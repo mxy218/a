@@ -54,6 +54,9 @@
 
 .method private constructor <init>(ILcom/google/android/startop/iorap/ActivityInfo;Lcom/google/android/startop/iorap/ActivityInfo;)V
     .registers 4
+    .param p1, "type"  # I
+    .param p2, "oldActivityInfo"  # Lcom/google/android/startop/iorap/ActivityInfo;
+    .param p3, "newActivityInfo"  # Lcom/google/android/startop/iorap/ActivityInfo;
 
     .line 70
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -76,6 +79,7 @@
 
 .method private constructor <init>(Landroid/os/Parcel;)V
     .registers 3
+    .param p1, "in"  # Landroid/os/Parcel;
 
     .line 114
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -103,11 +107,11 @@
 
     invoke-interface {v0, p1}, Landroid/os/Parcelable$Creator;->createFromParcel(Landroid/os/Parcel;)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v0
 
-    check-cast p1, Lcom/google/android/startop/iorap/ActivityInfo;
+    check-cast v0, Lcom/google/android/startop/iorap/ActivityInfo;
 
-    iput-object p1, p0, Lcom/google/android/startop/iorap/AppIntentEvent;->newActivityInfo:Lcom/google/android/startop/iorap/ActivityInfo;
+    iput-object v0, p0, Lcom/google/android/startop/iorap/AppIntentEvent;->newActivityInfo:Lcom/google/android/startop/iorap/ActivityInfo;
 
     .line 119
     invoke-direct {p0}, Lcom/google/android/startop/iorap/AppIntentEvent;->checkConstructorArguments()V
@@ -118,6 +122,8 @@
 
 .method synthetic constructor <init>(Landroid/os/Parcel;Lcom/google/android/startop/iorap/AppIntentEvent$1;)V
     .registers 3
+    .param p1, "x0"  # Landroid/os/Parcel;
+    .param p2, "x1"  # Lcom/google/android/startop/iorap/AppIntentEvent$1;
 
     .line 43
     invoke-direct {p0, p1}, Lcom/google/android/startop/iorap/AppIntentEvent;-><init>(Landroid/os/Parcel;)V
@@ -155,6 +161,8 @@
 
 .method public static createDefaultIntentChanged(Lcom/google/android/startop/iorap/ActivityInfo;Lcom/google/android/startop/iorap/ActivityInfo;)Lcom/google/android/startop/iorap/AppIntentEvent;
     .registers 4
+    .param p0, "oldActivityInfo"  # Lcom/google/android/startop/iorap/ActivityInfo;
+    .param p1, "newActivityInfo"  # Lcom/google/android/startop/iorap/ActivityInfo;
 
     .line 65
     new-instance v0, Lcom/google/android/startop/iorap/AppIntentEvent;
@@ -168,6 +176,7 @@
 
 .method private equals(Lcom/google/android/startop/iorap/AppIntentEvent;)Z
     .registers 4
+    .param p1, "other"  # Lcom/google/android/startop/iorap/AppIntentEvent;
 
     .line 101
     iget v0, p0, Lcom/google/android/startop/iorap/AppIntentEvent;->type:I
@@ -189,25 +198,25 @@
 
     iget-object v0, p0, Lcom/google/android/startop/iorap/AppIntentEvent;->newActivityInfo:Lcom/google/android/startop/iorap/ActivityInfo;
 
-    iget-object p1, p1, Lcom/google/android/startop/iorap/AppIntentEvent;->newActivityInfo:Lcom/google/android/startop/iorap/ActivityInfo;
+    iget-object v1, p1, Lcom/google/android/startop/iorap/AppIntentEvent;->newActivityInfo:Lcom/google/android/startop/iorap/ActivityInfo;
 
     .line 103
-    invoke-static {v0, p1}, Ljava/util/Objects;->equals(Ljava/lang/Object;Ljava/lang/Object;)Z
+    invoke-static {v0, v1}, Ljava/util/Objects;->equals(Ljava/lang/Object;Ljava/lang/Object;)Z
 
-    move-result p1
+    move-result v0
 
-    if-eqz p1, :cond_1c
+    if-eqz v0, :cond_1c
 
-    const/4 p1, 0x1
+    const/4 v0, 0x1
 
     goto :goto_1d
 
     :cond_1c
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
     .line 101
     :goto_1d
-    return p1
+    return v0
 .end method
 
 
@@ -223,35 +232,38 @@
 
 .method public equals(Ljava/lang/Object;)Z
     .registers 3
+    .param p1, "other"  # Ljava/lang/Object;
 
     .line 92
     if-ne p0, p1, :cond_4
 
     .line 93
-    const/4 p1, 0x1
+    const/4 v0, 0x1
 
-    return p1
+    return v0
 
     .line 94
     :cond_4
     instance-of v0, p1, Lcom/google/android/startop/iorap/AppIntentEvent;
 
-    if-eqz v0, :cond_f
+    if-eqz v0, :cond_10
 
     .line 95
-    check-cast p1, Lcom/google/android/startop/iorap/AppIntentEvent;
+    move-object v0, p1
 
-    invoke-direct {p0, p1}, Lcom/google/android/startop/iorap/AppIntentEvent;->equals(Lcom/google/android/startop/iorap/AppIntentEvent;)Z
+    check-cast v0, Lcom/google/android/startop/iorap/AppIntentEvent;
 
-    move-result p1
+    invoke-direct {p0, v0}, Lcom/google/android/startop/iorap/AppIntentEvent;->equals(Lcom/google/android/startop/iorap/AppIntentEvent;)Z
 
-    return p1
+    move-result v0
+
+    return v0
 
     .line 97
-    :cond_f
-    const/4 p1, 0x0
+    :cond_10
+    const/4 v0, 0x0
 
-    return p1
+    return v0
 .end method
 
 .method public toString()Ljava/lang/String;
@@ -285,6 +297,8 @@
 
 .method public writeToParcel(Landroid/os/Parcel;I)V
     .registers 4
+    .param p1, "out"  # Landroid/os/Parcel;
+    .param p2, "flags"  # I
 
     .line 109
     iget v0, p0, Lcom/google/android/startop/iorap/AppIntentEvent;->type:I

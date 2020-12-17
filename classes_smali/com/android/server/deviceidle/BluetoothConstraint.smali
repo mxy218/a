@@ -50,7 +50,10 @@
 .end method
 
 .method public constructor <init>(Landroid/content/Context;Landroid/os/Handler;Lcom/android/server/DeviceIdleController$LocalService;)V
-    .registers 5
+    .registers 6
+    .param p1, "context"  # Landroid/content/Context;
+    .param p2, "handler"  # Landroid/os/Handler;
+    .param p3, "localService"  # Lcom/android/server/DeviceIdleController$LocalService;
 
     .line 50
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -89,33 +92,35 @@
     iput-object p3, p0, Lcom/android/server/deviceidle/BluetoothConstraint;->mLocalService:Lcom/android/server/DeviceIdleController$LocalService;
 
     .line 54
-    iget-object p1, p0, Lcom/android/server/deviceidle/BluetoothConstraint;->mContext:Landroid/content/Context;
+    iget-object v0, p0, Lcom/android/server/deviceidle/BluetoothConstraint;->mContext:Landroid/content/Context;
 
-    const-class p2, Landroid/bluetooth/BluetoothManager;
+    const-class v1, Landroid/bluetooth/BluetoothManager;
 
-    invoke-virtual {p1, p2}, Landroid/content/Context;->getSystemService(Ljava/lang/Class;)Ljava/lang/Object;
+    invoke-virtual {v0, v1}, Landroid/content/Context;->getSystemService(Ljava/lang/Class;)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v0
 
-    check-cast p1, Landroid/bluetooth/BluetoothManager;
+    check-cast v0, Landroid/bluetooth/BluetoothManager;
 
-    iput-object p1, p0, Lcom/android/server/deviceidle/BluetoothConstraint;->mBluetoothManager:Landroid/bluetooth/BluetoothManager;
+    iput-object v0, p0, Lcom/android/server/deviceidle/BluetoothConstraint;->mBluetoothManager:Landroid/bluetooth/BluetoothManager;
 
     .line 55
     return-void
 .end method
 
 .method static synthetic access$000(Lcom/android/server/deviceidle/BluetoothConstraint;)Lcom/android/server/DeviceIdleController$LocalService;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/deviceidle/BluetoothConstraint;
 
     .line 37
-    iget-object p0, p0, Lcom/android/server/deviceidle/BluetoothConstraint;->mLocalService:Lcom/android/server/DeviceIdleController$LocalService;
+    iget-object v0, p0, Lcom/android/server/deviceidle/BluetoothConstraint;->mLocalService:Lcom/android/server/DeviceIdleController$LocalService;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$100(Lcom/android/server/deviceidle/BluetoothConstraint;)V
     .registers 1
+    .param p0, "x0"  # Lcom/android/server/deviceidle/BluetoothConstraint;
 
     .line 37
     invoke-direct {p0}, Lcom/android/server/deviceidle/BluetoothConstraint;->updateAndReportActiveLocked()V
@@ -147,6 +152,7 @@
     .catchall {:try_start_1 .. :try_end_d} :catchall_f
 
     .line 91
+    .end local p0  # "this":Lcom/android/server/deviceidle/BluetoothConstraint;
     :cond_d
     monitor-exit p0
 
@@ -162,7 +168,8 @@
 .end method
 
 .method static isBluetoothConnected(Landroid/bluetooth/BluetoothManager;)Z
-    .registers 3
+    .registers 4
+    .param p0, "bluetoothManager"  # Landroid/bluetooth/BluetoothManager;
     .annotation build Lcom/android/internal/annotations/VisibleForTesting;
     .end annotation
 
@@ -172,28 +179,29 @@
     move-result-object v0
 
     .line 113
+    .local v0, "adapter":Landroid/bluetooth/BluetoothAdapter;
     const/4 v1, 0x0
 
     if-eqz v0, :cond_1a
 
     invoke-virtual {v0}, Landroid/bluetooth/BluetoothAdapter;->isEnabled()Z
 
-    move-result v0
+    move-result v2
 
-    if-eqz v0, :cond_1a
+    if-eqz v2, :cond_1a
 
     .line 114
-    const/4 v0, 0x7
+    const/4 v2, 0x7
 
-    invoke-virtual {p0, v0}, Landroid/bluetooth/BluetoothManager;->getConnectedDevices(I)Ljava/util/List;
+    invoke-virtual {p0, v2}, Landroid/bluetooth/BluetoothManager;->getConnectedDevices(I)Ljava/util/List;
 
-    move-result-object p0
+    move-result-object v2
 
-    invoke-interface {p0}, Ljava/util/List;->size()I
+    invoke-interface {v2}, Ljava/util/List;->size()I
 
-    move-result p0
+    move-result v2
 
-    if-lez p0, :cond_19
+    if-lez v2, :cond_19
 
     const/4 v1, 0x1
 
@@ -206,7 +214,7 @@
 .end method
 
 .method private updateAndReportActiveLocked()V
-    .registers 3
+    .registers 4
     .annotation build Lcom/android/internal/annotations/GuardedBy;
         value = {
             "this"
@@ -221,6 +229,7 @@
     move-result v0
 
     .line 100
+    .local v0, "connected":Z
     iget-boolean v1, p0, Lcom/android/server/deviceidle/BluetoothConstraint;->mConnected:Z
 
     if-eq v0, v1, :cond_13
@@ -229,11 +238,11 @@
     iput-boolean v0, p0, Lcom/android/server/deviceidle/BluetoothConstraint;->mConnected:Z
 
     .line 103
-    iget-object v0, p0, Lcom/android/server/deviceidle/BluetoothConstraint;->mLocalService:Lcom/android/server/DeviceIdleController$LocalService;
+    iget-object v1, p0, Lcom/android/server/deviceidle/BluetoothConstraint;->mLocalService:Lcom/android/server/DeviceIdleController$LocalService;
 
-    iget-boolean v1, p0, Lcom/android/server/deviceidle/BluetoothConstraint;->mConnected:Z
+    iget-boolean v2, p0, Lcom/android/server/deviceidle/BluetoothConstraint;->mConnected:Z
 
-    invoke-virtual {v0, p0, v1}, Lcom/android/server/DeviceIdleController$LocalService;->onConstraintStateChanged(Lcom/android/server/deviceidle/IDeviceIdleConstraint;Z)V
+    invoke-virtual {v1, p0, v2}, Lcom/android/server/DeviceIdleController$LocalService;->onConstraintStateChanged(Lcom/android/server/deviceidle/IDeviceIdleConstraint;Z)V
 
     .line 105
     :cond_13
@@ -252,7 +261,7 @@
 .end method
 
 .method public declared-synchronized startMonitoring()V
-    .registers 5
+    .registers 6
 
     monitor-enter p0
 
@@ -271,6 +280,7 @@
     invoke-direct {v0}, Landroid/content/IntentFilter;-><init>()V
 
     .line 66
+    .local v0, "filter":Landroid/content/IntentFilter;
     const-string v1, "android.bluetooth.device.action.ACL_DISCONNECTED"
 
     invoke-virtual {v0, v1}, Landroid/content/IntentFilter;->addAction(Ljava/lang/String;)V
@@ -293,21 +303,21 @@
     invoke-virtual {v1, v2, v0}, Landroid/content/Context;->registerReceiver(Landroid/content/BroadcastReceiver;Landroid/content/IntentFilter;)Landroid/content/Intent;
 
     .line 72
-    iget-object v0, p0, Lcom/android/server/deviceidle/BluetoothConstraint;->mHandler:Landroid/os/Handler;
-
     iget-object v1, p0, Lcom/android/server/deviceidle/BluetoothConstraint;->mHandler:Landroid/os/Handler;
 
-    iget-object v2, p0, Lcom/android/server/deviceidle/BluetoothConstraint;->mTimeoutCallback:Ljava/lang/Runnable;
+    iget-object v2, p0, Lcom/android/server/deviceidle/BluetoothConstraint;->mHandler:Landroid/os/Handler;
+
+    iget-object v3, p0, Lcom/android/server/deviceidle/BluetoothConstraint;->mTimeoutCallback:Ljava/lang/Runnable;
 
     .line 73
-    invoke-static {v1, v2}, Landroid/os/Message;->obtain(Landroid/os/Handler;Ljava/lang/Runnable;)Landroid/os/Message;
+    invoke-static {v2, v3}, Landroid/os/Message;->obtain(Landroid/os/Handler;Ljava/lang/Runnable;)Landroid/os/Message;
 
-    move-result-object v1
+    move-result-object v2
 
-    const-wide/32 v2, 0x124f80
+    const-wide/32 v3, 0x124f80
 
     .line 72
-    invoke-virtual {v0, v1, v2, v3}, Landroid/os/Handler;->sendMessageDelayed(Landroid/os/Message;J)Z
+    invoke-virtual {v1, v2, v3, v4}, Landroid/os/Handler;->sendMessageDelayed(Landroid/os/Message;J)Z
 
     .line 76
     invoke-direct {p0}, Lcom/android/server/deviceidle/BluetoothConstraint;->updateAndReportActiveLocked()V
@@ -320,6 +330,8 @@
     return-void
 
     .line 59
+    .end local v0  # "filter":Landroid/content/IntentFilter;
+    .end local p0  # "this":Lcom/android/server/deviceidle/BluetoothConstraint;
     :catchall_36
     move-exception v0
 
@@ -361,6 +373,7 @@
     return-void
 
     .line 80
+    .end local p0  # "this":Lcom/android/server/deviceidle/BluetoothConstraint;
     :catchall_14
     move-exception v0
 

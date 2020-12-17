@@ -25,7 +25,7 @@
 .method constructor <init>(Landroid/content/Context;)V
     .registers 2
 
-    .line 186
+    .line 216
     iput-object p1, p0, Lcom/android/server/power/ShutdownThread$1;->val$context:Landroid/content/Context;
 
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -36,13 +36,15 @@
 
 # virtual methods
 .method public onClick(Landroid/content/DialogInterface;I)V
-    .registers 3
+    .registers 4
+    .param p1, "dialog"  # Landroid/content/DialogInterface;
+    .param p2, "which"  # I
 
-    .line 188
-    iget-object p1, p0, Lcom/android/server/power/ShutdownThread$1;->val$context:Landroid/content/Context;
+    .line 218
+    iget-object v0, p0, Lcom/android/server/power/ShutdownThread$1;->val$context:Landroid/content/Context;
 
-    invoke-static {p1}, Lcom/android/server/power/ShutdownThread;->access$000(Landroid/content/Context;)V
+    invoke-static {v0}, Lcom/android/server/power/ShutdownThread;->access$000(Landroid/content/Context;)V
 
-    .line 189
+    .line 219
     return-void
 .end method

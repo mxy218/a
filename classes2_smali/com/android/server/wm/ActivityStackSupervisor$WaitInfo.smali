@@ -25,20 +25,23 @@
 # direct methods
 .method constructor <init>(Landroid/content/ComponentName;Landroid/app/WaitResult;J)V
     .registers 5
+    .param p1, "targetComponent"  # Landroid/content/ComponentName;
+    .param p2, "result"  # Landroid/app/WaitResult;
+    .param p3, "startTimeMs"  # J
 
-    .line 2845
+    .line 2970
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
-    .line 2846
+    .line 2971
     iput-object p1, p0, Lcom/android/server/wm/ActivityStackSupervisor$WaitInfo;->mTargetComponent:Landroid/content/ComponentName;
 
-    .line 2847
+    .line 2972
     iput-object p2, p0, Lcom/android/server/wm/ActivityStackSupervisor$WaitInfo;->mResult:Landroid/app/WaitResult;
 
-    .line 2848
+    .line 2973
     iput-wide p3, p0, Lcom/android/server/wm/ActivityStackSupervisor$WaitInfo;->mStartTimeMs:J
 
-    .line 2849
+    .line 2974
     return-void
 .end method
 
@@ -46,8 +49,10 @@
 # virtual methods
 .method public dump(Ljava/io/PrintWriter;Ljava/lang/String;)V
     .registers 5
+    .param p1, "pw"  # Ljava/io/PrintWriter;
+    .param p2, "prefix"  # Ljava/lang/String;
 
-    .line 2868
+    .line 2993
     new-instance v0, Ljava/lang/StringBuilder;
 
     invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
@@ -64,7 +69,7 @@
 
     invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
-    .line 2869
+    .line 2994
     new-instance v0, Ljava/lang/StringBuilder;
 
     invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
@@ -85,7 +90,7 @@
 
     invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
-    .line 2870
+    .line 2995
     new-instance v0, Ljava/lang/StringBuilder;
 
     invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
@@ -102,19 +107,19 @@
 
     invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
-    .line 2871
+    .line 2996
     iget-object v0, p0, Lcom/android/server/wm/ActivityStackSupervisor$WaitInfo;->mResult:Landroid/app/WaitResult;
 
     invoke-virtual {v0, p1, p2}, Landroid/app/WaitResult;->dump(Ljava/io/PrintWriter;Ljava/lang/String;)V
 
-    .line 2872
+    .line 2997
     return-void
 .end method
 
 .method public getComponent()Landroid/content/ComponentName;
     .registers 2
 
-    .line 2864
+    .line 2989
     iget-object v0, p0, Lcom/android/server/wm/ActivityStackSupervisor$WaitInfo;->mTargetComponent:Landroid/content/ComponentName;
 
     return-object v0
@@ -123,7 +128,7 @@
 .method public getResult()Landroid/app/WaitResult;
     .registers 2
 
-    .line 2856
+    .line 2981
     iget-object v0, p0, Lcom/android/server/wm/ActivityStackSupervisor$WaitInfo;->mResult:Landroid/app/WaitResult;
 
     return-object v0
@@ -132,7 +137,7 @@
 .method public getStartTime()J
     .registers 3
 
-    .line 2860
+    .line 2985
     iget-wide v0, p0, Lcom/android/server/wm/ActivityStackSupervisor$WaitInfo;->mStartTimeMs:J
 
     return-wide v0
@@ -140,29 +145,30 @@
 
 .method public matches(Landroid/content/ComponentName;)Z
     .registers 3
+    .param p1, "targetComponent"  # Landroid/content/ComponentName;
 
-    .line 2852
+    .line 2977
     iget-object v0, p0, Lcom/android/server/wm/ActivityStackSupervisor$WaitInfo;->mTargetComponent:Landroid/content/ComponentName;
 
     if-eqz v0, :cond_d
 
     invoke-virtual {v0, p1}, Landroid/content/ComponentName;->equals(Ljava/lang/Object;)Z
 
-    move-result p1
+    move-result v0
 
-    if-eqz p1, :cond_b
+    if-eqz v0, :cond_b
 
     goto :goto_d
 
     :cond_b
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
     goto :goto_e
 
     :cond_d
     :goto_d
-    const/4 p1, 0x1
+    const/4 v0, 0x1
 
     :goto_e
-    return p1
+    return v0
 .end method

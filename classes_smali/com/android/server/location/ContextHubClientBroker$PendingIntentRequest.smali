@@ -36,6 +36,8 @@
 
 .method constructor <init>(Lcom/android/server/location/ContextHubClientBroker;Landroid/app/PendingIntent;J)V
     .registers 5
+    .param p2, "pendingIntent"  # Landroid/app/PendingIntent;
+    .param p3, "nanoAppId"  # J
 
     .line 115
     iput-object p1, p0, Lcom/android/server/location/ContextHubClientBroker$PendingIntentRequest;->this$0:Lcom/android/server/location/ContextHubClientBroker;

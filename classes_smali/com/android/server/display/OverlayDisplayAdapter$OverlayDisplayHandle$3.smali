@@ -24,6 +24,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/display/OverlayDisplayAdapter$OverlayDisplayHandle;)V
     .registers 2
+    .param p1, "this$1"  # Lcom/android/server/display/OverlayDisplayAdapter$OverlayDisplayHandle;
 
     .line 484
     iput-object p1, p0, Lcom/android/server/display/OverlayDisplayAdapter$OverlayDisplayHandle$3;->this$1:Lcom/android/server/display/OverlayDisplayAdapter$OverlayDisplayHandle;
@@ -58,6 +59,7 @@
     move-result-object v1
 
     .line 490
+    .local v1, "window":Lcom/android/server/display/OverlayDisplayWindow;
     iget-object v2, p0, Lcom/android/server/display/OverlayDisplayAdapter$OverlayDisplayHandle$3;->this$1:Lcom/android/server/display/OverlayDisplayAdapter$OverlayDisplayHandle;
 
     const/4 v3, 0x0
@@ -80,6 +82,7 @@
     return-void
 
     .line 491
+    .end local v1  # "window":Lcom/android/server/display/OverlayDisplayWindow;
     :catchall_1c
     move-exception v1
 

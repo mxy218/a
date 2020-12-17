@@ -27,6 +27,7 @@
 # direct methods
 .method constructor <init>(Landroid/content/Context;)V
     .registers 2
+    .param p1, "context"  # Landroid/content/Context;
 
     .line 40
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -41,56 +42,63 @@
 
 # virtual methods
 .method public initialize(Ljava/lang/String;Ljava/lang/String;Lcom/android/server/timezone/PackageTracker;)V
-    .registers 10
+    .registers 11
+    .param p1, "updaterAppPackageName"  # Ljava/lang/String;
+    .param p2, "dataAppPackageName"  # Ljava/lang/String;
+    .param p3, "packageTracker"  # Lcom/android/server/timezone/PackageTracker;
 
     .line 47
     iput-object p1, p0, Lcom/android/server/timezone/PackageTrackerIntentHelperImpl;->mUpdaterAppPackageName:Ljava/lang/String;
 
     .line 53
-    new-instance v3, Landroid/content/IntentFilter;
+    new-instance v0, Landroid/content/IntentFilter;
 
-    invoke-direct {v3}, Landroid/content/IntentFilter;-><init>()V
+    invoke-direct {v0}, Landroid/content/IntentFilter;-><init>()V
 
     .line 55
-    const-string/jumbo v0, "package"
+    .local v0, "packageIntentFilter":Landroid/content/IntentFilter;
+    const-string/jumbo v1, "package"
 
-    invoke-virtual {v3, v0}, Landroid/content/IntentFilter;->addDataScheme(Ljava/lang/String;)V
+    invoke-virtual {v0, v1}, Landroid/content/IntentFilter;->addDataScheme(Ljava/lang/String;)V
 
     .line 56
-    const/4 v0, 0x0
+    const/4 v1, 0x0
 
-    invoke-virtual {v3, p1, v0}, Landroid/content/IntentFilter;->addDataSchemeSpecificPart(Ljava/lang/String;I)V
+    invoke-virtual {v0, p1, v1}, Landroid/content/IntentFilter;->addDataSchemeSpecificPart(Ljava/lang/String;I)V
 
     .line 58
-    invoke-virtual {v3, p2, v0}, Landroid/content/IntentFilter;->addDataSchemeSpecificPart(Ljava/lang/String;I)V
+    invoke-virtual {v0, p2, v1}, Landroid/content/IntentFilter;->addDataSchemeSpecificPart(Ljava/lang/String;I)V
 
     .line 65
-    const-string p1, "android.intent.action.PACKAGE_ADDED"
+    const-string v1, "android.intent.action.PACKAGE_ADDED"
 
-    invoke-virtual {v3, p1}, Landroid/content/IntentFilter;->addAction(Ljava/lang/String;)V
+    invoke-virtual {v0, v1}, Landroid/content/IntentFilter;->addAction(Ljava/lang/String;)V
 
     .line 73
-    const-string p1, "android.intent.action.PACKAGE_CHANGED"
+    const-string v1, "android.intent.action.PACKAGE_CHANGED"
 
-    invoke-virtual {v3, p1}, Landroid/content/IntentFilter;->addAction(Ljava/lang/String;)V
+    invoke-virtual {v0, v1}, Landroid/content/IntentFilter;->addAction(Ljava/lang/String;)V
 
     .line 79
-    new-instance v1, Lcom/android/server/timezone/PackageTrackerIntentHelperImpl$Receiver;
+    new-instance v2, Lcom/android/server/timezone/PackageTrackerIntentHelperImpl$Receiver;
 
-    const/4 p1, 0x0
+    const/4 v1, 0x0
 
-    invoke-direct {v1, p3, p1}, Lcom/android/server/timezone/PackageTrackerIntentHelperImpl$Receiver;-><init>(Lcom/android/server/timezone/PackageTracker;Lcom/android/server/timezone/PackageTrackerIntentHelperImpl$1;)V
+    invoke-direct {v2, p3, v1}, Lcom/android/server/timezone/PackageTrackerIntentHelperImpl$Receiver;-><init>(Lcom/android/server/timezone/PackageTracker;Lcom/android/server/timezone/PackageTrackerIntentHelperImpl$1;)V
 
     .line 80
-    iget-object v0, p0, Lcom/android/server/timezone/PackageTrackerIntentHelperImpl;->mContext:Landroid/content/Context;
+    .local v2, "packageUpdateReceiver":Lcom/android/server/timezone/PackageTrackerIntentHelperImpl$Receiver;
+    iget-object v1, p0, Lcom/android/server/timezone/PackageTrackerIntentHelperImpl;->mContext:Landroid/content/Context;
 
-    sget-object v2, Landroid/os/UserHandle;->SYSTEM:Landroid/os/UserHandle;
-
-    const/4 v4, 0x0
+    sget-object v3, Landroid/os/UserHandle;->SYSTEM:Landroid/os/UserHandle;
 
     const/4 v5, 0x0
 
-    invoke-virtual/range {v0 .. v5}, Landroid/content/Context;->registerReceiverAsUser(Landroid/content/BroadcastReceiver;Landroid/os/UserHandle;Landroid/content/IntentFilter;Ljava/lang/String;Landroid/os/Handler;)Landroid/content/Intent;
+    const/4 v6, 0x0
+
+    move-object v4, v0
+
+    invoke-virtual/range {v1 .. v6}, Landroid/content/Context;->registerReceiverAsUser(Landroid/content/BroadcastReceiver;Landroid/os/UserHandle;Landroid/content/IntentFilter;Ljava/lang/String;Landroid/os/Handler;)Landroid/content/Intent;
 
     .line 83
     return-void
@@ -98,6 +106,7 @@
 
 .method public declared-synchronized scheduleReliabilityTrigger(J)V
     .registers 4
+    .param p1, "minimumDelayMillis"  # J
 
     monitor-enter p0
 
@@ -115,6 +124,8 @@
     return-void
 
     .line 94
+    .end local p0  # "this":Lcom/android/server/timezone/PackageTrackerIntentHelperImpl;
+    .end local p1  # "minimumDelayMillis":J
     :catchall_8
     move-exception p1
 
@@ -125,6 +136,7 @@
 
 .method public sendTriggerUpdateCheck(Lcom/android/server/timezone/CheckToken;)V
     .registers 5
+    .param p1, "checkToken"  # Lcom/android/server/timezone/CheckToken;
 
     .line 88
     iget-object v0, p0, Lcom/android/server/timezone/PackageTrackerIntentHelperImpl;->mContext:Landroid/content/Context;
@@ -142,9 +154,9 @@
     .line 90
     invoke-virtual {p1}, Lcom/android/server/timezone/CheckToken;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    invoke-static {p1}, Lcom/android/server/EventLogTags;->writeTimezoneTriggerCheck(Ljava/lang/String;)V
+    invoke-static {v0}, Lcom/android/server/EventLogTags;->writeTimezoneTriggerCheck(Ljava/lang/String;)V
 
     .line 91
     return-void
@@ -169,6 +181,7 @@
     return-void
 
     .line 99
+    .end local p0  # "this":Lcom/android/server/timezone/PackageTrackerIntentHelperImpl;
     :catchall_8
     move-exception v0
 

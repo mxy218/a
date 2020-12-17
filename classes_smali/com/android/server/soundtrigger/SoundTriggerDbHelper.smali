@@ -26,6 +26,7 @@
 # direct methods
 .method public constructor <init>(Landroid/content/Context;)V
     .registers 5
+    .param p1, "context"  # Landroid/content/Context;
 
     .line 62
     const-string/jumbo v0, "st_sound_model.db"
@@ -43,7 +44,8 @@
 
 # virtual methods
 .method public deleteGenericSoundModel(Ljava/util/UUID;)Z
-    .registers 6
+    .registers 8
+    .param p1, "model_uuid"  # Ljava/util/UUID;
 
     .line 129
     monitor-enter p0
@@ -52,99 +54,110 @@
     :try_start_1
     invoke-virtual {p0, p1}, Lcom/android/server/soundtrigger/SoundTriggerDbHelper;->getGenericSoundModel(Ljava/util/UUID;)Landroid/hardware/soundtrigger/SoundTrigger$GenericSoundModel;
 
-    move-result-object p1
+    move-result-object v0
 
     .line 131
-    const/4 v0, 0x0
+    .local v0, "soundModel":Landroid/hardware/soundtrigger/SoundTrigger$GenericSoundModel;
+    const/4 v1, 0x0
 
-    if-nez p1, :cond_a
+    if-nez v0, :cond_a
 
     .line 132
     monitor-exit p0
 
-    return v0
+    return v1
 
     .line 135
     :cond_a
     invoke-virtual {p0}, Lcom/android/server/soundtrigger/SoundTriggerDbHelper;->getWritableDatabase()Landroid/database/sqlite/SQLiteDatabase;
 
-    move-result-object v1
+    move-result-object v2
 
     .line 136
-    new-instance v2, Ljava/lang/StringBuilder;
+    .local v2, "db":Landroid/database/sqlite/SQLiteDatabase;
+    new-instance v3, Ljava/lang/StringBuilder;
 
-    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v3, "model_uuid=\'"
+    const-string/jumbo v4, "model_uuid=\'"
 
-    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    iget-object p1, p1, Landroid/hardware/soundtrigger/SoundTrigger$GenericSoundModel;->uuid:Ljava/util/UUID;
+    iget-object v4, v0, Landroid/hardware/soundtrigger/SoundTrigger$GenericSoundModel;->uuid:Ljava/util/UUID;
 
     .line 137
-    invoke-virtual {p1}, Ljava/util/UUID;->toString()Ljava/lang/String;
+    invoke-virtual {v4}, Ljava/util/UUID;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v4
 
-    invoke-virtual {v2, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string p1, "\'"
+    const-string v4, "\'"
 
-    invoke-virtual {v2, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
-    :try_end_2a
-    .catchall {:try_start_1 .. :try_end_2a} :catchall_3f
+    move-result-object v3
+    :try_end_2b
+    .catchall {:try_start_1 .. :try_end_2b} :catchall_40
 
     .line 139
-    :try_start_2a
-    const-string/jumbo v2, "st_sound_model"
+    .local v3, "soundModelClause":Ljava/lang/String;
+    :try_start_2b
+    const-string/jumbo v4, "st_sound_model"
 
-    const/4 v3, 0x0
+    const/4 v5, 0x0
 
-    invoke-virtual {v1, v2, p1, v3}, Landroid/database/sqlite/SQLiteDatabase;->delete(Ljava/lang/String;Ljava/lang/String;[Ljava/lang/String;)I
+    invoke-virtual {v2, v4, v3, v5}, Landroid/database/sqlite/SQLiteDatabase;->delete(Ljava/lang/String;Ljava/lang/String;[Ljava/lang/String;)I
 
-    move-result p1
-    :try_end_32
-    .catchall {:try_start_2a .. :try_end_32} :catchall_3a
+    move-result v4
+    :try_end_33
+    .catchall {:try_start_2b .. :try_end_33} :catchall_3b
 
-    if-eqz p1, :cond_35
+    if-eqz v4, :cond_36
 
-    const/4 v0, 0x1
+    const/4 v1, 0x1
 
     .line 141
-    :cond_35
-    :try_start_35
-    invoke-virtual {v1}, Landroid/database/sqlite/SQLiteDatabase;->close()V
+    :cond_36
+    :try_start_36
+    invoke-virtual {v2}, Landroid/database/sqlite/SQLiteDatabase;->close()V
 
     monitor-exit p0
 
     .line 139
-    return v0
+    return v1
 
     .line 141
-    :catchall_3a
-    move-exception p1
+    :catchall_3b
+    move-exception v1
 
-    invoke-virtual {v1}, Landroid/database/sqlite/SQLiteDatabase;->close()V
+    invoke-virtual {v2}, Landroid/database/sqlite/SQLiteDatabase;->close()V
 
-    throw p1
+    .end local p0  # "this":Lcom/android/server/soundtrigger/SoundTriggerDbHelper;
+    .end local p1  # "model_uuid":Ljava/util/UUID;
+    throw v1
 
     .line 143
-    :catchall_3f
-    move-exception p1
+    .end local v0  # "soundModel":Landroid/hardware/soundtrigger/SoundTrigger$GenericSoundModel;
+    .end local v2  # "db":Landroid/database/sqlite/SQLiteDatabase;
+    .end local v3  # "soundModelClause":Ljava/lang/String;
+    .restart local p0  # "this":Lcom/android/server/soundtrigger/SoundTriggerDbHelper;
+    .restart local p1  # "model_uuid":Ljava/util/UUID;
+    :catchall_40
+    move-exception v0
 
     monitor-exit p0
-    :try_end_41
-    .catchall {:try_start_35 .. :try_end_41} :catchall_3f
+    :try_end_42
+    .catchall {:try_start_36 .. :try_end_42} :catchall_40
 
-    throw p1
+    throw v0
 .end method
 
 .method public getGenericSoundModel(Ljava/util/UUID;)Landroid/hardware/soundtrigger/SoundTrigger$GenericSoundModel;
-    .registers 7
+    .registers 9
+    .param p1, "model_uuid"  # Ljava/util/UUID;
 
     .line 101
     monitor-enter p0
@@ -170,65 +183,70 @@
     move-result-object v0
 
     .line 107
+    .local v0, "selectQuery":Ljava/lang/String;
     invoke-virtual {p0}, Lcom/android/server/soundtrigger/SoundTriggerDbHelper;->getReadableDatabase()Landroid/database/sqlite/SQLiteDatabase;
 
     move-result-object v1
 
     .line 108
+    .local v1, "db":Landroid/database/sqlite/SQLiteDatabase;
     const/4 v2, 0x0
 
     invoke-virtual {v1, v0, v2}, Landroid/database/sqlite/SQLiteDatabase;->rawQuery(Ljava/lang/String;[Ljava/lang/String;)Landroid/database/Cursor;
 
-    move-result-object v0
+    move-result-object v3
     :try_end_20
     .catchall {:try_start_1 .. :try_end_20} :catchall_5d
 
     .line 110
+    .local v3, "c":Landroid/database/Cursor;
     :try_start_20
-    invoke-interface {v0}, Landroid/database/Cursor;->moveToFirst()Z
+    invoke-interface {v3}, Landroid/database/Cursor;->moveToFirst()Z
 
-    move-result v3
+    move-result v4
 
-    if-eqz v3, :cond_4c
+    if-eqz v4, :cond_4c
 
     .line 112
     const-string v2, "data"
 
-    invoke-interface {v0, v2}, Landroid/database/Cursor;->getColumnIndex(Ljava/lang/String;)I
+    invoke-interface {v3, v2}, Landroid/database/Cursor;->getColumnIndex(Ljava/lang/String;)I
 
     move-result v2
 
-    invoke-interface {v0, v2}, Landroid/database/Cursor;->getBlob(I)[B
+    invoke-interface {v3, v2}, Landroid/database/Cursor;->getBlob(I)[B
 
     move-result-object v2
 
     .line 114
-    const-string/jumbo v3, "vendor_uuid"
+    .local v2, "data":[B
+    const-string/jumbo v4, "vendor_uuid"
 
     .line 115
-    invoke-interface {v0, v3}, Landroid/database/Cursor;->getColumnIndex(Ljava/lang/String;)I
+    invoke-interface {v3, v4}, Landroid/database/Cursor;->getColumnIndex(Ljava/lang/String;)I
 
-    move-result v3
+    move-result v4
 
     .line 114
-    invoke-interface {v0, v3}, Landroid/database/Cursor;->getString(I)Ljava/lang/String;
+    invoke-interface {v3, v4}, Landroid/database/Cursor;->getString(I)Ljava/lang/String;
 
-    move-result-object v3
+    move-result-object v4
 
     .line 116
-    new-instance v4, Landroid/hardware/soundtrigger/SoundTrigger$GenericSoundModel;
+    .local v4, "vendor_uuid":Ljava/lang/String;
+    new-instance v5, Landroid/hardware/soundtrigger/SoundTrigger$GenericSoundModel;
 
-    invoke-static {v3}, Ljava/util/UUID;->fromString(Ljava/lang/String;)Ljava/util/UUID;
+    invoke-static {v4}, Ljava/util/UUID;->fromString(Ljava/lang/String;)Ljava/util/UUID;
 
-    move-result-object v3
+    move-result-object v6
 
-    invoke-direct {v4, p1, v3, v2}, Landroid/hardware/soundtrigger/SoundTrigger$GenericSoundModel;-><init>(Ljava/util/UUID;Ljava/util/UUID;[B)V
+    invoke-direct {v5, p1, v6, v2}, Landroid/hardware/soundtrigger/SoundTrigger$GenericSoundModel;-><init>(Ljava/util/UUID;Ljava/util/UUID;[B)V
     :try_end_44
     .catchall {:try_start_20 .. :try_end_44} :catchall_55
 
     .line 121
     :try_start_44
-    invoke-interface {v0}, Landroid/database/Cursor;->close()V
+    invoke-interface {v3}, Landroid/database/Cursor;->close()V
 
     .line 122
     invoke-virtual {v1}, Landroid/database/sqlite/SQLiteDatabase;->close()V
@@ -236,11 +254,13 @@
     monitor-exit p0
 
     .line 116
-    return-object v4
+    return-object v5
 
     .line 121
+    .end local v2  # "data":[B
+    .end local v4  # "vendor_uuid":Ljava/lang/String;
     :cond_4c
-    invoke-interface {v0}, Landroid/database/Cursor;->close()V
+    invoke-interface {v3}, Landroid/database/Cursor;->close()V
 
     .line 122
     invoke-virtual {v1}, Landroid/database/sqlite/SQLiteDatabase;->close()V
@@ -249,35 +269,49 @@
     nop
 
     .line 124
+    .end local v0  # "selectQuery":Ljava/lang/String;
+    .end local v1  # "db":Landroid/database/sqlite/SQLiteDatabase;
+    .end local v3  # "c":Landroid/database/Cursor;
     monitor-exit p0
 
     .line 125
     return-object v2
 
     .line 121
+    .restart local v0  # "selectQuery":Ljava/lang/String;
+    .restart local v1  # "db":Landroid/database/sqlite/SQLiteDatabase;
+    .restart local v3  # "c":Landroid/database/Cursor;
     :catchall_55
-    move-exception p1
+    move-exception v2
 
-    invoke-interface {v0}, Landroid/database/Cursor;->close()V
+    invoke-interface {v3}, Landroid/database/Cursor;->close()V
 
     .line 122
     invoke-virtual {v1}, Landroid/database/sqlite/SQLiteDatabase;->close()V
 
-    throw p1
+    .end local p0  # "this":Lcom/android/server/soundtrigger/SoundTriggerDbHelper;
+    .end local p1  # "model_uuid":Ljava/util/UUID;
+    throw v2
 
     .line 124
+    .end local v0  # "selectQuery":Ljava/lang/String;
+    .end local v1  # "db":Landroid/database/sqlite/SQLiteDatabase;
+    .end local v3  # "c":Landroid/database/Cursor;
+    .restart local p0  # "this":Lcom/android/server/soundtrigger/SoundTriggerDbHelper;
+    .restart local p1  # "model_uuid":Ljava/util/UUID;
     :catchall_5d
-    move-exception p1
+    move-exception v0
 
     monitor-exit p0
     :try_end_5f
     .catchall {:try_start_44 .. :try_end_5f} :catchall_5d
 
-    throw p1
+    throw v0
 .end method
 
 .method public onCreate(Landroid/database/sqlite/SQLiteDatabase;)V
     .registers 3
+    .param p1, "db"  # Landroid/database/sqlite/SQLiteDatabase;
 
     .line 68
     const-string v0, "CREATE TABLE st_sound_model(model_uuid TEXT PRIMARY KEY,vendor_uuid TEXT,data BLOB )"
@@ -289,12 +323,15 @@
 .end method
 
 .method public onUpgrade(Landroid/database/sqlite/SQLiteDatabase;II)V
-    .registers 4
+    .registers 5
+    .param p1, "db"  # Landroid/database/sqlite/SQLiteDatabase;
+    .param p2, "oldVersion"  # I
+    .param p3, "newVersion"  # I
 
     .line 74
-    const-string p2, "DROP TABLE IF EXISTS st_sound_model"
+    const-string v0, "DROP TABLE IF EXISTS st_sound_model"
 
-    invoke-virtual {p1, p2}, Landroid/database/sqlite/SQLiteDatabase;->execSQL(Ljava/lang/String;)V
+    invoke-virtual {p1, v0}, Landroid/database/sqlite/SQLiteDatabase;->execSQL(Ljava/lang/String;)V
 
     .line 75
     invoke-virtual {p0, p1}, Lcom/android/server/soundtrigger/SoundTriggerDbHelper;->onCreate(Landroid/database/sqlite/SQLiteDatabase;)V
@@ -304,7 +341,8 @@
 .end method
 
 .method public updateGenericSoundModel(Landroid/hardware/soundtrigger/SoundTrigger$GenericSoundModel;)Z
-    .registers 7
+    .registers 8
+    .param p1, "soundModel"  # Landroid/hardware/soundtrigger/SoundTrigger$GenericSoundModel;
 
     .line 83
     monitor-enter p0
@@ -316,12 +354,14 @@
     move-result-object v0
 
     .line 85
+    .local v0, "db":Landroid/database/sqlite/SQLiteDatabase;
     new-instance v1, Landroid/content/ContentValues;
 
     invoke-direct {v1}, Landroid/content/ContentValues;-><init>()V
 
     .line 86
-    const-string v2, "model_uuid"
+    .local v1, "values":Landroid/content/ContentValues;
+    const-string/jumbo v2, "model_uuid"
 
     iget-object v3, p1, Landroid/hardware/soundtrigger/SoundTrigger$GenericSoundModel;->uuid:Ljava/util/UUID;
 
@@ -345,64 +385,70 @@
     .line 88
     const-string v2, "data"
 
-    iget-object p1, p1, Landroid/hardware/soundtrigger/SoundTrigger$GenericSoundModel;->data:[B
+    iget-object v3, p1, Landroid/hardware/soundtrigger/SoundTrigger$GenericSoundModel;->data:[B
 
-    invoke-virtual {v1, v2, p1}, Landroid/content/ContentValues;->put(Ljava/lang/String;[B)V
-    :try_end_28
-    .catchall {:try_start_1 .. :try_end_28} :catchall_44
+    invoke-virtual {v1, v2, v3}, Landroid/content/ContentValues;->put(Ljava/lang/String;[B)V
+    :try_end_29
+    .catchall {:try_start_1 .. :try_end_29} :catchall_45
 
     .line 91
-    :try_start_28
-    const-string/jumbo p1, "st_sound_model"
+    :try_start_29
+    const-string/jumbo v2, "st_sound_model"
 
+    const/4 v3, 0x0
+
+    const/4 v4, 0x5
+
+    invoke-virtual {v0, v2, v3, v1, v4}, Landroid/database/sqlite/SQLiteDatabase;->insertWithOnConflict(Ljava/lang/String;Ljava/lang/String;Landroid/content/ContentValues;I)J
+
+    move-result-wide v2
+    :try_end_32
+    .catchall {:try_start_29 .. :try_end_32} :catchall_40
+
+    const-wide/16 v4, -0x1
+
+    cmp-long v2, v2, v4
+
+    if-eqz v2, :cond_3a
+
+    const/4 v2, 0x1
+
+    goto :goto_3b
+
+    :cond_3a
     const/4 v2, 0x0
 
-    const/4 v3, 0x5
-
-    invoke-virtual {v0, p1, v2, v1, v3}, Landroid/database/sqlite/SQLiteDatabase;->insertWithOnConflict(Ljava/lang/String;Ljava/lang/String;Landroid/content/ContentValues;I)J
-
-    move-result-wide v1
-    :try_end_31
-    .catchall {:try_start_28 .. :try_end_31} :catchall_3f
-
-    const-wide/16 v3, -0x1
-
-    cmp-long p1, v1, v3
-
-    if-eqz p1, :cond_39
-
-    const/4 p1, 0x1
-
-    goto :goto_3a
-
-    :cond_39
-    const/4 p1, 0x0
-
     .line 94
-    :goto_3a
-    :try_start_3a
+    :goto_3b
+    :try_start_3b
     invoke-virtual {v0}, Landroid/database/sqlite/SQLiteDatabase;->close()V
 
     monitor-exit p0
 
     .line 91
-    return p1
+    return v2
 
     .line 94
-    :catchall_3f
-    move-exception p1
+    :catchall_40
+    move-exception v2
 
     invoke-virtual {v0}, Landroid/database/sqlite/SQLiteDatabase;->close()V
 
-    throw p1
+    .end local p0  # "this":Lcom/android/server/soundtrigger/SoundTriggerDbHelper;
+    .end local p1  # "soundModel":Landroid/hardware/soundtrigger/SoundTrigger$GenericSoundModel;
+    throw v2
 
     .line 97
-    :catchall_44
-    move-exception p1
+    .end local v0  # "db":Landroid/database/sqlite/SQLiteDatabase;
+    .end local v1  # "values":Landroid/content/ContentValues;
+    .restart local p0  # "this":Lcom/android/server/soundtrigger/SoundTriggerDbHelper;
+    .restart local p1  # "soundModel":Landroid/hardware/soundtrigger/SoundTrigger$GenericSoundModel;
+    :catchall_45
+    move-exception v0
 
     monitor-exit p0
-    :try_end_46
-    .catchall {:try_start_3a .. :try_end_46} :catchall_44
+    :try_end_47
+    .catchall {:try_start_3b .. :try_end_47} :catchall_45
 
-    throw p1
+    throw v0
 .end method

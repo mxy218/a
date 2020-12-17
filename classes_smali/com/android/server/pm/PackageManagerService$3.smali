@@ -23,8 +23,9 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/pm/PackageManagerService;Z)V
     .registers 3
+    .param p1, "this$0"  # Lcom/android/server/pm/PackageManagerService;
 
-    .line 5797
+    .line 5954
     iput-object p1, p0, Lcom/android/server/pm/PackageManagerService$3;->this$0:Lcom/android/server/pm/PackageManagerService;
 
     iput-boolean p2, p0, Lcom/android/server/pm/PackageManagerService$3;->val$async:Z
@@ -39,12 +40,12 @@
 .method public onPermissionChanged()V
     .registers 2
 
-    .line 5800
+    .line 5957
     iget-boolean v0, p0, Lcom/android/server/pm/PackageManagerService$3;->val$async:Z
 
     if-nez v0, :cond_c
 
-    .line 5801
+    .line 5958
     iget-object v0, p0, Lcom/android/server/pm/PackageManagerService$3;->this$0:Lcom/android/server/pm/PackageManagerService;
 
     iget-object v0, v0, Lcom/android/server/pm/PackageManagerService;->mSettings:Lcom/android/server/pm/Settings;
@@ -53,13 +54,13 @@
 
     goto :goto_11
 
-    .line 5803
+    .line 5960
     :cond_c
     iget-object v0, p0, Lcom/android/server/pm/PackageManagerService$3;->this$0:Lcom/android/server/pm/PackageManagerService;
 
     invoke-virtual {v0}, Lcom/android/server/pm/PackageManagerService;->scheduleWriteSettingsLocked()V
 
-    .line 5805
+    .line 5962
     :goto_11
     return-void
 .end method

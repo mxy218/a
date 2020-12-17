@@ -40,6 +40,7 @@
 # virtual methods
 .method public createFromParcel(Landroid/os/Parcel;)Landroid/net/TetherStatsParcel;
     .registers 3
+    .param p1, "_aidl_source"  # Landroid/os/Parcel;
 
     .line 20
     new-instance v0, Landroid/net/TetherStatsParcel;
@@ -47,6 +48,7 @@
     invoke-direct {v0}, Landroid/net/TetherStatsParcel;-><init>()V
 
     .line 21
+    .local v0, "_aidl_out":Landroid/net/TetherStatsParcel;
     invoke-virtual {v0, p1}, Landroid/net/TetherStatsParcel;->readFromParcel(Landroid/os/Parcel;)V
 
     .line 22
@@ -65,12 +67,13 @@
 .end method
 
 .method public newArray(I)[Landroid/net/TetherStatsParcel;
-    .registers 2
+    .registers 3
+    .param p1, "_aidl_size"  # I
 
     .line 26
-    new-array p1, p1, [Landroid/net/TetherStatsParcel;
+    new-array v0, p1, [Landroid/net/TetherStatsParcel;
 
-    return-object p1
+    return-object v0
 .end method
 
 .method public bridge synthetic newArray(I)[Ljava/lang/Object;

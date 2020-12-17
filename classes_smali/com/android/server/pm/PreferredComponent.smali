@@ -47,7 +47,12 @@
 
 # direct methods
 .method public constructor <init>(Lcom/android/server/pm/PreferredComponent$Callbacks;I[Landroid/content/ComponentName;Landroid/content/ComponentName;Z)V
-    .registers 10
+    .registers 14
+    .param p1, "callbacks"  # Lcom/android/server/pm/PreferredComponent$Callbacks;
+    .param p2, "match"  # I
+    .param p3, "set"  # [Landroid/content/ComponentName;
+    .param p4, "component"  # Landroid/content/ComponentName;
+    .param p5, "always"  # Z
 
     .line 65
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -56,11 +61,11 @@
     iput-object p1, p0, Lcom/android/server/pm/PreferredComponent;->mCallbacks:Lcom/android/server/pm/PreferredComponent$Callbacks;
 
     .line 67
-    const/high16 p1, 0xfff0000
+    const/high16 v0, 0xfff0000
 
-    and-int/2addr p1, p2
+    and-int/2addr v0, p2
 
-    iput p1, p0, Lcom/android/server/pm/PreferredComponent;->mMatch:I
+    iput v0, p0, Lcom/android/server/pm/PreferredComponent;->mMatch:I
 
     .line 68
     iput-object p4, p0, Lcom/android/server/pm/PreferredComponent;->mComponent:Landroid/content/ComponentName;
@@ -71,114 +76,126 @@
     .line 70
     invoke-virtual {p4}, Landroid/content/ComponentName;->flattenToShortString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    iput-object p1, p0, Lcom/android/server/pm/PreferredComponent;->mShortComponent:Ljava/lang/String;
+    iput-object v0, p0, Lcom/android/server/pm/PreferredComponent;->mShortComponent:Ljava/lang/String;
 
     .line 71
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    iput-object p1, p0, Lcom/android/server/pm/PreferredComponent;->mParseError:Ljava/lang/String;
+    iput-object v0, p0, Lcom/android/server/pm/PreferredComponent;->mParseError:Ljava/lang/String;
 
     .line 72
-    iput-object p1, p0, Lcom/android/server/pm/PreferredComponent;->mSetupWizardPackageName:Ljava/lang/String;
+    iput-object v0, p0, Lcom/android/server/pm/PreferredComponent;->mSetupWizardPackageName:Ljava/lang/String;
 
     .line 73
     if-eqz p3, :cond_54
 
     .line 74
-    array-length p2, p3
+    array-length v1, p3
 
     .line 75
-    new-array p4, p2, [Ljava/lang/String;
+    .local v1, "N":I
+    new-array v2, v1, [Ljava/lang/String;
 
     .line 76
-    new-array p5, p2, [Ljava/lang/String;
+    .local v2, "myPackages":[Ljava/lang/String;
+    new-array v3, v1, [Ljava/lang/String;
 
     .line 77
-    new-array v0, p2, [Ljava/lang/String;
+    .local v3, "myClasses":[Ljava/lang/String;
+    new-array v4, v1, [Ljava/lang/String;
 
     .line 78
-    const/4 v1, 0x0
+    .local v4, "myComponents":[Ljava/lang/String;
+    const/4 v5, 0x0
 
+    .local v5, "i":I
     :goto_23
-    if-ge v1, p2, :cond_4d
+    if-ge v5, v1, :cond_4d
 
     .line 79
-    aget-object v2, p3, v1
+    aget-object v6, p3, v5
 
     .line 80
-    if-nez v2, :cond_30
+    .local v6, "cn":Landroid/content/ComponentName;
+    if-nez v6, :cond_30
 
     .line 81
-    iput-object p1, p0, Lcom/android/server/pm/PreferredComponent;->mSetPackages:[Ljava/lang/String;
+    iput-object v0, p0, Lcom/android/server/pm/PreferredComponent;->mSetPackages:[Ljava/lang/String;
 
     .line 82
-    iput-object p1, p0, Lcom/android/server/pm/PreferredComponent;->mSetClasses:[Ljava/lang/String;
+    iput-object v0, p0, Lcom/android/server/pm/PreferredComponent;->mSetClasses:[Ljava/lang/String;
 
     .line 83
-    iput-object p1, p0, Lcom/android/server/pm/PreferredComponent;->mSetComponents:[Ljava/lang/String;
+    iput-object v0, p0, Lcom/android/server/pm/PreferredComponent;->mSetComponents:[Ljava/lang/String;
 
     .line 84
     return-void
 
     .line 86
     :cond_30
-    invoke-virtual {v2}, Landroid/content/ComponentName;->getPackageName()Ljava/lang/String;
+    invoke-virtual {v6}, Landroid/content/ComponentName;->getPackageName()Ljava/lang/String;
 
-    move-result-object v3
+    move-result-object v7
 
-    invoke-virtual {v3}, Ljava/lang/String;->intern()Ljava/lang/String;
+    invoke-virtual {v7}, Ljava/lang/String;->intern()Ljava/lang/String;
 
-    move-result-object v3
+    move-result-object v7
 
-    aput-object v3, p4, v1
+    aput-object v7, v2, v5
 
     .line 87
-    invoke-virtual {v2}, Landroid/content/ComponentName;->getClassName()Ljava/lang/String;
+    invoke-virtual {v6}, Landroid/content/ComponentName;->getClassName()Ljava/lang/String;
 
-    move-result-object v3
+    move-result-object v7
 
-    invoke-virtual {v3}, Ljava/lang/String;->intern()Ljava/lang/String;
+    invoke-virtual {v7}, Ljava/lang/String;->intern()Ljava/lang/String;
 
-    move-result-object v3
+    move-result-object v7
 
-    aput-object v3, p5, v1
+    aput-object v7, v3, v5
 
     .line 88
-    invoke-virtual {v2}, Landroid/content/ComponentName;->flattenToShortString()Ljava/lang/String;
+    invoke-virtual {v6}, Landroid/content/ComponentName;->flattenToShortString()Ljava/lang/String;
 
-    move-result-object v2
+    move-result-object v7
 
-    aput-object v2, v0, v1
+    aput-object v7, v4, v5
 
     .line 78
-    add-int/lit8 v1, v1, 0x1
+    .end local v6  # "cn":Landroid/content/ComponentName;
+    add-int/lit8 v5, v5, 0x1
 
     goto :goto_23
 
     .line 90
+    .end local v5  # "i":I
     :cond_4d
-    iput-object p4, p0, Lcom/android/server/pm/PreferredComponent;->mSetPackages:[Ljava/lang/String;
+    iput-object v2, p0, Lcom/android/server/pm/PreferredComponent;->mSetPackages:[Ljava/lang/String;
 
     .line 91
-    iput-object p5, p0, Lcom/android/server/pm/PreferredComponent;->mSetClasses:[Ljava/lang/String;
+    iput-object v3, p0, Lcom/android/server/pm/PreferredComponent;->mSetClasses:[Ljava/lang/String;
 
     .line 92
-    iput-object v0, p0, Lcom/android/server/pm/PreferredComponent;->mSetComponents:[Ljava/lang/String;
+    iput-object v4, p0, Lcom/android/server/pm/PreferredComponent;->mSetComponents:[Ljava/lang/String;
 
     .line 93
+    .end local v1  # "N":I
+    .end local v2  # "myPackages":[Ljava/lang/String;
+    .end local v3  # "myClasses":[Ljava/lang/String;
+    .end local v4  # "myComponents":[Ljava/lang/String;
     goto :goto_5a
 
     .line 94
     :cond_54
-    iput-object p1, p0, Lcom/android/server/pm/PreferredComponent;->mSetPackages:[Ljava/lang/String;
+    iput-object v0, p0, Lcom/android/server/pm/PreferredComponent;->mSetPackages:[Ljava/lang/String;
 
     .line 95
-    iput-object p1, p0, Lcom/android/server/pm/PreferredComponent;->mSetClasses:[Ljava/lang/String;
+    iput-object v0, p0, Lcom/android/server/pm/PreferredComponent;->mSetClasses:[Ljava/lang/String;
 
     .line 96
-    iput-object p1, p0, Lcom/android/server/pm/PreferredComponent;->mSetComponents:[Ljava/lang/String;
+    iput-object v0, p0, Lcom/android/server/pm/PreferredComponent;->mSetComponents:[Ljava/lang/String;
 
     .line 98
     :goto_5a
@@ -186,7 +203,9 @@
 .end method
 
 .method public constructor <init>(Lcom/android/server/pm/PreferredComponent$Callbacks;Lorg/xmlpull/v1/XmlPullParser;)V
-    .registers 15
+    .registers 23
+    .param p1, "callbacks"  # Lcom/android/server/pm/PreferredComponent$Callbacks;
+    .param p2, "parser"  # Lorg/xmlpull/v1/XmlPullParser;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Lorg/xmlpull/v1/XmlPullParserException;,
@@ -195,450 +214,589 @@
     .end annotation
 
     .line 101
-    invoke-direct {p0}, Ljava/lang/Object;-><init>()V
+    move-object/from16 v0, p0
+
+    move-object/from16 v1, p2
+
+    invoke-direct/range {p0 .. p0}, Ljava/lang/Object;-><init>()V
 
     .line 102
-    iput-object p1, p0, Lcom/android/server/pm/PreferredComponent;->mCallbacks:Lcom/android/server/pm/PreferredComponent$Callbacks;
+    move-object/from16 v2, p1
+
+    iput-object v2, v0, Lcom/android/server/pm/PreferredComponent;->mCallbacks:Lcom/android/server/pm/PreferredComponent$Callbacks;
 
     .line 103
-    const-string/jumbo p1, "name"
+    const-string/jumbo v3, "name"
 
-    const/4 v0, 0x0
+    const/4 v4, 0x0
 
-    invoke-interface {p2, v0, p1}, Lorg/xmlpull/v1/XmlPullParser;->getAttributeValue(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+    invoke-interface {v1, v4, v3}, Lorg/xmlpull/v1/XmlPullParser;->getAttributeValue(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
 
-    move-result-object v1
+    move-result-object v5
 
-    iput-object v1, p0, Lcom/android/server/pm/PreferredComponent;->mShortComponent:Ljava/lang/String;
+    iput-object v5, v0, Lcom/android/server/pm/PreferredComponent;->mShortComponent:Ljava/lang/String;
 
     .line 104
-    iget-object v1, p0, Lcom/android/server/pm/PreferredComponent;->mShortComponent:Ljava/lang/String;
+    iget-object v5, v0, Lcom/android/server/pm/PreferredComponent;->mShortComponent:Ljava/lang/String;
 
-    invoke-static {v1}, Landroid/content/ComponentName;->unflattenFromString(Ljava/lang/String;)Landroid/content/ComponentName;
+    invoke-static {v5}, Landroid/content/ComponentName;->unflattenFromString(Ljava/lang/String;)Landroid/content/ComponentName;
 
-    move-result-object v1
+    move-result-object v5
 
-    iput-object v1, p0, Lcom/android/server/pm/PreferredComponent;->mComponent:Landroid/content/ComponentName;
+    iput-object v5, v0, Lcom/android/server/pm/PreferredComponent;->mComponent:Landroid/content/ComponentName;
 
     .line 105
-    iget-object v1, p0, Lcom/android/server/pm/PreferredComponent;->mComponent:Landroid/content/ComponentName;
+    iget-object v5, v0, Lcom/android/server/pm/PreferredComponent;->mComponent:Landroid/content/ComponentName;
 
-    if-nez v1, :cond_30
+    if-nez v5, :cond_36
 
     .line 106
-    new-instance v1, Ljava/lang/StringBuilder;
+    new-instance v5, Ljava/lang/StringBuilder;
 
-    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v5}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v2, "Bad activity name "
+    const-string v6, "Bad activity name "
 
-    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    iget-object v2, p0, Lcom/android/server/pm/PreferredComponent;->mShortComponent:Ljava/lang/String;
+    iget-object v6, v0, Lcom/android/server/pm/PreferredComponent;->mShortComponent:Ljava/lang/String;
 
-    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v5}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v1
+    move-result-object v5
 
-    iput-object v1, p0, Lcom/android/server/pm/PreferredComponent;->mParseError:Ljava/lang/String;
+    iput-object v5, v0, Lcom/android/server/pm/PreferredComponent;->mParseError:Ljava/lang/String;
 
     .line 108
-    :cond_30
-    const-string v1, "match"
+    :cond_36
+    const-string/jumbo v5, "match"
 
-    invoke-interface {p2, v0, v1}, Lorg/xmlpull/v1/XmlPullParser;->getAttributeValue(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+    invoke-interface {v1, v4, v5}, Lorg/xmlpull/v1/XmlPullParser;->getAttributeValue(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
 
-    move-result-object v1
+    move-result-object v5
 
     .line 109
-    const/4 v2, 0x0
+    .local v5, "matchStr":Ljava/lang/String;
+    const/4 v6, 0x0
 
-    if-eqz v1, :cond_40
+    if-eqz v5, :cond_47
 
-    const/16 v3, 0x10
+    const/16 v7, 0x10
 
-    invoke-static {v1, v3}, Ljava/lang/Integer;->parseInt(Ljava/lang/String;I)I
+    invoke-static {v5, v7}, Ljava/lang/Integer;->parseInt(Ljava/lang/String;I)I
 
-    move-result v1
+    move-result v7
 
-    goto :goto_41
+    goto :goto_48
 
-    :cond_40
-    move v1, v2
+    :cond_47
+    move v7, v6
 
-    :goto_41
-    iput v1, p0, Lcom/android/server/pm/PreferredComponent;->mMatch:I
+    :goto_48
+    iput v7, v0, Lcom/android/server/pm/PreferredComponent;->mMatch:I
 
     .line 110
-    const-string/jumbo v1, "set"
+    const-string/jumbo v7, "set"
 
-    invoke-interface {p2, v0, v1}, Lorg/xmlpull/v1/XmlPullParser;->getAttributeValue(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+    invoke-interface {v1, v4, v7}, Lorg/xmlpull/v1/XmlPullParser;->getAttributeValue(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
 
-    move-result-object v3
+    move-result-object v8
 
     .line 111
-    if-eqz v3, :cond_51
+    .local v8, "setCountStr":Ljava/lang/String;
+    if-eqz v8, :cond_57
 
-    invoke-static {v3}, Ljava/lang/Integer;->parseInt(Ljava/lang/String;)I
+    invoke-static {v8}, Ljava/lang/Integer;->parseInt(Ljava/lang/String;)I
 
-    move-result v3
-
-    goto :goto_52
-
-    :cond_51
-    move v3, v2
+    move-result v6
 
     .line 112
-    :goto_52
-    const-string v4, "always"
+    .local v6, "setCount":I
+    :cond_57
+    const-string v9, "always"
 
-    invoke-interface {p2, v0, v4}, Lorg/xmlpull/v1/XmlPullParser;->getAttributeValue(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+    invoke-interface {v1, v4, v9}, Lorg/xmlpull/v1/XmlPullParser;->getAttributeValue(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
 
-    move-result-object v4
+    move-result-object v9
 
     .line 113
-    const/4 v5, 0x1
+    .local v9, "alwaysStr":Ljava/lang/String;
+    const/4 v10, 0x1
 
-    if-eqz v4, :cond_60
+    if-eqz v9, :cond_65
 
-    invoke-static {v4}, Ljava/lang/Boolean;->parseBoolean(Ljava/lang/String;)Z
-
-    move-result v4
-
-    goto :goto_61
-
-    :cond_60
-    move v4, v5
-
-    :goto_61
-    iput-boolean v4, p0, Lcom/android/server/pm/PreferredComponent;->mAlways:Z
-
-    .line 115
-    if-lez v3, :cond_68
-
-    new-array v4, v3, [Ljava/lang/String;
-
-    goto :goto_69
-
-    :cond_68
-    move-object v4, v0
-
-    .line 116
-    :goto_69
-    if-lez v3, :cond_6e
-
-    new-array v6, v3, [Ljava/lang/String;
-
-    goto :goto_6f
-
-    :cond_6e
-    move-object v6, v0
-
-    .line 117
-    :goto_6f
-    if-lez v3, :cond_74
-
-    new-array v7, v3, [Ljava/lang/String;
-
-    goto :goto_75
-
-    :cond_74
-    move-object v7, v0
-
-    .line 119
-    :goto_75
-    nop
-
-    .line 121
-    invoke-interface {p2}, Lorg/xmlpull/v1/XmlPullParser;->getDepth()I
-
-    move-result v8
-
-    .line 123
-    :cond_7a
-    :goto_7a
-    invoke-interface {p2}, Lorg/xmlpull/v1/XmlPullParser;->next()I
-
-    move-result v9
-
-    if-eq v9, v5, :cond_138
-
-    const/4 v10, 0x3
-
-    if-ne v9, v10, :cond_89
-
-    .line 125
-    invoke-interface {p2}, Lorg/xmlpull/v1/XmlPullParser;->getDepth()I
+    invoke-static {v9}, Ljava/lang/Boolean;->parseBoolean(Ljava/lang/String;)Z
 
     move-result v11
 
-    if-le v11, v8, :cond_138
+    goto :goto_66
 
-    .line 126
-    :cond_89
-    if-eq v9, v10, :cond_7a
+    :cond_65
+    move v11, v10
 
-    const/4 v10, 0x4
+    :goto_66
+    iput-boolean v11, v0, Lcom/android/server/pm/PreferredComponent;->mAlways:Z
 
-    if-ne v9, v10, :cond_8f
+    .line 115
+    if-lez v6, :cond_6d
 
-    .line 128
+    new-array v11, v6, [Ljava/lang/String;
+
+    goto :goto_6e
+
+    :cond_6d
+    move-object v11, v4
+
+    .line 116
+    .local v11, "myPackages":[Ljava/lang/String;
+    :goto_6e
+    if-lez v6, :cond_73
+
+    new-array v12, v6, [Ljava/lang/String;
+
+    goto :goto_74
+
+    :cond_73
+    move-object v12, v4
+
+    .line 117
+    .local v12, "myClasses":[Ljava/lang/String;
+    :goto_74
+    if-lez v6, :cond_79
+
+    new-array v13, v6, [Ljava/lang/String;
+
     goto :goto_7a
 
-    .line 131
-    :cond_8f
-    invoke-interface {p2}, Lorg/xmlpull/v1/XmlPullParser;->getName()Ljava/lang/String;
+    :cond_79
+    move-object v13, v4
 
-    move-result-object v9
+    .line 119
+    .local v13, "myComponents":[Ljava/lang/String;
+    :goto_7a
+    const/4 v14, 0x0
+
+    .line 121
+    .local v14, "setPos":I
+    invoke-interface/range {p2 .. p2}, Lorg/xmlpull/v1/XmlPullParser;->getDepth()I
+
+    move-result v15
+
+    .line 123
+    .local v15, "outerDepth":I
+    :goto_7f
+    invoke-interface/range {p2 .. p2}, Lorg/xmlpull/v1/XmlPullParser;->next()I
+
+    move-result v4
+
+    move/from16 v17, v4
+
+    .local v17, "type":I
+    if-eq v4, v10, :cond_18b
+
+    const/4 v4, 0x3
+
+    move/from16 v10, v17
+
+    .end local v17  # "type":I
+    .local v10, "type":I
+    if-ne v10, v4, :cond_97
+
+    .line 125
+    invoke-interface/range {p2 .. p2}, Lorg/xmlpull/v1/XmlPullParser;->getDepth()I
+
+    move-result v4
+
+    if-le v4, v15, :cond_93
+
+    goto :goto_97
+
+    :cond_93
+    move-object/from16 v16, v5
+
+    goto/16 :goto_18f
+
+    .line 126
+    :cond_97
+    :goto_97
+    const/4 v4, 0x3
+
+    if-eq v10, v4, :cond_179
+
+    const/4 v4, 0x4
+
+    if-ne v10, v4, :cond_a5
+
+    .line 128
+    move-object/from16 v18, v3
+
+    move-object/from16 v16, v5
+
+    move-object/from16 v19, v7
+
+    goto/16 :goto_17f
+
+    .line 131
+    :cond_a5
+    invoke-interface/range {p2 .. p2}, Lorg/xmlpull/v1/XmlPullParser;->getName()Ljava/lang/String;
+
+    move-result-object v4
 
     .line 134
-    invoke-virtual {v9, v1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    .local v4, "tagName":Ljava/lang/String;
+    invoke-virtual {v4, v7}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result v10
+    move-result v17
 
-    if-eqz v10, :cond_111
+    if-eqz v17, :cond_142
 
     .line 135
-    invoke-interface {p2, v0, p1}, Lorg/xmlpull/v1/XmlPullParser;->getAttributeValue(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+    move-object/from16 v16, v5
 
-    move-result-object v9
+    const/4 v2, 0x0
+
+    .end local v5  # "matchStr":Ljava/lang/String;
+    .local v16, "matchStr":Ljava/lang/String;
+    invoke-interface {v1, v2, v3}, Lorg/xmlpull/v1/XmlPullParser;->getAttributeValue(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+
+    move-result-object v5
 
     .line 136
-    if-nez v9, :cond_b9
+    .local v5, "name":Ljava/lang/String;
+    if-nez v5, :cond_dc
 
     .line 137
-    iget-object v9, p0, Lcom/android/server/pm/PreferredComponent;->mParseError:Ljava/lang/String;
+    iget-object v2, v0, Lcom/android/server/pm/PreferredComponent;->mParseError:Ljava/lang/String;
 
-    if-nez v9, :cond_10d
+    if-nez v2, :cond_d7
 
     .line 138
-    new-instance v9, Ljava/lang/StringBuilder;
+    new-instance v2, Ljava/lang/StringBuilder;
 
-    invoke-direct {v9}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v10, "No name in set tag in preferred activity "
+    move-object/from16 v18, v3
 
-    invoke-virtual {v9, v10}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    const-string v3, "No name in set tag in preferred activity "
 
-    iget-object v10, p0, Lcom/android/server/pm/PreferredComponent;->mShortComponent:Ljava/lang/String;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v9, v10}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    iget-object v3, v0, Lcom/android/server/pm/PreferredComponent;->mShortComponent:Ljava/lang/String;
 
-    invoke-virtual {v9}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    move-result-object v9
+    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    iput-object v9, p0, Lcom/android/server/pm/PreferredComponent;->mParseError:Ljava/lang/String;
+    move-result-object v2
 
-    goto :goto_10d
+    iput-object v2, v0, Lcom/android/server/pm/PreferredComponent;->mParseError:Ljava/lang/String;
+
+    move-object/from16 v19, v7
+
+    goto/16 :goto_13e
+
+    .line 137
+    :cond_d7
+    move-object/from16 v18, v3
+
+    move-object/from16 v19, v7
+
+    goto :goto_13e
 
     .line 141
-    :cond_b9
-    if-lt v2, v3, :cond_d5
+    :cond_dc
+    move-object/from16 v18, v3
+
+    if-lt v14, v6, :cond_ff
 
     .line 142
-    iget-object v9, p0, Lcom/android/server/pm/PreferredComponent;->mParseError:Ljava/lang/String;
+    iget-object v2, v0, Lcom/android/server/pm/PreferredComponent;->mParseError:Ljava/lang/String;
 
-    if-nez v9, :cond_10d
+    if-nez v2, :cond_fc
 
     .line 143
-    new-instance v9, Ljava/lang/StringBuilder;
+    new-instance v2, Ljava/lang/StringBuilder;
 
-    invoke-direct {v9}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v10, "Too many set tags in preferred activity "
+    const-string v3, "Too many set tags in preferred activity "
 
-    invoke-virtual {v9, v10}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    iget-object v10, p0, Lcom/android/server/pm/PreferredComponent;->mShortComponent:Ljava/lang/String;
+    iget-object v3, v0, Lcom/android/server/pm/PreferredComponent;->mShortComponent:Ljava/lang/String;
 
-    invoke-virtual {v9, v10}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v9}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v9
+    move-result-object v2
 
-    iput-object v9, p0, Lcom/android/server/pm/PreferredComponent;->mParseError:Ljava/lang/String;
+    iput-object v2, v0, Lcom/android/server/pm/PreferredComponent;->mParseError:Ljava/lang/String;
 
-    goto :goto_10d
+    move-object/from16 v19, v7
+
+    goto :goto_13e
+
+    .line 142
+    :cond_fc
+    move-object/from16 v19, v7
+
+    goto :goto_13e
 
     .line 147
-    :cond_d5
-    invoke-static {v9}, Landroid/content/ComponentName;->unflattenFromString(Ljava/lang/String;)Landroid/content/ComponentName;
+    :cond_ff
+    invoke-static {v5}, Landroid/content/ComponentName;->unflattenFromString(Ljava/lang/String;)Landroid/content/ComponentName;
 
-    move-result-object v10
+    move-result-object v2
 
     .line 148
-    if-nez v10, :cond_fd
+    .local v2, "cn":Landroid/content/ComponentName;
+    if-nez v2, :cond_12c
 
     .line 149
-    iget-object v10, p0, Lcom/android/server/pm/PreferredComponent;->mParseError:Ljava/lang/String;
+    iget-object v3, v0, Lcom/android/server/pm/PreferredComponent;->mParseError:Ljava/lang/String;
 
-    if-nez v10, :cond_10d
+    if-nez v3, :cond_129
 
     .line 150
-    new-instance v10, Ljava/lang/StringBuilder;
+    new-instance v3, Ljava/lang/StringBuilder;
 
-    invoke-direct {v10}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v11, "Bad set name "
+    move-object/from16 v19, v7
 
-    invoke-virtual {v10, v11}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    const-string v7, "Bad set name "
 
-    invoke-virtual {v10, v9}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v7}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string v9, " in preferred activity "
+    invoke-virtual {v3, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v10, v9}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    const-string v7, " in preferred activity "
 
-    iget-object v9, p0, Lcom/android/server/pm/PreferredComponent;->mShortComponent:Ljava/lang/String;
+    invoke-virtual {v3, v7}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v10, v9}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    iget-object v7, v0, Lcom/android/server/pm/PreferredComponent;->mShortComponent:Ljava/lang/String;
 
-    invoke-virtual {v10}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v3, v7}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    move-result-object v9
+    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    iput-object v9, p0, Lcom/android/server/pm/PreferredComponent;->mParseError:Ljava/lang/String;
+    move-result-object v3
 
-    goto :goto_10d
+    iput-object v3, v0, Lcom/android/server/pm/PreferredComponent;->mParseError:Ljava/lang/String;
+
+    goto :goto_13e
+
+    .line 149
+    :cond_129
+    move-object/from16 v19, v7
+
+    goto :goto_13e
 
     .line 154
-    :cond_fd
-    invoke-virtual {v10}, Landroid/content/ComponentName;->getPackageName()Ljava/lang/String;
+    :cond_12c
+    move-object/from16 v19, v7
 
-    move-result-object v11
+    invoke-virtual {v2}, Landroid/content/ComponentName;->getPackageName()Ljava/lang/String;
 
-    aput-object v11, v4, v2
+    move-result-object v3
+
+    aput-object v3, v11, v14
 
     .line 155
-    invoke-virtual {v10}, Landroid/content/ComponentName;->getClassName()Ljava/lang/String;
+    invoke-virtual {v2}, Landroid/content/ComponentName;->getClassName()Ljava/lang/String;
 
-    move-result-object v10
+    move-result-object v3
 
-    aput-object v10, v6, v2
+    aput-object v3, v12, v14
 
     .line 156
-    aput-object v9, v7, v2
+    aput-object v5, v13, v14
 
     .line 157
-    add-int/lit8 v2, v2, 0x1
+    add-int/lit8 v14, v14, 0x1
 
     .line 160
-    :cond_10d
-    :goto_10d
-    invoke-static {p2}, Lcom/android/internal/util/XmlUtils;->skipCurrentTag(Lorg/xmlpull/v1/XmlPullParser;)V
+    .end local v2  # "cn":Landroid/content/ComponentName;
+    :goto_13e
+    invoke-static/range {p2 .. p2}, Lcom/android/internal/util/XmlUtils;->skipCurrentTag(Lorg/xmlpull/v1/XmlPullParser;)V
 
     .line 161
-    :cond_110
-    goto :goto_136
+    .end local v5  # "name":Ljava/lang/String;
+    :cond_141
+    goto :goto_16d
 
-    :cond_111
-    iget-object v10, p0, Lcom/android/server/pm/PreferredComponent;->mCallbacks:Lcom/android/server/pm/PreferredComponent$Callbacks;
+    .end local v16  # "matchStr":Ljava/lang/String;
+    .local v5, "matchStr":Ljava/lang/String;
+    :cond_142
+    move-object/from16 v18, v3
 
-    invoke-interface {v10, v9, p2}, Lcom/android/server/pm/PreferredComponent$Callbacks;->onReadTag(Ljava/lang/String;Lorg/xmlpull/v1/XmlPullParser;)Z
+    move-object/from16 v16, v5
 
-    move-result v9
+    move-object/from16 v19, v7
 
-    if-nez v9, :cond_110
+    .end local v5  # "matchStr":Ljava/lang/String;
+    .restart local v16  # "matchStr":Ljava/lang/String;
+    iget-object v2, v0, Lcom/android/server/pm/PreferredComponent;->mCallbacks:Lcom/android/server/pm/PreferredComponent$Callbacks;
+
+    invoke-interface {v2, v4, v1}, Lcom/android/server/pm/PreferredComponent$Callbacks;->onReadTag(Ljava/lang/String;Lorg/xmlpull/v1/XmlPullParser;)Z
+
+    move-result v2
+
+    if-nez v2, :cond_141
 
     .line 162
-    new-instance v9, Ljava/lang/StringBuilder;
+    new-instance v2, Ljava/lang/StringBuilder;
 
-    invoke-direct {v9}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v10, "Unknown element: "
+    const-string v3, "Unknown element: "
 
-    invoke-virtual {v9, v10}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-interface {p2}, Lorg/xmlpull/v1/XmlPullParser;->getName()Ljava/lang/String;
+    invoke-interface/range {p2 .. p2}, Lorg/xmlpull/v1/XmlPullParser;->getName()Ljava/lang/String;
 
-    move-result-object v10
+    move-result-object v3
 
-    invoke-virtual {v9, v10}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v9}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v9
+    move-result-object v2
 
-    const-string v10, "PreferredComponent"
+    const-string v3, "PreferredComponent"
 
-    invoke-static {v10, v9}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v3, v2}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 163
-    invoke-static {p2}, Lcom/android/internal/util/XmlUtils;->skipCurrentTag(Lorg/xmlpull/v1/XmlPullParser;)V
+    invoke-static/range {p2 .. p2}, Lcom/android/internal/util/XmlUtils;->skipCurrentTag(Lorg/xmlpull/v1/XmlPullParser;)V
 
     .line 165
-    :goto_136
-    goto/16 :goto_7a
+    .end local v4  # "tagName":Ljava/lang/String;
+    :goto_16d
+    move-object/from16 v2, p1
+
+    move-object/from16 v5, v16
+
+    move-object/from16 v3, v18
+
+    move-object/from16 v7, v19
+
+    const/4 v4, 0x0
+
+    const/4 v10, 0x1
+
+    goto/16 :goto_7f
+
+    .line 126
+    .end local v16  # "matchStr":Ljava/lang/String;
+    .restart local v5  # "matchStr":Ljava/lang/String;
+    :cond_179
+    move-object/from16 v18, v3
+
+    move-object/from16 v16, v5
+
+    move-object/from16 v19, v7
+
+    .line 123
+    .end local v5  # "matchStr":Ljava/lang/String;
+    .end local v10  # "type":I
+    .restart local v16  # "matchStr":Ljava/lang/String;
+    :goto_17f
+    move-object/from16 v2, p1
+
+    move-object/from16 v5, v16
+
+    move-object/from16 v3, v18
+
+    move-object/from16 v7, v19
+
+    const/4 v4, 0x0
+
+    const/4 v10, 0x1
+
+    goto/16 :goto_7f
+
+    .end local v16  # "matchStr":Ljava/lang/String;
+    .restart local v5  # "matchStr":Ljava/lang/String;
+    .restart local v17  # "type":I
+    :cond_18b
+    move-object/from16 v16, v5
+
+    move/from16 v10, v17
 
     .line 167
-    :cond_138
-    if-eq v2, v3, :cond_163
+    .end local v5  # "matchStr":Ljava/lang/String;
+    .end local v17  # "type":I
+    .restart local v10  # "type":I
+    .restart local v16  # "matchStr":Ljava/lang/String;
+    :goto_18f
+    if-eq v14, v6, :cond_1ba
 
     .line 168
-    iget-object p1, p0, Lcom/android/server/pm/PreferredComponent;->mParseError:Ljava/lang/String;
+    iget-object v2, v0, Lcom/android/server/pm/PreferredComponent;->mParseError:Ljava/lang/String;
 
-    if-nez p1, :cond_163
+    if-nez v2, :cond_1ba
 
     .line 169
-    new-instance p1, Ljava/lang/StringBuilder;
+    new-instance v2, Ljava/lang/StringBuilder;
 
-    invoke-direct {p1}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string p2, "Not enough set tags (expected "
+    const-string v3, "Not enough set tags (expected "
 
-    invoke-virtual {p1, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p1, v3}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v6}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    const-string p2, " but found "
+    const-string v3, " but found "
 
-    invoke-virtual {p1, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p1, v2}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v14}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    const-string p2, ") in "
+    const-string v3, ") in "
 
-    invoke-virtual {p1, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    iget-object p2, p0, Lcom/android/server/pm/PreferredComponent;->mShortComponent:Ljava/lang/String;
+    iget-object v3, v0, Lcom/android/server/pm/PreferredComponent;->mShortComponent:Ljava/lang/String;
 
-    invoke-virtual {p1, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v2
 
-    iput-object p1, p0, Lcom/android/server/pm/PreferredComponent;->mParseError:Ljava/lang/String;
+    iput-object v2, v0, Lcom/android/server/pm/PreferredComponent;->mParseError:Ljava/lang/String;
 
     .line 174
-    :cond_163
-    iput-object v4, p0, Lcom/android/server/pm/PreferredComponent;->mSetPackages:[Ljava/lang/String;
+    :cond_1ba
+    iput-object v11, v0, Lcom/android/server/pm/PreferredComponent;->mSetPackages:[Ljava/lang/String;
 
     .line 175
-    iput-object v6, p0, Lcom/android/server/pm/PreferredComponent;->mSetClasses:[Ljava/lang/String;
+    iput-object v12, v0, Lcom/android/server/pm/PreferredComponent;->mSetClasses:[Ljava/lang/String;
 
     .line 176
-    iput-object v7, p0, Lcom/android/server/pm/PreferredComponent;->mSetComponents:[Ljava/lang/String;
+    iput-object v13, v0, Lcom/android/server/pm/PreferredComponent;->mSetComponents:[Ljava/lang/String;
 
     .line 177
-    const-class p1, Landroid/content/pm/PackageManagerInternal;
+    const-class v2, Landroid/content/pm/PackageManagerInternal;
 
-    invoke-static {p1}, Lcom/android/server/LocalServices;->getService(Ljava/lang/Class;)Ljava/lang/Object;
+    invoke-static {v2}, Lcom/android/server/LocalServices;->getService(Ljava/lang/Class;)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v2
 
-    check-cast p1, Landroid/content/pm/PackageManagerInternal;
+    check-cast v2, Landroid/content/pm/PackageManagerInternal;
 
     .line 178
-    invoke-virtual {p1}, Landroid/content/pm/PackageManagerInternal;->getSetupWizardPackageName()Ljava/lang/String;
+    .local v2, "packageManagerInternal":Landroid/content/pm/PackageManagerInternal;
+    invoke-virtual {v2}, Landroid/content/pm/PackageManagerInternal;->getSetupWizardPackageName()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v3
 
-    iput-object p1, p0, Lcom/android/server/pm/PreferredComponent;->mSetupWizardPackageName:Ljava/lang/String;
+    iput-object v3, v0, Lcom/android/server/pm/PreferredComponent;->mSetupWizardPackageName:Ljava/lang/String;
 
     .line 179
     return-void
@@ -647,7 +805,7 @@
 
 # virtual methods
 .method public discardObsoleteComponents(Ljava/util/List;)[Landroid/content/ComponentName;
-    .registers 11
+    .registers 12
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(",
@@ -659,53 +817,59 @@
     .end annotation
 
     .line 293
+    .local p1, "query":Ljava/util/List;, "Ljava/util/List<Landroid/content/pm/ResolveInfo;>;"
     iget-object v0, p0, Lcom/android/server/pm/PreferredComponent;->mSetPackages:[Ljava/lang/String;
 
-    const/4 v1, 0x0
+    if-eqz v0, :cond_5d
 
-    if-eqz v0, :cond_5e
+    if-nez p1, :cond_7
 
-    if-nez p1, :cond_8
-
-    goto :goto_5e
+    goto :goto_5d
 
     .line 296
-    :cond_8
+    :cond_7
     invoke-interface {p1}, Ljava/util/List;->size()I
 
     move-result v0
 
     .line 297
-    iget-object v2, p0, Lcom/android/server/pm/PreferredComponent;->mSetPackages:[Ljava/lang/String;
+    .local v0, "NQ":I
+    iget-object v1, p0, Lcom/android/server/pm/PreferredComponent;->mSetPackages:[Ljava/lang/String;
 
-    array-length v2, v2
+    array-length v1, v1
 
     .line 298
-    new-instance v3, Ljava/util/ArrayList;
+    .local v1, "NS":I
+    new-instance v2, Ljava/util/ArrayList;
 
-    invoke-direct {v3}, Ljava/util/ArrayList;-><init>()V
+    invoke-direct {v2}, Ljava/util/ArrayList;-><init>()V
 
     .line 299
-    move v4, v1
+    .local v2, "aliveComponents":Ljava/util/ArrayList;, "Ljava/util/ArrayList<Landroid/content/ComponentName;>;"
+    const/4 v3, 0x0
 
-    :goto_15
-    if-ge v4, v0, :cond_51
+    .local v3, "i":I
+    :goto_14
+    if-ge v3, v0, :cond_50
 
     .line 300
-    invoke-interface {p1, v4}, Ljava/util/List;->get(I)Ljava/lang/Object;
+    invoke-interface {p1, v3}, Ljava/util/List;->get(I)Ljava/lang/Object;
 
-    move-result-object v5
+    move-result-object v4
 
-    check-cast v5, Landroid/content/pm/ResolveInfo;
+    check-cast v4, Landroid/content/pm/ResolveInfo;
 
     .line 301
-    iget-object v5, v5, Landroid/content/pm/ResolveInfo;->activityInfo:Landroid/content/pm/ActivityInfo;
+    .local v4, "ri":Landroid/content/pm/ResolveInfo;
+    iget-object v5, v4, Landroid/content/pm/ResolveInfo;->activityInfo:Landroid/content/pm/ActivityInfo;
 
     .line 302
-    move v6, v1
+    .local v5, "ai":Landroid/content/pm/ActivityInfo;
+    const/4 v6, 0x0
 
-    :goto_20
-    if-ge v6, v2, :cond_4e
+    .local v6, "j":I
+    :goto_1f
+    if-ge v6, v1, :cond_4d
 
     .line 303
     iget-object v7, p0, Lcom/android/server/pm/PreferredComponent;->mSetPackages:[Ljava/lang/String;
@@ -718,7 +882,7 @@
 
     move-result v7
 
-    if-eqz v7, :cond_4b
+    if-eqz v7, :cond_4a
 
     iget-object v7, p0, Lcom/android/server/pm/PreferredComponent;->mSetClasses:[Ljava/lang/String;
 
@@ -730,65 +894,77 @@
 
     move-result v7
 
-    if-eqz v7, :cond_4b
+    if-eqz v7, :cond_4a
 
     .line 304
-    new-instance v5, Landroid/content/ComponentName;
+    new-instance v7, Landroid/content/ComponentName;
 
-    iget-object v7, p0, Lcom/android/server/pm/PreferredComponent;->mSetPackages:[Ljava/lang/String;
+    iget-object v8, p0, Lcom/android/server/pm/PreferredComponent;->mSetPackages:[Ljava/lang/String;
 
-    aget-object v7, v7, v6
+    aget-object v8, v8, v6
 
-    iget-object v8, p0, Lcom/android/server/pm/PreferredComponent;->mSetClasses:[Ljava/lang/String;
+    iget-object v9, p0, Lcom/android/server/pm/PreferredComponent;->mSetClasses:[Ljava/lang/String;
 
-    aget-object v6, v8, v6
+    aget-object v9, v9, v6
 
-    invoke-direct {v5, v7, v6}, Landroid/content/ComponentName;-><init>(Ljava/lang/String;Ljava/lang/String;)V
+    invoke-direct {v7, v8, v9}, Landroid/content/ComponentName;-><init>(Ljava/lang/String;Ljava/lang/String;)V
 
-    invoke-virtual {v3, v5}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
+    invoke-virtual {v2, v7}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
 
     .line 305
-    goto :goto_4e
+    goto :goto_4d
 
     .line 302
-    :cond_4b
+    :cond_4a
     add-int/lit8 v6, v6, 0x1
 
-    goto :goto_20
+    goto :goto_1f
 
     .line 299
-    :cond_4e
-    :goto_4e
-    add-int/lit8 v4, v4, 0x1
+    .end local v4  # "ri":Landroid/content/pm/ResolveInfo;
+    .end local v5  # "ai":Landroid/content/pm/ActivityInfo;
+    .end local v6  # "j":I
+    :cond_4d
+    :goto_4d
+    add-int/lit8 v3, v3, 0x1
 
-    goto :goto_15
+    goto :goto_14
 
     .line 309
-    :cond_51
-    invoke-virtual {v3}, Ljava/util/ArrayList;->size()I
+    .end local v3  # "i":I
+    :cond_50
+    invoke-virtual {v2}, Ljava/util/ArrayList;->size()I
 
-    move-result p1
+    move-result v3
 
-    new-array p1, p1, [Landroid/content/ComponentName;
+    new-array v3, v3, [Landroid/content/ComponentName;
 
-    invoke-virtual {v3, p1}, Ljava/util/ArrayList;->toArray([Ljava/lang/Object;)[Ljava/lang/Object;
+    invoke-virtual {v2, v3}, Ljava/util/ArrayList;->toArray([Ljava/lang/Object;)[Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v3
 
-    check-cast p1, [Landroid/content/ComponentName;
+    check-cast v3, [Landroid/content/ComponentName;
 
-    return-object p1
+    return-object v3
 
     .line 294
-    :cond_5e
-    :goto_5e
-    new-array p1, v1, [Landroid/content/ComponentName;
+    .end local v0  # "NQ":I
+    .end local v1  # "NS":I
+    .end local v2  # "aliveComponents":Ljava/util/ArrayList;, "Ljava/util/ArrayList<Landroid/content/ComponentName;>;"
+    :cond_5d
+    :goto_5d
+    const/4 v0, 0x0
 
-    return-object p1
+    new-array v0, v0, [Landroid/content/ComponentName;
+
+    return-object v0
 .end method
 
 .method public dump(Ljava/io/PrintWriter;Ljava/lang/String;Ljava/lang/Object;)V
-    .registers 5
+    .registers 6
+    .param p1, "out"  # Ljava/io/PrintWriter;
+    .param p2, "prefix"  # Ljava/lang/String;
+    .param p3, "ident"  # Ljava/lang/Object;
 
     .line 313
     invoke-virtual {p1, p2}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
@@ -796,92 +972,94 @@
     .line 314
     invoke-static {p3}, Ljava/lang/System;->identityHashCode(Ljava/lang/Object;)I
 
-    move-result p3
+    move-result v0
 
-    invoke-static {p3}, Ljava/lang/Integer;->toHexString(I)Ljava/lang/String;
+    invoke-static {v0}, Ljava/lang/Integer;->toHexString(I)Ljava/lang/String;
 
-    move-result-object p3
+    move-result-object v0
 
     .line 313
-    invoke-virtual {p1, p3}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
+    invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
     .line 315
-    const/16 p3, 0x20
+    const/16 v0, 0x20
 
-    invoke-virtual {p1, p3}, Ljava/io/PrintWriter;->print(C)V
+    invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->print(C)V
 
     .line 316
-    iget-object p3, p0, Lcom/android/server/pm/PreferredComponent;->mShortComponent:Ljava/lang/String;
+    iget-object v0, p0, Lcom/android/server/pm/PreferredComponent;->mShortComponent:Ljava/lang/String;
 
-    invoke-virtual {p1, p3}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
     .line 317
     invoke-virtual {p1, p2}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
-    const-string p3, " mMatch=0x"
+    const-string v0, " mMatch=0x"
 
-    invoke-virtual {p1, p3}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
+    invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
     .line 318
-    iget p3, p0, Lcom/android/server/pm/PreferredComponent;->mMatch:I
+    iget v0, p0, Lcom/android/server/pm/PreferredComponent;->mMatch:I
 
-    invoke-static {p3}, Ljava/lang/Integer;->toHexString(I)Ljava/lang/String;
+    invoke-static {v0}, Ljava/lang/Integer;->toHexString(I)Ljava/lang/String;
 
-    move-result-object p3
+    move-result-object v0
 
-    invoke-virtual {p1, p3}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
+    invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
     .line 319
-    const-string p3, " mAlways="
+    const-string v0, " mAlways="
 
-    invoke-virtual {p1, p3}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
+    invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
-    iget-boolean p3, p0, Lcom/android/server/pm/PreferredComponent;->mAlways:Z
+    iget-boolean v0, p0, Lcom/android/server/pm/PreferredComponent;->mAlways:Z
 
-    invoke-virtual {p1, p3}, Ljava/io/PrintWriter;->println(Z)V
+    invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->println(Z)V
 
     .line 320
-    iget-object p3, p0, Lcom/android/server/pm/PreferredComponent;->mSetComponents:[Ljava/lang/String;
+    iget-object v0, p0, Lcom/android/server/pm/PreferredComponent;->mSetComponents:[Ljava/lang/String;
 
-    if-eqz p3, :cond_57
+    if-eqz v0, :cond_57
 
     .line 321
     invoke-virtual {p1, p2}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
-    const-string p3, "  Selected from:"
-
-    invoke-virtual {p1, p3}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
-
-    .line 322
-    const/4 p3, 0x0
-
-    :goto_40
-    iget-object v0, p0, Lcom/android/server/pm/PreferredComponent;->mSetComponents:[Ljava/lang/String;
-
-    array-length v0, v0
-
-    if-ge p3, v0, :cond_57
-
-    .line 323
-    invoke-virtual {p1, p2}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
-
-    const-string v0, "    "
-
-    invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
-
-    .line 324
-    iget-object v0, p0, Lcom/android/server/pm/PreferredComponent;->mSetComponents:[Ljava/lang/String;
-
-    aget-object v0, v0, p3
+    const-string v0, "  Selected from:"
 
     invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
     .line 322
-    add-int/lit8 p3, p3, 0x1
+    const/4 v0, 0x0
+
+    .local v0, "i":I
+    :goto_40
+    iget-object v1, p0, Lcom/android/server/pm/PreferredComponent;->mSetComponents:[Ljava/lang/String;
+
+    array-length v1, v1
+
+    if-ge v0, v1, :cond_57
+
+    .line 323
+    invoke-virtual {p1, p2}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
+
+    const-string v1, "    "
+
+    invoke-virtual {p1, v1}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
+
+    .line 324
+    iget-object v1, p0, Lcom/android/server/pm/PreferredComponent;->mSetComponents:[Ljava/lang/String;
+
+    aget-object v1, v1, v0
+
+    invoke-virtual {p1, v1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+
+    .line 322
+    add-int/lit8 v0, v0, 0x1
 
     goto :goto_40
 
     .line 327
+    .end local v0  # "i":I
     :cond_57
     return-void
 .end method
@@ -896,7 +1074,8 @@
 .end method
 
 .method public isSuperset(Ljava/util/List;Z)Z
-    .registers 12
+    .registers 14
+    .param p2, "excludeSetupWizardPackage"  # Z
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(",
@@ -907,6 +1086,7 @@
     .end annotation
 
     .line 258
+    .local p1, "query":Ljava/util/List;, "Ljava/util/List<Landroid/content/pm/ResolveInfo;>;"
     iget-object v0, p0, Lcom/android/server/pm/PreferredComponent;->mSetPackages:[Ljava/lang/String;
 
     const/4 v1, 0x0
@@ -937,11 +1117,13 @@
     move-result v0
 
     .line 265
+    .local v0, "NQ":I
     iget-object v3, p0, Lcom/android/server/pm/PreferredComponent;->mSetPackages:[Ljava/lang/String;
 
     array-length v3, v3
 
     .line 266
+    .local v3, "NS":I
     if-nez p2, :cond_19
 
     if-ge v3, v0, :cond_19
@@ -951,10 +1133,11 @@
 
     .line 269
     :cond_19
-    move v4, v1
+    const/4 v4, 0x0
 
+    .local v4, "i":I
     :goto_1a
-    if-ge v4, v0, :cond_5a
+    if-ge v4, v0, :cond_58
 
     .line 270
     invoke-interface {p1, v4}, Ljava/util/List;->get(I)Ljava/lang/Object;
@@ -964,96 +1147,102 @@
     check-cast v5, Landroid/content/pm/ResolveInfo;
 
     .line 271
-    iget-object v5, v5, Landroid/content/pm/ResolveInfo;->activityInfo:Landroid/content/pm/ActivityInfo;
+    .local v5, "ri":Landroid/content/pm/ResolveInfo;
+    iget-object v6, v5, Landroid/content/pm/ResolveInfo;->activityInfo:Landroid/content/pm/ActivityInfo;
 
     .line 272
-    nop
+    .local v6, "ai":Landroid/content/pm/ActivityInfo;
+    const/4 v7, 0x0
 
     .line 276
+    .local v7, "foundMatch":Z
     if-eqz p2, :cond_32
 
-    iget-object v6, v5, Landroid/content/pm/ActivityInfo;->packageName:Ljava/lang/String;
+    iget-object v8, v6, Landroid/content/pm/ActivityInfo;->packageName:Ljava/lang/String;
 
-    iget-object v7, p0, Lcom/android/server/pm/PreferredComponent;->mSetupWizardPackageName:Ljava/lang/String;
+    iget-object v9, p0, Lcom/android/server/pm/PreferredComponent;->mSetupWizardPackageName:Ljava/lang/String;
 
-    invoke-virtual {v6, v7}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v8, v9}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result v6
+    move-result v8
 
-    if-eqz v6, :cond_32
+    if-eqz v8, :cond_32
 
     .line 277
-    goto :goto_57
+    goto :goto_55
 
     .line 280
     :cond_32
-    move v6, v1
+    const/4 v8, 0x0
 
+    .local v8, "j":I
     :goto_33
-    if-ge v6, v3, :cond_53
+    if-ge v8, v3, :cond_52
 
     .line 281
-    iget-object v7, p0, Lcom/android/server/pm/PreferredComponent;->mSetPackages:[Ljava/lang/String;
+    iget-object v9, p0, Lcom/android/server/pm/PreferredComponent;->mSetPackages:[Ljava/lang/String;
 
-    aget-object v7, v7, v6
+    aget-object v9, v9, v8
 
-    iget-object v8, v5, Landroid/content/pm/ActivityInfo;->packageName:Ljava/lang/String;
+    iget-object v10, v6, Landroid/content/pm/ActivityInfo;->packageName:Ljava/lang/String;
 
-    invoke-virtual {v7, v8}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v9, v10}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result v7
+    move-result v9
 
-    if-eqz v7, :cond_50
+    if-eqz v9, :cond_4f
 
-    iget-object v7, p0, Lcom/android/server/pm/PreferredComponent;->mSetClasses:[Ljava/lang/String;
+    iget-object v9, p0, Lcom/android/server/pm/PreferredComponent;->mSetClasses:[Ljava/lang/String;
 
-    aget-object v7, v7, v6
+    aget-object v9, v9, v8
 
-    iget-object v8, v5, Landroid/content/pm/ActivityInfo;->name:Ljava/lang/String;
+    iget-object v10, v6, Landroid/content/pm/ActivityInfo;->name:Ljava/lang/String;
 
-    invoke-virtual {v7, v8}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v9, v10}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result v7
+    move-result v9
 
-    if-eqz v7, :cond_50
+    if-eqz v9, :cond_4f
 
     .line 282
-    nop
+    const/4 v7, 0x1
 
     .line 283
-    move v5, v2
-
-    goto :goto_54
+    goto :goto_52
 
     .line 280
-    :cond_50
-    add-int/lit8 v6, v6, 0x1
+    :cond_4f
+    add-int/lit8 v8, v8, 0x1
 
     goto :goto_33
 
-    :cond_53
-    move v5, v1
-
     .line 286
-    :goto_54
-    if-nez v5, :cond_57
+    .end local v8  # "j":I
+    :cond_52
+    :goto_52
+    if-nez v7, :cond_55
 
     return v1
 
     .line 269
-    :cond_57
-    :goto_57
+    .end local v5  # "ri":Landroid/content/pm/ResolveInfo;
+    .end local v6  # "ai":Landroid/content/pm/ActivityInfo;
+    .end local v7  # "foundMatch":Z
+    :cond_55
+    :goto_55
     add-int/lit8 v4, v4, 0x1
 
     goto :goto_1a
 
     .line 288
-    :cond_5a
+    .end local v4  # "i":I
+    :cond_58
     return v2
 .end method
 
 .method public sameSet(Ljava/util/List;Z)Z
-    .registers 13
+    .registers 15
+    .param p2, "excludeSetupWizardPackage"  # Z
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(",
@@ -1064,170 +1253,167 @@
     .end annotation
 
     .line 203
+    .local p1, "query":Ljava/util/List;, "Ljava/util/List<Landroid/content/pm/ResolveInfo;>;"
     iget-object v0, p0, Lcom/android/server/pm/PreferredComponent;->mSetPackages:[Ljava/lang/String;
 
-    const/4 v1, 0x1
+    const/4 v1, 0x0
 
-    const/4 v2, 0x0
+    const/4 v2, 0x1
 
-    if-nez v0, :cond_b
+    if-nez v0, :cond_a
 
     .line 204
     if-nez p1, :cond_9
 
-    goto :goto_a
-
-    :cond_9
     move v1, v2
 
-    :goto_a
+    :cond_9
     return v1
 
     .line 206
-    :cond_b
-    if-nez p1, :cond_e
+    :cond_a
+    if-nez p1, :cond_d
 
     .line 207
-    return v2
+    return v1
 
     .line 209
-    :cond_e
+    :cond_d
     invoke-interface {p1}, Ljava/util/List;->size()I
 
     move-result v0
 
     .line 210
+    .local v0, "NQ":I
     iget-object v3, p0, Lcom/android/server/pm/PreferredComponent;->mSetPackages:[Ljava/lang/String;
 
     array-length v3, v3
 
     .line 211
-    nop
+    .local v3, "NS":I
+    const/4 v4, 0x0
 
     .line 212
-    move v4, v2
+    .local v4, "numMatch":I
+    const/4 v5, 0x0
 
-    move v5, v4
-
-    :goto_18
-    if-ge v4, v0, :cond_5d
+    .local v5, "i":I
+    :goto_16
+    if-ge v5, v0, :cond_56
 
     .line 213
-    invoke-interface {p1, v4}, Ljava/util/List;->get(I)Ljava/lang/Object;
+    invoke-interface {p1, v5}, Ljava/util/List;->get(I)Ljava/lang/Object;
 
     move-result-object v6
 
     check-cast v6, Landroid/content/pm/ResolveInfo;
 
     .line 214
-    iget-object v6, v6, Landroid/content/pm/ResolveInfo;->activityInfo:Landroid/content/pm/ActivityInfo;
+    .local v6, "ri":Landroid/content/pm/ResolveInfo;
+    iget-object v7, v6, Landroid/content/pm/ResolveInfo;->activityInfo:Landroid/content/pm/ActivityInfo;
 
     .line 215
-    nop
+    .local v7, "ai":Landroid/content/pm/ActivityInfo;
+    const/4 v8, 0x0
 
     .line 219
-    if-eqz p2, :cond_30
+    .local v8, "good":Z
+    if-eqz p2, :cond_2e
 
-    iget-object v7, v6, Landroid/content/pm/ActivityInfo;->packageName:Ljava/lang/String;
+    iget-object v9, v7, Landroid/content/pm/ActivityInfo;->packageName:Ljava/lang/String;
 
-    iget-object v8, p0, Lcom/android/server/pm/PreferredComponent;->mSetupWizardPackageName:Ljava/lang/String;
+    iget-object v10, p0, Lcom/android/server/pm/PreferredComponent;->mSetupWizardPackageName:Ljava/lang/String;
 
-    invoke-virtual {v7, v8}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v9, v10}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result v7
+    move-result v9
 
-    if-eqz v7, :cond_30
+    if-eqz v9, :cond_2e
 
     .line 220
-    goto :goto_5a
+    goto :goto_53
 
     .line 223
-    :cond_30
-    move v7, v2
+    :cond_2e
+    const/4 v9, 0x0
 
-    :goto_31
-    if-ge v7, v3, :cond_54
+    .local v9, "j":I
+    :goto_2f
+    if-ge v9, v3, :cond_50
 
     .line 224
-    iget-object v8, p0, Lcom/android/server/pm/PreferredComponent;->mSetPackages:[Ljava/lang/String;
+    iget-object v10, p0, Lcom/android/server/pm/PreferredComponent;->mSetPackages:[Ljava/lang/String;
 
-    aget-object v8, v8, v7
+    aget-object v10, v10, v9
 
-    iget-object v9, v6, Landroid/content/pm/ActivityInfo;->packageName:Ljava/lang/String;
+    iget-object v11, v7, Landroid/content/pm/ActivityInfo;->packageName:Ljava/lang/String;
 
-    invoke-virtual {v8, v9}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v10, v11}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result v8
+    move-result v10
 
-    if-eqz v8, :cond_51
+    if-eqz v10, :cond_4d
 
-    iget-object v8, p0, Lcom/android/server/pm/PreferredComponent;->mSetClasses:[Ljava/lang/String;
+    iget-object v10, p0, Lcom/android/server/pm/PreferredComponent;->mSetClasses:[Ljava/lang/String;
 
-    aget-object v8, v8, v7
+    aget-object v10, v10, v9
 
-    iget-object v9, v6, Landroid/content/pm/ActivityInfo;->name:Ljava/lang/String;
+    iget-object v11, v7, Landroid/content/pm/ActivityInfo;->name:Ljava/lang/String;
 
     .line 225
-    invoke-virtual {v8, v9}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v10, v11}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result v8
+    move-result v10
 
-    if-eqz v8, :cond_51
+    if-eqz v10, :cond_4d
 
     .line 226
-    add-int/lit8 v5, v5, 0x1
-
-    .line 227
-    nop
-
-    .line 228
-    move v6, v5
-
-    move v5, v1
-
-    goto :goto_56
-
-    .line 223
-    :cond_51
-    add-int/lit8 v7, v7, 0x1
-
-    goto :goto_31
-
-    :cond_54
-    move v6, v5
-
-    move v5, v2
-
-    .line 231
-    :goto_56
-    if-nez v5, :cond_59
-
-    return v2
-
-    :cond_59
-    move v5, v6
-
-    .line 212
-    :goto_5a
     add-int/lit8 v4, v4, 0x1
 
-    goto :goto_18
+    .line 227
+    const/4 v8, 0x1
+
+    .line 228
+    goto :goto_50
+
+    .line 223
+    :cond_4d
+    add-int/lit8 v9, v9, 0x1
+
+    goto :goto_2f
+
+    .line 231
+    .end local v9  # "j":I
+    :cond_50
+    :goto_50
+    if-nez v8, :cond_53
+
+    return v1
+
+    .line 212
+    .end local v6  # "ri":Landroid/content/pm/ResolveInfo;
+    .end local v7  # "ai":Landroid/content/pm/ActivityInfo;
+    .end local v8  # "good":Z
+    :cond_53
+    :goto_53
+    add-int/lit8 v5, v5, 0x1
+
+    goto :goto_16
 
     .line 233
-    :cond_5d
-    if-ne v5, v3, :cond_60
+    .end local v5  # "i":I
+    :cond_56
+    if-ne v4, v3, :cond_59
 
-    goto :goto_61
-
-    :cond_60
     move v1, v2
 
-    :goto_61
+    :cond_59
     return v1
 .end method
 
 .method public sameSet([Landroid/content/ComponentName;)Z
     .registers 12
+    .param p1, "comps"  # [Landroid/content/ComponentName;
 
     .line 237
     iget-object v0, p0, Lcom/android/server/pm/PreferredComponent;->mSetPackages:[Ljava/lang/String;
@@ -1243,39 +1429,42 @@
     array-length v2, p1
 
     .line 239
+    .local v2, "NQ":I
     array-length v0, v0
 
     .line 240
-    nop
+    .local v0, "NS":I
+    const/4 v3, 0x0
 
     .line 241
-    move v3, v1
+    .local v3, "numMatch":I
+    const/4 v4, 0x0
 
-    move v4, v3
-
-    :goto_b
-    const/4 v5, 0x1
-
-    if-ge v3, v2, :cond_3e
+    .local v4, "i":I
+    :goto_a
+    if-ge v4, v2, :cond_3b
 
     .line 242
-    aget-object v6, p1, v3
+    aget-object v5, p1, v4
 
     .line 243
-    nop
+    .local v5, "cn":Landroid/content/ComponentName;
+    const/4 v6, 0x0
 
     .line 244
-    move v7, v1
+    .local v6, "good":Z
+    const/4 v7, 0x0
 
-    :goto_12
-    if-ge v7, v0, :cond_37
+    .local v7, "j":I
+    :goto_10
+    if-ge v7, v0, :cond_35
 
     .line 245
     iget-object v8, p0, Lcom/android/server/pm/PreferredComponent;->mSetPackages:[Ljava/lang/String;
 
     aget-object v8, v8, v7
 
-    invoke-virtual {v6}, Landroid/content/ComponentName;->getPackageName()Ljava/lang/String;
+    invoke-virtual {v5}, Landroid/content/ComponentName;->getPackageName()Ljava/lang/String;
 
     move-result-object v9
 
@@ -1283,14 +1472,14 @@
 
     move-result v8
 
-    if-eqz v8, :cond_34
+    if-eqz v8, :cond_32
 
     iget-object v8, p0, Lcom/android/server/pm/PreferredComponent;->mSetClasses:[Ljava/lang/String;
 
     aget-object v8, v8, v7
 
     .line 246
-    invoke-virtual {v6}, Landroid/content/ComponentName;->getClassName()Ljava/lang/String;
+    invoke-virtual {v5}, Landroid/content/ComponentName;->getClassName()Ljava/lang/String;
 
     move-result-object v9
 
@@ -1298,50 +1487,54 @@
 
     move-result v8
 
-    if-eqz v8, :cond_34
+    if-eqz v8, :cond_32
 
     .line 247
-    add-int/lit8 v4, v4, 0x1
+    add-int/lit8 v3, v3, 0x1
 
     .line 248
-    nop
+    const/4 v6, 0x1
 
     .line 249
-    goto :goto_38
+    goto :goto_35
 
     .line 244
-    :cond_34
+    :cond_32
     add-int/lit8 v7, v7, 0x1
 
-    goto :goto_12
-
-    :cond_37
-    move v5, v1
+    goto :goto_10
 
     .line 252
-    :goto_38
-    if-nez v5, :cond_3b
+    .end local v7  # "j":I
+    :cond_35
+    :goto_35
+    if-nez v6, :cond_38
 
     return v1
 
     .line 241
-    :cond_3b
-    add-int/lit8 v3, v3, 0x1
+    .end local v5  # "cn":Landroid/content/ComponentName;
+    .end local v6  # "good":Z
+    :cond_38
+    add-int/lit8 v4, v4, 0x1
 
-    goto :goto_b
+    goto :goto_a
 
     .line 254
+    .end local v4  # "i":I
+    :cond_3b
+    if-ne v3, v0, :cond_3e
+
+    const/4 v1, 0x1
+
     :cond_3e
-    if-ne v4, v0, :cond_41
-
-    move v1, v5
-
-    :cond_41
     return v1
 .end method
 
 .method public writeToXml(Lorg/xmlpull/v1/XmlSerializer;Z)V
-    .registers 8
+    .registers 9
+    .param p1, "serializer"  # Lorg/xmlpull/v1/XmlSerializer;
+    .param p2, "full"  # Z
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Ljava/io/IOException;
@@ -1351,83 +1544,83 @@
     .line 186
     iget-object v0, p0, Lcom/android/server/pm/PreferredComponent;->mSetClasses:[Ljava/lang/String;
 
-    const/4 v1, 0x0
-
-    if-eqz v0, :cond_7
+    if-eqz v0, :cond_6
 
     array-length v0, v0
 
-    goto :goto_8
+    goto :goto_7
 
-    :cond_7
-    move v0, v1
+    :cond_6
+    const/4 v0, 0x0
 
     .line 187
-    :goto_8
-    iget-object v2, p0, Lcom/android/server/pm/PreferredComponent;->mShortComponent:Ljava/lang/String;
+    .local v0, "NS":I
+    :goto_7
+    iget-object v1, p0, Lcom/android/server/pm/PreferredComponent;->mShortComponent:Ljava/lang/String;
 
-    const-string/jumbo v3, "name"
+    const-string/jumbo v2, "name"
 
-    const/4 v4, 0x0
+    const/4 v3, 0x0
 
-    invoke-interface {p1, v4, v3, v2}, Lorg/xmlpull/v1/XmlSerializer;->attribute(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
+    invoke-interface {p1, v3, v2, v1}, Lorg/xmlpull/v1/XmlSerializer;->attribute(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
 
     .line 188
     if-eqz p2, :cond_48
 
     .line 189
-    iget p2, p0, Lcom/android/server/pm/PreferredComponent;->mMatch:I
+    iget v1, p0, Lcom/android/server/pm/PreferredComponent;->mMatch:I
 
-    if-eqz p2, :cond_20
+    if-eqz v1, :cond_20
 
     .line 190
-    invoke-static {p2}, Ljava/lang/Integer;->toHexString(I)Ljava/lang/String;
+    invoke-static {v1}, Ljava/lang/Integer;->toHexString(I)Ljava/lang/String;
 
-    move-result-object p2
+    move-result-object v1
 
-    const-string v2, "match"
+    const-string/jumbo v4, "match"
 
-    invoke-interface {p1, v4, v2, p2}, Lorg/xmlpull/v1/XmlSerializer;->attribute(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
+    invoke-interface {p1, v3, v4, v1}, Lorg/xmlpull/v1/XmlSerializer;->attribute(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
 
     .line 192
     :cond_20
-    iget-boolean p2, p0, Lcom/android/server/pm/PreferredComponent;->mAlways:Z
+    iget-boolean v1, p0, Lcom/android/server/pm/PreferredComponent;->mAlways:Z
 
-    invoke-static {p2}, Ljava/lang/Boolean;->toString(Z)Ljava/lang/String;
+    invoke-static {v1}, Ljava/lang/Boolean;->toString(Z)Ljava/lang/String;
 
-    move-result-object p2
+    move-result-object v1
 
-    const-string v2, "always"
+    const-string v4, "always"
 
-    invoke-interface {p1, v4, v2, p2}, Lorg/xmlpull/v1/XmlSerializer;->attribute(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
+    invoke-interface {p1, v3, v4, v1}, Lorg/xmlpull/v1/XmlSerializer;->attribute(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
 
     .line 193
     invoke-static {v0}, Ljava/lang/Integer;->toString(I)Ljava/lang/String;
 
-    move-result-object p2
+    move-result-object v1
 
-    const-string/jumbo v2, "set"
+    const-string/jumbo v4, "set"
 
-    invoke-interface {p1, v4, v2, p2}, Lorg/xmlpull/v1/XmlSerializer;->attribute(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
+    invoke-interface {p1, v3, v4, v1}, Lorg/xmlpull/v1/XmlSerializer;->attribute(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
 
     .line 194
-    nop
+    const/4 v1, 0x0
 
+    .local v1, "s":I
     :goto_36
     if-ge v1, v0, :cond_48
 
     .line 195
-    invoke-interface {p1, v4, v2}, Lorg/xmlpull/v1/XmlSerializer;->startTag(Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
+    invoke-interface {p1, v3, v4}, Lorg/xmlpull/v1/XmlSerializer;->startTag(Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
 
     .line 196
-    iget-object p2, p0, Lcom/android/server/pm/PreferredComponent;->mSetComponents:[Ljava/lang/String;
+    iget-object v5, p0, Lcom/android/server/pm/PreferredComponent;->mSetComponents:[Ljava/lang/String;
 
-    aget-object p2, p2, v1
+    aget-object v5, v5, v1
 
-    invoke-interface {p1, v4, v3, p2}, Lorg/xmlpull/v1/XmlSerializer;->attribute(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
+    invoke-interface {p1, v3, v2, v5}, Lorg/xmlpull/v1/XmlSerializer;->attribute(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
 
     .line 197
-    invoke-interface {p1, v4, v2}, Lorg/xmlpull/v1/XmlSerializer;->endTag(Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
+    invoke-interface {p1, v3, v4}, Lorg/xmlpull/v1/XmlSerializer;->endTag(Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
 
     .line 194
     add-int/lit8 v1, v1, 0x1
@@ -1435,6 +1628,7 @@
     goto :goto_36
 
     .line 200
+    .end local v1  # "s":I
     :cond_48
     return-void
 .end method

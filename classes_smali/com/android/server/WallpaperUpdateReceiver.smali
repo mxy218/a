@@ -28,7 +28,7 @@
 .end method
 
 .method private updateWallpaper()V
-    .registers 4
+    .registers 6
 
     .line 50
     :try_start_0
@@ -37,35 +37,43 @@
     move-result-object v0
 
     .line 51
+    .local v0, "currentActivityThread":Landroid/app/ActivityThread;
     invoke-virtual {v0}, Landroid/app/ActivityThread;->getSystemUiContext()Landroid/app/ContextImpl;
-
-    move-result-object v0
-
-    .line 52
-    invoke-static {v0}, Landroid/app/WallpaperManager;->getInstance(Landroid/content/Context;)Landroid/app/WallpaperManager;
-
-    move-result-object v0
-
-    .line 54
-    sget-object v1, Landroid/graphics/Bitmap$Config;->ALPHA_8:Landroid/graphics/Bitmap$Config;
-
-    const/4 v2, 0x1
-
-    invoke-static {v2, v2, v1}, Landroid/graphics/Bitmap;->createBitmap(IILandroid/graphics/Bitmap$Config;)Landroid/graphics/Bitmap;
 
     move-result-object v1
 
+    .line 52
+    .local v1, "uiContext":Landroid/content/Context;
+    invoke-static {v1}, Landroid/app/WallpaperManager;->getInstance(Landroid/content/Context;)Landroid/app/WallpaperManager;
+
+    move-result-object v2
+
+    .line 54
+    .local v2, "wallpaperManager":Landroid/app/WallpaperManager;
+    sget-object v3, Landroid/graphics/Bitmap$Config;->ALPHA_8:Landroid/graphics/Bitmap$Config;
+
+    const/4 v4, 0x1
+
+    invoke-static {v4, v4, v3}, Landroid/graphics/Bitmap;->createBitmap(IILandroid/graphics/Bitmap$Config;)Landroid/graphics/Bitmap;
+
+    move-result-object v3
+
     .line 56
-    invoke-virtual {v0, v1}, Landroid/app/WallpaperManager;->setBitmap(Landroid/graphics/Bitmap;)V
+    .local v3, "blank":Landroid/graphics/Bitmap;
+    invoke-virtual {v2, v3}, Landroid/app/WallpaperManager;->setBitmap(Landroid/graphics/Bitmap;)V
 
     .line 57
-    const v1, 0x108027d
+    const v4, 0x108027b
 
-    invoke-virtual {v0, v1}, Landroid/app/WallpaperManager;->setResource(I)V
+    invoke-virtual {v2, v4}, Landroid/app/WallpaperManager;->setResource(I)V
     :try_end_1c
     .catch Ljava/lang/Exception; {:try_start_0 .. :try_end_1c} :catch_1d
 
     .line 60
+    .end local v0  # "currentActivityThread":Landroid/app/ActivityThread;
+    .end local v1  # "uiContext":Landroid/content/Context;
+    .end local v2  # "wallpaperManager":Landroid/app/WallpaperManager;
+    .end local v3  # "blank":Landroid/graphics/Bitmap;
     goto :goto_34
 
     .line 58
@@ -73,6 +81,7 @@
     move-exception v0
 
     .line 59
+    .local v0, "e":Ljava/lang/Exception;
     new-instance v1, Ljava/lang/StringBuilder;
 
     invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
@@ -85,13 +94,14 @@
 
     invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v1
 
-    const-string v1, "WallpaperUpdateReceiver"
+    const-string v2, "WallpaperUpdateReceiver"
 
-    invoke-static {v1, v0}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v2, v1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 61
+    .end local v0  # "e":Ljava/lang/Exception;
     :goto_34
     return-void
 .end method
@@ -99,29 +109,31 @@
 
 # virtual methods
 .method public onReceive(Landroid/content/Context;Landroid/content/Intent;)V
-    .registers 3
+    .registers 5
+    .param p1, "context"  # Landroid/content/Context;
+    .param p2, "intent"  # Landroid/content/Intent;
 
     .line 43
     if-eqz p2, :cond_16
 
     invoke-virtual {p2}, Landroid/content/Intent;->getAction()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    const-string p2, "android.intent.action.DEVICE_CUSTOMIZATION_READY"
+    const-string v1, "android.intent.action.DEVICE_CUSTOMIZATION_READY"
 
-    invoke-virtual {p2, p1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v1, v0}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result p1
+    move-result v0
 
-    if-eqz p1, :cond_16
+    if-eqz v0, :cond_16
 
     .line 44
-    new-instance p1, Lcom/android/server/-$$Lambda$WallpaperUpdateReceiver$U0nVive5QwEBqcnNmDq5uiouKcg;
+    new-instance v0, Lcom/android/server/-$$Lambda$WallpaperUpdateReceiver$U0nVive5QwEBqcnNmDq5uiouKcg;
 
-    invoke-direct {p1, p0}, Lcom/android/server/-$$Lambda$WallpaperUpdateReceiver$U0nVive5QwEBqcnNmDq5uiouKcg;-><init>(Lcom/android/server/WallpaperUpdateReceiver;)V
+    invoke-direct {v0, p0}, Lcom/android/server/-$$Lambda$WallpaperUpdateReceiver$U0nVive5QwEBqcnNmDq5uiouKcg;-><init>(Lcom/android/server/WallpaperUpdateReceiver;)V
 
-    invoke-static {p1}, Landroid/os/AsyncTask;->execute(Ljava/lang/Runnable;)V
+    invoke-static {v0}, Landroid/os/AsyncTask;->execute(Ljava/lang/Runnable;)V
 
     .line 46
     :cond_16

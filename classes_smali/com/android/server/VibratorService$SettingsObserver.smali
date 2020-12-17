@@ -21,27 +21,29 @@
 # direct methods
 .method public constructor <init>(Lcom/android/server/VibratorService;Landroid/os/Handler;)V
     .registers 3
+    .param p2, "handler"  # Landroid/os/Handler;
 
-    .line 482
+    .line 520
     iput-object p1, p0, Lcom/android/server/VibratorService$SettingsObserver;->this$0:Lcom/android/server/VibratorService;
 
-    .line 483
+    .line 521
     invoke-direct {p0, p2}, Landroid/database/ContentObserver;-><init>(Landroid/os/Handler;)V
 
-    .line 484
+    .line 522
     return-void
 .end method
 
 
 # virtual methods
 .method public onChange(Z)V
-    .registers 2
+    .registers 3
+    .param p1, "SelfChange"  # Z
 
-    .line 488
-    iget-object p1, p0, Lcom/android/server/VibratorService$SettingsObserver;->this$0:Lcom/android/server/VibratorService;
+    .line 526
+    iget-object v0, p0, Lcom/android/server/VibratorService$SettingsObserver;->this$0:Lcom/android/server/VibratorService;
 
-    invoke-static {p1}, Lcom/android/server/VibratorService;->access$800(Lcom/android/server/VibratorService;)V
+    invoke-static {v0}, Lcom/android/server/VibratorService;->access$1000(Lcom/android/server/VibratorService;)V
 
-    .line 489
+    .line 527
     return-void
 .end method

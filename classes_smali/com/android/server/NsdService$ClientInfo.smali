@@ -35,6 +35,8 @@
 # direct methods
 .method private constructor <init>(Lcom/android/server/NsdService;Lcom/android/internal/util/AsyncChannel;Landroid/os/Messenger;)V
     .registers 5
+    .param p2, "c"  # Lcom/android/internal/util/AsyncChannel;
+    .param p3, "m"  # Landroid/os/Messenger;
 
     .line 822
     iput-object p1, p0, Lcom/android/server/NsdService$ClientInfo;->this$0:Lcom/android/server/NsdService;
@@ -72,9 +74,9 @@
 
     invoke-virtual {p1, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
-    const-string p2, " messenger: "
+    const-string v0, " messenger: "
 
-    invoke-virtual {p1, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {p1, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {p1, p3}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
@@ -82,9 +84,9 @@
 
     move-result-object p1
 
-    const-string p2, "NsdService"
+    const-string v0, "NsdService"
 
-    invoke-static {p2, p1}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v0, p1}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 826
     return-void
@@ -92,6 +94,10 @@
 
 .method synthetic constructor <init>(Lcom/android/server/NsdService;Lcom/android/internal/util/AsyncChannel;Landroid/os/Messenger;Lcom/android/server/NsdService$1;)V
     .registers 5
+    .param p1, "x0"  # Lcom/android/server/NsdService;
+    .param p2, "x1"  # Lcom/android/internal/util/AsyncChannel;
+    .param p3, "x2"  # Landroid/os/Messenger;
+    .param p4, "x3"  # Lcom/android/server/NsdService$1;
 
     .line 808
     invoke-direct {p0, p1, p2, p3}, Lcom/android/server/NsdService$ClientInfo;-><init>(Lcom/android/server/NsdService;Lcom/android/internal/util/AsyncChannel;Landroid/os/Messenger;)V
@@ -100,34 +106,39 @@
 .end method
 
 .method static synthetic access$1100(Lcom/android/server/NsdService$ClientInfo;)Landroid/util/SparseIntArray;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/NsdService$ClientInfo;
 
     .line 808
-    iget-object p0, p0, Lcom/android/server/NsdService$ClientInfo;->mClientIds:Landroid/util/SparseIntArray;
+    iget-object v0, p0, Lcom/android/server/NsdService$ClientInfo;->mClientIds:Landroid/util/SparseIntArray;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$1200(Lcom/android/server/NsdService$ClientInfo;)Landroid/util/SparseIntArray;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/NsdService$ClientInfo;
 
     .line 808
-    iget-object p0, p0, Lcom/android/server/NsdService$ClientInfo;->mClientRequests:Landroid/util/SparseIntArray;
+    iget-object v0, p0, Lcom/android/server/NsdService$ClientInfo;->mClientRequests:Landroid/util/SparseIntArray;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$2200(Lcom/android/server/NsdService$ClientInfo;)Landroid/net/nsd/NsdServiceInfo;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/NsdService$ClientInfo;
 
     .line 808
-    iget-object p0, p0, Lcom/android/server/NsdService$ClientInfo;->mResolvedService:Landroid/net/nsd/NsdServiceInfo;
+    iget-object v0, p0, Lcom/android/server/NsdService$ClientInfo;->mResolvedService:Landroid/net/nsd/NsdServiceInfo;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$2202(Lcom/android/server/NsdService$ClientInfo;Landroid/net/nsd/NsdServiceInfo;)Landroid/net/nsd/NsdServiceInfo;
     .registers 2
+    .param p0, "x0"  # Lcom/android/server/NsdService$ClientInfo;
+    .param p1, "x1"  # Landroid/net/nsd/NsdServiceInfo;
 
     .line 808
     iput-object p1, p0, Lcom/android/server/NsdService$ClientInfo;->mResolvedService:Landroid/net/nsd/NsdServiceInfo;
@@ -136,27 +147,31 @@
 .end method
 
 .method static synthetic access$2400(Lcom/android/server/NsdService$ClientInfo;I)I
-    .registers 2
+    .registers 3
+    .param p0, "x0"  # Lcom/android/server/NsdService$ClientInfo;
+    .param p1, "x1"  # I
 
     .line 808
     invoke-direct {p0, p1}, Lcom/android/server/NsdService$ClientInfo;->getClientId(I)I
 
-    move-result p0
+    move-result v0
 
-    return p0
+    return v0
 .end method
 
 .method static synthetic access$2500(Lcom/android/server/NsdService$ClientInfo;)Lcom/android/internal/util/AsyncChannel;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/NsdService$ClientInfo;
 
     .line 808
-    iget-object p0, p0, Lcom/android/server/NsdService$ClientInfo;->mChannel:Lcom/android/internal/util/AsyncChannel;
+    iget-object v0, p0, Lcom/android/server/NsdService$ClientInfo;->mChannel:Lcom/android/internal/util/AsyncChannel;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$500(Lcom/android/server/NsdService$ClientInfo;)V
     .registers 1
+    .param p0, "x0"  # Lcom/android/server/NsdService$ClientInfo;
 
     .line 808
     invoke-direct {p0}, Lcom/android/server/NsdService$ClientInfo;->expungeAllRequests()V
@@ -170,6 +185,7 @@
     .line 848
     const/4 v0, 0x0
 
+    .local v0, "i":I
     :goto_1
     iget-object v1, p0, Lcom/android/server/NsdService$ClientInfo;->mClientIds:Landroid/util/SparseIntArray;
 
@@ -187,6 +203,7 @@
     move-result v1
 
     .line 850
+    .local v1, "clientId":I
     iget-object v2, p0, Lcom/android/server/NsdService$ClientInfo;->mClientIds:Landroid/util/SparseIntArray;
 
     invoke-virtual {v2, v0}, Landroid/util/SparseIntArray;->valueAt(I)I
@@ -194,6 +211,7 @@
     move-result v2
 
     .line 851
+    .local v2, "globalId":I
     iget-object v3, p0, Lcom/android/server/NsdService$ClientInfo;->this$0:Lcom/android/server/NsdService;
 
     invoke-static {v3}, Lcom/android/server/NsdService;->access$1300(Lcom/android/server/NsdService;)Landroid/util/SparseArray;
@@ -246,45 +264,45 @@
 
     invoke-virtual {v3, v1}, Landroid/util/SparseIntArray;->get(I)I
 
-    move-result v1
+    move-result v3
 
-    const v3, 0x60001
+    const v4, 0x60001
 
-    if-eq v1, v3, :cond_6c
+    if-eq v3, v4, :cond_6c
 
-    const v3, 0x60009
+    const v4, 0x60009
 
-    if-eq v1, v3, :cond_66
+    if-eq v3, v4, :cond_66
 
-    const v3, 0x60012
+    const v4, 0x60012
 
-    if-eq v1, v3, :cond_60
+    if-eq v3, v4, :cond_60
 
     goto :goto_72
 
     .line 859
     :cond_60
-    iget-object v1, p0, Lcom/android/server/NsdService$ClientInfo;->this$0:Lcom/android/server/NsdService;
+    iget-object v3, p0, Lcom/android/server/NsdService$ClientInfo;->this$0:Lcom/android/server/NsdService;
 
-    invoke-static {v1, v2}, Lcom/android/server/NsdService;->access$2700(Lcom/android/server/NsdService;I)Z
+    invoke-static {v3, v2}, Lcom/android/server/NsdService;->access$2700(Lcom/android/server/NsdService;I)Z
 
     .line 860
     goto :goto_72
 
     .line 862
     :cond_66
-    iget-object v1, p0, Lcom/android/server/NsdService$ClientInfo;->this$0:Lcom/android/server/NsdService;
+    iget-object v3, p0, Lcom/android/server/NsdService$ClientInfo;->this$0:Lcom/android/server/NsdService;
 
-    invoke-static {v1, v2}, Lcom/android/server/NsdService;->access$2100(Lcom/android/server/NsdService;I)Z
+    invoke-static {v3, v2}, Lcom/android/server/NsdService;->access$2100(Lcom/android/server/NsdService;I)Z
 
     .line 863
     goto :goto_72
 
     .line 856
     :cond_6c
-    iget-object v1, p0, Lcom/android/server/NsdService$ClientInfo;->this$0:Lcom/android/server/NsdService;
+    iget-object v3, p0, Lcom/android/server/NsdService$ClientInfo;->this$0:Lcom/android/server/NsdService;
 
-    invoke-static {v1, v2}, Lcom/android/server/NsdService;->access$1800(Lcom/android/server/NsdService;I)Z
+    invoke-static {v3, v2}, Lcom/android/server/NsdService;->access$1800(Lcom/android/server/NsdService;I)Z
 
     .line 857
     nop
@@ -296,45 +314,49 @@
     goto :goto_1
 
     .line 868
+    .end local v1  # "clientId":I
+    .end local v2  # "globalId":I
     :cond_75
-    iget-object v0, p0, Lcom/android/server/NsdService$ClientInfo;->mClientIds:Landroid/util/SparseIntArray;
+    iget-object v1, p0, Lcom/android/server/NsdService$ClientInfo;->mClientIds:Landroid/util/SparseIntArray;
 
-    invoke-virtual {v0}, Landroid/util/SparseIntArray;->clear()V
+    invoke-virtual {v1}, Landroid/util/SparseIntArray;->clear()V
 
     .line 869
-    iget-object v0, p0, Lcom/android/server/NsdService$ClientInfo;->mClientRequests:Landroid/util/SparseIntArray;
+    iget-object v1, p0, Lcom/android/server/NsdService$ClientInfo;->mClientRequests:Landroid/util/SparseIntArray;
 
-    invoke-virtual {v0}, Landroid/util/SparseIntArray;->clear()V
+    invoke-virtual {v1}, Landroid/util/SparseIntArray;->clear()V
 
     .line 870
     return-void
 .end method
 
 .method private getClientId(I)I
-    .registers 3
+    .registers 4
+    .param p1, "globalId"  # I
 
     .line 875
     iget-object v0, p0, Lcom/android/server/NsdService$ClientInfo;->mClientIds:Landroid/util/SparseIntArray;
 
     invoke-virtual {v0, p1}, Landroid/util/SparseIntArray;->indexOfValue(I)I
 
-    move-result p1
+    move-result v0
 
     .line 876
-    if-gez p1, :cond_9
+    .local v0, "idx":I
+    if-gez v0, :cond_9
 
     .line 877
-    return p1
+    return v0
 
     .line 879
     :cond_9
-    iget-object v0, p0, Lcom/android/server/NsdService$ClientInfo;->mClientIds:Landroid/util/SparseIntArray;
+    iget-object v1, p0, Lcom/android/server/NsdService$ClientInfo;->mClientIds:Landroid/util/SparseIntArray;
 
-    invoke-virtual {v0, p1}, Landroid/util/SparseIntArray;->keyAt(I)I
+    invoke-virtual {v1, v0}, Landroid/util/SparseIntArray;->keyAt(I)I
 
-    move-result p1
+    move-result v1
 
-    return p1
+    return v1
 .end method
 
 
@@ -348,7 +370,8 @@
     invoke-direct {v0}, Ljava/lang/StringBuffer;-><init>()V
 
     .line 831
-    const-string v1, "mChannel "
+    .local v0, "sb":Ljava/lang/StringBuffer;
+    const-string/jumbo v1, "mChannel "
 
     invoke-virtual {v0, v1}, Ljava/lang/StringBuffer;->append(Ljava/lang/String;)Ljava/lang/StringBuffer;
 
@@ -361,7 +384,7 @@
     invoke-virtual {v0, v1}, Ljava/lang/StringBuffer;->append(Ljava/lang/String;)Ljava/lang/StringBuffer;
 
     .line 832
-    const-string v2, "mMessenger "
+    const-string/jumbo v2, "mMessenger "
 
     invoke-virtual {v0, v2}, Ljava/lang/StringBuffer;->append(Ljava/lang/String;)Ljava/lang/StringBuffer;
 
@@ -372,7 +395,7 @@
     invoke-virtual {v0, v1}, Ljava/lang/StringBuffer;->append(Ljava/lang/String;)Ljava/lang/StringBuffer;
 
     .line 833
-    const-string v2, "mResolvedService "
+    const-string/jumbo v2, "mResolvedService "
 
     invoke-virtual {v0, v2}, Ljava/lang/StringBuffer;->append(Ljava/lang/String;)Ljava/lang/StringBuffer;
 
@@ -385,14 +408,15 @@
     .line 834
     const/4 v2, 0x0
 
-    :goto_2f
+    .local v2, "i":I
+    :goto_32
     iget-object v3, p0, Lcom/android/server/NsdService$ClientInfo;->mClientIds:Landroid/util/SparseIntArray;
 
     invoke-virtual {v3}, Landroid/util/SparseIntArray;->size()I
 
     move-result v3
 
-    if-ge v2, v3, :cond_67
+    if-ge v2, v3, :cond_6a
 
     .line 835
     iget-object v3, p0, Lcom/android/server/NsdService$ClientInfo;->mClientIds:Landroid/util/SparseIntArray;
@@ -402,6 +426,7 @@
     move-result v3
 
     .line 836
+    .local v3, "clientID":I
     const-string v4, "clientId "
 
     invoke-virtual {v0, v4}, Ljava/lang/StringBuffer;->append(Ljava/lang/String;)Ljava/lang/StringBuffer;
@@ -430,22 +455,24 @@
 
     invoke-virtual {v4, v3}, Landroid/util/SparseIntArray;->get(I)I
 
-    move-result v3
+    move-result v4
 
-    invoke-virtual {v0, v3}, Ljava/lang/StringBuffer;->append(I)Ljava/lang/StringBuffer;
+    invoke-virtual {v0, v4}, Ljava/lang/StringBuffer;->append(I)Ljava/lang/StringBuffer;
 
     invoke-virtual {v0, v1}, Ljava/lang/StringBuffer;->append(Ljava/lang/String;)Ljava/lang/StringBuffer;
 
     .line 834
+    .end local v3  # "clientID":I
     add-int/lit8 v2, v2, 0x1
 
-    goto :goto_2f
+    goto :goto_32
 
     .line 840
-    :cond_67
+    .end local v2  # "i":I
+    :cond_6a
     invoke-virtual {v0}, Ljava/lang/StringBuffer;->toString()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v1
 
-    return-object v0
+    return-object v1
 .end method

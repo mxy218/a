@@ -55,6 +55,7 @@
     .end annotation
 
     .line 1607
+    .local p0, "files":Ljava/util/List;, "Ljava/util/List<Ljava/io/File;>;"
     invoke-interface {p0}, Ljava/util/List;->isEmpty()Z
 
     move-result v0
@@ -81,13 +82,16 @@
     move-result-object v0
 
     .line 1611
+    .local v0, "longestName":Ljava/lang/String;
     invoke-interface {p0}, Ljava/util/List;->size()I
 
     move-result v1
 
     .line 1612
+    .local v1, "fileCount":I
     const/4 v2, 0x1
 
+    .local v2, "i":I
     :goto_19
     if-ge v2, v1, :cond_36
 
@@ -99,6 +103,7 @@
     check-cast v3, Ljava/io/File;
 
     .line 1614
+    .local v3, "file":Ljava/io/File;
     invoke-virtual {v3}, Ljava/io/File;->getName()Ljava/lang/String;
 
     move-result-object v4
@@ -119,45 +124,49 @@
     move-result-object v0
 
     .line 1612
+    .end local v3  # "file":Ljava/io/File;
     :cond_33
     add-int/lit8 v2, v2, 0x1
 
     goto :goto_19
 
     .line 1618
+    .end local v2  # "i":I
     :cond_36
-    const-string p0, ".xml"
+    const-string v2, ".xml"
 
-    const-string v1, ""
+    const-string v3, ""
 
-    invoke-virtual {v0, p0, v1}, Ljava/lang/String;->replace(Ljava/lang/CharSequence;Ljava/lang/CharSequence;)Ljava/lang/String;
+    invoke-virtual {v0, v2, v3}, Ljava/lang/String;->replace(Ljava/lang/CharSequence;Ljava/lang/CharSequence;)Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v2
 
-    invoke-static {p0}, Ljava/lang/Long;->parseLong(Ljava/lang/String;)J
+    invoke-static {v2}, Ljava/lang/Long;->parseLong(Ljava/lang/String;)J
 
-    move-result-wide v0
+    move-result-wide v2
 
-    return-wide v0
+    return-wide v2
 .end method
 
 
 # virtual methods
 .method public startTracking(Ljava/io/File;)V
-    .registers 3
+    .registers 4
+    .param p1, "folder"  # Ljava/io/File;
 
     .line 1584
     invoke-virtual {p1}, Ljava/io/File;->listFiles()[Ljava/io/File;
 
-    move-result-object p1
+    move-result-object v0
 
     .line 1585
-    if-eqz p1, :cond_b
+    .local v0, "files":[Ljava/io/File;
+    if-eqz v0, :cond_b
 
     .line 1586
-    iget-object v0, p0, Lcom/android/server/appop/HistoricalRegistry$HistoricalFilesInvariant;->mBeginFiles:Ljava/util/List;
+    iget-object v1, p0, Lcom/android/server/appop/HistoricalRegistry$HistoricalFilesInvariant;->mBeginFiles:Ljava/util/List;
 
-    invoke-static {v0, p1}, Ljava/util/Collections;->addAll(Ljava/util/Collection;[Ljava/lang/Object;)Z
+    invoke-static {v1, v0}, Ljava/util/Collections;->addAll(Ljava/util/Collection;[Ljava/lang/Object;)Z
 
     .line 1588
     :cond_b
@@ -165,7 +174,8 @@
 .end method
 
 .method public stopTracking(Ljava/io/File;)V
-    .registers 7
+    .registers 10
+    .param p1, "folder"  # Ljava/io/File;
 
     .line 1591
     new-instance v0, Ljava/util/ArrayList;
@@ -173,11 +183,13 @@
     invoke-direct {v0}, Ljava/util/ArrayList;-><init>()V
 
     .line 1592
+    .local v0, "endFiles":Ljava/util/List;, "Ljava/util/List<Ljava/io/File;>;"
     invoke-virtual {p1}, Ljava/io/File;->listFiles()[Ljava/io/File;
 
     move-result-object v1
 
     .line 1593
+    .local v1, "files":[Ljava/io/File;
     if-eqz v1, :cond_e
 
     .line 1594
@@ -185,52 +197,55 @@
 
     .line 1596
     :cond_e
-    iget-object v1, p0, Lcom/android/server/appop/HistoricalRegistry$HistoricalFilesInvariant;->mBeginFiles:Ljava/util/List;
+    iget-object v2, p0, Lcom/android/server/appop/HistoricalRegistry$HistoricalFilesInvariant;->mBeginFiles:Ljava/util/List;
 
-    invoke-static {v1}, Lcom/android/server/appop/HistoricalRegistry$HistoricalFilesInvariant;->getOldestFileOffsetMillis(Ljava/util/List;)J
+    invoke-static {v2}, Lcom/android/server/appop/HistoricalRegistry$HistoricalFilesInvariant;->getOldestFileOffsetMillis(Ljava/util/List;)J
 
-    move-result-wide v1
+    move-result-wide v2
 
     .line 1597
+    .local v2, "beginOldestFileOffsetMillis":J
     invoke-static {v0}, Lcom/android/server/appop/HistoricalRegistry$HistoricalFilesInvariant;->getOldestFileOffsetMillis(Ljava/util/List;)J
 
-    move-result-wide v3
+    move-result-wide v4
 
     .line 1598
-    cmp-long v0, v3, v1
+    .local v4, "endOldestFileOffsetMillis":J
+    cmp-long v6, v4, v2
 
-    if-ltz v0, :cond_1d
+    if-ltz v6, :cond_1d
 
     .line 1604
     return-void
 
     .line 1599
     :cond_1d
-    new-instance v0, Ljava/lang/StringBuilder;
+    new-instance v6, Ljava/lang/StringBuilder;
 
-    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v6}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v1, "History loss detected!\nold files: "
+    const-string v7, "History loss detected!\nold files: "
 
-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v6, v7}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    iget-object v1, p0, Lcom/android/server/appop/HistoricalRegistry$HistoricalFilesInvariant;->mBeginFiles:Ljava/util/List;
+    iget-object v7, p0, Lcom/android/server/appop/HistoricalRegistry$HistoricalFilesInvariant;->mBeginFiles:Ljava/util/List;
 
-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    invoke-virtual {v6, v7}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v6}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v6
 
     .line 1601
-    const/4 v1, 0x0
+    .local v6, "message":Ljava/lang/String;
+    const/4 v7, 0x0
 
-    invoke-static {v0, v1, p1}, Lcom/android/server/appop/HistoricalRegistry;->access$300(Ljava/lang/String;Ljava/lang/Throwable;Ljava/io/File;)V
+    invoke-static {v6, v7, p1}, Lcom/android/server/appop/HistoricalRegistry;->access$300(Ljava/lang/String;Ljava/lang/Throwable;Ljava/io/File;)V
 
     .line 1602
-    new-instance p1, Ljava/lang/IllegalStateException;
+    new-instance v7, Ljava/lang/IllegalStateException;
 
-    invoke-direct {p1, v0}, Ljava/lang/IllegalStateException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v7, v6}, Ljava/lang/IllegalStateException;-><init>(Ljava/lang/String;)V
 
-    throw p1
+    throw v7
 .end method

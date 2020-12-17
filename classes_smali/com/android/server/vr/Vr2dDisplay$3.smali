@@ -24,6 +24,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/vr/Vr2dDisplay;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/vr/Vr2dDisplay;
 
     .line 329
     iput-object p1, p0, Lcom/android/server/vr/Vr2dDisplay$3;->this$0:Lcom/android/server/vr/Vr2dDisplay;

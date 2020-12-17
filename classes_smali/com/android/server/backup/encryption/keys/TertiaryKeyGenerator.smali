@@ -15,7 +15,8 @@
 
 # direct methods
 .method public constructor <init>(Ljava/security/SecureRandom;)V
-    .registers 4
+    .registers 5
+    .param p1, "secureRandom"  # Ljava/security/SecureRandom;
 
     .line 33
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -47,16 +48,17 @@
 
     .line 37
     :catch_14
-    move-exception p1
+    move-exception v0
 
     .line 38
-    new-instance v0, Ljava/lang/RuntimeException;
+    .local v0, "e":Ljava/security/NoSuchAlgorithmException;
+    new-instance v1, Ljava/lang/RuntimeException;
 
-    const-string v1, "Impossible condition: JCE thinks it does not support AES."
+    const-string v2, "Impossible condition: JCE thinks it does not support AES."
 
-    invoke-direct {v0, v1, p1}, Ljava/lang/RuntimeException;-><init>(Ljava/lang/String;Ljava/lang/Throwable;)V
+    invoke-direct {v1, v2, v0}, Ljava/lang/RuntimeException;-><init>(Ljava/lang/String;Ljava/lang/Throwable;)V
 
-    throw v0
+    throw v1
 .end method
 
 

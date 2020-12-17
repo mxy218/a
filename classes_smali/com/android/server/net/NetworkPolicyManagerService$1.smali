@@ -24,8 +24,9 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/net/NetworkPolicyManagerService;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/net/NetworkPolicyManagerService;
 
-    .line 752
+    .line 827
     iput-object p1, p0, Lcom/android/server/net/NetworkPolicyManagerService$1;->this$0:Lcom/android/server/net/NetworkPolicyManagerService;
 
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -38,88 +39,82 @@
 .method public getServiceType()I
     .registers 2
 
-    .line 755
+    .line 830
     const/4 v0, 0x6
 
     return v0
 .end method
 
 .method public onLowPowerModeChanged(Landroid/os/PowerSaveState;)V
-    .registers 4
+    .registers 5
+    .param p1, "result"  # Landroid/os/PowerSaveState;
 
-    .line 760
-    iget-boolean p1, p1, Landroid/os/PowerSaveState;->batterySaverEnabled:Z
+    .line 835
+    iget-boolean v0, p1, Landroid/os/PowerSaveState;->batterySaverEnabled:Z
 
-    .line 761
-    invoke-static {}, Lcom/android/server/net/NetworkPolicyManagerService;->access$100()Z
+    .line 837
+    .local v0, "enabled":Z
+    new-instance v1, Ljava/lang/StringBuilder;
 
-    move-result v0
+    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
 
-    if-eqz v0, :cond_24
+    const-string/jumbo v2, "onLowPowerModeChanged("
 
-    .line 762
-    new-instance v0, Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-virtual {v1, v0}, Ljava/lang/StringBuilder;->append(Z)Ljava/lang/StringBuilder;
 
-    const-string/jumbo v1, "onLowPowerModeChanged("
+    const-string v2, ")"
 
-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Z)Ljava/lang/StringBuilder;
+    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    const-string v1, ")"
+    move-result-object v1
 
-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    const-string v2, "NetworkPolicy"
 
-    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-static {v2, v1}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
 
-    move-result-object v0
-
-    const-string v1, "NetworkPolicy"
-
-    invoke-static {v1, v0}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
-
-    .line 764
-    :cond_24
-    iget-object v0, p0, Lcom/android/server/net/NetworkPolicyManagerService$1;->this$0:Lcom/android/server/net/NetworkPolicyManagerService;
-
-    iget-object v0, v0, Lcom/android/server/net/NetworkPolicyManagerService;->mUidRulesFirstLock:Ljava/lang/Object;
-
-    monitor-enter v0
-
-    .line 765
-    :try_start_29
+    .line 839
     iget-object v1, p0, Lcom/android/server/net/NetworkPolicyManagerService$1;->this$0:Lcom/android/server/net/NetworkPolicyManagerService;
 
-    iget-boolean v1, v1, Lcom/android/server/net/NetworkPolicyManagerService;->mRestrictPower:Z
+    iget-object v1, v1, Lcom/android/server/net/NetworkPolicyManagerService;->mUidRulesFirstLock:Ljava/lang/Object;
 
-    if-eq v1, p1, :cond_38
+    monitor-enter v1
 
-    .line 766
-    iget-object v1, p0, Lcom/android/server/net/NetworkPolicyManagerService$1;->this$0:Lcom/android/server/net/NetworkPolicyManagerService;
+    .line 840
+    :try_start_23
+    iget-object v2, p0, Lcom/android/server/net/NetworkPolicyManagerService$1;->this$0:Lcom/android/server/net/NetworkPolicyManagerService;
 
-    iput-boolean p1, v1, Lcom/android/server/net/NetworkPolicyManagerService;->mRestrictPower:Z
+    iget-boolean v2, v2, Lcom/android/server/net/NetworkPolicyManagerService;->mRestrictPower:Z
 
-    .line 767
-    iget-object p1, p0, Lcom/android/server/net/NetworkPolicyManagerService$1;->this$0:Lcom/android/server/net/NetworkPolicyManagerService;
+    if-eq v2, v0, :cond_32
 
-    invoke-static {p1}, Lcom/android/server/net/NetworkPolicyManagerService;->access$200(Lcom/android/server/net/NetworkPolicyManagerService;)V
+    .line 841
+    iget-object v2, p0, Lcom/android/server/net/NetworkPolicyManagerService$1;->this$0:Lcom/android/server/net/NetworkPolicyManagerService;
 
-    .line 769
-    :cond_38
-    monitor-exit v0
+    iput-boolean v0, v2, Lcom/android/server/net/NetworkPolicyManagerService;->mRestrictPower:Z
 
-    .line 770
+    .line 842
+    iget-object v2, p0, Lcom/android/server/net/NetworkPolicyManagerService$1;->this$0:Lcom/android/server/net/NetworkPolicyManagerService;
+
+    invoke-static {v2}, Lcom/android/server/net/NetworkPolicyManagerService;->access$100(Lcom/android/server/net/NetworkPolicyManagerService;)V
+
+    .line 844
+    :cond_32
+    monitor-exit v1
+
+    .line 845
     return-void
 
-    .line 769
-    :catchall_3a
-    move-exception p1
+    .line 844
+    :catchall_34
+    move-exception v2
 
-    monitor-exit v0
-    :try_end_3c
-    .catchall {:try_start_29 .. :try_end_3c} :catchall_3a
+    monitor-exit v1
+    :try_end_36
+    .catchall {:try_start_23 .. :try_end_36} :catchall_34
 
-    throw p1
+    throw v2
 .end method

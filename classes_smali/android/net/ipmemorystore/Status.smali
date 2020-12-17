@@ -24,6 +24,7 @@
 # direct methods
 .method public constructor <init>(I)V
     .registers 2
+    .param p1, "resultCode"  # I
 
     .line 39
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -36,14 +37,15 @@
 .end method
 
 .method public constructor <init>(Landroid/net/ipmemorystore/StatusParcelable;)V
-    .registers 2
+    .registers 3
+    .param p1, "parcelable"  # Landroid/net/ipmemorystore/StatusParcelable;
     .annotation build Lcom/android/internal/annotations/VisibleForTesting;
     .end annotation
 
     .line 45
-    iget p1, p1, Landroid/net/ipmemorystore/StatusParcelable;->resultCode:I
+    iget v0, p1, Landroid/net/ipmemorystore/StatusParcelable;->resultCode:I
 
-    invoke-direct {p0, p1}, Landroid/net/ipmemorystore/Status;-><init>(I)V
+    invoke-direct {p0, v0}, Landroid/net/ipmemorystore/Status;-><init>(I)V
 
     .line 46
     return-void
@@ -79,6 +81,7 @@
     invoke-direct {v0}, Landroid/net/ipmemorystore/StatusParcelable;-><init>()V
 
     .line 52
+    .local v0, "parcelable":Landroid/net/ipmemorystore/StatusParcelable;
     iget v1, p0, Landroid/net/ipmemorystore/Status;->resultCode:I
 
     iput v1, v0, Landroid/net/ipmemorystore/StatusParcelable;->resultCode:I

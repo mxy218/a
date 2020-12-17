@@ -21,8 +21,9 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/Watchdog;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/Watchdog;
 
-    .line 266
+    .line 293
     iput-object p1, p0, Lcom/android/server/Watchdog$RebootRequestReceiver;->this$0:Lcom/android/server/Watchdog;
 
     invoke-direct {p0}, Landroid/content/BroadcastReceiver;-><init>()V
@@ -33,49 +34,51 @@
 
 # virtual methods
 .method public onReceive(Landroid/content/Context;Landroid/content/Intent;)V
-    .registers 4
+    .registers 5
+    .param p1, "c"  # Landroid/content/Context;
+    .param p2, "intent"  # Landroid/content/Intent;
 
-    .line 269
-    const-string/jumbo p1, "nowait"
+    .line 296
+    const-string/jumbo v0, "nowait"
 
-    const/4 v0, 0x0
+    const/4 v1, 0x0
 
-    invoke-virtual {p2, p1, v0}, Landroid/content/Intent;->getIntExtra(Ljava/lang/String;I)I
+    invoke-virtual {p2, v0, v1}, Landroid/content/Intent;->getIntExtra(Ljava/lang/String;I)I
 
-    move-result p1
+    move-result v0
 
-    if-eqz p1, :cond_12
+    if-eqz v0, :cond_12
 
-    .line 270
-    iget-object p1, p0, Lcom/android/server/Watchdog$RebootRequestReceiver;->this$0:Lcom/android/server/Watchdog;
+    .line 297
+    iget-object v0, p0, Lcom/android/server/Watchdog$RebootRequestReceiver;->this$0:Lcom/android/server/Watchdog;
 
-    const-string p2, "Received ACTION_REBOOT broadcast"
+    const-string v1, "Received ACTION_REBOOT broadcast"
 
-    invoke-virtual {p1, p2}, Lcom/android/server/Watchdog;->rebootSystem(Ljava/lang/String;)V
+    invoke-virtual {v0, v1}, Lcom/android/server/Watchdog;->rebootSystem(Ljava/lang/String;)V
 
-    .line 271
+    .line 298
     return-void
 
-    .line 273
+    .line 300
     :cond_12
-    new-instance p1, Ljava/lang/StringBuilder;
+    new-instance v0, Ljava/lang/StringBuilder;
 
-    invoke-direct {p1}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v0, "Unsupported ACTION_REBOOT broadcast: "
+    const-string v1, "Unsupported ACTION_REBOOT broadcast: "
 
-    invoke-virtual {p1, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p1, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    const-string p2, "Watchdog"
+    const-string v1, "Watchdog"
 
-    invoke-static {p2, p1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v0}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 274
+    .line 301
     return-void
 .end method

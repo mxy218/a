@@ -25,28 +25,31 @@
 .end method
 
 .method static getBoundIndexFromRotation(II)I
-    .registers 2
+    .registers 4
+    .param p0, "i"  # I
+    .param p1, "rotation"  # I
     .annotation build Lcom/android/internal/annotations/VisibleForTesting;
     .end annotation
 
     .line 57
     invoke-static {p1}, Lcom/android/server/wm/utils/DisplayRotationUtil;->getRotationToBoundsOffset(I)I
 
-    move-result p1
+    move-result v0
 
-    add-int/2addr p0, p1
+    add-int/2addr v0, p0
 
-    const/4 p1, 0x4
+    const/4 v1, 0x4
 
-    invoke-static {p0, p1}, Ljava/lang/Math;->floorMod(II)I
+    invoke-static {v0, v1}, Ljava/lang/Math;->floorMod(II)I
 
-    move-result p0
+    move-result v0
 
-    return p0
+    return v0
 .end method
 
 .method private static getRotationToBoundsOffset(I)I
     .registers 4
+    .param p0, "rotation"  # I
 
     .line 40
     const/4 v0, 0x0
@@ -78,9 +81,9 @@
 
     .line 44
     :cond_f
-    const/4 p0, -0x1
+    const/4 v0, -0x1
 
-    return p0
+    return v0
 
     .line 42
     :cond_11
@@ -90,7 +93,11 @@
 
 # virtual methods
 .method public getRotatedBounds([Landroid/graphics/Rect;III)[Landroid/graphics/Rect;
-    .registers 8
+    .registers 10
+    .param p1, "bounds"  # [Landroid/graphics/Rect;
+    .param p2, "rotation"  # I
+    .param p3, "initialDisplayWidth"  # I
+    .param p4, "initialDisplayHeight"  # I
 
     .line 74
     array-length v0, p1
@@ -112,75 +119,83 @@
     invoke-static {p2, p3, p4, v0}, Lcom/android/server/wm/utils/CoordinateTransforms;->transformPhysicalToLogicalCoordinates(IIILandroid/graphics/Matrix;)V
 
     .line 83
-    new-array p3, v1, [Landroid/graphics/Rect;
+    new-array v0, v1, [Landroid/graphics/Rect;
 
     .line 84
-    const/4 p4, 0x0
+    .local v0, "newBounds":[Landroid/graphics/Rect;
+    const/4 v1, 0x0
 
+    .local v1, "i":I
     :goto_f
-    array-length v0, p1
+    array-length v2, p1
 
-    if-ge p4, v0, :cond_30
+    if-ge v1, v2, :cond_30
 
     .line 86
-    aget-object v0, p1, p4
+    aget-object v2, p1, v1
 
     .line 87
-    invoke-virtual {v0}, Landroid/graphics/Rect;->isEmpty()Z
+    .local v2, "rect":Landroid/graphics/Rect;
+    invoke-virtual {v2}, Landroid/graphics/Rect;->isEmpty()Z
 
-    move-result v1
+    move-result v3
 
-    if-nez v1, :cond_27
+    if-nez v3, :cond_27
 
     .line 88
-    new-instance v1, Landroid/graphics/RectF;
+    new-instance v3, Landroid/graphics/RectF;
 
-    invoke-direct {v1, v0}, Landroid/graphics/RectF;-><init>(Landroid/graphics/Rect;)V
+    invoke-direct {v3, v2}, Landroid/graphics/RectF;-><init>(Landroid/graphics/Rect;)V
 
     .line 89
-    iget-object v2, p0, Lcom/android/server/wm/utils/DisplayRotationUtil;->mTmpMatrix:Landroid/graphics/Matrix;
+    .local v3, "rectF":Landroid/graphics/RectF;
+    iget-object v4, p0, Lcom/android/server/wm/utils/DisplayRotationUtil;->mTmpMatrix:Landroid/graphics/Matrix;
 
-    invoke-virtual {v2, v1}, Landroid/graphics/Matrix;->mapRect(Landroid/graphics/RectF;)Z
+    invoke-virtual {v4, v3}, Landroid/graphics/Matrix;->mapRect(Landroid/graphics/RectF;)Z
 
     .line 90
-    invoke-virtual {v1, v0}, Landroid/graphics/RectF;->round(Landroid/graphics/Rect;)V
+    invoke-virtual {v3, v2}, Landroid/graphics/RectF;->round(Landroid/graphics/Rect;)V
 
     .line 92
+    .end local v3  # "rectF":Landroid/graphics/RectF;
     :cond_27
-    invoke-static {p4, p2}, Lcom/android/server/wm/utils/DisplayRotationUtil;->getBoundIndexFromRotation(II)I
+    invoke-static {v1, p2}, Lcom/android/server/wm/utils/DisplayRotationUtil;->getBoundIndexFromRotation(II)I
 
-    move-result v1
+    move-result v3
 
-    aput-object v0, p3, v1
+    aput-object v2, v0, v3
 
     .line 84
-    add-int/lit8 p4, p4, 0x1
+    .end local v2  # "rect":Landroid/graphics/Rect;
+    add-int/lit8 v1, v1, 0x1
 
     goto :goto_f
 
     .line 94
+    .end local v1  # "i":I
     :cond_30
-    return-object p3
+    return-object v0
 
     .line 75
+    .end local v0  # "newBounds":[Landroid/graphics/Rect;
     :cond_31
-    new-instance p2, Ljava/lang/IllegalArgumentException;
+    new-instance v0, Ljava/lang/IllegalArgumentException;
 
-    new-instance p3, Ljava/lang/StringBuilder;
+    new-instance v1, Ljava/lang/StringBuilder;
 
-    invoke-direct {p3}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string p4, "bounds must have exactly 4 elements: bounds="
+    const-string v2, "bounds must have exactly 4 elements: bounds="
 
-    invoke-virtual {p3, p4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p3, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v1
 
-    invoke-direct {p2, p1}, Ljava/lang/IllegalArgumentException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v0, v1}, Ljava/lang/IllegalArgumentException;-><init>(Ljava/lang/String;)V
 
-    throw p2
+    throw v0
 .end method

@@ -40,6 +40,7 @@
 # direct methods
 .method constructor <init>(Landroid/content/Context;)V
     .registers 3
+    .param p1, "context"  # Landroid/content/Context;
 
     .line 58
     invoke-direct {p0}, Landroid/os/IDumpstate$Stub;-><init>()V
@@ -59,11 +60,11 @@
 
     invoke-virtual {p1, v0}, Landroid/content/Context;->getSystemService(Ljava/lang/String;)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v0
 
-    check-cast p1, Landroid/app/AppOpsManager;
+    check-cast v0, Landroid/app/AppOpsManager;
 
-    iput-object p1, p0, Lcom/android/server/os/BugreportManagerServiceImpl;->mAppOps:Landroid/app/AppOpsManager;
+    iput-object v0, p0, Lcom/android/server/os/BugreportManagerServiceImpl;->mAppOps:Landroid/app/AppOpsManager;
 
     .line 61
     nop
@@ -71,53 +72,55 @@
     .line 62
     invoke-static {}, Lcom/android/server/SystemConfig;->getInstance()Lcom/android/server/SystemConfig;
 
-    move-result-object p1
+    move-result-object v0
 
-    invoke-virtual {p1}, Lcom/android/server/SystemConfig;->getBugreportWhitelistedPackages()Landroid/util/ArraySet;
+    invoke-virtual {v0}, Lcom/android/server/SystemConfig;->getBugreportWhitelistedPackages()Landroid/util/ArraySet;
 
-    move-result-object p1
+    move-result-object v0
 
-    iput-object p1, p0, Lcom/android/server/os/BugreportManagerServiceImpl;->mBugreportWhitelistedPackages:Landroid/util/ArraySet;
+    iput-object v0, p0, Lcom/android/server/os/BugreportManagerServiceImpl;->mBugreportWhitelistedPackages:Landroid/util/ArraySet;
 
     .line 63
     return-void
 .end method
 
 .method static synthetic access$000(Lcom/android/server/os/BugreportManagerServiceImpl;)Ljava/lang/Object;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/os/BugreportManagerServiceImpl;
 
     .line 48
-    iget-object p0, p0, Lcom/android/server/os/BugreportManagerServiceImpl;->mLock:Ljava/lang/Object;
+    iget-object v0, p0, Lcom/android/server/os/BugreportManagerServiceImpl;->mLock:Ljava/lang/Object;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method private ensureIsPrimaryUser()V
-    .registers 4
+    .registers 5
 
     .line 132
-    nop
+    const/4 v0, 0x0
 
     .line 134
+    .local v0, "currentUser":Landroid/content/pm/UserInfo;
     :try_start_1
     invoke-static {}, Landroid/app/ActivityManager;->getService()Landroid/app/IActivityManager;
 
-    move-result-object v0
+    move-result-object v1
 
-    invoke-interface {v0}, Landroid/app/IActivityManager;->getCurrentUser()Landroid/content/pm/UserInfo;
+    invoke-interface {v1}, Landroid/app/IActivityManager;->getCurrentUser()Landroid/content/pm/UserInfo;
 
-    move-result-object v0
+    move-result-object v1
     :try_end_9
-    .catch Landroid/os/RemoteException; {:try_start_1 .. :try_end_9} :catch_a
+    .catch Landroid/os/RemoteException; {:try_start_1 .. :try_end_9} :catch_b
+
+    move-object v0, v1
 
     .line 137
     goto :goto_c
 
     .line 135
-    :catch_a
-    move-exception v0
-
-    const/4 v0, 0x0
+    :catch_b
+    move-exception v1
 
     .line 139
     :goto_c
@@ -132,6 +135,7 @@
     move-result-object v1
 
     .line 140
+    .local v1, "primaryUser":Landroid/content/pm/UserInfo;
     if-nez v0, :cond_1d
 
     .line 141
@@ -150,16 +154,16 @@
 
     .line 146
     :cond_24
-    iget v1, v1, Landroid/content/pm/UserInfo;->id:I
+    iget v2, v1, Landroid/content/pm/UserInfo;->id:I
 
-    iget v0, v0, Landroid/content/pm/UserInfo;->id:I
+    iget v3, v0, Landroid/content/pm/UserInfo;->id:I
 
-    if-eq v1, v0, :cond_2f
+    if-eq v2, v3, :cond_2f
 
     .line 147
-    const-string v0, "Current user not primary user. Only primary user is allowed to take bugreports."
+    const-string v2, "Current user not primary user. Only primary user is allowed to take bugreports."
 
-    invoke-direct {p0, v0}, Lcom/android/server/os/BugreportManagerServiceImpl;->logAndThrow(Ljava/lang/String;)V
+    invoke-direct {p0, v2}, Lcom/android/server/os/BugreportManagerServiceImpl;->logAndThrow(Ljava/lang/String;)V
 
     .line 150
     :cond_2f
@@ -167,7 +171,7 @@
 .end method
 
 .method private isDumpstateBinderServiceRunningLocked()Z
-    .registers 2
+    .registers 3
     .annotation build Lcom/android/internal/annotations/GuardedBy;
         value = {
             "mLock"
@@ -186,21 +190,23 @@
     move-result-object v0
 
     .line 188
+    .local v0, "ds":Landroid/os/IDumpstate;
     if-eqz v0, :cond_e
 
-    const/4 v0, 0x1
+    const/4 v1, 0x1
 
     goto :goto_f
 
     :cond_e
-    const/4 v0, 0x0
+    const/4 v1, 0x0
 
     :goto_f
-    return v0
+    return v1
 .end method
 
 .method private logAndThrow(Ljava/lang/String;)V
     .registers 3
+    .param p1, "message"  # Ljava/lang/String;
 
     .line 243
     const-string v0, "BugreportManagerService"
@@ -216,7 +222,9 @@
 .end method
 
 .method private reportError(Landroid/os/IDumpstateListener;I)V
-    .registers 4
+    .registers 6
+    .param p1, "listener"  # Landroid/os/IDumpstateListener;
+    .param p2, "errorCode"  # I
 
     .line 235
     :try_start_0
@@ -229,38 +237,40 @@
 
     .line 236
     :catch_4
-    move-exception p1
+    move-exception v0
 
     .line 238
-    new-instance p2, Ljava/lang/StringBuilder;
+    .local v0, "e":Landroid/os/RemoteException;
+    new-instance v1, Ljava/lang/StringBuilder;
 
-    invoke-direct {p2}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string/jumbo v0, "onError() transaction threw RemoteException: "
+    const-string/jumbo v2, "onError() transaction threw RemoteException: "
 
-    invoke-virtual {p2, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p1}, Landroid/os/RemoteException;->getMessage()Ljava/lang/String;
+    invoke-virtual {v0}, Landroid/os/RemoteException;->getMessage()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v2
 
-    invoke-virtual {p2, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v1
 
-    const-string p2, "BugreportManagerService"
+    const-string v2, "BugreportManagerService"
 
-    invoke-static {p2, p1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v2, v1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 240
+    .end local v0  # "e":Landroid/os/RemoteException;
     :goto_20
     return-void
 .end method
 
 .method private startAndGetDumpstateBinderServiceLocked()Landroid/os/IDumpstate;
-    .registers 10
+    .registers 9
     .annotation build Lcom/android/internal/annotations/GuardedBy;
         value = {
             "mLock"
@@ -275,137 +285,140 @@
     invoke-static {v0, v1}, Landroid/os/SystemProperties;->set(Ljava/lang/String;Ljava/lang/String;)V
 
     .line 207
-    nop
-
-    .line 208
-    nop
-
-    .line 209
-    nop
-
-    .line 210
     const/4 v0, 0x0
 
+    .line 208
+    .local v0, "ds":Landroid/os/IDumpstate;
     const/4 v1, 0x0
 
-    const/16 v2, 0x1f4
+    .line 209
+    .local v1, "timedOut":Z
+    const/4 v2, 0x0
 
-    move v3, v0
-
-    move-object v4, v1
-
-    move v1, v3
+    .line 210
+    .local v2, "totalTimeWaitedMillis":I
+    const/16 v3, 0x1f4
 
     .line 211
-    :goto_11
-    const-string/jumbo v5, "ms)"
+    .local v3, "seedWaitTimeMillis":I
+    :goto_c
+    const-string/jumbo v4, "ms)"
 
-    const-string v6, "BugreportManagerService"
+    const-string v5, "BugreportManagerService"
 
-    if-nez v1, :cond_53
+    if-nez v1, :cond_4f
 
     .line 213
-    const-string v4, "dumpstate"
+    const-string v6, "dumpstate"
 
-    invoke-static {v4}, Landroid/os/ServiceManager;->getService(Ljava/lang/String;)Landroid/os/IBinder;
+    invoke-static {v6}, Landroid/os/ServiceManager;->getService(Ljava/lang/String;)Landroid/os/IBinder;
 
-    move-result-object v4
+    move-result-object v6
 
-    invoke-static {v4}, Landroid/os/IDumpstate$Stub;->asInterface(Landroid/os/IBinder;)Landroid/os/IDumpstate;
-
-    move-result-object v4
-
-    .line 214
-    if-eqz v4, :cond_2a
-
-    .line 215
-    const-string v0, "Got bugreport service handle."
-
-    invoke-static {v6, v0}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
-
-    .line 216
-    goto :goto_53
-
-    .line 218
-    :cond_2a
-    int-to-long v7, v2
-
-    invoke-static {v7, v8}, Landroid/os/SystemClock;->sleep(J)V
-
-    .line 219
-    new-instance v1, Ljava/lang/StringBuilder;
-
-    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
-
-    const-string v7, "Waiting to get dumpstate service handle ("
-
-    invoke-virtual {v1, v7}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v1, v3}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v1, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
-
-    move-result-object v1
-
-    invoke-static {v6, v1}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
-
-    .line 221
-    add-int/2addr v3, v2
-
-    .line 222
-    mul-int/lit8 v2, v2, 0x2
-
-    .line 223
-    int-to-long v5, v3
-
-    const-wide/16 v7, 0x7530
-
-    cmp-long v1, v5, v7
-
-    if-lez v1, :cond_51
-
-    const/4 v1, 0x1
-
-    goto :goto_11
-
-    :cond_51
-    move v1, v0
-
-    goto :goto_11
-
-    .line 225
-    :cond_53
-    :goto_53
-    if-eqz v1, :cond_6c
-
-    .line 226
-    new-instance v0, Ljava/lang/StringBuilder;
-
-    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
-
-    const-string v1, "Timed out waiting to get dumpstate service handle ("
-
-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v0, v3}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v0, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-static {v6}, Landroid/os/IDumpstate$Stub;->asInterface(Landroid/os/IBinder;)Landroid/os/IDumpstate;
 
     move-result-object v0
 
-    invoke-static {v6, v0}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    .line 214
+    if-eqz v0, :cond_25
+
+    .line 215
+    const-string v6, "Got bugreport service handle."
+
+    invoke-static {v5, v6}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
+
+    .line 216
+    goto :goto_4f
+
+    .line 218
+    :cond_25
+    int-to-long v6, v3
+
+    invoke-static {v6, v7}, Landroid/os/SystemClock;->sleep(J)V
+
+    .line 219
+    new-instance v6, Ljava/lang/StringBuilder;
+
+    invoke-direct {v6}, Ljava/lang/StringBuilder;-><init>()V
+
+    const-string v7, "Waiting to get dumpstate service handle ("
+
+    invoke-virtual {v6, v7}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v6, v2}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v6, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v6}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v4
+
+    invoke-static {v5, v4}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
+
+    .line 221
+    add-int/2addr v2, v3
+
+    .line 222
+    mul-int/lit8 v3, v3, 0x2
+
+    .line 223
+    int-to-long v4, v2
+
+    const-wide/16 v6, 0x7530
+
+    cmp-long v4, v4, v6
+
+    if-lez v4, :cond_4c
+
+    const/4 v4, 0x1
+
+    goto :goto_4d
+
+    :cond_4c
+    const/4 v4, 0x0
+
+    :goto_4d
+    move v1, v4
+
+    goto :goto_c
+
+    .line 225
+    :cond_4f
+    :goto_4f
+    if-eqz v1, :cond_68
+
+    .line 226
+    new-instance v6, Ljava/lang/StringBuilder;
+
+    invoke-direct {v6}, Ljava/lang/StringBuilder;-><init>()V
+
+    const-string v7, "Timed out waiting to get dumpstate service handle ("
+
+    invoke-virtual {v6, v7}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v6, v2}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v6, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v6}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v4
+
+    invoke-static {v5, v4}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 230
-    :cond_6c
-    return-object v4
+    :cond_68
+    return-object v0
 .end method
 
 .method private startBugreportLocked(ILjava/lang/String;Ljava/io/FileDescriptor;Ljava/io/FileDescriptor;ILandroid/os/IDumpstateListener;)V
-    .registers 14
+    .registers 15
+    .param p1, "callingUid"  # I
+    .param p2, "callingPackage"  # Ljava/lang/String;
+    .param p3, "bugreportFd"  # Ljava/io/FileDescriptor;
+    .param p4, "screenshotFd"  # Ljava/io/FileDescriptor;
+    .param p5, "bugreportMode"  # I
+    .param p6, "listener"  # Landroid/os/IDumpstateListener;
     .annotation build Lcom/android/internal/annotations/GuardedBy;
         value = {
             "mLock"
@@ -422,14 +435,14 @@
     if-eqz v0, :cond_12
 
     .line 157
-    const-string p1, "\'dumpstate\' is already running. Cannot start a new bugreport while another one is currently in progress."
+    const-string v0, "\'dumpstate\' is already running. Cannot start a new bugreport while another one is currently in progress."
 
-    invoke-static {v1, p1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v0}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 159
-    const/4 p1, 0x5
+    const/4 v0, 0x5
 
-    invoke-direct {p0, p6, p1}, Lcom/android/server/os/BugreportManagerServiceImpl;->reportError(Landroid/os/IDumpstateListener;I)V
+    invoke-direct {p0, p6, v0}, Lcom/android/server/os/BugreportManagerServiceImpl;->reportError(Landroid/os/IDumpstateListener;I)V
 
     .line 161
     return-void
@@ -441,60 +454,67 @@
     move-result-object v0
 
     .line 165
+    .local v0, "ds":Landroid/os/IDumpstate;
     if-nez v0, :cond_22
 
     .line 166
-    const-string p1, "Unable to get bugreport service"
+    const-string v2, "Unable to get bugreport service"
 
-    invoke-static {v1, p1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v2}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 167
-    const/4 p1, 0x2
+    const/4 v1, 0x2
 
-    invoke-direct {p0, p6, p1}, Lcom/android/server/os/BugreportManagerServiceImpl;->reportError(Landroid/os/IDumpstateListener;I)V
+    invoke-direct {p0, p6, v1}, Lcom/android/server/os/BugreportManagerServiceImpl;->reportError(Landroid/os/IDumpstateListener;I)V
 
     .line 168
     return-void
 
     .line 172
     :cond_22
-    new-instance v6, Lcom/android/server/os/BugreportManagerServiceImpl$DumpstateListener;
+    new-instance v7, Lcom/android/server/os/BugreportManagerServiceImpl$DumpstateListener;
 
-    invoke-direct {v6, p0, p6, v0}, Lcom/android/server/os/BugreportManagerServiceImpl$DumpstateListener;-><init>(Lcom/android/server/os/BugreportManagerServiceImpl;Landroid/os/IDumpstateListener;Landroid/os/IDumpstate;)V
+    invoke-direct {v7, p0, p6, v0}, Lcom/android/server/os/BugreportManagerServiceImpl$DumpstateListener;-><init>(Lcom/android/server/os/BugreportManagerServiceImpl;Landroid/os/IDumpstateListener;Landroid/os/IDumpstate;)V
 
     .line 174
-    move v1, p1
+    .local v7, "myListener":Landroid/os/IDumpstateListener;
+    move-object v1, v0
 
-    move-object v2, p2
+    move v2, p1
 
-    move-object v3, p3
+    move-object v3, p2
 
-    move-object v4, p4
+    move-object v4, p3
 
-    move v5, p5
+    move-object v5, p4
 
-    :try_start_2c
-    invoke-interface/range {v0 .. v6}, Landroid/os/IDumpstate;->startBugreport(ILjava/lang/String;Ljava/io/FileDescriptor;Ljava/io/FileDescriptor;ILandroid/os/IDumpstateListener;)V
-    :try_end_2f
-    .catch Landroid/os/RemoteException; {:try_start_2c .. :try_end_2f} :catch_30
+    move v6, p5
+
+    :try_start_2d
+    invoke-interface/range {v1 .. v7}, Landroid/os/IDumpstate;->startBugreport(ILjava/lang/String;Ljava/io/FileDescriptor;Ljava/io/FileDescriptor;ILandroid/os/IDumpstateListener;)V
+    :try_end_30
+    .catch Landroid/os/RemoteException; {:try_start_2d .. :try_end_30} :catch_31
 
     .line 182
-    goto :goto_34
+    goto :goto_35
 
     .line 176
-    :catch_30
-    move-exception p1
+    :catch_31
+    move-exception v1
 
     .line 181
+    .local v1, "e":Landroid/os/RemoteException;
     invoke-virtual {p0}, Lcom/android/server/os/BugreportManagerServiceImpl;->cancelBugreport()V
 
     .line 183
-    :goto_34
+    .end local v1  # "e":Landroid/os/RemoteException;
+    :goto_35
     return-void
 .end method
 
 .method private validateBugreportMode(I)V
     .registers 5
+    .param p1, "mode"  # I
 
     .line 115
     if-eqz p1, :cond_3d
@@ -554,9 +574,9 @@
 
     invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v1
 
-    invoke-direct {v0, p1}, Ljava/lang/IllegalArgumentException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v0, v1}, Ljava/lang/IllegalArgumentException;-><init>(Ljava/lang/String;)V
 
     throw v0
 
@@ -611,55 +631,71 @@
 .end method
 
 .method public setListener(Ljava/lang/String;Landroid/os/IDumpstateListener;Z)Landroid/os/IDumpstateToken;
-    .registers 4
+    .registers 6
+    .param p1, "name"  # Ljava/lang/String;
+    .param p2, "listener"  # Landroid/os/IDumpstateListener;
+    .param p3, "getSectionDetails"  # Z
 
     .line 69
-    new-instance p1, Ljava/lang/UnsupportedOperationException;
+    new-instance v0, Ljava/lang/UnsupportedOperationException;
 
-    const-string/jumbo p2, "setListener is not allowed on this service"
+    const-string/jumbo v1, "setListener is not allowed on this service"
 
-    invoke-direct {p1, p2}, Ljava/lang/UnsupportedOperationException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v0, v1}, Ljava/lang/UnsupportedOperationException;-><init>(Ljava/lang/String;)V
 
-    throw p1
+    throw v0
 .end method
 
 .method public startBugreport(ILjava/lang/String;Ljava/io/FileDescriptor;Ljava/io/FileDescriptor;ILandroid/os/IDumpstateListener;)V
-    .registers 16
+    .registers 22
+    .param p1, "callingUidUnused"  # I
+    .param p2, "callingPackage"  # Ljava/lang/String;
+    .param p3, "bugreportFd"  # Ljava/io/FileDescriptor;
+    .param p4, "screenshotFd"  # Ljava/io/FileDescriptor;
+    .param p5, "bugreportMode"  # I
+    .param p6, "listener"  # Landroid/os/IDumpstateListener;
 
     .line 77
-    iget-object p1, p0, Lcom/android/server/os/BugreportManagerServiceImpl;->mContext:Landroid/content/Context;
+    move-object v8, p0
 
-    const-string v0, "android.permission.DUMP"
+    move-object/from16 v9, p2
 
-    const-string/jumbo v1, "startBugreport"
+    iget-object v0, v8, Lcom/android/server/os/BugreportManagerServiceImpl;->mContext:Landroid/content/Context;
 
-    invoke-virtual {p1, v0, v1}, Landroid/content/Context;->enforceCallingOrSelfPermission(Ljava/lang/String;Ljava/lang/String;)V
+    const-string v1, "android.permission.DUMP"
+
+    const-string/jumbo v2, "startBugreport"
+
+    invoke-virtual {v0, v1, v2}, Landroid/content/Context;->enforceCallingOrSelfPermission(Ljava/lang/String;Ljava/lang/String;)V
 
     .line 78
-    invoke-static {p2}, Lcom/android/internal/util/Preconditions;->checkNotNull(Ljava/lang/Object;)Ljava/lang/Object;
+    invoke-static/range {p2 .. p2}, Lcom/android/internal/util/Preconditions;->checkNotNull(Ljava/lang/Object;)Ljava/lang/Object;
 
     .line 79
-    invoke-static {p3}, Lcom/android/internal/util/Preconditions;->checkNotNull(Ljava/lang/Object;)Ljava/lang/Object;
+    invoke-static/range {p3 .. p3}, Lcom/android/internal/util/Preconditions;->checkNotNull(Ljava/lang/Object;)Ljava/lang/Object;
 
     .line 80
-    invoke-static {p6}, Lcom/android/internal/util/Preconditions;->checkNotNull(Ljava/lang/Object;)Ljava/lang/Object;
+    invoke-static/range {p6 .. p6}, Lcom/android/internal/util/Preconditions;->checkNotNull(Ljava/lang/Object;)Ljava/lang/Object;
 
     .line 81
-    invoke-direct {p0, p5}, Lcom/android/server/os/BugreportManagerServiceImpl;->validateBugreportMode(I)V
+    move/from16 v10, p5
+
+    invoke-direct {p0, v10}, Lcom/android/server/os/BugreportManagerServiceImpl;->validateBugreportMode(I)V
 
     .line 82
     invoke-static {}, Landroid/os/Binder;->clearCallingIdentity()J
 
-    move-result-wide v0
+    move-result-wide v11
 
     .line 84
-    :try_start_1a
+    .local v11, "identity":J
+    :try_start_1f
     invoke-direct {p0}, Lcom/android/server/os/BugreportManagerServiceImpl;->ensureIsPrimaryUser()V
-    :try_end_1d
-    .catchall {:try_start_1a .. :try_end_1d} :catchall_5a
+    :try_end_22
+    .catchall {:try_start_1f .. :try_end_22} :catchall_65
 
     .line 86
-    invoke-static {v0, v1}, Landroid/os/Binder;->restoreCallingIdentity(J)V
+    invoke-static {v11, v12}, Landroid/os/Binder;->restoreCallingIdentity(J)V
 
     .line 87
     nop
@@ -667,86 +703,92 @@
     .line 89
     invoke-static {}, Landroid/os/Binder;->getCallingUid()I
 
-    move-result v3
+    move-result v13
 
     .line 90
-    iget-object p1, p0, Lcom/android/server/os/BugreportManagerServiceImpl;->mAppOps:Landroid/app/AppOpsManager;
+    .local v13, "callingUid":I
+    iget-object v0, v8, Lcom/android/server/os/BugreportManagerServiceImpl;->mAppOps:Landroid/app/AppOpsManager;
 
-    invoke-virtual {p1, v3, p2}, Landroid/app/AppOpsManager;->checkPackage(ILjava/lang/String;)V
+    invoke-virtual {v0, v13, v9}, Landroid/app/AppOpsManager;->checkPackage(ILjava/lang/String;)V
 
     .line 92
-    iget-object p1, p0, Lcom/android/server/os/BugreportManagerServiceImpl;->mBugreportWhitelistedPackages:Landroid/util/ArraySet;
+    iget-object v0, v8, Lcom/android/server/os/BugreportManagerServiceImpl;->mBugreportWhitelistedPackages:Landroid/util/ArraySet;
 
-    invoke-virtual {p1, p2}, Landroid/util/ArraySet;->contains(Ljava/lang/Object;)Z
+    invoke-virtual {v0, v9}, Landroid/util/ArraySet;->contains(Ljava/lang/Object;)Z
 
-    move-result p1
+    move-result v0
 
-    if-eqz p1, :cond_43
+    if-eqz v0, :cond_4e
 
     .line 96
-    iget-object p1, p0, Lcom/android/server/os/BugreportManagerServiceImpl;->mLock:Ljava/lang/Object;
+    iget-object v14, v8, Lcom/android/server/os/BugreportManagerServiceImpl;->mLock:Ljava/lang/Object;
 
-    monitor-enter p1
+    monitor-enter v14
 
     .line 97
-    move-object v2, p0
+    move-object v1, p0
 
-    move-object v4, p2
+    move v2, v13
 
-    move-object v5, p3
+    move-object/from16 v3, p2
 
-    move-object v6, p4
+    move-object/from16 v4, p3
 
-    move v7, p5
+    move-object/from16 v5, p4
 
-    move-object v8, p6
+    move/from16 v6, p5
 
-    :try_start_3b
-    invoke-direct/range {v2 .. v8}, Lcom/android/server/os/BugreportManagerServiceImpl;->startBugreportLocked(ILjava/lang/String;Ljava/io/FileDescriptor;Ljava/io/FileDescriptor;ILandroid/os/IDumpstateListener;)V
+    move-object/from16 v7, p6
+
+    :try_start_46
+    invoke-direct/range {v1 .. v7}, Lcom/android/server/os/BugreportManagerServiceImpl;->startBugreportLocked(ILjava/lang/String;Ljava/io/FileDescriptor;Ljava/io/FileDescriptor;ILandroid/os/IDumpstateListener;)V
 
     .line 99
-    monitor-exit p1
+    monitor-exit v14
 
     .line 100
     return-void
 
     .line 99
-    :catchall_40
-    move-exception p2
+    :catchall_4b
+    move-exception v0
 
-    monitor-exit p1
-    :try_end_42
-    .catchall {:try_start_3b .. :try_end_42} :catchall_40
+    monitor-exit v14
+    :try_end_4d
+    .catchall {:try_start_46 .. :try_end_4d} :catchall_4b
 
-    throw p2
+    throw v0
 
     .line 93
-    :cond_43
-    new-instance p1, Ljava/lang/SecurityException;
+    :cond_4e
+    new-instance v0, Ljava/lang/SecurityException;
 
-    new-instance p3, Ljava/lang/StringBuilder;
+    new-instance v1, Ljava/lang/StringBuilder;
 
-    invoke-direct {p3}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
 
-    invoke-virtual {p3, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v9}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string p2, " is not whitelisted to use Bugreport API"
+    const-string v2, " is not whitelisted to use Bugreport API"
 
-    invoke-virtual {p3, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p2
+    move-result-object v1
 
-    invoke-direct {p1, p2}, Ljava/lang/SecurityException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v0, v1}, Ljava/lang/SecurityException;-><init>(Ljava/lang/String;)V
 
-    throw p1
+    throw v0
 
     .line 86
-    :catchall_5a
-    move-exception p1
+    .end local v13  # "callingUid":I
+    :catchall_65
+    move-exception v0
 
-    invoke-static {v0, v1}, Landroid/os/Binder;->restoreCallingIdentity(J)V
+    move-object v1, v0
 
-    throw p1
+    invoke-static {v11, v12}, Landroid/os/Binder;->restoreCallingIdentity(J)V
+
+    throw v1
 .end method

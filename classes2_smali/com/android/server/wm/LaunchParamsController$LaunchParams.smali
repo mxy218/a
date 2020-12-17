@@ -42,7 +42,8 @@
 
 # virtual methods
 .method public equals(Ljava/lang/Object;)Z
-    .registers 6
+    .registers 7
+    .param p1, "o"  # Ljava/lang/Object;
 
     .line 223
     const/4 v0, 0x1
@@ -55,7 +56,7 @@
     :cond_4
     const/4 v1, 0x0
 
-    if-eqz p1, :cond_32
+    if-eqz p1, :cond_35
 
     invoke-virtual {p0}, Ljava/lang/Object;->getClass()Ljava/lang/Class;
 
@@ -67,59 +68,65 @@
 
     if-eq v2, v3, :cond_12
 
-    goto :goto_32
+    goto :goto_35
 
     .line 226
     :cond_12
-    check-cast p1, Lcom/android/server/wm/LaunchParamsController$LaunchParams;
+    move-object v2, p1
+
+    check-cast v2, Lcom/android/server/wm/LaunchParamsController$LaunchParams;
 
     .line 228
-    iget v2, p0, Lcom/android/server/wm/LaunchParamsController$LaunchParams;->mPreferredDisplayId:I
+    .local v2, "that":Lcom/android/server/wm/LaunchParamsController$LaunchParams;
+    iget v3, p0, Lcom/android/server/wm/LaunchParamsController$LaunchParams;->mPreferredDisplayId:I
 
-    iget v3, p1, Lcom/android/server/wm/LaunchParamsController$LaunchParams;->mPreferredDisplayId:I
+    iget v4, v2, Lcom/android/server/wm/LaunchParamsController$LaunchParams;->mPreferredDisplayId:I
 
-    if-eq v2, v3, :cond_1b
+    if-eq v3, v4, :cond_1c
 
     return v1
 
     .line 229
-    :cond_1b
-    iget v2, p0, Lcom/android/server/wm/LaunchParamsController$LaunchParams;->mWindowingMode:I
+    :cond_1c
+    iget v3, p0, Lcom/android/server/wm/LaunchParamsController$LaunchParams;->mWindowingMode:I
 
-    iget v3, p1, Lcom/android/server/wm/LaunchParamsController$LaunchParams;->mWindowingMode:I
+    iget v4, v2, Lcom/android/server/wm/LaunchParamsController$LaunchParams;->mWindowingMode:I
 
-    if-eq v2, v3, :cond_22
+    if-eq v3, v4, :cond_23
 
     return v1
 
     .line 230
-    :cond_22
-    iget-object v2, p0, Lcom/android/server/wm/LaunchParamsController$LaunchParams;->mBounds:Landroid/graphics/Rect;
+    :cond_23
+    iget-object v3, p0, Lcom/android/server/wm/LaunchParamsController$LaunchParams;->mBounds:Landroid/graphics/Rect;
 
-    iget-object p1, p1, Lcom/android/server/wm/LaunchParamsController$LaunchParams;->mBounds:Landroid/graphics/Rect;
+    if-eqz v3, :cond_2e
 
-    if-eqz v2, :cond_2d
+    iget-object v0, v2, Lcom/android/server/wm/LaunchParamsController$LaunchParams;->mBounds:Landroid/graphics/Rect;
 
-    invoke-virtual {v2, p1}, Landroid/graphics/Rect;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v3, v0}, Landroid/graphics/Rect;->equals(Ljava/lang/Object;)Z
 
     move-result v0
 
-    goto :goto_31
+    goto :goto_34
 
-    :cond_2d
-    if-nez p1, :cond_30
+    :cond_2e
+    iget-object v3, v2, Lcom/android/server/wm/LaunchParamsController$LaunchParams;->mBounds:Landroid/graphics/Rect;
 
-    goto :goto_31
+    if-nez v3, :cond_33
 
-    :cond_30
+    goto :goto_34
+
+    :cond_33
     move v0, v1
 
-    :goto_31
+    :goto_34
     return v0
 
     .line 224
-    :cond_32
-    :goto_32
+    .end local v2  # "that":Lcom/android/server/wm/LaunchParamsController$LaunchParams;
+    :cond_35
+    :goto_35
     return v1
 .end method
 
@@ -164,7 +171,7 @@
 .end method
 
 .method public hashCode()I
-    .registers 3
+    .registers 4
 
     .line 235
     iget-object v0, p0, Lcom/android/server/wm/LaunchParamsController$LaunchParams;->mBounds:Landroid/graphics/Rect;
@@ -181,21 +188,26 @@
     const/4 v0, 0x0
 
     .line 236
+    .local v0, "result":I
     :goto_a
-    mul-int/lit8 v0, v0, 0x1f
+    mul-int/lit8 v1, v0, 0x1f
 
-    iget v1, p0, Lcom/android/server/wm/LaunchParamsController$LaunchParams;->mPreferredDisplayId:I
+    iget v2, p0, Lcom/android/server/wm/LaunchParamsController$LaunchParams;->mPreferredDisplayId:I
 
-    add-int/2addr v0, v1
+    add-int/2addr v1, v2
 
     .line 237
-    mul-int/lit8 v0, v0, 0x1f
+    .end local v0  # "result":I
+    .local v1, "result":I
+    mul-int/lit8 v0, v1, 0x1f
 
-    iget v1, p0, Lcom/android/server/wm/LaunchParamsController$LaunchParams;->mWindowingMode:I
+    iget v2, p0, Lcom/android/server/wm/LaunchParamsController$LaunchParams;->mWindowingMode:I
 
-    add-int/2addr v0, v1
+    add-int/2addr v0, v2
 
     .line 238
+    .end local v1  # "result":I
+    .restart local v0  # "result":I
     return v0
 .end method
 
@@ -256,6 +268,7 @@
 
 .method set(Lcom/android/server/wm/LaunchParamsController$LaunchParams;)V
     .registers 4
+    .param p1, "params"  # Lcom/android/server/wm/LaunchParamsController$LaunchParams;
 
     .line 202
     iget-object v0, p0, Lcom/android/server/wm/LaunchParamsController$LaunchParams;->mBounds:Landroid/graphics/Rect;
@@ -270,9 +283,9 @@
     iput v0, p0, Lcom/android/server/wm/LaunchParamsController$LaunchParams;->mPreferredDisplayId:I
 
     .line 204
-    iget p1, p1, Lcom/android/server/wm/LaunchParamsController$LaunchParams;->mWindowingMode:I
+    iget v0, p1, Lcom/android/server/wm/LaunchParamsController$LaunchParams;->mWindowingMode:I
 
-    iput p1, p0, Lcom/android/server/wm/LaunchParamsController$LaunchParams;->mWindowingMode:I
+    iput v0, p0, Lcom/android/server/wm/LaunchParamsController$LaunchParams;->mWindowingMode:I
 
     .line 205
     return-void

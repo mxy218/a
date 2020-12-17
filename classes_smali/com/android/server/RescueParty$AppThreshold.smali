@@ -23,6 +23,7 @@
 # direct methods
 .method public constructor <init>(I)V
     .registers 5
+    .param p1, "uid"  # I
 
     .line 364
     const/4 v0, 0x5
@@ -57,6 +58,7 @@
 
 .method public setCount(I)V
     .registers 2
+    .param p1, "count"  # I
 
     .line 368
     iput p1, p0, Lcom/android/server/RescueParty$AppThreshold;->count:I
@@ -66,6 +68,7 @@
 
 .method public setStart(J)V
     .registers 3
+    .param p1, "start"  # J
 
     .line 370
     iput-wide p1, p0, Lcom/android/server/RescueParty$AppThreshold;->start:J

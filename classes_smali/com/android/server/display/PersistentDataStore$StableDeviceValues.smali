@@ -24,7 +24,7 @@
 .method private constructor <init>()V
     .registers 1
 
-    .line 518
+    .line 533
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
     return-void
@@ -32,28 +32,30 @@
 
 .method synthetic constructor <init>(Lcom/android/server/display/PersistentDataStore$1;)V
     .registers 2
+    .param p1, "x0"  # Lcom/android/server/display/PersistentDataStore$1;
 
-    .line 518
+    .line 533
     invoke-direct {p0}, Lcom/android/server/display/PersistentDataStore$StableDeviceValues;-><init>()V
 
     return-void
 .end method
 
 .method static synthetic access$100(Lcom/android/server/display/PersistentDataStore$StableDeviceValues;)Landroid/graphics/Point;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/display/PersistentDataStore$StableDeviceValues;
 
-    .line 518
+    .line 533
     invoke-direct {p0}, Lcom/android/server/display/PersistentDataStore$StableDeviceValues;->getDisplaySize()Landroid/graphics/Point;
 
-    move-result-object p0
+    move-result-object v0
 
-    return-object p0
+    return-object v0
 .end method
 
 .method private getDisplaySize()Landroid/graphics/Point;
     .registers 4
 
-    .line 523
+    .line 538
     new-instance v0, Landroid/graphics/Point;
 
     iget v1, p0, Lcom/android/server/display/PersistentDataStore$StableDeviceValues;->mWidth:I
@@ -66,7 +68,8 @@
 .end method
 
 .method private static loadIntValue(Lorg/xmlpull/v1/XmlPullParser;)I
-    .registers 1
+    .registers 3
+    .param p0, "parser"  # Lorg/xmlpull/v1/XmlPullParser;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Ljava/io/IOException;,
@@ -74,37 +77,42 @@
         }
     .end annotation
 
-    .line 552
+    .line 567
     :try_start_0
     invoke-interface {p0}, Lorg/xmlpull/v1/XmlPullParser;->nextText()Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v0
 
-    .line 553
-    invoke-static {p0}, Ljava/lang/Integer;->parseInt(Ljava/lang/String;)I
+    .line 568
+    .local v0, "value":Ljava/lang/String;
+    invoke-static {v0}, Ljava/lang/Integer;->parseInt(Ljava/lang/String;)I
 
-    move-result p0
+    move-result v1
     :try_end_8
     .catch Ljava/lang/NumberFormatException; {:try_start_0 .. :try_end_8} :catch_9
 
-    return p0
+    return v1
 
-    .line 554
+    .line 569
+    .end local v0  # "value":Ljava/lang/String;
     :catch_9
-    move-exception p0
+    move-exception v0
 
-    .line 555
-    const/4 p0, 0x0
+    .line 570
+    .local v0, "nfe":Ljava/lang/NumberFormatException;
+    const/4 v1, 0x0
 
-    return p0
+    return v1
 .end method
 
 
 # virtual methods
 .method public dump(Ljava/io/PrintWriter;Ljava/lang/String;)V
     .registers 5
+    .param p1, "pw"  # Ljava/io/PrintWriter;
+    .param p2, "prefix"  # Ljava/lang/String;
 
-    .line 571
+    .line 586
     new-instance v0, Ljava/lang/StringBuilder;
 
     invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
@@ -125,33 +133,34 @@
 
     invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
-    .line 572
+    .line 587
     new-instance v0, Ljava/lang/StringBuilder;
 
     invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
 
     invoke-virtual {v0, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string p2, "StableDisplayHeight="
+    const-string v1, "StableDisplayHeight="
 
-    invoke-virtual {v0, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    iget p2, p0, Lcom/android/server/display/PersistentDataStore$StableDeviceValues;->mHeight:I
+    iget v1, p0, Lcom/android/server/display/PersistentDataStore$StableDeviceValues;->mHeight:I
 
-    invoke-virtual {v0, p2}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
     invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p2
+    move-result-object v0
 
-    invoke-virtual {p1, p2}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
-    .line 573
+    .line 588
     return-void
 .end method
 
 .method public loadFromXml(Lorg/xmlpull/v1/XmlPullParser;)V
     .registers 8
+    .param p1, "parser"  # Lorg/xmlpull/v1/XmlPullParser;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Ljava/io/IOException;,
@@ -159,12 +168,13 @@
         }
     .end annotation
 
-    .line 536
+    .line 551
     invoke-interface {p1}, Lorg/xmlpull/v1/XmlPullParser;->getDepth()I
 
     move-result v0
 
-    .line 537
+    .line 552
+    .local v0, "outerDepth":I
     :goto_4
     invoke-static {p1, v0}, Lcom/android/internal/util/XmlUtils;->nextElementWithin(Lorg/xmlpull/v1/XmlPullParser;I)Z
 
@@ -172,7 +182,7 @@
 
     if-eqz v1, :cond_48
 
-    .line 538
+    .line 553
     invoke-interface {p1}, Lorg/xmlpull/v1/XmlPullParser;->getName()Ljava/lang/String;
 
     move-result-object v1
@@ -227,7 +237,7 @@
 
     goto :goto_47
 
-    .line 543
+    .line 558
     :cond_39
     invoke-static {p1}, Lcom/android/server/display/PersistentDataStore$StableDeviceValues;->loadIntValue(Lorg/xmlpull/v1/XmlPullParser;)I
 
@@ -237,7 +247,7 @@
 
     goto :goto_47
 
-    .line 540
+    .line 555
     :cond_40
     invoke-static {p1}, Lcom/android/server/display/PersistentDataStore$StableDeviceValues;->loadIntValue(Lorg/xmlpull/v1/XmlPullParser;)I
 
@@ -245,27 +255,28 @@
 
     iput v1, p0, Lcom/android/server/display/PersistentDataStore$StableDeviceValues;->mWidth:I
 
-    .line 541
+    .line 556
     nop
 
-    .line 544
+    .line 559
     :goto_47
     goto :goto_4
 
-    .line 547
+    .line 562
     :cond_48
     return-void
 .end method
 
 .method public saveToXml(Lorg/xmlpull/v1/XmlSerializer;)V
     .registers 5
+    .param p1, "serializer"  # Lorg/xmlpull/v1/XmlSerializer;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Ljava/io/IOException;
         }
     .end annotation
 
-    .line 560
+    .line 575
     iget v0, p0, Lcom/android/server/display/PersistentDataStore$StableDeviceValues;->mWidth:I
 
     if-lez v0, :cond_2d
@@ -274,14 +285,14 @@
 
     if-lez v0, :cond_2d
 
-    .line 561
+    .line 576
     const-string/jumbo v0, "stable-display-width"
 
     const/4 v1, 0x0
 
     invoke-interface {p1, v1, v0}, Lorg/xmlpull/v1/XmlSerializer;->startTag(Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
 
-    .line 562
+    .line 577
     iget v2, p0, Lcom/android/server/display/PersistentDataStore$StableDeviceValues;->mWidth:I
 
     invoke-static {v2}, Ljava/lang/Integer;->toString(I)Ljava/lang/String;
@@ -290,15 +301,15 @@
 
     invoke-interface {p1, v2}, Lorg/xmlpull/v1/XmlSerializer;->text(Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
 
-    .line 563
+    .line 578
     invoke-interface {p1, v1, v0}, Lorg/xmlpull/v1/XmlSerializer;->endTag(Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
 
-    .line 564
+    .line 579
     const-string/jumbo v0, "stable-display-height"
 
     invoke-interface {p1, v1, v0}, Lorg/xmlpull/v1/XmlSerializer;->startTag(Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
 
-    .line 565
+    .line 580
     iget v2, p0, Lcom/android/server/display/PersistentDataStore$StableDeviceValues;->mHeight:I
 
     invoke-static {v2}, Ljava/lang/Integer;->toString(I)Ljava/lang/String;
@@ -307,18 +318,19 @@
 
     invoke-interface {p1, v2}, Lorg/xmlpull/v1/XmlSerializer;->text(Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
 
-    .line 566
+    .line 581
     invoke-interface {p1, v1, v0}, Lorg/xmlpull/v1/XmlSerializer;->endTag(Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
 
-    .line 568
+    .line 583
     :cond_2d
     return-void
 .end method
 
 .method public setDisplaySize(Landroid/graphics/Point;)Z
     .registers 4
+    .param p1, "r"  # Landroid/graphics/Point;
 
-    .line 527
+    .line 542
     iget v0, p0, Lcom/android/server/display/PersistentDataStore$StableDeviceValues;->mWidth:I
 
     iget v1, p1, Landroid/graphics/Point;->x:I
@@ -333,26 +345,26 @@
 
     goto :goto_f
 
-    .line 532
+    .line 547
     :cond_d
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    return p1
+    return v0
 
-    .line 528
+    .line 543
     :cond_f
     :goto_f
     iget v0, p1, Landroid/graphics/Point;->x:I
 
     iput v0, p0, Lcom/android/server/display/PersistentDataStore$StableDeviceValues;->mWidth:I
 
-    .line 529
-    iget p1, p1, Landroid/graphics/Point;->y:I
+    .line 544
+    iget v0, p1, Landroid/graphics/Point;->y:I
 
-    iput p1, p0, Lcom/android/server/display/PersistentDataStore$StableDeviceValues;->mHeight:I
+    iput v0, p0, Lcom/android/server/display/PersistentDataStore$StableDeviceValues;->mHeight:I
 
-    .line 530
-    const/4 p1, 0x1
+    .line 545
+    const/4 v0, 0x1
 
-    return p1
+    return v0
 .end method

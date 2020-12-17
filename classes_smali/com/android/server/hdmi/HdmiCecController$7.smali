@@ -28,6 +28,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/hdmi/HdmiCecController;Lcom/android/server/hdmi/HdmiCecMessage;Lcom/android/server/hdmi/HdmiControlService$SendMessageCallback;)V
     .registers 4
+    .param p1, "this$0"  # Lcom/android/server/hdmi/HdmiCecController;
 
     .line 620
     iput-object p1, p0, Lcom/android/server/hdmi/HdmiCecController$7;->this$0:Lcom/android/server/hdmi/HdmiCecController;
@@ -65,9 +66,9 @@
 
     const/4 v1, 0x0
 
-    new-array v2, v1, [Ljava/lang/Object;
+    new-array v1, v1, [Ljava/lang/Object;
 
-    invoke-static {v0, v2}, Lcom/android/server/hdmi/HdmiLogger;->debug(Ljava/lang/String;[Ljava/lang/Object;)V
+    invoke-static {v0, v1}, Lcom/android/server/hdmi/HdmiLogger;->debug(Ljava/lang/String;[Ljava/lang/Object;)V
 
     .line 624
     iget-object v0, p0, Lcom/android/server/hdmi/HdmiCecController$7;->val$cecMessage:Lcom/android/server/hdmi/HdmiCecMessage;
@@ -76,126 +77,140 @@
 
     move-result v0
 
-    iget-object v2, p0, Lcom/android/server/hdmi/HdmiCecController$7;->val$cecMessage:Lcom/android/server/hdmi/HdmiCecMessage;
+    iget-object v1, p0, Lcom/android/server/hdmi/HdmiCecController$7;->val$cecMessage:Lcom/android/server/hdmi/HdmiCecMessage;
 
-    invoke-virtual {v2}, Lcom/android/server/hdmi/HdmiCecMessage;->getParams()[B
+    invoke-virtual {v1}, Lcom/android/server/hdmi/HdmiCecMessage;->getParams()[B
 
-    move-result-object v2
+    move-result-object v1
 
-    invoke-static {v0, v2}, Lcom/android/server/hdmi/HdmiCecController;->access$600(I[B)[B
+    invoke-static {v0, v1}, Lcom/android/server/hdmi/HdmiCecController;->access$600(I[B)[B
 
     move-result-object v0
 
     .line 625
-    nop
+    .local v0, "body":[B
+    const/4 v1, 0x0
 
     .line 626
-    nop
+    .local v1, "i":I
+    const/4 v2, 0x0
+
+    move v8, v1
+
+    move v1, v2
 
     .line 628
-    :goto_2b
+    .local v1, "errorCode":I
+    .local v8, "i":I
+    :goto_2d
     iget-object v2, p0, Lcom/android/server/hdmi/HdmiCecController$7;->this$0:Lcom/android/server/hdmi/HdmiCecController;
 
     invoke-static {v2}, Lcom/android/server/hdmi/HdmiCecController;->access$800(Lcom/android/server/hdmi/HdmiCecController;)Lcom/android/server/hdmi/HdmiCecController$NativeWrapper;
 
-    move-result-object v3
+    move-result-object v2
 
-    iget-object v2, p0, Lcom/android/server/hdmi/HdmiCecController$7;->this$0:Lcom/android/server/hdmi/HdmiCecController;
+    iget-object v3, p0, Lcom/android/server/hdmi/HdmiCecController$7;->this$0:Lcom/android/server/hdmi/HdmiCecController;
 
-    invoke-static {v2}, Lcom/android/server/hdmi/HdmiCecController;->access$700(Lcom/android/server/hdmi/HdmiCecController;)J
+    invoke-static {v3}, Lcom/android/server/hdmi/HdmiCecController;->access$700(Lcom/android/server/hdmi/HdmiCecController;)J
 
-    move-result-wide v4
+    move-result-wide v3
 
-    iget-object v2, p0, Lcom/android/server/hdmi/HdmiCecController$7;->val$cecMessage:Lcom/android/server/hdmi/HdmiCecMessage;
+    iget-object v5, p0, Lcom/android/server/hdmi/HdmiCecController$7;->val$cecMessage:Lcom/android/server/hdmi/HdmiCecMessage;
 
     .line 629
-    invoke-virtual {v2}, Lcom/android/server/hdmi/HdmiCecMessage;->getSource()I
+    invoke-virtual {v5}, Lcom/android/server/hdmi/HdmiCecMessage;->getSource()I
+
+    move-result v5
+
+    iget-object v6, p0, Lcom/android/server/hdmi/HdmiCecController$7;->val$cecMessage:Lcom/android/server/hdmi/HdmiCecMessage;
+
+    invoke-virtual {v6}, Lcom/android/server/hdmi/HdmiCecMessage;->getDestination()I
 
     move-result v6
 
-    iget-object v2, p0, Lcom/android/server/hdmi/HdmiCecController$7;->val$cecMessage:Lcom/android/server/hdmi/HdmiCecMessage;
-
-    invoke-virtual {v2}, Lcom/android/server/hdmi/HdmiCecMessage;->getDestination()I
-
-    move-result v7
-
     .line 628
-    move-object v8, v0
+    move-object v7, v0
 
-    invoke-interface/range {v3 .. v8}, Lcom/android/server/hdmi/HdmiCecController$NativeWrapper;->nativeSendCecCommand(JII[B)I
+    invoke-interface/range {v2 .. v7}, Lcom/android/server/hdmi/HdmiCecController$NativeWrapper;->nativeSendCecCommand(JII[B)I
 
-    move-result v2
+    move-result v1
 
     .line 630
-    if-nez v2, :cond_4b
+    if-nez v1, :cond_4e
 
     .line 631
-    goto :goto_50
+    move v2, v8
+
+    goto :goto_53
 
     .line 633
-    :cond_4b
-    add-int/lit8 v3, v1, 0x1
+    :cond_4e
+    add-int/lit8 v2, v8, 0x1
 
-    const/4 v4, 0x1
+    .end local v8  # "i":I
+    .local v2, "i":I
+    const/4 v3, 0x1
 
-    if-lt v1, v4, :cond_82
+    if-lt v8, v3, :cond_85
 
     .line 635
-    :goto_50
-    nop
+    :goto_53
+    move v3, v1
 
     .line 636
-    if-eqz v2, :cond_73
+    .local v3, "finalError":I
+    if-eqz v3, :cond_76
 
     .line 637
-    new-instance v0, Ljava/lang/StringBuilder;
+    new-instance v4, Ljava/lang/StringBuilder;
 
-    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v4}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v1, "Failed to send "
+    const-string v5, "Failed to send "
 
-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    iget-object v1, p0, Lcom/android/server/hdmi/HdmiCecController$7;->val$cecMessage:Lcom/android/server/hdmi/HdmiCecMessage;
+    iget-object v5, p0, Lcom/android/server/hdmi/HdmiCecController$7;->val$cecMessage:Lcom/android/server/hdmi/HdmiCecMessage;
 
-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
-    const-string v1, " with errorCode="
+    const-string v5, " with errorCode="
 
-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0, v2}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v4, v3}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v4}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v4
 
-    const-string v1, "HdmiCecController"
+    const-string v5, "HdmiCecController"
 
-    invoke-static {v1, v0}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v5, v4}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 639
-    :cond_73
-    iget-object v0, p0, Lcom/android/server/hdmi/HdmiCecController$7;->val$callback:Lcom/android/server/hdmi/HdmiControlService$SendMessageCallback;
+    :cond_76
+    iget-object v4, p0, Lcom/android/server/hdmi/HdmiCecController$7;->val$callback:Lcom/android/server/hdmi/HdmiControlService$SendMessageCallback;
 
-    if-eqz v0, :cond_81
+    if-eqz v4, :cond_84
 
     .line 640
-    iget-object v0, p0, Lcom/android/server/hdmi/HdmiCecController$7;->this$0:Lcom/android/server/hdmi/HdmiCecController;
+    iget-object v4, p0, Lcom/android/server/hdmi/HdmiCecController$7;->this$0:Lcom/android/server/hdmi/HdmiCecController;
 
-    new-instance v1, Lcom/android/server/hdmi/HdmiCecController$7$1;
+    new-instance v5, Lcom/android/server/hdmi/HdmiCecController$7$1;
 
-    invoke-direct {v1, p0, v2}, Lcom/android/server/hdmi/HdmiCecController$7$1;-><init>(Lcom/android/server/hdmi/HdmiCecController$7;I)V
+    invoke-direct {v5, p0, v3}, Lcom/android/server/hdmi/HdmiCecController$7$1;-><init>(Lcom/android/server/hdmi/HdmiCecController$7;I)V
 
-    invoke-static {v0, v1}, Lcom/android/server/hdmi/HdmiCecController;->access$500(Lcom/android/server/hdmi/HdmiCecController;Ljava/lang/Runnable;)V
+    invoke-static {v4, v5}, Lcom/android/server/hdmi/HdmiCecController;->access$500(Lcom/android/server/hdmi/HdmiCecController;Ljava/lang/Runnable;)V
 
     .line 647
-    :cond_81
+    :cond_84
     return-void
 
     .line 633
-    :cond_82
-    move v1, v3
+    .end local v3  # "finalError":I
+    :cond_85
+    move v8, v2
 
-    goto :goto_2b
+    goto :goto_2d
 .end method

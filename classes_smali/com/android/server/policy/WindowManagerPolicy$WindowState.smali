@@ -21,7 +21,7 @@
 .method public canAddInternalSystemWindow()Z
     .registers 2
 
-    .line 461
+    .line 472
     const/4 v0, 0x0
 
     return v0
@@ -42,7 +42,7 @@
 .method public getActivityType()I
     .registers 2
 
-    .line 439
+    .line 450
     const/4 v0, 0x0
 
     return v0
@@ -152,19 +152,20 @@
 .method public isLetterboxedForDisplayCutoutLw()Z
     .registers 2
 
-    .line 420
+    .line 431
     const/4 v0, 0x0
 
     return v0
 .end method
 
 .method public isLetterboxedOverlappingWith(Landroid/graphics/Rect;)Z
-    .registers 2
+    .registers 3
+    .param p1, "rect"  # Landroid/graphics/Rect;
 
-    .line 428
-    const/4 p1, 0x0
+    .line 439
+    const/4 v0, 0x0
 
-    return p1
+    return v0
 .end method
 
 .method public abstract isVisibleLw()Z

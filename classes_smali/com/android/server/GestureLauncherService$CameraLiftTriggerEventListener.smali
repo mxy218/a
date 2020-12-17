@@ -22,7 +22,7 @@
 .method private constructor <init>(Lcom/android/server/GestureLauncherService;)V
     .registers 2
 
-    .line 534
+    .line 619
     iput-object p1, p0, Lcom/android/server/GestureLauncherService$CameraLiftTriggerEventListener;->this$0:Lcom/android/server/GestureLauncherService;
 
     invoke-direct {p0}, Landroid/hardware/TriggerEventListener;-><init>()V
@@ -32,8 +32,10 @@
 
 .method synthetic constructor <init>(Lcom/android/server/GestureLauncherService;Lcom/android/server/GestureLauncherService$1;)V
     .registers 3
+    .param p1, "x0"  # Lcom/android/server/GestureLauncherService;
+    .param p2, "x1"  # Lcom/android/server/GestureLauncherService$1;
 
-    .line 534
+    .line 619
     invoke-direct {p0, p1}, Lcom/android/server/GestureLauncherService$CameraLiftTriggerEventListener;-><init>(Lcom/android/server/GestureLauncherService;)V
 
     return-void
@@ -42,135 +44,146 @@
 
 # virtual methods
 .method public onTrigger(Landroid/hardware/TriggerEvent;)V
-    .registers 5
+    .registers 9
+    .param p1, "event"  # Landroid/hardware/TriggerEvent;
 
-    .line 539
+    .line 624
     iget-object v0, p0, Lcom/android/server/GestureLauncherService$CameraLiftTriggerEventListener;->this$0:Lcom/android/server/GestureLauncherService;
 
-    invoke-static {v0}, Lcom/android/server/GestureLauncherService;->access$1500(Lcom/android/server/GestureLauncherService;)Z
+    invoke-static {v0}, Lcom/android/server/GestureLauncherService;->access$1600(Lcom/android/server/GestureLauncherService;)Z
 
     move-result v0
 
     if-nez v0, :cond_9
 
-    .line 542
+    .line 627
     return-void
 
-    .line 544
+    .line 629
     :cond_9
-    iget-object p1, p1, Landroid/hardware/TriggerEvent;->sensor:Landroid/hardware/Sensor;
+    iget-object v0, p1, Landroid/hardware/TriggerEvent;->sensor:Landroid/hardware/Sensor;
 
-    iget-object v0, p0, Lcom/android/server/GestureLauncherService$CameraLiftTriggerEventListener;->this$0:Lcom/android/server/GestureLauncherService;
-
-    invoke-static {v0}, Lcom/android/server/GestureLauncherService;->access$1600(Lcom/android/server/GestureLauncherService;)Landroid/hardware/Sensor;
-
-    move-result-object v0
-
-    if-ne p1, v0, :cond_6c
-
-    .line 545
-    iget-object p1, p0, Lcom/android/server/GestureLauncherService$CameraLiftTriggerEventListener;->this$0:Lcom/android/server/GestureLauncherService;
-
-    invoke-static {p1}, Lcom/android/server/GestureLauncherService;->access$400(Lcom/android/server/GestureLauncherService;)Landroid/content/Context;
-
-    move-result-object p1
-
-    invoke-virtual {p1}, Landroid/content/Context;->getResources()Landroid/content/res/Resources;
-
-    .line 546
-    iget-object p1, p0, Lcom/android/server/GestureLauncherService$CameraLiftTriggerEventListener;->this$0:Lcom/android/server/GestureLauncherService;
-
-    invoke-static {p1}, Lcom/android/server/GestureLauncherService;->access$400(Lcom/android/server/GestureLauncherService;)Landroid/content/Context;
-
-    move-result-object p1
-
-    const-string/jumbo v0, "sensor"
-
-    invoke-virtual {p1, v0}, Landroid/content/Context;->getSystemService(Ljava/lang/String;)Ljava/lang/Object;
-
-    move-result-object p1
-
-    check-cast p1, Landroid/hardware/SensorManager;
-
-    .line 548
-    iget-object v0, p0, Lcom/android/server/GestureLauncherService$CameraLiftTriggerEventListener;->this$0:Lcom/android/server/GestureLauncherService;
-
-    .line 549
-    invoke-static {v0}, Lcom/android/server/GestureLauncherService;->access$1700(Lcom/android/server/GestureLauncherService;)Lcom/android/server/wm/WindowManagerInternal;
-
-    move-result-object v0
-
-    invoke-virtual {v0}, Lcom/android/server/wm/WindowManagerInternal;->isKeyguardShowingAndNotOccluded()Z
-
-    move-result v0
-
-    .line 550
     iget-object v1, p0, Lcom/android/server/GestureLauncherService$CameraLiftTriggerEventListener;->this$0:Lcom/android/server/GestureLauncherService;
 
-    invoke-static {v1}, Lcom/android/server/GestureLauncherService;->access$1800(Lcom/android/server/GestureLauncherService;)Landroid/os/PowerManager;
+    invoke-static {v1}, Lcom/android/server/GestureLauncherService;->access$1700(Lcom/android/server/GestureLauncherService;)Landroid/hardware/Sensor;
 
     move-result-object v1
 
-    invoke-virtual {v1}, Landroid/os/PowerManager;->isInteractive()Z
+    if-ne v0, v1, :cond_6d
 
-    move-result v1
-
-    .line 557
-    if-nez v0, :cond_43
-
-    if-nez v1, :cond_58
-
-    .line 558
-    :cond_43
+    .line 630
     iget-object v0, p0, Lcom/android/server/GestureLauncherService$CameraLiftTriggerEventListener;->this$0:Lcom/android/server/GestureLauncherService;
 
-    const/4 v1, 0x1
-
-    const/4 v2, 0x2
-
-    invoke-virtual {v0, v1, v2}, Lcom/android/server/GestureLauncherService;->handleCameraGesture(ZI)Z
-
-    move-result v0
-
-    if-eqz v0, :cond_58
-
-    .line 560
-    iget-object v0, p0, Lcom/android/server/GestureLauncherService$CameraLiftTriggerEventListener;->this$0:Lcom/android/server/GestureLauncherService;
-
-    invoke-static {v0}, Lcom/android/server/GestureLauncherService;->access$400(Lcom/android/server/GestureLauncherService;)Landroid/content/Context;
+    invoke-static {v0}, Lcom/android/server/GestureLauncherService;->access$500(Lcom/android/server/GestureLauncherService;)Landroid/content/Context;
 
     move-result-object v0
 
-    const/16 v1, 0x3dd
+    invoke-virtual {v0}, Landroid/content/Context;->getResources()Landroid/content/res/Resources;
 
-    invoke-static {v0, v1}, Lcom/android/internal/logging/MetricsLogger;->action(Landroid/content/Context;I)V
+    move-result-object v0
 
-    .line 566
-    :cond_58
-    iget-object v0, p0, Lcom/android/server/GestureLauncherService$CameraLiftTriggerEventListener;->this$0:Lcom/android/server/GestureLauncherService;
+    .line 631
+    .local v0, "resources":Landroid/content/res/Resources;
+    iget-object v1, p0, Lcom/android/server/GestureLauncherService$CameraLiftTriggerEventListener;->this$0:Lcom/android/server/GestureLauncherService;
 
-    .line 567
-    invoke-static {v0}, Lcom/android/server/GestureLauncherService;->access$1900(Lcom/android/server/GestureLauncherService;)Lcom/android/server/GestureLauncherService$CameraLiftTriggerEventListener;
+    invoke-static {v1}, Lcom/android/server/GestureLauncherService;->access$500(Lcom/android/server/GestureLauncherService;)Landroid/content/Context;
 
     move-result-object v1
 
+    const-string/jumbo v2, "sensor"
+
+    invoke-virtual {v1, v2}, Landroid/content/Context;->getSystemService(Ljava/lang/String;)Ljava/lang/Object;
+
+    move-result-object v1
+
+    check-cast v1, Landroid/hardware/SensorManager;
+
+    .line 633
+    .local v1, "sensorManager":Landroid/hardware/SensorManager;
     iget-object v2, p0, Lcom/android/server/GestureLauncherService$CameraLiftTriggerEventListener;->this$0:Lcom/android/server/GestureLauncherService;
 
-    invoke-static {v2}, Lcom/android/server/GestureLauncherService;->access$1600(Lcom/android/server/GestureLauncherService;)Landroid/hardware/Sensor;
+    .line 634
+    invoke-static {v2}, Lcom/android/server/GestureLauncherService;->access$1800(Lcom/android/server/GestureLauncherService;)Lcom/android/server/wm/WindowManagerInternal;
 
     move-result-object v2
 
-    .line 566
-    invoke-virtual {p1, v1, v2}, Landroid/hardware/SensorManager;->requestTriggerSensor(Landroid/hardware/TriggerEventListener;Landroid/hardware/Sensor;)Z
+    invoke-virtual {v2}, Lcom/android/server/wm/WindowManagerInternal;->isKeyguardShowingAndNotOccluded()Z
 
-    move-result p1
+    move-result v2
 
-    invoke-static {v0, p1}, Lcom/android/server/GestureLauncherService;->access$1502(Lcom/android/server/GestureLauncherService;Z)Z
+    .line 635
+    .local v2, "keyguardShowingAndNotOccluded":Z
+    iget-object v3, p0, Lcom/android/server/GestureLauncherService$CameraLiftTriggerEventListener;->this$0:Lcom/android/server/GestureLauncherService;
 
-    .line 571
+    invoke-static {v3}, Lcom/android/server/GestureLauncherService;->access$1900(Lcom/android/server/GestureLauncherService;)Landroid/os/PowerManager;
+
+    move-result-object v3
+
+    invoke-virtual {v3}, Landroid/os/PowerManager;->isInteractive()Z
+
+    move-result v3
+
+    .line 642
+    .local v3, "interactive":Z
+    if-nez v2, :cond_44
+
+    if-nez v3, :cond_59
+
+    .line 643
+    :cond_44
+    iget-object v4, p0, Lcom/android/server/GestureLauncherService$CameraLiftTriggerEventListener;->this$0:Lcom/android/server/GestureLauncherService;
+
+    const/4 v5, 0x1
+
+    const/4 v6, 0x2
+
+    invoke-virtual {v4, v5, v6}, Lcom/android/server/GestureLauncherService;->handleCameraGesture(ZI)Z
+
+    move-result v4
+
+    if-eqz v4, :cond_59
+
+    .line 645
+    iget-object v4, p0, Lcom/android/server/GestureLauncherService$CameraLiftTriggerEventListener;->this$0:Lcom/android/server/GestureLauncherService;
+
+    invoke-static {v4}, Lcom/android/server/GestureLauncherService;->access$500(Lcom/android/server/GestureLauncherService;)Landroid/content/Context;
+
+    move-result-object v4
+
+    const/16 v5, 0x3dd
+
+    invoke-static {v4, v5}, Lcom/android/internal/logging/MetricsLogger;->action(Landroid/content/Context;I)V
+
+    .line 651
+    :cond_59
+    iget-object v4, p0, Lcom/android/server/GestureLauncherService$CameraLiftTriggerEventListener;->this$0:Lcom/android/server/GestureLauncherService;
+
+    .line 652
+    invoke-static {v4}, Lcom/android/server/GestureLauncherService;->access$2000(Lcom/android/server/GestureLauncherService;)Lcom/android/server/GestureLauncherService$CameraLiftTriggerEventListener;
+
+    move-result-object v5
+
+    iget-object v6, p0, Lcom/android/server/GestureLauncherService$CameraLiftTriggerEventListener;->this$0:Lcom/android/server/GestureLauncherService;
+
+    invoke-static {v6}, Lcom/android/server/GestureLauncherService;->access$1700(Lcom/android/server/GestureLauncherService;)Landroid/hardware/Sensor;
+
+    move-result-object v6
+
+    .line 651
+    invoke-virtual {v1, v5, v6}, Landroid/hardware/SensorManager;->requestTriggerSensor(Landroid/hardware/TriggerEventListener;Landroid/hardware/Sensor;)Z
+
+    move-result v5
+
+    invoke-static {v4, v5}, Lcom/android/server/GestureLauncherService;->access$1602(Lcom/android/server/GestureLauncherService;Z)Z
+
+    .line 656
     return-void
 
-    .line 573
-    :cond_6c
+    .line 658
+    .end local v0  # "resources":Landroid/content/res/Resources;
+    .end local v1  # "sensorManager":Landroid/hardware/SensorManager;
+    .end local v2  # "keyguardShowingAndNotOccluded":Z
+    .end local v3  # "interactive":Z
+    :cond_6d
     return-void
 .end method

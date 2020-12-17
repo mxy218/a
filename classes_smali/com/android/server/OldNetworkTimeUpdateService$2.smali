@@ -21,8 +21,9 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/OldNetworkTimeUpdateService;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/OldNetworkTimeUpdateService;
 
-    .line 246
+    .line 244
     iput-object p1, p0, Lcom/android/server/OldNetworkTimeUpdateService$2;->this$0:Lcom/android/server/OldNetworkTimeUpdateService;
 
     invoke-direct {p0}, Landroid/content/BroadcastReceiver;-><init>()V
@@ -33,32 +34,35 @@
 
 # virtual methods
 .method public onReceive(Landroid/content/Context;Landroid/content/Intent;)V
-    .registers 5
+    .registers 7
+    .param p1, "context"  # Landroid/content/Context;
+    .param p2, "intent"  # Landroid/content/Intent;
 
-    .line 250
+    .line 248
     invoke-virtual {p2}, Landroid/content/Intent;->getAction()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    .line 252
-    const-string p2, "android.intent.action.NETWORK_SET_TIME"
+    .line 250
+    .local v0, "action":Ljava/lang/String;
+    const-string v1, "android.intent.action.NETWORK_SET_TIME"
 
-    invoke-virtual {p2, p1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v1, v0}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result p1
+    move-result v1
 
-    if-eqz p1, :cond_15
+    if-eqz v1, :cond_15
 
-    .line 253
-    iget-object p1, p0, Lcom/android/server/OldNetworkTimeUpdateService$2;->this$0:Lcom/android/server/OldNetworkTimeUpdateService;
+    .line 251
+    iget-object v1, p0, Lcom/android/server/OldNetworkTimeUpdateService$2;->this$0:Lcom/android/server/OldNetworkTimeUpdateService;
 
     invoke-static {}, Landroid/os/SystemClock;->elapsedRealtime()J
 
-    move-result-wide v0
+    move-result-wide v2
 
-    invoke-static {p1, v0, v1}, Lcom/android/server/OldNetworkTimeUpdateService;->access$202(Lcom/android/server/OldNetworkTimeUpdateService;J)J
+    invoke-static {v1, v2, v3}, Lcom/android/server/OldNetworkTimeUpdateService;->access$202(Lcom/android/server/OldNetworkTimeUpdateService;J)J
 
-    .line 255
+    .line 253
     :cond_15
     return-void
 .end method

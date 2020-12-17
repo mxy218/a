@@ -15,7 +15,9 @@
 
 # direct methods
 .method constructor <init>(Lcom/android/server/hdmi/HdmiCecLocalDevice;I)V
-    .registers 4
+    .registers 5
+    .param p1, "source"  # Lcom/android/server/hdmi/HdmiCecLocalDevice;
+    .param p2, "avrAddress"  # I
 
     .line 42
     invoke-direct {p0, p1}, Lcom/android/server/hdmi/HdmiCecFeatureAction;-><init>(Lcom/android/server/hdmi/HdmiCecLocalDevice;)V
@@ -23,16 +25,16 @@
     .line 43
     invoke-virtual {p0}, Lcom/android/server/hdmi/RequestArcAction;->getSourceAddress()I
 
-    move-result p1
+    move-result v0
 
-    const/4 v0, 0x0
+    const/4 v1, 0x0
 
-    invoke-static {p1, v0}, Lcom/android/server/hdmi/HdmiUtils;->verifyAddressType(II)V
+    invoke-static {v0, v1}, Lcom/android/server/hdmi/HdmiUtils;->verifyAddressType(II)V
 
     .line 44
-    const/4 p1, 0x5
+    const/4 v0, 0x5
 
-    invoke-static {p2, p1}, Lcom/android/server/hdmi/HdmiUtils;->verifyAddressType(II)V
+    invoke-static {p2, v0}, Lcom/android/server/hdmi/HdmiUtils;->verifyAddressType(II)V
 
     .line 45
     iput p2, p0, Lcom/android/server/hdmi/RequestArcAction;->mAvrAddress:I
@@ -60,6 +62,7 @@
     invoke-direct {v0, v1, v2, v3}, Lcom/android/server/hdmi/SetArcTransmissionStateAction;-><init>(Lcom/android/server/hdmi/HdmiCecLocalDevice;IZ)V
 
     .line 79
+    .local v0, "action":Lcom/android/server/hdmi/SetArcTransmissionStateAction;
     invoke-virtual {p0, v0}, Lcom/android/server/hdmi/RequestArcAction;->addAndStartAction(Lcom/android/server/hdmi/HdmiCecFeatureAction;)V
 
     .line 80
@@ -67,7 +70,8 @@
 .end method
 
 .method final handleTimerEvent(I)V
-    .registers 3
+    .registers 4
+    .param p1, "state"  # I
 
     .line 84
     iget v0, p0, Lcom/android/server/hdmi/RequestArcAction;->mState:I
@@ -82,13 +86,13 @@
 
     .line 87
     :cond_8
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    new-array p1, p1, [Ljava/lang/Object;
+    new-array v0, v0, [Ljava/lang/Object;
 
-    const-string v0, "[T] RequestArcAction."
+    const-string v1, "[T] RequestArcAction."
 
-    invoke-static {v0, p1}, Lcom/android/server/hdmi/HdmiLogger;->debug(Ljava/lang/String;[Ljava/lang/Object;)V
+    invoke-static {v1, v0}, Lcom/android/server/hdmi/HdmiLogger;->debug(Ljava/lang/String;[Ljava/lang/Object;)V
 
     .line 88
     invoke-virtual {p0}, Lcom/android/server/hdmi/RequestArcAction;->disableArcTransmission()V
@@ -106,7 +110,8 @@
 .end method
 
 .method processCommand(Lcom/android/server/hdmi/HdmiCecMessage;)Z
-    .registers 6
+    .registers 7
+    .param p1, "cmd"  # Lcom/android/server/hdmi/HdmiCecMessage;
 
     .line 50
     iget v0, p0, Lcom/android/server/hdmi/RequestArcAction;->mState:I
@@ -137,6 +142,7 @@
     move-result v0
 
     .line 55
+    .local v0, "opcode":I
     if-eqz v0, :cond_18
 
     .line 72
@@ -146,16 +152,17 @@
     :cond_18
     invoke-virtual {p1}, Lcom/android/server/hdmi/HdmiCecMessage;->getParams()[B
 
-    move-result-object p1
+    move-result-object v3
 
-    aget-byte p1, p1, v2
+    aget-byte v3, v3, v2
 
-    and-int/lit16 p1, p1, 0xff
+    and-int/lit16 v3, v3, 0xff
 
     .line 61
-    const/16 v0, 0xc4
+    .local v3, "originalOpcode":I
+    const/16 v4, 0xc4
 
-    if-ne p1, v0, :cond_2b
+    if-ne v3, v4, :cond_2b
 
     .line 62
     invoke-virtual {p0}, Lcom/android/server/hdmi/RequestArcAction;->disableArcTransmission()V
@@ -168,16 +175,16 @@
 
     .line 65
     :cond_2b
-    const/16 v0, 0xc3
+    const/16 v4, 0xc3
 
-    if-ne p1, v0, :cond_3a
+    if-ne v3, v4, :cond_3a
 
     .line 66
     invoke-virtual {p0}, Lcom/android/server/hdmi/RequestArcAction;->tv()Lcom/android/server/hdmi/HdmiCecLocalDeviceTv;
 
-    move-result-object p1
+    move-result-object v4
 
-    invoke-virtual {p1, v2}, Lcom/android/server/hdmi/HdmiCecLocalDeviceTv;->setArcStatus(Z)Z
+    invoke-virtual {v4, v2}, Lcom/android/server/hdmi/HdmiCecLocalDeviceTv;->setArcStatus(Z)Z
 
     .line 67
     invoke-virtual {p0}, Lcom/android/server/hdmi/RequestArcAction;->finish()V
@@ -190,6 +197,8 @@
     return v2
 
     .line 52
+    .end local v0  # "opcode":I
+    .end local v3  # "originalOpcode":I
     :cond_3b
     :goto_3b
     return v2

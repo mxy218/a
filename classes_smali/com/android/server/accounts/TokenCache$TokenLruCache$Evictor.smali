@@ -52,6 +52,7 @@
 # virtual methods
 .method public add(Lcom/android/server/accounts/TokenCache$Key;)V
     .registers 3
+    .param p1, "k"  # Lcom/android/server/accounts/TokenCache$Key;
 
     .line 93
     iget-object v0, p0, Lcom/android/server/accounts/TokenCache$TokenLruCache$Evictor;->mKeys:Ljava/util/List;
@@ -86,11 +87,13 @@
     check-cast v1, Lcom/android/server/accounts/TokenCache$Key;
 
     .line 98
+    .local v1, "k":Lcom/android/server/accounts/TokenCache$Key;
     iget-object v2, p0, Lcom/android/server/accounts/TokenCache$TokenLruCache$Evictor;->this$0:Lcom/android/server/accounts/TokenCache$TokenLruCache;
 
     invoke-virtual {v2, v1}, Lcom/android/server/accounts/TokenCache$TokenLruCache;->remove(Ljava/lang/Object;)Ljava/lang/Object;
 
     .line 99
+    .end local v1  # "k":Lcom/android/server/accounts/TokenCache$Key;
     goto :goto_6
 
     .line 100

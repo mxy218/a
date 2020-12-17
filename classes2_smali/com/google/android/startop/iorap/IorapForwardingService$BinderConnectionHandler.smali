@@ -27,6 +27,7 @@
 # direct methods
 .method public constructor <init>(Lcom/google/android/startop/iorap/IorapForwardingService;Landroid/os/Looper;)V
     .registers 3
+    .param p2, "looper"  # Landroid/os/Looper;
 
     .line 143
     iput-object p1, p0, Lcom/google/android/startop/iorap/IorapForwardingService$BinderConnectionHandler;->this$0:Lcom/google/android/startop/iorap/IorapForwardingService;
@@ -47,6 +48,7 @@
 # virtual methods
 .method public handleMessage(Landroid/os/Message;)V
     .registers 5
+    .param p1, "message"  # Landroid/os/Message;
 
     .line 153
     iget v0, p1, Landroid/os/Message;->what:I
@@ -54,30 +56,30 @@
     if-nez v0, :cond_1a
 
     .line 155
-    iget-object p1, p0, Lcom/google/android/startop/iorap/IorapForwardingService$BinderConnectionHandler;->this$0:Lcom/google/android/startop/iorap/IorapForwardingService;
+    iget-object v0, p0, Lcom/google/android/startop/iorap/IorapForwardingService$BinderConnectionHandler;->this$0:Lcom/google/android/startop/iorap/IorapForwardingService;
 
-    iget v0, p0, Lcom/google/android/startop/iorap/IorapForwardingService$BinderConnectionHandler;->mAttempts:I
+    iget v1, p0, Lcom/google/android/startop/iorap/IorapForwardingService$BinderConnectionHandler;->mAttempts:I
 
-    invoke-static {p1, v0}, Lcom/google/android/startop/iorap/IorapForwardingService;->access$000(Lcom/google/android/startop/iorap/IorapForwardingService;I)Z
+    invoke-static {v0, v1}, Lcom/google/android/startop/iorap/IorapForwardingService;->access$000(Lcom/google/android/startop/iorap/IorapForwardingService;I)Z
 
-    move-result p1
+    move-result v0
 
-    if-nez p1, :cond_15
+    if-nez v0, :cond_15
 
     .line 156
-    iget p1, p0, Lcom/google/android/startop/iorap/IorapForwardingService$BinderConnectionHandler;->mAttempts:I
+    iget v0, p0, Lcom/google/android/startop/iorap/IorapForwardingService$BinderConnectionHandler;->mAttempts:I
 
-    add-int/lit8 p1, p1, 0x1
+    add-int/lit8 v0, v0, 0x1
 
-    iput p1, p0, Lcom/google/android/startop/iorap/IorapForwardingService$BinderConnectionHandler;->mAttempts:I
+    iput v0, p0, Lcom/google/android/startop/iorap/IorapForwardingService$BinderConnectionHandler;->mAttempts:I
 
     goto :goto_19
 
     .line 158
     :cond_15
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    iput p1, p0, Lcom/google/android/startop/iorap/IorapForwardingService$BinderConnectionHandler;->mAttempts:I
+    iput v0, p0, Lcom/google/android/startop/iorap/IorapForwardingService$BinderConnectionHandler;->mAttempts:I
 
     .line 160
     nop
@@ -100,15 +102,15 @@
 
     invoke-virtual {p1}, Landroid/os/Message;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v2
 
-    invoke-virtual {v1, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v1
 
-    invoke-direct {v0, p1}, Ljava/lang/AssertionError;-><init>(Ljava/lang/Object;)V
+    invoke-direct {v0, v1}, Ljava/lang/AssertionError;-><init>(Ljava/lang/Object;)V
 
     throw v0
 .end method

@@ -28,6 +28,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/display/DisplayAdapter;Lcom/android/server/display/DisplayDevice;I)V
     .registers 4
+    .param p1, "this$0"  # Lcom/android/server/display/DisplayAdapter;
 
     .line 112
     iput-object p1, p0, Lcom/android/server/display/DisplayAdapter$1;->this$0:Lcom/android/server/display/DisplayAdapter;

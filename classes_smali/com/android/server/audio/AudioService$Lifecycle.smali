@@ -21,18 +21,19 @@
 # direct methods
 .method public constructor <init>(Landroid/content/Context;)V
     .registers 3
+    .param p1, "context"  # Landroid/content/Context;
 
-    .line 594
+    .line 652
     invoke-direct {p0, p1}, Lcom/android/server/SystemService;-><init>(Landroid/content/Context;)V
 
-    .line 595
+    .line 653
     new-instance v0, Lcom/android/server/audio/AudioService;
 
     invoke-direct {v0, p1}, Lcom/android/server/audio/AudioService;-><init>(Landroid/content/Context;)V
 
     iput-object v0, p0, Lcom/android/server/audio/AudioService$Lifecycle;->mService:Lcom/android/server/audio/AudioService;
 
-    .line 596
+    .line 654
     return-void
 .end method
 
@@ -40,32 +41,47 @@
 # virtual methods
 .method public onBootPhase(I)V
     .registers 3
+    .param p1, "phase"  # I
 
-    .line 605
+    .line 663
     const/16 v0, 0x226
 
-    if-ne p1, v0, :cond_9
+    if-ne p1, v0, :cond_a
 
-    .line 606
-    iget-object p1, p0, Lcom/android/server/audio/AudioService$Lifecycle;->mService:Lcom/android/server/audio/AudioService;
+    .line 664
+    iget-object v0, p0, Lcom/android/server/audio/AudioService$Lifecycle;->mService:Lcom/android/server/audio/AudioService;
 
-    invoke-virtual {p1}, Lcom/android/server/audio/AudioService;->systemReady()V
+    invoke-virtual {v0}, Lcom/android/server/audio/AudioService;->systemReady()V
 
-    .line 608
-    :cond_9
+    goto :goto_13
+
+    .line 667
+    :cond_a
+    const/16 v0, 0x3e8
+
+    if-ne p1, v0, :cond_13
+
+    .line 668
+    iget-object v0, p0, Lcom/android/server/audio/AudioService$Lifecycle;->mService:Lcom/android/server/audio/AudioService;
+
+    invoke-virtual {v0}, Lcom/android/server/audio/AudioService;->bootCompleted()V
+
+    .line 671
+    :cond_13
+    :goto_13
     return-void
 .end method
 
 .method public onStart()V
     .registers 3
 
-    .line 600
+    .line 658
     iget-object v0, p0, Lcom/android/server/audio/AudioService$Lifecycle;->mService:Lcom/android/server/audio/AudioService;
 
     const-string v1, "audio"
 
     invoke-virtual {p0, v1, v0}, Lcom/android/server/audio/AudioService$Lifecycle;->publishBinderService(Ljava/lang/String;Landroid/os/IBinder;)V
 
-    .line 601
+    .line 659
     return-void
 .end method

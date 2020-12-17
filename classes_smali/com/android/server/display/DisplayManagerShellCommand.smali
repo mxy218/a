@@ -14,6 +14,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/display/DisplayManagerService$BinderService;)V
     .registers 2
+    .param p1, "service"  # Lcom/android/server/display/DisplayManagerService$BinderService;
 
     .line 29
     invoke-direct {p0}, Landroid/os/ShellCommand;-><init>()V
@@ -40,7 +41,7 @@
 .end method
 
 .method private setAmbientColorTemperatureOverride()I
-    .registers 4
+    .registers 6
 
     .line 119
     invoke-virtual {p0}, Lcom/android/server/display/DisplayManagerShellCommand;->getNextArg()Ljava/lang/String;
@@ -48,6 +49,7 @@
     move-result-object v0
 
     .line 120
+    .local v0, "cctText":Ljava/lang/String;
     const/4 v1, 0x1
 
     if-nez v0, :cond_11
@@ -55,11 +57,11 @@
     .line 121
     invoke-virtual {p0}, Lcom/android/server/display/DisplayManagerShellCommand;->getErrPrintWriter()Ljava/io/PrintWriter;
 
-    move-result-object v0
+    move-result-object v2
 
-    const-string v2, "Error: no cct specified"
+    const-string v3, "Error: no cct specified"
 
-    invoke-virtual {v0, v2}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {v2, v3}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
     .line 122
     return v1
@@ -69,35 +71,38 @@
     :try_start_11
     invoke-static {v0}, Ljava/lang/Float;->parseFloat(Ljava/lang/String;)F
 
-    move-result v0
+    move-result v1
     :try_end_15
     .catch Ljava/lang/NumberFormatException; {:try_start_11 .. :try_end_15} :catch_1d
 
     .line 130
+    .local v1, "cct":F
     nop
 
     .line 131
-    iget-object v1, p0, Lcom/android/server/display/DisplayManagerShellCommand;->mService:Lcom/android/server/display/DisplayManagerService$BinderService;
+    iget-object v2, p0, Lcom/android/server/display/DisplayManagerShellCommand;->mService:Lcom/android/server/display/DisplayManagerService$BinderService;
 
-    invoke-virtual {v1, v0}, Lcom/android/server/display/DisplayManagerService$BinderService;->setAmbientColorTemperatureOverride(F)V
+    invoke-virtual {v2, v1}, Lcom/android/server/display/DisplayManagerService$BinderService;->setAmbientColorTemperatureOverride(F)V
 
     .line 132
-    const/4 v0, 0x0
+    const/4 v2, 0x0
 
-    return v0
+    return v2
 
     .line 127
+    .end local v1  # "cct":F
     :catch_1d
-    move-exception v0
+    move-exception v2
 
     .line 128
+    .local v2, "e":Ljava/lang/NumberFormatException;
     invoke-virtual {p0}, Lcom/android/server/display/DisplayManagerShellCommand;->getErrPrintWriter()Ljava/io/PrintWriter;
 
-    move-result-object v0
+    move-result-object v3
 
-    const-string v2, "Error: cct should be a number"
+    const-string v4, "Error: cct should be a number"
 
-    invoke-virtual {v0, v2}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {v3, v4}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
     .line 129
     return v1
@@ -105,6 +110,7 @@
 
 .method private setAutoBrightnessLoggingEnabled(Z)I
     .registers 3
+    .param p1, "enabled"  # Z
 
     .line 109
     iget-object v0, p0, Lcom/android/server/display/DisplayManagerShellCommand;->mService:Lcom/android/server/display/DisplayManagerService$BinderService;
@@ -112,13 +118,13 @@
     invoke-virtual {v0, p1}, Lcom/android/server/display/DisplayManagerService$BinderService;->setAutoBrightnessLoggingEnabled(Z)V
 
     .line 110
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    return p1
+    return v0
 .end method
 
 .method private setBrightness()I
-    .registers 4
+    .registers 6
 
     .line 85
     invoke-virtual {p0}, Lcom/android/server/display/DisplayManagerShellCommand;->getNextArg()Ljava/lang/String;
@@ -126,6 +132,7 @@
     move-result-object v0
 
     .line 86
+    .local v0, "brightnessText":Ljava/lang/String;
     const/4 v1, 0x1
 
     if-nez v0, :cond_11
@@ -133,11 +140,11 @@
     .line 87
     invoke-virtual {p0}, Lcom/android/server/display/DisplayManagerShellCommand;->getErrPrintWriter()Ljava/io/PrintWriter;
 
-    move-result-object v0
+    move-result-object v2
 
-    const-string v2, "Error: no brightness specified"
+    const-string v3, "Error: no brightness specified"
 
-    invoke-virtual {v0, v2}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {v2, v3}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
     .line 88
     return v1
@@ -147,63 +154,66 @@
     const/high16 v2, -0x40800000  # -1.0f
 
     .line 92
+    .local v2, "brightness":F
     :try_start_13
     invoke-static {v0}, Ljava/lang/Float;->parseFloat(Ljava/lang/String;)F
 
-    move-result v2
+    move-result v3
     :try_end_17
-    .catch Ljava/lang/NumberFormatException; {:try_start_13 .. :try_end_17} :catch_18
+    .catch Ljava/lang/NumberFormatException; {:try_start_13 .. :try_end_17} :catch_19
+
+    move v2, v3
 
     .line 94
-    goto :goto_19
+    goto :goto_1a
 
     .line 93
-    :catch_18
-    move-exception v0
+    :catch_19
+    move-exception v3
 
     .line 95
-    :goto_19
-    const/4 v0, 0x0
+    :goto_1a
+    const/4 v3, 0x0
 
-    cmpg-float v0, v2, v0
+    cmpg-float v3, v2, v3
 
-    if-ltz v0, :cond_30
+    if-ltz v3, :cond_31
 
-    const/high16 v0, 0x3f800000  # 1.0f
+    const/high16 v3, 0x3f800000  # 1.0f
 
-    cmpl-float v0, v2, v0
+    cmpl-float v3, v2, v3
 
-    if-lez v0, :cond_25
+    if-lez v3, :cond_26
 
-    goto :goto_30
+    goto :goto_31
 
     .line 99
-    :cond_25
-    iget-object v0, p0, Lcom/android/server/display/DisplayManagerShellCommand;->mService:Lcom/android/server/display/DisplayManagerService$BinderService;
+    :cond_26
+    iget-object v1, p0, Lcom/android/server/display/DisplayManagerShellCommand;->mService:Lcom/android/server/display/DisplayManagerService$BinderService;
 
-    const/high16 v1, 0x437f0000  # 255.0f
+    const/high16 v3, 0x437f0000  # 255.0f
 
-    mul-float/2addr v2, v1
+    mul-float/2addr v3, v2
 
-    float-to-int v1, v2
+    float-to-int v3, v3
 
-    invoke-virtual {v0, v1}, Lcom/android/server/display/DisplayManagerService$BinderService;->setBrightness(I)V
+    invoke-virtual {v1, v3}, Lcom/android/server/display/DisplayManagerService$BinderService;->setBrightness(I)V
 
     .line 100
-    const/4 v0, 0x0
+    const/4 v1, 0x0
 
-    return v0
+    return v1
 
     .line 96
-    :cond_30
-    :goto_30
+    :cond_31
+    :goto_31
     invoke-virtual {p0}, Lcom/android/server/display/DisplayManagerShellCommand;->getErrPrintWriter()Ljava/io/PrintWriter;
 
-    move-result-object v0
+    move-result-object v3
 
-    const-string v2, "Error: brightness should be a number between 0 and 1"
+    const-string v4, "Error: brightness should be a number between 0 and 1"
 
-    invoke-virtual {v0, v2}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {v3, v4}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
     .line 97
     return v1
@@ -211,6 +221,7 @@
 
 .method private setDisplayWhiteBalanceLoggingEnabled(Z)I
     .registers 3
+    .param p1, "enabled"  # Z
 
     .line 114
     iget-object v0, p0, Lcom/android/server/display/DisplayManagerShellCommand;->mService:Lcom/android/server/display/DisplayManagerService$BinderService;
@@ -218,15 +229,16 @@
     invoke-virtual {v0, p1}, Lcom/android/server/display/DisplayManagerService$BinderService;->setDisplayWhiteBalanceLoggingEnabled(Z)V
 
     .line 115
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    return p1
+    return v0
 .end method
 
 
 # virtual methods
 .method public onCommand(Ljava/lang/String;)I
-    .registers 6
+    .registers 7
+    .param p1, "cmd"  # Ljava/lang/String;
 
     .line 35
     if-nez p1, :cond_7
@@ -234,207 +246,208 @@
     .line 36
     invoke-virtual {p0, p1}, Lcom/android/server/display/DisplayManagerShellCommand;->handleDefaultCommands(Ljava/lang/String;)I
 
-    move-result p1
+    move-result v0
 
-    return p1
+    return v0
 
     .line 38
     :cond_7
     invoke-virtual {p0}, Lcom/android/server/display/DisplayManagerShellCommand;->getOutPrintWriter()Ljava/io/PrintWriter;
 
+    move-result-object v0
+
     .line 39
-    const/4 v0, -0x1
+    .local v0, "pw":Ljava/io/PrintWriter;
+    const/4 v1, -0x1
 
     invoke-virtual {p1}, Ljava/lang/String;->hashCode()I
 
-    move-result v1
+    move-result v2
 
-    const/4 v2, 0x0
+    const/4 v3, 0x0
 
-    const/4 v3, 0x1
+    const/4 v4, 0x1
 
-    sparse-switch v1, :sswitch_data_88
+    sparse-switch v2, :sswitch_data_88
 
-    :cond_14
-    goto :goto_5c
+    :cond_15
+    goto :goto_5d
 
-    :sswitch_15
-    const-string v1, "dwb-logging-disable"
+    :sswitch_16
+    const-string v2, "dwb-logging-disable"
 
-    invoke-virtual {p1, v1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {p1, v2}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result v1
+    move-result v2
 
-    if-eqz v1, :cond_14
+    if-eqz v2, :cond_15
 
-    const/4 v0, 0x5
+    const/4 v1, 0x5
 
-    goto :goto_5c
+    goto :goto_5d
 
-    :sswitch_1f
-    const-string/jumbo v1, "set-brightness"
+    :sswitch_20
+    const-string/jumbo v2, "set-brightness"
 
-    invoke-virtual {p1, v1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {p1, v2}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result v1
+    move-result v2
 
-    if-eqz v1, :cond_14
+    if-eqz v2, :cond_15
 
-    move v0, v2
+    move v1, v3
 
-    goto :goto_5c
+    goto :goto_5d
 
-    :sswitch_2a
-    const-string v1, "ab-logging-disable"
+    :sswitch_2b
+    const-string v2, "ab-logging-disable"
 
-    invoke-virtual {p1, v1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {p1, v2}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result v1
+    move-result v2
 
-    if-eqz v1, :cond_14
+    if-eqz v2, :cond_15
 
-    const/4 v0, 0x3
+    const/4 v1, 0x3
 
-    goto :goto_5c
+    goto :goto_5d
 
-    :sswitch_34
-    const-string v1, "dwb-set-cct"
+    :sswitch_35
+    const-string v2, "dwb-set-cct"
 
-    invoke-virtual {p1, v1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {p1, v2}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result v1
+    move-result v2
 
-    if-eqz v1, :cond_14
+    if-eqz v2, :cond_15
 
-    const/4 v0, 0x6
+    const/4 v1, 0x6
 
-    goto :goto_5c
+    goto :goto_5d
 
-    :sswitch_3e
-    const-string v1, "ab-logging-enable"
+    :sswitch_3f
+    const-string v2, "ab-logging-enable"
 
-    invoke-virtual {p1, v1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {p1, v2}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result v1
+    move-result v2
 
-    if-eqz v1, :cond_14
+    if-eqz v2, :cond_15
 
-    const/4 v0, 0x2
+    const/4 v1, 0x2
 
-    goto :goto_5c
+    goto :goto_5d
 
-    :sswitch_48
-    const-string v1, "dwb-logging-enable"
+    :sswitch_49
+    const-string v2, "dwb-logging-enable"
 
-    invoke-virtual {p1, v1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {p1, v2}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result v1
+    move-result v2
 
-    if-eqz v1, :cond_14
+    if-eqz v2, :cond_15
 
-    const/4 v0, 0x4
+    const/4 v1, 0x4
 
-    goto :goto_5c
+    goto :goto_5d
 
-    :sswitch_52
-    const-string/jumbo v1, "reset-brightness-configuration"
+    :sswitch_53
+    const-string/jumbo v2, "reset-brightness-configuration"
 
-    invoke-virtual {p1, v1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {p1, v2}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result v1
+    move-result v2
 
-    if-eqz v1, :cond_14
+    if-eqz v2, :cond_15
 
-    move v0, v3
+    move v1, v4
 
-    :goto_5c
-    packed-switch v0, :pswitch_data_a6
+    :goto_5d
+    packed-switch v1, :pswitch_data_a6
 
     .line 55
     invoke-virtual {p0, p1}, Lcom/android/server/display/DisplayManagerShellCommand;->handleDefaultCommands(Ljava/lang/String;)I
 
-    move-result p1
+    move-result v1
 
-    return p1
+    return v1
 
     .line 53
-    :pswitch_64  #0x6
+    :pswitch_65  #0x6
     invoke-direct {p0}, Lcom/android/server/display/DisplayManagerShellCommand;->setAmbientColorTemperatureOverride()I
 
-    move-result p1
+    move-result v1
 
-    return p1
+    return v1
 
     .line 51
-    :pswitch_69  #0x5
-    invoke-direct {p0, v2}, Lcom/android/server/display/DisplayManagerShellCommand;->setDisplayWhiteBalanceLoggingEnabled(Z)I
-
-    move-result p1
-
-    return p1
-
-    .line 49
-    :pswitch_6e  #0x4
+    :pswitch_6a  #0x5
     invoke-direct {p0, v3}, Lcom/android/server/display/DisplayManagerShellCommand;->setDisplayWhiteBalanceLoggingEnabled(Z)I
 
-    move-result p1
+    move-result v1
 
-    return p1
+    return v1
+
+    .line 49
+    :pswitch_6f  #0x4
+    invoke-direct {p0, v4}, Lcom/android/server/display/DisplayManagerShellCommand;->setDisplayWhiteBalanceLoggingEnabled(Z)I
+
+    move-result v1
+
+    return v1
 
     .line 47
-    :pswitch_73  #0x3
-    invoke-direct {p0, v2}, Lcom/android/server/display/DisplayManagerShellCommand;->setAutoBrightnessLoggingEnabled(Z)I
-
-    move-result p1
-
-    return p1
-
-    .line 45
-    :pswitch_78  #0x2
+    :pswitch_74  #0x3
     invoke-direct {p0, v3}, Lcom/android/server/display/DisplayManagerShellCommand;->setAutoBrightnessLoggingEnabled(Z)I
 
-    move-result p1
+    move-result v1
 
-    return p1
+    return v1
+
+    .line 45
+    :pswitch_79  #0x2
+    invoke-direct {p0, v4}, Lcom/android/server/display/DisplayManagerShellCommand;->setAutoBrightnessLoggingEnabled(Z)I
+
+    move-result v1
+
+    return v1
 
     .line 43
-    :pswitch_7d  #0x1
+    :pswitch_7e  #0x1
     invoke-direct {p0}, Lcom/android/server/display/DisplayManagerShellCommand;->resetBrightnessConfiguration()I
 
-    move-result p1
+    move-result v1
 
-    return p1
+    return v1
 
     .line 41
-    :pswitch_82  #0x0
+    :pswitch_83  #0x0
     invoke-direct {p0}, Lcom/android/server/display/DisplayManagerShellCommand;->setBrightness()I
 
-    move-result p1
+    move-result v1
 
-    return p1
-
-    nop
+    return v1
 
     :sswitch_data_88
     .sparse-switch
-        -0x59bb9cc8 -> :sswitch_52
-        -0x2b98d0f1 -> :sswitch_48
-        0x1cd1c6dd -> :sswitch_3e
-        0x327f7a8b -> :sswitch_34
-        0x40f5acce -> :sswitch_2a
-        0x5fa7aa9c -> :sswitch_1f
-        0x7c0d4adc -> :sswitch_15
+        -0x59bb9cc8 -> :sswitch_53
+        -0x2b98d0f1 -> :sswitch_49
+        0x1cd1c6dd -> :sswitch_3f
+        0x327f7a8b -> :sswitch_35
+        0x40f5acce -> :sswitch_2b
+        0x5fa7aa9c -> :sswitch_20
+        0x7c0d4adc -> :sswitch_16
     .end sparse-switch
 
     :pswitch_data_a6
     .packed-switch 0x0
-        :pswitch_82  #00000000
-        :pswitch_7d  #00000001
-        :pswitch_78  #00000002
-        :pswitch_73  #00000003
-        :pswitch_6e  #00000004
-        :pswitch_69  #00000005
-        :pswitch_64  #00000006
+        :pswitch_83  #00000000
+        :pswitch_7e  #00000001
+        :pswitch_79  #00000002
+        :pswitch_74  #00000003
+        :pswitch_6f  #00000004
+        :pswitch_6a  #00000005
+        :pswitch_65  #00000006
     .end packed-switch
 .end method
 
@@ -447,6 +460,7 @@
     move-result-object v0
 
     .line 62
+    .local v0, "pw":Ljava/io/PrintWriter;
     const-string v1, "Display manager commands:"
 
     invoke-virtual {v0, v1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V

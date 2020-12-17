@@ -29,6 +29,7 @@
 
 .method constructor <init>(Landroid/content/Context;)V
     .registers 2
+    .param p1, "context"  # Landroid/content/Context;
 
     .line 44
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -49,6 +50,7 @@
     invoke-direct {v0}, Landroid/content/Intent;-><init>()V
 
     .line 132
+    .local v0, "intent":Landroid/content/Intent;
     const/high16 v1, 0x10000000
 
     invoke-virtual {v0, v1}, Landroid/content/Intent;->addFlags(I)Landroid/content/Intent;
@@ -60,7 +62,10 @@
 
 # virtual methods
 .method confirmUsbHandler(Landroid/content/pm/ResolveInfo;Landroid/hardware/usb/UsbDevice;Landroid/hardware/usb/UsbAccessory;)V
-    .registers 7
+    .registers 10
+    .param p1, "rInfo"  # Landroid/content/pm/ResolveInfo;
+    .param p2, "device"  # Landroid/hardware/usb/UsbDevice;
+    .param p3, "accessory"  # Landroid/hardware/usb/UsbAccessory;
 
     .line 85
     invoke-direct {p0}, Lcom/android/server/usb/UsbHandlerManager;->createDialogIntent()Landroid/content/Intent;
@@ -68,6 +73,7 @@
     move-result-object v0
 
     .line 87
+    .local v0, "resolverIntent":Landroid/content/Intent;
     const-string v1, "com.android.systemui"
 
     const-string v2, "com.android.systemui.usb.UsbConfirmActivity"
@@ -80,39 +86,40 @@
     invoke-virtual {v0, v1, p1}, Landroid/content/Intent;->putExtra(Ljava/lang/String;Landroid/os/Parcelable;)Landroid/content/Intent;
 
     .line 90
-    iget-object p1, p1, Landroid/content/pm/ResolveInfo;->activityInfo:Landroid/content/pm/ActivityInfo;
+    iget-object v1, p1, Landroid/content/pm/ResolveInfo;->activityInfo:Landroid/content/pm/ActivityInfo;
 
-    iget-object p1, p1, Landroid/content/pm/ActivityInfo;->applicationInfo:Landroid/content/pm/ApplicationInfo;
+    iget-object v1, v1, Landroid/content/pm/ActivityInfo;->applicationInfo:Landroid/content/pm/ApplicationInfo;
 
-    iget p1, p1, Landroid/content/pm/ApplicationInfo;->uid:I
+    iget v1, v1, Landroid/content/pm/ApplicationInfo;->uid:I
 
     .line 91
-    invoke-static {p1}, Landroid/os/UserHandle;->getUserHandleForUid(I)Landroid/os/UserHandle;
+    invoke-static {v1}, Landroid/os/UserHandle;->getUserHandleForUid(I)Landroid/os/UserHandle;
 
-    move-result-object p1
+    move-result-object v1
 
     .line 93
+    .local v1, "user":Landroid/os/UserHandle;
     if-eqz p2, :cond_23
 
     .line 94
-    const-string p3, "device"
+    const-string v2, "device"
 
-    invoke-virtual {v0, p3, p2}, Landroid/content/Intent;->putExtra(Ljava/lang/String;Landroid/os/Parcelable;)Landroid/content/Intent;
+    invoke-virtual {v0, v2, p2}, Landroid/content/Intent;->putExtra(Ljava/lang/String;Landroid/os/Parcelable;)Landroid/content/Intent;
 
     goto :goto_28
 
     .line 96
     :cond_23
-    const-string p2, "accessory"
+    const-string v2, "accessory"
 
-    invoke-virtual {v0, p2, p3}, Landroid/content/Intent;->putExtra(Ljava/lang/String;Landroid/os/Parcelable;)Landroid/content/Intent;
+    invoke-virtual {v0, v2, p3}, Landroid/content/Intent;->putExtra(Ljava/lang/String;Landroid/os/Parcelable;)Landroid/content/Intent;
 
     .line 100
     :goto_28
     :try_start_28
-    iget-object p2, p0, Lcom/android/server/usb/UsbHandlerManager;->mContext:Landroid/content/Context;
+    iget-object v2, p0, Lcom/android/server/usb/UsbHandlerManager;->mContext:Landroid/content/Context;
 
-    invoke-virtual {p2, v0, p1}, Landroid/content/Context;->startActivityAsUser(Landroid/content/Intent;Landroid/os/UserHandle;)V
+    invoke-virtual {v2, v0, v1}, Landroid/content/Context;->startActivityAsUser(Landroid/content/Intent;Landroid/os/UserHandle;)V
     :try_end_2d
     .catch Landroid/content/ActivityNotFoundException; {:try_start_28 .. :try_end_2d} :catch_2e
 
@@ -121,34 +128,38 @@
 
     .line 101
     :catch_2e
-    move-exception p1
+    move-exception v2
 
     .line 102
-    sget-object p2, Lcom/android/server/usb/UsbHandlerManager;->LOG_TAG:Ljava/lang/String;
+    .local v2, "e":Landroid/content/ActivityNotFoundException;
+    sget-object v3, Lcom/android/server/usb/UsbHandlerManager;->LOG_TAG:Ljava/lang/String;
 
-    new-instance p3, Ljava/lang/StringBuilder;
+    new-instance v4, Ljava/lang/StringBuilder;
 
-    invoke-direct {p3}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v4}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string/jumbo v1, "unable to start activity "
+    const-string/jumbo v5, "unable to start activity "
 
-    invoke-virtual {p3, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p3, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    invoke-virtual {v4, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v4}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p3
+    move-result-object v4
 
-    invoke-static {p2, p3, p1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    invoke-static {v3, v4, v2}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
     .line 104
+    .end local v2  # "e":Landroid/content/ActivityNotFoundException;
     :goto_46
     return-void
 .end method
 
 .method selectUsbHandler(Ljava/util/ArrayList;Landroid/os/UserHandle;Landroid/content/Intent;)V
-    .registers 7
+    .registers 9
+    .param p2, "user"  # Landroid/os/UserHandle;
+    .param p3, "intent"  # Landroid/content/Intent;
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(",
@@ -162,11 +173,13 @@
     .end annotation
 
     .line 117
+    .local p1, "matches":Ljava/util/ArrayList;, "Ljava/util/ArrayList<Landroid/content/pm/ResolveInfo;>;"
     invoke-direct {p0}, Lcom/android/server/usb/UsbHandlerManager;->createDialogIntent()Landroid/content/Intent;
 
     move-result-object v0
 
     .line 118
+    .local v0, "resolverIntent":Landroid/content/Intent;
     const-string v1, "com.android.systemui"
 
     const-string v2, "com.android.systemui.usb.UsbResolverActivity"
@@ -179,15 +192,15 @@
     invoke-virtual {v0, v1, p1}, Landroid/content/Intent;->putParcelableArrayListExtra(Ljava/lang/String;Ljava/util/ArrayList;)Landroid/content/Intent;
 
     .line 121
-    const-string p1, "android.intent.extra.INTENT"
+    const-string v1, "android.intent.extra.INTENT"
 
-    invoke-virtual {v0, p1, p3}, Landroid/content/Intent;->putExtra(Ljava/lang/String;Landroid/os/Parcelable;)Landroid/content/Intent;
+    invoke-virtual {v0, v1, p3}, Landroid/content/Intent;->putExtra(Ljava/lang/String;Landroid/os/Parcelable;)Landroid/content/Intent;
 
     .line 124
     :try_start_16
-    iget-object p1, p0, Lcom/android/server/usb/UsbHandlerManager;->mContext:Landroid/content/Context;
+    iget-object v1, p0, Lcom/android/server/usb/UsbHandlerManager;->mContext:Landroid/content/Context;
 
-    invoke-virtual {p1, v0, p2}, Landroid/content/Context;->startActivityAsUser(Landroid/content/Intent;Landroid/os/UserHandle;)V
+    invoke-virtual {v1, v0, p2}, Landroid/content/Context;->startActivityAsUser(Landroid/content/Intent;Landroid/os/UserHandle;)V
     :try_end_1b
     .catch Landroid/content/ActivityNotFoundException; {:try_start_16 .. :try_end_1b} :catch_1c
 
@@ -196,34 +209,38 @@
 
     .line 125
     :catch_1c
-    move-exception p1
+    move-exception v1
 
     .line 126
-    sget-object p2, Lcom/android/server/usb/UsbHandlerManager;->LOG_TAG:Ljava/lang/String;
+    .local v1, "e":Landroid/content/ActivityNotFoundException;
+    sget-object v2, Lcom/android/server/usb/UsbHandlerManager;->LOG_TAG:Ljava/lang/String;
 
-    new-instance p3, Ljava/lang/StringBuilder;
+    new-instance v3, Ljava/lang/StringBuilder;
 
-    invoke-direct {p3}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string/jumbo v1, "unable to start activity "
+    const-string/jumbo v4, "unable to start activity "
 
-    invoke-virtual {p3, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p3, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p3
+    move-result-object v3
 
-    invoke-static {p2, p3, p1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    invoke-static {v2, v3, v1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
     .line 128
+    .end local v1  # "e":Landroid/content/ActivityNotFoundException;
     :goto_34
     return-void
 .end method
 
 .method showUsbAccessoryUriActivity(Landroid/hardware/usb/UsbAccessory;Landroid/os/UserHandle;)V
-    .registers 7
+    .registers 8
+    .param p1, "accessory"  # Landroid/hardware/usb/UsbAccessory;
+    .param p2, "user"  # Landroid/os/UserHandle;
 
     .line 58
     invoke-virtual {p1}, Landroid/hardware/usb/UsbAccessory;->getUri()Ljava/lang/String;
@@ -231,6 +248,7 @@
     move-result-object v0
 
     .line 59
+    .local v0, "uri":Ljava/lang/String;
     if-eqz v0, :cond_31
 
     invoke-virtual {v0}, Ljava/lang/String;->length()I
@@ -245,6 +263,7 @@
     move-result-object v1
 
     .line 62
+    .local v1, "dialogIntent":Landroid/content/Intent;
     const-string v2, "com.android.systemui"
 
     const-string v3, "com.android.systemui.usb.UsbAccessoryUriActivity"
@@ -257,15 +276,15 @@
     invoke-virtual {v1, v2, p1}, Landroid/content/Intent;->putExtra(Ljava/lang/String;Landroid/os/Parcelable;)Landroid/content/Intent;
 
     .line 65
-    const-string/jumbo p1, "uri"
+    const-string/jumbo v2, "uri"
 
-    invoke-virtual {v1, p1, v0}, Landroid/content/Intent;->putExtra(Ljava/lang/String;Ljava/lang/String;)Landroid/content/Intent;
+    invoke-virtual {v1, v2, v0}, Landroid/content/Intent;->putExtra(Ljava/lang/String;Ljava/lang/String;)Landroid/content/Intent;
 
     .line 67
     :try_start_22
-    iget-object p1, p0, Lcom/android/server/usb/UsbHandlerManager;->mContext:Landroid/content/Context;
+    iget-object v2, p0, Lcom/android/server/usb/UsbHandlerManager;->mContext:Landroid/content/Context;
 
-    invoke-virtual {p1, v1, p2}, Landroid/content/Context;->startActivityAsUser(Landroid/content/Intent;Landroid/os/UserHandle;)V
+    invoke-virtual {v2, v1, p2}, Landroid/content/Context;->startActivityAsUser(Landroid/content/Intent;Landroid/os/UserHandle;)V
     :try_end_27
     .catch Landroid/content/ActivityNotFoundException; {:try_start_22 .. :try_end_27} :catch_28
 
@@ -274,16 +293,19 @@
 
     .line 68
     :catch_28
-    move-exception p1
+    move-exception v2
 
     .line 69
-    sget-object p1, Lcom/android/server/usb/UsbHandlerManager;->LOG_TAG:Ljava/lang/String;
+    .local v2, "e":Landroid/content/ActivityNotFoundException;
+    sget-object v3, Lcom/android/server/usb/UsbHandlerManager;->LOG_TAG:Ljava/lang/String;
 
-    const-string/jumbo p2, "unable to start UsbAccessoryUriActivity"
+    const-string/jumbo v4, "unable to start UsbAccessoryUriActivity"
 
-    invoke-static {p1, p2}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v3, v4}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 72
+    .end local v1  # "dialogIntent":Landroid/content/Intent;
+    .end local v2  # "e":Landroid/content/ActivityNotFoundException;
     :cond_31
     :goto_31
     return-void

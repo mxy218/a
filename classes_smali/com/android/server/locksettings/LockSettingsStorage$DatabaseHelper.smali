@@ -31,9 +31,10 @@
 # direct methods
 .method public constructor <init>(Landroid/content/Context;)V
     .registers 5
+    .param p1, "context"  # Landroid/content/Context;
 
-    .line 758
-    const-string v0, "locksettings.db"
+    .line 735
+    const-string/jumbo v0, "locksettings.db"
 
     const/4 v1, 0x0
 
@@ -41,29 +42,30 @@
 
     invoke-direct {p0, p1, v0, v1, v2}, Landroid/database/sqlite/SQLiteOpenHelper;-><init>(Landroid/content/Context;Ljava/lang/String;Landroid/database/sqlite/SQLiteDatabase$CursorFactory;I)V
 
-    .line 759
-    const/4 p1, 0x1
+    .line 736
+    const/4 v0, 0x1
 
-    invoke-virtual {p0, p1}, Lcom/android/server/locksettings/LockSettingsStorage$DatabaseHelper;->setWriteAheadLoggingEnabled(Z)V
+    invoke-virtual {p0, v0}, Lcom/android/server/locksettings/LockSettingsStorage$DatabaseHelper;->setWriteAheadLoggingEnabled(Z)V
 
-    .line 761
+    .line 738
     const-wide/16 v0, 0x7530
 
     invoke-virtual {p0, v0, v1}, Lcom/android/server/locksettings/LockSettingsStorage$DatabaseHelper;->setIdleConnectionTimeout(J)V
 
-    .line 762
+    .line 739
     return-void
 .end method
 
 .method private createTable(Landroid/database/sqlite/SQLiteDatabase;)V
     .registers 3
+    .param p1, "db"  # Landroid/database/sqlite/SQLiteDatabase;
 
-    .line 769
+    .line 746
     const-string v0, "CREATE TABLE locksettings (_id INTEGER PRIMARY KEY AUTOINCREMENT,name TEXT,user INTEGER,value TEXT);"
 
     invoke-virtual {p1, v0}, Landroid/database/sqlite/SQLiteDatabase;->execSQL(Ljava/lang/String;)V
 
-    .line 775
+    .line 752
     return-void
 .end method
 
@@ -71,61 +73,67 @@
 # virtual methods
 .method public onCreate(Landroid/database/sqlite/SQLiteDatabase;)V
     .registers 3
+    .param p1, "db"  # Landroid/database/sqlite/SQLiteDatabase;
 
-    .line 779
+    .line 756
     invoke-direct {p0, p1}, Lcom/android/server/locksettings/LockSettingsStorage$DatabaseHelper;->createTable(Landroid/database/sqlite/SQLiteDatabase;)V
 
-    .line 780
+    .line 757
     iget-object v0, p0, Lcom/android/server/locksettings/LockSettingsStorage$DatabaseHelper;->mCallback:Lcom/android/server/locksettings/LockSettingsStorage$Callback;
 
     if-eqz v0, :cond_a
 
-    .line 781
+    .line 758
     invoke-interface {v0, p1}, Lcom/android/server/locksettings/LockSettingsStorage$Callback;->initialize(Landroid/database/sqlite/SQLiteDatabase;)V
 
-    .line 783
+    .line 760
     :cond_a
     return-void
 .end method
 
 .method public onUpgrade(Landroid/database/sqlite/SQLiteDatabase;II)V
-    .registers 4
+    .registers 7
+    .param p1, "db"  # Landroid/database/sqlite/SQLiteDatabase;
+    .param p2, "oldVersion"  # I
+    .param p3, "currentVersion"  # I
 
-    .line 787
-    nop
+    .line 764
+    move v0, p2
 
-    .line 788
-    const/4 p1, 0x2
+    .line 765
+    .local v0, "upgradeVersion":I
+    const/4 v1, 0x1
 
-    const/4 p3, 0x1
+    if-ne v0, v1, :cond_5
 
-    if-ne p2, p3, :cond_6
+    .line 767
+    const/4 v0, 0x2
 
-    .line 790
-    move p2, p1
+    .line 770
+    :cond_5
+    const/4 v1, 0x2
 
-    .line 793
-    :cond_6
-    if-eq p2, p1, :cond_f
+    if-eq v0, v1, :cond_f
 
-    .line 794
-    const-string p1, "LockSettingsDB"
+    .line 771
+    const-string v1, "LockSettingsDB"
 
-    const-string p2, "Failed to upgrade database!"
+    const-string v2, "Failed to upgrade database!"
 
-    invoke-static {p1, p2}, Landroid/util/Log;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v2}, Landroid/util/Log;->w(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 796
+    .line 773
     :cond_f
     return-void
 .end method
 
 .method public setCallback(Lcom/android/server/locksettings/LockSettingsStorage$Callback;)V
     .registers 2
+    .param p1, "callback"  # Lcom/android/server/locksettings/LockSettingsStorage$Callback;
 
-    .line 765
+    .line 742
     iput-object p1, p0, Lcom/android/server/locksettings/LockSettingsStorage$DatabaseHelper;->mCallback:Lcom/android/server/locksettings/LockSettingsStorage$Callback;
 
-    .line 766
+    .line 743
     return-void
 .end method

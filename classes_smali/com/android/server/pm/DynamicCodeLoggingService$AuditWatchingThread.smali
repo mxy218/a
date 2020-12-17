@@ -23,6 +23,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/pm/DynamicCodeLoggingService;Landroid/app/job/JobParameters;)V
     .registers 3
+    .param p2, "params"  # Landroid/app/job/JobParameters;
 
     .line 173
     iput-object p1, p0, Lcom/android/server/pm/DynamicCodeLoggingService$AuditWatchingThread;->this$0:Lcom/android/server/pm/DynamicCodeLoggingService;
@@ -40,7 +41,7 @@
 .end method
 
 .method private processAuditEvents()Z
-    .registers 9
+    .registers 14
 
     .line 225
     const/4 v0, 0x1
@@ -59,6 +60,7 @@
     aput v2, v1, v3
 
     .line 226
+    .local v1, "tags":[I
     aget v2, v1, v3
 
     const/4 v4, -0x1
@@ -75,158 +77,182 @@
     move-result-object v2
 
     .line 234
+    .local v2, "dynamicCodeLogger":Lcom/android/server/pm/dex/DynamicCodeLogger;
     new-instance v4, Ljava/util/ArrayList;
 
     invoke-direct {v4}, Ljava/util/ArrayList;-><init>()V
 
     .line 235
+    .local v4, "events":Ljava/util/List;, "Ljava/util/List<Landroid/util/EventLog$Event;>;"
     invoke-static {v1, v4}, Landroid/util/EventLog;->readEvents([ILjava/util/Collection;)V
 
     .line 237
-    move v1, v3
+    move v5, v3
 
+    .local v5, "i":I
     :goto_1f
     invoke-interface {v4}, Ljava/util/List;->size()I
 
-    move-result v5
+    move-result v6
 
-    if-ge v1, v5, :cond_81
+    if-ge v5, v6, :cond_83
 
     .line 238
-    iget-object v5, p0, Lcom/android/server/pm/DynamicCodeLoggingService$AuditWatchingThread;->this$0:Lcom/android/server/pm/DynamicCodeLoggingService;
+    iget-object v6, p0, Lcom/android/server/pm/DynamicCodeLoggingService$AuditWatchingThread;->this$0:Lcom/android/server/pm/DynamicCodeLoggingService;
 
-    invoke-static {v5}, Lcom/android/server/pm/DynamicCodeLoggingService;->access$300(Lcom/android/server/pm/DynamicCodeLoggingService;)Z
+    invoke-static {v6}, Lcom/android/server/pm/DynamicCodeLoggingService;->access$300(Lcom/android/server/pm/DynamicCodeLoggingService;)Z
 
-    move-result v5
+    move-result v6
 
-    if-eqz v5, :cond_37
+    if-eqz v6, :cond_37
 
     .line 239
     invoke-static {}, Lcom/android/server/pm/DynamicCodeLoggingService;->access$200()Ljava/lang/String;
 
-    move-result-object v1
+    move-result-object v6
 
-    const-string v2, "Stopping AuditWatchingJob run at scheduler request"
+    const-string v7, "Stopping AuditWatchingJob run at scheduler request"
 
-    invoke-static {v1, v2}, Landroid/util/Log;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v6, v7}, Landroid/util/Log;->w(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 240
     return v3
 
     .line 243
     :cond_37
-    invoke-interface {v4, v1}, Ljava/util/List;->get(I)Ljava/lang/Object;
+    invoke-interface {v4, v5}, Ljava/util/List;->get(I)Ljava/lang/Object;
 
-    move-result-object v5
+    move-result-object v6
 
-    check-cast v5, Landroid/util/EventLog$Event;
+    check-cast v6, Landroid/util/EventLog$Event;
 
     .line 246
-    invoke-virtual {v5}, Landroid/util/EventLog$Event;->getUid()I
-
-    move-result v6
-
-    .line 247
-    invoke-static {v6}, Landroid/os/Process;->isApplicationUid(I)Z
+    .local v6, "event":Landroid/util/EventLog$Event;
+    invoke-virtual {v6}, Landroid/util/EventLog$Event;->getUid()I
 
     move-result v7
 
-    if-nez v7, :cond_48
+    .line 247
+    .local v7, "uid":I
+    invoke-static {v7}, Landroid/os/Process;->isApplicationUid(I)Z
+
+    move-result v8
+
+    if-nez v8, :cond_48
 
     .line 248
-    goto :goto_7e
+    goto :goto_80
 
     .line 250
     :cond_48
-    invoke-virtual {v5}, Landroid/util/EventLog$Event;->getData()Ljava/lang/Object;
+    invoke-virtual {v6}, Landroid/util/EventLog$Event;->getData()Ljava/lang/Object;
 
-    move-result-object v5
+    move-result-object v8
 
     .line 251
-    instance-of v7, v5, Ljava/lang/String;
+    .local v8, "data":Ljava/lang/Object;
+    instance-of v9, v8, Ljava/lang/String;
 
-    if-nez v7, :cond_51
+    if-nez v9, :cond_51
 
     .line 252
-    goto :goto_7e
+    goto :goto_80
 
     .line 254
     :cond_51
-    check-cast v5, Ljava/lang/String;
+    move-object v9, v8
+
+    check-cast v9, Ljava/lang/String;
 
     .line 255
-    const-string/jumbo v7, "type=1400 "
+    .local v9, "message":Ljava/lang/String;
+    const-string/jumbo v10, "type=1400 "
 
-    invoke-virtual {v5, v7}, Ljava/lang/String;->startsWith(Ljava/lang/String;)Z
+    invoke-virtual {v9, v10}, Ljava/lang/String;->startsWith(Ljava/lang/String;)Z
 
-    move-result v7
+    move-result v10
 
-    if-nez v7, :cond_5d
+    if-nez v10, :cond_5e
 
     .line 256
-    goto :goto_7e
+    goto :goto_80
 
     .line 261
-    :cond_5d
+    :cond_5e
     invoke-static {}, Lcom/android/server/pm/DynamicCodeLoggingService;->access$400()Ljava/util/regex/Pattern;
 
-    move-result-object v7
+    move-result-object v10
 
-    invoke-virtual {v7, v5}, Ljava/util/regex/Pattern;->matcher(Ljava/lang/CharSequence;)Ljava/util/regex/Matcher;
+    invoke-virtual {v10, v9}, Ljava/util/regex/Pattern;->matcher(Ljava/lang/CharSequence;)Ljava/util/regex/Matcher;
 
-    move-result-object v5
+    move-result-object v10
 
     .line 262
-    invoke-virtual {v5}, Ljava/util/regex/Matcher;->matches()Z
+    .local v10, "matcher":Ljava/util/regex/Matcher;
+    invoke-virtual {v10}, Ljava/util/regex/Matcher;->matches()Z
 
-    move-result v7
+    move-result v11
 
-    if-nez v7, :cond_6c
+    if-nez v11, :cond_6d
 
     .line 263
-    goto :goto_7e
+    goto :goto_80
 
     .line 265
-    :cond_6c
-    invoke-virtual {v5, v0}, Ljava/util/regex/Matcher;->group(I)Ljava/lang/String;
+    :cond_6d
+    invoke-virtual {v10, v0}, Ljava/util/regex/Matcher;->group(I)Ljava/lang/String;
 
-    move-result-object v7
+    move-result-object v11
 
     .line 266
-    if-nez v7, :cond_7b
+    .local v11, "path":Ljava/lang/String;
+    if-nez v11, :cond_7d
 
     .line 269
-    const/4 v7, 0x2
+    const/4 v12, 0x2
 
-    invoke-virtual {v5, v7}, Ljava/util/regex/Matcher;->group(I)Ljava/lang/String;
+    invoke-virtual {v10, v12}, Ljava/util/regex/Matcher;->group(I)Ljava/lang/String;
 
-    move-result-object v5
+    move-result-object v12
 
-    invoke-static {v5}, Lcom/android/server/pm/DynamicCodeLoggingService;->access$500(Ljava/lang/String;)Ljava/lang/String;
+    invoke-static {v12}, Lcom/android/server/pm/DynamicCodeLoggingService;->access$500(Ljava/lang/String;)Ljava/lang/String;
 
-    move-result-object v7
+    move-result-object v12
+
+    move-object v11, v12
 
     .line 271
-    :cond_7b
-    invoke-virtual {v2, v6, v7}, Lcom/android/server/pm/dex/DynamicCodeLogger;->recordNative(ILjava/lang/String;)V
-    :try_end_7e
-    .catch Ljava/lang/Exception; {:try_start_1 .. :try_end_7e} :catch_82
+    :cond_7d
+    invoke-virtual {v2, v7, v11}, Lcom/android/server/pm/dex/DynamicCodeLogger;->recordNative(ILjava/lang/String;)V
+    :try_end_80
+    .catch Ljava/lang/Exception; {:try_start_1 .. :try_end_80} :catch_84
 
     .line 237
-    :goto_7e
-    add-int/lit8 v1, v1, 0x1
+    .end local v6  # "event":Landroid/util/EventLog$Event;
+    .end local v7  # "uid":I
+    .end local v8  # "data":Ljava/lang/Object;
+    .end local v9  # "message":Ljava/lang/String;
+    .end local v10  # "matcher":Ljava/util/regex/Matcher;
+    .end local v11  # "path":Ljava/lang/String;
+    :goto_80
+    add-int/lit8 v5, v5, 0x1
 
     goto :goto_1f
 
     .line 274
-    :cond_81
+    .end local v5  # "i":I
+    :cond_83
     return v0
 
     .line 275
-    :catch_82
+    .end local v1  # "tags":[I
+    .end local v2  # "dynamicCodeLogger":Lcom/android/server/pm/dex/DynamicCodeLogger;
+    .end local v4  # "events":Ljava/util/List;, "Ljava/util/List<Landroid/util/EventLog$Event;>;"
+    :catch_84
     move-exception v1
 
     .line 276
+    .local v1, "e":Ljava/lang/Exception;
     invoke-static {}, Lcom/android/server/pm/DynamicCodeLoggingService;->access$200()Ljava/lang/String;
 
     move-result-object v2

@@ -48,6 +48,7 @@
 # direct methods
 .method public constructor <init>(Ljava/lang/String;Ljava/util/ArrayList;)V
     .registers 4
+    .param p1, "deviceAddr"  # Ljava/lang/String;
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(",
@@ -59,6 +60,7 @@
     .end annotation
 
     .line 50
+    .local p2, "descriptors":Ljava/util/ArrayList;, "Ljava/util/ArrayList<Lcom/android/server/usb/descriptors/UsbDescriptor;>;"
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
     .line 44
@@ -73,22 +75,24 @@
     iput-object p2, p0, Lcom/android/server/usb/descriptors/UsbDescriptorParser;->mDescriptors:Ljava/util/ArrayList;
 
     .line 54
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    invoke-virtual {p2, p1}, Ljava/util/ArrayList;->get(I)Ljava/lang/Object;
+    invoke-virtual {p2, v0}, Ljava/util/ArrayList;->get(I)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v0
 
-    check-cast p1, Lcom/android/server/usb/descriptors/UsbDeviceDescriptor;
+    check-cast v0, Lcom/android/server/usb/descriptors/UsbDeviceDescriptor;
 
-    iput-object p1, p0, Lcom/android/server/usb/descriptors/UsbDescriptorParser;->mDeviceDescriptor:Lcom/android/server/usb/descriptors/UsbDeviceDescriptor;
+    iput-object v0, p0, Lcom/android/server/usb/descriptors/UsbDescriptorParser;->mDeviceDescriptor:Lcom/android/server/usb/descriptors/UsbDeviceDescriptor;
 
     .line 55
     return-void
 .end method
 
 .method public constructor <init>(Ljava/lang/String;[B)V
-    .registers 4
+    .registers 5
+    .param p1, "deviceAddr"  # Ljava/lang/String;
+    .param p2, "rawDescriptors"  # [B
 
     .line 61
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -102,13 +106,13 @@
     iput-object p1, p0, Lcom/android/server/usb/descriptors/UsbDescriptorParser;->mDeviceAddr:Ljava/lang/String;
 
     .line 63
-    new-instance p1, Ljava/util/ArrayList;
+    new-instance v0, Ljava/util/ArrayList;
 
-    const/16 v0, 0x80
+    const/16 v1, 0x80
 
-    invoke-direct {p1, v0}, Ljava/util/ArrayList;-><init>(I)V
+    invoke-direct {v0, v1}, Ljava/util/ArrayList;-><init>(I)V
 
-    iput-object p1, p0, Lcom/android/server/usb/descriptors/UsbDescriptorParser;->mDescriptors:Ljava/util/ArrayList;
+    iput-object v0, p0, Lcom/android/server/usb/descriptors/UsbDescriptorParser;->mDescriptors:Ljava/util/ArrayList;
 
     .line 64
     invoke-virtual {p0, p2}, Lcom/android/server/usb/descriptors/UsbDescriptorParser;->parseDescriptors([B)V
@@ -118,7 +122,8 @@
 .end method
 
 .method private allocDescriptor(Lcom/android/server/usb/descriptors/ByteStream;)Lcom/android/server/usb/descriptors/UsbDescriptor;
-    .registers 7
+    .registers 8
+    .param p1, "stream"  # Lcom/android/server/usb/descriptors/ByteStream;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Lcom/android/server/usb/descriptors/UsbDescriptorParser$UsbDescriptorsStreamFormatException;
@@ -134,239 +139,254 @@
     move-result v0
 
     .line 116
+    .local v0, "length":I
     invoke-virtual {p1}, Lcom/android/server/usb/descriptors/ByteStream;->getByte()B
 
     move-result v1
 
     .line 118
-    nop
+    .local v1, "type":B
+    const/4 v2, 0x0
 
     .line 119
-    const/4 v2, 0x1
+    .local v2, "descriptor":Lcom/android/server/usb/descriptors/UsbDescriptor;
+    const/4 v3, 0x1
 
-    const-string v3, "UsbDescriptorParser"
+    const-string v4, "UsbDescriptorParser"
 
-    if-eq v1, v2, :cond_96
+    if-eq v1, v3, :cond_9c
 
-    const/4 v2, 0x2
+    const/4 v3, 0x2
 
-    if-eq v1, v2, :cond_7a
+    if-eq v1, v3, :cond_7f
 
-    const/4 v2, 0x4
+    const/4 v3, 0x4
 
-    if-eq v1, v2, :cond_5e
+    if-eq v1, v3, :cond_62
 
-    const/4 v2, 0x5
+    const/4 v3, 0x5
 
-    if-eq v1, v2, :cond_43
+    if-eq v1, v3, :cond_46
 
-    const/16 v2, 0xb
+    const/16 v3, 0xb
 
-    if-eq v1, v2, :cond_3d
+    if-eq v1, v3, :cond_3f
 
-    const/16 v2, 0x21
+    const/16 v3, 0x21
 
-    if-eq v1, v2, :cond_37
+    if-eq v1, v3, :cond_38
 
-    const/16 v2, 0x24
+    const/16 v3, 0x24
 
-    if-eq v1, v2, :cond_32
+    if-eq v1, v3, :cond_32
 
-    const/16 p1, 0x25
+    const/16 v3, 0x25
 
-    if-eq v1, p1, :cond_2d
+    if-eq v1, v3, :cond_2c
 
-    const/4 p1, 0x0
-
-    goto/16 :goto_9e
+    goto/16 :goto_a5
 
     .line 184
-    :cond_2d
+    :cond_2c
     invoke-static {p0, v0, v1}, Lcom/android/server/usb/descriptors/UsbACEndpoint;->allocDescriptor(Lcom/android/server/usb/descriptors/UsbDescriptorParser;IB)Lcom/android/server/usb/descriptors/UsbDescriptor;
 
-    move-result-object p1
+    move-result-object v2
 
     .line 185
-    goto :goto_9e
+    goto/16 :goto_a5
 
     .line 180
     :cond_32
     invoke-static {p0, p1, v0, v1}, Lcom/android/server/usb/descriptors/UsbACInterface;->allocDescriptor(Lcom/android/server/usb/descriptors/UsbDescriptorParser;Lcom/android/server/usb/descriptors/ByteStream;IB)Lcom/android/server/usb/descriptors/UsbDescriptor;
 
-    move-result-object p1
+    move-result-object v2
 
     .line 181
-    goto :goto_9e
+    goto/16 :goto_a5
 
     .line 166
-    :cond_37
-    new-instance p1, Lcom/android/server/usb/descriptors/UsbHIDDescriptor;
+    :cond_38
+    new-instance v3, Lcom/android/server/usb/descriptors/UsbHIDDescriptor;
 
-    invoke-direct {p1, v0, v1}, Lcom/android/server/usb/descriptors/UsbHIDDescriptor;-><init>(IB)V
+    invoke-direct {v3, v0, v1}, Lcom/android/server/usb/descriptors/UsbHIDDescriptor;-><init>(IB)V
+
+    move-object v2, v3
 
     .line 167
-    goto :goto_9e
+    goto :goto_a5
 
     .line 173
-    :cond_3d
-    new-instance p1, Lcom/android/server/usb/descriptors/UsbInterfaceAssoc;
+    :cond_3f
+    new-instance v3, Lcom/android/server/usb/descriptors/UsbInterfaceAssoc;
 
-    invoke-direct {p1, v0, v1}, Lcom/android/server/usb/descriptors/UsbInterfaceAssoc;-><init>(IB)V
+    invoke-direct {v3, v0, v1}, Lcom/android/server/usb/descriptors/UsbInterfaceAssoc;-><init>(IB)V
+
+    move-object v2, v3
 
     .line 174
-    goto :goto_9e
+    goto :goto_a5
 
     .line 150
-    :cond_43
-    new-instance p1, Lcom/android/server/usb/descriptors/UsbEndpointDescriptor;
+    :cond_46
+    new-instance v3, Lcom/android/server/usb/descriptors/UsbEndpointDescriptor;
 
-    invoke-direct {p1, v0, v1}, Lcom/android/server/usb/descriptors/UsbEndpointDescriptor;-><init>(IB)V
+    invoke-direct {v3, v0, v1}, Lcom/android/server/usb/descriptors/UsbEndpointDescriptor;-><init>(IB)V
+
+    move-object v2, v3
 
     .line 151
-    iget-object v2, p0, Lcom/android/server/usb/descriptors/UsbDescriptorParser;->mCurInterfaceDescriptor:Lcom/android/server/usb/descriptors/UsbInterfaceDescriptor;
+    iget-object v3, p0, Lcom/android/server/usb/descriptors/UsbDescriptorParser;->mCurInterfaceDescriptor:Lcom/android/server/usb/descriptors/UsbInterfaceDescriptor;
 
-    if-eqz v2, :cond_53
+    if-eqz v3, :cond_57
 
     .line 152
-    move-object v4, p1
+    move-object v5, v2
 
-    check-cast v4, Lcom/android/server/usb/descriptors/UsbEndpointDescriptor;
+    check-cast v5, Lcom/android/server/usb/descriptors/UsbEndpointDescriptor;
 
-    invoke-virtual {v2, v4}, Lcom/android/server/usb/descriptors/UsbInterfaceDescriptor;->addEndpointDescriptor(Lcom/android/server/usb/descriptors/UsbEndpointDescriptor;)V
+    invoke-virtual {v3, v5}, Lcom/android/server/usb/descriptors/UsbInterfaceDescriptor;->addEndpointDescriptor(Lcom/android/server/usb/descriptors/UsbEndpointDescriptor;)V
 
-    goto :goto_9e
+    goto :goto_a5
 
     .line 155
-    :cond_53
-    const-string p1, "Endpoint Descriptor found with no associated Interface Descriptor!"
+    :cond_57
+    const-string v3, "Endpoint Descriptor found with no associated Interface Descriptor!"
 
-    invoke-static {v3, p1}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v4, v3}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 157
-    new-instance v0, Lcom/android/server/usb/descriptors/UsbDescriptorParser$UsbDescriptorsStreamFormatException;
+    new-instance v4, Lcom/android/server/usb/descriptors/UsbDescriptorParser$UsbDescriptorsStreamFormatException;
 
-    invoke-direct {v0, p0, p1}, Lcom/android/server/usb/descriptors/UsbDescriptorParser$UsbDescriptorsStreamFormatException;-><init>(Lcom/android/server/usb/descriptors/UsbDescriptorParser;Ljava/lang/String;)V
+    invoke-direct {v4, p0, v3}, Lcom/android/server/usb/descriptors/UsbDescriptorParser$UsbDescriptorsStreamFormatException;-><init>(Lcom/android/server/usb/descriptors/UsbDescriptorParser;Ljava/lang/String;)V
 
-    throw v0
+    throw v4
 
     .line 139
-    :cond_5e
-    new-instance p1, Lcom/android/server/usb/descriptors/UsbInterfaceDescriptor;
+    :cond_62
+    new-instance v3, Lcom/android/server/usb/descriptors/UsbInterfaceDescriptor;
 
-    invoke-direct {p1, v0, v1}, Lcom/android/server/usb/descriptors/UsbInterfaceDescriptor;-><init>(IB)V
+    invoke-direct {v3, v0, v1}, Lcom/android/server/usb/descriptors/UsbInterfaceDescriptor;-><init>(IB)V
 
-    iput-object p1, p0, Lcom/android/server/usb/descriptors/UsbDescriptorParser;->mCurInterfaceDescriptor:Lcom/android/server/usb/descriptors/UsbInterfaceDescriptor;
+    iput-object v3, p0, Lcom/android/server/usb/descriptors/UsbDescriptorParser;->mCurInterfaceDescriptor:Lcom/android/server/usb/descriptors/UsbInterfaceDescriptor;
+
+    move-object v2, v3
 
     .line 140
-    iget-object v2, p0, Lcom/android/server/usb/descriptors/UsbDescriptorParser;->mCurConfigDescriptor:Lcom/android/server/usb/descriptors/UsbConfigDescriptor;
+    iget-object v3, p0, Lcom/android/server/usb/descriptors/UsbDescriptorParser;->mCurConfigDescriptor:Lcom/android/server/usb/descriptors/UsbConfigDescriptor;
 
-    if-eqz v2, :cond_6f
+    if-eqz v3, :cond_74
 
     .line 141
-    iget-object v4, p0, Lcom/android/server/usb/descriptors/UsbDescriptorParser;->mCurInterfaceDescriptor:Lcom/android/server/usb/descriptors/UsbInterfaceDescriptor;
+    iget-object v5, p0, Lcom/android/server/usb/descriptors/UsbDescriptorParser;->mCurInterfaceDescriptor:Lcom/android/server/usb/descriptors/UsbInterfaceDescriptor;
 
-    invoke-virtual {v2, v4}, Lcom/android/server/usb/descriptors/UsbConfigDescriptor;->addInterfaceDescriptor(Lcom/android/server/usb/descriptors/UsbInterfaceDescriptor;)V
+    invoke-virtual {v3, v5}, Lcom/android/server/usb/descriptors/UsbConfigDescriptor;->addInterfaceDescriptor(Lcom/android/server/usb/descriptors/UsbInterfaceDescriptor;)V
 
-    goto :goto_9e
+    goto :goto_a5
 
     .line 143
-    :cond_6f
-    const-string p1, "Interface Descriptor found with no associated Config Descriptor!"
+    :cond_74
+    const-string v3, "Interface Descriptor found with no associated Config Descriptor!"
 
-    invoke-static {v3, p1}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v4, v3}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 144
-    new-instance v0, Lcom/android/server/usb/descriptors/UsbDescriptorParser$UsbDescriptorsStreamFormatException;
+    new-instance v4, Lcom/android/server/usb/descriptors/UsbDescriptorParser$UsbDescriptorsStreamFormatException;
 
-    invoke-direct {v0, p0, p1}, Lcom/android/server/usb/descriptors/UsbDescriptorParser$UsbDescriptorsStreamFormatException;-><init>(Lcom/android/server/usb/descriptors/UsbDescriptorParser;Ljava/lang/String;)V
+    invoke-direct {v4, p0, v3}, Lcom/android/server/usb/descriptors/UsbDescriptorParser$UsbDescriptorsStreamFormatException;-><init>(Lcom/android/server/usb/descriptors/UsbDescriptorParser;Ljava/lang/String;)V
 
-    throw v0
+    throw v4
 
     .line 128
-    :cond_7a
-    new-instance p1, Lcom/android/server/usb/descriptors/UsbConfigDescriptor;
+    :cond_7f
+    new-instance v3, Lcom/android/server/usb/descriptors/UsbConfigDescriptor;
 
-    invoke-direct {p1, v0, v1}, Lcom/android/server/usb/descriptors/UsbConfigDescriptor;-><init>(IB)V
+    invoke-direct {v3, v0, v1}, Lcom/android/server/usb/descriptors/UsbConfigDescriptor;-><init>(IB)V
 
-    iput-object p1, p0, Lcom/android/server/usb/descriptors/UsbDescriptorParser;->mCurConfigDescriptor:Lcom/android/server/usb/descriptors/UsbConfigDescriptor;
+    iput-object v3, p0, Lcom/android/server/usb/descriptors/UsbDescriptorParser;->mCurConfigDescriptor:Lcom/android/server/usb/descriptors/UsbConfigDescriptor;
+
+    move-object v2, v3
 
     .line 129
-    iget-object v2, p0, Lcom/android/server/usb/descriptors/UsbDescriptorParser;->mDeviceDescriptor:Lcom/android/server/usb/descriptors/UsbDeviceDescriptor;
+    iget-object v3, p0, Lcom/android/server/usb/descriptors/UsbDescriptorParser;->mDeviceDescriptor:Lcom/android/server/usb/descriptors/UsbDeviceDescriptor;
 
-    if-eqz v2, :cond_8b
+    if-eqz v3, :cond_91
 
     .line 130
-    iget-object v4, p0, Lcom/android/server/usb/descriptors/UsbDescriptorParser;->mCurConfigDescriptor:Lcom/android/server/usb/descriptors/UsbConfigDescriptor;
+    iget-object v5, p0, Lcom/android/server/usb/descriptors/UsbDescriptorParser;->mCurConfigDescriptor:Lcom/android/server/usb/descriptors/UsbConfigDescriptor;
 
-    invoke-virtual {v2, v4}, Lcom/android/server/usb/descriptors/UsbDeviceDescriptor;->addConfigDescriptor(Lcom/android/server/usb/descriptors/UsbConfigDescriptor;)V
+    invoke-virtual {v3, v5}, Lcom/android/server/usb/descriptors/UsbDeviceDescriptor;->addConfigDescriptor(Lcom/android/server/usb/descriptors/UsbConfigDescriptor;)V
 
-    goto :goto_9e
+    goto :goto_a5
 
     .line 132
-    :cond_8b
-    const-string p1, "Config Descriptor found with no associated Device Descriptor!"
+    :cond_91
+    const-string v3, "Config Descriptor found with no associated Device Descriptor!"
 
-    invoke-static {v3, p1}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v4, v3}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 133
-    new-instance v0, Lcom/android/server/usb/descriptors/UsbDescriptorParser$UsbDescriptorsStreamFormatException;
+    new-instance v4, Lcom/android/server/usb/descriptors/UsbDescriptorParser$UsbDescriptorsStreamFormatException;
 
-    invoke-direct {v0, p0, p1}, Lcom/android/server/usb/descriptors/UsbDescriptorParser$UsbDescriptorsStreamFormatException;-><init>(Lcom/android/server/usb/descriptors/UsbDescriptorParser;Ljava/lang/String;)V
+    invoke-direct {v4, p0, v3}, Lcom/android/server/usb/descriptors/UsbDescriptorParser$UsbDescriptorsStreamFormatException;-><init>(Lcom/android/server/usb/descriptors/UsbDescriptorParser;Ljava/lang/String;)V
 
-    throw v0
+    throw v4
 
     .line 124
-    :cond_96
-    new-instance p1, Lcom/android/server/usb/descriptors/UsbDeviceDescriptor;
+    :cond_9c
+    new-instance v3, Lcom/android/server/usb/descriptors/UsbDeviceDescriptor;
 
-    invoke-direct {p1, v0, v1}, Lcom/android/server/usb/descriptors/UsbDeviceDescriptor;-><init>(IB)V
+    invoke-direct {v3, v0, v1}, Lcom/android/server/usb/descriptors/UsbDeviceDescriptor;-><init>(IB)V
 
-    iput-object p1, p0, Lcom/android/server/usb/descriptors/UsbDescriptorParser;->mDeviceDescriptor:Lcom/android/server/usb/descriptors/UsbDeviceDescriptor;
+    iput-object v3, p0, Lcom/android/server/usb/descriptors/UsbDescriptorParser;->mDeviceDescriptor:Lcom/android/server/usb/descriptors/UsbDeviceDescriptor;
+
+    move-object v2, v3
 
     .line 125
     nop
 
     .line 191
-    :goto_9e
-    if-nez p1, :cond_c5
+    :goto_a5
+    if-nez v2, :cond_cd
 
     .line 193
-    new-instance p1, Ljava/lang/StringBuilder;
+    new-instance v3, Ljava/lang/StringBuilder;
 
-    invoke-direct {p1}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v2, "Unknown Descriptor len: "
+    const-string v5, "Unknown Descriptor len: "
 
-    invoke-virtual {p1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p1, v0}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v0}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    const-string v2, " type:0x"
+    const-string v5, " type:0x"
 
-    invoke-virtual {p1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     .line 194
     invoke-static {v1}, Ljava/lang/Integer;->toHexString(I)Ljava/lang/String;
 
-    move-result-object v2
+    move-result-object v5
 
-    invoke-virtual {p1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v3
 
     .line 193
-    invoke-static {v3, p1}, Landroid/util/Log;->i(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v4, v3}, Landroid/util/Log;->i(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 195
-    new-instance p1, Lcom/android/server/usb/descriptors/UsbUnknown;
+    new-instance v3, Lcom/android/server/usb/descriptors/UsbUnknown;
 
-    invoke-direct {p1, v0, v1}, Lcom/android/server/usb/descriptors/UsbUnknown;-><init>(IB)V
+    invoke-direct {v3, v0, v1}, Lcom/android/server/usb/descriptors/UsbUnknown;-><init>(IB)V
+
+    move-object v2, v3
 
     .line 198
-    :cond_c5
-    return-object p1
+    :cond_cd
+    return-object v2
 .end method
 
 .method private native getDescriptorString_native(Ljava/lang/String;I)Ljava/lang/String;
@@ -379,6 +399,8 @@
 # virtual methods
 .method public getACInterfaceDescriptors(BI)Ljava/util/ArrayList;
     .registers 8
+    .param p1, "subtype"  # B
+    .param p2, "subclass"  # I
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(BI)",
@@ -394,6 +416,7 @@
     invoke-direct {v0}, Ljava/util/ArrayList;-><init>()V
 
     .line 327
+    .local v0, "list":Ljava/util/ArrayList;, "Ljava/util/ArrayList<Lcom/android/server/usb/descriptors/UsbDescriptor;>;"
     iget-object v1, p0, Lcom/android/server/usb/descriptors/UsbDescriptorParser;->mDescriptors:Ljava/util/ArrayList;
 
     invoke-virtual {v1}, Ljava/util/ArrayList;->iterator()Ljava/util/Iterator;
@@ -414,6 +437,7 @@
     check-cast v2, Lcom/android/server/usb/descriptors/UsbDescriptor;
 
     .line 328
+    .local v2, "descriptor":Lcom/android/server/usb/descriptors/UsbDescriptor;
     invoke-virtual {v2}, Lcom/android/server/usb/descriptors/UsbDescriptor;->getType()B
 
     move-result v3
@@ -433,6 +457,7 @@
     check-cast v3, Lcom/android/server/usb/descriptors/UsbACInterface;
 
     .line 332
+    .local v3, "acDescriptor":Lcom/android/server/usb/descriptors/UsbACInterface;
     invoke-virtual {v3}, Lcom/android/server/usb/descriptors/UsbACInterface;->getSubtype()B
 
     move-result v4
@@ -442,14 +467,15 @@
     .line 333
     invoke-virtual {v3}, Lcom/android/server/usb/descriptors/UsbACInterface;->getSubclass()I
 
-    move-result v3
+    move-result v4
 
-    if-ne v3, p2, :cond_35
+    if-ne v4, p2, :cond_35
 
     .line 334
     invoke-virtual {v0, v2}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
 
     .line 336
+    .end local v3  # "acDescriptor":Lcom/android/server/usb/descriptors/UsbACInterface;
     :cond_35
     goto :goto_60
 
@@ -476,24 +502,25 @@
     .line 338
     invoke-virtual {v2}, Lcom/android/server/usb/descriptors/UsbDescriptor;->getType()B
 
-    move-result v2
+    move-result v4
 
-    invoke-static {v2}, Ljava/lang/Integer;->toHexString(I)Ljava/lang/String;
+    invoke-static {v4}, Ljava/lang/Integer;->toHexString(I)Ljava/lang/String;
 
-    move-result-object v2
+    move-result-object v4
 
-    invoke-virtual {v3, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v2
+    move-result-object v3
 
     .line 337
-    const-string v3, "UsbDescriptorParser"
+    const-string v4, "UsbDescriptorParser"
 
-    invoke-static {v3, v2}, Landroid/util/Log;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v4, v3}, Landroid/util/Log;->w(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 341
+    .end local v2  # "descriptor":Lcom/android/server/usb/descriptors/UsbDescriptor;
     :cond_60
     :goto_60
     goto :goto_b
@@ -523,15 +550,16 @@
 
 .method public getDescriptorString(I)Ljava/lang/String;
     .registers 3
+    .param p1, "stringId"  # I
 
     .line 258
     iget-object v0, p0, Lcom/android/server/usb/descriptors/UsbDescriptorParser;->mDeviceAddr:Ljava/lang/String;
 
     invoke-direct {p0, v0, p1}, Lcom/android/server/usb/descriptors/UsbDescriptorParser;->getDescriptorString_native(Ljava/lang/String;I)Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    return-object p1
+    return-object v0
 .end method
 
 .method public getDescriptors()Ljava/util/ArrayList;
@@ -553,6 +581,7 @@
 
 .method public getDescriptors(B)Ljava/util/ArrayList;
     .registers 6
+    .param p1, "type"  # B
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(B)",
@@ -568,6 +597,7 @@
     invoke-direct {v0}, Ljava/util/ArrayList;-><init>()V
 
     .line 292
+    .local v0, "list":Ljava/util/ArrayList;, "Ljava/util/ArrayList<Lcom/android/server/usb/descriptors/UsbDescriptor;>;"
     iget-object v1, p0, Lcom/android/server/usb/descriptors/UsbDescriptorParser;->mDescriptors:Ljava/util/ArrayList;
 
     invoke-virtual {v1}, Ljava/util/ArrayList;->iterator()Ljava/util/Iterator;
@@ -588,6 +618,7 @@
     check-cast v2, Lcom/android/server/usb/descriptors/UsbDescriptor;
 
     .line 293
+    .local v2, "descriptor":Lcom/android/server/usb/descriptors/UsbDescriptor;
     invoke-virtual {v2}, Lcom/android/server/usb/descriptors/UsbDescriptor;->getType()B
 
     move-result v3
@@ -598,6 +629,7 @@
     invoke-virtual {v0, v2}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
 
     .line 296
+    .end local v2  # "descriptor":Lcom/android/server/usb/descriptors/UsbDescriptor;
     :cond_20
     goto :goto_b
 
@@ -625,64 +657,70 @@
 .end method
 
 .method public getInputHeadsetProbability()F
-    .registers 4
+    .registers 5
 
     .line 529
     invoke-virtual {p0}, Lcom/android/server/usb/descriptors/UsbDescriptorParser;->hasMIDIInterface()Z
 
     move-result v0
 
-    const/4 v1, 0x0
-
     if-eqz v0, :cond_8
 
     .line 530
-    return v1
+    const/4 v0, 0x0
+
+    return v0
 
     .line 533
     :cond_8
-    nop
+    const/4 v0, 0x0
 
     .line 536
+    .local v0, "probability":F
     invoke-virtual {p0}, Lcom/android/server/usb/descriptors/UsbDescriptorParser;->hasMic()Z
 
-    move-result v0
+    move-result v1
 
     .line 539
+    .local v1, "hasMic":Z
     invoke-virtual {p0}, Lcom/android/server/usb/descriptors/UsbDescriptorParser;->hasSpeaker()Z
 
     move-result v2
 
     .line 541
-    if-eqz v0, :cond_17
+    .local v2, "hasSpeaker":Z
+    if-eqz v1, :cond_18
 
-    if-eqz v2, :cond_17
+    if-eqz v2, :cond_18
 
     .line 542
-    const/high16 v1, 0x3f400000  # 0.75f
+    const/high16 v3, 0x3f400000  # 0.75f
+
+    add-float/2addr v0, v3
 
     .line 545
-    :cond_17
-    if-eqz v0, :cond_22
+    :cond_18
+    if-eqz v1, :cond_23
 
     invoke-virtual {p0}, Lcom/android/server/usb/descriptors/UsbDescriptorParser;->hasHIDInterface()Z
 
-    move-result v0
+    move-result v3
 
-    if-eqz v0, :cond_22
+    if-eqz v3, :cond_23
 
     .line 546
-    const/high16 v0, 0x3e800000  # 0.25f
+    const/high16 v3, 0x3e800000  # 0.25f
 
-    add-float/2addr v1, v0
+    add-float/2addr v0, v3
 
     .line 549
-    :cond_22
-    return v1
+    :cond_23
+    return v0
 .end method
 
 .method public getInterfaceDescriptorsForClass(I)Ljava/util/ArrayList;
     .registers 7
+    .param p1, "usbClass"  # I
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(I)",
@@ -698,6 +736,7 @@
     invoke-direct {v0}, Ljava/util/ArrayList;-><init>()V
 
     .line 305
+    .local v0, "list":Ljava/util/ArrayList;, "Ljava/util/ArrayList<Lcom/android/server/usb/descriptors/UsbDescriptor;>;"
     iget-object v1, p0, Lcom/android/server/usb/descriptors/UsbDescriptorParser;->mDescriptors:Ljava/util/ArrayList;
 
     invoke-virtual {v1}, Ljava/util/ArrayList;->iterator()Ljava/util/Iterator;
@@ -718,6 +757,7 @@
     check-cast v2, Lcom/android/server/usb/descriptors/UsbDescriptor;
 
     .line 307
+    .local v2, "descriptor":Lcom/android/server/usb/descriptors/UsbDescriptor;
     invoke-virtual {v2}, Lcom/android/server/usb/descriptors/UsbDescriptor;->getType()B
 
     move-result v3
@@ -737,16 +777,18 @@
     check-cast v3, Lcom/android/server/usb/descriptors/UsbInterfaceDescriptor;
 
     .line 310
+    .local v3, "intrDesc":Lcom/android/server/usb/descriptors/UsbInterfaceDescriptor;
     invoke-virtual {v3}, Lcom/android/server/usb/descriptors/UsbInterfaceDescriptor;->getUsbClass()I
 
-    move-result v3
+    move-result v4
 
-    if-ne v3, p1, :cond_2e
+    if-ne v4, p1, :cond_2e
 
     .line 311
     invoke-virtual {v0, v2}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
 
     .line 313
+    .end local v3  # "intrDesc":Lcom/android/server/usb/descriptors/UsbInterfaceDescriptor;
     :cond_2e
     goto :goto_59
 
@@ -773,24 +815,25 @@
     .line 315
     invoke-virtual {v2}, Lcom/android/server/usb/descriptors/UsbDescriptor;->getType()B
 
-    move-result v2
+    move-result v4
 
-    invoke-static {v2}, Ljava/lang/Integer;->toHexString(I)Ljava/lang/String;
+    invoke-static {v4}, Ljava/lang/Integer;->toHexString(I)Ljava/lang/String;
 
-    move-result-object v2
+    move-result-object v4
 
-    invoke-virtual {v3, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v2
+    move-result-object v3
 
     .line 314
-    const-string v3, "UsbDescriptorParser"
+    const-string v4, "UsbDescriptorParser"
 
-    invoke-static {v3, v2}, Landroid/util/Log;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v4, v3}, Landroid/util/Log;->w(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 318
+    .end local v2  # "descriptor":Lcom/android/server/usb/descriptors/UsbDescriptor;
     :cond_59
     :goto_59
     goto :goto_b
@@ -801,107 +844,115 @@
 .end method
 
 .method public getOutputHeadsetProbability()F
-    .registers 8
+    .registers 9
 
     .line 566
     invoke-virtual {p0}, Lcom/android/server/usb/descriptors/UsbDescriptorParser;->hasMIDIInterface()Z
 
     move-result v0
 
-    const/4 v1, 0x0
-
     if-eqz v0, :cond_8
 
     .line 567
-    return v1
+    const/4 v0, 0x0
+
+    return v0
 
     .line 570
     :cond_8
-    nop
-
-    .line 574
     const/4 v0, 0x0
 
+    .line 574
+    .local v0, "probability":F
+    const/4 v1, 0x0
+
     .line 575
+    .local v1, "hasSpeaker":Z
     const/4 v2, 0x3
 
-    .line 576
     const/4 v3, 0x1
 
+    .line 576
     invoke-virtual {p0, v2, v3}, Lcom/android/server/usb/descriptors/UsbDescriptorParser;->getACInterfaceDescriptors(BI)Ljava/util/ArrayList;
 
     move-result-object v2
 
     .line 578
+    .local v2, "acDescriptors":Ljava/util/ArrayList;, "Ljava/util/ArrayList<Lcom/android/server/usb/descriptors/UsbDescriptor;>;"
     invoke-virtual {v2}, Ljava/util/ArrayList;->iterator()Ljava/util/Iterator;
 
-    move-result-object v2
+    move-result-object v3
 
     :goto_14
-    invoke-interface {v2}, Ljava/util/Iterator;->hasNext()Z
+    invoke-interface {v3}, Ljava/util/Iterator;->hasNext()Z
 
     move-result v4
 
     if-eqz v4, :cond_6e
 
-    invoke-interface {v2}, Ljava/util/Iterator;->next()Ljava/lang/Object;
+    invoke-interface {v3}, Ljava/util/Iterator;->next()Ljava/lang/Object;
 
     move-result-object v4
 
     check-cast v4, Lcom/android/server/usb/descriptors/UsbDescriptor;
 
     .line 579
+    .local v4, "descriptor":Lcom/android/server/usb/descriptors/UsbDescriptor;
     instance-of v5, v4, Lcom/android/server/usb/descriptors/UsbACTerminal;
 
     if-eqz v5, :cond_43
 
     .line 580
-    check-cast v4, Lcom/android/server/usb/descriptors/UsbACTerminal;
+    move-object v5, v4
+
+    check-cast v5, Lcom/android/server/usb/descriptors/UsbACTerminal;
 
     .line 581
-    invoke-virtual {v4}, Lcom/android/server/usb/descriptors/UsbACTerminal;->getTerminalType()I
+    .local v5, "outDescr":Lcom/android/server/usb/descriptors/UsbACTerminal;
+    invoke-virtual {v5}, Lcom/android/server/usb/descriptors/UsbACTerminal;->getTerminalType()I
 
-    move-result v5
+    move-result v6
 
-    const/16 v6, 0x301
+    const/16 v7, 0x301
 
-    if-eq v5, v6, :cond_40
+    if-eq v6, v7, :cond_41
 
     .line 582
-    invoke-virtual {v4}, Lcom/android/server/usb/descriptors/UsbACTerminal;->getTerminalType()I
+    invoke-virtual {v5}, Lcom/android/server/usb/descriptors/UsbACTerminal;->getTerminalType()I
 
-    move-result v5
+    move-result v6
 
-    const/16 v6, 0x302
+    const/16 v7, 0x302
 
-    if-eq v5, v6, :cond_40
+    if-eq v6, v7, :cond_41
 
     .line 584
-    invoke-virtual {v4}, Lcom/android/server/usb/descriptors/UsbACTerminal;->getTerminalType()I
+    invoke-virtual {v5}, Lcom/android/server/usb/descriptors/UsbACTerminal;->getTerminalType()I
 
-    move-result v4
+    move-result v6
 
-    const/16 v5, 0x402
+    const/16 v7, 0x402
 
-    if-ne v4, v5, :cond_3f
+    if-ne v6, v7, :cond_40
 
-    goto :goto_40
+    goto :goto_41
 
     .line 588
-    :cond_3f
+    .end local v5  # "outDescr":Lcom/android/server/usb/descriptors/UsbACTerminal;
+    :cond_40
     goto :goto_6d
 
     .line 585
-    :cond_40
-    :goto_40
-    nop
+    .restart local v5  # "outDescr":Lcom/android/server/usb/descriptors/UsbACTerminal;
+    :cond_41
+    :goto_41
+    const/4 v1, 0x1
 
     .line 586
-    move v0, v3
-
     goto :goto_6e
 
     .line 589
+    .end local v5  # "outDescr":Lcom/android/server/usb/descriptors/UsbACTerminal;
     :cond_43
     new-instance v5, Ljava/lang/StringBuilder;
 
@@ -924,53 +975,56 @@
     .line 590
     invoke-virtual {v4}, Lcom/android/server/usb/descriptors/UsbDescriptor;->getType()B
 
-    move-result v4
+    move-result v6
 
-    invoke-static {v4}, Ljava/lang/Integer;->toHexString(I)Ljava/lang/String;
+    invoke-static {v6}, Ljava/lang/Integer;->toHexString(I)Ljava/lang/String;
 
-    move-result-object v4
+    move-result-object v6
 
-    invoke-virtual {v5, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v5}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v4
+    move-result-object v5
 
     .line 589
-    const-string v5, "UsbDescriptorParser"
+    const-string v6, "UsbDescriptorParser"
 
-    invoke-static {v5, v4}, Landroid/util/Log;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v6, v5}, Landroid/util/Log;->w(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 592
+    .end local v4  # "descriptor":Lcom/android/server/usb/descriptors/UsbDescriptor;
     :goto_6d
     goto :goto_14
 
     .line 594
     :cond_6e
     :goto_6e
-    if-eqz v0, :cond_72
+    if-eqz v1, :cond_73
 
     .line 595
-    const/high16 v1, 0x3f400000  # 0.75f
+    const/high16 v3, 0x3f400000  # 0.75f
+
+    add-float/2addr v0, v3
 
     .line 598
-    :cond_72
-    if-eqz v0, :cond_7d
+    :cond_73
+    if-eqz v1, :cond_7e
 
     invoke-virtual {p0}, Lcom/android/server/usb/descriptors/UsbDescriptorParser;->hasHIDInterface()Z
 
-    move-result v0
+    move-result v3
 
-    if-eqz v0, :cond_7d
+    if-eqz v3, :cond_7e
 
     .line 599
-    const/high16 v0, 0x3e800000  # 0.25f
+    const/high16 v3, 0x3e800000  # 0.25f
 
-    add-float/2addr v1, v0
+    add-float/2addr v0, v3
 
     .line 602
-    :cond_7d
-    return v1
+    :cond_7e
+    return v0
 .end method
 
 .method public getParsingSpec()I
@@ -1032,7 +1086,7 @@
 .end method
 
 .method public hasAudioInterface()Z
-    .registers 3
+    .registers 4
 
     .line 481
     nop
@@ -1045,17 +1099,18 @@
     move-result-object v1
 
     .line 483
+    .local v1, "descriptors":Ljava/util/ArrayList;, "Ljava/util/ArrayList<Lcom/android/server/usb/descriptors/UsbDescriptor;>;"
     invoke-virtual {v1}, Ljava/util/ArrayList;->isEmpty()Z
 
-    move-result v1
+    move-result v2
 
-    xor-int/2addr v0, v1
+    xor-int/2addr v0, v2
 
     return v0
 .end method
 
 .method public hasHIDInterface()Z
-    .registers 2
+    .registers 3
 
     .line 490
     nop
@@ -1068,141 +1123,151 @@
     move-result-object v0
 
     .line 492
+    .local v0, "descriptors":Ljava/util/ArrayList;, "Ljava/util/ArrayList<Lcom/android/server/usb/descriptors/UsbDescriptor;>;"
     invoke-virtual {v0}, Ljava/util/ArrayList;->isEmpty()Z
 
-    move-result v0
+    move-result v1
 
-    xor-int/lit8 v0, v0, 0x1
+    xor-int/lit8 v1, v1, 0x1
 
-    return v0
+    return v1
 .end method
 
 .method public hasInput()Z
-    .registers 6
+    .registers 9
 
     .line 355
     nop
 
     .line 356
-    const/4 v0, 0x1
+    const/4 v0, 0x2
 
-    const/4 v1, 0x2
+    const/4 v1, 0x1
 
-    invoke-virtual {p0, v1, v0}, Lcom/android/server/usb/descriptors/UsbDescriptorParser;->getACInterfaceDescriptors(BI)Ljava/util/ArrayList;
+    invoke-virtual {p0, v0, v1}, Lcom/android/server/usb/descriptors/UsbDescriptorParser;->getACInterfaceDescriptors(BI)Ljava/util/ArrayList;
 
-    move-result-object v1
+    move-result-object v0
 
     .line 358
-    nop
+    .local v0, "acDescriptors":Ljava/util/ArrayList;, "Ljava/util/ArrayList<Lcom/android/server/usb/descriptors/UsbDescriptor;>;"
+    const/4 v1, 0x0
 
     .line 359
-    invoke-virtual {v1}, Ljava/util/ArrayList;->iterator()Ljava/util/Iterator;
-
-    move-result-object v1
-
-    :goto_c
-    invoke-interface {v1}, Ljava/util/Iterator;->hasNext()Z
-
-    move-result v2
-
-    if-eqz v2, :cond_5a
-
-    invoke-interface {v1}, Ljava/util/Iterator;->next()Ljava/lang/Object;
+    .local v1, "hasInput":Z
+    invoke-virtual {v0}, Ljava/util/ArrayList;->iterator()Ljava/util/Iterator;
 
     move-result-object v2
 
-    check-cast v2, Lcom/android/server/usb/descriptors/UsbDescriptor;
+    :goto_c
+    invoke-interface {v2}, Ljava/util/Iterator;->hasNext()Z
+
+    move-result v3
+
+    if-eqz v3, :cond_5b
+
+    invoke-interface {v2}, Ljava/util/Iterator;->next()Ljava/lang/Object;
+
+    move-result-object v3
+
+    check-cast v3, Lcom/android/server/usb/descriptors/UsbDescriptor;
 
     .line 360
-    instance-of v3, v2, Lcom/android/server/usb/descriptors/UsbACTerminal;
+    .local v3, "descriptor":Lcom/android/server/usb/descriptors/UsbDescriptor;
+    instance-of v4, v3, Lcom/android/server/usb/descriptors/UsbACTerminal;
 
-    if-eqz v3, :cond_2f
+    if-eqz v4, :cond_30
 
     .line 361
-    check-cast v2, Lcom/android/server/usb/descriptors/UsbACTerminal;
+    move-object v4, v3
+
+    check-cast v4, Lcom/android/server/usb/descriptors/UsbACTerminal;
 
     .line 363
-    invoke-virtual {v2}, Lcom/android/server/usb/descriptors/UsbACTerminal;->getTerminalType()I
+    .local v4, "inDescr":Lcom/android/server/usb/descriptors/UsbACTerminal;
+    invoke-virtual {v4}, Lcom/android/server/usb/descriptors/UsbACTerminal;->getTerminalType()I
 
-    move-result v2
+    move-result v5
 
     .line 367
-    and-int/lit16 v2, v2, -0x100
+    .local v5, "type":I
+    and-int/lit16 v6, v5, -0x100
 
     .line 368
-    const/16 v3, 0x100
+    .local v6, "terminalCategory":I
+    const/16 v7, 0x100
 
-    if-eq v2, v3, :cond_2e
+    if-eq v6, v7, :cond_2f
 
-    const/16 v3, 0x300
+    const/16 v7, 0x300
 
-    if-eq v2, v3, :cond_2e
+    if-eq v6, v7, :cond_2f
 
     .line 371
-    nop
+    const/4 v1, 0x1
 
     .line 372
     goto :goto_5b
 
     .line 374
-    :cond_2e
-    goto :goto_59
+    .end local v4  # "inDescr":Lcom/android/server/usb/descriptors/UsbACTerminal;
+    .end local v5  # "type":I
+    .end local v6  # "terminalCategory":I
+    :cond_2f
+    goto :goto_5a
 
     .line 375
-    :cond_2f
-    new-instance v3, Ljava/lang/StringBuilder;
+    :cond_30
+    new-instance v4, Ljava/lang/StringBuilder;
 
-    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v4}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v4, "Undefined Audio Input terminal l: "
+    const-string v5, "Undefined Audio Input terminal l: "
 
-    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v2}, Lcom/android/server/usb/descriptors/UsbDescriptor;->getLength()I
+    invoke-virtual {v3}, Lcom/android/server/usb/descriptors/UsbDescriptor;->getLength()I
 
-    move-result v4
+    move-result v5
 
-    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    const-string v4, " t:0x"
+    const-string v5, " t:0x"
 
-    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     .line 376
-    invoke-virtual {v2}, Lcom/android/server/usb/descriptors/UsbDescriptor;->getType()B
+    invoke-virtual {v3}, Lcom/android/server/usb/descriptors/UsbDescriptor;->getType()B
 
-    move-result v2
+    move-result v5
 
-    invoke-static {v2}, Ljava/lang/Integer;->toHexString(I)Ljava/lang/String;
+    invoke-static {v5}, Ljava/lang/Integer;->toHexString(I)Ljava/lang/String;
 
-    move-result-object v2
+    move-result-object v5
 
-    invoke-virtual {v3, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v4}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v2
+    move-result-object v4
 
     .line 375
-    const-string v3, "UsbDescriptorParser"
+    const-string v5, "UsbDescriptorParser"
 
-    invoke-static {v3, v2}, Landroid/util/Log;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v5, v4}, Landroid/util/Log;->w(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 378
-    :goto_59
+    .end local v3  # "descriptor":Lcom/android/server/usb/descriptors/UsbDescriptor;
+    :goto_5a
     goto :goto_c
 
-    .line 359
-    :cond_5a
-    const/4 v0, 0x0
-
     .line 383
+    :cond_5b
     :goto_5b
-    return v0
+    return v1
 .end method
 
 .method public hasMIDIInterface()Z
-    .registers 6
+    .registers 8
 
     .line 508
     nop
@@ -1215,509 +1280,539 @@
     move-result-object v1
 
     .line 510
+    .local v1, "descriptors":Ljava/util/ArrayList;, "Ljava/util/ArrayList<Lcom/android/server/usb/descriptors/UsbDescriptor;>;"
     invoke-virtual {v1}, Ljava/util/ArrayList;->iterator()Ljava/util/Iterator;
-
-    move-result-object v1
-
-    :goto_a
-    invoke-interface {v1}, Ljava/util/Iterator;->hasNext()Z
-
-    move-result v2
-
-    if-eqz v2, :cond_50
-
-    invoke-interface {v1}, Ljava/util/Iterator;->next()Ljava/lang/Object;
 
     move-result-object v2
 
-    check-cast v2, Lcom/android/server/usb/descriptors/UsbDescriptor;
+    :goto_a
+    invoke-interface {v2}, Ljava/util/Iterator;->hasNext()Z
+
+    move-result v3
+
+    if-eqz v3, :cond_51
+
+    invoke-interface {v2}, Ljava/util/Iterator;->next()Ljava/lang/Object;
+
+    move-result-object v3
+
+    check-cast v3, Lcom/android/server/usb/descriptors/UsbDescriptor;
 
     .line 512
-    instance-of v3, v2, Lcom/android/server/usb/descriptors/UsbInterfaceDescriptor;
+    .local v3, "descriptor":Lcom/android/server/usb/descriptors/UsbDescriptor;
+    instance-of v4, v3, Lcom/android/server/usb/descriptors/UsbInterfaceDescriptor;
 
-    if-eqz v3, :cond_25
+    if-eqz v4, :cond_26
 
     .line 513
-    check-cast v2, Lcom/android/server/usb/descriptors/UsbInterfaceDescriptor;
+    move-object v4, v3
+
+    check-cast v4, Lcom/android/server/usb/descriptors/UsbInterfaceDescriptor;
 
     .line 514
-    invoke-virtual {v2}, Lcom/android/server/usb/descriptors/UsbInterfaceDescriptor;->getUsbSubclass()I
+    .local v4, "interfaceDescr":Lcom/android/server/usb/descriptors/UsbInterfaceDescriptor;
+    invoke-virtual {v4}, Lcom/android/server/usb/descriptors/UsbInterfaceDescriptor;->getUsbSubclass()I
 
-    move-result v2
+    move-result v5
 
-    const/4 v3, 0x3
+    const/4 v6, 0x3
 
-    if-ne v2, v3, :cond_24
+    if-ne v5, v6, :cond_25
 
     .line 515
     return v0
 
     .line 517
-    :cond_24
-    goto :goto_4f
+    .end local v4  # "interfaceDescr":Lcom/android/server/usb/descriptors/UsbInterfaceDescriptor;
+    :cond_25
+    goto :goto_50
 
     .line 518
-    :cond_25
-    new-instance v3, Ljava/lang/StringBuilder;
+    :cond_26
+    new-instance v4, Ljava/lang/StringBuilder;
 
-    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v4}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v4, "Undefined Audio Class Interface l: "
+    const-string v5, "Undefined Audio Class Interface l: "
 
-    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v2}, Lcom/android/server/usb/descriptors/UsbDescriptor;->getLength()I
+    invoke-virtual {v3}, Lcom/android/server/usb/descriptors/UsbDescriptor;->getLength()I
 
-    move-result v4
+    move-result v5
 
-    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    const-string v4, " t:0x"
+    const-string v5, " t:0x"
 
-    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     .line 519
-    invoke-virtual {v2}, Lcom/android/server/usb/descriptors/UsbDescriptor;->getType()B
+    invoke-virtual {v3}, Lcom/android/server/usb/descriptors/UsbDescriptor;->getType()B
 
-    move-result v2
+    move-result v5
 
-    invoke-static {v2}, Ljava/lang/Integer;->toHexString(I)Ljava/lang/String;
+    invoke-static {v5}, Ljava/lang/Integer;->toHexString(I)Ljava/lang/String;
 
-    move-result-object v2
+    move-result-object v5
 
-    invoke-virtual {v3, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v4}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v2
+    move-result-object v4
 
     .line 518
-    const-string v3, "UsbDescriptorParser"
+    const-string v5, "UsbDescriptorParser"
 
-    invoke-static {v3, v2}, Landroid/util/Log;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v5, v4}, Landroid/util/Log;->w(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 521
-    :goto_4f
+    .end local v3  # "descriptor":Lcom/android/server/usb/descriptors/UsbDescriptor;
+    :goto_50
     goto :goto_a
 
     .line 522
-    :cond_50
+    :cond_51
     const/4 v0, 0x0
 
     return v0
 .end method
 
 .method public hasMic()Z
-    .registers 6
+    .registers 8
 
     .line 427
-    nop
+    const/4 v0, 0x0
 
     .line 429
+    .local v0, "hasMic":Z
     nop
 
     .line 430
-    const/4 v0, 0x1
-
     const/4 v1, 0x2
 
-    invoke-virtual {p0, v1, v0}, Lcom/android/server/usb/descriptors/UsbDescriptorParser;->getACInterfaceDescriptors(BI)Ljava/util/ArrayList;
+    const/4 v2, 0x1
+
+    invoke-virtual {p0, v1, v2}, Lcom/android/server/usb/descriptors/UsbDescriptorParser;->getACInterfaceDescriptors(BI)Ljava/util/ArrayList;
 
     move-result-object v1
 
     .line 432
+    .local v1, "acDescriptors":Ljava/util/ArrayList;, "Ljava/util/ArrayList<Lcom/android/server/usb/descriptors/UsbDescriptor;>;"
     invoke-virtual {v1}, Ljava/util/ArrayList;->iterator()Ljava/util/Iterator;
-
-    move-result-object v1
-
-    :goto_c
-    invoke-interface {v1}, Ljava/util/Iterator;->hasNext()Z
-
-    move-result v2
-
-    if-eqz v2, :cond_6d
-
-    invoke-interface {v1}, Ljava/util/Iterator;->next()Ljava/lang/Object;
 
     move-result-object v2
 
-    check-cast v2, Lcom/android/server/usb/descriptors/UsbDescriptor;
+    :goto_c
+    invoke-interface {v2}, Ljava/util/Iterator;->hasNext()Z
+
+    move-result v3
+
+    if-eqz v3, :cond_6e
+
+    invoke-interface {v2}, Ljava/util/Iterator;->next()Ljava/lang/Object;
+
+    move-result-object v3
+
+    check-cast v3, Lcom/android/server/usb/descriptors/UsbDescriptor;
 
     .line 433
-    instance-of v3, v2, Lcom/android/server/usb/descriptors/UsbACTerminal;
+    .local v3, "descriptor":Lcom/android/server/usb/descriptors/UsbDescriptor;
+    instance-of v4, v3, Lcom/android/server/usb/descriptors/UsbACTerminal;
 
-    if-eqz v3, :cond_42
+    if-eqz v4, :cond_43
 
     .line 434
-    check-cast v2, Lcom/android/server/usb/descriptors/UsbACTerminal;
+    move-object v4, v3
+
+    check-cast v4, Lcom/android/server/usb/descriptors/UsbACTerminal;
 
     .line 435
-    invoke-virtual {v2}, Lcom/android/server/usb/descriptors/UsbACTerminal;->getTerminalType()I
+    .local v4, "inDescr":Lcom/android/server/usb/descriptors/UsbACTerminal;
+    invoke-virtual {v4}, Lcom/android/server/usb/descriptors/UsbACTerminal;->getTerminalType()I
 
-    move-result v3
+    move-result v5
 
-    const/16 v4, 0x201
+    const/16 v6, 0x201
 
-    if-eq v3, v4, :cond_40
+    if-eq v5, v6, :cond_41
 
     .line 436
-    invoke-virtual {v2}, Lcom/android/server/usb/descriptors/UsbACTerminal;->getTerminalType()I
+    invoke-virtual {v4}, Lcom/android/server/usb/descriptors/UsbACTerminal;->getTerminalType()I
 
-    move-result v3
+    move-result v5
 
-    const/16 v4, 0x402
+    const/16 v6, 0x402
 
-    if-eq v3, v4, :cond_40
+    if-eq v5, v6, :cond_41
 
     .line 437
-    invoke-virtual {v2}, Lcom/android/server/usb/descriptors/UsbACTerminal;->getTerminalType()I
+    invoke-virtual {v4}, Lcom/android/server/usb/descriptors/UsbACTerminal;->getTerminalType()I
 
-    move-result v3
+    move-result v5
 
-    const/16 v4, 0x400
+    const/16 v6, 0x400
 
-    if-eq v3, v4, :cond_40
+    if-eq v5, v6, :cond_41
 
     .line 438
-    invoke-virtual {v2}, Lcom/android/server/usb/descriptors/UsbACTerminal;->getTerminalType()I
+    invoke-virtual {v4}, Lcom/android/server/usb/descriptors/UsbACTerminal;->getTerminalType()I
 
-    move-result v2
+    move-result v5
 
-    const/16 v3, 0x603
+    const/16 v6, 0x603
 
-    if-ne v2, v3, :cond_3f
+    if-ne v5, v6, :cond_40
 
-    goto :goto_40
+    goto :goto_41
 
     .line 442
-    :cond_3f
-    goto :goto_6c
+    .end local v4  # "inDescr":Lcom/android/server/usb/descriptors/UsbACTerminal;
+    :cond_40
+    goto :goto_6d
 
     .line 439
-    :cond_40
-    :goto_40
-    nop
+    .restart local v4  # "inDescr":Lcom/android/server/usb/descriptors/UsbACTerminal;
+    :cond_41
+    :goto_41
+    const/4 v0, 0x1
 
     .line 440
     goto :goto_6e
 
     .line 443
-    :cond_42
-    new-instance v3, Ljava/lang/StringBuilder;
+    .end local v4  # "inDescr":Lcom/android/server/usb/descriptors/UsbACTerminal;
+    :cond_43
+    new-instance v4, Ljava/lang/StringBuilder;
 
-    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v4}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v4, "Undefined Audio Input terminal l: "
+    const-string v5, "Undefined Audio Input terminal l: "
 
-    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v2}, Lcom/android/server/usb/descriptors/UsbDescriptor;->getLength()I
+    invoke-virtual {v3}, Lcom/android/server/usb/descriptors/UsbDescriptor;->getLength()I
 
-    move-result v4
+    move-result v5
 
-    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    const-string v4, " t:0x"
+    const-string v5, " t:0x"
 
-    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     .line 444
-    invoke-virtual {v2}, Lcom/android/server/usb/descriptors/UsbDescriptor;->getType()B
+    invoke-virtual {v3}, Lcom/android/server/usb/descriptors/UsbDescriptor;->getType()B
 
-    move-result v2
+    move-result v5
 
-    invoke-static {v2}, Ljava/lang/Integer;->toHexString(I)Ljava/lang/String;
+    invoke-static {v5}, Ljava/lang/Integer;->toHexString(I)Ljava/lang/String;
 
-    move-result-object v2
+    move-result-object v5
 
-    invoke-virtual {v3, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v4}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v2
+    move-result-object v4
 
     .line 443
-    const-string v3, "UsbDescriptorParser"
+    const-string v5, "UsbDescriptorParser"
 
-    invoke-static {v3, v2}, Landroid/util/Log;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v5, v4}, Landroid/util/Log;->w(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 446
-    :goto_6c
+    .end local v3  # "descriptor":Lcom/android/server/usb/descriptors/UsbDescriptor;
+    :goto_6d
     goto :goto_c
 
-    .line 432
-    :cond_6d
-    const/4 v0, 0x0
-
     .line 447
+    :cond_6e
     :goto_6e
     return v0
 .end method
 
 .method public hasOutput()Z
-    .registers 6
+    .registers 9
 
     .line 393
     nop
 
     .line 394
-    const/4 v0, 0x1
+    const/4 v0, 0x3
 
-    const/4 v1, 0x3
+    const/4 v1, 0x1
 
-    invoke-virtual {p0, v1, v0}, Lcom/android/server/usb/descriptors/UsbDescriptorParser;->getACInterfaceDescriptors(BI)Ljava/util/ArrayList;
+    invoke-virtual {p0, v0, v1}, Lcom/android/server/usb/descriptors/UsbDescriptorParser;->getACInterfaceDescriptors(BI)Ljava/util/ArrayList;
 
-    move-result-object v1
+    move-result-object v0
 
     .line 396
-    nop
+    .local v0, "acDescriptors":Ljava/util/ArrayList;, "Ljava/util/ArrayList<Lcom/android/server/usb/descriptors/UsbDescriptor;>;"
+    const/4 v1, 0x0
 
     .line 397
-    invoke-virtual {v1}, Ljava/util/ArrayList;->iterator()Ljava/util/Iterator;
-
-    move-result-object v1
-
-    :goto_c
-    invoke-interface {v1}, Ljava/util/Iterator;->hasNext()Z
-
-    move-result v2
-
-    if-eqz v2, :cond_5a
-
-    invoke-interface {v1}, Ljava/util/Iterator;->next()Ljava/lang/Object;
+    .local v1, "hasOutput":Z
+    invoke-virtual {v0}, Ljava/util/ArrayList;->iterator()Ljava/util/Iterator;
 
     move-result-object v2
 
-    check-cast v2, Lcom/android/server/usb/descriptors/UsbDescriptor;
+    :goto_c
+    invoke-interface {v2}, Ljava/util/Iterator;->hasNext()Z
+
+    move-result v3
+
+    if-eqz v3, :cond_5b
+
+    invoke-interface {v2}, Ljava/util/Iterator;->next()Ljava/lang/Object;
+
+    move-result-object v3
+
+    check-cast v3, Lcom/android/server/usb/descriptors/UsbDescriptor;
 
     .line 398
-    instance-of v3, v2, Lcom/android/server/usb/descriptors/UsbACTerminal;
+    .local v3, "descriptor":Lcom/android/server/usb/descriptors/UsbDescriptor;
+    instance-of v4, v3, Lcom/android/server/usb/descriptors/UsbACTerminal;
 
-    if-eqz v3, :cond_2f
+    if-eqz v4, :cond_30
 
     .line 399
-    check-cast v2, Lcom/android/server/usb/descriptors/UsbACTerminal;
+    move-object v4, v3
+
+    check-cast v4, Lcom/android/server/usb/descriptors/UsbACTerminal;
 
     .line 401
-    invoke-virtual {v2}, Lcom/android/server/usb/descriptors/UsbACTerminal;->getTerminalType()I
+    .local v4, "outDescr":Lcom/android/server/usb/descriptors/UsbACTerminal;
+    invoke-virtual {v4}, Lcom/android/server/usb/descriptors/UsbACTerminal;->getTerminalType()I
 
-    move-result v2
+    move-result v5
 
     .line 405
-    and-int/lit16 v2, v2, -0x100
+    .local v5, "type":I
+    and-int/lit16 v6, v5, -0x100
 
     .line 406
-    const/16 v3, 0x100
+    .local v6, "terminalCategory":I
+    const/16 v7, 0x100
 
-    if-eq v2, v3, :cond_2e
+    if-eq v6, v7, :cond_2f
 
-    const/16 v3, 0x200
+    const/16 v7, 0x200
 
-    if-eq v2, v3, :cond_2e
+    if-eq v6, v7, :cond_2f
 
     .line 409
-    nop
+    const/4 v1, 0x1
 
     .line 410
     goto :goto_5b
 
     .line 412
-    :cond_2e
-    goto :goto_59
+    .end local v4  # "outDescr":Lcom/android/server/usb/descriptors/UsbACTerminal;
+    .end local v5  # "type":I
+    .end local v6  # "terminalCategory":I
+    :cond_2f
+    goto :goto_5a
 
     .line 413
-    :cond_2f
-    new-instance v3, Ljava/lang/StringBuilder;
+    :cond_30
+    new-instance v4, Ljava/lang/StringBuilder;
 
-    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v4}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v4, "Undefined Audio Input terminal l: "
+    const-string v5, "Undefined Audio Input terminal l: "
 
-    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v2}, Lcom/android/server/usb/descriptors/UsbDescriptor;->getLength()I
+    invoke-virtual {v3}, Lcom/android/server/usb/descriptors/UsbDescriptor;->getLength()I
 
-    move-result v4
+    move-result v5
 
-    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    const-string v4, " t:0x"
+    const-string v5, " t:0x"
 
-    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     .line 414
-    invoke-virtual {v2}, Lcom/android/server/usb/descriptors/UsbDescriptor;->getType()B
+    invoke-virtual {v3}, Lcom/android/server/usb/descriptors/UsbDescriptor;->getType()B
 
-    move-result v2
+    move-result v5
 
-    invoke-static {v2}, Ljava/lang/Integer;->toHexString(I)Ljava/lang/String;
+    invoke-static {v5}, Ljava/lang/Integer;->toHexString(I)Ljava/lang/String;
 
-    move-result-object v2
+    move-result-object v5
 
-    invoke-virtual {v3, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v4}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v2
+    move-result-object v4
 
     .line 413
-    const-string v3, "UsbDescriptorParser"
+    const-string v5, "UsbDescriptorParser"
 
-    invoke-static {v3, v2}, Landroid/util/Log;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v5, v4}, Landroid/util/Log;->w(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 416
-    :goto_59
+    .end local v3  # "descriptor":Lcom/android/server/usb/descriptors/UsbDescriptor;
+    :goto_5a
     goto :goto_c
 
-    .line 397
-    :cond_5a
-    const/4 v0, 0x0
-
     .line 420
+    :cond_5b
     :goto_5b
-    return v0
+    return v1
 .end method
 
 .method public hasSpeaker()Z
-    .registers 6
+    .registers 8
 
     .line 454
-    nop
+    const/4 v0, 0x0
 
     .line 456
+    .local v0, "hasSpeaker":Z
     nop
 
     .line 457
-    const/4 v0, 0x1
-
     const/4 v1, 0x3
 
-    invoke-virtual {p0, v1, v0}, Lcom/android/server/usb/descriptors/UsbDescriptorParser;->getACInterfaceDescriptors(BI)Ljava/util/ArrayList;
+    const/4 v2, 0x1
+
+    invoke-virtual {p0, v1, v2}, Lcom/android/server/usb/descriptors/UsbDescriptorParser;->getACInterfaceDescriptors(BI)Ljava/util/ArrayList;
 
     move-result-object v1
 
     .line 459
+    .local v1, "acDescriptors":Ljava/util/ArrayList;, "Ljava/util/ArrayList<Lcom/android/server/usb/descriptors/UsbDescriptor;>;"
     invoke-virtual {v1}, Ljava/util/ArrayList;->iterator()Ljava/util/Iterator;
-
-    move-result-object v1
-
-    :goto_c
-    invoke-interface {v1}, Ljava/util/Iterator;->hasNext()Z
-
-    move-result v2
-
-    if-eqz v2, :cond_65
-
-    invoke-interface {v1}, Ljava/util/Iterator;->next()Ljava/lang/Object;
 
     move-result-object v2
 
-    check-cast v2, Lcom/android/server/usb/descriptors/UsbDescriptor;
+    :goto_c
+    invoke-interface {v2}, Ljava/util/Iterator;->hasNext()Z
+
+    move-result v3
+
+    if-eqz v3, :cond_66
+
+    invoke-interface {v2}, Ljava/util/Iterator;->next()Ljava/lang/Object;
+
+    move-result-object v3
+
+    check-cast v3, Lcom/android/server/usb/descriptors/UsbDescriptor;
 
     .line 460
-    instance-of v3, v2, Lcom/android/server/usb/descriptors/UsbACTerminal;
+    .local v3, "descriptor":Lcom/android/server/usb/descriptors/UsbDescriptor;
+    instance-of v4, v3, Lcom/android/server/usb/descriptors/UsbACTerminal;
 
-    if-eqz v3, :cond_3a
+    if-eqz v4, :cond_3b
 
     .line 461
-    check-cast v2, Lcom/android/server/usb/descriptors/UsbACTerminal;
+    move-object v4, v3
+
+    check-cast v4, Lcom/android/server/usb/descriptors/UsbACTerminal;
 
     .line 462
-    invoke-virtual {v2}, Lcom/android/server/usb/descriptors/UsbACTerminal;->getTerminalType()I
+    .local v4, "outDescr":Lcom/android/server/usb/descriptors/UsbACTerminal;
+    invoke-virtual {v4}, Lcom/android/server/usb/descriptors/UsbACTerminal;->getTerminalType()I
 
-    move-result v3
+    move-result v5
 
-    const/16 v4, 0x301
+    const/16 v6, 0x301
 
-    if-eq v3, v4, :cond_38
+    if-eq v5, v6, :cond_39
 
     .line 463
-    invoke-virtual {v2}, Lcom/android/server/usb/descriptors/UsbACTerminal;->getTerminalType()I
+    invoke-virtual {v4}, Lcom/android/server/usb/descriptors/UsbACTerminal;->getTerminalType()I
 
-    move-result v3
+    move-result v5
 
-    const/16 v4, 0x302
+    const/16 v6, 0x302
 
-    if-eq v3, v4, :cond_38
+    if-eq v5, v6, :cond_39
 
     .line 464
-    invoke-virtual {v2}, Lcom/android/server/usb/descriptors/UsbACTerminal;->getTerminalType()I
+    invoke-virtual {v4}, Lcom/android/server/usb/descriptors/UsbACTerminal;->getTerminalType()I
 
-    move-result v2
+    move-result v5
 
-    const/16 v3, 0x402
+    const/16 v6, 0x402
 
-    if-ne v2, v3, :cond_37
+    if-ne v5, v6, :cond_38
 
-    goto :goto_38
+    goto :goto_39
 
     .line 468
-    :cond_37
-    goto :goto_64
+    .end local v4  # "outDescr":Lcom/android/server/usb/descriptors/UsbACTerminal;
+    :cond_38
+    goto :goto_65
 
     .line 465
-    :cond_38
-    :goto_38
-    nop
+    .restart local v4  # "outDescr":Lcom/android/server/usb/descriptors/UsbACTerminal;
+    :cond_39
+    :goto_39
+    const/4 v0, 0x1
 
     .line 466
     goto :goto_66
 
     .line 469
-    :cond_3a
-    new-instance v3, Ljava/lang/StringBuilder;
+    .end local v4  # "outDescr":Lcom/android/server/usb/descriptors/UsbACTerminal;
+    :cond_3b
+    new-instance v4, Ljava/lang/StringBuilder;
 
-    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v4}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v4, "Undefined Audio Output terminal l: "
+    const-string v5, "Undefined Audio Output terminal l: "
 
-    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v2}, Lcom/android/server/usb/descriptors/UsbDescriptor;->getLength()I
+    invoke-virtual {v3}, Lcom/android/server/usb/descriptors/UsbDescriptor;->getLength()I
 
-    move-result v4
+    move-result v5
 
-    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    const-string v4, " t:0x"
+    const-string v5, " t:0x"
 
-    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     .line 470
-    invoke-virtual {v2}, Lcom/android/server/usb/descriptors/UsbDescriptor;->getType()B
+    invoke-virtual {v3}, Lcom/android/server/usb/descriptors/UsbDescriptor;->getType()B
 
-    move-result v2
+    move-result v5
 
-    invoke-static {v2}, Ljava/lang/Integer;->toHexString(I)Ljava/lang/String;
+    invoke-static {v5}, Ljava/lang/Integer;->toHexString(I)Ljava/lang/String;
 
-    move-result-object v2
+    move-result-object v5
 
-    invoke-virtual {v3, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v4}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v2
+    move-result-object v4
 
     .line 469
-    const-string v3, "UsbDescriptorParser"
+    const-string v5, "UsbDescriptorParser"
 
-    invoke-static {v3, v2}, Landroid/util/Log;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v5, v4}, Landroid/util/Log;->w(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 472
-    :goto_64
+    .end local v3  # "descriptor":Lcom/android/server/usb/descriptors/UsbDescriptor;
+    :goto_65
     goto :goto_c
 
-    .line 459
-    :cond_65
-    const/4 v0, 0x0
-
     .line 474
+    :cond_66
     :goto_66
     return v0
 .end method
 
 .method public hasStorageInterface()Z
-    .registers 2
+    .registers 3
 
     .line 499
     nop
@@ -1730,13 +1825,14 @@
     move-result-object v0
 
     .line 501
+    .local v0, "descriptors":Ljava/util/ArrayList;, "Ljava/util/ArrayList<Lcom/android/server/usb/descriptors/UsbDescriptor;>;"
     invoke-virtual {v0}, Ljava/util/ArrayList;->isEmpty()Z
 
-    move-result v0
+    move-result v1
 
-    xor-int/lit8 v0, v0, 0x1
+    xor-int/lit8 v1, v1, 0x1
 
-    return v0
+    return v1
 .end method
 
 .method public isInputHeadset()Z
@@ -1790,7 +1886,8 @@
 .end method
 
 .method public parseDescriptors([B)V
-    .registers 6
+    .registers 7
+    .param p1, "descriptors"  # [B
 
     .line 217
     const-string v0, "UsbDescriptorParser"
@@ -1800,104 +1897,114 @@
     invoke-direct {v1, p1}, Lcom/android/server/usb/descriptors/ByteStream;-><init>([B)V
 
     .line 218
+    .local v1, "stream":Lcom/android/server/usb/descriptors/ByteStream;
     :goto_7
     invoke-virtual {v1}, Lcom/android/server/usb/descriptors/ByteStream;->available()I
 
-    move-result p1
+    move-result v2
 
-    if-lez p1, :cond_3b
+    if-lez v2, :cond_3c
 
     .line 219
-    const/4 p1, 0x0
+    const/4 v2, 0x0
 
     .line 221
+    .local v2, "descriptor":Lcom/android/server/usb/descriptors/UsbDescriptor;
     :try_start_e
     invoke-direct {p0, v1}, Lcom/android/server/usb/descriptors/UsbDescriptorParser;->allocDescriptor(Lcom/android/server/usb/descriptors/ByteStream;)Lcom/android/server/usb/descriptors/UsbDescriptor;
 
-    move-result-object p1
+    move-result-object v3
     :try_end_12
-    .catch Ljava/lang/Exception; {:try_start_e .. :try_end_12} :catch_13
+    .catch Ljava/lang/Exception; {:try_start_e .. :try_end_12} :catch_14
+
+    move-object v2, v3
 
     .line 224
-    goto :goto_19
+    goto :goto_1a
 
     .line 222
-    :catch_13
-    move-exception v2
+    :catch_14
+    move-exception v3
 
     .line 223
-    const-string v3, "Exception allocating USB descriptor."
+    .local v3, "ex":Ljava/lang/Exception;
+    const-string v4, "Exception allocating USB descriptor."
 
-    invoke-static {v0, v3, v2}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    invoke-static {v0, v4, v3}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
     .line 226
-    :goto_19
-    if-eqz p1, :cond_3a
+    .end local v3  # "ex":Ljava/lang/Exception;
+    :goto_1a
+    if-eqz v2, :cond_3b
 
     .line 229
-    :try_start_1b
-    invoke-virtual {p1, v1}, Lcom/android/server/usb/descriptors/UsbDescriptor;->parseRawDescriptors(Lcom/android/server/usb/descriptors/ByteStream;)I
+    :try_start_1c
+    invoke-virtual {v2, v1}, Lcom/android/server/usb/descriptors/UsbDescriptor;->parseRawDescriptors(Lcom/android/server/usb/descriptors/ByteStream;)I
 
     .line 232
-    invoke-virtual {p1, v1}, Lcom/android/server/usb/descriptors/UsbDescriptor;->postParse(Lcom/android/server/usb/descriptors/ByteStream;)V
-    :try_end_21
-    .catch Ljava/lang/Exception; {:try_start_1b .. :try_end_21} :catch_29
-    .catchall {:try_start_1b .. :try_end_21} :catchall_27
+    invoke-virtual {v2, v1}, Lcom/android/server/usb/descriptors/UsbDescriptor;->postParse(Lcom/android/server/usb/descriptors/ByteStream;)V
+    :try_end_22
+    .catch Ljava/lang/Exception; {:try_start_1c .. :try_end_22} :catch_2a
+    .catchall {:try_start_1c .. :try_end_22} :catchall_28
 
     .line 239
-    :goto_21
-    iget-object v2, p0, Lcom/android/server/usb/descriptors/UsbDescriptorParser;->mDescriptors:Ljava/util/ArrayList;
+    :goto_22
+    iget-object v3, p0, Lcom/android/server/usb/descriptors/UsbDescriptorParser;->mDescriptors:Ljava/util/ArrayList;
 
-    invoke-virtual {v2, p1}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
+    invoke-virtual {v3, v2}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
 
     .line 240
-    goto :goto_3a
+    goto :goto_3b
 
     .line 239
-    :catchall_27
+    :catchall_28
     move-exception v0
 
-    goto :goto_34
+    goto :goto_35
 
     .line 233
-    :catch_29
-    move-exception v2
+    :catch_2a
+    move-exception v3
 
     .line 234
-    :try_start_2a
-    const-string v3, "Exception parsing USB descriptors."
+    .restart local v3  # "ex":Ljava/lang/Exception;
+    :try_start_2b
+    const-string v4, "Exception parsing USB descriptors."
 
-    invoke-static {v0, v3, v2}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    invoke-static {v0, v4, v3}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
     .line 237
-    const/4 v2, 0x4
+    const/4 v4, 0x4
 
-    invoke-virtual {p1, v2}, Lcom/android/server/usb/descriptors/UsbDescriptor;->setStatus(I)V
-    :try_end_33
-    .catchall {:try_start_2a .. :try_end_33} :catchall_27
+    invoke-virtual {v2, v4}, Lcom/android/server/usb/descriptors/UsbDescriptor;->setStatus(I)V
+    :try_end_34
+    .catchall {:try_start_2b .. :try_end_34} :catchall_28
 
-    goto :goto_21
+    .end local v3  # "ex":Ljava/lang/Exception;
+    goto :goto_22
 
     .line 239
-    :goto_34
-    iget-object v1, p0, Lcom/android/server/usb/descriptors/UsbDescriptorParser;->mDescriptors:Ljava/util/ArrayList;
+    :goto_35
+    iget-object v3, p0, Lcom/android/server/usb/descriptors/UsbDescriptorParser;->mDescriptors:Ljava/util/ArrayList;
 
-    invoke-virtual {v1, p1}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
+    invoke-virtual {v3, v2}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
 
     throw v0
 
     .line 242
-    :cond_3a
-    :goto_3a
+    .end local v2  # "descriptor":Lcom/android/server/usb/descriptors/UsbDescriptor;
+    :cond_3b
+    :goto_3b
     goto :goto_7
 
     .line 246
-    :cond_3b
+    :cond_3c
     return-void
 .end method
 
 .method public setACInterfaceSpec(I)V
     .registers 2
+    .param p1, "spec"  # I
 
     .line 86
     iput p1, p0, Lcom/android/server/usb/descriptors/UsbDescriptorParser;->mACInterfacesSpec:I
@@ -1933,6 +2040,7 @@
     move-result-object v0
 
     .line 281
+    .local v0, "device":Landroid/hardware/usb/UsbDevice$Builder;
     if-nez v0, :cond_1a
 
     .line 282

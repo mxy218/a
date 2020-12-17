@@ -62,6 +62,8 @@
 
 .method synthetic constructor <init>(Lcom/android/server/job/controllers/QuotaController;Lcom/android/server/job/controllers/QuotaController$1;)V
     .registers 3
+    .param p1, "x0"  # Lcom/android/server/job/controllers/QuotaController;
+    .param p2, "x1"  # Lcom/android/server/job/controllers/QuotaController$1;
 
     .line 1833
     invoke-direct {p0, p1}, Lcom/android/server/job/controllers/QuotaController$DeleteTimingSessionsFunctor;-><init>(Lcom/android/server/job/controllers/QuotaController;)V
@@ -94,6 +96,7 @@
     .end annotation
 
     .line 1842
+    .local p1, "sessions":Ljava/util/List;, "Ljava/util/List<Lcom/android/server/job/controllers/QuotaController$TimingSession;>;"
     if-eqz p1, :cond_7
 
     .line 1844

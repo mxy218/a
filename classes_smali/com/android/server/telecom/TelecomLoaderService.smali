@@ -61,6 +61,7 @@
 
 .method public constructor <init>(Landroid/content/Context;)V
     .registers 3
+    .param p1, "context"  # Landroid/content/Context;
 
     .line 124
     invoke-direct {p0, p1}, Lcom/android/server/SystemService;-><init>(Landroid/content/Context;)V
@@ -84,6 +85,7 @@
 
 .method static synthetic access$000(Lcom/android/server/telecom/TelecomLoaderService;)V
     .registers 1
+    .param p0, "x0"  # Lcom/android/server/telecom/TelecomLoaderService;
 
     .line 50
     invoke-direct {p0}, Lcom/android/server/telecom/TelecomLoaderService;->connectToTelecom()V
@@ -92,45 +94,52 @@
 .end method
 
 .method static synthetic access$100(Lcom/android/server/telecom/TelecomLoaderService;)Landroid/content/Context;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/telecom/TelecomLoaderService;
 
     .line 50
-    iget-object p0, p0, Lcom/android/server/telecom/TelecomLoaderService;->mContext:Landroid/content/Context;
+    iget-object v0, p0, Lcom/android/server/telecom/TelecomLoaderService;->mContext:Landroid/content/Context;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$200(Lcom/android/server/telecom/TelecomLoaderService;)Ljava/lang/Object;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/telecom/TelecomLoaderService;
 
     .line 50
-    iget-object p0, p0, Lcom/android/server/telecom/TelecomLoaderService;->mLock:Ljava/lang/Object;
+    iget-object v0, p0, Lcom/android/server/telecom/TelecomLoaderService;->mLock:Ljava/lang/Object;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$300(Lcom/android/server/telecom/TelecomLoaderService;)Landroid/util/IntArray;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/telecom/TelecomLoaderService;
 
     .line 50
-    iget-object p0, p0, Lcom/android/server/telecom/TelecomLoaderService;->mDefaultSimCallManagerRequests:Landroid/util/IntArray;
+    iget-object v0, p0, Lcom/android/server/telecom/TelecomLoaderService;->mDefaultSimCallManagerRequests:Landroid/util/IntArray;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$400(Lcom/android/server/telecom/TelecomLoaderService;)Lcom/android/server/pm/permission/DefaultPermissionGrantPolicy;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/telecom/TelecomLoaderService;
 
     .line 50
     invoke-direct {p0}, Lcom/android/server/telecom/TelecomLoaderService;->getDefaultPermissionGrantPolicy()Lcom/android/server/pm/permission/DefaultPermissionGrantPolicy;
 
-    move-result-object p0
+    move-result-object v0
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$600(Lcom/android/server/telecom/TelecomLoaderService;Lcom/android/server/pm/permission/DefaultPermissionGrantPolicy;I)V
     .registers 3
+    .param p0, "x0"  # Lcom/android/server/telecom/TelecomLoaderService;
+    .param p1, "x1"  # Lcom/android/server/pm/permission/DefaultPermissionGrantPolicy;
+    .param p2, "x2"  # I
 
     .line 50
     invoke-direct {p0, p1, p2}, Lcom/android/server/telecom/TelecomLoaderService;->updateSimCallManagerPermissions(Lcom/android/server/pm/permission/DefaultPermissionGrantPolicy;I)V
@@ -171,6 +180,7 @@
     invoke-direct {v1, p0, v2}, Lcom/android/server/telecom/TelecomLoaderService$TelecomServiceConnection;-><init>(Lcom/android/server/telecom/TelecomLoaderService;Lcom/android/server/telecom/TelecomLoaderService$1;)V
 
     .line 151
+    .local v1, "serviceConnection":Lcom/android/server/telecom/TelecomLoaderService$TelecomServiceConnection;
     new-instance v2, Landroid/content/Intent;
 
     const-string v3, "com.android.ITelecomService"
@@ -178,6 +188,7 @@
     invoke-direct {v2, v3}, Landroid/content/Intent;-><init>(Ljava/lang/String;)V
 
     .line 152
+    .local v2, "intent":Landroid/content/Intent;
     sget-object v3, Lcom/android/server/telecom/TelecomLoaderService;->SERVICE_COMPONENT:Landroid/content/ComponentName;
 
     invoke-virtual {v2, v3}, Landroid/content/Intent;->setComponent(Landroid/content/ComponentName;)Landroid/content/Intent;
@@ -186,20 +197,24 @@
     const v3, 0x4000041
 
     .line 157
+    .local v3, "flags":I
     iget-object v4, p0, Lcom/android/server/telecom/TelecomLoaderService;->mContext:Landroid/content/Context;
 
     sget-object v5, Landroid/os/UserHandle;->SYSTEM:Landroid/os/UserHandle;
 
     invoke-virtual {v4, v2, v1, v3, v5}, Landroid/content/Context;->bindServiceAsUser(Landroid/content/Intent;Landroid/content/ServiceConnection;ILandroid/os/UserHandle;)Z
 
-    move-result v2
+    move-result v4
 
-    if-eqz v2, :cond_31
+    if-eqz v4, :cond_31
 
     .line 158
     iput-object v1, p0, Lcom/android/server/telecom/TelecomLoaderService;->mServiceConnection:Lcom/android/server/telecom/TelecomLoaderService$TelecomServiceConnection;
 
     .line 160
+    .end local v1  # "serviceConnection":Lcom/android/server/telecom/TelecomLoaderService$TelecomServiceConnection;
+    .end local v2  # "intent":Landroid/content/Intent;
+    .end local v3  # "flags":I
     :cond_31
     monitor-exit v0
 
@@ -247,6 +262,7 @@
     invoke-direct {v1, p0}, Lcom/android/server/telecom/TelecomLoaderService$1;-><init>(Lcom/android/server/telecom/TelecomLoaderService;)V
 
     .line 239
+    .local v1, "receiver":Landroid/content/BroadcastReceiver;
     iget-object v0, p0, Lcom/android/server/telecom/TelecomLoaderService;->mContext:Landroid/content/Context;
 
     sget-object v2, Landroid/os/UserHandle;->ALL:Landroid/os/UserHandle;
@@ -268,7 +284,7 @@
 .end method
 
 .method private registerDefaultAppNotifier()V
-    .registers 5
+    .registers 6
 
     .line 218
     invoke-direct {p0}, Lcom/android/server/telecom/TelecomLoaderService;->getDefaultPermissionGrantPolicy()Lcom/android/server/pm/permission/DefaultPermissionGrantPolicy;
@@ -276,6 +292,7 @@
     move-result-object v0
 
     .line 220
+    .local v0, "permissionPolicy":Lcom/android/server/pm/permission/DefaultPermissionGrantPolicy;
     iget-object v1, p0, Lcom/android/server/telecom/TelecomLoaderService;->mContext:Landroid/content/Context;
 
     const-class v2, Landroid/app/role/RoleManager;
@@ -287,6 +304,7 @@
     check-cast v1, Landroid/app/role/RoleManager;
 
     .line 221
+    .local v1, "roleManager":Landroid/app/role/RoleManager;
     iget-object v2, p0, Lcom/android/server/telecom/TelecomLoaderService;->mContext:Landroid/content/Context;
 
     invoke-virtual {v2}, Landroid/content/Context;->getMainExecutor()Ljava/util/concurrent/Executor;
@@ -297,9 +315,9 @@
 
     invoke-direct {v3, p0, v0}, Lcom/android/server/telecom/-$$Lambda$TelecomLoaderService$JaEag0KH0v0eOJ4BOrxYzuIZXXo;-><init>(Lcom/android/server/telecom/TelecomLoaderService;Lcom/android/server/pm/permission/DefaultPermissionGrantPolicy;)V
 
-    sget-object v0, Landroid/os/UserHandle;->ALL:Landroid/os/UserHandle;
+    sget-object v4, Landroid/os/UserHandle;->ALL:Landroid/os/UserHandle;
 
-    invoke-virtual {v1, v2, v3, v0}, Landroid/app/role/RoleManager;->addOnRoleHoldersChangedListenerAsUser(Ljava/util/concurrent/Executor;Landroid/app/role/OnRoleHoldersChangedListener;Landroid/os/UserHandle;)V
+    invoke-virtual {v1, v2, v3, v4}, Landroid/app/role/RoleManager;->addOnRoleHoldersChangedListenerAsUser(Ljava/util/concurrent/Executor;Landroid/app/role/OnRoleHoldersChangedListener;Landroid/os/UserHandle;)V
 
     .line 224
     return-void
@@ -314,6 +332,7 @@
     move-result-object v0
 
     .line 168
+    .local v0, "permissionPolicy":Lcom/android/server/pm/permission/DefaultPermissionGrantPolicy;
     new-instance v1, Lcom/android/server/telecom/-$$Lambda$TelecomLoaderService$lBXoYxesURvEmfzumX9uIBbg66M;
 
     invoke-direct {v1, p0}, Lcom/android/server/telecom/-$$Lambda$TelecomLoaderService$lBXoYxesURvEmfzumX9uIBbg66M;-><init>(Lcom/android/server/telecom/TelecomLoaderService;)V
@@ -339,7 +358,9 @@
 .end method
 
 .method private updateSimCallManagerPermissions(Lcom/android/server/pm/permission/DefaultPermissionGrantPolicy;I)V
-    .registers 6
+    .registers 7
+    .param p1, "permissionGrantPolicy"  # Lcom/android/server/pm/permission/DefaultPermissionGrantPolicy;
+    .param p2, "userId"  # I
 
     .line 245
     iget-object v0, p0, Lcom/android/server/telecom/TelecomLoaderService;->mContext:Landroid/content/Context;
@@ -354,45 +375,49 @@
     check-cast v0, Landroid/telecom/TelecomManager;
 
     .line 247
+    .local v0, "telecomManager":Landroid/telecom/TelecomManager;
     invoke-virtual {v0, p2}, Landroid/telecom/TelecomManager;->getSimCallManager(I)Landroid/telecom/PhoneAccountHandle;
-
-    move-result-object v0
-
-    .line 248
-    if-eqz v0, :cond_33
-
-    .line 249
-    new-instance v1, Ljava/lang/StringBuilder;
-
-    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
-
-    const-string/jumbo v2, "updating sim call manager permissions for userId:"
-
-    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v1, p2}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
     move-result-object v1
 
-    const-string v2, "TelecomLoaderService"
+    .line 248
+    .local v1, "phoneAccount":Landroid/telecom/PhoneAccountHandle;
+    if-eqz v1, :cond_33
 
-    invoke-static {v2, v1}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
+    .line 249
+    new-instance v2, Ljava/lang/StringBuilder;
+
+    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
+
+    const-string/jumbo v3, "updating sim call manager permissions for userId:"
+
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v2, p2}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v2
+
+    const-string v3, "TelecomLoaderService"
+
+    invoke-static {v3, v2}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 250
-    invoke-virtual {v0}, Landroid/telecom/PhoneAccountHandle;->getComponentName()Landroid/content/ComponentName;
+    invoke-virtual {v1}, Landroid/telecom/PhoneAccountHandle;->getComponentName()Landroid/content/ComponentName;
 
-    move-result-object v0
+    move-result-object v2
 
-    invoke-virtual {v0}, Landroid/content/ComponentName;->getPackageName()Ljava/lang/String;
+    invoke-virtual {v2}, Landroid/content/ComponentName;->getPackageName()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v2
 
     .line 251
-    invoke-virtual {p1, v0, p2}, Lcom/android/server/pm/permission/DefaultPermissionGrantPolicy;->grantDefaultPermissionsToDefaultSimCallManager(Ljava/lang/String;I)V
+    .local v2, "packageName":Ljava/lang/String;
+    invoke-virtual {p1, v2, p2}, Lcom/android/server/pm/permission/DefaultPermissionGrantPolicy;->grantDefaultPermissionsToDefaultSimCallManager(Ljava/lang/String;I)V
 
     .line 254
+    .end local v2  # "packageName":Ljava/lang/String;
     :cond_33
     return-void
 .end method
@@ -400,7 +425,10 @@
 
 # virtual methods
 .method public synthetic lambda$registerDefaultAppNotifier$3$TelecomLoaderService(Lcom/android/server/pm/permission/DefaultPermissionGrantPolicy;Ljava/lang/String;Landroid/os/UserHandle;)V
-    .registers 4
+    .registers 5
+    .param p1, "permissionPolicy"  # Lcom/android/server/pm/permission/DefaultPermissionGrantPolicy;
+    .param p2, "roleName"  # Ljava/lang/String;
+    .param p3, "user"  # Landroid/os/UserHandle;
 
     .line 222
     nop
@@ -408,148 +436,155 @@
     .line 223
     invoke-virtual {p3}, Landroid/os/UserHandle;->getIdentifier()I
 
-    move-result p2
+    move-result v0
 
     .line 222
-    invoke-direct {p0, p1, p2}, Lcom/android/server/telecom/TelecomLoaderService;->updateSimCallManagerPermissions(Lcom/android/server/pm/permission/DefaultPermissionGrantPolicy;I)V
+    invoke-direct {p0, p1, v0}, Lcom/android/server/telecom/TelecomLoaderService;->updateSimCallManagerPermissions(Lcom/android/server/pm/permission/DefaultPermissionGrantPolicy;I)V
 
     return-void
 .end method
 
 .method public synthetic lambda$registerDefaultAppProviders$0$TelecomLoaderService(I)[Ljava/lang/String;
-    .registers 4
+    .registers 6
+    .param p1, "userId"  # I
 
     .line 169
-    iget-object p1, p0, Lcom/android/server/telecom/TelecomLoaderService;->mLock:Ljava/lang/Object;
+    iget-object v0, p0, Lcom/android/server/telecom/TelecomLoaderService;->mLock:Ljava/lang/Object;
 
-    monitor-enter p1
+    monitor-enter v0
 
     .line 170
     :try_start_3
-    iget-object v0, p0, Lcom/android/server/telecom/TelecomLoaderService;->mServiceConnection:Lcom/android/server/telecom/TelecomLoaderService$TelecomServiceConnection;
+    iget-object v1, p0, Lcom/android/server/telecom/TelecomLoaderService;->mServiceConnection:Lcom/android/server/telecom/TelecomLoaderService$TelecomServiceConnection;
 
-    const/4 v1, 0x0
+    const/4 v2, 0x0
 
-    if-nez v0, :cond_a
+    if-nez v1, :cond_a
 
     .line 171
-    monitor-exit p1
+    monitor-exit v0
 
-    return-object v1
+    return-object v2
 
     .line 173
     :cond_a
-    monitor-exit p1
+    monitor-exit v0
     :try_end_b
     .catchall {:try_start_3 .. :try_end_b} :catchall_1f
 
     .line 174
-    iget-object p1, p0, Lcom/android/server/telecom/TelecomLoaderService;->mContext:Landroid/content/Context;
+    iget-object v0, p0, Lcom/android/server/telecom/TelecomLoaderService;->mContext:Landroid/content/Context;
 
-    const/4 v0, 0x1
+    const/4 v1, 0x1
 
-    invoke-static {p1, v0}, Lcom/android/internal/telephony/SmsApplication;->getDefaultSmsApplication(Landroid/content/Context;Z)Landroid/content/ComponentName;
+    invoke-static {v0, v1}, Lcom/android/internal/telephony/SmsApplication;->getDefaultSmsApplication(Landroid/content/Context;Z)Landroid/content/ComponentName;
 
-    move-result-object p1
+    move-result-object v0
 
     .line 176
-    if-eqz p1, :cond_1e
+    .local v0, "smsComponent":Landroid/content/ComponentName;
+    if-eqz v0, :cond_1e
 
     .line 177
-    new-array v0, v0, [Ljava/lang/String;
+    new-array v1, v1, [Ljava/lang/String;
 
-    const/4 v1, 0x0
+    const/4 v2, 0x0
 
-    invoke-virtual {p1}, Landroid/content/ComponentName;->getPackageName()Ljava/lang/String;
+    invoke-virtual {v0}, Landroid/content/ComponentName;->getPackageName()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v3
 
-    aput-object p1, v0, v1
+    aput-object v3, v1, v2
 
-    return-object v0
+    return-object v1
 
     .line 179
     :cond_1e
-    return-object v1
+    return-object v2
 
     .line 173
+    .end local v0  # "smsComponent":Landroid/content/ComponentName;
     :catchall_1f
-    move-exception v0
+    move-exception v1
 
     :try_start_20
-    monitor-exit p1
+    monitor-exit v0
     :try_end_21
     .catchall {:try_start_20 .. :try_end_21} :catchall_1f
 
-    throw v0
+    throw v1
 .end method
 
 .method public synthetic lambda$registerDefaultAppProviders$1$TelecomLoaderService(I)[Ljava/lang/String;
-    .registers 4
+    .registers 5
+    .param p1, "userId"  # I
 
     .line 184
-    iget-object p1, p0, Lcom/android/server/telecom/TelecomLoaderService;->mLock:Ljava/lang/Object;
+    iget-object v0, p0, Lcom/android/server/telecom/TelecomLoaderService;->mLock:Ljava/lang/Object;
 
-    monitor-enter p1
+    monitor-enter v0
 
     .line 185
     :try_start_3
-    iget-object v0, p0, Lcom/android/server/telecom/TelecomLoaderService;->mServiceConnection:Lcom/android/server/telecom/TelecomLoaderService$TelecomServiceConnection;
+    iget-object v1, p0, Lcom/android/server/telecom/TelecomLoaderService;->mServiceConnection:Lcom/android/server/telecom/TelecomLoaderService$TelecomServiceConnection;
 
-    const/4 v1, 0x0
+    const/4 v2, 0x0
 
-    if-nez v0, :cond_a
+    if-nez v1, :cond_a
 
     .line 186
-    monitor-exit p1
+    monitor-exit v0
 
-    return-object v1
+    return-object v2
 
     .line 188
     :cond_a
-    monitor-exit p1
+    monitor-exit v0
     :try_end_b
     .catchall {:try_start_3 .. :try_end_b} :catchall_1b
 
     .line 189
-    iget-object p1, p0, Lcom/android/server/telecom/TelecomLoaderService;->mContext:Landroid/content/Context;
+    iget-object v0, p0, Lcom/android/server/telecom/TelecomLoaderService;->mContext:Landroid/content/Context;
 
-    invoke-static {p1}, Landroid/telecom/DefaultDialerManager;->getDefaultDialerApplication(Landroid/content/Context;)Ljava/lang/String;
+    invoke-static {v0}, Landroid/telecom/DefaultDialerManager;->getDefaultDialerApplication(Landroid/content/Context;)Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
     .line 190
-    if-eqz p1, :cond_1a
+    .local v0, "packageName":Ljava/lang/String;
+    if-eqz v0, :cond_1a
 
     .line 191
-    const/4 v0, 0x1
+    const/4 v1, 0x1
 
-    new-array v0, v0, [Ljava/lang/String;
+    new-array v1, v1, [Ljava/lang/String;
 
-    const/4 v1, 0x0
+    const/4 v2, 0x0
 
-    aput-object p1, v0, v1
+    aput-object v0, v1, v2
 
-    return-object v0
+    return-object v1
 
     .line 193
     :cond_1a
-    return-object v1
+    return-object v2
 
     .line 188
+    .end local v0  # "packageName":Ljava/lang/String;
     :catchall_1b
-    move-exception v0
+    move-exception v1
 
     :try_start_1c
-    monitor-exit p1
+    monitor-exit v0
     :try_end_1d
     .catchall {:try_start_1c .. :try_end_1d} :catchall_1b
 
-    throw v0
+    throw v1
 .end method
 
 .method public synthetic lambda$registerDefaultAppProviders$2$TelecomLoaderService(I)[Ljava/lang/String;
-    .registers 5
+    .registers 7
+    .param p1, "userId"  # I
 
     .line 198
     iget-object v0, p0, Lcom/android/server/telecom/TelecomLoaderService;->mLock:Ljava/lang/Object;
@@ -606,50 +641,55 @@
     check-cast v0, Landroid/telecom/TelecomManager;
 
     .line 209
+    .local v0, "telecomManager":Landroid/telecom/TelecomManager;
     invoke-virtual {v0, p1}, Landroid/telecom/TelecomManager;->getSimCallManager(I)Landroid/telecom/PhoneAccountHandle;
 
-    move-result-object p1
+    move-result-object v1
 
     .line 210
-    if-eqz p1, :cond_3b
+    .local v1, "phoneAccount":Landroid/telecom/PhoneAccountHandle;
+    if-eqz v1, :cond_3b
 
     .line 211
-    const/4 v0, 0x1
+    const/4 v2, 0x1
 
-    new-array v0, v0, [Ljava/lang/String;
+    new-array v2, v2, [Ljava/lang/String;
 
-    const/4 v1, 0x0
+    const/4 v3, 0x0
 
-    invoke-virtual {p1}, Landroid/telecom/PhoneAccountHandle;->getComponentName()Landroid/content/ComponentName;
+    invoke-virtual {v1}, Landroid/telecom/PhoneAccountHandle;->getComponentName()Landroid/content/ComponentName;
 
-    move-result-object p1
+    move-result-object v4
 
-    invoke-virtual {p1}, Landroid/content/ComponentName;->getPackageName()Ljava/lang/String;
+    invoke-virtual {v4}, Landroid/content/ComponentName;->getPackageName()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v4
 
-    aput-object p1, v0, v1
+    aput-object v4, v2, v3
 
-    return-object v0
+    return-object v2
 
     .line 213
     :cond_3b
     return-object v2
 
     .line 206
+    .end local v0  # "telecomManager":Landroid/telecom/TelecomManager;
+    .end local v1  # "phoneAccount":Landroid/telecom/PhoneAccountHandle;
     :catchall_3c
-    move-exception p1
+    move-exception v1
 
     :try_start_3d
     monitor-exit v0
     :try_end_3e
     .catchall {:try_start_3d .. :try_end_3e} :catchall_3c
 
-    throw p1
+    throw v1
 .end method
 
 .method public onBootPhase(I)V
     .registers 3
+    .param p1, "phase"  # I
 
     .line 135
     const/16 v0, 0x226

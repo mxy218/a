@@ -64,6 +64,7 @@
 
 .method synthetic constructor <init>(Landroid/net/ip/RouterAdvertisementDaemon$1;)V
     .registers 2
+    .param p1, "x0"  # Landroid/net/ip/RouterAdvertisementDaemon$1;
 
     .line 178
     invoke-direct {p0}, Landroid/net/ip/RouterAdvertisementDaemon$DeprecatedInfoTracker;-><init>()V
@@ -72,14 +73,15 @@
 .end method
 
 .method static synthetic access$1100(Landroid/net/ip/RouterAdvertisementDaemon$DeprecatedInfoTracker;)Z
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Landroid/net/ip/RouterAdvertisementDaemon$DeprecatedInfoTracker;
 
     .line 178
     invoke-direct {p0}, Landroid/net/ip/RouterAdvertisementDaemon$DeprecatedInfoTracker;->decrementCounters()Z
 
-    move-result p0
+    move-result v0
 
-    return p0
+    return v0
 .end method
 
 .method private decrementCounter(Ljava/util/HashMap;)Z
@@ -97,83 +99,85 @@
     .end annotation
 
     .line 219
-    nop
-
-    .line 221
-    invoke-virtual {p1}, Ljava/util/HashMap;->entrySet()Ljava/util/Set;
-
-    move-result-object p1
-
-    invoke-interface {p1}, Ljava/util/Set;->iterator()Ljava/util/Iterator;
-
-    move-result-object p1
-
+    .local p1, "map":Ljava/util/HashMap;, "Ljava/util/HashMap<TT;Ljava/lang/Integer;>;"
     const/4 v0, 0x0
 
-    .line 222
-    :goto_a
-    invoke-interface {p1}, Ljava/util/Iterator;->hasNext()Z
-
-    move-result v1
-
-    if-eqz v1, :cond_3b
-
-    .line 223
-    invoke-interface {p1}, Ljava/util/Iterator;->next()Ljava/lang/Object;
+    .line 221
+    .local v0, "removed":Z
+    invoke-virtual {p1}, Ljava/util/HashMap;->entrySet()Ljava/util/Set;
 
     move-result-object v1
 
-    check-cast v1, Ljava/util/Map$Entry;
+    invoke-interface {v1}, Ljava/util/Set;->iterator()Ljava/util/Iterator;
+
+    move-result-object v1
+
+    .line 222
+    .local v1, "it":Ljava/util/Iterator;, "Ljava/util/Iterator<Ljava/util/Map$Entry<TT;Ljava/lang/Integer;>;>;"
+    :goto_9
+    invoke-interface {v1}, Ljava/util/Iterator;->hasNext()Z
+
+    move-result v2
+
+    if-eqz v2, :cond_3a
+
+    .line 223
+    invoke-interface {v1}, Ljava/util/Iterator;->next()Ljava/lang/Object;
+
+    move-result-object v2
+
+    check-cast v2, Ljava/util/Map$Entry;
 
     .line 224
-    invoke-interface {v1}, Ljava/util/Map$Entry;->getValue()Ljava/lang/Object;
+    .local v2, "kv":Ljava/util/Map$Entry;, "Ljava/util/Map$Entry<TT;Ljava/lang/Integer;>;"
+    invoke-interface {v2}, Ljava/util/Map$Entry;->getValue()Ljava/lang/Object;
 
-    move-result-object v2
+    move-result-object v3
 
-    check-cast v2, Ljava/lang/Integer;
+    check-cast v3, Ljava/lang/Integer;
 
-    invoke-virtual {v2}, Ljava/lang/Integer;->intValue()I
+    invoke-virtual {v3}, Ljava/lang/Integer;->intValue()I
 
-    move-result v2
+    move-result v3
 
-    const/4 v3, 0x1
-
-    if-nez v2, :cond_28
+    if-nez v3, :cond_26
 
     .line 225
-    invoke-interface {p1}, Ljava/util/Iterator;->remove()V
+    invoke-interface {v1}, Ljava/util/Iterator;->remove()V
 
     .line 226
-    move v0, v3
+    const/4 v0, 0x1
 
-    goto :goto_3a
+    goto :goto_39
 
     .line 228
-    :cond_28
-    invoke-interface {v1}, Ljava/util/Map$Entry;->getValue()Ljava/lang/Object;
+    :cond_26
+    invoke-interface {v2}, Ljava/util/Map$Entry;->getValue()Ljava/lang/Object;
 
-    move-result-object v2
+    move-result-object v3
 
-    check-cast v2, Ljava/lang/Integer;
+    check-cast v3, Ljava/lang/Integer;
 
-    invoke-virtual {v2}, Ljava/lang/Integer;->intValue()I
+    invoke-virtual {v3}, Ljava/lang/Integer;->intValue()I
 
-    move-result v2
+    move-result v3
 
-    sub-int/2addr v2, v3
+    add-int/lit8 v3, v3, -0x1
 
-    invoke-static {v2}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
+    invoke-static {v3}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
 
-    move-result-object v2
+    move-result-object v3
 
-    invoke-interface {v1, v2}, Ljava/util/Map$Entry;->setValue(Ljava/lang/Object;)Ljava/lang/Object;
+    invoke-interface {v2, v3}, Ljava/util/Map$Entry;->setValue(Ljava/lang/Object;)Ljava/lang/Object;
 
     .line 230
-    :goto_3a
-    goto :goto_a
+    .end local v2  # "kv":Ljava/util/Map$Entry;, "Ljava/util/Map$Entry<TT;Ljava/lang/Integer;>;"
+    :goto_39
+    goto :goto_9
 
     .line 232
-    :cond_3b
+    .end local v1  # "it":Ljava/util/Iterator;, "Ljava/util/Iterator<Ljava/util/Map$Entry<TT;Ljava/lang/Integer;>;>;"
+    :cond_3a
     return v0
 .end method
 
@@ -188,6 +192,7 @@
     move-result v0
 
     .line 214
+    .local v0, "removed":Z
     iget-object v1, p0, Landroid/net/ip/RouterAdvertisementDaemon$DeprecatedInfoTracker;->mDnses:Ljava/util/HashMap;
 
     invoke-direct {p0, v1}, Landroid/net/ip/RouterAdvertisementDaemon$DeprecatedInfoTracker;->decrementCounter(Ljava/util/HashMap;)Z
@@ -276,7 +281,7 @@
 .end method
 
 .method putDnses(Ljava/util/Set;)V
-    .registers 5
+    .registers 6
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(",
@@ -287,35 +292,38 @@
     .end annotation
 
     .line 199
+    .local p1, "dnses":Ljava/util/Set;, "Ljava/util/Set<Ljava/net/Inet6Address;>;"
     invoke-interface {p1}, Ljava/util/Set;->iterator()Ljava/util/Iterator;
-
-    move-result-object p1
-
-    :goto_4
-    invoke-interface {p1}, Ljava/util/Iterator;->hasNext()Z
-
-    move-result v0
-
-    if-eqz v0, :cond_1b
-
-    invoke-interface {p1}, Ljava/util/Iterator;->next()Ljava/lang/Object;
 
     move-result-object v0
 
-    check-cast v0, Ljava/net/Inet6Address;
+    :goto_4
+    invoke-interface {v0}, Ljava/util/Iterator;->hasNext()Z
+
+    move-result v1
+
+    if-eqz v1, :cond_1b
+
+    invoke-interface {v0}, Ljava/util/Iterator;->next()Ljava/lang/Object;
+
+    move-result-object v1
+
+    check-cast v1, Ljava/net/Inet6Address;
 
     .line 200
-    iget-object v1, p0, Landroid/net/ip/RouterAdvertisementDaemon$DeprecatedInfoTracker;->mDnses:Ljava/util/HashMap;
+    .local v1, "dns":Ljava/net/Inet6Address;
+    iget-object v2, p0, Landroid/net/ip/RouterAdvertisementDaemon$DeprecatedInfoTracker;->mDnses:Ljava/util/HashMap;
 
-    const/4 v2, 0x5
+    const/4 v3, 0x5
 
-    invoke-static {v2}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
+    invoke-static {v3}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
 
-    move-result-object v2
+    move-result-object v3
 
-    invoke-virtual {v1, v0, v2}, Ljava/util/HashMap;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+    invoke-virtual {v2, v1, v3}, Ljava/util/HashMap;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
 
     .line 201
+    .end local v1  # "dns":Ljava/net/Inet6Address;
     goto :goto_4
 
     .line 202
@@ -324,7 +332,7 @@
 .end method
 
 .method putPrefixes(Ljava/util/Set;)V
-    .registers 5
+    .registers 6
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(",
@@ -335,35 +343,38 @@
     .end annotation
 
     .line 185
+    .local p1, "prefixes":Ljava/util/Set;, "Ljava/util/Set<Landroid/net/IpPrefix;>;"
     invoke-interface {p1}, Ljava/util/Set;->iterator()Ljava/util/Iterator;
-
-    move-result-object p1
-
-    :goto_4
-    invoke-interface {p1}, Ljava/util/Iterator;->hasNext()Z
-
-    move-result v0
-
-    if-eqz v0, :cond_1b
-
-    invoke-interface {p1}, Ljava/util/Iterator;->next()Ljava/lang/Object;
 
     move-result-object v0
 
-    check-cast v0, Landroid/net/IpPrefix;
+    :goto_4
+    invoke-interface {v0}, Ljava/util/Iterator;->hasNext()Z
+
+    move-result v1
+
+    if-eqz v1, :cond_1b
+
+    invoke-interface {v0}, Ljava/util/Iterator;->next()Ljava/lang/Object;
+
+    move-result-object v1
+
+    check-cast v1, Landroid/net/IpPrefix;
 
     .line 186
-    iget-object v1, p0, Landroid/net/ip/RouterAdvertisementDaemon$DeprecatedInfoTracker;->mPrefixes:Ljava/util/HashMap;
+    .local v1, "ipp":Landroid/net/IpPrefix;
+    iget-object v2, p0, Landroid/net/ip/RouterAdvertisementDaemon$DeprecatedInfoTracker;->mPrefixes:Ljava/util/HashMap;
 
-    const/4 v2, 0x5
+    const/4 v3, 0x5
 
-    invoke-static {v2}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
+    invoke-static {v3}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
 
-    move-result-object v2
+    move-result-object v3
 
-    invoke-virtual {v1, v0, v2}, Ljava/util/HashMap;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+    invoke-virtual {v2, v1, v3}, Ljava/util/HashMap;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
 
     .line 187
+    .end local v1  # "ipp":Landroid/net/IpPrefix;
     goto :goto_4
 
     .line 188
@@ -372,7 +383,7 @@
 .end method
 
 .method removeDnses(Ljava/util/Set;)V
-    .registers 4
+    .registers 5
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(",
@@ -383,29 +394,32 @@
     .end annotation
 
     .line 205
+    .local p1, "dnses":Ljava/util/Set;, "Ljava/util/Set<Ljava/net/Inet6Address;>;"
     invoke-interface {p1}, Ljava/util/Set;->iterator()Ljava/util/Iterator;
-
-    move-result-object p1
-
-    :goto_4
-    invoke-interface {p1}, Ljava/util/Iterator;->hasNext()Z
-
-    move-result v0
-
-    if-eqz v0, :cond_16
-
-    invoke-interface {p1}, Ljava/util/Iterator;->next()Ljava/lang/Object;
 
     move-result-object v0
 
-    check-cast v0, Ljava/net/Inet6Address;
+    :goto_4
+    invoke-interface {v0}, Ljava/util/Iterator;->hasNext()Z
+
+    move-result v1
+
+    if-eqz v1, :cond_16
+
+    invoke-interface {v0}, Ljava/util/Iterator;->next()Ljava/lang/Object;
+
+    move-result-object v1
+
+    check-cast v1, Ljava/net/Inet6Address;
 
     .line 206
-    iget-object v1, p0, Landroid/net/ip/RouterAdvertisementDaemon$DeprecatedInfoTracker;->mDnses:Ljava/util/HashMap;
+    .local v1, "dns":Ljava/net/Inet6Address;
+    iget-object v2, p0, Landroid/net/ip/RouterAdvertisementDaemon$DeprecatedInfoTracker;->mDnses:Ljava/util/HashMap;
 
-    invoke-virtual {v1, v0}, Ljava/util/HashMap;->remove(Ljava/lang/Object;)Ljava/lang/Object;
+    invoke-virtual {v2, v1}, Ljava/util/HashMap;->remove(Ljava/lang/Object;)Ljava/lang/Object;
 
     .line 207
+    .end local v1  # "dns":Ljava/net/Inet6Address;
     goto :goto_4
 
     .line 208
@@ -414,7 +428,7 @@
 .end method
 
 .method removePrefixes(Ljava/util/Set;)V
-    .registers 4
+    .registers 5
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(",
@@ -425,29 +439,32 @@
     .end annotation
 
     .line 191
+    .local p1, "prefixes":Ljava/util/Set;, "Ljava/util/Set<Landroid/net/IpPrefix;>;"
     invoke-interface {p1}, Ljava/util/Set;->iterator()Ljava/util/Iterator;
-
-    move-result-object p1
-
-    :goto_4
-    invoke-interface {p1}, Ljava/util/Iterator;->hasNext()Z
-
-    move-result v0
-
-    if-eqz v0, :cond_16
-
-    invoke-interface {p1}, Ljava/util/Iterator;->next()Ljava/lang/Object;
 
     move-result-object v0
 
-    check-cast v0, Landroid/net/IpPrefix;
+    :goto_4
+    invoke-interface {v0}, Ljava/util/Iterator;->hasNext()Z
+
+    move-result v1
+
+    if-eqz v1, :cond_16
+
+    invoke-interface {v0}, Ljava/util/Iterator;->next()Ljava/lang/Object;
+
+    move-result-object v1
+
+    check-cast v1, Landroid/net/IpPrefix;
 
     .line 192
-    iget-object v1, p0, Landroid/net/ip/RouterAdvertisementDaemon$DeprecatedInfoTracker;->mPrefixes:Ljava/util/HashMap;
+    .local v1, "ipp":Landroid/net/IpPrefix;
+    iget-object v2, p0, Landroid/net/ip/RouterAdvertisementDaemon$DeprecatedInfoTracker;->mPrefixes:Ljava/util/HashMap;
 
-    invoke-virtual {v1, v0}, Ljava/util/HashMap;->remove(Ljava/lang/Object;)Ljava/lang/Object;
+    invoke-virtual {v2, v1}, Ljava/util/HashMap;->remove(Ljava/lang/Object;)Ljava/lang/Object;
 
     .line 193
+    .end local v1  # "ipp":Landroid/net/IpPrefix;
     goto :goto_4
 
     .line 194

@@ -17,6 +17,10 @@
 # virtual methods
 .method public dump(Ljava/io/FileDescriptor;Ljava/io/PrintWriter;[Ljava/lang/String;Z)V
     .registers 5
+    .param p1, "fd"  # Ljava/io/FileDescriptor;
+    .param p2, "pw"  # Ljava/io/PrintWriter;
+    .param p3, "args"  # [Ljava/lang/String;
+    .param p4, "asProto"  # Z
 
     .line 248
     invoke-interface {p0, p1, p2, p3, p4}, Lcom/android/server/utils/PriorityDump$PriorityDumper;->dumpCritical(Ljava/io/FileDescriptor;Ljava/io/PrintWriter;[Ljava/lang/String;Z)V
@@ -33,6 +37,10 @@
 
 .method public dumpCritical(Ljava/io/FileDescriptor;Ljava/io/PrintWriter;[Ljava/lang/String;Z)V
     .registers 5
+    .param p1, "fd"  # Ljava/io/FileDescriptor;
+    .param p2, "pw"  # Ljava/io/PrintWriter;
+    .param p3, "args"  # [Ljava/lang/String;
+    .param p4, "asProto"  # Z
 
     .line 222
     return-void
@@ -40,6 +48,10 @@
 
 .method public dumpHigh(Ljava/io/FileDescriptor;Ljava/io/PrintWriter;[Ljava/lang/String;Z)V
     .registers 5
+    .param p1, "fd"  # Ljava/io/FileDescriptor;
+    .param p2, "pw"  # Ljava/io/PrintWriter;
+    .param p3, "args"  # [Ljava/lang/String;
+    .param p4, "asProto"  # Z
 
     .line 229
     return-void
@@ -47,6 +59,10 @@
 
 .method public dumpNormal(Ljava/io/FileDescriptor;Ljava/io/PrintWriter;[Ljava/lang/String;Z)V
     .registers 5
+    .param p1, "fd"  # Ljava/io/FileDescriptor;
+    .param p2, "pw"  # Ljava/io/PrintWriter;
+    .param p3, "args"  # [Ljava/lang/String;
+    .param p4, "asProto"  # Z
 
     .line 236
     return-void

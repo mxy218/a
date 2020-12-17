@@ -30,8 +30,9 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/biometrics/fingerprint/FingerprintService$FingerprintServiceWrapper;IILjava/lang/String;)V
     .registers 5
+    .param p1, "this$1"  # Lcom/android/server/biometrics/fingerprint/FingerprintService$FingerprintServiceWrapper;
 
-    .line 383
+    .line 399
     iput-object p1, p0, Lcom/android/server/biometrics/fingerprint/FingerprintService$FingerprintServiceWrapper$4;->this$1:Lcom/android/server/biometrics/fingerprint/FingerprintService$FingerprintServiceWrapper;
 
     iput p2, p0, Lcom/android/server/biometrics/fingerprint/FingerprintService$FingerprintServiceWrapper$4;->val$groupId:I
@@ -50,7 +51,7 @@
 .method public run()V
     .registers 6
 
-    .line 386
+    .line 402
     iget-object v0, p0, Lcom/android/server/biometrics/fingerprint/FingerprintService$FingerprintServiceWrapper$4;->this$1:Lcom/android/server/biometrics/fingerprint/FingerprintService$FingerprintServiceWrapper;
 
     iget-object v0, v0, Lcom/android/server/biometrics/fingerprint/FingerprintService$FingerprintServiceWrapper;->this$0:Lcom/android/server/biometrics/fingerprint/FingerprintService;
@@ -75,6 +76,6 @@
 
     invoke-interface {v0, v1, v2, v3, v4}, Lcom/android/server/biometrics/BiometricUtils;->renameBiometricForUser(Landroid/content/Context;IILjava/lang/CharSequence;)V
 
-    .line 388
+    .line 404
     return-void
 .end method

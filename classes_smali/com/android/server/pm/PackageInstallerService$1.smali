@@ -30,12 +30,14 @@
 
 # virtual methods
 .method public accept(Ljava/io/File;Ljava/lang/String;)Z
-    .registers 3
+    .registers 4
+    .param p1, "dir"  # Ljava/io/File;
+    .param p2, "name"  # Ljava/lang/String;
 
     .line 188
     invoke-static {p2}, Lcom/android/server/pm/PackageInstallerService;->isStageName(Ljava/lang/String;)Z
 
-    move-result p1
+    move-result v0
 
-    return p1
+    return v0
 .end method

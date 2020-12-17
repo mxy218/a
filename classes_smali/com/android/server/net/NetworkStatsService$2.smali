@@ -21,8 +21,9 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/net/NetworkStatsService;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/net/NetworkStatsService;
 
-    .line 1042
+    .line 1048
     iput-object p1, p0, Lcom/android/server/net/NetworkStatsService$2;->this$0:Lcom/android/server/net/NetworkStatsService;
 
     invoke-direct {p0}, Landroid/content/BroadcastReceiver;-><init>()V
@@ -33,15 +34,17 @@
 
 # virtual methods
 .method public onReceive(Landroid/content/Context;Landroid/content/Intent;)V
-    .registers 3
+    .registers 5
+    .param p1, "context"  # Landroid/content/Context;
+    .param p2, "intent"  # Landroid/content/Intent;
 
-    .line 1047
-    iget-object p1, p0, Lcom/android/server/net/NetworkStatsService$2;->this$0:Lcom/android/server/net/NetworkStatsService;
+    .line 1053
+    iget-object v0, p0, Lcom/android/server/net/NetworkStatsService$2;->this$0:Lcom/android/server/net/NetworkStatsService;
 
-    const/4 p2, 0x1
+    const/4 v1, 0x1
 
-    invoke-static {p1, p2}, Lcom/android/server/net/NetworkStatsService;->access$800(Lcom/android/server/net/NetworkStatsService;I)V
+    invoke-static {v0, v1}, Lcom/android/server/net/NetworkStatsService;->access$800(Lcom/android/server/net/NetworkStatsService;I)V
 
-    .line 1048
+    .line 1054
     return-void
 .end method

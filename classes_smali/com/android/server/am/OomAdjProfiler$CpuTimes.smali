@@ -36,6 +36,8 @@
 
 .method synthetic constructor <init>(Lcom/android/server/am/OomAdjProfiler;Lcom/android/server/am/OomAdjProfiler$1;)V
     .registers 3
+    .param p1, "x0"  # Lcom/android/server/am/OomAdjProfiler;
+    .param p2, "x1"  # Lcom/android/server/am/OomAdjProfiler$1;
 
     .line 184
     invoke-direct {p0, p1}, Lcom/android/server/am/OomAdjProfiler$CpuTimes;-><init>(Lcom/android/server/am/OomAdjProfiler;)V
@@ -47,6 +49,7 @@
 # virtual methods
 .method public addCpuTimeMs(J)V
     .registers 5
+    .param p1, "cpuTimeMs"  # J
 
     .line 189
     iget-object v0, p0, Lcom/android/server/am/OomAdjProfiler$CpuTimes;->this$0:Lcom/android/server/am/OomAdjProfiler;
@@ -69,6 +72,9 @@
 
 .method public addCpuTimeMs(JZZ)V
     .registers 7
+    .param p1, "cpuTimeMs"  # J
+    .param p3, "onBattery"  # Z
+    .param p4, "screenOff"  # Z
 
     .line 193
     if-eqz p3, :cond_e
@@ -84,11 +90,11 @@
     if-eqz p4, :cond_e
 
     .line 196
-    iget-wide p3, p0, Lcom/android/server/am/OomAdjProfiler$CpuTimes;->mOnBatteryScreenOffTimeMs:J
+    iget-wide v0, p0, Lcom/android/server/am/OomAdjProfiler$CpuTimes;->mOnBatteryScreenOffTimeMs:J
 
-    add-long/2addr p3, p1
+    add-long/2addr v0, p1
 
-    iput-wide p3, p0, Lcom/android/server/am/OomAdjProfiler$CpuTimes;->mOnBatteryScreenOffTimeMs:J
+    iput-wide v0, p0, Lcom/android/server/am/OomAdjProfiler$CpuTimes;->mOnBatteryScreenOffTimeMs:J
 
     .line 199
     :cond_e

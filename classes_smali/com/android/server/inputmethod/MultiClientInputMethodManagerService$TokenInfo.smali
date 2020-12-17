@@ -23,6 +23,8 @@
 # direct methods
 .method constructor <init>(Landroid/os/Binder;I)V
     .registers 3
+    .param p1, "token"  # Landroid/os/Binder;
+    .param p2, "displayId"  # I
 
     .line 710
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V

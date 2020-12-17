@@ -16,6 +16,8 @@
 # direct methods
 .method constructor <init>(Landroid/content/Context;Landroid/hardware/oemlock/V1_0/IOemLock;)V
     .registers 3
+    .param p1, "context"  # Landroid/content/Context;
+    .param p2, "oemLock"  # Landroid/hardware/oemlock/V1_0/IOemLock;
 
     .line 50
     invoke-direct {p0}, Lcom/android/server/oemlock/OemLock;-><init>()V
@@ -31,7 +33,7 @@
 .end method
 
 .method static getOemLockHalService()Landroid/hardware/oemlock/V1_0/IOemLock;
-    .registers 2
+    .registers 3
 
     .line 41
     :try_start_0
@@ -49,96 +51,112 @@
     move-exception v0
 
     .line 46
+    .local v0, "e":Landroid/os/RemoteException;
     invoke-virtual {v0}, Landroid/os/RemoteException;->rethrowFromSystemServer()Ljava/lang/RuntimeException;
 
-    move-result-object v0
+    move-result-object v1
 
-    throw v0
+    throw v1
 
     .line 42
+    .end local v0  # "e":Landroid/os/RemoteException;
     :catch_b
     move-exception v0
 
     .line 43
-    const-string v0, "OemLock"
+    .local v0, "e":Ljava/util/NoSuchElementException;
+    const-string v1, "OemLock"
 
-    const-string v1, "OemLock HAL not present on device"
+    const-string v2, "OemLock HAL not present on device"
 
-    invoke-static {v0, v1}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v2}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 44
-    const/4 v0, 0x0
+    const/4 v1, 0x0
 
-    return-object v0
+    return-object v1
 .end method
 
 .method static synthetic lambda$getLockName$0([Ljava/lang/Integer;[Ljava/lang/String;ILjava/lang/String;)V
-    .registers 5
+    .registers 6
+    .param p0, "requestStatus"  # [Ljava/lang/Integer;
+    .param p1, "lockName"  # [Ljava/lang/String;
+    .param p2, "status"  # I
+    .param p3, "name"  # Ljava/lang/String;
 
     .line 63
     invoke-static {p2}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
 
-    move-result-object p2
+    move-result-object v0
 
-    const/4 v0, 0x0
+    const/4 v1, 0x0
 
-    aput-object p2, p0, v0
+    aput-object v0, p0, v1
 
     .line 64
-    aput-object p3, p1, v0
+    aput-object p3, p1, v1
 
     .line 65
     return-void
 .end method
 
 .method static synthetic lambda$isOemUnlockAllowedByCarrier$1([Ljava/lang/Integer;[Ljava/lang/Boolean;IZ)V
-    .registers 5
+    .registers 6
+    .param p0, "requestStatus"  # [Ljava/lang/Integer;
+    .param p1, "allowedByCarrier"  # [Ljava/lang/Boolean;
+    .param p2, "status"  # I
+    .param p3, "allowed"  # Z
 
     .line 121
     invoke-static {p2}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
 
-    move-result-object p2
+    move-result-object v0
 
-    const/4 v0, 0x0
+    const/4 v1, 0x0
 
-    aput-object p2, p0, v0
+    aput-object v0, p0, v1
 
     .line 122
     invoke-static {p3}, Ljava/lang/Boolean;->valueOf(Z)Ljava/lang/Boolean;
 
-    move-result-object p0
+    move-result-object v0
 
-    aput-object p0, p1, v0
+    aput-object v0, p1, v1
 
     .line 123
     return-void
 .end method
 
 .method static synthetic lambda$isOemUnlockAllowedByDevice$2([Ljava/lang/Integer;[Ljava/lang/Boolean;IZ)V
-    .registers 5
+    .registers 6
+    .param p0, "requestStatus"  # [Ljava/lang/Integer;
+    .param p1, "allowedByDevice"  # [Ljava/lang/Boolean;
+    .param p2, "status"  # I
+    .param p3, "allowed"  # Z
 
     .line 169
     invoke-static {p2}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
 
-    move-result-object p2
+    move-result-object v0
 
-    const/4 v0, 0x0
+    const/4 v1, 0x0
 
-    aput-object p2, p0, v0
+    aput-object v0, p0, v1
 
     .line 170
     invoke-static {p3}, Ljava/lang/Boolean;->valueOf(Z)Ljava/lang/Boolean;
 
-    move-result-object p0
+    move-result-object v0
 
-    aput-object p0, p1, v0
+    aput-object v0, p1, v1
 
     .line 171
     return-void
 .end method
 
 .method private toByteArrayList([B)Ljava/util/ArrayList;
-    .registers 6
+    .registers 7
+    .param p1, "data"  # [B
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "([B)",
@@ -152,11 +170,11 @@
     if-nez p1, :cond_8
 
     .line 192
-    new-instance p1, Ljava/util/ArrayList;
+    new-instance v0, Ljava/util/ArrayList;
 
-    invoke-direct {p1}, Ljava/util/ArrayList;-><init>()V
+    invoke-direct {v0}, Ljava/util/ArrayList;-><init>()V
 
-    return-object p1
+    return-object v0
 
     .line 194
     :cond_8
@@ -167,6 +185,7 @@
     invoke-direct {v0, v1}, Ljava/util/ArrayList;-><init>(I)V
 
     .line 195
+    .local v0, "result":Ljava/util/ArrayList;, "Ljava/util/ArrayList<Ljava/lang/Byte;>;"
     array-length v1, p1
 
     const/4 v2, 0x0
@@ -177,13 +196,15 @@
     aget-byte v3, p1, v2
 
     .line 196
+    .local v3, "b":B
     invoke-static {v3}, Ljava/lang/Byte;->valueOf(B)Ljava/lang/Byte;
 
-    move-result-object v3
+    move-result-object v4
 
-    invoke-virtual {v0, v3}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
+    invoke-virtual {v0, v4}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
 
     .line 195
+    .end local v3  # "b":B
     add-int/lit8 v2, v2, 0x1
 
     goto :goto_10
@@ -206,9 +227,11 @@
     new-array v2, v1, [Ljava/lang/Integer;
 
     .line 59
+    .local v2, "requestStatus":[Ljava/lang/Integer;
     new-array v3, v1, [Ljava/lang/String;
 
     .line 62
+    .local v3, "lockName":[Ljava/lang/String;
     :try_start_7
     iget-object v4, p0, Lcom/android/server/oemlock/VendorLock;->mOemLock:Landroid/hardware/oemlock/V1_0/IOemLock;
 
@@ -226,17 +249,17 @@
     .line 71
     const/4 v4, 0x0
 
-    aget-object v2, v2, v4
+    aget-object v5, v2, v4
 
-    invoke-virtual {v2}, Ljava/lang/Integer;->intValue()I
+    invoke-virtual {v5}, Ljava/lang/Integer;->intValue()I
 
-    move-result v2
+    move-result v5
 
-    if-eqz v2, :cond_2a
+    if-eqz v5, :cond_2a
 
-    const/4 v3, 0x0
+    const/4 v4, 0x0
 
-    if-eq v2, v1, :cond_24
+    if-eq v5, v1, :cond_24
 
     .line 81
     const-string v1, "Unknown return value indicates code is out of sync with HAL"
@@ -244,7 +267,7 @@
     invoke-static {v0, v1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 82
-    return-object v3
+    return-object v4
 
     .line 77
     :cond_24
@@ -253,7 +276,7 @@
     invoke-static {v0, v1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 78
-    return-object v3
+    return-object v4
 
     .line 74
     :cond_2a
@@ -266,9 +289,10 @@
     move-exception v1
 
     .line 67
-    const-string v2, "Failed to get name from HAL"
+    .local v1, "e":Landroid/os/RemoteException;
+    const-string v4, "Failed to get name from HAL"
 
-    invoke-static {v0, v2, v1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    invoke-static {v0, v4, v1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
     .line 68
     invoke-virtual {v1}, Landroid/os/RemoteException;->rethrowFromSystemServer()Ljava/lang/RuntimeException;
@@ -289,9 +313,11 @@
     new-array v2, v1, [Ljava/lang/Integer;
 
     .line 117
+    .local v2, "requestStatus":[Ljava/lang/Integer;
     new-array v3, v1, [Ljava/lang/Boolean;
 
     .line 120
+    .local v3, "allowedByCarrier":[Ljava/lang/Boolean;
     :try_start_7
     iget-object v4, p0, Lcom/android/server/oemlock/VendorLock;->mOemLock:Landroid/hardware/oemlock/V1_0/IOemLock;
 
@@ -309,15 +335,15 @@
     .line 129
     const/4 v4, 0x0
 
-    aget-object v2, v2, v4
+    aget-object v5, v2, v4
 
-    invoke-virtual {v2}, Ljava/lang/Integer;->intValue()I
+    invoke-virtual {v5}, Ljava/lang/Integer;->intValue()I
 
-    move-result v2
+    move-result v5
 
-    if-eqz v2, :cond_2a
+    if-eqz v5, :cond_2a
 
-    if-eq v2, v1, :cond_22
+    if-eq v5, v1, :cond_22
 
     .line 135
     const-string v1, "Unknown return value indicates code is out of sync with HAL"
@@ -349,9 +375,10 @@
     move-exception v1
 
     .line 125
-    const-string v2, "Failed to get carrier state from HAL"
+    .local v1, "e":Landroid/os/RemoteException;
+    const-string v4, "Failed to get carrier state from HAL"
 
-    invoke-static {v0, v2}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v0, v4}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 126
     invoke-virtual {v1}, Landroid/os/RemoteException;->rethrowFromSystemServer()Ljava/lang/RuntimeException;
@@ -372,9 +399,11 @@
     new-array v2, v1, [Ljava/lang/Integer;
 
     .line 165
+    .local v2, "requestStatus":[Ljava/lang/Integer;
     new-array v3, v1, [Ljava/lang/Boolean;
 
     .line 168
+    .local v3, "allowedByDevice":[Ljava/lang/Boolean;
     :try_start_7
     iget-object v4, p0, Lcom/android/server/oemlock/VendorLock;->mOemLock:Landroid/hardware/oemlock/V1_0/IOemLock;
 
@@ -392,15 +421,15 @@
     .line 177
     const/4 v4, 0x0
 
-    aget-object v2, v2, v4
+    aget-object v5, v2, v4
 
-    invoke-virtual {v2}, Ljava/lang/Integer;->intValue()I
+    invoke-virtual {v5}, Ljava/lang/Integer;->intValue()I
 
-    move-result v2
+    move-result v5
 
-    if-eqz v2, :cond_2a
+    if-eqz v5, :cond_2a
 
-    if-eq v2, v1, :cond_22
+    if-eq v5, v1, :cond_22
 
     .line 183
     const-string v1, "Unknown return value indicates code is out of sync with HAL"
@@ -432,9 +461,10 @@
     move-exception v1
 
     .line 173
-    const-string v2, "Failed to get devie state from HAL"
+    .local v1, "e":Landroid/os/RemoteException;
+    const-string v4, "Failed to get devie state from HAL"
 
-    invoke-static {v0, v2}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v0, v4}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 174
     invoke-virtual {v1}, Landroid/os/RemoteException;->rethrowFromSystemServer()Ljava/lang/RuntimeException;
@@ -445,7 +475,9 @@
 .end method
 
 .method setOemUnlockAllowedByCarrier(Z[B)V
-    .registers 5
+    .registers 7
+    .param p1, "allowed"  # Z
+    .param p2, "signature"  # [B
 
     .line 89
     const-string v0, "OemLock"
@@ -453,84 +485,103 @@
     :try_start_2
     invoke-direct {p0, p2}, Lcom/android/server/oemlock/VendorLock;->toByteArrayList([B)Ljava/util/ArrayList;
 
-    move-result-object p2
+    move-result-object v1
 
     .line 90
-    iget-object v1, p0, Lcom/android/server/oemlock/VendorLock;->mOemLock:Landroid/hardware/oemlock/V1_0/IOemLock;
+    .local v1, "signatureBytes":Ljava/util/ArrayList;, "Ljava/util/ArrayList<Ljava/lang/Byte;>;"
+    iget-object v2, p0, Lcom/android/server/oemlock/VendorLock;->mOemLock:Landroid/hardware/oemlock/V1_0/IOemLock;
 
-    invoke-interface {v1, p1, p2}, Landroid/hardware/oemlock/V1_0/IOemLock;->setOemUnlockAllowedByCarrier(ZLjava/util/ArrayList;)I
+    invoke-interface {v2, p1, v1}, Landroid/hardware/oemlock/V1_0/IOemLock;->setOemUnlockAllowedByCarrier(ZLjava/util/ArrayList;)I
 
-    move-result v1
+    move-result v2
 
-    if-eqz v1, :cond_37
+    if-eqz v2, :cond_37
 
-    const/4 p1, 0x1
+    const/4 v3, 0x1
 
-    if-eq v1, p1, :cond_2f
+    if-eq v2, v3, :cond_2f
 
-    const/4 p1, 0x2
+    const/4 v3, 0x2
 
-    if-ne v1, p1, :cond_2a
+    if-ne v2, v3, :cond_2a
 
     .line 96
-    invoke-virtual {p2}, Ljava/util/ArrayList;->isEmpty()Z
+    invoke-virtual {v1}, Ljava/util/ArrayList;->isEmpty()Z
 
-    move-result p1
+    move-result v2
 
-    if-eqz p1, :cond_22
+    if-eqz v2, :cond_22
 
     .line 97
-    new-instance p1, Ljava/lang/IllegalArgumentException;
+    new-instance v2, Ljava/lang/IllegalArgumentException;
 
-    const-string p2, "Signature required for carrier unlock"
+    const-string v3, "Signature required for carrier unlock"
 
-    invoke-direct {p1, p2}, Ljava/lang/IllegalArgumentException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v2, v3}, Ljava/lang/IllegalArgumentException;-><init>(Ljava/lang/String;)V
 
-    throw p1
+    .end local p0  # "this":Lcom/android/server/oemlock/VendorLock;
+    .end local p1  # "allowed":Z
+    .end local p2  # "signature":[B
+    throw v2
 
     .line 99
+    .restart local p0  # "this":Lcom/android/server/oemlock/VendorLock;
+    .restart local p1  # "allowed":Z
+    .restart local p2  # "signature":[B
     :cond_22
-    new-instance p1, Ljava/lang/SecurityException;
+    new-instance v2, Ljava/lang/SecurityException;
 
-    const-string p2, "Invalid signature used in attempt to carrier unlock"
+    const-string v3, "Invalid signature used in attempt to carrier unlock"
 
-    invoke-direct {p1, p2}, Ljava/lang/SecurityException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v2, v3}, Ljava/lang/SecurityException;-><init>(Ljava/lang/String;)V
 
-    throw p1
+    .end local p0  # "this":Lcom/android/server/oemlock/VendorLock;
+    .end local p1  # "allowed":Z
+    .end local p2  # "signature":[B
+    throw v2
 
     .line 103
+    .restart local p0  # "this":Lcom/android/server/oemlock/VendorLock;
+    .restart local p1  # "allowed":Z
+    .restart local p2  # "signature":[B
     :cond_2a
-    const-string p1, "Unknown return value indicates code is out of sync with HAL"
+    const-string v2, "Unknown return value indicates code is out of sync with HAL"
 
-    invoke-static {v0, p1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v0, v2}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 106
     :cond_2f
-    new-instance p1, Ljava/lang/RuntimeException;
+    new-instance v2, Ljava/lang/RuntimeException;
 
-    const-string p2, "Failed to set carrier OEM unlock state"
+    const-string v3, "Failed to set carrier OEM unlock state"
 
-    invoke-direct {p1, p2}, Ljava/lang/RuntimeException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v2, v3}, Ljava/lang/RuntimeException;-><init>(Ljava/lang/String;)V
 
-    throw p1
+    .end local p0  # "this":Lcom/android/server/oemlock/VendorLock;
+    .end local p1  # "allowed":Z
+    .end local p2  # "signature":[B
+    throw v2
 
     .line 92
+    .restart local p0  # "this":Lcom/android/server/oemlock/VendorLock;
+    .restart local p1  # "allowed":Z
+    .restart local p2  # "signature":[B
     :cond_37
-    new-instance p2, Ljava/lang/StringBuilder;
+    new-instance v2, Ljava/lang/StringBuilder;
 
-    invoke-direct {p2}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v1, "Updated carrier allows OEM lock state to: "
+    const-string v3, "Updated carrier allows OEM lock state to: "
 
-    invoke-virtual {p2, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p2, p1}, Ljava/lang/StringBuilder;->append(Z)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, p1}, Ljava/lang/StringBuilder;->append(Z)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v2
 
-    invoke-static {v0, p1}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v0, v2}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
     :try_end_4b
     .catch Landroid/os/RemoteException; {:try_start_2 .. :try_end_4b} :catch_4c
 
@@ -538,24 +589,27 @@
     return-void
 
     .line 108
+    .end local v1  # "signatureBytes":Ljava/util/ArrayList;, "Ljava/util/ArrayList<Ljava/lang/Byte;>;"
     :catch_4c
-    move-exception p1
+    move-exception v1
 
     .line 109
-    const-string p2, "Failed to set carrier state with HAL"
+    .local v1, "e":Landroid/os/RemoteException;
+    const-string v2, "Failed to set carrier state with HAL"
 
-    invoke-static {v0, p2, p1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    invoke-static {v0, v2, v1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
     .line 110
-    invoke-virtual {p1}, Landroid/os/RemoteException;->rethrowFromSystemServer()Ljava/lang/RuntimeException;
+    invoke-virtual {v1}, Landroid/os/RemoteException;->rethrowFromSystemServer()Ljava/lang/RuntimeException;
 
-    move-result-object p1
+    move-result-object v0
 
-    throw p1
+    throw v0
 .end method
 
 .method setOemUnlockAllowedByDevice(Z)V
     .registers 5
+    .param p1, "allowedByDevice"  # Z
 
     .line 145
     const-string v0, "OemLock"
@@ -569,26 +623,30 @@
 
     if-eqz v1, :cond_1a
 
-    const/4 p1, 0x1
+    const/4 v2, 0x1
 
-    if-eq v1, p1, :cond_12
+    if-eq v1, v2, :cond_12
 
     .line 151
-    const-string p1, "Unknown return value indicates code is out of sync with HAL"
+    const-string v1, "Unknown return value indicates code is out of sync with HAL"
 
-    invoke-static {v0, p1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v0, v1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 154
     :cond_12
-    new-instance p1, Ljava/lang/RuntimeException;
+    new-instance v1, Ljava/lang/RuntimeException;
 
-    const-string v1, "Failed to set device OEM unlock state"
+    const-string v2, "Failed to set device OEM unlock state"
 
-    invoke-direct {p1, v1}, Ljava/lang/RuntimeException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v1, v2}, Ljava/lang/RuntimeException;-><init>(Ljava/lang/String;)V
 
-    throw p1
+    .end local p0  # "this":Lcom/android/server/oemlock/VendorLock;
+    .end local p1  # "allowedByDevice":Z
+    throw v1
 
     .line 147
+    .restart local p0  # "this":Lcom/android/server/oemlock/VendorLock;
+    .restart local p1  # "allowedByDevice":Z
     :cond_1a
     new-instance v1, Ljava/lang/StringBuilder;
 
@@ -602,9 +660,9 @@
 
     invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v1
 
-    invoke-static {v0, p1}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v0, v1}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
     :try_end_2e
     .catch Landroid/os/RemoteException; {:try_start_2 .. :try_end_2e} :catch_2f
 
@@ -613,17 +671,18 @@
 
     .line 156
     :catch_2f
-    move-exception p1
+    move-exception v1
 
     .line 157
-    const-string v1, "Failed to set device state with HAL"
+    .local v1, "e":Landroid/os/RemoteException;
+    const-string v2, "Failed to set device state with HAL"
 
-    invoke-static {v0, v1, p1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    invoke-static {v0, v2, v1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
     .line 158
-    invoke-virtual {p1}, Landroid/os/RemoteException;->rethrowFromSystemServer()Ljava/lang/RuntimeException;
+    invoke-virtual {v1}, Landroid/os/RemoteException;->rethrowFromSystemServer()Ljava/lang/RuntimeException;
 
-    move-result-object p1
+    move-result-object v0
 
-    throw p1
+    throw v0
 .end method

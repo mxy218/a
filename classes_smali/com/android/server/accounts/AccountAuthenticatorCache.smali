@@ -47,6 +47,7 @@
 
 .method public constructor <init>(Landroid/content/Context;)V
     .registers 8
+    .param p1, "context"  # Landroid/content/Context;
 
     .line 51
     sget-object v5, Lcom/android/server/accounts/AccountAuthenticatorCache;->sSerializer:Lcom/android/server/accounts/AccountAuthenticatorCache$MySerializer;
@@ -70,114 +71,132 @@
 
 # virtual methods
 .method public bridge synthetic getServiceInfo(Landroid/accounts/AuthenticatorDescription;I)Landroid/content/pm/RegisteredServicesCache$ServiceInfo;
-    .registers 3
+    .registers 4
+    .param p1, "x0"  # Landroid/accounts/AuthenticatorDescription;
+    .param p2, "x1"  # I
 
     .line 44
     invoke-super {p0, p1, p2}, Landroid/content/pm/RegisteredServicesCache;->getServiceInfo(Ljava/lang/Object;I)Landroid/content/pm/RegisteredServicesCache$ServiceInfo;
 
-    move-result-object p1
+    move-result-object v0
 
-    return-object p1
+    return-object v0
 .end method
 
 .method public parseServiceAttributes(Landroid/content/res/Resources;Ljava/lang/String;Landroid/util/AttributeSet;)Landroid/accounts/AuthenticatorDescription;
-    .registers 12
+    .registers 14
+    .param p1, "res"  # Landroid/content/res/Resources;
+    .param p2, "packageName"  # Ljava/lang/String;
+    .param p3, "attrs"  # Landroid/util/AttributeSet;
 
     .line 59
     sget-object v0, Lcom/android/internal/R$styleable;->AccountAuthenticator:[I
 
     invoke-virtual {p1, p3, v0}, Landroid/content/res/Resources;->obtainAttributes(Landroid/util/AttributeSet;[I)Landroid/content/res/TypedArray;
 
-    move-result-object p1
+    move-result-object v0
 
     .line 62
-    const/4 p3, 0x2
+    .local v0, "sa":Landroid/content/res/TypedArray;
+    const/4 v1, 0x2
 
     .line 63
     :try_start_7
-    invoke-virtual {p1, p3}, Landroid/content/res/TypedArray;->getString(I)Ljava/lang/String;
+    invoke-virtual {v0, v1}, Landroid/content/res/TypedArray;->getString(I)Ljava/lang/String;
 
-    move-result-object v1
+    move-result-object v3
 
     .line 64
-    const/4 p3, 0x0
+    .local v3, "accountType":Ljava/lang/String;
+    const/4 v1, 0x0
 
-    invoke-virtual {p1, p3, p3}, Landroid/content/res/TypedArray;->getResourceId(II)I
-
-    move-result v3
-
-    .line 66
-    const/4 v0, 0x1
-
-    invoke-virtual {p1, v0, p3}, Landroid/content/res/TypedArray;->getResourceId(II)I
-
-    move-result v4
-
-    .line 68
-    const/4 v0, 0x3
-
-    invoke-virtual {p1, v0, p3}, Landroid/content/res/TypedArray;->getResourceId(II)I
+    invoke-virtual {v0, v1, v1}, Landroid/content/res/TypedArray;->getResourceId(II)I
 
     move-result v5
 
-    .line 70
-    const/4 v0, 0x4
+    .line 66
+    .local v5, "labelId":I
+    const/4 v2, 0x1
 
-    invoke-virtual {p1, v0, p3}, Landroid/content/res/TypedArray;->getResourceId(II)I
+    invoke-virtual {v0, v2, v1}, Landroid/content/res/TypedArray;->getResourceId(II)I
 
     move-result v6
 
-    .line 72
-    const/4 v0, 0x5
+    .line 68
+    .local v6, "iconId":I
+    const/4 v2, 0x3
 
-    invoke-virtual {p1, v0, p3}, Landroid/content/res/TypedArray;->getBoolean(IZ)Z
+    invoke-virtual {v0, v2, v1}, Landroid/content/res/TypedArray;->getResourceId(II)I
 
     move-result v7
 
-    .line 74
-    invoke-static {v1}, Landroid/text/TextUtils;->isEmpty(Ljava/lang/CharSequence;)Z
+    .line 70
+    .local v7, "smallIconId":I
+    const/4 v2, 0x4
 
-    move-result p3
+    invoke-virtual {v0, v2, v1}, Landroid/content/res/TypedArray;->getResourceId(II)I
+
+    move-result v8
+
+    .line 72
+    .local v8, "prefId":I
+    const/4 v2, 0x5
+
+    invoke-virtual {v0, v2, v1}, Landroid/content/res/TypedArray;->getBoolean(IZ)Z
+
+    move-result v9
+
+    .line 74
+    .local v9, "customTokens":Z
+    invoke-static {v3}, Landroid/text/TextUtils;->isEmpty(Ljava/lang/CharSequence;)Z
+
+    move-result v1
     :try_end_28
     .catchall {:try_start_7 .. :try_end_28} :catchall_3a
 
-    if-eqz p3, :cond_2f
+    if-eqz v1, :cond_2f
 
     .line 75
-    const/4 p2, 0x0
+    const/4 v1, 0x0
 
     .line 80
-    invoke-virtual {p1}, Landroid/content/res/TypedArray;->recycle()V
+    invoke-virtual {v0}, Landroid/content/res/TypedArray;->recycle()V
 
     .line 75
-    return-object p2
+    return-object v1
 
     .line 77
     :cond_2f
     :try_start_2f
-    new-instance p3, Landroid/accounts/AuthenticatorDescription;
+    new-instance v1, Landroid/accounts/AuthenticatorDescription;
 
-    move-object v0, p3
+    move-object v2, v1
 
-    move-object v2, p2
+    move-object v4, p2
 
-    invoke-direct/range {v0 .. v7}, Landroid/accounts/AuthenticatorDescription;-><init>(Ljava/lang/String;Ljava/lang/String;IIIIZ)V
+    invoke-direct/range {v2 .. v9}, Landroid/accounts/AuthenticatorDescription;-><init>(Ljava/lang/String;Ljava/lang/String;IIIIZ)V
     :try_end_36
     .catchall {:try_start_2f .. :try_end_36} :catchall_3a
 
     .line 80
-    invoke-virtual {p1}, Landroid/content/res/TypedArray;->recycle()V
+    invoke-virtual {v0}, Landroid/content/res/TypedArray;->recycle()V
 
     .line 77
-    return-object p3
+    return-object v1
 
     .line 80
+    .end local v3  # "accountType":Ljava/lang/String;
+    .end local v5  # "labelId":I
+    .end local v6  # "iconId":I
+    .end local v7  # "smallIconId":I
+    .end local v8  # "prefId":I
+    .end local v9  # "customTokens":Z
     :catchall_3a
-    move-exception p2
+    move-exception v1
 
-    invoke-virtual {p1}, Landroid/content/res/TypedArray;->recycle()V
+    invoke-virtual {v0}, Landroid/content/res/TypedArray;->recycle()V
 
-    throw p2
+    throw v1
 .end method
 
 .method public bridge synthetic parseServiceAttributes(Landroid/content/res/Resources;Ljava/lang/String;Landroid/util/AttributeSet;)Ljava/lang/Object;

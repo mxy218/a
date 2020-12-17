@@ -21,8 +21,9 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/net/NetworkPolicyManagerService;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/net/NetworkPolicyManagerService;
 
-    .line 1133
+    .line 1206
     iput-object p1, p0, Lcom/android/server/net/NetworkPolicyManagerService$14;->this$0:Lcom/android/server/net/NetworkPolicyManagerService;
 
     invoke-direct {p0}, Lcom/android/server/net/BaseNetworkObserver;-><init>()V
@@ -34,11 +35,13 @@
 # virtual methods
 .method public limitReached(Ljava/lang/String;Ljava/lang/String;)V
     .registers 6
+    .param p1, "limitName"  # Ljava/lang/String;
+    .param p2, "iface"  # Ljava/lang/String;
 
-    .line 1137
+    .line 1210
     iget-object v0, p0, Lcom/android/server/net/NetworkPolicyManagerService$14;->this$0:Lcom/android/server/net/NetworkPolicyManagerService;
 
-    invoke-static {v0}, Lcom/android/server/net/NetworkPolicyManagerService;->access$1200(Lcom/android/server/net/NetworkPolicyManagerService;)Landroid/content/Context;
+    invoke-static {v0}, Lcom/android/server/net/NetworkPolicyManagerService;->access$1000(Lcom/android/server/net/NetworkPolicyManagerService;)Landroid/content/Context;
 
     move-result-object v0
 
@@ -48,29 +51,29 @@
 
     invoke-virtual {v0, v1, v2}, Landroid/content/Context;->enforceCallingOrSelfPermission(Ljava/lang/String;Ljava/lang/String;)V
 
-    .line 1139
+    .line 1212
     const-string v0, "globalAlert"
 
     invoke-virtual {v0, p1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result p1
+    move-result v0
 
-    if-nez p1, :cond_21
+    if-nez v0, :cond_21
 
-    .line 1140
-    iget-object p1, p0, Lcom/android/server/net/NetworkPolicyManagerService$14;->this$0:Lcom/android/server/net/NetworkPolicyManagerService;
+    .line 1213
+    iget-object v0, p0, Lcom/android/server/net/NetworkPolicyManagerService$14;->this$0:Lcom/android/server/net/NetworkPolicyManagerService;
 
-    iget-object p1, p1, Lcom/android/server/net/NetworkPolicyManagerService;->mHandler:Landroid/os/Handler;
+    iget-object v0, v0, Lcom/android/server/net/NetworkPolicyManagerService;->mHandler:Landroid/os/Handler;
 
-    const/4 v0, 0x5
+    const/4 v1, 0x5
 
-    invoke-virtual {p1, v0, p2}, Landroid/os/Handler;->obtainMessage(ILjava/lang/Object;)Landroid/os/Message;
+    invoke-virtual {v0, v1, p2}, Landroid/os/Handler;->obtainMessage(ILjava/lang/Object;)Landroid/os/Message;
 
-    move-result-object p1
+    move-result-object v0
 
-    invoke-virtual {p1}, Landroid/os/Message;->sendToTarget()V
+    invoke-virtual {v0}, Landroid/os/Message;->sendToTarget()V
 
-    .line 1142
+    .line 1215
     :cond_21
     return-void
 .end method

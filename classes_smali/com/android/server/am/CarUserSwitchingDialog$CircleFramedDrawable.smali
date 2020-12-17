@@ -30,197 +30,210 @@
 
 # direct methods
 .method public constructor <init>(Landroid/graphics/Bitmap;I)V
-    .registers 10
+    .registers 15
+    .param p1, "icon"  # Landroid/graphics/Bitmap;
+    .param p2, "size"  # I
 
-    .line 118
+    .line 108
     invoke-direct {p0}, Landroid/graphics/drawable/Drawable;-><init>()V
 
-    .line 119
+    .line 109
     iput p2, p0, Lcom/android/server/am/CarUserSwitchingDialog$CircleFramedDrawable;->mSize:I
 
-    .line 121
-    iget p2, p0, Lcom/android/server/am/CarUserSwitchingDialog$CircleFramedDrawable;->mSize:I
+    .line 111
+    iget v0, p0, Lcom/android/server/am/CarUserSwitchingDialog$CircleFramedDrawable;->mSize:I
 
-    sget-object v0, Landroid/graphics/Bitmap$Config;->ARGB_8888:Landroid/graphics/Bitmap$Config;
+    sget-object v1, Landroid/graphics/Bitmap$Config;->ARGB_8888:Landroid/graphics/Bitmap$Config;
 
-    invoke-static {p2, p2, v0}, Landroid/graphics/Bitmap;->createBitmap(IILandroid/graphics/Bitmap$Config;)Landroid/graphics/Bitmap;
+    invoke-static {v0, v0, v1}, Landroid/graphics/Bitmap;->createBitmap(IILandroid/graphics/Bitmap$Config;)Landroid/graphics/Bitmap;
 
-    move-result-object p2
+    move-result-object v0
 
-    iput-object p2, p0, Lcom/android/server/am/CarUserSwitchingDialog$CircleFramedDrawable;->mBitmap:Landroid/graphics/Bitmap;
+    iput-object v0, p0, Lcom/android/server/am/CarUserSwitchingDialog$CircleFramedDrawable;->mBitmap:Landroid/graphics/Bitmap;
 
-    .line 122
-    new-instance p2, Landroid/graphics/Canvas;
+    .line 112
+    new-instance v0, Landroid/graphics/Canvas;
 
-    iget-object v0, p0, Lcom/android/server/am/CarUserSwitchingDialog$CircleFramedDrawable;->mBitmap:Landroid/graphics/Bitmap;
+    iget-object v1, p0, Lcom/android/server/am/CarUserSwitchingDialog$CircleFramedDrawable;->mBitmap:Landroid/graphics/Bitmap;
 
-    invoke-direct {p2, v0}, Landroid/graphics/Canvas;-><init>(Landroid/graphics/Bitmap;)V
+    invoke-direct {v0, v1}, Landroid/graphics/Canvas;-><init>(Landroid/graphics/Bitmap;)V
 
-    .line 124
+    .line 114
+    .local v0, "canvas":Landroid/graphics/Canvas;
     invoke-virtual {p1}, Landroid/graphics/Bitmap;->getWidth()I
-
-    move-result v0
-
-    .line 125
-    invoke-virtual {p1}, Landroid/graphics/Bitmap;->getHeight()I
 
     move-result v1
 
-    .line 126
-    invoke-static {v0, v1}, Ljava/lang/Math;->min(II)I
+    .line 115
+    .local v1, "width":I
+    invoke-virtual {p1}, Landroid/graphics/Bitmap;->getHeight()I
 
     move-result v2
 
+    .line 116
+    .local v2, "height":I
+    invoke-static {v1, v2}, Ljava/lang/Math;->min(II)I
+
+    move-result v3
+
+    .line 118
+    .local v3, "square":I
+    new-instance v4, Landroid/graphics/Rect;
+
+    sub-int v5, v1, v3
+
+    div-int/lit8 v5, v5, 0x2
+
+    sub-int v6, v2, v3
+
+    div-int/lit8 v6, v6, 0x2
+
+    invoke-direct {v4, v5, v6, v3, v3}, Landroid/graphics/Rect;-><init>(IIII)V
+
+    .line 120
+    .local v4, "cropRect":Landroid/graphics/Rect;
+    new-instance v5, Landroid/graphics/RectF;
+
+    iget v6, p0, Lcom/android/server/am/CarUserSwitchingDialog$CircleFramedDrawable;->mSize:I
+
+    int-to-float v7, v6
+
+    int-to-float v6, v6
+
+    const/4 v8, 0x0
+
+    invoke-direct {v5, v8, v8, v7, v6}, Landroid/graphics/RectF;-><init>(FFFF)V
+
+    .line 122
+    .local v5, "circleRect":Landroid/graphics/RectF;
+    new-instance v6, Landroid/graphics/Path;
+
+    invoke-direct {v6}, Landroid/graphics/Path;-><init>()V
+
+    .line 123
+    .local v6, "fillPath":Landroid/graphics/Path;
+    const/high16 v7, 0x43b40000  # 360.0f
+
+    invoke-virtual {v6, v5, v8, v7}, Landroid/graphics/Path;->addArc(Landroid/graphics/RectF;FF)V
+
+    .line 125
+    sget-object v7, Landroid/graphics/PorterDuff$Mode;->CLEAR:Landroid/graphics/PorterDuff$Mode;
+
+    const/4 v9, 0x0
+
+    invoke-virtual {v0, v9, v7}, Landroid/graphics/Canvas;->drawColor(ILandroid/graphics/PorterDuff$Mode;)V
+
     .line 128
-    new-instance v3, Landroid/graphics/Rect;
+    new-instance v7, Landroid/graphics/Paint;
 
-    sub-int/2addr v0, v2
+    invoke-direct {v7}, Landroid/graphics/Paint;-><init>()V
 
-    div-int/lit8 v0, v0, 0x2
+    iput-object v7, p0, Lcom/android/server/am/CarUserSwitchingDialog$CircleFramedDrawable;->mPaint:Landroid/graphics/Paint;
 
-    sub-int/2addr v1, v2
+    .line 129
+    iget-object v7, p0, Lcom/android/server/am/CarUserSwitchingDialog$CircleFramedDrawable;->mPaint:Landroid/graphics/Paint;
 
-    div-int/lit8 v1, v1, 0x2
+    const/4 v10, 0x1
 
-    invoke-direct {v3, v0, v1, v2, v2}, Landroid/graphics/Rect;-><init>(IIII)V
+    invoke-virtual {v7, v10}, Landroid/graphics/Paint;->setAntiAlias(Z)V
 
     .line 130
-    new-instance v0, Landroid/graphics/RectF;
+    iget-object v7, p0, Lcom/android/server/am/CarUserSwitchingDialog$CircleFramedDrawable;->mPaint:Landroid/graphics/Paint;
 
-    iget v1, p0, Lcom/android/server/am/CarUserSwitchingDialog$CircleFramedDrawable;->mSize:I
+    const/high16 v10, -0x1000000
 
-    int-to-float v2, v1
+    invoke-virtual {v7, v10}, Landroid/graphics/Paint;->setColor(I)V
 
-    int-to-float v1, v1
+    .line 131
+    iget-object v7, p0, Lcom/android/server/am/CarUserSwitchingDialog$CircleFramedDrawable;->mPaint:Landroid/graphics/Paint;
 
-    const/4 v4, 0x0
+    sget-object v10, Landroid/graphics/Paint$Style;->FILL:Landroid/graphics/Paint$Style;
 
-    invoke-direct {v0, v4, v4, v2, v1}, Landroid/graphics/RectF;-><init>(FFFF)V
+    invoke-virtual {v7, v10}, Landroid/graphics/Paint;->setStyle(Landroid/graphics/Paint$Style;)V
 
     .line 132
-    new-instance v1, Landroid/graphics/Path;
+    iget-object v7, p0, Lcom/android/server/am/CarUserSwitchingDialog$CircleFramedDrawable;->mPaint:Landroid/graphics/Paint;
 
-    invoke-direct {v1}, Landroid/graphics/Path;-><init>()V
-
-    .line 133
-    const/high16 v2, 0x43b40000  # 360.0f
-
-    invoke-virtual {v1, v0, v4, v2}, Landroid/graphics/Path;->addArc(Landroid/graphics/RectF;FF)V
+    invoke-virtual {v0, v6, v7}, Landroid/graphics/Canvas;->drawPath(Landroid/graphics/Path;Landroid/graphics/Paint;)V
 
     .line 135
-    sget-object v2, Landroid/graphics/PorterDuff$Mode;->CLEAR:Landroid/graphics/PorterDuff$Mode;
+    iget-object v7, p0, Lcom/android/server/am/CarUserSwitchingDialog$CircleFramedDrawable;->mPaint:Landroid/graphics/Paint;
 
-    const/4 v5, 0x0
+    new-instance v10, Landroid/graphics/PorterDuffXfermode;
 
-    invoke-virtual {p2, v5, v2}, Landroid/graphics/Canvas;->drawColor(ILandroid/graphics/PorterDuff$Mode;)V
+    sget-object v11, Landroid/graphics/PorterDuff$Mode;->SRC_IN:Landroid/graphics/PorterDuff$Mode;
 
-    .line 138
-    new-instance v2, Landroid/graphics/Paint;
+    invoke-direct {v10, v11}, Landroid/graphics/PorterDuffXfermode;-><init>(Landroid/graphics/PorterDuff$Mode;)V
 
-    invoke-direct {v2}, Landroid/graphics/Paint;-><init>()V
+    invoke-virtual {v7, v10}, Landroid/graphics/Paint;->setXfermode(Landroid/graphics/Xfermode;)Landroid/graphics/Xfermode;
 
-    iput-object v2, p0, Lcom/android/server/am/CarUserSwitchingDialog$CircleFramedDrawable;->mPaint:Landroid/graphics/Paint;
+    .line 136
+    iget-object v7, p0, Lcom/android/server/am/CarUserSwitchingDialog$CircleFramedDrawable;->mPaint:Landroid/graphics/Paint;
+
+    invoke-virtual {v0, p1, v4, v5, v7}, Landroid/graphics/Canvas;->drawBitmap(Landroid/graphics/Bitmap;Landroid/graphics/Rect;Landroid/graphics/RectF;Landroid/graphics/Paint;)V
 
     .line 139
-    iget-object v2, p0, Lcom/android/server/am/CarUserSwitchingDialog$CircleFramedDrawable;->mPaint:Landroid/graphics/Paint;
+    iget-object v7, p0, Lcom/android/server/am/CarUserSwitchingDialog$CircleFramedDrawable;->mPaint:Landroid/graphics/Paint;
 
-    const/4 v6, 0x1
+    const/4 v10, 0x0
 
-    invoke-virtual {v2, v6}, Landroid/graphics/Paint;->setAntiAlias(Z)V
-
-    .line 140
-    iget-object v2, p0, Lcom/android/server/am/CarUserSwitchingDialog$CircleFramedDrawable;->mPaint:Landroid/graphics/Paint;
-
-    const/high16 v6, -0x1000000
-
-    invoke-virtual {v2, v6}, Landroid/graphics/Paint;->setColor(I)V
+    invoke-virtual {v7, v10}, Landroid/graphics/Paint;->setXfermode(Landroid/graphics/Xfermode;)Landroid/graphics/Xfermode;
 
     .line 141
-    iget-object v2, p0, Lcom/android/server/am/CarUserSwitchingDialog$CircleFramedDrawable;->mPaint:Landroid/graphics/Paint;
+    const/high16 v7, 0x3f800000  # 1.0f
 
-    sget-object v6, Landroid/graphics/Paint$Style;->FILL:Landroid/graphics/Paint$Style;
+    iput v7, p0, Lcom/android/server/am/CarUserSwitchingDialog$CircleFramedDrawable;->mScale:F
 
-    invoke-virtual {v2, v6}, Landroid/graphics/Paint;->setStyle(Landroid/graphics/Paint$Style;)V
+    .line 143
+    new-instance v7, Landroid/graphics/Rect;
 
-    .line 142
-    iget-object v2, p0, Lcom/android/server/am/CarUserSwitchingDialog$CircleFramedDrawable;->mPaint:Landroid/graphics/Paint;
+    iget v10, p0, Lcom/android/server/am/CarUserSwitchingDialog$CircleFramedDrawable;->mSize:I
 
-    invoke-virtual {p2, v1, v2}, Landroid/graphics/Canvas;->drawPath(Landroid/graphics/Path;Landroid/graphics/Paint;)V
+    invoke-direct {v7, v9, v9, v10, v10}, Landroid/graphics/Rect;-><init>(IIII)V
+
+    iput-object v7, p0, Lcom/android/server/am/CarUserSwitchingDialog$CircleFramedDrawable;->mSrcRect:Landroid/graphics/Rect;
+
+    .line 144
+    new-instance v7, Landroid/graphics/RectF;
+
+    iget v9, p0, Lcom/android/server/am/CarUserSwitchingDialog$CircleFramedDrawable;->mSize:I
+
+    int-to-float v10, v9
+
+    int-to-float v9, v9
+
+    invoke-direct {v7, v8, v8, v10, v9}, Landroid/graphics/RectF;-><init>(FFFF)V
+
+    iput-object v7, p0, Lcom/android/server/am/CarUserSwitchingDialog$CircleFramedDrawable;->mDstRect:Landroid/graphics/RectF;
 
     .line 145
-    iget-object v1, p0, Lcom/android/server/am/CarUserSwitchingDialog$CircleFramedDrawable;->mPaint:Landroid/graphics/Paint;
-
-    new-instance v2, Landroid/graphics/PorterDuffXfermode;
-
-    sget-object v6, Landroid/graphics/PorterDuff$Mode;->SRC_IN:Landroid/graphics/PorterDuff$Mode;
-
-    invoke-direct {v2, v6}, Landroid/graphics/PorterDuffXfermode;-><init>(Landroid/graphics/PorterDuff$Mode;)V
-
-    invoke-virtual {v1, v2}, Landroid/graphics/Paint;->setXfermode(Landroid/graphics/Xfermode;)Landroid/graphics/Xfermode;
-
-    .line 146
-    iget-object v1, p0, Lcom/android/server/am/CarUserSwitchingDialog$CircleFramedDrawable;->mPaint:Landroid/graphics/Paint;
-
-    invoke-virtual {p2, p1, v3, v0, v1}, Landroid/graphics/Canvas;->drawBitmap(Landroid/graphics/Bitmap;Landroid/graphics/Rect;Landroid/graphics/RectF;Landroid/graphics/Paint;)V
-
-    .line 149
-    iget-object p1, p0, Lcom/android/server/am/CarUserSwitchingDialog$CircleFramedDrawable;->mPaint:Landroid/graphics/Paint;
-
-    const/4 p2, 0x0
-
-    invoke-virtual {p1, p2}, Landroid/graphics/Paint;->setXfermode(Landroid/graphics/Xfermode;)Landroid/graphics/Xfermode;
-
-    .line 151
-    const/high16 p1, 0x3f800000  # 1.0f
-
-    iput p1, p0, Lcom/android/server/am/CarUserSwitchingDialog$CircleFramedDrawable;->mScale:F
-
-    .line 153
-    new-instance p1, Landroid/graphics/Rect;
-
-    iget p2, p0, Lcom/android/server/am/CarUserSwitchingDialog$CircleFramedDrawable;->mSize:I
-
-    invoke-direct {p1, v5, v5, p2, p2}, Landroid/graphics/Rect;-><init>(IIII)V
-
-    iput-object p1, p0, Lcom/android/server/am/CarUserSwitchingDialog$CircleFramedDrawable;->mSrcRect:Landroid/graphics/Rect;
-
-    .line 154
-    new-instance p1, Landroid/graphics/RectF;
-
-    iget p2, p0, Lcom/android/server/am/CarUserSwitchingDialog$CircleFramedDrawable;->mSize:I
-
-    int-to-float v0, p2
-
-    int-to-float p2, p2
-
-    invoke-direct {p1, v4, v4, v0, p2}, Landroid/graphics/RectF;-><init>(FFFF)V
-
-    iput-object p1, p0, Lcom/android/server/am/CarUserSwitchingDialog$CircleFramedDrawable;->mDstRect:Landroid/graphics/RectF;
-
-    .line 155
     return-void
 .end method
 
 .method public static getInstance(Landroid/graphics/Bitmap;F)Lcom/android/server/am/CarUserSwitchingDialog$CircleFramedDrawable;
-    .registers 3
+    .registers 4
+    .param p0, "icon"  # Landroid/graphics/Bitmap;
+    .param p1, "iconSize"  # F
 
-    .line 113
+    .line 103
     new-instance v0, Lcom/android/server/am/CarUserSwitchingDialog$CircleFramedDrawable;
 
-    float-to-int p1, p1
+    float-to-int v1, p1
 
-    invoke-direct {v0, p0, p1}, Lcom/android/server/am/CarUserSwitchingDialog$CircleFramedDrawable;-><init>(Landroid/graphics/Bitmap;I)V
+    invoke-direct {v0, p0, v1}, Lcom/android/server/am/CarUserSwitchingDialog$CircleFramedDrawable;-><init>(Landroid/graphics/Bitmap;I)V
 
-    .line 114
+    .line 104
+    .local v0, "instance":Lcom/android/server/am/CarUserSwitchingDialog$CircleFramedDrawable;
     return-object v0
 .end method
 
 
 # virtual methods
 .method public draw(Landroid/graphics/Canvas;)V
-    .registers 6
+    .registers 8
+    .param p1, "canvas"  # Landroid/graphics/Canvas;
 
-    .line 159
+    .line 149
     iget v0, p0, Lcom/android/server/am/CarUserSwitchingDialog$CircleFramedDrawable;->mScale:F
 
     iget v1, p0, Lcom/android/server/am/CarUserSwitchingDialog$CircleFramedDrawable;->mSize:I
@@ -229,47 +242,49 @@
 
     mul-float/2addr v0, v2
 
-    .line 160
+    .line 150
+    .local v0, "inside":F
     int-to-float v2, v1
 
     sub-float/2addr v2, v0
 
-    const/high16 v0, 0x40000000  # 2.0f
+    const/high16 v3, 0x40000000  # 2.0f
 
-    div-float/2addr v2, v0
+    div-float/2addr v2, v3
 
-    .line 162
-    iget-object v0, p0, Lcom/android/server/am/CarUserSwitchingDialog$CircleFramedDrawable;->mDstRect:Landroid/graphics/RectF;
+    .line 152
+    .local v2, "pad":F
+    iget-object v3, p0, Lcom/android/server/am/CarUserSwitchingDialog$CircleFramedDrawable;->mDstRect:Landroid/graphics/RectF;
 
-    int-to-float v3, v1
+    int-to-float v4, v1
 
-    sub-float/2addr v3, v2
+    sub-float/2addr v4, v2
 
     int-to-float v1, v1
 
     sub-float/2addr v1, v2
 
-    invoke-virtual {v0, v2, v2, v3, v1}, Landroid/graphics/RectF;->set(FFFF)V
+    invoke-virtual {v3, v2, v2, v4, v1}, Landroid/graphics/RectF;->set(FFFF)V
 
-    .line 163
-    iget-object v0, p0, Lcom/android/server/am/CarUserSwitchingDialog$CircleFramedDrawable;->mBitmap:Landroid/graphics/Bitmap;
+    .line 153
+    iget-object v1, p0, Lcom/android/server/am/CarUserSwitchingDialog$CircleFramedDrawable;->mBitmap:Landroid/graphics/Bitmap;
 
-    iget-object v1, p0, Lcom/android/server/am/CarUserSwitchingDialog$CircleFramedDrawable;->mSrcRect:Landroid/graphics/Rect;
+    iget-object v3, p0, Lcom/android/server/am/CarUserSwitchingDialog$CircleFramedDrawable;->mSrcRect:Landroid/graphics/Rect;
 
-    iget-object v2, p0, Lcom/android/server/am/CarUserSwitchingDialog$CircleFramedDrawable;->mDstRect:Landroid/graphics/RectF;
+    iget-object v4, p0, Lcom/android/server/am/CarUserSwitchingDialog$CircleFramedDrawable;->mDstRect:Landroid/graphics/RectF;
 
-    const/4 v3, 0x0
+    const/4 v5, 0x0
 
-    invoke-virtual {p1, v0, v1, v2, v3}, Landroid/graphics/Canvas;->drawBitmap(Landroid/graphics/Bitmap;Landroid/graphics/Rect;Landroid/graphics/RectF;Landroid/graphics/Paint;)V
+    invoke-virtual {p1, v1, v3, v4, v5}, Landroid/graphics/Canvas;->drawBitmap(Landroid/graphics/Bitmap;Landroid/graphics/Rect;Landroid/graphics/RectF;Landroid/graphics/Paint;)V
 
-    .line 164
+    .line 154
     return-void
 .end method
 
 .method public getOpacity()I
     .registers 2
 
-    .line 168
+    .line 158
     const/4 v0, -0x3
 
     return v0
@@ -277,14 +292,16 @@
 
 .method public setAlpha(I)V
     .registers 2
+    .param p1, "alpha"  # I
 
-    .line 174
+    .line 164
     return-void
 .end method
 
 .method public setColorFilter(Landroid/graphics/ColorFilter;)V
     .registers 2
+    .param p1, "colorFilter"  # Landroid/graphics/ColorFilter;
 
-    .line 179
+    .line 169
     return-void
 .end method

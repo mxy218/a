@@ -51,14 +51,15 @@
 
 .method public static asInterface(Landroid/os/IBinder;)Landroid/os/IDumpstate;
     .registers 3
+    .param p0, "obj"  # Landroid/os/IBinder;
 
     .line 72
     if-nez p0, :cond_4
 
     .line 73
-    const/4 p0, 0x0
+    const/4 v0, 0x0
 
-    return-object p0
+    return-object v0
 
     .line 75
     :cond_4
@@ -69,24 +70,27 @@
     move-result-object v0
 
     .line 76
-    if-eqz v0, :cond_13
+    .local v0, "iin":Landroid/os/IInterface;
+    if-eqz v0, :cond_14
 
     instance-of v1, v0, Landroid/os/IDumpstate;
 
-    if-eqz v1, :cond_13
+    if-eqz v1, :cond_14
 
     .line 77
-    check-cast v0, Landroid/os/IDumpstate;
+    move-object v1, v0
 
-    return-object v0
+    check-cast v1, Landroid/os/IDumpstate;
+
+    return-object v1
 
     .line 79
-    :cond_13
-    new-instance v0, Landroid/os/IDumpstate$Stub$Proxy;
+    :cond_14
+    new-instance v1, Landroid/os/IDumpstate$Stub$Proxy;
 
-    invoke-direct {v0, p0}, Landroid/os/IDumpstate$Stub$Proxy;-><init>(Landroid/os/IBinder;)V
+    invoke-direct {v1, p0}, Landroid/os/IDumpstate$Stub$Proxy;-><init>(Landroid/os/IBinder;)V
 
-    return-object v0
+    return-object v1
 .end method
 
 .method public static getDefaultImpl()Landroid/os/IDumpstate;
@@ -100,6 +104,7 @@
 
 .method public static setDefaultImpl(Landroid/os/IDumpstate;)Z
     .registers 2
+    .param p0, "impl"  # Landroid/os/IDumpstate;
 
     .line 255
     sget-object v0, Landroid/os/IDumpstate$Stub$Proxy;->sDefaultImpl:Landroid/os/IDumpstate;
@@ -112,15 +117,15 @@
     sput-object p0, Landroid/os/IDumpstate$Stub$Proxy;->sDefaultImpl:Landroid/os/IDumpstate;
 
     .line 257
-    const/4 p0, 0x1
+    const/4 v0, 0x1
 
-    return p0
+    return v0
 
     .line 259
     :cond_a
-    const/4 p0, 0x0
+    const/4 v0, 0x0
 
-    return p0
+    return v0
 .end method
 
 
@@ -133,7 +138,11 @@
 .end method
 
 .method public onTransact(ILandroid/os/Parcel;Landroid/os/Parcel;I)Z
-    .registers 13
+    .registers 23
+    .param p1, "code"  # I
+    .param p2, "data"  # Landroid/os/Parcel;
+    .param p3, "reply"  # Landroid/os/Parcel;
+    .param p4, "flags"  # I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -141,159 +150,194 @@
     .end annotation
 
     .line 87
-    nop
+    move/from16 v0, p1
+
+    move-object/from16 v1, p2
+
+    move-object/from16 v2, p3
+
+    const-string v3, "android.os.IDumpstate"
 
     .line 88
-    const/4 v0, 0x1
+    .local v3, "descriptor":Ljava/lang/String;
+    const/4 v4, 0x1
 
-    const-string v1, "android.os.IDumpstate"
+    if-eq v0, v4, :cond_59
 
-    if-eq p1, v0, :cond_4b
+    const/4 v5, 0x2
 
-    const/4 v2, 0x2
+    if-eq v0, v5, :cond_29
 
-    if-eq p1, v2, :cond_24
+    const/4 v5, 0x3
 
-    const/4 v2, 0x3
+    if-eq v0, v5, :cond_1f
 
-    if-eq p1, v2, :cond_1a
+    const v5, 0x5f4e5446
 
-    const v2, 0x5f4e5446
-
-    if-eq p1, v2, :cond_16
+    if-eq v0, v5, :cond_1b
 
     .line 137
-    invoke-super {p0, p1, p2, p3, p4}, Landroid/os/Binder;->onTransact(ILandroid/os/Parcel;Landroid/os/Parcel;I)Z
+    invoke-super/range {p0 .. p4}, Landroid/os/Binder;->onTransact(ILandroid/os/Parcel;Landroid/os/Parcel;I)Z
 
-    move-result p1
+    move-result v4
 
-    return p1
+    return v4
 
     .line 92
-    :cond_16
-    invoke-virtual {p3, v1}, Landroid/os/Parcel;->writeString(Ljava/lang/String;)V
+    :cond_1b
+    invoke-virtual {v2, v3}, Landroid/os/Parcel;->writeString(Ljava/lang/String;)V
 
     .line 93
-    return v0
+    return v4
 
     .line 130
-    :cond_1a
-    invoke-virtual {p2, v1}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
+    :cond_1f
+    invoke-virtual {v1, v3}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
 
     .line 131
-    invoke-virtual {p0}, Landroid/os/IDumpstate$Stub;->cancelBugreport()V
+    invoke-virtual/range {p0 .. p0}, Landroid/os/IDumpstate$Stub;->cancelBugreport()V
 
     .line 132
-    invoke-virtual {p3}, Landroid/os/Parcel;->writeNoException()V
+    invoke-virtual/range {p3 .. p3}, Landroid/os/Parcel;->writeNoException()V
 
     .line 133
-    return v0
+    return v4
 
     .line 111
-    :cond_24
-    invoke-virtual {p2, v1}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
+    :cond_29
+    invoke-virtual {v1, v3}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
 
     .line 113
-    invoke-virtual {p2}, Landroid/os/Parcel;->readInt()I
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
 
-    move-result v2
+    move-result v12
 
     .line 115
-    invoke-virtual {p2}, Landroid/os/Parcel;->readString()Ljava/lang/String;
+    .local v12, "_arg0":I
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readString()Ljava/lang/String;
 
-    move-result-object v3
+    move-result-object v13
 
     .line 117
-    invoke-virtual {p2}, Landroid/os/Parcel;->readRawFileDescriptor()Ljava/io/FileDescriptor;
+    .local v13, "_arg1":Ljava/lang/String;
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readRawFileDescriptor()Ljava/io/FileDescriptor;
 
-    move-result-object v4
+    move-result-object v14
 
     .line 119
-    invoke-virtual {p2}, Landroid/os/Parcel;->readRawFileDescriptor()Ljava/io/FileDescriptor;
+    .local v14, "_arg2":Ljava/io/FileDescriptor;
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readRawFileDescriptor()Ljava/io/FileDescriptor;
+
+    move-result-object v15
+
+    .line 121
+    .local v15, "_arg3":Ljava/io/FileDescriptor;
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
+
+    move-result v16
+
+    .line 123
+    .local v16, "_arg4":I
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readStrongBinder()Landroid/os/IBinder;
 
     move-result-object v5
 
-    .line 121
-    invoke-virtual {p2}, Landroid/os/Parcel;->readInt()I
+    invoke-static {v5}, Landroid/os/IDumpstateListener$Stub;->asInterface(Landroid/os/IBinder;)Landroid/os/IDumpstateListener;
 
-    move-result v6
-
-    .line 123
-    invoke-virtual {p2}, Landroid/os/Parcel;->readStrongBinder()Landroid/os/IBinder;
-
-    move-result-object p1
-
-    invoke-static {p1}, Landroid/os/IDumpstateListener$Stub;->asInterface(Landroid/os/IBinder;)Landroid/os/IDumpstateListener;
-
-    move-result-object v7
+    move-result-object v17
 
     .line 124
-    move-object v1, p0
+    .local v17, "_arg5":Landroid/os/IDumpstateListener;
+    move-object/from16 v5, p0
 
-    invoke-virtual/range {v1 .. v7}, Landroid/os/IDumpstate$Stub;->startBugreport(ILjava/lang/String;Ljava/io/FileDescriptor;Ljava/io/FileDescriptor;ILandroid/os/IDumpstateListener;)V
+    move v6, v12
+
+    move-object v7, v13
+
+    move-object v8, v14
+
+    move-object v9, v15
+
+    move/from16 v10, v16
+
+    move-object/from16 v11, v17
+
+    invoke-virtual/range {v5 .. v11}, Landroid/os/IDumpstate$Stub;->startBugreport(ILjava/lang/String;Ljava/io/FileDescriptor;Ljava/io/FileDescriptor;ILandroid/os/IDumpstateListener;)V
 
     .line 125
-    invoke-virtual {p3}, Landroid/os/Parcel;->writeNoException()V
+    invoke-virtual/range {p3 .. p3}, Landroid/os/Parcel;->writeNoException()V
 
     .line 126
-    return v0
+    return v4
 
     .line 97
-    :cond_4b
-    invoke-virtual {p2, v1}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
+    .end local v12  # "_arg0":I
+    .end local v13  # "_arg1":Ljava/lang/String;
+    .end local v14  # "_arg2":Ljava/io/FileDescriptor;
+    .end local v15  # "_arg3":Ljava/io/FileDescriptor;
+    .end local v16  # "_arg4":I
+    .end local v17  # "_arg5":Landroid/os/IDumpstateListener;
+    :cond_59
+    invoke-virtual {v1, v3}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
 
     .line 99
-    invoke-virtual {p2}, Landroid/os/Parcel;->readString()Ljava/lang/String;
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v5
 
     .line 101
-    invoke-virtual {p2}, Landroid/os/Parcel;->readStrongBinder()Landroid/os/IBinder;
+    .local v5, "_arg0":Ljava/lang/String;
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readStrongBinder()Landroid/os/IBinder;
 
-    move-result-object p4
+    move-result-object v6
 
-    invoke-static {p4}, Landroid/os/IDumpstateListener$Stub;->asInterface(Landroid/os/IBinder;)Landroid/os/IDumpstateListener;
+    invoke-static {v6}, Landroid/os/IDumpstateListener$Stub;->asInterface(Landroid/os/IBinder;)Landroid/os/IDumpstateListener;
 
-    move-result-object p4
+    move-result-object v6
 
     .line 103
-    invoke-virtual {p2}, Landroid/os/Parcel;->readInt()I
+    .local v6, "_arg1":Landroid/os/IDumpstateListener;
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
 
-    move-result p2
+    move-result v7
 
-    if-eqz p2, :cond_62
+    if-eqz v7, :cond_70
 
-    move p2, v0
+    move v7, v4
 
-    goto :goto_63
+    goto :goto_71
 
-    :cond_62
-    const/4 p2, 0x0
+    :cond_70
+    const/4 v7, 0x0
 
     .line 104
-    :goto_63
-    invoke-virtual {p0, p1, p4, p2}, Landroid/os/IDumpstate$Stub;->setListener(Ljava/lang/String;Landroid/os/IDumpstateListener;Z)Landroid/os/IDumpstateToken;
+    .local v7, "_arg2":Z
+    :goto_71
+    move-object/from16 v8, p0
 
-    move-result-object p1
+    invoke-virtual {v8, v5, v6, v7}, Landroid/os/IDumpstate$Stub;->setListener(Ljava/lang/String;Landroid/os/IDumpstateListener;Z)Landroid/os/IDumpstateToken;
+
+    move-result-object v9
 
     .line 105
-    invoke-virtual {p3}, Landroid/os/Parcel;->writeNoException()V
+    .local v9, "_result":Landroid/os/IDumpstateToken;
+    invoke-virtual/range {p3 .. p3}, Landroid/os/Parcel;->writeNoException()V
 
     .line 106
-    if-eqz p1, :cond_71
+    if-eqz v9, :cond_81
 
-    invoke-interface {p1}, Landroid/os/IDumpstateToken;->asBinder()Landroid/os/IBinder;
+    invoke-interface {v9}, Landroid/os/IDumpstateToken;->asBinder()Landroid/os/IBinder;
 
-    move-result-object p1
+    move-result-object v10
 
-    goto :goto_72
+    goto :goto_82
 
-    :cond_71
-    const/4 p1, 0x0
+    :cond_81
+    const/4 v10, 0x0
 
-    :goto_72
-    invoke-virtual {p3, p1}, Landroid/os/Parcel;->writeStrongBinder(Landroid/os/IBinder;)V
+    :goto_82
+    invoke-virtual {v2, v10}, Landroid/os/Parcel;->writeStrongBinder(Landroid/os/IBinder;)V
 
     .line 107
-    return v0
+    return v4
 .end method

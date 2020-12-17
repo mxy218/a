@@ -28,7 +28,11 @@
 
 # direct methods
 .method public constructor <init>(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Landroid/content/ContentResolver;)V
-    .registers 6
+    .registers 7
+    .param p1, "key"  # Ljava/lang/String;
+    .param p2, "name"  # Ljava/lang/String;
+    .param p3, "path"  # Ljava/lang/String;
+    .param p4, "cr"  # Landroid/content/ContentResolver;
 
     .line 58
     const/4 v0, 0x0
@@ -45,17 +49,17 @@
     iput-object p3, p0, Lcom/android/server/CertBlacklister$BlacklistObserver;->mPath:Ljava/lang/String;
 
     .line 62
-    new-instance p1, Ljava/io/File;
+    new-instance v0, Ljava/io/File;
 
-    iget-object p2, p0, Lcom/android/server/CertBlacklister$BlacklistObserver;->mPath:Ljava/lang/String;
+    iget-object v1, p0, Lcom/android/server/CertBlacklister$BlacklistObserver;->mPath:Ljava/lang/String;
 
-    invoke-direct {p1, p2}, Ljava/io/File;-><init>(Ljava/lang/String;)V
+    invoke-direct {v0, v1}, Ljava/io/File;-><init>(Ljava/lang/String;)V
 
-    invoke-virtual {p1}, Ljava/io/File;->getParentFile()Ljava/io/File;
+    invoke-virtual {v0}, Ljava/io/File;->getParentFile()Ljava/io/File;
 
-    move-result-object p1
+    move-result-object v0
 
-    iput-object p1, p0, Lcom/android/server/CertBlacklister$BlacklistObserver;->mTmpDir:Ljava/io/File;
+    iput-object v0, p0, Lcom/android/server/CertBlacklister$BlacklistObserver;->mTmpDir:Ljava/io/File;
 
     .line 63
     iput-object p4, p0, Lcom/android/server/CertBlacklister$BlacklistObserver;->mContentResolver:Landroid/content/ContentResolver;
@@ -65,21 +69,23 @@
 .end method
 
 .method static synthetic access$000(Lcom/android/server/CertBlacklister$BlacklistObserver;)Ljava/io/File;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/CertBlacklister$BlacklistObserver;
 
     .line 49
-    iget-object p0, p0, Lcom/android/server/CertBlacklister$BlacklistObserver;->mTmpDir:Ljava/io/File;
+    iget-object v0, p0, Lcom/android/server/CertBlacklister$BlacklistObserver;->mTmpDir:Ljava/io/File;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$100(Lcom/android/server/CertBlacklister$BlacklistObserver;)Ljava/lang/String;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/CertBlacklister$BlacklistObserver;
 
     .line 49
-    iget-object p0, p0, Lcom/android/server/CertBlacklister$BlacklistObserver;->mPath:Ljava/lang/String;
+    iget-object v0, p0, Lcom/android/server/CertBlacklister$BlacklistObserver;->mPath:Ljava/lang/String;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method private writeBlacklist()V
@@ -118,6 +124,7 @@
 
 .method public onChange(Z)V
     .registers 2
+    .param p1, "selfChange"  # Z
 
     .line 68
     invoke-super {p0, p1}, Landroid/database/ContentObserver;->onChange(Z)V

@@ -35,6 +35,8 @@
 
 .method synthetic constructor <init>(Lcom/android/server/broadcastradio/hal2/AnnouncementAggregator;Lcom/android/server/broadcastradio/hal2/AnnouncementAggregator$1;)V
     .registers 3
+    .param p1, "x0"  # Lcom/android/server/broadcastradio/hal2/AnnouncementAggregator;
+    .param p2, "x1"  # Lcom/android/server/broadcastradio/hal2/AnnouncementAggregator$1;
 
     .line 75
     invoke-direct {p0, p1}, Lcom/android/server/broadcastradio/hal2/AnnouncementAggregator$DeathRecipient;-><init>(Lcom/android/server/broadcastradio/hal2/AnnouncementAggregator;)V

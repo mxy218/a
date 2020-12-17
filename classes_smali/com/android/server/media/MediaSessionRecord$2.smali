@@ -38,6 +38,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/media/MediaSessionRecord;ZIIILjava/lang/String;II)V
     .registers 9
+    .param p1, "this$0"  # Lcom/android/server/media/MediaSessionRecord;
 
     .line 533
     iput-object p1, p0, Lcom/android/server/media/MediaSessionRecord$2;->this$0:Lcom/android/server/media/MediaSessionRecord;
@@ -162,6 +163,7 @@
     move-exception v0
 
     .line 551
+    .local v0, "e":Ljava/lang/RuntimeException;
     new-instance v1, Ljava/lang/StringBuilder;
 
     invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
@@ -231,6 +233,7 @@
     invoke-static {v2, v1, v0}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
     .line 556
+    .end local v0  # "e":Ljava/lang/RuntimeException;
     :goto_a1
     return-void
 .end method

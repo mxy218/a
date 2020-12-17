@@ -24,8 +24,9 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/MountServiceIdler;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/MountServiceIdler;
 
-    .line 42
+    .line 41
     iput-object p1, p0, Lcom/android/server/MountServiceIdler$1;->this$0:Lcom/android/server/MountServiceIdler;
 
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -38,14 +39,14 @@
 .method public run()V
     .registers 5
 
-    .line 45
+    .line 44
     const-string v0, "MountServiceIdler"
 
     const-string v1, "Got mount service completion callback"
 
     invoke-static {v0, v1}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 46
+    .line 45
     iget-object v0, p0, Lcom/android/server/MountServiceIdler$1;->this$0:Lcom/android/server/MountServiceIdler;
 
     invoke-static {v0}, Lcom/android/server/MountServiceIdler;->access$000(Lcom/android/server/MountServiceIdler;)Ljava/lang/Runnable;
@@ -54,7 +55,7 @@
 
     monitor-enter v0
 
-    .line 47
+    .line 46
     :try_start_e
     iget-object v1, p0, Lcom/android/server/MountServiceIdler$1;->this$0:Lcom/android/server/MountServiceIdler;
 
@@ -64,7 +65,7 @@
 
     if-eqz v1, :cond_27
 
-    .line 48
+    .line 47
     iget-object v1, p0, Lcom/android/server/MountServiceIdler$1;->this$0:Lcom/android/server/MountServiceIdler;
 
     iget-object v2, p0, Lcom/android/server/MountServiceIdler$1;->this$0:Lcom/android/server/MountServiceIdler;
@@ -77,26 +78,26 @@
 
     invoke-virtual {v1, v2, v3}, Lcom/android/server/MountServiceIdler;->jobFinished(Landroid/app/job/JobParameters;Z)V
 
-    .line 49
+    .line 48
     iget-object v1, p0, Lcom/android/server/MountServiceIdler$1;->this$0:Lcom/android/server/MountServiceIdler;
 
     invoke-static {v1, v3}, Lcom/android/server/MountServiceIdler;->access$102(Lcom/android/server/MountServiceIdler;Z)Z
 
-    .line 51
+    .line 50
     :cond_27
     monitor-exit v0
     :try_end_28
     .catchall {:try_start_e .. :try_end_28} :catchall_2e
 
-    .line 53
+    .line 52
     iget-object v0, p0, Lcom/android/server/MountServiceIdler$1;->this$0:Lcom/android/server/MountServiceIdler;
 
     invoke-static {v0}, Lcom/android/server/MountServiceIdler;->scheduleIdlePass(Landroid/content/Context;)V
 
-    .line 54
+    .line 53
     return-void
 
-    .line 51
+    .line 50
     :catchall_2e
     move-exception v1
 

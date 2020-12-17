@@ -26,6 +26,7 @@
 
 .method synthetic constructor <init>(Lcom/android/server/coverage/CoverageService$1;)V
     .registers 2
+    .param p1, "x0"  # Lcom/android/server/coverage/CoverageService$1;
 
     .line 66
     invoke-direct {p0}, Lcom/android/server/coverage/CoverageService$CoverageCommand;-><init>()V
@@ -34,7 +35,7 @@
 .end method
 
 .method private onDump()I
-    .registers 8
+    .registers 9
 
     .line 104
     invoke-virtual {p0}, Lcom/android/server/coverage/CoverageService$CoverageCommand;->getNextArg()Ljava/lang/String;
@@ -42,6 +43,7 @@
     move-result-object v0
 
     .line 105
+    .local v0, "dest":Ljava/lang/String;
     if-nez v0, :cond_9
 
     .line 106
@@ -56,6 +58,7 @@
     invoke-direct {v1, v0}, Ljava/io/File;-><init>(Ljava/lang/String;)V
 
     .line 109
+    .local v1, "f":Ljava/io/File;
     invoke-virtual {v1}, Ljava/io/File;->isDirectory()Z
 
     move-result v2
@@ -63,17 +66,18 @@
     if-eqz v2, :cond_1f
 
     .line 110
-    new-instance v0, Ljava/io/File;
+    new-instance v2, Ljava/io/File;
 
-    const-string v2, "coverage.ec"
+    const-string v3, "coverage.ec"
 
-    invoke-direct {v0, v1, v2}, Ljava/io/File;-><init>(Ljava/io/File;Ljava/lang/String;)V
+    invoke-direct {v2, v1, v3}, Ljava/io/File;-><init>(Ljava/io/File;Ljava/lang/String;)V
 
-    invoke-virtual {v0}, Ljava/io/File;->getAbsolutePath()Ljava/lang/String;
+    invoke-virtual {v2}, Ljava/io/File;->getAbsolutePath()Ljava/lang/String;
 
     move-result-object v0
 
     .line 115
+    .end local v1  # "f":Ljava/io/File;
     :cond_1f
     :goto_1f
     const-string/jumbo v1, "w"
@@ -83,6 +87,7 @@
     move-result-object v1
 
     .line 116
+    .local v1, "fd":Landroid/os/ParcelFileDescriptor;
     const/4 v2, -0x1
 
     if-nez v1, :cond_2a
@@ -104,18 +109,19 @@
     .catch Ljava/io/IOException; {:try_start_2a .. :try_end_34} :catch_66
 
     .line 123
+    .local v3, "output":Ljava/io/BufferedOutputStream;
     :try_start_34
     invoke-static {}, Lorg/jacoco/agent/rt/RT;->getAgent()Lorg/jacoco/agent/rt/IAgent;
 
-    move-result-object v1
+    move-result-object v4
 
-    const/4 v4, 0x0
+    const/4 v5, 0x0
 
-    invoke-interface {v1, v4}, Lorg/jacoco/agent/rt/IAgent;->getExecutionData(Z)[B
+    invoke-interface {v4, v5}, Lorg/jacoco/agent/rt/IAgent;->getExecutionData(Z)[B
 
-    move-result-object v1
+    move-result-object v4
 
-    invoke-virtual {v3, v1}, Ljava/io/BufferedOutputStream;->write([B)V
+    invoke-virtual {v3, v4}, Ljava/io/BufferedOutputStream;->write([B)V
 
     .line 124
     invoke-virtual {v3}, Ljava/io/BufferedOutputStream;->flush()V
@@ -123,21 +129,21 @@
     .line 125
     invoke-virtual {p0}, Lcom/android/server/coverage/CoverageService$CoverageCommand;->getOutPrintWriter()Ljava/io/PrintWriter;
 
-    move-result-object v1
+    move-result-object v4
 
-    const-string v5, "Dumped coverage data to %s"
+    const-string v6, "Dumped coverage data to %s"
 
-    const/4 v6, 0x1
+    const/4 v7, 0x1
 
-    new-array v6, v6, [Ljava/lang/Object;
+    new-array v7, v7, [Ljava/lang/Object;
 
-    aput-object v0, v6, v4
+    aput-object v0, v7, v5
 
-    invoke-static {v5, v6}, Ljava/lang/String;->format(Ljava/lang/String;[Ljava/lang/Object;)Ljava/lang/String;
+    invoke-static {v6, v7}, Ljava/lang/String;->format(Ljava/lang/String;[Ljava/lang/Object;)Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v6
 
-    invoke-virtual {v1, v0}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {v4, v6}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
     :try_end_55
     .catchall {:try_start_34 .. :try_end_55} :catchall_5a
 
@@ -148,23 +154,33 @@
     .catch Ljava/io/IOException; {:try_start_55 .. :try_end_58} :catch_66
 
     .line 129
+    .end local v3  # "output":Ljava/io/BufferedOutputStream;
     nop
 
     .line 131
-    return v4
+    return v5
 
     .line 121
+    .restart local v3  # "output":Ljava/io/BufferedOutputStream;
     :catchall_5a
-    move-exception v0
+    move-exception v4
 
+    .end local v0  # "dest":Ljava/lang/String;
+    .end local v1  # "fd":Landroid/os/ParcelFileDescriptor;
+    .end local v3  # "output":Ljava/io/BufferedOutputStream;
+    .end local p0  # "this":Lcom/android/server/coverage/CoverageService$CoverageCommand;
     :try_start_5b
-    throw v0
+    throw v4
     :try_end_5c
     .catchall {:try_start_5b .. :try_end_5c} :catchall_5c
 
     .line 126
+    .restart local v0  # "dest":Ljava/lang/String;
+    .restart local v1  # "fd":Landroid/os/ParcelFileDescriptor;
+    .restart local v3  # "output":Ljava/io/BufferedOutputStream;
+    .restart local p0  # "this":Lcom/android/server/coverage/CoverageService$CoverageCommand;
     :catchall_5c
-    move-exception v1
+    move-exception v5
 
     :try_start_5d
     invoke-virtual {v3}, Ljava/io/BufferedOutputStream;->close()V
@@ -174,43 +190,51 @@
     goto :goto_65
 
     :catchall_61
-    move-exception v3
+    move-exception v6
 
     :try_start_62
-    invoke-virtual {v0, v3}, Ljava/lang/Throwable;->addSuppressed(Ljava/lang/Throwable;)V
+    invoke-virtual {v4, v6}, Ljava/lang/Throwable;->addSuppressed(Ljava/lang/Throwable;)V
 
+    .end local v0  # "dest":Ljava/lang/String;
+    .end local v1  # "fd":Landroid/os/ParcelFileDescriptor;
+    .end local p0  # "this":Lcom/android/server/coverage/CoverageService$CoverageCommand;
     :goto_65
-    throw v1
+    throw v5
     :try_end_66
     .catch Ljava/io/IOException; {:try_start_62 .. :try_end_66} :catch_66
 
+    .end local v3  # "output":Ljava/io/BufferedOutputStream;
+    .restart local v0  # "dest":Ljava/lang/String;
+    .restart local v1  # "fd":Landroid/os/ParcelFileDescriptor;
+    .restart local p0  # "this":Lcom/android/server/coverage/CoverageService$CoverageCommand;
     :catch_66
-    move-exception v0
+    move-exception v3
 
     .line 127
+    .local v3, "e":Ljava/io/IOException;
     invoke-virtual {p0}, Lcom/android/server/coverage/CoverageService$CoverageCommand;->getErrPrintWriter()Ljava/io/PrintWriter;
 
-    move-result-object v1
+    move-result-object v4
 
-    new-instance v3, Ljava/lang/StringBuilder;
+    new-instance v5, Ljava/lang/StringBuilder;
 
-    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v5}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v4, "Failed to dump coverage data: "
+    const-string v6, "Failed to dump coverage data: "
 
-    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0}, Ljava/io/IOException;->getMessage()Ljava/lang/String;
+    invoke-virtual {v3}, Ljava/io/IOException;->getMessage()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v6
 
-    invoke-virtual {v3, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v5}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v5
 
-    invoke-virtual {v1, v0}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {v4, v5}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
     .line 128
     return v2
@@ -245,6 +269,7 @@
 # virtual methods
 .method public onCommand(Ljava/lang/String;)I
     .registers 3
+    .param p1, "cmd"  # Ljava/lang/String;
 
     .line 73
     const-string v0, "dump"
@@ -258,9 +283,9 @@
     .line 74
     invoke-direct {p0}, Lcom/android/server/coverage/CoverageService$CoverageCommand;->onDump()I
 
-    move-result p1
+    move-result v0
 
-    return p1
+    return v0
 
     .line 75
     :cond_d
@@ -275,17 +300,17 @@
     .line 76
     invoke-direct {p0}, Lcom/android/server/coverage/CoverageService$CoverageCommand;->onReset()I
 
-    move-result p1
+    move-result v0
 
-    return p1
+    return v0
 
     .line 78
     :cond_1b
     invoke-virtual {p0, p1}, Lcom/android/server/coverage/CoverageService$CoverageCommand;->handleDefaultCommands(Ljava/lang/String;)I
 
-    move-result p1
+    move-result v0
 
-    return p1
+    return v0
 .end method
 
 .method public onHelp()V
@@ -297,6 +322,7 @@
     move-result-object v0
 
     .line 88
+    .local v0, "pw":Ljava/io/PrintWriter;
     const-string v1, "Coverage commands:"
 
     invoke-virtual {v0, v1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V

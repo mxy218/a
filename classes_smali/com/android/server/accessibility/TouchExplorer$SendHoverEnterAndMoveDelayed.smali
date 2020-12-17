@@ -39,7 +39,8 @@
 
 # direct methods
 .method constructor <init>(Lcom/android/server/accessibility/TouchExplorer;)V
-    .registers 2
+    .registers 3
+    .param p1, "this$0"  # Lcom/android/server/accessibility/TouchExplorer;
 
     .line 1162
     iput-object p1, p0, Lcom/android/server/accessibility/TouchExplorer$SendHoverEnterAndMoveDelayed;->this$0:Lcom/android/server/accessibility/TouchExplorer;
@@ -47,33 +48,34 @@
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
     .line 1163
-    const-string p1, "SendHoverEnterAndMoveDelayed"
+    const-string v0, "SendHoverEnterAndMoveDelayed"
 
-    iput-object p1, p0, Lcom/android/server/accessibility/TouchExplorer$SendHoverEnterAndMoveDelayed;->LOG_TAG_SEND_HOVER_DELAYED:Ljava/lang/String;
+    iput-object v0, p0, Lcom/android/server/accessibility/TouchExplorer$SendHoverEnterAndMoveDelayed;->LOG_TAG_SEND_HOVER_DELAYED:Ljava/lang/String;
 
     .line 1165
-    new-instance p1, Ljava/util/ArrayList;
+    new-instance v0, Ljava/util/ArrayList;
 
-    invoke-direct {p1}, Ljava/util/ArrayList;-><init>()V
+    invoke-direct {v0}, Ljava/util/ArrayList;-><init>()V
 
-    iput-object p1, p0, Lcom/android/server/accessibility/TouchExplorer$SendHoverEnterAndMoveDelayed;->mEvents:Ljava/util/List;
+    iput-object v0, p0, Lcom/android/server/accessibility/TouchExplorer$SendHoverEnterAndMoveDelayed;->mEvents:Ljava/util/List;
 
     return-void
 .end method
 
 .method static synthetic access$200(Lcom/android/server/accessibility/TouchExplorer$SendHoverEnterAndMoveDelayed;)Z
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/accessibility/TouchExplorer$SendHoverEnterAndMoveDelayed;
 
     .line 1162
     invoke-direct {p0}, Lcom/android/server/accessibility/TouchExplorer$SendHoverEnterAndMoveDelayed;->isPending()Z
 
-    move-result p0
+    move-result v0
 
-    return p0
+    return v0
 .end method
 
 .method private clear()V
-    .registers 3
+    .registers 4
 
     .line 1195
     const/4 v0, -0x1
@@ -93,28 +95,31 @@
     move-result v0
 
     .line 1198
-    add-int/lit8 v0, v0, -0x1
+    .local v0, "eventCount":I
+    add-int/lit8 v1, v0, -0x1
 
+    .local v1, "i":I
     :goto_e
-    if-ltz v0, :cond_1e
+    if-ltz v1, :cond_1e
 
     .line 1199
-    iget-object v1, p0, Lcom/android/server/accessibility/TouchExplorer$SendHoverEnterAndMoveDelayed;->mEvents:Ljava/util/List;
+    iget-object v2, p0, Lcom/android/server/accessibility/TouchExplorer$SendHoverEnterAndMoveDelayed;->mEvents:Ljava/util/List;
 
-    invoke-interface {v1, v0}, Ljava/util/List;->remove(I)Ljava/lang/Object;
+    invoke-interface {v2, v1}, Ljava/util/List;->remove(I)Ljava/lang/Object;
 
-    move-result-object v1
+    move-result-object v2
 
-    check-cast v1, Landroid/view/MotionEvent;
+    check-cast v2, Landroid/view/MotionEvent;
 
-    invoke-virtual {v1}, Landroid/view/MotionEvent;->recycle()V
+    invoke-virtual {v2}, Landroid/view/MotionEvent;->recycle()V
 
     .line 1198
-    add-int/lit8 v0, v0, -0x1
+    add-int/lit8 v1, v1, -0x1
 
     goto :goto_e
 
     .line 1201
+    .end local v1  # "i":I
     :cond_1e
     return-void
 .end method
@@ -139,16 +144,17 @@
 
 # virtual methods
 .method public addEvent(Landroid/view/MotionEvent;)V
-    .registers 3
+    .registers 4
+    .param p1, "event"  # Landroid/view/MotionEvent;
 
     .line 1180
     iget-object v0, p0, Lcom/android/server/accessibility/TouchExplorer$SendHoverEnterAndMoveDelayed;->mEvents:Ljava/util/List;
 
     invoke-static {p1}, Landroid/view/MotionEvent;->obtain(Landroid/view/MotionEvent;)Landroid/view/MotionEvent;
 
-    move-result-object p1
+    move-result-object v1
 
-    invoke-interface {v0, p1}, Ljava/util/List;->add(Ljava/lang/Object;)Z
+    invoke-interface {v0, v1}, Ljava/util/List;->add(Ljava/lang/Object;)Z
 
     .line 1181
     return-void
@@ -203,7 +209,11 @@
 .end method
 
 .method public post(Landroid/view/MotionEvent;ZII)V
-    .registers 5
+    .registers 8
+    .param p1, "event"  # Landroid/view/MotionEvent;
+    .param p2, "touchExplorationInProgress"  # Z
+    .param p3, "pointerIdBits"  # I
+    .param p4, "policyFlags"  # I
 
     .line 1172
     invoke-virtual {p0}, Lcom/android/server/accessibility/TouchExplorer$SendHoverEnterAndMoveDelayed;->cancel()V
@@ -218,21 +228,21 @@
     iput p4, p0, Lcom/android/server/accessibility/TouchExplorer$SendHoverEnterAndMoveDelayed;->mPolicyFlags:I
 
     .line 1176
-    iget-object p1, p0, Lcom/android/server/accessibility/TouchExplorer$SendHoverEnterAndMoveDelayed;->this$0:Lcom/android/server/accessibility/TouchExplorer;
+    iget-object v0, p0, Lcom/android/server/accessibility/TouchExplorer$SendHoverEnterAndMoveDelayed;->this$0:Lcom/android/server/accessibility/TouchExplorer;
 
-    invoke-static {p1}, Lcom/android/server/accessibility/TouchExplorer;->access$300(Lcom/android/server/accessibility/TouchExplorer;)Landroid/os/Handler;
+    invoke-static {v0}, Lcom/android/server/accessibility/TouchExplorer;->access$300(Lcom/android/server/accessibility/TouchExplorer;)Landroid/os/Handler;
 
-    move-result-object p1
+    move-result-object v0
 
-    iget-object p2, p0, Lcom/android/server/accessibility/TouchExplorer$SendHoverEnterAndMoveDelayed;->this$0:Lcom/android/server/accessibility/TouchExplorer;
+    iget-object v1, p0, Lcom/android/server/accessibility/TouchExplorer$SendHoverEnterAndMoveDelayed;->this$0:Lcom/android/server/accessibility/TouchExplorer;
 
-    invoke-static {p2}, Lcom/android/server/accessibility/TouchExplorer;->access$600(Lcom/android/server/accessibility/TouchExplorer;)I
+    invoke-static {v1}, Lcom/android/server/accessibility/TouchExplorer;->access$600(Lcom/android/server/accessibility/TouchExplorer;)I
 
-    move-result p2
+    move-result v1
 
-    int-to-long p2, p2
+    int-to-long v1, v1
 
-    invoke-virtual {p1, p0, p2, p3}, Landroid/os/Handler;->postDelayed(Ljava/lang/Runnable;J)Z
+    invoke-virtual {v0, p0, v1, v2}, Landroid/os/Handler;->postDelayed(Ljava/lang/Runnable;J)Z
 
     .line 1177
     return-void
@@ -286,8 +296,10 @@
     move-result v0
 
     .line 1225
+    .local v0, "eventCount":I
     const/4 v1, 0x1
 
+    .local v1, "i":I
     :goto_2a
     if-ge v1, v0, :cond_41
 
@@ -316,6 +328,8 @@
     goto :goto_2a
 
     .line 1234
+    .end local v0  # "eventCount":I
+    .end local v1  # "i":I
     :cond_41
     invoke-direct {p0}, Lcom/android/server/accessibility/TouchExplorer$SendHoverEnterAndMoveDelayed;->clear()V
 

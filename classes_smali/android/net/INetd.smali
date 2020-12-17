@@ -22,8 +22,6 @@
 
 .field public static final FIREWALL_CHAIN_DOZABLE:I = 0x1
 
-.field public static final FIREWALL_CHAIN_ISOLATED:I = 0x4
-
 .field public static final FIREWALL_CHAIN_NONE:I = 0x0
 
 .field public static final FIREWALL_CHAIN_POWERSAVE:I = 0x3
@@ -116,14 +114,6 @@
     .end annotation
 .end method
 
-.method public abstract bandwidthAddRestrictAppOnInterface(Ljava/lang/String;Ljava/lang/String;I)V
-    .annotation system Ldalvik/annotation/Throws;
-        value = {
-            Landroid/os/RemoteException;
-        }
-    .end annotation
-.end method
-
 .method public abstract bandwidthEnableDataSaver(Z)Z
     .annotation system Ldalvik/annotation/Throws;
         value = {
@@ -157,14 +147,6 @@
 .end method
 
 .method public abstract bandwidthRemoveNiceApp(I)V
-    .annotation system Ldalvik/annotation/Throws;
-        value = {
-            Landroid/os/RemoteException;
-        }
-    .end annotation
-.end method
-
-.method public abstract bandwidthRemoveRestrictAppOnInterface(Ljava/lang/String;Ljava/lang/String;I)V
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;

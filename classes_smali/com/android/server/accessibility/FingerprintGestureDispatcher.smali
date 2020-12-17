@@ -47,6 +47,9 @@
 # direct methods
 .method public constructor <init>(Landroid/hardware/fingerprint/IFingerprintService;Landroid/content/res/Resources;Ljava/lang/Object;)V
     .registers 6
+    .param p1, "fingerprintService"  # Landroid/hardware/fingerprint/IFingerprintService;
+    .param p2, "resources"  # Landroid/content/res/Resources;
+    .param p3, "lock"  # Ljava/lang/Object;
 
     .line 56
     invoke-direct {p0}, Landroid/hardware/fingerprint/IFingerprintClientActiveCallback$Stub;-><init>()V
@@ -64,23 +67,23 @@
     iput-object p1, p0, Lcom/android/server/accessibility/FingerprintGestureDispatcher;->mFingerprintService:Landroid/hardware/fingerprint/IFingerprintService;
 
     .line 58
-    const p1, 0x1110086
+    const v0, 0x1110080
 
-    invoke-virtual {p2, p1}, Landroid/content/res/Resources;->getBoolean(I)Z
+    invoke-virtual {p2, v0}, Landroid/content/res/Resources;->getBoolean(I)Z
 
-    move-result p1
+    move-result v0
 
-    iput-boolean p1, p0, Lcom/android/server/accessibility/FingerprintGestureDispatcher;->mHardwareSupportsGestures:Z
+    iput-boolean v0, p0, Lcom/android/server/accessibility/FingerprintGestureDispatcher;->mHardwareSupportsGestures:Z
 
     .line 60
     iput-object p3, p0, Lcom/android/server/accessibility/FingerprintGestureDispatcher;->mLock:Ljava/lang/Object;
 
     .line 61
-    new-instance p1, Landroid/os/Handler;
+    new-instance v0, Landroid/os/Handler;
 
-    invoke-direct {p1, p0}, Landroid/os/Handler;-><init>(Landroid/os/Handler$Callback;)V
+    invoke-direct {v0, p0}, Landroid/os/Handler;-><init>(Landroid/os/Handler$Callback;)V
 
-    iput-object p1, p0, Lcom/android/server/accessibility/FingerprintGestureDispatcher;->mHandler:Landroid/os/Handler;
+    iput-object v0, p0, Lcom/android/server/accessibility/FingerprintGestureDispatcher;->mHandler:Landroid/os/Handler;
 
     .line 62
     return-void
@@ -88,6 +91,10 @@
 
 .method public constructor <init>(Landroid/hardware/fingerprint/IFingerprintService;Landroid/content/res/Resources;Ljava/lang/Object;Landroid/os/Handler;)V
     .registers 7
+    .param p1, "fingerprintService"  # Landroid/hardware/fingerprint/IFingerprintService;
+    .param p2, "resources"  # Landroid/content/res/Resources;
+    .param p3, "lock"  # Ljava/lang/Object;
+    .param p4, "handler"  # Landroid/os/Handler;
 
     .line 70
     invoke-direct {p0}, Landroid/hardware/fingerprint/IFingerprintClientActiveCallback$Stub;-><init>()V
@@ -105,13 +112,13 @@
     iput-object p1, p0, Lcom/android/server/accessibility/FingerprintGestureDispatcher;->mFingerprintService:Landroid/hardware/fingerprint/IFingerprintService;
 
     .line 72
-    const p1, 0x1110086
+    const v0, 0x1110080
 
-    invoke-virtual {p2, p1}, Landroid/content/res/Resources;->getBoolean(I)Z
+    invoke-virtual {p2, v0}, Landroid/content/res/Resources;->getBoolean(I)Z
 
-    move-result p1
+    move-result v0
 
-    iput-boolean p1, p0, Lcom/android/server/accessibility/FingerprintGestureDispatcher;->mHardwareSupportsGestures:Z
+    iput-boolean v0, p0, Lcom/android/server/accessibility/FingerprintGestureDispatcher;->mHardwareSupportsGestures:Z
 
     .line 74
     iput-object p3, p0, Lcom/android/server/accessibility/FingerprintGestureDispatcher;->mLock:Ljava/lang/Object;
@@ -126,7 +133,8 @@
 
 # virtual methods
 .method public handleMessage(Landroid/os/Message;)Z
-    .registers 8
+    .registers 9
+    .param p1, "message"  # Landroid/os/Message;
 
     .line 175
     iget v0, p1, Landroid/os/Message;->what:I
@@ -137,7 +145,7 @@
 
     const/4 v3, 0x1
 
-    if-ne v0, v3, :cond_25
+    if-ne v0, v3, :cond_27
 
     .line 176
     invoke-static {}, Landroid/os/Binder;->clearCallingIdentity()J
@@ -145,61 +153,70 @@
     move-result-wide v4
 
     .line 178
+    .local v4, "identity":J
     :try_start_c
-    iget-object p1, p0, Lcom/android/server/accessibility/FingerprintGestureDispatcher;->mFingerprintService:Landroid/hardware/fingerprint/IFingerprintService;
+    iget-object v0, p0, Lcom/android/server/accessibility/FingerprintGestureDispatcher;->mFingerprintService:Landroid/hardware/fingerprint/IFingerprintService;
 
-    invoke-interface {p1, p0}, Landroid/hardware/fingerprint/IFingerprintService;->addClientActiveCallback(Landroid/hardware/fingerprint/IFingerprintClientActiveCallback;)V
+    invoke-interface {v0, p0}, Landroid/hardware/fingerprint/IFingerprintService;->addClientActiveCallback(Landroid/hardware/fingerprint/IFingerprintClientActiveCallback;)V
 
     .line 179
     iput-boolean v3, p0, Lcom/android/server/accessibility/FingerprintGestureDispatcher;->mRegisteredReadOnlyExceptInHandler:Z
     :try_end_13
-    .catch Landroid/os/RemoteException; {:try_start_c .. :try_end_13} :catch_19
-    .catchall {:try_start_c .. :try_end_13} :catchall_17
+    .catch Landroid/os/RemoteException; {:try_start_c .. :try_end_13} :catch_1a
+    .catchall {:try_start_c .. :try_end_13} :catchall_18
 
     .line 183
-    :goto_13
+    nop
+
+    :goto_14
     invoke-static {v4, v5}, Landroid/os/Binder;->restoreCallingIdentity(J)V
 
     .line 184
-    goto :goto_20
+    goto :goto_22
 
     .line 183
-    :catchall_17
-    move-exception p1
+    :catchall_18
+    move-exception v0
 
-    goto :goto_21
+    goto :goto_23
 
     .line 180
-    :catch_19
-    move-exception p1
+    :catch_1a
+    move-exception v0
 
     .line 181
-    :try_start_1a
-    const-string p1, "Failed to register for fingerprint activity callbacks"
+    .local v0, "re":Landroid/os/RemoteException;
+    :try_start_1b
+    const-string v3, "Failed to register for fingerprint activity callbacks"
 
-    invoke-static {v2, p1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
-    :try_end_1f
-    .catchall {:try_start_1a .. :try_end_1f} :catchall_17
+    invoke-static {v2, v3}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
+    :try_end_20
+    .catchall {:try_start_1b .. :try_end_20} :catchall_18
 
-    goto :goto_13
+    .line 183
+    nop
+
+    .end local v0  # "re":Landroid/os/RemoteException;
+    goto :goto_14
 
     .line 185
-    :goto_20
+    :goto_22
     return v1
 
     .line 183
-    :goto_21
+    :goto_23
     invoke-static {v4, v5}, Landroid/os/Binder;->restoreCallingIdentity(J)V
 
-    throw p1
+    throw v0
 
     .line 186
-    :cond_25
+    .end local v4  # "identity":J
+    :cond_27
     iget v0, p1, Landroid/os/Message;->what:I
 
     const/4 v4, 0x2
 
-    if-ne v0, v4, :cond_48
+    if-ne v0, v4, :cond_4c
 
     .line 187
     invoke-static {}, Landroid/os/Binder;->clearCallingIdentity()J
@@ -207,59 +224,70 @@
     move-result-wide v4
 
     .line 189
-    :try_start_2e
-    iget-object p1, p0, Lcom/android/server/accessibility/FingerprintGestureDispatcher;->mFingerprintService:Landroid/hardware/fingerprint/IFingerprintService;
+    .restart local v4  # "identity":J
+    :try_start_30
+    iget-object v0, p0, Lcom/android/server/accessibility/FingerprintGestureDispatcher;->mFingerprintService:Landroid/hardware/fingerprint/IFingerprintService;
 
-    invoke-interface {p1, p0}, Landroid/hardware/fingerprint/IFingerprintService;->removeClientActiveCallback(Landroid/hardware/fingerprint/IFingerprintClientActiveCallback;)V
-    :try_end_33
-    .catch Landroid/os/RemoteException; {:try_start_2e .. :try_end_33} :catch_39
-    .catchall {:try_start_2e .. :try_end_33} :catchall_37
+    invoke-interface {v0, p0}, Landroid/hardware/fingerprint/IFingerprintService;->removeClientActiveCallback(Landroid/hardware/fingerprint/IFingerprintClientActiveCallback;)V
+    :try_end_35
+    .catch Landroid/os/RemoteException; {:try_start_30 .. :try_end_35} :catch_3c
+    .catchall {:try_start_30 .. :try_end_35} :catchall_3a
 
     .line 193
-    :goto_33
+    nop
+
+    :goto_36
     invoke-static {v4, v5}, Landroid/os/Binder;->restoreCallingIdentity(J)V
 
     .line 194
-    goto :goto_40
-
-    .line 193
-    :catchall_37
-    move-exception p1
-
     goto :goto_44
 
+    .line 193
+    :catchall_3a
+    move-exception v0
+
+    goto :goto_48
+
     .line 190
-    :catch_39
-    move-exception p1
+    :catch_3c
+    move-exception v0
 
     .line 191
-    :try_start_3a
-    const-string p1, "Failed to unregister for fingerprint activity callbacks"
+    .restart local v0  # "re":Landroid/os/RemoteException;
+    :try_start_3d
+    const-string v6, "Failed to unregister for fingerprint activity callbacks"
 
-    invoke-static {v2, p1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
-    :try_end_3f
-    .catchall {:try_start_3a .. :try_end_3f} :catchall_37
+    invoke-static {v2, v6}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
+    :try_end_42
+    .catchall {:try_start_3d .. :try_end_42} :catchall_3a
 
-    goto :goto_33
+    .line 193
+    nop
+
+    .end local v0  # "re":Landroid/os/RemoteException;
+    goto :goto_36
 
     .line 195
-    :goto_40
+    :goto_44
     iput-boolean v1, p0, Lcom/android/server/accessibility/FingerprintGestureDispatcher;->mRegisteredReadOnlyExceptInHandler:Z
 
     .line 196
+    .end local v4  # "identity":J
     nop
 
     .line 200
     return v3
 
     .line 193
-    :goto_44
+    .restart local v4  # "identity":J
+    :goto_48
     invoke-static {v4, v5}, Landroid/os/Binder;->restoreCallingIdentity(J)V
 
-    throw p1
+    throw v0
 
     .line 197
-    :cond_48
+    .end local v4  # "identity":J
+    :cond_4c
     new-instance v0, Ljava/lang/StringBuilder;
 
     invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
@@ -268,15 +296,15 @@
 
     invoke-virtual {v0, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    iget p1, p1, Landroid/os/Message;->what:I
+    iget v3, p1, Landroid/os/Message;->what:I
 
-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v3}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
     invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    invoke-static {v2, p1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v2, v0}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 198
     return v1
@@ -301,6 +329,7 @@
     move-result-wide v2
 
     .line 123
+    .local v2, "identity":J
     :try_start_a
     iget-object v0, p0, Lcom/android/server/accessibility/FingerprintGestureDispatcher;->mFingerprintService:Landroid/hardware/fingerprint/IFingerprintService;
 
@@ -332,6 +361,7 @@
     move-exception v0
 
     .line 125
+    .local v0, "re":Landroid/os/RemoteException;
     nop
 
     .line 127
@@ -343,6 +373,7 @@
 
 .method public onClientActiveChanged(Z)V
     .registers 7
+    .param p1, "nonGestureFingerprintClientActive"  # Z
 
     .line 108
     iget-boolean v0, p0, Lcom/android/server/accessibility/FingerprintGestureDispatcher;->mHardwareSupportsGestures:Z
@@ -362,6 +393,7 @@
 
     move v2, v1
 
+    .local v2, "i":I
     :goto_a
     :try_start_a
     iget-object v3, p0, Lcom/android/server/accessibility/FingerprintGestureDispatcher;->mCapturingClients:Ljava/util/List;
@@ -399,6 +431,7 @@
     goto :goto_a
 
     .line 115
+    .end local v2  # "i":I
     :cond_25
     monitor-exit v0
 
@@ -407,17 +440,18 @@
 
     .line 115
     :catchall_27
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_29
     .catchall {:try_start_a .. :try_end_29} :catchall_27
 
-    throw p1
+    throw v1
 .end method
 
 .method public onFingerprintGesture(I)Z
-    .registers 7
+    .registers 6
+    .param p1, "fingerprintKeyCode"  # I
 
     .line 141
     iget-object v0, p0, Lcom/android/server/accessibility/FingerprintGestureDispatcher;->mLock:Ljava/lang/Object;
@@ -443,107 +477,119 @@
 
     .line 145
     :cond_e
-    const/4 v1, 0x1
-
     packed-switch p1, :pswitch_data_3e
 
     .line 163
     monitor-exit v0
 
-    goto :goto_3a
+    goto :goto_39
 
     .line 155
-    :pswitch_14  #0x11b
-    nop
+    :pswitch_13  #0x11b
+    const/4 v1, 0x1
 
     .line 157
-    move p1, v1
-
-    goto :goto_1e
+    .local v1, "idForFingerprintGestureManager":I
+    goto :goto_1c
 
     .line 159
-    :pswitch_17  #0x11a
-    const/4 p1, 0x2
+    .end local v1  # "idForFingerprintGestureManager":I
+    :pswitch_15  #0x11a
+    const/4 v1, 0x2
 
     .line 161
-    goto :goto_1e
+    .restart local v1  # "idForFingerprintGestureManager":I
+    goto :goto_1c
 
     .line 151
-    :pswitch_19  #0x119
-    const/16 p1, 0x8
+    .end local v1  # "idForFingerprintGestureManager":I
+    :pswitch_17  #0x119
+    const/16 v1, 0x8
 
     .line 153
-    goto :goto_1e
+    .restart local v1  # "idForFingerprintGestureManager":I
+    goto :goto_1c
 
     .line 147
-    :pswitch_1c  #0x118
-    const/4 p1, 0x4
+    .end local v1  # "idForFingerprintGestureManager":I
+    :pswitch_1a  #0x118
+    const/4 v1, 0x4
 
     .line 149
+    .restart local v1  # "idForFingerprintGestureManager":I
     nop
 
     .line 165
-    :goto_1e
-    new-instance v3, Ljava/util/ArrayList;
+    :goto_1c
+    new-instance v2, Ljava/util/ArrayList;
 
-    iget-object v4, p0, Lcom/android/server/accessibility/FingerprintGestureDispatcher;->mCapturingClients:Ljava/util/List;
+    iget-object v3, p0, Lcom/android/server/accessibility/FingerprintGestureDispatcher;->mCapturingClients:Ljava/util/List;
 
-    invoke-direct {v3, v4}, Ljava/util/ArrayList;-><init>(Ljava/util/Collection;)V
+    invoke-direct {v2, v3}, Ljava/util/ArrayList;-><init>(Ljava/util/Collection;)V
 
     .line 166
+    .local v2, "clientList":Ljava/util/List;, "Ljava/util/List<Lcom/android/server/accessibility/FingerprintGestureDispatcher$FingerprintGestureClient;>;"
     monitor-exit v0
-    :try_end_26
-    .catchall {:try_start_3 .. :try_end_26} :catchall_3b
+    :try_end_24
+    .catchall {:try_start_3 .. :try_end_24} :catchall_3a
 
     .line 167
-    nop
+    const/4 v0, 0x0
 
-    :goto_27
-    invoke-interface {v3}, Ljava/util/List;->size()I
+    .local v0, "i":I
+    :goto_25
+    invoke-interface {v2}, Ljava/util/List;->size()I
 
-    move-result v0
+    move-result v3
 
-    if-ge v2, v0, :cond_39
+    if-ge v0, v3, :cond_37
 
     .line 168
-    invoke-interface {v3, v2}, Ljava/util/List;->get(I)Ljava/lang/Object;
+    invoke-interface {v2, v0}, Ljava/util/List;->get(I)Ljava/lang/Object;
 
-    move-result-object v0
+    move-result-object v3
 
-    check-cast v0, Lcom/android/server/accessibility/FingerprintGestureDispatcher$FingerprintGestureClient;
+    check-cast v3, Lcom/android/server/accessibility/FingerprintGestureDispatcher$FingerprintGestureClient;
 
-    invoke-interface {v0, p1}, Lcom/android/server/accessibility/FingerprintGestureDispatcher$FingerprintGestureClient;->onFingerprintGesture(I)V
+    invoke-interface {v3, v1}, Lcom/android/server/accessibility/FingerprintGestureDispatcher$FingerprintGestureClient;->onFingerprintGesture(I)V
 
     .line 167
-    add-int/lit8 v2, v2, 0x1
+    add-int/lit8 v0, v0, 0x1
 
-    goto :goto_27
+    goto :goto_25
 
     .line 170
-    :cond_39
-    return v1
+    .end local v0  # "i":I
+    :cond_37
+    const/4 v0, 0x1
+
+    return v0
 
     .line 163
-    :goto_3a
+    .end local v1  # "idForFingerprintGestureManager":I
+    .end local v2  # "clientList":Ljava/util/List;, "Ljava/util/List<Lcom/android/server/accessibility/FingerprintGestureDispatcher$FingerprintGestureClient;>;"
+    :goto_39
     return v2
 
     .line 166
-    :catchall_3b
-    move-exception p1
+    :catchall_3a
+    move-exception v1
 
-    :try_start_3c
+    :try_start_3b
     monitor-exit v0
-    :try_end_3d
-    .catchall {:try_start_3c .. :try_end_3d} :catchall_3b
+    :try_end_3c
+    .catchall {:try_start_3b .. :try_end_3c} :catchall_3a
 
-    throw p1
+    throw v1
+
+    nop
 
     :pswitch_data_3e
     .packed-switch 0x118
-        :pswitch_1c  #00000118
-        :pswitch_19  #00000119
-        :pswitch_17  #0000011a
-        :pswitch_14  #0000011b
+        :pswitch_1a  #00000118
+        :pswitch_17  #00000119
+        :pswitch_15  #0000011a
+        :pswitch_13  #0000011b
     .end packed-switch
 .end method
 
@@ -560,6 +606,7 @@
     .end annotation
 
     .line 84
+    .local p1, "clientList":Ljava/util/List;, "Ljava/util/List<+Lcom/android/server/accessibility/FingerprintGestureDispatcher$FingerprintGestureClient;>;"
     iget-boolean v0, p0, Lcom/android/server/accessibility/FingerprintGestureDispatcher;->mHardwareSupportsGestures:Z
 
     if-nez v0, :cond_5
@@ -581,6 +628,7 @@
     .line 88
     const/4 v1, 0x0
 
+    .local v1, "i":I
     :goto_e
     invoke-interface {p1}, Ljava/util/List;->size()I
 
@@ -596,6 +644,7 @@
     check-cast v2, Lcom/android/server/accessibility/FingerprintGestureDispatcher$FingerprintGestureClient;
 
     .line 90
+    .local v2, "client":Lcom/android/server/accessibility/FingerprintGestureDispatcher$FingerprintGestureClient;
     invoke-interface {v2}, Lcom/android/server/accessibility/FingerprintGestureDispatcher$FingerprintGestureClient;->isCapturingFingerprintGestures()Z
 
     move-result v3
@@ -608,55 +657,57 @@
     invoke-interface {v3, v2}, Ljava/util/List;->add(Ljava/lang/Object;)Z
 
     .line 88
+    .end local v2  # "client":Lcom/android/server/accessibility/FingerprintGestureDispatcher$FingerprintGestureClient;
     :cond_25
     add-int/lit8 v1, v1, 0x1
 
     goto :goto_e
 
     .line 94
+    .end local v1  # "i":I
     :cond_28
-    iget-object p1, p0, Lcom/android/server/accessibility/FingerprintGestureDispatcher;->mCapturingClients:Ljava/util/List;
+    iget-object v1, p0, Lcom/android/server/accessibility/FingerprintGestureDispatcher;->mCapturingClients:Ljava/util/List;
 
-    invoke-interface {p1}, Ljava/util/List;->isEmpty()Z
+    invoke-interface {v1}, Ljava/util/List;->isEmpty()Z
 
-    move-result p1
+    move-result v1
 
-    if-eqz p1, :cond_3f
+    if-eqz v1, :cond_3f
 
     .line 95
-    iget-boolean p1, p0, Lcom/android/server/accessibility/FingerprintGestureDispatcher;->mRegisteredReadOnlyExceptInHandler:Z
+    iget-boolean v1, p0, Lcom/android/server/accessibility/FingerprintGestureDispatcher;->mRegisteredReadOnlyExceptInHandler:Z
 
-    if-eqz p1, :cond_4d
+    if-eqz v1, :cond_4d
 
     .line 96
-    iget-object p1, p0, Lcom/android/server/accessibility/FingerprintGestureDispatcher;->mHandler:Landroid/os/Handler;
+    iget-object v1, p0, Lcom/android/server/accessibility/FingerprintGestureDispatcher;->mHandler:Landroid/os/Handler;
 
-    const/4 v1, 0x2
+    const/4 v2, 0x2
 
-    invoke-virtual {p1, v1}, Landroid/os/Handler;->obtainMessage(I)Landroid/os/Message;
+    invoke-virtual {v1, v2}, Landroid/os/Handler;->obtainMessage(I)Landroid/os/Message;
 
-    move-result-object p1
+    move-result-object v1
 
-    invoke-virtual {p1}, Landroid/os/Message;->sendToTarget()V
+    invoke-virtual {v1}, Landroid/os/Message;->sendToTarget()V
 
     goto :goto_4d
 
     .line 99
     :cond_3f
-    iget-boolean p1, p0, Lcom/android/server/accessibility/FingerprintGestureDispatcher;->mRegisteredReadOnlyExceptInHandler:Z
+    iget-boolean v1, p0, Lcom/android/server/accessibility/FingerprintGestureDispatcher;->mRegisteredReadOnlyExceptInHandler:Z
 
-    if-nez p1, :cond_4d
+    if-nez v1, :cond_4d
 
     .line 100
-    iget-object p1, p0, Lcom/android/server/accessibility/FingerprintGestureDispatcher;->mHandler:Landroid/os/Handler;
+    iget-object v1, p0, Lcom/android/server/accessibility/FingerprintGestureDispatcher;->mHandler:Landroid/os/Handler;
 
-    const/4 v1, 0x1
+    const/4 v2, 0x1
 
-    invoke-virtual {p1, v1}, Landroid/os/Handler;->obtainMessage(I)Landroid/os/Message;
+    invoke-virtual {v1, v2}, Landroid/os/Handler;->obtainMessage(I)Landroid/os/Message;
 
-    move-result-object p1
+    move-result-object v1
 
-    invoke-virtual {p1}, Landroid/os/Message;->sendToTarget()V
+    invoke-virtual {v1}, Landroid/os/Message;->sendToTarget()V
 
     .line 103
     :cond_4d
@@ -668,11 +719,11 @@
 
     .line 103
     :catchall_4f
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_51
     .catchall {:try_start_8 .. :try_end_51} :catchall_4f
 
-    throw p1
+    throw v1
 .end method

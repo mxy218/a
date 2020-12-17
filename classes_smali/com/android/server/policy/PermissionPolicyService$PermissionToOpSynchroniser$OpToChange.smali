@@ -27,6 +27,9 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/policy/PermissionPolicyService$PermissionToOpSynchroniser;ILjava/lang/String;I)V
     .registers 5
+    .param p2, "uid"  # I
+    .param p3, "packageName"  # Ljava/lang/String;
+    .param p4, "code"  # I
 
     .line 801
     iput-object p1, p0, Lcom/android/server/policy/PermissionPolicyService$PermissionToOpSynchroniser$OpToChange;->this$0:Lcom/android/server/policy/PermissionPolicyService$PermissionToOpSynchroniser;

@@ -21,6 +21,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/backup/BackupManagerService;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/backup/BackupManagerService;
 
     .line 97
     iput-object p1, p0, Lcom/android/server/backup/BackupManagerService$1;->this$0:Lcom/android/server/backup/BackupManagerService;
@@ -33,39 +34,43 @@
 
 # virtual methods
 .method public onReceive(Landroid/content/Context;Landroid/content/Intent;)V
-    .registers 4
+    .registers 5
+    .param p1, "context"  # Landroid/content/Context;
+    .param p2, "intent"  # Landroid/content/Intent;
 
     .line 100
     invoke-virtual {p2}, Landroid/content/Intent;->getAction()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    const-string v0, "android.intent.action.USER_REMOVED"
+    const-string v1, "android.intent.action.USER_REMOVED"
 
-    invoke-virtual {v0, p1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v1, v0}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result p1
+    move-result v0
 
-    if-eqz p1, :cond_1b
+    if-eqz v0, :cond_1b
 
     .line 101
-    const/16 p1, -0x2710
+    const/16 v0, -0x2710
 
-    const-string v0, "android.intent.extra.user_handle"
+    const-string v1, "android.intent.extra.user_handle"
 
-    invoke-virtual {p2, v0, p1}, Landroid/content/Intent;->getIntExtra(Ljava/lang/String;I)I
+    invoke-virtual {p2, v1, v0}, Landroid/content/Intent;->getIntExtra(Ljava/lang/String;I)I
 
-    move-result p1
+    move-result v0
 
     .line 102
-    if-lez p1, :cond_1b
+    .local v0, "userId":I
+    if-lez v0, :cond_1b
 
     .line 103
-    iget-object p2, p0, Lcom/android/server/backup/BackupManagerService$1;->this$0:Lcom/android/server/backup/BackupManagerService;
+    iget-object v1, p0, Lcom/android/server/backup/BackupManagerService$1;->this$0:Lcom/android/server/backup/BackupManagerService;
 
-    invoke-static {p2, p1}, Lcom/android/server/backup/BackupManagerService;->access$000(Lcom/android/server/backup/BackupManagerService;I)V
+    invoke-static {v1, v0}, Lcom/android/server/backup/BackupManagerService;->access$000(Lcom/android/server/backup/BackupManagerService;I)V
 
     .line 106
+    .end local v0  # "userId":I
     :cond_1b
     return-void
 .end method

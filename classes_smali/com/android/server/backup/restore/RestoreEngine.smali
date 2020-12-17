@@ -75,6 +75,7 @@
 
 .method public setResult(I)V
     .registers 3
+    .param p1, "result"  # I
 
     .line 64
     iget-object v0, p0, Lcom/android/server/backup/restore/RestoreEngine;->mResult:Ljava/util/concurrent/atomic/AtomicInteger;
@@ -87,6 +88,7 @@
 
 .method public setRunning(Z)V
     .registers 4
+    .param p1, "stillRunning"  # Z
 
     .line 41
     iget-object v0, p0, Lcom/android/server/backup/restore/RestoreEngine;->mRunning:Ljava/util/concurrent/atomic/AtomicBoolean;
@@ -100,9 +102,9 @@
     invoke-virtual {v1, p1}, Ljava/util/concurrent/atomic/AtomicBoolean;->set(Z)V
 
     .line 43
-    iget-object p1, p0, Lcom/android/server/backup/restore/RestoreEngine;->mRunning:Ljava/util/concurrent/atomic/AtomicBoolean;
+    iget-object v1, p0, Lcom/android/server/backup/restore/RestoreEngine;->mRunning:Ljava/util/concurrent/atomic/AtomicBoolean;
 
-    invoke-virtual {p1}, Ljava/lang/Object;->notifyAll()V
+    invoke-virtual {v1}, Ljava/lang/Object;->notifyAll()V
 
     .line 44
     monitor-exit v0
@@ -112,13 +114,13 @@
 
     .line 44
     :catchall_f
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_11
     .catchall {:try_start_3 .. :try_end_11} :catchall_f
 
-    throw p1
+    throw v1
 .end method
 
 .method public waitForResult()I

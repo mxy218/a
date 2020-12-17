@@ -44,15 +44,15 @@
 .method private constructor <init>()V
     .registers 2
 
-    .line 687
+    .line 691
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
-    .line 688
+    .line 692
     const/4 v0, 0x0
 
     iput v0, p0, Lcom/android/server/DropBoxManagerService$FileList;->blocks:I
 
-    .line 689
+    .line 693
     new-instance v0, Ljava/util/TreeSet;
 
     invoke-direct {v0}, Ljava/util/TreeSet;-><init>()V
@@ -64,8 +64,9 @@
 
 .method synthetic constructor <init>(Lcom/android/server/DropBoxManagerService$1;)V
     .registers 2
+    .param p1, "x0"  # Lcom/android/server/DropBoxManagerService$1;
 
-    .line 687
+    .line 691
     invoke-direct {p0}, Lcom/android/server/DropBoxManagerService$FileList;-><init>()V
 
     return-void
@@ -75,8 +76,9 @@
 # virtual methods
 .method public final compareTo(Lcom/android/server/DropBoxManagerService$FileList;)I
     .registers 5
+    .param p1, "o"  # Lcom/android/server/DropBoxManagerService$FileList;
 
-    .line 693
+    .line 697
     iget v0, p0, Lcom/android/server/DropBoxManagerService$FileList;->blocks:I
 
     iget v1, p1, Lcom/android/server/DropBoxManagerService$FileList;->blocks:I
@@ -87,7 +89,7 @@
 
     return v1
 
-    .line 694
+    .line 698
     :cond_8
     const/4 v0, 0x0
 
@@ -95,7 +97,7 @@
 
     return v0
 
-    .line 695
+    .line 699
     :cond_c
     invoke-virtual {p0}, Ljava/lang/Object;->hashCode()I
 
@@ -107,11 +109,11 @@
 
     if-ge v1, v2, :cond_18
 
-    const/4 p1, -0x1
+    const/4 v0, -0x1
 
-    return p1
+    return v0
 
-    .line 696
+    .line 700
     :cond_18
     invoke-virtual {p0}, Ljava/lang/Object;->hashCode()I
 
@@ -119,15 +121,15 @@
 
     invoke-virtual {p1}, Ljava/lang/Object;->hashCode()I
 
-    move-result p1
+    move-result v2
 
-    if-le v1, p1, :cond_24
+    if-le v1, v2, :cond_24
 
-    const/4 p1, 0x1
+    const/4 v0, 0x1
 
-    return p1
+    return v0
 
-    .line 697
+    .line 701
     :cond_24
     return v0
 .end method
@@ -135,7 +137,7 @@
 .method public bridge synthetic compareTo(Ljava/lang/Object;)I
     .registers 2
 
-    .line 687
+    .line 691
     check-cast p1, Lcom/android/server/DropBoxManagerService$FileList;
 
     invoke-virtual {p0, p1}, Lcom/android/server/DropBoxManagerService$FileList;->compareTo(Lcom/android/server/DropBoxManagerService$FileList;)I

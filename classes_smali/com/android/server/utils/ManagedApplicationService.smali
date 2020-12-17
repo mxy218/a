@@ -76,6 +76,16 @@
 # direct methods
 .method private constructor <init>(Landroid/content/Context;Landroid/content/ComponentName;IILjava/lang/String;Lcom/android/server/utils/ManagedApplicationService$BinderChecker;ZILandroid/os/Handler;Lcom/android/server/utils/ManagedApplicationService$EventCallback;)V
     .registers 13
+    .param p1, "context"  # Landroid/content/Context;
+    .param p2, "component"  # Landroid/content/ComponentName;
+    .param p3, "userId"  # I
+    .param p4, "clientLabel"  # I
+    .param p5, "settingsAction"  # Ljava/lang/String;
+    .param p6, "binderChecker"  # Lcom/android/server/utils/ManagedApplicationService$BinderChecker;
+    .param p7, "isImportant"  # Z
+    .param p8, "retryType"  # I
+    .param p9, "handler"  # Landroid/os/Handler;
+    .param p10, "eventCallback"  # Lcom/android/server/utils/ManagedApplicationService$EventCallback;
 
     .line 155
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -145,61 +155,69 @@
 .end method
 
 .method static synthetic access$000(Lcom/android/server/utils/ManagedApplicationService;)Ljava/lang/String;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/utils/ManagedApplicationService;
 
     .line 43
-    iget-object p0, p0, Lcom/android/server/utils/ManagedApplicationService;->TAG:Ljava/lang/String;
+    iget-object v0, p0, Lcom/android/server/utils/ManagedApplicationService;->TAG:Ljava/lang/String;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$100(Lcom/android/server/utils/ManagedApplicationService;)Ljava/lang/Object;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/utils/ManagedApplicationService;
 
     .line 43
-    iget-object p0, p0, Lcom/android/server/utils/ManagedApplicationService;->mLock:Ljava/lang/Object;
+    iget-object v0, p0, Lcom/android/server/utils/ManagedApplicationService;->mLock:Ljava/lang/Object;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$1000(Lcom/android/server/utils/ManagedApplicationService;)Lcom/android/server/utils/ManagedApplicationService$EventCallback;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/utils/ManagedApplicationService;
 
     .line 43
-    iget-object p0, p0, Lcom/android/server/utils/ManagedApplicationService;->mEventCb:Lcom/android/server/utils/ManagedApplicationService$EventCallback;
+    iget-object v0, p0, Lcom/android/server/utils/ManagedApplicationService;->mEventCb:Lcom/android/server/utils/ManagedApplicationService$EventCallback;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$200(Lcom/android/server/utils/ManagedApplicationService;)Landroid/content/ServiceConnection;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/utils/ManagedApplicationService;
 
     .line 43
-    iget-object p0, p0, Lcom/android/server/utils/ManagedApplicationService;->mConnection:Landroid/content/ServiceConnection;
+    iget-object v0, p0, Lcom/android/server/utils/ManagedApplicationService;->mConnection:Landroid/content/ServiceConnection;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$300(Lcom/android/server/utils/ManagedApplicationService;)Landroid/os/Handler;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/utils/ManagedApplicationService;
 
     .line 43
-    iget-object p0, p0, Lcom/android/server/utils/ManagedApplicationService;->mHandler:Landroid/os/Handler;
+    iget-object v0, p0, Lcom/android/server/utils/ManagedApplicationService;->mHandler:Landroid/os/Handler;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$400(Lcom/android/server/utils/ManagedApplicationService;)Landroid/os/IInterface;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/utils/ManagedApplicationService;
 
     .line 43
-    iget-object p0, p0, Lcom/android/server/utils/ManagedApplicationService;->mBoundInterface:Landroid/os/IInterface;
+    iget-object v0, p0, Lcom/android/server/utils/ManagedApplicationService;->mBoundInterface:Landroid/os/IInterface;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$402(Lcom/android/server/utils/ManagedApplicationService;Landroid/os/IInterface;)Landroid/os/IInterface;
     .registers 2
+    .param p0, "x0"  # Lcom/android/server/utils/ManagedApplicationService;
+    .param p1, "x1"  # Landroid/os/IInterface;
 
     .line 43
     iput-object p1, p0, Lcom/android/server/utils/ManagedApplicationService;->mBoundInterface:Landroid/os/IInterface;
@@ -209,6 +227,7 @@
 
 .method static synthetic access$500(Lcom/android/server/utils/ManagedApplicationService;)V
     .registers 1
+    .param p0, "x0"  # Lcom/android/server/utils/ManagedApplicationService;
 
     .line 43
     invoke-direct {p0}, Lcom/android/server/utils/ManagedApplicationService;->startRetriesLocked()V
@@ -218,6 +237,7 @@
 
 .method static synthetic access$600(Lcom/android/server/utils/ManagedApplicationService;)V
     .registers 1
+    .param p0, "x0"  # Lcom/android/server/utils/ManagedApplicationService;
 
     .line 43
     invoke-direct {p0}, Lcom/android/server/utils/ManagedApplicationService;->stopRetriesLocked()V
@@ -226,25 +246,29 @@
 .end method
 
 .method static synthetic access$700(Lcom/android/server/utils/ManagedApplicationService;)Lcom/android/server/utils/ManagedApplicationService$BinderChecker;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/utils/ManagedApplicationService;
 
     .line 43
-    iget-object p0, p0, Lcom/android/server/utils/ManagedApplicationService;->mChecker:Lcom/android/server/utils/ManagedApplicationService$BinderChecker;
+    iget-object v0, p0, Lcom/android/server/utils/ManagedApplicationService;->mChecker:Lcom/android/server/utils/ManagedApplicationService$BinderChecker;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$800(Lcom/android/server/utils/ManagedApplicationService;)Lcom/android/server/utils/ManagedApplicationService$PendingEvent;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/utils/ManagedApplicationService;
 
     .line 43
-    iget-object p0, p0, Lcom/android/server/utils/ManagedApplicationService;->mPendingEvent:Lcom/android/server/utils/ManagedApplicationService$PendingEvent;
+    iget-object v0, p0, Lcom/android/server/utils/ManagedApplicationService;->mPendingEvent:Lcom/android/server/utils/ManagedApplicationService$PendingEvent;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$802(Lcom/android/server/utils/ManagedApplicationService;Lcom/android/server/utils/ManagedApplicationService$PendingEvent;)Lcom/android/server/utils/ManagedApplicationService$PendingEvent;
     .registers 2
+    .param p0, "x0"  # Lcom/android/server/utils/ManagedApplicationService;
+    .param p1, "x1"  # Lcom/android/server/utils/ManagedApplicationService$PendingEvent;
 
     .line 43
     iput-object p1, p0, Lcom/android/server/utils/ManagedApplicationService;->mPendingEvent:Lcom/android/server/utils/ManagedApplicationService$PendingEvent;
@@ -253,16 +277,27 @@
 .end method
 
 .method static synthetic access$900(Lcom/android/server/utils/ManagedApplicationService;)Landroid/content/ComponentName;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/utils/ManagedApplicationService;
 
     .line 43
-    iget-object p0, p0, Lcom/android/server/utils/ManagedApplicationService;->mComponent:Landroid/content/ComponentName;
+    iget-object v0, p0, Lcom/android/server/utils/ManagedApplicationService;->mComponent:Landroid/content/ComponentName;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method public static build(Landroid/content/Context;Landroid/content/ComponentName;IILjava/lang/String;Lcom/android/server/utils/ManagedApplicationService$BinderChecker;ZILandroid/os/Handler;Lcom/android/server/utils/ManagedApplicationService$EventCallback;)Lcom/android/server/utils/ManagedApplicationService;
     .registers 22
+    .param p0, "context"  # Landroid/content/Context;
+    .param p1, "component"  # Landroid/content/ComponentName;
+    .param p2, "userId"  # I
+    .param p3, "clientLabel"  # I
+    .param p4, "settingsAction"  # Ljava/lang/String;
+    .param p5, "binderChecker"  # Lcom/android/server/utils/ManagedApplicationService$BinderChecker;
+    .param p6, "isImportant"  # Z
+    .param p7, "retryType"  # I
+    .param p8, "handler"  # Landroid/os/Handler;
+    .param p9, "eventCallback"  # Lcom/android/server/utils/ManagedApplicationService$EventCallback;
 
     .line 217
     new-instance v11, Lcom/android/server/utils/ManagedApplicationService;
@@ -360,6 +395,7 @@
     move-result-wide v0
 
     .line 454
+    .local v0, "timestamp":J
     iget-object v2, p0, Lcom/android/server/utils/ManagedApplicationService;->mHandler:Landroid/os/Handler;
 
     new-instance v3, Lcom/android/server/utils/-$$Lambda$ManagedApplicationService$7a-sAFwcUuC9yt8nXYlr0jScFcs;
@@ -369,6 +405,7 @@
     invoke-virtual {v2, v3}, Landroid/os/Handler;->post(Ljava/lang/Runnable;)Z
 
     .line 459
+    .end local v0  # "timestamp":J
     :cond_3f
     const/4 v0, 0x1
 
@@ -480,29 +517,31 @@
 
 .method private matches(Landroid/content/ComponentName;I)Z
     .registers 4
+    .param p1, "component"  # Landroid/content/ComponentName;
+    .param p2, "userId"  # I
 
     .line 410
     iget-object v0, p0, Lcom/android/server/utils/ManagedApplicationService;->mComponent:Landroid/content/ComponentName;
 
     invoke-static {v0, p1}, Ljava/util/Objects;->equals(Ljava/lang/Object;Ljava/lang/Object;)Z
 
-    move-result p1
+    move-result v0
 
-    if-eqz p1, :cond_e
+    if-eqz v0, :cond_e
 
-    iget p1, p0, Lcom/android/server/utils/ManagedApplicationService;->mUserId:I
+    iget v0, p0, Lcom/android/server/utils/ManagedApplicationService;->mUserId:I
 
-    if-ne p1, p2, :cond_e
+    if-ne v0, p2, :cond_e
 
-    const/4 p1, 0x1
+    const/4 v0, 0x1
 
     goto :goto_f
 
     :cond_e
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
     :goto_f
-    return p1
+    return v0
 .end method
 
 .method private queueRetryLocked()V
@@ -514,6 +553,7 @@
     move-result-wide v0
 
     .line 435
+    .local v0, "now":J
     iget-wide v2, p0, Lcom/android/server/utils/ManagedApplicationService;->mLastRetryTimeMs:J
 
     sub-long v2, v0, v2
@@ -539,35 +579,35 @@
     iput-wide v0, p0, Lcom/android/server/utils/ManagedApplicationService;->mLastRetryTimeMs:J
 
     .line 441
-    iget-object v0, p0, Lcom/android/server/utils/ManagedApplicationService;->mHandler:Landroid/os/Handler;
+    iget-object v2, p0, Lcom/android/server/utils/ManagedApplicationService;->mHandler:Landroid/os/Handler;
 
-    iget-object v1, p0, Lcom/android/server/utils/ManagedApplicationService;->mRetryRunnable:Ljava/lang/Runnable;
+    iget-object v3, p0, Lcom/android/server/utils/ManagedApplicationService;->mRetryRunnable:Ljava/lang/Runnable;
 
-    iget-wide v2, p0, Lcom/android/server/utils/ManagedApplicationService;->mNextRetryDurationMs:J
+    iget-wide v4, p0, Lcom/android/server/utils/ManagedApplicationService;->mNextRetryDurationMs:J
 
-    invoke-virtual {v0, v1, v2, v3}, Landroid/os/Handler;->postDelayed(Ljava/lang/Runnable;J)Z
+    invoke-virtual {v2, v3, v4, v5}, Landroid/os/Handler;->postDelayed(Ljava/lang/Runnable;J)Z
 
     .line 442
-    const-wide/16 v0, 0x2
+    const-wide/16 v2, 0x2
 
-    iget-wide v2, p0, Lcom/android/server/utils/ManagedApplicationService;->mNextRetryDurationMs:J
+    iget-wide v4, p0, Lcom/android/server/utils/ManagedApplicationService;->mNextRetryDurationMs:J
 
-    mul-long/2addr v2, v0
+    mul-long/2addr v4, v2
 
-    const-wide/16 v0, 0x3e80
+    const-wide/16 v2, 0x3e80
 
-    invoke-static {v2, v3, v0, v1}, Ljava/lang/Math;->min(JJ)J
+    invoke-static {v4, v5, v2, v3}, Ljava/lang/Math;->min(JJ)J
 
-    move-result-wide v0
+    move-result-wide v2
 
-    iput-wide v0, p0, Lcom/android/server/utils/ManagedApplicationService;->mNextRetryDurationMs:J
+    iput-wide v2, p0, Lcom/android/server/utils/ManagedApplicationService;->mNextRetryDurationMs:J
 
     .line 443
-    iget v0, p0, Lcom/android/server/utils/ManagedApplicationService;->mRetryCount:I
+    iget v2, p0, Lcom/android/server/utils/ManagedApplicationService;->mRetryCount:I
 
-    add-int/lit8 v0, v0, 0x1
+    add-int/lit8 v2, v2, 0x1
 
-    iput v0, p0, Lcom/android/server/utils/ManagedApplicationService;->mRetryCount:I
+    iput v2, p0, Lcom/android/server/utils/ManagedApplicationService;->mRetryCount:I
 
     .line 444
     return-void
@@ -664,6 +704,7 @@
     move-result-object v1
 
     .line 302
+    .local v1, "intent":Landroid/content/Intent;
     iget v2, p0, Lcom/android/server/utils/ManagedApplicationService;->mClientLabel:I
 
     if-eqz v2, :cond_1f
@@ -714,18 +755,19 @@
     const v2, 0x4000001
 
     .line 393
+    .local v2, "flags":I
     iget-boolean v3, p0, Lcom/android/server/utils/ManagedApplicationService;->mIsImportant:Z
     :try_end_42
-    .catchall {:try_start_3 .. :try_end_42} :catchall_8e
+    .catchall {:try_start_3 .. :try_end_42} :catchall_8d
 
-    if-eqz v3, :cond_47
+    if-eqz v3, :cond_46
 
     .line 394
-    const v2, 0x4000041
+    or-int/lit8 v2, v2, 0x40
 
     .line 397
-    :cond_47
-    :try_start_47
+    :cond_46
+    :try_start_46
     iget-object v3, p0, Lcom/android/server/utils/ManagedApplicationService;->mContext:Landroid/content/Context;
 
     iget-object v4, p0, Lcom/android/server/utils/ManagedApplicationService;->mConnection:Landroid/content/ServiceConnection;
@@ -738,45 +780,11 @@
 
     invoke-virtual {v3, v1, v4, v2, v5}, Landroid/content/Context;->bindServiceAsUser(Landroid/content/Intent;Landroid/content/ServiceConnection;ILandroid/os/UserHandle;)Z
 
-    move-result v2
+    move-result v3
 
-    if-nez v2, :cond_71
+    if-nez v3, :cond_70
 
     .line 399
-    iget-object v2, p0, Lcom/android/server/utils/ManagedApplicationService;->TAG:Ljava/lang/String;
-
-    new-instance v3, Ljava/lang/StringBuilder;
-
-    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
-
-    const-string v4, "Unable to bind service: "
-
-    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v3, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
-
-    move-result-object v3
-
-    invoke-static {v2, v3}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
-
-    .line 400
-    invoke-direct {p0}, Lcom/android/server/utils/ManagedApplicationService;->startRetriesLocked()V
-    :try_end_71
-    .catch Ljava/lang/SecurityException; {:try_start_47 .. :try_end_71} :catch_72
-    .catchall {:try_start_47 .. :try_end_71} :catchall_8e
-
-    .line 405
-    :cond_71
-    goto :goto_8c
-
-    .line 402
-    :catch_72
-    move-exception v2
-
-    .line 403
-    :try_start_73
     iget-object v3, p0, Lcom/android/server/utils/ManagedApplicationService;->TAG:Ljava/lang/String;
 
     new-instance v4, Ljava/lang/StringBuilder;
@@ -791,27 +799,65 @@
 
     invoke-virtual {v4}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v1
+    move-result-object v4
 
-    invoke-static {v3, v1, v2}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    invoke-static {v3, v4}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+
+    .line 400
+    invoke-direct {p0}, Lcom/android/server/utils/ManagedApplicationService;->startRetriesLocked()V
+    :try_end_70
+    .catch Ljava/lang/SecurityException; {:try_start_46 .. :try_end_70} :catch_71
+    .catchall {:try_start_46 .. :try_end_70} :catchall_8d
+
+    .line 405
+    :cond_70
+    goto :goto_8b
+
+    .line 402
+    :catch_71
+    move-exception v3
+
+    .line 403
+    .local v3, "e":Ljava/lang/SecurityException;
+    :try_start_72
+    iget-object v4, p0, Lcom/android/server/utils/ManagedApplicationService;->TAG:Ljava/lang/String;
+
+    new-instance v5, Ljava/lang/StringBuilder;
+
+    invoke-direct {v5}, Ljava/lang/StringBuilder;-><init>()V
+
+    const-string v6, "Unable to bind service: "
+
+    invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v5, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v5}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v5
+
+    invoke-static {v4, v5, v3}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
     .line 404
     invoke-direct {p0}, Lcom/android/server/utils/ManagedApplicationService;->startRetriesLocked()V
 
     .line 406
-    :goto_8c
+    .end local v1  # "intent":Landroid/content/Intent;
+    .end local v2  # "flags":I
+    .end local v3  # "e":Ljava/lang/SecurityException;
+    :goto_8b
     monitor-exit v0
 
     .line 407
     return-void
 
     .line 406
-    :catchall_8e
+    :catchall_8d
     move-exception v1
 
     monitor-exit v0
-    :try_end_90
-    .catchall {:try_start_73 .. :try_end_90} :catchall_8e
+    :try_end_8f
+    .catchall {:try_start_72 .. :try_end_8f} :catchall_8d
 
     throw v1
 .end method
@@ -869,28 +915,30 @@
 .end method
 
 .method public disconnectIfNotMatching(Landroid/content/ComponentName;I)Z
-    .registers 3
+    .registers 4
+    .param p1, "componentName"  # Landroid/content/ComponentName;
+    .param p2, "userId"  # I
 
     .line 245
     invoke-direct {p0, p1, p2}, Lcom/android/server/utils/ManagedApplicationService;->matches(Landroid/content/ComponentName;I)Z
 
-    move-result p1
+    move-result v0
 
-    if-eqz p1, :cond_8
+    if-eqz v0, :cond_8
 
     .line 246
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    return p1
+    return v0
 
     .line 248
     :cond_8
     invoke-virtual {p0}, Lcom/android/server/utils/ManagedApplicationService;->disconnect()V
 
     .line 249
-    const/4 p1, 0x1
+    const/4 v0, 0x1
 
-    return p1
+    return v0
 .end method
 
 .method public getComponent()Landroid/content/ComponentName;
@@ -913,6 +961,7 @@
 
 .method public synthetic lambda$checkAndDeliverServiceDiedCbLocked$0$ManagedApplicationService(J)V
     .registers 7
+    .param p1, "timestamp"  # J
 
     .line 455
     iget-object v0, p0, Lcom/android/server/utils/ManagedApplicationService;->mEventCb:Lcom/android/server/utils/ManagedApplicationService$EventCallback;
@@ -932,7 +981,8 @@
 .end method
 
 .method public sendEvent(Lcom/android/server/utils/ManagedApplicationService$PendingEvent;)V
-    .registers 4
+    .registers 6
+    .param p1, "event"  # Lcom/android/server/utils/ManagedApplicationService$PendingEvent;
 
     .line 259
     iget-object v0, p0, Lcom/android/server/utils/ManagedApplicationService;->mLock:Ljava/lang/Object;
@@ -944,6 +994,7 @@
     iget-object v1, p0, Lcom/android/server/utils/ManagedApplicationService;->mBoundInterface:Landroid/os/IInterface;
 
     .line 261
+    .local v1, "iface":Landroid/os/IInterface;
     if-nez v1, :cond_9
 
     .line 262
@@ -970,28 +1021,31 @@
 
     .line 269
     :catch_10
-    move-exception p1
+    move-exception v0
 
     .line 270
-    iget-object v0, p0, Lcom/android/server/utils/ManagedApplicationService;->TAG:Ljava/lang/String;
+    .local v0, "ex":Ljava/lang/Exception;
+    iget-object v2, p0, Lcom/android/server/utils/ManagedApplicationService;->TAG:Ljava/lang/String;
 
-    const-string v1, "Received exception from user service: "
+    const-string v3, "Received exception from user service: "
 
-    invoke-static {v0, v1, p1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    invoke-static {v2, v3, v0}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
     .line 273
+    .end local v0  # "ex":Ljava/lang/Exception;
     :cond_18
     :goto_18
     return-void
 
     .line 264
+    .end local v1  # "iface":Landroid/os/IInterface;
     :catchall_19
-    move-exception p1
+    move-exception v1
 
     :try_start_1a
     monitor-exit v0
     :try_end_1b
     .catchall {:try_start_1a .. :try_end_1b} :catchall_19
 
-    throw p1
+    throw v1
 .end method

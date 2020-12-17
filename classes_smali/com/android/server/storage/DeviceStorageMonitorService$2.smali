@@ -24,8 +24,9 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/storage/DeviceStorageMonitorService;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/storage/DeviceStorageMonitorService;
 
-    .line 301
+    .line 341
     iput-object p1, p0, Lcom/android/server/storage/DeviceStorageMonitorService$2;->this$0:Lcom/android/server/storage/DeviceStorageMonitorService;
 
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -38,7 +39,7 @@
 .method public checkMemory()V
     .registers 3
 
-    .line 305
+    .line 345
     iget-object v0, p0, Lcom/android/server/storage/DeviceStorageMonitorService$2;->this$0:Lcom/android/server/storage/DeviceStorageMonitorService;
 
     invoke-static {v0}, Lcom/android/server/storage/DeviceStorageMonitorService;->access$200(Lcom/android/server/storage/DeviceStorageMonitorService;)Landroid/os/Handler;
@@ -49,7 +50,7 @@
 
     invoke-virtual {v0, v1}, Landroid/os/Handler;->removeMessages(I)V
 
-    .line 306
+    .line 346
     iget-object v0, p0, Lcom/android/server/storage/DeviceStorageMonitorService$2;->this$0:Lcom/android/server/storage/DeviceStorageMonitorService;
 
     invoke-static {v0}, Lcom/android/server/storage/DeviceStorageMonitorService;->access$200(Lcom/android/server/storage/DeviceStorageMonitorService;)Landroid/os/Handler;
@@ -62,14 +63,14 @@
 
     invoke-virtual {v0}, Landroid/os/Message;->sendToTarget()V
 
-    .line 307
+    .line 347
     return-void
 .end method
 
 .method public getMemoryLowThreshold()J
     .registers 3
 
-    .line 316
+    .line 356
     iget-object v0, p0, Lcom/android/server/storage/DeviceStorageMonitorService$2;->this$0:Lcom/android/server/storage/DeviceStorageMonitorService;
 
     invoke-virtual {v0}, Lcom/android/server/storage/DeviceStorageMonitorService;->getContext()Landroid/content/Context;
@@ -84,7 +85,7 @@
 
     check-cast v0, Landroid/os/storage/StorageManager;
 
-    .line 317
+    .line 357
     invoke-static {}, Landroid/os/Environment;->getDataDirectory()Ljava/io/File;
 
     move-result-object v1
@@ -93,14 +94,14 @@
 
     move-result-wide v0
 
-    .line 316
+    .line 356
     return-wide v0
 .end method
 
 .method public isMemoryLow()Z
     .registers 5
 
-    .line 311
+    .line 351
     invoke-static {}, Landroid/os/Environment;->getDataDirectory()Ljava/io/File;
 
     move-result-object v0

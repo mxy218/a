@@ -25,19 +25,10 @@
 
 
 # virtual methods
-.method protected getFirstAcquireTimeMs()J
-    .registers 3
-
-    .line 37
-    iget-wide v0, p0, Lcom/android/server/biometrics/LoggableMonitor;->mFirstAcquireTimeMs:J
-
-    return-wide v0
-.end method
-
 .method protected isCryptoOperation()Z
     .registers 2
 
-    .line 45
+    .line 41
     const/4 v0, 0x0
 
     return v0
@@ -45,8 +36,12 @@
 
 .method protected final logOnAcquired(Landroid/content/Context;III)V
     .registers 16
+    .param p1, "context"  # Landroid/content/Context;
+    .param p2, "acquiredInfo"  # I
+    .param p3, "vendorCode"  # I
+    .param p4, "targetUserId"  # I
 
-    .line 71
+    .line 67
     invoke-virtual {p0}, Lcom/android/server/biometrics/LoggableMonitor;->statsModality()I
 
     move-result v0
@@ -55,12 +50,12 @@
 
     if-ne v0, v1, :cond_12
 
-    .line 72
+    .line 68
     const/16 v0, 0x14
 
     if-ne p2, v0, :cond_22
 
-    .line 73
+    .line 69
     invoke-static {}, Ljava/lang/System;->currentTimeMillis()J
 
     move-result-wide v0
@@ -69,11 +64,11 @@
 
     goto :goto_22
 
-    .line 75
+    .line 71
     :cond_12
     if-nez p2, :cond_22
 
-    .line 76
+    .line 72
     iget-wide v0, p0, Lcom/android/server/biometrics/LoggableMonitor;->mFirstAcquireTimeMs:J
 
     const-wide/16 v2, 0x0
@@ -82,178 +77,190 @@
 
     if-nez v0, :cond_22
 
-    .line 77
+    .line 73
     invoke-static {}, Ljava/lang/System;->currentTimeMillis()J
 
     move-result-wide v0
 
     iput-wide v0, p0, Lcom/android/server/biometrics/LoggableMonitor;->mFirstAcquireTimeMs:J
 
-    .line 89
+    .line 85
     :cond_22
     :goto_22
     const/16 v2, 0x57
 
-    .line 90
+    .line 86
     invoke-virtual {p0}, Lcom/android/server/biometrics/LoggableMonitor;->statsModality()I
 
     move-result v3
 
-    .line 92
+    .line 88
     invoke-virtual {p0}, Lcom/android/server/biometrics/LoggableMonitor;->isCryptoOperation()Z
 
     move-result v5
 
-    .line 93
+    .line 89
     invoke-virtual {p0}, Lcom/android/server/biometrics/LoggableMonitor;->statsAction()I
 
     move-result v6
 
-    .line 94
+    .line 90
     invoke-virtual {p0}, Lcom/android/server/biometrics/LoggableMonitor;->statsClient()I
 
     move-result v7
 
-    .line 97
+    const/4 v9, 0x0
+
+    .line 93
     invoke-static {p1, p4}, Lcom/android/server/biometrics/Utils;->isDebugEnabled(Landroid/content/Context;I)Z
 
     move-result v10
 
-    .line 89
+    .line 85
     move v4, p4
 
     move v8, p2
 
-    move v9, p3
-
     invoke-static/range {v2 .. v10}, Landroid/util/StatsLog;->write(IIIZIIIIZ)I
 
-    .line 98
+    .line 94
     return-void
 .end method
 
 .method protected final logOnAuthenticated(Landroid/content/Context;ZZIZ)V
-    .registers 16
+    .registers 22
+    .param p1, "context"  # Landroid/content/Context;
+    .param p2, "authenticated"  # Z
+    .param p3, "requireConfirmation"  # Z
+    .param p4, "targetUserId"  # I
+    .param p5, "isBiometricPrompt"  # Z
 
-    .line 131
-    nop
+    .line 119
+    move-object/from16 v0, p0
 
-    .line 132
-    if-nez p2, :cond_6
+    const/4 v1, 0x0
 
-    .line 133
-    const/4 p2, 0x1
+    .line 120
+    .local v1, "authState":I
+    if-nez p2, :cond_7
 
-    move v6, p2
+    .line 121
+    const/4 v1, 0x1
 
-    goto :goto_f
+    goto :goto_e
 
-    .line 136
-    :cond_6
+    .line 124
+    :cond_7
     if-eqz p5, :cond_d
 
     if-eqz p3, :cond_d
 
-    .line 137
-    const/4 p2, 0x2
+    .line 125
+    const/4 v1, 0x2
 
-    move v6, p2
+    goto :goto_e
 
-    goto :goto_f
-
-    .line 139
+    .line 127
     :cond_d
-    const/4 p2, 0x3
+    const/4 v1, 0x3
 
-    move v6, p2
+    .line 132
+    :goto_e
+    iget-wide v2, v0, Lcom/android/server/biometrics/LoggableMonitor;->mFirstAcquireTimeMs:J
 
-    .line 144
-    :goto_f
-    iget-wide v0, p0, Lcom/android/server/biometrics/LoggableMonitor;->mFirstAcquireTimeMs:J
+    const-wide/16 v4, 0x0
 
-    const-wide/16 v2, 0x0
+    cmp-long v2, v2, v4
 
-    cmp-long p2, v0, v2
+    if-eqz v2, :cond_1e
 
-    if-eqz p2, :cond_20
-
-    .line 145
+    .line 133
     invoke-static {}, Ljava/lang/System;->currentTimeMillis()J
 
-    move-result-wide v0
+    move-result-wide v2
 
-    iget-wide v2, p0, Lcom/android/server/biometrics/LoggableMonitor;->mFirstAcquireTimeMs:J
+    iget-wide v4, v0, Lcom/android/server/biometrics/LoggableMonitor;->mFirstAcquireTimeMs:J
 
-    sub-long/2addr v0, v2
+    sub-long/2addr v2, v4
 
-    move-wide v7, v0
+    goto :goto_20
 
-    goto :goto_23
+    .line 134
+    :cond_1e
+    const-wide/16 v2, -0x1
 
-    .line 146
-    :cond_20
-    const-wide/16 v0, -0x1
+    :goto_20
+    move-wide v12, v2
 
-    move-wide v7, v0
+    .line 145
+    .local v12, "latency":J
+    new-instance v2, Ljava/lang/StringBuilder;
 
-    .line 157
-    :goto_23
-    new-instance p2, Ljava/lang/StringBuilder;
+    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
 
-    invoke-direct {p2}, Ljava/lang/StringBuilder;-><init>()V
+    const-string v3, "Authentication latency: "
 
-    const-string p5, "Authentication latency: "
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p2, p5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v12, v13}, Ljava/lang/StringBuilder;->append(J)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p2, v7, v8}, Ljava/lang/StringBuilder;->append(J)Ljava/lang/StringBuilder;
+    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    invoke-virtual {p2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    move-result-object v2
 
-    move-result-object p2
+    const-string v3, "BiometricStats"
 
-    const-string p5, "BiometricStats"
+    invoke-static {v3, v2}, Landroid/util/Slog;->v(Ljava/lang/String;Ljava/lang/String;)I
 
-    invoke-static {p5, p2}, Landroid/util/Slog;->v(Ljava/lang/String;Ljava/lang/String;)I
+    .line 148
+    const/16 v2, 0x58
 
-    .line 160
-    const/16 v0, 0x58
-
-    .line 161
-    invoke-virtual {p0}, Lcom/android/server/biometrics/LoggableMonitor;->statsModality()I
-
-    move-result v1
-
-    .line 163
-    invoke-virtual {p0}, Lcom/android/server/biometrics/LoggableMonitor;->isCryptoOperation()Z
+    .line 149
+    invoke-virtual/range {p0 .. p0}, Lcom/android/server/biometrics/LoggableMonitor;->statsModality()I
 
     move-result v3
 
-    .line 164
-    invoke-virtual {p0}, Lcom/android/server/biometrics/LoggableMonitor;->statsClient()I
+    .line 151
+    invoke-virtual/range {p0 .. p0}, Lcom/android/server/biometrics/LoggableMonitor;->isCryptoOperation()Z
 
-    move-result v4
+    move-result v5
 
-    .line 168
-    invoke-static {p1, p4}, Lcom/android/server/biometrics/Utils;->isDebugEnabled(Landroid/content/Context;I)Z
+    .line 152
+    invoke-virtual/range {p0 .. p0}, Lcom/android/server/biometrics/LoggableMonitor;->statsClient()I
 
-    move-result v9
+    move-result v6
 
-    .line 160
-    move v2, p4
+    .line 156
+    move-object/from16 v14, p1
 
-    move v5, p3
+    move/from16 v15, p4
 
-    invoke-static/range {v0 .. v9}, Landroid/util/StatsLog;->write(IIIZIZIJZ)I
+    invoke-static {v14, v15}, Lcom/android/server/biometrics/Utils;->isDebugEnabled(Landroid/content/Context;I)Z
 
-    .line 169
+    move-result v11
+
+    .line 148
+    move/from16 v4, p4
+
+    move/from16 v7, p3
+
+    move v8, v1
+
+    move-wide v9, v12
+
+    invoke-static/range {v2 .. v11}, Landroid/util/StatsLog;->write(IIIZIZIJZ)I
+
+    .line 157
     return-void
 .end method
 
 .method protected final logOnEnrolled(IJZ)V
     .registers 13
+    .param p1, "targetUserId"  # I
+    .param p2, "latency"  # J
+    .param p4, "enrollSuccessful"  # Z
 
-    .line 179
+    .line 167
     new-instance v0, Ljava/lang/StringBuilder;
 
     invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
@@ -272,15 +279,15 @@
 
     invoke-static {v1, v0}, Landroid/util/Slog;->v(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 182
+    .line 170
     nop
 
-    .line 183
+    .line 171
     invoke-virtual {p0}, Lcom/android/server/biometrics/LoggableMonitor;->statsModality()I
 
     move-result v3
 
-    .line 182
+    .line 170
     const/16 v2, 0xb8
 
     move v4, p1
@@ -291,102 +298,57 @@
 
     invoke-static/range {v2 .. v7}, Landroid/util/StatsLog;->write(IIIJZ)I
 
-    .line 187
+    .line 175
     return-void
 .end method
 
 .method protected final logOnError(Landroid/content/Context;III)V
-    .registers 19
+    .registers 14
+    .param p1, "context"  # Landroid/content/Context;
+    .param p2, "error"  # I
+    .param p3, "vendorCode"  # I
+    .param p4, "targetUserId"  # I
 
-    .line 102
-    move-object v0, p0
+    .line 106
+    nop
 
-    iget-wide v1, v0, Lcom/android/server/biometrics/LoggableMonitor;->mFirstAcquireTimeMs:J
-
-    const-wide/16 v3, 0x0
-
-    cmp-long v1, v1, v3
-
-    if-eqz v1, :cond_11
-
-    .line 103
-    invoke-static {}, Ljava/lang/System;->currentTimeMillis()J
-
-    move-result-wide v1
-
-    iget-wide v3, v0, Lcom/android/server/biometrics/LoggableMonitor;->mFirstAcquireTimeMs:J
-
-    sub-long/2addr v1, v3
-
-    goto :goto_13
-
-    :cond_11
-    const-wide/16 v1, -0x1
-
-    :goto_13
-    move-wide v12, v1
-
-    .line 115
-    new-instance v1, Ljava/lang/StringBuilder;
-
-    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
-
-    const-string v2, "Error latency: "
-
-    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v1, v12, v13}, Ljava/lang/StringBuilder;->append(J)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
-
-    move-result-object v1
-
-    const-string v2, "BiometricStats"
-
-    invoke-static {v2, v1}, Landroid/util/Slog;->v(Ljava/lang/String;Ljava/lang/String;)I
-
-    .line 117
-    const/16 v3, 0x59
-
-    .line 118
+    .line 107
     invoke-virtual {p0}, Lcom/android/server/biometrics/LoggableMonitor;->statsModality()I
+
+    move-result v1
+
+    .line 109
+    invoke-virtual {p0}, Lcom/android/server/biometrics/LoggableMonitor;->isCryptoOperation()Z
+
+    move-result v3
+
+    .line 110
+    invoke-virtual {p0}, Lcom/android/server/biometrics/LoggableMonitor;->statsAction()I
 
     move-result v4
 
-    .line 120
-    invoke-virtual {p0}, Lcom/android/server/biometrics/LoggableMonitor;->isCryptoOperation()Z
-
-    move-result v6
-
-    .line 121
-    invoke-virtual {p0}, Lcom/android/server/biometrics/LoggableMonitor;->statsAction()I
-
-    move-result v7
-
-    .line 122
+    .line 111
     invoke-virtual {p0}, Lcom/android/server/biometrics/LoggableMonitor;->statsClient()I
+
+    move-result v5
+
+    .line 114
+    invoke-static {p1, p4}, Lcom/android/server/biometrics/Utils;->isDebugEnabled(Landroid/content/Context;I)Z
 
     move-result v8
 
-    .line 125
-    move-object v0, p1
+    .line 106
+    const/16 v0, 0x59
 
-    move/from16 v1, p4
+    move v2, p4
 
-    invoke-static {p1, v1}, Lcom/android/server/biometrics/Utils;->isDebugEnabled(Landroid/content/Context;I)Z
+    move v6, p2
 
-    move-result v11
+    move v7, p3
 
-    .line 117
-    move/from16 v5, p4
+    invoke-static/range {v0 .. v8}, Landroid/util/StatsLog;->write(IIIZIIIIZ)I
 
-    move/from16 v9, p2
-
-    move/from16 v10, p3
-
-    invoke-static/range {v3 .. v13}, Landroid/util/StatsLog;->write(IIIZIIIIZJ)I
-
-    .line 127
+    .line 115
     return-void
 .end method
 
@@ -396,7 +358,7 @@
 .method protected statsClient()I
     .registers 2
 
-    .line 66
+    .line 62
     const/4 v0, 0x0
 
     return v0

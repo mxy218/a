@@ -104,6 +104,9 @@
 
 .method public static callJobFinished(IZLjava/lang/String;)V
     .registers 4
+    .param p0, "jobId"  # I
+    .param p1, "needsReschedule"  # Z
+    .param p2, "why"  # Ljava/lang/String;
 
     .line 173
     invoke-static {}, Lcom/android/server/content/SyncJobService;->getInstance()Lcom/android/server/content/SyncJobService;
@@ -111,6 +114,7 @@
     move-result-object v0
 
     .line 174
+    .local v0, "instance":Lcom/android/server/content/SyncJobService;
     if-eqz v0, :cond_9
 
     .line 175
@@ -200,22 +204,23 @@
 
 .method public static jobParametersToString(Landroid/app/job/JobParameters;)Ljava/lang/String;
     .registers 3
+    .param p0, "params"  # Landroid/app/job/JobParameters;
 
     .line 203
-    if-nez p0, :cond_5
+    if-nez p0, :cond_6
 
     .line 204
-    const-string p0, "job:null"
+    const-string/jumbo v0, "job:null"
 
-    return-object p0
+    return-object v0
 
     .line 206
-    :cond_5
+    :cond_6
     new-instance v0, Ljava/lang/StringBuilder;
 
     invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v1, "job:#"
+    const-string/jumbo v1, "job:#"
 
     invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
@@ -253,24 +258,25 @@
     .line 208
     invoke-virtual {p0}, Landroid/app/job/JobParameters;->getExtras()Landroid/os/PersistableBundle;
 
-    move-result-object p0
+    move-result-object v1
 
-    invoke-static {p0}, Lcom/android/server/content/SyncOperation;->maybeCreateFromJobExtras(Landroid/os/PersistableBundle;)Lcom/android/server/content/SyncOperation;
+    invoke-static {v1}, Lcom/android/server/content/SyncOperation;->maybeCreateFromJobExtras(Landroid/os/PersistableBundle;)Lcom/android/server/content/SyncOperation;
 
-    move-result-object p0
+    move-result-object v1
 
-    invoke-virtual {v0, p0}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v0
 
     .line 206
-    return-object p0
+    return-object v0
 .end method
 
 .method public static markSyncStarted(I)V
     .registers 4
+    .param p0, "jobId"  # I
 
     .line 197
     sget-object v0, Lcom/android/server/content/SyncJobService;->sLock:Ljava/lang/Object;
@@ -293,13 +299,13 @@
 
     .line 199
     :catchall_b
-    move-exception p0
+    move-exception v1
 
     monitor-exit v0
     :try_end_d
     .catchall {:try_start_3 .. :try_end_d} :catchall_b
 
-    throw p0
+    throw v1
 .end method
 
 .method private updateInstance()V
@@ -333,6 +339,7 @@
 
 .method private static wtf(Ljava/lang/String;)V
     .registers 4
+    .param p0, "message"  # Ljava/lang/String;
 
     .line 213
     sget-object v0, Lcom/android/server/content/SyncJobService;->sLogger:Lcom/android/server/content/SyncLogger;
@@ -360,6 +367,9 @@
 # virtual methods
 .method public callJobFinishedInner(IZLjava/lang/String;)V
     .registers 10
+    .param p1, "jobId"  # I
+    .param p2, "needsReschedule"  # Z
+    .param p3, "why"  # Ljava/lang/String;
 
     .line 180
     sget-object v0, Lcom/android/server/content/SyncJobService;->sLock:Ljava/lang/Object;
@@ -377,6 +387,7 @@
     check-cast v1, Landroid/app/job/JobParameters;
 
     .line 182
+    .local v1, "params":Landroid/app/job/JobParameters;
     sget-object v2, Lcom/android/server/content/SyncJobService;->sLogger:Lcom/android/server/content/SyncLogger;
 
     const/16 v3, 0x9
@@ -456,37 +467,38 @@
     invoke-virtual {p0, v1, p2}, Lcom/android/server/content/SyncJobService;->jobFinished(Landroid/app/job/JobParameters;Z)V
 
     .line 189
-    sget-object p2, Lcom/android/server/content/SyncJobService;->sJobParamsMap:Landroid/util/SparseArray;
+    sget-object v2, Lcom/android/server/content/SyncJobService;->sJobParamsMap:Landroid/util/SparseArray;
 
-    invoke-virtual {p2, p1}, Landroid/util/SparseArray;->remove(I)V
+    invoke-virtual {v2, p1}, Landroid/util/SparseArray;->remove(I)V
 
     goto :goto_6d
 
     .line 191
     :cond_53
-    const-string p2, "SyncManager"
+    const-string v2, "SyncManager"
 
-    new-instance p3, Ljava/lang/StringBuilder;
+    new-instance v3, Ljava/lang/StringBuilder;
 
-    invoke-direct {p3}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v1, "Job params not found for "
+    const-string v4, "Job params not found for "
 
-    invoke-virtual {p3, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-static {p1}, Ljava/lang/String;->valueOf(I)Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v4
 
-    invoke-virtual {p3, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v3
 
-    invoke-static {p2, p1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v2, v3}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 193
+    .end local v1  # "params":Landroid/app/job/JobParameters;
     :goto_6d
     monitor-exit v0
 
@@ -495,17 +507,18 @@
 
     .line 193
     :catchall_6f
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_71
     .catchall {:try_start_3 .. :try_end_71} :catchall_6f
 
-    throw p1
+    throw v1
 .end method
 
 .method public onStartJob(Landroid/app/job/JobParameters;)Z
-    .registers 10
+    .registers 11
+    .param p1, "params"  # Landroid/app/job/JobParameters;
 
     .line 75
     invoke-direct {p0}, Lcom/android/server/content/SyncJobService;->updateInstance()V
@@ -525,32 +538,33 @@
     move-result-object v0
 
     .line 81
+    .local v0, "op":Lcom/android/server/content/SyncOperation;
     const/4 v1, 0x0
 
     if-nez v0, :cond_2e
 
     .line 82
-    new-instance v0, Ljava/lang/StringBuilder;
+    new-instance v2, Ljava/lang/StringBuilder;
 
-    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v2, "Got invalid job "
+    const-string v3, "Got invalid job "
 
-    invoke-virtual {v0, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {p1}, Landroid/app/job/JobParameters;->getJobId()I
 
-    move-result p1
+    move-result v3
 
-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v2
 
-    const-string v0, "SyncManager"
+    const-string v3, "SyncManager"
 
-    invoke-static {v0, p1}, Landroid/util/Slog;->wtf(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v3, v2}, Landroid/util/Slog;->wtf(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 83
     return v1
@@ -566,6 +580,7 @@
     move-result v2
 
     .line 88
+    .local v2, "readyToSync":Z
     sget-object v3, Lcom/android/server/content/SyncJobService;->sLogger:Lcom/android/server/content/SyncLogger;
 
     const/4 v4, 0x6
@@ -620,117 +635,125 @@
     if-nez v2, :cond_6b
 
     .line 95
-    iget-boolean v0, v0, Lcom/android/server/content/SyncOperation;->isPeriodic:Z
+    iget-boolean v1, v0, Lcom/android/server/content/SyncOperation;->isPeriodic:Z
+
+    xor-int/2addr v1, v5
 
     .line 96
-    xor-int/2addr v0, v5
-
-    invoke-virtual {p0, p1, v0}, Lcom/android/server/content/SyncJobService;->jobFinished(Landroid/app/job/JobParameters;Z)V
+    .local v1, "wantsReschedule":Z
+    invoke-virtual {p0, p1, v1}, Lcom/android/server/content/SyncJobService;->jobFinished(Landroid/app/job/JobParameters;Z)V
 
     .line 97
     return v5
 
     .line 100
+    .end local v1  # "wantsReschedule":Z
     :cond_6b
-    const-string v2, "SyncManager"
+    const-string v3, "SyncManager"
 
-    invoke-static {v2, v1}, Landroid/util/Log;->isLoggable(Ljava/lang/String;I)Z
+    invoke-static {v3, v1}, Landroid/util/Log;->isLoggable(Ljava/lang/String;I)Z
 
     move-result v1
 
     .line 101
-    sget-object v2, Lcom/android/server/content/SyncJobService;->sLock:Ljava/lang/Object;
+    .local v1, "isLoggable":Z
+    sget-object v3, Lcom/android/server/content/SyncJobService;->sLock:Ljava/lang/Object;
 
-    monitor-enter v2
+    monitor-enter v3
 
     .line 102
     :try_start_74
     invoke-virtual {p1}, Landroid/app/job/JobParameters;->getJobId()I
 
-    move-result v3
+    move-result v4
 
     .line 103
-    sget-object v4, Lcom/android/server/content/SyncJobService;->sJobParamsMap:Landroid/util/SparseArray;
+    .local v4, "jobId":I
+    sget-object v6, Lcom/android/server/content/SyncJobService;->sJobParamsMap:Landroid/util/SparseArray;
 
-    invoke-virtual {v4, v3, p1}, Landroid/util/SparseArray;->put(ILjava/lang/Object;)V
+    invoke-virtual {v6, v4, p1}, Landroid/util/SparseArray;->put(ILjava/lang/Object;)V
 
     .line 105
-    sget-object p1, Lcom/android/server/content/SyncJobService;->sStartedSyncs:Landroid/util/SparseBooleanArray;
+    sget-object v6, Lcom/android/server/content/SyncJobService;->sStartedSyncs:Landroid/util/SparseBooleanArray;
 
-    invoke-virtual {p1, v3}, Landroid/util/SparseBooleanArray;->delete(I)V
+    invoke-virtual {v6, v4}, Landroid/util/SparseBooleanArray;->delete(I)V
 
     .line 106
-    sget-object p1, Lcom/android/server/content/SyncJobService;->sJobStartUptimes:Landroid/util/SparseLongArray;
+    sget-object v6, Lcom/android/server/content/SyncJobService;->sJobStartUptimes:Landroid/util/SparseLongArray;
 
     invoke-static {}, Landroid/os/SystemClock;->uptimeMillis()J
 
-    move-result-wide v6
+    move-result-wide v7
 
-    invoke-virtual {p1, v3, v6, v7}, Landroid/util/SparseLongArray;->put(IJ)V
+    invoke-virtual {v6, v4, v7, v8}, Landroid/util/SparseLongArray;->put(IJ)V
 
     .line 107
-    monitor-exit v2
+    .end local v4  # "jobId":I
+    monitor-exit v3
     :try_end_8c
     .catchall {:try_start_74 .. :try_end_8c} :catchall_b4
 
     .line 108
     invoke-static {}, Landroid/os/Message;->obtain()Landroid/os/Message;
 
-    move-result-object p1
+    move-result-object v3
 
     .line 109
-    const/16 v2, 0xa
+    .local v3, "m":Landroid/os/Message;
+    const/16 v4, 0xa
 
-    iput v2, p1, Landroid/os/Message;->what:I
+    iput v4, v3, Landroid/os/Message;->what:I
 
     .line 110
     if-eqz v1, :cond_ae
 
     .line 111
-    new-instance v1, Ljava/lang/StringBuilder;
+    new-instance v4, Ljava/lang/StringBuilder;
 
-    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v4}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v2, "Got start job message "
+    const-string v6, "Got start job message "
 
-    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v4, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    iget-object v2, v0, Lcom/android/server/content/SyncOperation;->target:Lcom/android/server/content/SyncStorageEngine$EndPoint;
+    iget-object v6, v0, Lcom/android/server/content/SyncOperation;->target:Lcom/android/server/content/SyncStorageEngine$EndPoint;
 
-    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    invoke-virtual {v4, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v4}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v1
+    move-result-object v4
 
-    const-string v2, "SyncManager"
+    const-string v6, "SyncManager"
 
-    invoke-static {v2, v1}, Landroid/util/Slog;->v(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v6, v4}, Landroid/util/Slog;->v(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 113
     :cond_ae
-    iput-object v0, p1, Landroid/os/Message;->obj:Ljava/lang/Object;
+    iput-object v0, v3, Landroid/os/Message;->obj:Ljava/lang/Object;
 
     .line 114
-    invoke-static {p1}, Lcom/android/server/content/SyncManager;->sendMessage(Landroid/os/Message;)V
+    invoke-static {v3}, Lcom/android/server/content/SyncManager;->sendMessage(Landroid/os/Message;)V
 
     .line 115
     return v5
 
     .line 107
+    .end local v3  # "m":Landroid/os/Message;
     :catchall_b4
-    move-exception p1
+    move-exception v4
 
     :try_start_b5
-    monitor-exit v2
+    monitor-exit v3
     :try_end_b6
     .catchall {:try_start_b5 .. :try_end_b6} :catchall_b4
 
-    throw p1
+    throw v4
 .end method
 
 .method public onStopJob(Landroid/app/job/JobParameters;)Z
     .registers 19
+    .param p1, "params"  # Landroid/app/job/JobParameters;
 
     .line 120
     const/4 v0, 0x2
@@ -789,6 +812,7 @@
     move-result-object v1
 
     .line 125
+    .local v1, "op":Lcom/android/server/content/SyncOperation;
     const/4 v2, 0x0
 
     if-nez v1, :cond_56
@@ -798,23 +822,23 @@
 
     invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v1, "Got invalid job "
+    const-string v3, "Got invalid job "
 
-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual/range {p1 .. p1}, Landroid/app/job/JobParameters;->getJobId()I
 
-    move-result v1
+    move-result v3
 
-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v3}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
     invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
     move-result-object v0
 
-    const-string v1, "SyncManager"
+    const-string v3, "SyncManager"
 
-    invoke-static {v1, v0}, Landroid/util/Slog;->wtf(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v3, v0}, Landroid/util/Slog;->wtf(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 127
     return v2
@@ -830,6 +854,7 @@
     move-result v3
 
     .line 132
+    .local v3, "readyToSync":Z
     sget-object v4, Lcom/android/server/content/SyncJobService;->sLogger:Lcom/android/server/content/SyncLogger;
 
     const/4 v5, 0x4
@@ -878,6 +903,7 @@
     move-result v0
 
     .line 137
+    .local v0, "jobId":I
     sget-object v5, Lcom/android/server/content/SyncJobService;->sJobParamsMap:Landroid/util/SparseArray;
 
     invoke-virtual {v5, v0}, Landroid/util/SparseArray;->remove(I)V
@@ -890,14 +916,17 @@
     move-result-wide v9
 
     .line 140
+    .local v9, "startUptime":J
     invoke-static {}, Landroid/os/SystemClock;->uptimeMillis()J
 
     move-result-wide v11
 
     .line 141
+    .local v11, "nowUptime":J
     sub-long v13, v11, v9
 
     .line 144
+    .local v13, "runtime":J
     const-wide/32 v15, 0xea60
 
     cmp-long v5, v13, v15
@@ -907,67 +936,71 @@
     .line 148
     if-eqz v3, :cond_d8
 
-    sget-object v3, Lcom/android/server/content/SyncJobService;->sStartedSyncs:Landroid/util/SparseBooleanArray;
+    sget-object v5, Lcom/android/server/content/SyncJobService;->sStartedSyncs:Landroid/util/SparseBooleanArray;
 
-    invoke-virtual {v3, v0}, Landroid/util/SparseBooleanArray;->get(I)Z
+    invoke-virtual {v5, v0}, Landroid/util/SparseBooleanArray;->get(I)Z
 
-    move-result v3
+    move-result v5
 
-    if-nez v3, :cond_d8
+    if-nez v5, :cond_d8
 
     .line 149
-    new-instance v3, Ljava/lang/StringBuilder;
+    new-instance v5, Ljava/lang/StringBuilder;
 
-    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v5}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v5, "Job "
+    const-string v15, "Job "
 
-    invoke-virtual {v3, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v5, v15}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v3, v0}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v5, v0}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    const-string v5, " didn\'t start:  startUptime="
+    const-string v15, " didn\'t start:  startUptime="
 
-    invoke-virtual {v3, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v5, v15}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v3, v9, v10}, Ljava/lang/StringBuilder;->append(J)Ljava/lang/StringBuilder;
+    invoke-virtual {v5, v9, v10}, Ljava/lang/StringBuilder;->append(J)Ljava/lang/StringBuilder;
 
-    const-string v5, " nowUptime="
+    const-string v15, " nowUptime="
 
-    invoke-virtual {v3, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v5, v15}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v3, v11, v12}, Ljava/lang/StringBuilder;->append(J)Ljava/lang/StringBuilder;
+    invoke-virtual {v5, v11, v12}, Ljava/lang/StringBuilder;->append(J)Ljava/lang/StringBuilder;
 
-    const-string v5, " params="
+    const-string v15, " params="
 
-    invoke-virtual {v3, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v5, v15}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     .line 152
     invoke-static/range {p1 .. p1}, Lcom/android/server/content/SyncJobService;->jobParametersToString(Landroid/app/job/JobParameters;)Ljava/lang/String;
 
+    move-result-object v15
+
+    invoke-virtual {v5, v15}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v5}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
     move-result-object v5
 
-    invoke-virtual {v3, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
-
-    move-result-object v3
-
     .line 149
-    invoke-static {v3}, Lcom/android/server/content/SyncJobService;->wtf(Ljava/lang/String;)V
+    invoke-static {v5}, Lcom/android/server/content/SyncJobService;->wtf(Ljava/lang/String;)V
 
     .line 156
     :cond_d8
-    sget-object v3, Lcom/android/server/content/SyncJobService;->sStartedSyncs:Landroid/util/SparseBooleanArray;
+    sget-object v5, Lcom/android/server/content/SyncJobService;->sStartedSyncs:Landroid/util/SparseBooleanArray;
 
-    invoke-virtual {v3, v0}, Landroid/util/SparseBooleanArray;->delete(I)V
+    invoke-virtual {v5, v0}, Landroid/util/SparseBooleanArray;->delete(I)V
 
     .line 157
-    sget-object v3, Lcom/android/server/content/SyncJobService;->sJobStartUptimes:Landroid/util/SparseLongArray;
+    sget-object v5, Lcom/android/server/content/SyncJobService;->sJobStartUptimes:Landroid/util/SparseLongArray;
 
-    invoke-virtual {v3, v0}, Landroid/util/SparseLongArray;->delete(I)V
+    invoke-virtual {v5, v0}, Landroid/util/SparseLongArray;->delete(I)V
 
     .line 158
+    .end local v0  # "jobId":I
+    .end local v9  # "startUptime":J
+    .end local v11  # "nowUptime":J
+    .end local v13  # "runtime":J
     monitor-exit v4
     :try_end_e3
     .catchall {:try_start_82 .. :try_end_e3} :catchall_106
@@ -978,9 +1011,10 @@
     move-result-object v0
 
     .line 160
-    const/16 v3, 0xb
+    .local v0, "m":Landroid/os/Message;
+    const/16 v4, 0xb
 
-    iput v3, v0, Landroid/os/Message;->what:I
+    iput v4, v0, Landroid/os/Message;->what:I
 
     .line 161
     iput-object v1, v0, Landroid/os/Message;->obj:Ljava/lang/Object;
@@ -988,26 +1022,26 @@
     .line 164
     invoke-virtual/range {p1 .. p1}, Landroid/app/job/JobParameters;->getStopReason()I
 
-    move-result v1
+    move-result v4
 
-    if-eqz v1, :cond_f5
+    if-eqz v4, :cond_f5
 
-    move v1, v8
+    move v4, v8
 
     goto :goto_f6
 
     :cond_f5
-    move v1, v2
+    move v4, v2
 
     :goto_f6
-    iput v1, v0, Landroid/os/Message;->arg1:I
+    iput v4, v0, Landroid/os/Message;->arg1:I
 
     .line 166
     invoke-virtual/range {p1 .. p1}, Landroid/app/job/JobParameters;->getStopReason()I
 
-    move-result v1
+    move-result v4
 
-    if-ne v1, v7, :cond_ff
+    if-ne v4, v7, :cond_ff
 
     goto :goto_100
 
@@ -1024,6 +1058,7 @@
     return v2
 
     .line 158
+    .end local v0  # "m":Landroid/os/Message;
     :catchall_106
     move-exception v0
 

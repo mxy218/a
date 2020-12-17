@@ -21,6 +21,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/media/MediaSessionRecord;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/media/MediaSessionRecord;
 
     .line 1232
     iput-object p1, p0, Lcom/android/server/media/MediaSessionRecord$ControllerStub;->this$0:Lcom/android/server/media/MediaSessionRecord;
@@ -33,36 +34,48 @@
 
 # virtual methods
 .method public adjustVolume(Ljava/lang/String;Ljava/lang/String;Landroid/media/session/ISessionControllerCallback;II)V
-    .registers 19
+    .registers 22
+    .param p1, "packageName"  # Ljava/lang/String;
+    .param p2, "opPackageName"  # Ljava/lang/String;
+    .param p3, "caller"  # Landroid/media/session/ISessionControllerCallback;
+    .param p4, "direction"  # I
+    .param p5, "flags"  # I
 
     .line 1317
     invoke-static {}, Landroid/os/Binder;->getCallingPid()I
 
-    move-result v4
+    move-result v11
 
     .line 1318
+    .local v11, "pid":I
     invoke-static {}, Landroid/os/Binder;->getCallingUid()I
 
-    move-result v5
+    move-result v12
 
     .line 1319
+    .local v12, "uid":I
     invoke-static {}, Landroid/os/Binder;->clearCallingIdentity()J
 
-    move-result-wide v11
+    move-result-wide v13
 
     .line 1321
-    move-object v0, p0
+    .local v13, "token":J
+    move-object/from16 v15, p0
 
-    :try_start_d
-    iget-object v1, v0, Lcom/android/server/media/MediaSessionRecord$ControllerStub;->this$0:Lcom/android/server/media/MediaSessionRecord;
+    :try_start_e
+    iget-object v1, v15, Lcom/android/server/media/MediaSessionRecord$ControllerStub;->this$0:Lcom/android/server/media/MediaSessionRecord;
 
     const/4 v7, 0x0
 
     const/4 v10, 0x0
 
-    move-object v2, p1
+    move-object/from16 v2, p1
 
-    move-object v3, p2
+    move-object/from16 v3, p2
+
+    move v4, v11
+
+    move v5, v12
 
     move-object/from16 v6, p3
 
@@ -71,11 +84,11 @@
     move/from16 v9, p5
 
     invoke-virtual/range {v1 .. v10}, Lcom/android/server/media/MediaSessionRecord;->adjustVolume(Ljava/lang/String;Ljava/lang/String;IILandroid/media/session/ISessionControllerCallback;ZIIZ)V
-    :try_end_1c
-    .catchall {:try_start_d .. :try_end_1c} :catchall_21
+    :try_end_21
+    .catchall {:try_start_e .. :try_end_21} :catchall_26
 
     .line 1324
-    invoke-static {v11, v12}, Landroid/os/Binder;->restoreCallingIdentity(J)V
+    invoke-static {v13, v14}, Landroid/os/Binder;->restoreCallingIdentity(J)V
 
     .line 1325
     nop
@@ -84,16 +97,18 @@
     return-void
 
     .line 1324
-    :catchall_21
+    :catchall_26
     move-exception v0
 
-    invoke-static {v11, v12}, Landroid/os/Binder;->restoreCallingIdentity(J)V
+    invoke-static {v13, v14}, Landroid/os/Binder;->restoreCallingIdentity(J)V
 
     throw v0
 .end method
 
 .method public fastForward(Ljava/lang/String;Landroid/media/session/ISessionControllerCallback;)V
     .registers 6
+    .param p1, "packageName"  # Ljava/lang/String;
+    .param p2, "caller"  # Landroid/media/session/ISessionControllerCallback;
 
     .line 1424
     iget-object v0, p0, Lcom/android/server/media/MediaSessionRecord$ControllerStub;->this$0:Lcom/android/server/media/MediaSessionRecord;
@@ -358,6 +373,8 @@
 
 .method public next(Ljava/lang/String;Landroid/media/session/ISessionControllerCallback;)V
     .registers 6
+    .param p1, "packageName"  # Ljava/lang/String;
+    .param p2, "caller"  # Landroid/media/session/ISessionControllerCallback;
 
     .line 1413
     iget-object v0, p0, Lcom/android/server/media/MediaSessionRecord$ControllerStub;->this$0:Lcom/android/server/media/MediaSessionRecord;
@@ -382,6 +399,8 @@
 
 .method public pause(Ljava/lang/String;Landroid/media/session/ISessionControllerCallback;)V
     .registers 6
+    .param p1, "packageName"  # Ljava/lang/String;
+    .param p2, "caller"  # Landroid/media/session/ISessionControllerCallback;
 
     .line 1403
     iget-object v0, p0, Lcom/android/server/media/MediaSessionRecord$ControllerStub;->this$0:Lcom/android/server/media/MediaSessionRecord;
@@ -406,6 +425,8 @@
 
 .method public play(Ljava/lang/String;Landroid/media/session/ISessionControllerCallback;)V
     .registers 6
+    .param p1, "packageName"  # Ljava/lang/String;
+    .param p2, "caller"  # Landroid/media/session/ISessionControllerCallback;
 
     .line 1370
     iget-object v0, p0, Lcom/android/server/media/MediaSessionRecord$ControllerStub;->this$0:Lcom/android/server/media/MediaSessionRecord;
@@ -430,6 +451,10 @@
 
 .method public playFromMediaId(Ljava/lang/String;Landroid/media/session/ISessionControllerCallback;Ljava/lang/String;Landroid/os/Bundle;)V
     .registers 13
+    .param p1, "packageName"  # Ljava/lang/String;
+    .param p2, "caller"  # Landroid/media/session/ISessionControllerCallback;
+    .param p3, "mediaId"  # Ljava/lang/String;
+    .param p4, "extras"  # Landroid/os/Bundle;
 
     .line 1376
     iget-object v0, p0, Lcom/android/server/media/MediaSessionRecord$ControllerStub;->this$0:Lcom/android/server/media/MediaSessionRecord;
@@ -462,6 +487,10 @@
 
 .method public playFromSearch(Ljava/lang/String;Landroid/media/session/ISessionControllerCallback;Ljava/lang/String;Landroid/os/Bundle;)V
     .registers 13
+    .param p1, "packageName"  # Ljava/lang/String;
+    .param p2, "caller"  # Landroid/media/session/ISessionControllerCallback;
+    .param p3, "query"  # Ljava/lang/String;
+    .param p4, "extras"  # Landroid/os/Bundle;
 
     .line 1383
     iget-object v0, p0, Lcom/android/server/media/MediaSessionRecord$ControllerStub;->this$0:Lcom/android/server/media/MediaSessionRecord;
@@ -494,6 +523,10 @@
 
 .method public playFromUri(Ljava/lang/String;Landroid/media/session/ISessionControllerCallback;Landroid/net/Uri;Landroid/os/Bundle;)V
     .registers 13
+    .param p1, "packageName"  # Ljava/lang/String;
+    .param p2, "caller"  # Landroid/media/session/ISessionControllerCallback;
+    .param p3, "uri"  # Landroid/net/Uri;
+    .param p4, "extras"  # Landroid/os/Bundle;
 
     .line 1390
     iget-object v0, p0, Lcom/android/server/media/MediaSessionRecord$ControllerStub;->this$0:Lcom/android/server/media/MediaSessionRecord;
@@ -526,6 +559,8 @@
 
 .method public prepare(Ljava/lang/String;Landroid/media/session/ISessionControllerCallback;)V
     .registers 6
+    .param p1, "packageName"  # Ljava/lang/String;
+    .param p2, "caller"  # Landroid/media/session/ISessionControllerCallback;
 
     .line 1344
     iget-object v0, p0, Lcom/android/server/media/MediaSessionRecord$ControllerStub;->this$0:Lcom/android/server/media/MediaSessionRecord;
@@ -550,6 +585,10 @@
 
 .method public prepareFromMediaId(Ljava/lang/String;Landroid/media/session/ISessionControllerCallback;Ljava/lang/String;Landroid/os/Bundle;)V
     .registers 13
+    .param p1, "packageName"  # Ljava/lang/String;
+    .param p2, "caller"  # Landroid/media/session/ISessionControllerCallback;
+    .param p3, "mediaId"  # Ljava/lang/String;
+    .param p4, "extras"  # Landroid/os/Bundle;
 
     .line 1350
     iget-object v0, p0, Lcom/android/server/media/MediaSessionRecord$ControllerStub;->this$0:Lcom/android/server/media/MediaSessionRecord;
@@ -584,6 +623,10 @@
 
 .method public prepareFromSearch(Ljava/lang/String;Landroid/media/session/ISessionControllerCallback;Ljava/lang/String;Landroid/os/Bundle;)V
     .registers 13
+    .param p1, "packageName"  # Ljava/lang/String;
+    .param p2, "caller"  # Landroid/media/session/ISessionControllerCallback;
+    .param p3, "query"  # Ljava/lang/String;
+    .param p4, "extras"  # Landroid/os/Bundle;
 
     .line 1357
     iget-object v0, p0, Lcom/android/server/media/MediaSessionRecord$ControllerStub;->this$0:Lcom/android/server/media/MediaSessionRecord;
@@ -618,6 +661,10 @@
 
 .method public prepareFromUri(Ljava/lang/String;Landroid/media/session/ISessionControllerCallback;Landroid/net/Uri;Landroid/os/Bundle;)V
     .registers 13
+    .param p1, "packageName"  # Ljava/lang/String;
+    .param p2, "caller"  # Landroid/media/session/ISessionControllerCallback;
+    .param p3, "uri"  # Landroid/net/Uri;
+    .param p4, "extras"  # Landroid/os/Bundle;
 
     .line 1364
     iget-object v0, p0, Lcom/android/server/media/MediaSessionRecord$ControllerStub;->this$0:Lcom/android/server/media/MediaSessionRecord;
@@ -650,6 +697,8 @@
 
 .method public previous(Ljava/lang/String;Landroid/media/session/ISessionControllerCallback;)V
     .registers 6
+    .param p1, "packageName"  # Ljava/lang/String;
+    .param p2, "caller"  # Landroid/media/session/ISessionControllerCallback;
 
     .line 1418
     iget-object v0, p0, Lcom/android/server/media/MediaSessionRecord$ControllerStub;->this$0:Lcom/android/server/media/MediaSessionRecord;
@@ -674,6 +723,9 @@
 
 .method public rate(Ljava/lang/String;Landroid/media/session/ISessionControllerCallback;Landroid/media/Rating;)V
     .registers 11
+    .param p1, "packageName"  # Ljava/lang/String;
+    .param p2, "caller"  # Landroid/media/session/ISessionControllerCallback;
+    .param p3, "rating"  # Landroid/media/Rating;
 
     .line 1441
     iget-object v0, p0, Lcom/android/server/media/MediaSessionRecord$ControllerStub;->this$0:Lcom/android/server/media/MediaSessionRecord;
@@ -704,6 +756,8 @@
 
 .method public registerCallback(Ljava/lang/String;Landroid/media/session/ISessionControllerCallback;)V
     .registers 8
+    .param p1, "packageName"  # Ljava/lang/String;
+    .param p2, "cb"  # Landroid/media/session/ISessionControllerCallback;
 
     .line 1249
     iget-object v0, p0, Lcom/android/server/media/MediaSessionRecord$ControllerStub;->this$0:Lcom/android/server/media/MediaSessionRecord;
@@ -738,7 +792,7 @@
 
     .line 1255
     :catch_13
-    move-exception p1
+    move-exception v1
 
     .line 1258
     :goto_14
@@ -798,17 +852,17 @@
 
     invoke-virtual {v2, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
-    const-string p2, " from controller"
+    const-string v3, " from controller"
 
-    invoke-virtual {v2, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v2, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v2
 
-    invoke-static {v1, p1}, Landroid/util/Log;->d(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v2}, Landroid/util/Log;->d(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 1268
     :cond_57
@@ -819,17 +873,19 @@
 
     .line 1268
     :catchall_59
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_5b
     .catchall {:try_start_14 .. :try_end_5b} :catchall_59
 
-    throw p1
+    throw v1
 .end method
 
 .method public rewind(Ljava/lang/String;Landroid/media/session/ISessionControllerCallback;)V
     .registers 6
+    .param p1, "packageName"  # Ljava/lang/String;
+    .param p2, "caller"  # Landroid/media/session/ISessionControllerCallback;
 
     .line 1430
     iget-object v0, p0, Lcom/android/server/media/MediaSessionRecord$ControllerStub;->this$0:Lcom/android/server/media/MediaSessionRecord;
@@ -854,6 +910,9 @@
 
 .method public seekTo(Ljava/lang/String;Landroid/media/session/ISessionControllerCallback;J)V
     .registers 13
+    .param p1, "packageName"  # Ljava/lang/String;
+    .param p2, "caller"  # Landroid/media/session/ISessionControllerCallback;
+    .param p3, "pos"  # J
 
     .line 1435
     iget-object v0, p0, Lcom/android/server/media/MediaSessionRecord$ControllerStub;->this$0:Lcom/android/server/media/MediaSessionRecord;
@@ -884,6 +943,11 @@
 
 .method public sendCommand(Ljava/lang/String;Landroid/media/session/ISessionControllerCallback;Ljava/lang/String;Landroid/os/Bundle;Landroid/os/ResultReceiver;)V
     .registers 15
+    .param p1, "packageName"  # Ljava/lang/String;
+    .param p2, "caller"  # Landroid/media/session/ISessionControllerCallback;
+    .param p3, "command"  # Ljava/lang/String;
+    .param p4, "args"  # Landroid/os/Bundle;
+    .param p5, "cb"  # Landroid/os/ResultReceiver;
 
     .line 1236
     iget-object v0, p0, Lcom/android/server/media/MediaSessionRecord$ControllerStub;->this$0:Lcom/android/server/media/MediaSessionRecord;
@@ -918,6 +982,10 @@
 
 .method public sendCustomAction(Ljava/lang/String;Landroid/media/session/ISessionControllerCallback;Ljava/lang/String;Landroid/os/Bundle;)V
     .registers 13
+    .param p1, "packageName"  # Ljava/lang/String;
+    .param p2, "caller"  # Landroid/media/session/ISessionControllerCallback;
+    .param p3, "action"  # Ljava/lang/String;
+    .param p4, "args"  # Landroid/os/Bundle;
 
     .line 1455
     iget-object v0, p0, Lcom/android/server/media/MediaSessionRecord$ControllerStub;->this$0:Lcom/android/server/media/MediaSessionRecord;
@@ -950,6 +1018,9 @@
 
 .method public sendMediaButton(Ljava/lang/String;Landroid/media/session/ISessionControllerCallback;Landroid/view/KeyEvent;)Z
     .registers 12
+    .param p1, "packageName"  # Ljava/lang/String;
+    .param p2, "cb"  # Landroid/media/session/ISessionControllerCallback;
+    .param p3, "keyEvent"  # Landroid/view/KeyEvent;
 
     .line 1243
     iget-object v0, p0, Lcom/android/server/media/MediaSessionRecord$ControllerStub;->this$0:Lcom/android/server/media/MediaSessionRecord;
@@ -978,13 +1049,16 @@
 
     invoke-virtual/range {v1 .. v7}, Lcom/android/server/media/MediaSessionRecord$SessionCb;->sendMediaButton(Ljava/lang/String;IILandroid/media/session/ISessionControllerCallback;ZLandroid/view/KeyEvent;)Z
 
-    move-result p1
+    move-result v0
 
-    return p1
+    return v0
 .end method
 
 .method public setPlaybackSpeed(Ljava/lang/String;Landroid/media/session/ISessionControllerCallback;F)V
     .registers 11
+    .param p1, "packageName"  # Ljava/lang/String;
+    .param p2, "caller"  # Landroid/media/session/ISessionControllerCallback;
+    .param p3, "speed"  # F
 
     .line 1448
     iget-object v0, p0, Lcom/android/server/media/MediaSessionRecord$ControllerStub;->this$0:Lcom/android/server/media/MediaSessionRecord;
@@ -1014,43 +1088,57 @@
 .end method
 
 .method public setVolumeTo(Ljava/lang/String;Ljava/lang/String;Landroid/media/session/ISessionControllerCallback;II)V
-    .registers 16
+    .registers 20
+    .param p1, "packageName"  # Ljava/lang/String;
+    .param p2, "opPackageName"  # Ljava/lang/String;
+    .param p3, "caller"  # Landroid/media/session/ISessionControllerCallback;
+    .param p4, "value"  # I
+    .param p5, "flags"  # I
 
     .line 1331
     invoke-static {}, Landroid/os/Binder;->getCallingPid()I
 
-    move-result v3
+    move-result v9
 
     .line 1332
+    .local v9, "pid":I
     invoke-static {}, Landroid/os/Binder;->getCallingUid()I
 
-    move-result v4
+    move-result v10
 
     .line 1333
+    .local v10, "uid":I
     invoke-static {}, Landroid/os/Binder;->clearCallingIdentity()J
 
-    move-result-wide v8
+    move-result-wide v11
 
     .line 1335
-    :try_start_c
-    iget-object v0, p0, Lcom/android/server/media/MediaSessionRecord$ControllerStub;->this$0:Lcom/android/server/media/MediaSessionRecord;
+    .local v11, "token":J
+    move-object v13, p0
 
-    move-object v1, p1
+    :try_start_d
+    iget-object v1, v13, Lcom/android/server/media/MediaSessionRecord$ControllerStub;->this$0:Lcom/android/server/media/MediaSessionRecord;
 
-    move-object v2, p2
+    move-object v2, p1
 
-    move-object v5, p3
+    move-object/from16 v3, p2
 
-    move v6, p4
+    move v4, v9
 
-    move v7, p5
+    move v5, v10
 
-    invoke-static/range {v0 .. v7}, Lcom/android/server/media/MediaSessionRecord;->access$3800(Lcom/android/server/media/MediaSessionRecord;Ljava/lang/String;Ljava/lang/String;IILandroid/media/session/ISessionControllerCallback;II)V
-    :try_end_16
-    .catchall {:try_start_c .. :try_end_16} :catchall_1b
+    move-object/from16 v6, p3
+
+    move/from16 v7, p4
+
+    move/from16 v8, p5
+
+    invoke-static/range {v1 .. v8}, Lcom/android/server/media/MediaSessionRecord;->access$3800(Lcom/android/server/media/MediaSessionRecord;Ljava/lang/String;Ljava/lang/String;IILandroid/media/session/ISessionControllerCallback;II)V
+    :try_end_1d
+    .catchall {:try_start_d .. :try_end_1d} :catchall_22
 
     .line 1338
-    invoke-static {v8, v9}, Landroid/os/Binder;->restoreCallingIdentity(J)V
+    invoke-static {v11, v12}, Landroid/os/Binder;->restoreCallingIdentity(J)V
 
     .line 1339
     nop
@@ -1059,16 +1147,19 @@
     return-void
 
     .line 1338
-    :catchall_1b
-    move-exception p1
+    :catchall_22
+    move-exception v0
 
-    invoke-static {v8, v9}, Landroid/os/Binder;->restoreCallingIdentity(J)V
+    invoke-static {v11, v12}, Landroid/os/Binder;->restoreCallingIdentity(J)V
 
-    throw p1
+    throw v0
 .end method
 
 .method public skipToQueueItem(Ljava/lang/String;Landroid/media/session/ISessionControllerCallback;J)V
     .registers 13
+    .param p1, "packageName"  # Ljava/lang/String;
+    .param p2, "caller"  # Landroid/media/session/ISessionControllerCallback;
+    .param p3, "id"  # J
 
     .line 1397
     iget-object v0, p0, Lcom/android/server/media/MediaSessionRecord$ControllerStub;->this$0:Lcom/android/server/media/MediaSessionRecord;
@@ -1099,6 +1190,8 @@
 
 .method public stop(Ljava/lang/String;Landroid/media/session/ISessionControllerCallback;)V
     .registers 6
+    .param p1, "packageName"  # Ljava/lang/String;
+    .param p2, "caller"  # Landroid/media/session/ISessionControllerCallback;
 
     .line 1408
     iget-object v0, p0, Lcom/android/server/media/MediaSessionRecord$ControllerStub;->this$0:Lcom/android/server/media/MediaSessionRecord;
@@ -1122,7 +1215,8 @@
 .end method
 
 .method public unregisterCallback(Landroid/media/session/ISessionControllerCallback;)V
-    .registers 6
+    .registers 7
+    .param p1, "cb"  # Landroid/media/session/ISessionControllerCallback;
 
     .line 1273
     iget-object v0, p0, Lcom/android/server/media/MediaSessionRecord$ControllerStub;->this$0:Lcom/android/server/media/MediaSessionRecord;
@@ -1142,6 +1236,7 @@
     move-result v1
 
     .line 1275
+    .local v1, "index":I
     const/4 v2, -0x1
 
     if-eq v1, v2, :cond_19
@@ -1159,34 +1254,35 @@
     :cond_19
     invoke-static {}, Lcom/android/server/media/MediaSessionRecord;->access$3300()Z
 
-    move-result v1
+    move-result v2
 
-    if-eqz v1, :cond_3a
+    if-eqz v2, :cond_3a
 
     .line 1279
-    const-string v1, "MediaSessionRecord"
+    const-string v2, "MediaSessionRecord"
 
-    new-instance v2, Ljava/lang/StringBuilder;
+    new-instance v3, Ljava/lang/StringBuilder;
 
-    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string/jumbo v3, "unregistering callback "
+    const-string/jumbo v4, "unregistering callback "
 
-    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-interface {p1}, Landroid/media/session/ISessionControllerCallback;->asBinder()Landroid/os/IBinder;
 
-    move-result-object p1
+    move-result-object v4
 
-    invoke-virtual {v2, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v3
 
-    invoke-static {v1, p1}, Landroid/util/Log;->d(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v2, v3}, Landroid/util/Log;->d(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 1281
+    .end local v1  # "index":I
     :cond_3a
     monitor-exit v0
 
@@ -1195,11 +1291,11 @@
 
     .line 1281
     :catchall_3c
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_3e
     .catchall {:try_start_7 .. :try_end_3e} :catchall_3c
 
-    throw p1
+    throw v1
 .end method

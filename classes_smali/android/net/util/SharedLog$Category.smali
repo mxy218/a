@@ -124,17 +124,18 @@
 
 .method public static valueOf(Ljava/lang/String;)Landroid/net/util/SharedLog$Category;
     .registers 2
+    .param p0, "name"  # Ljava/lang/String;
 
     .line 42
     const-class v0, Landroid/net/util/SharedLog$Category;
 
     invoke-static {v0, p0}, Ljava/lang/Enum;->valueOf(Ljava/lang/Class;Ljava/lang/String;)Ljava/lang/Enum;
 
-    move-result-object p0
+    move-result-object v0
 
-    check-cast p0, Landroid/net/util/SharedLog$Category;
+    check-cast v0, Landroid/net/util/SharedLog$Category;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method public static values()[Landroid/net/util/SharedLog$Category;

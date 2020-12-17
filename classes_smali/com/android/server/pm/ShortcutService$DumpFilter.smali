@@ -52,39 +52,39 @@
 .method constructor <init>()V
     .registers 3
 
-    .line 3781
+    .line 3809
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
-    .line 3782
+    .line 3810
     const/4 v0, 0x0
 
     iput-boolean v0, p0, Lcom/android/server/pm/ShortcutService$DumpFilter;->mDumpCheckIn:Z
 
-    .line 3783
+    .line 3811
     iput-boolean v0, p0, Lcom/android/server/pm/ShortcutService$DumpFilter;->mCheckInClear:Z
 
-    .line 3785
+    .line 3813
     const/4 v1, 0x1
 
     iput-boolean v1, p0, Lcom/android/server/pm/ShortcutService$DumpFilter;->mDumpMain:Z
 
-    .line 3786
+    .line 3814
     iput-boolean v0, p0, Lcom/android/server/pm/ShortcutService$DumpFilter;->mDumpUid:Z
 
-    .line 3787
+    .line 3815
     iput-boolean v0, p0, Lcom/android/server/pm/ShortcutService$DumpFilter;->mDumpFiles:Z
 
-    .line 3789
+    .line 3817
     iput-boolean v1, p0, Lcom/android/server/pm/ShortcutService$DumpFilter;->mDumpDetails:Z
 
-    .line 3790
+    .line 3818
     new-instance v0, Ljava/util/ArrayList;
 
     invoke-direct {v0}, Ljava/util/ArrayList;-><init>()V
 
     iput-object v0, p0, Lcom/android/server/pm/ShortcutService$DumpFilter;->mPackagePatterns:Ljava/util/List;
 
-    .line 3791
+    .line 3819
     new-instance v0, Ljava/util/ArrayList;
 
     invoke-direct {v0}, Ljava/util/ArrayList;-><init>()V
@@ -97,55 +97,59 @@
 
 # virtual methods
 .method public addPackage(Ljava/lang/String;)V
-    .registers 2
+    .registers 3
+    .param p1, "packageName"  # Ljava/lang/String;
 
-    .line 3798
+    .line 3826
     invoke-static {p1}, Ljava/util/regex/Pattern;->quote(Ljava/lang/String;)Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    invoke-virtual {p0, p1}, Lcom/android/server/pm/ShortcutService$DumpFilter;->addPackageRegex(Ljava/lang/String;)V
+    invoke-virtual {p0, v0}, Lcom/android/server/pm/ShortcutService$DumpFilter;->addPackageRegex(Ljava/lang/String;)V
 
-    .line 3799
+    .line 3827
     return-void
 .end method
 
 .method addPackageRegex(Ljava/lang/String;)V
-    .registers 3
+    .registers 4
+    .param p1, "regex"  # Ljava/lang/String;
 
-    .line 3794
+    .line 3822
     iget-object v0, p0, Lcom/android/server/pm/ShortcutService$DumpFilter;->mPackagePatterns:Ljava/util/List;
 
     invoke-static {p1}, Ljava/util/regex/Pattern;->compile(Ljava/lang/String;)Ljava/util/regex/Pattern;
 
-    move-result-object p1
+    move-result-object v1
 
-    invoke-interface {v0, p1}, Ljava/util/List;->add(Ljava/lang/Object;)Z
+    invoke-interface {v0, v1}, Ljava/util/List;->add(Ljava/lang/Object;)Z
 
-    .line 3795
+    .line 3823
     return-void
 .end method
 
 .method addUser(I)V
-    .registers 3
+    .registers 4
+    .param p1, "userId"  # I
 
-    .line 3802
+    .line 3830
     iget-object v0, p0, Lcom/android/server/pm/ShortcutService$DumpFilter;->mUsers:Ljava/util/List;
 
     invoke-static {p1}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
 
-    move-result-object p1
+    move-result-object v1
 
-    invoke-interface {v0, p1}, Ljava/util/List;->add(Ljava/lang/Object;)Z
+    invoke-interface {v0, v1}, Ljava/util/List;->add(Ljava/lang/Object;)Z
 
-    .line 3803
+    .line 3831
     return-void
 .end method
 
 .method isPackageMatch(Ljava/lang/String;)Z
-    .registers 6
+    .registers 5
+    .param p1, "packageName"  # Ljava/lang/String;
 
-    .line 3806
+    .line 3834
     iget-object v0, p0, Lcom/android/server/pm/ShortcutService$DumpFilter;->mPackagePatterns:Ljava/util/List;
 
     invoke-interface {v0}, Ljava/util/List;->size()I
@@ -156,61 +160,64 @@
 
     if-nez v0, :cond_a
 
-    .line 3807
+    .line 3835
     return v1
 
-    .line 3809
+    .line 3837
     :cond_a
     const/4 v0, 0x0
 
-    move v2, v0
+    .local v0, "i":I
+    :goto_b
+    iget-object v2, p0, Lcom/android/server/pm/ShortcutService$DumpFilter;->mPackagePatterns:Ljava/util/List;
 
-    :goto_c
-    iget-object v3, p0, Lcom/android/server/pm/ShortcutService$DumpFilter;->mPackagePatterns:Ljava/util/List;
+    invoke-interface {v2}, Ljava/util/List;->size()I
 
-    invoke-interface {v3}, Ljava/util/List;->size()I
+    move-result v2
 
-    move-result v3
+    if-ge v0, v2, :cond_29
 
-    if-ge v2, v3, :cond_2a
+    .line 3838
+    iget-object v2, p0, Lcom/android/server/pm/ShortcutService$DumpFilter;->mPackagePatterns:Ljava/util/List;
 
-    .line 3810
-    iget-object v3, p0, Lcom/android/server/pm/ShortcutService$DumpFilter;->mPackagePatterns:Ljava/util/List;
+    invoke-interface {v2, v0}, Ljava/util/List;->get(I)Ljava/lang/Object;
 
-    invoke-interface {v3, v2}, Ljava/util/List;->get(I)Ljava/lang/Object;
+    move-result-object v2
 
-    move-result-object v3
+    check-cast v2, Ljava/util/regex/Pattern;
 
-    check-cast v3, Ljava/util/regex/Pattern;
+    invoke-virtual {v2, p1}, Ljava/util/regex/Pattern;->matcher(Ljava/lang/CharSequence;)Ljava/util/regex/Matcher;
 
-    invoke-virtual {v3, p1}, Ljava/util/regex/Pattern;->matcher(Ljava/lang/CharSequence;)Ljava/util/regex/Matcher;
+    move-result-object v2
 
-    move-result-object v3
+    invoke-virtual {v2}, Ljava/util/regex/Matcher;->find()Z
 
-    invoke-virtual {v3}, Ljava/util/regex/Matcher;->find()Z
+    move-result v2
 
-    move-result v3
+    if-eqz v2, :cond_26
 
-    if-eqz v3, :cond_27
-
-    .line 3811
+    .line 3839
     return v1
 
-    .line 3809
-    :cond_27
-    add-int/lit8 v2, v2, 0x1
+    .line 3837
+    :cond_26
+    add-int/lit8 v0, v0, 0x1
 
-    goto :goto_c
+    goto :goto_b
 
-    .line 3814
-    :cond_2a
+    .line 3842
+    .end local v0  # "i":I
+    :cond_29
+    const/4 v0, 0x0
+
     return v0
 .end method
 
 .method isUserMatch(I)Z
-    .registers 6
+    .registers 5
+    .param p1, "userId"  # I
 
-    .line 3818
+    .line 3846
     iget-object v0, p0, Lcom/android/server/pm/ShortcutService$DumpFilter;->mUsers:Ljava/util/List;
 
     invoke-interface {v0}, Ljava/util/List;->size()I
@@ -221,117 +228,125 @@
 
     if-nez v0, :cond_a
 
-    .line 3819
+    .line 3847
     return v1
 
-    .line 3821
+    .line 3849
     :cond_a
     const/4 v0, 0x0
 
-    move v2, v0
+    .local v0, "i":I
+    :goto_b
+    iget-object v2, p0, Lcom/android/server/pm/ShortcutService$DumpFilter;->mUsers:Ljava/util/List;
 
-    :goto_c
-    iget-object v3, p0, Lcom/android/server/pm/ShortcutService$DumpFilter;->mUsers:Ljava/util/List;
+    invoke-interface {v2}, Ljava/util/List;->size()I
 
-    invoke-interface {v3}, Ljava/util/List;->size()I
+    move-result v2
 
-    move-result v3
+    if-ge v0, v2, :cond_25
 
-    if-ge v2, v3, :cond_26
+    .line 3850
+    iget-object v2, p0, Lcom/android/server/pm/ShortcutService$DumpFilter;->mUsers:Ljava/util/List;
 
-    .line 3822
-    iget-object v3, p0, Lcom/android/server/pm/ShortcutService$DumpFilter;->mUsers:Ljava/util/List;
+    invoke-interface {v2, v0}, Ljava/util/List;->get(I)Ljava/lang/Object;
 
-    invoke-interface {v3, v2}, Ljava/util/List;->get(I)Ljava/lang/Object;
+    move-result-object v2
 
-    move-result-object v3
+    check-cast v2, Ljava/lang/Integer;
 
-    check-cast v3, Ljava/lang/Integer;
+    invoke-virtual {v2}, Ljava/lang/Integer;->intValue()I
 
-    invoke-virtual {v3}, Ljava/lang/Integer;->intValue()I
+    move-result v2
 
-    move-result v3
+    if-ne v2, p1, :cond_22
 
-    if-ne v3, p1, :cond_23
-
-    .line 3823
+    .line 3851
     return v1
 
-    .line 3821
-    :cond_23
-    add-int/lit8 v2, v2, 0x1
+    .line 3849
+    :cond_22
+    add-int/lit8 v0, v0, 0x1
 
-    goto :goto_c
+    goto :goto_b
 
-    .line 3826
-    :cond_26
+    .line 3854
+    .end local v0  # "i":I
+    :cond_25
+    const/4 v0, 0x0
+
     return v0
 .end method
 
 .method public setCheckInClear(Z)V
     .registers 2
+    .param p1, "checkInClear"  # Z
 
-    .line 3842
+    .line 3870
     iput-boolean p1, p0, Lcom/android/server/pm/ShortcutService$DumpFilter;->mCheckInClear:Z
 
-    .line 3843
+    .line 3871
     return-void
 .end method
 
 .method public setDumpCheckIn(Z)V
     .registers 2
+    .param p1, "dumpCheckIn"  # Z
 
-    .line 3834
+    .line 3862
     iput-boolean p1, p0, Lcom/android/server/pm/ShortcutService$DumpFilter;->mDumpCheckIn:Z
 
-    .line 3835
+    .line 3863
     return-void
 .end method
 
 .method public setDumpDetails(Z)V
     .registers 2
+    .param p1, "dumpDetails"  # Z
 
-    .line 3874
+    .line 3902
     iput-boolean p1, p0, Lcom/android/server/pm/ShortcutService$DumpFilter;->mDumpDetails:Z
 
-    .line 3875
+    .line 3903
     return-void
 .end method
 
 .method public setDumpFiles(Z)V
     .registers 2
+    .param p1, "dumpFiles"  # Z
 
-    .line 3866
+    .line 3894
     iput-boolean p1, p0, Lcom/android/server/pm/ShortcutService$DumpFilter;->mDumpFiles:Z
 
-    .line 3867
+    .line 3895
     return-void
 .end method
 
 .method public setDumpMain(Z)V
     .registers 2
+    .param p1, "dumpMain"  # Z
 
-    .line 3850
+    .line 3878
     iput-boolean p1, p0, Lcom/android/server/pm/ShortcutService$DumpFilter;->mDumpMain:Z
 
-    .line 3851
+    .line 3879
     return-void
 .end method
 
 .method public setDumpUid(Z)V
     .registers 2
+    .param p1, "dumpUid"  # Z
 
-    .line 3858
+    .line 3886
     iput-boolean p1, p0, Lcom/android/server/pm/ShortcutService$DumpFilter;->mDumpUid:Z
 
-    .line 3859
+    .line 3887
     return-void
 .end method
 
 .method public shouldCheckInClear()Z
     .registers 2
 
-    .line 3838
+    .line 3866
     iget-boolean v0, p0, Lcom/android/server/pm/ShortcutService$DumpFilter;->mCheckInClear:Z
 
     return v0
@@ -340,7 +355,7 @@
 .method public shouldDumpCheckIn()Z
     .registers 2
 
-    .line 3830
+    .line 3858
     iget-boolean v0, p0, Lcom/android/server/pm/ShortcutService$DumpFilter;->mDumpCheckIn:Z
 
     return v0
@@ -349,7 +364,7 @@
 .method public shouldDumpDetails()Z
     .registers 2
 
-    .line 3870
+    .line 3898
     iget-boolean v0, p0, Lcom/android/server/pm/ShortcutService$DumpFilter;->mDumpDetails:Z
 
     return v0
@@ -358,7 +373,7 @@
 .method public shouldDumpFiles()Z
     .registers 2
 
-    .line 3862
+    .line 3890
     iget-boolean v0, p0, Lcom/android/server/pm/ShortcutService$DumpFilter;->mDumpFiles:Z
 
     return v0
@@ -367,7 +382,7 @@
 .method public shouldDumpMain()Z
     .registers 2
 
-    .line 3846
+    .line 3874
     iget-boolean v0, p0, Lcom/android/server/pm/ShortcutService$DumpFilter;->mDumpMain:Z
 
     return v0
@@ -376,7 +391,7 @@
 .method public shouldDumpUid()Z
     .registers 2
 
-    .line 3854
+    .line 3882
     iget-boolean v0, p0, Lcom/android/server/pm/ShortcutService$DumpFilter;->mDumpUid:Z
 
     return v0

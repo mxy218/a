@@ -31,6 +31,15 @@
 # direct methods
 .method constructor <init>(Landroid/content/Context;Ljava/lang/String;Landroid/content/ComponentName;Landroid/service/contentcapture/IContentCaptureServiceCallback;ILcom/android/server/contentcapture/ContentCapturePerUserService;ZZI)V
     .registers 21
+    .param p1, "context"  # Landroid/content/Context;
+    .param p2, "serviceInterface"  # Ljava/lang/String;
+    .param p3, "serviceComponentName"  # Landroid/content/ComponentName;
+    .param p4, "callback"  # Landroid/service/contentcapture/IContentCaptureServiceCallback;
+    .param p5, "userId"  # I
+    .param p6, "perUserService"  # Lcom/android/server/contentcapture/ContentCapturePerUserService;
+    .param p7, "bindInstantServiceAllowed"  # Z
+    .param p8, "verbose"  # Z
+    .param p9, "idleUnbindTimeoutMs"  # I
 
     .line 53
     move-object v10, p0
@@ -80,14 +89,14 @@
     .line 58
     invoke-interface {p4}, Landroid/service/contentcapture/IContentCaptureServiceCallback;->asBinder()Landroid/os/IBinder;
 
-    move-result-object v0
+    move-result-object v1
 
-    iput-object v0, v10, Lcom/android/server/contentcapture/RemoteContentCaptureService;->mServerCallback:Landroid/os/IBinder;
+    iput-object v1, v10, Lcom/android/server/contentcapture/RemoteContentCaptureService;->mServerCallback:Landroid/os/IBinder;
 
     .line 59
-    move/from16 v0, p9
+    move/from16 v1, p9
 
-    iput v0, v10, Lcom/android/server/contentcapture/RemoteContentCaptureService;->mIdleUnbindTimeoutMs:I
+    iput v1, v10, Lcom/android/server/contentcapture/RemoteContentCaptureService;->mIdleUnbindTimeoutMs:I
 
     .line 62
     invoke-virtual {p0}, Lcom/android/server/contentcapture/RemoteContentCaptureService;->ensureBoundLocked()V
@@ -98,6 +107,8 @@
 
 .method static synthetic lambda$onActivityLifecycleEvent$4(Landroid/service/contentcapture/ActivityEvent;Landroid/service/contentcapture/IContentCaptureService;)V
     .registers 2
+    .param p0, "event"  # Landroid/service/contentcapture/ActivityEvent;
+    .param p1, "s"  # Landroid/service/contentcapture/IContentCaptureService;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -112,6 +123,9 @@
 
 .method static synthetic lambda$onActivitySnapshotRequest$2(ILandroid/service/contentcapture/SnapshotData;Landroid/service/contentcapture/IContentCaptureService;)V
     .registers 3
+    .param p0, "sessionId"  # I
+    .param p1, "snapshotData"  # Landroid/service/contentcapture/SnapshotData;
+    .param p2, "s"  # Landroid/service/contentcapture/IContentCaptureService;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -126,6 +140,8 @@
 
 .method static synthetic lambda$onDataRemovalRequest$3(Landroid/view/contentcapture/DataRemovalRequest;Landroid/service/contentcapture/IContentCaptureService;)V
     .registers 2
+    .param p0, "request"  # Landroid/view/contentcapture/DataRemovalRequest;
+    .param p1, "s"  # Landroid/service/contentcapture/IContentCaptureService;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -140,6 +156,8 @@
 
 .method static synthetic lambda$onSessionFinished$1(ILandroid/service/contentcapture/IContentCaptureService;)V
     .registers 2
+    .param p0, "sessionId"  # I
+    .param p1, "s"  # Landroid/service/contentcapture/IContentCaptureService;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -154,6 +172,12 @@
 
 .method static synthetic lambda$onSessionStarted$0(Landroid/view/contentcapture/ContentCaptureContext;IILcom/android/internal/os/IResultReceiver;ILandroid/service/contentcapture/IContentCaptureService;)V
     .registers 12
+    .param p0, "context"  # Landroid/view/contentcapture/ContentCaptureContext;
+    .param p1, "sessionId"  # I
+    .param p2, "uid"  # I
+    .param p3, "clientReceiver"  # Lcom/android/internal/os/IResultReceiver;
+    .param p4, "initialState"  # I
+    .param p5, "s"  # Landroid/service/contentcapture/IContentCaptureService;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -202,14 +226,15 @@
 .end method
 
 .method protected getServiceInterface(Landroid/os/IBinder;)Landroid/service/contentcapture/IContentCaptureService;
-    .registers 2
+    .registers 3
+    .param p1, "service"  # Landroid/os/IBinder;
 
     .line 67
     invoke-static {p1}, Landroid/service/contentcapture/IContentCaptureService$Stub;->asInterface(Landroid/os/IBinder;)Landroid/service/contentcapture/IContentCaptureService;
 
-    move-result-object p1
+    move-result-object v0
 
-    return-object p1
+    return-object v0
 .end method
 
 .method protected getTimeoutIdleBindMillis()J
@@ -225,6 +250,7 @@
 
 .method protected handleOnConnectedStateChanged(Z)V
     .registers 6
+    .param p1, "connected"  # Z
 
     .line 77
     if-eqz p1, :cond_f
@@ -288,9 +314,13 @@
 
     invoke-virtual {v1}, Lcom/android/server/contentcapture/ContentCapturePerUserService;->onConnected()V
 
+    .end local p0  # "this":Lcom/android/server/contentcapture/RemoteContentCaptureService;
+    .end local p1  # "connected":Z
     throw v0
 
     .line 92
+    .restart local p0  # "this":Lcom/android/server/contentcapture/RemoteContentCaptureService;
+    .restart local p1  # "connected":Z
     :cond_32
     iget-object v0, p0, Lcom/android/server/contentcapture/RemoteContentCaptureService;->mService:Landroid/os/IInterface;
 
@@ -316,6 +346,7 @@
     move-exception v0
 
     .line 97
+    .local v0, "e":Ljava/lang/Exception;
     iget-object v1, p0, Lcom/android/server/contentcapture/RemoteContentCaptureService;->mTag:Ljava/lang/String;
 
     new-instance v2, Ljava/lang/StringBuilder;
@@ -328,25 +359,27 @@
 
     invoke-virtual {v2, p1}, Ljava/lang/StringBuilder;->append(Z)Ljava/lang/StringBuilder;
 
-    const-string p1, "): "
+    const-string v3, "): "
 
-    invoke-virtual {v2, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v2, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v2
 
-    invoke-static {v1, p1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v2}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 99
+    .end local v0  # "e":Ljava/lang/Exception;
     :goto_5f
     return-void
 .end method
 
 .method public onActivityLifecycleEvent(Landroid/service/contentcapture/ActivityEvent;)V
     .registers 3
+    .param p1, "event"  # Landroid/service/contentcapture/ActivityEvent;
 
     .line 152
     new-instance v0, Lcom/android/server/contentcapture/-$$Lambda$RemoteContentCaptureService$yRaGuMutdbjMq9h32e3TC2_1a_A;
@@ -361,6 +394,8 @@
 
 .method public onActivitySnapshotRequest(ILandroid/service/contentcapture/SnapshotData;)V
     .registers 4
+    .param p1, "sessionId"  # I
+    .param p2, "snapshotData"  # Landroid/service/contentcapture/SnapshotData;
 
     .line 136
     new-instance v0, Lcom/android/server/contentcapture/-$$Lambda$RemoteContentCaptureService$WZi4-GWL57wurriOS0cLTQHXrS8;
@@ -374,7 +409,8 @@
 .end method
 
 .method public onDataRemovalRequest(Landroid/view/contentcapture/DataRemovalRequest;)V
-    .registers 3
+    .registers 4
+    .param p1, "request"  # Landroid/view/contentcapture/DataRemovalRequest;
 
     .line 143
     new-instance v0, Lcom/android/server/contentcapture/-$$Lambda$RemoteContentCaptureService$haMfPWsaVUWwKcAPgM3AadAkvOQ;
@@ -384,11 +420,11 @@
     invoke-virtual {p0, v0}, Lcom/android/server/contentcapture/RemoteContentCaptureService;->scheduleAsyncRequest(Lcom/android/internal/infra/AbstractRemoteService$AsyncRequest;)V
 
     .line 144
-    iget-object p1, p0, Lcom/android/server/contentcapture/RemoteContentCaptureService;->mComponentName:Landroid/content/ComponentName;
+    iget-object v0, p0, Lcom/android/server/contentcapture/RemoteContentCaptureService;->mComponentName:Landroid/content/ComponentName;
 
-    const/4 v0, 0x5
+    const/4 v1, 0x5
 
-    invoke-static {v0, p1}, Lcom/android/server/contentcapture/ContentCaptureMetricsLogger;->writeServiceEvent(ILandroid/content/ComponentName;)V
+    invoke-static {v1, v0}, Lcom/android/server/contentcapture/ContentCaptureMetricsLogger;->writeServiceEvent(ILandroid/content/ComponentName;)V
 
     .line 146
     return-void
@@ -396,6 +432,7 @@
 
 .method public onSessionFinished(I)V
     .registers 9
+    .param p1, "sessionId"  # I
 
     .line 124
     new-instance v0, Lcom/android/server/contentcapture/-$$Lambda$RemoteContentCaptureService$QbbzaxOFnxJI34vQptxzLE9Vvog;
@@ -431,6 +468,11 @@
 
 .method public onSessionStarted(Landroid/view/contentcapture/ContentCaptureContext;IILcom/android/internal/os/IResultReceiver;I)V
     .registers 13
+    .param p1, "context"  # Landroid/view/contentcapture/ContentCaptureContext;
+    .param p2, "sessionId"  # I
+    .param p3, "uid"  # I
+    .param p4, "clientReceiver"  # Lcom/android/internal/os/IResultReceiver;
+    .param p5, "initialState"  # I
 
     .line 111
     new-instance v6, Lcom/android/server/contentcapture/-$$Lambda$RemoteContentCaptureService$PMsA3CmwChlM0Qy__Uy6Yr5CFzk;

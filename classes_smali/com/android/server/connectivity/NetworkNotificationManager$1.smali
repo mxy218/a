@@ -22,7 +22,7 @@
 .method static constructor <clinit>()V
     .registers 3
 
-    .line 358
+    .line 413
     invoke-static {}, Lcom/android/server/connectivity/NetworkNotificationManager$NotificationType;->values()[Lcom/android/server/connectivity/NetworkNotificationManager$NotificationType;
 
     move-result-object v0

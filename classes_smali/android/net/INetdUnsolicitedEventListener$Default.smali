@@ -49,6 +49,7 @@
 
 .method public onInterfaceAdded(Ljava/lang/String;)V
     .registers 2
+    .param p1, "ifName"  # Ljava/lang/String;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -61,6 +62,10 @@
 
 .method public onInterfaceAddressRemoved(Ljava/lang/String;Ljava/lang/String;II)V
     .registers 5
+    .param p1, "addr"  # Ljava/lang/String;
+    .param p2, "ifName"  # Ljava/lang/String;
+    .param p3, "flags"  # I
+    .param p4, "scope"  # I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -73,6 +78,10 @@
 
 .method public onInterfaceAddressUpdated(Ljava/lang/String;Ljava/lang/String;II)V
     .registers 5
+    .param p1, "addr"  # Ljava/lang/String;
+    .param p2, "ifName"  # Ljava/lang/String;
+    .param p3, "flags"  # I
+    .param p4, "scope"  # I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -85,6 +94,8 @@
 
 .method public onInterfaceChanged(Ljava/lang/String;Z)V
     .registers 3
+    .param p1, "ifName"  # Ljava/lang/String;
+    .param p2, "up"  # Z
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -97,6 +108,10 @@
 
 .method public onInterfaceClassActivityChanged(ZIJI)V
     .registers 6
+    .param p1, "isActive"  # Z
+    .param p2, "timerLabel"  # I
+    .param p3, "timestampNs"  # J
+    .param p5, "uid"  # I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -109,6 +124,9 @@
 
 .method public onInterfaceDnsServerInfo(Ljava/lang/String;J[Ljava/lang/String;)V
     .registers 5
+    .param p1, "ifName"  # Ljava/lang/String;
+    .param p2, "lifetimeS"  # J
+    .param p4, "servers"  # [Ljava/lang/String;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -121,6 +139,8 @@
 
 .method public onInterfaceLinkStateChanged(Ljava/lang/String;Z)V
     .registers 3
+    .param p1, "ifName"  # Ljava/lang/String;
+    .param p2, "up"  # Z
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -133,6 +153,7 @@
 
 .method public onInterfaceRemoved(Ljava/lang/String;)V
     .registers 2
+    .param p1, "ifName"  # Ljava/lang/String;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -145,6 +166,8 @@
 
 .method public onQuotaLimitReached(Ljava/lang/String;Ljava/lang/String;)V
     .registers 3
+    .param p1, "alertName"  # Ljava/lang/String;
+    .param p2, "ifName"  # Ljava/lang/String;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -157,6 +180,10 @@
 
 .method public onRouteChanged(ZLjava/lang/String;Ljava/lang/String;Ljava/lang/String;)V
     .registers 5
+    .param p1, "updated"  # Z
+    .param p2, "route"  # Ljava/lang/String;
+    .param p3, "gateway"  # Ljava/lang/String;
+    .param p4, "ifName"  # Ljava/lang/String;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -169,6 +196,8 @@
 
 .method public onStrictCleartextDetected(ILjava/lang/String;)V
     .registers 3
+    .param p1, "uid"  # I
+    .param p2, "hex"  # Ljava/lang/String;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;

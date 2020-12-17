@@ -40,6 +40,7 @@
 
 .method public fetchIpMemoryStore(Landroid/net/IIpMemoryStoreCallbacks;)V
     .registers 2
+    .param p1, "cb"  # Landroid/net/IIpMemoryStoreCallbacks;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -61,6 +62,9 @@
 
 .method public makeDhcpServer(Ljava/lang/String;Landroid/net/dhcp/DhcpServingParamsParcel;Landroid/net/dhcp/IDhcpServerCallbacks;)V
     .registers 4
+    .param p1, "ifName"  # Ljava/lang/String;
+    .param p2, "params"  # Landroid/net/dhcp/DhcpServingParamsParcel;
+    .param p3, "cb"  # Landroid/net/dhcp/IDhcpServerCallbacks;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -73,6 +77,8 @@
 
 .method public makeIpClient(Ljava/lang/String;Landroid/net/ip/IIpClientCallbacks;)V
     .registers 3
+    .param p1, "ifName"  # Ljava/lang/String;
+    .param p2, "callbacks"  # Landroid/net/ip/IIpClientCallbacks;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -85,6 +91,9 @@
 
 .method public makeNetworkMonitor(Landroid/net/Network;Ljava/lang/String;Landroid/net/INetworkMonitorCallbacks;)V
     .registers 4
+    .param p1, "network"  # Landroid/net/Network;
+    .param p2, "name"  # Ljava/lang/String;
+    .param p3, "cb"  # Landroid/net/INetworkMonitorCallbacks;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;

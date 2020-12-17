@@ -28,6 +28,7 @@
 # direct methods
 .method constructor <init>(Landroid/os/IBinder;)V
     .registers 2
+    .param p1, "remote"  # Landroid/os/IBinder;
 
     .line 115
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -61,6 +62,8 @@
 
 .method public onComplete(Lcom/google/android/startop/iorap/RequestId;Lcom/google/android/startop/iorap/TaskResult;)V
     .registers 8
+    .param p1, "requestId"  # Lcom/google/android/startop/iorap/RequestId;
+    .param p2, "result"  # Lcom/google/android/startop/iorap/TaskResult;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -73,6 +76,7 @@
     move-result-object v0
 
     .line 159
+    .local v0, "_data":Landroid/os/Parcel;
     :try_start_4
     const-string v1, "com.google.android.startop.iorap.ITaskListener"
 
@@ -126,20 +130,21 @@
     move-result v1
 
     .line 175
+    .local v1, "_status":Z
     if-nez v1, :cond_3e
 
     invoke-static {}, Lcom/google/android/startop/iorap/ITaskListener$Stub;->getDefaultImpl()Lcom/google/android/startop/iorap/ITaskListener;
 
-    move-result-object v1
+    move-result-object v2
 
-    if-eqz v1, :cond_3e
+    if-eqz v2, :cond_3e
 
     .line 176
     invoke-static {}, Lcom/google/android/startop/iorap/ITaskListener$Stub;->getDefaultImpl()Lcom/google/android/startop/iorap/ITaskListener;
 
-    move-result-object v1
+    move-result-object v2
 
-    invoke-interface {v1, p1, p2}, Lcom/google/android/startop/iorap/ITaskListener;->onComplete(Lcom/google/android/startop/iorap/RequestId;Lcom/google/android/startop/iorap/TaskResult;)V
+    invoke-interface {v2, p1, p2}, Lcom/google/android/startop/iorap/ITaskListener;->onComplete(Lcom/google/android/startop/iorap/RequestId;Lcom/google/android/startop/iorap/TaskResult;)V
     :try_end_3a
     .catchall {:try_start_4 .. :try_end_3a} :catchall_43
 
@@ -150,6 +155,7 @@
     return-void
 
     .line 181
+    .end local v1  # "_status":Z
     :cond_3e
     invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
 
@@ -161,15 +167,17 @@
 
     .line 181
     :catchall_43
-    move-exception p1
+    move-exception v1
 
     invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
 
-    throw p1
+    throw v1
 .end method
 
 .method public onProgress(Lcom/google/android/startop/iorap/RequestId;Lcom/google/android/startop/iorap/TaskResult;)V
     .registers 7
+    .param p1, "requestId"  # Lcom/google/android/startop/iorap/RequestId;
+    .param p2, "result"  # Lcom/google/android/startop/iorap/TaskResult;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -182,6 +190,7 @@
     move-result-object v0
 
     .line 130
+    .local v0, "_data":Landroid/os/Parcel;
     :try_start_4
     const-string v1, "com.google.android.startop.iorap.ITaskListener"
 
@@ -233,20 +242,21 @@
     move-result v1
 
     .line 146
+    .local v1, "_status":Z
     if-nez v1, :cond_3d
 
     invoke-static {}, Lcom/google/android/startop/iorap/ITaskListener$Stub;->getDefaultImpl()Lcom/google/android/startop/iorap/ITaskListener;
 
-    move-result-object v1
+    move-result-object v2
 
-    if-eqz v1, :cond_3d
+    if-eqz v2, :cond_3d
 
     .line 147
     invoke-static {}, Lcom/google/android/startop/iorap/ITaskListener$Stub;->getDefaultImpl()Lcom/google/android/startop/iorap/ITaskListener;
 
-    move-result-object v1
+    move-result-object v2
 
-    invoke-interface {v1, p1, p2}, Lcom/google/android/startop/iorap/ITaskListener;->onProgress(Lcom/google/android/startop/iorap/RequestId;Lcom/google/android/startop/iorap/TaskResult;)V
+    invoke-interface {v2, p1, p2}, Lcom/google/android/startop/iorap/ITaskListener;->onProgress(Lcom/google/android/startop/iorap/RequestId;Lcom/google/android/startop/iorap/TaskResult;)V
     :try_end_39
     .catchall {:try_start_4 .. :try_end_39} :catchall_42
 
@@ -257,6 +267,7 @@
     return-void
 
     .line 152
+    .end local v1  # "_status":Z
     :cond_3d
     invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
 
@@ -268,9 +279,9 @@
 
     .line 152
     :catchall_42
-    move-exception p1
+    move-exception v1
 
     invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
 
-    throw p1
+    throw v1
 .end method

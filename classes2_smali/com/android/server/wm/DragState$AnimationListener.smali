@@ -26,7 +26,7 @@
 .method private constructor <init>(Lcom/android/server/wm/DragState;)V
     .registers 2
 
-    .line 696
+    .line 698
     iput-object p1, p0, Lcom/android/server/wm/DragState$AnimationListener;->this$0:Lcom/android/server/wm/DragState;
 
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -36,8 +36,10 @@
 
 .method synthetic constructor <init>(Lcom/android/server/wm/DragState;Lcom/android/server/wm/DragState$1;)V
     .registers 3
+    .param p1, "x0"  # Lcom/android/server/wm/DragState;
+    .param p2, "x1"  # Lcom/android/server/wm/DragState$1;
 
-    .line 696
+    .line 698
     invoke-direct {p0, p1}, Lcom/android/server/wm/DragState$AnimationListener;-><init>(Lcom/android/server/wm/DragState;)V
 
     return-void
@@ -47,80 +49,73 @@
 # virtual methods
 .method public onAnimationCancel(Landroid/animation/Animator;)V
     .registers 2
+    .param p1, "animator"  # Landroid/animation/Animator;
 
-    .line 720
+    .line 722
     return-void
 .end method
 
 .method public onAnimationEnd(Landroid/animation/Animator;)V
-    .registers 4
+    .registers 5
+    .param p1, "animator"  # Landroid/animation/Animator;
 
-    .line 727
-    iget-object p1, p0, Lcom/android/server/wm/DragState$AnimationListener;->this$0:Lcom/android/server/wm/DragState;
+    .line 729
+    iget-object v0, p0, Lcom/android/server/wm/DragState$AnimationListener;->this$0:Lcom/android/server/wm/DragState;
 
-    const/4 v0, 0x1
+    const/4 v1, 0x1
 
-    iput-boolean v0, p1, Lcom/android/server/wm/DragState;->mAnimationCompleted:Z
+    iput-boolean v1, v0, Lcom/android/server/wm/DragState;->mAnimationCompleted:Z
 
-    .line 730
-    iget-object p1, p1, Lcom/android/server/wm/DragState;->mDragDropController:Lcom/android/server/wm/DragDropController;
+    .line 732
+    iget-object v0, v0, Lcom/android/server/wm/DragState;->mDragDropController:Lcom/android/server/wm/DragDropController;
 
-    const/4 v0, 0x2
+    const/4 v1, 0x2
 
-    const/4 v1, 0x0
+    const/4 v2, 0x0
 
-    invoke-virtual {p1, v0, v1}, Lcom/android/server/wm/DragDropController;->sendHandlerMessage(ILjava/lang/Object;)V
+    invoke-virtual {v0, v1, v2}, Lcom/android/server/wm/DragDropController;->sendHandlerMessage(ILjava/lang/Object;)V
 
-    .line 731
+    .line 733
     return-void
 .end method
 
 .method public onAnimationRepeat(Landroid/animation/Animator;)V
     .registers 2
+    .param p1, "animator"  # Landroid/animation/Animator;
 
-    .line 723
+    .line 725
     return-void
 .end method
 
 .method public onAnimationStart(Landroid/animation/Animator;)V
     .registers 2
+    .param p1, "animator"  # Landroid/animation/Animator;
 
-    .line 717
+    .line 719
     return-void
 .end method
 
 .method public onAnimationUpdate(Landroid/animation/ValueAnimator;)V
     .registers 10
+    .param p1, "animation"  # Landroid/animation/ValueAnimator;
 
-    .line 700
+    .line 702
     const-string v0, "scale"
 
-    new-instance v7, Landroid/view/SurfaceControl$Transaction;
+    new-instance v1, Landroid/view/SurfaceControl$Transaction;
 
-    invoke-direct {v7}, Landroid/view/SurfaceControl$Transaction;-><init>()V
-
-    .line 701
-    :try_start_7
-    iget-object v1, p0, Lcom/android/server/wm/DragState$AnimationListener;->this$0:Lcom/android/server/wm/DragState;
-
-    iget-object v1, v1, Lcom/android/server/wm/DragState;->mSurfaceControl:Landroid/view/SurfaceControl;
-
-    const-string v2, "x"
+    invoke-direct {v1}, Landroid/view/SurfaceControl$Transaction;-><init>()V
 
     .line 703
-    invoke-virtual {p1, v2}, Landroid/animation/ValueAnimator;->getAnimatedValue(Ljava/lang/String;)Ljava/lang/Object;
+    .local v1, "transaction":Landroid/view/SurfaceControl$Transaction;
+    :try_start_7
+    iget-object v2, p0, Lcom/android/server/wm/DragState$AnimationListener;->this$0:Lcom/android/server/wm/DragState;
 
-    move-result-object v2
+    iget-object v2, v2, Lcom/android/server/wm/DragState;->mSurfaceControl:Landroid/view/SurfaceControl;
 
-    check-cast v2, Ljava/lang/Float;
+    const-string v3, "x"
 
-    invoke-virtual {v2}, Ljava/lang/Float;->floatValue()F
-
-    move-result v2
-
-    const-string v3, "y"
-
-    .line 704
+    .line 705
     invoke-virtual {p1, v3}, Landroid/animation/ValueAnimator;->getAnimatedValue(Ljava/lang/String;)Ljava/lang/Object;
 
     move-result-object v3
@@ -131,18 +126,50 @@
 
     move-result v3
 
-    .line 701
-    invoke-virtual {v7, v1, v2, v3}, Landroid/view/SurfaceControl$Transaction;->setPosition(Landroid/view/SurfaceControl;FF)Landroid/view/SurfaceControl$Transaction;
+    const-string v4, "y"
 
-    .line 705
-    iget-object v1, p0, Lcom/android/server/wm/DragState$AnimationListener;->this$0:Lcom/android/server/wm/DragState;
+    .line 706
+    invoke-virtual {p1, v4}, Landroid/animation/ValueAnimator;->getAnimatedValue(Ljava/lang/String;)Ljava/lang/Object;
 
-    iget-object v1, v1, Lcom/android/server/wm/DragState;->mSurfaceControl:Landroid/view/SurfaceControl;
+    move-result-object v4
 
-    const-string v2, "alpha"
+    check-cast v4, Ljava/lang/Float;
+
+    invoke-virtual {v4}, Ljava/lang/Float;->floatValue()F
+
+    move-result v4
+
+    .line 703
+    invoke-virtual {v1, v2, v3, v4}, Landroid/view/SurfaceControl$Transaction;->setPosition(Landroid/view/SurfaceControl;FF)Landroid/view/SurfaceControl$Transaction;
 
     .line 707
-    invoke-virtual {p1, v2}, Landroid/animation/ValueAnimator;->getAnimatedValue(Ljava/lang/String;)Ljava/lang/Object;
+    iget-object v2, p0, Lcom/android/server/wm/DragState$AnimationListener;->this$0:Lcom/android/server/wm/DragState;
+
+    iget-object v2, v2, Lcom/android/server/wm/DragState;->mSurfaceControl:Landroid/view/SurfaceControl;
+
+    const-string v3, "alpha"
+
+    .line 709
+    invoke-virtual {p1, v3}, Landroid/animation/ValueAnimator;->getAnimatedValue(Ljava/lang/String;)Ljava/lang/Object;
+
+    move-result-object v3
+
+    check-cast v3, Ljava/lang/Float;
+
+    invoke-virtual {v3}, Ljava/lang/Float;->floatValue()F
+
+    move-result v3
+
+    .line 707
+    invoke-virtual {v1, v2, v3}, Landroid/view/SurfaceControl$Transaction;->setAlpha(Landroid/view/SurfaceControl;F)Landroid/view/SurfaceControl$Transaction;
+
+    .line 710
+    iget-object v2, p0, Lcom/android/server/wm/DragState$AnimationListener;->this$0:Lcom/android/server/wm/DragState;
+
+    iget-object v3, v2, Lcom/android/server/wm/DragState;->mSurfaceControl:Landroid/view/SurfaceControl;
+
+    .line 712
+    invoke-virtual {p1, v0}, Landroid/animation/ValueAnimator;->getAnimatedValue(Ljava/lang/String;)Ljava/lang/Object;
 
     move-result-object v2
 
@@ -150,83 +177,72 @@
 
     invoke-virtual {v2}, Ljava/lang/Float;->floatValue()F
 
-    move-result v2
-
-    .line 705
-    invoke-virtual {v7, v1, v2}, Landroid/view/SurfaceControl$Transaction;->setAlpha(Landroid/view/SurfaceControl;F)Landroid/view/SurfaceControl$Transaction;
-
-    .line 708
-    iget-object v1, p0, Lcom/android/server/wm/DragState$AnimationListener;->this$0:Lcom/android/server/wm/DragState;
-
-    iget-object v2, v1, Lcom/android/server/wm/DragState;->mSurfaceControl:Landroid/view/SurfaceControl;
-
-    .line 710
-    invoke-virtual {p1, v0}, Landroid/animation/ValueAnimator;->getAnimatedValue(Ljava/lang/String;)Ljava/lang/Object;
-
-    move-result-object v1
-
-    check-cast v1, Ljava/lang/Float;
-
-    invoke-virtual {v1}, Ljava/lang/Float;->floatValue()F
-
-    move-result v3
-
-    const/4 v4, 0x0
+    move-result v4
 
     const/4 v5, 0x0
 
-    .line 711
+    const/4 v6, 0x0
+
+    .line 713
     invoke-virtual {p1, v0}, Landroid/animation/ValueAnimator;->getAnimatedValue(Ljava/lang/String;)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v0
 
-    check-cast p1, Ljava/lang/Float;
+    check-cast v0, Ljava/lang/Float;
 
-    invoke-virtual {p1}, Ljava/lang/Float;->floatValue()F
+    invoke-virtual {v0}, Ljava/lang/Float;->floatValue()F
 
-    move-result v6
+    move-result v7
 
-    .line 708
-    move-object v1, v7
+    .line 710
+    move-object v2, v1
 
-    invoke-virtual/range {v1 .. v6}, Landroid/view/SurfaceControl$Transaction;->setMatrix(Landroid/view/SurfaceControl;FFFF)Landroid/view/SurfaceControl$Transaction;
+    invoke-virtual/range {v2 .. v7}, Landroid/view/SurfaceControl$Transaction;->setMatrix(Landroid/view/SurfaceControl;FFFF)Landroid/view/SurfaceControl$Transaction;
 
-    .line 712
-    invoke-virtual {v7}, Landroid/view/SurfaceControl$Transaction;->apply()V
+    .line 714
+    invoke-virtual {v1}, Landroid/view/SurfaceControl$Transaction;->apply()V
     :try_end_5a
     .catchall {:try_start_7 .. :try_end_5a} :catchall_5e
 
-    .line 713
-    invoke-virtual {v7}, Landroid/view/SurfaceControl$Transaction;->close()V
+    .line 715
+    invoke-virtual {v1}, Landroid/view/SurfaceControl$Transaction;->close()V
 
-    .line 714
+    .line 716
+    .end local v1  # "transaction":Landroid/view/SurfaceControl$Transaction;
     return-void
 
-    .line 700
+    .line 702
+    .restart local v1  # "transaction":Landroid/view/SurfaceControl$Transaction;
     :catchall_5e
-    move-exception p1
+    move-exception v0
 
+    .end local v1  # "transaction":Landroid/view/SurfaceControl$Transaction;
+    .end local p0  # "this":Lcom/android/server/wm/DragState$AnimationListener;
+    .end local p1  # "animation":Landroid/animation/ValueAnimator;
     :try_start_5f
-    throw p1
+    throw v0
     :try_end_60
     .catchall {:try_start_5f .. :try_end_60} :catchall_60
 
-    .line 713
+    .line 715
+    .restart local v1  # "transaction":Landroid/view/SurfaceControl$Transaction;
+    .restart local p0  # "this":Lcom/android/server/wm/DragState$AnimationListener;
+    .restart local p1  # "animation":Landroid/animation/ValueAnimator;
     :catchall_60
-    move-exception v0
+    move-exception v2
 
     :try_start_61
-    invoke-virtual {v7}, Landroid/view/SurfaceControl$Transaction;->close()V
+    invoke-virtual {v1}, Landroid/view/SurfaceControl$Transaction;->close()V
     :try_end_64
     .catchall {:try_start_61 .. :try_end_64} :catchall_65
 
     goto :goto_69
 
     :catchall_65
-    move-exception v1
+    move-exception v3
 
-    invoke-virtual {p1, v1}, Ljava/lang/Throwable;->addSuppressed(Ljava/lang/Throwable;)V
+    invoke-virtual {v0, v3}, Ljava/lang/Throwable;->addSuppressed(Ljava/lang/Throwable;)V
 
     :goto_69
-    throw v0
+    throw v2
 .end method

@@ -18,61 +18,77 @@
 .method public postCancelDragAndDrop()V
     .registers 1
 
-    .line 195
+    .line 197
     return-void
 .end method
 
 .method public postPerformDrag()V
     .registers 1
 
-    .line 175
+    .line 177
     return-void
 .end method
 
 .method public postReportDropResult()V
     .registers 1
 
-    .line 185
+    .line 187
     return-void
 .end method
 
 .method public preCancelDragAndDrop(Landroid/os/IBinder;)V
     .registers 2
+    .param p1, "dragToken"  # Landroid/os/IBinder;
 
-    .line 190
+    .line 192
     return-void
 .end method
 
 .method public prePerformDrag(Landroid/view/IWindow;Landroid/os/IBinder;IFFFFLandroid/content/ClipData;)Z
-    .registers 9
+    .registers 10
+    .param p1, "window"  # Landroid/view/IWindow;
+    .param p2, "dragToken"  # Landroid/os/IBinder;
+    .param p3, "touchSource"  # I
+    .param p4, "touchX"  # F
+    .param p5, "touchY"  # F
+    .param p6, "thumbCenterX"  # F
+    .param p7, "thumbCenterY"  # F
+    .param p8, "data"  # Landroid/content/ClipData;
 
-    .line 169
-    const/4 p1, 0x1
+    .line 171
+    const/4 v0, 0x1
 
-    return p1
+    return v0
 .end method
 
 .method public preReportDropResult(Landroid/view/IWindow;Z)V
     .registers 3
+    .param p1, "window"  # Landroid/view/IWindow;
+    .param p2, "consumed"  # Z
 
-    .line 180
+    .line 182
     return-void
 .end method
 
 .method public registerInputChannel(Lcom/android/server/wm/DragState;Landroid/view/Display;Lcom/android/server/input/InputManagerService;Landroid/view/InputChannel;)Z
-    .registers 5
-
-    .line 159
-    invoke-virtual {p1, p2}, Lcom/android/server/wm/DragState;->register(Landroid/view/Display;)V
+    .registers 6
+    .param p1, "state"  # Lcom/android/server/wm/DragState;
+    .param p2, "display"  # Landroid/view/Display;
+    .param p3, "service"  # Lcom/android/server/input/InputManagerService;
+    .param p4, "source"  # Landroid/view/InputChannel;
 
     .line 160
-    invoke-virtual {p1}, Lcom/android/server/wm/DragState;->getInputChannel()Landroid/view/InputChannel;
+    invoke-virtual {p4}, Landroid/view/InputChannel;->getToken()Landroid/os/IBinder;
 
-    move-result-object p1
+    move-result-object v0
 
-    invoke-virtual {p3, p4, p1}, Lcom/android/server/input/InputManagerService;->transferTouchFocus(Landroid/view/InputChannel;Landroid/view/InputChannel;)Z
+    iput-object v0, p1, Lcom/android/server/wm/DragState;->mTransferTouchFromToken:Landroid/os/IBinder;
 
-    move-result p1
+    .line 161
+    invoke-virtual {p1, p2}, Lcom/android/server/wm/DragState;->register(Landroid/view/Display;)V
 
-    return p1
+    .line 162
+    const/4 v0, 0x1
+
+    return v0
 .end method

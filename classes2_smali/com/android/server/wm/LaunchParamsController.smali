@@ -37,6 +37,8 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/wm/ActivityTaskManagerService;Lcom/android/server/wm/LaunchParamsPersister;)V
     .registers 4
+    .param p1, "service"  # Lcom/android/server/wm/ActivityTaskManagerService;
+    .param p2, "persister"  # Lcom/android/server/wm/LaunchParamsPersister;
 
     .line 54
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -82,10 +84,17 @@
 
 # virtual methods
 .method calculate(Lcom/android/server/wm/TaskRecord;Landroid/content/pm/ActivityInfo$WindowLayout;Lcom/android/server/wm/ActivityRecord;Lcom/android/server/wm/ActivityRecord;Landroid/app/ActivityOptions;ILcom/android/server/wm/LaunchParamsController$LaunchParams;)V
-    .registers 23
+    .registers 24
+    .param p1, "task"  # Lcom/android/server/wm/TaskRecord;
+    .param p2, "layout"  # Landroid/content/pm/ActivityInfo$WindowLayout;
+    .param p3, "activity"  # Lcom/android/server/wm/ActivityRecord;
+    .param p4, "source"  # Lcom/android/server/wm/ActivityRecord;
+    .param p5, "options"  # Landroid/app/ActivityOptions;
+    .param p6, "phase"  # I
+    .param p7, "result"  # Lcom/android/server/wm/LaunchParamsController$LaunchParams;
 
     .line 79
-    move-object v0, p0
+    move-object/from16 v0, p0
 
     move-object/from16 v10, p1
 
@@ -96,18 +105,18 @@
     invoke-virtual/range {p7 .. p7}, Lcom/android/server/wm/LaunchParamsController$LaunchParams;->reset()V
 
     .line 81
-    if-nez v10, :cond_e
+    if-nez v10, :cond_f
 
-    if-eqz v11, :cond_13
+    if-eqz v11, :cond_14
 
     .line 82
-    :cond_e
+    :cond_f
     iget-object v1, v0, Lcom/android/server/wm/LaunchParamsController;->mPersister:Lcom/android/server/wm/LaunchParamsPersister;
 
     invoke-virtual {v1, v10, v11, v12}, Lcom/android/server/wm/LaunchParamsPersister;->getLaunchParams(Lcom/android/server/wm/TaskRecord;Lcom/android/server/wm/ActivityRecord;Lcom/android/server/wm/LaunchParamsController$LaunchParams;)V
 
     .line 88
-    :cond_13
+    :cond_14
     iget-object v1, v0, Lcom/android/server/wm/LaunchParamsController;->mModifiers:Ljava/util/List;
 
     invoke-interface {v1}, Ljava/util/List;->size()I
@@ -120,8 +129,9 @@
 
     move v14, v1
 
-    :goto_1c
-    if-ltz v14, :cond_5c
+    .local v14, "i":I
+    :goto_1d
+    if-ltz v14, :cond_5f
 
     .line 89
     iget-object v1, v0, Lcom/android/server/wm/LaunchParamsController;->mTmpCurrent:Lcom/android/server/wm/LaunchParamsController$LaunchParams;
@@ -140,12 +150,17 @@
 
     move-result-object v1
 
-    check-cast v1, Lcom/android/server/wm/LaunchParamsController$LaunchParamsModifier;
+    move-object v15, v1
+
+    check-cast v15, Lcom/android/server/wm/LaunchParamsController$LaunchParamsModifier;
 
     .line 93
+    .local v15, "modifier":Lcom/android/server/wm/LaunchParamsController$LaunchParamsModifier;
     iget-object v8, v0, Lcom/android/server/wm/LaunchParamsController;->mTmpCurrent:Lcom/android/server/wm/LaunchParamsController$LaunchParams;
 
     iget-object v9, v0, Lcom/android/server/wm/LaunchParamsController;->mTmpResult:Lcom/android/server/wm/LaunchParamsController$LaunchParams;
+
+    move-object v1, v15
 
     move-object/from16 v2, p1
 
@@ -163,83 +178,87 @@
 
     move-result v1
 
-    if-eqz v1, :cond_58
+    if-eqz v1, :cond_5b
 
-    if-eq v1, v13, :cond_52
+    if-eq v1, v13, :cond_55
 
     const/4 v2, 0x2
 
-    if-eq v1, v2, :cond_4c
+    if-eq v1, v2, :cond_4f
 
-    goto :goto_59
+    goto :goto_5c
 
     .line 104
-    :cond_4c
+    :cond_4f
     iget-object v1, v0, Lcom/android/server/wm/LaunchParamsController;->mTmpResult:Lcom/android/server/wm/LaunchParamsController$LaunchParams;
 
     invoke-virtual {v12, v1}, Lcom/android/server/wm/LaunchParamsController$LaunchParams;->set(Lcom/android/server/wm/LaunchParamsController$LaunchParams;)V
 
-    goto :goto_59
+    goto :goto_5c
 
     .line 100
-    :cond_52
-    iget-object v0, v0, Lcom/android/server/wm/LaunchParamsController;->mTmpResult:Lcom/android/server/wm/LaunchParamsController$LaunchParams;
+    :cond_55
+    iget-object v1, v0, Lcom/android/server/wm/LaunchParamsController;->mTmpResult:Lcom/android/server/wm/LaunchParamsController$LaunchParams;
 
-    invoke-virtual {v12, v0}, Lcom/android/server/wm/LaunchParamsController$LaunchParams;->set(Lcom/android/server/wm/LaunchParamsController$LaunchParams;)V
+    invoke-virtual {v12, v1}, Lcom/android/server/wm/LaunchParamsController$LaunchParams;->set(Lcom/android/server/wm/LaunchParamsController$LaunchParams;)V
 
     .line 101
     return-void
 
     .line 97
-    :cond_58
+    :cond_5b
     nop
 
     .line 88
-    :goto_59
+    .end local v15  # "modifier":Lcom/android/server/wm/LaunchParamsController$LaunchParamsModifier;
+    :goto_5c
     add-int/lit8 v14, v14, -0x1
 
-    goto :goto_1c
+    goto :goto_1d
 
     .line 109
-    :cond_5c
-    if-eqz v11, :cond_66
+    .end local v14  # "i":I
+    :cond_5f
+    if-eqz v11, :cond_69
 
     iget-object v1, v11, Lcom/android/server/wm/ActivityRecord;->requestedVrComponent:Landroid/content/ComponentName;
 
-    if-eqz v1, :cond_66
+    if-eqz v1, :cond_69
 
     .line 111
-    const/4 v0, 0x0
+    const/4 v1, 0x0
 
-    iput v0, v12, Lcom/android/server/wm/LaunchParamsController$LaunchParams;->mPreferredDisplayId:I
+    iput v1, v12, Lcom/android/server/wm/LaunchParamsController$LaunchParams;->mPreferredDisplayId:I
 
-    goto :goto_73
+    goto :goto_76
 
     .line 112
-    :cond_66
+    :cond_69
     iget-object v1, v0, Lcom/android/server/wm/LaunchParamsController;->mService:Lcom/android/server/wm/ActivityTaskManagerService;
 
     iget v1, v1, Lcom/android/server/wm/ActivityTaskManagerService;->mVr2dDisplayId:I
 
     const/4 v2, -0x1
 
-    if-eq v1, v2, :cond_73
+    if-eq v1, v2, :cond_76
 
     .line 115
-    iget-object v0, v0, Lcom/android/server/wm/LaunchParamsController;->mService:Lcom/android/server/wm/ActivityTaskManagerService;
+    iget-object v1, v0, Lcom/android/server/wm/LaunchParamsController;->mService:Lcom/android/server/wm/ActivityTaskManagerService;
 
-    iget v0, v0, Lcom/android/server/wm/ActivityTaskManagerService;->mVr2dDisplayId:I
+    iget v1, v1, Lcom/android/server/wm/ActivityTaskManagerService;->mVr2dDisplayId:I
 
-    iput v0, v12, Lcom/android/server/wm/LaunchParamsController$LaunchParams;->mPreferredDisplayId:I
+    iput v1, v12, Lcom/android/server/wm/LaunchParamsController$LaunchParams;->mPreferredDisplayId:I
 
     .line 117
-    :cond_73
-    :goto_73
+    :cond_76
+    :goto_76
     return-void
 .end method
 
 .method layoutTask(Lcom/android/server/wm/TaskRecord;Landroid/content/pm/ActivityInfo$WindowLayout;)Z
     .registers 9
+    .param p1, "task"  # Lcom/android/server/wm/TaskRecord;
+    .param p2, "layout"  # Landroid/content/pm/ActivityInfo$WindowLayout;
 
     .line 124
     const/4 v3, 0x0
@@ -256,13 +275,18 @@
 
     invoke-virtual/range {v0 .. v5}, Lcom/android/server/wm/LaunchParamsController;->layoutTask(Lcom/android/server/wm/TaskRecord;Landroid/content/pm/ActivityInfo$WindowLayout;Lcom/android/server/wm/ActivityRecord;Lcom/android/server/wm/ActivityRecord;Landroid/app/ActivityOptions;)Z
 
-    move-result p1
+    move-result v0
 
-    return p1
+    return v0
 .end method
 
 .method layoutTask(Lcom/android/server/wm/TaskRecord;Landroid/content/pm/ActivityInfo$WindowLayout;Lcom/android/server/wm/ActivityRecord;Lcom/android/server/wm/ActivityRecord;Landroid/app/ActivityOptions;)Z
     .registers 14
+    .param p1, "task"  # Lcom/android/server/wm/TaskRecord;
+    .param p2, "layout"  # Landroid/content/pm/ActivityInfo$WindowLayout;
+    .param p3, "activity"  # Lcom/android/server/wm/ActivityRecord;
+    .param p4, "source"  # Lcom/android/server/wm/ActivityRecord;
+    .param p5, "options"  # Landroid/app/ActivityOptions;
 
     .line 129
     iget-object v7, p0, Lcom/android/server/wm/LaunchParamsController;->mTmpParams:Lcom/android/server/wm/LaunchParamsController$LaunchParams;
@@ -284,173 +308,173 @@
     invoke-virtual/range {v0 .. v7}, Lcom/android/server/wm/LaunchParamsController;->calculate(Lcom/android/server/wm/TaskRecord;Landroid/content/pm/ActivityInfo$WindowLayout;Lcom/android/server/wm/ActivityRecord;Lcom/android/server/wm/ActivityRecord;Landroid/app/ActivityOptions;ILcom/android/server/wm/LaunchParamsController$LaunchParams;)V
 
     .line 132
-    iget-object p2, p0, Lcom/android/server/wm/LaunchParamsController;->mTmpParams:Lcom/android/server/wm/LaunchParamsController$LaunchParams;
+    iget-object v0, p0, Lcom/android/server/wm/LaunchParamsController;->mTmpParams:Lcom/android/server/wm/LaunchParamsController$LaunchParams;
 
-    invoke-virtual {p2}, Lcom/android/server/wm/LaunchParamsController$LaunchParams;->isEmpty()Z
+    invoke-virtual {v0}, Lcom/android/server/wm/LaunchParamsController$LaunchParams;->isEmpty()Z
 
-    move-result p2
+    move-result v0
 
-    const/4 p3, 0x0
+    const/4 v1, 0x0
 
-    if-eqz p2, :cond_16
+    if-eqz v0, :cond_16
 
     .line 133
-    return p3
+    return v1
 
     .line 136
     :cond_16
-    iget-object p2, p0, Lcom/android/server/wm/LaunchParamsController;->mService:Lcom/android/server/wm/ActivityTaskManagerService;
+    iget-object v0, p0, Lcom/android/server/wm/LaunchParamsController;->mService:Lcom/android/server/wm/ActivityTaskManagerService;
 
-    iget-object p2, p2, Lcom/android/server/wm/ActivityTaskManagerService;->mWindowManager:Lcom/android/server/wm/WindowManagerService;
+    iget-object v0, v0, Lcom/android/server/wm/ActivityTaskManagerService;->mWindowManager:Lcom/android/server/wm/WindowManagerService;
 
-    invoke-virtual {p2}, Lcom/android/server/wm/WindowManagerService;->deferSurfaceLayout()V
+    invoke-virtual {v0}, Lcom/android/server/wm/WindowManagerService;->deferSurfaceLayout()V
 
     .line 139
     :try_start_1d
-    iget-object p2, p0, Lcom/android/server/wm/LaunchParamsController;->mTmpParams:Lcom/android/server/wm/LaunchParamsController$LaunchParams;
+    iget-object v0, p0, Lcom/android/server/wm/LaunchParamsController;->mTmpParams:Lcom/android/server/wm/LaunchParamsController$LaunchParams;
 
-    invoke-virtual {p2}, Lcom/android/server/wm/LaunchParamsController$LaunchParams;->hasPreferredDisplay()Z
+    invoke-virtual {v0}, Lcom/android/server/wm/LaunchParamsController$LaunchParams;->hasPreferredDisplay()Z
 
-    move-result p2
+    move-result v0
 
-    if-eqz p2, :cond_42
+    if-eqz v0, :cond_42
 
-    iget-object p2, p0, Lcom/android/server/wm/LaunchParamsController;->mTmpParams:Lcom/android/server/wm/LaunchParamsController$LaunchParams;
+    iget-object v0, p0, Lcom/android/server/wm/LaunchParamsController;->mTmpParams:Lcom/android/server/wm/LaunchParamsController$LaunchParams;
 
-    iget p2, p2, Lcom/android/server/wm/LaunchParamsController$LaunchParams;->mPreferredDisplayId:I
+    iget v0, v0, Lcom/android/server/wm/LaunchParamsController$LaunchParams;->mPreferredDisplayId:I
 
     .line 140
     invoke-virtual {p1}, Lcom/android/server/wm/TaskRecord;->getStack()Lcom/android/server/wm/ActivityStack;
 
-    move-result-object p4
+    move-result-object v2
 
-    invoke-virtual {p4}, Lcom/android/server/wm/ActivityStack;->getDisplay()Lcom/android/server/wm/ActivityDisplay;
+    invoke-virtual {v2}, Lcom/android/server/wm/ActivityStack;->getDisplay()Lcom/android/server/wm/ActivityDisplay;
 
-    move-result-object p4
+    move-result-object v2
 
-    iget p4, p4, Lcom/android/server/wm/ActivityDisplay;->mDisplayId:I
+    iget v2, v2, Lcom/android/server/wm/ActivityDisplay;->mDisplayId:I
 
-    if-eq p2, p4, :cond_42
+    if-eq v0, v2, :cond_42
 
     .line 141
-    iget-object p2, p0, Lcom/android/server/wm/LaunchParamsController;->mService:Lcom/android/server/wm/ActivityTaskManagerService;
+    iget-object v0, p0, Lcom/android/server/wm/LaunchParamsController;->mService:Lcom/android/server/wm/ActivityTaskManagerService;
 
     invoke-virtual {p1}, Lcom/android/server/wm/TaskRecord;->getStackId()I
 
-    move-result p4
+    move-result v2
 
-    iget-object p5, p0, Lcom/android/server/wm/LaunchParamsController;->mTmpParams:Lcom/android/server/wm/LaunchParamsController$LaunchParams;
+    iget-object v3, p0, Lcom/android/server/wm/LaunchParamsController;->mTmpParams:Lcom/android/server/wm/LaunchParamsController$LaunchParams;
 
-    iget p5, p5, Lcom/android/server/wm/LaunchParamsController$LaunchParams;->mPreferredDisplayId:I
+    iget v3, v3, Lcom/android/server/wm/LaunchParamsController$LaunchParams;->mPreferredDisplayId:I
 
-    invoke-virtual {p2, p4, p5}, Lcom/android/server/wm/ActivityTaskManagerService;->moveStackToDisplay(II)V
+    invoke-virtual {v0, v2, v3}, Lcom/android/server/wm/ActivityTaskManagerService;->moveStackToDisplay(II)V
 
     .line 144
     :cond_42
-    iget-object p2, p0, Lcom/android/server/wm/LaunchParamsController;->mTmpParams:Lcom/android/server/wm/LaunchParamsController$LaunchParams;
+    iget-object v0, p0, Lcom/android/server/wm/LaunchParamsController;->mTmpParams:Lcom/android/server/wm/LaunchParamsController$LaunchParams;
 
-    invoke-virtual {p2}, Lcom/android/server/wm/LaunchParamsController$LaunchParams;->hasWindowingMode()Z
+    invoke-virtual {v0}, Lcom/android/server/wm/LaunchParamsController$LaunchParams;->hasWindowingMode()Z
 
-    move-result p2
+    move-result v0
 
-    if-eqz p2, :cond_63
+    if-eqz v0, :cond_63
 
-    iget-object p2, p0, Lcom/android/server/wm/LaunchParamsController;->mTmpParams:Lcom/android/server/wm/LaunchParamsController$LaunchParams;
+    iget-object v0, p0, Lcom/android/server/wm/LaunchParamsController;->mTmpParams:Lcom/android/server/wm/LaunchParamsController$LaunchParams;
 
-    iget p2, p2, Lcom/android/server/wm/LaunchParamsController$LaunchParams;->mWindowingMode:I
+    iget v0, v0, Lcom/android/server/wm/LaunchParamsController$LaunchParams;->mWindowingMode:I
 
     .line 145
     invoke-virtual {p1}, Lcom/android/server/wm/TaskRecord;->getStack()Lcom/android/server/wm/ActivityStack;
 
-    move-result-object p4
+    move-result-object v2
 
-    invoke-virtual {p4}, Lcom/android/server/wm/ActivityStack;->getWindowingMode()I
+    invoke-virtual {v2}, Lcom/android/server/wm/ActivityStack;->getWindowingMode()I
 
-    move-result p4
+    move-result v2
 
-    if-eq p2, p4, :cond_63
+    if-eq v0, v2, :cond_63
 
     .line 146
     invoke-virtual {p1}, Lcom/android/server/wm/TaskRecord;->getStack()Lcom/android/server/wm/ActivityStack;
 
-    move-result-object p2
+    move-result-object v0
 
-    iget-object p4, p0, Lcom/android/server/wm/LaunchParamsController;->mTmpParams:Lcom/android/server/wm/LaunchParamsController$LaunchParams;
+    iget-object v2, p0, Lcom/android/server/wm/LaunchParamsController;->mTmpParams:Lcom/android/server/wm/LaunchParamsController$LaunchParams;
 
-    iget p4, p4, Lcom/android/server/wm/LaunchParamsController$LaunchParams;->mWindowingMode:I
+    iget v2, v2, Lcom/android/server/wm/LaunchParamsController$LaunchParams;->mWindowingMode:I
 
-    invoke-virtual {p2, p4}, Lcom/android/server/wm/ActivityStack;->setWindowingMode(I)V
+    invoke-virtual {v0, v2}, Lcom/android/server/wm/ActivityStack;->setWindowingMode(I)V
 
     .line 149
     :cond_63
-    iget-object p2, p0, Lcom/android/server/wm/LaunchParamsController;->mTmpParams:Lcom/android/server/wm/LaunchParamsController$LaunchParams;
+    iget-object v0, p0, Lcom/android/server/wm/LaunchParamsController;->mTmpParams:Lcom/android/server/wm/LaunchParamsController$LaunchParams;
 
-    iget-object p2, p2, Lcom/android/server/wm/LaunchParamsController$LaunchParams;->mBounds:Landroid/graphics/Rect;
+    iget-object v0, v0, Lcom/android/server/wm/LaunchParamsController$LaunchParams;->mBounds:Landroid/graphics/Rect;
 
-    invoke-virtual {p2}, Landroid/graphics/Rect;->isEmpty()Z
+    invoke-virtual {v0}, Landroid/graphics/Rect;->isEmpty()Z
 
-    move-result p2
+    move-result v0
     :try_end_6b
     .catchall {:try_start_1d .. :try_end_6b} :catchall_a0
 
-    if-eqz p2, :cond_76
+    if-eqz v0, :cond_76
 
     .line 150
     nop
 
     .line 164
-    iget-object p1, p0, Lcom/android/server/wm/LaunchParamsController;->mService:Lcom/android/server/wm/ActivityTaskManagerService;
+    iget-object v0, p0, Lcom/android/server/wm/LaunchParamsController;->mService:Lcom/android/server/wm/ActivityTaskManagerService;
 
-    iget-object p1, p1, Lcom/android/server/wm/ActivityTaskManagerService;->mWindowManager:Lcom/android/server/wm/WindowManagerService;
+    iget-object v0, v0, Lcom/android/server/wm/ActivityTaskManagerService;->mWindowManager:Lcom/android/server/wm/WindowManagerService;
 
-    invoke-virtual {p1}, Lcom/android/server/wm/WindowManagerService;->continueSurfaceLayout()V
+    invoke-virtual {v0}, Lcom/android/server/wm/WindowManagerService;->continueSurfaceLayout()V
 
     .line 150
-    return p3
+    return v1
 
     .line 153
     :cond_76
     :try_start_76
     invoke-virtual {p1}, Lcom/android/server/wm/TaskRecord;->getStack()Lcom/android/server/wm/ActivityStack;
 
-    move-result-object p2
+    move-result-object v0
 
-    invoke-virtual {p2}, Lcom/android/server/wm/ActivityStack;->inFreeformWindowingMode()Z
+    invoke-virtual {v0}, Lcom/android/server/wm/ActivityStack;->inFreeformWindowingMode()Z
 
-    move-result p2
+    move-result v0
 
-    if-eqz p2, :cond_90
+    if-eqz v0, :cond_90
 
     .line 155
-    iget-object p2, p0, Lcom/android/server/wm/LaunchParamsController;->mTmpParams:Lcom/android/server/wm/LaunchParamsController$LaunchParams;
+    iget-object v0, p0, Lcom/android/server/wm/LaunchParamsController;->mTmpParams:Lcom/android/server/wm/LaunchParamsController$LaunchParams;
 
-    iget-object p2, p2, Lcom/android/server/wm/LaunchParamsController$LaunchParams;->mBounds:Landroid/graphics/Rect;
+    iget-object v0, v0, Lcom/android/server/wm/LaunchParamsController$LaunchParams;->mBounds:Landroid/graphics/Rect;
 
-    invoke-virtual {p1, p2}, Lcom/android/server/wm/TaskRecord;->updateOverrideConfiguration(Landroid/graphics/Rect;)Z
+    invoke-virtual {p1, v0}, Lcom/android/server/wm/TaskRecord;->updateOverrideConfiguration(Landroid/graphics/Rect;)Z
     :try_end_87
     .catchall {:try_start_76 .. :try_end_87} :catchall_a0
 
     .line 156
-    const/4 p1, 0x1
+    const/4 v0, 0x1
 
     .line 164
-    iget-object p2, p0, Lcom/android/server/wm/LaunchParamsController;->mService:Lcom/android/server/wm/ActivityTaskManagerService;
+    iget-object v1, p0, Lcom/android/server/wm/LaunchParamsController;->mService:Lcom/android/server/wm/ActivityTaskManagerService;
 
-    iget-object p2, p2, Lcom/android/server/wm/ActivityTaskManagerService;->mWindowManager:Lcom/android/server/wm/WindowManagerService;
+    iget-object v1, v1, Lcom/android/server/wm/ActivityTaskManagerService;->mWindowManager:Lcom/android/server/wm/WindowManagerService;
 
-    invoke-virtual {p2}, Lcom/android/server/wm/WindowManagerService;->continueSurfaceLayout()V
+    invoke-virtual {v1}, Lcom/android/server/wm/WindowManagerService;->continueSurfaceLayout()V
 
     .line 156
-    return p1
+    return v0
 
     .line 161
     :cond_90
     :try_start_90
-    iget-object p2, p0, Lcom/android/server/wm/LaunchParamsController;->mTmpParams:Lcom/android/server/wm/LaunchParamsController$LaunchParams;
+    iget-object v0, p0, Lcom/android/server/wm/LaunchParamsController;->mTmpParams:Lcom/android/server/wm/LaunchParamsController$LaunchParams;
 
-    iget-object p2, p2, Lcom/android/server/wm/LaunchParamsController$LaunchParams;->mBounds:Landroid/graphics/Rect;
+    iget-object v0, v0, Lcom/android/server/wm/LaunchParamsController$LaunchParams;->mBounds:Landroid/graphics/Rect;
 
-    invoke-virtual {p1, p2}, Lcom/android/server/wm/TaskRecord;->setLastNonFullscreenBounds(Landroid/graphics/Rect;)V
+    invoke-virtual {p1, v0}, Lcom/android/server/wm/TaskRecord;->setLastNonFullscreenBounds(Landroid/graphics/Rect;)V
     :try_end_97
     .catchall {:try_start_90 .. :try_end_97} :catchall_a0
 
@@ -458,30 +482,31 @@
     nop
 
     .line 164
-    iget-object p1, p0, Lcom/android/server/wm/LaunchParamsController;->mService:Lcom/android/server/wm/ActivityTaskManagerService;
+    iget-object v0, p0, Lcom/android/server/wm/LaunchParamsController;->mService:Lcom/android/server/wm/ActivityTaskManagerService;
 
-    iget-object p1, p1, Lcom/android/server/wm/ActivityTaskManagerService;->mWindowManager:Lcom/android/server/wm/WindowManagerService;
+    iget-object v0, v0, Lcom/android/server/wm/ActivityTaskManagerService;->mWindowManager:Lcom/android/server/wm/WindowManagerService;
 
-    invoke-virtual {p1}, Lcom/android/server/wm/WindowManagerService;->continueSurfaceLayout()V
+    invoke-virtual {v0}, Lcom/android/server/wm/WindowManagerService;->continueSurfaceLayout()V
 
     .line 162
-    return p3
+    return v1
 
     .line 164
     :catchall_a0
-    move-exception p1
+    move-exception v0
 
-    iget-object p2, p0, Lcom/android/server/wm/LaunchParamsController;->mService:Lcom/android/server/wm/ActivityTaskManagerService;
+    iget-object v1, p0, Lcom/android/server/wm/LaunchParamsController;->mService:Lcom/android/server/wm/ActivityTaskManagerService;
 
-    iget-object p2, p2, Lcom/android/server/wm/ActivityTaskManagerService;->mWindowManager:Lcom/android/server/wm/WindowManagerService;
+    iget-object v1, v1, Lcom/android/server/wm/ActivityTaskManagerService;->mWindowManager:Lcom/android/server/wm/WindowManagerService;
 
-    invoke-virtual {p2}, Lcom/android/server/wm/WindowManagerService;->continueSurfaceLayout()V
+    invoke-virtual {v1}, Lcom/android/server/wm/WindowManagerService;->continueSurfaceLayout()V
 
-    throw p1
+    throw v0
 .end method
 
 .method registerDefaultModifiers(Lcom/android/server/wm/ActivityStackSupervisor;)V
     .registers 3
+    .param p1, "supervisor"  # Lcom/android/server/wm/ActivityStackSupervisor;
 
     .line 65
     new-instance v0, Lcom/android/server/wm/TaskLaunchParamsModifier;
@@ -496,6 +521,7 @@
 
 .method registerModifier(Lcom/android/server/wm/LaunchParamsController$LaunchParamsModifier;)V
     .registers 3
+    .param p1, "modifier"  # Lcom/android/server/wm/LaunchParamsController$LaunchParamsModifier;
 
     .line 173
     iget-object v0, p0, Lcom/android/server/wm/LaunchParamsController;->mModifiers:Ljava/util/List;

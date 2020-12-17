@@ -12,6 +12,18 @@
 # direct methods
 .method public constructor <init>(Landroid/content/Context;Lcom/android/server/biometrics/Constants;Lcom/android/server/biometrics/BiometricServiceBase$DaemonWrapper;JLandroid/os/IBinder;Lcom/android/server/biometrics/BiometricServiceBase$ServiceListener;IIIZLjava/lang/String;Lcom/android/server/biometrics/BiometricUtils;)V
     .registers 28
+    .param p1, "context"  # Landroid/content/Context;
+    .param p2, "constants"  # Lcom/android/server/biometrics/Constants;
+    .param p3, "daemon"  # Lcom/android/server/biometrics/BiometricServiceBase$DaemonWrapper;
+    .param p4, "halDeviceId"  # J
+    .param p6, "token"  # Landroid/os/IBinder;
+    .param p7, "listener"  # Lcom/android/server/biometrics/BiometricServiceBase$ServiceListener;
+    .param p8, "biometricId"  # I
+    .param p9, "groupId"  # I
+    .param p10, "userId"  # I
+    .param p11, "restricted"  # Z
+    .param p12, "owner"  # Ljava/lang/String;
+    .param p13, "utils"  # Lcom/android/server/biometrics/BiometricUtils;
 
     .line 40
     move-object v13, p0
@@ -48,16 +60,18 @@
     iput v0, v13, Lcom/android/server/biometrics/RemovalClient;->mBiometricId:I
 
     .line 43
-    move-object/from16 v0, p13
+    move-object/from16 v1, p13
 
-    iput-object v0, v13, Lcom/android/server/biometrics/RemovalClient;->mBiometricUtils:Lcom/android/server/biometrics/BiometricUtils;
+    iput-object v1, v13, Lcom/android/server/biometrics/RemovalClient;->mBiometricUtils:Lcom/android/server/biometrics/BiometricUtils;
 
     .line 44
     return-void
 .end method
 
 .method private sendRemoved(Landroid/hardware/biometrics/BiometricAuthenticator$Identifier;I)Z
-    .registers 5
+    .registers 6
+    .param p1, "identifier"  # Landroid/hardware/biometrics/BiometricAuthenticator$Identifier;
+    .param p2, "remaining"  # I
 
     .line 102
     :try_start_0
@@ -82,30 +96,32 @@
 
     .line 105
     :catch_e
-    move-exception p1
+    move-exception v0
 
     .line 106
+    .local v0, "e":Landroid/os/RemoteException;
     invoke-virtual {p0}, Lcom/android/server/biometrics/RemovalClient;->getLogTag()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v1
 
-    const-string v1, "Failed to notify Removed:"
+    const-string v2, "Failed to notify Removed:"
 
-    invoke-static {v0, v1, p1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    invoke-static {v1, v2, v0}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
     .line 108
+    .end local v0  # "e":Landroid/os/RemoteException;
     :goto_18
     if-nez p2, :cond_1c
 
-    const/4 p1, 0x1
+    const/4 v0, 0x1
 
     goto :goto_1d
 
     :cond_1c
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
     :goto_1d
-    return p1
+    return v0
 .end method
 
 
@@ -118,7 +134,9 @@
 .end method
 
 .method public onAuthenticated(Landroid/hardware/biometrics/BiometricAuthenticator$Identifier;ZLjava/util/ArrayList;)Z
-    .registers 4
+    .registers 6
+    .param p1, "identifier"  # Landroid/hardware/biometrics/BiometricAuthenticator$Identifier;
+    .param p2, "authenticated"  # Z
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(",
@@ -131,58 +149,65 @@
     .end annotation
 
     .line 129
+    .local p3, "token":Ljava/util/ArrayList;, "Ljava/util/ArrayList<Ljava/lang/Byte;>;"
     invoke-virtual {p0}, Lcom/android/server/biometrics/RemovalClient;->getLogTag()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    const-string/jumbo p2, "onAuthenticated() called for remove!"
+    const-string/jumbo v1, "onAuthenticated() called for remove!"
 
-    invoke-static {p1, p2}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v0, v1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 130
-    const/4 p1, 0x1
+    const/4 v0, 0x1
 
-    return p1
+    return v0
 .end method
 
 .method public onEnrollResult(Landroid/hardware/biometrics/BiometricAuthenticator$Identifier;I)Z
-    .registers 3
+    .registers 5
+    .param p1, "identifier"  # Landroid/hardware/biometrics/BiometricAuthenticator$Identifier;
+    .param p2, "rem"  # I
 
     .line 122
     invoke-virtual {p0}, Lcom/android/server/biometrics/RemovalClient;->getLogTag()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    const-string/jumbo p2, "onEnrollResult() called for remove!"
+    const-string/jumbo v1, "onEnrollResult() called for remove!"
 
-    invoke-static {p1, p2}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v0, v1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 123
-    const/4 p1, 0x1
+    const/4 v0, 0x1
 
-    return p1
+    return v0
 .end method
 
 .method public onEnumerationResult(Landroid/hardware/biometrics/BiometricAuthenticator$Identifier;I)Z
-    .registers 3
+    .registers 5
+    .param p1, "identifier"  # Landroid/hardware/biometrics/BiometricAuthenticator$Identifier;
+    .param p2, "remaining"  # I
 
     .line 136
     invoke-virtual {p0}, Lcom/android/server/biometrics/RemovalClient;->getLogTag()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    const-string/jumbo p2, "onEnumerationResult() called for remove!"
+    const-string/jumbo v1, "onEnumerationResult() called for remove!"
 
-    invoke-static {p1, p2}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v0, v1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 137
-    const/4 p1, 0x1
+    const/4 v0, 0x1
 
-    return p1
+    return v0
 .end method
 
 .method public onRemoved(Landroid/hardware/biometrics/BiometricAuthenticator$Identifier;I)Z
     .registers 7
+    .param p1, "identifier"  # Landroid/hardware/biometrics/BiometricAuthenticator$Identifier;
+    .param p2, "remaining"  # I
 
     .line 113
     invoke-virtual {p1}, Landroid/hardware/biometrics/BiometricAuthenticator$Identifier;->getBiometricId()I
@@ -214,9 +239,9 @@
     :cond_17
     invoke-direct {p0, p1, p2}, Lcom/android/server/biometrics/RemovalClient;->sendRemoved(Landroid/hardware/biometrics/BiometricAuthenticator$Identifier;I)Z
 
-    move-result p1
+    move-result v0
 
-    return p1
+    return v0
 .end method
 
 .method public start()I
@@ -241,6 +266,7 @@
     move-result v1
 
     .line 60
+    .local v1, "result":I
     if-eqz v1, :cond_48
 
     .line 61
@@ -298,6 +324,7 @@
     return v1
 
     .line 70
+    .end local v1  # "result":I
     :cond_48
     goto :goto_54
 
@@ -306,6 +333,7 @@
     move-exception v1
 
     .line 69
+    .local v1, "e":Landroid/os/RemoteException;
     invoke-virtual {p0}, Lcom/android/server/biometrics/RemovalClient;->getLogTag()Ljava/lang/String;
 
     move-result-object v2
@@ -315,6 +343,7 @@
     invoke-static {v2, v3, v1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
     .line 71
+    .end local v1  # "e":Landroid/os/RemoteException;
     :goto_54
     return v0
 .end method
@@ -329,94 +358,96 @@
 .end method
 
 .method public stop(Z)I
-    .registers 5
+    .registers 7
+    .param p1, "initiatedByClient"  # Z
 
     .line 76
-    iget-boolean p1, p0, Lcom/android/server/biometrics/RemovalClient;->mAlreadyCancelled:Z
+    iget-boolean v0, p0, Lcom/android/server/biometrics/RemovalClient;->mAlreadyCancelled:Z
 
-    const/4 v0, 0x0
+    const/4 v1, 0x0
 
-    if-eqz p1, :cond_10
+    if-eqz v0, :cond_10
 
     .line 77
     invoke-virtual {p0}, Lcom/android/server/biometrics/RemovalClient;->getLogTag()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    const-string/jumbo v1, "stopRemove: already cancelled!"
+    const-string/jumbo v2, "stopRemove: already cancelled!"
 
-    invoke-static {p1, v1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v0, v2}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 78
-    return v0
+    return v1
 
     .line 82
     :cond_10
     :try_start_10
     invoke-virtual {p0}, Lcom/android/server/biometrics/RemovalClient;->getDaemonWrapper()Lcom/android/server/biometrics/BiometricServiceBase$DaemonWrapper;
 
-    move-result-object p1
+    move-result-object v0
 
-    invoke-interface {p1}, Lcom/android/server/biometrics/BiometricServiceBase$DaemonWrapper;->cancel()I
+    invoke-interface {v0}, Lcom/android/server/biometrics/BiometricServiceBase$DaemonWrapper;->cancel()I
 
-    move-result p1
+    move-result v0
 
     .line 83
-    if-eqz p1, :cond_34
+    .local v0, "result":I
+    if-eqz v0, :cond_34
 
     .line 84
     invoke-virtual {p0}, Lcom/android/server/biometrics/RemovalClient;->getLogTag()Ljava/lang/String;
 
-    move-result-object v0
-
-    new-instance v1, Ljava/lang/StringBuilder;
-
-    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
-
-    const-string/jumbo v2, "stopRemoval failed, result="
-
-    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v1, p1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
-
     move-result-object v1
 
-    invoke-static {v0, v1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    new-instance v2, Ljava/lang/StringBuilder;
+
+    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
+
+    const-string/jumbo v3, "stopRemoval failed, result="
+
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v2, v0}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v2
+
+    invoke-static {v1, v2}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 85
-    return p1
+    return v0
 
     .line 87
     :cond_34
     invoke-virtual {p0}, Lcom/android/server/biometrics/RemovalClient;->getLogTag()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v2
 
-    new-instance v1, Ljava/lang/StringBuilder;
+    new-instance v3, Ljava/lang/StringBuilder;
 
-    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v2, "client "
+    const-string v4, "client "
 
-    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {p0}, Lcom/android/server/biometrics/RemovalClient;->getOwnerString()Ljava/lang/String;
 
-    move-result-object v2
+    move-result-object v4
 
-    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string v2, " is no longer removing"
+    const-string v4, " is no longer removing"
 
-    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v1
+    move-result-object v3
 
-    invoke-static {p1, v1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v2, v3}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
     :try_end_55
     .catch Landroid/os/RemoteException; {:try_start_10 .. :try_end_55} :catch_5a
 
@@ -424,28 +455,30 @@
     nop
 
     .line 92
-    const/4 p1, 0x1
+    .end local v0  # "result":I
+    const/4 v0, 0x1
 
-    iput-boolean p1, p0, Lcom/android/server/biometrics/RemovalClient;->mAlreadyCancelled:Z
+    iput-boolean v0, p0, Lcom/android/server/biometrics/RemovalClient;->mAlreadyCancelled:Z
 
     .line 93
-    return v0
+    return v1
 
     .line 88
     :catch_5a
-    move-exception p1
+    move-exception v0
 
     .line 89
+    .local v0, "e":Landroid/os/RemoteException;
     invoke-virtual {p0}, Lcom/android/server/biometrics/RemovalClient;->getLogTag()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v1
 
-    const-string/jumbo v1, "stopRemoval failed"
+    const-string/jumbo v2, "stopRemoval failed"
 
-    invoke-static {v0, v1, p1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    invoke-static {v1, v2, v0}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
     .line 90
-    const/4 p1, 0x3
+    const/4 v1, 0x3
 
-    return p1
+    return v1
 .end method

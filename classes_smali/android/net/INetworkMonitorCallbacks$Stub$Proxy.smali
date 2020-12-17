@@ -30,19 +30,20 @@
 # direct methods
 .method constructor <init>(Landroid/os/IBinder;)V
     .registers 3
+    .param p1, "remote"  # Landroid/os/IBinder;
 
-    .line 143
+    .line 152
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
-    .line 146
+    .line 155
     const/4 v0, -0x1
 
     iput v0, p0, Landroid/net/INetworkMonitorCallbacks$Stub$Proxy;->mCachedVersion:I
 
-    .line 144
+    .line 153
     iput-object p1, p0, Landroid/net/INetworkMonitorCallbacks$Stub$Proxy;->mRemote:Landroid/os/IBinder;
 
-    .line 145
+    .line 154
     return-void
 .end method
 
@@ -51,7 +52,7 @@
 .method public asBinder()Landroid/os/IBinder;
     .registers 2
 
-    .line 149
+    .line 158
     iget-object v0, p0, Landroid/net/INetworkMonitorCallbacks$Stub$Proxy;->mRemote:Landroid/os/IBinder;
 
     return-object v0
@@ -60,7 +61,7 @@
 .method public getInterfaceDescriptor()Ljava/lang/String;
     .registers 2
 
-    .line 153
+    .line 162
     const-string v0, "android.net.INetworkMonitorCallbacks"
 
     return-object v0
@@ -74,30 +75,32 @@
         }
     .end annotation
 
-    .line 244
+    .line 268
     iget v0, p0, Landroid/net/INetworkMonitorCallbacks$Stub$Proxy;->mCachedVersion:I
 
     const/4 v1, -0x1
 
     if-ne v0, v1, :cond_33
 
-    .line 245
+    .line 269
     invoke-static {}, Landroid/os/Parcel;->obtain()Landroid/os/Parcel;
 
     move-result-object v0
 
-    .line 246
+    .line 270
+    .local v0, "data":Landroid/os/Parcel;
     invoke-static {}, Landroid/os/Parcel;->obtain()Landroid/os/Parcel;
 
     move-result-object v1
 
-    .line 248
+    .line 272
+    .local v1, "reply":Landroid/os/Parcel;
     :try_start_d
     const-string v2, "android.net.INetworkMonitorCallbacks"
 
     invoke-virtual {v0, v2}, Landroid/os/Parcel;->writeInterfaceToken(Ljava/lang/String;)V
 
-    .line 249
+    .line 273
     iget-object v2, p0, Landroid/net/INetworkMonitorCallbacks$Stub$Proxy;->mRemote:Landroid/os/IBinder;
 
     const v3, 0xffffff
@@ -106,10 +109,10 @@
 
     invoke-interface {v2, v3, v0, v1, v4}, Landroid/os/IBinder;->transact(ILandroid/os/Parcel;Landroid/os/Parcel;I)Z
 
-    .line 250
+    .line 274
     invoke-virtual {v1}, Landroid/os/Parcel;->readException()V
 
-    .line 251
+    .line 275
     invoke-virtual {v1}, Landroid/os/Parcel;->readInt()I
 
     move-result v2
@@ -118,27 +121,29 @@
     :try_end_24
     .catchall {:try_start_d .. :try_end_24} :catchall_2b
 
-    .line 253
+    .line 277
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
 
-    .line 254
+    .line 278
     invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
 
-    .line 255
+    .line 279
     goto :goto_33
 
-    .line 253
+    .line 277
     :catchall_2b
     move-exception v2
 
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
 
-    .line 254
+    .line 278
     invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
 
     throw v2
 
-    .line 257
+    .line 281
+    .end local v0  # "data":Landroid/os/Parcel;
+    .end local v1  # "reply":Landroid/os/Parcel;
     :cond_33
     :goto_33
     iget v0, p0, Landroid/net/INetworkMonitorCallbacks$Stub$Proxy;->mCachedVersion:I
@@ -154,18 +159,19 @@
         }
     .end annotation
 
-    .line 229
+    .line 238
     invoke-static {}, Landroid/os/Parcel;->obtain()Landroid/os/Parcel;
 
     move-result-object v0
 
-    .line 231
+    .line 240
+    .local v0, "_data":Landroid/os/Parcel;
     :try_start_4
     const-string v1, "android.net.INetworkMonitorCallbacks"
 
     invoke-virtual {v0, v1}, Landroid/os/Parcel;->writeInterfaceToken(Ljava/lang/String;)V
 
-    .line 232
+    .line 241
     iget-object v1, p0, Landroid/net/INetworkMonitorCallbacks$Stub$Proxy;->mRemote:Landroid/os/IBinder;
 
     const/4 v2, 0x5
@@ -178,41 +184,43 @@
 
     move-result v1
 
-    .line 233
+    .line 242
+    .local v1, "_status":Z
     if-nez v1, :cond_25
 
     invoke-static {}, Landroid/net/INetworkMonitorCallbacks$Stub;->getDefaultImpl()Landroid/net/INetworkMonitorCallbacks;
 
-    move-result-object v1
+    move-result-object v2
 
-    if-eqz v1, :cond_25
+    if-eqz v2, :cond_25
 
-    .line 234
+    .line 243
     invoke-static {}, Landroid/net/INetworkMonitorCallbacks$Stub;->getDefaultImpl()Landroid/net/INetworkMonitorCallbacks;
 
-    move-result-object v1
+    move-result-object v2
 
-    invoke-interface {v1}, Landroid/net/INetworkMonitorCallbacks;->hideProvisioningNotification()V
+    invoke-interface {v2}, Landroid/net/INetworkMonitorCallbacks;->hideProvisioningNotification()V
     :try_end_21
     .catchall {:try_start_4 .. :try_end_21} :catchall_2a
 
-    .line 239
+    .line 248
     invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
 
-    .line 235
+    .line 244
     return-void
 
-    .line 239
+    .line 248
+    .end local v1  # "_status":Z
     :cond_25
     invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
 
-    .line 240
+    .line 249
     nop
 
-    .line 241
+    .line 250
     return-void
 
-    .line 239
+    .line 248
     :catchall_2a
     move-exception v1
 
@@ -223,30 +231,33 @@
 
 .method public notifyNetworkTested(ILjava/lang/String;)V
     .registers 8
+    .param p1, "testResult"  # I
+    .param p2, "redirectUrl"  # Ljava/lang/String;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
         }
     .end annotation
 
-    .line 173
+    .line 182
     invoke-static {}, Landroid/os/Parcel;->obtain()Landroid/os/Parcel;
 
     move-result-object v0
 
-    .line 175
+    .line 184
+    .local v0, "_data":Landroid/os/Parcel;
     :try_start_4
     const-string v1, "android.net.INetworkMonitorCallbacks"
 
     invoke-virtual {v0, v1}, Landroid/os/Parcel;->writeInterfaceToken(Ljava/lang/String;)V
 
-    .line 176
+    .line 185
     invoke-virtual {v0, p1}, Landroid/os/Parcel;->writeInt(I)V
 
-    .line 177
+    .line 186
     invoke-virtual {v0, p2}, Landroid/os/Parcel;->writeString(Ljava/lang/String;)V
 
-    .line 178
+    .line 187
     iget-object v1, p0, Landroid/net/INetworkMonitorCallbacks$Stub$Proxy;->mRemote:Landroid/os/IBinder;
 
     const/4 v2, 0x2
@@ -259,88 +270,170 @@
 
     move-result v1
 
-    .line 179
+    .line 188
+    .local v1, "_status":Z
     if-nez v1, :cond_2b
 
     invoke-static {}, Landroid/net/INetworkMonitorCallbacks$Stub;->getDefaultImpl()Landroid/net/INetworkMonitorCallbacks;
 
-    move-result-object v1
+    move-result-object v2
 
-    if-eqz v1, :cond_2b
+    if-eqz v2, :cond_2b
 
-    .line 180
+    .line 189
     invoke-static {}, Landroid/net/INetworkMonitorCallbacks$Stub;->getDefaultImpl()Landroid/net/INetworkMonitorCallbacks;
 
-    move-result-object v1
+    move-result-object v2
 
-    invoke-interface {v1, p1, p2}, Landroid/net/INetworkMonitorCallbacks;->notifyNetworkTested(ILjava/lang/String;)V
+    invoke-interface {v2, p1, p2}, Landroid/net/INetworkMonitorCallbacks;->notifyNetworkTested(ILjava/lang/String;)V
     :try_end_27
     .catchall {:try_start_4 .. :try_end_27} :catchall_30
 
-    .line 185
+    .line 194
     invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
 
-    .line 181
+    .line 190
     return-void
 
-    .line 185
+    .line 194
+    .end local v1  # "_status":Z
     :cond_2b
     invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
 
-    .line 186
+    .line 195
     nop
 
-    .line 187
+    .line 196
     return-void
 
-    .line 185
+    .line 194
     :catchall_30
-    move-exception p1
+    move-exception v1
 
     invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
 
-    throw p1
+    throw v1
 .end method
 
-.method public notifyPrivateDnsConfigResolved(Landroid/net/PrivateDnsConfigParcel;)V
-    .registers 7
+.method public notifyPortalLoginTimeout()V
+    .registers 6
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
         }
     .end annotation
 
-    .line 190
+    .line 253
     invoke-static {}, Landroid/os/Parcel;->obtain()Landroid/os/Parcel;
 
     move-result-object v0
 
-    .line 192
+    .line 255
+    .local v0, "_data":Landroid/os/Parcel;
     :try_start_4
     const-string v1, "android.net.INetworkMonitorCallbacks"
 
     invoke-virtual {v0, v1}, Landroid/os/Parcel;->writeInterfaceToken(Ljava/lang/String;)V
 
-    .line 193
+    .line 256
+    iget-object v1, p0, Landroid/net/INetworkMonitorCallbacks$Stub$Proxy;->mRemote:Landroid/os/IBinder;
+
+    const/4 v2, 0x6
+
+    const/4 v3, 0x0
+
+    const/4 v4, 0x1
+
+    invoke-interface {v1, v2, v0, v3, v4}, Landroid/os/IBinder;->transact(ILandroid/os/Parcel;Landroid/os/Parcel;I)Z
+
+    move-result v1
+
+    .line 257
+    .local v1, "_status":Z
+    if-nez v1, :cond_25
+
+    invoke-static {}, Landroid/net/INetworkMonitorCallbacks$Stub;->getDefaultImpl()Landroid/net/INetworkMonitorCallbacks;
+
+    move-result-object v2
+
+    if-eqz v2, :cond_25
+
+    .line 258
+    invoke-static {}, Landroid/net/INetworkMonitorCallbacks$Stub;->getDefaultImpl()Landroid/net/INetworkMonitorCallbacks;
+
+    move-result-object v2
+
+    invoke-interface {v2}, Landroid/net/INetworkMonitorCallbacks;->notifyPortalLoginTimeout()V
+    :try_end_21
+    .catchall {:try_start_4 .. :try_end_21} :catchall_2a
+
+    .line 263
+    invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
+
+    .line 259
+    return-void
+
+    .line 263
+    .end local v1  # "_status":Z
+    :cond_25
+    invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
+
+    .line 264
+    nop
+
+    .line 265
+    return-void
+
+    .line 263
+    :catchall_2a
+    move-exception v1
+
+    invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
+
+    throw v1
+.end method
+
+.method public notifyPrivateDnsConfigResolved(Landroid/net/PrivateDnsConfigParcel;)V
+    .registers 7
+    .param p1, "config"  # Landroid/net/PrivateDnsConfigParcel;
+    .annotation system Ldalvik/annotation/Throws;
+        value = {
+            Landroid/os/RemoteException;
+        }
+    .end annotation
+
+    .line 199
+    invoke-static {}, Landroid/os/Parcel;->obtain()Landroid/os/Parcel;
+
+    move-result-object v0
+
+    .line 201
+    .local v0, "_data":Landroid/os/Parcel;
+    :try_start_4
+    const-string v1, "android.net.INetworkMonitorCallbacks"
+
+    invoke-virtual {v0, v1}, Landroid/os/Parcel;->writeInterfaceToken(Ljava/lang/String;)V
+
+    .line 202
     const/4 v1, 0x1
 
     const/4 v2, 0x0
 
     if-eqz p1, :cond_14
 
-    .line 194
+    .line 203
     invoke-virtual {v0, v1}, Landroid/os/Parcel;->writeInt(I)V
 
-    .line 195
+    .line 204
     invoke-virtual {p1, v0, v2}, Landroid/net/PrivateDnsConfigParcel;->writeToParcel(Landroid/os/Parcel;I)V
 
     goto :goto_17
 
-    .line 198
+    .line 207
     :cond_14
     invoke-virtual {v0, v2}, Landroid/os/Parcel;->writeInt(I)V
 
-    .line 200
+    .line 209
     :goto_17
     iget-object v2, p0, Landroid/net/INetworkMonitorCallbacks$Stub$Proxy;->mRemote:Landroid/os/IBinder;
 
@@ -352,69 +445,73 @@
 
     move-result v1
 
-    .line 201
+    .line 210
+    .local v1, "_status":Z
     if-nez v1, :cond_32
 
     invoke-static {}, Landroid/net/INetworkMonitorCallbacks$Stub;->getDefaultImpl()Landroid/net/INetworkMonitorCallbacks;
 
-    move-result-object v1
+    move-result-object v2
 
-    if-eqz v1, :cond_32
+    if-eqz v2, :cond_32
 
-    .line 202
+    .line 211
     invoke-static {}, Landroid/net/INetworkMonitorCallbacks$Stub;->getDefaultImpl()Landroid/net/INetworkMonitorCallbacks;
 
-    move-result-object v1
+    move-result-object v2
 
-    invoke-interface {v1, p1}, Landroid/net/INetworkMonitorCallbacks;->notifyPrivateDnsConfigResolved(Landroid/net/PrivateDnsConfigParcel;)V
+    invoke-interface {v2, p1}, Landroid/net/INetworkMonitorCallbacks;->notifyPrivateDnsConfigResolved(Landroid/net/PrivateDnsConfigParcel;)V
     :try_end_2e
     .catchall {:try_start_4 .. :try_end_2e} :catchall_37
 
-    .line 207
+    .line 216
     invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
 
-    .line 203
+    .line 212
     return-void
 
-    .line 207
+    .line 216
+    .end local v1  # "_status":Z
     :cond_32
     invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
 
-    .line 208
+    .line 217
     nop
 
-    .line 209
+    .line 218
     return-void
 
-    .line 207
+    .line 216
     :catchall_37
-    move-exception p1
+    move-exception v1
 
     invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
 
-    throw p1
+    throw v1
 .end method
 
 .method public onNetworkMonitorCreated(Landroid/net/INetworkMonitor;)V
     .registers 6
+    .param p1, "networkMonitor"  # Landroid/net/INetworkMonitor;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
         }
     .end annotation
 
-    .line 157
+    .line 166
     invoke-static {}, Landroid/os/Parcel;->obtain()Landroid/os/Parcel;
 
     move-result-object v0
 
-    .line 159
+    .line 168
+    .local v0, "_data":Landroid/os/Parcel;
     :try_start_4
     const-string v1, "android.net.INetworkMonitorCallbacks"
 
     invoke-virtual {v0, v1}, Landroid/os/Parcel;->writeInterfaceToken(Ljava/lang/String;)V
 
-    .line 160
+    .line 169
     const/4 v1, 0x0
 
     if-eqz p1, :cond_11
@@ -431,7 +528,7 @@
     :goto_12
     invoke-virtual {v0, v2}, Landroid/os/Parcel;->writeStrongBinder(Landroid/os/IBinder;)V
 
-    .line 161
+    .line 170
     iget-object v2, p0, Landroid/net/INetworkMonitorCallbacks$Stub$Proxy;->mRemote:Landroid/os/IBinder;
 
     const/4 v3, 0x1
@@ -440,75 +537,80 @@
 
     move-result v1
 
-    .line 162
+    .line 171
+    .local v1, "_status":Z
     if-nez v1, :cond_2f
 
     invoke-static {}, Landroid/net/INetworkMonitorCallbacks$Stub;->getDefaultImpl()Landroid/net/INetworkMonitorCallbacks;
 
-    move-result-object v1
+    move-result-object v2
 
-    if-eqz v1, :cond_2f
+    if-eqz v2, :cond_2f
 
-    .line 163
+    .line 172
     invoke-static {}, Landroid/net/INetworkMonitorCallbacks$Stub;->getDefaultImpl()Landroid/net/INetworkMonitorCallbacks;
 
-    move-result-object v1
+    move-result-object v2
 
-    invoke-interface {v1, p1}, Landroid/net/INetworkMonitorCallbacks;->onNetworkMonitorCreated(Landroid/net/INetworkMonitor;)V
+    invoke-interface {v2, p1}, Landroid/net/INetworkMonitorCallbacks;->onNetworkMonitorCreated(Landroid/net/INetworkMonitor;)V
     :try_end_2b
     .catchall {:try_start_4 .. :try_end_2b} :catchall_34
 
-    .line 168
+    .line 177
     invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
 
-    .line 164
+    .line 173
     return-void
 
-    .line 168
+    .line 177
+    .end local v1  # "_status":Z
     :cond_2f
     invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
 
-    .line 169
+    .line 178
     nop
 
-    .line 170
+    .line 179
     return-void
 
-    .line 168
+    .line 177
     :catchall_34
-    move-exception p1
+    move-exception v1
 
     invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
 
-    throw p1
+    throw v1
 .end method
 
 .method public showProvisioningNotification(Ljava/lang/String;Ljava/lang/String;)V
     .registers 8
+    .param p1, "action"  # Ljava/lang/String;
+    .param p2, "packageName"  # Ljava/lang/String;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
         }
     .end annotation
 
-    .line 212
+    .line 221
     invoke-static {}, Landroid/os/Parcel;->obtain()Landroid/os/Parcel;
 
     move-result-object v0
 
-    .line 214
+    .line 223
+    .local v0, "_data":Landroid/os/Parcel;
     :try_start_4
     const-string v1, "android.net.INetworkMonitorCallbacks"
 
     invoke-virtual {v0, v1}, Landroid/os/Parcel;->writeInterfaceToken(Ljava/lang/String;)V
 
-    .line 215
+    .line 224
     invoke-virtual {v0, p1}, Landroid/os/Parcel;->writeString(Ljava/lang/String;)V
 
-    .line 216
+    .line 225
     invoke-virtual {v0, p2}, Landroid/os/Parcel;->writeString(Ljava/lang/String;)V
 
-    .line 217
+    .line 226
     iget-object v1, p0, Landroid/net/INetworkMonitorCallbacks$Stub$Proxy;->mRemote:Landroid/os/IBinder;
 
     const/4 v2, 0x4
@@ -521,45 +623,47 @@
 
     move-result v1
 
-    .line 218
+    .line 227
+    .local v1, "_status":Z
     if-nez v1, :cond_2b
 
     invoke-static {}, Landroid/net/INetworkMonitorCallbacks$Stub;->getDefaultImpl()Landroid/net/INetworkMonitorCallbacks;
 
-    move-result-object v1
+    move-result-object v2
 
-    if-eqz v1, :cond_2b
+    if-eqz v2, :cond_2b
 
-    .line 219
+    .line 228
     invoke-static {}, Landroid/net/INetworkMonitorCallbacks$Stub;->getDefaultImpl()Landroid/net/INetworkMonitorCallbacks;
 
-    move-result-object v1
+    move-result-object v2
 
-    invoke-interface {v1, p1, p2}, Landroid/net/INetworkMonitorCallbacks;->showProvisioningNotification(Ljava/lang/String;Ljava/lang/String;)V
+    invoke-interface {v2, p1, p2}, Landroid/net/INetworkMonitorCallbacks;->showProvisioningNotification(Ljava/lang/String;Ljava/lang/String;)V
     :try_end_27
     .catchall {:try_start_4 .. :try_end_27} :catchall_30
 
-    .line 224
+    .line 233
     invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
 
-    .line 220
+    .line 229
     return-void
 
-    .line 224
+    .line 233
+    .end local v1  # "_status":Z
     :cond_2b
     invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
 
-    .line 225
+    .line 234
     nop
 
-    .line 226
+    .line 235
     return-void
 
-    .line 224
+    .line 233
     :catchall_30
-    move-exception p1
+    move-exception v1
 
     invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
 
-    throw p1
+    throw v1
 .end method

@@ -49,6 +49,7 @@
 
 .method public onIpMemoryStoreFetched(Landroid/net/IIpMemoryStore;)V
     .registers 2
+    .param p1, "ipMemoryStore"  # Landroid/net/IIpMemoryStore;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;

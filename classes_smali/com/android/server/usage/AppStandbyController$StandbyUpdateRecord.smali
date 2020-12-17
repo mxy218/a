@@ -29,6 +29,11 @@
 # direct methods
 .method constructor <init>(Ljava/lang/String;IIIZ)V
     .registers 6
+    .param p1, "pkgName"  # Ljava/lang/String;
+    .param p2, "userId"  # I
+    .param p3, "bucket"  # I
+    .param p4, "reason"  # I
+    .param p5, "isInteraction"  # Z
 
     .line 291
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -54,6 +59,11 @@
 
 .method public static obtain(Ljava/lang/String;IIIZ)Lcom/android/server/usage/AppStandbyController$StandbyUpdateRecord;
     .registers 14
+    .param p0, "pkgName"  # Ljava/lang/String;
+    .param p1, "userId"  # I
+    .param p2, "bucket"  # I
+    .param p3, "reason"  # I
+    .param p4, "isInteraction"  # Z
 
     .line 301
     sget-object v0, Lcom/android/server/usage/AppStandbyController;->sStandbyUpdatePool:Ljava/util/ArrayList;
@@ -69,14 +79,15 @@
     move-result v1
 
     .line 303
+    .local v1, "size":I
     const/4 v2, 0x1
 
     if-ge v1, v2, :cond_19
 
     .line 304
-    new-instance v1, Lcom/android/server/usage/AppStandbyController$StandbyUpdateRecord;
+    new-instance v2, Lcom/android/server/usage/AppStandbyController$StandbyUpdateRecord;
 
-    move-object v3, v1
+    move-object v3, v2
 
     move-object v4, p0
 
@@ -92,49 +103,52 @@
 
     monitor-exit v0
 
-    return-object v1
+    return-object v2
 
     .line 306
     :cond_19
-    sget-object v3, Lcom/android/server/usage/AppStandbyController;->sStandbyUpdatePool:Ljava/util/ArrayList;
+    sget-object v2, Lcom/android/server/usage/AppStandbyController;->sStandbyUpdatePool:Ljava/util/ArrayList;
 
-    sub-int/2addr v1, v2
+    add-int/lit8 v3, v1, -0x1
 
-    invoke-virtual {v3, v1}, Ljava/util/ArrayList;->remove(I)Ljava/lang/Object;
+    invoke-virtual {v2, v3}, Ljava/util/ArrayList;->remove(I)Ljava/lang/Object;
 
-    move-result-object v1
+    move-result-object v2
 
-    check-cast v1, Lcom/android/server/usage/AppStandbyController$StandbyUpdateRecord;
+    check-cast v2, Lcom/android/server/usage/AppStandbyController$StandbyUpdateRecord;
 
     .line 307
-    iput-object p0, v1, Lcom/android/server/usage/AppStandbyController$StandbyUpdateRecord;->packageName:Ljava/lang/String;
+    .local v2, "r":Lcom/android/server/usage/AppStandbyController$StandbyUpdateRecord;
+    iput-object p0, v2, Lcom/android/server/usage/AppStandbyController$StandbyUpdateRecord;->packageName:Ljava/lang/String;
 
     .line 308
-    iput p1, v1, Lcom/android/server/usage/AppStandbyController$StandbyUpdateRecord;->userId:I
+    iput p1, v2, Lcom/android/server/usage/AppStandbyController$StandbyUpdateRecord;->userId:I
 
     .line 309
-    iput p2, v1, Lcom/android/server/usage/AppStandbyController$StandbyUpdateRecord;->bucket:I
+    iput p2, v2, Lcom/android/server/usage/AppStandbyController$StandbyUpdateRecord;->bucket:I
 
     .line 310
-    iput p3, v1, Lcom/android/server/usage/AppStandbyController$StandbyUpdateRecord;->reason:I
+    iput p3, v2, Lcom/android/server/usage/AppStandbyController$StandbyUpdateRecord;->reason:I
 
     .line 311
-    iput-boolean p4, v1, Lcom/android/server/usage/AppStandbyController$StandbyUpdateRecord;->isUserInteraction:Z
+    iput-boolean p4, v2, Lcom/android/server/usage/AppStandbyController$StandbyUpdateRecord;->isUserInteraction:Z
 
     .line 312
     monitor-exit v0
 
-    return-object v1
+    return-object v2
 
     .line 313
-    :catchall_2e
-    move-exception p0
+    .end local v1  # "size":I
+    .end local v2  # "r":Lcom/android/server/usage/AppStandbyController$StandbyUpdateRecord;
+    :catchall_2f
+    move-exception v1
 
     monitor-exit v0
-    :try_end_30
-    .catchall {:try_start_3 .. :try_end_30} :catchall_2e
+    :try_end_31
+    .catchall {:try_start_3 .. :try_end_31} :catchall_2f
 
-    throw p0
+    throw v1
 .end method
 
 

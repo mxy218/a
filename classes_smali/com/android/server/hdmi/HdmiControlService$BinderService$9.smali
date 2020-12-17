@@ -26,6 +26,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/hdmi/HdmiControlService$BinderService;I)V
     .registers 3
+    .param p1, "this$1"  # Lcom/android/server/hdmi/HdmiControlService$BinderService;
 
     .line 1770
     iput-object p1, p0, Lcom/android/server/hdmi/HdmiControlService$BinderService$9;->this$1:Lcom/android/server/hdmi/HdmiControlService$BinderService;
@@ -60,6 +61,7 @@
     move-result-object v0
 
     .line 1775
+    .local v0, "setStreamPath":Lcom/android/server/hdmi/HdmiCecMessage;
     iget-object v1, p0, Lcom/android/server/hdmi/HdmiControlService$BinderService$9;->this$1:Lcom/android/server/hdmi/HdmiControlService$BinderService;
 
     iget-object v1, v1, Lcom/android/server/hdmi/HdmiControlService$BinderService;->this$0:Lcom/android/server/hdmi/HdmiControlService;

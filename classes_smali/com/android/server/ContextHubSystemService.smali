@@ -22,7 +22,8 @@
 
 # direct methods
 .method public constructor <init>(Landroid/content/Context;)V
-    .registers 4
+    .registers 5
+    .param p1, "context"  # Landroid/content/Context;
 
     .line 34
     invoke-direct {p0, p1}, Lcom/android/server/SystemService;-><init>(Landroid/content/Context;)V
@@ -36,13 +37,13 @@
 
     invoke-direct {v1, p0, p1}, Lcom/android/server/-$$Lambda$ContextHubSystemService$q-5gSEKm3he-4vIHcay4DLtf85E;-><init>(Lcom/android/server/ContextHubSystemService;Landroid/content/Context;)V
 
-    const-string p1, "Init ContextHubSystemService"
+    const-string v2, "Init ContextHubSystemService"
 
-    invoke-virtual {v0, v1, p1}, Lcom/android/server/SystemServerInitThreadPool;->submit(Ljava/lang/Runnable;Ljava/lang/String;)Ljava/util/concurrent/Future;
+    invoke-virtual {v0, v1, v2}, Lcom/android/server/SystemServerInitThreadPool;->submit(Ljava/lang/Runnable;Ljava/lang/String;)Ljava/util/concurrent/Future;
 
-    move-result-object p1
+    move-result-object v0
 
-    iput-object p1, p0, Lcom/android/server/ContextHubSystemService;->mInit:Ljava/util/concurrent/Future;
+    iput-object v0, p0, Lcom/android/server/ContextHubSystemService;->mInit:Ljava/util/concurrent/Future;
 
     .line 38
     return-void
@@ -52,6 +53,7 @@
 # virtual methods
 .method public synthetic lambda$new$0$ContextHubSystemService(Landroid/content/Context;)V
     .registers 3
+    .param p1, "context"  # Landroid/content/Context;
 
     .line 36
     new-instance v0, Lcom/android/server/location/ContextHubService;
@@ -65,7 +67,8 @@
 .end method
 
 .method public onBootPhase(I)V
-    .registers 3
+    .registers 4
+    .param p1, "phase"  # I
 
     .line 46
     const/16 v0, 0x1f4
@@ -73,30 +76,30 @@
     if-ne p1, v0, :cond_1d
 
     .line 47
-    const-string p1, "ContextHubSystemService"
+    const-string v0, "ContextHubSystemService"
 
-    const-string/jumbo v0, "onBootPhase: PHASE_SYSTEM_SERVICES_READY"
+    const-string/jumbo v1, "onBootPhase: PHASE_SYSTEM_SERVICES_READY"
 
-    invoke-static {p1, v0}, Landroid/util/Log;->d(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v0, v1}, Landroid/util/Log;->d(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 48
-    iget-object p1, p0, Lcom/android/server/ContextHubSystemService;->mInit:Ljava/util/concurrent/Future;
+    iget-object v0, p0, Lcom/android/server/ContextHubSystemService;->mInit:Ljava/util/concurrent/Future;
 
-    const-string v0, "Wait for ContextHubSystemService init"
+    const-string v1, "Wait for ContextHubSystemService init"
 
-    invoke-static {p1, v0}, Lcom/android/internal/util/ConcurrentUtils;->waitForFutureNoInterrupt(Ljava/util/concurrent/Future;Ljava/lang/String;)Ljava/lang/Object;
+    invoke-static {v0, v1}, Lcom/android/internal/util/ConcurrentUtils;->waitForFutureNoInterrupt(Ljava/util/concurrent/Future;Ljava/lang/String;)Ljava/lang/Object;
 
     .line 50
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    iput-object p1, p0, Lcom/android/server/ContextHubSystemService;->mInit:Ljava/util/concurrent/Future;
+    iput-object v0, p0, Lcom/android/server/ContextHubSystemService;->mInit:Ljava/util/concurrent/Future;
 
     .line 51
-    iget-object p1, p0, Lcom/android/server/ContextHubSystemService;->mContextHubService:Lcom/android/server/location/ContextHubService;
+    iget-object v0, p0, Lcom/android/server/ContextHubSystemService;->mContextHubService:Lcom/android/server/location/ContextHubService;
 
-    const-string v0, "contexthub"
+    const-string v1, "contexthub"
 
-    invoke-virtual {p0, v0, p1}, Lcom/android/server/ContextHubSystemService;->publishBinderService(Ljava/lang/String;Landroid/os/IBinder;)V
+    invoke-virtual {p0, v1, v0}, Lcom/android/server/ContextHubSystemService;->publishBinderService(Ljava/lang/String;Landroid/os/IBinder;)V
 
     .line 53
     :cond_1d

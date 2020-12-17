@@ -47,42 +47,44 @@
 
 # virtual methods
 .method public initialize(Landroid/content/Context;Lcom/android/server/notification/NotificationUsageStats;)V
-    .registers 3
+    .registers 5
+    .param p1, "ctx"  # Landroid/content/Context;
+    .param p2, "usageStats"  # Lcom/android/server/notification/NotificationUsageStats;
 
     .line 41
-    sget-boolean p1, Lcom/android/server/notification/NotificationIntrusivenessExtractor;->DBG:Z
+    sget-boolean v0, Lcom/android/server/notification/NotificationIntrusivenessExtractor;->DBG:Z
 
-    if-eqz p1, :cond_27
+    if-eqz v0, :cond_27
 
-    new-instance p1, Ljava/lang/StringBuilder;
+    new-instance v0, Ljava/lang/StringBuilder;
 
-    invoke-direct {p1}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string p2, "Initializing  "
+    const-string v1, "Initializing  "
 
-    invoke-virtual {p1, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {p0}, Ljava/lang/Object;->getClass()Ljava/lang/Class;
 
-    move-result-object p2
+    move-result-object v1
 
-    invoke-virtual {p2}, Ljava/lang/Class;->getSimpleName()Ljava/lang/String;
+    invoke-virtual {v1}, Ljava/lang/Class;->getSimpleName()Ljava/lang/String;
 
-    move-result-object p2
+    move-result-object v1
 
-    invoke-virtual {p1, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string p2, "."
+    const-string v1, "."
 
-    invoke-virtual {p1, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    const-string p2, "IntrusivenessExtractor"
+    const-string v1, "IntrusivenessExtractor"
 
-    invoke-static {p2, p1}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v0}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 42
     :cond_27
@@ -91,6 +93,7 @@
 
 .method public process(Lcom/android/server/notification/NotificationRecord;)Lcom/android/server/notification/RankingReconsideration;
     .registers 8
+    .param p1, "record"  # Lcom/android/server/notification/NotificationRecord;
 
     .line 45
     const/4 v0, 0x0
@@ -193,24 +196,24 @@
 
     invoke-virtual {p1}, Lcom/android/server/notification/NotificationRecord;->getKey()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v1
 
-    invoke-direct {v0, p0, p1, v3, v4}, Lcom/android/server/notification/NotificationIntrusivenessExtractor$1;-><init>(Lcom/android/server/notification/NotificationIntrusivenessExtractor;Ljava/lang/String;J)V
+    invoke-direct {v0, p0, v1, v3, v4}, Lcom/android/server/notification/NotificationIntrusivenessExtractor$1;-><init>(Lcom/android/server/notification/NotificationIntrusivenessExtractor;Ljava/lang/String;J)V
 
     return-object v0
 
     .line 46
     :cond_57
     :goto_57
-    sget-boolean p1, Lcom/android/server/notification/NotificationIntrusivenessExtractor;->DBG:Z
+    sget-boolean v1, Lcom/android/server/notification/NotificationIntrusivenessExtractor;->DBG:Z
 
-    if-eqz p1, :cond_63
+    if-eqz v1, :cond_63
 
-    const-string p1, "IntrusivenessExtractor"
+    const-string v1, "IntrusivenessExtractor"
 
-    const-string/jumbo v1, "skipping empty notification"
+    const-string/jumbo v2, "skipping empty notification"
 
-    invoke-static {p1, v1}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v2}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 47
     :cond_63
@@ -219,6 +222,7 @@
 
 .method public setConfig(Lcom/android/server/notification/RankingConfig;)V
     .registers 2
+    .param p1, "config"  # Lcom/android/server/notification/RankingConfig;
 
     .line 87
     return-void
@@ -226,6 +230,7 @@
 
 .method public setZenHelper(Lcom/android/server/notification/ZenModeHelper;)V
     .registers 2
+    .param p1, "helper"  # Lcom/android/server/notification/ZenModeHelper;
 
     .line 92
     return-void

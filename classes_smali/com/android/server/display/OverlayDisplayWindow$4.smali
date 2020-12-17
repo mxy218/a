@@ -21,6 +21,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/display/OverlayDisplayWindow;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/display/OverlayDisplayWindow;
 
     .line 366
     iput-object p1, p0, Lcom/android/server/display/OverlayDisplayWindow$4;->this$0:Lcom/android/server/display/OverlayDisplayWindow;
@@ -33,25 +34,29 @@
 
 # virtual methods
 .method public onScroll(Landroid/view/MotionEvent;Landroid/view/MotionEvent;FF)Z
-    .registers 5
+    .registers 6
+    .param p1, "e1"  # Landroid/view/MotionEvent;
+    .param p2, "e2"  # Landroid/view/MotionEvent;
+    .param p3, "distanceX"  # F
+    .param p4, "distanceY"  # F
 
     .line 370
-    iget-object p1, p0, Lcom/android/server/display/OverlayDisplayWindow$4;->this$0:Lcom/android/server/display/OverlayDisplayWindow;
+    iget-object v0, p0, Lcom/android/server/display/OverlayDisplayWindow$4;->this$0:Lcom/android/server/display/OverlayDisplayWindow;
 
-    invoke-static {p1, p3}, Lcom/android/server/display/OverlayDisplayWindow;->access$724(Lcom/android/server/display/OverlayDisplayWindow;F)F
+    invoke-static {v0, p3}, Lcom/android/server/display/OverlayDisplayWindow;->access$724(Lcom/android/server/display/OverlayDisplayWindow;F)F
 
     .line 371
-    iget-object p1, p0, Lcom/android/server/display/OverlayDisplayWindow$4;->this$0:Lcom/android/server/display/OverlayDisplayWindow;
+    iget-object v0, p0, Lcom/android/server/display/OverlayDisplayWindow$4;->this$0:Lcom/android/server/display/OverlayDisplayWindow;
 
-    invoke-static {p1, p4}, Lcom/android/server/display/OverlayDisplayWindow;->access$824(Lcom/android/server/display/OverlayDisplayWindow;F)F
+    invoke-static {v0, p4}, Lcom/android/server/display/OverlayDisplayWindow;->access$824(Lcom/android/server/display/OverlayDisplayWindow;F)F
 
     .line 372
-    iget-object p1, p0, Lcom/android/server/display/OverlayDisplayWindow$4;->this$0:Lcom/android/server/display/OverlayDisplayWindow;
+    iget-object v0, p0, Lcom/android/server/display/OverlayDisplayWindow$4;->this$0:Lcom/android/server/display/OverlayDisplayWindow;
 
-    invoke-virtual {p1}, Lcom/android/server/display/OverlayDisplayWindow;->relayout()V
+    invoke-virtual {v0}, Lcom/android/server/display/OverlayDisplayWindow;->relayout()V
 
     .line 373
-    const/4 p1, 0x1
+    const/4 v0, 0x1
 
-    return p1
+    return v0
 .end method

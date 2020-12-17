@@ -28,75 +28,82 @@
 .method constructor <init>(Lcom/android/server/usb/UsbDeviceManager$UsbHandlerHal;)V
     .registers 2
 
-    .line 1889
+    .line 2273
     iput-object p1, p0, Lcom/android/server/usb/UsbDeviceManager$UsbHandlerHal$UsbGadgetCallback;->this$0:Lcom/android/server/usb/UsbDeviceManager$UsbHandlerHal;
 
     invoke-direct {p0}, Landroid/hardware/usb/gadget/V1_0/IUsbGadgetCallback$Stub;-><init>()V
 
-    .line 1890
+    .line 2274
     return-void
 .end method
 
 .method constructor <init>(Lcom/android/server/usb/UsbDeviceManager$UsbHandlerHal;IJZ)V
     .registers 6
+    .param p2, "request"  # I
+    .param p3, "functions"  # J
+    .param p5, "chargingFunctions"  # Z
 
-    .line 1893
+    .line 2277
     iput-object p1, p0, Lcom/android/server/usb/UsbDeviceManager$UsbHandlerHal$UsbGadgetCallback;->this$0:Lcom/android/server/usb/UsbDeviceManager$UsbHandlerHal;
 
     invoke-direct {p0}, Landroid/hardware/usb/gadget/V1_0/IUsbGadgetCallback$Stub;-><init>()V
 
-    .line 1894
+    .line 2278
     iput p2, p0, Lcom/android/server/usb/UsbDeviceManager$UsbHandlerHal$UsbGadgetCallback;->mRequest:I
 
-    .line 1895
+    .line 2279
     iput-wide p3, p0, Lcom/android/server/usb/UsbDeviceManager$UsbHandlerHal$UsbGadgetCallback;->mFunctions:J
 
-    .line 1896
+    .line 2280
     iput-boolean p5, p0, Lcom/android/server/usb/UsbDeviceManager$UsbHandlerHal$UsbGadgetCallback;->mChargingFunctions:Z
 
-    .line 1897
+    .line 2281
     return-void
 .end method
 
 
 # virtual methods
 .method public getCurrentUsbFunctionsCb(JI)V
-    .registers 5
+    .registers 8
+    .param p1, "functions"  # J
+    .param p3, "status"  # I
 
-    .line 1923
+    .line 2307
     iget-object v0, p0, Lcom/android/server/usb/UsbDeviceManager$UsbHandlerHal$UsbGadgetCallback;->this$0:Lcom/android/server/usb/UsbDeviceManager$UsbHandlerHal;
 
     invoke-static {p1, p2}, Ljava/lang/Long;->valueOf(J)Ljava/lang/Long;
 
-    move-result-object p1
+    move-result-object v1
 
-    const/4 p2, 0x2
+    const/4 v2, 0x2
 
-    if-ne p3, p2, :cond_b
+    if-ne p3, v2, :cond_b
 
-    const/4 p2, 0x1
+    const/4 v2, 0x1
 
     goto :goto_c
 
     :cond_b
-    const/4 p2, 0x0
+    const/4 v2, 0x0
 
     :goto_c
-    const/16 p3, 0x10
+    const/16 v3, 0x10
 
-    invoke-virtual {v0, p3, p1, p2}, Lcom/android/server/usb/UsbDeviceManager$UsbHandlerHal;->sendMessage(ILjava/lang/Object;Z)V
+    invoke-virtual {v0, v3, v1, v2}, Lcom/android/server/usb/UsbDeviceManager$UsbHandlerHal;->sendMessage(ILjava/lang/Object;Z)V
 
-    .line 1925
+    .line 2309
     return-void
 .end method
 
 .method public setCurrentUsbFunctionsCb(JI)V
     .registers 8
+    .param p1, "functions"  # J
+    .param p3, "status"  # I
 
-    .line 1905
+    .line 2289
     iget-object v0, p0, Lcom/android/server/usb/UsbDeviceManager$UsbHandlerHal$UsbGadgetCallback;->this$0:Lcom/android/server/usb/UsbDeviceManager$UsbHandlerHal;
 
-    invoke-static {v0}, Lcom/android/server/usb/UsbDeviceManager$UsbHandlerHal;->access$700(Lcom/android/server/usb/UsbDeviceManager$UsbHandlerHal;)I
+    invoke-static {v0}, Lcom/android/server/usb/UsbDeviceManager$UsbHandlerHal;->access$900(Lcom/android/server/usb/UsbDeviceManager$UsbHandlerHal;)I
 
     move-result v0
 
@@ -116,87 +123,87 @@
 
     iget-wide v2, p0, Lcom/android/server/usb/UsbDeviceManager$UsbHandlerHal$UsbGadgetCallback;->mFunctions:J
 
-    cmp-long p1, v2, p1
+    cmp-long v0, v2, p1
 
-    if-eqz p1, :cond_1b
+    if-eqz v0, :cond_1b
 
     goto :goto_60
 
-    .line 1910
+    .line 2294
     :cond_1b
-    iget-object p1, p0, Lcom/android/server/usb/UsbDeviceManager$UsbHandlerHal$UsbGadgetCallback;->this$0:Lcom/android/server/usb/UsbDeviceManager$UsbHandlerHal;
+    iget-object v0, p0, Lcom/android/server/usb/UsbDeviceManager$UsbHandlerHal$UsbGadgetCallback;->this$0:Lcom/android/server/usb/UsbDeviceManager$UsbHandlerHal;
 
-    invoke-virtual {p1, v1}, Lcom/android/server/usb/UsbDeviceManager$UsbHandlerHal;->removeMessages(I)V
+    invoke-virtual {v0, v1}, Lcom/android/server/usb/UsbDeviceManager$UsbHandlerHal;->removeMessages(I)V
 
-    .line 1911
-    invoke-static {}, Lcom/android/server/usb/UsbDeviceManager;->access$300()Ljava/lang/String;
+    .line 2295
+    invoke-static {}, Lcom/android/server/usb/UsbDeviceManager;->access$000()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    new-instance p2, Ljava/lang/StringBuilder;
+    new-instance v1, Ljava/lang/StringBuilder;
 
-    invoke-direct {p2}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string/jumbo v0, "notifyCurrentFunction request:"
+    const-string/jumbo v2, "notifyCurrentFunction request:"
 
-    invoke-virtual {p2, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    iget v0, p0, Lcom/android/server/usb/UsbDeviceManager$UsbHandlerHal$UsbGadgetCallback;->mRequest:I
+    iget v2, p0, Lcom/android/server/usb/UsbDeviceManager$UsbHandlerHal$UsbGadgetCallback;->mRequest:I
 
-    invoke-virtual {p2, v0}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    const-string v0, " status:"
+    const-string v2, " status:"
 
-    invoke-virtual {p2, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p2, p3}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, p3}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p2
+    move-result-object v1
 
-    invoke-static {p1, p2}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v0, v1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 1912
+    .line 2296
     if-nez p3, :cond_4b
 
-    .line 1913
-    iget-object p1, p0, Lcom/android/server/usb/UsbDeviceManager$UsbHandlerHal$UsbGadgetCallback;->this$0:Lcom/android/server/usb/UsbDeviceManager$UsbHandlerHal;
+    .line 2297
+    iget-object v0, p0, Lcom/android/server/usb/UsbDeviceManager$UsbHandlerHal$UsbGadgetCallback;->this$0:Lcom/android/server/usb/UsbDeviceManager$UsbHandlerHal;
 
-    const/4 p2, 0x1
+    const/4 v1, 0x1
 
-    iput-boolean p2, p1, Lcom/android/server/usb/UsbDeviceManager$UsbHandlerHal;->mCurrentFunctionsApplied:Z
+    iput-boolean v1, v0, Lcom/android/server/usb/UsbDeviceManager$UsbHandlerHal;->mCurrentFunctionsApplied:Z
 
     goto :goto_5f
 
-    .line 1914
+    .line 2298
     :cond_4b
-    iget-boolean p1, p0, Lcom/android/server/usb/UsbDeviceManager$UsbHandlerHal$UsbGadgetCallback;->mChargingFunctions:Z
+    iget-boolean v0, p0, Lcom/android/server/usb/UsbDeviceManager$UsbHandlerHal$UsbGadgetCallback;->mChargingFunctions:Z
 
-    if-nez p1, :cond_5f
+    if-nez v0, :cond_5f
 
-    .line 1915
-    invoke-static {}, Lcom/android/server/usb/UsbDeviceManager;->access$300()Ljava/lang/String;
+    .line 2299
+    invoke-static {}, Lcom/android/server/usb/UsbDeviceManager;->access$000()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    const-string p2, "Setting default fuctions"
+    const-string v1, "Setting default fuctions"
 
-    invoke-static {p1, p2}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v0, v1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 1916
-    iget-object p1, p0, Lcom/android/server/usb/UsbDeviceManager$UsbHandlerHal$UsbGadgetCallback;->this$0:Lcom/android/server/usb/UsbDeviceManager$UsbHandlerHal;
+    .line 2300
+    iget-object v0, p0, Lcom/android/server/usb/UsbDeviceManager$UsbHandlerHal$UsbGadgetCallback;->this$0:Lcom/android/server/usb/UsbDeviceManager$UsbHandlerHal;
 
-    const/16 p2, 0xe
+    const/16 v1, 0xe
 
-    invoke-virtual {p1, p2}, Lcom/android/server/usb/UsbDeviceManager$UsbHandlerHal;->sendEmptyMessage(I)Z
+    invoke-virtual {v0, v1}, Lcom/android/server/usb/UsbDeviceManager$UsbHandlerHal;->sendEmptyMessage(I)Z
 
-    .line 1918
+    .line 2302
     :cond_5f
     :goto_5f
     return-void
 
-    .line 1907
+    .line 2291
     :cond_60
     :goto_60
     return-void

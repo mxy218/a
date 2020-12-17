@@ -108,7 +108,9 @@
 
 # direct methods
 .method private static synthetic $closeResource(Ljava/lang/Throwable;Ljava/lang/AutoCloseable;)V
-    .registers 2
+    .registers 3
+    .param p0, "x0"  # Ljava/lang/Throwable;
+    .param p1, "x1"  # Ljava/lang/AutoCloseable;
 
     .line 204
     if-eqz p0, :cond_b
@@ -121,9 +123,9 @@
     goto :goto_e
 
     :catchall_6
-    move-exception p1
+    move-exception v0
 
-    invoke-virtual {p0, p1}, Ljava/lang/Throwable;->addSuppressed(Ljava/lang/Throwable;)V
+    invoke-virtual {p0, v0}, Ljava/lang/Throwable;->addSuppressed(Ljava/lang/Throwable;)V
 
     goto :goto_e
 
@@ -135,7 +137,8 @@
 .end method
 
 .method public constructor <init>(Lcom/android/server/pm/PackageManagerService;)V
-    .registers 3
+    .registers 4
+    .param p1, "service"  # Lcom/android/server/pm/PackageManagerService;
 
     .line 132
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -144,48 +147,58 @@
     iput-object p1, p0, Lcom/android/server/pm/InstantAppRegistry;->mService:Lcom/android/server/pm/PackageManagerService;
 
     .line 134
-    new-instance p1, Lcom/android/server/pm/InstantAppRegistry$CookiePersistence;
+    new-instance v0, Lcom/android/server/pm/InstantAppRegistry$CookiePersistence;
 
     invoke-static {}, Lcom/android/internal/os/BackgroundThread;->getHandler()Landroid/os/Handler;
 
-    move-result-object v0
+    move-result-object v1
 
-    invoke-virtual {v0}, Landroid/os/Handler;->getLooper()Landroid/os/Looper;
+    invoke-virtual {v1}, Landroid/os/Handler;->getLooper()Landroid/os/Looper;
 
-    move-result-object v0
+    move-result-object v1
 
-    invoke-direct {p1, p0, v0}, Lcom/android/server/pm/InstantAppRegistry$CookiePersistence;-><init>(Lcom/android/server/pm/InstantAppRegistry;Landroid/os/Looper;)V
+    invoke-direct {v0, p0, v1}, Lcom/android/server/pm/InstantAppRegistry$CookiePersistence;-><init>(Lcom/android/server/pm/InstantAppRegistry;Landroid/os/Looper;)V
 
-    iput-object p1, p0, Lcom/android/server/pm/InstantAppRegistry;->mCookiePersistence:Lcom/android/server/pm/InstantAppRegistry$CookiePersistence;
+    iput-object v0, p0, Lcom/android/server/pm/InstantAppRegistry;->mCookiePersistence:Lcom/android/server/pm/InstantAppRegistry$CookiePersistence;
 
     .line 135
     return-void
 .end method
 
 .method static synthetic access$000(Ljava/lang/String;Ljava/lang/String;I)Ljava/io/File;
-    .registers 3
+    .registers 4
+    .param p0, "x0"  # Ljava/lang/String;
+    .param p1, "x1"  # Ljava/lang/String;
+    .param p2, "x2"  # I
 
     .line 80
     invoke-static {p0, p1, p2}, Lcom/android/server/pm/InstantAppRegistry;->computeInstantCookieFile(Ljava/lang/String;Ljava/lang/String;I)Ljava/io/File;
 
-    move-result-object p0
+    move-result-object v0
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$100(Ljava/lang/String;I)Ljava/io/File;
-    .registers 2
+    .registers 3
+    .param p0, "x0"  # Ljava/lang/String;
+    .param p1, "x1"  # I
 
     .line 80
     invoke-static {p0, p1}, Lcom/android/server/pm/InstantAppRegistry;->peekInstantCookieFile(Ljava/lang/String;I)Ljava/io/File;
 
-    move-result-object p0
+    move-result-object v0
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$200(Lcom/android/server/pm/InstantAppRegistry;[BLjava/lang/String;Ljava/io/File;I)V
     .registers 5
+    .param p0, "x0"  # Lcom/android/server/pm/InstantAppRegistry;
+    .param p1, "x1"  # [B
+    .param p2, "x2"  # Ljava/lang/String;
+    .param p3, "x3"  # Ljava/io/File;
+    .param p4, "x4"  # I
 
     .line 80
     invoke-direct {p0, p1, p2, p3, p4}, Lcom/android/server/pm/InstantAppRegistry;->persistInstantApplicationCookie([BLjava/lang/String;Ljava/io/File;I)V
@@ -195,6 +208,8 @@
 
 .method private addUninstalledInstantAppLPw(Landroid/content/pm/PackageParser$Package;I)V
     .registers 8
+    .param p1, "pkg"  # Landroid/content/pm/PackageParser$Package;
+    .param p2, "userId"  # I
     .annotation build Lcom/android/internal/annotations/GuardedBy;
         value = {
             "mService.mPackages"
@@ -209,6 +224,7 @@
     move-result-object v0
 
     .line 495
+    .local v0, "uninstalledApp":Landroid/content/pm/InstantAppInfo;
     if-nez v0, :cond_8
 
     .line 496
@@ -239,12 +255,15 @@
     check-cast v1, Ljava/util/List;
 
     .line 503
-    if-nez v1, :cond_27
+    .local v1, "uninstalledAppStates":Ljava/util/List;, "Ljava/util/List<Lcom/android/server/pm/InstantAppRegistry$UninstalledInstantAppState;>;"
+    if-nez v1, :cond_28
 
     .line 504
-    new-instance v1, Ljava/util/ArrayList;
+    new-instance v2, Ljava/util/ArrayList;
 
-    invoke-direct {v1}, Ljava/util/ArrayList;-><init>()V
+    invoke-direct {v2}, Ljava/util/ArrayList;-><init>()V
+
+    move-object v1, v2
 
     .line 505
     iget-object v2, p0, Lcom/android/server/pm/InstantAppRegistry;->mUninstalledInstantApps:Landroid/util/SparseArray;
@@ -252,7 +271,7 @@
     invoke-virtual {v2, p2, v1}, Landroid/util/SparseArray;->put(ILjava/lang/Object;)V
 
     .line 507
-    :cond_27
+    :cond_28
     new-instance v2, Lcom/android/server/pm/InstantAppRegistry$UninstalledInstantAppState;
 
     .line 508
@@ -263,6 +282,7 @@
     invoke-direct {v2, v0, v3, v4}, Lcom/android/server/pm/InstantAppRegistry$UninstalledInstantAppState;-><init>(Landroid/content/pm/InstantAppInfo;J)V
 
     .line 509
+    .local v2, "uninstalledAppState":Lcom/android/server/pm/InstantAppRegistry$UninstalledInstantAppState;
     invoke-interface {v1, v2}, Ljava/util/List;->add(Ljava/lang/Object;)Z
 
     .line 511
@@ -276,42 +296,50 @@
 .end method
 
 .method private static computeInstantCookieFile(Ljava/lang/String;Ljava/lang/String;I)Ljava/io/File;
-    .registers 4
+    .registers 6
+    .param p0, "packageName"  # Ljava/lang/String;
+    .param p1, "sha256Digest"  # Ljava/lang/String;
+    .param p2, "userId"  # I
 
     .line 1019
     invoke-static {p0, p2}, Lcom/android/server/pm/InstantAppRegistry;->getInstantApplicationDir(Ljava/lang/String;I)Ljava/io/File;
 
-    move-result-object p0
+    move-result-object v0
 
     .line 1020
-    new-instance p2, Ljava/lang/StringBuilder;
+    .local v0, "appDir":Ljava/io/File;
+    new-instance v1, Ljava/lang/StringBuilder;
 
-    invoke-direct {p2}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v0, "cookie_"
+    const-string v2, "cookie_"
 
-    invoke-virtual {p2, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p2, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string p1, ".dat"
+    const-string v2, ".dat"
 
-    invoke-virtual {p2, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v1
 
     .line 1022
-    new-instance p2, Ljava/io/File;
+    .local v1, "cookieFile":Ljava/lang/String;
+    new-instance v2, Ljava/io/File;
 
-    invoke-direct {p2, p0, p1}, Ljava/io/File;-><init>(Ljava/io/File;Ljava/lang/String;)V
+    invoke-direct {v2, v0, v1}, Ljava/io/File;-><init>(Ljava/io/File;Ljava/lang/String;)V
 
-    return-object p2
+    return-object v2
 .end method
 
 .method private createInstantAppInfoForPackage(Landroid/content/pm/PackageParser$Package;IZ)Landroid/content/pm/InstantAppInfo;
-    .registers 7
+    .registers 12
+    .param p1, "pkg"  # Landroid/content/pm/PackageParser$Package;
+    .param p2, "userId"  # I
+    .param p3, "addApplicationInfo"  # Z
 
     .line 845
     iget-object v0, p1, Landroid/content/pm/PackageParser$Package;->mExtras:Ljava/lang/Object;
@@ -319,6 +347,7 @@
     check-cast v0, Lcom/android/server/pm/PackageSetting;
 
     .line 846
+    .local v0, "ps":Lcom/android/server/pm/PackageSetting;
     const/4 v1, 0x0
 
     if-nez v0, :cond_8
@@ -348,6 +377,7 @@
     new-array v1, v1, [Ljava/lang/String;
 
     .line 854
+    .local v1, "requestedPermissions":[Ljava/lang/String;
     iget-object v2, p1, Landroid/content/pm/PackageParser$Package;->requestedPermissions:Ljava/util/ArrayList;
 
     invoke-virtual {v2, v1}, Ljava/util/ArrayList;->toArray([Ljava/lang/Object;)[Ljava/lang/Object;
@@ -355,65 +385,68 @@
     .line 856
     invoke-virtual {v0}, Lcom/android/server/pm/PackageSetting;->getPermissionsState()Lcom/android/server/pm/permission/PermissionsState;
 
-    move-result-object v0
+    move-result-object v2
 
-    invoke-virtual {v0, p2}, Lcom/android/server/pm/permission/PermissionsState;->getPermissions(I)Ljava/util/Set;
+    invoke-virtual {v2, p2}, Lcom/android/server/pm/permission/PermissionsState;->getPermissions(I)Ljava/util/Set;
 
-    move-result-object p2
+    move-result-object v2
 
     .line 857
-    invoke-interface {p2}, Ljava/util/Set;->size()I
+    .local v2, "permissions":Ljava/util/Set;, "Ljava/util/Set<Ljava/lang/String;>;"
+    invoke-interface {v2}, Ljava/util/Set;->size()I
 
-    move-result v0
+    move-result v3
 
-    new-array v0, v0, [Ljava/lang/String;
+    new-array v3, v3, [Ljava/lang/String;
 
     .line 858
-    invoke-interface {p2, v0}, Ljava/util/Set;->toArray([Ljava/lang/Object;)[Ljava/lang/Object;
+    .local v3, "grantedPermissions":[Ljava/lang/String;
+    invoke-interface {v2, v3}, Ljava/util/Set;->toArray([Ljava/lang/Object;)[Ljava/lang/Object;
 
     .line 860
     if-eqz p3, :cond_37
 
     .line 861
-    new-instance p2, Landroid/content/pm/InstantAppInfo;
+    new-instance v4, Landroid/content/pm/InstantAppInfo;
 
-    iget-object p1, p1, Landroid/content/pm/PackageParser$Package;->applicationInfo:Landroid/content/pm/ApplicationInfo;
+    iget-object v5, p1, Landroid/content/pm/PackageParser$Package;->applicationInfo:Landroid/content/pm/ApplicationInfo;
 
-    invoke-direct {p2, p1, v1, v0}, Landroid/content/pm/InstantAppInfo;-><init>(Landroid/content/pm/ApplicationInfo;[Ljava/lang/String;[Ljava/lang/String;)V
+    invoke-direct {v4, v5, v1, v3}, Landroid/content/pm/InstantAppInfo;-><init>(Landroid/content/pm/ApplicationInfo;[Ljava/lang/String;[Ljava/lang/String;)V
 
-    return-object p2
+    return-object v4
 
     .line 864
     :cond_37
-    new-instance p2, Landroid/content/pm/InstantAppInfo;
+    new-instance v4, Landroid/content/pm/InstantAppInfo;
 
-    iget-object p3, p1, Landroid/content/pm/PackageParser$Package;->applicationInfo:Landroid/content/pm/ApplicationInfo;
+    iget-object v5, p1, Landroid/content/pm/PackageParser$Package;->applicationInfo:Landroid/content/pm/ApplicationInfo;
 
-    iget-object p3, p3, Landroid/content/pm/ApplicationInfo;->packageName:Ljava/lang/String;
+    iget-object v5, v5, Landroid/content/pm/ApplicationInfo;->packageName:Ljava/lang/String;
 
-    iget-object p1, p1, Landroid/content/pm/PackageParser$Package;->applicationInfo:Landroid/content/pm/ApplicationInfo;
+    iget-object v6, p1, Landroid/content/pm/PackageParser$Package;->applicationInfo:Landroid/content/pm/ApplicationInfo;
 
-    iget-object v2, p0, Lcom/android/server/pm/InstantAppRegistry;->mService:Lcom/android/server/pm/PackageManagerService;
+    iget-object v7, p0, Lcom/android/server/pm/InstantAppRegistry;->mService:Lcom/android/server/pm/PackageManagerService;
 
-    iget-object v2, v2, Lcom/android/server/pm/PackageManagerService;->mContext:Landroid/content/Context;
+    iget-object v7, v7, Lcom/android/server/pm/PackageManagerService;->mContext:Landroid/content/Context;
 
     .line 865
-    invoke-virtual {v2}, Landroid/content/Context;->getPackageManager()Landroid/content/pm/PackageManager;
+    invoke-virtual {v7}, Landroid/content/Context;->getPackageManager()Landroid/content/pm/PackageManager;
 
-    move-result-object v2
+    move-result-object v7
 
-    invoke-virtual {p1, v2}, Landroid/content/pm/ApplicationInfo;->loadLabel(Landroid/content/pm/PackageManager;)Ljava/lang/CharSequence;
+    invoke-virtual {v6, v7}, Landroid/content/pm/ApplicationInfo;->loadLabel(Landroid/content/pm/PackageManager;)Ljava/lang/CharSequence;
 
-    move-result-object p1
+    move-result-object v6
 
-    invoke-direct {p2, p3, p1, v1, v0}, Landroid/content/pm/InstantAppInfo;-><init>(Ljava/lang/String;Ljava/lang/CharSequence;[Ljava/lang/String;[Ljava/lang/String;)V
+    invoke-direct {v4, v5, v6, v1, v3}, Landroid/content/pm/InstantAppInfo;-><init>(Ljava/lang/String;Ljava/lang/CharSequence;[Ljava/lang/String;[Ljava/lang/String;)V
 
     .line 864
-    return-object p2
+    return-object v4
 .end method
 
 .method private static deleteDir(Ljava/io/File;)V
     .registers 5
+    .param p0, "dir"  # Ljava/io/File;
 
     .line 1156
     invoke-virtual {p0}, Ljava/io/File;->listFiles()[Ljava/io/File;
@@ -421,6 +454,7 @@
     move-result-object v0
 
     .line 1157
+    .local v0, "files":[Ljava/io/File;
     if-eqz v0, :cond_12
 
     .line 1158
@@ -434,9 +468,11 @@
     aget-object v3, v0, v2
 
     .line 1159
+    .local v3, "file":Ljava/io/File;
     invoke-static {v3}, Lcom/android/server/pm/InstantAppRegistry;->deleteDir(Ljava/io/File;)V
 
     .line 1158
+    .end local v3  # "file":Ljava/io/File;
     add-int/lit8 v2, v2, 0x1
 
     goto :goto_8
@@ -450,7 +486,9 @@
 .end method
 
 .method private generateInstantAppAndroidIdLPw(Ljava/lang/String;I)Ljava/lang/String;
-    .registers 7
+    .registers 11
+    .param p1, "packageName"  # Ljava/lang/String;
+    .param p2, "userId"  # I
 
     .line 235
     const/16 v0, 0x8
@@ -458,6 +496,7 @@
     new-array v0, v0, [B
 
     .line 236
+    .local v0, "randomBytes":[B
     new-instance v1, Ljava/security/SecureRandom;
 
     invoke-direct {v1}, Ljava/security/SecureRandom;-><init>()V
@@ -467,130 +506,170 @@
     .line 237
     invoke-static {v0}, Landroid/util/ByteStringUtils;->toHexString([B)Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v1
 
-    sget-object v1, Ljava/util/Locale;->US:Ljava/util/Locale;
+    sget-object v2, Ljava/util/Locale;->US:Ljava/util/Locale;
 
-    invoke-virtual {v0, v1}, Ljava/lang/String;->toLowerCase(Ljava/util/Locale;)Ljava/lang/String;
-
-    move-result-object v0
-
-    .line 238
-    invoke-static {p1, p2}, Lcom/android/server/pm/InstantAppRegistry;->getInstantApplicationDir(Ljava/lang/String;I)Ljava/io/File;
+    invoke-virtual {v1, v2}, Ljava/lang/String;->toLowerCase(Ljava/util/Locale;)Ljava/lang/String;
 
     move-result-object v1
 
-    .line 239
-    invoke-virtual {v1}, Ljava/io/File;->exists()Z
-
-    move-result v2
-
-    const-string v3, "InstantAppRegistry"
-
-    if-nez v2, :cond_2e
-
-    invoke-virtual {v1}, Ljava/io/File;->mkdirs()Z
-
-    move-result v1
-
-    if-nez v1, :cond_2e
-
-    .line 240
-    const-string p1, "Cannot create instant app cookie directory"
-
-    invoke-static {v3, p1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
-
-    .line 241
-    return-object v0
-
-    .line 243
-    :cond_2e
-    new-instance v1, Ljava/io/File;
-
+    .line 238
+    .local v1, "id":Ljava/lang/String;
     invoke-static {p1, p2}, Lcom/android/server/pm/InstantAppRegistry;->getInstantApplicationDir(Ljava/lang/String;I)Ljava/io/File;
-
-    move-result-object p1
-
-    const-string p2, "android_id"
-
-    invoke-direct {v1, p1, p2}, Ljava/io/File;-><init>(Ljava/io/File;Ljava/lang/String;)V
-
-    .line 245
-    :try_start_39
-    new-instance p1, Ljava/io/FileOutputStream;
-
-    invoke-direct {p1, v1}, Ljava/io/FileOutputStream;-><init>(Ljava/io/File;)V
-    :try_end_3e
-    .catch Ljava/io/IOException; {:try_start_39 .. :try_end_3e} :catch_51
-
-    const/4 p2, 0x0
-
-    .line 246
-    :try_start_3f
-    invoke-virtual {v0}, Ljava/lang/String;->getBytes()[B
 
     move-result-object v2
 
-    invoke-virtual {p1, v2}, Ljava/io/FileOutputStream;->write([B)V
+    .line 239
+    .local v2, "appDir":Ljava/io/File;
+    invoke-virtual {v2}, Ljava/io/File;->exists()Z
+
+    move-result v3
+
+    const-string v4, "InstantAppRegistry"
+
+    if-nez v3, :cond_2e
+
+    invoke-virtual {v2}, Ljava/io/File;->mkdirs()Z
+
+    move-result v3
+
+    if-nez v3, :cond_2e
+
+    .line 240
+    const-string v3, "Cannot create instant app cookie directory"
+
+    invoke-static {v4, v3}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
+
+    .line 241
+    return-object v1
+
+    .line 243
+    :cond_2e
+    new-instance v3, Ljava/io/File;
+
+    invoke-static {p1, p2}, Lcom/android/server/pm/InstantAppRegistry;->getInstantApplicationDir(Ljava/lang/String;I)Ljava/io/File;
+
+    move-result-object v5
+
+    const-string v6, "android_id"
+
+    invoke-direct {v3, v5, v6}, Ljava/io/File;-><init>(Ljava/io/File;Ljava/lang/String;)V
+
+    .line 245
+    .local v3, "idFile":Ljava/io/File;
+    :try_start_39
+    new-instance v5, Ljava/io/FileOutputStream;
+
+    invoke-direct {v5, v3}, Ljava/io/FileOutputStream;-><init>(Ljava/io/File;)V
+    :try_end_3e
+    .catch Ljava/io/IOException; {:try_start_39 .. :try_end_3e} :catch_51
+
+    .local v5, "fos":Ljava/io/FileOutputStream;
+    const/4 v6, 0x0
+
+    .line 246
+    :try_start_3f
+    invoke-virtual {v1}, Ljava/lang/String;->getBytes()[B
+
+    move-result-object v7
+
+    invoke-virtual {v5, v7}, Ljava/io/FileOutputStream;->write([B)V
     :try_end_46
     .catchall {:try_start_3f .. :try_end_46} :catchall_4a
 
     .line 247
     :try_start_46
-    invoke-static {p2, p1}, Lcom/android/server/pm/InstantAppRegistry;->$closeResource(Ljava/lang/Throwable;Ljava/lang/AutoCloseable;)V
+    invoke-static {v6, v5}, Lcom/android/server/pm/InstantAppRegistry;->$closeResource(Ljava/lang/Throwable;Ljava/lang/AutoCloseable;)V
     :try_end_49
     .catch Ljava/io/IOException; {:try_start_46 .. :try_end_49} :catch_51
 
     .line 249
+    .end local v5  # "fos":Ljava/io/FileOutputStream;
     goto :goto_66
 
     .line 245
+    .restart local v5  # "fos":Ljava/io/FileOutputStream;
     :catchall_4a
-    move-exception p2
+    move-exception v6
 
+    .end local v0  # "randomBytes":[B
+    .end local v1  # "id":Ljava/lang/String;
+    .end local v2  # "appDir":Ljava/io/File;
+    .end local v3  # "idFile":Ljava/io/File;
+    .end local v5  # "fos":Ljava/io/FileOutputStream;
+    .end local p0  # "this":Lcom/android/server/pm/InstantAppRegistry;
+    .end local p1  # "packageName":Ljava/lang/String;
+    .end local p2  # "userId":I
     :try_start_4b
-    throw p2
+    throw v6
     :try_end_4c
     .catchall {:try_start_4b .. :try_end_4c} :catchall_4c
 
     .line 247
+    .restart local v0  # "randomBytes":[B
+    .restart local v1  # "id":Ljava/lang/String;
+    .restart local v2  # "appDir":Ljava/io/File;
+    .restart local v3  # "idFile":Ljava/io/File;
+    .restart local v5  # "fos":Ljava/io/FileOutputStream;
+    .restart local p0  # "this":Lcom/android/server/pm/InstantAppRegistry;
+    .restart local p1  # "packageName":Ljava/lang/String;
+    .restart local p2  # "userId":I
     :catchall_4c
-    move-exception v2
+    move-exception v7
 
     :try_start_4d
-    invoke-static {p2, p1}, Lcom/android/server/pm/InstantAppRegistry;->$closeResource(Ljava/lang/Throwable;Ljava/lang/AutoCloseable;)V
+    invoke-static {v6, v5}, Lcom/android/server/pm/InstantAppRegistry;->$closeResource(Ljava/lang/Throwable;Ljava/lang/AutoCloseable;)V
 
-    throw v2
+    .end local v0  # "randomBytes":[B
+    .end local v1  # "id":Ljava/lang/String;
+    .end local v2  # "appDir":Ljava/io/File;
+    .end local v3  # "idFile":Ljava/io/File;
+    .end local p0  # "this":Lcom/android/server/pm/InstantAppRegistry;
+    .end local p1  # "packageName":Ljava/lang/String;
+    .end local p2  # "userId":I
+    throw v7
     :try_end_51
     .catch Ljava/io/IOException; {:try_start_4d .. :try_end_51} :catch_51
 
+    .end local v5  # "fos":Ljava/io/FileOutputStream;
+    .restart local v0  # "randomBytes":[B
+    .restart local v1  # "id":Ljava/lang/String;
+    .restart local v2  # "appDir":Ljava/io/File;
+    .restart local v3  # "idFile":Ljava/io/File;
+    .restart local p0  # "this":Lcom/android/server/pm/InstantAppRegistry;
+    .restart local p1  # "packageName":Ljava/lang/String;
+    .restart local p2  # "userId":I
     :catch_51
-    move-exception p1
+    move-exception v5
 
     .line 248
-    new-instance p2, Ljava/lang/StringBuilder;
+    .local v5, "e":Ljava/io/IOException;
+    new-instance v6, Ljava/lang/StringBuilder;
 
-    invoke-direct {p2}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v6}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v2, "Error writing instant app android id file: "
+    const-string v7, "Error writing instant app android id file: "
 
-    invoke-virtual {p2, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v6, v7}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p2, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    invoke-virtual {v6, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v6}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p2
+    move-result-object v6
 
-    invoke-static {v3, p2, p1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    invoke-static {v4, v6, v5}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
     .line 250
+    .end local v5  # "e":Ljava/io/IOException;
     :goto_66
-    return-object v0
+    return-object v1
 .end method
 
 .method private getInstalledInstantApplicationsLPr(I)Ljava/util/List;
-    .registers 7
+    .registers 9
+    .param p1, "userId"  # I
     .annotation build Lcom/android/internal/annotations/GuardedBy;
         value = {
             "mService.mPackages"
@@ -607,24 +686,25 @@
     .end annotation
 
     .line 818
-    nop
+    const/4 v0, 0x0
 
     .line 820
-    iget-object v0, p0, Lcom/android/server/pm/InstantAppRegistry;->mService:Lcom/android/server/pm/PackageManagerService;
+    .local v0, "result":Ljava/util/List;, "Ljava/util/List<Landroid/content/pm/InstantAppInfo;>;"
+    iget-object v1, p0, Lcom/android/server/pm/InstantAppRegistry;->mService:Lcom/android/server/pm/PackageManagerService;
 
-    iget-object v0, v0, Lcom/android/server/pm/PackageManagerService;->mPackages:Landroid/util/ArrayMap;
+    iget-object v1, v1, Lcom/android/server/pm/PackageManagerService;->mPackages:Landroid/util/ArrayMap;
 
-    invoke-virtual {v0}, Landroid/util/ArrayMap;->size()I
+    invoke-virtual {v1}, Landroid/util/ArrayMap;->size()I
 
-    move-result v0
+    move-result v1
 
     .line 821
-    const/4 v1, 0x0
-
+    .local v1, "packageCount":I
     const/4 v2, 0x0
 
-    :goto_b
-    if-ge v2, v0, :cond_39
+    .local v2, "i":I
+    :goto_a
+    if-ge v2, v1, :cond_39
 
     .line 822
     iget-object v3, p0, Lcom/android/server/pm/InstantAppRegistry;->mService:Lcom/android/server/pm/PackageManagerService;
@@ -638,95 +718,108 @@
     check-cast v3, Landroid/content/pm/PackageParser$Package;
 
     .line 823
+    .local v3, "pkg":Landroid/content/pm/PackageParser$Package;
     iget-object v4, v3, Landroid/content/pm/PackageParser$Package;->mExtras:Ljava/lang/Object;
 
     check-cast v4, Lcom/android/server/pm/PackageSetting;
 
     .line 824
+    .local v4, "ps":Lcom/android/server/pm/PackageSetting;
     if-eqz v4, :cond_36
 
     invoke-virtual {v4, p1}, Lcom/android/server/pm/PackageSetting;->getInstantApp(I)Z
 
-    move-result v4
+    move-result v5
 
-    if-nez v4, :cond_24
+    if-nez v5, :cond_23
 
     .line 825
     goto :goto_36
 
     .line 827
-    :cond_24
-    const/4 v4, 0x1
+    :cond_23
+    const/4 v5, 0x1
 
-    invoke-direct {p0, v3, p1, v4}, Lcom/android/server/pm/InstantAppRegistry;->createInstantAppInfoForPackage(Landroid/content/pm/PackageParser$Package;IZ)Landroid/content/pm/InstantAppInfo;
+    invoke-direct {p0, v3, p1, v5}, Lcom/android/server/pm/InstantAppRegistry;->createInstantAppInfoForPackage(Landroid/content/pm/PackageParser$Package;IZ)Landroid/content/pm/InstantAppInfo;
 
-    move-result-object v3
+    move-result-object v5
 
     .line 829
-    if-nez v3, :cond_2c
+    .local v5, "info":Landroid/content/pm/InstantAppInfo;
+    if-nez v5, :cond_2b
 
     .line 830
     goto :goto_36
 
     .line 832
-    :cond_2c
-    if-nez v1, :cond_33
+    :cond_2b
+    if-nez v0, :cond_33
 
     .line 833
-    new-instance v1, Ljava/util/ArrayList;
+    new-instance v6, Ljava/util/ArrayList;
 
-    invoke-direct {v1}, Ljava/util/ArrayList;-><init>()V
+    invoke-direct {v6}, Ljava/util/ArrayList;-><init>()V
+
+    move-object v0, v6
 
     .line 835
     :cond_33
-    invoke-interface {v1, v3}, Ljava/util/List;->add(Ljava/lang/Object;)Z
+    invoke-interface {v0, v5}, Ljava/util/List;->add(Ljava/lang/Object;)Z
 
     .line 821
+    .end local v3  # "pkg":Landroid/content/pm/PackageParser$Package;
+    .end local v4  # "ps":Lcom/android/server/pm/PackageSetting;
+    .end local v5  # "info":Landroid/content/pm/InstantAppInfo;
     :cond_36
     :goto_36
     add-int/lit8 v2, v2, 0x1
 
-    goto :goto_b
+    goto :goto_a
 
     .line 838
+    .end local v2  # "i":I
     :cond_39
-    return-object v1
+    return-object v0
 .end method
 
 .method private static getInstantApplicationDir(Ljava/lang/String;I)Ljava/io/File;
-    .registers 3
+    .registers 4
+    .param p0, "packageName"  # Ljava/lang/String;
+    .param p1, "userId"  # I
 
     .line 1152
     new-instance v0, Ljava/io/File;
 
     invoke-static {p1}, Lcom/android/server/pm/InstantAppRegistry;->getInstantApplicationsDir(I)Ljava/io/File;
 
-    move-result-object p1
+    move-result-object v1
 
-    invoke-direct {v0, p1, p0}, Ljava/io/File;-><init>(Ljava/io/File;Ljava/lang/String;)V
+    invoke-direct {v0, v1, p0}, Ljava/io/File;-><init>(Ljava/io/File;Ljava/lang/String;)V
 
     return-object v0
 .end method
 
 .method private static getInstantApplicationsDir(I)Ljava/io/File;
-    .registers 3
+    .registers 4
+    .param p0, "userId"  # I
 
     .line 1147
     new-instance v0, Ljava/io/File;
 
     invoke-static {p0}, Landroid/os/Environment;->getUserSystemDirectory(I)Ljava/io/File;
 
-    move-result-object p0
+    move-result-object v1
 
-    const-string v1, "instant"
+    const-string/jumbo v2, "instant"
 
-    invoke-direct {v0, p0, v1}, Ljava/io/File;-><init>(Ljava/io/File;Ljava/lang/String;)V
+    invoke-direct {v0, v1, v2}, Ljava/io/File;-><init>(Ljava/io/File;Ljava/lang/String;)V
 
     return-object v0
 .end method
 
 .method private getUninstalledInstantAppStatesLPr(I)Ljava/util/List;
-    .registers 9
+    .registers 11
+    .param p1, "userId"  # I
     .annotation build Lcom/android/internal/annotations/GuardedBy;
         value = {
             "mService.mPackages"
@@ -743,17 +836,20 @@
     .end annotation
 
     .line 946
-    nop
+    const/4 v0, 0x0
 
     .line 947
-    iget-object v0, p0, Lcom/android/server/pm/InstantAppRegistry;->mUninstalledInstantApps:Landroid/util/SparseArray;
+    .local v0, "uninstalledAppStates":Ljava/util/List;, "Ljava/util/List<Lcom/android/server/pm/InstantAppRegistry$UninstalledInstantAppState;>;"
+    iget-object v1, p0, Lcom/android/server/pm/InstantAppRegistry;->mUninstalledInstantApps:Landroid/util/SparseArray;
 
-    if-eqz v0, :cond_e
+    if-eqz v1, :cond_f
 
     .line 948
-    invoke-virtual {v0, p1}, Landroid/util/SparseArray;->get(I)Ljava/lang/Object;
+    invoke-virtual {v1, p1}, Landroid/util/SparseArray;->get(I)Ljava/lang/Object;
 
-    move-result-object v0
+    move-result-object v1
+
+    move-object v0, v1
 
     check-cast v0, Ljava/util/List;
 
@@ -763,10 +859,6 @@
     .line 950
     return-object v0
 
-    .line 947
-    :cond_e
-    const/4 v0, 0x0
-
     .line 954
     :cond_f
     invoke-static {p1}, Lcom/android/server/pm/InstantAppRegistry;->getInstantApplicationsDir(I)Ljava/io/File;
@@ -774,110 +866,122 @@
     move-result-object v1
 
     .line 955
+    .local v1, "instantAppsDir":Ljava/io/File;
     invoke-virtual {v1}, Ljava/io/File;->exists()Z
 
     move-result v2
 
-    if-eqz v2, :cond_48
+    if-eqz v2, :cond_4a
 
     .line 956
     invoke-virtual {v1}, Ljava/io/File;->listFiles()[Ljava/io/File;
 
-    move-result-object v1
+    move-result-object v2
 
     .line 957
-    if-eqz v1, :cond_48
+    .local v2, "files":[Ljava/io/File;
+    if-eqz v2, :cond_4a
 
     .line 958
-    array-length v2, v1
+    array-length v3, v2
 
-    const/4 v3, 0x0
+    const/4 v4, 0x0
 
     :goto_21
-    if-ge v3, v2, :cond_48
+    if-ge v4, v3, :cond_4a
 
-    aget-object v4, v1, v3
+    aget-object v5, v2, v4
 
     .line 959
-    invoke-virtual {v4}, Ljava/io/File;->isDirectory()Z
+    .local v5, "instantDir":Ljava/io/File;
+    invoke-virtual {v5}, Ljava/io/File;->isDirectory()Z
 
-    move-result v5
+    move-result v6
 
-    if-nez v5, :cond_2c
+    if-nez v6, :cond_2c
 
     .line 960
-    goto :goto_45
+    goto :goto_47
 
     .line 962
     :cond_2c
-    new-instance v5, Ljava/io/File;
+    new-instance v6, Ljava/io/File;
 
-    const-string v6, "metadata.xml"
+    const-string/jumbo v7, "metadata.xml"
 
-    invoke-direct {v5, v4, v6}, Ljava/io/File;-><init>(Ljava/io/File;Ljava/lang/String;)V
+    invoke-direct {v6, v5, v7}, Ljava/io/File;-><init>(Ljava/io/File;Ljava/lang/String;)V
 
     .line 964
+    .local v6, "metadataFile":Ljava/io/File;
     nop
 
     .line 965
-    invoke-static {v5}, Lcom/android/server/pm/InstantAppRegistry;->parseMetadataFile(Ljava/io/File;)Lcom/android/server/pm/InstantAppRegistry$UninstalledInstantAppState;
+    invoke-static {v6}, Lcom/android/server/pm/InstantAppRegistry;->parseMetadataFile(Ljava/io/File;)Lcom/android/server/pm/InstantAppRegistry$UninstalledInstantAppState;
 
-    move-result-object v4
+    move-result-object v7
 
     .line 966
-    if-nez v4, :cond_3b
+    .local v7, "uninstalledAppState":Lcom/android/server/pm/InstantAppRegistry$UninstalledInstantAppState;
+    if-nez v7, :cond_3c
 
     .line 967
-    goto :goto_45
+    goto :goto_47
 
     .line 969
-    :cond_3b
-    if-nez v0, :cond_42
+    :cond_3c
+    if-nez v0, :cond_44
 
     .line 970
-    new-instance v0, Ljava/util/ArrayList;
+    new-instance v8, Ljava/util/ArrayList;
 
-    invoke-direct {v0}, Ljava/util/ArrayList;-><init>()V
+    invoke-direct {v8}, Ljava/util/ArrayList;-><init>()V
+
+    move-object v0, v8
 
     .line 972
-    :cond_42
-    invoke-interface {v0, v4}, Ljava/util/List;->add(Ljava/lang/Object;)Z
+    :cond_44
+    invoke-interface {v0, v7}, Ljava/util/List;->add(Ljava/lang/Object;)Z
 
     .line 958
-    :goto_45
-    add-int/lit8 v3, v3, 0x1
+    .end local v5  # "instantDir":Ljava/io/File;
+    .end local v6  # "metadataFile":Ljava/io/File;
+    .end local v7  # "uninstalledAppState":Lcom/android/server/pm/InstantAppRegistry$UninstalledInstantAppState;
+    :goto_47
+    add-int/lit8 v4, v4, 0x1
 
     goto :goto_21
 
     .line 977
-    :cond_48
-    if-eqz v0, :cond_5a
+    .end local v2  # "files":[Ljava/io/File;
+    :cond_4a
+    if-eqz v0, :cond_5c
 
     .line 978
-    iget-object v1, p0, Lcom/android/server/pm/InstantAppRegistry;->mUninstalledInstantApps:Landroid/util/SparseArray;
+    iget-object v2, p0, Lcom/android/server/pm/InstantAppRegistry;->mUninstalledInstantApps:Landroid/util/SparseArray;
 
-    if-nez v1, :cond_55
+    if-nez v2, :cond_57
 
     .line 979
-    new-instance v1, Landroid/util/SparseArray;
+    new-instance v2, Landroid/util/SparseArray;
 
-    invoke-direct {v1}, Landroid/util/SparseArray;-><init>()V
+    invoke-direct {v2}, Landroid/util/SparseArray;-><init>()V
 
-    iput-object v1, p0, Lcom/android/server/pm/InstantAppRegistry;->mUninstalledInstantApps:Landroid/util/SparseArray;
+    iput-object v2, p0, Lcom/android/server/pm/InstantAppRegistry;->mUninstalledInstantApps:Landroid/util/SparseArray;
 
     .line 981
-    :cond_55
-    iget-object v1, p0, Lcom/android/server/pm/InstantAppRegistry;->mUninstalledInstantApps:Landroid/util/SparseArray;
+    :cond_57
+    iget-object v2, p0, Lcom/android/server/pm/InstantAppRegistry;->mUninstalledInstantApps:Landroid/util/SparseArray;
 
-    invoke-virtual {v1, p1, v0}, Landroid/util/SparseArray;->put(ILjava/lang/Object;)V
+    invoke-virtual {v2, p1, v0}, Landroid/util/SparseArray;->put(ILjava/lang/Object;)V
 
     .line 984
-    :cond_5a
+    :cond_5c
     return-object v0
 .end method
 
 .method private getUninstalledInstantApplicationsLPr(I)Ljava/util/List;
-    .registers 6
+    .registers 8
+    .param p1, "userId"  # I
     .annotation build Lcom/android/internal/annotations/GuardedBy;
         value = {
             "mService.mPackages"
@@ -899,74 +1003,87 @@
     .line 874
     invoke-direct {p0, p1}, Lcom/android/server/pm/InstantAppRegistry;->getUninstalledInstantAppStatesLPr(I)Ljava/util/List;
 
-    move-result-object p1
+    move-result-object v0
 
     .line 875
-    const/4 v0, 0x0
+    .local v0, "uninstalledAppStates":Ljava/util/List;, "Ljava/util/List<Lcom/android/server/pm/InstantAppRegistry$UninstalledInstantAppState;>;"
+    if-eqz v0, :cond_2d
 
-    if-eqz p1, :cond_2d
-
-    invoke-interface {p1}, Ljava/util/List;->isEmpty()Z
+    invoke-interface {v0}, Ljava/util/List;->isEmpty()Z
 
     move-result v1
 
-    if-eqz v1, :cond_f
+    if-eqz v1, :cond_e
 
     goto :goto_2d
 
     .line 879
-    :cond_f
-    nop
+    :cond_e
+    const/4 v1, 0x0
 
     .line 880
-    invoke-interface {p1}, Ljava/util/List;->size()I
+    .local v1, "uninstalledApps":Ljava/util/List;, "Ljava/util/List<Landroid/content/pm/InstantAppInfo;>;"
+    invoke-interface {v0}, Ljava/util/List;->size()I
 
-    move-result v1
+    move-result v2
 
     .line 881
-    const/4 v2, 0x0
+    .local v2, "stateCount":I
+    const/4 v3, 0x0
 
-    :goto_15
-    if-ge v2, v1, :cond_2c
+    .local v3, "i":I
+    :goto_14
+    if-ge v3, v2, :cond_2c
 
     .line 882
-    invoke-interface {p1, v2}, Ljava/util/List;->get(I)Ljava/lang/Object;
+    invoke-interface {v0, v3}, Ljava/util/List;->get(I)Ljava/lang/Object;
 
-    move-result-object v3
+    move-result-object v4
 
-    check-cast v3, Lcom/android/server/pm/InstantAppRegistry$UninstalledInstantAppState;
+    check-cast v4, Lcom/android/server/pm/InstantAppRegistry$UninstalledInstantAppState;
 
     .line 883
-    if-nez v0, :cond_24
+    .local v4, "uninstalledAppState":Lcom/android/server/pm/InstantAppRegistry$UninstalledInstantAppState;
+    if-nez v1, :cond_24
 
     .line 884
-    new-instance v0, Ljava/util/ArrayList;
+    new-instance v5, Ljava/util/ArrayList;
 
-    invoke-direct {v0}, Ljava/util/ArrayList;-><init>()V
+    invoke-direct {v5}, Ljava/util/ArrayList;-><init>()V
+
+    move-object v1, v5
 
     .line 886
     :cond_24
-    iget-object v3, v3, Lcom/android/server/pm/InstantAppRegistry$UninstalledInstantAppState;->mInstantAppInfo:Landroid/content/pm/InstantAppInfo;
+    iget-object v5, v4, Lcom/android/server/pm/InstantAppRegistry$UninstalledInstantAppState;->mInstantAppInfo:Landroid/content/pm/InstantAppInfo;
 
-    invoke-interface {v0, v3}, Ljava/util/List;->add(Ljava/lang/Object;)Z
+    invoke-interface {v1, v5}, Ljava/util/List;->add(Ljava/lang/Object;)Z
 
     .line 881
-    add-int/lit8 v2, v2, 0x1
+    .end local v4  # "uninstalledAppState":Lcom/android/server/pm/InstantAppRegistry$UninstalledInstantAppState;
+    add-int/lit8 v3, v3, 0x1
 
-    goto :goto_15
+    goto :goto_14
 
     .line 888
+    .end local v3  # "i":I
     :cond_2c
-    return-object v0
+    return-object v1
 
     .line 876
+    .end local v1  # "uninstalledApps":Ljava/util/List;, "Ljava/util/List<Landroid/content/pm/InstantAppInfo;>;"
+    .end local v2  # "stateCount":I
     :cond_2d
     :goto_2d
-    return-object v0
+    const/4 v1, 0x0
+
+    return-object v1
 .end method
 
 .method private hasInstantAppMetadataLPr(Ljava/lang/String;I)Z
     .registers 6
+    .param p1, "packageName"  # Ljava/lang/String;
+    .param p2, "userId"  # I
 
     .line 617
     invoke-static {p1, p2}, Lcom/android/server/pm/InstantAppRegistry;->getInstantApplicationDir(Ljava/lang/String;I)Ljava/io/File;
@@ -974,9 +1091,10 @@
     move-result-object v0
 
     .line 618
+    .local v0, "instantAppDir":Ljava/io/File;
     new-instance v1, Ljava/io/File;
 
-    const-string v2, "metadata.xml"
+    const-string/jumbo v2, "metadata.xml"
 
     invoke-direct {v1, v0, v2}, Ljava/io/File;-><init>(Ljava/io/File;Ljava/lang/String;)V
 
@@ -984,11 +1102,11 @@
 
     move-result v1
 
-    if-nez v1, :cond_34
+    if-nez v1, :cond_36
 
     new-instance v1, Ljava/io/File;
 
-    const-string v2, "icon.png"
+    const-string/jumbo v2, "icon.png"
 
     invoke-direct {v1, v0, v2}, Ljava/io/File;-><init>(Ljava/io/File;Ljava/lang/String;)V
 
@@ -997,7 +1115,7 @@
 
     move-result v1
 
-    if-nez v1, :cond_34
+    if-nez v1, :cond_36
 
     new-instance v1, Ljava/io/File;
 
@@ -1008,35 +1126,37 @@
     .line 620
     invoke-virtual {v1}, Ljava/io/File;->exists()Z
 
-    move-result v0
+    move-result v1
 
-    if-nez v0, :cond_34
+    if-nez v1, :cond_36
 
     .line 621
     invoke-static {p1, p2}, Lcom/android/server/pm/InstantAppRegistry;->peekInstantCookieFile(Ljava/lang/String;I)Ljava/io/File;
 
-    move-result-object p1
+    move-result-object v1
 
-    if-eqz p1, :cond_32
+    if-eqz v1, :cond_34
 
-    goto :goto_34
-
-    :cond_32
-    const/4 p1, 0x0
-
-    goto :goto_35
+    goto :goto_36
 
     :cond_34
-    :goto_34
-    const/4 p1, 0x1
+    const/4 v1, 0x0
+
+    goto :goto_37
+
+    :cond_36
+    :goto_36
+    const/4 v1, 0x1
 
     .line 618
-    :goto_35
-    return p1
+    :goto_37
+    return v1
 .end method
 
 .method private hasUninstalledInstantAppStateLPr(Ljava/lang/String;I)Z
-    .registers 7
+    .registers 9
+    .param p1, "packageName"  # Ljava/lang/String;
+    .param p2, "userId"  # I
     .annotation build Lcom/android/internal/annotations/GuardedBy;
         value = {
             "mService.mPackages"
@@ -1060,102 +1180,114 @@
     .line 602
     invoke-virtual {v0, p2}, Landroid/util/SparseArray;->get(I)Ljava/lang/Object;
 
-    move-result-object p2
+    move-result-object v0
 
-    check-cast p2, Ljava/util/List;
+    check-cast v0, Ljava/util/List;
 
     .line 603
-    if-nez p2, :cond_10
+    .local v0, "uninstalledAppStates":Ljava/util/List;, "Ljava/util/List<Lcom/android/server/pm/InstantAppRegistry$UninstalledInstantAppState;>;"
+    if-nez v0, :cond_10
 
     .line 604
     return v1
 
     .line 606
     :cond_10
-    invoke-interface {p2}, Ljava/util/List;->size()I
+    invoke-interface {v0}, Ljava/util/List;->size()I
 
-    move-result v0
+    move-result v2
 
     .line 607
-    move v2, v1
+    .local v2, "appCount":I
+    const/4 v3, 0x0
 
+    .local v3, "i":I
     :goto_15
-    if-ge v2, v0, :cond_2e
+    if-ge v3, v2, :cond_2e
 
     .line 608
-    invoke-interface {p2, v2}, Ljava/util/List;->get(I)Ljava/lang/Object;
+    invoke-interface {v0, v3}, Ljava/util/List;->get(I)Ljava/lang/Object;
 
-    move-result-object v3
+    move-result-object v4
 
-    check-cast v3, Lcom/android/server/pm/InstantAppRegistry$UninstalledInstantAppState;
+    check-cast v4, Lcom/android/server/pm/InstantAppRegistry$UninstalledInstantAppState;
 
     .line 609
-    iget-object v3, v3, Lcom/android/server/pm/InstantAppRegistry$UninstalledInstantAppState;->mInstantAppInfo:Landroid/content/pm/InstantAppInfo;
+    .local v4, "uninstalledAppState":Lcom/android/server/pm/InstantAppRegistry$UninstalledInstantAppState;
+    iget-object v5, v4, Lcom/android/server/pm/InstantAppRegistry$UninstalledInstantAppState;->mInstantAppInfo:Landroid/content/pm/InstantAppInfo;
 
-    invoke-virtual {v3}, Landroid/content/pm/InstantAppInfo;->getPackageName()Ljava/lang/String;
+    invoke-virtual {v5}, Landroid/content/pm/InstantAppInfo;->getPackageName()Ljava/lang/String;
 
-    move-result-object v3
+    move-result-object v5
 
-    invoke-virtual {p1, v3}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {p1, v5}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result v3
+    move-result v5
 
-    if-eqz v3, :cond_2b
+    if-eqz v5, :cond_2b
 
     .line 610
-    const/4 p1, 0x1
+    const/4 v1, 0x1
 
-    return p1
+    return v1
 
     .line 607
+    .end local v4  # "uninstalledAppState":Lcom/android/server/pm/InstantAppRegistry$UninstalledInstantAppState;
     :cond_2b
-    add-int/lit8 v2, v2, 0x1
+    add-int/lit8 v3, v3, 0x1
 
     goto :goto_15
 
     .line 613
+    .end local v3  # "i":I
     :cond_2e
     return v1
 .end method
 
 .method static synthetic lambda$deleteInstantApplicationMetadataLPw$1(Ljava/lang/String;Lcom/android/server/pm/InstantAppRegistry$UninstalledInstantAppState;)Z
-    .registers 2
+    .registers 3
+    .param p0, "packageName"  # Ljava/lang/String;
+    .param p1, "state"  # Lcom/android/server/pm/InstantAppRegistry$UninstalledInstantAppState;
 
     .line 555
-    iget-object p1, p1, Lcom/android/server/pm/InstantAppRegistry$UninstalledInstantAppState;->mInstantAppInfo:Landroid/content/pm/InstantAppInfo;
+    iget-object v0, p1, Lcom/android/server/pm/InstantAppRegistry$UninstalledInstantAppState;->mInstantAppInfo:Landroid/content/pm/InstantAppInfo;
 
-    invoke-virtual {p1}, Landroid/content/pm/InstantAppInfo;->getPackageName()Ljava/lang/String;
+    invoke-virtual {v0}, Landroid/content/pm/InstantAppInfo;->getPackageName()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    invoke-virtual {p1, p0}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v0, p0}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result p0
+    move-result v0
 
-    return p0
+    return v0
 .end method
 
 .method static synthetic lambda$onPackageInstalledLPw$0(Landroid/content/pm/PackageParser$Package;Lcom/android/server/pm/InstantAppRegistry$UninstalledInstantAppState;)Z
-    .registers 2
+    .registers 4
+    .param p0, "pkg"  # Landroid/content/pm/PackageParser$Package;
+    .param p1, "state"  # Lcom/android/server/pm/InstantAppRegistry$UninstalledInstantAppState;
 
     .line 290
-    iget-object p1, p1, Lcom/android/server/pm/InstantAppRegistry$UninstalledInstantAppState;->mInstantAppInfo:Landroid/content/pm/InstantAppInfo;
+    iget-object v0, p1, Lcom/android/server/pm/InstantAppRegistry$UninstalledInstantAppState;->mInstantAppInfo:Landroid/content/pm/InstantAppInfo;
 
-    invoke-virtual {p1}, Landroid/content/pm/InstantAppInfo;->getPackageName()Ljava/lang/String;
+    invoke-virtual {v0}, Landroid/content/pm/InstantAppInfo;->getPackageName()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    iget-object p0, p0, Landroid/content/pm/PackageParser$Package;->packageName:Ljava/lang/String;
+    iget-object v1, p0, Landroid/content/pm/PackageParser$Package;->packageName:Ljava/lang/String;
 
-    invoke-virtual {p1, p0}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v0, v1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result p0
+    move-result v0
 
-    return p0
+    return v0
 .end method
 
 .method static synthetic lambda$pruneInstantApps$3(JLcom/android/server/pm/InstantAppRegistry$UninstalledInstantAppState;)Z
     .registers 7
+    .param p0, "maxUninstalledCacheDuration"  # J
+    .param p2, "state"  # Lcom/android/server/pm/InstantAppRegistry$UninstalledInstantAppState;
 
     .line 777
     invoke-static {}, Ljava/lang/System;->currentTimeMillis()J
@@ -1167,23 +1299,26 @@
     sub-long/2addr v0, v2
 
     .line 778
-    cmp-long p0, v0, p0
+    .local v0, "elapsedCachingMillis":J
+    cmp-long v2, v0, p0
 
-    if-lez p0, :cond_d
+    if-lez v2, :cond_d
 
-    const/4 p0, 0x1
+    const/4 v2, 0x1
 
     goto :goto_e
 
     :cond_d
-    const/4 p0, 0x0
+    const/4 v2, 0x0
 
     :goto_e
-    return p0
+    return v2
 .end method
 
 .method private static parseMetadata(Lorg/xmlpull/v1/XmlPullParser;Ljava/lang/String;)Landroid/content/pm/InstantAppInfo;
     .registers 5
+    .param p0, "parser"  # Lorg/xmlpull/v1/XmlPullParser;
+    .param p1, "packageName"  # Ljava/lang/String;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Ljava/io/IOException;,
@@ -1197,6 +1332,7 @@
     move-result v0
 
     .line 1050
+    .local v0, "outerDepth":I
     :cond_4
     invoke-static {p0, v0}, Lcom/android/internal/util/XmlUtils;->nextElementWithin(Lorg/xmlpull/v1/XmlPullParser;I)Z
 
@@ -1220,19 +1356,20 @@
     .line 1052
     invoke-static {p0, p1}, Lcom/android/server/pm/InstantAppRegistry;->parsePackage(Lorg/xmlpull/v1/XmlPullParser;Ljava/lang/String;)Landroid/content/pm/InstantAppInfo;
 
-    move-result-object p0
+    move-result-object v1
 
-    return-object p0
+    return-object v1
 
     .line 1055
     :cond_1c
-    const/4 p0, 0x0
+    const/4 v1, 0x0
 
-    return-object p0
+    return-object v1
 .end method
 
 .method private static parseMetadataFile(Ljava/io/File;)Lcom/android/server/pm/InstantAppRegistry$UninstalledInstantAppState;
-    .registers 7
+    .registers 10
+    .param p0, "metadataFile"  # Ljava/io/File;
 
     .line 989
     invoke-virtual {p0}, Ljava/io/File;->exists()Z
@@ -1260,6 +1397,7 @@
     .catch Ljava/io/FileNotFoundException; {:try_start_8 .. :try_end_11} :catch_56
 
     .line 998
+    .local v0, "in":Ljava/io/FileInputStream;
     nop
 
     .line 1000
@@ -1268,39 +1406,43 @@
     move-result-object v1
 
     .line 1001
+    .local v1, "instantDir":Ljava/io/File;
     invoke-virtual {p0}, Ljava/io/File;->lastModified()J
 
     move-result-wide v2
 
     .line 1002
+    .local v2, "timestamp":J
     invoke-virtual {v1}, Ljava/io/File;->getName()Ljava/lang/String;
-
-    move-result-object v1
-
-    .line 1005
-    :try_start_1e
-    invoke-static {}, Landroid/util/Xml;->newPullParser()Lorg/xmlpull/v1/XmlPullParser;
 
     move-result-object v4
 
-    .line 1006
-    sget-object v5, Ljava/nio/charset/StandardCharsets;->UTF_8:Ljava/nio/charset/Charset;
-
-    invoke-virtual {v5}, Ljava/nio/charset/Charset;->name()Ljava/lang/String;
+    .line 1005
+    .local v4, "packageName":Ljava/lang/String;
+    :try_start_1e
+    invoke-static {}, Landroid/util/Xml;->newPullParser()Lorg/xmlpull/v1/XmlPullParser;
 
     move-result-object v5
 
-    invoke-interface {v4, v0, v5}, Lorg/xmlpull/v1/XmlPullParser;->setInput(Ljava/io/InputStream;Ljava/lang/String;)V
+    .line 1006
+    .local v5, "parser":Lorg/xmlpull/v1/XmlPullParser;
+    sget-object v6, Ljava/nio/charset/StandardCharsets;->UTF_8:Ljava/nio/charset/Charset;
+
+    invoke-virtual {v6}, Ljava/nio/charset/Charset;->name()Ljava/lang/String;
+
+    move-result-object v6
+
+    invoke-interface {v5, v0, v6}, Lorg/xmlpull/v1/XmlPullParser;->setInput(Ljava/io/InputStream;Ljava/lang/String;)V
 
     .line 1007
-    new-instance v5, Lcom/android/server/pm/InstantAppRegistry$UninstalledInstantAppState;
+    new-instance v6, Lcom/android/server/pm/InstantAppRegistry$UninstalledInstantAppState;
 
     .line 1008
-    invoke-static {v4, v1}, Lcom/android/server/pm/InstantAppRegistry;->parseMetadata(Lorg/xmlpull/v1/XmlPullParser;Ljava/lang/String;)Landroid/content/pm/InstantAppInfo;
+    invoke-static {v5, v4}, Lcom/android/server/pm/InstantAppRegistry;->parseMetadata(Lorg/xmlpull/v1/XmlPullParser;Ljava/lang/String;)Landroid/content/pm/InstantAppInfo;
 
-    move-result-object v1
+    move-result-object v7
 
-    invoke-direct {v5, v1, v2, v3}, Lcom/android/server/pm/InstantAppRegistry$UninstalledInstantAppState;-><init>(Landroid/content/pm/InstantAppInfo;J)V
+    invoke-direct {v6, v7, v2, v3}, Lcom/android/server/pm/InstantAppRegistry$UninstalledInstantAppState;-><init>(Landroid/content/pm/InstantAppInfo;J)V
     :try_end_34
     .catch Lorg/xmlpull/v1/XmlPullParserException; {:try_start_1e .. :try_end_34} :catch_3a
     .catch Ljava/io/IOException; {:try_start_1e .. :try_end_34} :catch_3a
@@ -1310,65 +1452,85 @@
     invoke-static {v0}, Llibcore/io/IoUtils;->closeQuietly(Ljava/lang/AutoCloseable;)V
 
     .line 1007
-    return-object v5
+    return-object v6
 
     .line 1013
+    .end local v5  # "parser":Lorg/xmlpull/v1/XmlPullParser;
     :catchall_38
-    move-exception p0
+    move-exception v5
 
     goto :goto_52
 
     .line 1009
     :catch_3a
-    move-exception v1
+    move-exception v5
 
     .line 1010
+    .local v5, "e":Ljava/lang/Exception;
     :try_start_3b
-    new-instance v2, Ljava/lang/IllegalStateException;
+    new-instance v6, Ljava/lang/IllegalStateException;
 
-    new-instance v3, Ljava/lang/StringBuilder;
+    new-instance v7, Ljava/lang/StringBuilder;
 
-    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v7}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v4, "Failed parsing instant metadata file: "
+    const-string v8, "Failed parsing instant metadata file: "
 
-    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v7, v8}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v3, p0}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    invoke-virtual {v7, p0}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v7}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v7
 
-    invoke-direct {v2, p0, v1}, Ljava/lang/IllegalStateException;-><init>(Ljava/lang/String;Ljava/lang/Throwable;)V
+    invoke-direct {v6, v7, v5}, Ljava/lang/IllegalStateException;-><init>(Ljava/lang/String;Ljava/lang/Throwable;)V
 
-    throw v2
+    .end local v0  # "in":Ljava/io/FileInputStream;
+    .end local v1  # "instantDir":Ljava/io/File;
+    .end local v2  # "timestamp":J
+    .end local v4  # "packageName":Ljava/lang/String;
+    .end local p0  # "metadataFile":Ljava/io/File;
+    throw v6
     :try_end_52
     .catchall {:try_start_3b .. :try_end_52} :catchall_38
 
     .line 1013
+    .end local v5  # "e":Ljava/lang/Exception;
+    .restart local v0  # "in":Ljava/io/FileInputStream;
+    .restart local v1  # "instantDir":Ljava/io/File;
+    .restart local v2  # "timestamp":J
+    .restart local v4  # "packageName":Ljava/lang/String;
+    .restart local p0  # "metadataFile":Ljava/io/File;
     :goto_52
     invoke-static {v0}, Llibcore/io/IoUtils;->closeQuietly(Ljava/lang/AutoCloseable;)V
 
-    throw p0
+    throw v5
 
     .line 995
+    .end local v0  # "in":Ljava/io/FileInputStream;
+    .end local v1  # "instantDir":Ljava/io/File;
+    .end local v2  # "timestamp":J
+    .end local v4  # "packageName":Ljava/lang/String;
     :catch_56
-    move-exception p0
+    move-exception v0
 
     .line 996
-    const-string p0, "InstantAppRegistry"
+    .local v0, "fnfe":Ljava/io/FileNotFoundException;
+    const-string v2, "InstantAppRegistry"
 
-    const-string v0, "No instant metadata file"
+    const-string v3, "No instant metadata file"
 
-    invoke-static {p0, v0}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v2, v3}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 997
     return-object v1
 .end method
 
 .method private static parsePackage(Lorg/xmlpull/v1/XmlPullParser;Ljava/lang/String;)Landroid/content/pm/InstantAppInfo;
-    .registers 8
+    .registers 9
+    .param p0, "parser"  # Lorg/xmlpull/v1/XmlPullParser;
+    .param p1, "packageName"  # Ljava/lang/String;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Ljava/io/IOException;,
@@ -1379,35 +1541,39 @@
     .line 1061
     const/4 v0, 0x0
 
-    const-string v1, "label"
+    const-string/jumbo v1, "label"
 
     invoke-interface {p0, v0, v1}, Lorg/xmlpull/v1/XmlPullParser;->getAttributeValue(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
 
     move-result-object v0
 
     .line 1063
+    .local v0, "label":Ljava/lang/String;
     new-instance v1, Ljava/util/ArrayList;
 
     invoke-direct {v1}, Ljava/util/ArrayList;-><init>()V
 
     .line 1064
+    .local v1, "outRequestedPermissions":Ljava/util/List;, "Ljava/util/List<Ljava/lang/String;>;"
     new-instance v2, Ljava/util/ArrayList;
 
     invoke-direct {v2}, Ljava/util/ArrayList;-><init>()V
 
     .line 1066
+    .local v2, "outGrantedPermissions":Ljava/util/List;, "Ljava/util/List<Ljava/lang/String;>;"
     invoke-interface {p0}, Lorg/xmlpull/v1/XmlPullParser;->getDepth()I
 
     move-result v3
 
     .line 1067
-    :cond_15
-    :goto_15
+    .local v3, "outerDepth":I
+    :cond_16
+    :goto_16
     invoke-static {p0, v3}, Lcom/android/internal/util/XmlUtils;->nextElementWithin(Lorg/xmlpull/v1/XmlPullParser;I)Z
 
     move-result v4
 
-    if-eqz v4, :cond_2c
+    if-eqz v4, :cond_2d
 
     .line 1068
     invoke-interface {p0}, Lorg/xmlpull/v1/XmlPullParser;->getName()Ljava/lang/String;
@@ -1420,44 +1586,47 @@
 
     move-result v4
 
-    if-eqz v4, :cond_15
+    if-eqz v4, :cond_16
 
     .line 1069
     invoke-static {p0, v1, v2}, Lcom/android/server/pm/InstantAppRegistry;->parsePermissions(Lorg/xmlpull/v1/XmlPullParser;Ljava/util/List;Ljava/util/List;)V
 
-    goto :goto_15
+    goto :goto_16
 
     .line 1073
-    :cond_2c
+    :cond_2d
     invoke-interface {v1}, Ljava/util/List;->size()I
 
-    move-result p0
+    move-result v4
 
-    new-array p0, p0, [Ljava/lang/String;
+    new-array v4, v4, [Ljava/lang/String;
 
     .line 1074
-    invoke-interface {v1, p0}, Ljava/util/List;->toArray([Ljava/lang/Object;)[Ljava/lang/Object;
+    .local v4, "requestedPermissions":[Ljava/lang/String;
+    invoke-interface {v1, v4}, Ljava/util/List;->toArray([Ljava/lang/Object;)[Ljava/lang/Object;
 
     .line 1076
     invoke-interface {v2}, Ljava/util/List;->size()I
 
-    move-result v1
+    move-result v5
 
-    new-array v1, v1, [Ljava/lang/String;
+    new-array v5, v5, [Ljava/lang/String;
 
     .line 1077
-    invoke-interface {v2, v1}, Ljava/util/List;->toArray([Ljava/lang/Object;)[Ljava/lang/Object;
+    .local v5, "grantedPermissions":[Ljava/lang/String;
+    invoke-interface {v2, v5}, Ljava/util/List;->toArray([Ljava/lang/Object;)[Ljava/lang/Object;
 
     .line 1079
-    new-instance v2, Landroid/content/pm/InstantAppInfo;
+    new-instance v6, Landroid/content/pm/InstantAppInfo;
 
-    invoke-direct {v2, p1, v0, p0, v1}, Landroid/content/pm/InstantAppInfo;-><init>(Ljava/lang/String;Ljava/lang/CharSequence;[Ljava/lang/String;[Ljava/lang/String;)V
+    invoke-direct {v6, p1, v0, v4, v5}, Landroid/content/pm/InstantAppInfo;-><init>(Ljava/lang/String;Ljava/lang/CharSequence;[Ljava/lang/String;[Ljava/lang/String;)V
 
-    return-object v2
+    return-object v6
 .end method
 
 .method private static parsePermissions(Lorg/xmlpull/v1/XmlPullParser;Ljava/util/List;Ljava/util/List;)V
     .registers 6
+    .param p0, "parser"  # Lorg/xmlpull/v1/XmlPullParser;
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(",
@@ -1479,11 +1648,14 @@
     .end annotation
 
     .line 1087
+    .local p1, "outRequestedPermissions":Ljava/util/List;, "Ljava/util/List<Ljava/lang/String;>;"
+    .local p2, "outGrantedPermissions":Ljava/util/List;, "Ljava/util/List<Ljava/lang/String;>;"
     invoke-interface {p0}, Lorg/xmlpull/v1/XmlPullParser;->getDepth()I
 
     move-result v0
 
     .line 1088
+    .local v0, "outerDepth":I
     :cond_4
     :goto_4
     invoke-static {p0, v0}, Lcom/android/internal/util/XmlUtils;->nextElementWithin(Lorg/xmlpull/v1/XmlPullParser;I)Z
@@ -1513,6 +1685,7 @@
     move-result-object v1
 
     .line 1091
+    .local v1, "permission":Ljava/lang/String;
     invoke-interface {p1, v1}, Ljava/util/List;->add(Ljava/lang/Object;)Z
 
     .line 1092
@@ -1528,6 +1701,7 @@
     invoke-interface {p2, v1}, Ljava/util/List;->add(Ljava/lang/Object;)Z
 
     .line 1095
+    .end local v1  # "permission":Ljava/lang/String;
     :cond_2c
     goto :goto_4
 
@@ -1537,97 +1711,105 @@
 .end method
 
 .method private static peekInstantCookieFile(Ljava/lang/String;I)Ljava/io/File;
-    .registers 7
+    .registers 10
+    .param p0, "packageName"  # Ljava/lang/String;
+    .param p1, "userId"  # I
 
     .line 1027
     invoke-static {p0, p1}, Lcom/android/server/pm/InstantAppRegistry;->getInstantApplicationDir(Ljava/lang/String;I)Ljava/io/File;
 
-    move-result-object p0
+    move-result-object v0
 
     .line 1028
-    invoke-virtual {p0}, Ljava/io/File;->exists()Z
+    .local v0, "appDir":Ljava/io/File;
+    invoke-virtual {v0}, Ljava/io/File;->exists()Z
 
-    move-result p1
+    move-result v1
 
-    const/4 v0, 0x0
+    const/4 v2, 0x0
 
-    if-nez p1, :cond_c
+    if-nez v1, :cond_c
 
     .line 1029
-    return-object v0
+    return-object v2
 
     .line 1031
     :cond_c
-    invoke-virtual {p0}, Ljava/io/File;->listFiles()[Ljava/io/File;
+    invoke-virtual {v0}, Ljava/io/File;->listFiles()[Ljava/io/File;
 
-    move-result-object p0
+    move-result-object v1
 
     .line 1032
-    if-nez p0, :cond_13
+    .local v1, "files":[Ljava/io/File;
+    if-nez v1, :cond_13
 
     .line 1033
-    return-object v0
-
-    .line 1035
-    :cond_13
-    array-length p1, p0
-
-    const/4 v1, 0x0
-
-    :goto_15
-    if-ge v1, p1, :cond_3b
-
-    aget-object v2, p0, v1
-
-    .line 1036
-    invoke-virtual {v2}, Ljava/io/File;->isDirectory()Z
-
-    move-result v3
-
-    if-nez v3, :cond_38
-
-    .line 1037
-    invoke-virtual {v2}, Ljava/io/File;->getName()Ljava/lang/String;
-
-    move-result-object v3
-
-    const-string v4, "cookie_"
-
-    invoke-virtual {v3, v4}, Ljava/lang/String;->startsWith(Ljava/lang/String;)Z
-
-    move-result v3
-
-    if-eqz v3, :cond_38
-
-    .line 1038
-    invoke-virtual {v2}, Ljava/io/File;->getName()Ljava/lang/String;
-
-    move-result-object v3
-
-    const-string v4, ".dat"
-
-    invoke-virtual {v3, v4}, Ljava/lang/String;->endsWith(Ljava/lang/String;)Z
-
-    move-result v3
-
-    if-eqz v3, :cond_38
-
-    .line 1039
     return-object v2
 
     .line 1035
+    :cond_13
+    array-length v3, v1
+
+    const/4 v4, 0x0
+
+    :goto_15
+    if-ge v4, v3, :cond_3b
+
+    aget-object v5, v1, v4
+
+    .line 1036
+    .local v5, "file":Ljava/io/File;
+    invoke-virtual {v5}, Ljava/io/File;->isDirectory()Z
+
+    move-result v6
+
+    if-nez v6, :cond_38
+
+    .line 1037
+    invoke-virtual {v5}, Ljava/io/File;->getName()Ljava/lang/String;
+
+    move-result-object v6
+
+    const-string v7, "cookie_"
+
+    invoke-virtual {v6, v7}, Ljava/lang/String;->startsWith(Ljava/lang/String;)Z
+
+    move-result v6
+
+    if-eqz v6, :cond_38
+
+    .line 1038
+    invoke-virtual {v5}, Ljava/io/File;->getName()Ljava/lang/String;
+
+    move-result-object v6
+
+    const-string v7, ".dat"
+
+    invoke-virtual {v6, v7}, Ljava/lang/String;->endsWith(Ljava/lang/String;)Z
+
+    move-result v6
+
+    if-eqz v6, :cond_38
+
+    .line 1039
+    return-object v5
+
+    .line 1035
+    .end local v5  # "file":Ljava/io/File;
     :cond_38
-    add-int/lit8 v1, v1, 0x1
+    add-int/lit8 v4, v4, 0x1
 
     goto :goto_15
 
     .line 1042
     :cond_3b
-    return-object v0
+    return-object v2
 .end method
 
 .method private peekOrParseUninstalledInstantAppInfo(Ljava/lang/String;I)Landroid/content/pm/InstantAppInfo;
     .registers 8
+    .param p1, "packageName"  # Ljava/lang/String;
+    .param p2, "userId"  # I
 
     .line 918
     iget-object v0, p0, Lcom/android/server/pm/InstantAppRegistry;->mUninstalledInstantApps:Landroid/util/SparseArray;
@@ -1645,6 +1827,7 @@
     check-cast v0, Ljava/util/List;
 
     .line 921
+    .local v0, "uninstalledAppStates":Ljava/util/List;, "Ljava/util/List<Lcom/android/server/pm/InstantAppRegistry$UninstalledInstantAppState;>;"
     if-eqz v0, :cond_2c
 
     .line 922
@@ -1653,8 +1836,10 @@
     move-result v1
 
     .line 923
+    .local v1, "appCount":I
     const/4 v2, 0x0
 
+    .local v2, "i":I
     :goto_12
     if-ge v2, v1, :cond_2c
 
@@ -1666,6 +1851,7 @@
     check-cast v3, Lcom/android/server/pm/InstantAppRegistry$UninstalledInstantAppState;
 
     .line 925
+    .local v3, "uninstalledAppState":Lcom/android/server/pm/InstantAppRegistry$UninstalledInstantAppState;
     iget-object v4, v3, Lcom/android/server/pm/InstantAppRegistry$UninstalledInstantAppState;->mInstantAppInfo:Landroid/content/pm/InstantAppInfo;
 
     .line 926
@@ -1680,50 +1866,60 @@
     if-eqz v4, :cond_29
 
     .line 927
-    iget-object p1, v3, Lcom/android/server/pm/InstantAppRegistry$UninstalledInstantAppState;->mInstantAppInfo:Landroid/content/pm/InstantAppInfo;
+    iget-object v4, v3, Lcom/android/server/pm/InstantAppRegistry$UninstalledInstantAppState;->mInstantAppInfo:Landroid/content/pm/InstantAppInfo;
 
-    return-object p1
+    return-object v4
 
     .line 923
+    .end local v3  # "uninstalledAppState":Lcom/android/server/pm/InstantAppRegistry$UninstalledInstantAppState;
     :cond_29
     add-int/lit8 v2, v2, 0x1
 
     goto :goto_12
 
     .line 933
+    .end local v0  # "uninstalledAppStates":Ljava/util/List;, "Ljava/util/List<Lcom/android/server/pm/InstantAppRegistry$UninstalledInstantAppState;>;"
+    .end local v1  # "appCount":I
+    .end local v2  # "i":I
     :cond_2c
     new-instance v0, Ljava/io/File;
 
     invoke-static {p1, p2}, Lcom/android/server/pm/InstantAppRegistry;->getInstantApplicationDir(Ljava/lang/String;I)Ljava/io/File;
 
-    move-result-object p1
+    move-result-object v1
 
-    const-string p2, "metadata.xml"
+    const-string/jumbo v2, "metadata.xml"
 
-    invoke-direct {v0, p1, p2}, Ljava/io/File;-><init>(Ljava/io/File;Ljava/lang/String;)V
+    invoke-direct {v0, v1, v2}, Ljava/io/File;-><init>(Ljava/io/File;Ljava/lang/String;)V
 
     .line 935
+    .local v0, "metadataFile":Ljava/io/File;
     invoke-static {v0}, Lcom/android/server/pm/InstantAppRegistry;->parseMetadataFile(Ljava/io/File;)Lcom/android/server/pm/InstantAppRegistry$UninstalledInstantAppState;
 
-    move-result-object p1
+    move-result-object v1
 
     .line 936
-    if-nez p1, :cond_3f
+    .local v1, "uninstalledAppState":Lcom/android/server/pm/InstantAppRegistry$UninstalledInstantAppState;
+    if-nez v1, :cond_40
 
     .line 937
-    const/4 p1, 0x0
+    const/4 v2, 0x0
 
-    return-object p1
+    return-object v2
 
     .line 940
-    :cond_3f
-    iget-object p1, p1, Lcom/android/server/pm/InstantAppRegistry$UninstalledInstantAppState;->mInstantAppInfo:Landroid/content/pm/InstantAppInfo;
+    :cond_40
+    iget-object v2, v1, Lcom/android/server/pm/InstantAppRegistry$UninstalledInstantAppState;->mInstantAppInfo:Landroid/content/pm/InstantAppInfo;
 
-    return-object p1
+    return-object v2
 .end method
 
 .method private persistInstantApplicationCookie([BLjava/lang/String;Ljava/io/File;I)V
-    .registers 7
+    .registers 9
+    .param p1, "cookie"  # [B
+    .param p2, "packageName"  # Ljava/lang/String;
+    .param p3, "cookieFile"  # Ljava/io/File;
+    .param p4, "userId"  # I
 
     .line 186
     iget-object v0, p0, Lcom/android/server/pm/InstantAppRegistry;->mService:Lcom/android/server/pm/PackageManagerService;
@@ -1736,27 +1932,28 @@
     :try_start_5
     invoke-static {p2, p4}, Lcom/android/server/pm/InstantAppRegistry;->getInstantApplicationDir(Ljava/lang/String;I)Ljava/io/File;
 
-    move-result-object p2
+    move-result-object v1
 
     .line 188
-    invoke-virtual {p2}, Ljava/io/File;->exists()Z
+    .local v1, "appDir":Ljava/io/File;
+    invoke-virtual {v1}, Ljava/io/File;->exists()Z
 
-    move-result p4
+    move-result v2
 
-    if-nez p4, :cond_1e
+    if-nez v2, :cond_1e
 
-    invoke-virtual {p2}, Ljava/io/File;->mkdirs()Z
+    invoke-virtual {v1}, Ljava/io/File;->mkdirs()Z
 
-    move-result p2
+    move-result v2
 
-    if-nez p2, :cond_1e
+    if-nez v2, :cond_1e
 
     .line 189
-    const-string p1, "InstantAppRegistry"
+    const-string v2, "InstantAppRegistry"
 
-    const-string p2, "Cannot create instant app cookie directory"
+    const-string v3, "Cannot create instant app cookie directory"
 
-    invoke-static {p1, p2}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v2, v3}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 190
     monitor-exit v0
@@ -1767,34 +1964,35 @@
     :cond_1e
     invoke-virtual {p3}, Ljava/io/File;->exists()Z
 
-    move-result p2
+    move-result v2
 
-    if-eqz p2, :cond_31
+    if-eqz v2, :cond_31
 
     invoke-virtual {p3}, Ljava/io/File;->delete()Z
 
-    move-result p2
+    move-result v2
 
-    if-nez p2, :cond_31
+    if-nez v2, :cond_31
 
     .line 194
-    const-string p2, "InstantAppRegistry"
+    const-string v2, "InstantAppRegistry"
 
-    const-string p4, "Cannot delete instant app cookie file"
+    const-string v3, "Cannot delete instant app cookie file"
 
-    invoke-static {p2, p4}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v2, v3}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 198
     :cond_31
     if-eqz p1, :cond_66
 
-    array-length p2, p1
+    array-length v2, p1
 
-    if-gtz p2, :cond_37
+    if-gtz v2, :cond_37
 
     goto :goto_66
 
     .line 201
+    .end local v1  # "appDir":Ljava/io/File;
     :cond_37
     monitor-exit v0
     :try_end_38
@@ -1802,80 +2000,109 @@
 
     .line 202
     :try_start_38
-    new-instance p2, Ljava/io/FileOutputStream;
+    new-instance v0, Ljava/io/FileOutputStream;
 
-    invoke-direct {p2, p3}, Ljava/io/FileOutputStream;-><init>(Ljava/io/File;)V
+    invoke-direct {v0, p3}, Ljava/io/FileOutputStream;-><init>(Ljava/io/File;)V
     :try_end_3d
     .catch Ljava/io/IOException; {:try_start_38 .. :try_end_3d} :catch_4e
 
-    const/4 p4, 0x0
+    .local v0, "fos":Ljava/io/FileOutputStream;
+    const/4 v1, 0x0
 
     .line 203
-    const/4 v0, 0x0
+    const/4 v2, 0x0
 
     :try_start_3f
-    array-length v1, p1
+    array-length v3, p1
 
-    invoke-virtual {p2, p1, v0, v1}, Ljava/io/FileOutputStream;->write([BII)V
+    invoke-virtual {v0, p1, v2, v3}, Ljava/io/FileOutputStream;->write([BII)V
     :try_end_43
     .catchall {:try_start_3f .. :try_end_43} :catchall_47
 
     .line 204
     :try_start_43
-    invoke-static {p4, p2}, Lcom/android/server/pm/InstantAppRegistry;->$closeResource(Ljava/lang/Throwable;Ljava/lang/AutoCloseable;)V
+    invoke-static {v1, v0}, Lcom/android/server/pm/InstantAppRegistry;->$closeResource(Ljava/lang/Throwable;Ljava/lang/AutoCloseable;)V
     :try_end_46
     .catch Ljava/io/IOException; {:try_start_43 .. :try_end_46} :catch_4e
 
     .line 206
+    .end local v0  # "fos":Ljava/io/FileOutputStream;
     goto :goto_65
 
     .line 202
+    .restart local v0  # "fos":Ljava/io/FileOutputStream;
     :catchall_47
-    move-exception p1
+    move-exception v1
 
+    .end local v0  # "fos":Ljava/io/FileOutputStream;
+    .end local p0  # "this":Lcom/android/server/pm/InstantAppRegistry;
+    .end local p1  # "cookie":[B
+    .end local p2  # "packageName":Ljava/lang/String;
+    .end local p3  # "cookieFile":Ljava/io/File;
+    .end local p4  # "userId":I
     :try_start_48
-    throw p1
+    throw v1
     :try_end_49
     .catchall {:try_start_48 .. :try_end_49} :catchall_49
 
     .line 204
+    .restart local v0  # "fos":Ljava/io/FileOutputStream;
+    .restart local p0  # "this":Lcom/android/server/pm/InstantAppRegistry;
+    .restart local p1  # "cookie":[B
+    .restart local p2  # "packageName":Ljava/lang/String;
+    .restart local p3  # "cookieFile":Ljava/io/File;
+    .restart local p4  # "userId":I
     :catchall_49
-    move-exception p4
+    move-exception v2
 
     :try_start_4a
-    invoke-static {p1, p2}, Lcom/android/server/pm/InstantAppRegistry;->$closeResource(Ljava/lang/Throwable;Ljava/lang/AutoCloseable;)V
+    invoke-static {v1, v0}, Lcom/android/server/pm/InstantAppRegistry;->$closeResource(Ljava/lang/Throwable;Ljava/lang/AutoCloseable;)V
 
-    throw p4
+    .end local p0  # "this":Lcom/android/server/pm/InstantAppRegistry;
+    .end local p1  # "cookie":[B
+    .end local p2  # "packageName":Ljava/lang/String;
+    .end local p3  # "cookieFile":Ljava/io/File;
+    .end local p4  # "userId":I
+    throw v2
     :try_end_4e
     .catch Ljava/io/IOException; {:try_start_4a .. :try_end_4e} :catch_4e
 
+    .end local v0  # "fos":Ljava/io/FileOutputStream;
+    .restart local p0  # "this":Lcom/android/server/pm/InstantAppRegistry;
+    .restart local p1  # "cookie":[B
+    .restart local p2  # "packageName":Ljava/lang/String;
+    .restart local p3  # "cookieFile":Ljava/io/File;
+    .restart local p4  # "userId":I
     :catch_4e
-    move-exception p1
+    move-exception v0
 
     .line 205
-    new-instance p2, Ljava/lang/StringBuilder;
+    .local v0, "e":Ljava/io/IOException;
+    new-instance v1, Ljava/lang/StringBuilder;
 
-    invoke-direct {p2}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string p4, "Error writing instant app cookie file: "
+    const-string v2, "Error writing instant app cookie file: "
 
-    invoke-virtual {p2, p4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p2, p3}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, p3}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p2
+    move-result-object v1
 
-    const-string p3, "InstantAppRegistry"
+    const-string v2, "InstantAppRegistry"
 
-    invoke-static {p3, p2, p1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    invoke-static {v2, v1, v0}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
     .line 207
+    .end local v0  # "e":Ljava/io/IOException;
     :goto_65
     return-void
 
     .line 199
+    .restart local v1  # "appDir":Ljava/io/File;
     :cond_66
     :goto_66
     :try_start_66
@@ -1884,18 +2111,21 @@
     return-void
 
     .line 201
+    .end local v1  # "appDir":Ljava/io/File;
     :catchall_68
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_6a
     .catchall {:try_start_66 .. :try_end_6a} :catchall_68
 
-    throw p1
+    throw v1
 .end method
 
 .method private propagateInstantAppPermissionsIfNeeded(Landroid/content/pm/PackageParser$Package;I)V
-    .registers 11
+    .registers 13
+    .param p1, "pkg"  # Landroid/content/pm/PackageParser$Package;
+    .param p2, "userId"  # I
 
     .line 893
     iget-object v0, p1, Landroid/content/pm/PackageParser$Package;->packageName:Ljava/lang/String;
@@ -1905,6 +2135,7 @@
     move-result-object v0
 
     .line 895
+    .local v0, "appInfo":Landroid/content/pm/InstantAppInfo;
     if-nez v0, :cond_9
 
     .line 896
@@ -1932,53 +2163,58 @@
     move-result-wide v1
 
     .line 903
+    .local v1, "identity":J
     :try_start_18
     invoke-virtual {v0}, Landroid/content/pm/InstantAppInfo;->getGrantedPermissions()[Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v3
 
-    array-length v3, v0
+    array-length v4, v3
 
-    const/4 v4, 0x0
+    const/4 v5, 0x0
 
     :goto_1e
-    if-ge v4, v3, :cond_3e
+    if-ge v5, v4, :cond_3e
 
-    aget-object v5, v0, v4
+    aget-object v6, v3, v5
 
     .line 904
-    iget-object v6, p0, Lcom/android/server/pm/InstantAppRegistry;->mService:Lcom/android/server/pm/PackageManagerService;
+    .local v6, "grantedPermission":Ljava/lang/String;
+    iget-object v7, p0, Lcom/android/server/pm/InstantAppRegistry;->mService:Lcom/android/server/pm/PackageManagerService;
 
-    iget-object v6, v6, Lcom/android/server/pm/PackageManagerService;->mSettings:Lcom/android/server/pm/Settings;
+    iget-object v7, v7, Lcom/android/server/pm/PackageManagerService;->mSettings:Lcom/android/server/pm/Settings;
 
     .line 905
-    invoke-virtual {v6, v5}, Lcom/android/server/pm/Settings;->canPropagatePermissionToInstantApp(Ljava/lang/String;)Z
+    invoke-virtual {v7, v6}, Lcom/android/server/pm/Settings;->canPropagatePermissionToInstantApp(Ljava/lang/String;)Z
 
-    move-result v6
+    move-result v7
 
     .line 906
-    if-eqz v6, :cond_3b
+    .local v7, "propagatePermission":Z
+    if-eqz v7, :cond_3b
 
-    iget-object v6, p1, Landroid/content/pm/PackageParser$Package;->requestedPermissions:Ljava/util/ArrayList;
+    iget-object v8, p1, Landroid/content/pm/PackageParser$Package;->requestedPermissions:Ljava/util/ArrayList;
 
-    invoke-virtual {v6, v5}, Ljava/util/ArrayList;->contains(Ljava/lang/Object;)Z
+    invoke-virtual {v8, v6}, Ljava/util/ArrayList;->contains(Ljava/lang/Object;)Z
 
-    move-result v6
+    move-result v8
 
-    if-eqz v6, :cond_3b
+    if-eqz v8, :cond_3b
 
     .line 907
-    iget-object v6, p0, Lcom/android/server/pm/InstantAppRegistry;->mService:Lcom/android/server/pm/PackageManagerService;
+    iget-object v8, p0, Lcom/android/server/pm/InstantAppRegistry;->mService:Lcom/android/server/pm/PackageManagerService;
 
-    iget-object v7, p1, Landroid/content/pm/PackageParser$Package;->packageName:Ljava/lang/String;
+    iget-object v9, p1, Landroid/content/pm/PackageParser$Package;->packageName:Ljava/lang/String;
 
-    invoke-virtual {v6, v7, v5, p2}, Lcom/android/server/pm/PackageManagerService;->grantRuntimePermission(Ljava/lang/String;Ljava/lang/String;I)V
+    invoke-virtual {v8, v9, v6, p2}, Lcom/android/server/pm/PackageManagerService;->grantRuntimePermission(Ljava/lang/String;Ljava/lang/String;I)V
     :try_end_3b
     .catchall {:try_start_18 .. :try_end_3b} :catchall_43
 
     .line 903
+    .end local v6  # "grantedPermission":Ljava/lang/String;
+    .end local v7  # "propagatePermission":Z
     :cond_3b
-    add-int/lit8 v4, v4, 0x1
+    add-int/lit8 v5, v5, 0x1
 
     goto :goto_1e
 
@@ -1994,15 +2230,18 @@
 
     .line 911
     :catchall_43
-    move-exception p1
+    move-exception v3
 
     invoke-static {v1, v2}, Landroid/os/Binder;->restoreCallingIdentity(J)V
 
-    throw p1
+    throw v3
 .end method
 
 .method private pruneInstantApps(JJJ)Z
-    .registers 30
+    .registers 33
+    .param p1, "neededSpace"  # J
+    .param p3, "maxInstalledCacheDuration"  # J
+    .param p5, "maxUninstalledCacheDuration"  # J
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Ljava/io/IOException;
@@ -2010,456 +2249,635 @@
     .end annotation
 
     .line 676
-    move-object/from16 v0, p0
+    move-object/from16 v1, p0
 
-    move-wide/from16 v1, p5
+    move-wide/from16 v2, p5
 
-    iget-object v3, v0, Lcom/android/server/pm/InstantAppRegistry;->mService:Lcom/android/server/pm/PackageManagerService;
+    iget-object v0, v1, Lcom/android/server/pm/InstantAppRegistry;->mService:Lcom/android/server/pm/PackageManagerService;
 
-    iget-object v3, v3, Lcom/android/server/pm/PackageManagerService;->mContext:Landroid/content/Context;
+    iget-object v0, v0, Lcom/android/server/pm/PackageManagerService;->mContext:Landroid/content/Context;
 
     const-class v4, Landroid/os/storage/StorageManager;
 
-    invoke-virtual {v3, v4}, Landroid/content/Context;->getSystemService(Ljava/lang/Class;)Ljava/lang/Object;
+    invoke-virtual {v0, v4}, Landroid/content/Context;->getSystemService(Ljava/lang/Class;)Ljava/lang/Object;
 
-    move-result-object v3
+    move-result-object v0
 
-    check-cast v3, Landroid/os/storage/StorageManager;
+    move-object v4, v0
+
+    check-cast v4, Landroid/os/storage/StorageManager;
 
     .line 677
-    sget-object v4, Landroid/os/storage/StorageManager;->UUID_PRIVATE_INTERNAL:Ljava/lang/String;
+    .local v4, "storage":Landroid/os/storage/StorageManager;
+    sget-object v0, Landroid/os/storage/StorageManager;->UUID_PRIVATE_INTERNAL:Ljava/lang/String;
 
-    invoke-virtual {v3, v4}, Landroid/os/storage/StorageManager;->findPathForUuid(Ljava/lang/String;)Ljava/io/File;
+    invoke-virtual {v4, v0}, Landroid/os/storage/StorageManager;->findPathForUuid(Ljava/lang/String;)Ljava/io/File;
 
-    move-result-object v3
+    move-result-object v5
 
     .line 679
-    invoke-virtual {v3}, Ljava/io/File;->getUsableSpace()J
-
-    move-result-wide v4
-
-    cmp-long v4, v4, p1
-
-    const/4 v5, 0x1
-
-    if-ltz v4, :cond_20
-
-    .line 680
-    return v5
-
-    .line 683
-    :cond_20
-    const/4 v4, 0x0
-
-    .line 686
-    invoke-static {}, Ljava/lang/System;->currentTimeMillis()J
+    .local v5, "file":Ljava/io/File;
+    invoke-virtual {v5}, Ljava/io/File;->getUsableSpace()J
 
     move-result-wide v6
 
+    cmp-long v0, v6, p1
+
+    const/4 v6, 0x1
+
+    if-ltz v0, :cond_21
+
+    .line 680
+    return v6
+
+    .line 683
+    :cond_21
+    const/4 v7, 0x0
+
+    .line 686
+    .local v7, "packagesToDelete":Ljava/util/List;, "Ljava/util/List<Ljava/lang/String;>;"
+    invoke-static {}, Ljava/lang/System;->currentTimeMillis()J
+
+    move-result-wide v8
+
     .line 689
-    iget-object v8, v0, Lcom/android/server/pm/InstantAppRegistry;->mService:Lcom/android/server/pm/PackageManagerService;
+    .local v8, "now":J
+    iget-object v0, v1, Lcom/android/server/pm/InstantAppRegistry;->mService:Lcom/android/server/pm/PackageManagerService;
 
-    iget-object v8, v8, Lcom/android/server/pm/PackageManagerService;->mPackages:Landroid/util/ArrayMap;
+    iget-object v10, v0, Lcom/android/server/pm/PackageManagerService;->mPackages:Landroid/util/ArrayMap;
 
-    monitor-enter v8
+    monitor-enter v10
 
     .line 690
-    :try_start_2a
-    sget-object v9, Lcom/android/server/pm/PackageManagerService;->sUserManager:Lcom/android/server/pm/UserManagerService;
+    :try_start_2b
+    sget-object v0, Lcom/android/server/pm/PackageManagerService;->sUserManager:Lcom/android/server/pm/UserManagerService;
 
-    invoke-virtual {v9}, Lcom/android/server/pm/UserManagerService;->getUserIds()[I
+    invoke-virtual {v0}, Lcom/android/server/pm/UserManagerService;->getUserIds()[I
 
-    move-result-object v9
+    move-result-object v0
+
+    move-object v11, v0
 
     .line 692
-    iget-object v10, v0, Lcom/android/server/pm/InstantAppRegistry;->mService:Lcom/android/server/pm/PackageManagerService;
+    .local v11, "allUsers":[I
+    iget-object v0, v1, Lcom/android/server/pm/InstantAppRegistry;->mService:Lcom/android/server/pm/PackageManagerService;
 
-    iget-object v10, v10, Lcom/android/server/pm/PackageManagerService;->mPackages:Landroid/util/ArrayMap;
+    iget-object v0, v0, Lcom/android/server/pm/PackageManagerService;->mPackages:Landroid/util/ArrayMap;
 
-    invoke-virtual {v10}, Landroid/util/ArrayMap;->size()I
+    invoke-virtual {v0}, Landroid/util/ArrayMap;->size()I
 
-    move-result v10
+    move-result v0
+    :try_end_3a
+    .catchall {:try_start_2b .. :try_end_3a} :catchall_19d
 
     .line 693
-    move-object v12, v4
+    .local v0, "packageCount":I
+    const/4 v12, 0x0
 
-    const/4 v4, 0x0
-
-    :goto_3a
-    if-ge v4, v10, :cond_8e
+    .local v12, "i":I
+    :goto_3b
+    if-ge v12, v0, :cond_a2
 
     .line 694
-    iget-object v13, v0, Lcom/android/server/pm/InstantAppRegistry;->mService:Lcom/android/server/pm/PackageManagerService;
+    :try_start_3d
+    iget-object v14, v1, Lcom/android/server/pm/InstantAppRegistry;->mService:Lcom/android/server/pm/PackageManagerService;
 
-    iget-object v13, v13, Lcom/android/server/pm/PackageManagerService;->mPackages:Landroid/util/ArrayMap;
+    iget-object v14, v14, Lcom/android/server/pm/PackageManagerService;->mPackages:Landroid/util/ArrayMap;
 
-    invoke-virtual {v13, v4}, Landroid/util/ArrayMap;->valueAt(I)Ljava/lang/Object;
+    invoke-virtual {v14, v12}, Landroid/util/ArrayMap;->valueAt(I)Ljava/lang/Object;
 
-    move-result-object v13
+    move-result-object v14
 
-    check-cast v13, Landroid/content/pm/PackageParser$Package;
+    check-cast v14, Landroid/content/pm/PackageParser$Package;
 
     .line 695
-    invoke-virtual {v13}, Landroid/content/pm/PackageParser$Package;->getLatestPackageUseTimeInMills()J
+    .local v14, "pkg":Landroid/content/pm/PackageParser$Package;
+    invoke-virtual {v14}, Landroid/content/pm/PackageParser$Package;->getLatestPackageUseTimeInMills()J
 
-    move-result-wide v14
+    move-result-wide v15
 
-    sub-long v14, v6, v14
+    sub-long v15, v8, v15
 
-    cmp-long v14, v14, p3
+    cmp-long v15, v15, p3
 
-    if-gez v14, :cond_51
+    if-gez v15, :cond_54
 
     .line 696
-    goto :goto_8a
+    move/from16 v19, v0
+
+    goto :goto_97
 
     .line 698
-    :cond_51
-    iget-object v14, v13, Landroid/content/pm/PackageParser$Package;->mExtras:Ljava/lang/Object;
+    :cond_54
+    iget-object v15, v14, Landroid/content/pm/PackageParser$Package;->mExtras:Ljava/lang/Object;
 
-    instance-of v14, v14, Lcom/android/server/pm/PackageSetting;
+    instance-of v15, v15, Lcom/android/server/pm/PackageSetting;
 
-    if-nez v14, :cond_58
+    if-nez v15, :cond_5d
 
     .line 699
-    goto :goto_8a
+    move/from16 v19, v0
+
+    goto :goto_97
 
     .line 701
-    :cond_58
-    iget-object v14, v13, Landroid/content/pm/PackageParser$Package;->mExtras:Ljava/lang/Object;
+    :cond_5d
+    iget-object v15, v14, Landroid/content/pm/PackageParser$Package;->mExtras:Ljava/lang/Object;
 
-    check-cast v14, Lcom/android/server/pm/PackageSetting;
+    check-cast v15, Lcom/android/server/pm/PackageSetting;
 
     .line 702
-    nop
-
-    .line 703
-    array-length v15, v9
-
-    const/4 v11, 0x0
-
+    .local v15, "ps":Lcom/android/server/pm/PackageSetting;
     const/16 v16, 0x0
 
-    :goto_61
-    if-ge v11, v15, :cond_7c
+    .line 703
+    .local v16, "installedOnlyAsInstantApp":Z
+    array-length v13, v11
 
-    aget v5, v9, v11
+    const/4 v6, 0x0
+
+    :goto_65
+    if-ge v6, v13, :cond_86
+
+    aget v17, v11, v6
+
+    move/from16 v18, v17
 
     .line 704
-    invoke-virtual {v14, v5}, Lcom/android/server/pm/PackageSetting;->getInstalled(I)Z
+    .local v18, "userId":I
+    move/from16 v19, v0
+
+    move/from16 v0, v18
+
+    .end local v18  # "userId":I
+    .local v0, "userId":I
+    .local v19, "packageCount":I
+    invoke-virtual {v15, v0}, Lcom/android/server/pm/PackageSetting;->getInstalled(I)Z
 
     move-result v17
 
-    if-eqz v17, :cond_78
+    if-eqz v17, :cond_81
 
     .line 705
-    invoke-virtual {v14, v5}, Lcom/android/server/pm/PackageSetting;->getInstantApp(I)Z
+    invoke-virtual {v15, v0}, Lcom/android/server/pm/PackageSetting;->getInstantApp(I)Z
 
-    move-result v5
+    move-result v17
 
-    if-eqz v5, :cond_74
+    if-eqz v17, :cond_7e
 
     .line 706
     const/16 v16, 0x1
 
-    goto :goto_78
+    goto :goto_81
 
     .line 708
-    :cond_74
-    nop
-
-    .line 709
+    :cond_7e
     const/16 v16, 0x0
 
-    goto :goto_7c
+    .line 709
+    goto :goto_88
 
     .line 703
-    :cond_78
-    :goto_78
-    add-int/lit8 v11, v11, 0x1
+    .end local v0  # "userId":I
+    :cond_81
+    :goto_81
+    add-int/lit8 v6, v6, 0x1
 
-    const/4 v5, 0x1
+    move/from16 v0, v19
 
-    goto :goto_61
+    goto :goto_65
+
+    .end local v19  # "packageCount":I
+    .local v0, "packageCount":I
+    :cond_86
+    move/from16 v19, v0
 
     .line 713
-    :cond_7c
-    :goto_7c
-    if-eqz v16, :cond_8a
+    .end local v0  # "packageCount":I
+    .restart local v19  # "packageCount":I
+    :goto_88
+    if-eqz v16, :cond_97
 
     .line 714
-    if-nez v12, :cond_85
+    if-nez v7, :cond_92
 
     .line 715
-    new-instance v12, Ljava/util/ArrayList;
+    new-instance v0, Ljava/util/ArrayList;
 
-    invoke-direct {v12}, Ljava/util/ArrayList;-><init>()V
+    invoke-direct {v0}, Ljava/util/ArrayList;-><init>()V
+
+    move-object v7, v0
 
     .line 717
-    :cond_85
-    iget-object v5, v13, Landroid/content/pm/PackageParser$Package;->packageName:Ljava/lang/String;
+    :cond_92
+    iget-object v0, v14, Landroid/content/pm/PackageParser$Package;->packageName:Ljava/lang/String;
 
-    invoke-interface {v12, v5}, Ljava/util/List;->add(Ljava/lang/Object;)Z
+    invoke-interface {v7, v0}, Ljava/util/List;->add(Ljava/lang/Object;)Z
 
     .line 693
-    :cond_8a
-    :goto_8a
-    add-int/lit8 v4, v4, 0x1
+    .end local v14  # "pkg":Landroid/content/pm/PackageParser$Package;
+    .end local v15  # "ps":Lcom/android/server/pm/PackageSetting;
+    .end local v16  # "installedOnlyAsInstantApp":Z
+    :cond_97
+    :goto_97
+    add-int/lit8 v12, v12, 0x1
 
-    const/4 v5, 0x1
+    move/from16 v0, v19
 
-    goto :goto_3a
+    const/4 v6, 0x1
 
-    .line 721
-    :cond_8e
-    if-eqz v12, :cond_98
-
-    .line 722
-    new-instance v4, Lcom/android/server/pm/-$$Lambda$InstantAppRegistry$UOn4sUy4zBQuofxUbY8RBYhkNSE;
-
-    invoke-direct {v4, v0}, Lcom/android/server/pm/-$$Lambda$InstantAppRegistry$UOn4sUy4zBQuofxUbY8RBYhkNSE;-><init>(Lcom/android/server/pm/InstantAppRegistry;)V
-
-    invoke-interface {v12, v4}, Ljava/util/List;->sort(Ljava/util/Comparator;)V
+    goto :goto_3b
 
     .line 755
-    :cond_98
-    monitor-exit v8
-    :try_end_99
-    .catchall {:try_start_2a .. :try_end_99} :catchall_13f
+    .end local v11  # "allUsers":[I
+    .end local v12  # "i":I
+    .end local v19  # "packageCount":I
+    :catchall_9d
+    move-exception v0
+
+    move-object/from16 v20, v4
+
+    goto/16 :goto_1a0
+
+    .line 693
+    .restart local v0  # "packageCount":I
+    .restart local v11  # "allUsers":[I
+    .restart local v12  # "i":I
+    :cond_a2
+    move/from16 v19, v0
+
+    .line 721
+    .end local v0  # "packageCount":I
+    .end local v12  # "i":I
+    .restart local v19  # "packageCount":I
+    if-eqz v7, :cond_ae
+
+    .line 722
+    new-instance v0, Lcom/android/server/pm/-$$Lambda$InstantAppRegistry$UOn4sUy4zBQuofxUbY8RBYhkNSE;
+
+    invoke-direct {v0, v1}, Lcom/android/server/pm/-$$Lambda$InstantAppRegistry$UOn4sUy4zBQuofxUbY8RBYhkNSE;-><init>(Lcom/android/server/pm/InstantAppRegistry;)V
+
+    invoke-interface {v7, v0}, Ljava/util/List;->sort(Ljava/util/Comparator;)V
+    :try_end_ae
+    .catchall {:try_start_3d .. :try_end_ae} :catchall_9d
+
+    .line 755
+    .end local v19  # "packageCount":I
+    :cond_ae
+    :try_start_ae
+    monitor-exit v10
+    :try_end_af
+    .catchall {:try_start_ae .. :try_end_af} :catchall_197
 
     .line 757
-    if-eqz v12, :cond_c7
+    if-eqz v7, :cond_dd
 
     .line 758
-    invoke-interface {v12}, Ljava/util/List;->size()I
+    invoke-interface {v7}, Ljava/util/List;->size()I
 
-    move-result v4
+    move-result v0
 
     .line 759
-    const/4 v5, 0x0
+    .restart local v0  # "packageCount":I
+    const/4 v6, 0x0
 
-    :goto_a0
-    if-ge v5, v4, :cond_c7
+    .local v6, "i":I
+    :goto_b6
+    if-ge v6, v0, :cond_dd
 
     .line 760
-    invoke-interface {v12, v5}, Ljava/util/List;->get(I)Ljava/lang/Object;
+    invoke-interface {v7, v6}, Ljava/util/List;->get(I)Ljava/lang/Object;
 
-    move-result-object v6
+    move-result-object v10
 
-    move-object/from16 v18, v6
-
-    check-cast v18, Ljava/lang/String;
+    check-cast v10, Ljava/lang/String;
 
     .line 761
-    iget-object v6, v0, Lcom/android/server/pm/InstantAppRegistry;->mService:Lcom/android/server/pm/PackageManagerService;
+    .local v10, "packageToDelete":Ljava/lang/String;
+    iget-object v12, v1, Lcom/android/server/pm/InstantAppRegistry;->mService:Lcom/android/server/pm/PackageManagerService;
 
-    const-wide/16 v19, -0x1
+    const-wide/16 v20, -0x1
 
-    const/16 v21, 0x0
+    const/16 v22, 0x0
 
-    const/16 v22, 0x2
+    const/16 v23, 0x2
 
-    move-object/from16 v17, v6
+    move-object/from16 v18, v12
 
-    invoke-virtual/range {v17 .. v22}, Lcom/android/server/pm/PackageManagerService;->deletePackageX(Ljava/lang/String;JII)I
+    move-object/from16 v19, v10
 
-    move-result v6
-
-    const/4 v7, 0x1
-
-    if-ne v6, v7, :cond_c4
-
-    .line 764
-    invoke-virtual {v3}, Ljava/io/File;->getUsableSpace()J
-
-    move-result-wide v8
-
-    cmp-long v6, v8, p1
-
-    if-ltz v6, :cond_c4
-
-    .line 765
-    return v7
-
-    .line 759
-    :cond_c4
-    add-int/lit8 v5, v5, 0x1
-
-    goto :goto_a0
-
-    .line 772
-    :cond_c7
-    iget-object v4, v0, Lcom/android/server/pm/InstantAppRegistry;->mService:Lcom/android/server/pm/PackageManagerService;
-
-    iget-object v4, v4, Lcom/android/server/pm/PackageManagerService;->mPackages:Landroid/util/ArrayMap;
-
-    monitor-enter v4
-
-    .line 774
-    :try_start_cc
-    invoke-static {}, Lcom/android/server/pm/UserManagerService;->getInstance()Lcom/android/server/pm/UserManagerService;
-
-    move-result-object v5
-
-    invoke-virtual {v5}, Lcom/android/server/pm/UserManagerService;->getUserIds()[I
-
-    move-result-object v5
-
-    array-length v6, v5
-
-    const/4 v7, 0x0
-
-    :goto_d6
-    if-ge v7, v6, :cond_139
-
-    aget v8, v5, v7
-
-    .line 776
-    new-instance v9, Lcom/android/server/pm/-$$Lambda$InstantAppRegistry$BuKCbLr_MGBazMPl54-pWTuGHYY;
-
-    invoke-direct {v9, v1, v2}, Lcom/android/server/pm/-$$Lambda$InstantAppRegistry$BuKCbLr_MGBazMPl54-pWTuGHYY;-><init>(J)V
-
-    invoke-direct {v0, v9, v8}, Lcom/android/server/pm/InstantAppRegistry;->removeUninstalledInstantAppStateLPw(Ljava/util/function/Predicate;I)V
-
-    .line 782
-    invoke-static {v8}, Lcom/android/server/pm/InstantAppRegistry;->getInstantApplicationsDir(I)Ljava/io/File;
-
-    move-result-object v8
-
-    .line 783
-    invoke-virtual {v8}, Ljava/io/File;->exists()Z
-
-    move-result v9
-
-    if-nez v9, :cond_ee
-
-    .line 784
-    const/4 v11, 0x1
-
-    goto :goto_136
-
-    .line 786
-    :cond_ee
-    invoke-virtual {v8}, Ljava/io/File;->listFiles()[Ljava/io/File;
-
-    move-result-object v8
-
-    .line 787
-    if-nez v8, :cond_f6
-
-    .line 788
-    const/4 v11, 0x1
-
-    goto :goto_136
-
-    .line 790
-    :cond_f6
-    array-length v9, v8
-
-    const/4 v10, 0x0
-
-    :goto_f8
-    if-ge v10, v9, :cond_135
-
-    aget-object v11, v8, v10
-
-    .line 791
-    invoke-virtual {v11}, Ljava/io/File;->isDirectory()Z
+    invoke-virtual/range {v18 .. v23}, Lcom/android/server/pm/PackageManagerService;->deletePackageX(Ljava/lang/String;JII)I
 
     move-result v12
 
-    if-nez v12, :cond_104
+    const/4 v13, 0x1
 
-    .line 792
-    const/4 v11, 0x1
+    if-ne v12, v13, :cond_da
 
-    goto :goto_132
+    .line 764
+    invoke-virtual {v5}, Ljava/io/File;->getUsableSpace()J
 
-    .line 795
-    :cond_104
-    new-instance v12, Ljava/io/File;
+    move-result-wide v14
 
-    const-string v13, "metadata.xml"
+    cmp-long v12, v14, p1
 
-    invoke-direct {v12, v11, v13}, Ljava/io/File;-><init>(Ljava/io/File;Ljava/lang/String;)V
+    if-ltz v12, :cond_da
 
-    .line 796
-    invoke-virtual {v12}, Ljava/io/File;->exists()Z
+    .line 765
+    return v13
 
-    move-result v13
+    .line 759
+    .end local v10  # "packageToDelete":Ljava/lang/String;
+    :cond_da
+    add-int/lit8 v6, v6, 0x1
 
-    if-nez v13, :cond_113
+    goto :goto_b6
 
-    .line 797
-    const/4 v11, 0x1
+    .line 772
+    .end local v0  # "packageCount":I
+    .end local v6  # "i":I
+    :cond_dd
+    iget-object v0, v1, Lcom/android/server/pm/InstantAppRegistry;->mService:Lcom/android/server/pm/PackageManagerService;
 
-    goto :goto_132
+    iget-object v6, v0, Lcom/android/server/pm/PackageManagerService;->mPackages:Landroid/util/ArrayMap;
 
-    .line 800
-    :cond_113
-    invoke-static {}, Ljava/lang/System;->currentTimeMillis()J
-
-    move-result-wide v13
-
-    .line 801
-    invoke-virtual {v12}, Ljava/io/File;->lastModified()J
-
-    move-result-wide v17
-
-    sub-long v13, v13, v17
-
-    .line 802
-    cmp-long v12, v13, v1
-
-    if-lez v12, :cond_131
-
-    .line 803
-    invoke-static {v11}, Lcom/android/server/pm/InstantAppRegistry;->deleteDir(Ljava/io/File;)V
-
-    .line 804
-    invoke-virtual {v3}, Ljava/io/File;->getUsableSpace()J
-
-    move-result-wide v11
-
-    cmp-long v11, v11, p1
-
-    if-ltz v11, :cond_12f
-
-    .line 805
-    monitor-exit v4
-
-    const/4 v11, 0x1
-
-    return v11
-
-    .line 804
-    :cond_12f
-    const/4 v11, 0x1
-
-    goto :goto_132
-
-    .line 802
-    :cond_131
-    const/4 v11, 0x1
-
-    .line 790
-    :goto_132
-    add-int/lit8 v10, v10, 0x1
-
-    goto :goto_f8
-
-    :cond_135
-    const/4 v11, 0x1
+    monitor-enter v6
 
     .line 774
-    :goto_136
-    add-int/lit8 v7, v7, 0x1
+    :try_start_e2
+    invoke-static {}, Lcom/android/server/pm/UserManagerService;->getInstance()Lcom/android/server/pm/UserManagerService;
 
-    goto :goto_d6
+    move-result-object v0
+
+    invoke-virtual {v0}, Lcom/android/server/pm/UserManagerService;->getUserIds()[I
+
+    move-result-object v0
+
+    array-length v10, v0
+
+    const/4 v12, 0x0
+
+    :goto_ec
+    if-ge v12, v10, :cond_187
+
+    aget v13, v0, v12
+
+    .line 776
+    .local v13, "userId":I
+    new-instance v14, Lcom/android/server/pm/-$$Lambda$InstantAppRegistry$BuKCbLr_MGBazMPl54-pWTuGHYY;
+
+    invoke-direct {v14, v2, v3}, Lcom/android/server/pm/-$$Lambda$InstantAppRegistry$BuKCbLr_MGBazMPl54-pWTuGHYY;-><init>(J)V
+
+    invoke-direct {v1, v14, v13}, Lcom/android/server/pm/InstantAppRegistry;->removeUninstalledInstantAppStateLPw(Ljava/util/function/Predicate;I)V
+
+    .line 782
+    invoke-static {v13}, Lcom/android/server/pm/InstantAppRegistry;->getInstantApplicationsDir(I)Ljava/io/File;
+
+    move-result-object v14
+
+    .line 783
+    .local v14, "instantAppsDir":Ljava/io/File;
+    invoke-virtual {v14}, Ljava/io/File;->exists()Z
+
+    move-result v15
+
+    if-nez v15, :cond_10b
+
+    .line 784
+    move-object/from16 v16, v0
+
+    move-object/from16 v20, v4
+
+    move-object/from16 v21, v7
+
+    const/4 v4, 0x1
+
+    goto/16 :goto_17b
+
+    .line 786
+    :cond_10b
+    invoke-virtual {v14}, Ljava/io/File;->listFiles()[Ljava/io/File;
+
+    move-result-object v15
+
+    .line 787
+    .local v15, "files":[Ljava/io/File;
+    if-nez v15, :cond_11a
+
+    .line 788
+    move-object/from16 v16, v0
+
+    move-object/from16 v20, v4
+
+    move-object/from16 v21, v7
+
+    const/4 v4, 0x1
+
+    goto/16 :goto_17b
+
+    .line 790
+    :cond_11a
+    move-object/from16 v16, v0
+
+    array-length v0, v15
+
+    const/4 v1, 0x0
+
+    :goto_11e
+    if-ge v1, v0, :cond_176
+
+    aget-object v18, v15, v1
+
+    move-object/from16 v19, v18
+
+    .line 791
+    .local v19, "instantDir":Ljava/io/File;
+    invoke-virtual/range {v19 .. v19}, Ljava/io/File;->isDirectory()Z
+
+    move-result v18
+
+    if-nez v18, :cond_132
+
+    .line 792
+    move/from16 v18, v0
+
+    move-object/from16 v20, v4
+
+    move-object/from16 v21, v7
+
+    const/4 v4, 0x1
+
+    goto :goto_169
+
+    .line 795
+    :cond_132
+    move/from16 v18, v0
+
+    new-instance v0, Ljava/io/File;
+    :try_end_136
+    .catchall {:try_start_e2 .. :try_end_136} :catchall_18e
+
+    move-object/from16 v20, v4
+
+    .end local v4  # "storage":Landroid/os/storage/StorageManager;
+    .local v20, "storage":Landroid/os/storage/StorageManager;
+    :try_start_138
+    const-string/jumbo v4, "metadata.xml"
+    :try_end_13b
+    .catchall {:try_start_138 .. :try_end_13b} :catchall_172
+
+    move-object/from16 v21, v7
+
+    move-object/from16 v7, v19
+
+    .end local v19  # "instantDir":Ljava/io/File;
+    .local v7, "instantDir":Ljava/io/File;
+    .local v21, "packagesToDelete":Ljava/util/List;, "Ljava/util/List<Ljava/lang/String;>;"
+    :try_start_13f
+    invoke-direct {v0, v7, v4}, Ljava/io/File;-><init>(Ljava/io/File;Ljava/lang/String;)V
+
+    .line 796
+    .local v0, "metadataFile":Ljava/io/File;
+    invoke-virtual {v0}, Ljava/io/File;->exists()Z
+
+    move-result v4
+
+    if-nez v4, :cond_14a
+
+    .line 797
+    const/4 v4, 0x1
+
+    goto :goto_169
+
+    .line 800
+    :cond_14a
+    invoke-static {}, Ljava/lang/System;->currentTimeMillis()J
+
+    move-result-wide v22
+
+    .line 801
+    invoke-virtual {v0}, Ljava/io/File;->lastModified()J
+
+    move-result-wide v24
+
+    sub-long v22, v22, v24
+
+    .line 802
+    .local v22, "elapsedCachingMillis":J
+    cmp-long v4, v22, v2
+
+    if-lez v4, :cond_168
+
+    .line 803
+    invoke-static {v7}, Lcom/android/server/pm/InstantAppRegistry;->deleteDir(Ljava/io/File;)V
+
+    .line 804
+    invoke-virtual {v5}, Ljava/io/File;->getUsableSpace()J
+
+    move-result-wide v24
+
+    cmp-long v4, v24, p1
+
+    if-ltz v4, :cond_166
+
+    .line 805
+    monitor-exit v6
+
+    const/4 v4, 0x1
+
+    return v4
+
+    .line 804
+    :cond_166
+    const/4 v4, 0x1
+
+    goto :goto_169
+
+    .line 802
+    :cond_168
+    const/4 v4, 0x1
+
+    .line 790
+    .end local v0  # "metadataFile":Ljava/io/File;
+    .end local v7  # "instantDir":Ljava/io/File;
+    .end local v22  # "elapsedCachingMillis":J
+    :goto_169
+    add-int/lit8 v1, v1, 0x1
+
+    move/from16 v0, v18
+
+    move-object/from16 v4, v20
+
+    move-object/from16 v7, v21
+
+    goto :goto_11e
 
     .line 810
-    :cond_139
-    monitor-exit v4
+    .end local v13  # "userId":I
+    .end local v14  # "instantAppsDir":Ljava/io/File;
+    .end local v15  # "files":[Ljava/io/File;
+    .end local v21  # "packagesToDelete":Ljava/util/List;, "Ljava/util/List<Ljava/lang/String;>;"
+    .local v7, "packagesToDelete":Ljava/util/List;, "Ljava/util/List<Ljava/lang/String;>;"
+    :catchall_172
+    move-exception v0
+
+    move-object/from16 v21, v7
+
+    .end local v7  # "packagesToDelete":Ljava/util/List;, "Ljava/util/List<Ljava/lang/String;>;"
+    .restart local v21  # "packagesToDelete":Ljava/util/List;, "Ljava/util/List<Ljava/lang/String;>;"
+    goto :goto_193
+
+    .line 790
+    .end local v20  # "storage":Landroid/os/storage/StorageManager;
+    .end local v21  # "packagesToDelete":Ljava/util/List;, "Ljava/util/List<Ljava/lang/String;>;"
+    .restart local v4  # "storage":Landroid/os/storage/StorageManager;
+    .restart local v7  # "packagesToDelete":Ljava/util/List;, "Ljava/util/List<Ljava/lang/String;>;"
+    .restart local v13  # "userId":I
+    .restart local v14  # "instantAppsDir":Ljava/io/File;
+    .restart local v15  # "files":[Ljava/io/File;
+    :cond_176
+    move-object/from16 v20, v4
+
+    move-object/from16 v21, v7
+
+    const/4 v4, 0x1
+
+    .line 774
+    .end local v4  # "storage":Landroid/os/storage/StorageManager;
+    .end local v7  # "packagesToDelete":Ljava/util/List;, "Ljava/util/List<Ljava/lang/String;>;"
+    .end local v13  # "userId":I
+    .end local v14  # "instantAppsDir":Ljava/io/File;
+    .end local v15  # "files":[Ljava/io/File;
+    .restart local v20  # "storage":Landroid/os/storage/StorageManager;
+    .restart local v21  # "packagesToDelete":Ljava/util/List;, "Ljava/util/List<Ljava/lang/String;>;"
+    :goto_17b
+    add-int/lit8 v12, v12, 0x1
+
+    move-object/from16 v1, p0
+
+    move-object/from16 v0, v16
+
+    move-object/from16 v4, v20
+
+    move-object/from16 v7, v21
+
+    goto/16 :goto_ec
+
+    .line 810
+    .end local v20  # "storage":Landroid/os/storage/StorageManager;
+    .end local v21  # "packagesToDelete":Ljava/util/List;, "Ljava/util/List<Ljava/lang/String;>;"
+    .restart local v4  # "storage":Landroid/os/storage/StorageManager;
+    .restart local v7  # "packagesToDelete":Ljava/util/List;, "Ljava/util/List<Ljava/lang/String;>;"
+    :cond_187
+    move-object/from16 v20, v4
+
+    move-object/from16 v21, v7
+
+    .end local v4  # "storage":Landroid/os/storage/StorageManager;
+    .end local v7  # "packagesToDelete":Ljava/util/List;, "Ljava/util/List<Ljava/lang/String;>;"
+    .restart local v20  # "storage":Landroid/os/storage/StorageManager;
+    .restart local v21  # "packagesToDelete":Ljava/util/List;, "Ljava/util/List<Ljava/lang/String;>;"
+    monitor-exit v6
 
     .line 812
     const/4 v0, 0x0
@@ -2467,29 +2885,81 @@
     return v0
 
     .line 810
-    :catchall_13c
+    .end local v20  # "storage":Landroid/os/storage/StorageManager;
+    .end local v21  # "packagesToDelete":Ljava/util/List;, "Ljava/util/List<Ljava/lang/String;>;"
+    .restart local v4  # "storage":Landroid/os/storage/StorageManager;
+    .restart local v7  # "packagesToDelete":Ljava/util/List;, "Ljava/util/List<Ljava/lang/String;>;"
+    :catchall_18e
     move-exception v0
 
-    monitor-exit v4
-    :try_end_13e
-    .catchall {:try_start_cc .. :try_end_13e} :catchall_13c
+    move-object/from16 v20, v4
+
+    move-object/from16 v21, v7
+
+    .end local v4  # "storage":Landroid/os/storage/StorageManager;
+    .end local v7  # "packagesToDelete":Ljava/util/List;, "Ljava/util/List<Ljava/lang/String;>;"
+    .restart local v20  # "storage":Landroid/os/storage/StorageManager;
+    .restart local v21  # "packagesToDelete":Ljava/util/List;, "Ljava/util/List<Ljava/lang/String;>;"
+    :goto_193
+    monitor-exit v6
+    :try_end_194
+    .catchall {:try_start_13f .. :try_end_194} :catchall_195
 
     throw v0
+
+    :catchall_195
+    move-exception v0
+
+    goto :goto_193
 
     .line 755
-    :catchall_13f
+    .end local v11  # "allUsers":[I
+    .end local v20  # "storage":Landroid/os/storage/StorageManager;
+    .end local v21  # "packagesToDelete":Ljava/util/List;, "Ljava/util/List<Ljava/lang/String;>;"
+    .restart local v4  # "storage":Landroid/os/storage/StorageManager;
+    .restart local v7  # "packagesToDelete":Ljava/util/List;, "Ljava/util/List<Ljava/lang/String;>;"
+    :catchall_197
     move-exception v0
 
-    :try_start_140
-    monitor-exit v8
-    :try_end_141
-    .catchall {:try_start_140 .. :try_end_141} :catchall_13f
+    move-object/from16 v20, v4
+
+    move-object/from16 v21, v7
+
+    .end local v4  # "storage":Landroid/os/storage/StorageManager;
+    .end local v7  # "packagesToDelete":Ljava/util/List;, "Ljava/util/List<Ljava/lang/String;>;"
+    .restart local v20  # "storage":Landroid/os/storage/StorageManager;
+    .restart local v21  # "packagesToDelete":Ljava/util/List;, "Ljava/util/List<Ljava/lang/String;>;"
+    goto :goto_1a0
+
+    .end local v20  # "storage":Landroid/os/storage/StorageManager;
+    .end local v21  # "packagesToDelete":Ljava/util/List;, "Ljava/util/List<Ljava/lang/String;>;"
+    .restart local v4  # "storage":Landroid/os/storage/StorageManager;
+    .restart local v7  # "packagesToDelete":Ljava/util/List;, "Ljava/util/List<Ljava/lang/String;>;"
+    :catchall_19d
+    move-exception v0
+
+    move-object/from16 v20, v4
+
+    .end local v4  # "storage":Landroid/os/storage/StorageManager;
+    .restart local v20  # "storage":Landroid/os/storage/StorageManager;
+    :goto_1a0
+    :try_start_1a0
+    monitor-exit v10
+    :try_end_1a1
+    .catchall {:try_start_1a0 .. :try_end_1a1} :catchall_1a2
 
     throw v0
+
+    :catchall_1a2
+    move-exception v0
+
+    goto :goto_1a0
 .end method
 
 .method private removeAppLPw(II)V
     .registers 4
+    .param p1, "userId"  # I
+    .param p2, "targetAppId"  # I
     .annotation build Lcom/android/internal/annotations/GuardedBy;
         value = {
             "mService.mPackages"
@@ -2508,26 +2978,29 @@
     :cond_5
     invoke-virtual {v0, p1}, Landroid/util/SparseArray;->get(I)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v0
 
-    check-cast p1, Landroid/util/SparseArray;
+    check-cast v0, Landroid/util/SparseArray;
 
     .line 484
-    if-nez p1, :cond_e
+    .local v0, "targetAppList":Landroid/util/SparseArray;, "Landroid/util/SparseArray<Landroid/util/SparseBooleanArray;>;"
+    if-nez v0, :cond_e
 
     .line 485
     return-void
 
     .line 487
     :cond_e
-    invoke-virtual {p1, p2}, Landroid/util/SparseArray;->delete(I)V
+    invoke-virtual {v0, p2}, Landroid/util/SparseArray;->delete(I)V
 
     .line 488
     return-void
 .end method
 
 .method private removeInstantAppLPw(II)V
-    .registers 5
+    .registers 7
+    .param p1, "userId"  # I
+    .param p2, "instantAppId"  # I
     .annotation build Lcom/android/internal/annotations/GuardedBy;
         value = {
             "mService.mPackages"
@@ -2551,6 +3024,7 @@
     check-cast v0, Landroid/util/SparseBooleanArray;
 
     .line 458
+    .local v0, "instantAppList":Landroid/util/SparseBooleanArray;
     if-nez v0, :cond_e
 
     .line 459
@@ -2561,59 +3035,63 @@
     invoke-virtual {v0, p2}, Landroid/util/SparseBooleanArray;->delete(I)V
 
     .line 465
-    iget-object v0, p0, Lcom/android/server/pm/InstantAppRegistry;->mInstantGrants:Landroid/util/SparseArray;
+    iget-object v1, p0, Lcom/android/server/pm/InstantAppRegistry;->mInstantGrants:Landroid/util/SparseArray;
 
-    if-nez v0, :cond_16
+    if-nez v1, :cond_16
 
     .line 466
     return-void
 
     .line 468
     :cond_16
-    invoke-virtual {v0, p1}, Landroid/util/SparseArray;->get(I)Ljava/lang/Object;
+    invoke-virtual {v1, p1}, Landroid/util/SparseArray;->get(I)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v1
 
-    check-cast p1, Landroid/util/SparseArray;
+    check-cast v1, Landroid/util/SparseArray;
 
     .line 469
-    if-nez p1, :cond_1f
+    .local v1, "targetAppList":Landroid/util/SparseArray;, "Landroid/util/SparseArray<Landroid/util/SparseBooleanArray;>;"
+    if-nez v1, :cond_1f
 
     .line 470
     return-void
 
     .line 472
     :cond_1f
-    invoke-virtual {p1}, Landroid/util/SparseArray;->size()I
+    invoke-virtual {v1}, Landroid/util/SparseArray;->size()I
 
-    move-result v0
+    move-result v2
 
-    add-int/lit8 v0, v0, -0x1
+    add-int/lit8 v2, v2, -0x1
 
+    .local v2, "i":I
     :goto_25
-    if-ltz v0, :cond_33
+    if-ltz v2, :cond_33
 
     .line 473
-    invoke-virtual {p1, v0}, Landroid/util/SparseArray;->valueAt(I)Ljava/lang/Object;
+    invoke-virtual {v1, v2}, Landroid/util/SparseArray;->valueAt(I)Ljava/lang/Object;
 
-    move-result-object v1
+    move-result-object v3
 
-    check-cast v1, Landroid/util/SparseBooleanArray;
+    check-cast v3, Landroid/util/SparseBooleanArray;
 
-    invoke-virtual {v1, p2}, Landroid/util/SparseBooleanArray;->delete(I)V
+    invoke-virtual {v3, p2}, Landroid/util/SparseBooleanArray;->delete(I)V
 
     .line 472
-    add-int/lit8 v0, v0, -0x1
+    add-int/lit8 v2, v2, -0x1
 
     goto :goto_25
 
     .line 475
+    .end local v2  # "i":I
     :cond_33
     return-void
 .end method
 
 .method private removeUninstalledInstantAppStateLPw(Ljava/util/function/Predicate;I)V
-    .registers 6
+    .registers 8
+    .param p2, "userId"  # I
     .annotation build Lcom/android/internal/annotations/GuardedBy;
         value = {
             "mService.mPackages"
@@ -2630,6 +3108,7 @@
     .end annotation
 
     .line 571
+    .local p1, "criteria":Ljava/util/function/Predicate;, "Ljava/util/function/Predicate<Lcom/android/server/pm/InstantAppRegistry$UninstalledInstantAppState;>;"
     iget-object v0, p0, Lcom/android/server/pm/InstantAppRegistry;->mUninstalledInstantApps:Landroid/util/SparseArray;
 
     if-nez v0, :cond_5
@@ -2649,6 +3128,7 @@
     check-cast v0, Ljava/util/List;
 
     .line 576
+    .local v0, "uninstalledAppStates":Ljava/util/List;, "Ljava/util/List<Lcom/android/server/pm/InstantAppRegistry$UninstalledInstantAppState;>;"
     if-nez v0, :cond_f
 
     .line 577
@@ -2661,76 +3141,83 @@
     move-result v1
 
     .line 580
-    add-int/lit8 v1, v1, -0x1
+    .local v1, "appCount":I
+    add-int/lit8 v2, v1, -0x1
 
+    .local v2, "i":I
     :goto_15
-    if-ltz v1, :cond_41
+    if-ltz v2, :cond_41
 
     .line 581
-    invoke-interface {v0, v1}, Ljava/util/List;->get(I)Ljava/lang/Object;
+    invoke-interface {v0, v2}, Ljava/util/List;->get(I)Ljava/lang/Object;
 
-    move-result-object v2
+    move-result-object v3
 
-    check-cast v2, Lcom/android/server/pm/InstantAppRegistry$UninstalledInstantAppState;
+    check-cast v3, Lcom/android/server/pm/InstantAppRegistry$UninstalledInstantAppState;
 
     .line 582
-    invoke-interface {p1, v2}, Ljava/util/function/Predicate;->test(Ljava/lang/Object;)Z
+    .local v3, "uninstalledAppState":Lcom/android/server/pm/InstantAppRegistry$UninstalledInstantAppState;
+    invoke-interface {p1, v3}, Ljava/util/function/Predicate;->test(Ljava/lang/Object;)Z
 
-    move-result v2
+    move-result v4
 
-    if-nez v2, :cond_24
+    if-nez v4, :cond_24
 
     .line 583
     goto :goto_3e
 
     .line 585
     :cond_24
-    invoke-interface {v0, v1}, Ljava/util/List;->remove(I)Ljava/lang/Object;
+    invoke-interface {v0, v2}, Ljava/util/List;->remove(I)Ljava/lang/Object;
 
     .line 586
     invoke-interface {v0}, Ljava/util/List;->isEmpty()Z
 
-    move-result v2
+    move-result v4
 
-    if-eqz v2, :cond_3e
+    if-eqz v4, :cond_3e
 
     .line 587
-    iget-object p1, p0, Lcom/android/server/pm/InstantAppRegistry;->mUninstalledInstantApps:Landroid/util/SparseArray;
+    iget-object v4, p0, Lcom/android/server/pm/InstantAppRegistry;->mUninstalledInstantApps:Landroid/util/SparseArray;
 
-    invoke-virtual {p1, p2}, Landroid/util/SparseArray;->remove(I)V
+    invoke-virtual {v4, p2}, Landroid/util/SparseArray;->remove(I)V
 
     .line 588
-    iget-object p1, p0, Lcom/android/server/pm/InstantAppRegistry;->mUninstalledInstantApps:Landroid/util/SparseArray;
+    iget-object v4, p0, Lcom/android/server/pm/InstantAppRegistry;->mUninstalledInstantApps:Landroid/util/SparseArray;
 
-    invoke-virtual {p1}, Landroid/util/SparseArray;->size()I
+    invoke-virtual {v4}, Landroid/util/SparseArray;->size()I
 
-    move-result p1
+    move-result v4
 
-    if-gtz p1, :cond_3d
+    if-gtz v4, :cond_3d
 
     .line 589
-    const/4 p1, 0x0
+    const/4 v4, 0x0
 
-    iput-object p1, p0, Lcom/android/server/pm/InstantAppRegistry;->mUninstalledInstantApps:Landroid/util/SparseArray;
+    iput-object v4, p0, Lcom/android/server/pm/InstantAppRegistry;->mUninstalledInstantApps:Landroid/util/SparseArray;
 
     .line 591
     :cond_3d
     return-void
 
     .line 580
+    .end local v3  # "uninstalledAppState":Lcom/android/server/pm/InstantAppRegistry$UninstalledInstantAppState;
     :cond_3e
     :goto_3e
-    add-int/lit8 v1, v1, -0x1
+    add-int/lit8 v2, v2, -0x1
 
     goto :goto_15
 
     .line 594
+    .end local v2  # "i":I
     :cond_41
     return-void
 .end method
 
 .method private writeInstantApplicationIconLPw(Landroid/content/pm/PackageParser$Package;I)V
-    .registers 9
+    .registers 11
+    .param p1, "pkg"  # Landroid/content/pm/PackageParser$Package;
+    .param p2, "userId"  # I
 
     .line 517
     iget-object v0, p1, Landroid/content/pm/PackageParser$Package;->packageName:Ljava/lang/String;
@@ -2740,166 +3227,212 @@
     move-result-object v0
 
     .line 518
+    .local v0, "appDir":Ljava/io/File;
     invoke-virtual {v0}, Ljava/io/File;->exists()Z
 
-    move-result v0
+    move-result v1
 
-    if-nez v0, :cond_d
+    if-nez v1, :cond_d
 
     .line 519
     return-void
 
     .line 522
     :cond_d
-    iget-object v0, p1, Landroid/content/pm/PackageParser$Package;->applicationInfo:Landroid/content/pm/ApplicationInfo;
+    iget-object v1, p1, Landroid/content/pm/PackageParser$Package;->applicationInfo:Landroid/content/pm/ApplicationInfo;
 
-    iget-object v1, p0, Lcom/android/server/pm/InstantAppRegistry;->mService:Lcom/android/server/pm/PackageManagerService;
+    iget-object v2, p0, Lcom/android/server/pm/InstantAppRegistry;->mService:Lcom/android/server/pm/PackageManagerService;
 
-    iget-object v1, v1, Lcom/android/server/pm/PackageManagerService;->mContext:Landroid/content/Context;
+    iget-object v2, v2, Lcom/android/server/pm/PackageManagerService;->mContext:Landroid/content/Context;
 
-    invoke-virtual {v1}, Landroid/content/Context;->getPackageManager()Landroid/content/pm/PackageManager;
+    invoke-virtual {v2}, Landroid/content/Context;->getPackageManager()Landroid/content/pm/PackageManager;
+
+    move-result-object v2
+
+    invoke-virtual {v1, v2}, Landroid/content/pm/ApplicationInfo;->loadIcon(Landroid/content/pm/PackageManager;)Landroid/graphics/drawable/Drawable;
 
     move-result-object v1
 
-    invoke-virtual {v0, v1}, Landroid/content/pm/ApplicationInfo;->loadIcon(Landroid/content/pm/PackageManager;)Landroid/graphics/drawable/Drawable;
-
-    move-result-object v0
-
     .line 525
-    instance-of v1, v0, Landroid/graphics/drawable/BitmapDrawable;
+    .local v1, "icon":Landroid/graphics/drawable/Drawable;
+    instance-of v2, v1, Landroid/graphics/drawable/BitmapDrawable;
 
-    if-eqz v1, :cond_26
+    if-eqz v2, :cond_27
 
     .line 526
-    check-cast v0, Landroid/graphics/drawable/BitmapDrawable;
+    move-object v2, v1
 
-    invoke-virtual {v0}, Landroid/graphics/drawable/BitmapDrawable;->getBitmap()Landroid/graphics/Bitmap;
+    check-cast v2, Landroid/graphics/drawable/BitmapDrawable;
 
-    move-result-object v0
+    invoke-virtual {v2}, Landroid/graphics/drawable/BitmapDrawable;->getBitmap()Landroid/graphics/Bitmap;
 
+    move-result-object v2
+
+    .local v2, "bitmap":Landroid/graphics/Bitmap;
     goto :goto_49
 
     .line 528
-    :cond_26
-    invoke-virtual {v0}, Landroid/graphics/drawable/Drawable;->getIntrinsicWidth()I
-
-    move-result v1
-
-    .line 529
-    invoke-virtual {v0}, Landroid/graphics/drawable/Drawable;->getIntrinsicHeight()I
+    .end local v2  # "bitmap":Landroid/graphics/Bitmap;
+    :cond_27
+    invoke-virtual {v1}, Landroid/graphics/drawable/Drawable;->getIntrinsicWidth()I
 
     move-result v2
 
-    sget-object v3, Landroid/graphics/Bitmap$Config;->ARGB_8888:Landroid/graphics/Bitmap$Config;
-
-    .line 528
-    invoke-static {v1, v2, v3}, Landroid/graphics/Bitmap;->createBitmap(IILandroid/graphics/Bitmap$Config;)Landroid/graphics/Bitmap;
-
-    move-result-object v1
-
-    .line 530
-    new-instance v2, Landroid/graphics/Canvas;
-
-    invoke-direct {v2, v1}, Landroid/graphics/Canvas;-><init>(Landroid/graphics/Bitmap;)V
-
-    .line 531
-    invoke-virtual {v0}, Landroid/graphics/drawable/Drawable;->getIntrinsicWidth()I
+    .line 529
+    invoke-virtual {v1}, Landroid/graphics/drawable/Drawable;->getIntrinsicHeight()I
 
     move-result v3
 
-    invoke-virtual {v0}, Landroid/graphics/drawable/Drawable;->getIntrinsicHeight()I
+    sget-object v4, Landroid/graphics/Bitmap$Config;->ARGB_8888:Landroid/graphics/Bitmap$Config;
+
+    .line 528
+    invoke-static {v2, v3, v4}, Landroid/graphics/Bitmap;->createBitmap(IILandroid/graphics/Bitmap$Config;)Landroid/graphics/Bitmap;
+
+    move-result-object v2
+
+    .line 530
+    .restart local v2  # "bitmap":Landroid/graphics/Bitmap;
+    new-instance v3, Landroid/graphics/Canvas;
+
+    invoke-direct {v3, v2}, Landroid/graphics/Canvas;-><init>(Landroid/graphics/Bitmap;)V
+
+    .line 531
+    .local v3, "canvas":Landroid/graphics/Canvas;
+    invoke-virtual {v1}, Landroid/graphics/drawable/Drawable;->getIntrinsicWidth()I
 
     move-result v4
 
-    const/4 v5, 0x0
+    invoke-virtual {v1}, Landroid/graphics/drawable/Drawable;->getIntrinsicHeight()I
 
-    invoke-virtual {v0, v5, v5, v3, v4}, Landroid/graphics/drawable/Drawable;->setBounds(IIII)V
+    move-result v5
+
+    const/4 v6, 0x0
+
+    invoke-virtual {v1, v6, v6, v4, v5}, Landroid/graphics/drawable/Drawable;->setBounds(IIII)V
 
     .line 532
-    invoke-virtual {v0, v2}, Landroid/graphics/drawable/Drawable;->draw(Landroid/graphics/Canvas;)V
-
-    move-object v0, v1
+    invoke-virtual {v1, v3}, Landroid/graphics/drawable/Drawable;->draw(Landroid/graphics/Canvas;)V
 
     .line 535
+    .end local v3  # "canvas":Landroid/graphics/Canvas;
     :goto_49
-    new-instance v1, Ljava/io/File;
+    new-instance v3, Ljava/io/File;
 
-    iget-object p1, p1, Landroid/content/pm/PackageParser$Package;->packageName:Ljava/lang/String;
+    iget-object v4, p1, Landroid/content/pm/PackageParser$Package;->packageName:Ljava/lang/String;
 
-    invoke-static {p1, p2}, Lcom/android/server/pm/InstantAppRegistry;->getInstantApplicationDir(Ljava/lang/String;I)Ljava/io/File;
+    invoke-static {v4, p2}, Lcom/android/server/pm/InstantAppRegistry;->getInstantApplicationDir(Ljava/lang/String;I)Ljava/io/File;
 
-    move-result-object p1
+    move-result-object v4
 
-    const-string p2, "icon.png"
+    const-string/jumbo v5, "icon.png"
 
-    invoke-direct {v1, p1, p2}, Ljava/io/File;-><init>(Ljava/io/File;Ljava/lang/String;)V
+    invoke-direct {v3, v4, v5}, Ljava/io/File;-><init>(Ljava/io/File;Ljava/lang/String;)V
 
     .line 538
-    :try_start_56
-    new-instance p1, Ljava/io/FileOutputStream;
+    .local v3, "iconFile":Ljava/io/File;
+    :try_start_57
+    new-instance v4, Ljava/io/FileOutputStream;
 
-    invoke-direct {p1, v1}, Ljava/io/FileOutputStream;-><init>(Ljava/io/File;)V
-    :try_end_5b
-    .catch Ljava/lang/Exception; {:try_start_56 .. :try_end_5b} :catch_6e
+    invoke-direct {v4, v3}, Ljava/io/FileOutputStream;-><init>(Ljava/io/File;)V
+    :try_end_5c
+    .catch Ljava/lang/Exception; {:try_start_57 .. :try_end_5c} :catch_6f
 
-    const/4 p2, 0x0
+    .local v4, "out":Ljava/io/FileOutputStream;
+    const/4 v5, 0x0
 
     .line 539
-    :try_start_5c
-    sget-object v1, Landroid/graphics/Bitmap$CompressFormat;->PNG:Landroid/graphics/Bitmap$CompressFormat;
+    :try_start_5d
+    sget-object v6, Landroid/graphics/Bitmap$CompressFormat;->PNG:Landroid/graphics/Bitmap$CompressFormat;
 
-    const/16 v2, 0x64
+    const/16 v7, 0x64
 
-    invoke-virtual {v0, v1, v2, p1}, Landroid/graphics/Bitmap;->compress(Landroid/graphics/Bitmap$CompressFormat;ILjava/io/OutputStream;)Z
-    :try_end_63
-    .catchall {:try_start_5c .. :try_end_63} :catchall_67
+    invoke-virtual {v2, v6, v7, v4}, Landroid/graphics/Bitmap;->compress(Landroid/graphics/Bitmap$CompressFormat;ILjava/io/OutputStream;)Z
+    :try_end_64
+    .catchall {:try_start_5d .. :try_end_64} :catchall_68
 
     .line 540
-    :try_start_63
-    invoke-static {p2, p1}, Lcom/android/server/pm/InstantAppRegistry;->$closeResource(Ljava/lang/Throwable;Ljava/lang/AutoCloseable;)V
-    :try_end_66
-    .catch Ljava/lang/Exception; {:try_start_63 .. :try_end_66} :catch_6e
+    :try_start_64
+    invoke-static {v5, v4}, Lcom/android/server/pm/InstantAppRegistry;->$closeResource(Ljava/lang/Throwable;Ljava/lang/AutoCloseable;)V
+    :try_end_67
+    .catch Ljava/lang/Exception; {:try_start_64 .. :try_end_67} :catch_6f
 
     .line 542
-    goto :goto_76
+    .end local v4  # "out":Ljava/io/FileOutputStream;
+    goto :goto_77
 
     .line 538
-    :catchall_67
-    move-exception p2
+    .restart local v4  # "out":Ljava/io/FileOutputStream;
+    :catchall_68
+    move-exception v5
 
-    :try_start_68
-    throw p2
-    :try_end_69
-    .catchall {:try_start_68 .. :try_end_69} :catchall_69
+    .end local v0  # "appDir":Ljava/io/File;
+    .end local v1  # "icon":Landroid/graphics/drawable/Drawable;
+    .end local v2  # "bitmap":Landroid/graphics/Bitmap;
+    .end local v3  # "iconFile":Ljava/io/File;
+    .end local v4  # "out":Ljava/io/FileOutputStream;
+    .end local p0  # "this":Lcom/android/server/pm/InstantAppRegistry;
+    .end local p1  # "pkg":Landroid/content/pm/PackageParser$Package;
+    .end local p2  # "userId":I
+    :try_start_69
+    throw v5
+    :try_end_6a
+    .catchall {:try_start_69 .. :try_end_6a} :catchall_6a
 
     .line 540
-    :catchall_69
-    move-exception v0
+    .restart local v0  # "appDir":Ljava/io/File;
+    .restart local v1  # "icon":Landroid/graphics/drawable/Drawable;
+    .restart local v2  # "bitmap":Landroid/graphics/Bitmap;
+    .restart local v3  # "iconFile":Ljava/io/File;
+    .restart local v4  # "out":Ljava/io/FileOutputStream;
+    .restart local p0  # "this":Lcom/android/server/pm/InstantAppRegistry;
+    .restart local p1  # "pkg":Landroid/content/pm/PackageParser$Package;
+    .restart local p2  # "userId":I
+    :catchall_6a
+    move-exception v6
 
-    :try_start_6a
-    invoke-static {p2, p1}, Lcom/android/server/pm/InstantAppRegistry;->$closeResource(Ljava/lang/Throwable;Ljava/lang/AutoCloseable;)V
+    :try_start_6b
+    invoke-static {v5, v4}, Lcom/android/server/pm/InstantAppRegistry;->$closeResource(Ljava/lang/Throwable;Ljava/lang/AutoCloseable;)V
 
-    throw v0
-    :try_end_6e
-    .catch Ljava/lang/Exception; {:try_start_6a .. :try_end_6e} :catch_6e
+    .end local v0  # "appDir":Ljava/io/File;
+    .end local v1  # "icon":Landroid/graphics/drawable/Drawable;
+    .end local v2  # "bitmap":Landroid/graphics/Bitmap;
+    .end local v3  # "iconFile":Ljava/io/File;
+    .end local p0  # "this":Lcom/android/server/pm/InstantAppRegistry;
+    .end local p1  # "pkg":Landroid/content/pm/PackageParser$Package;
+    .end local p2  # "userId":I
+    throw v6
+    :try_end_6f
+    .catch Ljava/lang/Exception; {:try_start_6b .. :try_end_6f} :catch_6f
 
-    :catch_6e
-    move-exception p1
+    .end local v4  # "out":Ljava/io/FileOutputStream;
+    .restart local v0  # "appDir":Ljava/io/File;
+    .restart local v1  # "icon":Landroid/graphics/drawable/Drawable;
+    .restart local v2  # "bitmap":Landroid/graphics/Bitmap;
+    .restart local v3  # "iconFile":Ljava/io/File;
+    .restart local p0  # "this":Lcom/android/server/pm/InstantAppRegistry;
+    .restart local p1  # "pkg":Landroid/content/pm/PackageParser$Package;
+    .restart local p2  # "userId":I
+    :catch_6f
+    move-exception v4
 
     .line 541
-    const-string p2, "InstantAppRegistry"
+    .local v4, "e":Ljava/lang/Exception;
+    const-string v5, "InstantAppRegistry"
 
-    const-string v0, "Error writing instant app icon"
+    const-string v6, "Error writing instant app icon"
 
-    invoke-static {p2, v0, p1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    invoke-static {v5, v6, v4}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
     .line 543
-    :goto_76
+    .end local v4  # "e":Ljava/lang/Exception;
+    :goto_77
     return-void
 .end method
 
 .method private writeUninstalledInstantAppMetadata(Landroid/content/pm/InstantAppInfo;I)V
-    .registers 15
+    .registers 23
+    .param p1, "instantApp"  # Landroid/content/pm/InstantAppInfo;
+    .param p2, "userId"  # I
 
     .line 1101
     const-string/jumbo v0, "permission"
@@ -2908,212 +3441,303 @@
 
     const-string/jumbo v2, "package"
 
-    invoke-virtual {p1}, Landroid/content/pm/InstantAppInfo;->getPackageName()Ljava/lang/String;
+    invoke-virtual/range {p1 .. p1}, Landroid/content/pm/InstantAppInfo;->getPackageName()Ljava/lang/String;
 
     move-result-object v3
 
-    invoke-static {v3, p2}, Lcom/android/server/pm/InstantAppRegistry;->getInstantApplicationDir(Ljava/lang/String;I)Ljava/io/File;
+    move/from16 v4, p2
 
-    move-result-object p2
+    invoke-static {v3, v4}, Lcom/android/server/pm/InstantAppRegistry;->getInstantApplicationDir(Ljava/lang/String;I)Ljava/io/File;
+
+    move-result-object v3
 
     .line 1102
-    invoke-virtual {p2}, Ljava/io/File;->exists()Z
+    .local v3, "appDir":Ljava/io/File;
+    invoke-virtual {v3}, Ljava/io/File;->exists()Z
 
-    move-result v3
+    move-result v5
 
-    if-nez v3, :cond_1e
+    if-nez v5, :cond_20
 
-    invoke-virtual {p2}, Ljava/io/File;->mkdirs()Z
+    invoke-virtual {v3}, Ljava/io/File;->mkdirs()Z
 
-    move-result v3
+    move-result v5
 
-    if-nez v3, :cond_1e
+    if-nez v5, :cond_20
 
     .line 1103
     return-void
 
     .line 1106
-    :cond_1e
-    new-instance v3, Ljava/io/File;
+    :cond_20
+    new-instance v5, Ljava/io/File;
 
-    const-string v4, "metadata.xml"
+    const-string/jumbo v6, "metadata.xml"
 
-    invoke-direct {v3, p2, v4}, Ljava/io/File;-><init>(Ljava/io/File;Ljava/lang/String;)V
+    invoke-direct {v5, v3, v6}, Ljava/io/File;-><init>(Ljava/io/File;Ljava/lang/String;)V
 
     .line 1108
-    new-instance p2, Landroid/util/AtomicFile;
+    .local v5, "metadataFile":Ljava/io/File;
+    new-instance v6, Landroid/util/AtomicFile;
 
-    invoke-direct {p2, v3}, Landroid/util/AtomicFile;-><init>(Ljava/io/File;)V
+    invoke-direct {v6, v5}, Landroid/util/AtomicFile;-><init>(Ljava/io/File;)V
 
     .line 1109
-    nop
+    .local v6, "destination":Landroid/util/AtomicFile;
+    const/4 v7, 0x0
 
     .line 1111
-    const/4 v3, 0x0
+    .local v7, "out":Ljava/io/FileOutputStream;
+    :try_start_2e
+    invoke-virtual {v6}, Landroid/util/AtomicFile;->startWrite()Ljava/io/FileOutputStream;
 
-    :try_start_2c
-    invoke-virtual {p2}, Landroid/util/AtomicFile;->startWrite()Ljava/io/FileOutputStream;
+    move-result-object v8
 
-    move-result-object v4
-    :try_end_30
-    .catchall {:try_start_2c .. :try_end_30} :catchall_a0
+    move-object v7, v8
 
     .line 1113
-    :try_start_30
     invoke-static {}, Landroid/util/Xml;->newSerializer()Lorg/xmlpull/v1/XmlSerializer;
 
-    move-result-object v5
+    move-result-object v8
 
     .line 1114
-    sget-object v6, Ljava/nio/charset/StandardCharsets;->UTF_8:Ljava/nio/charset/Charset;
+    .local v8, "serializer":Lorg/xmlpull/v1/XmlSerializer;
+    sget-object v9, Ljava/nio/charset/StandardCharsets;->UTF_8:Ljava/nio/charset/Charset;
 
-    invoke-virtual {v6}, Ljava/nio/charset/Charset;->name()Ljava/lang/String;
+    invoke-virtual {v9}, Ljava/nio/charset/Charset;->name()Ljava/lang/String;
 
-    move-result-object v6
+    move-result-object v9
 
-    invoke-interface {v5, v4, v6}, Lorg/xmlpull/v1/XmlSerializer;->setOutput(Ljava/io/OutputStream;Ljava/lang/String;)V
+    invoke-interface {v8, v7, v9}, Lorg/xmlpull/v1/XmlSerializer;->setOutput(Ljava/io/OutputStream;Ljava/lang/String;)V
 
     .line 1115
-    const-string v6, "http://xmlpull.org/v1/doc/features.html#indent-output"
+    const-string v9, "http://xmlpull.org/v1/doc/features.html#indent-output"
 
-    const/4 v7, 0x1
+    const/4 v10, 0x1
 
-    invoke-interface {v5, v6, v7}, Lorg/xmlpull/v1/XmlSerializer;->setFeature(Ljava/lang/String;Z)V
+    invoke-interface {v8, v9, v10}, Lorg/xmlpull/v1/XmlSerializer;->setFeature(Ljava/lang/String;Z)V
 
     .line 1117
-    invoke-static {v7}, Ljava/lang/Boolean;->valueOf(Z)Ljava/lang/Boolean;
+    invoke-static {v10}, Ljava/lang/Boolean;->valueOf(Z)Ljava/lang/Boolean;
 
-    move-result-object v6
+    move-result-object v9
 
-    invoke-interface {v5, v3, v6}, Lorg/xmlpull/v1/XmlSerializer;->startDocument(Ljava/lang/String;Ljava/lang/Boolean;)V
+    const/4 v11, 0x0
+
+    invoke-interface {v8, v11, v9}, Lorg/xmlpull/v1/XmlSerializer;->startDocument(Ljava/lang/String;Ljava/lang/Boolean;)V
 
     .line 1119
-    invoke-interface {v5, v3, v2}, Lorg/xmlpull/v1/XmlSerializer;->startTag(Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
+    invoke-interface {v8, v11, v2}, Lorg/xmlpull/v1/XmlSerializer;->startTag(Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
 
     .line 1120
-    const-string v6, "label"
+    const-string/jumbo v9, "label"
+    :try_end_54
+    .catchall {:try_start_2e .. :try_end_54} :catchall_c7
 
-    iget-object v8, p0, Lcom/android/server/pm/InstantAppRegistry;->mService:Lcom/android/server/pm/PackageManagerService;
+    move-object/from16 v12, p0
 
-    iget-object v8, v8, Lcom/android/server/pm/PackageManagerService;->mContext:Landroid/content/Context;
+    :try_start_56
+    iget-object v13, v12, Lcom/android/server/pm/InstantAppRegistry;->mService:Lcom/android/server/pm/PackageManagerService;
+
+    iget-object v13, v13, Lcom/android/server/pm/PackageManagerService;->mContext:Landroid/content/Context;
 
     .line 1121
-    invoke-virtual {v8}, Landroid/content/Context;->getPackageManager()Landroid/content/pm/PackageManager;
+    invoke-virtual {v13}, Landroid/content/Context;->getPackageManager()Landroid/content/pm/PackageManager;
 
-    move-result-object v8
+    move-result-object v13
+    :try_end_5e
+    .catchall {:try_start_56 .. :try_end_5e} :catchall_c5
 
     .line 1120
-    invoke-virtual {p1, v8}, Landroid/content/pm/InstantAppInfo;->loadLabel(Landroid/content/pm/PackageManager;)Ljava/lang/CharSequence;
+    move-object/from16 v14, p1
 
-    move-result-object v8
+    :try_start_60
+    invoke-virtual {v14, v13}, Landroid/content/pm/InstantAppInfo;->loadLabel(Landroid/content/pm/PackageManager;)Ljava/lang/CharSequence;
+
+    move-result-object v13
 
     .line 1121
-    invoke-interface {v8}, Ljava/lang/CharSequence;->toString()Ljava/lang/String;
+    invoke-interface {v13}, Ljava/lang/CharSequence;->toString()Ljava/lang/String;
 
-    move-result-object v8
+    move-result-object v13
 
     .line 1120
-    invoke-interface {v5, v3, v6, v8}, Lorg/xmlpull/v1/XmlSerializer;->attribute(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
+    invoke-interface {v8, v11, v9, v13}, Lorg/xmlpull/v1/XmlSerializer;->attribute(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
 
     .line 1123
-    invoke-interface {v5, v3, v1}, Lorg/xmlpull/v1/XmlSerializer;->startTag(Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
+    invoke-interface {v8, v11, v1}, Lorg/xmlpull/v1/XmlSerializer;->startTag(Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
 
     .line 1124
-    invoke-virtual {p1}, Landroid/content/pm/InstantAppInfo;->getRequestedPermissions()[Ljava/lang/String;
+    invoke-virtual/range {p1 .. p1}, Landroid/content/pm/InstantAppInfo;->getRequestedPermissions()[Ljava/lang/String;
 
-    move-result-object v6
+    move-result-object v9
 
-    array-length v8, v6
+    array-length v13, v9
 
-    const/4 v9, 0x0
+    const/4 v15, 0x0
 
-    :goto_6b
-    if-ge v9, v8, :cond_91
+    :goto_74
+    if-ge v15, v13, :cond_b1
 
-    aget-object v10, v6, v9
+    aget-object v16, v9, v15
+
+    move-object/from16 v17, v16
 
     .line 1125
-    invoke-interface {v5, v3, v0}, Lorg/xmlpull/v1/XmlSerializer;->startTag(Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
+    .local v17, "permission":Ljava/lang/String;
+    invoke-interface {v8, v11, v0}, Lorg/xmlpull/v1/XmlSerializer;->startTag(Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
 
     .line 1126
-    const-string/jumbo v11, "name"
+    const-string/jumbo v10, "name"
+    :try_end_80
+    .catchall {:try_start_60 .. :try_end_80} :catchall_c3
 
-    invoke-interface {v5, v3, v11, v10}, Lorg/xmlpull/v1/XmlSerializer;->attribute(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
+    move-object/from16 v18, v3
+
+    move-object/from16 v3, v17
+
+    .end local v17  # "permission":Ljava/lang/String;
+    .local v3, "permission":Ljava/lang/String;
+    .local v18, "appDir":Ljava/io/File;
+    :try_start_84
+    invoke-interface {v8, v11, v10, v3}, Lorg/xmlpull/v1/XmlSerializer;->attribute(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
 
     .line 1127
-    invoke-virtual {p1}, Landroid/content/pm/InstantAppInfo;->getGrantedPermissions()[Ljava/lang/String;
+    invoke-virtual/range {p1 .. p1}, Landroid/content/pm/InstantAppInfo;->getGrantedPermissions()[Ljava/lang/String;
 
-    move-result-object v11
+    move-result-object v10
 
-    invoke-static {v11, v10}, Lcom/android/internal/util/ArrayUtils;->contains([Ljava/lang/Object;Ljava/lang/Object;)Z
+    invoke-static {v10, v3}, Lcom/android/internal/util/ArrayUtils;->contains([Ljava/lang/Object;Ljava/lang/Object;)Z
 
     move-result v10
 
-    if-eqz v10, :cond_8b
+    if-eqz v10, :cond_a0
 
     .line 1128
     const-string v10, "granted"
 
-    invoke-static {v7}, Ljava/lang/String;->valueOf(Z)Ljava/lang/String;
+    const/16 v16, 0x1
+
+    invoke-static/range {v16 .. v16}, Ljava/lang/String;->valueOf(Z)Ljava/lang/String;
 
     move-result-object v11
 
-    invoke-interface {v5, v3, v10, v11}, Lorg/xmlpull/v1/XmlSerializer;->attribute(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
+    move-object/from16 v19, v3
+
+    const/4 v3, 0x0
+
+    .end local v3  # "permission":Ljava/lang/String;
+    .local v19, "permission":Ljava/lang/String;
+    invoke-interface {v8, v3, v10, v11}, Lorg/xmlpull/v1/XmlSerializer;->attribute(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
+
+    goto :goto_a4
+
+    .line 1127
+    .end local v19  # "permission":Ljava/lang/String;
+    .restart local v3  # "permission":Ljava/lang/String;
+    :cond_a0
+    move-object/from16 v19, v3
+
+    const/16 v16, 0x1
 
     .line 1130
-    :cond_8b
-    invoke-interface {v5, v3, v0}, Lorg/xmlpull/v1/XmlSerializer;->endTag(Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
+    .end local v3  # "permission":Ljava/lang/String;
+    .restart local v19  # "permission":Ljava/lang/String;
+    :goto_a4
+    const/4 v3, 0x0
+
+    invoke-interface {v8, v3, v0}, Lorg/xmlpull/v1/XmlSerializer;->endTag(Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
 
     .line 1124
-    add-int/lit8 v9, v9, 0x1
+    nop
 
-    goto :goto_6b
+    .end local v19  # "permission":Ljava/lang/String;
+    add-int/lit8 v15, v15, 0x1
+
+    move/from16 v10, v16
+
+    move-object/from16 v3, v18
+
+    const/4 v11, 0x0
+
+    goto :goto_74
 
     .line 1132
-    :cond_91
-    invoke-interface {v5, v3, v1}, Lorg/xmlpull/v1/XmlSerializer;->endTag(Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
+    .end local v18  # "appDir":Ljava/io/File;
+    .local v3, "appDir":Ljava/io/File;
+    :cond_b1
+    move-object/from16 v18, v3
+
+    .end local v3  # "appDir":Ljava/io/File;
+    .restart local v18  # "appDir":Ljava/io/File;
+    const/4 v0, 0x0
+
+    invoke-interface {v8, v0, v1}, Lorg/xmlpull/v1/XmlSerializer;->endTag(Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
 
     .line 1134
-    invoke-interface {v5, v3, v2}, Lorg/xmlpull/v1/XmlSerializer;->endTag(Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
+    invoke-interface {v8, v0, v2}, Lorg/xmlpull/v1/XmlSerializer;->endTag(Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
 
     .line 1136
-    invoke-interface {v5}, Lorg/xmlpull/v1/XmlSerializer;->endDocument()V
+    invoke-interface {v8}, Lorg/xmlpull/v1/XmlSerializer;->endDocument()V
 
     .line 1137
-    invoke-virtual {p2, v4}, Landroid/util/AtomicFile;->finishWrite(Ljava/io/FileOutputStream;)V
-    :try_end_9d
-    .catchall {:try_start_30 .. :try_end_9d} :catchall_9e
+    invoke-virtual {v6, v7}, Landroid/util/AtomicFile;->finishWrite(Ljava/io/FileOutputStream;)V
+    :try_end_c0
+    .catchall {:try_start_84 .. :try_end_c0} :catchall_c1
 
-    goto :goto_ac
+    .end local v8  # "serializer":Lorg/xmlpull/v1/XmlSerializer;
+    goto :goto_d8
 
     .line 1138
-    :catchall_9e
-    move-exception p1
+    :catchall_c1
+    move-exception v0
 
-    goto :goto_a2
+    goto :goto_ce
 
-    :catchall_a0
-    move-exception p1
+    .end local v18  # "appDir":Ljava/io/File;
+    .restart local v3  # "appDir":Ljava/io/File;
+    :catchall_c3
+    move-exception v0
 
-    move-object v4, v3
+    goto :goto_cc
+
+    :catchall_c5
+    move-exception v0
+
+    goto :goto_ca
+
+    :catchall_c7
+    move-exception v0
+
+    move-object/from16 v12, p0
+
+    :goto_ca
+    move-object/from16 v14, p1
+
+    :goto_cc
+    move-object/from16 v18, v3
 
     .line 1139
-    :goto_a2
-    :try_start_a2
-    const-string v0, "InstantAppRegistry"
+    .end local v3  # "appDir":Ljava/io/File;
+    .local v0, "t":Ljava/lang/Throwable;
+    .restart local v18  # "appDir":Ljava/io/File;
+    :goto_ce
+    :try_start_ce
+    const-string v1, "InstantAppRegistry"
 
-    const-string v1, "Failed to write instant state, restoring backup"
+    const-string v2, "Failed to write instant state, restoring backup"
 
-    invoke-static {v0, v1, p1}, Landroid/util/Slog;->wtf(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    invoke-static {v1, v2, v0}, Landroid/util/Slog;->wtf(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
     .line 1140
-    invoke-virtual {p2, v4}, Landroid/util/AtomicFile;->failWrite(Ljava/io/FileOutputStream;)V
-    :try_end_ac
-    .catchall {:try_start_a2 .. :try_end_ac} :catchall_b1
+    invoke-virtual {v6, v7}, Landroid/util/AtomicFile;->failWrite(Ljava/io/FileOutputStream;)V
+    :try_end_d8
+    .catchall {:try_start_ce .. :try_end_d8} :catchall_dd
 
     .line 1142
-    :goto_ac
-    invoke-static {v4}, Llibcore/io/IoUtils;->closeQuietly(Ljava/lang/AutoCloseable;)V
+    .end local v0  # "t":Ljava/lang/Throwable;
+    :goto_d8
+    invoke-static {v7}, Llibcore/io/IoUtils;->closeQuietly(Ljava/lang/AutoCloseable;)V
 
     .line 1143
     nop
@@ -3122,18 +3746,20 @@
     return-void
 
     .line 1142
-    :catchall_b1
-    move-exception p1
+    :catchall_dd
+    move-exception v0
 
-    invoke-static {v4}, Llibcore/io/IoUtils;->closeQuietly(Ljava/lang/AutoCloseable;)V
+    invoke-static {v7}, Llibcore/io/IoUtils;->closeQuietly(Ljava/lang/AutoCloseable;)V
 
-    throw p1
+    throw v0
 .end method
 
 
 # virtual methods
 .method public addInstantAppLPw(II)V
     .registers 5
+    .param p1, "userId"  # I
+    .param p2, "instantAppId"  # I
     .annotation build Lcom/android/internal/annotations/GuardedBy;
         value = {
             "mService.mPackages"
@@ -3163,12 +3789,15 @@
     check-cast v0, Landroid/util/SparseBooleanArray;
 
     .line 444
-    if-nez v0, :cond_1f
+    .local v0, "instantAppList":Landroid/util/SparseBooleanArray;
+    if-nez v0, :cond_20
 
     .line 445
-    new-instance v0, Landroid/util/SparseBooleanArray;
+    new-instance v1, Landroid/util/SparseBooleanArray;
 
-    invoke-direct {v0}, Landroid/util/SparseBooleanArray;-><init>()V
+    invoke-direct {v1}, Landroid/util/SparseBooleanArray;-><init>()V
+
+    move-object v0, v1
 
     .line 446
     iget-object v1, p0, Lcom/android/server/pm/InstantAppRegistry;->mInstalledInstantAppUids:Landroid/util/SparseArray;
@@ -3176,10 +3805,10 @@
     invoke-virtual {v1, p1, v0}, Landroid/util/SparseArray;->put(ILjava/lang/Object;)V
 
     .line 448
-    :cond_1f
-    const/4 p1, 0x1
+    :cond_20
+    const/4 v1, 0x1
 
-    invoke-virtual {v0, p2, p1}, Landroid/util/SparseBooleanArray;->put(IZ)V
+    invoke-virtual {v0, p2, v1}, Landroid/util/SparseBooleanArray;->put(IZ)V
 
     .line 449
     return-void
@@ -3187,6 +3816,8 @@
 
 .method public deleteInstantApplicationMetadataLPw(Ljava/lang/String;I)V
     .registers 6
+    .param p1, "packageName"  # Ljava/lang/String;
+    .param p2, "userId"  # I
     .annotation build Lcom/android/internal/annotations/GuardedBy;
         value = {
             "mService.mPackages"
@@ -3206,9 +3837,10 @@
     move-result-object v0
 
     .line 559
+    .local v0, "instantAppDir":Ljava/io/File;
     new-instance v1, Ljava/io/File;
 
-    const-string v2, "metadata.xml"
+    const-string/jumbo v2, "metadata.xml"
 
     invoke-direct {v1, v0, v2}, Ljava/io/File;-><init>(Ljava/io/File;Ljava/lang/String;)V
 
@@ -3217,7 +3849,7 @@
     .line 560
     new-instance v1, Ljava/io/File;
 
-    const-string v2, "icon.png"
+    const-string/jumbo v2, "icon.png"
 
     invoke-direct {v1, v0, v2}, Ljava/io/File;-><init>(Ljava/io/File;Ljava/lang/String;)V
 
@@ -3235,21 +3867,24 @@
     .line 562
     invoke-static {p1, p2}, Lcom/android/server/pm/InstantAppRegistry;->peekInstantCookieFile(Ljava/lang/String;I)Ljava/io/File;
 
-    move-result-object p1
+    move-result-object v1
 
     .line 563
-    if-eqz p1, :cond_33
+    .local v1, "cookie":Ljava/io/File;
+    if-eqz v1, :cond_35
 
     .line 564
-    invoke-virtual {p1}, Ljava/io/File;->delete()Z
+    invoke-virtual {v1}, Ljava/io/File;->delete()Z
 
     .line 566
-    :cond_33
+    :cond_35
     return-void
 .end method
 
 .method public getInstantAppAndroidIdLPw(Ljava/lang/String;I)Ljava/lang/String;
     .registers 7
+    .param p1, "packageName"  # Ljava/lang/String;
+    .param p2, "userId"  # I
 
     .line 221
     new-instance v0, Ljava/io/File;
@@ -3263,6 +3898,7 @@
     invoke-direct {v0, v1, v2}, Ljava/io/File;-><init>(Ljava/io/File;Ljava/lang/String;)V
 
     .line 223
+    .local v0, "idFile":Ljava/io/File;
     invoke-virtual {v0}, Ljava/io/File;->exists()Z
 
     move-result v1
@@ -3277,17 +3913,18 @@
 
     invoke-static {v1}, Llibcore/io/IoUtils;->readFileAsString(Ljava/lang/String;)Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v1
     :try_end_19
     .catch Ljava/io/IOException; {:try_start_11 .. :try_end_19} :catch_1a
 
-    return-object p1
+    return-object v1
 
     .line 226
     :catch_1a
     move-exception v1
 
     .line 227
+    .local v1, "e":Ljava/io/IOException;
     new-instance v2, Ljava/lang/StringBuilder;
 
     invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
@@ -3300,23 +3937,26 @@
 
     invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v2
 
-    const-string v2, "InstantAppRegistry"
+    const-string v3, "InstantAppRegistry"
 
-    invoke-static {v2, v0, v1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    invoke-static {v3, v2, v1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
     .line 230
+    .end local v1  # "e":Ljava/io/IOException;
     :cond_31
     invoke-direct {p0, p1, p2}, Lcom/android/server/pm/InstantAppRegistry;->generateInstantAppAndroidIdLPw(Ljava/lang/String;I)Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v1
 
-    return-object p1
+    return-object v1
 .end method
 
 .method public getInstantAppCookieLPw(Ljava/lang/String;I)[B
-    .registers 6
+    .registers 10
+    .param p1, "packageName"  # Ljava/lang/String;
+    .param p2, "userId"  # I
     .annotation build Lcom/android/internal/annotations/GuardedBy;
         value = {
             "mService.mPackages"
@@ -3335,6 +3975,7 @@
     check-cast v0, Landroid/content/pm/PackageParser$Package;
 
     .line 142
+    .local v0, "pkg":Landroid/content/pm/PackageParser$Package;
     const/4 v1, 0x0
 
     if-nez v0, :cond_e
@@ -3348,112 +3989,120 @@
 
     invoke-virtual {v2, v0, p2}, Lcom/android/server/pm/InstantAppRegistry$CookiePersistence;->getPendingPersistCookieLPr(Landroid/content/pm/PackageParser$Package;I)[B
 
-    move-result-object v0
+    move-result-object v2
 
     .line 147
-    if-eqz v0, :cond_17
+    .local v2, "pendingCookie":[B
+    if-eqz v2, :cond_17
 
     .line 148
-    return-object v0
+    return-object v2
 
     .line 150
     :cond_17
     invoke-static {p1, p2}, Lcom/android/server/pm/InstantAppRegistry;->peekInstantCookieFile(Ljava/lang/String;I)Ljava/io/File;
 
-    move-result-object p1
+    move-result-object v3
 
     .line 151
-    if-eqz p1, :cond_43
+    .local v3, "cookieFile":Ljava/io/File;
+    if-eqz v3, :cond_43
 
-    invoke-virtual {p1}, Ljava/io/File;->exists()Z
+    invoke-virtual {v3}, Ljava/io/File;->exists()Z
 
-    move-result p2
+    move-result v4
 
-    if-eqz p2, :cond_43
+    if-eqz v4, :cond_43
 
     .line 153
     :try_start_23
-    invoke-virtual {p1}, Ljava/io/File;->toString()Ljava/lang/String;
+    invoke-virtual {v3}, Ljava/io/File;->toString()Ljava/lang/String;
 
-    move-result-object p2
+    move-result-object v4
 
-    invoke-static {p2}, Llibcore/io/IoUtils;->readFileAsByteArray(Ljava/lang/String;)[B
+    invoke-static {v4}, Llibcore/io/IoUtils;->readFileAsByteArray(Ljava/lang/String;)[B
 
-    move-result-object p1
+    move-result-object v1
     :try_end_2b
     .catch Ljava/io/IOException; {:try_start_23 .. :try_end_2b} :catch_2c
 
-    return-object p1
+    return-object v1
 
     .line 154
     :catch_2c
-    move-exception p2
+    move-exception v4
 
     .line 155
-    new-instance p2, Ljava/lang/StringBuilder;
+    .local v4, "e":Ljava/io/IOException;
+    new-instance v5, Ljava/lang/StringBuilder;
 
-    invoke-direct {p2}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v5}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v0, "Error reading cookie file: "
+    const-string v6, "Error reading cookie file: "
 
-    invoke-virtual {p2, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p2, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    invoke-virtual {v5, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v5}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v5
 
-    const-string p2, "InstantAppRegistry"
+    const-string v6, "InstantAppRegistry"
 
-    invoke-static {p2, p1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v6, v5}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 158
+    .end local v4  # "e":Ljava/io/IOException;
     :cond_43
     return-object v1
 .end method
 
 .method public getInstantAppIconLPw(Ljava/lang/String;I)Landroid/graphics/Bitmap;
-    .registers 4
+    .registers 6
+    .param p1, "packageName"  # Ljava/lang/String;
+    .param p2, "userId"  # I
 
     .line 211
     new-instance v0, Ljava/io/File;
 
     invoke-static {p1, p2}, Lcom/android/server/pm/InstantAppRegistry;->getInstantApplicationDir(Ljava/lang/String;I)Ljava/io/File;
 
-    move-result-object p1
+    move-result-object v1
 
-    const-string p2, "icon.png"
+    const-string/jumbo v2, "icon.png"
 
-    invoke-direct {v0, p1, p2}, Ljava/io/File;-><init>(Ljava/io/File;Ljava/lang/String;)V
+    invoke-direct {v0, v1, v2}, Ljava/io/File;-><init>(Ljava/io/File;Ljava/lang/String;)V
 
     .line 213
+    .local v0, "iconFile":Ljava/io/File;
     invoke-virtual {v0}, Ljava/io/File;->exists()Z
 
-    move-result p1
+    move-result v1
 
-    if-eqz p1, :cond_1a
+    if-eqz v1, :cond_1b
 
     .line 214
     invoke-virtual {v0}, Ljava/io/File;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v1
 
-    invoke-static {p1}, Landroid/graphics/BitmapFactory;->decodeFile(Ljava/lang/String;)Landroid/graphics/Bitmap;
+    invoke-static {v1}, Landroid/graphics/BitmapFactory;->decodeFile(Ljava/lang/String;)Landroid/graphics/Bitmap;
 
-    move-result-object p1
+    move-result-object v1
 
-    return-object p1
+    return-object v1
 
     .line 216
-    :cond_1a
-    const/4 p1, 0x0
+    :cond_1b
+    const/4 v1, 0x0
 
-    return-object p1
+    return-object v1
 .end method
 
 .method public getInstantAppsLPr(I)Ljava/util/List;
-    .registers 3
+    .registers 4
+    .param p1, "userId"  # I
     .annotation build Lcom/android/internal/annotations/GuardedBy;
         value = {
             "mService.mPackages"
@@ -3475,18 +4124,20 @@
     move-result-object v0
 
     .line 257
+    .local v0, "installedApps":Ljava/util/List;, "Ljava/util/List<Landroid/content/pm/InstantAppInfo;>;"
     invoke-direct {p0, p1}, Lcom/android/server/pm/InstantAppRegistry;->getUninstalledInstantApplicationsLPr(I)Ljava/util/List;
 
-    move-result-object p1
+    move-result-object v1
 
     .line 258
+    .local v1, "uninstalledApps":Ljava/util/List;, "Ljava/util/List<Landroid/content/pm/InstantAppInfo;>;"
     if-eqz v0, :cond_10
 
     .line 259
-    if-eqz p1, :cond_f
+    if-eqz v1, :cond_f
 
     .line 260
-    invoke-interface {v0, p1}, Ljava/util/List;->addAll(Ljava/util/Collection;)Z
+    invoke-interface {v0, v1}, Ljava/util/List;->addAll(Ljava/util/Collection;)Z
 
     .line 262
     :cond_f
@@ -3494,11 +4145,15 @@
 
     .line 264
     :cond_10
-    return-object p1
+    return-object v1
 .end method
 
 .method public grantInstantAccessLPw(ILandroid/content/Intent;II)V
-    .registers 7
+    .registers 9
+    .param p1, "userId"  # I
+    .param p2, "intent"  # Landroid/content/Intent;
+    .param p3, "targetAppId"  # I
+    .param p4, "instantAppId"  # I
     .annotation build Lcom/android/internal/annotations/GuardedBy;
         value = {
             "mService.mPackages"
@@ -3522,7 +4177,8 @@
     check-cast v0, Landroid/util/SparseBooleanArray;
 
     .line 410
-    if-eqz v0, :cond_6c
+    .local v0, "instantAppList":Landroid/util/SparseBooleanArray;
+    if-eqz v0, :cond_6e
 
     invoke-virtual {v0, p4}, Landroid/util/SparseBooleanArray;->get(I)Z
 
@@ -3530,15 +4186,15 @@
 
     if-nez v1, :cond_14
 
-    goto :goto_6c
+    goto :goto_6e
 
     .line 413
     :cond_14
     invoke-virtual {v0, p3}, Landroid/util/SparseBooleanArray;->get(I)Z
 
-    move-result v0
+    move-result v1
 
-    if-eqz v0, :cond_1b
+    if-eqz v1, :cond_1b
 
     .line 414
     return-void
@@ -3549,107 +4205,119 @@
 
     invoke-virtual {p2}, Landroid/content/Intent;->getAction()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v1
 
-    const-string v1, "android.intent.action.VIEW"
+    const-string v2, "android.intent.action.VIEW"
 
-    invoke-virtual {v1, v0}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v2, v1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result v0
+    move-result v1
 
-    if-eqz v0, :cond_38
+    if-eqz v1, :cond_38
 
     .line 417
     invoke-virtual {p2}, Landroid/content/Intent;->getCategories()Ljava/util/Set;
 
-    move-result-object p2
+    move-result-object v1
 
     .line 418
-    if-eqz p2, :cond_38
+    .local v1, "categories":Ljava/util/Set;, "Ljava/util/Set<Ljava/lang/String;>;"
+    if-eqz v1, :cond_38
 
-    const-string v0, "android.intent.category.BROWSABLE"
+    const-string v2, "android.intent.category.BROWSABLE"
 
-    invoke-interface {p2, v0}, Ljava/util/Set;->contains(Ljava/lang/Object;)Z
+    invoke-interface {v1, v2}, Ljava/util/Set;->contains(Ljava/lang/Object;)Z
 
-    move-result p2
+    move-result v2
 
-    if-eqz p2, :cond_38
+    if-eqz v2, :cond_38
 
     .line 419
     return-void
 
     .line 422
+    .end local v1  # "categories":Ljava/util/Set;, "Ljava/util/Set<Ljava/lang/String;>;"
     :cond_38
-    iget-object p2, p0, Lcom/android/server/pm/InstantAppRegistry;->mInstantGrants:Landroid/util/SparseArray;
+    iget-object v1, p0, Lcom/android/server/pm/InstantAppRegistry;->mInstantGrants:Landroid/util/SparseArray;
 
-    if-nez p2, :cond_43
+    if-nez v1, :cond_43
 
     .line 423
-    new-instance p2, Landroid/util/SparseArray;
+    new-instance v1, Landroid/util/SparseArray;
 
-    invoke-direct {p2}, Landroid/util/SparseArray;-><init>()V
+    invoke-direct {v1}, Landroid/util/SparseArray;-><init>()V
 
-    iput-object p2, p0, Lcom/android/server/pm/InstantAppRegistry;->mInstantGrants:Landroid/util/SparseArray;
+    iput-object v1, p0, Lcom/android/server/pm/InstantAppRegistry;->mInstantGrants:Landroid/util/SparseArray;
 
     .line 425
     :cond_43
-    iget-object p2, p0, Lcom/android/server/pm/InstantAppRegistry;->mInstantGrants:Landroid/util/SparseArray;
+    iget-object v1, p0, Lcom/android/server/pm/InstantAppRegistry;->mInstantGrants:Landroid/util/SparseArray;
 
-    invoke-virtual {p2, p1}, Landroid/util/SparseArray;->get(I)Ljava/lang/Object;
+    invoke-virtual {v1, p1}, Landroid/util/SparseArray;->get(I)Ljava/lang/Object;
 
-    move-result-object p2
+    move-result-object v1
 
-    check-cast p2, Landroid/util/SparseArray;
+    check-cast v1, Landroid/util/SparseArray;
 
     .line 426
-    if-nez p2, :cond_57
+    .local v1, "targetAppList":Landroid/util/SparseArray;, "Landroid/util/SparseArray<Landroid/util/SparseBooleanArray;>;"
+    if-nez v1, :cond_58
 
     .line 427
-    new-instance p2, Landroid/util/SparseArray;
+    new-instance v2, Landroid/util/SparseArray;
 
-    invoke-direct {p2}, Landroid/util/SparseArray;-><init>()V
+    invoke-direct {v2}, Landroid/util/SparseArray;-><init>()V
+
+    move-object v1, v2
 
     .line 428
-    iget-object v0, p0, Lcom/android/server/pm/InstantAppRegistry;->mInstantGrants:Landroid/util/SparseArray;
+    iget-object v2, p0, Lcom/android/server/pm/InstantAppRegistry;->mInstantGrants:Landroid/util/SparseArray;
 
-    invoke-virtual {v0, p1, p2}, Landroid/util/SparseArray;->put(ILjava/lang/Object;)V
+    invoke-virtual {v2, p1, v1}, Landroid/util/SparseArray;->put(ILjava/lang/Object;)V
 
     .line 430
-    :cond_57
-    invoke-virtual {p2, p3}, Landroid/util/SparseArray;->get(I)Ljava/lang/Object;
+    :cond_58
+    invoke-virtual {v1, p3}, Landroid/util/SparseArray;->get(I)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v2
 
-    check-cast p1, Landroid/util/SparseBooleanArray;
+    check-cast v2, Landroid/util/SparseBooleanArray;
 
     .line 431
-    if-nez p1, :cond_67
+    .local v2, "instantGrantList":Landroid/util/SparseBooleanArray;
+    if-nez v2, :cond_69
 
     .line 432
-    new-instance p1, Landroid/util/SparseBooleanArray;
+    new-instance v3, Landroid/util/SparseBooleanArray;
 
-    invoke-direct {p1}, Landroid/util/SparseBooleanArray;-><init>()V
+    invoke-direct {v3}, Landroid/util/SparseBooleanArray;-><init>()V
+
+    move-object v2, v3
 
     .line 433
-    invoke-virtual {p2, p3, p1}, Landroid/util/SparseArray;->put(ILjava/lang/Object;)V
+    invoke-virtual {v1, p3, v2}, Landroid/util/SparseArray;->put(ILjava/lang/Object;)V
 
     .line 435
-    :cond_67
-    const/4 p2, 0x1
+    :cond_69
+    const/4 v3, 0x1
 
-    invoke-virtual {p1, p4, p2}, Landroid/util/SparseBooleanArray;->put(IZ)V
+    invoke-virtual {v2, p4, v3}, Landroid/util/SparseBooleanArray;->put(IZ)V
 
     .line 436
     return-void
 
     .line 411
-    :cond_6c
-    :goto_6c
+    .end local v1  # "targetAppList":Landroid/util/SparseArray;, "Landroid/util/SparseArray<Landroid/util/SparseBooleanArray;>;"
+    .end local v2  # "instantGrantList":Landroid/util/SparseBooleanArray;
+    :cond_6e
+    :goto_6e
     return-void
 .end method
 
 .method hasInstantApplicationMetadataLPr(Ljava/lang/String;I)Z
     .registers 4
+    .param p1, "packageName"  # Ljava/lang/String;
+    .param p2, "userId"  # I
     .annotation build Lcom/android/internal/annotations/GuardedBy;
         value = {
             "mService.mPackages"
@@ -3666,28 +4334,31 @@
     .line 548
     invoke-direct {p0, p1, p2}, Lcom/android/server/pm/InstantAppRegistry;->hasInstantAppMetadataLPr(Ljava/lang/String;I)Z
 
-    move-result p1
+    move-result v0
 
-    if-eqz p1, :cond_d
+    if-eqz v0, :cond_d
 
     goto :goto_f
 
     :cond_d
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
     goto :goto_10
 
     :cond_f
     :goto_f
-    const/4 p1, 0x1
+    const/4 v0, 0x1
 
     .line 547
     :goto_10
-    return p1
+    return v0
 .end method
 
 .method public isInstantAccessGranted(III)Z
-    .registers 6
+    .registers 7
+    .param p1, "userId"  # I
+    .param p2, "targetAppId"  # I
+    .param p3, "instantAppId"  # I
 
     .line 389
     iget-object v0, p0, Lcom/android/server/pm/InstantAppRegistry;->mInstantGrants:Landroid/util/SparseArray;
@@ -3703,41 +4374,45 @@
     :cond_6
     invoke-virtual {v0, p1}, Landroid/util/SparseArray;->get(I)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v0
 
-    check-cast p1, Landroid/util/SparseArray;
+    check-cast v0, Landroid/util/SparseArray;
 
     .line 393
-    if-nez p1, :cond_f
+    .local v0, "targetAppList":Landroid/util/SparseArray;, "Landroid/util/SparseArray<Landroid/util/SparseBooleanArray;>;"
+    if-nez v0, :cond_f
 
     .line 394
     return v1
 
     .line 396
     :cond_f
-    invoke-virtual {p1, p2}, Landroid/util/SparseArray;->get(I)Ljava/lang/Object;
+    invoke-virtual {v0, p2}, Landroid/util/SparseArray;->get(I)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v2
 
-    check-cast p1, Landroid/util/SparseBooleanArray;
+    check-cast v2, Landroid/util/SparseBooleanArray;
 
     .line 397
-    if-nez p1, :cond_18
+    .local v2, "instantGrantList":Landroid/util/SparseBooleanArray;
+    if-nez v2, :cond_18
 
     .line 398
     return v1
 
     .line 400
     :cond_18
-    invoke-virtual {p1, p3}, Landroid/util/SparseBooleanArray;->get(I)Z
+    invoke-virtual {v2, p3}, Landroid/util/SparseBooleanArray;->get(I)Z
 
-    move-result p1
+    move-result v1
 
-    return p1
+    return v1
 .end method
 
 .method public synthetic lambda$pruneInstantApps$2$InstantAppRegistry(Ljava/lang/String;Ljava/lang/String;)I
-    .registers 10
+    .registers 13
+    .param p1, "lhs"  # Ljava/lang/String;
+    .param p2, "rhs"  # Ljava/lang/String;
 
     .line 723
     iget-object v0, p0, Lcom/android/server/pm/InstantAppRegistry;->mService:Lcom/android/server/pm/PackageManagerService;
@@ -3746,132 +4421,140 @@
 
     invoke-virtual {v0, p1}, Landroid/util/ArrayMap;->get(Ljava/lang/Object;)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v0
 
-    check-cast p1, Landroid/content/pm/PackageParser$Package;
+    check-cast v0, Landroid/content/pm/PackageParser$Package;
 
     .line 724
-    iget-object v0, p0, Lcom/android/server/pm/InstantAppRegistry;->mService:Lcom/android/server/pm/PackageManagerService;
+    .local v0, "lhsPkg":Landroid/content/pm/PackageParser$Package;
+    iget-object v1, p0, Lcom/android/server/pm/InstantAppRegistry;->mService:Lcom/android/server/pm/PackageManagerService;
 
-    iget-object v0, v0, Lcom/android/server/pm/PackageManagerService;->mPackages:Landroid/util/ArrayMap;
+    iget-object v1, v1, Lcom/android/server/pm/PackageManagerService;->mPackages:Landroid/util/ArrayMap;
 
-    invoke-virtual {v0, p2}, Landroid/util/ArrayMap;->get(Ljava/lang/Object;)Ljava/lang/Object;
+    invoke-virtual {v1, p2}, Landroid/util/ArrayMap;->get(Ljava/lang/Object;)Ljava/lang/Object;
 
-    move-result-object p2
+    move-result-object v1
 
-    check-cast p2, Landroid/content/pm/PackageParser$Package;
+    check-cast v1, Landroid/content/pm/PackageParser$Package;
 
     .line 725
-    const/4 v0, 0x0
+    .local v1, "rhsPkg":Landroid/content/pm/PackageParser$Package;
+    const/4 v2, 0x0
 
-    if-nez p1, :cond_1a
+    if-nez v0, :cond_1a
 
-    if-nez p2, :cond_1a
+    if-nez v1, :cond_1a
 
     .line 726
-    return v0
+    return v2
 
     .line 727
     :cond_1a
-    const/4 v1, -0x1
+    const/4 v3, -0x1
 
-    if-nez p1, :cond_1e
+    if-nez v0, :cond_1e
 
     .line 728
-    return v1
+    return v3
 
     .line 729
     :cond_1e
-    const/4 v2, 0x1
+    const/4 v4, 0x1
 
-    if-nez p2, :cond_22
+    if-nez v1, :cond_22
 
     .line 730
-    return v2
+    return v4
 
     .line 732
     :cond_22
-    invoke-virtual {p1}, Landroid/content/pm/PackageParser$Package;->getLatestPackageUseTimeInMills()J
-
-    move-result-wide v3
-
-    .line 733
-    invoke-virtual {p2}, Landroid/content/pm/PackageParser$Package;->getLatestPackageUseTimeInMills()J
+    invoke-virtual {v0}, Landroid/content/pm/PackageParser$Package;->getLatestPackageUseTimeInMills()J
 
     move-result-wide v5
 
-    cmp-long v3, v3, v5
+    .line 733
+    invoke-virtual {v1}, Landroid/content/pm/PackageParser$Package;->getLatestPackageUseTimeInMills()J
 
-    if-lez v3, :cond_2f
+    move-result-wide v7
+
+    cmp-long v5, v5, v7
+
+    if-lez v5, :cond_2f
 
     .line 734
-    return v2
+    return v4
 
     .line 735
     :cond_2f
-    invoke-virtual {p1}, Landroid/content/pm/PackageParser$Package;->getLatestPackageUseTimeInMills()J
-
-    move-result-wide v3
-
-    .line 736
-    invoke-virtual {p2}, Landroid/content/pm/PackageParser$Package;->getLatestPackageUseTimeInMills()J
+    invoke-virtual {v0}, Landroid/content/pm/PackageParser$Package;->getLatestPackageUseTimeInMills()J
 
     move-result-wide v5
 
-    cmp-long v3, v3, v5
+    .line 736
+    invoke-virtual {v1}, Landroid/content/pm/PackageParser$Package;->getLatestPackageUseTimeInMills()J
 
-    if-gez v3, :cond_3c
+    move-result-wide v7
+
+    cmp-long v5, v5, v7
+
+    if-gez v5, :cond_3c
 
     .line 737
-    return v1
+    return v3
 
     .line 739
     :cond_3c
-    iget-object v3, p1, Landroid/content/pm/PackageParser$Package;->mExtras:Ljava/lang/Object;
+    iget-object v5, v0, Landroid/content/pm/PackageParser$Package;->mExtras:Ljava/lang/Object;
 
-    instance-of v3, v3, Lcom/android/server/pm/PackageSetting;
+    instance-of v5, v5, Lcom/android/server/pm/PackageSetting;
 
-    if-eqz v3, :cond_5a
+    if-eqz v5, :cond_5a
 
-    iget-object v3, p2, Landroid/content/pm/PackageParser$Package;->mExtras:Ljava/lang/Object;
+    iget-object v5, v1, Landroid/content/pm/PackageParser$Package;->mExtras:Ljava/lang/Object;
 
-    instance-of v3, v3, Lcom/android/server/pm/PackageSetting;
+    instance-of v5, v5, Lcom/android/server/pm/PackageSetting;
 
-    if-eqz v3, :cond_5a
+    if-eqz v5, :cond_5a
 
     .line 741
-    iget-object p1, p1, Landroid/content/pm/PackageParser$Package;->mExtras:Ljava/lang/Object;
+    iget-object v2, v0, Landroid/content/pm/PackageParser$Package;->mExtras:Ljava/lang/Object;
 
-    check-cast p1, Lcom/android/server/pm/PackageSetting;
+    check-cast v2, Lcom/android/server/pm/PackageSetting;
 
     .line 742
-    iget-object p2, p2, Landroid/content/pm/PackageParser$Package;->mExtras:Ljava/lang/Object;
+    .local v2, "lhsPs":Lcom/android/server/pm/PackageSetting;
+    iget-object v5, v1, Landroid/content/pm/PackageParser$Package;->mExtras:Ljava/lang/Object;
 
-    check-cast p2, Lcom/android/server/pm/PackageSetting;
+    check-cast v5, Lcom/android/server/pm/PackageSetting;
 
     .line 743
-    iget-wide v3, p1, Lcom/android/server/pm/PackageSetting;->firstInstallTime:J
+    .local v5, "rhsPs":Lcom/android/server/pm/PackageSetting;
+    iget-wide v6, v2, Lcom/android/server/pm/PackageSetting;->firstInstallTime:J
 
-    iget-wide p1, p2, Lcom/android/server/pm/PackageSetting;->firstInstallTime:J
+    iget-wide v8, v5, Lcom/android/server/pm/PackageSetting;->firstInstallTime:J
 
-    cmp-long p1, v3, p1
+    cmp-long v6, v6, v8
 
-    if-lez p1, :cond_59
+    if-lez v6, :cond_59
 
     .line 744
-    return v2
+    return v4
 
     .line 746
     :cond_59
-    return v1
+    return v3
 
     .line 749
+    .end local v2  # "lhsPs":Lcom/android/server/pm/PackageSetting;
+    .end local v5  # "rhsPs":Lcom/android/server/pm/PackageSetting;
     :cond_5a
-    return v0
+    return v2
 .end method
 
 .method public onPackageInstalledLPw(Landroid/content/pm/PackageParser$Package;[I)V
-    .registers 14
+    .registers 20
+    .param p1, "pkg"  # Landroid/content/pm/PackageParser$Package;
+    .param p2, "userIds"  # [I
     .annotation build Lcom/android/internal/annotations/GuardedBy;
         value = {
             "mService.mPackages"
@@ -3879,246 +4562,269 @@
     .end annotation
 
     .line 269
-    iget-object v0, p1, Landroid/content/pm/PackageParser$Package;->mExtras:Ljava/lang/Object;
+    move-object/from16 v0, p0
 
-    check-cast v0, Lcom/android/server/pm/PackageSetting;
+    move-object/from16 v1, p1
+
+    move-object/from16 v2, p2
+
+    iget-object v3, v1, Landroid/content/pm/PackageParser$Package;->mExtras:Ljava/lang/Object;
+
+    check-cast v3, Lcom/android/server/pm/PackageSetting;
 
     .line 270
-    if-nez v0, :cond_7
+    .local v3, "ps":Lcom/android/server/pm/PackageSetting;
+    if-nez v3, :cond_d
 
     .line 271
     return-void
 
     .line 274
-    :cond_7
-    array-length v1, p2
+    :cond_d
+    array-length v4, v2
 
-    const/4 v2, 0x0
+    const/4 v5, 0x0
 
-    move v3, v2
+    move v6, v5
 
-    :goto_a
-    if-ge v3, v1, :cond_c0
+    :goto_10
+    if-ge v6, v4, :cond_c8
 
-    aget v4, p2, v3
+    aget v7, v2, v6
 
     .line 276
-    iget-object v5, p0, Lcom/android/server/pm/InstantAppRegistry;->mService:Lcom/android/server/pm/PackageManagerService;
+    .local v7, "userId":I
+    iget-object v8, v0, Lcom/android/server/pm/InstantAppRegistry;->mService:Lcom/android/server/pm/PackageManagerService;
 
-    iget-object v5, v5, Lcom/android/server/pm/PackageManagerService;->mPackages:Landroid/util/ArrayMap;
+    iget-object v8, v8, Lcom/android/server/pm/PackageManagerService;->mPackages:Landroid/util/ArrayMap;
 
-    iget-object v6, p1, Landroid/content/pm/PackageParser$Package;->packageName:Ljava/lang/String;
+    iget-object v9, v1, Landroid/content/pm/PackageParser$Package;->packageName:Ljava/lang/String;
 
-    invoke-virtual {v5, v6}, Landroid/util/ArrayMap;->get(Ljava/lang/Object;)Ljava/lang/Object;
+    invoke-virtual {v8, v9}, Landroid/util/ArrayMap;->get(Ljava/lang/Object;)Ljava/lang/Object;
 
-    move-result-object v5
+    move-result-object v8
 
-    if-eqz v5, :cond_bc
+    if-eqz v8, :cond_c4
 
-    invoke-virtual {v0, v4}, Lcom/android/server/pm/PackageSetting;->getInstalled(I)Z
-
-    move-result v5
-
-    if-nez v5, :cond_22
-
-    .line 277
-    goto/16 :goto_bc
-
-    .line 281
-    :cond_22
-    invoke-direct {p0, p1, v4}, Lcom/android/server/pm/InstantAppRegistry;->propagateInstantAppPermissionsIfNeeded(Landroid/content/pm/PackageParser$Package;I)V
-
-    .line 284
-    invoke-virtual {v0, v4}, Lcom/android/server/pm/PackageSetting;->getInstantApp(I)Z
-
-    move-result v5
-
-    if-eqz v5, :cond_30
-
-    .line 285
-    iget v5, v0, Lcom/android/server/pm/PackageSetting;->appId:I
-
-    invoke-virtual {p0, v4, v5}, Lcom/android/server/pm/InstantAppRegistry;->addInstantAppLPw(II)V
-
-    .line 289
-    :cond_30
-    new-instance v5, Lcom/android/server/pm/-$$Lambda$InstantAppRegistry$o-Qxi7Gaam-yhhMK-IMWv499oME;
-
-    invoke-direct {v5, p1}, Lcom/android/server/pm/-$$Lambda$InstantAppRegistry$o-Qxi7Gaam-yhhMK-IMWv499oME;-><init>(Landroid/content/pm/PackageParser$Package;)V
-
-    invoke-direct {p0, v5, v4}, Lcom/android/server/pm/InstantAppRegistry;->removeUninstalledInstantAppStateLPw(Ljava/util/function/Predicate;I)V
-
-    .line 294
-    iget-object v5, p1, Landroid/content/pm/PackageParser$Package;->packageName:Ljava/lang/String;
-
-    invoke-static {v5, v4}, Lcom/android/server/pm/InstantAppRegistry;->getInstantApplicationDir(Ljava/lang/String;I)Ljava/io/File;
-
-    move-result-object v5
-
-    .line 295
-    new-instance v6, Ljava/io/File;
-
-    const-string v7, "metadata.xml"
-
-    invoke-direct {v6, v5, v7}, Ljava/io/File;-><init>(Ljava/io/File;Ljava/lang/String;)V
-
-    invoke-virtual {v6}, Ljava/io/File;->delete()Z
-
-    .line 296
-    new-instance v6, Ljava/io/File;
-
-    const-string v7, "icon.png"
-
-    invoke-direct {v6, v5, v7}, Ljava/io/File;-><init>(Ljava/io/File;Ljava/lang/String;)V
-
-    invoke-virtual {v6}, Ljava/io/File;->delete()Z
-
-    .line 299
-    iget-object v5, p1, Landroid/content/pm/PackageParser$Package;->packageName:Ljava/lang/String;
-
-    invoke-static {v5, v4}, Lcom/android/server/pm/InstantAppRegistry;->peekInstantCookieFile(Ljava/lang/String;I)Ljava/io/File;
-
-    move-result-object v5
-
-    .line 300
-    if-nez v5, :cond_5b
-
-    .line 301
-    goto :goto_bc
-
-    .line 304
-    :cond_5b
-    invoke-virtual {v5}, Ljava/io/File;->getName()Ljava/lang/String;
-
-    move-result-object v6
-
-    .line 305
-    nop
-
-    .line 306
-    const-string v7, "cookie_"
-
-    invoke-virtual {v7}, Ljava/lang/String;->length()I
-
-    move-result v7
-
-    .line 307
-    invoke-virtual {v6}, Ljava/lang/String;->length()I
+    invoke-virtual {v3, v7}, Lcom/android/server/pm/PackageSetting;->getInstalled(I)Z
 
     move-result v8
 
-    const-string v9, ".dat"
+    if-nez v8, :cond_28
 
-    invoke-virtual {v9}, Ljava/lang/String;->length()I
+    .line 277
+    goto/16 :goto_c4
 
-    move-result v9
+    .line 281
+    :cond_28
+    invoke-direct {v0, v1, v7}, Lcom/android/server/pm/InstantAppRegistry;->propagateInstantAppPermissionsIfNeeded(Landroid/content/pm/PackageParser$Package;I)V
 
-    sub-int/2addr v8, v9
+    .line 284
+    invoke-virtual {v3, v7}, Lcom/android/server/pm/PackageSetting;->getInstantApp(I)Z
+
+    move-result v8
+
+    if-eqz v8, :cond_36
+
+    .line 285
+    iget v8, v3, Lcom/android/server/pm/PackageSetting;->appId:I
+
+    invoke-virtual {v0, v7, v8}, Lcom/android/server/pm/InstantAppRegistry;->addInstantAppLPw(II)V
+
+    .line 289
+    :cond_36
+    new-instance v8, Lcom/android/server/pm/-$$Lambda$InstantAppRegistry$o-Qxi7Gaam-yhhMK-IMWv499oME;
+
+    invoke-direct {v8, v1}, Lcom/android/server/pm/-$$Lambda$InstantAppRegistry$o-Qxi7Gaam-yhhMK-IMWv499oME;-><init>(Landroid/content/pm/PackageParser$Package;)V
+
+    invoke-direct {v0, v8, v7}, Lcom/android/server/pm/InstantAppRegistry;->removeUninstalledInstantAppStateLPw(Ljava/util/function/Predicate;I)V
+
+    .line 294
+    iget-object v8, v1, Landroid/content/pm/PackageParser$Package;->packageName:Ljava/lang/String;
+
+    invoke-static {v8, v7}, Lcom/android/server/pm/InstantAppRegistry;->getInstantApplicationDir(Ljava/lang/String;I)Ljava/io/File;
+
+    move-result-object v8
+
+    .line 295
+    .local v8, "instantAppDir":Ljava/io/File;
+    new-instance v9, Ljava/io/File;
+
+    const-string/jumbo v10, "metadata.xml"
+
+    invoke-direct {v9, v8, v10}, Ljava/io/File;-><init>(Ljava/io/File;Ljava/lang/String;)V
+
+    invoke-virtual {v9}, Ljava/io/File;->delete()Z
+
+    .line 296
+    new-instance v9, Ljava/io/File;
+
+    const-string/jumbo v10, "icon.png"
+
+    invoke-direct {v9, v8, v10}, Ljava/io/File;-><init>(Ljava/io/File;Ljava/lang/String;)V
+
+    invoke-virtual {v9}, Ljava/io/File;->delete()Z
+
+    .line 299
+    iget-object v9, v1, Landroid/content/pm/PackageParser$Package;->packageName:Ljava/lang/String;
+
+    invoke-static {v9, v7}, Lcom/android/server/pm/InstantAppRegistry;->peekInstantCookieFile(Ljava/lang/String;I)Ljava/io/File;
+
+    move-result-object v9
+
+    .line 300
+    .local v9, "currentCookieFile":Ljava/io/File;
+    if-nez v9, :cond_63
+
+    .line 301
+    goto :goto_c4
+
+    .line 304
+    :cond_63
+    invoke-virtual {v9}, Ljava/io/File;->getName()Ljava/lang/String;
+
+    move-result-object v10
+
+    .line 305
+    .local v10, "cookieName":Ljava/lang/String;
+    nop
 
     .line 306
-    invoke-virtual {v6, v7, v8}, Ljava/lang/String;->substring(II)Ljava/lang/String;
+    const-string v11, "cookie_"
 
-    move-result-object v6
+    invoke-virtual {v11}, Ljava/lang/String;->length()I
+
+    move-result v11
+
+    .line 307
+    invoke-virtual {v10}, Ljava/lang/String;->length()I
+
+    move-result v12
+
+    const-string v13, ".dat"
+
+    invoke-virtual {v13}, Ljava/lang/String;->length()I
+
+    move-result v13
+
+    sub-int/2addr v12, v13
+
+    .line 306
+    invoke-virtual {v10, v11, v12}, Ljava/lang/String;->substring(II)Ljava/lang/String;
+
+    move-result-object v11
 
     .line 314
-    iget-object v7, p1, Landroid/content/pm/PackageParser$Package;->mSigningDetails:Landroid/content/pm/PackageParser$SigningDetails;
+    .local v11, "currentCookieSha256":Ljava/lang/String;
+    iget-object v12, v1, Landroid/content/pm/PackageParser$Package;->mSigningDetails:Landroid/content/pm/PackageParser$SigningDetails;
 
-    const/4 v8, 0x1
+    const/4 v13, 0x1
 
-    invoke-virtual {v7, v6, v8}, Landroid/content/pm/PackageParser$SigningDetails;->checkCapability(Ljava/lang/String;I)Z
+    invoke-virtual {v12, v11, v13}, Landroid/content/pm/PackageParser$SigningDetails;->checkCapability(Ljava/lang/String;I)Z
 
-    move-result v7
+    move-result v12
 
-    if-eqz v7, :cond_7f
+    if-eqz v12, :cond_87
 
     .line 316
     return-void
 
     .line 321
-    :cond_7f
-    iget-object v7, p1, Landroid/content/pm/PackageParser$Package;->mSigningDetails:Landroid/content/pm/PackageParser$SigningDetails;
+    :cond_87
+    iget-object v12, v1, Landroid/content/pm/PackageParser$Package;->mSigningDetails:Landroid/content/pm/PackageParser$SigningDetails;
 
-    iget-object v7, v7, Landroid/content/pm/PackageParser$SigningDetails;->signatures:[Landroid/content/pm/Signature;
+    iget-object v12, v12, Landroid/content/pm/PackageParser$SigningDetails;->signatures:[Landroid/content/pm/Signature;
 
     .line 322
-    invoke-static {v7}, Landroid/util/PackageUtils;->computeSignaturesSha256Digests([Landroid/content/pm/Signature;)[Ljava/lang/String;
+    invoke-static {v12}, Landroid/util/PackageUtils;->computeSignaturesSha256Digests([Landroid/content/pm/Signature;)[Ljava/lang/String;
 
-    move-result-object v7
+    move-result-object v12
 
     .line 323
-    array-length v8, v7
+    .local v12, "signaturesSha256Digests":[Ljava/lang/String;
+    array-length v13, v12
 
-    move v9, v2
+    move v14, v5
 
-    :goto_89
-    if-ge v9, v8, :cond_97
+    :goto_91
+    if-ge v14, v13, :cond_9f
 
-    aget-object v10, v7, v9
+    aget-object v15, v12, v14
 
     .line 324
-    invoke-virtual {v10, v6}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    .local v15, "s":Ljava/lang/String;
+    invoke-virtual {v15, v11}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result v10
+    move-result v16
 
-    if-eqz v10, :cond_94
+    if-eqz v16, :cond_9c
 
     .line 325
     return-void
 
     .line 323
-    :cond_94
-    add-int/lit8 v9, v9, 0x1
+    .end local v15  # "s":Ljava/lang/String;
+    :cond_9c
+    add-int/lit8 v14, v14, 0x1
 
-    goto :goto_89
+    goto :goto_91
 
     .line 330
-    :cond_97
-    new-instance v6, Ljava/lang/StringBuilder;
+    :cond_9f
+    new-instance v13, Ljava/lang/StringBuilder;
 
-    invoke-direct {v6}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v13}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v7, "Signature for package "
+    const-string v14, "Signature for package "
 
-    invoke-virtual {v6, v7}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v13, v14}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    iget-object v7, p1, Landroid/content/pm/PackageParser$Package;->packageName:Ljava/lang/String;
+    iget-object v14, v1, Landroid/content/pm/PackageParser$Package;->packageName:Ljava/lang/String;
 
-    invoke-virtual {v6, v7}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v13, v14}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string v7, " changed - dropping cookie"
+    const-string v14, " changed - dropping cookie"
 
-    invoke-virtual {v6, v7}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v13, v14}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v6}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v13}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v6
+    move-result-object v13
 
-    const-string v7, "InstantAppRegistry"
+    const-string v14, "InstantAppRegistry"
 
-    invoke-static {v7, v6}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v14, v13}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 333
-    iget-object v6, p0, Lcom/android/server/pm/InstantAppRegistry;->mCookiePersistence:Lcom/android/server/pm/InstantAppRegistry$CookiePersistence;
+    iget-object v13, v0, Lcom/android/server/pm/InstantAppRegistry;->mCookiePersistence:Lcom/android/server/pm/InstantAppRegistry$CookiePersistence;
 
-    invoke-virtual {v6, p1, v4}, Lcom/android/server/pm/InstantAppRegistry$CookiePersistence;->cancelPendingPersistLPw(Landroid/content/pm/PackageParser$Package;I)V
+    invoke-virtual {v13, v1, v7}, Lcom/android/server/pm/InstantAppRegistry$CookiePersistence;->cancelPendingPersistLPw(Landroid/content/pm/PackageParser$Package;I)V
 
     .line 334
-    invoke-virtual {v5}, Ljava/io/File;->delete()Z
+    invoke-virtual {v9}, Ljava/io/File;->delete()Z
 
     .line 274
-    :cond_bc
-    :goto_bc
-    add-int/lit8 v3, v3, 0x1
+    .end local v7  # "userId":I
+    .end local v8  # "instantAppDir":Ljava/io/File;
+    .end local v9  # "currentCookieFile":Ljava/io/File;
+    .end local v10  # "cookieName":Ljava/lang/String;
+    .end local v11  # "currentCookieSha256":Ljava/lang/String;
+    .end local v12  # "signaturesSha256Digests":[Ljava/lang/String;
+    :cond_c4
+    :goto_c4
+    add-int/lit8 v6, v6, 0x1
 
-    goto/16 :goto_a
+    goto/16 :goto_10
 
     .line 336
-    :cond_c0
+    :cond_c8
     return-void
 .end method
 
 .method public onPackageUninstalledLPw(Landroid/content/pm/PackageParser$Package;[I)V
     .registers 9
+    .param p1, "pkg"  # Landroid/content/pm/PackageParser$Package;
+    .param p2, "userIds"  # [I
     .annotation build Lcom/android/internal/annotations/GuardedBy;
         value = {
             "mService.mPackages"
@@ -4131,6 +4837,7 @@
     check-cast v0, Lcom/android/server/pm/PackageSetting;
 
     .line 342
+    .local v0, "ps":Lcom/android/server/pm/PackageSetting;
     if-nez v0, :cond_7
 
     .line 343
@@ -4148,6 +4855,7 @@
     aget v3, p2, v2
 
     .line 347
+    .local v3, "userId":I
     iget-object v4, p0, Lcom/android/server/pm/InstantAppRegistry;->mService:Lcom/android/server/pm/PackageManagerService;
 
     iget-object v4, v4, Lcom/android/server/pm/PackageManagerService;->mPackages:Landroid/util/ArrayMap;
@@ -4208,6 +4916,7 @@
     invoke-direct {p0, v3, v4}, Lcom/android/server/pm/InstantAppRegistry;->removeAppLPw(II)V
 
     .line 346
+    .end local v3  # "userId":I
     :goto_42
     add-int/lit8 v2, v2, 0x1
 
@@ -4220,6 +4929,7 @@
 
 .method public onUserRemovedLPw(I)V
     .registers 4
+    .param p1, "userId"  # I
     .annotation build Lcom/android/internal/annotations/GuardedBy;
         value = {
             "mService.mPackages"
@@ -4294,9 +5004,9 @@
     :cond_34
     invoke-static {p1}, Lcom/android/server/pm/InstantAppRegistry;->getInstantApplicationsDir(I)Ljava/io/File;
 
-    move-result-object p1
+    move-result-object v0
 
-    invoke-static {p1}, Lcom/android/server/pm/InstantAppRegistry;->deleteDir(Ljava/io/File;)V
+    invoke-static {v0}, Lcom/android/server/pm/InstantAppRegistry;->deleteDir(Ljava/io/File;)V
 
     .line 385
     return-void
@@ -4304,6 +5014,8 @@
 
 .method pruneInstalledInstantApps(JJ)Z
     .registers 12
+    .param p1, "neededSpace"  # J
+    .param p3, "maxInstalledCacheDuration"  # J
 
     .line 645
     const-wide v5, 0x7fffffffffffffffL
@@ -4317,31 +5029,32 @@
     :try_start_8
     invoke-direct/range {v0 .. v6}, Lcom/android/server/pm/InstantAppRegistry;->pruneInstantApps(JJJ)Z
 
-    move-result p1
+    move-result v0
     :try_end_c
     .catch Ljava/io/IOException; {:try_start_8 .. :try_end_c} :catch_d
 
-    return p1
+    return v0
 
     .line 646
     :catch_d
-    move-exception p1
+    move-exception v0
 
     .line 647
-    const-string p2, "InstantAppRegistry"
+    .local v0, "e":Ljava/io/IOException;
+    const-string v1, "InstantAppRegistry"
 
-    const-string p3, "Error pruning installed instant apps"
+    const-string v2, "Error pruning installed instant apps"
 
-    invoke-static {p2, p3, p1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    invoke-static {v1, v2, v0}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
     .line 648
-    const/4 p1, 0x0
+    const/4 v1, 0x0
 
-    return p1
+    return v1
 .end method
 
 .method pruneInstantApps()V
-    .registers 12
+    .registers 14
 
     .line 625
     iget-object v0, p0, Lcom/android/server/pm/InstantAppRegistry;->mService:Lcom/android/server/pm/PackageManagerService;
@@ -4356,13 +5069,14 @@
     .line 625
     const-wide v1, 0x39ef8b000L
 
-    const-string v3, "installed_instant_app_max_cache_period"
+    const-string/jumbo v3, "installed_instant_app_max_cache_period"
 
     invoke-static {v0, v3, v1, v2}, Landroid/provider/Settings$Global;->getLong(Landroid/content/ContentResolver;Ljava/lang/String;J)J
 
-    move-result-wide v7
+    move-result-wide v11
 
     .line 630
+    .local v11, "maxInstalledCacheDuration":J
     iget-object v0, p0, Lcom/android/server/pm/InstantAppRegistry;->mService:Lcom/android/server/pm/PackageManagerService;
 
     iget-object v0, v0, Lcom/android/server/pm/PackageManagerService;->mContext:Landroid/content/Context;
@@ -4377,39 +5091,48 @@
 
     invoke-static {v0, v3, v1, v2}, Landroid/provider/Settings$Global;->getLong(Landroid/content/ContentResolver;Ljava/lang/String;J)J
 
-    move-result-wide v9
+    move-result-wide v0
 
     .line 636
+    .local v0, "maxUninstalledCacheDuration":J
     const-wide v5, 0x7fffffffffffffffL
 
     move-object v4, p0
 
-    :try_start_28
+    move-wide v7, v11
+
+    move-wide v9, v0
+
+    :try_start_2b
     invoke-direct/range {v4 .. v10}, Lcom/android/server/pm/InstantAppRegistry;->pruneInstantApps(JJJ)Z
-    :try_end_2b
-    .catch Ljava/io/IOException; {:try_start_28 .. :try_end_2b} :catch_2c
+    :try_end_2e
+    .catch Ljava/io/IOException; {:try_start_2b .. :try_end_2e} :catch_2f
 
     .line 640
-    goto :goto_34
+    goto :goto_37
 
     .line 638
-    :catch_2c
-    move-exception v0
+    :catch_2f
+    move-exception v2
 
     .line 639
-    const-string v1, "InstantAppRegistry"
+    .local v2, "e":Ljava/io/IOException;
+    const-string v3, "InstantAppRegistry"
 
-    const-string v2, "Error pruning installed and uninstalled instant apps"
+    const-string v4, "Error pruning installed and uninstalled instant apps"
 
-    invoke-static {v1, v2, v0}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    invoke-static {v3, v4, v2}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
     .line 641
-    :goto_34
+    .end local v2  # "e":Ljava/io/IOException;
+    :goto_37
     return-void
 .end method
 
 .method pruneUninstalledInstantApps(JJ)Z
     .registers 12
+    .param p1, "neededSpace"  # J
+    .param p3, "maxUninstalledCacheDuration"  # J
 
     .line 654
     const-wide v3, 0x7fffffffffffffffL
@@ -4423,31 +5146,35 @@
     :try_start_8
     invoke-direct/range {v0 .. v6}, Lcom/android/server/pm/InstantAppRegistry;->pruneInstantApps(JJJ)Z
 
-    move-result p1
+    move-result v0
     :try_end_c
     .catch Ljava/io/IOException; {:try_start_8 .. :try_end_c} :catch_d
 
-    return p1
+    return v0
 
     .line 655
     :catch_d
-    move-exception p1
+    move-exception v0
 
     .line 656
-    const-string p2, "InstantAppRegistry"
+    .local v0, "e":Ljava/io/IOException;
+    const-string v1, "InstantAppRegistry"
 
-    const-string p3, "Error pruning uninstalled instant apps"
+    const-string v2, "Error pruning uninstalled instant apps"
 
-    invoke-static {p2, p3, p1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    invoke-static {v1, v2, v0}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
     .line 657
-    const/4 p1, 0x0
+    const/4 v1, 0x0
 
-    return p1
+    return v1
 .end method
 
 .method public setInstantAppCookieLPw(Ljava/lang/String;[BI)Z
-    .registers 7
+    .registers 8
+    .param p1, "packageName"  # Ljava/lang/String;
+    .param p2, "cookie"  # [B
+    .param p3, "userId"  # I
     .annotation build Lcom/android/internal/annotations/GuardedBy;
         value = {
             "mService.mPackages"
@@ -4478,47 +5205,49 @@
     move-result v1
 
     .line 167
+    .local v1, "maxCookieSize":I
     array-length v2, p2
 
     if-le v2, v1, :cond_3d
 
     .line 168
-    new-instance p3, Ljava/lang/StringBuilder;
+    new-instance v2, Ljava/lang/StringBuilder;
 
-    invoke-direct {p3}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v2, "Instant app cookie for package "
+    const-string v3, "Instant app cookie for package "
 
-    invoke-virtual {p3, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p3, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string p1, " size "
+    const-string v3, " size "
 
-    invoke-virtual {p3, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    array-length p1, p2
+    array-length v3, p2
 
-    invoke-virtual {p3, p1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    const-string p1, " bytes while max size is "
+    const-string v3, " bytes while max size is "
 
-    invoke-virtual {p3, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p3, v1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v2
 
-    const-string p2, "InstantAppRegistry"
+    const-string v3, "InstantAppRegistry"
 
-    invoke-static {p2, p1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v3, v2}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 170
     return v0
 
     .line 175
+    .end local v1  # "maxCookieSize":I
     :cond_3d
     iget-object v1, p0, Lcom/android/server/pm/InstantAppRegistry;->mService:Lcom/android/server/pm/PackageManagerService;
 
@@ -4526,12 +5255,13 @@
 
     invoke-virtual {v1, p1}, Landroid/util/ArrayMap;->get(Ljava/lang/Object;)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v1
 
-    check-cast p1, Landroid/content/pm/PackageParser$Package;
+    check-cast v1, Landroid/content/pm/PackageParser$Package;
 
     .line 176
-    if-nez p1, :cond_4a
+    .local v1, "pkg":Landroid/content/pm/PackageParser$Package;
+    if-nez v1, :cond_4a
 
     .line 177
     return v0
@@ -4540,10 +5270,10 @@
     :cond_4a
     iget-object v0, p0, Lcom/android/server/pm/InstantAppRegistry;->mCookiePersistence:Lcom/android/server/pm/InstantAppRegistry$CookiePersistence;
 
-    invoke-virtual {v0, p3, p1, p2}, Lcom/android/server/pm/InstantAppRegistry$CookiePersistence;->schedulePersistLPw(ILandroid/content/pm/PackageParser$Package;[B)V
+    invoke-virtual {v0, p3, v1, p2}, Lcom/android/server/pm/InstantAppRegistry$CookiePersistence;->schedulePersistLPw(ILandroid/content/pm/PackageParser$Package;[B)V
 
     .line 181
-    const/4 p1, 0x1
+    const/4 v0, 0x1
 
-    return p1
+    return v0
 .end method

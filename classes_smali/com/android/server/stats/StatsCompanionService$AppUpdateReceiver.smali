@@ -18,7 +18,7 @@
 .method private constructor <init>()V
     .registers 1
 
-    .line 541
+    .line 539
     invoke-direct {p0}, Landroid/content/BroadcastReceiver;-><init>()V
 
     return-void
@@ -26,8 +26,9 @@
 
 .method synthetic constructor <init>(Lcom/android/server/stats/StatsCompanionService$1;)V
     .registers 2
+    .param p1, "x0"  # Lcom/android/server/stats/StatsCompanionService$1;
 
-    .line 541
+    .line 539
     invoke-direct {p0}, Lcom/android/server/stats/StatsCompanionService$AppUpdateReceiver;-><init>()V
 
     return-void
@@ -36,9 +37,11 @@
 
 # virtual methods
 .method public onReceive(Landroid/content/Context;Landroid/content/Intent;)V
-    .registers 13
+    .registers 16
+    .param p1, "context"  # Landroid/content/Context;
+    .param p2, "intent"  # Landroid/content/Intent;
 
-    .line 549
+    .line 547
     invoke-virtual {p2}, Landroid/content/Intent;->getAction()Ljava/lang/String;
 
     move-result-object v0
@@ -53,7 +56,7 @@
 
     if-nez v0, :cond_16
 
-    .line 550
+    .line 548
     const-string v0, "android.intent.extra.REPLACING"
 
     invoke-virtual {p2, v0, v1}, Landroid/content/Intent;->getBooleanExtra(Ljava/lang/String;Z)Z
@@ -62,10 +65,10 @@
 
     if-eqz v0, :cond_16
 
-    .line 551
+    .line 549
     return-void
 
-    .line 554
+    .line 552
     :cond_16
     invoke-static {}, Lcom/android/server/stats/StatsCompanionService;->access$100()Ljava/lang/Object;
 
@@ -73,7 +76,7 @@
 
     monitor-enter v0
 
-    .line 555
+    .line 553
     :try_start_1b
     invoke-static {}, Lcom/android/server/stats/StatsCompanionService;->access$200()Landroid/os/IStatsManager;
 
@@ -81,21 +84,21 @@
 
     if-nez v2, :cond_2a
 
-    .line 556
-    const-string p1, "StatsCompanionService"
+    .line 554
+    const-string v1, "StatsCompanionService"
 
-    const-string p2, "Could not access statsd to inform it of an app update"
+    const-string v2, "Could not access statsd to inform it of an app update"
 
-    invoke-static {p1, p2}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v2}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 557
+    .line 555
     monitor-exit v0
     :try_end_29
-    .catchall {:try_start_1b .. :try_end_29} :catchall_9c
+    .catchall {:try_start_1b .. :try_end_29} :catchall_a4
 
     return-void
 
-    .line 560
+    .line 558
     :cond_2a
     :try_start_2a
     invoke-virtual {p2}, Landroid/content/Intent;->getAction()Ljava/lang/String;
@@ -108,167 +111,212 @@
 
     move-result v2
 
-    if-eqz v2, :cond_5b
+    if-eqz v2, :cond_5c
 
-    .line 561
+    .line 559
     invoke-virtual {p2}, Landroid/content/Intent;->getExtras()Landroid/os/Bundle;
 
     move-result-object v2
 
-    .line 562
+    .line 560
+    .local v2, "b":Landroid/os/Bundle;
     const-string v3, "android.intent.extra.UID"
 
     invoke-virtual {v2, v3}, Landroid/os/Bundle;->getInt(Ljava/lang/String;)I
 
-    move-result v2
+    move-result v3
 
-    .line 563
-    const-string v3, "android.intent.extra.REPLACING"
+    .line 561
+    .local v3, "uid":I
+    const-string v4, "android.intent.extra.REPLACING"
 
-    invoke-virtual {p2, v3, v1}, Landroid/content/Intent;->getBooleanExtra(Ljava/lang/String;Z)Z
+    invoke-virtual {p2, v4, v1}, Landroid/content/Intent;->getBooleanExtra(Ljava/lang/String;Z)Z
 
     move-result v1
 
-    .line 564
-    if-nez v1, :cond_5a
+    .line 562
+    .local v1, "replacing":Z
+    if-nez v1, :cond_5b
 
-    .line 567
+    .line 565
     invoke-virtual {p1}, Landroid/content/Context;->getPackageManager()Landroid/content/pm/PackageManager;
-
-    .line 568
-    invoke-virtual {p2}, Landroid/content/Intent;->getData()Landroid/net/Uri;
-
-    move-result-object p1
-
-    invoke-virtual {p1}, Landroid/net/Uri;->getSchemeSpecificPart()Ljava/lang/String;
-
-    move-result-object p1
-
-    .line 569
-    invoke-static {}, Lcom/android/server/stats/StatsCompanionService;->access$200()Landroid/os/IStatsManager;
-
-    move-result-object p2
-
-    invoke-interface {p2, p1, v2}, Landroid/os/IStatsManager;->informOnePackageRemoved(Ljava/lang/String;I)V
-
-    .line 571
-    :cond_5a
-    goto :goto_91
-
-    .line 572
-    :cond_5b
-    invoke-virtual {p1}, Landroid/content/Context;->getPackageManager()Landroid/content/pm/PackageManager;
-
-    move-result-object p1
-
-    .line 573
-    invoke-virtual {p2}, Landroid/content/Intent;->getExtras()Landroid/os/Bundle;
-
-    move-result-object v1
-
-    .line 574
-    const-string v2, "android.intent.extra.UID"
-
-    invoke-virtual {v1, v2}, Landroid/os/Bundle;->getInt(Ljava/lang/String;)I
-
-    move-result v5
-
-    .line 575
-    invoke-virtual {p2}, Landroid/content/Intent;->getData()Landroid/net/Uri;
-
-    move-result-object p2
-
-    invoke-virtual {p2}, Landroid/net/Uri;->getSchemeSpecificPart()Ljava/lang/String;
 
     move-result-object v4
 
-    .line 576
-    const/high16 p2, 0x400000
+    .line 566
+    .local v4, "pm":Landroid/content/pm/PackageManager;
+    invoke-virtual {p2}, Landroid/content/Intent;->getData()Landroid/net/Uri;
 
-    invoke-virtual {p1, v4, p2}, Landroid/content/pm/PackageManager;->getPackageInfo(Ljava/lang/String;I)Landroid/content/pm/PackageInfo;
+    move-result-object v5
 
-    move-result-object p2
-    :try_end_77
-    .catch Ljava/lang/Exception; {:try_start_2a .. :try_end_77} :catch_92
-    .catchall {:try_start_2a .. :try_end_77} :catchall_9c
+    invoke-virtual {v5}, Landroid/net/Uri;->getSchemeSpecificPart()Ljava/lang/String;
 
-    .line 579
-    :try_start_77
-    invoke-virtual {p1, v4}, Landroid/content/pm/PackageManager;->getInstallerPackageName(Ljava/lang/String;)Ljava/lang/String;
+    move-result-object v5
 
-    move-result-object p1
-    :try_end_7b
-    .catch Ljava/lang/IllegalArgumentException; {:try_start_77 .. :try_end_7b} :catch_7c
-    .catch Ljava/lang/Exception; {:try_start_77 .. :try_end_7b} :catch_92
-    .catchall {:try_start_77 .. :try_end_7b} :catchall_9c
-
-    .line 582
-    goto :goto_7f
-
-    .line 580
-    :catch_7c
-    move-exception p1
-
-    .line 581
-    :try_start_7d
-    const-string p1, ""
-
-    .line 583
-    :goto_7f
+    .line 567
+    .local v5, "app":Ljava/lang/String;
     invoke-static {}, Lcom/android/server/stats/StatsCompanionService;->access$200()Landroid/os/IStatsManager;
+
+    move-result-object v6
+
+    invoke-interface {v6, v5, v3}, Landroid/os/IStatsManager;->informOnePackageRemoved(Ljava/lang/String;I)V
+
+    .line 569
+    .end local v1  # "replacing":Z
+    .end local v2  # "b":Landroid/os/Bundle;
+    .end local v3  # "uid":I
+    .end local v4  # "pm":Landroid/content/pm/PackageManager;
+    .end local v5  # "app":Ljava/lang/String;
+    :cond_5b
+    goto :goto_99
+
+    .line 570
+    :cond_5c
+    invoke-virtual {p1}, Landroid/content/Context;->getPackageManager()Landroid/content/pm/PackageManager;
+
+    move-result-object v1
+
+    .line 571
+    .local v1, "pm":Landroid/content/pm/PackageManager;
+    invoke-virtual {p2}, Landroid/content/Intent;->getExtras()Landroid/os/Bundle;
+
+    move-result-object v2
+
+    .line 572
+    .restart local v2  # "b":Landroid/os/Bundle;
+    const-string v3, "android.intent.extra.UID"
+
+    invoke-virtual {v2, v3}, Landroid/os/Bundle;->getInt(Ljava/lang/String;)I
+
+    move-result v6
+
+    .line 573
+    .local v6, "uid":I
+    invoke-virtual {p2}, Landroid/content/Intent;->getData()Landroid/net/Uri;
 
     move-result-object v3
 
-    invoke-virtual {p2}, Landroid/content/pm/PackageInfo;->getLongVersionCode()J
+    invoke-virtual {v3}, Landroid/net/Uri;->getSchemeSpecificPart()Ljava/lang/String;
 
-    move-result-wide v6
+    move-result-object v3
 
-    iget-object v8, p2, Landroid/content/pm/PackageInfo;->versionName:Ljava/lang/String;
+    .line 574
+    .local v3, "app":Ljava/lang/String;
+    const/high16 v4, 0x400000
 
-    .line 584
-    if-nez p1, :cond_8d
+    invoke-virtual {v1, v3, v4}, Landroid/content/pm/PackageManager;->getPackageInfo(Ljava/lang/String;I)Landroid/content/pm/PackageInfo;
 
-    const-string p1, ""
+    move-result-object v4
+    :try_end_78
+    .catch Ljava/lang/Exception; {:try_start_2a .. :try_end_78} :catch_9a
+    .catchall {:try_start_2a .. :try_end_78} :catchall_a4
 
-    :cond_8d
-    move-object v9, p1
+    move-object v11, v4
 
-    .line 583
-    invoke-interface/range {v3 .. v9}, Landroid/os/IStatsManager;->informOnePackage(Ljava/lang/String;IJLjava/lang/String;Ljava/lang/String;)V
-    :try_end_91
-    .catch Ljava/lang/Exception; {:try_start_7d .. :try_end_91} :catch_92
-    .catchall {:try_start_7d .. :try_end_91} :catchall_9c
+    .line 577
+    .local v11, "pi":Landroid/content/pm/PackageInfo;
+    :try_start_79
+    invoke-virtual {v1, v3}, Landroid/content/pm/PackageManager;->getInstallerPackageName(Ljava/lang/String;)Ljava/lang/String;
 
-    .line 588
-    :goto_91
-    goto :goto_9a
+    move-result-object v4
+    :try_end_7d
+    .catch Ljava/lang/IllegalArgumentException; {:try_start_79 .. :try_end_7d} :catch_7f
+    .catch Ljava/lang/Exception; {:try_start_79 .. :try_end_7d} :catch_9a
+    .catchall {:try_start_79 .. :try_end_7d} :catchall_a4
+
+    .line 580
+    .local v4, "installer":Ljava/lang/String;
+    move-object v12, v4
+
+    goto :goto_84
+
+    .line 578
+    .end local v4  # "installer":Ljava/lang/String;
+    :catch_7f
+    move-exception v4
+
+    .line 579
+    .local v4, "e":Ljava/lang/IllegalArgumentException;
+    :try_start_80
+    const-string v5, ""
+
+    move-object v4, v5
+
+    move-object v12, v4
+
+    .line 581
+    .end local v4  # "e":Ljava/lang/IllegalArgumentException;
+    .local v12, "installer":Ljava/lang/String;
+    :goto_84
+    invoke-static {}, Lcom/android/server/stats/StatsCompanionService;->access$200()Landroid/os/IStatsManager;
+
+    move-result-object v4
+
+    invoke-virtual {v11}, Landroid/content/pm/PackageInfo;->getLongVersionCode()J
+
+    move-result-wide v7
+
+    iget-object v9, v11, Landroid/content/pm/PackageInfo;->versionName:Ljava/lang/String;
+
+    .line 582
+    if-nez v12, :cond_94
+
+    const-string v5, ""
+
+    move-object v10, v5
+
+    goto :goto_95
+
+    :cond_94
+    move-object v10, v12
+
+    .line 581
+    :goto_95
+    move-object v5, v3
+
+    invoke-interface/range {v4 .. v10}, Landroid/os/IStatsManager;->informOnePackage(Ljava/lang/String;IJLjava/lang/String;Ljava/lang/String;)V
+    :try_end_99
+    .catch Ljava/lang/Exception; {:try_start_80 .. :try_end_99} :catch_9a
+    .catchall {:try_start_80 .. :try_end_99} :catchall_a4
 
     .line 586
-    :catch_92
-    move-exception p1
+    .end local v1  # "pm":Landroid/content/pm/PackageManager;
+    .end local v2  # "b":Landroid/os/Bundle;
+    .end local v3  # "app":Ljava/lang/String;
+    .end local v6  # "uid":I
+    .end local v11  # "pi":Landroid/content/pm/PackageInfo;
+    .end local v12  # "installer":Ljava/lang/String;
+    :goto_99
+    goto :goto_a2
+
+    .line 584
+    :catch_9a
+    move-exception v1
+
+    .line 585
+    .local v1, "e":Ljava/lang/Exception;
+    :try_start_9b
+    const-string v2, "StatsCompanionService"
+
+    const-string v3, "Failed to inform statsd of an app update"
+
+    invoke-static {v2, v3, v1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
     .line 587
-    :try_start_93
-    const-string p2, "StatsCompanionService"
-
-    const-string v1, "Failed to inform statsd of an app update"
-
-    invoke-static {p2, v1, p1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
-
-    .line 589
-    :goto_9a
+    .end local v1  # "e":Ljava/lang/Exception;
+    :goto_a2
     monitor-exit v0
 
-    .line 590
+    .line 588
     return-void
 
-    .line 589
-    :catchall_9c
-    move-exception p1
+    .line 587
+    :catchall_a4
+    move-exception v1
 
     monitor-exit v0
-    :try_end_9e
-    .catchall {:try_start_93 .. :try_end_9e} :catchall_9c
+    :try_end_a6
+    .catchall {:try_start_9b .. :try_end_a6} :catchall_a4
 
-    throw p1
+    throw v1
 .end method

@@ -32,6 +32,8 @@
 
 .method synthetic constructor <init>(Lcom/android/server/hdmi/HdmiControlService;Lcom/android/server/hdmi/HdmiControlService$1;)V
     .registers 3
+    .param p1, "x0"  # Lcom/android/server/hdmi/HdmiControlService;
+    .param p2, "x1"  # Lcom/android/server/hdmi/HdmiControlService$1;
 
     .line 188
     invoke-direct {p0, p1}, Lcom/android/server/hdmi/HdmiControlService$HdmiControlBroadcastReceiver;-><init>(Lcom/android/server/hdmi/HdmiControlService;)V
@@ -40,7 +42,7 @@
 .end method
 
 .method private getMenuLanguage()Ljava/lang/String;
-    .registers 3
+    .registers 4
 
     .line 220
     invoke-static {}, Ljava/util/Locale;->getDefault()Ljava/util/Locale;
@@ -48,13 +50,14 @@
     move-result-object v0
 
     .line 221
+    .local v0, "locale":Ljava/util/Locale;
     sget-object v1, Ljava/util/Locale;->TAIWAN:Ljava/util/Locale;
 
     invoke-virtual {v0, v1}, Ljava/util/Locale;->equals(Ljava/lang/Object;)Z
 
     move-result v1
 
-    if-nez v1, :cond_3e
+    if-nez v1, :cond_3f
 
     iget-object v1, p0, Lcom/android/server/hdmi/HdmiControlService$HdmiControlBroadcastReceiver;->this$0:Lcom/android/server/hdmi/HdmiControlService;
 
@@ -66,7 +69,7 @@
 
     move-result v1
 
-    if-nez v1, :cond_3e
+    if-nez v1, :cond_3f
 
     iget-object v1, p0, Lcom/android/server/hdmi/HdmiControlService$HdmiControlBroadcastReceiver;->this$0:Lcom/android/server/hdmi/HdmiControlService;
 
@@ -80,177 +83,184 @@
 
     if-eqz v1, :cond_25
 
-    goto :goto_3e
+    goto :goto_3f
 
     .line 227
     :cond_25
     invoke-virtual {v0}, Ljava/util/Locale;->getISO3Language()Ljava/lang/String;
 
-    move-result-object v0
-
-    .line 234
-    invoke-static {}, Lcom/android/server/hdmi/HdmiControlService;->access$600()Ljava/util/Map;
-
     move-result-object v1
 
-    invoke-interface {v1, v0}, Ljava/util/Map;->containsKey(Ljava/lang/Object;)Z
+    .line 234
+    .local v1, "language":Ljava/lang/String;
+    invoke-static {}, Lcom/android/server/hdmi/HdmiControlService;->access$600()Ljava/util/Map;
 
-    move-result v1
+    move-result-object v2
 
-    if-eqz v1, :cond_3d
+    invoke-interface {v2, v1}, Ljava/util/Map;->containsKey(Ljava/lang/Object;)Z
+
+    move-result v2
+
+    if-eqz v2, :cond_3e
 
     .line 235
     invoke-static {}, Lcom/android/server/hdmi/HdmiControlService;->access$600()Ljava/util/Map;
 
-    move-result-object v1
+    move-result-object v2
 
-    invoke-interface {v1, v0}, Ljava/util/Map;->get(Ljava/lang/Object;)Ljava/lang/Object;
+    invoke-interface {v2, v1}, Ljava/util/Map;->get(Ljava/lang/Object;)Ljava/lang/Object;
 
-    move-result-object v0
+    move-result-object v2
 
-    check-cast v0, Ljava/lang/String;
+    move-object v1, v2
+
+    check-cast v1, Ljava/lang/String;
 
     .line 238
-    :cond_3d
-    return-object v0
+    :cond_3e
+    return-object v1
 
     .line 225
-    :cond_3e
-    :goto_3e
-    const-string v0, "chi"
+    .end local v1  # "language":Ljava/lang/String;
+    :cond_3f
+    :goto_3f
+    const-string v1, "chi"
 
-    return-object v0
+    return-object v1
 .end method
 
 
 # virtual methods
 .method public onReceive(Landroid/content/Context;Landroid/content/Intent;)V
-    .registers 8
+    .registers 10
+    .param p1, "context"  # Landroid/content/Context;
+    .param p2, "intent"  # Landroid/content/Intent;
     .annotation runtime Lcom/android/server/hdmi/HdmiAnnotations$ServiceThreadOnly;
     .end annotation
 
     .line 192
-    iget-object p1, p0, Lcom/android/server/hdmi/HdmiControlService$HdmiControlBroadcastReceiver;->this$0:Lcom/android/server/hdmi/HdmiControlService;
+    iget-object v0, p0, Lcom/android/server/hdmi/HdmiControlService$HdmiControlBroadcastReceiver;->this$0:Lcom/android/server/hdmi/HdmiControlService;
 
-    invoke-static {p1}, Lcom/android/server/hdmi/HdmiControlService;->access$000(Lcom/android/server/hdmi/HdmiControlService;)V
+    invoke-static {v0}, Lcom/android/server/hdmi/HdmiControlService;->access$000(Lcom/android/server/hdmi/HdmiControlService;)V
 
     .line 193
-    const-string/jumbo p1, "sys.shutdown.requested"
+    const-string/jumbo v0, "sys.shutdown.requested"
 
-    invoke-static {p1}, Landroid/os/SystemProperties;->get(Ljava/lang/String;)Ljava/lang/String;
+    invoke-static {v0}, Landroid/os/SystemProperties;->get(Ljava/lang/String;)Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    const-string v0, "1"
+    const-string v1, "1"
 
-    invoke-virtual {p1, v0}, Ljava/lang/String;->contains(Ljava/lang/CharSequence;)Z
-
-    move-result p1
-
-    .line 194
-    invoke-virtual {p2}, Landroid/content/Intent;->getAction()Ljava/lang/String;
-
-    move-result-object p2
-
-    invoke-virtual {p2}, Ljava/lang/String;->hashCode()I
+    invoke-virtual {v0, v1}, Ljava/lang/String;->contains(Ljava/lang/CharSequence;)Z
 
     move-result v0
 
-    const/4 v1, 0x0
+    .line 194
+    .local v0, "isReboot":Z
+    invoke-virtual {p2}, Landroid/content/Intent;->getAction()Ljava/lang/String;
 
-    const/4 v2, 0x3
+    move-result-object v1
 
-    const/4 v3, 0x2
+    invoke-virtual {v1}, Ljava/lang/String;->hashCode()I
 
-    const/4 v4, 0x1
+    move-result v2
 
-    sparse-switch v0, :sswitch_data_98
+    const/4 v3, 0x0
+
+    const/4 v4, 0x3
+
+    const/4 v5, 0x2
+
+    const/4 v6, 0x1
+
+    sparse-switch v2, :sswitch_data_98
 
     :cond_21
     goto :goto_4a
 
     :sswitch_22
-    const-string v0, "android.intent.action.ACTION_SHUTDOWN"
+    const-string v2, "android.intent.action.ACTION_SHUTDOWN"
 
-    invoke-virtual {p2, v0}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v1, v2}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result p2
+    move-result v1
 
-    if-eqz p2, :cond_21
+    if-eqz v1, :cond_21
 
-    move p2, v2
+    move v1, v4
 
     goto :goto_4b
 
     :sswitch_2c
-    const-string v0, "android.intent.action.CONFIGURATION_CHANGED"
+    const-string v2, "android.intent.action.CONFIGURATION_CHANGED"
 
-    invoke-virtual {p2, v0}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v1, v2}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result p2
+    move-result v1
 
-    if-eqz p2, :cond_21
+    if-eqz v1, :cond_21
 
-    move p2, v3
+    move v1, v5
 
     goto :goto_4b
 
     :sswitch_36
-    const-string v0, "android.intent.action.SCREEN_ON"
+    const-string v2, "android.intent.action.SCREEN_ON"
 
-    invoke-virtual {p2, v0}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v1, v2}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result p2
+    move-result v1
 
-    if-eqz p2, :cond_21
+    if-eqz v1, :cond_21
 
-    move p2, v4
+    move v1, v6
 
     goto :goto_4b
 
     :sswitch_40
-    const-string v0, "android.intent.action.SCREEN_OFF"
+    const-string v2, "android.intent.action.SCREEN_OFF"
 
-    invoke-virtual {p2, v0}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v1, v2}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result p2
+    move-result v1
 
-    if-eqz p2, :cond_21
+    if-eqz v1, :cond_21
 
-    move p2, v1
+    move v1, v3
 
     goto :goto_4b
 
     :goto_4a
-    const/4 p2, -0x1
+    const/4 v1, -0x1
 
     :goto_4b
-    if-eqz p2, :cond_88
+    if-eqz v1, :cond_88
 
-    if-eq p2, v4, :cond_7a
+    if-eq v1, v6, :cond_7a
 
-    if-eq p2, v3, :cond_64
+    if-eq v1, v5, :cond_64
 
-    if-eq p2, v2, :cond_54
+    if-eq v1, v4, :cond_54
 
     goto :goto_97
 
     .line 212
     :cond_54
-    iget-object p2, p0, Lcom/android/server/hdmi/HdmiControlService$HdmiControlBroadcastReceiver;->this$0:Lcom/android/server/hdmi/HdmiControlService;
+    iget-object v1, p0, Lcom/android/server/hdmi/HdmiControlService$HdmiControlBroadcastReceiver;->this$0:Lcom/android/server/hdmi/HdmiControlService;
 
-    invoke-virtual {p2}, Lcom/android/server/hdmi/HdmiControlService;->isPowerOnOrTransient()Z
+    invoke-virtual {v1}, Lcom/android/server/hdmi/HdmiControlService;->isPowerOnOrTransient()Z
 
-    move-result p2
+    move-result v1
 
-    if-eqz p2, :cond_97
+    if-eqz v1, :cond_97
 
-    if-nez p1, :cond_97
+    if-nez v0, :cond_97
 
     .line 213
-    iget-object p1, p0, Lcom/android/server/hdmi/HdmiControlService$HdmiControlBroadcastReceiver;->this$0:Lcom/android/server/hdmi/HdmiControlService;
+    iget-object v1, p0, Lcom/android/server/hdmi/HdmiControlService$HdmiControlBroadcastReceiver;->this$0:Lcom/android/server/hdmi/HdmiControlService;
 
-    invoke-virtual {p1, v4}, Lcom/android/server/hdmi/HdmiControlService;->onStandby(I)V
+    invoke-virtual {v1, v6}, Lcom/android/server/hdmi/HdmiControlService;->onStandby(I)V
 
     goto :goto_97
 
@@ -258,61 +268,63 @@
     :cond_64
     invoke-direct {p0}, Lcom/android/server/hdmi/HdmiControlService$HdmiControlBroadcastReceiver;->getMenuLanguage()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v1
 
     .line 207
-    iget-object p2, p0, Lcom/android/server/hdmi/HdmiControlService$HdmiControlBroadcastReceiver;->this$0:Lcom/android/server/hdmi/HdmiControlService;
+    .local v1, "language":Ljava/lang/String;
+    iget-object v2, p0, Lcom/android/server/hdmi/HdmiControlService$HdmiControlBroadcastReceiver;->this$0:Lcom/android/server/hdmi/HdmiControlService;
 
-    invoke-static {p2}, Lcom/android/server/hdmi/HdmiControlService;->access$200(Lcom/android/server/hdmi/HdmiControlService;)Ljava/lang/String;
+    invoke-static {v2}, Lcom/android/server/hdmi/HdmiControlService;->access$200(Lcom/android/server/hdmi/HdmiControlService;)Ljava/lang/String;
 
-    move-result-object p2
+    move-result-object v2
 
-    invoke-virtual {p2, p1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v2, v1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result p2
+    move-result v2
 
-    if-nez p2, :cond_97
+    if-nez v2, :cond_97
 
     .line 208
-    iget-object p2, p0, Lcom/android/server/hdmi/HdmiControlService$HdmiControlBroadcastReceiver;->this$0:Lcom/android/server/hdmi/HdmiControlService;
+    iget-object v2, p0, Lcom/android/server/hdmi/HdmiControlService$HdmiControlBroadcastReceiver;->this$0:Lcom/android/server/hdmi/HdmiControlService;
 
-    invoke-static {p2, p1}, Lcom/android/server/hdmi/HdmiControlService;->access$300(Lcom/android/server/hdmi/HdmiControlService;Ljava/lang/String;)V
+    invoke-static {v2, v1}, Lcom/android/server/hdmi/HdmiControlService;->access$300(Lcom/android/server/hdmi/HdmiControlService;Ljava/lang/String;)V
 
     goto :goto_97
 
     .line 201
+    .end local v1  # "language":Ljava/lang/String;
     :cond_7a
-    iget-object p1, p0, Lcom/android/server/hdmi/HdmiControlService$HdmiControlBroadcastReceiver;->this$0:Lcom/android/server/hdmi/HdmiControlService;
+    iget-object v1, p0, Lcom/android/server/hdmi/HdmiControlService$HdmiControlBroadcastReceiver;->this$0:Lcom/android/server/hdmi/HdmiControlService;
 
-    invoke-virtual {p1}, Lcom/android/server/hdmi/HdmiControlService;->isPowerStandbyOrTransient()Z
+    invoke-virtual {v1}, Lcom/android/server/hdmi/HdmiControlService;->isPowerStandbyOrTransient()Z
 
-    move-result p1
+    move-result v1
 
-    if-eqz p1, :cond_97
+    if-eqz v1, :cond_97
 
     .line 202
-    iget-object p1, p0, Lcom/android/server/hdmi/HdmiControlService$HdmiControlBroadcastReceiver;->this$0:Lcom/android/server/hdmi/HdmiControlService;
+    iget-object v1, p0, Lcom/android/server/hdmi/HdmiControlService$HdmiControlBroadcastReceiver;->this$0:Lcom/android/server/hdmi/HdmiControlService;
 
-    invoke-static {p1}, Lcom/android/server/hdmi/HdmiControlService;->access$100(Lcom/android/server/hdmi/HdmiControlService;)V
+    invoke-static {v1}, Lcom/android/server/hdmi/HdmiControlService;->access$100(Lcom/android/server/hdmi/HdmiControlService;)V
 
     goto :goto_97
 
     .line 196
     :cond_88
-    iget-object p2, p0, Lcom/android/server/hdmi/HdmiControlService$HdmiControlBroadcastReceiver;->this$0:Lcom/android/server/hdmi/HdmiControlService;
+    iget-object v1, p0, Lcom/android/server/hdmi/HdmiControlService$HdmiControlBroadcastReceiver;->this$0:Lcom/android/server/hdmi/HdmiControlService;
 
-    invoke-virtual {p2}, Lcom/android/server/hdmi/HdmiControlService;->isPowerOnOrTransient()Z
+    invoke-virtual {v1}, Lcom/android/server/hdmi/HdmiControlService;->isPowerOnOrTransient()Z
 
-    move-result p2
+    move-result v1
 
-    if-eqz p2, :cond_97
+    if-eqz v1, :cond_97
 
-    if-nez p1, :cond_97
+    if-nez v0, :cond_97
 
     .line 197
-    iget-object p1, p0, Lcom/android/server/hdmi/HdmiControlService$HdmiControlBroadcastReceiver;->this$0:Lcom/android/server/hdmi/HdmiControlService;
+    iget-object v1, p0, Lcom/android/server/hdmi/HdmiControlService$HdmiControlBroadcastReceiver;->this$0:Lcom/android/server/hdmi/HdmiControlService;
 
-    invoke-virtual {p1, v1}, Lcom/android/server/hdmi/HdmiControlService;->onStandby(I)V
+    invoke-virtual {v1, v3}, Lcom/android/server/hdmi/HdmiControlService;->onStandby(I)V
 
     .line 217
     :cond_97

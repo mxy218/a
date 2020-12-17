@@ -22,7 +22,7 @@
 .method private constructor <init>(Lcom/android/server/appprediction/AppPredictionManagerService;)V
     .registers 2
 
-    .line 106
+    .line 88
     iput-object p1, p0, Lcom/android/server/appprediction/AppPredictionManagerService$PredictionManagerServiceStub;->this$0:Lcom/android/server/appprediction/AppPredictionManagerService;
 
     invoke-direct {p0}, Landroid/app/prediction/IPredictionManager$Stub;-><init>()V
@@ -32,8 +32,10 @@
 
 .method synthetic constructor <init>(Lcom/android/server/appprediction/AppPredictionManagerService;Lcom/android/server/appprediction/AppPredictionManagerService$1;)V
     .registers 3
+    .param p1, "x0"  # Lcom/android/server/appprediction/AppPredictionManagerService;
+    .param p2, "x1"  # Lcom/android/server/appprediction/AppPredictionManagerService$1;
 
-    .line 106
+    .line 88
     invoke-direct {p0, p1}, Lcom/android/server/appprediction/AppPredictionManagerService$PredictionManagerServiceStub;-><init>(Lcom/android/server/appprediction/AppPredictionManagerService;)V
 
     return-void
@@ -41,8 +43,11 @@
 
 .method static synthetic lambda$createPredictionSession$0(Landroid/app/prediction/AppPredictionContext;Landroid/app/prediction/AppPredictionSessionId;Lcom/android/server/appprediction/AppPredictionPerUserService;)V
     .registers 3
+    .param p0, "context"  # Landroid/app/prediction/AppPredictionContext;
+    .param p1, "sessionId"  # Landroid/app/prediction/AppPredictionSessionId;
+    .param p2, "service"  # Lcom/android/server/appprediction/AppPredictionPerUserService;
 
-    .line 112
+    .line 94
     invoke-virtual {p2, p0, p1}, Lcom/android/server/appprediction/AppPredictionPerUserService;->onCreatePredictionSessionLocked(Landroid/app/prediction/AppPredictionContext;Landroid/app/prediction/AppPredictionSessionId;)V
 
     return-void
@@ -50,8 +55,11 @@
 
 .method static synthetic lambda$notifyAppTargetEvent$1(Landroid/app/prediction/AppPredictionSessionId;Landroid/app/prediction/AppTargetEvent;Lcom/android/server/appprediction/AppPredictionPerUserService;)V
     .registers 3
+    .param p0, "sessionId"  # Landroid/app/prediction/AppPredictionSessionId;
+    .param p1, "event"  # Landroid/app/prediction/AppTargetEvent;
+    .param p2, "service"  # Lcom/android/server/appprediction/AppPredictionPerUserService;
 
-    .line 119
+    .line 101
     invoke-virtual {p2, p0, p1}, Lcom/android/server/appprediction/AppPredictionPerUserService;->notifyAppTargetEventLocked(Landroid/app/prediction/AppPredictionSessionId;Landroid/app/prediction/AppTargetEvent;)V
 
     return-void
@@ -59,8 +67,12 @@
 
 .method static synthetic lambda$notifyLaunchLocationShown$2(Landroid/app/prediction/AppPredictionSessionId;Ljava/lang/String;Landroid/content/pm/ParceledListSlice;Lcom/android/server/appprediction/AppPredictionPerUserService;)V
     .registers 4
+    .param p0, "sessionId"  # Landroid/app/prediction/AppPredictionSessionId;
+    .param p1, "launchLocation"  # Ljava/lang/String;
+    .param p2, "targetIds"  # Landroid/content/pm/ParceledListSlice;
+    .param p3, "service"  # Lcom/android/server/appprediction/AppPredictionPerUserService;
 
-    .line 126
+    .line 108
     invoke-virtual {p3, p0, p1, p2}, Lcom/android/server/appprediction/AppPredictionPerUserService;->notifyLaunchLocationShownLocked(Landroid/app/prediction/AppPredictionSessionId;Ljava/lang/String;Landroid/content/pm/ParceledListSlice;)V
 
     return-void
@@ -68,8 +80,10 @@
 
 .method static synthetic lambda$onDestroyPredictionSession$7(Landroid/app/prediction/AppPredictionSessionId;Lcom/android/server/appprediction/AppPredictionPerUserService;)V
     .registers 2
+    .param p0, "sessionId"  # Landroid/app/prediction/AppPredictionSessionId;
+    .param p1, "service"  # Lcom/android/server/appprediction/AppPredictionPerUserService;
 
-    .line 159
+    .line 141
     invoke-virtual {p1, p0}, Lcom/android/server/appprediction/AppPredictionPerUserService;->onDestroyPredictionSessionLocked(Landroid/app/prediction/AppPredictionSessionId;)V
 
     return-void
@@ -77,8 +91,11 @@
 
 .method static synthetic lambda$registerPredictionUpdates$4(Landroid/app/prediction/AppPredictionSessionId;Landroid/app/prediction/IPredictionCallback;Lcom/android/server/appprediction/AppPredictionPerUserService;)V
     .registers 3
+    .param p0, "sessionId"  # Landroid/app/prediction/AppPredictionSessionId;
+    .param p1, "callback"  # Landroid/app/prediction/IPredictionCallback;
+    .param p2, "service"  # Lcom/android/server/appprediction/AppPredictionPerUserService;
 
-    .line 141
+    .line 123
     invoke-virtual {p2, p0, p1}, Lcom/android/server/appprediction/AppPredictionPerUserService;->registerPredictionUpdatesLocked(Landroid/app/prediction/AppPredictionSessionId;Landroid/app/prediction/IPredictionCallback;)V
 
     return-void
@@ -86,8 +103,10 @@
 
 .method static synthetic lambda$requestPredictionUpdate$6(Landroid/app/prediction/AppPredictionSessionId;Lcom/android/server/appprediction/AppPredictionPerUserService;)V
     .registers 2
+    .param p0, "sessionId"  # Landroid/app/prediction/AppPredictionSessionId;
+    .param p1, "service"  # Lcom/android/server/appprediction/AppPredictionPerUserService;
 
-    .line 153
+    .line 135
     invoke-virtual {p1, p0}, Lcom/android/server/appprediction/AppPredictionPerUserService;->requestPredictionUpdateLocked(Landroid/app/prediction/AppPredictionSessionId;)V
 
     return-void
@@ -95,8 +114,12 @@
 
 .method static synthetic lambda$sortAppTargets$3(Landroid/app/prediction/AppPredictionSessionId;Landroid/content/pm/ParceledListSlice;Landroid/app/prediction/IPredictionCallback;Lcom/android/server/appprediction/AppPredictionPerUserService;)V
     .registers 4
+    .param p0, "sessionId"  # Landroid/app/prediction/AppPredictionSessionId;
+    .param p1, "targets"  # Landroid/content/pm/ParceledListSlice;
+    .param p2, "callback"  # Landroid/app/prediction/IPredictionCallback;
+    .param p3, "service"  # Lcom/android/server/appprediction/AppPredictionPerUserService;
 
-    .line 134
+    .line 116
     invoke-virtual {p3, p0, p1, p2}, Lcom/android/server/appprediction/AppPredictionPerUserService;->sortAppTargetsLocked(Landroid/app/prediction/AppPredictionSessionId;Landroid/content/pm/ParceledListSlice;Landroid/app/prediction/IPredictionCallback;)V
 
     return-void
@@ -104,15 +127,19 @@
 
 .method static synthetic lambda$unregisterPredictionUpdates$5(Landroid/app/prediction/AppPredictionSessionId;Landroid/app/prediction/IPredictionCallback;Lcom/android/server/appprediction/AppPredictionPerUserService;)V
     .registers 3
+    .param p0, "sessionId"  # Landroid/app/prediction/AppPredictionSessionId;
+    .param p1, "callback"  # Landroid/app/prediction/IPredictionCallback;
+    .param p2, "service"  # Lcom/android/server/appprediction/AppPredictionPerUserService;
 
-    .line 147
+    .line 129
     invoke-virtual {p2, p0, p1}, Lcom/android/server/appprediction/AppPredictionPerUserService;->unregisterPredictionUpdatesLocked(Landroid/app/prediction/AppPredictionSessionId;Landroid/app/prediction/IPredictionCallback;)V
 
     return-void
 .end method
 
 .method private runForUserLocked(Ljava/lang/String;Ljava/util/function/Consumer;)V
-    .registers 7
+    .registers 9
+    .param p1, "func"  # Ljava/lang/String;
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(",
@@ -123,261 +150,295 @@
         }
     .end annotation
 
-    .line 172
+    .line 154
+    .local p2, "c":Ljava/util/function/Consumer;, "Ljava/util/function/Consumer<Lcom/android/server/appprediction/AppPredictionPerUserService;>;"
     invoke-static {}, Landroid/os/UserHandle;->getCallingUserId()I
 
     move-result v0
 
-    .line 174
+    .line 156
+    .local v0, "userId":I
     iget-object v1, p0, Lcom/android/server/appprediction/AppPredictionManagerService$PredictionManagerServiceStub;->this$0:Lcom/android/server/appprediction/AppPredictionManagerService;
 
     invoke-virtual {v1}, Lcom/android/server/appprediction/AppPredictionManagerService;->getContext()Landroid/content/Context;
 
     move-result-object v1
 
-    .line 175
+    .line 157
+    .local v1, "ctx":Landroid/content/Context;
     const-string v2, "android.permission.PACKAGE_USAGE_STATS"
 
     invoke-virtual {v1, v2}, Landroid/content/Context;->checkCallingPermission(Ljava/lang/String;)I
 
-    move-result v1
+    move-result v2
 
-    if-eqz v1, :cond_6a
+    if-eqz v2, :cond_6a
 
-    iget-object v1, p0, Lcom/android/server/appprediction/AppPredictionManagerService$PredictionManagerServiceStub;->this$0:Lcom/android/server/appprediction/AppPredictionManagerService;
+    iget-object v2, p0, Lcom/android/server/appprediction/AppPredictionManagerService$PredictionManagerServiceStub;->this$0:Lcom/android/server/appprediction/AppPredictionManagerService;
 
-    .line 176
-    invoke-static {v1}, Lcom/android/server/appprediction/AppPredictionManagerService;->access$100(Lcom/android/server/appprediction/AppPredictionManagerService;)Lcom/android/server/infra/ServiceNameResolver;
+    .line 158
+    invoke-static {v2}, Lcom/android/server/appprediction/AppPredictionManagerService;->access$100(Lcom/android/server/appprediction/AppPredictionManagerService;)Lcom/android/server/infra/ServiceNameResolver;
 
-    move-result-object v1
+    move-result-object v2
 
-    invoke-interface {v1, v0}, Lcom/android/server/infra/ServiceNameResolver;->isTemporary(I)Z
-
-    move-result v1
-
-    if-nez v1, :cond_6a
-
-    iget-object v1, p0, Lcom/android/server/appprediction/AppPredictionManagerService$PredictionManagerServiceStub;->this$0:Lcom/android/server/appprediction/AppPredictionManagerService;
-
-    .line 177
-    invoke-static {v1}, Lcom/android/server/appprediction/AppPredictionManagerService;->access$200(Lcom/android/server/appprediction/AppPredictionManagerService;)Lcom/android/server/wm/ActivityTaskManagerInternal;
-
-    move-result-object v1
-
-    invoke-static {}, Landroid/os/Binder;->getCallingUid()I
+    invoke-interface {v2, v0}, Lcom/android/server/infra/ServiceNameResolver;->isTemporary(I)Z
 
     move-result v2
 
-    invoke-virtual {v1, v2}, Lcom/android/server/wm/ActivityTaskManagerInternal;->isCallerRecents(I)Z
+    if-nez v2, :cond_6a
 
-    move-result v1
+    iget-object v2, p0, Lcom/android/server/appprediction/AppPredictionManagerService$PredictionManagerServiceStub;->this$0:Lcom/android/server/appprediction/AppPredictionManagerService;
 
-    if-eqz v1, :cond_2f
+    .line 159
+    invoke-static {v2}, Lcom/android/server/appprediction/AppPredictionManagerService;->access$200(Lcom/android/server/appprediction/AppPredictionManagerService;)Lcom/android/server/wm/ActivityTaskManagerInternal;
+
+    move-result-object v2
+
+    invoke-static {}, Landroid/os/Binder;->getCallingUid()I
+
+    move-result v3
+
+    invoke-virtual {v2, v3}, Lcom/android/server/wm/ActivityTaskManagerInternal;->isCallerRecents(I)Z
+
+    move-result v2
+
+    if-eqz v2, :cond_2f
 
     goto :goto_6a
 
-    .line 179
+    .line 161
     :cond_2f
-    new-instance p2, Ljava/lang/StringBuilder;
+    new-instance v2, Ljava/lang/StringBuilder;
 
-    invoke-direct {p2}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v0, "Permission Denial: "
+    const-string v3, "Permission Denial: "
 
-    invoke-virtual {p2, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p2, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string p1, " from pid="
+    const-string v3, " from pid="
 
-    invoke-virtual {p2, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    .line 180
+    .line 162
     invoke-static {}, Landroid/os/Binder;->getCallingPid()I
 
-    move-result p1
+    move-result v3
 
-    invoke-virtual {p2, p1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    const-string p1, ", uid="
+    const-string v3, ", uid="
 
-    invoke-virtual {p2, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    .line 181
+    .line 163
     invoke-static {}, Landroid/os/Binder;->getCallingUid()I
 
-    move-result p1
+    move-result v3
 
-    invoke-virtual {p2, p1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    const-string p1, " expected caller to hold PACKAGE_USAGE_STATS permission"
+    const-string v3, " expected caller to hold PACKAGE_USAGE_STATS permission"
 
-    invoke-virtual {p2, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v2
 
-    .line 183
+    .line 165
+    .local v2, "msg":Ljava/lang/String;
     invoke-static {}, Lcom/android/server/appprediction/AppPredictionManagerService;->access$300()Ljava/lang/String;
 
-    move-result-object p2
+    move-result-object v3
 
-    invoke-static {p2, p1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v3, v2}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 184
-    new-instance p2, Ljava/lang/SecurityException;
+    .line 166
+    new-instance v3, Ljava/lang/SecurityException;
 
-    invoke-direct {p2, p1}, Ljava/lang/SecurityException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v3, v2}, Ljava/lang/SecurityException;-><init>(Ljava/lang/String;)V
 
-    throw p2
+    throw v3
 
-    .line 187
+    .line 169
+    .end local v2  # "msg":Ljava/lang/String;
     :cond_6a
     :goto_6a
     invoke-static {}, Landroid/os/Binder;->clearCallingIdentity()J
 
-    move-result-wide v1
+    move-result-wide v2
 
-    .line 189
+    .line 171
+    .local v2, "origId":J
     :try_start_6e
-    iget-object p1, p0, Lcom/android/server/appprediction/AppPredictionManagerService$PredictionManagerServiceStub;->this$0:Lcom/android/server/appprediction/AppPredictionManagerService;
+    iget-object v4, p0, Lcom/android/server/appprediction/AppPredictionManagerService$PredictionManagerServiceStub;->this$0:Lcom/android/server/appprediction/AppPredictionManagerService;
 
-    invoke-static {p1}, Lcom/android/server/appprediction/AppPredictionManagerService;->access$400(Lcom/android/server/appprediction/AppPredictionManagerService;)Ljava/lang/Object;
+    invoke-static {v4}, Lcom/android/server/appprediction/AppPredictionManagerService;->access$400(Lcom/android/server/appprediction/AppPredictionManagerService;)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v4
 
-    monitor-enter p1
+    monitor-enter v4
     :try_end_75
     .catchall {:try_start_6e .. :try_end_75} :catchall_89
 
-    .line 190
+    .line 172
     :try_start_75
-    iget-object v3, p0, Lcom/android/server/appprediction/AppPredictionManagerService$PredictionManagerServiceStub;->this$0:Lcom/android/server/appprediction/AppPredictionManagerService;
+    iget-object v5, p0, Lcom/android/server/appprediction/AppPredictionManagerService$PredictionManagerServiceStub;->this$0:Lcom/android/server/appprediction/AppPredictionManagerService;
 
-    invoke-static {v3, v0}, Lcom/android/server/appprediction/AppPredictionManagerService;->access$500(Lcom/android/server/appprediction/AppPredictionManagerService;I)Lcom/android/server/infra/AbstractPerUserSystemService;
+    invoke-static {v5, v0}, Lcom/android/server/appprediction/AppPredictionManagerService;->access$500(Lcom/android/server/appprediction/AppPredictionManagerService;I)Lcom/android/server/infra/AbstractPerUserSystemService;
 
-    move-result-object v0
+    move-result-object v5
 
-    check-cast v0, Lcom/android/server/appprediction/AppPredictionPerUserService;
+    check-cast v5, Lcom/android/server/appprediction/AppPredictionPerUserService;
 
-    .line 191
-    invoke-interface {p2, v0}, Ljava/util/function/Consumer;->accept(Ljava/lang/Object;)V
+    .line 173
+    .local v5, "service":Lcom/android/server/appprediction/AppPredictionPerUserService;
+    invoke-interface {p2, v5}, Ljava/util/function/Consumer;->accept(Ljava/lang/Object;)V
 
-    .line 192
-    monitor-exit p1
+    .line 174
+    .end local v5  # "service":Lcom/android/server/appprediction/AppPredictionPerUserService;
+    monitor-exit v4
     :try_end_81
     .catchall {:try_start_75 .. :try_end_81} :catchall_86
 
-    .line 194
-    invoke-static {v1, v2}, Landroid/os/Binder;->restoreCallingIdentity(J)V
+    .line 176
+    invoke-static {v2, v3}, Landroid/os/Binder;->restoreCallingIdentity(J)V
 
-    .line 195
+    .line 177
     nop
 
-    .line 196
+    .line 178
     return-void
 
-    .line 192
+    .line 174
     :catchall_86
-    move-exception p2
+    move-exception v5
 
     :try_start_87
-    monitor-exit p1
+    monitor-exit v4
     :try_end_88
     .catchall {:try_start_87 .. :try_end_88} :catchall_86
 
+    .end local v0  # "userId":I
+    .end local v1  # "ctx":Landroid/content/Context;
+    .end local v2  # "origId":J
+    .end local p0  # "this":Lcom/android/server/appprediction/AppPredictionManagerService$PredictionManagerServiceStub;
+    .end local p1  # "func":Ljava/lang/String;
+    .end local p2  # "c":Ljava/util/function/Consumer;, "Ljava/util/function/Consumer<Lcom/android/server/appprediction/AppPredictionPerUserService;>;"
     :try_start_88
-    throw p2
+    throw v5
     :try_end_89
     .catchall {:try_start_88 .. :try_end_89} :catchall_89
 
-    .line 194
+    .line 176
+    .restart local v0  # "userId":I
+    .restart local v1  # "ctx":Landroid/content/Context;
+    .restart local v2  # "origId":J
+    .restart local p0  # "this":Lcom/android/server/appprediction/AppPredictionManagerService$PredictionManagerServiceStub;
+    .restart local p1  # "func":Ljava/lang/String;
+    .restart local p2  # "c":Ljava/util/function/Consumer;, "Ljava/util/function/Consumer<Lcom/android/server/appprediction/AppPredictionPerUserService;>;"
     :catchall_89
-    move-exception p1
+    move-exception v4
 
-    invoke-static {v1, v2}, Landroid/os/Binder;->restoreCallingIdentity(J)V
+    invoke-static {v2, v3}, Landroid/os/Binder;->restoreCallingIdentity(J)V
 
-    throw p1
+    throw v4
 .end method
 
 
 # virtual methods
 .method public createPredictionSession(Landroid/app/prediction/AppPredictionContext;Landroid/app/prediction/AppPredictionSessionId;)V
-    .registers 4
+    .registers 5
+    .param p1, "context"  # Landroid/app/prediction/AppPredictionContext;
+    .param p2, "sessionId"  # Landroid/app/prediction/AppPredictionSessionId;
 
-    .line 111
+    .line 93
     new-instance v0, Lcom/android/server/appprediction/-$$Lambda$AppPredictionManagerService$PredictionManagerServiceStub$NmwmTMZXXS4S7viVNKzU2genXA8;
 
     invoke-direct {v0, p1, p2}, Lcom/android/server/appprediction/-$$Lambda$AppPredictionManagerService$PredictionManagerServiceStub$NmwmTMZXXS4S7viVNKzU2genXA8;-><init>(Landroid/app/prediction/AppPredictionContext;Landroid/app/prediction/AppPredictionSessionId;)V
 
-    const-string p1, "createPredictionSession"
+    const-string v1, "createPredictionSession"
 
-    invoke-direct {p0, p1, v0}, Lcom/android/server/appprediction/AppPredictionManagerService$PredictionManagerServiceStub;->runForUserLocked(Ljava/lang/String;Ljava/util/function/Consumer;)V
+    invoke-direct {p0, v1, v0}, Lcom/android/server/appprediction/AppPredictionManagerService$PredictionManagerServiceStub;->runForUserLocked(Ljava/lang/String;Ljava/util/function/Consumer;)V
 
-    .line 113
+    .line 95
     return-void
 .end method
 
 .method public notifyAppTargetEvent(Landroid/app/prediction/AppPredictionSessionId;Landroid/app/prediction/AppTargetEvent;)V
-    .registers 4
+    .registers 5
+    .param p1, "sessionId"  # Landroid/app/prediction/AppPredictionSessionId;
+    .param p2, "event"  # Landroid/app/prediction/AppTargetEvent;
 
-    .line 118
+    .line 100
     new-instance v0, Lcom/android/server/appprediction/-$$Lambda$AppPredictionManagerService$PredictionManagerServiceStub$4yDhFef-19aMlJ-Y7O6RdjSAvnk;
 
     invoke-direct {v0, p1, p2}, Lcom/android/server/appprediction/-$$Lambda$AppPredictionManagerService$PredictionManagerServiceStub$4yDhFef-19aMlJ-Y7O6RdjSAvnk;-><init>(Landroid/app/prediction/AppPredictionSessionId;Landroid/app/prediction/AppTargetEvent;)V
 
-    const-string/jumbo p1, "notifyAppTargetEvent"
+    const-string/jumbo v1, "notifyAppTargetEvent"
 
-    invoke-direct {p0, p1, v0}, Lcom/android/server/appprediction/AppPredictionManagerService$PredictionManagerServiceStub;->runForUserLocked(Ljava/lang/String;Ljava/util/function/Consumer;)V
+    invoke-direct {p0, v1, v0}, Lcom/android/server/appprediction/AppPredictionManagerService$PredictionManagerServiceStub;->runForUserLocked(Ljava/lang/String;Ljava/util/function/Consumer;)V
 
-    .line 120
+    .line 102
     return-void
 .end method
 
 .method public notifyLaunchLocationShown(Landroid/app/prediction/AppPredictionSessionId;Ljava/lang/String;Landroid/content/pm/ParceledListSlice;)V
-    .registers 5
+    .registers 6
+    .param p1, "sessionId"  # Landroid/app/prediction/AppPredictionSessionId;
+    .param p2, "launchLocation"  # Ljava/lang/String;
+    .param p3, "targetIds"  # Landroid/content/pm/ParceledListSlice;
 
-    .line 125
+    .line 107
     new-instance v0, Lcom/android/server/appprediction/-$$Lambda$AppPredictionManagerService$PredictionManagerServiceStub$vWB3PdxOOvPr7p0_NmoqXeH8Ros;
 
     invoke-direct {v0, p1, p2, p3}, Lcom/android/server/appprediction/-$$Lambda$AppPredictionManagerService$PredictionManagerServiceStub$vWB3PdxOOvPr7p0_NmoqXeH8Ros;-><init>(Landroid/app/prediction/AppPredictionSessionId;Ljava/lang/String;Landroid/content/pm/ParceledListSlice;)V
 
-    const-string/jumbo p1, "notifyLaunchLocationShown"
+    const-string/jumbo v1, "notifyLaunchLocationShown"
 
-    invoke-direct {p0, p1, v0}, Lcom/android/server/appprediction/AppPredictionManagerService$PredictionManagerServiceStub;->runForUserLocked(Ljava/lang/String;Ljava/util/function/Consumer;)V
+    invoke-direct {p0, v1, v0}, Lcom/android/server/appprediction/AppPredictionManagerService$PredictionManagerServiceStub;->runForUserLocked(Ljava/lang/String;Ljava/util/function/Consumer;)V
 
-    .line 127
+    .line 109
     return-void
 .end method
 
 .method public onDestroyPredictionSession(Landroid/app/prediction/AppPredictionSessionId;)V
-    .registers 3
+    .registers 4
+    .param p1, "sessionId"  # Landroid/app/prediction/AppPredictionSessionId;
 
-    .line 158
+    .line 140
     new-instance v0, Lcom/android/server/appprediction/-$$Lambda$AppPredictionManagerService$PredictionManagerServiceStub$gV-NT40YbIbIqIJKiNGjlZGVJjc;
 
     invoke-direct {v0, p1}, Lcom/android/server/appprediction/-$$Lambda$AppPredictionManagerService$PredictionManagerServiceStub$gV-NT40YbIbIqIJKiNGjlZGVJjc;-><init>(Landroid/app/prediction/AppPredictionSessionId;)V
 
-    const-string/jumbo p1, "onDestroyPredictionSession"
+    const-string/jumbo v1, "onDestroyPredictionSession"
 
-    invoke-direct {p0, p1, v0}, Lcom/android/server/appprediction/AppPredictionManagerService$PredictionManagerServiceStub;->runForUserLocked(Ljava/lang/String;Ljava/util/function/Consumer;)V
+    invoke-direct {p0, v1, v0}, Lcom/android/server/appprediction/AppPredictionManagerService$PredictionManagerServiceStub;->runForUserLocked(Ljava/lang/String;Ljava/util/function/Consumer;)V
 
-    .line 160
+    .line 142
     return-void
 .end method
 
 .method public onShellCommand(Ljava/io/FileDescriptor;Ljava/io/FileDescriptor;Ljava/io/FileDescriptor;[Ljava/lang/String;Landroid/os/ShellCallback;Landroid/os/ResultReceiver;)V
     .registers 15
+    .param p1, "in"  # Ljava/io/FileDescriptor;
+    .param p2, "out"  # Ljava/io/FileDescriptor;
+    .param p3, "err"  # Ljava/io/FileDescriptor;
+    .param p4, "args"  # [Ljava/lang/String;
+    .param p5, "callback"  # Landroid/os/ShellCallback;
+    .param p6, "resultReceiver"  # Landroid/os/ResultReceiver;
 
-    .line 166
+    .line 148
     new-instance v0, Lcom/android/server/appprediction/AppPredictionManagerServiceShellCommand;
 
     iget-object v1, p0, Lcom/android/server/appprediction/AppPredictionManagerService$PredictionManagerServiceStub;->this$0:Lcom/android/server/appprediction/AppPredictionManagerService;
 
     invoke-direct {v0, v1}, Lcom/android/server/appprediction/AppPredictionManagerServiceShellCommand;-><init>(Lcom/android/server/appprediction/AppPredictionManagerService;)V
 
-    .line 167
+    .line 149
     move-object v1, p0
 
     move-object v2, p1
@@ -394,70 +455,78 @@
 
     invoke-virtual/range {v0 .. v7}, Lcom/android/server/appprediction/AppPredictionManagerServiceShellCommand;->exec(Landroid/os/Binder;Ljava/io/FileDescriptor;Ljava/io/FileDescriptor;Ljava/io/FileDescriptor;[Ljava/lang/String;Landroid/os/ShellCallback;Landroid/os/ResultReceiver;)I
 
-    .line 168
+    .line 150
     return-void
 .end method
 
 .method public registerPredictionUpdates(Landroid/app/prediction/AppPredictionSessionId;Landroid/app/prediction/IPredictionCallback;)V
-    .registers 4
+    .registers 5
+    .param p1, "sessionId"  # Landroid/app/prediction/AppPredictionSessionId;
+    .param p2, "callback"  # Landroid/app/prediction/IPredictionCallback;
 
-    .line 140
+    .line 122
     new-instance v0, Lcom/android/server/appprediction/-$$Lambda$AppPredictionManagerService$PredictionManagerServiceStub$40EK4qcr-rG55ENTthOaXAXWDA4;
 
     invoke-direct {v0, p1, p2}, Lcom/android/server/appprediction/-$$Lambda$AppPredictionManagerService$PredictionManagerServiceStub$40EK4qcr-rG55ENTthOaXAXWDA4;-><init>(Landroid/app/prediction/AppPredictionSessionId;Landroid/app/prediction/IPredictionCallback;)V
 
-    const-string/jumbo p1, "registerPredictionUpdates"
+    const-string/jumbo v1, "registerPredictionUpdates"
 
-    invoke-direct {p0, p1, v0}, Lcom/android/server/appprediction/AppPredictionManagerService$PredictionManagerServiceStub;->runForUserLocked(Ljava/lang/String;Ljava/util/function/Consumer;)V
+    invoke-direct {p0, v1, v0}, Lcom/android/server/appprediction/AppPredictionManagerService$PredictionManagerServiceStub;->runForUserLocked(Ljava/lang/String;Ljava/util/function/Consumer;)V
 
-    .line 142
+    .line 124
     return-void
 .end method
 
 .method public requestPredictionUpdate(Landroid/app/prediction/AppPredictionSessionId;)V
-    .registers 3
+    .registers 4
+    .param p1, "sessionId"  # Landroid/app/prediction/AppPredictionSessionId;
 
-    .line 152
+    .line 134
     new-instance v0, Lcom/android/server/appprediction/-$$Lambda$AppPredictionManagerService$PredictionManagerServiceStub$vSY20eQq5y5FXrxhhqOTcEmezTs;
 
     invoke-direct {v0, p1}, Lcom/android/server/appprediction/-$$Lambda$AppPredictionManagerService$PredictionManagerServiceStub$vSY20eQq5y5FXrxhhqOTcEmezTs;-><init>(Landroid/app/prediction/AppPredictionSessionId;)V
 
-    const-string/jumbo p1, "requestPredictionUpdate"
+    const-string/jumbo v1, "requestPredictionUpdate"
 
-    invoke-direct {p0, p1, v0}, Lcom/android/server/appprediction/AppPredictionManagerService$PredictionManagerServiceStub;->runForUserLocked(Ljava/lang/String;Ljava/util/function/Consumer;)V
+    invoke-direct {p0, v1, v0}, Lcom/android/server/appprediction/AppPredictionManagerService$PredictionManagerServiceStub;->runForUserLocked(Ljava/lang/String;Ljava/util/function/Consumer;)V
 
-    .line 154
+    .line 136
     return-void
 .end method
 
 .method public sortAppTargets(Landroid/app/prediction/AppPredictionSessionId;Landroid/content/pm/ParceledListSlice;Landroid/app/prediction/IPredictionCallback;)V
-    .registers 5
+    .registers 6
+    .param p1, "sessionId"  # Landroid/app/prediction/AppPredictionSessionId;
+    .param p2, "targets"  # Landroid/content/pm/ParceledListSlice;
+    .param p3, "callback"  # Landroid/app/prediction/IPredictionCallback;
 
-    .line 133
+    .line 115
     new-instance v0, Lcom/android/server/appprediction/-$$Lambda$AppPredictionManagerService$PredictionManagerServiceStub$3-HMCieo6-UZfG43p_6ip1hrL0k;
 
     invoke-direct {v0, p1, p2, p3}, Lcom/android/server/appprediction/-$$Lambda$AppPredictionManagerService$PredictionManagerServiceStub$3-HMCieo6-UZfG43p_6ip1hrL0k;-><init>(Landroid/app/prediction/AppPredictionSessionId;Landroid/content/pm/ParceledListSlice;Landroid/app/prediction/IPredictionCallback;)V
 
-    const-string/jumbo p1, "sortAppTargets"
+    const-string/jumbo v1, "sortAppTargets"
 
-    invoke-direct {p0, p1, v0}, Lcom/android/server/appprediction/AppPredictionManagerService$PredictionManagerServiceStub;->runForUserLocked(Ljava/lang/String;Ljava/util/function/Consumer;)V
+    invoke-direct {p0, v1, v0}, Lcom/android/server/appprediction/AppPredictionManagerService$PredictionManagerServiceStub;->runForUserLocked(Ljava/lang/String;Ljava/util/function/Consumer;)V
 
-    .line 135
+    .line 117
     return-void
 .end method
 
 .method public unregisterPredictionUpdates(Landroid/app/prediction/AppPredictionSessionId;Landroid/app/prediction/IPredictionCallback;)V
-    .registers 4
+    .registers 5
+    .param p1, "sessionId"  # Landroid/app/prediction/AppPredictionSessionId;
+    .param p2, "callback"  # Landroid/app/prediction/IPredictionCallback;
 
-    .line 146
+    .line 128
     new-instance v0, Lcom/android/server/appprediction/-$$Lambda$AppPredictionManagerService$PredictionManagerServiceStub$s2vrDOHz5x1TW_6jMihxp1iCAvg;
 
     invoke-direct {v0, p1, p2}, Lcom/android/server/appprediction/-$$Lambda$AppPredictionManagerService$PredictionManagerServiceStub$s2vrDOHz5x1TW_6jMihxp1iCAvg;-><init>(Landroid/app/prediction/AppPredictionSessionId;Landroid/app/prediction/IPredictionCallback;)V
 
-    const-string/jumbo p1, "unregisterPredictionUpdates"
+    const-string/jumbo v1, "unregisterPredictionUpdates"
 
-    invoke-direct {p0, p1, v0}, Lcom/android/server/appprediction/AppPredictionManagerService$PredictionManagerServiceStub;->runForUserLocked(Ljava/lang/String;Ljava/util/function/Consumer;)V
+    invoke-direct {p0, v1, v0}, Lcom/android/server/appprediction/AppPredictionManagerService$PredictionManagerServiceStub;->runForUserLocked(Ljava/lang/String;Ljava/util/function/Consumer;)V
 
-    .line 148
+    .line 130
     return-void
 .end method

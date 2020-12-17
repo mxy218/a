@@ -24,6 +24,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/job/JobSchedulerService;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/job/JobSchedulerService;
 
     .line 2134
     iput-object p1, p0, Lcom/android/server/job/JobSchedulerService$HeartbeatAlarmListener;->this$0:Lcom/android/server/job/JobSchedulerService;
@@ -36,7 +37,7 @@
 
 # virtual methods
 .method public onAlarm()V
-    .registers 9
+    .registers 11
 
     .line 2138
     iget-object v0, p0, Lcom/android/server/job/JobSchedulerService$HeartbeatAlarmListener;->this$0:Lcom/android/server/job/JobSchedulerService;
@@ -60,48 +61,52 @@
     sub-long/2addr v1, v3
 
     .line 2140
+    .local v1, "sinceLast":J
     iget-object v3, p0, Lcom/android/server/job/JobSchedulerService$HeartbeatAlarmListener;->this$0:Lcom/android/server/job/JobSchedulerService;
 
     iget-object v3, v3, Lcom/android/server/job/JobSchedulerService;->mConstants:Lcom/android/server/job/JobSchedulerService$Constants;
 
     iget-wide v3, v3, Lcom/android/server/job/JobSchedulerService$Constants;->STANDBY_HEARTBEAT_TIME:J
 
-    div-long/2addr v1, v3
+    div-long v3, v1, v3
 
     .line 2141
-    const-wide/16 v3, 0x0
+    .local v3, "beatsElapsed":J
+    const-wide/16 v5, 0x0
 
-    cmp-long v3, v1, v3
+    cmp-long v5, v3, v5
 
-    if-lez v3, :cond_30
+    if-lez v5, :cond_31
 
     .line 2142
-    iget-object v3, p0, Lcom/android/server/job/JobSchedulerService$HeartbeatAlarmListener;->this$0:Lcom/android/server/job/JobSchedulerService;
+    iget-object v5, p0, Lcom/android/server/job/JobSchedulerService$HeartbeatAlarmListener;->this$0:Lcom/android/server/job/JobSchedulerService;
 
-    iget-wide v4, v3, Lcom/android/server/job/JobSchedulerService;->mLastHeartbeatTime:J
+    iget-wide v6, v5, Lcom/android/server/job/JobSchedulerService;->mLastHeartbeatTime:J
 
-    iget-object v6, p0, Lcom/android/server/job/JobSchedulerService$HeartbeatAlarmListener;->this$0:Lcom/android/server/job/JobSchedulerService;
+    iget-object v8, p0, Lcom/android/server/job/JobSchedulerService$HeartbeatAlarmListener;->this$0:Lcom/android/server/job/JobSchedulerService;
 
-    iget-object v6, v6, Lcom/android/server/job/JobSchedulerService;->mConstants:Lcom/android/server/job/JobSchedulerService$Constants;
+    iget-object v8, v8, Lcom/android/server/job/JobSchedulerService;->mConstants:Lcom/android/server/job/JobSchedulerService$Constants;
 
-    iget-wide v6, v6, Lcom/android/server/job/JobSchedulerService$Constants;->STANDBY_HEARTBEAT_TIME:J
+    iget-wide v8, v8, Lcom/android/server/job/JobSchedulerService$Constants;->STANDBY_HEARTBEAT_TIME:J
 
-    mul-long/2addr v6, v1
+    mul-long/2addr v8, v3
 
-    add-long/2addr v4, v6
+    add-long/2addr v6, v8
 
-    iput-wide v4, v3, Lcom/android/server/job/JobSchedulerService;->mLastHeartbeatTime:J
+    iput-wide v6, v5, Lcom/android/server/job/JobSchedulerService;->mLastHeartbeatTime:J
 
     .line 2143
-    iget-object v3, p0, Lcom/android/server/job/JobSchedulerService$HeartbeatAlarmListener;->this$0:Lcom/android/server/job/JobSchedulerService;
+    iget-object v5, p0, Lcom/android/server/job/JobSchedulerService$HeartbeatAlarmListener;->this$0:Lcom/android/server/job/JobSchedulerService;
 
-    invoke-virtual {v3, v1, v2}, Lcom/android/server/job/JobSchedulerService;->advanceHeartbeatLocked(J)V
+    invoke-virtual {v5, v3, v4}, Lcom/android/server/job/JobSchedulerService;->advanceHeartbeatLocked(J)V
 
     .line 2145
-    :cond_30
+    .end local v1  # "sinceLast":J
+    .end local v3  # "beatsElapsed":J
+    :cond_31
     monitor-exit v0
-    :try_end_31
-    .catchall {:try_start_5 .. :try_end_31} :catchall_37
+    :try_end_32
+    .catchall {:try_start_5 .. :try_end_32} :catchall_38
 
     .line 2146
     iget-object v0, p0, Lcom/android/server/job/JobSchedulerService$HeartbeatAlarmListener;->this$0:Lcom/android/server/job/JobSchedulerService;
@@ -112,13 +117,13 @@
     return-void
 
     .line 2145
-    :catchall_37
+    :catchall_38
     move-exception v1
 
-    :try_start_38
+    :try_start_39
     monitor-exit v0
-    :try_end_39
-    .catchall {:try_start_38 .. :try_end_39} :catchall_37
+    :try_end_3a
+    .catchall {:try_start_39 .. :try_end_3a} :catchall_38
 
     throw v1
 .end method

@@ -23,6 +23,8 @@
 # direct methods
 .method public constructor <init>(Landroid/content/Context;Lcom/android/server/accessibility/MagnificationGestureHandler;)V
     .registers 3
+    .param p1, "context"  # Landroid/content/Context;
+    .param p2, "gestureHandler"  # Lcom/android/server/accessibility/MagnificationGestureHandler;
 
     .line 1074
     invoke-direct {p0}, Landroid/content/BroadcastReceiver;-><init>()V
@@ -40,16 +42,18 @@
 
 # virtual methods
 .method public onReceive(Landroid/content/Context;Landroid/content/Intent;)V
-    .registers 3
+    .registers 5
+    .param p1, "context"  # Landroid/content/Context;
+    .param p2, "intent"  # Landroid/content/Intent;
 
     .line 1089
-    iget-object p1, p0, Lcom/android/server/accessibility/MagnificationGestureHandler$ScreenStateReceiver;->mGestureHandler:Lcom/android/server/accessibility/MagnificationGestureHandler;
+    iget-object v0, p0, Lcom/android/server/accessibility/MagnificationGestureHandler$ScreenStateReceiver;->mGestureHandler:Lcom/android/server/accessibility/MagnificationGestureHandler;
 
-    iget-object p1, p1, Lcom/android/server/accessibility/MagnificationGestureHandler;->mDetectingState:Lcom/android/server/accessibility/MagnificationGestureHandler$DetectingState;
+    iget-object v0, v0, Lcom/android/server/accessibility/MagnificationGestureHandler;->mDetectingState:Lcom/android/server/accessibility/MagnificationGestureHandler$DetectingState;
 
-    const/4 p2, 0x0
+    const/4 v1, 0x0
 
-    invoke-virtual {p1, p2}, Lcom/android/server/accessibility/MagnificationGestureHandler$DetectingState;->setShortcutTriggered(Z)V
+    invoke-virtual {v0, v1}, Lcom/android/server/accessibility/MagnificationGestureHandler$DetectingState;->setShortcutTriggered(Z)V
 
     .line 1090
     return-void

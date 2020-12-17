@@ -24,6 +24,7 @@
 # direct methods
 .method public constructor <init>(Landroid/content/Context;)V
     .registers 3
+    .param p1, "context"  # Landroid/content/Context;
 
     .line 50
     invoke-direct {p0, p1}, Lcom/android/server/SystemService;-><init>(Landroid/content/Context;)V
@@ -40,25 +41,29 @@
 .end method
 
 .method static synthetic access$000(Lcom/android/server/restrictions/RestrictionsManagerService;Ljava/lang/String;)Landroid/os/IBinder;
-    .registers 2
+    .registers 3
+    .param p0, "x0"  # Lcom/android/server/restrictions/RestrictionsManagerService;
+    .param p1, "x1"  # Ljava/lang/String;
 
     .line 42
     invoke-virtual {p0, p1}, Lcom/android/server/restrictions/RestrictionsManagerService;->getBinderService(Ljava/lang/String;)Landroid/os/IBinder;
 
-    move-result-object p0
+    move-result-object v0
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$100(Lcom/android/server/restrictions/RestrictionsManagerService;Ljava/lang/String;)Landroid/os/IBinder;
-    .registers 2
+    .registers 3
+    .param p0, "x0"  # Lcom/android/server/restrictions/RestrictionsManagerService;
+    .param p1, "x1"  # Ljava/lang/String;
 
     .line 42
     invoke-virtual {p0, p1}, Lcom/android/server/restrictions/RestrictionsManagerService;->getBinderService(Ljava/lang/String;)Landroid/os/IBinder;
 
-    move-result-object p0
+    move-result-object v0
 
-    return-object p0
+    return-object v0
 .end method
 
 

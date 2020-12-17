@@ -19,7 +19,8 @@
 
 # direct methods
 .method public constructor <init>(B)V
-    .registers 2
+    .registers 3
+    .param p1, "family"  # B
 
     .line 38
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -28,12 +29,12 @@
     iput-byte p1, p0, Landroid/net/netlink/StructNfGenMsg;->nfgen_family:B
 
     .line 40
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    iput-byte p1, p0, Landroid/net/netlink/StructNfGenMsg;->version:B
+    iput-byte v0, p0, Landroid/net/netlink/StructNfGenMsg;->version:B
 
     .line 41
-    iput-short p1, p0, Landroid/net/netlink/StructNfGenMsg;->res_id:S
+    iput-short v0, p0, Landroid/net/netlink/StructNfGenMsg;->res_id:S
 
     .line 42
     return-void
@@ -43,6 +44,7 @@
 # virtual methods
 .method public pack(Ljava/nio/ByteBuffer;)V
     .registers 3
+    .param p1, "byteBuffer"  # Ljava/nio/ByteBuffer;
 
     .line 45
     iget-byte v0, p0, Landroid/net/netlink/StructNfGenMsg;->nfgen_family:B

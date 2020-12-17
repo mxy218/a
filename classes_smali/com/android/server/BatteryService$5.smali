@@ -3,7 +3,7 @@
 .source "BatteryService.java"
 
 # interfaces
-.implements Lcom/android/server/BatteryService$HealthServiceWrapper$IHealthSupplier;
+.implements Lcom/android/server/BatteryService$HealthServiceWrapper$IServiceManagerSupplier;
 
 
 # annotations
@@ -24,8 +24,9 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/BatteryService;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/BatteryService;
 
-    .line 291
+    .line 498
     iput-object p1, p0, Lcom/android/server/BatteryService$5;->this$0:Lcom/android/server/BatteryService;
 
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V

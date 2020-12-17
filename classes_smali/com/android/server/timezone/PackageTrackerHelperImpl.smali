@@ -19,7 +19,8 @@
 
 # direct methods
 .method constructor <init>(Landroid/content/Context;)V
-    .registers 2
+    .registers 3
+    .param p1, "context"  # Landroid/content/Context;
 
     .line 43
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -30,9 +31,9 @@
     .line 45
     invoke-virtual {p1}, Landroid/content/Context;->getPackageManager()Landroid/content/pm/PackageManager;
 
-    move-result-object p1
+    move-result-object v0
 
-    iput-object p1, p0, Lcom/android/server/timezone/PackageTrackerHelperImpl;->mPackageManager:Landroid/content/pm/PackageManager;
+    iput-object v0, p0, Lcom/android/server/timezone/PackageTrackerHelperImpl;->mPackageManager:Landroid/content/pm/PackageManager;
 
     .line 46
     return-void
@@ -41,100 +42,103 @@
 
 # virtual methods
 .method public contentProviderRegistered(Ljava/lang/String;Ljava/lang/String;)Z
-    .registers 7
+    .registers 10
+    .param p1, "authority"  # Ljava/lang/String;
+    .param p2, "requiredPackageName"  # Ljava/lang/String;
 
     .line 109
-    nop
+    const v0, 0x8000
 
     .line 110
-    iget-object v0, p0, Lcom/android/server/timezone/PackageTrackerHelperImpl;->mPackageManager:Landroid/content/pm/PackageManager;
+    .local v0, "flags":I
+    iget-object v1, p0, Lcom/android/server/timezone/PackageTrackerHelperImpl;->mPackageManager:Landroid/content/pm/PackageManager;
 
-    sget-object v1, Landroid/os/UserHandle;->SYSTEM:Landroid/os/UserHandle;
+    sget-object v2, Landroid/os/UserHandle;->SYSTEM:Landroid/os/UserHandle;
 
     .line 111
-    invoke-virtual {v1}, Landroid/os/UserHandle;->getIdentifier()I
+    invoke-virtual {v2}, Landroid/os/UserHandle;->getIdentifier()I
 
-    move-result v1
+    move-result v2
 
     .line 110
-    const v2, 0x8000
+    invoke-virtual {v1, p1, v0, v2}, Landroid/content/pm/PackageManager;->resolveContentProviderAsUser(Ljava/lang/String;II)Landroid/content/pm/ProviderInfo;
 
-    invoke-virtual {v0, p1, v2, v1}, Landroid/content/pm/PackageManager;->resolveContentProviderAsUser(Ljava/lang/String;II)Landroid/content/pm/ProviderInfo;
-
-    move-result-object v0
+    move-result-object v1
 
     .line 112
-    const/4 v1, 0x0
+    .local v1, "providerInfo":Landroid/content/pm/ProviderInfo;
+    const/4 v2, 0x0
 
-    const-string v2, "PackageTrackerHelperImpl"
+    const-string v3, "PackageTrackerHelperImpl"
 
-    if-nez v0, :cond_2a
+    if-nez v1, :cond_29
 
     .line 113
-    new-instance p2, Ljava/lang/StringBuilder;
+    new-instance v4, Ljava/lang/StringBuilder;
 
-    invoke-direct {p2}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v4}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v0, "contentProviderRegistered: No content provider registered with authority="
+    const-string v5, "contentProviderRegistered: No content provider registered with authority="
 
-    invoke-virtual {p2, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p2, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v4, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v4}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v4
 
-    invoke-static {v2, p1}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v3, v4}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 115
-    return v1
+    return v2
 
     .line 117
-    :cond_2a
-    iget-object v0, v0, Landroid/content/pm/ProviderInfo;->applicationInfo:Landroid/content/pm/ApplicationInfo;
+    :cond_29
+    iget-object v4, v1, Landroid/content/pm/ProviderInfo;->applicationInfo:Landroid/content/pm/ApplicationInfo;
 
-    iget-object v0, v0, Landroid/content/pm/ApplicationInfo;->packageName:Ljava/lang/String;
+    iget-object v4, v4, Landroid/content/pm/ApplicationInfo;->packageName:Ljava/lang/String;
 
     .line 118
-    invoke-virtual {p2, v0}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {p2, v4}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result v0
+    move-result v4
 
     .line 119
-    if-nez v0, :cond_51
+    .local v4, "packageMatches":Z
+    if-nez v4, :cond_50
 
     .line 120
-    new-instance v0, Ljava/lang/StringBuilder;
+    new-instance v5, Ljava/lang/StringBuilder;
 
-    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v5}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v3, "contentProviderRegistered: App with packageName="
+    const-string v6, "contentProviderRegistered: App with packageName="
 
-    invoke-virtual {v0, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v5, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string p2, " does not expose the a content provider with authority="
+    const-string v6, " does not expose the a content provider with authority="
 
-    invoke-virtual {v0, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v5, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v5}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v5
 
-    invoke-static {v2, p1}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v3, v5}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 122
-    return v1
+    return v2
 
     .line 124
-    :cond_51
-    const/4 p1, 0x1
+    :cond_50
+    const/4 v2, 0x1
 
-    return p1
+    return v2
 .end method
 
 .method public getCheckTimeAllowedMillis()I
@@ -147,7 +151,7 @@
 
     move-result-object v0
 
-    const v1, 0x10e00b5
+    const v1, 0x10e00b4
 
     invoke-virtual {v0, v1}, Landroid/content/res/Resources;->getInteger(I)I
 
@@ -167,13 +171,14 @@
     move-result-object v0
 
     .line 61
-    const v1, 0x10401a1
+    .local v0, "resources":Landroid/content/res/Resources;
+    const v1, 0x104019b
 
     invoke-virtual {v0, v1}, Landroid/content/res/Resources;->getString(I)Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v1
 
-    return-object v0
+    return-object v1
 .end method
 
 .method public getFailedCheckRetryCount()I
@@ -186,7 +191,7 @@
 
     move-result-object v0
 
-    const v1, 0x10e00b4
+    const v1, 0x10e00b3
 
     invoke-virtual {v0, v1}, Landroid/content/res/Resources;->getInteger(I)I
 
@@ -196,7 +201,8 @@
 .end method
 
 .method public getInstalledPackageVersion(Ljava/lang/String;)J
-    .registers 4
+    .registers 6
+    .param p1, "packageName"  # Ljava/lang/String;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/content/pm/PackageManager$NameNotFoundException;
@@ -204,23 +210,23 @@
     .end annotation
 
     .line 78
-    nop
+    const v0, 0x8000
 
     .line 79
-    iget-object v0, p0, Lcom/android/server/timezone/PackageTrackerHelperImpl;->mPackageManager:Landroid/content/pm/PackageManager;
+    .local v0, "flags":I
+    iget-object v1, p0, Lcom/android/server/timezone/PackageTrackerHelperImpl;->mPackageManager:Landroid/content/pm/PackageManager;
 
-    const v1, 0x8000
+    invoke-virtual {v1, p1, v0}, Landroid/content/pm/PackageManager;->getPackageInfo(Ljava/lang/String;I)Landroid/content/pm/PackageInfo;
 
-    invoke-virtual {v0, p1, v1}, Landroid/content/pm/PackageManager;->getPackageInfo(Ljava/lang/String;I)Landroid/content/pm/PackageInfo;
-
-    move-result-object p1
+    move-result-object v1
 
     .line 80
-    invoke-virtual {p1}, Landroid/content/pm/PackageInfo;->getLongVersionCode()J
+    .local v1, "packageInfo":Landroid/content/pm/PackageInfo;
+    invoke-virtual {v1}, Landroid/content/pm/PackageInfo;->getLongVersionCode()J
 
-    move-result-wide v0
+    move-result-wide v2
 
-    return-wide v0
+    return-wide v2
 .end method
 
 .method public getUpdateAppPackageName()Ljava/lang/String;
@@ -233,7 +239,7 @@
 
     move-result-object v0
 
-    const v1, 0x10401a2
+    const v1, 0x104019c
 
     invoke-virtual {v0, v1}, Landroid/content/res/Resources;->getString(I)Ljava/lang/String;
 
@@ -243,7 +249,8 @@
 .end method
 
 .method public isPrivilegedApp(Ljava/lang/String;)Z
-    .registers 4
+    .registers 5
+    .param p1, "packageName"  # Ljava/lang/String;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/content/pm/PackageManager$NameNotFoundException;
@@ -251,25 +258,25 @@
     .end annotation
 
     .line 85
-    nop
+    const v0, 0x8000
 
     .line 86
-    iget-object v0, p0, Lcom/android/server/timezone/PackageTrackerHelperImpl;->mPackageManager:Landroid/content/pm/PackageManager;
+    .local v0, "flags":I
+    iget-object v1, p0, Lcom/android/server/timezone/PackageTrackerHelperImpl;->mPackageManager:Landroid/content/pm/PackageManager;
 
-    const v1, 0x8000
+    invoke-virtual {v1, p1, v0}, Landroid/content/pm/PackageManager;->getPackageInfo(Ljava/lang/String;I)Landroid/content/pm/PackageInfo;
 
-    invoke-virtual {v0, p1, v1}, Landroid/content/pm/PackageManager;->getPackageInfo(Ljava/lang/String;I)Landroid/content/pm/PackageInfo;
-
-    move-result-object p1
+    move-result-object v1
 
     .line 87
-    iget-object p1, p1, Landroid/content/pm/PackageInfo;->applicationInfo:Landroid/content/pm/ApplicationInfo;
+    .local v1, "packageInfo":Landroid/content/pm/PackageInfo;
+    iget-object v2, v1, Landroid/content/pm/PackageInfo;->applicationInfo:Landroid/content/pm/ApplicationInfo;
 
-    invoke-virtual {p1}, Landroid/content/pm/ApplicationInfo;->isPrivilegedApp()Z
+    invoke-virtual {v2}, Landroid/content/pm/ApplicationInfo;->isPrivilegedApp()Z
 
-    move-result p1
+    move-result v2
 
-    return p1
+    return v2
 .end method
 
 .method public isTrackingEnabled()Z
@@ -282,7 +289,7 @@
 
     move-result-object v0
 
-    const v1, 0x11100e7
+    const v1, 0x11100e2
 
     invoke-virtual {v0, v1}, Landroid/content/res/Resources;->getBoolean(I)Z
 
@@ -292,7 +299,9 @@
 .end method
 
 .method public receiverRegistered(Landroid/content/Intent;Ljava/lang/String;)Z
-    .registers 8
+    .registers 10
+    .param p1, "intent"  # Landroid/content/Intent;
+    .param p2, "requiredPermissionName"  # Ljava/lang/String;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/content/pm/PackageManager$NameNotFoundException;
@@ -300,108 +309,112 @@
     .end annotation
 
     .line 131
-    nop
+    const v0, 0x8000
 
     .line 132
-    iget-object v0, p0, Lcom/android/server/timezone/PackageTrackerHelperImpl;->mPackageManager:Landroid/content/pm/PackageManager;
+    .local v0, "flags":I
+    iget-object v1, p0, Lcom/android/server/timezone/PackageTrackerHelperImpl;->mPackageManager:Landroid/content/pm/PackageManager;
 
-    sget-object v1, Landroid/os/UserHandle;->SYSTEM:Landroid/os/UserHandle;
+    sget-object v2, Landroid/os/UserHandle;->SYSTEM:Landroid/os/UserHandle;
 
-    const v2, 0x8000
+    invoke-virtual {v1, p1, v0, v2}, Landroid/content/pm/PackageManager;->queryBroadcastReceiversAsUser(Landroid/content/Intent;ILandroid/os/UserHandle;)Ljava/util/List;
 
-    invoke-virtual {v0, p1, v2, v1}, Landroid/content/pm/PackageManager;->queryBroadcastReceiversAsUser(Landroid/content/Intent;ILandroid/os/UserHandle;)Ljava/util/List;
-
-    move-result-object v0
+    move-result-object v1
 
     .line 134
-    invoke-interface {v0}, Ljava/util/List;->size()I
+    .local v1, "resolveInfo":Ljava/util/List;, "Ljava/util/List<Landroid/content/pm/ResolveInfo;>;"
+    invoke-interface {v1}, Ljava/util/List;->size()I
 
-    move-result v1
+    move-result v2
 
-    const-string v2, "PackageTrackerHelperImpl"
+    const-string v3, "PackageTrackerHelperImpl"
 
-    const/4 v3, 0x0
+    const/4 v4, 0x0
 
-    const/4 v4, 0x1
+    const/4 v5, 0x1
 
-    if-eq v1, v4, :cond_34
+    if-eq v2, v5, :cond_33
 
     .line 135
-    new-instance p2, Ljava/lang/StringBuilder;
+    new-instance v2, Ljava/lang/StringBuilder;
 
-    invoke-direct {p2}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string/jumbo v1, "receiverRegistered: Zero or multiple broadcast receiver registered for intent="
+    const-string/jumbo v5, "receiverRegistered: Zero or multiple broadcast receiver registered for intent="
 
-    invoke-virtual {p2, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p2, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
-    const-string p1, ", found="
+    const-string v5, ", found="
 
-    invoke-virtual {p2, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p2, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v2
 
-    invoke-static {v2, p1}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v3, v2}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 137
-    return v3
+    return v4
 
     .line 140
-    :cond_34
-    invoke-interface {v0, v3}, Ljava/util/List;->get(I)Ljava/lang/Object;
+    :cond_33
+    invoke-interface {v1, v4}, Ljava/util/List;->get(I)Ljava/lang/Object;
 
-    move-result-object v0
+    move-result-object v2
 
-    check-cast v0, Landroid/content/pm/ResolveInfo;
+    check-cast v2, Landroid/content/pm/ResolveInfo;
 
     .line 141
-    iget-object v0, v0, Landroid/content/pm/ResolveInfo;->activityInfo:Landroid/content/pm/ActivityInfo;
+    .local v2, "matched":Landroid/content/pm/ResolveInfo;
+    iget-object v4, v2, Landroid/content/pm/ResolveInfo;->activityInfo:Landroid/content/pm/ActivityInfo;
 
-    iget-object v0, v0, Landroid/content/pm/ActivityInfo;->permission:Ljava/lang/String;
+    iget-object v4, v4, Landroid/content/pm/ActivityInfo;->permission:Ljava/lang/String;
 
-    invoke-virtual {p2, v0}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {p2, v4}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result v0
+    move-result v4
 
     .line 142
-    if-nez v0, :cond_61
+    .local v4, "requiresPermission":Z
+    if-nez v4, :cond_60
 
     .line 143
-    new-instance v1, Ljava/lang/StringBuilder;
+    new-instance v5, Ljava/lang/StringBuilder;
 
-    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v5}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string/jumbo v3, "receiverRegistered: Broadcast receiver registered for intent="
+    const-string/jumbo v6, "receiverRegistered: Broadcast receiver registered for intent="
 
-    invoke-virtual {v1, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v1, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    invoke-virtual {v5, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
-    const-string p1, " must require permission "
+    const-string v6, " must require permission "
 
-    invoke-virtual {v1, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v1, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v5, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v5}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v5
 
-    invoke-static {v2, p1}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v3, v5}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 146
-    :cond_61
-    return v0
+    :cond_60
+    return v4
 .end method
 
 .method public usesPermission(Ljava/lang/String;Ljava/lang/String;)Z
-    .registers 7
+    .registers 11
+    .param p1, "packageName"  # Ljava/lang/String;
+    .param p2, "requiredPermissionName"  # Ljava/lang/String;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/content/pm/PackageManager$NameNotFoundException;
@@ -409,59 +422,61 @@
     .end annotation
 
     .line 93
-    nop
+    const v0, 0x9000
 
     .line 95
-    iget-object v0, p0, Lcom/android/server/timezone/PackageTrackerHelperImpl;->mPackageManager:Landroid/content/pm/PackageManager;
+    .local v0, "flags":I
+    iget-object v1, p0, Lcom/android/server/timezone/PackageTrackerHelperImpl;->mPackageManager:Landroid/content/pm/PackageManager;
 
-    const v1, 0x9000
+    invoke-virtual {v1, p1, v0}, Landroid/content/pm/PackageManager;->getPackageInfo(Ljava/lang/String;I)Landroid/content/pm/PackageInfo;
 
-    invoke-virtual {v0, p1, v1}, Landroid/content/pm/PackageManager;->getPackageInfo(Ljava/lang/String;I)Landroid/content/pm/PackageInfo;
-
-    move-result-object p1
+    move-result-object v1
 
     .line 96
-    iget-object v0, p1, Landroid/content/pm/PackageInfo;->requestedPermissions:[Ljava/lang/String;
+    .local v1, "packageInfo":Landroid/content/pm/PackageInfo;
+    iget-object v2, v1, Landroid/content/pm/PackageInfo;->requestedPermissions:[Ljava/lang/String;
 
-    const/4 v1, 0x0
+    const/4 v3, 0x0
 
-    if-nez v0, :cond_10
+    if-nez v2, :cond_f
 
     .line 97
-    return v1
+    return v3
 
     .line 99
-    :cond_10
-    iget-object p1, p1, Landroid/content/pm/PackageInfo;->requestedPermissions:[Ljava/lang/String;
+    :cond_f
+    iget-object v2, v1, Landroid/content/pm/PackageInfo;->requestedPermissions:[Ljava/lang/String;
 
-    array-length v0, p1
+    array-length v4, v2
 
-    move v2, v1
+    move v5, v3
 
-    :goto_14
-    if-ge v2, v0, :cond_23
+    :goto_13
+    if-ge v5, v4, :cond_22
 
-    aget-object v3, p1, v2
+    aget-object v6, v2, v5
 
     .line 100
-    invoke-virtual {p2, v3}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    .local v6, "requestedPermission":Ljava/lang/String;
+    invoke-virtual {p2, v6}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result v3
+    move-result v7
 
-    if-eqz v3, :cond_20
+    if-eqz v7, :cond_1f
 
     .line 101
-    const/4 p1, 0x1
+    const/4 v2, 0x1
 
-    return p1
+    return v2
 
     .line 99
-    :cond_20
-    add-int/lit8 v2, v2, 0x1
+    .end local v6  # "requestedPermission":Ljava/lang/String;
+    :cond_1f
+    add-int/lit8 v5, v5, 0x1
 
-    goto :goto_14
+    goto :goto_13
 
     .line 104
-    :cond_23
-    return v1
+    :cond_22
+    return v3
 .end method

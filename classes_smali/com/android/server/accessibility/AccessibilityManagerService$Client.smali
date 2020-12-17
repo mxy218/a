@@ -26,63 +26,72 @@
 
 # direct methods
 .method private constructor <init>(Lcom/android/server/accessibility/AccessibilityManagerService;Landroid/view/accessibility/IAccessibilityManagerClient;ILcom/android/server/accessibility/AccessibilityManagerService$UserState;)V
-    .registers 5
+    .registers 7
+    .param p1, "this$0"  # Lcom/android/server/accessibility/AccessibilityManagerService;
+    .param p2, "callback"  # Landroid/view/accessibility/IAccessibilityManagerClient;
+    .param p3, "clientUid"  # I
+    .param p4, "userState"  # Lcom/android/server/accessibility/AccessibilityManagerService$UserState;
 
-    .line 3956
+    .line 3966
     iput-object p1, p0, Lcom/android/server/accessibility/AccessibilityManagerService$Client;->this$0:Lcom/android/server/accessibility/AccessibilityManagerService;
 
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
-    .line 3957
+    .line 3967
     iput-object p2, p0, Lcom/android/server/accessibility/AccessibilityManagerService$Client;->mCallback:Landroid/view/accessibility/IAccessibilityManagerClient;
 
-    .line 3958
-    invoke-static {p1}, Lcom/android/server/accessibility/AccessibilityManagerService;->access$3300(Lcom/android/server/accessibility/AccessibilityManagerService;)Landroid/content/pm/PackageManager;
+    .line 3968
+    invoke-static {p1}, Lcom/android/server/accessibility/AccessibilityManagerService;->access$3200(Lcom/android/server/accessibility/AccessibilityManagerService;)Landroid/content/pm/PackageManager;
 
-    move-result-object p2
+    move-result-object v0
 
-    invoke-virtual {p2, p3}, Landroid/content/pm/PackageManager;->getPackagesForUid(I)[Ljava/lang/String;
+    invoke-virtual {v0, p3}, Landroid/content/pm/PackageManager;->getPackagesForUid(I)[Ljava/lang/String;
 
-    move-result-object p2
+    move-result-object v0
 
-    iput-object p2, p0, Lcom/android/server/accessibility/AccessibilityManagerService$Client;->mPackageNames:[Ljava/lang/String;
+    iput-object v0, p0, Lcom/android/server/accessibility/AccessibilityManagerService$Client;->mPackageNames:[Ljava/lang/String;
 
-    .line 3959
+    .line 3969
     invoke-static {p1}, Lcom/android/server/accessibility/AccessibilityManagerService;->access$100(Lcom/android/server/accessibility/AccessibilityManagerService;)Ljava/lang/Object;
 
-    move-result-object p2
+    move-result-object v0
 
-    monitor-enter p2
+    monitor-enter v0
 
-    .line 3960
+    .line 3970
     :try_start_16
-    invoke-static {p1, p4, p0}, Lcom/android/server/accessibility/AccessibilityManagerService;->access$4400(Lcom/android/server/accessibility/AccessibilityManagerService;Lcom/android/server/accessibility/AccessibilityManagerService$UserState;Lcom/android/server/accessibility/AccessibilityManagerService$Client;)I
+    invoke-static {p1, p4, p0}, Lcom/android/server/accessibility/AccessibilityManagerService;->access$4300(Lcom/android/server/accessibility/AccessibilityManagerService;Lcom/android/server/accessibility/AccessibilityManagerService$UserState;Lcom/android/server/accessibility/AccessibilityManagerService$Client;)I
 
-    move-result p1
+    move-result v1
 
-    iput p1, p0, Lcom/android/server/accessibility/AccessibilityManagerService$Client;->mLastSentRelevantEventTypes:I
+    iput v1, p0, Lcom/android/server/accessibility/AccessibilityManagerService$Client;->mLastSentRelevantEventTypes:I
 
-    .line 3961
-    monitor-exit p2
+    .line 3971
+    monitor-exit v0
 
-    .line 3962
+    .line 3972
     return-void
 
-    .line 3961
+    .line 3971
     :catchall_1e
-    move-exception p1
+    move-exception v1
 
-    monitor-exit p2
+    monitor-exit v0
     :try_end_20
     .catchall {:try_start_16 .. :try_end_20} :catchall_1e
 
-    throw p1
+    throw v1
 .end method
 
 .method synthetic constructor <init>(Lcom/android/server/accessibility/AccessibilityManagerService;Landroid/view/accessibility/IAccessibilityManagerClient;ILcom/android/server/accessibility/AccessibilityManagerService$UserState;Lcom/android/server/accessibility/AccessibilityManagerService$1;)V
     .registers 6
+    .param p1, "x0"  # Lcom/android/server/accessibility/AccessibilityManagerService;
+    .param p2, "x1"  # Landroid/view/accessibility/IAccessibilityManagerClient;
+    .param p3, "x2"  # I
+    .param p4, "x3"  # Lcom/android/server/accessibility/AccessibilityManagerService$UserState;
+    .param p5, "x4"  # Lcom/android/server/accessibility/AccessibilityManagerService$1;
 
-    .line 3951
+    .line 3961
     invoke-direct {p0, p1, p2, p3, p4}, Lcom/android/server/accessibility/AccessibilityManagerService$Client;-><init>(Lcom/android/server/accessibility/AccessibilityManagerService;Landroid/view/accessibility/IAccessibilityManagerClient;ILcom/android/server/accessibility/AccessibilityManagerService$UserState;)V
 
     return-void

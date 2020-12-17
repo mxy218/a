@@ -24,8 +24,9 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/usage/UsageStatsService;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/usage/UsageStatsService;
 
-    .line 192
+    .line 217
     iput-object p1, p0, Lcom/android/server/usage/UsageStatsService$2;->this$0:Lcom/android/server/usage/UsageStatsService;
 
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -36,144 +37,159 @@
 
 # virtual methods
 .method public onLimitReached(IIJJLandroid/app/PendingIntent;)V
-    .registers 9
+    .registers 12
+    .param p1, "observerId"  # I
+    .param p2, "userId"  # I
+    .param p3, "timeLimit"  # J
+    .param p5, "timeElapsed"  # J
+    .param p7, "callbackIntent"  # Landroid/app/PendingIntent;
 
-    .line 196
+    .line 221
     if-nez p7, :cond_3
 
     return-void
 
-    .line 197
+    .line 222
     :cond_3
-    new-instance p2, Landroid/content/Intent;
+    new-instance v0, Landroid/content/Intent;
 
-    invoke-direct {p2}, Landroid/content/Intent;-><init>()V
+    invoke-direct {v0}, Landroid/content/Intent;-><init>()V
 
-    .line 198
-    const-string v0, "android.app.usage.extra.OBSERVER_ID"
+    .line 223
+    .local v0, "intent":Landroid/content/Intent;
+    const-string v1, "android.app.usage.extra.OBSERVER_ID"
 
-    invoke-virtual {p2, v0, p1}, Landroid/content/Intent;->putExtra(Ljava/lang/String;I)Landroid/content/Intent;
+    invoke-virtual {v0, v1, p1}, Landroid/content/Intent;->putExtra(Ljava/lang/String;I)Landroid/content/Intent;
 
-    .line 199
-    const-string p1, "android.app.usage.extra.TIME_LIMIT"
+    .line 224
+    const-string v1, "android.app.usage.extra.TIME_LIMIT"
 
-    invoke-virtual {p2, p1, p3, p4}, Landroid/content/Intent;->putExtra(Ljava/lang/String;J)Landroid/content/Intent;
+    invoke-virtual {v0, v1, p3, p4}, Landroid/content/Intent;->putExtra(Ljava/lang/String;J)Landroid/content/Intent;
 
-    .line 200
-    const-string p1, "android.app.usage.extra.TIME_USED"
+    .line 225
+    const-string v1, "android.app.usage.extra.TIME_USED"
 
-    invoke-virtual {p2, p1, p5, p6}, Landroid/content/Intent;->putExtra(Ljava/lang/String;J)Landroid/content/Intent;
+    invoke-virtual {v0, v1, p5, p6}, Landroid/content/Intent;->putExtra(Ljava/lang/String;J)Landroid/content/Intent;
 
-    .line 202
+    .line 227
     :try_start_17
-    iget-object p1, p0, Lcom/android/server/usage/UsageStatsService$2;->this$0:Lcom/android/server/usage/UsageStatsService;
+    iget-object v1, p0, Lcom/android/server/usage/UsageStatsService$2;->this$0:Lcom/android/server/usage/UsageStatsService;
 
-    invoke-virtual {p1}, Lcom/android/server/usage/UsageStatsService;->getContext()Landroid/content/Context;
+    invoke-virtual {v1}, Lcom/android/server/usage/UsageStatsService;->getContext()Landroid/content/Context;
 
-    move-result-object p1
+    move-result-object v1
 
-    const/4 p3, 0x0
+    const/4 v2, 0x0
 
-    invoke-virtual {p7, p1, p3, p2}, Landroid/app/PendingIntent;->send(Landroid/content/Context;ILandroid/content/Intent;)V
+    invoke-virtual {p7, v1, v2, v0}, Landroid/app/PendingIntent;->send(Landroid/content/Context;ILandroid/content/Intent;)V
     :try_end_21
     .catch Landroid/app/PendingIntent$CanceledException; {:try_start_17 .. :try_end_21} :catch_22
 
-    .line 206
+    .line 231
     goto :goto_39
 
-    .line 203
+    .line 228
     :catch_22
-    move-exception p1
+    move-exception v1
 
-    .line 204
-    new-instance p1, Ljava/lang/StringBuilder;
+    .line 229
+    .local v1, "e":Landroid/app/PendingIntent$CanceledException;
+    new-instance v2, Ljava/lang/StringBuilder;
 
-    invoke-direct {p1}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string p2, "Couldn\'t deliver callback: "
+    const-string v3, "Couldn\'t deliver callback: "
 
-    invoke-virtual {p1, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p1, p7}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, p7}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v2
 
-    const-string p2, "UsageStatsService"
+    const-string v3, "UsageStatsService"
 
-    invoke-static {p2, p1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v3, v2}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 207
+    .line 232
+    .end local v1  # "e":Landroid/app/PendingIntent$CanceledException;
     :goto_39
     return-void
 .end method
 
 .method public onSessionEnd(IIJLandroid/app/PendingIntent;)V
-    .registers 7
+    .registers 10
+    .param p1, "observerId"  # I
+    .param p2, "userId"  # I
+    .param p3, "timeElapsed"  # J
+    .param p5, "callbackIntent"  # Landroid/app/PendingIntent;
 
-    .line 212
+    .line 237
     if-nez p5, :cond_3
 
     return-void
 
-    .line 213
+    .line 238
     :cond_3
-    new-instance p2, Landroid/content/Intent;
+    new-instance v0, Landroid/content/Intent;
 
-    invoke-direct {p2}, Landroid/content/Intent;-><init>()V
+    invoke-direct {v0}, Landroid/content/Intent;-><init>()V
 
-    .line 214
-    const-string v0, "android.app.usage.extra.OBSERVER_ID"
+    .line 239
+    .local v0, "intent":Landroid/content/Intent;
+    const-string v1, "android.app.usage.extra.OBSERVER_ID"
 
-    invoke-virtual {p2, v0, p1}, Landroid/content/Intent;->putExtra(Ljava/lang/String;I)Landroid/content/Intent;
+    invoke-virtual {v0, v1, p1}, Landroid/content/Intent;->putExtra(Ljava/lang/String;I)Landroid/content/Intent;
 
-    .line 215
-    const-string p1, "android.app.usage.extra.TIME_USED"
+    .line 240
+    const-string v1, "android.app.usage.extra.TIME_USED"
 
-    invoke-virtual {p2, p1, p3, p4}, Landroid/content/Intent;->putExtra(Ljava/lang/String;J)Landroid/content/Intent;
+    invoke-virtual {v0, v1, p3, p4}, Landroid/content/Intent;->putExtra(Ljava/lang/String;J)Landroid/content/Intent;
 
-    .line 217
+    .line 242
     :try_start_12
-    iget-object p1, p0, Lcom/android/server/usage/UsageStatsService$2;->this$0:Lcom/android/server/usage/UsageStatsService;
+    iget-object v1, p0, Lcom/android/server/usage/UsageStatsService$2;->this$0:Lcom/android/server/usage/UsageStatsService;
 
-    invoke-virtual {p1}, Lcom/android/server/usage/UsageStatsService;->getContext()Landroid/content/Context;
+    invoke-virtual {v1}, Lcom/android/server/usage/UsageStatsService;->getContext()Landroid/content/Context;
 
-    move-result-object p1
+    move-result-object v1
 
-    const/4 p3, 0x0
+    const/4 v2, 0x0
 
-    invoke-virtual {p5, p1, p3, p2}, Landroid/app/PendingIntent;->send(Landroid/content/Context;ILandroid/content/Intent;)V
+    invoke-virtual {p5, v1, v2, v0}, Landroid/app/PendingIntent;->send(Landroid/content/Context;ILandroid/content/Intent;)V
     :try_end_1c
     .catch Landroid/app/PendingIntent$CanceledException; {:try_start_12 .. :try_end_1c} :catch_1d
 
-    .line 221
+    .line 246
     goto :goto_34
 
-    .line 218
+    .line 243
     :catch_1d
-    move-exception p1
+    move-exception v1
 
-    .line 219
-    new-instance p1, Ljava/lang/StringBuilder;
+    .line 244
+    .local v1, "e":Landroid/app/PendingIntent$CanceledException;
+    new-instance v2, Ljava/lang/StringBuilder;
 
-    invoke-direct {p1}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string p2, "Couldn\'t deliver callback: "
+    const-string v3, "Couldn\'t deliver callback: "
 
-    invoke-virtual {p1, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p1, p5}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, p5}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v2
 
-    const-string p2, "UsageStatsService"
+    const-string v3, "UsageStatsService"
 
-    invoke-static {p2, p1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v3, v2}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 222
+    .line 247
+    .end local v1  # "e":Landroid/app/PendingIntent$CanceledException;
     :goto_34
     return-void
 .end method

@@ -25,7 +25,7 @@
 .method public constructor <init>()V
     .registers 1
 
-    .line 18816
+    .line 19688
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
     return-void
@@ -34,12 +34,12 @@
 .method private ensureHasNetworkManagementInternal()Z
     .registers 2
 
-    .line 18839
+    .line 19711
     iget-object v0, p0, Lcom/android/server/am/ActivityManagerService$Injector;->mNmi:Lcom/android/server/NetworkManagementInternal;
 
     if-nez v0, :cond_e
 
-    .line 18840
+    .line 19712
     const-class v0, Lcom/android/server/NetworkManagementInternal;
 
     invoke-static {v0}, Lcom/android/server/LocalServices;->getService(Ljava/lang/Class;)Ljava/lang/Object;
@@ -50,7 +50,7 @@
 
     iput-object v0, p0, Lcom/android/server/am/ActivityManagerService$Injector;->mNmi:Lcom/android/server/NetworkManagementInternal;
 
-    .line 18842
+    .line 19714
     :cond_e
     iget-object v0, p0, Lcom/android/server/am/ActivityManagerService$Injector;->mNmi:Lcom/android/server/NetworkManagementInternal;
 
@@ -71,8 +71,10 @@
 # virtual methods
 .method public getAppOpsService(Ljava/io/File;Landroid/os/Handler;)Lcom/android/server/appop/AppOpsService;
     .registers 4
+    .param p1, "file"  # Ljava/io/File;
+    .param p2, "handler"  # Landroid/os/Handler;
 
-    .line 18824
+    .line 19696
     new-instance v0, Lcom/android/server/appop/AppOpsService;
 
     invoke-direct {v0, p1, p2}, Lcom/android/server/appop/AppOpsService;-><init>(Ljava/io/File;Landroid/os/Handler;)V
@@ -83,7 +85,7 @@
 .method public getContext()Landroid/content/Context;
     .registers 2
 
-    .line 18820
+    .line 19692
     const/4 v0, 0x0
 
     return-object v0
@@ -91,8 +93,9 @@
 
 .method public getUiHandler(Lcom/android/server/am/ActivityManagerService;)Landroid/os/Handler;
     .registers 3
+    .param p1, "service"  # Lcom/android/server/am/ActivityManagerService;
 
-    .line 18828
+    .line 19700
     new-instance v0, Lcom/android/server/am/ActivityManagerService$UiHandler;
 
     invoke-static {p1}, Ljava/util/Objects;->requireNonNull(Ljava/lang/Object;)Ljava/lang/Object;
@@ -104,26 +107,27 @@
 
 .method public isNetworkRestrictedForUid(I)Z
     .registers 3
+    .param p1, "uid"  # I
 
-    .line 18832
+    .line 19704
     invoke-direct {p0}, Lcom/android/server/am/ActivityManagerService$Injector;->ensureHasNetworkManagementInternal()Z
 
     move-result v0
 
     if-eqz v0, :cond_d
 
-    .line 18833
+    .line 19705
     iget-object v0, p0, Lcom/android/server/am/ActivityManagerService$Injector;->mNmi:Lcom/android/server/NetworkManagementInternal;
 
     invoke-virtual {v0, p1}, Lcom/android/server/NetworkManagementInternal;->isNetworkRestrictedForUid(I)Z
 
-    move-result p1
+    move-result v0
 
-    return p1
+    return v0
 
-    .line 18835
+    .line 19707
     :cond_d
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    return p1
+    return v0
 .end method

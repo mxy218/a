@@ -11,7 +11,8 @@
 
 # direct methods
 .method protected constructor <init>(J)V
-    .registers 3
+    .registers 4
+    .param p1, "id"  # J
 
     .line 25
     invoke-direct {p0}, Landroid/os/Binder;-><init>()V
@@ -20,9 +21,9 @@
     iput-wide p1, p0, Lcom/android/server/pm/KeySetHandle;->mId:J
 
     .line 27
-    const/4 p1, 0x1
+    const/4 v0, 0x1
 
-    iput p1, p0, Lcom/android/server/pm/KeySetHandle;->mRefCount:I
+    iput v0, p0, Lcom/android/server/pm/KeySetHandle;->mRefCount:I
 
     .line 28
     return-void
@@ -30,6 +31,8 @@
 
 .method protected constructor <init>(JI)V
     .registers 4
+    .param p1, "id"  # J
+    .param p3, "refCount"  # I
 
     .line 33
     invoke-direct {p0}, Landroid/os/Binder;-><init>()V
@@ -96,6 +99,7 @@
 
 .method protected setRefCountLPw(I)V
     .registers 2
+    .param p1, "newCount"  # I
 
     .line 50
     iput p1, p0, Lcom/android/server/pm/KeySetHandle;->mRefCount:I

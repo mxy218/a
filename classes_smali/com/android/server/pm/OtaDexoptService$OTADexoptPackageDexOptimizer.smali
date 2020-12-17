@@ -17,6 +17,9 @@
 # direct methods
 .method public constructor <init>(Lcom/android/server/pm/Installer;Ljava/lang/Object;Landroid/content/Context;)V
     .registers 5
+    .param p1, "installer"  # Lcom/android/server/pm/Installer;
+    .param p2, "installLock"  # Ljava/lang/Object;
+    .param p3, "context"  # Landroid/content/Context;
 
     .line 461
     const-string v0, "*otadexopt*"

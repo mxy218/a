@@ -26,6 +26,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/accessibility/MagnificationGestureHandler;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/accessibility/MagnificationGestureHandler;
 
     .line 569
     iput-object p1, p0, Lcom/android/server/accessibility/MagnificationGestureHandler$DelegatingState;->this$0:Lcom/android/server/accessibility/MagnificationGestureHandler;
@@ -39,6 +40,9 @@
 # virtual methods
 .method public onMotionEvent(Landroid/view/MotionEvent;Landroid/view/MotionEvent;I)V
     .registers 6
+    .param p1, "event"  # Landroid/view/MotionEvent;
+    .param p2, "rawEvent"  # Landroid/view/MotionEvent;
+    .param p3, "policyFlags"  # I
 
     .line 580
     invoke-virtual {p1}, Landroid/view/MotionEvent;->getActionMasked()I

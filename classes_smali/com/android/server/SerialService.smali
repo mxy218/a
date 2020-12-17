@@ -11,7 +11,8 @@
 
 # direct methods
 .method public constructor <init>(Landroid/content/Context;)V
-    .registers 3
+    .registers 4
+    .param p1, "context"  # Landroid/content/Context;
 
     .line 31
     invoke-direct {p0}, Landroid/hardware/ISerialManager$Stub;-><init>()V
@@ -22,15 +23,15 @@
     .line 33
     invoke-virtual {p1}, Landroid/content/Context;->getResources()Landroid/content/res/Resources;
 
-    move-result-object p1
+    move-result-object v0
 
-    const v0, 0x1070069
+    const v1, 0x107005e
 
-    invoke-virtual {p1, v0}, Landroid/content/res/Resources;->getStringArray(I)[Ljava/lang/String;
+    invoke-virtual {v0, v1}, Landroid/content/res/Resources;->getStringArray(I)[Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    iput-object p1, p0, Lcom/android/server/SerialService;->mSerialPorts:[Ljava/lang/String;
+    iput-object v0, p0, Lcom/android/server/SerialService;->mSerialPorts:[Ljava/lang/String;
 
     .line 35
     return-void
@@ -59,8 +60,10 @@
     invoke-direct {v0}, Ljava/util/ArrayList;-><init>()V
 
     .line 41
+    .local v0, "ports":Ljava/util/ArrayList;, "Ljava/util/ArrayList<Ljava/lang/String;>;"
     const/4 v1, 0x0
 
+    .local v1, "i":I
     :goto_e
     iget-object v2, p0, Lcom/android/server/SerialService;->mSerialPorts:[Ljava/lang/String;
 
@@ -72,6 +75,7 @@
     aget-object v2, v2, v1
 
     .line 43
+    .local v2, "path":Ljava/lang/String;
     new-instance v3, Ljava/io/File;
 
     invoke-direct {v3, v2}, Ljava/io/File;-><init>(Ljava/lang/String;)V
@@ -86,12 +90,14 @@
     invoke-virtual {v0, v2}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
 
     .line 41
+    .end local v2  # "path":Ljava/lang/String;
     :cond_23
     add-int/lit8 v1, v1, 0x1
 
     goto :goto_e
 
     .line 47
+    .end local v1  # "i":I
     :cond_26
     invoke-virtual {v0}, Ljava/util/ArrayList;->size()I
 
@@ -100,6 +106,7 @@
     new-array v1, v1, [Ljava/lang/String;
 
     .line 48
+    .local v1, "result":[Ljava/lang/String;
     invoke-virtual {v0, v1}, Ljava/util/ArrayList;->toArray([Ljava/lang/Object;)[Ljava/lang/Object;
 
     .line 49
@@ -108,6 +115,7 @@
 
 .method public openSerialPort(Ljava/lang/String;)Landroid/os/ParcelFileDescriptor;
     .registers 5
+    .param p1, "path"  # Ljava/lang/String;
 
     .line 53
     iget-object v0, p0, Lcom/android/server/SerialService;->mContext:Landroid/content/Context;
@@ -121,6 +129,7 @@
     .line 54
     const/4 v0, 0x0
 
+    .local v0, "i":I
     :goto_9
     iget-object v1, p0, Lcom/android/server/SerialService;->mSerialPorts:[Ljava/lang/String;
 
@@ -140,9 +149,9 @@
     .line 56
     invoke-direct {p0, p1}, Lcom/android/server/SerialService;->native_open(Ljava/lang/String;)Landroid/os/ParcelFileDescriptor;
 
-    move-result-object p1
+    move-result-object v1
 
-    return-object p1
+    return-object v1
 
     .line 54
     :cond_1b
@@ -151,6 +160,7 @@
     goto :goto_9
 
     .line 59
+    .end local v0  # "i":I
     :cond_1e
     new-instance v0, Ljava/lang/IllegalArgumentException;
 
@@ -166,9 +176,9 @@
 
     invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v1
 
-    invoke-direct {v0, p1}, Ljava/lang/IllegalArgumentException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v0, v1}, Ljava/lang/IllegalArgumentException;-><init>(Ljava/lang/String;)V
 
     throw v0
 .end method

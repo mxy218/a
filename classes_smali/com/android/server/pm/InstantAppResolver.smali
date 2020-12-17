@@ -49,18 +49,29 @@
 .end method
 
 .method static synthetic access$000(Ljava/util/List;Landroid/content/Intent;Ljava/lang/String;ILjava/lang/String;Landroid/content/pm/InstantAppResolveInfo$InstantAppDigest;Ljava/lang/String;)Landroid/content/pm/AuxiliaryResolveInfo;
-    .registers 7
+    .registers 8
+    .param p0, "x0"  # Ljava/util/List;
+    .param p1, "x1"  # Landroid/content/Intent;
+    .param p2, "x2"  # Ljava/lang/String;
+    .param p3, "x3"  # I
+    .param p4, "x4"  # Ljava/lang/String;
+    .param p5, "x5"  # Landroid/content/pm/InstantAppResolveInfo$InstantAppDigest;
+    .param p6, "x6"  # Ljava/lang/String;
 
     .line 69
     invoke-static/range {p0 .. p6}, Lcom/android/server/pm/InstantAppResolver;->filterInstantAppIntent(Ljava/util/List;Landroid/content/Intent;Ljava/lang/String;ILjava/lang/String;Landroid/content/pm/InstantAppResolveInfo$InstantAppDigest;Ljava/lang/String;)Landroid/content/pm/AuxiliaryResolveInfo;
 
-    move-result-object p0
+    move-result-object v0
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$100(IJLjava/lang/String;I)V
     .registers 5
+    .param p0, "x0"  # I
+    .param p1, "x1"  # J
+    .param p3, "x2"  # Ljava/lang/String;
+    .param p4, "x3"  # I
 
     .line 69
     invoke-static {p0, p1, p2, p3, p4}, Lcom/android/server/pm/InstantAppResolver;->logMetrics(IJLjava/lang/String;I)V
@@ -69,7 +80,17 @@
 .end method
 
 .method public static buildEphemeralInstallerIntent(Landroid/content/Intent;Landroid/content/Intent;Landroid/content/Intent;Ljava/lang/String;Landroid/os/Bundle;Ljava/lang/String;ILandroid/content/ComponentName;Ljava/lang/String;ZLjava/util/List;)Landroid/content/Intent;
-    .registers 33
+    .registers 35
+    .param p0, "origIntent"  # Landroid/content/Intent;
+    .param p1, "sanitizedIntent"  # Landroid/content/Intent;
+    .param p2, "failureIntent"  # Landroid/content/Intent;
+    .param p3, "callingPackage"  # Ljava/lang/String;
+    .param p4, "verificationBundle"  # Landroid/os/Bundle;
+    .param p5, "resolvedType"  # Ljava/lang/String;
+    .param p6, "userId"  # I
+    .param p7, "installFailureActivity"  # Landroid/content/ComponentName;
+    .param p8, "token"  # Ljava/lang/String;
+    .param p9, "needsPhaseTwo"  # Z
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(",
@@ -91,299 +112,321 @@
     .end annotation
 
     .line 262
+    .local p10, "filters":Ljava/util/List;, "Ljava/util/List<Landroid/content/pm/AuxiliaryResolveInfo$AuxiliaryFilter;>;"
     move-object/from16 v1, p0
 
     move-object/from16 v2, p4
 
-    move-object/from16 v0, p7
+    move-object/from16 v3, p7
 
-    move-object/from16 v3, p8
+    move-object/from16 v4, p8
 
-    move-object/from16 v4, p10
+    move-object/from16 v5, p10
 
     invoke-virtual/range {p0 .. p0}, Landroid/content/Intent;->getFlags()I
 
-    move-result v5
+    move-result v6
 
     .line 263
-    new-instance v6, Landroid/content/Intent;
+    .local v6, "flags":I
+    new-instance v0, Landroid/content/Intent;
 
-    invoke-direct {v6}, Landroid/content/Intent;-><init>()V
+    invoke-direct {v0}, Landroid/content/Intent;-><init>()V
+
+    move-object v7, v0
 
     .line 264
-    const/high16 v7, 0x40000000  # 2.0f
+    .local v7, "intent":Landroid/content/Intent;
+    const/high16 v0, 0x40000000  # 2.0f
 
-    or-int/2addr v5, v7
+    or-int/2addr v0, v6
 
-    const/high16 v7, 0x800000
+    const/high16 v8, 0x800000
 
-    or-int/2addr v5, v7
+    or-int/2addr v0, v8
 
-    invoke-virtual {v6, v5}, Landroid/content/Intent;->setFlags(I)Landroid/content/Intent;
+    invoke-virtual {v7, v0}, Landroid/content/Intent;->setFlags(I)Landroid/content/Intent;
 
     .line 267
-    if-eqz v3, :cond_23
+    if-eqz v4, :cond_24
 
     .line 268
-    const-string v5, "android.intent.extra.INSTANT_APP_TOKEN"
+    const-string v0, "android.intent.extra.INSTANT_APP_TOKEN"
 
-    invoke-virtual {v6, v5, v3}, Landroid/content/Intent;->putExtra(Ljava/lang/String;Ljava/lang/String;)Landroid/content/Intent;
+    invoke-virtual {v7, v0, v4}, Landroid/content/Intent;->putExtra(Ljava/lang/String;Ljava/lang/String;)Landroid/content/Intent;
 
     .line 270
-    :cond_23
+    :cond_24
     invoke-virtual/range {p0 .. p0}, Landroid/content/Intent;->getData()Landroid/net/Uri;
 
-    move-result-object v5
+    move-result-object v0
 
-    if-eqz v5, :cond_36
+    if-eqz v0, :cond_37
 
     .line 271
     invoke-virtual/range {p0 .. p0}, Landroid/content/Intent;->getData()Landroid/net/Uri;
 
-    move-result-object v5
+    move-result-object v0
 
-    invoke-virtual {v5}, Landroid/net/Uri;->getHost()Ljava/lang/String;
+    invoke-virtual {v0}, Landroid/net/Uri;->getHost()Ljava/lang/String;
 
-    move-result-object v5
+    move-result-object v0
 
-    const-string v7, "android.intent.extra.INSTANT_APP_HOSTNAME"
+    const-string v8, "android.intent.extra.INSTANT_APP_HOSTNAME"
 
-    invoke-virtual {v6, v7, v5}, Landroid/content/Intent;->putExtra(Ljava/lang/String;Ljava/lang/String;)Landroid/content/Intent;
+    invoke-virtual {v7, v8, v0}, Landroid/content/Intent;->putExtra(Ljava/lang/String;Ljava/lang/String;)Landroid/content/Intent;
 
     .line 273
-    :cond_36
+    :cond_37
     invoke-virtual/range {p0 .. p0}, Landroid/content/Intent;->getAction()Ljava/lang/String;
 
-    move-result-object v5
+    move-result-object v0
 
-    const-string v7, "android.intent.extra.INSTANT_APP_ACTION"
+    const-string v8, "android.intent.extra.INSTANT_APP_ACTION"
 
-    invoke-virtual {v6, v7, v5}, Landroid/content/Intent;->putExtra(Ljava/lang/String;Ljava/lang/String;)Landroid/content/Intent;
+    invoke-virtual {v7, v8, v0}, Landroid/content/Intent;->putExtra(Ljava/lang/String;Ljava/lang/String;)Landroid/content/Intent;
 
     .line 274
-    const-string v5, "android.intent.extra.INTENT"
+    const-string v0, "android.intent.extra.INTENT"
 
-    move-object/from16 v7, p1
+    move-object/from16 v8, p1
 
-    invoke-virtual {v6, v5, v7}, Landroid/content/Intent;->putExtra(Ljava/lang/String;Landroid/os/Parcelable;)Landroid/content/Intent;
+    invoke-virtual {v7, v0, v8}, Landroid/content/Intent;->putExtra(Ljava/lang/String;Landroid/os/Parcelable;)Landroid/content/Intent;
 
     .line 276
-    if-eqz p9, :cond_4f
+    if-eqz p9, :cond_52
 
     .line 277
     const-string v0, "android.intent.action.RESOLVE_INSTANT_APP_PACKAGE"
 
-    invoke-virtual {v6, v0}, Landroid/content/Intent;->setAction(Ljava/lang/String;)Landroid/content/Intent;
+    invoke-virtual {v7, v0}, Landroid/content/Intent;->setAction(Ljava/lang/String;)Landroid/content/Intent;
 
-    goto/16 :goto_150
+    move-object/from16 v13, p3
+
+    goto/16 :goto_169
 
     .line 280
-    :cond_4f
-    const-string v7, "android.intent.extra.SPLIT_NAME"
+    :cond_52
+    const-string v9, "android.intent.extra.SPLIT_NAME"
 
-    const/4 v8, 0x0
+    const/4 v10, 0x0
 
-    const/4 v9, 0x1
+    const/4 v11, 0x1
 
-    if-nez p2, :cond_57
+    if-nez p2, :cond_5a
 
-    if-eqz v0, :cond_a9
+    if-eqz v3, :cond_ae
 
     .line 284
-    :cond_57
-    if-eqz v0, :cond_7b
+    :cond_5a
+    if-eqz v3, :cond_7e
 
     .line 285
-    :try_start_59
-    new-instance v10, Landroid/content/Intent;
+    :try_start_5c
+    new-instance v12, Landroid/content/Intent;
 
-    invoke-direct {v10}, Landroid/content/Intent;-><init>()V
+    invoke-direct {v12}, Landroid/content/Intent;-><init>()V
 
     .line 286
-    invoke-virtual {v10, v0}, Landroid/content/Intent;->setComponent(Landroid/content/ComponentName;)Landroid/content/Intent;
+    .local v12, "onFailureIntent":Landroid/content/Intent;
+    invoke-virtual {v12, v3}, Landroid/content/Intent;->setComponent(Landroid/content/ComponentName;)Landroid/content/Intent;
 
     .line 287
-    if-eqz v4, :cond_75
+    if-eqz v5, :cond_78
 
     invoke-interface/range {p10 .. p10}, Ljava/util/List;->size()I
 
-    move-result v0
+    move-result v13
 
-    if-ne v0, v9, :cond_75
+    if-ne v13, v11, :cond_78
 
     .line 288
     nop
 
     .line 289
-    invoke-interface {v4, v8}, Ljava/util/List;->get(I)Ljava/lang/Object;
+    invoke-interface {v5, v10}, Ljava/util/List;->get(I)Ljava/lang/Object;
 
-    move-result-object v0
+    move-result-object v13
 
-    check-cast v0, Landroid/content/pm/AuxiliaryResolveInfo$AuxiliaryFilter;
+    check-cast v13, Landroid/content/pm/AuxiliaryResolveInfo$AuxiliaryFilter;
 
-    iget-object v0, v0, Landroid/content/pm/AuxiliaryResolveInfo$AuxiliaryFilter;->splitName:Ljava/lang/String;
+    iget-object v13, v13, Landroid/content/pm/AuxiliaryResolveInfo$AuxiliaryFilter;->splitName:Ljava/lang/String;
 
     .line 288
-    invoke-virtual {v10, v7, v0}, Landroid/content/Intent;->putExtra(Ljava/lang/String;Ljava/lang/String;)Landroid/content/Intent;
+    invoke-virtual {v12, v9, v13}, Landroid/content/Intent;->putExtra(Ljava/lang/String;Ljava/lang/String;)Landroid/content/Intent;
 
     .line 291
-    :cond_75
-    invoke-virtual {v10, v5, v1}, Landroid/content/Intent;->putExtra(Ljava/lang/String;Landroid/os/Parcelable;)Landroid/content/Intent;
+    :cond_78
+    invoke-virtual {v12, v0, v1}, Landroid/content/Intent;->putExtra(Ljava/lang/String;Landroid/os/Parcelable;)Landroid/content/Intent;
 
-    goto :goto_7d
+    goto :goto_80
 
     .line 308
-    :catch_79
+    .end local v12  # "onFailureIntent":Landroid/content/Intent;
+    :catch_7c
     move-exception v0
 
-    goto :goto_a8
+    goto :goto_ae
 
     .line 293
-    :cond_7b
-    move-object/from16 v10, p2
+    :cond_7e
+    move-object/from16 v12, p2
 
     .line 295
-    :goto_7d
+    .restart local v12  # "onFailureIntent":Landroid/content/Intent;
+    :goto_80
     invoke-static {}, Landroid/app/ActivityManager;->getService()Landroid/app/IActivityManager;
 
-    move-result-object v11
+    move-result-object v13
 
-    const/4 v12, 0x2
+    const/4 v14, 0x2
 
-    const/4 v14, 0x0
+    const/16 v16, 0x0
 
-    const/4 v15, 0x0
+    const/16 v17, 0x0
 
-    const/16 v16, 0x1
+    const/16 v18, 0x1
 
-    new-array v0, v9, [Landroid/content/Intent;
+    new-array v0, v11, [Landroid/content/Intent;
 
-    aput-object v10, v0, v8
+    aput-object v12, v0, v10
 
-    new-array v5, v9, [Ljava/lang/String;
+    new-array v15, v11, [Ljava/lang/String;
 
-    aput-object p5, v5, v8
+    aput-object p5, v15, v10
 
-    const/high16 v19, 0x54000000
+    const/high16 v21, 0x54000000
 
-    const/16 v20, 0x0
+    const/16 v22, 0x0
 
     .line 296
-    move-object/from16 v13, p3
+    move-object/from16 v20, v15
 
-    move-object/from16 v17, v0
+    move-object/from16 v15, p3
 
-    move-object/from16 v18, v5
+    move-object/from16 v19, v0
 
-    move/from16 v21, p6
+    move/from16 v23, p6
 
-    invoke-interface/range {v11 .. v21}, Landroid/app/IActivityManager;->getIntentSender(ILjava/lang/String;Landroid/os/IBinder;Ljava/lang/String;I[Landroid/content/Intent;[Ljava/lang/String;ILandroid/os/Bundle;I)Landroid/content/IIntentSender;
+    invoke-interface/range {v13 .. v23}, Landroid/app/IActivityManager;->getIntentSender(ILjava/lang/String;Landroid/os/IBinder;Ljava/lang/String;I[Landroid/content/Intent;[Ljava/lang/String;ILandroid/os/Bundle;I)Landroid/content/IIntentSender;
 
     move-result-object v0
 
     .line 305
-    new-instance v5, Landroid/content/IntentSender;
+    .local v0, "failureIntentTarget":Landroid/content/IIntentSender;
+    new-instance v13, Landroid/content/IntentSender;
 
-    invoke-direct {v5, v0}, Landroid/content/IntentSender;-><init>(Landroid/content/IIntentSender;)V
+    invoke-direct {v13, v0}, Landroid/content/IntentSender;-><init>(Landroid/content/IIntentSender;)V
 
     .line 307
-    const-string v0, "android.intent.extra.INSTANT_APP_FAILURE"
+    .local v13, "failureSender":Landroid/content/IntentSender;
+    const-string v14, "android.intent.extra.INSTANT_APP_FAILURE"
 
-    invoke-virtual {v6, v0, v5}, Landroid/content/Intent;->putExtra(Ljava/lang/String;Landroid/os/Parcelable;)Landroid/content/Intent;
-    :try_end_a8
-    .catch Landroid/os/RemoteException; {:try_start_59 .. :try_end_a8} :catch_79
+    invoke-virtual {v7, v14, v13}, Landroid/content/Intent;->putExtra(Ljava/lang/String;Landroid/os/Parcelable;)Landroid/content/Intent;
+    :try_end_ad
+    .catch Landroid/os/RemoteException; {:try_start_5c .. :try_end_ad} :catch_7c
 
     .line 308
-    :goto_a8
     nop
 
     .line 312
-    :cond_a9
+    .end local v0  # "failureIntentTarget":Landroid/content/IIntentSender;
+    .end local v12  # "onFailureIntent":Landroid/content/Intent;
+    .end local v13  # "failureSender":Landroid/content/IntentSender;
+    :cond_ae
+    :goto_ae
     new-instance v0, Landroid/content/Intent;
 
     invoke-direct {v0, v1}, Landroid/content/Intent;-><init>(Landroid/content/Intent;)V
 
+    move-object v12, v0
+
     .line 313
-    invoke-virtual {v0, v3}, Landroid/content/Intent;->setLaunchToken(Ljava/lang/String;)V
+    .local v12, "successIntent":Landroid/content/Intent;
+    invoke-virtual {v12, v4}, Landroid/content/Intent;->setLaunchToken(Ljava/lang/String;)V
 
     .line 315
-    :try_start_b1
+    :try_start_b7
     invoke-static {}, Landroid/app/ActivityManager;->getService()Landroid/app/IActivityManager;
 
-    move-result-object v10
+    move-result-object v13
 
-    const/4 v11, 0x2
+    const/4 v14, 0x2
 
-    const/4 v13, 0x0
+    const/16 v16, 0x0
 
-    const/4 v14, 0x0
+    const/16 v17, 0x0
 
-    const/4 v15, 0x0
+    const/16 v18, 0x0
 
-    new-array v1, v9, [Landroid/content/Intent;
+    new-array v0, v11, [Landroid/content/Intent;
 
-    aput-object v0, v1, v8
+    aput-object v12, v0, v10
 
-    new-array v0, v9, [Ljava/lang/String;
+    new-array v15, v11, [Ljava/lang/String;
 
-    aput-object p5, v0, v8
+    aput-object p5, v15, v10
 
-    const/high16 v18, 0x54000000
+    const/high16 v21, 0x54000000
 
-    const/16 v19, 0x0
+    const/16 v22, 0x0
 
     .line 316
-    move-object/from16 v12, p3
+    move-object/from16 v20, v15
 
-    move-object/from16 v16, v1
+    move-object/from16 v15, p3
 
-    move-object/from16 v17, v0
+    move-object/from16 v19, v0
 
-    move/from16 v20, p6
+    move/from16 v23, p6
 
-    invoke-interface/range {v10 .. v20}, Landroid/app/IActivityManager;->getIntentSender(ILjava/lang/String;Landroid/os/IBinder;Ljava/lang/String;I[Landroid/content/Intent;[Ljava/lang/String;ILandroid/os/Bundle;I)Landroid/content/IIntentSender;
+    invoke-interface/range {v13 .. v23}, Landroid/app/IActivityManager;->getIntentSender(ILjava/lang/String;Landroid/os/IBinder;Ljava/lang/String;I[Landroid/content/Intent;[Ljava/lang/String;ILandroid/os/Bundle;I)Landroid/content/IIntentSender;
 
     move-result-object v0
 
     .line 324
-    new-instance v1, Landroid/content/IntentSender;
+    .local v0, "successIntentTarget":Landroid/content/IIntentSender;
+    new-instance v13, Landroid/content/IntentSender;
 
-    invoke-direct {v1, v0}, Landroid/content/IntentSender;-><init>(Landroid/content/IIntentSender;)V
+    invoke-direct {v13, v0}, Landroid/content/IntentSender;-><init>(Landroid/content/IIntentSender;)V
 
     .line 325
-    const-string v0, "android.intent.extra.INSTANT_APP_SUCCESS"
+    .local v13, "successSender":Landroid/content/IntentSender;
+    const-string v14, "android.intent.extra.INSTANT_APP_SUCCESS"
 
-    invoke-virtual {v6, v0, v1}, Landroid/content/Intent;->putExtra(Ljava/lang/String;Landroid/os/Parcelable;)Landroid/content/Intent;
-    :try_end_db
-    .catch Landroid/os/RemoteException; {:try_start_b1 .. :try_end_db} :catch_dc
-
-    goto :goto_dd
+    invoke-virtual {v7, v14, v13}, Landroid/content/Intent;->putExtra(Ljava/lang/String;Landroid/os/Parcelable;)Landroid/content/Intent;
+    :try_end_e4
+    .catch Landroid/os/RemoteException; {:try_start_b7 .. :try_end_e4} :catch_e6
 
     .line 326
-    :catch_dc
-    move-exception v0
-
-    :goto_dd
     nop
 
+    .end local v0  # "successIntentTarget":Landroid/content/IIntentSender;
+    .end local v13  # "successSender":Landroid/content/IntentSender;
+    goto :goto_e7
+
+    :catch_e6
+    move-exception v0
+
     .line 327
-    if-eqz v2, :cond_e5
+    :goto_e7
+    if-eqz v2, :cond_ee
 
     .line 328
     const-string v0, "android.intent.extra.VERIFICATION_BUNDLE"
 
-    invoke-virtual {v6, v0, v2}, Landroid/content/Intent;->putExtra(Ljava/lang/String;Landroid/os/Bundle;)Landroid/content/Intent;
+    invoke-virtual {v7, v0, v2}, Landroid/content/Intent;->putExtra(Ljava/lang/String;Landroid/os/Bundle;)Landroid/content/Intent;
 
     .line 330
-    :cond_e5
+    :cond_ee
     const-string v0, "android.intent.extra.CALLING_PACKAGE"
 
-    move-object/from16 v1, p3
+    move-object/from16 v13, p3
 
-    invoke-virtual {v6, v0, v1}, Landroid/content/Intent;->putExtra(Ljava/lang/String;Ljava/lang/String;)Landroid/content/Intent;
+    invoke-virtual {v7, v0, v13}, Landroid/content/Intent;->putExtra(Ljava/lang/String;Ljava/lang/String;)Landroid/content/Intent;
 
     .line 332
-    if-eqz v4, :cond_14b
+    if-eqz v5, :cond_164
 
     .line 333
     invoke-interface/range {p10 .. p10}, Ljava/util/List;->size()I
@@ -393,123 +436,160 @@
     new-array v0, v0, [Landroid/os/Bundle;
 
     .line 334
+    .local v0, "resolvableFilters":[Landroid/os/Bundle;
+    const/4 v14, 0x0
+
+    .local v14, "i":I
     invoke-interface/range {p10 .. p10}, Ljava/util/List;->size()I
 
-    move-result v1
+    move-result v15
 
-    move v2, v8
-
-    :goto_f9
-    if-ge v2, v1, :cond_146
+    .local v15, "max":I
+    :goto_102
+    if-ge v14, v15, :cond_15f
 
     .line 335
-    new-instance v3, Landroid/os/Bundle;
+    new-instance v16, Landroid/os/Bundle;
 
-    invoke-direct {v3}, Landroid/os/Bundle;-><init>()V
+    invoke-direct/range {v16 .. v16}, Landroid/os/Bundle;-><init>()V
+
+    move-object/from16 v17, v16
 
     .line 336
-    invoke-interface {v4, v2}, Ljava/util/List;->get(I)Ljava/lang/Object;
+    .local v17, "resolvableFilter":Landroid/os/Bundle;
+    invoke-interface {v5, v14}, Ljava/util/List;->get(I)Ljava/lang/Object;
 
-    move-result-object v5
+    move-result-object v16
 
-    check-cast v5, Landroid/content/pm/AuxiliaryResolveInfo$AuxiliaryFilter;
+    move-object/from16 v10, v16
+
+    check-cast v10, Landroid/content/pm/AuxiliaryResolveInfo$AuxiliaryFilter;
 
     .line 337
-    iget-object v10, v5, Landroid/content/pm/AuxiliaryResolveInfo$AuxiliaryFilter;->resolveInfo:Landroid/content/pm/InstantAppResolveInfo;
+    .local v10, "filter":Landroid/content/pm/AuxiliaryResolveInfo$AuxiliaryFilter;
+    iget-object v11, v10, Landroid/content/pm/AuxiliaryResolveInfo$AuxiliaryFilter;->resolveInfo:Landroid/content/pm/InstantAppResolveInfo;
 
-    if-eqz v10, :cond_114
+    if-eqz v11, :cond_121
 
-    iget-object v10, v5, Landroid/content/pm/AuxiliaryResolveInfo$AuxiliaryFilter;->resolveInfo:Landroid/content/pm/InstantAppResolveInfo;
+    iget-object v11, v10, Landroid/content/pm/AuxiliaryResolveInfo$AuxiliaryFilter;->resolveInfo:Landroid/content/pm/InstantAppResolveInfo;
 
     .line 339
-    invoke-virtual {v10}, Landroid/content/pm/InstantAppResolveInfo;->shouldLetInstallerDecide()Z
+    invoke-virtual {v11}, Landroid/content/pm/InstantAppResolveInfo;->shouldLetInstallerDecide()Z
 
-    move-result v10
+    move-result v11
 
-    if-eqz v10, :cond_114
+    if-eqz v11, :cond_121
 
-    move v10, v9
+    const/4 v11, 0x1
 
-    goto :goto_115
+    goto :goto_122
 
-    :cond_114
-    move v10, v8
+    :cond_121
+    const/4 v11, 0x0
 
     .line 337
-    :goto_115
-    const-string v11, "android.intent.extra.UNKNOWN_INSTANT_APP"
+    :goto_122
+    const-string v1, "android.intent.extra.UNKNOWN_INSTANT_APP"
 
-    invoke-virtual {v3, v11, v10}, Landroid/os/Bundle;->putBoolean(Ljava/lang/String;Z)V
+    move-object/from16 v2, v17
+
+    .end local v17  # "resolvableFilter":Landroid/os/Bundle;
+    .local v2, "resolvableFilter":Landroid/os/Bundle;
+    invoke-virtual {v2, v1, v11}, Landroid/os/Bundle;->putBoolean(Ljava/lang/String;Z)V
 
     .line 340
-    iget-object v10, v5, Landroid/content/pm/AuxiliaryResolveInfo$AuxiliaryFilter;->packageName:Ljava/lang/String;
+    iget-object v1, v10, Landroid/content/pm/AuxiliaryResolveInfo$AuxiliaryFilter;->packageName:Ljava/lang/String;
 
     const-string v11, "android.intent.extra.PACKAGE_NAME"
 
-    invoke-virtual {v3, v11, v10}, Landroid/os/Bundle;->putString(Ljava/lang/String;Ljava/lang/String;)V
+    invoke-virtual {v2, v11, v1}, Landroid/os/Bundle;->putString(Ljava/lang/String;Ljava/lang/String;)V
 
     .line 341
-    iget-object v10, v5, Landroid/content/pm/AuxiliaryResolveInfo$AuxiliaryFilter;->splitName:Ljava/lang/String;
+    iget-object v1, v10, Landroid/content/pm/AuxiliaryResolveInfo$AuxiliaryFilter;->splitName:Ljava/lang/String;
 
-    invoke-virtual {v3, v7, v10}, Landroid/os/Bundle;->putString(Ljava/lang/String;Ljava/lang/String;)V
+    invoke-virtual {v2, v9, v1}, Landroid/os/Bundle;->putString(Ljava/lang/String;Ljava/lang/String;)V
 
     .line 342
-    iget-wide v10, v5, Landroid/content/pm/AuxiliaryResolveInfo$AuxiliaryFilter;->versionCode:J
+    iget-wide v3, v10, Landroid/content/pm/AuxiliaryResolveInfo$AuxiliaryFilter;->versionCode:J
 
-    const-string v12, "android.intent.extra.LONG_VERSION_CODE"
+    const-string v1, "android.intent.extra.LONG_VERSION_CODE"
 
-    invoke-virtual {v3, v12, v10, v11}, Landroid/os/Bundle;->putLong(Ljava/lang/String;J)V
+    invoke-virtual {v2, v1, v3, v4}, Landroid/os/Bundle;->putLong(Ljava/lang/String;J)V
 
     .line 343
-    iget-object v10, v5, Landroid/content/pm/AuxiliaryResolveInfo$AuxiliaryFilter;->extras:Landroid/os/Bundle;
+    iget-object v1, v10, Landroid/content/pm/AuxiliaryResolveInfo$AuxiliaryFilter;->extras:Landroid/os/Bundle;
 
-    const-string v11, "android.intent.extra.INSTANT_APP_EXTRAS"
+    const-string v3, "android.intent.extra.INSTANT_APP_EXTRAS"
 
-    invoke-virtual {v3, v11, v10}, Landroid/os/Bundle;->putBundle(Ljava/lang/String;Landroid/os/Bundle;)V
+    invoke-virtual {v2, v3, v1}, Landroid/os/Bundle;->putBundle(Ljava/lang/String;Landroid/os/Bundle;)V
 
     .line 344
-    aput-object v3, v0, v2
+    aput-object v2, v0, v14
 
     .line 345
-    if-nez v2, :cond_143
+    if-nez v14, :cond_152
 
     .line 348
-    invoke-virtual {v6, v3}, Landroid/content/Intent;->putExtras(Landroid/os/Bundle;)Landroid/content/Intent;
+    invoke-virtual {v7, v2}, Landroid/content/Intent;->putExtras(Landroid/os/Bundle;)Landroid/content/Intent;
 
     .line 349
-    iget-wide v10, v5, Landroid/content/pm/AuxiliaryResolveInfo$AuxiliaryFilter;->versionCode:J
+    iget-wide v3, v10, Landroid/content/pm/AuxiliaryResolveInfo$AuxiliaryFilter;->versionCode:J
 
-    long-to-int v3, v10
+    long-to-int v1, v3
 
-    const-string v5, "android.intent.extra.VERSION_CODE"
+    const-string v3, "android.intent.extra.VERSION_CODE"
 
-    invoke-virtual {v6, v5, v3}, Landroid/content/Intent;->putExtra(Ljava/lang/String;I)Landroid/content/Intent;
+    invoke-virtual {v7, v3, v1}, Landroid/content/Intent;->putExtra(Ljava/lang/String;I)Landroid/content/Intent;
 
     .line 334
-    :cond_143
-    add-int/lit8 v2, v2, 0x1
+    .end local v2  # "resolvableFilter":Landroid/os/Bundle;
+    .end local v10  # "filter":Landroid/content/pm/AuxiliaryResolveInfo$AuxiliaryFilter;
+    :cond_152
+    add-int/lit8 v14, v14, 0x1
 
-    goto :goto_f9
+    const/4 v10, 0x0
+
+    const/4 v11, 0x1
+
+    move-object/from16 v1, p0
+
+    move-object/from16 v2, p4
+
+    move-object/from16 v3, p7
+
+    move-object/from16 v4, p8
+
+    goto :goto_102
 
     .line 352
-    :cond_146
+    .end local v14  # "i":I
+    .end local v15  # "max":I
+    :cond_15f
     const-string v1, "android.intent.extra.INSTANT_APP_BUNDLES"
 
-    invoke-virtual {v6, v1, v0}, Landroid/content/Intent;->putExtra(Ljava/lang/String;[Landroid/os/Parcelable;)Landroid/content/Intent;
+    invoke-virtual {v7, v1, v0}, Landroid/content/Intent;->putExtra(Ljava/lang/String;[Landroid/os/Parcelable;)Landroid/content/Intent;
 
     .line 354
-    :cond_14b
+    .end local v0  # "resolvableFilters":[Landroid/os/Bundle;
+    :cond_164
     const-string v0, "android.intent.action.INSTALL_INSTANT_APP_PACKAGE"
 
-    invoke-virtual {v6, v0}, Landroid/content/Intent;->setAction(Ljava/lang/String;)Landroid/content/Intent;
+    invoke-virtual {v7, v0}, Landroid/content/Intent;->setAction(Ljava/lang/String;)Landroid/content/Intent;
 
     .line 356
-    :goto_150
-    return-object v6
+    .end local v12  # "successIntent":Landroid/content/Intent;
+    :goto_169
+    return-object v7
 .end method
 
 .method private static computeResolveFilters(Landroid/content/Intent;Ljava/lang/String;ILjava/lang/String;Ljava/lang/String;Landroid/content/pm/InstantAppResolveInfo;)Ljava/util/List;
-    .registers 20
+    .registers 22
+    .param p0, "origIntent"  # Landroid/content/Intent;
+    .param p1, "resolvedType"  # Ljava/lang/String;
+    .param p2, "userId"  # I
+    .param p3, "packageName"  # Ljava/lang/String;
+    .param p4, "token"  # Ljava/lang/String;
+    .param p5, "instantAppInfo"  # Landroid/content/pm/InstantAppResolveInfo;
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(",
@@ -542,21 +622,21 @@
     if-eqz v3, :cond_1b
 
     .line 439
-    new-instance v0, Landroid/content/pm/AuxiliaryResolveInfo$AuxiliaryFilter;
+    new-instance v3, Landroid/content/pm/AuxiliaryResolveInfo$AuxiliaryFilter;
 
     .line 442
     invoke-virtual/range {p5 .. p5}, Landroid/content/pm/InstantAppResolveInfo;->getExtras()Landroid/os/Bundle;
 
-    move-result-object v1
+    move-result-object v5
 
-    invoke-direct {v0, v2, v4, v1}, Landroid/content/pm/AuxiliaryResolveInfo$AuxiliaryFilter;-><init>(Landroid/content/pm/InstantAppResolveInfo;Ljava/lang/String;Landroid/os/Bundle;)V
+    invoke-direct {v3, v2, v4, v5}, Landroid/content/pm/AuxiliaryResolveInfo$AuxiliaryFilter;-><init>(Landroid/content/pm/InstantAppResolveInfo;Ljava/lang/String;Landroid/os/Bundle;)V
 
     .line 439
-    invoke-static {v0}, Ljava/util/Collections;->singletonList(Ljava/lang/Object;)Ljava/util/List;
+    invoke-static {v3}, Ljava/util/Collections;->singletonList(Ljava/lang/Object;)Ljava/util/List;
 
-    move-result-object v0
+    move-result-object v3
 
-    return-object v0
+    return-object v3
 
     .line 444
     :cond_1b
@@ -569,9 +649,9 @@
 
     invoke-virtual {v0, v3}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result v0
+    move-result v3
 
-    if-nez v0, :cond_28
+    if-nez v3, :cond_28
 
     .line 446
     return-object v4
@@ -583,309 +663,336 @@
     .line 449
     invoke-virtual/range {p5 .. p5}, Landroid/content/pm/InstantAppResolveInfo;->getIntentFilters()Ljava/util/List;
 
-    move-result-object v0
+    move-result-object v3
 
     .line 450
-    const-string v3, "PackageManager"
+    .local v3, "instantAppFilters":Ljava/util/List;, "Ljava/util/List<Landroid/content/pm/InstantAppIntentFilter;>;"
+    const-string v5, "PackageManager"
 
-    if-eqz v0, :cond_10b
+    if-eqz v3, :cond_112
 
-    invoke-interface {v0}, Ljava/util/List;->isEmpty()Z
-
-    move-result v5
-
-    if-eqz v5, :cond_3a
-
-    move-object v6, p0
-
-    goto/16 :goto_10c
-
-    .line 461
-    :cond_3a
-    new-instance v5, Lcom/android/server/pm/ComponentResolver$InstantAppIntentResolver;
-
-    invoke-direct {v5}, Lcom/android/server/pm/ComponentResolver$InstantAppIntentResolver;-><init>()V
-
-    .line 463
-    invoke-interface {v0}, Ljava/util/List;->size()I
+    invoke-interface {v3}, Ljava/util/List;->isEmpty()Z
 
     move-result v6
 
-    add-int/lit8 v6, v6, -0x1
+    if-eqz v6, :cond_3f
 
-    :goto_45
-    if-ltz v6, :cond_ac
+    move-object/from16 v8, p0
+
+    move-object/from16 v9, p1
+
+    move/from16 v10, p2
+
+    goto/16 :goto_118
+
+    .line 461
+    :cond_3f
+    new-instance v6, Lcom/android/server/pm/ComponentResolver$InstantAppIntentResolver;
+
+    invoke-direct {v6}, Lcom/android/server/pm/ComponentResolver$InstantAppIntentResolver;-><init>()V
+
+    .line 463
+    .local v6, "instantAppResolver":Lcom/android/server/pm/ComponentResolver$InstantAppIntentResolver;
+    invoke-interface {v3}, Ljava/util/List;->size()I
+
+    move-result v7
+
+    add-int/lit8 v7, v7, -0x1
+
+    .local v7, "j":I
+    :goto_4a
+    if-ltz v7, :cond_b1
 
     .line 464
-    invoke-interface {v0, v6}, Ljava/util/List;->get(I)Ljava/lang/Object;
-
-    move-result-object v7
-
-    check-cast v7, Landroid/content/pm/InstantAppIntentFilter;
-
-    .line 465
-    invoke-virtual {v7}, Landroid/content/pm/InstantAppIntentFilter;->getFilters()Ljava/util/List;
+    invoke-interface {v3, v7}, Ljava/util/List;->get(I)Ljava/lang/Object;
 
     move-result-object v8
 
+    check-cast v8, Landroid/content/pm/InstantAppIntentFilter;
+
+    .line 465
+    .local v8, "instantAppFilter":Landroid/content/pm/InstantAppIntentFilter;
+    invoke-virtual {v8}, Landroid/content/pm/InstantAppIntentFilter;->getFilters()Ljava/util/List;
+
+    move-result-object v9
+
     .line 466
-    if-eqz v8, :cond_a9
+    .local v9, "splitFilters":Ljava/util/List;, "Ljava/util/List<Landroid/content/IntentFilter;>;"
+    if-eqz v9, :cond_ae
 
-    invoke-interface {v8}, Ljava/util/List;->isEmpty()Z
+    invoke-interface {v9}, Ljava/util/List;->isEmpty()Z
 
-    move-result v9
+    move-result v10
 
-    if-eqz v9, :cond_5a
+    if-eqz v10, :cond_5f
 
     .line 467
-    goto :goto_a9
+    goto :goto_ae
 
     .line 469
-    :cond_5a
-    invoke-interface {v8}, Ljava/util/List;->size()I
+    :cond_5f
+    invoke-interface {v9}, Ljava/util/List;->size()I
 
-    move-result v9
+    move-result v10
 
-    add-int/lit8 v9, v9, -0x1
+    add-int/lit8 v10, v10, -0x1
 
-    :goto_60
-    if-ltz v9, :cond_a9
+    .local v10, "k":I
+    :goto_65
+    if-ltz v10, :cond_ae
 
     .line 470
-    invoke-interface {v8, v9}, Ljava/util/List;->get(I)Ljava/lang/Object;
-
-    move-result-object v10
-
-    check-cast v10, Landroid/content/IntentFilter;
-
-    .line 471
-    nop
-
-    .line 472
-    invoke-virtual {v10}, Landroid/content/IntentFilter;->authoritiesIterator()Ljava/util/Iterator;
+    invoke-interface {v9, v10}, Ljava/util/List;->get(I)Ljava/lang/Object;
 
     move-result-object v11
 
-    .line 474
-    if-eqz v11, :cond_75
+    check-cast v11, Landroid/content/IntentFilter;
 
-    invoke-interface {v11}, Ljava/util/Iterator;->hasNext()Z
+    .line 471
+    .local v11, "filter":Landroid/content/IntentFilter;
+    nop
 
-    move-result v11
-
-    if-nez v11, :cond_96
-
-    .line 475
-    :cond_75
-    const-string v11, "http"
-
-    invoke-virtual {v10, v11}, Landroid/content/IntentFilter;->hasDataScheme(Ljava/lang/String;)Z
-
-    move-result v11
-
-    if-nez v11, :cond_85
-
-    const-string v11, "https"
-
-    invoke-virtual {v10, v11}, Landroid/content/IntentFilter;->hasDataScheme(Ljava/lang/String;)Z
-
-    move-result v11
-
-    if-eqz v11, :cond_96
-
-    .line 476
-    :cond_85
-    const-string v11, "android.intent.action.VIEW"
-
-    invoke-virtual {v10, v11}, Landroid/content/IntentFilter;->hasAction(Ljava/lang/String;)Z
-
-    move-result v11
-
-    if-eqz v11, :cond_96
-
-    .line 477
-    const-string v11, "android.intent.category.BROWSABLE"
-
-    invoke-virtual {v10, v11}, Landroid/content/IntentFilter;->hasCategory(Ljava/lang/String;)Z
-
-    move-result v11
-
-    if-eqz v11, :cond_96
-
-    .line 478
-    goto :goto_a6
-
-    .line 480
-    :cond_96
-    new-instance v11, Landroid/content/pm/AuxiliaryResolveInfo$AuxiliaryFilter;
-
-    .line 484
-    invoke-virtual {v7}, Landroid/content/pm/InstantAppIntentFilter;->getSplitName()Ljava/lang/String;
+    .line 472
+    invoke-virtual {v11}, Landroid/content/IntentFilter;->authoritiesIterator()Ljava/util/Iterator;
 
     move-result-object v12
+
+    .line 474
+    .local v12, "authorities":Ljava/util/Iterator;, "Ljava/util/Iterator<Landroid/content/IntentFilter$AuthorityEntry;>;"
+    if-eqz v12, :cond_7a
+
+    invoke-interface {v12}, Ljava/util/Iterator;->hasNext()Z
+
+    move-result v13
+
+    if-nez v13, :cond_9b
+
+    .line 475
+    :cond_7a
+    const-string v13, "http"
+
+    invoke-virtual {v11, v13}, Landroid/content/IntentFilter;->hasDataScheme(Ljava/lang/String;)Z
+
+    move-result v13
+
+    if-nez v13, :cond_8a
+
+    const-string v13, "https"
+
+    invoke-virtual {v11, v13}, Landroid/content/IntentFilter;->hasDataScheme(Ljava/lang/String;)Z
+
+    move-result v13
+
+    if-eqz v13, :cond_9b
+
+    .line 476
+    :cond_8a
+    const-string v13, "android.intent.action.VIEW"
+
+    invoke-virtual {v11, v13}, Landroid/content/IntentFilter;->hasAction(Ljava/lang/String;)Z
+
+    move-result v13
+
+    if-eqz v13, :cond_9b
+
+    .line 477
+    const-string v13, "android.intent.category.BROWSABLE"
+
+    invoke-virtual {v11, v13}, Landroid/content/IntentFilter;->hasCategory(Ljava/lang/String;)Z
+
+    move-result v13
+
+    if-eqz v13, :cond_9b
+
+    .line 478
+    goto :goto_ab
+
+    .line 480
+    :cond_9b
+    new-instance v13, Landroid/content/pm/AuxiliaryResolveInfo$AuxiliaryFilter;
+
+    .line 484
+    invoke-virtual {v8}, Landroid/content/pm/InstantAppIntentFilter;->getSplitName()Ljava/lang/String;
+
+    move-result-object v14
 
     .line 485
     invoke-virtual/range {p5 .. p5}, Landroid/content/pm/InstantAppResolveInfo;->getExtras()Landroid/os/Bundle;
 
-    move-result-object v13
+    move-result-object v15
 
-    invoke-direct {v11, v10, v2, v12, v13}, Landroid/content/pm/AuxiliaryResolveInfo$AuxiliaryFilter;-><init>(Landroid/content/IntentFilter;Landroid/content/pm/InstantAppResolveInfo;Ljava/lang/String;Landroid/os/Bundle;)V
+    invoke-direct {v13, v11, v2, v14, v15}, Landroid/content/pm/AuxiliaryResolveInfo$AuxiliaryFilter;-><init>(Landroid/content/IntentFilter;Landroid/content/pm/InstantAppResolveInfo;Ljava/lang/String;Landroid/os/Bundle;)V
 
     .line 480
-    invoke-virtual {v5, v11}, Lcom/android/server/pm/ComponentResolver$InstantAppIntentResolver;->addFilter(Landroid/content/IntentFilter;)V
+    invoke-virtual {v6, v13}, Lcom/android/server/pm/ComponentResolver$InstantAppIntentResolver;->addFilter(Landroid/content/IntentFilter;)V
 
     .line 469
-    :goto_a6
-    add-int/lit8 v9, v9, -0x1
+    .end local v11  # "filter":Landroid/content/IntentFilter;
+    .end local v12  # "authorities":Ljava/util/Iterator;, "Ljava/util/Iterator<Landroid/content/IntentFilter$AuthorityEntry;>;"
+    :goto_ab
+    add-int/lit8 v10, v10, -0x1
 
-    goto :goto_60
+    goto :goto_65
 
     .line 463
-    :cond_a9
-    :goto_a9
-    add-int/lit8 v6, v6, -0x1
+    .end local v8  # "instantAppFilter":Landroid/content/pm/InstantAppIntentFilter;
+    .end local v9  # "splitFilters":Ljava/util/List;, "Ljava/util/List<Landroid/content/IntentFilter;>;"
+    .end local v10  # "k":I
+    :cond_ae
+    :goto_ae
+    add-int/lit8 v7, v7, -0x1
 
-    goto :goto_45
+    goto :goto_4a
 
     .line 489
-    :cond_ac
-    const/4 v0, 0x0
+    .end local v7  # "j":I
+    :cond_b1
+    const/4 v7, 0x0
 
     .line 490
-    move-object v6, p0
+    move-object/from16 v8, p0
 
-    move-object v7, p1
+    move-object/from16 v9, p1
 
-    move/from16 v8, p2
+    move/from16 v10, p2
 
-    invoke-virtual {v5, p0, p1, v0, v8}, Lcom/android/server/pm/ComponentResolver$InstantAppIntentResolver;->queryIntent(Landroid/content/Intent;Ljava/lang/String;ZI)Ljava/util/List;
+    invoke-virtual {v6, v8, v9, v7, v10}, Lcom/android/server/pm/ComponentResolver$InstantAppIntentResolver;->queryIntent(Landroid/content/Intent;Ljava/lang/String;ZI)Ljava/util/List;
 
-    move-result-object v0
+    move-result-object v7
 
     .line 492
-    invoke-interface {v0}, Ljava/util/List;->isEmpty()Z
+    .local v7, "matchedResolveInfoList":Ljava/util/List;, "Ljava/util/List<Landroid/content/pm/AuxiliaryResolveInfo$AuxiliaryFilter;>;"
+    invoke-interface {v7}, Ljava/util/List;->isEmpty()Z
 
-    move-result v5
+    move-result v11
 
-    const-string v6, "["
+    const-string v12, "["
 
-    if-nez v5, :cond_dc
+    if-nez v11, :cond_e3
 
     .line 493
-    sget-boolean v2, Lcom/android/server/pm/InstantAppResolver;->DEBUG_INSTANT:Z
+    sget-boolean v4, Lcom/android/server/pm/InstantAppResolver;->DEBUG_INSTANT:Z
 
-    if-eqz v2, :cond_db
+    if-eqz v4, :cond_e2
 
     .line 494
-    new-instance v2, Ljava/lang/StringBuilder;
+    new-instance v4, Ljava/lang/StringBuilder;
 
-    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v4}, Ljava/lang/StringBuilder;-><init>()V
 
-    invoke-virtual {v2, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v4, v12}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v2, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v4, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string v1, "] Found match(es); "
+    const-string v11, "] Found match(es); "
 
-    invoke-virtual {v2, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v4, v11}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v2, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    invoke-virtual {v4, v7}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v4}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v1
+    move-result-object v4
 
-    invoke-static {v3, v1}, Landroid/util/Log;->d(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v5, v4}, Landroid/util/Log;->d(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 496
-    :cond_db
-    return-object v0
+    :cond_e2
+    return-object v7
 
     .line 497
-    :cond_dc
-    sget-boolean v0, Lcom/android/server/pm/InstantAppResolver;->DEBUG_INSTANT:Z
+    :cond_e3
+    sget-boolean v11, Lcom/android/server/pm/InstantAppResolver;->DEBUG_INSTANT:Z
 
-    if-eqz v0, :cond_10a
+    if-eqz v11, :cond_111
 
     .line 498
-    new-instance v0, Ljava/lang/StringBuilder;
+    new-instance v11, Ljava/lang/StringBuilder;
 
-    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v11}, Ljava/lang/StringBuilder;-><init>()V
 
-    invoke-virtual {v0, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v11, v12}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v11, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string v1, "] No matches found package: "
+    const-string v12, "] No matches found package: "
 
-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v11, v12}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     .line 499
     invoke-virtual/range {p5 .. p5}, Landroid/content/pm/InstantAppResolveInfo;->getPackageName()Ljava/lang/String;
 
-    move-result-object v1
+    move-result-object v12
 
-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v11, v12}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string v1, ", versionCode: "
+    const-string v12, ", versionCode: "
 
-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v11, v12}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     .line 500
     invoke-virtual/range {p5 .. p5}, Landroid/content/pm/InstantAppResolveInfo;->getVersionCode()I
 
-    move-result v1
+    move-result v12
 
-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v11, v12}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v11}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v11
 
     .line 498
-    invoke-static {v3, v0}, Landroid/util/Log;->d(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v5, v11}, Landroid/util/Log;->d(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 502
-    :cond_10a
+    :cond_111
     return-object v4
 
     .line 450
-    :cond_10b
-    move-object v6, p0
+    .end local v6  # "instantAppResolver":Lcom/android/server/pm/ComponentResolver$InstantAppIntentResolver;
+    .end local v7  # "matchedResolveInfoList":Ljava/util/List;, "Ljava/util/List<Landroid/content/pm/AuxiliaryResolveInfo$AuxiliaryFilter;>;"
+    :cond_112
+    move-object/from16 v8, p0
+
+    move-object/from16 v9, p1
+
+    move/from16 v10, p2
 
     .line 452
-    :goto_10c
-    invoke-virtual {p0}, Landroid/content/Intent;->isWebIntent()Z
+    :goto_118
+    invoke-virtual/range {p0 .. p0}, Landroid/content/Intent;->isWebIntent()Z
 
-    move-result v0
+    move-result v6
 
-    if-eqz v0, :cond_113
+    if-eqz v6, :cond_11f
 
     .line 453
     return-object v4
 
     .line 456
-    :cond_113
-    sget-boolean v0, Lcom/android/server/pm/InstantAppResolver;->DEBUG_INSTANT:Z
+    :cond_11f
+    sget-boolean v4, Lcom/android/server/pm/InstantAppResolver;->DEBUG_INSTANT:Z
 
-    if-eqz v0, :cond_11c
+    if-eqz v4, :cond_128
 
     .line 457
-    const-string v0, "No app filters; go to phase 2"
+    const-string v4, "No app filters; go to phase 2"
 
-    invoke-static {v3, v0}, Landroid/util/Log;->d(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v5, v4}, Landroid/util/Log;->d(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 459
-    :cond_11c
+    :cond_128
     invoke-static {}, Ljava/util/Collections;->emptyList()Ljava/util/List;
 
-    move-result-object v0
+    move-result-object v4
 
-    return-object v0
+    return-object v4
 .end method
 
 .method private static createFailureIntent(Landroid/content/Intent;Ljava/lang/String;)Landroid/content/Intent;
-    .registers 3
+    .registers 4
+    .param p0, "origIntent"  # Landroid/content/Intent;
+    .param p1, "token"  # Ljava/lang/String;
 
     .line 418
     new-instance v0, Landroid/content/Intent;
@@ -893,22 +1000,23 @@
     invoke-direct {v0, p0}, Landroid/content/Intent;-><init>(Landroid/content/Intent;)V
 
     .line 419
+    .local v0, "failureIntent":Landroid/content/Intent;
     invoke-virtual {v0}, Landroid/content/Intent;->getFlags()I
 
-    move-result p0
+    move-result v1
 
-    or-int/lit16 p0, p0, 0x200
+    or-int/lit16 v1, v1, 0x200
 
-    invoke-virtual {v0, p0}, Landroid/content/Intent;->setFlags(I)Landroid/content/Intent;
+    invoke-virtual {v0, v1}, Landroid/content/Intent;->setFlags(I)Landroid/content/Intent;
 
     .line 420
     invoke-virtual {v0}, Landroid/content/Intent;->getFlags()I
 
-    move-result p0
+    move-result v1
 
-    and-int/lit16 p0, p0, -0x801
+    and-int/lit16 v1, v1, -0x801
 
-    invoke-virtual {v0, p0}, Landroid/content/Intent;->setFlags(I)Landroid/content/Intent;
+    invoke-virtual {v0, v1}, Landroid/content/Intent;->setFlags(I)Landroid/content/Intent;
 
     .line 421
     invoke-virtual {v0, p1}, Landroid/content/Intent;->setLaunchToken(Ljava/lang/String;)V
@@ -918,7 +1026,9 @@
 .end method
 
 .method public static doInstantAppResolutionPhaseOne(Lcom/android/server/pm/InstantAppResolverConnection;Landroid/content/pm/InstantAppRequest;)Landroid/content/pm/AuxiliaryResolveInfo;
-    .registers 20
+    .registers 21
+    .param p0, "connection"  # Lcom/android/server/pm/InstantAppResolverConnection;
+    .param p1, "requestObj"  # Landroid/content/pm/InstantAppRequest;
 
     .line 122
     move-object/from16 v1, p1
@@ -928,6 +1038,7 @@
     move-result-wide v2
 
     .line 123
+    .local v2, "startTime":J
     invoke-static {}, Ljava/util/UUID;->randomUUID()Ljava/util/UUID;
 
     move-result-object v0
@@ -937,6 +1048,7 @@
     move-result-object v11
 
     .line 124
+    .local v11, "token":Ljava/lang/String;
     sget-boolean v0, Lcom/android/server/pm/InstantAppResolver;->DEBUG_INSTANT:Z
 
     const-string v12, "["
@@ -969,480 +1081,573 @@
     iget-object v14, v1, Landroid/content/pm/InstantAppRequest;->origIntent:Landroid/content/Intent;
 
     .line 128
+    .local v14, "origIntent":Landroid/content/Intent;
     invoke-static {v14}, Lcom/android/server/pm/InstantAppResolver;->sanitizeIntent(Landroid/content/Intent;)Landroid/content/Intent;
+
+    move-result-object v15
+
+    .line 130
+    .local v15, "sanitizedIntent":Landroid/content/Intent;
+    const/16 v16, 0x0
+
+    .line 131
+    .local v16, "resolveInfo":Landroid/content/pm/AuxiliaryResolveInfo;
+    const/16 v17, 0x0
+
+    .line 133
+    .local v17, "resolutionStatus":I
+    const/4 v10, 0x2
+
+    :try_start_38
+    iget-object v0, v1, Landroid/content/pm/InstantAppRequest;->digest:Landroid/content/pm/InstantAppResolveInfo$InstantAppDigest;
+
+    .line 135
+    invoke-virtual {v0}, Landroid/content/pm/InstantAppResolveInfo$InstantAppDigest;->getDigestPrefixSecure()[I
 
     move-result-object v0
 
-    .line 130
-    nop
-
-    .line 131
-    nop
-
-    .line 133
-    const/4 v10, 0x1
-
-    const/4 v9, 0x0
-
-    const/4 v8, 0x0
-
-    const/4 v7, 0x2
-
-    :try_start_39
-    iget-object v4, v1, Landroid/content/pm/InstantAppRequest;->digest:Landroid/content/pm/InstantAppResolveInfo$InstantAppDigest;
-
-    .line 135
-    invoke-virtual {v4}, Landroid/content/pm/InstantAppResolveInfo$InstantAppDigest;->getDigestPrefixSecure()[I
-
-    move-result-object v4
-
-    iget v5, v1, Landroid/content/pm/InstantAppRequest;->userId:I
+    iget v4, v1, Landroid/content/pm/InstantAppRequest;->userId:I
 
     .line 134
-    move-object/from16 v6, p0
+    move-object/from16 v9, p0
 
-    invoke-virtual {v6, v0, v4, v5, v11}, Lcom/android/server/pm/InstantAppResolverConnection;->getInstantAppResolveInfoList(Landroid/content/Intent;[IILjava/lang/String;)Ljava/util/List;
+    invoke-virtual {v9, v15, v0, v4, v11}, Lcom/android/server/pm/InstantAppResolverConnection;->getInstantAppResolveInfoList(Landroid/content/Intent;[IILjava/lang/String;)Ljava/util/List;
 
-    move-result-object v4
+    move-result-object v0
 
     .line 136
-    if-eqz v4, :cond_6c
+    .local v0, "instantAppResolveInfoList":Ljava/util/List;, "Ljava/util/List<Landroid/content/pm/InstantAppResolveInfo;>;"
+    if-eqz v0, :cond_6b
 
-    invoke-interface {v4}, Ljava/util/List;->size()I
+    invoke-interface {v0}, Ljava/util/List;->size()I
 
-    move-result v0
+    move-result v4
 
-    if-lez v0, :cond_6c
+    if-lez v4, :cond_6b
 
     .line 137
     iget-object v6, v1, Landroid/content/pm/InstantAppRequest;->resolvedType:Ljava/lang/String;
 
-    iget v0, v1, Landroid/content/pm/InstantAppRequest;->userId:I
+    iget v7, v1, Landroid/content/pm/InstantAppRequest;->userId:I
 
     .line 139
     invoke-virtual {v14}, Landroid/content/Intent;->getPackage()Ljava/lang/String;
 
-    move-result-object v16
+    move-result-object v8
 
     iget-object v5, v1, Landroid/content/pm/InstantAppRequest;->digest:Landroid/content/pm/InstantAppResolveInfo$InstantAppDigest;
-    :try_end_59
-    .catch Lcom/android/server/pm/InstantAppResolverConnection$ConnectionException; {:try_start_39 .. :try_end_59} :catch_6f
+    :try_end_58
+    .catch Lcom/android/server/pm/InstantAppResolverConnection$ConnectionException; {:try_start_38 .. :try_end_58} :catch_71
 
     .line 137
-    move-object/from16 v17, v5
+    move-object v4, v0
+
+    move-object/from16 v18, v5
 
     move-object v5, v14
 
-    move v15, v7
+    move-object/from16 v9, v18
 
-    move v7, v0
-
-    move-object/from16 v8, v16
-
-    move-object/from16 v9, v17
+    move-object/from16 v18, v15
 
     move v15, v10
 
+    .end local v15  # "sanitizedIntent":Landroid/content/Intent;
+    .local v18, "sanitizedIntent":Landroid/content/Intent;
     move-object v10, v11
 
-    :try_start_64
+    :try_start_62
     invoke-static/range {v4 .. v10}, Lcom/android/server/pm/InstantAppResolver;->filterInstantAppIntent(Ljava/util/List;Landroid/content/Intent;Ljava/lang/String;ILjava/lang/String;Landroid/content/pm/InstantAppResolveInfo$InstantAppDigest;Ljava/lang/String;)Landroid/content/pm/AuxiliaryResolveInfo;
 
-    move-result-object v0
-    :try_end_68
-    .catch Lcom/android/server/pm/InstantAppResolverConnection$ConnectionException; {:try_start_64 .. :try_end_68} :catch_6a
+    move-result-object v4
+    :try_end_66
+    .catch Lcom/android/server/pm/InstantAppResolverConnection$ConnectionException; {:try_start_62 .. :try_end_66} :catch_69
 
-    move-object v8, v0
+    move-object/from16 v16, v4
 
-    goto :goto_6d
+    .end local v16  # "resolveInfo":Landroid/content/pm/AuxiliaryResolveInfo;
+    .local v4, "resolveInfo":Landroid/content/pm/AuxiliaryResolveInfo;
+    goto :goto_6e
 
     .line 141
-    :catch_6a
+    .end local v0  # "instantAppResolveInfoList":Ljava/util/List;, "Ljava/util/List<Landroid/content/pm/InstantAppResolveInfo;>;"
+    .end local v4  # "resolveInfo":Landroid/content/pm/AuxiliaryResolveInfo;
+    .restart local v16  # "resolveInfo":Landroid/content/pm/AuxiliaryResolveInfo;
+    :catch_69
     move-exception v0
 
-    goto :goto_71
+    goto :goto_75
+
+    .line 136
+    .end local v18  # "sanitizedIntent":Landroid/content/Intent;
+    .restart local v0  # "instantAppResolveInfoList":Ljava/util/List;, "Ljava/util/List<Landroid/content/pm/InstantAppResolveInfo;>;"
+    .restart local v15  # "sanitizedIntent":Landroid/content/Intent;
+    :cond_6b
+    move-object/from16 v18, v15
+
+    move v15, v10
 
     .line 149
-    :cond_6c
-    const/4 v8, 0x0
+    .end local v0  # "instantAppResolveInfoList":Ljava/util/List;, "Ljava/util/List<Landroid/content/pm/InstantAppResolveInfo;>;"
+    .end local v15  # "sanitizedIntent":Landroid/content/Intent;
+    .restart local v18  # "sanitizedIntent":Landroid/content/Intent;
+    :goto_6e
+    move/from16 v0, v17
 
-    :goto_6d
-    const/4 v15, 0x0
-
-    goto :goto_81
+    goto :goto_8c
 
     .line 141
-    :catch_6f
+    .end local v18  # "sanitizedIntent":Landroid/content/Intent;
+    .restart local v15  # "sanitizedIntent":Landroid/content/Intent;
+    :catch_71
     move-exception v0
+
+    move-object/from16 v18, v15
 
     move v15, v10
 
     .line 142
-    :goto_71
+    .end local v15  # "sanitizedIntent":Landroid/content/Intent;
+    .local v0, "e":Lcom/android/server/pm/InstantAppResolverConnection$ConnectionException;
+    .restart local v18  # "sanitizedIntent":Landroid/content/Intent;
+    :goto_75
     iget v4, v0, Lcom/android/server/pm/InstantAppResolverConnection$ConnectionException;->failure:I
 
-    if-ne v4, v15, :cond_78
+    const/4 v5, 0x1
+
+    if-ne v4, v5, :cond_7f
 
     .line 143
-    const/4 v8, 0x0
+    const/16 v17, 0x2
 
-    const/4 v15, 0x2
+    move/from16 v0, v17
 
-    goto :goto_81
+    goto :goto_8c
 
     .line 144
-    :cond_78
-    iget v0, v0, Lcom/android/server/pm/InstantAppResolverConnection$ConnectionException;->failure:I
+    :cond_7f
+    iget v4, v0, Lcom/android/server/pm/InstantAppResolverConnection$ConnectionException;->failure:I
 
-    const/4 v4, 0x2
-
-    if-ne v0, v4, :cond_80
+    if-ne v4, v15, :cond_88
 
     .line 145
-    const/4 v8, 0x0
+    const/16 v17, 0x3
 
-    const/4 v15, 0x3
+    move/from16 v0, v17
 
-    goto :goto_81
+    goto :goto_8c
 
     .line 147
-    :cond_80
-    const/4 v8, 0x0
+    :cond_88
+    const/16 v17, 0x1
+
+    move/from16 v0, v17
 
     .line 151
-    :goto_81
-    iget-boolean v0, v1, Landroid/content/pm/InstantAppRequest;->resolveForStart:Z
+    .end local v17  # "resolutionStatus":I
+    .local v0, "resolutionStatus":I
+    :goto_8c
+    iget-boolean v4, v1, Landroid/content/pm/InstantAppRequest;->resolveForStart:Z
 
-    if-eqz v0, :cond_8c
+    if-eqz v4, :cond_97
 
-    if-nez v15, :cond_8c
+    if-nez v0, :cond_97
 
     .line 152
-    const/16 v0, 0x383
+    const/16 v4, 0x383
 
-    invoke-static {v0, v2, v3, v11, v15}, Lcom/android/server/pm/InstantAppResolver;->logMetrics(IJLjava/lang/String;I)V
+    invoke-static {v4, v2, v3, v11, v0}, Lcom/android/server/pm/InstantAppResolver;->logMetrics(IJLjava/lang/String;I)V
 
     .line 155
-    :cond_8c
-    sget-boolean v0, Lcom/android/server/pm/InstantAppResolver;->DEBUG_INSTANT:Z
+    :cond_97
+    sget-boolean v4, Lcom/android/server/pm/InstantAppResolver;->DEBUG_INSTANT:Z
 
-    if-eqz v0, :cond_f9
+    if-eqz v4, :cond_103
 
-    if-nez v8, :cond_f9
+    if-nez v16, :cond_103
 
     .line 156
-    const/4 v1, 0x2
-
-    if-ne v15, v1, :cond_ad
+    if-ne v0, v15, :cond_b7
 
     .line 157
-    new-instance v0, Ljava/lang/StringBuilder;
+    new-instance v4, Ljava/lang/StringBuilder;
 
-    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v4}, Ljava/lang/StringBuilder;-><init>()V
 
-    invoke-virtual {v0, v12}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v4, v12}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0, v11}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v4, v11}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string v1, "] Phase1; bind timed out"
+    const-string v5, "] Phase1; bind timed out"
 
-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v4}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v4
 
-    invoke-static {v13, v0}, Landroid/util/Log;->d(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v13, v4}, Landroid/util/Log;->d(Ljava/lang/String;Ljava/lang/String;)I
 
-    goto :goto_f9
+    goto :goto_103
 
     .line 158
-    :cond_ad
-    const/4 v1, 0x3
+    :cond_b7
+    const/4 v4, 0x3
 
-    if-ne v15, v1, :cond_c8
+    if-ne v0, v4, :cond_d2
 
     .line 159
-    new-instance v0, Ljava/lang/StringBuilder;
+    new-instance v4, Ljava/lang/StringBuilder;
 
-    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v4}, Ljava/lang/StringBuilder;-><init>()V
 
-    invoke-virtual {v0, v12}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v4, v12}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0, v11}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v4, v11}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string v1, "] Phase1; call timed out"
+    const-string v5, "] Phase1; call timed out"
 
-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v4}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v4
 
-    invoke-static {v13, v0}, Landroid/util/Log;->d(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v13, v4}, Landroid/util/Log;->d(Ljava/lang/String;Ljava/lang/String;)I
 
-    goto :goto_f9
+    goto :goto_103
 
     .line 160
-    :cond_c8
-    if-eqz v15, :cond_e2
+    :cond_d2
+    if-eqz v0, :cond_ec
 
     .line 161
-    new-instance v0, Ljava/lang/StringBuilder;
+    new-instance v4, Ljava/lang/StringBuilder;
 
-    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v4}, Ljava/lang/StringBuilder;-><init>()V
 
-    invoke-virtual {v0, v12}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v4, v12}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0, v11}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v4, v11}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string v1, "] Phase1; service connection error"
+    const-string v5, "] Phase1; service connection error"
 
-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v4}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v4
 
-    invoke-static {v13, v0}, Landroid/util/Log;->d(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v13, v4}, Landroid/util/Log;->d(Ljava/lang/String;Ljava/lang/String;)I
 
-    goto :goto_f9
+    goto :goto_103
 
     .line 163
-    :cond_e2
-    new-instance v0, Ljava/lang/StringBuilder;
+    :cond_ec
+    new-instance v4, Ljava/lang/StringBuilder;
 
-    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v4}, Ljava/lang/StringBuilder;-><init>()V
 
-    invoke-virtual {v0, v12}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v4, v12}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0, v11}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v4, v11}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string v1, "] Phase1; No results matched"
+    const-string v5, "] Phase1; No results matched"
 
-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v4}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v4
 
-    invoke-static {v13, v0}, Landroid/util/Log;->d(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v13, v4}, Landroid/util/Log;->d(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 167
-    :cond_f9
-    :goto_f9
-    if-nez v8, :cond_10f
+    :cond_103
+    :goto_103
+    if-nez v16, :cond_119
 
     invoke-virtual {v14}, Landroid/content/Intent;->getFlags()I
 
-    move-result v0
+    move-result v4
 
-    and-int/lit16 v0, v0, 0x800
+    and-int/lit16 v4, v4, 0x800
 
-    if-eqz v0, :cond_10f
+    if-eqz v4, :cond_119
 
     .line 168
-    new-instance v0, Landroid/content/pm/AuxiliaryResolveInfo;
+    new-instance v4, Landroid/content/pm/AuxiliaryResolveInfo;
+
+    const/4 v5, 0x0
 
     invoke-static {v14, v11}, Lcom/android/server/pm/InstantAppResolver;->createFailureIntent(Landroid/content/Intent;Ljava/lang/String;)Landroid/content/Intent;
 
-    move-result-object v1
+    move-result-object v6
 
-    const/4 v2, 0x0
+    const/4 v7, 0x0
 
-    const/4 v3, 0x0
+    invoke-direct {v4, v11, v5, v6, v7}, Landroid/content/pm/AuxiliaryResolveInfo;-><init>(Ljava/lang/String;ZLandroid/content/Intent;Ljava/util/List;)V
 
-    invoke-direct {v0, v11, v2, v1, v3}, Landroid/content/pm/AuxiliaryResolveInfo;-><init>(Ljava/lang/String;ZLandroid/content/Intent;Ljava/util/List;)V
-
-    return-object v0
+    return-object v4
 
     .line 171
-    :cond_10f
-    return-object v8
+    :cond_119
+    return-object v16
 .end method
 
 .method public static doInstantAppResolutionPhaseTwo(Landroid/content/Context;Lcom/android/server/pm/InstantAppResolverConnection;Landroid/content/pm/InstantAppRequest;Landroid/content/pm/ActivityInfo;Landroid/os/Handler;)V
-    .registers 20
+    .registers 24
+    .param p0, "context"  # Landroid/content/Context;
+    .param p1, "connection"  # Lcom/android/server/pm/InstantAppResolverConnection;
+    .param p2, "requestObj"  # Landroid/content/pm/InstantAppRequest;
+    .param p3, "instantAppInstaller"  # Landroid/content/pm/ActivityInfo;
+    .param p4, "callbackHandler"  # Landroid/os/Handler;
 
     .line 177
-    move-object/from16 v0, p2
+    move-object/from16 v8, p2
 
     invoke-static {}, Ljava/lang/System;->currentTimeMillis()J
 
-    move-result-wide v9
+    move-result-wide v12
 
     .line 178
-    iget-object v1, v0, Landroid/content/pm/InstantAppRequest;->responseObj:Landroid/content/pm/AuxiliaryResolveInfo;
+    .local v12, "startTime":J
+    iget-object v0, v8, Landroid/content/pm/InstantAppRequest;->responseObj:Landroid/content/pm/AuxiliaryResolveInfo;
 
-    iget-object v11, v1, Landroid/content/pm/AuxiliaryResolveInfo;->token:Ljava/lang/String;
+    iget-object v15, v0, Landroid/content/pm/AuxiliaryResolveInfo;->token:Ljava/lang/String;
 
     .line 179
-    sget-boolean v1, Lcom/android/server/pm/InstantAppResolver;->DEBUG_INSTANT:Z
+    .local v15, "token":Ljava/lang/String;
+    sget-boolean v0, Lcom/android/server/pm/InstantAppResolver;->DEBUG_INSTANT:Z
 
-    const-string v12, "["
+    const-string v11, "["
 
-    const-string v13, "PackageManager"
+    const-string v10, "PackageManager"
 
-    if-eqz v1, :cond_29
+    if-eqz v0, :cond_29
 
     .line 180
-    new-instance v1, Ljava/lang/StringBuilder;
+    new-instance v0, Ljava/lang/StringBuilder;
 
-    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
 
-    invoke-virtual {v1, v12}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v11}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v1, v11}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v15}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string v2, "] Phase2; resolving"
+    const-string v1, "] Phase2; resolving"
 
-    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v1
+    move-result-object v0
 
-    invoke-static {v13, v1}, Landroid/util/Log;->d(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v10, v0}, Landroid/util/Log;->d(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 182
     :cond_29
-    iget-object v2, v0, Landroid/content/pm/InstantAppRequest;->origIntent:Landroid/content/Intent;
+    iget-object v9, v8, Landroid/content/pm/InstantAppRequest;->origIntent:Landroid/content/Intent;
 
     .line 183
-    invoke-static {v2}, Lcom/android/server/pm/InstantAppResolver;->sanitizeIntent(Landroid/content/Intent;)Landroid/content/Intent;
+    .local v9, "origIntent":Landroid/content/Intent;
+    invoke-static {v9}, Lcom/android/server/pm/InstantAppResolver;->sanitizeIntent(Landroid/content/Intent;)Landroid/content/Intent;
 
-    move-result-object v8
+    move-result-object v18
 
     .line 185
+    .local v18, "sanitizedIntent":Landroid/content/Intent;
     new-instance v14, Lcom/android/server/pm/InstantAppResolver$1;
 
     move-object v1, v14
 
+    move-object v2, v9
+
     move-object/from16 v3, p2
 
-    move-object v4, v11
+    move-object v4, v15
 
-    move-object v5, v8
+    move-object/from16 v5, v18
 
     move-object/from16 v6, p3
 
-    move-object v7, p0
+    move-object/from16 v7, p0
 
     invoke-direct/range {v1 .. v7}, Lcom/android/server/pm/InstantAppResolver$1;-><init>(Landroid/content/Intent;Landroid/content/pm/InstantAppRequest;Ljava/lang/String;Landroid/content/Intent;Landroid/content/pm/ActivityInfo;Landroid/content/Context;)V
 
     .line 226
-    :try_start_3c
-    iget-object v1, v0, Landroid/content/pm/InstantAppRequest;->digest:Landroid/content/pm/InstantAppResolveInfo$InstantAppDigest;
+    .local v14, "callback":Lcom/android/server/pm/InstantAppResolverConnection$PhaseTwoCallback;
+    :try_start_3f
+    iget-object v0, v8, Landroid/content/pm/InstantAppRequest;->digest:Landroid/content/pm/InstantAppResolveInfo$InstantAppDigest;
 
     .line 227
-    invoke-virtual {v1}, Landroid/content/pm/InstantAppResolveInfo$InstantAppDigest;->getDigestPrefixSecure()[I
+    invoke-virtual {v0}, Landroid/content/pm/InstantAppResolveInfo$InstantAppDigest;->getDigestPrefixSecure()[I
 
-    move-result-object v2
+    move-result-object v0
 
-    iget v3, v0, Landroid/content/pm/InstantAppRequest;->userId:I
+    iget v1, v8, Landroid/content/pm/InstantAppRequest;->userId:I
+    :try_end_47
+    .catch Lcom/android/server/pm/InstantAppResolverConnection$ConnectionException; {:try_start_3f .. :try_end_47} :catch_5d
 
     .line 226
-    move-object/from16 v0, p1
+    move-object v2, v9
 
-    move-object v1, v8
+    .end local v9  # "origIntent":Landroid/content/Intent;
+    .local v2, "origIntent":Landroid/content/Intent;
+    move-object/from16 v9, p1
+
+    move-object v3, v10
+
+    move-object/from16 v10, v18
 
     move-object v4, v11
 
-    move-object v5, v14
+    move-object v11, v0
 
-    move-object/from16 v6, p4
+    move-wide v5, v12
 
-    move-wide v7, v9
+    .end local v12  # "startTime":J
+    .local v5, "startTime":J
+    move v12, v1
 
-    invoke-virtual/range {v0 .. v8}, Lcom/android/server/pm/InstantAppResolverConnection;->getInstantAppIntentFilterList(Landroid/content/Intent;[IILjava/lang/String;Lcom/android/server/pm/InstantAppResolverConnection$PhaseTwoCallback;Landroid/os/Handler;J)V
-    :try_end_4f
-    .catch Lcom/android/server/pm/InstantAppResolverConnection$ConnectionException; {:try_start_3c .. :try_end_4f} :catch_50
+    move-object v13, v15
+
+    move-object v1, v15
+
+    .end local v15  # "token":Ljava/lang/String;
+    .local v1, "token":Ljava/lang/String;
+    move-object/from16 v15, p4
+
+    move-wide/from16 v16, v5
+
+    :try_start_57
+    invoke-virtual/range {v9 .. v17}, Lcom/android/server/pm/InstantAppResolverConnection;->getInstantAppIntentFilterList(Landroid/content/Intent;[IILjava/lang/String;Lcom/android/server/pm/InstantAppResolverConnection$PhaseTwoCallback;Landroid/os/Handler;J)V
+    :try_end_5a
+    .catch Lcom/android/server/pm/InstantAppResolverConnection$ConnectionException; {:try_start_57 .. :try_end_5a} :catch_5b
 
     .line 243
-    goto :goto_93
+    goto :goto_a5
 
     .line 229
-    :catch_50
+    :catch_5b
     move-exception v0
 
+    goto :goto_63
+
+    .end local v1  # "token":Ljava/lang/String;
+    .end local v2  # "origIntent":Landroid/content/Intent;
+    .end local v5  # "startTime":J
+    .restart local v9  # "origIntent":Landroid/content/Intent;
+    .restart local v12  # "startTime":J
+    .restart local v15  # "token":Ljava/lang/String;
+    :catch_5d
+    move-exception v0
+
+    move-object v2, v9
+
+    move-object v3, v10
+
+    move-object v4, v11
+
+    move-wide v5, v12
+
+    move-object v1, v15
+
     .line 230
-    nop
+    .end local v9  # "origIntent":Landroid/content/Intent;
+    .end local v12  # "startTime":J
+    .end local v15  # "token":Ljava/lang/String;
+    .local v0, "e":Lcom/android/server/pm/InstantAppResolverConnection$ConnectionException;
+    .restart local v1  # "token":Ljava/lang/String;
+    .restart local v2  # "origIntent":Landroid/content/Intent;
+    .restart local v5  # "startTime":J
+    :goto_63
+    const/4 v7, 0x1
 
     .line 231
-    iget v0, v0, Lcom/android/server/pm/InstantAppResolverConnection$ConnectionException;->failure:I
+    .local v7, "resolutionStatus":I
+    iget v9, v0, Lcom/android/server/pm/InstantAppResolverConnection$ConnectionException;->failure:I
 
-    const/4 v1, 0x2
+    const/4 v10, 0x1
 
-    const/4 v2, 0x1
-
-    if-ne v0, v2, :cond_59
+    if-ne v9, v10, :cond_6a
 
     .line 232
-    move v2, v1
+    const/4 v7, 0x2
 
     .line 234
-    :cond_59
-    const/16 v0, 0x384
+    :cond_6a
+    const/16 v9, 0x384
 
-    invoke-static {v0, v9, v10, v11, v2}, Lcom/android/server/pm/InstantAppResolver;->logMetrics(IJLjava/lang/String;I)V
+    invoke-static {v9, v5, v6, v1, v7}, Lcom/android/server/pm/InstantAppResolver;->logMetrics(IJLjava/lang/String;I)V
 
     .line 236
-    sget-boolean v0, Lcom/android/server/pm/InstantAppResolver;->DEBUG_INSTANT:Z
+    sget-boolean v9, Lcom/android/server/pm/InstantAppResolver;->DEBUG_INSTANT:Z
 
-    if-eqz v0, :cond_93
+    if-eqz v9, :cond_a5
 
     .line 237
-    if-ne v2, v1, :cond_7c
+    const/4 v9, 0x2
+
+    if-ne v7, v9, :cond_8e
 
     .line 238
-    new-instance v0, Ljava/lang/StringBuilder;
+    new-instance v9, Ljava/lang/StringBuilder;
 
-    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v9}, Ljava/lang/StringBuilder;-><init>()V
 
-    invoke-virtual {v0, v12}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v9, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0, v11}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v9, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string v1, "] Phase2; bind timed out"
+    const-string v4, "] Phase2; bind timed out"
 
-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v9, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v9}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v4
 
-    invoke-static {v13, v0}, Landroid/util/Log;->d(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v3, v4}, Landroid/util/Log;->d(Ljava/lang/String;Ljava/lang/String;)I
 
-    goto :goto_93
+    goto :goto_a5
 
     .line 240
-    :cond_7c
-    new-instance v0, Ljava/lang/StringBuilder;
+    :cond_8e
+    new-instance v9, Ljava/lang/StringBuilder;
 
-    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v9}, Ljava/lang/StringBuilder;-><init>()V
 
-    invoke-virtual {v0, v12}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v9, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0, v11}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v9, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string v1, "] Phase2; service connection error"
+    const-string v4, "] Phase2; service connection error"
 
-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v9, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v9}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v4
 
-    invoke-static {v13, v0}, Landroid/util/Log;->d(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v3, v4}, Landroid/util/Log;->d(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 244
-    :cond_93
-    :goto_93
+    .end local v0  # "e":Lcom/android/server/pm/InstantAppResolverConnection$ConnectionException;
+    .end local v7  # "resolutionStatus":I
+    :cond_a5
+    :goto_a5
     return-void
 .end method
 
 .method private static filterInstantAppIntent(Ljava/util/List;Landroid/content/Intent;Ljava/lang/String;ILjava/lang/String;Landroid/content/pm/InstantAppResolveInfo$InstantAppDigest;Ljava/lang/String;)Landroid/content/pm/AuxiliaryResolveInfo;
     .registers 23
+    .param p1, "origIntent"  # Landroid/content/Intent;
+    .param p2, "resolvedType"  # Ljava/lang/String;
+    .param p3, "userId"  # I
+    .param p4, "packageName"  # Ljava/lang/String;
+    .param p5, "digest"  # Landroid/content/pm/InstantAppResolveInfo$InstantAppDigest;
+    .param p6, "token"  # Ljava/lang/String;
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(",
@@ -1461,6 +1666,7 @@
     .end annotation
 
     .line 363
+    .local p0, "instantAppResolveInfoList":Ljava/util/List;, "Ljava/util/List<Landroid/content/pm/InstantAppResolveInfo;>;"
     move-object/from16 v6, p6
 
     invoke-virtual/range {p5 .. p5}, Landroid/content/pm/InstantAppResolveInfo$InstantAppDigest;->getDigestPrefix()[I
@@ -1468,86 +1674,94 @@
     move-result-object v7
 
     .line 364
+    .local v7, "shaPrefix":[I
     invoke-virtual/range {p5 .. p5}, Landroid/content/pm/InstantAppResolveInfo$InstantAppDigest;->getDigestBytes()[[B
 
     move-result-object v8
 
     .line 365
-    nop
+    .local v8, "digestBytes":[[B
+    const/4 v0, 0x0
 
     .line 366
-    nop
+    .local v0, "requiresSecondPhase":Z
+    const/4 v1, 0x0
 
     .line 367
+    .local v1, "filters":Ljava/util/ArrayList;, "Ljava/util/ArrayList<Landroid/content/pm/AuxiliaryResolveInfo$AuxiliaryFilter;>;"
     invoke-virtual/range {p1 .. p1}, Landroid/content/Intent;->isWebIntent()Z
 
-    move-result v0
+    move-result v2
 
-    const/4 v9, 0x0
+    const/4 v9, 0x1
 
-    const/4 v10, 0x1
+    if-nez v2, :cond_21
 
-    if-nez v0, :cond_22
+    array-length v2, v7
 
-    array-length v0, v7
-
-    if-lez v0, :cond_20
+    if-lez v2, :cond_1f
 
     .line 368
     invoke-virtual/range {p1 .. p1}, Landroid/content/Intent;->getFlags()I
 
-    move-result v0
+    move-result v2
 
-    and-int/lit16 v0, v0, 0x800
+    and-int/lit16 v2, v2, 0x800
 
-    if-nez v0, :cond_20
+    if-nez v2, :cond_1f
+
+    goto :goto_21
+
+    :cond_1f
+    const/4 v2, 0x0
 
     goto :goto_22
 
-    :cond_20
-    move v11, v9
+    :cond_21
+    :goto_21
+    move v2, v9
 
-    goto :goto_23
-
-    :cond_22
     :goto_22
-    move v11, v10
+    move v10, v2
 
     .line 369
-    :goto_23
+    .local v10, "requiresPrefixMatch":Z
     invoke-interface/range {p0 .. p0}, Ljava/util/List;->iterator()Ljava/util/Iterator;
 
-    move-result-object v12
+    move-result-object v11
 
-    const/4 v13, 0x0
+    move v13, v0
 
-    move v15, v9
+    move-object v12, v1
 
-    move-object v14, v13
-
-    :goto_2a
-    invoke-interface {v12}, Ljava/util/Iterator;->hasNext()Z
+    .end local v0  # "requiresSecondPhase":Z
+    .end local v1  # "filters":Ljava/util/ArrayList;, "Ljava/util/ArrayList<Landroid/content/pm/AuxiliaryResolveInfo$AuxiliaryFilter;>;"
+    .local v12, "filters":Ljava/util/ArrayList;, "Ljava/util/ArrayList<Landroid/content/pm/AuxiliaryResolveInfo$AuxiliaryFilter;>;"
+    .local v13, "requiresSecondPhase":Z
+    :goto_29
+    invoke-interface {v11}, Ljava/util/Iterator;->hasNext()Z
 
     move-result v0
 
-    if-eqz v0, :cond_8e
+    if-eqz v0, :cond_8c
 
-    invoke-interface {v12}, Ljava/util/Iterator;->next()Ljava/lang/Object;
+    invoke-interface {v11}, Ljava/util/Iterator;->next()Ljava/lang/Object;
 
     move-result-object v0
 
-    move-object v5, v0
+    move-object v14, v0
 
-    check-cast v5, Landroid/content/pm/InstantAppResolveInfo;
+    check-cast v14, Landroid/content/pm/InstantAppResolveInfo;
 
     .line 370
-    if-eqz v11, :cond_47
+    .local v14, "instantAppResolveInfo":Landroid/content/pm/InstantAppResolveInfo;
+    if-eqz v10, :cond_46
 
-    invoke-virtual {v5}, Landroid/content/pm/InstantAppResolveInfo;->shouldLetInstallerDecide()Z
+    invoke-virtual {v14}, Landroid/content/pm/InstantAppResolveInfo;->shouldLetInstallerDecide()Z
 
     move-result v0
 
-    if-eqz v0, :cond_47
+    if-eqz v0, :cond_46
 
     .line 371
     const-string v0, "PackageManager"
@@ -1557,72 +1771,73 @@
     invoke-static {v0, v1}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 373
-    goto :goto_2a
+    goto :goto_29
 
     .line 375
-    :cond_47
-    invoke-virtual {v5}, Landroid/content/pm/InstantAppResolveInfo;->getDigestBytes()[B
+    :cond_46
+    invoke-virtual {v14}, Landroid/content/pm/InstantAppResolveInfo;->getDigestBytes()[B
 
-    move-result-object v0
+    move-result-object v15
 
     .line 378
-    array-length v1, v7
+    .local v15, "filterDigestBytes":[B
+    array-length v0, v7
 
-    if-lez v1, :cond_6a
+    if-lez v0, :cond_67
 
-    if-nez v11, :cond_53
+    if-nez v10, :cond_52
 
-    array-length v1, v0
+    array-length v0, v15
 
-    if-lez v1, :cond_6a
+    if-lez v0, :cond_67
 
     .line 379
-    :cond_53
-    nop
+    :cond_52
+    const/4 v0, 0x0
 
     .line 381
+    .local v0, "matchFound":Z
     array-length v1, v7
 
-    sub-int/2addr v1, v10
+    sub-int/2addr v1, v9
 
-    :goto_56
-    if-ltz v1, :cond_66
+    .local v1, "i":I
+    :goto_55
+    if-ltz v1, :cond_64
 
     .line 382
     aget-object v2, v8, v1
 
-    invoke-static {v2, v0}, Ljava/util/Arrays;->equals([B[B)Z
+    invoke-static {v2, v15}, Ljava/util/Arrays;->equals([B[B)Z
 
     move-result v2
 
-    if-eqz v2, :cond_63
+    if-eqz v2, :cond_61
 
     .line 383
-    nop
+    const/4 v0, 0x1
 
     .line 384
-    move v0, v10
-
-    goto :goto_67
+    goto :goto_64
 
     .line 381
-    :cond_63
+    :cond_61
     add-int/lit8 v1, v1, -0x1
 
-    goto :goto_56
-
-    :cond_66
-    move v0, v9
+    goto :goto_55
 
     .line 387
-    :goto_67
-    if-nez v0, :cond_6a
+    .end local v1  # "i":I
+    :cond_64
+    :goto_64
+    if-nez v0, :cond_67
 
     .line 388
-    goto :goto_2a
+    goto :goto_29
 
     .line 392
-    :cond_6a
+    .end local v0  # "matchFound":Z
+    :cond_67
     move-object/from16 v0, p1
 
     move-object/from16 v1, p2
@@ -1633,54 +1848,64 @@
 
     move-object/from16 v4, p6
 
+    move-object v5, v14
+
     invoke-static/range {v0 .. v5}, Lcom/android/server/pm/InstantAppResolver;->computeResolveFilters(Landroid/content/Intent;Ljava/lang/String;ILjava/lang/String;Ljava/lang/String;Landroid/content/pm/InstantAppResolveInfo;)Ljava/util/List;
 
     move-result-object v0
 
     .line 394
-    if-eqz v0, :cond_8d
+    .local v0, "matchFilters":Ljava/util/List;, "Ljava/util/List<Landroid/content/pm/AuxiliaryResolveInfo$AuxiliaryFilter;>;"
+    if-eqz v0, :cond_8b
 
     .line 395
     invoke-interface {v0}, Ljava/util/List;->isEmpty()Z
 
     move-result v1
 
-    if-eqz v1, :cond_81
+    if-eqz v1, :cond_7f
 
     .line 396
-    move v15, v10
+    const/4 v13, 0x1
 
     .line 398
-    :cond_81
-    if-nez v14, :cond_8a
+    :cond_7f
+    if-nez v12, :cond_88
 
     .line 399
     new-instance v1, Ljava/util/ArrayList;
 
     invoke-direct {v1, v0}, Ljava/util/ArrayList;-><init>(Ljava/util/Collection;)V
 
-    move-object v14, v1
+    move-object v12, v1
 
-    goto :goto_8d
+    .end local v12  # "filters":Ljava/util/ArrayList;, "Ljava/util/ArrayList<Landroid/content/pm/AuxiliaryResolveInfo$AuxiliaryFilter;>;"
+    .local v1, "filters":Ljava/util/ArrayList;, "Ljava/util/ArrayList<Landroid/content/pm/AuxiliaryResolveInfo$AuxiliaryFilter;>;"
+    goto :goto_8b
 
     .line 401
-    :cond_8a
-    invoke-virtual {v14, v0}, Ljava/util/ArrayList;->addAll(Ljava/util/Collection;)Z
+    .end local v1  # "filters":Ljava/util/ArrayList;, "Ljava/util/ArrayList<Landroid/content/pm/AuxiliaryResolveInfo$AuxiliaryFilter;>;"
+    .restart local v12  # "filters":Ljava/util/ArrayList;, "Ljava/util/ArrayList<Landroid/content/pm/AuxiliaryResolveInfo$AuxiliaryFilter;>;"
+    :cond_88
+    invoke-virtual {v12, v0}, Ljava/util/ArrayList;->addAll(Ljava/util/Collection;)Z
 
     .line 404
-    :cond_8d
-    :goto_8d
-    goto :goto_2a
+    .end local v0  # "matchFilters":Ljava/util/List;, "Ljava/util/List<Landroid/content/pm/AuxiliaryResolveInfo$AuxiliaryFilter;>;"
+    .end local v14  # "instantAppResolveInfo":Landroid/content/pm/InstantAppResolveInfo;
+    .end local v15  # "filterDigestBytes":[B
+    :cond_8b
+    :goto_8b
+    goto :goto_29
 
     .line 405
-    :cond_8e
-    if-eqz v14, :cond_a2
+    :cond_8c
+    if-eqz v12, :cond_a0
 
-    invoke-virtual {v14}, Ljava/util/ArrayList;->isEmpty()Z
+    invoke-virtual {v12}, Ljava/util/ArrayList;->isEmpty()Z
 
     move-result v0
 
-    if-nez v0, :cond_a2
+    if-nez v0, :cond_a0
 
     .line 406
     new-instance v0, Landroid/content/pm/AuxiliaryResolveInfo;
@@ -1690,16 +1915,21 @@
 
     invoke-static {v1, v6}, Lcom/android/server/pm/InstantAppResolver;->createFailureIntent(Landroid/content/Intent;Ljava/lang/String;)Landroid/content/Intent;
 
-    move-result-object v1
+    move-result-object v2
 
-    invoke-direct {v0, v6, v15, v1, v14}, Landroid/content/pm/AuxiliaryResolveInfo;-><init>(Ljava/lang/String;ZLandroid/content/Intent;Ljava/util/List;)V
+    invoke-direct {v0, v6, v13, v2, v12}, Landroid/content/pm/AuxiliaryResolveInfo;-><init>(Ljava/lang/String;ZLandroid/content/Intent;Ljava/util/List;)V
 
     .line 406
     return-object v0
 
+    .line 405
+    :cond_a0
+    move-object/from16 v1, p1
+
     .line 410
-    :cond_a2
-    return-object v13
+    const/4 v0, 0x0
+
+    return-object v0
 .end method
 
 .method private static getLogger()Lcom/android/internal/logging/MetricsLogger;
@@ -1725,7 +1955,11 @@
 .end method
 
 .method private static logMetrics(IJLjava/lang/String;I)V
-    .registers 8
+    .registers 9
+    .param p0, "action"  # I
+    .param p1, "startTime"  # J
+    .param p3, "token"  # Ljava/lang/String;
+    .param p4, "status"  # I
 
     .line 507
     new-instance v0, Landroid/metrics/LogMaker;
@@ -1733,61 +1967,63 @@
     invoke-direct {v0, p0}, Landroid/metrics/LogMaker;-><init>(I)V
 
     .line 508
-    const/4 p0, 0x4
+    const/4 v1, 0x4
 
-    invoke-virtual {v0, p0}, Landroid/metrics/LogMaker;->setType(I)Landroid/metrics/LogMaker;
+    invoke-virtual {v0, v1}, Landroid/metrics/LogMaker;->setType(I)Landroid/metrics/LogMaker;
 
-    move-result-object p0
+    move-result-object v0
 
-    new-instance v0, Ljava/lang/Long;
+    new-instance v1, Ljava/lang/Long;
 
     .line 510
     invoke-static {}, Ljava/lang/System;->currentTimeMillis()J
 
-    move-result-wide v1
+    move-result-wide v2
 
-    sub-long/2addr v1, p1
+    sub-long/2addr v2, p1
 
-    invoke-direct {v0, v1, v2}, Ljava/lang/Long;-><init>(J)V
+    invoke-direct {v1, v2, v3}, Ljava/lang/Long;-><init>(J)V
 
     .line 509
-    const/16 p1, 0x385
+    const/16 v2, 0x385
 
-    invoke-virtual {p0, p1, v0}, Landroid/metrics/LogMaker;->addTaggedData(ILjava/lang/Object;)Landroid/metrics/LogMaker;
+    invoke-virtual {v0, v2, v1}, Landroid/metrics/LogMaker;->addTaggedData(ILjava/lang/Object;)Landroid/metrics/LogMaker;
 
-    move-result-object p0
+    move-result-object v0
 
     .line 511
-    const/16 p1, 0x387
+    const/16 v1, 0x387
 
-    invoke-virtual {p0, p1, p3}, Landroid/metrics/LogMaker;->addTaggedData(ILjava/lang/Object;)Landroid/metrics/LogMaker;
+    invoke-virtual {v0, v1, p3}, Landroid/metrics/LogMaker;->addTaggedData(ILjava/lang/Object;)Landroid/metrics/LogMaker;
 
-    move-result-object p0
+    move-result-object v0
 
-    new-instance p1, Ljava/lang/Integer;
+    new-instance v1, Ljava/lang/Integer;
 
-    invoke-direct {p1, p4}, Ljava/lang/Integer;-><init>(I)V
+    invoke-direct {v1, p4}, Ljava/lang/Integer;-><init>(I)V
 
     .line 512
-    const/16 p2, 0x386
+    const/16 v2, 0x386
 
-    invoke-virtual {p0, p2, p1}, Landroid/metrics/LogMaker;->addTaggedData(ILjava/lang/Object;)Landroid/metrics/LogMaker;
+    invoke-virtual {v0, v2, v1}, Landroid/metrics/LogMaker;->addTaggedData(ILjava/lang/Object;)Landroid/metrics/LogMaker;
 
-    move-result-object p0
+    move-result-object v0
 
     .line 513
+    .local v0, "logMaker":Landroid/metrics/LogMaker;
     invoke-static {}, Lcom/android/server/pm/InstantAppResolver;->getLogger()Lcom/android/internal/logging/MetricsLogger;
 
-    move-result-object p1
+    move-result-object v1
 
-    invoke-virtual {p1, p0}, Lcom/android/internal/logging/MetricsLogger;->write(Landroid/metrics/LogMaker;)V
+    invoke-virtual {v1, v0}, Lcom/android/internal/logging/MetricsLogger;->write(Landroid/metrics/LogMaker;)V
 
     .line 514
     return-void
 .end method
 
 .method public static sanitizeIntent(Landroid/content/Intent;)Landroid/content/Intent;
-    .registers 4
+    .registers 5
+    .param p0, "origIntent"  # Landroid/content/Intent;
 
     .line 104
     new-instance v0, Landroid/content/Intent;
@@ -1799,47 +2035,51 @@
     invoke-direct {v0, v1}, Landroid/content/Intent;-><init>(Ljava/lang/String;)V
 
     .line 105
+    .local v0, "sanitizedIntent":Landroid/content/Intent;
     invoke-virtual {p0}, Landroid/content/Intent;->getCategories()Ljava/util/Set;
 
     move-result-object v1
 
     .line 106
+    .local v1, "categories":Ljava/util/Set;, "Ljava/util/Set<Ljava/lang/String;>;"
     if-eqz v1, :cond_23
 
     .line 107
     invoke-interface {v1}, Ljava/util/Set;->iterator()Ljava/util/Iterator;
 
-    move-result-object v1
-
-    :goto_13
-    invoke-interface {v1}, Ljava/util/Iterator;->hasNext()Z
-
-    move-result v2
-
-    if-eqz v2, :cond_23
-
-    invoke-interface {v1}, Ljava/util/Iterator;->next()Ljava/lang/Object;
-
     move-result-object v2
 
-    check-cast v2, Ljava/lang/String;
+    :goto_13
+    invoke-interface {v2}, Ljava/util/Iterator;->hasNext()Z
+
+    move-result v3
+
+    if-eqz v3, :cond_23
+
+    invoke-interface {v2}, Ljava/util/Iterator;->next()Ljava/lang/Object;
+
+    move-result-object v3
+
+    check-cast v3, Ljava/lang/String;
 
     .line 108
-    invoke-virtual {v0, v2}, Landroid/content/Intent;->addCategory(Ljava/lang/String;)Landroid/content/Intent;
+    .local v3, "category":Ljava/lang/String;
+    invoke-virtual {v0, v3}, Landroid/content/Intent;->addCategory(Ljava/lang/String;)Landroid/content/Intent;
 
     .line 109
+    .end local v3  # "category":Ljava/lang/String;
     goto :goto_13
 
     .line 111
     :cond_23
     invoke-virtual {p0}, Landroid/content/Intent;->getData()Landroid/net/Uri;
 
-    move-result-object v1
+    move-result-object v2
 
-    if-nez v1, :cond_2b
+    if-nez v2, :cond_2b
 
     .line 112
-    const/4 v1, 0x0
+    const/4 v2, 0x0
 
     goto :goto_35
 
@@ -1847,35 +2087,38 @@
     :cond_2b
     invoke-virtual {p0}, Landroid/content/Intent;->getScheme()Ljava/lang/String;
 
-    move-result-object v1
+    move-result-object v2
 
-    const-string v2, ""
+    const-string v3, ""
 
-    invoke-static {v1, v2, v2}, Landroid/net/Uri;->fromParts(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Landroid/net/Uri;
-
-    move-result-object v1
-
-    .line 114
-    :goto_35
-    invoke-virtual {p0}, Landroid/content/Intent;->getType()Ljava/lang/String;
+    invoke-static {v2, v3, v3}, Landroid/net/Uri;->fromParts(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Landroid/net/Uri;
 
     move-result-object v2
 
-    invoke-virtual {v0, v1, v2}, Landroid/content/Intent;->setDataAndType(Landroid/net/Uri;Ljava/lang/String;)Landroid/content/Intent;
+    :goto_35
+    nop
+
+    .line 114
+    .local v2, "sanitizedUri":Landroid/net/Uri;
+    invoke-virtual {p0}, Landroid/content/Intent;->getType()Ljava/lang/String;
+
+    move-result-object v3
+
+    invoke-virtual {v0, v2, v3}, Landroid/content/Intent;->setDataAndType(Landroid/net/Uri;Ljava/lang/String;)Landroid/content/Intent;
 
     .line 115
     invoke-virtual {p0}, Landroid/content/Intent;->getFlags()I
 
-    move-result v1
+    move-result v3
 
-    invoke-virtual {v0, v1}, Landroid/content/Intent;->addFlags(I)Landroid/content/Intent;
+    invoke-virtual {v0, v3}, Landroid/content/Intent;->addFlags(I)Landroid/content/Intent;
 
     .line 116
     invoke-virtual {p0}, Landroid/content/Intent;->getPackage()Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v3
 
-    invoke-virtual {v0, p0}, Landroid/content/Intent;->setPackage(Ljava/lang/String;)Landroid/content/Intent;
+    invoke-virtual {v0, v3}, Landroid/content/Intent;->setPackage(Ljava/lang/String;)Landroid/content/Intent;
 
     .line 117
     return-object v0

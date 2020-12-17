@@ -10,6 +10,7 @@
 # direct methods
 .method protected constructor <init>(Lcom/android/server/wm/WindowManagerService;)V
     .registers 2
+    .param p1, "service"  # Lcom/android/server/wm/WindowManagerService;
 
     .line 28
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V

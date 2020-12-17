@@ -26,6 +26,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/storage/CacheQuotaStrategy$1;Landroid/os/IBinder;)V
     .registers 3
+    .param p1, "this$1"  # Lcom/android/server/storage/CacheQuotaStrategy$1;
 
     .line 131
     iput-object p1, p0, Lcom/android/server/storage/CacheQuotaStrategy$1$1;->this$1:Lcom/android/server/storage/CacheQuotaStrategy$1;
@@ -40,7 +41,7 @@
 
 # virtual methods
 .method public run()V
-    .registers 5
+    .registers 7
 
     .line 134
     iget-object v0, p0, Lcom/android/server/storage/CacheQuotaStrategy$1$1;->this$1:Lcom/android/server/storage/CacheQuotaStrategy$1;
@@ -77,6 +78,7 @@
     move-result-object v1
 
     .line 137
+    .local v1, "requests":Ljava/util/List;, "Ljava/util/List<Landroid/app/usage/CacheQuotaHint;>;"
     new-instance v2, Landroid/os/RemoteCallback;
 
     iget-object v3, p0, Lcom/android/server/storage/CacheQuotaStrategy$1$1;->this$1:Lcom/android/server/storage/CacheQuotaStrategy$1;
@@ -88,6 +90,7 @@
     .catchall {:try_start_9 .. :try_end_27} :catchall_3d
 
     .line 140
+    .local v2, "remoteCallback":Landroid/os/RemoteCallback;
     :try_start_27
     iget-object v3, p0, Lcom/android/server/storage/CacheQuotaStrategy$1$1;->this$1:Lcom/android/server/storage/CacheQuotaStrategy$1;
 
@@ -107,17 +110,21 @@
 
     .line 141
     :catch_33
-    move-exception v1
+    move-exception v3
 
     .line 142
+    .local v3, "ex":Landroid/os/RemoteException;
     :try_start_34
-    const-string v2, "CacheQuotaStrategy"
+    const-string v4, "CacheQuotaStrategy"
 
-    const-string v3, "Remote exception occurred while trying to get cache quota"
+    const-string v5, "Remote exception occurred while trying to get cache quota"
 
-    invoke-static {v2, v3, v1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    invoke-static {v4, v5, v3}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
     .line 146
+    .end local v1  # "requests":Ljava/util/List;, "Ljava/util/List<Landroid/app/usage/CacheQuotaHint;>;"
+    .end local v2  # "remoteCallback":Landroid/os/RemoteCallback;
+    .end local v3  # "ex":Landroid/os/RemoteException;
     :goto_3b
     monitor-exit v0
 

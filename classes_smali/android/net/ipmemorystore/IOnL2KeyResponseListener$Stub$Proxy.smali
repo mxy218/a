@@ -30,6 +30,7 @@
 # direct methods
 .method constructor <init>(Landroid/os/IBinder;)V
     .registers 3
+    .param p1, "remote"  # Landroid/os/IBinder;
 
     .line 99
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -87,11 +88,13 @@
     move-result-object v0
 
     .line 138
+    .local v0, "data":Landroid/os/Parcel;
     invoke-static {}, Landroid/os/Parcel;->obtain()Landroid/os/Parcel;
 
     move-result-object v1
 
     .line 140
+    .local v1, "reply":Landroid/os/Parcel;
     :try_start_d
     const-string v2, "android.net.ipmemorystore.IOnL2KeyResponseListener"
 
@@ -139,6 +142,8 @@
     throw v2
 
     .line 149
+    .end local v0  # "data":Landroid/os/Parcel;
+    .end local v1  # "reply":Landroid/os/Parcel;
     :cond_33
     :goto_33
     iget v0, p0, Landroid/net/ipmemorystore/IOnL2KeyResponseListener$Stub$Proxy;->mCachedVersion:I
@@ -148,6 +153,8 @@
 
 .method public onL2KeyResponse(Landroid/net/ipmemorystore/StatusParcelable;Ljava/lang/String;)V
     .registers 7
+    .param p1, "status"  # Landroid/net/ipmemorystore/StatusParcelable;
+    .param p2, "l2Key"  # Ljava/lang/String;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -160,6 +167,7 @@
     move-result-object v0
 
     .line 115
+    .local v0, "_data":Landroid/os/Parcel;
     :try_start_4
     const-string v1, "android.net.ipmemorystore.IOnL2KeyResponseListener"
 
@@ -198,20 +206,21 @@
     move-result v1
 
     .line 125
+    .local v1, "_status":Z
     if-nez v1, :cond_34
 
     invoke-static {}, Landroid/net/ipmemorystore/IOnL2KeyResponseListener$Stub;->getDefaultImpl()Landroid/net/ipmemorystore/IOnL2KeyResponseListener;
 
-    move-result-object v1
+    move-result-object v2
 
-    if-eqz v1, :cond_34
+    if-eqz v2, :cond_34
 
     .line 126
     invoke-static {}, Landroid/net/ipmemorystore/IOnL2KeyResponseListener$Stub;->getDefaultImpl()Landroid/net/ipmemorystore/IOnL2KeyResponseListener;
 
-    move-result-object v1
+    move-result-object v2
 
-    invoke-interface {v1, p1, p2}, Landroid/net/ipmemorystore/IOnL2KeyResponseListener;->onL2KeyResponse(Landroid/net/ipmemorystore/StatusParcelable;Ljava/lang/String;)V
+    invoke-interface {v2, p1, p2}, Landroid/net/ipmemorystore/IOnL2KeyResponseListener;->onL2KeyResponse(Landroid/net/ipmemorystore/StatusParcelable;Ljava/lang/String;)V
     :try_end_30
     .catchall {:try_start_4 .. :try_end_30} :catchall_39
 
@@ -222,6 +231,7 @@
     return-void
 
     .line 131
+    .end local v1  # "_status":Z
     :cond_34
     invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
 
@@ -233,9 +243,9 @@
 
     .line 131
     :catchall_39
-    move-exception p1
+    move-exception v1
 
     invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
 
-    throw p1
+    throw v1
 .end method

@@ -21,6 +21,8 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/EntropyMixer;Landroid/os/Looper;)V
     .registers 3
+    .param p1, "this$0"  # Lcom/android/server/EntropyMixer;
+    .param p2, "x0"  # Landroid/os/Looper;
 
     .line 73
     iput-object p1, p0, Lcom/android/server/EntropyMixer$1;->this$0:Lcom/android/server/EntropyMixer;
@@ -33,40 +35,41 @@
 
 # virtual methods
 .method public handleMessage(Landroid/os/Message;)V
-    .registers 3
+    .registers 4
+    .param p1, "msg"  # Landroid/os/Message;
 
     .line 79
-    iget p1, p1, Landroid/os/Message;->what:I
+    iget v0, p1, Landroid/os/Message;->what:I
 
-    const/4 v0, 0x1
+    const/4 v1, 0x1
 
-    if-eq p1, v0, :cond_d
+    if-eq v0, v1, :cond_d
 
     .line 80
-    const-string p1, "EntropyMixer"
+    const-string v0, "EntropyMixer"
 
-    const-string v0, "Will not process invalid message"
+    const-string v1, "Will not process invalid message"
 
-    invoke-static {p1, v0}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v0, v1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 81
     return-void
 
     .line 83
     :cond_d
-    iget-object p1, p0, Lcom/android/server/EntropyMixer$1;->this$0:Lcom/android/server/EntropyMixer;
+    iget-object v0, p0, Lcom/android/server/EntropyMixer$1;->this$0:Lcom/android/server/EntropyMixer;
 
-    invoke-static {p1}, Lcom/android/server/EntropyMixer;->access$000(Lcom/android/server/EntropyMixer;)V
+    invoke-static {v0}, Lcom/android/server/EntropyMixer;->access$000(Lcom/android/server/EntropyMixer;)V
 
     .line 84
-    iget-object p1, p0, Lcom/android/server/EntropyMixer$1;->this$0:Lcom/android/server/EntropyMixer;
+    iget-object v0, p0, Lcom/android/server/EntropyMixer$1;->this$0:Lcom/android/server/EntropyMixer;
 
-    invoke-static {p1}, Lcom/android/server/EntropyMixer;->access$100(Lcom/android/server/EntropyMixer;)V
+    invoke-static {v0}, Lcom/android/server/EntropyMixer;->access$100(Lcom/android/server/EntropyMixer;)V
 
     .line 85
-    iget-object p1, p0, Lcom/android/server/EntropyMixer$1;->this$0:Lcom/android/server/EntropyMixer;
+    iget-object v0, p0, Lcom/android/server/EntropyMixer$1;->this$0:Lcom/android/server/EntropyMixer;
 
-    invoke-static {p1}, Lcom/android/server/EntropyMixer;->access$200(Lcom/android/server/EntropyMixer;)V
+    invoke-static {v0}, Lcom/android/server/EntropyMixer;->access$200(Lcom/android/server/EntropyMixer;)V
 
     .line 86
     return-void

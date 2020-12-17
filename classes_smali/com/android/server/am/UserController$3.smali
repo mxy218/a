@@ -26,8 +26,9 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/am/UserController;Z)V
     .registers 3
+    .param p1, "this$0"  # Lcom/android/server/am/UserController;
 
-    .line 617
+    .line 598
     iput-object p1, p0, Lcom/android/server/am/UserController$3;->this$0:Lcom/android/server/am/UserController;
 
     iput-boolean p2, p0, Lcom/android/server/am/UserController$3;->val$foreground:Z
@@ -41,8 +42,9 @@
 # virtual methods
 .method public keyEvicted(I)V
     .registers 5
+    .param p1, "userId"  # I
 
-    .line 622
+    .line 603
     iget-object v0, p0, Lcom/android/server/am/UserController$3;->this$0:Lcom/android/server/am/UserController;
 
     invoke-static {v0}, Lcom/android/server/am/UserController;->access$200(Lcom/android/server/am/UserController;)Landroid/os/Handler;
@@ -57,14 +59,16 @@
 
     invoke-virtual {v0, v2}, Landroid/os/Handler;->post(Ljava/lang/Runnable;)Z
 
-    .line 623
+    .line 604
     return-void
 .end method
 
 .method public synthetic lambda$keyEvicted$0$UserController$3(IZ)V
     .registers 4
+    .param p1, "userId"  # I
+    .param p2, "foreground"  # Z
 
-    .line 622
+    .line 603
     iget-object v0, p0, Lcom/android/server/am/UserController$3;->this$0:Lcom/android/server/am/UserController;
 
     invoke-virtual {v0, p1, p2}, Lcom/android/server/am/UserController;->startUser(IZ)Z

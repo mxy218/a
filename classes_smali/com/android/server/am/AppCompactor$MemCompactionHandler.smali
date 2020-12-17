@@ -22,10 +22,10 @@
 .method private constructor <init>(Lcom/android/server/am/AppCompactor;)V
     .registers 2
 
-    .line 523
+    .line 530
     iput-object p1, p0, Lcom/android/server/am/AppCompactor$MemCompactionHandler;->this$0:Lcom/android/server/am/AppCompactor;
 
-    .line 524
+    .line 531
     iget-object p1, p1, Lcom/android/server/am/AppCompactor;->mCompactionThread:Lcom/android/server/ServiceThread;
 
     invoke-virtual {p1}, Lcom/android/server/ServiceThread;->getLooper()Landroid/os/Looper;
@@ -34,14 +34,16 @@
 
     invoke-direct {p0, p1}, Landroid/os/Handler;-><init>(Landroid/os/Looper;)V
 
-    .line 525
+    .line 532
     return-void
 .end method
 
 .method synthetic constructor <init>(Lcom/android/server/am/AppCompactor;Lcom/android/server/am/AppCompactor$1;)V
     .registers 3
+    .param p1, "x0"  # Lcom/android/server/am/AppCompactor;
+    .param p2, "x1"  # Lcom/android/server/am/AppCompactor$1;
 
-    .line 522
+    .line 529
     invoke-direct {p0, p1}, Lcom/android/server/am/AppCompactor$MemCompactionHandler;-><init>(Lcom/android/server/am/AppCompactor;)V
 
     return-void
@@ -50,14 +52,15 @@
 
 # virtual methods
 .method public handleMessage(Landroid/os/Message;)V
-    .registers 49
+    .registers 63
+    .param p1, "msg"  # Landroid/os/Message;
 
-    .line 529
-    move-object/from16 v0, p0
+    .line 536
+    move-object/from16 v1, p0
 
-    move-object/from16 v1, p1
+    move-object/from16 v2, p1
 
-    iget v2, v1, Landroid/os/Message;->what:I
+    iget v0, v2, Landroid/os/Message;->what:I
 
     const-wide/16 v3, 0x40
 
@@ -65,44 +68,47 @@
 
     const/4 v6, 0x1
 
-    if-eq v2, v6, :cond_1f
+    if-eq v0, v6, :cond_1f
 
-    if-eq v2, v5, :cond_10
+    if-eq v0, v5, :cond_10
 
-    goto/16 :goto_388
+    goto/16 :goto_651
 
-    .line 763
+    .line 770
     :cond_10
-    const-string v1, "compactSystem"
+    const-string v0, "compactSystem"
 
-    invoke-static {v3, v4, v1}, Landroid/os/Trace;->traceBegin(JLjava/lang/String;)V
+    invoke-static {v3, v4, v0}, Landroid/os/Trace;->traceBegin(JLjava/lang/String;)V
 
-    .line 764
-    iget-object v0, v0, Lcom/android/server/am/AppCompactor$MemCompactionHandler;->this$0:Lcom/android/server/am/AppCompactor;
+    .line 771
+    iget-object v0, v1, Lcom/android/server/am/AppCompactor$MemCompactionHandler;->this$0:Lcom/android/server/am/AppCompactor;
 
     invoke-static {v0}, Lcom/android/server/am/AppCompactor;->access$1800(Lcom/android/server/am/AppCompactor;)V
 
-    .line 765
+    .line 772
     invoke-static {v3, v4}, Landroid/os/Trace;->traceEnd(J)V
 
-    goto/16 :goto_388
+    goto/16 :goto_651
 
-    .line 531
+    .line 538
     :cond_1f
     invoke-static {}, Landroid/os/SystemClock;->uptimeMillis()J
 
     move-result-wide v7
 
-    .line 539
-    iget v2, v1, Landroid/os/Message;->arg1:I
+    .line 546
+    .local v7, "start":J
+    iget v15, v2, Landroid/os/Message;->arg1:I
 
-    .line 540
-    iget v1, v1, Landroid/os/Message;->arg2:I
+    .line 547
+    .local v15, "lastOomAdj":I
+    iget v13, v2, Landroid/os/Message;->arg2:I
 
-    .line 541
-    iget-object v9, v0, Lcom/android/server/am/AppCompactor$MemCompactionHandler;->this$0:Lcom/android/server/am/AppCompactor;
+    .line 548
+    .local v13, "procState":I
+    iget-object v0, v1, Lcom/android/server/am/AppCompactor$MemCompactionHandler;->this$0:Lcom/android/server/am/AppCompactor;
 
-    invoke-static {v9}, Lcom/android/server/am/AppCompactor;->access$1000(Lcom/android/server/am/AppCompactor;)Lcom/android/server/am/ActivityManagerService;
+    invoke-static {v0}, Lcom/android/server/am/AppCompactor;->access$1000(Lcom/android/server/am/AppCompactor;)Lcom/android/server/am/ActivityManagerService;
 
     move-result-object v9
 
@@ -111,1100 +117,2330 @@
     :try_start_2e
     invoke-static {}, Lcom/android/server/am/ActivityManagerService;->boostPriorityForLockedSection()V
 
-    .line 542
-    iget-object v10, v0, Lcom/android/server/am/AppCompactor$MemCompactionHandler;->this$0:Lcom/android/server/am/AppCompactor;
+    .line 549
+    iget-object v0, v1, Lcom/android/server/am/AppCompactor$MemCompactionHandler;->this$0:Lcom/android/server/am/AppCompactor;
 
-    invoke-static {v10}, Lcom/android/server/am/AppCompactor;->access$1100(Lcom/android/server/am/AppCompactor;)Ljava/util/ArrayList;
+    invoke-static {v0}, Lcom/android/server/am/AppCompactor;->access$1100(Lcom/android/server/am/AppCompactor;)Ljava/util/ArrayList;
 
-    move-result-object v10
-
-    const/4 v11, 0x0
-
-    invoke-virtual {v10, v11}, Ljava/util/ArrayList;->remove(I)Ljava/lang/Object;
-
-    move-result-object v10
-
-    move-object v15, v10
-
-    check-cast v15, Lcom/android/server/am/ProcessRecord;
-
-    .line 544
-    iget v13, v15, Lcom/android/server/am/ProcessRecord;->reqCompactAction:I
-
-    .line 545
-    iget v14, v15, Lcom/android/server/am/ProcessRecord;->pid:I
-
-    .line 546
-    iget-object v12, v15, Lcom/android/server/am/ProcessRecord;->processName:Ljava/lang/String;
-
-    .line 550
-    if-eq v13, v6, :cond_49
-
-    if-ne v13, v5, :cond_54
-
-    :cond_49
-    iget v10, v15, Lcom/android/server/am/ProcessRecord;->setAdj:I
-
-    const/16 v3, 0xc8
-
-    if-gt v10, v3, :cond_54
-
-    .line 558
-    monitor-exit v9
-    :try_end_50
-    .catchall {:try_start_2e .. :try_end_50} :catchall_389
-
-    invoke-static {}, Lcom/android/server/am/ActivityManagerService;->resetPriorityAfterLockedSection()V
-
-    return-void
-
-    .line 561
-    :cond_54
-    :try_start_54
-    iget v3, v15, Lcom/android/server/am/ProcessRecord;->lastCompactAction:I
-
-    .line 562
-    move-object v4, v12
-
-    iget-wide v11, v15, Lcom/android/server/am/ProcessRecord;->lastCompactTime:J
-
-    .line 565
-    iget-object v10, v0, Lcom/android/server/am/AppCompactor$MemCompactionHandler;->this$0:Lcom/android/server/am/AppCompactor;
-
-    invoke-static {v10}, Lcom/android/server/am/AppCompactor;->access$1200(Lcom/android/server/am/AppCompactor;)Ljava/util/Map;
-
-    move-result-object v10
-
-    invoke-static {v14}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
-
-    move-result-object v5
-
-    invoke-interface {v10, v5}, Ljava/util/Map;->remove(Ljava/lang/Object;)Ljava/lang/Object;
-
-    move-result-object v5
-
-    check-cast v5, Lcom/android/server/am/AppCompactor$LastCompactionStats;
-
-    .line 566
-    monitor-exit v9
-    :try_end_6a
-    .catchall {:try_start_54 .. :try_end_6a} :catchall_389
-
-    invoke-static {}, Lcom/android/server/am/ActivityManagerService;->resetPriorityAfterLockedSection()V
-
-    .line 568
-    if-nez v14, :cond_70
-
-    .line 570
-    return-void
-
-    .line 580
-    :cond_70
-    const-wide/16 v9, 0x0
-
-    cmp-long v17, v11, v9
-
-    if-eqz v17, :cond_da
-
-    .line 581
-    if-ne v13, v6, :cond_9c
-
-    .line 582
-    if-ne v3, v6, :cond_87
-
-    sub-long v20, v7, v11
-
-    iget-object v9, v0, Lcom/android/server/am/AppCompactor$MemCompactionHandler;->this$0:Lcom/android/server/am/AppCompactor;
-
-    move-wide/from16 v23, v7
-
-    iget-wide v6, v9, Lcom/android/server/am/AppCompactor;->mCompactThrottleSomeSome:J
-
-    cmp-long v6, v20, v6
-
-    if-ltz v6, :cond_98
-
-    goto :goto_89
-
-    :cond_87
-    move-wide/from16 v23, v7
-
-    :goto_89
-    const/4 v6, 0x2
-
-    if-ne v3, v6, :cond_99
-
-    sub-long v7, v23, v11
-
-    iget-object v6, v0, Lcom/android/server/am/AppCompactor$MemCompactionHandler;->this$0:Lcom/android/server/am/AppCompactor;
-
-    move-wide/from16 v20, v11
-
-    iget-wide v10, v6, Lcom/android/server/am/AppCompactor;->mCompactThrottleSomeFull:J
-
-    cmp-long v6, v7, v10
-
-    if-gez v6, :cond_de
-
-    .line 593
-    :cond_98
-    return-void
-
-    .line 582
-    :cond_99
-    move-wide/from16 v20, v11
-
-    goto :goto_de
-
-    .line 595
-    :cond_9c
-    move-wide/from16 v23, v7
-
-    move-wide/from16 v20, v11
-
-    const/4 v6, 0x2
-
-    if-ne v13, v6, :cond_be
-
-    .line 596
-    const/4 v6, 0x1
-
-    if-ne v3, v6, :cond_b0
-
-    sub-long v7, v23, v20
-
-    iget-object v6, v0, Lcom/android/server/am/AppCompactor$MemCompactionHandler;->this$0:Lcom/android/server/am/AppCompactor;
-
-    iget-wide v10, v6, Lcom/android/server/am/AppCompactor;->mCompactThrottleFullSome:J
-
-    cmp-long v6, v7, v10
-
-    if-ltz v6, :cond_bd
-
-    :cond_b0
-    const/4 v6, 0x2
-
-    if-ne v3, v6, :cond_de
-
-    sub-long v7, v23, v20
-
-    iget-object v6, v0, Lcom/android/server/am/AppCompactor$MemCompactionHandler;->this$0:Lcom/android/server/am/AppCompactor;
-
-    iget-wide v10, v6, Lcom/android/server/am/AppCompactor;->mCompactThrottleFullFull:J
-
-    cmp-long v6, v7, v10
-
-    if-gez v6, :cond_de
-
-    .line 607
-    :cond_bd
-    return-void
-
-    .line 609
-    :cond_be
-    const/4 v6, 0x3
-
-    if-ne v13, v6, :cond_cc
-
-    .line 610
-    sub-long v7, v23, v20
-
-    iget-object v6, v0, Lcom/android/server/am/AppCompactor$MemCompactionHandler;->this$0:Lcom/android/server/am/AppCompactor;
-
-    iget-wide v10, v6, Lcom/android/server/am/AppCompactor;->mCompactThrottlePersistent:J
-
-    cmp-long v6, v7, v10
-
-    if-gez v6, :cond_de
-
-    .line 616
-    return-void
-
-    .line 618
-    :cond_cc
-    const/4 v6, 0x4
-
-    if-ne v13, v6, :cond_de
-
-    .line 619
-    sub-long v7, v23, v20
-
-    iget-object v6, v0, Lcom/android/server/am/AppCompactor$MemCompactionHandler;->this$0:Lcom/android/server/am/AppCompactor;
-
-    iget-wide v10, v6, Lcom/android/server/am/AppCompactor;->mCompactThrottleBFGS:J
-
-    cmp-long v6, v7, v10
-
-    if-gez v6, :cond_de
-
-    .line 625
-    return-void
-
-    .line 580
-    :cond_da
-    move-wide/from16 v23, v7
-
-    move-wide/from16 v20, v11
-
-    .line 630
-    :cond_de
-    :goto_de
-    const/4 v6, 0x1
-
-    if-eq v13, v6, :cond_f2
-
-    const/4 v6, 0x2
-
-    if-eq v13, v6, :cond_ed
-
-    const/4 v6, 0x3
-
-    if-eq v13, v6, :cond_ed
-
-    const/4 v6, 0x4
-
-    if-eq v13, v6, :cond_ed
-
-    .line 641
-    const-string v6, ""
-
-    goto :goto_f7
-
-    .line 638
-    :cond_ed
-    iget-object v6, v0, Lcom/android/server/am/AppCompactor$MemCompactionHandler;->this$0:Lcom/android/server/am/AppCompactor;
-
-    iget-object v6, v6, Lcom/android/server/am/AppCompactor;->mCompactActionFull:Ljava/lang/String;
-
-    .line 639
-    goto :goto_f7
-
-    .line 632
-    :cond_f2
-    iget-object v6, v0, Lcom/android/server/am/AppCompactor$MemCompactionHandler;->this$0:Lcom/android/server/am/AppCompactor;
-
-    iget-object v6, v6, Lcom/android/server/am/AppCompactor;->mCompactActionSome:Ljava/lang/String;
-
-    .line 633
-    nop
-
-    .line 645
-    :goto_f7
-    const-string v7, ""
-
-    invoke-virtual {v7, v6}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
-
-    move-result v7
-
-    if-eqz v7, :cond_100
-
-    .line 646
-    return-void
-
-    .line 649
-    :cond_100
-    iget-object v7, v0, Lcom/android/server/am/AppCompactor$MemCompactionHandler;->this$0:Lcom/android/server/am/AppCompactor;
-
-    iget-object v7, v7, Lcom/android/server/am/AppCompactor;->mProcStateThrottle:Ljava/util/Set;
-
-    invoke-static {v1}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
-
-    move-result-object v8
-
-    invoke-interface {v7, v8}, Ljava/util/Set;->contains(Ljava/lang/Object;)Z
-
-    move-result v7
-
-    if-eqz v7, :cond_10f
-
-    .line 654
-    return-void
-
-    .line 657
-    :cond_10f
-    invoke-static {v14}, Landroid/os/Process;->getRss(I)[J
-
-    move-result-object v7
-
-    .line 658
-    const/4 v8, 0x2
-
-    aget-wide v10, v7, v8
-
-    .line 660
-    const/4 v12, 0x0
-
-    aget-wide v25, v7, v12
-
-    const-wide/16 v18, 0x0
-
-    cmp-long v12, v25, v18
-
-    if-nez v12, :cond_134
-
-    const/4 v12, 0x1
-
-    aget-wide v25, v7, v12
-
-    cmp-long v12, v25, v18
-
-    if-nez v12, :cond_134
-
-    aget-wide v25, v7, v8
-
-    cmp-long v8, v25, v18
-
-    if-nez v8, :cond_134
-
-    const/4 v8, 0x3
-
-    aget-wide v25, v7, v8
-
-    cmp-long v8, v25, v18
-
-    if-nez v8, :cond_134
-
-    .line 666
-    return-void
-
-    .line 669
-    :cond_134
-    const-string v8, "all"
-
-    invoke-virtual {v6, v8}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
-
-    move-result v8
-
-    if-nez v8, :cond_144
-
-    const-string v8, "anon"
-
-    invoke-virtual {v6, v8}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
-
-    move-result v8
-
-    if-eqz v8, :cond_197
-
-    .line 670
-    :cond_144
-    iget-object v8, v0, Lcom/android/server/am/AppCompactor$MemCompactionHandler;->this$0:Lcom/android/server/am/AppCompactor;
-
-    move-wide/from16 v25, v10
-
-    iget-wide v9, v8, Lcom/android/server/am/AppCompactor;->mFullAnonRssThrottleKb:J
-
-    const-wide/16 v18, 0x0
-
-    cmp-long v8, v9, v18
-
-    if-lez v8, :cond_159
-
-    iget-object v8, v0, Lcom/android/server/am/AppCompactor$MemCompactionHandler;->this$0:Lcom/android/server/am/AppCompactor;
-
-    iget-wide v8, v8, Lcom/android/server/am/AppCompactor;->mFullAnonRssThrottleKb:J
-
-    cmp-long v8, v25, v8
-
-    if-gez v8, :cond_159
-
-    .line 677
-    return-void
-
-    .line 680
-    :cond_159
-    if-eqz v5, :cond_197
-
-    iget-object v8, v0, Lcom/android/server/am/AppCompactor$MemCompactionHandler;->this$0:Lcom/android/server/am/AppCompactor;
-
-    iget-wide v8, v8, Lcom/android/server/am/AppCompactor;->mFullDeltaRssThrottleKb:J
-
-    const-wide/16 v18, 0x0
-
-    cmp-long v8, v8, v18
-
-    if-lez v8, :cond_197
-
-    .line 681
-    invoke-virtual {v5}, Lcom/android/server/am/AppCompactor$LastCompactionStats;->getRssAfterCompaction()[J
-
-    move-result-object v5
-
-    .line 682
-    const/4 v8, 0x1
-
-    aget-wide v9, v7, v8
-
-    aget-wide v18, v5, v8
-
-    sub-long v9, v9, v18
-
-    invoke-static {v9, v10}, Ljava/lang/Math;->abs(J)J
-
-    move-result-wide v8
-
-    const/4 v10, 0x2
-
-    aget-wide v18, v7, v10
-
-    aget-wide v25, v5, v10
-
-    sub-long v18, v18, v25
-
-    .line 683
-    invoke-static/range {v18 .. v19}, Ljava/lang/Math;->abs(J)J
-
-    move-result-wide v18
-
-    add-long v18, v8, v18
-
-    const/4 v8, 0x3
-
-    aget-wide v10, v7, v8
-
-    aget-wide v25, v5, v8
-
-    sub-long v10, v10, v25
-
-    .line 684
-    invoke-static {v10, v11}, Ljava/lang/Math;->abs(J)J
-
-    move-result-wide v10
-
-    add-long v18, v18, v10
-
-    .line 685
-    iget-object v5, v0, Lcom/android/server/am/AppCompactor$MemCompactionHandler;->this$0:Lcom/android/server/am/AppCompactor;
-
-    iget-wide v10, v5, Lcom/android/server/am/AppCompactor;->mFullDeltaRssThrottleKb:J
-
-    cmp-long v5, v18, v10
-
-    if-gtz v5, :cond_197
-
-    .line 691
-    return-void
-
-    .line 698
-    :cond_197
-    const/4 v5, 0x1
-
-    if-eq v13, v5, :cond_1b6
-
-    const/4 v5, 0x2
-
-    if-eq v13, v5, :cond_1b0
-
-    const/4 v5, 0x3
-
-    if-eq v13, v5, :cond_1aa
-
-    const/4 v5, 0x4
-
-    if-eq v13, v5, :cond_1a4
-
-    goto :goto_1bc
-
-    .line 709
-    :cond_1a4
-    iget-object v5, v0, Lcom/android/server/am/AppCompactor$MemCompactionHandler;->this$0:Lcom/android/server/am/AppCompactor;
-
-    invoke-static {v5}, Lcom/android/server/am/AppCompactor;->access$1608(Lcom/android/server/am/AppCompactor;)I
-
-    .line 710
-    goto :goto_1bc
-
-    .line 706
-    :cond_1aa
-    iget-object v5, v0, Lcom/android/server/am/AppCompactor$MemCompactionHandler;->this$0:Lcom/android/server/am/AppCompactor;
-
-    invoke-static {v5}, Lcom/android/server/am/AppCompactor;->access$1508(Lcom/android/server/am/AppCompactor;)I
-
-    .line 707
-    goto :goto_1bc
-
-    .line 703
-    :cond_1b0
-    iget-object v5, v0, Lcom/android/server/am/AppCompactor$MemCompactionHandler;->this$0:Lcom/android/server/am/AppCompactor;
-
-    invoke-static {v5}, Lcom/android/server/am/AppCompactor;->access$1408(Lcom/android/server/am/AppCompactor;)I
-
-    .line 704
-    goto :goto_1bc
-
-    .line 700
-    :cond_1b6
-    iget-object v5, v0, Lcom/android/server/am/AppCompactor$MemCompactionHandler;->this$0:Lcom/android/server/am/AppCompactor;
-
-    invoke-static {v5}, Lcom/android/server/am/AppCompactor;->access$1308(Lcom/android/server/am/AppCompactor;)I
-
-    .line 701
-    nop
-
-    .line 716
-    :goto_1bc
-    :try_start_1bc
-    new-instance v5, Ljava/lang/StringBuilder;
-
-    invoke-direct {v5}, Ljava/lang/StringBuilder;-><init>()V
-
-    const-string v8, "Compact "
-
-    invoke-virtual {v5, v8}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    .line 717
-    const/4 v8, 0x1
-
-    if-ne v13, v8, :cond_1cd
-
-    const-string/jumbo v8, "some"
-
-    goto :goto_1cf
-
-    :cond_1cd
-    const-string v8, "full"
-
-    :goto_1cf
-    invoke-virtual {v5, v8}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    const-string v8, ": "
-
-    invoke-virtual {v5, v8}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v5, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v5}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
-
-    move-result-object v5
-    :try_end_1de
-    .catch Ljava/lang/Exception; {:try_start_1bc .. :try_end_1de} :catch_37f
-    .catchall {:try_start_1bc .. :try_end_1de} :catchall_378
-
-    .line 716
-    const-wide/16 v10, 0x40
-
-    :try_start_1e0
-    invoke-static {v10, v11, v5}, Landroid/os/Trace;->traceBegin(JLjava/lang/String;)V
-    :try_end_1e3
-    .catch Ljava/lang/Exception; {:try_start_1e0 .. :try_end_1e3} :catch_375
-    .catchall {:try_start_1e0 .. :try_end_1e3} :catchall_378
-
-    .line 719
-    :try_start_1e3
-    invoke-static {}, Landroid/os/Debug;->getZramFreeKb()J
-
-    move-result-wide v36
-
-    .line 720
-    new-instance v5, Ljava/io/FileOutputStream;
-
-    new-instance v8, Ljava/lang/StringBuilder;
-
-    invoke-direct {v8}, Ljava/lang/StringBuilder;-><init>()V
-
-    const-string v10, "/proc/"
-
-    invoke-virtual {v8, v10}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v8, v14}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
-
-    const-string v10, "/reclaim"
-
-    invoke-virtual {v8, v10}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v8}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
-
-    move-result-object v8
-
-    invoke-direct {v5, v8}, Ljava/io/FileOutputStream;-><init>(Ljava/lang/String;)V
-
-    .line 721
-    invoke-virtual {v6}, Ljava/lang/String;->getBytes()[B
-
-    move-result-object v8
-
-    invoke-virtual {v5, v8}, Ljava/io/FileOutputStream;->write([B)V
-
-    .line 722
-    invoke-virtual {v5}, Ljava/io/FileOutputStream;->close()V
-
-    .line 723
-    invoke-static {v14}, Landroid/os/Process;->getRss(I)[J
-
-    move-result-object v5
-
-    .line 724
-    invoke-static {}, Landroid/os/SystemClock;->uptimeMillis()J
-
-    move-result-wide v11
-
-    .line 725
-    sub-long v29, v11, v23
-
-    .line 726
-    invoke-static {}, Landroid/os/Debug;->getZramFreeKb()J
-
-    move-result-wide v38
-
-    .line 727
-    const/16 v8, 0x756f
-
-    const/16 v10, 0x12
-
-    new-array v10, v10, [Ljava/lang/Object;
-
-    invoke-static {v14}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
-
-    move-result-object v18
-
-    const/16 v19, 0x0
-
-    aput-object v18, v10, v19
-
-    const/16 v18, 0x1
-
-    aput-object v4, v10, v18
-
-    const/16 v16, 0x2
-
-    aput-object v6, v10, v16
-
-    aget-wide v23, v7, v19
-
-    .line 728
-    invoke-static/range {v23 .. v24}, Ljava/lang/Long;->valueOf(J)Ljava/lang/Long;
-
-    move-result-object v18
-
-    const/4 v9, 0x3
-
-    aput-object v18, v10, v9
-
-    const/16 v18, 0x1
-
-    aget-wide v23, v7, v18
-
-    invoke-static/range {v23 .. v24}, Ljava/lang/Long;->valueOf(J)Ljava/lang/Long;
-
-    move-result-object v18
-
-    const/16 v17, 0x4
-
-    aput-object v18, v10, v17
-
-    const/16 v17, 0x5
-
-    const/16 v16, 0x2
-
-    aget-wide v18, v7, v16
-
-    invoke-static/range {v18 .. v19}, Ljava/lang/Long;->valueOf(J)Ljava/lang/Long;
-
-    move-result-object v18
-
-    aput-object v18, v10, v17
-
-    const/16 v17, 0x6
-
-    const/4 v9, 0x3
-
-    aget-wide v18, v7, v9
-
-    invoke-static/range {v18 .. v19}, Ljava/lang/Long;->valueOf(J)Ljava/lang/Long;
-
-    move-result-object v18
-
-    aput-object v18, v10, v17
-
-    const/16 v17, 0x7
-
-    const/16 v18, 0x0
-
-    aget-wide v23, v5, v18
-
-    aget-wide v25, v7, v18
-
-    sub-long v23, v23, v25
-
-    .line 729
-    invoke-static/range {v23 .. v24}, Ljava/lang/Long;->valueOf(J)Ljava/lang/Long;
-
-    move-result-object v18
-
-    aput-object v18, v10, v17
-
-    const/16 v17, 0x8
-
-    const/16 v18, 0x1
-
-    aget-wide v23, v5, v18
-
-    aget-wide v25, v7, v18
-
-    sub-long v23, v23, v25
-
-    invoke-static/range {v23 .. v24}, Ljava/lang/Long;->valueOf(J)Ljava/lang/Long;
-
-    move-result-object v18
-
-    aput-object v18, v10, v17
-
-    const/16 v17, 0x9
-
-    const/16 v16, 0x2
-
-    aget-wide v18, v5, v16
-
-    aget-wide v23, v7, v16
-
-    sub-long v18, v18, v23
-
-    .line 730
-    invoke-static/range {v18 .. v19}, Ljava/lang/Long;->valueOf(J)Ljava/lang/Long;
-
-    move-result-object v18
-
-    aput-object v18, v10, v17
-
-    const/16 v17, 0xa
-
-    const/4 v9, 0x3
-
-    aget-wide v18, v5, v9
-
-    aget-wide v23, v7, v9
-
-    sub-long v18, v18, v23
-
-    invoke-static/range {v18 .. v19}, Ljava/lang/Long;->valueOf(J)Ljava/lang/Long;
-
-    move-result-object v18
-
-    aput-object v18, v10, v17
-
-    const/16 v17, 0xb
-
-    invoke-static/range {v29 .. v30}, Ljava/lang/Long;->valueOf(J)Ljava/lang/Long;
-
-    move-result-object v18
-
-    aput-object v18, v10, v17
-
-    const/16 v17, 0xc
-
-    .line 731
-    invoke-static {v3}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
-
-    move-result-object v18
-
-    aput-object v18, v10, v17
-
-    const/16 v17, 0xd
-
-    invoke-static/range {v20 .. v21}, Ljava/lang/Long;->valueOf(J)Ljava/lang/Long;
-
-    move-result-object v18
-
-    aput-object v18, v10, v17
-
-    const/16 v17, 0xe
-
-    invoke-static {v2}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
-
-    move-result-object v18
-
-    aput-object v18, v10, v17
-
-    const/16 v17, 0xf
-
-    invoke-static {v1}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
-
-    move-result-object v18
-
-    aput-object v18, v10, v17
-
-    const/16 v17, 0x10
-
-    .line 732
-    invoke-static/range {v36 .. v37}, Ljava/lang/Long;->valueOf(J)Ljava/lang/Long;
-
-    move-result-object v18
-
-    aput-object v18, v10, v17
-
-    const/16 v17, 0x11
-
-    sub-long v18, v38, v36
-
-    invoke-static/range {v18 .. v19}, Ljava/lang/Long;->valueOf(J)Ljava/lang/Long;
-
-    move-result-object v18
-
-    aput-object v18, v10, v17
-
-    .line 727
-    invoke-static {v8, v10}, Landroid/util/EventLog;->writeEvent(I[Ljava/lang/Object;)I
-
-    .line 737
-    iget-object v8, v0, Lcom/android/server/am/AppCompactor$MemCompactionHandler;->this$0:Lcom/android/server/am/AppCompactor;
-
-    invoke-static {v8}, Lcom/android/server/am/AppCompactor;->access$1700(Lcom/android/server/am/AppCompactor;)Ljava/util/Random;
-
-    move-result-object v8
-
-    invoke-virtual {v8}, Ljava/util/Random;->nextFloat()F
-
-    move-result v8
-
-    iget-object v10, v0, Lcom/android/server/am/AppCompactor$MemCompactionHandler;->this$0:Lcom/android/server/am/AppCompactor;
-
-    iget v10, v10, Lcom/android/server/am/AppCompactor;->mStatsdSampleRate:F
-
-    cmpg-float v8, v8, v10
-
-    if-gez v8, :cond_32e
-
-    .line 738
-    const/16 v8, 0x73
+    move-result-object v0
 
     const/4 v10, 0x0
 
-    aget-wide v17, v7, v10
+    invoke-virtual {v0, v10}, Ljava/util/ArrayList;->remove(I)Ljava/lang/Object;
 
-    const/4 v10, 0x1
+    move-result-object v0
 
-    aget-wide v23, v7, v10
+    check-cast v0, Lcom/android/server/am/ProcessRecord;
 
-    const/4 v10, 0x2
+    move-object v14, v0
 
-    aget-wide v25, v7, v10
+    .line 551
+    .local v14, "proc":Lcom/android/server/am/ProcessRecord;
+    iget v0, v14, Lcom/android/server/am/ProcessRecord;->reqCompactAction:I
 
-    const/4 v9, 0x3
+    move v12, v0
 
-    aget-wide v27, v7, v9
+    .line 552
+    .local v12, "pendingAction":I
+    iget v0, v14, Lcom/android/server/am/ProcessRecord;->pid:I
 
-    const/4 v7, 0x0
+    move v11, v0
 
-    aget-wide v31, v5, v7
+    .line 553
+    .local v11, "pid":I
+    iget-object v0, v14, Lcom/android/server/am/ProcessRecord;->processName:Ljava/lang/String;
 
-    const/4 v7, 0x1
+    move-object/from16 v40, v0
 
-    aget-wide v33, v5, v7
+    .line 557
+    .local v40, "name":Ljava/lang/String;
+    if-eq v12, v6, :cond_51
 
-    const/4 v7, 0x2
+    if-ne v12, v5, :cond_4e
 
-    aget-wide v40, v5, v7
+    goto :goto_51
 
-    const/4 v7, 0x3
+    :cond_4e
+    move-object/from16 v4, v40
 
-    aget-wide v42, v5, v7
+    goto :goto_8b
 
-    .line 742
-    invoke-static {v1}, Landroid/app/ActivityManager;->processStateAmToProto(I)I
+    :cond_51
+    :goto_51
+    iget v0, v14, Lcom/android/server/am/ProcessRecord;->setAdj:I
+    :try_end_53
+    .catchall {:try_start_2e .. :try_end_53} :catchall_652
 
-    move-result v35
+    const/16 v3, 0xc8
 
-    .line 738
-    move v9, v8
+    if-gt v0, v3, :cond_89
 
-    move v10, v14
+    .line 560
+    :try_start_57
+    sget-boolean v0, Lcom/android/server/am/ActivityManagerDebugConfig;->DEBUG_COMPACTION:Z
 
-    move-wide/from16 v44, v11
+    if-eqz v0, :cond_79
 
-    move-wide/from16 v7, v20
+    .line 561
+    const-string v0, "ActivityManager"
 
-    move-object v11, v4
+    new-instance v3, Ljava/lang/StringBuilder;
 
-    move v12, v13
+    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
 
-    move v1, v13
+    const-string v4, "Skipping compaction as process "
 
-    move v4, v14
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    move-wide/from16 v13, v17
+    move-object/from16 v4, v40
 
-    move-object/from16 v46, v15
+    .end local v40  # "name":Ljava/lang/String;
+    .local v4, "name":Ljava/lang/String;
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    move-wide/from16 v15, v23
+    const-string v5, " is now perceptible."
 
-    move-wide/from16 v17, v25
+    invoke-virtual {v3, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    move-wide/from16 v19, v27
+    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-wide/from16 v21, v31
+    move-result-object v3
 
-    move-wide/from16 v23, v33
+    invoke-static {v0, v3}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
 
-    move-wide/from16 v25, v40
+    goto :goto_7b
 
-    move-wide/from16 v27, v42
+    .line 560
+    .end local v4  # "name":Ljava/lang/String;
+    .restart local v40  # "name":Ljava/lang/String;
+    :cond_79
+    move-object/from16 v4, v40
 
-    move/from16 v31, v3
+    .line 565
+    .end local v40  # "name":Ljava/lang/String;
+    .restart local v4  # "name":Ljava/lang/String;
+    :goto_7b
+    monitor-exit v9
+    :try_end_7c
+    .catchall {:try_start_57 .. :try_end_7c} :catchall_80
 
-    move-wide/from16 v32, v7
-
-    move/from16 v34, v2
-
-    invoke-static/range {v9 .. v39}, Landroid/util/StatsLog;->write(IILjava/lang/String;IJJJJJJJJJIJIIJJ)I
-
-    goto :goto_334
-
-    .line 737
-    :cond_32e
-    move-wide/from16 v44, v11
-
-    move v1, v13
-
-    move v4, v14
-
-    move-object/from16 v46, v15
-
-    .line 746
-    :goto_334
-    iget-object v2, v0, Lcom/android/server/am/AppCompactor$MemCompactionHandler;->this$0:Lcom/android/server/am/AppCompactor;
-
-    invoke-static {v2}, Lcom/android/server/am/AppCompactor;->access$1000(Lcom/android/server/am/AppCompactor;)Lcom/android/server/am/ActivityManagerService;
-
-    move-result-object v2
-
-    monitor-enter v2
-    :try_end_33b
-    .catch Ljava/lang/Exception; {:try_start_1e3 .. :try_end_33b} :catch_37f
-    .catchall {:try_start_1e3 .. :try_end_33b} :catchall_378
-
-    :try_start_33b
-    invoke-static {}, Lcom/android/server/am/ActivityManagerService;->boostPriorityForLockedSection()V
-
-    .line 747
-    move-wide/from16 v7, v44
-
-    move-object/from16 v10, v46
-
-    iput-wide v7, v10, Lcom/android/server/am/ProcessRecord;->lastCompactTime:J
-
-    .line 748
-    iput v1, v10, Lcom/android/server/am/ProcessRecord;->lastCompactAction:I
-
-    .line 749
-    monitor-exit v2
-    :try_end_347
-    .catchall {:try_start_33b .. :try_end_347} :catchall_36f
-
-    :try_start_347
     invoke-static {}, Lcom/android/server/am/ActivityManagerService;->resetPriorityAfterLockedSection()V
 
-    .line 751
-    const-string v1, "all"
+    return-void
 
-    invoke-virtual {v6, v1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    .line 573
+    .end local v4  # "name":Ljava/lang/String;
+    .end local v11  # "pid":I
+    .end local v12  # "pendingAction":I
+    .end local v14  # "proc":Lcom/android/server/am/ProcessRecord;
+    :catchall_80
+    move-exception v0
 
-    move-result v1
+    move-wide/from16 v52, v7
 
-    if-nez v1, :cond_35a
+    move/from16 v55, v13
 
-    const-string v1, "anon"
+    move/from16 v59, v15
 
-    .line 752
-    invoke-virtual {v6, v1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    goto/16 :goto_659
 
-    move-result v1
+    .line 557
+    .restart local v11  # "pid":I
+    .restart local v12  # "pendingAction":I
+    .restart local v14  # "proc":Lcom/android/server/am/ProcessRecord;
+    .restart local v40  # "name":Ljava/lang/String;
+    :cond_89
+    move-object/from16 v4, v40
 
-    if-eqz v1, :cond_36c
+    .line 568
+    .end local v40  # "name":Ljava/lang/String;
+    .restart local v4  # "name":Ljava/lang/String;
+    :goto_8b
+    :try_start_8b
+    iget v0, v14, Lcom/android/server/am/ProcessRecord;->lastCompactAction:I
 
-    .line 753
-    :cond_35a
-    iget-object v0, v0, Lcom/android/server/am/AppCompactor$MemCompactionHandler;->this$0:Lcom/android/server/am/AppCompactor;
+    move v3, v0
+
+    .line 569
+    .local v3, "lastCompactAction":I
+    iget-wide v5, v14, Lcom/android/server/am/ProcessRecord;->lastCompactTime:J
+
+    .line 572
+    .local v5, "lastCompactTime":J
+    iget-object v0, v1, Lcom/android/server/am/AppCompactor$MemCompactionHandler;->this$0:Lcom/android/server/am/AppCompactor;
 
     invoke-static {v0}, Lcom/android/server/am/AppCompactor;->access$1200(Lcom/android/server/am/AppCompactor;)Ljava/util/Map;
 
     move-result-object v0
 
-    invoke-static {v4}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
+    invoke-static {v11}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
 
-    move-result-object v1
+    move-result-object v10
 
-    new-instance v2, Lcom/android/server/am/AppCompactor$LastCompactionStats;
+    invoke-interface {v0, v10}, Ljava/util/Map;->remove(Ljava/lang/Object;)Ljava/lang/Object;
 
-    invoke-direct {v2, v5}, Lcom/android/server/am/AppCompactor$LastCompactionStats;-><init>([J)V
+    move-result-object v0
 
-    invoke-interface {v0, v1, v2}, Ljava/util/Map;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
-    :try_end_36c
-    .catch Ljava/lang/Exception; {:try_start_347 .. :try_end_36c} :catch_37f
-    .catchall {:try_start_347 .. :try_end_36c} :catchall_378
+    check-cast v0, Lcom/android/server/am/AppCompactor$LastCompactionStats;
 
-    .line 758
-    :cond_36c
-    const-wide/16 v1, 0x40
+    move-object/from16 v40, v0
 
-    goto :goto_383
+    .line 573
+    .local v40, "lastCompactionStats":Lcom/android/server/am/AppCompactor$LastCompactionStats;
+    monitor-exit v9
+    :try_end_a3
+    .catchall {:try_start_8b .. :try_end_a3} :catchall_652
 
-    .line 749
-    :catchall_36f
-    move-exception v0
-
-    :try_start_370
-    monitor-exit v2
-    :try_end_371
-    .catchall {:try_start_370 .. :try_end_371} :catchall_36f
-
-    :try_start_371
     invoke-static {}, Lcom/android/server/am/ActivityManagerService;->resetPriorityAfterLockedSection()V
 
-    throw v0
-    :try_end_375
-    .catch Ljava/lang/Exception; {:try_start_371 .. :try_end_375} :catch_37f
-    .catchall {:try_start_371 .. :try_end_375} :catchall_378
+    .line 575
+    if-nez v11, :cond_a9
 
-    .line 755
-    :catch_375
-    move-exception v0
-
-    move-wide v1, v10
-
-    goto :goto_382
-
-    .line 758
-    :catchall_378
-    move-exception v0
-
-    const-wide/16 v1, 0x40
-
-    invoke-static {v1, v2}, Landroid/os/Trace;->traceEnd(J)V
-
-    throw v0
-
-    .line 755
-    :catch_37f
-    move-exception v0
-
-    const-wide/16 v1, 0x40
-
-    .line 758
-    :goto_382
-    nop
-
-    :goto_383
-    invoke-static {v1, v2}, Landroid/os/Trace;->traceEnd(J)V
-
-    .line 759
-    nop
-
-    .line 760
-    nop
-
-    .line 769
-    :goto_388
+    .line 577
     return-void
 
-    .line 566
-    :catchall_389
+    .line 587
+    :cond_a9
+    const-wide/16 v9, 0x0
+
+    cmp-long v0, v5, v9
+
+    if-eqz v0, :cond_20a
+
+    .line 588
+    const/4 v0, 0x1
+
+    if-ne v12, v0, :cond_11e
+
+    .line 589
+    if-ne v3, v0, :cond_c4
+
+    sub-long v21, v7, v5
+
+    iget-object v0, v1, Lcom/android/server/am/AppCompactor$MemCompactionHandler;->this$0:Lcom/android/server/am/AppCompactor;
+
+    iget-wide v9, v0, Lcom/android/server/am/AppCompactor;->mCompactThrottleSomeSome:J
+
+    cmp-long v0, v21, v9
+
+    if-ltz v0, :cond_bf
+
+    goto :goto_c4
+
+    :cond_bf
+    move-object/from16 v22, v14
+
+    move/from16 v21, v15
+
+    goto :goto_d5
+
+    :cond_c4
+    :goto_c4
+    const/4 v0, 0x2
+
+    if-ne v3, v0, :cond_118
+
+    sub-long v9, v7, v5
+
+    iget-object v0, v1, Lcom/android/server/am/AppCompactor$MemCompactionHandler;->this$0:Lcom/android/server/am/AppCompactor;
+
+    move-object/from16 v22, v14
+
+    move/from16 v21, v15
+
+    .end local v14  # "proc":Lcom/android/server/am/ProcessRecord;
+    .end local v15  # "lastOomAdj":I
+    .local v21, "lastOomAdj":I
+    .local v22, "proc":Lcom/android/server/am/ProcessRecord;
+    iget-wide v14, v0, Lcom/android/server/am/AppCompactor;->mCompactThrottleSomeFull:J
+
+    cmp-long v0, v9, v14
+
+    if-gez v0, :cond_20e
+
+    .line 594
+    :goto_d5
+    sget-boolean v0, Lcom/android/server/am/ActivityManagerDebugConfig;->DEBUG_COMPACTION:Z
+
+    if-eqz v0, :cond_117
+
+    .line 595
+    new-instance v0, Ljava/lang/StringBuilder;
+
+    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
+
+    const-string v9, "Skipping some compaction for "
+
+    invoke-virtual {v0, v9}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v0, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    const-string v9, ": too soon. throttle="
+
+    invoke-virtual {v0, v9}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    iget-object v9, v1, Lcom/android/server/am/AppCompactor$MemCompactionHandler;->this$0:Lcom/android/server/am/AppCompactor;
+
+    iget-wide v9, v9, Lcom/android/server/am/AppCompactor;->mCompactThrottleSomeSome:J
+
+    invoke-virtual {v0, v9, v10}, Ljava/lang/StringBuilder;->append(J)Ljava/lang/StringBuilder;
+
+    const-string v9, "/"
+
+    invoke-virtual {v0, v9}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    iget-object v9, v1, Lcom/android/server/am/AppCompactor$MemCompactionHandler;->this$0:Lcom/android/server/am/AppCompactor;
+
+    iget-wide v9, v9, Lcom/android/server/am/AppCompactor;->mCompactThrottleSomeFull:J
+
+    invoke-virtual {v0, v9, v10}, Ljava/lang/StringBuilder;->append(J)Ljava/lang/StringBuilder;
+
+    const-string v9, " last="
+
+    invoke-virtual {v0, v9}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    sub-long v9, v7, v5
+
+    invoke-virtual {v0, v9, v10}, Ljava/lang/StringBuilder;->append(J)Ljava/lang/StringBuilder;
+
+    const-string/jumbo v9, "ms ago"
+
+    invoke-virtual {v0, v9}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v0
+
+    const-string v9, "ActivityManager"
+
+    invoke-static {v9, v0}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
+
+    .line 600
+    :cond_117
+    return-void
+
+    .line 589
+    .end local v21  # "lastOomAdj":I
+    .end local v22  # "proc":Lcom/android/server/am/ProcessRecord;
+    .restart local v14  # "proc":Lcom/android/server/am/ProcessRecord;
+    .restart local v15  # "lastOomAdj":I
+    :cond_118
+    move-object/from16 v22, v14
+
+    move/from16 v21, v15
+
+    .end local v14  # "proc":Lcom/android/server/am/ProcessRecord;
+    .end local v15  # "lastOomAdj":I
+    .restart local v21  # "lastOomAdj":I
+    .restart local v22  # "proc":Lcom/android/server/am/ProcessRecord;
+    goto/16 :goto_20e
+
+    .line 602
+    .end local v21  # "lastOomAdj":I
+    .end local v22  # "proc":Lcom/android/server/am/ProcessRecord;
+    .restart local v14  # "proc":Lcom/android/server/am/ProcessRecord;
+    .restart local v15  # "lastOomAdj":I
+    :cond_11e
+    move-object/from16 v22, v14
+
+    move/from16 v21, v15
+
+    .end local v14  # "proc":Lcom/android/server/am/ProcessRecord;
+    .end local v15  # "lastOomAdj":I
+    .restart local v21  # "lastOomAdj":I
+    .restart local v22  # "proc":Lcom/android/server/am/ProcessRecord;
+    const/4 v0, 0x2
+
+    if-ne v12, v0, :cond_182
+
+    .line 603
+    const/4 v9, 0x1
+
+    if-ne v3, v9, :cond_132
+
+    sub-long v9, v7, v5
+
+    iget-object v14, v1, Lcom/android/server/am/AppCompactor$MemCompactionHandler;->this$0:Lcom/android/server/am/AppCompactor;
+
+    iget-wide v14, v14, Lcom/android/server/am/AppCompactor;->mCompactThrottleFullSome:J
+
+    cmp-long v9, v9, v14
+
+    if-ltz v9, :cond_13f
+
+    :cond_132
+    const/4 v0, 0x2
+
+    if-ne v3, v0, :cond_20e
+
+    sub-long v9, v7, v5
+
+    iget-object v14, v1, Lcom/android/server/am/AppCompactor$MemCompactionHandler;->this$0:Lcom/android/server/am/AppCompactor;
+
+    iget-wide v14, v14, Lcom/android/server/am/AppCompactor;->mCompactThrottleFullFull:J
+
+    cmp-long v9, v9, v14
+
+    if-gez v9, :cond_20e
+
+    .line 608
+    :cond_13f
+    sget-boolean v0, Lcom/android/server/am/ActivityManagerDebugConfig;->DEBUG_COMPACTION:Z
+
+    if-eqz v0, :cond_181
+
+    .line 609
+    new-instance v0, Ljava/lang/StringBuilder;
+
+    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
+
+    const-string v9, "Skipping full compaction for "
+
+    invoke-virtual {v0, v9}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v0, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    const-string v9, ": too soon. throttle="
+
+    invoke-virtual {v0, v9}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    iget-object v9, v1, Lcom/android/server/am/AppCompactor$MemCompactionHandler;->this$0:Lcom/android/server/am/AppCompactor;
+
+    iget-wide v9, v9, Lcom/android/server/am/AppCompactor;->mCompactThrottleFullSome:J
+
+    invoke-virtual {v0, v9, v10}, Ljava/lang/StringBuilder;->append(J)Ljava/lang/StringBuilder;
+
+    const-string v9, "/"
+
+    invoke-virtual {v0, v9}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    iget-object v9, v1, Lcom/android/server/am/AppCompactor$MemCompactionHandler;->this$0:Lcom/android/server/am/AppCompactor;
+
+    iget-wide v9, v9, Lcom/android/server/am/AppCompactor;->mCompactThrottleFullFull:J
+
+    invoke-virtual {v0, v9, v10}, Ljava/lang/StringBuilder;->append(J)Ljava/lang/StringBuilder;
+
+    const-string v9, " last="
+
+    invoke-virtual {v0, v9}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    sub-long v9, v7, v5
+
+    invoke-virtual {v0, v9, v10}, Ljava/lang/StringBuilder;->append(J)Ljava/lang/StringBuilder;
+
+    const-string/jumbo v9, "ms ago"
+
+    invoke-virtual {v0, v9}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v0
+
+    const-string v9, "ActivityManager"
+
+    invoke-static {v9, v0}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
+
+    .line 614
+    :cond_181
+    return-void
+
+    .line 616
+    :cond_182
+    const/4 v9, 0x3
+
+    if-ne v12, v9, :cond_1c6
+
+    .line 617
+    sub-long v9, v7, v5
+
+    iget-object v14, v1, Lcom/android/server/am/AppCompactor$MemCompactionHandler;->this$0:Lcom/android/server/am/AppCompactor;
+
+    iget-wide v14, v14, Lcom/android/server/am/AppCompactor;->mCompactThrottlePersistent:J
+
+    cmp-long v9, v9, v14
+
+    if-gez v9, :cond_20e
+
+    .line 618
+    sget-boolean v0, Lcom/android/server/am/ActivityManagerDebugConfig;->DEBUG_COMPACTION:Z
+
+    if-eqz v0, :cond_1c5
+
+    .line 619
+    new-instance v0, Ljava/lang/StringBuilder;
+
+    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
+
+    const-string v9, "Skipping persistent compaction for "
+
+    invoke-virtual {v0, v9}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v0, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    const-string v9, ": too soon. throttle="
+
+    invoke-virtual {v0, v9}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    iget-object v9, v1, Lcom/android/server/am/AppCompactor$MemCompactionHandler;->this$0:Lcom/android/server/am/AppCompactor;
+
+    iget-wide v9, v9, Lcom/android/server/am/AppCompactor;->mCompactThrottlePersistent:J
+
+    invoke-virtual {v0, v9, v10}, Ljava/lang/StringBuilder;->append(J)Ljava/lang/StringBuilder;
+
+    const-string v9, " last="
+
+    invoke-virtual {v0, v9}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    sub-long v9, v7, v5
+
+    invoke-virtual {v0, v9, v10}, Ljava/lang/StringBuilder;->append(J)Ljava/lang/StringBuilder;
+
+    const-string/jumbo v9, "ms ago"
+
+    invoke-virtual {v0, v9}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v0
+
+    const-string v9, "ActivityManager"
+
+    invoke-static {v9, v0}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
+
+    .line 623
+    :cond_1c5
+    return-void
+
+    .line 625
+    :cond_1c6
+    const/4 v9, 0x4
+
+    if-ne v12, v9, :cond_20e
+
+    .line 626
+    sub-long v9, v7, v5
+
+    iget-object v14, v1, Lcom/android/server/am/AppCompactor$MemCompactionHandler;->this$0:Lcom/android/server/am/AppCompactor;
+
+    iget-wide v14, v14, Lcom/android/server/am/AppCompactor;->mCompactThrottleBFGS:J
+
+    cmp-long v9, v9, v14
+
+    if-gez v9, :cond_20e
+
+    .line 627
+    sget-boolean v0, Lcom/android/server/am/ActivityManagerDebugConfig;->DEBUG_COMPACTION:Z
+
+    if-eqz v0, :cond_209
+
+    .line 628
+    new-instance v0, Ljava/lang/StringBuilder;
+
+    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
+
+    const-string v9, "Skipping bfgs compaction for "
+
+    invoke-virtual {v0, v9}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v0, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    const-string v9, ": too soon. throttle="
+
+    invoke-virtual {v0, v9}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    iget-object v9, v1, Lcom/android/server/am/AppCompactor$MemCompactionHandler;->this$0:Lcom/android/server/am/AppCompactor;
+
+    iget-wide v9, v9, Lcom/android/server/am/AppCompactor;->mCompactThrottleBFGS:J
+
+    invoke-virtual {v0, v9, v10}, Ljava/lang/StringBuilder;->append(J)Ljava/lang/StringBuilder;
+
+    const-string v9, " last="
+
+    invoke-virtual {v0, v9}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    sub-long v9, v7, v5
+
+    invoke-virtual {v0, v9, v10}, Ljava/lang/StringBuilder;->append(J)Ljava/lang/StringBuilder;
+
+    const-string/jumbo v9, "ms ago"
+
+    invoke-virtual {v0, v9}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v0
+
+    const-string v9, "ActivityManager"
+
+    invoke-static {v9, v0}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
+
+    .line 632
+    :cond_209
+    return-void
+
+    .line 587
+    .end local v21  # "lastOomAdj":I
+    .end local v22  # "proc":Lcom/android/server/am/ProcessRecord;
+    .restart local v14  # "proc":Lcom/android/server/am/ProcessRecord;
+    .restart local v15  # "lastOomAdj":I
+    :cond_20a
+    move-object/from16 v22, v14
+
+    move/from16 v21, v15
+
+    .line 637
+    .end local v14  # "proc":Lcom/android/server/am/ProcessRecord;
+    .end local v15  # "lastOomAdj":I
+    .restart local v21  # "lastOomAdj":I
+    .restart local v22  # "proc":Lcom/android/server/am/ProcessRecord;
+    :cond_20e
+    :goto_20e
+    const/4 v9, 0x1
+
+    if-eq v12, v9, :cond_224
+
+    const/4 v0, 0x2
+
+    if-eq v12, v0, :cond_21e
+
+    const/4 v9, 0x3
+
+    if-eq v12, v9, :cond_21e
+
+    const/4 v9, 0x4
+
+    if-eq v12, v9, :cond_21e
+
+    .line 648
+    const-string v9, ""
+
+    move-object v15, v9
+
+    .local v9, "action":Ljava/lang/String;
+    goto :goto_229
+
+    .line 645
+    .end local v9  # "action":Ljava/lang/String;
+    :cond_21e
+    iget-object v9, v1, Lcom/android/server/am/AppCompactor$MemCompactionHandler;->this$0:Lcom/android/server/am/AppCompactor;
+
+    iget-object v9, v9, Lcom/android/server/am/AppCompactor;->mCompactActionFull:Ljava/lang/String;
+
+    .line 646
+    .restart local v9  # "action":Ljava/lang/String;
+    move-object v15, v9
+
+    goto :goto_229
+
+    .line 639
+    .end local v9  # "action":Ljava/lang/String;
+    :cond_224
+    iget-object v9, v1, Lcom/android/server/am/AppCompactor$MemCompactionHandler;->this$0:Lcom/android/server/am/AppCompactor;
+
+    iget-object v9, v9, Lcom/android/server/am/AppCompactor;->mCompactActionSome:Ljava/lang/String;
+
+    .line 640
+    .restart local v9  # "action":Ljava/lang/String;
+    move-object v15, v9
+
+    .line 652
+    .end local v9  # "action":Ljava/lang/String;
+    .local v15, "action":Ljava/lang/String;
+    :goto_229
+    const-string v9, ""
+
+    invoke-virtual {v9, v15}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+
+    move-result v9
+
+    if-eqz v9, :cond_232
+
+    .line 653
+    return-void
+
+    .line 656
+    :cond_232
+    iget-object v9, v1, Lcom/android/server/am/AppCompactor$MemCompactionHandler;->this$0:Lcom/android/server/am/AppCompactor;
+
+    iget-object v9, v9, Lcom/android/server/am/AppCompactor;->mProcStateThrottle:Ljava/util/Set;
+
+    invoke-static {v13}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
+
+    move-result-object v10
+
+    invoke-interface {v9, v10}, Ljava/util/Set;->contains(Ljava/lang/Object;)Z
+
+    move-result v9
+
+    if-eqz v9, :cond_263
+
+    .line 657
+    sget-boolean v0, Lcom/android/server/am/ActivityManagerDebugConfig;->DEBUG_COMPACTION:Z
+
+    if-eqz v0, :cond_262
+
+    .line 658
+    new-instance v0, Ljava/lang/StringBuilder;
+
+    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
+
+    const-string v9, "Skipping full compaction for process "
+
+    invoke-virtual {v0, v9}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v0, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    const-string v9, "; proc state is "
+
+    invoke-virtual {v0, v9}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v0, v13}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v0
+
+    const-string v9, "ActivityManager"
+
+    invoke-static {v9, v0}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
+
+    .line 661
+    :cond_262
+    return-void
+
+    .line 664
+    :cond_263
+    invoke-static {v11}, Landroid/os/Process;->getRss(I)[J
+
+    move-result-object v41
+
+    .line 665
+    .local v41, "rssBefore":[J
+    const/4 v0, 0x2
+
+    aget-wide v9, v41, v0
+
+    .line 667
+    .local v9, "anonRssBefore":J
+    const/4 v14, 0x0
+
+    aget-wide v25, v41, v14
+
+    const-wide/16 v19, 0x0
+
+    cmp-long v14, v25, v19
+
+    if-nez v14, :cond_2a7
+
+    const/4 v14, 0x1
+
+    aget-wide v25, v41, v14
+
+    cmp-long v14, v25, v19
+
+    if-nez v14, :cond_2a7
+
+    aget-wide v25, v41, v0
+
+    cmp-long v14, v25, v19
+
+    if-nez v14, :cond_2a7
+
+    const/4 v14, 0x3
+
+    aget-wide v25, v41, v14
+
+    cmp-long v14, v25, v19
+
+    if-nez v14, :cond_2a7
+
+    .line 669
+    sget-boolean v0, Lcom/android/server/am/ActivityManagerDebugConfig;->DEBUG_COMPACTION:Z
+
+    if-eqz v0, :cond_2a6
+
+    .line 670
+    new-instance v0, Ljava/lang/StringBuilder;
+
+    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
+
+    const-string v14, "Skipping compaction forprocess "
+
+    invoke-virtual {v0, v14}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v0, v11}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+
+    const-string v14, " with no memory usage. Dead?"
+
+    invoke-virtual {v0, v14}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v0
+
+    const-string v14, "ActivityManager"
+
+    invoke-static {v14, v0}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
+
+    .line 673
+    :cond_2a6
+    return-void
+
+    .line 676
+    :cond_2a7
+    const-string v14, "all"
+
+    invoke-virtual {v15, v14}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+
+    move-result v14
+
+    if-nez v14, :cond_2be
+
+    const-string v14, "anon"
+
+    invoke-virtual {v15, v14}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+
+    move-result v14
+
+    if-eqz v14, :cond_2b8
+
+    goto :goto_2be
+
+    :cond_2b8
+    move-wide/from16 v28, v9
+
+    move/from16 v25, v13
+
+    goto/16 :goto_369
+
+    .line 677
+    :cond_2be
+    :goto_2be
+    iget-object v14, v1, Lcom/android/server/am/AppCompactor$MemCompactionHandler;->this$0:Lcom/android/server/am/AppCompactor;
+
+    iget-wide v0, v14, Lcom/android/server/am/AppCompactor;->mFullAnonRssThrottleKb:J
+
+    const-wide/16 v19, 0x0
+
+    cmp-long v0, v0, v19
+
+    if-lez v0, :cond_2fc
+
+    move-object/from16 v1, p0
+
+    iget-object v0, v1, Lcom/android/server/am/AppCompactor$MemCompactionHandler;->this$0:Lcom/android/server/am/AppCompactor;
+
+    move/from16 v25, v13
+
+    .end local v13  # "procState":I
+    .local v25, "procState":I
+    iget-wide v13, v0, Lcom/android/server/am/AppCompactor;->mFullAnonRssThrottleKb:J
+
+    cmp-long v0, v9, v13
+
+    if-gez v0, :cond_300
+
+    .line 679
+    sget-boolean v0, Lcom/android/server/am/ActivityManagerDebugConfig;->DEBUG_COMPACTION:Z
+
+    if-eqz v0, :cond_2fb
+
+    .line 680
+    new-instance v0, Ljava/lang/StringBuilder;
+
+    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
+
+    const-string v13, "Skipping full compaction for process "
+
+    invoke-virtual {v0, v13}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v0, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    const-string v13, "; anon RSS is too small: "
+
+    invoke-virtual {v0, v13}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v0, v9, v10}, Ljava/lang/StringBuilder;->append(J)Ljava/lang/StringBuilder;
+
+    const-string v13, "KB."
+
+    invoke-virtual {v0, v13}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v0
+
+    const-string v13, "ActivityManager"
+
+    invoke-static {v13, v0}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
+
+    .line 684
+    :cond_2fb
+    return-void
+
+    .line 677
+    .end local v25  # "procState":I
+    .restart local v13  # "procState":I
+    :cond_2fc
+    move-object/from16 v1, p0
+
+    move/from16 v25, v13
+
+    .line 687
+    .end local v13  # "procState":I
+    .restart local v25  # "procState":I
+    :cond_300
+    if-eqz v40, :cond_367
+
+    iget-object v0, v1, Lcom/android/server/am/AppCompactor$MemCompactionHandler;->this$0:Lcom/android/server/am/AppCompactor;
+
+    iget-wide v13, v0, Lcom/android/server/am/AppCompactor;->mFullDeltaRssThrottleKb:J
+
+    const-wide/16 v19, 0x0
+
+    cmp-long v0, v13, v19
+
+    if-lez v0, :cond_367
+
+    .line 688
+    invoke-virtual/range {v40 .. v40}, Lcom/android/server/am/AppCompactor$LastCompactionStats;->getRssAfterCompaction()[J
+
+    move-result-object v13
+
+    .line 689
+    .local v13, "lastRss":[J
+    const/4 v0, 0x1
+
+    aget-wide v19, v41, v0
+
+    aget-wide v26, v13, v0
+
+    sub-long v19, v19, v26
+
+    invoke-static/range {v19 .. v20}, Ljava/lang/Math;->abs(J)J
+
+    move-result-wide v19
+
+    const/4 v0, 0x2
+
+    aget-wide v26, v41, v0
+
+    aget-wide v28, v13, v0
+
+    sub-long v26, v26, v28
+
+    .line 690
+    invoke-static/range {v26 .. v27}, Ljava/lang/Math;->abs(J)J
+
+    move-result-wide v26
+
+    add-long v19, v19, v26
+
+    const/4 v14, 0x3
+
+    aget-wide v26, v41, v14
+
+    aget-wide v28, v13, v14
+
+    sub-long v26, v26, v28
+
+    .line 691
+    invoke-static/range {v26 .. v27}, Ljava/lang/Math;->abs(J)J
+
+    move-result-wide v26
+
+    move-wide/from16 v28, v9
+
+    .end local v9  # "anonRssBefore":J
+    .local v28, "anonRssBefore":J
+    add-long v9, v19, v26
+
+    .line 692
+    .local v9, "absDelta":J
+    iget-object v14, v1, Lcom/android/server/am/AppCompactor$MemCompactionHandler;->this$0:Lcom/android/server/am/AppCompactor;
+
+    iget-wide v0, v14, Lcom/android/server/am/AppCompactor;->mFullDeltaRssThrottleKb:J
+
+    cmp-long v0, v9, v0
+
+    if-gtz v0, :cond_369
+
+    .line 693
+    sget-boolean v0, Lcom/android/server/am/ActivityManagerDebugConfig;->DEBUG_COMPACTION:Z
+
+    if-eqz v0, :cond_366
+
+    .line 694
+    new-instance v0, Ljava/lang/StringBuilder;
+
+    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
+
+    const-string v1, "Skipping full compaction for process "
+
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v0, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    const-string v1, "; abs delta is too small: "
+
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v0, v9, v10}, Ljava/lang/StringBuilder;->append(J)Ljava/lang/StringBuilder;
+
+    const-string v1, "KB."
+
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v0
+
+    const-string v1, "ActivityManager"
+
+    invoke-static {v1, v0}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
+
+    .line 698
+    :cond_366
+    return-void
+
+    .line 687
+    .end local v13  # "lastRss":[J
+    .end local v28  # "anonRssBefore":J
+    .local v9, "anonRssBefore":J
+    :cond_367
+    move-wide/from16 v28, v9
+
+    .line 705
+    .end local v9  # "anonRssBefore":J
+    .restart local v28  # "anonRssBefore":J
+    :cond_369
+    :goto_369
+    const/4 v0, 0x1
+
+    if-eq v12, v0, :cond_390
+
+    const/4 v0, 0x2
+
+    if-eq v12, v0, :cond_388
+
+    const/4 v1, 0x3
+
+    if-eq v12, v1, :cond_380
+
+    const/4 v1, 0x4
+
+    if-eq v12, v1, :cond_378
+
+    move-object/from16 v1, p0
+
+    goto :goto_398
+
+    .line 716
+    :cond_378
+    move-object/from16 v1, p0
+
+    iget-object v9, v1, Lcom/android/server/am/AppCompactor$MemCompactionHandler;->this$0:Lcom/android/server/am/AppCompactor;
+
+    invoke-static {v9}, Lcom/android/server/am/AppCompactor;->access$1608(Lcom/android/server/am/AppCompactor;)I
+
+    .line 717
+    goto :goto_398
+
+    .line 713
+    :cond_380
+    move-object/from16 v1, p0
+
+    iget-object v9, v1, Lcom/android/server/am/AppCompactor$MemCompactionHandler;->this$0:Lcom/android/server/am/AppCompactor;
+
+    invoke-static {v9}, Lcom/android/server/am/AppCompactor;->access$1508(Lcom/android/server/am/AppCompactor;)I
+
+    .line 714
+    goto :goto_398
+
+    .line 710
+    :cond_388
+    move-object/from16 v1, p0
+
+    iget-object v9, v1, Lcom/android/server/am/AppCompactor$MemCompactionHandler;->this$0:Lcom/android/server/am/AppCompactor;
+
+    invoke-static {v9}, Lcom/android/server/am/AppCompactor;->access$1408(Lcom/android/server/am/AppCompactor;)I
+
+    .line 711
+    goto :goto_398
+
+    .line 707
+    :cond_390
+    move-object/from16 v1, p0
+
+    iget-object v9, v1, Lcom/android/server/am/AppCompactor$MemCompactionHandler;->this$0:Lcom/android/server/am/AppCompactor;
+
+    invoke-static {v9}, Lcom/android/server/am/AppCompactor;->access$1308(Lcom/android/server/am/AppCompactor;)I
+
+    .line 708
+    nop
+
+    .line 723
+    :goto_398
+    :try_start_398
+    new-instance v9, Ljava/lang/StringBuilder;
+
+    invoke-direct {v9}, Ljava/lang/StringBuilder;-><init>()V
+
+    const-string v10, "Compact "
+
+    invoke-virtual {v9, v10}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    :try_end_3a2
+    .catch Ljava/lang/Exception; {:try_start_398 .. :try_end_3a2} :catch_63b
+    .catchall {:try_start_398 .. :try_end_3a2} :catchall_627
+
+    .line 724
+    const/4 v10, 0x1
+
+    if-ne v12, v10, :cond_3cb
+
+    :try_start_3a5
+    const-string/jumbo v10, "some"
+    :try_end_3a8
+    .catch Ljava/lang/Exception; {:try_start_3a5 .. :try_end_3a8} :catch_3b9
+    .catchall {:try_start_3a5 .. :try_end_3a8} :catchall_3a9
+
+    goto :goto_3cd
+
+    .line 765
+    :catchall_3a9
     move-exception v0
 
-    :try_start_38a
+    move-wide/from16 v52, v7
+
+    move v2, v11
+
+    move v11, v12
+
+    move-object v12, v15
+
+    move/from16 v59, v21
+
+    move-object/from16 v10, v22
+
+    move/from16 v55, v25
+
+    move-wide/from16 v50, v28
+
+    goto/16 :goto_635
+
+    .line 762
+    :catch_3b9
+    move-exception v0
+
+    move-wide/from16 v52, v7
+
+    move v2, v11
+
+    move v11, v12
+
+    move-object v12, v15
+
+    move/from16 v59, v21
+
+    move-object/from16 v10, v22
+
+    move/from16 v55, v25
+
+    move-wide/from16 v50, v28
+
+    const-wide/16 v7, 0x40
+
+    goto/16 :goto_64b
+
+    .line 724
+    :cond_3cb
+    :try_start_3cb
+    const-string v10, "full"
+
+    :goto_3cd
+    invoke-virtual {v9, v10}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    const-string v10, ": "
+
+    invoke-virtual {v9, v10}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v9, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v9}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v9
+    :try_end_3dc
+    .catch Ljava/lang/Exception; {:try_start_3cb .. :try_end_3dc} :catch_63b
+    .catchall {:try_start_3cb .. :try_end_3dc} :catchall_627
+
+    .line 723
+    const-wide/16 v13, 0x40
+
+    :try_start_3de
+    invoke-static {v13, v14, v9}, Landroid/os/Trace;->traceBegin(JLjava/lang/String;)V
+    :try_end_3e1
+    .catch Ljava/lang/Exception; {:try_start_3de .. :try_end_3e1} :catch_617
+    .catchall {:try_start_3de .. :try_end_3e1} :catchall_627
+
+    .line 726
+    :try_start_3e1
+    invoke-static {}, Landroid/os/Debug;->getZramFreeKb()J
+
+    move-result-wide v9
+
+    move-wide/from16 v42, v9
+
+    .line 727
+    .local v42, "zramFreeKbBefore":J
+    new-instance v9, Ljava/io/FileOutputStream;
+
+    new-instance v10, Ljava/lang/StringBuilder;
+
+    invoke-direct {v10}, Ljava/lang/StringBuilder;-><init>()V
+
+    const-string v13, "/proc/"
+
+    invoke-virtual {v10, v13}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v10, v11}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+
+    const-string v13, "/reclaim"
+
+    invoke-virtual {v10, v13}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v10}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v10
+
+    invoke-direct {v9, v10}, Ljava/io/FileOutputStream;-><init>(Ljava/lang/String;)V
+
+    move-object v13, v9
+
+    .line 728
+    .local v13, "fos":Ljava/io/FileOutputStream;
+    invoke-virtual {v15}, Ljava/lang/String;->getBytes()[B
+
+    move-result-object v9
+
+    invoke-virtual {v13, v9}, Ljava/io/FileOutputStream;->write([B)V
+
+    .line 729
+    invoke-virtual {v13}, Ljava/io/FileOutputStream;->close()V
+
+    .line 730
+    invoke-static {v11}, Landroid/os/Process;->getRss(I)[J
+
+    move-result-object v9
+
+    move-object v14, v9
+
+    .line 731
+    .local v14, "rssAfter":[J
+    invoke-static {}, Landroid/os/SystemClock;->uptimeMillis()J
+
+    move-result-wide v9
+
+    .line 732
+    .local v9, "end":J
+    sub-long v44, v9, v7
+
+    .line 733
+    .local v44, "time":J
+    invoke-static {}, Landroid/os/Debug;->getZramFreeKb()J
+
+    move-result-wide v19
+
+    move-wide/from16 v46, v19
+
+    .line 734
+    .local v46, "zramFreeKbAfter":J
+    const/16 v0, 0x12
+
+    new-array v0, v0, [Ljava/lang/Object;
+
+    invoke-static {v11}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
+
+    move-result-object v20
+
+    const/16 v18, 0x0
+
+    aput-object v20, v0, v18
+
+    const/16 v16, 0x1
+
+    aput-object v4, v0, v16
+
+    const/16 v17, 0x2
+
+    aput-object v15, v0, v17
+
+    aget-wide v26, v41, v18
+
+    .line 735
+    invoke-static/range {v26 .. v27}, Ljava/lang/Long;->valueOf(J)Ljava/lang/Long;
+
+    move-result-object v20
+
+    const/16 v24, 0x3
+
+    aput-object v20, v0, v24
+
+    const/16 v16, 0x1
+
+    aget-wide v26, v41, v16
+
+    invoke-static/range {v26 .. v27}, Ljava/lang/Long;->valueOf(J)Ljava/lang/Long;
+
+    move-result-object v20
+
+    const/16 v23, 0x4
+
+    aput-object v20, v0, v23
+
+    const/16 v20, 0x5
+
+    const/16 v17, 0x2
+
+    aget-wide v26, v41, v17
+
+    invoke-static/range {v26 .. v27}, Ljava/lang/Long;->valueOf(J)Ljava/lang/Long;
+
+    move-result-object v23
+
+    aput-object v23, v0, v20
+
+    const/16 v20, 0x6
+
+    const/16 v23, 0x3
+
+    aget-wide v26, v41, v23
+
+    invoke-static/range {v26 .. v27}, Ljava/lang/Long;->valueOf(J)Ljava/lang/Long;
+
+    move-result-object v23
+
+    aput-object v23, v0, v20
+
+    const/16 v20, 0x7
+
+    const/16 v18, 0x0
+
+    aget-wide v26, v14, v18
+
+    aget-wide v30, v41, v18
+
+    sub-long v26, v26, v30
+
+    .line 736
+    invoke-static/range {v26 .. v27}, Ljava/lang/Long;->valueOf(J)Ljava/lang/Long;
+
+    move-result-object v23
+
+    aput-object v23, v0, v20
+
+    const/16 v20, 0x8
+
+    const/16 v16, 0x1
+
+    aget-wide v26, v14, v16
+
+    aget-wide v30, v41, v16
+
+    sub-long v26, v26, v30
+
+    invoke-static/range {v26 .. v27}, Ljava/lang/Long;->valueOf(J)Ljava/lang/Long;
+
+    move-result-object v23
+
+    aput-object v23, v0, v20
+
+    const/16 v20, 0x9
+
+    const/16 v17, 0x2
+
+    aget-wide v26, v14, v17
+
+    aget-wide v30, v41, v17
+
+    sub-long v26, v26, v30
+
+    .line 737
+    invoke-static/range {v26 .. v27}, Ljava/lang/Long;->valueOf(J)Ljava/lang/Long;
+
+    move-result-object v23
+
+    aput-object v23, v0, v20
+
+    const/16 v20, 0xa
+
+    const/16 v23, 0x3
+
+    aget-wide v26, v14, v23
+
+    aget-wide v30, v41, v23
+
+    sub-long v26, v26, v30
+
+    invoke-static/range {v26 .. v27}, Ljava/lang/Long;->valueOf(J)Ljava/lang/Long;
+
+    move-result-object v23
+
+    aput-object v23, v0, v20
+
+    const/16 v20, 0xb
+
+    invoke-static/range {v44 .. v45}, Ljava/lang/Long;->valueOf(J)Ljava/lang/Long;
+
+    move-result-object v23
+
+    aput-object v23, v0, v20
+
+    const/16 v20, 0xc
+
+    .line 738
+    invoke-static {v3}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
+
+    move-result-object v23
+
+    aput-object v23, v0, v20
+
+    const/16 v20, 0xd
+
+    invoke-static {v5, v6}, Ljava/lang/Long;->valueOf(J)Ljava/lang/Long;
+
+    move-result-object v23
+
+    aput-object v23, v0, v20
+
+    const/16 v20, 0xe
+
+    invoke-static/range {v21 .. v21}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
+
+    move-result-object v23
+
+    aput-object v23, v0, v20
+
+    const/16 v20, 0xf
+
+    invoke-static/range {v25 .. v25}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
+
+    move-result-object v23
+
+    aput-object v23, v0, v20
+
+    const/16 v20, 0x10
+
+    .line 739
+    invoke-static/range {v42 .. v43}, Ljava/lang/Long;->valueOf(J)Ljava/lang/Long;
+
+    move-result-object v23
+
+    aput-object v23, v0, v20
+
+    const/16 v20, 0x11
+
+    sub-long v26, v46, v42
+
+    invoke-static/range {v26 .. v27}, Ljava/lang/Long;->valueOf(J)Ljava/lang/Long;
+
+    move-result-object v23
+
+    aput-object v23, v0, v20
+
+    .line 734
+    const/16 v2, 0x756f
+
+    invoke-static {v2, v0}, Landroid/util/EventLog;->writeEvent(I[Ljava/lang/Object;)I
+
+    .line 744
+    iget-object v0, v1, Lcom/android/server/am/AppCompactor$MemCompactionHandler;->this$0:Lcom/android/server/am/AppCompactor;
+
+    invoke-static {v0}, Lcom/android/server/am/AppCompactor;->access$1700(Lcom/android/server/am/AppCompactor;)Ljava/util/Random;
+
+    move-result-object v0
+
+    invoke-virtual {v0}, Ljava/util/Random;->nextFloat()F
+
+    move-result v0
+
+    iget-object v2, v1, Lcom/android/server/am/AppCompactor$MemCompactionHandler;->this$0:Lcom/android/server/am/AppCompactor;
+
+    iget v2, v2, Lcom/android/server/am/AppCompactor;->mStatsdSampleRate:F
+    :try_end_4ed
+    .catch Ljava/lang/Exception; {:try_start_3e1 .. :try_end_4ed} :catch_63b
+    .catchall {:try_start_3e1 .. :try_end_4ed} :catchall_627
+
+    cmpg-float v0, v0, v2
+
+    if-gez v0, :cond_581
+
+    .line 745
+    const/16 v2, 0x73
+
+    const/4 v0, 0x0
+
+    :try_start_4f4
+    aget-wide v19, v41, v0
+
+    const/4 v0, 0x1
+
+    aget-wide v26, v41, v0
+
+    const/4 v0, 0x2
+
+    aget-wide v30, v41, v0
+
+    const/16 v17, 0x3
+
+    aget-wide v32, v41, v17
+
+    const/16 v17, 0x0
+
+    aget-wide v34, v14, v17
+
+    const/16 v16, 0x1
+
+    aget-wide v36, v14, v16
+
+    const/4 v0, 0x2
+
+    aget-wide v38, v14, v0
+
+    const/4 v0, 0x3
+
+    aget-wide v48, v14, v0
+
+    .line 749
+    invoke-static/range {v25 .. v25}, Landroid/app/ActivityManager;->processStateAmToProto(I)I
+
+    move-result v0
+    :try_end_512
+    .catch Ljava/lang/Exception; {:try_start_4f4 .. :try_end_512} :catch_56f
+    .catchall {:try_start_4f4 .. :try_end_512} :catchall_55f
+
+    .line 745
+    move-wide/from16 v52, v7
+
+    move-wide v7, v9
+
+    move-wide/from16 v50, v28
+
+    .end local v9  # "end":J
+    .end local v28  # "anonRssBefore":J
+    .local v7, "end":J
+    .local v50, "anonRssBefore":J
+    .local v52, "start":J
+    move v9, v2
+
+    move v10, v11
+
+    move v2, v11
+
+    .end local v11  # "pid":I
+    .local v2, "pid":I
+    move-object v11, v4
+
+    move/from16 v54, v12
+
+    .end local v12  # "pendingAction":I
+    .local v54, "pendingAction":I
+    move-object/from16 v57, v13
+
+    move-object/from16 v58, v14
+
+    move-object/from16 v56, v22
+
+    move/from16 v55, v25
+
+    .end local v13  # "fos":Ljava/io/FileOutputStream;
+    .end local v14  # "rssAfter":[J
+    .end local v22  # "proc":Lcom/android/server/am/ProcessRecord;
+    .end local v25  # "procState":I
+    .local v55, "procState":I
+    .local v56, "proc":Lcom/android/server/am/ProcessRecord;
+    .local v57, "fos":Ljava/io/FileOutputStream;
+    .local v58, "rssAfter":[J
+    move-wide/from16 v13, v19
+
+    move-object/from16 v60, v15
+
+    move/from16 v59, v21
+
+    .end local v15  # "action":Ljava/lang/String;
+    .end local v21  # "lastOomAdj":I
+    .local v59, "lastOomAdj":I
+    .local v60, "action":Ljava/lang/String;
+    move-wide/from16 v15, v26
+
+    move-wide/from16 v17, v30
+
+    move-wide/from16 v19, v32
+
+    move-wide/from16 v21, v34
+
+    move-wide/from16 v23, v36
+
+    move-wide/from16 v25, v38
+
+    move-wide/from16 v27, v48
+
+    move-wide/from16 v29, v44
+
+    move/from16 v31, v3
+
+    move-wide/from16 v32, v5
+
+    move/from16 v34, v59
+
+    move/from16 v35, v0
+
+    move-wide/from16 v36, v42
+
+    move-wide/from16 v38, v46
+
+    :try_start_547
+    invoke-static/range {v9 .. v39}, Landroid/util/StatsLog;->write(IILjava/lang/String;IJJJJJJJJJIJIIJJ)I
+    :try_end_54a
+    .catch Ljava/lang/Exception; {:try_start_547 .. :try_end_54a} :catch_554
+    .catchall {:try_start_547 .. :try_end_54a} :catchall_54b
+
+    goto :goto_595
+
+    .line 765
+    .end local v7  # "end":J
+    .end local v42  # "zramFreeKbBefore":J
+    .end local v44  # "time":J
+    .end local v46  # "zramFreeKbAfter":J
+    .end local v57  # "fos":Ljava/io/FileOutputStream;
+    .end local v58  # "rssAfter":[J
+    :catchall_54b
+    move-exception v0
+
+    move/from16 v11, v54
+
+    move-object/from16 v10, v56
+
+    move-object/from16 v12, v60
+
+    goto/16 :goto_635
+
+    .line 762
+    :catch_554
+    move-exception v0
+
+    move/from16 v11, v54
+
+    move-object/from16 v10, v56
+
+    move-object/from16 v12, v60
+
+    const-wide/16 v7, 0x40
+
+    goto/16 :goto_64b
+
+    .line 765
+    .end local v2  # "pid":I
+    .end local v50  # "anonRssBefore":J
+    .end local v52  # "start":J
+    .end local v54  # "pendingAction":I
+    .end local v55  # "procState":I
+    .end local v56  # "proc":Lcom/android/server/am/ProcessRecord;
+    .end local v59  # "lastOomAdj":I
+    .end local v60  # "action":Ljava/lang/String;
+    .local v7, "start":J
+    .restart local v11  # "pid":I
+    .restart local v12  # "pendingAction":I
+    .restart local v15  # "action":Ljava/lang/String;
+    .restart local v21  # "lastOomAdj":I
+    .restart local v22  # "proc":Lcom/android/server/am/ProcessRecord;
+    .restart local v25  # "procState":I
+    .restart local v28  # "anonRssBefore":J
+    :catchall_55f
+    move-exception v0
+
+    move-wide/from16 v52, v7
+
+    move v2, v11
+
+    move/from16 v59, v21
+
+    move/from16 v55, v25
+
+    move-wide/from16 v50, v28
+
+    move v11, v12
+
+    move-object v12, v15
+
+    move-object/from16 v10, v22
+
+    .end local v7  # "start":J
+    .end local v11  # "pid":I
+    .end local v12  # "pendingAction":I
+    .end local v15  # "action":Ljava/lang/String;
+    .end local v21  # "lastOomAdj":I
+    .end local v22  # "proc":Lcom/android/server/am/ProcessRecord;
+    .end local v25  # "procState":I
+    .end local v28  # "anonRssBefore":J
+    .restart local v2  # "pid":I
+    .restart local v50  # "anonRssBefore":J
+    .restart local v52  # "start":J
+    .restart local v54  # "pendingAction":I
+    .restart local v55  # "procState":I
+    .restart local v56  # "proc":Lcom/android/server/am/ProcessRecord;
+    .restart local v59  # "lastOomAdj":I
+    .restart local v60  # "action":Ljava/lang/String;
+    goto/16 :goto_635
+
+    .line 762
+    .end local v2  # "pid":I
+    .end local v50  # "anonRssBefore":J
+    .end local v52  # "start":J
+    .end local v54  # "pendingAction":I
+    .end local v55  # "procState":I
+    .end local v56  # "proc":Lcom/android/server/am/ProcessRecord;
+    .end local v59  # "lastOomAdj":I
+    .end local v60  # "action":Ljava/lang/String;
+    .restart local v7  # "start":J
+    .restart local v11  # "pid":I
+    .restart local v12  # "pendingAction":I
+    .restart local v15  # "action":Ljava/lang/String;
+    .restart local v21  # "lastOomAdj":I
+    .restart local v22  # "proc":Lcom/android/server/am/ProcessRecord;
+    .restart local v25  # "procState":I
+    .restart local v28  # "anonRssBefore":J
+    :catch_56f
+    move-exception v0
+
+    move-wide/from16 v52, v7
+
+    move v2, v11
+
+    move/from16 v59, v21
+
+    move/from16 v55, v25
+
+    move-wide/from16 v50, v28
+
+    move v11, v12
+
+    move-object v12, v15
+
+    move-object/from16 v10, v22
+
+    const-wide/16 v7, 0x40
+
+    .end local v7  # "start":J
+    .end local v11  # "pid":I
+    .end local v12  # "pendingAction":I
+    .end local v15  # "action":Ljava/lang/String;
+    .end local v21  # "lastOomAdj":I
+    .end local v22  # "proc":Lcom/android/server/am/ProcessRecord;
+    .end local v25  # "procState":I
+    .end local v28  # "anonRssBefore":J
+    .restart local v2  # "pid":I
+    .restart local v50  # "anonRssBefore":J
+    .restart local v52  # "start":J
+    .restart local v54  # "pendingAction":I
+    .restart local v55  # "procState":I
+    .restart local v56  # "proc":Lcom/android/server/am/ProcessRecord;
+    .restart local v59  # "lastOomAdj":I
+    .restart local v60  # "action":Ljava/lang/String;
+    goto/16 :goto_64b
+
+    .line 744
+    .end local v2  # "pid":I
+    .end local v50  # "anonRssBefore":J
+    .end local v52  # "start":J
+    .end local v54  # "pendingAction":I
+    .end local v55  # "procState":I
+    .end local v56  # "proc":Lcom/android/server/am/ProcessRecord;
+    .end local v59  # "lastOomAdj":I
+    .end local v60  # "action":Ljava/lang/String;
+    .restart local v7  # "start":J
+    .restart local v9  # "end":J
+    .restart local v11  # "pid":I
+    .restart local v12  # "pendingAction":I
+    .restart local v13  # "fos":Ljava/io/FileOutputStream;
+    .restart local v14  # "rssAfter":[J
+    .restart local v15  # "action":Ljava/lang/String;
+    .restart local v21  # "lastOomAdj":I
+    .restart local v22  # "proc":Lcom/android/server/am/ProcessRecord;
+    .restart local v25  # "procState":I
+    .restart local v28  # "anonRssBefore":J
+    .restart local v42  # "zramFreeKbBefore":J
+    .restart local v44  # "time":J
+    .restart local v46  # "zramFreeKbAfter":J
+    :cond_581
+    move-wide/from16 v52, v7
+
+    move-wide v7, v9
+
+    move v2, v11
+
+    move/from16 v54, v12
+
+    move-object/from16 v57, v13
+
+    move-object/from16 v58, v14
+
+    move-object/from16 v60, v15
+
+    move/from16 v59, v21
+
+    move-object/from16 v56, v22
+
+    move/from16 v55, v25
+
+    move-wide/from16 v50, v28
+
+    .line 753
+    .end local v9  # "end":J
+    .end local v11  # "pid":I
+    .end local v12  # "pendingAction":I
+    .end local v13  # "fos":Ljava/io/FileOutputStream;
+    .end local v14  # "rssAfter":[J
+    .end local v15  # "action":Ljava/lang/String;
+    .end local v21  # "lastOomAdj":I
+    .end local v22  # "proc":Lcom/android/server/am/ProcessRecord;
+    .end local v25  # "procState":I
+    .end local v28  # "anonRssBefore":J
+    .restart local v2  # "pid":I
+    .local v7, "end":J
+    .restart local v50  # "anonRssBefore":J
+    .restart local v52  # "start":J
+    .restart local v54  # "pendingAction":I
+    .restart local v55  # "procState":I
+    .restart local v56  # "proc":Lcom/android/server/am/ProcessRecord;
+    .restart local v57  # "fos":Ljava/io/FileOutputStream;
+    .restart local v58  # "rssAfter":[J
+    .restart local v59  # "lastOomAdj":I
+    .restart local v60  # "action":Ljava/lang/String;
+    :goto_595
+    :try_start_595
+    iget-object v0, v1, Lcom/android/server/am/AppCompactor$MemCompactionHandler;->this$0:Lcom/android/server/am/AppCompactor;
+
+    invoke-static {v0}, Lcom/android/server/am/AppCompactor;->access$1000(Lcom/android/server/am/AppCompactor;)Lcom/android/server/am/ActivityManagerService;
+
+    move-result-object v9
+
+    monitor-enter v9
+    :try_end_59c
+    .catch Ljava/lang/Exception; {:try_start_595 .. :try_end_59c} :catch_60d
+    .catchall {:try_start_595 .. :try_end_59c} :catchall_605
+
+    :try_start_59c
+    invoke-static {}, Lcom/android/server/am/ActivityManagerService;->boostPriorityForLockedSection()V
+    :try_end_59f
+    .catchall {:try_start_59c .. :try_end_59f} :catchall_5ef
+
+    .line 754
+    move-object/from16 v10, v56
+
+    .end local v56  # "proc":Lcom/android/server/am/ProcessRecord;
+    .local v10, "proc":Lcom/android/server/am/ProcessRecord;
+    :try_start_5a1
+    iput-wide v7, v10, Lcom/android/server/am/ProcessRecord;->lastCompactTime:J
+    :try_end_5a3
+    .catchall {:try_start_5a1 .. :try_end_5a3} :catchall_5e7
+
+    .line 755
+    move/from16 v11, v54
+
+    .end local v54  # "pendingAction":I
+    .local v11, "pendingAction":I
+    :try_start_5a5
+    iput v11, v10, Lcom/android/server/am/ProcessRecord;->lastCompactAction:I
+
+    .line 756
     monitor-exit v9
-    :try_end_38b
-    .catchall {:try_start_38a .. :try_end_38b} :catchall_389
+    :try_end_5a8
+    .catchall {:try_start_5a5 .. :try_end_5a8} :catchall_5e1
+
+    :try_start_5a8
+    invoke-static {}, Lcom/android/server/am/ActivityManagerService;->resetPriorityAfterLockedSection()V
+
+    .line 758
+    const-string v0, "all"
+    :try_end_5ad
+    .catch Ljava/lang/Exception; {:try_start_5a8 .. :try_end_5ad} :catch_5da
+    .catchall {:try_start_5a8 .. :try_end_5ad} :catchall_5d5
+
+    move-object/from16 v12, v60
+
+    .end local v60  # "action":Ljava/lang/String;
+    .local v12, "action":Ljava/lang/String;
+    :try_start_5af
+    invoke-virtual {v12, v0}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+
+    move-result v0
+
+    if-nez v0, :cond_5bd
+
+    const-string v0, "anon"
+
+    .line 759
+    invoke-virtual {v12, v0}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+
+    move-result v0
+
+    if-eqz v0, :cond_5d1
+
+    .line 760
+    :cond_5bd
+    iget-object v0, v1, Lcom/android/server/am/AppCompactor$MemCompactionHandler;->this$0:Lcom/android/server/am/AppCompactor;
+
+    invoke-static {v0}, Lcom/android/server/am/AppCompactor;->access$1200(Lcom/android/server/am/AppCompactor;)Ljava/util/Map;
+
+    move-result-object v0
+
+    invoke-static {v2}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
+
+    move-result-object v9
+
+    new-instance v13, Lcom/android/server/am/AppCompactor$LastCompactionStats;
+
+    move-object/from16 v14, v58
+
+    .end local v58  # "rssAfter":[J
+    .restart local v14  # "rssAfter":[J
+    invoke-direct {v13, v14}, Lcom/android/server/am/AppCompactor$LastCompactionStats;-><init>([J)V
+
+    invoke-interface {v0, v9, v13}, Ljava/util/Map;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+    :try_end_5d1
+    .catch Ljava/lang/Exception; {:try_start_5af .. :try_end_5d1} :catch_5ff
+    .catchall {:try_start_5af .. :try_end_5d1} :catchall_5fd
+
+    .line 765
+    .end local v7  # "end":J
+    .end local v14  # "rssAfter":[J
+    .end local v42  # "zramFreeKbBefore":J
+    .end local v44  # "time":J
+    .end local v46  # "zramFreeKbAfter":J
+    .end local v57  # "fos":Ljava/io/FileOutputStream;
+    :cond_5d1
+    const-wide/16 v7, 0x40
+
+    goto/16 :goto_64c
+
+    .end local v12  # "action":Ljava/lang/String;
+    .restart local v60  # "action":Ljava/lang/String;
+    :catchall_5d5
+    move-exception v0
+
+    move-object/from16 v12, v60
+
+    .end local v60  # "action":Ljava/lang/String;
+    .restart local v12  # "action":Ljava/lang/String;
+    goto/16 :goto_635
+
+    .line 762
+    .end local v12  # "action":Ljava/lang/String;
+    .restart local v60  # "action":Ljava/lang/String;
+    :catch_5da
+    move-exception v0
+
+    move-object/from16 v12, v60
+
+    const-wide/16 v7, 0x40
+
+    .end local v60  # "action":Ljava/lang/String;
+    .restart local v12  # "action":Ljava/lang/String;
+    goto/16 :goto_64b
+
+    .line 756
+    .end local v12  # "action":Ljava/lang/String;
+    .restart local v7  # "end":J
+    .restart local v42  # "zramFreeKbBefore":J
+    .restart local v44  # "time":J
+    .restart local v46  # "zramFreeKbAfter":J
+    .restart local v57  # "fos":Ljava/io/FileOutputStream;
+    .restart local v58  # "rssAfter":[J
+    .restart local v60  # "action":Ljava/lang/String;
+    :catchall_5e1
+    move-exception v0
+
+    move-object/from16 v14, v58
+
+    move-object/from16 v12, v60
+
+    .end local v58  # "rssAfter":[J
+    .end local v60  # "action":Ljava/lang/String;
+    .restart local v12  # "action":Ljava/lang/String;
+    .restart local v14  # "rssAfter":[J
+    goto :goto_5f8
+
+    .end local v11  # "pendingAction":I
+    .end local v12  # "action":Ljava/lang/String;
+    .end local v14  # "rssAfter":[J
+    .restart local v54  # "pendingAction":I
+    .restart local v58  # "rssAfter":[J
+    .restart local v60  # "action":Ljava/lang/String;
+    :catchall_5e7
+    move-exception v0
+
+    move/from16 v11, v54
+
+    move-object/from16 v14, v58
+
+    move-object/from16 v12, v60
+
+    .end local v54  # "pendingAction":I
+    .end local v58  # "rssAfter":[J
+    .end local v60  # "action":Ljava/lang/String;
+    .restart local v11  # "pendingAction":I
+    .restart local v12  # "action":Ljava/lang/String;
+    .restart local v14  # "rssAfter":[J
+    goto :goto_5f8
+
+    .end local v10  # "proc":Lcom/android/server/am/ProcessRecord;
+    .end local v11  # "pendingAction":I
+    .end local v12  # "action":Ljava/lang/String;
+    .end local v14  # "rssAfter":[J
+    .restart local v54  # "pendingAction":I
+    .restart local v56  # "proc":Lcom/android/server/am/ProcessRecord;
+    .restart local v58  # "rssAfter":[J
+    .restart local v60  # "action":Ljava/lang/String;
+    :catchall_5ef
+    move-exception v0
+
+    move/from16 v11, v54
+
+    move-object/from16 v10, v56
+
+    move-object/from16 v14, v58
+
+    move-object/from16 v12, v60
+
+    .end local v54  # "pendingAction":I
+    .end local v56  # "proc":Lcom/android/server/am/ProcessRecord;
+    .end local v58  # "rssAfter":[J
+    .end local v60  # "action":Ljava/lang/String;
+    .restart local v10  # "proc":Lcom/android/server/am/ProcessRecord;
+    .restart local v11  # "pendingAction":I
+    .restart local v12  # "action":Ljava/lang/String;
+    .restart local v14  # "rssAfter":[J
+    :goto_5f8
+    :try_start_5f8
+    monitor-exit v9
+    :try_end_5f9
+    .catchall {:try_start_5f8 .. :try_end_5f9} :catchall_603
+
+    :try_start_5f9
+    invoke-static {}, Lcom/android/server/am/ActivityManagerService;->resetPriorityAfterLockedSection()V
+
+    .end local v2  # "pid":I
+    .end local v3  # "lastCompactAction":I
+    .end local v4  # "name":Ljava/lang/String;
+    .end local v5  # "lastCompactTime":J
+    .end local v10  # "proc":Lcom/android/server/am/ProcessRecord;
+    .end local v11  # "pendingAction":I
+    .end local v12  # "action":Ljava/lang/String;
+    .end local v40  # "lastCompactionStats":Lcom/android/server/am/AppCompactor$LastCompactionStats;
+    .end local v41  # "rssBefore":[J
+    .end local v50  # "anonRssBefore":J
+    .end local v52  # "start":J
+    .end local v55  # "procState":I
+    .end local v59  # "lastOomAdj":I
+    .end local p0  # "this":Lcom/android/server/am/AppCompactor$MemCompactionHandler;
+    .end local p1  # "msg":Landroid/os/Message;
+    throw v0
+    :try_end_5fd
+    .catch Ljava/lang/Exception; {:try_start_5f9 .. :try_end_5fd} :catch_5ff
+    .catchall {:try_start_5f9 .. :try_end_5fd} :catchall_5fd
+
+    .line 765
+    .end local v7  # "end":J
+    .end local v14  # "rssAfter":[J
+    .end local v42  # "zramFreeKbBefore":J
+    .end local v44  # "time":J
+    .end local v46  # "zramFreeKbAfter":J
+    .end local v57  # "fos":Ljava/io/FileOutputStream;
+    .restart local v2  # "pid":I
+    .restart local v3  # "lastCompactAction":I
+    .restart local v4  # "name":Ljava/lang/String;
+    .restart local v5  # "lastCompactTime":J
+    .restart local v10  # "proc":Lcom/android/server/am/ProcessRecord;
+    .restart local v11  # "pendingAction":I
+    .restart local v12  # "action":Ljava/lang/String;
+    .restart local v40  # "lastCompactionStats":Lcom/android/server/am/AppCompactor$LastCompactionStats;
+    .restart local v41  # "rssBefore":[J
+    .restart local v50  # "anonRssBefore":J
+    .restart local v52  # "start":J
+    .restart local v55  # "procState":I
+    .restart local v59  # "lastOomAdj":I
+    .restart local p0  # "this":Lcom/android/server/am/AppCompactor$MemCompactionHandler;
+    .restart local p1  # "msg":Landroid/os/Message;
+    :catchall_5fd
+    move-exception v0
+
+    goto :goto_635
+
+    .line 762
+    :catch_5ff
+    move-exception v0
+
+    const-wide/16 v7, 0x40
+
+    goto :goto_64b
+
+    .line 756
+    .restart local v7  # "end":J
+    .restart local v14  # "rssAfter":[J
+    .restart local v42  # "zramFreeKbBefore":J
+    .restart local v44  # "time":J
+    .restart local v46  # "zramFreeKbAfter":J
+    .restart local v57  # "fos":Ljava/io/FileOutputStream;
+    :catchall_603
+    move-exception v0
+
+    goto :goto_5f8
+
+    .line 765
+    .end local v7  # "end":J
+    .end local v10  # "proc":Lcom/android/server/am/ProcessRecord;
+    .end local v11  # "pendingAction":I
+    .end local v12  # "action":Ljava/lang/String;
+    .end local v14  # "rssAfter":[J
+    .end local v42  # "zramFreeKbBefore":J
+    .end local v44  # "time":J
+    .end local v46  # "zramFreeKbAfter":J
+    .end local v57  # "fos":Ljava/io/FileOutputStream;
+    .restart local v54  # "pendingAction":I
+    .restart local v56  # "proc":Lcom/android/server/am/ProcessRecord;
+    .restart local v60  # "action":Ljava/lang/String;
+    :catchall_605
+    move-exception v0
+
+    move/from16 v11, v54
+
+    move-object/from16 v10, v56
+
+    move-object/from16 v12, v60
+
+    .end local v54  # "pendingAction":I
+    .end local v56  # "proc":Lcom/android/server/am/ProcessRecord;
+    .end local v60  # "action":Ljava/lang/String;
+    .restart local v10  # "proc":Lcom/android/server/am/ProcessRecord;
+    .restart local v11  # "pendingAction":I
+    .restart local v12  # "action":Ljava/lang/String;
+    goto :goto_635
+
+    .line 762
+    .end local v10  # "proc":Lcom/android/server/am/ProcessRecord;
+    .end local v11  # "pendingAction":I
+    .end local v12  # "action":Ljava/lang/String;
+    .restart local v54  # "pendingAction":I
+    .restart local v56  # "proc":Lcom/android/server/am/ProcessRecord;
+    .restart local v60  # "action":Ljava/lang/String;
+    :catch_60d
+    move-exception v0
+
+    move/from16 v11, v54
+
+    move-object/from16 v10, v56
+
+    move-object/from16 v12, v60
+
+    const-wide/16 v7, 0x40
+
+    .end local v54  # "pendingAction":I
+    .end local v56  # "proc":Lcom/android/server/am/ProcessRecord;
+    .end local v60  # "action":Ljava/lang/String;
+    .restart local v10  # "proc":Lcom/android/server/am/ProcessRecord;
+    .restart local v11  # "pendingAction":I
+    .restart local v12  # "action":Ljava/lang/String;
+    goto :goto_64b
+
+    .end local v2  # "pid":I
+    .end local v10  # "proc":Lcom/android/server/am/ProcessRecord;
+    .end local v50  # "anonRssBefore":J
+    .end local v52  # "start":J
+    .end local v55  # "procState":I
+    .end local v59  # "lastOomAdj":I
+    .local v7, "start":J
+    .local v11, "pid":I
+    .local v12, "pendingAction":I
+    .restart local v15  # "action":Ljava/lang/String;
+    .restart local v21  # "lastOomAdj":I
+    .restart local v22  # "proc":Lcom/android/server/am/ProcessRecord;
+    .restart local v25  # "procState":I
+    .restart local v28  # "anonRssBefore":J
+    :catch_617
+    move-exception v0
+
+    move-wide/from16 v52, v7
+
+    move v2, v11
+
+    move v11, v12
+
+    move-object v12, v15
+
+    move/from16 v59, v21
+
+    move-object/from16 v10, v22
+
+    move/from16 v55, v25
+
+    move-wide/from16 v50, v28
+
+    move-wide v7, v13
+
+    goto :goto_64b
+
+    .line 765
+    :catchall_627
+    move-exception v0
+
+    move-wide/from16 v52, v7
+
+    move v2, v11
+
+    move v11, v12
+
+    move-object v12, v15
+
+    move/from16 v59, v21
+
+    move-object/from16 v10, v22
+
+    move/from16 v55, v25
+
+    move-wide/from16 v50, v28
+
+    .end local v7  # "start":J
+    .end local v15  # "action":Ljava/lang/String;
+    .end local v21  # "lastOomAdj":I
+    .end local v22  # "proc":Lcom/android/server/am/ProcessRecord;
+    .end local v25  # "procState":I
+    .end local v28  # "anonRssBefore":J
+    .restart local v2  # "pid":I
+    .restart local v10  # "proc":Lcom/android/server/am/ProcessRecord;
+    .local v11, "pendingAction":I
+    .local v12, "action":Ljava/lang/String;
+    .restart local v50  # "anonRssBefore":J
+    .restart local v52  # "start":J
+    .restart local v55  # "procState":I
+    .restart local v59  # "lastOomAdj":I
+    :goto_635
+    const-wide/16 v7, 0x40
+
+    invoke-static {v7, v8}, Landroid/os/Trace;->traceEnd(J)V
+
+    throw v0
+
+    .line 762
+    .end local v2  # "pid":I
+    .end local v10  # "proc":Lcom/android/server/am/ProcessRecord;
+    .end local v50  # "anonRssBefore":J
+    .end local v52  # "start":J
+    .end local v55  # "procState":I
+    .end local v59  # "lastOomAdj":I
+    .restart local v7  # "start":J
+    .local v11, "pid":I
+    .local v12, "pendingAction":I
+    .restart local v15  # "action":Ljava/lang/String;
+    .restart local v21  # "lastOomAdj":I
+    .restart local v22  # "proc":Lcom/android/server/am/ProcessRecord;
+    .restart local v25  # "procState":I
+    .restart local v28  # "anonRssBefore":J
+    :catch_63b
+    move-exception v0
+
+    move-wide/from16 v52, v7
+
+    move v2, v11
+
+    move v11, v12
+
+    move-object v12, v15
+
+    move/from16 v59, v21
+
+    move-object/from16 v10, v22
+
+    move/from16 v55, v25
+
+    move-wide/from16 v50, v28
+
+    const-wide/16 v7, 0x40
+
+    .line 765
+    .end local v7  # "start":J
+    .end local v15  # "action":Ljava/lang/String;
+    .end local v21  # "lastOomAdj":I
+    .end local v22  # "proc":Lcom/android/server/am/ProcessRecord;
+    .end local v25  # "procState":I
+    .end local v28  # "anonRssBefore":J
+    .restart local v2  # "pid":I
+    .restart local v10  # "proc":Lcom/android/server/am/ProcessRecord;
+    .local v11, "pendingAction":I
+    .local v12, "action":Ljava/lang/String;
+    .restart local v50  # "anonRssBefore":J
+    .restart local v52  # "start":J
+    .restart local v55  # "procState":I
+    .restart local v59  # "lastOomAdj":I
+    :goto_64b
+    nop
+
+    :goto_64c
+    invoke-static {v7, v8}, Landroid/os/Trace;->traceEnd(J)V
+
+    .line 766
+    nop
+
+    .line 767
+    nop
+
+    .line 776
+    .end local v2  # "pid":I
+    .end local v3  # "lastCompactAction":I
+    .end local v4  # "name":Ljava/lang/String;
+    .end local v5  # "lastCompactTime":J
+    .end local v10  # "proc":Lcom/android/server/am/ProcessRecord;
+    .end local v11  # "pendingAction":I
+    .end local v12  # "action":Ljava/lang/String;
+    .end local v40  # "lastCompactionStats":Lcom/android/server/am/AppCompactor$LastCompactionStats;
+    .end local v41  # "rssBefore":[J
+    .end local v50  # "anonRssBefore":J
+    .end local v52  # "start":J
+    .end local v55  # "procState":I
+    .end local v59  # "lastOomAdj":I
+    :goto_651
+    return-void
+
+    .line 573
+    .restart local v7  # "start":J
+    .local v13, "procState":I
+    .local v15, "lastOomAdj":I
+    :catchall_652
+    move-exception v0
+
+    move-wide/from16 v52, v7
+
+    move/from16 v55, v13
+
+    move/from16 v59, v15
+
+    .end local v7  # "start":J
+    .end local v13  # "procState":I
+    .end local v15  # "lastOomAdj":I
+    .restart local v52  # "start":J
+    .restart local v55  # "procState":I
+    .restart local v59  # "lastOomAdj":I
+    :goto_659
+    :try_start_659
+    monitor-exit v9
+    :try_end_65a
+    .catchall {:try_start_659 .. :try_end_65a} :catchall_65e
 
     invoke-static {}, Lcom/android/server/am/ActivityManagerService;->resetPriorityAfterLockedSection()V
 
     throw v0
+
+    :catchall_65e
+    move-exception v0
+
+    goto :goto_659
 .end method

@@ -21,6 +21,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/contentcapture/ContentCaptureManagerService;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/contentcapture/ContentCaptureManagerService;
 
     .line 542
     iput-object p1, p0, Lcom/android/server/contentcapture/ContentCaptureManagerService$ContentCaptureManagerServiceStub;->this$0:Lcom/android/server/contentcapture/ContentCaptureManagerService;
@@ -34,6 +35,9 @@
 # virtual methods
 .method public dump(Ljava/io/FileDescriptor;Ljava/io/PrintWriter;[Ljava/lang/String;)V
     .registers 13
+    .param p1, "fd"  # Ljava/io/FileDescriptor;
+    .param p2, "pw"  # Ljava/io/PrintWriter;
+    .param p3, "args"  # [Ljava/lang/String;
 
     .line 662
     iget-object v0, p0, Lcom/android/server/contentcapture/ContentCaptureManagerService$ContentCaptureManagerServiceStub;->this$0:Lcom/android/server/contentcapture/ContentCaptureManagerService;
@@ -58,11 +62,10 @@
 
     .line 664
     :cond_13
-    nop
-
-    .line 665
     const/4 v0, 0x1
 
+    .line 665
+    .local v0, "showHistory":Z
     if-eqz p3, :cond_6d
 
     .line 666
@@ -70,113 +73,121 @@
 
     const/4 v2, 0x0
 
-    move v4, v0
+    move v3, v0
 
-    move v3, v2
+    move v0, v2
 
-    :goto_1b
-    if-ge v3, v1, :cond_6c
+    .end local v0  # "showHistory":Z
+    .local v3, "showHistory":Z
+    :goto_1a
+    if-ge v0, v1, :cond_6c
 
-    aget-object v5, p3, v3
+    aget-object v4, p3, v0
 
     .line 667
-    const/4 v6, -0x1
+    .local v4, "arg":Ljava/lang/String;
+    const/4 v5, -0x1
 
-    invoke-virtual {v5}, Ljava/lang/String;->hashCode()I
+    invoke-virtual {v4}, Ljava/lang/String;->hashCode()I
 
-    move-result v7
+    move-result v6
 
-    const v8, 0x417d0228
+    const v7, 0x417d0228
 
-    if-eq v7, v8, :cond_39
+    const/4 v8, 0x1
 
-    const v8, 0x4f7504e1
+    if-eq v6, v7, :cond_39
 
-    if-eq v7, v8, :cond_2f
+    const v7, 0x4f7504e1
+
+    if-eq v6, v7, :cond_2f
 
     :cond_2e
     goto :goto_42
 
     :cond_2f
-    const-string v7, "--help"
+    const-string v6, "--help"
 
-    invoke-virtual {v5, v7}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v4, v6}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result v7
+    move-result v6
 
-    if-eqz v7, :cond_2e
+    if-eqz v6, :cond_2e
 
-    move v6, v0
+    move v5, v8
 
     goto :goto_42
 
     :cond_39
-    const-string v7, "--no-history"
+    const-string v6, "--no-history"
 
-    invoke-virtual {v5, v7}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v4, v6}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result v7
+    move-result v6
 
-    if-eqz v7, :cond_2e
+    if-eqz v6, :cond_2e
 
-    move v6, v2
+    move v5, v2
 
     :goto_42
-    if-eqz v6, :cond_67
+    if-eqz v5, :cond_67
 
-    if-eq v6, v0, :cond_61
+    if-eq v5, v8, :cond_61
 
     .line 675
-    iget-object v6, p0, Lcom/android/server/contentcapture/ContentCaptureManagerService$ContentCaptureManagerServiceStub;->this$0:Lcom/android/server/contentcapture/ContentCaptureManagerService;
+    iget-object v5, p0, Lcom/android/server/contentcapture/ContentCaptureManagerService$ContentCaptureManagerServiceStub;->this$0:Lcom/android/server/contentcapture/ContentCaptureManagerService;
 
-    invoke-static {v6}, Lcom/android/server/contentcapture/ContentCaptureManagerService;->access$2500(Lcom/android/server/contentcapture/ContentCaptureManagerService;)Ljava/lang/String;
-
-    move-result-object v6
-
-    new-instance v7, Ljava/lang/StringBuilder;
-
-    invoke-direct {v7}, Ljava/lang/StringBuilder;-><init>()V
-
-    const-string v8, "Ignoring invalid dump arg: "
-
-    invoke-virtual {v7, v8}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v7, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v7}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-static {v5}, Lcom/android/server/contentcapture/ContentCaptureManagerService;->access$2500(Lcom/android/server/contentcapture/ContentCaptureManagerService;)Ljava/lang/String;
 
     move-result-object v5
 
-    invoke-static {v6, v5}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    new-instance v6, Ljava/lang/StringBuilder;
+
+    invoke-direct {v6}, Ljava/lang/StringBuilder;-><init>()V
+
+    const-string v7, "Ignoring invalid dump arg: "
+
+    invoke-virtual {v6, v7}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v6, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v6}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v6
+
+    invoke-static {v5, v6}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
     goto :goto_69
 
     .line 672
     :cond_61
-    const-string p1, "Usage: dumpsys content_capture [--no-history]"
+    const-string v0, "Usage: dumpsys content_capture [--no-history]"
 
-    invoke-virtual {p2, p1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {p2, v0}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
     .line 673
     return-void
 
     .line 669
     :cond_67
-    nop
+    const/4 v3, 0x0
 
     .line 670
-    move v4, v2
+    nop
 
     .line 666
+    .end local v4  # "arg":Ljava/lang/String;
     :goto_69
-    add-int/lit8 v3, v3, 0x1
+    add-int/lit8 v0, v0, 0x1
 
-    goto :goto_1b
+    goto :goto_1a
 
     :cond_6c
-    move v0, v4
+    move v0, v3
 
     .line 680
+    .end local v3  # "showHistory":Z
+    .restart local v0  # "showHistory":Z
     :cond_6d
     iget-object v1, p0, Lcom/android/server/contentcapture/ContentCaptureManagerService$ContentCaptureManagerServiceStub;->this$0:Lcom/android/server/contentcapture/ContentCaptureManagerService;
 
@@ -212,9 +223,9 @@
     if-nez v1, :cond_8d
 
     .line 685
-    const-string p1, "disabled by device config"
+    const-string v1, "disabled by device config"
 
-    invoke-virtual {p2, p1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {p2, v1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
     goto :goto_a0
 
@@ -226,11 +237,11 @@
     invoke-virtual {p2}, Ljava/io/PrintWriter;->println()V
 
     .line 688
-    iget-object v0, p0, Lcom/android/server/contentcapture/ContentCaptureManagerService$ContentCaptureManagerServiceStub;->this$0:Lcom/android/server/contentcapture/ContentCaptureManagerService;
+    iget-object v1, p0, Lcom/android/server/contentcapture/ContentCaptureManagerService$ContentCaptureManagerServiceStub;->this$0:Lcom/android/server/contentcapture/ContentCaptureManagerService;
 
-    iget-object v0, v0, Lcom/android/server/contentcapture/ContentCaptureManagerService;->mRequestsHistory:Landroid/util/LocalLog;
+    iget-object v1, v1, Lcom/android/server/contentcapture/ContentCaptureManagerService;->mRequestsHistory:Landroid/util/LocalLog;
 
-    invoke-virtual {v0, p1, p2, p3}, Landroid/util/LocalLog;->reverseDump(Ljava/io/FileDescriptor;Ljava/io/PrintWriter;[Ljava/lang/String;)V
+    invoke-virtual {v1, p1, p2, p3}, Landroid/util/LocalLog;->reverseDump(Ljava/io/FileDescriptor;Ljava/io/PrintWriter;[Ljava/lang/String;)V
 
     .line 689
     invoke-virtual {p2}, Ljava/io/PrintWriter;->println()V
@@ -247,18 +258,19 @@
 
     .line 682
     :catchall_a1
-    move-exception p1
+    move-exception v2
 
     :try_start_a2
     monitor-exit v1
     :try_end_a3
     .catchall {:try_start_a2 .. :try_end_a3} :catchall_a1
 
-    throw p1
+    throw v2
 .end method
 
 .method public finishSession(I)V
     .registers 5
+    .param p1, "sessionId"  # I
 
     .line 564
     invoke-static {p1}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
@@ -273,6 +285,7 @@
     move-result v0
 
     .line 567
+    .local v0, "userId":I
     iget-object v1, p0, Lcom/android/server/contentcapture/ContentCaptureManagerService$ContentCaptureManagerServiceStub;->this$0:Lcom/android/server/contentcapture/ContentCaptureManagerService;
 
     invoke-static {v1}, Lcom/android/server/contentcapture/ContentCaptureManagerService;->access$500(Lcom/android/server/contentcapture/ContentCaptureManagerService;)Ljava/lang/Object;
@@ -287,14 +300,16 @@
 
     invoke-static {v2, v0}, Lcom/android/server/contentcapture/ContentCaptureManagerService;->access$600(Lcom/android/server/contentcapture/ContentCaptureManagerService;I)Lcom/android/server/infra/AbstractPerUserSystemService;
 
-    move-result-object v0
+    move-result-object v2
 
-    check-cast v0, Lcom/android/server/contentcapture/ContentCapturePerUserService;
+    check-cast v2, Lcom/android/server/contentcapture/ContentCapturePerUserService;
 
     .line 569
-    invoke-virtual {v0, p1}, Lcom/android/server/contentcapture/ContentCapturePerUserService;->finishSessionLocked(I)V
+    .local v2, "service":Lcom/android/server/contentcapture/ContentCapturePerUserService;
+    invoke-virtual {v2, p1}, Lcom/android/server/contentcapture/ContentCapturePerUserService;->finishSessionLocked(I)V
 
     .line 570
+    .end local v2  # "service":Lcom/android/server/contentcapture/ContentCapturePerUserService;
     monitor-exit v1
 
     .line 571
@@ -302,17 +317,19 @@
 
     .line 570
     :catchall_1f
-    move-exception p1
+    move-exception v2
 
     monitor-exit v1
     :try_end_21
     .catchall {:try_start_12 .. :try_end_21} :catchall_1f
 
-    throw p1
+    throw v2
 .end method
 
 .method public getContentCaptureConditions(Ljava/lang/String;Lcom/android/internal/os/IResultReceiver;)V
-    .registers 6
+    .registers 9
+    .param p1, "packageName"  # Ljava/lang/String;
+    .param p2, "result"  # Lcom/android/internal/os/IResultReceiver;
 
     .line 642
     iget-object v0, p0, Lcom/android/server/contentcapture/ContentCaptureManagerService$ContentCaptureManagerServiceStub;->this$0:Lcom/android/server/contentcapture/ContentCaptureManagerService;
@@ -337,6 +354,7 @@
     move-result v0
 
     .line 648
+    .local v0, "userId":I
     iget-object v1, p0, Lcom/android/server/contentcapture/ContentCaptureManagerService$ContentCaptureManagerServiceStub;->this$0:Lcom/android/server/contentcapture/ContentCaptureManagerService;
 
     invoke-static {v1}, Lcom/android/server/contentcapture/ContentCaptureManagerService;->access$2100(Lcom/android/server/contentcapture/ContentCaptureManagerService;)Ljava/lang/Object;
@@ -351,93 +369,101 @@
 
     invoke-static {v2, v0}, Lcom/android/server/contentcapture/ContentCaptureManagerService;->access$2200(Lcom/android/server/contentcapture/ContentCaptureManagerService;I)Lcom/android/server/infra/AbstractPerUserSystemService;
 
-    move-result-object v0
+    move-result-object v2
 
-    check-cast v0, Lcom/android/server/contentcapture/ContentCapturePerUserService;
+    check-cast v2, Lcom/android/server/contentcapture/ContentCapturePerUserService;
 
     .line 650
-    if-nez v0, :cond_25
+    .local v2, "service":Lcom/android/server/contentcapture/ContentCapturePerUserService;
+    if-nez v2, :cond_25
 
-    const/4 p1, 0x0
+    const/4 v3, 0x0
 
     goto :goto_2d
 
     .line 651
     :cond_25
-    invoke-virtual {v0, p1}, Lcom/android/server/contentcapture/ContentCapturePerUserService;->getContentCaptureConditionsLocked(Ljava/lang/String;)Landroid/util/ArraySet;
+    invoke-virtual {v2, p1}, Lcom/android/server/contentcapture/ContentCapturePerUserService;->getContentCaptureConditionsLocked(Ljava/lang/String;)Landroid/util/ArraySet;
 
-    move-result-object p1
+    move-result-object v3
 
-    invoke-static {p1}, Landroid/view/contentcapture/ContentCaptureHelper;->toList(Ljava/util/Set;)Ljava/util/ArrayList;
+    invoke-static {v3}, Landroid/view/contentcapture/ContentCaptureHelper;->toList(Ljava/util/Set;)Ljava/util/ArrayList;
 
-    move-result-object p1
+    move-result-object v3
+
+    :goto_2d
+    move-object v2, v3
 
     .line 652
-    :goto_2d
+    .local v2, "conditions":Ljava/util/ArrayList;, "Ljava/util/ArrayList<Landroid/view/contentcapture/ContentCaptureCondition;>;"
     monitor-exit v1
-    :try_end_2e
-    .catchall {:try_start_19 .. :try_end_2e} :catchall_53
+    :try_end_2f
+    .catchall {:try_start_19 .. :try_end_2f} :catchall_54
 
     .line 654
-    const/4 v0, 0x0
+    const/4 v1, 0x0
 
-    :try_start_2f
-    invoke-static {p1}, Lcom/android/internal/util/SyncResultReceiver;->bundleFor(Ljava/util/ArrayList;)Landroid/os/Bundle;
+    :try_start_30
+    invoke-static {v2}, Lcom/android/internal/util/SyncResultReceiver;->bundleFor(Ljava/util/ArrayList;)Landroid/os/Bundle;
 
-    move-result-object p1
+    move-result-object v3
 
-    invoke-interface {p2, v0, p1}, Lcom/android/internal/os/IResultReceiver;->send(ILandroid/os/Bundle;)V
-    :try_end_36
-    .catch Landroid/os/RemoteException; {:try_start_2f .. :try_end_36} :catch_37
+    invoke-interface {p2, v1, v3}, Lcom/android/internal/os/IResultReceiver;->send(ILandroid/os/Bundle;)V
+    :try_end_37
+    .catch Landroid/os/RemoteException; {:try_start_30 .. :try_end_37} :catch_38
 
     .line 657
-    goto :goto_52
+    goto :goto_53
 
     .line 655
-    :catch_37
-    move-exception p1
+    :catch_38
+    move-exception v1
 
     .line 656
-    iget-object p2, p0, Lcom/android/server/contentcapture/ContentCaptureManagerService$ContentCaptureManagerServiceStub;->this$0:Lcom/android/server/contentcapture/ContentCaptureManagerService;
+    .local v1, "e":Landroid/os/RemoteException;
+    iget-object v3, p0, Lcom/android/server/contentcapture/ContentCaptureManagerService$ContentCaptureManagerServiceStub;->this$0:Lcom/android/server/contentcapture/ContentCaptureManagerService;
 
-    invoke-static {p2}, Lcom/android/server/contentcapture/ContentCaptureManagerService;->access$2300(Lcom/android/server/contentcapture/ContentCaptureManagerService;)Ljava/lang/String;
+    invoke-static {v3}, Lcom/android/server/contentcapture/ContentCaptureManagerService;->access$2300(Lcom/android/server/contentcapture/ContentCaptureManagerService;)Ljava/lang/String;
 
-    move-result-object p2
+    move-result-object v3
 
-    new-instance v0, Ljava/lang/StringBuilder;
+    new-instance v4, Ljava/lang/StringBuilder;
 
-    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v4}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v1, "Unable to send getServiceComponentName(): "
+    const-string v5, "Unable to send getServiceComponentName(): "
 
-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    invoke-virtual {v4, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v4}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v4
 
-    invoke-static {p2, p1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v3, v4}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 658
-    :goto_52
+    .end local v1  # "e":Landroid/os/RemoteException;
+    :goto_53
     return-void
 
     .line 652
-    :catchall_53
-    move-exception p1
+    .end local v2  # "conditions":Ljava/util/ArrayList;, "Ljava/util/ArrayList<Landroid/view/contentcapture/ContentCaptureCondition;>;"
+    :catchall_54
+    move-exception v2
 
-    :try_start_54
+    :try_start_55
     monitor-exit v1
-    :try_end_55
-    .catchall {:try_start_54 .. :try_end_55} :catchall_53
+    :try_end_56
+    .catchall {:try_start_55 .. :try_end_56} :catchall_54
 
-    throw p1
+    throw v2
 .end method
 
 .method public getServiceComponentName(Lcom/android/internal/os/IResultReceiver;)V
-    .registers 5
+    .registers 8
+    .param p1, "result"  # Lcom/android/internal/os/IResultReceiver;
 
     .line 575
     invoke-static {}, Landroid/os/UserHandle;->getCallingUserId()I
@@ -445,6 +471,7 @@
     move-result v0
 
     .line 577
+    .local v0, "userId":I
     iget-object v1, p0, Lcom/android/server/contentcapture/ContentCaptureManagerService$ContentCaptureManagerServiceStub;->this$0:Lcom/android/server/contentcapture/ContentCaptureManagerService;
 
     invoke-static {v1}, Lcom/android/server/contentcapture/ContentCaptureManagerService;->access$700(Lcom/android/server/contentcapture/ContentCaptureManagerService;)Ljava/lang/Object;
@@ -459,80 +486,88 @@
 
     invoke-static {v2, v0}, Lcom/android/server/contentcapture/ContentCaptureManagerService;->access$800(Lcom/android/server/contentcapture/ContentCaptureManagerService;I)Lcom/android/server/infra/AbstractPerUserSystemService;
 
-    move-result-object v0
+    move-result-object v2
 
-    check-cast v0, Lcom/android/server/contentcapture/ContentCapturePerUserService;
+    check-cast v2, Lcom/android/server/contentcapture/ContentCapturePerUserService;
 
     .line 579
-    invoke-virtual {v0}, Lcom/android/server/contentcapture/ContentCapturePerUserService;->getServiceComponentName()Landroid/content/ComponentName;
+    .local v2, "service":Lcom/android/server/contentcapture/ContentCapturePerUserService;
+    invoke-virtual {v2}, Lcom/android/server/contentcapture/ContentCapturePerUserService;->getServiceComponentName()Landroid/content/ComponentName;
 
-    move-result-object v0
+    move-result-object v3
+
+    move-object v2, v3
 
     .line 580
+    .local v2, "connectedServiceComponentName":Landroid/content/ComponentName;
     monitor-exit v1
-    :try_end_18
-    .catchall {:try_start_b .. :try_end_18} :catchall_3d
+    :try_end_19
+    .catchall {:try_start_b .. :try_end_19} :catchall_3e
 
     .line 582
     const/4 v1, 0x0
 
-    :try_start_19
-    invoke-static {v0}, Lcom/android/internal/util/SyncResultReceiver;->bundleFor(Landroid/os/Parcelable;)Landroid/os/Bundle;
+    :try_start_1a
+    invoke-static {v2}, Lcom/android/internal/util/SyncResultReceiver;->bundleFor(Landroid/os/Parcelable;)Landroid/os/Bundle;
 
-    move-result-object v0
+    move-result-object v3
 
-    invoke-interface {p1, v1, v0}, Lcom/android/internal/os/IResultReceiver;->send(ILandroid/os/Bundle;)V
-    :try_end_20
-    .catch Landroid/os/RemoteException; {:try_start_19 .. :try_end_20} :catch_21
+    invoke-interface {p1, v1, v3}, Lcom/android/internal/os/IResultReceiver;->send(ILandroid/os/Bundle;)V
+    :try_end_21
+    .catch Landroid/os/RemoteException; {:try_start_1a .. :try_end_21} :catch_22
 
     .line 585
-    goto :goto_3c
+    goto :goto_3d
 
     .line 583
-    :catch_21
-    move-exception p1
+    :catch_22
+    move-exception v1
 
     .line 584
-    iget-object v0, p0, Lcom/android/server/contentcapture/ContentCaptureManagerService$ContentCaptureManagerServiceStub;->this$0:Lcom/android/server/contentcapture/ContentCaptureManagerService;
+    .local v1, "e":Landroid/os/RemoteException;
+    iget-object v3, p0, Lcom/android/server/contentcapture/ContentCaptureManagerService$ContentCaptureManagerServiceStub;->this$0:Lcom/android/server/contentcapture/ContentCaptureManagerService;
 
-    invoke-static {v0}, Lcom/android/server/contentcapture/ContentCaptureManagerService;->access$900(Lcom/android/server/contentcapture/ContentCaptureManagerService;)Ljava/lang/String;
+    invoke-static {v3}, Lcom/android/server/contentcapture/ContentCaptureManagerService;->access$900(Lcom/android/server/contentcapture/ContentCaptureManagerService;)Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v3
 
-    new-instance v1, Ljava/lang/StringBuilder;
+    new-instance v4, Ljava/lang/StringBuilder;
 
-    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v4}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v2, "Unable to send service component name: "
+    const-string v5, "Unable to send service component name: "
 
-    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v1, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    invoke-virtual {v4, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v4}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v4
 
-    invoke-static {v0, p1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v3, v4}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 586
-    :goto_3c
+    .end local v1  # "e":Landroid/os/RemoteException;
+    :goto_3d
     return-void
 
     .line 580
-    :catchall_3d
-    move-exception p1
+    .end local v2  # "connectedServiceComponentName":Landroid/content/ComponentName;
+    :catchall_3e
+    move-exception v2
 
-    :try_start_3e
+    :try_start_3f
     monitor-exit v1
-    :try_end_3f
-    .catchall {:try_start_3e .. :try_end_3f} :catchall_3d
+    :try_end_40
+    .catchall {:try_start_3f .. :try_end_40} :catchall_3e
 
-    throw p1
+    throw v2
 .end method
 
 .method public getServiceSettingsActivity(Lcom/android/internal/os/IResultReceiver;)V
-    .registers 5
+    .registers 8
+    .param p1, "result"  # Lcom/android/internal/os/IResultReceiver;
 
     .line 621
     iget-object v0, p0, Lcom/android/server/contentcapture/ContentCaptureManagerService$ContentCaptureManagerServiceStub;->this$0:Lcom/android/server/contentcapture/ContentCaptureManagerService;
@@ -557,6 +592,7 @@
     move-result v0
 
     .line 627
+    .local v0, "userId":I
     iget-object v1, p0, Lcom/android/server/contentcapture/ContentCaptureManagerService$ContentCaptureManagerServiceStub;->this$0:Lcom/android/server/contentcapture/ContentCaptureManagerService;
 
     invoke-static {v1}, Lcom/android/server/contentcapture/ContentCaptureManagerService;->access$1800(Lcom/android/server/contentcapture/ContentCaptureManagerService;)Ljava/lang/Object;
@@ -571,12 +607,13 @@
 
     invoke-static {v2, v0}, Lcom/android/server/contentcapture/ContentCaptureManagerService;->access$1900(Lcom/android/server/contentcapture/ContentCaptureManagerService;I)Lcom/android/server/infra/AbstractPerUserSystemService;
 
-    move-result-object v0
+    move-result-object v2
 
-    check-cast v0, Lcom/android/server/contentcapture/ContentCapturePerUserService;
+    check-cast v2, Lcom/android/server/contentcapture/ContentCapturePerUserService;
 
     .line 629
-    if-nez v0, :cond_25
+    .local v2, "service":Lcom/android/server/contentcapture/ContentCapturePerUserService;
+    if-nez v2, :cond_25
 
     monitor-exit v1
 
@@ -584,75 +621,82 @@
 
     .line 630
     :cond_25
-    invoke-virtual {v0}, Lcom/android/server/contentcapture/ContentCapturePerUserService;->getServiceSettingsActivityLocked()Landroid/content/ComponentName;
+    invoke-virtual {v2}, Lcom/android/server/contentcapture/ContentCapturePerUserService;->getServiceSettingsActivityLocked()Landroid/content/ComponentName;
 
-    move-result-object v0
+    move-result-object v3
+
+    move-object v2, v3
 
     .line 631
+    .local v2, "componentName":Landroid/content/ComponentName;
     monitor-exit v1
-    :try_end_2a
-    .catchall {:try_start_19 .. :try_end_2a} :catchall_4f
+    :try_end_2b
+    .catchall {:try_start_19 .. :try_end_2b} :catchall_50
 
     .line 633
     const/4 v1, 0x0
 
-    :try_start_2b
-    invoke-static {v0}, Lcom/android/internal/util/SyncResultReceiver;->bundleFor(Landroid/os/Parcelable;)Landroid/os/Bundle;
+    :try_start_2c
+    invoke-static {v2}, Lcom/android/internal/util/SyncResultReceiver;->bundleFor(Landroid/os/Parcelable;)Landroid/os/Bundle;
 
-    move-result-object v0
+    move-result-object v3
 
-    invoke-interface {p1, v1, v0}, Lcom/android/internal/os/IResultReceiver;->send(ILandroid/os/Bundle;)V
-    :try_end_32
-    .catch Landroid/os/RemoteException; {:try_start_2b .. :try_end_32} :catch_33
+    invoke-interface {p1, v1, v3}, Lcom/android/internal/os/IResultReceiver;->send(ILandroid/os/Bundle;)V
+    :try_end_33
+    .catch Landroid/os/RemoteException; {:try_start_2c .. :try_end_33} :catch_34
 
     .line 636
-    goto :goto_4e
+    goto :goto_4f
 
     .line 634
-    :catch_33
-    move-exception p1
+    :catch_34
+    move-exception v1
 
     .line 635
-    iget-object v0, p0, Lcom/android/server/contentcapture/ContentCaptureManagerService$ContentCaptureManagerServiceStub;->this$0:Lcom/android/server/contentcapture/ContentCaptureManagerService;
+    .local v1, "e":Landroid/os/RemoteException;
+    iget-object v3, p0, Lcom/android/server/contentcapture/ContentCaptureManagerService$ContentCaptureManagerServiceStub;->this$0:Lcom/android/server/contentcapture/ContentCaptureManagerService;
 
-    invoke-static {v0}, Lcom/android/server/contentcapture/ContentCaptureManagerService;->access$2000(Lcom/android/server/contentcapture/ContentCaptureManagerService;)Ljava/lang/String;
+    invoke-static {v3}, Lcom/android/server/contentcapture/ContentCaptureManagerService;->access$2000(Lcom/android/server/contentcapture/ContentCaptureManagerService;)Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v3
 
-    new-instance v1, Ljava/lang/StringBuilder;
+    new-instance v4, Ljava/lang/StringBuilder;
 
-    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v4}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v2, "Unable to send getServiceSettingsIntent(): "
+    const-string v5, "Unable to send getServiceSettingsIntent(): "
 
-    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v1, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    invoke-virtual {v4, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v4}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v4
 
-    invoke-static {v0, p1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v3, v4}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 637
-    :goto_4e
+    .end local v1  # "e":Landroid/os/RemoteException;
+    :goto_4f
     return-void
 
     .line 631
-    :catchall_4f
-    move-exception p1
+    .end local v2  # "componentName":Landroid/content/ComponentName;
+    :catchall_50
+    move-exception v2
 
-    :try_start_50
+    :try_start_51
     monitor-exit v1
-    :try_end_51
-    .catchall {:try_start_50 .. :try_end_51} :catchall_4f
+    :try_end_52
+    .catchall {:try_start_51 .. :try_end_52} :catchall_50
 
-    throw p1
+    throw v2
 .end method
 
 .method public isContentCaptureFeatureEnabled(Lcom/android/internal/os/IResultReceiver;)V
-    .registers 6
+    .registers 7
+    .param p1, "result"  # Lcom/android/internal/os/IResultReceiver;
 
     .line 603
     iget-object v0, p0, Lcom/android/server/contentcapture/ContentCaptureManagerService$ContentCaptureManagerServiceStub;->this$0:Lcom/android/server/contentcapture/ContentCaptureManagerService;
@@ -689,6 +733,7 @@
     move-result v1
 
     .line 610
+    .local v1, "userId":I
     iget-object v2, p0, Lcom/android/server/contentcapture/ContentCaptureManagerService$ContentCaptureManagerServiceStub;->this$0:Lcom/android/server/contentcapture/ContentCaptureManagerService;
 
     invoke-static {v2}, Lcom/android/server/contentcapture/ContentCaptureManagerService;->access$1500(Lcom/android/server/contentcapture/ContentCaptureManagerService;)Z
@@ -703,87 +748,94 @@
 
     invoke-static {v2, v1}, Lcom/android/server/contentcapture/ContentCaptureManagerService;->access$1600(Lcom/android/server/contentcapture/ContentCaptureManagerService;I)Z
 
-    move-result v1
+    move-result v2
 
-    if-nez v1, :cond_2d
+    if-nez v2, :cond_2d
 
-    move v1, v3
+    move v2, v3
 
     goto :goto_2e
 
     :cond_2d
-    const/4 v1, 0x0
+    const/4 v2, 0x0
+
+    :goto_2e
+    move v1, v2
 
     .line 611
-    :goto_2e
+    .local v1, "enabled":Z
     monitor-exit v0
-    :try_end_2f
-    .catchall {:try_start_7 .. :try_end_2f} :catchall_54
+    :try_end_30
+    .catchall {:try_start_7 .. :try_end_30} :catchall_55
 
     .line 613
-    if-eqz v1, :cond_32
+    if-eqz v1, :cond_33
 
-    goto :goto_33
+    goto :goto_34
 
-    :cond_32
+    :cond_33
     const/4 v3, 0x2
 
-    :goto_33
+    :goto_34
     const/4 v0, 0x0
 
-    :try_start_34
+    :try_start_35
     invoke-interface {p1, v3, v0}, Lcom/android/internal/os/IResultReceiver;->send(ILandroid/os/Bundle;)V
-    :try_end_37
-    .catch Landroid/os/RemoteException; {:try_start_34 .. :try_end_37} :catch_38
+    :try_end_38
+    .catch Landroid/os/RemoteException; {:try_start_35 .. :try_end_38} :catch_39
 
     .line 616
-    goto :goto_53
+    goto :goto_54
 
     .line 614
-    :catch_38
-    move-exception p1
+    :catch_39
+    move-exception v0
 
     .line 615
-    iget-object v0, p0, Lcom/android/server/contentcapture/ContentCaptureManagerService$ContentCaptureManagerServiceStub;->this$0:Lcom/android/server/contentcapture/ContentCaptureManagerService;
+    .local v0, "e":Landroid/os/RemoteException;
+    iget-object v2, p0, Lcom/android/server/contentcapture/ContentCaptureManagerService$ContentCaptureManagerServiceStub;->this$0:Lcom/android/server/contentcapture/ContentCaptureManagerService;
 
-    invoke-static {v0}, Lcom/android/server/contentcapture/ContentCaptureManagerService;->access$1700(Lcom/android/server/contentcapture/ContentCaptureManagerService;)Ljava/lang/String;
+    invoke-static {v2}, Lcom/android/server/contentcapture/ContentCaptureManagerService;->access$1700(Lcom/android/server/contentcapture/ContentCaptureManagerService;)Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v2
 
-    new-instance v1, Ljava/lang/StringBuilder;
+    new-instance v3, Ljava/lang/StringBuilder;
 
-    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v2, "Unable to send isContentCaptureFeatureEnabled(): "
+    const-string v4, "Unable to send isContentCaptureFeatureEnabled(): "
 
-    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v1, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v3
 
-    invoke-static {v0, p1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v2, v3}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 617
-    :goto_53
+    .end local v0  # "e":Landroid/os/RemoteException;
+    :goto_54
     return-void
 
     .line 611
-    :catchall_54
-    move-exception p1
+    .end local v1  # "enabled":Z
+    :catchall_55
+    move-exception v1
 
-    :try_start_55
+    :try_start_56
     monitor-exit v0
-    :try_end_56
-    .catchall {:try_start_55 .. :try_end_56} :catchall_54
+    :try_end_57
+    .catchall {:try_start_56 .. :try_end_57} :catchall_55
 
-    throw p1
+    throw v1
 .end method
 
 .method public synthetic lambda$getContentCaptureConditions$2$ContentCaptureManagerService$ContentCaptureManagerServiceStub(Ljava/lang/String;)V
     .registers 3
+    .param p1, "packageName"  # Ljava/lang/String;
 
     .line 642
     iget-object v0, p0, Lcom/android/server/contentcapture/ContentCaptureManagerService$ContentCaptureManagerServiceStub;->this$0:Lcom/android/server/contentcapture/ContentCaptureManagerService;
@@ -810,7 +862,7 @@
     .line 605
     iget-object v0, p0, Lcom/android/server/contentcapture/ContentCaptureManagerService$ContentCaptureManagerServiceStub;->this$0:Lcom/android/server/contentcapture/ContentCaptureManagerService;
 
-    const-string v1, "isContentCaptureFeatureEnabled()"
+    const-string/jumbo v1, "isContentCaptureFeatureEnabled()"
 
     invoke-static {v0, v1}, Lcom/android/server/contentcapture/ContentCaptureManagerService;->access$2800(Lcom/android/server/contentcapture/ContentCaptureManagerService;Ljava/lang/String;)V
 
@@ -819,6 +871,12 @@
 
 .method public onShellCommand(Ljava/io/FileDescriptor;Ljava/io/FileDescriptor;Ljava/io/FileDescriptor;[Ljava/lang/String;Landroid/os/ShellCallback;Landroid/os/ResultReceiver;)V
     .registers 15
+    .param p1, "in"  # Ljava/io/FileDescriptor;
+    .param p2, "out"  # Ljava/io/FileDescriptor;
+    .param p3, "err"  # Ljava/io/FileDescriptor;
+    .param p4, "args"  # [Ljava/lang/String;
+    .param p5, "callback"  # Landroid/os/ShellCallback;
+    .param p6, "resultReceiver"  # Landroid/os/ResultReceiver;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -854,6 +912,7 @@
 
 .method public removeData(Landroid/view/contentcapture/DataRemovalRequest;)V
     .registers 5
+    .param p1, "request"  # Landroid/view/contentcapture/DataRemovalRequest;
 
     .line 590
     invoke-static {p1}, Lcom/android/internal/util/Preconditions;->checkNotNull(Ljava/lang/Object;)Ljava/lang/Object;
@@ -873,6 +932,7 @@
     move-result v0
 
     .line 594
+    .local v0, "userId":I
     iget-object v1, p0, Lcom/android/server/contentcapture/ContentCaptureManagerService$ContentCaptureManagerServiceStub;->this$0:Lcom/android/server/contentcapture/ContentCaptureManagerService;
 
     invoke-static {v1}, Lcom/android/server/contentcapture/ContentCaptureManagerService;->access$1100(Lcom/android/server/contentcapture/ContentCaptureManagerService;)Ljava/lang/Object;
@@ -887,14 +947,16 @@
 
     invoke-static {v2, v0}, Lcom/android/server/contentcapture/ContentCaptureManagerService;->access$1200(Lcom/android/server/contentcapture/ContentCaptureManagerService;I)Lcom/android/server/infra/AbstractPerUserSystemService;
 
-    move-result-object v0
+    move-result-object v2
 
-    check-cast v0, Lcom/android/server/contentcapture/ContentCapturePerUserService;
+    check-cast v2, Lcom/android/server/contentcapture/ContentCapturePerUserService;
 
     .line 596
-    invoke-virtual {v0, p1}, Lcom/android/server/contentcapture/ContentCapturePerUserService;->removeDataLocked(Landroid/view/contentcapture/DataRemovalRequest;)V
+    .local v2, "service":Lcom/android/server/contentcapture/ContentCapturePerUserService;
+    invoke-virtual {v2, p1}, Lcom/android/server/contentcapture/ContentCapturePerUserService;->removeDataLocked(Landroid/view/contentcapture/DataRemovalRequest;)V
 
     .line 597
+    .end local v2  # "service":Lcom/android/server/contentcapture/ContentCapturePerUserService;
     monitor-exit v1
 
     .line 598
@@ -902,17 +964,22 @@
 
     .line 597
     :catchall_24
-    move-exception p1
+    move-exception v2
 
     monitor-exit v1
     :try_end_26
     .catchall {:try_start_17 .. :try_end_26} :catchall_24
 
-    throw p1
+    throw v2
 .end method
 
 .method public startSession(Landroid/os/IBinder;Landroid/content/ComponentName;IILcom/android/internal/os/IResultReceiver;)V
-    .registers 14
+    .registers 16
+    .param p1, "activityToken"  # Landroid/os/IBinder;
+    .param p2, "componentName"  # Landroid/content/ComponentName;
+    .param p3, "sessionId"  # I
+    .param p4, "flags"  # I
+    .param p5, "result"  # Lcom/android/internal/os/IResultReceiver;
 
     .line 548
     invoke-static {p1}, Lcom/android/internal/util/Preconditions;->checkNotNull(Ljava/lang/Object;)Ljava/lang/Object;
@@ -920,80 +987,84 @@
     .line 549
     invoke-static {p3}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
 
-    move-result-object p2
+    move-result-object v0
 
-    invoke-static {p2}, Lcom/android/internal/util/Preconditions;->checkNotNull(Ljava/lang/Object;)Ljava/lang/Object;
+    invoke-static {v0}, Lcom/android/internal/util/Preconditions;->checkNotNull(Ljava/lang/Object;)Ljava/lang/Object;
 
     .line 550
     invoke-static {}, Landroid/os/UserHandle;->getCallingUserId()I
 
-    move-result p2
+    move-result v0
 
     .line 552
-    iget-object v0, p0, Lcom/android/server/contentcapture/ContentCaptureManagerService$ContentCaptureManagerServiceStub;->this$0:Lcom/android/server/contentcapture/ContentCaptureManagerService;
+    .local v0, "userId":I
+    iget-object v1, p0, Lcom/android/server/contentcapture/ContentCaptureManagerService$ContentCaptureManagerServiceStub;->this$0:Lcom/android/server/contentcapture/ContentCaptureManagerService;
 
-    invoke-static {v0}, Lcom/android/server/contentcapture/ContentCaptureManagerService;->access$200(Lcom/android/server/contentcapture/ContentCaptureManagerService;)Landroid/app/ActivityManagerInternal;
+    invoke-static {v1}, Lcom/android/server/contentcapture/ContentCaptureManagerService;->access$200(Lcom/android/server/contentcapture/ContentCaptureManagerService;)Landroid/app/ActivityManagerInternal;
 
-    move-result-object v0
+    move-result-object v1
 
     .line 553
-    invoke-virtual {v0, p1}, Landroid/app/ActivityManagerInternal;->getActivityPresentationInfo(Landroid/os/IBinder;)Landroid/content/pm/ActivityPresentationInfo;
+    invoke-virtual {v1, p1}, Landroid/app/ActivityManagerInternal;->getActivityPresentationInfo(Landroid/os/IBinder;)Landroid/content/pm/ActivityPresentationInfo;
 
-    move-result-object v3
+    move-result-object v1
 
     .line 555
-    iget-object v0, p0, Lcom/android/server/contentcapture/ContentCaptureManagerService$ContentCaptureManagerServiceStub;->this$0:Lcom/android/server/contentcapture/ContentCaptureManagerService;
+    .local v1, "activityPresentationInfo":Landroid/content/pm/ActivityPresentationInfo;
+    iget-object v2, p0, Lcom/android/server/contentcapture/ContentCaptureManagerService$ContentCaptureManagerServiceStub;->this$0:Lcom/android/server/contentcapture/ContentCaptureManagerService;
 
-    invoke-static {v0}, Lcom/android/server/contentcapture/ContentCaptureManagerService;->access$300(Lcom/android/server/contentcapture/ContentCaptureManagerService;)Ljava/lang/Object;
+    invoke-static {v2}, Lcom/android/server/contentcapture/ContentCaptureManagerService;->access$300(Lcom/android/server/contentcapture/ContentCaptureManagerService;)Ljava/lang/Object;
 
-    move-result-object v0
+    move-result-object v9
 
-    monitor-enter v0
+    monitor-enter v9
 
     .line 556
     :try_start_1f
-    iget-object v1, p0, Lcom/android/server/contentcapture/ContentCaptureManagerService$ContentCaptureManagerServiceStub;->this$0:Lcom/android/server/contentcapture/ContentCaptureManagerService;
+    iget-object v2, p0, Lcom/android/server/contentcapture/ContentCaptureManagerService$ContentCaptureManagerServiceStub;->this$0:Lcom/android/server/contentcapture/ContentCaptureManagerService;
 
-    invoke-static {v1, p2}, Lcom/android/server/contentcapture/ContentCaptureManagerService;->access$400(Lcom/android/server/contentcapture/ContentCaptureManagerService;I)Lcom/android/server/infra/AbstractPerUserSystemService;
+    invoke-static {v2, v0}, Lcom/android/server/contentcapture/ContentCaptureManagerService;->access$400(Lcom/android/server/contentcapture/ContentCaptureManagerService;I)Lcom/android/server/infra/AbstractPerUserSystemService;
 
-    move-result-object p2
+    move-result-object v2
 
-    move-object v1, p2
-
-    check-cast v1, Lcom/android/server/contentcapture/ContentCapturePerUserService;
+    check-cast v2, Lcom/android/server/contentcapture/ContentCapturePerUserService;
 
     .line 557
+    .local v2, "service":Lcom/android/server/contentcapture/ContentCapturePerUserService;
     nop
 
     .line 558
     invoke-static {}, Landroid/os/Binder;->getCallingUid()I
 
-    move-result v5
+    move-result v6
 
     .line 557
-    move-object v2, p1
+    move-object v3, p1
 
-    move v4, p3
+    move-object v4, v1
 
-    move v6, p4
+    move v5, p3
 
-    move-object v7, p5
+    move v7, p4
 
-    invoke-virtual/range {v1 .. v7}, Lcom/android/server/contentcapture/ContentCapturePerUserService;->startSessionLocked(Landroid/os/IBinder;Landroid/content/pm/ActivityPresentationInfo;IIILcom/android/internal/os/IResultReceiver;)V
+    move-object v8, p5
+
+    invoke-virtual/range {v2 .. v8}, Lcom/android/server/contentcapture/ContentCapturePerUserService;->startSessionLocked(Landroid/os/IBinder;Landroid/content/pm/ActivityPresentationInfo;IIILcom/android/internal/os/IResultReceiver;)V
 
     .line 559
-    monitor-exit v0
+    .end local v2  # "service":Lcom/android/server/contentcapture/ContentCapturePerUserService;
+    monitor-exit v9
 
     .line 560
     return-void
 
     .line 559
     :catchall_36
-    move-exception p1
+    move-exception v2
 
-    monitor-exit v0
+    monitor-exit v9
     :try_end_38
     .catchall {:try_start_1f .. :try_end_38} :catchall_36
 
-    throw p1
+    throw v2
 .end method

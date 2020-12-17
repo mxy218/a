@@ -15,8 +15,6 @@
 
 
 # instance fields
-.field private final mAttrs:Landroid/media/AudioAttributes;
-
 .field private final mEffect:Landroid/os/VibrationEffect;
 
 .field private final mOpPkg:Ljava/lang/String;
@@ -29,36 +27,45 @@
 
 .field private final mUid:I
 
+.field private final mUsageHint:I
+
 
 # direct methods
-.method public constructor <init>(JLandroid/os/VibrationEffect;Landroid/os/VibrationEffect;Landroid/media/AudioAttributes;ILjava/lang/String;Ljava/lang/String;)V
+.method public constructor <init>(JLandroid/os/VibrationEffect;Landroid/os/VibrationEffect;IILjava/lang/String;Ljava/lang/String;)V
     .registers 9
+    .param p1, "startTimeDebug"  # J
+    .param p3, "effect"  # Landroid/os/VibrationEffect;
+    .param p4, "originalEffect"  # Landroid/os/VibrationEffect;
+    .param p5, "usageHint"  # I
+    .param p6, "uid"  # I
+    .param p7, "opPkg"  # Ljava/lang/String;
+    .param p8, "reason"  # Ljava/lang/String;
 
-    .line 292
+    .line 322
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
-    .line 293
+    .line 323
     iput-wide p1, p0, Lcom/android/server/VibratorService$VibrationInfo;->mStartTimeDebug:J
 
-    .line 294
+    .line 324
     iput-object p3, p0, Lcom/android/server/VibratorService$VibrationInfo;->mEffect:Landroid/os/VibrationEffect;
 
-    .line 295
+    .line 325
     iput-object p4, p0, Lcom/android/server/VibratorService$VibrationInfo;->mOriginalEffect:Landroid/os/VibrationEffect;
 
-    .line 296
-    iput-object p5, p0, Lcom/android/server/VibratorService$VibrationInfo;->mAttrs:Landroid/media/AudioAttributes;
+    .line 326
+    iput p5, p0, Lcom/android/server/VibratorService$VibrationInfo;->mUsageHint:I
 
-    .line 297
+    .line 327
     iput p6, p0, Lcom/android/server/VibratorService$VibrationInfo;->mUid:I
 
-    .line 298
+    .line 328
     iput-object p7, p0, Lcom/android/server/VibratorService$VibrationInfo;->mOpPkg:Ljava/lang/String;
 
-    .line 299
+    .line 329
     iput-object p8, p0, Lcom/android/server/VibratorService$VibrationInfo;->mReason:Ljava/lang/String;
 
-    .line 300
+    .line 330
     return-void
 .end method
 
@@ -67,17 +74,17 @@
 .method public toString()Ljava/lang/String;
     .registers 6
 
-    .line 304
+    .line 334
     new-instance v0, Ljava/lang/StringBuilder;
 
     invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
 
-    .line 305
+    .line 335
     const-string/jumbo v1, "startTime: "
 
     invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    .line 306
+    .line 336
     invoke-static {}, Landroid/icu/text/DateFormat;->getDateTimeInstance()Landroid/icu/text/DateFormat;
 
     move-result-object v1
@@ -94,71 +101,71 @@
 
     invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    .line 307
+    .line 337
     const-string v1, ", effect: "
 
     invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     iget-object v1, p0, Lcom/android/server/VibratorService$VibrationInfo;->mEffect:Landroid/os/VibrationEffect;
 
-    .line 308
+    .line 338
     invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
-    .line 309
+    .line 339
     const-string v1, ", originalEffect: "
 
     invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     iget-object v1, p0, Lcom/android/server/VibratorService$VibrationInfo;->mOriginalEffect:Landroid/os/VibrationEffect;
 
-    .line 310
+    .line 340
     invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
-    .line 311
-    const-string v1, ", attrs: "
+    .line 341
+    const-string v1, ", usageHint: "
 
     invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    iget-object v1, p0, Lcom/android/server/VibratorService$VibrationInfo;->mAttrs:Landroid/media/AudioAttributes;
+    iget v1, p0, Lcom/android/server/VibratorService$VibrationInfo;->mUsageHint:I
 
-    .line 312
-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    .line 342
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    .line 313
+    .line 343
     const-string v1, ", uid: "
 
     invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     iget v1, p0, Lcom/android/server/VibratorService$VibrationInfo;->mUid:I
 
-    .line 314
+    .line 344
     invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    .line 315
+    .line 345
     const-string v1, ", opPkg: "
 
     invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     iget-object v1, p0, Lcom/android/server/VibratorService$VibrationInfo;->mOpPkg:Ljava/lang/String;
 
-    .line 316
+    .line 346
     invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    .line 317
+    .line 347
     const-string v1, ", reason: "
 
     invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     iget-object v1, p0, Lcom/android/server/VibratorService$VibrationInfo;->mReason:Ljava/lang/String;
 
-    .line 318
+    .line 348
     invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    .line 319
+    .line 349
     invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
     move-result-object v0
 
-    .line 304
+    .line 334
     return-object v0
 .end method

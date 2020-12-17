@@ -19,47 +19,55 @@
 
 
 # direct methods
-.method constructor <init>(Lcom/android/server/biometrics/fingerprint/FingerprintService$FingerprintServiceWrapper;Landroid/content/Context;Lcom/android/server/biometrics/BiometricServiceBase$DaemonWrapper;JLandroid/os/IBinder;Lcom/android/server/biometrics/BiometricServiceBase$ServiceListener;II[BZLjava/lang/String;[II)V
+.method constructor <init>(Lcom/android/server/biometrics/fingerprint/FingerprintService$FingerprintServiceWrapper;Landroid/content/Context;Lcom/android/server/biometrics/BiometricServiceBase$DaemonWrapper;JLandroid/os/IBinder;Lcom/android/server/biometrics/BiometricServiceBase$ServiceListener;II[BZLjava/lang/String;[I)V
     .registers 30
+    .param p1, "this$1"  # Lcom/android/server/biometrics/fingerprint/FingerprintService$FingerprintServiceWrapper;
+    .param p2, "context"  # Landroid/content/Context;
+    .param p3, "daemon"  # Lcom/android/server/biometrics/BiometricServiceBase$DaemonWrapper;
+    .param p4, "halDeviceId"  # J
+    .param p6, "token"  # Landroid/os/IBinder;
+    .param p7, "listener"  # Lcom/android/server/biometrics/BiometricServiceBase$ServiceListener;
+    .param p8, "userId"  # I
+    .param p9, "groupId"  # I
+    .param p10, "cryptoToken"  # [B
+    .param p11, "restricted"  # Z
+    .param p12, "owner"  # Ljava/lang/String;
+    .param p13, "disabledFeatures"  # [I
 
-    .line 216
+    .line 223
     move-object/from16 v0, p1
 
-    move-object v1, p0
+    move-object/from16 v15, p0
 
-    iput-object v0, v1, Lcom/android/server/biometrics/fingerprint/FingerprintService$FingerprintServiceWrapper$1;->this$1:Lcom/android/server/biometrics/fingerprint/FingerprintService$FingerprintServiceWrapper;
+    iput-object v0, v15, Lcom/android/server/biometrics/fingerprint/FingerprintService$FingerprintServiceWrapper$1;->this$1:Lcom/android/server/biometrics/fingerprint/FingerprintService$FingerprintServiceWrapper;
 
     iget-object v2, v0, Lcom/android/server/biometrics/fingerprint/FingerprintService$FingerprintServiceWrapper;->this$0:Lcom/android/server/biometrics/fingerprint/FingerprintService;
 
-    move-object v0, p0
+    move-object/from16 v1, p0
 
-    move-object v1, v2
+    move-object/from16 v3, p2
 
-    move-object/from16 v2, p2
+    move-object/from16 v4, p3
 
-    move-object/from16 v3, p3
+    move-wide/from16 v5, p4
 
-    move-wide/from16 v4, p4
+    move-object/from16 v7, p6
 
-    move-object/from16 v6, p6
+    move-object/from16 v8, p7
 
-    move-object/from16 v7, p7
+    move/from16 v9, p8
 
-    move/from16 v8, p8
+    move/from16 v10, p9
 
-    move/from16 v9, p9
+    move-object/from16 v11, p10
 
-    move-object/from16 v10, p10
+    move/from16 v12, p11
 
-    move/from16 v11, p11
+    move-object/from16 v13, p12
 
-    move-object/from16 v12, p12
+    move-object/from16 v14, p13
 
-    move-object/from16 v13, p13
-
-    move/from16 v14, p14
-
-    invoke-direct/range {v0 .. v14}, Lcom/android/server/biometrics/BiometricServiceBase$EnrollClientImpl;-><init>(Lcom/android/server/biometrics/BiometricServiceBase;Landroid/content/Context;Lcom/android/server/biometrics/BiometricServiceBase$DaemonWrapper;JLandroid/os/IBinder;Lcom/android/server/biometrics/BiometricServiceBase$ServiceListener;II[BZLjava/lang/String;[II)V
+    invoke-direct/range {v1 .. v14}, Lcom/android/server/biometrics/BiometricServiceBase$EnrollClientImpl;-><init>(Lcom/android/server/biometrics/BiometricServiceBase;Landroid/content/Context;Lcom/android/server/biometrics/BiometricServiceBase$DaemonWrapper;JLandroid/os/IBinder;Lcom/android/server/biometrics/BiometricServiceBase$ServiceListener;II[BZLjava/lang/String;[I)V
 
     return-void
 .end method
@@ -69,7 +77,7 @@
 .method public shouldVibrate()Z
     .registers 2
 
-    .line 219
+    .line 226
     const/4 v0, 0x1
 
     return v0
@@ -78,7 +86,7 @@
 .method protected statsModality()I
     .registers 2
 
-    .line 224
+    .line 231
     iget-object v0, p0, Lcom/android/server/biometrics/fingerprint/FingerprintService$FingerprintServiceWrapper$1;->this$1:Lcom/android/server/biometrics/fingerprint/FingerprintService$FingerprintServiceWrapper;
 
     iget-object v0, v0, Lcom/android/server/biometrics/fingerprint/FingerprintService$FingerprintServiceWrapper;->this$0:Lcom/android/server/biometrics/fingerprint/FingerprintService;

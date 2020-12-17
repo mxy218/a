@@ -24,22 +24,24 @@
 
 # direct methods
 .method constructor <init>(II)V
-    .registers 3
+    .registers 4
+    .param p1, "timeout"  # I
+    .param p2, "type"  # I
 
-    .line 244
+    .line 263
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
-    .line 245
+    .line 264
     iput p1, p0, Lcom/android/server/NetworkManagementService$IdleTimerParams;->timeout:I
 
-    .line 246
+    .line 265
     iput p2, p0, Lcom/android/server/NetworkManagementService$IdleTimerParams;->type:I
 
-    .line 247
-    const/4 p1, 0x1
+    .line 266
+    const/4 v0, 0x1
 
-    iput p1, p0, Lcom/android/server/NetworkManagementService$IdleTimerParams;->networkCount:I
+    iput v0, p0, Lcom/android/server/NetworkManagementService$IdleTimerParams;->networkCount:I
 
-    .line 248
+    .line 267
     return-void
 .end method

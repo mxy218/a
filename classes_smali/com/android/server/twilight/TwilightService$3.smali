@@ -28,8 +28,9 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/twilight/TwilightService;Lcom/android/server/twilight/TwilightListener;Lcom/android/server/twilight/TwilightState;)V
     .registers 4
+    .param p1, "this$0"  # Lcom/android/server/twilight/TwilightService;
 
-    .line 221
+    .line 233
     iput-object p1, p0, Lcom/android/server/twilight/TwilightService$3;->this$0:Lcom/android/server/twilight/TwilightService;
 
     iput-object p2, p0, Lcom/android/server/twilight/TwilightService$3;->val$listener:Lcom/android/server/twilight/TwilightListener;
@@ -46,13 +47,13 @@
 .method public run()V
     .registers 3
 
-    .line 224
+    .line 236
     iget-object v0, p0, Lcom/android/server/twilight/TwilightService$3;->val$listener:Lcom/android/server/twilight/TwilightListener;
 
     iget-object v1, p0, Lcom/android/server/twilight/TwilightService$3;->val$state:Lcom/android/server/twilight/TwilightState;
 
     invoke-interface {v0, v1}, Lcom/android/server/twilight/TwilightListener;->onTwilightStateChanged(Lcom/android/server/twilight/TwilightState;)V
 
-    .line 225
+    .line 237
     return-void
 .end method

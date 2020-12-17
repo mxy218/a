@@ -36,7 +36,8 @@
 
 # virtual methods
 .method notifyWallpaperVisibilityChanged(Lcom/android/server/wm/DisplayContent;)V
-    .registers 6
+    .registers 8
+    .param p1, "displayContent"  # Lcom/android/server/wm/DisplayContent;
 
     .line 57
     invoke-virtual {p1}, Lcom/android/server/wm/DisplayContent;->getDisplayId()I
@@ -44,51 +45,56 @@
     move-result v0
 
     .line 58
-    iget-object p1, p1, Lcom/android/server/wm/DisplayContent;->mWallpaperController:Lcom/android/server/wm/WallpaperController;
+    .local v0, "displayId":I
+    iget-object v1, p1, Lcom/android/server/wm/DisplayContent;->mWallpaperController:Lcom/android/server/wm/WallpaperController;
 
-    invoke-virtual {p1}, Lcom/android/server/wm/WallpaperController;->isWallpaperVisible()Z
+    invoke-virtual {v1}, Lcom/android/server/wm/WallpaperController;->isWallpaperVisible()Z
 
-    move-result p1
+    move-result v1
 
     .line 59
-    iget-object v1, p0, Lcom/android/server/wm/WallpaperVisibilityListeners;->mDisplayListeners:Landroid/util/SparseArray;
+    .local v1, "visible":Z
+    iget-object v2, p0, Lcom/android/server/wm/WallpaperVisibilityListeners;->mDisplayListeners:Landroid/util/SparseArray;
 
     .line 60
-    invoke-virtual {v1, v0}, Landroid/util/SparseArray;->get(I)Ljava/lang/Object;
+    invoke-virtual {v2, v0}, Landroid/util/SparseArray;->get(I)Ljava/lang/Object;
 
-    move-result-object v1
+    move-result-object v2
 
-    check-cast v1, Landroid/os/RemoteCallbackList;
+    check-cast v2, Landroid/os/RemoteCallbackList;
 
     .line 63
-    if-nez v1, :cond_15
+    .local v2, "displayListeners":Landroid/os/RemoteCallbackList;, "Landroid/os/RemoteCallbackList<Landroid/view/IWallpaperVisibilityListener;>;"
+    if-nez v2, :cond_15
 
     .line 64
     return-void
 
     .line 67
     :cond_15
-    invoke-virtual {v1}, Landroid/os/RemoteCallbackList;->beginBroadcast()I
+    invoke-virtual {v2}, Landroid/os/RemoteCallbackList;->beginBroadcast()I
 
-    move-result v2
+    move-result v3
 
     .line 68
+    .local v3, "i":I
     :goto_19
-    if-lez v2, :cond_29
+    if-lez v3, :cond_29
 
     .line 69
-    add-int/lit8 v2, v2, -0x1
+    add-int/lit8 v3, v3, -0x1
 
     .line 70
-    invoke-virtual {v1, v2}, Landroid/os/RemoteCallbackList;->getBroadcastItem(I)Landroid/os/IInterface;
+    invoke-virtual {v2, v3}, Landroid/os/RemoteCallbackList;->getBroadcastItem(I)Landroid/os/IInterface;
 
-    move-result-object v3
+    move-result-object v4
 
-    check-cast v3, Landroid/view/IWallpaperVisibilityListener;
+    check-cast v4, Landroid/view/IWallpaperVisibilityListener;
 
     .line 72
+    .local v4, "listener":Landroid/view/IWallpaperVisibilityListener;
     :try_start_23
-    invoke-interface {v3, p1, v0}, Landroid/view/IWallpaperVisibilityListener;->onWallpaperVisibilityChanged(ZI)V
+    invoke-interface {v4, v1, v0}, Landroid/view/IWallpaperVisibilityListener;->onWallpaperVisibilityChanged(ZI)V
     :try_end_26
     .catch Landroid/os/RemoteException; {:try_start_23 .. :try_end_26} :catch_27
 
@@ -97,15 +103,16 @@
 
     .line 73
     :catch_27
-    move-exception v3
+    move-exception v5
 
     .line 76
+    .end local v4  # "listener":Landroid/view/IWallpaperVisibilityListener;
     :goto_28
     goto :goto_19
 
     .line 77
     :cond_29
-    invoke-virtual {v1}, Landroid/os/RemoteCallbackList;->finishBroadcast()V
+    invoke-virtual {v2}, Landroid/os/RemoteCallbackList;->finishBroadcast()V
 
     .line 78
     return-void
@@ -113,6 +120,8 @@
 
 .method registerWallpaperVisibilityListener(Landroid/view/IWallpaperVisibilityListener;I)V
     .registers 5
+    .param p1, "listener"  # Landroid/view/IWallpaperVisibilityListener;
+    .param p2, "displayId"  # I
 
     .line 37
     iget-object v0, p0, Lcom/android/server/wm/WallpaperVisibilityListeners;->mDisplayListeners:Landroid/util/SparseArray;
@@ -125,12 +134,15 @@
     check-cast v0, Landroid/os/RemoteCallbackList;
 
     .line 39
-    if-nez v0, :cond_14
+    .local v0, "listeners":Landroid/os/RemoteCallbackList;, "Landroid/os/RemoteCallbackList<Landroid/view/IWallpaperVisibilityListener;>;"
+    if-nez v0, :cond_15
 
     .line 40
-    new-instance v0, Landroid/os/RemoteCallbackList;
+    new-instance v1, Landroid/os/RemoteCallbackList;
 
-    invoke-direct {v0}, Landroid/os/RemoteCallbackList;-><init>()V
+    invoke-direct {v1}, Landroid/os/RemoteCallbackList;-><init>()V
+
+    move-object v0, v1
 
     .line 41
     iget-object v1, p0, Lcom/android/server/wm/WallpaperVisibilityListeners;->mDisplayListeners:Landroid/util/SparseArray;
@@ -138,7 +150,7 @@
     invoke-virtual {v1, p2, v0}, Landroid/util/SparseArray;->append(ILjava/lang/Object;)V
 
     .line 43
-    :cond_14
+    :cond_15
     invoke-virtual {v0, p1}, Landroid/os/RemoteCallbackList;->register(Landroid/os/IInterface;)Z
 
     .line 44
@@ -147,6 +159,8 @@
 
 .method unregisterWallpaperVisibilityListener(Landroid/view/IWallpaperVisibilityListener;I)V
     .registers 4
+    .param p1, "listener"  # Landroid/view/IWallpaperVisibilityListener;
+    .param p2, "displayId"  # I
 
     .line 48
     iget-object v0, p0, Lcom/android/server/wm/WallpaperVisibilityListeners;->mDisplayListeners:Landroid/util/SparseArray;
@@ -154,19 +168,20 @@
     .line 49
     invoke-virtual {v0, p2}, Landroid/util/SparseArray;->get(I)Ljava/lang/Object;
 
-    move-result-object p2
+    move-result-object v0
 
-    check-cast p2, Landroid/os/RemoteCallbackList;
+    check-cast v0, Landroid/os/RemoteCallbackList;
 
     .line 50
-    if-nez p2, :cond_b
+    .local v0, "listeners":Landroid/os/RemoteCallbackList;, "Landroid/os/RemoteCallbackList<Landroid/view/IWallpaperVisibilityListener;>;"
+    if-nez v0, :cond_b
 
     .line 51
     return-void
 
     .line 53
     :cond_b
-    invoke-virtual {p2, p1}, Landroid/os/RemoteCallbackList;->unregister(Landroid/os/IInterface;)Z
+    invoke-virtual {v0, p1}, Landroid/os/RemoteCallbackList;->unregister(Landroid/os/IInterface;)Z
 
     .line 54
     return-void

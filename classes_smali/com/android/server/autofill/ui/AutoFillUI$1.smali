@@ -32,6 +32,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/autofill/ui/AutoFillUI;Landroid/metrics/LogMaker;Lcom/android/server/autofill/ui/AutoFillUI$AutoFillUiCallback;Landroid/service/autofill/FillResponse;Landroid/view/autofill/AutofillId;)V
     .registers 6
+    .param p1, "this$0"  # Lcom/android/server/autofill/ui/AutoFillUI;
 
     .line 202
     iput-object p1, p0, Lcom/android/server/autofill/ui/AutoFillUI$1;->this$0:Lcom/android/server/autofill/ui/AutoFillUI;
@@ -53,6 +54,7 @@
 # virtual methods
 .method public dispatchUnhandledKey(Landroid/view/KeyEvent;)V
     .registers 4
+    .param p1, "keyEvent"  # Landroid/view/KeyEvent;
 
     .line 262
     iget-object v0, p0, Lcom/android/server/autofill/ui/AutoFillUI$1;->this$0:Lcom/android/server/autofill/ui/AutoFillUI;
@@ -104,6 +106,7 @@
 
 .method public onDatasetPicked(Landroid/service/autofill/Dataset;)V
     .registers 5
+    .param p1, "dataset"  # Landroid/service/autofill/Dataset;
 
     .line 216
     iget-object v0, p0, Lcom/android/server/autofill/ui/AutoFillUI$1;->val$log:Landroid/metrics/LogMaker;
@@ -142,6 +145,7 @@
     move-result v0
 
     .line 220
+    .local v0, "datasetIndex":I
     iget-object v1, p0, Lcom/android/server/autofill/ui/AutoFillUI$1;->this$0:Lcom/android/server/autofill/ui/AutoFillUI;
 
     invoke-static {v1}, Lcom/android/server/autofill/ui/AutoFillUI;->access$000(Lcom/android/server/autofill/ui/AutoFillUI;)Lcom/android/server/autofill/ui/AutoFillUI$AutoFillUiCallback;
@@ -157,6 +161,7 @@
     invoke-interface {v1, v2, v0, p1}, Lcom/android/server/autofill/ui/AutoFillUI$AutoFillUiCallback;->fill(IILandroid/service/autofill/Dataset;)V
 
     .line 222
+    .end local v0  # "datasetIndex":I
     :cond_2f
     return-void
 .end method
@@ -197,7 +202,8 @@
 .end method
 
 .method public onResponsePicked(Landroid/service/autofill/FillResponse;)V
-    .registers 6
+    .registers 7
+    .param p1, "response"  # Landroid/service/autofill/FillResponse;
 
     .line 205
     iget-object v0, p0, Lcom/android/server/autofill/ui/AutoFillUI$1;->val$log:Landroid/metrics/LogMaker;
@@ -244,10 +250,10 @@
 
     invoke-virtual {p1}, Landroid/service/autofill/FillResponse;->getClientState()Landroid/os/Bundle;
 
-    move-result-object p1
+    move-result-object v4
 
     .line 208
-    invoke-interface {v0, v1, v2, v3, p1}, Lcom/android/server/autofill/ui/AutoFillUI$AutoFillUiCallback;->authenticate(IILandroid/content/IntentSender;Landroid/os/Bundle;)V
+    invoke-interface {v0, v1, v2, v3, v4}, Lcom/android/server/autofill/ui/AutoFillUI$AutoFillUiCallback;->authenticate(IILandroid/content/IntentSender;Landroid/os/Bundle;)V
 
     .line 212
     :cond_2e
@@ -284,6 +290,9 @@
 
 .method public requestShowFillUi(IILandroid/view/autofill/IAutofillWindowPresenter;)V
     .registers 6
+    .param p1, "width"  # I
+    .param p2, "height"  # I
+    .param p3, "windowPresenter"  # Landroid/view/autofill/IAutofillWindowPresenter;
 
     .line 241
     iget-object v0, p0, Lcom/android/server/autofill/ui/AutoFillUI$1;->this$0:Lcom/android/server/autofill/ui/AutoFillUI;
@@ -312,6 +321,7 @@
 
 .method public startIntentSender(Landroid/content/IntentSender;)V
     .registers 3
+    .param p1, "intentSender"  # Landroid/content/IntentSender;
 
     .line 255
     iget-object v0, p0, Lcom/android/server/autofill/ui/AutoFillUI$1;->this$0:Lcom/android/server/autofill/ui/AutoFillUI;

@@ -24,8 +24,9 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/display/WifiDisplayAdapter;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/display/WifiDisplayAdapter;
 
-    .line 136
+    .line 157
     iput-object p1, p0, Lcom/android/server/display/WifiDisplayAdapter$1;->this$0:Lcom/android/server/display/WifiDisplayAdapter;
 
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -38,12 +39,12 @@
 .method public run()V
     .registers 8
 
-    .line 139
+    .line 160
     iget-object v0, p0, Lcom/android/server/display/WifiDisplayAdapter$1;->this$0:Lcom/android/server/display/WifiDisplayAdapter;
 
     new-instance v1, Lcom/android/server/display/WifiDisplayController;
 
-    .line 140
+    .line 161
     invoke-virtual {v0}, Lcom/android/server/display/WifiDisplayAdapter;->getContext()Landroid/content/Context;
 
     move-result-object v2
@@ -62,10 +63,10 @@
 
     invoke-direct {v1, v2, v3, v4}, Lcom/android/server/display/WifiDisplayController;-><init>(Landroid/content/Context;Landroid/os/Handler;Lcom/android/server/display/WifiDisplayController$Listener;)V
 
-    .line 139
+    .line 160
     invoke-static {v0, v1}, Lcom/android/server/display/WifiDisplayAdapter;->access$002(Lcom/android/server/display/WifiDisplayAdapter;Lcom/android/server/display/WifiDisplayController;)Lcom/android/server/display/WifiDisplayController;
 
-    .line 142
+    .line 163
     iget-object v0, p0, Lcom/android/server/display/WifiDisplayAdapter$1;->this$0:Lcom/android/server/display/WifiDisplayAdapter;
 
     invoke-virtual {v0}, Lcom/android/server/display/WifiDisplayAdapter;->getContext()Landroid/content/Context;
@@ -88,16 +89,16 @@
 
     iget-object v0, p0, Lcom/android/server/display/WifiDisplayAdapter$1;->this$0:Lcom/android/server/display/WifiDisplayAdapter;
 
-    .line 143
+    .line 164
     invoke-static {v0}, Lcom/android/server/display/WifiDisplayAdapter;->access$300(Lcom/android/server/display/WifiDisplayAdapter;)Lcom/android/server/display/WifiDisplayAdapter$WifiDisplayHandler;
 
     move-result-object v6
 
-    .line 142
+    .line 163
     const/4 v5, 0x0
 
     invoke-virtual/range {v1 .. v6}, Landroid/content/Context;->registerReceiverAsUser(Landroid/content/BroadcastReceiver;Landroid/os/UserHandle;Landroid/content/IntentFilter;Ljava/lang/String;Landroid/os/Handler;)Landroid/content/Intent;
 
-    .line 144
+    .line 165
     return-void
 .end method

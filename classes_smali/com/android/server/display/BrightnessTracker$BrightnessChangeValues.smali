@@ -29,25 +29,30 @@
 # direct methods
 .method constructor <init>(FFZZJ)V
     .registers 7
+    .param p1, "brightness"  # F
+    .param p2, "powerBrightnessFactor"  # F
+    .param p3, "isUserSetBrightness"  # Z
+    .param p4, "isDefaultBrightnessConfig"  # Z
+    .param p5, "timestamp"  # J
 
-    .line 996
+    .line 993
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
-    .line 997
+    .line 994
     iput p1, p0, Lcom/android/server/display/BrightnessTracker$BrightnessChangeValues;->brightness:F
 
-    .line 998
+    .line 995
     iput p2, p0, Lcom/android/server/display/BrightnessTracker$BrightnessChangeValues;->powerBrightnessFactor:F
 
-    .line 999
+    .line 996
     iput-boolean p3, p0, Lcom/android/server/display/BrightnessTracker$BrightnessChangeValues;->isUserSetBrightness:Z
 
-    .line 1000
+    .line 997
     iput-boolean p4, p0, Lcom/android/server/display/BrightnessTracker$BrightnessChangeValues;->isDefaultBrightnessConfig:Z
 
-    .line 1001
+    .line 998
     iput-wide p5, p0, Lcom/android/server/display/BrightnessTracker$BrightnessChangeValues;->timestamp:J
 
-    .line 1002
+    .line 999
     return-void
 .end method

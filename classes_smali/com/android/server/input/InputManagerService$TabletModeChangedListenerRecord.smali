@@ -28,19 +28,21 @@
 # direct methods
 .method public constructor <init>(Lcom/android/server/input/InputManagerService;ILandroid/hardware/input/ITabletModeChangedListener;)V
     .registers 4
+    .param p2, "pid"  # I
+    .param p3, "listener"  # Landroid/hardware/input/ITabletModeChangedListener;
 
-    .line 2331
+    .line 2246
     iput-object p1, p0, Lcom/android/server/input/InputManagerService$TabletModeChangedListenerRecord;->this$0:Lcom/android/server/input/InputManagerService;
 
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
-    .line 2332
+    .line 2247
     iput p2, p0, Lcom/android/server/input/InputManagerService$TabletModeChangedListenerRecord;->mPid:I
 
-    .line 2333
+    .line 2248
     iput-object p3, p0, Lcom/android/server/input/InputManagerService$TabletModeChangedListenerRecord;->mListener:Landroid/hardware/input/ITabletModeChangedListener;
 
-    .line 2334
+    .line 2249
     return-void
 .end method
 
@@ -49,21 +51,23 @@
 .method public binderDied()V
     .registers 3
 
-    .line 2341
+    .line 2256
     iget-object v0, p0, Lcom/android/server/input/InputManagerService$TabletModeChangedListenerRecord;->this$0:Lcom/android/server/input/InputManagerService;
 
     iget v1, p0, Lcom/android/server/input/InputManagerService$TabletModeChangedListenerRecord;->mPid:I
 
-    invoke-static {v0, v1}, Lcom/android/server/input/InputManagerService;->access$1800(Lcom/android/server/input/InputManagerService;I)V
+    invoke-static {v0, v1}, Lcom/android/server/input/InputManagerService;->access$1400(Lcom/android/server/input/InputManagerService;I)V
 
-    .line 2342
+    .line 2257
     return-void
 .end method
 
 .method public notifyTabletModeChanged(JZ)V
-    .registers 5
+    .registers 7
+    .param p1, "whenNanos"  # J
+    .param p3, "inTabletMode"  # Z
 
-    .line 2346
+    .line 2261
     :try_start_0
     iget-object v0, p0, Lcom/android/server/input/InputManagerService$TabletModeChangedListenerRecord;->mListener:Landroid/hardware/input/ITabletModeChangedListener;
 
@@ -71,42 +75,44 @@
     :try_end_5
     .catch Landroid/os/RemoteException; {:try_start_0 .. :try_end_5} :catch_6
 
-    .line 2351
+    .line 2266
     goto :goto_27
 
-    .line 2347
+    .line 2262
     :catch_6
-    move-exception p1
+    move-exception v0
 
-    .line 2348
-    new-instance p2, Ljava/lang/StringBuilder;
+    .line 2263
+    .local v0, "ex":Landroid/os/RemoteException;
+    new-instance v1, Ljava/lang/StringBuilder;
 
-    invoke-direct {p2}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string p3, "Failed to notify process "
+    const-string v2, "Failed to notify process "
 
-    invoke-virtual {p2, p3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    iget p3, p0, Lcom/android/server/input/InputManagerService$TabletModeChangedListenerRecord;->mPid:I
+    iget v2, p0, Lcom/android/server/input/InputManagerService$TabletModeChangedListenerRecord;->mPid:I
 
-    invoke-virtual {p2, p3}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    const-string p3, " that tablet mode changed, assuming it died."
+    const-string v2, " that tablet mode changed, assuming it died."
 
-    invoke-virtual {p2, p3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p2
+    move-result-object v1
 
-    const-string p3, "InputManager"
+    const-string v2, "InputManager"
 
-    invoke-static {p3, p2, p1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    invoke-static {v2, v1, v0}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
-    .line 2350
+    .line 2265
     invoke-virtual {p0}, Lcom/android/server/input/InputManagerService$TabletModeChangedListenerRecord;->binderDied()V
 
-    .line 2352
+    .line 2267
+    .end local v0  # "ex":Landroid/os/RemoteException;
     :goto_27
     return-void
 .end method

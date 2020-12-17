@@ -35,67 +35,76 @@
 
 # virtual methods
 .method public matches(Lcom/android/server/firewall/IntentFirewall;Landroid/content/ComponentName;Landroid/content/Intent;IILjava/lang/String;I)Z
-    .registers 20
+    .registers 19
+    .param p1, "ifw"  # Lcom/android/server/firewall/IntentFirewall;
+    .param p2, "resolvedComponent"  # Landroid/content/ComponentName;
+    .param p3, "intent"  # Landroid/content/Intent;
+    .param p4, "callerUid"  # I
+    .param p5, "callerPid"  # I
+    .param p6, "resolvedType"  # Ljava/lang/String;
+    .param p7, "receivingUid"  # I
 
     .line 30
     move-object v0, p0
 
     const/4 v1, 0x0
 
-    move v2, v1
+    .local v1, "i":I
+    :goto_2
+    iget-object v2, v0, Lcom/android/server/firewall/OrFilter;->children:Ljava/util/ArrayList;
 
-    :goto_3
-    iget-object v3, v0, Lcom/android/server/firewall/OrFilter;->children:Ljava/util/ArrayList;
+    invoke-virtual {v2}, Ljava/util/ArrayList;->size()I
 
-    invoke-virtual {v3}, Ljava/util/ArrayList;->size()I
+    move-result v2
 
-    move-result v3
-
-    if-ge v2, v3, :cond_2a
+    if-ge v1, v2, :cond_28
 
     .line 31
-    iget-object v3, v0, Lcom/android/server/firewall/OrFilter;->children:Ljava/util/ArrayList;
+    iget-object v2, v0, Lcom/android/server/firewall/OrFilter;->children:Ljava/util/ArrayList;
 
-    invoke-virtual {v3, v2}, Ljava/util/ArrayList;->get(I)Ljava/lang/Object;
+    invoke-virtual {v2, v1}, Ljava/util/ArrayList;->get(I)Ljava/lang/Object;
 
-    move-result-object v3
+    move-result-object v2
 
-    move-object v4, v3
+    move-object v3, v2
 
-    check-cast v4, Lcom/android/server/firewall/Filter;
+    check-cast v3, Lcom/android/server/firewall/Filter;
 
-    move-object v5, p1
+    move-object v4, p1
 
-    move-object v6, p2
+    move-object v5, p2
 
-    move-object v7, p3
+    move-object v6, p3
 
-    move/from16 v8, p4
+    move v7, p4
 
-    move/from16 v9, p5
+    move/from16 v8, p5
 
-    move-object/from16 v10, p6
+    move-object/from16 v9, p6
 
-    move/from16 v11, p7
+    move/from16 v10, p7
 
-    invoke-interface/range {v4 .. v11}, Lcom/android/server/firewall/Filter;->matches(Lcom/android/server/firewall/IntentFirewall;Landroid/content/ComponentName;Landroid/content/Intent;IILjava/lang/String;I)Z
+    invoke-interface/range {v3 .. v10}, Lcom/android/server/firewall/Filter;->matches(Lcom/android/server/firewall/IntentFirewall;Landroid/content/ComponentName;Landroid/content/Intent;IILjava/lang/String;I)Z
 
-    move-result v3
+    move-result v2
 
-    if-eqz v3, :cond_27
+    if-eqz v2, :cond_25
 
     .line 33
-    const/4 v0, 0x1
+    const/4 v2, 0x1
 
-    return v0
+    return v2
 
     .line 30
-    :cond_27
-    add-int/lit8 v2, v2, 0x1
+    :cond_25
+    add-int/lit8 v1, v1, 0x1
 
-    goto :goto_3
+    goto :goto_2
 
     .line 36
-    :cond_2a
+    .end local v1  # "i":I
+    :cond_28
+    const/4 v1, 0x0
+
     return v1
 .end method

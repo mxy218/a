@@ -39,7 +39,12 @@
 .end method
 
 .method public createIdmap(Ljava/lang/String;Ljava/lang/String;IZI)Ljava/lang/String;
-    .registers 6
+    .registers 7
+    .param p1, "targetApkPath"  # Ljava/lang/String;
+    .param p2, "overlayApkPath"  # Ljava/lang/String;
+    .param p3, "fulfilledPolicies"  # I
+    .param p4, "enforceOverlayable"  # Z
+    .param p5, "userId"  # I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -47,13 +52,15 @@
     .end annotation
 
     .line 27
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    return-object p1
+    return-object v0
 .end method
 
 .method public getIdmapPath(Ljava/lang/String;I)Ljava/lang/String;
-    .registers 3
+    .registers 4
+    .param p1, "overlayApkPath"  # Ljava/lang/String;
+    .param p2, "userId"  # I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -61,13 +68,15 @@
     .end annotation
 
     .line 15
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    return-object p1
+    return-object v0
 .end method
 
 .method public removeIdmap(Ljava/lang/String;I)Z
-    .registers 3
+    .registers 4
+    .param p1, "overlayApkPath"  # Ljava/lang/String;
+    .param p2, "userId"  # I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -75,13 +84,17 @@
     .end annotation
 
     .line 19
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    return p1
+    return v0
 .end method
 
 .method public verifyIdmap(Ljava/lang/String;IZI)Z
-    .registers 5
+    .registers 6
+    .param p1, "overlayApkPath"  # Ljava/lang/String;
+    .param p2, "fulfilledPolicies"  # I
+    .param p3, "enforceOverlayable"  # Z
+    .param p4, "userId"  # I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -89,7 +102,7 @@
     .end annotation
 
     .line 23
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    return p1
+    return v0
 .end method

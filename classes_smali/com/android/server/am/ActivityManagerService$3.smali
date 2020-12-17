@@ -24,8 +24,9 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/am/ActivityManagerService;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/am/ActivityManagerService;
 
-    .line 930
+    .line 1008
     iput-object p1, p0, Lcom/android/server/am/ActivityManagerService$3;->this$0:Lcom/android/server/am/ActivityManagerService;
 
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -37,8 +38,9 @@
 # virtual methods
 .method public onPropertiesChanged(Landroid/provider/DeviceConfig$Properties;)V
     .registers 6
+    .param p1, "properties"  # Landroid/provider/DeviceConfig$Properties;
 
-    .line 933
+    .line 1011
     iget-object v0, p0, Lcom/android/server/am/ActivityManagerService$3;->this$0:Lcom/android/server/am/ActivityManagerService;
 
     const-string v1, "activity_start_pss_defer"
@@ -51,6 +53,43 @@
 
     invoke-static {v0, v1, v2}, Lcom/android/server/am/ActivityManagerService;->access$102(Lcom/android/server/am/ActivityManagerService;J)J
 
-    .line 938
+    .line 1012
+    sget-boolean v0, Lcom/android/server/am/ActivityManagerDebugConfig;->DEBUG_PSS:Z
+
+    if-eqz v0, :cond_32
+
+    .line 1013
+    new-instance v0, Ljava/lang/StringBuilder;
+
+    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
+
+    const-string v1, "Activity-start PSS delay now "
+
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    iget-object v1, p0, Lcom/android/server/am/ActivityManagerService$3;->this$0:Lcom/android/server/am/ActivityManagerService;
+
+    .line 1014
+    invoke-static {v1}, Lcom/android/server/am/ActivityManagerService;->access$100(Lcom/android/server/am/ActivityManagerService;)J
+
+    move-result-wide v1
+
+    invoke-virtual {v0, v1, v2}, Ljava/lang/StringBuilder;->append(J)Ljava/lang/StringBuilder;
+
+    const-string v1, " ms"
+
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v0
+
+    .line 1013
+    const-string v1, "ActivityManager"
+
+    invoke-static {v1, v0}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
+
+    .line 1016
+    :cond_32
     return-void
 .end method

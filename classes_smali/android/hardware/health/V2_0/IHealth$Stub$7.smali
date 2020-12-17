@@ -26,6 +26,7 @@
 # direct methods
 .method constructor <init>(Landroid/hardware/health/V2_0/IHealth$Stub;Landroid/os/HwParcel;)V
     .registers 3
+    .param p1, "this$0"  # Landroid/hardware/health/V2_0/IHealth$Stub;
 
     .line 1025
     iput-object p1, p0, Landroid/hardware/health/V2_0/IHealth$Stub$7;->this$0:Landroid/hardware/health/V2_0/IHealth$Stub;
@@ -41,6 +42,7 @@
 # virtual methods
 .method public onValues(ILjava/util/ArrayList;)V
     .registers 5
+    .param p1, "result"  # I
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(I",
@@ -51,6 +53,7 @@
     .end annotation
 
     .line 1028
+    .local p2, "value":Ljava/util/ArrayList;, "Ljava/util/ArrayList<Landroid/hardware/health/V2_0/StorageInfo;>;"
     iget-object v0, p0, Landroid/hardware/health/V2_0/IHealth$Stub$7;->val$_hidl_reply:Landroid/os/HwParcel;
 
     const/4 v1, 0x0
@@ -63,14 +66,14 @@
     invoke-virtual {v0, p1}, Landroid/os/HwParcel;->writeInt32(I)V
 
     .line 1030
-    iget-object p1, p0, Landroid/hardware/health/V2_0/IHealth$Stub$7;->val$_hidl_reply:Landroid/os/HwParcel;
+    iget-object v0, p0, Landroid/hardware/health/V2_0/IHealth$Stub$7;->val$_hidl_reply:Landroid/os/HwParcel;
 
-    invoke-static {p1, p2}, Landroid/hardware/health/V2_0/StorageInfo;->writeVectorToParcel(Landroid/os/HwParcel;Ljava/util/ArrayList;)V
+    invoke-static {v0, p2}, Landroid/hardware/health/V2_0/StorageInfo;->writeVectorToParcel(Landroid/os/HwParcel;Ljava/util/ArrayList;)V
 
     .line 1031
-    iget-object p1, p0, Landroid/hardware/health/V2_0/IHealth$Stub$7;->val$_hidl_reply:Landroid/os/HwParcel;
+    iget-object v0, p0, Landroid/hardware/health/V2_0/IHealth$Stub$7;->val$_hidl_reply:Landroid/os/HwParcel;
 
-    invoke-virtual {p1}, Landroid/os/HwParcel;->send()V
+    invoke-virtual {v0}, Landroid/os/HwParcel;->send()V
 
     .line 1032
     return-void

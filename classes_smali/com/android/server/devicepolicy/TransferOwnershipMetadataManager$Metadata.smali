@@ -27,6 +27,10 @@
 # direct methods
 .method constructor <init>(Landroid/content/ComponentName;Landroid/content/ComponentName;ILjava/lang/String;)V
     .registers 5
+    .param p1, "sourceComponent"  # Landroid/content/ComponentName;
+    .param p2, "targetComponent"  # Landroid/content/ComponentName;
+    .param p3, "userId"  # I
+    .param p4, "adminType"  # Ljava/lang/String;
 
     .line 185
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -57,27 +61,32 @@
 .end method
 
 .method constructor <init>(Ljava/lang/String;Ljava/lang/String;ILjava/lang/String;)V
-    .registers 5
+    .registers 7
+    .param p1, "flatSourceComponent"  # Ljava/lang/String;
+    .param p2, "flatTargetComponent"  # Ljava/lang/String;
+    .param p3, "userId"  # I
+    .param p4, "adminType"  # Ljava/lang/String;
 
     .line 197
     invoke-static {p1}, Lcom/android/server/devicepolicy/TransferOwnershipMetadataManager$Metadata;->unflattenComponentUnchecked(Ljava/lang/String;)Landroid/content/ComponentName;
 
-    move-result-object p1
+    move-result-object v0
 
     .line 198
     invoke-static {p2}, Lcom/android/server/devicepolicy/TransferOwnershipMetadataManager$Metadata;->unflattenComponentUnchecked(Ljava/lang/String;)Landroid/content/ComponentName;
 
-    move-result-object p2
+    move-result-object v1
 
     .line 197
-    invoke-direct {p0, p1, p2, p3, p4}, Lcom/android/server/devicepolicy/TransferOwnershipMetadataManager$Metadata;-><init>(Landroid/content/ComponentName;Landroid/content/ComponentName;ILjava/lang/String;)V
+    invoke-direct {p0, v0, v1, p3, p4}, Lcom/android/server/devicepolicy/TransferOwnershipMetadataManager$Metadata;-><init>(Landroid/content/ComponentName;Landroid/content/ComponentName;ILjava/lang/String;)V
 
     .line 199
     return-void
 .end method
 
 .method private static unflattenComponentUnchecked(Ljava/lang/String;)Landroid/content/ComponentName;
-    .registers 1
+    .registers 2
+    .param p0, "flatComponent"  # Ljava/lang/String;
 
     .line 202
     invoke-static {p0}, Lcom/android/internal/util/Preconditions;->checkNotNull(Ljava/lang/Object;)Ljava/lang/Object;
@@ -85,15 +94,16 @@
     .line 203
     invoke-static {p0}, Landroid/content/ComponentName;->unflattenFromString(Ljava/lang/String;)Landroid/content/ComponentName;
 
-    move-result-object p0
+    move-result-object v0
 
-    return-object p0
+    return-object v0
 .end method
 
 
 # virtual methods
 .method public equals(Ljava/lang/Object;)Z
-    .registers 5
+    .registers 6
+    .param p1, "obj"  # Ljava/lang/Object;
 
     .line 208
     instance-of v0, p1, Lcom/android/server/devicepolicy/TransferOwnershipMetadataManager$Metadata;
@@ -107,57 +117,60 @@
 
     .line 211
     :cond_6
-    check-cast p1, Lcom/android/server/devicepolicy/TransferOwnershipMetadataManager$Metadata;
+    move-object v0, p1
+
+    check-cast v0, Lcom/android/server/devicepolicy/TransferOwnershipMetadataManager$Metadata;
 
     .line 213
-    iget v0, p0, Lcom/android/server/devicepolicy/TransferOwnershipMetadataManager$Metadata;->userId:I
+    .local v0, "params":Lcom/android/server/devicepolicy/TransferOwnershipMetadataManager$Metadata;
+    iget v2, p0, Lcom/android/server/devicepolicy/TransferOwnershipMetadataManager$Metadata;->userId:I
 
-    iget v2, p1, Lcom/android/server/devicepolicy/TransferOwnershipMetadataManager$Metadata;->userId:I
+    iget v3, v0, Lcom/android/server/devicepolicy/TransferOwnershipMetadataManager$Metadata;->userId:I
 
-    if-ne v0, v2, :cond_2e
+    if-ne v2, v3, :cond_2f
 
-    iget-object v0, p0, Lcom/android/server/devicepolicy/TransferOwnershipMetadataManager$Metadata;->sourceComponent:Landroid/content/ComponentName;
+    iget-object v2, p0, Lcom/android/server/devicepolicy/TransferOwnershipMetadataManager$Metadata;->sourceComponent:Landroid/content/ComponentName;
 
-    iget-object v2, p1, Lcom/android/server/devicepolicy/TransferOwnershipMetadataManager$Metadata;->sourceComponent:Landroid/content/ComponentName;
+    iget-object v3, v0, Lcom/android/server/devicepolicy/TransferOwnershipMetadataManager$Metadata;->sourceComponent:Landroid/content/ComponentName;
 
     .line 214
-    invoke-virtual {v0, v2}, Landroid/content/ComponentName;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v2, v3}, Landroid/content/ComponentName;->equals(Ljava/lang/Object;)Z
 
-    move-result v0
+    move-result v2
 
-    if-eqz v0, :cond_2e
+    if-eqz v2, :cond_2f
 
-    iget-object v0, p0, Lcom/android/server/devicepolicy/TransferOwnershipMetadataManager$Metadata;->targetComponent:Landroid/content/ComponentName;
+    iget-object v2, p0, Lcom/android/server/devicepolicy/TransferOwnershipMetadataManager$Metadata;->targetComponent:Landroid/content/ComponentName;
 
-    iget-object v2, p1, Lcom/android/server/devicepolicy/TransferOwnershipMetadataManager$Metadata;->targetComponent:Landroid/content/ComponentName;
+    iget-object v3, v0, Lcom/android/server/devicepolicy/TransferOwnershipMetadataManager$Metadata;->targetComponent:Landroid/content/ComponentName;
 
     .line 215
-    invoke-virtual {v0, v2}, Landroid/content/ComponentName;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v2, v3}, Landroid/content/ComponentName;->equals(Ljava/lang/Object;)Z
 
-    move-result v0
+    move-result v2
 
-    if-eqz v0, :cond_2e
+    if-eqz v2, :cond_2f
 
-    iget-object v0, p0, Lcom/android/server/devicepolicy/TransferOwnershipMetadataManager$Metadata;->adminType:Ljava/lang/String;
+    iget-object v2, p0, Lcom/android/server/devicepolicy/TransferOwnershipMetadataManager$Metadata;->adminType:Ljava/lang/String;
 
-    iget-object p1, p1, Lcom/android/server/devicepolicy/TransferOwnershipMetadataManager$Metadata;->adminType:Ljava/lang/String;
+    iget-object v3, v0, Lcom/android/server/devicepolicy/TransferOwnershipMetadataManager$Metadata;->adminType:Ljava/lang/String;
 
     .line 216
-    invoke-static {v0, p1}, Landroid/text/TextUtils;->equals(Ljava/lang/CharSequence;Ljava/lang/CharSequence;)Z
+    invoke-static {v2, v3}, Landroid/text/TextUtils;->equals(Ljava/lang/CharSequence;Ljava/lang/CharSequence;)Z
 
-    move-result p1
+    move-result v2
 
-    if-eqz p1, :cond_2e
+    if-eqz v2, :cond_2f
 
     const/4 v1, 0x1
 
-    goto :goto_2f
+    goto :goto_30
 
-    :cond_2e
+    :cond_2f
     nop
 
     .line 213
-    :goto_2f
+    :goto_30
     return v1
 .end method
 
@@ -165,17 +178,20 @@
     .registers 4
 
     .line 221
-    nop
+    const/4 v0, 0x1
 
     .line 222
-    iget v0, p0, Lcom/android/server/devicepolicy/TransferOwnershipMetadataManager$Metadata;->userId:I
+    .local v0, "hashCode":I
+    mul-int/lit8 v1, v0, 0x1f
 
-    const/16 v1, 0x1f
+    iget v2, p0, Lcom/android/server/devicepolicy/TransferOwnershipMetadataManager$Metadata;->userId:I
 
-    add-int/2addr v0, v1
+    add-int/2addr v1, v2
 
     .line 223
-    mul-int/2addr v0, v1
+    .end local v0  # "hashCode":I
+    .local v1, "hashCode":I
+    mul-int/lit8 v0, v1, 0x1f
 
     iget-object v2, p0, Lcom/android/server/devicepolicy/TransferOwnershipMetadataManager$Metadata;->sourceComponent:Landroid/content/ComponentName;
 
@@ -186,7 +202,9 @@
     add-int/2addr v0, v2
 
     .line 224
-    mul-int/2addr v0, v1
+    .end local v1  # "hashCode":I
+    .restart local v0  # "hashCode":I
+    mul-int/lit8 v1, v0, 0x1f
 
     iget-object v2, p0, Lcom/android/server/devicepolicy/TransferOwnershipMetadataManager$Metadata;->targetComponent:Landroid/content/ComponentName;
 
@@ -194,19 +212,23 @@
 
     move-result v2
 
-    add-int/2addr v0, v2
+    add-int/2addr v1, v2
 
     .line 225
-    mul-int/2addr v0, v1
+    .end local v0  # "hashCode":I
+    .restart local v1  # "hashCode":I
+    mul-int/lit8 v0, v1, 0x1f
 
-    iget-object v1, p0, Lcom/android/server/devicepolicy/TransferOwnershipMetadataManager$Metadata;->adminType:Ljava/lang/String;
+    iget-object v2, p0, Lcom/android/server/devicepolicy/TransferOwnershipMetadataManager$Metadata;->adminType:Ljava/lang/String;
 
-    invoke-virtual {v1}, Ljava/lang/String;->hashCode()I
+    invoke-virtual {v2}, Ljava/lang/String;->hashCode()I
 
-    move-result v1
+    move-result v2
 
-    add-int/2addr v0, v1
+    add-int/2addr v0, v2
 
     .line 226
+    .end local v1  # "hashCode":I
+    .restart local v0  # "hashCode":I
     return v0
 .end method

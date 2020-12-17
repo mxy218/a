@@ -22,10 +22,10 @@
 .method constructor <init>(Lcom/android/server/wm/BarController;)V
     .registers 2
 
-    .line 358
+    .line 357
     iput-object p1, p0, Lcom/android/server/wm/BarController$BarHandler;->this$0:Lcom/android/server/wm/BarController;
 
-    .line 359
+    .line 358
     invoke-static {}, Lcom/android/server/UiThread;->getHandler()Landroid/os/Handler;
 
     move-result-object p1
@@ -36,7 +36,7 @@
 
     invoke-direct {p0, p1}, Landroid/os/Handler;-><init>(Landroid/os/Looper;)V
 
-    .line 360
+    .line 359
     return-void
 .end method
 
@@ -44,48 +44,53 @@
 # virtual methods
 .method public handleMessage(Landroid/os/Message;)V
     .registers 4
+    .param p1, "msg"  # Landroid/os/Message;
 
-    .line 364
+    .line 363
     iget v0, p1, Landroid/os/Message;->what:I
 
     const/4 v1, 0x1
 
     if-eq v0, v1, :cond_6
 
-    goto :goto_1d
+    goto :goto_1e
 
-    .line 366
+    .line 365
     :cond_6
-    iget p1, p1, Landroid/os/Message;->arg1:I
+    iget v0, p1, Landroid/os/Message;->arg1:I
 
-    if-eqz p1, :cond_b
+    if-eqz v0, :cond_b
 
     goto :goto_c
 
     :cond_b
     const/4 v1, 0x0
 
-    .line 367
     :goto_c
-    iget-object p1, p0, Lcom/android/server/wm/BarController$BarHandler;->this$0:Lcom/android/server/wm/BarController;
+    move v0, v1
 
-    invoke-static {p1}, Lcom/android/server/wm/BarController;->access$100(Lcom/android/server/wm/BarController;)Lcom/android/server/wm/BarController$OnBarVisibilityChangedListener;
+    .line 366
+    .local v0, "visible":Z
+    iget-object v1, p0, Lcom/android/server/wm/BarController$BarHandler;->this$0:Lcom/android/server/wm/BarController;
 
-    move-result-object p1
+    invoke-static {v1}, Lcom/android/server/wm/BarController;->access$100(Lcom/android/server/wm/BarController;)Lcom/android/server/wm/BarController$OnBarVisibilityChangedListener;
 
-    if-eqz p1, :cond_1d
+    move-result-object v1
 
-    .line 368
-    iget-object p1, p0, Lcom/android/server/wm/BarController$BarHandler;->this$0:Lcom/android/server/wm/BarController;
+    if-eqz v1, :cond_1e
 
-    invoke-static {p1}, Lcom/android/server/wm/BarController;->access$100(Lcom/android/server/wm/BarController;)Lcom/android/server/wm/BarController$OnBarVisibilityChangedListener;
+    .line 367
+    iget-object v1, p0, Lcom/android/server/wm/BarController$BarHandler;->this$0:Lcom/android/server/wm/BarController;
 
-    move-result-object p1
+    invoke-static {v1}, Lcom/android/server/wm/BarController;->access$100(Lcom/android/server/wm/BarController;)Lcom/android/server/wm/BarController$OnBarVisibilityChangedListener;
 
-    invoke-interface {p1, v1}, Lcom/android/server/wm/BarController$OnBarVisibilityChangedListener;->onBarVisibilityChanged(Z)V
+    move-result-object v1
 
-    .line 372
-    :cond_1d
-    :goto_1d
+    invoke-interface {v1, v0}, Lcom/android/server/wm/BarController$OnBarVisibilityChangedListener;->onBarVisibilityChanged(Z)V
+
+    .line 371
+    .end local v0  # "visible":Z
+    :cond_1e
+    :goto_1e
     return-void
 .end method

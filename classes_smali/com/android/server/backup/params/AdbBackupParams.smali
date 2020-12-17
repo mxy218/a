@@ -26,6 +26,16 @@
 # direct methods
 .method public constructor <init>(Landroid/os/ParcelFileDescriptor;ZZZZZZZZ[Ljava/lang/String;)V
     .registers 11
+    .param p1, "output"  # Landroid/os/ParcelFileDescriptor;
+    .param p2, "saveApks"  # Z
+    .param p3, "saveObbs"  # Z
+    .param p4, "saveShared"  # Z
+    .param p5, "alsoWidgets"  # Z
+    .param p6, "doAllApps"  # Z
+    .param p7, "doSystem"  # Z
+    .param p8, "compress"  # Z
+    .param p9, "doKeyValue"  # Z
+    .param p10, "pkgList"  # [Ljava/lang/String;
 
     .line 35
     invoke-direct {p0}, Lcom/android/server/backup/params/AdbParams;-><init>()V

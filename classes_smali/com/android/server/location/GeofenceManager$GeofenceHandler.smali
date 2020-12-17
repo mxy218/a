@@ -37,22 +37,23 @@
 
 # virtual methods
 .method public handleMessage(Landroid/os/Message;)V
-    .registers 3
+    .registers 4
+    .param p1, "msg"  # Landroid/os/Message;
 
     .line 467
-    iget p1, p1, Landroid/os/Message;->what:I
+    iget v0, p1, Landroid/os/Message;->what:I
 
-    const/4 v0, 0x1
+    const/4 v1, 0x1
 
-    if-eq p1, v0, :cond_6
+    if-eq v0, v1, :cond_6
 
     goto :goto_b
 
     .line 469
     :cond_6
-    iget-object p1, p0, Lcom/android/server/location/GeofenceManager$GeofenceHandler;->this$0:Lcom/android/server/location/GeofenceManager;
+    iget-object v0, p0, Lcom/android/server/location/GeofenceManager$GeofenceHandler;->this$0:Lcom/android/server/location/GeofenceManager;
 
-    invoke-static {p1}, Lcom/android/server/location/GeofenceManager;->access$200(Lcom/android/server/location/GeofenceManager;)V
+    invoke-static {v0}, Lcom/android/server/location/GeofenceManager;->access$200(Lcom/android/server/location/GeofenceManager;)V
 
     .line 473
     :goto_b

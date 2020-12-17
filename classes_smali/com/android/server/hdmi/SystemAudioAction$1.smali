@@ -24,6 +24,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/hdmi/SystemAudioAction;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/hdmi/SystemAudioAction;
 
     .line 81
     iput-object p1, p0, Lcom/android/server/hdmi/SystemAudioAction$1;->this$0:Lcom/android/server/hdmi/SystemAudioAction;

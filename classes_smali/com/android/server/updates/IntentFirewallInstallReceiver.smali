@@ -16,9 +16,9 @@
 
     move-result-object v0
 
-    const-string v1, "ifw.xml"
+    const-string/jumbo v1, "ifw.xml"
 
-    const-string v2, "metadata/"
+    const-string/jumbo v2, "metadata/"
 
     const-string v3, "gservices.version"
 

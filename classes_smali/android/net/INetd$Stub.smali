@@ -30,8 +30,6 @@
 
 .field static final TRANSACTION_bandwidthAddNiceApp:I = 0x34
 
-.field static final TRANSACTION_bandwidthAddRestrictAppOnInterface:I = 0x5f
-
 .field static final TRANSACTION_bandwidthEnableDataSaver:I = 0x3
 
 .field static final TRANSACTION_bandwidthRemoveInterfaceAlert:I = 0x30
@@ -41,8 +39,6 @@
 .field static final TRANSACTION_bandwidthRemoveNaughtyApp:I = 0x33
 
 .field static final TRANSACTION_bandwidthRemoveNiceApp:I = 0x35
-
-.field static final TRANSACTION_bandwidthRemoveRestrictAppOnInterface:I = 0x60
 
 .field static final TRANSACTION_bandwidthSetGlobalAlert:I = 0x31
 
@@ -225,30 +221,31 @@
 .method public constructor <init>()V
     .registers 2
 
-    .line 338
+    .line 332
     invoke-direct {p0}, Landroid/os/Binder;-><init>()V
 
-    .line 339
+    .line 333
     const-string v0, "android.net.INetd"
 
     invoke-virtual {p0, p0, v0}, Landroid/net/INetd$Stub;->attachInterface(Landroid/os/IInterface;Ljava/lang/String;)V
 
-    .line 340
+    .line 334
     return-void
 .end method
 
 .method public static asInterface(Landroid/os/IBinder;)Landroid/net/INetd;
     .registers 3
+    .param p0, "obj"  # Landroid/os/IBinder;
 
-    .line 347
+    .line 341
     if-nez p0, :cond_4
 
-    .line 348
-    const/4 p0, 0x0
+    .line 342
+    const/4 v0, 0x0
 
-    return-object p0
+    return-object v0
 
-    .line 350
+    .line 344
     :cond_4
     const-string v0, "android.net.INetd"
 
@@ -256,31 +253,34 @@
 
     move-result-object v0
 
-    .line 351
-    if-eqz v0, :cond_13
+    .line 345
+    .local v0, "iin":Landroid/os/IInterface;
+    if-eqz v0, :cond_14
 
     instance-of v1, v0, Landroid/net/INetd;
 
-    if-eqz v1, :cond_13
+    if-eqz v1, :cond_14
 
-    .line 352
-    check-cast v0, Landroid/net/INetd;
+    .line 346
+    move-object v1, v0
 
-    return-object v0
+    check-cast v1, Landroid/net/INetd;
 
-    .line 354
-    :cond_13
-    new-instance v0, Landroid/net/INetd$Stub$Proxy;
+    return-object v1
 
-    invoke-direct {v0, p0}, Landroid/net/INetd$Stub$Proxy;-><init>(Landroid/os/IBinder;)V
+    .line 348
+    :cond_14
+    new-instance v1, Landroid/net/INetd$Stub$Proxy;
 
-    return-object v0
+    invoke-direct {v1, p0}, Landroid/net/INetd$Stub$Proxy;-><init>(Landroid/os/IBinder;)V
+
+    return-object v1
 .end method
 
 .method public static getDefaultImpl()Landroid/net/INetd;
     .registers 1
 
-    .line 3689
+    .line 3613
     sget-object v0, Landroid/net/INetd$Stub$Proxy;->sDefaultImpl:Landroid/net/INetd;
 
     return-object v0
@@ -288,27 +288,28 @@
 
 .method public static setDefaultImpl(Landroid/net/INetd;)Z
     .registers 2
+    .param p0, "impl"  # Landroid/net/INetd;
 
-    .line 3682
+    .line 3606
     sget-object v0, Landroid/net/INetd$Stub$Proxy;->sDefaultImpl:Landroid/net/INetd;
 
     if-nez v0, :cond_a
 
     if-eqz p0, :cond_a
 
-    .line 3683
+    .line 3607
     sput-object p0, Landroid/net/INetd$Stub$Proxy;->sDefaultImpl:Landroid/net/INetd;
 
-    .line 3684
-    const/4 p0, 0x1
+    .line 3608
+    const/4 v0, 0x1
 
-    return p0
+    return v0
 
-    .line 3686
+    .line 3610
     :cond_a
-    const/4 p0, 0x0
+    const/4 v0, 0x0
 
-    return p0
+    return v0
 .end method
 
 
@@ -316,2961 +317,3675 @@
 .method public asBinder()Landroid/os/IBinder;
     .registers 1
 
-    .line 358
+    .line 352
     return-object p0
 .end method
 
 .method public onTransact(ILandroid/os/Parcel;Landroid/os/Parcel;I)Z
-    .registers 27
+    .registers 49
+    .param p1, "code"  # I
+    .param p2, "data"  # Landroid/os/Parcel;
+    .param p3, "reply"  # Landroid/os/Parcel;
+    .param p4, "flags"  # I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
         }
     .end annotation
 
-    .line 362
-    move-object/from16 v0, p0
+    .line 356
+    move-object/from16 v15, p0
 
-    move/from16 v1, p1
+    move/from16 v14, p1
 
-    move-object/from16 v15, p2
+    move-object/from16 v13, p2
 
-    move-object/from16 v14, p3
+    move-object/from16 v12, p3
 
-    .line 363
-    const v2, 0xffffff
+    const-string v11, "android.net.INetd"
 
-    const/4 v13, 0x1
+    .line 357
+    .local v11, "descriptor":Ljava/lang/String;
+    const v0, 0xffffff
 
-    const-string v3, "android.net.INetd"
+    const/4 v10, 0x1
 
-    if-eq v1, v2, :cond_86f
+    if-eq v14, v0, :cond_8e4
 
-    const v2, 0x5f4e5446
+    const v0, 0x5f4e5446
 
-    if-eq v1, v2, :cond_869
+    if-eq v14, v0, :cond_8dd
 
-    const/4 v2, 0x0
+    const/4 v0, 0x0
 
-    const/4 v4, 0x0
+    packed-switch v14, :pswitch_data_8f8
 
-    packed-switch v1, :pswitch_data_882
-
-    .line 1533
+    .line 1501
     invoke-super/range {p0 .. p4}, Landroid/os/Binder;->onTransact(ILandroid/os/Parcel;Landroid/os/Parcel;I)Z
 
     move-result v0
 
     return v0
 
-    .line 1513
-    :pswitch_1f  #0x60
-    invoke-virtual {v15, v3}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
+    .line 1486
+    :pswitch_1e  #0x5e
+    invoke-virtual {v13, v11}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
 
-    .line 1515
-    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readString()Ljava/lang/String;
-
-    move-result-object v1
-
-    .line 1517
-    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readString()Ljava/lang/String;
-
-    move-result-object v2
-
-    .line 1519
-    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
-
-    move-result v3
-
-    .line 1520
-    invoke-virtual {v0, v1, v2, v3}, Landroid/net/INetd$Stub;->bandwidthRemoveRestrictAppOnInterface(Ljava/lang/String;Ljava/lang/String;I)V
-
-    .line 1521
-    invoke-virtual/range {p3 .. p3}, Landroid/os/Parcel;->writeNoException()V
-
-    .line 1522
-    return v13
-
-    .line 1500
-    :pswitch_35  #0x5f
-    invoke-virtual {v15, v3}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
-
-    .line 1502
-    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readString()Ljava/lang/String;
-
-    move-result-object v1
-
-    .line 1504
-    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readString()Ljava/lang/String;
-
-    move-result-object v2
-
-    .line 1506
-    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
-
-    move-result v3
-
-    .line 1507
-    invoke-virtual {v0, v1, v2, v3}, Landroid/net/INetd$Stub;->bandwidthAddRestrictAppOnInterface(Ljava/lang/String;Ljava/lang/String;I)V
-
-    .line 1508
-    invoke-virtual/range {p3 .. p3}, Landroid/os/Parcel;->writeNoException()V
-
-    .line 1509
-    return v13
-
-    .line 1492
-    :pswitch_4b  #0x5e
-    invoke-virtual {v15, v3}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
-
-    .line 1493
+    .line 1487
     invoke-virtual/range {p0 .. p0}, Landroid/net/INetd$Stub;->getOemNetd()Landroid/os/IBinder;
 
     move-result-object v0
 
-    .line 1494
-    invoke-virtual/range {p3 .. p3}, Landroid/os/Parcel;->writeNoException()V
-
-    .line 1495
-    invoke-virtual {v14, v0}, Landroid/os/Parcel;->writeStrongBinder(Landroid/os/IBinder;)V
-
-    .line 1496
-    return v13
-
-    .line 1485
-    :pswitch_59  #0x5d
-    invoke-virtual {v15, v3}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
-
-    .line 1486
-    invoke-virtual/range {p0 .. p0}, Landroid/net/INetd$Stub;->trafficSwapActiveStatsMap()V
-
-    .line 1487
-    invoke-virtual/range {p3 .. p3}, Landroid/os/Parcel;->writeNoException()V
-
     .line 1488
-    return v13
+    .local v0, "_result":Landroid/os/IBinder;
+    invoke-virtual/range {p3 .. p3}, Landroid/os/Parcel;->writeNoException()V
 
-    .line 1476
-    :pswitch_63  #0x5c
-    invoke-virtual {v15, v3}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
+    .line 1489
+    invoke-virtual {v12, v0}, Landroid/os/Parcel;->writeStrongBinder(Landroid/os/IBinder;)V
 
-    .line 1478
-    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->createIntArray()[I
-
-    move-result-object v1
+    .line 1490
+    return v10
 
     .line 1479
-    invoke-virtual {v0, v1}, Landroid/net/INetd$Stub;->firewallRemoveUidInterfaceRules([I)V
+    .end local v0  # "_result":Landroid/os/IBinder;
+    :pswitch_2c  #0x5d
+    invoke-virtual {v13, v11}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
 
     .line 1480
-    invoke-virtual/range {p3 .. p3}, Landroid/os/Parcel;->writeNoException()V
+    invoke-virtual/range {p0 .. p0}, Landroid/net/INetd$Stub;->trafficSwapActiveStatsMap()V
 
     .line 1481
-    return v13
+    invoke-virtual/range {p3 .. p3}, Landroid/os/Parcel;->writeNoException()V
 
-    .line 1465
-    :pswitch_71  #0x5b
-    invoke-virtual {v15, v3}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
-
-    .line 1467
-    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readString()Ljava/lang/String;
-
-    move-result-object v1
-
-    .line 1469
-    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->createIntArray()[I
-
-    move-result-object v2
+    .line 1482
+    return v10
 
     .line 1470
-    invoke-virtual {v0, v1, v2}, Landroid/net/INetd$Stub;->firewallAddUidInterfaceRules(Ljava/lang/String;[I)V
-
-    .line 1471
-    invoke-virtual/range {p3 .. p3}, Landroid/os/Parcel;->writeNoException()V
+    :pswitch_36  #0x5c
+    invoke-virtual {v13, v11}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
 
     .line 1472
-    return v13
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->createIntArray()[I
 
-    .line 1456
-    :pswitch_83  #0x5a
-    invoke-virtual {v15, v3}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
+    move-result-object v0
 
-    .line 1458
-    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readStrongBinder()Landroid/os/IBinder;
+    .line 1473
+    .local v0, "_arg0":[I
+    invoke-virtual {v15, v0}, Landroid/net/INetd$Stub;->firewallRemoveUidInterfaceRules([I)V
 
-    move-result-object v1
+    .line 1474
+    invoke-virtual/range {p3 .. p3}, Landroid/os/Parcel;->writeNoException()V
 
-    invoke-static {v1}, Landroid/net/INetdUnsolicitedEventListener$Stub;->asInterface(Landroid/os/IBinder;)Landroid/net/INetdUnsolicitedEventListener;
-
-    move-result-object v1
+    .line 1475
+    return v10
 
     .line 1459
-    invoke-virtual {v0, v1}, Landroid/net/INetd$Stub;->registerUnsolicitedEventListener(Landroid/net/INetdUnsolicitedEventListener;)V
-
-    .line 1460
-    invoke-virtual/range {p3 .. p3}, Landroid/os/Parcel;->writeNoException()V
+    .end local v0  # "_arg0":[I
+    :pswitch_44  #0x5b
+    invoke-virtual {v13, v11}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
 
     .line 1461
-    return v13
-
-    .line 1445
-    :pswitch_95  #0x59
-    invoke-virtual {v15, v3}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
-
-    .line 1447
     invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readString()Ljava/lang/String;
+
+    move-result-object v0
+
+    .line 1463
+    .local v0, "_arg0":Ljava/lang/String;
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->createIntArray()[I
 
     move-result-object v1
 
-    .line 1449
-    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readString()Ljava/lang/String;
+    .line 1464
+    .local v1, "_arg1":[I
+    invoke-virtual {v15, v0, v1}, Landroid/net/INetd$Stub;->firewallAddUidInterfaceRules(Ljava/lang/String;[I)V
 
-    move-result-object v2
+    .line 1465
+    invoke-virtual/range {p3 .. p3}, Landroid/os/Parcel;->writeNoException()V
+
+    .line 1466
+    return v10
 
     .line 1450
-    invoke-virtual {v0, v1, v2}, Landroid/net/INetd$Stub;->setTcpRWmemorySize(Ljava/lang/String;Ljava/lang/String;)V
-
-    .line 1451
-    invoke-virtual/range {p3 .. p3}, Landroid/os/Parcel;->writeNoException()V
+    .end local v0  # "_arg0":Ljava/lang/String;
+    .end local v1  # "_arg1":[I
+    :pswitch_56  #0x5a
+    invoke-virtual {v13, v11}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
 
     .line 1452
-    return v13
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readStrongBinder()Landroid/os/IBinder;
 
-    .line 1434
-    :pswitch_a7  #0x58
-    invoke-virtual {v15, v3}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
+    move-result-object v0
 
-    .line 1436
-    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readString()Ljava/lang/String;
+    invoke-static {v0}, Landroid/net/INetdUnsolicitedEventListener$Stub;->asInterface(Landroid/os/IBinder;)Landroid/net/INetdUnsolicitedEventListener;
 
-    move-result-object v1
+    move-result-object v0
 
-    .line 1438
-    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readString()Ljava/lang/String;
+    .line 1453
+    .local v0, "_arg0":Landroid/net/INetdUnsolicitedEventListener;
+    invoke-virtual {v15, v0}, Landroid/net/INetd$Stub;->registerUnsolicitedEventListener(Landroid/net/INetdUnsolicitedEventListener;)V
 
-    move-result-object v2
+    .line 1454
+    invoke-virtual/range {p3 .. p3}, Landroid/os/Parcel;->writeNoException()V
+
+    .line 1455
+    return v10
 
     .line 1439
-    invoke-virtual {v0, v1, v2}, Landroid/net/INetd$Stub;->tetherRemoveForward(Ljava/lang/String;Ljava/lang/String;)V
-
-    .line 1440
-    invoke-virtual/range {p3 .. p3}, Landroid/os/Parcel;->writeNoException()V
+    .end local v0  # "_arg0":Landroid/net/INetdUnsolicitedEventListener;
+    :pswitch_68  #0x59
+    invoke-virtual {v13, v11}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
 
     .line 1441
-    return v13
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readString()Ljava/lang/String;
 
-    .line 1423
-    :pswitch_b9  #0x57
-    invoke-virtual {v15, v3}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
+    move-result-object v0
 
-    .line 1425
+    .line 1443
+    .local v0, "_arg0":Ljava/lang/String;
     invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readString()Ljava/lang/String;
 
     move-result-object v1
 
-    .line 1427
-    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readString()Ljava/lang/String;
+    .line 1444
+    .local v1, "_arg1":Ljava/lang/String;
+    invoke-virtual {v15, v0, v1}, Landroid/net/INetd$Stub;->setTcpRWmemorySize(Ljava/lang/String;Ljava/lang/String;)V
 
-    move-result-object v2
+    .line 1445
+    invoke-virtual/range {p3 .. p3}, Landroid/os/Parcel;->writeNoException()V
+
+    .line 1446
+    return v10
 
     .line 1428
-    invoke-virtual {v0, v1, v2}, Landroid/net/INetd$Stub;->tetherAddForward(Ljava/lang/String;Ljava/lang/String;)V
-
-    .line 1429
-    invoke-virtual/range {p3 .. p3}, Landroid/os/Parcel;->writeNoException()V
+    .end local v0  # "_arg0":Ljava/lang/String;
+    .end local v1  # "_arg1":Ljava/lang/String;
+    :pswitch_7a  #0x58
+    invoke-virtual {v13, v11}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
 
     .line 1430
-    return v13
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readString()Ljava/lang/String;
 
-    .line 1412
-    :pswitch_cb  #0x56
-    invoke-virtual {v15, v3}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
+    move-result-object v0
 
-    .line 1414
+    .line 1432
+    .restart local v0  # "_arg0":Ljava/lang/String;
     invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readString()Ljava/lang/String;
 
     move-result-object v1
 
-    .line 1416
-    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
+    .line 1433
+    .restart local v1  # "_arg1":Ljava/lang/String;
+    invoke-virtual {v15, v0, v1}, Landroid/net/INetd$Stub;->tetherRemoveForward(Ljava/lang/String;Ljava/lang/String;)V
 
-    move-result v2
+    .line 1434
+    invoke-virtual/range {p3 .. p3}, Landroid/os/Parcel;->writeNoException()V
+
+    .line 1435
+    return v10
 
     .line 1417
-    invoke-virtual {v0, v1, v2}, Landroid/net/INetd$Stub;->interfaceSetMtu(Ljava/lang/String;I)V
-
-    .line 1418
-    invoke-virtual/range {p3 .. p3}, Landroid/os/Parcel;->writeNoException()V
+    .end local v0  # "_arg0":Ljava/lang/String;
+    .end local v1  # "_arg1":Ljava/lang/String;
+    :pswitch_8c  #0x57
+    invoke-virtual {v13, v11}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
 
     .line 1419
-    return v13
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readString()Ljava/lang/String;
 
-    .line 1401
-    :pswitch_dd  #0x55
-    invoke-virtual {v15, v3}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
+    move-result-object v0
 
-    .line 1403
+    .line 1421
+    .restart local v0  # "_arg0":Ljava/lang/String;
     invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readString()Ljava/lang/String;
 
     move-result-object v1
 
-    .line 1405
-    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
+    .line 1422
+    .restart local v1  # "_arg1":Ljava/lang/String;
+    invoke-virtual {v15, v0, v1}, Landroid/net/INetd$Stub;->tetherAddForward(Ljava/lang/String;Ljava/lang/String;)V
 
-    move-result v2
+    .line 1423
+    invoke-virtual/range {p3 .. p3}, Landroid/os/Parcel;->writeNoException()V
 
-    if-eqz v2, :cond_eb
-
-    move v4, v13
+    .line 1424
+    return v10
 
     .line 1406
-    :cond_eb
-    invoke-virtual {v0, v1, v4}, Landroid/net/INetd$Stub;->interfaceSetEnableIPv6(Ljava/lang/String;Z)V
-
-    .line 1407
-    invoke-virtual/range {p3 .. p3}, Landroid/os/Parcel;->writeNoException()V
+    .end local v0  # "_arg0":Ljava/lang/String;
+    .end local v1  # "_arg1":Ljava/lang/String;
+    :pswitch_9e  #0x56
+    invoke-virtual {v13, v11}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
 
     .line 1408
-    return v13
-
-    .line 1392
-    :pswitch_f2  #0x54
-    invoke-virtual {v15, v3}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
-
-    .line 1394
     invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readString()Ljava/lang/String;
 
-    move-result-object v1
+    move-result-object v0
 
-    .line 1395
-    invoke-virtual {v0, v1}, Landroid/net/INetd$Stub;->interfaceClearAddrs(Ljava/lang/String;)V
-
-    .line 1396
-    invoke-virtual/range {p3 .. p3}, Landroid/os/Parcel;->writeNoException()V
-
-    .line 1397
-    return v13
-
-    .line 1381
-    :pswitch_100  #0x53
-    invoke-virtual {v15, v3}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
-
-    .line 1383
-    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readString()Ljava/lang/String;
-
-    move-result-object v1
-
-    .line 1385
-    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
-
-    move-result v2
-
-    if-eqz v2, :cond_10e
-
-    move v4, v13
-
-    .line 1386
-    :cond_10e
-    invoke-virtual {v0, v1, v4}, Landroid/net/INetd$Stub;->interfaceSetIPv6PrivacyExtensions(Ljava/lang/String;Z)V
-
-    .line 1387
-    invoke-virtual/range {p3 .. p3}, Landroid/os/Parcel;->writeNoException()V
-
-    .line 1388
-    return v13
-
-    .line 1367
-    :pswitch_115  #0x52
-    invoke-virtual {v15, v3}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
-
-    .line 1369
+    .line 1410
+    .restart local v0  # "_arg0":Ljava/lang/String;
     invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
 
     move-result v1
 
-    if-eqz v1, :cond_128
+    .line 1411
+    .local v1, "_arg1":I
+    invoke-virtual {v15, v0, v1}, Landroid/net/INetd$Stub;->interfaceSetMtu(Ljava/lang/String;I)V
 
-    .line 1370
-    sget-object v1, Landroid/net/InterfaceConfigurationParcel;->CREATOR:Landroid/os/Parcelable$Creator;
-
-    invoke-interface {v1, v15}, Landroid/os/Parcelable$Creator;->createFromParcel(Landroid/os/Parcel;)Ljava/lang/Object;
-
-    move-result-object v1
-
-    move-object v2, v1
-
-    check-cast v2, Landroid/net/InterfaceConfigurationParcel;
-
-    goto :goto_129
-
-    .line 1373
-    :cond_128
-    nop
-
-    .line 1375
-    :goto_129
-    invoke-virtual {v0, v2}, Landroid/net/INetd$Stub;->interfaceSetCfg(Landroid/net/InterfaceConfigurationParcel;)V
-
-    .line 1376
+    .line 1412
     invoke-virtual/range {p3 .. p3}, Landroid/os/Parcel;->writeNoException()V
 
-    .line 1377
-    return v13
+    .line 1413
+    return v10
 
-    .line 1351
-    :pswitch_130  #0x51
-    invoke-virtual {v15, v3}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
+    .line 1395
+    .end local v0  # "_arg0":Ljava/lang/String;
+    .end local v1  # "_arg1":I
+    :pswitch_b0  #0x55
+    invoke-virtual {v13, v11}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
 
-    .line 1353
+    .line 1397
     invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readString()Ljava/lang/String;
 
     move-result-object v1
 
-    .line 1354
-    invoke-virtual {v0, v1}, Landroid/net/INetd$Stub;->interfaceGetCfg(Ljava/lang/String;)Landroid/net/InterfaceConfigurationParcel;
+    .line 1399
+    .local v1, "_arg0":Ljava/lang/String;
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
+
+    move-result v2
+
+    if-eqz v2, :cond_be
+
+    move v0, v10
+
+    .line 1400
+    .local v0, "_arg1":Z
+    :cond_be
+    invoke-virtual {v15, v1, v0}, Landroid/net/INetd$Stub;->interfaceSetEnableIPv6(Ljava/lang/String;Z)V
+
+    .line 1401
+    invoke-virtual/range {p3 .. p3}, Landroid/os/Parcel;->writeNoException()V
+
+    .line 1402
+    return v10
+
+    .line 1386
+    .end local v0  # "_arg1":Z
+    .end local v1  # "_arg0":Ljava/lang/String;
+    :pswitch_c5  #0x54
+    invoke-virtual {v13, v11}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
+
+    .line 1388
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readString()Ljava/lang/String;
 
     move-result-object v0
 
-    .line 1355
+    .line 1389
+    .local v0, "_arg0":Ljava/lang/String;
+    invoke-virtual {v15, v0}, Landroid/net/INetd$Stub;->interfaceClearAddrs(Ljava/lang/String;)V
+
+    .line 1390
     invoke-virtual/range {p3 .. p3}, Landroid/os/Parcel;->writeNoException()V
 
-    .line 1356
-    if-eqz v0, :cond_147
+    .line 1391
+    return v10
 
-    .line 1357
-    invoke-virtual {v14, v13}, Landroid/os/Parcel;->writeInt(I)V
+    .line 1375
+    .end local v0  # "_arg0":Ljava/lang/String;
+    :pswitch_d3  #0x53
+    invoke-virtual {v13, v11}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
 
-    .line 1358
-    invoke-virtual {v0, v14, v13}, Landroid/net/InterfaceConfigurationParcel;->writeToParcel(Landroid/os/Parcel;I)V
+    .line 1377
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readString()Ljava/lang/String;
 
-    goto :goto_14a
+    move-result-object v1
+
+    .line 1379
+    .restart local v1  # "_arg0":Ljava/lang/String;
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
+
+    move-result v2
+
+    if-eqz v2, :cond_e1
+
+    move v0, v10
+
+    .line 1380
+    .local v0, "_arg1":Z
+    :cond_e1
+    invoke-virtual {v15, v1, v0}, Landroid/net/INetd$Stub;->interfaceSetIPv6PrivacyExtensions(Ljava/lang/String;Z)V
+
+    .line 1381
+    invoke-virtual/range {p3 .. p3}, Landroid/os/Parcel;->writeNoException()V
+
+    .line 1382
+    return v10
 
     .line 1361
-    :cond_147
-    invoke-virtual {v14, v4}, Landroid/os/Parcel;->writeInt(I)V
+    .end local v0  # "_arg1":Z
+    .end local v1  # "_arg0":Ljava/lang/String;
+    :pswitch_e8  #0x52
+    invoke-virtual {v13, v11}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
 
     .line 1363
-    :goto_14a
-    return v13
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
 
-    .line 1343
-    :pswitch_14b  #0x50
-    invoke-virtual {v15, v3}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
+    move-result v0
 
-    .line 1344
+    if-eqz v0, :cond_fa
+
+    .line 1364
+    sget-object v0, Landroid/net/InterfaceConfigurationParcel;->CREATOR:Landroid/os/Parcelable$Creator;
+
+    invoke-interface {v0, v13}, Landroid/os/Parcelable$Creator;->createFromParcel(Landroid/os/Parcel;)Ljava/lang/Object;
+
+    move-result-object v0
+
+    check-cast v0, Landroid/net/InterfaceConfigurationParcel;
+
+    .local v0, "_arg0":Landroid/net/InterfaceConfigurationParcel;
+    goto :goto_fb
+
+    .line 1367
+    .end local v0  # "_arg0":Landroid/net/InterfaceConfigurationParcel;
+    :cond_fa
+    const/4 v0, 0x0
+
+    .line 1369
+    .restart local v0  # "_arg0":Landroid/net/InterfaceConfigurationParcel;
+    :goto_fb
+    invoke-virtual {v15, v0}, Landroid/net/INetd$Stub;->interfaceSetCfg(Landroid/net/InterfaceConfigurationParcel;)V
+
+    .line 1370
+    invoke-virtual/range {p3 .. p3}, Landroid/os/Parcel;->writeNoException()V
+
+    .line 1371
+    return v10
+
+    .line 1345
+    .end local v0  # "_arg0":Landroid/net/InterfaceConfigurationParcel;
+    :pswitch_102  #0x51
+    invoke-virtual {v13, v11}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
+
+    .line 1347
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readString()Ljava/lang/String;
+
+    move-result-object v1
+
+    .line 1348
+    .restart local v1  # "_arg0":Ljava/lang/String;
+    invoke-virtual {v15, v1}, Landroid/net/INetd$Stub;->interfaceGetCfg(Ljava/lang/String;)Landroid/net/InterfaceConfigurationParcel;
+
+    move-result-object v2
+
+    .line 1349
+    .local v2, "_result":Landroid/net/InterfaceConfigurationParcel;
+    invoke-virtual/range {p3 .. p3}, Landroid/os/Parcel;->writeNoException()V
+
+    .line 1350
+    if-eqz v2, :cond_119
+
+    .line 1351
+    invoke-virtual {v12, v10}, Landroid/os/Parcel;->writeInt(I)V
+
+    .line 1352
+    invoke-virtual {v2, v12, v10}, Landroid/net/InterfaceConfigurationParcel;->writeToParcel(Landroid/os/Parcel;I)V
+
+    goto :goto_11c
+
+    .line 1355
+    :cond_119
+    invoke-virtual {v12, v0}, Landroid/os/Parcel;->writeInt(I)V
+
+    .line 1357
+    :goto_11c
+    return v10
+
+    .line 1337
+    .end local v1  # "_arg0":Ljava/lang/String;
+    .end local v2  # "_result":Landroid/net/InterfaceConfigurationParcel;
+    :pswitch_11d  #0x50
+    invoke-virtual {v13, v11}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
+
+    .line 1338
     invoke-virtual/range {p0 .. p0}, Landroid/net/INetd$Stub;->interfaceGetList()[Ljava/lang/String;
 
     move-result-object v0
 
-    .line 1345
-    invoke-virtual/range {p3 .. p3}, Landroid/os/Parcel;->writeNoException()V
-
-    .line 1346
-    invoke-virtual {v14, v0}, Landroid/os/Parcel;->writeStringArray([Ljava/lang/String;)V
-
-    .line 1347
-    return v13
-
-    .line 1332
-    :pswitch_159  #0x4f
-    invoke-virtual {v15, v3}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
-
-    .line 1334
-    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
-
-    move-result v1
-
-    .line 1336
-    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
-
-    move-result v2
-
-    if-eqz v2, :cond_167
-
-    move v4, v13
-
-    .line 1337
-    :cond_167
-    invoke-virtual {v0, v1, v4}, Landroid/net/INetd$Stub;->firewallEnableChildChain(IZ)V
-
-    .line 1338
-    invoke-virtual/range {p3 .. p3}, Landroid/os/Parcel;->writeNoException()V
-
     .line 1339
-    return v13
+    .local v0, "_result":[Ljava/lang/String;
+    invoke-virtual/range {p3 .. p3}, Landroid/os/Parcel;->writeNoException()V
 
-    .line 1319
-    :pswitch_16e  #0x4e
-    invoke-virtual {v15, v3}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
+    .line 1340
+    invoke-virtual {v12, v0}, Landroid/os/Parcel;->writeStringArray([Ljava/lang/String;)V
 
-    .line 1321
-    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
-
-    move-result v1
-
-    .line 1323
-    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
-
-    move-result v2
-
-    .line 1325
-    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
-
-    move-result v3
+    .line 1341
+    return v10
 
     .line 1326
-    invoke-virtual {v0, v1, v2, v3}, Landroid/net/INetd$Stub;->firewallSetUidRule(III)V
-
-    .line 1327
-    invoke-virtual/range {p3 .. p3}, Landroid/os/Parcel;->writeNoException()V
+    .end local v0  # "_result":[Ljava/lang/String;
+    :pswitch_12b  #0x4f
+    invoke-virtual {v13, v11}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
 
     .line 1328
-    return v13
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
 
-    .line 1308
-    :pswitch_184  #0x4d
-    invoke-virtual {v15, v3}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
+    move-result v1
 
-    .line 1310
-    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readString()Ljava/lang/String;
-
-    move-result-object v1
-
-    .line 1312
+    .line 1330
+    .local v1, "_arg0":I
     invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
 
     move-result v2
 
-    .line 1313
-    invoke-virtual {v0, v1, v2}, Landroid/net/INetd$Stub;->firewallSetInterfaceRule(Ljava/lang/String;I)V
+    if-eqz v2, :cond_139
 
-    .line 1314
+    move v0, v10
+
+    .line 1331
+    .local v0, "_arg1":Z
+    :cond_139
+    invoke-virtual {v15, v1, v0}, Landroid/net/INetd$Stub;->firewallEnableChildChain(IZ)V
+
+    .line 1332
     invoke-virtual/range {p3 .. p3}, Landroid/os/Parcel;->writeNoException()V
+
+    .line 1333
+    return v10
+
+    .line 1313
+    .end local v0  # "_arg1":Z
+    .end local v1  # "_arg0":I
+    :pswitch_140  #0x4e
+    invoke-virtual {v13, v11}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
 
     .line 1315
-    return v13
-
-    .line 1299
-    :pswitch_196  #0x4c
-    invoke-virtual {v15, v3}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
-
-    .line 1301
     invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
-
-    move-result v1
-
-    .line 1302
-    invoke-virtual {v0, v1}, Landroid/net/INetd$Stub;->firewallSetFirewallType(I)V
-
-    .line 1303
-    invoke-virtual/range {p3 .. p3}, Landroid/os/Parcel;->writeNoException()V
-
-    .line 1304
-    return v13
-
-    .line 1289
-    :pswitch_1a4  #0x4b
-    invoke-virtual {v15, v3}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
-
-    .line 1291
-    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
-
-    move-result v1
-
-    .line 1292
-    invoke-virtual {v0, v1}, Landroid/net/INetd$Stub;->networkCanProtect(I)Z
 
     move-result v0
 
-    .line 1293
-    invoke-virtual/range {p3 .. p3}, Landroid/os/Parcel;->writeNoException()V
-
-    .line 1294
-    invoke-virtual {v14, v0}, Landroid/os/Parcel;->writeInt(I)V
-
-    .line 1295
-    return v13
-
-    .line 1280
-    :pswitch_1b6  #0x4a
-    invoke-virtual {v15, v3}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
-
-    .line 1282
+    .line 1317
+    .local v0, "_arg0":I
     invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
 
     move-result v1
 
-    .line 1283
-    invoke-virtual {v0, v1}, Landroid/net/INetd$Stub;->networkSetProtectDeny(I)V
-
-    .line 1284
-    invoke-virtual/range {p3 .. p3}, Landroid/os/Parcel;->writeNoException()V
-
-    .line 1285
-    return v13
-
-    .line 1271
-    :pswitch_1c4  #0x49
-    invoke-virtual {v15, v3}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
-
-    .line 1273
-    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
-
-    move-result v1
-
-    .line 1274
-    invoke-virtual {v0, v1}, Landroid/net/INetd$Stub;->networkSetProtectAllow(I)V
-
-    .line 1275
-    invoke-virtual/range {p3 .. p3}, Landroid/os/Parcel;->writeNoException()V
-
-    .line 1276
-    return v13
-
-    .line 1260
-    :pswitch_1d2  #0x48
-    invoke-virtual {v15, v3}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
-
-    .line 1262
-    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
-
-    move-result v1
-
-    .line 1264
-    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->createIntArray()[I
-
-    move-result-object v2
-
-    .line 1265
-    invoke-virtual {v0, v1, v2}, Landroid/net/INetd$Stub;->trafficSetNetPermForUids(I[I)V
-
-    .line 1266
-    invoke-virtual/range {p3 .. p3}, Landroid/os/Parcel;->writeNoException()V
-
-    .line 1267
-    return v13
-
-    .line 1251
-    :pswitch_1e4  #0x47
-    invoke-virtual {v15, v3}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
-
-    .line 1253
-    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->createIntArray()[I
-
-    move-result-object v1
-
-    .line 1254
-    invoke-virtual {v0, v1}, Landroid/net/INetd$Stub;->networkClearPermissionForUser([I)V
-
-    .line 1255
-    invoke-virtual/range {p3 .. p3}, Landroid/os/Parcel;->writeNoException()V
-
-    .line 1256
-    return v13
-
-    .line 1240
-    :pswitch_1f2  #0x46
-    invoke-virtual {v15, v3}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
-
-    .line 1242
-    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
-
-    move-result v1
-
-    .line 1244
-    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->createIntArray()[I
-
-    move-result-object v2
-
-    .line 1245
-    invoke-virtual {v0, v1, v2}, Landroid/net/INetd$Stub;->networkSetPermissionForUser(I[I)V
-
-    .line 1246
-    invoke-virtual/range {p3 .. p3}, Landroid/os/Parcel;->writeNoException()V
-
-    .line 1247
-    return v13
-
-    .line 1229
-    :pswitch_204  #0x45
-    invoke-virtual {v15, v3}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
-
-    .line 1231
-    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
-
-    move-result v1
-
-    .line 1233
+    .line 1319
+    .local v1, "_arg1":I
     invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
 
     move-result v2
 
-    .line 1234
-    invoke-virtual {v0, v1, v2}, Landroid/net/INetd$Stub;->networkSetPermissionForNetwork(II)V
+    .line 1320
+    .local v2, "_arg2":I
+    invoke-virtual {v15, v0, v1, v2}, Landroid/net/INetd$Stub;->firewallSetUidRule(III)V
 
-    .line 1235
+    .line 1321
     invoke-virtual/range {p3 .. p3}, Landroid/os/Parcel;->writeNoException()V
 
-    .line 1236
-    return v13
+    .line 1322
+    return v10
 
-    .line 1222
-    :pswitch_216  #0x44
-    invoke-virtual {v15, v3}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
+    .line 1302
+    .end local v0  # "_arg0":I
+    .end local v1  # "_arg1":I
+    .end local v2  # "_arg2":I
+    :pswitch_156  #0x4d
+    invoke-virtual {v13, v11}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
 
-    .line 1223
-    invoke-virtual/range {p0 .. p0}, Landroid/net/INetd$Stub;->networkClearDefault()V
+    .line 1304
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readString()Ljava/lang/String;
 
-    .line 1224
-    invoke-virtual/range {p3 .. p3}, Landroid/os/Parcel;->writeNoException()V
+    move-result-object v0
 
-    .line 1225
-    return v13
-
-    .line 1213
-    :pswitch_220  #0x43
-    invoke-virtual {v15, v3}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
-
-    .line 1215
+    .line 1306
+    .local v0, "_arg0":Ljava/lang/String;
     invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
 
     move-result v1
 
-    .line 1216
-    invoke-virtual {v0, v1}, Landroid/net/INetd$Stub;->networkSetDefault(I)V
+    .line 1307
+    .restart local v1  # "_arg1":I
+    invoke-virtual {v15, v0, v1}, Landroid/net/INetd$Stub;->firewallSetInterfaceRule(Ljava/lang/String;I)V
 
-    .line 1217
+    .line 1308
     invoke-virtual/range {p3 .. p3}, Landroid/os/Parcel;->writeNoException()V
 
+    .line 1309
+    return v10
+
+    .line 1293
+    .end local v0  # "_arg0":Ljava/lang/String;
+    .end local v1  # "_arg1":I
+    :pswitch_168  #0x4c
+    invoke-virtual {v13, v11}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
+
+    .line 1295
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
+
+    move-result v0
+
+    .line 1296
+    .local v0, "_arg0":I
+    invoke-virtual {v15, v0}, Landroid/net/INetd$Stub;->firewallSetFirewallType(I)V
+
+    .line 1297
+    invoke-virtual/range {p3 .. p3}, Landroid/os/Parcel;->writeNoException()V
+
+    .line 1298
+    return v10
+
+    .line 1283
+    .end local v0  # "_arg0":I
+    :pswitch_176  #0x4b
+    invoke-virtual {v13, v11}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
+
+    .line 1285
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
+
+    move-result v0
+
+    .line 1286
+    .restart local v0  # "_arg0":I
+    invoke-virtual {v15, v0}, Landroid/net/INetd$Stub;->networkCanProtect(I)Z
+
+    move-result v1
+
+    .line 1287
+    .local v1, "_result":Z
+    invoke-virtual/range {p3 .. p3}, Landroid/os/Parcel;->writeNoException()V
+
+    .line 1288
+    invoke-virtual {v12, v1}, Landroid/os/Parcel;->writeInt(I)V
+
+    .line 1289
+    return v10
+
+    .line 1274
+    .end local v0  # "_arg0":I
+    .end local v1  # "_result":Z
+    :pswitch_188  #0x4a
+    invoke-virtual {v13, v11}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
+
+    .line 1276
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
+
+    move-result v0
+
+    .line 1277
+    .restart local v0  # "_arg0":I
+    invoke-virtual {v15, v0}, Landroid/net/INetd$Stub;->networkSetProtectDeny(I)V
+
+    .line 1278
+    invoke-virtual/range {p3 .. p3}, Landroid/os/Parcel;->writeNoException()V
+
+    .line 1279
+    return v10
+
+    .line 1265
+    .end local v0  # "_arg0":I
+    :pswitch_196  #0x49
+    invoke-virtual {v13, v11}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
+
+    .line 1267
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
+
+    move-result v0
+
+    .line 1268
+    .restart local v0  # "_arg0":I
+    invoke-virtual {v15, v0}, Landroid/net/INetd$Stub;->networkSetProtectAllow(I)V
+
+    .line 1269
+    invoke-virtual/range {p3 .. p3}, Landroid/os/Parcel;->writeNoException()V
+
+    .line 1270
+    return v10
+
+    .line 1254
+    .end local v0  # "_arg0":I
+    :pswitch_1a4  #0x48
+    invoke-virtual {v13, v11}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
+
+    .line 1256
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
+
+    move-result v0
+
+    .line 1258
+    .restart local v0  # "_arg0":I
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->createIntArray()[I
+
+    move-result-object v1
+
+    .line 1259
+    .local v1, "_arg1":[I
+    invoke-virtual {v15, v0, v1}, Landroid/net/INetd$Stub;->trafficSetNetPermForUids(I[I)V
+
+    .line 1260
+    invoke-virtual/range {p3 .. p3}, Landroid/os/Parcel;->writeNoException()V
+
+    .line 1261
+    return v10
+
+    .line 1245
+    .end local v0  # "_arg0":I
+    .end local v1  # "_arg1":[I
+    :pswitch_1b6  #0x47
+    invoke-virtual {v13, v11}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
+
+    .line 1247
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->createIntArray()[I
+
+    move-result-object v0
+
+    .line 1248
+    .local v0, "_arg0":[I
+    invoke-virtual {v15, v0}, Landroid/net/INetd$Stub;->networkClearPermissionForUser([I)V
+
+    .line 1249
+    invoke-virtual/range {p3 .. p3}, Landroid/os/Parcel;->writeNoException()V
+
+    .line 1250
+    return v10
+
+    .line 1234
+    .end local v0  # "_arg0":[I
+    :pswitch_1c4  #0x46
+    invoke-virtual {v13, v11}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
+
+    .line 1236
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
+
+    move-result v0
+
+    .line 1238
+    .local v0, "_arg0":I
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->createIntArray()[I
+
+    move-result-object v1
+
+    .line 1239
+    .restart local v1  # "_arg1":[I
+    invoke-virtual {v15, v0, v1}, Landroid/net/INetd$Stub;->networkSetPermissionForUser(I[I)V
+
+    .line 1240
+    invoke-virtual/range {p3 .. p3}, Landroid/os/Parcel;->writeNoException()V
+
+    .line 1241
+    return v10
+
+    .line 1223
+    .end local v0  # "_arg0":I
+    .end local v1  # "_arg1":[I
+    :pswitch_1d6  #0x45
+    invoke-virtual {v13, v11}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
+
+    .line 1225
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
+
+    move-result v0
+
+    .line 1227
+    .restart local v0  # "_arg0":I
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
+
+    move-result v1
+
+    .line 1228
+    .local v1, "_arg1":I
+    invoke-virtual {v15, v0, v1}, Landroid/net/INetd$Stub;->networkSetPermissionForNetwork(II)V
+
+    .line 1229
+    invoke-virtual/range {p3 .. p3}, Landroid/os/Parcel;->writeNoException()V
+
+    .line 1230
+    return v10
+
+    .line 1216
+    .end local v0  # "_arg0":I
+    .end local v1  # "_arg1":I
+    :pswitch_1e8  #0x44
+    invoke-virtual {v13, v11}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
+
+    .line 1217
+    invoke-virtual/range {p0 .. p0}, Landroid/net/INetd$Stub;->networkClearDefault()V
+
     .line 1218
-    return v13
+    invoke-virtual/range {p3 .. p3}, Landroid/os/Parcel;->writeNoException()V
 
-    .line 1205
-    :pswitch_22e  #0x42
-    invoke-virtual {v15, v3}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
+    .line 1219
+    return v10
 
-    .line 1206
+    .line 1207
+    :pswitch_1f2  #0x43
+    invoke-virtual {v13, v11}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
+
+    .line 1209
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
+
+    move-result v0
+
+    .line 1210
+    .restart local v0  # "_arg0":I
+    invoke-virtual {v15, v0}, Landroid/net/INetd$Stub;->networkSetDefault(I)V
+
+    .line 1211
+    invoke-virtual/range {p3 .. p3}, Landroid/os/Parcel;->writeNoException()V
+
+    .line 1212
+    return v10
+
+    .line 1199
+    .end local v0  # "_arg0":I
+    :pswitch_200  #0x42
+    invoke-virtual {v13, v11}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
+
+    .line 1200
     invoke-virtual/range {p0 .. p0}, Landroid/net/INetd$Stub;->networkGetDefault()I
 
     move-result v0
 
-    .line 1207
-    invoke-virtual/range {p3 .. p3}, Landroid/os/Parcel;->writeNoException()V
-
-    .line 1208
-    invoke-virtual {v14, v0}, Landroid/os/Parcel;->writeInt(I)V
-
-    .line 1209
-    return v13
-
-    .line 1188
-    :pswitch_23c  #0x41
-    invoke-virtual {v15, v3}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
-
-    .line 1190
-    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
-
-    move-result v1
-
-    .line 1192
-    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readString()Ljava/lang/String;
-
-    move-result-object v2
-
-    .line 1194
-    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readString()Ljava/lang/String;
-
-    move-result-object v3
-
-    .line 1196
-    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readString()Ljava/lang/String;
-
-    move-result-object v4
-
-    .line 1198
-    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
-
-    move-result v5
-
-    .line 1199
-    move-object/from16 v0, p0
-
-    invoke-virtual/range {v0 .. v5}, Landroid/net/INetd$Stub;->networkRemoveLegacyRoute(ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;I)V
-
-    .line 1200
-    invoke-virtual/range {p3 .. p3}, Landroid/os/Parcel;->writeNoException()V
-
     .line 1201
-    return v13
+    .local v0, "_result":I
+    invoke-virtual/range {p3 .. p3}, Landroid/os/Parcel;->writeNoException()V
 
-    .line 1171
-    :pswitch_25c  #0x40
-    invoke-virtual {v15, v3}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
+    .line 1202
+    invoke-virtual {v12, v0}, Landroid/os/Parcel;->writeInt(I)V
 
-    .line 1173
-    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
-
-    move-result v1
-
-    .line 1175
-    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readString()Ljava/lang/String;
-
-    move-result-object v2
-
-    .line 1177
-    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readString()Ljava/lang/String;
-
-    move-result-object v3
-
-    .line 1179
-    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readString()Ljava/lang/String;
-
-    move-result-object v4
-
-    .line 1181
-    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
-
-    move-result v5
+    .line 1203
+    return v10
 
     .line 1182
-    move-object/from16 v0, p0
-
-    invoke-virtual/range {v0 .. v5}, Landroid/net/INetd$Stub;->networkAddLegacyRoute(ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;I)V
-
-    .line 1183
-    invoke-virtual/range {p3 .. p3}, Landroid/os/Parcel;->writeNoException()V
+    .end local v0  # "_result":I
+    :pswitch_20e  #0x41
+    invoke-virtual {v13, v11}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
 
     .line 1184
-    return v13
-
-    .line 1156
-    :pswitch_27c  #0x3f
-    invoke-virtual {v15, v3}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
-
-    .line 1158
-    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
-
-    move-result v1
-
-    .line 1160
-    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readString()Ljava/lang/String;
-
-    move-result-object v2
-
-    .line 1162
-    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readString()Ljava/lang/String;
-
-    move-result-object v3
-
-    .line 1164
-    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readString()Ljava/lang/String;
-
-    move-result-object v4
-
-    .line 1165
-    invoke-virtual {v0, v1, v2, v3, v4}, Landroid/net/INetd$Stub;->networkRemoveRoute(ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;)V
-
-    .line 1166
-    invoke-virtual/range {p3 .. p3}, Landroid/os/Parcel;->writeNoException()V
-
-    .line 1167
-    return v13
-
-    .line 1141
-    :pswitch_296  #0x3e
-    invoke-virtual {v15, v3}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
-
-    .line 1143
-    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
-
-    move-result v1
-
-    .line 1145
-    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readString()Ljava/lang/String;
-
-    move-result-object v2
-
-    .line 1147
-    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readString()Ljava/lang/String;
-
-    move-result-object v3
-
-    .line 1149
-    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readString()Ljava/lang/String;
-
-    move-result-object v4
-
-    .line 1150
-    invoke-virtual {v0, v1, v2, v3, v4}, Landroid/net/INetd$Stub;->networkAddRoute(ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;)V
-
-    .line 1151
-    invoke-virtual/range {p3 .. p3}, Landroid/os/Parcel;->writeNoException()V
-
-    .line 1152
-    return v13
-
-    .line 1133
-    :pswitch_2b0  #0x3d
-    invoke-virtual {v15, v3}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
-
-    .line 1134
-    invoke-virtual/range {p0 .. p0}, Landroid/net/INetd$Stub;->tetherDnsList()[Ljava/lang/String;
-
-    move-result-object v0
-
-    .line 1135
-    invoke-virtual/range {p3 .. p3}, Landroid/os/Parcel;->writeNoException()V
-
-    .line 1136
-    invoke-virtual {v14, v0}, Landroid/os/Parcel;->writeStringArray([Ljava/lang/String;)V
-
-    .line 1137
-    return v13
-
-    .line 1122
-    :pswitch_2be  #0x3c
-    invoke-virtual {v15, v3}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
-
-    .line 1124
-    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
-
-    move-result v1
-
-    .line 1126
-    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->createStringArray()[Ljava/lang/String;
-
-    move-result-object v2
-
-    .line 1127
-    invoke-virtual {v0, v1, v2}, Landroid/net/INetd$Stub;->tetherDnsSet(I[Ljava/lang/String;)V
-
-    .line 1128
-    invoke-virtual/range {p3 .. p3}, Landroid/os/Parcel;->writeNoException()V
-
-    .line 1129
-    return v13
-
-    .line 1114
-    :pswitch_2d0  #0x3b
-    invoke-virtual {v15, v3}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
-
-    .line 1115
-    invoke-virtual/range {p0 .. p0}, Landroid/net/INetd$Stub;->tetherInterfaceList()[Ljava/lang/String;
-
-    move-result-object v0
-
-    .line 1116
-    invoke-virtual/range {p3 .. p3}, Landroid/os/Parcel;->writeNoException()V
-
-    .line 1117
-    invoke-virtual {v14, v0}, Landroid/os/Parcel;->writeStringArray([Ljava/lang/String;)V
-
-    .line 1118
-    return v13
-
-    .line 1105
-    :pswitch_2de  #0x3a
-    invoke-virtual {v15, v3}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
-
-    .line 1107
-    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readString()Ljava/lang/String;
-
-    move-result-object v1
-
-    .line 1108
-    invoke-virtual {v0, v1}, Landroid/net/INetd$Stub;->tetherInterfaceRemove(Ljava/lang/String;)V
-
-    .line 1109
-    invoke-virtual/range {p3 .. p3}, Landroid/os/Parcel;->writeNoException()V
-
-    .line 1110
-    return v13
-
-    .line 1096
-    :pswitch_2ec  #0x39
-    invoke-virtual {v15, v3}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
-
-    .line 1098
-    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readString()Ljava/lang/String;
-
-    move-result-object v1
-
-    .line 1099
-    invoke-virtual {v0, v1}, Landroid/net/INetd$Stub;->tetherInterfaceAdd(Ljava/lang/String;)V
-
-    .line 1100
-    invoke-virtual/range {p3 .. p3}, Landroid/os/Parcel;->writeNoException()V
-
-    .line 1101
-    return v13
-
-    .line 1088
-    :pswitch_2fa  #0x38
-    invoke-virtual {v15, v3}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
-
-    .line 1089
-    invoke-virtual/range {p0 .. p0}, Landroid/net/INetd$Stub;->tetherIsEnabled()Z
-
-    move-result v0
-
-    .line 1090
-    invoke-virtual/range {p3 .. p3}, Landroid/os/Parcel;->writeNoException()V
-
-    .line 1091
-    invoke-virtual {v14, v0}, Landroid/os/Parcel;->writeInt(I)V
-
-    .line 1092
-    return v13
-
-    .line 1081
-    :pswitch_308  #0x37
-    invoke-virtual {v15, v3}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
-
-    .line 1082
-    invoke-virtual/range {p0 .. p0}, Landroid/net/INetd$Stub;->tetherStop()V
-
-    .line 1083
-    invoke-virtual/range {p3 .. p3}, Landroid/os/Parcel;->writeNoException()V
-
-    .line 1084
-    return v13
-
-    .line 1072
-    :pswitch_312  #0x36
-    invoke-virtual {v15, v3}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
-
-    .line 1074
-    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->createStringArray()[Ljava/lang/String;
-
-    move-result-object v1
-
-    .line 1075
-    invoke-virtual {v0, v1}, Landroid/net/INetd$Stub;->tetherStart([Ljava/lang/String;)V
-
-    .line 1076
-    invoke-virtual/range {p3 .. p3}, Landroid/os/Parcel;->writeNoException()V
-
-    .line 1077
-    return v13
-
-    .line 1063
-    :pswitch_320  #0x35
-    invoke-virtual {v15, v3}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
-
-    .line 1065
-    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
-
-    move-result v1
-
-    .line 1066
-    invoke-virtual {v0, v1}, Landroid/net/INetd$Stub;->bandwidthRemoveNiceApp(I)V
-
-    .line 1067
-    invoke-virtual/range {p3 .. p3}, Landroid/os/Parcel;->writeNoException()V
-
-    .line 1068
-    return v13
-
-    .line 1054
-    :pswitch_32e  #0x34
-    invoke-virtual {v15, v3}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
-
-    .line 1056
-    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
-
-    move-result v1
-
-    .line 1057
-    invoke-virtual {v0, v1}, Landroid/net/INetd$Stub;->bandwidthAddNiceApp(I)V
-
-    .line 1058
-    invoke-virtual/range {p3 .. p3}, Landroid/os/Parcel;->writeNoException()V
-
-    .line 1059
-    return v13
-
-    .line 1045
-    :pswitch_33c  #0x33
-    invoke-virtual {v15, v3}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
-
-    .line 1047
-    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
-
-    move-result v1
-
-    .line 1048
-    invoke-virtual {v0, v1}, Landroid/net/INetd$Stub;->bandwidthRemoveNaughtyApp(I)V
-
-    .line 1049
-    invoke-virtual/range {p3 .. p3}, Landroid/os/Parcel;->writeNoException()V
-
-    .line 1050
-    return v13
-
-    .line 1036
-    :pswitch_34a  #0x32
-    invoke-virtual {v15, v3}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
-
-    .line 1038
-    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
-
-    move-result v1
-
-    .line 1039
-    invoke-virtual {v0, v1}, Landroid/net/INetd$Stub;->bandwidthAddNaughtyApp(I)V
-
-    .line 1040
-    invoke-virtual/range {p3 .. p3}, Landroid/os/Parcel;->writeNoException()V
-
-    .line 1041
-    return v13
-
-    .line 1027
-    :pswitch_358  #0x31
-    invoke-virtual {v15, v3}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
-
-    .line 1029
-    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readLong()J
-
-    move-result-wide v1
-
-    .line 1030
-    invoke-virtual {v0, v1, v2}, Landroid/net/INetd$Stub;->bandwidthSetGlobalAlert(J)V
-
-    .line 1031
-    invoke-virtual/range {p3 .. p3}, Landroid/os/Parcel;->writeNoException()V
-
-    .line 1032
-    return v13
-
-    .line 1018
-    :pswitch_366  #0x30
-    invoke-virtual {v15, v3}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
-
-    .line 1020
-    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readString()Ljava/lang/String;
-
-    move-result-object v1
-
-    .line 1021
-    invoke-virtual {v0, v1}, Landroid/net/INetd$Stub;->bandwidthRemoveInterfaceAlert(Ljava/lang/String;)V
-
-    .line 1022
-    invoke-virtual/range {p3 .. p3}, Landroid/os/Parcel;->writeNoException()V
-
-    .line 1023
-    return v13
-
-    .line 1007
-    :pswitch_374  #0x2f
-    invoke-virtual {v15, v3}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
-
-    .line 1009
-    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readString()Ljava/lang/String;
-
-    move-result-object v1
-
-    .line 1011
-    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readLong()J
-
-    move-result-wide v2
-
-    .line 1012
-    invoke-virtual {v0, v1, v2, v3}, Landroid/net/INetd$Stub;->bandwidthSetInterfaceAlert(Ljava/lang/String;J)V
-
-    .line 1013
-    invoke-virtual/range {p3 .. p3}, Landroid/os/Parcel;->writeNoException()V
-
-    .line 1014
-    return v13
-
-    .line 998
-    :pswitch_386  #0x2e
-    invoke-virtual {v15, v3}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
-
-    .line 1000
-    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readString()Ljava/lang/String;
-
-    move-result-object v1
-
-    .line 1001
-    invoke-virtual {v0, v1}, Landroid/net/INetd$Stub;->bandwidthRemoveInterfaceQuota(Ljava/lang/String;)V
-
-    .line 1002
-    invoke-virtual/range {p3 .. p3}, Landroid/os/Parcel;->writeNoException()V
-
-    .line 1003
-    return v13
-
-    .line 987
-    :pswitch_394  #0x2d
-    invoke-virtual {v15, v3}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
-
-    .line 989
-    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readString()Ljava/lang/String;
-
-    move-result-object v1
-
-    .line 991
-    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readLong()J
-
-    move-result-wide v2
-
-    .line 992
-    invoke-virtual {v0, v1, v2, v3}, Landroid/net/INetd$Stub;->bandwidthSetInterfaceQuota(Ljava/lang/String;J)V
-
-    .line 993
-    invoke-virtual/range {p3 .. p3}, Landroid/os/Parcel;->writeNoException()V
-
-    .line 994
-    return v13
-
-    .line 976
-    :pswitch_3a6  #0x2c
-    invoke-virtual {v15, v3}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
-
-    .line 978
-    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readString()Ljava/lang/String;
-
-    move-result-object v1
-
-    .line 980
-    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readString()Ljava/lang/String;
-
-    move-result-object v2
-
-    .line 981
-    invoke-virtual {v0, v1, v2}, Landroid/net/INetd$Stub;->ipfwdRemoveInterfaceForward(Ljava/lang/String;Ljava/lang/String;)V
-
-    .line 982
-    invoke-virtual/range {p3 .. p3}, Landroid/os/Parcel;->writeNoException()V
-
-    .line 983
-    return v13
-
-    .line 965
-    :pswitch_3b8  #0x2b
-    invoke-virtual {v15, v3}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
-
-    .line 967
-    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readString()Ljava/lang/String;
-
-    move-result-object v1
-
-    .line 969
-    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readString()Ljava/lang/String;
-
-    move-result-object v2
-
-    .line 970
-    invoke-virtual {v0, v1, v2}, Landroid/net/INetd$Stub;->ipfwdAddInterfaceForward(Ljava/lang/String;Ljava/lang/String;)V
-
-    .line 971
-    invoke-virtual/range {p3 .. p3}, Landroid/os/Parcel;->writeNoException()V
-
-    .line 972
-    return v13
-
-    .line 956
-    :pswitch_3ca  #0x2a
-    invoke-virtual {v15, v3}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
-
-    .line 958
-    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readString()Ljava/lang/String;
-
-    move-result-object v1
-
-    .line 959
-    invoke-virtual {v0, v1}, Landroid/net/INetd$Stub;->ipfwdDisableForwarding(Ljava/lang/String;)V
-
-    .line 960
-    invoke-virtual/range {p3 .. p3}, Landroid/os/Parcel;->writeNoException()V
-
-    .line 961
-    return v13
-
-    .line 947
-    :pswitch_3d8  #0x29
-    invoke-virtual {v15, v3}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
-
-    .line 949
-    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readString()Ljava/lang/String;
-
-    move-result-object v1
-
-    .line 950
-    invoke-virtual {v0, v1}, Landroid/net/INetd$Stub;->ipfwdEnableForwarding(Ljava/lang/String;)V
-
-    .line 951
-    invoke-virtual/range {p3 .. p3}, Landroid/os/Parcel;->writeNoException()V
-
-    .line 952
-    return v13
-
-    .line 939
-    :pswitch_3e6  #0x28
-    invoke-virtual {v15, v3}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
-
-    .line 940
-    invoke-virtual/range {p0 .. p0}, Landroid/net/INetd$Stub;->ipfwdGetRequesterList()[Ljava/lang/String;
-
-    move-result-object v0
-
-    .line 941
-    invoke-virtual/range {p3 .. p3}, Landroid/os/Parcel;->writeNoException()V
-
-    .line 942
-    invoke-virtual {v14, v0}, Landroid/os/Parcel;->writeStringArray([Ljava/lang/String;)V
-
-    .line 943
-    return v13
-
-    .line 931
-    :pswitch_3f4  #0x27
-    invoke-virtual {v15, v3}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
-
-    .line 932
-    invoke-virtual/range {p0 .. p0}, Landroid/net/INetd$Stub;->ipfwdEnabled()Z
-
-    move-result v0
-
-    .line 933
-    invoke-virtual/range {p3 .. p3}, Landroid/os/Parcel;->writeNoException()V
-
-    .line 934
-    invoke-virtual {v14, v0}, Landroid/os/Parcel;->writeInt(I)V
-
-    .line 935
-    return v13
-
-    .line 922
-    :pswitch_402  #0x26
-    invoke-virtual {v15, v3}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
-
-    .line 924
-    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readString()Ljava/lang/String;
-
-    move-result-object v1
-
-    .line 925
-    invoke-virtual {v0, v1}, Landroid/net/INetd$Stub;->clatdStop(Ljava/lang/String;)V
-
-    .line 926
-    invoke-virtual/range {p3 .. p3}, Landroid/os/Parcel;->writeNoException()V
-
-    .line 927
-    return v13
-
-    .line 910
-    :pswitch_410  #0x25
-    invoke-virtual {v15, v3}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
-
-    .line 912
-    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readString()Ljava/lang/String;
-
-    move-result-object v1
-
-    .line 914
-    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readString()Ljava/lang/String;
-
-    move-result-object v2
-
-    .line 915
-    invoke-virtual {v0, v1, v2}, Landroid/net/INetd$Stub;->clatdStart(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
-
-    move-result-object v0
-
-    .line 916
-    invoke-virtual/range {p3 .. p3}, Landroid/os/Parcel;->writeNoException()V
-
-    .line 917
-    invoke-virtual {v14, v0}, Landroid/os/Parcel;->writeString(Ljava/lang/String;)V
-
-    .line 918
-    return v13
-
-    .line 899
-    :pswitch_426  #0x24
-    invoke-virtual {v15, v3}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
-
-    .line 901
-    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
-
-    move-result v1
-
-    .line 903
-    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
-
-    move-result v2
-
-    .line 904
-    invoke-virtual {v0, v1, v2}, Landroid/net/INetd$Stub;->strictUidCleartextPenalty(II)V
-
-    .line 905
-    invoke-virtual/range {p3 .. p3}, Landroid/os/Parcel;->writeNoException()V
-
-    .line 906
-    return v13
-
-    .line 886
-    :pswitch_438  #0x23
-    invoke-virtual {v15, v3}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
-
-    .line 888
-    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readString()Ljava/lang/String;
-
-    move-result-object v1
-
-    .line 890
-    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
-
-    move-result v2
-
-    .line 892
-    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readString()Ljava/lang/String;
-
-    move-result-object v3
-
-    .line 893
-    invoke-virtual {v0, v1, v2, v3}, Landroid/net/INetd$Stub;->idletimerRemoveInterface(Ljava/lang/String;ILjava/lang/String;)V
-
-    .line 894
-    invoke-virtual/range {p3 .. p3}, Landroid/os/Parcel;->writeNoException()V
-
-    .line 895
-    return v13
-
-    .line 873
-    :pswitch_44e  #0x22
-    invoke-virtual {v15, v3}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
-
-    .line 875
-    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readString()Ljava/lang/String;
-
-    move-result-object v1
-
-    .line 877
-    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
-
-    move-result v2
-
-    .line 879
-    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readString()Ljava/lang/String;
-
-    move-result-object v3
-
-    .line 880
-    invoke-virtual {v0, v1, v2, v3}, Landroid/net/INetd$Stub;->idletimerAddInterface(Ljava/lang/String;ILjava/lang/String;)V
-
-    .line 881
-    invoke-virtual/range {p3 .. p3}, Landroid/os/Parcel;->writeNoException()V
-
-    .line 882
-    return v13
-
-    .line 862
-    :pswitch_464  #0x21
-    invoke-virtual {v15, v3}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
-
-    .line 864
-    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readString()Ljava/lang/String;
-
-    move-result-object v1
-
-    .line 866
-    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
-
-    move-result v2
-
-    .line 867
-    invoke-virtual {v0, v1, v2}, Landroid/net/INetd$Stub;->setIPv6AddrGenMode(Ljava/lang/String;I)V
-
-    .line 868
-    invoke-virtual/range {p3 .. p3}, Landroid/os/Parcel;->writeNoException()V
-
-    .line 869
-    return v13
-
-    .line 847
-    :pswitch_476  #0x20
-    invoke-virtual {v15, v3}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
-
-    .line 849
-    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readString()Ljava/lang/String;
-
-    move-result-object v1
-
-    .line 851
-    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readString()Ljava/lang/String;
-
-    move-result-object v2
-
-    .line 853
-    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
-
-    move-result v3
-
-    .line 855
-    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
-
-    move-result v4
-
-    .line 856
-    invoke-virtual {v0, v1, v2, v3, v4}, Landroid/net/INetd$Stub;->wakeupDelInterface(Ljava/lang/String;Ljava/lang/String;II)V
-
-    .line 857
-    invoke-virtual/range {p3 .. p3}, Landroid/os/Parcel;->writeNoException()V
-
-    .line 858
-    return v13
-
-    .line 832
-    :pswitch_490  #0x1f
-    invoke-virtual {v15, v3}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
-
-    .line 834
-    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readString()Ljava/lang/String;
-
-    move-result-object v1
-
-    .line 836
-    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readString()Ljava/lang/String;
-
-    move-result-object v2
-
-    .line 838
-    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
-
-    move-result v3
-
-    .line 840
-    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
-
-    move-result v4
-
-    .line 841
-    invoke-virtual {v0, v1, v2, v3, v4}, Landroid/net/INetd$Stub;->wakeupAddInterface(Ljava/lang/String;Ljava/lang/String;II)V
-
-    .line 842
-    invoke-virtual/range {p3 .. p3}, Landroid/os/Parcel;->writeNoException()V
-
-    .line 843
-    return v13
-
-    .line 823
-    :pswitch_4aa  #0x1e
-    invoke-virtual {v15, v3}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
-
-    .line 825
-    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readString()Ljava/lang/String;
-
-    move-result-object v1
-
-    .line 826
-    invoke-virtual {v0, v1}, Landroid/net/INetd$Stub;->ipSecRemoveTunnelInterface(Ljava/lang/String;)V
-
-    .line 827
-    invoke-virtual/range {p3 .. p3}, Landroid/os/Parcel;->writeNoException()V
-
-    .line 828
-    return v13
-
-    .line 804
-    :pswitch_4b8  #0x1d
-    invoke-virtual {v15, v3}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
-
-    .line 806
-    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readString()Ljava/lang/String;
-
-    move-result-object v1
-
-    .line 808
-    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readString()Ljava/lang/String;
-
-    move-result-object v2
-
-    .line 810
-    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readString()Ljava/lang/String;
-
-    move-result-object v3
-
-    .line 812
-    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
-
-    move-result v4
-
-    .line 814
-    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
-
-    move-result v5
-
-    .line 816
     invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
 
     move-result v6
 
-    .line 817
-    move-object/from16 v0, p0
-
-    invoke-virtual/range {v0 .. v6}, Landroid/net/INetd$Stub;->ipSecUpdateTunnelInterface(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;III)V
-
-    .line 818
-    invoke-virtual/range {p3 .. p3}, Landroid/os/Parcel;->writeNoException()V
-
-    .line 819
-    return v13
-
-    .line 785
-    :pswitch_4dc  #0x1c
-    invoke-virtual {v15, v3}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
-
-    .line 787
+    .line 1186
+    .local v6, "_arg0":I
     invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readString()Ljava/lang/String;
 
-    move-result-object v1
+    move-result-object v7
 
-    .line 789
-    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readString()Ljava/lang/String;
-
-    move-result-object v2
-
-    .line 791
-    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readString()Ljava/lang/String;
-
-    move-result-object v3
-
-    .line 793
-    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
-
-    move-result v4
-
-    .line 795
-    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
-
-    move-result v5
-
-    .line 797
-    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
-
-    move-result v6
-
-    .line 798
-    move-object/from16 v0, p0
-
-    invoke-virtual/range {v0 .. v6}, Landroid/net/INetd$Stub;->ipSecAddTunnelInterface(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;III)V
-
-    .line 799
-    invoke-virtual/range {p3 .. p3}, Landroid/os/Parcel;->writeNoException()V
-
-    .line 800
-    return v13
-
-    .line 766
-    :pswitch_500  #0x1b
-    invoke-virtual {v15, v3}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
-
-    .line 768
-    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
-
-    move-result v1
-
-    .line 770
-    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
-
-    move-result v2
-
-    .line 772
-    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
-
-    move-result v3
-
-    .line 774
-    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
-
-    move-result v4
-
-    .line 776
-    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
-
-    move-result v5
-
-    .line 778
-    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
-
-    move-result v6
-
-    .line 779
-    move-object/from16 v0, p0
-
-    invoke-virtual/range {v0 .. v6}, Landroid/net/INetd$Stub;->ipSecDeleteSecurityPolicy(IIIIII)V
-
-    .line 780
-    invoke-virtual/range {p3 .. p3}, Landroid/os/Parcel;->writeNoException()V
-
-    .line 781
-    return v13
-
-    .line 741
-    :pswitch_524  #0x1a
-    invoke-virtual {v15, v3}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
-
-    .line 743
-    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
-
-    move-result v1
-
-    .line 745
-    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
-
-    move-result v2
-
-    .line 747
-    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
-
-    move-result v3
-
-    .line 749
-    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readString()Ljava/lang/String;
-
-    move-result-object v4
-
-    .line 751
-    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readString()Ljava/lang/String;
-
-    move-result-object v5
-
-    .line 753
-    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
-
-    move-result v6
-
-    .line 755
-    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
-
-    move-result v7
-
-    .line 757
-    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
-
-    move-result v8
-
-    .line 759
-    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
-
-    move-result v9
-
-    .line 760
-    move-object/from16 v0, p0
-
-    invoke-virtual/range {v0 .. v9}, Landroid/net/INetd$Stub;->ipSecUpdateSecurityPolicy(IIILjava/lang/String;Ljava/lang/String;IIII)V
-
-    .line 761
-    invoke-virtual/range {p3 .. p3}, Landroid/os/Parcel;->writeNoException()V
-
-    .line 762
-    return v13
-
-    .line 716
-    :pswitch_554  #0x19
-    invoke-virtual {v15, v3}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
-
-    .line 718
-    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
-
-    move-result v1
-
-    .line 720
-    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
-
-    move-result v2
-
-    .line 722
-    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
-
-    move-result v3
-
-    .line 724
-    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readString()Ljava/lang/String;
-
-    move-result-object v4
-
-    .line 726
-    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readString()Ljava/lang/String;
-
-    move-result-object v5
-
-    .line 728
-    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
-
-    move-result v6
-
-    .line 730
-    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
-
-    move-result v7
-
-    .line 732
-    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
-
-    move-result v8
-
-    .line 734
-    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
-
-    move-result v9
-
-    .line 735
-    move-object/from16 v0, p0
-
-    invoke-virtual/range {v0 .. v9}, Landroid/net/INetd$Stub;->ipSecAddSecurityPolicy(IIILjava/lang/String;Ljava/lang/String;IIII)V
-
-    .line 736
-    invoke-virtual/range {p3 .. p3}, Landroid/os/Parcel;->writeNoException()V
-
-    .line 737
-    return v13
-
-    .line 702
-    :pswitch_584  #0x18
-    invoke-virtual {v15, v3}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
-
-    .line 704
-    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
-
-    move-result v1
-
-    if-eqz v1, :cond_597
-
-    .line 705
-    sget-object v1, Landroid/os/ParcelFileDescriptor;->CREATOR:Landroid/os/Parcelable$Creator;
-
-    invoke-interface {v1, v15}, Landroid/os/Parcelable$Creator;->createFromParcel(Landroid/os/Parcel;)Ljava/lang/Object;
-
-    move-result-object v1
-
-    move-object v2, v1
-
-    check-cast v2, Landroid/os/ParcelFileDescriptor;
-
-    goto :goto_598
-
-    .line 708
-    :cond_597
-    nop
-
-    .line 710
-    :goto_598
-    invoke-virtual {v0, v2}, Landroid/net/INetd$Stub;->ipSecRemoveTransportModeTransform(Landroid/os/ParcelFileDescriptor;)V
-
-    .line 711
-    invoke-virtual/range {p3 .. p3}, Landroid/os/Parcel;->writeNoException()V
-
-    .line 712
-    return v13
-
-    .line 678
-    :pswitch_59f  #0x17
-    invoke-virtual {v15, v3}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
-
-    .line 680
-    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
-
-    move-result v1
-
-    if-eqz v1, :cond_5b1
-
-    .line 681
-    sget-object v1, Landroid/os/ParcelFileDescriptor;->CREATOR:Landroid/os/Parcelable$Creator;
-
-    invoke-interface {v1, v15}, Landroid/os/Parcelable$Creator;->createFromParcel(Landroid/os/Parcel;)Ljava/lang/Object;
-
-    move-result-object v1
-
-    check-cast v1, Landroid/os/ParcelFileDescriptor;
-
-    goto :goto_5b2
-
-    .line 684
-    :cond_5b1
-    move-object v1, v2
-
-    .line 687
-    :goto_5b2
-    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
-
-    move-result v2
-
-    .line 689
-    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
-
-    move-result v3
-
-    .line 691
-    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readString()Ljava/lang/String;
-
-    move-result-object v4
-
-    .line 693
-    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readString()Ljava/lang/String;
-
-    move-result-object v5
-
-    .line 695
-    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
-
-    move-result v6
-
-    .line 696
-    move-object/from16 v0, p0
-
-    invoke-virtual/range {v0 .. v6}, Landroid/net/INetd$Stub;->ipSecApplyTransportModeTransform(Landroid/os/ParcelFileDescriptor;IILjava/lang/String;Ljava/lang/String;I)V
-
-    .line 697
-    invoke-virtual/range {p3 .. p3}, Landroid/os/Parcel;->writeNoException()V
-
-    .line 698
-    return v13
-
-    .line 657
-    :pswitch_5cf  #0x16
-    invoke-virtual {v15, v3}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
-
-    .line 659
-    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
-
-    move-result v1
-
-    .line 661
-    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readString()Ljava/lang/String;
-
-    move-result-object v2
-
-    .line 663
-    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readString()Ljava/lang/String;
-
-    move-result-object v3
-
-    .line 665
-    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
-
-    move-result v4
-
-    .line 667
-    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
-
-    move-result v5
-
-    .line 669
-    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
-
-    move-result v6
-
-    .line 671
-    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
-
-    move-result v7
-
-    .line 672
-    move-object/from16 v0, p0
-
-    invoke-virtual/range {v0 .. v7}, Landroid/net/INetd$Stub;->ipSecDeleteSecurityAssociation(ILjava/lang/String;Ljava/lang/String;IIII)V
-
-    .line 673
-    invoke-virtual/range {p3 .. p3}, Landroid/os/Parcel;->writeNoException()V
-
-    .line 674
-    return v13
-
-    .line 608
-    :pswitch_5f7  #0x15
-    invoke-virtual {v15, v3}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
-
-    .line 610
-    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
-
-    move-result v1
-
-    .line 612
-    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
-
-    move-result v2
-
-    .line 614
-    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readString()Ljava/lang/String;
-
-    move-result-object v3
-
-    .line 616
-    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readString()Ljava/lang/String;
-
-    move-result-object v4
-
-    .line 618
-    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
-
-    move-result v5
-
-    .line 620
-    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
-
-    move-result v6
-
-    .line 622
-    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
-
-    move-result v7
-
-    .line 624
-    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
-
-    move-result v8
-
-    .line 626
-    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readString()Ljava/lang/String;
-
-    move-result-object v9
-
-    .line 628
-    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->createByteArray()[B
-
-    move-result-object v10
-
-    .line 630
-    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
-
-    move-result v11
-
-    .line 632
-    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readString()Ljava/lang/String;
-
-    move-result-object v12
-
-    .line 634
-    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->createByteArray()[B
-
-    move-result-object v16
-
-    move-object/from16 v13, v16
-
-    .line 636
-    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
-
-    move-result v16
-
-    move/from16 v14, v16
-
-    .line 638
-    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readString()Ljava/lang/String;
-
-    move-result-object v16
-
-    move-object v0, v15
-
-    move-object/from16 v15, v16
-
-    .line 640
-    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->createByteArray()[B
-
-    move-result-object v16
-
-    .line 642
-    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
-
-    move-result v17
-
-    .line 644
-    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
-
-    move-result v18
-
-    .line 646
-    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
-
-    move-result v19
-
-    .line 648
-    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
-
-    move-result v20
-
-    .line 650
-    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
-
-    move-result v21
-
-    .line 651
-    move-object/from16 v0, p0
-
-    invoke-virtual/range {v0 .. v21}, Landroid/net/INetd$Stub;->ipSecAddSecurityAssociation(IILjava/lang/String;Ljava/lang/String;IIIILjava/lang/String;[BILjava/lang/String;[BILjava/lang/String;[BIIIII)V
-
-    .line 652
-    invoke-virtual/range {p3 .. p3}, Landroid/os/Parcel;->writeNoException()V
-
-    .line 653
-    const/4 v6, 0x1
-
-    return v6
-
-    .line 592
-    :pswitch_65f  #0x14
-    move v6, v13
-
-    move-object v0, v15
-
-    invoke-virtual {v0, v3}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
-
-    .line 594
-    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
-
-    move-result v1
-
-    .line 596
-    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readString()Ljava/lang/String;
-
-    move-result-object v2
-
-    .line 598
-    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readString()Ljava/lang/String;
-
-    move-result-object v3
-
-    .line 600
-    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
-
-    move-result v0
-
-    .line 601
-    move-object/from16 v5, p0
-
-    invoke-virtual {v5, v1, v2, v3, v0}, Landroid/net/INetd$Stub;->ipSecAllocateSpi(ILjava/lang/String;Ljava/lang/String;I)I
-
-    move-result v0
-
-    .line 602
-    invoke-virtual/range {p3 .. p3}, Landroid/os/Parcel;->writeNoException()V
-
-    .line 603
-    move-object/from16 v7, p3
-
-    invoke-virtual {v7, v0}, Landroid/os/Parcel;->writeInt(I)V
-
-    .line 604
-    return v6
-
-    .line 576
-    :pswitch_683  #0x13
-    move-object v5, v0
-
-    move v6, v13
-
-    move-object v7, v14
-
-    move-object v0, v15
-
-    invoke-virtual {v0, v3}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
-
-    .line 578
-    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
-
-    move-result v1
-
-    if-eqz v1, :cond_69a
-
-    .line 579
-    sget-object v1, Landroid/os/ParcelFileDescriptor;->CREATOR:Landroid/os/Parcelable$Creator;
-
-    invoke-interface {v1, v0}, Landroid/os/Parcelable$Creator;->createFromParcel(Landroid/os/Parcel;)Ljava/lang/Object;
-
-    move-result-object v1
-
-    move-object v2, v1
-
-    check-cast v2, Landroid/os/ParcelFileDescriptor;
-
-    goto :goto_69b
-
-    .line 582
-    :cond_69a
-    nop
-
-    .line 585
-    :goto_69b
-    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
-
-    move-result v0
-
-    .line 586
-    invoke-virtual {v5, v2, v0}, Landroid/net/INetd$Stub;->ipSecSetEncapSocketOwner(Landroid/os/ParcelFileDescriptor;I)V
-
-    .line 587
-    invoke-virtual/range {p3 .. p3}, Landroid/os/Parcel;->writeNoException()V
-
-    .line 588
-    return v6
-
-    .line 559
-    :pswitch_6a6  #0x12
-    move-object v5, v0
-
-    move v6, v13
-
-    move-object v7, v14
-
-    move-object v0, v15
-
-    invoke-virtual {v0, v3}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
-
-    .line 561
-    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
-
-    move-result v1
-
-    .line 563
-    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
-
-    move-result v2
-
-    .line 565
-    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readString()Ljava/lang/String;
-
-    move-result-object v3
-
-    .line 567
-    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readString()Ljava/lang/String;
-
-    move-result-object v4
-
-    .line 569
+    .line 1188
+    .local v7, "_arg1":Ljava/lang/String;
     invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readString()Ljava/lang/String;
 
     move-result-object v8
 
-    .line 570
+    .line 1190
+    .local v8, "_arg2":Ljava/lang/String;
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readString()Ljava/lang/String;
+
+    move-result-object v9
+
+    .line 1192
+    .local v9, "_arg3":Ljava/lang/String;
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
+
+    move-result v16
+
+    .line 1193
+    .local v16, "_arg4":I
     move-object/from16 v0, p0
 
-    move-object v5, v8
+    move v1, v6
 
-    invoke-virtual/range {v0 .. v5}, Landroid/net/INetd$Stub;->setProcSysNet(IILjava/lang/String;Ljava/lang/String;Ljava/lang/String;)V
+    move-object v2, v7
 
-    .line 571
+    move-object v3, v8
+
+    move-object v4, v9
+
+    move/from16 v5, v16
+
+    invoke-virtual/range {v0 .. v5}, Landroid/net/INetd$Stub;->networkRemoveLegacyRoute(ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;I)V
+
+    .line 1194
     invoke-virtual/range {p3 .. p3}, Landroid/os/Parcel;->writeNoException()V
 
-    .line 572
-    return v6
+    .line 1195
+    return v10
 
-    .line 543
-    :pswitch_6cb  #0x11
-    move-object v5, v0
+    .line 1165
+    .end local v6  # "_arg0":I
+    .end local v7  # "_arg1":Ljava/lang/String;
+    .end local v8  # "_arg2":Ljava/lang/String;
+    .end local v9  # "_arg3":Ljava/lang/String;
+    .end local v16  # "_arg4":I
+    :pswitch_234  #0x40
+    invoke-virtual {v13, v11}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
 
-    move v6, v13
-
-    move-object v7, v14
-
-    move-object v0, v15
-
-    invoke-virtual {v0, v3}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
-
-    .line 545
+    .line 1167
     invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
 
-    move-result v1
+    move-result v6
 
-    .line 547
+    .line 1169
+    .restart local v6  # "_arg0":I
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readString()Ljava/lang/String;
+
+    move-result-object v7
+
+    .line 1171
+    .restart local v7  # "_arg1":Ljava/lang/String;
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readString()Ljava/lang/String;
+
+    move-result-object v8
+
+    .line 1173
+    .restart local v8  # "_arg2":Ljava/lang/String;
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readString()Ljava/lang/String;
+
+    move-result-object v9
+
+    .line 1175
+    .restart local v9  # "_arg3":Ljava/lang/String;
     invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
 
-    move-result v2
+    move-result v16
 
-    .line 549
+    .line 1176
+    .restart local v16  # "_arg4":I
+    move-object/from16 v0, p0
+
+    move v1, v6
+
+    move-object v2, v7
+
+    move-object v3, v8
+
+    move-object v4, v9
+
+    move/from16 v5, v16
+
+    invoke-virtual/range {v0 .. v5}, Landroid/net/INetd$Stub;->networkAddLegacyRoute(ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;I)V
+
+    .line 1177
+    invoke-virtual/range {p3 .. p3}, Landroid/os/Parcel;->writeNoException()V
+
+    .line 1178
+    return v10
+
+    .line 1150
+    .end local v6  # "_arg0":I
+    .end local v7  # "_arg1":Ljava/lang/String;
+    .end local v8  # "_arg2":Ljava/lang/String;
+    .end local v9  # "_arg3":Ljava/lang/String;
+    .end local v16  # "_arg4":I
+    :pswitch_25a  #0x3f
+    invoke-virtual {v13, v11}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
+
+    .line 1152
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
+
+    move-result v0
+
+    .line 1154
+    .local v0, "_arg0":I
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readString()Ljava/lang/String;
+
+    move-result-object v1
+
+    .line 1156
+    .local v1, "_arg1":Ljava/lang/String;
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readString()Ljava/lang/String;
+
+    move-result-object v2
+
+    .line 1158
+    .local v2, "_arg2":Ljava/lang/String;
     invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readString()Ljava/lang/String;
 
     move-result-object v3
 
-    .line 551
+    .line 1159
+    .local v3, "_arg3":Ljava/lang/String;
+    invoke-virtual {v15, v0, v1, v2, v3}, Landroid/net/INetd$Stub;->networkRemoveRoute(ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;)V
+
+    .line 1160
+    invoke-virtual/range {p3 .. p3}, Landroid/os/Parcel;->writeNoException()V
+
+    .line 1161
+    return v10
+
+    .line 1135
+    .end local v0  # "_arg0":I
+    .end local v1  # "_arg1":Ljava/lang/String;
+    .end local v2  # "_arg2":Ljava/lang/String;
+    .end local v3  # "_arg3":Ljava/lang/String;
+    :pswitch_274  #0x3e
+    invoke-virtual {v13, v11}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
+
+    .line 1137
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
+
+    move-result v0
+
+    .line 1139
+    .restart local v0  # "_arg0":I
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readString()Ljava/lang/String;
+
+    move-result-object v1
+
+    .line 1141
+    .restart local v1  # "_arg1":Ljava/lang/String;
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readString()Ljava/lang/String;
+
+    move-result-object v2
+
+    .line 1143
+    .restart local v2  # "_arg2":Ljava/lang/String;
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readString()Ljava/lang/String;
+
+    move-result-object v3
+
+    .line 1144
+    .restart local v3  # "_arg3":Ljava/lang/String;
+    invoke-virtual {v15, v0, v1, v2, v3}, Landroid/net/INetd$Stub;->networkAddRoute(ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;)V
+
+    .line 1145
+    invoke-virtual/range {p3 .. p3}, Landroid/os/Parcel;->writeNoException()V
+
+    .line 1146
+    return v10
+
+    .line 1127
+    .end local v0  # "_arg0":I
+    .end local v1  # "_arg1":Ljava/lang/String;
+    .end local v2  # "_arg2":Ljava/lang/String;
+    .end local v3  # "_arg3":Ljava/lang/String;
+    :pswitch_28e  #0x3d
+    invoke-virtual {v13, v11}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
+
+    .line 1128
+    invoke-virtual/range {p0 .. p0}, Landroid/net/INetd$Stub;->tetherDnsList()[Ljava/lang/String;
+
+    move-result-object v0
+
+    .line 1129
+    .local v0, "_result":[Ljava/lang/String;
+    invoke-virtual/range {p3 .. p3}, Landroid/os/Parcel;->writeNoException()V
+
+    .line 1130
+    invoke-virtual {v12, v0}, Landroid/os/Parcel;->writeStringArray([Ljava/lang/String;)V
+
+    .line 1131
+    return v10
+
+    .line 1116
+    .end local v0  # "_result":[Ljava/lang/String;
+    :pswitch_29c  #0x3c
+    invoke-virtual {v13, v11}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
+
+    .line 1118
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
+
+    move-result v0
+
+    .line 1120
+    .local v0, "_arg0":I
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->createStringArray()[Ljava/lang/String;
+
+    move-result-object v1
+
+    .line 1121
+    .local v1, "_arg1":[Ljava/lang/String;
+    invoke-virtual {v15, v0, v1}, Landroid/net/INetd$Stub;->tetherDnsSet(I[Ljava/lang/String;)V
+
+    .line 1122
+    invoke-virtual/range {p3 .. p3}, Landroid/os/Parcel;->writeNoException()V
+
+    .line 1123
+    return v10
+
+    .line 1108
+    .end local v0  # "_arg0":I
+    .end local v1  # "_arg1":[Ljava/lang/String;
+    :pswitch_2ae  #0x3b
+    invoke-virtual {v13, v11}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
+
+    .line 1109
+    invoke-virtual/range {p0 .. p0}, Landroid/net/INetd$Stub;->tetherInterfaceList()[Ljava/lang/String;
+
+    move-result-object v0
+
+    .line 1110
+    .local v0, "_result":[Ljava/lang/String;
+    invoke-virtual/range {p3 .. p3}, Landroid/os/Parcel;->writeNoException()V
+
+    .line 1111
+    invoke-virtual {v12, v0}, Landroid/os/Parcel;->writeStringArray([Ljava/lang/String;)V
+
+    .line 1112
+    return v10
+
+    .line 1099
+    .end local v0  # "_result":[Ljava/lang/String;
+    :pswitch_2bc  #0x3a
+    invoke-virtual {v13, v11}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
+
+    .line 1101
     invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readString()Ljava/lang/String;
 
     move-result-object v0
 
-    .line 552
-    invoke-virtual {v5, v1, v2, v3, v0}, Landroid/net/INetd$Stub;->getProcSysNet(IILjava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+    .line 1102
+    .local v0, "_arg0":Ljava/lang/String;
+    invoke-virtual {v15, v0}, Landroid/net/INetd$Stub;->tetherInterfaceRemove(Ljava/lang/String;)V
+
+    .line 1103
+    invoke-virtual/range {p3 .. p3}, Landroid/os/Parcel;->writeNoException()V
+
+    .line 1104
+    return v10
+
+    .line 1090
+    .end local v0  # "_arg0":Ljava/lang/String;
+    :pswitch_2ca  #0x39
+    invoke-virtual {v13, v11}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
+
+    .line 1092
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readString()Ljava/lang/String;
 
     move-result-object v0
+
+    .line 1093
+    .restart local v0  # "_arg0":Ljava/lang/String;
+    invoke-virtual {v15, v0}, Landroid/net/INetd$Stub;->tetherInterfaceAdd(Ljava/lang/String;)V
+
+    .line 1094
+    invoke-virtual/range {p3 .. p3}, Landroid/os/Parcel;->writeNoException()V
+
+    .line 1095
+    return v10
+
+    .line 1082
+    .end local v0  # "_arg0":Ljava/lang/String;
+    :pswitch_2d8  #0x38
+    invoke-virtual {v13, v11}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
+
+    .line 1083
+    invoke-virtual/range {p0 .. p0}, Landroid/net/INetd$Stub;->tetherIsEnabled()Z
+
+    move-result v0
+
+    .line 1084
+    .local v0, "_result":Z
+    invoke-virtual/range {p3 .. p3}, Landroid/os/Parcel;->writeNoException()V
+
+    .line 1085
+    invoke-virtual {v12, v0}, Landroid/os/Parcel;->writeInt(I)V
+
+    .line 1086
+    return v10
+
+    .line 1075
+    .end local v0  # "_result":Z
+    :pswitch_2e6  #0x37
+    invoke-virtual {v13, v11}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
+
+    .line 1076
+    invoke-virtual/range {p0 .. p0}, Landroid/net/INetd$Stub;->tetherStop()V
+
+    .line 1077
+    invoke-virtual/range {p3 .. p3}, Landroid/os/Parcel;->writeNoException()V
+
+    .line 1078
+    return v10
+
+    .line 1066
+    :pswitch_2f0  #0x36
+    invoke-virtual {v13, v11}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
+
+    .line 1068
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->createStringArray()[Ljava/lang/String;
+
+    move-result-object v0
+
+    .line 1069
+    .local v0, "_arg0":[Ljava/lang/String;
+    invoke-virtual {v15, v0}, Landroid/net/INetd$Stub;->tetherStart([Ljava/lang/String;)V
+
+    .line 1070
+    invoke-virtual/range {p3 .. p3}, Landroid/os/Parcel;->writeNoException()V
+
+    .line 1071
+    return v10
+
+    .line 1057
+    .end local v0  # "_arg0":[Ljava/lang/String;
+    :pswitch_2fe  #0x35
+    invoke-virtual {v13, v11}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
+
+    .line 1059
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
+
+    move-result v0
+
+    .line 1060
+    .local v0, "_arg0":I
+    invoke-virtual {v15, v0}, Landroid/net/INetd$Stub;->bandwidthRemoveNiceApp(I)V
+
+    .line 1061
+    invoke-virtual/range {p3 .. p3}, Landroid/os/Parcel;->writeNoException()V
+
+    .line 1062
+    return v10
+
+    .line 1048
+    .end local v0  # "_arg0":I
+    :pswitch_30c  #0x34
+    invoke-virtual {v13, v11}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
+
+    .line 1050
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
+
+    move-result v0
+
+    .line 1051
+    .restart local v0  # "_arg0":I
+    invoke-virtual {v15, v0}, Landroid/net/INetd$Stub;->bandwidthAddNiceApp(I)V
+
+    .line 1052
+    invoke-virtual/range {p3 .. p3}, Landroid/os/Parcel;->writeNoException()V
+
+    .line 1053
+    return v10
+
+    .line 1039
+    .end local v0  # "_arg0":I
+    :pswitch_31a  #0x33
+    invoke-virtual {v13, v11}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
+
+    .line 1041
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
+
+    move-result v0
+
+    .line 1042
+    .restart local v0  # "_arg0":I
+    invoke-virtual {v15, v0}, Landroid/net/INetd$Stub;->bandwidthRemoveNaughtyApp(I)V
+
+    .line 1043
+    invoke-virtual/range {p3 .. p3}, Landroid/os/Parcel;->writeNoException()V
+
+    .line 1044
+    return v10
+
+    .line 1030
+    .end local v0  # "_arg0":I
+    :pswitch_328  #0x32
+    invoke-virtual {v13, v11}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
+
+    .line 1032
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
+
+    move-result v0
+
+    .line 1033
+    .restart local v0  # "_arg0":I
+    invoke-virtual {v15, v0}, Landroid/net/INetd$Stub;->bandwidthAddNaughtyApp(I)V
+
+    .line 1034
+    invoke-virtual/range {p3 .. p3}, Landroid/os/Parcel;->writeNoException()V
+
+    .line 1035
+    return v10
+
+    .line 1021
+    .end local v0  # "_arg0":I
+    :pswitch_336  #0x31
+    invoke-virtual {v13, v11}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
+
+    .line 1023
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readLong()J
+
+    move-result-wide v0
+
+    .line 1024
+    .local v0, "_arg0":J
+    invoke-virtual {v15, v0, v1}, Landroid/net/INetd$Stub;->bandwidthSetGlobalAlert(J)V
+
+    .line 1025
+    invoke-virtual/range {p3 .. p3}, Landroid/os/Parcel;->writeNoException()V
+
+    .line 1026
+    return v10
+
+    .line 1012
+    .end local v0  # "_arg0":J
+    :pswitch_344  #0x30
+    invoke-virtual {v13, v11}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
+
+    .line 1014
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readString()Ljava/lang/String;
+
+    move-result-object v0
+
+    .line 1015
+    .local v0, "_arg0":Ljava/lang/String;
+    invoke-virtual {v15, v0}, Landroid/net/INetd$Stub;->bandwidthRemoveInterfaceAlert(Ljava/lang/String;)V
+
+    .line 1016
+    invoke-virtual/range {p3 .. p3}, Landroid/os/Parcel;->writeNoException()V
+
+    .line 1017
+    return v10
+
+    .line 1001
+    .end local v0  # "_arg0":Ljava/lang/String;
+    :pswitch_352  #0x2f
+    invoke-virtual {v13, v11}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
+
+    .line 1003
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readString()Ljava/lang/String;
+
+    move-result-object v0
+
+    .line 1005
+    .restart local v0  # "_arg0":Ljava/lang/String;
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readLong()J
+
+    move-result-wide v1
+
+    .line 1006
+    .local v1, "_arg1":J
+    invoke-virtual {v15, v0, v1, v2}, Landroid/net/INetd$Stub;->bandwidthSetInterfaceAlert(Ljava/lang/String;J)V
+
+    .line 1007
+    invoke-virtual/range {p3 .. p3}, Landroid/os/Parcel;->writeNoException()V
+
+    .line 1008
+    return v10
+
+    .line 992
+    .end local v0  # "_arg0":Ljava/lang/String;
+    .end local v1  # "_arg1":J
+    :pswitch_364  #0x2e
+    invoke-virtual {v13, v11}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
+
+    .line 994
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readString()Ljava/lang/String;
+
+    move-result-object v0
+
+    .line 995
+    .restart local v0  # "_arg0":Ljava/lang/String;
+    invoke-virtual {v15, v0}, Landroid/net/INetd$Stub;->bandwidthRemoveInterfaceQuota(Ljava/lang/String;)V
+
+    .line 996
+    invoke-virtual/range {p3 .. p3}, Landroid/os/Parcel;->writeNoException()V
+
+    .line 997
+    return v10
+
+    .line 981
+    .end local v0  # "_arg0":Ljava/lang/String;
+    :pswitch_372  #0x2d
+    invoke-virtual {v13, v11}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
+
+    .line 983
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readString()Ljava/lang/String;
+
+    move-result-object v0
+
+    .line 985
+    .restart local v0  # "_arg0":Ljava/lang/String;
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readLong()J
+
+    move-result-wide v1
+
+    .line 986
+    .restart local v1  # "_arg1":J
+    invoke-virtual {v15, v0, v1, v2}, Landroid/net/INetd$Stub;->bandwidthSetInterfaceQuota(Ljava/lang/String;J)V
+
+    .line 987
+    invoke-virtual/range {p3 .. p3}, Landroid/os/Parcel;->writeNoException()V
+
+    .line 988
+    return v10
+
+    .line 970
+    .end local v0  # "_arg0":Ljava/lang/String;
+    .end local v1  # "_arg1":J
+    :pswitch_384  #0x2c
+    invoke-virtual {v13, v11}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
+
+    .line 972
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readString()Ljava/lang/String;
+
+    move-result-object v0
+
+    .line 974
+    .restart local v0  # "_arg0":Ljava/lang/String;
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readString()Ljava/lang/String;
+
+    move-result-object v1
+
+    .line 975
+    .local v1, "_arg1":Ljava/lang/String;
+    invoke-virtual {v15, v0, v1}, Landroid/net/INetd$Stub;->ipfwdRemoveInterfaceForward(Ljava/lang/String;Ljava/lang/String;)V
+
+    .line 976
+    invoke-virtual/range {p3 .. p3}, Landroid/os/Parcel;->writeNoException()V
+
+    .line 977
+    return v10
+
+    .line 959
+    .end local v0  # "_arg0":Ljava/lang/String;
+    .end local v1  # "_arg1":Ljava/lang/String;
+    :pswitch_396  #0x2b
+    invoke-virtual {v13, v11}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
+
+    .line 961
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readString()Ljava/lang/String;
+
+    move-result-object v0
+
+    .line 963
+    .restart local v0  # "_arg0":Ljava/lang/String;
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readString()Ljava/lang/String;
+
+    move-result-object v1
+
+    .line 964
+    .restart local v1  # "_arg1":Ljava/lang/String;
+    invoke-virtual {v15, v0, v1}, Landroid/net/INetd$Stub;->ipfwdAddInterfaceForward(Ljava/lang/String;Ljava/lang/String;)V
+
+    .line 965
+    invoke-virtual/range {p3 .. p3}, Landroid/os/Parcel;->writeNoException()V
+
+    .line 966
+    return v10
+
+    .line 950
+    .end local v0  # "_arg0":Ljava/lang/String;
+    .end local v1  # "_arg1":Ljava/lang/String;
+    :pswitch_3a8  #0x2a
+    invoke-virtual {v13, v11}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
+
+    .line 952
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readString()Ljava/lang/String;
+
+    move-result-object v0
+
+    .line 953
+    .restart local v0  # "_arg0":Ljava/lang/String;
+    invoke-virtual {v15, v0}, Landroid/net/INetd$Stub;->ipfwdDisableForwarding(Ljava/lang/String;)V
+
+    .line 954
+    invoke-virtual/range {p3 .. p3}, Landroid/os/Parcel;->writeNoException()V
+
+    .line 955
+    return v10
+
+    .line 941
+    .end local v0  # "_arg0":Ljava/lang/String;
+    :pswitch_3b6  #0x29
+    invoke-virtual {v13, v11}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
+
+    .line 943
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readString()Ljava/lang/String;
+
+    move-result-object v0
+
+    .line 944
+    .restart local v0  # "_arg0":Ljava/lang/String;
+    invoke-virtual {v15, v0}, Landroid/net/INetd$Stub;->ipfwdEnableForwarding(Ljava/lang/String;)V
+
+    .line 945
+    invoke-virtual/range {p3 .. p3}, Landroid/os/Parcel;->writeNoException()V
+
+    .line 946
+    return v10
+
+    .line 933
+    .end local v0  # "_arg0":Ljava/lang/String;
+    :pswitch_3c4  #0x28
+    invoke-virtual {v13, v11}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
+
+    .line 934
+    invoke-virtual/range {p0 .. p0}, Landroid/net/INetd$Stub;->ipfwdGetRequesterList()[Ljava/lang/String;
+
+    move-result-object v0
+
+    .line 935
+    .local v0, "_result":[Ljava/lang/String;
+    invoke-virtual/range {p3 .. p3}, Landroid/os/Parcel;->writeNoException()V
+
+    .line 936
+    invoke-virtual {v12, v0}, Landroid/os/Parcel;->writeStringArray([Ljava/lang/String;)V
+
+    .line 937
+    return v10
+
+    .line 925
+    .end local v0  # "_result":[Ljava/lang/String;
+    :pswitch_3d2  #0x27
+    invoke-virtual {v13, v11}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
+
+    .line 926
+    invoke-virtual/range {p0 .. p0}, Landroid/net/INetd$Stub;->ipfwdEnabled()Z
+
+    move-result v0
+
+    .line 927
+    .local v0, "_result":Z
+    invoke-virtual/range {p3 .. p3}, Landroid/os/Parcel;->writeNoException()V
+
+    .line 928
+    invoke-virtual {v12, v0}, Landroid/os/Parcel;->writeInt(I)V
+
+    .line 929
+    return v10
+
+    .line 916
+    .end local v0  # "_result":Z
+    :pswitch_3e0  #0x26
+    invoke-virtual {v13, v11}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
+
+    .line 918
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readString()Ljava/lang/String;
+
+    move-result-object v0
+
+    .line 919
+    .local v0, "_arg0":Ljava/lang/String;
+    invoke-virtual {v15, v0}, Landroid/net/INetd$Stub;->clatdStop(Ljava/lang/String;)V
+
+    .line 920
+    invoke-virtual/range {p3 .. p3}, Landroid/os/Parcel;->writeNoException()V
+
+    .line 921
+    return v10
+
+    .line 904
+    .end local v0  # "_arg0":Ljava/lang/String;
+    :pswitch_3ee  #0x25
+    invoke-virtual {v13, v11}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
+
+    .line 906
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readString()Ljava/lang/String;
+
+    move-result-object v0
+
+    .line 908
+    .restart local v0  # "_arg0":Ljava/lang/String;
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readString()Ljava/lang/String;
+
+    move-result-object v1
+
+    .line 909
+    .restart local v1  # "_arg1":Ljava/lang/String;
+    invoke-virtual {v15, v0, v1}, Landroid/net/INetd$Stub;->clatdStart(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+
+    move-result-object v2
+
+    .line 910
+    .local v2, "_result":Ljava/lang/String;
+    invoke-virtual/range {p3 .. p3}, Landroid/os/Parcel;->writeNoException()V
+
+    .line 911
+    invoke-virtual {v12, v2}, Landroid/os/Parcel;->writeString(Ljava/lang/String;)V
+
+    .line 912
+    return v10
+
+    .line 893
+    .end local v0  # "_arg0":Ljava/lang/String;
+    .end local v1  # "_arg1":Ljava/lang/String;
+    .end local v2  # "_result":Ljava/lang/String;
+    :pswitch_404  #0x24
+    invoke-virtual {v13, v11}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
+
+    .line 895
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
+
+    move-result v0
+
+    .line 897
+    .local v0, "_arg0":I
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
+
+    move-result v1
+
+    .line 898
+    .local v1, "_arg1":I
+    invoke-virtual {v15, v0, v1}, Landroid/net/INetd$Stub;->strictUidCleartextPenalty(II)V
+
+    .line 899
+    invoke-virtual/range {p3 .. p3}, Landroid/os/Parcel;->writeNoException()V
+
+    .line 900
+    return v10
+
+    .line 880
+    .end local v0  # "_arg0":I
+    .end local v1  # "_arg1":I
+    :pswitch_416  #0x23
+    invoke-virtual {v13, v11}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
+
+    .line 882
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readString()Ljava/lang/String;
+
+    move-result-object v0
+
+    .line 884
+    .local v0, "_arg0":Ljava/lang/String;
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
+
+    move-result v1
+
+    .line 886
+    .restart local v1  # "_arg1":I
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readString()Ljava/lang/String;
+
+    move-result-object v2
+
+    .line 887
+    .local v2, "_arg2":Ljava/lang/String;
+    invoke-virtual {v15, v0, v1, v2}, Landroid/net/INetd$Stub;->idletimerRemoveInterface(Ljava/lang/String;ILjava/lang/String;)V
+
+    .line 888
+    invoke-virtual/range {p3 .. p3}, Landroid/os/Parcel;->writeNoException()V
+
+    .line 889
+    return v10
+
+    .line 867
+    .end local v0  # "_arg0":Ljava/lang/String;
+    .end local v1  # "_arg1":I
+    .end local v2  # "_arg2":Ljava/lang/String;
+    :pswitch_42c  #0x22
+    invoke-virtual {v13, v11}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
+
+    .line 869
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readString()Ljava/lang/String;
+
+    move-result-object v0
+
+    .line 871
+    .restart local v0  # "_arg0":Ljava/lang/String;
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
+
+    move-result v1
+
+    .line 873
+    .restart local v1  # "_arg1":I
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readString()Ljava/lang/String;
+
+    move-result-object v2
+
+    .line 874
+    .restart local v2  # "_arg2":Ljava/lang/String;
+    invoke-virtual {v15, v0, v1, v2}, Landroid/net/INetd$Stub;->idletimerAddInterface(Ljava/lang/String;ILjava/lang/String;)V
+
+    .line 875
+    invoke-virtual/range {p3 .. p3}, Landroid/os/Parcel;->writeNoException()V
+
+    .line 876
+    return v10
+
+    .line 856
+    .end local v0  # "_arg0":Ljava/lang/String;
+    .end local v1  # "_arg1":I
+    .end local v2  # "_arg2":Ljava/lang/String;
+    :pswitch_442  #0x21
+    invoke-virtual {v13, v11}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
+
+    .line 858
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readString()Ljava/lang/String;
+
+    move-result-object v0
+
+    .line 860
+    .restart local v0  # "_arg0":Ljava/lang/String;
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
+
+    move-result v1
+
+    .line 861
+    .restart local v1  # "_arg1":I
+    invoke-virtual {v15, v0, v1}, Landroid/net/INetd$Stub;->setIPv6AddrGenMode(Ljava/lang/String;I)V
+
+    .line 862
+    invoke-virtual/range {p3 .. p3}, Landroid/os/Parcel;->writeNoException()V
+
+    .line 863
+    return v10
+
+    .line 841
+    .end local v0  # "_arg0":Ljava/lang/String;
+    .end local v1  # "_arg1":I
+    :pswitch_454  #0x20
+    invoke-virtual {v13, v11}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
+
+    .line 843
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readString()Ljava/lang/String;
+
+    move-result-object v0
+
+    .line 845
+    .restart local v0  # "_arg0":Ljava/lang/String;
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readString()Ljava/lang/String;
+
+    move-result-object v1
+
+    .line 847
+    .local v1, "_arg1":Ljava/lang/String;
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
+
+    move-result v2
+
+    .line 849
+    .local v2, "_arg2":I
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
+
+    move-result v3
+
+    .line 850
+    .local v3, "_arg3":I
+    invoke-virtual {v15, v0, v1, v2, v3}, Landroid/net/INetd$Stub;->wakeupDelInterface(Ljava/lang/String;Ljava/lang/String;II)V
+
+    .line 851
+    invoke-virtual/range {p3 .. p3}, Landroid/os/Parcel;->writeNoException()V
+
+    .line 852
+    return v10
+
+    .line 826
+    .end local v0  # "_arg0":Ljava/lang/String;
+    .end local v1  # "_arg1":Ljava/lang/String;
+    .end local v2  # "_arg2":I
+    .end local v3  # "_arg3":I
+    :pswitch_46e  #0x1f
+    invoke-virtual {v13, v11}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
+
+    .line 828
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readString()Ljava/lang/String;
+
+    move-result-object v0
+
+    .line 830
+    .restart local v0  # "_arg0":Ljava/lang/String;
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readString()Ljava/lang/String;
+
+    move-result-object v1
+
+    .line 832
+    .restart local v1  # "_arg1":Ljava/lang/String;
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
+
+    move-result v2
+
+    .line 834
+    .restart local v2  # "_arg2":I
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
+
+    move-result v3
+
+    .line 835
+    .restart local v3  # "_arg3":I
+    invoke-virtual {v15, v0, v1, v2, v3}, Landroid/net/INetd$Stub;->wakeupAddInterface(Ljava/lang/String;Ljava/lang/String;II)V
+
+    .line 836
+    invoke-virtual/range {p3 .. p3}, Landroid/os/Parcel;->writeNoException()V
+
+    .line 837
+    return v10
+
+    .line 817
+    .end local v0  # "_arg0":Ljava/lang/String;
+    .end local v1  # "_arg1":Ljava/lang/String;
+    .end local v2  # "_arg2":I
+    .end local v3  # "_arg3":I
+    :pswitch_488  #0x1e
+    invoke-virtual {v13, v11}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
+
+    .line 819
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readString()Ljava/lang/String;
+
+    move-result-object v0
+
+    .line 820
+    .restart local v0  # "_arg0":Ljava/lang/String;
+    invoke-virtual {v15, v0}, Landroid/net/INetd$Stub;->ipSecRemoveTunnelInterface(Ljava/lang/String;)V
+
+    .line 821
+    invoke-virtual/range {p3 .. p3}, Landroid/os/Parcel;->writeNoException()V
+
+    .line 822
+    return v10
+
+    .line 798
+    .end local v0  # "_arg0":Ljava/lang/String;
+    :pswitch_496  #0x1d
+    invoke-virtual {v13, v11}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
+
+    .line 800
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readString()Ljava/lang/String;
+
+    move-result-object v7
+
+    .line 802
+    .local v7, "_arg0":Ljava/lang/String;
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readString()Ljava/lang/String;
+
+    move-result-object v8
+
+    .line 804
+    .local v8, "_arg1":Ljava/lang/String;
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readString()Ljava/lang/String;
+
+    move-result-object v9
+
+    .line 806
+    .local v9, "_arg2":Ljava/lang/String;
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
+
+    move-result v16
+
+    .line 808
+    .local v16, "_arg3":I
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
+
+    move-result v17
+
+    .line 810
+    .local v17, "_arg4":I
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
+
+    move-result v18
+
+    .line 811
+    .local v18, "_arg5":I
+    move-object/from16 v0, p0
+
+    move-object v1, v7
+
+    move-object v2, v8
+
+    move-object v3, v9
+
+    move/from16 v4, v16
+
+    move/from16 v5, v17
+
+    move/from16 v6, v18
+
+    invoke-virtual/range {v0 .. v6}, Landroid/net/INetd$Stub;->ipSecUpdateTunnelInterface(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;III)V
+
+    .line 812
+    invoke-virtual/range {p3 .. p3}, Landroid/os/Parcel;->writeNoException()V
+
+    .line 813
+    return v10
+
+    .line 779
+    .end local v7  # "_arg0":Ljava/lang/String;
+    .end local v8  # "_arg1":Ljava/lang/String;
+    .end local v9  # "_arg2":Ljava/lang/String;
+    .end local v16  # "_arg3":I
+    .end local v17  # "_arg4":I
+    .end local v18  # "_arg5":I
+    :pswitch_4c3  #0x1c
+    invoke-virtual {v13, v11}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
+
+    .line 781
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readString()Ljava/lang/String;
+
+    move-result-object v7
+
+    .line 783
+    .restart local v7  # "_arg0":Ljava/lang/String;
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readString()Ljava/lang/String;
+
+    move-result-object v8
+
+    .line 785
+    .restart local v8  # "_arg1":Ljava/lang/String;
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readString()Ljava/lang/String;
+
+    move-result-object v9
+
+    .line 787
+    .restart local v9  # "_arg2":Ljava/lang/String;
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
+
+    move-result v16
+
+    .line 789
+    .restart local v16  # "_arg3":I
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
+
+    move-result v17
+
+    .line 791
+    .restart local v17  # "_arg4":I
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
+
+    move-result v18
+
+    .line 792
+    .restart local v18  # "_arg5":I
+    move-object/from16 v0, p0
+
+    move-object v1, v7
+
+    move-object v2, v8
+
+    move-object v3, v9
+
+    move/from16 v4, v16
+
+    move/from16 v5, v17
+
+    move/from16 v6, v18
+
+    invoke-virtual/range {v0 .. v6}, Landroid/net/INetd$Stub;->ipSecAddTunnelInterface(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;III)V
+
+    .line 793
+    invoke-virtual/range {p3 .. p3}, Landroid/os/Parcel;->writeNoException()V
+
+    .line 794
+    return v10
+
+    .line 760
+    .end local v7  # "_arg0":Ljava/lang/String;
+    .end local v8  # "_arg1":Ljava/lang/String;
+    .end local v9  # "_arg2":Ljava/lang/String;
+    .end local v16  # "_arg3":I
+    .end local v17  # "_arg4":I
+    .end local v18  # "_arg5":I
+    :pswitch_4f0  #0x1b
+    invoke-virtual {v13, v11}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
+
+    .line 762
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
+
+    move-result v7
+
+    .line 764
+    .local v7, "_arg0":I
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
+
+    move-result v8
+
+    .line 766
+    .local v8, "_arg1":I
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
+
+    move-result v9
+
+    .line 768
+    .local v9, "_arg2":I
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
+
+    move-result v16
+
+    .line 770
+    .restart local v16  # "_arg3":I
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
+
+    move-result v17
+
+    .line 772
+    .restart local v17  # "_arg4":I
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
+
+    move-result v18
+
+    .line 773
+    .restart local v18  # "_arg5":I
+    move-object/from16 v0, p0
+
+    move v1, v7
+
+    move v2, v8
+
+    move v3, v9
+
+    move/from16 v4, v16
+
+    move/from16 v5, v17
+
+    move/from16 v6, v18
+
+    invoke-virtual/range {v0 .. v6}, Landroid/net/INetd$Stub;->ipSecDeleteSecurityPolicy(IIIIII)V
+
+    .line 774
+    invoke-virtual/range {p3 .. p3}, Landroid/os/Parcel;->writeNoException()V
+
+    .line 775
+    return v10
+
+    .line 735
+    .end local v7  # "_arg0":I
+    .end local v8  # "_arg1":I
+    .end local v9  # "_arg2":I
+    .end local v16  # "_arg3":I
+    .end local v17  # "_arg4":I
+    .end local v18  # "_arg5":I
+    :pswitch_51d  #0x1a
+    invoke-virtual {v13, v11}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
+
+    .line 737
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
+
+    move-result v16
+
+    .line 739
+    .local v16, "_arg0":I
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
+
+    move-result v17
+
+    .line 741
+    .local v17, "_arg1":I
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
+
+    move-result v18
+
+    .line 743
+    .local v18, "_arg2":I
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readString()Ljava/lang/String;
+
+    move-result-object v19
+
+    .line 745
+    .local v19, "_arg3":Ljava/lang/String;
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readString()Ljava/lang/String;
+
+    move-result-object v20
+
+    .line 747
+    .local v20, "_arg4":Ljava/lang/String;
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
+
+    move-result v21
+
+    .line 749
+    .local v21, "_arg5":I
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
+
+    move-result v22
+
+    .line 751
+    .local v22, "_arg6":I
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
+
+    move-result v23
+
+    .line 753
+    .local v23, "_arg7":I
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
+
+    move-result v24
+
+    .line 754
+    .local v24, "_arg8":I
+    move-object/from16 v0, p0
+
+    move/from16 v1, v16
+
+    move/from16 v2, v17
+
+    move/from16 v3, v18
+
+    move-object/from16 v4, v19
+
+    move-object/from16 v5, v20
+
+    move/from16 v6, v21
+
+    move/from16 v7, v22
+
+    move/from16 v8, v23
+
+    move/from16 v9, v24
+
+    invoke-virtual/range {v0 .. v9}, Landroid/net/INetd$Stub;->ipSecUpdateSecurityPolicy(IIILjava/lang/String;Ljava/lang/String;IIII)V
+
+    .line 755
+    invoke-virtual/range {p3 .. p3}, Landroid/os/Parcel;->writeNoException()V
+
+    .line 756
+    return v10
+
+    .line 710
+    .end local v16  # "_arg0":I
+    .end local v17  # "_arg1":I
+    .end local v18  # "_arg2":I
+    .end local v19  # "_arg3":Ljava/lang/String;
+    .end local v20  # "_arg4":Ljava/lang/String;
+    .end local v21  # "_arg5":I
+    .end local v22  # "_arg6":I
+    .end local v23  # "_arg7":I
+    .end local v24  # "_arg8":I
+    :pswitch_55f  #0x19
+    invoke-virtual {v13, v11}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
+
+    .line 712
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
+
+    move-result v16
+
+    .line 714
+    .restart local v16  # "_arg0":I
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
+
+    move-result v17
+
+    .line 716
+    .restart local v17  # "_arg1":I
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
+
+    move-result v18
+
+    .line 718
+    .restart local v18  # "_arg2":I
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readString()Ljava/lang/String;
+
+    move-result-object v19
+
+    .line 720
+    .restart local v19  # "_arg3":Ljava/lang/String;
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readString()Ljava/lang/String;
+
+    move-result-object v20
+
+    .line 722
+    .restart local v20  # "_arg4":Ljava/lang/String;
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
+
+    move-result v21
+
+    .line 724
+    .restart local v21  # "_arg5":I
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
+
+    move-result v22
+
+    .line 726
+    .restart local v22  # "_arg6":I
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
+
+    move-result v23
+
+    .line 728
+    .restart local v23  # "_arg7":I
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
+
+    move-result v24
+
+    .line 729
+    .restart local v24  # "_arg8":I
+    move-object/from16 v0, p0
+
+    move/from16 v1, v16
+
+    move/from16 v2, v17
+
+    move/from16 v3, v18
+
+    move-object/from16 v4, v19
+
+    move-object/from16 v5, v20
+
+    move/from16 v6, v21
+
+    move/from16 v7, v22
+
+    move/from16 v8, v23
+
+    move/from16 v9, v24
+
+    invoke-virtual/range {v0 .. v9}, Landroid/net/INetd$Stub;->ipSecAddSecurityPolicy(IIILjava/lang/String;Ljava/lang/String;IIII)V
+
+    .line 730
+    invoke-virtual/range {p3 .. p3}, Landroid/os/Parcel;->writeNoException()V
+
+    .line 731
+    return v10
+
+    .line 696
+    .end local v16  # "_arg0":I
+    .end local v17  # "_arg1":I
+    .end local v18  # "_arg2":I
+    .end local v19  # "_arg3":Ljava/lang/String;
+    .end local v20  # "_arg4":Ljava/lang/String;
+    .end local v21  # "_arg5":I
+    .end local v22  # "_arg6":I
+    .end local v23  # "_arg7":I
+    .end local v24  # "_arg8":I
+    :pswitch_5a1  #0x18
+    invoke-virtual {v13, v11}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
+
+    .line 698
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
+
+    move-result v0
+
+    if-eqz v0, :cond_5b3
+
+    .line 699
+    sget-object v0, Landroid/os/ParcelFileDescriptor;->CREATOR:Landroid/os/Parcelable$Creator;
+
+    invoke-interface {v0, v13}, Landroid/os/Parcelable$Creator;->createFromParcel(Landroid/os/Parcel;)Ljava/lang/Object;
+
+    move-result-object v0
+
+    check-cast v0, Landroid/os/ParcelFileDescriptor;
+
+    .local v0, "_arg0":Landroid/os/ParcelFileDescriptor;
+    goto :goto_5b4
+
+    .line 702
+    .end local v0  # "_arg0":Landroid/os/ParcelFileDescriptor;
+    :cond_5b3
+    const/4 v0, 0x0
+
+    .line 704
+    .restart local v0  # "_arg0":Landroid/os/ParcelFileDescriptor;
+    :goto_5b4
+    invoke-virtual {v15, v0}, Landroid/net/INetd$Stub;->ipSecRemoveTransportModeTransform(Landroid/os/ParcelFileDescriptor;)V
+
+    .line 705
+    invoke-virtual/range {p3 .. p3}, Landroid/os/Parcel;->writeNoException()V
+
+    .line 706
+    return v10
+
+    .line 672
+    .end local v0  # "_arg0":Landroid/os/ParcelFileDescriptor;
+    :pswitch_5bb  #0x17
+    invoke-virtual {v13, v11}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
+
+    .line 674
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
+
+    move-result v0
+
+    if-eqz v0, :cond_5ce
+
+    .line 675
+    sget-object v0, Landroid/os/ParcelFileDescriptor;->CREATOR:Landroid/os/Parcelable$Creator;
+
+    invoke-interface {v0, v13}, Landroid/os/Parcelable$Creator;->createFromParcel(Landroid/os/Parcel;)Ljava/lang/Object;
+
+    move-result-object v0
+
+    check-cast v0, Landroid/os/ParcelFileDescriptor;
+
+    move-object v7, v0
+
+    .restart local v0  # "_arg0":Landroid/os/ParcelFileDescriptor;
+    goto :goto_5d0
+
+    .line 678
+    .end local v0  # "_arg0":Landroid/os/ParcelFileDescriptor;
+    :cond_5ce
+    const/4 v0, 0x0
+
+    move-object v7, v0
+
+    .line 681
+    .local v7, "_arg0":Landroid/os/ParcelFileDescriptor;
+    :goto_5d0
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
+
+    move-result v8
+
+    .line 683
+    .restart local v8  # "_arg1":I
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
+
+    move-result v9
+
+    .line 685
+    .restart local v9  # "_arg2":I
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readString()Ljava/lang/String;
+
+    move-result-object v16
+
+    .line 687
+    .local v16, "_arg3":Ljava/lang/String;
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readString()Ljava/lang/String;
+
+    move-result-object v17
+
+    .line 689
+    .local v17, "_arg4":Ljava/lang/String;
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
+
+    move-result v18
+
+    .line 690
+    .local v18, "_arg5":I
+    move-object/from16 v0, p0
+
+    move-object v1, v7
+
+    move v2, v8
+
+    move v3, v9
+
+    move-object/from16 v4, v16
+
+    move-object/from16 v5, v17
+
+    move/from16 v6, v18
+
+    invoke-virtual/range {v0 .. v6}, Landroid/net/INetd$Stub;->ipSecApplyTransportModeTransform(Landroid/os/ParcelFileDescriptor;IILjava/lang/String;Ljava/lang/String;I)V
+
+    .line 691
+    invoke-virtual/range {p3 .. p3}, Landroid/os/Parcel;->writeNoException()V
+
+    .line 692
+    return v10
+
+    .line 651
+    .end local v7  # "_arg0":Landroid/os/ParcelFileDescriptor;
+    .end local v8  # "_arg1":I
+    .end local v9  # "_arg2":I
+    .end local v16  # "_arg3":Ljava/lang/String;
+    .end local v17  # "_arg4":Ljava/lang/String;
+    .end local v18  # "_arg5":I
+    :pswitch_5f6  #0x16
+    invoke-virtual {v13, v11}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
+
+    .line 653
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
+
+    move-result v8
+
+    .line 655
+    .local v8, "_arg0":I
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readString()Ljava/lang/String;
+
+    move-result-object v9
+
+    .line 657
+    .local v9, "_arg1":Ljava/lang/String;
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readString()Ljava/lang/String;
+
+    move-result-object v16
+
+    .line 659
+    .local v16, "_arg2":Ljava/lang/String;
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
+
+    move-result v17
+
+    .line 661
+    .local v17, "_arg3":I
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
+
+    move-result v18
+
+    .line 663
+    .local v18, "_arg4":I
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
+
+    move-result v19
+
+    .line 665
+    .local v19, "_arg5":I
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
+
+    move-result v20
+
+    .line 666
+    .local v20, "_arg6":I
+    move-object/from16 v0, p0
+
+    move v1, v8
+
+    move-object v2, v9
+
+    move-object/from16 v3, v16
+
+    move/from16 v4, v17
+
+    move/from16 v5, v18
+
+    move/from16 v6, v19
+
+    move/from16 v7, v20
+
+    invoke-virtual/range {v0 .. v7}, Landroid/net/INetd$Stub;->ipSecDeleteSecurityAssociation(ILjava/lang/String;Ljava/lang/String;IIII)V
+
+    .line 667
+    invoke-virtual/range {p3 .. p3}, Landroid/os/Parcel;->writeNoException()V
+
+    .line 668
+    return v10
+
+    .line 602
+    .end local v8  # "_arg0":I
+    .end local v9  # "_arg1":Ljava/lang/String;
+    .end local v16  # "_arg2":Ljava/lang/String;
+    .end local v17  # "_arg3":I
+    .end local v18  # "_arg4":I
+    .end local v19  # "_arg5":I
+    .end local v20  # "_arg6":I
+    :pswitch_62a  #0x15
+    invoke-virtual {v13, v11}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
+
+    .line 604
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
+
+    move-result v22
+
+    .local v22, "_arg0":I
+    move/from16 v1, v22
+
+    .line 606
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
+
+    move-result v23
+
+    .local v23, "_arg1":I
+    move/from16 v2, v23
+
+    .line 608
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readString()Ljava/lang/String;
+
+    move-result-object v24
+
+    .local v24, "_arg2":Ljava/lang/String;
+    move-object/from16 v3, v24
+
+    .line 610
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readString()Ljava/lang/String;
+
+    move-result-object v25
+
+    .local v25, "_arg3":Ljava/lang/String;
+    move-object/from16 v4, v25
+
+    .line 612
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
+
+    move-result v26
+
+    .local v26, "_arg4":I
+    move/from16 v5, v26
+
+    .line 614
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
+
+    move-result v27
+
+    .local v27, "_arg5":I
+    move/from16 v6, v27
+
+    .line 616
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
+
+    move-result v28
+
+    .local v28, "_arg6":I
+    move/from16 v7, v28
+
+    .line 618
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
+
+    move-result v29
+
+    .local v29, "_arg7":I
+    move/from16 v8, v29
+
+    .line 620
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readString()Ljava/lang/String;
+
+    move-result-object v30
+
+    .local v30, "_arg8":Ljava/lang/String;
+    move-object/from16 v9, v30
+
+    .line 622
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->createByteArray()[B
+
+    move-result-object v31
+
+    move v0, v10
+
+    .local v31, "_arg9":[B
+    move-object/from16 v10, v31
+
+    .line 624
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
+
+    move-result v32
+
+    move-object/from16 v33, v11
+
+    .end local v11  # "descriptor":Ljava/lang/String;
+    .local v32, "_arg10":I
+    .local v33, "descriptor":Ljava/lang/String;
+    move/from16 v11, v32
+
+    .line 626
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readString()Ljava/lang/String;
+
+    move-result-object v34
+
+    .local v34, "_arg11":Ljava/lang/String;
+    move-object/from16 v12, v34
+
+    .line 628
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->createByteArray()[B
+
+    move-result-object v35
+
+    .local v35, "_arg12":[B
+    move-object/from16 v13, v35
+
+    .line 630
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
+
+    move-result v36
+
+    .local v36, "_arg13":I
+    move/from16 v14, v36
+
+    .line 632
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readString()Ljava/lang/String;
+
+    move-result-object v37
+
+    .local v37, "_arg14":Ljava/lang/String;
+    move-object/from16 v15, v37
+
+    .line 634
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->createByteArray()[B
+
+    move-result-object v38
+
+    .local v38, "_arg15":[B
+    move-object/from16 v16, v38
+
+    .line 636
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
+
+    move-result v39
+
+    .local v39, "_arg16":I
+    move/from16 v17, v39
+
+    .line 638
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
+
+    move-result v40
+
+    .local v40, "_arg17":I
+    move/from16 v18, v40
+
+    .line 640
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
+
+    move-result v41
+
+    .local v41, "_arg18":I
+    move/from16 v19, v41
+
+    .line 642
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
+
+    move-result v42
+
+    .local v42, "_arg19":I
+    move/from16 v20, v42
+
+    .line 644
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
+
+    move-result v43
+
+    .local v43, "_arg20":I
+    move/from16 v21, v43
+
+    .line 645
+    move-object/from16 v0, p0
+
+    invoke-virtual/range {v0 .. v21}, Landroid/net/INetd$Stub;->ipSecAddSecurityAssociation(IILjava/lang/String;Ljava/lang/String;IIIILjava/lang/String;[BILjava/lang/String;[BILjava/lang/String;[BIIIII)V
+
+    .line 646
+    invoke-virtual/range {p3 .. p3}, Landroid/os/Parcel;->writeNoException()V
+
+    .line 647
+    const/4 v6, 0x1
+
+    return v6
+
+    .line 586
+    .end local v22  # "_arg0":I
+    .end local v23  # "_arg1":I
+    .end local v24  # "_arg2":Ljava/lang/String;
+    .end local v25  # "_arg3":Ljava/lang/String;
+    .end local v26  # "_arg4":I
+    .end local v27  # "_arg5":I
+    .end local v28  # "_arg6":I
+    .end local v29  # "_arg7":I
+    .end local v30  # "_arg8":Ljava/lang/String;
+    .end local v31  # "_arg9":[B
+    .end local v32  # "_arg10":I
+    .end local v33  # "descriptor":Ljava/lang/String;
+    .end local v34  # "_arg11":Ljava/lang/String;
+    .end local v35  # "_arg12":[B
+    .end local v36  # "_arg13":I
+    .end local v37  # "_arg14":Ljava/lang/String;
+    .end local v38  # "_arg15":[B
+    .end local v39  # "_arg16":I
+    .end local v40  # "_arg17":I
+    .end local v41  # "_arg18":I
+    .end local v42  # "_arg19":I
+    .end local v43  # "_arg20":I
+    .restart local v11  # "descriptor":Ljava/lang/String;
+    :pswitch_6b8  #0x14
+    move v6, v10
+
+    move-object/from16 v33, v11
+
+    .end local v11  # "descriptor":Ljava/lang/String;
+    .restart local v33  # "descriptor":Ljava/lang/String;
+    move-object/from16 v7, p2
+
+    move-object/from16 v8, v33
+
+    .end local v33  # "descriptor":Ljava/lang/String;
+    .local v8, "descriptor":Ljava/lang/String;
+    invoke-virtual {v7, v8}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
+
+    .line 588
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
+
+    move-result v0
+
+    .line 590
+    .local v0, "_arg0":I
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readString()Ljava/lang/String;
+
+    move-result-object v1
+
+    .line 592
+    .restart local v1  # "_arg1":Ljava/lang/String;
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readString()Ljava/lang/String;
+
+    move-result-object v2
+
+    .line 594
+    .local v2, "_arg2":Ljava/lang/String;
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
+
+    move-result v3
+
+    .line 595
+    .restart local v3  # "_arg3":I
+    move-object/from16 v9, p0
+
+    invoke-virtual {v9, v0, v1, v2, v3}, Landroid/net/INetd$Stub;->ipSecAllocateSpi(ILjava/lang/String;Ljava/lang/String;I)I
+
+    move-result v4
+
+    .line 596
+    .local v4, "_result":I
+    invoke-virtual/range {p3 .. p3}, Landroid/os/Parcel;->writeNoException()V
+
+    .line 597
+    move-object/from16 v10, p3
+
+    invoke-virtual {v10, v4}, Landroid/os/Parcel;->writeInt(I)V
+
+    .line 598
+    return v6
+
+    .line 570
+    .end local v0  # "_arg0":I
+    .end local v1  # "_arg1":Ljava/lang/String;
+    .end local v2  # "_arg2":Ljava/lang/String;
+    .end local v3  # "_arg3":I
+    .end local v4  # "_result":I
+    .end local v8  # "descriptor":Ljava/lang/String;
+    .restart local v11  # "descriptor":Ljava/lang/String;
+    :pswitch_6e1  #0x13
+    move v6, v10
+
+    move-object v8, v11
+
+    move-object v10, v12
+
+    move-object v7, v13
+
+    move-object v9, v15
+
+    .end local v11  # "descriptor":Ljava/lang/String;
+    .restart local v8  # "descriptor":Ljava/lang/String;
+    invoke-virtual {v7, v8}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
+
+    .line 572
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
+
+    move-result v0
+
+    if-eqz v0, :cond_6f8
+
+    .line 573
+    sget-object v0, Landroid/os/ParcelFileDescriptor;->CREATOR:Landroid/os/Parcelable$Creator;
+
+    invoke-interface {v0, v7}, Landroid/os/Parcelable$Creator;->createFromParcel(Landroid/os/Parcel;)Ljava/lang/Object;
+
+    move-result-object v0
+
+    check-cast v0, Landroid/os/ParcelFileDescriptor;
+
+    .local v0, "_arg0":Landroid/os/ParcelFileDescriptor;
+    goto :goto_6f9
+
+    .line 576
+    .end local v0  # "_arg0":Landroid/os/ParcelFileDescriptor;
+    :cond_6f8
+    const/4 v0, 0x0
+
+    .line 579
+    .restart local v0  # "_arg0":Landroid/os/ParcelFileDescriptor;
+    :goto_6f9
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
+
+    move-result v1
+
+    .line 580
+    .local v1, "_arg1":I
+    invoke-virtual {v9, v0, v1}, Landroid/net/INetd$Stub;->ipSecSetEncapSocketOwner(Landroid/os/ParcelFileDescriptor;I)V
+
+    .line 581
+    invoke-virtual/range {p3 .. p3}, Landroid/os/Parcel;->writeNoException()V
+
+    .line 582
+    return v6
 
     .line 553
-    invoke-virtual/range {p3 .. p3}, Landroid/os/Parcel;->writeNoException()V
+    .end local v0  # "_arg0":Landroid/os/ParcelFileDescriptor;
+    .end local v1  # "_arg1":I
+    .end local v8  # "descriptor":Ljava/lang/String;
+    .restart local v11  # "descriptor":Ljava/lang/String;
+    :pswitch_704  #0x12
+    move v6, v10
 
-    .line 554
-    invoke-virtual {v7, v0}, Landroid/os/Parcel;->writeString(Ljava/lang/String;)V
+    move-object v8, v11
+
+    move-object v10, v12
+
+    move-object v7, v13
+
+    move-object v9, v15
+
+    .end local v11  # "descriptor":Ljava/lang/String;
+    .restart local v8  # "descriptor":Ljava/lang/String;
+    invoke-virtual {v7, v8}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
 
     .line 555
-    return v6
-
-    .line 530
-    :pswitch_6ed  #0x10
-    move-object v5, v0
-
-    move v6, v13
-
-    move-object v7, v14
-
-    move-object v0, v15
-
-    invoke-virtual {v0, v3}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
-
-    .line 532
-    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readString()Ljava/lang/String;
-
-    move-result-object v1
-
-    .line 534
-    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readString()Ljava/lang/String;
-
-    move-result-object v2
-
-    .line 536
     invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
 
-    move-result v0
+    move-result v11
+
+    .line 557
+    .local v11, "_arg0":I
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
+
+    move-result v12
+
+    .line 559
+    .local v12, "_arg1":I
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readString()Ljava/lang/String;
+
+    move-result-object v13
+
+    .line 561
+    .local v13, "_arg2":Ljava/lang/String;
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readString()Ljava/lang/String;
+
+    move-result-object v14
+
+    .line 563
+    .local v14, "_arg3":Ljava/lang/String;
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readString()Ljava/lang/String;
+
+    move-result-object v15
+
+    .line 564
+    .local v15, "_arg4":Ljava/lang/String;
+    move-object/from16 v0, p0
+
+    move v1, v11
+
+    move v2, v12
+
+    move-object v3, v13
+
+    move-object v4, v14
+
+    move-object v5, v15
+
+    invoke-virtual/range {v0 .. v5}, Landroid/net/INetd$Stub;->setProcSysNet(IILjava/lang/String;Ljava/lang/String;Ljava/lang/String;)V
+
+    .line 565
+    invoke-virtual/range {p3 .. p3}, Landroid/os/Parcel;->writeNoException()V
+
+    .line 566
+    return v6
 
     .line 537
-    invoke-virtual {v5, v1, v2, v0}, Landroid/net/INetd$Stub;->interfaceDelAddress(Ljava/lang/String;Ljava/lang/String;I)V
+    .end local v8  # "descriptor":Ljava/lang/String;
+    .end local v12  # "_arg1":I
+    .end local v13  # "_arg2":Ljava/lang/String;
+    .end local v14  # "_arg3":Ljava/lang/String;
+    .end local v15  # "_arg4":Ljava/lang/String;
+    .local v11, "descriptor":Ljava/lang/String;
+    :pswitch_72e  #0x11
+    move v6, v10
 
-    .line 538
-    invoke-virtual/range {p3 .. p3}, Landroid/os/Parcel;->writeNoException()V
+    move-object v8, v11
+
+    move-object v10, v12
+
+    move-object v7, v13
+
+    move-object v9, v15
+
+    .end local v11  # "descriptor":Ljava/lang/String;
+    .restart local v8  # "descriptor":Ljava/lang/String;
+    invoke-virtual {v7, v8}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
 
     .line 539
-    return v6
-
-    .line 517
-    :pswitch_707  #0xf
-    move-object v5, v0
-
-    move v6, v13
-
-    move-object v7, v14
-
-    move-object v0, v15
-
-    invoke-virtual {v0, v3}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
-
-    .line 519
-    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readString()Ljava/lang/String;
-
-    move-result-object v1
-
-    .line 521
-    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readString()Ljava/lang/String;
-
-    move-result-object v2
-
-    .line 523
     invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
 
     move-result v0
 
-    .line 524
-    invoke-virtual {v5, v1, v2, v0}, Landroid/net/INetd$Stub;->interfaceAddAddress(Ljava/lang/String;Ljava/lang/String;I)V
+    .line 541
+    .local v0, "_arg0":I
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
 
-    .line 525
+    move-result v1
+
+    .line 543
+    .restart local v1  # "_arg1":I
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readString()Ljava/lang/String;
+
+    move-result-object v2
+
+    .line 545
+    .restart local v2  # "_arg2":Ljava/lang/String;
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readString()Ljava/lang/String;
+
+    move-result-object v3
+
+    .line 546
+    .local v3, "_arg3":Ljava/lang/String;
+    invoke-virtual {v9, v0, v1, v2, v3}, Landroid/net/INetd$Stub;->getProcSysNet(IILjava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+
+    move-result-object v4
+
+    .line 547
+    .local v4, "_result":Ljava/lang/String;
     invoke-virtual/range {p3 .. p3}, Landroid/os/Parcel;->writeNoException()V
 
-    .line 526
+    .line 548
+    invoke-virtual {v10, v4}, Landroid/os/Parcel;->writeString(Ljava/lang/String;)V
+
+    .line 549
     return v6
 
-    .line 509
-    :pswitch_721  #0xe
-    move-object v5, v0
+    .line 524
+    .end local v0  # "_arg0":I
+    .end local v1  # "_arg1":I
+    .end local v2  # "_arg2":Ljava/lang/String;
+    .end local v3  # "_arg3":Ljava/lang/String;
+    .end local v4  # "_result":Ljava/lang/String;
+    .end local v8  # "descriptor":Ljava/lang/String;
+    .restart local v11  # "descriptor":Ljava/lang/String;
+    :pswitch_751  #0x10
+    move v6, v10
 
-    move v6, v13
+    move-object v8, v11
 
-    move-object v7, v14
+    move-object v10, v12
 
-    move-object v0, v15
+    move-object v7, v13
 
-    invoke-virtual {v0, v3}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
+    move-object v9, v15
 
-    .line 510
+    .end local v11  # "descriptor":Ljava/lang/String;
+    .restart local v8  # "descriptor":Ljava/lang/String;
+    invoke-virtual {v7, v8}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
+
+    .line 526
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readString()Ljava/lang/String;
+
+    move-result-object v0
+
+    .line 528
+    .local v0, "_arg0":Ljava/lang/String;
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readString()Ljava/lang/String;
+
+    move-result-object v1
+
+    .line 530
+    .local v1, "_arg1":Ljava/lang/String;
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
+
+    move-result v2
+
+    .line 531
+    .local v2, "_arg2":I
+    invoke-virtual {v9, v0, v1, v2}, Landroid/net/INetd$Stub;->interfaceDelAddress(Ljava/lang/String;Ljava/lang/String;I)V
+
+    .line 532
+    invoke-virtual/range {p3 .. p3}, Landroid/os/Parcel;->writeNoException()V
+
+    .line 533
+    return v6
+
+    .line 511
+    .end local v0  # "_arg0":Ljava/lang/String;
+    .end local v1  # "_arg1":Ljava/lang/String;
+    .end local v2  # "_arg2":I
+    .end local v8  # "descriptor":Ljava/lang/String;
+    .restart local v11  # "descriptor":Ljava/lang/String;
+    :pswitch_76c  #0xf
+    move v6, v10
+
+    move-object v8, v11
+
+    move-object v10, v12
+
+    move-object v7, v13
+
+    move-object v9, v15
+
+    .end local v11  # "descriptor":Ljava/lang/String;
+    .restart local v8  # "descriptor":Ljava/lang/String;
+    invoke-virtual {v7, v8}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
+
+    .line 513
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readString()Ljava/lang/String;
+
+    move-result-object v0
+
+    .line 515
+    .restart local v0  # "_arg0":Ljava/lang/String;
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readString()Ljava/lang/String;
+
+    move-result-object v1
+
+    .line 517
+    .restart local v1  # "_arg1":Ljava/lang/String;
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
+
+    move-result v2
+
+    .line 518
+    .restart local v2  # "_arg2":I
+    invoke-virtual {v9, v0, v1, v2}, Landroid/net/INetd$Stub;->interfaceAddAddress(Ljava/lang/String;Ljava/lang/String;I)V
+
+    .line 519
+    invoke-virtual/range {p3 .. p3}, Landroid/os/Parcel;->writeNoException()V
+
+    .line 520
+    return v6
+
+    .line 503
+    .end local v0  # "_arg0":Ljava/lang/String;
+    .end local v1  # "_arg1":Ljava/lang/String;
+    .end local v2  # "_arg2":I
+    .end local v8  # "descriptor":Ljava/lang/String;
+    .restart local v11  # "descriptor":Ljava/lang/String;
+    :pswitch_787  #0xe
+    move v6, v10
+
+    move-object v8, v11
+
+    move-object v10, v12
+
+    move-object v7, v13
+
+    move-object v9, v15
+
+    .end local v11  # "descriptor":Ljava/lang/String;
+    .restart local v8  # "descriptor":Ljava/lang/String;
+    invoke-virtual {v7, v8}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
+
+    .line 504
     invoke-virtual/range {p0 .. p0}, Landroid/net/INetd$Stub;->tetherGetStats()[Landroid/net/TetherStatsParcel;
 
     move-result-object v0
 
-    .line 511
+    .line 505
+    .local v0, "_result":[Landroid/net/TetherStatsParcel;
     invoke-virtual/range {p3 .. p3}, Landroid/os/Parcel;->writeNoException()V
 
-    .line 512
-    invoke-virtual {v7, v0, v6}, Landroid/os/Parcel;->writeTypedArray([Landroid/os/Parcelable;I)V
+    .line 506
+    invoke-virtual {v10, v0, v6}, Landroid/os/Parcel;->writeTypedArray([Landroid/os/Parcelable;I)V
 
-    .line 513
+    .line 507
     return v6
 
-    .line 501
-    :pswitch_733  #0xd
-    move-object v5, v0
+    .line 495
+    .end local v0  # "_result":[Landroid/net/TetherStatsParcel;
+    .end local v8  # "descriptor":Ljava/lang/String;
+    .restart local v11  # "descriptor":Ljava/lang/String;
+    :pswitch_79a  #0xd
+    move v6, v10
 
-    move v6, v13
+    move-object v8, v11
 
-    move-object v7, v14
+    move-object v10, v12
 
-    move-object v0, v15
+    move-object v7, v13
 
-    invoke-virtual {v0, v3}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
+    move-object v9, v15
 
-    .line 502
+    .end local v11  # "descriptor":Ljava/lang/String;
+    .restart local v8  # "descriptor":Ljava/lang/String;
+    invoke-virtual {v7, v8}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
+
+    .line 496
     invoke-virtual/range {p0 .. p0}, Landroid/net/INetd$Stub;->tetherApplyDnsInterfaces()Z
 
     move-result v0
 
-    .line 503
+    .line 497
+    .local v0, "_result":Z
     invoke-virtual/range {p3 .. p3}, Landroid/os/Parcel;->writeNoException()V
 
-    .line 504
-    invoke-virtual {v7, v0}, Landroid/os/Parcel;->writeInt(I)V
+    .line 498
+    invoke-virtual {v10, v0}, Landroid/os/Parcel;->writeInt(I)V
 
-    .line 505
+    .line 499
     return v6
 
+    .line 484
+    .end local v0  # "_result":Z
+    .end local v8  # "descriptor":Ljava/lang/String;
+    .restart local v11  # "descriptor":Ljava/lang/String;
+    :pswitch_7ad  #0xc
+    move v6, v10
+
+    move-object v8, v11
+
+    move-object v10, v12
+
+    move-object v7, v13
+
+    move-object v9, v15
+
+    .end local v11  # "descriptor":Ljava/lang/String;
+    .restart local v8  # "descriptor":Ljava/lang/String;
+    invoke-virtual {v7, v8}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
+
+    .line 486
+    sget-object v0, Landroid/net/UidRangeParcel;->CREATOR:Landroid/os/Parcelable$Creator;
+
+    invoke-virtual {v7, v0}, Landroid/os/Parcel;->createTypedArray(Landroid/os/Parcelable$Creator;)[Ljava/lang/Object;
+
+    move-result-object v0
+
+    check-cast v0, [Landroid/net/UidRangeParcel;
+
+    .line 488
+    .local v0, "_arg0":[Landroid/net/UidRangeParcel;
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->createIntArray()[I
+
+    move-result-object v1
+
+    .line 489
+    .local v1, "_arg1":[I
+    invoke-virtual {v9, v0, v1}, Landroid/net/INetd$Stub;->socketDestroy([Landroid/net/UidRangeParcel;[I)V
+
     .line 490
-    :pswitch_745  #0xc
-    move-object v5, v0
+    invoke-virtual/range {p3 .. p3}, Landroid/os/Parcel;->writeNoException()V
 
-    move v6, v13
+    .line 491
+    return v6
 
-    move-object v7, v14
+    .line 473
+    .end local v0  # "_arg0":[Landroid/net/UidRangeParcel;
+    .end local v1  # "_arg1":[I
+    .end local v8  # "descriptor":Ljava/lang/String;
+    .restart local v11  # "descriptor":Ljava/lang/String;
+    :pswitch_7c8  #0xb
+    move v6, v10
 
-    move-object v0, v15
+    move-object v8, v11
 
-    invoke-virtual {v0, v3}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
+    move-object v10, v12
 
-    .line 492
+    move-object v7, v13
+
+    move-object v9, v15
+
+    .end local v11  # "descriptor":Ljava/lang/String;
+    .restart local v8  # "descriptor":Ljava/lang/String;
+    invoke-virtual {v7, v8}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
+
+    .line 475
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
+
+    move-result v1
+
+    if-eqz v1, :cond_7d7
+
+    move v0, v6
+
+    .line 477
+    .local v0, "_arg0":Z
+    :cond_7d7
     sget-object v1, Landroid/net/UidRangeParcel;->CREATOR:Landroid/os/Parcelable$Creator;
 
-    invoke-virtual {v0, v1}, Landroid/os/Parcel;->createTypedArray(Landroid/os/Parcelable$Creator;)[Ljava/lang/Object;
+    invoke-virtual {v7, v1}, Landroid/os/Parcel;->createTypedArray(Landroid/os/Parcelable$Creator;)[Ljava/lang/Object;
 
     move-result-object v1
 
     check-cast v1, [Landroid/net/UidRangeParcel;
 
-    .line 494
-    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->createIntArray()[I
-
-    move-result-object v0
-
-    .line 495
-    invoke-virtual {v5, v1, v0}, Landroid/net/INetd$Stub;->socketDestroy([Landroid/net/UidRangeParcel;[I)V
-
-    .line 496
-    invoke-virtual/range {p3 .. p3}, Landroid/os/Parcel;->writeNoException()V
-
-    .line 497
-    return v6
+    .line 478
+    .local v1, "_arg1":[Landroid/net/UidRangeParcel;
+    invoke-virtual {v9, v0, v1}, Landroid/net/INetd$Stub;->networkRejectNonSecureVpn(Z[Landroid/net/UidRangeParcel;)V
 
     .line 479
-    :pswitch_75f  #0xb
-    move-object v5, v0
-
-    move v6, v13
-
-    move-object v7, v14
-
-    move-object v0, v15
-
-    invoke-virtual {v0, v3}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
-
-    .line 481
-    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
-
-    move-result v1
-
-    if-eqz v1, :cond_76d
-
-    move v4, v6
-
-    .line 483
-    :cond_76d
-    sget-object v1, Landroid/net/UidRangeParcel;->CREATOR:Landroid/os/Parcelable$Creator;
-
-    invoke-virtual {v0, v1}, Landroid/os/Parcel;->createTypedArray(Landroid/os/Parcelable$Creator;)[Ljava/lang/Object;
-
-    move-result-object v0
-
-    check-cast v0, [Landroid/net/UidRangeParcel;
-
-    .line 484
-    invoke-virtual {v5, v4, v0}, Landroid/net/INetd$Stub;->networkRejectNonSecureVpn(Z[Landroid/net/UidRangeParcel;)V
-
-    .line 485
     invoke-virtual/range {p3 .. p3}, Landroid/os/Parcel;->writeNoException()V
 
-    .line 486
+    .line 480
     return v6
-
-    .line 468
-    :pswitch_77c  #0xa
-    move-object v5, v0
-
-    move v6, v13
-
-    move-object v7, v14
-
-    move-object v0, v15
-
-    invoke-virtual {v0, v3}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
-
-    .line 470
-    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
-
-    move-result v1
-
-    .line 472
-    sget-object v2, Landroid/net/UidRangeParcel;->CREATOR:Landroid/os/Parcelable$Creator;
-
-    invoke-virtual {v0, v2}, Landroid/os/Parcel;->createTypedArray(Landroid/os/Parcelable$Creator;)[Ljava/lang/Object;
-
-    move-result-object v0
-
-    check-cast v0, [Landroid/net/UidRangeParcel;
-
-    .line 473
-    invoke-virtual {v5, v1, v0}, Landroid/net/INetd$Stub;->networkRemoveUidRanges(I[Landroid/net/UidRangeParcel;)V
-
-    .line 474
-    invoke-virtual/range {p3 .. p3}, Landroid/os/Parcel;->writeNoException()V
-
-    .line 475
-    return v6
-
-    .line 457
-    :pswitch_796  #0x9
-    move-object v5, v0
-
-    move v6, v13
-
-    move-object v7, v14
-
-    move-object v0, v15
-
-    invoke-virtual {v0, v3}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
-
-    .line 459
-    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
-
-    move-result v1
-
-    .line 461
-    sget-object v2, Landroid/net/UidRangeParcel;->CREATOR:Landroid/os/Parcelable$Creator;
-
-    invoke-virtual {v0, v2}, Landroid/os/Parcel;->createTypedArray(Landroid/os/Parcelable$Creator;)[Ljava/lang/Object;
-
-    move-result-object v0
-
-    check-cast v0, [Landroid/net/UidRangeParcel;
 
     .line 462
-    invoke-virtual {v5, v1, v0}, Landroid/net/INetd$Stub;->networkAddUidRanges(I[Landroid/net/UidRangeParcel;)V
+    .end local v0  # "_arg0":Z
+    .end local v1  # "_arg1":[Landroid/net/UidRangeParcel;
+    .end local v8  # "descriptor":Ljava/lang/String;
+    .restart local v11  # "descriptor":Ljava/lang/String;
+    :pswitch_7e6  #0xa
+    move v6, v10
 
-    .line 463
-    invoke-virtual/range {p3 .. p3}, Landroid/os/Parcel;->writeNoException()V
+    move-object v8, v11
+
+    move-object v10, v12
+
+    move-object v7, v13
+
+    move-object v9, v15
+
+    .end local v11  # "descriptor":Ljava/lang/String;
+    .restart local v8  # "descriptor":Ljava/lang/String;
+    invoke-virtual {v7, v8}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
 
     .line 464
-    return v6
-
-    .line 446
-    :pswitch_7b0  #0x8
-    move-object v5, v0
-
-    move v6, v13
-
-    move-object v7, v14
-
-    move-object v0, v15
-
-    invoke-virtual {v0, v3}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
-
-    .line 448
     invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
 
-    move-result v1
+    move-result v0
 
-    .line 450
-    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readString()Ljava/lang/String;
+    .line 466
+    .local v0, "_arg0":I
+    sget-object v1, Landroid/net/UidRangeParcel;->CREATOR:Landroid/os/Parcelable$Creator;
 
-    move-result-object v0
+    invoke-virtual {v7, v1}, Landroid/os/Parcel;->createTypedArray(Landroid/os/Parcelable$Creator;)[Ljava/lang/Object;
+
+    move-result-object v1
+
+    check-cast v1, [Landroid/net/UidRangeParcel;
+
+    .line 467
+    .restart local v1  # "_arg1":[Landroid/net/UidRangeParcel;
+    invoke-virtual {v9, v0, v1}, Landroid/net/INetd$Stub;->networkRemoveUidRanges(I[Landroid/net/UidRangeParcel;)V
+
+    .line 468
+    invoke-virtual/range {p3 .. p3}, Landroid/os/Parcel;->writeNoException()V
+
+    .line 469
+    return v6
 
     .line 451
-    invoke-virtual {v5, v1, v0}, Landroid/net/INetd$Stub;->networkRemoveInterface(ILjava/lang/String;)V
+    .end local v0  # "_arg0":I
+    .end local v1  # "_arg1":[Landroid/net/UidRangeParcel;
+    .end local v8  # "descriptor":Ljava/lang/String;
+    .restart local v11  # "descriptor":Ljava/lang/String;
+    :pswitch_801  #0x9
+    move v6, v10
 
-    .line 452
-    invoke-virtual/range {p3 .. p3}, Landroid/os/Parcel;->writeNoException()V
+    move-object v8, v11
+
+    move-object v10, v12
+
+    move-object v7, v13
+
+    move-object v9, v15
+
+    .end local v11  # "descriptor":Ljava/lang/String;
+    .restart local v8  # "descriptor":Ljava/lang/String;
+    invoke-virtual {v7, v8}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
 
     .line 453
-    return v6
-
-    .line 435
-    :pswitch_7c6  #0x7
-    move-object v5, v0
-
-    move v6, v13
-
-    move-object v7, v14
-
-    move-object v0, v15
-
-    invoke-virtual {v0, v3}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
-
-    .line 437
     invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
 
-    move-result v1
+    move-result v0
 
-    .line 439
-    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readString()Ljava/lang/String;
+    .line 455
+    .restart local v0  # "_arg0":I
+    sget-object v1, Landroid/net/UidRangeParcel;->CREATOR:Landroid/os/Parcelable$Creator;
 
-    move-result-object v0
+    invoke-virtual {v7, v1}, Landroid/os/Parcel;->createTypedArray(Landroid/os/Parcelable$Creator;)[Ljava/lang/Object;
+
+    move-result-object v1
+
+    check-cast v1, [Landroid/net/UidRangeParcel;
+
+    .line 456
+    .restart local v1  # "_arg1":[Landroid/net/UidRangeParcel;
+    invoke-virtual {v9, v0, v1}, Landroid/net/INetd$Stub;->networkAddUidRanges(I[Landroid/net/UidRangeParcel;)V
+
+    .line 457
+    invoke-virtual/range {p3 .. p3}, Landroid/os/Parcel;->writeNoException()V
+
+    .line 458
+    return v6
 
     .line 440
-    invoke-virtual {v5, v1, v0}, Landroid/net/INetd$Stub;->networkAddInterface(ILjava/lang/String;)V
+    .end local v0  # "_arg0":I
+    .end local v1  # "_arg1":[Landroid/net/UidRangeParcel;
+    .end local v8  # "descriptor":Ljava/lang/String;
+    .restart local v11  # "descriptor":Ljava/lang/String;
+    :pswitch_81c  #0x8
+    move v6, v10
 
-    .line 441
-    invoke-virtual/range {p3 .. p3}, Landroid/os/Parcel;->writeNoException()V
+    move-object v8, v11
+
+    move-object v10, v12
+
+    move-object v7, v13
+
+    move-object v9, v15
+
+    .end local v11  # "descriptor":Ljava/lang/String;
+    .restart local v8  # "descriptor":Ljava/lang/String;
+    invoke-virtual {v7, v8}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
 
     .line 442
-    return v6
-
-    .line 426
-    :pswitch_7dc  #0x6
-    move-object v5, v0
-
-    move v6, v13
-
-    move-object v7, v14
-
-    move-object v0, v15
-
-    invoke-virtual {v0, v3}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
-
-    .line 428
     invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
 
     move-result v0
 
-    .line 429
-    invoke-virtual {v5, v0}, Landroid/net/INetd$Stub;->networkDestroy(I)V
-
-    .line 430
-    invoke-virtual/range {p3 .. p3}, Landroid/os/Parcel;->writeNoException()V
-
-    .line 431
-    return v6
-
-    .line 415
-    :pswitch_7ee  #0x5
-    move-object v5, v0
-
-    move v6, v13
-
-    move-object v7, v14
-
-    move-object v0, v15
-
-    invoke-virtual {v0, v3}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
-
-    .line 417
-    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
-
-    move-result v1
-
-    .line 419
-    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
-
-    move-result v0
-
-    if-eqz v0, :cond_800
-
-    move v4, v6
-
-    .line 420
-    :cond_800
-    invoke-virtual {v5, v1, v4}, Landroid/net/INetd$Stub;->networkCreateVpn(IZ)V
-
-    .line 421
-    invoke-virtual/range {p3 .. p3}, Landroid/os/Parcel;->writeNoException()V
-
-    .line 422
-    return v6
-
-    .line 404
-    :pswitch_807  #0x4
-    move-object v5, v0
-
-    move v6, v13
-
-    move-object v7, v14
-
-    move-object v0, v15
-
-    invoke-virtual {v0, v3}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
-
-    .line 406
-    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
-
-    move-result v1
-
-    .line 408
-    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
-
-    move-result v0
-
-    .line 409
-    invoke-virtual {v5, v1, v0}, Landroid/net/INetd$Stub;->networkCreatePhysical(II)V
-
-    .line 410
-    invoke-virtual/range {p3 .. p3}, Landroid/os/Parcel;->writeNoException()V
-
-    .line 411
-    return v6
-
-    .line 394
-    :pswitch_81d  #0x3
-    move-object v5, v0
-
-    move v6, v13
-
-    move-object v7, v14
-
-    move-object v0, v15
-
-    invoke-virtual {v0, v3}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
-
-    .line 396
-    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
-
-    move-result v0
-
-    if-eqz v0, :cond_82b
-
-    move v4, v6
-
-    .line 397
-    :cond_82b
-    invoke-virtual {v5, v4}, Landroid/net/INetd$Stub;->bandwidthEnableDataSaver(Z)Z
-
-    move-result v0
-
-    .line 398
-    invoke-virtual/range {p3 .. p3}, Landroid/os/Parcel;->writeNoException()V
-
-    .line 399
-    invoke-virtual {v7, v0}, Landroid/os/Parcel;->writeInt(I)V
-
-    .line 400
-    return v6
-
-    .line 380
-    :pswitch_836  #0x2
-    move-object v5, v0
-
-    move v6, v13
-
-    move-object v7, v14
-
-    move-object v0, v15
-
-    invoke-virtual {v0, v3}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
-
-    .line 382
+    .line 444
+    .restart local v0  # "_arg0":I
     invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readString()Ljava/lang/String;
 
     move-result-object v1
 
-    .line 384
+    .line 445
+    .local v1, "_arg1":Ljava/lang/String;
+    invoke-virtual {v9, v0, v1}, Landroid/net/INetd$Stub;->networkRemoveInterface(ILjava/lang/String;)V
+
+    .line 446
+    invoke-virtual/range {p3 .. p3}, Landroid/os/Parcel;->writeNoException()V
+
+    .line 447
+    return v6
+
+    .line 429
+    .end local v0  # "_arg0":I
+    .end local v1  # "_arg1":Ljava/lang/String;
+    .end local v8  # "descriptor":Ljava/lang/String;
+    .restart local v11  # "descriptor":Ljava/lang/String;
+    :pswitch_833  #0x7
+    move v6, v10
+
+    move-object v8, v11
+
+    move-object v10, v12
+
+    move-object v7, v13
+
+    move-object v9, v15
+
+    .end local v11  # "descriptor":Ljava/lang/String;
+    .restart local v8  # "descriptor":Ljava/lang/String;
+    invoke-virtual {v7, v8}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
+
+    .line 431
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
+
+    move-result v0
+
+    .line 433
+    .restart local v0  # "_arg0":I
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readString()Ljava/lang/String;
+
+    move-result-object v1
+
+    .line 434
+    .restart local v1  # "_arg1":Ljava/lang/String;
+    invoke-virtual {v9, v0, v1}, Landroid/net/INetd$Stub;->networkAddInterface(ILjava/lang/String;)V
+
+    .line 435
+    invoke-virtual/range {p3 .. p3}, Landroid/os/Parcel;->writeNoException()V
+
+    .line 436
+    return v6
+
+    .line 420
+    .end local v0  # "_arg0":I
+    .end local v1  # "_arg1":Ljava/lang/String;
+    .end local v8  # "descriptor":Ljava/lang/String;
+    .restart local v11  # "descriptor":Ljava/lang/String;
+    :pswitch_84a  #0x6
+    move v6, v10
+
+    move-object v8, v11
+
+    move-object v10, v12
+
+    move-object v7, v13
+
+    move-object v9, v15
+
+    .end local v11  # "descriptor":Ljava/lang/String;
+    .restart local v8  # "descriptor":Ljava/lang/String;
+    invoke-virtual {v7, v8}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
+
+    .line 422
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
+
+    move-result v0
+
+    .line 423
+    .restart local v0  # "_arg0":I
+    invoke-virtual {v9, v0}, Landroid/net/INetd$Stub;->networkDestroy(I)V
+
+    .line 424
+    invoke-virtual/range {p3 .. p3}, Landroid/os/Parcel;->writeNoException()V
+
+    .line 425
+    return v6
+
+    .line 409
+    .end local v0  # "_arg0":I
+    .end local v8  # "descriptor":Ljava/lang/String;
+    .restart local v11  # "descriptor":Ljava/lang/String;
+    :pswitch_85d  #0x5
+    move v6, v10
+
+    move-object v8, v11
+
+    move-object v10, v12
+
+    move-object v7, v13
+
+    move-object v9, v15
+
+    .end local v11  # "descriptor":Ljava/lang/String;
+    .restart local v8  # "descriptor":Ljava/lang/String;
+    invoke-virtual {v7, v8}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
+
+    .line 411
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
+
+    move-result v1
+
+    .line 413
+    .local v1, "_arg0":I
     invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
 
     move-result v2
 
-    if-eqz v2, :cond_848
+    if-eqz v2, :cond_870
 
-    move v4, v6
+    move v0, v6
 
-    .line 386
-    :cond_848
-    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->createIntArray()[I
+    .line 414
+    .local v0, "_arg1":Z
+    :cond_870
+    invoke-virtual {v9, v1, v0}, Landroid/net/INetd$Stub;->networkCreateVpn(IZ)V
 
-    move-result-object v0
+    .line 415
+    invoke-virtual/range {p3 .. p3}, Landroid/os/Parcel;->writeNoException()V
 
-    .line 387
-    invoke-virtual {v5, v1, v4, v0}, Landroid/net/INetd$Stub;->firewallReplaceUidChain(Ljava/lang/String;Z[I)Z
+    .line 416
+    return v6
+
+    .line 398
+    .end local v0  # "_arg1":Z
+    .end local v1  # "_arg0":I
+    .end local v8  # "descriptor":Ljava/lang/String;
+    .restart local v11  # "descriptor":Ljava/lang/String;
+    :pswitch_877  #0x4
+    move v6, v10
+
+    move-object v8, v11
+
+    move-object v10, v12
+
+    move-object v7, v13
+
+    move-object v9, v15
+
+    .end local v11  # "descriptor":Ljava/lang/String;
+    .restart local v8  # "descriptor":Ljava/lang/String;
+    invoke-virtual {v7, v8}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
+
+    .line 400
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
 
     move-result v0
 
-    .line 388
+    .line 402
+    .local v0, "_arg0":I
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
+
+    move-result v1
+
+    .line 403
+    .local v1, "_arg1":I
+    invoke-virtual {v9, v0, v1}, Landroid/net/INetd$Stub;->networkCreatePhysical(II)V
+
+    .line 404
     invoke-virtual/range {p3 .. p3}, Landroid/os/Parcel;->writeNoException()V
 
-    .line 389
-    invoke-virtual {v7, v0}, Landroid/os/Parcel;->writeInt(I)V
-
-    .line 390
+    .line 405
     return v6
 
-    .line 372
-    :pswitch_857  #0x1
-    move-object v5, v0
+    .line 388
+    .end local v0  # "_arg0":I
+    .end local v1  # "_arg1":I
+    .end local v8  # "descriptor":Ljava/lang/String;
+    .restart local v11  # "descriptor":Ljava/lang/String;
+    :pswitch_88e  #0x3
+    move v6, v10
 
-    move v6, v13
+    move-object v8, v11
 
-    move-object v7, v14
+    move-object v10, v12
 
-    move-object v0, v15
+    move-object v7, v13
 
-    invoke-virtual {v0, v3}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
+    move-object v9, v15
 
-    .line 373
+    .end local v11  # "descriptor":Ljava/lang/String;
+    .restart local v8  # "descriptor":Ljava/lang/String;
+    invoke-virtual {v7, v8}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
+
+    .line 390
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
+
+    move-result v1
+
+    if-eqz v1, :cond_89d
+
+    move v0, v6
+
+    .line 391
+    .local v0, "_arg0":Z
+    :cond_89d
+    invoke-virtual {v9, v0}, Landroid/net/INetd$Stub;->bandwidthEnableDataSaver(Z)Z
+
+    move-result v1
+
+    .line 392
+    .local v1, "_result":Z
+    invoke-virtual/range {p3 .. p3}, Landroid/os/Parcel;->writeNoException()V
+
+    .line 393
+    invoke-virtual {v10, v1}, Landroid/os/Parcel;->writeInt(I)V
+
+    .line 394
+    return v6
+
+    .line 374
+    .end local v0  # "_arg0":Z
+    .end local v1  # "_result":Z
+    .end local v8  # "descriptor":Ljava/lang/String;
+    .restart local v11  # "descriptor":Ljava/lang/String;
+    :pswitch_8a8  #0x2
+    move v6, v10
+
+    move-object v8, v11
+
+    move-object v10, v12
+
+    move-object v7, v13
+
+    move-object v9, v15
+
+    .end local v11  # "descriptor":Ljava/lang/String;
+    .restart local v8  # "descriptor":Ljava/lang/String;
+    invoke-virtual {v7, v8}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
+
+    .line 376
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readString()Ljava/lang/String;
+
+    move-result-object v1
+
+    .line 378
+    .local v1, "_arg0":Ljava/lang/String;
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
+
+    move-result v2
+
+    if-eqz v2, :cond_8bb
+
+    move v0, v6
+
+    .line 380
+    .local v0, "_arg1":Z
+    :cond_8bb
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->createIntArray()[I
+
+    move-result-object v2
+
+    .line 381
+    .local v2, "_arg2":[I
+    invoke-virtual {v9, v1, v0, v2}, Landroid/net/INetd$Stub;->firewallReplaceUidChain(Ljava/lang/String;Z[I)Z
+
+    move-result v3
+
+    .line 382
+    .local v3, "_result":Z
+    invoke-virtual/range {p3 .. p3}, Landroid/os/Parcel;->writeNoException()V
+
+    .line 383
+    invoke-virtual {v10, v3}, Landroid/os/Parcel;->writeInt(I)V
+
+    .line 384
+    return v6
+
+    .line 366
+    .end local v0  # "_arg1":Z
+    .end local v1  # "_arg0":Ljava/lang/String;
+    .end local v2  # "_arg2":[I
+    .end local v3  # "_result":Z
+    .end local v8  # "descriptor":Ljava/lang/String;
+    .restart local v11  # "descriptor":Ljava/lang/String;
+    :pswitch_8ca  #0x1
+    move v6, v10
+
+    move-object v8, v11
+
+    move-object v10, v12
+
+    move-object v7, v13
+
+    move-object v9, v15
+
+    .end local v11  # "descriptor":Ljava/lang/String;
+    .restart local v8  # "descriptor":Ljava/lang/String;
+    invoke-virtual {v7, v8}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
+
+    .line 367
     invoke-virtual/range {p0 .. p0}, Landroid/net/INetd$Stub;->isAlive()Z
 
     move-result v0
 
-    .line 374
-    invoke-virtual/range {p3 .. p3}, Landroid/os/Parcel;->writeNoException()V
-
-    .line 375
-    invoke-virtual {v7, v0}, Landroid/os/Parcel;->writeInt(I)V
-
-    .line 376
-    return v6
-
-    .line 367
-    :cond_869
-    move v6, v13
-
-    move-object v7, v14
-
-    invoke-virtual {v7, v3}, Landroid/os/Parcel;->writeString(Ljava/lang/String;)V
-
     .line 368
-    return v6
-
-    .line 1526
-    :cond_86f
-    move-object v5, v0
-
-    move v6, v13
-
-    move-object v7, v14
-
-    move-object v0, v15
-
-    invoke-virtual {v0, v3}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
-
-    .line 1527
+    .local v0, "_result":Z
     invoke-virtual/range {p3 .. p3}, Landroid/os/Parcel;->writeNoException()V
 
-    .line 1528
+    .line 369
+    invoke-virtual {v10, v0}, Landroid/os/Parcel;->writeInt(I)V
+
+    .line 370
+    return v6
+
+    .line 361
+    .end local v0  # "_result":Z
+    .end local v8  # "descriptor":Ljava/lang/String;
+    .restart local v11  # "descriptor":Ljava/lang/String;
+    :cond_8dd
+    move v6, v10
+
+    move-object v8, v11
+
+    move-object v10, v12
+
+    .end local v11  # "descriptor":Ljava/lang/String;
+    .restart local v8  # "descriptor":Ljava/lang/String;
+    invoke-virtual {v10, v8}, Landroid/os/Parcel;->writeString(Ljava/lang/String;)V
+
+    .line 362
+    return v6
+
+    .line 1494
+    .end local v8  # "descriptor":Ljava/lang/String;
+    .restart local v11  # "descriptor":Ljava/lang/String;
+    :cond_8e4
+    move v6, v10
+
+    move-object v8, v11
+
+    move-object v10, v12
+
+    move-object v7, v13
+
+    move-object v9, v15
+
+    .end local v11  # "descriptor":Ljava/lang/String;
+    .restart local v8  # "descriptor":Ljava/lang/String;
+    invoke-virtual {v7, v8}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
+
+    .line 1495
+    invoke-virtual/range {p3 .. p3}, Landroid/os/Parcel;->writeNoException()V
+
+    .line 1496
     invoke-virtual/range {p0 .. p0}, Landroid/net/INetd$Stub;->getInterfaceVersion()I
 
     move-result v0
 
-    invoke-virtual {v7, v0}, Landroid/os/Parcel;->writeInt(I)V
+    invoke-virtual {v10, v0}, Landroid/os/Parcel;->writeInt(I)V
 
-    .line 1529
+    .line 1497
     return v6
 
     nop
 
-    :pswitch_data_882
+    :pswitch_data_8f8
     .packed-switch 0x1
-        :pswitch_857  #00000001
-        :pswitch_836  #00000002
-        :pswitch_81d  #00000003
-        :pswitch_807  #00000004
-        :pswitch_7ee  #00000005
-        :pswitch_7dc  #00000006
-        :pswitch_7c6  #00000007
-        :pswitch_7b0  #00000008
-        :pswitch_796  #00000009
-        :pswitch_77c  #0000000a
-        :pswitch_75f  #0000000b
-        :pswitch_745  #0000000c
-        :pswitch_733  #0000000d
-        :pswitch_721  #0000000e
-        :pswitch_707  #0000000f
-        :pswitch_6ed  #00000010
-        :pswitch_6cb  #00000011
-        :pswitch_6a6  #00000012
-        :pswitch_683  #00000013
-        :pswitch_65f  #00000014
-        :pswitch_5f7  #00000015
-        :pswitch_5cf  #00000016
-        :pswitch_59f  #00000017
-        :pswitch_584  #00000018
-        :pswitch_554  #00000019
-        :pswitch_524  #0000001a
-        :pswitch_500  #0000001b
-        :pswitch_4dc  #0000001c
-        :pswitch_4b8  #0000001d
-        :pswitch_4aa  #0000001e
-        :pswitch_490  #0000001f
-        :pswitch_476  #00000020
-        :pswitch_464  #00000021
-        :pswitch_44e  #00000022
-        :pswitch_438  #00000023
-        :pswitch_426  #00000024
-        :pswitch_410  #00000025
-        :pswitch_402  #00000026
-        :pswitch_3f4  #00000027
-        :pswitch_3e6  #00000028
-        :pswitch_3d8  #00000029
-        :pswitch_3ca  #0000002a
-        :pswitch_3b8  #0000002b
-        :pswitch_3a6  #0000002c
-        :pswitch_394  #0000002d
-        :pswitch_386  #0000002e
-        :pswitch_374  #0000002f
-        :pswitch_366  #00000030
-        :pswitch_358  #00000031
-        :pswitch_34a  #00000032
-        :pswitch_33c  #00000033
-        :pswitch_32e  #00000034
-        :pswitch_320  #00000035
-        :pswitch_312  #00000036
-        :pswitch_308  #00000037
-        :pswitch_2fa  #00000038
-        :pswitch_2ec  #00000039
-        :pswitch_2de  #0000003a
-        :pswitch_2d0  #0000003b
-        :pswitch_2be  #0000003c
-        :pswitch_2b0  #0000003d
-        :pswitch_296  #0000003e
-        :pswitch_27c  #0000003f
-        :pswitch_25c  #00000040
-        :pswitch_23c  #00000041
-        :pswitch_22e  #00000042
-        :pswitch_220  #00000043
-        :pswitch_216  #00000044
-        :pswitch_204  #00000045
-        :pswitch_1f2  #00000046
-        :pswitch_1e4  #00000047
-        :pswitch_1d2  #00000048
-        :pswitch_1c4  #00000049
-        :pswitch_1b6  #0000004a
-        :pswitch_1a4  #0000004b
-        :pswitch_196  #0000004c
-        :pswitch_184  #0000004d
-        :pswitch_16e  #0000004e
-        :pswitch_159  #0000004f
-        :pswitch_14b  #00000050
-        :pswitch_130  #00000051
-        :pswitch_115  #00000052
-        :pswitch_100  #00000053
-        :pswitch_f2  #00000054
-        :pswitch_dd  #00000055
-        :pswitch_cb  #00000056
-        :pswitch_b9  #00000057
-        :pswitch_a7  #00000058
-        :pswitch_95  #00000059
-        :pswitch_83  #0000005a
-        :pswitch_71  #0000005b
-        :pswitch_63  #0000005c
-        :pswitch_59  #0000005d
-        :pswitch_4b  #0000005e
-        :pswitch_35  #0000005f
-        :pswitch_1f  #00000060
+        :pswitch_8ca  #00000001
+        :pswitch_8a8  #00000002
+        :pswitch_88e  #00000003
+        :pswitch_877  #00000004
+        :pswitch_85d  #00000005
+        :pswitch_84a  #00000006
+        :pswitch_833  #00000007
+        :pswitch_81c  #00000008
+        :pswitch_801  #00000009
+        :pswitch_7e6  #0000000a
+        :pswitch_7c8  #0000000b
+        :pswitch_7ad  #0000000c
+        :pswitch_79a  #0000000d
+        :pswitch_787  #0000000e
+        :pswitch_76c  #0000000f
+        :pswitch_751  #00000010
+        :pswitch_72e  #00000011
+        :pswitch_704  #00000012
+        :pswitch_6e1  #00000013
+        :pswitch_6b8  #00000014
+        :pswitch_62a  #00000015
+        :pswitch_5f6  #00000016
+        :pswitch_5bb  #00000017
+        :pswitch_5a1  #00000018
+        :pswitch_55f  #00000019
+        :pswitch_51d  #0000001a
+        :pswitch_4f0  #0000001b
+        :pswitch_4c3  #0000001c
+        :pswitch_496  #0000001d
+        :pswitch_488  #0000001e
+        :pswitch_46e  #0000001f
+        :pswitch_454  #00000020
+        :pswitch_442  #00000021
+        :pswitch_42c  #00000022
+        :pswitch_416  #00000023
+        :pswitch_404  #00000024
+        :pswitch_3ee  #00000025
+        :pswitch_3e0  #00000026
+        :pswitch_3d2  #00000027
+        :pswitch_3c4  #00000028
+        :pswitch_3b6  #00000029
+        :pswitch_3a8  #0000002a
+        :pswitch_396  #0000002b
+        :pswitch_384  #0000002c
+        :pswitch_372  #0000002d
+        :pswitch_364  #0000002e
+        :pswitch_352  #0000002f
+        :pswitch_344  #00000030
+        :pswitch_336  #00000031
+        :pswitch_328  #00000032
+        :pswitch_31a  #00000033
+        :pswitch_30c  #00000034
+        :pswitch_2fe  #00000035
+        :pswitch_2f0  #00000036
+        :pswitch_2e6  #00000037
+        :pswitch_2d8  #00000038
+        :pswitch_2ca  #00000039
+        :pswitch_2bc  #0000003a
+        :pswitch_2ae  #0000003b
+        :pswitch_29c  #0000003c
+        :pswitch_28e  #0000003d
+        :pswitch_274  #0000003e
+        :pswitch_25a  #0000003f
+        :pswitch_234  #00000040
+        :pswitch_20e  #00000041
+        :pswitch_200  #00000042
+        :pswitch_1f2  #00000043
+        :pswitch_1e8  #00000044
+        :pswitch_1d6  #00000045
+        :pswitch_1c4  #00000046
+        :pswitch_1b6  #00000047
+        :pswitch_1a4  #00000048
+        :pswitch_196  #00000049
+        :pswitch_188  #0000004a
+        :pswitch_176  #0000004b
+        :pswitch_168  #0000004c
+        :pswitch_156  #0000004d
+        :pswitch_140  #0000004e
+        :pswitch_12b  #0000004f
+        :pswitch_11d  #00000050
+        :pswitch_102  #00000051
+        :pswitch_e8  #00000052
+        :pswitch_d3  #00000053
+        :pswitch_c5  #00000054
+        :pswitch_b0  #00000055
+        :pswitch_9e  #00000056
+        :pswitch_8c  #00000057
+        :pswitch_7a  #00000058
+        :pswitch_68  #00000059
+        :pswitch_56  #0000005a
+        :pswitch_44  #0000005b
+        :pswitch_36  #0000005c
+        :pswitch_2c  #0000005d
+        :pswitch_1e  #0000005e
     .end packed-switch
 .end method

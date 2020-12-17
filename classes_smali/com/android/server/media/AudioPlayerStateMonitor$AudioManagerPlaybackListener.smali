@@ -32,6 +32,8 @@
 
 .method synthetic constructor <init>(Lcom/android/server/media/AudioPlayerStateMonitor;Lcom/android/server/media/AudioPlayerStateMonitor$1;)V
     .registers 3
+    .param p1, "x0"  # Lcom/android/server/media/AudioPlayerStateMonitor;
+    .param p2, "x1"  # Lcom/android/server/media/AudioPlayerStateMonitor$1;
 
     .line 221
     invoke-direct {p0, p1}, Lcom/android/server/media/AudioPlayerStateMonitor$AudioManagerPlaybackListener;-><init>(Lcom/android/server/media/AudioPlayerStateMonitor;)V
@@ -42,7 +44,7 @@
 
 # virtual methods
 .method public onPlaybackConfigChanged(Ljava/util/List;)V
-    .registers 11
+    .registers 12
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(",
@@ -53,6 +55,7 @@
     .end annotation
 
     .line 224
+    .local p1, "configs":Ljava/util/List;, "Ljava/util/List<Landroid/media/AudioPlaybackConfiguration;>;"
     iget-object v0, p0, Lcom/android/server/media/AudioPlayerStateMonitor$AudioManagerPlaybackListener;->this$0:Lcom/android/server/media/AudioPlayerStateMonitor;
 
     invoke-static {v0}, Lcom/android/server/media/AudioPlayerStateMonitor;->access$100(Lcom/android/server/media/AudioPlayerStateMonitor;)Ljava/lang/Object;
@@ -75,6 +78,7 @@
     invoke-direct {v1}, Landroid/util/ArrayMap;-><init>()V
 
     .line 229
+    .local v1, "activeAudioPlaybackConfigs":Landroid/util/ArrayMap;, "Landroid/util/ArrayMap<Ljava/lang/Integer;Landroid/media/AudioPlaybackConfiguration;>;"
     invoke-interface {p1}, Ljava/util/List;->iterator()Ljava/util/Iterator;
 
     move-result-object v2
@@ -93,6 +97,7 @@
     check-cast v3, Landroid/media/AudioPlaybackConfiguration;
 
     .line 230
+    .local v3, "config":Landroid/media/AudioPlaybackConfiguration;
     invoke-virtual {v3}, Landroid/media/AudioPlaybackConfiguration;->isActive()Z
 
     move-result v4
@@ -126,6 +131,7 @@
     invoke-virtual {v1, v4, v3}, Landroid/util/ArrayMap;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
 
     .line 234
+    .end local v3  # "config":Landroid/media/AudioPlaybackConfiguration;
     :cond_43
     goto :goto_17
 
@@ -135,6 +141,7 @@
 
     move v3, v2
 
+    .local v3, "i":I
     :goto_46
     invoke-virtual {v1}, Landroid/util/ArrayMap;->size()I
 
@@ -150,11 +157,13 @@
     check-cast v4, Landroid/media/AudioPlaybackConfiguration;
 
     .line 239
+    .local v4, "config":Landroid/media/AudioPlaybackConfiguration;
     invoke-virtual {v4}, Landroid/media/AudioPlaybackConfiguration;->getClientUid()I
 
     move-result v5
 
     .line 240
+    .local v5, "uid":I
     iget-object v6, p0, Lcom/android/server/media/AudioPlayerStateMonitor$AudioManagerPlaybackListener;->this$0:Lcom/android/server/media/AudioPlayerStateMonitor;
 
     iget-object v6, v6, Lcom/android/server/media/AudioPlayerStateMonitor;->mPrevActiveAudioPlaybackConfigs:Landroid/util/ArrayMap;
@@ -198,53 +207,57 @@
     .line 244
     invoke-static {v4}, Landroid/media/AudioPlaybackConfiguration;->toLogFriendlyString(Landroid/media/AudioPlaybackConfiguration;)Ljava/lang/String;
 
-    move-result-object v4
+    move-result-object v8
 
-    invoke-virtual {v7, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v7, v8}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v7}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v4
+    move-result-object v7
 
     .line 243
-    invoke-static {v6, v4}, Landroid/util/Log;->d(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v6, v7}, Landroid/util/Log;->d(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 247
     :cond_8a
-    iget-object v4, p0, Lcom/android/server/media/AudioPlayerStateMonitor$AudioManagerPlaybackListener;->this$0:Lcom/android/server/media/AudioPlayerStateMonitor;
+    iget-object v6, p0, Lcom/android/server/media/AudioPlayerStateMonitor$AudioManagerPlaybackListener;->this$0:Lcom/android/server/media/AudioPlayerStateMonitor;
 
-    iget-object v4, v4, Lcom/android/server/media/AudioPlayerStateMonitor;->mSortedAudioPlaybackClientUids:Landroid/util/IntArray;
+    iget-object v6, v6, Lcom/android/server/media/AudioPlayerStateMonitor;->mSortedAudioPlaybackClientUids:Landroid/util/IntArray;
 
-    invoke-virtual {v4, v5}, Landroid/util/IntArray;->indexOf(I)I
+    invoke-virtual {v6, v5}, Landroid/util/IntArray;->indexOf(I)I
 
-    move-result v4
+    move-result v6
 
     .line 248
-    if-nez v4, :cond_95
+    .local v6, "index":I
+    if-nez v6, :cond_95
 
     .line 250
     goto :goto_a5
 
     .line 251
     :cond_95
-    if-lez v4, :cond_9e
+    if-lez v6, :cond_9e
 
     .line 252
-    iget-object v6, p0, Lcom/android/server/media/AudioPlayerStateMonitor$AudioManagerPlaybackListener;->this$0:Lcom/android/server/media/AudioPlayerStateMonitor;
+    iget-object v7, p0, Lcom/android/server/media/AudioPlayerStateMonitor$AudioManagerPlaybackListener;->this$0:Lcom/android/server/media/AudioPlayerStateMonitor;
 
-    iget-object v6, v6, Lcom/android/server/media/AudioPlayerStateMonitor;->mSortedAudioPlaybackClientUids:Landroid/util/IntArray;
+    iget-object v7, v7, Lcom/android/server/media/AudioPlayerStateMonitor;->mSortedAudioPlaybackClientUids:Landroid/util/IntArray;
 
-    invoke-virtual {v6, v4}, Landroid/util/IntArray;->remove(I)V
+    invoke-virtual {v7, v6}, Landroid/util/IntArray;->remove(I)V
 
     .line 254
     :cond_9e
-    iget-object v4, p0, Lcom/android/server/media/AudioPlayerStateMonitor$AudioManagerPlaybackListener;->this$0:Lcom/android/server/media/AudioPlayerStateMonitor;
+    iget-object v7, p0, Lcom/android/server/media/AudioPlayerStateMonitor$AudioManagerPlaybackListener;->this$0:Lcom/android/server/media/AudioPlayerStateMonitor;
 
-    iget-object v4, v4, Lcom/android/server/media/AudioPlayerStateMonitor;->mSortedAudioPlaybackClientUids:Landroid/util/IntArray;
+    iget-object v7, v7, Lcom/android/server/media/AudioPlayerStateMonitor;->mSortedAudioPlaybackClientUids:Landroid/util/IntArray;
 
-    invoke-virtual {v4, v2, v5}, Landroid/util/IntArray;->add(II)V
+    invoke-virtual {v7, v2, v5}, Landroid/util/IntArray;->add(II)V
 
     .line 237
+    .end local v4  # "config":Landroid/media/AudioPlaybackConfiguration;
+    .end local v5  # "uid":I
+    .end local v6  # "index":I
     :cond_a5
     :goto_a5
     add-int/lit8 v3, v3, 0x1
@@ -252,6 +265,7 @@
     goto :goto_46
 
     .line 258
+    .end local v3  # "i":I
     :cond_a8
     iget-object v3, p0, Lcom/android/server/media/AudioPlayerStateMonitor$AudioManagerPlaybackListener;->this$0:Lcom/android/server/media/AudioPlayerStateMonitor;
 
@@ -263,7 +277,7 @@
 
     const/4 v4, 0x1
 
-    if-lez v3, :cond_112
+    if-lez v3, :cond_110
 
     iget-object v3, p0, Lcom/android/server/media/AudioPlayerStateMonitor$AudioManagerPlaybackListener;->this$0:Lcom/android/server/media/AudioPlayerStateMonitor;
 
@@ -286,228 +300,243 @@
 
     move-result v3
 
-    if-nez v3, :cond_112
+    if-nez v3, :cond_110
 
     .line 260
-    nop
+    const/4 v3, -0x1
 
     .line 261
-    nop
+    .local v3, "firstActiveUid":I
+    const/4 v5, -0x1
 
     .line 262
-    move v3, v4
+    .local v5, "firatActiveUidIndex":I
+    move v6, v4
 
+    .local v6, "i":I
     :goto_cc
-    iget-object v5, p0, Lcom/android/server/media/AudioPlayerStateMonitor$AudioManagerPlaybackListener;->this$0:Lcom/android/server/media/AudioPlayerStateMonitor;
-
-    iget-object v5, v5, Lcom/android/server/media/AudioPlayerStateMonitor;->mSortedAudioPlaybackClientUids:Landroid/util/IntArray;
-
-    invoke-virtual {v5}, Landroid/util/IntArray;->size()I
-
-    move-result v5
-
-    const/4 v6, -0x1
-
-    if-ge v3, v5, :cond_f3
-
-    .line 263
-    iget-object v5, p0, Lcom/android/server/media/AudioPlayerStateMonitor$AudioManagerPlaybackListener;->this$0:Lcom/android/server/media/AudioPlayerStateMonitor;
-
-    iget-object v5, v5, Lcom/android/server/media/AudioPlayerStateMonitor;->mSortedAudioPlaybackClientUids:Landroid/util/IntArray;
-
-    invoke-virtual {v5, v3}, Landroid/util/IntArray;->get(I)I
-
-    move-result v6
-
-    .line 264
-    iget-object v5, p0, Lcom/android/server/media/AudioPlayerStateMonitor$AudioManagerPlaybackListener;->this$0:Lcom/android/server/media/AudioPlayerStateMonitor;
-
-    iget-object v5, v5, Lcom/android/server/media/AudioPlayerStateMonitor;->mActiveAudioUids:Ljava/util/Set;
-
-    invoke-static {v6}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
-
-    move-result-object v7
-
-    invoke-interface {v5, v7}, Ljava/util/Set;->contains(Ljava/lang/Object;)Z
-
-    move-result v5
-
-    if-eqz v5, :cond_f0
-
-    .line 265
-    nop
-
-    .line 266
-    nop
-
-    .line 267
-    goto :goto_f4
-
-    .line 262
-    :cond_f0
-    add-int/lit8 v3, v3, 0x1
-
-    goto :goto_cc
-
-    :cond_f3
-    move v3, v6
-
-    .line 270
-    :goto_f4
-    nop
-
-    :goto_f5
-    if-lez v3, :cond_10b
-
-    .line 271
-    iget-object v5, p0, Lcom/android/server/media/AudioPlayerStateMonitor$AudioManagerPlaybackListener;->this$0:Lcom/android/server/media/AudioPlayerStateMonitor;
-
-    iget-object v5, v5, Lcom/android/server/media/AudioPlayerStateMonitor;->mSortedAudioPlaybackClientUids:Landroid/util/IntArray;
-
     iget-object v7, p0, Lcom/android/server/media/AudioPlayerStateMonitor$AudioManagerPlaybackListener;->this$0:Lcom/android/server/media/AudioPlayerStateMonitor;
 
     iget-object v7, v7, Lcom/android/server/media/AudioPlayerStateMonitor;->mSortedAudioPlaybackClientUids:Landroid/util/IntArray;
 
-    add-int/lit8 v8, v3, -0x1
-
-    .line 272
-    invoke-virtual {v7, v8}, Landroid/util/IntArray;->get(I)I
+    invoke-virtual {v7}, Landroid/util/IntArray;->size()I
 
     move-result v7
 
-    .line 271
-    invoke-virtual {v5, v3, v7}, Landroid/util/IntArray;->set(II)V
+    if-ge v6, v7, :cond_f2
+
+    .line 263
+    iget-object v7, p0, Lcom/android/server/media/AudioPlayerStateMonitor$AudioManagerPlaybackListener;->this$0:Lcom/android/server/media/AudioPlayerStateMonitor;
+
+    iget-object v7, v7, Lcom/android/server/media/AudioPlayerStateMonitor;->mSortedAudioPlaybackClientUids:Landroid/util/IntArray;
+
+    invoke-virtual {v7, v6}, Landroid/util/IntArray;->get(I)I
+
+    move-result v7
+
+    .line 264
+    .local v7, "uid":I
+    iget-object v8, p0, Lcom/android/server/media/AudioPlayerStateMonitor$AudioManagerPlaybackListener;->this$0:Lcom/android/server/media/AudioPlayerStateMonitor;
+
+    iget-object v8, v8, Lcom/android/server/media/AudioPlayerStateMonitor;->mActiveAudioUids:Ljava/util/Set;
+
+    invoke-static {v7}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
+
+    move-result-object v9
+
+    invoke-interface {v8, v9}, Ljava/util/Set;->contains(Ljava/lang/Object;)Z
+
+    move-result v8
+
+    if-eqz v8, :cond_ef
+
+    .line 265
+    move v5, v6
+
+    .line 266
+    move v3, v7
+
+    .line 267
+    goto :goto_f2
+
+    .line 262
+    .end local v7  # "uid":I
+    :cond_ef
+    add-int/lit8 v6, v6, 0x1
+
+    goto :goto_cc
 
     .line 270
-    add-int/lit8 v3, v3, -0x1
+    .end local v6  # "i":I
+    :cond_f2
+    :goto_f2
+    move v6, v5
 
-    goto :goto_f5
+    .restart local v6  # "i":I
+    :goto_f3
+    if-lez v6, :cond_109
+
+    .line 271
+    iget-object v7, p0, Lcom/android/server/media/AudioPlayerStateMonitor$AudioManagerPlaybackListener;->this$0:Lcom/android/server/media/AudioPlayerStateMonitor;
+
+    iget-object v7, v7, Lcom/android/server/media/AudioPlayerStateMonitor;->mSortedAudioPlaybackClientUids:Landroid/util/IntArray;
+
+    iget-object v8, p0, Lcom/android/server/media/AudioPlayerStateMonitor$AudioManagerPlaybackListener;->this$0:Lcom/android/server/media/AudioPlayerStateMonitor;
+
+    iget-object v8, v8, Lcom/android/server/media/AudioPlayerStateMonitor;->mSortedAudioPlaybackClientUids:Landroid/util/IntArray;
+
+    add-int/lit8 v9, v6, -0x1
+
+    .line 272
+    invoke-virtual {v8, v9}, Landroid/util/IntArray;->get(I)I
+
+    move-result v8
+
+    .line 271
+    invoke-virtual {v7, v6, v8}, Landroid/util/IntArray;->set(II)V
+
+    .line 270
+    add-int/lit8 v6, v6, -0x1
+
+    goto :goto_f3
 
     .line 274
-    :cond_10b
-    iget-object v3, p0, Lcom/android/server/media/AudioPlayerStateMonitor$AudioManagerPlaybackListener;->this$0:Lcom/android/server/media/AudioPlayerStateMonitor;
+    .end local v6  # "i":I
+    :cond_109
+    iget-object v6, p0, Lcom/android/server/media/AudioPlayerStateMonitor$AudioManagerPlaybackListener;->this$0:Lcom/android/server/media/AudioPlayerStateMonitor;
 
-    iget-object v3, v3, Lcom/android/server/media/AudioPlayerStateMonitor;->mSortedAudioPlaybackClientUids:Landroid/util/IntArray;
+    iget-object v6, v6, Lcom/android/server/media/AudioPlayerStateMonitor;->mSortedAudioPlaybackClientUids:Landroid/util/IntArray;
 
-    invoke-virtual {v3, v2, v6}, Landroid/util/IntArray;->set(II)V
+    invoke-virtual {v6, v2, v3}, Landroid/util/IntArray;->set(II)V
 
     .line 278
-    :cond_112
+    .end local v3  # "firstActiveUid":I
+    .end local v5  # "firatActiveUidIndex":I
+    :cond_110
     invoke-interface {p1}, Ljava/util/List;->iterator()Ljava/util/Iterator;
 
-    move-result-object p1
+    move-result-object v3
 
-    :goto_116
-    invoke-interface {p1}, Ljava/util/Iterator;->hasNext()Z
+    :goto_114
+    invoke-interface {v3}, Ljava/util/Iterator;->hasNext()Z
+
+    move-result v5
+
+    if-eqz v5, :cond_141
+
+    invoke-interface {v3}, Ljava/util/Iterator;->next()Ljava/lang/Object;
+
+    move-result-object v5
+
+    check-cast v5, Landroid/media/AudioPlaybackConfiguration;
+
+    .line 279
+    .local v5, "config":Landroid/media/AudioPlaybackConfiguration;
+    invoke-virtual {v5}, Landroid/media/AudioPlaybackConfiguration;->getPlayerInterfaceId()I
+
+    move-result v6
+
+    .line 280
+    .local v6, "pii":I
+    iget-object v7, p0, Lcom/android/server/media/AudioPlayerStateMonitor$AudioManagerPlaybackListener;->this$0:Lcom/android/server/media/AudioPlayerStateMonitor;
+
+    iget-object v7, v7, Lcom/android/server/media/AudioPlayerStateMonitor;->mPrevActiveAudioPlaybackConfigs:Landroid/util/ArrayMap;
+
+    invoke-static {v6}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
+
+    move-result-object v8
+
+    invoke-virtual {v7, v8}, Landroid/util/ArrayMap;->remove(Ljava/lang/Object;)Ljava/lang/Object;
+
+    move-result-object v7
+
+    if-eqz v7, :cond_134
+
+    move v7, v4
+
+    goto :goto_135
+
+    :cond_134
+    move v7, v2
+
+    .line 281
+    .local v7, "wasActive":Z
+    :goto_135
+    invoke-virtual {v5}, Landroid/media/AudioPlaybackConfiguration;->isActive()Z
+
+    move-result v8
+
+    if-eq v7, v8, :cond_140
+
+    .line 282
+    iget-object v8, p0, Lcom/android/server/media/AudioPlayerStateMonitor$AudioManagerPlaybackListener;->this$0:Lcom/android/server/media/AudioPlayerStateMonitor;
+
+    invoke-static {v8, v5, v2}, Lcom/android/server/media/AudioPlayerStateMonitor;->access$400(Lcom/android/server/media/AudioPlayerStateMonitor;Landroid/media/AudioPlaybackConfiguration;Z)V
+
+    .line 285
+    .end local v5  # "config":Landroid/media/AudioPlaybackConfiguration;
+    .end local v6  # "pii":I
+    .end local v7  # "wasActive":Z
+    :cond_140
+    goto :goto_114
+
+    .line 286
+    :cond_141
+    iget-object v2, p0, Lcom/android/server/media/AudioPlayerStateMonitor$AudioManagerPlaybackListener;->this$0:Lcom/android/server/media/AudioPlayerStateMonitor;
+
+    iget-object v2, v2, Lcom/android/server/media/AudioPlayerStateMonitor;->mPrevActiveAudioPlaybackConfigs:Landroid/util/ArrayMap;
+
+    invoke-virtual {v2}, Landroid/util/ArrayMap;->values()Ljava/util/Collection;
+
+    move-result-object v2
+
+    invoke-interface {v2}, Ljava/util/Collection;->iterator()Ljava/util/Iterator;
+
+    move-result-object v2
+
+    :goto_14d
+    invoke-interface {v2}, Ljava/util/Iterator;->hasNext()Z
 
     move-result v3
 
-    if-eqz v3, :cond_143
+    if-eqz v3, :cond_15f
 
-    invoke-interface {p1}, Ljava/util/Iterator;->next()Ljava/lang/Object;
+    invoke-interface {v2}, Ljava/util/Iterator;->next()Ljava/lang/Object;
 
     move-result-object v3
 
     check-cast v3, Landroid/media/AudioPlaybackConfiguration;
 
-    .line 279
-    invoke-virtual {v3}, Landroid/media/AudioPlaybackConfiguration;->getPlayerInterfaceId()I
-
-    move-result v5
-
-    .line 280
-    iget-object v6, p0, Lcom/android/server/media/AudioPlayerStateMonitor$AudioManagerPlaybackListener;->this$0:Lcom/android/server/media/AudioPlayerStateMonitor;
-
-    iget-object v6, v6, Lcom/android/server/media/AudioPlayerStateMonitor;->mPrevActiveAudioPlaybackConfigs:Landroid/util/ArrayMap;
-
-    invoke-static {v5}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
-
-    move-result-object v5
-
-    invoke-virtual {v6, v5}, Landroid/util/ArrayMap;->remove(Ljava/lang/Object;)Ljava/lang/Object;
-
-    move-result-object v5
-
-    if-eqz v5, :cond_136
-
-    move v5, v4
-
-    goto :goto_137
-
-    :cond_136
-    move v5, v2
-
-    .line 281
-    :goto_137
-    invoke-virtual {v3}, Landroid/media/AudioPlaybackConfiguration;->isActive()Z
-
-    move-result v6
-
-    if-eq v5, v6, :cond_142
-
-    .line 282
+    .line 287
+    .local v3, "config":Landroid/media/AudioPlaybackConfiguration;
     iget-object v5, p0, Lcom/android/server/media/AudioPlayerStateMonitor$AudioManagerPlaybackListener;->this$0:Lcom/android/server/media/AudioPlayerStateMonitor;
 
-    invoke-static {v5, v3, v2}, Lcom/android/server/media/AudioPlayerStateMonitor;->access$400(Lcom/android/server/media/AudioPlayerStateMonitor;Landroid/media/AudioPlaybackConfiguration;Z)V
-
-    .line 285
-    :cond_142
-    goto :goto_116
-
-    .line 286
-    :cond_143
-    iget-object p1, p0, Lcom/android/server/media/AudioPlayerStateMonitor$AudioManagerPlaybackListener;->this$0:Lcom/android/server/media/AudioPlayerStateMonitor;
-
-    iget-object p1, p1, Lcom/android/server/media/AudioPlayerStateMonitor;->mPrevActiveAudioPlaybackConfigs:Landroid/util/ArrayMap;
-
-    invoke-virtual {p1}, Landroid/util/ArrayMap;->values()Ljava/util/Collection;
-
-    move-result-object p1
-
-    invoke-interface {p1}, Ljava/util/Collection;->iterator()Ljava/util/Iterator;
-
-    move-result-object p1
-
-    :goto_14f
-    invoke-interface {p1}, Ljava/util/Iterator;->hasNext()Z
-
-    move-result v2
-
-    if-eqz v2, :cond_161
-
-    invoke-interface {p1}, Ljava/util/Iterator;->next()Ljava/lang/Object;
-
-    move-result-object v2
-
-    check-cast v2, Landroid/media/AudioPlaybackConfiguration;
-
-    .line 287
-    iget-object v3, p0, Lcom/android/server/media/AudioPlayerStateMonitor$AudioManagerPlaybackListener;->this$0:Lcom/android/server/media/AudioPlayerStateMonitor;
-
-    invoke-static {v3, v2, v4}, Lcom/android/server/media/AudioPlayerStateMonitor;->access$400(Lcom/android/server/media/AudioPlayerStateMonitor;Landroid/media/AudioPlaybackConfiguration;Z)V
+    invoke-static {v5, v3, v4}, Lcom/android/server/media/AudioPlayerStateMonitor;->access$400(Lcom/android/server/media/AudioPlayerStateMonitor;Landroid/media/AudioPlaybackConfiguration;Z)V
 
     .line 288
-    goto :goto_14f
+    .end local v3  # "config":Landroid/media/AudioPlaybackConfiguration;
+    goto :goto_14d
 
     .line 291
-    :cond_161
-    iget-object p1, p0, Lcom/android/server/media/AudioPlayerStateMonitor$AudioManagerPlaybackListener;->this$0:Lcom/android/server/media/AudioPlayerStateMonitor;
+    :cond_15f
+    iget-object v2, p0, Lcom/android/server/media/AudioPlayerStateMonitor$AudioManagerPlaybackListener;->this$0:Lcom/android/server/media/AudioPlayerStateMonitor;
 
-    iput-object v1, p1, Lcom/android/server/media/AudioPlayerStateMonitor;->mPrevActiveAudioPlaybackConfigs:Landroid/util/ArrayMap;
+    iput-object v1, v2, Lcom/android/server/media/AudioPlayerStateMonitor;->mPrevActiveAudioPlaybackConfigs:Landroid/util/ArrayMap;
 
     .line 292
+    .end local v1  # "activeAudioPlaybackConfigs":Landroid/util/ArrayMap;, "Landroid/util/ArrayMap<Ljava/lang/Integer;Landroid/media/AudioPlaybackConfiguration;>;"
     monitor-exit v0
 
     .line 293
     return-void
 
     .line 292
-    :catchall_167
-    move-exception p1
+    :catchall_165
+    move-exception v1
 
     monitor-exit v0
-    :try_end_169
-    .catchall {:try_start_7 .. :try_end_169} :catchall_167
+    :try_end_167
+    .catchall {:try_start_7 .. :try_end_167} :catchall_165
 
-    throw p1
+    throw v1
 .end method

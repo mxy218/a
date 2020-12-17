@@ -67,7 +67,8 @@
 .end method
 
 .method private constructor <init>(Lcom/android/server/pm/dex/PackageDexUsage$PackageUseInfo;)V
-    .registers 7
+    .registers 9
+    .param p1, "other"  # Lcom/android/server/pm/dex/PackageDexUsage$PackageUseInfo;
 
     .line 736
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -104,6 +105,7 @@
     check-cast v1, Ljava/util/Map$Entry;
 
     .line 739
+    .local v1, "e":Ljava/util/Map$Entry;, "Ljava/util/Map$Entry<Ljava/lang/String;Ljava/util/Set<Ljava/lang/String;>;>;"
     iget-object v2, p0, Lcom/android/server/pm/dex/PackageDexUsage$PackageUseInfo;->mCodePathsUsedByOtherApps:Ljava/util/Map;
 
     invoke-interface {v1}, Ljava/util/Map$Entry;->getKey()Ljava/lang/Object;
@@ -116,15 +118,16 @@
 
     invoke-interface {v1}, Ljava/util/Map$Entry;->getValue()Ljava/lang/Object;
 
-    move-result-object v1
+    move-result-object v5
 
-    check-cast v1, Ljava/util/Collection;
+    check-cast v5, Ljava/util/Collection;
 
-    invoke-direct {v4, v1}, Ljava/util/HashSet;-><init>(Ljava/util/Collection;)V
+    invoke-direct {v4, v5}, Ljava/util/HashSet;-><init>(Ljava/util/Collection;)V
 
     invoke-interface {v2, v3, v4}, Ljava/util/Map;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
 
     .line 740
+    .end local v1  # "e":Ljava/util/Map$Entry;, "Ljava/util/Map$Entry<Ljava/lang/String;Ljava/util/Set<Ljava/lang/String;>;>;"
     goto :goto_14
 
     .line 742
@@ -136,53 +139,55 @@
     iput-object v0, p0, Lcom/android/server/pm/dex/PackageDexUsage$PackageUseInfo;->mDexUseInfoMap:Ljava/util/Map;
 
     .line 743
-    iget-object p1, p1, Lcom/android/server/pm/dex/PackageDexUsage$PackageUseInfo;->mDexUseInfoMap:Ljava/util/Map;
+    iget-object v0, p1, Lcom/android/server/pm/dex/PackageDexUsage$PackageUseInfo;->mDexUseInfoMap:Ljava/util/Map;
 
-    invoke-interface {p1}, Ljava/util/Map;->entrySet()Ljava/util/Set;
+    invoke-interface {v0}, Ljava/util/Map;->entrySet()Ljava/util/Set;
 
-    move-result-object p1
+    move-result-object v0
 
-    invoke-interface {p1}, Ljava/util/Set;->iterator()Ljava/util/Iterator;
+    invoke-interface {v0}, Ljava/util/Set;->iterator()Ljava/util/Iterator;
 
-    move-result-object p1
+    move-result-object v0
 
     :goto_48
-    invoke-interface {p1}, Ljava/util/Iterator;->hasNext()Z
+    invoke-interface {v0}, Ljava/util/Iterator;->hasNext()Z
 
-    move-result v0
+    move-result v1
 
-    if-eqz v0, :cond_6c
+    if-eqz v1, :cond_6c
 
-    invoke-interface {p1}, Ljava/util/Iterator;->next()Ljava/lang/Object;
+    invoke-interface {v0}, Ljava/util/Iterator;->next()Ljava/lang/Object;
 
-    move-result-object v0
+    move-result-object v1
 
-    check-cast v0, Ljava/util/Map$Entry;
+    check-cast v1, Ljava/util/Map$Entry;
 
     .line 744
-    iget-object v1, p0, Lcom/android/server/pm/dex/PackageDexUsage$PackageUseInfo;->mDexUseInfoMap:Ljava/util/Map;
+    .local v1, "e":Ljava/util/Map$Entry;, "Ljava/util/Map$Entry<Ljava/lang/String;Lcom/android/server/pm/dex/PackageDexUsage$DexUseInfo;>;"
+    iget-object v2, p0, Lcom/android/server/pm/dex/PackageDexUsage$PackageUseInfo;->mDexUseInfoMap:Ljava/util/Map;
 
-    invoke-interface {v0}, Ljava/util/Map$Entry;->getKey()Ljava/lang/Object;
+    invoke-interface {v1}, Ljava/util/Map$Entry;->getKey()Ljava/lang/Object;
 
-    move-result-object v2
+    move-result-object v3
 
-    check-cast v2, Ljava/lang/String;
+    check-cast v3, Ljava/lang/String;
 
-    new-instance v3, Lcom/android/server/pm/dex/PackageDexUsage$DexUseInfo;
+    new-instance v4, Lcom/android/server/pm/dex/PackageDexUsage$DexUseInfo;
 
-    invoke-interface {v0}, Ljava/util/Map$Entry;->getValue()Ljava/lang/Object;
+    invoke-interface {v1}, Ljava/util/Map$Entry;->getValue()Ljava/lang/Object;
 
-    move-result-object v0
+    move-result-object v5
 
-    check-cast v0, Lcom/android/server/pm/dex/PackageDexUsage$DexUseInfo;
+    check-cast v5, Lcom/android/server/pm/dex/PackageDexUsage$DexUseInfo;
 
-    const/4 v4, 0x0
+    const/4 v6, 0x0
 
-    invoke-direct {v3, v0, v4}, Lcom/android/server/pm/dex/PackageDexUsage$DexUseInfo;-><init>(Lcom/android/server/pm/dex/PackageDexUsage$DexUseInfo;Lcom/android/server/pm/dex/PackageDexUsage$1;)V
+    invoke-direct {v4, v5, v6}, Lcom/android/server/pm/dex/PackageDexUsage$DexUseInfo;-><init>(Lcom/android/server/pm/dex/PackageDexUsage$DexUseInfo;Lcom/android/server/pm/dex/PackageDexUsage$1;)V
 
-    invoke-interface {v1, v2, v3}, Ljava/util/Map;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+    invoke-interface {v2, v3, v4}, Ljava/util/Map;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
 
     .line 745
+    .end local v1  # "e":Ljava/util/Map$Entry;, "Ljava/util/Map$Entry<Ljava/lang/String;Lcom/android/server/pm/dex/PackageDexUsage$DexUseInfo;>;"
     goto :goto_48
 
     .line 746
@@ -192,6 +197,8 @@
 
 .method synthetic constructor <init>(Lcom/android/server/pm/dex/PackageDexUsage$PackageUseInfo;Lcom/android/server/pm/dex/PackageDexUsage$1;)V
     .registers 3
+    .param p1, "x0"  # Lcom/android/server/pm/dex/PackageDexUsage$PackageUseInfo;
+    .param p2, "x1"  # Lcom/android/server/pm/dex/PackageDexUsage$1;
 
     .line 710
     invoke-direct {p0, p1}, Lcom/android/server/pm/dex/PackageDexUsage$PackageUseInfo;-><init>(Lcom/android/server/pm/dex/PackageDexUsage$PackageUseInfo;)V
@@ -200,45 +207,55 @@
 .end method
 
 .method static synthetic access$000(Lcom/android/server/pm/dex/PackageDexUsage$PackageUseInfo;Ljava/lang/String;ZLjava/lang/String;Ljava/lang/String;)Z
-    .registers 5
+    .registers 6
+    .param p0, "x0"  # Lcom/android/server/pm/dex/PackageDexUsage$PackageUseInfo;
+    .param p1, "x1"  # Ljava/lang/String;
+    .param p2, "x2"  # Z
+    .param p3, "x3"  # Ljava/lang/String;
+    .param p4, "x4"  # Ljava/lang/String;
 
     .line 710
     invoke-direct {p0, p1, p2, p3, p4}, Lcom/android/server/pm/dex/PackageDexUsage$PackageUseInfo;->mergeCodePathUsedByOtherApps(Ljava/lang/String;ZLjava/lang/String;Ljava/lang/String;)Z
 
-    move-result p0
+    move-result v0
 
-    return p0
+    return v0
 .end method
 
 .method static synthetic access$100(Lcom/android/server/pm/dex/PackageDexUsage$PackageUseInfo;)Ljava/util/Map;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/pm/dex/PackageDexUsage$PackageUseInfo;
 
     .line 710
-    iget-object p0, p0, Lcom/android/server/pm/dex/PackageDexUsage$PackageUseInfo;->mDexUseInfoMap:Ljava/util/Map;
+    iget-object v0, p0, Lcom/android/server/pm/dex/PackageDexUsage$PackageUseInfo;->mDexUseInfoMap:Ljava/util/Map;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$500(Lcom/android/server/pm/dex/PackageDexUsage$PackageUseInfo;)Ljava/util/Map;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/pm/dex/PackageDexUsage$PackageUseInfo;
 
     .line 710
-    iget-object p0, p0, Lcom/android/server/pm/dex/PackageDexUsage$PackageUseInfo;->mCodePathsUsedByOtherApps:Ljava/util/Map;
+    iget-object v0, p0, Lcom/android/server/pm/dex/PackageDexUsage$PackageUseInfo;->mCodePathsUsedByOtherApps:Ljava/util/Map;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$800(Lcom/android/server/pm/dex/PackageDexUsage$PackageUseInfo;)Z
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/pm/dex/PackageDexUsage$PackageUseInfo;
 
     .line 710
-    iget-boolean p0, p0, Lcom/android/server/pm/dex/PackageDexUsage$PackageUseInfo;->mUsedByOtherAppsBeforeUpgrade:Z
+    iget-boolean v0, p0, Lcom/android/server/pm/dex/PackageDexUsage$PackageUseInfo;->mUsedByOtherAppsBeforeUpgrade:Z
 
-    return p0
+    return v0
 .end method
 
 .method static synthetic access$802(Lcom/android/server/pm/dex/PackageDexUsage$PackageUseInfo;Z)Z
     .registers 2
+    .param p0, "x0"  # Lcom/android/server/pm/dex/PackageDexUsage$PackageUseInfo;
+    .param p1, "x1"  # Z
 
     .line 710
     iput-boolean p1, p0, Lcom/android/server/pm/dex/PackageDexUsage$PackageUseInfo;->mUsedByOtherAppsBeforeUpgrade:Z
@@ -247,7 +264,11 @@
 .end method
 
 .method private mergeCodePathUsedByOtherApps(Ljava/lang/String;ZLjava/lang/String;Ljava/lang/String;)Z
-    .registers 8
+    .registers 10
+    .param p1, "codePath"  # Ljava/lang/String;
+    .param p2, "isUsedByOtherApps"  # Z
+    .param p3, "owningPackageName"  # Ljava/lang/String;
+    .param p4, "loadingPackage"  # Ljava/lang/String;
 
     .line 750
     const/4 v0, 0x0
@@ -259,76 +280,75 @@
 
     .line 755
     :cond_4
-    nop
+    const/4 v1, 0x0
 
     .line 756
-    iget-object p2, p0, Lcom/android/server/pm/dex/PackageDexUsage$PackageUseInfo;->mCodePathsUsedByOtherApps:Ljava/util/Map;
-
-    invoke-interface {p2, p1}, Ljava/util/Map;->get(Ljava/lang/Object;)Ljava/lang/Object;
-
-    move-result-object p2
-
-    check-cast p2, Ljava/util/Set;
-
-    .line 757
-    const/4 v1, 0x1
-
-    if-nez p2, :cond_1c
-
-    .line 758
-    new-instance p2, Ljava/util/HashSet;
-
-    invoke-direct {p2}, Ljava/util/HashSet;-><init>()V
-
-    .line 759
+    .local v1, "newCodePath":Z
     iget-object v2, p0, Lcom/android/server/pm/dex/PackageDexUsage$PackageUseInfo;->mCodePathsUsedByOtherApps:Ljava/util/Map;
 
-    invoke-interface {v2, p1, p2}, Ljava/util/Map;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+    invoke-interface {v2, p1}, Ljava/util/Map;->get(Ljava/lang/Object;)Ljava/lang/Object;
 
-    .line 760
-    move p1, v1
+    move-result-object v2
 
-    goto :goto_1d
+    check-cast v2, Ljava/util/Set;
 
     .line 757
-    :cond_1c
-    move p1, v0
+    .local v2, "loadingPackages":Ljava/util/Set;, "Ljava/util/Set<Ljava/lang/String;>;"
+    if-nez v2, :cond_1b
+
+    .line 758
+    new-instance v3, Ljava/util/HashSet;
+
+    invoke-direct {v3}, Ljava/util/HashSet;-><init>()V
+
+    move-object v2, v3
+
+    .line 759
+    iget-object v3, p0, Lcom/android/server/pm/dex/PackageDexUsage$PackageUseInfo;->mCodePathsUsedByOtherApps:Ljava/util/Map;
+
+    invoke-interface {v3, p1, v2}, Ljava/util/Map;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+
+    .line 760
+    const/4 v1, 0x1
 
     .line 762
-    :goto_1d
-    if-eqz p4, :cond_2d
+    :cond_1b
+    const/4 v3, 0x1
+
+    if-eqz p4, :cond_2c
 
     .line 763
     invoke-virtual {p4, p3}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result p3
+    move-result v4
 
-    if-nez p3, :cond_2d
+    if-nez v4, :cond_2c
 
     .line 764
-    invoke-interface {p2, p4}, Ljava/util/Set;->add(Ljava/lang/Object;)Z
+    invoke-interface {v2, p4}, Ljava/util/Set;->add(Ljava/lang/Object;)Z
 
-    move-result p2
+    move-result v4
 
-    if-eqz p2, :cond_2d
+    if-eqz v4, :cond_2c
 
-    move p2, v1
+    move v4, v3
 
-    goto :goto_2e
+    goto :goto_2d
 
-    :cond_2d
-    move p2, v0
+    :cond_2c
+    move v4, v0
 
     .line 765
-    :goto_2e
-    if-nez p1, :cond_32
+    .local v4, "newLoadingPackage":Z
+    :goto_2d
+    if-nez v1, :cond_31
 
-    if-eqz p2, :cond_33
+    if-eqz v4, :cond_32
+
+    :cond_31
+    move v0, v3
 
     :cond_32
-    move v0, v1
-
-    :cond_33
     return v0
 .end method
 
@@ -386,6 +406,7 @@
 
 .method public getLoadingPackages(Ljava/lang/String;)Ljava/util/Set;
     .registers 4
+    .param p1, "codePath"  # Ljava/lang/String;
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(",
@@ -404,11 +425,11 @@
 
     invoke-interface {v0, p1, v1}, Ljava/util/Map;->getOrDefault(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v0
 
-    check-cast p1, Ljava/util/Set;
+    check-cast v0, Ljava/util/Set;
 
-    return-object p1
+    return-object v0
 .end method
 
 .method public isAnyCodePathUsedByOtherApps()Z
@@ -428,13 +449,14 @@
 
 .method public isUsedByOtherApps(Ljava/lang/String;)Z
     .registers 3
+    .param p1, "codePath"  # Ljava/lang/String;
 
     .line 769
     iget-object v0, p0, Lcom/android/server/pm/dex/PackageDexUsage$PackageUseInfo;->mCodePathsUsedByOtherApps:Ljava/util/Map;
 
     invoke-interface {v0, p1}, Ljava/util/Map;->containsKey(Ljava/lang/Object;)Z
 
-    move-result p1
+    move-result v0
 
-    return p1
+    return v0
 .end method

@@ -21,6 +21,8 @@
 
 .field duration:I
 
+.field message:Ljava/lang/String;
+
 .field final pid:I
 
 .field final pkg:Ljava/lang/String;
@@ -31,29 +33,35 @@
 # direct methods
 .method constructor <init>(ILjava/lang/String;Landroid/app/ITransientNotification;ILandroid/os/Binder;I)V
     .registers 7
+    .param p1, "pid"  # I
+    .param p2, "pkg"  # Ljava/lang/String;
+    .param p3, "callback"  # Landroid/app/ITransientNotification;
+    .param p4, "duration"  # I
+    .param p5, "token"  # Landroid/os/Binder;
+    .param p6, "displayId"  # I
 
-    .line 738
+    .line 734
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
-    .line 739
+    .line 735
     iput p1, p0, Lcom/android/server/notification/NotificationManagerService$ToastRecord;->pid:I
 
-    .line 740
+    .line 736
     iput-object p2, p0, Lcom/android/server/notification/NotificationManagerService$ToastRecord;->pkg:Ljava/lang/String;
 
-    .line 741
+    .line 737
     iput-object p3, p0, Lcom/android/server/notification/NotificationManagerService$ToastRecord;->callback:Landroid/app/ITransientNotification;
 
-    .line 742
+    .line 738
     iput p4, p0, Lcom/android/server/notification/NotificationManagerService$ToastRecord;->duration:I
 
-    .line 743
+    .line 739
     iput-object p5, p0, Lcom/android/server/notification/NotificationManagerService$ToastRecord;->token:Landroid/os/Binder;
 
-    .line 744
+    .line 740
     iput p6, p0, Lcom/android/server/notification/NotificationManagerService$ToastRecord;->displayId:I
 
-    .line 745
+    .line 741
     return-void
 .end method
 
@@ -61,44 +69,58 @@
 # virtual methods
 .method dump(Ljava/io/PrintWriter;Ljava/lang/String;Lcom/android/server/notification/NotificationManagerService$DumpFilter;)V
     .registers 5
+    .param p1, "pw"  # Ljava/io/PrintWriter;
+    .param p2, "prefix"  # Ljava/lang/String;
+    .param p3, "filter"  # Lcom/android/server/notification/NotificationManagerService$DumpFilter;
 
-    .line 752
+    .line 748
     if-eqz p3, :cond_b
 
     iget-object v0, p0, Lcom/android/server/notification/NotificationManagerService$ToastRecord;->pkg:Ljava/lang/String;
 
     invoke-virtual {p3, v0}, Lcom/android/server/notification/NotificationManagerService$DumpFilter;->matches(Ljava/lang/String;)Z
 
-    move-result p3
+    move-result v0
 
-    if-nez p3, :cond_b
+    if-nez v0, :cond_b
 
     return-void
 
-    .line 753
+    .line 749
     :cond_b
-    new-instance p3, Ljava/lang/StringBuilder;
+    new-instance v0, Ljava/lang/StringBuilder;
 
-    invoke-direct {p3}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
 
-    invoke-virtual {p3, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p3, p0}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, p0}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p2
+    move-result-object v0
 
-    invoke-virtual {p1, p2}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
-    .line 754
+    .line 750
+    return-void
+.end method
+
+.method setMessage(Ljava/lang/String;)V
+    .registers 2
+    .param p1, "message"  # Ljava/lang/String;
+
+    .line 765
+    iput-object p1, p0, Lcom/android/server/notification/NotificationManagerService$ToastRecord;->message:Ljava/lang/String;
+
+    .line 766
     return-void
 .end method
 
 .method public final toString()Ljava/lang/String;
     .registers 3
 
-    .line 759
+    .line 755
     new-instance v0, Ljava/lang/StringBuilder;
 
     invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
@@ -107,7 +129,7 @@
 
     invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    .line 760
+    .line 756
     invoke-static {p0}, Ljava/lang/System;->identityHashCode(Ljava/lang/Object;)I
 
     move-result v1
@@ -146,16 +168,17 @@
 
     move-result-object v0
 
-    .line 759
+    .line 755
     return-object v0
 .end method
 
 .method update(I)V
     .registers 2
+    .param p1, "duration"  # I
 
-    .line 748
+    .line 744
     iput p1, p0, Lcom/android/server/notification/NotificationManagerService$ToastRecord;->duration:I
 
-    .line 749
+    .line 745
     return-void
 .end method

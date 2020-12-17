@@ -21,6 +21,7 @@
 # direct methods
 .method public constructor <init>(Ljava/lang/String;)V
     .registers 2
+    .param p1, "msg"  # Ljava/lang/String;
 
     .line 81
     invoke-direct {p0}, Lcom/android/server/audio/AudioEventLogger$Event;-><init>()V

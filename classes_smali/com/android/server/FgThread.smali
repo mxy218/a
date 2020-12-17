@@ -60,6 +60,7 @@
     move-result-object v0
 
     .line 51
+    .local v0, "looper":Landroid/os/Looper;
     const-wide/32 v1, 0x80000
 
     invoke-virtual {v0, v1, v2}, Landroid/os/Looper;->setTraceTag(J)V
@@ -72,28 +73,29 @@
     invoke-virtual {v0, v1, v2, v3, v4}, Landroid/os/Looper;->setSlowLogThresholdMs(JJ)V
 
     .line 54
-    new-instance v0, Landroid/os/Handler;
+    new-instance v1, Landroid/os/Handler;
 
-    sget-object v1, Lcom/android/server/FgThread;->sInstance:Lcom/android/server/FgThread;
+    sget-object v2, Lcom/android/server/FgThread;->sInstance:Lcom/android/server/FgThread;
 
-    invoke-virtual {v1}, Lcom/android/server/FgThread;->getLooper()Landroid/os/Looper;
+    invoke-virtual {v2}, Lcom/android/server/FgThread;->getLooper()Landroid/os/Looper;
 
-    move-result-object v1
+    move-result-object v2
 
-    invoke-direct {v0, v1}, Landroid/os/Handler;-><init>(Landroid/os/Looper;)V
+    invoke-direct {v1, v2}, Landroid/os/Handler;-><init>(Landroid/os/Looper;)V
 
-    sput-object v0, Lcom/android/server/FgThread;->sHandler:Landroid/os/Handler;
+    sput-object v1, Lcom/android/server/FgThread;->sHandler:Landroid/os/Handler;
 
     .line 55
-    new-instance v0, Landroid/os/HandlerExecutor;
+    new-instance v1, Landroid/os/HandlerExecutor;
 
-    sget-object v1, Lcom/android/server/FgThread;->sHandler:Landroid/os/Handler;
+    sget-object v2, Lcom/android/server/FgThread;->sHandler:Landroid/os/Handler;
 
-    invoke-direct {v0, v1}, Landroid/os/HandlerExecutor;-><init>(Landroid/os/Handler;)V
+    invoke-direct {v1, v2}, Landroid/os/HandlerExecutor;-><init>(Landroid/os/Handler;)V
 
-    sput-object v0, Lcom/android/server/FgThread;->sHandlerExecutor:Landroid/os/HandlerExecutor;
+    sput-object v1, Lcom/android/server/FgThread;->sHandlerExecutor:Landroid/os/HandlerExecutor;
 
     .line 57
+    .end local v0  # "looper":Landroid/os/Looper;
     :cond_39
     return-void
 .end method

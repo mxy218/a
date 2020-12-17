@@ -28,6 +28,9 @@
 # direct methods
 .method constructor <init>(FFJ)V
     .registers 5
+    .param p1, "fromAlpha"  # F
+    .param p2, "toAlpha"  # F
+    .param p3, "duration"  # J
 
     .line 366
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -48,31 +51,35 @@
 
 # virtual methods
 .method public apply(Landroid/view/SurfaceControl$Transaction;Landroid/view/SurfaceControl;J)V
-    .registers 7
+    .registers 8
+    .param p1, "t"  # Landroid/view/SurfaceControl$Transaction;
+    .param p2, "sc"  # Landroid/view/SurfaceControl;
+    .param p3, "currentPlayTime"  # J
 
     .line 379
-    long-to-float p3, p3
+    long-to-float v0, p3
 
     invoke-virtual {p0}, Lcom/android/server/wm/Dimmer$AlphaAnimationSpec;->getDuration()J
 
-    move-result-wide v0
+    move-result-wide v1
 
-    long-to-float p4, v0
+    long-to-float v1, v1
 
-    div-float/2addr p3, p4
+    div-float/2addr v0, v1
 
-    iget p4, p0, Lcom/android/server/wm/Dimmer$AlphaAnimationSpec;->mToAlpha:F
+    iget v1, p0, Lcom/android/server/wm/Dimmer$AlphaAnimationSpec;->mToAlpha:F
 
-    iget v0, p0, Lcom/android/server/wm/Dimmer$AlphaAnimationSpec;->mFromAlpha:F
+    iget v2, p0, Lcom/android/server/wm/Dimmer$AlphaAnimationSpec;->mFromAlpha:F
 
-    sub-float/2addr p4, v0
+    sub-float/2addr v1, v2
 
-    mul-float/2addr p3, p4
+    mul-float/2addr v0, v1
 
-    add-float/2addr p3, v0
+    add-float/2addr v0, v2
 
     .line 381
-    invoke-virtual {p1, p2, p3}, Landroid/view/SurfaceControl$Transaction;->setAlpha(Landroid/view/SurfaceControl;F)Landroid/view/SurfaceControl$Transaction;
+    .local v0, "alpha":F
+    invoke-virtual {p1, p2, v0}, Landroid/view/SurfaceControl$Transaction;->setAlpha(Landroid/view/SurfaceControl;F)Landroid/view/SurfaceControl$Transaction;
 
     .line 382
     return-void
@@ -80,31 +87,33 @@
 
 .method public dump(Ljava/io/PrintWriter;Ljava/lang/String;)V
     .registers 5
+    .param p1, "pw"  # Ljava/io/PrintWriter;
+    .param p2, "prefix"  # Ljava/lang/String;
 
     .line 386
     invoke-virtual {p1, p2}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
-    const-string p2, "from="
+    const-string v0, "from="
 
-    invoke-virtual {p1, p2}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
+    invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
-    iget p2, p0, Lcom/android/server/wm/Dimmer$AlphaAnimationSpec;->mFromAlpha:F
+    iget v0, p0, Lcom/android/server/wm/Dimmer$AlphaAnimationSpec;->mFromAlpha:F
 
-    invoke-virtual {p1, p2}, Ljava/io/PrintWriter;->print(F)V
+    invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->print(F)V
 
     .line 387
-    const-string p2, " to="
+    const-string v0, " to="
 
-    invoke-virtual {p1, p2}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
+    invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
-    iget p2, p0, Lcom/android/server/wm/Dimmer$AlphaAnimationSpec;->mToAlpha:F
+    iget v0, p0, Lcom/android/server/wm/Dimmer$AlphaAnimationSpec;->mToAlpha:F
 
-    invoke-virtual {p1, p2}, Ljava/io/PrintWriter;->print(F)V
+    invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->print(F)V
 
     .line 388
-    const-string p2, " duration="
+    const-string v0, " duration="
 
-    invoke-virtual {p1, p2}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
+    invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
     iget-wide v0, p0, Lcom/android/server/wm/Dimmer$AlphaAnimationSpec;->mDuration:J
 
@@ -125,6 +134,7 @@
 
 .method public writeToProtoInner(Landroid/util/proto/ProtoOutputStream;)V
     .registers 8
+    .param p1, "proto"  # Landroid/util/proto/ProtoOutputStream;
 
     .line 393
     const-wide v0, 0x10b00000003L
@@ -134,6 +144,7 @@
     move-result-wide v0
 
     .line 394
+    .local v0, "token":J
     iget v2, p0, Lcom/android/server/wm/Dimmer$AlphaAnimationSpec;->mFromAlpha:F
 
     const-wide v3, 0x10200000001L

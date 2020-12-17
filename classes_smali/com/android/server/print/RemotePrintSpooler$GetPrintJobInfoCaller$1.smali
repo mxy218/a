@@ -20,14 +20,15 @@
 
 # direct methods
 .method constructor <init>(Lcom/android/server/print/RemotePrintSpooler$GetPrintJobInfoCaller;)V
-    .registers 2
+    .registers 3
+    .param p1, "this$0"  # Lcom/android/server/print/RemotePrintSpooler$GetPrintJobInfoCaller;
 
     .line 747
     iput-object p1, p0, Lcom/android/server/print/RemotePrintSpooler$GetPrintJobInfoCaller$1;->this$0:Lcom/android/server/print/RemotePrintSpooler$GetPrintJobInfoCaller;
 
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    invoke-direct {p0, p1}, Lcom/android/server/print/RemotePrintSpooler$BasePrintSpoolerServiceCallbacks;-><init>(Lcom/android/server/print/RemotePrintSpooler$1;)V
+    invoke-direct {p0, v0}, Lcom/android/server/print/RemotePrintSpooler$BasePrintSpoolerServiceCallbacks;-><init>(Lcom/android/server/print/RemotePrintSpooler$1;)V
 
     return-void
 .end method
@@ -36,6 +37,8 @@
 # virtual methods
 .method public onGetPrintJobInfoResult(Landroid/print/PrintJobInfo;I)V
     .registers 4
+    .param p1, "printJob"  # Landroid/print/PrintJobInfo;
+    .param p2, "sequence"  # I
 
     .line 750
     iget-object v0, p0, Lcom/android/server/print/RemotePrintSpooler$GetPrintJobInfoCaller$1;->this$0:Lcom/android/server/print/RemotePrintSpooler$GetPrintJobInfoCaller;

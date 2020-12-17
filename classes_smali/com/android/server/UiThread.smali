@@ -58,6 +58,7 @@
     move-result-object v0
 
     .line 51
+    .local v0, "looper":Landroid/os/Looper;
     const-wide/32 v1, 0x80000
 
     invoke-virtual {v0, v1, v2}, Landroid/os/Looper;->setTraceTag(J)V
@@ -70,19 +71,20 @@
     invoke-virtual {v0, v1, v2, v3, v4}, Landroid/os/Looper;->setSlowLogThresholdMs(JJ)V
 
     .line 54
-    new-instance v0, Landroid/os/Handler;
+    new-instance v1, Landroid/os/Handler;
 
-    sget-object v1, Lcom/android/server/UiThread;->sInstance:Lcom/android/server/UiThread;
+    sget-object v2, Lcom/android/server/UiThread;->sInstance:Lcom/android/server/UiThread;
 
-    invoke-virtual {v1}, Lcom/android/server/UiThread;->getLooper()Landroid/os/Looper;
+    invoke-virtual {v2}, Lcom/android/server/UiThread;->getLooper()Landroid/os/Looper;
 
-    move-result-object v1
+    move-result-object v2
 
-    invoke-direct {v0, v1}, Landroid/os/Handler;-><init>(Landroid/os/Looper;)V
+    invoke-direct {v1, v2}, Landroid/os/Handler;-><init>(Landroid/os/Looper;)V
 
-    sput-object v0, Lcom/android/server/UiThread;->sHandler:Landroid/os/Handler;
+    sput-object v1, Lcom/android/server/UiThread;->sHandler:Landroid/os/Handler;
 
     .line 56
+    .end local v0  # "looper":Landroid/os/Looper;
     :cond_30
     return-void
 .end method

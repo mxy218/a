@@ -30,6 +30,7 @@
 # direct methods
 .method public constructor <init>(Landroid/content/Context;)V
     .registers 3
+    .param p1, "context"  # Landroid/content/Context;
 
     .line 63
     invoke-direct {p0, p1}, Lcom/android/server/SystemService;-><init>(Landroid/content/Context;)V
@@ -46,12 +47,13 @@
 .end method
 
 .method static synthetic access$000(Lcom/android/server/SensorPrivacyService;)Lcom/android/server/SensorPrivacyService$SensorPrivacyServiceImpl;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/SensorPrivacyService;
 
     .line 52
-    iget-object p0, p0, Lcom/android/server/SensorPrivacyService;->mSensorPrivacyServiceImpl:Lcom/android/server/SensorPrivacyService$SensorPrivacyServiceImpl;
+    iget-object v0, p0, Lcom/android/server/SensorPrivacyService;->mSensorPrivacyServiceImpl:Lcom/android/server/SensorPrivacyService$SensorPrivacyServiceImpl;
 
-    return-object p0
+    return-object v0
 .end method
 
 

@@ -32,6 +32,7 @@
 
 .method static readFromProto(Landroid/util/proto/ProtoInputStream;)Lcom/android/server/backup/encryption/chunk/Chunk;
     .registers 4
+    .param p0, "inputStream"  # Landroid/util/proto/ProtoInputStream;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Ljava/io/IOException;
@@ -44,6 +45,7 @@
     invoke-direct {v0}, Lcom/android/server/backup/encryption/chunk/Chunk;-><init>()V
 
     .line 23
+    .local v0, "result":Lcom/android/server/backup/encryption/chunk/Chunk;
     :goto_5
     invoke-virtual {p0}, Landroid/util/proto/ProtoInputStream;->nextField()I
 

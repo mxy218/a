@@ -27,26 +27,29 @@
 
 # direct methods
 .method public constructor <init>(Landroid/hardware/display/DisplayManagerInternal;ILandroid/view/SurfaceControl;)V
-    .registers 4
+    .registers 5
+    .param p1, "displayManagerInternal"  # Landroid/hardware/display/DisplayManagerInternal;
+    .param p2, "displayId"  # I
+    .param p3, "surfaceControl"  # Landroid/view/SurfaceControl;
 
-    .line 745
+    .line 756
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
-    .line 746
+    .line 757
     iput-object p1, p0, Lcom/android/server/display/ColorFade$NaturalSurfaceLayout;->mDisplayManagerInternal:Landroid/hardware/display/DisplayManagerInternal;
 
-    .line 747
+    .line 758
     iput p2, p0, Lcom/android/server/display/ColorFade$NaturalSurfaceLayout;->mDisplayId:I
 
-    .line 748
+    .line 759
     iput-object p3, p0, Lcom/android/server/display/ColorFade$NaturalSurfaceLayout;->mSurfaceControl:Landroid/view/SurfaceControl;
 
-    .line 749
-    iget-object p1, p0, Lcom/android/server/display/ColorFade$NaturalSurfaceLayout;->mDisplayManagerInternal:Landroid/hardware/display/DisplayManagerInternal;
+    .line 760
+    iget-object v0, p0, Lcom/android/server/display/ColorFade$NaturalSurfaceLayout;->mDisplayManagerInternal:Landroid/hardware/display/DisplayManagerInternal;
 
-    invoke-virtual {p1, p0}, Landroid/hardware/display/DisplayManagerInternal;->registerDisplayTransactionListener(Landroid/hardware/display/DisplayManagerInternal$DisplayTransactionListener;)V
+    invoke-virtual {v0, p0}, Landroid/hardware/display/DisplayManagerInternal;->registerDisplayTransactionListener(Landroid/hardware/display/DisplayManagerInternal$DisplayTransactionListener;)V
 
-    .line 750
+    .line 761
     return-void
 .end method
 
@@ -55,29 +58,29 @@
 .method public dispose()V
     .registers 2
 
-    .line 753
+    .line 764
     monitor-enter p0
 
-    .line 754
+    .line 765
     const/4 v0, 0x0
 
     :try_start_2
     iput-object v0, p0, Lcom/android/server/display/ColorFade$NaturalSurfaceLayout;->mSurfaceControl:Landroid/view/SurfaceControl;
 
-    .line 755
+    .line 766
     monitor-exit p0
     :try_end_5
     .catchall {:try_start_2 .. :try_end_5} :catchall_b
 
-    .line 756
+    .line 767
     iget-object v0, p0, Lcom/android/server/display/ColorFade$NaturalSurfaceLayout;->mDisplayManagerInternal:Landroid/hardware/display/DisplayManagerInternal;
 
     invoke-virtual {v0, p0}, Landroid/hardware/display/DisplayManagerInternal;->unregisterDisplayTransactionListener(Landroid/hardware/display/DisplayManagerInternal$DisplayTransactionListener;)V
 
-    .line 757
+    .line 768
     return-void
 
-    .line 755
+    .line 766
     :catchall_b
     move-exception v0
 
@@ -90,23 +93,24 @@
 .end method
 
 .method public onDisplayTransaction(Landroid/view/SurfaceControl$Transaction;)V
-    .registers 11
+    .registers 12
+    .param p1, "t"  # Landroid/view/SurfaceControl$Transaction;
 
-    .line 761
+    .line 772
     monitor-enter p0
 
-    .line 762
+    .line 773
     :try_start_1
     iget-object v0, p0, Lcom/android/server/display/ColorFade$NaturalSurfaceLayout;->mSurfaceControl:Landroid/view/SurfaceControl;
 
     if-nez v0, :cond_7
 
-    .line 763
+    .line 774
     monitor-exit p0
 
     return-void
 
-    .line 766
+    .line 777
     :cond_7
     iget-object v0, p0, Lcom/android/server/display/ColorFade$NaturalSurfaceLayout;->mDisplayManagerInternal:Landroid/hardware/display/DisplayManagerInternal;
 
@@ -116,7 +120,8 @@
 
     move-result-object v0
 
-    .line 767
+    .line 778
+    .local v0, "displayInfo":Landroid/view/DisplayInfo;
     iget v1, v0, Landroid/view/DisplayInfo;->rotation:I
 
     const/4 v2, 0x0
@@ -137,34 +142,34 @@
 
     goto :goto_72
 
-    .line 782
+    .line 793
     :cond_1e
     iget-object v1, p0, Lcom/android/server/display/ColorFade$NaturalSurfaceLayout;->mSurfaceControl:Landroid/view/SurfaceControl;
 
-    iget v0, v0, Landroid/view/DisplayInfo;->logicalWidth:I
+    iget v3, v0, Landroid/view/DisplayInfo;->logicalWidth:I
 
-    int-to-float v0, v0
+    int-to-float v3, v3
 
-    invoke-virtual {p1, v1, v0, v2}, Landroid/view/SurfaceControl$Transaction;->setPosition(Landroid/view/SurfaceControl;FF)Landroid/view/SurfaceControl$Transaction;
+    invoke-virtual {p1, v1, v3, v2}, Landroid/view/SurfaceControl$Transaction;->setPosition(Landroid/view/SurfaceControl;FF)Landroid/view/SurfaceControl$Transaction;
 
-    .line 783
-    iget-object v4, p0, Lcom/android/server/display/ColorFade$NaturalSurfaceLayout;->mSurfaceControl:Landroid/view/SurfaceControl;
+    .line 794
+    iget-object v5, p0, Lcom/android/server/display/ColorFade$NaturalSurfaceLayout;->mSurfaceControl:Landroid/view/SurfaceControl;
 
-    const/4 v5, 0x0
+    const/4 v6, 0x0
 
-    const/high16 v6, 0x3f800000  # 1.0f
+    const/high16 v7, 0x3f800000  # 1.0f
 
-    const/high16 v7, -0x40800000  # -1.0f
+    const/high16 v8, -0x40800000  # -1.0f
 
-    const/4 v8, 0x0
+    const/4 v9, 0x0
 
-    move-object v3, p1
+    move-object v4, p1
 
-    invoke-virtual/range {v3 .. v8}, Landroid/view/SurfaceControl$Transaction;->setMatrix(Landroid/view/SurfaceControl;FFFF)Landroid/view/SurfaceControl$Transaction;
+    invoke-virtual/range {v4 .. v9}, Landroid/view/SurfaceControl$Transaction;->setMatrix(Landroid/view/SurfaceControl;FFFF)Landroid/view/SurfaceControl$Transaction;
 
     goto :goto_72
 
-    .line 777
+    .line 788
     :cond_33
     iget-object v1, p0, Lcom/android/server/display/ColorFade$NaturalSurfaceLayout;->mSurfaceControl:Landroid/view/SurfaceControl;
 
@@ -172,65 +177,65 @@
 
     int-to-float v2, v2
 
-    iget v0, v0, Landroid/view/DisplayInfo;->logicalHeight:I
+    iget v3, v0, Landroid/view/DisplayInfo;->logicalHeight:I
 
-    int-to-float v0, v0
+    int-to-float v3, v3
 
-    invoke-virtual {p1, v1, v2, v0}, Landroid/view/SurfaceControl$Transaction;->setPosition(Landroid/view/SurfaceControl;FF)Landroid/view/SurfaceControl$Transaction;
+    invoke-virtual {p1, v1, v2, v3}, Landroid/view/SurfaceControl$Transaction;->setPosition(Landroid/view/SurfaceControl;FF)Landroid/view/SurfaceControl$Transaction;
 
-    .line 779
-    iget-object v4, p0, Lcom/android/server/display/ColorFade$NaturalSurfaceLayout;->mSurfaceControl:Landroid/view/SurfaceControl;
-
-    const/high16 v5, -0x40800000  # -1.0f
-
-    const/4 v6, 0x0
-
-    const/4 v7, 0x0
-
-    const/high16 v8, -0x40800000  # -1.0f
-
-    move-object v3, p1
-
-    invoke-virtual/range {v3 .. v8}, Landroid/view/SurfaceControl$Transaction;->setMatrix(Landroid/view/SurfaceControl;FFFF)Landroid/view/SurfaceControl$Transaction;
-
-    .line 780
-    goto :goto_72
-
-    .line 773
-    :cond_4b
-    iget-object v1, p0, Lcom/android/server/display/ColorFade$NaturalSurfaceLayout;->mSurfaceControl:Landroid/view/SurfaceControl;
-
-    iget v0, v0, Landroid/view/DisplayInfo;->logicalHeight:I
-
-    int-to-float v0, v0
-
-    invoke-virtual {p1, v1, v2, v0}, Landroid/view/SurfaceControl$Transaction;->setPosition(Landroid/view/SurfaceControl;FF)Landroid/view/SurfaceControl$Transaction;
-
-    .line 774
-    iget-object v4, p0, Lcom/android/server/display/ColorFade$NaturalSurfaceLayout;->mSurfaceControl:Landroid/view/SurfaceControl;
-
-    const/4 v5, 0x0
+    .line 790
+    iget-object v5, p0, Lcom/android/server/display/ColorFade$NaturalSurfaceLayout;->mSurfaceControl:Landroid/view/SurfaceControl;
 
     const/high16 v6, -0x40800000  # -1.0f
 
-    const/high16 v7, 0x3f800000  # 1.0f
+    const/4 v7, 0x0
 
     const/4 v8, 0x0
 
-    move-object v3, p1
+    const/high16 v9, -0x40800000  # -1.0f
 
-    invoke-virtual/range {v3 .. v8}, Landroid/view/SurfaceControl$Transaction;->setMatrix(Landroid/view/SurfaceControl;FFFF)Landroid/view/SurfaceControl$Transaction;
+    move-object v4, p1
 
-    .line 775
+    invoke-virtual/range {v4 .. v9}, Landroid/view/SurfaceControl$Transaction;->setMatrix(Landroid/view/SurfaceControl;FFFF)Landroid/view/SurfaceControl$Transaction;
+
+    .line 791
     goto :goto_72
 
-    .line 769
+    .line 784
+    :cond_4b
+    iget-object v1, p0, Lcom/android/server/display/ColorFade$NaturalSurfaceLayout;->mSurfaceControl:Landroid/view/SurfaceControl;
+
+    iget v3, v0, Landroid/view/DisplayInfo;->logicalHeight:I
+
+    int-to-float v3, v3
+
+    invoke-virtual {p1, v1, v2, v3}, Landroid/view/SurfaceControl$Transaction;->setPosition(Landroid/view/SurfaceControl;FF)Landroid/view/SurfaceControl$Transaction;
+
+    .line 785
+    iget-object v5, p0, Lcom/android/server/display/ColorFade$NaturalSurfaceLayout;->mSurfaceControl:Landroid/view/SurfaceControl;
+
+    const/4 v6, 0x0
+
+    const/high16 v7, -0x40800000  # -1.0f
+
+    const/high16 v8, 0x3f800000  # 1.0f
+
+    const/4 v9, 0x0
+
+    move-object v4, p1
+
+    invoke-virtual/range {v4 .. v9}, Landroid/view/SurfaceControl$Transaction;->setMatrix(Landroid/view/SurfaceControl;FFFF)Landroid/view/SurfaceControl$Transaction;
+
+    .line 786
+    goto :goto_72
+
+    .line 780
     :cond_60
-    iget-object v0, p0, Lcom/android/server/display/ColorFade$NaturalSurfaceLayout;->mSurfaceControl:Landroid/view/SurfaceControl;
+    iget-object v1, p0, Lcom/android/server/display/ColorFade$NaturalSurfaceLayout;->mSurfaceControl:Landroid/view/SurfaceControl;
 
-    invoke-virtual {p1, v0, v2, v2}, Landroid/view/SurfaceControl$Transaction;->setPosition(Landroid/view/SurfaceControl;FF)Landroid/view/SurfaceControl$Transaction;
+    invoke-virtual {p1, v1, v2, v2}, Landroid/view/SurfaceControl$Transaction;->setPosition(Landroid/view/SurfaceControl;FF)Landroid/view/SurfaceControl$Transaction;
 
-    .line 770
+    .line 781
     iget-object v4, p0, Lcom/android/server/display/ColorFade$NaturalSurfaceLayout;->mSurfaceControl:Landroid/view/SurfaceControl;
 
     const/high16 v5, 0x3f800000  # 1.0f
@@ -245,23 +250,24 @@
 
     invoke-virtual/range {v3 .. v8}, Landroid/view/SurfaceControl$Transaction;->setMatrix(Landroid/view/SurfaceControl;FFFF)Landroid/view/SurfaceControl$Transaction;
 
-    .line 771
+    .line 782
     nop
 
-    .line 786
+    .line 797
+    .end local v0  # "displayInfo":Landroid/view/DisplayInfo;
     :goto_72
     monitor-exit p0
 
-    .line 787
+    .line 798
     return-void
 
-    .line 786
+    .line 797
     :catchall_74
-    move-exception p1
+    move-exception v0
 
     monitor-exit p0
     :try_end_76
     .catchall {:try_start_1 .. :try_end_76} :catchall_74
 
-    throw p1
+    throw v0
 .end method

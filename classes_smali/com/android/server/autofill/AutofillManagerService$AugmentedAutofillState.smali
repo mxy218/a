@@ -66,6 +66,10 @@
 
 .method static synthetic access$400(Lcom/android/server/autofill/AutofillManagerService$AugmentedAutofillState;ILjava/lang/String;Z)V
     .registers 4
+    .param p0, "x0"  # Lcom/android/server/autofill/AutofillManagerService$AugmentedAutofillState;
+    .param p1, "x1"  # I
+    .param p2, "x2"  # Ljava/lang/String;
+    .param p3, "x3"  # Z
 
     .line 971
     invoke-direct {p0, p1, p2, p3}, Lcom/android/server/autofill/AutofillManagerService$AugmentedAutofillState;->setServiceInfo(ILjava/lang/String;Z)V
@@ -74,7 +78,10 @@
 .end method
 
 .method private setServiceInfo(ILjava/lang/String;Z)V
-    .registers 7
+    .registers 9
+    .param p1, "userId"  # I
+    .param p2, "serviceName"  # Ljava/lang/String;
+    .param p3, "isTemporary"  # Z
 
     .line 980
     iget-object v0, p0, Lcom/android/server/autofill/AutofillManagerService$AugmentedAutofillState;->mGlobalWhitelistStateLock:Ljava/lang/Object;
@@ -86,19 +93,19 @@
 
     .line 982
     :try_start_5
-    iget-object p3, p0, Lcom/android/server/autofill/AutofillManagerService$AugmentedAutofillState;->mTemporaryServices:Landroid/util/SparseBooleanArray;
+    iget-object v1, p0, Lcom/android/server/autofill/AutofillManagerService$AugmentedAutofillState;->mTemporaryServices:Landroid/util/SparseBooleanArray;
 
-    const/4 v1, 0x1
+    const/4 v2, 0x1
 
-    invoke-virtual {p3, p1, v1}, Landroid/util/SparseBooleanArray;->put(IZ)V
+    invoke-virtual {v1, p1, v2}, Landroid/util/SparseBooleanArray;->put(IZ)V
 
     goto :goto_11
 
     .line 984
     :cond_c
-    iget-object p3, p0, Lcom/android/server/autofill/AutofillManagerService$AugmentedAutofillState;->mTemporaryServices:Landroid/util/SparseBooleanArray;
+    iget-object v1, p0, Lcom/android/server/autofill/AutofillManagerService$AugmentedAutofillState;->mTemporaryServices:Landroid/util/SparseBooleanArray;
 
-    invoke-virtual {p3, p1}, Landroid/util/SparseBooleanArray;->delete(I)V
+    invoke-virtual {v1, p1}, Landroid/util/SparseBooleanArray;->delete(I)V
 
     .line 986
     :goto_11
@@ -110,56 +117,58 @@
     .line 988
     invoke-static {p2}, Landroid/content/ComponentName;->unflattenFromString(Ljava/lang/String;)Landroid/content/ComponentName;
 
-    move-result-object p3
+    move-result-object v1
 
     .line 989
-    if-nez p3, :cond_37
+    .local v1, "componentName":Landroid/content/ComponentName;
+    if-nez v1, :cond_37
 
     .line 990
-    const-string p3, "AutofillManagerService"
+    const-string v2, "AutofillManagerService"
 
-    new-instance v1, Ljava/lang/StringBuilder;
+    new-instance v3, Ljava/lang/StringBuilder;
 
-    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string/jumbo v2, "setServiceInfo(): invalid name: "
+    const-string/jumbo v4, "setServiceInfo(): invalid name: "
 
-    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v1, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p2
+    move-result-object v3
 
-    invoke-static {p3, p2}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v2, v3}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 991
-    iget-object p2, p0, Lcom/android/server/autofill/AutofillManagerService$AugmentedAutofillState;->mServicePackages:Landroid/util/SparseArray;
+    iget-object v2, p0, Lcom/android/server/autofill/AutofillManagerService$AugmentedAutofillState;->mServicePackages:Landroid/util/SparseArray;
 
-    invoke-virtual {p2, p1}, Landroid/util/SparseArray;->remove(I)V
+    invoke-virtual {v2, p1}, Landroid/util/SparseArray;->remove(I)V
 
     goto :goto_40
 
     .line 993
     :cond_37
-    iget-object p2, p0, Lcom/android/server/autofill/AutofillManagerService$AugmentedAutofillState;->mServicePackages:Landroid/util/SparseArray;
+    iget-object v2, p0, Lcom/android/server/autofill/AutofillManagerService$AugmentedAutofillState;->mServicePackages:Landroid/util/SparseArray;
 
-    invoke-virtual {p3}, Landroid/content/ComponentName;->getPackageName()Ljava/lang/String;
+    invoke-virtual {v1}, Landroid/content/ComponentName;->getPackageName()Ljava/lang/String;
 
-    move-result-object p3
+    move-result-object v3
 
-    invoke-virtual {p2, p1, p3}, Landroid/util/SparseArray;->put(ILjava/lang/Object;)V
+    invoke-virtual {v2, p1, v3}, Landroid/util/SparseArray;->put(ILjava/lang/Object;)V
 
     .line 995
+    .end local v1  # "componentName":Landroid/content/ComponentName;
     :goto_40
     goto :goto_46
 
     .line 996
     :cond_41
-    iget-object p2, p0, Lcom/android/server/autofill/AutofillManagerService$AugmentedAutofillState;->mServicePackages:Landroid/util/SparseArray;
+    iget-object v1, p0, Lcom/android/server/autofill/AutofillManagerService$AugmentedAutofillState;->mServicePackages:Landroid/util/SparseArray;
 
-    invoke-virtual {p2, p1}, Landroid/util/SparseArray;->remove(I)V
+    invoke-virtual {v1, p1}, Landroid/util/SparseArray;->remove(I)V
 
     .line 998
     :goto_46
@@ -170,19 +179,21 @@
 
     .line 998
     :catchall_48
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_4a
     .catchall {:try_start_5 .. :try_end_4a} :catchall_48
 
-    throw p1
+    throw v1
 .end method
 
 
 # virtual methods
 .method public dump(Ljava/lang/String;Ljava/io/PrintWriter;)V
     .registers 5
+    .param p1, "prefix"  # Ljava/lang/String;
+    .param p2, "pw"  # Ljava/io/PrintWriter;
 
     .line 1033
     invoke-super {p0, p1, p2}, Lcom/android/internal/infra/GlobalWhitelistState;->dump(Ljava/lang/String;Ljava/io/PrintWriter;)V
@@ -226,13 +237,13 @@
     .line 1040
     invoke-virtual {p2, p1}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
-    const-string p1, "Temp services: "
+    const-string v1, "Temp services: "
 
-    invoke-virtual {p2, p1}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
+    invoke-virtual {p2, v1}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
-    iget-object p1, p0, Lcom/android/server/autofill/AutofillManagerService$AugmentedAutofillState;->mTemporaryServices:Landroid/util/SparseBooleanArray;
+    iget-object v1, p0, Lcom/android/server/autofill/AutofillManagerService$AugmentedAutofillState;->mTemporaryServices:Landroid/util/SparseBooleanArray;
 
-    invoke-virtual {p2, p1}, Ljava/io/PrintWriter;->println(Ljava/lang/Object;)V
+    invoke-virtual {p2, v1}, Ljava/io/PrintWriter;->println(Ljava/lang/Object;)V
 
     .line 1042
     :cond_30
@@ -243,17 +254,20 @@
 
     .line 1042
     :catchall_32
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_34
     .catchall {:try_start_6 .. :try_end_34} :catchall_32
 
-    throw p1
+    throw v1
 .end method
 
 .method public injectAugmentedAutofillInfo(Landroid/content/AutofillOptions;ILjava/lang/String;)V
-    .registers 6
+    .registers 7
+    .param p1, "options"  # Landroid/content/AutofillOptions;
+    .param p2, "userId"  # I
+    .param p3, "packageName"  # Ljava/lang/String;
 
     .line 1003
     iget-object v0, p0, Lcom/android/server/autofill/AutofillManagerService$AugmentedAutofillState;->mGlobalWhitelistStateLock:Ljava/lang/Object;
@@ -276,31 +290,33 @@
 
     invoke-virtual {v1, p2}, Landroid/util/SparseArray;->get(I)Ljava/lang/Object;
 
-    move-result-object p2
+    move-result-object v1
 
-    check-cast p2, Lcom/android/internal/infra/WhitelistHelper;
+    check-cast v1, Lcom/android/internal/infra/WhitelistHelper;
 
     .line 1006
-    if-eqz p2, :cond_20
+    .local v1, "helper":Lcom/android/internal/infra/WhitelistHelper;
+    if-eqz v1, :cond_20
 
     .line 1007
-    invoke-virtual {p2, p3}, Lcom/android/internal/infra/WhitelistHelper;->isWhitelisted(Ljava/lang/String;)Z
+    invoke-virtual {v1, p3}, Lcom/android/internal/infra/WhitelistHelper;->isWhitelisted(Ljava/lang/String;)Z
 
-    move-result v1
+    move-result v2
 
-    iput-boolean v1, p1, Landroid/content/AutofillOptions;->augmentedAutofillEnabled:Z
+    iput-boolean v2, p1, Landroid/content/AutofillOptions;->augmentedAutofillEnabled:Z
 
     .line 1008
     nop
 
     .line 1009
-    invoke-virtual {p2, p3}, Lcom/android/internal/infra/WhitelistHelper;->getWhitelistedComponents(Ljava/lang/String;)Landroid/util/ArraySet;
+    invoke-virtual {v1, p3}, Lcom/android/internal/infra/WhitelistHelper;->getWhitelistedComponents(Ljava/lang/String;)Landroid/util/ArraySet;
 
-    move-result-object p2
+    move-result-object v2
 
-    iput-object p2, p1, Landroid/content/AutofillOptions;->whitelistedActivitiesForAugmentedAutofill:Landroid/util/ArraySet;
+    iput-object v2, p1, Landroid/content/AutofillOptions;->whitelistedActivitiesForAugmentedAutofill:Landroid/util/ArraySet;
 
     .line 1011
+    .end local v1  # "helper":Lcom/android/internal/infra/WhitelistHelper;
     :cond_20
     monitor-exit v0
 
@@ -309,17 +325,19 @@
 
     .line 1011
     :catchall_22
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_24
     .catchall {:try_start_3 .. :try_end_24} :catchall_22
 
-    throw p1
+    throw v1
 .end method
 
 .method public isWhitelisted(ILandroid/content/ComponentName;)Z
-    .registers 8
+    .registers 9
+    .param p1, "userId"  # I
+    .param p2, "componentName"  # Landroid/content/ComponentName;
 
     .line 1016
     iget-object v0, p0, Lcom/android/server/autofill/AutofillManagerService$AugmentedAutofillState;->mGlobalWhitelistStateLock:Ljava/lang/Object;
@@ -357,55 +375,56 @@
     .line 1020
     invoke-virtual {p2}, Landroid/content/ComponentName;->getPackageName()Ljava/lang/String;
 
-    move-result-object p2
-
-    .line 1021
-    iget-object v1, p0, Lcom/android/server/autofill/AutofillManagerService$AugmentedAutofillState;->mServicePackages:Landroid/util/SparseArray;
-
-    invoke-virtual {v1, p1}, Landroid/util/SparseArray;->get(I)Ljava/lang/Object;
-
     move-result-object v1
 
-    invoke-virtual {p2, v1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    .line 1021
+    .local v1, "packageName":Ljava/lang/String;
+    iget-object v3, p0, Lcom/android/server/autofill/AutofillManagerService$AugmentedAutofillState;->mServicePackages:Landroid/util/SparseArray;
 
-    move-result v1
+    invoke-virtual {v3, p1}, Landroid/util/SparseArray;->get(I)Ljava/lang/Object;
 
-    if-nez v1, :cond_50
+    move-result-object v3
+
+    invoke-virtual {v1, v3}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+
+    move-result v3
+
+    if-nez v3, :cond_50
 
     .line 1022
-    const-string v1, "AutofillManagerService"
+    const-string v3, "AutofillManagerService"
 
-    new-instance v3, Ljava/lang/StringBuilder;
+    new-instance v4, Ljava/lang/StringBuilder;
 
-    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v4}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v4, "Ignoring package "
+    const-string v5, "Ignoring package "
 
-    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v3, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v4, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string p2, " for augmented autofill while using temporary service "
+    const-string v5, " for augmented autofill while using temporary service "
 
-    invoke-virtual {v3, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    iget-object p2, p0, Lcom/android/server/autofill/AutofillManagerService$AugmentedAutofillState;->mServicePackages:Landroid/util/SparseArray;
+    iget-object v5, p0, Lcom/android/server/autofill/AutofillManagerService$AugmentedAutofillState;->mServicePackages:Landroid/util/SparseArray;
 
     .line 1023
-    invoke-virtual {p2, p1}, Landroid/util/SparseArray;->get(I)Ljava/lang/Object;
+    invoke-virtual {v5, p1}, Landroid/util/SparseArray;->get(I)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v5
 
-    check-cast p1, Ljava/lang/String;
+    check-cast v5, Ljava/lang/String;
 
-    invoke-virtual {v3, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v4}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v4
 
     .line 1022
-    invoke-static {v1, p1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v3, v4}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 1024
     monitor-exit v0
@@ -413,21 +432,22 @@
     return v2
 
     .line 1027
+    .end local v1  # "packageName":Ljava/lang/String;
     :cond_50
     monitor-exit v0
 
     .line 1028
-    const/4 p1, 0x1
+    const/4 v0, 0x1
 
-    return p1
+    return v0
 
     .line 1027
     :catchall_53
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_55
     .catchall {:try_start_3 .. :try_end_55} :catchall_53
 
-    throw p1
+    throw v1
 .end method

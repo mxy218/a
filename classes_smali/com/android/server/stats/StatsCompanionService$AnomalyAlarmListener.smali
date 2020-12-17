@@ -21,7 +21,7 @@
 .method public constructor <init>()V
     .registers 1
 
-    .line 593
+    .line 591
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
     return-void
@@ -32,7 +32,7 @@
 .method public onAlarm()V
     .registers 5
 
-    .line 596
+    .line 594
     new-instance v0, Ljava/lang/StringBuilder;
 
     invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
@@ -41,7 +41,7 @@
 
     invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    .line 597
+    .line 595
     invoke-static {}, Ljava/lang/System;->currentTimeMillis()J
 
     move-result-wide v1
@@ -56,19 +56,19 @@
 
     move-result-object v0
 
-    .line 596
+    .line 594
     const-string v1, "StatsCompanionService"
 
     invoke-static {v1, v0}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 598
+    .line 596
     invoke-static {}, Lcom/android/server/stats/StatsCompanionService;->access$100()Ljava/lang/Object;
 
     move-result-object v0
 
     monitor-enter v0
 
-    .line 599
+    .line 597
     :try_start_25
     invoke-static {}, Lcom/android/server/stats/StatsCompanionService;->access$200()Landroid/os/IStatsManager;
 
@@ -76,21 +76,21 @@
 
     if-nez v1, :cond_34
 
-    .line 600
+    .line 598
     const-string v1, "StatsCompanionService"
 
     const-string v2, "Could not access statsd to inform it of anomaly alarm firing"
 
     invoke-static {v1, v2}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 601
+    .line 599
     monitor-exit v0
     :try_end_33
     .catchall {:try_start_25 .. :try_end_33} :catchall_46
 
     return-void
 
-    .line 605
+    .line 603
     :cond_34
     :try_start_34
     invoke-static {}, Lcom/android/server/stats/StatsCompanionService;->access$200()Landroid/os/IStatsManager;
@@ -102,14 +102,15 @@
     .catch Landroid/os/RemoteException; {:try_start_34 .. :try_end_3b} :catch_3c
     .catchall {:try_start_34 .. :try_end_3b} :catchall_46
 
-    .line 608
+    .line 606
     goto :goto_44
 
-    .line 606
+    .line 604
     :catch_3c
     move-exception v1
 
-    .line 607
+    .line 605
+    .local v1, "e":Landroid/os/RemoteException;
     :try_start_3d
     const-string v2, "StatsCompanionService"
 
@@ -117,14 +118,15 @@
 
     invoke-static {v2, v3, v1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
-    .line 609
+    .line 607
+    .end local v1  # "e":Landroid/os/RemoteException;
     :goto_44
     monitor-exit v0
 
-    .line 611
+    .line 609
     return-void
 
-    .line 609
+    .line 607
     :catchall_46
     move-exception v1
 

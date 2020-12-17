@@ -21,14 +21,15 @@
 # direct methods
 .method constructor <init>(Lcom/android/internal/os/BinderCallsStats;)V
     .registers 2
+    .param p1, "binderCallsStats"  # Lcom/android/internal/os/BinderCallsStats;
 
-    .line 211
+    .line 208
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
-    .line 212
+    .line 209
     iput-object p1, p0, Lcom/android/server/BinderCallsStatsService$Internal;->mBinderCallsStats:Lcom/android/internal/os/BinderCallsStats;
 
-    .line 213
+    .line 210
     return-void
 .end method
 
@@ -45,7 +46,7 @@
         }
     .end annotation
 
-    .line 227
+    .line 224
     iget-object v0, p0, Lcom/android/server/BinderCallsStatsService$Internal;->mBinderCallsStats:Lcom/android/internal/os/BinderCallsStats;
 
     invoke-virtual {v0}, Lcom/android/internal/os/BinderCallsStats;->getExportedCallStats()Ljava/util/ArrayList;
@@ -67,7 +68,7 @@
         }
     .end annotation
 
-    .line 232
+    .line 229
     iget-object v0, p0, Lcom/android/server/BinderCallsStatsService$Internal;->mBinderCallsStats:Lcom/android/internal/os/BinderCallsStats;
 
     invoke-virtual {v0}, Lcom/android/internal/os/BinderCallsStats;->getExportedExceptionStats()Landroid/util/ArrayMap;
@@ -80,11 +81,11 @@
 .method public reset()V
     .registers 2
 
-    .line 217
+    .line 214
     iget-object v0, p0, Lcom/android/server/BinderCallsStatsService$Internal;->mBinderCallsStats:Lcom/android/internal/os/BinderCallsStats;
 
     invoke-virtual {v0}, Lcom/android/internal/os/BinderCallsStats;->reset()V
 
-    .line 218
+    .line 215
     return-void
 .end method

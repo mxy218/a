@@ -6,6 +6,7 @@
 # virtual methods
 .method public onInitializeOverrideConfiguration(Landroid/content/res/Configuration;)V
     .registers 2
+    .param p1, "config"  # Landroid/content/res/Configuration;
 
     .line 28
     return-void

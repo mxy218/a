@@ -46,7 +46,8 @@
 .end method
 
 .method static collect(JLandroid/util/SparseArray;)Lcom/android/server/connectivity/NetdEventListenerService$NetworkMetricsSnapshot;
-    .registers 5
+    .registers 7
+    .param p0, "timeMs"  # J
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(J",
@@ -58,49 +59,55 @@
     .end annotation
 
     .line 401
+    .local p2, "networkMetrics":Landroid/util/SparseArray;, "Landroid/util/SparseArray<Landroid/net/metrics/NetworkMetrics;>;"
     new-instance v0, Lcom/android/server/connectivity/NetdEventListenerService$NetworkMetricsSnapshot;
 
     invoke-direct {v0}, Lcom/android/server/connectivity/NetdEventListenerService$NetworkMetricsSnapshot;-><init>()V
 
     .line 402
+    .local v0, "snapshot":Lcom/android/server/connectivity/NetdEventListenerService$NetworkMetricsSnapshot;
     iput-wide p0, v0, Lcom/android/server/connectivity/NetdEventListenerService$NetworkMetricsSnapshot;->timeMs:J
 
     .line 403
-    const/4 p0, 0x0
+    const/4 v1, 0x0
 
+    .local v1, "i":I
     :goto_8
     invoke-virtual {p2}, Landroid/util/SparseArray;->size()I
 
-    move-result p1
+    move-result v2
 
-    if-ge p0, p1, :cond_22
+    if-ge v1, v2, :cond_22
 
     .line 404
-    invoke-virtual {p2, p0}, Landroid/util/SparseArray;->valueAt(I)Ljava/lang/Object;
+    invoke-virtual {p2, v1}, Landroid/util/SparseArray;->valueAt(I)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v2
 
-    check-cast p1, Landroid/net/metrics/NetworkMetrics;
+    check-cast v2, Landroid/net/metrics/NetworkMetrics;
 
-    invoke-virtual {p1}, Landroid/net/metrics/NetworkMetrics;->getPendingStats()Landroid/net/metrics/NetworkMetrics$Summary;
+    invoke-virtual {v2}, Landroid/net/metrics/NetworkMetrics;->getPendingStats()Landroid/net/metrics/NetworkMetrics$Summary;
 
-    move-result-object p1
+    move-result-object v2
 
     .line 405
-    if-eqz p1, :cond_1f
+    .local v2, "s":Landroid/net/metrics/NetworkMetrics$Summary;
+    if-eqz v2, :cond_1f
 
     .line 406
-    iget-object v1, v0, Lcom/android/server/connectivity/NetdEventListenerService$NetworkMetricsSnapshot;->stats:Ljava/util/List;
+    iget-object v3, v0, Lcom/android/server/connectivity/NetdEventListenerService$NetworkMetricsSnapshot;->stats:Ljava/util/List;
 
-    invoke-interface {v1, p1}, Ljava/util/List;->add(Ljava/lang/Object;)Z
+    invoke-interface {v3, v2}, Ljava/util/List;->add(Ljava/lang/Object;)Z
 
     .line 403
+    .end local v2  # "s":Landroid/net/metrics/NetworkMetrics$Summary;
     :cond_1f
-    add-int/lit8 p0, p0, 0x1
+    add-int/lit8 v1, v1, 0x1
 
     goto :goto_8
 
     .line 409
+    .end local v1  # "i":I
     :cond_22
     return-object v0
 .end method
@@ -118,6 +125,7 @@
     invoke-direct {v0, v1}, Ljava/util/StringJoiner;-><init>(Ljava/lang/CharSequence;)V
 
     .line 415
+    .local v0, "j":Ljava/util/StringJoiner;
     iget-object v1, p0, Lcom/android/server/connectivity/NetdEventListenerService$NetworkMetricsSnapshot;->stats:Ljava/util/List;
 
     invoke-interface {v1}, Ljava/util/List;->iterator()Ljava/util/Iterator;
@@ -138,13 +146,15 @@
     check-cast v2, Landroid/net/metrics/NetworkMetrics$Summary;
 
     .line 416
+    .local v2, "s":Landroid/net/metrics/NetworkMetrics$Summary;
     invoke-virtual {v2}, Landroid/net/metrics/NetworkMetrics$Summary;->toString()Ljava/lang/String;
 
-    move-result-object v2
+    move-result-object v3
 
-    invoke-virtual {v0, v2}, Ljava/util/StringJoiner;->add(Ljava/lang/CharSequence;)Ljava/util/StringJoiner;
+    invoke-virtual {v0, v3}, Ljava/util/StringJoiner;->add(Ljava/lang/CharSequence;)Ljava/util/StringJoiner;
 
     .line 417
+    .end local v2  # "s":Landroid/net/metrics/NetworkMetrics$Summary;
     goto :goto_d
 
     .line 418
@@ -177,15 +187,15 @@
 
     invoke-virtual {v0}, Ljava/util/StringJoiner;->toString()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v3
 
-    aput-object v0, v1, v2
+    aput-object v3, v1, v2
 
-    const-string v0, "%tT.%tL: %s"
+    const-string v2, "%tT.%tL: %s"
 
-    invoke-static {v0, v1}, Ljava/lang/String;->format(Ljava/lang/String;[Ljava/lang/Object;)Ljava/lang/String;
+    invoke-static {v2, v1}, Ljava/lang/String;->format(Ljava/lang/String;[Ljava/lang/Object;)Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v1
 
-    return-object v0
+    return-object v1
 .end method

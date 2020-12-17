@@ -21,6 +21,7 @@
 # direct methods
 .method constructor <init>(Landroid/net/IpMemoryStore;)V
     .registers 2
+    .param p1, "this$0"  # Landroid/net/IpMemoryStore;
 
     .line 45
     iput-object p1, p0, Landroid/net/IpMemoryStore$1;->this$0:Landroid/net/IpMemoryStore;
@@ -43,6 +44,7 @@
 
 .method public onIpMemoryStoreFetched(Landroid/net/IIpMemoryStore;)V
     .registers 3
+    .param p1, "memoryStore"  # Landroid/net/IIpMemoryStore;
 
     .line 48
     iget-object v0, p0, Landroid/net/IpMemoryStore$1;->this$0:Landroid/net/IpMemoryStore;

@@ -27,6 +27,9 @@
 # direct methods
 .method constructor <init>(Landroid/view/SurfaceControl$Transaction;Lcom/android/server/wm/AppWindowToken;Landroid/graphics/GraphicBuffer;)V
     .registers 5
+    .param p1, "t"  # Landroid/view/SurfaceControl$Transaction;
+    .param p2, "appToken"  # Lcom/android/server/wm/AppWindowToken;
+    .param p3, "thumbnailHeader"  # Landroid/graphics/GraphicBuffer;
 
     .line 59
     const/4 v0, 0x0
@@ -39,6 +42,10 @@
 
 .method constructor <init>(Landroid/view/SurfaceControl$Transaction;Lcom/android/server/wm/AppWindowToken;Landroid/graphics/GraphicBuffer;Z)V
     .registers 12
+    .param p1, "t"  # Landroid/view/SurfaceControl$Transaction;
+    .param p2, "appToken"  # Lcom/android/server/wm/AppWindowToken;
+    .param p3, "thumbnailHeader"  # Landroid/graphics/GraphicBuffer;
+    .param p4, "relative"  # Z
 
     .line 71
     new-instance v5, Landroid/view/Surface;
@@ -64,7 +71,13 @@
 .end method
 
 .method constructor <init>(Landroid/view/SurfaceControl$Transaction;Lcom/android/server/wm/AppWindowToken;Landroid/graphics/GraphicBuffer;ZLandroid/view/Surface;Lcom/android/server/wm/SurfaceAnimator;)V
-    .registers 10
+    .registers 11
+    .param p1, "t"  # Landroid/view/SurfaceControl$Transaction;
+    .param p2, "appToken"  # Lcom/android/server/wm/AppWindowToken;
+    .param p3, "thumbnailHeader"  # Landroid/graphics/GraphicBuffer;
+    .param p4, "relative"  # Z
+    .param p5, "drawSurface"  # Landroid/view/Surface;
+    .param p6, "animator"  # Lcom/android/server/wm/SurfaceAnimator;
 
     .line 75
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -85,55 +98,138 @@
 
     .line 83
     :cond_c
-    new-instance p6, Lcom/android/server/wm/SurfaceAnimator;
+    new-instance v0, Lcom/android/server/wm/SurfaceAnimator;
 
-    new-instance v0, Lcom/android/server/wm/-$$Lambda$AppWindowThumbnail$hHTeq2FR5SSE1YyVM6K-wuzeLLo;
+    new-instance v1, Lcom/android/server/wm/-$$Lambda$AppWindowThumbnail$hHTeq2FR5SSE1YyVM6K-wuzeLLo;
 
-    invoke-direct {v0, p0}, Lcom/android/server/wm/-$$Lambda$AppWindowThumbnail$hHTeq2FR5SSE1YyVM6K-wuzeLLo;-><init>(Lcom/android/server/wm/AppWindowThumbnail;)V
+    invoke-direct {v1, p0}, Lcom/android/server/wm/-$$Lambda$AppWindowThumbnail$hHTeq2FR5SSE1YyVM6K-wuzeLLo;-><init>(Lcom/android/server/wm/AppWindowThumbnail;)V
 
-    iget-object v1, p2, Lcom/android/server/wm/AppWindowToken;->mWmService:Lcom/android/server/wm/WindowManagerService;
+    iget-object v2, p2, Lcom/android/server/wm/AppWindowToken;->mWmService:Lcom/android/server/wm/WindowManagerService;
 
-    invoke-direct {p6, p0, v0, v1}, Lcom/android/server/wm/SurfaceAnimator;-><init>(Lcom/android/server/wm/SurfaceAnimator$Animatable;Ljava/lang/Runnable;Lcom/android/server/wm/WindowManagerService;)V
+    invoke-direct {v0, p0, v1, v2}, Lcom/android/server/wm/SurfaceAnimator;-><init>(Lcom/android/server/wm/SurfaceAnimator$Animatable;Ljava/lang/Runnable;Lcom/android/server/wm/WindowManagerService;)V
 
-    iput-object p6, p0, Lcom/android/server/wm/AppWindowThumbnail;->mSurfaceAnimator:Lcom/android/server/wm/SurfaceAnimator;
+    iput-object v0, p0, Lcom/android/server/wm/AppWindowThumbnail;->mSurfaceAnimator:Lcom/android/server/wm/SurfaceAnimator;
 
     .line 86
     :goto_1a
     invoke-virtual {p3}, Landroid/graphics/GraphicBuffer;->getWidth()I
 
-    move-result p6
+    move-result v0
 
-    iput p6, p0, Lcom/android/server/wm/AppWindowThumbnail;->mWidth:I
+    iput v0, p0, Lcom/android/server/wm/AppWindowThumbnail;->mWidth:I
 
     .line 87
     invoke-virtual {p3}, Landroid/graphics/GraphicBuffer;->getHeight()I
 
-    move-result p6
+    move-result v0
 
-    iput p6, p0, Lcom/android/server/wm/AppWindowThumbnail;->mHeight:I
+    iput v0, p0, Lcom/android/server/wm/AppWindowThumbnail;->mHeight:I
 
     .line 90
     invoke-virtual {p2}, Lcom/android/server/wm/AppWindowToken;->findMainWindow()Lcom/android/server/wm/WindowState;
 
-    move-result-object p6
-
-    .line 95
-    invoke-virtual {p2}, Lcom/android/server/wm/AppWindowToken;->makeSurface()Landroid/view/SurfaceControl$Builder;
-
     move-result-object v0
 
-    new-instance v1, Ljava/lang/StringBuilder;
+    .line 95
+    .local v0, "window":Lcom/android/server/wm/WindowState;
+    invoke-virtual {p2}, Lcom/android/server/wm/AppWindowToken;->makeSurface()Landroid/view/SurfaceControl$Builder;
 
-    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
+    move-result-object v1
 
-    const-string v2, "thumbnail anim: "
+    new-instance v2, Ljava/lang/StringBuilder;
 
-    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
+
+    const-string v3, "thumbnail anim: "
+
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     .line 96
     invoke-virtual {p2}, Lcom/android/server/wm/AppWindowToken;->toString()Ljava/lang/String;
 
+    move-result-object v3
+
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
     move-result-object v2
+
+    invoke-virtual {v1, v2}, Landroid/view/SurfaceControl$Builder;->setName(Ljava/lang/String;)Landroid/view/SurfaceControl$Builder;
+
+    move-result-object v1
+
+    iget v2, p0, Lcom/android/server/wm/AppWindowThumbnail;->mWidth:I
+
+    iget v3, p0, Lcom/android/server/wm/AppWindowThumbnail;->mHeight:I
+
+    .line 97
+    invoke-virtual {v1, v2, v3}, Landroid/view/SurfaceControl$Builder;->setBufferSize(II)Landroid/view/SurfaceControl$Builder;
+
+    move-result-object v1
+
+    const/4 v2, -0x3
+
+    .line 98
+    invoke-virtual {v1, v2}, Landroid/view/SurfaceControl$Builder;->setFormat(I)Landroid/view/SurfaceControl$Builder;
+
+    move-result-object v1
+
+    const/4 v2, 0x2
+
+    iget v3, p2, Lcom/android/server/wm/AppWindowToken;->windowType:I
+
+    .line 99
+    invoke-virtual {v1, v2, v3}, Landroid/view/SurfaceControl$Builder;->setMetadata(II)Landroid/view/SurfaceControl$Builder;
+
+    move-result-object v1
+
+    const/4 v2, 0x1
+
+    .line 101
+    if-eqz v0, :cond_61
+
+    iget v3, v0, Lcom/android/server/wm/WindowState;->mOwnerUid:I
+
+    goto :goto_65
+
+    :cond_61
+    invoke-static {}, Landroid/os/Binder;->getCallingUid()I
+
+    move-result v3
+
+    .line 100
+    :goto_65
+    invoke-virtual {v1, v2, v3}, Landroid/view/SurfaceControl$Builder;->setMetadata(II)Landroid/view/SurfaceControl$Builder;
+
+    move-result-object v1
+
+    .line 102
+    invoke-virtual {v1}, Landroid/view/SurfaceControl$Builder;->build()Landroid/view/SurfaceControl;
+
+    move-result-object v1
+
+    iput-object v1, p0, Lcom/android/server/wm/AppWindowThumbnail;->mSurfaceControl:Landroid/view/SurfaceControl;
+
+    .line 104
+    sget-boolean v1, Lcom/android/server/wm/WindowManagerDebugConfig;->SHOW_TRANSACTIONS:Z
+
+    if-eqz v1, :cond_90
+
+    .line 105
+    new-instance v1, Ljava/lang/StringBuilder;
+
+    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
+
+    const-string v2, "  THUMBNAIL "
+
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    iget-object v2, p0, Lcom/android/server/wm/AppWindowThumbnail;->mSurfaceControl:Landroid/view/SurfaceControl;
+
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+
+    const-string v2, ": CREATE"
 
     invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
@@ -141,66 +237,15 @@
 
     move-result-object v1
 
-    invoke-virtual {v0, v1}, Landroid/view/SurfaceControl$Builder;->setName(Ljava/lang/String;)Landroid/view/SurfaceControl$Builder;
+    const-string v2, "WindowManager"
 
-    move-result-object v0
-
-    iget v1, p0, Lcom/android/server/wm/AppWindowThumbnail;->mWidth:I
-
-    iget v2, p0, Lcom/android/server/wm/AppWindowThumbnail;->mHeight:I
-
-    .line 97
-    invoke-virtual {v0, v1, v2}, Landroid/view/SurfaceControl$Builder;->setBufferSize(II)Landroid/view/SurfaceControl$Builder;
-
-    move-result-object v0
-
-    const/4 v1, -0x3
-
-    .line 98
-    invoke-virtual {v0, v1}, Landroid/view/SurfaceControl$Builder;->setFormat(I)Landroid/view/SurfaceControl$Builder;
-
-    move-result-object v0
-
-    const/4 v1, 0x2
-
-    iget v2, p2, Lcom/android/server/wm/AppWindowToken;->windowType:I
-
-    .line 99
-    invoke-virtual {v0, v1, v2}, Landroid/view/SurfaceControl$Builder;->setMetadata(II)Landroid/view/SurfaceControl$Builder;
-
-    move-result-object v0
-
-    const/4 v1, 0x1
-
-    .line 101
-    if-eqz p6, :cond_61
-
-    iget p6, p6, Lcom/android/server/wm/WindowState;->mOwnerUid:I
-
-    goto :goto_65
-
-    :cond_61
-    invoke-static {}, Landroid/os/Binder;->getCallingUid()I
-
-    move-result p6
-
-    .line 100
-    :goto_65
-    invoke-virtual {v0, v1, p6}, Landroid/view/SurfaceControl$Builder;->setMetadata(II)Landroid/view/SurfaceControl$Builder;
-
-    move-result-object p6
-
-    .line 102
-    invoke-virtual {p6}, Landroid/view/SurfaceControl$Builder;->build()Landroid/view/SurfaceControl;
-
-    move-result-object p6
-
-    iput-object p6, p0, Lcom/android/server/wm/AppWindowThumbnail;->mSurfaceControl:Landroid/view/SurfaceControl;
+    invoke-static {v2, v1}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 109
-    iget-object p6, p0, Lcom/android/server/wm/AppWindowThumbnail;->mSurfaceControl:Landroid/view/SurfaceControl;
+    :cond_90
+    iget-object v1, p0, Lcom/android/server/wm/AppWindowThumbnail;->mSurfaceControl:Landroid/view/SurfaceControl;
 
-    invoke-virtual {p5, p6}, Landroid/view/Surface;->copyFrom(Landroid/view/SurfaceControl;)V
+    invoke-virtual {p5, v1}, Landroid/view/Surface;->copyFrom(Landroid/view/SurfaceControl;)V
 
     .line 110
     invoke-virtual {p5, p3}, Landroid/view/Surface;->attachAndQueueBuffer(Landroid/graphics/GraphicBuffer;)V
@@ -209,31 +254,31 @@
     invoke-virtual {p5}, Landroid/view/Surface;->release()V
 
     .line 112
-    iget-object p3, p0, Lcom/android/server/wm/AppWindowThumbnail;->mSurfaceControl:Landroid/view/SurfaceControl;
+    iget-object v1, p0, Lcom/android/server/wm/AppWindowThumbnail;->mSurfaceControl:Landroid/view/SurfaceControl;
 
-    invoke-virtual {p1, p3}, Landroid/view/SurfaceControl$Transaction;->show(Landroid/view/SurfaceControl;)Landroid/view/SurfaceControl$Transaction;
+    invoke-virtual {p1, v1}, Landroid/view/SurfaceControl$Transaction;->show(Landroid/view/SurfaceControl;)Landroid/view/SurfaceControl$Transaction;
 
     .line 116
-    iget-object p3, p0, Lcom/android/server/wm/AppWindowThumbnail;->mSurfaceControl:Landroid/view/SurfaceControl;
+    iget-object v1, p0, Lcom/android/server/wm/AppWindowThumbnail;->mSurfaceControl:Landroid/view/SurfaceControl;
 
-    const p5, 0x7fffffff
+    const v2, 0x7fffffff
 
-    invoke-virtual {p1, p3, p5}, Landroid/view/SurfaceControl$Transaction;->setLayer(Landroid/view/SurfaceControl;I)Landroid/view/SurfaceControl$Transaction;
+    invoke-virtual {p1, v1, v2}, Landroid/view/SurfaceControl$Transaction;->setLayer(Landroid/view/SurfaceControl;I)Landroid/view/SurfaceControl$Transaction;
 
     .line 117
-    if-eqz p4, :cond_92
+    if-eqz p4, :cond_b3
 
     .line 118
-    iget-object p3, p0, Lcom/android/server/wm/AppWindowThumbnail;->mSurfaceControl:Landroid/view/SurfaceControl;
+    iget-object v1, p0, Lcom/android/server/wm/AppWindowThumbnail;->mSurfaceControl:Landroid/view/SurfaceControl;
 
     invoke-virtual {p2}, Lcom/android/server/wm/AppWindowToken;->getSurfaceControl()Landroid/view/SurfaceControl;
 
-    move-result-object p2
+    move-result-object v2
 
-    invoke-virtual {p1, p3, p2}, Landroid/view/SurfaceControl$Transaction;->reparent(Landroid/view/SurfaceControl;Landroid/view/SurfaceControl;)Landroid/view/SurfaceControl$Transaction;
+    invoke-virtual {p1, v1, v2}, Landroid/view/SurfaceControl$Transaction;->reparent(Landroid/view/SurfaceControl;Landroid/view/SurfaceControl;)Landroid/view/SurfaceControl$Transaction;
 
     .line 120
-    :cond_92
+    :cond_b3
     return-void
 .end method
 
@@ -373,6 +418,8 @@
 
 .method public onAnimationLeashCreated(Landroid/view/SurfaceControl$Transaction;Landroid/view/SurfaceControl;)V
     .registers 4
+    .param p1, "t"  # Landroid/view/SurfaceControl$Transaction;
+    .param p2, "leash"  # Landroid/view/SurfaceControl;
 
     .line 191
     const v0, 0x7fffffff
@@ -400,6 +447,7 @@
 
 .method public onAnimationLeashLost(Landroid/view/SurfaceControl$Transaction;)V
     .registers 3
+    .param p1, "t"  # Landroid/view/SurfaceControl$Transaction;
 
     .line 202
     iget-object v0, p0, Lcom/android/server/wm/AppWindowThumbnail;->mSurfaceControl:Landroid/view/SurfaceControl;
@@ -411,23 +459,25 @@
 .end method
 
 .method setShowing(Landroid/view/SurfaceControl$Transaction;Z)V
-    .registers 3
+    .registers 4
+    .param p1, "pendingTransaction"  # Landroid/view/SurfaceControl$Transaction;
+    .param p2, "show"  # Z
 
     .line 148
     if-eqz p2, :cond_8
 
     .line 149
-    iget-object p2, p0, Lcom/android/server/wm/AppWindowThumbnail;->mSurfaceControl:Landroid/view/SurfaceControl;
+    iget-object v0, p0, Lcom/android/server/wm/AppWindowThumbnail;->mSurfaceControl:Landroid/view/SurfaceControl;
 
-    invoke-virtual {p1, p2}, Landroid/view/SurfaceControl$Transaction;->show(Landroid/view/SurfaceControl;)Landroid/view/SurfaceControl$Transaction;
+    invoke-virtual {p1, v0}, Landroid/view/SurfaceControl$Transaction;->show(Landroid/view/SurfaceControl;)Landroid/view/SurfaceControl$Transaction;
 
     goto :goto_d
 
     .line 151
     :cond_8
-    iget-object p2, p0, Lcom/android/server/wm/AppWindowThumbnail;->mSurfaceControl:Landroid/view/SurfaceControl;
+    iget-object v0, p0, Lcom/android/server/wm/AppWindowThumbnail;->mSurfaceControl:Landroid/view/SurfaceControl;
 
-    invoke-virtual {p1, p2}, Landroid/view/SurfaceControl$Transaction;->hide(Landroid/view/SurfaceControl;)Landroid/view/SurfaceControl$Transaction;
+    invoke-virtual {p1, v0}, Landroid/view/SurfaceControl$Transaction;->hide(Landroid/view/SurfaceControl;)Landroid/view/SurfaceControl$Transaction;
 
     .line 153
     :goto_d
@@ -436,6 +486,8 @@
 
 .method startAnimation(Landroid/view/SurfaceControl$Transaction;Landroid/view/animation/Animation;)V
     .registers 4
+    .param p1, "t"  # Landroid/view/SurfaceControl$Transaction;
+    .param p2, "anim"  # Landroid/view/animation/Animation;
 
     .line 123
     const/4 v0, 0x0
@@ -448,6 +500,9 @@
 
 .method startAnimation(Landroid/view/SurfaceControl$Transaction;Landroid/view/animation/Animation;Landroid/graphics/Point;)V
     .registers 9
+    .param p1, "t"  # Landroid/view/SurfaceControl$Transaction;
+    .param p2, "anim"  # Landroid/view/animation/Animation;
+    .param p3, "position"  # Landroid/graphics/Point;
 
     .line 127
     const-wide/16 v0, 0x2710
@@ -498,18 +553,18 @@
 
     invoke-direct {v2, p2, p3, v3, v4}, Lcom/android/server/wm/WindowAnimationSpec;-><init>(Landroid/view/animation/Animation;Landroid/graphics/Point;ZF)V
 
-    iget-object p2, p0, Lcom/android/server/wm/AppWindowThumbnail;->mAppToken:Lcom/android/server/wm/AppWindowToken;
+    iget-object v3, p0, Lcom/android/server/wm/AppWindowThumbnail;->mAppToken:Lcom/android/server/wm/AppWindowToken;
 
-    iget-object p2, p2, Lcom/android/server/wm/AppWindowToken;->mWmService:Lcom/android/server/wm/WindowManagerService;
+    iget-object v3, v3, Lcom/android/server/wm/AppWindowToken;->mWmService:Lcom/android/server/wm/WindowManagerService;
 
-    iget-object p2, p2, Lcom/android/server/wm/WindowManagerService;->mSurfaceAnimationRunner:Lcom/android/server/wm/SurfaceAnimationRunner;
+    iget-object v3, v3, Lcom/android/server/wm/WindowManagerService;->mSurfaceAnimationRunner:Lcom/android/server/wm/SurfaceAnimationRunner;
 
-    invoke-direct {v1, v2, p2}, Lcom/android/server/wm/LocalAnimationAdapter;-><init>(Lcom/android/server/wm/LocalAnimationAdapter$AnimationSpec;Lcom/android/server/wm/SurfaceAnimationRunner;)V
+    invoke-direct {v1, v2, v3}, Lcom/android/server/wm/LocalAnimationAdapter;-><init>(Lcom/android/server/wm/LocalAnimationAdapter$AnimationSpec;Lcom/android/server/wm/SurfaceAnimationRunner;)V
 
     .line 129
-    const/4 p2, 0x0
+    const/4 v2, 0x0
 
-    invoke-virtual {v0, p1, v1, p2}, Lcom/android/server/wm/SurfaceAnimator;->startAnimation(Landroid/view/SurfaceControl$Transaction;Lcom/android/server/wm/AnimationAdapter;Z)V
+    invoke-virtual {v0, p1, v1, v2}, Lcom/android/server/wm/SurfaceAnimator;->startAnimation(Landroid/view/SurfaceControl$Transaction;Lcom/android/server/wm/AnimationAdapter;Z)V
 
     .line 134
     return-void
@@ -517,6 +572,9 @@
 
 .method startAnimation(Landroid/view/SurfaceControl$Transaction;Lcom/android/server/wm/AnimationAdapter;Z)V
     .registers 5
+    .param p1, "t"  # Landroid/view/SurfaceControl$Transaction;
+    .param p2, "anim"  # Lcom/android/server/wm/AnimationAdapter;
+    .param p3, "hidden"  # Z
 
     .line 140
     iget-object v0, p0, Lcom/android/server/wm/AppWindowThumbnail;->mSurfaceAnimator:Lcom/android/server/wm/SurfaceAnimator;
@@ -528,46 +586,49 @@
 .end method
 
 .method writeToProto(Landroid/util/proto/ProtoOutputStream;J)V
-    .registers 7
+    .registers 9
+    .param p1, "proto"  # Landroid/util/proto/ProtoOutputStream;
+    .param p2, "fieldId"  # J
 
     .line 170
     invoke-virtual {p1, p2, p3}, Landroid/util/proto/ProtoOutputStream;->start(J)J
 
-    move-result-wide p2
+    move-result-wide v0
 
     .line 171
-    iget v0, p0, Lcom/android/server/wm/AppWindowThumbnail;->mWidth:I
+    .local v0, "token":J
+    iget v2, p0, Lcom/android/server/wm/AppWindowThumbnail;->mWidth:I
 
-    const-wide v1, 0x10500000001L
+    const-wide v3, 0x10500000001L
 
-    invoke-virtual {p1, v1, v2, v0}, Landroid/util/proto/ProtoOutputStream;->write(JI)V
+    invoke-virtual {p1, v3, v4, v2}, Landroid/util/proto/ProtoOutputStream;->write(JI)V
 
     .line 172
-    iget v0, p0, Lcom/android/server/wm/AppWindowThumbnail;->mHeight:I
+    iget v2, p0, Lcom/android/server/wm/AppWindowThumbnail;->mHeight:I
 
-    const-wide v1, 0x10500000002L
+    const-wide v3, 0x10500000002L
 
-    invoke-virtual {p1, v1, v2, v0}, Landroid/util/proto/ProtoOutputStream;->write(JI)V
+    invoke-virtual {p1, v3, v4, v2}, Landroid/util/proto/ProtoOutputStream;->write(JI)V
 
     .line 173
-    iget-object v0, p0, Lcom/android/server/wm/AppWindowThumbnail;->mSurfaceAnimator:Lcom/android/server/wm/SurfaceAnimator;
+    iget-object v2, p0, Lcom/android/server/wm/AppWindowThumbnail;->mSurfaceAnimator:Lcom/android/server/wm/SurfaceAnimator;
 
-    invoke-virtual {v0}, Lcom/android/server/wm/SurfaceAnimator;->isAnimating()Z
+    invoke-virtual {v2}, Lcom/android/server/wm/SurfaceAnimator;->isAnimating()Z
 
-    move-result v0
+    move-result v2
 
-    if-eqz v0, :cond_2a
+    if-eqz v2, :cond_2a
 
     .line 174
-    iget-object v0, p0, Lcom/android/server/wm/AppWindowThumbnail;->mSurfaceAnimator:Lcom/android/server/wm/SurfaceAnimator;
+    iget-object v2, p0, Lcom/android/server/wm/AppWindowThumbnail;->mSurfaceAnimator:Lcom/android/server/wm/SurfaceAnimator;
 
-    const-wide v1, 0x10b00000003L
+    const-wide v3, 0x10b00000003L
 
-    invoke-virtual {v0, p1, v1, v2}, Lcom/android/server/wm/SurfaceAnimator;->writeToProto(Landroid/util/proto/ProtoOutputStream;J)V
+    invoke-virtual {v2, p1, v3, v4}, Lcom/android/server/wm/SurfaceAnimator;->writeToProto(Landroid/util/proto/ProtoOutputStream;J)V
 
     .line 176
     :cond_2a
-    invoke-virtual {p1, p2, p3}, Landroid/util/proto/ProtoOutputStream;->end(J)V
+    invoke-virtual {p1, v0, v1}, Landroid/util/proto/ProtoOutputStream;->end(J)V
 
     .line 177
     return-void

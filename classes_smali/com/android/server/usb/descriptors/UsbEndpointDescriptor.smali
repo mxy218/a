@@ -63,15 +63,17 @@
 
 # direct methods
 .method public constructor <init>(IB)V
-    .registers 3
+    .registers 4
+    .param p1, "length"  # I
+    .param p2, "type"  # B
 
     .line 84
     invoke-direct {p0, p1, p2}, Lcom/android/server/usb/descriptors/UsbDescriptor;-><init>(IB)V
 
     .line 85
-    const/4 p1, 0x4
+    const/4 v0, 0x4
 
-    iput p1, p0, Lcom/android/server/usb/descriptors/UsbEndpointDescriptor;->mHierarchyLevel:I
+    iput v0, p0, Lcom/android/server/usb/descriptors/UsbEndpointDescriptor;->mHierarchyLevel:I
 
     .line 86
     return-void
@@ -135,6 +137,7 @@
 
 .method public parseRawDescriptors(Lcom/android/server/usb/descriptors/ByteStream;)I
     .registers 4
+    .param p1, "stream"  # Lcom/android/server/usb/descriptors/ByteStream;
 
     .line 124
     invoke-virtual {p1}, Lcom/android/server/usb/descriptors/ByteStream;->getUnsignedByte()I
@@ -181,19 +184,20 @@
     .line 130
     invoke-virtual {p1}, Lcom/android/server/usb/descriptors/ByteStream;->getByte()B
 
-    move-result p1
+    move-result v0
 
-    iput-byte p1, p0, Lcom/android/server/usb/descriptors/UsbEndpointDescriptor;->mSyncAddress:B
+    iput-byte v0, p0, Lcom/android/server/usb/descriptors/UsbEndpointDescriptor;->mSyncAddress:B
 
     .line 132
     :cond_2a
-    iget p1, p0, Lcom/android/server/usb/descriptors/UsbEndpointDescriptor;->mLength:I
+    iget v0, p0, Lcom/android/server/usb/descriptors/UsbEndpointDescriptor;->mLength:I
 
-    return p1
+    return v0
 .end method
 
 .method public report(Lcom/android/server/usb/descriptors/report/ReportCanvas;)V
-    .registers 6
+    .registers 7
+    .param p1, "canvas"  # Lcom/android/server/usb/descriptors/report/ReportCanvas;
 
     .line 137
     invoke-super {p0, p1}, Lcom/android/server/usb/descriptors/UsbDescriptor;->report(Lcom/android/server/usb/descriptors/report/ReportCanvas;)V
@@ -207,6 +211,7 @@
     move-result v0
 
     .line 142
+    .local v0, "address":I
     new-instance v1, Ljava/lang/StringBuilder;
 
     invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
@@ -225,110 +230,111 @@
     invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     .line 145
-    and-int/lit8 v0, v0, -0x80
+    and-int/lit8 v2, v0, -0x80
 
-    if-nez v0, :cond_24
+    if-nez v2, :cond_24
 
-    const-string v0, " [out]"
+    const-string v2, " [out]"
 
     goto :goto_26
 
     :cond_24
-    const-string v0, " [in]"
+    const-string v2, " [in]"
 
     :goto_26
-    invoke-virtual {v1, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
-
-    move-result-object v0
-
-    .line 142
-    invoke-virtual {p1, v0}, Lcom/android/server/usb/descriptors/report/ReportCanvas;->writeListItem(Ljava/lang/String;)V
-
-    .line 147
-    invoke-virtual {p0}, Lcom/android/server/usb/descriptors/UsbEndpointDescriptor;->getAttributes()I
-
-    move-result v0
-
-    .line 148
-    invoke-virtual {p1}, Lcom/android/server/usb/descriptors/report/ReportCanvas;->openListItem()V
-
-    .line 149
-    new-instance v1, Ljava/lang/StringBuilder;
-
-    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
-
-    const-string v2, "Attributes: "
-
-    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-static {v0}, Lcom/android/server/usb/descriptors/report/ReportCanvas;->getHexString(I)Ljava/lang/String;
-
-    move-result-object v2
-
-    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    const-string v2, " "
-
     invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
     move-result-object v1
 
-    invoke-virtual {p1, v1}, Lcom/android/server/usb/descriptors/report/ReportCanvas;->write(Ljava/lang/String;)V
+    .line 142
+    invoke-virtual {p1, v1}, Lcom/android/server/usb/descriptors/report/ReportCanvas;->writeListItem(Ljava/lang/String;)V
+
+    .line 147
+    invoke-virtual {p0}, Lcom/android/server/usb/descriptors/UsbEndpointDescriptor;->getAttributes()I
+
+    move-result v1
+
+    .line 148
+    .local v1, "attributes":I
+    invoke-virtual {p1}, Lcom/android/server/usb/descriptors/report/ReportCanvas;->openListItem()V
+
+    .line 149
+    new-instance v2, Ljava/lang/StringBuilder;
+
+    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
+
+    const-string v3, "Attributes: "
+
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-static {v1}, Lcom/android/server/usb/descriptors/report/ReportCanvas;->getHexString(I)Ljava/lang/String;
+
+    move-result-object v3
+
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    const-string v3, " "
+
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v2
+
+    invoke-virtual {p1, v2}, Lcom/android/server/usb/descriptors/report/ReportCanvas;->write(Ljava/lang/String;)V
 
     .line 150
-    and-int/lit8 v1, v0, 0x3
+    and-int/lit8 v2, v1, 0x3
 
-    const/4 v2, 0x1
+    const/4 v3, 0x1
 
-    if-eqz v1, :cond_74
+    if-eqz v2, :cond_74
 
-    if-eq v1, v2, :cond_6e
+    if-eq v2, v3, :cond_6e
 
-    const/4 v3, 0x2
+    const/4 v4, 0x2
 
-    if-eq v1, v3, :cond_68
+    if-eq v2, v4, :cond_68
 
-    const/4 v3, 0x3
+    const/4 v4, 0x3
 
-    if-eq v1, v3, :cond_62
+    if-eq v2, v4, :cond_62
 
     goto :goto_7a
 
     .line 161
     :cond_62
-    const-string v3, "Interrupt"
+    const-string v2, "Interrupt"
 
-    invoke-virtual {p1, v3}, Lcom/android/server/usb/descriptors/report/ReportCanvas;->write(Ljava/lang/String;)V
+    invoke-virtual {p1, v2}, Lcom/android/server/usb/descriptors/report/ReportCanvas;->write(Ljava/lang/String;)V
 
     goto :goto_7a
 
     .line 158
     :cond_68
-    const-string v3, "Bulk"
+    const-string v2, "Bulk"
 
-    invoke-virtual {p1, v3}, Lcom/android/server/usb/descriptors/report/ReportCanvas;->write(Ljava/lang/String;)V
+    invoke-virtual {p1, v2}, Lcom/android/server/usb/descriptors/report/ReportCanvas;->write(Ljava/lang/String;)V
 
     .line 159
     goto :goto_7a
 
     .line 155
     :cond_6e
-    const-string v3, "Iso"
+    const-string v2, "Iso"
 
-    invoke-virtual {p1, v3}, Lcom/android/server/usb/descriptors/report/ReportCanvas;->write(Ljava/lang/String;)V
+    invoke-virtual {p1, v2}, Lcom/android/server/usb/descriptors/report/ReportCanvas;->write(Ljava/lang/String;)V
 
     .line 156
     goto :goto_7a
 
     .line 152
     :cond_74
-    const-string v3, "Control"
+    const-string v2, "Control"
 
-    invoke-virtual {p1, v3}, Lcom/android/server/usb/descriptors/report/ReportCanvas;->write(Ljava/lang/String;)V
+    invoke-virtual {p1, v2}, Lcom/android/server/usb/descriptors/report/ReportCanvas;->write(Ljava/lang/String;)V
 
     .line 153
     nop
@@ -338,169 +344,171 @@
     invoke-virtual {p1}, Lcom/android/server/usb/descriptors/report/ReportCanvas;->closeListItem()V
 
     .line 167
-    if-ne v1, v2, :cond_db
+    and-int/lit8 v2, v1, 0x3
+
+    if-ne v2, v3, :cond_de
 
     .line 169
     invoke-virtual {p1}, Lcom/android/server/usb/descriptors/report/ReportCanvas;->openListItem()V
 
     .line 170
-    const-string v1, "Aync: "
+    const-string v2, "Aync: "
 
-    invoke-virtual {p1, v1}, Lcom/android/server/usb/descriptors/report/ReportCanvas;->write(Ljava/lang/String;)V
+    invoke-virtual {p1, v2}, Lcom/android/server/usb/descriptors/report/ReportCanvas;->write(Ljava/lang/String;)V
 
     .line 171
-    and-int/lit8 v1, v0, 0xc
+    and-int/lit8 v2, v1, 0xc
 
-    if-eqz v1, :cond_9f
+    if-eqz v2, :cond_a1
 
-    const/4 v2, 0x4
+    const/4 v3, 0x4
 
-    if-eq v1, v2, :cond_99
+    if-eq v2, v3, :cond_9b
 
-    const/16 v2, 0x8
+    const/16 v3, 0x8
 
-    if-eq v1, v2, :cond_93
+    if-eq v2, v3, :cond_95
 
-    goto :goto_a5
+    goto :goto_a7
 
     .line 179
-    :cond_93
-    const-string v1, "ADAPTIVE ASYNC"
+    :cond_95
+    const-string v2, "ADAPTIVE ASYNC"
 
-    invoke-virtual {p1, v1}, Lcom/android/server/usb/descriptors/report/ReportCanvas;->write(Ljava/lang/String;)V
+    invoke-virtual {p1, v2}, Lcom/android/server/usb/descriptors/report/ReportCanvas;->write(Ljava/lang/String;)V
 
-    goto :goto_a5
+    goto :goto_a7
 
     .line 176
-    :cond_99
-    const-string v1, "ASYNC"
+    :cond_9b
+    const-string v2, "ASYNC"
 
-    invoke-virtual {p1, v1}, Lcom/android/server/usb/descriptors/report/ReportCanvas;->write(Ljava/lang/String;)V
+    invoke-virtual {p1, v2}, Lcom/android/server/usb/descriptors/report/ReportCanvas;->write(Ljava/lang/String;)V
 
     .line 177
-    goto :goto_a5
+    goto :goto_a7
 
     .line 173
-    :cond_9f
-    const-string v1, "NONE"
+    :cond_a1
+    const-string v2, "NONE"
 
-    invoke-virtual {p1, v1}, Lcom/android/server/usb/descriptors/report/ReportCanvas;->write(Ljava/lang/String;)V
+    invoke-virtual {p1, v2}, Lcom/android/server/usb/descriptors/report/ReportCanvas;->write(Ljava/lang/String;)V
 
     .line 174
     nop
 
     .line 182
-    :goto_a5
+    :goto_a7
     invoke-virtual {p1}, Lcom/android/server/usb/descriptors/report/ReportCanvas;->closeListItem()V
 
     .line 184
     invoke-virtual {p1}, Lcom/android/server/usb/descriptors/report/ReportCanvas;->openListItem()V
 
     .line 185
-    const-string v1, "Useage: "
+    const-string v2, "Useage: "
 
-    invoke-virtual {p1, v1}, Lcom/android/server/usb/descriptors/report/ReportCanvas;->write(Ljava/lang/String;)V
+    invoke-virtual {p1, v2}, Lcom/android/server/usb/descriptors/report/ReportCanvas;->write(Ljava/lang/String;)V
 
     .line 186
-    const/16 v1, 0x30
+    and-int/lit8 v2, v1, 0x30
 
-    and-int/2addr v0, v1
+    if-eqz v2, :cond_d5
 
-    if-eqz v0, :cond_d2
+    const/16 v3, 0x10
 
-    const/16 v2, 0x10
+    if-eq v2, v3, :cond_cf
 
-    if-eq v0, v2, :cond_cc
+    const/16 v3, 0x20
 
-    const/16 v2, 0x20
+    if-eq v2, v3, :cond_c9
 
-    if-eq v0, v2, :cond_c6
+    const/16 v3, 0x30
 
-    if-eq v0, v1, :cond_c0
+    if-eq v2, v3, :cond_c3
 
-    goto :goto_d8
+    goto :goto_db
 
     .line 197
-    :cond_c0
-    const-string v0, "RESERVED"
+    :cond_c3
+    const-string v2, "RESERVED"
 
-    invoke-virtual {p1, v0}, Lcom/android/server/usb/descriptors/report/ReportCanvas;->write(Ljava/lang/String;)V
+    invoke-virtual {p1, v2}, Lcom/android/server/usb/descriptors/report/ReportCanvas;->write(Ljava/lang/String;)V
 
-    goto :goto_d8
+    goto :goto_db
 
     .line 194
-    :cond_c6
-    const-string v0, "EXPLICIT FEEDBACK"
+    :cond_c9
+    const-string v2, "EXPLICIT FEEDBACK"
 
-    invoke-virtual {p1, v0}, Lcom/android/server/usb/descriptors/report/ReportCanvas;->write(Ljava/lang/String;)V
+    invoke-virtual {p1, v2}, Lcom/android/server/usb/descriptors/report/ReportCanvas;->write(Ljava/lang/String;)V
 
     .line 195
-    goto :goto_d8
+    goto :goto_db
 
     .line 191
-    :cond_cc
-    const-string v0, "FEEDBACK"
+    :cond_cf
+    const-string v2, "FEEDBACK"
 
-    invoke-virtual {p1, v0}, Lcom/android/server/usb/descriptors/report/ReportCanvas;->write(Ljava/lang/String;)V
+    invoke-virtual {p1, v2}, Lcom/android/server/usb/descriptors/report/ReportCanvas;->write(Ljava/lang/String;)V
 
     .line 192
-    goto :goto_d8
+    goto :goto_db
 
     .line 188
-    :cond_d2
-    const-string v0, "DATA"
+    :cond_d5
+    const-string v2, "DATA"
 
-    invoke-virtual {p1, v0}, Lcom/android/server/usb/descriptors/report/ReportCanvas;->write(Ljava/lang/String;)V
+    invoke-virtual {p1, v2}, Lcom/android/server/usb/descriptors/report/ReportCanvas;->write(Ljava/lang/String;)V
 
     .line 189
     nop
 
     .line 200
-    :goto_d8
+    :goto_db
     invoke-virtual {p1}, Lcom/android/server/usb/descriptors/report/ReportCanvas;->closeListItem()V
 
     .line 202
-    :cond_db
-    new-instance v0, Ljava/lang/StringBuilder;
+    :cond_de
+    new-instance v2, Ljava/lang/StringBuilder;
 
-    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v1, "Package Size: "
+    const-string v3, "Package Size: "
 
-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {p0}, Lcom/android/server/usb/descriptors/UsbEndpointDescriptor;->getPacketSize()I
 
-    move-result v1
+    move-result v3
 
-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v2
 
-    invoke-virtual {p1, v0}, Lcom/android/server/usb/descriptors/report/ReportCanvas;->writeListItem(Ljava/lang/String;)V
+    invoke-virtual {p1, v2}, Lcom/android/server/usb/descriptors/report/ReportCanvas;->writeListItem(Ljava/lang/String;)V
 
     .line 203
-    new-instance v0, Ljava/lang/StringBuilder;
+    new-instance v2, Ljava/lang/StringBuilder;
 
-    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v1, "Interval: "
+    const-string v3, "Interval: "
 
-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {p0}, Lcom/android/server/usb/descriptors/UsbEndpointDescriptor;->getInterval()I
 
-    move-result v1
+    move-result v3
 
-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v2
 
-    invoke-virtual {p1, v0}, Lcom/android/server/usb/descriptors/report/ReportCanvas;->writeListItem(Ljava/lang/String;)V
+    invoke-virtual {p1, v2}, Lcom/android/server/usb/descriptors/report/ReportCanvas;->writeListItem(Ljava/lang/String;)V
 
     .line 204
     invoke-virtual {p1}, Lcom/android/server/usb/descriptors/report/ReportCanvas;->closeList()V
@@ -510,20 +518,21 @@
 .end method
 
 .method toAndroid(Lcom/android/server/usb/descriptors/UsbDescriptorParser;)Landroid/hardware/usb/UsbEndpoint;
-    .registers 6
+    .registers 7
+    .param p1, "parser"  # Lcom/android/server/usb/descriptors/UsbDescriptorParser;
 
     .line 119
-    new-instance p1, Landroid/hardware/usb/UsbEndpoint;
+    new-instance v0, Landroid/hardware/usb/UsbEndpoint;
 
-    iget v0, p0, Lcom/android/server/usb/descriptors/UsbEndpointDescriptor;->mEndpointAddress:I
+    iget v1, p0, Lcom/android/server/usb/descriptors/UsbEndpointDescriptor;->mEndpointAddress:I
 
-    iget v1, p0, Lcom/android/server/usb/descriptors/UsbEndpointDescriptor;->mAttributes:I
+    iget v2, p0, Lcom/android/server/usb/descriptors/UsbEndpointDescriptor;->mAttributes:I
 
-    iget v2, p0, Lcom/android/server/usb/descriptors/UsbEndpointDescriptor;->mPacketSize:I
+    iget v3, p0, Lcom/android/server/usb/descriptors/UsbEndpointDescriptor;->mPacketSize:I
 
-    iget v3, p0, Lcom/android/server/usb/descriptors/UsbEndpointDescriptor;->mInterval:I
+    iget v4, p0, Lcom/android/server/usb/descriptors/UsbEndpointDescriptor;->mInterval:I
 
-    invoke-direct {p1, v0, v1, v2, v3}, Landroid/hardware/usb/UsbEndpoint;-><init>(IIII)V
+    invoke-direct {v0, v1, v2, v3, v4}, Landroid/hardware/usb/UsbEndpoint;-><init>(IIII)V
 
-    return-object p1
+    return-object v0
 .end method

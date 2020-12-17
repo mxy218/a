@@ -21,8 +21,10 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/display/WifiDisplayController;Landroid/os/Handler;)V
     .registers 3
+    .param p1, "this$0"  # Lcom/android/server/display/WifiDisplayController;
+    .param p2, "x0"  # Landroid/os/Handler;
 
-    .line 180
+    .line 220
     iput-object p1, p0, Lcom/android/server/display/WifiDisplayController$1;->this$0:Lcom/android/server/display/WifiDisplayController;
 
     invoke-direct {p0, p2}, Landroid/database/ContentObserver;-><init>(Landroid/os/Handler;)V
@@ -33,13 +35,15 @@
 
 # virtual methods
 .method public onChange(ZLandroid/net/Uri;)V
-    .registers 3
+    .registers 4
+    .param p1, "selfChange"  # Z
+    .param p2, "uri"  # Landroid/net/Uri;
 
-    .line 183
-    iget-object p1, p0, Lcom/android/server/display/WifiDisplayController$1;->this$0:Lcom/android/server/display/WifiDisplayController;
+    .line 223
+    iget-object v0, p0, Lcom/android/server/display/WifiDisplayController$1;->this$0:Lcom/android/server/display/WifiDisplayController;
 
-    invoke-static {p1}, Lcom/android/server/display/WifiDisplayController;->access$000(Lcom/android/server/display/WifiDisplayController;)V
+    invoke-static {v0}, Lcom/android/server/display/WifiDisplayController;->access$000(Lcom/android/server/display/WifiDisplayController;)V
 
-    .line 184
+    .line 224
     return-void
 .end method

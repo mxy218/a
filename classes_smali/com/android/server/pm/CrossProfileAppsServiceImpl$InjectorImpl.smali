@@ -24,6 +24,7 @@
 # direct methods
 .method public constructor <init>(Landroid/content/Context;)V
     .registers 2
+    .param p1, "context"  # Landroid/content/Context;
 
     .line 243
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -175,6 +176,7 @@
 
 .method public restoreCallingIdentity(J)V
     .registers 3
+    .param p1, "token"  # J
 
     .line 264
     invoke-static {p1, p2}, Landroid/os/Binder;->restoreCallingIdentity(J)V

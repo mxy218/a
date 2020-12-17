@@ -21,6 +21,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/companion/CompanionDeviceManagerService;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/companion/CompanionDeviceManagerService;
 
     .line 141
     iput-object p1, p0, Lcom/android/server/companion/CompanionDeviceManagerService$1;->this$0:Lcom/android/server/companion/CompanionDeviceManagerService;
@@ -31,22 +32,26 @@
 .end method
 
 .method static synthetic lambda$onPackageRemoved$0(Ljava/lang/String;Lcom/android/server/companion/CompanionDeviceManagerService$Association;)Z
-    .registers 2
+    .registers 3
+    .param p0, "packageName"  # Ljava/lang/String;
+    .param p1, "a"  # Lcom/android/server/companion/CompanionDeviceManagerService$Association;
 
     .line 146
-    iget-object p1, p1, Lcom/android/server/companion/CompanionDeviceManagerService$Association;->companionAppPackage:Ljava/lang/String;
+    iget-object v0, p1, Lcom/android/server/companion/CompanionDeviceManagerService$Association;->companionAppPackage:Ljava/lang/String;
 
-    invoke-static {p1, p0}, Ljava/util/Objects;->equals(Ljava/lang/Object;Ljava/lang/Object;)Z
+    invoke-static {v0, p0}, Ljava/util/Objects;->equals(Ljava/lang/Object;Ljava/lang/Object;)Z
 
-    move-result p0
+    move-result v0
 
-    xor-int/lit8 p0, p0, 0x1
+    xor-int/lit8 v0, v0, 0x1
 
-    return p0
+    return v0
 .end method
 
 .method static synthetic lambda$onPackageRemoved$1(Ljava/lang/String;Ljava/util/Set;)Ljava/util/Set;
     .registers 3
+    .param p0, "packageName"  # Ljava/lang/String;
+    .param p1, "as"  # Ljava/util/Set;
 
     .line 145
     new-instance v0, Lcom/android/server/companion/-$$Lambda$CompanionDeviceManagerService$1$IwZz9SPheLuA45R-qkZX_v1sHV4;
@@ -55,15 +60,16 @@
 
     invoke-static {p1, v0}, Lcom/android/internal/util/CollectionUtils;->filter(Ljava/util/Set;Ljava/util/function/Predicate;)Ljava/util/Set;
 
-    move-result-object p0
+    move-result-object v0
 
-    return-object p0
+    return-object v0
 .end method
 
 
 # virtual methods
 .method public onPackageModified(Ljava/lang/String;)V
     .registers 4
+    .param p1, "packageName"  # Ljava/lang/String;
 
     .line 152
     invoke-virtual {p0}, Lcom/android/server/companion/CompanionDeviceManagerService$1;->getChangingUserId()I
@@ -71,6 +77,7 @@
     move-result v0
 
     .line 153
+    .local v0, "userId":I
     iget-object v1, p0, Lcom/android/server/companion/CompanionDeviceManagerService$1;->this$0:Lcom/android/server/companion/CompanionDeviceManagerService;
 
     invoke-static {v1, v0, p1}, Lcom/android/server/companion/CompanionDeviceManagerService;->access$100(Lcom/android/server/companion/CompanionDeviceManagerService;ILjava/lang/String;)Ljava/util/Set;
@@ -94,22 +101,24 @@
 .end method
 
 .method public onPackageRemoved(Ljava/lang/String;I)V
-    .registers 4
+    .registers 6
+    .param p1, "packageName"  # Ljava/lang/String;
+    .param p2, "uid"  # I
 
     .line 144
-    iget-object p2, p0, Lcom/android/server/companion/CompanionDeviceManagerService$1;->this$0:Lcom/android/server/companion/CompanionDeviceManagerService;
+    iget-object v0, p0, Lcom/android/server/companion/CompanionDeviceManagerService$1;->this$0:Lcom/android/server/companion/CompanionDeviceManagerService;
 
-    new-instance v0, Lcom/android/server/companion/-$$Lambda$CompanionDeviceManagerService$1$EelUlD0Ldboon98oq6H5kDCPW9I;
+    new-instance v1, Lcom/android/server/companion/-$$Lambda$CompanionDeviceManagerService$1$EelUlD0Ldboon98oq6H5kDCPW9I;
 
-    invoke-direct {v0, p1}, Lcom/android/server/companion/-$$Lambda$CompanionDeviceManagerService$1$EelUlD0Ldboon98oq6H5kDCPW9I;-><init>(Ljava/lang/String;)V
+    invoke-direct {v1, p1}, Lcom/android/server/companion/-$$Lambda$CompanionDeviceManagerService$1$EelUlD0Ldboon98oq6H5kDCPW9I;-><init>(Ljava/lang/String;)V
 
     .line 147
     invoke-virtual {p0}, Lcom/android/server/companion/CompanionDeviceManagerService$1;->getChangingUserId()I
 
-    move-result p1
+    move-result v2
 
     .line 144
-    invoke-static {p2, v0, p1}, Lcom/android/server/companion/CompanionDeviceManagerService;->access$000(Lcom/android/server/companion/CompanionDeviceManagerService;Ljava/util/function/Function;I)V
+    invoke-static {v0, v1, v2}, Lcom/android/server/companion/CompanionDeviceManagerService;->access$000(Lcom/android/server/companion/CompanionDeviceManagerService;Ljava/util/function/Function;I)V
 
     .line 148
     return-void

@@ -23,7 +23,9 @@
 
 # direct methods
 .method private static synthetic $closeResource(Ljava/lang/Throwable;Ljava/lang/AutoCloseable;)V
-    .registers 2
+    .registers 3
+    .param p0, "x0"  # Ljava/lang/Throwable;
+    .param p1, "x1"  # Ljava/lang/AutoCloseable;
 
     .line 135
     if-eqz p0, :cond_b
@@ -36,9 +38,9 @@
     goto :goto_e
 
     :catchall_6
-    move-exception p1
+    move-exception v0
 
-    invoke-virtual {p0, p1}, Ljava/lang/Throwable;->addSuppressed(Ljava/lang/Throwable;)V
+    invoke-virtual {p0, v0}, Ljava/lang/Throwable;->addSuppressed(Ljava/lang/Throwable;)V
 
     goto :goto_e
 
@@ -51,6 +53,11 @@
 
 .method protected constructor <init>(Landroid/content/Context;Landroid/os/ParcelFileDescriptor;Landroid/app/admin/StartInstallingUpdateCallback;Lcom/android/server/devicepolicy/DevicePolicyManagerService$Injector;Lcom/android/server/devicepolicy/DevicePolicyConstants;)V
     .registers 6
+    .param p1, "context"  # Landroid/content/Context;
+    .param p2, "updateFileDescriptor"  # Landroid/os/ParcelFileDescriptor;
+    .param p3, "callback"  # Landroid/app/admin/StartInstallingUpdateCallback;
+    .param p4, "injector"  # Lcom/android/server/devicepolicy/DevicePolicyManagerService$Injector;
+    .param p5, "constants"  # Lcom/android/server/devicepolicy/DevicePolicyConstants;
 
     .line 55
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -75,38 +82,42 @@
 .end method
 
 .method private calculateBatteryPercentage(Landroid/content/Intent;)F
-    .registers 5
+    .registers 6
+    .param p1, "batteryStatus"  # Landroid/content/Intent;
 
     .line 101
     const/4 v0, -0x1
 
-    const-string v1, "level"
+    const-string/jumbo v1, "level"
 
     invoke-virtual {p1, v1, v0}, Landroid/content/Intent;->getIntExtra(Ljava/lang/String;I)I
 
     move-result v1
 
     .line 102
+    .local v1, "level":I
     const-string/jumbo v2, "scale"
 
     invoke-virtual {p1, v2, v0}, Landroid/content/Intent;->getIntExtra(Ljava/lang/String;I)I
 
-    move-result p1
+    move-result v0
 
     .line 103
-    mul-int/lit8 v1, v1, 0x64
+    .local v0, "scale":I
+    mul-int/lit8 v2, v1, 0x64
 
-    int-to-float v0, v1
+    int-to-float v2, v2
 
-    int-to-float p1, p1
+    int-to-float v3, v0
 
-    div-float/2addr v0, p1
+    div-float/2addr v2, v3
 
-    return v0
+    return v2
 .end method
 
 .method private copyToFile(Ljava/io/File;)V
-    .registers 5
+    .registers 6
+    .param p1, "destination"  # Ljava/io/File;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Ljava/io/IOException;
@@ -119,73 +130,100 @@
     invoke-direct {v0, p1}, Ljava/io/FileOutputStream;-><init>(Ljava/io/File;)V
 
     .line 132
+    .local v0, "out":Ljava/io/OutputStream;
     :try_start_5
-    new-instance p1, Landroid/os/ParcelFileDescriptor$AutoCloseInputStream;
+    new-instance v1, Landroid/os/ParcelFileDescriptor$AutoCloseInputStream;
 
-    iget-object v1, p0, Lcom/android/server/devicepolicy/UpdateInstaller;->mUpdateFileDescriptor:Landroid/os/ParcelFileDescriptor;
+    iget-object v2, p0, Lcom/android/server/devicepolicy/UpdateInstaller;->mUpdateFileDescriptor:Landroid/os/ParcelFileDescriptor;
 
-    invoke-direct {p1, v1}, Landroid/os/ParcelFileDescriptor$AutoCloseInputStream;-><init>(Landroid/os/ParcelFileDescriptor;)V
+    invoke-direct {v1, v2}, Landroid/os/ParcelFileDescriptor$AutoCloseInputStream;-><init>(Landroid/os/ParcelFileDescriptor;)V
     :try_end_c
     .catchall {:try_start_5 .. :try_end_c} :catchall_1f
 
     .line 131
+    .local v1, "in":Ljava/io/InputStream;
     nop
 
     .line 134
     :try_start_d
-    invoke-static {p1, v0}, Landroid/os/FileUtils;->copy(Ljava/io/InputStream;Ljava/io/OutputStream;)J
+    invoke-static {v1, v0}, Landroid/os/FileUtils;->copy(Ljava/io/InputStream;Ljava/io/OutputStream;)J
     :try_end_10
     .catchall {:try_start_d .. :try_end_10} :catchall_18
 
     .line 135
-    const/4 v1, 0x0
+    const/4 v2, 0x0
 
     :try_start_11
-    invoke-static {v1, p1}, Lcom/android/server/devicepolicy/UpdateInstaller;->$closeResource(Ljava/lang/Throwable;Ljava/lang/AutoCloseable;)V
+    invoke-static {v2, v1}, Lcom/android/server/devicepolicy/UpdateInstaller;->$closeResource(Ljava/lang/Throwable;Ljava/lang/AutoCloseable;)V
     :try_end_14
     .catchall {:try_start_11 .. :try_end_14} :catchall_1f
 
-    invoke-static {v1, v0}, Lcom/android/server/devicepolicy/UpdateInstaller;->$closeResource(Ljava/lang/Throwable;Ljava/lang/AutoCloseable;)V
+    .end local v1  # "in":Ljava/io/InputStream;
+    invoke-static {v2, v0}, Lcom/android/server/devicepolicy/UpdateInstaller;->$closeResource(Ljava/lang/Throwable;Ljava/lang/AutoCloseable;)V
 
     .line 136
+    .end local v0  # "out":Ljava/io/OutputStream;
     return-void
 
     .line 131
+    .restart local v0  # "out":Ljava/io/OutputStream;
+    .restart local v1  # "in":Ljava/io/InputStream;
     :catchall_18
-    move-exception v1
+    move-exception v2
 
+    .end local v0  # "out":Ljava/io/OutputStream;
+    .end local v1  # "in":Ljava/io/InputStream;
+    .end local p0  # "this":Lcom/android/server/devicepolicy/UpdateInstaller;
+    .end local p1  # "destination":Ljava/io/File;
     :try_start_19
-    throw v1
+    throw v2
     :try_end_1a
     .catchall {:try_start_19 .. :try_end_1a} :catchall_1a
 
     .line 135
+    .restart local v0  # "out":Ljava/io/OutputStream;
+    .restart local v1  # "in":Ljava/io/InputStream;
+    .restart local p0  # "this":Lcom/android/server/devicepolicy/UpdateInstaller;
+    .restart local p1  # "destination":Ljava/io/File;
     :catchall_1a
-    move-exception v2
+    move-exception v3
 
     :try_start_1b
-    invoke-static {v1, p1}, Lcom/android/server/devicepolicy/UpdateInstaller;->$closeResource(Ljava/lang/Throwable;Ljava/lang/AutoCloseable;)V
+    invoke-static {v2, v1}, Lcom/android/server/devicepolicy/UpdateInstaller;->$closeResource(Ljava/lang/Throwable;Ljava/lang/AutoCloseable;)V
 
-    throw v2
+    .end local v0  # "out":Ljava/io/OutputStream;
+    .end local p0  # "this":Lcom/android/server/devicepolicy/UpdateInstaller;
+    .end local p1  # "destination":Ljava/io/File;
+    throw v3
     :try_end_1f
     .catchall {:try_start_1b .. :try_end_1f} :catchall_1f
 
     .line 131
+    .end local v1  # "in":Ljava/io/InputStream;
+    .restart local v0  # "out":Ljava/io/OutputStream;
+    .restart local p0  # "this":Lcom/android/server/devicepolicy/UpdateInstaller;
+    .restart local p1  # "destination":Ljava/io/File;
     :catchall_1f
-    move-exception p1
+    move-exception v1
 
+    .end local v0  # "out":Ljava/io/OutputStream;
+    .end local p0  # "this":Lcom/android/server/devicepolicy/UpdateInstaller;
+    .end local p1  # "destination":Ljava/io/File;
     :try_start_20
-    throw p1
+    throw v1
     :try_end_21
     .catchall {:try_start_20 .. :try_end_21} :catchall_21
 
     .line 135
+    .restart local v0  # "out":Ljava/io/OutputStream;
+    .restart local p0  # "this":Lcom/android/server/devicepolicy/UpdateInstaller;
+    .restart local p1  # "destination":Ljava/io/File;
     :catchall_21
-    move-exception v1
+    move-exception v2
 
-    invoke-static {p1, v0}, Lcom/android/server/devicepolicy/UpdateInstaller;->$closeResource(Ljava/lang/Throwable;Ljava/lang/AutoCloseable;)V
+    invoke-static {v1, v0}, Lcom/android/server/devicepolicy/UpdateInstaller;->$closeResource(Ljava/lang/Throwable;Ljava/lang/AutoCloseable;)V
 
-    throw v1
+    throw v2
 .end method
 
 .method private copyUpdateFileToDataOtaPackageDir()Ljava/io/File;
@@ -198,6 +236,7 @@
     move-result-object v0
 
     .line 109
+    .local v0, "destination":Ljava/io/File;
     invoke-direct {p0, v0}, Lcom/android/server/devicepolicy/UpdateInstaller;->copyToFile(Ljava/io/File;)V
     :try_end_7
     .catch Ljava/io/IOException; {:try_start_0 .. :try_end_7} :catch_8
@@ -206,10 +245,12 @@
     return-object v0
 
     .line 111
+    .end local v0  # "destination":Ljava/io/File;
     :catch_8
     move-exception v0
 
     .line 112
+    .local v0, "e":Ljava/io/IOException;
     const-string v1, "UpdateInstaller"
 
     const-string v2, "Failed to copy update file to OTA directory"
@@ -222,15 +263,15 @@
     .line 115
     invoke-static {v0}, Landroid/util/Log;->getStackTraceString(Ljava/lang/Throwable;)Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v2
 
     .line 113
-    invoke-virtual {p0, v1, v0}, Lcom/android/server/devicepolicy/UpdateInstaller;->notifyCallbackOnError(ILjava/lang/String;)V
+    invoke-virtual {p0, v1, v2}, Lcom/android/server/devicepolicy/UpdateInstaller;->notifyCallbackOnError(ILjava/lang/String;)V
 
     .line 116
-    const/4 v0, 0x0
+    const/4 v1, 0x0
 
-    return-object v0
+    return-object v1
 .end method
 
 .method private createNewFileWithPermissions()Ljava/io/File;
@@ -275,6 +316,7 @@
     move-result-object v0
 
     .line 123
+    .local v0, "destination":Ljava/io/File;
     const/4 v1, -0x1
 
     const/16 v2, 0x1e4
@@ -286,7 +328,7 @@
 .end method
 
 .method private isBatteryLevelSufficient()Z
-    .registers 5
+    .registers 7
 
     .line 90
     iget-object v0, p0, Lcom/android/server/devicepolicy/UpdateInstaller;->mContext:Landroid/content/Context;
@@ -304,11 +346,13 @@
     move-result-object v0
 
     .line 92
+    .local v0, "batteryStatus":Landroid/content/Intent;
     invoke-direct {p0, v0}, Lcom/android/server/devicepolicy/UpdateInstaller;->calculateBatteryPercentage(Landroid/content/Intent;)F
 
     move-result v1
 
     .line 93
+    .local v1, "batteryPercentage":F
     nop
 
     .line 94
@@ -318,63 +362,64 @@
 
     invoke-virtual {v0, v2, v3}, Landroid/content/Intent;->getIntExtra(Ljava/lang/String;I)I
 
-    move-result v0
+    move-result v2
 
-    const/4 v2, 0x1
+    const/4 v3, 0x1
 
-    const/4 v3, 0x0
+    const/4 v4, 0x0
 
-    if-lez v0, :cond_21
+    if-lez v2, :cond_21
 
-    move v0, v2
+    move v2, v3
 
     goto :goto_22
 
     :cond_21
-    move v0, v3
+    move v2, v4
 
     .line 95
+    .local v2, "isBatteryPluggedIn":Z
     :goto_22
-    if-eqz v0, :cond_30
+    if-eqz v2, :cond_30
 
     .line 96
-    iget-object v0, p0, Lcom/android/server/devicepolicy/UpdateInstaller;->mConstants:Lcom/android/server/devicepolicy/DevicePolicyConstants;
+    iget-object v5, p0, Lcom/android/server/devicepolicy/UpdateInstaller;->mConstants:Lcom/android/server/devicepolicy/DevicePolicyConstants;
 
-    iget v0, v0, Lcom/android/server/devicepolicy/DevicePolicyConstants;->BATTERY_THRESHOLD_CHARGING:I
+    iget v5, v5, Lcom/android/server/devicepolicy/DevicePolicyConstants;->BATTERY_THRESHOLD_CHARGING:I
 
-    int-to-float v0, v0
+    int-to-float v5, v5
 
-    cmpl-float v0, v1, v0
+    cmpl-float v5, v1, v5
 
-    if-ltz v0, :cond_2e
+    if-ltz v5, :cond_2e
 
     goto :goto_3b
 
     :cond_2e
-    move v2, v3
+    move v3, v4
 
     goto :goto_3b
 
     .line 97
     :cond_30
-    iget-object v0, p0, Lcom/android/server/devicepolicy/UpdateInstaller;->mConstants:Lcom/android/server/devicepolicy/DevicePolicyConstants;
+    iget-object v5, p0, Lcom/android/server/devicepolicy/UpdateInstaller;->mConstants:Lcom/android/server/devicepolicy/DevicePolicyConstants;
 
-    iget v0, v0, Lcom/android/server/devicepolicy/DevicePolicyConstants;->BATTERY_THRESHOLD_NOT_CHARGING:I
+    iget v5, v5, Lcom/android/server/devicepolicy/DevicePolicyConstants;->BATTERY_THRESHOLD_NOT_CHARGING:I
 
-    int-to-float v0, v0
+    int-to-float v5, v5
 
-    cmpl-float v0, v1, v0
+    cmpl-float v5, v1, v5
 
-    if-ltz v0, :cond_3a
+    if-ltz v5, :cond_3a
 
     goto :goto_3b
 
     :cond_3a
-    move v2, v3
+    move v3, v4
 
     .line 95
     :goto_3b
-    return v2
+    return v3
 .end method
 
 
@@ -440,7 +485,9 @@
 .end method
 
 .method protected notifyCallbackOnError(ILjava/lang/String;)V
-    .registers 4
+    .registers 6
+    .param p1, "errorCode"  # I
+    .param p2, "errorMessage"  # Ljava/lang/String;
 
     .line 145
     invoke-virtual {p0}, Lcom/android/server/devicepolicy/UpdateInstaller;->cleanupUpdateFile()V
@@ -476,16 +523,18 @@
 
     .line 152
     :catch_17
-    move-exception p1
+    move-exception v0
 
     .line 153
-    const-string p2, "UpdateInstaller"
+    .local v0, "e":Landroid/os/RemoteException;
+    const-string v1, "UpdateInstaller"
 
-    const-string v0, "Error while calling callback"
+    const-string v2, "Error while calling callback"
 
-    invoke-static {p2, v0, p1}, Landroid/util/Log;->d(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    invoke-static {v1, v2, v0}, Landroid/util/Log;->d(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
     .line 155
+    .end local v0  # "e":Landroid/os/RemoteException;
     :goto_1f
     return-void
 .end method
@@ -573,6 +622,7 @@
     invoke-direct {v0, v1}, Ljava/lang/Thread;-><init>(Ljava/lang/Runnable;)V
 
     .line 85
+    .local v0, "thread":Ljava/lang/Thread;
     const/16 v1, 0xa
 
     invoke-virtual {v0, v1}, Ljava/lang/Thread;->setPriority(I)V

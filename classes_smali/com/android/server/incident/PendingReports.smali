@@ -44,6 +44,7 @@
 # direct methods
 .method constructor <init>(Landroid/content/Context;)V
     .registers 4
+    .param p1, "context"  # Landroid/content/Context;
 
     .line 123
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -98,11 +99,11 @@
 
     invoke-virtual {p1, v0}, Landroid/content/Context;->getSystemService(Ljava/lang/Class;)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v0
 
-    check-cast p1, Landroid/app/AppOpsManager;
+    check-cast v0, Landroid/app/AppOpsManager;
 
-    iput-object p1, p0, Lcom/android/server/incident/PendingReports;->mAppOpsManager:Landroid/app/AppOpsManager;
+    iput-object v0, p0, Lcom/android/server/incident/PendingReports;->mAppOpsManager:Landroid/app/AppOpsManager;
 
     .line 127
     return-void
@@ -110,6 +111,7 @@
 
 .method static synthetic access$008(Lcom/android/server/incident/PendingReports;)I
     .registers 3
+    .param p0, "x0"  # Lcom/android/server/incident/PendingReports;
 
     .line 48
     iget v0, p0, Lcom/android/server/incident/PendingReports;->mNextPendingId:I
@@ -122,43 +124,49 @@
 .end method
 
 .method private authorizeReportImpl(ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;ILandroid/os/IIncidentAuthListener;)V
-    .registers 21
+    .registers 23
+    .param p1, "callingUid"  # I
+    .param p2, "callingPackage"  # Ljava/lang/String;
+    .param p3, "receiverClass"  # Ljava/lang/String;
+    .param p4, "reportId"  # Ljava/lang/String;
+    .param p5, "flags"  # I
+    .param p6, "listener"  # Landroid/os/IIncidentAuthListener;
 
     .line 268
-    move-object v8, p0
+    move-object/from16 v8, p0
 
-    move v0, p1
+    move/from16 v9, p1
 
-    move-object/from16 v3, p2
+    move-object/from16 v10, p2
 
-    move-object/from16 v9, p6
+    move-object/from16 v11, p6
 
-    if-eqz v0, :cond_30
+    if-eqz v9, :cond_32
 
     invoke-direct/range {p0 .. p2}, Lcom/android/server/incident/PendingReports;->isPackageInUid(ILjava/lang/String;)Z
 
-    move-result v1
+    move-result v0
 
-    if-nez v1, :cond_30
+    if-nez v0, :cond_32
 
     .line 269
-    new-instance v1, Ljava/lang/StringBuilder;
+    new-instance v0, Ljava/lang/StringBuilder;
 
-    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v2, "Calling uid "
+    const-string v1, "Calling uid "
 
-    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v1, p1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v9}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    const-string v0, " doesn\'t match package "
+    const-string v1, " doesn\'t match package "
 
-    invoke-virtual {v1, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v1, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v10}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
     move-result-object v0
 
@@ -167,59 +175,62 @@
     invoke-static {v1, v0}, Landroid/util/Log;->w(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 271
-    invoke-direct {p0, v9, v3}, Lcom/android/server/incident/PendingReports;->denyReportBeforeAddingRec(Landroid/os/IIncidentAuthListener;Ljava/lang/String;)V
+    invoke-direct {v8, v11, v10}, Lcom/android/server/incident/PendingReports;->denyReportBeforeAddingRec(Landroid/os/IIncidentAuthListener;Ljava/lang/String;)V
 
     .line 272
     return-void
 
     .line 276
-    :cond_30
-    invoke-direct {p0}, Lcom/android/server/incident/PendingReports;->getAndValidateUser()I
+    :cond_32
+    invoke-direct/range {p0 .. p0}, Lcom/android/server/incident/PendingReports;->getAndValidateUser()I
 
-    move-result v10
+    move-result v12
 
     .line 277
+    .local v12, "primaryUser":I
     const/16 v0, -0x2710
 
-    if-ne v10, v0, :cond_3c
+    if-ne v12, v0, :cond_3e
 
     .line 278
-    invoke-direct {p0, v9, v3}, Lcom/android/server/incident/PendingReports;->denyReportBeforeAddingRec(Landroid/os/IIncidentAuthListener;Ljava/lang/String;)V
+    invoke-direct {v8, v11, v10}, Lcom/android/server/incident/PendingReports;->denyReportBeforeAddingRec(Landroid/os/IIncidentAuthListener;Ljava/lang/String;)V
 
     .line 279
     return-void
 
     .line 283
-    :cond_3c
-    invoke-direct {p0, v10}, Lcom/android/server/incident/PendingReports;->getApproverComponent(I)Landroid/content/ComponentName;
+    :cond_3e
+    invoke-direct {v8, v12}, Lcom/android/server/incident/PendingReports;->getApproverComponent(I)Landroid/content/ComponentName;
 
-    move-result-object v11
+    move-result-object v13
 
     .line 284
-    if-nez v11, :cond_46
+    .local v13, "receiver":Landroid/content/ComponentName;
+    if-nez v13, :cond_48
 
     .line 287
-    invoke-direct {p0, v9, v3}, Lcom/android/server/incident/PendingReports;->denyReportBeforeAddingRec(Landroid/os/IIncidentAuthListener;Ljava/lang/String;)V
+    invoke-direct {v8, v11, v10}, Lcom/android/server/incident/PendingReports;->denyReportBeforeAddingRec(Landroid/os/IIncidentAuthListener;Ljava/lang/String;)V
 
     .line 288
     return-void
 
     .line 292
-    :cond_46
-    nop
+    :cond_48
+    const/4 v14, 0x0
 
     .line 293
-    iget-object v12, v8, Lcom/android/server/incident/PendingReports;->mLock:Ljava/lang/Object;
+    .local v14, "rec":Lcom/android/server/incident/PendingReports$PendingReportRec;
+    iget-object v15, v8, Lcom/android/server/incident/PendingReports;->mLock:Ljava/lang/Object;
 
-    monitor-enter v12
+    monitor-enter v15
 
     .line 294
-    :try_start_4a
-    new-instance v13, Lcom/android/server/incident/PendingReports$PendingReportRec;
+    :try_start_4c
+    new-instance v0, Lcom/android/server/incident/PendingReports$PendingReportRec;
 
-    move-object v1, v13
+    move-object v1, v0
 
-    move-object v2, p0
+    move-object/from16 v2, p0
 
     move-object/from16 v3, p2
 
@@ -233,86 +244,91 @@
 
     invoke-direct/range {v1 .. v7}, Lcom/android/server/incident/PendingReports$PendingReportRec;-><init>(Lcom/android/server/incident/PendingReports;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;ILandroid/os/IIncidentAuthListener;)V
 
+    move-object v14, v0
+
     .line 295
     iget-object v0, v8, Lcom/android/server/incident/PendingReports;->mPending:Ljava/util/ArrayList;
 
-    invoke-virtual {v0, v13}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
+    invoke-virtual {v0, v14}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
 
     .line 296
-    monitor-exit v12
-    :try_end_61
-    .catchall {:try_start_4a .. :try_end_61} :catchall_91
+    monitor-exit v15
+    :try_end_65
+    .catchall {:try_start_4c .. :try_end_65} :catchall_95
 
     .line 299
-    :try_start_61
+    :try_start_65
     invoke-interface/range {p6 .. p6}, Landroid/os/IIncidentAuthListener;->asBinder()Landroid/os/IBinder;
 
     move-result-object v0
 
     new-instance v1, Lcom/android/server/incident/-$$Lambda$PendingReports$B2hwzQpyMfhPG0Cw6n_Xz1SrHR0;
 
-    invoke-direct {v1, p0, v9, v11, v10}, Lcom/android/server/incident/-$$Lambda$PendingReports$B2hwzQpyMfhPG0Cw6n_Xz1SrHR0;-><init>(Lcom/android/server/incident/PendingReports;Landroid/os/IIncidentAuthListener;Landroid/content/ComponentName;I)V
+    invoke-direct {v1, v8, v11, v13, v12}, Lcom/android/server/incident/-$$Lambda$PendingReports$B2hwzQpyMfhPG0Cw6n_Xz1SrHR0;-><init>(Lcom/android/server/incident/PendingReports;Landroid/os/IIncidentAuthListener;Landroid/content/ComponentName;I)V
 
     const/4 v2, 0x0
 
     invoke-interface {v0, v1, v2}, Landroid/os/IBinder;->linkToDeath(Landroid/os/IBinder$DeathRecipient;I)V
-    :try_end_6e
-    .catch Landroid/os/RemoteException; {:try_start_61 .. :try_end_6e} :catch_6f
+    :try_end_72
+    .catch Landroid/os/RemoteException; {:try_start_65 .. :try_end_72} :catch_73
 
     .line 307
-    goto :goto_8d
+    goto :goto_91
 
     .line 303
-    :catch_6f
+    :catch_73
     move-exception v0
 
     .line 304
-    new-instance v0, Ljava/lang/StringBuilder;
+    .local v0, "ex":Landroid/os/RemoteException;
+    new-instance v1, Ljava/lang/StringBuilder;
 
-    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v1, "Remote died while trying to register death listener: "
+    const-string v2, "Remote died while trying to register death listener: "
 
-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v13}, Lcom/android/server/incident/PendingReports$PendingReportRec;->getUri()Landroid/net/Uri;
+    invoke-virtual {v14}, Lcom/android/server/incident/PendingReports$PendingReportRec;->getUri()Landroid/net/Uri;
+
+    move-result-object v2
+
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
     move-result-object v1
 
-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    const-string v2, "IncidentCompanionService"
 
-    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
-
-    move-result-object v0
-
-    const-string v1, "IncidentCompanionService"
-
-    invoke-static {v1, v0}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v2, v1}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 306
-    invoke-direct {p0, v9, v11, v10}, Lcom/android/server/incident/PendingReports;->cancelReportImpl(Landroid/os/IIncidentAuthListener;Landroid/content/ComponentName;I)V
+    invoke-direct {v8, v11, v13, v12}, Lcom/android/server/incident/PendingReports;->cancelReportImpl(Landroid/os/IIncidentAuthListener;Landroid/content/ComponentName;I)V
 
     .line 310
-    :goto_8d
-    invoke-direct {p0, v11, v10}, Lcom/android/server/incident/PendingReports;->sendBroadcast(Landroid/content/ComponentName;I)V
+    .end local v0  # "ex":Landroid/os/RemoteException;
+    :goto_91
+    invoke-direct {v8, v13, v12}, Lcom/android/server/incident/PendingReports;->sendBroadcast(Landroid/content/ComponentName;I)V
 
     .line 311
     return-void
 
     .line 296
-    :catchall_91
+    :catchall_95
     move-exception v0
 
-    :try_start_92
-    monitor-exit v12
-    :try_end_93
-    .catchall {:try_start_92 .. :try_end_93} :catchall_91
+    :try_start_96
+    monitor-exit v15
+    :try_end_97
+    .catchall {:try_start_96 .. :try_end_97} :catchall_95
 
     throw v0
 .end method
 
 .method private cancelReportImpl(Landroid/os/IIncidentAuthListener;)V
     .registers 5
+    .param p1, "listener"  # Landroid/os/IIncidentAuthListener;
 
     .line 317
     invoke-direct {p0}, Lcom/android/server/incident/PendingReports;->getAndValidateUser()I
@@ -320,11 +336,13 @@
     move-result v0
 
     .line 318
+    .local v0, "primaryUser":I
     invoke-direct {p0, v0}, Lcom/android/server/incident/PendingReports;->getApproverComponent(I)Landroid/content/ComponentName;
 
     move-result-object v1
 
     .line 319
+    .local v1, "receiver":Landroid/content/ComponentName;
     const/16 v2, -0x2710
 
     if-eq v0, v2, :cond_11
@@ -340,7 +358,10 @@
 .end method
 
 .method private cancelReportImpl(Landroid/os/IIncidentAuthListener;Landroid/content/ComponentName;I)V
-    .registers 5
+    .registers 6
+    .param p1, "listener"  # Landroid/os/IIncidentAuthListener;
+    .param p2, "receiver"  # Landroid/content/ComponentName;
+    .param p3, "primaryUser"  # I
 
     .line 331
     iget-object v0, p0, Lcom/android/server/incident/PendingReports;->mLock:Ljava/lang/Object;
@@ -364,18 +385,20 @@
 
     .line 333
     :catchall_b
-    move-exception p1
+    move-exception v1
 
     :try_start_c
     monitor-exit v0
     :try_end_d
     .catchall {:try_start_c .. :try_end_d} :catchall_b
 
-    throw p1
+    throw v1
 .end method
 
 .method private denyReportBeforeAddingRec(Landroid/os/IIncidentAuthListener;Ljava/lang/String;)V
-    .registers 5
+    .registers 6
+    .param p1, "listener"  # Landroid/os/IIncidentAuthListener;
+    .param p2, "pkg"  # Ljava/lang/String;
 
     .line 414
     :try_start_0
@@ -388,34 +411,37 @@
 
     .line 415
     :catch_4
-    move-exception p1
+    move-exception v0
 
     .line 416
-    new-instance v0, Ljava/lang/StringBuilder;
+    .local v0, "ex":Landroid/os/RemoteException;
+    new-instance v1, Ljava/lang/StringBuilder;
 
-    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v1, "Failed calling back for denial for "
+    const-string v2, "Failed calling back for denial for "
 
-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p2
+    move-result-object v1
 
-    const-string v0, "IncidentCompanionService"
+    const-string v2, "IncidentCompanionService"
 
-    invoke-static {v0, p2, p1}, Landroid/util/Log;->w(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    invoke-static {v2, v1, v0}, Landroid/util/Log;->w(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
     .line 418
+    .end local v0  # "ex":Landroid/os/RemoteException;
     :goto_1b
     return-void
 .end method
 
 .method private findAndRemovePendingReportRecLocked(Ljava/lang/String;)Lcom/android/server/incident/PendingReports$PendingReportRec;
-    .registers 6
+    .registers 8
+    .param p1, "uriString"  # Ljava/lang/String;
 
     .line 374
     invoke-static {p1}, Landroid/net/Uri;->parse(Ljava/lang/String;)Landroid/net/Uri;
@@ -423,87 +449,98 @@
     move-result-object v0
 
     .line 377
+    .local v0, "uri":Landroid/net/Uri;
     const/4 v1, 0x0
 
     :try_start_5
-    const-string v2, "id"
+    const-string/jumbo v2, "id"
 
     invoke-virtual {v0, v2}, Landroid/net/Uri;->getQueryParameter(Ljava/lang/String;)Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v2
 
     .line 378
-    invoke-static {v0}, Ljava/lang/Integer;->parseInt(Ljava/lang/String;)I
+    .local v2, "idStr":Ljava/lang/String;
+    invoke-static {v2}, Ljava/lang/Integer;->parseInt(Ljava/lang/String;)I
 
-    move-result p1
-    :try_end_f
-    .catch Ljava/lang/NumberFormatException; {:try_start_5 .. :try_end_f} :catch_2c
+    move-result v3
+    :try_end_10
+    .catch Ljava/lang/NumberFormatException; {:try_start_5 .. :try_end_10} :catch_2e
+
+    move v2, v3
 
     .line 382
+    .local v2, "id":I
     nop
 
     .line 384
-    iget-object v0, p0, Lcom/android/server/incident/PendingReports;->mPending:Ljava/util/ArrayList;
+    iget-object v3, p0, Lcom/android/server/incident/PendingReports;->mPending:Ljava/util/ArrayList;
 
-    invoke-virtual {v0}, Ljava/util/ArrayList;->iterator()Ljava/util/Iterator;
+    invoke-virtual {v3}, Ljava/util/ArrayList;->iterator()Ljava/util/Iterator;
 
-    move-result-object v0
+    move-result-object v3
 
-    :goto_16
-    invoke-interface {v0}, Ljava/util/Iterator;->hasNext()Z
+    .local v3, "i":Ljava/util/Iterator;, "Ljava/util/Iterator<Lcom/android/server/incident/PendingReports$PendingReportRec;>;"
+    :goto_18
+    invoke-interface {v3}, Ljava/util/Iterator;->hasNext()Z
 
-    move-result v2
+    move-result v4
 
-    if-eqz v2, :cond_2b
+    if-eqz v4, :cond_2d
 
     .line 385
-    invoke-interface {v0}, Ljava/util/Iterator;->next()Ljava/lang/Object;
+    invoke-interface {v3}, Ljava/util/Iterator;->next()Ljava/lang/Object;
 
-    move-result-object v2
+    move-result-object v4
 
-    check-cast v2, Lcom/android/server/incident/PendingReports$PendingReportRec;
+    check-cast v4, Lcom/android/server/incident/PendingReports$PendingReportRec;
 
     .line 386
-    iget v3, v2, Lcom/android/server/incident/PendingReports$PendingReportRec;->id:I
+    .local v4, "rec":Lcom/android/server/incident/PendingReports$PendingReportRec;
+    iget v5, v4, Lcom/android/server/incident/PendingReports$PendingReportRec;->id:I
 
-    if-ne v3, p1, :cond_2a
+    if-ne v5, v2, :cond_2c
 
     .line 387
-    invoke-interface {v0}, Ljava/util/Iterator;->remove()V
+    invoke-interface {v3}, Ljava/util/Iterator;->remove()V
 
     .line 388
-    return-object v2
+    return-object v4
 
     .line 390
-    :cond_2a
-    goto :goto_16
+    .end local v4  # "rec":Lcom/android/server/incident/PendingReports$PendingReportRec;
+    :cond_2c
+    goto :goto_18
 
     .line 391
-    :cond_2b
+    .end local v3  # "i":Ljava/util/Iterator;, "Ljava/util/Iterator<Lcom/android/server/incident/PendingReports$PendingReportRec;>;"
+    :cond_2d
     return-object v1
 
     .line 379
-    :catch_2c
-    move-exception v0
+    .end local v2  # "id":I
+    :catch_2e
+    move-exception v2
 
     .line 380
-    new-instance v0, Ljava/lang/StringBuilder;
+    .local v2, "ex":Ljava/lang/NumberFormatException;
+    new-instance v3, Ljava/lang/StringBuilder;
 
-    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v2, "Can\'t parse id from: "
+    const-string v4, "Can\'t parse id from: "
 
-    invoke-virtual {v0, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v3
 
-    const-string v0, "IncidentCompanionService"
+    const-string v4, "IncidentCompanionService"
 
-    invoke-static {v0, p1}, Landroid/util/Log;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v4, v3}, Landroid/util/Log;->w(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 381
     return-object v1
@@ -523,7 +560,8 @@
 .end method
 
 .method private getApproverComponent(I)Landroid/content/ComponentName;
-    .registers 5
+    .registers 6
+    .param p1, "userId"  # I
 
     .line 436
     new-instance v0, Landroid/content/Intent;
@@ -533,82 +571,86 @@
     invoke-direct {v0, v1}, Landroid/content/Intent;-><init>(Ljava/lang/String;)V
 
     .line 437
+    .local v0, "intent":Landroid/content/Intent;
     iget-object v1, p0, Lcom/android/server/incident/PendingReports;->mPackageManager:Landroid/content/pm/PackageManager;
 
     const/high16 v2, 0x1c0000
 
     invoke-virtual {v1, v0, v2, p1}, Landroid/content/pm/PackageManager;->queryBroadcastReceiversAsUser(Landroid/content/Intent;II)Ljava/util/List;
 
-    move-result-object p1
+    move-result-object v1
 
     .line 440
-    invoke-interface {p1}, Ljava/util/List;->size()I
+    .local v1, "matches":Ljava/util/List;, "Ljava/util/List<Landroid/content/pm/ResolveInfo;>;"
+    invoke-interface {v1}, Ljava/util/List;->size()I
 
-    move-result v0
+    move-result v2
 
-    const/4 v1, 0x1
+    const/4 v3, 0x1
 
-    if-ne v0, v1, :cond_26
+    if-ne v2, v3, :cond_26
 
     .line 441
-    const/4 v0, 0x0
+    const/4 v2, 0x0
 
-    invoke-interface {p1, v0}, Ljava/util/List;->get(I)Ljava/lang/Object;
+    invoke-interface {v1, v2}, Ljava/util/List;->get(I)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v2
 
-    check-cast p1, Landroid/content/pm/ResolveInfo;
+    check-cast v2, Landroid/content/pm/ResolveInfo;
 
-    invoke-virtual {p1}, Landroid/content/pm/ResolveInfo;->getComponentInfo()Landroid/content/pm/ComponentInfo;
+    invoke-virtual {v2}, Landroid/content/pm/ResolveInfo;->getComponentInfo()Landroid/content/pm/ComponentInfo;
 
-    move-result-object p1
+    move-result-object v2
 
-    invoke-virtual {p1}, Landroid/content/pm/ComponentInfo;->getComponentName()Landroid/content/ComponentName;
+    invoke-virtual {v2}, Landroid/content/pm/ComponentInfo;->getComponentName()Landroid/content/ComponentName;
 
-    move-result-object p1
+    move-result-object v2
 
-    return-object p1
+    return-object v2
 
     .line 443
     :cond_26
-    new-instance v0, Ljava/lang/StringBuilder;
+    new-instance v2, Ljava/lang/StringBuilder;
 
-    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v1, "Didn\'t find exactly one BroadcastReceiver to handle android.intent.action.PENDING_INCIDENT_REPORTS_CHANGED. The report will be denied. size="
+    const-string v3, "Didn\'t find exactly one BroadcastReceiver to handle android.intent.action.PENDING_INCIDENT_REPORTS_CHANGED. The report will be denied. size="
 
-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     .line 446
-    invoke-interface {p1}, Ljava/util/List;->size()I
+    invoke-interface {v1}, Ljava/util/List;->size()I
 
-    move-result v1
+    move-result v3
 
-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    const-string v1, ": matches="
+    const-string v3, ": matches="
 
-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v2
 
     .line 443
-    const-string v0, "IncidentCompanionService"
+    const-string v3, "IncidentCompanionService"
 
-    invoke-static {v0, p1}, Landroid/util/Log;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v3, v2}, Landroid/util/Log;->w(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 447
-    const/4 p1, 0x0
+    const/4 v2, 0x0
 
-    return-object p1
+    return-object v2
 .end method
 
 .method private isPackageInUid(ILjava/lang/String;)Z
-    .registers 4
+    .registers 5
+    .param p1, "uid"  # I
+    .param p2, "packageName"  # Ljava/lang/String;
 
     .line 456
     :try_start_0
@@ -619,22 +661,24 @@
     .catch Ljava/lang/SecurityException; {:try_start_0 .. :try_end_5} :catch_7
 
     .line 457
-    const/4 p1, 0x1
+    const/4 v0, 0x1
 
-    return p1
+    return v0
 
     .line 458
     :catch_7
-    move-exception p1
+    move-exception v0
 
     .line 459
-    const/4 p1, 0x0
+    .local v0, "ex":Ljava/lang/SecurityException;
+    const/4 v1, 0x0
 
-    return p1
+    return v1
 .end method
 
 .method private removePendingReportRecLocked(Landroid/os/IIncidentAuthListener;)V
     .registers 6
+    .param p1, "listener"  # Landroid/os/IIncidentAuthListener;
 
     .line 399
     iget-object v0, p0, Lcom/android/server/incident/PendingReports;->mPending:Ljava/util/ArrayList;
@@ -643,6 +687,7 @@
 
     move-result-object v0
 
+    .local v0, "i":Ljava/util/Iterator;, "Ljava/util/Iterator<Lcom/android/server/incident/PendingReports$PendingReportRec;>;"
     :goto_6
     invoke-interface {v0}, Ljava/util/Iterator;->hasNext()Z
 
@@ -658,6 +703,7 @@
     check-cast v1, Lcom/android/server/incident/PendingReports$PendingReportRec;
 
     .line 401
+    .local v1, "rec":Lcom/android/server/incident/PendingReports$PendingReportRec;
     iget-object v2, v1, Lcom/android/server/incident/PendingReports$PendingReportRec;->listener:Landroid/os/IIncidentAuthListener;
 
     invoke-interface {v2}, Landroid/os/IIncidentAuthListener;->asBinder()Landroid/os/IBinder;
@@ -687,26 +733,28 @@
 
     invoke-virtual {v1}, Lcom/android/server/incident/PendingReports$PendingReportRec;->getUri()Landroid/net/Uri;
 
-    move-result-object v1
+    move-result-object v3
 
-    invoke-virtual {v2, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v1
+    move-result-object v2
 
-    const-string v2, "IncidentCompanionService"
+    const-string v3, "IncidentCompanionService"
 
-    invoke-static {v2, v1}, Landroid/util/Log;->i(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v3, v2}, Landroid/util/Log;->i(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 403
     invoke-interface {v0}, Ljava/util/Iterator;->remove()V
 
     .line 405
+    .end local v1  # "rec":Lcom/android/server/incident/PendingReports$PendingReportRec;
     :cond_43
     goto :goto_6
 
     .line 406
+    .end local v0  # "i":Ljava/util/Iterator;, "Ljava/util/Iterator<Lcom/android/server/incident/PendingReports$PendingReportRec;>;"
     :cond_44
     return-void
 .end method
@@ -720,6 +768,7 @@
     move-result v0
 
     .line 346
+    .local v0, "primaryUser":I
     const/16 v1, -0x2710
 
     if-ne v0, v1, :cond_9
@@ -734,6 +783,7 @@
     move-result-object v1
 
     .line 350
+    .local v1, "receiver":Landroid/content/ComponentName;
     if-nez v1, :cond_10
 
     .line 351
@@ -748,7 +798,9 @@
 .end method
 
 .method private sendBroadcast(Landroid/content/ComponentName;I)V
-    .registers 6
+    .registers 9
+    .param p1, "receiver"  # Landroid/content/ComponentName;
+    .param p2, "primaryUser"  # I
 
     .line 360
     new-instance v0, Landroid/content/Intent;
@@ -758,34 +810,36 @@
     invoke-direct {v0, v1}, Landroid/content/Intent;-><init>(Ljava/lang/String;)V
 
     .line 361
+    .local v0, "intent":Landroid/content/Intent;
     invoke-virtual {v0, p1}, Landroid/content/Intent;->setComponent(Landroid/content/ComponentName;)Landroid/content/Intent;
 
     .line 362
     invoke-static {}, Landroid/app/BroadcastOptions;->makeBasic()Landroid/app/BroadcastOptions;
 
-    move-result-object p1
+    move-result-object v1
 
     .line 363
-    const/4 v1, 0x1
+    .local v1, "options":Landroid/app/BroadcastOptions;
+    const/4 v2, 0x1
 
-    invoke-virtual {p1, v1}, Landroid/app/BroadcastOptions;->setBackgroundActivityStartsAllowed(Z)V
+    invoke-virtual {v1, v2}, Landroid/app/BroadcastOptions;->setBackgroundActivityStartsAllowed(Z)V
 
     .line 366
-    iget-object v1, p0, Lcom/android/server/incident/PendingReports;->mContext:Landroid/content/Context;
+    iget-object v2, p0, Lcom/android/server/incident/PendingReports;->mContext:Landroid/content/Context;
 
     invoke-static {p2}, Landroid/os/UserHandle;->getUserHandleForUid(I)Landroid/os/UserHandle;
 
-    move-result-object p2
+    move-result-object v3
 
     .line 367
-    invoke-virtual {p1}, Landroid/app/BroadcastOptions;->toBundle()Landroid/os/Bundle;
+    invoke-virtual {v1}, Landroid/app/BroadcastOptions;->toBundle()Landroid/os/Bundle;
 
-    move-result-object p1
+    move-result-object v4
 
     .line 366
-    const-string v2, "android.permission.APPROVE_INCIDENT_REPORTS"
+    const-string v5, "android.permission.APPROVE_INCIDENT_REPORTS"
 
-    invoke-virtual {v1, v0, p2, v2, p1}, Landroid/content/Context;->sendBroadcastAsUser(Landroid/content/Intent;Landroid/os/UserHandle;Ljava/lang/String;Landroid/os/Bundle;)V
+    invoke-virtual {v2, v0, v3, v5, v4}, Landroid/content/Context;->sendBroadcastAsUser(Landroid/content/Intent;Landroid/os/UserHandle;Ljava/lang/String;Landroid/os/Bundle;)V
 
     .line 368
     return-void
@@ -794,7 +848,8 @@
 
 # virtual methods
 .method public approveReport(Ljava/lang/String;)V
-    .registers 6
+    .registers 7
+    .param p1, "uri"  # Ljava/lang/String;
 
     .line 187
     iget-object v0, p0, Lcom/android/server/incident/PendingReports;->mLock:Ljava/lang/Object;
@@ -808,26 +863,27 @@
     move-result-object v1
 
     .line 189
+    .local v1, "rec":Lcom/android/server/incident/PendingReports$PendingReportRec;
     if-nez v1, :cond_21
 
     .line 190
-    const-string v1, "IncidentCompanionService"
+    const-string v2, "IncidentCompanionService"
 
-    new-instance v2, Ljava/lang/StringBuilder;
+    new-instance v3, Ljava/lang/StringBuilder;
 
-    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v3, "confirmApproved: Couldn\'t find record for uri: "
+    const-string v4, "confirmApproved: Couldn\'t find record for uri: "
 
-    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v2, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v3
 
-    invoke-static {v1, p1}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v2, v3}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 191
     monitor-exit v0
@@ -878,55 +934,66 @@
     move-exception v0
 
     .line 203
-    new-instance v1, Ljava/lang/StringBuilder;
+    .local v0, "ex":Landroid/os/RemoteException;
+    new-instance v2, Ljava/lang/StringBuilder;
 
-    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v2, "Failed calling back for approval for: "
+    const-string v3, "Failed calling back for approval for: "
 
-    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v1, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v2
 
-    const-string v1, "IncidentCompanionService"
+    const-string v3, "IncidentCompanionService"
 
-    invoke-static {v1, p1, v0}, Landroid/util/Log;->w(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    invoke-static {v3, v2, v0}, Landroid/util/Log;->w(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
     .line 205
+    .end local v0  # "ex":Landroid/os/RemoteException;
     :goto_58
     return-void
 
     .line 193
+    .end local v1  # "rec":Lcom/android/server/incident/PendingReports$PendingReportRec;
     :catchall_59
-    move-exception p1
+    move-exception v1
 
     :try_start_5a
     monitor-exit v0
     :try_end_5b
     .catchall {:try_start_5a .. :try_end_5b} :catchall_59
 
-    throw p1
+    throw v1
 .end method
 
 .method public authorizeReport(ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;ILandroid/os/IIncidentAuthListener;)V
-    .registers 18
+    .registers 19
+    .param p1, "callingUid"  # I
+    .param p2, "callingPackage"  # Ljava/lang/String;
+    .param p3, "receiverClass"  # Ljava/lang/String;
+    .param p4, "reportId"  # Ljava/lang/String;
+    .param p5, "flags"  # I
+    .param p6, "listener"  # Landroid/os/IIncidentAuthListener;
 
     .line 141
-    move-object v1, p0
+    move-object v8, p0
 
-    iget-object v8, v1, Lcom/android/server/incident/PendingReports;->mRequestQueue:Lcom/android/server/incident/RequestQueue;
+    iget-object v9, v8, Lcom/android/server/incident/PendingReports;->mRequestQueue:Lcom/android/server/incident/RequestQueue;
 
     invoke-interface/range {p6 .. p6}, Landroid/os/IIncidentAuthListener;->asBinder()Landroid/os/IBinder;
 
-    move-result-object v9
+    move-result-object v10
 
-    new-instance v10, Lcom/android/server/incident/-$$Lambda$PendingReports$42Ba6ZxAFxFmqtPlfnXNpuKHOXM;
+    new-instance v11, Lcom/android/server/incident/-$$Lambda$PendingReports$42Ba6ZxAFxFmqtPlfnXNpuKHOXM;
 
-    move-object v0, v10
+    move-object v0, v11
+
+    move-object v1, p0
 
     move v2, p1
 
@@ -934,7 +1001,7 @@
 
     move-object v4, p3
 
-    move-object v5, p4
+    move-object/from16 v5, p4
 
     move/from16 v6, p5
 
@@ -944,14 +1011,15 @@
 
     const/4 v0, 0x1
 
-    invoke-virtual {v8, v9, v0, v10}, Lcom/android/server/incident/RequestQueue;->enqueue(Landroid/os/IBinder;ZLjava/lang/Runnable;)V
+    invoke-virtual {v9, v10, v0, v11}, Lcom/android/server/incident/RequestQueue;->enqueue(Landroid/os/IBinder;ZLjava/lang/Runnable;)V
 
     .line 145
     return-void
 .end method
 
 .method public cancelAuthorization(Landroid/os/IIncidentAuthListener;)V
-    .registers 5
+    .registers 6
+    .param p1, "listener"  # Landroid/os/IIncidentAuthListener;
 
     .line 158
     iget-object v0, p0, Lcom/android/server/incident/PendingReports;->mRequestQueue:Lcom/android/server/incident/RequestQueue;
@@ -964,16 +1032,17 @@
 
     invoke-direct {v2, p0, p1}, Lcom/android/server/incident/-$$Lambda$PendingReports$h00dGfNWXgDmC4-YyxYy1CUoKw4;-><init>(Lcom/android/server/incident/PendingReports;Landroid/os/IIncidentAuthListener;)V
 
-    const/4 p1, 0x0
+    const/4 v3, 0x0
 
-    invoke-virtual {v0, v1, p1, v2}, Lcom/android/server/incident/RequestQueue;->enqueue(Landroid/os/IBinder;ZLjava/lang/Runnable;)V
+    invoke-virtual {v0, v1, v3, v2}, Lcom/android/server/incident/RequestQueue;->enqueue(Landroid/os/IBinder;ZLjava/lang/Runnable;)V
 
     .line 161
     return-void
 .end method
 
 .method public denyReport(Ljava/lang/String;)V
-    .registers 6
+    .registers 7
+    .param p1, "uri"  # Ljava/lang/String;
 
     .line 212
     iget-object v0, p0, Lcom/android/server/incident/PendingReports;->mLock:Ljava/lang/Object;
@@ -987,26 +1056,27 @@
     move-result-object v1
 
     .line 214
+    .local v1, "rec":Lcom/android/server/incident/PendingReports$PendingReportRec;
     if-nez v1, :cond_21
 
     .line 215
-    const-string v1, "IncidentCompanionService"
+    const-string v2, "IncidentCompanionService"
 
-    new-instance v2, Ljava/lang/StringBuilder;
+    new-instance v3, Ljava/lang/StringBuilder;
 
-    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v3, "confirmDenied: Couldn\'t find record for uri: "
+    const-string v4, "confirmDenied: Couldn\'t find record for uri: "
 
-    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v2, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v3
 
-    invoke-static {v1, p1}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v2, v3}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 216
     monitor-exit v0
@@ -1057,179 +1127,193 @@
     move-exception v0
 
     .line 228
-    new-instance v1, Ljava/lang/StringBuilder;
+    .local v0, "ex":Landroid/os/RemoteException;
+    new-instance v2, Ljava/lang/StringBuilder;
 
-    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v2, "Failed calling back for denial for: "
+    const-string v3, "Failed calling back for denial for: "
 
-    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v1, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v2
 
-    const-string v1, "IncidentCompanionService"
+    const-string v3, "IncidentCompanionService"
 
-    invoke-static {v1, p1, v0}, Landroid/util/Log;->w(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    invoke-static {v3, v2, v0}, Landroid/util/Log;->w(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
     .line 230
+    .end local v0  # "ex":Landroid/os/RemoteException;
     :goto_58
     return-void
 
     .line 218
+    .end local v1  # "rec":Lcom/android/server/incident/PendingReports$PendingReportRec;
     :catchall_59
-    move-exception p1
+    move-exception v1
 
     :try_start_5a
     monitor-exit v0
     :try_end_5b
     .catchall {:try_start_5a .. :try_end_5b} :catchall_59
 
-    throw p1
+    throw v1
 .end method
 
 .method protected dump(Ljava/io/FileDescriptor;Ljava/io/PrintWriter;[Ljava/lang/String;)V
-    .registers 13
+    .registers 14
+    .param p1, "fd"  # Ljava/io/FileDescriptor;
+    .param p2, "writer"  # Ljava/io/PrintWriter;
+    .param p3, "args"  # [Ljava/lang/String;
 
     .line 236
-    array-length p1, p3
+    array-length v0, p3
 
-    if-nez p1, :cond_6e
+    if-nez v0, :cond_6f
 
     .line 238
-    new-instance p1, Ljava/text/SimpleDateFormat;
+    new-instance v0, Ljava/text/SimpleDateFormat;
 
-    const-string/jumbo p3, "yyyy-MM-dd HH:mm:ss.SSS"
+    const-string/jumbo v1, "yyyy-MM-dd HH:mm:ss.SSS"
 
-    invoke-direct {p1, p3}, Ljava/text/SimpleDateFormat;-><init>(Ljava/lang/String;)V
+    invoke-direct {v0, v1}, Ljava/text/SimpleDateFormat;-><init>(Ljava/lang/String;)V
 
     .line 239
-    iget-object p3, p0, Lcom/android/server/incident/PendingReports;->mLock:Ljava/lang/Object;
+    .local v0, "df":Ljava/text/SimpleDateFormat;
+    iget-object v1, p0, Lcom/android/server/incident/PendingReports;->mLock:Ljava/lang/Object;
 
-    monitor-enter p3
+    monitor-enter v1
 
     .line 240
     :try_start_e
-    iget-object v0, p0, Lcom/android/server/incident/PendingReports;->mPending:Ljava/util/ArrayList;
+    iget-object v2, p0, Lcom/android/server/incident/PendingReports;->mPending:Ljava/util/ArrayList;
 
-    invoke-virtual {v0}, Ljava/util/ArrayList;->size()I
+    invoke-virtual {v2}, Ljava/util/ArrayList;->size()I
 
-    move-result v0
+    move-result v2
 
     .line 241
-    new-instance v1, Ljava/lang/StringBuilder;
+    .local v2, "size":I
+    new-instance v3, Ljava/lang/StringBuilder;
 
-    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v2, "mPending: ("
+    const-string/jumbo v4, "mPending: ("
 
-    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v1, v0}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v2}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    const-string v2, ")"
+    const-string v4, ")"
 
-    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
-
-    move-result-object v1
-
-    invoke-virtual {p2, v1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
-
-    .line 242
-    const/4 v1, 0x0
-
-    move v2, v1
-
-    :goto_2f
-    if-ge v2, v0, :cond_69
-
-    .line 243
-    iget-object v3, p0, Lcom/android/server/incident/PendingReports;->mPending:Ljava/util/ArrayList;
-
-    invoke-virtual {v3, v2}, Ljava/util/ArrayList;->get(I)Ljava/lang/Object;
-
-    move-result-object v3
-
-    check-cast v3, Lcom/android/server/incident/PendingReports$PendingReportRec;
-
-    .line 244
-    const-string v4, "  %11d %s: %s"
-
-    const/4 v5, 0x3
-
-    new-array v5, v5, [Ljava/lang/Object;
-
-    iget-wide v6, v3, Lcom/android/server/incident/PendingReports$PendingReportRec;->addedRealtime:J
-
-    invoke-static {v6, v7}, Ljava/lang/Long;->valueOf(J)Ljava/lang/Long;
-
-    move-result-object v6
-
-    aput-object v6, v5, v1
-
-    new-instance v6, Ljava/util/Date;
-
-    iget-wide v7, v3, Lcom/android/server/incident/PendingReports$PendingReportRec;->addedWalltime:J
-
-    invoke-direct {v6, v7, v8}, Ljava/util/Date;-><init>(J)V
-
-    .line 245
-    invoke-virtual {p1, v6}, Ljava/text/SimpleDateFormat;->format(Ljava/util/Date;)Ljava/lang/String;
-
-    move-result-object v6
-
-    const/4 v7, 0x1
-
-    aput-object v6, v5, v7
-
-    const/4 v6, 0x2
-
-    .line 246
-    invoke-virtual {v3}, Lcom/android/server/incident/PendingReports$PendingReportRec;->getUri()Landroid/net/Uri;
-
-    move-result-object v3
-
-    invoke-virtual {v3}, Landroid/net/Uri;->toString()Ljava/lang/String;
-
-    move-result-object v3
-
-    aput-object v3, v5, v6
-
-    .line 244
-    invoke-static {v4, v5}, Ljava/lang/String;->format(Ljava/lang/String;[Ljava/lang/Object;)Ljava/lang/String;
+    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
     move-result-object v3
 
     invoke-virtual {p2, v3}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
     .line 242
-    add-int/lit8 v2, v2, 0x1
+    const/4 v3, 0x0
+
+    .local v3, "i":I
+    :goto_2f
+    if-ge v3, v2, :cond_6a
+
+    .line 243
+    iget-object v4, p0, Lcom/android/server/incident/PendingReports;->mPending:Ljava/util/ArrayList;
+
+    invoke-virtual {v4, v3}, Ljava/util/ArrayList;->get(I)Ljava/lang/Object;
+
+    move-result-object v4
+
+    check-cast v4, Lcom/android/server/incident/PendingReports$PendingReportRec;
+
+    .line 244
+    .local v4, "entry":Lcom/android/server/incident/PendingReports$PendingReportRec;
+    const-string v5, "  %11d %s: %s"
+
+    const/4 v6, 0x3
+
+    new-array v6, v6, [Ljava/lang/Object;
+
+    const/4 v7, 0x0
+
+    iget-wide v8, v4, Lcom/android/server/incident/PendingReports$PendingReportRec;->addedRealtime:J
+
+    invoke-static {v8, v9}, Ljava/lang/Long;->valueOf(J)Ljava/lang/Long;
+
+    move-result-object v8
+
+    aput-object v8, v6, v7
+
+    new-instance v7, Ljava/util/Date;
+
+    iget-wide v8, v4, Lcom/android/server/incident/PendingReports$PendingReportRec;->addedWalltime:J
+
+    invoke-direct {v7, v8, v9}, Ljava/util/Date;-><init>(J)V
+
+    .line 245
+    invoke-virtual {v0, v7}, Ljava/text/SimpleDateFormat;->format(Ljava/util/Date;)Ljava/lang/String;
+
+    move-result-object v7
+
+    const/4 v8, 0x1
+
+    aput-object v7, v6, v8
+
+    const/4 v7, 0x2
+
+    .line 246
+    invoke-virtual {v4}, Lcom/android/server/incident/PendingReports$PendingReportRec;->getUri()Landroid/net/Uri;
+
+    move-result-object v8
+
+    invoke-virtual {v8}, Landroid/net/Uri;->toString()Ljava/lang/String;
+
+    move-result-object v8
+
+    aput-object v8, v6, v7
+
+    .line 244
+    invoke-static {v5, v6}, Ljava/lang/String;->format(Ljava/lang/String;[Ljava/lang/Object;)Ljava/lang/String;
+
+    move-result-object v5
+
+    invoke-virtual {p2, v5}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+
+    .line 242
+    .end local v4  # "entry":Lcom/android/server/incident/PendingReports$PendingReportRec;
+    add-int/lit8 v3, v3, 0x1
 
     goto :goto_2f
 
     .line 248
-    :cond_69
-    monitor-exit p3
+    .end local v2  # "size":I
+    .end local v3  # "i":I
+    :cond_6a
+    monitor-exit v1
 
-    goto :goto_6e
+    goto :goto_6f
 
-    :catchall_6b
-    move-exception p1
+    :catchall_6c
+    move-exception v2
 
-    monitor-exit p3
-    :try_end_6d
-    .catchall {:try_start_e .. :try_end_6d} :catchall_6b
+    monitor-exit v1
+    :try_end_6e
+    .catchall {:try_start_e .. :try_end_6e} :catchall_6c
 
-    throw p1
+    throw v2
 
     .line 250
-    :cond_6e
-    :goto_6e
+    .end local v0  # "df":Ljava/text/SimpleDateFormat;
+    :cond_6f
+    :goto_6f
     return-void
 .end method
 
@@ -1258,13 +1342,16 @@
     move-result v1
 
     .line 172
+    .local v1, "size":I
     new-instance v2, Ljava/util/ArrayList;
 
     invoke-direct {v2, v1}, Ljava/util/ArrayList;-><init>(I)V
 
     .line 173
+    .local v2, "result":Ljava/util/ArrayList;, "Ljava/util/ArrayList<Ljava/lang/String;>;"
     const/4 v3, 0x0
 
+    .local v3, "i":I
     :goto_f
     if-ge v3, v1, :cond_27
 
@@ -1293,12 +1380,15 @@
     goto :goto_f
 
     .line 176
+    .end local v3  # "i":I
     :cond_27
     monitor-exit v0
 
     return-object v2
 
     .line 177
+    .end local v1  # "size":I
+    .end local v2  # "result":Ljava/util/ArrayList;, "Ljava/util/ArrayList<Ljava/lang/String;>;"
     :catchall_29
     move-exception v1
 
@@ -1311,6 +1401,12 @@
 
 .method public synthetic lambda$authorizeReport$0$PendingReports(ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;ILandroid/os/IIncidentAuthListener;)V
     .registers 7
+    .param p1, "callingUid"  # I
+    .param p2, "callingPackage"  # Ljava/lang/String;
+    .param p3, "receiverClass"  # Ljava/lang/String;
+    .param p4, "reportId"  # Ljava/lang/String;
+    .param p5, "flags"  # I
+    .param p6, "listener"  # Landroid/os/IIncidentAuthListener;
 
     .line 142
     invoke-direct/range {p0 .. p6}, Lcom/android/server/incident/PendingReports;->authorizeReportImpl(ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;ILandroid/os/IIncidentAuthListener;)V
@@ -1321,6 +1417,9 @@
 
 .method public synthetic lambda$authorizeReportImpl$2$PendingReports(Landroid/os/IIncidentAuthListener;Landroid/content/ComponentName;I)V
     .registers 6
+    .param p1, "listener"  # Landroid/os/IIncidentAuthListener;
+    .param p2, "receiver"  # Landroid/content/ComponentName;
+    .param p3, "primaryUser"  # I
 
     .line 300
     new-instance v0, Ljava/lang/StringBuilder;
@@ -1350,6 +1449,7 @@
 
 .method public synthetic lambda$cancelAuthorization$1$PendingReports(Landroid/os/IIncidentAuthListener;)V
     .registers 2
+    .param p1, "listener"  # Landroid/os/IIncidentAuthListener;
 
     .line 159
     invoke-direct {p0, p1}, Lcom/android/server/incident/PendingReports;->cancelReportImpl(Landroid/os/IIncidentAuthListener;)V

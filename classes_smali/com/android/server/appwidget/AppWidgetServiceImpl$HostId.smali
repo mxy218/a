@@ -25,46 +25,50 @@
 # direct methods
 .method public constructor <init>(IILjava/lang/String;)V
     .registers 4
+    .param p1, "uid"  # I
+    .param p2, "hostId"  # I
+    .param p3, "packageName"  # Ljava/lang/String;
 
-    .line 4066
+    .line 4090
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
-    .line 4067
+    .line 4091
     iput p1, p0, Lcom/android/server/appwidget/AppWidgetServiceImpl$HostId;->uid:I
 
-    .line 4068
+    .line 4092
     iput p2, p0, Lcom/android/server/appwidget/AppWidgetServiceImpl$HostId;->hostId:I
 
-    .line 4069
+    .line 4093
     iput-object p3, p0, Lcom/android/server/appwidget/AppWidgetServiceImpl$HostId;->packageName:Ljava/lang/String;
 
-    .line 4070
+    .line 4094
     return-void
 .end method
 
 
 # virtual methods
 .method public equals(Ljava/lang/Object;)Z
-    .registers 6
+    .registers 7
+    .param p1, "obj"  # Ljava/lang/Object;
 
-    .line 4074
+    .line 4098
     const/4 v0, 0x1
 
     if-ne p0, p1, :cond_4
 
-    .line 4075
+    .line 4099
     return v0
 
-    .line 4077
+    .line 4101
     :cond_4
     const/4 v1, 0x0
 
     if-nez p1, :cond_8
 
-    .line 4078
+    .line 4102
     return v1
 
-    .line 4080
+    .line 4104
     :cond_8
     invoke-virtual {p0}, Ljava/lang/Object;->getClass()Ljava/lang/Class;
 
@@ -76,107 +80,115 @@
 
     if-eq v2, v3, :cond_13
 
-    .line 4081
+    .line 4105
     return v1
 
-    .line 4083
+    .line 4107
     :cond_13
-    check-cast p1, Lcom/android/server/appwidget/AppWidgetServiceImpl$HostId;
+    move-object v2, p1
 
-    .line 4084
-    iget v2, p0, Lcom/android/server/appwidget/AppWidgetServiceImpl$HostId;->uid:I
+    check-cast v2, Lcom/android/server/appwidget/AppWidgetServiceImpl$HostId;
 
-    iget v3, p1, Lcom/android/server/appwidget/AppWidgetServiceImpl$HostId;->uid:I
+    .line 4108
+    .local v2, "other":Lcom/android/server/appwidget/AppWidgetServiceImpl$HostId;
+    iget v3, p0, Lcom/android/server/appwidget/AppWidgetServiceImpl$HostId;->uid:I
 
-    if-eq v2, v3, :cond_1c
+    iget v4, v2, Lcom/android/server/appwidget/AppWidgetServiceImpl$HostId;->uid:I
 
-    .line 4085
+    if-eq v3, v4, :cond_1d
+
+    .line 4109
     return v1
 
-    .line 4087
-    :cond_1c
-    iget v2, p0, Lcom/android/server/appwidget/AppWidgetServiceImpl$HostId;->hostId:I
+    .line 4111
+    :cond_1d
+    iget v3, p0, Lcom/android/server/appwidget/AppWidgetServiceImpl$HostId;->hostId:I
 
-    iget v3, p1, Lcom/android/server/appwidget/AppWidgetServiceImpl$HostId;->hostId:I
+    iget v4, v2, Lcom/android/server/appwidget/AppWidgetServiceImpl$HostId;->hostId:I
 
-    if-eq v2, v3, :cond_23
+    if-eq v3, v4, :cond_24
 
-    .line 4088
+    .line 4112
     return v1
 
-    .line 4090
-    :cond_23
-    iget-object v2, p0, Lcom/android/server/appwidget/AppWidgetServiceImpl$HostId;->packageName:Ljava/lang/String;
+    .line 4114
+    :cond_24
+    iget-object v3, p0, Lcom/android/server/appwidget/AppWidgetServiceImpl$HostId;->packageName:Ljava/lang/String;
 
-    if-nez v2, :cond_2c
+    if-nez v3, :cond_2d
 
-    .line 4091
-    iget-object p1, p1, Lcom/android/server/appwidget/AppWidgetServiceImpl$HostId;->packageName:Ljava/lang/String;
+    .line 4115
+    iget-object v3, v2, Lcom/android/server/appwidget/AppWidgetServiceImpl$HostId;->packageName:Ljava/lang/String;
 
-    if-eqz p1, :cond_35
+    if-eqz v3, :cond_36
 
-    .line 4092
+    .line 4116
     return v1
 
-    .line 4094
-    :cond_2c
-    iget-object p1, p1, Lcom/android/server/appwidget/AppWidgetServiceImpl$HostId;->packageName:Ljava/lang/String;
+    .line 4118
+    :cond_2d
+    iget-object v4, v2, Lcom/android/server/appwidget/AppWidgetServiceImpl$HostId;->packageName:Ljava/lang/String;
 
-    invoke-virtual {v2, p1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v3, v4}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result p1
+    move-result v3
 
-    if-nez p1, :cond_35
+    if-nez v3, :cond_36
 
-    .line 4095
+    .line 4119
     return v1
 
-    .line 4097
-    :cond_35
+    .line 4121
+    :cond_36
     return v0
 .end method
 
 .method public hashCode()I
-    .registers 3
+    .registers 4
 
-    .line 4102
+    .line 4126
     iget v0, p0, Lcom/android/server/appwidget/AppWidgetServiceImpl$HostId;->uid:I
 
-    .line 4103
-    mul-int/lit8 v0, v0, 0x1f
+    .line 4127
+    .local v0, "result":I
+    mul-int/lit8 v1, v0, 0x1f
 
-    iget v1, p0, Lcom/android/server/appwidget/AppWidgetServiceImpl$HostId;->hostId:I
+    iget v2, p0, Lcom/android/server/appwidget/AppWidgetServiceImpl$HostId;->hostId:I
 
-    add-int/2addr v0, v1
+    add-int/2addr v1, v2
 
-    .line 4104
-    mul-int/lit8 v0, v0, 0x1f
+    .line 4128
+    .end local v0  # "result":I
+    .local v1, "result":I
+    mul-int/lit8 v0, v1, 0x1f
 
-    iget-object v1, p0, Lcom/android/server/appwidget/AppWidgetServiceImpl$HostId;->packageName:Ljava/lang/String;
+    iget-object v2, p0, Lcom/android/server/appwidget/AppWidgetServiceImpl$HostId;->packageName:Ljava/lang/String;
 
-    if-eqz v1, :cond_12
+    if-eqz v2, :cond_12
 
-    .line 4105
-    invoke-virtual {v1}, Ljava/lang/String;->hashCode()I
+    .line 4129
+    invoke-virtual {v2}, Ljava/lang/String;->hashCode()I
 
-    move-result v1
+    move-result v2
 
     goto :goto_13
 
     :cond_12
-    const/4 v1, 0x0
+    const/4 v2, 0x0
 
     :goto_13
-    add-int/2addr v0, v1
+    add-int/2addr v0, v2
 
-    .line 4106
+    .line 4130
+    .end local v1  # "result":I
+    .restart local v0  # "result":I
     return v0
 .end method
 
 .method public toString()Ljava/lang/String;
     .registers 3
 
-    .line 4111
+    .line 4135
     new-instance v0, Ljava/lang/StringBuilder;
 
     invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
@@ -199,7 +211,7 @@
 
     iget v1, p0, Lcom/android/server/appwidget/AppWidgetServiceImpl$HostId;->uid:I
 
-    .line 4112
+    .line 4136
     invoke-static {v1}, Landroid/os/UserHandle;->getAppId(I)I
 
     move-result v1
@@ -230,6 +242,6 @@
 
     move-result-object v0
 
-    .line 4111
+    .line 4135
     return-object v0
 .end method

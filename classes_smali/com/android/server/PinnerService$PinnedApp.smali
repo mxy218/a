@@ -35,45 +35,49 @@
 # direct methods
 .method private constructor <init>(Lcom/android/server/PinnerService;Landroid/content/pm/ApplicationInfo;)V
     .registers 4
+    .param p2, "appInfo"  # Landroid/content/pm/ApplicationInfo;
 
-    .line 977
+    .line 983
     iput-object p1, p0, Lcom/android/server/PinnerService$PinnedApp;->this$0:Lcom/android/server/PinnerService;
 
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
-    .line 975
+    .line 981
     new-instance v0, Ljava/util/ArrayList;
 
     invoke-direct {v0}, Ljava/util/ArrayList;-><init>()V
 
     iput-object v0, p0, Lcom/android/server/PinnerService$PinnedApp;->mFiles:Ljava/util/ArrayList;
 
-    .line 978
-    iget p2, p2, Landroid/content/pm/ApplicationInfo;->uid:I
+    .line 984
+    iget v0, p2, Landroid/content/pm/ApplicationInfo;->uid:I
 
-    iput p2, p0, Lcom/android/server/PinnerService$PinnedApp;->uid:I
+    iput v0, p0, Lcom/android/server/PinnerService$PinnedApp;->uid:I
 
-    .line 979
+    .line 985
     invoke-static {p1}, Lcom/android/server/PinnerService;->access$1300(Lcom/android/server/PinnerService;)Landroid/app/ActivityManagerInternal;
 
     move-result-object p1
 
-    iget p2, p0, Lcom/android/server/PinnerService$PinnedApp;->uid:I
+    iget v0, p0, Lcom/android/server/PinnerService$PinnedApp;->uid:I
 
-    invoke-virtual {p1, p2}, Landroid/app/ActivityManagerInternal;->isUidActive(I)Z
+    invoke-virtual {p1, v0}, Landroid/app/ActivityManagerInternal;->isUidActive(I)Z
 
     move-result p1
 
     iput-boolean p1, p0, Lcom/android/server/PinnerService$PinnedApp;->active:Z
 
-    .line 980
+    .line 986
     return-void
 .end method
 
 .method synthetic constructor <init>(Lcom/android/server/PinnerService;Landroid/content/pm/ApplicationInfo;Lcom/android/server/PinnerService$1;)V
     .registers 4
+    .param p1, "x0"  # Lcom/android/server/PinnerService;
+    .param p2, "x1"  # Landroid/content/pm/ApplicationInfo;
+    .param p3, "x2"  # Lcom/android/server/PinnerService$1;
 
-    .line 963
+    .line 969
     invoke-direct {p0, p1, p2}, Lcom/android/server/PinnerService$PinnedApp;-><init>(Lcom/android/server/PinnerService;Landroid/content/pm/ApplicationInfo;)V
 
     return-void

@@ -22,7 +22,7 @@
 .method private constructor <init>(Lcom/android/server/audio/AudioService$AudioPolicyProxy;)V
     .registers 2
 
-    .line 7412
+    .line 8442
     iput-object p1, p0, Lcom/android/server/audio/AudioService$AudioPolicyProxy$UnregisterOnStopCallback;->this$1:Lcom/android/server/audio/AudioService$AudioPolicyProxy;
 
     invoke-direct {p0}, Landroid/media/projection/IMediaProjectionCallback$Stub;-><init>()V
@@ -32,8 +32,10 @@
 
 .method synthetic constructor <init>(Lcom/android/server/audio/AudioService$AudioPolicyProxy;Lcom/android/server/audio/AudioService$1;)V
     .registers 3
+    .param p1, "x0"  # Lcom/android/server/audio/AudioService$AudioPolicyProxy;
+    .param p2, "x1"  # Lcom/android/server/audio/AudioService$1;
 
-    .line 7412
+    .line 8442
     invoke-direct {p0, p1}, Lcom/android/server/audio/AudioService$AudioPolicyProxy$UnregisterOnStopCallback;-><init>(Lcom/android/server/audio/AudioService$AudioPolicyProxy;)V
 
     return-void
@@ -44,7 +46,7 @@
 .method public onStop()V
     .registers 3
 
-    .line 7414
+    .line 8444
     iget-object v0, p0, Lcom/android/server/audio/AudioService$AudioPolicyProxy$UnregisterOnStopCallback;->this$1:Lcom/android/server/audio/AudioService$AudioPolicyProxy;
 
     iget-object v0, v0, Lcom/android/server/audio/AudioService$AudioPolicyProxy;->this$0:Lcom/android/server/audio/AudioService;
@@ -55,6 +57,6 @@
 
     invoke-virtual {v0, v1}, Lcom/android/server/audio/AudioService;->unregisterAudioPolicyAsync(Landroid/media/audiopolicy/IAudioPolicyCallback;)V
 
-    .line 7415
+    .line 8445
     return-void
 .end method

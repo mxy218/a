@@ -44,6 +44,16 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/biometrics/BiometricServiceBase;Landroid/content/Context;Lcom/android/server/biometrics/BiometricServiceBase$DaemonWrapper;JLandroid/os/IBinder;Lcom/android/server/biometrics/BiometricServiceBase$ServiceListener;IIZLjava/lang/String;Ljava/util/List;Lcom/android/server/biometrics/BiometricUtils;)V
     .registers 27
+    .param p2, "context"  # Landroid/content/Context;
+    .param p3, "daemon"  # Lcom/android/server/biometrics/BiometricServiceBase$DaemonWrapper;
+    .param p4, "halDeviceId"  # J
+    .param p6, "token"  # Landroid/os/IBinder;
+    .param p7, "listener"  # Lcom/android/server/biometrics/BiometricServiceBase$ServiceListener;
+    .param p8, "groupId"  # I
+    .param p9, "userId"  # I
+    .param p10, "restricted"  # Z
+    .param p11, "owner"  # Ljava/lang/String;
+    .param p13, "utils"  # Lcom/android/server/biometrics/BiometricUtils;
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(",
@@ -63,14 +73,15 @@
         }
     .end annotation
 
-    .line 334
+    .line 335
+    .local p12, "enrolledList":Ljava/util/List;, "Ljava/util/List<+Landroid/hardware/biometrics/BiometricAuthenticator$Identifier;>;"
     move-object v12, p0
 
     move-object v0, p1
 
     iput-object v0, v12, Lcom/android/server/biometrics/BiometricServiceBase$InternalEnumerateClient;->this$0:Lcom/android/server/biometrics/BiometricServiceBase;
 
-    .line 335
+    .line 336
     invoke-virtual {p1}, Lcom/android/server/biometrics/BiometricServiceBase;->getConstants()Lcom/android/server/biometrics/Constants;
 
     move-result-object v2
@@ -97,42 +108,43 @@
 
     invoke-direct/range {v0 .. v11}, Lcom/android/server/biometrics/EnumerateClient;-><init>(Landroid/content/Context;Lcom/android/server/biometrics/Constants;Lcom/android/server/biometrics/BiometricServiceBase$DaemonWrapper;JLandroid/os/IBinder;Lcom/android/server/biometrics/BiometricServiceBase$ServiceListener;IIZLjava/lang/String;)V
 
-    .line 328
+    .line 329
     new-instance v0, Ljava/util/ArrayList;
 
     invoke-direct {v0}, Ljava/util/ArrayList;-><init>()V
 
     iput-object v0, v12, Lcom/android/server/biometrics/BiometricServiceBase$InternalEnumerateClient;->mUnknownHALTemplates:Ljava/util/List;
 
-    .line 337
+    .line 338
     move-object/from16 v0, p12
 
     iput-object v0, v12, Lcom/android/server/biometrics/BiometricServiceBase$InternalEnumerateClient;->mEnrolledList:Ljava/util/List;
 
-    .line 338
-    move-object/from16 v0, p13
-
-    iput-object v0, v12, Lcom/android/server/biometrics/BiometricServiceBase$InternalEnumerateClient;->mUtils:Lcom/android/server/biometrics/BiometricUtils;
-
     .line 339
+    move-object/from16 v1, p13
+
+    iput-object v1, v12, Lcom/android/server/biometrics/BiometricServiceBase$InternalEnumerateClient;->mUtils:Lcom/android/server/biometrics/BiometricUtils;
+
+    .line 340
     return-void
 .end method
 
 .method private doTemplateCleanup()V
-    .registers 6
+    .registers 7
 
-    .line 363
+    .line 364
     iget-object v0, p0, Lcom/android/server/biometrics/BiometricServiceBase$InternalEnumerateClient;->mEnrolledList:Ljava/util/List;
 
     if-nez v0, :cond_5
 
-    .line 364
+    .line 365
     return-void
 
-    .line 369
+    .line 370
     :cond_5
     const/4 v0, 0x0
 
+    .local v0, "i":I
     :goto_6
     iget-object v1, p0, Lcom/android/server/biometrics/BiometricServiceBase$InternalEnumerateClient;->mEnrolledList:Ljava/util/List;
 
@@ -142,7 +154,7 @@
 
     if-ge v0, v1, :cond_5e
 
-    .line 370
+    .line 371
     iget-object v1, p0, Lcom/android/server/biometrics/BiometricServiceBase$InternalEnumerateClient;->mEnrolledList:Ljava/util/List;
 
     invoke-interface {v1, v0}, Ljava/util/List;->get(I)Ljava/lang/Object;
@@ -151,7 +163,8 @@
 
     check-cast v1, Landroid/hardware/biometrics/BiometricAuthenticator$Identifier;
 
-    .line 371
+    .line 372
+    .local v1, "identifier":Landroid/hardware/biometrics/BiometricAuthenticator$Identifier;
     iget-object v2, p0, Lcom/android/server/biometrics/BiometricServiceBase$InternalEnumerateClient;->this$0:Lcom/android/server/biometrics/BiometricServiceBase;
 
     invoke-virtual {v2}, Lcom/android/server/biometrics/BiometricServiceBase;->getTag()Ljava/lang/String;
@@ -166,7 +179,7 @@
 
     invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    .line 372
+    .line 373
     invoke-virtual {v1}, Landroid/hardware/biometrics/BiometricAuthenticator$Identifier;->getBiometricId()I
 
     move-result v4
@@ -177,7 +190,7 @@
 
     invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    .line 373
+    .line 374
     invoke-virtual {v1}, Landroid/hardware/biometrics/BiometricAuthenticator$Identifier;->getName()Ljava/lang/CharSequence;
 
     move-result-object v4
@@ -188,66 +201,69 @@
 
     move-result-object v3
 
-    .line 371
+    .line 372
     invoke-static {v2, v3}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 374
+    .line 375
     iget-object v2, p0, Lcom/android/server/biometrics/BiometricServiceBase$InternalEnumerateClient;->mUtils:Lcom/android/server/biometrics/BiometricUtils;
 
     invoke-virtual {p0}, Lcom/android/server/biometrics/BiometricServiceBase$InternalEnumerateClient;->getContext()Landroid/content/Context;
 
     move-result-object v3
 
-    .line 375
+    .line 376
     invoke-virtual {p0}, Lcom/android/server/biometrics/BiometricServiceBase$InternalEnumerateClient;->getTargetUserId()I
 
     move-result v4
 
     invoke-virtual {v1}, Landroid/hardware/biometrics/BiometricAuthenticator$Identifier;->getBiometricId()I
 
-    move-result v1
+    move-result v5
 
-    .line 374
-    invoke-interface {v2, v3, v4, v1}, Lcom/android/server/biometrics/BiometricUtils;->removeBiometricForUser(Landroid/content/Context;II)V
-
-    .line 376
-    const/16 v1, 0x94
+    .line 375
+    invoke-interface {v2, v3, v4, v5}, Lcom/android/server/biometrics/BiometricUtils;->removeBiometricForUser(Landroid/content/Context;II)V
 
     .line 377
+    const/16 v2, 0x94
+
+    .line 378
     invoke-virtual {p0}, Lcom/android/server/biometrics/BiometricServiceBase$InternalEnumerateClient;->statsModality()I
 
-    move-result v2
+    move-result v3
 
-    const/4 v3, 0x2
+    const/4 v4, 0x2
 
-    .line 376
-    invoke-static {v1, v2, v3}, Landroid/util/StatsLog;->write(III)I
+    .line 377
+    invoke-static {v2, v3, v4}, Landroid/util/StatsLog;->write(III)I
 
-    .line 369
+    .line 370
+    .end local v1  # "identifier":Landroid/hardware/biometrics/BiometricAuthenticator$Identifier;
     add-int/lit8 v0, v0, 0x1
 
     goto :goto_6
 
-    .line 380
+    .line 381
+    .end local v0  # "i":I
     :cond_5e
     iget-object v0, p0, Lcom/android/server/biometrics/BiometricServiceBase$InternalEnumerateClient;->mEnrolledList:Ljava/util/List;
 
     invoke-interface {v0}, Ljava/util/List;->clear()V
 
-    .line 381
+    .line 382
     return-void
 .end method
 
 .method private handleEnumeratedTemplate(Landroid/hardware/biometrics/BiometricAuthenticator$Identifier;)V
     .registers 6
-
-    .line 342
-    if-nez p1, :cond_3
+    .param p1, "identifier"  # Landroid/hardware/biometrics/BiometricAuthenticator$Identifier;
 
     .line 343
+    if-nez p1, :cond_3
+
+    .line 344
     return-void
 
-    .line 345
+    .line 346
     :cond_3
     iget-object v0, p0, Lcom/android/server/biometrics/BiometricServiceBase$InternalEnumerateClient;->this$0:Lcom/android/server/biometrics/BiometricServiceBase;
 
@@ -275,24 +291,24 @@
 
     invoke-static {v0, v1}, Landroid/util/Slog;->v(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 346
-    nop
-
     .line 347
     const/4 v0, 0x0
 
-    move v1, v0
+    .line 348
+    .local v0, "matched":Z
+    const/4 v1, 0x0
 
-    :goto_24
+    .local v1, "i":I
+    :goto_23
     iget-object v2, p0, Lcom/android/server/biometrics/BiometricServiceBase$InternalEnumerateClient;->mEnrolledList:Ljava/util/List;
 
     invoke-interface {v2}, Ljava/util/List;->size()I
 
     move-result v2
 
-    if-ge v1, v2, :cond_49
+    if-ge v1, v2, :cond_47
 
-    .line 348
+    .line 349
     iget-object v2, p0, Lcom/android/server/biometrics/BiometricServiceBase$InternalEnumerateClient;->mEnrolledList:Ljava/util/List;
 
     invoke-interface {v2, v1}, Ljava/util/List;->get(I)Ljava/lang/Object;
@@ -309,68 +325,67 @@
 
     move-result v3
 
-    if-ne v2, v3, :cond_46
-
-    .line 349
-    iget-object v0, p0, Lcom/android/server/biometrics/BiometricServiceBase$InternalEnumerateClient;->mEnrolledList:Ljava/util/List;
-
-    invoke-interface {v0, v1}, Ljava/util/List;->remove(I)Ljava/lang/Object;
+    if-ne v2, v3, :cond_44
 
     .line 350
-    nop
+    iget-object v2, p0, Lcom/android/server/biometrics/BiometricServiceBase$InternalEnumerateClient;->mEnrolledList:Ljava/util/List;
+
+    invoke-interface {v2, v1}, Ljava/util/List;->remove(I)Ljava/lang/Object;
 
     .line 351
     const/4 v0, 0x1
 
-    goto :goto_49
+    .line 352
+    goto :goto_47
 
-    .line 347
-    :cond_46
+    .line 348
+    :cond_44
     add-int/lit8 v1, v1, 0x1
 
-    goto :goto_24
+    goto :goto_23
 
-    .line 356
-    :cond_49
-    :goto_49
-    if-nez v0, :cond_56
+    .line 357
+    .end local v1  # "i":I
+    :cond_47
+    :goto_47
+    if-nez v0, :cond_54
 
     invoke-virtual {p1}, Landroid/hardware/biometrics/BiometricAuthenticator$Identifier;->getBiometricId()I
 
     move-result v1
 
-    if-eqz v1, :cond_56
+    if-eqz v1, :cond_54
 
-    .line 357
+    .line 358
     iget-object v1, p0, Lcom/android/server/biometrics/BiometricServiceBase$InternalEnumerateClient;->mUnknownHALTemplates:Ljava/util/List;
 
     invoke-interface {v1, p1}, Ljava/util/List;->add(Ljava/lang/Object;)Z
 
-    .line 359
-    :cond_56
-    iget-object p1, p0, Lcom/android/server/biometrics/BiometricServiceBase$InternalEnumerateClient;->this$0:Lcom/android/server/biometrics/BiometricServiceBase;
-
-    invoke-virtual {p1}, Lcom/android/server/biometrics/BiometricServiceBase;->getTag()Ljava/lang/String;
-
-    move-result-object p1
-
-    new-instance v1, Ljava/lang/StringBuilder;
-
-    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
-
-    const-string v2, "Matched: "
-
-    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v1, v0}, Ljava/lang/StringBuilder;->append(Z)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
-
-    move-result-object v0
-
-    invoke-static {p1, v0}, Landroid/util/Slog;->v(Ljava/lang/String;Ljava/lang/String;)I
-
     .line 360
+    :cond_54
+    iget-object v1, p0, Lcom/android/server/biometrics/BiometricServiceBase$InternalEnumerateClient;->this$0:Lcom/android/server/biometrics/BiometricServiceBase;
+
+    invoke-virtual {v1}, Lcom/android/server/biometrics/BiometricServiceBase;->getTag()Ljava/lang/String;
+
+    move-result-object v1
+
+    new-instance v2, Ljava/lang/StringBuilder;
+
+    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
+
+    const-string v3, "Matched: "
+
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v2, v0}, Ljava/lang/StringBuilder;->append(Z)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v2
+
+    invoke-static {v1, v2}, Landroid/util/Slog;->v(Ljava/lang/String;Ljava/lang/String;)I
+
+    .line 361
     return-void
 .end method
 
@@ -387,43 +402,45 @@
         }
     .end annotation
 
-    .line 384
+    .line 385
     iget-object v0, p0, Lcom/android/server/biometrics/BiometricServiceBase$InternalEnumerateClient;->mUnknownHALTemplates:Ljava/util/List;
 
     return-object v0
 .end method
 
 .method public onEnumerationResult(Landroid/hardware/biometrics/BiometricAuthenticator$Identifier;I)Z
-    .registers 3
-
-    .line 390
-    invoke-direct {p0, p1}, Lcom/android/server/biometrics/BiometricServiceBase$InternalEnumerateClient;->handleEnumeratedTemplate(Landroid/hardware/biometrics/BiometricAuthenticator$Identifier;)V
+    .registers 4
+    .param p1, "identifier"  # Landroid/hardware/biometrics/BiometricAuthenticator$Identifier;
+    .param p2, "remaining"  # I
 
     .line 391
-    if-nez p2, :cond_8
+    invoke-direct {p0, p1}, Lcom/android/server/biometrics/BiometricServiceBase$InternalEnumerateClient;->handleEnumeratedTemplate(Landroid/hardware/biometrics/BiometricAuthenticator$Identifier;)V
 
     .line 392
+    if-nez p2, :cond_8
+
+    .line 393
     invoke-direct {p0}, Lcom/android/server/biometrics/BiometricServiceBase$InternalEnumerateClient;->doTemplateCleanup()V
 
-    .line 394
+    .line 395
     :cond_8
     if-nez p2, :cond_c
 
-    const/4 p1, 0x1
+    const/4 v0, 0x1
 
     goto :goto_d
 
     :cond_c
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
     :goto_d
-    return p1
+    return v0
 .end method
 
 .method protected statsModality()I
     .registers 2
 
-    .line 399
+    .line 400
     iget-object v0, p0, Lcom/android/server/biometrics/BiometricServiceBase$InternalEnumerateClient;->this$0:Lcom/android/server/biometrics/BiometricServiceBase;
 
     invoke-virtual {v0}, Lcom/android/server/biometrics/BiometricServiceBase;->statsModality()I

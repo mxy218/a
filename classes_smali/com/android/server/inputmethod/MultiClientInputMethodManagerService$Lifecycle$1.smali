@@ -23,6 +23,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/inputmethod/MultiClientInputMethodManagerService$Lifecycle;Lcom/android/server/inputmethod/MultiClientInputMethodManagerService$UserToInputMethodInfoMap;)V
     .registers 3
+    .param p1, "this$0"  # Lcom/android/server/inputmethod/MultiClientInputMethodManagerService$Lifecycle;
 
     .line 169
     iput-object p1, p0, Lcom/android/server/inputmethod/MultiClientInputMethodManagerService$Lifecycle$1;->this$0:Lcom/android/server/inputmethod/MultiClientInputMethodManagerService$Lifecycle;
@@ -38,6 +39,7 @@
 # virtual methods
 .method public getEnabledInputMethodListAsUser(I)Ljava/util/List;
     .registers 3
+    .param p1, "userId"  # I
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(I)",
@@ -52,13 +54,14 @@
 
     invoke-virtual {v0, p1}, Lcom/android/server/inputmethod/MultiClientInputMethodManagerService$UserToInputMethodInfoMap;->getAsList(I)Ljava/util/List;
 
-    move-result-object p1
+    move-result-object v0
 
-    return-object p1
+    return-object v0
 .end method
 
 .method public getInputMethodListAsUser(I)Ljava/util/List;
     .registers 3
+    .param p1, "userId"  # I
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(I)",
@@ -73,9 +76,9 @@
 
     invoke-virtual {v0, p1}, Lcom/android/server/inputmethod/MultiClientInputMethodManagerService$UserToInputMethodInfoMap;->getAsList(I)Ljava/util/List;
 
-    move-result-object p1
+    move-result-object v0
 
-    return-object p1
+    return-object v0
 .end method
 
 .method public hideCurrentInputMethod()V
@@ -90,6 +93,7 @@
 
 .method public setInteractive(Z)V
     .registers 2
+    .param p1, "interactive"  # Z
 
     .line 172
     invoke-static {}, Lcom/android/server/inputmethod/MultiClientInputMethodManagerService;->access$200()V

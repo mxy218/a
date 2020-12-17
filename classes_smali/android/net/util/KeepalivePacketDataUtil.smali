@@ -15,6 +15,7 @@
 
 .method public static toStableParcelable(Landroid/net/NattKeepalivePacketData;)Landroid/net/NattKeepalivePacketDataParcelable;
     .registers 3
+    .param p0, "pkt"  # Landroid/net/NattKeepalivePacketData;
 
     .line 31
     new-instance v0, Landroid/net/NattKeepalivePacketDataParcelable;
@@ -22,6 +23,7 @@
     invoke-direct {v0}, Landroid/net/NattKeepalivePacketDataParcelable;-><init>()V
 
     .line 33
+    .local v0, "parcel":Landroid/net/NattKeepalivePacketDataParcelable;
     iget-object v1, p0, Landroid/net/NattKeepalivePacketData;->srcAddress:Ljava/net/InetAddress;
 
     invoke-virtual {v1}, Ljava/net/InetAddress;->getAddress()[B
@@ -45,9 +47,9 @@
     iput-object v1, v0, Landroid/net/NattKeepalivePacketDataParcelable;->dstAddress:[B
 
     .line 36
-    iget p0, p0, Landroid/net/NattKeepalivePacketData;->dstPort:I
+    iget v1, p0, Landroid/net/NattKeepalivePacketData;->dstPort:I
 
-    iput p0, v0, Landroid/net/NattKeepalivePacketDataParcelable;->dstPort:I
+    iput v1, v0, Landroid/net/NattKeepalivePacketDataParcelable;->dstPort:I
 
     .line 37
     return-object v0

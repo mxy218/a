@@ -60,33 +60,41 @@
 
 # direct methods
 .method constructor <init>(Lcom/android/server/audio/AudioService;Landroid/media/audiopolicy/AudioPolicyConfig;Landroid/media/audiopolicy/IAudioPolicyCallback;ZZZZLandroid/media/projection/IMediaProjection;)V
-    .registers 11
+    .registers 13
+    .param p1, "this$0"  # Lcom/android/server/audio/AudioService;
+    .param p2, "config"  # Landroid/media/audiopolicy/AudioPolicyConfig;
+    .param p3, "token"  # Landroid/media/audiopolicy/IAudioPolicyCallback;
+    .param p4, "hasFocusListener"  # Z
+    .param p5, "isFocusPolicy"  # Z
+    .param p6, "isTestFocusPolicy"  # Z
+    .param p7, "isVolumeController"  # Z
+    .param p8, "projection"  # Landroid/media/projection/IMediaProjection;
 
-    .line 7432
+    .line 8462
     iput-object p1, p0, Lcom/android/server/audio/AudioService$AudioPolicyProxy;->this$0:Lcom/android/server/audio/AudioService;
 
-    .line 7433
+    .line 8463
     invoke-direct {p0, p2}, Landroid/media/audiopolicy/AudioPolicyConfig;-><init>(Landroid/media/audiopolicy/AudioPolicyConfig;)V
 
-    .line 7408
+    .line 8438
     new-instance v0, Ljava/util/HashMap;
 
     invoke-direct {v0}, Ljava/util/HashMap;-><init>()V
 
     iput-object v0, p0, Lcom/android/server/audio/AudioService$AudioPolicyProxy;->mUidDeviceAffinities:Ljava/util/HashMap;
 
-    .line 7426
+    .line 8456
     const/4 v0, 0x0
 
     iput v0, p0, Lcom/android/server/audio/AudioService$AudioPolicyProxy;->mFocusDuckBehavior:I
 
-    .line 7427
+    .line 8457
     iput-boolean v0, p0, Lcom/android/server/audio/AudioService$AudioPolicyProxy;->mIsFocusPolicy:Z
 
-    .line 7428
+    .line 8458
     iput-boolean v0, p0, Lcom/android/server/audio/AudioService$AudioPolicyProxy;->mIsTestFocusPolicy:Z
 
-    .line 7434
+    .line 8464
     new-instance v0, Ljava/lang/String;
 
     new-instance v1, Ljava/lang/StringBuilder;
@@ -95,184 +103,187 @@
 
     invoke-virtual {p2}, Landroid/media/audiopolicy/AudioPolicyConfig;->hashCode()I
 
-    move-result p2
+    move-result v2
 
-    invoke-virtual {v1, p2}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    const-string p2, ":ap:"
+    const-string v2, ":ap:"
 
-    invoke-virtual {v1, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-static {p1}, Lcom/android/server/audio/AudioService;->access$9608(Lcom/android/server/audio/AudioService;)I
+    invoke-static {p1}, Lcom/android/server/audio/AudioService;->access$10508(Lcom/android/server/audio/AudioService;)I
 
-    move-result p2
+    move-result v2
 
-    invoke-virtual {v1, p2}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
     invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p2
+    move-result-object v1
 
-    invoke-direct {v0, p2}, Ljava/lang/String;-><init>(Ljava/lang/String;)V
+    invoke-direct {v0, v1}, Ljava/lang/String;-><init>(Ljava/lang/String;)V
 
     invoke-virtual {p0, v0}, Lcom/android/server/audio/AudioService$AudioPolicyProxy;->setRegistration(Ljava/lang/String;)V
 
-    .line 7435
+    .line 8465
     iput-object p3, p0, Lcom/android/server/audio/AudioService$AudioPolicyProxy;->mPolicyCallback:Landroid/media/audiopolicy/IAudioPolicyCallback;
 
-    .line 7436
+    .line 8466
     iput-boolean p4, p0, Lcom/android/server/audio/AudioService$AudioPolicyProxy;->mHasFocusListener:Z
 
-    .line 7437
+    .line 8467
     iput-boolean p7, p0, Lcom/android/server/audio/AudioService$AudioPolicyProxy;->mIsVolumeController:Z
 
-    .line 7438
+    .line 8468
     iput-object p8, p0, Lcom/android/server/audio/AudioService$AudioPolicyProxy;->mProjection:Landroid/media/projection/IMediaProjection;
 
-    .line 7439
-    iget-boolean p2, p0, Lcom/android/server/audio/AudioService$AudioPolicyProxy;->mHasFocusListener:Z
+    .line 8469
+    iget-boolean v0, p0, Lcom/android/server/audio/AudioService$AudioPolicyProxy;->mHasFocusListener:Z
 
-    if-eqz p2, :cond_5e
+    if-eqz v0, :cond_5e
 
-    .line 7440
-    invoke-static {p1}, Lcom/android/server/audio/AudioService;->access$7900(Lcom/android/server/audio/AudioService;)Lcom/android/server/audio/MediaFocusControl;
+    .line 8470
+    invoke-static {p1}, Lcom/android/server/audio/AudioService;->access$8800(Lcom/android/server/audio/AudioService;)Lcom/android/server/audio/MediaFocusControl;
 
-    move-result-object p2
+    move-result-object v0
 
-    iget-object p3, p0, Lcom/android/server/audio/AudioService$AudioPolicyProxy;->mPolicyCallback:Landroid/media/audiopolicy/IAudioPolicyCallback;
+    iget-object v1, p0, Lcom/android/server/audio/AudioService$AudioPolicyProxy;->mPolicyCallback:Landroid/media/audiopolicy/IAudioPolicyCallback;
 
-    invoke-virtual {p2, p3}, Lcom/android/server/audio/MediaFocusControl;->addFocusFollower(Landroid/media/audiopolicy/IAudioPolicyCallback;)V
+    invoke-virtual {v0, v1}, Lcom/android/server/audio/MediaFocusControl;->addFocusFollower(Landroid/media/audiopolicy/IAudioPolicyCallback;)V
 
-    .line 7442
+    .line 8472
     if-eqz p5, :cond_5e
 
-    .line 7443
-    const/4 p2, 0x1
+    .line 8473
+    const/4 v0, 0x1
 
-    iput-boolean p2, p0, Lcom/android/server/audio/AudioService$AudioPolicyProxy;->mIsFocusPolicy:Z
+    iput-boolean v0, p0, Lcom/android/server/audio/AudioService$AudioPolicyProxy;->mIsFocusPolicy:Z
 
-    .line 7444
+    .line 8474
     iput-boolean p6, p0, Lcom/android/server/audio/AudioService$AudioPolicyProxy;->mIsTestFocusPolicy:Z
 
-    .line 7445
-    invoke-static {p1}, Lcom/android/server/audio/AudioService;->access$7900(Lcom/android/server/audio/AudioService;)Lcom/android/server/audio/MediaFocusControl;
+    .line 8475
+    invoke-static {p1}, Lcom/android/server/audio/AudioService;->access$8800(Lcom/android/server/audio/AudioService;)Lcom/android/server/audio/MediaFocusControl;
 
-    move-result-object p2
+    move-result-object v0
 
-    iget-object p3, p0, Lcom/android/server/audio/AudioService$AudioPolicyProxy;->mPolicyCallback:Landroid/media/audiopolicy/IAudioPolicyCallback;
+    iget-object v1, p0, Lcom/android/server/audio/AudioService$AudioPolicyProxy;->mPolicyCallback:Landroid/media/audiopolicy/IAudioPolicyCallback;
 
-    iget-boolean p4, p0, Lcom/android/server/audio/AudioService$AudioPolicyProxy;->mIsTestFocusPolicy:Z
+    iget-boolean v2, p0, Lcom/android/server/audio/AudioService$AudioPolicyProxy;->mIsTestFocusPolicy:Z
 
-    invoke-virtual {p2, p3, p4}, Lcom/android/server/audio/MediaFocusControl;->setFocusPolicy(Landroid/media/audiopolicy/IAudioPolicyCallback;Z)V
+    invoke-virtual {v0, v1, v2}, Lcom/android/server/audio/MediaFocusControl;->setFocusPolicy(Landroid/media/audiopolicy/IAudioPolicyCallback;Z)V
 
-    .line 7448
+    .line 8478
     :cond_5e
-    iget-boolean p2, p0, Lcom/android/server/audio/AudioService$AudioPolicyProxy;->mIsVolumeController:Z
+    iget-boolean v0, p0, Lcom/android/server/audio/AudioService$AudioPolicyProxy;->mIsVolumeController:Z
 
-    if-eqz p2, :cond_67
+    if-eqz v0, :cond_67
 
-    .line 7449
-    iget-object p2, p0, Lcom/android/server/audio/AudioService$AudioPolicyProxy;->mPolicyCallback:Landroid/media/audiopolicy/IAudioPolicyCallback;
+    .line 8479
+    iget-object v0, p0, Lcom/android/server/audio/AudioService$AudioPolicyProxy;->mPolicyCallback:Landroid/media/audiopolicy/IAudioPolicyCallback;
 
-    invoke-static {p1, p2}, Lcom/android/server/audio/AudioService;->access$9700(Lcom/android/server/audio/AudioService;Landroid/media/audiopolicy/IAudioPolicyCallback;)V
+    invoke-static {p1, v0}, Lcom/android/server/audio/AudioService;->access$10600(Lcom/android/server/audio/AudioService;Landroid/media/audiopolicy/IAudioPolicyCallback;)V
 
-    .line 7451
+    .line 8481
     :cond_67
-    iget-object p1, p0, Lcom/android/server/audio/AudioService$AudioPolicyProxy;->mProjection:Landroid/media/projection/IMediaProjection;
+    iget-object v0, p0, Lcom/android/server/audio/AudioService$AudioPolicyProxy;->mProjection:Landroid/media/projection/IMediaProjection;
 
-    if-eqz p1, :cond_9b
+    if-eqz v0, :cond_9b
 
-    .line 7452
-    new-instance p1, Lcom/android/server/audio/AudioService$AudioPolicyProxy$UnregisterOnStopCallback;
+    .line 8482
+    new-instance v0, Lcom/android/server/audio/AudioService$AudioPolicyProxy$UnregisterOnStopCallback;
 
-    const/4 p2, 0x0
+    const/4 v1, 0x0
 
-    invoke-direct {p1, p0, p2}, Lcom/android/server/audio/AudioService$AudioPolicyProxy$UnregisterOnStopCallback;-><init>(Lcom/android/server/audio/AudioService$AudioPolicyProxy;Lcom/android/server/audio/AudioService$1;)V
+    invoke-direct {v0, p0, v1}, Lcom/android/server/audio/AudioService$AudioPolicyProxy$UnregisterOnStopCallback;-><init>(Lcom/android/server/audio/AudioService$AudioPolicyProxy;Lcom/android/server/audio/AudioService$1;)V
 
-    iput-object p1, p0, Lcom/android/server/audio/AudioService$AudioPolicyProxy;->mProjectionCallback:Lcom/android/server/audio/AudioService$AudioPolicyProxy$UnregisterOnStopCallback;
+    iput-object v0, p0, Lcom/android/server/audio/AudioService$AudioPolicyProxy;->mProjectionCallback:Lcom/android/server/audio/AudioService$AudioPolicyProxy$UnregisterOnStopCallback;
 
-    .line 7454
+    .line 8484
     :try_start_73
-    iget-object p1, p0, Lcom/android/server/audio/AudioService$AudioPolicyProxy;->mProjection:Landroid/media/projection/IMediaProjection;
+    iget-object v0, p0, Lcom/android/server/audio/AudioService$AudioPolicyProxy;->mProjection:Landroid/media/projection/IMediaProjection;
 
-    iget-object p2, p0, Lcom/android/server/audio/AudioService$AudioPolicyProxy;->mProjectionCallback:Lcom/android/server/audio/AudioService$AudioPolicyProxy$UnregisterOnStopCallback;
+    iget-object v1, p0, Lcom/android/server/audio/AudioService$AudioPolicyProxy;->mProjectionCallback:Lcom/android/server/audio/AudioService$AudioPolicyProxy$UnregisterOnStopCallback;
 
-    invoke-interface {p1, p2}, Landroid/media/projection/IMediaProjection;->registerCallback(Landroid/media/projection/IMediaProjectionCallback;)V
+    invoke-interface {v0, v1}, Landroid/media/projection/IMediaProjection;->registerCallback(Landroid/media/projection/IMediaProjectionCallback;)V
     :try_end_7a
     .catch Landroid/os/RemoteException; {:try_start_73 .. :try_end_7a} :catch_7b
 
-    .line 7459
+    .line 8489
     goto :goto_9b
 
-    .line 7455
+    .line 8485
     :catch_7b
-    move-exception p1
+    move-exception v0
 
-    .line 7456
+    .line 8486
+    .local v0, "e":Landroid/os/RemoteException;
     invoke-virtual {p0}, Lcom/android/server/audio/AudioService$AudioPolicyProxy;->release()V
 
-    .line 7457
-    new-instance p2, Ljava/lang/IllegalStateException;
+    .line 8487
+    new-instance v1, Ljava/lang/IllegalStateException;
 
-    new-instance p3, Ljava/lang/StringBuilder;
+    new-instance v2, Ljava/lang/StringBuilder;
 
-    invoke-direct {p3}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string p4, "MediaProjection callback registration failed, could not link to "
+    const-string v3, "MediaProjection callback registration failed, could not link to "
 
-    invoke-virtual {p3, p4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p3, p8}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, p8}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
-    const-string p4, " binder death"
+    const-string v3, " binder death"
 
-    invoke-virtual {p3, p4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p3
+    move-result-object v2
 
-    invoke-direct {p2, p3, p1}, Ljava/lang/IllegalStateException;-><init>(Ljava/lang/String;Ljava/lang/Throwable;)V
+    invoke-direct {v1, v2, v0}, Ljava/lang/IllegalStateException;-><init>(Ljava/lang/String;Ljava/lang/Throwable;)V
 
-    throw p2
+    throw v1
 
-    .line 7461
+    .line 8491
+    .end local v0  # "e":Landroid/os/RemoteException;
     :cond_9b
     :goto_9b
     invoke-virtual {p0}, Lcom/android/server/audio/AudioService$AudioPolicyProxy;->connectMixes()I
 
-    move-result p1
+    move-result v0
 
-    .line 7462
-    if-nez p1, :cond_a2
+    .line 8492
+    .local v0, "status":I
+    if-nez v0, :cond_a2
 
-    .line 7466
+    .line 8496
     return-void
 
-    .line 7463
+    .line 8493
     :cond_a2
     invoke-virtual {p0}, Lcom/android/server/audio/AudioService$AudioPolicyProxy;->release()V
 
-    .line 7464
-    new-instance p2, Ljava/lang/IllegalStateException;
+    .line 8494
+    new-instance v1, Ljava/lang/IllegalStateException;
 
-    new-instance p3, Ljava/lang/StringBuilder;
+    new-instance v2, Ljava/lang/StringBuilder;
 
-    invoke-direct {p3}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string p4, "Could not connect mix, error: "
+    const-string v3, "Could not connect mix, error: "
 
-    invoke-virtual {p3, p4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p3, p1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v0}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v2
 
-    invoke-direct {p2, p1}, Ljava/lang/IllegalStateException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v1, v2}, Ljava/lang/IllegalStateException;-><init>(Ljava/lang/String;)V
 
-    throw p2
+    throw v1
 .end method
 
 
@@ -288,12 +299,13 @@
         }
     .end annotation
 
-    .line 7539
+    .line 8568
+    .local p1, "mixes":Ljava/util/ArrayList;, "Ljava/util/ArrayList<Landroid/media/audiopolicy/AudioMix;>;"
     iget-object v0, p0, Lcom/android/server/audio/AudioService$AudioPolicyProxy;->mMixes:Ljava/util/ArrayList;
 
     monitor-enter v0
 
-    .line 7540
+    .line 8569
     :try_start_3
     iget-object v1, p0, Lcom/android/server/audio/AudioService$AudioPolicyProxy;->mMixes:Ljava/util/ArrayList;
 
@@ -301,46 +313,46 @@
 
     invoke-static {v1, v2}, Landroid/media/AudioSystem;->registerPolicyMixes(Ljava/util/ArrayList;Z)I
 
-    .line 7541
+    .line 8570
     invoke-virtual {p0, p1}, Lcom/android/server/audio/AudioService$AudioPolicyProxy;->add(Ljava/util/ArrayList;)V
 
-    .line 7542
-    iget-object p1, p0, Lcom/android/server/audio/AudioService$AudioPolicyProxy;->mMixes:Ljava/util/ArrayList;
+    .line 8571
+    iget-object v1, p0, Lcom/android/server/audio/AudioService$AudioPolicyProxy;->mMixes:Ljava/util/ArrayList;
 
-    const/4 v1, 0x1
+    const/4 v2, 0x1
 
-    invoke-static {p1, v1}, Landroid/media/AudioSystem;->registerPolicyMixes(Ljava/util/ArrayList;Z)I
+    invoke-static {v1, v2}, Landroid/media/AudioSystem;->registerPolicyMixes(Ljava/util/ArrayList;Z)I
 
-    move-result p1
+    move-result v1
 
     monitor-exit v0
 
-    return p1
+    return v1
 
-    .line 7543
+    .line 8572
     :catchall_15
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_17
     .catchall {:try_start_3 .. :try_end_17} :catchall_15
 
-    throw p1
+    throw v1
 .end method
 
 .method public binderDied()V
     .registers 5
 
-    .line 7469
+    .line 8499
     iget-object v0, p0, Lcom/android/server/audio/AudioService$AudioPolicyProxy;->this$0:Lcom/android/server/audio/AudioService;
 
-    invoke-static {v0}, Lcom/android/server/audio/AudioService;->access$9900(Lcom/android/server/audio/AudioService;)Ljava/util/HashMap;
+    invoke-static {v0}, Lcom/android/server/audio/AudioService;->access$10800(Lcom/android/server/audio/AudioService;)Ljava/util/HashMap;
 
     move-result-object v0
 
     monitor-enter v0
 
-    .line 7470
+    .line 8500
     :try_start_7
     const-string v1, "AudioPolicyProxy"
 
@@ -366,13 +378,13 @@
 
     invoke-static {v1, v2}, Landroid/util/Log;->i(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 7471
+    .line 8501
     invoke-virtual {p0}, Lcom/android/server/audio/AudioService$AudioPolicyProxy;->release()V
 
-    .line 7472
+    .line 8502
     iget-object v1, p0, Lcom/android/server/audio/AudioService$AudioPolicyProxy;->this$0:Lcom/android/server/audio/AudioService;
 
-    invoke-static {v1}, Lcom/android/server/audio/AudioService;->access$9900(Lcom/android/server/audio/AudioService;)Ljava/util/HashMap;
+    invoke-static {v1}, Lcom/android/server/audio/AudioService;->access$10800(Lcom/android/server/audio/AudioService;)Ljava/util/HashMap;
 
     move-result-object v1
 
@@ -384,34 +396,34 @@
 
     invoke-virtual {v1, v2}, Ljava/util/HashMap;->remove(Ljava/lang/Object;)Ljava/lang/Object;
 
-    .line 7473
+    .line 8503
     monitor-exit v0
     :try_end_37
     .catchall {:try_start_7 .. :try_end_37} :catchall_4e
 
-    .line 7474
+    .line 8504
     iget-boolean v0, p0, Lcom/android/server/audio/AudioService$AudioPolicyProxy;->mIsVolumeController:Z
 
     if-eqz v0, :cond_4d
 
-    .line 7475
+    .line 8505
     iget-object v0, p0, Lcom/android/server/audio/AudioService$AudioPolicyProxy;->this$0:Lcom/android/server/audio/AudioService;
 
-    invoke-static {v0}, Lcom/android/server/audio/AudioService;->access$10000(Lcom/android/server/audio/AudioService;)Ljava/lang/Object;
+    invoke-static {v0}, Lcom/android/server/audio/AudioService;->access$10900(Lcom/android/server/audio/AudioService;)Ljava/lang/Object;
 
     move-result-object v0
 
     monitor-enter v0
 
-    .line 7476
+    .line 8506
     :try_start_42
     iget-object v1, p0, Lcom/android/server/audio/AudioService$AudioPolicyProxy;->this$0:Lcom/android/server/audio/AudioService;
 
     const/4 v2, 0x0
 
-    invoke-static {v1, v2}, Lcom/android/server/audio/AudioService;->access$10102(Lcom/android/server/audio/AudioService;Landroid/media/audiopolicy/IAudioPolicyCallback;)Landroid/media/audiopolicy/IAudioPolicyCallback;
+    invoke-static {v1, v2}, Lcom/android/server/audio/AudioService;->access$11002(Lcom/android/server/audio/AudioService;Landroid/media/audiopolicy/IAudioPolicyCallback;)Landroid/media/audiopolicy/IAudioPolicyCallback;
 
-    .line 7477
+    .line 8507
     monitor-exit v0
 
     goto :goto_4d
@@ -425,12 +437,12 @@
 
     throw v1
 
-    .line 7479
+    .line 8509
     :cond_4d
     :goto_4d
     return-void
 
-    .line 7473
+    .line 8503
     :catchall_4e
     move-exception v1
 
@@ -445,12 +457,13 @@
 .method connectMixes()I
     .registers 5
 
-    .line 7556
+    .line 8585
     invoke-static {}, Landroid/os/Binder;->clearCallingIdentity()J
 
     move-result-wide v0
 
-    .line 7557
+    .line 8586
+    .local v0, "identity":J
     iget-object v2, p0, Lcom/android/server/audio/AudioService$AudioPolicyProxy;->mMixes:Ljava/util/ArrayList;
 
     const/4 v3, 0x1
@@ -459,17 +472,18 @@
 
     move-result v2
 
-    .line 7558
+    .line 8587
+    .local v2, "status":I
     invoke-static {v0, v1}, Landroid/os/Binder;->restoreCallingIdentity(J)V
 
-    .line 7559
+    .line 8588
     return v2
 .end method
 
 .method getRegistrationId()Ljava/lang/String;
     .registers 2
 
-    .line 7482
+    .line 8512
     invoke-virtual {p0}, Lcom/android/server/audio/AudioService$AudioPolicyProxy;->getRegistration()Ljava/lang/String;
 
     move-result-object v0
@@ -477,10 +491,11 @@
     return-object v0
 .end method
 
-.method hasMixAffectingUsage(II)Z
-    .registers 6
+.method hasMixAffectingUsage(I)Z
+    .registers 5
+    .param p1, "usage"  # I
 
-    .line 7508
+    .line 8538
     iget-object v0, p0, Lcom/android/server/audio/AudioService$AudioPolicyProxy;->mMixes:Ljava/util/ArrayList;
 
     invoke-virtual {v0}, Ljava/util/ArrayList;->iterator()Ljava/util/Iterator;
@@ -492,7 +507,7 @@
 
     move-result v1
 
-    if-eqz v1, :cond_22
+    if-eqz v1, :cond_1b
 
     invoke-interface {v0}, Ljava/util/Iterator;->next()Ljava/lang/Object;
 
@@ -500,131 +515,129 @@
 
     check-cast v1, Landroid/media/audiopolicy/AudioMix;
 
-    .line 7509
+    .line 8539
+    .local v1, "mix":Landroid/media/audiopolicy/AudioMix;
     invoke-virtual {v1, p1}, Landroid/media/audiopolicy/AudioMix;->isAffectingUsage(I)Z
 
     move-result v2
 
-    if-eqz v2, :cond_21
+    if-eqz v2, :cond_1a
 
-    .line 7510
-    invoke-virtual {v1}, Landroid/media/audiopolicy/AudioMix;->getRouteFlags()I
+    .line 8540
+    const/4 v0, 0x1
 
-    move-result v1
+    return v0
 
-    and-int/2addr v1, p2
-
-    if-eq v1, p2, :cond_21
-
-    .line 7511
-    const/4 p1, 0x1
-
-    return p1
-
-    .line 7513
-    :cond_21
+    .line 8542
+    .end local v1  # "mix":Landroid/media/audiopolicy/AudioMix;
+    :cond_1a
     goto :goto_6
 
-    .line 7514
-    :cond_22
-    const/4 p1, 0x0
+    .line 8543
+    :cond_1b
+    const/4 v0, 0x0
 
-    return p1
+    return v0
 .end method
 
 .method hasMixRoutedToDevices([I[Ljava/lang/String;)Z
-    .registers 10
+    .registers 9
+    .param p1, "deviceTypes"  # [I
+    .param p2, "deviceAddresses"  # [Ljava/lang/String;
 
-    .line 7520
+    .line 8549
     const/4 v0, 0x0
 
-    move v1, v0
+    .local v0, "i":I
+    :goto_1
+    array-length v1, p1
 
-    :goto_2
-    array-length v2, p1
+    if-ge v0, v1, :cond_2b
 
-    const/4 v3, 0x1
+    .line 8550
+    const/4 v1, 0x0
 
-    if-ge v1, v2, :cond_2d
-
-    .line 7521
-    nop
-
-    .line 7522
+    .line 8551
+    .local v1, "hasDevice":Z
     iget-object v2, p0, Lcom/android/server/audio/AudioService$AudioPolicyProxy;->mMixes:Ljava/util/ArrayList;
 
     invoke-virtual {v2}, Ljava/util/ArrayList;->iterator()Ljava/util/Iterator;
 
     move-result-object v2
 
-    :goto_d
+    :goto_b
     invoke-interface {v2}, Ljava/util/Iterator;->hasNext()Z
 
-    move-result v4
+    move-result v3
 
-    if-eqz v4, :cond_26
+    if-eqz v3, :cond_24
 
     invoke-interface {v2}, Ljava/util/Iterator;->next()Ljava/lang/Object;
 
-    move-result-object v4
+    move-result-object v3
 
-    check-cast v4, Landroid/media/audiopolicy/AudioMix;
+    check-cast v3, Landroid/media/audiopolicy/AudioMix;
 
-    .line 7525
-    aget v5, p1, v1
+    .line 8554
+    .local v3, "mix":Landroid/media/audiopolicy/AudioMix;
+    aget v4, p1, v0
 
-    aget-object v6, p2, v1
+    aget-object v5, p2, v0
 
-    invoke-virtual {v4, v5, v6}, Landroid/media/audiopolicy/AudioMix;->isRoutedToDevice(ILjava/lang/String;)Z
+    invoke-virtual {v3, v4, v5}, Landroid/media/audiopolicy/AudioMix;->isRoutedToDevice(ILjava/lang/String;)Z
 
     move-result v4
 
-    if-eqz v4, :cond_25
+    if-eqz v4, :cond_23
 
-    .line 7526
-    nop
+    .line 8555
+    const/4 v1, 0x1
 
-    .line 7527
-    goto :goto_27
+    .line 8556
+    goto :goto_24
 
-    .line 7529
-    :cond_25
-    goto :goto_d
+    .line 8558
+    .end local v3  # "mix":Landroid/media/audiopolicy/AudioMix;
+    :cond_23
+    goto :goto_b
 
-    .line 7522
-    :cond_26
-    move v3, v0
+    .line 8559
+    :cond_24
+    :goto_24
+    if-nez v1, :cond_28
 
-    .line 7530
-    :goto_27
-    if-nez v3, :cond_2a
+    .line 8560
+    const/4 v2, 0x0
 
-    .line 7531
+    return v2
+
+    .line 8549
+    .end local v1  # "hasDevice":Z
+    :cond_28
+    add-int/lit8 v0, v0, 0x1
+
+    goto :goto_1
+
+    .line 8563
+    .end local v0  # "i":I
+    :cond_2b
+    const/4 v0, 0x1
+
     return v0
-
-    .line 7520
-    :cond_2a
-    add-int/lit8 v1, v1, 0x1
-
-    goto :goto_2
-
-    .line 7534
-    :cond_2d
-    return v3
 .end method
 
 .method release()V
     .registers 5
 
-    .line 7486
+    .line 8516
     iget-boolean v0, p0, Lcom/android/server/audio/AudioService$AudioPolicyProxy;->mIsFocusPolicy:Z
 
     if-eqz v0, :cond_11
 
-    .line 7487
+    .line 8517
     iget-object v0, p0, Lcom/android/server/audio/AudioService$AudioPolicyProxy;->this$0:Lcom/android/server/audio/AudioService;
 
-    invoke-static {v0}, Lcom/android/server/audio/AudioService;->access$7900(Lcom/android/server/audio/AudioService;)Lcom/android/server/audio/MediaFocusControl;
+    invoke-static {v0}, Lcom/android/server/audio/AudioService;->access$8800(Lcom/android/server/audio/AudioService;)Lcom/android/server/audio/MediaFocusControl;
 
     move-result-object v0
 
@@ -634,7 +647,7 @@
 
     invoke-virtual {v0, v1, v2}, Lcom/android/server/audio/MediaFocusControl;->unsetFocusPolicy(Landroid/media/audiopolicy/IAudioPolicyCallback;Z)V
 
-    .line 7489
+    .line 8519
     :cond_11
     iget v0, p0, Lcom/android/server/audio/AudioService$AudioPolicyProxy;->mFocusDuckBehavior:I
 
@@ -644,25 +657,25 @@
 
     if-ne v0, v1, :cond_20
 
-    .line 7490
+    .line 8520
     iget-object v0, p0, Lcom/android/server/audio/AudioService$AudioPolicyProxy;->this$0:Lcom/android/server/audio/AudioService;
 
-    invoke-static {v0}, Lcom/android/server/audio/AudioService;->access$7900(Lcom/android/server/audio/AudioService;)Lcom/android/server/audio/MediaFocusControl;
+    invoke-static {v0}, Lcom/android/server/audio/AudioService;->access$8800(Lcom/android/server/audio/AudioService;)Lcom/android/server/audio/MediaFocusControl;
 
     move-result-object v0
 
     invoke-virtual {v0, v2}, Lcom/android/server/audio/MediaFocusControl;->setDuckingInExtPolicyAvailable(Z)V
 
-    .line 7492
+    .line 8522
     :cond_20
     iget-boolean v0, p0, Lcom/android/server/audio/AudioService$AudioPolicyProxy;->mHasFocusListener:Z
 
     if-eqz v0, :cond_2f
 
-    .line 7493
+    .line 8523
     iget-object v0, p0, Lcom/android/server/audio/AudioService$AudioPolicyProxy;->this$0:Lcom/android/server/audio/AudioService;
 
-    invoke-static {v0}, Lcom/android/server/audio/AudioService;->access$7900(Lcom/android/server/audio/AudioService;)Lcom/android/server/audio/MediaFocusControl;
+    invoke-static {v0}, Lcom/android/server/audio/AudioService;->access$8800(Lcom/android/server/audio/AudioService;)Lcom/android/server/audio/MediaFocusControl;
 
     move-result-object v0
 
@@ -670,13 +683,13 @@
 
     invoke-virtual {v0, v1}, Lcom/android/server/audio/MediaFocusControl;->removeFocusFollower(Landroid/media/audiopolicy/IAudioPolicyCallback;)V
 
-    .line 7495
+    .line 8525
     :cond_2f
     iget-object v0, p0, Lcom/android/server/audio/AudioService$AudioPolicyProxy;->mProjectionCallback:Lcom/android/server/audio/AudioService$AudioPolicyProxy$UnregisterOnStopCallback;
 
     if-eqz v0, :cond_41
 
-    .line 7497
+    .line 8527
     :try_start_33
     iget-object v1, p0, Lcom/android/server/audio/AudioService$AudioPolicyProxy;->mProjection:Landroid/media/projection/IMediaProjection;
 
@@ -684,36 +697,39 @@
     :try_end_38
     .catch Landroid/os/RemoteException; {:try_start_33 .. :try_end_38} :catch_39
 
-    .line 7500
+    .line 8530
     goto :goto_41
 
-    .line 7498
+    .line 8528
     :catch_39
     move-exception v0
 
-    .line 7499
-    const-string v0, "AudioPolicyProxy"
+    .line 8529
+    .local v0, "e":Landroid/os/RemoteException;
+    const-string v1, "AudioPolicyProxy"
 
-    const-string v1, "Fail to unregister Audiopolicy callback from MediaProjection"
+    const-string v3, "Fail to unregister Audiopolicy callback from MediaProjection"
 
-    invoke-static {v0, v1}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v3}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 7502
+    .line 8532
+    .end local v0  # "e":Landroid/os/RemoteException;
     :cond_41
     :goto_41
     invoke-static {}, Landroid/os/Binder;->clearCallingIdentity()J
 
     move-result-wide v0
 
-    .line 7503
+    .line 8533
+    .local v0, "identity":J
     iget-object v3, p0, Lcom/android/server/audio/AudioService$AudioPolicyProxy;->mMixes:Ljava/util/ArrayList;
 
     invoke-static {v3, v2}, Landroid/media/AudioSystem;->registerPolicyMixes(Ljava/util/ArrayList;Z)I
 
-    .line 7504
+    .line 8534
     invoke-static {v0, v1}, Landroid/os/Binder;->restoreCallingIdentity(J)V
 
-    .line 7505
+    .line 8535
     return-void
 .end method
 
@@ -728,12 +744,13 @@
         }
     .end annotation
 
-    .line 7548
+    .line 8577
+    .local p1, "mixes":Ljava/util/ArrayList;, "Ljava/util/ArrayList<Landroid/media/audiopolicy/AudioMix;>;"
     iget-object v0, p0, Lcom/android/server/audio/AudioService$AudioPolicyProxy;->mMixes:Ljava/util/ArrayList;
 
     monitor-enter v0
 
-    .line 7549
+    .line 8578
     :try_start_3
     iget-object v1, p0, Lcom/android/server/audio/AudioService$AudioPolicyProxy;->mMixes:Ljava/util/ArrayList;
 
@@ -741,37 +758,38 @@
 
     invoke-static {v1, v2}, Landroid/media/AudioSystem;->registerPolicyMixes(Ljava/util/ArrayList;Z)I
 
-    .line 7550
+    .line 8579
     invoke-virtual {p0, p1}, Lcom/android/server/audio/AudioService$AudioPolicyProxy;->remove(Ljava/util/ArrayList;)V
 
-    .line 7551
-    iget-object p1, p0, Lcom/android/server/audio/AudioService$AudioPolicyProxy;->mMixes:Ljava/util/ArrayList;
+    .line 8580
+    iget-object v1, p0, Lcom/android/server/audio/AudioService$AudioPolicyProxy;->mMixes:Ljava/util/ArrayList;
 
-    const/4 v1, 0x1
+    const/4 v2, 0x1
 
-    invoke-static {p1, v1}, Landroid/media/AudioSystem;->registerPolicyMixes(Ljava/util/ArrayList;Z)I
+    invoke-static {v1, v2}, Landroid/media/AudioSystem;->registerPolicyMixes(Ljava/util/ArrayList;Z)I
 
-    move-result p1
+    move-result v1
 
     monitor-exit v0
 
-    return p1
+    return v1
 
-    .line 7552
+    .line 8581
     :catchall_15
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_17
     .catchall {:try_start_3 .. :try_end_17} :catchall_15
 
-    throw p1
+    throw v1
 .end method
 
 .method removeUidDeviceAffinities(I)I
-    .registers 4
+    .registers 6
+    .param p1, "uid"  # I
 
-    .line 7587
+    .line 8616
     iget-object v0, p0, Lcom/android/server/audio/AudioService$AudioPolicyProxy;->mUidDeviceAffinities:Ljava/util/HashMap;
 
     new-instance v1, Ljava/lang/Integer;
@@ -784,50 +802,58 @@
 
     if-eqz v0, :cond_1c
 
-    .line 7588
+    .line 8617
     invoke-static {}, Landroid/os/Binder;->clearCallingIdentity()J
 
     move-result-wide v0
 
-    .line 7589
+    .line 8618
+    .local v0, "identity":J
     invoke-static {p1}, Landroid/media/AudioSystem;->removeUidDeviceAffinities(I)I
 
-    move-result p1
+    move-result v2
 
-    .line 7590
+    .line 8619
+    .local v2, "res":I
     invoke-static {v0, v1}, Landroid/os/Binder;->restoreCallingIdentity(J)V
 
-    .line 7591
-    if-nez p1, :cond_1c
+    .line 8620
+    if-nez v2, :cond_1c
 
-    .line 7592
-    const/4 p1, 0x0
+    .line 8621
+    const/4 v3, 0x0
 
-    return p1
+    return v3
 
-    .line 7595
+    .line 8624
+    .end local v0  # "identity":J
+    .end local v2  # "res":I
     :cond_1c
-    const-string p1, "AudioPolicyProxy"
+    const-string v0, "AudioPolicyProxy"
 
-    const-string v0, "AudioSystem. removeUidDeviceAffinities failed"
+    const-string v1, "AudioSystem. removeUidDeviceAffinities failed"
 
-    invoke-static {p1, v0}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v0, v1}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 7596
-    const/4 p1, -0x1
+    .line 8625
+    const/4 v0, -0x1
 
-    return p1
+    return v0
 .end method
 
 .method setUidDeviceAffinities(I[I[Ljava/lang/String;)I
-    .registers 10
+    .registers 12
+    .param p1, "uid"  # I
+    .param p2, "types"  # [I
+    .param p3, "addresses"  # [Ljava/lang/String;
 
-    .line 7563
+    .line 8592
     new-instance v0, Ljava/lang/Integer;
 
     invoke-direct {v0, p1}, Ljava/lang/Integer;-><init>(I)V
 
-    .line 7565
+    .line 8594
+    .local v0, "Uid":Ljava/lang/Integer;
     iget-object v1, p0, Lcom/android/server/audio/AudioService$AudioPolicyProxy;->mUidDeviceAffinities:Ljava/util/HashMap;
 
     invoke-virtual {v1, v0}, Ljava/util/HashMap;->remove(Ljava/lang/Object;)Ljava/lang/Object;
@@ -840,239 +866,246 @@
 
     if-eqz v1, :cond_37
 
-    .line 7566
+    .line 8595
     invoke-static {}, Landroid/os/Binder;->clearCallingIdentity()J
 
     move-result-wide v4
 
-    .line 7567
+    .line 8596
+    .local v4, "identity":J
     invoke-static {p1}, Landroid/media/AudioSystem;->removeUidDeviceAffinities(I)I
 
     move-result v1
 
-    .line 7568
+    .line 8597
+    .local v1, "res":I
     invoke-static {v4, v5}, Landroid/os/Binder;->restoreCallingIdentity(J)V
 
-    .line 7569
+    .line 8598
     if-eqz v1, :cond_37
 
-    .line 7570
-    new-instance p2, Ljava/lang/StringBuilder;
+    .line 8599
+    new-instance v6, Ljava/lang/StringBuilder;
 
-    invoke-direct {p2}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v6}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string p3, "AudioSystem. removeUidDeviceAffinities("
+    const-string v7, "AudioSystem. removeUidDeviceAffinities("
 
-    invoke-virtual {p2, p3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v6, v7}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p2, p1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v6, p1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    const-string p1, ") failed,  cannot call AudioSystem.setUidDeviceAffinities"
+    const-string v7, ") failed,  cannot call AudioSystem.setUidDeviceAffinities"
 
-    invoke-virtual {p2, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v6, v7}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v6}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v6
 
-    invoke-static {v3, p1}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v3, v6}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 7572
+    .line 8601
     return v2
 
-    .line 7575
+    .line 8604
+    .end local v1  # "res":I
+    .end local v4  # "identity":J
     :cond_37
     invoke-static {}, Landroid/os/Binder;->clearCallingIdentity()J
 
     move-result-wide v4
 
-    .line 7576
+    .line 8605
+    .restart local v4  # "identity":J
     invoke-static {p1, p2, p3}, Landroid/media/AudioSystem;->setUidDeviceAffinities(I[I[Ljava/lang/String;)I
 
     move-result v1
 
-    .line 7577
+    .line 8606
+    .restart local v1  # "res":I
     invoke-static {v4, v5}, Landroid/os/Binder;->restoreCallingIdentity(J)V
 
-    .line 7578
+    .line 8607
     if-nez v1, :cond_50
 
-    .line 7579
-    iget-object p1, p0, Lcom/android/server/audio/AudioService$AudioPolicyProxy;->mUidDeviceAffinities:Ljava/util/HashMap;
+    .line 8608
+    iget-object v2, p0, Lcom/android/server/audio/AudioService$AudioPolicyProxy;->mUidDeviceAffinities:Ljava/util/HashMap;
 
-    new-instance v1, Lcom/android/server/audio/AudioService$AudioDeviceArray;
+    new-instance v3, Lcom/android/server/audio/AudioService$AudioDeviceArray;
 
-    invoke-direct {v1, p2, p3}, Lcom/android/server/audio/AudioService$AudioDeviceArray;-><init>([I[Ljava/lang/String;)V
+    invoke-direct {v3, p2, p3}, Lcom/android/server/audio/AudioService$AudioDeviceArray;-><init>([I[Ljava/lang/String;)V
 
-    invoke-virtual {p1, v0, v1}, Ljava/util/HashMap;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+    invoke-virtual {v2, v0, v3}, Ljava/util/HashMap;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
 
-    .line 7580
-    const/4 p1, 0x0
+    .line 8609
+    const/4 v2, 0x0
 
-    return p1
+    return v2
 
-    .line 7582
+    .line 8611
     :cond_50
-    new-instance p2, Ljava/lang/StringBuilder;
+    new-instance v6, Ljava/lang/StringBuilder;
 
-    invoke-direct {p2}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v6}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string p3, "AudioSystem. setUidDeviceAffinities("
+    const-string v7, "AudioSystem. setUidDeviceAffinities("
 
-    invoke-virtual {p2, p3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v6, v7}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p2, p1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v6, p1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    const-string p1, ") failed"
+    const-string v7, ") failed"
 
-    invoke-virtual {p2, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v6, v7}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v6}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v6
 
-    invoke-static {v3, p1}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v3, v6}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 7583
+    .line 8612
     return v2
 .end method
 
 .method public toLogFriendlyString()Ljava/lang/String;
-    .registers 4
+    .registers 5
 
-    .line 7601
+    .line 8630
     invoke-super {p0}, Landroid/media/audiopolicy/AudioPolicyConfig;->toLogFriendlyString()Ljava/lang/String;
 
     move-result-object v0
 
-    .line 7602
+    .line 8631
+    .local v0, "textDump":Ljava/lang/String;
     new-instance v1, Ljava/lang/StringBuilder;
 
     invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
 
     invoke-virtual {v1, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string v0, " Proxy:\n"
+    const-string v2, " Proxy:\n"
 
-    invoke-virtual {v1, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
     move-result-object v0
 
-    .line 7603
+    .line 8632
     new-instance v1, Ljava/lang/StringBuilder;
 
     invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
 
     invoke-virtual {v1, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string v0, "   is focus policy= "
+    const-string v2, "   is focus policy= "
 
-    invoke-virtual {v1, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    iget-boolean v0, p0, Lcom/android/server/audio/AudioService$AudioPolicyProxy;->mIsFocusPolicy:Z
-
-    invoke-virtual {v1, v0}, Ljava/lang/StringBuilder;->append(Z)Ljava/lang/StringBuilder;
-
-    const-string v0, "\n"
-
-    invoke-virtual {v1, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
-
-    move-result-object v1
-
-    .line 7604
     iget-boolean v2, p0, Lcom/android/server/audio/AudioService$AudioPolicyProxy;->mIsFocusPolicy:Z
 
-    if-eqz v2, :cond_7f
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Z)Ljava/lang/StringBuilder;
 
-    .line 7605
-    new-instance v2, Ljava/lang/StringBuilder;
+    const-string v2, "\n"
 
-    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v2, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    const-string v1, "     focus duck behaviour= "
-
-    invoke-virtual {v2, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    iget v1, p0, Lcom/android/server/audio/AudioService$AudioPolicyProxy;->mFocusDuckBehavior:I
-
-    invoke-virtual {v2, v1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v2, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
-
-    move-result-object v1
-
-    .line 7606
-    new-instance v2, Ljava/lang/StringBuilder;
-
-    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
-
-    invoke-virtual {v2, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    const-string v1, "     is test focus policy= "
-
-    invoke-virtual {v2, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    iget-boolean v1, p0, Lcom/android/server/audio/AudioService$AudioPolicyProxy;->mIsTestFocusPolicy:Z
-
-    invoke-virtual {v2, v1}, Ljava/lang/StringBuilder;->append(Z)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v2, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
-
-    move-result-object v1
-
-    .line 7607
-    new-instance v2, Ljava/lang/StringBuilder;
-
-    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
-
-    invoke-virtual {v2, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    const-string v1, "     has focus listener= "
-
-    invoke-virtual {v2, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    iget-boolean v1, p0, Lcom/android/server/audio/AudioService$AudioPolicyProxy;->mHasFocusListener:Z
-
-    invoke-virtual {v2, v1}, Ljava/lang/StringBuilder;->append(Z)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v2, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
-
-    move-result-object v1
-
-    .line 7609
-    :cond_7f
-    new-instance v2, Ljava/lang/StringBuilder;
-
-    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
-
-    invoke-virtual {v2, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    const-string v1, "   media projection= "
-
-    invoke-virtual {v2, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    iget-object v1, p0, Lcom/android/server/audio/AudioService$AudioPolicyProxy;->mProjection:Landroid/media/projection/IMediaProjection;
-
-    invoke-virtual {v2, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v2, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
     move-result-object v0
 
-    .line 7610
+    .line 8633
+    iget-boolean v1, p0, Lcom/android/server/audio/AudioService$AudioPolicyProxy;->mIsFocusPolicy:Z
+
+    if-eqz v1, :cond_7f
+
+    .line 8634
+    new-instance v1, Ljava/lang/StringBuilder;
+
+    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
+
+    invoke-virtual {v1, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    const-string v3, "     focus duck behaviour= "
+
+    invoke-virtual {v1, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    iget v3, p0, Lcom/android/server/audio/AudioService$AudioPolicyProxy;->mFocusDuckBehavior:I
+
+    invoke-virtual {v1, v3}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v0
+
+    .line 8635
+    new-instance v1, Ljava/lang/StringBuilder;
+
+    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
+
+    invoke-virtual {v1, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    const-string v3, "     is test focus policy= "
+
+    invoke-virtual {v1, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    iget-boolean v3, p0, Lcom/android/server/audio/AudioService$AudioPolicyProxy;->mIsTestFocusPolicy:Z
+
+    invoke-virtual {v1, v3}, Ljava/lang/StringBuilder;->append(Z)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v0
+
+    .line 8636
+    new-instance v1, Ljava/lang/StringBuilder;
+
+    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
+
+    invoke-virtual {v1, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    const-string v3, "     has focus listener= "
+
+    invoke-virtual {v1, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    iget-boolean v3, p0, Lcom/android/server/audio/AudioService$AudioPolicyProxy;->mHasFocusListener:Z
+
+    invoke-virtual {v1, v3}, Ljava/lang/StringBuilder;->append(Z)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v0
+
+    .line 8638
+    :cond_7f
+    new-instance v1, Ljava/lang/StringBuilder;
+
+    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
+
+    invoke-virtual {v1, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    const-string v3, "   media projection= "
+
+    invoke-virtual {v1, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    iget-object v3, p0, Lcom/android/server/audio/AudioService$AudioPolicyProxy;->mProjection:Landroid/media/projection/IMediaProjection;
+
+    invoke-virtual {v1, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v0
+
+    .line 8639
     return-object v0
 .end method

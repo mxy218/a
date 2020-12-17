@@ -17,7 +17,8 @@
 
 # direct methods
 .method public constructor <init>([B)V
-    .registers 2
+    .registers 3
+    .param p1, "bytes"  # [B
 
     .line 61
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -33,17 +34,18 @@
 
     .line 63
     :cond_8
-    new-instance p1, Ljava/lang/IllegalArgumentException;
+    new-instance v0, Ljava/lang/IllegalArgumentException;
 
-    invoke-direct {p1}, Ljava/lang/IllegalArgumentException;-><init>()V
+    invoke-direct {v0}, Ljava/lang/IllegalArgumentException;-><init>()V
 
-    throw p1
+    throw v0
 .end method
 
 
 # virtual methods
 .method public advance(I)V
     .registers 7
+    .param p1, "numBytes"  # I
 
     .line 184
     if-ltz p1, :cond_1e
@@ -58,22 +60,23 @@
     add-long/2addr v1, v3
 
     .line 190
+    .local v1, "longNewIndex":J
     iget-object v3, p0, Lcom/android/server/usb/descriptors/ByteStream;->mBytes:[B
 
     array-length v3, v3
 
     int-to-long v3, v3
 
-    cmp-long v1, v1, v3
+    cmp-long v3, v1, v3
 
-    if-gez v1, :cond_18
+    if-gez v3, :cond_18
 
     .line 191
-    iget v1, p0, Lcom/android/server/usb/descriptors/ByteStream;->mReadCount:I
+    iget v3, p0, Lcom/android/server/usb/descriptors/ByteStream;->mReadCount:I
 
-    add-int/2addr v1, p1
+    add-int/2addr v3, p1
 
-    iput v1, p0, Lcom/android/server/usb/descriptors/ByteStream;->mReadCount:I
+    iput v3, p0, Lcom/android/server/usb/descriptors/ByteStream;->mReadCount:I
 
     .line 192
     add-int/2addr v0, p1
@@ -85,19 +88,20 @@
 
     .line 194
     :cond_18
-    new-instance p1, Ljava/lang/IndexOutOfBoundsException;
+    new-instance v0, Ljava/lang/IndexOutOfBoundsException;
 
-    invoke-direct {p1}, Ljava/lang/IndexOutOfBoundsException;-><init>()V
+    invoke-direct {v0}, Ljava/lang/IndexOutOfBoundsException;-><init>()V
 
-    throw p1
+    throw v0
 
     .line 186
+    .end local v1  # "longNewIndex":J
     :cond_1e
-    new-instance p1, Ljava/lang/IllegalArgumentException;
+    new-instance v0, Ljava/lang/IllegalArgumentException;
 
-    invoke-direct {p1}, Ljava/lang/IllegalArgumentException;-><init>()V
+    invoke-direct {v0}, Ljava/lang/IllegalArgumentException;-><init>()V
 
-    throw p1
+    throw v0
 .end method
 
 .method public available()I
@@ -248,6 +252,7 @@
 
 .method public reverse(I)V
     .registers 4
+    .param p1, "numBytes"  # I
 
     .line 205
     if-ltz p1, :cond_15
@@ -274,23 +279,23 @@
 
     .line 213
     :cond_f
-    new-instance p1, Ljava/lang/IndexOutOfBoundsException;
+    new-instance v0, Ljava/lang/IndexOutOfBoundsException;
 
-    invoke-direct {p1}, Ljava/lang/IndexOutOfBoundsException;-><init>()V
+    invoke-direct {v0}, Ljava/lang/IndexOutOfBoundsException;-><init>()V
 
-    throw p1
+    throw v0
 
     .line 207
     :cond_15
-    new-instance p1, Ljava/lang/IllegalArgumentException;
+    new-instance v0, Ljava/lang/IllegalArgumentException;
 
-    invoke-direct {p1}, Ljava/lang/IllegalArgumentException;-><init>()V
+    invoke-direct {v0}, Ljava/lang/IllegalArgumentException;-><init>()V
 
-    throw p1
+    throw v0
 .end method
 
 .method public unpackUsbInt()I
-    .registers 5
+    .registers 7
 
     .line 167
     invoke-virtual {p0}, Lcom/android/server/usb/descriptors/ByteStream;->available()I
@@ -307,36 +312,44 @@
     move-result v0
 
     .line 169
+    .local v0, "b0":I
     invoke-virtual {p0}, Lcom/android/server/usb/descriptors/ByteStream;->getUnsignedByte()I
 
     move-result v1
 
     .line 170
+    .local v1, "b1":I
     invoke-virtual {p0}, Lcom/android/server/usb/descriptors/ByteStream;->getUnsignedByte()I
 
     move-result v2
 
     .line 171
+    .local v2, "b2":I
     invoke-virtual {p0}, Lcom/android/server/usb/descriptors/ByteStream;->getUnsignedByte()I
 
     move-result v3
 
     .line 172
-    shl-int/lit8 v3, v3, 0x18
+    .local v3, "b3":I
+    shl-int/lit8 v4, v3, 0x18
 
-    shl-int/lit8 v2, v2, 0x10
+    shl-int/lit8 v5, v2, 0x10
 
-    or-int/2addr v2, v3
+    or-int/2addr v4, v5
 
-    shl-int/lit8 v1, v1, 0x8
+    shl-int/lit8 v5, v1, 0x8
 
-    or-int/2addr v1, v2
+    or-int/2addr v4, v5
 
-    or-int/2addr v0, v1
+    or-int/2addr v4, v0
 
-    return v0
+    return v4
 
     .line 174
+    .end local v0  # "b0":I
+    .end local v1  # "b1":I
+    .end local v2  # "b2":I
+    .end local v3  # "b3":I
     :cond_21
     new-instance v0, Ljava/lang/IndexOutOfBoundsException;
 
@@ -346,7 +359,7 @@
 .end method
 
 .method public unpackUsbShort()I
-    .registers 3
+    .registers 4
 
     .line 133
     invoke-virtual {p0}, Lcom/android/server/usb/descriptors/ByteStream;->available()I
@@ -363,18 +376,22 @@
     move-result v0
 
     .line 135
+    .local v0, "b0":I
     invoke-virtual {p0}, Lcom/android/server/usb/descriptors/ByteStream;->getUnsignedByte()I
 
     move-result v1
 
     .line 136
-    shl-int/lit8 v1, v1, 0x8
+    .local v1, "b1":I
+    shl-int/lit8 v2, v1, 0x8
 
-    or-int/2addr v0, v1
+    or-int/2addr v2, v0
 
-    return v0
+    return v2
 
     .line 138
+    .end local v0  # "b0":I
+    .end local v1  # "b1":I
     :cond_13
     new-instance v0, Ljava/lang/IndexOutOfBoundsException;
 
@@ -384,7 +401,7 @@
 .end method
 
 .method public unpackUsbTriple()I
-    .registers 4
+    .registers 6
 
     .line 151
     invoke-virtual {p0}, Lcom/android/server/usb/descriptors/ByteStream;->available()I
@@ -401,27 +418,33 @@
     move-result v0
 
     .line 153
+    .local v0, "b0":I
     invoke-virtual {p0}, Lcom/android/server/usb/descriptors/ByteStream;->getUnsignedByte()I
 
     move-result v1
 
     .line 154
+    .local v1, "b1":I
     invoke-virtual {p0}, Lcom/android/server/usb/descriptors/ByteStream;->getUnsignedByte()I
 
     move-result v2
 
     .line 155
-    shl-int/lit8 v2, v2, 0x10
+    .local v2, "b2":I
+    shl-int/lit8 v3, v2, 0x10
 
-    shl-int/lit8 v1, v1, 0x8
+    shl-int/lit8 v4, v1, 0x8
 
-    or-int/2addr v1, v2
+    or-int/2addr v3, v4
 
-    or-int/2addr v0, v1
+    or-int/2addr v3, v0
 
-    return v0
+    return v3
 
     .line 157
+    .end local v0  # "b0":I
+    .end local v1  # "b1":I
+    .end local v2  # "b2":I
     :cond_1a
     new-instance v0, Ljava/lang/IndexOutOfBoundsException;
 

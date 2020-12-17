@@ -26,8 +26,9 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/am/ActivityManagerShellCommand;Ljava/util/concurrent/CountDownLatch;)V
     .registers 3
+    .param p1, "this$0"  # Lcom/android/server/am/ActivityManagerShellCommand;
 
-    .line 929
+    .line 975
     iput-object p1, p0, Lcom/android/server/am/ActivityManagerShellCommand$2;->this$0:Lcom/android/server/am/ActivityManagerShellCommand;
 
     iput-object p2, p0, Lcom/android/server/am/ActivityManagerShellCommand$2;->val$latch:Ljava/util/concurrent/CountDownLatch;
@@ -40,13 +41,14 @@
 
 # virtual methods
 .method public onResult(Landroid/os/Bundle;)V
-    .registers 2
+    .registers 3
+    .param p1, "result"  # Landroid/os/Bundle;
 
-    .line 932
-    iget-object p1, p0, Lcom/android/server/am/ActivityManagerShellCommand$2;->val$latch:Ljava/util/concurrent/CountDownLatch;
+    .line 978
+    iget-object v0, p0, Lcom/android/server/am/ActivityManagerShellCommand$2;->val$latch:Ljava/util/concurrent/CountDownLatch;
 
-    invoke-virtual {p1}, Ljava/util/concurrent/CountDownLatch;->countDown()V
+    invoke-virtual {v0}, Ljava/util/concurrent/CountDownLatch;->countDown()V
 
-    .line 933
+    .line 979
     return-void
 .end method

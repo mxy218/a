@@ -33,6 +33,7 @@
 
 .method public setNext(Lcom/android/server/accessibility/EventStreamTransformation;)V
     .registers 2
+    .param p1, "next"  # Lcom/android/server/accessibility/EventStreamTransformation;
 
     .line 24
     iput-object p1, p0, Lcom/android/server/accessibility/BaseEventStreamTransformation;->mNext:Lcom/android/server/accessibility/EventStreamTransformation;

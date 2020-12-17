@@ -28,20 +28,23 @@
 # direct methods
 .method constructor <init>(Landroid/content/Context;Landroid/content/Intent;Landroid/os/UserHandle;)V
     .registers 4
+    .param p1, "context"  # Landroid/content/Context;
+    .param p2, "intent"  # Landroid/content/Intent;
+    .param p3, "userHandle"  # Landroid/os/UserHandle;
 
-    .line 7154
+    .line 7776
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
-    .line 7155
+    .line 7777
     iput-object p1, p0, Lcom/android/server/am/ActivityManagerService$StartActivityRunnable;->mContext:Landroid/content/Context;
 
-    .line 7156
+    .line 7778
     iput-object p2, p0, Lcom/android/server/am/ActivityManagerService$StartActivityRunnable;->mIntent:Landroid/content/Intent;
 
-    .line 7157
+    .line 7779
     iput-object p3, p0, Lcom/android/server/am/ActivityManagerService$StartActivityRunnable;->mUserHandle:Landroid/os/UserHandle;
 
-    .line 7158
+    .line 7780
     return-void
 .end method
 
@@ -50,7 +53,7 @@
 .method public run()V
     .registers 4
 
-    .line 7162
+    .line 7784
     iget-object v0, p0, Lcom/android/server/am/ActivityManagerService$StartActivityRunnable;->mContext:Landroid/content/Context;
 
     iget-object v1, p0, Lcom/android/server/am/ActivityManagerService$StartActivityRunnable;->mIntent:Landroid/content/Intent;
@@ -59,6 +62,6 @@
 
     invoke-virtual {v0, v1, v2}, Landroid/content/Context;->startActivityAsUser(Landroid/content/Intent;Landroid/os/UserHandle;)V
 
-    .line 7163
+    .line 7785
     return-void
 .end method

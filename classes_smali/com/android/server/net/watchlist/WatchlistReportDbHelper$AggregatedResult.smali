@@ -42,6 +42,7 @@
 # direct methods
 .method public constructor <init>(Ljava/util/Set;Ljava/lang/String;Ljava/util/HashMap;)V
     .registers 4
+    .param p2, "cncDomainVisited"  # Ljava/lang/String;
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(",
@@ -57,6 +58,8 @@
     .end annotation
 
     .line 89
+    .local p1, "appDigestList":Ljava/util/Set;, "Ljava/util/Set<Ljava/lang/String;>;"
+    .local p3, "appDigestCNCList":Ljava/util/HashMap;, "Ljava/util/HashMap<Ljava/lang/String;Ljava/lang/String;>;"
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
     .line 90

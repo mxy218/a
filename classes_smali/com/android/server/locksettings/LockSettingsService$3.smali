@@ -5,7 +5,7 @@
 
 # annotations
 .annotation system Ldalvik/annotation/EnclosingMethod;
-    value = Lcom/android/server/locksettings/LockSettingsService;->unlockUser(I[B[BIJLjava/util/ArrayList;)V
+    value = Lcom/android/server/locksettings/LockSettingsService;->unlockUser(I[B[B)V
 .end annotation
 
 .annotation system Ldalvik/annotation/InnerClass;
@@ -23,8 +23,9 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/locksettings/LockSettingsService;Ljava/util/concurrent/CountDownLatch;)V
     .registers 3
+    .param p1, "this$0"  # Lcom/android/server/locksettings/LockSettingsService;
 
-    .line 1272
+    .line 1258
     iput-object p1, p0, Lcom/android/server/locksettings/LockSettingsService$3;->this$0:Lcom/android/server/locksettings/LockSettingsService;
 
     iput-object p2, p0, Lcom/android/server/locksettings/LockSettingsService$3;->val$latch:Ljava/util/concurrent/CountDownLatch;
@@ -37,75 +38,82 @@
 
 # virtual methods
 .method public onFinished(ILandroid/os/Bundle;)V
-    .registers 3
+    .registers 5
+    .param p1, "id"  # I
+    .param p2, "extras"  # Landroid/os/Bundle;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
         }
     .end annotation
 
-    .line 1285
-    const-string p1, "LockSettingsService"
+    .line 1271
+    const-string v0, "LockSettingsService"
 
-    const-string/jumbo p2, "unlockUser finished"
+    const-string/jumbo v1, "unlockUser finished"
 
-    invoke-static {p1, p2}, Landroid/util/Log;->d(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v0, v1}, Landroid/util/Log;->d(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 1286
-    iget-object p1, p0, Lcom/android/server/locksettings/LockSettingsService$3;->val$latch:Ljava/util/concurrent/CountDownLatch;
+    .line 1272
+    iget-object v0, p0, Lcom/android/server/locksettings/LockSettingsService$3;->val$latch:Ljava/util/concurrent/CountDownLatch;
 
-    invoke-virtual {p1}, Ljava/util/concurrent/CountDownLatch;->countDown()V
+    invoke-virtual {v0}, Ljava/util/concurrent/CountDownLatch;->countDown()V
 
-    .line 1287
+    .line 1273
     return-void
 .end method
 
 .method public onProgress(IILandroid/os/Bundle;)V
-    .registers 4
+    .registers 6
+    .param p1, "id"  # I
+    .param p2, "progress"  # I
+    .param p3, "extras"  # Landroid/os/Bundle;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
         }
     .end annotation
 
-    .line 1280
-    new-instance p1, Ljava/lang/StringBuilder;
+    .line 1266
+    new-instance v0, Ljava/lang/StringBuilder;
 
-    invoke-direct {p1}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string/jumbo p3, "unlockUser progress "
+    const-string/jumbo v1, "unlockUser progress "
 
-    invoke-virtual {p1, p3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p1, p2}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, p2}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    const-string p2, "LockSettingsService"
+    const-string v1, "LockSettingsService"
 
-    invoke-static {p2, p1}, Landroid/util/Log;->d(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v0}, Landroid/util/Log;->d(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 1281
+    .line 1267
     return-void
 .end method
 
 .method public onStarted(ILandroid/os/Bundle;)V
-    .registers 3
+    .registers 5
+    .param p1, "id"  # I
+    .param p2, "extras"  # Landroid/os/Bundle;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
         }
     .end annotation
 
-    .line 1275
-    const-string p1, "LockSettingsService"
+    .line 1261
+    const-string v0, "LockSettingsService"
 
-    const-string/jumbo p2, "unlockUser started"
+    const-string/jumbo v1, "unlockUser started"
 
-    invoke-static {p1, p2}, Landroid/util/Log;->d(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v0, v1}, Landroid/util/Log;->d(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 1276
+    .line 1262
     return-void
 .end method

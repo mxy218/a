@@ -12,6 +12,7 @@
 # direct methods
 .method public constructor <init>(Landroid/net/INetworkMonitor;)V
     .registers 3
+    .param p1, "networkMonitorManager"  # Landroid/net/INetworkMonitor;
 
     .line 48
     const-class v0, Landroid/net/NetworkMonitorManager;
@@ -28,6 +29,8 @@
 
 .method public constructor <init>(Landroid/net/INetworkMonitor;Ljava/lang/String;)V
     .registers 3
+    .param p1, "networkMonitorManager"  # Landroid/net/INetworkMonitor;
+    .param p2, "tag"  # Ljava/lang/String;
 
     .line 42
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -44,6 +47,8 @@
 
 .method private log(Ljava/lang/String;Ljava/lang/Throwable;)V
     .registers 4
+    .param p1, "s"  # Ljava/lang/String;
+    .param p2, "e"  # Ljava/lang/Throwable;
 
     .line 52
     iget-object v0, p0, Landroid/net/NetworkMonitorManager;->mTag:Ljava/lang/String;
@@ -57,7 +62,8 @@
 
 # virtual methods
 .method public forceReevaluation(I)Z
-    .registers 5
+    .registers 6
+    .param p1, "uid"  # I
 
     .line 110
     invoke-static {}, Landroid/os/Binder;->clearCallingIdentity()J
@@ -65,6 +71,7 @@
     move-result-wide v0
 
     .line 112
+    .local v0, "token":J
     :try_start_4
     iget-object v2, p0, Landroid/net/NetworkMonitorManager;->mNetworkMonitor:Landroid/net/INetworkMonitor;
 
@@ -74,46 +81,48 @@
     .catchall {:try_start_4 .. :try_end_9} :catchall_e
 
     .line 113
-    const/4 p1, 0x1
+    const/4 v2, 0x1
 
     .line 118
     invoke-static {v0, v1}, Landroid/os/Binder;->restoreCallingIdentity(J)V
 
     .line 113
-    return p1
+    return v2
 
     .line 118
     :catchall_e
-    move-exception p1
+    move-exception v2
 
     goto :goto_1b
 
     .line 114
     :catch_10
-    move-exception p1
+    move-exception v2
 
     .line 115
+    .local v2, "e":Landroid/os/RemoteException;
     :try_start_11
-    const-string v2, "Error in forceReevaluation"
+    const-string v3, "Error in forceReevaluation"
 
-    invoke-direct {p0, v2, p1}, Landroid/net/NetworkMonitorManager;->log(Ljava/lang/String;Ljava/lang/Throwable;)V
+    invoke-direct {p0, v3, v2}, Landroid/net/NetworkMonitorManager;->log(Ljava/lang/String;Ljava/lang/Throwable;)V
     :try_end_16
     .catchall {:try_start_11 .. :try_end_16} :catchall_e
 
     .line 116
-    const/4 p1, 0x0
+    const/4 v3, 0x0
 
     .line 118
     invoke-static {v0, v1}, Landroid/os/Binder;->restoreCallingIdentity(J)V
 
     .line 116
-    return p1
+    return v3
 
     .line 118
+    .end local v2  # "e":Landroid/os/RemoteException;
     :goto_1b
     invoke-static {v0, v1}, Landroid/os/Binder;->restoreCallingIdentity(J)V
 
-    throw p1
+    throw v2
 .end method
 
 .method public launchCaptivePortalApp()Z
@@ -125,6 +134,7 @@
     move-result-wide v0
 
     .line 73
+    .local v0, "token":J
     :try_start_4
     iget-object v2, p0, Landroid/net/NetworkMonitorManager;->mNetworkMonitor:Landroid/net/INetworkMonitor;
 
@@ -153,6 +163,7 @@
     move-exception v2
 
     .line 76
+    .local v2, "e":Landroid/os/RemoteException;
     :try_start_11
     const-string v3, "Error in launchCaptivePortalApp"
 
@@ -161,15 +172,16 @@
     .catchall {:try_start_11 .. :try_end_16} :catchall_e
 
     .line 77
-    const/4 v2, 0x0
+    const/4 v3, 0x0
 
     .line 79
     invoke-static {v0, v1}, Landroid/os/Binder;->restoreCallingIdentity(J)V
 
     .line 77
-    return v2
+    return v3
 
     .line 79
+    .end local v2  # "e":Landroid/os/RemoteException;
     :goto_1b
     invoke-static {v0, v1}, Landroid/os/Binder;->restoreCallingIdentity(J)V
 
@@ -177,7 +189,8 @@
 .end method
 
 .method public notifyCaptivePortalAppFinished(I)Z
-    .registers 5
+    .registers 6
+    .param p1, "response"  # I
 
     .line 84
     invoke-static {}, Landroid/os/Binder;->clearCallingIdentity()J
@@ -185,6 +198,7 @@
     move-result-wide v0
 
     .line 86
+    .local v0, "token":J
     :try_start_4
     iget-object v2, p0, Landroid/net/NetworkMonitorManager;->mNetworkMonitor:Landroid/net/INetworkMonitor;
 
@@ -194,50 +208,53 @@
     .catchall {:try_start_4 .. :try_end_9} :catchall_e
 
     .line 87
-    const/4 p1, 0x1
+    const/4 v2, 0x1
 
     .line 92
     invoke-static {v0, v1}, Landroid/os/Binder;->restoreCallingIdentity(J)V
 
     .line 87
-    return p1
+    return v2
 
     .line 92
     :catchall_e
-    move-exception p1
+    move-exception v2
 
     goto :goto_1b
 
     .line 88
     :catch_10
-    move-exception p1
+    move-exception v2
 
     .line 89
+    .local v2, "e":Landroid/os/RemoteException;
     :try_start_11
-    const-string v2, "Error in notifyCaptivePortalAppFinished"
+    const-string v3, "Error in notifyCaptivePortalAppFinished"
 
-    invoke-direct {p0, v2, p1}, Landroid/net/NetworkMonitorManager;->log(Ljava/lang/String;Ljava/lang/Throwable;)V
+    invoke-direct {p0, v3, v2}, Landroid/net/NetworkMonitorManager;->log(Ljava/lang/String;Ljava/lang/Throwable;)V
     :try_end_16
     .catchall {:try_start_11 .. :try_end_16} :catchall_e
 
     .line 90
-    const/4 p1, 0x0
+    const/4 v3, 0x0
 
     .line 92
     invoke-static {v0, v1}, Landroid/os/Binder;->restoreCallingIdentity(J)V
 
     .line 90
-    return p1
+    return v3
 
     .line 92
+    .end local v2  # "e":Landroid/os/RemoteException;
     :goto_1b
     invoke-static {v0, v1}, Landroid/os/Binder;->restoreCallingIdentity(J)V
 
-    throw p1
+    throw v2
 .end method
 
 .method public notifyDnsResponse(I)Z
-    .registers 5
+    .registers 6
+    .param p1, "returnCode"  # I
 
     .line 136
     invoke-static {}, Landroid/os/Binder;->clearCallingIdentity()J
@@ -245,6 +262,7 @@
     move-result-wide v0
 
     .line 138
+    .local v0, "token":J
     :try_start_4
     iget-object v2, p0, Landroid/net/NetworkMonitorManager;->mNetworkMonitor:Landroid/net/INetworkMonitor;
 
@@ -254,50 +272,53 @@
     .catchall {:try_start_4 .. :try_end_9} :catchall_e
 
     .line 139
-    const/4 p1, 0x1
+    const/4 v2, 0x1
 
     .line 144
     invoke-static {v0, v1}, Landroid/os/Binder;->restoreCallingIdentity(J)V
 
     .line 139
-    return p1
+    return v2
 
     .line 144
     :catchall_e
-    move-exception p1
+    move-exception v2
 
     goto :goto_1b
 
     .line 140
     :catch_10
-    move-exception p1
+    move-exception v2
 
     .line 141
+    .local v2, "e":Landroid/os/RemoteException;
     :try_start_11
-    const-string v2, "Error in notifyDnsResponse"
+    const-string v3, "Error in notifyDnsResponse"
 
-    invoke-direct {p0, v2, p1}, Landroid/net/NetworkMonitorManager;->log(Ljava/lang/String;Ljava/lang/Throwable;)V
+    invoke-direct {p0, v3, v2}, Landroid/net/NetworkMonitorManager;->log(Ljava/lang/String;Ljava/lang/Throwable;)V
     :try_end_16
     .catchall {:try_start_11 .. :try_end_16} :catchall_e
 
     .line 142
-    const/4 p1, 0x0
+    const/4 v3, 0x0
 
     .line 144
     invoke-static {v0, v1}, Landroid/os/Binder;->restoreCallingIdentity(J)V
 
     .line 142
-    return p1
+    return v3
 
     .line 144
+    .end local v2  # "e":Landroid/os/RemoteException;
     :goto_1b
     invoke-static {v0, v1}, Landroid/os/Binder;->restoreCallingIdentity(J)V
 
-    throw p1
+    throw v2
 .end method
 
 .method public notifyLinkPropertiesChanged(Landroid/net/LinkProperties;)Z
-    .registers 5
+    .registers 6
+    .param p1, "lp"  # Landroid/net/LinkProperties;
 
     .line 175
     invoke-static {}, Landroid/os/Binder;->clearCallingIdentity()J
@@ -305,6 +326,7 @@
     move-result-wide v0
 
     .line 177
+    .local v0, "token":J
     :try_start_4
     iget-object v2, p0, Landroid/net/NetworkMonitorManager;->mNetworkMonitor:Landroid/net/INetworkMonitor;
 
@@ -314,50 +336,53 @@
     .catchall {:try_start_4 .. :try_end_9} :catchall_e
 
     .line 178
-    const/4 p1, 0x1
+    const/4 v2, 0x1
 
     .line 183
     invoke-static {v0, v1}, Landroid/os/Binder;->restoreCallingIdentity(J)V
 
     .line 178
-    return p1
+    return v2
 
     .line 183
     :catchall_e
-    move-exception p1
+    move-exception v2
 
     goto :goto_1b
 
     .line 179
     :catch_10
-    move-exception p1
+    move-exception v2
 
     .line 180
+    .local v2, "e":Landroid/os/RemoteException;
     :try_start_11
-    const-string v2, "Error in notifyLinkPropertiesChanged"
+    const-string v3, "Error in notifyLinkPropertiesChanged"
 
-    invoke-direct {p0, v2, p1}, Landroid/net/NetworkMonitorManager;->log(Ljava/lang/String;Ljava/lang/Throwable;)V
+    invoke-direct {p0, v3, v2}, Landroid/net/NetworkMonitorManager;->log(Ljava/lang/String;Ljava/lang/Throwable;)V
     :try_end_16
     .catchall {:try_start_11 .. :try_end_16} :catchall_e
 
     .line 181
-    const/4 p1, 0x0
+    const/4 v3, 0x0
 
     .line 183
     invoke-static {v0, v1}, Landroid/os/Binder;->restoreCallingIdentity(J)V
 
     .line 181
-    return p1
+    return v3
 
     .line 183
+    .end local v2  # "e":Landroid/os/RemoteException;
     :goto_1b
     invoke-static {v0, v1}, Landroid/os/Binder;->restoreCallingIdentity(J)V
 
-    throw p1
+    throw v2
 .end method
 
 .method public notifyNetworkCapabilitiesChanged(Landroid/net/NetworkCapabilities;)Z
-    .registers 5
+    .registers 6
+    .param p1, "nc"  # Landroid/net/NetworkCapabilities;
 
     .line 188
     invoke-static {}, Landroid/os/Binder;->clearCallingIdentity()J
@@ -365,6 +390,7 @@
     move-result-wide v0
 
     .line 190
+    .local v0, "token":J
     :try_start_4
     iget-object v2, p0, Landroid/net/NetworkMonitorManager;->mNetworkMonitor:Landroid/net/INetworkMonitor;
 
@@ -374,50 +400,54 @@
     .catchall {:try_start_4 .. :try_end_9} :catchall_e
 
     .line 191
-    const/4 p1, 0x1
+    const/4 v2, 0x1
 
     .line 196
     invoke-static {v0, v1}, Landroid/os/Binder;->restoreCallingIdentity(J)V
 
     .line 191
-    return p1
+    return v2
 
     .line 196
     :catchall_e
-    move-exception p1
+    move-exception v2
 
     goto :goto_1b
 
     .line 192
     :catch_10
-    move-exception p1
+    move-exception v2
 
     .line 193
+    .local v2, "e":Landroid/os/RemoteException;
     :try_start_11
-    const-string v2, "Error in notifyNetworkCapabilitiesChanged"
+    const-string v3, "Error in notifyNetworkCapabilitiesChanged"
 
-    invoke-direct {p0, v2, p1}, Landroid/net/NetworkMonitorManager;->log(Ljava/lang/String;Ljava/lang/Throwable;)V
+    invoke-direct {p0, v3, v2}, Landroid/net/NetworkMonitorManager;->log(Ljava/lang/String;Ljava/lang/Throwable;)V
     :try_end_16
     .catchall {:try_start_11 .. :try_end_16} :catchall_e
 
     .line 194
-    const/4 p1, 0x0
+    const/4 v3, 0x0
 
     .line 196
     invoke-static {v0, v1}, Landroid/os/Binder;->restoreCallingIdentity(J)V
 
     .line 194
-    return p1
+    return v3
 
     .line 196
+    .end local v2  # "e":Landroid/os/RemoteException;
     :goto_1b
     invoke-static {v0, v1}, Landroid/os/Binder;->restoreCallingIdentity(J)V
 
-    throw p1
+    throw v2
 .end method
 
 .method public notifyNetworkConnected(Landroid/net/LinkProperties;Landroid/net/NetworkCapabilities;)Z
-    .registers 6
+    .registers 7
+    .param p1, "lp"  # Landroid/net/LinkProperties;
+    .param p2, "nc"  # Landroid/net/NetworkCapabilities;
 
     .line 149
     invoke-static {}, Landroid/os/Binder;->clearCallingIdentity()J
@@ -425,6 +455,7 @@
     move-result-wide v0
 
     .line 151
+    .local v0, "token":J
     :try_start_4
     iget-object v2, p0, Landroid/net/NetworkMonitorManager;->mNetworkMonitor:Landroid/net/INetworkMonitor;
 
@@ -434,46 +465,48 @@
     .catchall {:try_start_4 .. :try_end_9} :catchall_e
 
     .line 152
-    const/4 p1, 0x1
+    const/4 v2, 0x1
 
     .line 157
     invoke-static {v0, v1}, Landroid/os/Binder;->restoreCallingIdentity(J)V
 
     .line 152
-    return p1
+    return v2
 
     .line 157
     :catchall_e
-    move-exception p1
+    move-exception v2
 
     goto :goto_1b
 
     .line 153
     :catch_10
-    move-exception p1
+    move-exception v2
 
     .line 154
+    .local v2, "e":Landroid/os/RemoteException;
     :try_start_11
-    const-string p2, "Error in notifyNetworkConnected"
+    const-string v3, "Error in notifyNetworkConnected"
 
-    invoke-direct {p0, p2, p1}, Landroid/net/NetworkMonitorManager;->log(Ljava/lang/String;Ljava/lang/Throwable;)V
+    invoke-direct {p0, v3, v2}, Landroid/net/NetworkMonitorManager;->log(Ljava/lang/String;Ljava/lang/Throwable;)V
     :try_end_16
     .catchall {:try_start_11 .. :try_end_16} :catchall_e
 
     .line 155
-    const/4 p1, 0x0
+    const/4 v3, 0x0
 
     .line 157
     invoke-static {v0, v1}, Landroid/os/Binder;->restoreCallingIdentity(J)V
 
     .line 155
-    return p1
+    return v3
 
     .line 157
+    .end local v2  # "e":Landroid/os/RemoteException;
     :goto_1b
     invoke-static {v0, v1}, Landroid/os/Binder;->restoreCallingIdentity(J)V
 
-    throw p1
+    throw v2
 .end method
 
 .method public notifyNetworkDisconnected()Z
@@ -485,6 +518,7 @@
     move-result-wide v0
 
     .line 164
+    .local v0, "token":J
     :try_start_4
     iget-object v2, p0, Landroid/net/NetworkMonitorManager;->mNetworkMonitor:Landroid/net/INetworkMonitor;
 
@@ -513,6 +547,7 @@
     move-exception v2
 
     .line 167
+    .local v2, "e":Landroid/os/RemoteException;
     :try_start_11
     const-string v3, "Error in notifyNetworkDisconnected"
 
@@ -521,15 +556,16 @@
     .catchall {:try_start_11 .. :try_end_16} :catchall_e
 
     .line 168
-    const/4 v2, 0x0
+    const/4 v3, 0x0
 
     .line 170
     invoke-static {v0, v1}, Landroid/os/Binder;->restoreCallingIdentity(J)V
 
     .line 168
-    return v2
+    return v3
 
     .line 170
+    .end local v2  # "e":Landroid/os/RemoteException;
     :goto_1b
     invoke-static {v0, v1}, Landroid/os/Binder;->restoreCallingIdentity(J)V
 
@@ -537,7 +573,8 @@
 .end method
 
 .method public notifyPrivateDnsChanged(Landroid/net/PrivateDnsConfigParcel;)Z
-    .registers 5
+    .registers 6
+    .param p1, "config"  # Landroid/net/PrivateDnsConfigParcel;
 
     .line 123
     invoke-static {}, Landroid/os/Binder;->clearCallingIdentity()J
@@ -545,6 +582,7 @@
     move-result-wide v0
 
     .line 125
+    .local v0, "token":J
     :try_start_4
     iget-object v2, p0, Landroid/net/NetworkMonitorManager;->mNetworkMonitor:Landroid/net/INetworkMonitor;
 
@@ -554,46 +592,48 @@
     .catchall {:try_start_4 .. :try_end_9} :catchall_e
 
     .line 126
-    const/4 p1, 0x1
+    const/4 v2, 0x1
 
     .line 131
     invoke-static {v0, v1}, Landroid/os/Binder;->restoreCallingIdentity(J)V
 
     .line 126
-    return p1
+    return v2
 
     .line 131
     :catchall_e
-    move-exception p1
+    move-exception v2
 
     goto :goto_1b
 
     .line 127
     :catch_10
-    move-exception p1
+    move-exception v2
 
     .line 128
+    .local v2, "e":Landroid/os/RemoteException;
     :try_start_11
-    const-string v2, "Error in notifyPrivateDnsChanged"
+    const-string v3, "Error in notifyPrivateDnsChanged"
 
-    invoke-direct {p0, v2, p1}, Landroid/net/NetworkMonitorManager;->log(Ljava/lang/String;Ljava/lang/Throwable;)V
+    invoke-direct {p0, v3, v2}, Landroid/net/NetworkMonitorManager;->log(Ljava/lang/String;Ljava/lang/Throwable;)V
     :try_end_16
     .catchall {:try_start_11 .. :try_end_16} :catchall_e
 
     .line 129
-    const/4 p1, 0x0
+    const/4 v3, 0x0
 
     .line 131
     invoke-static {v0, v1}, Landroid/os/Binder;->restoreCallingIdentity(J)V
 
     .line 129
-    return p1
+    return v3
 
     .line 131
+    .end local v2  # "e":Landroid/os/RemoteException;
     :goto_1b
     invoke-static {v0, v1}, Landroid/os/Binder;->restoreCallingIdentity(J)V
 
-    throw p1
+    throw v2
 .end method
 
 .method public setAcceptPartialConnectivity()Z
@@ -605,6 +645,7 @@
     move-result-wide v0
 
     .line 99
+    .local v0, "token":J
     :try_start_4
     iget-object v2, p0, Landroid/net/NetworkMonitorManager;->mNetworkMonitor:Landroid/net/INetworkMonitor;
 
@@ -633,6 +674,7 @@
     move-exception v2
 
     .line 102
+    .local v2, "e":Landroid/os/RemoteException;
     :try_start_11
     const-string v3, "Error in setAcceptPartialConnectivity"
 
@@ -641,15 +683,16 @@
     .catchall {:try_start_11 .. :try_end_16} :catchall_e
 
     .line 103
-    const/4 v2, 0x0
+    const/4 v3, 0x0
 
     .line 105
     invoke-static {v0, v1}, Landroid/os/Binder;->restoreCallingIdentity(J)V
 
     .line 103
-    return v2
+    return v3
 
     .line 105
+    .end local v2  # "e":Landroid/os/RemoteException;
     :goto_1b
     invoke-static {v0, v1}, Landroid/os/Binder;->restoreCallingIdentity(J)V
 
@@ -665,6 +708,7 @@
     move-result-wide v0
 
     .line 60
+    .local v0, "token":J
     :try_start_4
     iget-object v2, p0, Landroid/net/NetworkMonitorManager;->mNetworkMonitor:Landroid/net/INetworkMonitor;
 
@@ -693,6 +737,7 @@
     move-exception v2
 
     .line 63
+    .local v2, "e":Landroid/os/RemoteException;
     :try_start_11
     const-string v3, "Error in start"
 
@@ -701,15 +746,16 @@
     .catchall {:try_start_11 .. :try_end_16} :catchall_e
 
     .line 64
-    const/4 v2, 0x0
+    const/4 v3, 0x0
 
     .line 66
     invoke-static {v0, v1}, Landroid/os/Binder;->restoreCallingIdentity(J)V
 
     .line 64
-    return v2
+    return v3
 
     .line 66
+    .end local v2  # "e":Landroid/os/RemoteException;
     :goto_1b
     invoke-static {v0, v1}, Landroid/os/Binder;->restoreCallingIdentity(J)V
 

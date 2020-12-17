@@ -24,15 +24,15 @@
 .method private constructor <init>()V
     .registers 2
 
-    .line 511
+    .line 489
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
-    .line 512
+    .line 490
     const/4 v0, -0x1
 
     iput v0, p0, Lcom/android/server/connectivity/tethering/UpstreamNetworkMonitor$TypeStatePair;->type:I
 
-    .line 513
+    .line 491
     const/4 v0, 0x0
 
     iput-object v0, p0, Lcom/android/server/connectivity/tethering/UpstreamNetworkMonitor$TypeStatePair;->ns:Landroid/net/NetworkState;
@@ -42,8 +42,9 @@
 
 .method synthetic constructor <init>(Lcom/android/server/connectivity/tethering/UpstreamNetworkMonitor$1;)V
     .registers 2
+    .param p1, "x0"  # Lcom/android/server/connectivity/tethering/UpstreamNetworkMonitor$1;
 
-    .line 511
+    .line 489
     invoke-direct {p0}, Lcom/android/server/connectivity/tethering/UpstreamNetworkMonitor$TypeStatePair;-><init>()V
 
     return-void

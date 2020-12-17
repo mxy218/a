@@ -49,14 +49,15 @@
 
 .method public static asInterface(Landroid/os/IBinder;)Lcom/google/android/startop/iorap/ITaskListener;
     .registers 3
+    .param p0, "obj"  # Landroid/os/IBinder;
 
     .line 42
     if-nez p0, :cond_4
 
     .line 43
-    const/4 p0, 0x0
+    const/4 v0, 0x0
 
-    return-object p0
+    return-object v0
 
     .line 45
     :cond_4
@@ -67,24 +68,27 @@
     move-result-object v0
 
     .line 46
-    if-eqz v0, :cond_13
+    .local v0, "iin":Landroid/os/IInterface;
+    if-eqz v0, :cond_14
 
     instance-of v1, v0, Lcom/google/android/startop/iorap/ITaskListener;
 
-    if-eqz v1, :cond_13
+    if-eqz v1, :cond_14
 
     .line 47
-    check-cast v0, Lcom/google/android/startop/iorap/ITaskListener;
+    move-object v1, v0
 
-    return-object v0
+    check-cast v1, Lcom/google/android/startop/iorap/ITaskListener;
+
+    return-object v1
 
     .line 49
-    :cond_13
-    new-instance v0, Lcom/google/android/startop/iorap/ITaskListener$Stub$Proxy;
+    :cond_14
+    new-instance v1, Lcom/google/android/startop/iorap/ITaskListener$Stub$Proxy;
 
-    invoke-direct {v0, p0}, Lcom/google/android/startop/iorap/ITaskListener$Stub$Proxy;-><init>(Landroid/os/IBinder;)V
+    invoke-direct {v1, p0}, Lcom/google/android/startop/iorap/ITaskListener$Stub$Proxy;-><init>(Landroid/os/IBinder;)V
 
-    return-object v0
+    return-object v1
 .end method
 
 .method public static getDefaultImpl()Lcom/google/android/startop/iorap/ITaskListener;
@@ -98,6 +102,7 @@
 
 .method public static setDefaultImpl(Lcom/google/android/startop/iorap/ITaskListener;)Z
     .registers 2
+    .param p0, "impl"  # Lcom/google/android/startop/iorap/ITaskListener;
 
     .line 189
     sget-object v0, Lcom/google/android/startop/iorap/ITaskListener$Stub$Proxy;->sDefaultImpl:Lcom/google/android/startop/iorap/ITaskListener;
@@ -110,15 +115,15 @@
     sput-object p0, Lcom/google/android/startop/iorap/ITaskListener$Stub$Proxy;->sDefaultImpl:Lcom/google/android/startop/iorap/ITaskListener;
 
     .line 191
-    const/4 p0, 0x1
+    const/4 v0, 0x1
 
-    return p0
+    return v0
 
     .line 193
     :cond_a
-    const/4 p0, 0x0
+    const/4 v0, 0x0
 
-    return p0
+    return v0
 .end method
 
 
@@ -132,6 +137,10 @@
 
 .method public onTransact(ILandroid/os/Parcel;Landroid/os/Parcel;I)Z
     .registers 9
+    .param p1, "code"  # I
+    .param p2, "data"  # Landroid/os/Parcel;
+    .param p3, "reply"  # Landroid/os/Parcel;
+    .param p4, "flags"  # I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -139,151 +148,158 @@
     .end annotation
 
     .line 57
-    nop
+    const-string v0, "com.google.android.startop.iorap.ITaskListener"
 
     .line 58
-    const/4 v0, 0x0
-
+    .local v0, "descriptor":Ljava/lang/String;
     const/4 v1, 0x1
 
-    const-string v2, "com.google.android.startop.iorap.ITaskListener"
+    if-eq p1, v1, :cond_3d
 
-    if-eq p1, v1, :cond_40
+    const/4 v2, 0x2
 
-    const/4 v3, 0x2
+    if-eq p1, v2, :cond_16
 
-    if-eq p1, v3, :cond_18
+    const v2, 0x5f4e5446
 
-    const v0, 0x5f4e5446
-
-    if-eq p1, v0, :cond_14
+    if-eq p1, v2, :cond_12
 
     .line 107
     invoke-super {p0, p1, p2, p3, p4}, Landroid/os/Binder;->onTransact(ILandroid/os/Parcel;Landroid/os/Parcel;I)Z
 
-    move-result p1
+    move-result v1
 
-    return p1
+    return v1
 
     .line 62
-    :cond_14
-    invoke-virtual {p3, v2}, Landroid/os/Parcel;->writeString(Ljava/lang/String;)V
+    :cond_12
+    invoke-virtual {p3, v0}, Landroid/os/Parcel;->writeString(Ljava/lang/String;)V
 
     .line 63
     return v1
 
     .line 87
-    :cond_18
-    invoke-virtual {p2, v2}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
+    :cond_16
+    invoke-virtual {p2, v0}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
 
     .line 89
     invoke-virtual {p2}, Landroid/os/Parcel;->readInt()I
 
-    move-result p1
+    move-result v2
 
-    if-eqz p1, :cond_2a
+    if-eqz v2, :cond_28
 
     .line 90
-    sget-object p1, Lcom/google/android/startop/iorap/RequestId;->CREATOR:Landroid/os/Parcelable$Creator;
+    sget-object v2, Lcom/google/android/startop/iorap/RequestId;->CREATOR:Landroid/os/Parcelable$Creator;
 
-    invoke-interface {p1, p2}, Landroid/os/Parcelable$Creator;->createFromParcel(Landroid/os/Parcel;)Ljava/lang/Object;
+    invoke-interface {v2, p2}, Landroid/os/Parcelable$Creator;->createFromParcel(Landroid/os/Parcel;)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v2
 
-    check-cast p1, Lcom/google/android/startop/iorap/RequestId;
+    check-cast v2, Lcom/google/android/startop/iorap/RequestId;
 
-    goto :goto_2b
+    .local v2, "_arg0":Lcom/google/android/startop/iorap/RequestId;
+    goto :goto_29
 
     .line 93
-    :cond_2a
-    move-object p1, v0
+    .end local v2  # "_arg0":Lcom/google/android/startop/iorap/RequestId;
+    :cond_28
+    const/4 v2, 0x0
 
     .line 96
-    :goto_2b
+    .restart local v2  # "_arg0":Lcom/google/android/startop/iorap/RequestId;
+    :goto_29
     invoke-virtual {p2}, Landroid/os/Parcel;->readInt()I
 
-    move-result p3
+    move-result v3
 
-    if-eqz p3, :cond_3b
+    if-eqz v3, :cond_38
 
     .line 97
-    sget-object p3, Lcom/google/android/startop/iorap/TaskResult;->CREATOR:Landroid/os/Parcelable$Creator;
+    sget-object v3, Lcom/google/android/startop/iorap/TaskResult;->CREATOR:Landroid/os/Parcelable$Creator;
 
-    invoke-interface {p3, p2}, Landroid/os/Parcelable$Creator;->createFromParcel(Landroid/os/Parcel;)Ljava/lang/Object;
+    invoke-interface {v3, p2}, Landroid/os/Parcelable$Creator;->createFromParcel(Landroid/os/Parcel;)Ljava/lang/Object;
 
-    move-result-object p2
+    move-result-object v3
 
-    move-object v0, p2
+    check-cast v3, Lcom/google/android/startop/iorap/TaskResult;
 
-    check-cast v0, Lcom/google/android/startop/iorap/TaskResult;
-
-    goto :goto_3c
+    .local v3, "_arg1":Lcom/google/android/startop/iorap/TaskResult;
+    goto :goto_39
 
     .line 100
-    :cond_3b
-    nop
+    .end local v3  # "_arg1":Lcom/google/android/startop/iorap/TaskResult;
+    :cond_38
+    const/4 v3, 0x0
 
     .line 102
-    :goto_3c
-    invoke-virtual {p0, p1, v0}, Lcom/google/android/startop/iorap/ITaskListener$Stub;->onComplete(Lcom/google/android/startop/iorap/RequestId;Lcom/google/android/startop/iorap/TaskResult;)V
+    .restart local v3  # "_arg1":Lcom/google/android/startop/iorap/TaskResult;
+    :goto_39
+    invoke-virtual {p0, v2, v3}, Lcom/google/android/startop/iorap/ITaskListener$Stub;->onComplete(Lcom/google/android/startop/iorap/RequestId;Lcom/google/android/startop/iorap/TaskResult;)V
 
     .line 103
     return v1
 
     .line 67
-    :cond_40
-    invoke-virtual {p2, v2}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
+    .end local v2  # "_arg0":Lcom/google/android/startop/iorap/RequestId;
+    .end local v3  # "_arg1":Lcom/google/android/startop/iorap/TaskResult;
+    :cond_3d
+    invoke-virtual {p2, v0}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
 
     .line 69
     invoke-virtual {p2}, Landroid/os/Parcel;->readInt()I
 
-    move-result p1
+    move-result v2
 
-    if-eqz p1, :cond_52
+    if-eqz v2, :cond_4f
 
     .line 70
-    sget-object p1, Lcom/google/android/startop/iorap/RequestId;->CREATOR:Landroid/os/Parcelable$Creator;
+    sget-object v2, Lcom/google/android/startop/iorap/RequestId;->CREATOR:Landroid/os/Parcelable$Creator;
 
-    invoke-interface {p1, p2}, Landroid/os/Parcelable$Creator;->createFromParcel(Landroid/os/Parcel;)Ljava/lang/Object;
+    invoke-interface {v2, p2}, Landroid/os/Parcelable$Creator;->createFromParcel(Landroid/os/Parcel;)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v2
 
-    check-cast p1, Lcom/google/android/startop/iorap/RequestId;
+    check-cast v2, Lcom/google/android/startop/iorap/RequestId;
 
-    goto :goto_53
+    .restart local v2  # "_arg0":Lcom/google/android/startop/iorap/RequestId;
+    goto :goto_50
 
     .line 73
-    :cond_52
-    move-object p1, v0
+    .end local v2  # "_arg0":Lcom/google/android/startop/iorap/RequestId;
+    :cond_4f
+    const/4 v2, 0x0
 
     .line 76
-    :goto_53
+    .restart local v2  # "_arg0":Lcom/google/android/startop/iorap/RequestId;
+    :goto_50
     invoke-virtual {p2}, Landroid/os/Parcel;->readInt()I
 
-    move-result p3
+    move-result v3
 
-    if-eqz p3, :cond_63
+    if-eqz v3, :cond_5f
 
     .line 77
-    sget-object p3, Lcom/google/android/startop/iorap/TaskResult;->CREATOR:Landroid/os/Parcelable$Creator;
+    sget-object v3, Lcom/google/android/startop/iorap/TaskResult;->CREATOR:Landroid/os/Parcelable$Creator;
 
-    invoke-interface {p3, p2}, Landroid/os/Parcelable$Creator;->createFromParcel(Landroid/os/Parcel;)Ljava/lang/Object;
+    invoke-interface {v3, p2}, Landroid/os/Parcelable$Creator;->createFromParcel(Landroid/os/Parcel;)Ljava/lang/Object;
 
-    move-result-object p2
+    move-result-object v3
 
-    move-object v0, p2
+    check-cast v3, Lcom/google/android/startop/iorap/TaskResult;
 
-    check-cast v0, Lcom/google/android/startop/iorap/TaskResult;
-
-    goto :goto_64
+    .restart local v3  # "_arg1":Lcom/google/android/startop/iorap/TaskResult;
+    goto :goto_60
 
     .line 80
-    :cond_63
-    nop
+    .end local v3  # "_arg1":Lcom/google/android/startop/iorap/TaskResult;
+    :cond_5f
+    const/4 v3, 0x0
 
     .line 82
-    :goto_64
-    invoke-virtual {p0, p1, v0}, Lcom/google/android/startop/iorap/ITaskListener$Stub;->onProgress(Lcom/google/android/startop/iorap/RequestId;Lcom/google/android/startop/iorap/TaskResult;)V
+    .restart local v3  # "_arg1":Lcom/google/android/startop/iorap/TaskResult;
+    :goto_60
+    invoke-virtual {p0, v2, v3}, Lcom/google/android/startop/iorap/ITaskListener$Stub;->onProgress(Lcom/google/android/startop/iorap/RequestId;Lcom/google/android/startop/iorap/TaskResult;)V
 
     .line 83
     return v1

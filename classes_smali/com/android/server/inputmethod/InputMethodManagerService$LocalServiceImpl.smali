@@ -21,14 +21,15 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/inputmethod/InputMethodManagerService;)V
     .registers 2
+    .param p1, "service"  # Lcom/android/server/inputmethod/InputMethodManagerService;
 
-    .line 4501
+    .line 4664
     invoke-direct {p0}, Lcom/android/server/inputmethod/InputMethodManagerInternal;-><init>()V
 
-    .line 4502
+    .line 4665
     iput-object p1, p0, Lcom/android/server/inputmethod/InputMethodManagerService$LocalServiceImpl;->mService:Lcom/android/server/inputmethod/InputMethodManagerService;
 
-    .line 4503
+    .line 4666
     return-void
 .end method
 
@@ -36,6 +37,7 @@
 # virtual methods
 .method public getEnabledInputMethodListAsUser(I)Ljava/util/List;
     .registers 3
+    .param p1, "userId"  # I
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(I)",
@@ -45,41 +47,42 @@
         }
     .end annotation
 
-    .line 4525
-    iget-object v0, p0, Lcom/android/server/inputmethod/InputMethodManagerService$LocalServiceImpl;->mService:Lcom/android/server/inputmethod/InputMethodManagerService;
-
-    invoke-static {v0, p1}, Lcom/android/server/inputmethod/InputMethodManagerService;->access$2200(Lcom/android/server/inputmethod/InputMethodManagerService;I)Ljava/util/List;
-
-    move-result-object p1
-
-    return-object p1
-.end method
-
-.method public getInputMethodListAsUser(I)Ljava/util/List;
-    .registers 3
-    .annotation system Ldalvik/annotation/Signature;
-        value = {
-            "(I)",
-            "Ljava/util/List<",
-            "Landroid/view/inputmethod/InputMethodInfo;",
-            ">;"
-        }
-    .end annotation
-
-    .line 4520
+    .line 4688
     iget-object v0, p0, Lcom/android/server/inputmethod/InputMethodManagerService$LocalServiceImpl;->mService:Lcom/android/server/inputmethod/InputMethodManagerService;
 
     invoke-static {v0, p1}, Lcom/android/server/inputmethod/InputMethodManagerService;->access$2100(Lcom/android/server/inputmethod/InputMethodManagerService;I)Ljava/util/List;
 
-    move-result-object p1
+    move-result-object v0
 
-    return-object p1
+    return-object v0
+.end method
+
+.method public getInputMethodListAsUser(I)Ljava/util/List;
+    .registers 3
+    .param p1, "userId"  # I
+    .annotation system Ldalvik/annotation/Signature;
+        value = {
+            "(I)",
+            "Ljava/util/List<",
+            "Landroid/view/inputmethod/InputMethodInfo;",
+            ">;"
+        }
+    .end annotation
+
+    .line 4683
+    iget-object v0, p0, Lcom/android/server/inputmethod/InputMethodManagerService$LocalServiceImpl;->mService:Lcom/android/server/inputmethod/InputMethodManagerService;
+
+    invoke-static {v0, p1}, Lcom/android/server/inputmethod/InputMethodManagerService;->access$2000(Lcom/android/server/inputmethod/InputMethodManagerService;I)Ljava/util/List;
+
+    move-result-object v0
+
+    return-object v0
 .end method
 
 .method public hideCurrentInputMethod()V
     .registers 3
 
-    .line 4514
+    .line 4677
     iget-object v0, p0, Lcom/android/server/inputmethod/InputMethodManagerService$LocalServiceImpl;->mService:Lcom/android/server/inputmethod/InputMethodManagerService;
 
     iget-object v0, v0, Lcom/android/server/inputmethod/InputMethodManagerService;->mHandler:Landroid/os/Handler;
@@ -88,21 +91,22 @@
 
     invoke-virtual {v0, v1}, Landroid/os/Handler;->removeMessages(I)V
 
-    .line 4515
+    .line 4678
     iget-object v0, p0, Lcom/android/server/inputmethod/InputMethodManagerService$LocalServiceImpl;->mService:Lcom/android/server/inputmethod/InputMethodManagerService;
 
     iget-object v0, v0, Lcom/android/server/inputmethod/InputMethodManagerService;->mHandler:Landroid/os/Handler;
 
     invoke-virtual {v0, v1}, Landroid/os/Handler;->sendEmptyMessage(I)Z
 
-    .line 4516
+    .line 4679
     return-void
 .end method
 
 .method public setInteractive(Z)V
     .registers 5
+    .param p1, "interactive"  # Z
 
-    .line 4508
+    .line 4671
     iget-object v0, p0, Lcom/android/server/inputmethod/InputMethodManagerService$LocalServiceImpl;->mService:Lcom/android/server/inputmethod/InputMethodManagerService;
 
     iget-object v0, v0, Lcom/android/server/inputmethod/InputMethodManagerService;->mHandler:Landroid/os/Handler;
@@ -113,11 +117,11 @@
 
     invoke-virtual {v0, v2, p1, v1}, Landroid/os/Handler;->obtainMessage(III)Landroid/os/Message;
 
-    move-result-object p1
+    move-result-object v0
 
-    .line 4509
-    invoke-virtual {p1}, Landroid/os/Message;->sendToTarget()V
+    .line 4672
+    invoke-virtual {v0}, Landroid/os/Message;->sendToTarget()V
 
-    .line 4510
+    .line 4673
     return-void
 .end method

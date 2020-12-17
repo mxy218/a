@@ -60,60 +60,61 @@
 
 # direct methods
 .method public constructor <init>(Landroid/content/Context;)V
-    .registers 3
+    .registers 4
+    .param p1, "context"  # Landroid/content/Context;
 
-    .line 114
+    .line 111
     invoke-direct {p0, p1}, Lcom/android/server/SystemService;-><init>(Landroid/content/Context;)V
 
-    .line 106
+    .line 103
     new-instance v0, Landroid/util/ArraySet;
 
     invoke-direct {v0}, Landroid/util/ArraySet;-><init>()V
 
     iput-object v0, p0, Lcom/android/server/voiceinteraction/VoiceInteractionManagerService;->mLoadedKeyphraseIds:Landroid/util/ArraySet;
 
-    .line 110
+    .line 107
     new-instance v0, Landroid/os/RemoteCallbackList;
 
     invoke-direct {v0}, Landroid/os/RemoteCallbackList;-><init>()V
 
     iput-object v0, p0, Lcom/android/server/voiceinteraction/VoiceInteractionManagerService;->mVoiceInteractionSessionListeners:Landroid/os/RemoteCallbackList;
 
-    .line 115
+    .line 112
     iput-object p1, p0, Lcom/android/server/voiceinteraction/VoiceInteractionManagerService;->mContext:Landroid/content/Context;
 
-    .line 116
+    .line 113
     invoke-virtual {p1}, Landroid/content/Context;->getContentResolver()Landroid/content/ContentResolver;
 
     move-result-object v0
 
     iput-object v0, p0, Lcom/android/server/voiceinteraction/VoiceInteractionManagerService;->mResolver:Landroid/content/ContentResolver;
 
-    .line 117
+    .line 114
     new-instance v0, Lcom/android/server/voiceinteraction/DatabaseHelper;
 
     invoke-direct {v0, p1}, Lcom/android/server/voiceinteraction/DatabaseHelper;-><init>(Landroid/content/Context;)V
 
     iput-object v0, p0, Lcom/android/server/voiceinteraction/VoiceInteractionManagerService;->mDbHelper:Lcom/android/server/voiceinteraction/DatabaseHelper;
 
-    .line 118
+    .line 115
     new-instance v0, Lcom/android/server/voiceinteraction/VoiceInteractionManagerService$VoiceInteractionManagerServiceStub;
 
     invoke-direct {v0, p0}, Lcom/android/server/voiceinteraction/VoiceInteractionManagerService$VoiceInteractionManagerServiceStub;-><init>(Lcom/android/server/voiceinteraction/VoiceInteractionManagerService;)V
 
     iput-object v0, p0, Lcom/android/server/voiceinteraction/VoiceInteractionManagerService;->mServiceStub:Lcom/android/server/voiceinteraction/VoiceInteractionManagerService$VoiceInteractionManagerServiceStub;
 
-    .line 119
+    .line 116
     const-class v0, Landroid/app/ActivityManagerInternal;
 
-    .line 120
+    .line 117
     invoke-static {v0}, Lcom/android/server/LocalServices;->getService(Ljava/lang/Class;)Ljava/lang/Object;
 
     move-result-object v0
 
     check-cast v0, Landroid/app/ActivityManagerInternal;
 
-    .line 119
+    .line 116
     invoke-static {v0}, Lcom/android/internal/util/Preconditions;->checkNotNull(Ljava/lang/Object;)Ljava/lang/Object;
 
     move-result-object v0
@@ -122,17 +123,17 @@
 
     iput-object v0, p0, Lcom/android/server/voiceinteraction/VoiceInteractionManagerService;->mAmInternal:Landroid/app/ActivityManagerInternal;
 
-    .line 121
+    .line 118
     const-class v0, Lcom/android/server/wm/ActivityTaskManagerInternal;
 
-    .line 122
+    .line 119
     invoke-static {v0}, Lcom/android/server/LocalServices;->getService(Ljava/lang/Class;)Ljava/lang/Object;
 
     move-result-object v0
 
     check-cast v0, Lcom/android/server/wm/ActivityTaskManagerInternal;
 
-    .line 121
+    .line 118
     invoke-static {v0}, Lcom/android/internal/util/Preconditions;->checkNotNull(Ljava/lang/Object;)Ljava/lang/Object;
 
     move-result-object v0
@@ -141,121 +142,125 @@
 
     iput-object v0, p0, Lcom/android/server/voiceinteraction/VoiceInteractionManagerService;->mAtmInternal:Lcom/android/server/wm/ActivityTaskManagerInternal;
 
-    .line 123
+    .line 120
     const-class v0, Landroid/os/UserManager;
 
-    .line 124
+    .line 121
     invoke-virtual {p1, v0}, Landroid/content/Context;->getSystemService(Ljava/lang/Class;)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v0
 
-    check-cast p1, Landroid/os/UserManager;
+    check-cast v0, Landroid/os/UserManager;
+
+    .line 120
+    invoke-static {v0}, Lcom/android/internal/util/Preconditions;->checkNotNull(Ljava/lang/Object;)Ljava/lang/Object;
+
+    move-result-object v0
+
+    check-cast v0, Landroid/os/UserManager;
+
+    iput-object v0, p0, Lcom/android/server/voiceinteraction/VoiceInteractionManagerService;->mUserManager:Landroid/os/UserManager;
 
     .line 123
-    invoke-static {p1}, Lcom/android/internal/util/Preconditions;->checkNotNull(Ljava/lang/Object;)Ljava/lang/Object;
+    const-class v0, Landroid/content/pm/PackageManagerInternal;
 
-    move-result-object p1
+    invoke-static {v0}, Lcom/android/server/LocalServices;->getService(Ljava/lang/Class;)Ljava/lang/Object;
 
-    check-cast p1, Landroid/os/UserManager;
+    move-result-object v0
 
-    iput-object p1, p0, Lcom/android/server/voiceinteraction/VoiceInteractionManagerService;->mUserManager:Landroid/os/UserManager;
+    check-cast v0, Landroid/content/pm/PackageManagerInternal;
 
-    .line 126
-    const-class p1, Landroid/content/pm/PackageManagerInternal;
+    .line 125
+    .local v0, "packageManagerInternal":Landroid/content/pm/PackageManagerInternal;
+    new-instance v1, Lcom/android/server/voiceinteraction/VoiceInteractionManagerService$1;
 
-    invoke-static {p1}, Lcom/android/server/LocalServices;->getService(Ljava/lang/Class;)Ljava/lang/Object;
+    invoke-direct {v1, p0}, Lcom/android/server/voiceinteraction/VoiceInteractionManagerService$1;-><init>(Lcom/android/server/voiceinteraction/VoiceInteractionManagerService;)V
 
-    move-result-object p1
+    invoke-virtual {v0, v1}, Landroid/content/pm/PackageManagerInternal;->setVoiceInteractionPackagesProvider(Landroid/content/pm/PackageManagerInternal$PackagesProvider;)V
 
-    check-cast p1, Landroid/content/pm/PackageManagerInternal;
-
-    .line 128
-    new-instance v0, Lcom/android/server/voiceinteraction/VoiceInteractionManagerService$1;
-
-    invoke-direct {v0, p0}, Lcom/android/server/voiceinteraction/VoiceInteractionManagerService$1;-><init>(Lcom/android/server/voiceinteraction/VoiceInteractionManagerService;)V
-
-    invoke-virtual {p1, v0}, Landroid/content/pm/PackageManagerInternal;->setVoiceInteractionPackagesProvider(Landroid/content/pm/PackageManagerInternal$PackagesProvider;)V
-
-    .line 140
+    .line 137
     return-void
 .end method
 
 .method static synthetic access$000(Lcom/android/server/voiceinteraction/VoiceInteractionManagerService;)Lcom/android/server/voiceinteraction/VoiceInteractionManagerService$VoiceInteractionManagerServiceStub;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/voiceinteraction/VoiceInteractionManagerService;
 
-    .line 96
-    iget-object p0, p0, Lcom/android/server/voiceinteraction/VoiceInteractionManagerService;->mServiceStub:Lcom/android/server/voiceinteraction/VoiceInteractionManagerService$VoiceInteractionManagerServiceStub;
+    .line 93
+    iget-object v0, p0, Lcom/android/server/voiceinteraction/VoiceInteractionManagerService;->mServiceStub:Lcom/android/server/voiceinteraction/VoiceInteractionManagerService$VoiceInteractionManagerServiceStub;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$100(Lcom/android/server/voiceinteraction/VoiceInteractionManagerService;)Landroid/os/RemoteCallbackList;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/voiceinteraction/VoiceInteractionManagerService;
 
-    .line 96
-    iget-object p0, p0, Lcom/android/server/voiceinteraction/VoiceInteractionManagerService;->mVoiceInteractionSessionListeners:Landroid/os/RemoteCallbackList;
+    .line 93
+    iget-object v0, p0, Lcom/android/server/voiceinteraction/VoiceInteractionManagerService;->mVoiceInteractionSessionListeners:Landroid/os/RemoteCallbackList;
 
-    return-object p0
+    return-object v0
 .end method
 
 
 # virtual methods
 .method public onBootPhase(I)V
-    .registers 3
+    .registers 4
+    .param p1, "phase"  # I
 
-    .line 150
+    .line 147
     const/16 v0, 0x1f4
 
     if-ne v0, p1, :cond_1f
 
-    .line 151
-    const-class p1, Landroid/content/pm/ShortcutServiceInternal;
+    .line 148
+    const-class v0, Landroid/content/pm/ShortcutServiceInternal;
 
-    .line 152
-    invoke-static {p1}, Lcom/android/server/LocalServices;->getService(Ljava/lang/Class;)Ljava/lang/Object;
+    .line 149
+    invoke-static {v0}, Lcom/android/server/LocalServices;->getService(Ljava/lang/Class;)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v0
 
-    check-cast p1, Landroid/content/pm/ShortcutServiceInternal;
+    check-cast v0, Landroid/content/pm/ShortcutServiceInternal;
 
-    .line 151
-    invoke-static {p1}, Lcom/android/internal/util/Preconditions;->checkNotNull(Ljava/lang/Object;)Ljava/lang/Object;
+    .line 148
+    invoke-static {v0}, Lcom/android/internal/util/Preconditions;->checkNotNull(Ljava/lang/Object;)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v0
 
-    check-cast p1, Landroid/content/pm/ShortcutServiceInternal;
+    check-cast v0, Landroid/content/pm/ShortcutServiceInternal;
 
-    iput-object p1, p0, Lcom/android/server/voiceinteraction/VoiceInteractionManagerService;->mShortcutServiceInternal:Landroid/content/pm/ShortcutServiceInternal;
+    iput-object v0, p0, Lcom/android/server/voiceinteraction/VoiceInteractionManagerService;->mShortcutServiceInternal:Landroid/content/pm/ShortcutServiceInternal;
 
-    .line 153
-    const-class p1, Lcom/android/server/soundtrigger/SoundTriggerInternal;
+    .line 150
+    const-class v0, Lcom/android/server/soundtrigger/SoundTriggerInternal;
 
-    invoke-static {p1}, Lcom/android/server/LocalServices;->getService(Ljava/lang/Class;)Ljava/lang/Object;
+    invoke-static {v0}, Lcom/android/server/LocalServices;->getService(Ljava/lang/Class;)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v0
 
-    check-cast p1, Lcom/android/server/soundtrigger/SoundTriggerInternal;
+    check-cast v0, Lcom/android/server/soundtrigger/SoundTriggerInternal;
 
-    iput-object p1, p0, Lcom/android/server/voiceinteraction/VoiceInteractionManagerService;->mSoundTriggerInternal:Lcom/android/server/soundtrigger/SoundTriggerInternal;
+    iput-object v0, p0, Lcom/android/server/voiceinteraction/VoiceInteractionManagerService;->mSoundTriggerInternal:Lcom/android/server/soundtrigger/SoundTriggerInternal;
 
     goto :goto_2c
 
-    .line 154
+    .line 151
     :cond_1f
     const/16 v0, 0x258
 
     if-ne p1, v0, :cond_2c
 
-    .line 155
-    iget-object p1, p0, Lcom/android/server/voiceinteraction/VoiceInteractionManagerService;->mServiceStub:Lcom/android/server/voiceinteraction/VoiceInteractionManagerService$VoiceInteractionManagerServiceStub;
+    .line 152
+    iget-object v0, p0, Lcom/android/server/voiceinteraction/VoiceInteractionManagerService;->mServiceStub:Lcom/android/server/voiceinteraction/VoiceInteractionManagerService$VoiceInteractionManagerServiceStub;
 
     invoke-virtual {p0}, Lcom/android/server/voiceinteraction/VoiceInteractionManagerService;->isSafeMode()Z
 
-    move-result v0
+    move-result v1
 
-    invoke-virtual {p1, v0}, Lcom/android/server/voiceinteraction/VoiceInteractionManagerService$VoiceInteractionManagerServiceStub;->systemRunning(Z)V
+    invoke-virtual {v0, v1}, Lcom/android/server/voiceinteraction/VoiceInteractionManagerService$VoiceInteractionManagerServiceStub;->systemRunning(Z)V
 
-    .line 157
+    .line 154
     :cond_2c
     :goto_2c
     return-void
@@ -264,14 +269,14 @@
 .method public onStart()V
     .registers 3
 
-    .line 144
+    .line 141
     iget-object v0, p0, Lcom/android/server/voiceinteraction/VoiceInteractionManagerService;->mServiceStub:Lcom/android/server/voiceinteraction/VoiceInteractionManagerService$VoiceInteractionManagerServiceStub;
 
     const-string/jumbo v1, "voiceinteraction"
 
     invoke-virtual {p0, v1, v0}, Lcom/android/server/voiceinteraction/VoiceInteractionManagerService;->publishBinderService(Ljava/lang/String;Landroid/os/IBinder;)V
 
-    .line 145
+    .line 142
     const-class v0, Landroid/service/voice/VoiceInteractionManagerInternal;
 
     new-instance v1, Lcom/android/server/voiceinteraction/VoiceInteractionManagerService$LocalService;
@@ -280,49 +285,52 @@
 
     invoke-virtual {p0, v0, v1}, Lcom/android/server/voiceinteraction/VoiceInteractionManagerService;->publishLocalService(Ljava/lang/Class;Ljava/lang/Object;)V
 
-    .line 146
+    .line 143
     return-void
 .end method
 
 .method public onStartUser(I)V
     .registers 3
+    .param p1, "userHandle"  # I
 
-    .line 161
+    .line 158
     iget-object v0, p0, Lcom/android/server/voiceinteraction/VoiceInteractionManagerService;->mServiceStub:Lcom/android/server/voiceinteraction/VoiceInteractionManagerService$VoiceInteractionManagerServiceStub;
 
     invoke-virtual {v0, p1}, Lcom/android/server/voiceinteraction/VoiceInteractionManagerService$VoiceInteractionManagerServiceStub;->initForUser(I)V
 
-    .line 162
+    .line 159
     return-void
 .end method
 
 .method public onSwitchUser(I)V
     .registers 3
+    .param p1, "userHandle"  # I
 
-    .line 172
+    .line 169
     iget-object v0, p0, Lcom/android/server/voiceinteraction/VoiceInteractionManagerService;->mServiceStub:Lcom/android/server/voiceinteraction/VoiceInteractionManagerService$VoiceInteractionManagerServiceStub;
 
     invoke-virtual {v0, p1}, Lcom/android/server/voiceinteraction/VoiceInteractionManagerService$VoiceInteractionManagerServiceStub;->switchUser(I)V
 
-    .line 173
+    .line 170
     return-void
 .end method
 
 .method public onUnlockUser(I)V
-    .registers 3
+    .registers 4
+    .param p1, "userHandle"  # I
 
-    .line 166
+    .line 163
     iget-object v0, p0, Lcom/android/server/voiceinteraction/VoiceInteractionManagerService;->mServiceStub:Lcom/android/server/voiceinteraction/VoiceInteractionManagerService$VoiceInteractionManagerServiceStub;
 
     invoke-virtual {v0, p1}, Lcom/android/server/voiceinteraction/VoiceInteractionManagerService$VoiceInteractionManagerServiceStub;->initForUser(I)V
 
-    .line 167
-    iget-object p1, p0, Lcom/android/server/voiceinteraction/VoiceInteractionManagerService;->mServiceStub:Lcom/android/server/voiceinteraction/VoiceInteractionManagerService$VoiceInteractionManagerServiceStub;
+    .line 164
+    iget-object v0, p0, Lcom/android/server/voiceinteraction/VoiceInteractionManagerService;->mServiceStub:Lcom/android/server/voiceinteraction/VoiceInteractionManagerService$VoiceInteractionManagerServiceStub;
 
-    const/4 v0, 0x0
+    const/4 v1, 0x0
 
-    invoke-virtual {p1, v0}, Lcom/android/server/voiceinteraction/VoiceInteractionManagerService$VoiceInteractionManagerServiceStub;->switchImplementationIfNeeded(Z)V
+    invoke-virtual {v0, v1}, Lcom/android/server/voiceinteraction/VoiceInteractionManagerService$VoiceInteractionManagerServiceStub;->switchImplementationIfNeeded(Z)V
 
-    .line 168
+    .line 165
     return-void
 .end method

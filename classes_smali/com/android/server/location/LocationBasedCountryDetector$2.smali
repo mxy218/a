@@ -21,6 +21,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/location/LocationBasedCountryDetector;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/location/LocationBasedCountryDetector;
 
     .line 200
     iput-object p1, p0, Lcom/android/server/location/LocationBasedCountryDetector$2;->this$0:Lcom/android/server/location/LocationBasedCountryDetector;

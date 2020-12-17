@@ -47,6 +47,7 @@
 
 .method synthetic constructor <init>(Lcom/android/server/pm/dex/PackageDynamicCodeLoading$1;)V
     .registers 2
+    .param p1, "x0"  # Lcom/android/server/pm/dex/PackageDynamicCodeLoading$1;
 
     .line 510
     invoke-direct {p0}, Lcom/android/server/pm/dex/PackageDynamicCodeLoading$PackageDynamicCode;-><init>()V
@@ -55,7 +56,8 @@
 .end method
 
 .method private constructor <init>(Lcom/android/server/pm/dex/PackageDynamicCodeLoading$PackageDynamicCode;)V
-    .registers 6
+    .registers 7
+    .param p1, "original"  # Lcom/android/server/pm/dex/PackageDynamicCodeLoading$PackageDynamicCode;
 
     .line 521
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -74,54 +76,58 @@
     iput-object v0, p0, Lcom/android/server/pm/dex/PackageDynamicCodeLoading$PackageDynamicCode;->mFileUsageMap:Ljava/util/Map;
 
     .line 523
-    iget-object p1, p1, Lcom/android/server/pm/dex/PackageDynamicCodeLoading$PackageDynamicCode;->mFileUsageMap:Ljava/util/Map;
+    iget-object v0, p1, Lcom/android/server/pm/dex/PackageDynamicCodeLoading$PackageDynamicCode;->mFileUsageMap:Ljava/util/Map;
 
-    invoke-interface {p1}, Ljava/util/Map;->entrySet()Ljava/util/Set;
+    invoke-interface {v0}, Ljava/util/Map;->entrySet()Ljava/util/Set;
 
-    move-result-object p1
+    move-result-object v0
 
-    invoke-interface {p1}, Ljava/util/Set;->iterator()Ljava/util/Iterator;
+    invoke-interface {v0}, Ljava/util/Set;->iterator()Ljava/util/Iterator;
 
-    move-result-object p1
+    move-result-object v0
 
     :goto_1a
-    invoke-interface {p1}, Ljava/util/Iterator;->hasNext()Z
+    invoke-interface {v0}, Ljava/util/Iterator;->hasNext()Z
 
-    move-result v0
+    move-result v1
 
-    if-eqz v0, :cond_3e
+    if-eqz v1, :cond_3e
 
-    invoke-interface {p1}, Ljava/util/Iterator;->next()Ljava/lang/Object;
+    invoke-interface {v0}, Ljava/util/Iterator;->next()Ljava/lang/Object;
 
-    move-result-object v0
+    move-result-object v1
 
-    check-cast v0, Ljava/util/Map$Entry;
+    check-cast v1, Ljava/util/Map$Entry;
 
     .line 524
-    new-instance v1, Lcom/android/server/pm/dex/PackageDynamicCodeLoading$DynamicCodeFile;
+    .local v1, "entry":Ljava/util/Map$Entry;, "Ljava/util/Map$Entry<Ljava/lang/String;Lcom/android/server/pm/dex/PackageDynamicCodeLoading$DynamicCodeFile;>;"
+    new-instance v2, Lcom/android/server/pm/dex/PackageDynamicCodeLoading$DynamicCodeFile;
 
-    invoke-interface {v0}, Ljava/util/Map$Entry;->getValue()Ljava/lang/Object;
+    invoke-interface {v1}, Ljava/util/Map$Entry;->getValue()Ljava/lang/Object;
 
-    move-result-object v2
+    move-result-object v3
 
-    check-cast v2, Lcom/android/server/pm/dex/PackageDynamicCodeLoading$DynamicCodeFile;
+    check-cast v3, Lcom/android/server/pm/dex/PackageDynamicCodeLoading$DynamicCodeFile;
 
-    const/4 v3, 0x0
+    const/4 v4, 0x0
 
-    invoke-direct {v1, v2, v3}, Lcom/android/server/pm/dex/PackageDynamicCodeLoading$DynamicCodeFile;-><init>(Lcom/android/server/pm/dex/PackageDynamicCodeLoading$DynamicCodeFile;Lcom/android/server/pm/dex/PackageDynamicCodeLoading$1;)V
+    invoke-direct {v2, v3, v4}, Lcom/android/server/pm/dex/PackageDynamicCodeLoading$DynamicCodeFile;-><init>(Lcom/android/server/pm/dex/PackageDynamicCodeLoading$DynamicCodeFile;Lcom/android/server/pm/dex/PackageDynamicCodeLoading$1;)V
 
     .line 525
-    iget-object v2, p0, Lcom/android/server/pm/dex/PackageDynamicCodeLoading$PackageDynamicCode;->mFileUsageMap:Ljava/util/Map;
+    .local v2, "newValue":Lcom/android/server/pm/dex/PackageDynamicCodeLoading$DynamicCodeFile;
+    iget-object v3, p0, Lcom/android/server/pm/dex/PackageDynamicCodeLoading$PackageDynamicCode;->mFileUsageMap:Ljava/util/Map;
 
-    invoke-interface {v0}, Ljava/util/Map$Entry;->getKey()Ljava/lang/Object;
+    invoke-interface {v1}, Ljava/util/Map$Entry;->getKey()Ljava/lang/Object;
 
-    move-result-object v0
+    move-result-object v4
 
-    check-cast v0, Ljava/lang/String;
+    check-cast v4, Ljava/lang/String;
 
-    invoke-interface {v2, v0, v1}, Ljava/util/Map;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+    invoke-interface {v3, v4, v2}, Ljava/util/Map;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
 
     .line 526
+    .end local v1  # "entry":Ljava/util/Map$Entry;, "Ljava/util/Map$Entry<Ljava/lang/String;Lcom/android/server/pm/dex/PackageDynamicCodeLoading$DynamicCodeFile;>;"
+    .end local v2  # "newValue":Lcom/android/server/pm/dex/PackageDynamicCodeLoading$DynamicCodeFile;
     goto :goto_1a
 
     .line 527
@@ -131,6 +137,8 @@
 
 .method synthetic constructor <init>(Lcom/android/server/pm/dex/PackageDynamicCodeLoading$PackageDynamicCode;Lcom/android/server/pm/dex/PackageDynamicCodeLoading$1;)V
     .registers 3
+    .param p1, "x0"  # Lcom/android/server/pm/dex/PackageDynamicCodeLoading$PackageDynamicCode;
+    .param p2, "x1"  # Lcom/android/server/pm/dex/PackageDynamicCodeLoading$1;
 
     .line 510
     invoke-direct {p0, p1}, Lcom/android/server/pm/dex/PackageDynamicCodeLoading$PackageDynamicCode;-><init>(Lcom/android/server/pm/dex/PackageDynamicCodeLoading$PackageDynamicCode;)V
@@ -139,40 +147,53 @@
 .end method
 
 .method static synthetic access$100(Lcom/android/server/pm/dex/PackageDynamicCodeLoading$PackageDynamicCode;Ljava/lang/String;CILjava/lang/String;)Z
-    .registers 5
+    .registers 6
+    .param p0, "x0"  # Lcom/android/server/pm/dex/PackageDynamicCodeLoading$PackageDynamicCode;
+    .param p1, "x1"  # Ljava/lang/String;
+    .param p2, "x2"  # C
+    .param p3, "x3"  # I
+    .param p4, "x4"  # Ljava/lang/String;
 
     .line 510
     invoke-direct {p0, p1, p2, p3, p4}, Lcom/android/server/pm/dex/PackageDynamicCodeLoading$PackageDynamicCode;->add(Ljava/lang/String;CILjava/lang/String;)Z
 
-    move-result p0
+    move-result v0
 
-    return p0
+    return v0
 .end method
 
 .method static synthetic access$300(Lcom/android/server/pm/dex/PackageDynamicCodeLoading$PackageDynamicCode;I)Z
-    .registers 2
+    .registers 3
+    .param p0, "x0"  # Lcom/android/server/pm/dex/PackageDynamicCodeLoading$PackageDynamicCode;
+    .param p1, "x1"  # I
 
     .line 510
     invoke-direct {p0, p1}, Lcom/android/server/pm/dex/PackageDynamicCodeLoading$PackageDynamicCode;->removeUser(I)Z
 
-    move-result p0
+    move-result v0
 
-    return p0
+    return v0
 .end method
 
 .method static synthetic access$400(Lcom/android/server/pm/dex/PackageDynamicCodeLoading$PackageDynamicCode;Ljava/lang/String;I)Z
-    .registers 3
+    .registers 4
+    .param p0, "x0"  # Lcom/android/server/pm/dex/PackageDynamicCodeLoading$PackageDynamicCode;
+    .param p1, "x1"  # Ljava/lang/String;
+    .param p2, "x2"  # I
 
     .line 510
     invoke-direct {p0, p1, p2}, Lcom/android/server/pm/dex/PackageDynamicCodeLoading$PackageDynamicCode;->removeFile(Ljava/lang/String;I)Z
 
-    move-result p0
+    move-result v0
 
-    return p0
+    return v0
 .end method
 
 .method static synthetic access$500(Lcom/android/server/pm/dex/PackageDynamicCodeLoading$PackageDynamicCode;Ljava/util/Map;Ljava/util/Set;)V
     .registers 3
+    .param p0, "x0"  # Lcom/android/server/pm/dex/PackageDynamicCodeLoading$PackageDynamicCode;
+    .param p1, "x1"  # Ljava/util/Map;
+    .param p2, "x2"  # Ljava/util/Set;
 
     .line 510
     invoke-direct {p0, p1, p2}, Lcom/android/server/pm/dex/PackageDynamicCodeLoading$PackageDynamicCode;->syncData(Ljava/util/Map;Ljava/util/Set;)V
@@ -181,7 +202,11 @@
 .end method
 
 .method private add(Ljava/lang/String;CILjava/lang/String;)Z
-    .registers 9
+    .registers 10
+    .param p1, "path"  # Ljava/lang/String;
+    .param p2, "fileType"  # C
+    .param p3, "userId"  # I
+    .param p4, "loadingPackage"  # Ljava/lang/String;
 
     .line 530
     iget-object v0, p0, Lcom/android/server/pm/dex/PackageDynamicCodeLoading$PackageDynamicCode;->mFileUsageMap:Ljava/util/Map;
@@ -193,100 +218,105 @@
     check-cast v0, Lcom/android/server/pm/dex/PackageDynamicCodeLoading$DynamicCodeFile;
 
     .line 531
-    if-nez v0, :cond_27
+    .local v0, "fileInfo":Lcom/android/server/pm/dex/PackageDynamicCodeLoading$DynamicCodeFile;
+    if-nez v0, :cond_28
 
     .line 532
-    iget-object v0, p0, Lcom/android/server/pm/dex/PackageDynamicCodeLoading$PackageDynamicCode;->mFileUsageMap:Ljava/util/Map;
+    iget-object v1, p0, Lcom/android/server/pm/dex/PackageDynamicCodeLoading$PackageDynamicCode;->mFileUsageMap:Ljava/util/Map;
 
-    invoke-interface {v0}, Ljava/util/Map;->size()I
+    invoke-interface {v1}, Ljava/util/Map;->size()I
 
-    move-result v0
+    move-result v1
 
-    const/16 v1, 0x64
+    const/16 v2, 0x64
 
-    const/4 v2, 0x0
+    const/4 v3, 0x0
 
-    if-lt v0, v1, :cond_16
+    if-lt v1, v2, :cond_16
 
     .line 533
-    return v2
+    return v3
 
     .line 535
     :cond_16
-    new-instance v0, Lcom/android/server/pm/dex/PackageDynamicCodeLoading$DynamicCodeFile;
+    new-instance v1, Lcom/android/server/pm/dex/PackageDynamicCodeLoading$DynamicCodeFile;
 
-    const/4 v1, 0x1
+    const/4 v2, 0x1
 
-    new-array v3, v1, [Ljava/lang/String;
+    new-array v4, v2, [Ljava/lang/String;
 
-    aput-object p4, v3, v2
+    aput-object p4, v4, v3
 
-    const/4 p4, 0x0
+    const/4 v3, 0x0
 
-    invoke-direct {v0, p2, p3, v3, p4}, Lcom/android/server/pm/dex/PackageDynamicCodeLoading$DynamicCodeFile;-><init>(CI[Ljava/lang/String;Lcom/android/server/pm/dex/PackageDynamicCodeLoading$1;)V
+    invoke-direct {v1, p2, p3, v4, v3}, Lcom/android/server/pm/dex/PackageDynamicCodeLoading$DynamicCodeFile;-><init>(CI[Ljava/lang/String;Lcom/android/server/pm/dex/PackageDynamicCodeLoading$1;)V
+
+    move-object v0, v1
 
     .line 536
-    iget-object p2, p0, Lcom/android/server/pm/dex/PackageDynamicCodeLoading$PackageDynamicCode;->mFileUsageMap:Ljava/util/Map;
+    iget-object v1, p0, Lcom/android/server/pm/dex/PackageDynamicCodeLoading$PackageDynamicCode;->mFileUsageMap:Ljava/util/Map;
 
-    invoke-interface {p2, p1, v0}, Ljava/util/Map;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+    invoke-interface {v1, p1, v0}, Ljava/util/Map;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
 
     .line 537
-    return v1
+    return v2
 
     .line 539
-    :cond_27
-    iget p2, v0, Lcom/android/server/pm/dex/PackageDynamicCodeLoading$DynamicCodeFile;->mUserId:I
+    :cond_28
+    iget v1, v0, Lcom/android/server/pm/dex/PackageDynamicCodeLoading$DynamicCodeFile;->mUserId:I
 
-    if-ne p2, p3, :cond_32
+    if-ne v1, p3, :cond_33
 
     .line 547
-    iget-object p1, v0, Lcom/android/server/pm/dex/PackageDynamicCodeLoading$DynamicCodeFile;->mLoadingPackages:Ljava/util/Set;
+    iget-object v1, v0, Lcom/android/server/pm/dex/PackageDynamicCodeLoading$DynamicCodeFile;->mLoadingPackages:Ljava/util/Set;
 
-    invoke-interface {p1, p4}, Ljava/util/Set;->add(Ljava/lang/Object;)Z
+    invoke-interface {v1, p4}, Ljava/util/Set;->add(Ljava/lang/Object;)Z
 
-    move-result p1
+    move-result v1
 
-    return p1
+    return v1
 
     .line 542
-    :cond_32
-    new-instance p2, Ljava/lang/IllegalArgumentException;
+    :cond_33
+    new-instance v1, Ljava/lang/IllegalArgumentException;
 
-    new-instance p4, Ljava/lang/StringBuilder;
+    new-instance v2, Ljava/lang/StringBuilder;
 
-    invoke-direct {p4}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v1, "Cannot change userId for \'"
+    const-string v3, "Cannot change userId for \'"
 
-    invoke-virtual {p4, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p4, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string p1, "\' from "
+    const-string v3, "\' from "
 
-    invoke-virtual {p4, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    iget p1, v0, Lcom/android/server/pm/dex/PackageDynamicCodeLoading$DynamicCodeFile;->mUserId:I
+    iget v3, v0, Lcom/android/server/pm/dex/PackageDynamicCodeLoading$DynamicCodeFile;->mUserId:I
 
-    invoke-virtual {p4, p1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    const-string p1, " to "
+    const-string v3, " to "
 
-    invoke-virtual {p4, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p4, p3}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, p3}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p4}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v2
 
-    invoke-direct {p2, p1}, Ljava/lang/IllegalArgumentException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v1, v2}, Ljava/lang/IllegalArgumentException;-><init>(Ljava/lang/String;)V
 
-    throw p2
+    throw v1
 .end method
 
 .method private removeFile(Ljava/lang/String;I)Z
-    .registers 4
+    .registers 5
+    .param p1, "filePath"  # Ljava/lang/String;
+    .param p2, "userId"  # I
 
     .line 565
     iget-object v0, p0, Lcom/android/server/pm/dex/PackageDynamicCodeLoading$PackageDynamicCode;->mFileUsageMap:Ljava/util/Map;
@@ -298,89 +328,93 @@
     check-cast v0, Lcom/android/server/pm/dex/PackageDynamicCodeLoading$DynamicCodeFile;
 
     .line 566
+    .local v0, "fileInfo":Lcom/android/server/pm/dex/PackageDynamicCodeLoading$DynamicCodeFile;
     if-eqz v0, :cond_16
 
-    iget v0, v0, Lcom/android/server/pm/dex/PackageDynamicCodeLoading$DynamicCodeFile;->mUserId:I
+    iget v1, v0, Lcom/android/server/pm/dex/PackageDynamicCodeLoading$DynamicCodeFile;->mUserId:I
 
-    if-eq v0, p2, :cond_f
+    if-eq v1, p2, :cond_f
 
     goto :goto_16
 
     .line 569
     :cond_f
-    iget-object p2, p0, Lcom/android/server/pm/dex/PackageDynamicCodeLoading$PackageDynamicCode;->mFileUsageMap:Ljava/util/Map;
+    iget-object v1, p0, Lcom/android/server/pm/dex/PackageDynamicCodeLoading$PackageDynamicCode;->mFileUsageMap:Ljava/util/Map;
 
-    invoke-interface {p2, p1}, Ljava/util/Map;->remove(Ljava/lang/Object;)Ljava/lang/Object;
+    invoke-interface {v1, p1}, Ljava/util/Map;->remove(Ljava/lang/Object;)Ljava/lang/Object;
 
     .line 570
-    const/4 p1, 0x1
+    const/4 v1, 0x1
 
-    return p1
+    return v1
 
     .line 567
     :cond_16
     :goto_16
-    const/4 p1, 0x0
+    const/4 v1, 0x0
 
-    return p1
+    return v1
 .end method
 
 .method private removeUser(I)Z
-    .registers 5
+    .registers 6
+    .param p1, "userId"  # I
 
     .line 552
-    nop
+    const/4 v0, 0x0
 
     .line 553
-    iget-object v0, p0, Lcom/android/server/pm/dex/PackageDynamicCodeLoading$PackageDynamicCode;->mFileUsageMap:Ljava/util/Map;
+    .local v0, "updated":Z
+    iget-object v1, p0, Lcom/android/server/pm/dex/PackageDynamicCodeLoading$PackageDynamicCode;->mFileUsageMap:Ljava/util/Map;
 
-    invoke-interface {v0}, Ljava/util/Map;->values()Ljava/util/Collection;
+    invoke-interface {v1}, Ljava/util/Map;->values()Ljava/util/Collection;
 
-    move-result-object v0
+    move-result-object v1
 
-    invoke-interface {v0}, Ljava/util/Collection;->iterator()Ljava/util/Iterator;
+    invoke-interface {v1}, Ljava/util/Collection;->iterator()Ljava/util/Iterator;
 
-    move-result-object v0
-
-    const/4 v1, 0x0
+    move-result-object v1
 
     .line 554
-    :goto_c
-    invoke-interface {v0}, Ljava/util/Iterator;->hasNext()Z
+    .local v1, "it":Ljava/util/Iterator;, "Ljava/util/Iterator<Lcom/android/server/pm/dex/PackageDynamicCodeLoading$DynamicCodeFile;>;"
+    :goto_b
+    invoke-interface {v1}, Ljava/util/Iterator;->hasNext()Z
 
     move-result v2
 
-    if-eqz v2, :cond_21
+    if-eqz v2, :cond_20
 
     .line 555
-    invoke-interface {v0}, Ljava/util/Iterator;->next()Ljava/lang/Object;
+    invoke-interface {v1}, Ljava/util/Iterator;->next()Ljava/lang/Object;
 
     move-result-object v2
 
     check-cast v2, Lcom/android/server/pm/dex/PackageDynamicCodeLoading$DynamicCodeFile;
 
     .line 556
-    iget v2, v2, Lcom/android/server/pm/dex/PackageDynamicCodeLoading$DynamicCodeFile;->mUserId:I
+    .local v2, "fileInfo":Lcom/android/server/pm/dex/PackageDynamicCodeLoading$DynamicCodeFile;
+    iget v3, v2, Lcom/android/server/pm/dex/PackageDynamicCodeLoading$DynamicCodeFile;->mUserId:I
 
-    if-ne v2, p1, :cond_20
+    if-ne v3, p1, :cond_1f
 
     .line 557
-    invoke-interface {v0}, Ljava/util/Iterator;->remove()V
+    invoke-interface {v1}, Ljava/util/Iterator;->remove()V
 
     .line 558
-    const/4 v1, 0x1
+    const/4 v0, 0x1
 
     .line 560
-    :cond_20
-    goto :goto_c
+    .end local v2  # "fileInfo":Lcom/android/server/pm/dex/PackageDynamicCodeLoading$DynamicCodeFile;
+    :cond_1f
+    goto :goto_b
 
     .line 561
-    :cond_21
-    return v1
+    :cond_20
+    return v0
 .end method
 
 .method private syncData(Ljava/util/Map;Ljava/util/Set;)V
-    .registers 9
+    .registers 10
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(",
@@ -396,6 +430,8 @@
     .end annotation
 
     .line 576
+    .local p1, "packageToUsersMap":Ljava/util/Map;, "Ljava/util/Map<Ljava/lang/String;Ljava/util/Set<Ljava/lang/Integer;>;>;"
+    .local p2, "owningPackageUsers":Ljava/util/Set;, "Ljava/util/Set<Ljava/lang/Integer;>;"
     iget-object v0, p0, Lcom/android/server/pm/dex/PackageDynamicCodeLoading$PackageDynamicCode;->mFileUsageMap:Ljava/util/Map;
 
     invoke-interface {v0}, Ljava/util/Map;->values()Ljava/util/Collection;
@@ -407,6 +443,7 @@
     move-result-object v0
 
     .line 577
+    .local v0, "fileIt":Ljava/util/Iterator;, "Ljava/util/Iterator<Lcom/android/server/pm/dex/PackageDynamicCodeLoading$DynamicCodeFile;>;"
     :goto_a
     invoke-interface {v0}, Ljava/util/Iterator;->hasNext()Z
 
@@ -422,9 +459,11 @@
     check-cast v1, Lcom/android/server/pm/dex/PackageDynamicCodeLoading$DynamicCodeFile;
 
     .line 579
+    .local v1, "fileInfo":Lcom/android/server/pm/dex/PackageDynamicCodeLoading$DynamicCodeFile;
     iget v2, v1, Lcom/android/server/pm/dex/PackageDynamicCodeLoading$DynamicCodeFile;->mUserId:I
 
     .line 580
+    .local v2, "fileUserId":I
     invoke-static {v2}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
 
     move-result-object v3
@@ -449,6 +488,7 @@
     move-result-object v3
 
     .line 586
+    .local v3, "loaderIt":Ljava/util/Iterator;, "Ljava/util/Iterator<Ljava/lang/String;>;"
     :goto_2c
     invoke-interface {v3}, Ljava/util/Iterator;->hasNext()Z
 
@@ -464,48 +504,55 @@
     check-cast v4, Ljava/lang/String;
 
     .line 588
+    .local v4, "loader":Ljava/lang/String;
     invoke-interface {p1, v4}, Ljava/util/Map;->get(Ljava/lang/Object;)Ljava/lang/Object;
 
-    move-result-object v4
+    move-result-object v5
 
-    check-cast v4, Ljava/util/Set;
+    check-cast v5, Ljava/util/Set;
 
     .line 589
-    if-eqz v4, :cond_4a
+    .local v5, "loadingPackageUsers":Ljava/util/Set;, "Ljava/util/Set<Ljava/lang/Integer;>;"
+    if-eqz v5, :cond_4a
 
     .line 590
     invoke-static {v2}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
 
-    move-result-object v5
+    move-result-object v6
 
-    invoke-interface {v4, v5}, Ljava/util/Set;->contains(Ljava/lang/Object;)Z
+    invoke-interface {v5, v6}, Ljava/util/Set;->contains(Ljava/lang/Object;)Z
 
-    move-result v4
+    move-result v6
 
-    if-nez v4, :cond_4d
+    if-nez v6, :cond_4d
 
     .line 591
     :cond_4a
     invoke-interface {v3}, Ljava/util/Iterator;->remove()V
 
     .line 593
+    .end local v4  # "loader":Ljava/lang/String;
+    .end local v5  # "loadingPackageUsers":Ljava/util/Set;, "Ljava/util/Set<Ljava/lang/Integer;>;"
     :cond_4d
     goto :goto_2c
 
     .line 594
     :cond_4e
-    iget-object v1, v1, Lcom/android/server/pm/dex/PackageDynamicCodeLoading$DynamicCodeFile;->mLoadingPackages:Ljava/util/Set;
+    iget-object v4, v1, Lcom/android/server/pm/dex/PackageDynamicCodeLoading$DynamicCodeFile;->mLoadingPackages:Ljava/util/Set;
 
-    invoke-interface {v1}, Ljava/util/Set;->isEmpty()Z
+    invoke-interface {v4}, Ljava/util/Set;->isEmpty()Z
 
-    move-result v1
+    move-result v4
 
-    if-eqz v1, :cond_59
+    if-eqz v4, :cond_59
 
     .line 595
     invoke-interface {v0}, Ljava/util/Iterator;->remove()V
 
     .line 598
+    .end local v1  # "fileInfo":Lcom/android/server/pm/dex/PackageDynamicCodeLoading$DynamicCodeFile;
+    .end local v2  # "fileUserId":I
+    .end local v3  # "loaderIt":Ljava/util/Iterator;, "Ljava/util/Iterator<Ljava/lang/String;>;"
     :cond_59
     :goto_59
     goto :goto_a

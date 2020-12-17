@@ -42,6 +42,8 @@
 
 .method synthetic constructor <init>(Lcom/google/android/startop/iorap/IorapForwardingService;Lcom/google/android/startop/iorap/IorapForwardingService$1;)V
     .registers 3
+    .param p1, "x0"  # Lcom/google/android/startop/iorap/IorapForwardingService;
+    .param p2, "x1"  # Lcom/google/android/startop/iorap/IorapForwardingService$1;
 
     .line 263
     invoke-direct {p0, p1}, Lcom/google/android/startop/iorap/IorapForwardingService$AppLaunchObserver;-><init>(Lcom/google/android/startop/iorap/IorapForwardingService;)V
@@ -53,6 +55,7 @@
 # virtual methods
 .method public synthetic lambda$onActivityLaunchCancelled$3$IorapForwardingService$AppLaunchObserver([B)V
     .registers 7
+    .param p1, "activity"  # [B
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -83,6 +86,7 @@
 
 .method public synthetic lambda$onActivityLaunchFinished$4$IorapForwardingService$AppLaunchObserver([B)V
     .registers 7
+    .param p1, "activity"  # [B
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -113,6 +117,8 @@
 
 .method public synthetic lambda$onActivityLaunched$2$IorapForwardingService$AppLaunchObserver([BI)V
     .registers 8
+    .param p1, "activity"  # [B
+    .param p2, "temperature"  # I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -173,6 +179,7 @@
 
 .method public synthetic lambda$onIntentStarted$0$IorapForwardingService$AppLaunchObserver(Landroid/content/Intent;)V
     .registers 7
+    .param p1, "intent"  # Landroid/content/Intent;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -203,6 +210,7 @@
 
 .method public onActivityLaunchCancelled([B)V
     .registers 6
+    .param p1, "activity"  # [B
 
     .line 314
     sget-boolean v0, Lcom/google/android/startop/iorap/IorapForwardingService;->DEBUG:Z
@@ -254,6 +262,7 @@
 
 .method public onActivityLaunchFinished([B)V
     .registers 6
+    .param p1, "activity"  # [B
 
     .line 327
     sget-boolean v0, Lcom/google/android/startop/iorap/IorapForwardingService;->DEBUG:Z
@@ -305,6 +314,8 @@
 
 .method public onActivityLaunched([BI)V
     .registers 7
+    .param p1, "activity"  # [B
+    .param p2, "temperature"  # I
 
     .line 301
     sget-boolean v0, Lcom/google/android/startop/iorap/IorapForwardingService;->DEBUG:Z
@@ -409,6 +420,7 @@
 
 .method public onIntentStarted(Landroid/content/Intent;)V
     .registers 6
+    .param p1, "intent"  # Landroid/content/Intent;
 
     .line 273
     iget-wide v0, p0, Lcom/google/android/startop/iorap/IorapForwardingService$AppLaunchObserver;->mSequenceId:J

@@ -32,6 +32,8 @@
 
 .method synthetic constructor <init>(Lcom/android/server/job/JobSchedulerService;Lcom/android/server/job/JobSchedulerService$1;)V
     .registers 3
+    .param p1, "x0"  # Lcom/android/server/job/JobSchedulerService;
+    .param p2, "x1"  # Lcom/android/server/job/JobSchedulerService$1;
 
     .line 322
     invoke-direct {p0, p1}, Lcom/android/server/job/JobSchedulerService$ThermalStatusListener;-><init>(Lcom/android/server/job/JobSchedulerService;)V
@@ -43,6 +45,7 @@
 # virtual methods
 .method public onStatusChange(I)V
     .registers 5
+    .param p1, "status"  # I
 
     .line 325
     iget-object v0, p0, Lcom/android/server/job/JobSchedulerService$ThermalStatusListener;->this$0:Lcom/android/server/job/JobSchedulerService;
@@ -59,15 +62,15 @@
 
     if-lt p1, v2, :cond_c
 
-    const/4 p1, 0x1
+    const/4 v2, 0x1
 
     goto :goto_d
 
     :cond_c
-    const/4 p1, 0x0
+    const/4 v2, 0x0
 
     :goto_d
-    invoke-static {v1, p1}, Lcom/android/server/job/JobSchedulerService;->access$002(Lcom/android/server/job/JobSchedulerService;Z)Z
+    invoke-static {v1, v2}, Lcom/android/server/job/JobSchedulerService;->access$002(Lcom/android/server/job/JobSchedulerService;Z)Z
 
     .line 327
     monitor-exit v0
@@ -75,21 +78,21 @@
     .catchall {:try_start_5 .. :try_end_11} :catchall_17
 
     .line 328
-    iget-object p1, p0, Lcom/android/server/job/JobSchedulerService$ThermalStatusListener;->this$0:Lcom/android/server/job/JobSchedulerService;
+    iget-object v0, p0, Lcom/android/server/job/JobSchedulerService$ThermalStatusListener;->this$0:Lcom/android/server/job/JobSchedulerService;
 
-    invoke-virtual {p1}, Lcom/android/server/job/JobSchedulerService;->onControllerStateChanged()V
+    invoke-virtual {v0}, Lcom/android/server/job/JobSchedulerService;->onControllerStateChanged()V
 
     .line 329
     return-void
 
     .line 327
     :catchall_17
-    move-exception p1
+    move-exception v1
 
     :try_start_18
     monitor-exit v0
     :try_end_19
     .catchall {:try_start_18 .. :try_end_19} :catchall_17
 
-    throw p1
+    throw v1
 .end method

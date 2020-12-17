@@ -48,6 +48,9 @@
 
 .method public static newDeviceSelect(Lcom/android/server/hdmi/HdmiControlService;ILandroid/hardware/hdmi/IHdmiControlCallback;)Lcom/android/server/hdmi/SelectRequestBuffer$DeviceSelectRequest;
     .registers 5
+    .param p0, "srv"  # Lcom/android/server/hdmi/HdmiControlService;
+    .param p1, "id"  # I
+    .param p2, "callback"  # Landroid/hardware/hdmi/IHdmiControlCallback;
 
     .line 127
     new-instance v0, Lcom/android/server/hdmi/SelectRequestBuffer$DeviceSelectRequest;
@@ -61,6 +64,9 @@
 
 .method public static newPortSelect(Lcom/android/server/hdmi/HdmiControlService;ILandroid/hardware/hdmi/IHdmiControlCallback;)Lcom/android/server/hdmi/SelectRequestBuffer$PortSelectRequest;
     .registers 5
+    .param p0, "srv"  # Lcom/android/server/hdmi/HdmiControlService;
+    .param p1, "id"  # I
+    .param p2, "callback"  # Landroid/hardware/hdmi/IHdmiControlCallback;
 
     .line 132
     new-instance v0, Lcom/android/server/hdmi/SelectRequestBuffer$PortSelectRequest;
@@ -107,6 +113,7 @@
 
 .method public set(Lcom/android/server/hdmi/SelectRequestBuffer$SelectRequest;)V
     .registers 2
+    .param p1, "request"  # Lcom/android/server/hdmi/SelectRequestBuffer$SelectRequest;
 
     .line 140
     iput-object p1, p0, Lcom/android/server/hdmi/SelectRequestBuffer;->mRequest:Lcom/android/server/hdmi/SelectRequestBuffer$SelectRequest;

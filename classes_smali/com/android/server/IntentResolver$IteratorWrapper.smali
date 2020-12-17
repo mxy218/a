@@ -58,6 +58,8 @@
     .end annotation
 
     .line 344
+    .local p0, "this":Lcom/android/server/IntentResolver$IteratorWrapper;, "Lcom/android/server/IntentResolver<TF;TR;>.IteratorWrapper;"
+    .local p2, "it":Ljava/util/Iterator;, "Ljava/util/Iterator<TF;>;"
     iput-object p1, p0, Lcom/android/server/IntentResolver$IteratorWrapper;->this$0:Lcom/android/server/IntentResolver;
 
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -75,6 +77,7 @@
     .registers 2
 
     .line 349
+    .local p0, "this":Lcom/android/server/IntentResolver$IteratorWrapper;, "Lcom/android/server/IntentResolver<TF;TR;>.IteratorWrapper;"
     iget-object v0, p0, Lcom/android/server/IntentResolver$IteratorWrapper;->mI:Ljava/util/Iterator;
 
     invoke-interface {v0}, Ljava/util/Iterator;->hasNext()Z
@@ -93,6 +96,7 @@
     .end annotation
 
     .line 353
+    .local p0, "this":Lcom/android/server/IntentResolver$IteratorWrapper;, "Lcom/android/server/IntentResolver<TF;TR;>.IteratorWrapper;"
     iget-object v0, p0, Lcom/android/server/IntentResolver$IteratorWrapper;->mI:Ljava/util/Iterator;
 
     invoke-interface {v0}, Ljava/util/Iterator;->next()Ljava/lang/Object;
@@ -110,6 +114,7 @@
     .registers 2
 
     .line 340
+    .local p0, "this":Lcom/android/server/IntentResolver$IteratorWrapper;, "Lcom/android/server/IntentResolver<TF;TR;>.IteratorWrapper;"
     invoke-virtual {p0}, Lcom/android/server/IntentResolver$IteratorWrapper;->next()Landroid/content/IntentFilter;
 
     move-result-object v0
@@ -121,6 +126,7 @@
     .registers 3
 
     .line 357
+    .local p0, "this":Lcom/android/server/IntentResolver$IteratorWrapper;, "Lcom/android/server/IntentResolver<TF;TR;>.IteratorWrapper;"
     iget-object v0, p0, Lcom/android/server/IntentResolver$IteratorWrapper;->mCur:Landroid/content/IntentFilter;
 
     if-eqz v0, :cond_9

@@ -30,6 +30,8 @@
 # direct methods
 .method private constructor <init>(Lcom/android/server/autofill/RemoteAugmentedAutofillService;I)V
     .registers 3
+    .param p1, "service"  # Lcom/android/server/autofill/RemoteAugmentedAutofillService;
+    .param p2, "sessionId"  # I
 
     .line 169
     invoke-direct {p0, p1}, Lcom/android/internal/infra/AbstractRemoteService$PendingRequest;-><init>(Lcom/android/internal/infra/AbstractRemoteService;)V
@@ -43,6 +45,9 @@
 
 .method synthetic constructor <init>(Lcom/android/server/autofill/RemoteAugmentedAutofillService;ILcom/android/server/autofill/RemoteAugmentedAutofillService$1;)V
     .registers 4
+    .param p1, "x0"  # Lcom/android/server/autofill/RemoteAugmentedAutofillService;
+    .param p2, "x1"  # I
+    .param p3, "x2"  # Lcom/android/server/autofill/RemoteAugmentedAutofillService$1;
 
     .line 164
     invoke-direct {p0, p1, p2}, Lcom/android/server/autofill/RemoteAugmentedAutofillService$MyPendingRequest;-><init>(Lcom/android/server/autofill/RemoteAugmentedAutofillService;I)V

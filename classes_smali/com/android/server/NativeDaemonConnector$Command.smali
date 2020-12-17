@@ -30,7 +30,9 @@
 
 # direct methods
 .method public varargs constructor <init>(Ljava/lang/String;[Ljava/lang/Object;)V
-    .registers 5
+    .registers 6
+    .param p1, "cmd"  # Ljava/lang/String;
+    .param p2, "args"  # [Ljava/lang/Object;
 
     .line 575
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -46,20 +48,22 @@
     iput-object p1, p0, Lcom/android/server/NativeDaemonConnector$Command;->mCmd:Ljava/lang/String;
 
     .line 577
-    array-length p1, p2
+    array-length v0, p2
 
-    const/4 v0, 0x0
+    const/4 v1, 0x0
 
     :goto_d
-    if-ge v0, p1, :cond_17
+    if-ge v1, v0, :cond_17
 
-    aget-object v1, p2, v0
+    aget-object v2, p2, v1
 
     .line 578
-    invoke-virtual {p0, v1}, Lcom/android/server/NativeDaemonConnector$Command;->appendArg(Ljava/lang/Object;)Lcom/android/server/NativeDaemonConnector$Command;
+    .local v2, "arg":Ljava/lang/Object;
+    invoke-virtual {p0, v2}, Lcom/android/server/NativeDaemonConnector$Command;->appendArg(Ljava/lang/Object;)Lcom/android/server/NativeDaemonConnector$Command;
 
     .line 577
-    add-int/lit8 v0, v0, 0x1
+    .end local v2  # "arg":Ljava/lang/Object;
+    add-int/lit8 v1, v1, 0x1
 
     goto :goto_d
 
@@ -69,27 +73,30 @@
 .end method
 
 .method static synthetic access$000(Lcom/android/server/NativeDaemonConnector$Command;)Ljava/lang/String;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/NativeDaemonConnector$Command;
 
     .line 571
-    iget-object p0, p0, Lcom/android/server/NativeDaemonConnector$Command;->mCmd:Ljava/lang/String;
+    iget-object v0, p0, Lcom/android/server/NativeDaemonConnector$Command;->mCmd:Ljava/lang/String;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$100(Lcom/android/server/NativeDaemonConnector$Command;)Ljava/util/ArrayList;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/NativeDaemonConnector$Command;
 
     .line 571
-    iget-object p0, p0, Lcom/android/server/NativeDaemonConnector$Command;->mArguments:Ljava/util/ArrayList;
+    iget-object v0, p0, Lcom/android/server/NativeDaemonConnector$Command;->mArguments:Ljava/util/ArrayList;
 
-    return-object p0
+    return-object v0
 .end method
 
 
 # virtual methods
 .method public appendArg(Ljava/lang/Object;)Lcom/android/server/NativeDaemonConnector$Command;
     .registers 3
+    .param p1, "arg"  # Ljava/lang/Object;
 
     .line 583
     iget-object v0, p0, Lcom/android/server/NativeDaemonConnector$Command;->mArguments:Ljava/util/ArrayList;

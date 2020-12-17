@@ -18,7 +18,7 @@
 .method private constructor <init>()V
     .registers 1
 
-    .line 2755
+    .line 2709
     invoke-direct {p0}, Landroid/os/IThermalEventListener$Stub;-><init>()V
 
     return-void
@@ -26,8 +26,9 @@
 
 .method synthetic constructor <init>(Lcom/android/server/stats/StatsCompanionService$1;)V
     .registers 2
+    .param p1, "x0"  # Lcom/android/server/stats/StatsCompanionService$1;
 
-    .line 2755
+    .line 2709
     invoke-direct {p0}, Lcom/android/server/stats/StatsCompanionService$ThermalEventListener;-><init>()V
 
     return-void
@@ -36,14 +37,15 @@
 
 # virtual methods
 .method public notifyThrottling(Landroid/os/Temperature;)V
-    .registers 6
+    .registers 7
+    .param p1, "temp"  # Landroid/os/Temperature;
 
-    .line 2758
+    .line 2712
     invoke-virtual {p1}, Landroid/os/Temperature;->getType()I
 
     move-result v0
 
-    .line 2759
+    .line 2713
     invoke-virtual {p1}, Landroid/os/Temperature;->getName()Ljava/lang/String;
 
     move-result-object v1
@@ -60,13 +62,13 @@
 
     invoke-virtual {p1}, Landroid/os/Temperature;->getStatus()I
 
-    move-result p1
+    move-result v3
 
-    .line 2758
-    const/16 v3, 0xbd
+    .line 2712
+    const/16 v4, 0xbd
 
-    invoke-static {v3, v0, v1, v2, p1}, Landroid/util/StatsLog;->write(IILjava/lang/String;II)I
+    invoke-static {v4, v0, v1, v2, v3}, Landroid/util/StatsLog;->write(IILjava/lang/String;II)I
 
-    .line 2760
+    .line 2714
     return-void
 .end method

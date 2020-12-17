@@ -65,8 +65,6 @@
 
 .field static final NTWK_BLOCKED_BLACKLIST:I = 0x2
 
-.field static final NTWK_BLOCKED_ISOLATED:I = 0x8
-
 .field static final NTWK_BLOCKED_POWER:I = 0x0
 
 .field static final TAG:Ljava/lang/String; = "NetworkPolicy"
@@ -86,7 +84,7 @@
 .method static constructor <clinit>()V
     .registers 3
 
-    .line 47
+    .line 45
     const-string v0, "NetworkPolicy"
 
     const/4 v1, 0x3
@@ -97,7 +95,7 @@
 
     sput-boolean v1, Lcom/android/server/net/NetworkPolicyLogger;->LOGD:Z
 
-    .line 48
+    .line 46
     const/4 v1, 0x2
 
     invoke-static {v0, v1}, Landroid/util/Log;->isLoggable(Ljava/lang/String;I)Z
@@ -106,7 +104,7 @@
 
     sput-boolean v0, Lcom/android/server/net/NetworkPolicyLogger;->LOGV:Z
 
-    .line 51
+    .line 49
     invoke-static {}, Landroid/app/ActivityManager;->isLowRamDeviceStatic()Z
 
     move-result v0
@@ -127,7 +125,7 @@
     :goto_1d
     sput v0, Lcom/android/server/net/NetworkPolicyLogger;->MAX_LOG_SIZE:I
 
-    .line 53
+    .line 51
     invoke-static {}, Landroid/app/ActivityManager;->isLowRamDeviceStatic()Z
 
     move-result v0
@@ -142,17 +140,17 @@
     :goto_27
     sput v1, Lcom/android/server/net/NetworkPolicyLogger;->MAX_NETWORK_BLOCKED_LOG_SIZE:I
 
-    .line 52
+    .line 50
     return-void
 .end method
 
 .method public constructor <init>()V
     .registers 3
 
-    .line 44
+    .line 42
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
-    .line 81
+    .line 78
     new-instance v0, Lcom/android/server/net/NetworkPolicyLogger$LogBuffer;
 
     sget v1, Lcom/android/server/net/NetworkPolicyLogger;->MAX_NETWORK_BLOCKED_LOG_SIZE:I
@@ -161,7 +159,7 @@
 
     iput-object v0, p0, Lcom/android/server/net/NetworkPolicyLogger;->mNetworkBlockedBuffer:Lcom/android/server/net/NetworkPolicyLogger$LogBuffer;
 
-    .line 82
+    .line 79
     new-instance v0, Lcom/android/server/net/NetworkPolicyLogger$LogBuffer;
 
     sget v1, Lcom/android/server/net/NetworkPolicyLogger;->MAX_LOG_SIZE:I
@@ -170,7 +168,7 @@
 
     iput-object v0, p0, Lcom/android/server/net/NetworkPolicyLogger;->mUidStateChangeBuffer:Lcom/android/server/net/NetworkPolicyLogger$LogBuffer;
 
-    .line 83
+    .line 80
     new-instance v0, Lcom/android/server/net/NetworkPolicyLogger$LogBuffer;
 
     sget v1, Lcom/android/server/net/NetworkPolicyLogger;->MAX_LOG_SIZE:I
@@ -179,7 +177,7 @@
 
     iput-object v0, p0, Lcom/android/server/net/NetworkPolicyLogger;->mEventsBuffer:Lcom/android/server/net/NetworkPolicyLogger$LogBuffer;
 
-    .line 85
+    .line 82
     new-instance v0, Ljava/lang/Object;
 
     invoke-direct {v0}, Ljava/lang/Object;-><init>()V
@@ -190,141 +188,165 @@
 .end method
 
 .method static synthetic access$000(I)Ljava/lang/String;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # I
 
-    .line 44
+    .line 42
     invoke-static {p0}, Lcom/android/server/net/NetworkPolicyLogger;->getBlockedReason(I)Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v0
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$100(III)Ljava/lang/String;
-    .registers 3
+    .registers 4
+    .param p0, "x0"  # I
+    .param p1, "x1"  # I
+    .param p2, "x2"  # I
 
-    .line 44
+    .line 42
     invoke-static {p0, p1, p2}, Lcom/android/server/net/NetworkPolicyLogger;->getPolicyChangedLog(III)Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v0
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$1000(III)Ljava/lang/String;
-    .registers 3
+    .registers 4
+    .param p0, "x0"  # I
+    .param p1, "x1"  # I
+    .param p2, "x2"  # I
 
-    .line 44
+    .line 42
     invoke-static {p0, p1, p2}, Lcom/android/server/net/NetworkPolicyLogger;->getUidFirewallRuleChangedLog(III)Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v0
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$1100(IZ)Ljava/lang/String;
-    .registers 2
+    .registers 3
+    .param p0, "x0"  # I
+    .param p1, "x1"  # Z
 
-    .line 44
+    .line 42
     invoke-static {p0, p1}, Lcom/android/server/net/NetworkPolicyLogger;->getFirewallChainEnabledLog(IZ)Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v0
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$200(IZ)Ljava/lang/String;
-    .registers 2
+    .registers 3
+    .param p0, "x0"  # I
+    .param p1, "x1"  # Z
 
-    .line 44
+    .line 42
     invoke-static {p0, p1}, Lcom/android/server/net/NetworkPolicyLogger;->getMeterednessChangedLog(IZ)Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v0
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$300(I)Ljava/lang/String;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # I
 
-    .line 44
+    .line 42
     invoke-static {p0}, Lcom/android/server/net/NetworkPolicyLogger;->getUserRemovedLog(I)Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v0
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$400(ZZ)Ljava/lang/String;
-    .registers 2
+    .registers 3
+    .param p0, "x0"  # Z
+    .param p1, "x1"  # Z
 
-    .line 44
+    .line 42
     invoke-static {p0, p1}, Lcom/android/server/net/NetworkPolicyLogger;->getRestrictBackgroundChangedLog(ZZ)Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v0
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$500(Z)Ljava/lang/String;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Z
 
-    .line 44
+    .line 42
     invoke-static {p0}, Lcom/android/server/net/NetworkPolicyLogger;->getDeviceIdleModeEnabled(Z)Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v0
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$600(IZ)Ljava/lang/String;
-    .registers 2
+    .registers 3
+    .param p0, "x0"  # I
+    .param p1, "x1"  # Z
 
-    .line 44
+    .line 42
     invoke-static {p0, p1}, Lcom/android/server/net/NetworkPolicyLogger;->getAppIdleChangedLog(IZ)Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v0
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$700(IZ)Ljava/lang/String;
-    .registers 2
+    .registers 3
+    .param p0, "x0"  # I
+    .param p1, "x1"  # Z
 
-    .line 44
+    .line 42
     invoke-static {p0, p1}, Lcom/android/server/net/NetworkPolicyLogger;->getAppIdleWlChangedLog(IZ)Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v0
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$800(Z)Ljava/lang/String;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Z
 
-    .line 44
+    .line 42
     invoke-static {p0}, Lcom/android/server/net/NetworkPolicyLogger;->getParoleStateChanged(Z)Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v0
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$900(IZ)Ljava/lang/String;
-    .registers 2
+    .registers 3
+    .param p0, "x0"  # I
+    .param p1, "x1"  # Z
 
-    .line 44
+    .line 42
     invoke-static {p0, p1}, Lcom/android/server/net/NetworkPolicyLogger;->getTempPowerSaveWlChangedLog(IZ)Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v0
 
-    return-object p0
+    return-object v0
 .end method
 
 .method private static getAppIdleChangedLog(IZ)Ljava/lang/String;
     .registers 4
+    .param p0, "uid"  # I
+    .param p1, "idle"  # Z
 
-    .line 272
+    .line 267
     new-instance v0, Ljava/lang/StringBuilder;
 
     invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
@@ -335,23 +357,25 @@
 
     invoke-virtual {v0, p0}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    const-string p0, ": "
+    const-string v1, ": "
 
-    invoke-virtual {v0, p0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Z)Ljava/lang/StringBuilder;
 
     invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v0
 
-    return-object p0
+    return-object v0
 .end method
 
 .method private static getAppIdleWlChangedLog(IZ)Ljava/lang/String;
     .registers 4
+    .param p0, "uid"  # I
+    .param p1, "isWhitelisted"  # Z
 
-    .line 276
+    .line 271
     new-instance v0, Ljava/lang/StringBuilder;
 
     invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
@@ -362,99 +386,94 @@
 
     invoke-virtual {v0, p0}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    const-string p0, ": "
+    const-string v1, ": "
 
-    invoke-virtual {v0, p0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Z)Ljava/lang/StringBuilder;
 
     invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v0
 
-    return-object p0
+    return-object v0
 .end method
 
 .method private static getBlockedReason(I)Ljava/lang/String;
-    .registers 1
+    .registers 2
+    .param p0, "reason"  # I
 
-    .line 227
-    packed-switch p0, :pswitch_data_22
+    .line 224
+    packed-switch p0, :pswitch_data_20
 
-    .line 245
-    :pswitch_3  #0x7
+    .line 240
     invoke-static {p0}, Ljava/lang/String;->valueOf(I)Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v0
 
-    return-object p0
+    return-object v0
 
-    .line 243
-    :pswitch_8  #0x8
-    const-string p0, "blocked by isolation"
+    .line 238
+    :pswitch_8  #0x6
+    const-string v0, "allowed by default"
 
-    return-object p0
+    return-object v0
 
-    .line 241
-    :pswitch_b  #0x6
-    const-string p0, "allowed by default"
+    .line 236
+    :pswitch_b  #0x5
+    const-string v0, "blocked when background is restricted"
 
-    return-object p0
+    return-object v0
 
-    .line 239
-    :pswitch_e  #0x5
-    const-string p0, "blocked when background is restricted"
+    .line 234
+    :pswitch_e  #0x4
+    const-string/jumbo v0, "temporary whitelisted on metered network"
 
-    return-object p0
+    return-object v0
 
-    .line 237
-    :pswitch_11  #0x4
-    const-string/jumbo p0, "temporary whitelisted on metered network"
+    .line 232
+    :pswitch_12  #0x3
+    const-string/jumbo v0, "whitelisted on metered network"
 
-    return-object p0
+    return-object v0
 
-    .line 235
-    :pswitch_15  #0x3
-    const-string/jumbo p0, "whitelisted on metered network"
+    .line 230
+    :pswitch_16  #0x2
+    const-string v0, "blacklisted on metered network"
 
-    return-object p0
+    return-object v0
 
-    .line 233
-    :pswitch_19  #0x2
-    const-string p0, "blacklisted on metered network"
+    .line 228
+    :pswitch_19  #0x1
+    const-string v0, "allowed on unmetered network"
 
-    return-object p0
+    return-object v0
 
-    .line 231
-    :pswitch_1c  #0x1
-    const-string p0, "allowed on unmetered network"
+    .line 226
+    :pswitch_1c  #0x0
+    const-string v0, "blocked by power restrictions"
 
-    return-object p0
+    return-object v0
 
-    .line 229
-    :pswitch_1f  #0x0
-    const-string p0, "blocked by power restrictions"
+    nop
 
-    return-object p0
-
-    :pswitch_data_22
+    :pswitch_data_20
     .packed-switch 0x0
-        :pswitch_1f  #00000000
-        :pswitch_1c  #00000001
-        :pswitch_19  #00000002
-        :pswitch_15  #00000003
-        :pswitch_11  #00000004
-        :pswitch_e  #00000005
-        :pswitch_b  #00000006
-        :pswitch_3  #00000007
-        :pswitch_8  #00000008
+        :pswitch_1c  #00000000
+        :pswitch_19  #00000001
+        :pswitch_16  #00000002
+        :pswitch_12  #00000003
+        :pswitch_e  #00000004
+        :pswitch_b  #00000005
+        :pswitch_8  #00000006
     .end packed-switch
 .end method
 
 .method private static getDeviceIdleModeEnabled(Z)Ljava/lang/String;
     .registers 3
+    .param p0, "enabled"  # Z
 
-    .line 268
+    .line 263
     new-instance v0, Ljava/lang/StringBuilder;
 
     invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
@@ -467,15 +486,17 @@
 
     invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v0
 
-    return-object p0
+    return-object v0
 .end method
 
 .method private static getFirewallChainEnabledLog(IZ)Ljava/lang/String;
     .registers 4
+    .param p0, "chain"  # I
+    .param p1, "enabled"  # Z
 
-    .line 293
+    .line 288
     new-instance v0, Ljava/lang/StringBuilder;
 
     invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
@@ -486,79 +507,71 @@
 
     invoke-static {p0}, Lcom/android/server/net/NetworkPolicyLogger;->getFirewallChainName(I)Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v1
 
-    invoke-virtual {v0, p0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string p0, " state: "
+    const-string v1, " state: "
 
-    invoke-virtual {v0, p0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Z)Ljava/lang/StringBuilder;
 
     invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v0
 
-    return-object p0
+    return-object v0
 .end method
 
 .method private static getFirewallChainName(I)Ljava/lang/String;
     .registers 2
+    .param p0, "chain"  # I
 
-    .line 297
+    .line 292
     const/4 v0, 0x1
 
-    if-eq p0, v0, :cond_1c
+    if-eq p0, v0, :cond_16
 
     const/4 v0, 0x2
 
-    if-eq p0, v0, :cond_18
+    if-eq p0, v0, :cond_12
 
     const/4 v0, 0x3
 
-    if-eq p0, v0, :cond_14
+    if-eq p0, v0, :cond_e
 
-    const/4 v0, 0x4
-
-    if-eq p0, v0, :cond_11
-
-    .line 307
+    .line 300
     invoke-static {p0}, Ljava/lang/String;->valueOf(I)Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v0
 
-    return-object p0
+    return-object v0
 
-    .line 305
-    :cond_11
-    const-string p0, "isolated"
+    .line 298
+    :cond_e
+    const-string/jumbo v0, "powersave"
 
-    return-object p0
+    return-object v0
 
-    .line 303
-    :cond_14
-    const-string/jumbo p0, "powersave"
+    .line 296
+    :cond_12
+    const-string/jumbo v0, "standby"
 
-    return-object p0
+    return-object v0
 
-    .line 301
-    :cond_18
-    const-string/jumbo p0, "standby"
+    .line 294
+    :cond_16
+    const-string v0, "dozable"
 
-    return-object p0
-
-    .line 299
-    :cond_1c
-    const-string p0, "dozable"
-
-    return-object p0
+    return-object v0
 .end method
 
 .method private static getFirewallRuleName(I)Ljava/lang/String;
     .registers 2
+    .param p0, "rule"  # I
 
-    .line 312
+    .line 305
     if-eqz p0, :cond_13
 
     const/4 v0, 0x1
@@ -569,36 +582,38 @@
 
     if-eq p0, v0, :cond_d
 
-    .line 320
+    .line 313
     invoke-static {p0}, Ljava/lang/String;->valueOf(I)Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v0
 
-    return-object p0
+    return-object v0
 
-    .line 318
+    .line 311
     :cond_d
-    const-string p0, "deny"
+    const-string v0, "deny"
 
-    return-object p0
+    return-object v0
 
-    .line 316
+    .line 309
     :cond_10
-    const-string p0, "allow"
+    const-string v0, "allow"
 
-    return-object p0
+    return-object v0
 
-    .line 314
+    .line 307
     :cond_13
-    const-string p0, "default"
+    const-string v0, "default"
 
-    return-object p0
+    return-object v0
 .end method
 
 .method private static getMeterednessChangedLog(IZ)Ljava/lang/String;
     .registers 4
+    .param p0, "netId"  # I
+    .param p1, "newMetered"  # Z
 
-    .line 256
+    .line 251
     new-instance v0, Ljava/lang/StringBuilder;
 
     invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
@@ -609,23 +624,24 @@
 
     invoke-virtual {v0, p0}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    const-string p0, " changed to "
+    const-string v1, " changed to "
 
-    invoke-virtual {v0, p0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Z)Ljava/lang/StringBuilder;
 
     invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v0
 
-    return-object p0
+    return-object v0
 .end method
 
 .method private static getParoleStateChanged(Z)Ljava/lang/String;
     .registers 3
+    .param p0, "paroleOn"  # Z
 
-    .line 280
+    .line 275
     new-instance v0, Ljava/lang/StringBuilder;
 
     invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
@@ -638,15 +654,18 @@
 
     invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v0
 
-    return-object p0
+    return-object v0
 .end method
 
 .method private static getPolicyChangedLog(III)Ljava/lang/String;
     .registers 5
+    .param p0, "uid"  # I
+    .param p1, "oldPolicy"  # I
+    .param p2, "newPolicy"  # I
 
-    .line 250
+    .line 245
     new-instance v0, Ljava/lang/StringBuilder;
 
     invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
@@ -657,40 +676,42 @@
 
     invoke-virtual {v0, p0}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    const-string p0, " changed from "
+    const-string v1, " changed from "
 
-    invoke-virtual {v0, p0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    .line 251
+    .line 246
     invoke-static {p1}, Landroid/net/NetworkPolicyManager;->uidPoliciesToString(I)Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v1
 
-    invoke-virtual {v0, p0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string p0, " to "
+    const-string v1, " to "
 
-    invoke-virtual {v0, p0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    .line 252
+    .line 247
     invoke-static {p2}, Landroid/net/NetworkPolicyManager;->uidPoliciesToString(I)Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v1
 
-    invoke-virtual {v0, p0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v0
 
-    .line 250
-    return-object p0
+    .line 245
+    return-object v0
 .end method
 
 .method private static getRestrictBackgroundChangedLog(ZZ)Ljava/lang/String;
     .registers 4
+    .param p0, "oldValue"  # Z
+    .param p1, "newValue"  # Z
 
-    .line 264
+    .line 259
     new-instance v0, Ljava/lang/StringBuilder;
 
     invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
@@ -701,23 +722,25 @@
 
     invoke-virtual {v0, p0}, Ljava/lang/StringBuilder;->append(Z)Ljava/lang/StringBuilder;
 
-    const-string p0, "->"
+    const-string v1, "->"
 
-    invoke-virtual {v0, p0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Z)Ljava/lang/StringBuilder;
 
     invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v0
 
-    return-object p0
+    return-object v0
 .end method
 
 .method private static getTempPowerSaveWlChangedLog(IZ)Ljava/lang/String;
     .registers 4
+    .param p0, "appId"  # I
+    .param p1, "added"  # Z
 
-    .line 284
+    .line 279
     new-instance v0, Ljava/lang/StringBuilder;
 
     invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
@@ -728,66 +751,70 @@
 
     invoke-virtual {v0, p0}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    const-string p0, " changed to: "
+    const-string v1, " changed to: "
 
-    invoke-virtual {v0, p0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Z)Ljava/lang/StringBuilder;
 
     invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v0
 
-    return-object p0
+    return-object v0
 .end method
 
 .method private static getUidFirewallRuleChangedLog(III)Ljava/lang/String;
-    .registers 5
+    .registers 6
+    .param p0, "chain"  # I
+    .param p1, "uid"  # I
+    .param p2, "rule"  # I
 
-    .line 288
+    .line 283
     const/4 v0, 0x3
 
     new-array v0, v0, [Ljava/lang/Object;
 
-    .line 289
+    .line 284
     invoke-static {p1}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
 
-    move-result-object p1
+    move-result-object v1
 
-    const/4 v1, 0x0
+    const/4 v2, 0x0
 
-    aput-object p1, v0, v1
+    aput-object v1, v0, v2
 
     invoke-static {p0}, Lcom/android/server/net/NetworkPolicyLogger;->getFirewallChainName(I)Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v1
 
-    const/4 p1, 0x1
+    const/4 v2, 0x1
 
-    aput-object p0, v0, p1
+    aput-object v1, v0, v2
 
     invoke-static {p2}, Lcom/android/server/net/NetworkPolicyLogger;->getFirewallRuleName(I)Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v1
 
-    const/4 p1, 0x2
+    const/4 v2, 0x2
 
-    aput-object p0, v0, p1
+    aput-object v1, v0, v2
 
-    .line 288
-    const-string p0, "Firewall rule changed: %d-%s-%s"
+    .line 283
+    const-string v1, "Firewall rule changed: %d-%s-%s"
 
-    invoke-static {p0, v0}, Ljava/lang/String;->format(Ljava/lang/String;[Ljava/lang/Object;)Ljava/lang/String;
+    invoke-static {v1, v0}, Ljava/lang/String;->format(Ljava/lang/String;[Ljava/lang/Object;)Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v0
 
-    return-object p0
+    return-object v0
 .end method
 
 .method private static getUserRemovedLog(I)Ljava/lang/String;
     .registers 3
+    .param p0, "userId"  # I
 
-    .line 260
+    .line 255
     new-instance v0, Ljava/lang/StringBuilder;
 
     invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
@@ -800,22 +827,24 @@
 
     invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v0
 
-    return-object p0
+    return-object v0
 .end method
 
 
 # virtual methods
 .method appIdleStateChanged(IZ)V
     .registers 6
+    .param p1, "uid"  # I
+    .param p2, "idle"  # Z
 
-    .line 146
+    .line 143
     iget-object v0, p0, Lcom/android/server/net/NetworkPolicyLogger;->mLock:Ljava/lang/Object;
 
     monitor-enter v0
 
-    .line 147
+    .line 144
     :try_start_3
     sget-boolean v1, Lcom/android/server/net/NetworkPolicyLogger;->LOGD:Z
 
@@ -829,38 +858,40 @@
 
     invoke-static {v1, v2}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 148
+    .line 145
     :cond_10
     iget-object v1, p0, Lcom/android/server/net/NetworkPolicyLogger;->mEventsBuffer:Lcom/android/server/net/NetworkPolicyLogger$LogBuffer;
 
     invoke-virtual {v1, p1, p2}, Lcom/android/server/net/NetworkPolicyLogger$LogBuffer;->appIdleStateChanged(IZ)V
 
-    .line 149
+    .line 146
     monitor-exit v0
 
-    .line 150
+    .line 147
     return-void
 
-    .line 149
+    .line 146
     :catchall_17
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_19
     .catchall {:try_start_3 .. :try_end_19} :catchall_17
 
-    throw p1
+    throw v1
 .end method
 
 .method appIdleWlChanged(IZ)V
     .registers 6
+    .param p1, "uid"  # I
+    .param p2, "isWhitelisted"  # Z
 
-    .line 153
+    .line 150
     iget-object v0, p0, Lcom/android/server/net/NetworkPolicyLogger;->mLock:Ljava/lang/Object;
 
     monitor-enter v0
 
-    .line 154
+    .line 151
     :try_start_3
     sget-boolean v1, Lcom/android/server/net/NetworkPolicyLogger;->LOGD:Z
 
@@ -874,38 +905,39 @@
 
     invoke-static {v1, v2}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 155
+    .line 152
     :cond_10
     iget-object v1, p0, Lcom/android/server/net/NetworkPolicyLogger;->mEventsBuffer:Lcom/android/server/net/NetworkPolicyLogger$LogBuffer;
 
     invoke-virtual {v1, p1, p2}, Lcom/android/server/net/NetworkPolicyLogger$LogBuffer;->appIdleWlChanged(IZ)V
 
-    .line 156
+    .line 153
     monitor-exit v0
 
-    .line 157
+    .line 154
     return-void
 
-    .line 156
+    .line 153
     :catchall_17
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_19
     .catchall {:try_start_3 .. :try_end_19} :catchall_17
 
-    throw p1
+    throw v1
 .end method
 
 .method deviceIdleModeEnabled(Z)V
     .registers 5
+    .param p1, "enabled"  # Z
 
-    .line 139
+    .line 136
     iget-object v0, p0, Lcom/android/server/net/NetworkPolicyLogger;->mLock:Ljava/lang/Object;
 
     monitor-enter v0
 
-    .line 140
+    .line 137
     :try_start_3
     sget-boolean v1, Lcom/android/server/net/NetworkPolicyLogger;->LOGD:Z
 
@@ -919,121 +951,123 @@
 
     invoke-static {v1, v2}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 141
+    .line 138
     :cond_10
     iget-object v1, p0, Lcom/android/server/net/NetworkPolicyLogger;->mEventsBuffer:Lcom/android/server/net/NetworkPolicyLogger$LogBuffer;
 
     invoke-virtual {v1, p1}, Lcom/android/server/net/NetworkPolicyLogger$LogBuffer;->deviceIdleModeEnabled(Z)V
 
-    .line 142
+    .line 139
     monitor-exit v0
 
-    .line 143
+    .line 140
     return-void
 
-    .line 142
+    .line 139
     :catchall_17
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_19
     .catchall {:try_start_3 .. :try_end_19} :catchall_17
 
-    throw p1
+    throw v1
 .end method
 
 .method dumpLogs(Lcom/android/internal/util/IndentingPrintWriter;)V
     .registers 4
+    .param p1, "pw"  # Lcom/android/internal/util/IndentingPrintWriter;
 
-    .line 205
+    .line 202
     iget-object v0, p0, Lcom/android/server/net/NetworkPolicyLogger;->mLock:Ljava/lang/Object;
 
     monitor-enter v0
 
-    .line 206
+    .line 203
     :try_start_3
     invoke-virtual {p1}, Lcom/android/internal/util/IndentingPrintWriter;->println()V
 
-    .line 207
-    const-string v1, "mEventLogs (most recent first):"
+    .line 204
+    const-string/jumbo v1, "mEventLogs (most recent first):"
 
     invoke-virtual {p1, v1}, Lcom/android/internal/util/IndentingPrintWriter;->println(Ljava/lang/String;)V
 
-    .line 208
+    .line 205
     invoke-virtual {p1}, Lcom/android/internal/util/IndentingPrintWriter;->increaseIndent()Lcom/android/internal/util/IndentingPrintWriter;
 
-    .line 209
+    .line 206
     iget-object v1, p0, Lcom/android/server/net/NetworkPolicyLogger;->mEventsBuffer:Lcom/android/server/net/NetworkPolicyLogger$LogBuffer;
 
     invoke-virtual {v1, p1}, Lcom/android/server/net/NetworkPolicyLogger$LogBuffer;->reverseDump(Lcom/android/internal/util/IndentingPrintWriter;)V
 
-    .line 210
+    .line 207
     invoke-virtual {p1}, Lcom/android/internal/util/IndentingPrintWriter;->decreaseIndent()Lcom/android/internal/util/IndentingPrintWriter;
 
-    .line 212
+    .line 209
     invoke-virtual {p1}, Lcom/android/internal/util/IndentingPrintWriter;->println()V
 
-    .line 213
-    const-string v1, "mNetworkBlockedLogs (most recent first):"
+    .line 210
+    const-string/jumbo v1, "mNetworkBlockedLogs (most recent first):"
 
     invoke-virtual {p1, v1}, Lcom/android/internal/util/IndentingPrintWriter;->println(Ljava/lang/String;)V
 
-    .line 214
+    .line 211
     invoke-virtual {p1}, Lcom/android/internal/util/IndentingPrintWriter;->increaseIndent()Lcom/android/internal/util/IndentingPrintWriter;
 
-    .line 215
+    .line 212
     iget-object v1, p0, Lcom/android/server/net/NetworkPolicyLogger;->mNetworkBlockedBuffer:Lcom/android/server/net/NetworkPolicyLogger$LogBuffer;
 
     invoke-virtual {v1, p1}, Lcom/android/server/net/NetworkPolicyLogger$LogBuffer;->reverseDump(Lcom/android/internal/util/IndentingPrintWriter;)V
 
-    .line 216
+    .line 213
     invoke-virtual {p1}, Lcom/android/internal/util/IndentingPrintWriter;->decreaseIndent()Lcom/android/internal/util/IndentingPrintWriter;
 
-    .line 218
+    .line 215
     invoke-virtual {p1}, Lcom/android/internal/util/IndentingPrintWriter;->println()V
 
-    .line 219
-    const-string v1, "mUidStateChangeLogs (most recent first):"
+    .line 216
+    const-string/jumbo v1, "mUidStateChangeLogs (most recent first):"
 
     invoke-virtual {p1, v1}, Lcom/android/internal/util/IndentingPrintWriter;->println(Ljava/lang/String;)V
 
-    .line 220
+    .line 217
     invoke-virtual {p1}, Lcom/android/internal/util/IndentingPrintWriter;->increaseIndent()Lcom/android/internal/util/IndentingPrintWriter;
 
-    .line 221
+    .line 218
     iget-object v1, p0, Lcom/android/server/net/NetworkPolicyLogger;->mUidStateChangeBuffer:Lcom/android/server/net/NetworkPolicyLogger$LogBuffer;
 
     invoke-virtual {v1, p1}, Lcom/android/server/net/NetworkPolicyLogger$LogBuffer;->reverseDump(Lcom/android/internal/util/IndentingPrintWriter;)V
 
-    .line 222
+    .line 219
     invoke-virtual {p1}, Lcom/android/internal/util/IndentingPrintWriter;->decreaseIndent()Lcom/android/internal/util/IndentingPrintWriter;
 
-    .line 223
+    .line 220
     monitor-exit v0
 
-    .line 224
+    .line 221
     return-void
 
-    .line 223
-    :catchall_3e
-    move-exception p1
+    .line 220
+    :catchall_41
+    move-exception v1
 
     monitor-exit v0
-    :try_end_40
-    .catchall {:try_start_3 .. :try_end_40} :catchall_3e
+    :try_end_43
+    .catchall {:try_start_3 .. :try_end_43} :catchall_41
 
-    throw p1
+    throw v1
 .end method
 
 .method event(Ljava/lang/String;)V
     .registers 4
+    .param p1, "msg"  # Ljava/lang/String;
 
-    .line 103
+    .line 100
     iget-object v0, p0, Lcom/android/server/net/NetworkPolicyLogger;->mLock:Ljava/lang/Object;
 
     monitor-enter v0
 
-    .line 104
+    .line 101
     :try_start_3
     sget-boolean v1, Lcom/android/server/net/NetworkPolicyLogger;->LOGV:Z
 
@@ -1043,38 +1077,40 @@
 
     invoke-static {v1, p1}, Landroid/util/Slog;->v(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 105
+    .line 102
     :cond_c
     iget-object v1, p0, Lcom/android/server/net/NetworkPolicyLogger;->mEventsBuffer:Lcom/android/server/net/NetworkPolicyLogger$LogBuffer;
 
     invoke-virtual {v1, p1}, Lcom/android/server/net/NetworkPolicyLogger$LogBuffer;->event(Ljava/lang/String;)V
 
-    .line 106
+    .line 103
     monitor-exit v0
 
-    .line 107
+    .line 104
     return-void
 
-    .line 106
+    .line 103
     :catchall_13
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_15
     .catchall {:try_start_3 .. :try_end_15} :catchall_13
 
-    throw p1
+    throw v1
 .end method
 
 .method firewallChainEnabled(IZ)V
     .registers 6
+    .param p1, "chain"  # I
+    .param p2, "enabled"  # Z
 
-    .line 181
+    .line 178
     iget-object v0, p0, Lcom/android/server/net/NetworkPolicyLogger;->mLock:Ljava/lang/Object;
 
     monitor-enter v0
 
-    .line 182
+    .line 179
     :try_start_3
     sget-boolean v1, Lcom/android/server/net/NetworkPolicyLogger;->LOGD:Z
 
@@ -1088,38 +1124,41 @@
 
     invoke-static {v1, v2}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 183
+    .line 180
     :cond_10
     iget-object v1, p0, Lcom/android/server/net/NetworkPolicyLogger;->mEventsBuffer:Lcom/android/server/net/NetworkPolicyLogger$LogBuffer;
 
     invoke-virtual {v1, p1, p2}, Lcom/android/server/net/NetworkPolicyLogger$LogBuffer;->firewallChainEnabled(IZ)V
 
-    .line 184
+    .line 181
     monitor-exit v0
 
-    .line 185
+    .line 182
     return-void
 
-    .line 184
+    .line 181
     :catchall_17
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_19
     .catchall {:try_start_3 .. :try_end_19} :catchall_17
 
-    throw p1
+    throw v1
 .end method
 
 .method firewallRulesChanged(I[I[I)V
     .registers 7
+    .param p1, "chain"  # I
+    .param p2, "uids"  # [I
+    .param p3, "rules"  # [I
 
-    .line 188
+    .line 185
     iget-object v0, p0, Lcom/android/server/net/NetworkPolicyLogger;->mLock:Ljava/lang/Object;
 
     monitor-enter v0
 
-    .line 189
+    .line 186
     :try_start_3
     new-instance v1, Ljava/lang/StringBuilder;
 
@@ -1131,65 +1170,67 @@
 
     invoke-static {p1}, Lcom/android/server/net/NetworkPolicyLogger;->getFirewallChainName(I)Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v2
 
-    invoke-virtual {v1, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string p1, "; uids="
+    const-string v2, "; uids="
 
-    invoke-virtual {v1, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    .line 190
+    .line 187
     invoke-static {p2}, Ljava/util/Arrays;->toString([I)Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v2
 
-    invoke-virtual {v1, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string p1, "; rules="
+    const-string v2, "; rules="
 
-    invoke-virtual {v1, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-static {p3}, Ljava/util/Arrays;->toString([I)Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v2
 
-    invoke-virtual {v1, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v1
 
-    .line 191
-    sget-boolean p2, Lcom/android/server/net/NetworkPolicyLogger;->LOGD:Z
+    .line 188
+    .local v1, "log":Ljava/lang/String;
+    sget-boolean v2, Lcom/android/server/net/NetworkPolicyLogger;->LOGD:Z
 
-    if-eqz p2, :cond_39
+    if-eqz v2, :cond_39
 
-    const-string p2, "NetworkPolicy"
+    const-string v2, "NetworkPolicy"
 
-    invoke-static {p2, p1}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v2, v1}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 192
+    .line 189
     :cond_39
-    iget-object p2, p0, Lcom/android/server/net/NetworkPolicyLogger;->mEventsBuffer:Lcom/android/server/net/NetworkPolicyLogger$LogBuffer;
+    iget-object v2, p0, Lcom/android/server/net/NetworkPolicyLogger;->mEventsBuffer:Lcom/android/server/net/NetworkPolicyLogger$LogBuffer;
 
-    invoke-virtual {p2, p1}, Lcom/android/server/net/NetworkPolicyLogger$LogBuffer;->event(Ljava/lang/String;)V
+    invoke-virtual {v2, v1}, Lcom/android/server/net/NetworkPolicyLogger$LogBuffer;->event(Ljava/lang/String;)V
 
-    .line 193
+    .line 190
+    .end local v1  # "log":Ljava/lang/String;
     monitor-exit v0
 
-    .line 194
+    .line 191
     return-void
 
-    .line 193
+    .line 190
     :catchall_40
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_42
     .catchall {:try_start_3 .. :try_end_42} :catchall_40
 
-    throw p1
+    throw v1
 .end method
 
 .method meteredRestrictedPkgsChanged(Ljava/util/Set;)V
@@ -1203,12 +1244,13 @@
         }
     .end annotation
 
-    .line 197
+    .line 194
+    .local p1, "restrictedUids":Ljava/util/Set;, "Ljava/util/Set<Ljava/lang/Integer;>;"
     iget-object v0, p0, Lcom/android/server/net/NetworkPolicyLogger;->mLock:Ljava/lang/Object;
 
     monitor-enter v0
 
-    .line 198
+    .line 195
     :try_start_3
     new-instance v1, Ljava/lang/StringBuilder;
 
@@ -1222,49 +1264,53 @@
 
     invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v1
 
-    .line 199
-    sget-boolean v1, Lcom/android/server/net/NetworkPolicyLogger;->LOGD:Z
+    .line 196
+    .local v1, "log":Ljava/lang/String;
+    sget-boolean v2, Lcom/android/server/net/NetworkPolicyLogger;->LOGD:Z
 
-    if-eqz v1, :cond_1d
+    if-eqz v2, :cond_1d
 
-    const-string v1, "NetworkPolicy"
+    const-string v2, "NetworkPolicy"
 
-    invoke-static {v1, p1}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v2, v1}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 200
+    .line 197
     :cond_1d
-    iget-object v1, p0, Lcom/android/server/net/NetworkPolicyLogger;->mEventsBuffer:Lcom/android/server/net/NetworkPolicyLogger$LogBuffer;
+    iget-object v2, p0, Lcom/android/server/net/NetworkPolicyLogger;->mEventsBuffer:Lcom/android/server/net/NetworkPolicyLogger$LogBuffer;
 
-    invoke-virtual {v1, p1}, Lcom/android/server/net/NetworkPolicyLogger$LogBuffer;->event(Ljava/lang/String;)V
+    invoke-virtual {v2, v1}, Lcom/android/server/net/NetworkPolicyLogger$LogBuffer;->event(Ljava/lang/String;)V
 
-    .line 201
+    .line 198
+    .end local v1  # "log":Ljava/lang/String;
     monitor-exit v0
 
-    .line 202
+    .line 199
     return-void
 
-    .line 201
+    .line 198
     :catchall_24
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_26
     .catchall {:try_start_3 .. :try_end_26} :catchall_24
 
-    throw p1
+    throw v1
 .end method
 
 .method meterednessChanged(IZ)V
     .registers 6
+    .param p1, "netId"  # I
+    .param p2, "newMetered"  # Z
 
-    .line 117
+    .line 114
     iget-object v0, p0, Lcom/android/server/net/NetworkPolicyLogger;->mLock:Ljava/lang/Object;
 
     monitor-enter v0
 
-    .line 118
+    .line 115
     :try_start_3
     sget-boolean v1, Lcom/android/server/net/NetworkPolicyLogger;->LOGD:Z
 
@@ -1278,38 +1324,40 @@
 
     invoke-static {v1, v2}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 119
+    .line 116
     :cond_10
     iget-object v1, p0, Lcom/android/server/net/NetworkPolicyLogger;->mEventsBuffer:Lcom/android/server/net/NetworkPolicyLogger$LogBuffer;
 
     invoke-virtual {v1, p1, p2}, Lcom/android/server/net/NetworkPolicyLogger$LogBuffer;->meterednessChanged(IZ)V
 
-    .line 120
+    .line 117
     monitor-exit v0
 
-    .line 121
+    .line 118
     return-void
 
-    .line 120
+    .line 117
     :catchall_17
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_19
     .catchall {:try_start_3 .. :try_end_19} :catchall_17
 
-    throw p1
+    throw v1
 .end method
 
 .method networkBlocked(II)V
     .registers 7
+    .param p1, "uid"  # I
+    .param p2, "reason"  # I
 
-    .line 88
+    .line 85
     iget-object v0, p0, Lcom/android/server/net/NetworkPolicyLogger;->mLock:Ljava/lang/Object;
 
     monitor-enter v0
 
-    .line 89
+    .line 86
     :try_start_3
     sget-boolean v1, Lcom/android/server/net/NetworkPolicyLogger;->LOGD:Z
 
@@ -1339,38 +1387,39 @@
 
     invoke-static {v1, v2}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 90
+    .line 87
     :cond_24
     iget-object v1, p0, Lcom/android/server/net/NetworkPolicyLogger;->mNetworkBlockedBuffer:Lcom/android/server/net/NetworkPolicyLogger$LogBuffer;
 
     invoke-virtual {v1, p1, p2}, Lcom/android/server/net/NetworkPolicyLogger$LogBuffer;->networkBlocked(II)V
 
-    .line 91
+    .line 88
     monitor-exit v0
 
-    .line 92
+    .line 89
     return-void
 
-    .line 91
+    .line 88
     :catchall_2b
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_2d
     .catchall {:try_start_3 .. :try_end_2d} :catchall_2b
 
-    throw p1
+    throw v1
 .end method
 
 .method paroleStateChanged(Z)V
     .registers 5
+    .param p1, "paroleOn"  # Z
 
-    .line 160
+    .line 157
     iget-object v0, p0, Lcom/android/server/net/NetworkPolicyLogger;->mLock:Ljava/lang/Object;
 
     monitor-enter v0
 
-    .line 161
+    .line 158
     :try_start_3
     sget-boolean v1, Lcom/android/server/net/NetworkPolicyLogger;->LOGD:Z
 
@@ -1384,38 +1433,39 @@
 
     invoke-static {v1, v2}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 162
+    .line 159
     :cond_10
     iget-object v1, p0, Lcom/android/server/net/NetworkPolicyLogger;->mEventsBuffer:Lcom/android/server/net/NetworkPolicyLogger$LogBuffer;
 
     invoke-virtual {v1, p1}, Lcom/android/server/net/NetworkPolicyLogger$LogBuffer;->paroleStateChanged(Z)V
 
-    .line 163
+    .line 160
     monitor-exit v0
 
-    .line 164
+    .line 161
     return-void
 
-    .line 163
+    .line 160
     :catchall_17
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_19
     .catchall {:try_start_3 .. :try_end_19} :catchall_17
 
-    throw p1
+    throw v1
 .end method
 
 .method removingUserState(I)V
     .registers 5
+    .param p1, "userId"  # I
 
-    .line 124
+    .line 121
     iget-object v0, p0, Lcom/android/server/net/NetworkPolicyLogger;->mLock:Ljava/lang/Object;
 
     monitor-enter v0
 
-    .line 125
+    .line 122
     :try_start_3
     sget-boolean v1, Lcom/android/server/net/NetworkPolicyLogger;->LOGD:Z
 
@@ -1429,38 +1479,40 @@
 
     invoke-static {v1, v2}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 126
+    .line 123
     :cond_10
     iget-object v1, p0, Lcom/android/server/net/NetworkPolicyLogger;->mEventsBuffer:Lcom/android/server/net/NetworkPolicyLogger$LogBuffer;
 
     invoke-virtual {v1, p1}, Lcom/android/server/net/NetworkPolicyLogger$LogBuffer;->userRemoved(I)V
 
-    .line 127
+    .line 124
     monitor-exit v0
 
-    .line 128
+    .line 125
     return-void
 
-    .line 127
+    .line 124
     :catchall_17
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_19
     .catchall {:try_start_3 .. :try_end_19} :catchall_17
 
-    throw p1
+    throw v1
 .end method
 
 .method restrictBackgroundChanged(ZZ)V
     .registers 6
+    .param p1, "oldValue"  # Z
+    .param p2, "newValue"  # Z
 
-    .line 131
+    .line 128
     iget-object v0, p0, Lcom/android/server/net/NetworkPolicyLogger;->mLock:Ljava/lang/Object;
 
     monitor-enter v0
 
-    .line 132
+    .line 129
     :try_start_3
     sget-boolean v1, Lcom/android/server/net/NetworkPolicyLogger;->LOGD:Z
 
@@ -1468,46 +1520,48 @@
 
     const-string v1, "NetworkPolicy"
 
-    .line 133
+    .line 130
     invoke-static {p1, p2}, Lcom/android/server/net/NetworkPolicyLogger;->getRestrictBackgroundChangedLog(ZZ)Ljava/lang/String;
 
     move-result-object v2
 
-    .line 132
+    .line 129
     invoke-static {v1, v2}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 134
+    .line 131
     :cond_10
     iget-object v1, p0, Lcom/android/server/net/NetworkPolicyLogger;->mEventsBuffer:Lcom/android/server/net/NetworkPolicyLogger$LogBuffer;
 
     invoke-virtual {v1, p1, p2}, Lcom/android/server/net/NetworkPolicyLogger$LogBuffer;->restrictBackgroundChanged(ZZ)V
 
-    .line 135
+    .line 132
     monitor-exit v0
 
-    .line 136
+    .line 133
     return-void
 
-    .line 135
+    .line 132
     :catchall_17
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_19
     .catchall {:try_start_3 .. :try_end_19} :catchall_17
 
-    throw p1
+    throw v1
 .end method
 
 .method tempPowerSaveWlChanged(IZ)V
     .registers 6
+    .param p1, "appId"  # I
+    .param p2, "added"  # Z
 
-    .line 167
+    .line 164
     iget-object v0, p0, Lcom/android/server/net/NetworkPolicyLogger;->mLock:Ljava/lang/Object;
 
     monitor-enter v0
 
-    .line 168
+    .line 165
     :try_start_3
     sget-boolean v1, Lcom/android/server/net/NetworkPolicyLogger;->LOGV:Z
 
@@ -1521,38 +1575,41 @@
 
     invoke-static {v1, v2}, Landroid/util/Slog;->v(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 169
+    .line 166
     :cond_10
     iget-object v1, p0, Lcom/android/server/net/NetworkPolicyLogger;->mEventsBuffer:Lcom/android/server/net/NetworkPolicyLogger$LogBuffer;
 
     invoke-virtual {v1, p1, p2}, Lcom/android/server/net/NetworkPolicyLogger$LogBuffer;->tempPowerSaveWlChanged(IZ)V
 
-    .line 170
+    .line 167
     monitor-exit v0
 
-    .line 171
+    .line 168
     return-void
 
-    .line 170
+    .line 167
     :catchall_17
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_19
     .catchall {:try_start_3 .. :try_end_19} :catchall_17
 
-    throw p1
+    throw v1
 .end method
 
 .method uidFirewallRuleChanged(III)V
     .registers 7
+    .param p1, "chain"  # I
+    .param p2, "uid"  # I
+    .param p3, "rule"  # I
 
-    .line 174
+    .line 171
     iget-object v0, p0, Lcom/android/server/net/NetworkPolicyLogger;->mLock:Ljava/lang/Object;
 
     monitor-enter v0
 
-    .line 175
+    .line 172
     :try_start_3
     sget-boolean v1, Lcom/android/server/net/NetworkPolicyLogger;->LOGV:Z
 
@@ -1566,38 +1623,41 @@
 
     invoke-static {v1, v2}, Landroid/util/Slog;->v(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 176
+    .line 173
     :cond_10
     iget-object v1, p0, Lcom/android/server/net/NetworkPolicyLogger;->mEventsBuffer:Lcom/android/server/net/NetworkPolicyLogger$LogBuffer;
 
     invoke-virtual {v1, p1, p2, p3}, Lcom/android/server/net/NetworkPolicyLogger$LogBuffer;->uidFirewallRuleChanged(III)V
 
-    .line 177
+    .line 174
     monitor-exit v0
 
-    .line 178
+    .line 175
     return-void
 
-    .line 177
+    .line 174
     :catchall_17
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_19
     .catchall {:try_start_3 .. :try_end_19} :catchall_17
 
-    throw p1
+    throw v1
 .end method
 
 .method uidPolicyChanged(III)V
     .registers 7
+    .param p1, "uid"  # I
+    .param p2, "oldPolicy"  # I
+    .param p3, "newPolicy"  # I
 
-    .line 110
+    .line 107
     iget-object v0, p0, Lcom/android/server/net/NetworkPolicyLogger;->mLock:Ljava/lang/Object;
 
     monitor-enter v0
 
-    .line 111
+    .line 108
     :try_start_3
     sget-boolean v1, Lcom/android/server/net/NetworkPolicyLogger;->LOGV:Z
 
@@ -1611,38 +1671,41 @@
 
     invoke-static {v1, v2}, Landroid/util/Slog;->v(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 112
+    .line 109
     :cond_10
     iget-object v1, p0, Lcom/android/server/net/NetworkPolicyLogger;->mEventsBuffer:Lcom/android/server/net/NetworkPolicyLogger$LogBuffer;
 
     invoke-virtual {v1, p1, p2, p3}, Lcom/android/server/net/NetworkPolicyLogger$LogBuffer;->uidPolicyChanged(III)V
 
-    .line 113
+    .line 110
     monitor-exit v0
 
-    .line 114
+    .line 111
     return-void
 
-    .line 113
+    .line 110
     :catchall_17
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_19
     .catchall {:try_start_3 .. :try_end_19} :catchall_17
 
-    throw p1
+    throw v1
 .end method
 
 .method uidStateChanged(IIJ)V
     .registers 9
+    .param p1, "uid"  # I
+    .param p2, "procState"  # I
+    .param p3, "procStateSeq"  # J
 
-    .line 95
+    .line 92
     iget-object v0, p0, Lcom/android/server/net/NetworkPolicyLogger;->mLock:Ljava/lang/Object;
 
     monitor-enter v0
 
-    .line 96
+    .line 93
     :try_start_3
     sget-boolean v1, Lcom/android/server/net/NetworkPolicyLogger;->LOGV:Z
 
@@ -1674,25 +1737,25 @@
 
     invoke-static {v1, v2}, Landroid/util/Slog;->v(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 98
+    .line 95
     :cond_28
     iget-object v1, p0, Lcom/android/server/net/NetworkPolicyLogger;->mUidStateChangeBuffer:Lcom/android/server/net/NetworkPolicyLogger$LogBuffer;
 
     invoke-virtual {v1, p1, p2, p3, p4}, Lcom/android/server/net/NetworkPolicyLogger$LogBuffer;->uidStateChanged(IIJ)V
 
-    .line 99
+    .line 96
     monitor-exit v0
 
-    .line 100
+    .line 97
     return-void
 
-    .line 99
+    .line 96
     :catchall_2f
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_31
     .catchall {:try_start_3 .. :try_end_31} :catchall_2f
 
-    throw p1
+    throw v1
 .end method

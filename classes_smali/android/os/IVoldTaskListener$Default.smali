@@ -40,6 +40,8 @@
 
 .method public onFinished(ILandroid/os/PersistableBundle;)V
     .registers 3
+    .param p1, "status"  # I
+    .param p2, "extras"  # Landroid/os/PersistableBundle;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -52,6 +54,8 @@
 
 .method public onStatus(ILandroid/os/PersistableBundle;)V
     .registers 3
+    .param p1, "status"  # I
+    .param p2, "extras"  # Landroid/os/PersistableBundle;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;

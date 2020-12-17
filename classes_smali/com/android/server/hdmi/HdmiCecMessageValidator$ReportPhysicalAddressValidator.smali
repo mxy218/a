@@ -35,6 +35,8 @@
 
 .method synthetic constructor <init>(Lcom/android/server/hdmi/HdmiCecMessageValidator;Lcom/android/server/hdmi/HdmiCecMessageValidator$1;)V
     .registers 3
+    .param p1, "x0"  # Lcom/android/server/hdmi/HdmiCecMessageValidator;
+    .param p2, "x1"  # Lcom/android/server/hdmi/HdmiCecMessageValidator$1;
 
     .line 317
     invoke-direct {p0, p1}, Lcom/android/server/hdmi/HdmiCecMessageValidator$ReportPhysicalAddressValidator;-><init>(Lcom/android/server/hdmi/HdmiCecMessageValidator;)V
@@ -46,6 +48,7 @@
 # virtual methods
 .method public isValid([B)I
     .registers 4
+    .param p1, "params"  # [B
 
     .line 320
     array-length v0, p1
@@ -55,9 +58,9 @@
     if-ge v0, v1, :cond_6
 
     .line 321
-    const/4 p1, 0x4
+    const/4 v0, 0x4
 
-    return p1
+    return v0
 
     .line 323
     :cond_6
@@ -73,20 +76,20 @@
 
     const/4 v0, 0x2
 
-    aget-byte p1, p1, v0
+    aget-byte v0, p1, v0
 
-    invoke-static {p1}, Lcom/android/server/hdmi/HdmiCecMessageValidator;->isValidType(I)Z
+    invoke-static {v0}, Lcom/android/server/hdmi/HdmiCecMessageValidator;->isValidType(I)Z
 
-    move-result p1
+    move-result v0
 
-    if-eqz p1, :cond_19
+    if-eqz v0, :cond_19
 
     const/4 v1, 0x1
 
     :cond_19
     invoke-static {v1}, Lcom/android/server/hdmi/HdmiCecMessageValidator;->access$500(Z)I
 
-    move-result p1
+    move-result v0
 
-    return p1
+    return v0
 .end method

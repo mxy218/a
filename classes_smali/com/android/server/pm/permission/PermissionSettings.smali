@@ -79,6 +79,7 @@
 # direct methods
 .method constructor <init>(Ljava/lang/Object;)V
     .registers 3
+    .param p1, "lock"  # Ljava/lang/Object;
 
     .line 83
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -119,7 +120,8 @@
 .end method
 
 .method public static readPermissions(Landroid/util/ArrayMap;Lorg/xmlpull/v1/XmlPullParser;)V
-    .registers 6
+    .registers 7
+    .param p1, "parser"  # Lorg/xmlpull/v1/XmlPullParser;
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(",
@@ -140,95 +142,100 @@
     .end annotation
 
     .line 155
+    .local p0, "out":Landroid/util/ArrayMap;, "Landroid/util/ArrayMap<Ljava/lang/String;Lcom/android/server/pm/permission/BasePermission;>;"
     invoke-interface {p1}, Lorg/xmlpull/v1/XmlPullParser;->getDepth()I
 
     move-result v0
 
     .line 157
+    .local v0, "outerDepth":I
     :cond_4
     :goto_4
     invoke-interface {p1}, Lorg/xmlpull/v1/XmlPullParser;->next()I
 
     move-result v1
 
-    const/4 v2, 0x1
+    move v2, v1
 
-    if-eq v1, v2, :cond_49
+    .local v2, "type":I
+    const/4 v3, 0x1
 
-    const/4 v2, 0x3
+    if-eq v1, v3, :cond_4a
 
-    if-ne v1, v2, :cond_14
+    const/4 v1, 0x3
+
+    if-ne v2, v1, :cond_15
 
     .line 158
     invoke-interface {p1}, Lorg/xmlpull/v1/XmlPullParser;->getDepth()I
 
     move-result v3
 
-    if-le v3, v0, :cond_49
+    if-le v3, v0, :cond_4a
 
     .line 159
-    :cond_14
-    if-eq v1, v2, :cond_4
+    :cond_15
+    if-eq v2, v1, :cond_4
 
-    const/4 v2, 0x4
+    const/4 v1, 0x4
 
-    if-ne v1, v2, :cond_1a
+    if-ne v2, v1, :cond_1b
 
     .line 160
     goto :goto_4
 
     .line 163
-    :cond_1a
+    :cond_1b
     invoke-static {p0, p1}, Lcom/android/server/pm/permission/BasePermission;->readLPw(Ljava/util/Map;Lorg/xmlpull/v1/XmlPullParser;)Z
 
     move-result v1
 
-    if-nez v1, :cond_45
+    if-nez v1, :cond_46
 
     .line 164
     const/4 v1, 0x5
 
-    new-instance v2, Ljava/lang/StringBuilder;
+    new-instance v3, Ljava/lang/StringBuilder;
 
-    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v3, "Unknown element reading permissions: "
+    const-string v4, "Unknown element reading permissions: "
 
-    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     .line 165
     invoke-interface {p1}, Lorg/xmlpull/v1/XmlPullParser;->getName()Ljava/lang/String;
 
-    move-result-object v3
+    move-result-object v4
 
-    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string v3, " at "
+    const-string v4, " at "
 
-    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     .line 166
     invoke-interface {p1}, Lorg/xmlpull/v1/XmlPullParser;->getPositionDescription()Ljava/lang/String;
 
+    move-result-object v4
+
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
     move-result-object v3
 
-    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
-
-    move-result-object v2
-
     .line 164
-    invoke-static {v1, v2}, Lcom/android/server/pm/PackageManagerService;->reportSettingsProblem(ILjava/lang/String;)V
+    invoke-static {v1, v3}, Lcom/android/server/pm/PackageManagerService;->reportSettingsProblem(ILjava/lang/String;)V
 
     .line 168
-    :cond_45
+    :cond_46
     invoke-static {p1}, Lcom/android/internal/util/XmlUtils;->skipCurrentTag(Lorg/xmlpull/v1/XmlPullParser;)V
 
     goto :goto_4
 
     .line 170
-    :cond_49
+    :cond_4a
     return-void
 .end method
 
@@ -236,6 +243,8 @@
 # virtual methods
 .method public addAppOpPackage(Ljava/lang/String;Ljava/lang/String;)V
     .registers 5
+    .param p1, "permName"  # Ljava/lang/String;
+    .param p2, "packageName"  # Ljava/lang/String;
 
     .line 94
     iget-object v0, p0, Lcom/android/server/pm/permission/PermissionSettings;->mAppOpPermissionPackages:Landroid/util/ArrayMap;
@@ -247,12 +256,15 @@
     check-cast v0, Landroid/util/ArraySet;
 
     .line 95
-    if-nez v0, :cond_14
+    .local v0, "pkgs":Landroid/util/ArraySet;, "Landroid/util/ArraySet<Ljava/lang/String;>;"
+    if-nez v0, :cond_15
 
     .line 96
-    new-instance v0, Landroid/util/ArraySet;
+    new-instance v1, Landroid/util/ArraySet;
 
-    invoke-direct {v0}, Landroid/util/ArraySet;-><init>()V
+    invoke-direct {v1}, Landroid/util/ArraySet;-><init>()V
+
+    move-object v0, v1
 
     .line 97
     iget-object v1, p0, Lcom/android/server/pm/permission/PermissionSettings;->mAppOpPermissionPackages:Landroid/util/ArrayMap;
@@ -260,7 +272,7 @@
     invoke-virtual {v1, p1, v0}, Landroid/util/ArrayMap;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
 
     .line 99
-    :cond_14
+    :cond_15
     invoke-virtual {v0, p2}, Landroid/util/ArraySet;->add(Ljava/lang/Object;)Z
 
     .line 100
@@ -268,7 +280,8 @@
 .end method
 
 .method public canPropagatePermissionToInstantApp(Ljava/lang/String;)Z
-    .registers 4
+    .registers 5
+    .param p1, "permName"  # Ljava/lang/String;
 
     .line 118
     iget-object v0, p0, Lcom/android/server/pm/permission/PermissionSettings;->mLock:Ljava/lang/Object;
@@ -281,57 +294,63 @@
 
     invoke-virtual {v1, p1}, Landroid/util/ArrayMap;->get(Ljava/lang/Object;)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v1
 
-    check-cast p1, Lcom/android/server/pm/permission/BasePermission;
+    check-cast v1, Lcom/android/server/pm/permission/BasePermission;
 
     .line 120
-    if-eqz p1, :cond_21
-
-    invoke-virtual {p1}, Lcom/android/server/pm/permission/BasePermission;->isRuntime()Z
-
-    move-result v1
-
-    if-nez v1, :cond_19
-
-    invoke-virtual {p1}, Lcom/android/server/pm/permission/BasePermission;->isDevelopment()Z
-
-    move-result v1
-
+    .local v1, "bp":Lcom/android/server/pm/permission/BasePermission;
     if-eqz v1, :cond_21
 
+    invoke-virtual {v1}, Lcom/android/server/pm/permission/BasePermission;->isRuntime()Z
+
+    move-result v2
+
+    if-nez v2, :cond_19
+
+    invoke-virtual {v1}, Lcom/android/server/pm/permission/BasePermission;->isDevelopment()Z
+
+    move-result v2
+
+    if-eqz v2, :cond_21
+
     :cond_19
-    invoke-virtual {p1}, Lcom/android/server/pm/permission/BasePermission;->isInstant()Z
+    invoke-virtual {v1}, Lcom/android/server/pm/permission/BasePermission;->isInstant()Z
 
-    move-result p1
+    move-result v2
 
-    if-eqz p1, :cond_21
+    if-eqz v2, :cond_21
 
-    const/4 p1, 0x1
+    const/4 v2, 0x1
 
     goto :goto_22
 
     :cond_21
-    const/4 p1, 0x0
+    const/4 v2, 0x0
 
     :goto_22
     monitor-exit v0
 
-    return p1
+    return v2
 
     .line 121
+    .end local v1  # "bp":Lcom/android/server/pm/permission/BasePermission;
     :catchall_24
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_26
     .catchall {:try_start_3 .. :try_end_26} :catchall_24
 
-    throw p1
+    throw v1
 .end method
 
 .method public dumpPermissions(Ljava/io/PrintWriter;Ljava/lang/String;Landroid/util/ArraySet;ZLcom/android/server/pm/DumpState;)V
     .registers 16
+    .param p1, "pw"  # Ljava/io/PrintWriter;
+    .param p2, "packageName"  # Ljava/lang/String;
+    .param p4, "externalStorageEnforced"  # Z
+    .param p5, "dumpState"  # Lcom/android/server/pm/DumpState;
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(",
@@ -346,43 +365,42 @@
     .end annotation
 
     .line 175
+    .local p3, "permissionNames":Landroid/util/ArraySet;, "Landroid/util/ArraySet<Ljava/lang/String;>;"
     iget-object v0, p0, Lcom/android/server/pm/permission/PermissionSettings;->mLock:Ljava/lang/Object;
 
     monitor-enter v0
 
     .line 176
-    nop
+    const/4 v1, 0x0
 
     .line 177
+    .local v1, "printedSomething":Z
     :try_start_4
-    iget-object v1, p0, Lcom/android/server/pm/permission/PermissionSettings;->mPermissions:Landroid/util/ArrayMap;
+    iget-object v2, p0, Lcom/android/server/pm/permission/PermissionSettings;->mPermissions:Landroid/util/ArrayMap;
 
-    invoke-virtual {v1}, Landroid/util/ArrayMap;->values()Ljava/util/Collection;
+    invoke-virtual {v2}, Landroid/util/ArrayMap;->values()Ljava/util/Collection;
 
-    move-result-object v1
+    move-result-object v2
 
-    invoke-interface {v1}, Ljava/util/Collection;->iterator()Ljava/util/Iterator;
+    invoke-interface {v2}, Ljava/util/Collection;->iterator()Ljava/util/Iterator;
 
-    move-result-object v1
+    move-result-object v2
 
-    const/4 v2, 0x0
-
-    move v8, v2
-
-    :goto_10
-    invoke-interface {v1}, Ljava/util/Iterator;->hasNext()Z
+    :goto_e
+    invoke-interface {v2}, Ljava/util/Iterator;->hasNext()Z
 
     move-result v3
 
     if-eqz v3, :cond_26
 
-    invoke-interface {v1}, Ljava/util/Iterator;->next()Ljava/lang/Object;
+    invoke-interface {v2}, Ljava/util/Iterator;->next()Ljava/lang/Object;
 
     move-result-object v3
 
     check-cast v3, Lcom/android/server/pm/permission/BasePermission;
 
     .line 178
+    .local v3, "bp":Lcom/android/server/pm/permission/BasePermission;
     move-object v4, p1
 
     move-object v5, p2
@@ -391,137 +409,153 @@
 
     move v7, p4
 
+    move v8, v1
+
     move-object v9, p5
 
     invoke-virtual/range {v3 .. v9}, Lcom/android/server/pm/permission/BasePermission;->dumpPermissionsLPr(Ljava/io/PrintWriter;Ljava/lang/String;Ljava/util/Set;ZZLcom/android/server/pm/DumpState;)Z
 
-    move-result v8
+    move-result v4
+
+    move v1, v4
 
     .line 180
-    goto :goto_10
+    .end local v3  # "bp":Lcom/android/server/pm/permission/BasePermission;
+    goto :goto_e
 
     .line 181
     :cond_26
-    if-nez p2, :cond_7b
+    if-nez p2, :cond_7c
 
-    if-nez p3, :cond_7b
+    if-nez p3, :cond_7c
 
     .line 182
-    move p2, v2
+    const/4 v2, 0x0
 
-    :goto_2b
-    iget-object p3, p0, Lcom/android/server/pm/permission/PermissionSettings;->mAppOpPermissionPackages:Landroid/util/ArrayMap;
+    move v3, v2
 
-    invoke-virtual {p3}, Landroid/util/ArrayMap;->size()I
+    .local v3, "iperm":I
+    :goto_2c
+    iget-object v4, p0, Lcom/android/server/pm/permission/PermissionSettings;->mAppOpPermissionPackages:Landroid/util/ArrayMap;
 
-    move-result p3
+    invoke-virtual {v4}, Landroid/util/ArrayMap;->size()I
 
-    if-ge p2, p3, :cond_7b
+    move-result v4
+
+    if-ge v3, v4, :cond_7c
 
     .line 183
-    if-nez p2, :cond_43
+    if-nez v3, :cond_44
 
     .line 184
     invoke-virtual {p5}, Lcom/android/server/pm/DumpState;->onTitlePrinted()Z
 
-    move-result p3
+    move-result v4
 
-    if-eqz p3, :cond_3e
+    if-eqz v4, :cond_3f
 
     .line 185
     invoke-virtual {p1}, Ljava/io/PrintWriter;->println()V
 
     .line 186
-    :cond_3e
-    const-string p3, "AppOp Permissions:"
+    :cond_3f
+    const-string v4, "AppOp Permissions:"
 
-    invoke-virtual {p1, p3}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {p1, v4}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
     .line 188
-    :cond_43
-    const-string p3, "  AppOp Permission "
+    :cond_44
+    const-string v4, "  AppOp Permission "
 
-    invoke-virtual {p1, p3}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
+    invoke-virtual {p1, v4}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
     .line 189
-    iget-object p3, p0, Lcom/android/server/pm/permission/PermissionSettings;->mAppOpPermissionPackages:Landroid/util/ArrayMap;
+    iget-object v4, p0, Lcom/android/server/pm/permission/PermissionSettings;->mAppOpPermissionPackages:Landroid/util/ArrayMap;
 
-    invoke-virtual {p3, p2}, Landroid/util/ArrayMap;->keyAt(I)Ljava/lang/Object;
+    invoke-virtual {v4, v3}, Landroid/util/ArrayMap;->keyAt(I)Ljava/lang/Object;
 
-    move-result-object p3
+    move-result-object v4
 
-    check-cast p3, Ljava/lang/String;
+    check-cast v4, Ljava/lang/String;
 
-    invoke-virtual {p1, p3}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
+    invoke-virtual {p1, v4}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
     .line 190
-    const-string p3, ":"
+    const-string v4, ":"
 
-    invoke-virtual {p1, p3}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {p1, v4}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
     .line 191
-    iget-object p3, p0, Lcom/android/server/pm/permission/PermissionSettings;->mAppOpPermissionPackages:Landroid/util/ArrayMap;
+    iget-object v4, p0, Lcom/android/server/pm/permission/PermissionSettings;->mAppOpPermissionPackages:Landroid/util/ArrayMap;
 
-    invoke-virtual {p3, p2}, Landroid/util/ArrayMap;->valueAt(I)Ljava/lang/Object;
+    invoke-virtual {v4, v3}, Landroid/util/ArrayMap;->valueAt(I)Ljava/lang/Object;
 
-    move-result-object p3
+    move-result-object v4
 
-    check-cast p3, Landroid/util/ArraySet;
+    check-cast v4, Landroid/util/ArraySet;
 
     .line 192
-    move p4, v2
+    .local v4, "pkgs":Landroid/util/ArraySet;, "Landroid/util/ArraySet<Ljava/lang/String;>;"
+    move v5, v2
 
-    :goto_61
-    invoke-virtual {p3}, Landroid/util/ArraySet;->size()I
+    .local v5, "ipkg":I
+    :goto_62
+    invoke-virtual {v4}, Landroid/util/ArraySet;->size()I
 
-    move-result v1
+    move-result v6
 
-    if-ge p4, v1, :cond_78
+    if-ge v5, v6, :cond_79
 
     .line 193
-    const-string v1, "    "
+    const-string v6, "    "
 
-    invoke-virtual {p1, v1}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
+    invoke-virtual {p1, v6}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
-    invoke-virtual {p3, p4}, Landroid/util/ArraySet;->valueAt(I)Ljava/lang/Object;
+    invoke-virtual {v4, v5}, Landroid/util/ArraySet;->valueAt(I)Ljava/lang/Object;
 
-    move-result-object v1
+    move-result-object v6
 
-    check-cast v1, Ljava/lang/String;
+    check-cast v6, Ljava/lang/String;
 
-    invoke-virtual {p1, v1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {p1, v6}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
     .line 192
-    add-int/lit8 p4, p4, 0x1
+    add-int/lit8 v5, v5, 0x1
 
-    goto :goto_61
+    goto :goto_62
 
     .line 182
-    :cond_78
-    add-int/lit8 p2, p2, 0x1
+    .end local v4  # "pkgs":Landroid/util/ArraySet;, "Landroid/util/ArraySet<Ljava/lang/String;>;"
+    .end local v5  # "ipkg":I
+    :cond_79
+    add-int/lit8 v3, v3, 0x1
 
-    goto :goto_2b
+    goto :goto_2c
 
     .line 197
-    :cond_7b
+    .end local v1  # "printedSomething":Z
+    .end local v3  # "iperm":I
+    :cond_7c
     monitor-exit v0
 
     .line 198
     return-void
 
     .line 197
-    :catchall_7d
-    move-exception p1
+    :catchall_7e
+    move-exception v1
 
     monitor-exit v0
-    :try_end_7f
-    .catchall {:try_start_4 .. :try_end_7f} :catchall_7d
+    :try_end_80
+    .catchall {:try_start_4 .. :try_end_80} :catchall_7e
 
-    throw p1
+    throw v1
 .end method
 
 .method enforcePermissionTree(Ljava/lang/String;I)Lcom/android/server/pm/permission/BasePermission;
     .registers 5
+    .param p1, "permName"  # Ljava/lang/String;
+    .param p2, "callingUid"  # I
 
     .line 246
     iget-object v0, p0, Lcom/android/server/pm/permission/PermissionSettings;->mLock:Ljava/lang/Object;
@@ -540,21 +574,21 @@
     .line 247
     invoke-static {v1, p1, p2}, Lcom/android/server/pm/permission/BasePermission;->enforcePermissionTree(Ljava/util/Collection;Ljava/lang/String;I)Lcom/android/server/pm/permission/BasePermission;
 
-    move-result-object p1
+    move-result-object v1
 
     monitor-exit v0
 
-    return-object p1
+    return-object v1
 
     .line 249
     :catchall_f
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_11
     .catchall {:try_start_3 .. :try_end_11} :catchall_f
 
-    throw p1
+    throw v1
 .end method
 
 .method getAllPermissionTreesLocked()Ljava/util/Collection;
@@ -612,7 +646,8 @@
 .end method
 
 .method public getPermission(Ljava/lang/String;)Lcom/android/server/pm/permission/BasePermission;
-    .registers 3
+    .registers 4
+    .param p1, "permName"  # Ljava/lang/String;
 
     .line 88
     iget-object v0, p0, Lcom/android/server/pm/permission/PermissionSettings;->mLock:Ljava/lang/Object;
@@ -623,25 +658,26 @@
     :try_start_3
     invoke-virtual {p0, p1}, Lcom/android/server/pm/permission/PermissionSettings;->getPermissionLocked(Ljava/lang/String;)Lcom/android/server/pm/permission/BasePermission;
 
-    move-result-object p1
+    move-result-object v1
 
     monitor-exit v0
 
-    return-object p1
+    return-object v1
 
     .line 90
     :catchall_9
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_b
     .catchall {:try_start_3 .. :try_end_b} :catchall_9
 
-    throw p1
+    throw v1
 .end method
 
 .method getPermissionLocked(Ljava/lang/String;)Lcom/android/server/pm/permission/BasePermission;
     .registers 3
+    .param p1, "permName"  # Ljava/lang/String;
     .annotation build Lcom/android/internal/annotations/GuardedBy;
         value = {
             "mLock"
@@ -653,15 +689,16 @@
 
     invoke-virtual {v0, p1}, Landroid/util/ArrayMap;->get(Ljava/lang/Object;)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v0
 
-    check-cast p1, Lcom/android/server/pm/permission/BasePermission;
+    check-cast v0, Lcom/android/server/pm/permission/BasePermission;
 
-    return-object p1
+    return-object v0
 .end method
 
 .method getPermissionTreeLocked(Ljava/lang/String;)Lcom/android/server/pm/permission/BasePermission;
     .registers 3
+    .param p1, "permName"  # Ljava/lang/String;
     .annotation build Lcom/android/internal/annotations/GuardedBy;
         value = {
             "mLock"
@@ -673,15 +710,16 @@
 
     invoke-virtual {v0, p1}, Landroid/util/ArrayMap;->get(Ljava/lang/Object;)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v0
 
-    check-cast p1, Lcom/android/server/pm/permission/BasePermission;
+    check-cast v0, Lcom/android/server/pm/permission/BasePermission;
 
-    return-object p1
+    return-object v0
 .end method
 
 .method isPermissionAppOp(Ljava/lang/String;)Z
-    .registers 4
+    .registers 5
+    .param p1, "permName"  # Ljava/lang/String;
 
     .line 260
     iget-object v0, p0, Lcom/android/server/pm/permission/PermissionSettings;->mLock:Ljava/lang/Object;
@@ -694,44 +732,47 @@
 
     invoke-virtual {v1, p1}, Landroid/util/ArrayMap;->get(Ljava/lang/Object;)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v1
 
-    check-cast p1, Lcom/android/server/pm/permission/BasePermission;
+    check-cast v1, Lcom/android/server/pm/permission/BasePermission;
 
     .line 262
-    if-eqz p1, :cond_15
+    .local v1, "bp":Lcom/android/server/pm/permission/BasePermission;
+    if-eqz v1, :cond_15
 
-    invoke-virtual {p1}, Lcom/android/server/pm/permission/BasePermission;->isAppOp()Z
+    invoke-virtual {v1}, Lcom/android/server/pm/permission/BasePermission;->isAppOp()Z
 
-    move-result p1
+    move-result v2
 
-    if-eqz p1, :cond_15
+    if-eqz v2, :cond_15
 
-    const/4 p1, 0x1
+    const/4 v2, 0x1
 
     goto :goto_16
 
     :cond_15
-    const/4 p1, 0x0
+    const/4 v2, 0x0
 
     :goto_16
     monitor-exit v0
 
-    return p1
+    return v2
 
     .line 263
+    .end local v1  # "bp":Lcom/android/server/pm/permission/BasePermission;
     :catchall_18
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_1a
     .catchall {:try_start_3 .. :try_end_1a} :catchall_18
 
-    throw p1
+    throw v1
 .end method
 
 .method public isPermissionInstant(Ljava/lang/String;)Z
-    .registers 4
+    .registers 5
+    .param p1, "permName"  # Ljava/lang/String;
 
     .line 253
     iget-object v0, p0, Lcom/android/server/pm/permission/PermissionSettings;->mLock:Ljava/lang/Object;
@@ -744,44 +785,48 @@
 
     invoke-virtual {v1, p1}, Landroid/util/ArrayMap;->get(Ljava/lang/Object;)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v1
 
-    check-cast p1, Lcom/android/server/pm/permission/BasePermission;
+    check-cast v1, Lcom/android/server/pm/permission/BasePermission;
 
     .line 255
-    if-eqz p1, :cond_15
+    .local v1, "bp":Lcom/android/server/pm/permission/BasePermission;
+    if-eqz v1, :cond_15
 
-    invoke-virtual {p1}, Lcom/android/server/pm/permission/BasePermission;->isInstant()Z
+    invoke-virtual {v1}, Lcom/android/server/pm/permission/BasePermission;->isInstant()Z
 
-    move-result p1
+    move-result v2
 
-    if-eqz p1, :cond_15
+    if-eqz v2, :cond_15
 
-    const/4 p1, 0x1
+    const/4 v2, 0x1
 
     goto :goto_16
 
     :cond_15
-    const/4 p1, 0x0
+    const/4 v2, 0x0
 
     :goto_16
     monitor-exit v0
 
-    return p1
+    return v2
 
     .line 256
+    .end local v1  # "bp":Lcom/android/server/pm/permission/BasePermission;
     :catchall_18
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_1a
     .catchall {:try_start_3 .. :try_end_1a} :catchall_18
 
-    throw p1
+    throw v1
 .end method
 
 .method putPermissionLocked(Ljava/lang/String;Lcom/android/server/pm/permission/BasePermission;)V
     .registers 4
+    .param p1, "permName"  # Ljava/lang/String;
+    .param p2, "permission"  # Lcom/android/server/pm/permission/BasePermission;
     .annotation build Lcom/android/internal/annotations/GuardedBy;
         value = {
             "mLock"
@@ -799,6 +844,8 @@
 
 .method putPermissionTreeLocked(Ljava/lang/String;Lcom/android/server/pm/permission/BasePermission;)V
     .registers 4
+    .param p1, "permName"  # Ljava/lang/String;
+    .param p2, "permission"  # Lcom/android/server/pm/permission/BasePermission;
     .annotation build Lcom/android/internal/annotations/GuardedBy;
         value = {
             "mLock"
@@ -816,6 +863,7 @@
 
 .method public readPermissionTrees(Lorg/xmlpull/v1/XmlPullParser;)V
     .registers 4
+    .param p1, "parser"  # Lorg/xmlpull/v1/XmlPullParser;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Ljava/io/IOException;,
@@ -842,17 +890,18 @@
 
     .line 134
     :catchall_a
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_c
     .catchall {:try_start_3 .. :try_end_c} :catchall_a
 
-    throw p1
+    throw v1
 .end method
 
 .method public readPermissions(Lorg/xmlpull/v1/XmlPullParser;)V
     .registers 4
+    .param p1, "parser"  # Lorg/xmlpull/v1/XmlPullParser;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Ljava/io/IOException;,
@@ -879,17 +928,18 @@
 
     .line 127
     :catchall_a
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_c
     .catchall {:try_start_3 .. :try_end_c} :catchall_a
 
-    throw p1
+    throw v1
 .end method
 
 .method removePermissionLocked(Ljava/lang/String;)V
     .registers 3
+    .param p1, "permName"  # Ljava/lang/String;
     .annotation build Lcom/android/internal/annotations/GuardedBy;
         value = {
             "mLock"
@@ -907,6 +957,7 @@
 
 .method removePermissionTreeLocked(Ljava/lang/String;)V
     .registers 3
+    .param p1, "permName"  # Ljava/lang/String;
     .annotation build Lcom/android/internal/annotations/GuardedBy;
         value = {
             "mLock"
@@ -923,7 +974,9 @@
 .end method
 
 .method public transferPermissions(Ljava/lang/String;Ljava/lang/String;)V
-    .registers 7
+    .registers 8
+    .param p1, "origPackageName"  # Ljava/lang/String;
+    .param p2, "newPackageName"  # Ljava/lang/String;
 
     .line 106
     iget-object v0, p0, Lcom/android/server/pm/permission/PermissionSettings;->mLock:Ljava/lang/Object;
@@ -933,6 +986,7 @@
     .line 107
     const/4 v1, 0x0
 
+    .local v1, "i":I
     :goto_4
     const/4 v2, 0x2
 
@@ -950,41 +1004,46 @@
     iget-object v2, p0, Lcom/android/server/pm/permission/PermissionSettings;->mPermissions:Landroid/util/ArrayMap;
 
     .line 110
+    .local v2, "permissions":Landroid/util/ArrayMap;, "Landroid/util/ArrayMap<Ljava/lang/String;Lcom/android/server/pm/permission/BasePermission;>;"
     :goto_e
     invoke-virtual {v2}, Landroid/util/ArrayMap;->values()Ljava/util/Collection;
 
-    move-result-object v2
+    move-result-object v3
 
-    invoke-interface {v2}, Ljava/util/Collection;->iterator()Ljava/util/Iterator;
-
-    move-result-object v2
-
-    :goto_16
-    invoke-interface {v2}, Ljava/util/Iterator;->hasNext()Z
-
-    move-result v3
-
-    if-eqz v3, :cond_26
-
-    invoke-interface {v2}, Ljava/util/Iterator;->next()Ljava/lang/Object;
+    invoke-interface {v3}, Ljava/util/Collection;->iterator()Ljava/util/Iterator;
 
     move-result-object v3
 
-    check-cast v3, Lcom/android/server/pm/permission/BasePermission;
+    :goto_16
+    invoke-interface {v3}, Ljava/util/Iterator;->hasNext()Z
+
+    move-result v4
+
+    if-eqz v4, :cond_26
+
+    invoke-interface {v3}, Ljava/util/Iterator;->next()Ljava/lang/Object;
+
+    move-result-object v4
+
+    check-cast v4, Lcom/android/server/pm/permission/BasePermission;
 
     .line 111
-    invoke-virtual {v3, p1, p2}, Lcom/android/server/pm/permission/BasePermission;->transfer(Ljava/lang/String;Ljava/lang/String;)V
+    .local v4, "bp":Lcom/android/server/pm/permission/BasePermission;
+    invoke-virtual {v4, p1, p2}, Lcom/android/server/pm/permission/BasePermission;->transfer(Ljava/lang/String;Ljava/lang/String;)V
 
     .line 112
+    .end local v4  # "bp":Lcom/android/server/pm/permission/BasePermission;
     goto :goto_16
 
     .line 107
+    .end local v2  # "permissions":Landroid/util/ArrayMap;, "Landroid/util/ArrayMap<Ljava/lang/String;Lcom/android/server/pm/permission/BasePermission;>;"
     :cond_26
     add-int/lit8 v1, v1, 0x1
 
     goto :goto_4
 
     .line 114
+    .end local v1  # "i":I
     :cond_29
     monitor-exit v0
 
@@ -993,17 +1052,18 @@
 
     .line 114
     :catchall_2b
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_2d
     .catchall {:try_start_9 .. :try_end_2d} :catchall_2b
 
-    throw p1
+    throw v1
 .end method
 
 .method public writePermissionTrees(Lorg/xmlpull/v1/XmlSerializer;)V
     .registers 5
+    .param p1, "serializer"  # Lorg/xmlpull/v1/XmlSerializer;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Ljava/io/IOException;
@@ -1041,9 +1101,11 @@
     check-cast v2, Lcom/android/server/pm/permission/BasePermission;
 
     .line 148
+    .local v2, "bp":Lcom/android/server/pm/permission/BasePermission;
     invoke-virtual {v2, p1}, Lcom/android/server/pm/permission/BasePermission;->writeLPr(Lorg/xmlpull/v1/XmlSerializer;)V
 
     .line 149
+    .end local v2  # "bp":Lcom/android/server/pm/permission/BasePermission;
     goto :goto_d
 
     .line 150
@@ -1055,17 +1117,18 @@
 
     .line 150
     :catchall_1f
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_21
     .catchall {:try_start_3 .. :try_end_21} :catchall_1f
 
-    throw p1
+    throw v1
 .end method
 
 .method public writePermissions(Lorg/xmlpull/v1/XmlSerializer;)V
     .registers 5
+    .param p1, "serializer"  # Lorg/xmlpull/v1/XmlSerializer;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Ljava/io/IOException;
@@ -1103,9 +1166,11 @@
     check-cast v2, Lcom/android/server/pm/permission/BasePermission;
 
     .line 140
+    .local v2, "bp":Lcom/android/server/pm/permission/BasePermission;
     invoke-virtual {v2, p1}, Lcom/android/server/pm/permission/BasePermission;->writeLPr(Lorg/xmlpull/v1/XmlSerializer;)V
 
     .line 141
+    .end local v2  # "bp":Lcom/android/server/pm/permission/BasePermission;
     goto :goto_d
 
     .line 142
@@ -1117,11 +1182,11 @@
 
     .line 142
     :catchall_1f
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_21
     .catchall {:try_start_3 .. :try_end_21} :catchall_1f
 
-    throw p1
+    throw v1
 .end method

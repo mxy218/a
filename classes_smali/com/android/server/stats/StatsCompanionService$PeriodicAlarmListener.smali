@@ -21,7 +21,7 @@
 .method public constructor <init>()V
     .registers 1
 
-    .line 635
+    .line 633
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
     return-void
@@ -32,14 +32,14 @@
 .method public onAlarm()V
     .registers 5
 
-    .line 641
+    .line 639
     invoke-static {}, Lcom/android/server/stats/StatsCompanionService;->access$100()Ljava/lang/Object;
 
     move-result-object v0
 
     monitor-enter v0
 
-    .line 642
+    .line 640
     :try_start_5
     invoke-static {}, Lcom/android/server/stats/StatsCompanionService;->access$200()Landroid/os/IStatsManager;
 
@@ -47,21 +47,21 @@
 
     if-nez v1, :cond_14
 
-    .line 643
+    .line 641
     const-string v1, "StatsCompanionService"
 
     const-string v2, "Could not access statsd to inform it of periodic alarm firing."
 
     invoke-static {v1, v2}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 644
+    .line 642
     monitor-exit v0
     :try_end_13
     .catchall {:try_start_5 .. :try_end_13} :catchall_26
 
     return-void
 
-    .line 648
+    .line 646
     :cond_14
     :try_start_14
     invoke-static {}, Lcom/android/server/stats/StatsCompanionService;->access$200()Landroid/os/IStatsManager;
@@ -73,14 +73,15 @@
     .catch Landroid/os/RemoteException; {:try_start_14 .. :try_end_1b} :catch_1c
     .catchall {:try_start_14 .. :try_end_1b} :catchall_26
 
-    .line 651
+    .line 649
     goto :goto_24
 
-    .line 649
+    .line 647
     :catch_1c
     move-exception v1
 
-    .line 650
+    .line 648
+    .local v1, "e":Landroid/os/RemoteException;
     :try_start_1d
     const-string v2, "StatsCompanionService"
 
@@ -88,14 +89,15 @@
 
     invoke-static {v2, v3, v1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
-    .line 652
+    .line 650
+    .end local v1  # "e":Landroid/os/RemoteException;
     :goto_24
     monitor-exit v0
 
-    .line 654
+    .line 652
     return-void
 
-    .line 652
+    .line 650
     :catchall_26
     move-exception v1
 

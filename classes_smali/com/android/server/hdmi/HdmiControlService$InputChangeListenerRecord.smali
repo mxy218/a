@@ -26,6 +26,7 @@
 # direct methods
 .method public constructor <init>(Lcom/android/server/hdmi/HdmiControlService;Landroid/hardware/hdmi/IHdmiInputChangeListener;)V
     .registers 3
+    .param p2, "listener"  # Landroid/hardware/hdmi/IHdmiInputChangeListener;
 
     .line 2236
     iput-object p1, p0, Lcom/android/server/hdmi/HdmiControlService$InputChangeListenerRecord;->this$0:Lcom/android/server/hdmi/HdmiControlService;
@@ -40,12 +41,13 @@
 .end method
 
 .method static synthetic access$5600(Lcom/android/server/hdmi/HdmiControlService$InputChangeListenerRecord;)Landroid/hardware/hdmi/IHdmiInputChangeListener;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/hdmi/HdmiControlService$InputChangeListenerRecord;
 
     .line 2233
-    iget-object p0, p0, Lcom/android/server/hdmi/HdmiControlService$InputChangeListenerRecord;->mListener:Landroid/hardware/hdmi/IHdmiInputChangeListener;
+    iget-object v0, p0, Lcom/android/server/hdmi/HdmiControlService$InputChangeListenerRecord;->mListener:Landroid/hardware/hdmi/IHdmiInputChangeListener;
 
-    return-object p0
+    return-object v0
 .end method
 
 

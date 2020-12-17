@@ -24,6 +24,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/uri/UriGrantsManagerService;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/uri/UriGrantsManagerService;
 
     .line 1304
     iput-object p1, p0, Lcom/android/server/uri/UriGrantsManagerService$LocalService;->this$0:Lcom/android/server/uri/UriGrantsManagerService;
@@ -37,6 +38,10 @@
 # virtual methods
 .method public checkAuthorityGrants(ILandroid/content/pm/ProviderInfo;IZ)Z
     .registers 7
+    .param p1, "callingUid"  # I
+    .param p2, "cpi"  # Landroid/content/pm/ProviderInfo;
+    .param p3, "userId"  # I
+    .param p4, "checkUser"  # Z
 
     .line 1444
     iget-object v0, p0, Lcom/android/server/uri/UriGrantsManagerService$LocalService;->this$0:Lcom/android/server/uri/UriGrantsManagerService;
@@ -53,25 +58,30 @@
 
     invoke-virtual {v1, p1, p2, p3, p4}, Lcom/android/server/uri/UriGrantsManagerService;->checkAuthorityGrants(ILandroid/content/pm/ProviderInfo;IZ)Z
 
-    move-result p1
+    move-result v1
 
     monitor-exit v0
 
-    return p1
+    return v1
 
     .line 1447
     :catchall_f
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_11
     .catchall {:try_start_7 .. :try_end_11} :catchall_f
 
-    throw p1
+    throw v1
 .end method
 
 .method public checkGrantUriPermission(ILjava/lang/String;Landroid/net/Uri;II)I
     .registers 13
+    .param p1, "callingUid"  # I
+    .param p2, "targetPkg"  # Ljava/lang/String;
+    .param p3, "uri"  # Landroid/net/Uri;
+    .param p4, "modeFlags"  # I
+    .param p5, "userId"  # I
 
     .line 1350
     iget-object v0, p0, Lcom/android/server/uri/UriGrantsManagerService$LocalService;->this$0:Lcom/android/server/uri/UriGrantsManagerService;
@@ -105,25 +115,30 @@
 
     invoke-virtual/range {v1 .. v6}, Lcom/android/server/uri/UriGrantsManagerService;->checkGrantUriPermission(ILjava/lang/String;Landroid/net/Uri;II)I
 
-    move-result p1
+    move-result v1
 
     monitor-exit v0
 
-    return p1
+    return v1
 
     .line 1354
     :catchall_1b
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_1d
     .catchall {:try_start_e .. :try_end_1d} :catchall_1b
 
-    throw p1
+    throw v1
 .end method
 
 .method public checkGrantUriPermission(ILjava/lang/String;Lcom/android/server/uri/GrantUri;II)I
     .registers 13
+    .param p1, "callingUid"  # I
+    .param p2, "targetPkg"  # Ljava/lang/String;
+    .param p3, "uri"  # Lcom/android/server/uri/GrantUri;
+    .param p4, "modeFlags"  # I
+    .param p5, "userId"  # I
 
     .line 1341
     iget-object v0, p0, Lcom/android/server/uri/UriGrantsManagerService$LocalService;->this$0:Lcom/android/server/uri/UriGrantsManagerService;
@@ -150,25 +165,31 @@
 
     invoke-virtual/range {v1 .. v6}, Lcom/android/server/uri/UriGrantsManagerService;->checkGrantUriPermission(ILjava/lang/String;Lcom/android/server/uri/GrantUri;II)I
 
-    move-result p1
+    move-result v1
 
     monitor-exit v0
 
-    return p1
+    return v1
 
     .line 1344
     :catchall_14
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_16
     .catchall {:try_start_7 .. :try_end_16} :catchall_14
 
-    throw p1
+    throw v1
 .end method
 
 .method public checkGrantUriPermissionFromIntent(ILjava/lang/String;Landroid/content/Intent;ILcom/android/server/uri/NeededUriGrants;I)Lcom/android/server/uri/NeededUriGrants;
     .registers 15
+    .param p1, "callingUid"  # I
+    .param p2, "targetPkg"  # Ljava/lang/String;
+    .param p3, "intent"  # Landroid/content/Intent;
+    .param p4, "mode"  # I
+    .param p5, "needed"  # Lcom/android/server/uri/NeededUriGrants;
+    .param p6, "targetUserId"  # I
 
     .line 1360
     iget-object v0, p0, Lcom/android/server/uri/UriGrantsManagerService$LocalService;->this$0:Lcom/android/server/uri/UriGrantsManagerService;
@@ -197,25 +218,28 @@
 
     invoke-virtual/range {v1 .. v7}, Lcom/android/server/uri/UriGrantsManagerService;->checkGrantUriPermissionFromIntent(ILjava/lang/String;Landroid/content/Intent;ILcom/android/server/uri/NeededUriGrants;I)Lcom/android/server/uri/NeededUriGrants;
 
-    move-result-object p1
+    move-result-object v1
 
     monitor-exit v0
 
-    return-object p1
+    return-object v1
 
     .line 1363
     :catchall_15
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_17
     .catchall {:try_start_7 .. :try_end_17} :catchall_15
 
-    throw p1
+    throw v1
 .end method
 
 .method public checkUriPermission(Lcom/android/server/uri/GrantUri;II)Z
     .registers 6
+    .param p1, "grantUri"  # Lcom/android/server/uri/GrantUri;
+    .param p2, "uid"  # I
+    .param p3, "modeFlags"  # I
 
     .line 1333
     iget-object v0, p0, Lcom/android/server/uri/UriGrantsManagerService$LocalService;->this$0:Lcom/android/server/uri/UriGrantsManagerService;
@@ -232,25 +256,28 @@
 
     invoke-virtual {v1, p1, p2, p3}, Lcom/android/server/uri/UriGrantsManagerService;->checkUriPermission(Lcom/android/server/uri/GrantUri;II)Z
 
-    move-result p1
+    move-result v1
 
     monitor-exit v0
 
-    return p1
+    return v1
 
     .line 1335
     :catchall_f
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_11
     .catchall {:try_start_7 .. :try_end_11} :catchall_f
 
-    throw p1
+    throw v1
 .end method
 
 .method public dump(Ljava/io/PrintWriter;ZLjava/lang/String;)V
-    .registers 13
+    .registers 15
+    .param p1, "pw"  # Ljava/io/PrintWriter;
+    .param p2, "dumpAll"  # Z
+    .param p3, "dumpPackage"  # Ljava/lang/String;
 
     .line 1452
     iget-object v0, p0, Lcom/android/server/uri/UriGrantsManagerService$LocalService;->this$0:Lcom/android/server/uri/UriGrantsManagerService;
@@ -262,82 +289,85 @@
     monitor-enter v0
 
     .line 1453
-    nop
+    const/4 v1, 0x0
 
     .line 1454
-    nop
-
-    .line 1455
-    :try_start_9
-    iget-object v1, p0, Lcom/android/server/uri/UriGrantsManagerService$LocalService;->this$0:Lcom/android/server/uri/UriGrantsManagerService;
-
-    invoke-static {v1}, Lcom/android/server/uri/UriGrantsManagerService;->access$600(Lcom/android/server/uri/UriGrantsManagerService;)Landroid/util/SparseArray;
-
-    move-result-object v1
-
-    invoke-virtual {v1}, Landroid/util/SparseArray;->size()I
-
-    move-result v1
-    :try_end_13
-    .catchall {:try_start_9 .. :try_end_13} :catchall_ac
-
+    .local v1, "needSep":Z
     const/4 v2, 0x0
 
-    if-lez v1, :cond_a2
+    .line 1455
+    .local v2, "printedAnything":Z
+    :try_start_9
+    iget-object v3, p0, Lcom/android/server/uri/UriGrantsManagerService$LocalService;->this$0:Lcom/android/server/uri/UriGrantsManagerService;
+
+    invoke-static {v3}, Lcom/android/server/uri/UriGrantsManagerService;->access$600(Lcom/android/server/uri/UriGrantsManagerService;)Landroid/util/SparseArray;
+
+    move-result-object v3
+
+    invoke-virtual {v3}, Landroid/util/SparseArray;->size()I
+
+    move-result v3
+    :try_end_13
+    .catchall {:try_start_9 .. :try_end_13} :catchall_a7
+
+    if-lez v3, :cond_9e
 
     .line 1456
-    nop
+    const/4 v3, 0x0
 
     .line 1457
-    const/4 v1, -0x2
+    .local v3, "printed":Z
+    const/4 v4, -0x2
 
     .line 1458
-    const/4 v3, -0x1
+    .local v4, "dumpUid":I
+    const/4 v5, 0x0
 
     if-eqz p3, :cond_2e
 
     .line 1460
-    :try_start_1b
-    iget-object v1, p0, Lcom/android/server/uri/UriGrantsManagerService$LocalService;->this$0:Lcom/android/server/uri/UriGrantsManagerService;
+    :try_start_1a
+    iget-object v6, p0, Lcom/android/server/uri/UriGrantsManagerService$LocalService;->this$0:Lcom/android/server/uri/UriGrantsManagerService;
 
-    invoke-static {v1}, Lcom/android/server/uri/UriGrantsManagerService;->access$700(Lcom/android/server/uri/UriGrantsManagerService;)Landroid/content/Context;
+    invoke-static {v6}, Lcom/android/server/uri/UriGrantsManagerService;->access$700(Lcom/android/server/uri/UriGrantsManagerService;)Landroid/content/Context;
 
-    move-result-object v1
+    move-result-object v6
 
-    invoke-virtual {v1}, Landroid/content/Context;->getPackageManager()Landroid/content/pm/PackageManager;
+    invoke-virtual {v6}, Landroid/content/Context;->getPackageManager()Landroid/content/pm/PackageManager;
 
-    move-result-object v1
+    move-result-object v6
 
-    const/high16 v4, 0x400000
+    const/high16 v7, 0x400000
 
-    invoke-virtual {v1, p3, v4, v2}, Landroid/content/pm/PackageManager;->getPackageUidAsUser(Ljava/lang/String;II)I
+    invoke-virtual {v6, p3, v7, v5}, Landroid/content/pm/PackageManager;->getPackageUidAsUser(Ljava/lang/String;II)I
 
-    move-result v1
-    :try_end_2b
-    .catch Landroid/content/pm/PackageManager$NameNotFoundException; {:try_start_1b .. :try_end_2b} :catch_2c
-    .catchall {:try_start_1b .. :try_end_2b} :catchall_ac
+    move-result v6
+    :try_end_2a
+    .catch Landroid/content/pm/PackageManager$NameNotFoundException; {:try_start_1a .. :try_end_2a} :catch_2c
+    .catchall {:try_start_1a .. :try_end_2a} :catchall_a7
+
+    move v4, v6
 
     .line 1464
     goto :goto_2e
 
     .line 1462
     :catch_2c
-    move-exception p3
+    move-exception v6
 
     .line 1463
-    move v1, v3
+    .local v6, "e":Landroid/content/pm/PackageManager$NameNotFoundException;
+    const/4 v4, -0x1
 
     .line 1466
+    .end local v6  # "e":Landroid/content/pm/PackageManager$NameNotFoundException;
     :cond_2e
     :goto_2e
-    move p3, v2
+    nop
 
-    move v4, p3
-
-    move v5, v4
-
-    :goto_31
-    :try_start_31
+    .local v5, "i":I
+    :goto_2f
+    :try_start_2f
     iget-object v6, p0, Lcom/android/server/uri/UriGrantsManagerService$LocalService;->this$0:Lcom/android/server/uri/UriGrantsManagerService;
 
     invoke-static {v6}, Lcom/android/server/uri/UriGrantsManagerService;->access$600(Lcom/android/server/uri/UriGrantsManagerService;)Landroid/util/SparseArray;
@@ -348,7 +378,7 @@
 
     move-result v6
 
-    if-ge v2, v6, :cond_a3
+    if-ge v5, v6, :cond_9e
 
     .line 1467
     iget-object v6, p0, Lcom/android/server/uri/UriGrantsManagerService$LocalService;->this$0:Lcom/android/server/uri/UriGrantsManagerService;
@@ -357,24 +387,27 @@
 
     move-result-object v6
 
-    invoke-virtual {v6, v2}, Landroid/util/SparseArray;->keyAt(I)I
+    invoke-virtual {v6, v5}, Landroid/util/SparseArray;->keyAt(I)I
 
     move-result v6
 
     .line 1468
-    if-lt v1, v3, :cond_50
+    .local v6, "uid":I
+    const/4 v7, -0x1
+
+    if-lt v4, v7, :cond_4f
 
     invoke-static {v6}, Landroid/os/UserHandle;->getAppId(I)I
 
     move-result v7
 
-    if-eq v7, v1, :cond_50
+    if-eq v7, v4, :cond_4f
 
     .line 1469
-    goto :goto_9f
+    goto :goto_9b
 
     .line 1471
-    :cond_50
+    :cond_4f
     iget-object v7, p0, Lcom/android/server/uri/UriGrantsManagerService$LocalService;->this$0:Lcom/android/server/uri/UriGrantsManagerService;
 
     .line 1472
@@ -382,134 +415,140 @@
 
     move-result-object v7
 
-    invoke-virtual {v7, v2}, Landroid/util/SparseArray;->valueAt(I)Ljava/lang/Object;
+    invoke-virtual {v7, v5}, Landroid/util/SparseArray;->valueAt(I)Ljava/lang/Object;
 
     move-result-object v7
 
     check-cast v7, Landroid/util/ArrayMap;
 
     .line 1473
-    const/4 v8, 0x1
-
-    if-nez v4, :cond_6e
+    .local v7, "perms":Landroid/util/ArrayMap;, "Landroid/util/ArrayMap<Lcom/android/server/uri/GrantUri;Lcom/android/server/uri/UriPermission;>;"
+    if-nez v3, :cond_6a
 
     .line 1474
-    if-eqz v5, :cond_64
+    if-eqz v1, :cond_62
 
     invoke-virtual {p1}, Ljava/io/PrintWriter;->println()V
 
     .line 1475
-    :cond_64
-    nop
+    :cond_62
+    const/4 v1, 0x1
 
     .line 1476
-    const-string p3, "  Granted Uri Permissions:"
+    const-string v8, "  Granted Uri Permissions:"
 
-    invoke-virtual {p1, p3}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {p1, v8}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
     .line 1477
-    nop
+    const/4 v3, 0x1
 
     .line 1478
-    move p3, v8
-
-    move v4, p3
-
-    move v5, v4
+    const/4 v2, 0x1
 
     .line 1480
-    :cond_6e
+    :cond_6a
     const-string v8, "  * UID "
 
     invoke-virtual {p1, v8}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
     invoke-virtual {p1, v6}, Ljava/io/PrintWriter;->print(I)V
 
-    const-string v6, " holds:"
+    const-string v8, " holds:"
 
-    invoke-virtual {p1, v6}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {p1, v8}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
     .line 1481
     invoke-virtual {v7}, Landroid/util/ArrayMap;->values()Ljava/util/Collection;
 
-    move-result-object v6
+    move-result-object v8
 
-    invoke-interface {v6}, Ljava/util/Collection;->iterator()Ljava/util/Iterator;
+    invoke-interface {v8}, Ljava/util/Collection;->iterator()Ljava/util/Iterator;
 
-    move-result-object v6
+    move-result-object v8
 
-    :goto_83
-    invoke-interface {v6}, Ljava/util/Iterator;->hasNext()Z
+    :goto_7f
+    invoke-interface {v8}, Ljava/util/Iterator;->hasNext()Z
 
-    move-result v7
+    move-result v9
 
-    if-eqz v7, :cond_9f
+    if-eqz v9, :cond_9b
 
-    invoke-interface {v6}, Ljava/util/Iterator;->next()Ljava/lang/Object;
+    invoke-interface {v8}, Ljava/util/Iterator;->next()Ljava/lang/Object;
 
-    move-result-object v7
+    move-result-object v9
 
-    check-cast v7, Lcom/android/server/uri/UriPermission;
+    check-cast v9, Lcom/android/server/uri/UriPermission;
 
     .line 1482
-    const-string v8, "    "
+    .local v9, "perm":Lcom/android/server/uri/UriPermission;
+    const-string v10, "    "
 
-    invoke-virtual {p1, v8}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
+    invoke-virtual {p1, v10}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
-    invoke-virtual {p1, v7}, Ljava/io/PrintWriter;->println(Ljava/lang/Object;)V
+    invoke-virtual {p1, v9}, Ljava/io/PrintWriter;->println(Ljava/lang/Object;)V
 
     .line 1483
-    if-eqz p2, :cond_9e
+    if-eqz p2, :cond_9a
 
     .line 1484
-    const-string v8, "      "
+    const-string v10, "      "
 
-    invoke-virtual {v7, p1, v8}, Lcom/android/server/uri/UriPermission;->dump(Ljava/io/PrintWriter;Ljava/lang/String;)V
+    invoke-virtual {v9, p1, v10}, Lcom/android/server/uri/UriPermission;->dump(Ljava/io/PrintWriter;Ljava/lang/String;)V
 
     .line 1486
-    :cond_9e
-    goto :goto_83
+    .end local v9  # "perm":Lcom/android/server/uri/UriPermission;
+    :cond_9a
+    goto :goto_7f
 
     .line 1466
-    :cond_9f
-    :goto_9f
-    add-int/lit8 v2, v2, 0x1
+    .end local v6  # "uid":I
+    .end local v7  # "perms":Landroid/util/ArrayMap;, "Landroid/util/ArrayMap<Lcom/android/server/uri/GrantUri;Lcom/android/server/uri/UriPermission;>;"
+    :cond_9b
+    :goto_9b
+    add-int/lit8 v5, v5, 0x1
 
-    goto :goto_31
-
-    .line 1455
-    :cond_a2
-    move p3, v2
+    goto :goto_2f
 
     .line 1490
-    :cond_a3
-    if-nez p3, :cond_aa
+    .end local v3  # "printed":Z
+    .end local v4  # "dumpUid":I
+    .end local v5  # "i":I
+    :cond_9e
+    if-nez v2, :cond_a5
 
     .line 1491
-    const-string p2, "  (nothing)"
+    const-string v3, "  (nothing)"
 
-    invoke-virtual {p1, p2}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {p1, v3}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
     .line 1493
-    :cond_aa
+    .end local v1  # "needSep":Z
+    .end local v2  # "printedAnything":Z
+    :cond_a5
     monitor-exit v0
 
     .line 1494
     return-void
 
     .line 1493
-    :catchall_ac
-    move-exception p1
+    :catchall_a7
+    move-exception v1
 
     monitor-exit v0
-    :try_end_ae
-    .catchall {:try_start_31 .. :try_end_ae} :catchall_ac
+    :try_end_a9
+    .catchall {:try_start_2f .. :try_end_a9} :catchall_a7
 
-    throw p1
+    throw v1
 .end method
 
 .method public grantUriPermission(ILjava/lang/String;Lcom/android/server/uri/GrantUri;ILcom/android/server/uri/UriPermissionOwner;I)V
     .registers 15
+    .param p1, "callingUid"  # I
+    .param p2, "targetPkg"  # Ljava/lang/String;
+    .param p3, "grantUri"  # Lcom/android/server/uri/GrantUri;
+    .param p4, "modeFlags"  # I
+    .param p5, "owner"  # Lcom/android/server/uri/UriPermissionOwner;
+    .param p6, "targetUserId"  # I
 
     .line 1316
     iget-object v0, p0, Lcom/android/server/uri/UriGrantsManagerService$LocalService;->this$0:Lcom/android/server/uri/UriGrantsManagerService;
@@ -546,17 +585,21 @@
 
     .line 1319
     :catchall_14
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_16
     .catchall {:try_start_7 .. :try_end_16} :catchall_14
 
-    throw p1
+    throw v1
 .end method
 
 .method public grantUriPermissionFromIntent(ILjava/lang/String;Landroid/content/Intent;I)V
     .registers 12
+    .param p1, "callingUid"  # I
+    .param p2, "targetPkg"  # Ljava/lang/String;
+    .param p3, "intent"  # Landroid/content/Intent;
+    .param p4, "targetUserId"  # I
 
     .line 1369
     iget-object v0, p0, Lcom/android/server/uri/UriGrantsManagerService$LocalService;->this$0:Lcom/android/server/uri/UriGrantsManagerService;
@@ -591,17 +634,22 @@
 
     .line 1372
     :catchall_13
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_15
     .catchall {:try_start_7 .. :try_end_15} :catchall_13
 
-    throw p1
+    throw v1
 .end method
 
 .method public grantUriPermissionFromIntent(ILjava/lang/String;Landroid/content/Intent;Lcom/android/server/uri/UriPermissionOwner;I)V
     .registers 13
+    .param p1, "callingUid"  # I
+    .param p2, "targetPkg"  # Ljava/lang/String;
+    .param p3, "intent"  # Landroid/content/Intent;
+    .param p4, "owner"  # Lcom/android/server/uri/UriPermissionOwner;
+    .param p5, "targetUserId"  # I
 
     .line 1378
     iget-object v0, p0, Lcom/android/server/uri/UriGrantsManagerService$LocalService;->this$0:Lcom/android/server/uri/UriGrantsManagerService;
@@ -636,17 +684,19 @@
 
     .line 1381
     :catchall_13
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_15
     .catchall {:try_start_7 .. :try_end_15} :catchall_13
 
-    throw p1
+    throw v1
 .end method
 
 .method public grantUriPermissionUncheckedFromIntent(Lcom/android/server/uri/NeededUriGrants;Lcom/android/server/uri/UriPermissionOwner;)V
     .registers 5
+    .param p1, "needed"  # Lcom/android/server/uri/NeededUriGrants;
+    .param p2, "owner"  # Lcom/android/server/uri/UriPermissionOwner;
 
     .line 1387
     iget-object v0, p0, Lcom/android/server/uri/UriGrantsManagerService$LocalService;->this$0:Lcom/android/server/uri/UriGrantsManagerService;
@@ -671,17 +721,18 @@
 
     .line 1389
     :catchall_e
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_10
     .catchall {:try_start_7 .. :try_end_10} :catchall_e
 
-    throw p1
+    throw v1
 .end method
 
 .method public newUriPermissionOwner(Ljava/lang/String;)Landroid/os/IBinder;
-    .registers 4
+    .registers 5
+    .param p1, "name"  # Ljava/lang/String;
 
     .line 1408
     iget-object v0, p0, Lcom/android/server/uri/UriGrantsManagerService$LocalService;->this$0:Lcom/android/server/uri/UriGrantsManagerService;
@@ -706,23 +757,25 @@
     invoke-direct {v1, p0, p1}, Lcom/android/server/uri/UriPermissionOwner;-><init>(Lcom/android/server/uri/UriGrantsManagerInternal;Ljava/lang/Object;)V
 
     .line 1411
+    .local v1, "owner":Lcom/android/server/uri/UriPermissionOwner;
     invoke-virtual {v1}, Lcom/android/server/uri/UriPermissionOwner;->getExternalToken()Landroid/os/Binder;
 
-    move-result-object p1
+    move-result-object v2
 
     monitor-exit v0
 
-    return-object p1
+    return-object v2
 
     .line 1412
+    .end local v1  # "owner":Lcom/android/server/uri/UriPermissionOwner;
     :catchall_1a
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_1c
     .catchall {:try_start_f .. :try_end_1c} :catchall_1a
 
-    throw p1
+    throw v1
 .end method
 
 .method public onActivityManagerInternalAdded()V
@@ -797,6 +850,7 @@
 
 .method public removeUriPermissionIfNeeded(Lcom/android/server/uri/UriPermission;)V
     .registers 4
+    .param p1, "perm"  # Lcom/android/server/uri/UriPermission;
 
     .line 1308
     iget-object v0, p0, Lcom/android/server/uri/UriGrantsManagerService$LocalService;->this$0:Lcom/android/server/uri/UriGrantsManagerService;
@@ -821,17 +875,21 @@
 
     .line 1310
     :catchall_e
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_10
     .catchall {:try_start_7 .. :try_end_10} :catchall_e
 
-    throw p1
+    throw v1
 .end method
 
 .method public removeUriPermissionsForPackage(Ljava/lang/String;IZZ)V
     .registers 7
+    .param p1, "packageName"  # Ljava/lang/String;
+    .param p2, "userHandle"  # I
+    .param p3, "persistable"  # Z
+    .param p4, "targetOnly"  # Z
 
     .line 1418
     iget-object v0, p0, Lcom/android/server/uri/UriGrantsManagerService$LocalService;->this$0:Lcom/android/server/uri/UriGrantsManagerService;
@@ -856,17 +914,21 @@
 
     .line 1421
     :catchall_e
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_10
     .catchall {:try_start_7 .. :try_end_10} :catchall_e
 
-    throw p1
+    throw v1
 .end method
 
 .method public revokeUriPermission(Ljava/lang/String;ILcom/android/server/uri/GrantUri;I)V
     .registers 7
+    .param p1, "targetPackage"  # Ljava/lang/String;
+    .param p2, "callingUid"  # I
+    .param p3, "grantUri"  # Lcom/android/server/uri/GrantUri;
+    .param p4, "modeFlags"  # I
 
     .line 1325
     iget-object v0, p0, Lcom/android/server/uri/UriGrantsManagerService$LocalService;->this$0:Lcom/android/server/uri/UriGrantsManagerService;
@@ -891,17 +953,21 @@
 
     .line 1328
     :catchall_e
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_10
     .catchall {:try_start_7 .. :try_end_10} :catchall_e
 
-    throw p1
+    throw v1
 .end method
 
 .method public revokeUriPermissionFromOwner(Landroid/os/IBinder;Landroid/net/Uri;II)V
-    .registers 8
+    .registers 10
+    .param p1, "token"  # Landroid/os/IBinder;
+    .param p2, "uri"  # Landroid/net/Uri;
+    .param p3, "mode"  # I
+    .param p4, "userId"  # I
 
     .line 1426
     iget-object v0, p0, Lcom/android/server/uri/UriGrantsManagerService$LocalService;->this$0:Lcom/android/server/uri/UriGrantsManagerService;
@@ -919,6 +985,7 @@
     move-result-object v1
 
     .line 1428
+    .local v1, "owner":Lcom/android/server/uri/UriPermissionOwner;
     if-eqz v1, :cond_24
 
     .line 1432
@@ -931,26 +998,29 @@
 
     .line 1435
     :cond_13
-    and-int/lit16 p1, p3, 0x80
+    and-int/lit16 v2, p3, 0x80
 
-    if-eqz p1, :cond_19
+    if-eqz v2, :cond_19
 
-    const/4 p1, 0x1
+    const/4 v2, 0x1
 
     goto :goto_1a
 
     :cond_19
-    const/4 p1, 0x0
+    const/4 v2, 0x0
 
     .line 1436
+    .local v2, "prefix":Z
     :goto_1a
-    new-instance v2, Lcom/android/server/uri/GrantUri;
+    new-instance v3, Lcom/android/server/uri/GrantUri;
 
-    invoke-direct {v2, p4, p2, p1}, Lcom/android/server/uri/GrantUri;-><init>(ILandroid/net/Uri;Z)V
+    invoke-direct {v3, p4, p2, v2}, Lcom/android/server/uri/GrantUri;-><init>(ILandroid/net/Uri;Z)V
 
-    invoke-virtual {v1, v2, p3}, Lcom/android/server/uri/UriPermissionOwner;->removeUriPermission(Lcom/android/server/uri/GrantUri;I)V
+    invoke-virtual {v1, v3, p3}, Lcom/android/server/uri/UriPermissionOwner;->removeUriPermission(Lcom/android/server/uri/GrantUri;I)V
 
     .line 1438
+    .end local v1  # "owner":Lcom/android/server/uri/UriPermissionOwner;
+    .end local v2  # "prefix":Z
     :goto_22
     monitor-exit v0
 
@@ -958,34 +1028,46 @@
     return-void
 
     .line 1429
+    .restart local v1  # "owner":Lcom/android/server/uri/UriPermissionOwner;
     :cond_24
-    new-instance p2, Ljava/lang/IllegalArgumentException;
+    new-instance v2, Ljava/lang/IllegalArgumentException;
 
-    new-instance p3, Ljava/lang/StringBuilder;
+    new-instance v3, Ljava/lang/StringBuilder;
 
-    invoke-direct {p3}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string p4, "Unknown owner: "
+    const-string v4, "Unknown owner: "
 
-    invoke-virtual {p3, p4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p3, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v3
 
-    invoke-direct {p2, p1}, Ljava/lang/IllegalArgumentException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v2, v3}, Ljava/lang/IllegalArgumentException;-><init>(Ljava/lang/String;)V
 
-    throw p2
+    .end local p0  # "this":Lcom/android/server/uri/UriGrantsManagerService$LocalService;
+    .end local p1  # "token":Landroid/os/IBinder;
+    .end local p2  # "uri":Landroid/net/Uri;
+    .end local p3  # "mode":I
+    .end local p4  # "userId":I
+    throw v2
 
     .line 1438
+    .end local v1  # "owner":Lcom/android/server/uri/UriPermissionOwner;
+    .restart local p0  # "this":Lcom/android/server/uri/UriGrantsManagerService$LocalService;
+    .restart local p1  # "token":Landroid/os/IBinder;
+    .restart local p2  # "uri":Landroid/net/Uri;
+    .restart local p3  # "mode":I
+    .restart local p4  # "userId":I
     :catchall_3b
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_3d
     .catchall {:try_start_7 .. :try_end_3d} :catchall_3b
 
-    throw p1
+    throw v1
 .end method

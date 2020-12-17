@@ -29,7 +29,10 @@
 
 # direct methods
 .method public constructor <init>(Landroid/content/Context;Lcom/android/server/wm/DisplayContent;I)V
-    .registers 7
+    .registers 9
+    .param p1, "context"  # Landroid/content/Context;
+    .param p2, "dc"  # Lcom/android/server/wm/DisplayContent;
+    .param p3, "zOrder"  # I
 
     .line 51
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -47,6 +50,7 @@
     move-result-object v0
 
     .line 53
+    .local v0, "display":Landroid/view/Display;
     new-instance v1, Landroid/graphics/Point;
 
     invoke-direct {v1}, Landroid/graphics/Point;-><init>()V
@@ -59,108 +63,109 @@
     invoke-virtual {v0, v1}, Landroid/view/Display;->getSize(Landroid/graphics/Point;)V
 
     .line 56
-    nop
+    const/4 v1, 0x0
 
     .line 58
-    const/4 v0, 0x0
-
-    :try_start_1c
+    .local v1, "ctrl":Landroid/view/SurfaceControl;
+    :try_start_1b
     invoke-virtual {p2}, Lcom/android/server/wm/DisplayContent;->makeOverlay()Landroid/view/SurfaceControl$Builder;
 
-    move-result-object p2
+    move-result-object v2
 
-    const-string v1, "EmulatorDisplayOverlay"
+    const-string v3, "EmulatorDisplayOverlay"
 
     .line 59
-    invoke-virtual {p2, v1}, Landroid/view/SurfaceControl$Builder;->setName(Ljava/lang/String;)Landroid/view/SurfaceControl$Builder;
+    invoke-virtual {v2, v3}, Landroid/view/SurfaceControl$Builder;->setName(Ljava/lang/String;)Landroid/view/SurfaceControl$Builder;
 
-    move-result-object p2
+    move-result-object v2
 
-    iget-object v1, p0, Lcom/android/server/wm/EmulatorDisplayOverlay;->mScreenSize:Landroid/graphics/Point;
+    iget-object v3, p0, Lcom/android/server/wm/EmulatorDisplayOverlay;->mScreenSize:Landroid/graphics/Point;
 
-    iget v1, v1, Landroid/graphics/Point;->x:I
+    iget v3, v3, Landroid/graphics/Point;->x:I
 
-    iget-object v2, p0, Lcom/android/server/wm/EmulatorDisplayOverlay;->mScreenSize:Landroid/graphics/Point;
+    iget-object v4, p0, Lcom/android/server/wm/EmulatorDisplayOverlay;->mScreenSize:Landroid/graphics/Point;
 
-    iget v2, v2, Landroid/graphics/Point;->y:I
+    iget v4, v4, Landroid/graphics/Point;->y:I
 
     .line 60
-    invoke-virtual {p2, v1, v2}, Landroid/view/SurfaceControl$Builder;->setBufferSize(II)Landroid/view/SurfaceControl$Builder;
+    invoke-virtual {v2, v3, v4}, Landroid/view/SurfaceControl$Builder;->setBufferSize(II)Landroid/view/SurfaceControl$Builder;
 
-    move-result-object p2
+    move-result-object v2
 
-    const/4 v1, -0x3
+    const/4 v3, -0x3
 
     .line 61
-    invoke-virtual {p2, v1}, Landroid/view/SurfaceControl$Builder;->setFormat(I)Landroid/view/SurfaceControl$Builder;
+    invoke-virtual {v2, v3}, Landroid/view/SurfaceControl$Builder;->setFormat(I)Landroid/view/SurfaceControl$Builder;
 
-    move-result-object p2
+    move-result-object v2
 
     .line 62
-    invoke-virtual {p2}, Landroid/view/SurfaceControl$Builder;->build()Landroid/view/SurfaceControl;
+    invoke-virtual {v2}, Landroid/view/SurfaceControl$Builder;->build()Landroid/view/SurfaceControl;
 
-    move-result-object v0
+    move-result-object v2
+
+    move-object v1, v2
 
     .line 63
-    invoke-virtual {v0, p3}, Landroid/view/SurfaceControl;->setLayer(I)V
+    invoke-virtual {v1, p3}, Landroid/view/SurfaceControl;->setLayer(I)V
 
     .line 64
-    const/4 p2, 0x0
+    const/4 v2, 0x0
 
-    invoke-virtual {v0, p2, p2}, Landroid/view/SurfaceControl;->setPosition(FF)V
+    invoke-virtual {v1, v2, v2}, Landroid/view/SurfaceControl;->setPosition(FF)V
 
     .line 65
-    invoke-virtual {v0}, Landroid/view/SurfaceControl;->show()V
+    invoke-virtual {v1}, Landroid/view/SurfaceControl;->show()V
 
     .line 66
-    iget-object p2, p0, Lcom/android/server/wm/EmulatorDisplayOverlay;->mSurface:Landroid/view/Surface;
+    iget-object v2, p0, Lcom/android/server/wm/EmulatorDisplayOverlay;->mSurface:Landroid/view/Surface;
 
-    invoke-virtual {p2, v0}, Landroid/view/Surface;->copyFrom(Landroid/view/SurfaceControl;)V
+    invoke-virtual {v2, v1}, Landroid/view/Surface;->copyFrom(Landroid/view/SurfaceControl;)V
     :try_end_4a
-    .catch Landroid/view/Surface$OutOfResourcesException; {:try_start_1c .. :try_end_4a} :catch_4b
+    .catch Landroid/view/Surface$OutOfResourcesException; {:try_start_1b .. :try_end_4a} :catch_4b
 
     .line 68
     goto :goto_4c
 
     .line 67
     :catch_4b
-    move-exception p2
+    move-exception v2
 
     .line 69
     :goto_4c
-    iput-object v0, p0, Lcom/android/server/wm/EmulatorDisplayOverlay;->mSurfaceControl:Landroid/view/SurfaceControl;
+    iput-object v1, p0, Lcom/android/server/wm/EmulatorDisplayOverlay;->mSurfaceControl:Landroid/view/SurfaceControl;
 
     .line 70
-    const/4 p2, 0x1
+    const/4 v2, 0x1
 
-    iput-boolean p2, p0, Lcom/android/server/wm/EmulatorDisplayOverlay;->mDrawNeeded:Z
+    iput-boolean v2, p0, Lcom/android/server/wm/EmulatorDisplayOverlay;->mDrawNeeded:Z
 
     .line 71
-    const p2, 0x10802cd
+    const v2, 0x10802cb
 
-    invoke-virtual {p1, p2}, Landroid/content/Context;->getDrawable(I)Landroid/graphics/drawable/Drawable;
+    invoke-virtual {p1, v2}, Landroid/content/Context;->getDrawable(I)Landroid/graphics/drawable/Drawable;
 
-    move-result-object p1
+    move-result-object v2
 
-    iput-object p1, p0, Lcom/android/server/wm/EmulatorDisplayOverlay;->mOverlay:Landroid/graphics/drawable/Drawable;
+    iput-object v2, p0, Lcom/android/server/wm/EmulatorDisplayOverlay;->mOverlay:Landroid/graphics/drawable/Drawable;
 
     .line 73
     return-void
 .end method
 
 .method private drawIfNeeded()V
-    .registers 5
+    .registers 6
 
     .line 76
     iget-boolean v0, p0, Lcom/android/server/wm/EmulatorDisplayOverlay;->mDrawNeeded:Z
 
-    if-eqz v0, :cond_4f
+    if-eqz v0, :cond_50
 
     iget-boolean v0, p0, Lcom/android/server/wm/EmulatorDisplayOverlay;->mVisible:Z
 
     if-nez v0, :cond_9
 
-    goto :goto_4f
+    goto :goto_50
 
     .line 79
     :cond_9
@@ -182,72 +187,77 @@
     invoke-direct {v1, v0, v0, v2, v3}, Landroid/graphics/Rect;-><init>(IIII)V
 
     .line 82
+    .local v1, "dirty":Landroid/graphics/Rect;
     const/4 v2, 0x0
 
     .line 84
+    .local v2, "c":Landroid/graphics/Canvas;
     :try_start_1a
     iget-object v3, p0, Lcom/android/server/wm/EmulatorDisplayOverlay;->mSurface:Landroid/view/Surface;
 
     invoke-virtual {v3, v1}, Landroid/view/Surface;->lockCanvas(Landroid/graphics/Rect;)Landroid/graphics/Canvas;
 
-    move-result-object v2
+    move-result-object v3
     :try_end_20
-    .catch Ljava/lang/IllegalArgumentException; {:try_start_1a .. :try_end_20} :catch_23
-    .catch Landroid/view/Surface$OutOfResourcesException; {:try_start_1a .. :try_end_20} :catch_21
+    .catch Ljava/lang/IllegalArgumentException; {:try_start_1a .. :try_end_20} :catch_24
+    .catch Landroid/view/Surface$OutOfResourcesException; {:try_start_1a .. :try_end_20} :catch_22
+
+    move-object v2, v3
 
     .line 87
-    :goto_20
-    goto :goto_25
+    :goto_21
+    goto :goto_26
 
     .line 86
-    :catch_21
-    move-exception v1
+    :catch_22
+    move-exception v3
 
-    goto :goto_25
+    goto :goto_26
 
     .line 85
-    :catch_23
-    move-exception v1
+    :catch_24
+    move-exception v3
 
-    goto :goto_20
+    goto :goto_21
 
     .line 88
-    :goto_25
-    if-nez v2, :cond_28
+    :goto_26
+    if-nez v2, :cond_29
 
     .line 89
     return-void
 
     .line 91
-    :cond_28
-    sget-object v1, Landroid/graphics/PorterDuff$Mode;->SRC:Landroid/graphics/PorterDuff$Mode;
+    :cond_29
+    sget-object v3, Landroid/graphics/PorterDuff$Mode;->SRC:Landroid/graphics/PorterDuff$Mode;
 
-    invoke-virtual {v2, v0, v1}, Landroid/graphics/Canvas;->drawColor(ILandroid/graphics/PorterDuff$Mode;)V
+    invoke-virtual {v2, v0, v3}, Landroid/graphics/Canvas;->drawColor(ILandroid/graphics/PorterDuff$Mode;)V
 
     .line 92
-    iget-object v1, p0, Lcom/android/server/wm/EmulatorDisplayOverlay;->mSurfaceControl:Landroid/view/SurfaceControl;
+    iget-object v3, p0, Lcom/android/server/wm/EmulatorDisplayOverlay;->mSurfaceControl:Landroid/view/SurfaceControl;
 
-    const/4 v3, 0x0
+    const/4 v4, 0x0
 
-    invoke-virtual {v1, v3, v3}, Landroid/view/SurfaceControl;->setPosition(FF)V
+    invoke-virtual {v3, v4, v4}, Landroid/view/SurfaceControl;->setPosition(FF)V
 
     .line 94
-    iget-object v1, p0, Lcom/android/server/wm/EmulatorDisplayOverlay;->mScreenSize:Landroid/graphics/Point;
-
-    iget v1, v1, Landroid/graphics/Point;->x:I
-
     iget-object v3, p0, Lcom/android/server/wm/EmulatorDisplayOverlay;->mScreenSize:Landroid/graphics/Point;
 
-    iget v3, v3, Landroid/graphics/Point;->y:I
+    iget v3, v3, Landroid/graphics/Point;->x:I
 
-    invoke-static {v1, v3}, Ljava/lang/Math;->max(II)I
+    iget-object v4, p0, Lcom/android/server/wm/EmulatorDisplayOverlay;->mScreenSize:Landroid/graphics/Point;
 
-    move-result v1
+    iget v4, v4, Landroid/graphics/Point;->y:I
+
+    invoke-static {v3, v4}, Ljava/lang/Math;->max(II)I
+
+    move-result v3
 
     .line 95
-    iget-object v3, p0, Lcom/android/server/wm/EmulatorDisplayOverlay;->mOverlay:Landroid/graphics/drawable/Drawable;
+    .local v3, "size":I
+    iget-object v4, p0, Lcom/android/server/wm/EmulatorDisplayOverlay;->mOverlay:Landroid/graphics/drawable/Drawable;
 
-    invoke-virtual {v3, v0, v0, v1, v1}, Landroid/graphics/drawable/Drawable;->setBounds(IIII)V
+    invoke-virtual {v4, v0, v0, v3, v3}, Landroid/graphics/drawable/Drawable;->setBounds(IIII)V
 
     .line 96
     iget-object v0, p0, Lcom/android/server/wm/EmulatorDisplayOverlay;->mOverlay:Landroid/graphics/drawable/Drawable;
@@ -263,8 +273,11 @@
     return-void
 
     .line 77
-    :cond_4f
-    :goto_4f
+    .end local v1  # "dirty":Landroid/graphics/Rect;
+    .end local v2  # "c":Landroid/graphics/Canvas;
+    .end local v3  # "size":I
+    :cond_50
+    :goto_50
     return-void
 .end method
 
@@ -272,6 +285,9 @@
 # virtual methods
 .method positionSurface(III)V
     .registers 5
+    .param p1, "dw"  # I
+    .param p2, "dh"  # I
+    .param p3, "rotation"  # I
 
     .line 116
     iget v0, p0, Lcom/android/server/wm/EmulatorDisplayOverlay;->mLastDW:I
@@ -297,9 +313,9 @@
     iput p2, p0, Lcom/android/server/wm/EmulatorDisplayOverlay;->mLastDH:I
 
     .line 121
-    const/4 p1, 0x1
+    const/4 v0, 0x1
 
-    iput-boolean p1, p0, Lcom/android/server/wm/EmulatorDisplayOverlay;->mDrawNeeded:Z
+    iput-boolean v0, p0, Lcom/android/server/wm/EmulatorDisplayOverlay;->mDrawNeeded:Z
 
     .line 122
     iput p3, p0, Lcom/android/server/wm/EmulatorDisplayOverlay;->mRotation:I
@@ -313,6 +329,7 @@
 
 .method public setVisibility(Z)V
     .registers 3
+    .param p1, "on"  # Z
 
     .line 103
     iget-object v0, p0, Lcom/android/server/wm/EmulatorDisplayOverlay;->mSurfaceControl:Landroid/view/SurfaceControl;
@@ -333,17 +350,17 @@
     if-eqz p1, :cond_12
 
     .line 109
-    iget-object p1, p0, Lcom/android/server/wm/EmulatorDisplayOverlay;->mSurfaceControl:Landroid/view/SurfaceControl;
+    iget-object v0, p0, Lcom/android/server/wm/EmulatorDisplayOverlay;->mSurfaceControl:Landroid/view/SurfaceControl;
 
-    invoke-virtual {p1}, Landroid/view/SurfaceControl;->show()V
+    invoke-virtual {v0}, Landroid/view/SurfaceControl;->show()V
 
     goto :goto_17
 
     .line 111
     :cond_12
-    iget-object p1, p0, Lcom/android/server/wm/EmulatorDisplayOverlay;->mSurfaceControl:Landroid/view/SurfaceControl;
+    iget-object v0, p0, Lcom/android/server/wm/EmulatorDisplayOverlay;->mSurfaceControl:Landroid/view/SurfaceControl;
 
-    invoke-virtual {p1}, Landroid/view/SurfaceControl;->hide()V
+    invoke-virtual {v0}, Landroid/view/SurfaceControl;->hide()V
 
     .line 113
     :goto_17

@@ -28,6 +28,7 @@
     .end annotation
 
     .line 31
+    .local p1, "future":Ljava/util/concurrent/CompletableFuture;, "Ljava/util/concurrent/CompletableFuture<Lcom/android/server/backup/remote/RemoteResult;>;"
     invoke-direct {p0}, Landroid/app/backup/IBackupCallback$Stub;-><init>()V
 
     .line 32
@@ -40,7 +41,8 @@
 
 # virtual methods
 .method public operationComplete(J)V
-    .registers 4
+    .registers 5
+    .param p1, "result"  # J
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -52,9 +54,9 @@
 
     invoke-static {p1, p2}, Lcom/android/server/backup/remote/RemoteResult;->of(J)Lcom/android/server/backup/remote/RemoteResult;
 
-    move-result-object p1
+    move-result-object v1
 
-    invoke-virtual {v0, p1}, Ljava/util/concurrent/CompletableFuture;->complete(Ljava/lang/Object;)Z
+    invoke-virtual {v0, v1}, Ljava/util/concurrent/CompletableFuture;->complete(Ljava/lang/Object;)Z
 
     .line 38
     return-void

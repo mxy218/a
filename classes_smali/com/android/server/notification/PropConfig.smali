@@ -18,58 +18,65 @@
 .end method
 
 .method public static getInt(Landroid/content/Context;Ljava/lang/String;I)I
-    .registers 3
+    .registers 4
+    .param p0, "context"  # Landroid/content/Context;
+    .param p1, "propName"  # Ljava/lang/String;
+    .param p2, "resId"  # I
 
     .line 26
     invoke-virtual {p0}, Landroid/content/Context;->getResources()Landroid/content/res/Resources;
 
-    move-result-object p0
+    move-result-object v0
 
-    invoke-virtual {p0, p2}, Landroid/content/res/Resources;->getInteger(I)I
+    invoke-virtual {v0, p2}, Landroid/content/res/Resources;->getInteger(I)I
 
-    move-result p0
+    move-result v0
 
-    invoke-static {p1, p0}, Landroid/os/SystemProperties;->getInt(Ljava/lang/String;I)I
+    invoke-static {p1, v0}, Landroid/os/SystemProperties;->getInt(Ljava/lang/String;I)I
 
-    move-result p0
+    move-result v0
 
-    return p0
+    return v0
 .end method
 
 .method public static getStringArray(Landroid/content/Context;Ljava/lang/String;I)[Ljava/lang/String;
-    .registers 4
+    .registers 5
+    .param p0, "context"  # Landroid/content/Context;
+    .param p1, "propName"  # Ljava/lang/String;
+    .param p2, "resId"  # I
 
     .line 30
     const-string v0, "UNSET"
 
     invoke-static {p1, v0}, Landroid/os/SystemProperties;->get(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v1
 
     .line 31
-    invoke-virtual {v0, p1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    .local v1, "prop":Ljava/lang/String;
+    invoke-virtual {v0, v1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
     move-result v0
 
     if-nez v0, :cond_13
 
-    const-string p0, ","
+    const-string v0, ","
 
-    invoke-virtual {p1, p0}, Ljava/lang/String;->split(Ljava/lang/String;)[Ljava/lang/String;
+    invoke-virtual {v1, v0}, Ljava/lang/String;->split(Ljava/lang/String;)[Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v0
 
     goto :goto_1b
 
     :cond_13
     invoke-virtual {p0}, Landroid/content/Context;->getResources()Landroid/content/res/Resources;
 
-    move-result-object p0
+    move-result-object v0
 
-    invoke-virtual {p0, p2}, Landroid/content/res/Resources;->getStringArray(I)[Ljava/lang/String;
+    invoke-virtual {v0, p2}, Landroid/content/res/Resources;->getStringArray(I)[Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v0
 
     :goto_1b
-    return-object p0
+    return-object v0
 .end method

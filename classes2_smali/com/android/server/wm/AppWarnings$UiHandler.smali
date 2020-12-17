@@ -33,6 +33,7 @@
 # direct methods
 .method public constructor <init>(Lcom/android/server/wm/AppWarnings;Landroid/os/Looper;)V
     .registers 4
+    .param p2, "looper"  # Landroid/os/Looper;
 
     .line 378
     iput-object p1, p0, Lcom/android/server/wm/AppWarnings$UiHandler;->this$0:Lcom/android/server/wm/AppWarnings;
@@ -52,6 +53,7 @@
 # virtual methods
 .method public handleMessage(Landroid/os/Message;)V
     .registers 4
+    .param p1, "msg"  # Landroid/os/Message;
 
     .line 384
     iget v0, p1, Landroid/os/Message;->what:I
@@ -80,66 +82,74 @@
 
     .line 401
     :cond_12
-    iget-object p1, p1, Landroid/os/Message;->obj:Ljava/lang/Object;
+    iget-object v0, p1, Landroid/os/Message;->obj:Ljava/lang/Object;
 
-    check-cast p1, Lcom/android/server/wm/ActivityRecord;
+    check-cast v0, Lcom/android/server/wm/ActivityRecord;
 
     .line 402
-    iget-object v0, p0, Lcom/android/server/wm/AppWarnings$UiHandler;->this$0:Lcom/android/server/wm/AppWarnings;
+    .local v0, "ar":Lcom/android/server/wm/ActivityRecord;
+    iget-object v1, p0, Lcom/android/server/wm/AppWarnings$UiHandler;->this$0:Lcom/android/server/wm/AppWarnings;
 
-    invoke-static {v0, p1}, Lcom/android/server/wm/AppWarnings;->access$400(Lcom/android/server/wm/AppWarnings;Lcom/android/server/wm/ActivityRecord;)V
+    invoke-static {v1, v0}, Lcom/android/server/wm/AppWarnings;->access$400(Lcom/android/server/wm/AppWarnings;Lcom/android/server/wm/ActivityRecord;)V
 
     goto :goto_40
 
     .line 397
+    .end local v0  # "ar":Lcom/android/server/wm/ActivityRecord;
     :cond_1c
-    iget-object p1, p1, Landroid/os/Message;->obj:Ljava/lang/Object;
+    iget-object v0, p1, Landroid/os/Message;->obj:Ljava/lang/Object;
 
-    check-cast p1, Ljava/lang/String;
+    check-cast v0, Ljava/lang/String;
 
     .line 398
-    iget-object v0, p0, Lcom/android/server/wm/AppWarnings$UiHandler;->this$0:Lcom/android/server/wm/AppWarnings;
+    .local v0, "name":Ljava/lang/String;
+    iget-object v1, p0, Lcom/android/server/wm/AppWarnings$UiHandler;->this$0:Lcom/android/server/wm/AppWarnings;
 
-    invoke-static {v0, p1}, Lcom/android/server/wm/AppWarnings;->access$300(Lcom/android/server/wm/AppWarnings;Ljava/lang/String;)V
+    invoke-static {v1, v0}, Lcom/android/server/wm/AppWarnings;->access$300(Lcom/android/server/wm/AppWarnings;Ljava/lang/String;)V
 
     .line 399
+    .end local v0  # "name":Ljava/lang/String;
     goto :goto_40
 
     .line 393
     :cond_26
-    iget-object p1, p1, Landroid/os/Message;->obj:Ljava/lang/Object;
+    iget-object v0, p1, Landroid/os/Message;->obj:Ljava/lang/Object;
 
-    check-cast p1, Lcom/android/server/wm/ActivityRecord;
+    check-cast v0, Lcom/android/server/wm/ActivityRecord;
 
     .line 394
-    iget-object v0, p0, Lcom/android/server/wm/AppWarnings$UiHandler;->this$0:Lcom/android/server/wm/AppWarnings;
+    .local v0, "ar":Lcom/android/server/wm/ActivityRecord;
+    iget-object v1, p0, Lcom/android/server/wm/AppWarnings$UiHandler;->this$0:Lcom/android/server/wm/AppWarnings;
 
-    invoke-static {v0, p1}, Lcom/android/server/wm/AppWarnings;->access$200(Lcom/android/server/wm/AppWarnings;Lcom/android/server/wm/ActivityRecord;)V
+    invoke-static {v1, v0}, Lcom/android/server/wm/AppWarnings;->access$200(Lcom/android/server/wm/AppWarnings;Lcom/android/server/wm/ActivityRecord;)V
 
     .line 395
+    .end local v0  # "ar":Lcom/android/server/wm/ActivityRecord;
     goto :goto_40
 
     .line 390
     :cond_30
-    iget-object p1, p0, Lcom/android/server/wm/AppWarnings$UiHandler;->this$0:Lcom/android/server/wm/AppWarnings;
+    iget-object v0, p0, Lcom/android/server/wm/AppWarnings$UiHandler;->this$0:Lcom/android/server/wm/AppWarnings;
 
-    invoke-static {p1}, Lcom/android/server/wm/AppWarnings;->access$100(Lcom/android/server/wm/AppWarnings;)V
+    invoke-static {v0}, Lcom/android/server/wm/AppWarnings;->access$100(Lcom/android/server/wm/AppWarnings;)V
 
     .line 391
     goto :goto_40
 
     .line 386
     :cond_36
-    iget-object p1, p1, Landroid/os/Message;->obj:Ljava/lang/Object;
+    iget-object v0, p1, Landroid/os/Message;->obj:Ljava/lang/Object;
 
-    check-cast p1, Lcom/android/server/wm/ActivityRecord;
+    check-cast v0, Lcom/android/server/wm/ActivityRecord;
 
     .line 387
-    iget-object v0, p0, Lcom/android/server/wm/AppWarnings$UiHandler;->this$0:Lcom/android/server/wm/AppWarnings;
+    .restart local v0  # "ar":Lcom/android/server/wm/ActivityRecord;
+    iget-object v1, p0, Lcom/android/server/wm/AppWarnings$UiHandler;->this$0:Lcom/android/server/wm/AppWarnings;
 
-    invoke-static {v0, p1}, Lcom/android/server/wm/AppWarnings;->access$000(Lcom/android/server/wm/AppWarnings;Lcom/android/server/wm/ActivityRecord;)V
+    invoke-static {v1, v0}, Lcom/android/server/wm/AppWarnings;->access$000(Lcom/android/server/wm/AppWarnings;Lcom/android/server/wm/ActivityRecord;)V
 
     .line 388
+    .end local v0  # "ar":Lcom/android/server/wm/ActivityRecord;
     nop
 
     .line 405
@@ -149,15 +159,16 @@
 
 .method public hideDialogsForPackage(Ljava/lang/String;)V
     .registers 3
+    .param p1, "name"  # Ljava/lang/String;
 
     .line 428
     const/4 v0, 0x4
 
     invoke-virtual {p0, v0, p1}, Lcom/android/server/wm/AppWarnings$UiHandler;->obtainMessage(ILjava/lang/Object;)Landroid/os/Message;
 
-    move-result-object p1
+    move-result-object v0
 
-    invoke-virtual {p1}, Landroid/os/Message;->sendToTarget()V
+    invoke-virtual {v0}, Landroid/os/Message;->sendToTarget()V
 
     .line 429
     return-void
@@ -180,6 +191,7 @@
 
 .method public showDeprecatedTargetDialog(Lcom/android/server/wm/ActivityRecord;)V
     .registers 3
+    .param p1, "r"  # Lcom/android/server/wm/ActivityRecord;
 
     .line 423
     const/4 v0, 0x5
@@ -189,9 +201,9 @@
     .line 424
     invoke-virtual {p0, v0, p1}, Lcom/android/server/wm/AppWarnings$UiHandler;->obtainMessage(ILjava/lang/Object;)Landroid/os/Message;
 
-    move-result-object p1
+    move-result-object v0
 
-    invoke-virtual {p1}, Landroid/os/Message;->sendToTarget()V
+    invoke-virtual {v0}, Landroid/os/Message;->sendToTarget()V
 
     .line 425
     return-void
@@ -199,6 +211,7 @@
 
 .method public showUnsupportedCompileSdkDialog(Lcom/android/server/wm/ActivityRecord;)V
     .registers 3
+    .param p1, "r"  # Lcom/android/server/wm/ActivityRecord;
 
     .line 418
     const/4 v0, 0x3
@@ -208,9 +221,9 @@
     .line 419
     invoke-virtual {p0, v0, p1}, Lcom/android/server/wm/AppWarnings$UiHandler;->obtainMessage(ILjava/lang/Object;)Landroid/os/Message;
 
-    move-result-object p1
+    move-result-object v0
 
-    invoke-virtual {p1}, Landroid/os/Message;->sendToTarget()V
+    invoke-virtual {v0}, Landroid/os/Message;->sendToTarget()V
 
     .line 420
     return-void
@@ -218,6 +231,7 @@
 
 .method public showUnsupportedDisplaySizeDialog(Lcom/android/server/wm/ActivityRecord;)V
     .registers 3
+    .param p1, "r"  # Lcom/android/server/wm/ActivityRecord;
 
     .line 408
     const/4 v0, 0x1
@@ -227,9 +241,9 @@
     .line 409
     invoke-virtual {p0, v0, p1}, Lcom/android/server/wm/AppWarnings$UiHandler;->obtainMessage(ILjava/lang/Object;)Landroid/os/Message;
 
-    move-result-object p1
+    move-result-object v0
 
-    invoke-virtual {p1}, Landroid/os/Message;->sendToTarget()V
+    invoke-virtual {v0}, Landroid/os/Message;->sendToTarget()V
 
     .line 410
     return-void

@@ -22,7 +22,7 @@
 .method static constructor <clinit>()V
     .registers 3
 
-    .line 2266
+    .line 2287
     invoke-static {}, Landroid/telephony/LocationAccessPolicy$LocationPermissionResult;->values()[Landroid/telephony/LocationAccessPolicy$LocationPermissionResult;
 
     move-result-object v0

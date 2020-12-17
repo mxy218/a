@@ -21,6 +21,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/search/SearchManagerService;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/search/SearchManagerService;
 
     .line 162
     iput-object p1, p0, Lcom/android/server/search/SearchManagerService$MyPackageMonitor;->this$0:Lcom/android/server/search/SearchManagerService;
@@ -39,6 +40,7 @@
     move-result v0
 
     .line 176
+    .local v0, "changingUserId":I
     iget-object v1, p0, Lcom/android/server/search/SearchManagerService$MyPackageMonitor;->this$0:Lcom/android/server/search/SearchManagerService;
 
     invoke-static {v1}, Lcom/android/server/search/SearchManagerService;->access$300(Lcom/android/server/search/SearchManagerService;)Landroid/util/SparseArray;
@@ -50,6 +52,7 @@
     .line 178
     const/4 v2, 0x0
 
+    .local v2, "i":I
     :goto_c
     :try_start_c
     iget-object v3, p0, Lcom/android/server/search/SearchManagerService$MyPackageMonitor;->this$0:Lcom/android/server/search/SearchManagerService;
@@ -86,11 +89,11 @@
 
     invoke-virtual {v3, v2}, Landroid/util/SparseArray;->valueAt(I)Ljava/lang/Object;
 
-    move-result-object v2
+    move-result-object v3
 
-    check-cast v2, Lcom/android/server/search/Searchables;
+    check-cast v3, Lcom/android/server/search/Searchables;
 
-    invoke-virtual {v2}, Lcom/android/server/search/Searchables;->updateSearchableList()V
+    invoke-virtual {v3}, Lcom/android/server/search/Searchables;->updateSearchableList()V
 
     .line 181
     goto :goto_37
@@ -102,6 +105,7 @@
     goto :goto_c
 
     .line 184
+    .end local v2  # "i":I
     :cond_37
     :goto_37
     monitor-exit v1
@@ -116,6 +120,7 @@
     invoke-direct {v1, v2}, Landroid/content/Intent;-><init>(Ljava/lang/String;)V
 
     .line 187
+    .local v1, "intent":Landroid/content/Intent;
     const/high16 v2, 0x24000000
 
     invoke-virtual {v1, v2}, Landroid/content/Intent;->addFlags(I)Landroid/content/Intent;
@@ -137,21 +142,23 @@
     return-void
 
     .line 184
+    .end local v1  # "intent":Landroid/content/Intent;
     :catchall_53
-    move-exception v0
+    move-exception v2
 
     :try_start_54
     monitor-exit v1
     :try_end_55
     .catchall {:try_start_54 .. :try_end_55} :catchall_53
 
-    throw v0
+    throw v2
 .end method
 
 
 # virtual methods
 .method public onPackageModified(Ljava/lang/String;)V
     .registers 2
+    .param p1, "pkg"  # Ljava/lang/String;
 
     .line 171
     invoke-direct {p0}, Lcom/android/server/search/SearchManagerService$MyPackageMonitor;->updateSearchables()V

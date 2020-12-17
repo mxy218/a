@@ -30,21 +30,23 @@
 
 # virtual methods
 .method public asInterface(Landroid/os/IBinder;)Landroid/os/IInterface;
-    .registers 2
+    .registers 3
+    .param p1, "binder"  # Landroid/os/IBinder;
 
     .line 437
     invoke-static {p1}, Landroid/service/vr/IVrListener$Stub;->asInterface(Landroid/os/IBinder;)Landroid/service/vr/IVrListener;
 
-    move-result-object p1
+    move-result-object v0
 
-    return-object p1
+    return-object v0
 .end method
 
 .method public checkType(Landroid/os/IInterface;)Z
-    .registers 2
+    .registers 3
+    .param p1, "service"  # Landroid/os/IInterface;
 
     .line 442
-    instance-of p1, p1, Landroid/service/vr/IVrListener;
+    instance-of v0, p1, Landroid/service/vr/IVrListener;
 
-    return p1
+    return v0
 .end method

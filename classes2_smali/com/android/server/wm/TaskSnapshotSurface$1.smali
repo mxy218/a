@@ -17,8 +17,9 @@
 # direct methods
 .method constructor <init>(Landroid/os/Looper;)V
     .registers 2
+    .param p1, "x0"  # Landroid/os/Looper;
 
-    .line 440
+    .line 441
     invoke-direct {p0, p1}, Landroid/os/Handler;-><init>(Landroid/os/Looper;)V
 
     return-void
@@ -27,66 +28,72 @@
 
 # virtual methods
 .method public handleMessage(Landroid/os/Message;)V
-    .registers 4
+    .registers 5
+    .param p1, "msg"  # Landroid/os/Message;
 
-    .line 444
+    .line 445
     iget v0, p1, Landroid/os/Message;->what:I
 
     if-eqz v0, :cond_5
 
     goto :goto_20
 
-    .line 447
-    :cond_5
-    iget-object p1, p1, Landroid/os/Message;->obj:Ljava/lang/Object;
-
-    check-cast p1, Lcom/android/server/wm/TaskSnapshotSurface;
-
     .line 448
-    invoke-static {p1}, Lcom/android/server/wm/TaskSnapshotSurface;->access$000(Lcom/android/server/wm/TaskSnapshotSurface;)Lcom/android/server/wm/WindowManagerService;
+    :cond_5
+    iget-object v0, p1, Landroid/os/Message;->obj:Ljava/lang/Object;
 
-    move-result-object v0
+    check-cast v0, Lcom/android/server/wm/TaskSnapshotSurface;
 
-    iget-object v0, v0, Lcom/android/server/wm/WindowManagerService;->mGlobalLock:Lcom/android/server/wm/WindowManagerGlobalLock;
+    .line 449
+    .local v0, "surface":Lcom/android/server/wm/TaskSnapshotSurface;
+    invoke-static {v0}, Lcom/android/server/wm/TaskSnapshotSurface;->access$000(Lcom/android/server/wm/TaskSnapshotSurface;)Lcom/android/server/wm/WindowManagerService;
 
-    monitor-enter v0
+    move-result-object v1
+
+    iget-object v1, v1, Lcom/android/server/wm/WindowManagerService;->mGlobalLock:Lcom/android/server/wm/WindowManagerGlobalLock;
+
+    monitor-enter v1
 
     :try_start_10
     invoke-static {}, Lcom/android/server/wm/WindowManagerService;->boostPriorityForLockedSection()V
 
-    .line 449
-    invoke-static {p1}, Lcom/android/server/wm/TaskSnapshotSurface;->access$100(Lcom/android/server/wm/TaskSnapshotSurface;)Z
-
-    move-result v1
-
     .line 450
-    monitor-exit v0
+    invoke-static {v0}, Lcom/android/server/wm/TaskSnapshotSurface;->access$100(Lcom/android/server/wm/TaskSnapshotSurface;)Z
+
+    move-result v2
+
+    .line 451
+    .local v2, "hasDrawn":Z
+    monitor-exit v1
     :try_end_18
     .catchall {:try_start_10 .. :try_end_18} :catchall_21
 
     invoke-static {}, Lcom/android/server/wm/WindowManagerService;->resetPriorityAfterLockedSection()V
 
-    .line 451
-    if-eqz v1, :cond_20
-
     .line 452
-    invoke-static {p1}, Lcom/android/server/wm/TaskSnapshotSurface;->access$200(Lcom/android/server/wm/TaskSnapshotSurface;)V
+    if-eqz v2, :cond_20
 
-    .line 456
+    .line 453
+    invoke-static {v0}, Lcom/android/server/wm/TaskSnapshotSurface;->access$200(Lcom/android/server/wm/TaskSnapshotSurface;)V
+
+    .line 457
+    .end local v0  # "surface":Lcom/android/server/wm/TaskSnapshotSurface;
+    .end local v2  # "hasDrawn":Z
     :cond_20
     :goto_20
     return-void
 
-    .line 450
+    .line 451
+    .restart local v0  # "surface":Lcom/android/server/wm/TaskSnapshotSurface;
     :catchall_21
-    move-exception p1
+    move-exception v2
 
     :try_start_22
-    monitor-exit v0
+    monitor-exit v1
     :try_end_23
     .catchall {:try_start_22 .. :try_end_23} :catchall_21
 
     invoke-static {}, Lcom/android/server/wm/WindowManagerService;->resetPriorityAfterLockedSection()V
 
-    throw p1
+    throw v2
 .end method

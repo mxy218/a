@@ -1,9 +1,6 @@
 .class Lcom/android/server/ConnectivityService$1;
-.super Ljava/lang/Object;
+.super Landroid/telephony/PhoneStateListener;
 .source "ConnectivityService.java"
-
-# interfaces
-.implements Lcom/android/server/utils/PriorityDump$PriorityDumper;
 
 
 # annotations
@@ -24,66 +21,55 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/ConnectivityService;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/ConnectivityService;
 
-    .line 829
+    .line 582
     iput-object p1, p0, Lcom/android/server/ConnectivityService$1;->this$0:Lcom/android/server/ConnectivityService;
 
-    invoke-direct {p0}, Ljava/lang/Object;-><init>()V
+    invoke-direct {p0}, Landroid/telephony/PhoneStateListener;-><init>()V
 
     return-void
 .end method
 
 
 # virtual methods
-.method public dump(Ljava/io/FileDescriptor;Ljava/io/PrintWriter;[Ljava/lang/String;Z)V
+.method public onActiveDataSubscriptionIdChanged(I)V
     .registers 6
+    .param p1, "subId"  # I
 
-    .line 843
+    .line 585
     iget-object v0, p0, Lcom/android/server/ConnectivityService$1;->this$0:Lcom/android/server/ConnectivityService;
 
-    invoke-static {v0, p1, p2, p3, p4}, Lcom/android/server/ConnectivityService;->access$100(Lcom/android/server/ConnectivityService;Ljava/io/FileDescriptor;Ljava/io/PrintWriter;[Ljava/lang/String;Z)V
+    invoke-static {v0}, Lcom/android/server/ConnectivityService;->access$000(Lcom/android/server/ConnectivityService;)I
 
-    .line 844
-    return-void
-.end method
+    move-result v0
 
-.method public dumpHigh(Ljava/io/FileDescriptor;Ljava/io/PrintWriter;[Ljava/lang/String;Z)V
-    .registers 6
+    if-eq p1, v0, :cond_1e
 
-    .line 832
-    iget-object p3, p0, Lcom/android/server/ConnectivityService$1;->this$0:Lcom/android/server/ConnectivityService;
+    .line 586
+    iget-object v0, p0, Lcom/android/server/ConnectivityService$1;->this$0:Lcom/android/server/ConnectivityService;
 
-    const-string v0, "--diag"
-
-    filled-new-array {v0}, [Ljava/lang/String;
+    invoke-static {v0}, Lcom/android/server/ConnectivityService;->access$100(Lcom/android/server/ConnectivityService;)Lcom/android/server/ConnectivityService$InternalHandler;
 
     move-result-object v0
 
-    invoke-static {p3, p1, p2, v0, p4}, Lcom/android/server/ConnectivityService;->access$100(Lcom/android/server/ConnectivityService;Ljava/io/FileDescriptor;Ljava/io/PrintWriter;[Ljava/lang/String;Z)V
+    iget-object v1, p0, Lcom/android/server/ConnectivityService$1;->this$0:Lcom/android/server/ConnectivityService;
 
-    .line 833
-    iget-object p3, p0, Lcom/android/server/ConnectivityService$1;->this$0:Lcom/android/server/ConnectivityService;
+    invoke-static {v1}, Lcom/android/server/ConnectivityService;->access$100(Lcom/android/server/ConnectivityService;)Lcom/android/server/ConnectivityService$InternalHandler;
 
-    const-string v0, "--short"
+    move-result-object v1
 
-    filled-new-array {v0}, [Ljava/lang/String;
+    const/16 v2, 0xa1
 
-    move-result-object v0
+    const/4 v3, 0x0
 
-    invoke-static {p3, p1, p2, v0, p4}, Lcom/android/server/ConnectivityService;->access$100(Lcom/android/server/ConnectivityService;Ljava/io/FileDescriptor;Ljava/io/PrintWriter;[Ljava/lang/String;Z)V
+    invoke-virtual {v1, v2, p1, v3}, Lcom/android/server/ConnectivityService$InternalHandler;->obtainMessage(III)Landroid/os/Message;
 
-    .line 834
-    return-void
-.end method
+    move-result-object v1
 
-.method public dumpNormal(Ljava/io/FileDescriptor;Ljava/io/PrintWriter;[Ljava/lang/String;Z)V
-    .registers 6
+    invoke-virtual {v0, v1}, Lcom/android/server/ConnectivityService$InternalHandler;->sendMessage(Landroid/os/Message;)Z
 
-    .line 838
-    iget-object v0, p0, Lcom/android/server/ConnectivityService$1;->this$0:Lcom/android/server/ConnectivityService;
-
-    invoke-static {v0, p1, p2, p3, p4}, Lcom/android/server/ConnectivityService;->access$100(Lcom/android/server/ConnectivityService;Ljava/io/FileDescriptor;Ljava/io/PrintWriter;[Ljava/lang/String;Z)V
-
-    .line 839
+    .line 588
+    :cond_1e
     return-void
 .end method

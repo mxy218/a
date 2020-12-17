@@ -23,8 +23,10 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/pm/PackageManagerService;Landroid/os/Handler;Landroid/content/ContentResolver;)V
     .registers 4
+    .param p1, "this$0"  # Lcom/android/server/pm/PackageManagerService;
+    .param p2, "x0"  # Landroid/os/Handler;
 
-    .line 21791
+    .line 22567
     iput-object p1, p0, Lcom/android/server/pm/PackageManagerService$6;->this$0:Lcom/android/server/pm/PackageManagerService;
 
     iput-object p3, p0, Lcom/android/server/pm/PackageManagerService$6;->val$resolver:Landroid/content/ContentResolver;
@@ -37,91 +39,97 @@
 
 # virtual methods
 .method public onChange(Z)V
-    .registers 10
+    .registers 11
+    .param p1, "selfChange"  # Z
 
-    .line 21794
-    iget-object p1, p0, Lcom/android/server/pm/PackageManagerService$6;->val$resolver:Landroid/content/ContentResolver;
+    .line 22570
+    iget-object v0, p0, Lcom/android/server/pm/PackageManagerService$6;->val$resolver:Landroid/content/ContentResolver;
 
-    .line 21795
-    const/4 v0, 0x1
+    .line 22571
+    const/4 v1, 0x1
 
-    const-string v1, "enable_ephemeral_feature"
+    const-string v2, "enable_ephemeral_feature"
 
-    invoke-static {p1, v1, v0}, Landroid/provider/Settings$Global;->getInt(Landroid/content/ContentResolver;Ljava/lang/String;I)I
+    invoke-static {v0, v2, v1}, Landroid/provider/Settings$Global;->getInt(Landroid/content/ContentResolver;Ljava/lang/String;I)I
 
-    move-result p1
+    move-result v0
 
-    const/4 v1, 0x0
+    const/4 v2, 0x0
 
-    if-nez p1, :cond_e
+    if-nez v0, :cond_e
 
-    move p1, v0
+    move v0, v1
 
     goto :goto_f
 
     :cond_e
-    move p1, v1
+    move v0, v2
 
-    .line 21796
+    .line 22572
+    .local v0, "ephemeralFeatureDisabled":Z
     :goto_f
     invoke-static {}, Lcom/android/server/pm/UserManagerService;->getInstance()Lcom/android/server/pm/UserManagerService;
 
-    move-result-object v2
+    move-result-object v3
 
-    invoke-virtual {v2}, Lcom/android/server/pm/UserManagerService;->getUserIds()[I
+    invoke-virtual {v3}, Lcom/android/server/pm/UserManagerService;->getUserIds()[I
 
-    move-result-object v2
+    move-result-object v3
 
-    array-length v3, v2
+    array-length v4, v3
 
-    move v4, v1
+    move v5, v2
 
     :goto_19
-    if-ge v4, v3, :cond_39
+    if-ge v5, v4, :cond_3a
 
-    aget v5, v2, v4
+    aget v6, v3, v5
 
-    .line 21797
-    if-nez p1, :cond_2c
+    .line 22573
+    .local v6, "userId":I
+    if-nez v0, :cond_2d
 
-    iget-object v6, p0, Lcom/android/server/pm/PackageManagerService$6;->val$resolver:Landroid/content/ContentResolver;
+    iget-object v7, p0, Lcom/android/server/pm/PackageManagerService$6;->val$resolver:Landroid/content/ContentResolver;
 
-    .line 21798
-    const-string v7, "instant_apps_enabled"
+    .line 22574
+    const-string/jumbo v8, "instant_apps_enabled"
 
-    invoke-static {v6, v7, v0, v5}, Landroid/provider/Settings$Secure;->getIntForUser(Landroid/content/ContentResolver;Ljava/lang/String;II)I
+    invoke-static {v7, v8, v1, v6}, Landroid/provider/Settings$Secure;->getIntForUser(Landroid/content/ContentResolver;Ljava/lang/String;II)I
 
-    move-result v6
+    move-result v7
 
-    if-nez v6, :cond_2a
-
-    goto :goto_2c
-
-    :cond_2a
-    move v6, v1
+    if-nez v7, :cond_2b
 
     goto :goto_2d
 
-    :cond_2c
-    :goto_2c
-    move v6, v0
+    :cond_2b
+    move v7, v2
 
-    .line 21800
+    goto :goto_2e
+
+    :cond_2d
     :goto_2d
-    iget-object v7, p0, Lcom/android/server/pm/PackageManagerService$6;->this$0:Lcom/android/server/pm/PackageManagerService;
+    move v7, v1
 
-    invoke-static {v7}, Lcom/android/server/pm/PackageManagerService;->access$4800(Lcom/android/server/pm/PackageManagerService;)Landroid/util/SparseBooleanArray;
+    .line 22576
+    .local v7, "instantAppsDisabledForUser":Z
+    :goto_2e
+    iget-object v8, p0, Lcom/android/server/pm/PackageManagerService$6;->this$0:Lcom/android/server/pm/PackageManagerService;
 
-    move-result-object v7
+    invoke-static {v8}, Lcom/android/server/pm/PackageManagerService;->access$5200(Lcom/android/server/pm/PackageManagerService;)Landroid/util/SparseBooleanArray;
 
-    invoke-virtual {v7, v5, v6}, Landroid/util/SparseBooleanArray;->put(IZ)V
+    move-result-object v8
 
-    .line 21796
-    add-int/lit8 v4, v4, 0x1
+    invoke-virtual {v8, v6, v7}, Landroid/util/SparseBooleanArray;->put(IZ)V
+
+    .line 22572
+    .end local v6  # "userId":I
+    .end local v7  # "instantAppsDisabledForUser":Z
+    add-int/lit8 v5, v5, 0x1
 
     goto :goto_19
 
-    .line 21802
-    :cond_39
+    .line 22578
+    :cond_3a
     return-void
 .end method

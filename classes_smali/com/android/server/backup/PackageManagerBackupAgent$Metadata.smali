@@ -32,6 +32,8 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/backup/PackageManagerBackupAgent;JLjava/util/ArrayList;)V
     .registers 5
+    .param p1, "this$0"  # Lcom/android/server/backup/PackageManagerBackupAgent;
+    .param p2, "version"  # J
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(J",
@@ -41,6 +43,7 @@
     .end annotation
 
     .line 124
+    .local p4, "hashes":Ljava/util/ArrayList;, "Ljava/util/ArrayList<[B>;"
     iput-object p1, p0, Lcom/android/server/backup/PackageManagerBackupAgent$Metadata;->this$0:Lcom/android/server/backup/PackageManagerBackupAgent;
 
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V

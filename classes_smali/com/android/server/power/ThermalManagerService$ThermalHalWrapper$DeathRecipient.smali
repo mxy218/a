@@ -24,8 +24,9 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/power/ThermalManagerService$ThermalHalWrapper;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/power/ThermalManagerService$ThermalHalWrapper;
 
-    .line 633
+    .line 629
     iput-object p1, p0, Lcom/android/server/power/ThermalManagerService$ThermalHalWrapper$DeathRecipient;->this$0:Lcom/android/server/power/ThermalManagerService$ThermalHalWrapper;
 
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -37,15 +38,16 @@
 # virtual methods
 .method public serviceDied(J)V
     .registers 6
+    .param p1, "cookie"  # J
 
-    .line 636
+    .line 632
     const-wide/16 v0, 0x15ec
 
     cmp-long v0, p1, v0
 
     if-nez v0, :cond_30
 
-    .line 637
+    .line 633
     sget-object v0, Lcom/android/server/power/ThermalManagerService$ThermalHalWrapper;->TAG:Ljava/lang/String;
 
     new-instance v1, Ljava/lang/StringBuilder;
@@ -60,43 +62,43 @@
 
     invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v1
 
-    invoke-static {v0, p1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v0, v1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
+
+    .line 634
+    iget-object v0, p0, Lcom/android/server/power/ThermalManagerService$ThermalHalWrapper$DeathRecipient;->this$0:Lcom/android/server/power/ThermalManagerService$ThermalHalWrapper;
+
+    iget-object v0, v0, Lcom/android/server/power/ThermalManagerService$ThermalHalWrapper;->mHalLock:Ljava/lang/Object;
+
+    monitor-enter v0
+
+    .line 635
+    :try_start_21
+    iget-object v1, p0, Lcom/android/server/power/ThermalManagerService$ThermalHalWrapper$DeathRecipient;->this$0:Lcom/android/server/power/ThermalManagerService$ThermalHalWrapper;
+
+    invoke-virtual {v1}, Lcom/android/server/power/ThermalManagerService$ThermalHalWrapper;->connectToHal()Z
+
+    .line 637
+    iget-object v1, p0, Lcom/android/server/power/ThermalManagerService$ThermalHalWrapper$DeathRecipient;->this$0:Lcom/android/server/power/ThermalManagerService$ThermalHalWrapper;
+
+    invoke-virtual {v1}, Lcom/android/server/power/ThermalManagerService$ThermalHalWrapper;->resendCurrentTemperatures()V
 
     .line 638
-    iget-object p1, p0, Lcom/android/server/power/ThermalManagerService$ThermalHalWrapper$DeathRecipient;->this$0:Lcom/android/server/power/ThermalManagerService$ThermalHalWrapper;
-
-    iget-object p1, p1, Lcom/android/server/power/ThermalManagerService$ThermalHalWrapper;->mHalLock:Ljava/lang/Object;
-
-    monitor-enter p1
-
-    .line 639
-    :try_start_21
-    iget-object p2, p0, Lcom/android/server/power/ThermalManagerService$ThermalHalWrapper$DeathRecipient;->this$0:Lcom/android/server/power/ThermalManagerService$ThermalHalWrapper;
-
-    invoke-virtual {p2}, Lcom/android/server/power/ThermalManagerService$ThermalHalWrapper;->connectToHal()Z
-
-    .line 641
-    iget-object p2, p0, Lcom/android/server/power/ThermalManagerService$ThermalHalWrapper$DeathRecipient;->this$0:Lcom/android/server/power/ThermalManagerService$ThermalHalWrapper;
-
-    invoke-virtual {p2}, Lcom/android/server/power/ThermalManagerService$ThermalHalWrapper;->resendCurrentTemperatures()V
-
-    .line 642
-    monitor-exit p1
+    monitor-exit v0
 
     goto :goto_30
 
     :catchall_2d
-    move-exception p2
+    move-exception v1
 
-    monitor-exit p1
+    monitor-exit v0
     :try_end_2f
     .catchall {:try_start_21 .. :try_end_2f} :catchall_2d
 
-    throw p2
+    throw v1
 
-    .line 644
+    .line 640
     :cond_30
     :goto_30
     return-void

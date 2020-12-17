@@ -29,6 +29,9 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/GraphicsStatsService;Ljava/lang/String;JJ)V
     .registers 7
+    .param p2, "packageName"  # Ljava/lang/String;
+    .param p3, "versionCode"  # J
+    .param p5, "startTime"  # J
 
     .line 397
     iput-object p1, p0, Lcom/android/server/GraphicsStatsService$BufferInfo;->this$0:Lcom/android/server/GraphicsStatsService;

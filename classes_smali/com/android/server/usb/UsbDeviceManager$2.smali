@@ -21,8 +21,9 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/usb/UsbDeviceManager;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/usb/UsbDeviceManager;
 
-    .line 315
+    .line 368
     iput-object p1, p0, Lcom/android/server/usb/UsbDeviceManager$2;->this$0:Lcom/android/server/usb/UsbDeviceManager;
 
     invoke-direct {p0}, Landroid/content/BroadcastReceiver;-><init>()V
@@ -33,41 +34,45 @@
 
 # virtual methods
 .method public onReceive(Landroid/content/Context;Landroid/content/Intent;)V
-    .registers 4
+    .registers 7
+    .param p1, "context"  # Landroid/content/Context;
+    .param p2, "intent"  # Landroid/content/Intent;
 
-    .line 318
-    const-string/jumbo p1, "plugged"
+    .line 371
+    const-string/jumbo v0, "plugged"
 
-    const/4 v0, -0x1
+    const/4 v1, -0x1
 
-    invoke-virtual {p2, p1, v0}, Landroid/content/Intent;->getIntExtra(Ljava/lang/String;I)I
+    invoke-virtual {p2, v0, v1}, Landroid/content/Intent;->getIntExtra(Ljava/lang/String;I)I
 
-    move-result p1
+    move-result v0
 
-    .line 319
-    const/4 p2, 0x2
+    .line 372
+    .local v0, "chargePlug":I
+    const/4 v1, 0x2
 
-    if-ne p1, p2, :cond_d
+    if-ne v0, v1, :cond_d
 
-    const/4 p1, 0x1
+    const/4 v1, 0x1
 
     goto :goto_e
 
     :cond_d
-    const/4 p1, 0x0
+    const/4 v1, 0x0
 
-    .line 320
+    .line 373
+    .local v1, "usbCharging":Z
     :goto_e
-    iget-object p2, p0, Lcom/android/server/usb/UsbDeviceManager$2;->this$0:Lcom/android/server/usb/UsbDeviceManager;
+    iget-object v2, p0, Lcom/android/server/usb/UsbDeviceManager$2;->this$0:Lcom/android/server/usb/UsbDeviceManager;
 
-    invoke-static {p2}, Lcom/android/server/usb/UsbDeviceManager;->access$000(Lcom/android/server/usb/UsbDeviceManager;)Lcom/android/server/usb/UsbDeviceManager$UsbHandler;
+    invoke-static {v2}, Lcom/android/server/usb/UsbDeviceManager;->access$100(Lcom/android/server/usb/UsbDeviceManager;)Lcom/android/server/usb/UsbDeviceManager$UsbHandler;
 
-    move-result-object p2
+    move-result-object v2
 
-    const/16 v0, 0x9
+    const/16 v3, 0x9
 
-    invoke-virtual {p2, v0, p1}, Lcom/android/server/usb/UsbDeviceManager$UsbHandler;->sendMessage(IZ)V
+    invoke-virtual {v2, v3, v1}, Lcom/android/server/usb/UsbDeviceManager$UsbHandler;->sendMessage(IZ)V
 
-    .line 321
+    .line 374
     return-void
 .end method

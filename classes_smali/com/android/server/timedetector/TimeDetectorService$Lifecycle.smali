@@ -17,6 +17,7 @@
 # direct methods
 .method public constructor <init>(Landroid/content/Context;)V
     .registers 2
+    .param p1, "context"  # Landroid/content/Context;
 
     .line 46
     invoke-direct {p0, p1}, Lcom/android/server/SystemService;-><init>(Landroid/content/Context;)V
@@ -40,6 +41,7 @@
     move-result-object v0
 
     .line 55
+    .local v0, "service":Lcom/android/server/timedetector/TimeDetectorService;
     const-string/jumbo v1, "time_detector"
 
     invoke-virtual {p0, v1, v0}, Lcom/android/server/timedetector/TimeDetectorService$Lifecycle;->publishBinderService(Ljava/lang/String;Landroid/os/IBinder;)V

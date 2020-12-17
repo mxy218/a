@@ -29,6 +29,11 @@
 # direct methods
 .method constructor <init>(Ljava/lang/String;IIII)V
     .registers 6
+    .param p1, "callingPackage"  # Ljava/lang/String;
+    .param p2, "requesterPid"  # I
+    .param p3, "requestedMode"  # I
+    .param p4, "ownerPid"  # I
+    .param p5, "actualMode"  # I
 
     .line 35
     invoke-direct {p0}, Lcom/android/server/audio/AudioEventLogger$Event;-><init>()V

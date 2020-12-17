@@ -34,8 +34,9 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/content/SyncManager;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/content/SyncManager;
 
-    .line 2253
+    .line 2259
     iput-object p1, p0, Lcom/android/server/content/SyncManager$13;->this$0:Lcom/android/server/content/SyncManager;
 
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -46,7 +47,7 @@
 
 # virtual methods
 .method public compare(Landroid/content/pm/RegisteredServicesCache$ServiceInfo;Landroid/content/pm/RegisteredServicesCache$ServiceInfo;)I
-    .registers 3
+    .registers 5
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(",
@@ -59,30 +60,32 @@
         }
     .end annotation
 
-    .line 2257
-    iget-object p1, p1, Landroid/content/pm/RegisteredServicesCache$ServiceInfo;->type:Ljava/lang/Object;
+    .line 2263
+    .local p1, "lhs":Landroid/content/pm/RegisteredServicesCache$ServiceInfo;, "Landroid/content/pm/RegisteredServicesCache$ServiceInfo<Landroid/content/SyncAdapterType;>;"
+    .local p2, "rhs":Landroid/content/pm/RegisteredServicesCache$ServiceInfo;, "Landroid/content/pm/RegisteredServicesCache$ServiceInfo<Landroid/content/SyncAdapterType;>;"
+    iget-object v0, p1, Landroid/content/pm/RegisteredServicesCache$ServiceInfo;->type:Ljava/lang/Object;
 
-    check-cast p1, Landroid/content/SyncAdapterType;
+    check-cast v0, Landroid/content/SyncAdapterType;
 
-    iget-object p1, p1, Landroid/content/SyncAdapterType;->authority:Ljava/lang/String;
+    iget-object v0, v0, Landroid/content/SyncAdapterType;->authority:Ljava/lang/String;
 
-    iget-object p2, p2, Landroid/content/pm/RegisteredServicesCache$ServiceInfo;->type:Ljava/lang/Object;
+    iget-object v1, p2, Landroid/content/pm/RegisteredServicesCache$ServiceInfo;->type:Ljava/lang/Object;
 
-    check-cast p2, Landroid/content/SyncAdapterType;
+    check-cast v1, Landroid/content/SyncAdapterType;
 
-    iget-object p2, p2, Landroid/content/SyncAdapterType;->authority:Ljava/lang/String;
+    iget-object v1, v1, Landroid/content/SyncAdapterType;->authority:Ljava/lang/String;
 
-    invoke-virtual {p1, p2}, Ljava/lang/String;->compareTo(Ljava/lang/String;)I
+    invoke-virtual {v0, v1}, Ljava/lang/String;->compareTo(Ljava/lang/String;)I
 
-    move-result p1
+    move-result v0
 
-    return p1
+    return v0
 .end method
 
 .method public bridge synthetic compare(Ljava/lang/Object;Ljava/lang/Object;)I
     .registers 3
 
-    .line 2253
+    .line 2259
     check-cast p1, Landroid/content/pm/RegisteredServicesCache$ServiceInfo;
 
     check-cast p2, Landroid/content/pm/RegisteredServicesCache$ServiceInfo;

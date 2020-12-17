@@ -28,7 +28,7 @@
 .method private constructor <init>()V
     .registers 1
 
-    .line 4060
+    .line 4085
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
     return-void
@@ -38,24 +38,25 @@
 # virtual methods
 .method reset(Z)V
     .registers 3
+    .param p1, "screenshotReady"  # Z
 
-    .line 4067
+    .line 4092
     const/4 v0, 0x0
 
     iput-object v0, p0, Lcom/android/server/wm/DisplayContent$ScreenshotApplicationState;->appWin:Lcom/android/server/wm/WindowState;
 
-    .line 4068
+    .line 4093
     const/4 v0, 0x0
 
     iput v0, p0, Lcom/android/server/wm/DisplayContent$ScreenshotApplicationState;->maxLayer:I
 
-    .line 4069
+    .line 4094
     iput v0, p0, Lcom/android/server/wm/DisplayContent$ScreenshotApplicationState;->minLayer:I
 
-    .line 4070
+    .line 4095
     iput-boolean p1, p0, Lcom/android/server/wm/DisplayContent$ScreenshotApplicationState;->screenshotReady:Z
 
-    .line 4071
+    .line 4096
     if-eqz p1, :cond_d
 
     goto :goto_10
@@ -66,6 +67,6 @@
     :goto_10
     iput v0, p0, Lcom/android/server/wm/DisplayContent$ScreenshotApplicationState;->minLayer:I
 
-    .line 4072
+    .line 4097
     return-void
 .end method

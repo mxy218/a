@@ -28,8 +28,9 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/power/Notifier;II)V
     .registers 4
+    .param p1, "this$0"  # Lcom/android/server/power/Notifier;
 
-    .line 487
+    .line 508
     iput-object p1, p0, Lcom/android/server/power/Notifier$4;->this$0:Lcom/android/server/power/Notifier;
 
     iput p2, p0, Lcom/android/server/power/Notifier$4;->val$why:I
@@ -46,34 +47,35 @@
 .method public run()V
     .registers 10
 
-    .line 490
+    .line 511
     new-instance v0, Landroid/metrics/LogMaker;
 
     const/16 v1, 0xc6
 
     invoke-direct {v0, v1}, Landroid/metrics/LogMaker;-><init>(I)V
 
-    .line 491
+    .line 512
+    .local v0, "log":Landroid/metrics/LogMaker;
     const/4 v1, 0x1
 
     invoke-virtual {v0, v1}, Landroid/metrics/LogMaker;->setType(I)Landroid/metrics/LogMaker;
 
-    .line 492
+    .line 513
     iget v1, p0, Lcom/android/server/power/Notifier$4;->val$why:I
 
     invoke-virtual {v0, v1}, Landroid/metrics/LogMaker;->setSubtype(I)Landroid/metrics/LogMaker;
 
-    .line 493
+    .line 514
     iget v1, p0, Lcom/android/server/power/Notifier$4;->val$interactiveChangeLatency:I
 
     int-to-long v1, v1
 
     invoke-virtual {v0, v1, v2}, Landroid/metrics/LogMaker;->setLatency(J)Landroid/metrics/LogMaker;
 
-    .line 494
+    .line 515
     iget-object v1, p0, Lcom/android/server/power/Notifier$4;->this$0:Lcom/android/server/power/Notifier;
 
-    .line 495
+    .line 516
     invoke-static {v1}, Lcom/android/server/power/Notifier;->access$100(Lcom/android/server/power/Notifier;)I
 
     move-result v1
@@ -82,15 +84,15 @@
 
     move-result-object v1
 
-    .line 494
+    .line 515
     const/16 v2, 0x69e
 
     invoke-virtual {v0, v2, v1}, Landroid/metrics/LogMaker;->addTaggedData(ILjava/lang/Object;)Landroid/metrics/LogMaker;
 
-    .line 496
+    .line 517
     invoke-static {v0}, Lcom/android/internal/logging/MetricsLogger;->action(Landroid/metrics/LogMaker;)V
 
-    .line 497
+    .line 518
     iget v8, p0, Lcom/android/server/power/Notifier$4;->val$interactiveChangeLatency:I
 
     const/4 v3, 0x1
@@ -103,17 +105,17 @@
 
     invoke-static/range {v3 .. v8}, Lcom/android/server/EventLogTags;->writePowerScreenState(IIJII)V
 
-    .line 498
-    iget-object v0, p0, Lcom/android/server/power/Notifier$4;->this$0:Lcom/android/server/power/Notifier;
+    .line 519
+    iget-object v1, p0, Lcom/android/server/power/Notifier$4;->this$0:Lcom/android/server/power/Notifier;
 
-    invoke-static {v0}, Lcom/android/server/power/Notifier;->access$300(Lcom/android/server/power/Notifier;)Lcom/android/server/policy/WindowManagerPolicy;
+    invoke-static {v1}, Lcom/android/server/power/Notifier;->access$300(Lcom/android/server/power/Notifier;)Lcom/android/server/policy/WindowManagerPolicy;
 
-    move-result-object v0
+    move-result-object v1
 
-    iget v1, p0, Lcom/android/server/power/Notifier$4;->val$why:I
+    iget v2, p0, Lcom/android/server/power/Notifier$4;->val$why:I
 
-    invoke-interface {v0, v1}, Lcom/android/server/policy/WindowManagerPolicy;->finishedWakingUp(I)V
+    invoke-interface {v1, v2}, Lcom/android/server/policy/WindowManagerPolicy;->finishedWakingUp(I)V
 
-    .line 499
+    .line 520
     return-void
 .end method

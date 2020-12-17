@@ -21,6 +21,7 @@
 # direct methods
 .method public constructor <init>(Lcom/android/server/content/SyncStorageEngine;Landroid/os/Looper;)V
     .registers 3
+    .param p2, "looper"  # Landroid/os/Looper;
 
     .line 571
     iput-object p1, p0, Lcom/android/server/content/SyncStorageEngine$MyHandler;->this$0:Lcom/android/server/content/SyncStorageEngine;
@@ -36,6 +37,7 @@
 # virtual methods
 .method public handleMessage(Landroid/os/Message;)V
     .registers 4
+    .param p1, "msg"  # Landroid/os/Message;
 
     .line 577
     iget v0, p1, Landroid/os/Message;->what:I
@@ -45,9 +47,9 @@
     if-ne v0, v1, :cond_16
 
     .line 578
-    iget-object p1, p0, Lcom/android/server/content/SyncStorageEngine$MyHandler;->this$0:Lcom/android/server/content/SyncStorageEngine;
+    iget-object v0, p0, Lcom/android/server/content/SyncStorageEngine$MyHandler;->this$0:Lcom/android/server/content/SyncStorageEngine;
 
-    invoke-static {p1}, Lcom/android/server/content/SyncStorageEngine;->access$100(Lcom/android/server/content/SyncStorageEngine;)Landroid/util/SparseArray;
+    invoke-static {v0}, Lcom/android/server/content/SyncStorageEngine;->access$100(Lcom/android/server/content/SyncStorageEngine;)Landroid/util/SparseArray;
 
     move-result-object v0
 
@@ -55,9 +57,9 @@
 
     .line 579
     :try_start_c
-    iget-object p1, p0, Lcom/android/server/content/SyncStorageEngine$MyHandler;->this$0:Lcom/android/server/content/SyncStorageEngine;
+    iget-object v1, p0, Lcom/android/server/content/SyncStorageEngine$MyHandler;->this$0:Lcom/android/server/content/SyncStorageEngine;
 
-    invoke-static {p1}, Lcom/android/server/content/SyncStorageEngine;->access$200(Lcom/android/server/content/SyncStorageEngine;)V
+    invoke-static {v1}, Lcom/android/server/content/SyncStorageEngine;->access$200(Lcom/android/server/content/SyncStorageEngine;)V
 
     .line 580
     monitor-exit v0
@@ -65,50 +67,50 @@
     goto :goto_2c
 
     :catchall_13
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_15
     .catchall {:try_start_c .. :try_end_15} :catchall_13
 
-    throw p1
+    throw v1
 
     .line 581
     :cond_16
-    iget p1, p1, Landroid/os/Message;->what:I
+    iget v0, p1, Landroid/os/Message;->what:I
 
-    const/4 v0, 0x2
+    const/4 v1, 0x2
 
-    if-ne p1, v0, :cond_2c
+    if-ne v0, v1, :cond_2c
 
     .line 582
-    iget-object p1, p0, Lcom/android/server/content/SyncStorageEngine$MyHandler;->this$0:Lcom/android/server/content/SyncStorageEngine;
+    iget-object v0, p0, Lcom/android/server/content/SyncStorageEngine$MyHandler;->this$0:Lcom/android/server/content/SyncStorageEngine;
 
-    invoke-static {p1}, Lcom/android/server/content/SyncStorageEngine;->access$100(Lcom/android/server/content/SyncStorageEngine;)Landroid/util/SparseArray;
+    invoke-static {v0}, Lcom/android/server/content/SyncStorageEngine;->access$100(Lcom/android/server/content/SyncStorageEngine;)Landroid/util/SparseArray;
 
-    move-result-object p1
+    move-result-object v0
 
-    monitor-enter p1
+    monitor-enter v0
 
     .line 583
     :try_start_22
-    iget-object v0, p0, Lcom/android/server/content/SyncStorageEngine$MyHandler;->this$0:Lcom/android/server/content/SyncStorageEngine;
+    iget-object v1, p0, Lcom/android/server/content/SyncStorageEngine$MyHandler;->this$0:Lcom/android/server/content/SyncStorageEngine;
 
-    invoke-static {v0}, Lcom/android/server/content/SyncStorageEngine;->access$300(Lcom/android/server/content/SyncStorageEngine;)V
+    invoke-static {v1}, Lcom/android/server/content/SyncStorageEngine;->access$300(Lcom/android/server/content/SyncStorageEngine;)V
 
     .line 584
-    monitor-exit p1
+    monitor-exit v0
 
     goto :goto_2c
 
     :catchall_29
-    move-exception v0
+    move-exception v1
 
-    monitor-exit p1
+    monitor-exit v0
     :try_end_2b
     .catchall {:try_start_22 .. :try_end_2b} :catchall_29
 
-    throw v0
+    throw v1
 
     .line 586
     :cond_2c

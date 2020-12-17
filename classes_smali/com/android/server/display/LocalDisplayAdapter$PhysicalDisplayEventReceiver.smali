@@ -20,122 +20,183 @@
 
 # direct methods
 .method constructor <init>(Lcom/android/server/display/LocalDisplayAdapter;Landroid/os/Looper;)V
-    .registers 4
+    .registers 3
+    .param p2, "looper"  # Landroid/os/Looper;
 
-    .line 858
+    .line 914
     iput-object p1, p0, Lcom/android/server/display/LocalDisplayAdapter$PhysicalDisplayEventReceiver;->this$0:Lcom/android/server/display/LocalDisplayAdapter;
 
-    .line 859
+    .line 915
     const/4 p1, 0x0
 
-    const/4 v0, 0x1
+    invoke-direct {p0, p2, p1}, Landroid/view/DisplayEventReceiver;-><init>(Landroid/os/Looper;I)V
 
-    invoke-direct {p0, p2, p1, v0}, Landroid/view/DisplayEventReceiver;-><init>(Landroid/os/Looper;II)V
-
-    .line 860
+    .line 916
     return-void
 .end method
 
 
 # virtual methods
 .method public onConfigChanged(JJI)V
-    .registers 6
+    .registers 11
+    .param p1, "timestampNanos"  # J
+    .param p3, "physicalDisplayId"  # J
+    .param p5, "physIndex"  # I
 
-    .line 881
-    iget-object p1, p0, Lcom/android/server/display/LocalDisplayAdapter$PhysicalDisplayEventReceiver;->this$0:Lcom/android/server/display/LocalDisplayAdapter;
+    .line 932
+    new-instance v0, Ljava/lang/StringBuilder;
 
-    invoke-virtual {p1}, Lcom/android/server/display/LocalDisplayAdapter;->getSyncRoot()Lcom/android/server/display/DisplayManagerService$SyncRoot;
+    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
 
-    move-result-object p1
+    const-string/jumbo v1, "onConfigChanged(timestampNanos="
 
-    monitor-enter p1
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    .line 882
-    :try_start_7
-    iget-object p2, p0, Lcom/android/server/display/LocalDisplayAdapter$PhysicalDisplayEventReceiver;->this$0:Lcom/android/server/display/LocalDisplayAdapter;
+    invoke-virtual {v0, p1, p2}, Ljava/lang/StringBuilder;->append(J)Ljava/lang/StringBuilder;
 
-    invoke-static {p2}, Lcom/android/server/display/LocalDisplayAdapter;->access$500(Lcom/android/server/display/LocalDisplayAdapter;)Landroid/util/LongSparseArray;
+    const-string v1, ", physicalDisplayId="
 
-    move-result-object p2
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p2, p3, p4}, Landroid/util/LongSparseArray;->get(J)Ljava/lang/Object;
+    invoke-virtual {v0, p3, p4}, Ljava/lang/StringBuilder;->append(J)Ljava/lang/StringBuilder;
 
-    move-result-object p2
+    const-string v1, ", physIndex="
 
-    check-cast p2, Lcom/android/server/display/LocalDisplayAdapter$LocalDisplayDevice;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    .line 883
-    if-nez p2, :cond_17
+    invoke-virtual {v0, p5}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    .line 888
-    monitor-exit p1
+    const-string v1, ")"
+
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v0
+
+    const-string v1, "LocalDisplayAdapter"
+
+    invoke-static {v1, v0}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
+
+    .line 937
+    iget-object v0, p0, Lcom/android/server/display/LocalDisplayAdapter$PhysicalDisplayEventReceiver;->this$0:Lcom/android/server/display/LocalDisplayAdapter;
+
+    invoke-virtual {v0}, Lcom/android/server/display/LocalDisplayAdapter;->getSyncRoot()Lcom/android/server/display/DisplayManagerService$SyncRoot;
+
+    move-result-object v0
+
+    monitor-enter v0
+
+    .line 938
+    :try_start_33
+    iget-object v1, p0, Lcom/android/server/display/LocalDisplayAdapter$PhysicalDisplayEventReceiver;->this$0:Lcom/android/server/display/LocalDisplayAdapter;
+
+    invoke-static {v1}, Lcom/android/server/display/LocalDisplayAdapter;->access$700(Lcom/android/server/display/LocalDisplayAdapter;)Landroid/util/LongSparseArray;
+
+    move-result-object v1
+
+    invoke-virtual {v1, p3, p4}, Landroid/util/LongSparseArray;->get(J)Ljava/lang/Object;
+
+    move-result-object v1
+
+    check-cast v1, Lcom/android/server/display/LocalDisplayAdapter$LocalDisplayDevice;
+
+    .line 939
+    .local v1, "device":Lcom/android/server/display/LocalDisplayAdapter$LocalDisplayDevice;
+    if-nez v1, :cond_59
+
+    .line 941
+    const-string v2, "LocalDisplayAdapter"
+
+    new-instance v3, Ljava/lang/StringBuilder;
+
+    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
+
+    const-string v4, "Received config change for unhandled physical display: physicalDisplayId="
+
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v3, p3, p4}, Ljava/lang/StringBuilder;->append(J)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v3
+
+    invoke-static {v2, v3}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
+
+    .line 944
+    monitor-exit v0
 
     return-void
 
-    .line 890
-    :cond_17
-    invoke-virtual {p2, p5}, Lcom/android/server/display/LocalDisplayAdapter$LocalDisplayDevice;->onActivePhysicalDisplayModeChangedLocked(I)V
+    .line 946
+    :cond_59
+    invoke-virtual {v1, p5}, Lcom/android/server/display/LocalDisplayAdapter$LocalDisplayDevice;->onActivePhysicalDisplayModeChangedLocked(I)V
 
-    .line 891
-    monitor-exit p1
+    .line 947
+    .end local v1  # "device":Lcom/android/server/display/LocalDisplayAdapter$LocalDisplayDevice;
+    monitor-exit v0
 
-    .line 892
+    .line 948
     return-void
 
-    .line 891
-    :catchall_1c
-    move-exception p2
+    .line 947
+    :catchall_5e
+    move-exception v1
 
-    monitor-exit p1
-    :try_end_1e
-    .catchall {:try_start_7 .. :try_end_1e} :catchall_1c
+    monitor-exit v0
+    :try_end_60
+    .catchall {:try_start_33 .. :try_end_60} :catchall_5e
 
-    throw p2
+    throw v1
 .end method
 
 .method public onHotplug(JJZ)V
-    .registers 6
+    .registers 8
+    .param p1, "timestampNanos"  # J
+    .param p3, "physicalDisplayId"  # J
+    .param p5, "connected"  # Z
 
-    .line 864
-    iget-object p1, p0, Lcom/android/server/display/LocalDisplayAdapter$PhysicalDisplayEventReceiver;->this$0:Lcom/android/server/display/LocalDisplayAdapter;
+    .line 920
+    iget-object v0, p0, Lcom/android/server/display/LocalDisplayAdapter$PhysicalDisplayEventReceiver;->this$0:Lcom/android/server/display/LocalDisplayAdapter;
 
-    invoke-virtual {p1}, Lcom/android/server/display/LocalDisplayAdapter;->getSyncRoot()Lcom/android/server/display/DisplayManagerService$SyncRoot;
+    invoke-virtual {v0}, Lcom/android/server/display/LocalDisplayAdapter;->getSyncRoot()Lcom/android/server/display/DisplayManagerService$SyncRoot;
 
-    move-result-object p1
+    move-result-object v0
 
-    monitor-enter p1
+    monitor-enter v0
 
-    .line 865
+    .line 921
     if-eqz p5, :cond_f
 
-    .line 866
+    .line 922
     :try_start_9
-    iget-object p2, p0, Lcom/android/server/display/LocalDisplayAdapter$PhysicalDisplayEventReceiver;->this$0:Lcom/android/server/display/LocalDisplayAdapter;
+    iget-object v1, p0, Lcom/android/server/display/LocalDisplayAdapter$PhysicalDisplayEventReceiver;->this$0:Lcom/android/server/display/LocalDisplayAdapter;
 
-    invoke-static {p2, p3, p4}, Lcom/android/server/display/LocalDisplayAdapter;->access$300(Lcom/android/server/display/LocalDisplayAdapter;J)V
+    invoke-static {v1, p3, p4}, Lcom/android/server/display/LocalDisplayAdapter;->access$500(Lcom/android/server/display/LocalDisplayAdapter;J)V
 
     goto :goto_14
 
-    .line 868
+    .line 924
     :cond_f
-    iget-object p2, p0, Lcom/android/server/display/LocalDisplayAdapter$PhysicalDisplayEventReceiver;->this$0:Lcom/android/server/display/LocalDisplayAdapter;
+    iget-object v1, p0, Lcom/android/server/display/LocalDisplayAdapter$PhysicalDisplayEventReceiver;->this$0:Lcom/android/server/display/LocalDisplayAdapter;
 
-    invoke-static {p2, p3, p4}, Lcom/android/server/display/LocalDisplayAdapter;->access$400(Lcom/android/server/display/LocalDisplayAdapter;J)V
+    invoke-static {v1, p3, p4}, Lcom/android/server/display/LocalDisplayAdapter;->access$600(Lcom/android/server/display/LocalDisplayAdapter;J)V
 
-    .line 870
+    .line 926
     :goto_14
-    monitor-exit p1
+    monitor-exit v0
 
-    .line 871
+    .line 927
     return-void
 
-    .line 870
+    .line 926
     :catchall_16
-    move-exception p2
+    move-exception v1
 
-    monitor-exit p1
+    monitor-exit v0
     :try_end_18
     .catchall {:try_start_9 .. :try_end_18} :catchall_16
 
-    throw p2
+    throw v1
 .end method

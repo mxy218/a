@@ -34,7 +34,14 @@
 
 # direct methods
 .method private constructor <init>(IILandroid/content/ComponentName;Ljava/lang/String;JIZ)V
-    .registers 9
+    .registers 11
+    .param p1, "type"  # I
+    .param p2, "userId"  # I
+    .param p3, "agent"  # Landroid/content/ComponentName;
+    .param p4, "message"  # Ljava/lang/String;
+    .param p5, "duration"  # J
+    .param p7, "flags"  # I
+    .param p8, "managingTrust"  # Z
 
     .line 59
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -51,9 +58,9 @@
     .line 63
     invoke-static {}, Landroid/os/SystemClock;->elapsedRealtime()J
 
-    move-result-wide p1
+    move-result-wide v0
 
-    iput-wide p1, p0, Lcom/android/server/trust/TrustArchive$Event;->elapsedTimestamp:J
+    iput-wide v0, p0, Lcom/android/server/trust/TrustArchive$Event;->elapsedTimestamp:J
 
     .line 64
     iput-object p4, p0, Lcom/android/server/trust/TrustArchive$Event;->message:Ljava/lang/String;
@@ -73,6 +80,14 @@
 
 .method synthetic constructor <init>(IILandroid/content/ComponentName;Ljava/lang/String;JIZLcom/android/server/trust/TrustArchive$1;)V
     .registers 10
+    .param p1, "x0"  # I
+    .param p2, "x1"  # I
+    .param p3, "x2"  # Landroid/content/ComponentName;
+    .param p4, "x3"  # Ljava/lang/String;
+    .param p5, "x4"  # J
+    .param p7, "x5"  # I
+    .param p8, "x6"  # Z
+    .param p9, "x7"  # Lcom/android/server/trust/TrustArchive$1;
 
     .line 44
     invoke-direct/range {p0 .. p8}, Lcom/android/server/trust/TrustArchive$Event;-><init>(IILandroid/content/ComponentName;Ljava/lang/String;JIZ)V

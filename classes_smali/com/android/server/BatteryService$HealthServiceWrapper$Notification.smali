@@ -22,7 +22,7 @@
 .method private constructor <init>(Lcom/android/server/BatteryService$HealthServiceWrapper;)V
     .registers 2
 
-    .line 1474
+    .line 1772
     iput-object p1, p0, Lcom/android/server/BatteryService$HealthServiceWrapper$Notification;->this$0:Lcom/android/server/BatteryService$HealthServiceWrapper;
 
     invoke-direct {p0}, Landroid/hidl/manager/V1_0/IServiceNotification$Stub;-><init>()V
@@ -32,8 +32,10 @@
 
 .method synthetic constructor <init>(Lcom/android/server/BatteryService$HealthServiceWrapper;Lcom/android/server/BatteryService$1;)V
     .registers 3
+    .param p1, "x0"  # Lcom/android/server/BatteryService$HealthServiceWrapper;
+    .param p2, "x1"  # Lcom/android/server/BatteryService$1;
 
-    .line 1474
+    .line 1772
     invoke-direct {p0, p1}, Lcom/android/server/BatteryService$HealthServiceWrapper$Notification;-><init>(Lcom/android/server/BatteryService$HealthServiceWrapper;)V
 
     return-void
@@ -42,53 +44,56 @@
 
 # virtual methods
 .method public final onRegistration(Ljava/lang/String;Ljava/lang/String;Z)V
-    .registers 4
+    .registers 6
+    .param p1, "interfaceName"  # Ljava/lang/String;
+    .param p2, "instanceName"  # Ljava/lang/String;
+    .param p3, "preexisting"  # Z
 
-    .line 1478
-    const-string p3, "android.hardware.health@2.0::IHealth"
+    .line 1776
+    const-string v0, "android.hardware.health@2.0::IHealth"
 
-    invoke-virtual {p3, p1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v0, p1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result p1
+    move-result v0
 
-    if-nez p1, :cond_9
+    if-nez v0, :cond_9
 
     return-void
 
-    .line 1479
+    .line 1777
     :cond_9
-    iget-object p1, p0, Lcom/android/server/BatteryService$HealthServiceWrapper$Notification;->this$0:Lcom/android/server/BatteryService$HealthServiceWrapper;
+    iget-object v0, p0, Lcom/android/server/BatteryService$HealthServiceWrapper$Notification;->this$0:Lcom/android/server/BatteryService$HealthServiceWrapper;
 
-    invoke-static {p1}, Lcom/android/server/BatteryService$HealthServiceWrapper;->access$2400(Lcom/android/server/BatteryService$HealthServiceWrapper;)Ljava/lang/String;
+    invoke-static {v0}, Lcom/android/server/BatteryService$HealthServiceWrapper;->access$2300(Lcom/android/server/BatteryService$HealthServiceWrapper;)Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    invoke-virtual {p1, p2}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v0, p2}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result p1
+    move-result v0
 
-    if-nez p1, :cond_16
+    if-nez v0, :cond_16
 
     return-void
 
-    .line 1483
+    .line 1781
     :cond_16
-    iget-object p1, p0, Lcom/android/server/BatteryService$HealthServiceWrapper$Notification;->this$0:Lcom/android/server/BatteryService$HealthServiceWrapper;
+    iget-object v0, p0, Lcom/android/server/BatteryService$HealthServiceWrapper$Notification;->this$0:Lcom/android/server/BatteryService$HealthServiceWrapper;
 
-    invoke-static {p1}, Lcom/android/server/BatteryService$HealthServiceWrapper;->access$2800(Lcom/android/server/BatteryService$HealthServiceWrapper;)Landroid/os/HandlerThread;
+    invoke-static {v0}, Lcom/android/server/BatteryService$HealthServiceWrapper;->access$2700(Lcom/android/server/BatteryService$HealthServiceWrapper;)Landroid/os/HandlerThread;
 
-    move-result-object p1
+    move-result-object v0
 
-    invoke-virtual {p1}, Landroid/os/HandlerThread;->getThreadHandler()Landroid/os/Handler;
+    invoke-virtual {v0}, Landroid/os/HandlerThread;->getThreadHandler()Landroid/os/Handler;
 
-    move-result-object p1
+    move-result-object v0
 
-    new-instance p2, Lcom/android/server/BatteryService$HealthServiceWrapper$Notification$1;
+    new-instance v1, Lcom/android/server/BatteryService$HealthServiceWrapper$Notification$1;
 
-    invoke-direct {p2, p0}, Lcom/android/server/BatteryService$HealthServiceWrapper$Notification$1;-><init>(Lcom/android/server/BatteryService$HealthServiceWrapper$Notification;)V
+    invoke-direct {v1, p0}, Lcom/android/server/BatteryService$HealthServiceWrapper$Notification$1;-><init>(Lcom/android/server/BatteryService$HealthServiceWrapper$Notification;)V
 
-    invoke-virtual {p1, p2}, Landroid/os/Handler;->post(Ljava/lang/Runnable;)Z
+    invoke-virtual {v0, v1}, Landroid/os/Handler;->post(Ljava/lang/Runnable;)Z
 
-    .line 1501
+    .line 1799
     return-void
 .end method

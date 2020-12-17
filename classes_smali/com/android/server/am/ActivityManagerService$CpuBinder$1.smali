@@ -24,8 +24,9 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/am/ActivityManagerService$CpuBinder;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/am/ActivityManagerService$CpuBinder;
 
-    .line 2185
+    .line 2294
     iput-object p1, p0, Lcom/android/server/am/ActivityManagerService$CpuBinder$1;->this$0:Lcom/android/server/am/ActivityManagerService$CpuBinder;
 
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -36,88 +37,92 @@
 
 # virtual methods
 .method public dumpCritical(Ljava/io/FileDescriptor;Ljava/io/PrintWriter;[Ljava/lang/String;Z)V
-    .registers 7
+    .registers 9
+    .param p1, "fd"  # Ljava/io/FileDescriptor;
+    .param p2, "pw"  # Ljava/io/PrintWriter;
+    .param p3, "args"  # [Ljava/lang/String;
+    .param p4, "asProto"  # Z
 
-    .line 2189
+    .line 2298
     if-eqz p4, :cond_3
 
     return-void
 
-    .line 2190
+    .line 2299
     :cond_3
-    iget-object p1, p0, Lcom/android/server/am/ActivityManagerService$CpuBinder$1;->this$0:Lcom/android/server/am/ActivityManagerService$CpuBinder;
+    iget-object v0, p0, Lcom/android/server/am/ActivityManagerService$CpuBinder$1;->this$0:Lcom/android/server/am/ActivityManagerService$CpuBinder;
 
-    iget-object p1, p1, Lcom/android/server/am/ActivityManagerService$CpuBinder;->mActivityManagerService:Lcom/android/server/am/ActivityManagerService;
+    iget-object v0, v0, Lcom/android/server/am/ActivityManagerService$CpuBinder;->mActivityManagerService:Lcom/android/server/am/ActivityManagerService;
 
-    iget-object p1, p1, Lcom/android/server/am/ActivityManagerService;->mContext:Landroid/content/Context;
+    iget-object v0, v0, Lcom/android/server/am/ActivityManagerService;->mContext:Landroid/content/Context;
 
-    const-string p3, "cpuinfo"
+    const-string v1, "cpuinfo"
 
-    invoke-static {p1, p3, p2}, Lcom/android/internal/util/DumpUtils;->checkDumpAndUsageStatsPermission(Landroid/content/Context;Ljava/lang/String;Ljava/io/PrintWriter;)Z
+    invoke-static {v0, v1, p2}, Lcom/android/internal/util/DumpUtils;->checkDumpAndUsageStatsPermission(Landroid/content/Context;Ljava/lang/String;Ljava/io/PrintWriter;)Z
 
-    move-result p1
+    move-result v0
 
-    if-nez p1, :cond_12
+    if-nez v0, :cond_12
 
-    .line 2191
+    .line 2300
     return-void
 
-    .line 2192
+    .line 2301
     :cond_12
-    iget-object p1, p0, Lcom/android/server/am/ActivityManagerService$CpuBinder$1;->this$0:Lcom/android/server/am/ActivityManagerService$CpuBinder;
+    iget-object v0, p0, Lcom/android/server/am/ActivityManagerService$CpuBinder$1;->this$0:Lcom/android/server/am/ActivityManagerService$CpuBinder;
 
-    iget-object p1, p1, Lcom/android/server/am/ActivityManagerService$CpuBinder;->mActivityManagerService:Lcom/android/server/am/ActivityManagerService;
+    iget-object v0, v0, Lcom/android/server/am/ActivityManagerService$CpuBinder;->mActivityManagerService:Lcom/android/server/am/ActivityManagerService;
 
-    iget-object p1, p1, Lcom/android/server/am/ActivityManagerService;->mProcessCpuTracker:Lcom/android/internal/os/ProcessCpuTracker;
+    iget-object v0, v0, Lcom/android/server/am/ActivityManagerService;->mProcessCpuTracker:Lcom/android/internal/os/ProcessCpuTracker;
 
-    monitor-enter p1
+    monitor-enter v0
 
-    .line 2193
+    .line 2302
     :try_start_19
-    iget-object p3, p0, Lcom/android/server/am/ActivityManagerService$CpuBinder$1;->this$0:Lcom/android/server/am/ActivityManagerService$CpuBinder;
+    iget-object v1, p0, Lcom/android/server/am/ActivityManagerService$CpuBinder$1;->this$0:Lcom/android/server/am/ActivityManagerService$CpuBinder;
 
-    iget-object p3, p3, Lcom/android/server/am/ActivityManagerService$CpuBinder;->mActivityManagerService:Lcom/android/server/am/ActivityManagerService;
+    iget-object v1, v1, Lcom/android/server/am/ActivityManagerService$CpuBinder;->mActivityManagerService:Lcom/android/server/am/ActivityManagerService;
 
-    iget-object p3, p3, Lcom/android/server/am/ActivityManagerService;->mProcessCpuTracker:Lcom/android/internal/os/ProcessCpuTracker;
+    iget-object v1, v1, Lcom/android/server/am/ActivityManagerService;->mProcessCpuTracker:Lcom/android/internal/os/ProcessCpuTracker;
 
-    invoke-virtual {p3}, Lcom/android/internal/os/ProcessCpuTracker;->printCurrentLoad()Ljava/lang/String;
+    invoke-virtual {v1}, Lcom/android/internal/os/ProcessCpuTracker;->printCurrentLoad()Ljava/lang/String;
 
-    move-result-object p3
+    move-result-object v1
 
-    invoke-virtual {p2, p3}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
+    invoke-virtual {p2, v1}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
-    .line 2194
-    iget-object p3, p0, Lcom/android/server/am/ActivityManagerService$CpuBinder$1;->this$0:Lcom/android/server/am/ActivityManagerService$CpuBinder;
+    .line 2303
+    iget-object v1, p0, Lcom/android/server/am/ActivityManagerService$CpuBinder$1;->this$0:Lcom/android/server/am/ActivityManagerService$CpuBinder;
 
-    iget-object p3, p3, Lcom/android/server/am/ActivityManagerService$CpuBinder;->mActivityManagerService:Lcom/android/server/am/ActivityManagerService;
+    iget-object v1, v1, Lcom/android/server/am/ActivityManagerService$CpuBinder;->mActivityManagerService:Lcom/android/server/am/ActivityManagerService;
 
-    iget-object p3, p3, Lcom/android/server/am/ActivityManagerService;->mProcessCpuTracker:Lcom/android/internal/os/ProcessCpuTracker;
+    iget-object v1, v1, Lcom/android/server/am/ActivityManagerService;->mProcessCpuTracker:Lcom/android/internal/os/ProcessCpuTracker;
 
-    .line 2195
+    .line 2304
     invoke-static {}, Landroid/os/SystemClock;->uptimeMillis()J
 
-    move-result-wide v0
+    move-result-wide v2
 
-    .line 2194
-    invoke-virtual {p3, v0, v1}, Lcom/android/internal/os/ProcessCpuTracker;->printCurrentState(J)Ljava/lang/String;
+    .line 2303
+    invoke-virtual {v1, v2, v3}, Lcom/android/internal/os/ProcessCpuTracker;->printCurrentState(J)Ljava/lang/String;
 
-    move-result-object p3
+    move-result-object v1
 
-    invoke-virtual {p2, p3}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
+    invoke-virtual {p2, v1}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
-    .line 2196
-    monitor-exit p1
+    .line 2305
+    monitor-exit v0
 
-    .line 2197
+    .line 2306
     return-void
 
-    .line 2196
+    .line 2305
     :catchall_39
-    move-exception p2
+    move-exception v1
 
-    monitor-exit p1
+    monitor-exit v0
     :try_end_3b
     .catchall {:try_start_19 .. :try_end_3b} :catchall_39
 
-    throw p2
+    throw v1
 .end method

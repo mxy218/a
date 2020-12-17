@@ -67,6 +67,7 @@
 
 .method public static final readVectorFromParcel(Landroid/os/HwParcel;)Ljava/util/ArrayList;
     .registers 13
+    .param p0, "parcel"  # Landroid/os/HwParcel;
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(",
@@ -84,6 +85,7 @@
     invoke-direct {v0}, Ljava/util/ArrayList;-><init>()V
 
     .line 235
+    .local v0, "_hidl_vec":Ljava/util/ArrayList;, "Ljava/util/ArrayList<Landroid/hidl/manager/V1_0/IServiceManager$InstanceDebugInfo;>;"
     const-wide/16 v1, 0x10
 
     invoke-virtual {p0, v1, v2}, Landroid/os/HwParcel;->readBuffer(J)Landroid/os/HwBlob;
@@ -91,6 +93,7 @@
     move-result-object v1
 
     .line 238
+    .local v1, "_hidl_blob":Landroid/os/HwBlob;
     const-wide/16 v2, 0x8
 
     invoke-virtual {v1, v2, v3}, Landroid/os/HwBlob;->getInt32(J)I
@@ -98,6 +101,7 @@
     move-result v2
 
     .line 239
+    .local v2, "_hidl_vec_size":I
     mul-int/lit8 v3, v2, 0x40
 
     int-to-long v5, v3
@@ -116,44 +120,52 @@
 
     invoke-virtual/range {v4 .. v11}, Landroid/os/HwParcel;->readEmbeddedBuffer(JJJZ)Landroid/os/HwBlob;
 
-    move-result-object v1
+    move-result-object v3
 
     .line 243
+    .local v3, "childBlob":Landroid/os/HwBlob;
     invoke-virtual {v0}, Ljava/util/ArrayList;->clear()V
 
     .line 244
-    const/4 v3, 0x0
+    const/4 v4, 0x0
 
+    .local v4, "_hidl_index_0":I
     :goto_24
-    if-ge v3, v2, :cond_37
+    if-ge v4, v2, :cond_37
 
     .line 245
-    new-instance v4, Landroid/hidl/manager/V1_0/IServiceManager$InstanceDebugInfo;
+    new-instance v5, Landroid/hidl/manager/V1_0/IServiceManager$InstanceDebugInfo;
 
-    invoke-direct {v4}, Landroid/hidl/manager/V1_0/IServiceManager$InstanceDebugInfo;-><init>()V
+    invoke-direct {v5}, Landroid/hidl/manager/V1_0/IServiceManager$InstanceDebugInfo;-><init>()V
 
     .line 246
-    mul-int/lit8 v5, v3, 0x40
+    .local v5, "_hidl_vec_element":Landroid/hidl/manager/V1_0/IServiceManager$InstanceDebugInfo;
+    mul-int/lit8 v6, v4, 0x40
 
-    int-to-long v5, v5
+    int-to-long v6, v6
 
-    invoke-virtual {v4, p0, v1, v5, v6}, Landroid/hidl/manager/V1_0/IServiceManager$InstanceDebugInfo;->readEmbeddedFromParcel(Landroid/os/HwParcel;Landroid/os/HwBlob;J)V
+    invoke-virtual {v5, p0, v3, v6, v7}, Landroid/hidl/manager/V1_0/IServiceManager$InstanceDebugInfo;->readEmbeddedFromParcel(Landroid/os/HwParcel;Landroid/os/HwBlob;J)V
 
     .line 247
-    invoke-virtual {v0, v4}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
+    invoke-virtual {v0, v5}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
 
     .line 244
-    add-int/lit8 v3, v3, 0x1
+    .end local v5  # "_hidl_vec_element":Landroid/hidl/manager/V1_0/IServiceManager$InstanceDebugInfo;
+    add-int/lit8 v4, v4, 0x1
 
     goto :goto_24
 
     .line 251
+    .end local v2  # "_hidl_vec_size":I
+    .end local v3  # "childBlob":Landroid/os/HwBlob;
+    .end local v4  # "_hidl_index_0":I
     :cond_37
     return-object v0
 .end method
 
 .method public static final writeVectorToParcel(Landroid/os/HwParcel;Ljava/util/ArrayList;)V
     .registers 9
+    .param p0, "parcel"  # Landroid/os/HwParcel;
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(",
@@ -165,6 +177,7 @@
     .end annotation
 
     .line 295
+    .local p1, "_hidl_vec":Ljava/util/ArrayList;, "Ljava/util/ArrayList<Landroid/hidl/manager/V1_0/IServiceManager$InstanceDebugInfo;>;"
     new-instance v0, Landroid/os/HwBlob;
 
     const/16 v1, 0x10
@@ -172,60 +185,67 @@
     invoke-direct {v0, v1}, Landroid/os/HwBlob;-><init>(I)V
 
     .line 297
+    .local v0, "_hidl_blob":Landroid/os/HwBlob;
     invoke-virtual {p1}, Ljava/util/ArrayList;->size()I
 
     move-result v1
 
     .line 298
+    .local v1, "_hidl_vec_size":I
     const-wide/16 v2, 0x8
 
     invoke-virtual {v0, v2, v3, v1}, Landroid/os/HwBlob;->putInt32(JI)V
 
     .line 299
-    const/4 v2, 0x0
+    const-wide/16 v2, 0xc
 
-    const-wide/16 v3, 0xc
+    const/4 v4, 0x0
 
-    invoke-virtual {v0, v3, v4, v2}, Landroid/os/HwBlob;->putBool(JZ)V
+    invoke-virtual {v0, v2, v3, v4}, Landroid/os/HwBlob;->putBool(JZ)V
 
     .line 300
-    new-instance v3, Landroid/os/HwBlob;
+    new-instance v2, Landroid/os/HwBlob;
 
-    mul-int/lit8 v4, v1, 0x40
+    mul-int/lit8 v3, v1, 0x40
 
-    invoke-direct {v3, v4}, Landroid/os/HwBlob;-><init>(I)V
+    invoke-direct {v2, v3}, Landroid/os/HwBlob;-><init>(I)V
 
     .line 301
-    nop
+    .local v2, "childBlob":Landroid/os/HwBlob;
+    const/4 v3, 0x0
 
+    .local v3, "_hidl_index_0":I
     :goto_1e
-    if-ge v2, v1, :cond_2f
+    if-ge v3, v1, :cond_2f
 
     .line 302
-    invoke-virtual {p1, v2}, Ljava/util/ArrayList;->get(I)Ljava/lang/Object;
+    invoke-virtual {p1, v3}, Ljava/util/ArrayList;->get(I)Ljava/lang/Object;
 
     move-result-object v4
 
     check-cast v4, Landroid/hidl/manager/V1_0/IServiceManager$InstanceDebugInfo;
 
-    mul-int/lit8 v5, v2, 0x40
+    mul-int/lit8 v5, v3, 0x40
 
     int-to-long v5, v5
 
-    invoke-virtual {v4, v3, v5, v6}, Landroid/hidl/manager/V1_0/IServiceManager$InstanceDebugInfo;->writeEmbeddedToBlob(Landroid/os/HwBlob;J)V
+    invoke-virtual {v4, v2, v5, v6}, Landroid/hidl/manager/V1_0/IServiceManager$InstanceDebugInfo;->writeEmbeddedToBlob(Landroid/os/HwBlob;J)V
 
     .line 301
-    add-int/lit8 v2, v2, 0x1
+    add-int/lit8 v3, v3, 0x1
 
     goto :goto_1e
 
     .line 304
+    .end local v3  # "_hidl_index_0":I
     :cond_2f
-    const-wide/16 v1, 0x0
+    const-wide/16 v3, 0x0
 
-    invoke-virtual {v0, v1, v2, v3}, Landroid/os/HwBlob;->putBlob(JLandroid/os/HwBlob;)V
+    invoke-virtual {v0, v3, v4, v2}, Landroid/os/HwBlob;->putBlob(JLandroid/os/HwBlob;)V
 
     .line 307
+    .end local v1  # "_hidl_vec_size":I
+    .end local v2  # "childBlob":Landroid/os/HwBlob;
     invoke-virtual {p0, v0}, Landroid/os/HwParcel;->writeBuffer(Landroid/os/HwBlob;)V
 
     .line 308
@@ -235,7 +255,8 @@
 
 # virtual methods
 .method public final equals(Ljava/lang/Object;)Z
-    .registers 6
+    .registers 7
+    .param p1, "otherObject"  # Ljava/lang/Object;
 
     .line 172
     const/4 v0, 0x1
@@ -269,76 +290,79 @@
 
     .line 181
     :cond_11
-    check-cast p1, Landroid/hidl/manager/V1_0/IServiceManager$InstanceDebugInfo;
+    move-object v2, p1
+
+    check-cast v2, Landroid/hidl/manager/V1_0/IServiceManager$InstanceDebugInfo;
 
     .line 182
-    iget-object v2, p0, Landroid/hidl/manager/V1_0/IServiceManager$InstanceDebugInfo;->interfaceName:Ljava/lang/String;
+    .local v2, "other":Landroid/hidl/manager/V1_0/IServiceManager$InstanceDebugInfo;
+    iget-object v3, p0, Landroid/hidl/manager/V1_0/IServiceManager$InstanceDebugInfo;->interfaceName:Ljava/lang/String;
 
-    iget-object v3, p1, Landroid/hidl/manager/V1_0/IServiceManager$InstanceDebugInfo;->interfaceName:Ljava/lang/String;
+    iget-object v4, v2, Landroid/hidl/manager/V1_0/IServiceManager$InstanceDebugInfo;->interfaceName:Ljava/lang/String;
 
-    invoke-static {v2, v3}, Landroid/os/HidlSupport;->deepEquals(Ljava/lang/Object;Ljava/lang/Object;)Z
+    invoke-static {v3, v4}, Landroid/os/HidlSupport;->deepEquals(Ljava/lang/Object;Ljava/lang/Object;)Z
 
-    move-result v2
+    move-result v3
 
-    if-nez v2, :cond_1e
+    if-nez v3, :cond_1f
 
     .line 183
     return v1
 
     .line 185
-    :cond_1e
-    iget-object v2, p0, Landroid/hidl/manager/V1_0/IServiceManager$InstanceDebugInfo;->instanceName:Ljava/lang/String;
+    :cond_1f
+    iget-object v3, p0, Landroid/hidl/manager/V1_0/IServiceManager$InstanceDebugInfo;->instanceName:Ljava/lang/String;
 
-    iget-object v3, p1, Landroid/hidl/manager/V1_0/IServiceManager$InstanceDebugInfo;->instanceName:Ljava/lang/String;
+    iget-object v4, v2, Landroid/hidl/manager/V1_0/IServiceManager$InstanceDebugInfo;->instanceName:Ljava/lang/String;
 
-    invoke-static {v2, v3}, Landroid/os/HidlSupport;->deepEquals(Ljava/lang/Object;Ljava/lang/Object;)Z
+    invoke-static {v3, v4}, Landroid/os/HidlSupport;->deepEquals(Ljava/lang/Object;Ljava/lang/Object;)Z
 
-    move-result v2
+    move-result v3
 
-    if-nez v2, :cond_29
+    if-nez v3, :cond_2a
 
     .line 186
     return v1
 
     .line 188
-    :cond_29
-    iget v2, p0, Landroid/hidl/manager/V1_0/IServiceManager$InstanceDebugInfo;->pid:I
+    :cond_2a
+    iget v3, p0, Landroid/hidl/manager/V1_0/IServiceManager$InstanceDebugInfo;->pid:I
 
-    iget v3, p1, Landroid/hidl/manager/V1_0/IServiceManager$InstanceDebugInfo;->pid:I
+    iget v4, v2, Landroid/hidl/manager/V1_0/IServiceManager$InstanceDebugInfo;->pid:I
 
-    if-eq v2, v3, :cond_30
+    if-eq v3, v4, :cond_31
 
     .line 189
     return v1
 
     .line 191
-    :cond_30
-    iget-object v2, p0, Landroid/hidl/manager/V1_0/IServiceManager$InstanceDebugInfo;->clientPids:Ljava/util/ArrayList;
+    :cond_31
+    iget-object v3, p0, Landroid/hidl/manager/V1_0/IServiceManager$InstanceDebugInfo;->clientPids:Ljava/util/ArrayList;
 
-    iget-object v3, p1, Landroid/hidl/manager/V1_0/IServiceManager$InstanceDebugInfo;->clientPids:Ljava/util/ArrayList;
+    iget-object v4, v2, Landroid/hidl/manager/V1_0/IServiceManager$InstanceDebugInfo;->clientPids:Ljava/util/ArrayList;
 
-    invoke-static {v2, v3}, Landroid/os/HidlSupport;->deepEquals(Ljava/lang/Object;Ljava/lang/Object;)Z
+    invoke-static {v3, v4}, Landroid/os/HidlSupport;->deepEquals(Ljava/lang/Object;Ljava/lang/Object;)Z
 
-    move-result v2
+    move-result v3
 
-    if-nez v2, :cond_3b
+    if-nez v3, :cond_3c
 
     .line 192
     return v1
 
     .line 194
-    :cond_3b
-    iget v2, p0, Landroid/hidl/manager/V1_0/IServiceManager$InstanceDebugInfo;->arch:I
+    :cond_3c
+    iget v3, p0, Landroid/hidl/manager/V1_0/IServiceManager$InstanceDebugInfo;->arch:I
 
-    iget p1, p1, Landroid/hidl/manager/V1_0/IServiceManager$InstanceDebugInfo;->arch:I
+    iget v4, v2, Landroid/hidl/manager/V1_0/IServiceManager$InstanceDebugInfo;->arch:I
 
-    if-eq v2, p1, :cond_42
+    if-eq v3, v4, :cond_43
 
     .line 195
     return v1
 
     .line 197
-    :cond_42
+    :cond_43
     return v0
 .end method
 
@@ -443,6 +467,9 @@
 
 .method public final readEmbeddedFromParcel(Landroid/os/HwParcel;Landroid/os/HwBlob;J)V
     .registers 21
+    .param p1, "parcel"  # Landroid/os/HwParcel;
+    .param p2, "_hidl_blob"  # Landroid/os/HwBlob;
+    .param p3, "_hidl_offset"  # J
 
     .line 256
     move-object/from16 v0, p0
@@ -455,44 +482,46 @@
 
     invoke-virtual {v1, v4, v5}, Landroid/os/HwBlob;->getString(J)Ljava/lang/String;
 
-    move-result-object v6
+    move-result-object v4
 
-    iput-object v6, v0, Landroid/hidl/manager/V1_0/IServiceManager$InstanceDebugInfo;->interfaceName:Ljava/lang/String;
+    iput-object v4, v0, Landroid/hidl/manager/V1_0/IServiceManager$InstanceDebugInfo;->interfaceName:Ljava/lang/String;
 
     .line 258
-    iget-object v6, v0, Landroid/hidl/manager/V1_0/IServiceManager$InstanceDebugInfo;->interfaceName:Ljava/lang/String;
+    iget-object v4, v0, Landroid/hidl/manager/V1_0/IServiceManager$InstanceDebugInfo;->interfaceName:Ljava/lang/String;
 
     .line 259
-    invoke-virtual {v6}, Ljava/lang/String;->getBytes()[B
+    invoke-virtual {v4}, Ljava/lang/String;->getBytes()[B
 
-    move-result-object v6
+    move-result-object v4
 
-    array-length v6, v6
+    array-length v4, v4
 
-    add-int/lit8 v6, v6, 0x1
+    add-int/lit8 v4, v4, 0x1
 
-    int-to-long v8, v6
+    int-to-long v6, v4
 
     .line 260
     invoke-virtual/range {p2 .. p2}, Landroid/os/HwBlob;->handle()J
 
-    move-result-wide v10
+    move-result-wide v8
 
-    add-long v12, v4, v2
+    add-long v4, p3, v2
+
+    add-long v10, v4, v2
 
     .line 258
-    const/4 v14, 0x0
+    const/4 v12, 0x0
 
-    move-object/from16 v7, p1
+    move-object/from16 v5, p1
 
-    invoke-virtual/range {v7 .. v14}, Landroid/os/HwParcel;->readEmbeddedBuffer(JJJZ)Landroid/os/HwBlob;
+    invoke-virtual/range {v5 .. v12}, Landroid/os/HwParcel;->readEmbeddedBuffer(JJJZ)Landroid/os/HwBlob;
 
     .line 263
     const-wide/16 v4, 0x10
 
-    add-long v4, p3, v4
+    add-long v6, p3, v4
 
-    invoke-virtual {v1, v4, v5}, Landroid/os/HwBlob;->getString(J)Ljava/lang/String;
+    invoke-virtual {v1, v6, v7}, Landroid/os/HwBlob;->getString(J)Ljava/lang/String;
 
     move-result-object v6
 
@@ -517,9 +546,15 @@
 
     move-result-wide v10
 
+    add-long v4, p3, v4
+
     add-long v12, v4, v2
 
     .line 265
+    const/4 v14, 0x0
+
+    move-object/from16 v7, p1
+
     invoke-virtual/range {v7 .. v14}, Landroid/os/HwParcel;->readEmbeddedBuffer(JJJZ)Landroid/os/HwBlob;
 
     .line 270
@@ -536,17 +571,18 @@
     .line 272
     const-wide/16 v4, 0x28
 
-    add-long v4, p3, v4
+    add-long v6, p3, v4
 
-    const-wide/16 v6, 0x8
+    const-wide/16 v8, 0x8
 
-    add-long/2addr v6, v4
+    add-long/2addr v6, v8
 
     invoke-virtual {v1, v6, v7}, Landroid/os/HwBlob;->getInt32(J)I
 
     move-result v6
 
     .line 273
+    .local v6, "_hidl_vec_size":I
     mul-int/lit8 v7, v6, 0x4
 
     int-to-long v9, v7
@@ -555,6 +591,8 @@
     invoke-virtual/range {p2 .. p2}, Landroid/os/HwBlob;->handle()J
 
     move-result-wide v11
+
+    add-long v4, p3, v4
 
     add-long v13, v4, v2
 
@@ -568,6 +606,7 @@
     move-result-object v2
 
     .line 277
+    .local v2, "childBlob":Landroid/os/HwBlob;
     iget-object v3, v0, Landroid/hidl/manager/V1_0/IServiceManager$InstanceDebugInfo;->clientPids:Ljava/util/ArrayList;
 
     invoke-virtual {v3}, Ljava/util/ArrayList;->clear()V
@@ -575,8 +614,9 @@
     .line 278
     const/4 v3, 0x0
 
-    :goto_6c
-    if-ge v3, v6, :cond_81
+    .local v3, "_hidl_index_0":I
+    :goto_75
+    if-ge v3, v6, :cond_8a
 
     .line 280
     mul-int/lit8 v4, v3, 0x4
@@ -588,30 +628,35 @@
     move-result v4
 
     .line 281
+    .local v4, "_hidl_vec_element":I
     iget-object v5, v0, Landroid/hidl/manager/V1_0/IServiceManager$InstanceDebugInfo;->clientPids:Ljava/util/ArrayList;
 
     invoke-static {v4}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
 
-    move-result-object v4
+    move-result-object v7
 
-    invoke-virtual {v5, v4}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
+    invoke-virtual {v5, v7}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
 
     .line 278
+    .end local v4  # "_hidl_vec_element":I
     add-int/lit8 v3, v3, 0x1
 
-    goto :goto_6c
+    goto :goto_75
 
     .line 284
-    :cond_81
+    .end local v2  # "childBlob":Landroid/os/HwBlob;
+    .end local v3  # "_hidl_index_0":I
+    .end local v6  # "_hidl_vec_size":I
+    :cond_8a
     const-wide/16 v2, 0x38
 
     add-long v2, p3, v2
 
     invoke-virtual {v1, v2, v3}, Landroid/os/HwBlob;->getInt32(J)I
 
-    move-result v1
+    move-result v2
 
-    iput v1, v0, Landroid/hidl/manager/V1_0/IServiceManager$InstanceDebugInfo;->arch:I
+    iput v2, v0, Landroid/hidl/manager/V1_0/IServiceManager$InstanceDebugInfo;->arch:I
 
     .line 285
     return-void
@@ -619,6 +664,7 @@
 
 .method public final readFromParcel(Landroid/os/HwParcel;)V
     .registers 5
+    .param p1, "parcel"  # Landroid/os/HwParcel;
 
     .line 229
     const-wide/16 v0, 0x40
@@ -628,6 +674,7 @@
     move-result-object v0
 
     .line 230
+    .local v0, "blob":Landroid/os/HwBlob;
     const-wide/16 v1, 0x0
 
     invoke-virtual {p0, p1, v0, v1, v2}, Landroid/hidl/manager/V1_0/IServiceManager$InstanceDebugInfo;->readEmbeddedFromParcel(Landroid/os/HwParcel;Landroid/os/HwBlob;J)V
@@ -645,6 +692,7 @@
     invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
 
     .line 213
+    .local v0, "builder":Ljava/lang/StringBuilder;
     const-string/jumbo v1, "{"
 
     invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
@@ -711,13 +759,15 @@
     .line 225
     invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v1
 
-    return-object v0
+    return-object v1
 .end method
 
 .method public final writeEmbeddedToBlob(Landroid/os/HwBlob;J)V
     .registers 14
+    .param p1, "_hidl_blob"  # Landroid/os/HwBlob;
+    .param p2, "_hidl_offset"  # J
 
     .line 312
     const-wide/16 v0, 0x0
@@ -754,20 +804,23 @@
     move-result v2
 
     .line 317
+    .local v2, "_hidl_vec_size":I
     const-wide/16 v3, 0x28
 
-    add-long/2addr v3, p2
+    add-long v5, p2, v3
 
-    const-wide/16 v5, 0x8
+    const-wide/16 v7, 0x8
 
-    add-long/2addr v5, v3
+    add-long/2addr v5, v7
 
     invoke-virtual {p1, v5, v6, v2}, Landroid/os/HwBlob;->putInt32(JI)V
 
     .line 318
-    const-wide/16 v5, 0xc
+    add-long v5, p2, v3
 
-    add-long/2addr v5, v3
+    const-wide/16 v7, 0xc
+
+    add-long/2addr v5, v7
 
     const/4 v7, 0x0
 
@@ -781,49 +834,56 @@
     invoke-direct {v5, v6}, Landroid/os/HwBlob;-><init>(I)V
 
     .line 320
-    nop
+    .local v5, "childBlob":Landroid/os/HwBlob;
+    const/4 v6, 0x0
 
-    :goto_37
-    if-ge v7, v2, :cond_4e
+    .local v6, "_hidl_index_0":I
+    :goto_3a
+    if-ge v6, v2, :cond_51
 
     .line 321
-    mul-int/lit8 v6, v7, 0x4
+    mul-int/lit8 v7, v6, 0x4
 
-    int-to-long v8, v6
+    int-to-long v7, v7
 
-    iget-object v6, p0, Landroid/hidl/manager/V1_0/IServiceManager$InstanceDebugInfo;->clientPids:Ljava/util/ArrayList;
+    iget-object v9, p0, Landroid/hidl/manager/V1_0/IServiceManager$InstanceDebugInfo;->clientPids:Ljava/util/ArrayList;
 
-    invoke-virtual {v6, v7}, Ljava/util/ArrayList;->get(I)Ljava/lang/Object;
+    invoke-virtual {v9, v6}, Ljava/util/ArrayList;->get(I)Ljava/lang/Object;
 
-    move-result-object v6
+    move-result-object v9
 
-    check-cast v6, Ljava/lang/Integer;
+    check-cast v9, Ljava/lang/Integer;
 
-    invoke-virtual {v6}, Ljava/lang/Integer;->intValue()I
+    invoke-virtual {v9}, Ljava/lang/Integer;->intValue()I
 
-    move-result v6
+    move-result v9
 
-    invoke-virtual {v5, v8, v9, v6}, Landroid/os/HwBlob;->putInt32(JI)V
+    invoke-virtual {v5, v7, v8, v9}, Landroid/os/HwBlob;->putInt32(JI)V
 
     .line 320
-    add-int/lit8 v7, v7, 0x1
+    add-int/lit8 v6, v6, 0x1
 
-    goto :goto_37
+    goto :goto_3a
 
     .line 323
-    :cond_4e
+    .end local v6  # "_hidl_index_0":I
+    :cond_51
+    add-long/2addr v3, p2
+
     add-long/2addr v3, v0
 
     invoke-virtual {p1, v3, v4, v5}, Landroid/os/HwBlob;->putBlob(JLandroid/os/HwBlob;)V
 
     .line 325
+    .end local v2  # "_hidl_vec_size":I
+    .end local v5  # "childBlob":Landroid/os/HwBlob;
     const-wide/16 v0, 0x38
 
-    add-long/2addr p2, v0
+    add-long/2addr v0, p2
 
-    iget v0, p0, Landroid/hidl/manager/V1_0/IServiceManager$InstanceDebugInfo;->arch:I
+    iget v2, p0, Landroid/hidl/manager/V1_0/IServiceManager$InstanceDebugInfo;->arch:I
 
-    invoke-virtual {p1, p2, p3, v0}, Landroid/os/HwBlob;->putInt32(JI)V
+    invoke-virtual {p1, v0, v1, v2}, Landroid/os/HwBlob;->putInt32(JI)V
 
     .line 326
     return-void
@@ -831,6 +891,7 @@
 
 .method public final writeToParcel(Landroid/os/HwParcel;)V
     .registers 5
+    .param p1, "parcel"  # Landroid/os/HwParcel;
 
     .line 288
     new-instance v0, Landroid/os/HwBlob;
@@ -840,6 +901,7 @@
     invoke-direct {v0, v1}, Landroid/os/HwBlob;-><init>(I)V
 
     .line 289
+    .local v0, "_hidl_blob":Landroid/os/HwBlob;
     const-wide/16 v1, 0x0
 
     invoke-virtual {p0, v0, v1, v2}, Landroid/hidl/manager/V1_0/IServiceManager$InstanceDebugInfo;->writeEmbeddedToBlob(Landroid/os/HwBlob;J)V

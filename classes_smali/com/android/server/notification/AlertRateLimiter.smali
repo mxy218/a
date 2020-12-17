@@ -30,6 +30,7 @@
 # virtual methods
 .method shouldRateLimitAlert(J)Z
     .registers 7
+    .param p1, "now"  # J
 
     .line 28
     iget-wide v0, p0, Lcom/android/server/notification/AlertRateLimiter;->mLastNotificationMillis:J
@@ -37,6 +38,7 @@
     sub-long v0, p1, v0
 
     .line 29
+    .local v0, "millisSinceLast":J
     const-wide/16 v2, 0x0
 
     cmp-long v2, v0, v2
@@ -45,9 +47,9 @@
 
     const-wide/16 v2, 0x3e8
 
-    cmp-long v0, v0, v2
+    cmp-long v2, v0, v2
 
-    if-gez v0, :cond_11
+    if-gez v2, :cond_11
 
     goto :goto_15
 
@@ -56,14 +58,14 @@
     iput-wide p1, p0, Lcom/android/server/notification/AlertRateLimiter;->mLastNotificationMillis:J
 
     .line 33
-    const/4 p1, 0x0
+    const/4 v2, 0x0
 
-    return p1
+    return v2
 
     .line 30
     :cond_15
     :goto_15
-    const/4 p1, 0x1
+    const/4 v2, 0x1
 
-    return p1
+    return v2
 .end method

@@ -23,8 +23,9 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/am/ActivityManagerShellCommand$MyActivityController;Ljava/io/InputStreamReader;)V
     .registers 3
+    .param p1, "this$0"  # Lcom/android/server/am/ActivityManagerShellCommand$MyActivityController;
 
-    .line 1246
+    .line 1292
     iput-object p1, p0, Lcom/android/server/am/ActivityManagerShellCommand$MyActivityController$1;->this$0:Lcom/android/server/am/ActivityManagerShellCommand$MyActivityController;
 
     iput-object p2, p0, Lcom/android/server/am/ActivityManagerShellCommand$MyActivityController$1;->val$converter:Ljava/io/InputStreamReader;
@@ -39,23 +40,25 @@
 .method public run()V
     .registers 7
 
-    .line 1249
+    .line 1295
     new-instance v0, Ljava/io/BufferedReader;
 
     iget-object v1, p0, Lcom/android/server/am/ActivityManagerShellCommand$MyActivityController$1;->val$converter:Ljava/io/InputStreamReader;
 
     invoke-direct {v0, v1}, Ljava/io/BufferedReader;-><init>(Ljava/io/Reader;)V
 
-    .line 1251
+    .line 1297
+    .local v0, "in":Ljava/io/BufferedReader;
     const/4 v1, 0x0
 
-    .line 1253
+    .line 1299
+    .local v1, "count":I
     :goto_8
     iget-object v2, p0, Lcom/android/server/am/ActivityManagerShellCommand$MyActivityController$1;->this$0:Lcom/android/server/am/ActivityManagerShellCommand$MyActivityController;
 
     monitor-enter v2
 
-    .line 1254
+    .line 1300
     :try_start_b
     iget-object v3, p0, Lcom/android/server/am/ActivityManagerShellCommand$MyActivityController$1;->this$0:Lcom/android/server/am/ActivityManagerShellCommand$MyActivityController;
 
@@ -63,48 +66,49 @@
 
     if-nez v3, :cond_13
 
-    .line 1255
+    .line 1301
     monitor-exit v2
 
     return-void
 
-    .line 1257
+    .line 1303
     :cond_13
     const/4 v3, 0x2
 
     if-ne v1, v3, :cond_20
 
-    .line 1258
+    .line 1304
     iget-object v3, p0, Lcom/android/server/am/ActivityManagerShellCommand$MyActivityController$1;->this$0:Lcom/android/server/am/ActivityManagerShellCommand$MyActivityController;
 
     const/4 v4, 0x1
 
     iput-boolean v4, v3, Lcom/android/server/am/ActivityManagerShellCommand$MyActivityController;->mGotGdbPrint:Z
 
-    .line 1259
+    .line 1305
     iget-object v3, p0, Lcom/android/server/am/ActivityManagerShellCommand$MyActivityController$1;->this$0:Lcom/android/server/am/ActivityManagerShellCommand$MyActivityController;
 
     invoke-virtual {v3}, Ljava/lang/Object;->notifyAll()V
 
-    .line 1261
+    .line 1307
     :cond_20
     monitor-exit v2
     :try_end_21
     .catchall {:try_start_b .. :try_end_21} :catchall_4c
 
-    .line 1263
+    .line 1309
     :try_start_21
     invoke-virtual {v0}, Ljava/io/BufferedReader;->readLine()Ljava/lang/String;
 
     move-result-object v2
 
-    .line 1264
+    .line 1310
+    .local v2, "line":Ljava/lang/String;
     if-nez v2, :cond_28
 
-    .line 1265
+    .line 1311
     return-void
 
-    .line 1267
+    .line 1313
     :cond_28
     iget-object v3, p0, Lcom/android/server/am/ActivityManagerShellCommand$MyActivityController$1;->this$0:Lcom/android/server/am/ActivityManagerShellCommand$MyActivityController;
 
@@ -122,40 +126,43 @@
 
     invoke-virtual {v4}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v2
+    move-result-object v4
 
-    invoke-virtual {v3, v2}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {v3, v4}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
-    .line 1268
-    iget-object v2, p0, Lcom/android/server/am/ActivityManagerShellCommand$MyActivityController$1;->this$0:Lcom/android/server/am/ActivityManagerShellCommand$MyActivityController;
+    .line 1314
+    iget-object v3, p0, Lcom/android/server/am/ActivityManagerShellCommand$MyActivityController$1;->this$0:Lcom/android/server/am/ActivityManagerShellCommand$MyActivityController;
 
-    iget-object v2, v2, Lcom/android/server/am/ActivityManagerShellCommand$MyActivityController;->mPw:Ljava/io/PrintWriter;
+    iget-object v3, v3, Lcom/android/server/am/ActivityManagerShellCommand$MyActivityController;->mPw:Ljava/io/PrintWriter;
 
-    invoke-virtual {v2}, Ljava/io/PrintWriter;->flush()V
+    invoke-virtual {v3}, Ljava/io/PrintWriter;->flush()V
     :try_end_47
     .catch Ljava/io/IOException; {:try_start_21 .. :try_end_47} :catch_4a
 
-    .line 1269
+    .line 1315
     add-int/lit8 v1, v1, 0x1
 
-    .line 1272
+    .line 1318
     goto :goto_8
 
-    .line 1270
+    .line 1316
+    .end local v2  # "line":Ljava/lang/String;
     :catch_4a
-    move-exception v0
+    move-exception v2
 
-    .line 1271
+    .line 1317
+    .local v2, "e":Ljava/io/IOException;
     return-void
 
-    .line 1261
+    .line 1307
+    .end local v2  # "e":Ljava/io/IOException;
     :catchall_4c
-    move-exception v0
+    move-exception v3
 
     :try_start_4d
     monitor-exit v2
     :try_end_4e
     .catchall {:try_start_4d .. :try_end_4e} :catchall_4c
 
-    throw v0
+    throw v3
 .end method

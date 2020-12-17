@@ -28,6 +28,7 @@
 # direct methods
 .method constructor <init>(Landroid/os/IBinder;)V
     .registers 2
+    .param p1, "remote"  # Landroid/os/IBinder;
 
     .line 398
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -52,6 +53,7 @@
 
 .method public beginGsiInstall(Landroid/gsi/GsiInstallParams;)I
     .registers 7
+    .param p1, "params"  # Landroid/gsi/GsiInstallParams;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -64,11 +66,13 @@
     move-result-object v0
 
     .line 821
+    .local v0, "_data":Landroid/os/Parcel;
     invoke-static {}, Landroid/os/Parcel;->obtain()Landroid/os/Parcel;
 
     move-result-object v1
 
     .line 824
+    .local v1, "_reply":Landroid/os/Parcel;
     :try_start_8
     const-string v2, "android.gsi.IGsiService"
 
@@ -104,24 +108,25 @@
     move-result v2
 
     .line 833
+    .local v2, "_status":Z
     if-nez v2, :cond_3a
 
     invoke-static {}, Landroid/gsi/IGsiService$Stub;->getDefaultImpl()Landroid/gsi/IGsiService;
 
-    move-result-object v2
+    move-result-object v3
 
-    if-eqz v2, :cond_3a
+    if-eqz v3, :cond_3a
 
     .line 834
     invoke-static {}, Landroid/gsi/IGsiService$Stub;->getDefaultImpl()Landroid/gsi/IGsiService;
 
-    move-result-object v2
+    move-result-object v3
 
-    invoke-interface {v2, p1}, Landroid/gsi/IGsiService;->beginGsiInstall(Landroid/gsi/GsiInstallParams;)I
+    invoke-interface {v3, p1}, Landroid/gsi/IGsiService;->beginGsiInstall(Landroid/gsi/GsiInstallParams;)I
 
-    move-result p1
+    move-result v3
     :try_end_33
-    .catchall {:try_start_8 .. :try_end_33} :catchall_49
+    .catchall {:try_start_8 .. :try_end_33} :catchall_4a
 
     .line 840
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
@@ -130,7 +135,7 @@
     invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
 
     .line 834
-    return p1
+    return v3
 
     .line 836
     :cond_3a
@@ -140,11 +145,14 @@
     .line 837
     invoke-virtual {v1}, Landroid/os/Parcel;->readInt()I
 
-    move-result p1
+    move-result v3
     :try_end_41
-    .catchall {:try_start_3a .. :try_end_41} :catchall_49
+    .catchall {:try_start_3a .. :try_end_41} :catchall_4a
+
+    move v2, v3
 
     .line 840
+    .local v2, "_result":I
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
 
     .line 841
@@ -154,18 +162,19 @@
     nop
 
     .line 843
-    return p1
+    return v2
 
     .line 840
-    :catchall_49
-    move-exception p1
+    .end local v2  # "_result":I
+    :catchall_4a
+    move-exception v2
 
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
 
     .line 841
     invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
 
-    throw p1
+    throw v2
 .end method
 
 .method public cancelGsiInstall()Z
@@ -182,11 +191,13 @@
     move-result-object v0
 
     .line 598
+    .local v0, "_data":Landroid/os/Parcel;
     invoke-static {}, Landroid/os/Parcel;->obtain()Landroid/os/Parcel;
 
     move-result-object v1
 
     .line 601
+    .local v1, "_reply":Landroid/os/Parcel;
     :try_start_8
     const-string v2, "android.gsi.IGsiService"
 
@@ -204,24 +215,25 @@
     move-result v2
 
     .line 603
+    .local v2, "_status":Z
     if-nez v2, :cond_2c
 
     invoke-static {}, Landroid/gsi/IGsiService$Stub;->getDefaultImpl()Landroid/gsi/IGsiService;
 
-    move-result-object v2
+    move-result-object v3
 
-    if-eqz v2, :cond_2c
+    if-eqz v3, :cond_2c
 
     .line 604
     invoke-static {}, Landroid/gsi/IGsiService$Stub;->getDefaultImpl()Landroid/gsi/IGsiService;
 
-    move-result-object v2
+    move-result-object v3
 
-    invoke-interface {v2}, Landroid/gsi/IGsiService;->cancelGsiInstall()Z
+    invoke-interface {v3}, Landroid/gsi/IGsiService;->cancelGsiInstall()Z
 
-    move-result v2
+    move-result v3
     :try_end_25
-    .catchall {:try_start_8 .. :try_end_25} :catchall_3e
+    .catchall {:try_start_8 .. :try_end_25} :catchall_3f
 
     .line 610
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
@@ -230,7 +242,7 @@
     invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
 
     .line 604
-    return v2
+    return v3
 
     .line 606
     :cond_2c
@@ -240,16 +252,19 @@
     .line 607
     invoke-virtual {v1}, Landroid/os/Parcel;->readInt()I
 
-    move-result v2
+    move-result v3
     :try_end_33
-    .catchall {:try_start_2c .. :try_end_33} :catchall_3e
+    .catchall {:try_start_2c .. :try_end_33} :catchall_3f
 
-    if-eqz v2, :cond_36
+    if-eqz v3, :cond_36
 
     const/4 v4, 0x1
 
-    .line 610
     :cond_36
+    move v2, v4
+
+    .line 610
+    .local v2, "_result":Z
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
 
     .line 611
@@ -259,10 +274,11 @@
     nop
 
     .line 613
-    return v4
+    return v2
 
     .line 610
-    :catchall_3e
+    .end local v2  # "_result":Z
+    :catchall_3f
     move-exception v2
 
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
@@ -275,6 +291,7 @@
 
 .method public commitGsiChunkFromMemory([B)Z
     .registers 7
+    .param p1, "bytes"  # [B
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -287,11 +304,13 @@
     move-result-object v0
 
     .line 522
+    .local v0, "_data":Landroid/os/Parcel;
     invoke-static {}, Landroid/os/Parcel;->obtain()Landroid/os/Parcel;
 
     move-result-object v1
 
     .line 525
+    .local v1, "_reply":Landroid/os/Parcel;
     :try_start_8
     const-string v2, "android.gsi.IGsiService"
 
@@ -312,24 +331,25 @@
     move-result v2
 
     .line 528
+    .local v2, "_status":Z
     if-nez v2, :cond_2f
 
     invoke-static {}, Landroid/gsi/IGsiService$Stub;->getDefaultImpl()Landroid/gsi/IGsiService;
 
-    move-result-object v2
+    move-result-object v3
 
-    if-eqz v2, :cond_2f
+    if-eqz v3, :cond_2f
 
     .line 529
     invoke-static {}, Landroid/gsi/IGsiService$Stub;->getDefaultImpl()Landroid/gsi/IGsiService;
 
-    move-result-object v2
+    move-result-object v3
 
-    invoke-interface {v2, p1}, Landroid/gsi/IGsiService;->commitGsiChunkFromMemory([B)Z
+    invoke-interface {v3, p1}, Landroid/gsi/IGsiService;->commitGsiChunkFromMemory([B)Z
 
-    move-result p1
+    move-result v3
     :try_end_28
-    .catchall {:try_start_8 .. :try_end_28} :catchall_41
+    .catchall {:try_start_8 .. :try_end_28} :catchall_42
 
     .line 535
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
@@ -338,7 +358,7 @@
     invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
 
     .line 529
-    return p1
+    return v3
 
     .line 531
     :cond_2f
@@ -348,16 +368,19 @@
     .line 532
     invoke-virtual {v1}, Landroid/os/Parcel;->readInt()I
 
-    move-result p1
+    move-result v3
     :try_end_36
-    .catchall {:try_start_2f .. :try_end_36} :catchall_41
+    .catchall {:try_start_2f .. :try_end_36} :catchall_42
 
-    if-eqz p1, :cond_39
+    if-eqz v3, :cond_39
 
     const/4 v4, 0x1
 
-    .line 535
     :cond_39
+    move v2, v4
+
+    .line 535
+    .local v2, "_result":Z
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
 
     .line 536
@@ -367,22 +390,25 @@
     nop
 
     .line 538
-    return v4
+    return v2
 
     .line 535
-    :catchall_41
-    move-exception p1
+    .end local v2  # "_result":Z
+    :catchall_42
+    move-exception v2
 
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
 
     .line 536
     invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
 
-    throw p1
+    throw v2
 .end method
 
 .method public commitGsiChunkFromStream(Landroid/os/ParcelFileDescriptor;J)Z
     .registers 10
+    .param p1, "stream"  # Landroid/os/ParcelFileDescriptor;
+    .param p2, "bytes"  # J
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -395,11 +421,13 @@
     move-result-object v0
 
     .line 459
+    .local v0, "_data":Landroid/os/Parcel;
     invoke-static {}, Landroid/os/Parcel;->obtain()Landroid/os/Parcel;
 
     move-result-object v1
 
     .line 462
+    .local v1, "_reply":Landroid/os/Parcel;
     :try_start_8
     const-string v2, "android.gsi.IGsiService"
 
@@ -438,13 +466,14 @@
     move-result v4
 
     .line 472
+    .local v4, "_status":Z
     if-nez v4, :cond_3c
 
     invoke-static {}, Landroid/gsi/IGsiService$Stub;->getDefaultImpl()Landroid/gsi/IGsiService;
 
-    move-result-object v4
+    move-result-object v5
 
-    if-eqz v4, :cond_3c
+    if-eqz v5, :cond_3c
 
     .line 473
     invoke-static {}, Landroid/gsi/IGsiService$Stub;->getDefaultImpl()Landroid/gsi/IGsiService;
@@ -453,7 +482,7 @@
 
     invoke-interface {v2, p1, p2, p3}, Landroid/gsi/IGsiService;->commitGsiChunkFromStream(Landroid/os/ParcelFileDescriptor;J)Z
 
-    move-result p1
+    move-result v2
     :try_end_35
     .catchall {:try_start_8 .. :try_end_35} :catchall_4f
 
@@ -464,7 +493,7 @@
     invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
 
     .line 473
-    return p1
+    return v2
 
     .line 475
     :cond_3c
@@ -474,11 +503,11 @@
     .line 476
     invoke-virtual {v1}, Landroid/os/Parcel;->readInt()I
 
-    move-result p1
+    move-result v5
     :try_end_43
     .catchall {:try_start_3c .. :try_end_43} :catchall_4f
 
-    if-eqz p1, :cond_46
+    if-eqz v5, :cond_46
 
     goto :goto_47
 
@@ -486,6 +515,8 @@
     move v2, v3
 
     .line 479
+    .end local v4  # "_status":Z
+    .local v2, "_result":Z
     :goto_47
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
 
@@ -499,15 +530,16 @@
     return v2
 
     .line 479
+    .end local v2  # "_result":Z
     :catchall_4f
-    move-exception p1
+    move-exception v2
 
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
 
     .line 480
     invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
 
-    throw p1
+    throw v2
 .end method
 
 .method public disableGsiInstall()Z
@@ -524,11 +556,13 @@
     move-result-object v0
 
     .line 672
+    .local v0, "_data":Landroid/os/Parcel;
     invoke-static {}, Landroid/os/Parcel;->obtain()Landroid/os/Parcel;
 
     move-result-object v1
 
     .line 675
+    .local v1, "_reply":Landroid/os/Parcel;
     :try_start_8
     const-string v2, "android.gsi.IGsiService"
 
@@ -546,24 +580,25 @@
     move-result v2
 
     .line 677
+    .local v2, "_status":Z
     if-nez v2, :cond_2d
 
     invoke-static {}, Landroid/gsi/IGsiService$Stub;->getDefaultImpl()Landroid/gsi/IGsiService;
 
-    move-result-object v2
+    move-result-object v3
 
-    if-eqz v2, :cond_2d
+    if-eqz v3, :cond_2d
 
     .line 678
     invoke-static {}, Landroid/gsi/IGsiService$Stub;->getDefaultImpl()Landroid/gsi/IGsiService;
 
-    move-result-object v2
+    move-result-object v3
 
-    invoke-interface {v2}, Landroid/gsi/IGsiService;->disableGsiInstall()Z
+    invoke-interface {v3}, Landroid/gsi/IGsiService;->disableGsiInstall()Z
 
-    move-result v2
+    move-result v3
     :try_end_26
-    .catchall {:try_start_8 .. :try_end_26} :catchall_3f
+    .catchall {:try_start_8 .. :try_end_26} :catchall_40
 
     .line 684
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
@@ -572,7 +607,7 @@
     invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
 
     .line 678
-    return v2
+    return v3
 
     .line 680
     :cond_2d
@@ -582,16 +617,19 @@
     .line 681
     invoke-virtual {v1}, Landroid/os/Parcel;->readInt()I
 
-    move-result v2
+    move-result v3
     :try_end_34
-    .catchall {:try_start_2d .. :try_end_34} :catchall_3f
+    .catchall {:try_start_2d .. :try_end_34} :catchall_40
 
-    if-eqz v2, :cond_37
+    if-eqz v3, :cond_37
 
     const/4 v4, 0x1
 
-    .line 684
     :cond_37
+    move v2, v4
+
+    .line 684
+    .local v2, "_result":Z
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
 
     .line 685
@@ -601,10 +639,11 @@
     nop
 
     .line 687
-    return v4
+    return v2
 
     .line 684
-    :catchall_3f
+    .end local v2  # "_result":Z
+    :catchall_40
     move-exception v2
 
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
@@ -629,11 +668,13 @@
     move-result-object v0
 
     .line 769
+    .local v0, "_data":Landroid/os/Parcel;
     invoke-static {}, Landroid/os/Parcel;->obtain()Landroid/os/Parcel;
 
     move-result-object v1
 
     .line 772
+    .local v1, "_reply":Landroid/os/Parcel;
     :try_start_8
     const-string v2, "android.gsi.IGsiService"
 
@@ -651,24 +692,25 @@
     move-result v2
 
     .line 774
+    .local v2, "_status":Z
     if-nez v2, :cond_2d
 
     invoke-static {}, Landroid/gsi/IGsiService$Stub;->getDefaultImpl()Landroid/gsi/IGsiService;
 
-    move-result-object v2
+    move-result-object v3
 
-    if-eqz v2, :cond_2d
+    if-eqz v3, :cond_2d
 
     .line 775
     invoke-static {}, Landroid/gsi/IGsiService$Stub;->getDefaultImpl()Landroid/gsi/IGsiService;
 
-    move-result-object v2
+    move-result-object v3
 
-    invoke-interface {v2}, Landroid/gsi/IGsiService;->getGsiBootStatus()I
+    invoke-interface {v3}, Landroid/gsi/IGsiService;->getGsiBootStatus()I
 
-    move-result v2
+    move-result v3
     :try_end_26
-    .catchall {:try_start_8 .. :try_end_26} :catchall_3c
+    .catchall {:try_start_8 .. :try_end_26} :catchall_3d
 
     .line 781
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
@@ -677,7 +719,7 @@
     invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
 
     .line 775
-    return v2
+    return v3
 
     .line 777
     :cond_2d
@@ -687,11 +729,14 @@
     .line 778
     invoke-virtual {v1}, Landroid/os/Parcel;->readInt()I
 
-    move-result v2
+    move-result v3
     :try_end_34
-    .catchall {:try_start_2d .. :try_end_34} :catchall_3c
+    .catchall {:try_start_2d .. :try_end_34} :catchall_3d
+
+    move v2, v3
 
     .line 781
+    .local v2, "_result":I
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
 
     .line 782
@@ -704,7 +749,8 @@
     return v2
 
     .line 781
-    :catchall_3c
+    .end local v2  # "_result":I
+    :catchall_3d
     move-exception v2
 
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
@@ -729,11 +775,13 @@
     move-result-object v0
 
     .line 491
+    .local v0, "_data":Landroid/os/Parcel;
     invoke-static {}, Landroid/os/Parcel;->obtain()Landroid/os/Parcel;
 
     move-result-object v1
 
     .line 494
+    .local v1, "_reply":Landroid/os/Parcel;
     :try_start_8
     const-string v2, "android.gsi.IGsiService"
 
@@ -751,22 +799,23 @@
     move-result v2
 
     .line 496
+    .local v2, "_status":Z
     if-nez v2, :cond_2c
 
     invoke-static {}, Landroid/gsi/IGsiService$Stub;->getDefaultImpl()Landroid/gsi/IGsiService;
 
-    move-result-object v2
+    move-result-object v3
 
-    if-eqz v2, :cond_2c
+    if-eqz v3, :cond_2c
 
     .line 497
     invoke-static {}, Landroid/gsi/IGsiService$Stub;->getDefaultImpl()Landroid/gsi/IGsiService;
 
-    move-result-object v2
+    move-result-object v3
 
-    invoke-interface {v2}, Landroid/gsi/IGsiService;->getInstallProgress()Landroid/gsi/GsiProgress;
+    invoke-interface {v3}, Landroid/gsi/IGsiService;->getInstallProgress()Landroid/gsi/GsiProgress;
 
-    move-result-object v2
+    move-result-object v3
     :try_end_25
     .catchall {:try_start_8 .. :try_end_25} :catchall_47
 
@@ -777,7 +826,7 @@
     invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
 
     .line 497
-    return-object v2
+    return-object v3
 
     .line 499
     :cond_2c
@@ -787,28 +836,32 @@
     .line 500
     invoke-virtual {v1}, Landroid/os/Parcel;->readInt()I
 
-    move-result v2
+    move-result v3
 
-    if-eqz v2, :cond_3e
+    if-eqz v3, :cond_3e
 
     .line 501
-    sget-object v2, Landroid/gsi/GsiProgress;->CREATOR:Landroid/os/Parcelable$Creator;
+    sget-object v3, Landroid/gsi/GsiProgress;->CREATOR:Landroid/os/Parcelable$Creator;
 
-    invoke-interface {v2, v1}, Landroid/os/Parcelable$Creator;->createFromParcel(Landroid/os/Parcel;)Ljava/lang/Object;
+    invoke-interface {v3, v1}, Landroid/os/Parcelable$Creator;->createFromParcel(Landroid/os/Parcel;)Ljava/lang/Object;
 
-    move-result-object v2
+    move-result-object v3
 
-    check-cast v2, Landroid/gsi/GsiProgress;
+    check-cast v3, Landroid/gsi/GsiProgress;
     :try_end_3d
     .catchall {:try_start_2c .. :try_end_3d} :catchall_47
 
+    .local v3, "_result":Landroid/gsi/GsiProgress;
     goto :goto_3f
 
     .line 504
+    .end local v3  # "_result":Landroid/gsi/GsiProgress;
     :cond_3e
-    const/4 v2, 0x0
+    const/4 v3, 0x0
 
     .line 508
+    .end local v2  # "_status":Z
+    .restart local v3  # "_result":Landroid/gsi/GsiProgress;
     :goto_3f
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
 
@@ -819,9 +872,10 @@
     nop
 
     .line 511
-    return-object v2
+    return-object v3
 
     .line 508
+    .end local v3  # "_result":Landroid/gsi/GsiProgress;
     :catchall_47
     move-exception v2
 
@@ -847,11 +901,13 @@
     move-result-object v0
 
     .line 793
+    .local v0, "_data":Landroid/os/Parcel;
     invoke-static {}, Landroid/os/Parcel;->obtain()Landroid/os/Parcel;
 
     move-result-object v1
 
     .line 796
+    .local v1, "_reply":Landroid/os/Parcel;
     :try_start_8
     const-string v2, "android.gsi.IGsiService"
 
@@ -869,24 +925,25 @@
     move-result v2
 
     .line 798
+    .local v2, "_status":Z
     if-nez v2, :cond_2d
 
     invoke-static {}, Landroid/gsi/IGsiService$Stub;->getDefaultImpl()Landroid/gsi/IGsiService;
 
-    move-result-object v2
+    move-result-object v3
 
-    if-eqz v2, :cond_2d
+    if-eqz v3, :cond_2d
 
     .line 799
     invoke-static {}, Landroid/gsi/IGsiService$Stub;->getDefaultImpl()Landroid/gsi/IGsiService;
 
-    move-result-object v2
+    move-result-object v3
 
-    invoke-interface {v2}, Landroid/gsi/IGsiService;->getInstalledGsiImageDir()Ljava/lang/String;
+    invoke-interface {v3}, Landroid/gsi/IGsiService;->getInstalledGsiImageDir()Ljava/lang/String;
 
-    move-result-object v2
+    move-result-object v3
     :try_end_26
-    .catchall {:try_start_8 .. :try_end_26} :catchall_3c
+    .catchall {:try_start_8 .. :try_end_26} :catchall_3d
 
     .line 805
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
@@ -895,7 +952,7 @@
     invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
 
     .line 799
-    return-object v2
+    return-object v3
 
     .line 801
     :cond_2d
@@ -905,11 +962,14 @@
     .line 802
     invoke-virtual {v1}, Landroid/os/Parcel;->readString()Ljava/lang/String;
 
-    move-result-object v2
+    move-result-object v3
     :try_end_34
-    .catchall {:try_start_2d .. :try_end_34} :catchall_3c
+    .catchall {:try_start_2d .. :try_end_34} :catchall_3d
+
+    move-object v2, v3
 
     .line 805
+    .local v2, "_result":Ljava/lang/String;
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
 
     .line 806
@@ -922,7 +982,8 @@
     return-object v2
 
     .line 805
-    :catchall_3c
+    .end local v2  # "_result":Ljava/lang/String;
+    :catchall_3d
     move-exception v2
 
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
@@ -956,11 +1017,13 @@
     move-result-object v0
 
     .line 696
+    .local v0, "_data":Landroid/os/Parcel;
     invoke-static {}, Landroid/os/Parcel;->obtain()Landroid/os/Parcel;
 
     move-result-object v1
 
     .line 699
+    .local v1, "_reply":Landroid/os/Parcel;
     :try_start_8
     const-string v2, "android.gsi.IGsiService"
 
@@ -978,24 +1041,25 @@
     move-result v2
 
     .line 701
+    .local v2, "_status":Z
     if-nez v2, :cond_2d
 
     invoke-static {}, Landroid/gsi/IGsiService$Stub;->getDefaultImpl()Landroid/gsi/IGsiService;
 
-    move-result-object v2
+    move-result-object v3
 
-    if-eqz v2, :cond_2d
+    if-eqz v3, :cond_2d
 
     .line 702
     invoke-static {}, Landroid/gsi/IGsiService$Stub;->getDefaultImpl()Landroid/gsi/IGsiService;
 
-    move-result-object v2
+    move-result-object v3
 
-    invoke-interface {v2}, Landroid/gsi/IGsiService;->getUserdataImageSize()J
+    invoke-interface {v3}, Landroid/gsi/IGsiService;->getUserdataImageSize()J
 
-    move-result-wide v2
+    move-result-wide v3
     :try_end_26
-    .catchall {:try_start_8 .. :try_end_26} :catchall_3c
+    .catchall {:try_start_8 .. :try_end_26} :catchall_3d
 
     .line 708
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
@@ -1004,7 +1068,7 @@
     invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
 
     .line 702
-    return-wide v2
+    return-wide v3
 
     .line 704
     :cond_2d
@@ -1014,11 +1078,14 @@
     .line 705
     invoke-virtual {v1}, Landroid/os/Parcel;->readLong()J
 
-    move-result-wide v2
+    move-result-wide v3
     :try_end_34
-    .catchall {:try_start_2d .. :try_end_34} :catchall_3c
+    .catchall {:try_start_2d .. :try_end_34} :catchall_3d
+
+    move-wide v2, v3
 
     .line 708
+    .local v2, "_result":J
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
 
     .line 709
@@ -1031,7 +1098,8 @@
     return-wide v2
 
     .line 708
-    :catchall_3c
+    .end local v2  # "_result":J
+    :catchall_3d
     move-exception v2
 
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
@@ -1056,11 +1124,13 @@
     move-result-object v0
 
     .line 575
+    .local v0, "_data":Landroid/os/Parcel;
     invoke-static {}, Landroid/os/Parcel;->obtain()Landroid/os/Parcel;
 
     move-result-object v1
 
     .line 578
+    .local v1, "_reply":Landroid/os/Parcel;
     :try_start_8
     const-string v2, "android.gsi.IGsiService"
 
@@ -1078,24 +1148,25 @@
     move-result v2
 
     .line 580
+    .local v2, "_status":Z
     if-nez v2, :cond_2c
 
     invoke-static {}, Landroid/gsi/IGsiService$Stub;->getDefaultImpl()Landroid/gsi/IGsiService;
 
-    move-result-object v2
+    move-result-object v3
 
-    if-eqz v2, :cond_2c
+    if-eqz v3, :cond_2c
 
     .line 581
     invoke-static {}, Landroid/gsi/IGsiService$Stub;->getDefaultImpl()Landroid/gsi/IGsiService;
 
-    move-result-object v2
+    move-result-object v3
 
-    invoke-interface {v2}, Landroid/gsi/IGsiService;->isGsiEnabled()Z
+    invoke-interface {v3}, Landroid/gsi/IGsiService;->isGsiEnabled()Z
 
-    move-result v2
+    move-result v3
     :try_end_25
-    .catchall {:try_start_8 .. :try_end_25} :catchall_3e
+    .catchall {:try_start_8 .. :try_end_25} :catchall_3f
 
     .line 587
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
@@ -1104,7 +1175,7 @@
     invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
 
     .line 581
-    return v2
+    return v3
 
     .line 583
     :cond_2c
@@ -1114,16 +1185,19 @@
     .line 584
     invoke-virtual {v1}, Landroid/os/Parcel;->readInt()I
 
-    move-result v2
+    move-result v3
     :try_end_33
-    .catchall {:try_start_2c .. :try_end_33} :catchall_3e
+    .catchall {:try_start_2c .. :try_end_33} :catchall_3f
 
-    if-eqz v2, :cond_36
+    if-eqz v3, :cond_36
 
     const/4 v4, 0x1
 
-    .line 587
     :cond_36
+    move v2, v4
+
+    .line 587
+    .local v2, "_result":Z
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
 
     .line 588
@@ -1133,10 +1207,11 @@
     nop
 
     .line 590
-    return v4
+    return v2
 
     .line 587
-    :catchall_3e
+    .end local v2  # "_result":Z
+    :catchall_3f
     move-exception v2
 
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
@@ -1161,11 +1236,13 @@
     move-result-object v0
 
     .line 621
+    .local v0, "_data":Landroid/os/Parcel;
     invoke-static {}, Landroid/os/Parcel;->obtain()Landroid/os/Parcel;
 
     move-result-object v1
 
     .line 624
+    .local v1, "_reply":Landroid/os/Parcel;
     :try_start_8
     const-string v2, "android.gsi.IGsiService"
 
@@ -1183,24 +1260,25 @@
     move-result v2
 
     .line 626
+    .local v2, "_status":Z
     if-nez v2, :cond_2d
 
     invoke-static {}, Landroid/gsi/IGsiService$Stub;->getDefaultImpl()Landroid/gsi/IGsiService;
 
-    move-result-object v2
+    move-result-object v3
 
-    if-eqz v2, :cond_2d
+    if-eqz v3, :cond_2d
 
     .line 627
     invoke-static {}, Landroid/gsi/IGsiService$Stub;->getDefaultImpl()Landroid/gsi/IGsiService;
 
-    move-result-object v2
+    move-result-object v3
 
-    invoke-interface {v2}, Landroid/gsi/IGsiService;->isGsiInstallInProgress()Z
+    invoke-interface {v3}, Landroid/gsi/IGsiService;->isGsiInstallInProgress()Z
 
-    move-result v2
+    move-result v3
     :try_end_26
-    .catchall {:try_start_8 .. :try_end_26} :catchall_3f
+    .catchall {:try_start_8 .. :try_end_26} :catchall_40
 
     .line 633
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
@@ -1209,7 +1287,7 @@
     invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
 
     .line 627
-    return v2
+    return v3
 
     .line 629
     :cond_2d
@@ -1219,16 +1297,19 @@
     .line 630
     invoke-virtual {v1}, Landroid/os/Parcel;->readInt()I
 
-    move-result v2
+    move-result v3
     :try_end_34
-    .catchall {:try_start_2d .. :try_end_34} :catchall_3f
+    .catchall {:try_start_2d .. :try_end_34} :catchall_40
 
-    if-eqz v2, :cond_37
+    if-eqz v3, :cond_37
 
     const/4 v4, 0x1
 
-    .line 633
     :cond_37
+    move v2, v4
+
+    .line 633
+    .local v2, "_result":Z
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
 
     .line 634
@@ -1238,10 +1319,11 @@
     nop
 
     .line 636
-    return v4
+    return v2
 
     .line 633
-    :catchall_3f
+    .end local v2  # "_result":Z
+    :catchall_40
     move-exception v2
 
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
@@ -1266,11 +1348,13 @@
     move-result-object v0
 
     .line 742
+    .local v0, "_data":Landroid/os/Parcel;
     invoke-static {}, Landroid/os/Parcel;->obtain()Landroid/os/Parcel;
 
     move-result-object v1
 
     .line 745
+    .local v1, "_reply":Landroid/os/Parcel;
     :try_start_8
     const-string v2, "android.gsi.IGsiService"
 
@@ -1288,24 +1372,25 @@
     move-result v2
 
     .line 747
+    .local v2, "_status":Z
     if-nez v2, :cond_2d
 
     invoke-static {}, Landroid/gsi/IGsiService$Stub;->getDefaultImpl()Landroid/gsi/IGsiService;
 
-    move-result-object v2
+    move-result-object v3
 
-    if-eqz v2, :cond_2d
+    if-eqz v3, :cond_2d
 
     .line 748
     invoke-static {}, Landroid/gsi/IGsiService$Stub;->getDefaultImpl()Landroid/gsi/IGsiService;
 
-    move-result-object v2
+    move-result-object v3
 
-    invoke-interface {v2}, Landroid/gsi/IGsiService;->isGsiInstalled()Z
+    invoke-interface {v3}, Landroid/gsi/IGsiService;->isGsiInstalled()Z
 
-    move-result v2
+    move-result v3
     :try_end_26
-    .catchall {:try_start_8 .. :try_end_26} :catchall_3f
+    .catchall {:try_start_8 .. :try_end_26} :catchall_40
 
     .line 754
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
@@ -1314,7 +1399,7 @@
     invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
 
     .line 748
-    return v2
+    return v3
 
     .line 750
     :cond_2d
@@ -1324,16 +1409,19 @@
     .line 751
     invoke-virtual {v1}, Landroid/os/Parcel;->readInt()I
 
-    move-result v2
+    move-result v3
     :try_end_34
-    .catchall {:try_start_2d .. :try_end_34} :catchall_3f
+    .catchall {:try_start_2d .. :try_end_34} :catchall_40
 
-    if-eqz v2, :cond_37
+    if-eqz v3, :cond_37
 
     const/4 v4, 0x1
 
-    .line 754
     :cond_37
+    move v2, v4
+
+    .line 754
+    .local v2, "_result":Z
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
 
     .line 755
@@ -1343,10 +1431,11 @@
     nop
 
     .line 757
-    return v4
+    return v2
 
     .line 754
-    :catchall_3f
+    .end local v2  # "_result":Z
+    :catchall_40
     move-exception v2
 
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
@@ -1371,11 +1460,13 @@
     move-result-object v0
 
     .line 719
+    .local v0, "_data":Landroid/os/Parcel;
     invoke-static {}, Landroid/os/Parcel;->obtain()Landroid/os/Parcel;
 
     move-result-object v1
 
     .line 722
+    .local v1, "_reply":Landroid/os/Parcel;
     :try_start_8
     const-string v2, "android.gsi.IGsiService"
 
@@ -1393,24 +1484,25 @@
     move-result v2
 
     .line 724
+    .local v2, "_status":Z
     if-nez v2, :cond_2d
 
     invoke-static {}, Landroid/gsi/IGsiService$Stub;->getDefaultImpl()Landroid/gsi/IGsiService;
 
-    move-result-object v2
+    move-result-object v3
 
-    if-eqz v2, :cond_2d
+    if-eqz v3, :cond_2d
 
     .line 725
     invoke-static {}, Landroid/gsi/IGsiService$Stub;->getDefaultImpl()Landroid/gsi/IGsiService;
 
-    move-result-object v2
+    move-result-object v3
 
-    invoke-interface {v2}, Landroid/gsi/IGsiService;->isGsiRunning()Z
+    invoke-interface {v3}, Landroid/gsi/IGsiService;->isGsiRunning()Z
 
-    move-result v2
+    move-result v3
     :try_end_26
-    .catchall {:try_start_8 .. :try_end_26} :catchall_3f
+    .catchall {:try_start_8 .. :try_end_26} :catchall_40
 
     .line 731
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
@@ -1419,7 +1511,7 @@
     invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
 
     .line 725
-    return v2
+    return v3
 
     .line 727
     :cond_2d
@@ -1429,16 +1521,19 @@
     .line 728
     invoke-virtual {v1}, Landroid/os/Parcel;->readInt()I
 
-    move-result v2
+    move-result v3
     :try_end_34
-    .catchall {:try_start_2d .. :try_end_34} :catchall_3f
+    .catchall {:try_start_2d .. :try_end_34} :catchall_40
 
-    if-eqz v2, :cond_37
+    if-eqz v3, :cond_37
 
     const/4 v4, 0x1
 
-    .line 731
     :cond_37
+    move v2, v4
+
+    .line 731
+    .local v2, "_result":Z
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
 
     .line 732
@@ -1448,10 +1543,11 @@
     nop
 
     .line 734
-    return v4
+    return v2
 
     .line 731
-    :catchall_3f
+    .end local v2  # "_result":Z
+    :catchall_40
     move-exception v2
 
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
@@ -1476,11 +1572,13 @@
     move-result-object v0
 
     .line 648
+    .local v0, "_data":Landroid/os/Parcel;
     invoke-static {}, Landroid/os/Parcel;->obtain()Landroid/os/Parcel;
 
     move-result-object v1
 
     .line 651
+    .local v1, "_reply":Landroid/os/Parcel;
     :try_start_8
     const-string v2, "android.gsi.IGsiService"
 
@@ -1498,24 +1596,25 @@
     move-result v2
 
     .line 653
+    .local v2, "_status":Z
     if-nez v2, :cond_2d
 
     invoke-static {}, Landroid/gsi/IGsiService$Stub;->getDefaultImpl()Landroid/gsi/IGsiService;
 
-    move-result-object v2
+    move-result-object v3
 
-    if-eqz v2, :cond_2d
+    if-eqz v3, :cond_2d
 
     .line 654
     invoke-static {}, Landroid/gsi/IGsiService$Stub;->getDefaultImpl()Landroid/gsi/IGsiService;
 
-    move-result-object v2
+    move-result-object v3
 
-    invoke-interface {v2}, Landroid/gsi/IGsiService;->removeGsiInstall()Z
+    invoke-interface {v3}, Landroid/gsi/IGsiService;->removeGsiInstall()Z
 
-    move-result v2
+    move-result v3
     :try_end_26
-    .catchall {:try_start_8 .. :try_end_26} :catchall_3f
+    .catchall {:try_start_8 .. :try_end_26} :catchall_40
 
     .line 660
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
@@ -1524,7 +1623,7 @@
     invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
 
     .line 654
-    return v2
+    return v3
 
     .line 656
     :cond_2d
@@ -1534,16 +1633,19 @@
     .line 657
     invoke-virtual {v1}, Landroid/os/Parcel;->readInt()I
 
-    move-result v2
+    move-result v3
     :try_end_34
-    .catchall {:try_start_2d .. :try_end_34} :catchall_3f
+    .catchall {:try_start_2d .. :try_end_34} :catchall_40
 
-    if-eqz v2, :cond_37
+    if-eqz v3, :cond_37
 
     const/4 v4, 0x1
 
-    .line 660
     :cond_37
+    move v2, v4
+
+    .line 660
+    .local v2, "_result":Z
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
 
     .line 661
@@ -1553,10 +1655,11 @@
     nop
 
     .line 663
-    return v4
+    return v2
 
     .line 660
-    :catchall_3f
+    .end local v2  # "_result":Z
+    :catchall_40
     move-exception v2
 
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
@@ -1569,6 +1672,7 @@
 
 .method public setGsiBootable(Z)I
     .registers 7
+    .param p1, "oneShot"  # Z
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -1581,11 +1685,13 @@
     move-result-object v0
 
     .line 551
+    .local v0, "_data":Landroid/os/Parcel;
     invoke-static {}, Landroid/os/Parcel;->obtain()Landroid/os/Parcel;
 
     move-result-object v1
 
     .line 554
+    .local v1, "_reply":Landroid/os/Parcel;
     :try_start_8
     const-string v2, "android.gsi.IGsiService"
 
@@ -1616,24 +1722,25 @@
     move-result v2
 
     .line 557
+    .local v2, "_status":Z
     if-nez v2, :cond_34
 
     invoke-static {}, Landroid/gsi/IGsiService$Stub;->getDefaultImpl()Landroid/gsi/IGsiService;
 
-    move-result-object v2
+    move-result-object v3
 
-    if-eqz v2, :cond_34
+    if-eqz v3, :cond_34
 
     .line 558
     invoke-static {}, Landroid/gsi/IGsiService$Stub;->getDefaultImpl()Landroid/gsi/IGsiService;
 
-    move-result-object v2
+    move-result-object v3
 
-    invoke-interface {v2, p1}, Landroid/gsi/IGsiService;->setGsiBootable(Z)I
+    invoke-interface {v3, p1}, Landroid/gsi/IGsiService;->setGsiBootable(Z)I
 
-    move-result p1
+    move-result v3
     :try_end_2d
-    .catchall {:try_start_8 .. :try_end_2d} :catchall_43
+    .catchall {:try_start_8 .. :try_end_2d} :catchall_44
 
     .line 564
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
@@ -1642,7 +1749,7 @@
     invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
 
     .line 558
-    return p1
+    return v3
 
     .line 560
     :cond_34
@@ -1652,11 +1759,14 @@
     .line 561
     invoke-virtual {v1}, Landroid/os/Parcel;->readInt()I
 
-    move-result p1
+    move-result v3
     :try_end_3b
-    .catchall {:try_start_34 .. :try_end_3b} :catchall_43
+    .catchall {:try_start_34 .. :try_end_3b} :catchall_44
+
+    move v2, v3
 
     .line 564
+    .local v2, "_result":I
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
 
     .line 565
@@ -1666,22 +1776,26 @@
     nop
 
     .line 567
-    return p1
+    return v2
 
     .line 564
-    :catchall_43
-    move-exception p1
+    .end local v2  # "_result":I
+    :catchall_44
+    move-exception v2
 
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
 
     .line 565
     invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
 
-    throw p1
+    throw v2
 .end method
 
 .method public startGsiInstall(JJZ)I
-    .registers 15
+    .registers 16
+    .param p1, "gsiSize"  # J
+    .param p3, "userdataSize"  # J
+    .param p5, "wipeUserdata"  # Z
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -1694,11 +1808,13 @@
     move-result-object v0
 
     .line 429
+    .local v0, "_data":Landroid/os/Parcel;
     invoke-static {}, Landroid/os/Parcel;->obtain()Landroid/os/Parcel;
 
     move-result-object v1
 
     .line 432
+    .local v1, "_reply":Landroid/os/Parcel;
     :try_start_8
     const-string v2, "android.gsi.IGsiService"
 
@@ -1735,30 +1851,31 @@
     move-result v2
 
     .line 437
+    .local v2, "_status":Z
     if-nez v2, :cond_3d
 
     invoke-static {}, Landroid/gsi/IGsiService$Stub;->getDefaultImpl()Landroid/gsi/IGsiService;
 
-    move-result-object v2
+    move-result-object v3
 
-    if-eqz v2, :cond_3d
+    if-eqz v3, :cond_3d
 
     .line 438
     invoke-static {}, Landroid/gsi/IGsiService$Stub;->getDefaultImpl()Landroid/gsi/IGsiService;
 
-    move-result-object v3
+    move-result-object v4
 
-    move-wide v4, p1
+    move-wide v5, p1
 
-    move-wide v6, p3
+    move-wide v7, p3
 
-    move v8, p5
+    move v9, p5
 
-    invoke-interface/range {v3 .. v8}, Landroid/gsi/IGsiService;->startGsiInstall(JJZ)I
+    invoke-interface/range {v4 .. v9}, Landroid/gsi/IGsiService;->startGsiInstall(JJZ)I
 
-    move-result p1
+    move-result v3
     :try_end_36
-    .catchall {:try_start_8 .. :try_end_36} :catchall_4c
+    .catchall {:try_start_8 .. :try_end_36} :catchall_4d
 
     .line 444
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
@@ -1767,7 +1884,7 @@
     invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
 
     .line 438
-    return p1
+    return v3
 
     .line 440
     :cond_3d
@@ -1777,11 +1894,14 @@
     .line 441
     invoke-virtual {v1}, Landroid/os/Parcel;->readInt()I
 
-    move-result p1
+    move-result v3
     :try_end_44
-    .catchall {:try_start_3d .. :try_end_44} :catchall_4c
+    .catchall {:try_start_3d .. :try_end_44} :catchall_4d
+
+    move v2, v3
 
     .line 444
+    .local v2, "_result":I
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
 
     .line 445
@@ -1791,18 +1911,19 @@
     nop
 
     .line 447
-    return p1
+    return v2
 
     .line 444
-    :catchall_4c
-    move-exception p1
+    .end local v2  # "_result":I
+    :catchall_4d
+    move-exception v2
 
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
 
     .line 445
     invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
 
-    throw p1
+    throw v2
 .end method
 
 .method public wipeGsiUserdata()I
@@ -1819,11 +1940,13 @@
     move-result-object v0
 
     .line 855
+    .local v0, "_data":Landroid/os/Parcel;
     invoke-static {}, Landroid/os/Parcel;->obtain()Landroid/os/Parcel;
 
     move-result-object v1
 
     .line 858
+    .local v1, "_reply":Landroid/os/Parcel;
     :try_start_8
     const-string v2, "android.gsi.IGsiService"
 
@@ -1841,24 +1964,25 @@
     move-result v2
 
     .line 860
+    .local v2, "_status":Z
     if-nez v2, :cond_2d
 
     invoke-static {}, Landroid/gsi/IGsiService$Stub;->getDefaultImpl()Landroid/gsi/IGsiService;
 
-    move-result-object v2
+    move-result-object v3
 
-    if-eqz v2, :cond_2d
+    if-eqz v3, :cond_2d
 
     .line 861
     invoke-static {}, Landroid/gsi/IGsiService$Stub;->getDefaultImpl()Landroid/gsi/IGsiService;
 
-    move-result-object v2
+    move-result-object v3
 
-    invoke-interface {v2}, Landroid/gsi/IGsiService;->wipeGsiUserdata()I
+    invoke-interface {v3}, Landroid/gsi/IGsiService;->wipeGsiUserdata()I
 
-    move-result v2
+    move-result v3
     :try_end_26
-    .catchall {:try_start_8 .. :try_end_26} :catchall_3c
+    .catchall {:try_start_8 .. :try_end_26} :catchall_3d
 
     .line 867
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
@@ -1867,7 +1991,7 @@
     invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
 
     .line 861
-    return v2
+    return v3
 
     .line 863
     :cond_2d
@@ -1877,11 +2001,14 @@
     .line 864
     invoke-virtual {v1}, Landroid/os/Parcel;->readInt()I
 
-    move-result v2
+    move-result v3
     :try_end_34
-    .catchall {:try_start_2d .. :try_end_34} :catchall_3c
+    .catchall {:try_start_2d .. :try_end_34} :catchall_3d
+
+    move v2, v3
 
     .line 867
+    .local v2, "_result":I
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
 
     .line 868
@@ -1894,7 +2021,8 @@
     return v2
 
     .line 867
-    :catchall_3c
+    .end local v2  # "_result":I
+    :catchall_3d
     move-exception v2
 
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V

@@ -21,6 +21,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/broadcastradio/hal2/BroadcastRadioService;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/broadcastradio/hal2/BroadcastRadioService;
 
     .line 57
     iput-object p1, p0, Lcom/android/server/broadcastradio/hal2/BroadcastRadioService$1;->this$0:Lcom/android/server/broadcastradio/hal2/BroadcastRadioService;
@@ -33,7 +34,10 @@
 
 # virtual methods
 .method public onRegistration(Ljava/lang/String;Ljava/lang/String;Z)V
-    .registers 11
+    .registers 13
+    .param p1, "fqName"  # Ljava/lang/String;
+    .param p2, "serviceName"  # Ljava/lang/String;
+    .param p3, "preexisting"  # Z
 
     .line 60
     new-instance v0, Ljava/lang/StringBuilder;
@@ -46,233 +50,233 @@
 
     invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string p1, ", "
+    const-string v1, ", "
 
-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v0, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string p1, ", "
+    const-string v1, ", "
 
-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v0, p3}, Ljava/lang/StringBuilder;->append(Z)Ljava/lang/StringBuilder;
 
-    const-string p1, ")"
+    const-string v1, ")"
 
-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    const-string p3, "BcRadio2Srv"
+    const-string v1, "BcRadio2Srv"
 
-    invoke-static {p3, p1}, Landroid/util/Slog;->v(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v0}, Landroid/util/Slog;->v(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 62
-    iget-object p1, p0, Lcom/android/server/broadcastradio/hal2/BroadcastRadioService$1;->this$0:Lcom/android/server/broadcastradio/hal2/BroadcastRadioService;
+    iget-object v0, p0, Lcom/android/server/broadcastradio/hal2/BroadcastRadioService$1;->this$0:Lcom/android/server/broadcastradio/hal2/BroadcastRadioService;
 
-    invoke-static {p1}, Lcom/android/server/broadcastradio/hal2/BroadcastRadioService;->access$000(Lcom/android/server/broadcastradio/hal2/BroadcastRadioService;)Ljava/lang/Object;
+    invoke-static {v0}, Lcom/android/server/broadcastradio/hal2/BroadcastRadioService;->access$000(Lcom/android/server/broadcastradio/hal2/BroadcastRadioService;)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v0
 
-    monitor-enter p1
+    monitor-enter v0
 
     .line 64
     :try_start_33
-    iget-object p3, p0, Lcom/android/server/broadcastradio/hal2/BroadcastRadioService$1;->this$0:Lcom/android/server/broadcastradio/hal2/BroadcastRadioService;
-
-    invoke-static {p3}, Lcom/android/server/broadcastradio/hal2/BroadcastRadioService;->access$100(Lcom/android/server/broadcastradio/hal2/BroadcastRadioService;)Ljava/util/Map;
-
-    move-result-object p3
-
-    invoke-interface {p3, p2}, Ljava/util/Map;->get(Ljava/lang/Object;)Ljava/lang/Object;
-
-    move-result-object p3
-
-    check-cast p3, Ljava/lang/Integer;
-
-    .line 65
-    nop
-
-    .line 66
-    const/4 v0, 0x0
-
-    if-nez p3, :cond_52
-
-    .line 67
-    const/4 p3, 0x1
-
-    .line 68
     iget-object v1, p0, Lcom/android/server/broadcastradio/hal2/BroadcastRadioService$1;->this$0:Lcom/android/server/broadcastradio/hal2/BroadcastRadioService;
 
-    invoke-static {v1}, Lcom/android/server/broadcastradio/hal2/BroadcastRadioService;->access$200(Lcom/android/server/broadcastradio/hal2/BroadcastRadioService;)I
-
-    move-result v1
-
-    invoke-static {v1}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
+    invoke-static {v1}, Lcom/android/server/broadcastradio/hal2/BroadcastRadioService;->access$100(Lcom/android/server/broadcastradio/hal2/BroadcastRadioService;)Ljava/util/Map;
 
     move-result-object v1
 
-    move-object v6, v1
+    invoke-interface {v1, p2}, Ljava/util/Map;->get(Ljava/lang/Object;)Ljava/lang/Object;
 
-    move v1, p3
+    move-result-object v1
 
-    move-object p3, v6
+    check-cast v1, Ljava/lang/Integer;
 
-    goto :goto_53
+    .line 65
+    .local v1, "moduleId":Ljava/lang/Integer;
+    const/4 v2, 0x0
 
     .line 66
-    :cond_52
-    move v1, v0
+    .local v2, "newService":Z
+    if-nez v1, :cond_4e
+
+    .line 67
+    const/4 v2, 0x1
+
+    .line 68
+    iget-object v3, p0, Lcom/android/server/broadcastradio/hal2/BroadcastRadioService$1;->this$0:Lcom/android/server/broadcastradio/hal2/BroadcastRadioService;
+
+    invoke-static {v3}, Lcom/android/server/broadcastradio/hal2/BroadcastRadioService;->access$200(Lcom/android/server/broadcastradio/hal2/BroadcastRadioService;)I
+
+    move-result v3
+
+    invoke-static {v3}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
+
+    move-result-object v3
+
+    move-object v1, v3
 
     .line 71
-    :goto_53
-    invoke-virtual {p3}, Ljava/lang/Integer;->intValue()I
+    :cond_4e
+    invoke-virtual {v1}, Ljava/lang/Integer;->intValue()I
 
-    move-result v2
+    move-result v3
 
-    invoke-static {v2, p2}, Lcom/android/server/broadcastradio/hal2/RadioModule;->tryLoadingModule(ILjava/lang/String;)Lcom/android/server/broadcastradio/hal2/RadioModule;
+    invoke-static {v3, p2}, Lcom/android/server/broadcastradio/hal2/RadioModule;->tryLoadingModule(ILjava/lang/String;)Lcom/android/server/broadcastradio/hal2/RadioModule;
 
-    move-result-object v2
+    move-result-object v3
 
     .line 72
-    if-nez v2, :cond_5f
+    .local v3, "module":Lcom/android/server/broadcastradio/hal2/RadioModule;
+    if-nez v3, :cond_5a
 
     .line 73
-    monitor-exit p1
+    monitor-exit v0
 
     return-void
 
     .line 75
-    :cond_5f
-    const-string v3, "BcRadio2Srv"
+    :cond_5a
+    const-string v4, "BcRadio2Srv"
 
-    new-instance v4, Ljava/lang/StringBuilder;
+    new-instance v5, Ljava/lang/StringBuilder;
 
-    invoke-direct {v4}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v5}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v5, "loaded broadcast radio module "
+    const-string/jumbo v6, "loaded broadcast radio module "
 
-    invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v4, p3}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    invoke-virtual {v5, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
-    const-string v5, ": "
+    const-string v6, ": "
 
-    invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v4, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v5, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string v5, " (HAL 2.0)"
+    const-string v6, " (HAL 2.0)"
 
-    invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v4}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v5}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v5
+
+    invoke-static {v4, v5}, Landroid/util/Slog;->v(Ljava/lang/String;Ljava/lang/String;)I
+
+    .line 77
+    iget-object v4, p0, Lcom/android/server/broadcastradio/hal2/BroadcastRadioService$1;->this$0:Lcom/android/server/broadcastradio/hal2/BroadcastRadioService;
+
+    invoke-static {v4}, Lcom/android/server/broadcastradio/hal2/BroadcastRadioService;->access$300(Lcom/android/server/broadcastradio/hal2/BroadcastRadioService;)Ljava/util/Map;
 
     move-result-object v4
 
-    invoke-static {v3, v4}, Landroid/util/Slog;->v(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-interface {v4, v1, v3}, Ljava/util/Map;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
 
-    .line 77
-    iget-object v3, p0, Lcom/android/server/broadcastradio/hal2/BroadcastRadioService$1;->this$0:Lcom/android/server/broadcastradio/hal2/BroadcastRadioService;
+    move-result-object v4
 
-    invoke-static {v3}, Lcom/android/server/broadcastradio/hal2/BroadcastRadioService;->access$300(Lcom/android/server/broadcastradio/hal2/BroadcastRadioService;)Ljava/util/Map;
-
-    move-result-object v3
-
-    invoke-interface {v3, p3, v2}, Ljava/util/Map;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
-
-    move-result-object v3
-
-    check-cast v3, Lcom/android/server/broadcastradio/hal2/RadioModule;
+    check-cast v4, Lcom/android/server/broadcastradio/hal2/RadioModule;
 
     .line 78
-    if-eqz v3, :cond_97
+    .local v4, "prevModule":Lcom/android/server/broadcastradio/hal2/RadioModule;
+    if-eqz v4, :cond_94
 
     .line 79
-    invoke-static {v0}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
+    const/4 v5, 0x0
 
-    move-result-object v0
+    invoke-static {v5}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
 
-    invoke-virtual {v3, v0}, Lcom/android/server/broadcastradio/hal2/RadioModule;->closeSessions(Ljava/lang/Integer;)V
+    move-result-object v5
+
+    invoke-virtual {v4, v5}, Lcom/android/server/broadcastradio/hal2/RadioModule;->closeSessions(Ljava/lang/Integer;)V
 
     .line 82
-    :cond_97
-    if-eqz v1, :cond_a7
+    :cond_94
+    if-eqz v2, :cond_a4
 
     .line 83
-    iget-object v0, p0, Lcom/android/server/broadcastradio/hal2/BroadcastRadioService$1;->this$0:Lcom/android/server/broadcastradio/hal2/BroadcastRadioService;
+    iget-object v5, p0, Lcom/android/server/broadcastradio/hal2/BroadcastRadioService$1;->this$0:Lcom/android/server/broadcastradio/hal2/BroadcastRadioService;
 
-    invoke-static {v0}, Lcom/android/server/broadcastradio/hal2/BroadcastRadioService;->access$100(Lcom/android/server/broadcastradio/hal2/BroadcastRadioService;)Ljava/util/Map;
+    invoke-static {v5}, Lcom/android/server/broadcastradio/hal2/BroadcastRadioService;->access$100(Lcom/android/server/broadcastradio/hal2/BroadcastRadioService;)Ljava/util/Map;
 
-    move-result-object v0
+    move-result-object v5
 
-    invoke-interface {v0, p2, p3}, Ljava/util/Map;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+    invoke-interface {v5, p2, v1}, Ljava/util/Map;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
 
     .line 84
-    iget-object p2, p0, Lcom/android/server/broadcastradio/hal2/BroadcastRadioService$1;->this$0:Lcom/android/server/broadcastradio/hal2/BroadcastRadioService;
+    iget-object v5, p0, Lcom/android/server/broadcastradio/hal2/BroadcastRadioService$1;->this$0:Lcom/android/server/broadcastradio/hal2/BroadcastRadioService;
 
-    invoke-static {p2}, Lcom/android/server/broadcastradio/hal2/BroadcastRadioService;->access$208(Lcom/android/server/broadcastradio/hal2/BroadcastRadioService;)I
-    :try_end_a7
-    .catchall {:try_start_33 .. :try_end_a7} :catchall_c6
+    invoke-static {v5}, Lcom/android/server/broadcastradio/hal2/BroadcastRadioService;->access$208(Lcom/android/server/broadcastradio/hal2/BroadcastRadioService;)I
+    :try_end_a4
+    .catchall {:try_start_33 .. :try_end_a4} :catchall_c3
 
     .line 88
-    :cond_a7
-    :try_start_a7
-    invoke-virtual {v2}, Lcom/android/server/broadcastradio/hal2/RadioModule;->getService()Landroid/hardware/broadcastradio/V2_0/IBroadcastRadio;
+    :cond_a4
+    :try_start_a4
+    invoke-virtual {v3}, Lcom/android/server/broadcastradio/hal2/RadioModule;->getService()Landroid/hardware/broadcastradio/V2_0/IBroadcastRadio;
 
-    move-result-object p2
+    move-result-object v5
 
-    iget-object v0, p0, Lcom/android/server/broadcastradio/hal2/BroadcastRadioService$1;->this$0:Lcom/android/server/broadcastradio/hal2/BroadcastRadioService;
+    iget-object v6, p0, Lcom/android/server/broadcastradio/hal2/BroadcastRadioService$1;->this$0:Lcom/android/server/broadcastradio/hal2/BroadcastRadioService;
 
-    invoke-static {v0}, Lcom/android/server/broadcastradio/hal2/BroadcastRadioService;->access$400(Lcom/android/server/broadcastradio/hal2/BroadcastRadioService;)Landroid/os/IHwBinder$DeathRecipient;
+    invoke-static {v6}, Lcom/android/server/broadcastradio/hal2/BroadcastRadioService;->access$400(Lcom/android/server/broadcastradio/hal2/BroadcastRadioService;)Landroid/os/IHwBinder$DeathRecipient;
 
-    move-result-object v0
+    move-result-object v6
 
-    invoke-virtual {p3}, Ljava/lang/Integer;->intValue()I
+    invoke-virtual {v1}, Ljava/lang/Integer;->intValue()I
 
-    move-result v1
+    move-result v7
 
-    int-to-long v1, v1
+    int-to-long v7, v7
 
-    invoke-interface {p2, v0, v1, v2}, Landroid/hardware/broadcastradio/V2_0/IBroadcastRadio;->linkToDeath(Landroid/os/IHwBinder$DeathRecipient;J)Z
-    :try_end_b9
-    .catch Landroid/os/RemoteException; {:try_start_a7 .. :try_end_b9} :catch_ba
-    .catchall {:try_start_a7 .. :try_end_b9} :catchall_c6
+    invoke-interface {v5, v6, v7, v8}, Landroid/hardware/broadcastradio/V2_0/IBroadcastRadio;->linkToDeath(Landroid/os/IHwBinder$DeathRecipient;J)Z
+    :try_end_b6
+    .catch Landroid/os/RemoteException; {:try_start_a4 .. :try_end_b6} :catch_b7
+    .catchall {:try_start_a4 .. :try_end_b6} :catchall_c3
 
     .line 92
-    goto :goto_c4
+    goto :goto_c1
 
     .line 89
-    :catch_ba
-    move-exception p2
+    :catch_b7
+    move-exception v5
 
     .line 91
-    :try_start_bb
-    iget-object p2, p0, Lcom/android/server/broadcastradio/hal2/BroadcastRadioService$1;->this$0:Lcom/android/server/broadcastradio/hal2/BroadcastRadioService;
+    .local v5, "ex":Landroid/os/RemoteException;
+    :try_start_b8
+    iget-object v6, p0, Lcom/android/server/broadcastradio/hal2/BroadcastRadioService$1;->this$0:Lcom/android/server/broadcastradio/hal2/BroadcastRadioService;
 
-    invoke-static {p2}, Lcom/android/server/broadcastradio/hal2/BroadcastRadioService;->access$300(Lcom/android/server/broadcastradio/hal2/BroadcastRadioService;)Ljava/util/Map;
+    invoke-static {v6}, Lcom/android/server/broadcastradio/hal2/BroadcastRadioService;->access$300(Lcom/android/server/broadcastradio/hal2/BroadcastRadioService;)Ljava/util/Map;
 
-    move-result-object p2
+    move-result-object v6
 
-    invoke-interface {p2, p3}, Ljava/util/Map;->remove(Ljava/lang/Object;)Ljava/lang/Object;
+    invoke-interface {v6, v1}, Ljava/util/Map;->remove(Ljava/lang/Object;)Ljava/lang/Object;
 
     .line 93
-    :goto_c4
-    monitor-exit p1
+    .end local v2  # "newService":Z
+    .end local v3  # "module":Lcom/android/server/broadcastradio/hal2/RadioModule;
+    .end local v4  # "prevModule":Lcom/android/server/broadcastradio/hal2/RadioModule;
+    .end local v5  # "ex":Landroid/os/RemoteException;
+    :goto_c1
+    monitor-exit v0
 
     .line 94
     return-void
 
     .line 93
-    :catchall_c6
-    move-exception p2
+    .end local v1  # "moduleId":Ljava/lang/Integer;
+    :catchall_c3
+    move-exception v1
 
-    monitor-exit p1
-    :try_end_c8
-    .catchall {:try_start_bb .. :try_end_c8} :catchall_c6
+    monitor-exit v0
+    :try_end_c5
+    .catchall {:try_start_b8 .. :try_end_c5} :catchall_c3
 
-    throw p2
+    throw v1
 .end method

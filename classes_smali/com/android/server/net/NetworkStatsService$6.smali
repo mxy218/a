@@ -21,8 +21,9 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/net/NetworkStatsService;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/net/NetworkStatsService;
 
-    .line 1103
+    .line 1109
     iput-object p1, p0, Lcom/android/server/net/NetworkStatsService$6;->this$0:Lcom/android/server/net/NetworkStatsService;
 
     invoke-direct {p0}, Landroid/content/BroadcastReceiver;-><init>()V
@@ -33,36 +34,38 @@
 
 # virtual methods
 .method public onReceive(Landroid/content/Context;Landroid/content/Intent;)V
-    .registers 3
+    .registers 5
+    .param p1, "context"  # Landroid/content/Context;
+    .param p2, "intent"  # Landroid/content/Intent;
 
-    .line 1107
-    iget-object p1, p0, Lcom/android/server/net/NetworkStatsService$6;->this$0:Lcom/android/server/net/NetworkStatsService;
+    .line 1113
+    iget-object v0, p0, Lcom/android/server/net/NetworkStatsService$6;->this$0:Lcom/android/server/net/NetworkStatsService;
 
-    invoke-static {p1}, Lcom/android/server/net/NetworkStatsService;->access$300(Lcom/android/server/net/NetworkStatsService;)Ljava/lang/Object;
+    invoke-static {v0}, Lcom/android/server/net/NetworkStatsService;->access$300(Lcom/android/server/net/NetworkStatsService;)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v0
 
-    monitor-enter p1
+    monitor-enter v0
 
-    .line 1108
+    .line 1114
     :try_start_7
-    iget-object p2, p0, Lcom/android/server/net/NetworkStatsService$6;->this$0:Lcom/android/server/net/NetworkStatsService;
+    iget-object v1, p0, Lcom/android/server/net/NetworkStatsService$6;->this$0:Lcom/android/server/net/NetworkStatsService;
 
-    invoke-static {p2}, Lcom/android/server/net/NetworkStatsService;->access$1300(Lcom/android/server/net/NetworkStatsService;)V
+    invoke-static {v1}, Lcom/android/server/net/NetworkStatsService;->access$1300(Lcom/android/server/net/NetworkStatsService;)V
 
-    .line 1109
-    monitor-exit p1
+    .line 1115
+    monitor-exit v0
 
-    .line 1110
+    .line 1116
     return-void
 
-    .line 1109
+    .line 1115
     :catchall_e
-    move-exception p2
+    move-exception v1
 
-    monitor-exit p1
+    monitor-exit v0
     :try_end_10
     .catchall {:try_start_7 .. :try_end_10} :catchall_e
 
-    throw p2
+    throw v1
 .end method

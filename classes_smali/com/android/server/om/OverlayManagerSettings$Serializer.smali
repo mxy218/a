@@ -61,7 +61,8 @@
 .end method
 
 .method public static persist(Ljava/util/ArrayList;Ljava/io/OutputStream;)V
-    .registers 7
+    .registers 8
+    .param p1, "os"  # Ljava/io/OutputStream;
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(",
@@ -81,72 +82,79 @@
     .end annotation
 
     .line 454
+    .local p0, "table":Ljava/util/ArrayList;, "Ljava/util/ArrayList<Lcom/android/server/om/OverlayManagerSettings$SettingsItem;>;"
     new-instance v0, Lcom/android/internal/util/FastXmlSerializer;
 
     invoke-direct {v0}, Lcom/android/internal/util/FastXmlSerializer;-><init>()V
 
     .line 455
+    .local v0, "xml":Lcom/android/internal/util/FastXmlSerializer;
     const-string/jumbo v1, "utf-8"
 
     invoke-virtual {v0, p1, v1}, Lcom/android/internal/util/FastXmlSerializer;->setOutput(Ljava/io/OutputStream;Ljava/lang/String;)V
 
     .line 456
-    const/4 p1, 0x1
+    const/4 v1, 0x1
 
-    invoke-static {p1}, Ljava/lang/Boolean;->valueOf(Z)Ljava/lang/Boolean;
+    invoke-static {v1}, Ljava/lang/Boolean;->valueOf(Z)Ljava/lang/Boolean;
 
-    move-result-object v1
+    move-result-object v2
 
-    const/4 v2, 0x0
+    const/4 v3, 0x0
 
-    invoke-virtual {v0, v2, v1}, Lcom/android/internal/util/FastXmlSerializer;->startDocument(Ljava/lang/String;Ljava/lang/Boolean;)V
+    invoke-virtual {v0, v3, v2}, Lcom/android/internal/util/FastXmlSerializer;->startDocument(Ljava/lang/String;Ljava/lang/Boolean;)V
 
     .line 457
-    const-string v1, "http://xmlpull.org/v1/doc/features.html#indent-output"
+    const-string v2, "http://xmlpull.org/v1/doc/features.html#indent-output"
 
-    invoke-virtual {v0, v1, p1}, Lcom/android/internal/util/FastXmlSerializer;->setFeature(Ljava/lang/String;Z)V
+    invoke-virtual {v0, v2, v1}, Lcom/android/internal/util/FastXmlSerializer;->setFeature(Ljava/lang/String;Z)V
 
     .line 458
-    const-string/jumbo p1, "overlays"
+    const-string/jumbo v1, "overlays"
 
-    invoke-virtual {v0, v2, p1}, Lcom/android/internal/util/FastXmlSerializer;->startTag(Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
+    invoke-virtual {v0, v3, v1}, Lcom/android/internal/util/FastXmlSerializer;->startTag(Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
 
     .line 459
-    const-string/jumbo v1, "version"
+    const-string/jumbo v2, "version"
 
-    const/4 v3, 0x3
+    const/4 v4, 0x3
 
-    invoke-static {v0, v1, v3}, Lcom/android/internal/util/XmlUtils;->writeIntAttribute(Lorg/xmlpull/v1/XmlSerializer;Ljava/lang/String;I)V
+    invoke-static {v0, v2, v4}, Lcom/android/internal/util/XmlUtils;->writeIntAttribute(Lorg/xmlpull/v1/XmlSerializer;Ljava/lang/String;I)V
 
     .line 461
     invoke-virtual {p0}, Ljava/util/ArrayList;->size()I
 
-    move-result v1
+    move-result v2
 
     .line 462
-    const/4 v3, 0x0
+    .local v2, "n":I
+    const/4 v4, 0x0
 
+    .local v4, "i":I
     :goto_2b
-    if-ge v3, v1, :cond_39
+    if-ge v4, v2, :cond_39
 
     .line 463
-    invoke-virtual {p0, v3}, Ljava/util/ArrayList;->get(I)Ljava/lang/Object;
+    invoke-virtual {p0, v4}, Ljava/util/ArrayList;->get(I)Ljava/lang/Object;
 
-    move-result-object v4
+    move-result-object v5
 
-    check-cast v4, Lcom/android/server/om/OverlayManagerSettings$SettingsItem;
+    check-cast v5, Lcom/android/server/om/OverlayManagerSettings$SettingsItem;
 
     .line 464
-    invoke-static {v0, v4}, Lcom/android/server/om/OverlayManagerSettings$Serializer;->persistRow(Lcom/android/internal/util/FastXmlSerializer;Lcom/android/server/om/OverlayManagerSettings$SettingsItem;)V
+    .local v5, "item":Lcom/android/server/om/OverlayManagerSettings$SettingsItem;
+    invoke-static {v0, v5}, Lcom/android/server/om/OverlayManagerSettings$Serializer;->persistRow(Lcom/android/internal/util/FastXmlSerializer;Lcom/android/server/om/OverlayManagerSettings$SettingsItem;)V
 
     .line 462
-    add-int/lit8 v3, v3, 0x1
+    .end local v5  # "item":Lcom/android/server/om/OverlayManagerSettings$SettingsItem;
+    add-int/lit8 v4, v4, 0x1
 
     goto :goto_2b
 
     .line 466
+    .end local v4  # "i":I
     :cond_39
-    invoke-virtual {v0, v2, p1}, Lcom/android/internal/util/FastXmlSerializer;->endTag(Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
+    invoke-virtual {v0, v3, v1}, Lcom/android/internal/util/FastXmlSerializer;->endTag(Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
 
     .line 467
     invoke-virtual {v0}, Lcom/android/internal/util/FastXmlSerializer;->endDocument()V
@@ -157,6 +165,8 @@
 
 .method private static persistRow(Lcom/android/internal/util/FastXmlSerializer;Lcom/android/server/om/OverlayManagerSettings$SettingsItem;)V
     .registers 6
+    .param p0, "xml"  # Lcom/android/internal/util/FastXmlSerializer;
+    .param p1, "item"  # Lcom/android/server/om/OverlayManagerSettings$SettingsItem;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Ljava/io/IOException;
@@ -164,7 +174,7 @@
     .end annotation
 
     .line 472
-    const-string v0, "item"
+    const-string/jumbo v0, "item"
 
     const/4 v1, 0x0
 
@@ -233,7 +243,7 @@
 
     move-result v2
 
-    const-string v3, "isEnabled"
+    const-string/jumbo v3, "isEnabled"
 
     invoke-static {p0, v3, v2}, Lcom/android/internal/util/XmlUtils;->writeBooleanAttribute(Lorg/xmlpull/v1/XmlSerializer;Ljava/lang/String;Z)V
 
@@ -242,7 +252,7 @@
 
     move-result v2
 
-    const-string v3, "isStatic"
+    const-string/jumbo v3, "isStatic"
 
     invoke-static {p0, v3, v2}, Lcom/android/internal/util/XmlUtils;->writeBooleanAttribute(Lorg/xmlpull/v1/XmlSerializer;Ljava/lang/String;Z)V
 
@@ -258,11 +268,11 @@
     .line 483
     invoke-static {p1}, Lcom/android/server/om/OverlayManagerSettings$SettingsItem;->access$1500(Lcom/android/server/om/OverlayManagerSettings$SettingsItem;)Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v2
 
-    const-string v2, "category"
+    const-string v3, "category"
 
-    invoke-static {p0, v2, p1}, Lcom/android/internal/util/XmlUtils;->writeStringAttribute(Lorg/xmlpull/v1/XmlSerializer;Ljava/lang/String;Ljava/lang/CharSequence;)V
+    invoke-static {p0, v3, v2}, Lcom/android/internal/util/XmlUtils;->writeStringAttribute(Lorg/xmlpull/v1/XmlSerializer;Ljava/lang/String;Ljava/lang/CharSequence;)V
 
     .line 484
     invoke-virtual {p0, v1, v0}, Lcom/android/internal/util/FastXmlSerializer;->endTag(Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
@@ -272,7 +282,8 @@
 .end method
 
 .method public static restore(Ljava/util/ArrayList;Ljava/io/InputStream;)V
-    .registers 8
+    .registers 10
+    .param p1, "is"  # Ljava/io/InputStream;
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(",
@@ -292,145 +303,165 @@
     .end annotation
 
     .line 398
+    .local p0, "table":Ljava/util/ArrayList;, "Ljava/util/ArrayList<Lcom/android/server/om/OverlayManagerSettings$SettingsItem;>;"
     new-instance v0, Ljava/io/InputStreamReader;
 
     invoke-direct {v0, p1}, Ljava/io/InputStreamReader;-><init>(Ljava/io/InputStream;)V
 
     .line 399
+    .local v0, "reader":Ljava/io/InputStreamReader;
     :try_start_5
     invoke-virtual {p0}, Ljava/util/ArrayList;->clear()V
 
     .line 400
     invoke-static {}, Landroid/util/Xml;->newPullParser()Lorg/xmlpull/v1/XmlPullParser;
 
-    move-result-object p1
+    move-result-object v1
 
     .line 401
-    invoke-interface {p1, v0}, Lorg/xmlpull/v1/XmlPullParser;->setInput(Ljava/io/Reader;)V
+    .local v1, "parser":Lorg/xmlpull/v1/XmlPullParser;
+    invoke-interface {v1, v0}, Lorg/xmlpull/v1/XmlPullParser;->setInput(Ljava/io/Reader;)V
 
     .line 402
-    const-string/jumbo v1, "overlays"
+    const-string/jumbo v2, "overlays"
 
-    invoke-static {p1, v1}, Lcom/android/internal/util/XmlUtils;->beginDocument(Lorg/xmlpull/v1/XmlPullParser;Ljava/lang/String;)V
+    invoke-static {v1, v2}, Lcom/android/internal/util/XmlUtils;->beginDocument(Lorg/xmlpull/v1/XmlPullParser;Ljava/lang/String;)V
 
     .line 403
-    const-string/jumbo v1, "version"
+    const-string/jumbo v2, "version"
 
-    invoke-static {p1, v1}, Lcom/android/internal/util/XmlUtils;->readIntAttribute(Lorg/xmlpull/v1/XmlPullParser;Ljava/lang/String;)I
+    invoke-static {v1, v2}, Lcom/android/internal/util/XmlUtils;->readIntAttribute(Lorg/xmlpull/v1/XmlPullParser;Ljava/lang/String;)I
 
-    move-result v1
+    move-result v2
 
     .line 404
-    const/4 v2, 0x3
+    .local v2, "version":I
+    const/4 v3, 0x3
 
-    if-eq v1, v2, :cond_22
+    if-eq v2, v3, :cond_22
 
     .line 405
-    invoke-static {v1}, Lcom/android/server/om/OverlayManagerSettings$Serializer;->upgrade(I)V
+    invoke-static {v2}, Lcom/android/server/om/OverlayManagerSettings$Serializer;->upgrade(I)V
 
     .line 407
     :cond_22
-    invoke-interface {p1}, Lorg/xmlpull/v1/XmlPullParser;->getDepth()I
+    invoke-interface {v1}, Lorg/xmlpull/v1/XmlPullParser;->getDepth()I
 
-    move-result v1
+    move-result v3
 
     .line 409
+    .local v3, "depth":I
     :goto_26
-    invoke-static {p1, v1}, Lcom/android/internal/util/XmlUtils;->nextElementWithin(Lorg/xmlpull/v1/XmlPullParser;I)Z
-
-    move-result v2
-
-    if-eqz v2, :cond_51
-
-    .line 410
-    invoke-interface {p1}, Lorg/xmlpull/v1/XmlPullParser;->getName()Ljava/lang/String;
-
-    move-result-object v2
-
-    const/4 v3, -0x1
-
-    invoke-virtual {v2}, Ljava/lang/String;->hashCode()I
+    invoke-static {v1, v3}, Lcom/android/internal/util/XmlUtils;->nextElementWithin(Lorg/xmlpull/v1/XmlPullParser;I)Z
 
     move-result v4
 
-    const v5, 0x317b13
+    if-eqz v4, :cond_52
 
-    if-eq v4, v5, :cond_3b
+    .line 410
+    invoke-interface {v1}, Lorg/xmlpull/v1/XmlPullParser;->getName()Ljava/lang/String;
+
+    move-result-object v4
+
+    const/4 v5, -0x1
+
+    invoke-virtual {v4}, Ljava/lang/String;->hashCode()I
+
+    move-result v6
+
+    const v7, 0x317b13
+
+    if-eq v6, v7, :cond_3b
 
     :cond_3a
-    goto :goto_44
+    goto :goto_45
 
     :cond_3b
-    const-string v4, "item"
+    const-string/jumbo v6, "item"
 
-    invoke-virtual {v2, v4}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v4, v6}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result v2
+    move-result v4
 
-    if-eqz v2, :cond_3a
+    if-eqz v4, :cond_3a
 
-    const/4 v3, 0x0
+    const/4 v5, 0x0
 
-    :goto_44
-    if-eqz v3, :cond_47
+    :goto_45
+    if-eqz v5, :cond_48
 
-    goto :goto_50
+    goto :goto_51
 
     .line 412
-    :cond_47
-    add-int/lit8 v2, v1, 0x1
+    :cond_48
+    add-int/lit8 v4, v3, 0x1
 
-    invoke-static {p1, v2}, Lcom/android/server/om/OverlayManagerSettings$Serializer;->restoreRow(Lorg/xmlpull/v1/XmlPullParser;I)Lcom/android/server/om/OverlayManagerSettings$SettingsItem;
+    invoke-static {v1, v4}, Lcom/android/server/om/OverlayManagerSettings$Serializer;->restoreRow(Lorg/xmlpull/v1/XmlPullParser;I)Lcom/android/server/om/OverlayManagerSettings$SettingsItem;
 
-    move-result-object v2
+    move-result-object v4
 
     .line 413
-    invoke-virtual {p0, v2}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
-    :try_end_50
-    .catchall {:try_start_5 .. :try_end_50} :catchall_55
+    .local v4, "item":Lcom/android/server/om/OverlayManagerSettings$SettingsItem;
+    invoke-virtual {p0, v4}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
+    :try_end_51
+    .catchall {:try_start_5 .. :try_end_51} :catchall_56
 
     .line 414
-    :goto_50
+    .end local v4  # "item":Lcom/android/server/om/OverlayManagerSettings$SettingsItem;
+    :goto_51
     goto :goto_26
 
     .line 417
-    :cond_51
+    .end local v1  # "parser":Lorg/xmlpull/v1/XmlPullParser;
+    .end local v2  # "version":I
+    .end local v3  # "depth":I
+    :cond_52
     invoke-virtual {v0}, Ljava/io/InputStreamReader;->close()V
 
     .line 418
+    .end local v0  # "reader":Ljava/io/InputStreamReader;
     return-void
 
     .line 398
-    :catchall_55
-    move-exception p0
+    .restart local v0  # "reader":Ljava/io/InputStreamReader;
+    :catchall_56
+    move-exception v1
 
-    :try_start_56
-    throw p0
-    :try_end_57
-    .catchall {:try_start_56 .. :try_end_57} :catchall_57
+    .end local v0  # "reader":Ljava/io/InputStreamReader;
+    .end local p0  # "table":Ljava/util/ArrayList;, "Ljava/util/ArrayList<Lcom/android/server/om/OverlayManagerSettings$SettingsItem;>;"
+    .end local p1  # "is":Ljava/io/InputStream;
+    :try_start_57
+    throw v1
+    :try_end_58
+    .catchall {:try_start_57 .. :try_end_58} :catchall_58
 
     .line 417
-    :catchall_57
-    move-exception p1
+    .restart local v0  # "reader":Ljava/io/InputStreamReader;
+    .restart local p0  # "table":Ljava/util/ArrayList;, "Ljava/util/ArrayList<Lcom/android/server/om/OverlayManagerSettings$SettingsItem;>;"
+    .restart local p1  # "is":Ljava/io/InputStream;
+    :catchall_58
+    move-exception v2
 
-    :try_start_58
+    :try_start_59
     invoke-virtual {v0}, Ljava/io/InputStreamReader;->close()V
-    :try_end_5b
-    .catchall {:try_start_58 .. :try_end_5b} :catchall_5c
+    :try_end_5c
+    .catchall {:try_start_59 .. :try_end_5c} :catchall_5d
 
-    goto :goto_60
+    goto :goto_61
 
-    :catchall_5c
-    move-exception v0
+    :catchall_5d
+    move-exception v3
 
-    invoke-virtual {p0, v0}, Ljava/lang/Throwable;->addSuppressed(Ljava/lang/Throwable;)V
+    invoke-virtual {v1, v3}, Ljava/lang/Throwable;->addSuppressed(Ljava/lang/Throwable;)V
 
-    :goto_60
-    throw p1
+    :goto_61
+    throw v2
 .end method
 
 .method private static restoreRow(Lorg/xmlpull/v1/XmlPullParser;I)Lcom/android/server/om/OverlayManagerSettings$SettingsItem;
-    .registers 13
+    .registers 25
+    .param p0, "parser"  # Lorg/xmlpull/v1/XmlPullParser;
+    .param p1, "depth"  # I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Ljava/io/IOException;
@@ -438,87 +469,120 @@
     .end annotation
 
     .line 435
-    const-string/jumbo p1, "packageName"
+    move-object/from16 v0, p0
 
-    invoke-static {p0, p1}, Lcom/android/internal/util/XmlUtils;->readStringAttribute(Lorg/xmlpull/v1/XmlPullParser;Ljava/lang/String;)Ljava/lang/String;
+    const-string/jumbo v1, "packageName"
+
+    invoke-static {v0, v1}, Lcom/android/internal/util/XmlUtils;->readStringAttribute(Lorg/xmlpull/v1/XmlPullParser;Ljava/lang/String;)Ljava/lang/String;
 
     move-result-object v1
 
     .line 436
-    const-string/jumbo p1, "userId"
+    .local v1, "packageName":Ljava/lang/String;
+    const-string/jumbo v2, "userId"
 
-    invoke-static {p0, p1}, Lcom/android/internal/util/XmlUtils;->readIntAttribute(Lorg/xmlpull/v1/XmlPullParser;Ljava/lang/String;)I
+    invoke-static {v0, v2}, Lcom/android/internal/util/XmlUtils;->readIntAttribute(Lorg/xmlpull/v1/XmlPullParser;Ljava/lang/String;)I
 
-    move-result v2
+    move-result v13
 
     .line 437
-    const-string/jumbo p1, "targetPackageName"
+    .local v13, "userId":I
+    const-string/jumbo v2, "targetPackageName"
 
-    invoke-static {p0, p1}, Lcom/android/internal/util/XmlUtils;->readStringAttribute(Lorg/xmlpull/v1/XmlPullParser;Ljava/lang/String;)Ljava/lang/String;
+    invoke-static {v0, v2}, Lcom/android/internal/util/XmlUtils;->readStringAttribute(Lorg/xmlpull/v1/XmlPullParser;Ljava/lang/String;)Ljava/lang/String;
 
-    move-result-object v3
+    move-result-object v14
 
     .line 439
-    const-string/jumbo p1, "targetOverlayableName"
+    .local v14, "targetPackageName":Ljava/lang/String;
+    const-string/jumbo v2, "targetOverlayableName"
 
-    invoke-static {p0, p1}, Lcom/android/internal/util/XmlUtils;->readStringAttribute(Lorg/xmlpull/v1/XmlPullParser;Ljava/lang/String;)Ljava/lang/String;
+    invoke-static {v0, v2}, Lcom/android/internal/util/XmlUtils;->readStringAttribute(Lorg/xmlpull/v1/XmlPullParser;Ljava/lang/String;)Ljava/lang/String;
 
-    move-result-object v4
+    move-result-object v15
 
     .line 441
-    const-string p1, "baseCodePath"
+    .local v15, "targetOverlayableName":Ljava/lang/String;
+    const-string v2, "baseCodePath"
 
-    invoke-static {p0, p1}, Lcom/android/internal/util/XmlUtils;->readStringAttribute(Lorg/xmlpull/v1/XmlPullParser;Ljava/lang/String;)Ljava/lang/String;
+    invoke-static {v0, v2}, Lcom/android/internal/util/XmlUtils;->readStringAttribute(Lorg/xmlpull/v1/XmlPullParser;Ljava/lang/String;)Ljava/lang/String;
 
-    move-result-object v5
+    move-result-object v16
 
     .line 442
-    const-string/jumbo p1, "state"
+    .local v16, "baseCodePath":Ljava/lang/String;
+    const-string/jumbo v2, "state"
 
-    invoke-static {p0, p1}, Lcom/android/internal/util/XmlUtils;->readIntAttribute(Lorg/xmlpull/v1/XmlPullParser;Ljava/lang/String;)I
+    invoke-static {v0, v2}, Lcom/android/internal/util/XmlUtils;->readIntAttribute(Lorg/xmlpull/v1/XmlPullParser;Ljava/lang/String;)I
 
-    move-result v6
+    move-result v17
 
     .line 443
-    const-string p1, "isEnabled"
+    .local v17, "state":I
+    const-string/jumbo v2, "isEnabled"
 
-    invoke-static {p0, p1}, Lcom/android/internal/util/XmlUtils;->readBooleanAttribute(Lorg/xmlpull/v1/XmlPullParser;Ljava/lang/String;)Z
+    invoke-static {v0, v2}, Lcom/android/internal/util/XmlUtils;->readBooleanAttribute(Lorg/xmlpull/v1/XmlPullParser;Ljava/lang/String;)Z
 
-    move-result v7
+    move-result v18
 
     .line 444
-    const-string p1, "isStatic"
+    .local v18, "isEnabled":Z
+    const-string/jumbo v2, "isStatic"
 
-    invoke-static {p0, p1}, Lcom/android/internal/util/XmlUtils;->readBooleanAttribute(Lorg/xmlpull/v1/XmlPullParser;Ljava/lang/String;)Z
+    invoke-static {v0, v2}, Lcom/android/internal/util/XmlUtils;->readBooleanAttribute(Lorg/xmlpull/v1/XmlPullParser;Ljava/lang/String;)Z
 
-    move-result v8
+    move-result v19
 
     .line 445
-    const-string/jumbo p1, "priority"
+    .local v19, "isStatic":Z
+    const-string/jumbo v2, "priority"
 
-    invoke-static {p0, p1}, Lcom/android/internal/util/XmlUtils;->readIntAttribute(Lorg/xmlpull/v1/XmlPullParser;Ljava/lang/String;)I
+    invoke-static {v0, v2}, Lcom/android/internal/util/XmlUtils;->readIntAttribute(Lorg/xmlpull/v1/XmlPullParser;Ljava/lang/String;)I
 
-    move-result v9
+    move-result v20
 
     .line 446
-    const-string p1, "category"
+    .local v20, "priority":I
+    const-string v2, "category"
 
-    invoke-static {p0, p1}, Lcom/android/internal/util/XmlUtils;->readStringAttribute(Lorg/xmlpull/v1/XmlPullParser;Ljava/lang/String;)Ljava/lang/String;
+    invoke-static {v0, v2}, Lcom/android/internal/util/XmlUtils;->readStringAttribute(Lorg/xmlpull/v1/XmlPullParser;Ljava/lang/String;)Ljava/lang/String;
 
-    move-result-object v10
+    move-result-object v21
 
     .line 448
-    new-instance p0, Lcom/android/server/om/OverlayManagerSettings$SettingsItem;
+    .local v21, "category":Ljava/lang/String;
+    new-instance v22, Lcom/android/server/om/OverlayManagerSettings$SettingsItem;
 
-    move-object v0, p0
+    move-object/from16 v2, v22
 
-    invoke-direct/range {v0 .. v10}, Lcom/android/server/om/OverlayManagerSettings$SettingsItem;-><init>(Ljava/lang/String;ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;IZZILjava/lang/String;)V
+    move-object v3, v1
 
-    return-object p0
+    move v4, v13
+
+    move-object v5, v14
+
+    move-object v6, v15
+
+    move-object/from16 v7, v16
+
+    move/from16 v8, v17
+
+    move/from16 v9, v18
+
+    move/from16 v10, v19
+
+    move/from16 v11, v20
+
+    move-object/from16 v12, v21
+
+    invoke-direct/range {v2 .. v12}, Lcom/android/server/om/OverlayManagerSettings$SettingsItem;-><init>(Ljava/lang/String;ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;IZZILjava/lang/String;)V
+
+    return-object v22
 .end method
 
 .method private static upgrade(I)V
     .registers 4
+    .param p0, "oldVersion"  # I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Lorg/xmlpull/v1/XmlPullParserException;
@@ -551,9 +615,9 @@
 
     invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v1
 
-    invoke-direct {v0, p0}, Lorg/xmlpull/v1/XmlPullParserException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v0, v1}, Lorg/xmlpull/v1/XmlPullParserException;-><init>(Ljava/lang/String;)V
 
     throw v0
 
@@ -571,15 +635,15 @@
 
     invoke-virtual {v1, p0}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    const-string p0, "; ignoring"
+    const-string v2, "; ignoring"
 
-    invoke-virtual {v1, p0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v1
 
-    invoke-direct {v0, p0}, Lorg/xmlpull/v1/XmlPullParserException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v0, v1}, Lorg/xmlpull/v1/XmlPullParserException;-><init>(Ljava/lang/String;)V
 
     throw v0
 .end method

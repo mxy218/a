@@ -27,6 +27,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/wm/ImmersiveModeConfirmation;Landroid/os/Looper;)V
     .registers 3
+    .param p2, "looper"  # Landroid/os/Looper;
 
     .line 385
     iput-object p1, p0, Lcom/android/server/wm/ImmersiveModeConfirmation$H;->this$0:Lcom/android/server/wm/ImmersiveModeConfirmation;
@@ -41,34 +42,35 @@
 
 # virtual methods
 .method public handleMessage(Landroid/os/Message;)V
-    .registers 3
+    .registers 4
+    .param p1, "msg"  # Landroid/os/Message;
 
     .line 391
-    iget p1, p1, Landroid/os/Message;->what:I
+    iget v0, p1, Landroid/os/Message;->what:I
 
-    const/4 v0, 0x1
+    const/4 v1, 0x1
 
-    if-eq p1, v0, :cond_f
+    if-eq v0, v1, :cond_f
 
-    const/4 v0, 0x2
+    const/4 v1, 0x2
 
-    if-eq p1, v0, :cond_9
+    if-eq v0, v1, :cond_9
 
     goto :goto_15
 
     .line 396
     :cond_9
-    iget-object p1, p0, Lcom/android/server/wm/ImmersiveModeConfirmation$H;->this$0:Lcom/android/server/wm/ImmersiveModeConfirmation;
+    iget-object v0, p0, Lcom/android/server/wm/ImmersiveModeConfirmation$H;->this$0:Lcom/android/server/wm/ImmersiveModeConfirmation;
 
-    invoke-static {p1}, Lcom/android/server/wm/ImmersiveModeConfirmation;->access$1100(Lcom/android/server/wm/ImmersiveModeConfirmation;)V
+    invoke-static {v0}, Lcom/android/server/wm/ImmersiveModeConfirmation;->access$1100(Lcom/android/server/wm/ImmersiveModeConfirmation;)V
 
     goto :goto_15
 
     .line 393
     :cond_f
-    iget-object p1, p0, Lcom/android/server/wm/ImmersiveModeConfirmation$H;->this$0:Lcom/android/server/wm/ImmersiveModeConfirmation;
+    iget-object v0, p0, Lcom/android/server/wm/ImmersiveModeConfirmation$H;->this$0:Lcom/android/server/wm/ImmersiveModeConfirmation;
 
-    invoke-static {p1}, Lcom/android/server/wm/ImmersiveModeConfirmation;->access$1200(Lcom/android/server/wm/ImmersiveModeConfirmation;)V
+    invoke-static {v0}, Lcom/android/server/wm/ImmersiveModeConfirmation;->access$1200(Lcom/android/server/wm/ImmersiveModeConfirmation;)V
 
     .line 394
     nop

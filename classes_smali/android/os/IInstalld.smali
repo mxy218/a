@@ -16,8 +16,6 @@
 
 
 # static fields
-.field public static final FLAG_CLEAR_APP_DATA_KEEP_ART_PROFILES:I = 0x20000
-
 .field public static final FLAG_CLEAR_CACHE_ONLY:I = 0x10
 
 .field public static final FLAG_CLEAR_CODE_CACHE_ONLY:I = 0x20
@@ -65,6 +63,14 @@
 .end method
 
 .method public abstract compileLayouts(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;I)Z
+    .annotation system Ldalvik/annotation/Throws;
+        value = {
+            Landroid/os/RemoteException;
+        }
+    .end annotation
+.end method
+
+.method public abstract copyFiles(Ljava/lang/String;Ljava/lang/String;)V
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -265,6 +271,14 @@
 .end method
 
 .method public abstract linkNativeLibraryDirectory(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;I)V
+    .annotation system Ldalvik/annotation/Throws;
+        value = {
+            Landroid/os/RemoteException;
+        }
+    .end annotation
+.end method
+
+.method public abstract markBootComplete(Ljava/lang/String;)V
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;

@@ -53,6 +53,8 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/textservices/TextServicesManagerService$SpellCheckerBindGroup;Lcom/android/server/textservices/TextServicesManagerService$SessionRequest;)V
     .registers 5
+    .param p1, "bindGroup"  # Lcom/android/server/textservices/TextServicesManagerService$SpellCheckerBindGroup;
+    .param p2, "request"  # Lcom/android/server/textservices/TextServicesManagerService$SessionRequest;
 
     .line 1077
     invoke-direct {p0}, Lcom/android/internal/textservice/ISpellCheckerServiceCallback$Stub;-><init>()V
@@ -78,11 +80,11 @@
     iput-object v1, p0, Lcom/android/server/textservices/TextServicesManagerService$ISpellCheckerServiceCallbackBinder;->mBindGroup:Ljava/lang/ref/WeakReference;
 
     .line 1080
-    new-instance p1, Ljava/lang/ref/WeakReference;
+    new-instance v1, Ljava/lang/ref/WeakReference;
 
-    invoke-direct {p1, p2}, Ljava/lang/ref/WeakReference;-><init>(Ljava/lang/Object;)V
+    invoke-direct {v1, p2}, Ljava/lang/ref/WeakReference;-><init>(Ljava/lang/Object;)V
 
-    iput-object p1, p0, Lcom/android/server/textservices/TextServicesManagerService$ISpellCheckerServiceCallbackBinder;->mRequest:Ljava/lang/ref/WeakReference;
+    iput-object v1, p0, Lcom/android/server/textservices/TextServicesManagerService$ISpellCheckerServiceCallbackBinder;->mRequest:Ljava/lang/ref/WeakReference;
 
     .line 1081
     monitor-exit v0
@@ -92,19 +94,20 @@
 
     .line 1081
     :catchall_1d
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_1f
     .catchall {:try_start_d .. :try_end_1f} :catchall_1d
 
-    throw p1
+    throw v1
 .end method
 
 
 # virtual methods
 .method public onSessionCreated(Lcom/android/internal/textservice/ISpellCheckerSession;)V
     .registers 6
+    .param p1, "newSession"  # Lcom/android/internal/textservice/ISpellCheckerSession;
 
     .line 1088
     iget-object v0, p0, Lcom/android/server/textservices/TextServicesManagerService$ISpellCheckerServiceCallbackBinder;->mCallbackLock:Ljava/lang/Object;
@@ -134,6 +137,7 @@
     check-cast v1, Lcom/android/server/textservices/TextServicesManagerService$SpellCheckerBindGroup;
 
     .line 1093
+    .local v1, "group":Lcom/android/server/textservices/TextServicesManagerService$SpellCheckerBindGroup;
     iget-object v2, p0, Lcom/android/server/textservices/TextServicesManagerService$ISpellCheckerServiceCallbackBinder;->mRequest:Ljava/lang/ref/WeakReference;
 
     invoke-virtual {v2}, Ljava/lang/ref/WeakReference;->get()Ljava/lang/Object;
@@ -143,6 +147,7 @@
     check-cast v2, Lcom/android/server/textservices/TextServicesManagerService$SessionRequest;
 
     .line 1094
+    .local v2, "request":Lcom/android/server/textservices/TextServicesManagerService$SessionRequest;
     const/4 v3, 0x0
 
     iput-object v3, p0, Lcom/android/server/textservices/TextServicesManagerService$ISpellCheckerServiceCallbackBinder;->mBindGroup:Ljava/lang/ref/WeakReference;
@@ -168,6 +173,8 @@
     return-void
 
     .line 1090
+    .end local v1  # "group":Lcom/android/server/textservices/TextServicesManagerService$SpellCheckerBindGroup;
+    .end local v2  # "request":Lcom/android/server/textservices/TextServicesManagerService$SessionRequest;
     :cond_2a
     :goto_2a
     :try_start_2a
@@ -177,11 +184,11 @@
 
     .line 1096
     :catchall_2c
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_2e
     .catchall {:try_start_2a .. :try_end_2e} :catchall_2c
 
-    throw p1
+    throw v1
 .end method

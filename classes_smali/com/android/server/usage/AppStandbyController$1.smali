@@ -21,6 +21,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/usage/AppStandbyController;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/usage/AppStandbyController;
 
     .line 1807
     iput-object p1, p0, Lcom/android/server/usage/AppStandbyController$1;->this$0:Lcom/android/server/usage/AppStandbyController;
@@ -33,21 +34,22 @@
 
 # virtual methods
 .method public onAvailable(Landroid/net/Network;)V
-    .registers 2
+    .registers 3
+    .param p1, "network"  # Landroid/net/Network;
 
     .line 1810
-    iget-object p1, p0, Lcom/android/server/usage/AppStandbyController$1;->this$0:Lcom/android/server/usage/AppStandbyController;
+    iget-object v0, p0, Lcom/android/server/usage/AppStandbyController$1;->this$0:Lcom/android/server/usage/AppStandbyController;
 
-    invoke-static {p1}, Lcom/android/server/usage/AppStandbyController;->access$500(Lcom/android/server/usage/AppStandbyController;)Landroid/net/ConnectivityManager;
+    invoke-static {v0}, Lcom/android/server/usage/AppStandbyController;->access$500(Lcom/android/server/usage/AppStandbyController;)Landroid/net/ConnectivityManager;
 
-    move-result-object p1
+    move-result-object v0
 
-    invoke-virtual {p1, p0}, Landroid/net/ConnectivityManager;->unregisterNetworkCallback(Landroid/net/ConnectivityManager$NetworkCallback;)V
+    invoke-virtual {v0, p0}, Landroid/net/ConnectivityManager;->unregisterNetworkCallback(Landroid/net/ConnectivityManager$NetworkCallback;)V
 
     .line 1811
-    iget-object p1, p0, Lcom/android/server/usage/AppStandbyController$1;->this$0:Lcom/android/server/usage/AppStandbyController;
+    iget-object v0, p0, Lcom/android/server/usage/AppStandbyController$1;->this$0:Lcom/android/server/usage/AppStandbyController;
 
-    invoke-virtual {p1}, Lcom/android/server/usage/AppStandbyController;->checkParoleTimeout()V
+    invoke-virtual {v0}, Lcom/android/server/usage/AppStandbyController;->checkParoleTimeout()V
 
     .line 1812
     return-void

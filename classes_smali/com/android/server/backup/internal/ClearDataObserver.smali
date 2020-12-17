@@ -10,6 +10,7 @@
 # direct methods
 .method public constructor <init>(Lcom/android/server/backup/UserBackupManagerService;)V
     .registers 2
+    .param p1, "backupManagerService"  # Lcom/android/server/backup/UserBackupManagerService;
 
     .line 27
     invoke-direct {p0}, Landroid/content/pm/IPackageDataObserver$Stub;-><init>()V
@@ -24,47 +25,49 @@
 
 # virtual methods
 .method public onRemoveCompleted(Ljava/lang/String;Z)V
-    .registers 4
+    .registers 6
+    .param p1, "packageName"  # Ljava/lang/String;
+    .param p2, "succeeded"  # Z
 
     .line 32
-    iget-object p1, p0, Lcom/android/server/backup/internal/ClearDataObserver;->backupManagerService:Lcom/android/server/backup/UserBackupManagerService;
+    iget-object v0, p0, Lcom/android/server/backup/internal/ClearDataObserver;->backupManagerService:Lcom/android/server/backup/UserBackupManagerService;
 
-    invoke-virtual {p1}, Lcom/android/server/backup/UserBackupManagerService;->getClearDataLock()Ljava/lang/Object;
+    invoke-virtual {v0}, Lcom/android/server/backup/UserBackupManagerService;->getClearDataLock()Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v0
 
-    monitor-enter p1
+    monitor-enter v0
 
     .line 33
     :try_start_7
-    iget-object p2, p0, Lcom/android/server/backup/internal/ClearDataObserver;->backupManagerService:Lcom/android/server/backup/UserBackupManagerService;
+    iget-object v1, p0, Lcom/android/server/backup/internal/ClearDataObserver;->backupManagerService:Lcom/android/server/backup/UserBackupManagerService;
 
-    const/4 v0, 0x0
+    const/4 v2, 0x0
 
-    invoke-virtual {p2, v0}, Lcom/android/server/backup/UserBackupManagerService;->setClearingData(Z)V
+    invoke-virtual {v1, v2}, Lcom/android/server/backup/UserBackupManagerService;->setClearingData(Z)V
 
     .line 34
-    iget-object p2, p0, Lcom/android/server/backup/internal/ClearDataObserver;->backupManagerService:Lcom/android/server/backup/UserBackupManagerService;
+    iget-object v1, p0, Lcom/android/server/backup/internal/ClearDataObserver;->backupManagerService:Lcom/android/server/backup/UserBackupManagerService;
 
-    invoke-virtual {p2}, Lcom/android/server/backup/UserBackupManagerService;->getClearDataLock()Ljava/lang/Object;
+    invoke-virtual {v1}, Lcom/android/server/backup/UserBackupManagerService;->getClearDataLock()Ljava/lang/Object;
 
-    move-result-object p2
+    move-result-object v1
 
-    invoke-virtual {p2}, Ljava/lang/Object;->notifyAll()V
+    invoke-virtual {v1}, Ljava/lang/Object;->notifyAll()V
 
     .line 35
-    monitor-exit p1
+    monitor-exit v0
 
     .line 36
     return-void
 
     .line 35
     :catchall_18
-    move-exception p2
+    move-exception v1
 
-    monitor-exit p1
+    monitor-exit v0
     :try_end_1a
     .catchall {:try_start_7 .. :try_end_1a} :catchall_18
 
-    throw p2
+    throw v1
 .end method

@@ -17,6 +17,8 @@
 # direct methods
 .method public constructor <init>(J[B)V
     .registers 4
+    .param p1, "sequenceId"  # J
+    .param p3, "snapshot"  # [B
 
     .line 221
     invoke-direct {p0, p1, p2, p3}, Lcom/google/android/startop/iorap/AppLaunchEvent$BaseWithActivityRecordData;-><init>(J[B)V
@@ -29,6 +31,7 @@
 # virtual methods
 .method public equals(Ljava/lang/Object;)Z
     .registers 3
+    .param p1, "other"  # Ljava/lang/Object;
 
     .line 226
     instance-of v0, p1, Lcom/google/android/startop/iorap/AppLaunchEvent$ActivityLaunched;
@@ -38,13 +41,13 @@
     .line 227
     invoke-super {p0, p1}, Lcom/google/android/startop/iorap/AppLaunchEvent$BaseWithActivityRecordData;->equals(Ljava/lang/Object;)Z
 
-    move-result p1
+    move-result v0
 
-    return p1
+    return v0
 
     .line 229
     :cond_9
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    return p1
+    return v0
 .end method

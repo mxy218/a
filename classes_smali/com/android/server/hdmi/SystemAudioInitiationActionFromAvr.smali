@@ -22,18 +22,19 @@
 
 # direct methods
 .method constructor <init>(Lcom/android/server/hdmi/HdmiCecLocalDevice;)V
-    .registers 2
+    .registers 3
+    .param p1, "source"  # Lcom/android/server/hdmi/HdmiCecLocalDevice;
 
     .line 39
     invoke-direct {p0, p1}, Lcom/android/server/hdmi/HdmiCecFeatureAction;-><init>(Lcom/android/server/hdmi/HdmiCecLocalDevice;)V
 
     .line 35
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    iput p1, p0, Lcom/android/server/hdmi/SystemAudioInitiationActionFromAvr;->mSendRequestActiveSourceRetryCount:I
+    iput v0, p0, Lcom/android/server/hdmi/SystemAudioInitiationActionFromAvr;->mSendRequestActiveSourceRetryCount:I
 
     .line 36
-    iput p1, p0, Lcom/android/server/hdmi/SystemAudioInitiationActionFromAvr;->mSendSetSystemAudioModeRetryCount:I
+    iput v0, p0, Lcom/android/server/hdmi/SystemAudioInitiationActionFromAvr;->mSendSetSystemAudioModeRetryCount:I
 
     .line 40
     return-void
@@ -127,6 +128,7 @@
 
 .method private switchToRelevantInputForDeviceAt(I)V
     .registers 2
+    .param p1, "physicalAddress"  # I
 
     .line 147
     return-void
@@ -135,7 +137,8 @@
 
 # virtual methods
 .method handleTimerEvent(I)V
-    .registers 3
+    .registers 4
+    .param p1, "state"  # I
 
     .line 74
     iget v0, p0, Lcom/android/server/hdmi/SystemAudioInitiationActionFromAvr;->mState:I
@@ -147,11 +150,11 @@
 
     .line 78
     :cond_5
-    iget p1, p0, Lcom/android/server/hdmi/SystemAudioInitiationActionFromAvr;->mState:I
+    iget v0, p0, Lcom/android/server/hdmi/SystemAudioInitiationActionFromAvr;->mState:I
 
-    const/4 v0, 0x1
+    const/4 v1, 0x1
 
-    if-eq p1, v0, :cond_b
+    if-eq v0, v1, :cond_b
 
     goto :goto_e
 
@@ -165,7 +168,8 @@
 .end method
 
 .method public synthetic lambda$queryTvSystemAudioModeSupport$2$SystemAudioInitiationActionFromAvr(Z)V
-    .registers 3
+    .registers 4
+    .param p1, "supported"  # Z
 
     .line 133
     if-eqz p1, :cond_16
@@ -173,20 +177,20 @@
     .line 134
     invoke-virtual {p0}, Lcom/android/server/hdmi/SystemAudioInitiationActionFromAvr;->audioSystem()Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;
 
-    move-result-object p1
+    move-result-object v0
 
-    const/4 v0, 0x1
+    const/4 v1, 0x1
 
-    invoke-virtual {p1, v0}, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->checkSupportAndSetSystemAudioMode(Z)Z
+    invoke-virtual {v0, v1}, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->checkSupportAndSetSystemAudioMode(Z)Z
 
-    move-result p1
+    move-result v0
 
-    if-eqz p1, :cond_12
+    if-eqz v0, :cond_12
 
     .line 135
-    const/16 p1, 0xf
+    const/16 v0, 0xf
 
-    invoke-virtual {p0, v0, p1}, Lcom/android/server/hdmi/SystemAudioInitiationActionFromAvr;->sendSetSystemAudioMode(ZI)V
+    invoke-virtual {p0, v1, v0}, Lcom/android/server/hdmi/SystemAudioInitiationActionFromAvr;->sendSetSystemAudioMode(ZI)V
 
     .line 137
     :cond_12
@@ -198,11 +202,11 @@
     :cond_16
     invoke-virtual {p0}, Lcom/android/server/hdmi/SystemAudioInitiationActionFromAvr;->audioSystem()Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;
 
-    move-result-object p1
+    move-result-object v0
 
-    const/4 v0, 0x0
+    const/4 v1, 0x0
 
-    invoke-virtual {p1, v0}, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->checkSupportAndSetSystemAudioMode(Z)Z
+    invoke-virtual {v0, v1}, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->checkSupportAndSetSystemAudioMode(Z)Z
 
     .line 140
     invoke-virtual {p0}, Lcom/android/server/hdmi/SystemAudioInitiationActionFromAvr;->finish()V
@@ -213,22 +217,23 @@
 .end method
 
 .method public synthetic lambda$sendRequestActiveSource$0$SystemAudioInitiationActionFromAvr(I)V
-    .registers 3
+    .registers 4
+    .param p1, "result"  # I
 
     .line 88
     if-eqz p1, :cond_1a
 
     .line 89
-    iget p1, p0, Lcom/android/server/hdmi/SystemAudioInitiationActionFromAvr;->mSendRequestActiveSourceRetryCount:I
+    iget v0, p0, Lcom/android/server/hdmi/SystemAudioInitiationActionFromAvr;->mSendRequestActiveSourceRetryCount:I
 
-    const/4 v0, 0x5
+    const/4 v1, 0x5
 
-    if-ge p1, v0, :cond_f
+    if-ge v0, v1, :cond_f
 
     .line 90
-    add-int/lit8 p1, p1, 0x1
+    add-int/lit8 v0, v0, 0x1
 
-    iput p1, p0, Lcom/android/server/hdmi/SystemAudioInitiationActionFromAvr;->mSendRequestActiveSourceRetryCount:I
+    iput v0, p0, Lcom/android/server/hdmi/SystemAudioInitiationActionFromAvr;->mSendRequestActiveSourceRetryCount:I
 
     .line 91
     invoke-virtual {p0}, Lcom/android/server/hdmi/SystemAudioInitiationActionFromAvr;->sendRequestActiveSource()V
@@ -239,11 +244,11 @@
     :cond_f
     invoke-virtual {p0}, Lcom/android/server/hdmi/SystemAudioInitiationActionFromAvr;->audioSystem()Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;
 
-    move-result-object p1
+    move-result-object v0
 
-    const/4 v0, 0x0
+    const/4 v1, 0x0
 
-    invoke-virtual {p1, v0}, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->checkSupportAndSetSystemAudioMode(Z)Z
+    invoke-virtual {v0, v1}, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->checkSupportAndSetSystemAudioMode(Z)Z
 
     .line 94
     invoke-virtual {p0}, Lcom/android/server/hdmi/SystemAudioInitiationActionFromAvr;->finish()V
@@ -255,22 +260,25 @@
 .end method
 
 .method public synthetic lambda$sendSetSystemAudioMode$1$SystemAudioInitiationActionFromAvr(ZII)V
-    .registers 5
+    .registers 6
+    .param p1, "on"  # Z
+    .param p2, "dest"  # I
+    .param p3, "result"  # I
 
     .line 103
     if-eqz p3, :cond_1a
 
     .line 104
-    iget p3, p0, Lcom/android/server/hdmi/SystemAudioInitiationActionFromAvr;->mSendSetSystemAudioModeRetryCount:I
+    iget v0, p0, Lcom/android/server/hdmi/SystemAudioInitiationActionFromAvr;->mSendSetSystemAudioModeRetryCount:I
 
-    const/4 v0, 0x5
+    const/4 v1, 0x5
 
-    if-ge p3, v0, :cond_f
+    if-ge v0, v1, :cond_f
 
     .line 105
-    add-int/lit8 p3, p3, 0x1
+    add-int/lit8 v0, v0, 0x1
 
-    iput p3, p0, Lcom/android/server/hdmi/SystemAudioInitiationActionFromAvr;->mSendSetSystemAudioModeRetryCount:I
+    iput v0, p0, Lcom/android/server/hdmi/SystemAudioInitiationActionFromAvr;->mSendSetSystemAudioModeRetryCount:I
 
     .line 106
     invoke-virtual {p0, p1, p2}, Lcom/android/server/hdmi/SystemAudioInitiationActionFromAvr;->sendSetSystemAudioMode(ZI)V
@@ -281,11 +289,11 @@
     :cond_f
     invoke-virtual {p0}, Lcom/android/server/hdmi/SystemAudioInitiationActionFromAvr;->audioSystem()Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;
 
-    move-result-object p1
+    move-result-object v0
 
-    const/4 p2, 0x0
+    const/4 v1, 0x0
 
-    invoke-virtual {p1, p2}, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->checkSupportAndSetSystemAudioMode(Z)Z
+    invoke-virtual {v0, v1}, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->checkSupportAndSetSystemAudioMode(Z)Z
 
     .line 109
     invoke-virtual {p0}, Lcom/android/server/hdmi/SystemAudioInitiationActionFromAvr;->finish()V
@@ -298,6 +306,7 @@
 
 .method processCommand(Lcom/android/server/hdmi/HdmiCecMessage;)Z
     .registers 5
+    .param p1, "cmd"  # Lcom/android/server/hdmi/HdmiCecMessage;
 
     .line 56
     invoke-virtual {p1}, Lcom/android/server/hdmi/HdmiCecMessage;->getOpcode()I
@@ -338,9 +347,9 @@
     invoke-virtual {v0, p1}, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->handleActiveSource(Lcom/android/server/hdmi/HdmiCecMessage;)Z
 
     .line 65
-    const/4 p1, 0x2
+    const/4 v0, 0x2
 
-    iput p1, p0, Lcom/android/server/hdmi/SystemAudioInitiationActionFromAvr;->mState:I
+    iput v0, p0, Lcom/android/server/hdmi/SystemAudioInitiationActionFromAvr;->mState:I
 
     .line 66
     invoke-direct {p0}, Lcom/android/server/hdmi/SystemAudioInitiationActionFromAvr;->queryTvSystemAudioModeSupport()V
@@ -373,6 +382,8 @@
 
 .method protected sendSetSystemAudioMode(ZI)V
     .registers 5
+    .param p1, "on"  # Z
+    .param p2, "dest"  # I
 
     .line 101
     invoke-virtual {p0}, Lcom/android/server/hdmi/SystemAudioInitiationActionFromAvr;->getSourceAddress()I

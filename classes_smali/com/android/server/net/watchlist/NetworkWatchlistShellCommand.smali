@@ -12,6 +12,8 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/net/watchlist/NetworkWatchlistService;Landroid/content/Context;)V
     .registers 3
+    .param p1, "service"  # Lcom/android/server/net/watchlist/NetworkWatchlistService;
+    .param p2, "context"  # Landroid/content/Context;
 
     .line 42
     invoke-direct {p0}, Landroid/os/ShellCommand;-><init>()V
@@ -40,11 +42,13 @@
     move-result-object v0
 
     .line 91
+    .local v0, "pw":Ljava/io/PrintWriter;
     invoke-static {}, Landroid/os/Binder;->clearCallingIdentity()J
 
     move-result-wide v1
 
     .line 94
+    .local v1, "ident":J
     const/4 v3, -0x1
 
     :try_start_9
@@ -114,13 +118,13 @@
     nop
 
     .line 108
-    const/4 v0, 0x0
+    const/4 v3, 0x0
 
-    return v0
+    return v3
 
     .line 106
     :catchall_3f
-    move-exception v0
+    move-exception v3
 
     goto :goto_5b
 
@@ -129,6 +133,7 @@
     move-exception v4
 
     .line 103
+    .local v4, "ex":Ljava/lang/Exception;
     :try_start_42
     new-instance v5, Ljava/lang/StringBuilder;
 
@@ -142,9 +147,9 @@
 
     invoke-virtual {v5}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v4
+    move-result-object v5
 
-    invoke-virtual {v0, v4}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {v0, v5}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
     :try_end_56
     .catchall {:try_start_42 .. :try_end_56} :catchall_3f
 
@@ -158,14 +163,15 @@
     return v3
 
     .line 106
+    .end local v4  # "ex":Ljava/lang/Exception;
     :goto_5b
     invoke-static {v1, v2}, Landroid/os/Binder;->restoreCallingIdentity(J)V
 
-    throw v0
+    throw v3
 .end method
 
 .method private runSetTestConfig()I
-    .registers 5
+    .registers 6
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -178,58 +184,66 @@
     move-result-object v0
 
     .line 75
+    .local v0, "pw":Ljava/io/PrintWriter;
     :try_start_4
     invoke-virtual {p0}, Lcom/android/server/net/watchlist/NetworkWatchlistShellCommand;->getNextArgRequired()Ljava/lang/String;
 
     move-result-object v1
 
     .line 76
+    .local v1, "configXmlPath":Ljava/lang/String;
     const-string/jumbo v2, "r"
 
     invoke-virtual {p0, v1, v2}, Lcom/android/server/net/watchlist/NetworkWatchlistShellCommand;->openFileForSystem(Ljava/lang/String;Ljava/lang/String;)Landroid/os/ParcelFileDescriptor;
 
-    move-result-object v1
+    move-result-object v2
 
     .line 77
-    if-eqz v1, :cond_21
+    .local v2, "pfd":Landroid/os/ParcelFileDescriptor;
+    if-eqz v2, :cond_21
 
     .line 78
-    new-instance v2, Ljava/io/FileInputStream;
+    new-instance v3, Ljava/io/FileInputStream;
 
-    invoke-virtual {v1}, Landroid/os/ParcelFileDescriptor;->getFileDescriptor()Ljava/io/FileDescriptor;
+    invoke-virtual {v2}, Landroid/os/ParcelFileDescriptor;->getFileDescriptor()Ljava/io/FileDescriptor;
 
-    move-result-object v1
+    move-result-object v4
 
-    invoke-direct {v2, v1}, Ljava/io/FileInputStream;-><init>(Ljava/io/FileDescriptor;)V
+    invoke-direct {v3, v4}, Ljava/io/FileInputStream;-><init>(Ljava/io/FileDescriptor;)V
 
     .line 79
+    .local v3, "fileStream":Ljava/io/InputStream;
     invoke-static {}, Lcom/android/server/net/watchlist/WatchlistConfig;->getInstance()Lcom/android/server/net/watchlist/WatchlistConfig;
 
-    move-result-object v1
+    move-result-object v4
 
-    invoke-virtual {v1, v2}, Lcom/android/server/net/watchlist/WatchlistConfig;->setTestMode(Ljava/io/InputStream;)V
+    invoke-virtual {v4, v3}, Lcom/android/server/net/watchlist/WatchlistConfig;->setTestMode(Ljava/io/InputStream;)V
 
     .line 81
+    .end local v3  # "fileStream":Ljava/io/InputStream;
     :cond_21
-    const-string v1, "Success!"
+    const-string v3, "Success!"
 
-    invoke-virtual {v0, v1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {v0, v3}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
     :try_end_26
     .catch Ljava/lang/Exception; {:try_start_4 .. :try_end_26} :catch_29
 
     .line 85
+    .end local v1  # "configXmlPath":Ljava/lang/String;
+    .end local v2  # "pfd":Landroid/os/ParcelFileDescriptor;
     nop
 
     .line 86
-    const/4 v0, 0x0
+    const/4 v1, 0x0
 
-    return v0
+    return v1
 
     .line 82
     :catch_29
     move-exception v1
 
     .line 83
+    .local v1, "ex":Ljava/lang/Exception;
     new-instance v2, Ljava/lang/StringBuilder;
 
     invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
@@ -240,26 +254,27 @@
 
     invoke-virtual {v1}, Ljava/lang/Exception;->toString()Ljava/lang/String;
 
-    move-result-object v1
+    move-result-object v3
 
-    invoke-virtual {v2, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v1
+    move-result-object v2
 
-    invoke-virtual {v0, v1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {v0, v2}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
     .line 84
-    const/4 v0, -0x1
+    const/4 v2, -0x1
 
-    return v0
+    return v2
 .end method
 
 
 # virtual methods
 .method public onCommand(Ljava/lang/String;)I
     .registers 7
+    .param p1, "cmd"  # Ljava/lang/String;
 
     .line 49
     if-nez p1, :cond_7
@@ -267,9 +282,9 @@
     .line 50
     invoke-virtual {p0, p1}, Lcom/android/server/net/watchlist/NetworkWatchlistShellCommand;->handleDefaultCommands(Ljava/lang/String;)I
 
-    move-result p1
+    move-result v0
 
-    return p1
+    return v0
 
     .line 53
     :cond_7
@@ -278,6 +293,7 @@
     move-result-object v0
 
     .line 55
+    .local v0, "pw":Ljava/io/PrintWriter;
     const/4 v1, -0x1
 
     :try_start_c
@@ -335,50 +351,52 @@
     .line 61
     invoke-virtual {p0, p1}, Lcom/android/server/net/watchlist/NetworkWatchlistShellCommand;->handleDefaultCommands(Ljava/lang/String;)I
 
-    move-result p1
+    move-result v1
 
-    return p1
+    return v1
 
     .line 59
     :cond_3b
     invoke-direct {p0}, Lcom/android/server/net/watchlist/NetworkWatchlistShellCommand;->runForceGenerateReport()I
 
-    move-result p1
+    move-result v1
 
-    return p1
+    return v1
 
     .line 57
     :cond_40
     invoke-direct {p0}, Lcom/android/server/net/watchlist/NetworkWatchlistShellCommand;->runSetTestConfig()I
 
-    move-result p1
+    move-result v1
     :try_end_44
     .catch Ljava/lang/Exception; {:try_start_c .. :try_end_44} :catch_45
 
-    return p1
+    return v1
 
     .line 63
     :catch_45
-    move-exception p1
+    move-exception v2
 
     .line 64
-    new-instance v2, Ljava/lang/StringBuilder;
+    .local v2, "e":Ljava/lang/Exception;
+    new-instance v3, Ljava/lang/StringBuilder;
 
-    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v3, "Exception: "
+    const-string v4, "Exception: "
 
-    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v2, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v3
 
-    invoke-virtual {v0, p1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {v0, v3}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
     .line 66
+    .end local v2  # "e":Ljava/lang/Exception;
     return v1
 .end method
 
@@ -391,6 +409,7 @@
     move-result-object v0
 
     .line 114
+    .local v0, "pw":Ljava/io/PrintWriter;
     const-string v1, "Network watchlist manager commands:"
 
     invoke-virtual {v0, v1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V

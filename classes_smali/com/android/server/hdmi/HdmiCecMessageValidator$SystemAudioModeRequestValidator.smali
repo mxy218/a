@@ -34,6 +34,8 @@
 
 .method synthetic constructor <init>(Lcom/android/server/hdmi/HdmiCecMessageValidator;Lcom/android/server/hdmi/HdmiCecMessageValidator$1;)V
     .registers 3
+    .param p1, "x0"  # Lcom/android/server/hdmi/HdmiCecMessageValidator;
+    .param p2, "x1"  # Lcom/android/server/hdmi/HdmiCecMessageValidator$1;
 
     .line 306
     invoke-direct {p0, p1}, Lcom/android/server/hdmi/HdmiCecMessageValidator$SystemAudioModeRequestValidator;-><init>(Lcom/android/server/hdmi/HdmiCecMessageValidator;)V
@@ -45,6 +47,7 @@
 # virtual methods
 .method public isValid([B)I
     .registers 3
+    .param p1, "params"  # [B
 
     .line 310
     array-length v0, p1
@@ -52,15 +55,15 @@
     if-nez v0, :cond_5
 
     .line 311
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    return p1
+    return v0
 
     .line 313
     :cond_5
     invoke-super {p0, p1}, Lcom/android/server/hdmi/HdmiCecMessageValidator$PhysicalAddressValidator;->isValid([B)I
 
-    move-result p1
+    move-result v0
 
-    return p1
+    return v0
 .end method

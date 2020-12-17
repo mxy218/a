@@ -49,6 +49,8 @@
 
 .method public onL2KeyResponse(Landroid/net/ipmemorystore/StatusParcelable;Ljava/lang/String;)V
     .registers 3
+    .param p1, "status"  # Landroid/net/ipmemorystore/StatusParcelable;
+    .param p2, "l2Key"  # Ljava/lang/String;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;

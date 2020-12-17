@@ -66,7 +66,8 @@
 .end method
 
 .method public constructor <init>(Landroid/content/Context;)V
-    .registers 5
+    .registers 6
+    .param p1, "context"  # Landroid/content/Context;
 
     .line 112
     invoke-direct {p0}, Lcom/android/internal/net/INetworkWatchlistManager$Stub;-><init>()V
@@ -96,46 +97,46 @@
     .line 114
     invoke-static {}, Lcom/android/server/net/watchlist/WatchlistConfig;->getInstance()Lcom/android/server/net/watchlist/WatchlistConfig;
 
-    move-result-object p1
-
-    iput-object p1, p0, Lcom/android/server/net/watchlist/NetworkWatchlistService;->mConfig:Lcom/android/server/net/watchlist/WatchlistConfig;
-
-    .line 115
-    new-instance p1, Lcom/android/server/ServiceThread;
-
-    sget-object v1, Lcom/android/server/net/watchlist/NetworkWatchlistService;->TAG:Ljava/lang/String;
-
-    const/16 v2, 0xa
-
-    invoke-direct {p1, v1, v2, v0}, Lcom/android/server/ServiceThread;-><init>(Ljava/lang/String;IZ)V
-
-    iput-object p1, p0, Lcom/android/server/net/watchlist/NetworkWatchlistService;->mHandlerThread:Lcom/android/server/ServiceThread;
-
-    .line 117
-    iget-object p1, p0, Lcom/android/server/net/watchlist/NetworkWatchlistService;->mHandlerThread:Lcom/android/server/ServiceThread;
-
-    invoke-virtual {p1}, Lcom/android/server/ServiceThread;->start()V
-
-    .line 118
-    new-instance p1, Lcom/android/server/net/watchlist/WatchlistLoggingHandler;
-
-    iget-object v0, p0, Lcom/android/server/net/watchlist/NetworkWatchlistService;->mContext:Landroid/content/Context;
-
-    iget-object v1, p0, Lcom/android/server/net/watchlist/NetworkWatchlistService;->mHandlerThread:Lcom/android/server/ServiceThread;
-
-    .line 119
-    invoke-virtual {v1}, Lcom/android/server/ServiceThread;->getLooper()Landroid/os/Looper;
-
     move-result-object v1
 
-    invoke-direct {p1, v0, v1}, Lcom/android/server/net/watchlist/WatchlistLoggingHandler;-><init>(Landroid/content/Context;Landroid/os/Looper;)V
+    iput-object v1, p0, Lcom/android/server/net/watchlist/NetworkWatchlistService;->mConfig:Lcom/android/server/net/watchlist/WatchlistConfig;
 
-    iput-object p1, p0, Lcom/android/server/net/watchlist/NetworkWatchlistService;->mNetworkWatchlistHandler:Lcom/android/server/net/watchlist/WatchlistLoggingHandler;
+    .line 115
+    new-instance v1, Lcom/android/server/ServiceThread;
+
+    sget-object v2, Lcom/android/server/net/watchlist/NetworkWatchlistService;->TAG:Ljava/lang/String;
+
+    const/16 v3, 0xa
+
+    invoke-direct {v1, v2, v3, v0}, Lcom/android/server/ServiceThread;-><init>(Ljava/lang/String;IZ)V
+
+    iput-object v1, p0, Lcom/android/server/net/watchlist/NetworkWatchlistService;->mHandlerThread:Lcom/android/server/ServiceThread;
+
+    .line 117
+    iget-object v0, p0, Lcom/android/server/net/watchlist/NetworkWatchlistService;->mHandlerThread:Lcom/android/server/ServiceThread;
+
+    invoke-virtual {v0}, Lcom/android/server/ServiceThread;->start()V
+
+    .line 118
+    new-instance v0, Lcom/android/server/net/watchlist/WatchlistLoggingHandler;
+
+    iget-object v1, p0, Lcom/android/server/net/watchlist/NetworkWatchlistService;->mContext:Landroid/content/Context;
+
+    iget-object v2, p0, Lcom/android/server/net/watchlist/NetworkWatchlistService;->mHandlerThread:Lcom/android/server/ServiceThread;
+
+    .line 119
+    invoke-virtual {v2}, Lcom/android/server/ServiceThread;->getLooper()Landroid/os/Looper;
+
+    move-result-object v2
+
+    invoke-direct {v0, v1, v2}, Lcom/android/server/net/watchlist/WatchlistLoggingHandler;-><init>(Landroid/content/Context;Landroid/os/Looper;)V
+
+    iput-object v0, p0, Lcom/android/server/net/watchlist/NetworkWatchlistService;->mNetworkWatchlistHandler:Lcom/android/server/net/watchlist/WatchlistLoggingHandler;
 
     .line 120
-    iget-object p1, p0, Lcom/android/server/net/watchlist/NetworkWatchlistService;->mNetworkWatchlistHandler:Lcom/android/server/net/watchlist/WatchlistLoggingHandler;
+    iget-object v0, p0, Lcom/android/server/net/watchlist/NetworkWatchlistService;->mNetworkWatchlistHandler:Lcom/android/server/net/watchlist/WatchlistLoggingHandler;
 
-    invoke-virtual {p1}, Lcom/android/server/net/watchlist/WatchlistLoggingHandler;->reportWatchlistIfNecessary()V
+    invoke-virtual {v0}, Lcom/android/server/net/watchlist/WatchlistLoggingHandler;->reportWatchlistIfNecessary()V
 
     .line 121
     return-void
@@ -143,6 +144,10 @@
 
 .method constructor <init>(Landroid/content/Context;Lcom/android/server/ServiceThread;Lcom/android/server/net/watchlist/WatchlistLoggingHandler;Landroid/net/IIpConnectivityMetrics;)V
     .registers 6
+    .param p1, "context"  # Landroid/content/Context;
+    .param p2, "handlerThread"  # Lcom/android/server/ServiceThread;
+    .param p3, "handler"  # Lcom/android/server/net/watchlist/WatchlistLoggingHandler;
+    .param p4, "ipConnectivityMetrics"  # Landroid/net/IIpConnectivityMetrics;
     .annotation build Lcom/android/internal/annotations/VisibleForTesting;
     .end annotation
 
@@ -174,9 +179,9 @@
     .line 128
     invoke-static {}, Lcom/android/server/net/watchlist/WatchlistConfig;->getInstance()Lcom/android/server/net/watchlist/WatchlistConfig;
 
-    move-result-object p1
+    move-result-object v0
 
-    iput-object p1, p0, Lcom/android/server/net/watchlist/NetworkWatchlistService;->mConfig:Lcom/android/server/net/watchlist/WatchlistConfig;
+    iput-object v0, p0, Lcom/android/server/net/watchlist/NetworkWatchlistService;->mConfig:Lcom/android/server/net/watchlist/WatchlistConfig;
 
     .line 129
     iput-object p2, p0, Lcom/android/server/net/watchlist/NetworkWatchlistService;->mHandlerThread:Lcom/android/server/ServiceThread;
@@ -202,6 +207,7 @@
 
 .method static synthetic access$100(Lcom/android/server/net/watchlist/NetworkWatchlistService;)V
     .registers 1
+    .param p0, "x0"  # Lcom/android/server/net/watchlist/NetworkWatchlistService;
 
     .line 50
     invoke-direct {p0}, Lcom/android/server/net/watchlist/NetworkWatchlistService;->init()V
@@ -211,6 +217,7 @@
 
 .method static synthetic access$200(Lcom/android/server/net/watchlist/NetworkWatchlistService;)V
     .registers 1
+    .param p0, "x0"  # Lcom/android/server/net/watchlist/NetworkWatchlistService;
 
     .line 50
     invoke-direct {p0}, Lcom/android/server/net/watchlist/NetworkWatchlistService;->initIpConnectivityMetrics()V
@@ -219,16 +226,17 @@
 .end method
 
 .method static synthetic access$300(Lcom/android/server/net/watchlist/NetworkWatchlistService;)Z
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/net/watchlist/NetworkWatchlistService;
 
     .line 50
-    iget-boolean p0, p0, Lcom/android/server/net/watchlist/NetworkWatchlistService;->mIsLoggingEnabled:Z
+    iget-boolean v0, p0, Lcom/android/server/net/watchlist/NetworkWatchlistService;->mIsLoggingEnabled:Z
 
-    return p0
+    return v0
 .end method
 
 .method private enforceWatchlistLoggingPermission()V
-    .registers 5
+    .registers 6
 
     .line 245
     invoke-static {}, Landroid/os/Binder;->getCallingUid()I
@@ -236,6 +244,7 @@
     move-result v0
 
     .line 246
+    .local v0, "uid":I
     const/16 v1, 0x3e8
 
     if-ne v0, v1, :cond_9
@@ -256,18 +265,18 @@
     .line 248
     invoke-static {v0}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
 
-    move-result-object v0
+    move-result-object v4
 
-    aput-object v0, v2, v3
+    aput-object v4, v2, v3
 
     .line 247
-    const-string v0, "Uid %d has no permission to change watchlist setting."
+    const-string v3, "Uid %d has no permission to change watchlist setting."
 
-    invoke-static {v0, v2}, Ljava/lang/String;->format(Ljava/lang/String;[Ljava/lang/Object;)Ljava/lang/String;
+    invoke-static {v3, v2}, Ljava/lang/String;->format(Ljava/lang/String;[Ljava/lang/Object;)Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v2
 
-    invoke-direct {v1, v0}, Ljava/lang/SecurityException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v1, v2}, Ljava/lang/SecurityException;-><init>(Ljava/lang/String;)V
 
     throw v1
 .end method
@@ -317,6 +326,7 @@
     move-result v0
 
     .line 164
+    .local v0, "callingUid":I
     const/16 v1, 0x7d0
 
     if-eq v0, v1, :cond_d
@@ -326,22 +336,25 @@
     goto :goto_d
 
     :cond_b
-    const/4 v0, 0x0
+    const/4 v1, 0x0
 
     goto :goto_e
 
     :cond_d
     :goto_d
-    const/4 v0, 0x1
+    const/4 v1, 0x1
 
     :goto_e
-    return v0
+    return v1
 .end method
 
 
 # virtual methods
 .method protected dump(Ljava/io/FileDescriptor;Ljava/io/PrintWriter;[Ljava/lang/String;)V
     .registers 6
+    .param p1, "fd"  # Ljava/io/FileDescriptor;
+    .param p2, "pw"  # Ljava/io/PrintWriter;
+    .param p3, "args"  # [Ljava/lang/String;
 
     .line 282
     iget-object v0, p0, Lcom/android/server/net/watchlist/NetworkWatchlistService;->mContext:Landroid/content/Context;
@@ -368,6 +381,7 @@
 
 .method public forceReportWatchlistForTest(J)Z
     .registers 4
+    .param p1, "lastReportTime"  # J
 
     .line 272
     iget-object v0, p0, Lcom/android/server/net/watchlist/NetworkWatchlistService;->mConfig:Lcom/android/server/net/watchlist/WatchlistConfig;
@@ -379,9 +393,9 @@
     if-eqz v0, :cond_a
 
     .line 274
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    return p1
+    return v0
 
     .line 276
     :cond_a
@@ -390,9 +404,9 @@
     invoke-virtual {v0, p1, p2}, Lcom/android/server/net/watchlist/WatchlistLoggingHandler;->forceReportWatchlistForTest(J)V
 
     .line 277
-    const/4 p1, 0x1
+    const/4 v0, 0x1
 
-    return p1
+    return v0
 .end method
 
 .method public getWatchlistConfigHash()[B
@@ -410,6 +424,12 @@
 
 .method public onShellCommand(Ljava/io/FileDescriptor;Ljava/io/FileDescriptor;Ljava/io/FileDescriptor;[Ljava/lang/String;Landroid/os/ShellCallback;Landroid/os/ResultReceiver;)V
     .registers 15
+    .param p1, "in"  # Ljava/io/FileDescriptor;
+    .param p2, "out"  # Ljava/io/FileDescriptor;
+    .param p3, "err"  # Ljava/io/FileDescriptor;
+    .param p4, "args"  # [Ljava/lang/String;
+    .param p5, "callback"  # Landroid/os/ShellCallback;
+    .param p6, "resultReceiver"  # Landroid/os/ResultReceiver;
 
     .line 170
     invoke-direct {p0}, Lcom/android/server/net/watchlist/NetworkWatchlistService;->isCallerShell()Z
@@ -419,11 +439,11 @@
     if-nez v0, :cond_e
 
     .line 171
-    sget-object p1, Lcom/android/server/net/watchlist/NetworkWatchlistService;->TAG:Ljava/lang/String;
+    sget-object v0, Lcom/android/server/net/watchlist/NetworkWatchlistService;->TAG:Ljava/lang/String;
 
-    const-string p2, "Only shell is allowed to call network watchlist shell commands"
+    const-string v1, "Only shell is allowed to call network watchlist shell commands"
 
-    invoke-static {p1, p2}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v0, v1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 172
     return-void
@@ -592,11 +612,13 @@
     move-exception v2
 
     .line 198
+    .local v2, "re":Landroid/os/RemoteException;
     monitor-exit v0
 
     return v1
 
     .line 200
+    .end local v2  # "re":Landroid/os/RemoteException;
     :catchall_26
     move-exception v1
 
@@ -687,11 +709,13 @@
     move-exception v2
 
     .line 227
+    .local v2, "re":Landroid/os/RemoteException;
     monitor-exit v0
 
     return v1
 
     .line 229
+    .end local v2  # "re":Landroid/os/RemoteException;
     :catchall_20
     move-exception v1
 

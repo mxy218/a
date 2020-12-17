@@ -24,6 +24,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/notification/EventConditionProvider;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/notification/EventConditionProvider;
 
     .line 316
     iput-object p1, p0, Lcom/android/server/notification/EventConditionProvider$2;->this$0:Lcom/android/server/notification/EventConditionProvider;
@@ -43,16 +44,16 @@
 
     move-result v0
 
-    if-eqz v0, :cond_d
+    if-eqz v0, :cond_e
 
     const-string v0, "ConditionProviders.ECP"
 
-    const-string v1, "mTrackerCallback.onChanged"
+    const-string/jumbo v1, "mTrackerCallback.onChanged"
 
     invoke-static {v0, v1}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 320
-    :cond_d
+    :cond_e
     iget-object v0, p0, Lcom/android/server/notification/EventConditionProvider$2;->this$0:Lcom/android/server/notification/EventConditionProvider;
 
     invoke-static {v0}, Lcom/android/server/notification/EventConditionProvider;->access$300(Lcom/android/server/notification/EventConditionProvider;)Landroid/os/Handler;

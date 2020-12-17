@@ -24,6 +24,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/hdmi/RequestArcInitiationAction;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/hdmi/RequestArcInitiationAction;
 
     .line 46
     iput-object p1, p0, Lcom/android/server/hdmi/RequestArcInitiationAction$1;->this$0:Lcom/android/server/hdmi/RequestArcInitiationAction;
@@ -36,26 +37,27 @@
 
 # virtual methods
 .method public onSendCompleted(I)V
-    .registers 3
+    .registers 4
+    .param p1, "error"  # I
 
     .line 49
     if-eqz p1, :cond_11
 
     .line 51
-    iget-object p1, p0, Lcom/android/server/hdmi/RequestArcInitiationAction$1;->this$0:Lcom/android/server/hdmi/RequestArcInitiationAction;
+    iget-object v0, p0, Lcom/android/server/hdmi/RequestArcInitiationAction$1;->this$0:Lcom/android/server/hdmi/RequestArcInitiationAction;
 
-    invoke-virtual {p1}, Lcom/android/server/hdmi/RequestArcInitiationAction;->tv()Lcom/android/server/hdmi/HdmiCecLocalDeviceTv;
+    invoke-virtual {v0}, Lcom/android/server/hdmi/RequestArcInitiationAction;->tv()Lcom/android/server/hdmi/HdmiCecLocalDeviceTv;
 
-    move-result-object p1
+    move-result-object v0
 
-    const/4 v0, 0x0
+    const/4 v1, 0x0
 
-    invoke-virtual {p1, v0}, Lcom/android/server/hdmi/HdmiCecLocalDeviceTv;->setArcStatus(Z)Z
+    invoke-virtual {v0, v1}, Lcom/android/server/hdmi/HdmiCecLocalDeviceTv;->setArcStatus(Z)Z
 
     .line 52
-    iget-object p1, p0, Lcom/android/server/hdmi/RequestArcInitiationAction$1;->this$0:Lcom/android/server/hdmi/RequestArcInitiationAction;
+    iget-object v0, p0, Lcom/android/server/hdmi/RequestArcInitiationAction$1;->this$0:Lcom/android/server/hdmi/RequestArcInitiationAction;
 
-    invoke-virtual {p1}, Lcom/android/server/hdmi/RequestArcInitiationAction;->finish()V
+    invoke-virtual {v0}, Lcom/android/server/hdmi/RequestArcInitiationAction;->finish()V
 
     .line 54
     :cond_11

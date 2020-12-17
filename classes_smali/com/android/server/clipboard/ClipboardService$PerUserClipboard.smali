@@ -47,34 +47,35 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/clipboard/ClipboardService;I)V
     .registers 3
+    .param p2, "userId"  # I
 
-    .line 250
+    .line 253
     iput-object p1, p0, Lcom/android/server/clipboard/ClipboardService$PerUserClipboard;->this$0:Lcom/android/server/clipboard/ClipboardService;
 
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
-    .line 239
+    .line 242
     new-instance p1, Landroid/os/RemoteCallbackList;
 
     invoke-direct {p1}, Landroid/os/RemoteCallbackList;-><init>()V
 
     iput-object p1, p0, Lcom/android/server/clipboard/ClipboardService$PerUserClipboard;->primaryClipListeners:Landroid/os/RemoteCallbackList;
 
-    .line 245
+    .line 248
     const/16 p1, 0x270f
 
     iput p1, p0, Lcom/android/server/clipboard/ClipboardService$PerUserClipboard;->primaryClipUid:I
 
-    .line 247
+    .line 250
     new-instance p1, Ljava/util/HashSet;
 
     invoke-direct {p1}, Ljava/util/HashSet;-><init>()V
 
     iput-object p1, p0, Lcom/android/server/clipboard/ClipboardService$PerUserClipboard;->activePermissionOwners:Ljava/util/HashSet;
 
-    .line 251
+    .line 254
     iput p2, p0, Lcom/android/server/clipboard/ClipboardService$PerUserClipboard;->userId:I
 
-    .line 252
+    .line 255
     return-void
 .end method

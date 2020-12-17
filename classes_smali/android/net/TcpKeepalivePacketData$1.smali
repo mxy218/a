@@ -40,6 +40,7 @@
 # virtual methods
 .method public createFromParcel(Landroid/os/Parcel;)Landroid/net/TcpKeepalivePacketData;
     .registers 4
+    .param p1, "in"  # Landroid/os/Parcel;
 
     .line 196
     new-instance v0, Landroid/net/TcpKeepalivePacketData;
@@ -63,12 +64,13 @@
 .end method
 
 .method public newArray(I)[Landroid/net/TcpKeepalivePacketData;
-    .registers 2
+    .registers 3
+    .param p1, "size"  # I
 
     .line 200
-    new-array p1, p1, [Landroid/net/TcpKeepalivePacketData;
+    new-array v0, p1, [Landroid/net/TcpKeepalivePacketData;
 
-    return-object p1
+    return-object v0
 .end method
 
 .method public bridge synthetic newArray(I)[Ljava/lang/Object;

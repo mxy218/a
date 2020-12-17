@@ -24,6 +24,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/voiceinteraction/VoiceInteractionManagerServiceImpl;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/voiceinteraction/VoiceInteractionManagerServiceImpl;
 
     .line 108
     iput-object p1, p0, Lcom/android/server/voiceinteraction/VoiceInteractionManagerServiceImpl$2;->this$0:Lcom/android/server/voiceinteraction/VoiceInteractionManagerServiceImpl;
@@ -36,34 +37,36 @@
 
 # virtual methods
 .method public onServiceConnected(Landroid/content/ComponentName;Landroid/os/IBinder;)V
-    .registers 4
+    .registers 6
+    .param p1, "name"  # Landroid/content/ComponentName;
+    .param p2, "service"  # Landroid/os/IBinder;
 
     .line 111
-    iget-object p1, p0, Lcom/android/server/voiceinteraction/VoiceInteractionManagerServiceImpl$2;->this$0:Lcom/android/server/voiceinteraction/VoiceInteractionManagerServiceImpl;
+    iget-object v0, p0, Lcom/android/server/voiceinteraction/VoiceInteractionManagerServiceImpl$2;->this$0:Lcom/android/server/voiceinteraction/VoiceInteractionManagerServiceImpl;
 
-    iget-object p1, p1, Lcom/android/server/voiceinteraction/VoiceInteractionManagerServiceImpl;->mServiceStub:Lcom/android/server/voiceinteraction/VoiceInteractionManagerService$VoiceInteractionManagerServiceStub;
+    iget-object v0, v0, Lcom/android/server/voiceinteraction/VoiceInteractionManagerServiceImpl;->mServiceStub:Lcom/android/server/voiceinteraction/VoiceInteractionManagerService$VoiceInteractionManagerServiceStub;
 
-    monitor-enter p1
+    monitor-enter v0
 
     .line 112
     :try_start_5
-    iget-object v0, p0, Lcom/android/server/voiceinteraction/VoiceInteractionManagerServiceImpl$2;->this$0:Lcom/android/server/voiceinteraction/VoiceInteractionManagerServiceImpl;
+    iget-object v1, p0, Lcom/android/server/voiceinteraction/VoiceInteractionManagerServiceImpl$2;->this$0:Lcom/android/server/voiceinteraction/VoiceInteractionManagerServiceImpl;
 
     invoke-static {p2}, Landroid/service/voice/IVoiceInteractionService$Stub;->asInterface(Landroid/os/IBinder;)Landroid/service/voice/IVoiceInteractionService;
 
-    move-result-object p2
+    move-result-object v2
 
-    iput-object p2, v0, Lcom/android/server/voiceinteraction/VoiceInteractionManagerServiceImpl;->mService:Landroid/service/voice/IVoiceInteractionService;
+    iput-object v2, v1, Lcom/android/server/voiceinteraction/VoiceInteractionManagerServiceImpl;->mService:Landroid/service/voice/IVoiceInteractionService;
     :try_end_d
     .catchall {:try_start_5 .. :try_end_d} :catchall_18
 
     .line 114
     :try_start_d
-    iget-object p2, p0, Lcom/android/server/voiceinteraction/VoiceInteractionManagerServiceImpl$2;->this$0:Lcom/android/server/voiceinteraction/VoiceInteractionManagerServiceImpl;
+    iget-object v1, p0, Lcom/android/server/voiceinteraction/VoiceInteractionManagerServiceImpl$2;->this$0:Lcom/android/server/voiceinteraction/VoiceInteractionManagerServiceImpl;
 
-    iget-object p2, p2, Lcom/android/server/voiceinteraction/VoiceInteractionManagerServiceImpl;->mService:Landroid/service/voice/IVoiceInteractionService;
+    iget-object v1, v1, Lcom/android/server/voiceinteraction/VoiceInteractionManagerServiceImpl;->mService:Landroid/service/voice/IVoiceInteractionService;
 
-    invoke-interface {p2}, Landroid/service/voice/IVoiceInteractionService;->ready()V
+    invoke-interface {v1}, Landroid/service/voice/IVoiceInteractionService;->ready()V
     :try_end_14
     .catch Landroid/os/RemoteException; {:try_start_d .. :try_end_14} :catch_15
     .catchall {:try_start_d .. :try_end_14} :catchall_18
@@ -73,36 +76,37 @@
 
     .line 115
     :catch_15
-    move-exception p2
+    move-exception v1
 
     .line 117
     :goto_16
     :try_start_16
-    monitor-exit p1
+    monitor-exit v0
 
     .line 118
     return-void
 
     .line 117
     :catchall_18
-    move-exception p2
+    move-exception v1
 
-    monitor-exit p1
+    monitor-exit v0
     :try_end_1a
     .catchall {:try_start_16 .. :try_end_1a} :catchall_18
 
-    throw p2
+    throw v1
 .end method
 
 .method public onServiceDisconnected(Landroid/content/ComponentName;)V
-    .registers 3
+    .registers 4
+    .param p1, "name"  # Landroid/content/ComponentName;
 
     .line 122
-    iget-object p1, p0, Lcom/android/server/voiceinteraction/VoiceInteractionManagerServiceImpl$2;->this$0:Lcom/android/server/voiceinteraction/VoiceInteractionManagerServiceImpl;
+    iget-object v0, p0, Lcom/android/server/voiceinteraction/VoiceInteractionManagerServiceImpl$2;->this$0:Lcom/android/server/voiceinteraction/VoiceInteractionManagerServiceImpl;
 
-    const/4 v0, 0x0
+    const/4 v1, 0x0
 
-    iput-object v0, p1, Lcom/android/server/voiceinteraction/VoiceInteractionManagerServiceImpl;->mService:Landroid/service/voice/IVoiceInteractionService;
+    iput-object v1, v0, Lcom/android/server/voiceinteraction/VoiceInteractionManagerServiceImpl;->mService:Landroid/service/voice/IVoiceInteractionService;
 
     .line 123
     return-void

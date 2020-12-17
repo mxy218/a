@@ -39,7 +39,8 @@
 
 # virtual methods
 .method public createFromParcel(Landroid/os/Parcel;)Lcom/google/android/startop/iorap/AppLaunchEvent;
-    .registers 7
+    .registers 8
+    .param p1, "source"  # Landroid/os/Parcel;
 
     .line 293
     invoke-virtual {p1}, Landroid/os/Parcel;->readInt()I
@@ -47,111 +48,121 @@
     move-result v0
 
     .line 295
+    .local v0, "typeIndex":I
     invoke-static {v0}, Lcom/google/android/startop/iorap/AppLaunchEvent;->access$000(I)Ljava/lang/Class;
 
     move-result-object v1
 
     .line 296
+    .local v1, "kls":Ljava/lang/Class;, "Ljava/lang/Class<*>;"
     if-eqz v1, :cond_3d
 
     .line 301
-    const/4 v0, 0x1
+    const/4 v2, 0x1
 
     :try_start_b
-    new-array v2, v0, [Ljava/lang/Class;
+    new-array v3, v2, [Ljava/lang/Class;
 
-    const-class v3, Landroid/os/Parcel;
+    const-class v4, Landroid/os/Parcel;
 
-    const/4 v4, 0x0
+    const/4 v5, 0x0
 
-    aput-object v3, v2, v4
+    aput-object v4, v3, v5
 
-    invoke-virtual {v1, v2}, Ljava/lang/Class;->getConstructor([Ljava/lang/Class;)Ljava/lang/reflect/Constructor;
+    invoke-virtual {v1, v3}, Ljava/lang/Class;->getConstructor([Ljava/lang/Class;)Ljava/lang/reflect/Constructor;
 
-    move-result-object v1
+    move-result-object v3
 
-    new-array v0, v0, [Ljava/lang/Object;
+    new-array v2, v2, [Ljava/lang/Object;
 
-    aput-object p1, v0, v4
+    aput-object p1, v2, v5
 
-    invoke-virtual {v1, v0}, Ljava/lang/reflect/Constructor;->newInstance([Ljava/lang/Object;)Ljava/lang/Object;
+    invoke-virtual {v3, v2}, Ljava/lang/reflect/Constructor;->newInstance([Ljava/lang/Object;)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v2
 
-    check-cast p1, Lcom/google/android/startop/iorap/AppLaunchEvent;
+    check-cast v2, Lcom/google/android/startop/iorap/AppLaunchEvent;
     :try_end_20
     .catch Ljava/lang/InstantiationException; {:try_start_b .. :try_end_20} :catch_36
     .catch Ljava/lang/IllegalAccessException; {:try_start_b .. :try_end_20} :catch_2f
     .catch Ljava/lang/reflect/InvocationTargetException; {:try_start_b .. :try_end_20} :catch_28
     .catch Ljava/lang/NoSuchMethodException; {:try_start_b .. :try_end_20} :catch_21
 
-    return-object p1
+    return-object v2
 
     .line 308
     :catch_21
-    move-exception p1
+    move-exception v2
 
     .line 309
-    new-instance v0, Ljava/lang/AssertionError;
+    .local v2, "e":Ljava/lang/NoSuchMethodException;
+    new-instance v3, Ljava/lang/AssertionError;
 
-    invoke-direct {v0, p1}, Ljava/lang/AssertionError;-><init>(Ljava/lang/Object;)V
+    invoke-direct {v3, v2}, Ljava/lang/AssertionError;-><init>(Ljava/lang/Object;)V
 
-    throw v0
+    throw v3
 
     .line 306
+    .end local v2  # "e":Ljava/lang/NoSuchMethodException;
     :catch_28
-    move-exception p1
+    move-exception v2
 
     .line 307
-    new-instance v0, Ljava/lang/AssertionError;
+    .local v2, "e":Ljava/lang/reflect/InvocationTargetException;
+    new-instance v3, Ljava/lang/AssertionError;
 
-    invoke-direct {v0, p1}, Ljava/lang/AssertionError;-><init>(Ljava/lang/Object;)V
+    invoke-direct {v3, v2}, Ljava/lang/AssertionError;-><init>(Ljava/lang/Object;)V
 
-    throw v0
+    throw v3
 
     .line 304
+    .end local v2  # "e":Ljava/lang/reflect/InvocationTargetException;
     :catch_2f
-    move-exception p1
+    move-exception v2
 
     .line 305
-    new-instance v0, Ljava/lang/AssertionError;
+    .local v2, "e":Ljava/lang/IllegalAccessException;
+    new-instance v3, Ljava/lang/AssertionError;
 
-    invoke-direct {v0, p1}, Ljava/lang/AssertionError;-><init>(Ljava/lang/Object;)V
+    invoke-direct {v3, v2}, Ljava/lang/AssertionError;-><init>(Ljava/lang/Object;)V
 
-    throw v0
+    throw v3
 
     .line 302
+    .end local v2  # "e":Ljava/lang/IllegalAccessException;
     :catch_36
-    move-exception p1
+    move-exception v2
 
     .line 303
-    new-instance v0, Ljava/lang/AssertionError;
+    .local v2, "e":Ljava/lang/InstantiationException;
+    new-instance v3, Ljava/lang/AssertionError;
 
-    invoke-direct {v0, p1}, Ljava/lang/AssertionError;-><init>(Ljava/lang/Object;)V
+    invoke-direct {v3, v2}, Ljava/lang/AssertionError;-><init>(Ljava/lang/Object;)V
 
-    throw v0
+    throw v3
 
     .line 297
+    .end local v2  # "e":Ljava/lang/InstantiationException;
     :cond_3d
-    new-instance p1, Ljava/lang/IllegalArgumentException;
+    new-instance v2, Ljava/lang/IllegalArgumentException;
 
-    new-instance v1, Ljava/lang/StringBuilder;
+    new-instance v3, Ljava/lang/StringBuilder;
 
-    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v2, "Invalid type index: "
+    const-string v4, "Invalid type index: "
 
-    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v1, v0}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v0}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v3
 
-    invoke-direct {p1, v0}, Ljava/lang/IllegalArgumentException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v2, v3}, Ljava/lang/IllegalArgumentException;-><init>(Ljava/lang/String;)V
 
-    throw p1
+    throw v2
 .end method
 
 .method public bridge synthetic createFromParcel(Landroid/os/Parcel;)Ljava/lang/Object;
@@ -166,14 +177,15 @@
 .end method
 
 .method public newArray(I)[Lcom/google/android/startop/iorap/AppLaunchEvent;
-    .registers 2
+    .registers 3
+    .param p1, "size"  # I
 
     .line 315
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    new-array p1, p1, [Lcom/google/android/startop/iorap/AppLaunchEvent;
+    new-array v0, v0, [Lcom/google/android/startop/iorap/AppLaunchEvent;
 
-    return-object p1
+    return-object v0
 .end method
 
 .method public bridge synthetic newArray(I)[Ljava/lang/Object;

@@ -31,6 +31,8 @@
 # direct methods
 .method public constructor <init>(Lcom/android/server/tv/TvRemoteService;Lcom/android/server/tv/TvRemoteService$UserProvider;Landroid/content/Context;)V
     .registers 6
+    .param p2, "provider"  # Lcom/android/server/tv/TvRemoteService$UserProvider;
+    .param p3, "context"  # Landroid/content/Context;
 
     .line 222
     iput-object p1, p0, Lcom/android/server/tv/TvRemoteService$UserHandler;->this$0:Lcom/android/server/tv/TvRemoteService;
@@ -84,6 +86,7 @@
 # virtual methods
 .method public handleMessage(Landroid/os/Message;)V
     .registers 4
+    .param p1, "msg"  # Landroid/os/Message;
 
     .line 229
     iget v0, p1, Landroid/os/Message;->what:I
@@ -100,32 +103,36 @@
 
     .line 235
     :cond_9
-    iget-object p1, p1, Landroid/os/Message;->obj:Ljava/lang/Object;
+    iget-object v0, p1, Landroid/os/Message;->obj:Ljava/lang/Object;
 
-    check-cast p1, Landroid/os/IBinder;
+    check-cast v0, Landroid/os/IBinder;
 
     .line 236
-    iget-object v0, p0, Lcom/android/server/tv/TvRemoteService$UserHandler;->this$0:Lcom/android/server/tv/TvRemoteService;
+    .local v0, "token":Landroid/os/IBinder;
+    iget-object v1, p0, Lcom/android/server/tv/TvRemoteService$UserHandler;->this$0:Lcom/android/server/tv/TvRemoteService;
 
-    invoke-static {v0}, Lcom/android/server/tv/TvRemoteService;->access$000(Lcom/android/server/tv/TvRemoteService;)Ljava/util/Map;
+    invoke-static {v1}, Lcom/android/server/tv/TvRemoteService;->access$000(Lcom/android/server/tv/TvRemoteService;)Ljava/util/Map;
 
-    move-result-object v0
+    move-result-object v1
 
-    invoke-interface {v0, p1}, Ljava/util/Map;->get(Ljava/lang/Object;)Ljava/lang/Object;
+    invoke-interface {v1, v0}, Ljava/util/Map;->get(Ljava/lang/Object;)Ljava/lang/Object;
 
-    move-result-object v0
+    move-result-object v1
 
-    check-cast v0, Lcom/android/server/tv/TvRemoteProviderProxy;
+    check-cast v1, Lcom/android/server/tv/TvRemoteProviderProxy;
 
     .line 237
-    if-eqz v0, :cond_23
+    .local v1, "provider":Lcom/android/server/tv/TvRemoteProviderProxy;
+    if-eqz v1, :cond_23
 
     .line 238
-    invoke-virtual {v0, p1}, Lcom/android/server/tv/TvRemoteProviderProxy;->inputBridgeConnected(Landroid/os/IBinder;)V
+    invoke-virtual {v1, v0}, Lcom/android/server/tv/TvRemoteProviderProxy;->inputBridgeConnected(Landroid/os/IBinder;)V
 
     goto :goto_23
 
     .line 231
+    .end local v0  # "token":Landroid/os/IBinder;
+    .end local v1  # "provider":Lcom/android/server/tv/TvRemoteProviderProxy;
     :cond_1f
     invoke-direct {p0}, Lcom/android/server/tv/TvRemoteService$UserHandler;->start()V
 

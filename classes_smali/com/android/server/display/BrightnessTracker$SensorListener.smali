@@ -25,7 +25,7 @@
 .method private constructor <init>(Lcom/android/server/display/BrightnessTracker;)V
     .registers 2
 
-    .line 884
+    .line 881
     iput-object p1, p0, Lcom/android/server/display/BrightnessTracker$SensorListener;->this$0:Lcom/android/server/display/BrightnessTracker;
 
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -35,8 +35,10 @@
 
 .method synthetic constructor <init>(Lcom/android/server/display/BrightnessTracker;Lcom/android/server/display/BrightnessTracker$1;)V
     .registers 3
+    .param p1, "x0"  # Lcom/android/server/display/BrightnessTracker;
+    .param p2, "x1"  # Lcom/android/server/display/BrightnessTracker$1;
 
-    .line 884
+    .line 881
     invoke-direct {p0, p1}, Lcom/android/server/display/BrightnessTracker$SensorListener;-><init>(Lcom/android/server/display/BrightnessTracker;)V
 
     return-void
@@ -46,24 +48,27 @@
 # virtual methods
 .method public onAccuracyChanged(Landroid/hardware/Sensor;I)V
     .registers 3
+    .param p1, "sensor"  # Landroid/hardware/Sensor;
+    .param p2, "accuracy"  # I
 
-    .line 894
+    .line 891
     return-void
 .end method
 
 .method public onSensorChanged(Landroid/hardware/SensorEvent;)V
     .registers 3
+    .param p1, "event"  # Landroid/hardware/SensorEvent;
 
-    .line 887
+    .line 884
     iget-object v0, p0, Lcom/android/server/display/BrightnessTracker$SensorListener;->this$0:Lcom/android/server/display/BrightnessTracker;
 
     invoke-static {v0, p1}, Lcom/android/server/display/BrightnessTracker;->access$400(Lcom/android/server/display/BrightnessTracker;Landroid/hardware/SensorEvent;)V
 
-    .line 888
+    .line 885
     iget-object v0, p0, Lcom/android/server/display/BrightnessTracker$SensorListener;->this$0:Lcom/android/server/display/BrightnessTracker;
 
     invoke-static {v0, p1}, Lcom/android/server/display/BrightnessTracker;->access$500(Lcom/android/server/display/BrightnessTracker;Landroid/hardware/SensorEvent;)V
 
-    .line 889
+    .line 886
     return-void
 .end method

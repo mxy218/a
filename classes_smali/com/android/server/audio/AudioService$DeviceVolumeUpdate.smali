@@ -31,47 +31,54 @@
 # direct methods
 .method constructor <init>(IIILjava/lang/String;)V
     .registers 5
+    .param p1, "streamType"  # I
+    .param p2, "vssVolIndex"  # I
+    .param p3, "device"  # I
+    .param p4, "caller"  # Ljava/lang/String;
 
-    .line 5072
+    .line 5903
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
-    .line 5073
+    .line 5904
     iput p1, p0, Lcom/android/server/audio/AudioService$DeviceVolumeUpdate;->mStreamType:I
 
-    .line 5074
+    .line 5905
     iput p2, p0, Lcom/android/server/audio/AudioService$DeviceVolumeUpdate;->mVssVolIndex:I
 
-    .line 5075
+    .line 5906
     iput p3, p0, Lcom/android/server/audio/AudioService$DeviceVolumeUpdate;->mDevice:I
 
-    .line 5076
+    .line 5907
     iput-object p4, p0, Lcom/android/server/audio/AudioService$DeviceVolumeUpdate;->mCaller:Ljava/lang/String;
 
-    .line 5077
+    .line 5908
     return-void
 .end method
 
 .method constructor <init>(IILjava/lang/String;)V
-    .registers 4
+    .registers 5
+    .param p1, "streamType"  # I
+    .param p2, "device"  # I
+    .param p3, "caller"  # Ljava/lang/String;
 
-    .line 5081
+    .line 5912
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
-    .line 5082
+    .line 5913
     iput p1, p0, Lcom/android/server/audio/AudioService$DeviceVolumeUpdate;->mStreamType:I
 
-    .line 5083
-    const/16 p1, -0x801
+    .line 5914
+    const/16 v0, -0x801
 
-    iput p1, p0, Lcom/android/server/audio/AudioService$DeviceVolumeUpdate;->mVssVolIndex:I
+    iput v0, p0, Lcom/android/server/audio/AudioService$DeviceVolumeUpdate;->mVssVolIndex:I
 
-    .line 5084
+    .line 5915
     iput p2, p0, Lcom/android/server/audio/AudioService$DeviceVolumeUpdate;->mDevice:I
 
-    .line 5085
+    .line 5916
     iput-object p3, p0, Lcom/android/server/audio/AudioService$DeviceVolumeUpdate;->mCaller:Ljava/lang/String;
 
-    .line 5086
+    .line 5917
     return-void
 .end method
 
@@ -85,7 +92,7 @@
         }
     .end annotation
 
-    .line 5093
+    .line 5924
     iget v0, p0, Lcom/android/server/audio/AudioService$DeviceVolumeUpdate;->mVssVolIndex:I
 
     const/16 v1, -0x801
@@ -102,7 +109,7 @@
     :goto_9
     invoke-static {v0}, Lcom/android/internal/util/Preconditions;->checkState(Z)V
 
-    .line 5094
+    .line 5925
     iget v0, p0, Lcom/android/server/audio/AudioService$DeviceVolumeUpdate;->mVssVolIndex:I
 
     return v0
@@ -111,7 +118,7 @@
 .method hasVolumeIndex()Z
     .registers 3
 
-    .line 5089
+    .line 5920
     iget v0, p0, Lcom/android/server/audio/AudioService$DeviceVolumeUpdate;->mVssVolIndex:I
 
     const/16 v1, -0x801

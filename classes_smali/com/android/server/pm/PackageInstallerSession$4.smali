@@ -21,8 +21,9 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/pm/PackageInstallerSession;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/pm/PackageInstallerSession;
 
-    .line 1455
+    .line 1475
     iput-object p1, p0, Lcom/android/server/pm/PackageInstallerSession$4;->this$0:Lcom/android/server/pm/PackageInstallerSession;
 
     invoke-direct {p0}, Landroid/content/pm/IPackageInstallObserver2$Stub;-><init>()V
@@ -33,29 +34,34 @@
 
 # virtual methods
 .method public onPackageInstalled(Ljava/lang/String;ILjava/lang/String;Landroid/os/Bundle;)V
-    .registers 5
+    .registers 6
+    .param p1, "basePackageName"  # Ljava/lang/String;
+    .param p2, "returnCode"  # I
+    .param p3, "msg"  # Ljava/lang/String;
+    .param p4, "extras"  # Landroid/os/Bundle;
 
-    .line 1464
-    iget-object p1, p0, Lcom/android/server/pm/PackageInstallerSession$4;->this$0:Lcom/android/server/pm/PackageInstallerSession;
+    .line 1484
+    iget-object v0, p0, Lcom/android/server/pm/PackageInstallerSession$4;->this$0:Lcom/android/server/pm/PackageInstallerSession;
 
-    invoke-static {p1}, Lcom/android/server/pm/PackageInstallerSession;->access$400(Lcom/android/server/pm/PackageInstallerSession;)V
+    invoke-static {v0}, Lcom/android/server/pm/PackageInstallerSession;->access$400(Lcom/android/server/pm/PackageInstallerSession;)V
 
-    .line 1465
-    iget-object p1, p0, Lcom/android/server/pm/PackageInstallerSession$4;->this$0:Lcom/android/server/pm/PackageInstallerSession;
+    .line 1485
+    iget-object v0, p0, Lcom/android/server/pm/PackageInstallerSession$4;->this$0:Lcom/android/server/pm/PackageInstallerSession;
 
-    invoke-static {p1, p2, p3, p4}, Lcom/android/server/pm/PackageInstallerSession;->access$500(Lcom/android/server/pm/PackageInstallerSession;ILjava/lang/String;Landroid/os/Bundle;)V
+    invoke-static {v0, p2, p3, p4}, Lcom/android/server/pm/PackageInstallerSession;->access$500(Lcom/android/server/pm/PackageInstallerSession;ILjava/lang/String;Landroid/os/Bundle;)V
 
-    .line 1466
+    .line 1486
     return-void
 .end method
 
 .method public onUserActionRequired(Landroid/content/Intent;)V
-    .registers 2
+    .registers 3
+    .param p1, "intent"  # Landroid/content/Intent;
 
-    .line 1458
-    new-instance p1, Ljava/lang/IllegalStateException;
+    .line 1478
+    new-instance v0, Ljava/lang/IllegalStateException;
 
-    invoke-direct {p1}, Ljava/lang/IllegalStateException;-><init>()V
+    invoke-direct {v0}, Ljava/lang/IllegalStateException;-><init>()V
 
-    throw p1
+    throw v0
 .end method

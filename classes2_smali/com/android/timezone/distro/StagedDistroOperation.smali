@@ -33,6 +33,8 @@
 
 .method private constructor <init>(ZLcom/android/timezone/distro/DistroVersion;)V
     .registers 3
+    .param p1, "isUninstall"  # Z
+    .param p2, "distroVersion"  # Lcom/android/timezone/distro/DistroVersion;
 
     .line 30
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -49,6 +51,7 @@
 
 .method public static install(Lcom/android/timezone/distro/DistroVersion;)Lcom/android/timezone/distro/StagedDistroOperation;
     .registers 3
+    .param p0, "distroVersion"  # Lcom/android/timezone/distro/DistroVersion;
 
     .line 36
     if-eqz p0, :cond_9
@@ -64,13 +67,13 @@
 
     .line 37
     :cond_9
-    new-instance p0, Ljava/lang/NullPointerException;
+    new-instance v0, Ljava/lang/NullPointerException;
 
-    const-string v0, "distroVersion==null"
+    const-string v1, "distroVersion==null"
 
-    invoke-direct {p0, v0}, Ljava/lang/NullPointerException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v0, v1}, Ljava/lang/NullPointerException;-><init>(Ljava/lang/String;)V
 
-    throw p0
+    throw v0
 .end method
 
 .method public static uninstall()Lcom/android/timezone/distro/StagedDistroOperation;
@@ -85,7 +88,8 @@
 
 # virtual methods
 .method public equals(Ljava/lang/Object;)Z
-    .registers 6
+    .registers 7
+    .param p1, "o"  # Ljava/lang/Object;
 
     .line 48
     const/4 v0, 0x1
@@ -99,7 +103,7 @@
     :cond_4
     const/4 v1, 0x0
 
-    if-eqz p1, :cond_2d
+    if-eqz p1, :cond_2e
 
     invoke-virtual {p0}, Ljava/lang/Object;->getClass()Ljava/lang/Class;
 
@@ -111,84 +115,91 @@
 
     if-eq v2, v3, :cond_12
 
-    goto :goto_2d
+    goto :goto_2e
 
     .line 55
     :cond_12
-    check-cast p1, Lcom/android/timezone/distro/StagedDistroOperation;
+    move-object v2, p1
+
+    check-cast v2, Lcom/android/timezone/distro/StagedDistroOperation;
 
     .line 57
-    iget-boolean v2, p0, Lcom/android/timezone/distro/StagedDistroOperation;->isUninstall:Z
+    .local v2, "that":Lcom/android/timezone/distro/StagedDistroOperation;
+    iget-boolean v3, p0, Lcom/android/timezone/distro/StagedDistroOperation;->isUninstall:Z
 
-    iget-boolean v3, p1, Lcom/android/timezone/distro/StagedDistroOperation;->isUninstall:Z
+    iget-boolean v4, v2, Lcom/android/timezone/distro/StagedDistroOperation;->isUninstall:Z
 
-    if-eq v2, v3, :cond_1b
+    if-eq v3, v4, :cond_1c
 
     .line 58
     return v1
 
     .line 60
-    :cond_1b
-    iget-object v2, p0, Lcom/android/timezone/distro/StagedDistroOperation;->distroVersion:Lcom/android/timezone/distro/DistroVersion;
+    :cond_1c
+    iget-object v3, p0, Lcom/android/timezone/distro/StagedDistroOperation;->distroVersion:Lcom/android/timezone/distro/DistroVersion;
 
-    if-eqz v2, :cond_26
+    if-eqz v3, :cond_27
 
-    iget-object p1, p1, Lcom/android/timezone/distro/StagedDistroOperation;->distroVersion:Lcom/android/timezone/distro/DistroVersion;
+    iget-object v0, v2, Lcom/android/timezone/distro/StagedDistroOperation;->distroVersion:Lcom/android/timezone/distro/DistroVersion;
 
-    invoke-virtual {v2, p1}, Lcom/android/timezone/distro/DistroVersion;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v3, v0}, Lcom/android/timezone/distro/DistroVersion;->equals(Ljava/lang/Object;)Z
 
     move-result v0
 
-    goto :goto_2c
+    goto :goto_2d
 
     .line 61
-    :cond_26
-    iget-object p1, p1, Lcom/android/timezone/distro/StagedDistroOperation;->distroVersion:Lcom/android/timezone/distro/DistroVersion;
+    :cond_27
+    iget-object v3, v2, Lcom/android/timezone/distro/StagedDistroOperation;->distroVersion:Lcom/android/timezone/distro/DistroVersion;
 
-    if-nez p1, :cond_2b
+    if-nez v3, :cond_2c
 
-    goto :goto_2c
+    goto :goto_2d
 
-    :cond_2b
+    :cond_2c
     move v0, v1
 
     .line 60
-    :goto_2c
+    :goto_2d
     return v0
 
     .line 52
-    :cond_2d
-    :goto_2d
+    .end local v2  # "that":Lcom/android/timezone/distro/StagedDistroOperation;
+    :cond_2e
+    :goto_2e
     return v1
 .end method
 
 .method public hashCode()I
-    .registers 3
+    .registers 4
 
     .line 66
     iget-boolean v0, p0, Lcom/android/timezone/distro/StagedDistroOperation;->isUninstall:Z
 
     .line 67
-    mul-int/lit8 v0, v0, 0x1f
+    .local v0, "result":I
+    mul-int/lit8 v1, v0, 0x1f
 
-    iget-object v1, p0, Lcom/android/timezone/distro/StagedDistroOperation;->distroVersion:Lcom/android/timezone/distro/DistroVersion;
+    iget-object v2, p0, Lcom/android/timezone/distro/StagedDistroOperation;->distroVersion:Lcom/android/timezone/distro/DistroVersion;
 
-    if-eqz v1, :cond_d
+    if-eqz v2, :cond_d
 
-    invoke-virtual {v1}, Lcom/android/timezone/distro/DistroVersion;->hashCode()I
+    invoke-virtual {v2}, Lcom/android/timezone/distro/DistroVersion;->hashCode()I
 
-    move-result v1
+    move-result v2
 
     goto :goto_e
 
     :cond_d
-    const/4 v1, 0x0
+    const/4 v2, 0x0
 
     :goto_e
-    add-int/2addr v0, v1
+    add-int/2addr v1, v2
 
     .line 68
-    return v0
+    .end local v0  # "result":I
+    .local v1, "result":I
+    return v1
 .end method
 
 .method public toString()Ljava/lang/String;

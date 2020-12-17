@@ -10,6 +10,8 @@
 # direct methods
 .method public constructor <init>(ILjava/lang/String;)V
     .registers 3
+    .param p1, "error"  # I
+    .param p2, "detailMessage"  # Ljava/lang/String;
 
     .line 34
     invoke-direct {p0, p2}, Ljava/lang/Exception;-><init>(Ljava/lang/String;)V
@@ -23,6 +25,9 @@
 
 .method public constructor <init>(ILjava/lang/String;Ljava/lang/Throwable;)V
     .registers 4
+    .param p1, "error"  # I
+    .param p2, "detailMessage"  # Ljava/lang/String;
+    .param p3, "throwable"  # Ljava/lang/Throwable;
 
     .line 39
     invoke-direct {p0, p2, p3}, Ljava/lang/Exception;-><init>(Ljava/lang/String;Ljava/lang/Throwable;)V
@@ -35,37 +40,40 @@
 .end method
 
 .method public constructor <init>(Ljava/lang/String;)V
-    .registers 2
+    .registers 3
+    .param p1, "detailMessage"  # Ljava/lang/String;
 
     .line 29
     invoke-direct {p0, p1}, Ljava/lang/Exception;-><init>(Ljava/lang/String;)V
 
     .line 30
-    const/16 p1, -0x6e
+    const/16 v0, -0x6e
 
-    iput p1, p0, Lcom/android/server/pm/PackageManagerException;->error:I
+    iput v0, p0, Lcom/android/server/pm/PackageManagerException;->error:I
 
     .line 31
     return-void
 .end method
 
 .method public constructor <init>(Ljava/lang/Throwable;)V
-    .registers 2
+    .registers 3
+    .param p1, "e"  # Ljava/lang/Throwable;
 
     .line 44
     invoke-direct {p0, p1}, Ljava/lang/Exception;-><init>(Ljava/lang/Throwable;)V
 
     .line 45
-    const/16 p1, -0x6e
+    const/16 v0, -0x6e
 
-    iput p1, p0, Lcom/android/server/pm/PackageManagerException;->error:I
+    iput v0, p0, Lcom/android/server/pm/PackageManagerException;->error:I
 
     .line 46
     return-void
 .end method
 
 .method public static from(Landroid/content/pm/PackageParser$PackageParserException;)Lcom/android/server/pm/PackageManagerException;
-    .registers 4
+    .registers 5
+    .param p0, "e"  # Landroid/content/pm/PackageParser$PackageParserException;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Lcom/android/server/pm/PackageManagerException;
@@ -83,15 +91,16 @@
 
     invoke-virtual {p0}, Landroid/content/pm/PackageParser$PackageParserException;->getCause()Ljava/lang/Throwable;
 
-    move-result-object p0
+    move-result-object v3
 
-    invoke-direct {v0, v1, v2, p0}, Lcom/android/server/pm/PackageManagerException;-><init>(ILjava/lang/String;Ljava/lang/Throwable;)V
+    invoke-direct {v0, v1, v2, v3}, Lcom/android/server/pm/PackageManagerException;-><init>(ILjava/lang/String;Ljava/lang/Throwable;)V
 
     throw v0
 .end method
 
 .method public static from(Lcom/android/server/pm/Installer$InstallerException;)Lcom/android/server/pm/PackageManagerException;
-    .registers 4
+    .registers 5
+    .param p0, "e"  # Lcom/android/server/pm/Installer$InstallerException;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Lcom/android/server/pm/PackageManagerException;
@@ -108,11 +117,11 @@
 
     invoke-virtual {p0}, Lcom/android/server/pm/Installer$InstallerException;->getCause()Ljava/lang/Throwable;
 
-    move-result-object p0
+    move-result-object v2
 
-    const/16 v2, -0x6e
+    const/16 v3, -0x6e
 
-    invoke-direct {v0, v2, v1, p0}, Lcom/android/server/pm/PackageManagerException;-><init>(ILjava/lang/String;Ljava/lang/Throwable;)V
+    invoke-direct {v0, v3, v1, v2}, Lcom/android/server/pm/PackageManagerException;-><init>(ILjava/lang/String;Ljava/lang/Throwable;)V
 
     throw v0
 .end method

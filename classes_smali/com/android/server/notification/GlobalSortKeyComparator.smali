@@ -34,7 +34,9 @@
 
 # virtual methods
 .method public compare(Lcom/android/server/notification/NotificationRecord;Lcom/android/server/notification/NotificationRecord;)I
-    .registers 5
+    .registers 6
+    .param p1, "left"  # Lcom/android/server/notification/NotificationRecord;
+    .param p2, "right"  # Lcom/android/server/notification/NotificationRecord;
 
     .line 30
     invoke-virtual {p1}, Lcom/android/server/notification/NotificationRecord;->getGlobalSortKey()Ljava/lang/String;
@@ -46,26 +48,26 @@
     if-nez v0, :cond_1e
 
     .line 31
-    new-instance p2, Ljava/lang/StringBuilder;
+    new-instance v0, Ljava/lang/StringBuilder;
 
-    invoke-direct {p2}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v0, "Missing left global sort key: "
+    const-string v2, "Missing left global sort key: "
 
-    invoke-virtual {p2, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p2, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    invoke-static {v1, p1}, Landroid/util/Slog;->wtf(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v0}, Landroid/util/Slog;->wtf(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 32
-    const/4 p1, 0x1
+    const/4 v0, 0x1
 
-    return p1
+    return v0
 
     .line 34
     :cond_1e
@@ -76,42 +78,42 @@
     if-nez v0, :cond_3a
 
     .line 35
-    new-instance p1, Ljava/lang/StringBuilder;
+    new-instance v0, Ljava/lang/StringBuilder;
 
-    invoke-direct {p1}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v0, "Missing right global sort key: "
+    const-string v2, "Missing right global sort key: "
 
-    invoke-virtual {p1, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p1, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    invoke-static {v1, p1}, Landroid/util/Slog;->wtf(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v0}, Landroid/util/Slog;->wtf(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 36
-    const/4 p1, -0x1
+    const/4 v0, -0x1
 
-    return p1
+    return v0
 
     .line 38
     :cond_3a
     invoke-virtual {p1}, Lcom/android/server/notification/NotificationRecord;->getGlobalSortKey()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
     invoke-virtual {p2}, Lcom/android/server/notification/NotificationRecord;->getGlobalSortKey()Ljava/lang/String;
 
-    move-result-object p2
+    move-result-object v1
 
-    invoke-virtual {p1, p2}, Ljava/lang/String;->compareTo(Ljava/lang/String;)I
+    invoke-virtual {v0, v1}, Ljava/lang/String;->compareTo(Ljava/lang/String;)I
 
-    move-result p1
+    move-result v0
 
-    return p1
+    return v0
 .end method
 
 .method public bridge synthetic compare(Ljava/lang/Object;Ljava/lang/Object;)I

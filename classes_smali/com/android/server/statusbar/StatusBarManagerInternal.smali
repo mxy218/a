@@ -70,7 +70,7 @@
 .method public abstract showScreenPinningRequest(I)V
 .end method
 
-.method public abstract showShutdownUi(ZLjava/lang/String;Z)Z
+.method public abstract showShutdownUi(ZLjava/lang/String;)Z
 .end method
 
 .method public abstract startAssist(Landroid/os/Bundle;)V

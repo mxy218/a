@@ -27,76 +27,90 @@
 
 # virtual methods
 .method public getInt(Landroid/content/Context;Ljava/lang/String;I)I
-    .registers 4
+    .registers 5
+    .param p1, "context"  # Landroid/content/Context;
+    .param p2, "name"  # Ljava/lang/String;
+    .param p3, "defaultValue"  # I
 
     .line 408
     invoke-virtual {p1}, Landroid/content/Context;->getContentResolver()Landroid/content/ContentResolver;
 
-    move-result-object p1
+    move-result-object v0
 
-    invoke-static {p1, p2, p3}, Landroid/provider/Settings$Global;->getInt(Landroid/content/ContentResolver;Ljava/lang/String;I)I
+    invoke-static {v0, p2, p3}, Landroid/provider/Settings$Global;->getInt(Landroid/content/ContentResolver;Ljava/lang/String;I)I
 
-    move-result p1
+    move-result v0
 
-    return p1
+    return v0
 .end method
 
 .method public getSecureInt(Landroid/content/Context;Ljava/lang/String;I)I
-    .registers 4
+    .registers 5
+    .param p1, "context"  # Landroid/content/Context;
+    .param p2, "name"  # Ljava/lang/String;
+    .param p3, "defaultValue"  # I
 
     .line 412
     invoke-virtual {p1}, Landroid/content/Context;->getContentResolver()Landroid/content/ContentResolver;
 
-    move-result-object p1
+    move-result-object v0
 
-    invoke-static {p1, p2, p3}, Landroid/provider/Settings$Secure;->getInt(Landroid/content/ContentResolver;Ljava/lang/String;I)I
+    invoke-static {v0, p2, p3}, Landroid/provider/Settings$Secure;->getInt(Landroid/content/ContentResolver;Ljava/lang/String;I)I
 
-    move-result p1
+    move-result v0
 
-    return p1
+    return v0
 .end method
 
 .method public getString(Landroid/content/Context;Ljava/lang/String;)Ljava/lang/String;
-    .registers 3
+    .registers 4
+    .param p1, "context"  # Landroid/content/Context;
+    .param p2, "name"  # Ljava/lang/String;
 
     .line 400
     invoke-virtual {p1}, Landroid/content/Context;->getContentResolver()Landroid/content/ContentResolver;
 
-    move-result-object p1
+    move-result-object v0
 
-    invoke-static {p1, p2}, Landroid/provider/Settings$Global;->getString(Landroid/content/ContentResolver;Ljava/lang/String;)Ljava/lang/String;
+    invoke-static {v0, p2}, Landroid/provider/Settings$Global;->getString(Landroid/content/ContentResolver;Ljava/lang/String;)Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    return-object p1
+    return-object v0
 .end method
 
 .method public putInt(Landroid/content/Context;Ljava/lang/String;I)Z
-    .registers 4
+    .registers 5
+    .param p1, "context"  # Landroid/content/Context;
+    .param p2, "name"  # Ljava/lang/String;
+    .param p3, "value"  # I
 
     .line 404
     invoke-virtual {p1}, Landroid/content/Context;->getContentResolver()Landroid/content/ContentResolver;
 
-    move-result-object p1
+    move-result-object v0
 
-    invoke-static {p1, p2, p3}, Landroid/provider/Settings$Global;->putInt(Landroid/content/ContentResolver;Ljava/lang/String;I)Z
+    invoke-static {v0, p2, p3}, Landroid/provider/Settings$Global;->putInt(Landroid/content/ContentResolver;Ljava/lang/String;I)Z
 
-    move-result p1
+    move-result v0
 
-    return p1
+    return v0
 .end method
 
 .method public putString(Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)Z
-    .registers 4
+    .registers 5
+    .param p1, "context"  # Landroid/content/Context;
+    .param p2, "name"  # Ljava/lang/String;
+    .param p3, "value"  # Ljava/lang/String;
 
     .line 396
     invoke-virtual {p1}, Landroid/content/Context;->getContentResolver()Landroid/content/ContentResolver;
 
-    move-result-object p1
+    move-result-object v0
 
-    invoke-static {p1, p2, p3}, Landroid/provider/Settings$Global;->putString(Landroid/content/ContentResolver;Ljava/lang/String;Ljava/lang/String;)Z
+    invoke-static {v0, p2, p3}, Landroid/provider/Settings$Global;->putString(Landroid/content/ContentResolver;Ljava/lang/String;Ljava/lang/String;)Z
 
-    move-result p1
+    move-result v0
 
-    return p1
+    return v0
 .end method

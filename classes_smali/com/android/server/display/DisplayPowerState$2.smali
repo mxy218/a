@@ -25,8 +25,9 @@
 # direct methods
 .method constructor <init>(Ljava/lang/String;)V
     .registers 2
+    .param p1, "x0"  # Ljava/lang/String;
 
-    .line 110
+    .line 116
     invoke-direct {p0, p1}, Landroid/util/IntProperty;-><init>(Ljava/lang/String;)V
 
     return-void
@@ -35,24 +36,25 @@
 
 # virtual methods
 .method public get(Lcom/android/server/display/DisplayPowerState;)Ljava/lang/Integer;
-    .registers 2
+    .registers 3
+    .param p1, "object"  # Lcom/android/server/display/DisplayPowerState;
 
-    .line 118
+    .line 124
     invoke-virtual {p1}, Lcom/android/server/display/DisplayPowerState;->getScreenBrightness()I
 
-    move-result p1
+    move-result v0
 
-    invoke-static {p1}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
+    invoke-static {v0}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
 
-    move-result-object p1
+    move-result-object v0
 
-    return-object p1
+    return-object v0
 .end method
 
 .method public bridge synthetic get(Ljava/lang/Object;)Ljava/lang/Object;
     .registers 2
 
-    .line 110
+    .line 116
     check-cast p1, Lcom/android/server/display/DisplayPowerState;
 
     invoke-virtual {p0, p1}, Lcom/android/server/display/DisplayPowerState$2;->get(Lcom/android/server/display/DisplayPowerState;)Ljava/lang/Integer;
@@ -64,18 +66,20 @@
 
 .method public setValue(Lcom/android/server/display/DisplayPowerState;I)V
     .registers 3
+    .param p1, "object"  # Lcom/android/server/display/DisplayPowerState;
+    .param p2, "value"  # I
 
-    .line 113
+    .line 119
     invoke-virtual {p1, p2}, Lcom/android/server/display/DisplayPowerState;->setScreenBrightness(I)V
 
-    .line 114
+    .line 120
     return-void
 .end method
 
 .method public bridge synthetic setValue(Ljava/lang/Object;I)V
     .registers 3
 
-    .line 110
+    .line 116
     check-cast p1, Lcom/android/server/display/DisplayPowerState;
 
     invoke-virtual {p0, p1, p2}, Lcom/android/server/display/DisplayPowerState$2;->setValue(Lcom/android/server/display/DisplayPowerState;I)V

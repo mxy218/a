@@ -104,10 +104,11 @@
 .end method
 
 .method public static asByte(I)B
-    .registers 1
+    .registers 2
+    .param p0, "i"  # I
 
     .line 91
-    int-to-byte p0, p0
+    int-to-byte v0, p0
 
-    return p0
+    return v0
 .end method

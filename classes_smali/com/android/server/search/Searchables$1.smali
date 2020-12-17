@@ -39,15 +39,17 @@
 
 # virtual methods
 .method public compare(Landroid/content/pm/ResolveInfo;Landroid/content/pm/ResolveInfo;)I
-    .registers 5
+    .registers 7
+    .param p1, "lhs"  # Landroid/content/pm/ResolveInfo;
+    .param p2, "rhs"  # Landroid/content/pm/ResolveInfo;
 
     .line 357
     if-ne p1, p2, :cond_4
 
     .line 358
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    return p1
+    return v0
 
     .line 360
     :cond_4
@@ -56,19 +58,21 @@
     move-result v0
 
     .line 361
+    .local v0, "lhsSystem":Z
     invoke-static {p2}, Lcom/android/server/search/Searchables;->access$000(Landroid/content/pm/ResolveInfo;)Z
 
     move-result v1
 
     .line 363
+    .local v1, "rhsSystem":Z
     if-eqz v0, :cond_12
 
     if-nez v1, :cond_12
 
     .line 364
-    const/4 p1, -0x1
+    const/4 v2, -0x1
 
-    return p1
+    return v2
 
     .line 365
     :cond_12
@@ -77,19 +81,19 @@
     if-nez v0, :cond_18
 
     .line 366
-    const/4 p1, 0x1
+    const/4 v2, 0x1
 
-    return p1
+    return v2
 
     .line 373
     :cond_18
-    iget p2, p2, Landroid/content/pm/ResolveInfo;->priority:I
+    iget v2, p2, Landroid/content/pm/ResolveInfo;->priority:I
 
-    iget p1, p1, Landroid/content/pm/ResolveInfo;->priority:I
+    iget v3, p1, Landroid/content/pm/ResolveInfo;->priority:I
 
-    sub-int/2addr p2, p1
+    sub-int/2addr v2, v3
 
-    return p2
+    return v2
 .end method
 
 .method public bridge synthetic compare(Ljava/lang/Object;Ljava/lang/Object;)I

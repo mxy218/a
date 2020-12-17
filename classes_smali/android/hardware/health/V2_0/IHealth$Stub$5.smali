@@ -26,6 +26,7 @@
 # direct methods
 .method constructor <init>(Landroid/hardware/health/V2_0/IHealth$Stub;Landroid/os/HwParcel;)V
     .registers 3
+    .param p1, "this$0"  # Landroid/hardware/health/V2_0/IHealth$Stub;
 
     .line 985
     iput-object p1, p0, Landroid/hardware/health/V2_0/IHealth$Stub$5;->this$0:Landroid/hardware/health/V2_0/IHealth$Stub;
@@ -41,6 +42,8 @@
 # virtual methods
 .method public onValues(IJ)V
     .registers 6
+    .param p1, "result"  # I
+    .param p2, "value"  # J
 
     .line 988
     iget-object v0, p0, Landroid/hardware/health/V2_0/IHealth$Stub$5;->val$_hidl_reply:Landroid/os/HwParcel;
@@ -55,14 +58,14 @@
     invoke-virtual {v0, p1}, Landroid/os/HwParcel;->writeInt32(I)V
 
     .line 990
-    iget-object p1, p0, Landroid/hardware/health/V2_0/IHealth$Stub$5;->val$_hidl_reply:Landroid/os/HwParcel;
+    iget-object v0, p0, Landroid/hardware/health/V2_0/IHealth$Stub$5;->val$_hidl_reply:Landroid/os/HwParcel;
 
-    invoke-virtual {p1, p2, p3}, Landroid/os/HwParcel;->writeInt64(J)V
+    invoke-virtual {v0, p2, p3}, Landroid/os/HwParcel;->writeInt64(J)V
 
     .line 991
-    iget-object p1, p0, Landroid/hardware/health/V2_0/IHealth$Stub$5;->val$_hidl_reply:Landroid/os/HwParcel;
+    iget-object v0, p0, Landroid/hardware/health/V2_0/IHealth$Stub$5;->val$_hidl_reply:Landroid/os/HwParcel;
 
-    invoke-virtual {p1}, Landroid/os/HwParcel;->send()V
+    invoke-virtual {v0}, Landroid/os/HwParcel;->send()V
 
     .line 992
     return-void

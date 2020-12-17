@@ -25,6 +25,9 @@
 # direct methods
 .method constructor <init>(III)V
     .registers 4
+    .param p1, "vendorId"  # I
+    .param p2, "productId"  # I
+    .param p3, "flags"  # I
 
     .line 84
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V

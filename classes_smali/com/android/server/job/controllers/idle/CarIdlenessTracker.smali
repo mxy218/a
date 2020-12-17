@@ -143,6 +143,7 @@
 
 .method private static logIfDebug(Ljava/lang/String;)V
     .registers 2
+    .param p0, "msg"  # Ljava/lang/String;
 
     .line 171
     sget-boolean v0, Lcom/android/server/job/controllers/idle/CarIdlenessTracker;->DEBUG:Z
@@ -161,6 +162,7 @@
 
 .method private setForceIdleState(Z)V
     .registers 2
+    .param p1, "forced"  # Z
 
     .line 126
     iput-boolean p1, p0, Lcom/android/server/job/controllers/idle/CarIdlenessTracker;->mForced:Z
@@ -234,6 +236,7 @@
     const/4 v0, 0x1
 
     .line 132
+    .local v0, "newState":Z
     :goto_c
     iget-boolean v1, p0, Lcom/android/server/job/controllers/idle/CarIdlenessTracker;->mIdle:Z
 
@@ -260,11 +263,11 @@
     iput-boolean v0, p0, Lcom/android/server/job/controllers/idle/CarIdlenessTracker;->mIdle:Z
 
     .line 136
-    iget-object v0, p0, Lcom/android/server/job/controllers/idle/CarIdlenessTracker;->mIdleListener:Lcom/android/server/job/controllers/idle/IdlenessListener;
+    iget-object v1, p0, Lcom/android/server/job/controllers/idle/CarIdlenessTracker;->mIdleListener:Lcom/android/server/job/controllers/idle/IdlenessListener;
 
-    iget-boolean v1, p0, Lcom/android/server/job/controllers/idle/CarIdlenessTracker;->mIdle:Z
+    iget-boolean v2, p0, Lcom/android/server/job/controllers/idle/CarIdlenessTracker;->mIdle:Z
 
-    invoke-interface {v0, v1}, Lcom/android/server/job/controllers/idle/IdlenessListener;->reportNewIdleState(Z)V
+    invoke-interface {v1, v2}, Lcom/android/server/job/controllers/idle/IdlenessListener;->reportNewIdleState(Z)V
 
     goto :goto_42
 
@@ -282,9 +285,9 @@
 
     invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v1
 
-    invoke-static {v0}, Lcom/android/server/job/controllers/idle/CarIdlenessTracker;->logIfDebug(Ljava/lang/String;)V
+    invoke-static {v1}, Lcom/android/server/job/controllers/idle/CarIdlenessTracker;->logIfDebug(Ljava/lang/String;)V
 
     .line 141
     :goto_42
@@ -295,6 +298,7 @@
 # virtual methods
 .method public dump(Ljava/io/PrintWriter;)V
     .registers 3
+    .param p1, "pw"  # Ljava/io/PrintWriter;
 
     .line 87
     const-string v0, "  mIdle: "
@@ -328,87 +332,90 @@
 .end method
 
 .method public onReceive(Landroid/content/Context;Landroid/content/Intent;)V
-    .registers 5
+    .registers 7
+    .param p1, "context"  # Landroid/content/Context;
+    .param p2, "intent"  # Landroid/content/Intent;
 
     .line 93
     invoke-virtual {p2}, Landroid/content/Intent;->getAction()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
     .line 94
-    new-instance p2, Ljava/lang/StringBuilder;
+    .local v0, "action":Ljava/lang/String;
+    new-instance v1, Ljava/lang/StringBuilder;
 
-    invoke-direct {p2}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v0, "Received action: "
+    const-string v2, "Received action: "
 
-    invoke-virtual {p2, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p2, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p2
+    move-result-object v1
 
-    invoke-static {p2}, Lcom/android/server/job/controllers/idle/CarIdlenessTracker;->logIfDebug(Ljava/lang/String;)V
+    invoke-static {v1}, Lcom/android/server/job/controllers/idle/CarIdlenessTracker;->logIfDebug(Ljava/lang/String;)V
 
     .line 97
-    const-string p2, "com.android.server.jobscheduler.FORCE_IDLE"
+    const-string v1, "com.android.server.jobscheduler.FORCE_IDLE"
 
-    invoke-virtual {p1, p2}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v0, v1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result p2
+    move-result v1
 
-    const/4 v0, 0x1
+    const/4 v2, 0x1
 
-    if-eqz p2, :cond_2b
+    if-eqz v1, :cond_2b
 
     .line 98
-    const-string p1, "Forcing idle..."
+    const-string v1, "Forcing idle..."
 
-    invoke-static {p1}, Lcom/android/server/job/controllers/idle/CarIdlenessTracker;->logIfDebug(Ljava/lang/String;)V
+    invoke-static {v1}, Lcom/android/server/job/controllers/idle/CarIdlenessTracker;->logIfDebug(Ljava/lang/String;)V
 
     .line 99
-    invoke-direct {p0, v0}, Lcom/android/server/job/controllers/idle/CarIdlenessTracker;->setForceIdleState(Z)V
+    invoke-direct {p0, v2}, Lcom/android/server/job/controllers/idle/CarIdlenessTracker;->setForceIdleState(Z)V
 
     goto/16 :goto_a9
 
     .line 100
     :cond_2b
-    const-string p2, "com.android.server.jobscheduler.UNFORCE_IDLE"
+    const-string v1, "com.android.server.jobscheduler.UNFORCE_IDLE"
 
-    invoke-virtual {p1, p2}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v0, v1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result p2
+    move-result v1
 
-    const/4 v1, 0x0
+    const/4 v3, 0x0
 
-    if-eqz p2, :cond_3d
+    if-eqz v1, :cond_3d
 
     .line 101
-    const-string p1, "Unforcing idle..."
+    const-string v1, "Unforcing idle..."
 
-    invoke-static {p1}, Lcom/android/server/job/controllers/idle/CarIdlenessTracker;->logIfDebug(Ljava/lang/String;)V
+    invoke-static {v1}, Lcom/android/server/job/controllers/idle/CarIdlenessTracker;->logIfDebug(Ljava/lang/String;)V
 
     .line 102
-    invoke-direct {p0, v1}, Lcom/android/server/job/controllers/idle/CarIdlenessTracker;->setForceIdleState(Z)V
+    invoke-direct {p0, v3}, Lcom/android/server/job/controllers/idle/CarIdlenessTracker;->setForceIdleState(Z)V
 
     goto :goto_a9
 
     .line 103
     :cond_3d
-    const-string p2, "android.intent.action.SCREEN_ON"
+    const-string v1, "android.intent.action.SCREEN_ON"
 
-    invoke-virtual {p1, p2}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v0, v1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result p2
+    move-result v1
 
-    if-eqz p2, :cond_4e
+    if-eqz v1, :cond_4e
 
     .line 104
-    const-string p1, "Screen is on..."
+    const-string v1, "Screen is on..."
 
-    invoke-static {p1}, Lcom/android/server/job/controllers/idle/CarIdlenessTracker;->logIfDebug(Ljava/lang/String;)V
+    invoke-static {v1}, Lcom/android/server/job/controllers/idle/CarIdlenessTracker;->logIfDebug(Ljava/lang/String;)V
 
     .line 105
     invoke-direct {p0}, Lcom/android/server/job/controllers/idle/CarIdlenessTracker;->handleScreenOn()V
@@ -417,21 +424,21 @@
 
     .line 106
     :cond_4e
-    const-string p2, "com.android.server.jobscheduler.GARAGE_MODE_ON"
+    const-string v1, "com.android.server.jobscheduler.GARAGE_MODE_ON"
 
-    invoke-virtual {p1, p2}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v0, v1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result p2
+    move-result v1
 
-    if-eqz p2, :cond_61
+    if-eqz v1, :cond_61
 
     .line 107
-    const-string p1, "GarageMode is on..."
+    const-string v1, "GarageMode is on..."
 
-    invoke-static {p1}, Lcom/android/server/job/controllers/idle/CarIdlenessTracker;->logIfDebug(Ljava/lang/String;)V
+    invoke-static {v1}, Lcom/android/server/job/controllers/idle/CarIdlenessTracker;->logIfDebug(Ljava/lang/String;)V
 
     .line 108
-    iput-boolean v0, p0, Lcom/android/server/job/controllers/idle/CarIdlenessTracker;->mGarageModeOn:Z
+    iput-boolean v2, p0, Lcom/android/server/job/controllers/idle/CarIdlenessTracker;->mGarageModeOn:Z
 
     .line 109
     invoke-direct {p0}, Lcom/android/server/job/controllers/idle/CarIdlenessTracker;->updateIdlenessState()V
@@ -440,21 +447,21 @@
 
     .line 110
     :cond_61
-    const-string p2, "com.android.server.jobscheduler.GARAGE_MODE_OFF"
+    const-string v1, "com.android.server.jobscheduler.GARAGE_MODE_OFF"
 
-    invoke-virtual {p1, p2}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v0, v1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result p2
+    move-result v1
 
-    if-eqz p2, :cond_74
+    if-eqz v1, :cond_74
 
     .line 111
-    const-string p1, "GarageMode is off..."
+    const-string v1, "GarageMode is off..."
 
-    invoke-static {p1}, Lcom/android/server/job/controllers/idle/CarIdlenessTracker;->logIfDebug(Ljava/lang/String;)V
+    invoke-static {v1}, Lcom/android/server/job/controllers/idle/CarIdlenessTracker;->logIfDebug(Ljava/lang/String;)V
 
     .line 112
-    iput-boolean v1, p0, Lcom/android/server/job/controllers/idle/CarIdlenessTracker;->mGarageModeOn:Z
+    iput-boolean v3, p0, Lcom/android/server/job/controllers/idle/CarIdlenessTracker;->mGarageModeOn:Z
 
     .line 113
     invoke-direct {p0}, Lcom/android/server/job/controllers/idle/CarIdlenessTracker;->updateIdlenessState()V
@@ -463,23 +470,23 @@
 
     .line 114
     :cond_74
-    const-string p2, "com.android.server.ACTION_TRIGGER_IDLE"
+    const-string v1, "com.android.server.ACTION_TRIGGER_IDLE"
 
-    invoke-virtual {p1, p2}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v0, v1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result p1
+    move-result v1
 
-    if-eqz p1, :cond_a9
+    if-eqz v1, :cond_a9
 
     .line 115
-    iget-boolean p1, p0, Lcom/android/server/job/controllers/idle/CarIdlenessTracker;->mGarageModeOn:Z
+    iget-boolean v1, p0, Lcom/android/server/job/controllers/idle/CarIdlenessTracker;->mGarageModeOn:Z
 
-    if-nez p1, :cond_89
+    if-nez v1, :cond_89
 
     .line 116
-    const-string p1, "Idle trigger fired..."
+    const-string v1, "Idle trigger fired..."
 
-    invoke-static {p1}, Lcom/android/server/job/controllers/idle/CarIdlenessTracker;->logIfDebug(Ljava/lang/String;)V
+    invoke-static {v1}, Lcom/android/server/job/controllers/idle/CarIdlenessTracker;->logIfDebug(Ljava/lang/String;)V
 
     .line 117
     invoke-direct {p0}, Lcom/android/server/job/controllers/idle/CarIdlenessTracker;->triggerIdlenessOnce()V
@@ -488,31 +495,31 @@
 
     .line 119
     :cond_89
-    new-instance p1, Ljava/lang/StringBuilder;
+    new-instance v1, Ljava/lang/StringBuilder;
 
-    invoke-direct {p1}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string p2, "TRIGGER_IDLE received but not changing state; idle="
+    const-string v2, "TRIGGER_IDLE received but not changing state; idle="
 
-    invoke-virtual {p1, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    iget-boolean p2, p0, Lcom/android/server/job/controllers/idle/CarIdlenessTracker;->mIdle:Z
+    iget-boolean v2, p0, Lcom/android/server/job/controllers/idle/CarIdlenessTracker;->mIdle:Z
 
-    invoke-virtual {p1, p2}, Ljava/lang/StringBuilder;->append(Z)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Z)Ljava/lang/StringBuilder;
 
-    const-string p2, " screen="
+    const-string v2, " screen="
 
-    invoke-virtual {p1, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    iget-boolean p2, p0, Lcom/android/server/job/controllers/idle/CarIdlenessTracker;->mGarageModeOn:Z
+    iget-boolean v2, p0, Lcom/android/server/job/controllers/idle/CarIdlenessTracker;->mGarageModeOn:Z
 
-    invoke-virtual {p1, p2}, Ljava/lang/StringBuilder;->append(Z)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Z)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v1
 
-    invoke-static {p1}, Lcom/android/server/job/controllers/idle/CarIdlenessTracker;->logIfDebug(Ljava/lang/String;)V
+    invoke-static {v1}, Lcom/android/server/job/controllers/idle/CarIdlenessTracker;->logIfDebug(Ljava/lang/String;)V
 
     .line 123
     :cond_a9
@@ -521,48 +528,51 @@
 .end method
 
 .method public startTracking(Landroid/content/Context;Lcom/android/server/job/controllers/idle/IdlenessListener;)V
-    .registers 4
+    .registers 5
+    .param p1, "context"  # Landroid/content/Context;
+    .param p2, "listener"  # Lcom/android/server/job/controllers/idle/IdlenessListener;
 
     .line 66
     iput-object p2, p0, Lcom/android/server/job/controllers/idle/CarIdlenessTracker;->mIdleListener:Lcom/android/server/job/controllers/idle/IdlenessListener;
 
     .line 68
-    new-instance p2, Landroid/content/IntentFilter;
+    new-instance v0, Landroid/content/IntentFilter;
 
-    invoke-direct {p2}, Landroid/content/IntentFilter;-><init>()V
+    invoke-direct {v0}, Landroid/content/IntentFilter;-><init>()V
 
     .line 71
-    const-string v0, "android.intent.action.SCREEN_ON"
+    .local v0, "filter":Landroid/content/IntentFilter;
+    const-string v1, "android.intent.action.SCREEN_ON"
 
-    invoke-virtual {p2, v0}, Landroid/content/IntentFilter;->addAction(Ljava/lang/String;)V
+    invoke-virtual {v0, v1}, Landroid/content/IntentFilter;->addAction(Ljava/lang/String;)V
 
     .line 74
-    const-string v0, "com.android.server.jobscheduler.GARAGE_MODE_ON"
+    const-string v1, "com.android.server.jobscheduler.GARAGE_MODE_ON"
 
-    invoke-virtual {p2, v0}, Landroid/content/IntentFilter;->addAction(Ljava/lang/String;)V
+    invoke-virtual {v0, v1}, Landroid/content/IntentFilter;->addAction(Ljava/lang/String;)V
 
     .line 75
-    const-string v0, "com.android.server.jobscheduler.GARAGE_MODE_OFF"
+    const-string v1, "com.android.server.jobscheduler.GARAGE_MODE_OFF"
 
-    invoke-virtual {p2, v0}, Landroid/content/IntentFilter;->addAction(Ljava/lang/String;)V
+    invoke-virtual {v0, v1}, Landroid/content/IntentFilter;->addAction(Ljava/lang/String;)V
 
     .line 78
-    const-string v0, "com.android.server.jobscheduler.FORCE_IDLE"
+    const-string v1, "com.android.server.jobscheduler.FORCE_IDLE"
 
-    invoke-virtual {p2, v0}, Landroid/content/IntentFilter;->addAction(Ljava/lang/String;)V
+    invoke-virtual {v0, v1}, Landroid/content/IntentFilter;->addAction(Ljava/lang/String;)V
 
     .line 79
-    const-string v0, "com.android.server.jobscheduler.UNFORCE_IDLE"
+    const-string v1, "com.android.server.jobscheduler.UNFORCE_IDLE"
 
-    invoke-virtual {p2, v0}, Landroid/content/IntentFilter;->addAction(Ljava/lang/String;)V
+    invoke-virtual {v0, v1}, Landroid/content/IntentFilter;->addAction(Ljava/lang/String;)V
 
     .line 80
-    const-string v0, "com.android.server.ACTION_TRIGGER_IDLE"
+    const-string v1, "com.android.server.ACTION_TRIGGER_IDLE"
 
-    invoke-virtual {p2, v0}, Landroid/content/IntentFilter;->addAction(Ljava/lang/String;)V
+    invoke-virtual {v0, v1}, Landroid/content/IntentFilter;->addAction(Ljava/lang/String;)V
 
     .line 82
-    invoke-virtual {p1, p0, p2}, Landroid/content/Context;->registerReceiver(Landroid/content/BroadcastReceiver;Landroid/content/IntentFilter;)Landroid/content/Intent;
+    invoke-virtual {p1, p0, v0}, Landroid/content/Context;->registerReceiver(Landroid/content/BroadcastReceiver;Landroid/content/IntentFilter;)Landroid/content/Intent;
 
     .line 83
     return-void

@@ -39,6 +39,7 @@
 
 .method public static isPrivateDnsValidationRequired(Landroid/net/NetworkCapabilities;)Z
     .registers 2
+    .param p0, "nc"  # Landroid/net/NetworkCapabilities;
 
     .line 51
     if-eqz p0, :cond_1c
@@ -66,24 +67,25 @@
     .line 54
     invoke-virtual {p0, v0}, Landroid/net/NetworkCapabilities;->hasCapability(I)Z
 
-    move-result p0
+    move-result v0
 
-    if-eqz p0, :cond_1c
+    if-eqz v0, :cond_1c
 
-    const/4 p0, 0x1
+    const/4 v0, 0x1
 
     goto :goto_1d
 
     :cond_1c
-    const/4 p0, 0x0
+    const/4 v0, 0x0
 
     .line 51
     :goto_1d
-    return p0
+    return v0
 .end method
 
 .method public static isValidationRequired(Landroid/net/NetworkCapabilities;)Z
     .registers 2
+    .param p0, "nc"  # Landroid/net/NetworkCapabilities;
 
     .line 63
     invoke-static {p0}, Landroid/net/shared/NetworkMonitorUtils;->isPrivateDnsValidationRequired(Landroid/net/NetworkCapabilities;)Z
@@ -96,17 +98,17 @@
 
     invoke-virtual {p0, v0}, Landroid/net/NetworkCapabilities;->hasCapability(I)Z
 
-    move-result p0
+    move-result v0
 
-    if-eqz p0, :cond_10
+    if-eqz v0, :cond_10
 
-    const/4 p0, 0x1
+    const/4 v0, 0x1
 
     goto :goto_11
 
     :cond_10
-    const/4 p0, 0x0
+    const/4 v0, 0x0
 
     :goto_11
-    return p0
+    return v0
 .end method

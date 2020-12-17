@@ -21,8 +21,9 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/companion/CompanionDeviceManagerService;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/companion/CompanionDeviceManagerService;
 
-    .line 428
+    .line 426
     iput-object p1, p0, Lcom/android/server/companion/CompanionDeviceManagerService$3;->this$0:Lcom/android/server/companion/CompanionDeviceManagerService;
 
     invoke-direct {p0}, Landroid/companion/ICompanionDeviceDiscoveryServiceCallback$Stub;-><init>()V
@@ -34,68 +35,76 @@
 # virtual methods
 .method public onDeviceSelected(Ljava/lang/String;ILjava/lang/String;)V
     .registers 5
+    .param p1, "packageName"  # Ljava/lang/String;
+    .param p2, "userId"  # I
+    .param p3, "deviceAddress"  # Ljava/lang/String;
 
-    .line 443
+    .line 441
     iget-object v0, p0, Lcom/android/server/companion/CompanionDeviceManagerService$3;->this$0:Lcom/android/server/companion/CompanionDeviceManagerService;
 
     invoke-virtual {v0, p2, p1, p3}, Lcom/android/server/companion/CompanionDeviceManagerService;->addAssociation(ILjava/lang/String;Ljava/lang/String;)V
 
-    .line 444
-    iget-object p1, p0, Lcom/android/server/companion/CompanionDeviceManagerService$3;->this$0:Lcom/android/server/companion/CompanionDeviceManagerService;
+    .line 442
+    iget-object v0, p0, Lcom/android/server/companion/CompanionDeviceManagerService$3;->this$0:Lcom/android/server/companion/CompanionDeviceManagerService;
 
-    invoke-static {p1}, Lcom/android/server/companion/CompanionDeviceManagerService;->access$900(Lcom/android/server/companion/CompanionDeviceManagerService;)V
+    invoke-static {v0}, Lcom/android/server/companion/CompanionDeviceManagerService;->access$900(Lcom/android/server/companion/CompanionDeviceManagerService;)V
 
-    .line 445
+    .line 443
     return-void
 .end method
 
 .method public onDeviceSelectionCancel()V
     .registers 2
 
-    .line 449
+    .line 447
     iget-object v0, p0, Lcom/android/server/companion/CompanionDeviceManagerService$3;->this$0:Lcom/android/server/companion/CompanionDeviceManagerService;
 
     invoke-static {v0}, Lcom/android/server/companion/CompanionDeviceManagerService;->access$900(Lcom/android/server/companion/CompanionDeviceManagerService;)V
 
-    .line 450
+    .line 448
     return-void
 .end method
 
 .method public onTransact(ILandroid/os/Parcel;Landroid/os/Parcel;I)Z
-    .registers 5
+    .registers 8
+    .param p1, "code"  # I
+    .param p2, "data"  # Landroid/os/Parcel;
+    .param p3, "reply"  # Landroid/os/Parcel;
+    .param p4, "flags"  # I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
         }
     .end annotation
 
-    .line 434
+    .line 432
     :try_start_0
     invoke-super {p0, p1, p2, p3, p4}, Landroid/companion/ICompanionDeviceDiscoveryServiceCallback$Stub;->onTransact(ILandroid/os/Parcel;Landroid/os/Parcel;I)Z
 
-    move-result p1
+    move-result v0
     :try_end_4
     .catchall {:try_start_0 .. :try_end_4} :catchall_5
 
-    return p1
+    return v0
+
+    .line 433
+    :catchall_5
+    move-exception v0
+
+    .line 434
+    .local v0, "e":Ljava/lang/Throwable;
+    const-string v1, "CompanionDeviceManagerService"
+
+    const-string v2, "Error during IPC"
+
+    invoke-static {v1, v2, v0}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
     .line 435
-    :catchall_5
-    move-exception p1
+    const-class v1, Landroid/os/RemoteException;
 
-    .line 436
-    const-string p2, "CompanionDeviceManagerService"
+    invoke-static {v0, v1}, Landroid/util/ExceptionUtils;->propagate(Ljava/lang/Throwable;Ljava/lang/Class;)Ljava/lang/RuntimeException;
 
-    const-string p3, "Error during IPC"
+    move-result-object v1
 
-    invoke-static {p2, p3, p1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
-
-    .line 437
-    const-class p2, Landroid/os/RemoteException;
-
-    invoke-static {p1, p2}, Landroid/util/ExceptionUtils;->propagate(Ljava/lang/Throwable;Ljava/lang/Class;)Ljava/lang/RuntimeException;
-
-    move-result-object p1
-
-    throw p1
+    throw v1
 .end method

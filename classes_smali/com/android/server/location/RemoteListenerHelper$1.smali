@@ -25,17 +25,19 @@
 
 # direct methods
 .method constructor <init>(Lcom/android/server/location/RemoteListenerHelper;)V
-    .registers 2
+    .registers 3
+    .param p1, "this$0"  # Lcom/android/server/location/RemoteListenerHelper;
 
-    .line 210
+    .line 211
+    .local p0, "this":Lcom/android/server/location/RemoteListenerHelper$1;, "Lcom/android/server/location/RemoteListenerHelper$1;"
     iput-object p1, p0, Lcom/android/server/location/RemoteListenerHelper$1;->this$0:Lcom/android/server/location/RemoteListenerHelper;
 
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
-    .line 211
-    const/4 p1, 0x4
+    .line 212
+    const/4 v0, 0x4
 
-    iput p1, p0, Lcom/android/server/location/RemoteListenerHelper$1;->registrationState:I
+    iput v0, p0, Lcom/android/server/location/RemoteListenerHelper$1;->registrationState:I
 
     return-void
 .end method
@@ -45,7 +47,8 @@
 .method public synthetic lambda$run$0$RemoteListenerHelper$1()V
     .registers 5
 
-    .line 221
+    .line 222
+    .local p0, "this":Lcom/android/server/location/RemoteListenerHelper$1;, "Lcom/android/server/location/RemoteListenerHelper$1;"
     iget-object v0, p0, Lcom/android/server/location/RemoteListenerHelper$1;->this$0:Lcom/android/server/location/RemoteListenerHelper;
 
     invoke-static {v0}, Lcom/android/server/location/RemoteListenerHelper;->access$300(Lcom/android/server/location/RemoteListenerHelper;)Ljava/util/Map;
@@ -54,7 +57,7 @@
 
     monitor-enter v0
 
-    .line 222
+    .line 223
     :try_start_7
     iget-object v1, p0, Lcom/android/server/location/RemoteListenerHelper$1;->this$0:Lcom/android/server/location/RemoteListenerHelper;
 
@@ -68,13 +71,13 @@
 
     invoke-static {v1, v2}, Lcom/android/server/location/RemoteListenerHelper;->access$400(Lcom/android/server/location/RemoteListenerHelper;Lcom/android/server/location/RemoteListenerHelper$ListenerOperation;)V
 
-    .line 223
+    .line 224
     monitor-exit v0
 
-    .line 224
+    .line 225
     return-void
 
-    .line 223
+    .line 224
     :catchall_16
     move-exception v1
 
@@ -88,7 +91,8 @@
 .method public run()V
     .registers 3
 
-    .line 214
+    .line 215
+    .local p0, "this":Lcom/android/server/location/RemoteListenerHelper$1;, "Lcom/android/server/location/RemoteListenerHelper$1;"
     iget-object v0, p0, Lcom/android/server/location/RemoteListenerHelper$1;->this$0:Lcom/android/server/location/RemoteListenerHelper;
 
     invoke-static {v0}, Lcom/android/server/location/RemoteListenerHelper;->access$200(Lcom/android/server/location/RemoteListenerHelper;)Z
@@ -97,7 +101,7 @@
 
     if-nez v0, :cond_1c
 
-    .line 215
+    .line 216
     iget-object v0, p0, Lcom/android/server/location/RemoteListenerHelper$1;->this$0:Lcom/android/server/location/RemoteListenerHelper;
 
     invoke-virtual {v0}, Lcom/android/server/location/RemoteListenerHelper;->registerWithService()I
@@ -106,7 +110,7 @@
 
     iput v0, p0, Lcom/android/server/location/RemoteListenerHelper$1;->registrationState:I
 
-    .line 216
+    .line 217
     iget-object v0, p0, Lcom/android/server/location/RemoteListenerHelper$1;->this$0:Lcom/android/server/location/RemoteListenerHelper;
 
     iget v1, p0, Lcom/android/server/location/RemoteListenerHelper$1;->registrationState:I
@@ -123,7 +127,7 @@
     :goto_19
     invoke-static {v0, v1}, Lcom/android/server/location/RemoteListenerHelper;->access$202(Lcom/android/server/location/RemoteListenerHelper;Z)Z
 
-    .line 218
+    .line 219
     :cond_1c
     iget-object v0, p0, Lcom/android/server/location/RemoteListenerHelper$1;->this$0:Lcom/android/server/location/RemoteListenerHelper;
 
@@ -133,7 +137,7 @@
 
     if-nez v0, :cond_30
 
-    .line 220
+    .line 221
     iget-object v0, p0, Lcom/android/server/location/RemoteListenerHelper$1;->this$0:Lcom/android/server/location/RemoteListenerHelper;
 
     iget-object v0, v0, Lcom/android/server/location/RemoteListenerHelper;->mHandler:Landroid/os/Handler;
@@ -144,7 +148,7 @@
 
     invoke-virtual {v0, v1}, Landroid/os/Handler;->post(Ljava/lang/Runnable;)Z
 
-    .line 226
+    .line 227
     :cond_30
     return-void
 .end method

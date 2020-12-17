@@ -22,7 +22,7 @@
 .method private constructor <init>(Lcom/android/server/ConnectivityService;)V
     .registers 2
 
-    .line 7239
+    .line 7293
     iput-object p1, p0, Lcom/android/server/ConnectivityService$ShellCmd;->this$0:Lcom/android/server/ConnectivityService;
 
     invoke-direct {p0}, Landroid/os/ShellCommand;-><init>()V
@@ -32,8 +32,10 @@
 
 .method synthetic constructor <init>(Lcom/android/server/ConnectivityService;Lcom/android/server/ConnectivityService$1;)V
     .registers 3
+    .param p1, "x0"  # Lcom/android/server/ConnectivityService;
+    .param p2, "x1"  # Lcom/android/server/ConnectivityService$1;
 
-    .line 7239
+    .line 7293
     invoke-direct {p0, p1}, Lcom/android/server/ConnectivityService$ShellCmd;-><init>(Lcom/android/server/ConnectivityService;)V
 
     return-void
@@ -42,25 +44,27 @@
 
 # virtual methods
 .method public onCommand(Ljava/lang/String;)I
-    .registers 7
+    .registers 9
+    .param p1, "cmd"  # Ljava/lang/String;
 
-    .line 7243
+    .line 7297
     if-nez p1, :cond_7
 
-    .line 7244
+    .line 7298
     invoke-virtual {p0, p1}, Lcom/android/server/ConnectivityService$ShellCmd;->handleDefaultCommands(Ljava/lang/String;)I
 
-    move-result p1
+    move-result v0
 
-    return p1
+    return v0
 
-    .line 7246
+    .line 7300
     :cond_7
     invoke-virtual {p0}, Lcom/android/server/ConnectivityService$ShellCmd;->getOutPrintWriter()Ljava/io/PrintWriter;
 
     move-result-object v0
 
-    .line 7248
+    .line 7302
+    .local v0, "pw":Ljava/io/PrintWriter;
     const/4 v1, -0x1
 
     :try_start_c
@@ -96,157 +100,166 @@
     :goto_22
     if-eqz v2, :cond_29
 
-    .line 7268
+    .line 7322
     invoke-virtual {p0, p1}, Lcom/android/server/ConnectivityService$ShellCmd;->handleDefaultCommands(Ljava/lang/String;)I
 
-    move-result p1
+    move-result v1
 
-    return p1
+    return v1
 
-    .line 7250
+    .line 7304
     :cond_29
     invoke-virtual {p0}, Lcom/android/server/ConnectivityService$ShellCmd;->getNextArg()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v2
 
-    .line 7251
-    const-string v2, "enable"
+    .line 7305
+    .local v2, "action":Ljava/lang/String;
+    const-string v3, "enable"
 
-    invoke-virtual {v2, p1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v3, v2}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result v2
+    move-result v3
 
-    if-eqz v2, :cond_3c
+    if-eqz v3, :cond_3c
 
-    .line 7252
-    iget-object p1, p0, Lcom/android/server/ConnectivityService$ShellCmd;->this$0:Lcom/android/server/ConnectivityService;
+    .line 7306
+    iget-object v3, p0, Lcom/android/server/ConnectivityService$ShellCmd;->this$0:Lcom/android/server/ConnectivityService;
 
-    const/4 v2, 0x1
+    const/4 v5, 0x1
 
-    invoke-virtual {p1, v2}, Lcom/android/server/ConnectivityService;->setAirplaneMode(Z)V
+    invoke-virtual {v3, v5}, Lcom/android/server/ConnectivityService;->setAirplaneMode(Z)V
 
-    .line 7253
+    .line 7307
     return v4
 
-    .line 7254
+    .line 7308
     :cond_3c
-    const-string v2, "disable"
+    const-string v3, "disable"
 
-    invoke-virtual {v2, p1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v3, v2}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result v2
+    move-result v3
 
-    if-eqz v2, :cond_4a
+    if-eqz v3, :cond_4a
 
-    .line 7255
-    iget-object p1, p0, Lcom/android/server/ConnectivityService$ShellCmd;->this$0:Lcom/android/server/ConnectivityService;
+    .line 7309
+    iget-object v3, p0, Lcom/android/server/ConnectivityService$ShellCmd;->this$0:Lcom/android/server/ConnectivityService;
 
-    invoke-virtual {p1, v4}, Lcom/android/server/ConnectivityService;->setAirplaneMode(Z)V
+    invoke-virtual {v3, v4}, Lcom/android/server/ConnectivityService;->setAirplaneMode(Z)V
 
-    .line 7256
+    .line 7310
     return v4
 
-    .line 7257
+    .line 7311
     :cond_4a
-    if-nez p1, :cond_67
+    if-nez v2, :cond_67
 
-    .line 7258
-    iget-object p1, p0, Lcom/android/server/ConnectivityService$ShellCmd;->this$0:Lcom/android/server/ConnectivityService;
+    .line 7312
+    iget-object v3, p0, Lcom/android/server/ConnectivityService$ShellCmd;->this$0:Lcom/android/server/ConnectivityService;
 
-    invoke-static {p1}, Lcom/android/server/ConnectivityService;->access$3000(Lcom/android/server/ConnectivityService;)Landroid/content/Context;
+    invoke-static {v3}, Lcom/android/server/ConnectivityService;->access$3200(Lcom/android/server/ConnectivityService;)Landroid/content/Context;
 
-    move-result-object p1
+    move-result-object v3
 
-    invoke-virtual {p1}, Landroid/content/Context;->getContentResolver()Landroid/content/ContentResolver;
+    invoke-virtual {v3}, Landroid/content/Context;->getContentResolver()Landroid/content/ContentResolver;
 
-    move-result-object p1
+    move-result-object v3
 
-    .line 7259
-    const-string v2, "airplane_mode_on"
+    .line 7313
+    .local v3, "cr":Landroid/content/ContentResolver;
+    const-string v5, "airplane_mode_on"
 
-    invoke-static {p1, v2}, Landroid/provider/Settings$Global;->getInt(Landroid/content/ContentResolver;Ljava/lang/String;)I
+    invoke-static {v3, v5}, Landroid/provider/Settings$Global;->getInt(Landroid/content/ContentResolver;Ljava/lang/String;)I
 
-    move-result p1
+    move-result v5
 
-    .line 7261
-    if-nez p1, :cond_61
+    .line 7315
+    .local v5, "enabled":I
+    if-nez v5, :cond_61
 
-    const-string p1, "disabled"
+    const-string v6, "disabled"
 
     goto :goto_63
 
     :cond_61
-    const-string p1, "enabled"
+    const-string v6, "enabled"
 
     :goto_63
-    invoke-virtual {v0, p1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {v0, v6}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
-    .line 7262
+    .line 7316
     return v4
 
-    .line 7264
+    .line 7318
+    .end local v3  # "cr":Landroid/content/ContentResolver;
+    .end local v5  # "enabled":I
     :cond_67
     invoke-virtual {p0}, Lcom/android/server/ConnectivityService$ShellCmd;->onHelp()V
     :try_end_6a
     .catch Ljava/lang/Exception; {:try_start_c .. :try_end_6a} :catch_6b
 
-    .line 7265
+    .line 7319
     return v1
 
-    .line 7270
+    .line 7324
+    .end local v2  # "action":Ljava/lang/String;
     :catch_6b
-    move-exception p1
+    move-exception v2
 
-    .line 7271
-    invoke-virtual {v0, p1}, Ljava/io/PrintWriter;->println(Ljava/lang/Object;)V
+    .line 7325
+    .local v2, "e":Ljava/lang/Exception;
+    invoke-virtual {v0, v2}, Ljava/io/PrintWriter;->println(Ljava/lang/Object;)V
 
-    .line 7273
+    .line 7327
+    .end local v2  # "e":Ljava/lang/Exception;
     return v1
 .end method
 
 .method public onHelp()V
     .registers 3
 
-    .line 7278
+    .line 7332
     invoke-virtual {p0}, Lcom/android/server/ConnectivityService$ShellCmd;->getOutPrintWriter()Ljava/io/PrintWriter;
 
     move-result-object v0
 
-    .line 7279
+    .line 7333
+    .local v0, "pw":Ljava/io/PrintWriter;
     const-string v1, "Connectivity service commands:"
 
     invoke-virtual {v0, v1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
-    .line 7280
+    .line 7334
     const-string v1, "  help"
 
     invoke-virtual {v0, v1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
-    .line 7281
+    .line 7335
     const-string v1, "    Print this help text."
 
     invoke-virtual {v0, v1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
-    .line 7282
+    .line 7336
     const-string v1, "  airplane-mode [enable|disable]"
 
     invoke-virtual {v0, v1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
-    .line 7283
+    .line 7337
     const-string v1, "    Turn airplane mode on or off."
 
     invoke-virtual {v0, v1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
-    .line 7284
+    .line 7338
     const-string v1, "  airplane-mode"
 
     invoke-virtual {v0, v1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
-    .line 7285
+    .line 7339
     const-string v1, "    Get airplane mode."
 
     invoke-virtual {v0, v1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
-    .line 7286
+    .line 7340
     return-void
 .end method

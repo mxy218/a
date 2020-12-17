@@ -47,51 +47,59 @@
 
 # direct methods
 .method public constructor <init>(Lcom/android/server/wm/ActivityTaskManagerService;Lcom/android/server/wm/ActivityRecord;Landroid/os/Bundle;Landroid/content/Intent;Ljava/lang/String;Landroid/app/IAssistDataReceiver;Landroid/os/Bundle;I)V
-    .registers 9
+    .registers 10
+    .param p1, "this$0"  # Lcom/android/server/wm/ActivityTaskManagerService;
+    .param p2, "_activity"  # Lcom/android/server/wm/ActivityRecord;
+    .param p3, "_extras"  # Landroid/os/Bundle;
+    .param p4, "_intent"  # Landroid/content/Intent;
+    .param p5, "_hint"  # Ljava/lang/String;
+    .param p6, "_receiver"  # Landroid/app/IAssistDataReceiver;
+    .param p7, "_receiverExtras"  # Landroid/os/Bundle;
+    .param p8, "_userHandle"  # I
 
-    .line 3725
+    .line 3772
     iput-object p1, p0, Lcom/android/server/wm/ActivityTaskManagerService$PendingAssistExtras;->this$0:Lcom/android/server/wm/ActivityTaskManagerService;
 
     invoke-direct {p0}, Landroid/os/Binder;-><init>()V
 
-    .line 3717
-    const/4 p1, 0x0
+    .line 3764
+    const/4 v0, 0x0
 
-    iput-boolean p1, p0, Lcom/android/server/wm/ActivityTaskManagerService$PendingAssistExtras;->haveResult:Z
+    iput-boolean v0, p0, Lcom/android/server/wm/ActivityTaskManagerService$PendingAssistExtras;->haveResult:Z
 
-    .line 3718
-    const/4 p1, 0x0
+    .line 3765
+    const/4 v0, 0x0
 
-    iput-object p1, p0, Lcom/android/server/wm/ActivityTaskManagerService$PendingAssistExtras;->result:Landroid/os/Bundle;
+    iput-object v0, p0, Lcom/android/server/wm/ActivityTaskManagerService$PendingAssistExtras;->result:Landroid/os/Bundle;
 
-    .line 3719
-    iput-object p1, p0, Lcom/android/server/wm/ActivityTaskManagerService$PendingAssistExtras;->structure:Landroid/app/assist/AssistStructure;
+    .line 3766
+    iput-object v0, p0, Lcom/android/server/wm/ActivityTaskManagerService$PendingAssistExtras;->structure:Landroid/app/assist/AssistStructure;
 
-    .line 3720
-    iput-object p1, p0, Lcom/android/server/wm/ActivityTaskManagerService$PendingAssistExtras;->content:Landroid/app/assist/AssistContent;
+    .line 3767
+    iput-object v0, p0, Lcom/android/server/wm/ActivityTaskManagerService$PendingAssistExtras;->content:Landroid/app/assist/AssistContent;
 
-    .line 3726
+    .line 3773
     iput-object p2, p0, Lcom/android/server/wm/ActivityTaskManagerService$PendingAssistExtras;->activity:Lcom/android/server/wm/ActivityRecord;
 
-    .line 3727
+    .line 3774
     iput-object p3, p0, Lcom/android/server/wm/ActivityTaskManagerService$PendingAssistExtras;->extras:Landroid/os/Bundle;
 
-    .line 3728
+    .line 3775
     iput-object p4, p0, Lcom/android/server/wm/ActivityTaskManagerService$PendingAssistExtras;->intent:Landroid/content/Intent;
 
-    .line 3729
+    .line 3776
     iput-object p5, p0, Lcom/android/server/wm/ActivityTaskManagerService$PendingAssistExtras;->hint:Ljava/lang/String;
 
-    .line 3730
+    .line 3777
     iput-object p6, p0, Lcom/android/server/wm/ActivityTaskManagerService$PendingAssistExtras;->receiver:Landroid/app/IAssistDataReceiver;
 
-    .line 3731
+    .line 3778
     iput-object p7, p0, Lcom/android/server/wm/ActivityTaskManagerService$PendingAssistExtras;->receiverExtras:Landroid/os/Bundle;
 
-    .line 3732
+    .line 3779
     iput p8, p0, Lcom/android/server/wm/ActivityTaskManagerService$PendingAssistExtras;->userHandle:I
 
-    .line 3733
+    .line 3780
     return-void
 .end method
 
@@ -100,7 +108,7 @@
 .method public run()V
     .registers 3
 
-    .line 3737
+    .line 3784
     new-instance v0, Ljava/lang/StringBuilder;
 
     invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
@@ -121,32 +129,32 @@
 
     invoke-static {v1, v0}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 3738
+    .line 3785
     monitor-enter p0
 
-    .line 3739
+    .line 3786
     const/4 v0, 0x1
 
     :try_start_1a
     iput-boolean v0, p0, Lcom/android/server/wm/ActivityTaskManagerService$PendingAssistExtras;->haveResult:Z
 
-    .line 3740
+    .line 3787
     invoke-virtual {p0}, Ljava/lang/Object;->notifyAll()V
 
-    .line 3741
+    .line 3788
     monitor-exit p0
     :try_end_20
     .catchall {:try_start_1a .. :try_end_20} :catchall_26
 
-    .line 3742
+    .line 3789
     iget-object v0, p0, Lcom/android/server/wm/ActivityTaskManagerService$PendingAssistExtras;->this$0:Lcom/android/server/wm/ActivityTaskManagerService;
 
     invoke-static {v0, p0}, Lcom/android/server/wm/ActivityTaskManagerService;->access$300(Lcom/android/server/wm/ActivityTaskManagerService;Lcom/android/server/wm/ActivityTaskManagerService$PendingAssistExtras;)V
 
-    .line 3743
+    .line 3790
     return-void
 
-    .line 3741
+    .line 3788
     :catchall_26
     move-exception v0
 

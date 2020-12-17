@@ -284,6 +284,14 @@
 
 .method public constructor <init>(Landroid/graphics/Rect;Landroid/graphics/Rect;Landroid/graphics/Rect;Landroid/graphics/Rect;Landroid/graphics/Rect;Landroid/graphics/Rect;Landroid/graphics/Rect;Landroid/graphics/Rect;)V
     .registers 11
+    .param p1, "parentFrame"  # Landroid/graphics/Rect;
+    .param p2, "displayFrame"  # Landroid/graphics/Rect;
+    .param p3, "overscanFrame"  # Landroid/graphics/Rect;
+    .param p4, "contentFrame"  # Landroid/graphics/Rect;
+    .param p5, "visibleFrame"  # Landroid/graphics/Rect;
+    .param p6, "decorFrame"  # Landroid/graphics/Rect;
+    .param p7, "stableFrame"  # Landroid/graphics/Rect;
+    .param p8, "outsetFrame"  # Landroid/graphics/Rect;
 
     .line 201
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -524,7 +532,8 @@
 
 # virtual methods
 .method calculateDockedDividerInsets(Landroid/graphics/Rect;)V
-    .registers 4
+    .registers 5
+    .param p1, "cutoutInsets"  # Landroid/graphics/Rect;
 
     .line 259
     iget-object v0, p0, Lcom/android/server/wm/WindowFrames;->mTmpRect:Landroid/graphics/Rect;
@@ -539,42 +548,45 @@
     invoke-virtual {v0, p1}, Landroid/graphics/Rect;->inset(Landroid/graphics/Rect;)V
 
     .line 261
-    iget-object p1, p0, Lcom/android/server/wm/WindowFrames;->mTmpRect:Landroid/graphics/Rect;
-
-    iget-object v0, p0, Lcom/android/server/wm/WindowFrames;->mStableFrame:Landroid/graphics/Rect;
-
-    invoke-virtual {p1, v0}, Landroid/graphics/Rect;->intersectUnchecked(Landroid/graphics/Rect;)V
-
-    .line 262
-    iget-object p1, p0, Lcom/android/server/wm/WindowFrames;->mDisplayFrame:Landroid/graphics/Rect;
-
     iget-object v0, p0, Lcom/android/server/wm/WindowFrames;->mTmpRect:Landroid/graphics/Rect;
 
-    iget-object v1, p0, Lcom/android/server/wm/WindowFrames;->mStableInsets:Landroid/graphics/Rect;
+    iget-object v1, p0, Lcom/android/server/wm/WindowFrames;->mStableFrame:Landroid/graphics/Rect;
 
-    invoke-static {p1, v0, v1}, Lcom/android/server/wm/utils/InsetUtils;->insetsBetweenFrames(Landroid/graphics/Rect;Landroid/graphics/Rect;Landroid/graphics/Rect;)V
+    invoke-virtual {v0, v1}, Landroid/graphics/Rect;->intersectUnchecked(Landroid/graphics/Rect;)V
+
+    .line 262
+    iget-object v0, p0, Lcom/android/server/wm/WindowFrames;->mDisplayFrame:Landroid/graphics/Rect;
+
+    iget-object v1, p0, Lcom/android/server/wm/WindowFrames;->mTmpRect:Landroid/graphics/Rect;
+
+    iget-object v2, p0, Lcom/android/server/wm/WindowFrames;->mStableInsets:Landroid/graphics/Rect;
+
+    invoke-static {v0, v1, v2}, Lcom/android/server/wm/utils/InsetUtils;->insetsBetweenFrames(Landroid/graphics/Rect;Landroid/graphics/Rect;Landroid/graphics/Rect;)V
 
     .line 266
-    iget-object p1, p0, Lcom/android/server/wm/WindowFrames;->mContentInsets:Landroid/graphics/Rect;
+    iget-object v0, p0, Lcom/android/server/wm/WindowFrames;->mContentInsets:Landroid/graphics/Rect;
 
-    invoke-virtual {p1}, Landroid/graphics/Rect;->setEmpty()V
+    invoke-virtual {v0}, Landroid/graphics/Rect;->setEmpty()V
 
     .line 267
-    iget-object p1, p0, Lcom/android/server/wm/WindowFrames;->mVisibleInsets:Landroid/graphics/Rect;
+    iget-object v0, p0, Lcom/android/server/wm/WindowFrames;->mVisibleInsets:Landroid/graphics/Rect;
 
-    invoke-virtual {p1}, Landroid/graphics/Rect;->setEmpty()V
+    invoke-virtual {v0}, Landroid/graphics/Rect;->setEmpty()V
 
     .line 268
-    sget-object p1, Lcom/android/server/wm/utils/WmDisplayCutout;->NO_CUTOUT:Lcom/android/server/wm/utils/WmDisplayCutout;
+    sget-object v0, Lcom/android/server/wm/utils/WmDisplayCutout;->NO_CUTOUT:Lcom/android/server/wm/utils/WmDisplayCutout;
 
-    iput-object p1, p0, Lcom/android/server/wm/WindowFrames;->mDisplayCutout:Lcom/android/server/wm/utils/WmDisplayCutout;
+    iput-object v0, p0, Lcom/android/server/wm/WindowFrames;->mDisplayCutout:Lcom/android/server/wm/utils/WmDisplayCutout;
 
     .line 269
     return-void
 .end method
 
 .method calculateInsets(ZZLandroid/graphics/Rect;)V
-    .registers 8
+    .registers 11
+    .param p1, "windowsAreFloating"  # Z
+    .param p2, "inFullscreenContainer"  # Z
+    .param p3, "windowBounds"  # Landroid/graphics/Rect;
 
     .line 284
     const/4 v0, 0x1
@@ -601,18 +613,19 @@
     move v2, v1
 
     .line 286
+    .local v2, "overrideRightInset":Z
     :goto_11
     if-nez p1, :cond_1e
 
     if-nez p2, :cond_1e
 
-    iget-object p1, p0, Lcom/android/server/wm/WindowFrames;->mFrame:Landroid/graphics/Rect;
+    iget-object v3, p0, Lcom/android/server/wm/WindowFrames;->mFrame:Landroid/graphics/Rect;
 
-    iget p1, p1, Landroid/graphics/Rect;->bottom:I
+    iget v3, v3, Landroid/graphics/Rect;->bottom:I
 
-    iget p2, p3, Landroid/graphics/Rect;->bottom:I
+    iget v4, p3, Landroid/graphics/Rect;->bottom:I
 
-    if-le p1, p2, :cond_1e
+    if-le v3, v4, :cond_1e
 
     goto :goto_1f
 
@@ -620,70 +633,73 @@
     move v0, v1
 
     .line 289
+    .local v0, "overrideBottomInset":Z
     :goto_1f
-    iget-object p1, p0, Lcom/android/server/wm/WindowFrames;->mTmpRect:Landroid/graphics/Rect;
+    iget-object v1, p0, Lcom/android/server/wm/WindowFrames;->mTmpRect:Landroid/graphics/Rect;
 
-    iget-object p2, p0, Lcom/android/server/wm/WindowFrames;->mFrame:Landroid/graphics/Rect;
+    iget-object v3, p0, Lcom/android/server/wm/WindowFrames;->mFrame:Landroid/graphics/Rect;
 
-    iget p2, p2, Landroid/graphics/Rect;->left:I
+    iget v3, v3, Landroid/graphics/Rect;->left:I
 
-    iget-object v1, p0, Lcom/android/server/wm/WindowFrames;->mFrame:Landroid/graphics/Rect;
+    iget-object v4, p0, Lcom/android/server/wm/WindowFrames;->mFrame:Landroid/graphics/Rect;
 
-    iget v1, v1, Landroid/graphics/Rect;->top:I
+    iget v4, v4, Landroid/graphics/Rect;->top:I
 
     .line 290
     if-eqz v2, :cond_2e
 
-    iget v2, p3, Landroid/graphics/Rect;->right:I
+    iget v5, p3, Landroid/graphics/Rect;->right:I
 
     goto :goto_32
 
     :cond_2e
-    iget-object v2, p0, Lcom/android/server/wm/WindowFrames;->mFrame:Landroid/graphics/Rect;
+    iget-object v5, p0, Lcom/android/server/wm/WindowFrames;->mFrame:Landroid/graphics/Rect;
 
-    iget v2, v2, Landroid/graphics/Rect;->right:I
+    iget v5, v5, Landroid/graphics/Rect;->right:I
 
     .line 291
     :goto_32
-    if-eqz v0, :cond_35
+    if-eqz v0, :cond_37
 
-    goto :goto_37
+    iget v6, p3, Landroid/graphics/Rect;->bottom:I
 
-    :cond_35
-    iget-object p3, p0, Lcom/android/server/wm/WindowFrames;->mFrame:Landroid/graphics/Rect;
+    goto :goto_3b
 
-    :goto_37
-    iget p3, p3, Landroid/graphics/Rect;->bottom:I
+    :cond_37
+    iget-object v6, p0, Lcom/android/server/wm/WindowFrames;->mFrame:Landroid/graphics/Rect;
+
+    iget v6, v6, Landroid/graphics/Rect;->bottom:I
 
     .line 289
-    invoke-virtual {p1, p2, v1, v2, p3}, Landroid/graphics/Rect;->set(IIII)V
+    :goto_3b
+    invoke-virtual {v1, v3, v4, v5, v6}, Landroid/graphics/Rect;->set(IIII)V
 
     .line 293
-    iget-object p1, p0, Lcom/android/server/wm/WindowFrames;->mTmpRect:Landroid/graphics/Rect;
+    iget-object v1, p0, Lcom/android/server/wm/WindowFrames;->mTmpRect:Landroid/graphics/Rect;
 
-    iget-object p2, p0, Lcom/android/server/wm/WindowFrames;->mContentFrame:Landroid/graphics/Rect;
+    iget-object v3, p0, Lcom/android/server/wm/WindowFrames;->mContentFrame:Landroid/graphics/Rect;
 
-    iget-object p3, p0, Lcom/android/server/wm/WindowFrames;->mContentInsets:Landroid/graphics/Rect;
+    iget-object v4, p0, Lcom/android/server/wm/WindowFrames;->mContentInsets:Landroid/graphics/Rect;
 
-    invoke-static {p1, p2, p3}, Lcom/android/server/wm/utils/InsetUtils;->insetsBetweenFrames(Landroid/graphics/Rect;Landroid/graphics/Rect;Landroid/graphics/Rect;)V
+    invoke-static {v1, v3, v4}, Lcom/android/server/wm/utils/InsetUtils;->insetsBetweenFrames(Landroid/graphics/Rect;Landroid/graphics/Rect;Landroid/graphics/Rect;)V
 
     .line 294
-    iget-object p1, p0, Lcom/android/server/wm/WindowFrames;->mTmpRect:Landroid/graphics/Rect;
+    iget-object v1, p0, Lcom/android/server/wm/WindowFrames;->mTmpRect:Landroid/graphics/Rect;
 
-    iget-object p2, p0, Lcom/android/server/wm/WindowFrames;->mVisibleFrame:Landroid/graphics/Rect;
+    iget-object v3, p0, Lcom/android/server/wm/WindowFrames;->mVisibleFrame:Landroid/graphics/Rect;
 
-    iget-object p3, p0, Lcom/android/server/wm/WindowFrames;->mVisibleInsets:Landroid/graphics/Rect;
+    iget-object v4, p0, Lcom/android/server/wm/WindowFrames;->mVisibleInsets:Landroid/graphics/Rect;
 
-    invoke-static {p1, p2, p3}, Lcom/android/server/wm/utils/InsetUtils;->insetsBetweenFrames(Landroid/graphics/Rect;Landroid/graphics/Rect;Landroid/graphics/Rect;)V
+    invoke-static {v1, v3, v4}, Lcom/android/server/wm/utils/InsetUtils;->insetsBetweenFrames(Landroid/graphics/Rect;Landroid/graphics/Rect;Landroid/graphics/Rect;)V
 
     .line 295
-    iget-object p1, p0, Lcom/android/server/wm/WindowFrames;->mTmpRect:Landroid/graphics/Rect;
+    iget-object v1, p0, Lcom/android/server/wm/WindowFrames;->mTmpRect:Landroid/graphics/Rect;
 
-    iget-object p2, p0, Lcom/android/server/wm/WindowFrames;->mStableFrame:Landroid/graphics/Rect;
+    iget-object v3, p0, Lcom/android/server/wm/WindowFrames;->mStableFrame:Landroid/graphics/Rect;
 
-    iget-object p3, p0, Lcom/android/server/wm/WindowFrames;->mStableInsets:Landroid/graphics/Rect;
+    iget-object v4, p0, Lcom/android/server/wm/WindowFrames;->mStableInsets:Landroid/graphics/Rect;
 
-    invoke-static {p1, p2, p3}, Lcom/android/server/wm/utils/InsetUtils;->insetsBetweenFrames(Landroid/graphics/Rect;Landroid/graphics/Rect;Landroid/graphics/Rect;)V
+    invoke-static {v1, v3, v4}, Lcom/android/server/wm/utils/InsetUtils;->insetsBetweenFrames(Landroid/graphics/Rect;Landroid/graphics/Rect;Landroid/graphics/Rect;)V
 
     .line 296
     return-void
@@ -713,6 +729,8 @@
 
 .method public dump(Ljava/io/PrintWriter;Ljava/lang/String;)V
     .registers 9
+    .param p1, "pw"  # Ljava/io/PrintWriter;
+    .param p2, "prefix"  # Ljava/lang/String;
 
     .line 420
     new-instance v0, Ljava/lang/StringBuilder;
@@ -1071,80 +1089,80 @@
 
     invoke-virtual {v0, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string p2, "Lst insets: overscan="
+    const-string v4, "Lst insets: overscan="
 
-    invoke-virtual {v0, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    iget-object p2, p0, Lcom/android/server/wm/WindowFrames;->mLastOverscanInsets:Landroid/graphics/Rect;
+    iget-object v4, p0, Lcom/android/server/wm/WindowFrames;->mLastOverscanInsets:Landroid/graphics/Rect;
 
-    sget-object v4, Lcom/android/server/wm/WindowFrames;->sTmpSB:Ljava/lang/StringBuilder;
+    sget-object v5, Lcom/android/server/wm/WindowFrames;->sTmpSB:Ljava/lang/StringBuilder;
 
-    invoke-virtual {p2, v4}, Landroid/graphics/Rect;->toShortString(Ljava/lang/StringBuilder;)Ljava/lang/String;
+    invoke-virtual {v4, v5}, Landroid/graphics/Rect;->toShortString(Ljava/lang/StringBuilder;)Ljava/lang/String;
 
-    move-result-object p2
+    move-result-object v4
 
-    invoke-virtual {v0, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v0, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    iget-object p2, p0, Lcom/android/server/wm/WindowFrames;->mLastContentInsets:Landroid/graphics/Rect;
+    iget-object v2, p0, Lcom/android/server/wm/WindowFrames;->mLastContentInsets:Landroid/graphics/Rect;
 
-    sget-object v2, Lcom/android/server/wm/WindowFrames;->sTmpSB:Ljava/lang/StringBuilder;
+    sget-object v4, Lcom/android/server/wm/WindowFrames;->sTmpSB:Ljava/lang/StringBuilder;
 
     .line 439
-    invoke-virtual {p2, v2}, Landroid/graphics/Rect;->toShortString(Ljava/lang/StringBuilder;)Ljava/lang/String;
+    invoke-virtual {v2, v4}, Landroid/graphics/Rect;->toShortString(Ljava/lang/StringBuilder;)Ljava/lang/String;
 
-    move-result-object p2
+    move-result-object v2
 
-    invoke-virtual {v0, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    iget-object p2, p0, Lcom/android/server/wm/WindowFrames;->mLastVisibleInsets:Landroid/graphics/Rect;
+    iget-object v1, p0, Lcom/android/server/wm/WindowFrames;->mLastVisibleInsets:Landroid/graphics/Rect;
 
-    sget-object v1, Lcom/android/server/wm/WindowFrames;->sTmpSB:Ljava/lang/StringBuilder;
+    sget-object v2, Lcom/android/server/wm/WindowFrames;->sTmpSB:Ljava/lang/StringBuilder;
 
     .line 440
-    invoke-virtual {p2, v1}, Landroid/graphics/Rect;->toShortString(Ljava/lang/StringBuilder;)Ljava/lang/String;
+    invoke-virtual {v1, v2}, Landroid/graphics/Rect;->toShortString(Ljava/lang/StringBuilder;)Ljava/lang/String;
 
-    move-result-object p2
+    move-result-object v1
 
-    invoke-virtual {v0, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v0, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    iget-object p2, p0, Lcom/android/server/wm/WindowFrames;->mLastStableInsets:Landroid/graphics/Rect;
+    iget-object v1, p0, Lcom/android/server/wm/WindowFrames;->mLastStableInsets:Landroid/graphics/Rect;
 
-    sget-object v1, Lcom/android/server/wm/WindowFrames;->sTmpSB:Ljava/lang/StringBuilder;
+    sget-object v2, Lcom/android/server/wm/WindowFrames;->sTmpSB:Ljava/lang/StringBuilder;
 
     .line 441
-    invoke-virtual {p2, v1}, Landroid/graphics/Rect;->toShortString(Ljava/lang/StringBuilder;)Ljava/lang/String;
+    invoke-virtual {v1, v2}, Landroid/graphics/Rect;->toShortString(Ljava/lang/StringBuilder;)Ljava/lang/String;
 
-    move-result-object p2
+    move-result-object v1
 
-    invoke-virtual {v0, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string p2, " outset="
+    const-string v1, " outset="
 
-    invoke-virtual {v0, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    iget-object p2, p0, Lcom/android/server/wm/WindowFrames;->mLastOutsets:Landroid/graphics/Rect;
+    iget-object v1, p0, Lcom/android/server/wm/WindowFrames;->mLastOutsets:Landroid/graphics/Rect;
 
-    sget-object v1, Lcom/android/server/wm/WindowFrames;->sTmpSB:Ljava/lang/StringBuilder;
+    sget-object v2, Lcom/android/server/wm/WindowFrames;->sTmpSB:Ljava/lang/StringBuilder;
 
     .line 442
-    invoke-virtual {p2, v1}, Landroid/graphics/Rect;->toShortString(Ljava/lang/StringBuilder;)Ljava/lang/String;
+    invoke-virtual {v1, v2}, Landroid/graphics/Rect;->toShortString(Ljava/lang/StringBuilder;)Ljava/lang/String;
 
-    move-result-object p2
+    move-result-object v1
 
-    invoke-virtual {v0, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p2
+    move-result-object v0
 
     .line 438
-    invoke-virtual {p1, p2}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
     .line 443
     return-void
@@ -1330,6 +1348,8 @@
 
 .method offsetFrames(II)V
     .registers 4
+    .param p1, "layoutXDiff"  # I
+    .param p2, "layoutYDiff"  # I
 
     .line 312
     iget-object v0, p0, Lcom/android/server/wm/WindowFrames;->mFrame:Landroid/graphics/Rect;
@@ -1410,6 +1430,7 @@
 
 .method scaleInsets(F)V
     .registers 3
+    .param p1, "scale"  # F
 
     .line 304
     iget-object v0, p0, Lcom/android/server/wm/WindowFrames;->mOverscanInsets:Landroid/graphics/Rect;
@@ -1442,6 +1463,7 @@
 
 .method public setContentChanged(Z)V
     .registers 2
+    .param p1, "contentChanged"  # Z
 
     .line 388
     iput-boolean p1, p0, Lcom/android/server/wm/WindowFrames;->mContentChanged:Z
@@ -1452,6 +1474,7 @@
 
 .method public setDisplayCutout(Lcom/android/server/wm/utils/WmDisplayCutout;)V
     .registers 2
+    .param p1, "displayCutout"  # Lcom/android/server/wm/utils/WmDisplayCutout;
 
     .line 229
     iput-object p1, p0, Lcom/android/server/wm/WindowFrames;->mDisplayCutout:Lcom/android/server/wm/utils/WmDisplayCutout;
@@ -1462,6 +1485,14 @@
 
 .method public setFrames(Landroid/graphics/Rect;Landroid/graphics/Rect;Landroid/graphics/Rect;Landroid/graphics/Rect;Landroid/graphics/Rect;Landroid/graphics/Rect;Landroid/graphics/Rect;Landroid/graphics/Rect;)V
     .registers 10
+    .param p1, "parentFrame"  # Landroid/graphics/Rect;
+    .param p2, "displayFrame"  # Landroid/graphics/Rect;
+    .param p3, "overscanFrame"  # Landroid/graphics/Rect;
+    .param p4, "contentFrame"  # Landroid/graphics/Rect;
+    .param p5, "visibleFrame"  # Landroid/graphics/Rect;
+    .param p6, "decorFrame"  # Landroid/graphics/Rect;
+    .param p7, "stableFrame"  # Landroid/graphics/Rect;
+    .param p8, "outsetFrame"  # Landroid/graphics/Rect;
 
     .line 209
     iget-object v0, p0, Lcom/android/server/wm/WindowFrames;->mParentFrame:Landroid/graphics/Rect;
@@ -1469,39 +1500,39 @@
     invoke-virtual {v0, p1}, Landroid/graphics/Rect;->set(Landroid/graphics/Rect;)V
 
     .line 210
-    iget-object p1, p0, Lcom/android/server/wm/WindowFrames;->mDisplayFrame:Landroid/graphics/Rect;
+    iget-object v0, p0, Lcom/android/server/wm/WindowFrames;->mDisplayFrame:Landroid/graphics/Rect;
 
-    invoke-virtual {p1, p2}, Landroid/graphics/Rect;->set(Landroid/graphics/Rect;)V
+    invoke-virtual {v0, p2}, Landroid/graphics/Rect;->set(Landroid/graphics/Rect;)V
 
     .line 211
-    iget-object p1, p0, Lcom/android/server/wm/WindowFrames;->mOverscanFrame:Landroid/graphics/Rect;
+    iget-object v0, p0, Lcom/android/server/wm/WindowFrames;->mOverscanFrame:Landroid/graphics/Rect;
 
-    invoke-virtual {p1, p3}, Landroid/graphics/Rect;->set(Landroid/graphics/Rect;)V
+    invoke-virtual {v0, p3}, Landroid/graphics/Rect;->set(Landroid/graphics/Rect;)V
 
     .line 212
-    iget-object p1, p0, Lcom/android/server/wm/WindowFrames;->mContentFrame:Landroid/graphics/Rect;
+    iget-object v0, p0, Lcom/android/server/wm/WindowFrames;->mContentFrame:Landroid/graphics/Rect;
 
-    invoke-virtual {p1, p4}, Landroid/graphics/Rect;->set(Landroid/graphics/Rect;)V
+    invoke-virtual {v0, p4}, Landroid/graphics/Rect;->set(Landroid/graphics/Rect;)V
 
     .line 213
-    iget-object p1, p0, Lcom/android/server/wm/WindowFrames;->mVisibleFrame:Landroid/graphics/Rect;
+    iget-object v0, p0, Lcom/android/server/wm/WindowFrames;->mVisibleFrame:Landroid/graphics/Rect;
 
-    invoke-virtual {p1, p5}, Landroid/graphics/Rect;->set(Landroid/graphics/Rect;)V
+    invoke-virtual {v0, p5}, Landroid/graphics/Rect;->set(Landroid/graphics/Rect;)V
 
     .line 214
-    iget-object p1, p0, Lcom/android/server/wm/WindowFrames;->mDecorFrame:Landroid/graphics/Rect;
+    iget-object v0, p0, Lcom/android/server/wm/WindowFrames;->mDecorFrame:Landroid/graphics/Rect;
 
-    invoke-virtual {p1, p6}, Landroid/graphics/Rect;->set(Landroid/graphics/Rect;)V
+    invoke-virtual {v0, p6}, Landroid/graphics/Rect;->set(Landroid/graphics/Rect;)V
 
     .line 215
-    iget-object p1, p0, Lcom/android/server/wm/WindowFrames;->mStableFrame:Landroid/graphics/Rect;
+    iget-object v0, p0, Lcom/android/server/wm/WindowFrames;->mStableFrame:Landroid/graphics/Rect;
 
-    invoke-virtual {p1, p7}, Landroid/graphics/Rect;->set(Landroid/graphics/Rect;)V
+    invoke-virtual {v0, p7}, Landroid/graphics/Rect;->set(Landroid/graphics/Rect;)V
 
     .line 216
-    iget-object p1, p0, Lcom/android/server/wm/WindowFrames;->mOutsetFrame:Landroid/graphics/Rect;
+    iget-object v0, p0, Lcom/android/server/wm/WindowFrames;->mOutsetFrame:Landroid/graphics/Rect;
 
-    invoke-virtual {p1, p8}, Landroid/graphics/Rect;->set(Landroid/graphics/Rect;)V
+    invoke-virtual {v0, p8}, Landroid/graphics/Rect;->set(Landroid/graphics/Rect;)V
 
     .line 217
     return-void
@@ -1509,6 +1540,7 @@
 
 .method public setHasOutsets(Z)V
     .registers 3
+    .param p1, "hasOutsets"  # Z
 
     .line 374
     iget-boolean v0, p0, Lcom/android/server/wm/WindowFrames;->mHasOutsets:Z
@@ -1526,9 +1558,9 @@
     if-nez p1, :cond_e
 
     .line 379
-    iget-object p1, p0, Lcom/android/server/wm/WindowFrames;->mOutsets:Landroid/graphics/Rect;
+    iget-object v0, p0, Lcom/android/server/wm/WindowFrames;->mOutsets:Landroid/graphics/Rect;
 
-    invoke-virtual {p1}, Landroid/graphics/Rect;->setEmpty()V
+    invoke-virtual {v0}, Landroid/graphics/Rect;->setEmpty()V
 
     .line 381
     :cond_e
@@ -1537,6 +1569,7 @@
 
 .method public setParentFrameWasClippedByDisplayCutout(Z)V
     .registers 2
+    .param p1, "parentFrameWasClippedByDisplayCutout"  # Z
 
     .line 221
     iput-boolean p1, p0, Lcom/android/server/wm/WindowFrames;->mParentFrameWasClippedByDisplayCutout:Z
@@ -1750,124 +1783,127 @@
 .end method
 
 .method public writeToProto(Landroid/util/proto/ProtoOutputStream;J)V
-    .registers 7
+    .registers 9
+    .param p1, "proto"  # Landroid/util/proto/ProtoOutputStream;
+    .param p2, "fieldId"  # J
 
     .line 399
     invoke-virtual {p1, p2, p3}, Landroid/util/proto/ProtoOutputStream;->start(J)J
 
-    move-result-wide p2
+    move-result-wide v0
 
     .line 400
-    iget-object v0, p0, Lcom/android/server/wm/WindowFrames;->mParentFrame:Landroid/graphics/Rect;
+    .local v0, "token":J
+    iget-object v2, p0, Lcom/android/server/wm/WindowFrames;->mParentFrame:Landroid/graphics/Rect;
 
-    const-wide v1, 0x10b00000008L
+    const-wide v3, 0x10b00000008L
 
-    invoke-virtual {v0, p1, v1, v2}, Landroid/graphics/Rect;->writeToProto(Landroid/util/proto/ProtoOutputStream;J)V
+    invoke-virtual {v2, p1, v3, v4}, Landroid/graphics/Rect;->writeToProto(Landroid/util/proto/ProtoOutputStream;J)V
 
     .line 401
-    iget-object v0, p0, Lcom/android/server/wm/WindowFrames;->mContentFrame:Landroid/graphics/Rect;
+    iget-object v2, p0, Lcom/android/server/wm/WindowFrames;->mContentFrame:Landroid/graphics/Rect;
 
-    const-wide v1, 0x10b00000002L
+    const-wide v3, 0x10b00000002L
 
-    invoke-virtual {v0, p1, v1, v2}, Landroid/graphics/Rect;->writeToProto(Landroid/util/proto/ProtoOutputStream;J)V
+    invoke-virtual {v2, p1, v3, v4}, Landroid/graphics/Rect;->writeToProto(Landroid/util/proto/ProtoOutputStream;J)V
 
     .line 402
-    iget-object v0, p0, Lcom/android/server/wm/WindowFrames;->mDisplayFrame:Landroid/graphics/Rect;
+    iget-object v2, p0, Lcom/android/server/wm/WindowFrames;->mDisplayFrame:Landroid/graphics/Rect;
 
-    const-wide v1, 0x10b00000004L
+    const-wide v3, 0x10b00000004L
 
-    invoke-virtual {v0, p1, v1, v2}, Landroid/graphics/Rect;->writeToProto(Landroid/util/proto/ProtoOutputStream;J)V
+    invoke-virtual {v2, p1, v3, v4}, Landroid/graphics/Rect;->writeToProto(Landroid/util/proto/ProtoOutputStream;J)V
 
     .line 403
-    iget-object v0, p0, Lcom/android/server/wm/WindowFrames;->mOverscanFrame:Landroid/graphics/Rect;
+    iget-object v2, p0, Lcom/android/server/wm/WindowFrames;->mOverscanFrame:Landroid/graphics/Rect;
 
-    const-wide v1, 0x10b00000007L
+    const-wide v3, 0x10b00000007L
 
-    invoke-virtual {v0, p1, v1, v2}, Landroid/graphics/Rect;->writeToProto(Landroid/util/proto/ProtoOutputStream;J)V
+    invoke-virtual {v2, p1, v3, v4}, Landroid/graphics/Rect;->writeToProto(Landroid/util/proto/ProtoOutputStream;J)V
 
     .line 404
-    iget-object v0, p0, Lcom/android/server/wm/WindowFrames;->mVisibleFrame:Landroid/graphics/Rect;
+    iget-object v2, p0, Lcom/android/server/wm/WindowFrames;->mVisibleFrame:Landroid/graphics/Rect;
 
-    const-wide v1, 0x10b00000009L
+    const-wide v3, 0x10b00000009L
 
-    invoke-virtual {v0, p1, v1, v2}, Landroid/graphics/Rect;->writeToProto(Landroid/util/proto/ProtoOutputStream;J)V
+    invoke-virtual {v2, p1, v3, v4}, Landroid/graphics/Rect;->writeToProto(Landroid/util/proto/ProtoOutputStream;J)V
 
     .line 405
-    iget-object v0, p0, Lcom/android/server/wm/WindowFrames;->mDecorFrame:Landroid/graphics/Rect;
+    iget-object v2, p0, Lcom/android/server/wm/WindowFrames;->mDecorFrame:Landroid/graphics/Rect;
 
-    const-wide v1, 0x10b00000003L
+    const-wide v3, 0x10b00000003L
 
-    invoke-virtual {v0, p1, v1, v2}, Landroid/graphics/Rect;->writeToProto(Landroid/util/proto/ProtoOutputStream;J)V
+    invoke-virtual {v2, p1, v3, v4}, Landroid/graphics/Rect;->writeToProto(Landroid/util/proto/ProtoOutputStream;J)V
 
     .line 406
-    iget-object v0, p0, Lcom/android/server/wm/WindowFrames;->mOutsetFrame:Landroid/graphics/Rect;
+    iget-object v2, p0, Lcom/android/server/wm/WindowFrames;->mOutsetFrame:Landroid/graphics/Rect;
 
-    const-wide v1, 0x10b00000006L
+    const-wide v3, 0x10b00000006L
 
-    invoke-virtual {v0, p1, v1, v2}, Landroid/graphics/Rect;->writeToProto(Landroid/util/proto/ProtoOutputStream;J)V
+    invoke-virtual {v2, p1, v3, v4}, Landroid/graphics/Rect;->writeToProto(Landroid/util/proto/ProtoOutputStream;J)V
 
     .line 407
-    iget-object v0, p0, Lcom/android/server/wm/WindowFrames;->mContainingFrame:Landroid/graphics/Rect;
+    iget-object v2, p0, Lcom/android/server/wm/WindowFrames;->mContainingFrame:Landroid/graphics/Rect;
 
-    const-wide v1, 0x10b00000001L
+    const-wide v3, 0x10b00000001L
 
-    invoke-virtual {v0, p1, v1, v2}, Landroid/graphics/Rect;->writeToProto(Landroid/util/proto/ProtoOutputStream;J)V
+    invoke-virtual {v2, p1, v3, v4}, Landroid/graphics/Rect;->writeToProto(Landroid/util/proto/ProtoOutputStream;J)V
 
     .line 408
-    iget-object v0, p0, Lcom/android/server/wm/WindowFrames;->mFrame:Landroid/graphics/Rect;
+    iget-object v2, p0, Lcom/android/server/wm/WindowFrames;->mFrame:Landroid/graphics/Rect;
 
-    const-wide v1, 0x10b00000005L
+    const-wide v3, 0x10b00000005L
 
-    invoke-virtual {v0, p1, v1, v2}, Landroid/graphics/Rect;->writeToProto(Landroid/util/proto/ProtoOutputStream;J)V
+    invoke-virtual {v2, p1, v3, v4}, Landroid/graphics/Rect;->writeToProto(Landroid/util/proto/ProtoOutputStream;J)V
 
     .line 409
-    iget-object v0, p0, Lcom/android/server/wm/WindowFrames;->mDisplayCutout:Lcom/android/server/wm/utils/WmDisplayCutout;
+    iget-object v2, p0, Lcom/android/server/wm/WindowFrames;->mDisplayCutout:Lcom/android/server/wm/utils/WmDisplayCutout;
 
-    invoke-virtual {v0}, Lcom/android/server/wm/utils/WmDisplayCutout;->getDisplayCutout()Landroid/view/DisplayCutout;
+    invoke-virtual {v2}, Lcom/android/server/wm/utils/WmDisplayCutout;->getDisplayCutout()Landroid/view/DisplayCutout;
 
-    move-result-object v0
+    move-result-object v2
 
-    const-wide v1, 0x10b0000000aL
+    const-wide v3, 0x10b0000000aL
 
-    invoke-virtual {v0, p1, v1, v2}, Landroid/view/DisplayCutout;->writeToProto(Landroid/util/proto/ProtoOutputStream;J)V
+    invoke-virtual {v2, p1, v3, v4}, Landroid/view/DisplayCutout;->writeToProto(Landroid/util/proto/ProtoOutputStream;J)V
 
     .line 410
-    iget-object v0, p0, Lcom/android/server/wm/WindowFrames;->mContentInsets:Landroid/graphics/Rect;
+    iget-object v2, p0, Lcom/android/server/wm/WindowFrames;->mContentInsets:Landroid/graphics/Rect;
 
-    const-wide v1, 0x10b0000000bL
+    const-wide v3, 0x10b0000000bL
 
-    invoke-virtual {v0, p1, v1, v2}, Landroid/graphics/Rect;->writeToProto(Landroid/util/proto/ProtoOutputStream;J)V
+    invoke-virtual {v2, p1, v3, v4}, Landroid/graphics/Rect;->writeToProto(Landroid/util/proto/ProtoOutputStream;J)V
 
     .line 411
-    iget-object v0, p0, Lcom/android/server/wm/WindowFrames;->mOverscanInsets:Landroid/graphics/Rect;
+    iget-object v2, p0, Lcom/android/server/wm/WindowFrames;->mOverscanInsets:Landroid/graphics/Rect;
 
-    const-wide v1, 0x10b0000000cL
+    const-wide v3, 0x10b0000000cL
 
-    invoke-virtual {v0, p1, v1, v2}, Landroid/graphics/Rect;->writeToProto(Landroid/util/proto/ProtoOutputStream;J)V
+    invoke-virtual {v2, p1, v3, v4}, Landroid/graphics/Rect;->writeToProto(Landroid/util/proto/ProtoOutputStream;J)V
 
     .line 412
-    iget-object v0, p0, Lcom/android/server/wm/WindowFrames;->mVisibleInsets:Landroid/graphics/Rect;
+    iget-object v2, p0, Lcom/android/server/wm/WindowFrames;->mVisibleInsets:Landroid/graphics/Rect;
 
-    const-wide v1, 0x10b0000000dL
+    const-wide v3, 0x10b0000000dL
 
-    invoke-virtual {v0, p1, v1, v2}, Landroid/graphics/Rect;->writeToProto(Landroid/util/proto/ProtoOutputStream;J)V
+    invoke-virtual {v2, p1, v3, v4}, Landroid/graphics/Rect;->writeToProto(Landroid/util/proto/ProtoOutputStream;J)V
 
     .line 413
-    iget-object v0, p0, Lcom/android/server/wm/WindowFrames;->mStableInsets:Landroid/graphics/Rect;
+    iget-object v2, p0, Lcom/android/server/wm/WindowFrames;->mStableInsets:Landroid/graphics/Rect;
 
-    const-wide v1, 0x10b0000000eL
+    const-wide v3, 0x10b0000000eL
 
-    invoke-virtual {v0, p1, v1, v2}, Landroid/graphics/Rect;->writeToProto(Landroid/util/proto/ProtoOutputStream;J)V
+    invoke-virtual {v2, p1, v3, v4}, Landroid/graphics/Rect;->writeToProto(Landroid/util/proto/ProtoOutputStream;J)V
 
     .line 414
-    iget-object v0, p0, Lcom/android/server/wm/WindowFrames;->mOutsets:Landroid/graphics/Rect;
+    iget-object v2, p0, Lcom/android/server/wm/WindowFrames;->mOutsets:Landroid/graphics/Rect;
 
-    const-wide v1, 0x10b0000000fL
+    const-wide v3, 0x10b0000000fL
 
-    invoke-virtual {v0, p1, v1, v2}, Landroid/graphics/Rect;->writeToProto(Landroid/util/proto/ProtoOutputStream;J)V
+    invoke-virtual {v2, p1, v3, v4}, Landroid/graphics/Rect;->writeToProto(Landroid/util/proto/ProtoOutputStream;J)V
 
     .line 416
-    invoke-virtual {p1, p2, p3}, Landroid/util/proto/ProtoOutputStream;->end(J)V
+    invoke-virtual {p1, v0, v1}, Landroid/util/proto/ProtoOutputStream;->end(J)V
 
     .line 417
     return-void

@@ -21,23 +21,26 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/accounts/AccountManagerService;Landroid/os/Looper;)V
     .registers 3
+    .param p1, "this$0"  # Lcom/android/server/accounts/AccountManagerService;
+    .param p2, "looper"  # Landroid/os/Looper;
 
-    .line 5079
+    .line 5063
     iput-object p1, p0, Lcom/android/server/accounts/AccountManagerService$MessageHandler;->this$0:Lcom/android/server/accounts/AccountManagerService;
 
-    .line 5080
+    .line 5064
     invoke-direct {p0, p2}, Landroid/os/Handler;-><init>(Landroid/os/Looper;)V
 
-    .line 5081
+    .line 5065
     return-void
 .end method
 
 
 # virtual methods
 .method public handleMessage(Landroid/os/Message;)V
-    .registers 6
+    .registers 7
+    .param p1, "msg"  # Landroid/os/Message;
 
-    .line 5085
+    .line 5069
     iget v0, p1, Landroid/os/Message;->what:I
 
     const/4 v1, 0x3
@@ -48,7 +51,7 @@
 
     if-ne v0, v1, :cond_17
 
-    .line 5092
+    .line 5076
     iget-object v0, p0, Lcom/android/server/accounts/AccountManagerService$MessageHandler;->this$0:Lcom/android/server/accounts/AccountManagerService;
 
     const/4 v1, 0x0
@@ -59,14 +62,14 @@
 
     iget v3, p1, Landroid/os/Message;->arg1:I
 
-    iget p1, p1, Landroid/os/Message;->arg2:I
+    iget v4, p1, Landroid/os/Message;->arg2:I
 
-    invoke-virtual {v0, v1, v2, v3, p1}, Lcom/android/server/accounts/AccountManagerService;->copyAccountToUser(Landroid/accounts/IAccountManagerResponse;Landroid/accounts/Account;II)V
+    invoke-virtual {v0, v1, v2, v3, v4}, Lcom/android/server/accounts/AccountManagerService;->copyAccountToUser(Landroid/accounts/IAccountManagerResponse;Landroid/accounts/Account;II)V
 
-    .line 5093
+    .line 5077
     goto :goto_39
 
-    .line 5096
+    .line 5080
     :cond_17
     new-instance v0, Ljava/lang/IllegalStateException;
 
@@ -78,31 +81,33 @@
 
     invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    iget p1, p1, Landroid/os/Message;->what:I
+    iget v2, p1, Landroid/os/Message;->what:I
 
-    invoke-virtual {v1, p1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
     invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v1
 
-    invoke-direct {v0, p1}, Ljava/lang/IllegalStateException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v0, v1}, Ljava/lang/IllegalStateException;-><init>(Ljava/lang/String;)V
 
     throw v0
 
-    .line 5087
+    .line 5071
     :cond_31
-    iget-object p1, p1, Landroid/os/Message;->obj:Ljava/lang/Object;
+    iget-object v0, p1, Landroid/os/Message;->obj:Ljava/lang/Object;
 
-    check-cast p1, Lcom/android/server/accounts/AccountManagerService$Session;
+    check-cast v0, Lcom/android/server/accounts/AccountManagerService$Session;
 
-    .line 5088
-    invoke-virtual {p1}, Lcom/android/server/accounts/AccountManagerService$Session;->onTimedOut()V
+    .line 5072
+    .local v0, "session":Lcom/android/server/accounts/AccountManagerService$Session;
+    invoke-virtual {v0}, Lcom/android/server/accounts/AccountManagerService$Session;->onTimedOut()V
 
-    .line 5089
+    .line 5073
     nop
 
-    .line 5098
+    .line 5082
+    .end local v0  # "session":Lcom/android/server/accounts/AccountManagerService$Session;
     :goto_39
     return-void
 .end method

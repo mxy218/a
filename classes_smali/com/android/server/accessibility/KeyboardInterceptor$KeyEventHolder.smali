@@ -66,7 +66,10 @@
 .end method
 
 .method public static obtain(Landroid/view/KeyEvent;IJ)Lcom/android/server/accessibility/KeyboardInterceptor$KeyEventHolder;
-    .registers 5
+    .registers 6
+    .param p0, "event"  # Landroid/view/KeyEvent;
+    .param p1, "policyFlags"  # I
+    .param p2, "dispatchTime"  # J
 
     .line 162
     sget-object v0, Lcom/android/server/accessibility/KeyboardInterceptor$KeyEventHolder;->sPool:Landroid/util/Pools$SimplePool;
@@ -78,20 +81,23 @@
     check-cast v0, Lcom/android/server/accessibility/KeyboardInterceptor$KeyEventHolder;
 
     .line 163
-    if-nez v0, :cond_f
+    .local v0, "holder":Lcom/android/server/accessibility/KeyboardInterceptor$KeyEventHolder;
+    if-nez v0, :cond_10
 
     .line 164
-    new-instance v0, Lcom/android/server/accessibility/KeyboardInterceptor$KeyEventHolder;
+    new-instance v1, Lcom/android/server/accessibility/KeyboardInterceptor$KeyEventHolder;
 
-    invoke-direct {v0}, Lcom/android/server/accessibility/KeyboardInterceptor$KeyEventHolder;-><init>()V
+    invoke-direct {v1}, Lcom/android/server/accessibility/KeyboardInterceptor$KeyEventHolder;-><init>()V
+
+    move-object v0, v1
 
     .line 166
-    :cond_f
+    :cond_10
     invoke-static {p0}, Landroid/view/KeyEvent;->obtain(Landroid/view/KeyEvent;)Landroid/view/KeyEvent;
 
-    move-result-object p0
+    move-result-object v1
 
-    iput-object p0, v0, Lcom/android/server/accessibility/KeyboardInterceptor$KeyEventHolder;->event:Landroid/view/KeyEvent;
+    iput-object v1, v0, Lcom/android/server/accessibility/KeyboardInterceptor$KeyEventHolder;->event:Landroid/view/KeyEvent;
 
     .line 167
     iput p1, v0, Lcom/android/server/accessibility/KeyboardInterceptor$KeyEventHolder;->policyFlags:I

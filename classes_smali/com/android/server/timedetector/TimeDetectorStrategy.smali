@@ -13,7 +13,8 @@
 
 # direct methods
 .method public static getTimeAt(Landroid/util/TimestampedValue;J)J
-    .registers 5
+    .registers 7
+    .param p1, "referenceClockMillisNow"  # J
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(",
@@ -24,27 +25,28 @@
     .end annotation
 
     .line 90
+    .local p0, "timeValue":Landroid/util/TimestampedValue;, "Landroid/util/TimestampedValue<Ljava/lang/Long;>;"
     invoke-virtual {p0}, Landroid/util/TimestampedValue;->getReferenceTimeMillis()J
 
     move-result-wide v0
 
-    sub-long/2addr p1, v0
+    sub-long v0, p1, v0
 
     .line 91
     invoke-virtual {p0}, Landroid/util/TimestampedValue;->getValue()Ljava/lang/Object;
 
-    move-result-object p0
+    move-result-object v2
 
-    check-cast p0, Ljava/lang/Long;
+    check-cast v2, Ljava/lang/Long;
 
-    invoke-virtual {p0}, Ljava/lang/Long;->longValue()J
+    invoke-virtual {v2}, Ljava/lang/Long;->longValue()J
 
-    move-result-wide v0
+    move-result-wide v2
 
-    add-long/2addr p1, v0
+    add-long/2addr v0, v2
 
     .line 90
-    return-wide p1
+    return-wide v0
 .end method
 
 

@@ -48,6 +48,9 @@
 
 .method static synthetic access$1100(Lcom/android/server/print/RemotePrintSpooler$ClearCustomPrinterIconCacheCaller;Ljava/lang/Object;I)V
     .registers 3
+    .param p0, "x0"  # Lcom/android/server/print/RemotePrintSpooler$ClearCustomPrinterIconCacheCaller;
+    .param p1, "x1"  # Ljava/lang/Object;
+    .param p2, "x2"  # I
 
     .line 826
     invoke-virtual {p0, p1, p2}, Lcom/android/server/print/RemotePrintSpooler$ClearCustomPrinterIconCacheCaller;->onRemoteMethodResult(Ljava/lang/Object;I)V
@@ -59,6 +62,7 @@
 # virtual methods
 .method public clearCustomPrinterIconCache(Landroid/print/IPrintSpooler;)Ljava/lang/Void;
     .registers 4
+    .param p1, "target"  # Landroid/print/IPrintSpooler;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;,
@@ -72,6 +76,7 @@
     move-result v0
 
     .line 842
+    .local v0, "sequence":I
     iget-object v1, p0, Lcom/android/server/print/RemotePrintSpooler$ClearCustomPrinterIconCacheCaller;->mCallback:Landroid/print/IPrintSpoolerCallbacks;
 
     invoke-interface {p1, v1, v0}, Landroid/print/IPrintSpooler;->clearCustomPrinterIconCache(Landroid/print/IPrintSpoolerCallbacks;I)V
@@ -79,9 +84,9 @@
     .line 843
     invoke-virtual {p0, v0}, Lcom/android/server/print/RemotePrintSpooler$ClearCustomPrinterIconCacheCaller;->getResultTimed(I)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v1
 
-    check-cast p1, Ljava/lang/Void;
+    check-cast v1, Ljava/lang/Void;
 
-    return-object p1
+    return-object v1
 .end method

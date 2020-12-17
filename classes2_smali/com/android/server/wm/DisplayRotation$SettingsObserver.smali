@@ -21,14 +21,15 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/wm/DisplayRotation;Landroid/os/Handler;)V
     .registers 3
+    .param p2, "handler"  # Landroid/os/Handler;
 
-    .line 980
+    .line 1030
     iput-object p1, p0, Lcom/android/server/wm/DisplayRotation$SettingsObserver;->this$0:Lcom/android/server/wm/DisplayRotation;
 
-    .line 981
+    .line 1031
     invoke-direct {p0, p2}, Landroid/database/ContentObserver;-><init>(Landroid/os/Handler;)V
 
-    .line 982
+    .line 1032
     return-void
 .end method
 
@@ -37,10 +38,10 @@
 .method observe()V
     .registers 5
 
-    .line 985
+    .line 1035
     iget-object v0, p0, Lcom/android/server/wm/DisplayRotation$SettingsObserver;->this$0:Lcom/android/server/wm/DisplayRotation;
 
-    invoke-static {v0}, Lcom/android/server/wm/DisplayRotation;->access$500(Lcom/android/server/wm/DisplayRotation;)Landroid/content/Context;
+    invoke-static {v0}, Lcom/android/server/wm/DisplayRotation;->access$700(Lcom/android/server/wm/DisplayRotation;)Landroid/content/Context;
 
     move-result-object v0
 
@@ -48,7 +49,8 @@
 
     move-result-object v0
 
-    .line 986
+    .line 1036
+    .local v0, "resolver":Landroid/content/ContentResolver;
     const-string v1, "show_rotation_suggestions"
 
     invoke-static {v1}, Landroid/provider/Settings$Secure;->getUriFor(Ljava/lang/String;)Landroid/net/Uri;
@@ -61,7 +63,7 @@
 
     invoke-virtual {v0, v1, v3, p0, v2}, Landroid/content/ContentResolver;->registerContentObserver(Landroid/net/Uri;ZLandroid/database/ContentObserver;I)V
 
-    .line 989
+    .line 1039
     const-string v1, "accelerometer_rotation"
 
     invoke-static {v1}, Landroid/provider/Settings$System;->getUriFor(Ljava/lang/String;)Landroid/net/Uri;
@@ -70,16 +72,7 @@
 
     invoke-virtual {v0, v1, v3, p0, v2}, Landroid/content/ContentResolver;->registerContentObserver(Landroid/net/Uri;ZLandroid/database/ContentObserver;I)V
 
-    .line 992
-    const-string v1, "accelerometer_rotation_angles"
-
-    invoke-static {v1}, Landroid/provider/Settings$System;->getUriFor(Ljava/lang/String;)Landroid/net/Uri;
-
-    move-result-object v1
-
-    invoke-virtual {v0, v1, v3, p0, v2}, Landroid/content/ContentResolver;->registerContentObserver(Landroid/net/Uri;ZLandroid/database/ContentObserver;I)V
-
-    .line 995
+    .line 1042
     const-string v1, "user_rotation"
 
     invoke-static {v1}, Landroid/provider/Settings$System;->getUriFor(Ljava/lang/String;)Landroid/net/Uri;
@@ -88,41 +81,42 @@
 
     invoke-virtual {v0, v1, v3, p0, v2}, Landroid/content/ContentResolver;->registerContentObserver(Landroid/net/Uri;ZLandroid/database/ContentObserver;I)V
 
-    .line 998
-    iget-object v0, p0, Lcom/android/server/wm/DisplayRotation$SettingsObserver;->this$0:Lcom/android/server/wm/DisplayRotation;
+    .line 1045
+    iget-object v1, p0, Lcom/android/server/wm/DisplayRotation$SettingsObserver;->this$0:Lcom/android/server/wm/DisplayRotation;
 
-    invoke-static {v0}, Lcom/android/server/wm/DisplayRotation;->access$600(Lcom/android/server/wm/DisplayRotation;)Z
+    invoke-static {v1}, Lcom/android/server/wm/DisplayRotation;->access$800(Lcom/android/server/wm/DisplayRotation;)Z
 
-    .line 999
+    .line 1046
     return-void
 .end method
 
 .method public onChange(Z)V
-    .registers 4
+    .registers 5
+    .param p1, "selfChange"  # Z
 
-    .line 1003
-    iget-object p1, p0, Lcom/android/server/wm/DisplayRotation$SettingsObserver;->this$0:Lcom/android/server/wm/DisplayRotation;
+    .line 1050
+    iget-object v0, p0, Lcom/android/server/wm/DisplayRotation$SettingsObserver;->this$0:Lcom/android/server/wm/DisplayRotation;
 
-    invoke-static {p1}, Lcom/android/server/wm/DisplayRotation;->access$600(Lcom/android/server/wm/DisplayRotation;)Z
+    invoke-static {v0}, Lcom/android/server/wm/DisplayRotation;->access$800(Lcom/android/server/wm/DisplayRotation;)Z
 
-    move-result p1
+    move-result v0
 
-    if-eqz p1, :cond_13
+    if-eqz v0, :cond_13
 
-    .line 1004
-    iget-object p1, p0, Lcom/android/server/wm/DisplayRotation$SettingsObserver;->this$0:Lcom/android/server/wm/DisplayRotation;
+    .line 1051
+    iget-object v0, p0, Lcom/android/server/wm/DisplayRotation$SettingsObserver;->this$0:Lcom/android/server/wm/DisplayRotation;
 
-    invoke-static {p1}, Lcom/android/server/wm/DisplayRotation;->access$000(Lcom/android/server/wm/DisplayRotation;)Lcom/android/server/wm/WindowManagerService;
+    invoke-static {v0}, Lcom/android/server/wm/DisplayRotation;->access$200(Lcom/android/server/wm/DisplayRotation;)Lcom/android/server/wm/WindowManagerService;
 
-    move-result-object p1
+    move-result-object v0
 
-    const/4 v0, 0x1
+    const/4 v1, 0x1
 
-    const/4 v1, 0x0
+    const/4 v2, 0x0
 
-    invoke-virtual {p1, v0, v1}, Lcom/android/server/wm/WindowManagerService;->updateRotation(ZZ)V
+    invoke-virtual {v0, v1, v2}, Lcom/android/server/wm/WindowManagerService;->updateRotation(ZZ)V
 
-    .line 1007
+    .line 1054
     :cond_13
     return-void
 .end method

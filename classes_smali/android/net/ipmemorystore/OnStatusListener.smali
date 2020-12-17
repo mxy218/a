@@ -6,6 +6,7 @@
 # direct methods
 .method public static toAIDL(Landroid/net/ipmemorystore/OnStatusListener;)Landroid/net/ipmemorystore/IOnStatusListener;
     .registers 2
+    .param p0, "listener"  # Landroid/net/ipmemorystore/OnStatusListener;
 
     .line 35
     new-instance v0, Landroid/net/ipmemorystore/OnStatusListener$1;

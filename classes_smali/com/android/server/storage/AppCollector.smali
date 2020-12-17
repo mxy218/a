@@ -44,6 +44,8 @@
 
 .method public constructor <init>(Landroid/content/Context;Landroid/os/storage/VolumeInfo;)V
     .registers 11
+    .param p1, "context"  # Landroid/content/Context;
+    .param p2, "volume"  # Landroid/os/storage/VolumeInfo;
 
     .line 61
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -83,9 +85,9 @@
 
     invoke-virtual {p1, v0}, Landroid/content/Context;->getSystemService(Ljava/lang/String;)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v0
 
-    move-object v6, p1
+    move-object v6, v0
 
     check-cast v6, Landroid/app/usage/StorageStatsManager;
 
@@ -113,18 +115,20 @@
 .end method
 
 .method static synthetic access$100(Lcom/android/server/storage/AppCollector;)Ljava/util/concurrent/CompletableFuture;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/storage/AppCollector;
 
     .line 50
-    iget-object p0, p0, Lcom/android/server/storage/AppCollector;->mStats:Ljava/util/concurrent/CompletableFuture;
+    iget-object v0, p0, Lcom/android/server/storage/AppCollector;->mStats:Ljava/util/concurrent/CompletableFuture;
 
-    return-object p0
+    return-object v0
 .end method
 
 
 # virtual methods
 .method public getPackageStats(J)Ljava/util/List;
-    .registers 6
+    .registers 7
+    .param p1, "timeoutMillis"  # J
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(J)",
@@ -167,6 +171,7 @@
     const/4 v0, 0x0
 
     .line 88
+    .local v0, "value":Ljava/util/List;, "Ljava/util/List<Landroid/content/pm/PackageStats;>;"
     :try_start_14
     iget-object v1, p0, Lcom/android/server/storage/AppCollector;->mStats:Ljava/util/concurrent/CompletableFuture;
 
@@ -174,59 +179,63 @@
 
     invoke-virtual {v1, p1, p2, v2}, Ljava/util/concurrent/CompletableFuture;->get(JLjava/util/concurrent/TimeUnit;)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v1
 
-    check-cast p1, Ljava/util/List;
+    check-cast v1, Ljava/util/List;
     :try_end_1e
-    .catch Ljava/lang/InterruptedException; {:try_start_14 .. :try_end_1e} :catch_28
-    .catch Ljava/util/concurrent/ExecutionException; {:try_start_14 .. :try_end_1e} :catch_28
-    .catch Ljava/util/concurrent/TimeoutException; {:try_start_14 .. :try_end_1e} :catch_1f
+    .catch Ljava/lang/InterruptedException; {:try_start_14 .. :try_end_1e} :catch_29
+    .catch Ljava/util/concurrent/ExecutionException; {:try_start_14 .. :try_end_1e} :catch_29
+    .catch Ljava/util/concurrent/TimeoutException; {:try_start_14 .. :try_end_1e} :catch_20
+
+    move-object v0, v1
 
     .line 93
+    :goto_1f
     goto :goto_32
 
     .line 91
-    :catch_1f
-    move-exception p1
+    :catch_20
+    move-exception v1
 
     .line 92
-    sget-object p1, Lcom/android/server/storage/AppCollector;->TAG:Ljava/lang/String;
+    .local v1, "e":Ljava/util/concurrent/TimeoutException;
+    sget-object v2, Lcom/android/server/storage/AppCollector;->TAG:Ljava/lang/String;
 
-    const-string p2, "AppCollector timed out"
+    const-string v3, "AppCollector timed out"
 
-    invoke-static {p1, p2}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v2, v3}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;)I
 
-    goto :goto_31
+    goto :goto_32
 
     .line 89
-    :catch_28
-    move-exception p1
+    .end local v1  # "e":Ljava/util/concurrent/TimeoutException;
+    :catch_29
+    move-exception v1
 
     .line 90
-    sget-object p2, Lcom/android/server/storage/AppCollector;->TAG:Ljava/lang/String;
+    .local v1, "e":Ljava/lang/Exception;
+    sget-object v2, Lcom/android/server/storage/AppCollector;->TAG:Ljava/lang/String;
 
-    const-string v1, "An exception occurred while getting app storage"
+    const-string v3, "An exception occurred while getting app storage"
 
-    invoke-static {p2, v1, p1}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    invoke-static {v2, v3, v1}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
-    .line 93
-    nop
+    .end local v1  # "e":Ljava/lang/Exception;
+    goto :goto_1f
 
     .line 94
-    :goto_31
-    move-object p1, v0
-
     :goto_32
-    return-object p1
+    return-object v0
 
     .line 84
+    .end local v0  # "value":Ljava/util/List;, "Ljava/util/List<Landroid/content/pm/PackageStats;>;"
     :catchall_33
-    move-exception p1
+    move-exception v0
 
     :try_start_34
     monitor-exit p0
     :try_end_35
     .catchall {:try_start_34 .. :try_end_35} :catchall_33
 
-    throw p1
+    throw v0
 .end method

@@ -33,6 +33,13 @@
 # direct methods
 .method constructor <init>(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V
     .registers 8
+    .param p1, "scheme"  # Ljava/lang/String;
+    .param p2, "host"  # Ljava/lang/String;
+    .param p3, "port"  # Ljava/lang/String;
+    .param p4, "path"  # Ljava/lang/String;
+    .param p5, "pathPattern"  # Ljava/lang/String;
+    .param p6, "pathPrefix"  # Ljava/lang/String;
+    .param p7, "mimeType"  # Ljava/lang/String;
 
     .line 58
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -65,7 +72,7 @@
 
 # virtual methods
 .method public toString()Ljava/lang/String;
-    .registers 2
+    .registers 3
 
     .line 94
     new-instance v0, Ljava/lang/StringBuilder;
@@ -73,18 +80,20 @@
     invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
 
     .line 95
+    .local v0, "strBuilder":Ljava/lang/StringBuilder;
     invoke-virtual {p0, v0}, Lcom/android/server/pm/ShareTargetInfo$TargetData;->toStringInner(Ljava/lang/StringBuilder;)V
 
     .line 96
     invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v1
 
-    return-object v0
+    return-object v1
 .end method
 
 .method public toStringInner(Ljava/lang/StringBuilder;)V
     .registers 3
+    .param p1, "strBuilder"  # Ljava/lang/StringBuilder;
 
     .line 69
     iget-object v0, p0, Lcom/android/server/pm/ShareTargetInfo$TargetData;->mScheme:Ljava/lang/String;

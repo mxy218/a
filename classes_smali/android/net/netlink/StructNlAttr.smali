@@ -44,6 +44,7 @@
 
 .method public constructor <init>(Ljava/nio/ByteOrder;)V
     .registers 3
+    .param p1, "byteOrder"  # Ljava/nio/ByteOrder;
 
     .line 102
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -68,7 +69,9 @@
 .end method
 
 .method public constructor <init>(SB)V
-    .registers 4
+    .registers 5
+    .param p1, "type"  # S
+    .param p2, "value"  # B
 
     .line 106
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -89,18 +92,18 @@
     iput-short p1, p0, Landroid/net/netlink/StructNlAttr;->nla_type:S
 
     .line 108
-    const/4 p1, 0x1
+    const/4 v0, 0x1
 
-    new-array p1, p1, [B
+    new-array v0, v0, [B
 
-    invoke-direct {p0, p1}, Landroid/net/netlink/StructNlAttr;->setValue([B)V
+    invoke-direct {p0, v0}, Landroid/net/netlink/StructNlAttr;->setValue([B)V
 
     .line 109
-    iget-object p1, p0, Landroid/net/netlink/StructNlAttr;->nla_value:[B
+    iget-object v0, p0, Landroid/net/netlink/StructNlAttr;->nla_value:[B
 
-    const/4 v0, 0x0
+    const/4 v1, 0x0
 
-    aput-byte p2, p1, v0
+    aput-byte p2, v0, v1
 
     .line 110
     return-void
@@ -108,6 +111,8 @@
 
 .method public constructor <init>(SI)V
     .registers 4
+    .param p1, "type"  # S
+    .param p2, "value"  # I
 
     .line 124
     invoke-static {}, Ljava/nio/ByteOrder;->nativeOrder()Ljava/nio/ByteOrder;
@@ -121,7 +126,10 @@
 .end method
 
 .method public constructor <init>(SILjava/nio/ByteOrder;)V
-    .registers 4
+    .registers 5
+    .param p1, "type"  # S
+    .param p2, "value"  # I
+    .param p3, "order"  # Ljava/nio/ByteOrder;
 
     .line 128
     invoke-direct {p0, p3}, Landroid/net/netlink/StructNlAttr;-><init>(Ljava/nio/ByteOrder;)V
@@ -130,18 +138,18 @@
     iput-short p1, p0, Landroid/net/netlink/StructNlAttr;->nla_type:S
 
     .line 130
-    const/4 p1, 0x4
+    const/4 v0, 0x4
 
-    new-array p1, p1, [B
+    new-array v0, v0, [B
 
-    invoke-direct {p0, p1}, Landroid/net/netlink/StructNlAttr;->setValue([B)V
+    invoke-direct {p0, v0}, Landroid/net/netlink/StructNlAttr;->setValue([B)V
 
     .line 131
     invoke-virtual {p0}, Landroid/net/netlink/StructNlAttr;->getValueAsByteBuffer()Ljava/nio/ByteBuffer;
 
-    move-result-object p1
+    move-result-object v0
 
-    invoke-virtual {p1, p2}, Ljava/nio/ByteBuffer;->putInt(I)Ljava/nio/ByteBuffer;
+    invoke-virtual {v0, p2}, Ljava/nio/ByteBuffer;->putInt(I)Ljava/nio/ByteBuffer;
 
     .line 132
     return-void
@@ -149,6 +157,8 @@
 
 .method public constructor <init>(SLjava/net/InetAddress;)V
     .registers 4
+    .param p1, "type"  # S
+    .param p2, "ip"  # Ljava/net/InetAddress;
 
     .line 134
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -171,9 +181,9 @@
     .line 136
     invoke-virtual {p2}, Ljava/net/InetAddress;->getAddress()[B
 
-    move-result-object p1
+    move-result-object v0
 
-    invoke-direct {p0, p1}, Landroid/net/netlink/StructNlAttr;->setValue([B)V
+    invoke-direct {p0, v0}, Landroid/net/netlink/StructNlAttr;->setValue([B)V
 
     .line 137
     return-void
@@ -181,6 +191,8 @@
 
 .method public constructor <init>(SS)V
     .registers 4
+    .param p1, "type"  # S
+    .param p2, "value"  # S
 
     .line 113
     invoke-static {}, Ljava/nio/ByteOrder;->nativeOrder()Ljava/nio/ByteOrder;
@@ -194,7 +206,10 @@
 .end method
 
 .method public constructor <init>(SSLjava/nio/ByteOrder;)V
-    .registers 4
+    .registers 5
+    .param p1, "type"  # S
+    .param p2, "value"  # S
+    .param p3, "order"  # Ljava/nio/ByteOrder;
 
     .line 117
     invoke-direct {p0, p3}, Landroid/net/netlink/StructNlAttr;-><init>(Ljava/nio/ByteOrder;)V
@@ -203,25 +218,27 @@
     iput-short p1, p0, Landroid/net/netlink/StructNlAttr;->nla_type:S
 
     .line 119
-    const/4 p1, 0x2
+    const/4 v0, 0x2
 
-    new-array p1, p1, [B
+    new-array v0, v0, [B
 
-    invoke-direct {p0, p1}, Landroid/net/netlink/StructNlAttr;->setValue([B)V
+    invoke-direct {p0, v0}, Landroid/net/netlink/StructNlAttr;->setValue([B)V
 
     .line 120
     invoke-virtual {p0}, Landroid/net/netlink/StructNlAttr;->getValueAsByteBuffer()Ljava/nio/ByteBuffer;
 
-    move-result-object p1
+    move-result-object v0
 
-    invoke-virtual {p1, p2}, Ljava/nio/ByteBuffer;->putShort(S)Ljava/nio/ByteBuffer;
+    invoke-virtual {v0, p2}, Ljava/nio/ByteBuffer;->putShort(S)Ljava/nio/ByteBuffer;
 
     .line 121
     return-void
 .end method
 
 .method public varargs constructor <init>(S[Landroid/net/netlink/StructNlAttr;)V
-    .registers 7
+    .registers 9
+    .param p1, "type"  # S
+    .param p2, "nested"  # [Landroid/net/netlink/StructNlAttr;
 
     .line 140
     invoke-direct {p0}, Landroid/net/netlink/StructNlAttr;-><init>()V
@@ -229,61 +246,69 @@
     .line 141
     invoke-static {p1}, Landroid/net/netlink/StructNlAttr;->makeNestedType(S)S
 
-    move-result p1
+    move-result v0
 
-    iput-short p1, p0, Landroid/net/netlink/StructNlAttr;->nla_type:S
+    iput-short v0, p0, Landroid/net/netlink/StructNlAttr;->nla_type:S
 
     .line 143
-    nop
-
-    .line 144
-    array-length p1, p2
-
     const/4 v0, 0x0
 
-    move v1, v0
+    .line 144
+    .local v0, "payloadLength":I
+    array-length v1, p2
 
-    move v2, v1
+    const/4 v2, 0x0
 
+    move v3, v0
+
+    move v0, v2
+
+    .end local v0  # "payloadLength":I
+    .local v3, "payloadLength":I
     :goto_e
-    if-ge v1, p1, :cond_1a
+    if-ge v0, v1, :cond_1a
 
-    aget-object v3, p2, v1
+    aget-object v4, p2, v0
 
-    invoke-virtual {v3}, Landroid/net/netlink/StructNlAttr;->getAlignedLength()I
+    .local v4, "nla":Landroid/net/netlink/StructNlAttr;
+    invoke-virtual {v4}, Landroid/net/netlink/StructNlAttr;->getAlignedLength()I
 
-    move-result v3
+    move-result v5
 
-    add-int/2addr v2, v3
+    add-int/2addr v3, v5
 
-    add-int/lit8 v1, v1, 0x1
+    .end local v4  # "nla":Landroid/net/netlink/StructNlAttr;
+    add-int/lit8 v0, v0, 0x1
 
     goto :goto_e
 
     .line 145
     :cond_1a
-    new-array p1, v2, [B
+    new-array v0, v3, [B
 
-    invoke-direct {p0, p1}, Landroid/net/netlink/StructNlAttr;->setValue([B)V
+    invoke-direct {p0, v0}, Landroid/net/netlink/StructNlAttr;->setValue([B)V
 
     .line 147
     invoke-virtual {p0}, Landroid/net/netlink/StructNlAttr;->getValueAsByteBuffer()Ljava/nio/ByteBuffer;
 
-    move-result-object p1
+    move-result-object v0
 
     .line 148
+    .local v0, "buf":Ljava/nio/ByteBuffer;
     array-length v1, p2
 
     :goto_24
-    if-ge v0, v1, :cond_2e
+    if-ge v2, v1, :cond_2e
 
-    aget-object v2, p2, v0
+    aget-object v4, p2, v2
 
     .line 149
-    invoke-virtual {v2, p1}, Landroid/net/netlink/StructNlAttr;->pack(Ljava/nio/ByteBuffer;)V
+    .restart local v4  # "nla":Landroid/net/netlink/StructNlAttr;
+    invoke-virtual {v4, v0}, Landroid/net/netlink/StructNlAttr;->pack(Ljava/nio/ByteBuffer;)V
 
     .line 148
-    add-int/lit8 v0, v0, 0x1
+    .end local v4  # "nla":Landroid/net/netlink/StructNlAttr;
+    add-int/lit8 v2, v2, 0x1
 
     goto :goto_24
 
@@ -294,19 +319,21 @@
 
 .method public static makeNestedType(S)S
     .registers 2
+    .param p0, "type"  # S
 
     .line 40
     const v0, 0x8000
 
-    or-int/2addr p0, v0
+    or-int/2addr v0, p0
 
-    int-to-short p0, p0
+    int-to-short v0, v0
 
-    return p0
+    return v0
 .end method
 
 .method public static parse(Ljava/nio/ByteBuffer;)Landroid/net/netlink/StructNlAttr;
     .registers 6
+    .param p0, "byteBuffer"  # Ljava/nio/ByteBuffer;
 
     .line 74
     invoke-static {p0}, Landroid/net/netlink/StructNlAttr;->peek(Ljava/nio/ByteBuffer;)Landroid/net/netlink/StructNlAttr;
@@ -314,6 +341,7 @@
     move-result-object v0
 
     .line 75
+    .local v0, "struct":Landroid/net/netlink/StructNlAttr;
     if-eqz v0, :cond_37
 
     invoke-virtual {p0}, Ljava/nio/ByteBuffer;->remaining()I
@@ -335,6 +363,7 @@
     move-result v1
 
     .line 80
+    .local v1, "baseOffset":I
     add-int/lit8 v2, v1, 0x4
 
     invoke-virtual {p0, v2}, Ljava/nio/ByteBuffer;->position(I)Ljava/nio/Buffer;
@@ -347,6 +376,7 @@
     and-int/2addr v2, v3
 
     .line 83
+    .local v2, "valueLen":I
     add-int/lit8 v2, v2, -0x4
 
     .line 84
@@ -367,26 +397,29 @@
     .line 87
     invoke-virtual {v0}, Landroid/net/netlink/StructNlAttr;->getAlignedLength()I
 
-    move-result v2
+    move-result v3
 
-    add-int/2addr v1, v2
+    add-int/2addr v3, v1
 
-    invoke-virtual {p0, v1}, Ljava/nio/ByteBuffer;->position(I)Ljava/nio/Buffer;
+    invoke-virtual {p0, v3}, Ljava/nio/ByteBuffer;->position(I)Ljava/nio/Buffer;
 
     .line 89
     :cond_36
     return-object v0
 
     .line 76
+    .end local v1  # "baseOffset":I
+    .end local v2  # "valueLen":I
     :cond_37
     :goto_37
-    const/4 p0, 0x0
+    const/4 v1, 0x0
 
-    return-object p0
+    return-object v1
 .end method
 
 .method public static peek(Ljava/nio/ByteBuffer;)Landroid/net/netlink/StructNlAttr;
     .registers 7
+    .param p0, "byteBuffer"  # Ljava/nio/ByteBuffer;
 
     .line 48
     const/4 v0, 0x0
@@ -410,6 +443,7 @@
     move-result v1
 
     .line 54
+    .local v1, "baseOffset":I
     new-instance v3, Landroid/net/netlink/StructNlAttr;
 
     invoke-virtual {p0}, Ljava/nio/ByteBuffer;->order()Ljava/nio/ByteOrder;
@@ -419,11 +453,13 @@
     invoke-direct {v3, v4}, Landroid/net/netlink/StructNlAttr;-><init>(Ljava/nio/ByteOrder;)V
 
     .line 56
+    .local v3, "struct":Landroid/net/netlink/StructNlAttr;
     invoke-virtual {p0}, Ljava/nio/ByteBuffer;->order()Ljava/nio/ByteOrder;
 
     move-result-object v4
 
     .line 57
+    .local v4, "originalOrder":Ljava/nio/ByteOrder;
     invoke-static {}, Ljava/nio/ByteOrder;->nativeOrder()Ljava/nio/ByteOrder;
 
     move-result-object v5
@@ -457,9 +493,9 @@
     invoke-virtual {p0, v1}, Ljava/nio/ByteBuffer;->position(I)Ljava/nio/Buffer;
 
     .line 66
-    iget-short p0, v3, Landroid/net/netlink/StructNlAttr;->nla_len:S
+    iget-short v5, v3, Landroid/net/netlink/StructNlAttr;->nla_len:S
 
-    if-ge p0, v2, :cond_3b
+    if-ge v5, v2, :cond_3b
 
     .line 68
     return-object v0
@@ -477,35 +513,39 @@
     throw v0
 
     .line 49
+    .end local v1  # "baseOffset":I
+    .end local v3  # "struct":Landroid/net/netlink/StructNlAttr;
+    .end local v4  # "originalOrder":Ljava/nio/ByteOrder;
     :cond_41
     :goto_41
     return-object v0
 .end method
 
 .method private setValue([B)V
-    .registers 2
+    .registers 3
+    .param p1, "value"  # [B
 
     .line 198
     iput-object p1, p0, Landroid/net/netlink/StructNlAttr;->nla_value:[B
 
     .line 199
-    iget-object p1, p0, Landroid/net/netlink/StructNlAttr;->nla_value:[B
+    iget-object v0, p0, Landroid/net/netlink/StructNlAttr;->nla_value:[B
 
-    if-eqz p1, :cond_8
+    if-eqz v0, :cond_8
 
-    array-length p1, p1
+    array-length v0, v0
 
     goto :goto_9
 
     :cond_8
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
     :goto_9
-    add-int/lit8 p1, p1, 0x4
+    add-int/lit8 v0, v0, 0x4
 
-    int-to-short p1, p1
+    int-to-short v0, v0
 
-    iput-short p1, p0, Landroid/net/netlink/StructNlAttr;->nla_len:S
+    iput-short v0, p0, Landroid/net/netlink/StructNlAttr;->nla_len:S
 
     .line 200
     return-void
@@ -545,6 +585,7 @@
     move-result-object v0
 
     .line 160
+    .local v0, "byteBuffer":Ljava/nio/ByteBuffer;
     iget-object v1, p0, Landroid/net/netlink/StructNlAttr;->mByteOrder:Ljava/nio/ByteOrder;
 
     invoke-virtual {v0, v1}, Ljava/nio/ByteBuffer;->order(Ljava/nio/ByteOrder;)Ljava/nio/ByteBuffer;
@@ -581,11 +622,13 @@
     move-exception v0
 
     .line 178
+    .local v0, "ignored":Ljava/net/UnknownHostException;
     return-object v1
 .end method
 
 .method public getValueAsInt(I)I
-    .registers 4
+    .registers 5
+    .param p1, "defaultValue"  # I
 
     .line 165
     invoke-virtual {p0}, Landroid/net/netlink/StructNlAttr;->getValueAsByteBuffer()Ljava/nio/ByteBuffer;
@@ -593,15 +636,16 @@
     move-result-object v0
 
     .line 166
+    .local v0, "byteBuffer":Ljava/nio/ByteBuffer;
     if-eqz v0, :cond_17
 
     invoke-virtual {v0}, Ljava/nio/ByteBuffer;->remaining()I
 
-    move-result v0
+    move-result v1
 
-    const/4 v1, 0x4
+    const/4 v2, 0x4
 
-    if-eq v0, v1, :cond_e
+    if-eq v1, v2, :cond_e
 
     goto :goto_17
 
@@ -609,13 +653,13 @@
     :cond_e
     invoke-virtual {p0}, Landroid/net/netlink/StructNlAttr;->getValueAsByteBuffer()Ljava/nio/ByteBuffer;
 
-    move-result-object p1
+    move-result-object v1
 
-    invoke-virtual {p1}, Ljava/nio/ByteBuffer;->getInt()I
+    invoke-virtual {v1}, Ljava/nio/ByteBuffer;->getInt()I
 
-    move-result p1
+    move-result v1
 
-    return p1
+    return v1
 
     .line 167
     :cond_17
@@ -625,6 +669,7 @@
 
 .method public pack(Ljava/nio/ByteBuffer;)V
     .registers 5
+    .param p1, "byteBuffer"  # Ljava/nio/ByteBuffer;
 
     .line 183
     invoke-virtual {p1}, Ljava/nio/ByteBuffer;->order()Ljava/nio/ByteOrder;
@@ -632,11 +677,13 @@
     move-result-object v0
 
     .line 184
+    .local v0, "originalOrder":Ljava/nio/ByteOrder;
     invoke-virtual {p1}, Ljava/nio/ByteBuffer;->position()I
 
     move-result v1
 
     .line 186
+    .local v1, "originalPosition":I
     invoke-static {}, Ljava/nio/ByteOrder;->nativeOrder()Ljava/nio/ByteOrder;
 
     move-result-object v2
@@ -675,22 +722,22 @@
     .line 194
     invoke-virtual {p0}, Landroid/net/netlink/StructNlAttr;->getAlignedLength()I
 
-    move-result v0
+    move-result v2
 
-    add-int/2addr v1, v0
+    add-int/2addr v2, v1
 
-    invoke-virtual {p1, v1}, Ljava/nio/ByteBuffer;->position(I)Ljava/nio/Buffer;
+    invoke-virtual {p1, v2}, Ljava/nio/ByteBuffer;->position(I)Ljava/nio/Buffer;
 
     .line 195
     return-void
 
     .line 192
     :catchall_2f
-    move-exception v1
+    move-exception v2
 
     invoke-virtual {p1, v0}, Ljava/nio/ByteBuffer;->order(Ljava/nio/ByteOrder;)Ljava/nio/ByteBuffer;
 
-    throw v1
+    throw v2
 .end method
 
 .method public toString()Ljava/lang/String;

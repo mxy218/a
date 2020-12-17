@@ -83,7 +83,18 @@
 .end method
 
 .method public constructor <init>(Landroid/content/Context;Lcom/android/server/biometrics/Constants;Lcom/android/server/biometrics/BiometricServiceBase$DaemonWrapper;JLandroid/os/IBinder;Lcom/android/server/biometrics/BiometricServiceBase$ServiceListener;IIZLjava/lang/String;I)V
-    .registers 13
+    .registers 16
+    .param p1, "context"  # Landroid/content/Context;
+    .param p2, "constants"  # Lcom/android/server/biometrics/Constants;
+    .param p3, "daemon"  # Lcom/android/server/biometrics/BiometricServiceBase$DaemonWrapper;
+    .param p4, "halDeviceId"  # J
+    .param p6, "token"  # Landroid/os/IBinder;
+    .param p7, "listener"  # Lcom/android/server/biometrics/BiometricServiceBase$ServiceListener;
+    .param p8, "userId"  # I
+    .param p9, "groupId"  # I
+    .param p10, "restricted"  # Z
+    .param p11, "owner"  # Ljava/lang/String;
+    .param p12, "cookie"  # I
 
     .line 86
     invoke-direct {p0}, Lcom/android/server/biometrics/LoggableMonitor;-><init>()V
@@ -122,36 +133,36 @@
     iput p12, p0, Lcom/android/server/biometrics/ClientMonitor;->mCookie:I
 
     .line 98
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    invoke-static {p1}, Landroid/os/VibrationEffect;->get(I)Landroid/os/VibrationEffect;
+    invoke-static {v0}, Landroid/os/VibrationEffect;->get(I)Landroid/os/VibrationEffect;
 
-    move-result-object p2
+    move-result-object v1
 
-    iput-object p2, p0, Lcom/android/server/biometrics/ClientMonitor;->mSuccessVibrationEffect:Landroid/os/VibrationEffect;
+    iput-object v1, p0, Lcom/android/server/biometrics/ClientMonitor;->mSuccessVibrationEffect:Landroid/os/VibrationEffect;
 
     .line 99
-    const/4 p2, 0x1
+    const/4 v1, 0x1
 
-    invoke-static {p2}, Landroid/os/VibrationEffect;->get(I)Landroid/os/VibrationEffect;
+    invoke-static {v1}, Landroid/os/VibrationEffect;->get(I)Landroid/os/VibrationEffect;
 
-    move-result-object p2
+    move-result-object v1
 
-    iput-object p2, p0, Lcom/android/server/biometrics/ClientMonitor;->mErrorVibrationEffect:Landroid/os/VibrationEffect;
+    iput-object v1, p0, Lcom/android/server/biometrics/ClientMonitor;->mErrorVibrationEffect:Landroid/os/VibrationEffect;
 
     .line 100
-    new-instance p2, Lcom/android/internal/logging/MetricsLogger;
+    new-instance v1, Lcom/android/internal/logging/MetricsLogger;
 
-    invoke-direct {p2}, Lcom/android/internal/logging/MetricsLogger;-><init>()V
+    invoke-direct {v1}, Lcom/android/internal/logging/MetricsLogger;-><init>()V
 
-    iput-object p2, p0, Lcom/android/server/biometrics/ClientMonitor;->mMetricsLogger:Lcom/android/internal/logging/MetricsLogger;
+    iput-object v1, p0, Lcom/android/server/biometrics/ClientMonitor;->mMetricsLogger:Lcom/android/internal/logging/MetricsLogger;
 
     .line 102
     if-eqz p6, :cond_3f
 
     .line 103
     :try_start_30
-    invoke-interface {p6, p0, p1}, Landroid/os/IBinder;->linkToDeath(Landroid/os/IBinder$DeathRecipient;I)V
+    invoke-interface {p6, p0, v0}, Landroid/os/IBinder;->linkToDeath(Landroid/os/IBinder$DeathRecipient;I)V
     :try_end_33
     .catch Landroid/os/RemoteException; {:try_start_30 .. :try_end_33} :catch_34
 
@@ -159,20 +170,22 @@
 
     .line 105
     :catch_34
-    move-exception p1
+    move-exception v0
 
     .line 106
+    .local v0, "e":Landroid/os/RemoteException;
     invoke-virtual {p0}, Lcom/android/server/biometrics/ClientMonitor;->getLogTag()Ljava/lang/String;
 
-    move-result-object p2
+    move-result-object v1
 
-    const-string p3, "caught remote exception in linkToDeath: "
+    const-string v2, "caught remote exception in linkToDeath: "
 
-    invoke-static {p2, p3, p1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    invoke-static {v1, v2, v0}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
     goto :goto_40
 
     .line 107
+    .end local v0  # "e":Landroid/os/RemoteException;
     :cond_3f
     :goto_3f
     nop
@@ -183,7 +196,9 @@
 .end method
 
 .method private blacklistContains(II)Z
-    .registers 6
+    .registers 8
+    .param p1, "acquiredInfo"  # I
+    .param p2, "vendorCode"  # I
 
     .line 156
     iget-object v0, p0, Lcom/android/server/biometrics/ClientMonitor;->mConstants:Lcom/android/server/biometrics/Constants;
@@ -192,118 +207,126 @@
 
     move-result v0
 
-    const/4 v1, 0x0
-
-    const/4 v2, 0x1
+    const/4 v1, 0x1
 
     if-ne p1, v0, :cond_36
 
     .line 157
-    move p1, v1
+    const/4 v0, 0x0
 
-    :goto_b
+    .local v0, "i":I
+    :goto_a
     invoke-virtual {p0}, Lcom/android/server/biometrics/ClientMonitor;->getAcquireVendorIgnorelist()[I
 
-    move-result-object v0
+    move-result-object v2
 
-    array-length v0, v0
+    array-length v2, v2
 
-    if-ge p1, v0, :cond_62
+    if-ge v0, v2, :cond_35
 
     .line 158
     invoke-virtual {p0}, Lcom/android/server/biometrics/ClientMonitor;->getAcquireVendorIgnorelist()[I
 
-    move-result-object v0
+    move-result-object v2
 
-    aget v0, v0, p1
+    aget v2, v2, v0
 
-    if-ne v0, p2, :cond_33
+    if-ne v2, p2, :cond_32
 
     .line 159
     invoke-virtual {p0}, Lcom/android/server/biometrics/ClientMonitor;->getLogTag()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v2
 
-    new-instance v0, Ljava/lang/StringBuilder;
+    new-instance v3, Ljava/lang/StringBuilder;
 
-    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v1, "Ignoring vendor message: "
+    const-string v4, "Ignoring vendor message: "
 
-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0, p2}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, p2}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p2
+    move-result-object v3
 
-    invoke-static {p1, p2}, Landroid/util/Slog;->v(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v2, v3}, Landroid/util/Slog;->v(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 160
-    return v2
+    return v1
 
     .line 157
-    :cond_33
-    add-int/lit8 p1, p1, 0x1
+    :cond_32
+    add-int/lit8 v0, v0, 0x1
 
-    goto :goto_b
+    goto :goto_a
+
+    .end local v0  # "i":I
+    :cond_35
+    goto :goto_62
 
     .line 164
     :cond_36
-    move p2, v1
+    const/4 v0, 0x0
 
+    .restart local v0  # "i":I
     :goto_37
     invoke-virtual {p0}, Lcom/android/server/biometrics/ClientMonitor;->getAcquireIgnorelist()[I
 
-    move-result-object v0
+    move-result-object v2
 
-    array-length v0, v0
+    array-length v2, v2
 
-    if-ge p2, v0, :cond_62
+    if-ge v0, v2, :cond_62
 
     .line 165
     invoke-virtual {p0}, Lcom/android/server/biometrics/ClientMonitor;->getAcquireIgnorelist()[I
 
-    move-result-object v0
+    move-result-object v2
 
-    aget v0, v0, p2
+    aget v2, v2, v0
 
-    if-ne v0, p1, :cond_5f
+    if-ne v2, p1, :cond_5f
 
     .line 166
     invoke-virtual {p0}, Lcom/android/server/biometrics/ClientMonitor;->getLogTag()Ljava/lang/String;
 
-    move-result-object p2
+    move-result-object v2
 
-    new-instance v0, Ljava/lang/StringBuilder;
+    new-instance v3, Ljava/lang/StringBuilder;
 
-    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v1, "Ignoring message: "
+    const-string v4, "Ignoring message: "
 
-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, p1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v3
 
-    invoke-static {p2, p1}, Landroid/util/Slog;->v(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v2, v3}, Landroid/util/Slog;->v(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 167
-    return v2
+    return v1
 
     .line 164
     :cond_5f
-    add-int/lit8 p2, p2, 0x1
+    add-int/lit8 v0, v0, 0x1
 
     goto :goto_37
 
     .line 171
+    .end local v0  # "i":I
     :cond_62
-    return v1
+    :goto_62
+    const/4 v0, 0x0
+
+    return v0
 .end method
 
 
@@ -338,7 +361,7 @@
 .end method
 
 .method public destroy()V
-    .registers 6
+    .registers 7
 
     .line 222
     iget-object v0, p0, Lcom/android/server/biometrics/ClientMonitor;->mToken:Landroid/os/IBinder;
@@ -363,37 +386,39 @@
     move-exception v0
 
     .line 227
+    .local v0, "e":Ljava/util/NoSuchElementException;
     invoke-virtual {p0}, Lcom/android/server/biometrics/ClientMonitor;->getLogTag()Ljava/lang/String;
-
-    move-result-object v0
-
-    new-instance v2, Ljava/lang/StringBuilder;
-
-    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
-
-    const-string v3, "destroy(): "
-
-    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v2, p0}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
-
-    const-string v3, ":"
-
-    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
     move-result-object v2
 
-    new-instance v3, Ljava/lang/Exception;
+    new-instance v3, Ljava/lang/StringBuilder;
 
-    const-string v4, "here"
+    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
 
-    invoke-direct {v3, v4}, Ljava/lang/Exception;-><init>(Ljava/lang/String;)V
+    const-string v4, "destroy(): "
 
-    invoke-static {v0, v2, v3}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v3, p0}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+
+    const-string v4, ":"
+
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v3
+
+    new-instance v4, Ljava/lang/Exception;
+
+    const-string v5, "here"
+
+    invoke-direct {v4, v5}, Ljava/lang/Exception;-><init>(Ljava/lang/String;)V
+
+    invoke-static {v2, v3, v4}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
     .line 229
+    .end local v0  # "e":Ljava/util/NoSuchElementException;
     :goto_2f
     iput-object v1, p0, Lcom/android/server/biometrics/ClientMonitor;->mToken:Landroid/os/IBinder;
 
@@ -613,6 +638,8 @@
 
 .method public onAcquired(II)Z
     .registers 6
+    .param p1, "acquiredInfo"  # I
+    .param p2, "vendorCode"  # I
 
     .line 185
     iget-object v0, p0, Lcom/android/server/biometrics/ClientMonitor;->mContext:Landroid/content/Context;
@@ -676,7 +703,7 @@
 
     .line 191
     :cond_3c
-    const/4 p2, 0x0
+    const/4 v0, 0x0
 
     .line 197
     if-nez p1, :cond_42
@@ -686,32 +713,33 @@
 
     .line 191
     :cond_42
-    return p2
+    return v0
 
     .line 197
     :catchall_43
-    move-exception p2
+    move-exception v0
 
     goto :goto_56
 
     .line 192
     :catch_45
-    move-exception p2
+    move-exception v0
 
     .line 193
+    .local v0, "e":Landroid/os/RemoteException;
     :try_start_46
     invoke-virtual {p0}, Lcom/android/server/biometrics/ClientMonitor;->getLogTag()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v1
 
-    const-string v1, "Failed to invoke sendAcquired"
+    const-string v2, "Failed to invoke sendAcquired"
 
-    invoke-static {v0, v1, p2}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    invoke-static {v1, v2, v0}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
     :try_end_4f
     .catchall {:try_start_46 .. :try_end_4f} :catchall_43
 
     .line 194
-    const/4 p2, 0x1
+    const/4 v1, 0x1
 
     .line 197
     if-nez p1, :cond_55
@@ -721,9 +749,10 @@
 
     .line 194
     :cond_55
-    return p2
+    return v1
 
     .line 197
+    .end local v0  # "e":Landroid/os/RemoteException;
     :goto_56
     if-nez p1, :cond_5b
 
@@ -731,7 +760,7 @@
     invoke-virtual {p0}, Lcom/android/server/biometrics/ClientMonitor;->notifyUserActivity()V
 
     :cond_5b
-    throw p2
+    throw v0
 .end method
 
 .method public abstract onAuthenticated(Landroid/hardware/biometrics/BiometricAuthenticator$Identifier;ZLjava/util/ArrayList;)Z
@@ -755,6 +784,9 @@
 
 .method public onError(JII)Z
     .registers 12
+    .param p1, "deviceId"  # J
+    .param p3, "error"  # I
+    .param p4, "vendorCode"  # I
 
     .line 210
     iget-object v0, p0, Lcom/android/server/biometrics/ClientMonitor;->mContext:Landroid/content/Context;
@@ -794,22 +826,24 @@
 
     .line 215
     :catch_1a
-    move-exception p1
+    move-exception v0
 
     .line 216
+    .local v0, "e":Landroid/os/RemoteException;
     invoke-virtual {p0}, Lcom/android/server/biometrics/ClientMonitor;->getLogTag()Ljava/lang/String;
 
-    move-result-object p2
+    move-result-object v1
 
-    const-string p3, "Failed to invoke sendError"
+    const-string v2, "Failed to invoke sendError"
 
-    invoke-static {p2, p3, p1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    invoke-static {v1, v2, v0}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
     .line 218
+    .end local v0  # "e":Landroid/os/RemoteException;
     :goto_24
-    const/4 p1, 0x1
+    const/4 v0, 0x1
 
-    return p1
+    return v0
 .end method
 
 .method public abstract onRemoved(Landroid/hardware/biometrics/BiometricAuthenticator$Identifier;I)Z
@@ -822,59 +856,15 @@
 .end method
 
 .method public final vibrateError()V
-    .registers 4
+    .registers 1
 
-    .line 300
-    iget-object v0, p0, Lcom/android/server/biometrics/ClientMonitor;->mContext:Landroid/content/Context;
-
-    const-class v1, Landroid/os/Vibrator;
-
-    invoke-virtual {v0, v1}, Landroid/content/Context;->getSystemService(Ljava/lang/Class;)Ljava/lang/Object;
-
-    move-result-object v0
-
-    check-cast v0, Landroid/os/Vibrator;
-
-    .line 301
-    if-eqz v0, :cond_13
-
-    .line 302
-    iget-object v1, p0, Lcom/android/server/biometrics/ClientMonitor;->mErrorVibrationEffect:Landroid/os/VibrationEffect;
-
-    sget-object v2, Lcom/android/server/biometrics/ClientMonitor;->FINGERPRINT_SONFICATION_ATTRIBUTES:Landroid/media/AudioAttributes;
-
-    invoke-virtual {v0, v1, v2}, Landroid/os/Vibrator;->vibrate(Landroid/os/VibrationEffect;Landroid/media/AudioAttributes;)V
-
-    .line 304
-    :cond_13
+    .line 308
     return-void
 .end method
 
 .method public final vibrateSuccess()V
-    .registers 4
+    .registers 1
 
-    .line 293
-    iget-object v0, p0, Lcom/android/server/biometrics/ClientMonitor;->mContext:Landroid/content/Context;
-
-    const-class v1, Landroid/os/Vibrator;
-
-    invoke-virtual {v0, v1}, Landroid/content/Context;->getSystemService(Ljava/lang/Class;)Ljava/lang/Object;
-
-    move-result-object v0
-
-    check-cast v0, Landroid/os/Vibrator;
-
-    .line 294
-    if-eqz v0, :cond_13
-
-    .line 295
-    iget-object v1, p0, Lcom/android/server/biometrics/ClientMonitor;->mSuccessVibrationEffect:Landroid/os/VibrationEffect;
-
-    sget-object v2, Lcom/android/server/biometrics/ClientMonitor;->FINGERPRINT_SONFICATION_ATTRIBUTES:Landroid/media/AudioAttributes;
-
-    invoke-virtual {v0, v1, v2}, Landroid/os/Vibrator;->vibrate(Landroid/os/VibrationEffect;Landroid/media/AudioAttributes;)V
-
-    .line 297
-    :cond_13
+    .line 299
     return-void
 .end method

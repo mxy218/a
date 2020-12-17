@@ -24,8 +24,9 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/am/UserController$5;)V
     .registers 2
+    .param p1, "this$1"  # Lcom/android/server/am/UserController$5;
 
-    .line 757
+    .line 737
     iput-object p1, p0, Lcom/android/server/am/UserController$5$1;->this$1:Lcom/android/server/am/UserController$5;
 
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -38,7 +39,7 @@
 .method public run()V
     .registers 3
 
-    .line 760
+    .line 740
     iget-object v0, p0, Lcom/android/server/am/UserController$5$1;->this$1:Lcom/android/server/am/UserController$5;
 
     iget-object v0, v0, Lcom/android/server/am/UserController$5;->this$0:Lcom/android/server/am/UserController;
@@ -49,6 +50,6 @@
 
     invoke-virtual {v0, v1}, Lcom/android/server/am/UserController;->finishUserStopped(Lcom/android/server/am/UserState;)V
 
-    .line 761
+    .line 741
     return-void
 .end method

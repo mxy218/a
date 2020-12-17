@@ -24,6 +24,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/hdmi/OneTouchRecordAction;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/hdmi/OneTouchRecordAction;
 
     .line 61
     iput-object p1, p0, Lcom/android/server/hdmi/OneTouchRecordAction$1;->this$0:Lcom/android/server/hdmi/OneTouchRecordAction;
@@ -36,34 +37,35 @@
 
 # virtual methods
 .method public onSendCompleted(I)V
-    .registers 4
+    .registers 5
+    .param p1, "error"  # I
 
     .line 65
     if-eqz p1, :cond_19
 
     .line 66
-    iget-object p1, p0, Lcom/android/server/hdmi/OneTouchRecordAction$1;->this$0:Lcom/android/server/hdmi/OneTouchRecordAction;
-
-    invoke-virtual {p1}, Lcom/android/server/hdmi/OneTouchRecordAction;->tv()Lcom/android/server/hdmi/HdmiCecLocalDeviceTv;
-
-    move-result-object p1
-
     iget-object v0, p0, Lcom/android/server/hdmi/OneTouchRecordAction$1;->this$0:Lcom/android/server/hdmi/OneTouchRecordAction;
 
+    invoke-virtual {v0}, Lcom/android/server/hdmi/OneTouchRecordAction;->tv()Lcom/android/server/hdmi/HdmiCecLocalDeviceTv;
+
+    move-result-object v0
+
+    iget-object v1, p0, Lcom/android/server/hdmi/OneTouchRecordAction$1;->this$0:Lcom/android/server/hdmi/OneTouchRecordAction;
+
     .line 67
-    invoke-static {v0}, Lcom/android/server/hdmi/OneTouchRecordAction;->access$000(Lcom/android/server/hdmi/OneTouchRecordAction;)I
+    invoke-static {v1}, Lcom/android/server/hdmi/OneTouchRecordAction;->access$000(Lcom/android/server/hdmi/OneTouchRecordAction;)I
 
-    move-result v0
+    move-result v1
 
-    const/16 v1, 0x31
+    const/16 v2, 0x31
 
     .line 66
-    invoke-virtual {p1, v0, v1}, Lcom/android/server/hdmi/HdmiCecLocalDeviceTv;->announceOneTouchRecordResult(II)V
+    invoke-virtual {v0, v1, v2}, Lcom/android/server/hdmi/HdmiCecLocalDeviceTv;->announceOneTouchRecordResult(II)V
 
     .line 69
-    iget-object p1, p0, Lcom/android/server/hdmi/OneTouchRecordAction$1;->this$0:Lcom/android/server/hdmi/OneTouchRecordAction;
+    iget-object v0, p0, Lcom/android/server/hdmi/OneTouchRecordAction$1;->this$0:Lcom/android/server/hdmi/OneTouchRecordAction;
 
-    invoke-virtual {p1}, Lcom/android/server/hdmi/OneTouchRecordAction;->finish()V
+    invoke-virtual {v0}, Lcom/android/server/hdmi/OneTouchRecordAction;->finish()V
 
     .line 70
     return-void

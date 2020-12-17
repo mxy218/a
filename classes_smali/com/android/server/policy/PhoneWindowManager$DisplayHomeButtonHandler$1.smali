@@ -24,8 +24,9 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/policy/PhoneWindowManager$DisplayHomeButtonHandler;)V
     .registers 2
+    .param p1, "this$1"  # Lcom/android/server/policy/PhoneWindowManager$DisplayHomeButtonHandler;
 
-    .line 1871
+    .line 1693
     iput-object p1, p0, Lcom/android/server/policy/PhoneWindowManager$DisplayHomeButtonHandler$1;->this$1:Lcom/android/server/policy/PhoneWindowManager$DisplayHomeButtonHandler;
 
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -38,36 +39,36 @@
 .method public run()V
     .registers 3
 
-    .line 1874
+    .line 1696
     iget-object v0, p0, Lcom/android/server/policy/PhoneWindowManager$DisplayHomeButtonHandler$1;->this$1:Lcom/android/server/policy/PhoneWindowManager$DisplayHomeButtonHandler;
 
-    invoke-static {v0}, Lcom/android/server/policy/PhoneWindowManager$DisplayHomeButtonHandler;->access$2900(Lcom/android/server/policy/PhoneWindowManager$DisplayHomeButtonHandler;)Z
+    invoke-static {v0}, Lcom/android/server/policy/PhoneWindowManager$DisplayHomeButtonHandler;->access$2600(Lcom/android/server/policy/PhoneWindowManager$DisplayHomeButtonHandler;)Z
 
     move-result v0
 
     if-eqz v0, :cond_1b
 
-    .line 1875
+    .line 1697
     iget-object v0, p0, Lcom/android/server/policy/PhoneWindowManager$DisplayHomeButtonHandler$1;->this$1:Lcom/android/server/policy/PhoneWindowManager$DisplayHomeButtonHandler;
 
     const/4 v1, 0x0
 
-    invoke-static {v0, v1}, Lcom/android/server/policy/PhoneWindowManager$DisplayHomeButtonHandler;->access$2902(Lcom/android/server/policy/PhoneWindowManager$DisplayHomeButtonHandler;Z)Z
+    invoke-static {v0, v1}, Lcom/android/server/policy/PhoneWindowManager$DisplayHomeButtonHandler;->access$2602(Lcom/android/server/policy/PhoneWindowManager$DisplayHomeButtonHandler;Z)Z
 
-    .line 1876
+    .line 1698
     iget-object v0, p0, Lcom/android/server/policy/PhoneWindowManager$DisplayHomeButtonHandler$1;->this$1:Lcom/android/server/policy/PhoneWindowManager$DisplayHomeButtonHandler;
 
     iget-object v0, v0, Lcom/android/server/policy/PhoneWindowManager$DisplayHomeButtonHandler;->this$0:Lcom/android/server/policy/PhoneWindowManager;
 
     iget-object v1, p0, Lcom/android/server/policy/PhoneWindowManager$DisplayHomeButtonHandler$1;->this$1:Lcom/android/server/policy/PhoneWindowManager$DisplayHomeButtonHandler;
 
-    invoke-static {v1}, Lcom/android/server/policy/PhoneWindowManager$DisplayHomeButtonHandler;->access$3000(Lcom/android/server/policy/PhoneWindowManager$DisplayHomeButtonHandler;)I
+    invoke-static {v1}, Lcom/android/server/policy/PhoneWindowManager$DisplayHomeButtonHandler;->access$2700(Lcom/android/server/policy/PhoneWindowManager$DisplayHomeButtonHandler;)I
 
     move-result v1
 
-    invoke-static {v0, v1}, Lcom/android/server/policy/PhoneWindowManager;->access$3100(Lcom/android/server/policy/PhoneWindowManager;I)V
+    invoke-static {v0, v1}, Lcom/android/server/policy/PhoneWindowManager;->access$2800(Lcom/android/server/policy/PhoneWindowManager;I)V
 
-    .line 1878
+    .line 1700
     :cond_1b
     return-void
 .end method

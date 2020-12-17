@@ -21,6 +21,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/tv/TvRemoteProviderWatcher;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/tv/TvRemoteProviderWatcher;
 
     .line 199
     iput-object p1, p0, Lcom/android/server/tv/TvRemoteProviderWatcher$1;->this$0:Lcom/android/server/tv/TvRemoteProviderWatcher;
@@ -33,49 +34,51 @@
 
 # virtual methods
 .method public onReceive(Landroid/content/Context;Landroid/content/Intent;)V
-    .registers 4
+    .registers 5
+    .param p1, "context"  # Landroid/content/Context;
+    .param p2, "intent"  # Landroid/content/Intent;
 
     .line 202
     invoke-static {}, Lcom/android/server/tv/TvRemoteProviderWatcher;->access$000()Z
 
-    move-result p1
+    move-result v0
 
-    if-eqz p1, :cond_1c
+    if-eqz v0, :cond_1c
 
     .line 203
-    new-instance p1, Ljava/lang/StringBuilder;
+    new-instance v0, Ljava/lang/StringBuilder;
 
-    invoke-direct {p1}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v0, "Received package manager broadcast: "
+    const-string v1, "Received package manager broadcast: "
 
-    invoke-virtual {p1, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p1, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    const-string p2, "TvRemoteProvWatcher"
+    const-string v1, "TvRemoteProvWatcher"
 
-    invoke-static {p2, p1}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v0}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 205
     :cond_1c
-    iget-object p1, p0, Lcom/android/server/tv/TvRemoteProviderWatcher$1;->this$0:Lcom/android/server/tv/TvRemoteProviderWatcher;
+    iget-object v0, p0, Lcom/android/server/tv/TvRemoteProviderWatcher$1;->this$0:Lcom/android/server/tv/TvRemoteProviderWatcher;
 
-    invoke-static {p1}, Lcom/android/server/tv/TvRemoteProviderWatcher;->access$200(Lcom/android/server/tv/TvRemoteProviderWatcher;)Landroid/os/Handler;
+    invoke-static {v0}, Lcom/android/server/tv/TvRemoteProviderWatcher;->access$200(Lcom/android/server/tv/TvRemoteProviderWatcher;)Landroid/os/Handler;
 
-    move-result-object p1
+    move-result-object v0
 
-    iget-object p2, p0, Lcom/android/server/tv/TvRemoteProviderWatcher$1;->this$0:Lcom/android/server/tv/TvRemoteProviderWatcher;
+    iget-object v1, p0, Lcom/android/server/tv/TvRemoteProviderWatcher$1;->this$0:Lcom/android/server/tv/TvRemoteProviderWatcher;
 
-    invoke-static {p2}, Lcom/android/server/tv/TvRemoteProviderWatcher;->access$100(Lcom/android/server/tv/TvRemoteProviderWatcher;)Ljava/lang/Runnable;
+    invoke-static {v1}, Lcom/android/server/tv/TvRemoteProviderWatcher;->access$100(Lcom/android/server/tv/TvRemoteProviderWatcher;)Ljava/lang/Runnable;
 
-    move-result-object p2
+    move-result-object v1
 
-    invoke-virtual {p1, p2}, Landroid/os/Handler;->post(Ljava/lang/Runnable;)Z
+    invoke-virtual {v0, v1}, Landroid/os/Handler;->post(Ljava/lang/Runnable;)Z
 
     .line 206
     return-void

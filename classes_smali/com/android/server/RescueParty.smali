@@ -124,7 +124,8 @@
 .end method
 
 .method private static executeRescueLevel(Landroid/content/Context;)V
-    .registers 5
+    .registers 7
+    .param p0, "context"  # Landroid/content/Context;
 
     .line 209
     const-string/jumbo v0, "sys.rescue_level"
@@ -136,6 +137,7 @@
     move-result v0
 
     .line 210
+    .local v0, "level":I
     if-nez v0, :cond_b
 
     return-void
@@ -172,29 +174,29 @@
     invoke-static {v0}, Lcom/android/server/EventLogTags;->writeRescueSuccess(I)V
 
     .line 216
-    const/4 p0, 0x3
+    const/4 v1, 0x3
 
-    new-instance v1, Ljava/lang/StringBuilder;
+    new-instance v2, Ljava/lang/StringBuilder;
 
-    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v2, "Finished rescue level "
+    const-string v3, "Finished rescue level "
 
-    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     .line 217
     invoke-static {v0}, Lcom/android/server/RescueParty;->levelToString(I)Ljava/lang/String;
 
+    move-result-object v3
+
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
     move-result-object v2
 
-    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
-
-    move-result-object v1
-
     .line 216
-    invoke-static {p0, v1}, Lcom/android/server/pm/PackageManagerServiceUtils;->logCriticalInfo(ILjava/lang/String;)V
+    invoke-static {v1, v2}, Lcom/android/server/pm/PackageManagerServiceUtils;->logCriticalInfo(ILjava/lang/String;)V
     :try_end_44
     .catchall {:try_start_25 .. :try_end_44} :catchall_45
 
@@ -203,54 +205,60 @@
 
     .line 218
     :catchall_45
-    move-exception p0
+    move-exception v1
 
     .line 219
-    invoke-static {p0}, Landroid/util/ExceptionUtils;->getCompleteMessage(Ljava/lang/Throwable;)Ljava/lang/String;
+    .local v1, "t":Ljava/lang/Throwable;
+    invoke-static {v1}, Landroid/util/ExceptionUtils;->getCompleteMessage(Ljava/lang/Throwable;)Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v2
 
     .line 220
-    invoke-static {v0, p0}, Lcom/android/server/EventLogTags;->writeRescueFailure(ILjava/lang/String;)V
+    .local v2, "msg":Ljava/lang/String;
+    invoke-static {v0, v2}, Lcom/android/server/EventLogTags;->writeRescueFailure(ILjava/lang/String;)V
 
     .line 221
-    const/4 v1, 0x6
+    const/4 v3, 0x6
 
-    new-instance v2, Ljava/lang/StringBuilder;
+    new-instance v4, Ljava/lang/StringBuilder;
 
-    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v4}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v3, "Failed rescue level "
+    const-string v5, "Failed rescue level "
 
-    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     .line 222
     invoke-static {v0}, Lcom/android/server/RescueParty;->levelToString(I)Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v5
 
-    invoke-virtual {v2, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string v0, ": "
+    const-string v5, ": "
 
-    invoke-virtual {v2, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v2, p0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v4, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v4}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v4
 
     .line 221
-    invoke-static {v1, p0}, Lcom/android/server/pm/PackageManagerServiceUtils;->logCriticalInfo(ILjava/lang/String;)V
+    invoke-static {v3, v4}, Lcom/android/server/pm/PackageManagerServiceUtils;->logCriticalInfo(ILjava/lang/String;)V
 
     .line 224
+    .end local v1  # "t":Ljava/lang/Throwable;
+    .end local v2  # "msg":Ljava/lang/String;
     :goto_6e
     return-void
 .end method
 
 .method private static executeRescueLevelInternal(Landroid/content/Context;I)V
     .registers 4
+    .param p0, "context"  # Landroid/content/Context;
+    .param p1, "level"  # I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Ljava/lang/Exception;
@@ -283,9 +291,9 @@
 
     .line 239
     :cond_12
-    const-string p1, "RescueParty"
+    const-string v0, "RescueParty"
 
-    invoke-static {p0, p1}, Landroid/os/RecoverySystem;->rebootPromptAndWipeUserData(Landroid/content/Context;Ljava/lang/String;)V
+    invoke-static {p0, v0}, Landroid/os/RecoverySystem;->rebootPromptAndWipeUserData(Landroid/content/Context;Ljava/lang/String;)V
 
     goto :goto_24
 
@@ -312,16 +320,16 @@
 
     .line 242
     :goto_24
-    const-string/jumbo p0, "no_package"
+    const-string/jumbo v0, "no_package"
 
-    invoke-static {p0}, Lcom/android/server/utils/FlagNamespaceUtils;->addToKnownResetNamespaces(Ljava/lang/String;)V
+    invoke-static {v0}, Lcom/android/server/utils/FlagNamespaceUtils;->addToKnownResetNamespaces(Ljava/lang/String;)V
 
     .line 244
     return-void
 .end method
 
 .method private static getAllUserIds()[I
-    .registers 5
+    .registers 7
 
     .line 374
     const/4 v0, 0x1
@@ -333,6 +341,7 @@
     aput v1, v0, v1
 
     .line 376
+    .local v0, "userIds":[I
     :try_start_6
     invoke-static {}, Landroid/os/Environment;->getDataSystemDeDirectory()Ljava/io/File;
 
@@ -345,56 +354,63 @@
     array-length v3, v2
 
     :goto_f
-    if-ge v1, v3, :cond_26
+    if-ge v1, v3, :cond_27
 
     aget-object v4, v2, v1
     :try_end_13
-    .catchall {:try_start_6 .. :try_end_13} :catchall_27
+    .catchall {:try_start_6 .. :try_end_13} :catchall_28
 
     .line 378
+    .local v4, "file":Ljava/io/File;
     :try_start_13
     invoke-virtual {v4}, Ljava/io/File;->getName()Ljava/lang/String;
 
-    move-result-object v4
+    move-result-object v5
 
-    invoke-static {v4}, Ljava/lang/Integer;->parseInt(Ljava/lang/String;)I
+    invoke-static {v5}, Ljava/lang/Integer;->parseInt(Ljava/lang/String;)I
 
-    move-result v4
+    move-result v5
 
     .line 379
-    if-eqz v4, :cond_21
+    .local v5, "userId":I
+    if-eqz v5, :cond_22
 
     .line 380
-    invoke-static {v0, v4}, Lcom/android/internal/util/ArrayUtils;->appendInt([II)[I
+    invoke-static {v0, v5}, Lcom/android/internal/util/ArrayUtils;->appendInt([II)[I
 
-    move-result-object v0
+    move-result-object v6
     :try_end_21
-    .catch Ljava/lang/NumberFormatException; {:try_start_13 .. :try_end_21} :catch_22
-    .catchall {:try_start_13 .. :try_end_21} :catchall_27
+    .catch Ljava/lang/NumberFormatException; {:try_start_13 .. :try_end_21} :catch_23
+    .catchall {:try_start_13 .. :try_end_21} :catchall_28
+
+    move-object v0, v6
 
     .line 383
-    :cond_21
-    goto :goto_23
+    .end local v5  # "userId":I
+    :cond_22
+    goto :goto_24
 
     .line 382
-    :catch_22
-    move-exception v4
+    :catch_23
+    move-exception v5
 
     .line 376
-    :goto_23
+    .end local v4  # "file":Ljava/io/File;
+    :goto_24
     add-int/lit8 v1, v1, 0x1
 
     goto :goto_f
 
     .line 387
-    :cond_26
-    goto :goto_2f
+    :cond_27
+    goto :goto_30
 
     .line 385
-    :catchall_27
+    :catchall_28
     move-exception v1
 
     .line 386
+    .local v1, "t":Ljava/lang/Throwable;
     const-string v2, "RescueParty"
 
     const-string v3, "Trouble discovering users"
@@ -402,7 +418,8 @@
     invoke-static {v2, v3, v1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
     .line 388
-    :goto_2f
+    .end local v1  # "t":Ljava/lang/Throwable;
+    :goto_30
     return-object v0
 .end method
 
@@ -451,6 +468,7 @@
 
 .method private static incrementRescueLevel(I)V
     .registers 5
+    .param p0, "triggerUid"  # I
 
     .line 198
     nop
@@ -474,6 +492,7 @@
     move-result v0
 
     .line 201
+    .local v0, "level":I
     invoke-static {v0}, Ljava/lang/Integer;->toString(I)Ljava/lang/String;
 
     move-result-object v2
@@ -495,24 +514,24 @@
     .line 205
     invoke-static {v0}, Lcom/android/server/RescueParty;->levelToString(I)Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v2
 
-    invoke-virtual {v1, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string v0, " triggered by UID "
+    const-string v2, " triggered by UID "
 
-    invoke-virtual {v1, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v1, p0}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
     invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v1
 
     .line 204
-    const/4 v0, 0x5
+    const/4 v2, 0x5
 
-    invoke-static {v0, p0}, Lcom/android/server/pm/PackageManagerServiceUtils;->logCriticalInfo(ILjava/lang/String;)V
+    invoke-static {v2, v1}, Lcom/android/server/pm/PackageManagerServiceUtils;->logCriticalInfo(ILjava/lang/String;)V
 
     .line 206
     return-void
@@ -663,13 +682,14 @@
     move-result-object v1
 
     .line 403
+    .local v1, "state":Ljava/lang/String;
     const-string v3, "CONFIGURED"
 
     invoke-virtual {v1}, Ljava/lang/String;->trim()Ljava/lang/String;
 
-    move-result-object v1
+    move-result-object v4
 
-    invoke-virtual {v3, v1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v3, v4}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
     move-result v0
     :try_end_2c
@@ -678,10 +698,12 @@
     return v0
 
     .line 404
+    .end local v1  # "state":Ljava/lang/String;
     :catchall_2d
     move-exception v1
 
     .line 405
+    .local v1, "t":Ljava/lang/Throwable;
     const-string v3, "Failed to determine if device was on USB"
 
     invoke-static {v2, v3, v1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
@@ -692,6 +714,7 @@
 
 .method private static levelToString(I)Ljava/lang/String;
     .registers 2
+    .param p0, "level"  # I
 
     .line 411
     if-eqz p0, :cond_1f
@@ -715,43 +738,45 @@
     .line 417
     invoke-static {p0}, Ljava/lang/Integer;->toString(I)Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v0
 
-    return-object p0
+    return-object v0
 
     .line 416
     :cond_13
-    const-string p0, "FACTORY_RESET"
+    const-string v0, "FACTORY_RESET"
 
-    return-object p0
+    return-object v0
 
     .line 415
     :cond_16
-    const-string p0, "RESET_SETTINGS_TRUSTED_DEFAULTS"
+    const-string v0, "RESET_SETTINGS_TRUSTED_DEFAULTS"
 
-    return-object p0
+    return-object v0
 
     .line 414
     :cond_19
-    const-string p0, "RESET_SETTINGS_UNTRUSTED_CHANGES"
+    const-string v0, "RESET_SETTINGS_UNTRUSTED_CHANGES"
 
-    return-object p0
+    return-object v0
 
     .line 413
     :cond_1c
-    const-string p0, "RESET_SETTINGS_UNTRUSTED_DEFAULTS"
+    const-string v0, "RESET_SETTINGS_UNTRUSTED_DEFAULTS"
 
-    return-object p0
+    return-object v0
 
     .line 412
     :cond_1f
-    const-string p0, "NONE"
+    const-string v0, "NONE"
 
-    return-object p0
+    return-object v0
 .end method
 
 .method public static noteAppCrash(Landroid/content/Context;I)V
     .registers 4
+    .param p0, "context"  # Landroid/content/Context;
+    .param p1, "uid"  # I
 
     .line 142
     invoke-static {}, Lcom/android/server/RescueParty;->isDisabled()Z
@@ -773,12 +798,15 @@
     check-cast v0, Lcom/android/server/RescueParty$Threshold;
 
     .line 144
-    if-nez v0, :cond_1b
+    .local v0, "t":Lcom/android/server/RescueParty$Threshold;
+    if-nez v0, :cond_1c
 
     .line 145
-    new-instance v0, Lcom/android/server/RescueParty$AppThreshold;
+    new-instance v1, Lcom/android/server/RescueParty$AppThreshold;
 
-    invoke-direct {v0, p1}, Lcom/android/server/RescueParty$AppThreshold;-><init>(I)V
+    invoke-direct {v1, p1}, Lcom/android/server/RescueParty$AppThreshold;-><init>(I)V
+
+    move-object v0, v1
 
     .line 146
     sget-object v1, Lcom/android/server/RescueParty;->sApps:Landroid/util/SparseArray;
@@ -786,12 +814,12 @@
     invoke-virtual {v1, p1, v0}, Landroid/util/SparseArray;->put(ILjava/lang/Object;)V
 
     .line 148
-    :cond_1b
+    :cond_1c
     invoke-virtual {v0}, Lcom/android/server/RescueParty$Threshold;->incrementAndTest()Z
 
-    move-result p1
+    move-result v1
 
-    if-eqz p1, :cond_2e
+    if-eqz v1, :cond_2f
 
     .line 149
     invoke-virtual {v0}, Lcom/android/server/RescueParty$Threshold;->reset()V
@@ -799,20 +827,21 @@
     .line 150
     invoke-static {v0}, Lcom/android/server/RescueParty$Threshold;->access$000(Lcom/android/server/RescueParty$Threshold;)I
 
-    move-result p1
+    move-result v1
 
-    invoke-static {p1}, Lcom/android/server/RescueParty;->incrementRescueLevel(I)V
+    invoke-static {v1}, Lcom/android/server/RescueParty;->incrementRescueLevel(I)V
 
     .line 151
     invoke-static {p0}, Lcom/android/server/RescueParty;->executeRescueLevel(Landroid/content/Context;)V
 
     .line 153
-    :cond_2e
+    :cond_2f
     return-void
 .end method
 
 .method public static noteBoot(Landroid/content/Context;)V
     .registers 2
+    .param p0, "context"  # Landroid/content/Context;
 
     .line 129
     invoke-static {}, Lcom/android/server/RescueParty;->isDisabled()Z
@@ -857,6 +886,7 @@
 
 .method public static onSettingsProviderPublished(Landroid/content/Context;)V
     .registers 1
+    .param p0, "context"  # Landroid/content/Context;
 
     .line 167
     invoke-static {}, Lcom/android/server/RescueParty;->handleNativeRescuePartyResets()V
@@ -869,7 +899,9 @@
 .end method
 
 .method private static resetAllSettings(Landroid/content/Context;I)V
-    .registers 11
+    .registers 13
+    .param p0, "context"  # Landroid/content/Context;
+    .param p1, "mode"  # I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Ljava/lang/Exception;
@@ -877,43 +909,47 @@
     .end annotation
 
     .line 249
-    nop
-
-    .line 250
-    invoke-virtual {p0}, Landroid/content/Context;->getContentResolver()Landroid/content/ContentResolver;
-
-    move-result-object p0
-
-    .line 252
     const/4 v0, 0x0
 
-    :try_start_6
+    .line 250
+    .local v0, "res":Ljava/lang/Exception;
+    invoke-virtual {p0}, Landroid/content/Context;->getContentResolver()Landroid/content/ContentResolver;
+
+    move-result-object v1
+
+    .line 252
+    .local v1, "resolver":Landroid/content/ContentResolver;
+    :try_start_5
     invoke-static {p1}, Lcom/android/server/utils/FlagNamespaceUtils;->resetDeviceConfig(I)V
-    :try_end_9
-    .catch Ljava/lang/Exception; {:try_start_6 .. :try_end_9} :catch_b
+    :try_end_8
+    .catch Ljava/lang/Exception; {:try_start_5 .. :try_end_8} :catch_9
 
     .line 255
-    move-object v2, v0
-
-    goto :goto_13
+    goto :goto_12
 
     .line 253
-    :catch_b
-    move-exception v1
+    :catch_9
+    move-exception v2
 
     .line 254
-    new-instance v2, Ljava/lang/RuntimeException;
+    .local v2, "e":Ljava/lang/Exception;
+    new-instance v3, Ljava/lang/RuntimeException;
 
-    const-string v3, "Failed to reset config settings"
+    const-string v4, "Failed to reset config settings"
 
-    invoke-direct {v2, v3, v1}, Ljava/lang/RuntimeException;-><init>(Ljava/lang/String;Ljava/lang/Throwable;)V
+    invoke-direct {v3, v4, v2}, Ljava/lang/RuntimeException;-><init>(Ljava/lang/String;Ljava/lang/Throwable;)V
+
+    move-object v0, v3
 
     .line 257
-    :goto_13
-    const/4 v1, 0x0
+    .end local v2  # "e":Ljava/lang/Exception;
+    :goto_12
+    const/4 v2, 0x0
+
+    const/4 v3, 0x0
 
     :try_start_14
-    invoke-static {p0, v0, p1, v1}, Landroid/provider/Settings$Global;->resetToDefaultsAsUser(Landroid/content/ContentResolver;Ljava/lang/String;II)V
+    invoke-static {v1, v3, p1, v2}, Landroid/provider/Settings$Global;->resetToDefaultsAsUser(Landroid/content/ContentResolver;Ljava/lang/String;II)V
     :try_end_17
     .catch Ljava/lang/Exception; {:try_start_14 .. :try_end_17} :catch_18
 
@@ -922,33 +958,36 @@
 
     .line 258
     :catch_18
-    move-exception v2
+    move-exception v4
 
     .line 259
-    new-instance v3, Ljava/lang/RuntimeException;
+    .local v4, "e":Ljava/lang/Exception;
+    new-instance v5, Ljava/lang/RuntimeException;
 
-    const-string v4, "Failed to reset global settings"
+    const-string v6, "Failed to reset global settings"
 
-    invoke-direct {v3, v4, v2}, Ljava/lang/RuntimeException;-><init>(Ljava/lang/String;Ljava/lang/Throwable;)V
+    invoke-direct {v5, v6, v4}, Ljava/lang/RuntimeException;-><init>(Ljava/lang/String;Ljava/lang/Throwable;)V
 
-    move-object v2, v3
+    move-object v0, v5
 
     .line 261
+    .end local v4  # "e":Ljava/lang/Exception;
     :goto_21
     invoke-static {}, Lcom/android/server/RescueParty;->getAllUserIds()[I
 
-    move-result-object v3
+    move-result-object v4
 
-    array-length v4, v3
+    array-length v5, v4
 
     :goto_26
-    if-ge v1, v4, :cond_49
+    if-ge v2, v5, :cond_49
 
-    aget v5, v3, v1
+    aget v6, v4, v2
 
     .line 263
+    .local v6, "userId":I
     :try_start_2a
-    invoke-static {p0, v0, p1, v5}, Landroid/provider/Settings$Secure;->resetToDefaultsAsUser(Landroid/content/ContentResolver;Ljava/lang/String;II)V
+    invoke-static {v1, v3, p1, v6}, Landroid/provider/Settings$Secure;->resetToDefaultsAsUser(Landroid/content/ContentResolver;Ljava/lang/String;II)V
     :try_end_2d
     .catch Ljava/lang/Exception; {:try_start_2a .. :try_end_2d} :catch_2e
 
@@ -957,45 +996,48 @@
 
     .line 264
     :catch_2e
-    move-exception v2
+    move-exception v7
 
     .line 265
-    new-instance v6, Ljava/lang/RuntimeException;
+    .local v7, "e":Ljava/lang/Exception;
+    new-instance v8, Ljava/lang/RuntimeException;
 
-    new-instance v7, Ljava/lang/StringBuilder;
+    new-instance v9, Ljava/lang/StringBuilder;
 
-    invoke-direct {v7}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v9}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v8, "Failed to reset secure settings for "
+    const-string v10, "Failed to reset secure settings for "
 
-    invoke-virtual {v7, v8}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v9, v10}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v7, v5}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v9, v6}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v7}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v9}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v5
+    move-result-object v9
 
-    invoke-direct {v6, v5, v2}, Ljava/lang/RuntimeException;-><init>(Ljava/lang/String;Ljava/lang/Throwable;)V
+    invoke-direct {v8, v9, v7}, Ljava/lang/RuntimeException;-><init>(Ljava/lang/String;Ljava/lang/Throwable;)V
 
-    move-object v2, v6
+    move-object v0, v8
 
     .line 261
+    .end local v6  # "userId":I
+    .end local v7  # "e":Ljava/lang/Exception;
     :goto_46
-    add-int/lit8 v1, v1, 0x1
+    add-int/lit8 v2, v2, 0x1
 
     goto :goto_26
 
     .line 268
     :cond_49
-    if-nez v2, :cond_4c
+    if-nez v0, :cond_4c
 
     .line 271
     return-void
 
     .line 269
     :cond_4c
-    throw v2
+    throw v0
 .end method
 
 .method static resetAllThresholds()V
@@ -1011,6 +1053,7 @@
     .line 175
     const/4 v0, 0x0
 
+    .local v0, "i":I
     :goto_6
     sget-object v1, Lcom/android/server/RescueParty;->sApps:Landroid/util/SparseArray;
 
@@ -1034,14 +1077,17 @@
     check-cast v1, Lcom/android/server/RescueParty$Threshold;
 
     .line 177
+    .local v1, "appThreshold":Lcom/android/server/RescueParty$Threshold;
     invoke-virtual {v1}, Lcom/android/server/RescueParty$Threshold;->reset()V
 
     .line 175
+    .end local v1  # "appThreshold":Lcom/android/server/RescueParty$Threshold;
     add-int/lit8 v0, v0, 0x1
 
     goto :goto_6
 
     .line 179
+    .end local v0  # "i":I
     :cond_20
     return-void
 .end method

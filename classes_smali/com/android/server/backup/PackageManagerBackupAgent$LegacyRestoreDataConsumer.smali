@@ -35,6 +35,8 @@
 
 .method synthetic constructor <init>(Lcom/android/server/backup/PackageManagerBackupAgent;Lcom/android/server/backup/PackageManagerBackupAgent$1;)V
     .registers 3
+    .param p1, "x0"  # Lcom/android/server/backup/PackageManagerBackupAgent;
+    .param p2, "x1"  # Lcom/android/server/backup/PackageManagerBackupAgent$1;
 
     .line 670
     invoke-direct {p0, p1}, Lcom/android/server/backup/PackageManagerBackupAgent$LegacyRestoreDataConsumer;-><init>(Lcom/android/server/backup/PackageManagerBackupAgent;)V
@@ -45,7 +47,8 @@
 
 # virtual methods
 .method public consumeRestoreData(Landroid/app/backup/BackupDataInput;)V
-    .registers 10
+    .registers 19
+    .param p1, "data"  # Landroid/app/backup/BackupDataInput;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Ljava/io/IOException;
@@ -53,247 +56,309 @@
     .end annotation
 
     .line 673
-    new-instance v0, Ljava/util/ArrayList;
+    move-object/from16 v0, p0
 
-    invoke-direct {v0}, Ljava/util/ArrayList;-><init>()V
+    new-instance v1, Ljava/util/ArrayList;
+
+    invoke-direct {v1}, Ljava/util/ArrayList;-><init>()V
 
     .line 674
-    new-instance v1, Ljava/util/HashMap;
+    .local v1, "restoredApps":Ljava/util/List;, "Ljava/util/List<Landroid/content/pm/ApplicationInfo;>;"
+    new-instance v2, Ljava/util/HashMap;
 
-    invoke-direct {v1}, Ljava/util/HashMap;-><init>()V
+    invoke-direct {v2}, Ljava/util/HashMap;-><init>()V
 
     .line 675
-    nop
+    .local v2, "sigMap":Ljava/util/HashMap;, "Ljava/util/HashMap<Ljava/lang/String;Lcom/android/server/backup/PackageManagerBackupAgent$Metadata;>;"
+    const/4 v3, -0x1
 
     .line 681
-    :goto_b
-    invoke-virtual {p1}, Landroid/app/backup/BackupDataInput;->getKey()Ljava/lang/String;
+    .local v3, "storedSystemVersion":I
+    :goto_d
+    invoke-virtual/range {p1 .. p1}, Landroid/app/backup/BackupDataInput;->getKey()Ljava/lang/String;
 
-    move-result-object v2
+    move-result-object v4
 
     .line 682
-    invoke-virtual {p1}, Landroid/app/backup/BackupDataInput;->getDataSize()I
+    .local v4, "key":Ljava/lang/String;
+    invoke-virtual/range {p1 .. p1}, Landroid/app/backup/BackupDataInput;->getDataSize()I
 
-    move-result v3
+    move-result v5
 
     .line 687
-    new-array v4, v3, [B
+    .local v5, "dataSize":I
+    new-array v6, v5, [B
 
     .line 688
-    const/4 v5, 0x0
+    .local v6, "inputBytes":[B
+    const/4 v7, 0x0
 
-    invoke-virtual {p1, v4, v5, v3}, Landroid/app/backup/BackupDataInput;->readEntityData([BII)I
+    move-object/from16 v8, p1
+
+    invoke-virtual {v8, v6, v7, v5}, Landroid/app/backup/BackupDataInput;->readEntityData([BII)I
 
     .line 689
-    new-instance v3, Ljava/io/ByteArrayInputStream;
+    new-instance v7, Ljava/io/ByteArrayInputStream;
 
-    invoke-direct {v3, v4}, Ljava/io/ByteArrayInputStream;-><init>([B)V
+    invoke-direct {v7, v6}, Ljava/io/ByteArrayInputStream;-><init>([B)V
 
     .line 690
-    new-instance v4, Ljava/io/DataInputStream;
+    .local v7, "inputBuffer":Ljava/io/ByteArrayInputStream;
+    new-instance v9, Ljava/io/DataInputStream;
 
-    invoke-direct {v4, v3}, Ljava/io/DataInputStream;-><init>(Ljava/io/InputStream;)V
+    invoke-direct {v9, v7}, Ljava/io/DataInputStream;-><init>(Ljava/io/InputStream;)V
 
     .line 692
-    const-string v3, "@meta@"
+    .local v9, "inputBufferStream":Ljava/io/DataInputStream;
+    const-string v10, "@meta@"
 
-    invoke-virtual {v2, v3}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v4, v10}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result v3
+    move-result v10
 
-    if-eqz v3, :cond_44
+    if-eqz v10, :cond_4a
 
     .line 693
-    invoke-virtual {v4}, Ljava/io/DataInputStream;->readInt()I
+    invoke-virtual {v9}, Ljava/io/DataInputStream;->readInt()I
 
-    move-result v2
+    move-result v10
 
     .line 695
-    iget-object v3, p0, Lcom/android/server/backup/PackageManagerBackupAgent$LegacyRestoreDataConsumer;->this$0:Lcom/android/server/backup/PackageManagerBackupAgent;
+    .local v10, "storedSdkVersion":I
+    iget-object v11, v0, Lcom/android/server/backup/PackageManagerBackupAgent$LegacyRestoreDataConsumer;->this$0:Lcom/android/server/backup/PackageManagerBackupAgent;
 
-    invoke-static {v3, v2}, Lcom/android/server/backup/PackageManagerBackupAgent;->access$202(Lcom/android/server/backup/PackageManagerBackupAgent;I)I
+    invoke-static {v11, v10}, Lcom/android/server/backup/PackageManagerBackupAgent;->access$202(Lcom/android/server/backup/PackageManagerBackupAgent;I)I
 
     .line 696
-    iget-object v2, p0, Lcom/android/server/backup/PackageManagerBackupAgent$LegacyRestoreDataConsumer;->this$0:Lcom/android/server/backup/PackageManagerBackupAgent;
+    iget-object v11, v0, Lcom/android/server/backup/PackageManagerBackupAgent$LegacyRestoreDataConsumer;->this$0:Lcom/android/server/backup/PackageManagerBackupAgent;
 
-    invoke-virtual {v4}, Ljava/io/DataInputStream;->readUTF()Ljava/lang/String;
+    invoke-virtual {v9}, Ljava/io/DataInputStream;->readUTF()Ljava/lang/String;
 
-    move-result-object v3
+    move-result-object v12
 
-    invoke-static {v2, v3}, Lcom/android/server/backup/PackageManagerBackupAgent;->access$302(Lcom/android/server/backup/PackageManagerBackupAgent;Ljava/lang/String;)Ljava/lang/String;
+    invoke-static {v11, v12}, Lcom/android/server/backup/PackageManagerBackupAgent;->access$302(Lcom/android/server/backup/PackageManagerBackupAgent;Ljava/lang/String;)Ljava/lang/String;
 
     .line 697
-    iget-object v2, p0, Lcom/android/server/backup/PackageManagerBackupAgent$LegacyRestoreDataConsumer;->this$0:Lcom/android/server/backup/PackageManagerBackupAgent;
+    iget-object v11, v0, Lcom/android/server/backup/PackageManagerBackupAgent$LegacyRestoreDataConsumer;->this$0:Lcom/android/server/backup/PackageManagerBackupAgent;
 
-    const/4 v3, 0x1
+    const/4 v12, 0x1
 
-    invoke-static {v2, v3}, Lcom/android/server/backup/PackageManagerBackupAgent;->access$402(Lcom/android/server/backup/PackageManagerBackupAgent;Z)Z
+    invoke-static {v11, v12}, Lcom/android/server/backup/PackageManagerBackupAgent;->access$402(Lcom/android/server/backup/PackageManagerBackupAgent;Z)Z
 
     .line 704
-    goto :goto_a4
+    .end local v10  # "storedSdkVersion":I
+    move-object/from16 v16, v1
 
-    :cond_44
-    const-string v3, "@home@"
+    goto :goto_b0
 
-    invoke-virtual {v2, v3}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    :cond_4a
+    const-string v10, "@home@"
 
-    move-result v3
+    invoke-virtual {v4, v10}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    if-eqz v3, :cond_75
+    move-result v10
+
+    if-eqz v10, :cond_7d
 
     .line 705
-    invoke-virtual {v4}, Ljava/io/DataInputStream;->readUTF()Ljava/lang/String;
+    invoke-virtual {v9}, Ljava/io/DataInputStream;->readUTF()Ljava/lang/String;
 
-    move-result-object v2
+    move-result-object v10
 
     .line 706
-    iget-object v3, p0, Lcom/android/server/backup/PackageManagerBackupAgent$LegacyRestoreDataConsumer;->this$0:Lcom/android/server/backup/PackageManagerBackupAgent;
+    .local v10, "cn":Ljava/lang/String;
+    iget-object v11, v0, Lcom/android/server/backup/PackageManagerBackupAgent$LegacyRestoreDataConsumer;->this$0:Lcom/android/server/backup/PackageManagerBackupAgent;
 
-    invoke-static {v2}, Landroid/content/ComponentName;->unflattenFromString(Ljava/lang/String;)Landroid/content/ComponentName;
+    invoke-static {v10}, Landroid/content/ComponentName;->unflattenFromString(Ljava/lang/String;)Landroid/content/ComponentName;
 
-    move-result-object v2
+    move-result-object v12
 
-    invoke-static {v3, v2}, Lcom/android/server/backup/PackageManagerBackupAgent;->access$502(Lcom/android/server/backup/PackageManagerBackupAgent;Landroid/content/ComponentName;)Landroid/content/ComponentName;
+    invoke-static {v11, v12}, Lcom/android/server/backup/PackageManagerBackupAgent;->access$502(Lcom/android/server/backup/PackageManagerBackupAgent;Landroid/content/ComponentName;)Landroid/content/ComponentName;
 
     .line 707
-    iget-object v2, p0, Lcom/android/server/backup/PackageManagerBackupAgent$LegacyRestoreDataConsumer;->this$0:Lcom/android/server/backup/PackageManagerBackupAgent;
+    iget-object v11, v0, Lcom/android/server/backup/PackageManagerBackupAgent$LegacyRestoreDataConsumer;->this$0:Lcom/android/server/backup/PackageManagerBackupAgent;
 
-    invoke-virtual {v4}, Ljava/io/DataInputStream;->readLong()J
+    invoke-virtual {v9}, Ljava/io/DataInputStream;->readLong()J
 
-    move-result-wide v5
+    move-result-wide v12
 
-    invoke-static {v2, v5, v6}, Lcom/android/server/backup/PackageManagerBackupAgent;->access$602(Lcom/android/server/backup/PackageManagerBackupAgent;J)J
+    invoke-static {v11, v12, v13}, Lcom/android/server/backup/PackageManagerBackupAgent;->access$602(Lcom/android/server/backup/PackageManagerBackupAgent;J)J
 
     .line 708
-    iget-object v2, p0, Lcom/android/server/backup/PackageManagerBackupAgent$LegacyRestoreDataConsumer;->this$0:Lcom/android/server/backup/PackageManagerBackupAgent;
+    iget-object v11, v0, Lcom/android/server/backup/PackageManagerBackupAgent$LegacyRestoreDataConsumer;->this$0:Lcom/android/server/backup/PackageManagerBackupAgent;
 
-    invoke-virtual {v4}, Ljava/io/DataInputStream;->readUTF()Ljava/lang/String;
+    invoke-virtual {v9}, Ljava/io/DataInputStream;->readUTF()Ljava/lang/String;
 
-    move-result-object v3
+    move-result-object v12
 
-    invoke-static {v2, v3}, Lcom/android/server/backup/PackageManagerBackupAgent;->access$702(Lcom/android/server/backup/PackageManagerBackupAgent;Ljava/lang/String;)Ljava/lang/String;
+    invoke-static {v11, v12}, Lcom/android/server/backup/PackageManagerBackupAgent;->access$702(Lcom/android/server/backup/PackageManagerBackupAgent;Ljava/lang/String;)Ljava/lang/String;
 
     .line 709
-    iget-object v2, p0, Lcom/android/server/backup/PackageManagerBackupAgent$LegacyRestoreDataConsumer;->this$0:Lcom/android/server/backup/PackageManagerBackupAgent;
+    iget-object v11, v0, Lcom/android/server/backup/PackageManagerBackupAgent$LegacyRestoreDataConsumer;->this$0:Lcom/android/server/backup/PackageManagerBackupAgent;
 
-    invoke-static {v4}, Lcom/android/server/backup/PackageManagerBackupAgent;->access$900(Ljava/io/DataInputStream;)Ljava/util/ArrayList;
+    invoke-static {v9}, Lcom/android/server/backup/PackageManagerBackupAgent;->access$900(Ljava/io/DataInputStream;)Ljava/util/ArrayList;
 
-    move-result-object v3
+    move-result-object v12
 
-    invoke-static {v2, v3}, Lcom/android/server/backup/PackageManagerBackupAgent;->access$802(Lcom/android/server/backup/PackageManagerBackupAgent;Ljava/util/ArrayList;)Ljava/util/ArrayList;
+    invoke-static {v11, v12}, Lcom/android/server/backup/PackageManagerBackupAgent;->access$802(Lcom/android/server/backup/PackageManagerBackupAgent;Ljava/util/ArrayList;)Ljava/util/ArrayList;
 
     .line 716
-    goto :goto_a4
+    .end local v10  # "cn":Ljava/lang/String;
+    move-object/from16 v16, v1
+
+    goto :goto_b0
 
     .line 718
-    :cond_75
-    invoke-virtual {v4}, Ljava/io/DataInputStream;->readInt()I
+    :cond_7d
+    invoke-virtual {v9}, Ljava/io/DataInputStream;->readInt()I
 
-    move-result v3
+    move-result v10
 
     .line 720
-    const/high16 v5, -0x80000000
+    .local v10, "versionCodeInt":I
+    const/high16 v11, -0x80000000
 
-    if-ne v3, v5, :cond_82
+    if-ne v10, v11, :cond_8a
 
     .line 721
-    invoke-virtual {v4}, Ljava/io/DataInputStream;->readLong()J
+    invoke-virtual {v9}, Ljava/io/DataInputStream;->readLong()J
 
-    move-result-wide v5
+    move-result-wide v11
 
-    goto :goto_83
+    .local v11, "versionCode":J
+    goto :goto_8b
 
     .line 723
-    :cond_82
-    int-to-long v5, v3
+    .end local v11  # "versionCode":J
+    :cond_8a
+    int-to-long v11, v10
 
     .line 725
-    :goto_83
-    invoke-static {v4}, Lcom/android/server/backup/PackageManagerBackupAgent;->access$900(Ljava/io/DataInputStream;)Ljava/util/ArrayList;
+    .restart local v11  # "versionCode":J
+    :goto_8b
+    invoke-static {v9}, Lcom/android/server/backup/PackageManagerBackupAgent;->access$900(Ljava/io/DataInputStream;)Ljava/util/ArrayList;
 
-    move-result-object v3
+    move-result-object v13
 
     .line 732
-    if-eqz v3, :cond_b3
+    .local v13, "sigs":Ljava/util/ArrayList;, "Ljava/util/ArrayList<[B>;"
+    if-eqz v13, :cond_c1
 
-    invoke-virtual {v3}, Ljava/util/ArrayList;->size()I
+    invoke-virtual {v13}, Ljava/util/ArrayList;->size()I
 
-    move-result v4
+    move-result v14
 
-    if-nez v4, :cond_90
+    if-nez v14, :cond_9a
 
-    goto :goto_b3
+    move-object/from16 v16, v1
+
+    goto :goto_c3
 
     .line 738
-    :cond_90
-    new-instance v4, Landroid/content/pm/ApplicationInfo;
+    :cond_9a
+    new-instance v14, Landroid/content/pm/ApplicationInfo;
 
-    invoke-direct {v4}, Landroid/content/pm/ApplicationInfo;-><init>()V
+    invoke-direct {v14}, Landroid/content/pm/ApplicationInfo;-><init>()V
 
     .line 739
-    iput-object v2, v4, Landroid/content/pm/ApplicationInfo;->packageName:Ljava/lang/String;
+    .local v14, "app":Landroid/content/pm/ApplicationInfo;
+    iput-object v4, v14, Landroid/content/pm/ApplicationInfo;->packageName:Ljava/lang/String;
 
     .line 740
-    invoke-interface {v0, v4}, Ljava/util/List;->add(Ljava/lang/Object;)Z
+    invoke-interface {v1, v14}, Ljava/util/List;->add(Ljava/lang/Object;)Z
 
     .line 741
-    new-instance v4, Lcom/android/server/backup/PackageManagerBackupAgent$Metadata;
+    new-instance v15, Lcom/android/server/backup/PackageManagerBackupAgent$Metadata;
 
-    iget-object v7, p0, Lcom/android/server/backup/PackageManagerBackupAgent$LegacyRestoreDataConsumer;->this$0:Lcom/android/server/backup/PackageManagerBackupAgent;
+    move-object/from16 v16, v1
 
-    invoke-direct {v4, v7, v5, v6, v3}, Lcom/android/server/backup/PackageManagerBackupAgent$Metadata;-><init>(Lcom/android/server/backup/PackageManagerBackupAgent;JLjava/util/ArrayList;)V
+    .end local v1  # "restoredApps":Ljava/util/List;, "Ljava/util/List<Landroid/content/pm/ApplicationInfo;>;"
+    .local v16, "restoredApps":Ljava/util/List;, "Ljava/util/List<Landroid/content/pm/ApplicationInfo;>;"
+    iget-object v1, v0, Lcom/android/server/backup/PackageManagerBackupAgent$LegacyRestoreDataConsumer;->this$0:Lcom/android/server/backup/PackageManagerBackupAgent;
 
-    invoke-virtual {v1, v2, v4}, Ljava/util/HashMap;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+    invoke-direct {v15, v1, v11, v12, v13}, Lcom/android/server/backup/PackageManagerBackupAgent$Metadata;-><init>(Lcom/android/server/backup/PackageManagerBackupAgent;JLjava/util/ArrayList;)V
+
+    invoke-virtual {v2, v4, v15}, Ljava/util/HashMap;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
 
     .line 744
-    :goto_a4
-    invoke-virtual {p1}, Landroid/app/backup/BackupDataInput;->readNextHeader()Z
+    .end local v10  # "versionCodeInt":I
+    .end local v11  # "versionCode":J
+    .end local v13  # "sigs":Ljava/util/ArrayList;, "Ljava/util/ArrayList<[B>;"
+    .end local v14  # "app":Landroid/content/pm/ApplicationInfo;
+    :goto_b0
+    invoke-virtual/range {p1 .. p1}, Landroid/app/backup/BackupDataInput;->readNextHeader()Z
 
-    move-result v2
+    move-result v1
 
     .line 745
-    if-nez v2, :cond_b1
+    .local v1, "readNextHeader":Z
+    if-nez v1, :cond_bd
 
     .line 748
     nop
 
     .line 753
-    iget-object p1, p0, Lcom/android/server/backup/PackageManagerBackupAgent$LegacyRestoreDataConsumer;->this$0:Lcom/android/server/backup/PackageManagerBackupAgent;
+    .end local v1  # "readNextHeader":Z
+    .end local v4  # "key":Ljava/lang/String;
+    .end local v5  # "dataSize":I
+    .end local v6  # "inputBytes":[B
+    .end local v7  # "inputBuffer":Ljava/io/ByteArrayInputStream;
+    .end local v9  # "inputBufferStream":Ljava/io/DataInputStream;
+    iget-object v1, v0, Lcom/android/server/backup/PackageManagerBackupAgent$LegacyRestoreDataConsumer;->this$0:Lcom/android/server/backup/PackageManagerBackupAgent;
 
-    invoke-static {p1, v1}, Lcom/android/server/backup/PackageManagerBackupAgent;->access$1002(Lcom/android/server/backup/PackageManagerBackupAgent;Ljava/util/HashMap;)Ljava/util/HashMap;
+    invoke-static {v1, v2}, Lcom/android/server/backup/PackageManagerBackupAgent;->access$1002(Lcom/android/server/backup/PackageManagerBackupAgent;Ljava/util/HashMap;)Ljava/util/HashMap;
 
     .line 754
     return-void
 
     .line 750
-    :cond_b1
-    goto/16 :goto_b
+    :cond_bd
+    move-object/from16 v1, v16
+
+    goto/16 :goto_d
+
+    .line 732
+    .end local v16  # "restoredApps":Ljava/util/List;, "Ljava/util/List<Landroid/content/pm/ApplicationInfo;>;"
+    .local v1, "restoredApps":Ljava/util/List;, "Ljava/util/List<Landroid/content/pm/ApplicationInfo;>;"
+    .restart local v4  # "key":Ljava/lang/String;
+    .restart local v5  # "dataSize":I
+    .restart local v6  # "inputBytes":[B
+    .restart local v7  # "inputBuffer":Ljava/io/ByteArrayInputStream;
+    .restart local v9  # "inputBufferStream":Ljava/io/DataInputStream;
+    .restart local v10  # "versionCodeInt":I
+    .restart local v11  # "versionCode":J
+    .restart local v13  # "sigs":Ljava/util/ArrayList;, "Ljava/util/ArrayList<[B>;"
+    :cond_c1
+    move-object/from16 v16, v1
 
     .line 733
-    :cond_b3
-    :goto_b3
-    new-instance v3, Ljava/lang/StringBuilder;
+    .end local v1  # "restoredApps":Ljava/util/List;, "Ljava/util/List<Landroid/content/pm/ApplicationInfo;>;"
+    .restart local v16  # "restoredApps":Ljava/util/List;, "Ljava/util/List<Landroid/content/pm/ApplicationInfo;>;"
+    :goto_c3
+    new-instance v1, Ljava/lang/StringBuilder;
 
-    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v4, "Not restoring package "
+    const-string v14, "Not restoring package "
 
-    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v14}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v3, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string v2, " since it appears to have no signatures."
+    const-string v14, " since it appears to have no signatures."
 
-    invoke-virtual {v3, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v14}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v2
+    move-result-object v1
 
-    const-string v3, "PMBA"
+    const-string v14, "PMBA"
 
-    invoke-static {v3, v2}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v14, v1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 735
-    goto/16 :goto_b
+    move-object/from16 v1, v16
+
+    goto/16 :goto_d
 .end method

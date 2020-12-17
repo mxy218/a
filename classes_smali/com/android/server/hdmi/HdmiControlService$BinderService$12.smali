@@ -24,6 +24,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/hdmi/HdmiControlService$BinderService;)V
     .registers 2
+    .param p1, "this$1"  # Lcom/android/server/hdmi/HdmiControlService$BinderService;
 
     .line 1823
     iput-object p1, p0, Lcom/android/server/hdmi/HdmiControlService$BinderService$12;->this$1:Lcom/android/server/hdmi/HdmiControlService$BinderService;
@@ -36,7 +37,7 @@
 
 # virtual methods
 .method public run()V
-    .registers 3
+    .registers 4
 
     .line 1826
     iget-object v0, p0, Lcom/android/server/hdmi/HdmiControlService$BinderService$12;->this$1:Lcom/android/server/hdmi/HdmiControlService$BinderService;
@@ -48,14 +49,15 @@
     move-result-object v0
 
     .line 1827
+    .local v0, "tv":Lcom/android/server/hdmi/HdmiCecLocalDeviceTv;
     if-nez v0, :cond_12
 
     .line 1828
-    const-string v0, "HdmiControlService"
+    const-string v1, "HdmiControlService"
 
-    const-string v1, "Local tv device not available to change arc mode."
+    const-string v2, "Local tv device not available to change arc mode."
 
-    invoke-static {v0, v1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v2}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 1829
     return-void

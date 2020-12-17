@@ -24,8 +24,9 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/clipboard/ClipboardService;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/clipboard/ClipboardService;
 
-    .line 197
+    .line 200
     iput-object p1, p0, Lcom/android/server/clipboard/ClipboardService$1;->this$0:Lcom/android/server/clipboard/ClipboardService;
 
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -36,9 +37,10 @@
 
 # virtual methods
 .method public onHostClipboardUpdated(Ljava/lang/String;)V
-    .registers 6
+    .registers 7
+    .param p1, "contents"  # Ljava/lang/String;
 
-    .line 200
+    .line 203
     new-instance v0, Landroid/content/ClipData;
 
     const-string/jumbo v1, "text/plain"
@@ -51,48 +53,49 @@
 
     invoke-direct {v2, p1}, Landroid/content/ClipData$Item;-><init>(Ljava/lang/CharSequence;)V
 
-    const-string p1, "host clipboard"
+    const-string v3, "host clipboard"
 
-    invoke-direct {v0, p1, v1, v2}, Landroid/content/ClipData;-><init>(Ljava/lang/CharSequence;[Ljava/lang/String;Landroid/content/ClipData$Item;)V
+    invoke-direct {v0, v3, v1, v2}, Landroid/content/ClipData;-><init>(Ljava/lang/CharSequence;[Ljava/lang/String;Landroid/content/ClipData$Item;)V
 
-    .line 204
-    iget-object p1, p0, Lcom/android/server/clipboard/ClipboardService$1;->this$0:Lcom/android/server/clipboard/ClipboardService;
-
-    invoke-static {p1}, Lcom/android/server/clipboard/ClipboardService;->access$000(Lcom/android/server/clipboard/ClipboardService;)Landroid/util/SparseArray;
-
-    move-result-object p1
-
-    monitor-enter p1
-
-    .line 205
-    :try_start_1a
+    .line 207
+    .local v0, "clip":Landroid/content/ClipData;
     iget-object v1, p0, Lcom/android/server/clipboard/ClipboardService$1;->this$0:Lcom/android/server/clipboard/ClipboardService;
 
-    iget-object v2, p0, Lcom/android/server/clipboard/ClipboardService$1;->this$0:Lcom/android/server/clipboard/ClipboardService;
+    invoke-static {v1}, Lcom/android/server/clipboard/ClipboardService;->access$000(Lcom/android/server/clipboard/ClipboardService;)Landroid/util/SparseArray;
 
-    const/4 v3, 0x0
+    move-result-object v1
 
-    invoke-static {v2, v3}, Lcom/android/server/clipboard/ClipboardService;->access$100(Lcom/android/server/clipboard/ClipboardService;I)Lcom/android/server/clipboard/ClipboardService$PerUserClipboard;
-
-    move-result-object v2
-
-    const/16 v3, 0x3e8
-
-    invoke-virtual {v1, v2, v0, v3}, Lcom/android/server/clipboard/ClipboardService;->setPrimaryClipInternal(Lcom/android/server/clipboard/ClipboardService$PerUserClipboard;Landroid/content/ClipData;I)V
-
-    .line 207
-    monitor-exit p1
+    monitor-enter v1
 
     .line 208
+    :try_start_1a
+    iget-object v2, p0, Lcom/android/server/clipboard/ClipboardService$1;->this$0:Lcom/android/server/clipboard/ClipboardService;
+
+    iget-object v3, p0, Lcom/android/server/clipboard/ClipboardService$1;->this$0:Lcom/android/server/clipboard/ClipboardService;
+
+    const/4 v4, 0x0
+
+    invoke-static {v3, v4}, Lcom/android/server/clipboard/ClipboardService;->access$100(Lcom/android/server/clipboard/ClipboardService;I)Lcom/android/server/clipboard/ClipboardService$PerUserClipboard;
+
+    move-result-object v3
+
+    const/16 v4, 0x3e8
+
+    invoke-virtual {v2, v3, v0, v4}, Lcom/android/server/clipboard/ClipboardService;->setPrimaryClipInternal(Lcom/android/server/clipboard/ClipboardService$PerUserClipboard;Landroid/content/ClipData;I)V
+
+    .line 210
+    monitor-exit v1
+
+    .line 211
     return-void
 
-    .line 207
+    .line 210
     :catchall_2a
-    move-exception v0
+    move-exception v2
 
-    monitor-exit p1
+    monitor-exit v1
     :try_end_2c
     .catchall {:try_start_1a .. :try_end_2c} :catchall_2a
 
-    throw v0
+    throw v2
 .end method

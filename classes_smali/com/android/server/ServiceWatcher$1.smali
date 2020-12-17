@@ -21,8 +21,9 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/ServiceWatcher;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/ServiceWatcher;
 
-    .line 188
+    .line 209
     iput-object p1, p0, Lcom/android/server/ServiceWatcher$1;->this$0:Lcom/android/server/ServiceWatcher;
 
     invoke-direct {p0}, Lcom/android/internal/content/PackageMonitor;-><init>()V
@@ -33,29 +34,11 @@
 
 # virtual methods
 .method public onPackageAdded(Ljava/lang/String;I)V
-    .registers 4
+    .registers 5
+    .param p1, "packageName"  # Ljava/lang/String;
+    .param p2, "uid"  # I
 
-    .line 196
-    iget-object p2, p0, Lcom/android/server/ServiceWatcher$1;->this$0:Lcom/android/server/ServiceWatcher;
-
-    invoke-virtual {p2}, Lcom/android/server/ServiceWatcher;->getCurrentPackageName()Ljava/lang/String;
-
-    move-result-object v0
-
-    invoke-static {p1, v0}, Ljava/util/Objects;->equals(Ljava/lang/Object;Ljava/lang/Object;)Z
-
-    move-result p1
-
-    invoke-static {p2, p1}, Lcom/android/server/ServiceWatcher;->access$000(Lcom/android/server/ServiceWatcher;Z)V
-
-    .line 197
-    return-void
-.end method
-
-.method public onPackageChanged(Ljava/lang/String;I[Ljava/lang/String;)Z
-    .registers 6
-
-    .line 206
+    .line 217
     iget-object v0, p0, Lcom/android/server/ServiceWatcher$1;->this$0:Lcom/android/server/ServiceWatcher;
 
     invoke-virtual {v0}, Lcom/android/server/ServiceWatcher;->getCurrentPackageName()Ljava/lang/String;
@@ -68,50 +51,77 @@
 
     invoke-static {v0, v1}, Lcom/android/server/ServiceWatcher;->access$000(Lcom/android/server/ServiceWatcher;Z)V
 
-    .line 207
+    .line 218
+    return-void
+.end method
+
+.method public onPackageChanged(Ljava/lang/String;I[Ljava/lang/String;)Z
+    .registers 6
+    .param p1, "packageName"  # Ljava/lang/String;
+    .param p2, "uid"  # I
+    .param p3, "components"  # [Ljava/lang/String;
+
+    .line 227
+    iget-object v0, p0, Lcom/android/server/ServiceWatcher$1;->this$0:Lcom/android/server/ServiceWatcher;
+
+    invoke-virtual {v0}, Lcom/android/server/ServiceWatcher;->getCurrentPackageName()Ljava/lang/String;
+
+    move-result-object v1
+
+    invoke-static {p1, v1}, Ljava/util/Objects;->equals(Ljava/lang/Object;Ljava/lang/Object;)Z
+
+    move-result v1
+
+    invoke-static {v0, v1}, Lcom/android/server/ServiceWatcher;->access$000(Lcom/android/server/ServiceWatcher;Z)V
+
+    .line 228
     invoke-super {p0, p1, p2, p3}, Lcom/android/internal/content/PackageMonitor;->onPackageChanged(Ljava/lang/String;I[Ljava/lang/String;)Z
 
-    move-result p1
+    move-result v0
 
-    return p1
+    return v0
 .end method
 
 .method public onPackageRemoved(Ljava/lang/String;I)V
-    .registers 4
+    .registers 5
+    .param p1, "packageName"  # Ljava/lang/String;
+    .param p2, "uid"  # I
 
-    .line 201
-    iget-object p2, p0, Lcom/android/server/ServiceWatcher$1;->this$0:Lcom/android/server/ServiceWatcher;
+    .line 222
+    iget-object v0, p0, Lcom/android/server/ServiceWatcher$1;->this$0:Lcom/android/server/ServiceWatcher;
 
-    invoke-virtual {p2}, Lcom/android/server/ServiceWatcher;->getCurrentPackageName()Ljava/lang/String;
+    invoke-virtual {v0}, Lcom/android/server/ServiceWatcher;->getCurrentPackageName()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v1
 
-    invoke-static {p1, v0}, Ljava/util/Objects;->equals(Ljava/lang/Object;Ljava/lang/Object;)Z
+    invoke-static {p1, v1}, Ljava/util/Objects;->equals(Ljava/lang/Object;Ljava/lang/Object;)Z
 
-    move-result p1
+    move-result v1
 
-    invoke-static {p2, p1}, Lcom/android/server/ServiceWatcher;->access$000(Lcom/android/server/ServiceWatcher;Z)V
+    invoke-static {v0, v1}, Lcom/android/server/ServiceWatcher;->access$000(Lcom/android/server/ServiceWatcher;Z)V
 
-    .line 202
+    .line 223
     return-void
 .end method
 
 .method public onPackageUpdateFinished(Ljava/lang/String;I)V
-    .registers 4
+    .registers 5
+    .param p1, "packageName"  # Ljava/lang/String;
+    .param p2, "uid"  # I
 
-    .line 191
-    iget-object p2, p0, Lcom/android/server/ServiceWatcher$1;->this$0:Lcom/android/server/ServiceWatcher;
+    .line 212
+    iget-object v0, p0, Lcom/android/server/ServiceWatcher$1;->this$0:Lcom/android/server/ServiceWatcher;
 
-    invoke-virtual {p2}, Lcom/android/server/ServiceWatcher;->getCurrentPackageName()Ljava/lang/String;
+    invoke-virtual {v0}, Lcom/android/server/ServiceWatcher;->getCurrentPackageName()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v1
 
-    invoke-static {p1, v0}, Ljava/util/Objects;->equals(Ljava/lang/Object;Ljava/lang/Object;)Z
+    invoke-static {p1, v1}, Ljava/util/Objects;->equals(Ljava/lang/Object;Ljava/lang/Object;)Z
 
-    move-result p1
+    move-result v1
 
-    invoke-static {p2, p1}, Lcom/android/server/ServiceWatcher;->access$000(Lcom/android/server/ServiceWatcher;Z)V
+    invoke-static {v0, v1}, Lcom/android/server/ServiceWatcher;->access$000(Lcom/android/server/ServiceWatcher;Z)V
 
-    .line 192
+    .line 213
     return-void
 .end method

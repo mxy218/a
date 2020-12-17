@@ -71,6 +71,8 @@
 # direct methods
 .method constructor <init>(Landroid/content/Context;Ljava/util/List;ILjava/util/function/UnaryOperator;Ljava/util/function/UnaryOperator;)V
     .registers 6
+    .param p1, "context"  # Landroid/content/Context;
+    .param p3, "networkType"  # I
     .annotation build Lcom/android/internal/annotations/VisibleForTesting;
     .end annotation
 
@@ -93,6 +95,9 @@
     .end annotation
 
     .line 523
+    .local p2, "scoredNetworkList":Ljava/util/List;, "Ljava/util/List<Landroid/net/ScoredNetwork;>;"
+    .local p4, "currentNetworkFilter":Ljava/util/function/UnaryOperator;, "Ljava/util/function/UnaryOperator<Ljava/util/List<Landroid/net/ScoredNetwork;>;>;"
+    .local p5, "scanResultsFilter":Ljava/util/function/UnaryOperator;, "Ljava/util/function/UnaryOperator<Ljava/util/List<Landroid/net/ScoredNetwork;>;>;"
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
     .line 524
@@ -116,6 +121,8 @@
 
 .method static create(Landroid/content/Context;Ljava/util/List;I)Lcom/android/server/NetworkScoreService$FilteringCacheUpdatingConsumer;
     .registers 10
+    .param p0, "context"  # Landroid/content/Context;
+    .param p2, "networkType"  # I
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(",
@@ -128,6 +135,7 @@
     .end annotation
 
     .line 515
+    .local p1, "scoredNetworkList":Ljava/util/List;, "Ljava/util/List<Landroid/net/ScoredNetwork;>;"
     new-instance v6, Lcom/android/server/NetworkScoreService$FilteringCacheUpdatingConsumer;
 
     const/4 v4, 0x0
@@ -148,7 +156,8 @@
 .end method
 
 .method private filterScores(Ljava/util/List;I)Ljava/util/List;
-    .registers 5
+    .registers 6
+    .param p2, "filterType"  # I
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(",
@@ -162,6 +171,7 @@
     .end annotation
 
     .line 556
+    .local p1, "scoredNetworkList":Ljava/util/List;, "Ljava/util/List<Landroid/net/ScoredNetwork;>;"
     if-eqz p2, :cond_55
 
     const/4 v0, 0x1
@@ -185,76 +195,76 @@
 
     invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p2
+    move-result-object v0
 
-    const-string v0, "NetworkScoreService"
+    const-string v1, "NetworkScoreService"
 
-    invoke-static {v0, p2}, Landroid/util/Log;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v0}, Landroid/util/Log;->w(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 576
     return-object p1
 
     .line 568
     :cond_1f
-    iget-object p2, p0, Lcom/android/server/NetworkScoreService$FilteringCacheUpdatingConsumer;->mScanResultsFilter:Ljava/util/function/UnaryOperator;
+    iget-object v0, p0, Lcom/android/server/NetworkScoreService$FilteringCacheUpdatingConsumer;->mScanResultsFilter:Ljava/util/function/UnaryOperator;
 
-    if-nez p2, :cond_31
+    if-nez v0, :cond_31
 
     .line 569
-    new-instance p2, Lcom/android/server/NetworkScoreService$ScanResultsScoreCacheFilter;
+    new-instance v0, Lcom/android/server/NetworkScoreService$ScanResultsScoreCacheFilter;
 
-    new-instance v0, Lcom/android/server/NetworkScoreService$ScanResultsSupplier;
+    new-instance v1, Lcom/android/server/NetworkScoreService$ScanResultsSupplier;
 
-    iget-object v1, p0, Lcom/android/server/NetworkScoreService$FilteringCacheUpdatingConsumer;->mContext:Landroid/content/Context;
+    iget-object v2, p0, Lcom/android/server/NetworkScoreService$FilteringCacheUpdatingConsumer;->mContext:Landroid/content/Context;
 
-    invoke-direct {v0, v1}, Lcom/android/server/NetworkScoreService$ScanResultsSupplier;-><init>(Landroid/content/Context;)V
+    invoke-direct {v1, v2}, Lcom/android/server/NetworkScoreService$ScanResultsSupplier;-><init>(Landroid/content/Context;)V
 
-    invoke-direct {p2, v0}, Lcom/android/server/NetworkScoreService$ScanResultsScoreCacheFilter;-><init>(Ljava/util/function/Supplier;)V
+    invoke-direct {v0, v1}, Lcom/android/server/NetworkScoreService$ScanResultsScoreCacheFilter;-><init>(Ljava/util/function/Supplier;)V
 
-    iput-object p2, p0, Lcom/android/server/NetworkScoreService$FilteringCacheUpdatingConsumer;->mScanResultsFilter:Ljava/util/function/UnaryOperator;
+    iput-object v0, p0, Lcom/android/server/NetworkScoreService$FilteringCacheUpdatingConsumer;->mScanResultsFilter:Ljava/util/function/UnaryOperator;
 
     .line 572
     :cond_31
-    iget-object p2, p0, Lcom/android/server/NetworkScoreService$FilteringCacheUpdatingConsumer;->mScanResultsFilter:Ljava/util/function/UnaryOperator;
+    iget-object v0, p0, Lcom/android/server/NetworkScoreService$FilteringCacheUpdatingConsumer;->mScanResultsFilter:Ljava/util/function/UnaryOperator;
 
-    invoke-interface {p2, p1}, Ljava/util/function/UnaryOperator;->apply(Ljava/lang/Object;)Ljava/lang/Object;
+    invoke-interface {v0, p1}, Ljava/util/function/UnaryOperator;->apply(Ljava/lang/Object;)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v0
 
-    check-cast p1, Ljava/util/List;
+    check-cast v0, Ljava/util/List;
 
-    return-object p1
+    return-object v0
 
     .line 561
     :cond_3a
-    iget-object p2, p0, Lcom/android/server/NetworkScoreService$FilteringCacheUpdatingConsumer;->mCurrentNetworkFilter:Ljava/util/function/UnaryOperator;
+    iget-object v0, p0, Lcom/android/server/NetworkScoreService$FilteringCacheUpdatingConsumer;->mCurrentNetworkFilter:Ljava/util/function/UnaryOperator;
 
-    if-nez p2, :cond_4c
+    if-nez v0, :cond_4c
 
     .line 562
-    new-instance p2, Lcom/android/server/NetworkScoreService$CurrentNetworkScoreCacheFilter;
+    new-instance v0, Lcom/android/server/NetworkScoreService$CurrentNetworkScoreCacheFilter;
 
-    new-instance v0, Lcom/android/server/NetworkScoreService$WifiInfoSupplier;
+    new-instance v1, Lcom/android/server/NetworkScoreService$WifiInfoSupplier;
 
-    iget-object v1, p0, Lcom/android/server/NetworkScoreService$FilteringCacheUpdatingConsumer;->mContext:Landroid/content/Context;
+    iget-object v2, p0, Lcom/android/server/NetworkScoreService$FilteringCacheUpdatingConsumer;->mContext:Landroid/content/Context;
 
-    invoke-direct {v0, v1}, Lcom/android/server/NetworkScoreService$WifiInfoSupplier;-><init>(Landroid/content/Context;)V
+    invoke-direct {v1, v2}, Lcom/android/server/NetworkScoreService$WifiInfoSupplier;-><init>(Landroid/content/Context;)V
 
-    invoke-direct {p2, v0}, Lcom/android/server/NetworkScoreService$CurrentNetworkScoreCacheFilter;-><init>(Ljava/util/function/Supplier;)V
+    invoke-direct {v0, v1}, Lcom/android/server/NetworkScoreService$CurrentNetworkScoreCacheFilter;-><init>(Ljava/util/function/Supplier;)V
 
-    iput-object p2, p0, Lcom/android/server/NetworkScoreService$FilteringCacheUpdatingConsumer;->mCurrentNetworkFilter:Ljava/util/function/UnaryOperator;
+    iput-object v0, p0, Lcom/android/server/NetworkScoreService$FilteringCacheUpdatingConsumer;->mCurrentNetworkFilter:Ljava/util/function/UnaryOperator;
 
     .line 565
     :cond_4c
-    iget-object p2, p0, Lcom/android/server/NetworkScoreService$FilteringCacheUpdatingConsumer;->mCurrentNetworkFilter:Ljava/util/function/UnaryOperator;
+    iget-object v0, p0, Lcom/android/server/NetworkScoreService$FilteringCacheUpdatingConsumer;->mCurrentNetworkFilter:Ljava/util/function/UnaryOperator;
 
-    invoke-interface {p2, p1}, Ljava/util/function/UnaryOperator;->apply(Ljava/lang/Object;)Ljava/lang/Object;
+    invoke-interface {v0, p1}, Ljava/util/function/UnaryOperator;->apply(Ljava/lang/Object;)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v0
 
-    check-cast p1, Ljava/util/List;
+    check-cast v0, Ljava/util/List;
 
-    return-object p1
+    return-object v0
 
     .line 558
     :cond_55
@@ -264,90 +274,93 @@
 
 # virtual methods
 .method public accept(Landroid/net/INetworkScoreCache;Ljava/lang/Object;)V
-    .registers 4
+    .registers 7
+    .param p1, "networkScoreCache"  # Landroid/net/INetworkScoreCache;
+    .param p2, "cookie"  # Ljava/lang/Object;
 
     .line 533
-    nop
+    const/4 v0, 0x0
 
     .line 534
-    instance-of v0, p2, Ljava/lang/Integer;
+    .local v0, "filterType":I
+    instance-of v1, p2, Ljava/lang/Integer;
 
-    if-eqz v0, :cond_c
+    if-eqz v1, :cond_c
 
     .line 535
-    check-cast p2, Ljava/lang/Integer;
+    move-object v1, p2
 
-    invoke-virtual {p2}, Ljava/lang/Integer;->intValue()I
+    check-cast v1, Ljava/lang/Integer;
 
-    move-result p2
-
-    goto :goto_d
-
-    .line 534
-    :cond_c
-    const/4 p2, 0x0
-
-    .line 539
-    :goto_d
-    :try_start_d
-    iget-object v0, p0, Lcom/android/server/NetworkScoreService$FilteringCacheUpdatingConsumer;->mScoredNetworkList:Ljava/util/List;
-
-    .line 540
-    invoke-direct {p0, v0, p2}, Lcom/android/server/NetworkScoreService$FilteringCacheUpdatingConsumer;->filterScores(Ljava/util/List;I)Ljava/util/List;
-
-    move-result-object p2
-
-    .line 541
-    invoke-interface {p2}, Ljava/util/List;->isEmpty()Z
+    invoke-virtual {v1}, Ljava/lang/Integer;->intValue()I
 
     move-result v0
 
-    if-nez v0, :cond_1c
+    .line 539
+    :cond_c
+    :try_start_c
+    iget-object v1, p0, Lcom/android/server/NetworkScoreService$FilteringCacheUpdatingConsumer;->mScoredNetworkList:Ljava/util/List;
+
+    .line 540
+    invoke-direct {p0, v1, v0}, Lcom/android/server/NetworkScoreService$FilteringCacheUpdatingConsumer;->filterScores(Ljava/util/List;I)Ljava/util/List;
+
+    move-result-object v1
+
+    .line 541
+    .local v1, "filteredNetworkList":Ljava/util/List;, "Ljava/util/List<Landroid/net/ScoredNetwork;>;"
+    invoke-interface {v1}, Ljava/util/List;->isEmpty()Z
+
+    move-result v2
+
+    if-nez v2, :cond_1b
 
     .line 542
-    invoke-interface {p1, p2}, Landroid/net/INetworkScoreCache;->updateScores(Ljava/util/List;)V
-    :try_end_1c
-    .catch Landroid/os/RemoteException; {:try_start_d .. :try_end_1c} :catch_1d
+    invoke-interface {p1, v1}, Landroid/net/INetworkScoreCache;->updateScores(Ljava/util/List;)V
+    :try_end_1b
+    .catch Landroid/os/RemoteException; {:try_start_c .. :try_end_1b} :catch_1c
 
     .line 548
-    :cond_1c
-    goto :goto_3c
+    .end local v1  # "filteredNetworkList":Ljava/util/List;, "Ljava/util/List<Landroid/net/ScoredNetwork;>;"
+    :cond_1b
+    goto :goto_3b
 
     .line 544
-    :catch_1d
-    move-exception p1
+    :catch_1c
+    move-exception v1
 
     .line 545
+    .local v1, "e":Landroid/os/RemoteException;
     invoke-static {}, Lcom/android/server/NetworkScoreService;->access$700()Z
 
-    move-result p2
+    move-result v2
 
-    if-eqz p2, :cond_3c
+    if-eqz v2, :cond_3b
 
     .line 546
-    new-instance p2, Ljava/lang/StringBuilder;
+    new-instance v2, Ljava/lang/StringBuilder;
 
-    invoke-direct {p2}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v0, "Unable to update scores of type "
+    const-string v3, "Unable to update scores of type "
 
-    invoke-virtual {p2, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    iget v0, p0, Lcom/android/server/NetworkScoreService$FilteringCacheUpdatingConsumer;->mNetworkType:I
+    iget v3, p0, Lcom/android/server/NetworkScoreService$FilteringCacheUpdatingConsumer;->mNetworkType:I
 
-    invoke-virtual {p2, v0}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p2
+    move-result-object v2
 
-    const-string v0, "NetworkScoreService"
+    const-string v3, "NetworkScoreService"
 
-    invoke-static {v0, p2, p1}, Landroid/util/Log;->v(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    invoke-static {v3, v2, v1}, Landroid/util/Log;->v(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
     .line 549
-    :cond_3c
-    :goto_3c
+    .end local v1  # "e":Landroid/os/RemoteException;
+    :cond_3b
+    :goto_3b
     return-void
 .end method
 

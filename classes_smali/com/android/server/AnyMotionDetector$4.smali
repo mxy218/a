@@ -24,8 +24,9 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/AnyMotionDetector;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/AnyMotionDetector;
 
-    .line 354
+    .line 360
     iput-object p1, p0, Lcom/android/server/AnyMotionDetector$4;->this$0:Lcom/android/server/AnyMotionDetector;
 
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -38,7 +39,7 @@
 .method public run()V
     .registers 4
 
-    .line 357
+    .line 363
     iget-object v0, p0, Lcom/android/server/AnyMotionDetector$4;->this$0:Lcom/android/server/AnyMotionDetector;
 
     invoke-static {v0}, Lcom/android/server/AnyMotionDetector;->access$000(Lcom/android/server/AnyMotionDetector;)Ljava/lang/Object;
@@ -47,7 +48,7 @@
 
     monitor-enter v0
 
-    .line 358
+    .line 364
     :try_start_7
     iget-object v1, p0, Lcom/android/server/AnyMotionDetector$4;->this$0:Lcom/android/server/AnyMotionDetector;
 
@@ -59,26 +60,26 @@
 
     if-ne v1, v2, :cond_1b
 
-    .line 359
+    .line 365
     iget-object v1, p0, Lcom/android/server/AnyMotionDetector$4;->this$0:Lcom/android/server/AnyMotionDetector;
 
     const/4 v2, 0x0
 
     invoke-static {v1, v2}, Lcom/android/server/AnyMotionDetector;->access$602(Lcom/android/server/AnyMotionDetector;Z)Z
 
-    .line 360
+    .line 366
     iget-object v1, p0, Lcom/android/server/AnyMotionDetector$4;->this$0:Lcom/android/server/AnyMotionDetector;
 
     invoke-virtual {v1}, Lcom/android/server/AnyMotionDetector;->stop()V
 
-    .line 362
+    .line 368
     :cond_1b
     monitor-exit v0
 
-    .line 363
+    .line 369
     return-void
 
-    .line 362
+    .line 368
     :catchall_1d
     move-exception v1
 

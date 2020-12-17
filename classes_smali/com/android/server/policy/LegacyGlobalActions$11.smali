@@ -21,6 +21,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/policy/LegacyGlobalActions;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/policy/LegacyGlobalActions;
 
     .line 773
     iput-object p1, p0, Lcom/android/server/policy/LegacyGlobalActions$11;->this$0:Lcom/android/server/policy/LegacyGlobalActions;
@@ -33,31 +34,33 @@
 
 # virtual methods
 .method public onReceive(Landroid/content/Context;Landroid/content/Intent;)V
-    .registers 3
+    .registers 5
+    .param p1, "context"  # Landroid/content/Context;
+    .param p2, "intent"  # Landroid/content/Intent;
 
     .line 776
     invoke-virtual {p2}, Landroid/content/Intent;->getAction()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    const-string p2, "android.media.RINGER_MODE_CHANGED"
+    const-string v1, "android.media.RINGER_MODE_CHANGED"
 
-    invoke-virtual {p1, p2}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v0, v1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result p1
+    move-result v0
 
-    if-eqz p1, :cond_16
+    if-eqz v0, :cond_16
 
     .line 777
-    iget-object p1, p0, Lcom/android/server/policy/LegacyGlobalActions$11;->this$0:Lcom/android/server/policy/LegacyGlobalActions;
+    iget-object v0, p0, Lcom/android/server/policy/LegacyGlobalActions$11;->this$0:Lcom/android/server/policy/LegacyGlobalActions;
 
-    invoke-static {p1}, Lcom/android/server/policy/LegacyGlobalActions;->access$600(Lcom/android/server/policy/LegacyGlobalActions;)Landroid/os/Handler;
+    invoke-static {v0}, Lcom/android/server/policy/LegacyGlobalActions;->access$600(Lcom/android/server/policy/LegacyGlobalActions;)Landroid/os/Handler;
 
-    move-result-object p1
+    move-result-object v0
 
-    const/4 p2, 0x1
+    const/4 v1, 0x1
 
-    invoke-virtual {p1, p2}, Landroid/os/Handler;->sendEmptyMessage(I)Z
+    invoke-virtual {v0, v1}, Landroid/os/Handler;->sendEmptyMessage(I)Z
 
     .line 779
     :cond_16

@@ -16,6 +16,9 @@
 # direct methods
 .method constructor <init>(IBI)V
     .registers 4
+    .param p1, "length"  # I
+    .param p2, "type"  # B
+    .param p3, "subclass"  # I
 
     .line 33
     invoke-direct {p0, p1, p2}, Lcom/android/server/usb/descriptors/UsbDescriptor;-><init>(IB)V
@@ -28,82 +31,87 @@
 .end method
 
 .method public static allocDescriptor(Lcom/android/server/usb/descriptors/UsbDescriptorParser;IB)Lcom/android/server/usb/descriptors/UsbDescriptor;
-    .registers 4
+    .registers 7
+    .param p0, "parser"  # Lcom/android/server/usb/descriptors/UsbDescriptorParser;
+    .param p1, "length"  # I
+    .param p2, "type"  # B
 
     .line 54
     invoke-virtual {p0}, Lcom/android/server/usb/descriptors/UsbDescriptorParser;->getCurInterface()Lcom/android/server/usb/descriptors/UsbInterfaceDescriptor;
 
-    move-result-object p0
+    move-result-object v0
 
     .line 55
-    invoke-virtual {p0}, Lcom/android/server/usb/descriptors/UsbInterfaceDescriptor;->getUsbSubclass()I
+    .local v0, "interfaceDesc":Lcom/android/server/usb/descriptors/UsbInterfaceDescriptor;
+    invoke-virtual {v0}, Lcom/android/server/usb/descriptors/UsbInterfaceDescriptor;->getUsbSubclass()I
 
-    move-result p0
+    move-result v1
 
     .line 56
-    const/4 v0, 0x1
+    .local v1, "subClass":I
+    const/4 v2, 0x1
 
-    if-eq p0, v0, :cond_39
+    if-eq v1, v2, :cond_39
 
-    const/4 v0, 0x2
+    const/4 v2, 0x2
 
-    if-eq p0, v0, :cond_33
+    if-eq v1, v2, :cond_33
 
-    const/4 v0, 0x3
+    const/4 v2, 0x3
 
-    if-eq p0, v0, :cond_2d
+    if-eq v1, v2, :cond_2d
 
     .line 67
-    new-instance p1, Ljava/lang/StringBuilder;
+    new-instance v2, Ljava/lang/StringBuilder;
 
-    invoke-direct {p1}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string p2, "Unknown Audio Class Endpoint id:0x"
+    const-string v3, "Unknown Audio Class Endpoint id:0x"
 
-    invoke-virtual {p1, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-static {p0}, Ljava/lang/Integer;->toHexString(I)Ljava/lang/String;
+    invoke-static {v1}, Ljava/lang/Integer;->toHexString(I)Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v3
 
-    invoke-virtual {p1, p0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v2
 
-    const-string p1, "UsbACEndpoint"
+    const-string v3, "UsbACEndpoint"
 
-    invoke-static {p1, p0}, Landroid/util/Log;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v3, v2}, Landroid/util/Log;->w(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 68
-    const/4 p0, 0x0
+    const/4 v2, 0x0
 
-    return-object p0
+    return-object v2
 
     .line 64
     :cond_2d
-    new-instance v0, Lcom/android/server/usb/descriptors/UsbACMidiEndpoint;
+    new-instance v2, Lcom/android/server/usb/descriptors/UsbACMidiEndpoint;
 
-    invoke-direct {v0, p1, p2, p0}, Lcom/android/server/usb/descriptors/UsbACMidiEndpoint;-><init>(IBI)V
+    invoke-direct {v2, p1, p2, v1}, Lcom/android/server/usb/descriptors/UsbACMidiEndpoint;-><init>(IBI)V
 
-    return-object v0
+    return-object v2
 
     .line 61
     :cond_33
-    new-instance v0, Lcom/android/server/usb/descriptors/UsbACAudioStreamEndpoint;
+    new-instance v2, Lcom/android/server/usb/descriptors/UsbACAudioStreamEndpoint;
 
-    invoke-direct {v0, p1, p2, p0}, Lcom/android/server/usb/descriptors/UsbACAudioStreamEndpoint;-><init>(IBI)V
+    invoke-direct {v2, p1, p2, v1}, Lcom/android/server/usb/descriptors/UsbACAudioStreamEndpoint;-><init>(IBI)V
 
-    return-object v0
+    return-object v2
 
     .line 58
     :cond_39
-    new-instance v0, Lcom/android/server/usb/descriptors/UsbACAudioControlEndpoint;
+    new-instance v2, Lcom/android/server/usb/descriptors/UsbACAudioControlEndpoint;
 
-    invoke-direct {v0, p1, p2, p0}, Lcom/android/server/usb/descriptors/UsbACAudioControlEndpoint;-><init>(IBI)V
+    invoke-direct {v2, p1, p2, v1}, Lcom/android/server/usb/descriptors/UsbACAudioControlEndpoint;-><init>(IBI)V
 
-    return-object v0
+    return-object v2
 .end method
 
 
@@ -127,17 +135,18 @@
 .end method
 
 .method public parseRawDescriptors(Lcom/android/server/usb/descriptors/ByteStream;)I
-    .registers 2
+    .registers 3
+    .param p1, "stream"  # Lcom/android/server/usb/descriptors/ByteStream;
 
     .line 47
     invoke-virtual {p1}, Lcom/android/server/usb/descriptors/ByteStream;->getByte()B
 
-    move-result p1
+    move-result v0
 
-    iput-byte p1, p0, Lcom/android/server/usb/descriptors/UsbACEndpoint;->mSubtype:B
+    iput-byte v0, p0, Lcom/android/server/usb/descriptors/UsbACEndpoint;->mSubtype:B
 
     .line 49
-    iget p1, p0, Lcom/android/server/usb/descriptors/UsbACEndpoint;->mLength:I
+    iget v0, p0, Lcom/android/server/usb/descriptors/UsbACEndpoint;->mLength:I
 
-    return p1
+    return v0
 .end method

@@ -36,7 +36,9 @@
 
 # direct methods
 .method private static synthetic $closeResource(Ljava/lang/Throwable;Ljava/lang/AutoCloseable;)V
-    .registers 2
+    .registers 3
+    .param p0, "x0"  # Ljava/lang/Throwable;
+    .param p1, "x1"  # Ljava/lang/AutoCloseable;
 
     .line 173
     if-eqz p0, :cond_b
@@ -49,9 +51,9 @@
     goto :goto_e
 
     :catchall_6
-    move-exception p1
+    move-exception v0
 
-    invoke-virtual {p0, p1}, Ljava/lang/Throwable;->addSuppressed(Ljava/lang/Throwable;)V
+    invoke-virtual {p0, v0}, Ljava/lang/Throwable;->addSuppressed(Ljava/lang/Throwable;)V
 
     goto :goto_e
 
@@ -114,6 +116,7 @@
     move-result v0
 
     .line 148
+    .local v0, "gsiIndex":I
     if-lez v0, :cond_18
 
     .line 149
@@ -129,15 +132,15 @@
 
     invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v1
 
-    return-object v0
+    return-object v1
 
     .line 151
     :cond_18
-    const-string v0, "host"
+    const-string v1, "host"
 
-    return-object v0
+    return-object v1
 .end method
 
 .method private getSlotMapFile()Ljava/io/File;
@@ -166,7 +169,7 @@
 .end method
 
 .method private loadSlotMap()Ljava/util/Map;
-    .registers 4
+    .registers 5
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "()",
@@ -183,6 +186,7 @@
     move-result-object v0
 
     .line 170
+    .local v0, "file":Ljava/io/File;
     invoke-virtual {v0}, Ljava/io/File;->exists()Z
 
     move-result v1
@@ -197,62 +201,76 @@
     :try_end_f
     .catch Ljava/lang/Exception; {:try_start_a .. :try_end_f} :catch_1f
 
-    const/4 v0, 0x0
+    .local v1, "stream":Ljava/io/FileInputStream;
+    const/4 v2, 0x0
 
     .line 172
     :try_start_10
     invoke-virtual {p0, v1}, Lcom/android/server/locksettings/PasswordSlotManager;->loadSlotMap(Ljava/io/InputStream;)Ljava/util/Map;
 
-    move-result-object v2
+    move-result-object v3
     :try_end_14
     .catchall {:try_start_10 .. :try_end_14} :catchall_18
 
     .line 173
     :try_start_14
-    invoke-static {v0, v1}, Lcom/android/server/locksettings/PasswordSlotManager;->$closeResource(Ljava/lang/Throwable;Ljava/lang/AutoCloseable;)V
+    invoke-static {v2, v1}, Lcom/android/server/locksettings/PasswordSlotManager;->$closeResource(Ljava/lang/Throwable;Ljava/lang/AutoCloseable;)V
     :try_end_17
     .catch Ljava/lang/Exception; {:try_start_14 .. :try_end_17} :catch_1f
 
     .line 172
-    return-object v2
+    return-object v3
 
     .line 171
     :catchall_18
-    move-exception v0
+    move-exception v2
 
+    .end local v0  # "file":Ljava/io/File;
+    .end local v1  # "stream":Ljava/io/FileInputStream;
+    .end local p0  # "this":Lcom/android/server/locksettings/PasswordSlotManager;
     :try_start_19
-    throw v0
+    throw v2
     :try_end_1a
     .catchall {:try_start_19 .. :try_end_1a} :catchall_1a
 
     .line 173
+    .restart local v0  # "file":Ljava/io/File;
+    .restart local v1  # "stream":Ljava/io/FileInputStream;
+    .restart local p0  # "this":Lcom/android/server/locksettings/PasswordSlotManager;
     :catchall_1a
-    move-exception v2
+    move-exception v3
 
     :try_start_1b
-    invoke-static {v0, v1}, Lcom/android/server/locksettings/PasswordSlotManager;->$closeResource(Ljava/lang/Throwable;Ljava/lang/AutoCloseable;)V
+    invoke-static {v2, v1}, Lcom/android/server/locksettings/PasswordSlotManager;->$closeResource(Ljava/lang/Throwable;Ljava/lang/AutoCloseable;)V
 
-    throw v2
+    .end local v0  # "file":Ljava/io/File;
+    .end local p0  # "this":Lcom/android/server/locksettings/PasswordSlotManager;
+    throw v3
     :try_end_1f
     .catch Ljava/lang/Exception; {:try_start_1b .. :try_end_1f} :catch_1f
 
+    .end local v1  # "stream":Ljava/io/FileInputStream;
+    .restart local v0  # "file":Ljava/io/File;
+    .restart local p0  # "this":Lcom/android/server/locksettings/PasswordSlotManager;
     :catch_1f
-    move-exception v0
+    move-exception v1
 
     .line 174
-    const-string v1, "PasswordSlotManager"
+    .local v1, "e":Ljava/lang/Exception;
+    const-string v2, "PasswordSlotManager"
 
-    const-string v2, "Could not load slot map file"
+    const-string v3, "Could not load slot map file"
 
-    invoke-static {v1, v2, v0}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    invoke-static {v2, v3, v1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
     .line 177
+    .end local v1  # "e":Ljava/lang/Exception;
     :cond_27
-    new-instance v0, Ljava/util/HashMap;
+    new-instance v1, Ljava/util/HashMap;
 
-    invoke-direct {v0}, Ljava/util/HashMap;-><init>()V
+    invoke-direct {v1}, Ljava/util/HashMap;-><init>()V
 
-    return-object v0
+    return-object v1
 .end method
 
 .method private saveSlotMap()V
@@ -325,6 +343,7 @@
     :try_end_3c
     .catch Ljava/io/IOException; {:try_start_33 .. :try_end_3c} :catch_4b
 
+    .local v0, "fos":Ljava/io/FileOutputStream;
     const/4 v2, 0x0
 
     .line 212
@@ -340,37 +359,48 @@
     .catch Ljava/io/IOException; {:try_start_40 .. :try_end_43} :catch_4b
 
     .line 215
+    .end local v0  # "fos":Ljava/io/FileOutputStream;
     goto :goto_51
 
     .line 211
+    .restart local v0  # "fos":Ljava/io/FileOutputStream;
     :catchall_44
     move-exception v2
 
+    .end local v0  # "fos":Ljava/io/FileOutputStream;
+    .end local p0  # "this":Lcom/android/server/locksettings/PasswordSlotManager;
     :try_start_45
     throw v2
     :try_end_46
     .catchall {:try_start_45 .. :try_end_46} :catchall_46
 
     .line 213
+    .restart local v0  # "fos":Ljava/io/FileOutputStream;
+    .restart local p0  # "this":Lcom/android/server/locksettings/PasswordSlotManager;
     :catchall_46
     move-exception v3
 
     :try_start_47
     invoke-static {v2, v0}, Lcom/android/server/locksettings/PasswordSlotManager;->$closeResource(Ljava/lang/Throwable;Ljava/lang/AutoCloseable;)V
 
+    .end local p0  # "this":Lcom/android/server/locksettings/PasswordSlotManager;
     throw v3
     :try_end_4b
     .catch Ljava/io/IOException; {:try_start_47 .. :try_end_4b} :catch_4b
 
+    .end local v0  # "fos":Ljava/io/FileOutputStream;
+    .restart local p0  # "this":Lcom/android/server/locksettings/PasswordSlotManager;
     :catch_4b
     move-exception v0
 
     .line 214
+    .local v0, "e":Ljava/io/IOException;
     const-string v2, "failed to save password slot map"
 
     invoke-static {v1, v2, v0}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
     .line 216
+    .end local v0  # "e":Ljava/io/IOException;
     :goto_51
     return-void
 .end method
@@ -434,7 +464,8 @@
 .end method
 
 .method protected loadSlotMap(Ljava/io/InputStream;)Ljava/util/Map;
-    .registers 6
+    .registers 9
+    .param p1, "stream"  # Ljava/io/InputStream;
     .annotation build Lcom/android/internal/annotations/VisibleForTesting;
     .end annotation
 
@@ -462,53 +493,61 @@
     invoke-direct {v0}, Ljava/util/HashMap;-><init>()V
 
     .line 157
+    .local v0, "map":Ljava/util/HashMap;, "Ljava/util/HashMap<Ljava/lang/Integer;Ljava/lang/String;>;"
     new-instance v1, Ljava/util/Properties;
 
     invoke-direct {v1}, Ljava/util/Properties;-><init>()V
 
     .line 158
+    .local v1, "props":Ljava/util/Properties;
     invoke-virtual {v1, p1}, Ljava/util/Properties;->load(Ljava/io/InputStream;)V
 
     .line 159
     invoke-virtual {v1}, Ljava/util/Properties;->stringPropertyNames()Ljava/util/Set;
 
-    move-result-object p1
+    move-result-object v2
 
-    invoke-interface {p1}, Ljava/util/Set;->iterator()Ljava/util/Iterator;
-
-    move-result-object p1
-
-    :goto_15
-    invoke-interface {p1}, Ljava/util/Iterator;->hasNext()Z
-
-    move-result v2
-
-    if-eqz v2, :cond_31
-
-    invoke-interface {p1}, Ljava/util/Iterator;->next()Ljava/lang/Object;
+    invoke-interface {v2}, Ljava/util/Set;->iterator()Ljava/util/Iterator;
 
     move-result-object v2
 
-    check-cast v2, Ljava/lang/String;
-
-    .line 160
-    invoke-static {v2}, Ljava/lang/Integer;->parseInt(Ljava/lang/String;)I
+    :goto_15
+    invoke-interface {v2}, Ljava/util/Iterator;->hasNext()Z
 
     move-result v3
 
-    .line 161
-    invoke-virtual {v1, v2}, Ljava/util/Properties;->getProperty(Ljava/lang/String;)Ljava/lang/String;
+    if-eqz v3, :cond_31
 
-    move-result-object v2
-
-    .line 162
-    invoke-static {v3}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
+    invoke-interface {v2}, Ljava/util/Iterator;->next()Ljava/lang/Object;
 
     move-result-object v3
 
-    invoke-virtual {v0, v3, v2}, Ljava/util/HashMap;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+    check-cast v3, Ljava/lang/String;
+
+    .line 160
+    .local v3, "slotString":Ljava/lang/String;
+    invoke-static {v3}, Ljava/lang/Integer;->parseInt(Ljava/lang/String;)I
+
+    move-result v4
+
+    .line 161
+    .local v4, "slot":I
+    invoke-virtual {v1, v3}, Ljava/util/Properties;->getProperty(Ljava/lang/String;)Ljava/lang/String;
+
+    move-result-object v5
+
+    .line 162
+    .local v5, "owner":Ljava/lang/String;
+    invoke-static {v4}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
+
+    move-result-object v6
+
+    invoke-virtual {v0, v6, v5}, Ljava/util/HashMap;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
 
     .line 163
+    .end local v3  # "slotString":Ljava/lang/String;
+    .end local v4  # "slot":I
+    .end local v5  # "owner":Ljava/lang/String;
     goto :goto_15
 
     .line 164
@@ -518,6 +557,7 @@
 
 .method public markSlotDeleted(I)V
     .registers 5
+    .param p1, "slot"  # I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Ljava/lang/RuntimeException;
@@ -578,15 +618,15 @@
 
     invoke-virtual {v1, p1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    const-string p1, " cannot be deleted"
+    const-string v2, " cannot be deleted"
 
-    invoke-virtual {v1, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v1
 
-    invoke-direct {v0, p1}, Ljava/lang/RuntimeException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v0, v1}, Ljava/lang/RuntimeException;-><init>(Ljava/lang/String;)V
 
     throw v0
 
@@ -597,9 +637,9 @@
 
     invoke-static {p1}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
 
-    move-result-object p1
+    move-result-object v1
 
-    invoke-interface {v0, p1}, Ljava/util/Map;->remove(Ljava/lang/Object;)Ljava/lang/Object;
+    invoke-interface {v0, v1}, Ljava/util/Map;->remove(Ljava/lang/Object;)Ljava/lang/Object;
 
     .line 129
     invoke-direct {p0}, Lcom/android/server/locksettings/PasswordSlotManager;->saveSlotMap()V
@@ -610,6 +650,7 @@
 
 .method public markSlotInUse(I)V
     .registers 5
+    .param p1, "slot"  # I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Ljava/lang/RuntimeException;
@@ -670,15 +711,15 @@
 
     invoke-virtual {v1, p1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    const-string p1, " is not available"
+    const-string v2, " is not available"
 
-    invoke-virtual {v1, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v1
 
-    invoke-direct {v0, p1}, Ljava/lang/RuntimeException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v0, v1}, Ljava/lang/RuntimeException;-><init>(Ljava/lang/String;)V
 
     throw v0
 
@@ -689,13 +730,13 @@
 
     invoke-static {p1}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
 
-    move-result-object p1
+    move-result-object v1
 
     invoke-direct {p0}, Lcom/android/server/locksettings/PasswordSlotManager;->getMode()Ljava/lang/String;
 
-    move-result-object v1
+    move-result-object v2
 
-    invoke-interface {v0, p1, v1}, Ljava/util/Map;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+    invoke-interface {v0, v1, v2}, Ljava/util/Map;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
 
     .line 115
     invoke-direct {p0}, Lcom/android/server/locksettings/PasswordSlotManager;->saveSlotMap()V
@@ -722,6 +763,7 @@
     .end annotation
 
     .line 79
+    .local p1, "activeSlots":Ljava/util/Set;, "Ljava/util/Set<Ljava/lang/Integer;>;"
     iget-object v0, p0, Lcom/android/server/locksettings/PasswordSlotManager;->mSlotMap:Ljava/util/Map;
 
     if-nez v0, :cond_c
@@ -743,6 +785,7 @@
     invoke-direct {v0}, Ljava/util/HashSet;-><init>()V
 
     .line 86
+    .local v0, "slotsToDelete":Ljava/util/HashSet;, "Ljava/util/HashSet<Ljava/lang/Integer;>;"
     iget-object v1, p0, Lcom/android/server/locksettings/PasswordSlotManager;->mSlotMap:Ljava/util/Map;
 
     invoke-interface {v1}, Ljava/util/Map;->entrySet()Ljava/util/Set;
@@ -767,6 +810,7 @@
     check-cast v2, Ljava/util/Map$Entry;
 
     .line 88
+    .local v2, "entry":Ljava/util/Map$Entry;, "Ljava/util/Map$Entry<Ljava/lang/Integer;Ljava/lang/String;>;"
     invoke-interface {v2}, Ljava/util/Map$Entry;->getValue()Ljava/lang/Object;
 
     move-result-object v3
@@ -786,13 +830,14 @@
     .line 89
     invoke-interface {v2}, Ljava/util/Map$Entry;->getKey()Ljava/lang/Object;
 
-    move-result-object v2
+    move-result-object v3
 
-    check-cast v2, Ljava/lang/Integer;
+    check-cast v3, Ljava/lang/Integer;
 
-    invoke-virtual {v0, v2}, Ljava/util/HashSet;->add(Ljava/lang/Object;)Z
+    invoke-virtual {v0, v3}, Ljava/util/HashSet;->add(Ljava/lang/Object;)Z
 
     .line 91
+    .end local v2  # "entry":Ljava/util/Map$Entry;, "Ljava/util/Map$Entry<Ljava/lang/Integer;Ljava/lang/String;>;"
     :cond_40
     goto :goto_1b
 
@@ -800,58 +845,62 @@
     :cond_41
     invoke-virtual {v0}, Ljava/util/HashSet;->iterator()Ljava/util/Iterator;
 
-    move-result-object v0
-
-    :goto_45
-    invoke-interface {v0}, Ljava/util/Iterator;->hasNext()Z
-
-    move-result v1
-
-    if-eqz v1, :cond_57
-
-    invoke-interface {v0}, Ljava/util/Iterator;->next()Ljava/lang/Object;
-
     move-result-object v1
 
-    check-cast v1, Ljava/lang/Integer;
+    :goto_45
+    invoke-interface {v1}, Ljava/util/Iterator;->hasNext()Z
+
+    move-result v2
+
+    if-eqz v2, :cond_57
+
+    invoke-interface {v1}, Ljava/util/Iterator;->next()Ljava/lang/Object;
+
+    move-result-object v2
+
+    check-cast v2, Ljava/lang/Integer;
 
     .line 93
-    iget-object v2, p0, Lcom/android/server/locksettings/PasswordSlotManager;->mSlotMap:Ljava/util/Map;
+    .local v2, "slot":Ljava/lang/Integer;
+    iget-object v3, p0, Lcom/android/server/locksettings/PasswordSlotManager;->mSlotMap:Ljava/util/Map;
 
-    invoke-interface {v2, v1}, Ljava/util/Map;->remove(Ljava/lang/Object;)Ljava/lang/Object;
+    invoke-interface {v3, v2}, Ljava/util/Map;->remove(Ljava/lang/Object;)Ljava/lang/Object;
 
     .line 94
+    .end local v2  # "slot":Ljava/lang/Integer;
     goto :goto_45
 
     .line 97
     :cond_57
     invoke-interface {p1}, Ljava/util/Set;->iterator()Ljava/util/Iterator;
 
-    move-result-object p1
+    move-result-object v1
 
     :goto_5b
-    invoke-interface {p1}, Ljava/util/Iterator;->hasNext()Z
+    invoke-interface {v1}, Ljava/util/Iterator;->hasNext()Z
 
-    move-result v0
+    move-result v2
 
-    if-eqz v0, :cond_71
+    if-eqz v2, :cond_71
 
-    invoke-interface {p1}, Ljava/util/Iterator;->next()Ljava/lang/Object;
-
-    move-result-object v0
-
-    check-cast v0, Ljava/lang/Integer;
-
-    .line 98
-    iget-object v1, p0, Lcom/android/server/locksettings/PasswordSlotManager;->mSlotMap:Ljava/util/Map;
-
-    invoke-direct {p0}, Lcom/android/server/locksettings/PasswordSlotManager;->getMode()Ljava/lang/String;
+    invoke-interface {v1}, Ljava/util/Iterator;->next()Ljava/lang/Object;
 
     move-result-object v2
 
-    invoke-interface {v1, v0, v2}, Ljava/util/Map;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+    check-cast v2, Ljava/lang/Integer;
+
+    .line 98
+    .restart local v2  # "slot":Ljava/lang/Integer;
+    iget-object v3, p0, Lcom/android/server/locksettings/PasswordSlotManager;->mSlotMap:Ljava/util/Map;
+
+    invoke-direct {p0}, Lcom/android/server/locksettings/PasswordSlotManager;->getMode()Ljava/lang/String;
+
+    move-result-object v4
+
+    invoke-interface {v3, v2, v4}, Ljava/util/Map;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
 
     .line 99
+    .end local v2  # "slot":Ljava/lang/Integer;
     goto :goto_5b
 
     .line 101
@@ -863,7 +912,8 @@
 .end method
 
 .method protected saveSlotMap(Ljava/io/OutputStream;)V
-    .registers 6
+    .registers 7
+    .param p1, "stream"  # Ljava/io/OutputStream;
     .annotation build Lcom/android/internal/annotations/VisibleForTesting;
     .end annotation
 
@@ -888,6 +938,7 @@
     invoke-direct {v0}, Ljava/util/Properties;-><init>()V
 
     .line 196
+    .local v0, "props":Ljava/util/Properties;
     iget-object v1, p0, Lcom/android/server/locksettings/PasswordSlotManager;->mSlotMap:Ljava/util/Map;
 
     invoke-interface {v1}, Ljava/util/Map;->entrySet()Ljava/util/Set;
@@ -912,6 +963,7 @@
     check-cast v2, Ljava/util/Map$Entry;
 
     .line 197
+    .local v2, "entry":Ljava/util/Map$Entry;, "Ljava/util/Map$Entry<Ljava/lang/Integer;Ljava/lang/String;>;"
     invoke-interface {v2}, Ljava/util/Map$Entry;->getKey()Ljava/lang/Object;
 
     move-result-object v3
@@ -924,13 +976,14 @@
 
     invoke-interface {v2}, Ljava/util/Map$Entry;->getValue()Ljava/lang/Object;
 
-    move-result-object v2
+    move-result-object v4
 
-    check-cast v2, Ljava/lang/String;
+    check-cast v4, Ljava/lang/String;
 
-    invoke-virtual {v0, v3, v2}, Ljava/util/Properties;->setProperty(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/Object;
+    invoke-virtual {v0, v3, v4}, Ljava/util/Properties;->setProperty(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/Object;
 
     .line 198
+    .end local v2  # "entry":Ljava/util/Map$Entry;, "Ljava/util/Map$Entry<Ljava/lang/Integer;Ljava/lang/String;>;"
     goto :goto_14
 
     .line 199

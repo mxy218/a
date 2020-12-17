@@ -24,8 +24,9 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/biometrics/BiometricServiceBase$LockoutResetMonitor;)V
     .registers 2
+    .param p1, "this$1"  # Lcom/android/server/biometrics/BiometricServiceBase$LockoutResetMonitor;
 
-    .line 602
+    .line 596
     iput-object p1, p0, Lcom/android/server/biometrics/BiometricServiceBase$LockoutResetMonitor$2;->this$1:Lcom/android/server/biometrics/BiometricServiceBase$LockoutResetMonitor;
 
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -38,12 +39,12 @@
 .method public run()V
     .registers 3
 
-    .line 605
+    .line 599
     iget-object v0, p0, Lcom/android/server/biometrics/BiometricServiceBase$LockoutResetMonitor$2;->this$1:Lcom/android/server/biometrics/BiometricServiceBase$LockoutResetMonitor;
 
     invoke-static {v0}, Lcom/android/server/biometrics/BiometricServiceBase$LockoutResetMonitor;->access$1100(Lcom/android/server/biometrics/BiometricServiceBase$LockoutResetMonitor;)V
 
-    .line 606
+    .line 600
     iget-object v0, p0, Lcom/android/server/biometrics/BiometricServiceBase$LockoutResetMonitor$2;->this$1:Lcom/android/server/biometrics/BiometricServiceBase$LockoutResetMonitor;
 
     iget-object v0, v0, Lcom/android/server/biometrics/BiometricServiceBase$LockoutResetMonitor;->this$0:Lcom/android/server/biometrics/BiometricServiceBase;
@@ -52,6 +53,6 @@
 
     invoke-static {v0, v1}, Lcom/android/server/biometrics/BiometricServiceBase;->access$1200(Lcom/android/server/biometrics/BiometricServiceBase;Lcom/android/server/biometrics/BiometricServiceBase$LockoutResetMonitor;)V
 
-    .line 607
+    .line 601
     return-void
 .end method

@@ -23,6 +23,7 @@
 # direct methods
 .method public constructor <init>(Lcom/android/server/display/VirtualDisplayAdapter;Landroid/os/IBinder;)V
     .registers 3
+    .param p2, "appToken"  # Landroid/os/IBinder;
 
     .line 451
     iput-object p1, p0, Lcom/android/server/display/VirtualDisplayAdapter$MediaProjectionCallback;->this$0:Lcom/android/server/display/VirtualDisplayAdapter;

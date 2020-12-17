@@ -26,16 +26,18 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/power/AttentionDetector;I)V
     .registers 3
+    .param p1, "this$0"  # Lcom/android/server/power/AttentionDetector;
+    .param p2, "id"  # I
 
-    .line 313
+    .line 316
     iput-object p1, p0, Lcom/android/server/power/AttentionDetector$AttentionCallbackInternalImpl;->this$0:Lcom/android/server/power/AttentionDetector;
 
     invoke-direct {p0}, Landroid/attention/AttentionManagerInternal$AttentionCallbackInternal;-><init>()V
 
-    .line 314
+    .line 317
     iput p2, p0, Lcom/android/server/power/AttentionDetector$AttentionCallbackInternalImpl;->mId:I
 
-    .line 315
+    .line 318
     return-void
 .end method
 
@@ -43,8 +45,9 @@
 # virtual methods
 .method public onFailure(I)V
     .registers 4
+    .param p1, "error"  # I
 
-    .line 340
+    .line 343
     new-instance v0, Ljava/lang/StringBuilder;
 
     invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
@@ -55,153 +58,155 @@
 
     invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    const-string p1, ", ID: "
+    const-string v1, ", ID: "
 
-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    iget p1, p0, Lcom/android/server/power/AttentionDetector$AttentionCallbackInternalImpl;->mId:I
+    iget v1, p0, Lcom/android/server/power/AttentionDetector$AttentionCallbackInternalImpl;->mId:I
 
-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
     invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    const-string v0, "AttentionDetector"
+    const-string v1, "AttentionDetector"
 
-    invoke-static {v0, p1}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v0}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 341
-    iget-object p1, p0, Lcom/android/server/power/AttentionDetector$AttentionCallbackInternalImpl;->this$0:Lcom/android/server/power/AttentionDetector;
+    .line 344
+    iget-object v0, p0, Lcom/android/server/power/AttentionDetector$AttentionCallbackInternalImpl;->this$0:Lcom/android/server/power/AttentionDetector;
 
-    invoke-static {p1}, Lcom/android/server/power/AttentionDetector;->access$100(Lcom/android/server/power/AttentionDetector;)Ljava/util/concurrent/atomic/AtomicBoolean;
+    invoke-static {v0}, Lcom/android/server/power/AttentionDetector;->access$200(Lcom/android/server/power/AttentionDetector;)Ljava/util/concurrent/atomic/AtomicBoolean;
 
-    move-result-object p1
+    move-result-object v0
 
-    const/4 v0, 0x0
+    const/4 v1, 0x0
 
-    invoke-virtual {p1, v0}, Ljava/util/concurrent/atomic/AtomicBoolean;->set(Z)V
+    invoke-virtual {v0, v1}, Ljava/util/concurrent/atomic/AtomicBoolean;->set(Z)V
 
-    .line 342
+    .line 345
     return-void
 .end method
 
 .method public onSuccess(IJ)V
-    .registers 5
+    .registers 7
+    .param p1, "result"  # I
+    .param p2, "timestamp"  # J
 
-    .line 319
-    new-instance p2, Ljava/lang/StringBuilder;
+    .line 322
+    new-instance v0, Ljava/lang/StringBuilder;
 
-    invoke-direct {p2}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string/jumbo p3, "onSuccess: "
+    const-string/jumbo v1, "onSuccess: "
 
-    invoke-virtual {p2, p3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p2, p1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    const-string p3, ", ID: "
+    const-string v1, ", ID: "
 
-    invoke-virtual {p2, p3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    iget p3, p0, Lcom/android/server/power/AttentionDetector$AttentionCallbackInternalImpl;->mId:I
+    iget v1, p0, Lcom/android/server/power/AttentionDetector$AttentionCallbackInternalImpl;->mId:I
 
-    invoke-virtual {p2, p3}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p2
+    move-result-object v0
 
-    const-string p3, "AttentionDetector"
+    const-string v1, "AttentionDetector"
 
-    invoke-static {p3, p2}, Landroid/util/Slog;->v(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v0}, Landroid/util/Slog;->v(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 323
-    iget p2, p0, Lcom/android/server/power/AttentionDetector$AttentionCallbackInternalImpl;->mId:I
+    .line 326
+    iget v0, p0, Lcom/android/server/power/AttentionDetector$AttentionCallbackInternalImpl;->mId:I
 
-    iget-object p3, p0, Lcom/android/server/power/AttentionDetector$AttentionCallbackInternalImpl;->this$0:Lcom/android/server/power/AttentionDetector;
+    iget-object v1, p0, Lcom/android/server/power/AttentionDetector$AttentionCallbackInternalImpl;->this$0:Lcom/android/server/power/AttentionDetector;
 
-    iget p3, p3, Lcom/android/server/power/AttentionDetector;->mRequestId:I
+    iget v1, v1, Lcom/android/server/power/AttentionDetector;->mRequestId:I
 
-    if-ne p2, p3, :cond_5e
+    if-ne v0, v1, :cond_5e
 
-    iget-object p2, p0, Lcom/android/server/power/AttentionDetector$AttentionCallbackInternalImpl;->this$0:Lcom/android/server/power/AttentionDetector;
+    iget-object v0, p0, Lcom/android/server/power/AttentionDetector$AttentionCallbackInternalImpl;->this$0:Lcom/android/server/power/AttentionDetector;
 
-    invoke-static {p2}, Lcom/android/server/power/AttentionDetector;->access$100(Lcom/android/server/power/AttentionDetector;)Ljava/util/concurrent/atomic/AtomicBoolean;
+    invoke-static {v0}, Lcom/android/server/power/AttentionDetector;->access$200(Lcom/android/server/power/AttentionDetector;)Ljava/util/concurrent/atomic/AtomicBoolean;
 
-    move-result-object p2
+    move-result-object v0
 
-    const/4 p3, 0x0
+    const/4 v1, 0x0
 
-    invoke-virtual {p2, p3}, Ljava/util/concurrent/atomic/AtomicBoolean;->getAndSet(Z)Z
+    invoke-virtual {v0, v1}, Ljava/util/concurrent/atomic/AtomicBoolean;->getAndSet(Z)Z
 
-    move-result p2
+    move-result v0
 
-    if-eqz p2, :cond_5e
-
-    .line 324
-    iget-object p2, p0, Lcom/android/server/power/AttentionDetector$AttentionCallbackInternalImpl;->this$0:Lcom/android/server/power/AttentionDetector;
-
-    invoke-static {p2}, Lcom/android/server/power/AttentionDetector;->access$200(Lcom/android/server/power/AttentionDetector;)Ljava/lang/Object;
-
-    move-result-object p2
-
-    monitor-enter p2
-
-    .line 325
-    :try_start_3d
-    iget-object p3, p0, Lcom/android/server/power/AttentionDetector$AttentionCallbackInternalImpl;->this$0:Lcom/android/server/power/AttentionDetector;
-
-    invoke-static {p3}, Lcom/android/server/power/AttentionDetector;->access$300(Lcom/android/server/power/AttentionDetector;)I
-
-    move-result p3
-
-    const/4 v0, 0x1
-
-    if-eq p3, v0, :cond_48
+    if-eqz v0, :cond_5e
 
     .line 327
-    monitor-exit p2
+    iget-object v0, p0, Lcom/android/server/power/AttentionDetector$AttentionCallbackInternalImpl;->this$0:Lcom/android/server/power/AttentionDetector;
+
+    invoke-static {v0}, Lcom/android/server/power/AttentionDetector;->access$300(Lcom/android/server/power/AttentionDetector;)Ljava/lang/Object;
+
+    move-result-object v0
+
+    monitor-enter v0
+
+    .line 328
+    :try_start_3d
+    iget-object v1, p0, Lcom/android/server/power/AttentionDetector$AttentionCallbackInternalImpl;->this$0:Lcom/android/server/power/AttentionDetector;
+
+    invoke-static {v1}, Lcom/android/server/power/AttentionDetector;->access$400(Lcom/android/server/power/AttentionDetector;)I
+
+    move-result v1
+
+    const/4 v2, 0x1
+
+    if-eq v1, v2, :cond_48
+
+    .line 330
+    monitor-exit v0
 
     return-void
 
-    .line 329
+    .line 332
     :cond_48
-    if-ne p1, v0, :cond_54
+    if-ne p1, v2, :cond_54
 
-    .line 330
-    iget-object p1, p0, Lcom/android/server/power/AttentionDetector$AttentionCallbackInternalImpl;->this$0:Lcom/android/server/power/AttentionDetector;
+    .line 333
+    iget-object v1, p0, Lcom/android/server/power/AttentionDetector$AttentionCallbackInternalImpl;->this$0:Lcom/android/server/power/AttentionDetector;
 
-    invoke-static {p1}, Lcom/android/server/power/AttentionDetector;->access$400(Lcom/android/server/power/AttentionDetector;)Ljava/lang/Runnable;
+    invoke-static {v1}, Lcom/android/server/power/AttentionDetector;->access$500(Lcom/android/server/power/AttentionDetector;)Ljava/lang/Runnable;
 
-    move-result-object p1
+    move-result-object v1
 
-    invoke-interface {p1}, Ljava/lang/Runnable;->run()V
+    invoke-interface {v1}, Ljava/lang/Runnable;->run()V
 
     goto :goto_59
 
-    .line 332
+    .line 335
     :cond_54
-    iget-object p1, p0, Lcom/android/server/power/AttentionDetector$AttentionCallbackInternalImpl;->this$0:Lcom/android/server/power/AttentionDetector;
+    iget-object v1, p0, Lcom/android/server/power/AttentionDetector$AttentionCallbackInternalImpl;->this$0:Lcom/android/server/power/AttentionDetector;
 
-    invoke-static {p1}, Lcom/android/server/power/AttentionDetector;->access$500(Lcom/android/server/power/AttentionDetector;)V
+    invoke-static {v1}, Lcom/android/server/power/AttentionDetector;->access$600(Lcom/android/server/power/AttentionDetector;)V
 
-    .line 334
+    .line 337
     :goto_59
-    monitor-exit p2
+    monitor-exit v0
 
     goto :goto_5e
 
     :catchall_5b
-    move-exception p1
+    move-exception v1
 
-    monitor-exit p2
+    monitor-exit v0
     :try_end_5d
     .catchall {:try_start_3d .. :try_end_5d} :catchall_5b
 
-    throw p1
+    throw v1
 
-    .line 336
+    .line 339
     :cond_5e
     :goto_5e
     return-void

@@ -21,7 +21,7 @@
 .method constructor <init>()V
     .registers 1
 
-    .line 739
+    .line 722
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
     return-void
@@ -31,8 +31,9 @@
 # virtual methods
 .method createAmbientDisplayConfiguration(Landroid/content/Context;)Landroid/hardware/display/AmbientDisplayConfiguration;
     .registers 3
+    .param p1, "context"  # Landroid/content/Context;
 
-    .line 766
+    .line 749
     new-instance v0, Landroid/hardware/display/AmbientDisplayConfiguration;
 
     invoke-direct {v0, p1}, Landroid/hardware/display/AmbientDisplayConfiguration;-><init>(Landroid/content/Context;)V
@@ -42,8 +43,11 @@
 
 .method createBatterySaverPolicy(Ljava/lang/Object;Landroid/content/Context;Lcom/android/server/power/batterysaver/BatterySavingStats;)Lcom/android/server/power/batterysaver/BatterySaverPolicy;
     .registers 5
+    .param p1, "lock"  # Ljava/lang/Object;
+    .param p2, "context"  # Landroid/content/Context;
+    .param p3, "batterySavingStats"  # Lcom/android/server/power/batterysaver/BatterySavingStats;
 
-    .line 753
+    .line 736
     new-instance v0, Lcom/android/server/power/batterysaver/BatterySaverPolicy;
 
     invoke-direct {v0, p1, p2, p3}, Lcom/android/server/power/batterysaver/BatterySaverPolicy;-><init>(Ljava/lang/Object;Landroid/content/Context;Lcom/android/server/power/batterysaver/BatterySavingStats;)V
@@ -54,7 +58,7 @@
 .method createNativeWrapper()Lcom/android/server/power/PowerManagerService$NativeWrapper;
     .registers 2
 
-    .line 757
+    .line 740
     new-instance v0, Lcom/android/server/power/PowerManagerService$NativeWrapper;
 
     invoke-direct {v0}, Lcom/android/server/power/PowerManagerService$NativeWrapper;-><init>()V
@@ -64,8 +68,13 @@
 
 .method createNotifier(Landroid/os/Looper;Landroid/content/Context;Lcom/android/internal/app/IBatteryStats;Lcom/android/server/power/SuspendBlocker;Lcom/android/server/policy/WindowManagerPolicy;)Lcom/android/server/power/Notifier;
     .registers 13
+    .param p1, "looper"  # Landroid/os/Looper;
+    .param p2, "context"  # Landroid/content/Context;
+    .param p3, "batteryStats"  # Lcom/android/internal/app/IBatteryStats;
+    .param p4, "suspendBlocker"  # Lcom/android/server/power/SuspendBlocker;
+    .param p5, "policy"  # Lcom/android/server/policy/WindowManagerPolicy;
 
-    .line 742
+    .line 725
     new-instance v6, Lcom/android/server/power/Notifier;
 
     move-object v0, v6
@@ -86,30 +95,36 @@
 .end method
 
 .method createSuspendBlocker(Lcom/android/server/power/PowerManagerService;Ljava/lang/String;)Lcom/android/server/power/SuspendBlocker;
-    .registers 4
+    .registers 5
+    .param p1, "service"  # Lcom/android/server/power/PowerManagerService;
+    .param p2, "name"  # Ljava/lang/String;
 
-    .line 746
+    .line 729
     new-instance v0, Lcom/android/server/power/PowerManagerService$SuspendBlockerImpl;
 
     invoke-static {p1}, Ljava/util/Objects;->requireNonNull(Ljava/lang/Object;)Ljava/lang/Object;
 
     invoke-direct {v0, p1, p2}, Lcom/android/server/power/PowerManagerService$SuspendBlockerImpl;-><init>(Lcom/android/server/power/PowerManagerService;Ljava/lang/String;)V
 
-    .line 747
+    .line 730
+    .local v0, "suspendBlocker":Lcom/android/server/power/SuspendBlocker;
     invoke-static {p1}, Lcom/android/server/power/PowerManagerService;->access$1100(Lcom/android/server/power/PowerManagerService;)Ljava/util/ArrayList;
 
-    move-result-object p1
+    move-result-object v1
 
-    invoke-virtual {p1, v0}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
+    invoke-virtual {v1, v0}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
 
-    .line 748
+    .line 731
     return-object v0
 .end method
 
 .method createWirelessChargerDetector(Landroid/hardware/SensorManager;Lcom/android/server/power/SuspendBlocker;Landroid/os/Handler;)Lcom/android/server/power/WirelessChargerDetector;
     .registers 5
+    .param p1, "sensorManager"  # Landroid/hardware/SensorManager;
+    .param p2, "suspendBlocker"  # Lcom/android/server/power/SuspendBlocker;
+    .param p3, "handler"  # Landroid/os/Handler;
 
-    .line 762
+    .line 745
     new-instance v0, Lcom/android/server/power/WirelessChargerDetector;
 
     invoke-direct {v0, p1, p2, p3}, Lcom/android/server/power/WirelessChargerDetector;-><init>(Landroid/hardware/SensorManager;Lcom/android/server/power/SuspendBlocker;Landroid/os/Handler;)V

@@ -26,53 +26,58 @@
 
 # direct methods
 .method public constructor <init>(Landroid/content/Context;Landroid/content/IntentSender;Ljava/lang/String;ZI)V
-    .registers 6
+    .registers 9
+    .param p1, "context"  # Landroid/content/Context;
+    .param p2, "target"  # Landroid/content/IntentSender;
+    .param p3, "packageName"  # Ljava/lang/String;
+    .param p4, "showNotification"  # Z
+    .param p5, "userId"  # I
 
-    .line 949
+    .line 946
     invoke-direct {p0}, Landroid/app/PackageDeleteObserver;-><init>()V
 
-    .line 950
+    .line 947
     iput-object p1, p0, Lcom/android/server/pm/PackageInstallerService$PackageDeleteObserverAdapter;->mContext:Landroid/content/Context;
 
-    .line 951
+    .line 948
     iput-object p2, p0, Lcom/android/server/pm/PackageInstallerService$PackageDeleteObserverAdapter;->mTarget:Landroid/content/IntentSender;
 
-    .line 952
+    .line 949
     iput-object p3, p0, Lcom/android/server/pm/PackageInstallerService$PackageDeleteObserverAdapter;->mPackageName:Ljava/lang/String;
 
-    .line 953
+    .line 950
     if-eqz p4, :cond_1f
 
-    .line 954
-    iget-object p1, p0, Lcom/android/server/pm/PackageInstallerService$PackageDeleteObserverAdapter;->mContext:Landroid/content/Context;
+    .line 951
+    iget-object v0, p0, Lcom/android/server/pm/PackageInstallerService$PackageDeleteObserverAdapter;->mContext:Landroid/content/Context;
 
-    .line 955
-    invoke-virtual {p1}, Landroid/content/Context;->getResources()Landroid/content/res/Resources;
+    .line 952
+    invoke-virtual {v0}, Landroid/content/Context;->getResources()Landroid/content/res/Resources;
 
-    move-result-object p2
+    move-result-object v1
 
-    const p4, 0x104049f
+    const v2, 0x104049d
 
-    invoke-virtual {p2, p4}, Landroid/content/res/Resources;->getString(I)Ljava/lang/String;
+    invoke-virtual {v1, v2}, Landroid/content/res/Resources;->getString(I)Ljava/lang/String;
 
-    move-result-object p2
+    move-result-object v1
 
-    .line 954
-    invoke-static {p1, p2, p3, p5}, Lcom/android/server/pm/PackageInstallerService;->access$300(Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;I)Landroid/app/Notification;
+    .line 951
+    invoke-static {v0, v1, p3, p5}, Lcom/android/server/pm/PackageInstallerService;->access$300(Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;I)Landroid/app/Notification;
 
-    move-result-object p1
+    move-result-object v0
 
-    iput-object p1, p0, Lcom/android/server/pm/PackageInstallerService$PackageDeleteObserverAdapter;->mNotification:Landroid/app/Notification;
+    iput-object v0, p0, Lcom/android/server/pm/PackageInstallerService$PackageDeleteObserverAdapter;->mNotification:Landroid/app/Notification;
 
     goto :goto_22
 
-    .line 959
+    .line 956
     :cond_1f
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    iput-object p1, p0, Lcom/android/server/pm/PackageInstallerService$PackageDeleteObserverAdapter;->mNotification:Landroid/app/Notification;
+    iput-object v0, p0, Lcom/android/server/pm/PackageInstallerService$PackageDeleteObserverAdapter;->mNotification:Landroid/app/Notification;
 
-    .line 961
+    .line 958
     :goto_22
     return-void
 .end method
@@ -80,9 +85,12 @@
 
 # virtual methods
 .method public onPackageDeleted(Ljava/lang/String;ILjava/lang/String;)V
-    .registers 10
+    .registers 11
+    .param p1, "basePackageName"  # Ljava/lang/String;
+    .param p2, "returnCode"  # I
+    .param p3, "msg"  # Ljava/lang/String;
 
-    .line 981
+    .line 978
     const/4 v0, 0x1
 
     if-ne v0, p2, :cond_19
@@ -91,10 +99,10 @@
 
     if-eqz v0, :cond_19
 
-    .line 982
+    .line 979
     iget-object v0, p0, Lcom/android/server/pm/PackageInstallerService$PackageDeleteObserverAdapter;->mContext:Landroid/content/Context;
 
-    .line 983
+    .line 980
     const-string/jumbo v1, "notification"
 
     invoke-virtual {v0, v1}, Landroid/content/Context;->getSystemService(Ljava/lang/String;)Ljava/lang/Object;
@@ -103,131 +111,138 @@
 
     check-cast v0, Landroid/app/NotificationManager;
 
-    .line 984
+    .line 981
+    .local v0, "notificationManager":Landroid/app/NotificationManager;
     const/16 v1, 0x15
 
     iget-object v2, p0, Lcom/android/server/pm/PackageInstallerService$PackageDeleteObserverAdapter;->mNotification:Landroid/app/Notification;
 
     invoke-virtual {v0, p1, v1, v2}, Landroid/app/NotificationManager;->notify(Ljava/lang/String;ILandroid/app/Notification;)V
 
-    .line 988
+    .line 985
+    .end local v0  # "notificationManager":Landroid/app/NotificationManager;
     :cond_19
-    iget-object p1, p0, Lcom/android/server/pm/PackageInstallerService$PackageDeleteObserverAdapter;->mTarget:Landroid/content/IntentSender;
-
-    if-nez p1, :cond_1e
-
-    .line 989
-    return-void
-
-    .line 991
-    :cond_1e
-    new-instance v3, Landroid/content/Intent;
-
-    invoke-direct {v3}, Landroid/content/Intent;-><init>()V
-
-    .line 992
-    iget-object p1, p0, Lcom/android/server/pm/PackageInstallerService$PackageDeleteObserverAdapter;->mPackageName:Ljava/lang/String;
-
-    const-string v0, "android.content.pm.extra.PACKAGE_NAME"
-
-    invoke-virtual {v3, v0, p1}, Landroid/content/Intent;->putExtra(Ljava/lang/String;Ljava/lang/String;)Landroid/content/Intent;
-
-    .line 993
-    nop
-
-    .line 994
-    invoke-static {p2}, Landroid/content/pm/PackageManager;->deleteStatusToPublicStatus(I)I
-
-    move-result p1
-
-    .line 993
-    const-string v0, "android.content.pm.extra.STATUS"
-
-    invoke-virtual {v3, v0, p1}, Landroid/content/Intent;->putExtra(Ljava/lang/String;I)Landroid/content/Intent;
-
-    .line 995
-    nop
-
-    .line 996
-    invoke-static {p2, p3}, Landroid/content/pm/PackageManager;->deleteStatusToString(ILjava/lang/String;)Ljava/lang/String;
-
-    move-result-object p1
-
-    .line 995
-    const-string p3, "android.content.pm.extra.STATUS_MESSAGE"
-
-    invoke-virtual {v3, p3, p1}, Landroid/content/Intent;->putExtra(Ljava/lang/String;Ljava/lang/String;)Landroid/content/Intent;
-
-    .line 997
-    const-string p1, "android.content.pm.extra.LEGACY_STATUS"
-
-    invoke-virtual {v3, p1, p2}, Landroid/content/Intent;->putExtra(Ljava/lang/String;I)Landroid/content/Intent;
-
-    .line 999
-    :try_start_43
     iget-object v0, p0, Lcom/android/server/pm/PackageInstallerService$PackageDeleteObserverAdapter;->mTarget:Landroid/content/IntentSender;
 
-    iget-object v1, p0, Lcom/android/server/pm/PackageInstallerService$PackageDeleteObserverAdapter;->mContext:Landroid/content/Context;
+    if-nez v0, :cond_1e
 
-    const/4 v2, 0x0
+    .line 986
+    return-void
 
-    const/4 v4, 0x0
+    .line 988
+    :cond_1e
+    new-instance v0, Landroid/content/Intent;
+
+    invoke-direct {v0}, Landroid/content/Intent;-><init>()V
+
+    .line 989
+    .local v0, "fillIn":Landroid/content/Intent;
+    iget-object v1, p0, Lcom/android/server/pm/PackageInstallerService$PackageDeleteObserverAdapter;->mPackageName:Ljava/lang/String;
+
+    const-string v2, "android.content.pm.extra.PACKAGE_NAME"
+
+    invoke-virtual {v0, v2, v1}, Landroid/content/Intent;->putExtra(Ljava/lang/String;Ljava/lang/String;)Landroid/content/Intent;
+
+    .line 990
+    nop
+
+    .line 991
+    invoke-static {p2}, Landroid/content/pm/PackageManager;->deleteStatusToPublicStatus(I)I
+
+    move-result v1
+
+    .line 990
+    const-string v2, "android.content.pm.extra.STATUS"
+
+    invoke-virtual {v0, v2, v1}, Landroid/content/Intent;->putExtra(Ljava/lang/String;I)Landroid/content/Intent;
+
+    .line 992
+    nop
+
+    .line 993
+    invoke-static {p2, p3}, Landroid/content/pm/PackageManager;->deleteStatusToString(ILjava/lang/String;)Ljava/lang/String;
+
+    move-result-object v1
+
+    .line 992
+    const-string v2, "android.content.pm.extra.STATUS_MESSAGE"
+
+    invoke-virtual {v0, v2, v1}, Landroid/content/Intent;->putExtra(Ljava/lang/String;Ljava/lang/String;)Landroid/content/Intent;
+
+    .line 994
+    const-string v1, "android.content.pm.extra.LEGACY_STATUS"
+
+    invoke-virtual {v0, v1, p2}, Landroid/content/Intent;->putExtra(Ljava/lang/String;I)Landroid/content/Intent;
+
+    .line 996
+    :try_start_43
+    iget-object v1, p0, Lcom/android/server/pm/PackageInstallerService$PackageDeleteObserverAdapter;->mTarget:Landroid/content/IntentSender;
+
+    iget-object v2, p0, Lcom/android/server/pm/PackageInstallerService$PackageDeleteObserverAdapter;->mContext:Landroid/content/Context;
+
+    const/4 v3, 0x0
 
     const/4 v5, 0x0
 
-    invoke-virtual/range {v0 .. v5}, Landroid/content/IntentSender;->sendIntent(Landroid/content/Context;ILandroid/content/Intent;Landroid/content/IntentSender$OnFinished;Landroid/os/Handler;)V
-    :try_end_4d
-    .catch Landroid/content/IntentSender$SendIntentException; {:try_start_43 .. :try_end_4d} :catch_4e
+    const/4 v6, 0x0
 
-    .line 1001
-    goto :goto_4f
+    move-object v4, v0
 
-    .line 1000
-    :catch_4e
-    move-exception p1
+    invoke-virtual/range {v1 .. v6}, Landroid/content/IntentSender;->sendIntent(Landroid/content/Context;ILandroid/content/Intent;Landroid/content/IntentSender$OnFinished;Landroid/os/Handler;)V
+    :try_end_4e
+    .catch Landroid/content/IntentSender$SendIntentException; {:try_start_43 .. :try_end_4e} :catch_4f
 
-    .line 1002
-    :goto_4f
+    .line 998
+    goto :goto_50
+
+    .line 997
+    :catch_4f
+    move-exception v1
+
+    .line 999
+    :goto_50
     return-void
 .end method
 
 .method public onUserActionRequired(Landroid/content/Intent;)V
     .registers 9
+    .param p1, "intent"  # Landroid/content/Intent;
 
-    .line 965
+    .line 962
     iget-object v0, p0, Lcom/android/server/pm/PackageInstallerService$PackageDeleteObserverAdapter;->mTarget:Landroid/content/IntentSender;
 
     if-nez v0, :cond_5
 
-    .line 966
+    .line 963
     return-void
 
-    .line 968
+    .line 965
     :cond_5
-    new-instance v4, Landroid/content/Intent;
+    new-instance v0, Landroid/content/Intent;
 
-    invoke-direct {v4}, Landroid/content/Intent;-><init>()V
+    invoke-direct {v0}, Landroid/content/Intent;-><init>()V
+
+    .line 966
+    .local v0, "fillIn":Landroid/content/Intent;
+    iget-object v1, p0, Lcom/android/server/pm/PackageInstallerService$PackageDeleteObserverAdapter;->mPackageName:Ljava/lang/String;
+
+    const-string v2, "android.content.pm.extra.PACKAGE_NAME"
+
+    invoke-virtual {v0, v2, v1}, Landroid/content/Intent;->putExtra(Ljava/lang/String;Ljava/lang/String;)Landroid/content/Intent;
+
+    .line 967
+    const/4 v1, -0x1
+
+    const-string v2, "android.content.pm.extra.STATUS"
+
+    invoke-virtual {v0, v2, v1}, Landroid/content/Intent;->putExtra(Ljava/lang/String;I)Landroid/content/Intent;
 
     .line 969
-    iget-object v0, p0, Lcom/android/server/pm/PackageInstallerService$PackageDeleteObserverAdapter;->mPackageName:Ljava/lang/String;
+    const-string v1, "android.intent.extra.INTENT"
 
-    const-string v1, "android.content.pm.extra.PACKAGE_NAME"
+    invoke-virtual {v0, v1, p1}, Landroid/content/Intent;->putExtra(Ljava/lang/String;Landroid/os/Parcelable;)Landroid/content/Intent;
 
-    invoke-virtual {v4, v1, v0}, Landroid/content/Intent;->putExtra(Ljava/lang/String;Ljava/lang/String;)Landroid/content/Intent;
-
-    .line 970
-    const/4 v0, -0x1
-
-    const-string v1, "android.content.pm.extra.STATUS"
-
-    invoke-virtual {v4, v1, v0}, Landroid/content/Intent;->putExtra(Ljava/lang/String;I)Landroid/content/Intent;
-
-    .line 972
-    const-string v0, "android.intent.extra.INTENT"
-
-    invoke-virtual {v4, v0, p1}, Landroid/content/Intent;->putExtra(Ljava/lang/String;Landroid/os/Parcelable;)Landroid/content/Intent;
-
-    .line 974
+    .line 971
     :try_start_1c
     iget-object v1, p0, Lcom/android/server/pm/PackageInstallerService$PackageDeleteObserverAdapter;->mTarget:Landroid/content/IntentSender;
 
@@ -239,18 +254,20 @@
 
     const/4 v6, 0x0
 
+    move-object v4, v0
+
     invoke-virtual/range {v1 .. v6}, Landroid/content/IntentSender;->sendIntent(Landroid/content/Context;ILandroid/content/Intent;Landroid/content/IntentSender$OnFinished;Landroid/os/Handler;)V
-    :try_end_26
-    .catch Landroid/content/IntentSender$SendIntentException; {:try_start_1c .. :try_end_26} :catch_27
+    :try_end_27
+    .catch Landroid/content/IntentSender$SendIntentException; {:try_start_1c .. :try_end_27} :catch_28
 
-    .line 976
-    goto :goto_28
+    .line 973
+    goto :goto_29
 
-    .line 975
-    :catch_27
-    move-exception p1
+    .line 972
+    :catch_28
+    move-exception v1
 
-    .line 977
-    :goto_28
+    .line 974
+    :goto_29
     return-void
 .end method

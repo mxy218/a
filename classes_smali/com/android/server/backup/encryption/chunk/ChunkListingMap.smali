@@ -38,6 +38,7 @@
     .end annotation
 
     .line 63
+    .local p1, "chunksByHash":Ljava/util/Map;, "Ljava/util/Map<Lcom/android/server/backup/encryption/chunk/ChunkHash;Lcom/android/server/backup/encryption/chunk/ChunkListingMap$Entry;>;"
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
     .line 64
@@ -47,9 +48,9 @@
 
     invoke-static {v0}, Ljava/util/Collections;->unmodifiableMap(Ljava/util/Map;)Ljava/util/Map;
 
-    move-result-object p1
+    move-result-object v0
 
-    iput-object p1, p0, Lcom/android/server/backup/encryption/chunk/ChunkListingMap;->mChunksByHash:Ljava/util/Map;
+    iput-object v0, p0, Lcom/android/server/backup/encryption/chunk/ChunkListingMap;->mChunksByHash:Ljava/util/Map;
 
     .line 65
     return-void
@@ -57,6 +58,7 @@
 
 .method public static readFromProto(Landroid/util/proto/ProtoInputStream;)Lcom/android/server/backup/encryption/chunk/ChunkListingMap;
     .registers 11
+    .param p0, "inputStream"  # Landroid/util/proto/ProtoInputStream;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Ljava/io/IOException;
@@ -69,9 +71,11 @@
     invoke-direct {v0}, Ljava/util/HashMap;-><init>()V
 
     .line 46
+    .local v0, "entries":Ljava/util/Map;, "Ljava/util/Map<Lcom/android/server/backup/encryption/chunk/ChunkHash;Lcom/android/server/backup/encryption/chunk/ChunkListingMap$Entry;>;"
     const-wide/16 v1, 0x0
 
     .line 48
+    .local v1, "start":J
     :cond_7
     :goto_7
     invoke-virtual {p0}, Landroid/util/proto/ProtoInputStream;->nextField()I
@@ -99,11 +103,13 @@
     move-result-wide v3
 
     .line 51
+    .local v3, "chunkToken":J
     invoke-static {p0}, Lcom/android/server/backup/encryption/chunk/Chunk;->readFromProto(Landroid/util/proto/ProtoInputStream;)Lcom/android/server/backup/encryption/chunk/Chunk;
 
     move-result-object v5
 
     .line 52
+    .local v5, "chunk":Lcom/android/server/backup/encryption/chunk/Chunk;
     new-instance v6, Lcom/android/server/backup/encryption/chunk/ChunkHash;
 
     invoke-virtual {v5}, Lcom/android/server/backup/encryption/chunk/Chunk;->getHash()[B
@@ -127,25 +133,27 @@
     .line 53
     invoke-virtual {v5}, Lcom/android/server/backup/encryption/chunk/Chunk;->getLength()I
 
-    move-result v5
+    move-result v6
 
-    int-to-long v5, v5
+    int-to-long v6, v6
 
-    add-long/2addr v1, v5
+    add-long/2addr v1, v6
 
     .line 54
     invoke-virtual {p0, v3, v4}, Landroid/util/proto/ProtoInputStream;->end(J)V
 
     .line 55
+    .end local v3  # "chunkToken":J
+    .end local v5  # "chunk":Lcom/android/server/backup/encryption/chunk/Chunk;
     goto :goto_7
 
     .line 58
     :cond_42
-    new-instance p0, Lcom/android/server/backup/encryption/chunk/ChunkListingMap;
+    new-instance v3, Lcom/android/server/backup/encryption/chunk/ChunkListingMap;
 
-    invoke-direct {p0, v0}, Lcom/android/server/backup/encryption/chunk/ChunkListingMap;-><init>(Ljava/util/Map;)V
+    invoke-direct {v3, v0}, Lcom/android/server/backup/encryption/chunk/ChunkListingMap;-><init>(Ljava/util/Map;)V
 
-    return-object p0
+    return-object v3
 .end method
 
 
@@ -165,28 +173,30 @@
 
 .method public getChunkEntry(Lcom/android/server/backup/encryption/chunk/ChunkHash;)Lcom/android/server/backup/encryption/chunk/ChunkListingMap$Entry;
     .registers 3
+    .param p1, "hash"  # Lcom/android/server/backup/encryption/chunk/ChunkHash;
 
     .line 81
     iget-object v0, p0, Lcom/android/server/backup/encryption/chunk/ChunkListingMap;->mChunksByHash:Ljava/util/Map;
 
     invoke-interface {v0, p1}, Ljava/util/Map;->get(Ljava/lang/Object;)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v0
 
-    check-cast p1, Lcom/android/server/backup/encryption/chunk/ChunkListingMap$Entry;
+    check-cast v0, Lcom/android/server/backup/encryption/chunk/ChunkListingMap$Entry;
 
-    return-object p1
+    return-object v0
 .end method
 
 .method public hasChunk(Lcom/android/server/backup/encryption/chunk/ChunkHash;)Z
     .registers 3
+    .param p1, "hash"  # Lcom/android/server/backup/encryption/chunk/ChunkHash;
 
     .line 69
     iget-object v0, p0, Lcom/android/server/backup/encryption/chunk/ChunkListingMap;->mChunksByHash:Ljava/util/Map;
 
     invoke-interface {v0, p1}, Ljava/util/Map;->containsKey(Ljava/lang/Object;)Z
 
-    move-result p1
+    move-result v0
 
-    return p1
+    return v0
 .end method

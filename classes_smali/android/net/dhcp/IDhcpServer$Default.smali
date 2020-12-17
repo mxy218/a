@@ -49,6 +49,7 @@
 
 .method public start(Landroid/net/INetworkStackStatusCallback;)V
     .registers 2
+    .param p1, "cb"  # Landroid/net/INetworkStackStatusCallback;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -61,6 +62,7 @@
 
 .method public stop(Landroid/net/INetworkStackStatusCallback;)V
     .registers 2
+    .param p1, "cb"  # Landroid/net/INetworkStackStatusCallback;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -73,6 +75,8 @@
 
 .method public updateParams(Landroid/net/dhcp/DhcpServingParamsParcel;Landroid/net/INetworkStackStatusCallback;)V
     .registers 3
+    .param p1, "params"  # Landroid/net/dhcp/DhcpServingParamsParcel;
+    .param p2, "cb"  # Landroid/net/INetworkStackStatusCallback;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;

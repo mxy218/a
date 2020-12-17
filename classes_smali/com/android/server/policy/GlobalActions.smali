@@ -36,7 +36,9 @@
 
 # direct methods
 .method public constructor <init>(Landroid/content/Context;Lcom/android/server/policy/WindowManagerPolicy$WindowManagerFuncs;)V
-    .registers 4
+    .registers 5
+    .param p1, "context"  # Landroid/content/Context;
+    .param p2, "windowManagerFuncs"  # Lcom/android/server/policy/WindowManagerPolicy$WindowManagerFuncs;
 
     .line 40
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -52,43 +54,43 @@
     iput-object p1, p0, Lcom/android/server/policy/GlobalActions;->mContext:Landroid/content/Context;
 
     .line 42
-    new-instance p1, Landroid/os/Handler;
+    new-instance v0, Landroid/os/Handler;
 
-    invoke-direct {p1}, Landroid/os/Handler;-><init>()V
+    invoke-direct {v0}, Landroid/os/Handler;-><init>()V
 
-    iput-object p1, p0, Lcom/android/server/policy/GlobalActions;->mHandler:Landroid/os/Handler;
+    iput-object v0, p0, Lcom/android/server/policy/GlobalActions;->mHandler:Landroid/os/Handler;
 
     .line 43
     iput-object p2, p0, Lcom/android/server/policy/GlobalActions;->mWindowManagerFuncs:Lcom/android/server/policy/WindowManagerPolicy$WindowManagerFuncs;
 
     .line 45
-    const-class p1, Lcom/android/server/policy/GlobalActionsProvider;
+    const-class v0, Lcom/android/server/policy/GlobalActionsProvider;
 
-    invoke-static {p1}, Lcom/android/server/LocalServices;->getService(Ljava/lang/Class;)Ljava/lang/Object;
+    invoke-static {v0}, Lcom/android/server/LocalServices;->getService(Ljava/lang/Class;)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v0
 
-    check-cast p1, Lcom/android/server/policy/GlobalActionsProvider;
+    check-cast v0, Lcom/android/server/policy/GlobalActionsProvider;
 
-    iput-object p1, p0, Lcom/android/server/policy/GlobalActions;->mGlobalActionsProvider:Lcom/android/server/policy/GlobalActionsProvider;
+    iput-object v0, p0, Lcom/android/server/policy/GlobalActions;->mGlobalActionsProvider:Lcom/android/server/policy/GlobalActionsProvider;
 
     .line 46
-    iget-object p1, p0, Lcom/android/server/policy/GlobalActions;->mGlobalActionsProvider:Lcom/android/server/policy/GlobalActionsProvider;
+    iget-object v0, p0, Lcom/android/server/policy/GlobalActions;->mGlobalActionsProvider:Lcom/android/server/policy/GlobalActionsProvider;
 
-    if-eqz p1, :cond_27
+    if-eqz v0, :cond_27
 
     .line 47
-    invoke-interface {p1, p0}, Lcom/android/server/policy/GlobalActionsProvider;->setGlobalActionsListener(Lcom/android/server/policy/GlobalActionsProvider$GlobalActionsListener;)V
+    invoke-interface {v0, p0}, Lcom/android/server/policy/GlobalActionsProvider;->setGlobalActionsListener(Lcom/android/server/policy/GlobalActionsProvider$GlobalActionsListener;)V
 
     goto :goto_2e
 
     .line 49
     :cond_27
-    const-string p1, "GlobalActions"
+    const-string v0, "GlobalActions"
 
-    const-string p2, "No GlobalActionsProvider found, defaulting to LegacyGlobalActions"
+    const-string v1, "No GlobalActionsProvider found, defaulting to LegacyGlobalActions"
 
-    invoke-static {p1, p2}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v0, v1}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 51
     :goto_2e
@@ -97,6 +99,7 @@
 
 .method static synthetic access$000(Lcom/android/server/policy/GlobalActions;)V
     .registers 1
+    .param p0, "x0"  # Lcom/android/server/policy/GlobalActions;
 
     .line 25
     invoke-direct {p0}, Lcom/android/server/policy/GlobalActions;->ensureLegacyCreated()V
@@ -105,30 +108,33 @@
 .end method
 
 .method static synthetic access$100(Lcom/android/server/policy/GlobalActions;)Z
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/policy/GlobalActions;
 
     .line 25
-    iget-boolean p0, p0, Lcom/android/server/policy/GlobalActions;->mKeyguardShowing:Z
+    iget-boolean v0, p0, Lcom/android/server/policy/GlobalActions;->mKeyguardShowing:Z
 
-    return p0
+    return v0
 .end method
 
 .method static synthetic access$200(Lcom/android/server/policy/GlobalActions;)Z
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/policy/GlobalActions;
 
     .line 25
-    iget-boolean p0, p0, Lcom/android/server/policy/GlobalActions;->mDeviceProvisioned:Z
+    iget-boolean v0, p0, Lcom/android/server/policy/GlobalActions;->mDeviceProvisioned:Z
 
-    return p0
+    return v0
 .end method
 
 .method static synthetic access$300(Lcom/android/server/policy/GlobalActions;)Lcom/android/server/policy/LegacyGlobalActions;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/policy/GlobalActions;
 
     .line 25
-    iget-object p0, p0, Lcom/android/server/policy/GlobalActions;->mLegacyGlobalActions:Lcom/android/server/policy/LegacyGlobalActions;
+    iget-object v0, p0, Lcom/android/server/policy/GlobalActions;->mLegacyGlobalActions:Lcom/android/server/policy/LegacyGlobalActions;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method private ensureLegacyCreated()V
@@ -164,31 +170,32 @@
 
 # virtual methods
 .method public onGlobalActionsAvailableChanged(Z)V
-    .registers 4
+    .registers 5
+    .param p1, "available"  # Z
 
     .line 93
     iput-boolean p1, p0, Lcom/android/server/policy/GlobalActions;->mGlobalActionsAvailable:Z
 
     .line 94
-    iget-boolean p1, p0, Lcom/android/server/policy/GlobalActions;->mShowing:Z
+    iget-boolean v0, p0, Lcom/android/server/policy/GlobalActions;->mShowing:Z
 
-    if-eqz p1, :cond_16
+    if-eqz v0, :cond_16
 
-    iget-boolean p1, p0, Lcom/android/server/policy/GlobalActions;->mGlobalActionsAvailable:Z
+    iget-boolean v0, p0, Lcom/android/server/policy/GlobalActions;->mGlobalActionsAvailable:Z
 
-    if-nez p1, :cond_16
+    if-nez v0, :cond_16
 
     .line 97
     invoke-direct {p0}, Lcom/android/server/policy/GlobalActions;->ensureLegacyCreated()V
 
     .line 98
-    iget-object p1, p0, Lcom/android/server/policy/GlobalActions;->mLegacyGlobalActions:Lcom/android/server/policy/LegacyGlobalActions;
+    iget-object v0, p0, Lcom/android/server/policy/GlobalActions;->mLegacyGlobalActions:Lcom/android/server/policy/LegacyGlobalActions;
 
-    iget-boolean v0, p0, Lcom/android/server/policy/GlobalActions;->mKeyguardShowing:Z
+    iget-boolean v1, p0, Lcom/android/server/policy/GlobalActions;->mKeyguardShowing:Z
 
-    iget-boolean v1, p0, Lcom/android/server/policy/GlobalActions;->mDeviceProvisioned:Z
+    iget-boolean v2, p0, Lcom/android/server/policy/GlobalActions;->mDeviceProvisioned:Z
 
-    invoke-virtual {p1, v0, v1}, Lcom/android/server/policy/LegacyGlobalActions;->showDialog(ZZ)V
+    invoke-virtual {v0, v1, v2}, Lcom/android/server/policy/LegacyGlobalActions;->showDialog(ZZ)V
 
     .line 100
     :cond_16
@@ -222,7 +229,9 @@
 .end method
 
 .method public showDialog(ZZ)V
-    .registers 5
+    .registers 7
+    .param p1, "keyguardShowing"  # Z
+    .param p2, "deviceProvisioned"  # Z
 
     .line 61
     iget-object v0, p0, Lcom/android/server/policy/GlobalActions;->mGlobalActionsProvider:Lcom/android/server/policy/GlobalActionsProvider;
@@ -246,28 +255,28 @@
     iput-boolean p2, p0, Lcom/android/server/policy/GlobalActions;->mDeviceProvisioned:Z
 
     .line 66
-    const/4 p1, 0x1
+    const/4 v0, 0x1
 
-    iput-boolean p1, p0, Lcom/android/server/policy/GlobalActions;->mShowing:Z
+    iput-boolean v0, p0, Lcom/android/server/policy/GlobalActions;->mShowing:Z
 
     .line 67
-    iget-boolean p1, p0, Lcom/android/server/policy/GlobalActions;->mGlobalActionsAvailable:Z
+    iget-boolean v0, p0, Lcom/android/server/policy/GlobalActions;->mGlobalActionsAvailable:Z
 
-    if-eqz p1, :cond_25
+    if-eqz v0, :cond_25
 
     .line 68
-    iget-object p1, p0, Lcom/android/server/policy/GlobalActions;->mHandler:Landroid/os/Handler;
+    iget-object v0, p0, Lcom/android/server/policy/GlobalActions;->mHandler:Landroid/os/Handler;
 
-    iget-object p2, p0, Lcom/android/server/policy/GlobalActions;->mShowTimeout:Ljava/lang/Runnable;
+    iget-object v1, p0, Lcom/android/server/policy/GlobalActions;->mShowTimeout:Ljava/lang/Runnable;
 
-    const-wide/16 v0, 0x1388
+    const-wide/16 v2, 0x1388
 
-    invoke-virtual {p1, p2, v0, v1}, Landroid/os/Handler;->postDelayed(Ljava/lang/Runnable;J)Z
+    invoke-virtual {v0, v1, v2, v3}, Landroid/os/Handler;->postDelayed(Ljava/lang/Runnable;J)Z
 
     .line 69
-    iget-object p1, p0, Lcom/android/server/policy/GlobalActions;->mGlobalActionsProvider:Lcom/android/server/policy/GlobalActionsProvider;
+    iget-object v0, p0, Lcom/android/server/policy/GlobalActions;->mGlobalActionsProvider:Lcom/android/server/policy/GlobalActionsProvider;
 
-    invoke-interface {p1}, Lcom/android/server/policy/GlobalActionsProvider;->showGlobalActions()V
+    invoke-interface {v0}, Lcom/android/server/policy/GlobalActionsProvider;->showGlobalActions()V
 
     goto :goto_31
 
@@ -276,13 +285,13 @@
     invoke-direct {p0}, Lcom/android/server/policy/GlobalActions;->ensureLegacyCreated()V
 
     .line 73
-    iget-object p1, p0, Lcom/android/server/policy/GlobalActions;->mLegacyGlobalActions:Lcom/android/server/policy/LegacyGlobalActions;
+    iget-object v0, p0, Lcom/android/server/policy/GlobalActions;->mLegacyGlobalActions:Lcom/android/server/policy/LegacyGlobalActions;
 
-    iget-boolean p2, p0, Lcom/android/server/policy/GlobalActions;->mKeyguardShowing:Z
+    iget-boolean v1, p0, Lcom/android/server/policy/GlobalActions;->mKeyguardShowing:Z
 
-    iget-boolean v0, p0, Lcom/android/server/policy/GlobalActions;->mDeviceProvisioned:Z
+    iget-boolean v2, p0, Lcom/android/server/policy/GlobalActions;->mDeviceProvisioned:Z
 
-    invoke-virtual {p1, p2, v0}, Lcom/android/server/policy/LegacyGlobalActions;->showDialog(ZZ)V
+    invoke-virtual {v0, v1, v2}, Lcom/android/server/policy/LegacyGlobalActions;->showDialog(ZZ)V
 
     .line 75
     :goto_31

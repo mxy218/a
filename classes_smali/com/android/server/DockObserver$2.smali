@@ -21,6 +21,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/DockObserver;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/DockObserver;
 
     .line 237
     iput-object p1, p0, Lcom/android/server/DockObserver$2;->this$0:Lcom/android/server/DockObserver;
@@ -34,6 +35,7 @@
 # virtual methods
 .method public onUEvent(Landroid/os/UEventObserver$UEvent;)V
     .registers 5
+    .param p1, "event"  # Landroid/os/UEventObserver$UEvent;
 
     .line 240
     const-string v0, "DockObserver"
@@ -112,35 +114,41 @@
     :try_end_3d
     .catchall {:try_start_2a .. :try_end_3d} :catchall_3b
 
+    .end local p0  # "this":Lcom/android/server/DockObserver$2;
+    .end local p1  # "event":Landroid/os/UEventObserver$UEvent;
     :try_start_3d
     throw v1
     :try_end_3e
     .catch Ljava/lang/NumberFormatException; {:try_start_3d .. :try_end_3e} :catch_3e
 
     .line 248
+    .restart local p0  # "this":Lcom/android/server/DockObserver$2;
+    .restart local p1  # "event":Landroid/os/UEventObserver$UEvent;
     :catch_3e
     move-exception v0
 
     .line 249
-    new-instance v0, Ljava/lang/StringBuilder;
+    .local v0, "e":Ljava/lang/NumberFormatException;
+    new-instance v1, Ljava/lang/StringBuilder;
 
-    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v1, "Could not parse switch state from event "
+    const-string v2, "Could not parse switch state from event "
 
-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v1
 
-    const-string v0, "DockObserver"
+    const-string v2, "DockObserver"
 
-    invoke-static {v0, p1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v2, v1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 251
+    .end local v0  # "e":Ljava/lang/NumberFormatException;
     :goto_55
     return-void
 .end method

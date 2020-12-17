@@ -26,15 +26,15 @@
     iput-object p1, p0, Lcom/android/server/policy/LegacyGlobalActions$SilentModeToggleAction;->this$0:Lcom/android/server/policy/LegacyGlobalActions;
 
     .line 636
-    const v1, 0x108031e
+    const v1, 0x108031c
 
-    const v2, 0x108031d
+    const v2, 0x108031b
 
-    const v3, 0x10402c5
+    const v3, 0x10402c1
 
-    const v4, 0x10402c4
+    const v4, 0x10402c0
 
-    const v5, 0x10402c3
+    const v5, 0x10402bf
 
     move-object v0, p0
 
@@ -47,35 +47,36 @@
 
 # virtual methods
 .method public onToggle(Z)V
-    .registers 3
+    .registers 4
+    .param p1, "on"  # Z
 
     .line 645
     if-eqz p1, :cond_d
 
     .line 646
-    iget-object p1, p0, Lcom/android/server/policy/LegacyGlobalActions$SilentModeToggleAction;->this$0:Lcom/android/server/policy/LegacyGlobalActions;
+    iget-object v0, p0, Lcom/android/server/policy/LegacyGlobalActions$SilentModeToggleAction;->this$0:Lcom/android/server/policy/LegacyGlobalActions;
 
-    invoke-static {p1}, Lcom/android/server/policy/LegacyGlobalActions;->access$800(Lcom/android/server/policy/LegacyGlobalActions;)Landroid/media/AudioManager;
+    invoke-static {v0}, Lcom/android/server/policy/LegacyGlobalActions;->access$800(Lcom/android/server/policy/LegacyGlobalActions;)Landroid/media/AudioManager;
 
-    move-result-object p1
+    move-result-object v0
 
-    const/4 v0, 0x0
+    const/4 v1, 0x0
 
-    invoke-virtual {p1, v0}, Landroid/media/AudioManager;->setRingerMode(I)V
+    invoke-virtual {v0, v1}, Landroid/media/AudioManager;->setRingerMode(I)V
 
     goto :goto_17
 
     .line 648
     :cond_d
-    iget-object p1, p0, Lcom/android/server/policy/LegacyGlobalActions$SilentModeToggleAction;->this$0:Lcom/android/server/policy/LegacyGlobalActions;
+    iget-object v0, p0, Lcom/android/server/policy/LegacyGlobalActions$SilentModeToggleAction;->this$0:Lcom/android/server/policy/LegacyGlobalActions;
 
-    invoke-static {p1}, Lcom/android/server/policy/LegacyGlobalActions;->access$800(Lcom/android/server/policy/LegacyGlobalActions;)Landroid/media/AudioManager;
+    invoke-static {v0}, Lcom/android/server/policy/LegacyGlobalActions;->access$800(Lcom/android/server/policy/LegacyGlobalActions;)Landroid/media/AudioManager;
 
-    move-result-object p1
+    move-result-object v0
 
-    const/4 v0, 0x2
+    const/4 v1, 0x2
 
-    invoke-virtual {p1, v0}, Landroid/media/AudioManager;->setRingerMode(I)V
+    invoke-virtual {v0, v1}, Landroid/media/AudioManager;->setRingerMode(I)V
 
     .line 650
     :goto_17

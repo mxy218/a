@@ -40,6 +40,8 @@
 
 .method synthetic constructor <init>(Lcom/android/server/role/RoleManagerShellCommand;Lcom/android/server/role/RoleManagerShellCommand$1;)V
     .registers 3
+    .param p1, "x0"  # Lcom/android/server/role/RoleManagerShellCommand;
+    .param p2, "x1"  # Lcom/android/server/role/RoleManagerShellCommand$1;
 
     .line 41
     invoke-direct {p0, p1}, Lcom/android/server/role/RoleManagerShellCommand$CallbackFuture;-><init>(Lcom/android/server/role/RoleManagerShellCommand;)V
@@ -65,38 +67,40 @@
 .end method
 
 .method public synthetic lambda$createCallback$0$RoleManagerShellCommand$CallbackFuture(Landroid/os/Bundle;)V
-    .registers 3
+    .registers 5
+    .param p1, "result"  # Landroid/os/Bundle;
 
     .line 46
     if-eqz p1, :cond_4
 
-    const/4 p1, 0x1
+    const/4 v0, 0x1
 
     goto :goto_5
 
     :cond_4
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
     .line 47
+    .local v0, "successful":Z
     :goto_5
-    if-eqz p1, :cond_c
+    if-eqz v0, :cond_c
 
     .line 48
-    const/4 p1, 0x0
+    const/4 v1, 0x0
 
-    invoke-virtual {p0, p1}, Lcom/android/server/role/RoleManagerShellCommand$CallbackFuture;->complete(Ljava/lang/Object;)Z
+    invoke-virtual {p0, v1}, Lcom/android/server/role/RoleManagerShellCommand$CallbackFuture;->complete(Ljava/lang/Object;)Z
 
     goto :goto_16
 
     .line 50
     :cond_c
-    new-instance p1, Ljava/lang/RuntimeException;
+    new-instance v1, Ljava/lang/RuntimeException;
 
-    const-string v0, "Failed"
+    const-string v2, "Failed"
 
-    invoke-direct {p1, v0}, Ljava/lang/RuntimeException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v1, v2}, Ljava/lang/RuntimeException;-><init>(Ljava/lang/String;)V
 
-    invoke-virtual {p0, p1}, Lcom/android/server/role/RoleManagerShellCommand$CallbackFuture;->completeExceptionally(Ljava/lang/Throwable;)Z
+    invoke-virtual {p0, v1}, Lcom/android/server/role/RoleManagerShellCommand$CallbackFuture;->completeExceptionally(Ljava/lang/Throwable;)Z
 
     .line 52
     :goto_16
@@ -126,6 +130,7 @@
     move-exception v0
 
     .line 60
+    .local v0, "e":Ljava/lang/Exception;
     iget-object v1, p0, Lcom/android/server/role/RoleManagerShellCommand$CallbackFuture;->this$0:Lcom/android/server/role/RoleManagerShellCommand;
 
     invoke-virtual {v1}, Lcom/android/server/role/RoleManagerShellCommand;->getErrPrintWriter()Ljava/io/PrintWriter;
@@ -143,19 +148,19 @@
     .line 61
     invoke-static {v0}, Landroid/util/Log;->getStackTraceString(Ljava/lang/Throwable;)Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v3
 
-    invoke-virtual {v2, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v2
 
     .line 60
-    invoke-virtual {v1, v0}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {v1, v2}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
     .line 62
-    const/4 v0, -0x1
+    const/4 v1, -0x1
 
-    return v0
+    return v1
 .end method

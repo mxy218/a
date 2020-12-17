@@ -33,8 +33,9 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/AlarmManagerService;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/AlarmManagerService;
 
-    .line 2721
+    .line 2859
     iput-object p1, p0, Lcom/android/server/AlarmManagerService$5;->this$0:Lcom/android/server/AlarmManagerService;
 
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -46,8 +47,10 @@
 # virtual methods
 .method public compare(Lcom/android/server/AlarmManagerService$FilterStats;Lcom/android/server/AlarmManagerService$FilterStats;)I
     .registers 7
+    .param p1, "lhs"  # Lcom/android/server/AlarmManagerService$FilterStats;
+    .param p2, "rhs"  # Lcom/android/server/AlarmManagerService$FilterStats;
 
-    .line 2724
+    .line 2862
     iget-wide v0, p1, Lcom/android/server/AlarmManagerService$FilterStats;->aggregateTime:J
 
     iget-wide v2, p2, Lcom/android/server/AlarmManagerService$FilterStats;->aggregateTime:J
@@ -56,37 +59,37 @@
 
     if-gez v0, :cond_a
 
-    .line 2725
-    const/4 p1, 0x1
+    .line 2863
+    const/4 v0, 0x1
 
-    return p1
+    return v0
 
-    .line 2726
+    .line 2864
     :cond_a
     iget-wide v0, p1, Lcom/android/server/AlarmManagerService$FilterStats;->aggregateTime:J
 
-    iget-wide p1, p2, Lcom/android/server/AlarmManagerService$FilterStats;->aggregateTime:J
+    iget-wide v2, p2, Lcom/android/server/AlarmManagerService$FilterStats;->aggregateTime:J
 
-    cmp-long p1, v0, p1
+    cmp-long v0, v0, v2
 
-    if-lez p1, :cond_14
+    if-lez v0, :cond_14
 
-    .line 2727
-    const/4 p1, -0x1
+    .line 2865
+    const/4 v0, -0x1
 
-    return p1
+    return v0
 
-    .line 2729
+    .line 2867
     :cond_14
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    return p1
+    return v0
 .end method
 
 .method public bridge synthetic compare(Ljava/lang/Object;Ljava/lang/Object;)I
     .registers 3
 
-    .line 2721
+    .line 2859
     check-cast p1, Lcom/android/server/AlarmManagerService$FilterStats;
 
     check-cast p2, Lcom/android/server/AlarmManagerService$FilterStats;

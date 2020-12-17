@@ -28,6 +28,9 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/broadcastradio/hal2/RadioModule;Landroid/hardware/broadcastradio/V2_0/ITunerSession;Landroid/hardware/radio/ITunerCallback;)V
     .registers 5
+    .param p1, "module"  # Lcom/android/server/broadcastradio/hal2/RadioModule;
+    .param p2, "hwSession"  # Landroid/hardware/broadcastradio/V2_0/ITunerSession;
+    .param p3, "callback"  # Landroid/hardware/radio/ITunerCallback;
 
     .line 54
     invoke-direct {p0}, Landroid/hardware/radio/ITuner$Stub;-><init>()V
@@ -55,29 +58,29 @@
     .line 55
     invoke-static {p1}, Ljava/util/Objects;->requireNonNull(Ljava/lang/Object;)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v0
 
-    check-cast p1, Lcom/android/server/broadcastradio/hal2/RadioModule;
+    check-cast v0, Lcom/android/server/broadcastradio/hal2/RadioModule;
 
-    iput-object p1, p0, Lcom/android/server/broadcastradio/hal2/TunerSession;->mModule:Lcom/android/server/broadcastradio/hal2/RadioModule;
+    iput-object v0, p0, Lcom/android/server/broadcastradio/hal2/TunerSession;->mModule:Lcom/android/server/broadcastradio/hal2/RadioModule;
 
     .line 56
     invoke-static {p2}, Ljava/util/Objects;->requireNonNull(Ljava/lang/Object;)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v0
 
-    check-cast p1, Landroid/hardware/broadcastradio/V2_0/ITunerSession;
+    check-cast v0, Landroid/hardware/broadcastradio/V2_0/ITunerSession;
 
-    iput-object p1, p0, Lcom/android/server/broadcastradio/hal2/TunerSession;->mHwSession:Landroid/hardware/broadcastradio/V2_0/ITunerSession;
+    iput-object v0, p0, Lcom/android/server/broadcastradio/hal2/TunerSession;->mHwSession:Landroid/hardware/broadcastradio/V2_0/ITunerSession;
 
     .line 57
     invoke-static {p3}, Ljava/util/Objects;->requireNonNull(Ljava/lang/Object;)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v0
 
-    check-cast p1, Landroid/hardware/radio/ITunerCallback;
+    check-cast v0, Landroid/hardware/radio/ITunerCallback;
 
-    iput-object p1, p0, Lcom/android/server/broadcastradio/hal2/TunerSession;->mCallback:Landroid/hardware/radio/ITunerCallback;
+    iput-object v0, p0, Lcom/android/server/broadcastradio/hal2/TunerSession;->mCallback:Landroid/hardware/radio/ITunerCallback;
 
     .line 58
     return-void
@@ -107,6 +110,10 @@
 
 .method static synthetic lambda$isConfigFlagSet$2(Landroid/util/MutableInt;Landroid/util/MutableBoolean;IZ)V
     .registers 4
+    .param p0, "halResult"  # Landroid/util/MutableInt;
+    .param p1, "flagState"  # Landroid/util/MutableBoolean;
+    .param p2, "result"  # I
+    .param p3, "value"  # Z
 
     .line 225
     iput p2, p0, Landroid/util/MutableInt;->value:I
@@ -120,6 +127,8 @@
 
 .method static synthetic lambda$setConfiguration$0(Landroid/hardware/radio/RadioManager$BandConfig;Landroid/hardware/radio/ITunerCallback;)V
     .registers 2
+    .param p0, "config"  # Landroid/hardware/radio/RadioManager$BandConfig;
+    .param p1, "cb"  # Landroid/hardware/radio/ITunerCallback;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -134,6 +143,7 @@
 
 .method static synthetic lambda$startBackgroundScan$1(Landroid/hardware/radio/ITunerCallback;)V
     .registers 1
+    .param p0, "cb"  # Landroid/hardware/radio/ITunerCallback;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -215,7 +225,8 @@
 .end method
 
 .method public close(Ljava/lang/Integer;)V
-    .registers 5
+    .registers 6
+    .param p1, "error"  # Ljava/lang/Integer;
 
     .line 73
     iget-object v0, p0, Lcom/android/server/broadcastradio/hal2/TunerSession;->mLock:Ljava/lang/Object;
@@ -230,13 +241,13 @@
 
     monitor-exit v0
     :try_end_8
-    .catchall {:try_start_3 .. :try_end_8} :catchall_27
+    .catchall {:try_start_3 .. :try_end_8} :catchall_28
 
     return-void
 
     .line 75
     :cond_9
-    if-eqz p1, :cond_1d
+    if-eqz p1, :cond_1e
 
     .line 77
     :try_start_b
@@ -244,39 +255,41 @@
 
     invoke-virtual {p1}, Ljava/lang/Integer;->intValue()I
 
-    move-result p1
+    move-result v2
 
-    invoke-interface {v1, p1}, Landroid/hardware/radio/ITunerCallback;->onError(I)V
+    invoke-interface {v1, v2}, Landroid/hardware/radio/ITunerCallback;->onError(I)V
     :try_end_14
     .catch Landroid/os/RemoteException; {:try_start_b .. :try_end_14} :catch_15
-    .catchall {:try_start_b .. :try_end_14} :catchall_27
+    .catchall {:try_start_b .. :try_end_14} :catchall_28
 
     .line 80
-    goto :goto_1d
+    goto :goto_1e
 
     .line 78
     :catch_15
-    move-exception p1
+    move-exception v1
 
     .line 79
+    .local v1, "ex":Landroid/os/RemoteException;
     :try_start_16
-    const-string v1, "BcRadio2Srv.session"
+    const-string v2, "BcRadio2Srv.session"
 
-    const-string v2, "mCallback.onError() failed: "
+    const-string/jumbo v3, "mCallback.onError() failed: "
 
-    invoke-static {v1, v2, p1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    invoke-static {v2, v3, v1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
     .line 82
-    :cond_1d
-    :goto_1d
-    const/4 p1, 0x1
+    .end local v1  # "ex":Landroid/os/RemoteException;
+    :cond_1e
+    :goto_1e
+    const/4 v1, 0x1
 
-    iput-boolean p1, p0, Lcom/android/server/broadcastradio/hal2/TunerSession;->mIsClosed:Z
+    iput-boolean v1, p0, Lcom/android/server/broadcastradio/hal2/TunerSession;->mIsClosed:Z
 
     .line 83
-    iget-object p1, p0, Lcom/android/server/broadcastradio/hal2/TunerSession;->mModule:Lcom/android/server/broadcastradio/hal2/RadioModule;
+    iget-object v1, p0, Lcom/android/server/broadcastradio/hal2/TunerSession;->mModule:Lcom/android/server/broadcastradio/hal2/RadioModule;
 
-    invoke-virtual {p1, p0}, Lcom/android/server/broadcastradio/hal2/RadioModule;->onTunerSessionClosed(Lcom/android/server/broadcastradio/hal2/TunerSession;)V
+    invoke-virtual {v1, p0}, Lcom/android/server/broadcastradio/hal2/RadioModule;->onTunerSessionClosed(Lcom/android/server/broadcastradio/hal2/TunerSession;)V
 
     .line 84
     monitor-exit v0
@@ -285,14 +298,14 @@
     return-void
 
     .line 84
-    :catchall_27
-    move-exception p1
+    :catchall_28
+    move-exception v1
 
     monitor-exit v0
-    :try_end_29
-    .catchall {:try_start_16 .. :try_end_29} :catchall_27
+    :try_end_2a
+    .catchall {:try_start_16 .. :try_end_2a} :catchall_28
 
-    throw p1
+    throw v1
 .end method
 
 .method public getConfiguration()Landroid/hardware/radio/RadioManager$BandConfig;
@@ -327,15 +340,16 @@
 
 .method public getImage(I)Landroid/graphics/Bitmap;
     .registers 3
+    .param p1, "id"  # I
 
     .line 176
     iget-object v0, p0, Lcom/android/server/broadcastradio/hal2/TunerSession;->mModule:Lcom/android/server/broadcastradio/hal2/RadioModule;
 
     invoke-virtual {v0, p1}, Lcom/android/server/broadcastradio/hal2/RadioModule;->getImage(I)Landroid/graphics/Bitmap;
 
-    move-result-object p1
+    move-result-object v0
 
-    return-object p1
+    return-object v0
 .end method
 
 .method public getParameters(Ljava/util/List;)Ljava/util/Map;
@@ -351,6 +365,7 @@
     .end annotation
 
     .line 258
+    .local p1, "keys":Ljava/util/List;, "Ljava/util/List<Ljava/lang/String;>;"
     iget-object v0, p0, Lcom/android/server/broadcastradio/hal2/TunerSession;->mLock:Ljava/lang/Object;
 
     monitor-enter v0
@@ -366,27 +381,27 @@
 
     invoke-static {v1}, Lcom/android/server/broadcastradio/hal2/Utils;->maybeRethrow(Lcom/android/server/broadcastradio/hal2/Utils$FuncThrowingRemoteException;)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v1
 
-    check-cast p1, Ljava/util/List;
+    check-cast v1, Ljava/util/List;
 
-    invoke-static {p1}, Lcom/android/server/broadcastradio/hal2/Convert;->vendorInfoFromHal(Ljava/util/List;)Ljava/util/Map;
+    invoke-static {v1}, Lcom/android/server/broadcastradio/hal2/Convert;->vendorInfoFromHal(Ljava/util/List;)Ljava/util/Map;
 
-    move-result-object p1
+    move-result-object v1
 
     monitor-exit v0
 
-    return-object p1
+    return-object v1
 
     .line 262
     :catchall_17
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_19
     .catchall {:try_start_3 .. :try_end_19} :catchall_17
 
-    throw p1
+    throw v1
 .end method
 
 .method public isClosed()Z
@@ -399,14 +414,15 @@
 .end method
 
 .method public isConfigFlagSet(I)Z
-    .registers 7
+    .registers 9
+    .param p1, "flag"  # I
 
     .line 217
     new-instance v0, Ljava/lang/StringBuilder;
 
     invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v1, "isConfigFlagSet "
+    const-string/jumbo v1, "isConfigFlagSet "
 
     invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
@@ -430,7 +446,7 @@
     monitor-enter v0
 
     .line 219
-    :try_start_1d
+    :try_start_1e
     invoke-direct {p0}, Lcom/android/server/broadcastradio/hal2/TunerSession;->checkNotClosedLocked()V
 
     .line 221
@@ -441,16 +457,18 @@
     invoke-direct {v1, v2}, Landroid/util/MutableInt;-><init>(I)V
 
     .line 222
+    .local v1, "halResult":Landroid/util/MutableInt;
     new-instance v2, Landroid/util/MutableBoolean;
 
     const/4 v3, 0x0
 
     invoke-direct {v2, v3}, Landroid/util/MutableBoolean;-><init>(Z)V
-    :try_end_2c
-    .catchall {:try_start_1d .. :try_end_2c} :catchall_5e
+    :try_end_2d
+    .catchall {:try_start_1e .. :try_end_2d} :catchall_60
 
     .line 224
-    :try_start_2c
+    .local v2, "flagState":Landroid/util/MutableBoolean;
+    :try_start_2d
     iget-object v3, p0, Lcom/android/server/broadcastradio/hal2/TunerSession;->mHwSession:Landroid/hardware/broadcastradio/V2_0/ITunerSession;
 
     new-instance v4, Lcom/android/server/broadcastradio/hal2/-$$Lambda$TunerSession$ypybq6SvfCU67BzHDgrQ7oDdspw;
@@ -458,70 +476,79 @@
     invoke-direct {v4, v1, v2}, Lcom/android/server/broadcastradio/hal2/-$$Lambda$TunerSession$ypybq6SvfCU67BzHDgrQ7oDdspw;-><init>(Landroid/util/MutableInt;Landroid/util/MutableBoolean;)V
 
     invoke-interface {v3, p1, v4}, Landroid/hardware/broadcastradio/V2_0/ITunerSession;->isConfigFlagSet(ILandroid/hardware/broadcastradio/V2_0/ITunerSession$isConfigFlagSetCallback;)V
-    :try_end_36
-    .catch Landroid/os/RemoteException; {:try_start_2c .. :try_end_36} :catch_42
-    .catchall {:try_start_2c .. :try_end_36} :catchall_5e
+    :try_end_37
+    .catch Landroid/os/RemoteException; {:try_start_2d .. :try_end_37} :catch_44
+    .catchall {:try_start_2d .. :try_end_37} :catchall_60
 
     .line 230
     nop
 
     .line 231
-    :try_start_37
-    const-string p1, "isConfigFlagSet"
+    :try_start_38
+    const-string/jumbo v3, "isConfigFlagSet"
 
-    iget v1, v1, Landroid/util/MutableInt;->value:I
+    iget v4, v1, Landroid/util/MutableInt;->value:I
 
-    invoke-static {p1, v1}, Lcom/android/server/broadcastradio/hal2/Convert;->throwOnError(Ljava/lang/String;I)V
+    invoke-static {v3, v4}, Lcom/android/server/broadcastradio/hal2/Convert;->throwOnError(Ljava/lang/String;I)V
 
     .line 233
-    iget-boolean p1, v2, Landroid/util/MutableBoolean;->value:Z
+    iget-boolean v3, v2, Landroid/util/MutableBoolean;->value:Z
 
     monitor-exit v0
 
-    return p1
+    return v3
 
     .line 228
-    :catch_42
-    move-exception v1
+    :catch_44
+    move-exception v3
 
     .line 229
-    new-instance v2, Ljava/lang/RuntimeException;
+    .local v3, "ex":Landroid/os/RemoteException;
+    new-instance v4, Ljava/lang/RuntimeException;
 
-    new-instance v3, Ljava/lang/StringBuilder;
+    new-instance v5, Ljava/lang/StringBuilder;
 
-    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v5}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v4, "Failed to check flag "
+    const-string v6, "Failed to check flag "
 
-    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-static {p1}, Landroid/hardware/broadcastradio/V2_0/ConfigFlag;->toString(I)Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v6
 
-    invoke-virtual {v3, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v5}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v5
 
-    invoke-direct {v2, p1, v1}, Ljava/lang/RuntimeException;-><init>(Ljava/lang/String;Ljava/lang/Throwable;)V
+    invoke-direct {v4, v5, v3}, Ljava/lang/RuntimeException;-><init>(Ljava/lang/String;Ljava/lang/Throwable;)V
 
-    throw v2
+    .end local p0  # "this":Lcom/android/server/broadcastradio/hal2/TunerSession;
+    .end local p1  # "flag":I
+    throw v4
 
     .line 234
-    :catchall_5e
-    move-exception p1
+    .end local v1  # "halResult":Landroid/util/MutableInt;
+    .end local v2  # "flagState":Landroid/util/MutableBoolean;
+    .end local v3  # "ex":Landroid/os/RemoteException;
+    .restart local p0  # "this":Lcom/android/server/broadcastradio/hal2/TunerSession;
+    .restart local p1  # "flag":I
+    :catchall_60
+    move-exception v1
 
     monitor-exit v0
-    :try_end_60
-    .catchall {:try_start_37 .. :try_end_60} :catchall_5e
+    :try_end_62
+    .catchall {:try_start_38 .. :try_end_62} :catchall_60
 
-    throw p1
+    throw v1
 .end method
 
 .method public isConfigFlagSupported(I)Z
-    .registers 3
+    .registers 4
+    .param p1, "flag"  # I
 
     .line 206
     const/4 v0, 0x1
@@ -537,18 +564,21 @@
 
     .line 210
     :catch_5
-    move-exception p1
+    move-exception v0
 
     .line 211
-    const/4 p1, 0x0
+    .local v0, "ex":Ljava/lang/UnsupportedOperationException;
+    const/4 v1, 0x0
 
-    return p1
+    return v1
 
     .line 208
+    .end local v0  # "ex":Ljava/lang/UnsupportedOperationException;
     :catch_8
-    move-exception p1
+    move-exception v1
 
     .line 209
+    .local v1, "ex":Ljava/lang/IllegalStateException;
     return v0
 .end method
 
@@ -583,7 +613,8 @@
 .end method
 
 .method public synthetic lambda$getParameters$4$TunerSession(Ljava/util/List;)Ljava/util/ArrayList;
-    .registers 3
+    .registers 4
+    .param p1, "keys"  # Ljava/util/List;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -595,17 +626,18 @@
 
     invoke-static {p1}, Lcom/android/server/broadcastradio/hal2/Convert;->listToArrayList(Ljava/util/List;)Ljava/util/ArrayList;
 
-    move-result-object p1
+    move-result-object v1
 
-    invoke-interface {v0, p1}, Landroid/hardware/broadcastradio/V2_0/ITunerSession;->getParameters(Ljava/util/ArrayList;)Ljava/util/ArrayList;
+    invoke-interface {v0, v1}, Landroid/hardware/broadcastradio/V2_0/ITunerSession;->getParameters(Ljava/util/ArrayList;)Ljava/util/ArrayList;
 
-    move-result-object p1
+    move-result-object v0
 
-    return-object p1
+    return-object v0
 .end method
 
 .method public synthetic lambda$setParameters$3$TunerSession(Ljava/util/Map;)Ljava/util/ArrayList;
-    .registers 3
+    .registers 4
+    .param p1, "parameters"  # Ljava/util/Map;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -617,17 +649,19 @@
 
     invoke-static {p1}, Lcom/android/server/broadcastradio/hal2/Convert;->vendorInfoToHal(Ljava/util/Map;)Ljava/util/ArrayList;
 
-    move-result-object p1
+    move-result-object v1
 
-    invoke-interface {v0, p1}, Landroid/hardware/broadcastradio/V2_0/ITunerSession;->setParameters(Ljava/util/ArrayList;)Ljava/util/ArrayList;
+    invoke-interface {v0, v1}, Landroid/hardware/broadcastradio/V2_0/ITunerSession;->setParameters(Ljava/util/ArrayList;)Ljava/util/ArrayList;
 
-    move-result-object p1
+    move-result-object v0
 
-    return-object p1
+    return-object v0
 .end method
 
 .method public scan(ZZ)V
-    .registers 5
+    .registers 6
+    .param p1, "directionDown"  # Z
+    .param p2, "skipSubChannel"  # Z
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -648,24 +682,26 @@
 
     if-nez p1, :cond_c
 
-    const/4 p1, 0x1
+    const/4 v2, 0x1
 
     goto :goto_d
 
     :cond_c
-    const/4 p1, 0x0
+    const/4 v2, 0x0
 
     :goto_d
-    invoke-interface {v1, p1, p2}, Landroid/hardware/broadcastradio/V2_0/ITunerSession;->scan(ZZ)I
+    invoke-interface {v1, v2, p2}, Landroid/hardware/broadcastradio/V2_0/ITunerSession;->scan(ZZ)I
 
-    move-result p1
+    move-result v1
 
     .line 148
-    const-string/jumbo p2, "step"
+    .local v1, "halResult":I
+    const-string/jumbo v2, "step"
 
-    invoke-static {p2, p1}, Lcom/android/server/broadcastradio/hal2/Convert;->throwOnError(Ljava/lang/String;I)V
+    invoke-static {v2, v1}, Lcom/android/server/broadcastradio/hal2/Convert;->throwOnError(Ljava/lang/String;I)V
 
     .line 149
+    .end local v1  # "halResult":I
     monitor-exit v0
 
     .line 150
@@ -673,17 +709,19 @@
 
     .line 149
     :catchall_19
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_1b
     .catchall {:try_start_3 .. :try_end_1b} :catchall_19
 
-    throw p1
+    throw v1
 .end method
 
 .method public setConfigFlag(IZ)V
-    .registers 5
+    .registers 6
+    .param p1, "flag"  # I
+    .param p2, "value"  # Z
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -733,14 +771,16 @@
 
     invoke-interface {v1, p1, p2}, Landroid/hardware/broadcastradio/V2_0/ITunerSession;->setConfigFlag(IZ)I
 
-    move-result p1
+    move-result v1
 
     .line 243
-    const-string/jumbo p2, "setConfigFlag"
+    .local v1, "halResult":I
+    const-string/jumbo v2, "setConfigFlag"
 
-    invoke-static {p2, p1}, Lcom/android/server/broadcastradio/hal2/Convert;->throwOnError(Ljava/lang/String;I)V
+    invoke-static {v2, v1}, Lcom/android/server/broadcastradio/hal2/Convert;->throwOnError(Ljava/lang/String;I)V
 
     .line 244
+    .end local v1  # "halResult":I
     monitor-exit v0
 
     .line 245
@@ -748,17 +788,18 @@
 
     .line 244
     :catchall_37
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_39
     .catchall {:try_start_26 .. :try_end_39} :catchall_37
 
-    throw p1
+    throw v1
 .end method
 
 .method public setConfiguration(Landroid/hardware/radio/RadioManager$BandConfig;)V
     .registers 5
+    .param p1, "config"  # Landroid/hardware/radio/RadioManager$BandConfig;
 
     .line 100
     iget-object v0, p0, Lcom/android/server/broadcastradio/hal2/TunerSession;->mLock:Ljava/lang/Object;
@@ -802,17 +843,18 @@
 
     .line 105
     :catchall_21
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_23
     .catchall {:try_start_3 .. :try_end_23} :catchall_21
 
-    throw p1
+    throw v1
 .end method
 
 .method public setMuted(Z)V
-    .registers 4
+    .registers 5
+    .param p1, "mute"  # Z
 
     .line 118
     iget-object v0, p0, Lcom/android/server/broadcastradio/hal2/TunerSession;->mLock:Ljava/lang/Object;
@@ -837,11 +879,11 @@
     iput-boolean p1, p0, Lcom/android/server/broadcastradio/hal2/TunerSession;->mIsMuted:Z
 
     .line 122
-    const-string p1, "BcRadio2Srv.session"
+    const-string v1, "BcRadio2Srv.session"
 
-    const-string v1, "Mute via RadioService is not implemented - please handle it via app"
+    const-string v2, "Mute via RadioService is not implemented - please handle it via app"
 
-    invoke-static {p1, v1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v2}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 123
     monitor-exit v0
@@ -851,17 +893,18 @@
 
     .line 123
     :catchall_17
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_19
     .catchall {:try_start_3 .. :try_end_19} :catchall_17
 
-    throw p1
+    throw v1
 .end method
 
 .method public setParameters(Ljava/util/Map;)Ljava/util/Map;
     .registers 4
+    .param p1, "parameters"  # Ljava/util/Map;
 
     .line 249
     iget-object v0, p0, Lcom/android/server/broadcastradio/hal2/TunerSession;->mLock:Ljava/lang/Object;
@@ -879,27 +922,27 @@
 
     invoke-static {v1}, Lcom/android/server/broadcastradio/hal2/Utils;->maybeRethrow(Lcom/android/server/broadcastradio/hal2/Utils$FuncThrowingRemoteException;)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v1
 
-    check-cast p1, Ljava/util/List;
+    check-cast v1, Ljava/util/List;
 
-    invoke-static {p1}, Lcom/android/server/broadcastradio/hal2/Convert;->vendorInfoFromHal(Ljava/util/List;)Ljava/util/Map;
+    invoke-static {v1}, Lcom/android/server/broadcastradio/hal2/Convert;->vendorInfoFromHal(Ljava/util/List;)Ljava/util/Map;
 
-    move-result-object p1
+    move-result-object v1
 
     monitor-exit v0
 
-    return-object p1
+    return-object v1
 
     .line 253
     :catchall_17
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_19
     .catchall {:try_start_3 .. :try_end_19} :catchall_17
 
-    throw p1
+    throw v1
 .end method
 
 .method public startBackgroundScan()Z
@@ -926,7 +969,8 @@
 .end method
 
 .method public startProgramListUpdates(Landroid/hardware/radio/ProgramList$Filter;)V
-    .registers 4
+    .registers 5
+    .param p1, "filter"  # Landroid/hardware/radio/ProgramList$Filter;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -947,18 +991,20 @@
 
     invoke-static {p1}, Lcom/android/server/broadcastradio/hal2/Convert;->programFilterToHal(Landroid/hardware/radio/ProgramList$Filter;)Landroid/hardware/broadcastradio/V2_0/ProgramFilter;
 
-    move-result-object p1
+    move-result-object v2
 
-    invoke-interface {v1, p1}, Landroid/hardware/broadcastradio/V2_0/ITunerSession;->startProgramListUpdates(Landroid/hardware/broadcastradio/V2_0/ProgramFilter;)I
+    invoke-interface {v1, v2}, Landroid/hardware/broadcastradio/V2_0/ITunerSession;->startProgramListUpdates(Landroid/hardware/broadcastradio/V2_0/ProgramFilter;)I
 
-    move-result p1
+    move-result v1
 
     .line 191
-    const-string/jumbo v1, "startProgramListUpdates"
+    .local v1, "halResult":I
+    const-string/jumbo v2, "startProgramListUpdates"
 
-    invoke-static {v1, p1}, Lcom/android/server/broadcastradio/hal2/Convert;->throwOnError(Ljava/lang/String;I)V
+    invoke-static {v2, v1}, Lcom/android/server/broadcastradio/hal2/Convert;->throwOnError(Ljava/lang/String;I)V
 
     .line 192
+    .end local v1  # "halResult":I
     monitor-exit v0
 
     .line 193
@@ -966,17 +1012,19 @@
 
     .line 192
     :catchall_18
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_1a
     .catchall {:try_start_3 .. :try_end_1a} :catchall_18
 
-    throw p1
+    throw v1
 .end method
 
 .method public step(ZZ)V
-    .registers 4
+    .registers 6
+    .param p1, "directionDown"  # Z
+    .param p2, "skipSubChannel"  # Z
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -984,51 +1032,53 @@
     .end annotation
 
     .line 136
-    iget-object p2, p0, Lcom/android/server/broadcastradio/hal2/TunerSession;->mLock:Ljava/lang/Object;
+    iget-object v0, p0, Lcom/android/server/broadcastradio/hal2/TunerSession;->mLock:Ljava/lang/Object;
 
-    monitor-enter p2
+    monitor-enter v0
 
     .line 137
     :try_start_3
     invoke-direct {p0}, Lcom/android/server/broadcastradio/hal2/TunerSession;->checkNotClosedLocked()V
 
     .line 138
-    iget-object v0, p0, Lcom/android/server/broadcastradio/hal2/TunerSession;->mHwSession:Landroid/hardware/broadcastradio/V2_0/ITunerSession;
+    iget-object v1, p0, Lcom/android/server/broadcastradio/hal2/TunerSession;->mHwSession:Landroid/hardware/broadcastradio/V2_0/ITunerSession;
 
     if-nez p1, :cond_c
 
-    const/4 p1, 0x1
+    const/4 v2, 0x1
 
     goto :goto_d
 
     :cond_c
-    const/4 p1, 0x0
+    const/4 v2, 0x0
 
     :goto_d
-    invoke-interface {v0, p1}, Landroid/hardware/broadcastradio/V2_0/ITunerSession;->step(Z)I
+    invoke-interface {v1, v2}, Landroid/hardware/broadcastradio/V2_0/ITunerSession;->step(Z)I
 
-    move-result p1
+    move-result v1
 
     .line 139
-    const-string/jumbo v0, "step"
+    .local v1, "halResult":I
+    const-string/jumbo v2, "step"
 
-    invoke-static {v0, p1}, Lcom/android/server/broadcastradio/hal2/Convert;->throwOnError(Ljava/lang/String;I)V
+    invoke-static {v2, v1}, Lcom/android/server/broadcastradio/hal2/Convert;->throwOnError(Ljava/lang/String;I)V
 
     .line 140
-    monitor-exit p2
+    .end local v1  # "halResult":I
+    monitor-exit v0
 
     .line 141
     return-void
 
     .line 140
     :catchall_19
-    move-exception p1
+    move-exception v1
 
-    monitor-exit p2
+    monitor-exit v0
     :try_end_1b
     .catchall {:try_start_3 .. :try_end_1b} :catchall_19
 
-    throw p1
+    throw v1
 .end method
 
 .method public stopProgramListUpdates()V
@@ -1071,7 +1121,8 @@
 .end method
 
 .method public tune(Landroid/hardware/radio/ProgramSelector;)V
-    .registers 4
+    .registers 5
+    .param p1, "selector"  # Landroid/hardware/radio/ProgramSelector;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -1092,18 +1143,20 @@
 
     invoke-static {p1}, Lcom/android/server/broadcastradio/hal2/Convert;->programSelectorToHal(Landroid/hardware/radio/ProgramSelector;)Landroid/hardware/broadcastradio/V2_0/ProgramSelector;
 
-    move-result-object p1
+    move-result-object v2
 
-    invoke-interface {v1, p1}, Landroid/hardware/broadcastradio/V2_0/ITunerSession;->tune(Landroid/hardware/broadcastradio/V2_0/ProgramSelector;)I
+    invoke-interface {v1, v2}, Landroid/hardware/broadcastradio/V2_0/ITunerSession;->tune(Landroid/hardware/broadcastradio/V2_0/ProgramSelector;)I
 
-    move-result p1
+    move-result v1
 
     .line 157
-    const-string/jumbo v1, "tune"
+    .local v1, "halResult":I
+    const-string/jumbo v2, "tune"
 
-    invoke-static {v1, p1}, Lcom/android/server/broadcastradio/hal2/Convert;->throwOnError(Ljava/lang/String;I)V
+    invoke-static {v2, v1}, Lcom/android/server/broadcastradio/hal2/Convert;->throwOnError(Ljava/lang/String;I)V
 
     .line 158
+    .end local v1  # "halResult":I
     monitor-exit v0
 
     .line 159
@@ -1111,11 +1164,11 @@
 
     .line 158
     :catchall_18
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_1a
     .catchall {:try_start_3 .. :try_end_1a} :catchall_18
 
-    throw p1
+    throw v1
 .end method

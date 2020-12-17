@@ -16,22 +16,23 @@
 
 # direct methods
 .method public static nameOf(Lcom/android/server/accessibility/MagnificationGestureHandler$State;)Ljava/lang/String;
-    .registers 1
+    .registers 2
+    .param p0, "s"  # Lcom/android/server/accessibility/MagnificationGestureHandler$State;
 
     .line 361
     if-eqz p0, :cond_7
 
     invoke-interface {p0}, Lcom/android/server/accessibility/MagnificationGestureHandler$State;->name()Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v0
 
     goto :goto_a
 
     :cond_7
-    const-string/jumbo p0, "null"
+    const-string/jumbo v0, "null"
 
     :goto_a
-    return-object p0
+    return-object v0
 .end method
 
 

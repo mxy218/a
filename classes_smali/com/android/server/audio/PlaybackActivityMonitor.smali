@@ -44,17 +44,6 @@
 
 
 # instance fields
-.field private final mAllowedCapturePolicies:Ljava/util/HashMap;
-    .annotation system Ldalvik/annotation/Signature;
-        value = {
-            "Ljava/util/HashMap<",
-            "Ljava/lang/Integer;",
-            "Ljava/lang/Integer;",
-            ">;"
-        }
-    .end annotation
-.end field
-
 .field private final mBannedUids:Ljava/util/ArrayList;
     .annotation system Ldalvik/annotation/Signature;
         value = {
@@ -236,7 +225,7 @@
 
     sput-object v0, Lcom/android/server/audio/PlaybackActivityMonitor;->PLAY_SKIP_RAMP:Landroid/media/VolumeShaper$Operation;
 
-    .line 946
+    .line 864
     new-instance v0, Lcom/android/server/audio/AudioEventLogger;
 
     const/16 v1, 0x64
@@ -270,6 +259,8 @@
 
 .method constructor <init>(Landroid/content/Context;I)V
     .registers 5
+    .param p1, "context"  # Landroid/content/Context;
+    .param p2, "maxAlarmVolume"  # I
 
     .line 100
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -315,21 +306,14 @@
 
     iput-object v0, p0, Lcom/android/server/audio/PlaybackActivityMonitor;->mBannedUids:Ljava/util/ArrayList;
 
-    .line 303
-    new-instance v0, Ljava/util/HashMap;
-
-    invoke-direct {v0}, Ljava/util/HashMap;-><init>()V
-
-    iput-object v0, p0, Lcom/android/server/audio/PlaybackActivityMonitor;->mAllowedCapturePolicies:Ljava/util/HashMap;
-
-    .line 505
+    .line 423
     new-instance v0, Ljava/util/ArrayList;
 
     invoke-direct {v0}, Ljava/util/ArrayList;-><init>()V
 
     iput-object v0, p0, Lcom/android/server/audio/PlaybackActivityMonitor;->mMutedPlayers:Ljava/util/ArrayList;
 
-    .line 507
+    .line 425
     new-instance v0, Lcom/android/server/audio/PlaybackActivityMonitor$DuckingManager;
 
     const/4 v1, 0x0
@@ -400,7 +384,7 @@
 .end method
 
 .method private anonymizeForPublicConsumption(Ljava/util/List;)Ljava/util/ArrayList;
-    .registers 5
+    .registers 6
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(",
@@ -413,54 +397,60 @@
         }
     .end annotation
 
-    .line 491
+    .line 409
+    .local p1, "sysConfigs":Ljava/util/List;, "Ljava/util/List<Landroid/media/AudioPlaybackConfiguration;>;"
     new-instance v0, Ljava/util/ArrayList;
 
     invoke-direct {v0}, Ljava/util/ArrayList;-><init>()V
 
-    .line 494
+    .line 412
+    .local v0, "publicConfigs":Ljava/util/ArrayList;, "Ljava/util/ArrayList<Landroid/media/AudioPlaybackConfiguration;>;"
     invoke-interface {p1}, Ljava/util/List;->iterator()Ljava/util/Iterator;
-
-    move-result-object p1
-
-    :goto_9
-    invoke-interface {p1}, Ljava/util/Iterator;->hasNext()Z
-
-    move-result v1
-
-    if-eqz v1, :cond_23
-
-    invoke-interface {p1}, Ljava/util/Iterator;->next()Ljava/lang/Object;
 
     move-result-object v1
 
-    check-cast v1, Landroid/media/AudioPlaybackConfiguration;
-
-    .line 495
-    invoke-virtual {v1}, Landroid/media/AudioPlaybackConfiguration;->isActive()Z
+    :goto_9
+    invoke-interface {v1}, Ljava/util/Iterator;->hasNext()Z
 
     move-result v2
 
-    if-eqz v2, :cond_22
+    if-eqz v2, :cond_23
 
-    .line 496
-    invoke-static {v1}, Landroid/media/AudioPlaybackConfiguration;->anonymizedCopy(Landroid/media/AudioPlaybackConfiguration;)Landroid/media/AudioPlaybackConfiguration;
+    invoke-interface {v1}, Ljava/util/Iterator;->next()Ljava/lang/Object;
 
-    move-result-object v1
+    move-result-object v2
 
-    invoke-virtual {v0, v1}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
+    check-cast v2, Landroid/media/AudioPlaybackConfiguration;
 
-    .line 498
+    .line 413
+    .local v2, "config":Landroid/media/AudioPlaybackConfiguration;
+    invoke-virtual {v2}, Landroid/media/AudioPlaybackConfiguration;->isActive()Z
+
+    move-result v3
+
+    if-eqz v3, :cond_22
+
+    .line 414
+    invoke-static {v2}, Landroid/media/AudioPlaybackConfiguration;->anonymizedCopy(Landroid/media/AudioPlaybackConfiguration;)Landroid/media/AudioPlaybackConfiguration;
+
+    move-result-object v3
+
+    invoke-virtual {v0, v3}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
+
+    .line 416
+    .end local v2  # "config":Landroid/media/AudioPlaybackConfiguration;
     :cond_22
     goto :goto_9
 
-    .line 499
+    .line 417
     :cond_23
     return-object v0
 .end method
 
 .method private checkBanPlayer(Landroid/media/AudioPlaybackConfiguration;I)Z
-    .registers 9
+    .registers 10
+    .param p1, "apc"  # Landroid/media/AudioPlaybackConfiguration;
+    .param p2, "uid"  # I
 
     .line 137
     const-string v0, " uid:"
@@ -481,6 +471,7 @@
     const/4 v2, 0x0
 
     .line 138
+    .local v2, "toBan":Z
     :goto_d
     if-eqz v2, :cond_50
 
@@ -490,6 +481,7 @@
     move-result v3
 
     .line 141
+    .local v3, "piid":I
     :try_start_13
     new-instance v4, Ljava/lang/StringBuilder;
 
@@ -514,9 +506,9 @@
     .line 142
     invoke-virtual {p1}, Landroid/media/AudioPlaybackConfiguration;->getPlayerProxy()Landroid/media/PlayerProxy;
 
-    move-result-object p1
+    move-result-object v4
 
-    invoke-virtual {p1}, Landroid/media/PlayerProxy;->pause()V
+    invoke-virtual {v4}, Landroid/media/PlayerProxy;->pause()V
     :try_end_34
     .catch Ljava/lang/Exception; {:try_start_13 .. :try_end_34} :catch_35
 
@@ -525,107 +517,115 @@
 
     .line 143
     :catch_35
-    move-exception p1
+    move-exception v4
 
     .line 144
-    new-instance v4, Ljava/lang/StringBuilder;
+    .local v4, "e":Ljava/lang/Exception;
+    new-instance v5, Ljava/lang/StringBuilder;
 
-    invoke-direct {v4}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v5}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v5, "error banning player "
+    const-string v6, "error banning player "
 
-    invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v4, v3}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v5, v3}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v4, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v5, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v4, p2}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v5, p2}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v4}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v5}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p2
+    move-result-object v0
 
-    invoke-static {v1, p2, p1}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    invoke-static {v1, v0, v4}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
     .line 147
+    .end local v3  # "piid":I
+    .end local v4  # "e":Ljava/lang/Exception;
     :cond_50
     :goto_50
     return v2
 .end method
 
 .method private static checkConfigurationCaller(ILandroid/media/AudioPlaybackConfiguration;I)Z
-    .registers 5
+    .registers 6
+    .param p0, "piid"  # I
+    .param p1, "apc"  # Landroid/media/AudioPlaybackConfiguration;
+    .param p2, "binderUid"  # I
 
-    .line 428
+    .line 346
     const/4 v0, 0x0
 
     if-nez p1, :cond_4
 
-    .line 429
+    .line 347
     return v0
 
-    .line 430
+    .line 348
     :cond_4
     if-eqz p2, :cond_2b
 
     invoke-virtual {p1}, Landroid/media/AudioPlaybackConfiguration;->getClientUid()I
 
-    move-result p1
+    move-result v1
 
-    if-eq p1, p2, :cond_2b
+    if-eq v1, p2, :cond_2b
 
-    .line 431
-    new-instance p1, Ljava/lang/StringBuilder;
+    .line 349
+    new-instance v1, Ljava/lang/StringBuilder;
 
-    invoke-direct {p1}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v1, "Forbidden operation from uid "
+    const-string v2, "Forbidden operation from uid "
 
-    invoke-virtual {p1, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p1, p2}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, p2}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    const-string p2, " for player "
+    const-string v2, " for player "
 
-    invoke-virtual {p1, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p1, p0}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, p0}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v1
 
-    const-string p1, "AudioService.PlaybackActivityMonitor"
+    const-string v2, "AudioService.PlaybackActivityMonitor"
 
-    invoke-static {p1, p0}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v2, v1}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 432
+    .line 350
     return v0
 
-    .line 434
+    .line 352
     :cond_2b
-    const/4 p0, 0x1
+    const/4 v0, 0x1
 
-    return p0
+    return v0
 .end method
 
 .method private checkVolumeForPrivilegedAlarm(Landroid/media/AudioPlaybackConfiguration;I)V
     .registers 9
+    .param p1, "apc"  # Landroid/media/AudioPlaybackConfiguration;
+    .param p2, "event"  # I
 
-    .line 205
+    .line 192
     const/4 v0, 0x2
 
     if-eq p2, v0, :cond_9
 
-    .line 206
+    .line 193
     invoke-virtual {p1}, Landroid/media/AudioPlaybackConfiguration;->getPlayerState()I
 
     move-result v1
 
     if-ne v1, v0, :cond_6c
 
-    .line 207
+    .line 194
     :cond_9
     invoke-virtual {p1}, Landroid/media/AudioPlaybackConfiguration;->getAudioAttributes()Landroid/media/AudioAttributes;
 
@@ -641,7 +641,7 @@
 
     if-ne v1, v2, :cond_6c
 
-    .line 209
+    .line 196
     invoke-virtual {p1}, Landroid/media/AudioPlaybackConfiguration;->getAudioAttributes()Landroid/media/AudioAttributes;
 
     move-result-object v1
@@ -656,7 +656,7 @@
 
     iget-object v1, p0, Lcom/android/server/audio/PlaybackActivityMonitor;->mContext:Landroid/content/Context;
 
-    .line 211
+    .line 198
     invoke-virtual {p1}, Landroid/media/AudioPlaybackConfiguration;->getClientPid()I
 
     move-result v3
@@ -665,7 +665,7 @@
 
     move-result v4
 
-    .line 210
+    .line 197
     const-string v5, "android.permission.MODIFY_PHONE_STATE"
 
     invoke-virtual {v1, v5, v3, v4}, Landroid/content/Context;->checkPermission(Ljava/lang/String;II)I
@@ -674,74 +674,74 @@
 
     if-nez v1, :cond_6c
 
-    .line 213
+    .line 200
     if-ne p2, v0, :cond_4f
 
-    .line 214
+    .line 201
     invoke-virtual {p1}, Landroid/media/AudioPlaybackConfiguration;->getPlayerState()I
 
     move-result v1
 
     if-eq v1, v0, :cond_4f
 
-    .line 215
-    iget p1, p0, Lcom/android/server/audio/PlaybackActivityMonitor;->mPrivilegedAlarmActiveCount:I
+    .line 202
+    iget v1, p0, Lcom/android/server/audio/PlaybackActivityMonitor;->mPrivilegedAlarmActiveCount:I
 
-    add-int/lit8 p2, p1, 0x1
+    add-int/lit8 v3, v1, 0x1
 
-    iput p2, p0, Lcom/android/server/audio/PlaybackActivityMonitor;->mPrivilegedAlarmActiveCount:I
+    iput v3, p0, Lcom/android/server/audio/PlaybackActivityMonitor;->mPrivilegedAlarmActiveCount:I
 
-    if-nez p1, :cond_6c
+    if-nez v1, :cond_6c
 
-    .line 216
+    .line 203
     invoke-static {v2, v0}, Landroid/media/AudioSystem;->getStreamVolumeIndex(II)I
 
-    move-result p1
+    move-result v1
 
-    iput p1, p0, Lcom/android/server/audio/PlaybackActivityMonitor;->mSavedAlarmVolume:I
+    iput v1, p0, Lcom/android/server/audio/PlaybackActivityMonitor;->mSavedAlarmVolume:I
 
-    .line 218
-    iget p1, p0, Lcom/android/server/audio/PlaybackActivityMonitor;->mMaxAlarmVolume:I
+    .line 205
+    iget v1, p0, Lcom/android/server/audio/PlaybackActivityMonitor;->mMaxAlarmVolume:I
 
-    invoke-static {v2, p1, v0}, Landroid/media/AudioSystem;->setStreamVolumeIndexAS(III)I
+    invoke-static {v2, v1, v0}, Landroid/media/AudioSystem;->setStreamVolumeIndexAS(III)I
 
     goto :goto_6c
 
-    .line 221
+    .line 208
     :cond_4f
     if-eq p2, v0, :cond_6c
 
-    .line 222
+    .line 209
     invoke-virtual {p1}, Landroid/media/AudioPlaybackConfiguration;->getPlayerState()I
 
-    move-result p1
+    move-result v1
 
-    if-ne p1, v0, :cond_6c
+    if-ne v1, v0, :cond_6c
 
-    .line 223
-    iget p1, p0, Lcom/android/server/audio/PlaybackActivityMonitor;->mPrivilegedAlarmActiveCount:I
+    .line 210
+    iget v1, p0, Lcom/android/server/audio/PlaybackActivityMonitor;->mPrivilegedAlarmActiveCount:I
 
-    add-int/lit8 p1, p1, -0x1
+    add-int/lit8 v1, v1, -0x1
 
-    iput p1, p0, Lcom/android/server/audio/PlaybackActivityMonitor;->mPrivilegedAlarmActiveCount:I
+    iput v1, p0, Lcom/android/server/audio/PlaybackActivityMonitor;->mPrivilegedAlarmActiveCount:I
 
-    if-nez p1, :cond_6c
+    if-nez v1, :cond_6c
 
-    .line 224
+    .line 211
     invoke-static {v2, v0}, Landroid/media/AudioSystem;->getStreamVolumeIndex(II)I
 
-    move-result p1
+    move-result v1
 
-    iget p2, p0, Lcom/android/server/audio/PlaybackActivityMonitor;->mMaxAlarmVolume:I
+    iget v3, p0, Lcom/android/server/audio/PlaybackActivityMonitor;->mMaxAlarmVolume:I
 
-    if-ne p1, p2, :cond_6c
+    if-ne v1, v3, :cond_6c
 
-    .line 227
-    iget p1, p0, Lcom/android/server/audio/PlaybackActivityMonitor;->mSavedAlarmVolume:I
+    .line 214
+    iget v1, p0, Lcom/android/server/audio/PlaybackActivityMonitor;->mSavedAlarmVolume:I
 
-    invoke-static {v2, p1, v0}, Landroid/media/AudioSystem;->setStreamVolumeIndexAS(III)I
+    invoke-static {v2, v1, v0}, Landroid/media/AudioSystem;->setStreamVolumeIndexAS(III)I
 
-    .line 234
+    .line 221
     :cond_6c
     :goto_6c
     return-void
@@ -749,13 +749,14 @@
 
 .method private dispatchPlaybackChange(Z)V
     .registers 11
+    .param p1, "iplayerReleased"  # Z
 
-    .line 442
+    .line 360
     iget-object v0, p0, Lcom/android/server/audio/PlaybackActivityMonitor;->mClients:Ljava/util/ArrayList;
 
     monitor-enter v0
 
-    .line 444
+    .line 362
     :try_start_3
     iget-object v1, p0, Lcom/android/server/audio/PlaybackActivityMonitor;->mClients:Ljava/util/ArrayList;
 
@@ -765,23 +766,23 @@
 
     if-eqz v1, :cond_d
 
-    .line 445
+    .line 363
     monitor-exit v0
 
     return-void
 
-    .line 447
+    .line 365
     :cond_d
     monitor-exit v0
     :try_end_e
     .catchall {:try_start_3 .. :try_end_e} :catchall_96
 
-    .line 453
+    .line 371
     iget-object v1, p0, Lcom/android/server/audio/PlaybackActivityMonitor;->mPlayerLock:Ljava/lang/Object;
 
     monitor-enter v1
 
-    .line 454
+    .line 372
     :try_start_11
     iget-object v0, p0, Lcom/android/server/audio/PlaybackActivityMonitor;->mPlayers:Ljava/util/HashMap;
 
@@ -791,12 +792,12 @@
 
     if-eqz v0, :cond_1b
 
-    .line 455
+    .line 373
     monitor-exit v1
 
     return-void
 
-    .line 457
+    .line 375
     :cond_1b
     new-instance v0, Ljava/util/ArrayList;
 
@@ -808,17 +809,18 @@
 
     invoke-direct {v0, v2}, Ljava/util/ArrayList;-><init>(Ljava/util/Collection;)V
 
-    .line 458
+    .line 376
+    .local v0, "configsSystem":Ljava/util/List;, "Ljava/util/List<Landroid/media/AudioPlaybackConfiguration;>;"
     monitor-exit v1
     :try_end_27
     .catchall {:try_start_11 .. :try_end_27} :catchall_93
 
-    .line 459
+    .line 377
     iget-object v2, p0, Lcom/android/server/audio/PlaybackActivityMonitor;->mClients:Ljava/util/ArrayList;
 
     monitor-enter v2
 
-    .line 461
+    .line 379
     :try_start_2a
     iget-object v1, p0, Lcom/android/server/audio/PlaybackActivityMonitor;->mClients:Ljava/util/ArrayList;
 
@@ -828,12 +830,12 @@
 
     if-eqz v1, :cond_34
 
-    .line 462
+    .line 380
     monitor-exit v2
 
     return-void
 
-    .line 464
+    .line 382
     :cond_34
     iget-boolean v1, p0, Lcom/android/server/audio/PlaybackActivityMonitor;->mHasPublicClients:Z
 
@@ -848,7 +850,8 @@
     :cond_3d
     const/4 v1, 0x0
 
-    .line 465
+    .line 383
+    .local v1, "configsPublic":Ljava/util/List;, "Ljava/util/List<Landroid/media/AudioPlaybackConfiguration;>;"
     :goto_3e
     iget-object v3, p0, Lcom/android/server/audio/PlaybackActivityMonitor;->mClients:Ljava/util/ArrayList;
 
@@ -856,7 +859,8 @@
 
     move-result-object v3
 
-    .line 466
+    .line 384
+    .local v3, "clientIterator":Ljava/util/Iterator;, "Ljava/util/Iterator<Lcom/android/server/audio/PlaybackActivityMonitor$PlayMonitorClient;>;"
     :goto_44
     invoke-interface {v3}, Ljava/util/Iterator;->hasNext()Z
 
@@ -864,7 +868,7 @@
 
     if-eqz v4, :cond_8e
 
-    .line 467
+    .line 385
     invoke-interface {v3}, Ljava/util/Iterator;->next()Ljava/lang/Object;
 
     move-result-object v4
@@ -873,7 +877,8 @@
     :try_end_50
     .catchall {:try_start_2a .. :try_end_50} :catchall_90
 
-    .line 470
+    .line 388
+    .local v4, "pmc":Lcom/android/server/audio/PlaybackActivityMonitor$PlayMonitorClient;
     :try_start_50
     iget v5, v4, Lcom/android/server/audio/PlaybackActivityMonitor$PlayMonitorClient;->mErrorCount:I
 
@@ -881,19 +886,19 @@
 
     if-ge v5, v6, :cond_65
 
-    .line 471
+    .line 389
     iget-boolean v5, v4, Lcom/android/server/audio/PlaybackActivityMonitor$PlayMonitorClient;->mIsPrivileged:Z
 
     if-eqz v5, :cond_5f
 
-    .line 472
+    .line 390
     iget-object v5, v4, Lcom/android/server/audio/PlaybackActivityMonitor$PlayMonitorClient;->mDispatcherCb:Landroid/media/IPlaybackConfigDispatcher;
 
     invoke-interface {v5, v0, p1}, Landroid/media/IPlaybackConfigDispatcher;->dispatchPlaybackConfigChange(Ljava/util/List;Z)V
 
     goto :goto_65
 
-    .line 477
+    .line 395
     :cond_5f
     iget-object v5, v4, Lcom/android/server/audio/PlaybackActivityMonitor$PlayMonitorClient;->mDispatcherCb:Landroid/media/IPlaybackConfigDispatcher;
 
@@ -904,16 +909,17 @@
     .catch Landroid/os/RemoteException; {:try_start_50 .. :try_end_65} :catch_66
     .catchall {:try_start_50 .. :try_end_65} :catchall_90
 
-    .line 484
+    .line 402
     :cond_65
     :goto_65
     goto :goto_8d
 
-    .line 480
+    .line 398
     :catch_66
     move-exception v5
 
-    .line 481
+    .line 399
+    .local v5, "e":Landroid/os/RemoteException;
     :try_start_67
     iget v6, v4, Lcom/android/server/audio/PlaybackActivityMonitor$PlayMonitorClient;->mErrorCount:I
 
@@ -921,7 +927,7 @@
 
     iput v6, v4, Lcom/android/server/audio/PlaybackActivityMonitor$PlayMonitorClient;->mErrorCount:I
 
-    .line 482
+    .line 400
     const-string v6, "AudioService.PlaybackActivityMonitor"
 
     new-instance v7, Ljava/lang/StringBuilder;
@@ -944,103 +950,65 @@
 
     invoke-virtual {v7}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v4
+    move-result-object v7
 
-    invoke-static {v6, v4, v5}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    invoke-static {v6, v7, v5}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
-    .line 485
+    .line 403
+    .end local v4  # "pmc":Lcom/android/server/audio/PlaybackActivityMonitor$PlayMonitorClient;
+    .end local v5  # "e":Landroid/os/RemoteException;
     :goto_8d
     goto :goto_44
 
-    .line 486
+    .line 404
+    .end local v3  # "clientIterator":Ljava/util/Iterator;, "Ljava/util/Iterator<Lcom/android/server/audio/PlaybackActivityMonitor$PlayMonitorClient;>;"
     :cond_8e
     monitor-exit v2
 
-    .line 487
+    .line 405
     return-void
 
-    .line 486
+    .line 404
+    .end local v1  # "configsPublic":Ljava/util/List;, "Ljava/util/List<Landroid/media/AudioPlaybackConfiguration;>;"
     :catchall_90
-    move-exception p1
+    move-exception v1
 
     monitor-exit v2
     :try_end_92
     .catchall {:try_start_67 .. :try_end_92} :catchall_90
 
-    throw p1
+    throw v1
 
-    .line 458
+    .line 376
+    .end local v0  # "configsSystem":Ljava/util/List;, "Ljava/util/List<Landroid/media/AudioPlaybackConfiguration;>;"
     :catchall_93
-    move-exception p1
+    move-exception v0
 
     :try_start_94
     monitor-exit v1
     :try_end_95
     .catchall {:try_start_94 .. :try_end_95} :catchall_93
 
-    throw p1
+    throw v0
 
-    .line 447
+    .line 365
     :catchall_96
-    move-exception p1
+    move-exception v1
 
     :try_start_97
     monitor-exit v0
     :try_end_98
     .catchall {:try_start_97 .. :try_end_98} :catchall_96
 
-    throw p1
-.end method
-
-.method private updateAllowedCapturePolicy(Landroid/media/AudioPlaybackConfiguration;I)V
-    .registers 5
-
-    .line 354
-    invoke-virtual {p1}, Landroid/media/AudioPlaybackConfiguration;->getAudioAttributes()Landroid/media/AudioAttributes;
-
-    move-result-object v0
-
-    .line 355
-    invoke-virtual {v0}, Landroid/media/AudioAttributes;->getAllowedCapturePolicy()I
-
-    move-result v0
-
-    if-lt v0, p2, :cond_b
-
-    .line 356
-    return-void
-
-    .line 358
-    :cond_b
-    new-instance v0, Landroid/media/AudioAttributes$Builder;
-
-    .line 359
-    invoke-virtual {p1}, Landroid/media/AudioPlaybackConfiguration;->getAudioAttributes()Landroid/media/AudioAttributes;
-
-    move-result-object v1
-
-    invoke-direct {v0, v1}, Landroid/media/AudioAttributes$Builder;-><init>(Landroid/media/AudioAttributes;)V
-
-    .line 360
-    invoke-virtual {v0, p2}, Landroid/media/AudioAttributes$Builder;->setAllowedCapturePolicy(I)Landroid/media/AudioAttributes$Builder;
-
-    move-result-object p2
-
-    invoke-virtual {p2}, Landroid/media/AudioAttributes$Builder;->build()Landroid/media/AudioAttributes;
-
-    move-result-object p2
-
-    .line 358
-    invoke-virtual {p1, p2}, Landroid/media/AudioPlaybackConfiguration;->handleAudioAttributesEvent(Landroid/media/AudioAttributes;)Z
-
-    .line 361
-    return-void
+    throw v1
 .end method
 
 
 # virtual methods
 .method public disableAudioForUid(ZI)V
-    .registers 6
+    .registers 7
+    .param p1, "disable"  # Z
+    .param p2, "uid"  # I
 
     .line 112
     iget-object v0, p0, Lcom/android/server/audio/PlaybackActivityMonitor;->mPlayerLock:Ljava/lang/Object;
@@ -1060,90 +1028,99 @@
     move-result v1
 
     .line 114
+    .local v1, "index":I
     if-ltz v1, :cond_18
 
     .line 115
-    if-nez p1, :cond_3e
+    if-nez p1, :cond_3f
 
     .line 119
-    iget-object p1, p0, Lcom/android/server/audio/PlaybackActivityMonitor;->mBannedUids:Ljava/util/ArrayList;
+    iget-object v2, p0, Lcom/android/server/audio/PlaybackActivityMonitor;->mBannedUids:Ljava/util/ArrayList;
 
-    invoke-virtual {p1, v1}, Ljava/util/ArrayList;->remove(I)Ljava/lang/Object;
+    invoke-virtual {v2, v1}, Ljava/util/ArrayList;->remove(I)Ljava/lang/Object;
 
-    goto :goto_3e
+    goto :goto_3f
 
     .line 123
     :cond_18
-    if-eqz p1, :cond_3e
+    if-eqz p1, :cond_3f
 
     .line 124
-    iget-object p1, p0, Lcom/android/server/audio/PlaybackActivityMonitor;->mPlayers:Ljava/util/HashMap;
+    iget-object v2, p0, Lcom/android/server/audio/PlaybackActivityMonitor;->mPlayers:Ljava/util/HashMap;
 
-    invoke-virtual {p1}, Ljava/util/HashMap;->values()Ljava/util/Collection;
+    invoke-virtual {v2}, Ljava/util/HashMap;->values()Ljava/util/Collection;
 
-    move-result-object p1
+    move-result-object v2
 
-    invoke-interface {p1}, Ljava/util/Collection;->iterator()Ljava/util/Iterator;
+    invoke-interface {v2}, Ljava/util/Collection;->iterator()Ljava/util/Iterator;
 
-    move-result-object p1
+    move-result-object v2
 
     :goto_24
-    invoke-interface {p1}, Ljava/util/Iterator;->hasNext()Z
+    invoke-interface {v2}, Ljava/util/Iterator;->hasNext()Z
 
-    move-result v1
+    move-result v3
 
-    if-eqz v1, :cond_34
+    if-eqz v3, :cond_35
 
-    invoke-interface {p1}, Ljava/util/Iterator;->next()Ljava/lang/Object;
+    invoke-interface {v2}, Ljava/util/Iterator;->next()Ljava/lang/Object;
 
-    move-result-object v1
+    move-result-object v3
 
-    check-cast v1, Landroid/media/AudioPlaybackConfiguration;
+    check-cast v3, Landroid/media/AudioPlaybackConfiguration;
 
     .line 125
-    invoke-direct {p0, v1, p2}, Lcom/android/server/audio/PlaybackActivityMonitor;->checkBanPlayer(Landroid/media/AudioPlaybackConfiguration;I)Z
+    .local v3, "apc":Landroid/media/AudioPlaybackConfiguration;
+    invoke-direct {p0, v3, p2}, Lcom/android/server/audio/PlaybackActivityMonitor;->checkBanPlayer(Landroid/media/AudioPlaybackConfiguration;I)Z
 
     .line 126
+    nop
+
+    .end local v3  # "apc":Landroid/media/AudioPlaybackConfiguration;
     goto :goto_24
 
     .line 130
-    :cond_34
-    iget-object p1, p0, Lcom/android/server/audio/PlaybackActivityMonitor;->mBannedUids:Ljava/util/ArrayList;
+    :cond_35
+    iget-object v2, p0, Lcom/android/server/audio/PlaybackActivityMonitor;->mBannedUids:Ljava/util/ArrayList;
 
-    new-instance v1, Ljava/lang/Integer;
+    new-instance v3, Ljava/lang/Integer;
 
-    invoke-direct {v1, p2}, Ljava/lang/Integer;-><init>(I)V
+    invoke-direct {v3, p2}, Ljava/lang/Integer;-><init>(I)V
 
-    invoke-virtual {p1, v1}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
+    invoke-virtual {v2, v3}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
 
     .line 133
-    :cond_3e
-    :goto_3e
+    .end local v1  # "index":I
+    :cond_3f
+    :goto_3f
     monitor-exit v0
 
     .line 134
     return-void
 
     .line 133
-    :catchall_40
-    move-exception p1
+    :catchall_41
+    move-exception v1
 
     monitor-exit v0
-    :try_end_42
-    .catchall {:try_start_3 .. :try_end_42} :catchall_40
+    :try_end_43
+    .catchall {:try_start_3 .. :try_end_43} :catchall_41
 
-    throw p1
+    throw v1
 .end method
 
 .method public duckPlayers(Lcom/android/server/audio/FocusRequester;Lcom/android/server/audio/FocusRequester;Z)Z
     .registers 12
+    .param p1, "winner"  # Lcom/android/server/audio/FocusRequester;
+    .param p2, "loser"  # Lcom/android/server/audio/FocusRequester;
+    .param p3, "forceDuck"  # Z
 
-    .line 515
+    .line 433
     iget-object v0, p0, Lcom/android/server/audio/PlaybackActivityMonitor;->mPlayerLock:Ljava/lang/Object;
 
     monitor-enter v0
 
-    .line 516
+    .line 434
     :try_start_3
     iget-object v1, p0, Lcom/android/server/audio/PlaybackActivityMonitor;->mPlayers:Ljava/util/HashMap;
 
@@ -1155,12 +1132,12 @@
 
     if-eqz v1, :cond_e
 
-    .line 517
+    .line 435
     monitor-exit v0
 
     return v2
 
-    .line 521
+    .line 439
     :cond_e
     iget-object v1, p0, Lcom/android/server/audio/PlaybackActivityMonitor;->mPlayers:Ljava/util/HashMap;
 
@@ -1172,12 +1149,14 @@
 
     move-result-object v1
 
-    .line 522
+    .line 440
+    .local v1, "apcIterator":Ljava/util/Iterator;, "Ljava/util/Iterator<Landroid/media/AudioPlaybackConfiguration;>;"
     new-instance v3, Ljava/util/ArrayList;
 
     invoke-direct {v3}, Ljava/util/ArrayList;-><init>()V
 
-    .line 524
+    .line 442
+    .local v3, "apcsToDuck":Ljava/util/ArrayList;, "Ljava/util/ArrayList<Landroid/media/AudioPlaybackConfiguration;>;"
     :goto_1d
     invoke-interface {v1}, Ljava/util/Iterator;->hasNext()Z
 
@@ -1185,14 +1164,15 @@
 
     if-eqz v4, :cond_e1
 
-    .line 525
+    .line 443
     invoke-interface {v1}, Ljava/util/Iterator;->next()Ljava/lang/Object;
 
     move-result-object v4
 
     check-cast v4, Landroid/media/AudioPlaybackConfiguration;
 
-    .line 526
+    .line 444
+    .local v4, "apc":Landroid/media/AudioPlaybackConfiguration;
     invoke-virtual {v4}, Landroid/media/AudioPlaybackConfiguration;->getClientUid()I
 
     move-result v5
@@ -1203,7 +1183,7 @@
 
     if-nez v5, :cond_df
 
-    .line 527
+    .line 445
     invoke-virtual {v4}, Landroid/media/AudioPlaybackConfiguration;->getClientUid()I
 
     move-result v5
@@ -1214,7 +1194,7 @@
 
     if-eqz v5, :cond_df
 
-    .line 528
+    .line 446
     invoke-virtual {v4}, Landroid/media/AudioPlaybackConfiguration;->getPlayerState()I
 
     move-result v5
@@ -1223,7 +1203,7 @@
 
     if-ne v5, v6, :cond_df
 
-    .line 530
+    .line 448
     const/4 v5, 0x0
 
     if-nez p3, :cond_8b
@@ -1238,61 +1218,61 @@
 
     if-ne v6, v2, :cond_8b
 
-    .line 534
-    const-string p1, "AudioService.PlaybackActivityMonitor"
+    .line 452
+    const-string v2, "AudioService.PlaybackActivityMonitor"
 
-    new-instance p2, Ljava/lang/StringBuilder;
+    new-instance v6, Ljava/lang/StringBuilder;
 
-    invoke-direct {p2}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v6}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string/jumbo p3, "not ducking player "
+    const-string/jumbo v7, "not ducking player "
 
-    invoke-virtual {p2, p3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v6, v7}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v4}, Landroid/media/AudioPlaybackConfiguration;->getPlayerInterfaceId()I
 
-    move-result p3
+    move-result v7
 
-    invoke-virtual {p2, p3}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v6, v7}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    const-string p3, " uid:"
+    const-string v7, " uid:"
 
-    invoke-virtual {p2, p3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v6, v7}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    .line 535
+    .line 453
     invoke-virtual {v4}, Landroid/media/AudioPlaybackConfiguration;->getClientUid()I
 
-    move-result p3
+    move-result v7
 
-    invoke-virtual {p2, p3}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v6, v7}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    const-string p3, " pid:"
+    const-string v7, " pid:"
 
-    invoke-virtual {p2, p3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v6, v7}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v4}, Landroid/media/AudioPlaybackConfiguration;->getClientPid()I
 
-    move-result p3
+    move-result v7
 
-    invoke-virtual {p2, p3}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v6, v7}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    const-string p3, " - SPEECH"
+    const-string v7, " - SPEECH"
 
-    invoke-virtual {p2, p3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v6, v7}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v6}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p2
+    move-result-object v6
 
-    .line 534
-    invoke-static {p1, p2}, Landroid/util/Log;->v(Ljava/lang/String;Ljava/lang/String;)I
+    .line 452
+    invoke-static {v2, v6}, Landroid/util/Log;->v(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 537
+    .line 455
     monitor-exit v0
 
     return v5
 
-    .line 538
+    .line 456
     :cond_8b
     sget-object v6, Lcom/android/server/audio/PlaybackActivityMonitor;->UNDUCKABLE_PLAYER_TYPES:[I
 
@@ -1306,111 +1286,115 @@
 
     if-eqz v6, :cond_dc
 
-    .line 539
-    const-string p1, "AudioService.PlaybackActivityMonitor"
+    .line 457
+    const-string v2, "AudioService.PlaybackActivityMonitor"
 
-    new-instance p2, Ljava/lang/StringBuilder;
+    new-instance v6, Ljava/lang/StringBuilder;
 
-    invoke-direct {p2}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v6}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string/jumbo p3, "not ducking player "
+    const-string/jumbo v7, "not ducking player "
 
-    invoke-virtual {p2, p3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v6, v7}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v4}, Landroid/media/AudioPlaybackConfiguration;->getPlayerInterfaceId()I
 
-    move-result p3
+    move-result v7
 
-    invoke-virtual {p2, p3}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v6, v7}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    const-string p3, " uid:"
+    const-string v7, " uid:"
 
-    invoke-virtual {p2, p3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v6, v7}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    .line 540
+    .line 458
     invoke-virtual {v4}, Landroid/media/AudioPlaybackConfiguration;->getClientUid()I
 
-    move-result p3
+    move-result v7
 
-    invoke-virtual {p2, p3}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v6, v7}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    const-string p3, " pid:"
+    const-string v7, " pid:"
 
-    invoke-virtual {p2, p3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v6, v7}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v4}, Landroid/media/AudioPlaybackConfiguration;->getClientPid()I
 
-    move-result p3
+    move-result v7
 
-    invoke-virtual {p2, p3}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v6, v7}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    const-string p3, " due to type:"
+    const-string v7, " due to type:"
 
-    invoke-virtual {p2, p3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v6, v7}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    .line 543
+    .line 461
     invoke-virtual {v4}, Landroid/media/AudioPlaybackConfiguration;->getPlayerType()I
 
-    move-result p3
+    move-result v7
 
-    .line 542
-    invoke-static {p3}, Landroid/media/AudioPlaybackConfiguration;->toLogFriendlyPlayerType(I)Ljava/lang/String;
+    .line 460
+    invoke-static {v7}, Landroid/media/AudioPlaybackConfiguration;->toLogFriendlyPlayerType(I)Ljava/lang/String;
 
-    move-result-object p3
+    move-result-object v7
 
-    invoke-virtual {p2, p3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v6, v7}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v6}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p2
+    move-result-object v6
 
-    .line 539
-    invoke-static {p1, p2}, Landroid/util/Log;->v(Ljava/lang/String;Ljava/lang/String;)I
+    .line 457
+    invoke-static {v2, v6}, Landroid/util/Log;->v(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 544
+    .line 462
     monitor-exit v0
 
     return v5
 
-    .line 546
+    .line 464
     :cond_dc
     invoke-virtual {v3, v4}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
 
-    .line 548
+    .line 466
+    .end local v4  # "apc":Landroid/media/AudioPlaybackConfiguration;
     :cond_df
     goto/16 :goto_1d
 
-    .line 552
+    .line 470
     :cond_e1
-    iget-object p1, p0, Lcom/android/server/audio/PlaybackActivityMonitor;->mDuckingManager:Lcom/android/server/audio/PlaybackActivityMonitor$DuckingManager;
+    iget-object v4, p0, Lcom/android/server/audio/PlaybackActivityMonitor;->mDuckingManager:Lcom/android/server/audio/PlaybackActivityMonitor$DuckingManager;
 
     invoke-virtual {p2}, Lcom/android/server/audio/FocusRequester;->getClientUid()I
 
-    move-result p2
+    move-result v5
 
-    invoke-virtual {p1, p2, v3}, Lcom/android/server/audio/PlaybackActivityMonitor$DuckingManager;->duckUid(ILjava/util/ArrayList;)V
+    invoke-virtual {v4, v5, v3}, Lcom/android/server/audio/PlaybackActivityMonitor$DuckingManager;->duckUid(ILjava/util/ArrayList;)V
 
-    .line 553
+    .line 471
+    .end local v1  # "apcIterator":Ljava/util/Iterator;, "Ljava/util/Iterator<Landroid/media/AudioPlaybackConfiguration;>;"
+    .end local v3  # "apcsToDuck":Ljava/util/ArrayList;, "Ljava/util/ArrayList<Landroid/media/AudioPlaybackConfiguration;>;"
     monitor-exit v0
 
-    .line 554
+    .line 472
     return v2
 
-    .line 553
+    .line 471
     :catchall_ec
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_ee
     .catchall {:try_start_3 .. :try_end_ee} :catchall_ec
 
-    throw p1
+    throw v1
 .end method
 
 .method protected dump(Ljava/io/PrintWriter;)V
     .registers 8
+    .param p1, "pw"  # Ljava/io/PrintWriter;
 
-    .line 371
+    .line 295
     new-instance v0, Ljava/lang/StringBuilder;
 
     invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
@@ -1419,7 +1403,7 @@
 
     invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    .line 372
+    .line 296
     invoke-static {}, Ljava/text/DateFormat;->getTimeInstance()Ljava/text/DateFormat;
 
     move-result-object v1
@@ -1438,28 +1422,28 @@
 
     move-result-object v0
 
-    .line 371
+    .line 295
     invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
-    .line 373
+    .line 297
     iget-object v0, p0, Lcom/android/server/audio/PlaybackActivityMonitor;->mPlayerLock:Ljava/lang/Object;
 
     monitor-enter v0
 
-    .line 374
+    .line 298
     :try_start_24
     const-string v1, "\n  playback listeners:"
 
     invoke-virtual {p1, v1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
-    .line 375
+    .line 299
     iget-object v1, p0, Lcom/android/server/audio/PlaybackActivityMonitor;->mClients:Ljava/util/ArrayList;
 
     monitor-enter v1
     :try_end_2c
-    .catchall {:try_start_24 .. :try_end_2c} :catchall_15d
+    .catchall {:try_start_24 .. :try_end_2c} :catchall_116
 
-    .line 376
+    .line 300
     :try_start_2c
     iget-object v2, p0, Lcom/android/server/audio/PlaybackActivityMonitor;->mClients:Ljava/util/ArrayList;
 
@@ -1480,7 +1464,8 @@
 
     check-cast v3, Lcom/android/server/audio/PlaybackActivityMonitor$PlayMonitorClient;
 
-    .line 377
+    .line 301
+    .local v3, "pmc":Lcom/android/server/audio/PlaybackActivityMonitor$PlayMonitorClient;
     new-instance v4, Ljava/lang/StringBuilder;
 
     invoke-direct {v4}, Ljava/lang/StringBuilder;-><init>()V
@@ -1503,41 +1488,42 @@
     :goto_51
     invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    .line 378
+    .line 302
     invoke-virtual {v3}, Ljava/lang/Object;->toString()Ljava/lang/String;
 
-    move-result-object v3
+    move-result-object v5
 
-    invoke-virtual {v4, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v4}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v3
+    move-result-object v4
 
-    .line 377
-    invoke-virtual {p1, v3}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
+    .line 301
+    invoke-virtual {p1, v4}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
-    .line 379
+    .line 303
+    .end local v3  # "pmc":Lcom/android/server/audio/PlaybackActivityMonitor$PlayMonitorClient;
     goto :goto_32
 
-    .line 380
+    .line 304
     :cond_63
     monitor-exit v1
     :try_end_64
-    .catchall {:try_start_2c .. :try_end_64} :catchall_15a
+    .catchall {:try_start_2c .. :try_end_64} :catchall_113
 
-    .line 381
+    .line 305
     :try_start_64
     const-string v1, "\n"
 
     invoke-virtual {p1, v1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
-    .line 383
+    .line 307
     const-string v1, "\n  players:"
 
     invoke-virtual {p1, v1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
-    .line 384
+    .line 308
     new-instance v1, Ljava/util/ArrayList;
 
     iget-object v2, p0, Lcom/android/server/audio/PlaybackActivityMonitor;->mPlayers:Ljava/util/HashMap;
@@ -1548,286 +1534,218 @@
 
     invoke-direct {v1, v2}, Ljava/util/ArrayList;-><init>(Ljava/util/Collection;)V
 
-    .line 385
+    .line 309
+    .local v1, "piidIntList":Ljava/util/List;, "Ljava/util/List<Ljava/lang/Integer;>;"
     invoke-static {v1}, Ljava/util/Collections;->sort(Ljava/util/List;)V
 
-    .line 386
+    .line 310
     invoke-interface {v1}, Ljava/util/List;->iterator()Ljava/util/Iterator;
 
-    move-result-object v1
+    move-result-object v2
 
     :goto_80
-    invoke-interface {v1}, Ljava/util/Iterator;->hasNext()Z
+    invoke-interface {v2}, Ljava/util/Iterator;->hasNext()Z
 
-    move-result v2
+    move-result v3
 
-    if-eqz v2, :cond_9a
+    if-eqz v3, :cond_9a
 
-    invoke-interface {v1}, Ljava/util/Iterator;->next()Ljava/lang/Object;
+    invoke-interface {v2}, Ljava/util/Iterator;->next()Ljava/lang/Object;
 
-    move-result-object v2
+    move-result-object v3
 
-    check-cast v2, Ljava/lang/Integer;
+    check-cast v3, Ljava/lang/Integer;
 
-    .line 387
-    iget-object v3, p0, Lcom/android/server/audio/PlaybackActivityMonitor;->mPlayers:Ljava/util/HashMap;
+    .line 311
+    .local v3, "piidInt":Ljava/lang/Integer;
+    iget-object v4, p0, Lcom/android/server/audio/PlaybackActivityMonitor;->mPlayers:Ljava/util/HashMap;
 
-    invoke-virtual {v3, v2}, Ljava/util/HashMap;->get(Ljava/lang/Object;)Ljava/lang/Object;
-
-    move-result-object v2
-
-    check-cast v2, Landroid/media/AudioPlaybackConfiguration;
-
-    .line 388
-    if-eqz v2, :cond_99
-
-    .line 389
-    invoke-virtual {v2, p1}, Landroid/media/AudioPlaybackConfiguration;->dump(Ljava/io/PrintWriter;)V
-
-    .line 391
-    :cond_99
-    goto :goto_80
-
-    .line 393
-    :cond_9a
-    const-string v1, "\n  ducked players piids:"
-
-    invoke-virtual {p1, v1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
-
-    .line 394
-    iget-object v1, p0, Lcom/android/server/audio/PlaybackActivityMonitor;->mDuckingManager:Lcom/android/server/audio/PlaybackActivityMonitor$DuckingManager;
-
-    invoke-virtual {v1, p1}, Lcom/android/server/audio/PlaybackActivityMonitor$DuckingManager;->dump(Ljava/io/PrintWriter;)V
-
-    .line 396
-    const-string v1, "\n  muted player piids:"
-
-    invoke-virtual {p1, v1}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
-
-    .line 397
-    iget-object v1, p0, Lcom/android/server/audio/PlaybackActivityMonitor;->mMutedPlayers:Ljava/util/ArrayList;
-
-    invoke-virtual {v1}, Ljava/util/ArrayList;->iterator()Ljava/util/Iterator;
-
-    move-result-object v1
-
-    :goto_af
-    invoke-interface {v1}, Ljava/util/Iterator;->hasNext()Z
-
-    move-result v2
-
-    if-eqz v2, :cond_d4
-
-    invoke-interface {v1}, Ljava/util/Iterator;->next()Ljava/lang/Object;
-
-    move-result-object v2
-
-    check-cast v2, Ljava/lang/Integer;
-
-    invoke-virtual {v2}, Ljava/lang/Integer;->intValue()I
-
-    move-result v2
-
-    .line 398
-    new-instance v3, Ljava/lang/StringBuilder;
-
-    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
-
-    const-string v4, " "
-
-    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v3, v2}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
-
-    move-result-object v2
-
-    invoke-virtual {p1, v2}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
-
-    .line 399
-    goto :goto_af
-
-    .line 400
-    :cond_d4
-    invoke-virtual {p1}, Ljava/io/PrintWriter;->println()V
-
-    .line 402
-    const-string v1, "\n  banned uids:"
-
-    invoke-virtual {p1, v1}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
-
-    .line 403
-    iget-object v1, p0, Lcom/android/server/audio/PlaybackActivityMonitor;->mBannedUids:Ljava/util/ArrayList;
-
-    invoke-virtual {v1}, Ljava/util/ArrayList;->iterator()Ljava/util/Iterator;
-
-    move-result-object v1
-
-    :goto_e2
-    invoke-interface {v1}, Ljava/util/Iterator;->hasNext()Z
-
-    move-result v2
-
-    if-eqz v2, :cond_107
-
-    invoke-interface {v1}, Ljava/util/Iterator;->next()Ljava/lang/Object;
-
-    move-result-object v2
-
-    check-cast v2, Ljava/lang/Integer;
-
-    invoke-virtual {v2}, Ljava/lang/Integer;->intValue()I
-
-    move-result v2
-
-    .line 404
-    new-instance v3, Ljava/lang/StringBuilder;
-
-    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
-
-    const-string v4, " "
-
-    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v3, v2}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
-
-    move-result-object v2
-
-    invoke-virtual {p1, v2}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
-
-    .line 405
-    goto :goto_e2
-
-    .line 406
-    :cond_107
-    const-string v1, "\n"
-
-    invoke-virtual {p1, v1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
-
-    .line 408
-    sget-object v1, Lcom/android/server/audio/PlaybackActivityMonitor;->sEventLogger:Lcom/android/server/audio/AudioEventLogger;
-
-    invoke-virtual {v1, p1}, Lcom/android/server/audio/AudioEventLogger;->dump(Ljava/io/PrintWriter;)V
-
-    .line 409
-    monitor-exit v0
-    :try_end_112
-    .catchall {:try_start_64 .. :try_end_112} :catchall_15d
-
-    .line 410
-    iget-object v1, p0, Lcom/android/server/audio/PlaybackActivityMonitor;->mAllowedCapturePolicies:Ljava/util/HashMap;
-
-    monitor-enter v1
-
-    .line 411
-    :try_start_115
-    const-string v0, "\n  allowed capture policies:"
-
-    invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
-
-    .line 412
-    iget-object v0, p0, Lcom/android/server/audio/PlaybackActivityMonitor;->mAllowedCapturePolicies:Ljava/util/HashMap;
-
-    invoke-virtual {v0}, Ljava/util/HashMap;->entrySet()Ljava/util/Set;
-
-    move-result-object v0
-
-    invoke-interface {v0}, Ljava/util/Set;->iterator()Ljava/util/Iterator;
-
-    move-result-object v0
-
-    :goto_124
-    invoke-interface {v0}, Ljava/util/Iterator;->hasNext()Z
-
-    move-result v2
-
-    if-eqz v2, :cond_155
-
-    invoke-interface {v0}, Ljava/util/Iterator;->next()Ljava/lang/Object;
-
-    move-result-object v2
-
-    check-cast v2, Ljava/util/Map$Entry;
-
-    .line 413
-    new-instance v3, Ljava/lang/StringBuilder;
-
-    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
-
-    const-string v4, "  uid: "
-
-    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-interface {v2}, Ljava/util/Map$Entry;->getKey()Ljava/lang/Object;
+    invoke-virtual {v4, v3}, Ljava/util/HashMap;->get(Ljava/lang/Object;)Ljava/lang/Object;
 
     move-result-object v4
 
-    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    check-cast v4, Landroid/media/AudioPlaybackConfiguration;
 
-    const-string v4, " policy: "
+    .line 312
+    .local v4, "apc":Landroid/media/AudioPlaybackConfiguration;
+    if-eqz v4, :cond_99
 
-    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    .line 313
+    invoke-virtual {v4, p1}, Landroid/media/AudioPlaybackConfiguration;->dump(Ljava/io/PrintWriter;)V
 
-    invoke-interface {v2}, Ljava/util/Map$Entry;->getValue()Ljava/lang/Object;
+    .line 315
+    .end local v3  # "piidInt":Ljava/lang/Integer;
+    .end local v4  # "apc":Landroid/media/AudioPlaybackConfiguration;
+    :cond_99
+    goto :goto_80
 
-    move-result-object v2
-
-    invoke-virtual {v3, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
-
-    move-result-object v2
+    .line 317
+    :cond_9a
+    const-string v2, "\n  ducked players piids:"
 
     invoke-virtual {p1, v2}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
-    .line 414
-    goto :goto_124
+    .line 318
+    iget-object v2, p0, Lcom/android/server/audio/PlaybackActivityMonitor;->mDuckingManager:Lcom/android/server/audio/PlaybackActivityMonitor$DuckingManager;
 
-    .line 415
-    :cond_155
-    monitor-exit v1
+    invoke-virtual {v2, p1}, Lcom/android/server/audio/PlaybackActivityMonitor$DuckingManager;->dump(Ljava/io/PrintWriter;)V
 
-    .line 416
+    .line 320
+    const-string v2, "\n  muted player piids:"
+
+    invoke-virtual {p1, v2}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
+
+    .line 321
+    iget-object v2, p0, Lcom/android/server/audio/PlaybackActivityMonitor;->mMutedPlayers:Ljava/util/ArrayList;
+
+    invoke-virtual {v2}, Ljava/util/ArrayList;->iterator()Ljava/util/Iterator;
+
+    move-result-object v2
+
+    :goto_af
+    invoke-interface {v2}, Ljava/util/Iterator;->hasNext()Z
+
+    move-result v3
+
+    if-eqz v3, :cond_d4
+
+    invoke-interface {v2}, Ljava/util/Iterator;->next()Ljava/lang/Object;
+
+    move-result-object v3
+
+    check-cast v3, Ljava/lang/Integer;
+
+    invoke-virtual {v3}, Ljava/lang/Integer;->intValue()I
+
+    move-result v3
+
+    .line 322
+    .local v3, "piid":I
+    new-instance v4, Ljava/lang/StringBuilder;
+
+    invoke-direct {v4}, Ljava/lang/StringBuilder;-><init>()V
+
+    const-string v5, " "
+
+    invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v4, v3}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v4}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v4
+
+    invoke-virtual {p1, v4}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
+
+    .line 323
+    .end local v3  # "piid":I
+    goto :goto_af
+
+    .line 324
+    :cond_d4
+    invoke-virtual {p1}, Ljava/io/PrintWriter;->println()V
+
+    .line 326
+    const-string v2, "\n  banned uids:"
+
+    invoke-virtual {p1, v2}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
+
+    .line 327
+    iget-object v2, p0, Lcom/android/server/audio/PlaybackActivityMonitor;->mBannedUids:Ljava/util/ArrayList;
+
+    invoke-virtual {v2}, Ljava/util/ArrayList;->iterator()Ljava/util/Iterator;
+
+    move-result-object v2
+
+    :goto_e2
+    invoke-interface {v2}, Ljava/util/Iterator;->hasNext()Z
+
+    move-result v3
+
+    if-eqz v3, :cond_107
+
+    invoke-interface {v2}, Ljava/util/Iterator;->next()Ljava/lang/Object;
+
+    move-result-object v3
+
+    check-cast v3, Ljava/lang/Integer;
+
+    invoke-virtual {v3}, Ljava/lang/Integer;->intValue()I
+
+    move-result v3
+
+    .line 328
+    .local v3, "uid":I
+    new-instance v4, Ljava/lang/StringBuilder;
+
+    invoke-direct {v4}, Ljava/lang/StringBuilder;-><init>()V
+
+    const-string v5, " "
+
+    invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v4, v3}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v4}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v4
+
+    invoke-virtual {p1, v4}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
+
+    .line 329
+    .end local v3  # "uid":I
+    goto :goto_e2
+
+    .line 330
+    :cond_107
+    const-string v2, "\n"
+
+    invoke-virtual {p1, v2}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+
+    .line 332
+    sget-object v2, Lcom/android/server/audio/PlaybackActivityMonitor;->sEventLogger:Lcom/android/server/audio/AudioEventLogger;
+
+    invoke-virtual {v2, p1}, Lcom/android/server/audio/AudioEventLogger;->dump(Ljava/io/PrintWriter;)V
+
+    .line 333
+    .end local v1  # "piidIntList":Ljava/util/List;, "Ljava/util/List<Ljava/lang/Integer;>;"
+    monitor-exit v0
+    :try_end_112
+    .catchall {:try_start_64 .. :try_end_112} :catchall_116
+
+    .line 334
     return-void
 
-    .line 415
-    :catchall_157
-    move-exception p1
+    .line 304
+    :catchall_113
+    move-exception v2
 
+    :try_start_114
     monitor-exit v1
-    :try_end_159
-    .catchall {:try_start_115 .. :try_end_159} :catchall_157
+    :try_end_115
+    .catchall {:try_start_114 .. :try_end_115} :catchall_113
 
-    throw p1
+    .end local p0  # "this":Lcom/android/server/audio/PlaybackActivityMonitor;
+    .end local p1  # "pw":Ljava/io/PrintWriter;
+    :try_start_115
+    throw v2
 
-    .line 380
-    :catchall_15a
-    move-exception p1
-
-    :try_start_15b
-    monitor-exit v1
-    :try_end_15c
-    .catchall {:try_start_15b .. :try_end_15c} :catchall_15a
-
-    :try_start_15c
-    throw p1
-
-    .line 409
-    :catchall_15d
-    move-exception p1
+    .line 333
+    .restart local p0  # "this":Lcom/android/server/audio/PlaybackActivityMonitor;
+    .restart local p1  # "pw":Ljava/io/PrintWriter;
+    :catchall_116
+    move-exception v1
 
     monitor-exit v0
-    :try_end_15f
-    .catchall {:try_start_15c .. :try_end_15f} :catchall_15d
+    :try_end_118
+    .catchall {:try_start_115 .. :try_end_118} :catchall_116
 
-    throw p1
+    throw v1
 .end method
 
 .method getActivePlaybackConfigurations(Z)Ljava/util/List;
-    .registers 5
+    .registers 6
+    .param p1, "isPrivileged"  # Z
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(Z)",
@@ -1837,148 +1755,108 @@
         }
     .end annotation
 
-    .line 673
+    .line 591
     iget-object v0, p0, Lcom/android/server/audio/PlaybackActivityMonitor;->mPlayers:Ljava/util/HashMap;
 
     monitor-enter v0
 
-    .line 674
+    .line 592
     if-eqz p1, :cond_12
 
-    .line 675
+    .line 593
     :try_start_5
-    new-instance p1, Ljava/util/ArrayList;
-
-    iget-object v1, p0, Lcom/android/server/audio/PlaybackActivityMonitor;->mPlayers:Ljava/util/HashMap;
-
-    invoke-virtual {v1}, Ljava/util/HashMap;->values()Ljava/util/Collection;
-
-    move-result-object v1
-
-    invoke-direct {p1, v1}, Ljava/util/ArrayList;-><init>(Ljava/util/Collection;)V
-
-    monitor-exit v0
-
-    return-object p1
-
-    .line 678
-    :cond_12
-    iget-object p1, p0, Lcom/android/server/audio/PlaybackActivityMonitor;->mPlayerLock:Ljava/lang/Object;
-
-    monitor-enter p1
-    :try_end_15
-    .catchall {:try_start_5 .. :try_end_15} :catchall_2a
-
-    .line 679
-    :try_start_15
     new-instance v1, Ljava/util/ArrayList;
 
     iget-object v2, p0, Lcom/android/server/audio/PlaybackActivityMonitor;->mPlayers:Ljava/util/HashMap;
 
-    .line 680
     invoke-virtual {v2}, Ljava/util/HashMap;->values()Ljava/util/Collection;
 
     move-result-object v2
 
     invoke-direct {v1, v2}, Ljava/util/ArrayList;-><init>(Ljava/util/Collection;)V
 
-    .line 679
-    invoke-direct {p0, v1}, Lcom/android/server/audio/PlaybackActivityMonitor;->anonymizeForPublicConsumption(Ljava/util/List;)Ljava/util/ArrayList;
+    monitor-exit v0
 
-    move-result-object v1
+    return-object v1
 
-    .line 681
-    monitor-exit p1
+    .line 596
+    :cond_12
+    iget-object v1, p0, Lcom/android/server/audio/PlaybackActivityMonitor;->mPlayerLock:Ljava/lang/Object;
+
+    monitor-enter v1
+    :try_end_15
+    .catchall {:try_start_5 .. :try_end_15} :catchall_2a
+
+    .line 597
+    :try_start_15
+    new-instance v2, Ljava/util/ArrayList;
+
+    iget-object v3, p0, Lcom/android/server/audio/PlaybackActivityMonitor;->mPlayers:Ljava/util/HashMap;
+
+    .line 598
+    invoke-virtual {v3}, Ljava/util/HashMap;->values()Ljava/util/Collection;
+
+    move-result-object v3
+
+    invoke-direct {v2, v3}, Ljava/util/ArrayList;-><init>(Ljava/util/Collection;)V
+
+    .line 597
+    invoke-direct {p0, v2}, Lcom/android/server/audio/PlaybackActivityMonitor;->anonymizeForPublicConsumption(Ljava/util/List;)Ljava/util/ArrayList;
+
+    move-result-object v2
+
+    .line 599
+    .local v2, "configsPublic":Ljava/util/List;, "Ljava/util/List<Landroid/media/AudioPlaybackConfiguration;>;"
+    monitor-exit v1
     :try_end_25
     .catchall {:try_start_15 .. :try_end_25} :catchall_27
 
-    .line 682
+    .line 600
     :try_start_25
     monitor-exit v0
     :try_end_26
     .catchall {:try_start_25 .. :try_end_26} :catchall_2a
 
-    return-object v1
+    return-object v2
 
-    .line 681
+    .line 599
+    .end local v2  # "configsPublic":Ljava/util/List;, "Ljava/util/List<Landroid/media/AudioPlaybackConfiguration;>;"
     :catchall_27
-    move-exception v1
+    move-exception v2
 
     :try_start_28
-    monitor-exit p1
+    monitor-exit v1
     :try_end_29
     .catchall {:try_start_28 .. :try_end_29} :catchall_27
 
+    .end local p0  # "this":Lcom/android/server/audio/PlaybackActivityMonitor;
+    .end local p1  # "isPrivileged":Z
     :try_start_29
-    throw v1
+    throw v2
 
-    .line 684
+    .line 602
+    .restart local p0  # "this":Lcom/android/server/audio/PlaybackActivityMonitor;
+    .restart local p1  # "isPrivileged":Z
     :catchall_2a
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_2c
     .catchall {:try_start_29 .. :try_end_2c} :catchall_2a
 
-    throw p1
-.end method
-
-.method public getAllAllowedCapturePolicies()Ljava/util/HashMap;
-    .registers 2
-    .annotation system Ldalvik/annotation/Signature;
-        value = {
-            "()",
-            "Ljava/util/HashMap<",
-            "Ljava/lang/Integer;",
-            "Ljava/lang/Integer;",
-            ">;"
-        }
-    .end annotation
-
-    .line 350
-    iget-object v0, p0, Lcom/android/server/audio/PlaybackActivityMonitor;->mAllowedCapturePolicies:Ljava/util/HashMap;
-
-    return-object v0
-.end method
-
-.method public getAllowedCapturePolicy(I)I
-    .registers 4
-
-    .line 343
-    iget-object v0, p0, Lcom/android/server/audio/PlaybackActivityMonitor;->mAllowedCapturePolicies:Ljava/util/HashMap;
-
-    invoke-static {p1}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
-
-    move-result-object p1
-
-    const/4 v1, 0x1
-
-    invoke-static {v1}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
-
-    move-result-object v1
-
-    invoke-virtual {v0, p1, v1}, Ljava/util/HashMap;->getOrDefault(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
-
-    move-result-object p1
-
-    check-cast p1, Ljava/lang/Integer;
-
-    invoke-virtual {p1}, Ljava/lang/Integer;->intValue()I
-
-    move-result p1
-
-    return p1
+    throw v1
 .end method
 
 .method public mutePlayersForCall([I)V
-    .registers 11
+    .registers 13
+    .param p1, "usagesToMute"  # [I
 
-    .line 572
+    .line 490
     iget-object v0, p0, Lcom/android/server/audio/PlaybackActivityMonitor;->mPlayerLock:Ljava/lang/Object;
 
     monitor-enter v0
 
-    .line 573
+    .line 491
     :try_start_3
     iget-object v1, p0, Lcom/android/server/audio/PlaybackActivityMonitor;->mPlayers:Ljava/util/HashMap;
 
@@ -1986,403 +1864,231 @@
 
     move-result-object v1
 
-    .line 574
+    .line 492
+    .local v1, "piidSet":Ljava/util/Set;, "Ljava/util/Set<Ljava/lang/Integer;>;"
     invoke-interface {v1}, Ljava/util/Set;->iterator()Ljava/util/Iterator;
-
-    move-result-object v1
-
-    .line 576
-    :goto_d
-    invoke-interface {v1}, Ljava/util/Iterator;->hasNext()Z
-
-    move-result v2
-
-    if-eqz v2, :cond_9b
-
-    .line 577
-    invoke-interface {v1}, Ljava/util/Iterator;->next()Ljava/lang/Object;
 
     move-result-object v2
 
-    check-cast v2, Ljava/lang/Integer;
+    .line 494
+    .local v2, "piidIterator":Ljava/util/Iterator;, "Ljava/util/Iterator<Ljava/lang/Integer;>;"
+    :goto_d
+    invoke-interface {v2}, Ljava/util/Iterator;->hasNext()Z
 
-    .line 578
-    iget-object v3, p0, Lcom/android/server/audio/PlaybackActivityMonitor;->mPlayers:Ljava/util/HashMap;
+    move-result v3
 
-    invoke-virtual {v3, v2}, Ljava/util/HashMap;->get(Ljava/lang/Object;)Ljava/lang/Object;
+    if-eqz v3, :cond_99
+
+    .line 495
+    invoke-interface {v2}, Ljava/util/Iterator;->next()Ljava/lang/Object;
 
     move-result-object v3
 
-    check-cast v3, Landroid/media/AudioPlaybackConfiguration;
+    check-cast v3, Ljava/lang/Integer;
 
-    .line 579
-    if-nez v3, :cond_24
+    .line 496
+    .local v3, "piid":Ljava/lang/Integer;
+    iget-object v4, p0, Lcom/android/server/audio/PlaybackActivityMonitor;->mPlayers:Ljava/util/HashMap;
 
-    .line 580
-    goto :goto_d
-
-    .line 582
-    :cond_24
-    invoke-virtual {v3}, Landroid/media/AudioPlaybackConfiguration;->getAudioAttributes()Landroid/media/AudioAttributes;
+    invoke-virtual {v4, v3}, Ljava/util/HashMap;->get(Ljava/lang/Object;)Ljava/lang/Object;
 
     move-result-object v4
 
-    invoke-virtual {v4}, Landroid/media/AudioAttributes;->getUsage()I
+    check-cast v4, Landroid/media/AudioPlaybackConfiguration;
 
-    move-result v4
+    .line 497
+    .local v4, "apc":Landroid/media/AudioPlaybackConfiguration;
+    if-nez v4, :cond_24
 
-    .line 583
-    nop
+    .line 498
+    goto :goto_d
 
-    .line 584
-    array-length v5, p1
-
-    const/4 v6, 0x0
-
-    move v7, v6
-
-    :goto_30
-    if-ge v7, v5, :cond_3c
-
-    aget v8, p1, v7
-    :try_end_34
-    .catchall {:try_start_3 .. :try_end_34} :catchall_9d
-
-    .line 585
-    if-ne v4, v8, :cond_39
-
-    .line 586
-    nop
-
-    .line 587
-    const/4 v6, 0x1
-
-    goto :goto_3c
-
-    .line 584
-    :cond_39
-    add-int/lit8 v7, v7, 0x1
-
-    goto :goto_30
-
-    .line 590
-    :cond_3c
-    :goto_3c
-    if-eqz v6, :cond_99
-
-    .line 592
-    :try_start_3e
-    sget-object v4, Lcom/android/server/audio/PlaybackActivityMonitor;->sEventLogger:Lcom/android/server/audio/AudioEventLogger;
-
-    new-instance v5, Lcom/android/server/audio/AudioEventLogger$StringEvent;
-
-    new-instance v6, Ljava/lang/StringBuilder;
-
-    invoke-direct {v6}, Ljava/lang/StringBuilder;-><init>()V
-
-    const-string v7, "call: muting piid:"
-
-    invoke-virtual {v6, v7}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v6, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
-
-    const-string v7, " uid:"
-
-    invoke-virtual {v6, v7}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    .line 593
-    invoke-virtual {v3}, Landroid/media/AudioPlaybackConfiguration;->getClientUid()I
-
-    move-result v7
-
-    invoke-virtual {v6, v7}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v6}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
-
-    move-result-object v6
-
-    invoke-direct {v5, v6}, Lcom/android/server/audio/AudioEventLogger$StringEvent;-><init>(Ljava/lang/String;)V
-
-    const-string v6, "AudioService.PlaybackActivityMonitor"
-
-    invoke-virtual {v5, v6}, Lcom/android/server/audio/AudioEventLogger$StringEvent;->printLog(Ljava/lang/String;)Lcom/android/server/audio/AudioEventLogger$Event;
+    .line 500
+    :cond_24
+    invoke-virtual {v4}, Landroid/media/AudioPlaybackConfiguration;->getAudioAttributes()Landroid/media/AudioAttributes;
 
     move-result-object v5
 
-    .line 592
-    invoke-virtual {v4, v5}, Lcom/android/server/audio/AudioEventLogger;->log(Lcom/android/server/audio/AudioEventLogger$Event;)V
-
-    .line 594
-    invoke-virtual {v3}, Landroid/media/AudioPlaybackConfiguration;->getPlayerProxy()Landroid/media/PlayerProxy;
-
-    move-result-object v3
-
-    const/4 v4, 0x0
-
-    invoke-virtual {v3, v4}, Landroid/media/PlayerProxy;->setVolume(F)V
-
-    .line 595
-    iget-object v3, p0, Lcom/android/server/audio/PlaybackActivityMonitor;->mMutedPlayers:Ljava/util/ArrayList;
-
-    new-instance v4, Ljava/lang/Integer;
-
-    invoke-virtual {v2}, Ljava/lang/Integer;->intValue()I
+    invoke-virtual {v5}, Landroid/media/AudioAttributes;->getUsage()I
 
     move-result v5
 
-    invoke-direct {v4, v5}, Ljava/lang/Integer;-><init>(I)V
+    .line 501
+    .local v5, "playerUsage":I
+    const/4 v6, 0x0
 
-    invoke-virtual {v3, v4}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
-    :try_end_81
-    .catch Ljava/lang/Exception; {:try_start_3e .. :try_end_81} :catch_82
-    .catchall {:try_start_3e .. :try_end_81} :catchall_9d
+    .line 502
+    .local v6, "mute":Z
+    array-length v7, p1
 
-    .line 598
-    goto :goto_99
+    const/4 v8, 0x0
 
-    .line 596
-    :catch_82
-    move-exception v3
+    :goto_2f
+    if-ge v8, v7, :cond_3a
 
-    .line 597
-    :try_start_83
-    const-string v4, "AudioService.PlaybackActivityMonitor"
+    aget v9, p1, v8
+    :try_end_33
+    .catchall {:try_start_3 .. :try_end_33} :catchall_9b
 
-    new-instance v5, Ljava/lang/StringBuilder;
+    .line 503
+    .local v9, "usageToMute":I
+    if-ne v5, v9, :cond_37
 
-    invoke-direct {v5}, Ljava/lang/StringBuilder;-><init>()V
+    .line 504
+    const/4 v6, 0x1
 
-    const-string v6, "call: error muting player "
+    .line 505
+    goto :goto_3a
 
-    invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    .line 502
+    .end local v9  # "usageToMute":I
+    :cond_37
+    add-int/lit8 v8, v8, 0x1
 
-    invoke-virtual {v5, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    goto :goto_2f
 
-    invoke-virtual {v5}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    .line 508
+    :cond_3a
+    :goto_3a
+    if-eqz v6, :cond_97
 
-    move-result-object v2
+    .line 510
+    :try_start_3c
+    sget-object v7, Lcom/android/server/audio/PlaybackActivityMonitor;->sEventLogger:Lcom/android/server/audio/AudioEventLogger;
 
-    invoke-static {v4, v2, v3}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    new-instance v8, Lcom/android/server/audio/AudioEventLogger$StringEvent;
 
-    .line 600
-    :cond_99
-    :goto_99
+    new-instance v9, Ljava/lang/StringBuilder;
+
+    invoke-direct {v9}, Ljava/lang/StringBuilder;-><init>()V
+
+    const-string v10, "call: muting piid:"
+
+    invoke-virtual {v9, v10}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v9, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+
+    const-string v10, " uid:"
+
+    invoke-virtual {v9, v10}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    .line 511
+    invoke-virtual {v4}, Landroid/media/AudioPlaybackConfiguration;->getClientUid()I
+
+    move-result v10
+
+    invoke-virtual {v9, v10}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v9}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v9
+
+    invoke-direct {v8, v9}, Lcom/android/server/audio/AudioEventLogger$StringEvent;-><init>(Ljava/lang/String;)V
+
+    const-string v9, "AudioService.PlaybackActivityMonitor"
+
+    invoke-virtual {v8, v9}, Lcom/android/server/audio/AudioEventLogger$StringEvent;->printLog(Ljava/lang/String;)Lcom/android/server/audio/AudioEventLogger$Event;
+
+    move-result-object v8
+
+    .line 510
+    invoke-virtual {v7, v8}, Lcom/android/server/audio/AudioEventLogger;->log(Lcom/android/server/audio/AudioEventLogger$Event;)V
+
+    .line 512
+    invoke-virtual {v4}, Landroid/media/AudioPlaybackConfiguration;->getPlayerProxy()Landroid/media/PlayerProxy;
+
+    move-result-object v7
+
+    const/4 v8, 0x0
+
+    invoke-virtual {v7, v8}, Landroid/media/PlayerProxy;->setVolume(F)V
+
+    .line 513
+    iget-object v7, p0, Lcom/android/server/audio/PlaybackActivityMonitor;->mMutedPlayers:Ljava/util/ArrayList;
+
+    new-instance v8, Ljava/lang/Integer;
+
+    invoke-virtual {v3}, Ljava/lang/Integer;->intValue()I
+
+    move-result v9
+
+    invoke-direct {v8, v9}, Ljava/lang/Integer;-><init>(I)V
+
+    invoke-virtual {v7, v8}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
+    :try_end_7f
+    .catch Ljava/lang/Exception; {:try_start_3c .. :try_end_7f} :catch_80
+    .catchall {:try_start_3c .. :try_end_7f} :catchall_9b
+
+    .line 516
+    goto :goto_97
+
+    .line 514
+    :catch_80
+    move-exception v7
+
+    .line 515
+    .local v7, "e":Ljava/lang/Exception;
+    :try_start_81
+    const-string v8, "AudioService.PlaybackActivityMonitor"
+
+    new-instance v9, Ljava/lang/StringBuilder;
+
+    invoke-direct {v9}, Ljava/lang/StringBuilder;-><init>()V
+
+    const-string v10, "call: error muting player "
+
+    invoke-virtual {v9, v10}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v9, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v9}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v9
+
+    invoke-static {v8, v9, v7}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+
+    .line 518
+    .end local v3  # "piid":Ljava/lang/Integer;
+    .end local v4  # "apc":Landroid/media/AudioPlaybackConfiguration;
+    .end local v5  # "playerUsage":I
+    .end local v6  # "mute":Z
+    .end local v7  # "e":Ljava/lang/Exception;
+    :cond_97
+    :goto_97
     goto/16 :goto_d
 
-    .line 601
-    :cond_9b
+    .line 519
+    .end local v1  # "piidSet":Ljava/util/Set;, "Ljava/util/Set<Ljava/lang/Integer;>;"
+    .end local v2  # "piidIterator":Ljava/util/Iterator;, "Ljava/util/Iterator<Ljava/lang/Integer;>;"
+    :cond_99
     monitor-exit v0
 
-    .line 602
+    .line 520
     return-void
 
-    .line 601
-    :catchall_9d
-    move-exception p1
+    .line 519
+    :catchall_9b
+    move-exception v1
 
     monitor-exit v0
-    :try_end_9f
-    .catchall {:try_start_83 .. :try_end_9f} :catchall_9d
+    :try_end_9d
+    .catchall {:try_start_81 .. :try_end_9d} :catchall_9b
 
-    throw p1
+    throw v1
 .end method
 
 .method public playerAttributes(ILandroid/media/AudioAttributes;I)V
-    .registers 8
-
-    .line 178
-    iget-object v0, p0, Lcom/android/server/audio/PlaybackActivityMonitor;->mAllowedCapturePolicies:Ljava/util/HashMap;
-
-    monitor-enter v0
-
-    .line 179
-    :try_start_3
-    iget-object v1, p0, Lcom/android/server/audio/PlaybackActivityMonitor;->mAllowedCapturePolicies:Ljava/util/HashMap;
-
-    invoke-static {p3}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
-
-    move-result-object v2
-
-    invoke-virtual {v1, v2}, Ljava/util/HashMap;->containsKey(Ljava/lang/Object;)Z
-
-    move-result v1
-
-    if-eqz v1, :cond_42
-
-    .line 180
-    invoke-virtual {p2}, Landroid/media/AudioAttributes;->getAllowedCapturePolicy()I
-
-    move-result v1
-
-    iget-object v2, p0, Lcom/android/server/audio/PlaybackActivityMonitor;->mAllowedCapturePolicies:Ljava/util/HashMap;
-
-    invoke-static {p3}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
-
-    move-result-object v3
-
-    invoke-virtual {v2, v3}, Ljava/util/HashMap;->get(Ljava/lang/Object;)Ljava/lang/Object;
-
-    move-result-object v2
-
-    check-cast v2, Ljava/lang/Integer;
-
-    invoke-virtual {v2}, Ljava/lang/Integer;->intValue()I
-
-    move-result v2
-
-    if-ge v1, v2, :cond_42
-
-    .line 181
-    new-instance v1, Landroid/media/AudioAttributes$Builder;
-
-    invoke-direct {v1, p2}, Landroid/media/AudioAttributes$Builder;-><init>(Landroid/media/AudioAttributes;)V
-
-    iget-object p2, p0, Lcom/android/server/audio/PlaybackActivityMonitor;->mAllowedCapturePolicies:Ljava/util/HashMap;
-
-    .line 182
-    invoke-static {p3}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
-
-    move-result-object v2
-
-    invoke-virtual {p2, v2}, Ljava/util/HashMap;->get(Ljava/lang/Object;)Ljava/lang/Object;
-
-    move-result-object p2
-
-    check-cast p2, Ljava/lang/Integer;
-
-    invoke-virtual {p2}, Ljava/lang/Integer;->intValue()I
-
-    move-result p2
-
-    invoke-virtual {v1, p2}, Landroid/media/AudioAttributes$Builder;->setAllowedCapturePolicy(I)Landroid/media/AudioAttributes$Builder;
-
-    move-result-object p2
-
-    invoke-virtual {p2}, Landroid/media/AudioAttributes$Builder;->build()Landroid/media/AudioAttributes;
-
-    move-result-object p2
-
-    .line 184
-    :cond_42
-    monitor-exit v0
-    :try_end_43
-    .catchall {:try_start_3 .. :try_end_43} :catchall_7b
-
-    .line 185
-    iget-object v1, p0, Lcom/android/server/audio/PlaybackActivityMonitor;->mPlayerLock:Ljava/lang/Object;
-
-    monitor-enter v1
-
-    .line 186
-    :try_start_46
-    iget-object v0, p0, Lcom/android/server/audio/PlaybackActivityMonitor;->mPlayers:Ljava/util/HashMap;
-
-    new-instance v2, Ljava/lang/Integer;
-
-    invoke-direct {v2, p1}, Ljava/lang/Integer;-><init>(I)V
-
-    invoke-virtual {v0, v2}, Ljava/util/HashMap;->get(Ljava/lang/Object;)Ljava/lang/Object;
-
-    move-result-object v0
-
-    check-cast v0, Landroid/media/AudioPlaybackConfiguration;
-
-    .line 187
-    invoke-static {p1, v0, p3}, Lcom/android/server/audio/PlaybackActivityMonitor;->checkConfigurationCaller(ILandroid/media/AudioPlaybackConfiguration;I)Z
-
-    move-result p3
-
-    const/4 v2, 0x0
-
-    if-eqz p3, :cond_69
-
-    .line 188
-    sget-object p3, Lcom/android/server/audio/PlaybackActivityMonitor;->sEventLogger:Lcom/android/server/audio/AudioEventLogger;
-
-    new-instance v3, Lcom/android/server/audio/PlaybackActivityMonitor$AudioAttrEvent;
-
-    invoke-direct {v3, p1, p2}, Lcom/android/server/audio/PlaybackActivityMonitor$AudioAttrEvent;-><init>(ILandroid/media/AudioAttributes;)V
-
-    invoke-virtual {p3, v3}, Lcom/android/server/audio/AudioEventLogger;->log(Lcom/android/server/audio/AudioEventLogger$Event;)V
-
-    .line 189
-    invoke-virtual {v0, p2}, Landroid/media/AudioPlaybackConfiguration;->handleAudioAttributesEvent(Landroid/media/AudioAttributes;)Z
-
-    move-result p1
-
-    goto :goto_71
-
-    .line 191
-    :cond_69
-    const-string p1, "AudioService.PlaybackActivityMonitor"
-
-    const-string p2, "Error updating audio attributes"
-
-    invoke-static {p1, p2}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;)I
-
-    .line 192
-    move p1, v2
-
-    .line 194
-    :goto_71
-    monitor-exit v1
-    :try_end_72
-    .catchall {:try_start_46 .. :try_end_72} :catchall_78
-
-    .line 195
-    if-eqz p1, :cond_77
-
-    .line 196
-    invoke-direct {p0, v2}, Lcom/android/server/audio/PlaybackActivityMonitor;->dispatchPlaybackChange(Z)V
-
-    .line 198
-    :cond_77
-    return-void
-
-    .line 194
-    :catchall_78
-    move-exception p1
-
-    :try_start_79
-    monitor-exit v1
-    :try_end_7a
-    .catchall {:try_start_79 .. :try_end_7a} :catchall_78
-
-    throw p1
-
-    .line 184
-    :catchall_7b
-    move-exception p1
-
-    :try_start_7c
-    monitor-exit v0
-    :try_end_7d
-    .catchall {:try_start_7c .. :try_end_7d} :catchall_7b
-
-    throw p1
-.end method
-
-.method public playerDeath(I)V
-    .registers 3
-
-    .line 366
-    const/4 v0, 0x0
-
-    invoke-virtual {p0, p1, v0}, Lcom/android/server/audio/PlaybackActivityMonitor;->releasePlayer(II)V
-
-    .line 367
-    return-void
-.end method
-
-.method public playerEvent(III)V
     .registers 9
+    .param p1, "piid"  # I
+    .param p2, "attr"  # Landroid/media/AudioAttributes;
+    .param p3, "binderUid"  # I
 
-    .line 239
+    .line 172
     iget-object v0, p0, Lcom/android/server/audio/PlaybackActivityMonitor;->mPlayerLock:Ljava/lang/Object;
 
     monitor-enter v0
 
-    .line 240
+    .line 173
     :try_start_3
     iget-object v1, p0, Lcom/android/server/audio/PlaybackActivityMonitor;->mPlayers:Ljava/util/HashMap;
 
@@ -2396,15 +2102,124 @@
 
     check-cast v1, Landroid/media/AudioPlaybackConfiguration;
 
-    .line 241
+    .line 174
+    .local v1, "apc":Landroid/media/AudioPlaybackConfiguration;
+    invoke-static {p1, v1, p3}, Lcom/android/server/audio/PlaybackActivityMonitor;->checkConfigurationCaller(ILandroid/media/AudioPlaybackConfiguration;I)Z
+
+    move-result v2
+
+    const/4 v3, 0x0
+
+    if-eqz v2, :cond_26
+
+    .line 175
+    sget-object v2, Lcom/android/server/audio/PlaybackActivityMonitor;->sEventLogger:Lcom/android/server/audio/AudioEventLogger;
+
+    new-instance v4, Lcom/android/server/audio/PlaybackActivityMonitor$AudioAttrEvent;
+
+    invoke-direct {v4, p1, p2}, Lcom/android/server/audio/PlaybackActivityMonitor$AudioAttrEvent;-><init>(ILandroid/media/AudioAttributes;)V
+
+    invoke-virtual {v2, v4}, Lcom/android/server/audio/AudioEventLogger;->log(Lcom/android/server/audio/AudioEventLogger$Event;)V
+
+    .line 176
+    invoke-virtual {v1, p2}, Landroid/media/AudioPlaybackConfiguration;->handleAudioAttributesEvent(Landroid/media/AudioAttributes;)Z
+
+    move-result v2
+
+    .local v2, "change":Z
+    goto :goto_2e
+
+    .line 178
+    .end local v2  # "change":Z
+    :cond_26
+    const-string v2, "AudioService.PlaybackActivityMonitor"
+
+    const-string v4, "Error updating audio attributes"
+
+    invoke-static {v2, v4}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;)I
+
+    .line 179
+    move v2, v3
+
+    .line 181
+    .end local v1  # "apc":Landroid/media/AudioPlaybackConfiguration;
+    .restart local v2  # "change":Z
+    :goto_2e
+    monitor-exit v0
+    :try_end_2f
+    .catchall {:try_start_3 .. :try_end_2f} :catchall_35
+
+    .line 182
+    if-eqz v2, :cond_34
+
+    .line 183
+    invoke-direct {p0, v3}, Lcom/android/server/audio/PlaybackActivityMonitor;->dispatchPlaybackChange(Z)V
+
+    .line 185
+    :cond_34
+    return-void
+
+    .line 181
+    .end local v2  # "change":Z
+    :catchall_35
+    move-exception v1
+
+    :try_start_36
+    monitor-exit v0
+    :try_end_37
+    .catchall {:try_start_36 .. :try_end_37} :catchall_35
+
+    throw v1
+.end method
+
+.method public playerDeath(I)V
+    .registers 3
+    .param p1, "piid"  # I
+
+    .line 290
+    const/4 v0, 0x0
+
+    invoke-virtual {p0, p1, v0}, Lcom/android/server/audio/PlaybackActivityMonitor;->releasePlayer(II)V
+
+    .line 291
+    return-void
+.end method
+
+.method public playerEvent(III)V
+    .registers 11
+    .param p1, "piid"  # I
+    .param p2, "event"  # I
+    .param p3, "binderUid"  # I
+
+    .line 226
+    iget-object v0, p0, Lcom/android/server/audio/PlaybackActivityMonitor;->mPlayerLock:Ljava/lang/Object;
+
+    monitor-enter v0
+
+    .line 227
+    :try_start_3
+    iget-object v1, p0, Lcom/android/server/audio/PlaybackActivityMonitor;->mPlayers:Ljava/util/HashMap;
+
+    new-instance v2, Ljava/lang/Integer;
+
+    invoke-direct {v2, p1}, Ljava/lang/Integer;-><init>(I)V
+
+    invoke-virtual {v1, v2}, Ljava/util/HashMap;->get(Ljava/lang/Object;)Ljava/lang/Object;
+
+    move-result-object v1
+
+    check-cast v1, Landroid/media/AudioPlaybackConfiguration;
+
+    .line 228
+    .local v1, "apc":Landroid/media/AudioPlaybackConfiguration;
     if-nez v1, :cond_14
 
-    .line 242
+    .line 229
     monitor-exit v0
 
     return-void
 
-    .line 244
+    .line 231
     :cond_14
     sget-object v2, Lcom/android/server/audio/PlaybackActivityMonitor;->sEventLogger:Lcom/android/server/audio/AudioEventLogger;
 
@@ -2414,12 +2229,12 @@
 
     invoke-virtual {v2, v3}, Lcom/android/server/audio/AudioEventLogger;->log(Lcom/android/server/audio/AudioEventLogger$Event;)V
 
-    .line 245
+    .line 232
     const/4 v2, 0x2
 
     if-ne p2, v2, :cond_61
 
-    .line 246
+    .line 233
     iget-object v3, p0, Lcom/android/server/audio/PlaybackActivityMonitor;->mBannedUids:Ljava/util/ArrayList;
 
     invoke-virtual {v3}, Ljava/util/ArrayList;->iterator()Ljava/util/Iterator;
@@ -2439,54 +2254,56 @@
 
     check-cast v4, Ljava/lang/Integer;
 
-    .line 247
+    .line 234
+    .local v4, "uidInteger":Ljava/lang/Integer;
     invoke-virtual {v4}, Ljava/lang/Integer;->intValue()I
 
-    move-result v4
+    move-result v5
 
-    invoke-direct {p0, v1, v4}, Lcom/android/server/audio/PlaybackActivityMonitor;->checkBanPlayer(Landroid/media/AudioPlaybackConfiguration;I)Z
+    invoke-direct {p0, v1, v5}, Lcom/android/server/audio/PlaybackActivityMonitor;->checkBanPlayer(Landroid/media/AudioPlaybackConfiguration;I)Z
 
-    move-result v4
+    move-result v5
 
-    if-eqz v4, :cond_60
+    if-eqz v5, :cond_60
 
-    .line 249
-    sget-object p2, Lcom/android/server/audio/PlaybackActivityMonitor;->sEventLogger:Lcom/android/server/audio/AudioEventLogger;
+    .line 236
+    sget-object v2, Lcom/android/server/audio/PlaybackActivityMonitor;->sEventLogger:Lcom/android/server/audio/AudioEventLogger;
 
-    new-instance p3, Lcom/android/server/audio/AudioEventLogger$StringEvent;
+    new-instance v3, Lcom/android/server/audio/AudioEventLogger$StringEvent;
 
-    new-instance v1, Ljava/lang/StringBuilder;
+    new-instance v5, Ljava/lang/StringBuilder;
 
-    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v5}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string/jumbo v2, "not starting piid:"
+    const-string/jumbo v6, "not starting piid:"
 
-    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v1, p1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v5, p1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    const-string p1, " ,is banned"
+    const-string v6, " ,is banned"
 
-    invoke-virtual {v1, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v5}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v5
 
-    invoke-direct {p3, p1}, Lcom/android/server/audio/AudioEventLogger$StringEvent;-><init>(Ljava/lang/String;)V
+    invoke-direct {v3, v5}, Lcom/android/server/audio/AudioEventLogger$StringEvent;-><init>(Ljava/lang/String;)V
 
-    invoke-virtual {p2, p3}, Lcom/android/server/audio/AudioEventLogger;->log(Lcom/android/server/audio/AudioEventLogger$Event;)V
+    invoke-virtual {v2, v3}, Lcom/android/server/audio/AudioEventLogger;->log(Lcom/android/server/audio/AudioEventLogger$Event;)V
 
-    .line 251
+    .line 238
     monitor-exit v0
 
     return-void
 
-    .line 253
+    .line 240
+    .end local v4  # "uidInteger":Ljava/lang/Integer;
     :cond_60
     goto :goto_27
 
-    .line 255
+    .line 242
     :cond_61
     invoke-virtual {v1}, Landroid/media/AudioPlaybackConfiguration;->getPlayerType()I
 
@@ -2496,102 +2313,113 @@
 
     if-ne v3, v4, :cond_6a
 
-    .line 257
+    .line 244
     monitor-exit v0
 
     return-void
 
-    .line 259
+    .line 246
     :cond_6a
     invoke-static {p1, v1, p3}, Lcom/android/server/audio/PlaybackActivityMonitor;->checkConfigurationCaller(ILandroid/media/AudioPlaybackConfiguration;I)Z
 
-    move-result p1
+    move-result v3
 
-    const/4 p3, 0x0
+    if-eqz v3, :cond_78
 
-    if-eqz p1, :cond_79
-
-    .line 261
+    .line 248
     invoke-direct {p0, v1, p2}, Lcom/android/server/audio/PlaybackActivityMonitor;->checkVolumeForPrivilegedAlarm(Landroid/media/AudioPlaybackConfiguration;I)V
 
-    .line 262
+    .line 249
     invoke-virtual {v1, p2}, Landroid/media/AudioPlaybackConfiguration;->handleStateEvent(I)Z
 
-    move-result p1
+    move-result v3
 
-    goto :goto_90
+    .local v3, "change":Z
+    goto :goto_8f
 
-    .line 264
-    :cond_79
-    const-string p1, "AudioService.PlaybackActivityMonitor"
+    .line 251
+    .end local v3  # "change":Z
+    :cond_78
+    const-string v3, "AudioService.PlaybackActivityMonitor"
 
-    new-instance v3, Ljava/lang/StringBuilder;
+    new-instance v4, Ljava/lang/StringBuilder;
 
-    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v4}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v4, "Error handling event "
+    const-string v5, "Error handling event "
 
-    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v3, p2}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v4, p2}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v4}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v3
+    move-result-object v4
 
-    invoke-static {p1, v3}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v3, v4}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 265
-    move p1, p3
+    .line 252
+    const/4 v3, 0x0
 
-    .line 267
-    :goto_90
-    if-eqz p1, :cond_99
+    .line 254
+    .restart local v3  # "change":Z
+    :goto_8f
+    if-eqz v3, :cond_98
 
-    if-ne p2, v2, :cond_99
+    if-ne p2, v2, :cond_98
 
-    .line 268
+    .line 255
     iget-object v2, p0, Lcom/android/server/audio/PlaybackActivityMonitor;->mDuckingManager:Lcom/android/server/audio/PlaybackActivityMonitor$DuckingManager;
 
     invoke-virtual {v2, v1}, Lcom/android/server/audio/PlaybackActivityMonitor$DuckingManager;->checkDuck(Landroid/media/AudioPlaybackConfiguration;)V
 
-    .line 270
-    :cond_99
+    .line 257
+    .end local v1  # "apc":Landroid/media/AudioPlaybackConfiguration;
+    :cond_98
     monitor-exit v0
-    :try_end_9a
-    .catchall {:try_start_3 .. :try_end_9a} :catchall_a3
+    :try_end_99
+    .catchall {:try_start_3 .. :try_end_99} :catchall_a4
 
-    .line 271
-    if-eqz p1, :cond_a2
+    .line 258
+    if-eqz v3, :cond_a3
 
-    .line 272
+    .line 259
     if-nez p2, :cond_9f
 
-    const/4 p3, 0x1
+    const/4 v0, 0x1
+
+    goto :goto_a0
 
     :cond_9f
-    invoke-direct {p0, p3}, Lcom/android/server/audio/PlaybackActivityMonitor;->dispatchPlaybackChange(Z)V
+    const/4 v0, 0x0
 
-    .line 274
-    :cond_a2
+    :goto_a0
+    invoke-direct {p0, v0}, Lcom/android/server/audio/PlaybackActivityMonitor;->dispatchPlaybackChange(Z)V
+
+    .line 261
+    :cond_a3
     return-void
 
-    .line 270
-    :catchall_a3
-    move-exception p1
+    .line 257
+    .end local v3  # "change":Z
+    :catchall_a4
+    move-exception v1
 
-    :try_start_a4
+    :try_start_a5
     monitor-exit v0
-    :try_end_a5
-    .catchall {:try_start_a4 .. :try_end_a5} :catchall_a3
+    :try_end_a6
+    .catchall {:try_start_a5 .. :try_end_a6} :catchall_a4
 
-    throw p1
+    throw v1
 .end method
 
 .method public playerHasOpPlayAudio(IZI)V
     .registers 6
+    .param p1, "piid"  # I
+    .param p2, "hasOpPlayAudio"  # Z
+    .param p3, "binderUid"  # I
 
-    .line 278
+    .line 265
     sget-object v0, Lcom/android/server/audio/PlaybackActivityMonitor;->sEventLogger:Lcom/android/server/audio/AudioEventLogger;
 
     new-instance v1, Lcom/android/server/audio/PlaybackActivityMonitor$PlayerOpPlayAudioEvent;
@@ -2600,301 +2428,193 @@
 
     invoke-virtual {v0, v1}, Lcom/android/server/audio/AudioEventLogger;->log(Lcom/android/server/audio/AudioEventLogger$Event;)V
 
-    .line 279
+    .line 266
     return-void
 .end method
 
 .method registerPlaybackCallback(Landroid/media/IPlaybackConfigDispatcher;Z)V
-    .registers 5
+    .registers 6
+    .param p1, "pcdb"  # Landroid/media/IPlaybackConfigDispatcher;
+    .param p2, "isPrivileged"  # Z
 
-    .line 634
+    .line 552
     if-nez p1, :cond_3
 
-    .line 635
+    .line 553
     return-void
 
-    .line 637
+    .line 555
     :cond_3
     iget-object v0, p0, Lcom/android/server/audio/PlaybackActivityMonitor;->mClients:Ljava/util/ArrayList;
 
     monitor-enter v0
 
-    .line 638
+    .line 556
     :try_start_6
     new-instance v1, Lcom/android/server/audio/PlaybackActivityMonitor$PlayMonitorClient;
 
     invoke-direct {v1, p1, p2}, Lcom/android/server/audio/PlaybackActivityMonitor$PlayMonitorClient;-><init>(Landroid/media/IPlaybackConfigDispatcher;Z)V
 
-    .line 639
+    .line 557
+    .local v1, "pmc":Lcom/android/server/audio/PlaybackActivityMonitor$PlayMonitorClient;
     invoke-virtual {v1}, Lcom/android/server/audio/PlaybackActivityMonitor$PlayMonitorClient;->init()Z
 
-    move-result p1
+    move-result v2
 
-    if-eqz p1, :cond_1b
+    if-eqz v2, :cond_1b
 
-    .line 640
+    .line 558
     if-nez p2, :cond_16
 
-    .line 641
-    const/4 p1, 0x1
+    .line 559
+    const/4 v2, 0x1
 
-    iput-boolean p1, p0, Lcom/android/server/audio/PlaybackActivityMonitor;->mHasPublicClients:Z
+    iput-boolean v2, p0, Lcom/android/server/audio/PlaybackActivityMonitor;->mHasPublicClients:Z
 
-    .line 643
+    .line 561
     :cond_16
-    iget-object p1, p0, Lcom/android/server/audio/PlaybackActivityMonitor;->mClients:Ljava/util/ArrayList;
+    iget-object v2, p0, Lcom/android/server/audio/PlaybackActivityMonitor;->mClients:Ljava/util/ArrayList;
 
-    invoke-virtual {p1, v1}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
+    invoke-virtual {v2, v1}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
 
-    .line 645
+    .line 563
+    .end local v1  # "pmc":Lcom/android/server/audio/PlaybackActivityMonitor$PlayMonitorClient;
     :cond_1b
     monitor-exit v0
 
-    .line 646
+    .line 564
     return-void
 
-    .line 645
+    .line 563
     :catchall_1d
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_1f
     .catchall {:try_start_6 .. :try_end_1f} :catchall_1d
 
-    throw p1
+    throw v1
 .end method
 
 .method public releasePlayer(II)V
-    .registers 9
+    .registers 10
+    .param p1, "piid"  # I
+    .param p2, "binderUid"  # I
 
-    .line 283
-    nop
+    .line 270
+    const/4 v0, 0x0
 
-    .line 284
-    iget-object v0, p0, Lcom/android/server/audio/PlaybackActivityMonitor;->mPlayerLock:Ljava/lang/Object;
+    .line 271
+    .local v0, "change":Z
+    iget-object v1, p0, Lcom/android/server/audio/PlaybackActivityMonitor;->mPlayerLock:Ljava/lang/Object;
 
-    monitor-enter v0
+    monitor-enter v1
 
-    .line 285
+    .line 272
     :try_start_4
-    iget-object v1, p0, Lcom/android/server/audio/PlaybackActivityMonitor;->mPlayers:Ljava/util/HashMap;
-
-    new-instance v2, Ljava/lang/Integer;
-
-    invoke-direct {v2, p1}, Ljava/lang/Integer;-><init>(I)V
-
-    invoke-virtual {v1, v2}, Ljava/util/HashMap;->get(Ljava/lang/Object;)Ljava/lang/Object;
-
-    move-result-object v1
-
-    check-cast v1, Landroid/media/AudioPlaybackConfiguration;
-
-    .line 286
-    invoke-static {p1, v1, p2}, Lcom/android/server/audio/PlaybackActivityMonitor;->checkConfigurationCaller(ILandroid/media/AudioPlaybackConfiguration;I)Z
-
-    move-result p2
-
-    const/4 v2, 0x0
-
-    if-eqz p2, :cond_4a
-
-    .line 287
-    sget-object p2, Lcom/android/server/audio/PlaybackActivityMonitor;->sEventLogger:Lcom/android/server/audio/AudioEventLogger;
-
-    new-instance v3, Lcom/android/server/audio/AudioEventLogger$StringEvent;
-
-    new-instance v4, Ljava/lang/StringBuilder;
-
-    invoke-direct {v4}, Ljava/lang/StringBuilder;-><init>()V
-
-    const-string/jumbo v5, "releasing player piid:"
-
-    invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v4, p1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v4}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
-
-    move-result-object v4
-
-    invoke-direct {v3, v4}, Lcom/android/server/audio/AudioEventLogger$StringEvent;-><init>(Ljava/lang/String;)V
-
-    invoke-virtual {p2, v3}, Lcom/android/server/audio/AudioEventLogger;->log(Lcom/android/server/audio/AudioEventLogger$Event;)V
-
-    .line 289
-    iget-object p2, p0, Lcom/android/server/audio/PlaybackActivityMonitor;->mPlayers:Ljava/util/HashMap;
+    iget-object v2, p0, Lcom/android/server/audio/PlaybackActivityMonitor;->mPlayers:Ljava/util/HashMap;
 
     new-instance v3, Ljava/lang/Integer;
 
     invoke-direct {v3, p1}, Ljava/lang/Integer;-><init>(I)V
 
-    invoke-virtual {p2, v3}, Ljava/util/HashMap;->remove(Ljava/lang/Object;)Ljava/lang/Object;
-
-    .line 290
-    iget-object p1, p0, Lcom/android/server/audio/PlaybackActivityMonitor;->mDuckingManager:Lcom/android/server/audio/PlaybackActivityMonitor$DuckingManager;
-
-    invoke-virtual {p1, v1}, Lcom/android/server/audio/PlaybackActivityMonitor$DuckingManager;->removeReleased(Landroid/media/AudioPlaybackConfiguration;)V
-
-    .line 291
-    invoke-direct {p0, v1, v2}, Lcom/android/server/audio/PlaybackActivityMonitor;->checkVolumeForPrivilegedAlarm(Landroid/media/AudioPlaybackConfiguration;I)V
-
-    .line 292
-    invoke-virtual {v1, v2}, Landroid/media/AudioPlaybackConfiguration;->handleStateEvent(I)Z
-
-    move-result v2
-
-    .line 294
-    :cond_4a
-    monitor-exit v0
-    :try_end_4b
-    .catchall {:try_start_4 .. :try_end_4b} :catchall_52
-
-    .line 295
-    if-eqz v2, :cond_51
-
-    .line 296
-    const/4 p1, 0x1
-
-    invoke-direct {p0, p1}, Lcom/android/server/audio/PlaybackActivityMonitor;->dispatchPlaybackChange(Z)V
-
-    .line 298
-    :cond_51
-    return-void
-
-    .line 294
-    :catchall_52
-    move-exception p1
-
-    :try_start_53
-    monitor-exit v0
-    :try_end_54
-    .catchall {:try_start_53 .. :try_end_54} :catchall_52
-
-    throw p1
-.end method
-
-.method public setAllowedCapturePolicy(II)V
-    .registers 7
-
-    .line 317
-    iget-object v0, p0, Lcom/android/server/audio/PlaybackActivityMonitor;->mAllowedCapturePolicies:Ljava/util/HashMap;
-
-    monitor-enter v0
-
-    .line 318
-    const/4 v1, 0x1
-
-    if-ne p2, v1, :cond_11
-
-    .line 321
-    :try_start_6
-    iget-object p2, p0, Lcom/android/server/audio/PlaybackActivityMonitor;->mAllowedCapturePolicies:Ljava/util/HashMap;
-
-    invoke-static {p1}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
-
-    move-result-object p1
-
-    invoke-virtual {p2, p1}, Ljava/util/HashMap;->remove(Ljava/lang/Object;)Ljava/lang/Object;
-
-    .line 322
-    monitor-exit v0
-
-    return-void
-
-    .line 324
-    :cond_11
-    iget-object v1, p0, Lcom/android/server/audio/PlaybackActivityMonitor;->mAllowedCapturePolicies:Ljava/util/HashMap;
-
-    invoke-static {p1}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
-
-    move-result-object v2
-
-    invoke-static {p2}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
-
-    move-result-object v3
-
-    invoke-virtual {v1, v2, v3}, Ljava/util/HashMap;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
-
-    .line 326
-    monitor-exit v0
-    :try_end_1f
-    .catchall {:try_start_6 .. :try_end_1f} :catchall_47
-
-    .line 327
-    iget-object v1, p0, Lcom/android/server/audio/PlaybackActivityMonitor;->mPlayerLock:Ljava/lang/Object;
-
-    monitor-enter v1
-
-    .line 328
-    :try_start_22
-    iget-object v0, p0, Lcom/android/server/audio/PlaybackActivityMonitor;->mPlayers:Ljava/util/HashMap;
-
-    invoke-virtual {v0}, Ljava/util/HashMap;->values()Ljava/util/Collection;
-
-    move-result-object v0
-
-    invoke-interface {v0}, Ljava/util/Collection;->iterator()Ljava/util/Iterator;
-
-    move-result-object v0
-
-    :goto_2c
-    invoke-interface {v0}, Ljava/util/Iterator;->hasNext()Z
-
-    move-result v2
-
-    if-eqz v2, :cond_42
-
-    invoke-interface {v0}, Ljava/util/Iterator;->next()Ljava/lang/Object;
+    invoke-virtual {v2, v3}, Ljava/util/HashMap;->get(Ljava/lang/Object;)Ljava/lang/Object;
 
     move-result-object v2
 
     check-cast v2, Landroid/media/AudioPlaybackConfiguration;
 
-    .line 329
-    invoke-virtual {v2}, Landroid/media/AudioPlaybackConfiguration;->getClientUid()I
+    .line 273
+    .local v2, "apc":Landroid/media/AudioPlaybackConfiguration;
+    invoke-static {p1, v2, p2}, Lcom/android/server/audio/PlaybackActivityMonitor;->checkConfigurationCaller(ILandroid/media/AudioPlaybackConfiguration;I)Z
 
     move-result v3
 
-    if-ne v3, p1, :cond_41
+    if-eqz v3, :cond_4b
 
-    .line 330
-    invoke-direct {p0, v2, p2}, Lcom/android/server/audio/PlaybackActivityMonitor;->updateAllowedCapturePolicy(Landroid/media/AudioPlaybackConfiguration;I)V
+    .line 274
+    sget-object v3, Lcom/android/server/audio/PlaybackActivityMonitor;->sEventLogger:Lcom/android/server/audio/AudioEventLogger;
 
-    .line 332
-    :cond_41
-    goto :goto_2c
+    new-instance v4, Lcom/android/server/audio/AudioEventLogger$StringEvent;
 
-    .line 333
-    :cond_42
+    new-instance v5, Ljava/lang/StringBuilder;
+
+    invoke-direct {v5}, Ljava/lang/StringBuilder;-><init>()V
+
+    const-string/jumbo v6, "releasing player piid:"
+
+    invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v5, p1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v5}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v5
+
+    invoke-direct {v4, v5}, Lcom/android/server/audio/AudioEventLogger$StringEvent;-><init>(Ljava/lang/String;)V
+
+    invoke-virtual {v3, v4}, Lcom/android/server/audio/AudioEventLogger;->log(Lcom/android/server/audio/AudioEventLogger$Event;)V
+
+    .line 276
+    iget-object v3, p0, Lcom/android/server/audio/PlaybackActivityMonitor;->mPlayers:Ljava/util/HashMap;
+
+    new-instance v4, Ljava/lang/Integer;
+
+    invoke-direct {v4, p1}, Ljava/lang/Integer;-><init>(I)V
+
+    invoke-virtual {v3, v4}, Ljava/util/HashMap;->remove(Ljava/lang/Object;)Ljava/lang/Object;
+
+    .line 277
+    iget-object v3, p0, Lcom/android/server/audio/PlaybackActivityMonitor;->mDuckingManager:Lcom/android/server/audio/PlaybackActivityMonitor$DuckingManager;
+
+    invoke-virtual {v3, v2}, Lcom/android/server/audio/PlaybackActivityMonitor$DuckingManager;->removeReleased(Landroid/media/AudioPlaybackConfiguration;)V
+
+    .line 278
+    const/4 v3, 0x0
+
+    invoke-direct {p0, v2, v3}, Lcom/android/server/audio/PlaybackActivityMonitor;->checkVolumeForPrivilegedAlarm(Landroid/media/AudioPlaybackConfiguration;I)V
+
+    .line 279
+    invoke-virtual {v2, v3}, Landroid/media/AudioPlaybackConfiguration;->handleStateEvent(I)Z
+
+    move-result v3
+
+    move v0, v3
+
+    .line 281
+    .end local v2  # "apc":Landroid/media/AudioPlaybackConfiguration;
+    :cond_4b
     monitor-exit v1
+    :try_end_4c
+    .catchall {:try_start_4 .. :try_end_4c} :catchall_53
 
-    .line 334
+    .line 282
+    if-eqz v0, :cond_52
+
+    .line 283
+    const/4 v1, 0x1
+
+    invoke-direct {p0, v1}, Lcom/android/server/audio/PlaybackActivityMonitor;->dispatchPlaybackChange(Z)V
+
+    .line 285
+    :cond_52
     return-void
 
-    .line 333
-    :catchall_44
-    move-exception p1
+    .line 281
+    :catchall_53
+    move-exception v2
 
+    :try_start_54
     monitor-exit v1
-    :try_end_46
-    .catchall {:try_start_22 .. :try_end_46} :catchall_44
+    :try_end_55
+    .catchall {:try_start_54 .. :try_end_55} :catchall_53
 
-    throw p1
-
-    .line 326
-    :catchall_47
-    move-exception p1
-
-    :try_start_48
-    monitor-exit v0
-    :try_end_49
-    .catchall {:try_start_48 .. :try_end_49} :catchall_47
-
-    throw p1
+    throw v2
 .end method
 
 .method public trackPlayer(Landroid/media/PlayerBase$PlayerIdCard;)I
     .registers 7
+    .param p1, "pic"  # Landroid/media/PlayerBase$PlayerIdCard;
 
     .line 157
     invoke-static {}, Landroid/media/AudioSystem;->newAudioPlayerId()I
@@ -2902,6 +2622,7 @@
     move-result v0
 
     .line 159
+    .local v0, "newPiid":I
     new-instance v1, Landroid/media/AudioPlaybackConfiguration;
 
     .line 161
@@ -2916,155 +2637,97 @@
     invoke-direct {v1, p1, v0, v2, v3}, Landroid/media/AudioPlaybackConfiguration;-><init>(Landroid/media/PlayerBase$PlayerIdCard;III)V
 
     .line 162
+    .local v1, "apc":Landroid/media/AudioPlaybackConfiguration;
     invoke-virtual {v1}, Landroid/media/AudioPlaybackConfiguration;->init()V
 
     .line 163
-    iget-object p1, p0, Lcom/android/server/audio/PlaybackActivityMonitor;->mAllowedCapturePolicies:Ljava/util/HashMap;
+    sget-object v2, Lcom/android/server/audio/PlaybackActivityMonitor;->sEventLogger:Lcom/android/server/audio/AudioEventLogger;
 
-    monitor-enter p1
+    new-instance v3, Lcom/android/server/audio/PlaybackActivityMonitor$NewPlayerEvent;
+
+    invoke-direct {v3, v1}, Lcom/android/server/audio/PlaybackActivityMonitor$NewPlayerEvent;-><init>(Landroid/media/AudioPlaybackConfiguration;)V
+
+    invoke-virtual {v2, v3}, Lcom/android/server/audio/AudioEventLogger;->log(Lcom/android/server/audio/AudioEventLogger$Event;)V
 
     .line 164
-    :try_start_17
-    invoke-virtual {v1}, Landroid/media/AudioPlaybackConfiguration;->getClientUid()I
-
-    move-result v2
-
-    .line 165
-    iget-object v3, p0, Lcom/android/server/audio/PlaybackActivityMonitor;->mAllowedCapturePolicies:Ljava/util/HashMap;
-
-    invoke-static {v2}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
-
-    move-result-object v4
-
-    invoke-virtual {v3, v4}, Ljava/util/HashMap;->containsKey(Ljava/lang/Object;)Z
-
-    move-result v3
-
-    if-eqz v3, :cond_3a
-
-    .line 166
-    iget-object v3, p0, Lcom/android/server/audio/PlaybackActivityMonitor;->mAllowedCapturePolicies:Ljava/util/HashMap;
-
-    invoke-static {v2}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
-
-    move-result-object v2
-
-    invoke-virtual {v3, v2}, Ljava/util/HashMap;->get(Ljava/lang/Object;)Ljava/lang/Object;
-
-    move-result-object v2
-
-    check-cast v2, Ljava/lang/Integer;
-
-    invoke-virtual {v2}, Ljava/lang/Integer;->intValue()I
-
-    move-result v2
-
-    invoke-direct {p0, v1, v2}, Lcom/android/server/audio/PlaybackActivityMonitor;->updateAllowedCapturePolicy(Landroid/media/AudioPlaybackConfiguration;I)V
-
-    .line 168
-    :cond_3a
-    monitor-exit p1
-    :try_end_3b
-    .catchall {:try_start_17 .. :try_end_3b} :catchall_56
-
-    .line 169
-    sget-object p1, Lcom/android/server/audio/PlaybackActivityMonitor;->sEventLogger:Lcom/android/server/audio/AudioEventLogger;
-
-    new-instance v2, Lcom/android/server/audio/PlaybackActivityMonitor$NewPlayerEvent;
-
-    invoke-direct {v2, v1}, Lcom/android/server/audio/PlaybackActivityMonitor$NewPlayerEvent;-><init>(Landroid/media/AudioPlaybackConfiguration;)V
-
-    invoke-virtual {p1, v2}, Lcom/android/server/audio/AudioEventLogger;->log(Lcom/android/server/audio/AudioEventLogger$Event;)V
-
-    .line 170
     iget-object v2, p0, Lcom/android/server/audio/PlaybackActivityMonitor;->mPlayerLock:Ljava/lang/Object;
 
     monitor-enter v2
 
-    .line 171
-    :try_start_48
-    iget-object p1, p0, Lcom/android/server/audio/PlaybackActivityMonitor;->mPlayers:Ljava/util/HashMap;
+    .line 165
+    :try_start_21
+    iget-object v3, p0, Lcom/android/server/audio/PlaybackActivityMonitor;->mPlayers:Ljava/util/HashMap;
 
     invoke-static {v0}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
 
-    move-result-object v3
+    move-result-object v4
 
-    invoke-virtual {p1, v3, v1}, Ljava/util/HashMap;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+    invoke-virtual {v3, v4, v1}, Ljava/util/HashMap;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
 
-    .line 172
+    .line 166
     monitor-exit v2
 
-    .line 173
+    .line 167
     return v0
 
-    .line 172
-    :catchall_53
-    move-exception p1
+    .line 166
+    :catchall_2c
+    move-exception v3
 
     monitor-exit v2
-    :try_end_55
-    .catchall {:try_start_48 .. :try_end_55} :catchall_53
+    :try_end_2e
+    .catchall {:try_start_21 .. :try_end_2e} :catchall_2c
 
-    throw p1
-
-    .line 168
-    :catchall_56
-    move-exception v0
-
-    :try_start_57
-    monitor-exit p1
-    :try_end_58
-    .catchall {:try_start_57 .. :try_end_58} :catchall_56
-
-    throw v0
+    throw v3
 .end method
 
 .method public unduckPlayers(Lcom/android/server/audio/FocusRequester;)V
-    .registers 5
+    .registers 6
+    .param p1, "winner"  # Lcom/android/server/audio/FocusRequester;
 
-    .line 560
+    .line 478
     iget-object v0, p0, Lcom/android/server/audio/PlaybackActivityMonitor;->mPlayerLock:Ljava/lang/Object;
 
     monitor-enter v0
 
-    .line 561
+    .line 479
     :try_start_3
     iget-object v1, p0, Lcom/android/server/audio/PlaybackActivityMonitor;->mDuckingManager:Lcom/android/server/audio/PlaybackActivityMonitor$DuckingManager;
 
     invoke-virtual {p1}, Lcom/android/server/audio/FocusRequester;->getClientUid()I
 
-    move-result p1
+    move-result v2
 
-    iget-object v2, p0, Lcom/android/server/audio/PlaybackActivityMonitor;->mPlayers:Ljava/util/HashMap;
+    iget-object v3, p0, Lcom/android/server/audio/PlaybackActivityMonitor;->mPlayers:Ljava/util/HashMap;
 
-    invoke-virtual {v1, p1, v2}, Lcom/android/server/audio/PlaybackActivityMonitor$DuckingManager;->unduckUid(ILjava/util/HashMap;)V
+    invoke-virtual {v1, v2, v3}, Lcom/android/server/audio/PlaybackActivityMonitor$DuckingManager;->unduckUid(ILjava/util/HashMap;)V
 
-    .line 562
+    .line 480
     monitor-exit v0
 
-    .line 563
+    .line 481
     return-void
 
-    .line 562
+    .line 480
     :catchall_10
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_12
     .catchall {:try_start_3 .. :try_end_12} :catchall_10
 
-    throw p1
+    throw v1
 .end method
 
 .method public unmutePlayersForCall()V
     .registers 9
 
-    .line 609
+    .line 527
     iget-object v0, p0, Lcom/android/server/audio/PlaybackActivityMonitor;->mPlayerLock:Ljava/lang/Object;
 
     monitor-enter v0
 
-    .line 610
+    .line 528
     :try_start_3
     iget-object v1, p0, Lcom/android/server/audio/PlaybackActivityMonitor;->mMutedPlayers:Ljava/util/ArrayList;
 
@@ -3074,12 +2737,12 @@
 
     if-eqz v1, :cond_d
 
-    .line 611
+    .line 529
     monitor-exit v0
 
     return-void
 
-    .line 613
+    .line 531
     :cond_d
     iget-object v1, p0, Lcom/android/server/audio/PlaybackActivityMonitor;->mMutedPlayers:Ljava/util/ArrayList;
 
@@ -3104,7 +2767,8 @@
 
     move-result v2
 
-    .line 614
+    .line 532
+    .local v2, "piid":I
     iget-object v3, p0, Lcom/android/server/audio/PlaybackActivityMonitor;->mPlayers:Ljava/util/HashMap;
 
     invoke-static {v2}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
@@ -3119,10 +2783,11 @@
     :try_end_2f
     .catchall {:try_start_3 .. :try_end_2f} :catchall_87
 
-    .line 615
+    .line 533
+    .local v3, "apc":Landroid/media/AudioPlaybackConfiguration;
     if-eqz v3, :cond_7f
 
-    .line 617
+    .line 535
     :try_start_31
     sget-object v4, Lcom/android/server/audio/PlaybackActivityMonitor;->sEventLogger:Lcom/android/server/audio/AudioEventLogger;
 
@@ -3146,15 +2811,15 @@
 
     const-string v6, "AudioService.PlaybackActivityMonitor"
 
-    .line 618
+    .line 536
     invoke-virtual {v5, v6}, Lcom/android/server/audio/AudioEventLogger$StringEvent;->printLog(Ljava/lang/String;)Lcom/android/server/audio/AudioEventLogger$Event;
 
     move-result-object v5
 
-    .line 617
+    .line 535
     invoke-virtual {v4, v5}, Lcom/android/server/audio/AudioEventLogger;->log(Lcom/android/server/audio/AudioEventLogger$Event;)V
 
-    .line 619
+    .line 537
     invoke-virtual {v3}, Landroid/media/AudioPlaybackConfiguration;->getPlayerProxy()Landroid/media/PlayerProxy;
 
     move-result-object v4
@@ -3166,14 +2831,15 @@
     .catch Ljava/lang/Exception; {:try_start_31 .. :try_end_5b} :catch_5c
     .catchall {:try_start_31 .. :try_end_5b} :catchall_87
 
-    .line 623
+    .line 541
     goto :goto_7f
 
-    .line 620
+    .line 538
     :catch_5c
     move-exception v4
 
-    .line 621
+    .line 539
+    .local v4, "e":Ljava/lang/Exception;
     :try_start_5d
     const-string v5, "AudioService.PlaybackActivityMonitor"
 
@@ -3187,42 +2853,45 @@
 
     invoke-virtual {v6, v2}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    const-string v2, " uid:"
+    const-string v7, " uid:"
 
-    invoke-virtual {v6, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v6, v7}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    .line 622
+    .line 540
     invoke-virtual {v3}, Landroid/media/AudioPlaybackConfiguration;->getClientUid()I
 
-    move-result v2
+    move-result v7
 
-    invoke-virtual {v6, v2}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v6, v7}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
     invoke-virtual {v6}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v2
+    move-result-object v6
 
-    .line 621
-    invoke-static {v5, v2, v4}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    .line 539
+    invoke-static {v5, v6, v4}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
-    .line 625
+    .line 543
+    .end local v2  # "piid":I
+    .end local v3  # "apc":Landroid/media/AudioPlaybackConfiguration;
+    .end local v4  # "e":Ljava/lang/Exception;
     :cond_7f
     :goto_7f
     goto :goto_13
 
-    .line 626
+    .line 544
     :cond_80
     iget-object v1, p0, Lcom/android/server/audio/PlaybackActivityMonitor;->mMutedPlayers:Ljava/util/ArrayList;
 
     invoke-virtual {v1}, Ljava/util/ArrayList;->clear()V
 
-    .line 627
+    .line 545
     monitor-exit v0
 
-    .line 628
+    .line 546
     return-void
 
-    .line 627
+    .line 545
     :catchall_87
     move-exception v1
 
@@ -3235,20 +2904,21 @@
 
 .method unregisterPlaybackCallback(Landroid/media/IPlaybackConfigDispatcher;)V
     .registers 7
+    .param p1, "pcdb"  # Landroid/media/IPlaybackConfigDispatcher;
 
-    .line 649
+    .line 567
     if-nez p1, :cond_3
 
-    .line 650
+    .line 568
     return-void
 
-    .line 652
+    .line 570
     :cond_3
     iget-object v0, p0, Lcom/android/server/audio/PlaybackActivityMonitor;->mClients:Ljava/util/ArrayList;
 
     monitor-enter v0
 
-    .line 653
+    .line 571
     :try_start_6
     iget-object v1, p0, Lcom/android/server/audio/PlaybackActivityMonitor;->mClients:Ljava/util/ArrayList;
 
@@ -3256,10 +2926,12 @@
 
     move-result-object v1
 
-    .line 654
+    .line 572
+    .local v1, "clientIterator":Ljava/util/Iterator;, "Ljava/util/Iterator<Lcom/android/server/audio/PlaybackActivityMonitor$PlayMonitorClient;>;"
     const/4 v2, 0x0
 
-    .line 657
+    .line 575
+    .local v2, "hasPublicClients":Z
     :goto_d
     invoke-interface {v1}, Ljava/util/Iterator;->hasNext()Z
 
@@ -3267,14 +2939,15 @@
 
     if-eqz v3, :cond_2e
 
-    .line 658
+    .line 576
     invoke-interface {v1}, Ljava/util/Iterator;->next()Ljava/lang/Object;
 
     move-result-object v3
 
     check-cast v3, Lcom/android/server/audio/PlaybackActivityMonitor$PlayMonitorClient;
 
-    .line 659
+    .line 577
+    .local v3, "pmc":Lcom/android/server/audio/PlaybackActivityMonitor$PlayMonitorClient;
     iget-object v4, v3, Lcom/android/server/audio/PlaybackActivityMonitor$PlayMonitorClient;->mDispatcherCb:Landroid/media/IPlaybackConfigDispatcher;
 
     invoke-virtual {p1, v4}, Ljava/lang/Object;->equals(Ljava/lang/Object;)Z
@@ -3283,45 +2956,48 @@
 
     if-eqz v4, :cond_28
 
-    .line 660
+    .line 578
     invoke-virtual {v3}, Lcom/android/server/audio/PlaybackActivityMonitor$PlayMonitorClient;->release()V
 
-    .line 661
+    .line 579
     invoke-interface {v1}, Ljava/util/Iterator;->remove()V
 
     goto :goto_2d
 
-    .line 663
+    .line 581
     :cond_28
-    iget-boolean v3, v3, Lcom/android/server/audio/PlaybackActivityMonitor$PlayMonitorClient;->mIsPrivileged:Z
+    iget-boolean v4, v3, Lcom/android/server/audio/PlaybackActivityMonitor$PlayMonitorClient;->mIsPrivileged:Z
 
-    if-nez v3, :cond_2d
+    if-nez v4, :cond_2d
 
-    .line 664
+    .line 582
     const/4 v2, 0x1
 
-    .line 667
+    .line 585
+    .end local v3  # "pmc":Lcom/android/server/audio/PlaybackActivityMonitor$PlayMonitorClient;
     :cond_2d
     :goto_2d
     goto :goto_d
 
-    .line 668
+    .line 586
     :cond_2e
     iput-boolean v2, p0, Lcom/android/server/audio/PlaybackActivityMonitor;->mHasPublicClients:Z
 
-    .line 669
+    .line 587
+    .end local v1  # "clientIterator":Ljava/util/Iterator;, "Ljava/util/Iterator<Lcom/android/server/audio/PlaybackActivityMonitor$PlayMonitorClient;>;"
+    .end local v2  # "hasPublicClients":Z
     monitor-exit v0
 
-    .line 670
+    .line 588
     return-void
 
-    .line 669
+    .line 587
     :catchall_32
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_34
     .catchall {:try_start_6 .. :try_end_34} :catchall_32
 
-    throw p1
+    throw v1
 .end method

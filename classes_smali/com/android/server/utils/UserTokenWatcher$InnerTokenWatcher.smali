@@ -23,6 +23,9 @@
 # direct methods
 .method private constructor <init>(Lcom/android/server/utils/UserTokenWatcher;ILandroid/os/Handler;Ljava/lang/String;)V
     .registers 5
+    .param p2, "userId"  # I
+    .param p3, "handler"  # Landroid/os/Handler;
+    .param p4, "tag"  # Ljava/lang/String;
 
     .line 142
     iput-object p1, p0, Lcom/android/server/utils/UserTokenWatcher$InnerTokenWatcher;->this$0:Lcom/android/server/utils/UserTokenWatcher;
@@ -39,6 +42,11 @@
 
 .method synthetic constructor <init>(Lcom/android/server/utils/UserTokenWatcher;ILandroid/os/Handler;Ljava/lang/String;Lcom/android/server/utils/UserTokenWatcher$1;)V
     .registers 6
+    .param p1, "x0"  # Lcom/android/server/utils/UserTokenWatcher;
+    .param p2, "x1"  # I
+    .param p3, "x2"  # Landroid/os/Handler;
+    .param p4, "x3"  # Ljava/lang/String;
+    .param p5, "x4"  # Lcom/android/server/utils/UserTokenWatcher$1;
 
     .line 139
     invoke-direct {p0, p1, p2, p3, p4}, Lcom/android/server/utils/UserTokenWatcher$InnerTokenWatcher;-><init>(Lcom/android/server/utils/UserTokenWatcher;ILandroid/os/Handler;Ljava/lang/String;)V
@@ -67,7 +75,7 @@
 .end method
 
 .method public released()V
-    .registers 4
+    .registers 5
 
     .line 156
     iget-object v0, p0, Lcom/android/server/utils/UserTokenWatcher$InnerTokenWatcher;->this$0:Lcom/android/server/utils/UserTokenWatcher;
@@ -106,26 +114,28 @@
     check-cast v1, Landroid/os/TokenWatcher;
 
     .line 160
+    .local v1, "watcher":Landroid/os/TokenWatcher;
     if-eqz v1, :cond_33
 
     invoke-virtual {v1}, Landroid/os/TokenWatcher;->isAcquired()Z
 
-    move-result v1
+    move-result v2
 
-    if-nez v1, :cond_33
+    if-nez v2, :cond_33
 
     .line 161
-    iget-object v1, p0, Lcom/android/server/utils/UserTokenWatcher$InnerTokenWatcher;->this$0:Lcom/android/server/utils/UserTokenWatcher;
+    iget-object v2, p0, Lcom/android/server/utils/UserTokenWatcher$InnerTokenWatcher;->this$0:Lcom/android/server/utils/UserTokenWatcher;
 
-    invoke-static {v1}, Lcom/android/server/utils/UserTokenWatcher;->access$200(Lcom/android/server/utils/UserTokenWatcher;)Landroid/util/SparseArray;
+    invoke-static {v2}, Lcom/android/server/utils/UserTokenWatcher;->access$200(Lcom/android/server/utils/UserTokenWatcher;)Landroid/util/SparseArray;
 
-    move-result-object v1
+    move-result-object v2
 
-    iget v2, p0, Lcom/android/server/utils/UserTokenWatcher$InnerTokenWatcher;->mUserId:I
+    iget v3, p0, Lcom/android/server/utils/UserTokenWatcher$InnerTokenWatcher;->mUserId:I
 
-    invoke-virtual {v1, v2}, Landroid/util/SparseArray;->remove(I)V
+    invoke-virtual {v2, v3}, Landroid/util/SparseArray;->remove(I)V
 
     .line 163
+    .end local v1  # "watcher":Landroid/os/TokenWatcher;
     :cond_33
     monitor-exit v0
 

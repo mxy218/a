@@ -20,18 +20,31 @@
 
 # direct methods
 .method constructor <init>(Lcom/android/server/biometrics/face/FaceService$FaceServiceWrapper;Landroid/content/Context;Lcom/android/server/biometrics/Constants;Lcom/android/server/biometrics/BiometricServiceBase$DaemonWrapper;JLandroid/os/IBinder;Lcom/android/server/biometrics/BiometricServiceBase$ServiceListener;IIZLjava/lang/String;)V
-    .registers 25
+    .registers 27
+    .param p1, "this$1"  # Lcom/android/server/biometrics/face/FaceService$FaceServiceWrapper;
+    .param p2, "context"  # Landroid/content/Context;
+    .param p3, "constants"  # Lcom/android/server/biometrics/Constants;
+    .param p4, "daemon"  # Lcom/android/server/biometrics/BiometricServiceBase$DaemonWrapper;
+    .param p5, "halDeviceId"  # J
+    .param p7, "token"  # Landroid/os/IBinder;
+    .param p8, "listener"  # Lcom/android/server/biometrics/BiometricServiceBase$ServiceListener;
+    .param p9, "groupId"  # I
+    .param p10, "userId"  # I
+    .param p11, "restricted"  # Z
+    .param p12, "owner"  # Ljava/lang/String;
 
-    .line 498
+    .line 355
+    move-object v12, p0
+
+    move-object v13, p1
+
+    iput-object v13, v12, Lcom/android/server/biometrics/face/FaceService$FaceServiceWrapper$3;->this$1:Lcom/android/server/biometrics/face/FaceService$FaceServiceWrapper;
+
     move-object v0, p0
 
-    move-object v1, p1
+    move-object/from16 v1, p2
 
-    iput-object v1, v0, Lcom/android/server/biometrics/face/FaceService$FaceServiceWrapper$3;->this$1:Lcom/android/server/biometrics/face/FaceService$FaceServiceWrapper;
-
-    move-object v1, p2
-
-    move-object v2, p3
+    move-object/from16 v2, p3
 
     move-object/from16 v3, p4
 
@@ -59,7 +72,7 @@
 .method protected statsModality()I
     .registers 2
 
-    .line 501
+    .line 358
     iget-object v0, p0, Lcom/android/server/biometrics/face/FaceService$FaceServiceWrapper$3;->this$1:Lcom/android/server/biometrics/face/FaceService$FaceServiceWrapper;
 
     iget-object v0, v0, Lcom/android/server/biometrics/face/FaceService$FaceServiceWrapper;->this$0:Lcom/android/server/biometrics/face/FaceService;

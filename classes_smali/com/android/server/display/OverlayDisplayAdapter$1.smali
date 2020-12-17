@@ -24,6 +24,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/display/OverlayDisplayAdapter;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/display/OverlayDisplayAdapter;
 
     .line 113
     iput-object p1, p0, Lcom/android/server/display/OverlayDisplayAdapter$1;->this$0:Lcom/android/server/display/OverlayDisplayAdapter;

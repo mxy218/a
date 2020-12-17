@@ -35,6 +35,8 @@
 # direct methods
 .method constructor <init>([BI)V
     .registers 4
+    .param p1, "score"  # [B
+    .param p2, "index"  # I
 
     .line 76
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -59,60 +61,67 @@
 .end method
 
 .method private static compare([B[B)I
-    .registers 6
+    .registers 5
+    .param p0, "left"  # [B
+    .param p1, "right"  # [B
 
     .line 114
     const/4 v0, 0x0
 
-    move v1, v0
+    .local v0, "i":I
+    :goto_1
+    array-length v1, p0
 
-    :goto_2
-    array-length v2, p0
-
-    if-ge v1, v2, :cond_18
+    if-ge v0, v1, :cond_17
 
     .line 115
-    aget-byte v2, p0, v1
+    aget-byte v1, p0, v0
 
-    aget-byte v3, p1, v1
+    aget-byte v2, p1, v0
 
-    if-le v2, v3, :cond_d
+    if-le v1, v2, :cond_c
 
     .line 116
-    const/4 p0, 0x1
+    const/4 v1, 0x1
 
-    return p0
+    return v1
 
     .line 117
-    :cond_d
-    aget-byte v2, p0, v1
+    :cond_c
+    aget-byte v1, p0, v0
 
-    aget-byte v3, p1, v1
+    aget-byte v2, p1, v0
 
-    if-ge v2, v3, :cond_15
+    if-ge v1, v2, :cond_14
 
     .line 118
-    const/4 p0, -0x1
+    const/4 v1, -0x1
 
-    return p0
+    return v1
 
     .line 114
-    :cond_15
-    add-int/lit8 v1, v1, 0x1
+    :cond_14
+    add-int/lit8 v0, v0, 0x1
 
-    goto :goto_2
+    goto :goto_1
 
     .line 121
-    :cond_18
+    .end local v0  # "i":I
+    :cond_17
+    const/4 v0, 0x0
+
     return v0
 .end method
 
 .method private set([BI)V
     .registers 6
+    .param p1, "score"  # [B
+    .param p2, "index"  # I
 
     .line 82
     const/4 v0, 0x0
 
+    .local v0, "i":I
     :goto_1
     iget-object v1, p0, Lcom/android/server/inputmethod/LocaleUtils$ScoreEntry;->mScore:[B
 
@@ -131,6 +140,7 @@
     goto :goto_1
 
     .line 85
+    .end local v0  # "i":I
     :cond_d
     iput p2, p0, Lcom/android/server/inputmethod/LocaleUtils$ScoreEntry;->mIndex:I
 
@@ -141,20 +151,21 @@
 
 # virtual methods
 .method public compareTo(Lcom/android/server/inputmethod/LocaleUtils$ScoreEntry;)I
-    .registers 3
+    .registers 4
+    .param p1, "other"  # Lcom/android/server/inputmethod/LocaleUtils$ScoreEntry;
 
     .line 126
     iget-object v0, p0, Lcom/android/server/inputmethod/LocaleUtils$ScoreEntry;->mScore:[B
 
-    iget-object p1, p1, Lcom/android/server/inputmethod/LocaleUtils$ScoreEntry;->mScore:[B
+    iget-object v1, p1, Lcom/android/server/inputmethod/LocaleUtils$ScoreEntry;->mScore:[B
 
-    invoke-static {v0, p1}, Lcom/android/server/inputmethod/LocaleUtils$ScoreEntry;->compare([B[B)I
+    invoke-static {v0, v1}, Lcom/android/server/inputmethod/LocaleUtils$ScoreEntry;->compare([B[B)I
 
-    move-result p1
+    move-result v0
 
-    mul-int/lit8 p1, p1, -0x1
+    mul-int/lit8 v0, v0, -0x1
 
-    return p1
+    return v0
 .end method
 
 .method public bridge synthetic compareTo(Ljava/lang/Object;)I
@@ -172,6 +183,8 @@
 
 .method public updateIfBetter([BI)V
     .registers 5
+    .param p1, "score"  # [B
+    .param p2, "index"  # I
 
     .line 92
     iget-object v0, p0, Lcom/android/server/inputmethod/LocaleUtils$ScoreEntry;->mScore:[B

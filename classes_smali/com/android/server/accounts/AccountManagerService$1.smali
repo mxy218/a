@@ -21,6 +21,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/accounts/AccountManagerService;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/accounts/AccountManagerService;
 
     .line 288
     iput-object p1, p0, Lcom/android/server/accounts/AccountManagerService$1;->this$0:Lcom/android/server/accounts/AccountManagerService;
@@ -33,41 +34,47 @@
 
 # virtual methods
 .method public onReceive(Landroid/content/Context;Landroid/content/Intent;)V
-    .registers 4
+    .registers 6
+    .param p1, "context1"  # Landroid/content/Context;
+    .param p2, "intent"  # Landroid/content/Intent;
 
     .line 293
-    const-string p1, "android.intent.extra.REPLACING"
+    const-string v0, "android.intent.extra.REPLACING"
 
-    const/4 v0, 0x0
+    const/4 v1, 0x0
 
-    invoke-virtual {p2, p1, v0}, Landroid/content/Intent;->getBooleanExtra(Ljava/lang/String;Z)Z
+    invoke-virtual {p2, v0, v1}, Landroid/content/Intent;->getBooleanExtra(Ljava/lang/String;Z)Z
 
-    move-result p1
+    move-result v0
 
-    if-nez p1, :cond_1d
+    if-nez v0, :cond_1d
 
     .line 303
     invoke-virtual {p2}, Landroid/content/Intent;->getData()Landroid/net/Uri;
 
-    move-result-object p1
+    move-result-object v0
 
-    invoke-virtual {p1}, Landroid/net/Uri;->getSchemeSpecificPart()Ljava/lang/String;
+    invoke-virtual {v0}, Landroid/net/Uri;->getSchemeSpecificPart()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
     .line 304
-    new-instance p2, Lcom/android/server/accounts/AccountManagerService$1$1;
+    .local v0, "removedPackageName":Ljava/lang/String;
+    new-instance v1, Lcom/android/server/accounts/AccountManagerService$1$1;
 
-    invoke-direct {p2, p0, p1}, Lcom/android/server/accounts/AccountManagerService$1$1;-><init>(Lcom/android/server/accounts/AccountManagerService$1;Ljava/lang/String;)V
+    invoke-direct {v1, p0, v0}, Lcom/android/server/accounts/AccountManagerService$1$1;-><init>(Lcom/android/server/accounts/AccountManagerService$1;Ljava/lang/String;)V
 
     .line 312
-    iget-object p1, p0, Lcom/android/server/accounts/AccountManagerService$1;->this$0:Lcom/android/server/accounts/AccountManagerService;
+    .local v1, "purgingRunnable":Ljava/lang/Runnable;
+    iget-object v2, p0, Lcom/android/server/accounts/AccountManagerService$1;->this$0:Lcom/android/server/accounts/AccountManagerService;
 
-    iget-object p1, p1, Lcom/android/server/accounts/AccountManagerService;->mHandler:Lcom/android/server/accounts/AccountManagerService$MessageHandler;
+    iget-object v2, v2, Lcom/android/server/accounts/AccountManagerService;->mHandler:Lcom/android/server/accounts/AccountManagerService$MessageHandler;
 
-    invoke-virtual {p1, p2}, Lcom/android/server/accounts/AccountManagerService$MessageHandler;->post(Ljava/lang/Runnable;)Z
+    invoke-virtual {v2, v1}, Lcom/android/server/accounts/AccountManagerService$MessageHandler;->post(Ljava/lang/Runnable;)Z
 
     .line 314
+    .end local v0  # "removedPackageName":Ljava/lang/String;
+    .end local v1  # "purgingRunnable":Ljava/lang/Runnable;
     :cond_1d
     return-void
 .end method

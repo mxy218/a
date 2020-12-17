@@ -25,6 +25,8 @@
 # direct methods
 .method public constructor <init>(Landroid/content/Context;Lcom/android/server/accessibility/MagnificationController;)V
     .registers 4
+    .param p1, "context"  # Landroid/content/Context;
+    .param p2, "controller"  # Lcom/android/server/accessibility/MagnificationController;
 
     .line 1275
     invoke-direct {p0}, Landroid/content/BroadcastReceiver;-><init>()V
@@ -47,12 +49,14 @@
 
 # virtual methods
 .method public onReceive(Landroid/content/Context;Landroid/content/Intent;)V
-    .registers 3
+    .registers 4
+    .param p1, "context"  # Landroid/content/Context;
+    .param p2, "intent"  # Landroid/content/Intent;
 
     .line 1296
-    iget-object p1, p0, Lcom/android/server/accessibility/MagnificationController$ScreenStateObserver;->mController:Lcom/android/server/accessibility/MagnificationController;
+    iget-object v0, p0, Lcom/android/server/accessibility/MagnificationController$ScreenStateObserver;->mController:Lcom/android/server/accessibility/MagnificationController;
 
-    invoke-static {p1}, Lcom/android/server/accessibility/MagnificationController;->access$600(Lcom/android/server/accessibility/MagnificationController;)V
+    invoke-static {v0}, Lcom/android/server/accessibility/MagnificationController;->access$600(Lcom/android/server/accessibility/MagnificationController;)V
 
     .line 1297
     return-void

@@ -117,8 +117,10 @@
 
 .method public constructor <init>(Landroid/content/Context;Landroid/net/INetd;)V
     .registers 4
+    .param p1, "context"  # Landroid/content/Context;
+    .param p2, "netd"  # Landroid/net/INetd;
 
-    .line 143
+    .line 138
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
     .line 87
@@ -149,88 +151,95 @@
 
     iput-object v0, p0, Lcom/android/server/connectivity/PermissionMonitor;->mAllApps:Ljava/util/Set;
 
-    .line 144
+    .line 139
     invoke-virtual {p1}, Landroid/content/Context;->getPackageManager()Landroid/content/pm/PackageManager;
 
     move-result-object v0
 
     iput-object v0, p0, Lcom/android/server/connectivity/PermissionMonitor;->mPackageManager:Landroid/content/pm/PackageManager;
 
-    .line 145
+    .line 140
     const-string/jumbo v0, "user"
 
     invoke-virtual {p1, v0}, Landroid/content/Context;->getSystemService(Ljava/lang/String;)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v0
 
-    check-cast p1, Landroid/os/UserManager;
+    check-cast v0, Landroid/os/UserManager;
 
-    iput-object p1, p0, Lcom/android/server/connectivity/PermissionMonitor;->mUserManager:Landroid/os/UserManager;
+    iput-object v0, p0, Lcom/android/server/connectivity/PermissionMonitor;->mUserManager:Landroid/os/UserManager;
 
-    .line 146
+    .line 141
     iput-object p2, p0, Lcom/android/server/connectivity/PermissionMonitor;->mNetd:Landroid/net/INetd;
 
-    .line 147
+    .line 142
     return-void
 .end method
 
 .method static synthetic access$000(Lcom/android/server/connectivity/PermissionMonitor;)Landroid/content/pm/PackageManager;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/connectivity/PermissionMonitor;
 
     .line 75
-    iget-object p0, p0, Lcom/android/server/connectivity/PermissionMonitor;->mPackageManager:Landroid/content/pm/PackageManager;
+    iget-object v0, p0, Lcom/android/server/connectivity/PermissionMonitor;->mPackageManager:Landroid/content/pm/PackageManager;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$100(Lcom/android/server/connectivity/PermissionMonitor;Ljava/lang/String;)Landroid/content/pm/PackageInfo;
-    .registers 2
+    .registers 3
+    .param p0, "x0"  # Lcom/android/server/connectivity/PermissionMonitor;
+    .param p1, "x1"  # Ljava/lang/String;
 
     .line 75
     invoke-direct {p0, p1}, Lcom/android/server/connectivity/PermissionMonitor;->getPackageInfo(Ljava/lang/String;)Landroid/content/pm/PackageInfo;
 
-    move-result-object p0
+    move-result-object v0
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$200([Ljava/lang/String;[I)I
-    .registers 2
+    .registers 3
+    .param p0, "x0"  # [Ljava/lang/String;
+    .param p1, "x1"  # [I
 
     .line 75
     invoke-static {p0, p1}, Lcom/android/server/connectivity/PermissionMonitor;->getNetdPermissionMask([Ljava/lang/String;[I)I
 
-    move-result p0
+    move-result v0
 
-    return p0
+    return v0
 .end method
 
 .method private static getNetdPermissionMask([Ljava/lang/String;[I)I
     .registers 6
+    .param p0, "requestedPermissions"  # [Ljava/lang/String;
+    .param p1, "requestedPermissionsFlags"  # [I
 
-    .line 453
-    nop
-
-    .line 454
+    .line 448
     const/4 v0, 0x0
 
-    if-eqz p0, :cond_33
+    .line 449
+    .local v0, "permissions":I
+    if-eqz p0, :cond_32
 
-    if-nez p1, :cond_7
+    if-nez p1, :cond_6
 
-    goto :goto_33
+    goto :goto_32
 
-    .line 455
-    :cond_7
-    move v1, v0
+    .line 450
+    :cond_6
+    const/4 v1, 0x0
 
-    :goto_8
+    .local v1, "i":I
+    :goto_7
     array-length v2, p0
 
-    if-ge v0, v2, :cond_32
+    if-ge v1, v2, :cond_31
 
-    .line 456
-    aget-object v2, p0, v0
+    .line 451
+    aget-object v2, p0, v1
 
     const-string v3, "android.permission.INTERNET"
 
@@ -238,20 +247,20 @@
 
     move-result v2
 
-    if-eqz v2, :cond_1d
+    if-eqz v2, :cond_1c
 
-    aget v2, p1, v0
+    aget v2, p1, v1
 
     and-int/lit8 v2, v2, 0x2
 
-    if-eqz v2, :cond_1d
+    if-eqz v2, :cond_1c
 
-    .line 458
-    or-int/lit8 v1, v1, 0x4
+    .line 453
+    or-int/lit8 v0, v0, 0x4
 
-    .line 460
-    :cond_1d
-    aget-object v2, p0, v0
+    .line 455
+    :cond_1c
+    aget-object v2, p0, v1
 
     const-string v3, "android.permission.UPDATE_DEVICE_STATS"
 
@@ -259,37 +268,39 @@
 
     move-result v2
 
-    if-eqz v2, :cond_2f
+    if-eqz v2, :cond_2e
 
-    aget v2, p1, v0
+    aget v2, p1, v1
 
     and-int/lit8 v2, v2, 0x2
 
-    if-eqz v2, :cond_2f
+    if-eqz v2, :cond_2e
 
-    .line 462
-    or-int/lit8 v1, v1, 0x8
+    .line 457
+    or-int/lit8 v0, v0, 0x8
 
-    .line 455
-    :cond_2f
-    add-int/lit8 v0, v0, 0x1
+    .line 450
+    :cond_2e
+    add-int/lit8 v1, v1, 0x1
 
-    goto :goto_8
+    goto :goto_7
 
-    .line 465
+    .line 460
+    .end local v1  # "i":I
+    :cond_31
+    return v0
+
+    .line 449
     :cond_32
-    return v1
-
-    .line 454
-    :cond_33
-    :goto_33
+    :goto_32
     return v0
 .end method
 
 .method private getPackageInfo(Ljava/lang/String;)Landroid/content/pm/PackageInfo;
     .registers 4
+    .param p1, "packageName"  # Ljava/lang/String;
 
-    .line 470
+    .line 465
     :try_start_0
     iget-object v0, p0, Lcom/android/server/connectivity/PermissionMonitor;->mPackageManager:Landroid/content/pm/PackageManager;
 
@@ -297,25 +308,28 @@
 
     invoke-virtual {v0, p1, v1}, Landroid/content/pm/PackageManager;->getPackageInfo(Ljava/lang/String;I)Landroid/content/pm/PackageInfo;
 
-    move-result-object p1
+    move-result-object v0
     :try_end_9
     .catch Landroid/content/pm/PackageManager$NameNotFoundException; {:try_start_0 .. :try_end_9} :catch_a
 
-    .line 472
-    return-object p1
+    .line 467
+    .local v0, "app":Landroid/content/pm/PackageInfo;
+    return-object v0
 
-    .line 473
+    .line 468
+    .end local v0  # "app":Landroid/content/pm/PackageInfo;
     :catch_a
-    move-exception p1
+    move-exception v0
 
-    .line 474
-    const/4 p1, 0x0
+    .line 469
+    .local v0, "e":Landroid/content/pm/PackageManager$NameNotFoundException;
+    const/4 v1, 0x0
 
-    return-object p1
+    return-object v1
 .end method
 
 .method private intersectUids(Ljava/util/Set;Ljava/util/Set;)Ljava/util/Set;
-    .registers 9
+    .registers 11
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(",
@@ -331,107 +345,119 @@
         }
     .end annotation
 
-    .line 533
+    .line 528
+    .local p1, "ranges":Ljava/util/Set;, "Ljava/util/Set<Landroid/net/UidRange;>;"
+    .local p2, "appIds":Ljava/util/Set;, "Ljava/util/Set<Ljava/lang/Integer;>;"
     new-instance v0, Ljava/util/HashSet;
 
     invoke-direct {v0}, Ljava/util/HashSet;-><init>()V
 
-    .line 534
+    .line 529
+    .local v0, "result":Ljava/util/Set;, "Ljava/util/Set<Ljava/lang/Integer;>;"
     invoke-interface {p1}, Ljava/util/Set;->iterator()Ljava/util/Iterator;
-
-    move-result-object p1
-
-    :goto_9
-    invoke-interface {p1}, Ljava/util/Iterator;->hasNext()Z
-
-    move-result v1
-
-    if-eqz v1, :cond_49
-
-    invoke-interface {p1}, Ljava/util/Iterator;->next()Ljava/lang/Object;
 
     move-result-object v1
 
-    check-cast v1, Landroid/net/UidRange;
-
-    .line 535
-    invoke-virtual {v1}, Landroid/net/UidRange;->getStartUser()I
+    :goto_9
+    invoke-interface {v1}, Ljava/util/Iterator;->hasNext()Z
 
     move-result v2
 
-    :goto_19
-    invoke-virtual {v1}, Landroid/net/UidRange;->getEndUser()I
+    if-eqz v2, :cond_49
+
+    invoke-interface {v1}, Ljava/util/Iterator;->next()Ljava/lang/Object;
+
+    move-result-object v2
+
+    check-cast v2, Landroid/net/UidRange;
+
+    .line 530
+    .local v2, "range":Landroid/net/UidRange;
+    invoke-virtual {v2}, Landroid/net/UidRange;->getStartUser()I
 
     move-result v3
 
-    if-gt v2, v3, :cond_48
-
-    .line 536
-    invoke-interface {p2}, Ljava/util/Set;->iterator()Ljava/util/Iterator;
-
-    move-result-object v3
-
-    :goto_23
-    invoke-interface {v3}, Ljava/util/Iterator;->hasNext()Z
+    .local v3, "userId":I
+    :goto_19
+    invoke-virtual {v2}, Landroid/net/UidRange;->getEndUser()I
 
     move-result v4
 
-    if-eqz v4, :cond_45
+    if-gt v3, v4, :cond_48
 
-    invoke-interface {v3}, Ljava/util/Iterator;->next()Ljava/lang/Object;
+    .line 531
+    invoke-interface {p2}, Ljava/util/Set;->iterator()Ljava/util/Iterator;
 
     move-result-object v4
 
-    check-cast v4, Ljava/lang/Integer;
-
-    invoke-virtual {v4}, Ljava/lang/Integer;->intValue()I
-
-    move-result v4
-
-    .line 537
-    invoke-static {v2, v4}, Landroid/os/UserHandle;->getUid(II)I
-
-    move-result v4
-
-    .line 538
-    invoke-virtual {v1, v4}, Landroid/net/UidRange;->contains(I)Z
+    :goto_23
+    invoke-interface {v4}, Ljava/util/Iterator;->hasNext()Z
 
     move-result v5
 
-    if-eqz v5, :cond_44
+    if-eqz v5, :cond_45
 
-    .line 539
-    invoke-static {v4}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
+    invoke-interface {v4}, Ljava/util/Iterator;->next()Ljava/lang/Object;
 
-    move-result-object v4
+    move-result-object v5
 
-    invoke-interface {v0, v4}, Ljava/util/Set;->add(Ljava/lang/Object;)Z
+    check-cast v5, Ljava/lang/Integer;
 
-    .line 541
+    invoke-virtual {v5}, Ljava/lang/Integer;->intValue()I
+
+    move-result v5
+
+    .line 532
+    .local v5, "appId":I
+    invoke-static {v3, v5}, Landroid/os/UserHandle;->getUid(II)I
+
+    move-result v6
+
+    .line 533
+    .local v6, "uid":I
+    invoke-virtual {v2, v6}, Landroid/net/UidRange;->contains(I)Z
+
+    move-result v7
+
+    if-eqz v7, :cond_44
+
+    .line 534
+    invoke-static {v6}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
+
+    move-result-object v7
+
+    invoke-interface {v0, v7}, Ljava/util/Set;->add(Ljava/lang/Object;)Z
+
+    .line 536
+    .end local v5  # "appId":I
+    .end local v6  # "uid":I
     :cond_44
     goto :goto_23
 
-    .line 535
+    .line 530
     :cond_45
-    add-int/lit8 v2, v2, 0x1
+    add-int/lit8 v3, v3, 0x1
 
     goto :goto_19
 
-    .line 543
+    .line 538
+    .end local v2  # "range":Landroid/net/UidRange;
+    .end local v3  # "userId":I
     :cond_48
     goto :goto_9
 
-    .line 544
+    .line 539
     :cond_49
     return-object v0
 .end method
 
 .method static isVendorApp(Landroid/content/pm/ApplicationInfo;)Z
     .registers 2
+    .param p0, "appInfo"  # Landroid/content/pm/ApplicationInfo;
     .annotation build Lcom/android/internal/annotations/VisibleForTesting;
     .end annotation
 
-    .line 223
+    .line 218
     invoke-virtual {p0}, Landroid/content/pm/ApplicationInfo;->isVendor()Z
 
     move-result v0
@@ -446,63 +472,68 @@
 
     invoke-virtual {p0}, Landroid/content/pm/ApplicationInfo;->isProduct()Z
 
-    move-result p0
+    move-result v0
 
-    if-eqz p0, :cond_13
+    if-eqz v0, :cond_13
 
     goto :goto_15
 
     :cond_13
-    const/4 p0, 0x0
+    const/4 v0, 0x0
 
     goto :goto_16
 
     :cond_15
     :goto_15
-    const/4 p0, 0x1
+    const/4 v0, 0x1
 
     :goto_16
-    return p0
+    return v0
 .end method
 
 .method private static log(Ljava/lang/String;)V
     .registers 2
+    .param p0, "s"  # Ljava/lang/String;
 
-    .line 699
+    .line 694
     const-string v0, "PermissionMonitor"
 
     invoke-static {v0, p0}, Landroid/util/Log;->d(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 701
+    .line 696
     return-void
 .end method
 
 .method private static loge(Ljava/lang/String;)V
     .registers 2
+    .param p0, "s"  # Ljava/lang/String;
 
-    .line 704
+    .line 699
     const-string v0, "PermissionMonitor"
 
     invoke-static {v0, p0}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 705
+    .line 700
     return-void
 .end method
 
 .method private static loge(Ljava/lang/String;Ljava/lang/Throwable;)V
     .registers 3
+    .param p0, "s"  # Ljava/lang/String;
+    .param p1, "e"  # Ljava/lang/Throwable;
 
-    .line 708
+    .line 703
     const-string v0, "PermissionMonitor"
 
     invoke-static {v0, p0, p1}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
-    .line 709
+    .line 704
     return-void
 .end method
 
 .method private removeBypassingUids(Ljava/util/Set;I)V
-    .registers 3
+    .registers 4
+    .param p2, "vpnAppUid"  # I
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(",
@@ -512,26 +543,27 @@
         }
     .end annotation
 
-    .line 557
+    .line 552
+    .local p1, "uids":Ljava/util/Set;, "Ljava/util/Set<Ljava/lang/Integer;>;"
     invoke-static {p2}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
 
-    move-result-object p2
+    move-result-object v0
 
-    invoke-interface {p1, p2}, Ljava/util/Set;->remove(Ljava/lang/Object;)Z
+    invoke-interface {p1, v0}, Ljava/util/Set;->remove(Ljava/lang/Object;)Z
 
-    .line 558
-    new-instance p2, Lcom/android/server/connectivity/-$$Lambda$PermissionMonitor$h-GPsXXwaQ-Mfu5-dqCp_VIYNOM;
+    .line 553
+    new-instance v0, Lcom/android/server/connectivity/-$$Lambda$PermissionMonitor$h-GPsXXwaQ-Mfu5-dqCp_VIYNOM;
 
-    invoke-direct {p2, p0}, Lcom/android/server/connectivity/-$$Lambda$PermissionMonitor$h-GPsXXwaQ-Mfu5-dqCp_VIYNOM;-><init>(Lcom/android/server/connectivity/PermissionMonitor;)V
+    invoke-direct {v0, p0}, Lcom/android/server/connectivity/-$$Lambda$PermissionMonitor$h-GPsXXwaQ-Mfu5-dqCp_VIYNOM;-><init>(Lcom/android/server/connectivity/PermissionMonitor;)V
 
-    invoke-interface {p1, p2}, Ljava/util/Set;->removeIf(Ljava/util/function/Predicate;)Z
+    invoke-interface {p1, v0}, Ljava/util/Set;->removeIf(Ljava/util/function/Predicate;)Z
 
-    .line 559
+    .line 554
     return-void
 .end method
 
 .method private toIntArray(Ljava/util/Collection;)[I
-    .registers 6
+    .registers 8
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(",
@@ -541,57 +573,65 @@
         }
     .end annotation
 
-    .line 278
+    .line 273
+    .local p1, "list":Ljava/util/Collection;, "Ljava/util/Collection<Ljava/lang/Integer;>;"
     invoke-interface {p1}, Ljava/util/Collection;->size()I
 
     move-result v0
 
     new-array v0, v0, [I
 
-    .line 279
-    nop
-
-    .line 280
-    invoke-interface {p1}, Ljava/util/Collection;->iterator()Ljava/util/Iterator;
-
-    move-result-object p1
-
+    .line 274
+    .local v0, "array":[I
     const/4 v1, 0x0
 
-    :goto_c
-    invoke-interface {p1}, Ljava/util/Iterator;->hasNext()Z
-
-    move-result v2
-
-    if-eqz v2, :cond_22
-
-    invoke-interface {p1}, Ljava/util/Iterator;->next()Ljava/lang/Object;
+    .line 275
+    .local v1, "i":I
+    invoke-interface {p1}, Ljava/util/Collection;->iterator()Ljava/util/Iterator;
 
     move-result-object v2
 
-    check-cast v2, Ljava/lang/Integer;
+    :goto_b
+    invoke-interface {v2}, Ljava/util/Iterator;->hasNext()Z
 
-    .line 281
-    add-int/lit8 v3, v1, 0x1
+    move-result v3
 
-    invoke-virtual {v2}, Ljava/lang/Integer;->intValue()I
+    if-eqz v3, :cond_21
 
-    move-result v2
+    invoke-interface {v2}, Ljava/util/Iterator;->next()Ljava/lang/Object;
 
-    aput v2, v0, v1
+    move-result-object v3
 
-    .line 282
-    move v1, v3
+    check-cast v3, Ljava/lang/Integer;
 
-    goto :goto_c
+    .line 276
+    .local v3, "item":Ljava/lang/Integer;
+    add-int/lit8 v4, v1, 0x1
 
-    .line 283
-    :cond_22
+    .end local v1  # "i":I
+    .local v4, "i":I
+    invoke-virtual {v3}, Ljava/lang/Integer;->intValue()I
+
+    move-result v5
+
+    aput v5, v0, v1
+
+    .line 277
+    .end local v3  # "item":Ljava/lang/Integer;
+    move v1, v4
+
+    goto :goto_b
+
+    .line 278
+    .end local v4  # "i":I
+    .restart local v1  # "i":I
+    :cond_21
     return-object v0
 .end method
 
 .method private update(Ljava/util/Set;Ljava/util/Map;Z)V
-    .registers 11
+    .registers 12
+    .param p3, "add"  # Z
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(",
@@ -605,83 +645,78 @@
         }
     .end annotation
 
-    .line 287
+    .line 282
+    .local p1, "users":Ljava/util/Set;, "Ljava/util/Set<Ljava/lang/Integer;>;"
+    .local p2, "apps":Ljava/util/Map;, "Ljava/util/Map<Ljava/lang/Integer;Ljava/lang/Boolean;>;"
     new-instance v0, Ljava/util/ArrayList;
 
     invoke-direct {v0}, Ljava/util/ArrayList;-><init>()V
 
-    .line 288
+    .line 283
+    .local v0, "network":Ljava/util/List;, "Ljava/util/List<Ljava/lang/Integer;>;"
     new-instance v1, Ljava/util/ArrayList;
 
     invoke-direct {v1}, Ljava/util/ArrayList;-><init>()V
 
-    .line 289
+    .line 284
+    .local v1, "system":Ljava/util/List;, "Ljava/util/List<Ljava/lang/Integer;>;"
     invoke-interface {p2}, Ljava/util/Map;->entrySet()Ljava/util/Set;
-
-    move-result-object p2
-
-    invoke-interface {p2}, Ljava/util/Set;->iterator()Ljava/util/Iterator;
-
-    move-result-object p2
-
-    :goto_12
-    invoke-interface {p2}, Ljava/util/Iterator;->hasNext()Z
-
-    move-result v2
-
-    if-eqz v2, :cond_58
-
-    invoke-interface {p2}, Ljava/util/Iterator;->next()Ljava/lang/Object;
 
     move-result-object v2
 
-    check-cast v2, Ljava/util/Map$Entry;
+    invoke-interface {v2}, Ljava/util/Set;->iterator()Ljava/util/Iterator;
 
-    .line 290
-    invoke-interface {v2}, Ljava/util/Map$Entry;->getValue()Ljava/lang/Object;
+    move-result-object v2
 
-    move-result-object v3
-
-    check-cast v3, Ljava/lang/Boolean;
-
-    invoke-virtual {v3}, Ljava/lang/Boolean;->booleanValue()Z
+    :goto_12
+    invoke-interface {v2}, Ljava/util/Iterator;->hasNext()Z
 
     move-result v3
 
-    if-eqz v3, :cond_2c
+    if-eqz v3, :cond_58
 
-    move-object v3, v1
+    invoke-interface {v2}, Ljava/util/Iterator;->next()Ljava/lang/Object;
+
+    move-result-object v3
+
+    check-cast v3, Ljava/util/Map$Entry;
+
+    .line 285
+    .local v3, "app":Ljava/util/Map$Entry;, "Ljava/util/Map$Entry<Ljava/lang/Integer;Ljava/lang/Boolean;>;"
+    invoke-interface {v3}, Ljava/util/Map$Entry;->getValue()Ljava/lang/Object;
+
+    move-result-object v4
+
+    check-cast v4, Ljava/lang/Boolean;
+
+    invoke-virtual {v4}, Ljava/lang/Boolean;->booleanValue()Z
+
+    move-result v4
+
+    if-eqz v4, :cond_2c
+
+    move-object v4, v1
 
     goto :goto_2d
 
     :cond_2c
-    move-object v3, v0
+    move-object v4, v0
 
-    .line 291
+    .line 286
+    .local v4, "list":Ljava/util/List;, "Ljava/util/List<Ljava/lang/Integer;>;"
     :goto_2d
     invoke-interface {p1}, Ljava/util/Set;->iterator()Ljava/util/Iterator;
 
-    move-result-object v4
-
-    :goto_31
-    invoke-interface {v4}, Ljava/util/Iterator;->hasNext()Z
-
-    move-result v5
-
-    if-eqz v5, :cond_57
-
-    invoke-interface {v4}, Ljava/util/Iterator;->next()Ljava/lang/Object;
-
     move-result-object v5
 
-    check-cast v5, Ljava/lang/Integer;
+    :goto_31
+    invoke-interface {v5}, Ljava/util/Iterator;->hasNext()Z
 
-    invoke-virtual {v5}, Ljava/lang/Integer;->intValue()I
+    move-result v6
 
-    move-result v5
+    if-eqz v6, :cond_57
 
-    .line 292
-    invoke-interface {v2}, Ljava/util/Map$Entry;->getKey()Ljava/lang/Object;
+    invoke-interface {v5}, Ljava/util/Iterator;->next()Ljava/lang/Object;
 
     move-result-object v6
 
@@ -691,105 +726,124 @@
 
     move-result v6
 
-    invoke-static {v5, v6}, Landroid/os/UserHandle;->getUid(II)I
+    .line 287
+    .local v6, "user":I
+    invoke-interface {v3}, Ljava/util/Map$Entry;->getKey()Ljava/lang/Object;
 
-    move-result v5
+    move-result-object v7
 
-    invoke-static {v5}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
+    check-cast v7, Ljava/lang/Integer;
 
-    move-result-object v5
+    invoke-virtual {v7}, Ljava/lang/Integer;->intValue()I
 
-    invoke-interface {v3, v5}, Ljava/util/List;->add(Ljava/lang/Object;)Z
+    move-result v7
 
-    .line 293
+    invoke-static {v6, v7}, Landroid/os/UserHandle;->getUid(II)I
+
+    move-result v7
+
+    invoke-static {v7}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
+
+    move-result-object v7
+
+    invoke-interface {v4, v7}, Ljava/util/List;->add(Ljava/lang/Object;)Z
+
+    .line 288
+    .end local v6  # "user":I
     goto :goto_31
 
-    .line 294
+    .line 289
+    .end local v3  # "app":Ljava/util/Map$Entry;, "Ljava/util/Map$Entry<Ljava/lang/Integer;Ljava/lang/Boolean;>;"
+    .end local v4  # "list":Ljava/util/List;, "Ljava/util/List<Ljava/lang/Integer;>;"
     :cond_57
     goto :goto_12
 
-    .line 296
+    .line 291
     :cond_58
     if-eqz p3, :cond_6f
 
-    .line 297
+    .line 292
     :try_start_5a
-    iget-object p1, p0, Lcom/android/server/connectivity/PermissionMonitor;->mNetd:Landroid/net/INetd;
+    iget-object v2, p0, Lcom/android/server/connectivity/PermissionMonitor;->mNetd:Landroid/net/INetd;
 
-    const/4 p2, 0x1
+    const/4 v3, 0x1
 
     invoke-direct {p0, v0}, Lcom/android/server/connectivity/PermissionMonitor;->toIntArray(Ljava/util/Collection;)[I
 
-    move-result-object p3
+    move-result-object v4
 
-    invoke-interface {p1, p2, p3}, Landroid/net/INetd;->networkSetPermissionForUser(I[I)V
+    invoke-interface {v2, v3, v4}, Landroid/net/INetd;->networkSetPermissionForUser(I[I)V
 
-    .line 298
-    iget-object p1, p0, Lcom/android/server/connectivity/PermissionMonitor;->mNetd:Landroid/net/INetd;
+    .line 293
+    iget-object v2, p0, Lcom/android/server/connectivity/PermissionMonitor;->mNetd:Landroid/net/INetd;
 
-    const/4 p2, 0x2
+    const/4 v3, 0x2
 
     invoke-direct {p0, v1}, Lcom/android/server/connectivity/PermissionMonitor;->toIntArray(Ljava/util/Collection;)[I
 
-    move-result-object p3
+    move-result-object v4
 
-    invoke-interface {p1, p2, p3}, Landroid/net/INetd;->networkSetPermissionForUser(I[I)V
+    invoke-interface {v2, v3, v4}, Landroid/net/INetd;->networkSetPermissionForUser(I[I)V
 
     goto :goto_81
 
-    .line 300
+    .line 295
     :cond_6f
-    iget-object p1, p0, Lcom/android/server/connectivity/PermissionMonitor;->mNetd:Landroid/net/INetd;
+    iget-object v2, p0, Lcom/android/server/connectivity/PermissionMonitor;->mNetd:Landroid/net/INetd;
 
     invoke-direct {p0, v0}, Lcom/android/server/connectivity/PermissionMonitor;->toIntArray(Ljava/util/Collection;)[I
 
-    move-result-object p2
+    move-result-object v3
 
-    invoke-interface {p1, p2}, Landroid/net/INetd;->networkClearPermissionForUser([I)V
+    invoke-interface {v2, v3}, Landroid/net/INetd;->networkClearPermissionForUser([I)V
 
-    .line 301
-    iget-object p1, p0, Lcom/android/server/connectivity/PermissionMonitor;->mNetd:Landroid/net/INetd;
+    .line 296
+    iget-object v2, p0, Lcom/android/server/connectivity/PermissionMonitor;->mNetd:Landroid/net/INetd;
 
     invoke-direct {p0, v1}, Lcom/android/server/connectivity/PermissionMonitor;->toIntArray(Ljava/util/Collection;)[I
 
-    move-result-object p2
+    move-result-object v3
 
-    invoke-interface {p1, p2}, Landroid/net/INetd;->networkClearPermissionForUser([I)V
+    invoke-interface {v2, v3}, Landroid/net/INetd;->networkClearPermissionForUser([I)V
     :try_end_81
     .catch Landroid/os/RemoteException; {:try_start_5a .. :try_end_81} :catch_82
 
-    .line 305
+    .line 300
     :goto_81
     goto :goto_97
 
-    .line 303
+    .line 298
     :catch_82
-    move-exception p1
+    move-exception v2
 
-    .line 304
-    new-instance p2, Ljava/lang/StringBuilder;
+    .line 299
+    .local v2, "e":Landroid/os/RemoteException;
+    new-instance v3, Ljava/lang/StringBuilder;
 
-    invoke-direct {p2}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string p3, "Exception when updating permissions: "
+    const-string v4, "Exception when updating permissions: "
 
-    invoke-virtual {p2, p3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p2, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v3
 
-    invoke-static {p1}, Lcom/android/server/connectivity/PermissionMonitor;->loge(Ljava/lang/String;)V
+    invoke-static {v3}, Lcom/android/server/connectivity/PermissionMonitor;->loge(Ljava/lang/String;)V
 
-    .line 306
+    .line 301
+    .end local v2  # "e":Landroid/os/RemoteException;
     :goto_97
     return-void
 .end method
 
 .method private updateVpnUids(Ljava/lang/String;Ljava/util/Set;Z)V
-    .registers 5
+    .registers 8
+    .param p1, "iface"  # Ljava/lang/String;
+    .param p3, "add"  # Z
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(",
@@ -800,78 +854,83 @@
         }
     .end annotation
 
-    .line 573
+    .line 568
+    .local p2, "uids":Ljava/util/Set;, "Ljava/util/Set<Ljava/lang/Integer;>;"
     invoke-interface {p2}, Ljava/util/Set;->size()I
 
     move-result v0
 
     if-nez v0, :cond_7
 
-    .line 574
+    .line 569
     return-void
 
-    .line 577
+    .line 572
     :cond_7
     const-string v0, "Exception when updating permissions: "
 
     if-eqz p3, :cond_15
 
-    .line 578
+    .line 573
     :try_start_b
-    iget-object p3, p0, Lcom/android/server/connectivity/PermissionMonitor;->mNetd:Landroid/net/INetd;
+    iget-object v1, p0, Lcom/android/server/connectivity/PermissionMonitor;->mNetd:Landroid/net/INetd;
 
     invoke-direct {p0, p2}, Lcom/android/server/connectivity/PermissionMonitor;->toIntArray(Ljava/util/Collection;)[I
 
-    move-result-object p2
+    move-result-object v2
 
-    invoke-interface {p3, p1, p2}, Landroid/net/INetd;->firewallAddUidInterfaceRules(Ljava/lang/String;[I)V
+    invoke-interface {v1, p1, v2}, Landroid/net/INetd;->firewallAddUidInterfaceRules(Ljava/lang/String;[I)V
 
     goto :goto_2e
 
-    .line 580
+    .line 575
     :cond_15
-    iget-object p1, p0, Lcom/android/server/connectivity/PermissionMonitor;->mNetd:Landroid/net/INetd;
+    iget-object v1, p0, Lcom/android/server/connectivity/PermissionMonitor;->mNetd:Landroid/net/INetd;
 
     invoke-direct {p0, p2}, Lcom/android/server/connectivity/PermissionMonitor;->toIntArray(Ljava/util/Collection;)[I
 
-    move-result-object p2
+    move-result-object v2
 
-    invoke-interface {p1, p2}, Landroid/net/INetd;->firewallRemoveUidInterfaceRules([I)V
+    invoke-interface {v1, v2}, Landroid/net/INetd;->firewallRemoveUidInterfaceRules([I)V
     :try_end_1e
     .catch Landroid/os/ServiceSpecificException; {:try_start_b .. :try_end_1e} :catch_24
     .catch Landroid/os/RemoteException; {:try_start_b .. :try_end_1e} :catch_1f
 
     goto :goto_2e
 
-    .line 588
+    .line 583
     :catch_1f
-    move-exception p1
+    move-exception v1
 
-    .line 589
-    invoke-static {v0, p1}, Lcom/android/server/connectivity/PermissionMonitor;->loge(Ljava/lang/String;Ljava/lang/Throwable;)V
+    .line 584
+    .local v1, "e":Landroid/os/RemoteException;
+    invoke-static {v0, v1}, Lcom/android/server/connectivity/PermissionMonitor;->loge(Ljava/lang/String;Ljava/lang/Throwable;)V
 
     goto :goto_2f
 
-    .line 582
+    .line 577
+    .end local v1  # "e":Landroid/os/RemoteException;
     :catch_24
-    move-exception p1
+    move-exception v1
+
+    .line 580
+    .local v1, "e":Landroid/os/ServiceSpecificException;
+    iget v2, v1, Landroid/os/ServiceSpecificException;->errorCode:I
+
+    sget v3, Landroid/system/OsConstants;->EOPNOTSUPP:I
+
+    if-eq v2, v3, :cond_2e
+
+    .line 581
+    invoke-static {v0, v1}, Lcom/android/server/connectivity/PermissionMonitor;->loge(Ljava/lang/String;Ljava/lang/Throwable;)V
 
     .line 585
-    iget p2, p1, Landroid/os/ServiceSpecificException;->errorCode:I
-
-    sget p3, Landroid/system/OsConstants;->EOPNOTSUPP:I
-
-    if-eq p2, p3, :cond_2e
-
-    .line 586
-    invoke-static {v0, p1}, Lcom/android/server/connectivity/PermissionMonitor;->loge(Ljava/lang/String;Ljava/lang/Throwable;)V
-
-    .line 590
+    .end local v1  # "e":Landroid/os/ServiceSpecificException;
     :cond_2e
     :goto_2e
     nop
 
-    .line 591
+    .line 586
     :goto_2f
     return-void
 .end method
@@ -880,16 +939,17 @@
 # virtual methods
 .method public dump(Lcom/android/internal/util/IndentingPrintWriter;)V
     .registers 6
+    .param p1, "pw"  # Lcom/android/internal/util/IndentingPrintWriter;
 
-    .line 687
+    .line 682
     const-string v0, "Interface filtering rules:"
 
     invoke-virtual {p1, v0}, Lcom/android/internal/util/IndentingPrintWriter;->println(Ljava/lang/String;)V
 
-    .line 688
+    .line 683
     invoke-virtual {p1}, Lcom/android/internal/util/IndentingPrintWriter;->increaseIndent()Lcom/android/internal/util/IndentingPrintWriter;
 
-    .line 689
+    .line 684
     iget-object v0, p0, Lcom/android/server/connectivity/PermissionMonitor;->mVpnUidRanges:Ljava/util/Map;
 
     invoke-interface {v0}, Ljava/util/Map;->entrySet()Ljava/util/Set;
@@ -913,7 +973,8 @@
 
     check-cast v1, Ljava/util/Map$Entry;
 
-    .line 690
+    .line 685
+    .local v1, "vpn":Ljava/util/Map$Entry;, "Ljava/util/Map$Entry<Ljava/lang/String;Ljava/util/Set<Landroid/net/UidRange;>;>;"
     new-instance v2, Ljava/lang/StringBuilder;
 
     invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
@@ -936,7 +997,7 @@
 
     invoke-virtual {p1, v2}, Lcom/android/internal/util/IndentingPrintWriter;->println(Ljava/lang/String;)V
 
-    .line 691
+    .line 686
     new-instance v2, Ljava/lang/StringBuilder;
 
     invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
@@ -947,33 +1008,34 @@
 
     invoke-interface {v1}, Ljava/util/Map$Entry;->getValue()Ljava/lang/Object;
 
-    move-result-object v1
+    move-result-object v3
 
-    check-cast v1, Ljava/util/Set;
+    check-cast v3, Ljava/util/Set;
 
-    invoke-virtual {v1}, Ljava/lang/Object;->toString()Ljava/lang/String;
+    invoke-virtual {v3}, Ljava/lang/Object;->toString()Ljava/lang/String;
 
-    move-result-object v1
+    move-result-object v3
 
-    invoke-virtual {v2, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v1
+    move-result-object v2
 
-    invoke-virtual {p1, v1}, Lcom/android/internal/util/IndentingPrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {p1, v2}, Lcom/android/internal/util/IndentingPrintWriter;->println(Ljava/lang/String;)V
 
-    .line 692
+    .line 687
     invoke-virtual {p1}, Lcom/android/internal/util/IndentingPrintWriter;->println()V
 
-    .line 693
+    .line 688
+    .end local v1  # "vpn":Ljava/util/Map$Entry;, "Ljava/util/Map$Entry<Ljava/lang/String;Ljava/util/Set<Landroid/net/UidRange;>;>;"
     goto :goto_12
 
-    .line 694
+    .line 689
     :cond_5a
     invoke-virtual {p1}, Lcom/android/internal/util/IndentingPrintWriter;->decreaseIndent()Lcom/android/internal/util/IndentingPrintWriter;
 
-    .line 695
+    .line 690
     return-void
 .end method
 
@@ -982,7 +1044,7 @@
     .annotation build Lcom/android/internal/annotations/VisibleForTesting;
     .end annotation
 
-    .line 228
+    .line 223
     sget v0, Landroid/os/Build$VERSION;->FIRST_SDK_INT:I
 
     return v0
@@ -990,6 +1052,7 @@
 
 .method public getVpnUidRanges(Ljava/lang/String;)Ljava/util/Set;
     .registers 3
+    .param p1, "iface"  # Ljava/lang/String;
     .annotation build Lcom/android/internal/annotations/VisibleForTesting;
     .end annotation
 
@@ -1004,39 +1067,42 @@
         }
     .end annotation
 
-    .line 682
+    .line 677
     iget-object v0, p0, Lcom/android/server/connectivity/PermissionMonitor;->mVpnUidRanges:Ljava/util/Map;
 
     invoke-interface {v0, p1}, Ljava/util/Map;->get(Ljava/lang/Object;)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v0
 
-    check-cast p1, Ljava/util/Set;
+    check-cast v0, Ljava/util/Set;
 
-    return-object p1
+    return-object v0
 .end method
 
 .method hasNetworkPermission(Landroid/content/pm/PackageInfo;)Z
     .registers 3
+    .param p1, "app"  # Landroid/content/pm/PackageInfo;
     .annotation build Lcom/android/internal/annotations/VisibleForTesting;
     .end annotation
 
-    .line 243
+    .line 238
     const-string v0, "android.permission.CHANGE_NETWORK_STATE"
 
     invoke-virtual {p0, p1, v0}, Lcom/android/server/connectivity/PermissionMonitor;->hasPermission(Landroid/content/pm/PackageInfo;Ljava/lang/String;)Z
 
-    move-result p1
+    move-result v0
 
-    return p1
+    return v0
 .end method
 
 .method hasPermission(Landroid/content/pm/PackageInfo;Ljava/lang/String;)Z
-    .registers 5
+    .registers 6
+    .param p1, "app"  # Landroid/content/pm/PackageInfo;
+    .param p2, "permission"  # Ljava/lang/String;
     .annotation build Lcom/android/internal/annotations/VisibleForTesting;
     .end annotation
 
-    .line 233
+    .line 228
     iget-object v0, p1, Landroid/content/pm/PackageInfo;->requestedPermissions:[Ljava/lang/String;
 
     const/4 v1, 0x0
@@ -1049,46 +1115,48 @@
 
     goto :goto_23
 
-    .line 236
+    .line 231
     :cond_a
     iget-object v0, p1, Landroid/content/pm/PackageInfo;->requestedPermissions:[Ljava/lang/String;
 
     invoke-static {v0, p2}, Lcom/android/internal/util/ArrayUtils;->indexOf([Ljava/lang/Object;Ljava/lang/Object;)I
 
-    move-result p2
+    move-result v0
 
-    .line 237
-    if-ltz p2, :cond_22
+    .line 232
+    .local v0, "index":I
+    if-ltz v0, :cond_22
 
-    iget-object v0, p1, Landroid/content/pm/PackageInfo;->requestedPermissionsFlags:[I
+    iget-object v2, p1, Landroid/content/pm/PackageInfo;->requestedPermissionsFlags:[I
 
-    array-length v0, v0
+    array-length v2, v2
 
-    if-lt p2, v0, :cond_18
+    if-lt v0, v2, :cond_18
 
     goto :goto_22
 
-    .line 238
+    .line 233
     :cond_18
-    iget-object p1, p1, Landroid/content/pm/PackageInfo;->requestedPermissionsFlags:[I
+    iget-object v2, p1, Landroid/content/pm/PackageInfo;->requestedPermissionsFlags:[I
 
-    aget p1, p1, p2
+    aget v2, v2, v0
 
-    and-int/lit8 p1, p1, 0x2
+    and-int/lit8 v2, v2, 0x2
 
-    if-eqz p1, :cond_21
+    if-eqz v2, :cond_21
 
     const/4 v1, 0x1
 
     :cond_21
     return v1
 
-    .line 237
+    .line 232
     :cond_22
     :goto_22
     return v1
 
-    .line 234
+    .line 229
+    .end local v0  # "index":I
     :cond_23
     :goto_23
     return v1
@@ -1096,17 +1164,18 @@
 
 .method hasRestrictedNetworkPermission(Landroid/content/pm/PackageInfo;)Z
     .registers 6
+    .param p1, "app"  # Landroid/content/pm/PackageInfo;
     .annotation build Lcom/android/internal/annotations/VisibleForTesting;
     .end annotation
 
-    .line 250
+    .line 245
     iget-object v0, p1, Landroid/content/pm/PackageInfo;->applicationInfo:Landroid/content/pm/ApplicationInfo;
 
     const/4 v1, 0x1
 
     if-eqz v0, :cond_25
 
-    .line 253
+    .line 248
     iget-object v0, p1, Landroid/content/pm/PackageInfo;->applicationInfo:Landroid/content/pm/ApplicationInfo;
 
     iget v0, v0, Landroid/content/pm/ApplicationInfo;->uid:I
@@ -1123,10 +1192,10 @@
 
     if-ge v0, v3, :cond_16
 
-    .line 254
+    .line 249
     return v1
 
-    .line 257
+    .line 252
     :cond_16
     iget-object v0, p1, Landroid/content/pm/PackageInfo;->applicationInfo:Landroid/content/pm/ApplicationInfo;
 
@@ -1136,17 +1205,17 @@
 
     iget-object v0, p1, Landroid/content/pm/PackageInfo;->applicationInfo:Landroid/content/pm/ApplicationInfo;
 
-    .line 258
+    .line 253
     invoke-static {v0}, Lcom/android/server/connectivity/PermissionMonitor;->isVendorApp(Landroid/content/pm/ApplicationInfo;)Z
 
     move-result v0
 
     if-eqz v0, :cond_25
 
-    .line 259
+    .line 254
     return v1
 
-    .line 262
+    .line 257
     :cond_25
     const-string v0, "android.permission.CONNECTIVITY_INTERNAL"
 
@@ -1156,7 +1225,7 @@
 
     if-nez v0, :cond_40
 
-    .line 263
+    .line 258
     const-string v0, "android.permission.NETWORK_STACK"
 
     invoke-virtual {p0, p1, v0}, Lcom/android/server/connectivity/PermissionMonitor;->hasPermission(Landroid/content/pm/PackageInfo;Ljava/lang/String;)Z
@@ -1165,14 +1234,14 @@
 
     if-nez v0, :cond_40
 
-    .line 264
+    .line 259
     const-string v0, "android.permission.CONNECTIVITY_USE_RESTRICTED_NETWORKS"
 
     invoke-virtual {p0, p1, v0}, Lcom/android/server/connectivity/PermissionMonitor;->hasPermission(Landroid/content/pm/PackageInfo;Ljava/lang/String;)Z
 
-    move-result p1
+    move-result v0
 
-    if-eqz p1, :cond_3e
+    if-eqz v0, :cond_3e
 
     goto :goto_40
 
@@ -1185,34 +1254,37 @@
     :goto_40
     nop
 
-    .line 262
+    .line 257
     :goto_41
     return v1
 .end method
 
 .method public declared-synchronized hasUseBackgroundNetworksPermission(I)Z
-    .registers 3
+    .registers 4
+    .param p1, "uid"  # I
 
     monitor-enter p0
 
-    .line 274
+    .line 269
     :try_start_1
     iget-object v0, p0, Lcom/android/server/connectivity/PermissionMonitor;->mApps:Ljava/util/Map;
 
     invoke-static {p1}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
 
-    move-result-object p1
+    move-result-object v1
 
-    invoke-interface {v0, p1}, Ljava/util/Map;->containsKey(Ljava/lang/Object;)Z
+    invoke-interface {v0, v1}, Ljava/util/Map;->containsKey(Ljava/lang/Object;)Z
 
-    move-result p1
+    move-result v0
     :try_end_b
     .catchall {:try_start_1 .. :try_end_b} :catchall_d
 
     monitor-exit p0
 
-    return p1
+    return v0
 
+    .end local p0  # "this":Lcom/android/server/connectivity/PermissionMonitor;
+    .end local p1  # "uid":I
     :catchall_d
     move-exception p1
 
@@ -1222,19 +1294,21 @@
 .end method
 
 .method protected highestPermissionForUid(Ljava/lang/Boolean;Ljava/lang/String;)Ljava/lang/Boolean;
-    .registers 5
+    .registers 7
+    .param p1, "currentPermission"  # Ljava/lang/Boolean;
+    .param p2, "name"  # Ljava/lang/String;
     .annotation build Lcom/android/internal/annotations/VisibleForTesting;
     .end annotation
 
-    .line 348
+    .line 343
     sget-object v0, Lcom/android/server/connectivity/PermissionMonitor;->SYSTEM:Ljava/lang/Boolean;
 
     if-ne p1, v0, :cond_5
 
-    .line 349
+    .line 344
     return-object p1
 
-    .line 352
+    .line 347
     :cond_5
     :try_start_5
     iget-object v0, p0, Lcom/android/server/connectivity/PermissionMonitor;->mPackageManager:Landroid/content/pm/PackageManager;
@@ -1245,92 +1319,105 @@
 
     move-result-object v0
 
-    .line 353
+    .line 348
+    .local v0, "app":Landroid/content/pm/PackageInfo;
     invoke-virtual {p0, v0}, Lcom/android/server/connectivity/PermissionMonitor;->hasNetworkPermission(Landroid/content/pm/PackageInfo;)Z
 
     move-result v1
 
-    .line 354
+    .line 349
+    .local v1, "isNetwork":Z
     invoke-virtual {p0, v0}, Lcom/android/server/connectivity/PermissionMonitor;->hasRestrictedNetworkPermission(Landroid/content/pm/PackageInfo;)Z
 
-    move-result v0
+    move-result v2
 
-    .line 355
+    .line 350
+    .local v2, "hasRestrictedPermission":Z
     if-nez v1, :cond_19
 
-    if-eqz v0, :cond_1d
+    if-eqz v2, :cond_1e
+
+    .line 351
+    :cond_19
+    invoke-static {v2}, Ljava/lang/Boolean;->valueOf(Z)Ljava/lang/Boolean;
+
+    move-result-object v3
+    :try_end_1d
+    .catch Landroid/content/pm/PackageManager$NameNotFoundException; {:try_start_5 .. :try_end_1d} :catch_1f
+
+    move-object p1, v3
 
     .line 356
-    :cond_19
-    invoke-static {v0}, Ljava/lang/Boolean;->valueOf(Z)Ljava/lang/Boolean;
+    .end local v0  # "app":Landroid/content/pm/PackageInfo;
+    .end local v1  # "isNetwork":Z
+    .end local v2  # "hasRestrictedPermission":Z
+    :cond_1e
+    goto :goto_34
 
-    move-result-object p1
-    :try_end_1d
-    .catch Landroid/content/pm/PackageManager$NameNotFoundException; {:try_start_5 .. :try_end_1d} :catch_1e
-
-    .line 361
-    :cond_1d
-    goto :goto_33
-
-    .line 358
-    :catch_1e
+    .line 353
+    :catch_1f
     move-exception v0
 
-    .line 360
-    new-instance v0, Ljava/lang/StringBuilder;
+    .line 355
+    .local v0, "e":Landroid/content/pm/PackageManager$NameNotFoundException;
+    new-instance v1, Ljava/lang/StringBuilder;
 
-    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v1, "NameNotFoundException "
+    const-string v2, "NameNotFoundException "
 
-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p2
+    move-result-object v1
 
-    invoke-static {p2}, Lcom/android/server/connectivity/PermissionMonitor;->loge(Ljava/lang/String;)V
+    invoke-static {v1}, Lcom/android/server/connectivity/PermissionMonitor;->loge(Ljava/lang/String;)V
 
-    .line 362
-    :goto_33
+    .line 357
+    .end local v0  # "e":Landroid/content/pm/PackageManager$NameNotFoundException;
+    :goto_34
     return-object p1
 .end method
 
 .method public synthetic lambda$removeBypassingUids$0$PermissionMonitor(Ljava/lang/Integer;)Z
     .registers 4
+    .param p1, "uid"  # Ljava/lang/Integer;
 
-    .line 558
+    .line 553
     iget-object v0, p0, Lcom/android/server/connectivity/PermissionMonitor;->mApps:Ljava/util/Map;
 
     sget-object v1, Lcom/android/server/connectivity/PermissionMonitor;->NETWORK:Ljava/lang/Boolean;
 
     invoke-interface {v0, p1, v1}, Ljava/util/Map;->getOrDefault(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v0
 
-    sget-object v0, Lcom/android/server/connectivity/PermissionMonitor;->SYSTEM:Ljava/lang/Boolean;
+    sget-object v1, Lcom/android/server/connectivity/PermissionMonitor;->SYSTEM:Ljava/lang/Boolean;
 
-    if-ne p1, v0, :cond_e
+    if-ne v0, v1, :cond_e
 
-    const/4 p1, 0x1
+    const/4 v0, 0x1
 
     goto :goto_f
 
     :cond_e
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
     :goto_f
-    return p1
+    return v0
 .end method
 
 .method public declared-synchronized onPackageAdded(Ljava/lang/String;I)V
-    .registers 7
+    .registers 9
+    .param p1, "packageName"  # Ljava/lang/String;
+    .param p2, "uid"  # I
 
     monitor-enter p0
 
-    .line 376
+    .line 371
     :try_start_1
     iget-object v0, p0, Lcom/android/server/connectivity/PermissionMonitor;->mApps:Ljava/util/Map;
 
@@ -1346,139 +1433,150 @@
 
     invoke-virtual {p0, v0, p1}, Lcom/android/server/connectivity/PermissionMonitor;->highestPermissionForUid(Ljava/lang/Boolean;Ljava/lang/String;)Ljava/lang/Boolean;
 
-    move-result-object p1
+    move-result-object v0
 
-    .line 377
-    iget-object v0, p0, Lcom/android/server/connectivity/PermissionMonitor;->mApps:Ljava/util/Map;
+    .line 372
+    .local v0, "permission":Ljava/lang/Boolean;
+    iget-object v1, p0, Lcom/android/server/connectivity/PermissionMonitor;->mApps:Ljava/util/Map;
 
     invoke-static {p2}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
+
+    move-result-object v2
+
+    invoke-interface {v1, v2}, Ljava/util/Map;->get(Ljava/lang/Object;)Ljava/lang/Object;
 
     move-result-object v1
 
-    invoke-interface {v0, v1}, Ljava/util/Map;->get(Ljava/lang/Object;)Ljava/lang/Object;
+    const/4 v2, 0x1
 
-    move-result-object v0
+    if-eq v0, v1, :cond_38
 
-    const/4 v1, 0x1
+    .line 373
+    iget-object v1, p0, Lcom/android/server/connectivity/PermissionMonitor;->mApps:Ljava/util/Map;
 
-    if-eq p1, v0, :cond_38
-
-    .line 378
-    iget-object v0, p0, Lcom/android/server/connectivity/PermissionMonitor;->mApps:Ljava/util/Map;
-
-    invoke-static {p2}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
-
-    move-result-object v2
-
-    invoke-interface {v0, v2, p1}, Ljava/util/Map;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
-
-    .line 380
-    new-instance v0, Ljava/util/HashMap;
-
-    invoke-direct {v0}, Ljava/util/HashMap;-><init>()V
-
-    .line 381
-    invoke-static {p2}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
-
-    move-result-object v2
-
-    invoke-interface {v0, v2, p1}, Ljava/util/Map;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
-
-    .line 382
-    iget-object p1, p0, Lcom/android/server/connectivity/PermissionMonitor;->mUsers:Ljava/util/Set;
-
-    invoke-direct {p0, p1, v0, v1}, Lcom/android/server/connectivity/PermissionMonitor;->update(Ljava/util/Set;Ljava/util/Map;Z)V
-
-    .line 388
-    :cond_38
-    iget-object p1, p0, Lcom/android/server/connectivity/PermissionMonitor;->mVpnUidRanges:Ljava/util/Map;
-
-    invoke-interface {p1}, Ljava/util/Map;->entrySet()Ljava/util/Set;
-
-    move-result-object p1
-
-    invoke-interface {p1}, Ljava/util/Set;->iterator()Ljava/util/Iterator;
-
-    move-result-object p1
-
-    :goto_42
-    invoke-interface {p1}, Ljava/util/Iterator;->hasNext()Z
-
-    move-result v0
-
-    if-eqz v0, :cond_74
-
-    invoke-interface {p1}, Ljava/util/Iterator;->next()Ljava/lang/Object;
-
-    move-result-object v0
-
-    check-cast v0, Ljava/util/Map$Entry;
-
-    .line 389
-    invoke-interface {v0}, Ljava/util/Map$Entry;->getValue()Ljava/lang/Object;
-
-    move-result-object v2
-
-    check-cast v2, Ljava/util/Collection;
-
-    invoke-static {v2, p2}, Landroid/net/UidRange;->containsUid(Ljava/util/Collection;I)Z
-
-    move-result v2
-
-    if-eqz v2, :cond_73
-
-    .line 390
-    new-instance v2, Ljava/util/HashSet;
-
-    invoke-direct {v2}, Ljava/util/HashSet;-><init>()V
-
-    .line 391
     invoke-static {p2}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
 
     move-result-object v3
 
-    invoke-interface {v2, v3}, Ljava/util/Set;->add(Ljava/lang/Object;)Z
+    invoke-interface {v1, v3, v0}, Ljava/util/Map;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
 
-    .line 392
-    const/4 v3, -0x1
+    .line 375
+    new-instance v1, Ljava/util/HashMap;
 
-    invoke-direct {p0, v2, v3}, Lcom/android/server/connectivity/PermissionMonitor;->removeBypassingUids(Ljava/util/Set;I)V
+    invoke-direct {v1}, Ljava/util/HashMap;-><init>()V
 
-    .line 393
-    invoke-interface {v0}, Ljava/util/Map$Entry;->getKey()Ljava/lang/Object;
+    .line 376
+    .local v1, "apps":Ljava/util/Map;, "Ljava/util/Map<Ljava/lang/Integer;Ljava/lang/Boolean;>;"
+    invoke-static {p2}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
 
-    move-result-object v0
+    move-result-object v3
 
-    check-cast v0, Ljava/lang/String;
+    invoke-interface {v1, v3, v0}, Ljava/util/Map;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
 
-    invoke-direct {p0, v0, v2, v1}, Lcom/android/server/connectivity/PermissionMonitor;->updateVpnUids(Ljava/lang/String;Ljava/util/Set;Z)V
+    .line 377
+    iget-object v3, p0, Lcom/android/server/connectivity/PermissionMonitor;->mUsers:Ljava/util/Set;
 
-    .line 395
+    invoke-direct {p0, v3, v1, v2}, Lcom/android/server/connectivity/PermissionMonitor;->update(Ljava/util/Set;Ljava/util/Map;Z)V
+
+    .line 383
+    .end local v1  # "apps":Ljava/util/Map;, "Ljava/util/Map<Ljava/lang/Integer;Ljava/lang/Boolean;>;"
+    .end local p0  # "this":Lcom/android/server/connectivity/PermissionMonitor;
+    :cond_38
+    iget-object v1, p0, Lcom/android/server/connectivity/PermissionMonitor;->mVpnUidRanges:Ljava/util/Map;
+
+    invoke-interface {v1}, Ljava/util/Map;->entrySet()Ljava/util/Set;
+
+    move-result-object v1
+
+    invoke-interface {v1}, Ljava/util/Set;->iterator()Ljava/util/Iterator;
+
+    move-result-object v1
+
+    :goto_42
+    invoke-interface {v1}, Ljava/util/Iterator;->hasNext()Z
+
+    move-result v3
+
+    if-eqz v3, :cond_74
+
+    invoke-interface {v1}, Ljava/util/Iterator;->next()Ljava/lang/Object;
+
+    move-result-object v3
+
+    check-cast v3, Ljava/util/Map$Entry;
+
+    .line 384
+    .local v3, "vpn":Ljava/util/Map$Entry;, "Ljava/util/Map$Entry<Ljava/lang/String;Ljava/util/Set<Landroid/net/UidRange;>;>;"
+    invoke-interface {v3}, Ljava/util/Map$Entry;->getValue()Ljava/lang/Object;
+
+    move-result-object v4
+
+    check-cast v4, Ljava/util/Collection;
+
+    invoke-static {v4, p2}, Landroid/net/UidRange;->containsUid(Ljava/util/Collection;I)Z
+
+    move-result v4
+
+    if-eqz v4, :cond_73
+
+    .line 385
+    new-instance v4, Ljava/util/HashSet;
+
+    invoke-direct {v4}, Ljava/util/HashSet;-><init>()V
+
+    .line 386
+    .local v4, "changedUids":Ljava/util/Set;, "Ljava/util/Set<Ljava/lang/Integer;>;"
+    invoke-static {p2}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
+
+    move-result-object v5
+
+    invoke-interface {v4, v5}, Ljava/util/Set;->add(Ljava/lang/Object;)Z
+
+    .line 387
+    const/4 v5, -0x1
+
+    invoke-direct {p0, v4, v5}, Lcom/android/server/connectivity/PermissionMonitor;->removeBypassingUids(Ljava/util/Set;I)V
+
+    .line 388
+    invoke-interface {v3}, Ljava/util/Map$Entry;->getKey()Ljava/lang/Object;
+
+    move-result-object v5
+
+    check-cast v5, Ljava/lang/String;
+
+    invoke-direct {p0, v5, v4, v2}, Lcom/android/server/connectivity/PermissionMonitor;->updateVpnUids(Ljava/lang/String;Ljava/util/Set;Z)V
+
+    .line 390
+    .end local v3  # "vpn":Ljava/util/Map$Entry;, "Ljava/util/Map$Entry<Ljava/lang/String;Ljava/util/Set<Landroid/net/UidRange;>;>;"
+    .end local v4  # "changedUids":Ljava/util/Set;, "Ljava/util/Set<Ljava/lang/Integer;>;"
     :cond_73
     goto :goto_42
 
-    .line 396
+    .line 391
     :cond_74
-    iget-object p1, p0, Lcom/android/server/connectivity/PermissionMonitor;->mAllApps:Ljava/util/Set;
+    iget-object v1, p0, Lcom/android/server/connectivity/PermissionMonitor;->mAllApps:Ljava/util/Set;
 
     invoke-static {p2}, Landroid/os/UserHandle;->getAppId(I)I
 
-    move-result p2
+    move-result v2
 
-    invoke-static {p2}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
+    invoke-static {v2}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
 
-    move-result-object p2
+    move-result-object v2
 
-    invoke-interface {p1, p2}, Ljava/util/Set;->add(Ljava/lang/Object;)Z
+    invoke-interface {v1, v2}, Ljava/util/Set;->add(Ljava/lang/Object;)Z
     :try_end_81
     .catchall {:try_start_1 .. :try_end_81} :catchall_83
 
-    .line 397
+    .line 392
     monitor-exit p0
 
     return-void
 
-    .line 375
+    .line 370
+    .end local v0  # "permission":Ljava/lang/Boolean;
+    .end local p1  # "packageName":Ljava/lang/String;
+    .end local p2  # "uid":I
     :catchall_83
     move-exception p1
 
@@ -1488,11 +1586,12 @@
 .end method
 
 .method public declared-synchronized onPackageRemoved(I)V
-    .registers 9
+    .registers 10
+    .param p1, "uid"  # I
 
     monitor-enter p0
 
-    .line 410
+    .line 405
     :try_start_1
     iget-object v0, p0, Lcom/android/server/connectivity/PermissionMonitor;->mVpnUidRanges:Ljava/util/Map;
 
@@ -1519,7 +1618,8 @@
 
     check-cast v1, Ljava/util/Map$Entry;
 
-    .line 411
+    .line 406
+    .local v1, "vpn":Ljava/util/Map$Entry;, "Ljava/util/Map$Entry<Ljava/lang/String;Ljava/util/Set<Landroid/net/UidRange;>;>;"
     invoke-interface {v1}, Ljava/util/Map$Entry;->getValue()Ljava/lang/Object;
 
     move-result-object v3
@@ -1532,37 +1632,41 @@
 
     if-eqz v3, :cond_3d
 
-    .line 412
+    .line 407
     new-instance v3, Ljava/util/HashSet;
 
     invoke-direct {v3}, Ljava/util/HashSet;-><init>()V
 
-    .line 413
+    .line 408
+    .local v3, "changedUids":Ljava/util/Set;, "Ljava/util/Set<Ljava/lang/Integer;>;"
     invoke-static {p1}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
 
     move-result-object v4
 
     invoke-interface {v3, v4}, Ljava/util/Set;->add(Ljava/lang/Object;)Z
 
-    .line 414
+    .line 409
     const/4 v4, -0x1
 
     invoke-direct {p0, v3, v4}, Lcom/android/server/connectivity/PermissionMonitor;->removeBypassingUids(Ljava/util/Set;I)V
 
-    .line 415
+    .line 410
     invoke-interface {v1}, Ljava/util/Map$Entry;->getKey()Ljava/lang/Object;
 
-    move-result-object v1
+    move-result-object v4
 
-    check-cast v1, Ljava/lang/String;
+    check-cast v4, Ljava/lang/String;
 
-    invoke-direct {p0, v1, v3, v2}, Lcom/android/server/connectivity/PermissionMonitor;->updateVpnUids(Ljava/lang/String;Ljava/util/Set;Z)V
+    invoke-direct {p0, v4, v3, v2}, Lcom/android/server/connectivity/PermissionMonitor;->updateVpnUids(Ljava/lang/String;Ljava/util/Set;Z)V
 
-    .line 417
+    .line 412
+    .end local v1  # "vpn":Ljava/util/Map$Entry;, "Ljava/util/Map$Entry<Ljava/lang/String;Ljava/util/Set<Landroid/net/UidRange;>;>;"
+    .end local v3  # "changedUids":Ljava/util/Set;, "Ljava/util/Set<Ljava/lang/Integer;>;"
+    .end local p0  # "this":Lcom/android/server/connectivity/PermissionMonitor;
     :cond_3d
     goto :goto_b
 
-    .line 419
+    .line 414
     :cond_3e
     iget-object v0, p0, Lcom/android/server/connectivity/PermissionMonitor;->mPackageManager:Landroid/content/pm/PackageManager;
 
@@ -1572,7 +1676,7 @@
 
     if-nez v0, :cond_53
 
-    .line 420
+    .line 415
     iget-object v0, p0, Lcom/android/server/connectivity/PermissionMonitor;->mAllApps:Ljava/util/Set;
 
     invoke-static {p1}, Landroid/os/UserHandle;->getAppId(I)I
@@ -1585,153 +1689,172 @@
 
     invoke-interface {v0, v1}, Ljava/util/Set;->remove(Ljava/lang/Object;)Z
 
-    .line 423
+    .line 418
     :cond_53
     new-instance v0, Ljava/util/HashMap;
 
     invoke-direct {v0}, Ljava/util/HashMap;-><init>()V
 
-    .line 424
+    .line 419
+    .local v0, "apps":Ljava/util/Map;, "Ljava/util/Map<Ljava/lang/Integer;Ljava/lang/Boolean;>;"
     const/4 v1, 0x0
 
-    .line 425
+    .line 420
+    .local v1, "permission":Ljava/lang/Boolean;
     iget-object v3, p0, Lcom/android/server/connectivity/PermissionMonitor;->mPackageManager:Landroid/content/pm/PackageManager;
 
     invoke-virtual {v3, p1}, Landroid/content/pm/PackageManager;->getPackagesForUid(I)[Ljava/lang/String;
 
     move-result-object v3
 
-    .line 426
-    if-eqz v3, :cond_79
+    .line 421
+    .local v3, "packages":[Ljava/lang/String;
+    if-eqz v3, :cond_7a
 
     array-length v4, v3
 
-    if-lez v4, :cond_79
+    if-lez v4, :cond_7a
 
-    .line 427
+    .line 422
     array-length v4, v3
 
     move-object v5, v1
 
     move v1, v2
 
+    .end local v1  # "permission":Ljava/lang/Boolean;
+    .local v5, "permission":Ljava/lang/Boolean;
     :goto_67
-    if-ge v1, v4, :cond_78
+    if-ge v1, v4, :cond_79
 
     aget-object v6, v3, v1
 
-    .line 428
+    .line 423
+    .local v6, "name":Ljava/lang/String;
     invoke-virtual {p0, v5, v6}, Lcom/android/server/connectivity/PermissionMonitor;->highestPermissionForUid(Ljava/lang/Boolean;Ljava/lang/String;)Ljava/lang/Boolean;
 
-    move-result-object v5
+    move-result-object v7
 
-    .line 429
-    sget-object v6, Lcom/android/server/connectivity/PermissionMonitor;->SYSTEM:Ljava/lang/Boolean;
-    :try_end_71
-    .catchall {:try_start_1 .. :try_end_71} :catchall_b9
+    move-object v5, v7
 
-    if-ne v5, v6, :cond_75
+    .line 424
+    sget-object v7, Lcom/android/server/connectivity/PermissionMonitor;->SYSTEM:Ljava/lang/Boolean;
+    :try_end_72
+    .catchall {:try_start_1 .. :try_end_72} :catchall_ba
 
-    .line 433
+    if-ne v5, v7, :cond_76
+
+    .line 428
     monitor-exit p0
 
     return-void
 
-    .line 427
-    :cond_75
+    .line 422
+    .end local v6  # "name":Ljava/lang/String;
+    .restart local p0  # "this":Lcom/android/server/connectivity/PermissionMonitor;
+    :cond_76
     add-int/lit8 v1, v1, 0x1
 
     goto :goto_67
 
-    :cond_78
+    .end local p0  # "this":Lcom/android/server/connectivity/PermissionMonitor;
+    :cond_79
     move-object v1, v5
 
-    .line 437
-    :cond_79
-    :try_start_79
-    iget-object v3, p0, Lcom/android/server/connectivity/PermissionMonitor;->mApps:Ljava/util/Map;
+    .line 432
+    .end local v5  # "permission":Ljava/lang/Boolean;
+    .restart local v1  # "permission":Ljava/lang/Boolean;
+    :cond_7a
+    :try_start_7a
+    iget-object v4, p0, Lcom/android/server/connectivity/PermissionMonitor;->mApps:Ljava/util/Map;
+
+    invoke-static {p1}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
+
+    move-result-object v5
+
+    invoke-interface {v4, v5}, Ljava/util/Map;->get(Ljava/lang/Object;)Ljava/lang/Object;
+
+    move-result-object v4
+    :try_end_84
+    .catchall {:try_start_7a .. :try_end_84} :catchall_ba
+
+    if-ne v1, v4, :cond_88
+
+    .line 434
+    monitor-exit p0
+
+    return-void
+
+    .line 435
+    .restart local p0  # "this":Lcom/android/server/connectivity/PermissionMonitor;
+    :cond_88
+    if-eqz v1, :cond_a1
+
+    .line 436
+    :try_start_8a
+    iget-object v2, p0, Lcom/android/server/connectivity/PermissionMonitor;->mApps:Ljava/util/Map;
 
     invoke-static {p1}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
 
     move-result-object v4
 
-    invoke-interface {v3, v4}, Ljava/util/Map;->get(Ljava/lang/Object;)Ljava/lang/Object;
+    invoke-interface {v2, v4, v1}, Ljava/util/Map;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
 
-    move-result-object v3
-    :try_end_83
-    .catchall {:try_start_79 .. :try_end_83} :catchall_b9
+    .line 437
+    invoke-static {p1}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
 
-    if-ne v1, v3, :cond_87
+    move-result-object v2
 
-    .line 439
-    monitor-exit p0
+    invoke-interface {v0, v2, v1}, Ljava/util/Map;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
 
-    return-void
+    .line 438
+    iget-object v2, p0, Lcom/android/server/connectivity/PermissionMonitor;->mUsers:Ljava/util/Set;
+
+    const/4 v4, 0x1
+
+    invoke-direct {p0, v2, v0, v4}, Lcom/android/server/connectivity/PermissionMonitor;->update(Ljava/util/Set;Ljava/util/Map;Z)V
+
+    goto :goto_b8
 
     .line 440
-    :cond_87
-    if-eqz v1, :cond_a0
+    .end local p0  # "this":Lcom/android/server/connectivity/PermissionMonitor;
+    :cond_a1
+    iget-object v4, p0, Lcom/android/server/connectivity/PermissionMonitor;->mApps:Ljava/util/Map;
+
+    invoke-static {p1}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
+
+    move-result-object v5
+
+    invoke-interface {v4, v5}, Ljava/util/Map;->remove(Ljava/lang/Object;)Ljava/lang/Object;
 
     .line 441
-    :try_start_89
-    iget-object v2, p0, Lcom/android/server/connectivity/PermissionMonitor;->mApps:Ljava/util/Map;
-
     invoke-static {p1}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
 
-    move-result-object v3
+    move-result-object v4
 
-    invoke-interface {v2, v3, v1}, Ljava/util/Map;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+    sget-object v5, Lcom/android/server/connectivity/PermissionMonitor;->NETWORK:Ljava/lang/Boolean;
+
+    invoke-interface {v0, v4, v5}, Ljava/util/Map;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
 
     .line 442
-    invoke-static {p1}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
+    iget-object v4, p0, Lcom/android/server/connectivity/PermissionMonitor;->mUsers:Ljava/util/Set;
 
-    move-result-object p1
+    invoke-direct {p0, v4, v0, v2}, Lcom/android/server/connectivity/PermissionMonitor;->update(Ljava/util/Set;Ljava/util/Map;Z)V
+    :try_end_b8
+    .catchall {:try_start_8a .. :try_end_b8} :catchall_ba
 
-    invoke-interface {v0, p1, v1}, Ljava/util/Map;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
-
-    .line 443
-    iget-object p1, p0, Lcom/android/server/connectivity/PermissionMonitor;->mUsers:Ljava/util/Set;
-
-    const/4 v1, 0x1
-
-    invoke-direct {p0, p1, v0, v1}, Lcom/android/server/connectivity/PermissionMonitor;->update(Ljava/util/Set;Ljava/util/Map;Z)V
-
-    goto :goto_b7
-
-    .line 445
-    :cond_a0
-    iget-object v1, p0, Lcom/android/server/connectivity/PermissionMonitor;->mApps:Ljava/util/Map;
-
-    invoke-static {p1}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
-
-    move-result-object v3
-
-    invoke-interface {v1, v3}, Ljava/util/Map;->remove(Ljava/lang/Object;)Ljava/lang/Object;
-
-    .line 446
-    invoke-static {p1}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
-
-    move-result-object p1
-
-    sget-object v1, Lcom/android/server/connectivity/PermissionMonitor;->NETWORK:Ljava/lang/Boolean;
-
-    invoke-interface {v0, p1, v1}, Ljava/util/Map;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
-
-    .line 447
-    iget-object p1, p0, Lcom/android/server/connectivity/PermissionMonitor;->mUsers:Ljava/util/Set;
-
-    invoke-direct {p0, p1, v0, v2}, Lcom/android/server/connectivity/PermissionMonitor;->update(Ljava/util/Set;Ljava/util/Map;Z)V
-    :try_end_b7
-    .catchall {:try_start_89 .. :try_end_b7} :catchall_b9
-
-    .line 449
-    :goto_b7
+    .line 444
+    :goto_b8
     monitor-exit p0
 
     return-void
 
-    .line 409
-    :catchall_b9
+    .line 404
+    .end local v0  # "apps":Ljava/util/Map;, "Ljava/util/Map<Ljava/lang/Integer;Ljava/lang/Boolean;>;"
+    .end local v1  # "permission":Ljava/lang/Boolean;
+    .end local v3  # "packages":[Ljava/lang/String;
+    .end local p1  # "uid":I
+    :catchall_ba
     move-exception p1
 
     monitor-exit p0
@@ -1740,14 +1863,15 @@
 .end method
 
 .method public declared-synchronized onUserAdded(I)V
-    .registers 4
+    .registers 5
+    .param p1, "user"  # I
 
     monitor-enter p0
 
-    .line 316
+    .line 311
     if-gez p1, :cond_19
 
-    .line 317
+    .line 312
     :try_start_3
     new-instance v0, Ljava/lang/StringBuilder;
 
@@ -1761,18 +1885,19 @@
 
     invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    invoke-static {p1}, Lcom/android/server/connectivity/PermissionMonitor;->loge(Ljava/lang/String;)V
+    invoke-static {v0}, Lcom/android/server/connectivity/PermissionMonitor;->loge(Ljava/lang/String;)V
     :try_end_17
     .catchall {:try_start_3 .. :try_end_17} :catchall_36
 
-    .line 318
+    .line 313
     monitor-exit p0
 
     return-void
 
-    .line 320
+    .line 315
+    .end local p0  # "this":Lcom/android/server/connectivity/PermissionMonitor;
     :cond_19
     :try_start_19
     iget-object v0, p0, Lcom/android/server/connectivity/PermissionMonitor;->mUsers:Ljava/util/Set;
@@ -1783,33 +1908,36 @@
 
     invoke-interface {v0, v1}, Ljava/util/Set;->add(Ljava/lang/Object;)Z
 
-    .line 322
+    .line 317
     new-instance v0, Ljava/util/HashSet;
 
     invoke-direct {v0}, Ljava/util/HashSet;-><init>()V
 
-    .line 323
+    .line 318
+    .local v0, "users":Ljava/util/Set;, "Ljava/util/Set<Ljava/lang/Integer;>;"
     invoke-static {p1}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
 
-    move-result-object p1
+    move-result-object v1
 
-    invoke-interface {v0, p1}, Ljava/util/Set;->add(Ljava/lang/Object;)Z
+    invoke-interface {v0, v1}, Ljava/util/Set;->add(Ljava/lang/Object;)Z
 
-    .line 324
-    iget-object p1, p0, Lcom/android/server/connectivity/PermissionMonitor;->mApps:Ljava/util/Map;
+    .line 319
+    iget-object v1, p0, Lcom/android/server/connectivity/PermissionMonitor;->mApps:Ljava/util/Map;
 
-    const/4 v1, 0x1
+    const/4 v2, 0x1
 
-    invoke-direct {p0, v0, p1, v1}, Lcom/android/server/connectivity/PermissionMonitor;->update(Ljava/util/Set;Ljava/util/Map;Z)V
+    invoke-direct {p0, v0, v1, v2}, Lcom/android/server/connectivity/PermissionMonitor;->update(Ljava/util/Set;Ljava/util/Map;Z)V
     :try_end_34
     .catchall {:try_start_19 .. :try_end_34} :catchall_36
 
-    .line 325
+    .line 320
     monitor-exit p0
 
     return-void
 
-    .line 315
+    .line 310
+    .end local v0  # "users":Ljava/util/Set;, "Ljava/util/Set<Ljava/lang/Integer;>;"
+    .end local p1  # "user":I
     :catchall_36
     move-exception p1
 
@@ -1819,14 +1947,15 @@
 .end method
 
 .method public declared-synchronized onUserRemoved(I)V
-    .registers 4
+    .registers 5
+    .param p1, "user"  # I
 
     monitor-enter p0
 
-    .line 335
+    .line 330
     if-gez p1, :cond_19
 
-    .line 336
+    .line 331
     :try_start_3
     new-instance v0, Ljava/lang/StringBuilder;
 
@@ -1840,18 +1969,19 @@
 
     invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    invoke-static {p1}, Lcom/android/server/connectivity/PermissionMonitor;->loge(Ljava/lang/String;)V
+    invoke-static {v0}, Lcom/android/server/connectivity/PermissionMonitor;->loge(Ljava/lang/String;)V
     :try_end_17
     .catchall {:try_start_3 .. :try_end_17} :catchall_36
 
-    .line 337
+    .line 332
     monitor-exit p0
 
     return-void
 
-    .line 339
+    .line 334
+    .end local p0  # "this":Lcom/android/server/connectivity/PermissionMonitor;
     :cond_19
     :try_start_19
     iget-object v0, p0, Lcom/android/server/connectivity/PermissionMonitor;->mUsers:Ljava/util/Set;
@@ -1862,33 +1992,36 @@
 
     invoke-interface {v0, v1}, Ljava/util/Set;->remove(Ljava/lang/Object;)Z
 
-    .line 341
+    .line 336
     new-instance v0, Ljava/util/HashSet;
 
     invoke-direct {v0}, Ljava/util/HashSet;-><init>()V
 
-    .line 342
+    .line 337
+    .local v0, "users":Ljava/util/Set;, "Ljava/util/Set<Ljava/lang/Integer;>;"
     invoke-static {p1}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
 
-    move-result-object p1
+    move-result-object v1
 
-    invoke-interface {v0, p1}, Ljava/util/Set;->add(Ljava/lang/Object;)Z
+    invoke-interface {v0, v1}, Ljava/util/Set;->add(Ljava/lang/Object;)Z
 
-    .line 343
-    iget-object p1, p0, Lcom/android/server/connectivity/PermissionMonitor;->mApps:Ljava/util/Map;
+    .line 338
+    iget-object v1, p0, Lcom/android/server/connectivity/PermissionMonitor;->mApps:Ljava/util/Map;
 
-    const/4 v1, 0x0
+    const/4 v2, 0x0
 
-    invoke-direct {p0, v0, p1, v1}, Lcom/android/server/connectivity/PermissionMonitor;->update(Ljava/util/Set;Ljava/util/Map;Z)V
+    invoke-direct {p0, v0, v1, v2}, Lcom/android/server/connectivity/PermissionMonitor;->update(Ljava/util/Set;Ljava/util/Map;Z)V
     :try_end_34
     .catchall {:try_start_19 .. :try_end_34} :catchall_36
 
-    .line 344
+    .line 339
     monitor-exit p0
 
     return-void
 
-    .line 334
+    .line 329
+    .end local v0  # "users":Ljava/util/Set;, "Ljava/util/Set<Ljava/lang/Integer;>;"
+    .end local p1  # "user":I
     :catchall_36
     move-exception p1
 
@@ -1898,7 +2031,9 @@
 .end method
 
 .method public declared-synchronized onVpnUidRangesAdded(Ljava/lang/String;Ljava/util/Set;I)V
-    .registers 5
+    .registers 7
+    .param p1, "iface"  # Ljava/lang/String;
+    .param p3, "vpnAppUid"  # I
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(",
@@ -1909,9 +2044,10 @@
         }
     .end annotation
 
+    .local p2, "rangesToAdd":Ljava/util/Set;, "Ljava/util/Set<Landroid/net/UidRange;>;"
     monitor-enter p0
 
-    .line 491
+    .line 486
     :try_start_1
     iget-object v0, p0, Lcom/android/server/connectivity/PermissionMonitor;->mAllApps:Ljava/util/Set;
 
@@ -1919,55 +2055,61 @@
 
     move-result-object v0
 
-    .line 492
+    .line 487
+    .local v0, "changedUids":Ljava/util/Set;, "Ljava/util/Set<Ljava/lang/Integer;>;"
     invoke-direct {p0, v0, p3}, Lcom/android/server/connectivity/PermissionMonitor;->removeBypassingUids(Ljava/util/Set;I)V
 
-    .line 493
-    const/4 p3, 0x1
+    .line 488
+    const/4 v1, 0x1
 
-    invoke-direct {p0, p1, v0, p3}, Lcom/android/server/connectivity/PermissionMonitor;->updateVpnUids(Ljava/lang/String;Ljava/util/Set;Z)V
+    invoke-direct {p0, p1, v0, v1}, Lcom/android/server/connectivity/PermissionMonitor;->updateVpnUids(Ljava/lang/String;Ljava/util/Set;Z)V
 
-    .line 494
-    iget-object p3, p0, Lcom/android/server/connectivity/PermissionMonitor;->mVpnUidRanges:Ljava/util/Map;
+    .line 489
+    iget-object v1, p0, Lcom/android/server/connectivity/PermissionMonitor;->mVpnUidRanges:Ljava/util/Map;
 
-    invoke-interface {p3, p1}, Ljava/util/Map;->containsKey(Ljava/lang/Object;)Z
+    invoke-interface {v1, p1}, Ljava/util/Map;->containsKey(Ljava/lang/Object;)Z
 
-    move-result p3
+    move-result v1
 
-    if-eqz p3, :cond_22
+    if-eqz v1, :cond_22
 
-    .line 495
-    iget-object p3, p0, Lcom/android/server/connectivity/PermissionMonitor;->mVpnUidRanges:Ljava/util/Map;
+    .line 490
+    iget-object v1, p0, Lcom/android/server/connectivity/PermissionMonitor;->mVpnUidRanges:Ljava/util/Map;
 
-    invoke-interface {p3, p1}, Ljava/util/Map;->get(Ljava/lang/Object;)Ljava/lang/Object;
+    invoke-interface {v1, p1}, Ljava/util/Map;->get(Ljava/lang/Object;)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v1
 
-    check-cast p1, Ljava/util/Set;
+    check-cast v1, Ljava/util/Set;
 
-    invoke-interface {p1, p2}, Ljava/util/Set;->addAll(Ljava/util/Collection;)Z
+    invoke-interface {v1, p2}, Ljava/util/Set;->addAll(Ljava/util/Collection;)Z
 
     goto :goto_2c
 
-    .line 497
+    .line 492
+    .end local p0  # "this":Lcom/android/server/connectivity/PermissionMonitor;
     :cond_22
-    iget-object p3, p0, Lcom/android/server/connectivity/PermissionMonitor;->mVpnUidRanges:Ljava/util/Map;
+    iget-object v1, p0, Lcom/android/server/connectivity/PermissionMonitor;->mVpnUidRanges:Ljava/util/Map;
 
-    new-instance v0, Ljava/util/HashSet;
+    new-instance v2, Ljava/util/HashSet;
 
-    invoke-direct {v0, p2}, Ljava/util/HashSet;-><init>(Ljava/util/Collection;)V
+    invoke-direct {v2, p2}, Ljava/util/HashSet;-><init>(Ljava/util/Collection;)V
 
-    invoke-interface {p3, p1, v0}, Ljava/util/Map;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+    invoke-interface {v1, p1, v2}, Ljava/util/Map;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
     :try_end_2c
     .catchall {:try_start_1 .. :try_end_2c} :catchall_2e
 
-    .line 499
+    .line 494
     :goto_2c
     monitor-exit p0
 
     return-void
 
-    .line 490
+    .line 485
+    .end local v0  # "changedUids":Ljava/util/Set;, "Ljava/util/Set<Ljava/lang/Integer;>;"
+    .end local p1  # "iface":Ljava/lang/String;
+    .end local p2  # "rangesToAdd":Ljava/util/Set;, "Ljava/util/Set<Landroid/net/UidRange;>;"
+    .end local p3  # "vpnAppUid":I
     :catchall_2e
     move-exception p1
 
@@ -1977,7 +2119,9 @@
 .end method
 
 .method public declared-synchronized onVpnUidRangesRemoved(Ljava/lang/String;Ljava/util/Set;I)V
-    .registers 5
+    .registers 8
+    .param p1, "iface"  # Ljava/lang/String;
+    .param p3, "vpnAppUid"  # I
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(",
@@ -1988,9 +2132,10 @@
         }
     .end annotation
 
+    .local p2, "rangesToRemove":Ljava/util/Set;, "Ljava/util/Set<Landroid/net/UidRange;>;"
     monitor-enter p0
 
-    .line 512
+    .line 507
     :try_start_1
     iget-object v0, p0, Lcom/android/server/connectivity/PermissionMonitor;->mAllApps:Ljava/util/Set;
 
@@ -1998,78 +2143,86 @@
 
     move-result-object v0
 
-    .line 513
+    .line 508
+    .local v0, "changedUids":Ljava/util/Set;, "Ljava/util/Set<Ljava/lang/Integer;>;"
     invoke-direct {p0, v0, p3}, Lcom/android/server/connectivity/PermissionMonitor;->removeBypassingUids(Ljava/util/Set;I)V
 
-    .line 514
-    const/4 p3, 0x0
+    .line 509
+    const/4 v1, 0x0
 
-    invoke-direct {p0, p1, v0, p3}, Lcom/android/server/connectivity/PermissionMonitor;->updateVpnUids(Ljava/lang/String;Ljava/util/Set;Z)V
+    invoke-direct {p0, p1, v0, v1}, Lcom/android/server/connectivity/PermissionMonitor;->updateVpnUids(Ljava/lang/String;Ljava/util/Set;Z)V
 
-    .line 515
-    iget-object p3, p0, Lcom/android/server/connectivity/PermissionMonitor;->mVpnUidRanges:Ljava/util/Map;
+    .line 510
+    iget-object v1, p0, Lcom/android/server/connectivity/PermissionMonitor;->mVpnUidRanges:Ljava/util/Map;
 
-    const/4 v0, 0x0
+    const/4 v2, 0x0
 
-    invoke-interface {p3, p1, v0}, Ljava/util/Map;->getOrDefault(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+    invoke-interface {v1, p1, v2}, Ljava/util/Map;->getOrDefault(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
 
-    move-result-object p3
+    move-result-object v1
 
-    check-cast p3, Ljava/util/Set;
+    check-cast v1, Ljava/util/Set;
 
-    .line 516
-    if-nez p3, :cond_2f
+    .line 511
+    .local v1, "existingRanges":Ljava/util/Set;, "Ljava/util/Set<Landroid/net/UidRange;>;"
+    if-nez v1, :cond_2f
 
-    .line 517
-    new-instance p2, Ljava/lang/StringBuilder;
+    .line 512
+    new-instance v2, Ljava/lang/StringBuilder;
 
-    invoke-direct {p2}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string p3, "Attempt to remove unknown vpn uid Range iface = "
+    const-string v3, "Attempt to remove unknown vpn uid Range iface = "
 
-    invoke-virtual {p2, p3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p2, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v2
 
-    invoke-static {p1}, Lcom/android/server/connectivity/PermissionMonitor;->loge(Ljava/lang/String;)V
+    invoke-static {v2}, Lcom/android/server/connectivity/PermissionMonitor;->loge(Ljava/lang/String;)V
     :try_end_2d
     .catchall {:try_start_1 .. :try_end_2d} :catchall_3f
 
-    .line 518
+    .line 513
     monitor-exit p0
 
     return-void
 
-    .line 520
+    .line 515
+    .end local p0  # "this":Lcom/android/server/connectivity/PermissionMonitor;
     :cond_2f
     :try_start_2f
-    invoke-interface {p3, p2}, Ljava/util/Set;->removeAll(Ljava/util/Collection;)Z
+    invoke-interface {v1, p2}, Ljava/util/Set;->removeAll(Ljava/util/Collection;)Z
 
-    .line 521
-    invoke-interface {p3}, Ljava/util/Set;->size()I
+    .line 516
+    invoke-interface {v1}, Ljava/util/Set;->size()I
 
-    move-result p2
+    move-result v2
 
-    if-nez p2, :cond_3d
+    if-nez v2, :cond_3d
 
-    .line 522
-    iget-object p2, p0, Lcom/android/server/connectivity/PermissionMonitor;->mVpnUidRanges:Ljava/util/Map;
+    .line 517
+    iget-object v2, p0, Lcom/android/server/connectivity/PermissionMonitor;->mVpnUidRanges:Ljava/util/Map;
 
-    invoke-interface {p2, p1}, Ljava/util/Map;->remove(Ljava/lang/Object;)Ljava/lang/Object;
+    invoke-interface {v2, p1}, Ljava/util/Map;->remove(Ljava/lang/Object;)Ljava/lang/Object;
     :try_end_3d
     .catchall {:try_start_2f .. :try_end_3d} :catchall_3f
 
-    .line 524
+    .line 519
     :cond_3d
     monitor-exit p0
 
     return-void
 
-    .line 511
+    .line 506
+    .end local v0  # "changedUids":Ljava/util/Set;, "Ljava/util/Set<Ljava/lang/Integer;>;"
+    .end local v1  # "existingRanges":Ljava/util/Set;, "Ljava/util/Set<Landroid/net/UidRange;>;"
+    .end local p1  # "iface":Ljava/lang/String;
+    .end local p2  # "rangesToRemove":Ljava/util/Set;, "Ljava/util/Set<Landroid/net/UidRange;>;"
+    .end local p3  # "vpnAppUid":I
     :catchall_3f
     move-exception p1
 
@@ -2080,111 +2233,120 @@
 
 .method sendPackagePermissionsForUid(II)V
     .registers 4
+    .param p1, "uid"  # I
+    .param p2, "permissions"  # I
     .annotation build Lcom/android/internal/annotations/VisibleForTesting;
     .end annotation
 
-    .line 604
+    .line 599
     new-instance v0, Landroid/util/SparseIntArray;
 
     invoke-direct {v0}, Landroid/util/SparseIntArray;-><init>()V
 
-    .line 605
+    .line 600
+    .local v0, "netdPermissionsAppIds":Landroid/util/SparseIntArray;
     invoke-virtual {v0, p1, p2}, Landroid/util/SparseIntArray;->put(II)V
 
-    .line 606
+    .line 601
     invoke-virtual {p0, v0}, Lcom/android/server/connectivity/PermissionMonitor;->sendPackagePermissionsToNetd(Landroid/util/SparseIntArray;)V
 
-    .line 607
+    .line 602
     return-void
 .end method
 
 .method sendPackagePermissionsToNetd(Landroid/util/SparseIntArray;)V
-    .registers 15
+    .registers 14
+    .param p1, "netdPermissionsAppIds"  # Landroid/util/SparseIntArray;
     .annotation build Lcom/android/internal/annotations/VisibleForTesting;
     .end annotation
 
-    .line 620
+    .line 615
     iget-object v0, p0, Lcom/android/server/connectivity/PermissionMonitor;->mNetd:Landroid/net/INetd;
 
     const-string v1, "PermissionMonitor"
 
     if-nez v0, :cond_c
 
-    .line 621
-    const-string p1, "Failed to get the netd service"
+    .line 616
+    const-string v0, "Failed to get the netd service"
 
-    invoke-static {v1, p1}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v0}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 622
+    .line 617
     return-void
 
-    .line 624
+    .line 619
     :cond_c
     new-instance v0, Ljava/util/ArrayList;
 
     invoke-direct {v0}, Ljava/util/ArrayList;-><init>()V
 
-    .line 625
+    .line 620
+    .local v0, "allPermissionAppIds":Ljava/util/ArrayList;, "Ljava/util/ArrayList<Ljava/lang/Integer;>;"
     new-instance v2, Ljava/util/ArrayList;
 
     invoke-direct {v2}, Ljava/util/ArrayList;-><init>()V
 
-    .line 626
+    .line 621
+    .local v2, "internetPermissionAppIds":Ljava/util/ArrayList;, "Ljava/util/ArrayList<Ljava/lang/Integer;>;"
     new-instance v3, Ljava/util/ArrayList;
 
     invoke-direct {v3}, Ljava/util/ArrayList;-><init>()V
 
-    .line 627
+    .line 622
+    .local v3, "updateStatsPermissionAppIds":Ljava/util/ArrayList;, "Ljava/util/ArrayList<Ljava/lang/Integer;>;"
     new-instance v4, Ljava/util/ArrayList;
 
     invoke-direct {v4}, Ljava/util/ArrayList;-><init>()V
 
-    .line 628
+    .line 623
+    .local v4, "noPermissionAppIds":Ljava/util/ArrayList;, "Ljava/util/ArrayList<Ljava/lang/Integer;>;"
     new-instance v5, Ljava/util/ArrayList;
 
     invoke-direct {v5}, Ljava/util/ArrayList;-><init>()V
 
-    .line 629
+    .line 624
+    .local v5, "uninstalledAppIds":Ljava/util/ArrayList;, "Ljava/util/ArrayList<Ljava/lang/Integer;>;"
     const/4 v6, 0x0
 
-    move v7, v6
-
-    :goto_27
+    .local v6, "i":I
+    :goto_26
     invoke-virtual {p1}, Landroid/util/SparseIntArray;->size()I
 
-    move-result v8
+    move-result v7
 
-    const/16 v9, 0xc
+    const/16 v8, 0xc
 
-    const/16 v10, 0x8
+    const/16 v9, 0x8
 
-    const/4 v11, 0x4
+    const/4 v10, 0x4
 
-    const/4 v12, -0x1
+    const/4 v11, -0x1
 
-    if-ge v7, v8, :cond_a1
+    if-ge v6, v7, :cond_a0
 
-    .line 630
-    invoke-virtual {p1, v7}, Landroid/util/SparseIntArray;->valueAt(I)I
+    .line 625
+    invoke-virtual {p1, v6}, Landroid/util/SparseIntArray;->valueAt(I)I
 
-    move-result v8
+    move-result v7
 
-    .line 631
-    if-eq v8, v12, :cond_72
+    .line 626
+    .local v7, "permissions":I
+    if-eq v7, v11, :cond_71
 
-    if-eqz v8, :cond_66
+    if-eqz v7, :cond_65
 
-    if-eq v8, v11, :cond_5a
+    if-eq v7, v10, :cond_59
 
-    if-eq v8, v10, :cond_4e
+    if-eq v7, v9, :cond_4d
 
-    if-eq v8, v9, :cond_42
+    if-eq v7, v8, :cond_41
 
-    goto :goto_7d
+    goto :goto_7c
 
-    .line 633
-    :cond_42
-    invoke-virtual {p1, v7}, Landroid/util/SparseIntArray;->keyAt(I)I
+    .line 628
+    :cond_41
+    invoke-virtual {p1, v6}, Landroid/util/SparseIntArray;->keyAt(I)I
 
     move-result v8
 
@@ -2194,12 +2356,12 @@
 
     invoke-virtual {v0, v8}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
 
-    .line 634
-    goto :goto_9e
+    .line 629
+    goto :goto_9d
 
-    .line 639
-    :cond_4e
-    invoke-virtual {p1, v7}, Landroid/util/SparseIntArray;->keyAt(I)I
+    .line 634
+    :cond_4d
+    invoke-virtual {p1, v6}, Landroid/util/SparseIntArray;->keyAt(I)I
 
     move-result v8
 
@@ -2209,12 +2371,12 @@
 
     invoke-virtual {v3, v8}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
 
-    .line 640
-    goto :goto_9e
+    .line 635
+    goto :goto_9d
 
-    .line 636
-    :cond_5a
-    invoke-virtual {p1, v7}, Landroid/util/SparseIntArray;->keyAt(I)I
+    .line 631
+    :cond_59
+    invoke-virtual {p1, v6}, Landroid/util/SparseIntArray;->keyAt(I)I
 
     move-result v8
 
@@ -2224,12 +2386,12 @@
 
     invoke-virtual {v2, v8}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
 
-    .line 637
-    goto :goto_9e
+    .line 632
+    goto :goto_9d
 
-    .line 642
-    :cond_66
-    invoke-virtual {p1, v7}, Landroid/util/SparseIntArray;->keyAt(I)I
+    .line 637
+    :cond_65
+    invoke-virtual {p1, v6}, Landroid/util/SparseIntArray;->keyAt(I)I
 
     move-result v8
 
@@ -2239,197 +2401,203 @@
 
     invoke-virtual {v4, v8}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
 
-    .line 643
-    goto :goto_9e
+    .line 638
+    goto :goto_9d
 
-    .line 645
-    :cond_72
-    invoke-virtual {p1, v7}, Landroid/util/SparseIntArray;->keyAt(I)I
-
-    move-result v9
-
-    invoke-static {v9}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
-
-    move-result-object v9
-
-    invoke-virtual {v5, v9}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
-
-    .line 647
-    :goto_7d
-    new-instance v9, Ljava/lang/StringBuilder;
-
-    invoke-direct {v9}, Ljava/lang/StringBuilder;-><init>()V
-
-    const-string/jumbo v10, "unknown permission type: "
-
-    invoke-virtual {v9, v10}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v9, v8}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
-
-    const-string v8, "for uid: "
-
-    invoke-virtual {v9, v8}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    .line 648
-    invoke-virtual {p1, v7}, Landroid/util/SparseIntArray;->keyAt(I)I
+    .line 640
+    :cond_71
+    invoke-virtual {p1, v6}, Landroid/util/SparseIntArray;->keyAt(I)I
 
     move-result v8
 
-    invoke-virtual {v9, v8}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v9}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-static {v8}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
 
     move-result-object v8
 
-    .line 647
+    invoke-virtual {v5, v8}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
+
+    .line 642
+    :goto_7c
+    new-instance v8, Ljava/lang/StringBuilder;
+
+    invoke-direct {v8}, Ljava/lang/StringBuilder;-><init>()V
+
+    const-string/jumbo v9, "unknown permission type: "
+
+    invoke-virtual {v8, v9}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v8, v7}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+
+    const-string v9, "for uid: "
+
+    invoke-virtual {v8, v9}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    .line 643
+    invoke-virtual {p1, v6}, Landroid/util/SparseIntArray;->keyAt(I)I
+
+    move-result v9
+
+    invoke-virtual {v8, v9}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v8}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v8
+
+    .line 642
     invoke-static {v1, v8}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 629
-    :goto_9e
-    add-int/lit8 v7, v7, 0x1
+    .line 624
+    .end local v7  # "permissions":I
+    :goto_9d
+    add-int/lit8 v6, v6, 0x1
 
-    goto :goto_27
+    goto :goto_26
 
-    .line 653
-    :cond_a1
-    :try_start_a1
+    .line 648
+    .end local v6  # "i":I
+    :cond_a0
+    :try_start_a0
     invoke-virtual {v0}, Ljava/util/ArrayList;->size()I
 
-    move-result p1
+    move-result v6
 
-    if-eqz p1, :cond_b0
+    if-eqz v6, :cond_af
 
-    .line 654
-    iget-object p1, p0, Lcom/android/server/connectivity/PermissionMonitor;->mNetd:Landroid/net/INetd;
+    .line 649
+    iget-object v6, p0, Lcom/android/server/connectivity/PermissionMonitor;->mNetd:Landroid/net/INetd;
 
-    .line 656
+    .line 651
     invoke-static {v0}, Lcom/android/internal/util/ArrayUtils;->convertToIntArray(Ljava/util/List;)[I
 
-    move-result-object v0
+    move-result-object v7
 
-    .line 654
-    invoke-interface {p1, v9, v0}, Landroid/net/INetd;->trafficSetNetPermForUids(I[I)V
+    .line 649
+    invoke-interface {v6, v8, v7}, Landroid/net/INetd;->trafficSetNetPermForUids(I[I)V
 
-    .line 658
-    :cond_b0
+    .line 653
+    :cond_af
     invoke-virtual {v2}, Ljava/util/ArrayList;->size()I
 
-    move-result p1
+    move-result v6
 
-    if-eqz p1, :cond_bf
+    if-eqz v6, :cond_be
 
-    .line 659
-    iget-object p1, p0, Lcom/android/server/connectivity/PermissionMonitor;->mNetd:Landroid/net/INetd;
+    .line 654
+    iget-object v6, p0, Lcom/android/server/connectivity/PermissionMonitor;->mNetd:Landroid/net/INetd;
 
-    .line 660
+    .line 655
     invoke-static {v2}, Lcom/android/internal/util/ArrayUtils;->convertToIntArray(Ljava/util/List;)[I
 
-    move-result-object v0
+    move-result-object v7
 
-    .line 659
-    invoke-interface {p1, v11, v0}, Landroid/net/INetd;->trafficSetNetPermForUids(I[I)V
+    .line 654
+    invoke-interface {v6, v10, v7}, Landroid/net/INetd;->trafficSetNetPermForUids(I[I)V
 
-    .line 662
-    :cond_bf
+    .line 657
+    :cond_be
     invoke-virtual {v3}, Ljava/util/ArrayList;->size()I
 
-    move-result p1
+    move-result v6
 
-    if-eqz p1, :cond_ce
+    if-eqz v6, :cond_cd
 
-    .line 663
-    iget-object p1, p0, Lcom/android/server/connectivity/PermissionMonitor;->mNetd:Landroid/net/INetd;
+    .line 658
+    iget-object v6, p0, Lcom/android/server/connectivity/PermissionMonitor;->mNetd:Landroid/net/INetd;
 
-    .line 664
+    .line 659
     invoke-static {v3}, Lcom/android/internal/util/ArrayUtils;->convertToIntArray(Ljava/util/List;)[I
 
-    move-result-object v0
+    move-result-object v7
 
-    .line 663
-    invoke-interface {p1, v10, v0}, Landroid/net/INetd;->trafficSetNetPermForUids(I[I)V
+    .line 658
+    invoke-interface {v6, v9, v7}, Landroid/net/INetd;->trafficSetNetPermForUids(I[I)V
 
-    .line 666
-    :cond_ce
+    .line 661
+    :cond_cd
     invoke-virtual {v4}, Ljava/util/ArrayList;->size()I
 
-    move-result p1
+    move-result v6
 
-    if-eqz p1, :cond_dd
+    if-eqz v6, :cond_dd
 
-    .line 667
-    iget-object p1, p0, Lcom/android/server/connectivity/PermissionMonitor;->mNetd:Landroid/net/INetd;
+    .line 662
+    iget-object v6, p0, Lcom/android/server/connectivity/PermissionMonitor;->mNetd:Landroid/net/INetd;
 
-    .line 668
+    const/4 v7, 0x0
+
+    .line 663
     invoke-static {v4}, Lcom/android/internal/util/ArrayUtils;->convertToIntArray(Ljava/util/List;)[I
 
-    move-result-object v0
+    move-result-object v8
 
-    .line 667
-    invoke-interface {p1, v6, v0}, Landroid/net/INetd;->trafficSetNetPermForUids(I[I)V
+    .line 662
+    invoke-interface {v6, v7, v8}, Landroid/net/INetd;->trafficSetNetPermForUids(I[I)V
 
-    .line 670
+    .line 665
     :cond_dd
     invoke-virtual {v5}, Ljava/util/ArrayList;->size()I
 
-    move-result p1
+    move-result v6
 
-    if-eqz p1, :cond_ec
+    if-eqz v6, :cond_ec
 
-    .line 671
-    iget-object p1, p0, Lcom/android/server/connectivity/PermissionMonitor;->mNetd:Landroid/net/INetd;
+    .line 666
+    iget-object v6, p0, Lcom/android/server/connectivity/PermissionMonitor;->mNetd:Landroid/net/INetd;
 
-    .line 672
+    .line 667
     invoke-static {v5}, Lcom/android/internal/util/ArrayUtils;->convertToIntArray(Ljava/util/List;)[I
 
-    move-result-object v0
+    move-result-object v7
+
+    .line 666
+    invoke-interface {v6, v11, v7}, Landroid/net/INetd;->trafficSetNetPermForUids(I[I)V
+    :try_end_ec
+    .catch Landroid/os/RemoteException; {:try_start_a0 .. :try_end_ec} :catch_ed
 
     .line 671
-    invoke-interface {p1, v12, v0}, Landroid/net/INetd;->trafficSetNetPermForUids(I[I)V
-    :try_end_ec
-    .catch Landroid/os/RemoteException; {:try_start_a1 .. :try_end_ec} :catch_ed
-
-    .line 676
     :cond_ec
     goto :goto_102
 
-    .line 674
+    .line 669
     :catch_ed
-    move-exception p1
+    move-exception v6
 
-    .line 675
-    new-instance v0, Ljava/lang/StringBuilder;
+    .line 670
+    .local v6, "e":Landroid/os/RemoteException;
+    new-instance v7, Ljava/lang/StringBuilder;
 
-    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v7}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v2, "Pass appId list of special permission failed."
+    const-string v8, "Pass appId list of special permission failed."
 
-    invoke-virtual {v0, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v7, v8}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    invoke-virtual {v7, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v7}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v7
 
-    invoke-static {v1, p1}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v7}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 677
+    .line 672
+    .end local v6  # "e":Landroid/os/RemoteException;
     :goto_102
     return-void
 .end method
 
 .method public declared-synchronized startMonitoring()V
-    .registers 10
+    .registers 13
 
     monitor-enter p0
 
-    .line 152
+    .line 147
     :try_start_1
     const-string v0, "Monitoring"
 
     invoke-static {v0}, Lcom/android/server/connectivity/PermissionMonitor;->log(Ljava/lang/String;)V
 
-    .line 154
+    .line 149
     const-class v0, Landroid/content/pm/PackageManagerInternal;
 
     invoke-static {v0}, Lcom/android/server/LocalServices;->getService(Ljava/lang/Class;)Ljava/lang/Object;
@@ -2438,10 +2606,11 @@
 
     check-cast v0, Landroid/content/pm/PackageManagerInternal;
 
-    .line 155
+    .line 150
+    .local v0, "pmi":Landroid/content/pm/PackageManagerInternal;
     if-eqz v0, :cond_1a
 
-    .line 156
+    .line 151
     new-instance v1, Lcom/android/server/connectivity/PermissionMonitor$PackageListObserver;
 
     const/4 v2, 0x0
@@ -2452,370 +2621,398 @@
 
     goto :goto_1f
 
-    .line 158
+    .line 153
+    .end local p0  # "this":Lcom/android/server/connectivity/PermissionMonitor;
     :cond_1a
-    const-string v0, "failed to get the PackageManagerInternal service"
+    const-string v1, "failed to get the PackageManagerInternal service"
 
-    invoke-static {v0}, Lcom/android/server/connectivity/PermissionMonitor;->loge(Ljava/lang/String;)V
+    invoke-static {v1}, Lcom/android/server/connectivity/PermissionMonitor;->loge(Ljava/lang/String;)V
 
-    .line 160
+    .line 155
     :goto_1f
-    iget-object v0, p0, Lcom/android/server/connectivity/PermissionMonitor;->mPackageManager:Landroid/content/pm/PackageManager;
+    iget-object v1, p0, Lcom/android/server/connectivity/PermissionMonitor;->mPackageManager:Landroid/content/pm/PackageManager;
 
-    const v1, 0x401000
+    const v2, 0x401000
 
-    invoke-virtual {v0, v1}, Landroid/content/pm/PackageManager;->getInstalledPackages(I)Ljava/util/List;
+    invoke-virtual {v1, v2}, Landroid/content/pm/PackageManager;->getInstalledPackages(I)Ljava/util/List;
 
-    move-result-object v0
+    move-result-object v1
 
-    .line 162
-    if-nez v0, :cond_31
+    .line 157
+    .local v1, "apps":Ljava/util/List;, "Ljava/util/List<Landroid/content/pm/PackageInfo;>;"
+    if-nez v1, :cond_31
 
-    .line 163
-    const-string v0, "No apps"
+    .line 158
+    const-string v2, "No apps"
 
-    invoke-static {v0}, Lcom/android/server/connectivity/PermissionMonitor;->loge(Ljava/lang/String;)V
+    invoke-static {v2}, Lcom/android/server/connectivity/PermissionMonitor;->loge(Ljava/lang/String;)V
     :try_end_2f
-    .catchall {:try_start_1 .. :try_end_2f} :catchall_138
+    .catchall {:try_start_1 .. :try_end_2f} :catchall_137
 
-    .line 164
+    .line 159
     monitor-exit p0
 
     return-void
 
-    .line 167
+    .line 162
     :cond_31
     :try_start_31
-    new-instance v1, Landroid/util/SparseIntArray;
+    new-instance v2, Landroid/util/SparseIntArray;
 
-    invoke-direct {v1}, Landroid/util/SparseIntArray;-><init>()V
+    invoke-direct {v2}, Landroid/util/SparseIntArray;-><init>()V
 
-    .line 169
-    invoke-interface {v0}, Ljava/util/List;->iterator()Ljava/util/Iterator;
+    .line 164
+    .local v2, "netdPermsUids":Landroid/util/SparseIntArray;
+    invoke-interface {v1}, Ljava/util/List;->iterator()Ljava/util/Iterator;
 
-    move-result-object v0
+    move-result-object v3
 
     :goto_3a
-    invoke-interface {v0}, Ljava/util/Iterator;->hasNext()Z
+    invoke-interface {v3}, Ljava/util/Iterator;->hasNext()Z
 
-    move-result v2
+    move-result v4
 
-    if-eqz v2, :cond_9c
+    if-eqz v4, :cond_9c
 
-    invoke-interface {v0}, Ljava/util/Iterator;->next()Ljava/lang/Object;
+    invoke-interface {v3}, Ljava/util/Iterator;->next()Ljava/lang/Object;
 
-    move-result-object v2
+    move-result-object v4
 
-    check-cast v2, Landroid/content/pm/PackageInfo;
+    check-cast v4, Landroid/content/pm/PackageInfo;
 
-    .line 170
-    iget-object v3, v2, Landroid/content/pm/PackageInfo;->applicationInfo:Landroid/content/pm/ApplicationInfo;
+    .line 165
+    .local v4, "app":Landroid/content/pm/PackageInfo;
+    iget-object v5, v4, Landroid/content/pm/PackageInfo;->applicationInfo:Landroid/content/pm/ApplicationInfo;
 
-    if-eqz v3, :cond_4f
+    if-eqz v5, :cond_4f
 
-    iget-object v3, v2, Landroid/content/pm/PackageInfo;->applicationInfo:Landroid/content/pm/ApplicationInfo;
+    iget-object v5, v4, Landroid/content/pm/PackageInfo;->applicationInfo:Landroid/content/pm/ApplicationInfo;
 
-    iget v3, v3, Landroid/content/pm/ApplicationInfo;->uid:I
+    iget v5, v5, Landroid/content/pm/ApplicationInfo;->uid:I
 
     goto :goto_50
 
     :cond_4f
-    const/4 v3, -0x1
+    const/4 v5, -0x1
+
+    .line 166
+    .local v5, "uid":I
+    :goto_50
+    if-gez v5, :cond_53
+
+    .line 167
+    goto :goto_3a
+
+    .line 169
+    :cond_53
+    iget-object v6, p0, Lcom/android/server/connectivity/PermissionMonitor;->mAllApps:Ljava/util/Set;
+
+    invoke-static {v5}, Landroid/os/UserHandle;->getAppId(I)I
+
+    move-result v7
+
+    invoke-static {v7}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
+
+    move-result-object v7
+
+    invoke-interface {v6, v7}, Ljava/util/Set;->add(Ljava/lang/Object;)Z
 
     .line 171
-    :goto_50
-    if-gez v3, :cond_53
-
-    .line 172
-    goto :goto_3a
-
-    .line 174
-    :cond_53
-    iget-object v4, p0, Lcom/android/server/connectivity/PermissionMonitor;->mAllApps:Ljava/util/Set;
-
-    invoke-static {v3}, Landroid/os/UserHandle;->getAppId(I)I
-
-    move-result v5
-
-    invoke-static {v5}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
-
-    move-result-object v5
-
-    invoke-interface {v4, v5}, Ljava/util/Set;->add(Ljava/lang/Object;)Z
-
-    .line 176
-    invoke-virtual {p0, v2}, Lcom/android/server/connectivity/PermissionMonitor;->hasNetworkPermission(Landroid/content/pm/PackageInfo;)Z
-
-    move-result v4
-
-    .line 177
-    invoke-virtual {p0, v2}, Lcom/android/server/connectivity/PermissionMonitor;->hasRestrictedNetworkPermission(Landroid/content/pm/PackageInfo;)Z
-
-    move-result v5
-
-    .line 179
-    if-nez v4, :cond_6c
-
-    if-eqz v5, :cond_8b
-
-    .line 180
-    :cond_6c
-    iget-object v4, p0, Lcom/android/server/connectivity/PermissionMonitor;->mApps:Ljava/util/Map;
-
-    invoke-static {v3}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
-
-    move-result-object v6
-
-    invoke-interface {v4, v6}, Ljava/util/Map;->get(Ljava/lang/Object;)Ljava/lang/Object;
-
-    move-result-object v4
-
-    check-cast v4, Ljava/lang/Boolean;
-
-    .line 183
-    if-eqz v4, :cond_7e
-
-    sget-object v6, Lcom/android/server/connectivity/PermissionMonitor;->NETWORK:Ljava/lang/Boolean;
-
-    if-ne v4, v6, :cond_8b
-
-    .line 184
-    :cond_7e
-    iget-object v4, p0, Lcom/android/server/connectivity/PermissionMonitor;->mApps:Ljava/util/Map;
-
-    invoke-static {v3}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
-
-    move-result-object v6
-
-    invoke-static {v5}, Ljava/lang/Boolean;->valueOf(Z)Ljava/lang/Boolean;
-
-    move-result-object v5
-
-    invoke-interface {v4, v6, v5}, Ljava/util/Map;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
-
-    .line 189
-    :cond_8b
-    iget-object v4, v2, Landroid/content/pm/PackageInfo;->requestedPermissions:[Ljava/lang/String;
-
-    iget-object v2, v2, Landroid/content/pm/PackageInfo;->requestedPermissionsFlags:[I
-
-    invoke-static {v4, v2}, Lcom/android/server/connectivity/PermissionMonitor;->getNetdPermissionMask([Ljava/lang/String;[I)I
-
-    move-result v2
-
-    .line 191
-    invoke-virtual {v1, v3}, Landroid/util/SparseIntArray;->get(I)I
-
-    move-result v4
-
-    or-int/2addr v2, v4
-
-    invoke-virtual {v1, v3, v2}, Landroid/util/SparseIntArray;->put(II)V
-
-    .line 192
-    goto :goto_3a
-
-    .line 194
-    :cond_9c
-    iget-object v0, p0, Lcom/android/server/connectivity/PermissionMonitor;->mUserManager:Landroid/os/UserManager;
-
-    const/4 v2, 0x1
-
-    invoke-virtual {v0, v2}, Landroid/os/UserManager;->getUsers(Z)Ljava/util/List;
-
-    move-result-object v0
-
-    .line 195
-    if-eqz v0, :cond_c1
-
-    .line 196
-    invoke-interface {v0}, Ljava/util/List;->iterator()Ljava/util/Iterator;
-
-    move-result-object v0
-
-    :goto_a9
-    invoke-interface {v0}, Ljava/util/Iterator;->hasNext()Z
-
-    move-result v3
-
-    if-eqz v3, :cond_c1
-
-    invoke-interface {v0}, Ljava/util/Iterator;->next()Ljava/lang/Object;
-
-    move-result-object v3
-
-    check-cast v3, Landroid/content/pm/UserInfo;
-
-    .line 197
-    iget-object v4, p0, Lcom/android/server/connectivity/PermissionMonitor;->mUsers:Ljava/util/Set;
-
-    iget v3, v3, Landroid/content/pm/UserInfo;->id:I
-
-    invoke-static {v3}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
-
-    move-result-object v3
-
-    invoke-interface {v4, v3}, Ljava/util/Set;->add(Ljava/lang/Object;)Z
-
-    .line 198
-    goto :goto_a9
-
-    .line 202
-    :cond_c1
-    invoke-static {}, Lcom/android/server/SystemConfig;->getInstance()Lcom/android/server/SystemConfig;
-
-    move-result-object v0
-
-    invoke-virtual {v0}, Lcom/android/server/SystemConfig;->getSystemPermissions()Landroid/util/SparseArray;
-
-    move-result-object v0
-
-    .line 203
-    const/4 v3, 0x0
-
-    move v4, v3
-
-    :goto_cb
-    invoke-virtual {v0}, Landroid/util/SparseArray;->size()I
-
-    move-result v5
-
-    if-ge v4, v5, :cond_104
-
-    .line 204
-    invoke-virtual {v0, v4}, Landroid/util/SparseArray;->valueAt(I)Ljava/lang/Object;
-
-    move-result-object v5
-
-    check-cast v5, Landroid/util/ArraySet;
-
-    .line 205
-    invoke-virtual {v0, v4}, Landroid/util/SparseArray;->keyAt(I)I
+    invoke-virtual {p0, v4}, Lcom/android/server/connectivity/PermissionMonitor;->hasNetworkPermission(Landroid/content/pm/PackageInfo;)Z
 
     move-result v6
 
-    .line 206
+    .line 172
+    .local v6, "isNetwork":Z
+    invoke-virtual {p0, v4}, Lcom/android/server/connectivity/PermissionMonitor;->hasRestrictedNetworkPermission(Landroid/content/pm/PackageInfo;)Z
+
+    move-result v7
+
+    .line 174
+    .local v7, "hasRestrictedPermission":Z
+    if-nez v6, :cond_6c
+
+    if-eqz v7, :cond_8b
+
+    .line 175
+    :cond_6c
+    iget-object v8, p0, Lcom/android/server/connectivity/PermissionMonitor;->mApps:Ljava/util/Map;
+
+    invoke-static {v5}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
+
+    move-result-object v9
+
+    invoke-interface {v8, v9}, Ljava/util/Map;->get(Ljava/lang/Object;)Ljava/lang/Object;
+
+    move-result-object v8
+
+    check-cast v8, Ljava/lang/Boolean;
+
+    .line 178
+    .local v8, "permission":Ljava/lang/Boolean;
+    if-eqz v8, :cond_7e
+
+    sget-object v9, Lcom/android/server/connectivity/PermissionMonitor;->NETWORK:Ljava/lang/Boolean;
+
+    if-ne v8, v9, :cond_8b
+
+    .line 179
+    :cond_7e
+    iget-object v9, p0, Lcom/android/server/connectivity/PermissionMonitor;->mApps:Ljava/util/Map;
+
+    invoke-static {v5}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
+
+    move-result-object v10
+
+    invoke-static {v7}, Ljava/lang/Boolean;->valueOf(Z)Ljava/lang/Boolean;
+
+    move-result-object v11
+
+    invoke-interface {v9, v10, v11}, Ljava/util/Map;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+
+    .line 184
+    .end local v8  # "permission":Ljava/lang/Boolean;
+    :cond_8b
+    iget-object v8, v4, Landroid/content/pm/PackageInfo;->requestedPermissions:[Ljava/lang/String;
+
+    iget-object v9, v4, Landroid/content/pm/PackageInfo;->requestedPermissionsFlags:[I
+
+    invoke-static {v8, v9}, Lcom/android/server/connectivity/PermissionMonitor;->getNetdPermissionMask([Ljava/lang/String;[I)I
+
+    move-result v8
+
+    .line 186
+    .local v8, "otherNetdPerms":I
+    invoke-virtual {v2, v5}, Landroid/util/SparseIntArray;->get(I)I
+
+    move-result v9
+
+    or-int/2addr v9, v8
+
+    invoke-virtual {v2, v5, v9}, Landroid/util/SparseIntArray;->put(II)V
+
+    .line 187
+    .end local v4  # "app":Landroid/content/pm/PackageInfo;
+    .end local v5  # "uid":I
+    .end local v6  # "isNetwork":Z
+    .end local v7  # "hasRestrictedPermission":Z
+    .end local v8  # "otherNetdPerms":I
+    goto :goto_3a
+
+    .line 189
+    :cond_9c
+    iget-object v3, p0, Lcom/android/server/connectivity/PermissionMonitor;->mUserManager:Landroid/os/UserManager;
+
+    const/4 v4, 0x1
+
+    invoke-virtual {v3, v4}, Landroid/os/UserManager;->getUsers(Z)Ljava/util/List;
+
+    move-result-object v3
+
+    .line 190
+    .local v3, "users":Ljava/util/List;, "Ljava/util/List<Landroid/content/pm/UserInfo;>;"
+    if-eqz v3, :cond_c2
+
+    .line 191
+    invoke-interface {v3}, Ljava/util/List;->iterator()Ljava/util/Iterator;
+
+    move-result-object v5
+
+    :goto_a9
+    invoke-interface {v5}, Ljava/util/Iterator;->hasNext()Z
+
+    move-result v6
+
+    if-eqz v6, :cond_c2
+
+    invoke-interface {v5}, Ljava/util/Iterator;->next()Ljava/lang/Object;
+
+    move-result-object v6
+
+    check-cast v6, Landroid/content/pm/UserInfo;
+
+    .line 192
+    .local v6, "user":Landroid/content/pm/UserInfo;
+    iget-object v7, p0, Lcom/android/server/connectivity/PermissionMonitor;->mUsers:Ljava/util/Set;
+
+    iget v8, v6, Landroid/content/pm/UserInfo;->id:I
+
+    invoke-static {v8}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
+
+    move-result-object v8
+
+    invoke-interface {v7, v8}, Ljava/util/Set;->add(Ljava/lang/Object;)Z
+
+    .line 193
     nop
 
-    .line 208
-    if-eqz v5, :cond_f8
+    .end local v6  # "user":Landroid/content/pm/UserInfo;
+    goto :goto_a9
 
-    .line 209
-    const-string v7, "android.permission.UPDATE_DEVICE_STATS"
+    .line 197
+    :cond_c2
+    invoke-static {}, Lcom/android/server/SystemConfig;->getInstance()Lcom/android/server/SystemConfig;
 
-    invoke-virtual {v5, v7}, Landroid/util/ArraySet;->contains(Ljava/lang/Object;)Z
+    move-result-object v5
 
-    move-result v7
+    invoke-virtual {v5}, Lcom/android/server/SystemConfig;->getSystemPermissions()Landroid/util/SparseArray;
 
-    if-eqz v7, :cond_e9
+    move-result-object v5
 
-    .line 210
-    const/16 v7, 0x8
+    .line 198
+    .local v5, "systemPermission":Landroid/util/SparseArray;, "Landroid/util/SparseArray<Landroid/util/ArraySet<Ljava/lang/String;>;>;"
+    const/4 v6, 0x0
 
-    goto :goto_ea
+    move v7, v6
 
-    :cond_e9
-    move v7, v3
+    .local v7, "i":I
+    :goto_cc
+    invoke-virtual {v5}, Landroid/util/SparseArray;->size()I
 
-    :goto_ea
-    or-int/2addr v7, v3
+    move-result v8
 
-    .line 211
-    const-string v8, "android.permission.INTERNET"
+    if-ge v7, v8, :cond_103
 
-    invoke-virtual {v5, v8}, Landroid/util/ArraySet;->contains(Ljava/lang/Object;)Z
+    .line 199
+    invoke-virtual {v5, v7}, Landroid/util/SparseArray;->valueAt(I)Ljava/lang/Object;
 
-    move-result v5
+    move-result-object v8
 
-    if-eqz v5, :cond_f5
+    check-cast v8, Landroid/util/ArraySet;
 
-    .line 212
-    const/4 v5, 0x4
+    .line 200
+    .local v8, "perms":Landroid/util/ArraySet;, "Landroid/util/ArraySet<Ljava/lang/String;>;"
+    invoke-virtual {v5, v7}, Landroid/util/SparseArray;->keyAt(I)I
 
-    goto :goto_f6
+    move-result v9
 
-    :cond_f5
-    move v5, v3
-
-    :goto_f6
-    or-int/2addr v5, v7
-
-    goto :goto_f9
-
-    .line 208
-    :cond_f8
-    move v5, v3
-
-    .line 214
-    :goto_f9
-    invoke-virtual {v1, v6}, Landroid/util/SparseIntArray;->get(I)I
-
-    move-result v7
-
-    or-int/2addr v5, v7
-
-    invoke-virtual {v1, v6, v5}, Landroid/util/SparseIntArray;->put(II)V
+    .line 201
+    .local v9, "uid":I
+    const/4 v10, 0x0
 
     .line 203
-    add-int/lit8 v4, v4, 0x1
+    .local v10, "netdPermission":I
+    if-eqz v8, :cond_f8
 
-    goto :goto_cb
+    .line 204
+    const-string v11, "android.permission.UPDATE_DEVICE_STATS"
 
-    .line 216
-    :cond_104
-    new-instance v0, Ljava/lang/StringBuilder;
+    invoke-virtual {v8, v11}, Landroid/util/ArraySet;->contains(Ljava/lang/Object;)Z
 
-    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
+    move-result v11
 
-    const-string v3, "Users: "
+    if-eqz v11, :cond_ea
 
-    invoke-virtual {v0, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    .line 205
+    const/16 v11, 0x8
 
-    iget-object v3, p0, Lcom/android/server/connectivity/PermissionMonitor;->mUsers:Ljava/util/Set;
+    goto :goto_eb
 
-    invoke-interface {v3}, Ljava/util/Set;->size()I
+    :cond_ea
+    move v11, v6
 
-    move-result v3
+    :goto_eb
+    or-int/2addr v10, v11
 
-    invoke-virtual {v0, v3}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    .line 206
+    const-string v11, "android.permission.INTERNET"
 
-    const-string v3, ", Apps: "
+    invoke-virtual {v8, v11}, Landroid/util/ArraySet;->contains(Ljava/lang/Object;)Z
 
-    invoke-virtual {v0, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    move-result v11
 
-    iget-object v3, p0, Lcom/android/server/connectivity/PermissionMonitor;->mApps:Ljava/util/Map;
+    if-eqz v11, :cond_f6
 
-    invoke-interface {v3}, Ljava/util/Map;->size()I
+    .line 207
+    const/4 v11, 0x4
 
-    move-result v3
+    goto :goto_f7
 
-    invoke-virtual {v0, v3}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    :cond_f6
+    move v11, v6
 
-    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    :goto_f7
+    or-int/2addr v10, v11
 
-    move-result-object v0
+    .line 209
+    :cond_f8
+    invoke-virtual {v2, v9}, Landroid/util/SparseIntArray;->get(I)I
 
-    invoke-static {v0}, Lcom/android/server/connectivity/PermissionMonitor;->log(Ljava/lang/String;)V
+    move-result v11
 
-    .line 217
-    iget-object v0, p0, Lcom/android/server/connectivity/PermissionMonitor;->mUsers:Ljava/util/Set;
+    or-int/2addr v11, v10
 
-    iget-object v3, p0, Lcom/android/server/connectivity/PermissionMonitor;->mApps:Ljava/util/Map;
+    invoke-virtual {v2, v9, v11}, Landroid/util/SparseIntArray;->put(II)V
 
-    invoke-direct {p0, v0, v3, v2}, Lcom/android/server/connectivity/PermissionMonitor;->update(Ljava/util/Set;Ljava/util/Map;Z)V
+    .line 198
+    .end local v8  # "perms":Landroid/util/ArraySet;, "Landroid/util/ArraySet<Ljava/lang/String;>;"
+    .end local v9  # "uid":I
+    .end local v10  # "netdPermission":I
+    add-int/lit8 v7, v7, 0x1
 
-    .line 218
-    invoke-virtual {p0, v1}, Lcom/android/server/connectivity/PermissionMonitor;->sendPackagePermissionsToNetd(Landroid/util/SparseIntArray;)V
-    :try_end_136
-    .catchall {:try_start_31 .. :try_end_136} :catchall_138
+    goto :goto_cc
 
-    .line 219
+    .line 211
+    .end local v7  # "i":I
+    :cond_103
+    new-instance v6, Ljava/lang/StringBuilder;
+
+    invoke-direct {v6}, Ljava/lang/StringBuilder;-><init>()V
+
+    const-string v7, "Users: "
+
+    invoke-virtual {v6, v7}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    iget-object v7, p0, Lcom/android/server/connectivity/PermissionMonitor;->mUsers:Ljava/util/Set;
+
+    invoke-interface {v7}, Ljava/util/Set;->size()I
+
+    move-result v7
+
+    invoke-virtual {v6, v7}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+
+    const-string v7, ", Apps: "
+
+    invoke-virtual {v6, v7}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    iget-object v7, p0, Lcom/android/server/connectivity/PermissionMonitor;->mApps:Ljava/util/Map;
+
+    invoke-interface {v7}, Ljava/util/Map;->size()I
+
+    move-result v7
+
+    invoke-virtual {v6, v7}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v6}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v6
+
+    invoke-static {v6}, Lcom/android/server/connectivity/PermissionMonitor;->log(Ljava/lang/String;)V
+
+    .line 212
+    iget-object v6, p0, Lcom/android/server/connectivity/PermissionMonitor;->mUsers:Ljava/util/Set;
+
+    iget-object v7, p0, Lcom/android/server/connectivity/PermissionMonitor;->mApps:Ljava/util/Map;
+
+    invoke-direct {p0, v6, v7, v4}, Lcom/android/server/connectivity/PermissionMonitor;->update(Ljava/util/Set;Ljava/util/Map;Z)V
+
+    .line 213
+    invoke-virtual {p0, v2}, Lcom/android/server/connectivity/PermissionMonitor;->sendPackagePermissionsToNetd(Landroid/util/SparseIntArray;)V
+    :try_end_135
+    .catchall {:try_start_31 .. :try_end_135} :catchall_137
+
+    .line 214
     monitor-exit p0
 
     return-void
 
-    .line 151
-    :catchall_138
+    .line 146
+    .end local v0  # "pmi":Landroid/content/pm/PackageManagerInternal;
+    .end local v1  # "apps":Ljava/util/List;, "Ljava/util/List<Landroid/content/pm/PackageInfo;>;"
+    .end local v2  # "netdPermsUids":Landroid/util/SparseIntArray;
+    .end local v3  # "users":Ljava/util/List;, "Ljava/util/List<Landroid/content/pm/UserInfo;>;"
+    .end local v5  # "systemPermission":Landroid/util/SparseArray;, "Landroid/util/SparseArray<Landroid/util/ArraySet<Ljava/lang/String;>;>;"
+    :catchall_137
     move-exception v0
 
     monitor-exit p0

@@ -33,7 +33,13 @@
 
 # direct methods
 .method private constructor <init>(Landroid/content/Context;IIILandroid/location/IGpsGeofenceHardware;Landroid/location/IFusedGeofenceHardware;)V
-    .registers 18
+    .registers 19
+    .param p1, "context"  # Landroid/content/Context;
+    .param p2, "overlaySwitchResId"  # I
+    .param p3, "defaultServicePackageNameResId"  # I
+    .param p4, "initialPackageNamesResId"  # I
+    .param p5, "gpsGeofence"  # Landroid/location/IGpsGeofenceHardware;
+    .param p6, "fusedGeofenceHardware"  # Landroid/location/IFusedGeofenceHardware;
 
     .line 81
     move-object v9, p0
@@ -48,12 +54,12 @@
     iput-object v0, v9, Lcom/android/server/location/GeofenceProxy;->mUpdateGeofenceHardware:Lcom/android/server/ServiceWatcher$BinderRunner;
 
     .line 82
-    move-object v2, p1
+    move-object v10, p1
 
-    iput-object v2, v9, Lcom/android/server/location/GeofenceProxy;->mContext:Landroid/content/Context;
+    iput-object v10, v9, Lcom/android/server/location/GeofenceProxy;->mContext:Landroid/content/Context;
 
     .line 83
-    new-instance v10, Lcom/android/server/location/GeofenceProxy$1;
+    new-instance v11, Lcom/android/server/location/GeofenceProxy$1;
 
     .line 85
     invoke-static {}, Lcom/android/server/FgThread;->getHandler()Landroid/os/Handler;
@@ -64,19 +70,21 @@
 
     const-string v4, "com.android.location.service.GeofenceProvider"
 
-    move-object v0, v10
+    move-object v0, v11
 
     move-object v1, p0
+
+    move-object v2, p1
 
     move v5, p2
 
     move v6, p3
 
-    move v7, p4
+    move/from16 v7, p4
 
     invoke-direct/range {v0 .. v8}, Lcom/android/server/location/GeofenceProxy$1;-><init>(Lcom/android/server/location/GeofenceProxy;Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;IIILandroid/os/Handler;)V
 
-    iput-object v10, v9, Lcom/android/server/location/GeofenceProxy;->mServiceWatcher:Lcom/android/server/ServiceWatcher;
+    iput-object v11, v9, Lcom/android/server/location/GeofenceProxy;->mServiceWatcher:Lcom/android/server/ServiceWatcher;
 
     .line 92
     move-object/from16 v0, p5
@@ -84,48 +92,53 @@
     iput-object v0, v9, Lcom/android/server/location/GeofenceProxy;->mGpsGeofenceHardware:Landroid/location/IGpsGeofenceHardware;
 
     .line 93
-    move-object/from16 v0, p6
+    move-object/from16 v1, p6
 
-    iput-object v0, v9, Lcom/android/server/location/GeofenceProxy;->mFusedGeofenceHardware:Landroid/location/IFusedGeofenceHardware;
+    iput-object v1, v9, Lcom/android/server/location/GeofenceProxy;->mFusedGeofenceHardware:Landroid/location/IFusedGeofenceHardware;
 
     .line 95
-    const/4 v0, 0x0
+    const/4 v2, 0x0
 
-    iput-object v0, v9, Lcom/android/server/location/GeofenceProxy;->mGeofenceHardware:Landroid/hardware/location/IGeofenceHardware;
+    iput-object v2, v9, Lcom/android/server/location/GeofenceProxy;->mGeofenceHardware:Landroid/hardware/location/IGeofenceHardware;
 
     .line 96
     return-void
 .end method
 
 .method static synthetic access$000(Lcom/android/server/location/GeofenceProxy;)Lcom/android/server/ServiceWatcher$BinderRunner;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/location/GeofenceProxy;
 
     .line 39
-    iget-object p0, p0, Lcom/android/server/location/GeofenceProxy;->mUpdateGeofenceHardware:Lcom/android/server/ServiceWatcher$BinderRunner;
+    iget-object v0, p0, Lcom/android/server/location/GeofenceProxy;->mUpdateGeofenceHardware:Lcom/android/server/ServiceWatcher$BinderRunner;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$200(Lcom/android/server/location/GeofenceProxy;)Landroid/location/IGpsGeofenceHardware;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/location/GeofenceProxy;
 
     .line 39
-    iget-object p0, p0, Lcom/android/server/location/GeofenceProxy;->mGpsGeofenceHardware:Landroid/location/IGpsGeofenceHardware;
+    iget-object v0, p0, Lcom/android/server/location/GeofenceProxy;->mGpsGeofenceHardware:Landroid/location/IGpsGeofenceHardware;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$300(Lcom/android/server/location/GeofenceProxy;)Landroid/location/IFusedGeofenceHardware;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/location/GeofenceProxy;
 
     .line 39
-    iget-object p0, p0, Lcom/android/server/location/GeofenceProxy;->mFusedGeofenceHardware:Landroid/location/IFusedGeofenceHardware;
+    iget-object v0, p0, Lcom/android/server/location/GeofenceProxy;->mFusedGeofenceHardware:Landroid/location/IFusedGeofenceHardware;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$402(Lcom/android/server/location/GeofenceProxy;Landroid/hardware/location/IGeofenceHardware;)Landroid/hardware/location/IGeofenceHardware;
     .registers 2
+    .param p0, "x0"  # Lcom/android/server/location/GeofenceProxy;
+    .param p1, "x1"  # Landroid/hardware/location/IGeofenceHardware;
 
     .line 39
     iput-object p1, p0, Lcom/android/server/location/GeofenceProxy;->mGeofenceHardware:Landroid/hardware/location/IGeofenceHardware;
@@ -134,12 +147,13 @@
 .end method
 
 .method static synthetic access$500(Lcom/android/server/location/GeofenceProxy;)Lcom/android/server/ServiceWatcher;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/location/GeofenceProxy;
 
     .line 39
-    iget-object p0, p0, Lcom/android/server/location/GeofenceProxy;->mServiceWatcher:Lcom/android/server/ServiceWatcher;
+    iget-object v0, p0, Lcom/android/server/location/GeofenceProxy;->mServiceWatcher:Lcom/android/server/ServiceWatcher;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method private bind()Z
@@ -187,6 +201,12 @@
 
 .method public static createAndBind(Landroid/content/Context;IIILandroid/location/IGpsGeofenceHardware;Landroid/location/IFusedGeofenceHardware;)Lcom/android/server/location/GeofenceProxy;
     .registers 14
+    .param p0, "context"  # Landroid/content/Context;
+    .param p1, "overlaySwitchResId"  # I
+    .param p2, "defaultServicePackageNameResId"  # I
+    .param p3, "initialPackageNamesResId"  # I
+    .param p4, "gpsGeofence"  # Landroid/location/IGpsGeofenceHardware;
+    .param p5, "fusedGeofenceHardware"  # Landroid/location/IFusedGeofenceHardware;
 
     .line 67
     new-instance v7, Lcom/android/server/location/GeofenceProxy;
@@ -208,26 +228,28 @@
     invoke-direct/range {v0 .. v6}, Lcom/android/server/location/GeofenceProxy;-><init>(Landroid/content/Context;IIILandroid/location/IGpsGeofenceHardware;Landroid/location/IFusedGeofenceHardware;)V
 
     .line 71
-    invoke-direct {v7}, Lcom/android/server/location/GeofenceProxy;->bind()Z
+    .local v0, "proxy":Lcom/android/server/location/GeofenceProxy;
+    invoke-direct {v0}, Lcom/android/server/location/GeofenceProxy;->bind()Z
 
-    move-result p0
+    move-result v1
 
-    if-eqz p0, :cond_13
+    if-eqz v1, :cond_13
 
     .line 72
-    return-object v7
+    return-object v0
 
     .line 74
     :cond_13
-    const/4 p0, 0x0
+    const/4 v1, 0x0
 
-    return-object p0
+    return-object v1
 .end method
 
 
 # virtual methods
 .method public synthetic lambda$new$0$GeofenceProxy(Landroid/os/IBinder;)V
-    .registers 3
+    .registers 5
+    .param p1, "binder"  # Landroid/os/IBinder;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -237,13 +259,14 @@
     .line 55
     invoke-static {p1}, Landroid/location/IGeofenceProvider$Stub;->asInterface(Landroid/os/IBinder;)Landroid/location/IGeofenceProvider;
 
-    move-result-object p1
+    move-result-object v0
 
     .line 57
+    .local v0, "provider":Landroid/location/IGeofenceProvider;
     :try_start_4
-    iget-object v0, p0, Lcom/android/server/location/GeofenceProxy;->mGeofenceHardware:Landroid/hardware/location/IGeofenceHardware;
+    iget-object v1, p0, Lcom/android/server/location/GeofenceProxy;->mGeofenceHardware:Landroid/hardware/location/IGeofenceHardware;
 
-    invoke-interface {p1, v0}, Landroid/location/IGeofenceProvider;->setGeofenceHardware(Landroid/hardware/location/IGeofenceHardware;)V
+    invoke-interface {v0, v1}, Landroid/location/IGeofenceProvider;->setGeofenceHardware(Landroid/hardware/location/IGeofenceHardware;)V
     :try_end_9
     .catch Landroid/os/RemoteException; {:try_start_4 .. :try_end_9} :catch_a
 
@@ -252,14 +275,16 @@
 
     .line 58
     :catch_a
-    move-exception p1
+    move-exception v1
 
     .line 59
-    const-string v0, "GeofenceProxy"
+    .local v1, "e":Landroid/os/RemoteException;
+    const-string v2, "GeofenceProxy"
 
-    invoke-static {v0, p1}, Landroid/util/Log;->w(Ljava/lang/String;Ljava/lang/Throwable;)I
+    invoke-static {v2, v1}, Landroid/util/Log;->w(Ljava/lang/String;Ljava/lang/Throwable;)I
 
     .line 61
+    .end local v1  # "e":Landroid/os/RemoteException;
     :goto_10
     return-void
 .end method

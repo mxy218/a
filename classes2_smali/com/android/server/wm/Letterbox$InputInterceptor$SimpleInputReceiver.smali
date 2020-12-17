@@ -17,6 +17,7 @@
 # direct methods
 .method constructor <init>(Landroid/view/InputChannel;)V
     .registers 3
+    .param p1, "inputChannel"  # Landroid/view/InputChannel;
 
     .line 221
     invoke-static {}, Lcom/android/server/UiThread;->getHandler()Landroid/os/Handler;

@@ -21,8 +21,9 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/power/ShutdownThread;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/power/ShutdownThread;
 
-    .line 448
+    .line 472
     iput-object p1, p0, Lcom/android/server/power/ShutdownThread$3;->this$0:Lcom/android/server/power/ShutdownThread;
 
     invoke-direct {p0}, Landroid/content/BroadcastReceiver;-><init>()V
@@ -33,13 +34,15 @@
 
 # virtual methods
 .method public onReceive(Landroid/content/Context;Landroid/content/Intent;)V
-    .registers 3
+    .registers 4
+    .param p1, "context"  # Landroid/content/Context;
+    .param p2, "intent"  # Landroid/content/Intent;
 
-    .line 451
-    iget-object p1, p0, Lcom/android/server/power/ShutdownThread$3;->this$0:Lcom/android/server/power/ShutdownThread;
+    .line 475
+    iget-object v0, p0, Lcom/android/server/power/ShutdownThread$3;->this$0:Lcom/android/server/power/ShutdownThread;
 
-    invoke-virtual {p1}, Lcom/android/server/power/ShutdownThread;->actionDone()V
+    invoke-virtual {v0}, Lcom/android/server/power/ShutdownThread;->actionDone()V
 
-    .line 452
+    .line 476
     return-void
 .end method

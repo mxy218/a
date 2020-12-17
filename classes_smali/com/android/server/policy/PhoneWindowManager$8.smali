@@ -21,8 +21,9 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/policy/PhoneWindowManager;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/policy/PhoneWindowManager;
 
-    .line 2228
+    .line 2069
     iput-object p1, p0, Lcom/android/server/policy/PhoneWindowManager$8;->this$0:Lcom/android/server/policy/PhoneWindowManager;
 
     invoke-direct {p0}, Lcom/android/server/wm/WindowManagerInternal$AppTransitionListener;-><init>()V
@@ -34,27 +35,32 @@
 # virtual methods
 .method public onAppTransitionCancelledLocked(I)V
     .registers 5
+    .param p1, "transit"  # I
 
-    .line 2237
+    .line 2078
     iget-object v0, p0, Lcom/android/server/policy/PhoneWindowManager$8;->this$0:Lcom/android/server/policy/PhoneWindowManager;
 
     const-wide/16 v1, 0x0
 
-    invoke-static {v0, p1, v1, v2}, Lcom/android/server/policy/PhoneWindowManager;->access$4000(Lcom/android/server/policy/PhoneWindowManager;IJ)I
+    invoke-static {v0, p1, v1, v2}, Lcom/android/server/policy/PhoneWindowManager;->access$3700(Lcom/android/server/policy/PhoneWindowManager;IJ)I
 
-    .line 2238
+    .line 2079
     return-void
 .end method
 
 .method public onAppTransitionStartingLocked(IJJJ)I
-    .registers 8
+    .registers 9
+    .param p1, "transit"  # I
+    .param p2, "duration"  # J
+    .param p4, "statusBarAnimationStartTime"  # J
+    .param p6, "statusBarAnimationDuration"  # J
 
-    .line 2232
-    iget-object p4, p0, Lcom/android/server/policy/PhoneWindowManager$8;->this$0:Lcom/android/server/policy/PhoneWindowManager;
+    .line 2073
+    iget-object v0, p0, Lcom/android/server/policy/PhoneWindowManager$8;->this$0:Lcom/android/server/policy/PhoneWindowManager;
 
-    invoke-static {p4, p1, p2, p3}, Lcom/android/server/policy/PhoneWindowManager;->access$4000(Lcom/android/server/policy/PhoneWindowManager;IJ)I
+    invoke-static {v0, p1, p2, p3}, Lcom/android/server/policy/PhoneWindowManager;->access$3700(Lcom/android/server/policy/PhoneWindowManager;IJ)I
 
-    move-result p1
+    move-result v0
 
-    return p1
+    return v0
 .end method

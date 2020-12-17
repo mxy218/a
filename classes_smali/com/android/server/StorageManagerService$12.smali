@@ -1,11 +1,11 @@
 .class Lcom/android/server/StorageManagerService$12;
-.super Lcom/android/internal/app/IAppOpsCallback$Stub;
+.super Landroid/os/IVoldTaskListener$Stub;
 .source "StorageManagerService.java"
 
 
 # annotations
-.annotation system Ldalvik/annotation/EnclosingClass;
-    value = Lcom/android/server/StorageManagerService;
+.annotation system Ldalvik/annotation/EnclosingMethod;
+    value = Lcom/android/server/StorageManagerService;->setPrimaryStorageUuid(Ljava/lang/String;Landroid/content/pm/IPackageMoveObserver;)V
 .end annotation
 
 .annotation system Ldalvik/annotation/InnerClass;
@@ -21,44 +21,60 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/StorageManagerService;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/StorageManagerService;
 
-    .line 3317
+    .line 2410
     iput-object p1, p0, Lcom/android/server/StorageManagerService$12;->this$0:Lcom/android/server/StorageManagerService;
 
-    invoke-direct {p0}, Lcom/android/internal/app/IAppOpsCallback$Stub;-><init>()V
+    invoke-direct {p0}, Landroid/os/IVoldTaskListener$Stub;-><init>()V
 
     return-void
 .end method
 
 
 # virtual methods
-.method public opChanged(IILjava/lang/String;)V
-    .registers 4
-    .annotation system Ldalvik/annotation/Throws;
-        value = {
-            Landroid/os/RemoteException;
-        }
-    .end annotation
+.method public onFinished(ILandroid/os/PersistableBundle;)V
+    .registers 3
+    .param p1, "status"  # I
+    .param p2, "extras"  # Landroid/os/PersistableBundle;
 
-    .line 3320
-    invoke-static {}, Lcom/android/server/StorageManagerService;->access$4700()Z
+    .line 2421
+    return-void
+.end method
 
-    move-result p1
+.method public onStatus(ILandroid/os/PersistableBundle;)V
+    .registers 5
+    .param p1, "status"  # I
+    .param p2, "extras"  # Landroid/os/PersistableBundle;
 
-    if-nez p1, :cond_7
+    .line 2413
+    iget-object v0, p0, Lcom/android/server/StorageManagerService$12;->this$0:Lcom/android/server/StorageManagerService;
 
+    invoke-static {v0}, Lcom/android/server/StorageManagerService;->access$2800(Lcom/android/server/StorageManagerService;)Ljava/lang/Object;
+
+    move-result-object v0
+
+    monitor-enter v0
+
+    .line 2414
+    :try_start_7
+    iget-object v1, p0, Lcom/android/server/StorageManagerService$12;->this$0:Lcom/android/server/StorageManagerService;
+
+    invoke-static {v1, p1}, Lcom/android/server/StorageManagerService;->access$4600(Lcom/android/server/StorageManagerService;I)V
+
+    .line 2415
+    monitor-exit v0
+
+    .line 2416
     return-void
 
-    .line 3322
-    :cond_7
-    iget-object p1, p0, Lcom/android/server/StorageManagerService$12;->this$0:Lcom/android/server/StorageManagerService;
+    .line 2415
+    :catchall_e
+    move-exception v1
 
-    invoke-static {p1, p2, p3}, Lcom/android/server/StorageManagerService;->access$4800(Lcom/android/server/StorageManagerService;ILjava/lang/String;)I
+    monitor-exit v0
+    :try_end_10
+    .catchall {:try_start_7 .. :try_end_10} :catchall_e
 
-    move-result p3
-
-    invoke-static {p1, p2, p3}, Lcom/android/server/StorageManagerService;->access$4900(Lcom/android/server/StorageManagerService;II)V
-
-    .line 3323
-    return-void
+    throw v1
 .end method

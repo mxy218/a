@@ -49,6 +49,9 @@
 
 .method static synthetic access$600(Lcom/android/server/print/RemotePrintSpooler$GetPrintJobInfosCaller;Ljava/lang/Object;I)V
     .registers 3
+    .param p0, "x0"  # Lcom/android/server/print/RemotePrintSpooler$GetPrintJobInfosCaller;
+    .param p1, "x1"  # Ljava/lang/Object;
+    .param p2, "x2"  # I
 
     .line 719
     invoke-virtual {p0, p1, p2}, Lcom/android/server/print/RemotePrintSpooler$GetPrintJobInfosCaller;->onRemoteMethodResult(Ljava/lang/Object;I)V
@@ -60,6 +63,10 @@
 # virtual methods
 .method public getPrintJobInfos(Landroid/print/IPrintSpooler;Landroid/content/ComponentName;II)Ljava/util/List;
     .registers 12
+    .param p1, "target"  # Landroid/print/IPrintSpooler;
+    .param p2, "componentName"  # Landroid/content/ComponentName;
+    .param p3, "state"  # I
+    .param p4, "appId"  # I
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(",
@@ -85,6 +92,7 @@
     move-result v6
 
     .line 737
+    .local v6, "sequence":I
     iget-object v1, p0, Lcom/android/server/print/RemotePrintSpooler$GetPrintJobInfosCaller;->mCallback:Landroid/print/IPrintSpoolerCallbacks;
 
     move-object v0, p1
@@ -102,9 +110,9 @@
     .line 738
     invoke-virtual {p0, v6}, Lcom/android/server/print/RemotePrintSpooler$GetPrintJobInfosCaller;->getResultTimed(I)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v0
 
-    check-cast p1, Ljava/util/List;
+    check-cast v0, Ljava/util/List;
 
-    return-object p1
+    return-object v0
 .end method

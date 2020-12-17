@@ -23,6 +23,8 @@
 # direct methods
 .method public constructor <init>(Landroid/content/Context;Landroid/content/res/TypedArray;)V
     .registers 3
+    .param p1, "c"  # Landroid/content/Context;
+    .param p2, "ta"  # Landroid/content/res/TypedArray;
 
     .line 62
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V

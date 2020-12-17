@@ -38,6 +38,8 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/tv/TvInputManagerService;Landroid/os/IBinder;I)V
     .registers 4
+    .param p2, "clientToken"  # Landroid/os/IBinder;
+    .param p3, "userId"  # I
 
     .line 2167
     iput-object p1, p0, Lcom/android/server/tv/TvInputManagerService$ClientState;->this$0:Lcom/android/server/tv/TvInputManagerService;
@@ -62,36 +64,39 @@
 .end method
 
 .method static synthetic access$3800(Lcom/android/server/tv/TvInputManagerService$ClientState;)Ljava/util/List;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/tv/TvInputManagerService$ClientState;
 
     .line 2161
-    iget-object p0, p0, Lcom/android/server/tv/TvInputManagerService$ClientState;->sessionTokens:Ljava/util/List;
+    iget-object v0, p0, Lcom/android/server/tv/TvInputManagerService$ClientState;->sessionTokens:Ljava/util/List;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$6300(Lcom/android/server/tv/TvInputManagerService$ClientState;)Landroid/os/IBinder;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/tv/TvInputManagerService$ClientState;
 
     .line 2161
-    iget-object p0, p0, Lcom/android/server/tv/TvInputManagerService$ClientState;->clientToken:Landroid/os/IBinder;
+    iget-object v0, p0, Lcom/android/server/tv/TvInputManagerService$ClientState;->clientToken:Landroid/os/IBinder;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$6400(Lcom/android/server/tv/TvInputManagerService$ClientState;)I
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/tv/TvInputManagerService$ClientState;
 
     .line 2161
-    iget p0, p0, Lcom/android/server/tv/TvInputManagerService$ClientState;->userId:I
+    iget v0, p0, Lcom/android/server/tv/TvInputManagerService$ClientState;->userId:I
 
-    return p0
+    return v0
 .end method
 
 
 # virtual methods
 .method public binderDied()V
-    .registers 7
+    .registers 8
 
     .line 2178
     iget-object v0, p0, Lcom/android/server/tv/TvInputManagerService$ClientState;->this$0:Lcom/android/server/tv/TvInputManagerService;
@@ -113,61 +118,65 @@
     move-result-object v1
 
     .line 2182
+    .local v1, "userState":Lcom/android/server/tv/TvInputManagerService$UserState;
     invoke-static {v1}, Lcom/android/server/tv/TvInputManagerService$UserState;->access$2800(Lcom/android/server/tv/TvInputManagerService$UserState;)Ljava/util/Map;
 
-    move-result-object v1
+    move-result-object v2
 
-    iget-object v2, p0, Lcom/android/server/tv/TvInputManagerService$ClientState;->clientToken:Landroid/os/IBinder;
+    iget-object v3, p0, Lcom/android/server/tv/TvInputManagerService$ClientState;->clientToken:Landroid/os/IBinder;
 
-    invoke-interface {v1, v2}, Ljava/util/Map;->get(Ljava/lang/Object;)Ljava/lang/Object;
+    invoke-interface {v2, v3}, Ljava/util/Map;->get(Ljava/lang/Object;)Ljava/lang/Object;
 
-    move-result-object v1
+    move-result-object v2
 
-    check-cast v1, Lcom/android/server/tv/TvInputManagerService$ClientState;
+    check-cast v2, Lcom/android/server/tv/TvInputManagerService$ClientState;
 
     .line 2183
-    if-eqz v1, :cond_38
+    .local v2, "clientState":Lcom/android/server/tv/TvInputManagerService$ClientState;
+    if-eqz v2, :cond_38
 
     .line 2184
     :goto_1d
-    iget-object v2, v1, Lcom/android/server/tv/TvInputManagerService$ClientState;->sessionTokens:Ljava/util/List;
+    iget-object v3, v2, Lcom/android/server/tv/TvInputManagerService$ClientState;->sessionTokens:Ljava/util/List;
 
-    invoke-interface {v2}, Ljava/util/List;->size()I
+    invoke-interface {v3}, Ljava/util/List;->size()I
 
-    move-result v2
+    move-result v3
 
-    if-lez v2, :cond_38
+    if-lez v3, :cond_38
 
     .line 2185
-    iget-object v2, p0, Lcom/android/server/tv/TvInputManagerService$ClientState;->this$0:Lcom/android/server/tv/TvInputManagerService;
+    iget-object v3, p0, Lcom/android/server/tv/TvInputManagerService$ClientState;->this$0:Lcom/android/server/tv/TvInputManagerService;
 
-    iget-object v3, v1, Lcom/android/server/tv/TvInputManagerService$ClientState;->sessionTokens:Ljava/util/List;
+    iget-object v4, v2, Lcom/android/server/tv/TvInputManagerService$ClientState;->sessionTokens:Ljava/util/List;
 
-    const/4 v4, 0x0
+    const/4 v5, 0x0
 
     .line 2186
-    invoke-interface {v3, v4}, Ljava/util/List;->get(I)Ljava/lang/Object;
+    invoke-interface {v4, v5}, Ljava/util/List;->get(I)Ljava/lang/Object;
 
-    move-result-object v3
+    move-result-object v4
 
-    check-cast v3, Landroid/os/IBinder;
+    check-cast v4, Landroid/os/IBinder;
 
-    const/16 v4, 0x3e8
+    const/16 v5, 0x3e8
 
-    iget v5, p0, Lcom/android/server/tv/TvInputManagerService$ClientState;->userId:I
+    iget v6, p0, Lcom/android/server/tv/TvInputManagerService$ClientState;->userId:I
 
     .line 2185
-    invoke-static {v2, v3, v4, v5}, Lcom/android/server/tv/TvInputManagerService;->access$5200(Lcom/android/server/tv/TvInputManagerService;Landroid/os/IBinder;II)V
+    invoke-static {v3, v4, v5, v6}, Lcom/android/server/tv/TvInputManagerService;->access$5200(Lcom/android/server/tv/TvInputManagerService;Landroid/os/IBinder;II)V
 
     goto :goto_1d
 
     .line 2189
     :cond_38
-    const/4 v1, 0x0
+    const/4 v3, 0x0
 
-    iput-object v1, p0, Lcom/android/server/tv/TvInputManagerService$ClientState;->clientToken:Landroid/os/IBinder;
+    iput-object v3, p0, Lcom/android/server/tv/TvInputManagerService$ClientState;->clientToken:Landroid/os/IBinder;
 
     .line 2190
+    .end local v1  # "userState":Lcom/android/server/tv/TvInputManagerService$UserState;
+    .end local v2  # "clientState":Lcom/android/server/tv/TvInputManagerService$ClientState;
     monitor-exit v0
 
     .line 2191

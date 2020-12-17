@@ -26,6 +26,10 @@
 # direct methods
 .method constructor <init>(Landroid/content/IntentFilter;Ljava/lang/String;II)V
     .registers 5
+    .param p1, "filter"  # Landroid/content/IntentFilter;
+    .param p2, "ownerPackage"  # Ljava/lang/String;
+    .param p3, "targetUserId"  # I
+    .param p4, "flags"  # I
 
     .line 48
     invoke-direct {p0, p1}, Landroid/content/IntentFilter;-><init>(Landroid/content/IntentFilter;)V
@@ -45,6 +49,7 @@
 
 .method constructor <init>(Lorg/xmlpull/v1/XmlPullParser;)V
     .registers 9
+    .param p1, "parser"  # Lorg/xmlpull/v1/XmlPullParser;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Lorg/xmlpull/v1/XmlPullParserException;,
@@ -94,147 +99,156 @@
     move-result v0
 
     .line 72
+    .local v0, "outerDepth":I
     invoke-interface {p1}, Lorg/xmlpull/v1/XmlPullParser;->getName()Ljava/lang/String;
 
     move-result-object v1
 
     .line 74
+    .local v1, "tagName":Ljava/lang/String;
     :cond_2a
     :goto_2a
     invoke-interface {p1}, Lorg/xmlpull/v1/XmlPullParser;->next()I
 
     move-result v2
 
-    const/4 v3, 0x1
+    move v3, v2
 
-    const/4 v4, 0x5
+    .local v3, "type":I
+    const/4 v4, 0x1
 
-    const-string v5, "filter"
+    const/4 v5, 0x5
 
-    if-eq v2, v3, :cond_75
+    const-string v6, "filter"
 
-    const/4 v3, 0x3
+    if-eq v2, v4, :cond_76
 
-    if-ne v2, v3, :cond_3d
+    const/4 v2, 0x3
+
+    if-ne v3, v2, :cond_3e
 
     .line 75
     invoke-interface {p1}, Lorg/xmlpull/v1/XmlPullParser;->getDepth()I
 
-    move-result v6
+    move-result v4
 
-    if-le v6, v0, :cond_75
+    if-le v4, v0, :cond_76
 
     .line 76
-    :cond_3d
+    :cond_3e
     invoke-interface {p1}, Lorg/xmlpull/v1/XmlPullParser;->getName()Ljava/lang/String;
 
     move-result-object v1
 
     .line 77
-    if-eq v2, v3, :cond_2a
+    if-eq v3, v2, :cond_2a
 
-    const/4 v3, 0x4
+    const/4 v2, 0x4
 
-    if-ne v2, v3, :cond_47
+    if-ne v3, v2, :cond_48
 
     .line 78
     goto :goto_2a
 
     .line 79
-    :cond_47
-    const/4 v3, 0x2
+    :cond_48
+    const/4 v2, 0x2
 
-    if-ne v2, v3, :cond_2a
+    if-ne v3, v2, :cond_2a
 
     .line 80
-    invoke-virtual {v1, v5}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v1, v6}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
     move-result v2
 
-    if-eqz v2, :cond_51
+    if-eqz v2, :cond_52
 
     .line 81
-    goto :goto_75
+    goto :goto_76
 
     .line 83
-    :cond_51
+    :cond_52
     new-instance v2, Ljava/lang/StringBuilder;
 
     invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v3, "Unknown element under crossProfile-intent-filters: "
+    const-string v4, "Unknown element under crossProfile-intent-filters: "
 
-    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v2, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string v3, " at "
+    const-string v4, " at "
 
-    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     .line 85
     invoke-interface {p1}, Lorg/xmlpull/v1/XmlPullParser;->getPositionDescription()Ljava/lang/String;
 
-    move-result-object v3
+    move-result-object v4
 
-    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
     move-result-object v2
 
     .line 86
-    invoke-static {v4, v2}, Lcom/android/server/pm/PackageManagerService;->reportSettingsProblem(ILjava/lang/String;)V
+    .local v2, "msg":Ljava/lang/String;
+    invoke-static {v5, v2}, Lcom/android/server/pm/PackageManagerService;->reportSettingsProblem(ILjava/lang/String;)V
 
     .line 87
     invoke-static {p1}, Lcom/android/internal/util/XmlUtils;->skipCurrentTag(Lorg/xmlpull/v1/XmlPullParser;)V
 
     .line 88
+    .end local v2  # "msg":Ljava/lang/String;
     goto :goto_2a
 
     .line 91
-    :cond_75
-    :goto_75
-    invoke-virtual {v1, v5}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    :cond_76
+    :goto_76
+    invoke-virtual {v1, v6}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result v0
+    move-result v2
 
-    if-eqz v0, :cond_7f
+    if-eqz v2, :cond_80
 
     .line 92
     invoke-virtual {p0, p1}, Lcom/android/server/pm/CrossProfileIntentFilter;->readFromXml(Lorg/xmlpull/v1/XmlPullParser;)V
 
-    goto :goto_9a
+    goto :goto_9b
 
     .line 94
-    :cond_7f
-    new-instance v0, Ljava/lang/StringBuilder;
+    :cond_80
+    new-instance v2, Ljava/lang/StringBuilder;
 
-    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v1, "Missing element under CrossProfileIntentFilter: filter at "
+    const-string v4, "Missing element under CrossProfileIntentFilter: filter at "
 
-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     .line 95
     invoke-interface {p1}, Lorg/xmlpull/v1/XmlPullParser;->getPositionDescription()Ljava/lang/String;
 
-    move-result-object v1
+    move-result-object v4
 
-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v2
 
     .line 96
-    invoke-static {v4, v0}, Lcom/android/server/pm/PackageManagerService;->reportSettingsProblem(ILjava/lang/String;)V
+    .restart local v2  # "msg":Ljava/lang/String;
+    invoke-static {v5, v2}, Lcom/android/server/pm/PackageManagerService;->reportSettingsProblem(ILjava/lang/String;)V
 
     .line 97
     invoke-static {p1}, Lcom/android/internal/util/XmlUtils;->skipCurrentTag(Lorg/xmlpull/v1/XmlPullParser;)V
 
     .line 99
-    :goto_9a
+    .end local v2  # "msg":Ljava/lang/String;
+    :goto_9b
     return-void
 .end method
 
@@ -242,6 +256,7 @@
 # virtual methods
 .method equalsIgnoreFilter(Lcom/android/server/pm/CrossProfileIntentFilter;)Z
     .registers 4
+    .param p1, "other"  # Lcom/android/server/pm/CrossProfileIntentFilter;
 
     .line 137
     iget v0, p0, Lcom/android/server/pm/CrossProfileIntentFilter;->mTargetUserId:I
@@ -263,20 +278,20 @@
 
     iget v0, p0, Lcom/android/server/pm/CrossProfileIntentFilter;->mFlags:I
 
-    iget p1, p1, Lcom/android/server/pm/CrossProfileIntentFilter;->mFlags:I
+    iget v1, p1, Lcom/android/server/pm/CrossProfileIntentFilter;->mFlags:I
 
-    if-ne v0, p1, :cond_18
+    if-ne v0, v1, :cond_18
 
-    const/4 p1, 0x1
+    const/4 v0, 0x1
 
     goto :goto_19
 
     :cond_18
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
     .line 137
     :goto_19
-    return p1
+    return v0
 .end method
 
 .method public getFlags()I
@@ -289,24 +304,28 @@
 .end method
 
 .method getIntFromXml(Lorg/xmlpull/v1/XmlPullParser;Ljava/lang/String;I)I
-    .registers 5
+    .registers 6
+    .param p1, "parser"  # Lorg/xmlpull/v1/XmlPullParser;
+    .param p2, "attribute"  # Ljava/lang/String;
+    .param p3, "defaultValue"  # I
 
     .line 114
     const/4 v0, 0x0
 
     invoke-virtual {p0, p1, p2, v0}, Lcom/android/server/pm/CrossProfileIntentFilter;->getStringFromXml(Lorg/xmlpull/v1/XmlPullParser;Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
     .line 115
-    if-eqz p1, :cond_c
+    .local v0, "stringValue":Ljava/lang/String;
+    if-eqz v0, :cond_c
 
     .line 116
-    invoke-static {p1}, Ljava/lang/Integer;->parseInt(Ljava/lang/String;)I
+    invoke-static {v0}, Ljava/lang/Integer;->parseInt(Ljava/lang/String;)I
 
-    move-result p1
+    move-result v1
 
-    return p1
+    return v1
 
     .line 118
     :cond_c
@@ -323,7 +342,10 @@
 .end method
 
 .method getStringFromXml(Lorg/xmlpull/v1/XmlPullParser;Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
-    .registers 6
+    .registers 7
+    .param p1, "parser"  # Lorg/xmlpull/v1/XmlPullParser;
+    .param p2, "attribute"  # Ljava/lang/String;
+    .param p3, "defaultValue"  # Ljava/lang/String;
 
     .line 102
     const/4 v0, 0x0
@@ -333,43 +355,46 @@
     move-result-object v0
 
     .line 103
+    .local v0, "value":Ljava/lang/String;
     if-nez v0, :cond_29
 
     .line 104
-    new-instance v0, Ljava/lang/StringBuilder;
+    new-instance v1, Ljava/lang/StringBuilder;
 
-    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v1, "Missing element under CrossProfileIntentFilter: "
+    const-string v2, "Missing element under CrossProfileIntentFilter: "
 
-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string p2, " at "
+    const-string v2, " at "
 
-    invoke-virtual {v0, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     .line 105
     invoke-interface {p1}, Lorg/xmlpull/v1/XmlPullParser;->getPositionDescription()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v2
 
-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v1
 
     .line 106
-    const/4 p2, 0x5
+    .local v1, "msg":Ljava/lang/String;
+    const/4 v2, 0x5
 
-    invoke-static {p2, p1}, Lcom/android/server/pm/PackageManagerService;->reportSettingsProblem(ILjava/lang/String;)V
+    invoke-static {v2, v1}, Lcom/android/server/pm/PackageManagerService;->reportSettingsProblem(ILjava/lang/String;)V
 
     .line 107
     return-object p3
 
     .line 109
+    .end local v1  # "msg":Ljava/lang/String;
     :cond_29
     return-object v0
 .end method
@@ -432,6 +457,7 @@
 
 .method public writeToXml(Lorg/xmlpull/v1/XmlSerializer;)V
     .registers 5
+    .param p1, "serializer"  # Lorg/xmlpull/v1/XmlSerializer;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Ljava/io/IOException;

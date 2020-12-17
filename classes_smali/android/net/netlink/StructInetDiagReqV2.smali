@@ -20,6 +20,10 @@
 # direct methods
 .method public constructor <init>(ILjava/net/InetSocketAddress;Ljava/net/InetSocketAddress;I)V
     .registers 6
+    .param p1, "protocol"  # I
+    .param p2, "local"  # Ljava/net/InetSocketAddress;
+    .param p3, "remote"  # Ljava/net/InetSocketAddress;
+    .param p4, "family"  # I
 
     .line 50
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -30,21 +34,21 @@
     iput v0, p0, Landroid/net/netlink/StructInetDiagReqV2;->INET_DIAG_REQ_V2_ALL_STATES:I
 
     .line 51
-    int-to-byte p4, p4
+    int-to-byte v0, p4
 
-    iput-byte p4, p0, Landroid/net/netlink/StructInetDiagReqV2;->sdiag_family:B
+    iput-byte v0, p0, Landroid/net/netlink/StructInetDiagReqV2;->sdiag_family:B
 
     .line 52
-    int-to-byte p1, p1
+    int-to-byte v0, p1
 
-    iput-byte p1, p0, Landroid/net/netlink/StructInetDiagReqV2;->sdiag_protocol:B
+    iput-byte v0, p0, Landroid/net/netlink/StructInetDiagReqV2;->sdiag_protocol:B
 
     .line 53
-    new-instance p1, Landroid/net/netlink/StructInetDiagSockId;
+    new-instance v0, Landroid/net/netlink/StructInetDiagSockId;
 
-    invoke-direct {p1, p2, p3}, Landroid/net/netlink/StructInetDiagSockId;-><init>(Ljava/net/InetSocketAddress;Ljava/net/InetSocketAddress;)V
+    invoke-direct {v0, p2, p3}, Landroid/net/netlink/StructInetDiagSockId;-><init>(Ljava/net/InetSocketAddress;Ljava/net/InetSocketAddress;)V
 
-    iput-object p1, p0, Landroid/net/netlink/StructInetDiagReqV2;->id:Landroid/net/netlink/StructInetDiagSockId;
+    iput-object v0, p0, Landroid/net/netlink/StructInetDiagReqV2;->id:Landroid/net/netlink/StructInetDiagSockId;
 
     .line 54
     return-void
@@ -54,6 +58,7 @@
 # virtual methods
 .method public pack(Ljava/nio/ByteBuffer;)V
     .registers 3
+    .param p1, "byteBuffer"  # Ljava/nio/ByteBuffer;
 
     .line 58
     iget-byte v0, p0, Landroid/net/netlink/StructInetDiagReqV2;->sdiag_family:B
@@ -88,7 +93,7 @@
 .end method
 
 .method public toString()Ljava/lang/String;
-    .registers 5
+    .registers 6
 
     .line 68
     iget-byte v0, p0, Landroid/net/netlink/StructInetDiagReqV2;->sdiag_family:B
@@ -98,6 +103,7 @@
     move-result-object v0
 
     .line 69
+    .local v0, "familyStr":Ljava/lang/String;
     iget-byte v1, p0, Landroid/net/netlink/StructInetDiagReqV2;->sdiag_protocol:B
 
     invoke-static {v1}, Landroid/net/netlink/NetlinkConstants;->stringForAddressFamily(I)Ljava/lang/String;
@@ -105,6 +111,7 @@
     move-result-object v1
 
     .line 71
+    .local v1, "protocolStr":Ljava/lang/String;
     new-instance v2, Ljava/lang/StringBuilder;
 
     invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
@@ -115,60 +122,60 @@
 
     invoke-virtual {v2, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string/jumbo v0, "}, sdiag_protocol{"
+    const-string/jumbo v3, "}, sdiag_protocol{"
 
-    invoke-virtual {v2, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v2, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    const-string/jumbo v0, "}, idiag_ext{"
-
-    invoke-virtual {v2, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    const/4 v0, 0x0
-
-    invoke-virtual {v2, v0}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
-
-    const-string v1, ")}, pad{"
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v2, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v2, v0}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    const-string/jumbo v3, "}, idiag_ext{"
 
-    const-string/jumbo v0, "}, idiag_states{"
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v2, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    const/4 v3, 0x0
+
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+
+    const-string v4, ")}, pad{"
+
+    invoke-virtual {v2, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+
+    const-string/jumbo v3, "}, idiag_states{"
+
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     .line 76
-    const/4 v0, -0x1
+    const/4 v3, -0x1
 
-    invoke-static {v0}, Ljava/lang/Integer;->toHexString(I)Ljava/lang/String;
+    invoke-static {v3}, Ljava/lang/Integer;->toHexString(I)Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v3
 
-    invoke-virtual {v2, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string/jumbo v0, "}, "
+    const-string/jumbo v3, "}, "
 
-    invoke-virtual {v2, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    iget-object v0, p0, Landroid/net/netlink/StructInetDiagReqV2;->id:Landroid/net/netlink/StructInetDiagSockId;
+    iget-object v3, p0, Landroid/net/netlink/StructInetDiagReqV2;->id:Landroid/net/netlink/StructInetDiagSockId;
 
     .line 77
-    invoke-virtual {v0}, Landroid/net/netlink/StructInetDiagSockId;->toString()Ljava/lang/String;
+    invoke-virtual {v3}, Landroid/net/netlink/StructInetDiagSockId;->toString()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v3
 
-    invoke-virtual {v2, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string/jumbo v0, "}"
+    const-string/jumbo v3, "}"
 
-    invoke-virtual {v2, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v2
 
     .line 71
-    return-object v0
+    return-object v2
 .end method

@@ -24,8 +24,9 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/statusbar/StatusBarManagerService;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/statusbar/StatusBarManagerService;
 
-    .line 471
+    .line 477
     iput-object p1, p0, Lcom/android/server/statusbar/StatusBarManagerService$2;->this$0:Lcom/android/server/statusbar/StatusBarManagerService;
 
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -36,12 +37,12 @@
 
 # virtual methods
 .method public isGlobalActionsDisabled()Z
-    .registers 3
+    .registers 4
 
-    .line 475
+    .line 481
     iget-object v0, p0, Lcom/android/server/statusbar/StatusBarManagerService$2;->this$0:Lcom/android/server/statusbar/StatusBarManagerService;
 
-    invoke-static {v0}, Lcom/android/server/statusbar/StatusBarManagerService;->access$1100(Lcom/android/server/statusbar/StatusBarManagerService;)Landroid/util/SparseArray;
+    invoke-static {v0}, Lcom/android/server/statusbar/StatusBarManagerService;->access$1200(Lcom/android/server/statusbar/StatusBarManagerService;)Landroid/util/SparseArray;
 
     move-result-object v0
 
@@ -53,14 +54,15 @@
 
     check-cast v0, Lcom/android/server/statusbar/StatusBarManagerService$UiState;
 
-    invoke-static {v0}, Lcom/android/server/statusbar/StatusBarManagerService$UiState;->access$1200(Lcom/android/server/statusbar/StatusBarManagerService$UiState;)I
+    invoke-static {v0}, Lcom/android/server/statusbar/StatusBarManagerService$UiState;->access$1300(Lcom/android/server/statusbar/StatusBarManagerService$UiState;)I
 
     move-result v0
 
-    .line 476
-    and-int/lit8 v0, v0, 0x8
+    .line 482
+    .local v0, "disabled2":I
+    and-int/lit8 v2, v0, 0x8
 
-    if-eqz v0, :cond_16
+    if-eqz v2, :cond_16
 
     const/4 v1, 0x1
 
@@ -69,46 +71,47 @@
 .end method
 
 .method public setGlobalActionsListener(Lcom/android/server/policy/GlobalActionsProvider$GlobalActionsListener;)V
-    .registers 3
+    .registers 4
+    .param p1, "listener"  # Lcom/android/server/policy/GlobalActionsProvider$GlobalActionsListener;
 
-    .line 481
+    .line 487
     iget-object v0, p0, Lcom/android/server/statusbar/StatusBarManagerService$2;->this$0:Lcom/android/server/statusbar/StatusBarManagerService;
 
-    invoke-static {v0, p1}, Lcom/android/server/statusbar/StatusBarManagerService;->access$1302(Lcom/android/server/statusbar/StatusBarManagerService;Lcom/android/server/policy/GlobalActionsProvider$GlobalActionsListener;)Lcom/android/server/policy/GlobalActionsProvider$GlobalActionsListener;
+    invoke-static {v0, p1}, Lcom/android/server/statusbar/StatusBarManagerService;->access$1402(Lcom/android/server/statusbar/StatusBarManagerService;Lcom/android/server/policy/GlobalActionsProvider$GlobalActionsListener;)Lcom/android/server/policy/GlobalActionsProvider$GlobalActionsListener;
 
-    .line 482
-    iget-object p1, p0, Lcom/android/server/statusbar/StatusBarManagerService$2;->this$0:Lcom/android/server/statusbar/StatusBarManagerService;
-
-    invoke-static {p1}, Lcom/android/server/statusbar/StatusBarManagerService;->access$1300(Lcom/android/server/statusbar/StatusBarManagerService;)Lcom/android/server/policy/GlobalActionsProvider$GlobalActionsListener;
-
-    move-result-object p1
-
+    .line 488
     iget-object v0, p0, Lcom/android/server/statusbar/StatusBarManagerService$2;->this$0:Lcom/android/server/statusbar/StatusBarManagerService;
 
-    invoke-static {v0}, Lcom/android/server/statusbar/StatusBarManagerService;->access$100(Lcom/android/server/statusbar/StatusBarManagerService;)Lcom/android/internal/statusbar/IStatusBar;
+    invoke-static {v0}, Lcom/android/server/statusbar/StatusBarManagerService;->access$1400(Lcom/android/server/statusbar/StatusBarManagerService;)Lcom/android/server/policy/GlobalActionsProvider$GlobalActionsListener;
 
     move-result-object v0
 
-    if-eqz v0, :cond_15
+    iget-object v1, p0, Lcom/android/server/statusbar/StatusBarManagerService$2;->this$0:Lcom/android/server/statusbar/StatusBarManagerService;
 
-    const/4 v0, 0x1
+    invoke-static {v1}, Lcom/android/server/statusbar/StatusBarManagerService;->access$100(Lcom/android/server/statusbar/StatusBarManagerService;)Lcom/android/internal/statusbar/IStatusBar;
+
+    move-result-object v1
+
+    if-eqz v1, :cond_15
+
+    const/4 v1, 0x1
 
     goto :goto_16
 
     :cond_15
-    const/4 v0, 0x0
+    const/4 v1, 0x0
 
     :goto_16
-    invoke-interface {p1, v0}, Lcom/android/server/policy/GlobalActionsProvider$GlobalActionsListener;->onGlobalActionsAvailableChanged(Z)V
+    invoke-interface {v0, v1}, Lcom/android/server/policy/GlobalActionsProvider$GlobalActionsListener;->onGlobalActionsAvailableChanged(Z)V
 
-    .line 483
+    .line 489
     return-void
 .end method
 
 .method public showGlobalActions()V
     .registers 2
 
-    .line 487
+    .line 493
     iget-object v0, p0, Lcom/android/server/statusbar/StatusBarManagerService$2;->this$0:Lcom/android/server/statusbar/StatusBarManagerService;
 
     invoke-static {v0}, Lcom/android/server/statusbar/StatusBarManagerService;->access$100(Lcom/android/server/statusbar/StatusBarManagerService;)Lcom/android/internal/statusbar/IStatusBar;
@@ -117,7 +120,7 @@
 
     if-eqz v0, :cond_13
 
-    .line 489
+    .line 495
     :try_start_8
     iget-object v0, p0, Lcom/android/server/statusbar/StatusBarManagerService$2;->this$0:Lcom/android/server/statusbar/StatusBarManagerService;
 
@@ -131,11 +134,11 @@
 
     goto :goto_13
 
-    .line 490
+    .line 496
     :catch_12
     move-exception v0
 
-    .line 492
+    .line 498
     :cond_13
     :goto_13
     return-void

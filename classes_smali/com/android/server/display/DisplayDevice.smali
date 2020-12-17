@@ -26,6 +26,9 @@
 # direct methods
 .method public constructor <init>(Lcom/android/server/display/DisplayAdapter;Landroid/os/IBinder;Ljava/lang/String;)V
     .registers 5
+    .param p1, "displayAdapter"  # Lcom/android/server/display/DisplayAdapter;
+    .param p2, "displayToken"  # Landroid/os/IBinder;
+    .param p3, "uniqueId"  # Ljava/lang/String;
 
     .line 55
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -62,13 +65,14 @@
 
 .method public dumpLocked(Ljava/io/PrintWriter;)V
     .registers 4
+    .param p1, "pw"  # Ljava/io/PrintWriter;
 
     .line 252
     new-instance v0, Ljava/lang/StringBuilder;
 
     invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v1, "mAdapter="
+    const-string/jumbo v1, "mAdapter="
 
     invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
@@ -91,7 +95,7 @@
 
     invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v1, "mUniqueId="
+    const-string/jumbo v1, "mUniqueId="
 
     invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
@@ -110,7 +114,7 @@
 
     invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v1, "mDisplayToken="
+    const-string/jumbo v1, "mDisplayToken="
 
     invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
@@ -129,7 +133,7 @@
 
     invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v1, "mCurrentLayerStack="
+    const-string/jumbo v1, "mCurrentLayerStack="
 
     invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
@@ -148,7 +152,7 @@
 
     invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v1, "mCurrentOrientation="
+    const-string/jumbo v1, "mCurrentOrientation="
 
     invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
@@ -167,7 +171,7 @@
 
     invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v1, "mCurrentLayerStackRect="
+    const-string/jumbo v1, "mCurrentLayerStackRect="
 
     invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
@@ -186,7 +190,7 @@
 
     invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v1, "mCurrentDisplayRect="
+    const-string/jumbo v1, "mCurrentDisplayRect="
 
     invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
@@ -205,7 +209,7 @@
 
     invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v1, "mCurrentSurface="
+    const-string/jumbo v1, "mCurrentSurface="
 
     invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
@@ -278,6 +282,7 @@
 
 .method public performTraversalLocked(Landroid/view/SurfaceControl$Transaction;)V
     .registers 2
+    .param p1, "t"  # Landroid/view/SurfaceControl$Transaction;
 
     .line 126
     return-void
@@ -285,6 +290,7 @@
 
 .method public final populateViewportLocked(Landroid/hardware/display/DisplayViewport;)V
     .registers 5
+    .param p1, "viewport"  # Landroid/hardware/display/DisplayViewport;
 
     .line 218
     iget v0, p0, Lcom/android/server/display/DisplayDevice;->mCurrentOrientation:I
@@ -349,90 +355,97 @@
     :cond_2f
     const/4 v1, 0x0
 
-    .line 234
     :cond_30
     :goto_30
+    move v0, v1
+
+    .line 234
+    .local v0, "isRotated":Z
     invoke-virtual {p0}, Lcom/android/server/display/DisplayDevice;->getDisplayDeviceInfoLocked()Lcom/android/server/display/DisplayDeviceInfo;
 
-    move-result-object v0
+    move-result-object v1
 
     .line 235
-    if-eqz v1, :cond_39
+    .local v1, "info":Lcom/android/server/display/DisplayDeviceInfo;
+    if-eqz v0, :cond_3a
 
-    iget v2, v0, Lcom/android/server/display/DisplayDeviceInfo;->height:I
+    iget v2, v1, Lcom/android/server/display/DisplayDeviceInfo;->height:I
 
-    goto :goto_3b
+    goto :goto_3c
 
-    :cond_39
-    iget v2, v0, Lcom/android/server/display/DisplayDeviceInfo;->width:I
+    :cond_3a
+    iget v2, v1, Lcom/android/server/display/DisplayDeviceInfo;->width:I
 
-    :goto_3b
+    :goto_3c
     iput v2, p1, Landroid/hardware/display/DisplayViewport;->deviceWidth:I
 
     .line 236
-    if-eqz v1, :cond_42
+    if-eqz v0, :cond_43
 
-    iget v1, v0, Lcom/android/server/display/DisplayDeviceInfo;->width:I
+    iget v2, v1, Lcom/android/server/display/DisplayDeviceInfo;->width:I
 
-    goto :goto_44
+    goto :goto_45
 
-    :cond_42
-    iget v1, v0, Lcom/android/server/display/DisplayDeviceInfo;->height:I
+    :cond_43
+    iget v2, v1, Lcom/android/server/display/DisplayDeviceInfo;->height:I
 
-    :goto_44
-    iput v1, p1, Landroid/hardware/display/DisplayViewport;->deviceHeight:I
+    :goto_45
+    iput v2, p1, Landroid/hardware/display/DisplayViewport;->deviceHeight:I
 
     .line 238
-    iget-object v1, v0, Lcom/android/server/display/DisplayDeviceInfo;->uniqueId:Ljava/lang/String;
+    iget-object v2, v1, Lcom/android/server/display/DisplayDeviceInfo;->uniqueId:Ljava/lang/String;
 
-    iput-object v1, p1, Landroid/hardware/display/DisplayViewport;->uniqueId:Ljava/lang/String;
+    iput-object v2, p1, Landroid/hardware/display/DisplayViewport;->uniqueId:Ljava/lang/String;
 
     .line 240
-    iget-object v1, v0, Lcom/android/server/display/DisplayDeviceInfo;->address:Landroid/view/DisplayAddress;
+    iget-object v2, v1, Lcom/android/server/display/DisplayDeviceInfo;->address:Landroid/view/DisplayAddress;
 
-    instance-of v1, v1, Landroid/view/DisplayAddress$Physical;
+    instance-of v2, v2, Landroid/view/DisplayAddress$Physical;
 
-    if-eqz v1, :cond_5f
+    if-eqz v2, :cond_60
 
     .line 241
-    iget-object v0, v0, Lcom/android/server/display/DisplayDeviceInfo;->address:Landroid/view/DisplayAddress;
+    iget-object v2, v1, Lcom/android/server/display/DisplayDeviceInfo;->address:Landroid/view/DisplayAddress;
 
-    check-cast v0, Landroid/view/DisplayAddress$Physical;
+    check-cast v2, Landroid/view/DisplayAddress$Physical;
 
-    invoke-virtual {v0}, Landroid/view/DisplayAddress$Physical;->getPort()B
+    invoke-virtual {v2}, Landroid/view/DisplayAddress$Physical;->getPort()B
 
-    move-result v0
+    move-result v2
 
-    invoke-static {v0}, Ljava/lang/Byte;->valueOf(B)Ljava/lang/Byte;
+    invoke-static {v2}, Ljava/lang/Byte;->valueOf(B)Ljava/lang/Byte;
 
-    move-result-object v0
+    move-result-object v2
 
-    iput-object v0, p1, Landroid/hardware/display/DisplayViewport;->physicalPort:Ljava/lang/Byte;
+    iput-object v2, p1, Landroid/hardware/display/DisplayViewport;->physicalPort:Ljava/lang/Byte;
 
-    goto :goto_62
+    goto :goto_63
 
     .line 243
-    :cond_5f
-    const/4 v0, 0x0
+    :cond_60
+    const/4 v2, 0x0
 
-    iput-object v0, p1, Landroid/hardware/display/DisplayViewport;->physicalPort:Ljava/lang/Byte;
+    iput-object v2, p1, Landroid/hardware/display/DisplayViewport;->physicalPort:Ljava/lang/Byte;
 
     .line 245
-    :goto_62
+    :goto_63
     return-void
 .end method
 
 .method public requestDisplayStateLocked(II)Ljava/lang/Runnable;
-    .registers 3
+    .registers 4
+    .param p1, "state"  # I
+    .param p2, "brightness"  # I
 
     .line 137
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    return-object p1
+    return-object v0
 .end method
 
 .method public setAllowedDisplayModesLocked([I)V
     .registers 2
+    .param p1, "modes"  # [I
 
     .line 148
     return-void
@@ -440,6 +453,8 @@
 
 .method public final setLayerStackLocked(Landroid/view/SurfaceControl$Transaction;I)V
     .registers 4
+    .param p1, "t"  # Landroid/view/SurfaceControl$Transaction;
+    .param p2, "layerStack"  # I
 
     .line 163
     iget v0, p0, Lcom/android/server/display/DisplayDevice;->mCurrentLayerStack:I
@@ -461,6 +476,10 @@
 
 .method public final setProjectionLocked(Landroid/view/SurfaceControl$Transaction;ILandroid/graphics/Rect;Landroid/graphics/Rect;)V
     .registers 6
+    .param p1, "t"  # Landroid/view/SurfaceControl$Transaction;
+    .param p2, "orientation"  # I
+    .param p3, "layerStackRect"  # Landroid/graphics/Rect;
+    .param p4, "displayRect"  # Landroid/graphics/Rect;
 
     .line 181
     iget v0, p0, Lcom/android/server/display/DisplayDevice;->mCurrentOrientation:I
@@ -541,6 +560,7 @@
 
 .method public setRequestedColorModeLocked(I)V
     .registers 2
+    .param p1, "colorMode"  # I
 
     .line 154
     return-void
@@ -548,6 +568,8 @@
 
 .method public final setSurfaceLocked(Landroid/view/SurfaceControl$Transaction;Landroid/view/Surface;)V
     .registers 4
+    .param p1, "t"  # Landroid/view/SurfaceControl$Transaction;
+    .param p2, "surface"  # Landroid/view/Surface;
 
     .line 207
     iget-object v0, p0, Lcom/android/server/display/DisplayDevice;->mCurrentSurface:Landroid/view/Surface;

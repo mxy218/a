@@ -21,8 +21,9 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/wm/WindowManagerService;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/wm/WindowManagerService;
 
-    .line 413
+    .line 425
     iput-object p1, p0, Lcom/android/server/wm/WindowManagerService$2;->this$0:Lcom/android/server/wm/WindowManagerService;
 
     invoke-direct {p0}, Landroid/content/BroadcastReceiver;-><init>()V
@@ -33,60 +34,62 @@
 
 # virtual methods
 .method public onReceive(Landroid/content/Context;Landroid/content/Intent;)V
-    .registers 4
+    .registers 6
+    .param p1, "context"  # Landroid/content/Context;
+    .param p2, "intent"  # Landroid/content/Intent;
 
-    .line 416
+    .line 428
     invoke-virtual {p2}, Landroid/content/Intent;->getAction()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    invoke-virtual {p1}, Ljava/lang/String;->hashCode()I
+    invoke-virtual {v0}, Ljava/lang/String;->hashCode()I
 
-    move-result p2
+    move-result v1
 
-    const v0, 0x3ae4d524
+    const v2, 0x3ae4d524
 
-    if-eq p2, v0, :cond_e
+    if-eq v1, v2, :cond_e
 
     :cond_d
     goto :goto_18
 
     :cond_e
-    const-string p2, "android.app.action.DEVICE_POLICY_MANAGER_STATE_CHANGED"
+    const-string v1, "android.app.action.DEVICE_POLICY_MANAGER_STATE_CHANGED"
 
-    invoke-virtual {p1, p2}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v0, v1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result p1
+    move-result v0
 
-    if-eqz p1, :cond_d
+    if-eqz v0, :cond_d
 
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
     goto :goto_19
 
     :goto_18
-    const/4 p1, -0x1
+    const/4 v0, -0x1
 
     :goto_19
-    if-eqz p1, :cond_1c
+    if-eqz v0, :cond_1c
 
     goto :goto_29
 
-    .line 418
+    .line 430
     :cond_1c
-    iget-object p1, p0, Lcom/android/server/wm/WindowManagerService$2;->this$0:Lcom/android/server/wm/WindowManagerService;
+    iget-object v0, p0, Lcom/android/server/wm/WindowManagerService$2;->this$0:Lcom/android/server/wm/WindowManagerService;
 
-    invoke-static {p1}, Lcom/android/server/wm/WindowManagerService;->access$000(Lcom/android/server/wm/WindowManagerService;)Lcom/android/server/wm/KeyguardDisableHandler;
+    invoke-static {v0}, Lcom/android/server/wm/WindowManagerService;->access$000(Lcom/android/server/wm/WindowManagerService;)Lcom/android/server/wm/KeyguardDisableHandler;
 
-    move-result-object p1
+    move-result-object v0
 
     invoke-virtual {p0}, Lcom/android/server/wm/WindowManagerService$2;->getSendingUserId()I
 
-    move-result p2
+    move-result v1
 
-    invoke-virtual {p1, p2}, Lcom/android/server/wm/KeyguardDisableHandler;->updateKeyguardEnabled(I)V
+    invoke-virtual {v0, v1}, Lcom/android/server/wm/KeyguardDisableHandler;->updateKeyguardEnabled(I)V
 
-    .line 421
+    .line 433
     :goto_29
     return-void
 .end method

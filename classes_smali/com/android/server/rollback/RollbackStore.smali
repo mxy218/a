@@ -14,6 +14,7 @@
 # direct methods
 .method constructor <init>(Ljava/io/File;)V
     .registers 2
+    .param p1, "rollbackDataDir"  # Ljava/io/File;
 
     .line 71
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -26,7 +27,10 @@
 .end method
 
 .method static backupPackageCodePath(Lcom/android/server/rollback/RollbackData;Ljava/lang/String;Ljava/lang/String;)V
-    .registers 4
+    .registers 9
+    .param p0, "data"  # Lcom/android/server/rollback/RollbackData;
+    .param p1, "packageName"  # Ljava/lang/String;
+    .param p2, "codePath"  # Ljava/lang/String;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Ljava/io/IOException;
@@ -39,38 +43,41 @@
     invoke-direct {v0, p2}, Ljava/io/File;-><init>(Ljava/lang/String;)V
 
     .line 219
-    new-instance p2, Ljava/io/File;
+    .local v0, "sourceFile":Ljava/io/File;
+    new-instance v1, Ljava/io/File;
 
-    iget-object p0, p0, Lcom/android/server/rollback/RollbackData;->backupDir:Ljava/io/File;
+    iget-object v2, p0, Lcom/android/server/rollback/RollbackData;->backupDir:Ljava/io/File;
 
-    invoke-direct {p2, p0, p1}, Ljava/io/File;-><init>(Ljava/io/File;Ljava/lang/String;)V
+    invoke-direct {v1, v2, p1}, Ljava/io/File;-><init>(Ljava/io/File;Ljava/lang/String;)V
 
     .line 220
-    invoke-virtual {p2}, Ljava/io/File;->mkdirs()Z
+    .local v1, "targetDir":Ljava/io/File;
+    invoke-virtual {v1}, Ljava/io/File;->mkdirs()Z
 
     .line 221
-    new-instance p0, Ljava/io/File;
+    new-instance v2, Ljava/io/File;
 
     invoke-virtual {v0}, Ljava/io/File;->getName()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v3
 
-    invoke-direct {p0, p2, p1}, Ljava/io/File;-><init>(Ljava/io/File;Ljava/lang/String;)V
+    invoke-direct {v2, v1, v3}, Ljava/io/File;-><init>(Ljava/io/File;Ljava/lang/String;)V
 
     .line 224
+    .local v2, "targetFile":Ljava/io/File;
     invoke-virtual {v0}, Ljava/io/File;->toPath()Ljava/nio/file/Path;
 
-    move-result-object p1
+    move-result-object v3
 
-    invoke-virtual {p0}, Ljava/io/File;->toPath()Ljava/nio/file/Path;
+    invoke-virtual {v2}, Ljava/io/File;->toPath()Ljava/nio/file/Path;
 
-    move-result-object p0
+    move-result-object v4
 
-    const/4 p2, 0x0
+    const/4 v5, 0x0
 
-    new-array p2, p2, [Ljava/nio/file/CopyOption;
+    new-array v5, v5, [Ljava/nio/file/CopyOption;
 
-    invoke-static {p1, p0, p2}, Ljava/nio/file/Files;->copy(Ljava/nio/file/Path;Ljava/nio/file/Path;[Ljava/nio/file/CopyOption;)Ljava/nio/file/Path;
+    invoke-static {v3, v4, v5}, Ljava/nio/file/Files;->copy(Ljava/nio/file/Path;Ljava/nio/file/Path;[Ljava/nio/file/CopyOption;)Ljava/nio/file/Path;
 
     .line 225
     return-void
@@ -78,6 +85,7 @@
 
 .method private static ceSnapshotInodesFromJson(Lorg/json/JSONArray;)Landroid/util/SparseLongArray;
     .registers 7
+    .param p0, "json"  # Lorg/json/JSONArray;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Lorg/json/JSONException;
@@ -94,8 +102,10 @@
     invoke-direct {v0, v1}, Landroid/util/SparseLongArray;-><init>(I)V
 
     .line 167
+    .local v0, "ceSnapshotInodes":Landroid/util/SparseLongArray;
     const/4 v1, 0x0
 
+    .local v1, "i":I
     :goto_a
     invoke-virtual {p0}, Lorg/json/JSONArray;->length()I
 
@@ -109,6 +119,7 @@
     move-result-object v2
 
     .line 169
+    .local v2, "entry":Lorg/json/JSONObject;
     const-string/jumbo v3, "userId"
 
     invoke-virtual {v2, v3}, Lorg/json/JSONObject;->getInt(Ljava/lang/String;)I
@@ -124,17 +135,20 @@
     invoke-virtual {v0, v3, v4, v5}, Landroid/util/SparseLongArray;->append(IJ)V
 
     .line 167
+    .end local v2  # "entry":Lorg/json/JSONObject;
     add-int/lit8 v1, v1, 0x1
 
     goto :goto_a
 
     .line 171
+    .end local v1  # "i":I
     :cond_27
     return-object v0
 .end method
 
 .method private static ceSnapshotInodesToJson(Landroid/util/SparseLongArray;)Lorg/json/JSONArray;
     .registers 7
+    .param p0, "ceSnapshotInodes"  # Landroid/util/SparseLongArray;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Lorg/json/JSONException;
@@ -147,8 +161,10 @@
     invoke-direct {v0}, Lorg/json/JSONArray;-><init>()V
 
     .line 155
+    .local v0, "array":Lorg/json/JSONArray;
     const/4 v1, 0x0
 
+    .local v1, "i":I
     :goto_6
     invoke-virtual {p0}, Landroid/util/SparseLongArray;->size()I
 
@@ -162,6 +178,7 @@
     invoke-direct {v2}, Lorg/json/JSONObject;-><init>()V
 
     .line 157
+    .local v2, "entryJson":Lorg/json/JSONObject;
     invoke-virtual {p0, v1}, Landroid/util/SparseLongArray;->keyAt(I)I
 
     move-result v3
@@ -183,17 +200,20 @@
     invoke-virtual {v0, v2}, Lorg/json/JSONArray;->put(Ljava/lang/Object;)Lorg/json/JSONArray;
 
     .line 155
+    .end local v2  # "entryJson":Lorg/json/JSONObject;
     add-int/lit8 v1, v1, 0x1
 
     goto :goto_6
 
     .line 161
+    .end local v1  # "i":I
     :cond_2a
     return-object v0
 .end method
 
 .method private static convertToIntArray(Lorg/json/JSONArray;)Landroid/util/IntArray;
     .registers 4
+    .param p0, "jsonArray"  # Lorg/json/JSONArray;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Lorg/json/JSONException;
@@ -208,11 +228,11 @@
     if-nez v0, :cond_c
 
     .line 100
-    new-instance p0, Landroid/util/IntArray;
+    new-instance v0, Landroid/util/IntArray;
 
-    invoke-direct {p0}, Landroid/util/IntArray;-><init>()V
+    invoke-direct {v0}, Landroid/util/IntArray;-><init>()V
 
-    return-object p0
+    return-object v0
 
     .line 103
     :cond_c
@@ -223,8 +243,10 @@
     new-array v0, v0, [I
 
     .line 104
+    .local v0, "ret":[I
     const/4 v1, 0x0
 
+    .local v1, "i":I
     :goto_13
     array-length v2, v0
 
@@ -243,16 +265,18 @@
     goto :goto_13
 
     .line 108
+    .end local v1  # "i":I
     :cond_1f
     invoke-static {v0}, Landroid/util/IntArray;->wrap([I)Landroid/util/IntArray;
 
-    move-result-object p0
+    move-result-object v1
 
-    return-object p0
+    return-object v1
 .end method
 
 .method private static convertToJsonArray(Landroid/util/IntArray;)Lorg/json/JSONArray;
     .registers 4
+    .param p0, "intArray"  # Landroid/util/IntArray;
 
     .line 115
     new-instance v0, Lorg/json/JSONArray;
@@ -260,8 +284,10 @@
     invoke-direct {v0}, Lorg/json/JSONArray;-><init>()V
 
     .line 116
+    .local v0, "jsonArray":Lorg/json/JSONArray;
     const/4 v1, 0x0
 
+    .local v1, "i":I
     :goto_6
     invoke-virtual {p0}, Landroid/util/IntArray;->size()I
 
@@ -282,12 +308,13 @@
     goto :goto_6
 
     .line 120
+    .end local v1  # "i":I
     :cond_16
     return-object v0
 .end method
 
 .method private static convertToJsonArray(Ljava/util/List;)Lorg/json/JSONArray;
-    .registers 6
+    .registers 7
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(",
@@ -305,58 +332,64 @@
     .end annotation
 
     .line 125
+    .local p0, "list":Ljava/util/List;, "Ljava/util/List<Landroid/content/rollback/PackageRollbackInfo$RestoreInfo;>;"
     new-instance v0, Lorg/json/JSONArray;
 
     invoke-direct {v0}, Lorg/json/JSONArray;-><init>()V
 
     .line 126
+    .local v0, "jsonArray":Lorg/json/JSONArray;
     invoke-interface {p0}, Ljava/util/List;->iterator()Ljava/util/Iterator;
-
-    move-result-object p0
-
-    :goto_9
-    invoke-interface {p0}, Ljava/util/Iterator;->hasNext()Z
-
-    move-result v1
-
-    if-eqz v1, :cond_35
-
-    invoke-interface {p0}, Ljava/util/Iterator;->next()Ljava/lang/Object;
 
     move-result-object v1
 
-    check-cast v1, Landroid/content/rollback/PackageRollbackInfo$RestoreInfo;
+    :goto_9
+    invoke-interface {v1}, Ljava/util/Iterator;->hasNext()Z
+
+    move-result v2
+
+    if-eqz v2, :cond_35
+
+    invoke-interface {v1}, Ljava/util/Iterator;->next()Ljava/lang/Object;
+
+    move-result-object v2
+
+    check-cast v2, Landroid/content/rollback/PackageRollbackInfo$RestoreInfo;
 
     .line 127
-    new-instance v2, Lorg/json/JSONObject;
+    .local v2, "ri":Landroid/content/rollback/PackageRollbackInfo$RestoreInfo;
+    new-instance v3, Lorg/json/JSONObject;
 
-    invoke-direct {v2}, Lorg/json/JSONObject;-><init>()V
+    invoke-direct {v3}, Lorg/json/JSONObject;-><init>()V
 
     .line 128
-    iget v3, v1, Landroid/content/rollback/PackageRollbackInfo$RestoreInfo;->userId:I
+    .local v3, "jo":Lorg/json/JSONObject;
+    iget v4, v2, Landroid/content/rollback/PackageRollbackInfo$RestoreInfo;->userId:I
 
-    const-string/jumbo v4, "userId"
+    const-string/jumbo v5, "userId"
 
-    invoke-virtual {v2, v4, v3}, Lorg/json/JSONObject;->put(Ljava/lang/String;I)Lorg/json/JSONObject;
+    invoke-virtual {v3, v5, v4}, Lorg/json/JSONObject;->put(Ljava/lang/String;I)Lorg/json/JSONObject;
 
     .line 129
-    iget v3, v1, Landroid/content/rollback/PackageRollbackInfo$RestoreInfo;->appId:I
+    iget v4, v2, Landroid/content/rollback/PackageRollbackInfo$RestoreInfo;->appId:I
 
-    const-string v4, "appId"
+    const-string v5, "appId"
 
-    invoke-virtual {v2, v4, v3}, Lorg/json/JSONObject;->put(Ljava/lang/String;I)Lorg/json/JSONObject;
+    invoke-virtual {v3, v5, v4}, Lorg/json/JSONObject;->put(Ljava/lang/String;I)Lorg/json/JSONObject;
 
     .line 130
-    iget-object v1, v1, Landroid/content/rollback/PackageRollbackInfo$RestoreInfo;->seInfo:Ljava/lang/String;
+    iget-object v4, v2, Landroid/content/rollback/PackageRollbackInfo$RestoreInfo;->seInfo:Ljava/lang/String;
 
-    const-string/jumbo v3, "seInfo"
+    const-string/jumbo v5, "seInfo"
 
-    invoke-virtual {v2, v3, v1}, Lorg/json/JSONObject;->put(Ljava/lang/String;Ljava/lang/Object;)Lorg/json/JSONObject;
+    invoke-virtual {v3, v5, v4}, Lorg/json/JSONObject;->put(Ljava/lang/String;Ljava/lang/Object;)Lorg/json/JSONObject;
 
     .line 131
-    invoke-virtual {v0, v2}, Lorg/json/JSONArray;->put(Ljava/lang/Object;)Lorg/json/JSONArray;
+    invoke-virtual {v0, v3}, Lorg/json/JSONArray;->put(Ljava/lang/Object;)Lorg/json/JSONArray;
 
     .line 132
+    .end local v2  # "ri":Landroid/content/rollback/PackageRollbackInfo$RestoreInfo;
+    .end local v3  # "jo":Lorg/json/JSONObject;
     goto :goto_9
 
     .line 134
@@ -366,6 +399,7 @@
 
 .method private static convertToRestoreInfoArray(Lorg/json/JSONArray;)Ljava/util/ArrayList;
     .registers 8
+    .param p0, "array"  # Lorg/json/JSONArray;
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(",
@@ -389,8 +423,10 @@
     invoke-direct {v0}, Ljava/util/ArrayList;-><init>()V
 
     .line 141
+    .local v0, "restoreInfos":Ljava/util/ArrayList;, "Ljava/util/ArrayList<Landroid/content/rollback/PackageRollbackInfo$RestoreInfo;>;"
     const/4 v1, 0x0
 
+    .local v1, "i":I
     :goto_6
     invoke-virtual {p0}, Lorg/json/JSONArray;->length()I
 
@@ -404,6 +440,7 @@
     move-result-object v2
 
     .line 143
+    .local v2, "jo":Lorg/json/JSONObject;
     new-instance v3, Landroid/content/rollback/PackageRollbackInfo$RestoreInfo;
 
     .line 144
@@ -425,25 +462,28 @@
 
     invoke-virtual {v2, v6}, Lorg/json/JSONObject;->getString(Ljava/lang/String;)Ljava/lang/String;
 
-    move-result-object v2
+    move-result-object v6
 
-    invoke-direct {v3, v4, v5, v2}, Landroid/content/rollback/PackageRollbackInfo$RestoreInfo;-><init>(IILjava/lang/String;)V
+    invoke-direct {v3, v4, v5, v6}, Landroid/content/rollback/PackageRollbackInfo$RestoreInfo;-><init>(IILjava/lang/String;)V
 
     .line 143
     invoke-virtual {v0, v3}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
 
     .line 141
+    .end local v2  # "jo":Lorg/json/JSONObject;
     add-int/lit8 v1, v1, 0x1
 
     goto :goto_6
 
     .line 149
+    .end local v1  # "i":I
     :cond_2f
     return-object v0
 .end method
 
 .method static deletePackageCodePaths(Lcom/android/server/rollback/RollbackData;)V
-    .registers 5
+    .registers 6
+    .param p0, "data"  # Lcom/android/server/rollback/RollbackData;
 
     .line 245
     iget-object v0, p0, Lcom/android/server/rollback/RollbackData;->info:Landroid/content/rollback/RollbackInfo;
@@ -470,20 +510,24 @@
     check-cast v1, Landroid/content/rollback/PackageRollbackInfo;
 
     .line 246
+    .local v1, "info":Landroid/content/rollback/PackageRollbackInfo;
     new-instance v2, Ljava/io/File;
 
     iget-object v3, p0, Lcom/android/server/rollback/RollbackData;->backupDir:Ljava/io/File;
 
     invoke-virtual {v1}, Landroid/content/rollback/PackageRollbackInfo;->getPackageName()Ljava/lang/String;
 
-    move-result-object v1
+    move-result-object v4
 
-    invoke-direct {v2, v3, v1}, Ljava/io/File;-><init>(Ljava/io/File;Ljava/lang/String;)V
+    invoke-direct {v2, v3, v4}, Ljava/io/File;-><init>(Ljava/io/File;Ljava/lang/String;)V
 
     .line 247
+    .local v2, "targetDir":Ljava/io/File;
     invoke-static {v2}, Lcom/android/server/rollback/RollbackStore;->removeFile(Ljava/io/File;)V
 
     .line 248
+    .end local v1  # "info":Landroid/content/rollback/PackageRollbackInfo;
+    .end local v2  # "targetDir":Ljava/io/File;
     goto :goto_a
 
     .line 249
@@ -492,43 +536,48 @@
 .end method
 
 .method static getPackageCodePaths(Lcom/android/server/rollback/RollbackData;Ljava/lang/String;)[Ljava/io/File;
-    .registers 3
+    .registers 5
+    .param p0, "data"  # Lcom/android/server/rollback/RollbackData;
+    .param p1, "packageName"  # Ljava/lang/String;
 
     .line 232
     new-instance v0, Ljava/io/File;
 
-    iget-object p0, p0, Lcom/android/server/rollback/RollbackData;->backupDir:Ljava/io/File;
+    iget-object v1, p0, Lcom/android/server/rollback/RollbackData;->backupDir:Ljava/io/File;
 
-    invoke-direct {v0, p0, p1}, Ljava/io/File;-><init>(Ljava/io/File;Ljava/lang/String;)V
+    invoke-direct {v0, v1, p1}, Ljava/io/File;-><init>(Ljava/io/File;Ljava/lang/String;)V
 
     .line 233
+    .local v0, "targetDir":Ljava/io/File;
     invoke-virtual {v0}, Ljava/io/File;->listFiles()[Ljava/io/File;
 
-    move-result-object p0
+    move-result-object v1
 
     .line 234
-    if-eqz p0, :cond_12
+    .local v1, "files":[Ljava/io/File;
+    if-eqz v1, :cond_12
 
-    array-length p1, p0
+    array-length v2, v1
 
-    if-nez p1, :cond_11
+    if-nez v2, :cond_11
 
     goto :goto_12
 
     .line 237
     :cond_11
-    return-object p0
+    return-object v1
 
     .line 235
     :cond_12
     :goto_12
-    const/4 p0, 0x0
+    const/4 v2, 0x0
 
-    return-object p0
+    return-object v2
 .end method
 
 .method private static loadRollbackData(Ljava/io/File;)Lcom/android/server/rollback/RollbackData;
-    .registers 11
+    .registers 12
+    .param p0, "backupDir"  # Ljava/io/File;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Ljava/io/IOException;
@@ -544,23 +593,25 @@
     invoke-direct {v0, p0, v1}, Ljava/io/File;-><init>(Ljava/io/File;Ljava/lang/String;)V
 
     .line 286
+    .local v0, "rollbackJsonFile":Ljava/io/File;
     new-instance v1, Lorg/json/JSONObject;
 
     .line 287
     invoke-virtual {v0}, Ljava/io/File;->getAbsolutePath()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v2
 
-    invoke-static {v0}, Llibcore/io/IoUtils;->readFileAsString(Ljava/lang/String;)Ljava/lang/String;
+    invoke-static {v2}, Llibcore/io/IoUtils;->readFileAsString(Ljava/lang/String;)Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v2
 
-    invoke-direct {v1, v0}, Lorg/json/JSONObject;-><init>(Ljava/lang/String;)V
+    invoke-direct {v1, v2}, Lorg/json/JSONObject;-><init>(Ljava/lang/String;)V
 
     .line 289
-    new-instance v0, Lcom/android/server/rollback/RollbackData;
+    .local v1, "dataJson":Lorg/json/JSONObject;
+    new-instance v10, Lcom/android/server/rollback/RollbackData;
 
-    const-string v2, "info"
+    const-string/jumbo v2, "info"
 
     .line 290
     invoke-virtual {v1, v2}, Lorg/json/JSONObject;->getJSONObject(Ljava/lang/String;)Lorg/json/JSONObject;
@@ -614,33 +665,37 @@
 
     move-result v9
 
-    move-object v2, v0
+    move-object v2, v10
 
     move-object v4, p0
 
     invoke-direct/range {v2 .. v9}, Lcom/android/server/rollback/RollbackData;-><init>(Landroid/content/rollback/RollbackInfo;Ljava/io/File;Ljava/time/Instant;IIIZ)V
-    :try_end_50
-    .catch Lorg/json/JSONException; {:try_start_0 .. :try_end_50} :catch_51
-    .catch Ljava/time/format/DateTimeParseException; {:try_start_0 .. :try_end_50} :catch_51
-    .catch Ljava/text/ParseException; {:try_start_0 .. :try_end_50} :catch_51
+    :try_end_51
+    .catch Lorg/json/JSONException; {:try_start_0 .. :try_end_51} :catch_52
+    .catch Ljava/time/format/DateTimeParseException; {:try_start_0 .. :try_end_51} :catch_52
+    .catch Ljava/text/ParseException; {:try_start_0 .. :try_end_51} :catch_52
 
     .line 289
-    return-object v0
+    return-object v10
 
     .line 297
-    :catch_51
-    move-exception p0
+    .end local v0  # "rollbackJsonFile":Ljava/io/File;
+    .end local v1  # "dataJson":Lorg/json/JSONObject;
+    :catch_52
+    move-exception v0
 
     .line 298
-    new-instance v0, Ljava/io/IOException;
+    .local v0, "e":Ljava/lang/Exception;
+    new-instance v1, Ljava/io/IOException;
 
-    invoke-direct {v0, p0}, Ljava/io/IOException;-><init>(Ljava/lang/Throwable;)V
+    invoke-direct {v1, v0}, Ljava/io/IOException;-><init>(Ljava/lang/Throwable;)V
 
-    throw v0
+    throw v1
 .end method
 
 .method private static packageRollbackInfoFromJson(Lorg/json/JSONObject;)Landroid/content/rollback/PackageRollbackInfo;
-    .registers 10
+    .registers 18
+    .param p0, "json"  # Lorg/json/JSONObject;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Lorg/json/JSONException;
@@ -648,110 +703,132 @@
     .end annotation
 
     .line 336
-    nop
+    move-object/from16 v0, p0
 
     .line 337
-    const-string/jumbo v0, "versionRolledBackFrom"
+    const-string/jumbo v1, "versionRolledBackFrom"
 
-    invoke-virtual {p0, v0}, Lorg/json/JSONObject;->getJSONObject(Ljava/lang/String;)Lorg/json/JSONObject;
+    invoke-virtual {v0, v1}, Lorg/json/JSONObject;->getJSONObject(Ljava/lang/String;)Lorg/json/JSONObject;
 
-    move-result-object v0
+    move-result-object v1
 
     .line 336
-    invoke-static {v0}, Lcom/android/server/rollback/RollbackStore;->versionedPackageFromJson(Lorg/json/JSONObject;)Landroid/content/pm/VersionedPackage;
+    invoke-static {v1}, Lcom/android/server/rollback/RollbackStore;->versionedPackageFromJson(Lorg/json/JSONObject;)Landroid/content/pm/VersionedPackage;
+
+    move-result-object v1
+
+    .line 338
+    .local v1, "versionRolledBackFrom":Landroid/content/pm/VersionedPackage;
+    nop
+
+    .line 339
+    const-string/jumbo v2, "versionRolledBackTo"
+
+    invoke-virtual {v0, v2}, Lorg/json/JSONObject;->getJSONObject(Ljava/lang/String;)Lorg/json/JSONObject;
 
     move-result-object v2
 
     .line 338
-    nop
+    invoke-static {v2}, Lcom/android/server/rollback/RollbackStore;->versionedPackageFromJson(Lorg/json/JSONObject;)Landroid/content/pm/VersionedPackage;
 
-    .line 339
-    const-string/jumbo v0, "versionRolledBackTo"
-
-    invoke-virtual {p0, v0}, Lorg/json/JSONObject;->getJSONObject(Ljava/lang/String;)Lorg/json/JSONObject;
-
-    move-result-object v0
-
-    .line 338
-    invoke-static {v0}, Lcom/android/server/rollback/RollbackStore;->versionedPackageFromJson(Lorg/json/JSONObject;)Landroid/content/pm/VersionedPackage;
-
-    move-result-object v3
+    move-result-object v10
 
     .line 341
+    .local v10, "versionRolledBackTo":Landroid/content/pm/VersionedPackage;
     nop
 
     .line 342
-    const-string/jumbo v0, "pendingBackups"
+    const-string/jumbo v2, "pendingBackups"
 
-    invoke-virtual {p0, v0}, Lorg/json/JSONObject;->getJSONArray(Ljava/lang/String;)Lorg/json/JSONArray;
+    invoke-virtual {v0, v2}, Lorg/json/JSONObject;->getJSONArray(Ljava/lang/String;)Lorg/json/JSONArray;
 
-    move-result-object v0
+    move-result-object v2
 
     .line 341
-    invoke-static {v0}, Lcom/android/server/rollback/RollbackStore;->convertToIntArray(Lorg/json/JSONArray;)Landroid/util/IntArray;
+    invoke-static {v2}, Lcom/android/server/rollback/RollbackStore;->convertToIntArray(Lorg/json/JSONArray;)Landroid/util/IntArray;
 
-    move-result-object v4
+    move-result-object v11
 
     .line 343
+    .local v11, "pendingBackups":Landroid/util/IntArray;
     nop
 
     .line 344
-    const-string/jumbo v0, "pendingRestores"
+    const-string/jumbo v2, "pendingRestores"
 
-    invoke-virtual {p0, v0}, Lorg/json/JSONObject;->getJSONArray(Ljava/lang/String;)Lorg/json/JSONArray;
+    invoke-virtual {v0, v2}, Lorg/json/JSONObject;->getJSONArray(Ljava/lang/String;)Lorg/json/JSONArray;
 
-    move-result-object v0
+    move-result-object v2
 
     .line 343
-    invoke-static {v0}, Lcom/android/server/rollback/RollbackStore;->convertToRestoreInfoArray(Lorg/json/JSONArray;)Ljava/util/ArrayList;
+    invoke-static {v2}, Lcom/android/server/rollback/RollbackStore;->convertToRestoreInfoArray(Lorg/json/JSONArray;)Ljava/util/ArrayList;
 
-    move-result-object v5
+    move-result-object v12
 
     .line 346
-    const-string v0, "isApex"
+    .local v12, "pendingRestores":Ljava/util/ArrayList;, "Ljava/util/ArrayList<Landroid/content/rollback/PackageRollbackInfo$RestoreInfo;>;"
+    const-string/jumbo v2, "isApex"
 
-    invoke-virtual {p0, v0}, Lorg/json/JSONObject;->getBoolean(Ljava/lang/String;)Z
+    invoke-virtual {v0, v2}, Lorg/json/JSONObject;->getBoolean(Ljava/lang/String;)Z
 
-    move-result v6
+    move-result v13
 
     .line 348
-    const-string v0, "installedUsers"
+    .local v13, "isApex":Z
+    const-string/jumbo v2, "installedUsers"
 
-    invoke-virtual {p0, v0}, Lorg/json/JSONObject;->getJSONArray(Ljava/lang/String;)Lorg/json/JSONArray;
+    invoke-virtual {v0, v2}, Lorg/json/JSONObject;->getJSONArray(Ljava/lang/String;)Lorg/json/JSONArray;
 
-    move-result-object v0
+    move-result-object v2
 
-    invoke-static {v0}, Lcom/android/server/rollback/RollbackStore;->convertToIntArray(Lorg/json/JSONArray;)Landroid/util/IntArray;
+    invoke-static {v2}, Lcom/android/server/rollback/RollbackStore;->convertToIntArray(Lorg/json/JSONArray;)Landroid/util/IntArray;
 
-    move-result-object v7
+    move-result-object v14
 
     .line 349
+    .local v14, "installedUsers":Landroid/util/IntArray;
     nop
 
     .line 350
-    const-string v0, "ceSnapshotInodes"
+    const-string v2, "ceSnapshotInodes"
 
-    invoke-virtual {p0, v0}, Lorg/json/JSONObject;->getJSONArray(Ljava/lang/String;)Lorg/json/JSONArray;
+    invoke-virtual {v0, v2}, Lorg/json/JSONObject;->getJSONArray(Ljava/lang/String;)Lorg/json/JSONArray;
 
-    move-result-object p0
+    move-result-object v2
 
     .line 349
-    invoke-static {p0}, Lcom/android/server/rollback/RollbackStore;->ceSnapshotInodesFromJson(Lorg/json/JSONArray;)Landroid/util/SparseLongArray;
+    invoke-static {v2}, Lcom/android/server/rollback/RollbackStore;->ceSnapshotInodesFromJson(Lorg/json/JSONArray;)Landroid/util/SparseLongArray;
 
-    move-result-object v8
+    move-result-object v15
 
     .line 352
-    new-instance p0, Landroid/content/rollback/PackageRollbackInfo;
+    .local v15, "ceSnapshotInodes":Landroid/util/SparseLongArray;
+    new-instance v16, Landroid/content/rollback/PackageRollbackInfo;
 
-    move-object v1, p0
+    move-object/from16 v2, v16
 
-    invoke-direct/range {v1 .. v8}, Landroid/content/rollback/PackageRollbackInfo;-><init>(Landroid/content/pm/VersionedPackage;Landroid/content/pm/VersionedPackage;Landroid/util/IntArray;Ljava/util/ArrayList;ZLandroid/util/IntArray;Landroid/util/SparseLongArray;)V
+    move-object v3, v1
 
-    return-object p0
+    move-object v4, v10
+
+    move-object v5, v11
+
+    move-object v6, v12
+
+    move v7, v13
+
+    move-object v8, v14
+
+    move-object v9, v15
+
+    invoke-direct/range {v2 .. v9}, Landroid/content/rollback/PackageRollbackInfo;-><init>(Landroid/content/pm/VersionedPackage;Landroid/content/pm/VersionedPackage;Landroid/util/IntArray;Ljava/util/ArrayList;ZLandroid/util/IntArray;Landroid/util/SparseLongArray;)V
+
+    return-object v16
 .end method
 
 .method private static packageRollbackInfosFromJson(Lorg/json/JSONArray;)Ljava/util/List;
     .registers 4
+    .param p0, "json"  # Lorg/json/JSONArray;
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(",
@@ -775,8 +852,10 @@
     invoke-direct {v0}, Ljava/util/ArrayList;-><init>()V
 
     .line 385
+    .local v0, "infos":Ljava/util/List;, "Ljava/util/List<Landroid/content/rollback/PackageRollbackInfo;>;"
     const/4 v1, 0x0
 
+    .local v1, "i":I
     :goto_6
     invoke-virtual {p0}, Lorg/json/JSONArray;->length()I
 
@@ -801,12 +880,14 @@
     goto :goto_6
 
     .line 388
+    .end local v1  # "i":I
     :cond_1a
     return-object v0
 .end method
 
 .method private static removeFile(Ljava/io/File;)V
     .registers 5
+    .param p0, "file"  # Ljava/io/File;
 
     .line 397
     invoke-virtual {p0}, Ljava/io/File;->isDirectory()Z
@@ -830,9 +911,11 @@
     aget-object v3, v0, v2
 
     .line 399
+    .local v3, "child":Ljava/io/File;
     invoke-static {v3}, Lcom/android/server/rollback/RollbackStore;->removeFile(Ljava/io/File;)V
 
     .line 398
+    .end local v3  # "child":Ljava/io/File;
     add-int/lit8 v2, v2, 0x1
 
     goto :goto_c
@@ -855,6 +938,7 @@
 
 .method private static rollbackInfoFromJson(Lorg/json/JSONObject;)Landroid/content/rollback/RollbackInfo;
     .registers 8
+    .param p0, "json"  # Lorg/json/JSONObject;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Lorg/json/JSONException;
@@ -883,7 +967,7 @@
     move-result-object v2
 
     .line 188
-    const-string v0, "isStaged"
+    const-string/jumbo v0, "isStaged"
 
     invoke-virtual {p0, v0}, Lorg/json/JSONObject;->getBoolean(Ljava/lang/String;)Z
 
@@ -917,6 +1001,7 @@
 
 .method private static rollbackInfoToJson(Landroid/content/rollback/RollbackInfo;)Lorg/json/JSONObject;
     .registers 4
+    .param p0, "rollback"  # Landroid/content/rollback/RollbackInfo;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Lorg/json/JSONException;
@@ -929,6 +1014,7 @@
     invoke-direct {v0}, Lorg/json/JSONObject;-><init>()V
 
     .line 176
+    .local v0, "json":Lorg/json/JSONObject;
     invoke-virtual {p0}, Landroid/content/rollback/RollbackInfo;->getRollbackId()I
 
     move-result v1
@@ -955,7 +1041,7 @@
 
     move-result v1
 
-    const-string v2, "isStaged"
+    const-string/jumbo v2, "isStaged"
 
     invoke-virtual {v0, v2, v1}, Lorg/json/JSONObject;->put(Ljava/lang/String;Z)Lorg/json/JSONObject;
 
@@ -975,18 +1061,18 @@
     .line 180
     invoke-virtual {p0}, Landroid/content/rollback/RollbackInfo;->getCommittedSessionId()I
 
-    move-result p0
+    move-result v1
 
-    const-string v1, "committedSessionId"
+    const-string v2, "committedSessionId"
 
-    invoke-virtual {v0, v1, p0}, Lorg/json/JSONObject;->put(Ljava/lang/String;I)Lorg/json/JSONObject;
+    invoke-virtual {v0, v2, v1}, Lorg/json/JSONObject;->put(Ljava/lang/String;I)Lorg/json/JSONObject;
 
     .line 181
     return-object v0
 .end method
 
 .method private static toJson(Ljava/util/List;)Lorg/json/JSONArray;
-    .registers 3
+    .registers 5
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(",
@@ -1004,36 +1090,40 @@
     .end annotation
 
     .line 375
+    .local p0, "infos":Ljava/util/List;, "Ljava/util/List<Landroid/content/rollback/PackageRollbackInfo;>;"
     new-instance v0, Lorg/json/JSONArray;
 
     invoke-direct {v0}, Lorg/json/JSONArray;-><init>()V
 
     .line 376
+    .local v0, "json":Lorg/json/JSONArray;
     invoke-interface {p0}, Ljava/util/List;->iterator()Ljava/util/Iterator;
 
-    move-result-object p0
+    move-result-object v1
 
     :goto_9
-    invoke-interface {p0}, Ljava/util/Iterator;->hasNext()Z
+    invoke-interface {v1}, Ljava/util/Iterator;->hasNext()Z
 
-    move-result v1
+    move-result v2
 
-    if-eqz v1, :cond_1d
+    if-eqz v2, :cond_1d
 
-    invoke-interface {p0}, Ljava/util/Iterator;->next()Ljava/lang/Object;
+    invoke-interface {v1}, Ljava/util/Iterator;->next()Ljava/lang/Object;
 
-    move-result-object v1
+    move-result-object v2
 
-    check-cast v1, Landroid/content/rollback/PackageRollbackInfo;
+    check-cast v2, Landroid/content/rollback/PackageRollbackInfo;
 
     .line 377
-    invoke-static {v1}, Lcom/android/server/rollback/RollbackStore;->toJson(Landroid/content/rollback/PackageRollbackInfo;)Lorg/json/JSONObject;
+    .local v2, "info":Landroid/content/rollback/PackageRollbackInfo;
+    invoke-static {v2}, Lcom/android/server/rollback/RollbackStore;->toJson(Landroid/content/rollback/PackageRollbackInfo;)Lorg/json/JSONObject;
 
-    move-result-object v1
+    move-result-object v3
 
-    invoke-virtual {v0, v1}, Lorg/json/JSONArray;->put(Ljava/lang/Object;)Lorg/json/JSONArray;
+    invoke-virtual {v0, v3}, Lorg/json/JSONArray;->put(Ljava/lang/Object;)Lorg/json/JSONArray;
 
     .line 378
+    .end local v2  # "info":Landroid/content/rollback/PackageRollbackInfo;
     goto :goto_9
 
     .line 379
@@ -1042,7 +1132,8 @@
 .end method
 
 .method private static toJson(Landroid/content/pm/VersionedPackage;)Lorg/json/JSONObject;
-    .registers 4
+    .registers 5
+    .param p0, "pkg"  # Landroid/content/pm/VersionedPackage;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Lorg/json/JSONException;
@@ -1055,6 +1146,7 @@
     invoke-direct {v0}, Lorg/json/JSONObject;-><init>()V
 
     .line 304
+    .local v0, "json":Lorg/json/JSONObject;
     invoke-virtual {p0}, Landroid/content/pm/VersionedPackage;->getPackageName()Ljava/lang/String;
 
     move-result-object v1
@@ -1068,16 +1160,17 @@
 
     move-result-wide v1
 
-    const-string p0, "longVersionCode"
+    const-string/jumbo v3, "longVersionCode"
 
-    invoke-virtual {v0, p0, v1, v2}, Lorg/json/JSONObject;->put(Ljava/lang/String;J)Lorg/json/JSONObject;
+    invoke-virtual {v0, v3, v1, v2}, Lorg/json/JSONObject;->put(Ljava/lang/String;J)Lorg/json/JSONObject;
 
     .line 306
     return-object v0
 .end method
 
 .method private static toJson(Landroid/content/rollback/PackageRollbackInfo;)Lorg/json/JSONObject;
-    .registers 6
+    .registers 7
+    .param p0, "info"  # Landroid/content/rollback/PackageRollbackInfo;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Lorg/json/JSONException;
@@ -1090,6 +1183,7 @@
     invoke-direct {v0}, Lorg/json/JSONObject;-><init>()V
 
     .line 317
+    .local v0, "json":Lorg/json/JSONObject;
     invoke-virtual {p0}, Landroid/content/rollback/PackageRollbackInfo;->getVersionRolledBackFrom()Landroid/content/pm/VersionedPackage;
 
     move-result-object v1
@@ -1121,70 +1215,74 @@
     move-result-object v1
 
     .line 321
+    .local v1, "pendingBackups":Landroid/util/IntArray;
     invoke-virtual {p0}, Landroid/content/rollback/PackageRollbackInfo;->getPendingRestores()Ljava/util/ArrayList;
 
     move-result-object v2
 
     .line 322
+    .local v2, "pendingRestores":Ljava/util/List;, "Ljava/util/List<Landroid/content/rollback/PackageRollbackInfo$RestoreInfo;>;"
     invoke-virtual {p0}, Landroid/content/rollback/PackageRollbackInfo;->getInstalledUsers()Landroid/util/IntArray;
 
     move-result-object v3
 
     .line 323
+    .local v3, "installedUsers":Landroid/util/IntArray;
     invoke-static {v1}, Lcom/android/server/rollback/RollbackStore;->convertToJsonArray(Landroid/util/IntArray;)Lorg/json/JSONArray;
 
-    move-result-object v1
+    move-result-object v4
 
-    const-string/jumbo v4, "pendingBackups"
+    const-string/jumbo v5, "pendingBackups"
 
-    invoke-virtual {v0, v4, v1}, Lorg/json/JSONObject;->put(Ljava/lang/String;Ljava/lang/Object;)Lorg/json/JSONObject;
+    invoke-virtual {v0, v5, v4}, Lorg/json/JSONObject;->put(Ljava/lang/String;Ljava/lang/Object;)Lorg/json/JSONObject;
 
     .line 324
     invoke-static {v2}, Lcom/android/server/rollback/RollbackStore;->convertToJsonArray(Ljava/util/List;)Lorg/json/JSONArray;
 
-    move-result-object v1
+    move-result-object v4
 
-    const-string/jumbo v2, "pendingRestores"
+    const-string/jumbo v5, "pendingRestores"
 
-    invoke-virtual {v0, v2, v1}, Lorg/json/JSONObject;->put(Ljava/lang/String;Ljava/lang/Object;)Lorg/json/JSONObject;
+    invoke-virtual {v0, v5, v4}, Lorg/json/JSONObject;->put(Ljava/lang/String;Ljava/lang/Object;)Lorg/json/JSONObject;
 
     .line 326
     invoke-virtual {p0}, Landroid/content/rollback/PackageRollbackInfo;->isApex()Z
 
-    move-result v1
+    move-result v4
 
-    const-string v2, "isApex"
+    const-string/jumbo v5, "isApex"
 
-    invoke-virtual {v0, v2, v1}, Lorg/json/JSONObject;->put(Ljava/lang/String;Z)Lorg/json/JSONObject;
+    invoke-virtual {v0, v5, v4}, Lorg/json/JSONObject;->put(Ljava/lang/String;Z)Lorg/json/JSONObject;
 
     .line 328
     invoke-static {v3}, Lcom/android/server/rollback/RollbackStore;->convertToJsonArray(Landroid/util/IntArray;)Lorg/json/JSONArray;
 
-    move-result-object v1
+    move-result-object v4
 
-    const-string v2, "installedUsers"
+    const-string/jumbo v5, "installedUsers"
 
-    invoke-virtual {v0, v2, v1}, Lorg/json/JSONObject;->put(Ljava/lang/String;Ljava/lang/Object;)Lorg/json/JSONObject;
+    invoke-virtual {v0, v5, v4}, Lorg/json/JSONObject;->put(Ljava/lang/String;Ljava/lang/Object;)Lorg/json/JSONObject;
 
     .line 329
     invoke-virtual {p0}, Landroid/content/rollback/PackageRollbackInfo;->getCeSnapshotInodes()Landroid/util/SparseLongArray;
 
-    move-result-object p0
+    move-result-object v4
 
-    invoke-static {p0}, Lcom/android/server/rollback/RollbackStore;->ceSnapshotInodesToJson(Landroid/util/SparseLongArray;)Lorg/json/JSONArray;
+    invoke-static {v4}, Lcom/android/server/rollback/RollbackStore;->ceSnapshotInodesToJson(Landroid/util/SparseLongArray;)Lorg/json/JSONArray;
 
-    move-result-object p0
+    move-result-object v4
 
-    const-string v1, "ceSnapshotInodes"
+    const-string v5, "ceSnapshotInodes"
 
-    invoke-virtual {v0, v1, p0}, Lorg/json/JSONObject;->put(Ljava/lang/String;Ljava/lang/Object;)Lorg/json/JSONObject;
+    invoke-virtual {v0, v5, v4}, Lorg/json/JSONObject;->put(Ljava/lang/String;Ljava/lang/Object;)Lorg/json/JSONObject;
 
     .line 331
     return-object v0
 .end method
 
 .method private static versionedPackageFromJson(Lorg/json/JSONObject;)Landroid/content/pm/VersionedPackage;
-    .registers 4
+    .registers 5
+    .param p0, "json"  # Lorg/json/JSONObject;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Lorg/json/JSONException;
@@ -1199,22 +1297,25 @@
     move-result-object v0
 
     .line 311
-    const-string v1, "longVersionCode"
+    .local v0, "packageName":Ljava/lang/String;
+    const-string/jumbo v1, "longVersionCode"
 
     invoke-virtual {p0, v1}, Lorg/json/JSONObject;->getLong(Ljava/lang/String;)J
 
     move-result-wide v1
 
     .line 312
-    new-instance p0, Landroid/content/pm/VersionedPackage;
+    .local v1, "longVersionCode":J
+    new-instance v3, Landroid/content/pm/VersionedPackage;
 
-    invoke-direct {p0, v0, v1, v2}, Landroid/content/pm/VersionedPackage;-><init>(Ljava/lang/String;J)V
+    invoke-direct {v3, v0, v1, v2}, Landroid/content/pm/VersionedPackage;-><init>(Ljava/lang/String;J)V
 
-    return-object p0
+    return-object v3
 .end method
 
 .method private static versionedPackagesFromJson(Lorg/json/JSONArray;)Ljava/util/List;
     .registers 4
+    .param p0, "json"  # Lorg/json/JSONArray;
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(",
@@ -1238,8 +1339,10 @@
     invoke-direct {v0}, Ljava/util/ArrayList;-><init>()V
 
     .line 368
+    .local v0, "packages":Ljava/util/List;, "Ljava/util/List<Landroid/content/pm/VersionedPackage;>;"
     const/4 v1, 0x0
 
+    .local v1, "i":I
     :goto_6
     invoke-virtual {p0}, Lorg/json/JSONArray;->length()I
 
@@ -1264,12 +1367,13 @@
     goto :goto_6
 
     .line 371
+    .end local v1  # "i":I
     :cond_1a
     return-object v0
 .end method
 
 .method private static versionedPackagesToJson(Ljava/util/List;)Lorg/json/JSONArray;
-    .registers 3
+    .registers 5
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(",
@@ -1287,36 +1391,40 @@
     .end annotation
 
     .line 358
+    .local p0, "packages":Ljava/util/List;, "Ljava/util/List<Landroid/content/pm/VersionedPackage;>;"
     new-instance v0, Lorg/json/JSONArray;
 
     invoke-direct {v0}, Lorg/json/JSONArray;-><init>()V
 
     .line 359
+    .local v0, "json":Lorg/json/JSONArray;
     invoke-interface {p0}, Ljava/util/List;->iterator()Ljava/util/Iterator;
 
-    move-result-object p0
+    move-result-object v1
 
     :goto_9
-    invoke-interface {p0}, Ljava/util/Iterator;->hasNext()Z
+    invoke-interface {v1}, Ljava/util/Iterator;->hasNext()Z
 
-    move-result v1
+    move-result v2
 
-    if-eqz v1, :cond_1d
+    if-eqz v2, :cond_1d
 
-    invoke-interface {p0}, Ljava/util/Iterator;->next()Ljava/lang/Object;
+    invoke-interface {v1}, Ljava/util/Iterator;->next()Ljava/lang/Object;
 
-    move-result-object v1
+    move-result-object v2
 
-    check-cast v1, Landroid/content/pm/VersionedPackage;
+    check-cast v2, Landroid/content/pm/VersionedPackage;
 
     .line 360
-    invoke-static {v1}, Lcom/android/server/rollback/RollbackStore;->toJson(Landroid/content/pm/VersionedPackage;)Lorg/json/JSONObject;
+    .local v2, "pkg":Landroid/content/pm/VersionedPackage;
+    invoke-static {v2}, Lcom/android/server/rollback/RollbackStore;->toJson(Landroid/content/pm/VersionedPackage;)Lorg/json/JSONObject;
 
-    move-result-object v1
+    move-result-object v3
 
-    invoke-virtual {v0, v1}, Lorg/json/JSONArray;->put(Ljava/lang/Object;)Lorg/json/JSONArray;
+    invoke-virtual {v0, v3}, Lorg/json/JSONArray;->put(Ljava/lang/Object;)Lorg/json/JSONArray;
 
     .line 361
+    .end local v2  # "pkg":Landroid/content/pm/VersionedPackage;
     goto :goto_9
 
     .line 362
@@ -1328,6 +1436,7 @@
 # virtual methods
 .method createNonStagedRollback(I)Lcom/android/server/rollback/RollbackData;
     .registers 5
+    .param p1, "rollbackId"  # I
 
     .line 198
     new-instance v0, Ljava/io/File;
@@ -1341,6 +1450,7 @@
     invoke-direct {v0, v1, v2}, Ljava/io/File;-><init>(Ljava/io/File;Ljava/lang/String;)V
 
     .line 199
+    .local v0, "backupDir":Ljava/io/File;
     new-instance v1, Lcom/android/server/rollback/RollbackData;
 
     const/4 v2, -0x1
@@ -1352,6 +1462,8 @@
 
 .method createStagedRollback(II)Lcom/android/server/rollback/RollbackData;
     .registers 6
+    .param p1, "rollbackId"  # I
+    .param p2, "stagedSessionId"  # I
 
     .line 207
     new-instance v0, Ljava/io/File;
@@ -1365,6 +1477,7 @@
     invoke-direct {v0, v1, v2}, Ljava/io/File;-><init>(Ljava/io/File;Ljava/lang/String;)V
 
     .line 208
+    .local v0, "backupDir":Ljava/io/File;
     new-instance v1, Lcom/android/server/rollback/RollbackData;
 
     invoke-direct {v1, p1, v0, p2}, Lcom/android/server/rollback/RollbackData;-><init>(ILjava/io/File;I)V
@@ -1373,12 +1486,13 @@
 .end method
 
 .method deleteRollbackData(Lcom/android/server/rollback/RollbackData;)V
-    .registers 2
+    .registers 3
+    .param p1, "data"  # Lcom/android/server/rollback/RollbackData;
 
     .line 276
-    iget-object p1, p1, Lcom/android/server/rollback/RollbackData;->backupDir:Ljava/io/File;
+    iget-object v0, p1, Lcom/android/server/rollback/RollbackData;->backupDir:Ljava/io/File;
 
-    invoke-static {p1}, Lcom/android/server/rollback/RollbackStore;->removeFile(Ljava/io/File;)V
+    invoke-static {v0}, Lcom/android/server/rollback/RollbackStore;->removeFile(Ljava/io/File;)V
 
     .line 277
     return-void
@@ -1401,6 +1515,7 @@
     invoke-direct {v0}, Ljava/util/ArrayList;-><init>()V
 
     .line 80
+    .local v0, "rollbacks":Ljava/util/List;, "Ljava/util/List<Lcom/android/server/rollback/RollbackData;>;"
     iget-object v1, p0, Lcom/android/server/rollback/RollbackStore;->mRollbackDataDir:Ljava/io/File;
 
     invoke-virtual {v1}, Ljava/io/File;->mkdirs()Z
@@ -1422,6 +1537,7 @@
     aget-object v4, v1, v3
 
     .line 82
+    .local v4, "rollbackDir":Ljava/io/File;
     invoke-virtual {v4}, Ljava/io/File;->isDirectory()Z
 
     move-result v5
@@ -1446,6 +1562,7 @@
     move-exception v5
 
     .line 86
+    .local v5, "e":Ljava/io/IOException;
     new-instance v6, Ljava/lang/StringBuilder;
 
     invoke-direct {v6}, Ljava/lang/StringBuilder;-><init>()V
@@ -1468,6 +1585,8 @@
     invoke-static {v4}, Lcom/android/server/rollback/RollbackStore;->removeFile(Ljava/io/File;)V
 
     .line 81
+    .end local v4  # "rollbackDir":Ljava/io/File;
+    .end local v5  # "e":Ljava/io/IOException;
     :cond_3e
     :goto_3e
     add-int/lit8 v3, v3, 0x1
@@ -1480,7 +1599,8 @@
 .end method
 
 .method saveRollbackData(Lcom/android/server/rollback/RollbackData;)V
-    .registers 6
+    .registers 7
+    .param p1, "data"  # Lcom/android/server/rollback/RollbackData;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Ljava/io/IOException;
@@ -1494,7 +1614,8 @@
     invoke-direct {v0}, Lorg/json/JSONObject;-><init>()V
 
     .line 257
-    const-string v1, "info"
+    .local v0, "dataJson":Lorg/json/JSONObject;
+    const-string/jumbo v1, "info"
 
     iget-object v2, p1, Lcom/android/server/rollback/RollbackData;->info:Landroid/content/rollback/RollbackInfo;
 
@@ -1552,40 +1673,44 @@
 
     new-instance v2, Ljava/io/File;
 
-    iget-object p1, p1, Lcom/android/server/rollback/RollbackData;->backupDir:Ljava/io/File;
+    iget-object v3, p1, Lcom/android/server/rollback/RollbackData;->backupDir:Ljava/io/File;
 
-    const-string/jumbo v3, "rollback.json"
+    const-string/jumbo v4, "rollback.json"
 
-    invoke-direct {v2, p1, v3}, Ljava/io/File;-><init>(Ljava/io/File;Ljava/lang/String;)V
+    invoke-direct {v2, v3, v4}, Ljava/io/File;-><init>(Ljava/io/File;Ljava/lang/String;)V
 
     invoke-direct {v1, v2}, Ljava/io/PrintWriter;-><init>(Ljava/io/File;)V
 
     .line 265
+    .local v1, "pw":Ljava/io/PrintWriter;
     invoke-virtual {v0}, Lorg/json/JSONObject;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v2
 
-    invoke-virtual {v1, p1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {v1, v2}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
     .line 266
     invoke-virtual {v1}, Ljava/io/PrintWriter;->close()V
-    :try_end_58
-    .catch Lorg/json/JSONException; {:try_start_0 .. :try_end_58} :catch_5a
+    :try_end_59
+    .catch Lorg/json/JSONException; {:try_start_0 .. :try_end_59} :catch_5b
 
     .line 269
+    .end local v0  # "dataJson":Lorg/json/JSONObject;
+    .end local v1  # "pw":Ljava/io/PrintWriter;
     nop
 
     .line 270
     return-void
 
     .line 267
-    :catch_5a
-    move-exception p1
+    :catch_5b
+    move-exception v0
 
     .line 268
-    new-instance v0, Ljava/io/IOException;
+    .local v0, "e":Lorg/json/JSONException;
+    new-instance v1, Ljava/io/IOException;
 
-    invoke-direct {v0, p1}, Ljava/io/IOException;-><init>(Ljava/lang/Throwable;)V
+    invoke-direct {v1, v0}, Ljava/io/IOException;-><init>(Ljava/lang/Throwable;)V
 
-    throw v0
+    throw v1
 .end method

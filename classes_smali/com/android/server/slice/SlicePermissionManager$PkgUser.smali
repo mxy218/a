@@ -29,6 +29,7 @@
 # direct methods
 .method public constructor <init>(Ljava/lang/String;)V
     .registers 4
+    .param p1, "pkgUserStr"  # Ljava/lang/String;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Ljava/lang/IllegalArgumentException;
@@ -46,29 +47,31 @@
 
     invoke-virtual {p1, v0, v1}, Ljava/lang/String;->split(Ljava/lang/String;I)[Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
     .line 418
-    const/4 v0, 0x0
+    .local v0, "vals":[Ljava/lang/String;
+    const/4 v1, 0x0
 
-    aget-object v0, p1, v0
+    aget-object v1, v0, v1
 
-    iput-object v0, p0, Lcom/android/server/slice/SlicePermissionManager$PkgUser;->mPkg:Ljava/lang/String;
+    iput-object v1, p0, Lcom/android/server/slice/SlicePermissionManager$PkgUser;->mPkg:Ljava/lang/String;
 
     .line 419
-    const/4 v0, 0x1
+    const/4 v1, 0x1
 
-    aget-object p1, p1, v0
+    aget-object v1, v0, v1
 
-    invoke-static {p1}, Ljava/lang/Integer;->parseInt(Ljava/lang/String;)I
+    invoke-static {v1}, Ljava/lang/Integer;->parseInt(Ljava/lang/String;)I
 
-    move-result p1
+    move-result v1
 
-    iput p1, p0, Lcom/android/server/slice/SlicePermissionManager$PkgUser;->mUserId:I
+    iput v1, p0, Lcom/android/server/slice/SlicePermissionManager$PkgUser;->mUserId:I
     :try_end_18
     .catch Ljava/lang/Exception; {:try_start_3 .. :try_end_18} :catch_1a
 
     .line 422
+    .end local v0  # "vals":[Ljava/lang/String;
     nop
 
     .line 423
@@ -76,18 +79,21 @@
 
     .line 420
     :catch_1a
-    move-exception p1
+    move-exception v0
 
     .line 421
-    new-instance v0, Ljava/lang/IllegalArgumentException;
+    .local v0, "e":Ljava/lang/Exception;
+    new-instance v1, Ljava/lang/IllegalArgumentException;
 
-    invoke-direct {v0, p1}, Ljava/lang/IllegalArgumentException;-><init>(Ljava/lang/Throwable;)V
+    invoke-direct {v1, v0}, Ljava/lang/IllegalArgumentException;-><init>(Ljava/lang/Throwable;)V
 
-    throw v0
+    throw v1
 .end method
 
 .method public constructor <init>(Ljava/lang/String;I)V
     .registers 3
+    .param p1, "pkg"  # Ljava/lang/String;
+    .param p2, "userId"  # I
 
     .line 410
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -103,18 +109,20 @@
 .end method
 
 .method static synthetic access$000(Lcom/android/server/slice/SlicePermissionManager$PkgUser;)Ljava/lang/String;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/slice/SlicePermissionManager$PkgUser;
 
     .line 404
-    iget-object p0, p0, Lcom/android/server/slice/SlicePermissionManager$PkgUser;->mPkg:Ljava/lang/String;
+    iget-object v0, p0, Lcom/android/server/slice/SlicePermissionManager$PkgUser;->mPkg:Ljava/lang/String;
 
-    return-object p0
+    return-object v0
 .end method
 
 
 # virtual methods
 .method public equals(Ljava/lang/Object;)Z
-    .registers 5
+    .registers 6
+    .param p1, "obj"  # Ljava/lang/Object;
 
     .line 440
     invoke-virtual {p0}, Ljava/lang/Object;->getClass()Ljava/lang/Class;
@@ -145,28 +153,31 @@
 
     .line 441
     :cond_14
-    check-cast p1, Lcom/android/server/slice/SlicePermissionManager$PkgUser;
+    move-object v0, p1
+
+    check-cast v0, Lcom/android/server/slice/SlicePermissionManager$PkgUser;
 
     .line 442
-    iget-object v0, p1, Lcom/android/server/slice/SlicePermissionManager$PkgUser;->mPkg:Ljava/lang/String;
+    .local v0, "other":Lcom/android/server/slice/SlicePermissionManager$PkgUser;
+    iget-object v2, v0, Lcom/android/server/slice/SlicePermissionManager$PkgUser;->mPkg:Ljava/lang/String;
 
-    iget-object v2, p0, Lcom/android/server/slice/SlicePermissionManager$PkgUser;->mPkg:Ljava/lang/String;
+    iget-object v3, p0, Lcom/android/server/slice/SlicePermissionManager$PkgUser;->mPkg:Ljava/lang/String;
 
-    invoke-static {v0, v2}, Ljava/util/Objects;->equals(Ljava/lang/Object;Ljava/lang/Object;)Z
+    invoke-static {v2, v3}, Ljava/util/Objects;->equals(Ljava/lang/Object;Ljava/lang/Object;)Z
 
-    move-result v0
+    move-result v2
 
-    if-eqz v0, :cond_27
+    if-eqz v2, :cond_28
 
-    iget p1, p1, Lcom/android/server/slice/SlicePermissionManager$PkgUser;->mUserId:I
+    iget v2, v0, Lcom/android/server/slice/SlicePermissionManager$PkgUser;->mUserId:I
 
-    iget v0, p0, Lcom/android/server/slice/SlicePermissionManager$PkgUser;->mUserId:I
+    iget v3, p0, Lcom/android/server/slice/SlicePermissionManager$PkgUser;->mUserId:I
 
-    if-ne p1, v0, :cond_27
+    if-ne v2, v3, :cond_28
 
     const/4 v1, 0x1
 
-    :cond_27
+    :cond_28
     return v1
 .end method
 

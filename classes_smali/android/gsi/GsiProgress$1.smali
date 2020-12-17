@@ -40,6 +40,7 @@
 # virtual methods
 .method public createFromParcel(Landroid/os/Parcel;)Landroid/gsi/GsiProgress;
     .registers 3
+    .param p1, "_aidl_source"  # Landroid/os/Parcel;
 
     .line 19
     new-instance v0, Landroid/gsi/GsiProgress;
@@ -47,6 +48,7 @@
     invoke-direct {v0}, Landroid/gsi/GsiProgress;-><init>()V
 
     .line 20
+    .local v0, "_aidl_out":Landroid/gsi/GsiProgress;
     invoke-virtual {v0, p1}, Landroid/gsi/GsiProgress;->readFromParcel(Landroid/os/Parcel;)V
 
     .line 21
@@ -65,12 +67,13 @@
 .end method
 
 .method public newArray(I)[Landroid/gsi/GsiProgress;
-    .registers 2
+    .registers 3
+    .param p1, "_aidl_size"  # I
 
     .line 25
-    new-array p1, p1, [Landroid/gsi/GsiProgress;
+    new-array v0, p1, [Landroid/gsi/GsiProgress;
 
-    return-object p1
+    return-object v0
 .end method
 
 .method public bridge synthetic newArray(I)[Ljava/lang/Object;

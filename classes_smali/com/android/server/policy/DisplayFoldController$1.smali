@@ -37,33 +37,36 @@
 # virtual methods
 .method public onAccuracyChanged(Landroid/hardware/Sensor;I)V
     .registers 3
+    .param p1, "sensor"  # Landroid/hardware/Sensor;
+    .param p2, "accuracy"  # I
 
     .line 178
     return-void
 .end method
 
 .method public onSensorChanged(Landroid/hardware/SensorEvent;)V
-    .registers 5
+    .registers 6
+    .param p1, "event"  # Landroid/hardware/SensorEvent;
 
     .line 172
     iget-object v0, p0, Lcom/android/server/policy/DisplayFoldController$1;->val$result:Lcom/android/server/policy/DisplayFoldController;
 
-    iget-object p1, p1, Landroid/hardware/SensorEvent;->values:[F
+    iget-object v1, p1, Landroid/hardware/SensorEvent;->values:[F
 
-    const/4 v1, 0x0
+    const/4 v2, 0x0
 
-    aget p1, p1, v1
+    aget v1, v1, v2
 
-    const/high16 v2, 0x3f800000  # 1.0f
+    const/high16 v3, 0x3f800000  # 1.0f
 
-    cmpg-float p1, p1, v2
+    cmpg-float v1, v1, v3
 
-    if-gez p1, :cond_e
+    if-gez v1, :cond_e
 
-    const/4 v1, 0x1
+    const/4 v2, 0x1
 
     :cond_e
-    invoke-virtual {v0, v1}, Lcom/android/server/policy/DisplayFoldController;->requestDeviceFolded(Z)V
+    invoke-virtual {v0, v2}, Lcom/android/server/policy/DisplayFoldController;->requestDeviceFolded(Z)V
 
     .line 173
     return-void

@@ -21,6 +21,7 @@
 # direct methods
 .method public constructor <init>(Landroid/content/Context;)V
     .registers 3
+    .param p1, "context"  # Landroid/content/Context;
 
     .line 135
     invoke-direct {p0, p1}, Lcom/android/server/SystemService;-><init>(Landroid/content/Context;)V
@@ -40,6 +41,7 @@
 # virtual methods
 .method public onBootPhase(I)V
     .registers 3
+    .param p1, "phase"  # I
 
     .line 147
     const/16 v0, 0x1f4
@@ -47,9 +49,9 @@
     if-ne p1, v0, :cond_a
 
     .line 148
-    iget-object p1, p0, Lcom/android/server/NetworkScoreService$Lifecycle;->mService:Lcom/android/server/NetworkScoreService;
+    iget-object v0, p0, Lcom/android/server/NetworkScoreService$Lifecycle;->mService:Lcom/android/server/NetworkScoreService;
 
-    invoke-virtual {p1}, Lcom/android/server/NetworkScoreService;->systemReady()V
+    invoke-virtual {v0}, Lcom/android/server/NetworkScoreService;->systemReady()V
 
     goto :goto_13
 
@@ -60,9 +62,9 @@
     if-ne p1, v0, :cond_13
 
     .line 150
-    iget-object p1, p0, Lcom/android/server/NetworkScoreService$Lifecycle;->mService:Lcom/android/server/NetworkScoreService;
+    iget-object v0, p0, Lcom/android/server/NetworkScoreService$Lifecycle;->mService:Lcom/android/server/NetworkScoreService;
 
-    invoke-virtual {p1}, Lcom/android/server/NetworkScoreService;->systemRunning()V
+    invoke-virtual {v0}, Lcom/android/server/NetworkScoreService;->systemRunning()V
 
     .line 152
     :cond_13

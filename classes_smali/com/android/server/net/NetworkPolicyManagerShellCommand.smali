@@ -11,7 +11,9 @@
 
 # direct methods
 .method constructor <init>(Landroid/content/Context;Lcom/android/server/net/NetworkPolicyManagerService;)V
-    .registers 3
+    .registers 4
+    .param p1, "context"  # Landroid/content/Context;
+    .param p2, "service"  # Lcom/android/server/net/NetworkPolicyManagerService;
 
     .line 38
     invoke-direct {p0}, Landroid/os/ShellCommand;-><init>()V
@@ -20,15 +22,15 @@
     iput-object p2, p0, Lcom/android/server/net/NetworkPolicyManagerShellCommand;->mInterface:Lcom/android/server/net/NetworkPolicyManagerService;
 
     .line 40
-    const-string/jumbo p2, "wifi"
+    const-string/jumbo v0, "wifi"
 
-    invoke-virtual {p1, p2}, Landroid/content/Context;->getSystemService(Ljava/lang/String;)Ljava/lang/Object;
+    invoke-virtual {p1, v0}, Landroid/content/Context;->getSystemService(Ljava/lang/String;)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v0
 
-    check-cast p1, Landroid/net/wifi/WifiManager;
+    check-cast v0, Landroid/net/wifi/WifiManager;
 
-    iput-object p1, p0, Lcom/android/server/net/NetworkPolicyManagerShellCommand;->mWifiManager:Landroid/net/wifi/WifiManager;
+    iput-object v0, p0, Lcom/android/server/net/NetworkPolicyManagerShellCommand;->mWifiManager:Landroid/net/wifi/WifiManager;
 
     .line 41
     return-void
@@ -89,7 +91,7 @@
 .end method
 
 .method private getNextBooleanArg()I
-    .registers 3
+    .registers 4
 
     .line 374
     invoke-virtual {p0}, Lcom/android/server/net/NetworkPolicyManagerShellCommand;->getOutPrintWriter()Ljava/io/PrintWriter;
@@ -97,34 +99,36 @@
     move-result-object v0
 
     .line 375
+    .local v0, "pw":Ljava/io/PrintWriter;
     invoke-virtual {p0}, Lcom/android/server/net/NetworkPolicyManagerShellCommand;->getNextArg()Ljava/lang/String;
 
     move-result-object v1
 
     .line 376
+    .local v1, "arg":Ljava/lang/String;
     if-nez v1, :cond_11
 
     .line 377
-    const-string v1, "Error: didn\'t specify BOOLEAN"
+    const-string v2, "Error: didn\'t specify BOOLEAN"
 
-    invoke-virtual {v0, v1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {v0, v2}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
     .line 378
-    const/4 v0, -0x1
+    const/4 v2, -0x1
 
-    return v0
+    return v2
 
     .line 380
     :cond_11
     invoke-static {v1}, Ljava/lang/Boolean;->valueOf(Ljava/lang/String;)Ljava/lang/Boolean;
 
-    move-result-object v0
+    move-result-object v2
 
-    invoke-virtual {v0}, Ljava/lang/Boolean;->booleanValue()Z
+    invoke-virtual {v2}, Ljava/lang/Boolean;->booleanValue()Z
 
-    move-result v0
+    move-result v2
 
-    return v0
+    return v2
 .end method
 
 .method private getRestrictBackground()I
@@ -141,6 +145,7 @@
     move-result-object v0
 
     .line 239
+    .local v0, "pw":Ljava/io/PrintWriter;
     const-string v1, "Restrict background status: "
 
     invoke-virtual {v0, v1}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
@@ -165,13 +170,13 @@
     invoke-virtual {v0, v1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
     .line 241
-    const/4 v0, 0x0
+    const/4 v1, 0x0
 
-    return v0
+    return v1
 .end method
 
 .method private getUidFromNextArg()I
-    .registers 5
+    .registers 6
 
     .line 384
     invoke-virtual {p0}, Lcom/android/server/net/NetworkPolicyManagerShellCommand;->getOutPrintWriter()Ljava/io/PrintWriter;
@@ -179,67 +184,70 @@
     move-result-object v0
 
     .line 385
+    .local v0, "pw":Ljava/io/PrintWriter;
     invoke-virtual {p0}, Lcom/android/server/net/NetworkPolicyManagerShellCommand;->getNextArg()Ljava/lang/String;
 
     move-result-object v1
 
     .line 386
+    .local v1, "arg":Ljava/lang/String;
     if-nez v1, :cond_11
 
     .line 387
-    const-string v1, "Error: didn\'t specify UID"
+    const-string v2, "Error: didn\'t specify UID"
 
-    invoke-virtual {v0, v1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {v0, v2}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
     .line 388
-    const/4 v0, -0x1
+    const/4 v2, -0x1
 
-    return v0
+    return v2
 
     .line 391
     :cond_11
     :try_start_11
     invoke-static {v1}, Ljava/lang/Integer;->parseInt(Ljava/lang/String;)I
 
-    move-result v0
+    move-result v2
     :try_end_15
     .catch Ljava/lang/NumberFormatException; {:try_start_11 .. :try_end_15} :catch_16
 
-    return v0
+    return v2
 
     .line 392
     :catch_16
     move-exception v2
 
     .line 393
-    new-instance v2, Ljava/lang/StringBuilder;
+    .local v2, "e":Ljava/lang/NumberFormatException;
+    new-instance v3, Ljava/lang/StringBuilder;
 
-    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v3, "Error: UID ("
+    const-string v4, "Error: UID ("
 
-    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v2, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string v1, ") should be a number"
+    const-string v4, ") should be a number"
 
-    invoke-virtual {v2, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v1
+    move-result-object v3
 
-    invoke-virtual {v0, v1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {v0, v3}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
     .line 394
-    const/4 v0, -0x2
+    const/4 v3, -0x2
 
-    return v0
+    return v3
 .end method
 
 .method private listAppIdleWhitelist()I
-    .registers 3
+    .registers 4
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -249,21 +257,25 @@
     .line 232
     invoke-virtual {p0}, Lcom/android/server/net/NetworkPolicyManagerShellCommand;->getOutPrintWriter()Ljava/io/PrintWriter;
 
-    .line 233
-    iget-object v0, p0, Lcom/android/server/net/NetworkPolicyManagerShellCommand;->mInterface:Lcom/android/server/net/NetworkPolicyManagerService;
-
-    invoke-virtual {v0}, Lcom/android/server/net/NetworkPolicyManagerService;->getAppIdleWhitelist()[I
-
     move-result-object v0
 
+    .line 233
+    .local v0, "pw":Ljava/io/PrintWriter;
+    iget-object v1, p0, Lcom/android/server/net/NetworkPolicyManagerShellCommand;->mInterface:Lcom/android/server/net/NetworkPolicyManagerService;
+
+    invoke-virtual {v1}, Lcom/android/server/net/NetworkPolicyManagerService;->getAppIdleWhitelist()[I
+
+    move-result-object v1
+
     .line 234
-    const-string v1, "App Idle whitelisted UIDs"
+    .local v1, "uids":[I
+    const-string v2, "App Idle whitelisted UIDs"
 
-    invoke-direct {p0, v1, v0}, Lcom/android/server/net/NetworkPolicyManagerShellCommand;->listUidList(Ljava/lang/String;[I)I
+    invoke-direct {p0, v2, v1}, Lcom/android/server/net/NetworkPolicyManagerShellCommand;->listUidList(Ljava/lang/String;[I)I
 
-    move-result v0
+    move-result v2
 
-    return v0
+    return v2
 .end method
 
 .method private listRestrictBackgroundBlacklist()I
@@ -307,7 +319,9 @@
 .end method
 
 .method private listUidList(Ljava/lang/String;[I)I
-    .registers 6
+    .registers 7
+    .param p1, "msg"  # Ljava/lang/String;
+    .param p2, "uids"  # [I
 
     .line 206
     invoke-virtual {p0}, Lcom/android/server/net/NetworkPolicyManagerShellCommand;->getOutPrintWriter()Ljava/io/PrintWriter;
@@ -315,62 +329,69 @@
     move-result-object v0
 
     .line 207
+    .local v0, "pw":Ljava/io/PrintWriter;
     invoke-virtual {v0, p1}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
-    const-string p1, ": "
+    const-string v1, ": "
 
-    invoke-virtual {v0, p1}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
+    invoke-virtual {v0, v1}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
     .line 208
-    array-length p1, p2
+    array-length v1, p2
 
-    const/4 v1, 0x0
-
-    if-nez p1, :cond_17
+    if-nez v1, :cond_16
 
     .line 209
-    const-string/jumbo p1, "none"
+    const-string/jumbo v1, "none"
 
-    invoke-virtual {v0, p1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {v0, v1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
-    goto :goto_28
+    goto :goto_27
 
     .line 211
-    :cond_17
-    move p1, v1
+    :cond_16
+    const/4 v1, 0x0
 
-    :goto_18
+    .local v1, "i":I
+    :goto_17
     array-length v2, p2
 
-    if-ge p1, v2, :cond_28
+    if-ge v1, v2, :cond_27
 
     .line 212
-    aget v2, p2, p1
+    aget v2, p2, v1
 
     .line 213
+    .local v2, "uid":I
     invoke-virtual {v0, v2}, Ljava/io/PrintWriter;->print(I)V
 
     .line 214
-    const/16 v2, 0x20
+    const/16 v3, 0x20
 
-    invoke-virtual {v0, v2}, Ljava/io/PrintWriter;->print(C)V
+    invoke-virtual {v0, v3}, Ljava/io/PrintWriter;->print(C)V
 
     .line 211
-    add-int/lit8 p1, p1, 0x1
+    .end local v2  # "uid":I
+    add-int/lit8 v1, v1, 0x1
 
-    goto :goto_18
+    goto :goto_17
 
     .line 217
-    :cond_28
-    :goto_28
+    .end local v1  # "i":I
+    :cond_27
+    :goto_27
     invoke-virtual {v0}, Ljava/io/PrintWriter;->println()V
 
     .line 218
+    const/4 v1, 0x0
+
     return v1
 .end method
 
 .method private listUidPolicies(Ljava/lang/String;I)I
-    .registers 4
+    .registers 5
+    .param p1, "msg"  # Ljava/lang/String;
+    .param p2, "policy"  # I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -382,14 +403,15 @@
 
     invoke-virtual {v0, p2}, Lcom/android/server/net/NetworkPolicyManagerService;->getUidsWithPolicy(I)[I
 
-    move-result-object p2
+    move-result-object v0
 
     .line 202
-    invoke-direct {p0, p1, p2}, Lcom/android/server/net/NetworkPolicyManagerShellCommand;->listUidList(Ljava/lang/String;[I)I
+    .local v0, "uids":[I
+    invoke-direct {p0, p1, v0}, Lcom/android/server/net/NetworkPolicyManagerShellCommand;->listUidList(Ljava/lang/String;[I)I
 
-    move-result p1
+    move-result v1
 
-    return p1
+    return v1
 .end method
 
 .method private listWifiNetworks()I
@@ -401,56 +423,62 @@
     move-result-object v0
 
     .line 319
+    .local v0, "pw":Ljava/io/PrintWriter;
     invoke-virtual {p0}, Lcom/android/server/net/NetworkPolicyManagerShellCommand;->getNextArg()Ljava/lang/String;
 
     move-result-object v1
 
     .line 321
-    const/4 v2, 0x0
-
-    if-nez v1, :cond_d
+    .local v1, "arg":Ljava/lang/String;
+    if-nez v1, :cond_c
 
     .line 322
-    move v3, v2
+    const/4 v2, 0x0
 
-    goto :goto_16
+    .local v2, "match":I
+    goto :goto_15
 
     .line 323
-    :cond_d
+    .end local v2  # "match":I
+    :cond_c
     invoke-static {v1}, Ljava/lang/Boolean;->parseBoolean(Ljava/lang/String;)Z
 
-    move-result v3
+    move-result v2
 
-    if-eqz v3, :cond_15
+    if-eqz v2, :cond_14
 
     .line 324
-    const/4 v3, 0x1
+    const/4 v2, 0x1
 
-    goto :goto_16
+    .restart local v2  # "match":I
+    goto :goto_15
 
     .line 326
-    :cond_15
-    const/4 v3, 0x2
+    .end local v2  # "match":I
+    :cond_14
+    const/4 v2, 0x2
 
     .line 329
-    :goto_16
-    iget-object v4, p0, Lcom/android/server/net/NetworkPolicyManagerShellCommand;->mWifiManager:Landroid/net/wifi/WifiManager;
+    .restart local v2  # "match":I
+    :goto_15
+    iget-object v3, p0, Lcom/android/server/net/NetworkPolicyManagerShellCommand;->mWifiManager:Landroid/net/wifi/WifiManager;
 
-    invoke-virtual {v4}, Landroid/net/wifi/WifiManager;->getConfiguredNetworks()Ljava/util/List;
+    invoke-virtual {v3}, Landroid/net/wifi/WifiManager;->getConfiguredNetworks()Ljava/util/List;
 
-    move-result-object v4
+    move-result-object v3
 
     .line 330
-    invoke-interface {v4}, Ljava/util/List;->iterator()Ljava/util/Iterator;
+    .local v3, "configs":Ljava/util/List;, "Ljava/util/List<Landroid/net/wifi/WifiConfiguration;>;"
+    invoke-interface {v3}, Ljava/util/List;->iterator()Ljava/util/Iterator;
 
     move-result-object v4
 
-    :goto_20
+    :goto_1f
     invoke-interface {v4}, Ljava/util/Iterator;->hasNext()Z
 
     move-result v5
 
-    if-eqz v5, :cond_48
+    if-eqz v5, :cond_47
 
     invoke-interface {v4}, Ljava/util/Iterator;->next()Ljava/lang/Object;
 
@@ -459,14 +487,15 @@
     check-cast v5, Landroid/net/wifi/WifiConfiguration;
 
     .line 331
-    if-eqz v1, :cond_32
+    .local v5, "config":Landroid/net/wifi/WifiConfiguration;
+    if-eqz v1, :cond_31
 
     iget v6, v5, Landroid/net/wifi/WifiConfiguration;->meteredOverride:I
 
-    if-ne v6, v3, :cond_47
+    if-ne v6, v2, :cond_46
 
     .line 332
-    :cond_32
+    :cond_31
     invoke-static {v5}, Landroid/net/NetworkPolicyManager;->resolveNetworkId(Landroid/net/wifi/WifiConfiguration;)Ljava/lang/String;
 
     move-result-object v6
@@ -479,25 +508,29 @@
     invoke-virtual {v0, v6}, Ljava/io/PrintWriter;->print(C)V
 
     .line 334
-    iget v5, v5, Landroid/net/wifi/WifiConfiguration;->meteredOverride:I
+    iget v6, v5, Landroid/net/wifi/WifiConfiguration;->meteredOverride:I
 
-    invoke-static {v5}, Lcom/android/server/net/NetworkPolicyManagerShellCommand;->overrideToString(I)Ljava/lang/String;
+    invoke-static {v6}, Lcom/android/server/net/NetworkPolicyManagerShellCommand;->overrideToString(I)Ljava/lang/String;
 
-    move-result-object v5
+    move-result-object v6
 
-    invoke-virtual {v0, v5}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {v0, v6}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
     .line 336
-    :cond_47
-    goto :goto_20
+    .end local v5  # "config":Landroid/net/wifi/WifiConfiguration;
+    :cond_46
+    goto :goto_1f
 
     .line 337
-    :cond_48
-    return v2
+    :cond_47
+    const/4 v4, 0x0
+
+    return v4
 .end method
 
 .method private static overrideToString(I)Ljava/lang/String;
     .registers 2
+    .param p0, "override"  # I
 
     .line 358
     const/4 v0, 0x1
@@ -509,21 +542,21 @@
     if-eq p0, v0, :cond_a
 
     .line 361
-    const-string/jumbo p0, "none"
+    const-string/jumbo v0, "none"
 
-    return-object p0
+    return-object v0
 
     .line 360
     :cond_a
-    const-string p0, "false"
+    const-string v0, "false"
 
-    return-object p0
+    return-object v0
 
     .line 359
     :cond_d
-    const-string/jumbo p0, "true"
+    const-string/jumbo v0, "true"
 
-    return-object p0
+    return-object v0
 .end method
 
 .method private removeAppIdleWhitelist()I
@@ -585,7 +618,9 @@
 .end method
 
 .method private resetUidPolicy(Ljava/lang/String;I)I
-    .registers 5
+    .registers 7
+    .param p1, "errorMessage"  # Ljava/lang/String;
+    .param p2, "expectedPolicy"  # I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -598,6 +633,7 @@
     move-result v0
 
     .line 271
+    .local v0, "uid":I
     if-gez v0, :cond_7
 
     .line 272
@@ -612,41 +648,44 @@
     move-result v1
 
     .line 275
+    .local v1, "actualPolicy":I
     if-eq v1, p2, :cond_25
 
     .line 276
     invoke-virtual {p0}, Lcom/android/server/net/NetworkPolicyManagerShellCommand;->getOutPrintWriter()Ljava/io/PrintWriter;
 
-    move-result-object p2
+    move-result-object v2
 
     .line 277
-    const-string v1, "Error: UID "
+    .local v2, "pw":Ljava/io/PrintWriter;
+    const-string v3, "Error: UID "
 
-    invoke-virtual {p2, v1}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
+    invoke-virtual {v2, v3}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
-    invoke-virtual {p2, v0}, Ljava/io/PrintWriter;->print(I)V
+    invoke-virtual {v2, v0}, Ljava/io/PrintWriter;->print(I)V
 
-    const/16 v0, 0x20
+    const/16 v3, 0x20
 
-    invoke-virtual {p2, v0}, Ljava/io/PrintWriter;->print(C)V
+    invoke-virtual {v2, v3}, Ljava/io/PrintWriter;->print(C)V
 
-    invoke-virtual {p2, p1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {v2, p1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
     .line 278
-    const/4 p1, -0x1
+    const/4 v3, -0x1
 
-    return p1
+    return v3
 
     .line 280
+    .end local v2  # "pw":Ljava/io/PrintWriter;
     :cond_25
-    iget-object p1, p0, Lcom/android/server/net/NetworkPolicyManagerShellCommand;->mInterface:Lcom/android/server/net/NetworkPolicyManagerService;
+    iget-object v2, p0, Lcom/android/server/net/NetworkPolicyManagerShellCommand;->mInterface:Lcom/android/server/net/NetworkPolicyManagerService;
 
-    const/4 p2, 0x0
+    const/4 v3, 0x0
 
-    invoke-virtual {p1, v0, p2}, Lcom/android/server/net/NetworkPolicyManagerService;->setUidPolicy(II)V
+    invoke-virtual {v2, v0, v3}, Lcom/android/server/net/NetworkPolicyManagerService;->setUidPolicy(II)V
 
     .line 281
-    return p2
+    return v3
 .end method
 
 .method private runAdd()I
@@ -663,19 +702,21 @@
     move-result-object v0
 
     .line 164
+    .local v0, "pw":Ljava/io/PrintWriter;
     invoke-virtual {p0}, Lcom/android/server/net/NetworkPolicyManagerShellCommand;->getNextArg()Ljava/lang/String;
 
     move-result-object v1
 
     .line 165
+    .local v1, "type":Ljava/lang/String;
     const/4 v2, -0x1
 
     if-nez v1, :cond_11
 
     .line 166
-    const-string v1, "Error: didn\'t specify type of data to add"
+    const-string v3, "Error: didn\'t specify type of data to add"
 
-    invoke-virtual {v0, v1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {v0, v3}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
     .line 167
     return v2
@@ -765,15 +806,15 @@
 
     invoke-virtual {v3, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string v1, "\'"
+    const-string v4, "\'"
 
-    invoke-virtual {v3, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v1
+    move-result-object v3
 
-    invoke-virtual {v0, v1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {v0, v3}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
     .line 178
     return v2
@@ -782,25 +823,25 @@
     :cond_68
     invoke-direct {p0}, Lcom/android/server/net/NetworkPolicyManagerShellCommand;->addAppIdleWhitelist()I
 
-    move-result v0
+    move-result v2
 
-    return v0
+    return v2
 
     .line 173
     :cond_6d
     invoke-direct {p0}, Lcom/android/server/net/NetworkPolicyManagerShellCommand;->addRestrictBackgroundBlacklist()I
 
-    move-result v0
+    move-result v2
 
-    return v0
+    return v2
 
     .line 171
     :cond_72
     invoke-direct {p0}, Lcom/android/server/net/NetworkPolicyManagerShellCommand;->addRestrictBackgroundWhitelist()I
 
-    move-result v0
+    move-result v2
 
-    return v0
+    return v2
 .end method
 
 .method private runGet()I
@@ -817,19 +858,21 @@
     move-result-object v0
 
     .line 109
+    .local v0, "pw":Ljava/io/PrintWriter;
     invoke-virtual {p0}, Lcom/android/server/net/NetworkPolicyManagerShellCommand;->getNextArg()Ljava/lang/String;
 
     move-result-object v1
 
     .line 110
+    .local v1, "type":Ljava/lang/String;
     const/4 v2, -0x1
 
     if-nez v1, :cond_11
 
     .line 111
-    const-string v1, "Error: didn\'t specify type of data to get"
+    const-string v3, "Error: didn\'t specify type of data to get"
 
-    invoke-virtual {v0, v1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {v0, v3}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
     .line 112
     return v2
@@ -877,15 +920,15 @@
 
     invoke-virtual {v3, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string v1, "\'"
+    const-string v4, "\'"
 
-    invoke-virtual {v3, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v1
+    move-result-object v3
 
-    invoke-virtual {v0, v1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {v0, v3}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
     .line 119
     return v2
@@ -894,9 +937,9 @@
     :cond_43
     invoke-direct {p0}, Lcom/android/server/net/NetworkPolicyManagerShellCommand;->getRestrictBackground()I
 
-    move-result v0
+    move-result v2
 
-    return v0
+    return v2
 .end method
 
 .method private runList()I
@@ -913,19 +956,21 @@
     move-result-object v0
 
     .line 143
+    .local v0, "pw":Ljava/io/PrintWriter;
     invoke-virtual {p0}, Lcom/android/server/net/NetworkPolicyManagerShellCommand;->getNextArg()Ljava/lang/String;
 
     move-result-object v1
 
     .line 144
+    .local v1, "type":Ljava/lang/String;
     const/4 v2, -0x1
 
     if-nez v1, :cond_11
 
     .line 145
-    const-string v1, "Error: didn\'t specify type of data to list"
+    const-string v3, "Error: didn\'t specify type of data to list"
 
-    invoke-virtual {v0, v1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {v0, v3}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
     .line 146
     return v2
@@ -1022,15 +1067,15 @@
 
     invoke-virtual {v3, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string v1, "\'"
+    const-string v4, "\'"
 
-    invoke-virtual {v3, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v1
+    move-result-object v3
 
-    invoke-virtual {v0, v1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {v0, v3}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
     .line 159
     return v2
@@ -1039,33 +1084,33 @@
     :cond_6a
     invoke-direct {p0}, Lcom/android/server/net/NetworkPolicyManagerShellCommand;->listRestrictBackgroundBlacklist()I
 
-    move-result v0
+    move-result v2
 
-    return v0
+    return v2
 
     .line 154
     :cond_6f
     invoke-direct {p0}, Lcom/android/server/net/NetworkPolicyManagerShellCommand;->listRestrictBackgroundWhitelist()I
 
-    move-result v0
+    move-result v2
 
-    return v0
+    return v2
 
     .line 152
     :cond_74
     invoke-direct {p0}, Lcom/android/server/net/NetworkPolicyManagerShellCommand;->listWifiNetworks()I
 
-    move-result v0
+    move-result v2
 
-    return v0
+    return v2
 
     .line 150
     :cond_79
     invoke-direct {p0}, Lcom/android/server/net/NetworkPolicyManagerShellCommand;->listAppIdleWhitelist()I
 
-    move-result v0
+    move-result v2
 
-    return v0
+    return v2
 
     :sswitch_data_7e
     .sparse-switch
@@ -1090,19 +1135,21 @@
     move-result-object v0
 
     .line 183
+    .local v0, "pw":Ljava/io/PrintWriter;
     invoke-virtual {p0}, Lcom/android/server/net/NetworkPolicyManagerShellCommand;->getNextArg()Ljava/lang/String;
 
     move-result-object v1
 
     .line 184
+    .local v1, "type":Ljava/lang/String;
     const/4 v2, -0x1
 
     if-nez v1, :cond_11
 
     .line 185
-    const-string v1, "Error: didn\'t specify type of data to remove"
+    const-string v3, "Error: didn\'t specify type of data to remove"
 
-    invoke-virtual {v0, v1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {v0, v3}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
     .line 186
     return v2
@@ -1192,15 +1239,15 @@
 
     invoke-virtual {v3, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string v1, "\'"
+    const-string v4, "\'"
 
-    invoke-virtual {v3, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v1
+    move-result-object v3
 
-    invoke-virtual {v0, v1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {v0, v3}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
     .line 197
     return v2
@@ -1209,25 +1256,25 @@
     :cond_68
     invoke-direct {p0}, Lcom/android/server/net/NetworkPolicyManagerShellCommand;->removeAppIdleWhitelist()I
 
-    move-result v0
+    move-result v2
 
-    return v0
+    return v2
 
     .line 192
     :cond_6d
     invoke-direct {p0}, Lcom/android/server/net/NetworkPolicyManagerShellCommand;->removeRestrictBackgroundBlacklist()I
 
-    move-result v0
+    move-result v2
 
-    return v0
+    return v2
 
     .line 190
     :cond_72
     invoke-direct {p0}, Lcom/android/server/net/NetworkPolicyManagerShellCommand;->removeRestrictBackgroundWhitelist()I
 
-    move-result v0
+    move-result v2
 
-    return v0
+    return v2
 .end method
 
 .method private runSet()I
@@ -1244,19 +1291,21 @@
     move-result-object v0
 
     .line 124
+    .local v0, "pw":Ljava/io/PrintWriter;
     invoke-virtual {p0}, Lcom/android/server/net/NetworkPolicyManagerShellCommand;->getNextArg()Ljava/lang/String;
 
     move-result-object v1
 
     .line 125
+    .local v1, "type":Ljava/lang/String;
     const/4 v2, -0x1
 
     if-nez v1, :cond_11
 
     .line 126
-    const-string v1, "Error: didn\'t specify type of data to set"
+    const-string v3, "Error: didn\'t specify type of data to set"
 
-    invoke-virtual {v0, v1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {v0, v3}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
     .line 127
     return v2
@@ -1284,7 +1333,7 @@
     if-eq v3, v4, :cond_27
 
     :cond_26
-    goto :goto_47
+    goto :goto_48
 
     :cond_27
     const-string/jumbo v3, "sub-plan-owner"
@@ -1297,7 +1346,7 @@
 
     move v3, v5
 
-    goto :goto_48
+    goto :goto_49
 
     :cond_32
     const-string/jumbo v3, "restrict-background"
@@ -1310,10 +1359,10 @@
 
     move v3, v6
 
-    goto :goto_48
+    goto :goto_49
 
     :cond_3d
-    const-string v3, "metered-network"
+    const-string/jumbo v3, "metered-network"
 
     invoke-virtual {v1, v3}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
@@ -1323,17 +1372,17 @@
 
     const/4 v3, 0x0
 
-    goto :goto_48
-
-    :goto_47
-    move v3, v2
+    goto :goto_49
 
     :goto_48
-    if-eqz v3, :cond_72
+    move v3, v2
 
-    if-eq v3, v6, :cond_6d
+    :goto_49
+    if-eqz v3, :cond_73
 
-    if-eq v3, v5, :cond_68
+    if-eq v3, v6, :cond_6e
+
+    if-eq v3, v5, :cond_69
 
     .line 137
     new-instance v3, Ljava/lang/StringBuilder;
@@ -1346,46 +1395,47 @@
 
     invoke-virtual {v3, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string v1, "\'"
+    const-string v4, "\'"
 
-    invoke-virtual {v3, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v1
+    move-result-object v3
 
-    invoke-virtual {v0, v1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {v0, v3}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
     .line 138
     return v2
 
     .line 135
-    :cond_68
+    :cond_69
     invoke-direct {p0}, Lcom/android/server/net/NetworkPolicyManagerShellCommand;->setSubPlanOwner()I
 
-    move-result v0
+    move-result v2
 
-    return v0
+    return v2
 
     .line 133
-    :cond_6d
+    :cond_6e
     invoke-direct {p0}, Lcom/android/server/net/NetworkPolicyManagerShellCommand;->setRestrictBackground()I
 
-    move-result v0
+    move-result v2
 
-    return v0
+    return v2
 
     .line 131
-    :cond_72
+    :cond_73
     invoke-direct {p0}, Lcom/android/server/net/NetworkPolicyManagerShellCommand;->setMeteredWifiNetwork()I
 
-    move-result v0
+    move-result v2
 
-    return v0
+    return v2
 .end method
 
 .method private setAppIdleWhitelist(Z)I
     .registers 4
+    .param p1, "isWhitelisted"  # Z
 
     .line 301
     invoke-direct {p0}, Lcom/android/server/net/NetworkPolicyManagerShellCommand;->getUidFromNextArg()I
@@ -1393,6 +1443,7 @@
     move-result v0
 
     .line 302
+    .local v0, "uid":I
     if-gez v0, :cond_7
 
     .line 303
@@ -1405,13 +1456,13 @@
     invoke-virtual {v1, v0, p1}, Lcom/android/server/net/NetworkPolicyManagerService;->setAppIdleWhitelist(IZ)V
 
     .line 306
-    const/4 p1, 0x0
+    const/4 v1, 0x0
 
-    return p1
+    return v1
 .end method
 
 .method private setMeteredWifiNetwork()I
-    .registers 5
+    .registers 8
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -1424,19 +1475,21 @@
     move-result-object v0
 
     .line 342
+    .local v0, "pw":Ljava/io/PrintWriter;
     invoke-virtual {p0}, Lcom/android/server/net/NetworkPolicyManagerShellCommand;->getNextArg()Ljava/lang/String;
 
     move-result-object v1
 
     .line 343
+    .local v1, "networkId":Ljava/lang/String;
     const/4 v2, -0x1
 
     if-nez v1, :cond_11
 
     .line 344
-    const-string v1, "Error: didn\'t specify networkId"
+    const-string v3, "Error: didn\'t specify networkId"
 
-    invoke-virtual {v0, v1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {v0, v3}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
     .line 345
     return v2
@@ -1448,38 +1501,39 @@
     move-result-object v3
 
     .line 348
+    .local v3, "arg":Ljava/lang/String;
     if-nez v3, :cond_1d
 
     .line 349
-    const-string v1, "Error: didn\'t specify meteredOverride"
+    const-string v4, "Error: didn\'t specify meteredOverride"
 
-    invoke-virtual {v0, v1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {v0, v4}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
     .line 350
     return v2
 
     .line 352
     :cond_1d
-    iget-object v0, p0, Lcom/android/server/net/NetworkPolicyManagerShellCommand;->mInterface:Lcom/android/server/net/NetworkPolicyManagerService;
+    iget-object v4, p0, Lcom/android/server/net/NetworkPolicyManagerShellCommand;->mInterface:Lcom/android/server/net/NetworkPolicyManagerService;
 
     invoke-static {v1}, Landroid/net/NetworkPolicyManager;->resolveNetworkId(Ljava/lang/String;)Ljava/lang/String;
 
-    move-result-object v1
+    move-result-object v5
 
     .line 353
     invoke-static {v3}, Lcom/android/server/net/NetworkPolicyManagerShellCommand;->stringToOverride(Ljava/lang/String;)I
 
-    move-result v3
+    move-result v6
 
     .line 352
-    invoke-virtual {v0, v1, v3}, Lcom/android/server/net/NetworkPolicyManagerService;->setWifiMeteredOverride(Ljava/lang/String;I)V
+    invoke-virtual {v4, v5, v6}, Lcom/android/server/net/NetworkPolicyManagerService;->setWifiMeteredOverride(Ljava/lang/String;I)V
 
     .line 354
     return v2
 .end method
 
 .method private setRestrictBackground()I
-    .registers 4
+    .registers 5
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -1492,6 +1546,7 @@
     move-result v0
 
     .line 246
+    .local v0, "enabled":I
     if-gez v0, :cond_7
 
     .line 247
@@ -1505,15 +1560,15 @@
 
     if-lez v0, :cond_e
 
-    const/4 v0, 0x1
+    const/4 v3, 0x1
 
     goto :goto_f
 
     :cond_e
-    move v0, v2
+    move v3, v2
 
     :goto_f
-    invoke-virtual {v1, v0}, Lcom/android/server/net/NetworkPolicyManagerService;->setRestrictBackground(Z)V
+    invoke-virtual {v1, v3}, Lcom/android/server/net/NetworkPolicyManagerService;->setRestrictBackground(Z)V
 
     .line 250
     return v2
@@ -1537,23 +1592,26 @@
     move-result v0
 
     .line 255
+    .local v0, "subId":I
     invoke-virtual {p0}, Lcom/android/server/net/NetworkPolicyManagerShellCommand;->getNextArg()Ljava/lang/String;
 
     move-result-object v1
 
     .line 256
+    .local v1, "packageName":Ljava/lang/String;
     iget-object v2, p0, Lcom/android/server/net/NetworkPolicyManagerShellCommand;->mInterface:Lcom/android/server/net/NetworkPolicyManagerService;
 
     invoke-virtual {v2, v0, v1}, Lcom/android/server/net/NetworkPolicyManagerService;->setSubscriptionPlansOwner(ILjava/lang/String;)V
 
     .line 257
-    const/4 v0, 0x0
+    const/4 v2, 0x0
 
-    return v0
+    return v2
 .end method
 
 .method private setUidPolicy(I)I
     .registers 4
+    .param p1, "policy"  # I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -1566,6 +1624,7 @@
     move-result v0
 
     .line 262
+    .local v0, "uid":I
     if-gez v0, :cond_7
 
     .line 263
@@ -1578,13 +1637,14 @@
     invoke-virtual {v1, v0, p1}, Lcom/android/server/net/NetworkPolicyManagerService;->setUidPolicy(II)V
 
     .line 266
-    const/4 p1, 0x0
+    const/4 v1, 0x0
 
-    return p1
+    return v1
 .end method
 
 .method private static stringToOverride(Ljava/lang/String;)I
     .registers 5
+    .param p0, "override"  # Ljava/lang/String;
 
     .line 366
     invoke-virtual {p0}, Ljava/lang/String;->hashCode()I
@@ -1611,11 +1671,11 @@
 
     invoke-virtual {p0, v0}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result p0
+    move-result v0
 
-    if-eqz p0, :cond_10
+    if-eqz v0, :cond_10
 
-    move p0, v3
+    move v0, v3
 
     goto :goto_27
 
@@ -1624,30 +1684,30 @@
 
     invoke-virtual {p0, v0}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result p0
+    move-result v0
 
-    if-eqz p0, :cond_10
+    if-eqz v0, :cond_10
 
-    move p0, v2
+    move v0, v2
 
     goto :goto_27
 
     :goto_26
-    const/4 p0, -0x1
+    const/4 v0, -0x1
 
     :goto_27
-    if-eqz p0, :cond_2e
+    if-eqz v0, :cond_2e
 
-    if-eq p0, v3, :cond_2c
+    if-eq v0, v3, :cond_2c
 
     .line 369
     return v2
 
     .line 368
     :cond_2c
-    const/4 p0, 0x2
+    const/4 v0, 0x2
 
-    return p0
+    return v0
 
     .line 367
     :cond_2e
@@ -1658,6 +1718,7 @@
 # virtual methods
 .method public onCommand(Ljava/lang/String;)I
     .registers 9
+    .param p1, "cmd"  # Ljava/lang/String;
 
     .line 45
     if-nez p1, :cond_7
@@ -1665,9 +1726,9 @@
     .line 46
     invoke-virtual {p0, p1}, Lcom/android/server/net/NetworkPolicyManagerShellCommand;->handleDefaultCommands(Ljava/lang/String;)I
 
-    move-result p1
+    move-result v0
 
-    return p1
+    return v0
 
     .line 48
     :cond_7
@@ -1676,6 +1737,7 @@
     move-result-object v0
 
     .line 50
+    .local v0, "pw":Ljava/io/PrintWriter;
     const/4 v1, -0x1
 
     :try_start_c
@@ -1694,10 +1756,10 @@
     sparse-switch v2, :sswitch_data_8c
 
     :cond_17
-    goto :goto_4c
+    goto :goto_4d
 
     :sswitch_18
-    const-string v2, "list"
+    const-string/jumbo v2, "list"
 
     invoke-virtual {p1, v2}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
@@ -1707,9 +1769,9 @@
 
     move v2, v5
 
-    goto :goto_4d
+    goto :goto_4e
 
-    :sswitch_22
+    :sswitch_23
     const-string/jumbo v2, "set"
 
     invoke-virtual {p1, v2}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
@@ -1720,9 +1782,9 @@
 
     move v2, v6
 
-    goto :goto_4d
+    goto :goto_4e
 
-    :sswitch_2d
+    :sswitch_2e
     const-string v2, "get"
 
     invoke-virtual {p1, v2}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
@@ -1733,9 +1795,9 @@
 
     const/4 v2, 0x0
 
-    goto :goto_4d
+    goto :goto_4e
 
-    :sswitch_37
+    :sswitch_38
     const-string v2, "add"
 
     invoke-virtual {p1, v2}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
@@ -1746,9 +1808,9 @@
 
     move v2, v4
 
-    goto :goto_4d
+    goto :goto_4e
 
-    :sswitch_41
+    :sswitch_42
     const-string/jumbo v2, "remove"
 
     invoke-virtual {p1, v2}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
@@ -1759,103 +1821,103 @@
 
     move v2, v3
 
-    goto :goto_4d
-
-    :goto_4c
-    move v2, v1
+    goto :goto_4e
 
     :goto_4d
-    if-eqz v2, :cond_70
+    move v2, v1
 
-    if-eq v2, v6, :cond_6b
+    :goto_4e
+    if-eqz v2, :cond_71
 
-    if-eq v2, v5, :cond_66
+    if-eq v2, v6, :cond_6c
 
-    if-eq v2, v4, :cond_61
+    if-eq v2, v5, :cond_67
 
-    if-eq v2, v3, :cond_5c
+    if-eq v2, v4, :cond_62
+
+    if-eq v2, v3, :cond_5d
 
     .line 62
     invoke-virtual {p0, p1}, Lcom/android/server/net/NetworkPolicyManagerShellCommand;->handleDefaultCommands(Ljava/lang/String;)I
 
-    move-result p1
+    move-result v1
 
-    return p1
-
-    .line 60
-    :cond_5c
-    invoke-direct {p0}, Lcom/android/server/net/NetworkPolicyManagerShellCommand;->runRemove()I
-
-    move-result p1
-
-    return p1
-
-    .line 58
-    :cond_61
-    invoke-direct {p0}, Lcom/android/server/net/NetworkPolicyManagerShellCommand;->runAdd()I
-
-    move-result p1
-
-    return p1
-
-    .line 56
-    :cond_66
-    invoke-direct {p0}, Lcom/android/server/net/NetworkPolicyManagerShellCommand;->runList()I
-
-    move-result p1
-
-    return p1
-
-    .line 54
-    :cond_6b
-    invoke-direct {p0}, Lcom/android/server/net/NetworkPolicyManagerShellCommand;->runSet()I
-
-    move-result p1
-
-    return p1
-
-    .line 52
-    :cond_70
-    invoke-direct {p0}, Lcom/android/server/net/NetworkPolicyManagerShellCommand;->runGet()I
-
-    move-result p1
-    :try_end_74
-    .catch Landroid/os/RemoteException; {:try_start_c .. :try_end_74} :catch_75
-
-    return p1
-
-    .line 64
-    :catch_75
-    move-exception p1
-
-    .line 65
-    new-instance v2, Ljava/lang/StringBuilder;
-
-    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
-
-    const-string v3, "Remote exception: "
-
-    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v2, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
-
-    move-result-object p1
-
-    invoke-virtual {v0, p1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
-
-    .line 67
     return v1
 
-    nop
+    .line 60
+    :cond_5d
+    invoke-direct {p0}, Lcom/android/server/net/NetworkPolicyManagerShellCommand;->runRemove()I
+
+    move-result v1
+
+    return v1
+
+    .line 58
+    :cond_62
+    invoke-direct {p0}, Lcom/android/server/net/NetworkPolicyManagerShellCommand;->runAdd()I
+
+    move-result v1
+
+    return v1
+
+    .line 56
+    :cond_67
+    invoke-direct {p0}, Lcom/android/server/net/NetworkPolicyManagerShellCommand;->runList()I
+
+    move-result v1
+
+    return v1
+
+    .line 54
+    :cond_6c
+    invoke-direct {p0}, Lcom/android/server/net/NetworkPolicyManagerShellCommand;->runSet()I
+
+    move-result v1
+
+    return v1
+
+    .line 52
+    :cond_71
+    invoke-direct {p0}, Lcom/android/server/net/NetworkPolicyManagerShellCommand;->runGet()I
+
+    move-result v1
+    :try_end_75
+    .catch Landroid/os/RemoteException; {:try_start_c .. :try_end_75} :catch_76
+
+    return v1
+
+    .line 64
+    :catch_76
+    move-exception v2
+
+    .line 65
+    .local v2, "e":Landroid/os/RemoteException;
+    new-instance v3, Ljava/lang/StringBuilder;
+
+    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
+
+    const-string v4, "Remote exception: "
+
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v3, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v3
+
+    invoke-virtual {v0, v3}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+
+    .line 67
+    .end local v2  # "e":Landroid/os/RemoteException;
+    return v1
 
     :sswitch_data_8c
     .sparse-switch
-        -0x37b5077c -> :sswitch_41
-        0x178a1 -> :sswitch_37
-        0x18f56 -> :sswitch_2d
-        0x1bc62 -> :sswitch_22
+        -0x37b5077c -> :sswitch_42
+        0x178a1 -> :sswitch_38
+        0x18f56 -> :sswitch_2e
+        0x1bc62 -> :sswitch_23
         0x32b09e -> :sswitch_18
     .end sparse-switch
 .end method
@@ -1869,6 +1931,7 @@
     move-result-object v0
 
     .line 73
+    .local v0, "pw":Ljava/io/PrintWriter;
     const-string v1, "Network policy manager (netpolicy) commands:"
 
     invoke-virtual {v0, v1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V

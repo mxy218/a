@@ -30,8 +30,9 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/am/ServiceRecord;Ljava/lang/String;II)V
     .registers 5
+    .param p1, "this$0"  # Lcom/android/server/am/ServiceRecord;
 
-    .line 941
+    .line 968
     iput-object p1, p0, Lcom/android/server/am/ServiceRecord$3;->this$0:Lcom/android/server/am/ServiceRecord;
 
     iput-object p2, p0, Lcom/android/server/am/ServiceRecord$3;->val$localPackageName:Ljava/lang/String;
@@ -50,7 +51,7 @@
 .method public run()V
     .registers 5
 
-    .line 944
+    .line 971
     const-class v0, Lcom/android/server/notification/NotificationManagerInternal;
 
     invoke-static {v0}, Lcom/android/server/LocalServices;->getService(Ljava/lang/Class;)Ljava/lang/Object;
@@ -59,13 +60,14 @@
 
     check-cast v0, Lcom/android/server/notification/NotificationManagerInternal;
 
-    .line 946
+    .line 973
+    .local v0, "nmi":Lcom/android/server/notification/NotificationManagerInternal;
     if-nez v0, :cond_b
 
-    .line 947
+    .line 974
     return-void
 
-    .line 949
+    .line 976
     :cond_b
     iget-object v1, p0, Lcom/android/server/am/ServiceRecord$3;->val$localPackageName:Ljava/lang/String;
 
@@ -75,6 +77,6 @@
 
     invoke-interface {v0, v1, v2, v3}, Lcom/android/server/notification/NotificationManagerInternal;->removeForegroundServiceFlagFromNotification(Ljava/lang/String;II)V
 
-    .line 951
+    .line 978
     return-void
 .end method

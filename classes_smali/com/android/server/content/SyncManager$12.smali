@@ -23,6 +23,8 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/content/SyncManager;Landroid/os/Handler;Landroid/content/ContentResolver;)V
     .registers 4
+    .param p1, "this$0"  # Lcom/android/server/content/SyncManager;
+    .param p2, "x0"  # Landroid/os/Handler;
 
     .line 693
     iput-object p1, p0, Lcom/android/server/content/SyncManager$12;->this$0:Lcom/android/server/content/SyncManager;
@@ -37,30 +39,31 @@
 
 # virtual methods
 .method public onChange(Z)V
-    .registers 3
+    .registers 4
+    .param p1, "selfChange"  # Z
 
     .line 695
-    iget-object p1, p0, Lcom/android/server/content/SyncManager$12;->this$0:Lcom/android/server/content/SyncManager;
+    iget-object v0, p0, Lcom/android/server/content/SyncManager$12;->this$0:Lcom/android/server/content/SyncManager;
 
-    invoke-static {p1}, Lcom/android/server/content/SyncManager;->access$1600(Lcom/android/server/content/SyncManager;)Z
+    invoke-static {v0}, Lcom/android/server/content/SyncManager;->access$1600(Lcom/android/server/content/SyncManager;)Z
+
+    move-result v1
+
+    invoke-static {v0, v1}, Lcom/android/server/content/SyncManager;->access$1576(Lcom/android/server/content/SyncManager;I)Z
+
+    .line 696
+    iget-object v0, p0, Lcom/android/server/content/SyncManager$12;->this$0:Lcom/android/server/content/SyncManager;
+
+    invoke-static {v0}, Lcom/android/server/content/SyncManager;->access$1500(Lcom/android/server/content/SyncManager;)Z
 
     move-result v0
 
-    invoke-static {p1, v0}, Lcom/android/server/content/SyncManager;->access$1576(Lcom/android/server/content/SyncManager;I)Z
-
-    .line 696
-    iget-object p1, p0, Lcom/android/server/content/SyncManager$12;->this$0:Lcom/android/server/content/SyncManager;
-
-    invoke-static {p1}, Lcom/android/server/content/SyncManager;->access$1500(Lcom/android/server/content/SyncManager;)Z
-
-    move-result p1
-
-    if-eqz p1, :cond_16
+    if-eqz v0, :cond_16
 
     .line 697
-    iget-object p1, p0, Lcom/android/server/content/SyncManager$12;->val$resolver:Landroid/content/ContentResolver;
+    iget-object v0, p0, Lcom/android/server/content/SyncManager$12;->val$resolver:Landroid/content/ContentResolver;
 
-    invoke-virtual {p1, p0}, Landroid/content/ContentResolver;->unregisterContentObserver(Landroid/database/ContentObserver;)V
+    invoke-virtual {v0, p0}, Landroid/content/ContentResolver;->unregisterContentObserver(Landroid/database/ContentObserver;)V
 
     .line 699
     :cond_16

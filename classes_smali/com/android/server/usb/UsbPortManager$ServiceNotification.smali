@@ -21,6 +21,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/usb/UsbPortManager;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/usb/UsbPortManager;
 
     .line 765
     iput-object p1, p0, Lcom/android/server/usb/UsbPortManager$ServiceNotification;->this$0:Lcom/android/server/usb/UsbPortManager;
@@ -33,39 +34,42 @@
 
 # virtual methods
 .method public onRegistration(Ljava/lang/String;Ljava/lang/String;Z)V
-    .registers 5
+    .registers 7
+    .param p1, "fqName"  # Ljava/lang/String;
+    .param p2, "name"  # Ljava/lang/String;
+    .param p3, "preexisting"  # Z
 
     .line 768
-    new-instance p3, Ljava/lang/StringBuilder;
+    new-instance v0, Ljava/lang/StringBuilder;
 
-    invoke-direct {p3}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v0, "Usb hal service started "
+    const-string v1, "Usb hal service started "
 
-    invoke-virtual {p3, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p3, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string p1, " "
+    const-string v1, " "
 
-    invoke-virtual {p3, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p3, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    const/4 p2, 0x0
+    const/4 v1, 0x0
 
-    const/4 p3, 0x4
+    const/4 v2, 0x4
 
-    invoke-static {p3, p2, p1}, Lcom/android/server/usb/UsbPortManager;->access$100(ILcom/android/internal/util/IndentingPrintWriter;Ljava/lang/String;)V
+    invoke-static {v2, v1, v0}, Lcom/android/server/usb/UsbPortManager;->access$100(ILcom/android/internal/util/IndentingPrintWriter;Ljava/lang/String;)V
 
     .line 769
-    iget-object p1, p0, Lcom/android/server/usb/UsbPortManager$ServiceNotification;->this$0:Lcom/android/server/usb/UsbPortManager;
+    iget-object v0, p0, Lcom/android/server/usb/UsbPortManager$ServiceNotification;->this$0:Lcom/android/server/usb/UsbPortManager;
 
-    invoke-static {p1, p2}, Lcom/android/server/usb/UsbPortManager;->access$500(Lcom/android/server/usb/UsbPortManager;Lcom/android/internal/util/IndentingPrintWriter;)V
+    invoke-static {v0, v1}, Lcom/android/server/usb/UsbPortManager;->access$500(Lcom/android/server/usb/UsbPortManager;Lcom/android/internal/util/IndentingPrintWriter;)V
 
     .line 770
     return-void

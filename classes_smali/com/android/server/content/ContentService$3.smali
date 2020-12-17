@@ -24,6 +24,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/content/ContentService;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/content/ContentService;
 
     .line 286
     iput-object p1, p0, Lcom/android/server/content/ContentService$3;->this$0:Lcom/android/server/content/ContentService;
@@ -37,13 +38,15 @@
 # virtual methods
 .method public getPackages(Ljava/lang/String;I)[Ljava/lang/String;
     .registers 4
+    .param p1, "authority"  # Ljava/lang/String;
+    .param p2, "userId"  # I
 
     .line 289
     iget-object v0, p0, Lcom/android/server/content/ContentService$3;->this$0:Lcom/android/server/content/ContentService;
 
     invoke-virtual {v0, p1, p2}, Lcom/android/server/content/ContentService;->getSyncAdapterPackagesForAuthorityAsUser(Ljava/lang/String;I)[Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    return-object p1
+    return-object v0
 .end method

@@ -35,6 +35,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/job/controllers/DeviceIdleJobsController;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/job/controllers/DeviceIdleJobsController;
 
     .line 284
     iput-object p1, p0, Lcom/android/server/job/controllers/DeviceIdleJobsController$DeviceIdleUpdateFunctor;->this$0:Lcom/android/server/job/controllers/DeviceIdleJobsController;
@@ -48,6 +49,7 @@
 # virtual methods
 .method public accept(Lcom/android/server/job/controllers/JobStatus;)V
     .registers 4
+    .param p1, "jobStatus"  # Lcom/android/server/job/controllers/JobStatus;
 
     .line 289
     iget-boolean v0, p0, Lcom/android/server/job/controllers/DeviceIdleJobsController$DeviceIdleUpdateFunctor;->mChanged:Z
@@ -56,11 +58,11 @@
 
     invoke-static {v1, p1}, Lcom/android/server/job/controllers/DeviceIdleJobsController;->access$600(Lcom/android/server/job/controllers/DeviceIdleJobsController;Lcom/android/server/job/controllers/JobStatus;)Z
 
-    move-result p1
+    move-result v1
 
-    or-int/2addr p1, v0
+    or-int/2addr v0, v1
 
-    iput-boolean p1, p0, Lcom/android/server/job/controllers/DeviceIdleJobsController$DeviceIdleUpdateFunctor;->mChanged:Z
+    iput-boolean v0, p0, Lcom/android/server/job/controllers/DeviceIdleJobsController$DeviceIdleUpdateFunctor;->mChanged:Z
 
     .line 290
     return-void

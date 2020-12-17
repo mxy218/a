@@ -39,7 +39,8 @@
 .end method
 
 .method public beginGsiInstall(Landroid/gsi/GsiInstallParams;)I
-    .registers 2
+    .registers 3
+    .param p1, "params"  # Landroid/gsi/GsiInstallParams;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -47,9 +48,9 @@
     .end annotation
 
     .line 164
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    return p1
+    return v0
 .end method
 
 .method public cancelGsiInstall()Z
@@ -67,7 +68,8 @@
 .end method
 
 .method public commitGsiChunkFromMemory([B)Z
-    .registers 2
+    .registers 3
+    .param p1, "bytes"  # [B
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -75,13 +77,15 @@
     .end annotation
 
     .line 59
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    return p1
+    return v0
 .end method
 
 .method public commitGsiChunkFromStream(Landroid/os/ParcelFileDescriptor;J)Z
-    .registers 4
+    .registers 5
+    .param p1, "stream"  # Landroid/os/ParcelFileDescriptor;
+    .param p2, "bytes"  # J
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -89,9 +93,9 @@
     .end annotation
 
     .line 41
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    return p1
+    return v0
 .end method
 
 .method public disableGsiInstall()Z
@@ -235,7 +239,8 @@
 .end method
 
 .method public setGsiBootable(Z)I
-    .registers 2
+    .registers 3
+    .param p1, "oneShot"  # Z
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -243,13 +248,16 @@
     .end annotation
 
     .line 71
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    return p1
+    return v0
 .end method
 
 .method public startGsiInstall(JJZ)I
-    .registers 6
+    .registers 7
+    .param p1, "gsiSize"  # J
+    .param p3, "userdataSize"  # J
+    .param p5, "wipeUserdata"  # Z
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -257,9 +265,9 @@
     .end annotation
 
     .line 30
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    return p1
+    return v0
 .end method
 
 .method public wipeGsiUserdata()I

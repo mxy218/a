@@ -173,6 +173,8 @@
 
 .method constructor <init>(IB)V
     .registers 4
+    .param p1, "length"  # I
+    .param p2, "type"  # B
 
     .line 135
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -198,93 +200,103 @@
 
     .line 140
     :cond_e
-    new-instance p1, Ljava/lang/IllegalArgumentException;
+    new-instance v0, Ljava/lang/IllegalArgumentException;
 
-    invoke-direct {p1}, Ljava/lang/IllegalArgumentException;-><init>()V
+    invoke-direct {v0}, Ljava/lang/IllegalArgumentException;-><init>()V
 
-    throw p1
+    throw v0
 .end method
 
 .method public static getUsbDescriptorString(Landroid/hardware/usb/UsbDeviceConnection;B)Ljava/lang/String;
-    .registers 10
+    .registers 11
+    .param p0, "connection"  # Landroid/hardware/usb/UsbDeviceConnection;
+    .param p1, "strIndex"  # B
 
     .line 220
-    nop
+    const-string v0, ""
 
     .line 221
-    if-eqz p1, :cond_2d
+    .local v0, "usbStr":Ljava/lang/String;
+    if-eqz p1, :cond_31
 
     .line 223
-    const/16 v1, 0x80
+    const/16 v2, 0x80
 
-    const/4 v2, 0x6
+    const/4 v3, 0x6
 
-    or-int/lit16 v3, p1, 0x300
+    or-int/lit16 v4, p1, 0x300
 
-    const/4 v4, 0x0
+    const/4 v5, 0x0
 
-    :try_start_9
-    sget-object v5, Lcom/android/server/usb/descriptors/UsbDescriptor;->sStringBuffer:[B
+    :try_start_a
+    sget-object v6, Lcom/android/server/usb/descriptors/UsbDescriptor;->sStringBuffer:[B
 
-    const/16 v6, 0xff
+    const/16 v7, 0xff
 
-    const/16 v7, 0xc8
+    const/16 v8, 0xc8
 
-    move-object v0, p0
+    move-object v1, p0
 
-    invoke-virtual/range {v0 .. v7}, Landroid/hardware/usb/UsbDeviceConnection;->controlTransfer(IIII[BII)I
+    invoke-virtual/range {v1 .. v8}, Landroid/hardware/usb/UsbDeviceConnection;->controlTransfer(IIII[BII)I
 
-    move-result p0
+    move-result v1
 
     .line 231
-    if-ltz p0, :cond_22
+    .local v1, "rdo":I
+    if-ltz v1, :cond_25
 
     .line 232
-    new-instance p1, Ljava/lang/String;
+    new-instance v2, Ljava/lang/String;
 
-    sget-object v0, Lcom/android/server/usb/descriptors/UsbDescriptor;->sStringBuffer:[B
+    sget-object v3, Lcom/android/server/usb/descriptors/UsbDescriptor;->sStringBuffer:[B
 
-    const/4 v1, 0x2
+    add-int/lit8 v4, v1, -0x2
 
-    sub-int/2addr p0, v1
+    const-string v5, "UTF-16LE"
 
-    const-string v2, "UTF-16LE"
+    const/4 v6, 0x2
 
-    invoke-direct {p1, v0, v1, p0, v2}, Ljava/lang/String;-><init>([BIILjava/lang/String;)V
+    invoke-direct {v2, v3, v6, v4, v5}, Ljava/lang/String;-><init>([BIILjava/lang/String;)V
 
-    goto :goto_24
+    move-object v0, v2
+
+    goto :goto_28
 
     .line 234
-    :cond_22
-    const-string p1, "?"
-    :try_end_24
-    .catch Ljava/lang/Exception; {:try_start_9 .. :try_end_24} :catch_25
+    :cond_25
+    const-string v2, "?"
+    :try_end_27
+    .catch Ljava/lang/Exception; {:try_start_a .. :try_end_27} :catch_29
+
+    move-object v0, v2
 
     .line 238
-    :goto_24
-    goto :goto_2f
+    .end local v1  # "rdo":I
+    :goto_28
+    goto :goto_31
 
     .line 236
-    :catch_25
-    move-exception p0
+    :catch_29
+    move-exception v1
 
     .line 237
-    const-string p1, "UsbDescriptor"
+    .local v1, "e":Ljava/lang/Exception;
+    const-string v2, "UsbDescriptor"
 
-    const-string v0, "Can not communicate with USB device"
+    const-string v3, "Can not communicate with USB device"
 
-    invoke-static {p1, v0, p0}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    invoke-static {v2, v3, v1}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
     .line 240
-    :cond_2d
-    const-string p1, ""
-
-    :goto_2f
-    return-object p1
+    .end local v1  # "e":Ljava/lang/Exception;
+    :cond_31
+    :goto_31
+    return-object v0
 .end method
 
 .method private reportParseStatus(Lcom/android/server/usb/descriptors/report/ReportCanvas;)V
-    .registers 5
+    .registers 6
+    .param p1, "canvas"  # Lcom/android/server/usb/descriptors/report/ReportCanvas;
 
     .line 244
     invoke-virtual {p0}, Lcom/android/server/usb/descriptors/UsbDescriptor;->getStatus()I
@@ -292,6 +304,7 @@
     move-result v0
 
     .line 245
+    .local v0, "status":I
     const/4 v1, 0x1
 
     if-eqz v0, :cond_11
@@ -314,41 +327,41 @@
 
     .line 252
     :cond_11
-    new-instance v0, Ljava/lang/StringBuilder;
+    new-instance v2, Ljava/lang/StringBuilder;
 
-    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string/jumbo v2, "status: "
+    const-string/jumbo v3, "status: "
 
-    invoke-virtual {v0, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {p0}, Lcom/android/server/usb/descriptors/UsbDescriptor;->getStatusString()Ljava/lang/String;
 
-    move-result-object v2
+    move-result-object v3
 
-    invoke-virtual {v0, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string v2, " ["
+    const-string v3, " ["
 
-    invoke-virtual {v0, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     .line 253
     invoke-virtual {p0}, Lcom/android/server/usb/descriptors/UsbDescriptor;->getOverUnderRunCount()I
 
-    move-result v2
+    move-result v3
 
-    invoke-virtual {v0, v2}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    const-string v2, "]"
+    const-string v3, "]"
 
-    invoke-virtual {v0, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v2
 
     .line 252
-    invoke-virtual {p1, v0, v1}, Lcom/android/server/usb/descriptors/report/ReportCanvas;->writeParagraph(Ljava/lang/String;Z)V
+    invoke-virtual {p1, v2, v1}, Lcom/android/server/usb/descriptors/report/ReportCanvas;->writeParagraph(Ljava/lang/String;Z)V
 
     .line 256
     :goto_3b
@@ -416,7 +429,8 @@
 .end method
 
 .method public parseRawDescriptors(Lcom/android/server/usb/descriptors/ByteStream;)I
-    .registers 6
+    .registers 7
+    .param p1, "stream"  # Lcom/android/server/usb/descriptors/ByteStream;
 
     .line 205
     invoke-virtual {p1}, Lcom/android/server/usb/descriptors/ByteStream;->getReadCount()I
@@ -424,47 +438,52 @@
     move-result v0
 
     .line 206
+    .local v0, "numRead":I
     iget v1, p0, Lcom/android/server/usb/descriptors/UsbDescriptor;->mLength:I
 
     sub-int/2addr v1, v0
 
     .line 207
+    .local v1, "dataLen":I
     if-lez v1, :cond_1b
 
     .line 208
-    new-array v0, v1, [B
+    new-array v2, v1, [B
 
-    iput-object v0, p0, Lcom/android/server/usb/descriptors/UsbDescriptor;->mRawData:[B
+    iput-object v2, p0, Lcom/android/server/usb/descriptors/UsbDescriptor;->mRawData:[B
 
     .line 209
-    const/4 v0, 0x0
+    const/4 v2, 0x0
 
+    .local v2, "index":I
     :goto_e
-    if-ge v0, v1, :cond_1b
+    if-ge v2, v1, :cond_1b
 
     .line 210
-    iget-object v2, p0, Lcom/android/server/usb/descriptors/UsbDescriptor;->mRawData:[B
+    iget-object v3, p0, Lcom/android/server/usb/descriptors/UsbDescriptor;->mRawData:[B
 
     invoke-virtual {p1}, Lcom/android/server/usb/descriptors/ByteStream;->getByte()B
 
-    move-result v3
+    move-result v4
 
-    aput-byte v3, v2, v0
+    aput-byte v4, v3, v2
 
     .line 209
-    add-int/lit8 v0, v0, 0x1
+    add-int/lit8 v2, v2, 0x1
 
     goto :goto_e
 
     .line 213
+    .end local v2  # "index":I
     :cond_1b
-    iget p1, p0, Lcom/android/server/usb/descriptors/UsbDescriptor;->mLength:I
+    iget v2, p0, Lcom/android/server/usb/descriptors/UsbDescriptor;->mLength:I
 
-    return p1
+    return v2
 .end method
 
 .method public postParse(Lcom/android/server/usb/descriptors/ByteStream;)V
-    .registers 6
+    .registers 7
+    .param p1, "stream"  # Lcom/android/server/usb/descriptors/ByteStream;
 
     .line 180
     invoke-virtual {p1}, Lcom/android/server/usb/descriptors/ByteStream;->getReadCount()I
@@ -472,6 +491,7 @@
     move-result v0
 
     .line 181
+    .local v0, "bytesRead":I
     iget v1, p0, Lcom/android/server/usb/descriptors/UsbDescriptor;->mLength:I
 
     const-string v2, " r: "
@@ -486,51 +506,51 @@
     invoke-virtual {p1, v1}, Lcom/android/server/usb/descriptors/ByteStream;->advance(I)V
 
     .line 184
-    const/4 p1, 0x2
+    const/4 v1, 0x2
 
-    iput p1, p0, Lcom/android/server/usb/descriptors/UsbDescriptor;->mStatus:I
+    iput v1, p0, Lcom/android/server/usb/descriptors/UsbDescriptor;->mStatus:I
 
     .line 185
-    iget p1, p0, Lcom/android/server/usb/descriptors/UsbDescriptor;->mLength:I
+    iget v1, p0, Lcom/android/server/usb/descriptors/UsbDescriptor;->mLength:I
 
-    sub-int/2addr p1, v0
+    sub-int/2addr v1, v0
 
-    iput p1, p0, Lcom/android/server/usb/descriptors/UsbDescriptor;->mOverUnderRunCount:I
+    iput v1, p0, Lcom/android/server/usb/descriptors/UsbDescriptor;->mOverUnderRunCount:I
 
     .line 186
-    new-instance p1, Ljava/lang/StringBuilder;
+    new-instance v1, Ljava/lang/StringBuilder;
 
-    invoke-direct {p1}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v1, "UNDERRUN t:0x"
+    const-string v4, "UNDERRUN t:0x"
 
-    invoke-virtual {p1, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    iget-byte v1, p0, Lcom/android/server/usb/descriptors/UsbDescriptor;->mType:B
+    iget-byte v4, p0, Lcom/android/server/usb/descriptors/UsbDescriptor;->mType:B
 
-    invoke-static {v1}, Ljava/lang/Integer;->toHexString(I)Ljava/lang/String;
+    invoke-static {v4}, Ljava/lang/Integer;->toHexString(I)Ljava/lang/String;
+
+    move-result-object v4
+
+    invoke-virtual {v1, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v1, v0}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+
+    const-string v2, " < l: "
+
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    iget v2, p0, Lcom/android/server/usb/descriptors/UsbDescriptor;->mLength:I
+
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
     move-result-object v1
 
-    invoke-virtual {p1, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {p1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {p1, v0}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
-
-    const-string v0, " < l: "
-
-    invoke-virtual {p1, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    iget v0, p0, Lcom/android/server/usb/descriptors/UsbDescriptor;->mLength:I
-
-    invoke-virtual {p1, v0}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
-
-    invoke-virtual {p1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
-
-    move-result-object p1
-
-    invoke-static {v3, p1}, Landroid/util/Log;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v3, v1}, Landroid/util/Log;->w(Ljava/lang/String;Ljava/lang/String;)I
 
     goto :goto_81
 
@@ -544,59 +564,59 @@
     invoke-virtual {p1, v1}, Lcom/android/server/usb/descriptors/ByteStream;->reverse(I)V
 
     .line 191
-    const/4 p1, 0x3
+    const/4 v1, 0x3
 
-    iput p1, p0, Lcom/android/server/usb/descriptors/UsbDescriptor;->mStatus:I
+    iput v1, p0, Lcom/android/server/usb/descriptors/UsbDescriptor;->mStatus:I
 
     .line 192
-    iget p1, p0, Lcom/android/server/usb/descriptors/UsbDescriptor;->mLength:I
+    iget v1, p0, Lcom/android/server/usb/descriptors/UsbDescriptor;->mLength:I
 
-    sub-int p1, v0, p1
+    sub-int v1, v0, v1
 
-    iput p1, p0, Lcom/android/server/usb/descriptors/UsbDescriptor;->mOverUnderRunCount:I
+    iput v1, p0, Lcom/android/server/usb/descriptors/UsbDescriptor;->mOverUnderRunCount:I
 
     .line 193
-    new-instance p1, Ljava/lang/StringBuilder;
+    new-instance v1, Ljava/lang/StringBuilder;
 
-    invoke-direct {p1}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v1, "OVERRRUN t:0x"
+    const-string v4, "OVERRRUN t:0x"
 
-    invoke-virtual {p1, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    iget-byte v1, p0, Lcom/android/server/usb/descriptors/UsbDescriptor;->mType:B
+    iget-byte v4, p0, Lcom/android/server/usb/descriptors/UsbDescriptor;->mType:B
 
-    invoke-static {v1}, Ljava/lang/Integer;->toHexString(I)Ljava/lang/String;
+    invoke-static {v4}, Ljava/lang/Integer;->toHexString(I)Ljava/lang/String;
+
+    move-result-object v4
+
+    invoke-virtual {v1, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v1, v0}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+
+    const-string v2, " > l: "
+
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    iget v2, p0, Lcom/android/server/usb/descriptors/UsbDescriptor;->mLength:I
+
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
     move-result-object v1
 
-    invoke-virtual {p1, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {p1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {p1, v0}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
-
-    const-string v0, " > l: "
-
-    invoke-virtual {p1, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    iget v0, p0, Lcom/android/server/usb/descriptors/UsbDescriptor;->mLength:I
-
-    invoke-virtual {p1, v0}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
-
-    invoke-virtual {p1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
-
-    move-result-object p1
-
-    invoke-static {v3, p1}, Landroid/util/Log;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v3, v1}, Landroid/util/Log;->w(Ljava/lang/String;Ljava/lang/String;)I
 
     goto :goto_81
 
     .line 197
     :cond_7e
-    const/4 p1, 0x1
+    const/4 v1, 0x1
 
-    iput p1, p0, Lcom/android/server/usb/descriptors/UsbDescriptor;->mStatus:I
+    iput v1, p0, Lcom/android/server/usb/descriptors/UsbDescriptor;->mStatus:I
 
     .line 199
     :goto_81
@@ -604,7 +624,8 @@
 .end method
 
 .method public report(Lcom/android/server/usb/descriptors/report/ReportCanvas;)V
-    .registers 4
+    .registers 6
+    .param p1, "canvas"  # Lcom/android/server/usb/descriptors/report/ReportCanvas;
 
     .line 260
     invoke-virtual {p0}, Lcom/android/server/usb/descriptors/UsbDescriptor;->getType()B
@@ -616,66 +637,68 @@
     move-result-object v0
 
     .line 261
+    .local v0, "descTypeStr":Ljava/lang/String;
     new-instance v1, Ljava/lang/StringBuilder;
 
     invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
 
     invoke-virtual {v1, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string v0, ": "
+    const-string v2, ": "
 
-    invoke-virtual {v1, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {p0}, Lcom/android/server/usb/descriptors/UsbDescriptor;->getType()B
 
-    move-result v0
+    move-result v2
 
-    invoke-static {v0}, Lcom/android/server/usb/descriptors/report/ReportCanvas;->getHexString(B)Ljava/lang/String;
+    invoke-static {v2}, Lcom/android/server/usb/descriptors/report/ReportCanvas;->getHexString(B)Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v2
 
-    invoke-virtual {v1, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string v0, " Len: "
+    const-string v2, " Len: "
 
-    invoke-virtual {v1, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     .line 262
     invoke-virtual {p0}, Lcom/android/server/usb/descriptors/UsbDescriptor;->getLength()I
 
-    move-result v0
+    move-result v2
 
-    invoke-virtual {v1, v0}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
     invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v1
 
     .line 263
-    iget v1, p0, Lcom/android/server/usb/descriptors/UsbDescriptor;->mHierarchyLevel:I
+    .local v1, "text":Ljava/lang/String;
+    iget v2, p0, Lcom/android/server/usb/descriptors/UsbDescriptor;->mHierarchyLevel:I
 
-    if-eqz v1, :cond_38
+    if-eqz v2, :cond_38
 
     .line 264
-    invoke-virtual {p1, v1, v0}, Lcom/android/server/usb/descriptors/report/ReportCanvas;->writeHeader(ILjava/lang/String;)V
+    invoke-virtual {p1, v2, v1}, Lcom/android/server/usb/descriptors/report/ReportCanvas;->writeHeader(ILjava/lang/String;)V
 
     goto :goto_3c
 
     .line 266
     :cond_38
-    const/4 v1, 0x0
+    const/4 v2, 0x0
 
-    invoke-virtual {p1, v0, v1}, Lcom/android/server/usb/descriptors/report/ReportCanvas;->writeParagraph(Ljava/lang/String;Z)V
+    invoke-virtual {p1, v1, v2}, Lcom/android/server/usb/descriptors/report/ReportCanvas;->writeParagraph(Ljava/lang/String;Z)V
 
     .line 269
     :goto_3c
     invoke-virtual {p0}, Lcom/android/server/usb/descriptors/UsbDescriptor;->getStatus()I
 
-    move-result v0
+    move-result v2
 
-    const/4 v1, 0x1
+    const/4 v3, 0x1
 
-    if-eq v0, v1, :cond_46
+    if-eq v2, v3, :cond_46
 
     .line 270
     invoke-direct {p0, p1}, Lcom/android/server/usb/descriptors/UsbDescriptor;->reportParseStatus(Lcom/android/server/usb/descriptors/report/ReportCanvas;)V
@@ -687,6 +710,7 @@
 
 .method public setStatus(I)V
     .registers 2
+    .param p1, "status"  # I
 
     .line 160
     iput p1, p0, Lcom/android/server/usb/descriptors/UsbDescriptor;->mStatus:I
@@ -696,7 +720,8 @@
 .end method
 
 .method public shortReport(Lcom/android/server/usb/descriptors/report/ReportCanvas;)V
-    .registers 4
+    .registers 5
+    .param p1, "canvas"  # Lcom/android/server/usb/descriptors/report/ReportCanvas;
 
     .line 276
     invoke-virtual {p0}, Lcom/android/server/usb/descriptors/UsbDescriptor;->getType()B
@@ -708,45 +733,47 @@
     move-result-object v0
 
     .line 277
+    .local v0, "descTypeStr":Ljava/lang/String;
     new-instance v1, Ljava/lang/StringBuilder;
 
     invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
 
     invoke-virtual {v1, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string v0, ": "
+    const-string v2, ": "
 
-    invoke-virtual {v1, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {p0}, Lcom/android/server/usb/descriptors/UsbDescriptor;->getType()B
 
-    move-result v0
+    move-result v2
 
-    invoke-static {v0}, Lcom/android/server/usb/descriptors/report/ReportCanvas;->getHexString(B)Ljava/lang/String;
+    invoke-static {v2}, Lcom/android/server/usb/descriptors/report/ReportCanvas;->getHexString(B)Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v2
 
-    invoke-virtual {v1, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string v0, " Len: "
+    const-string v2, " Len: "
 
-    invoke-virtual {v1, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     .line 278
     invoke-virtual {p0}, Lcom/android/server/usb/descriptors/UsbDescriptor;->getLength()I
 
-    move-result v0
+    move-result v2
 
-    invoke-virtual {v1, v0}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
     invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v1
 
     .line 279
-    const/4 v1, 0x0
+    .local v1, "text":Ljava/lang/String;
+    const/4 v2, 0x0
 
-    invoke-virtual {p1, v0, v1}, Lcom/android/server/usb/descriptors/report/ReportCanvas;->writeParagraph(Ljava/lang/String;Z)V
+    invoke-virtual {p1, v1, v2}, Lcom/android/server/usb/descriptors/report/ReportCanvas;->writeParagraph(Ljava/lang/String;Z)V
 
     .line 280
     return-void

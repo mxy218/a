@@ -22,7 +22,7 @@
 .method private constructor <init>(Lcom/android/server/BatteryService;)V
     .registers 2
 
-    .line 1195
+    .line 1493
     iput-object p1, p0, Lcom/android/server/BatteryService$BinderService;->this$0:Lcom/android/server/BatteryService;
 
     invoke-direct {p0}, Landroid/os/Binder;-><init>()V
@@ -32,8 +32,10 @@
 
 .method synthetic constructor <init>(Lcom/android/server/BatteryService;Lcom/android/server/BatteryService$1;)V
     .registers 3
+    .param p1, "x0"  # Lcom/android/server/BatteryService;
+    .param p2, "x1"  # Lcom/android/server/BatteryService$1;
 
-    .line 1195
+    .line 1493
     invoke-direct {p0, p1}, Lcom/android/server/BatteryService$BinderService;-><init>(Lcom/android/server/BatteryService;)V
 
     return-void
@@ -43,15 +45,18 @@
 # virtual methods
 .method protected dump(Ljava/io/FileDescriptor;Ljava/io/PrintWriter;[Ljava/lang/String;)V
     .registers 6
+    .param p1, "fd"  # Ljava/io/FileDescriptor;
+    .param p2, "pw"  # Ljava/io/PrintWriter;
+    .param p3, "args"  # [Ljava/lang/String;
 
-    .line 1197
+    .line 1495
     iget-object v0, p0, Lcom/android/server/BatteryService$BinderService;->this$0:Lcom/android/server/BatteryService;
 
-    invoke-static {v0}, Lcom/android/server/BatteryService;->access$900(Lcom/android/server/BatteryService;)Landroid/content/Context;
+    invoke-static {v0}, Lcom/android/server/BatteryService;->access$1000(Lcom/android/server/BatteryService;)Landroid/content/Context;
 
     move-result-object v0
 
-    invoke-static {}, Lcom/android/server/BatteryService;->access$1100()Ljava/lang/String;
+    invoke-static {}, Lcom/android/server/BatteryService;->access$900()Ljava/lang/String;
 
     move-result-object v1
 
@@ -63,7 +68,7 @@
 
     return-void
 
-    .line 1199
+    .line 1497
     :cond_11
     array-length v0, p3
 
@@ -81,28 +86,34 @@
 
     if-eqz v0, :cond_25
 
-    .line 1200
-    iget-object p2, p0, Lcom/android/server/BatteryService$BinderService;->this$0:Lcom/android/server/BatteryService;
+    .line 1498
+    iget-object v0, p0, Lcom/android/server/BatteryService$BinderService;->this$0:Lcom/android/server/BatteryService;
 
-    invoke-static {p2, p1}, Lcom/android/server/BatteryService;->access$1700(Lcom/android/server/BatteryService;Ljava/io/FileDescriptor;)V
+    invoke-static {v0, p1}, Lcom/android/server/BatteryService;->access$1600(Lcom/android/server/BatteryService;Ljava/io/FileDescriptor;)V
 
     goto :goto_2a
 
-    .line 1202
+    .line 1500
     :cond_25
     iget-object v0, p0, Lcom/android/server/BatteryService$BinderService;->this$0:Lcom/android/server/BatteryService;
 
-    invoke-static {v0, p1, p2, p3}, Lcom/android/server/BatteryService;->access$1800(Lcom/android/server/BatteryService;Ljava/io/FileDescriptor;Ljava/io/PrintWriter;[Ljava/lang/String;)V
+    invoke-static {v0, p1, p2, p3}, Lcom/android/server/BatteryService;->access$1700(Lcom/android/server/BatteryService;Ljava/io/FileDescriptor;Ljava/io/PrintWriter;[Ljava/lang/String;)V
 
-    .line 1204
+    .line 1502
     :goto_2a
     return-void
 .end method
 
 .method public onShellCommand(Ljava/io/FileDescriptor;Ljava/io/FileDescriptor;Ljava/io/FileDescriptor;[Ljava/lang/String;Landroid/os/ShellCallback;Landroid/os/ResultReceiver;)V
     .registers 15
+    .param p1, "in"  # Ljava/io/FileDescriptor;
+    .param p2, "out"  # Ljava/io/FileDescriptor;
+    .param p3, "err"  # Ljava/io/FileDescriptor;
+    .param p4, "args"  # [Ljava/lang/String;
+    .param p5, "callback"  # Landroid/os/ShellCallback;
+    .param p6, "resultReceiver"  # Landroid/os/ResultReceiver;
 
-    .line 1209
+    .line 1507
     new-instance v0, Lcom/android/server/BatteryService$Shell;
 
     iget-object v1, p0, Lcom/android/server/BatteryService$BinderService;->this$0:Lcom/android/server/BatteryService;
@@ -125,6 +136,6 @@
 
     invoke-virtual/range {v0 .. v7}, Lcom/android/server/BatteryService$Shell;->exec(Landroid/os/Binder;Ljava/io/FileDescriptor;Ljava/io/FileDescriptor;Ljava/io/FileDescriptor;[Ljava/lang/String;Landroid/os/ShellCallback;Landroid/os/ResultReceiver;)I
 
-    .line 1210
+    .line 1508
     return-void
 .end method

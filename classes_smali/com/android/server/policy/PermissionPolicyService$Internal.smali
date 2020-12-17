@@ -32,6 +32,8 @@
 
 .method synthetic constructor <init>(Lcom/android/server/policy/PermissionPolicyService;Lcom/android/server/policy/PermissionPolicyService$1;)V
     .registers 3
+    .param p1, "x0"  # Lcom/android/server/policy/PermissionPolicyService;
+    .param p2, "x1"  # Lcom/android/server/policy/PermissionPolicyService$1;
 
     .line 809
     invoke-direct {p0, p1}, Lcom/android/server/policy/PermissionPolicyService$Internal;-><init>(Lcom/android/server/policy/PermissionPolicyService;)V
@@ -41,6 +43,9 @@
 
 .method private isActionRemovedForCallingPackage(Landroid/content/Intent;ILjava/lang/String;)Z
     .registers 10
+    .param p1, "intent"  # Landroid/content/Intent;
+    .param p2, "callingUid"  # I
+    .param p3, "callingPackage"  # Ljava/lang/String;
 
     .line 841
     invoke-virtual {p1}, Landroid/content/Intent;->getAction()Ljava/lang/String;
@@ -48,6 +53,7 @@
     move-result-object v0
 
     .line 842
+    .local v0, "action":Ljava/lang/String;
     const/4 v1, 0x0
 
     if-nez v0, :cond_8
@@ -81,9 +87,9 @@
 
     invoke-virtual {v0, v3}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result v0
+    move-result v3
 
-    if-eqz v0, :cond_18
+    if-eqz v3, :cond_18
 
     move v2, v1
 
@@ -94,9 +100,9 @@
 
     invoke-virtual {v0, v3}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result v0
+    move-result v3
 
-    if-eqz v0, :cond_18
+    if-eqz v3, :cond_18
 
     move v2, v5
 
@@ -111,34 +117,35 @@
     .line 850
     :cond_31
     :try_start_31
-    iget-object v0, p0, Lcom/android/server/policy/PermissionPolicyService$Internal;->this$0:Lcom/android/server/policy/PermissionPolicyService;
+    iget-object v2, p0, Lcom/android/server/policy/PermissionPolicyService$Internal;->this$0:Lcom/android/server/policy/PermissionPolicyService;
 
-    invoke-virtual {v0}, Lcom/android/server/policy/PermissionPolicyService;->getContext()Landroid/content/Context;
+    invoke-virtual {v2}, Lcom/android/server/policy/PermissionPolicyService;->getContext()Landroid/content/Context;
 
-    move-result-object v0
+    move-result-object v2
 
-    invoke-virtual {v0}, Landroid/content/Context;->getPackageManager()Landroid/content/pm/PackageManager;
+    invoke-virtual {v2}, Landroid/content/Context;->getPackageManager()Landroid/content/pm/PackageManager;
 
-    move-result-object v0
+    move-result-object v2
 
     .line 851
     invoke-static {p2}, Landroid/os/UserHandle;->getUserId(I)I
 
-    move-result p2
+    move-result v3
 
     .line 850
-    invoke-virtual {v0, p3, v1, p2}, Landroid/content/pm/PackageManager;->getApplicationInfoAsUser(Ljava/lang/String;II)Landroid/content/pm/ApplicationInfo;
+    invoke-virtual {v2, p3, v1, v3}, Landroid/content/pm/PackageManager;->getApplicationInfoAsUser(Ljava/lang/String;II)Landroid/content/pm/ApplicationInfo;
 
-    move-result-object p2
+    move-result-object v2
 
     .line 852
-    iget p2, p2, Landroid/content/pm/ApplicationInfo;->targetSdkVersion:I
+    .local v2, "applicationInfo":Landroid/content/pm/ApplicationInfo;
+    iget v3, v2, Landroid/content/pm/ApplicationInfo;->targetSdkVersion:I
     :try_end_45
     .catch Landroid/content/pm/PackageManager$NameNotFoundException; {:try_start_31 .. :try_end_45} :catch_4b
 
-    const/16 v0, 0x1d
+    const/16 v4, 0x1d
 
-    if-lt p2, v0, :cond_4a
+    if-lt v3, v4, :cond_4a
 
     .line 855
     return v5
@@ -148,35 +155,38 @@
     goto :goto_64
 
     .line 857
+    .end local v2  # "applicationInfo":Landroid/content/pm/ApplicationInfo;
     :catch_4b
-    move-exception p2
+    move-exception v2
 
     .line 858
+    .local v2, "e":Landroid/content/pm/PackageManager$NameNotFoundException;
     invoke-static {}, Lcom/android/server/policy/PermissionPolicyService;->access$600()Ljava/lang/String;
 
-    move-result-object p2
+    move-result-object v3
 
-    new-instance v0, Ljava/lang/StringBuilder;
+    new-instance v4, Ljava/lang/StringBuilder;
 
-    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v4}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v2, "Cannot find application info for "
+    const-string v5, "Cannot find application info for "
 
-    invoke-virtual {v0, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0, p3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v4, p3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v4}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v4
 
-    invoke-static {p2, v0}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v3, v4}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 861
+    .end local v2  # "e":Landroid/content/pm/PackageManager$NameNotFoundException;
     :goto_64
-    const-string p2, "android.intent.extra.CALLING_PACKAGE"
+    const-string v2, "android.intent.extra.CALLING_PACKAGE"
 
-    invoke-virtual {p1, p2, p3}, Landroid/content/Intent;->putExtra(Ljava/lang/String;Ljava/lang/String;)Landroid/content/Intent;
+    invoke-virtual {p1, v2, p3}, Landroid/content/Intent;->putExtra(Ljava/lang/String;Ljava/lang/String;)Landroid/content/Intent;
 
     .line 862
     return v1
@@ -186,6 +196,9 @@
 # virtual methods
 .method public checkStartActivity(Landroid/content/Intent;ILjava/lang/String;)Z
     .registers 7
+    .param p1, "intent"  # Landroid/content/Intent;
+    .param p2, "callingUid"  # I
+    .param p3, "callingPackage"  # Ljava/lang/String;
 
     .line 814
     if-eqz p3, :cond_3b
@@ -211,59 +224,61 @@
 
     invoke-virtual {p1}, Landroid/content/Intent;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v2
 
-    invoke-virtual {v1, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string p1, " from "
+    const-string v2, " from "
 
-    invoke-virtual {v1, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v1, p3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string p1, " (uid="
+    const-string v2, " (uid="
 
-    invoke-virtual {v1, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v1, p2}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    const-string p1, ")"
+    const-string v2, ")"
 
-    invoke-virtual {v1, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v1
 
-    invoke-static {v0, p1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v0, v1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 818
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    return p1
+    return v0
 
     .line 820
     :cond_3b
-    const/4 p1, 0x1
+    const/4 v0, 0x1
 
-    return p1
+    return v0
 .end method
 
 .method public isInitialized(I)Z
     .registers 3
+    .param p1, "userId"  # I
 
     .line 825
     iget-object v0, p0, Lcom/android/server/policy/PermissionPolicyService$Internal;->this$0:Lcom/android/server/policy/PermissionPolicyService;
 
     invoke-static {v0, p1}, Lcom/android/server/policy/PermissionPolicyService;->access$100(Lcom/android/server/policy/PermissionPolicyService;I)Z
 
-    move-result p1
+    move-result v0
 
-    return p1
+    return v0
 .end method
 
 .method public setOnInitializedCallback(Lcom/android/server/policy/PermissionPolicyInternal$OnInitializedCallback;)V
     .registers 4
+    .param p1, "callback"  # Lcom/android/server/policy/PermissionPolicyInternal$OnInitializedCallback;
 
     .line 830
     iget-object v0, p0, Lcom/android/server/policy/PermissionPolicyService$Internal;->this$0:Lcom/android/server/policy/PermissionPolicyService;
@@ -288,11 +303,11 @@
 
     .line 832
     :catchall_e
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_10
     .catchall {:try_start_7 .. :try_end_10} :catchall_e
 
-    throw p1
+    throw v1
 .end method

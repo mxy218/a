@@ -50,6 +50,7 @@
 
 .method public constructor <init>(Landroid/content/Context;)V
     .registers 5
+    .param p1, "context"  # Landroid/content/Context;
 
     .line 97
     new-instance v0, Ljava/lang/StringBuilder;
@@ -81,7 +82,11 @@
 .end method
 
 .method public constructor <init>(Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V
-    .registers 7
+    .registers 9
+    .param p1, "context"  # Landroid/content/Context;
+    .param p2, "entropyFile"  # Ljava/lang/String;
+    .param p3, "randomDevice"  # Ljava/lang/String;
+    .param p4, "hwRandomDevice"  # Ljava/lang/String;
 
     .line 105
     invoke-direct {p0}, Landroid/os/Binder;-><init>()V
@@ -142,67 +147,70 @@
     invoke-direct {p0}, Lcom/android/server/EntropyMixer;->scheduleEntropyWriter()V
 
     .line 118
-    new-instance p2, Landroid/content/IntentFilter;
+    new-instance v0, Landroid/content/IntentFilter;
 
-    const-string p3, "android.intent.action.ACTION_SHUTDOWN"
+    const-string v1, "android.intent.action.ACTION_SHUTDOWN"
 
-    invoke-direct {p2, p3}, Landroid/content/IntentFilter;-><init>(Ljava/lang/String;)V
+    invoke-direct {v0, v1}, Landroid/content/IntentFilter;-><init>(Ljava/lang/String;)V
 
     .line 119
-    const-string p3, "android.intent.action.ACTION_POWER_CONNECTED"
+    .local v0, "broadcastFilter":Landroid/content/IntentFilter;
+    const-string v1, "android.intent.action.ACTION_POWER_CONNECTED"
 
-    invoke-virtual {p2, p3}, Landroid/content/IntentFilter;->addAction(Ljava/lang/String;)V
+    invoke-virtual {v0, v1}, Landroid/content/IntentFilter;->addAction(Ljava/lang/String;)V
 
     .line 120
-    const-string p3, "android.intent.action.REBOOT"
+    const-string v1, "android.intent.action.REBOOT"
 
-    invoke-virtual {p2, p3}, Landroid/content/IntentFilter;->addAction(Ljava/lang/String;)V
+    invoke-virtual {v0, v1}, Landroid/content/IntentFilter;->addAction(Ljava/lang/String;)V
 
     .line 121
-    iget-object p3, p0, Lcom/android/server/EntropyMixer;->mBroadcastReceiver:Landroid/content/BroadcastReceiver;
+    iget-object v1, p0, Lcom/android/server/EntropyMixer;->mBroadcastReceiver:Landroid/content/BroadcastReceiver;
 
-    const/4 p4, 0x0
+    const/4 v2, 0x0
 
-    iget-object v0, p0, Lcom/android/server/EntropyMixer;->mHandler:Landroid/os/Handler;
+    iget-object v3, p0, Lcom/android/server/EntropyMixer;->mHandler:Landroid/os/Handler;
 
-    invoke-virtual {p1, p3, p2, p4, v0}, Landroid/content/Context;->registerReceiver(Landroid/content/BroadcastReceiver;Landroid/content/IntentFilter;Ljava/lang/String;Landroid/os/Handler;)Landroid/content/Intent;
+    invoke-virtual {p1, v1, v0, v2, v3}, Landroid/content/Context;->registerReceiver(Landroid/content/BroadcastReceiver;Landroid/content/IntentFilter;Ljava/lang/String;Landroid/os/Handler;)Landroid/content/Intent;
 
     .line 127
     return-void
 
     .line 108
+    .end local v0  # "broadcastFilter":Landroid/content/IntentFilter;
     :cond_4e
-    new-instance p1, Ljava/lang/NullPointerException;
+    new-instance v0, Ljava/lang/NullPointerException;
 
-    const-string p2, "entropyFile"
+    const-string v1, "entropyFile"
 
-    invoke-direct {p1, p2}, Ljava/lang/NullPointerException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v0, v1}, Ljava/lang/NullPointerException;-><init>(Ljava/lang/String;)V
 
-    throw p1
+    throw v0
 
     .line 107
     :cond_56
-    new-instance p1, Ljava/lang/NullPointerException;
+    new-instance v0, Ljava/lang/NullPointerException;
 
-    const-string p2, "hwRandomDevice"
+    const-string v1, "hwRandomDevice"
 
-    invoke-direct {p1, p2}, Ljava/lang/NullPointerException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v0, v1}, Ljava/lang/NullPointerException;-><init>(Ljava/lang/String;)V
 
-    throw p1
+    throw v0
 
     .line 106
     :cond_5e
-    new-instance p1, Ljava/lang/NullPointerException;
+    new-instance v0, Ljava/lang/NullPointerException;
 
-    const-string/jumbo p2, "randomDevice"
+    const-string/jumbo v1, "randomDevice"
 
-    invoke-direct {p1, p2}, Ljava/lang/NullPointerException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v0, v1}, Ljava/lang/NullPointerException;-><init>(Ljava/lang/String;)V
 
-    throw p1
+    throw v0
 .end method
 
 .method static synthetic access$000(Lcom/android/server/EntropyMixer;)V
     .registers 1
+    .param p0, "x0"  # Lcom/android/server/EntropyMixer;
 
     .line 59
     invoke-direct {p0}, Lcom/android/server/EntropyMixer;->addHwRandomEntropy()V
@@ -212,6 +220,7 @@
 
 .method static synthetic access$100(Lcom/android/server/EntropyMixer;)V
     .registers 1
+    .param p0, "x0"  # Lcom/android/server/EntropyMixer;
 
     .line 59
     invoke-direct {p0}, Lcom/android/server/EntropyMixer;->writeEntropy()V
@@ -221,6 +230,7 @@
 
 .method static synthetic access$200(Lcom/android/server/EntropyMixer;)V
     .registers 1
+    .param p0, "x0"  # Lcom/android/server/EntropyMixer;
 
     .line 59
     invoke-direct {p0}, Lcom/android/server/EntropyMixer;->scheduleEntropyWriter()V
@@ -229,15 +239,14 @@
 .end method
 
 .method private addDeviceSpecificEntropy()V
-    .registers 6
+    .registers 5
 
     .line 168
-    nop
-
-    .line 170
     const/4 v0, 0x0
 
-    :try_start_2
+    .line 170
+    .local v0, "out":Ljava/io/PrintWriter;
+    :try_start_1
     new-instance v1, Ljava/io/PrintWriter;
 
     new-instance v2, Ljava/io/FileOutputStream;
@@ -247,196 +256,182 @@
     invoke-direct {v2, v3}, Ljava/io/FileOutputStream;-><init>(Ljava/lang/String;)V
 
     invoke-direct {v1, v2}, Ljava/io/PrintWriter;-><init>(Ljava/io/OutputStream;)V
-    :try_end_e
-    .catch Ljava/io/IOException; {:try_start_2 .. :try_end_e} :catch_94
-    .catchall {:try_start_2 .. :try_end_e} :catchall_8f
+
+    move-object v0, v1
 
     .line 171
-    :try_start_e
-    const-string v0, "Copyright (C) 2009 The Android Open Source Project"
+    const-string v1, "Copyright (C) 2009 The Android Open Source Project"
 
-    invoke-virtual {v1, v0}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {v0, v1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
     .line 172
-    const-string v0, "All Your Randomness Are Belong To Us"
+    const-string v1, "All Your Randomness Are Belong To Us"
 
-    invoke-virtual {v1, v0}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {v0, v1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
     .line 173
-    sget-wide v2, Lcom/android/server/EntropyMixer;->START_TIME:J
+    sget-wide v1, Lcom/android/server/EntropyMixer;->START_TIME:J
 
-    invoke-virtual {v1, v2, v3}, Ljava/io/PrintWriter;->println(J)V
+    invoke-virtual {v0, v1, v2}, Ljava/io/PrintWriter;->println(J)V
 
     .line 174
-    sget-wide v2, Lcom/android/server/EntropyMixer;->START_NANOTIME:J
+    sget-wide v1, Lcom/android/server/EntropyMixer;->START_NANOTIME:J
 
-    invoke-virtual {v1, v2, v3}, Ljava/io/PrintWriter;->println(J)V
+    invoke-virtual {v0, v1, v2}, Ljava/io/PrintWriter;->println(J)V
 
     .line 175
-    const-string/jumbo v0, "ro.serialno"
+    const-string/jumbo v1, "ro.serialno"
 
-    invoke-static {v0}, Landroid/os/SystemProperties;->get(Ljava/lang/String;)Ljava/lang/String;
+    invoke-static {v1}, Landroid/os/SystemProperties;->get(Ljava/lang/String;)Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v1
 
-    invoke-virtual {v1, v0}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {v0, v1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
     .line 176
-    const-string/jumbo v0, "ro.bootmode"
+    const-string/jumbo v1, "ro.bootmode"
 
-    invoke-static {v0}, Landroid/os/SystemProperties;->get(Ljava/lang/String;)Ljava/lang/String;
+    invoke-static {v1}, Landroid/os/SystemProperties;->get(Ljava/lang/String;)Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v1
 
-    invoke-virtual {v1, v0}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {v0, v1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
     .line 177
-    const-string/jumbo v0, "ro.baseband"
+    const-string/jumbo v1, "ro.baseband"
 
-    invoke-static {v0}, Landroid/os/SystemProperties;->get(Ljava/lang/String;)Ljava/lang/String;
+    invoke-static {v1}, Landroid/os/SystemProperties;->get(Ljava/lang/String;)Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v1
 
-    invoke-virtual {v1, v0}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {v0, v1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
     .line 178
-    const-string/jumbo v0, "ro.carrier"
+    const-string/jumbo v1, "ro.carrier"
 
-    invoke-static {v0}, Landroid/os/SystemProperties;->get(Ljava/lang/String;)Ljava/lang/String;
+    invoke-static {v1}, Landroid/os/SystemProperties;->get(Ljava/lang/String;)Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v1
 
-    invoke-virtual {v1, v0}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {v0, v1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
     .line 179
-    const-string/jumbo v0, "ro.bootloader"
+    const-string/jumbo v1, "ro.bootloader"
 
-    invoke-static {v0}, Landroid/os/SystemProperties;->get(Ljava/lang/String;)Ljava/lang/String;
+    invoke-static {v1}, Landroid/os/SystemProperties;->get(Ljava/lang/String;)Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v1
 
-    invoke-virtual {v1, v0}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {v0, v1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
     .line 180
-    const-string/jumbo v0, "ro.hardware"
+    const-string/jumbo v1, "ro.hardware"
 
-    invoke-static {v0}, Landroid/os/SystemProperties;->get(Ljava/lang/String;)Ljava/lang/String;
+    invoke-static {v1}, Landroid/os/SystemProperties;->get(Ljava/lang/String;)Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v1
 
-    invoke-virtual {v1, v0}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {v0, v1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
     .line 181
-    const-string/jumbo v0, "ro.revision"
+    const-string/jumbo v1, "ro.revision"
 
-    invoke-static {v0}, Landroid/os/SystemProperties;->get(Ljava/lang/String;)Ljava/lang/String;
+    invoke-static {v1}, Landroid/os/SystemProperties;->get(Ljava/lang/String;)Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v1
 
-    invoke-virtual {v1, v0}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {v0, v1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
     .line 182
-    const-string/jumbo v0, "ro.build.fingerprint"
+    const-string/jumbo v1, "ro.build.fingerprint"
 
-    invoke-static {v0}, Landroid/os/SystemProperties;->get(Ljava/lang/String;)Ljava/lang/String;
+    invoke-static {v1}, Landroid/os/SystemProperties;->get(Ljava/lang/String;)Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v1
 
-    invoke-virtual {v1, v0}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {v0, v1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
     .line 183
-    new-instance v0, Ljava/lang/Object;
+    new-instance v1, Ljava/lang/Object;
 
-    invoke-direct {v0}, Ljava/lang/Object;-><init>()V
+    invoke-direct {v1}, Ljava/lang/Object;-><init>()V
 
-    invoke-virtual {v0}, Ljava/lang/Object;->hashCode()I
+    invoke-virtual {v1}, Ljava/lang/Object;->hashCode()I
 
-    move-result v0
+    move-result v1
 
-    invoke-virtual {v1, v0}, Ljava/io/PrintWriter;->println(I)V
+    invoke-virtual {v0, v1}, Ljava/io/PrintWriter;->println(I)V
 
     .line 184
     invoke-static {}, Ljava/lang/System;->currentTimeMillis()J
 
-    move-result-wide v2
+    move-result-wide v1
 
-    invoke-virtual {v1, v2, v3}, Ljava/io/PrintWriter;->println(J)V
+    invoke-virtual {v0, v1, v2}, Ljava/io/PrintWriter;->println(J)V
 
     .line 185
     invoke-static {}, Ljava/lang/System;->nanoTime()J
 
-    move-result-wide v2
+    move-result-wide v1
 
-    invoke-virtual {v1, v2, v3}, Ljava/io/PrintWriter;->println(J)V
+    invoke-virtual {v0, v1, v2}, Ljava/io/PrintWriter;->println(J)V
     :try_end_8c
-    .catch Ljava/io/IOException; {:try_start_e .. :try_end_8c} :catch_8d
-    .catchall {:try_start_e .. :try_end_8c} :catchall_a5
+    .catch Ljava/io/IOException; {:try_start_1 .. :try_end_8c} :catch_93
+    .catchall {:try_start_1 .. :try_end_8c} :catchall_91
 
     .line 189
-    goto :goto_a1
+    nop
 
-    .line 186
-    :catch_8d
-    move-exception v0
+    .line 190
+    :goto_8d
+    invoke-virtual {v0}, Ljava/io/PrintWriter;->close()V
 
-    goto :goto_98
+    goto :goto_9f
 
     .line 189
-    :catchall_8f
+    :catchall_91
     move-exception v1
 
-    move-object v4, v1
-
-    move-object v1, v0
-
-    move-object v0, v4
-
-    goto :goto_a6
+    goto :goto_a0
 
     .line 186
-    :catch_94
+    :catch_93
     move-exception v1
-
-    move-object v4, v1
-
-    move-object v1, v0
-
-    move-object v0, v4
 
     .line 187
-    :goto_98
-    :try_start_98
+    .local v1, "e":Ljava/io/IOException;
+    :try_start_94
     const-string v2, "EntropyMixer"
 
     const-string v3, "Unable to add device specific data to the entropy pool"
 
-    invoke-static {v2, v3, v0}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
-    :try_end_9f
-    .catchall {:try_start_98 .. :try_end_9f} :catchall_a5
+    invoke-static {v2, v3, v1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    :try_end_9b
+    .catchall {:try_start_94 .. :try_end_9b} :catchall_91
 
     .line 189
-    if-eqz v1, :cond_a4
+    nop
+
+    .end local v1  # "e":Ljava/io/IOException;
+    if-eqz v0, :cond_9f
 
     .line 190
-    :goto_a1
-    invoke-virtual {v1}, Ljava/io/PrintWriter;->close()V
+    goto :goto_8d
 
     .line 193
-    :cond_a4
+    :cond_9f
+    :goto_9f
     return-void
 
     .line 189
-    :catchall_a5
-    move-exception v0
-
-    :goto_a6
-    if-eqz v1, :cond_ab
+    :goto_a0
+    if-eqz v0, :cond_a5
 
     .line 190
-    invoke-virtual {v1}, Ljava/io/PrintWriter;->close()V
+    invoke-virtual {v0}, Ljava/io/PrintWriter;->close()V
 
-    :cond_ab
-    throw v0
+    :cond_a5
+    throw v1
 .end method
 
 .method private addHwRandomEntropy()V
@@ -490,11 +485,13 @@
     move-exception v1
 
     .line 208
+    .local v1, "e":Ljava/io/IOException;
     const-string v2, "Failed to add HW RNG output to entropy pool"
 
     invoke-static {v0, v2, v1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
     .line 210
+    .end local v1  # "e":Ljava/io/IOException;
     :goto_28
     return-void
 .end method
@@ -508,6 +505,7 @@
     move-result-object v0
 
     .line 214
+    .local v0, "dataDir":Ljava/io/File;
     new-instance v1, Ljava/io/File;
 
     const-string/jumbo v2, "system"
@@ -515,14 +513,15 @@
     invoke-direct {v1, v0, v2}, Ljava/io/File;-><init>(Ljava/io/File;Ljava/lang/String;)V
 
     .line 215
+    .local v1, "systemDir":Ljava/io/File;
     invoke-virtual {v1}, Ljava/io/File;->mkdirs()Z
 
     .line 216
     invoke-virtual {v1}, Ljava/io/File;->toString()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v2
 
-    return-object v0
+    return-object v2
 .end method
 
 .method private loadInitialEntropy()V
@@ -554,6 +553,7 @@
     move-exception v1
 
     .line 140
+    .local v1, "e":Ljava/io/IOException;
     const-string v2, "Failure loading existing entropy file"
 
     invoke-static {v0, v2, v1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
@@ -561,15 +561,18 @@
     goto :goto_1d
 
     .line 137
+    .end local v1  # "e":Ljava/io/IOException;
     :catch_16
     move-exception v1
 
     .line 138
-    const-string v1, "No existing entropy file -- first boot?"
+    .local v1, "e":Ljava/io/FileNotFoundException;
+    const-string v2, "No existing entropy file -- first boot?"
 
-    invoke-static {v0, v1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v0, v2}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 141
+    .end local v1  # "e":Ljava/io/FileNotFoundException;
     :goto_1c
     nop
 
@@ -633,11 +636,13 @@
     move-exception v1
 
     .line 149
+    .local v1, "e":Ljava/io/IOException;
     const-string v2, "Unable to write entropy"
 
     invoke-static {v0, v2, v1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
     .line 151
+    .end local v1  # "e":Ljava/io/IOException;
     :goto_1a
     return-void
 .end method

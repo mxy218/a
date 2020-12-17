@@ -21,6 +21,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/power/batterysaver/BatterySaverController;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/power/batterysaver/BatterySaverController;
 
     .line 163
     iput-object p1, p0, Lcom/android/server/power/batterysaver/BatterySaverController$1;->this$0:Lcom/android/server/power/batterysaver/BatterySaverController;
@@ -33,196 +34,198 @@
 
 # virtual methods
 .method public onReceive(Landroid/content/Context;Landroid/content/Intent;)V
-    .registers 9
+    .registers 10
+    .param p1, "context"  # Landroid/content/Context;
+    .param p2, "intent"  # Landroid/content/Intent;
 
     .line 169
     invoke-virtual {p2}, Landroid/content/Intent;->getAction()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    invoke-virtual {p1}, Ljava/lang/String;->hashCode()I
+    invoke-virtual {v0}, Ljava/lang/String;->hashCode()I
 
-    move-result v0
+    move-result v1
 
-    const/4 v1, 0x4
+    const/4 v2, 0x4
 
-    const/4 v2, 0x3
+    const/4 v3, 0x3
 
-    const/4 v3, 0x2
+    const/4 v4, 0x2
 
-    const/4 v4, 0x1
+    const/4 v5, 0x1
 
-    const/4 v5, 0x0
+    const/4 v6, 0x0
 
-    sparse-switch v0, :sswitch_data_8a
+    sparse-switch v1, :sswitch_data_8a
 
     :cond_10
     goto :goto_43
 
     :sswitch_11
-    const-string v0, "android.os.action.DEVICE_IDLE_MODE_CHANGED"
+    const-string v1, "android.os.action.DEVICE_IDLE_MODE_CHANGED"
 
-    invoke-virtual {p1, v0}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v0, v1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result p1
+    move-result v0
 
-    if-eqz p1, :cond_10
+    if-eqz v0, :cond_10
 
-    move p1, v2
+    move v0, v3
 
     goto :goto_44
 
     :sswitch_1b
-    const-string v0, "android.os.action.LIGHT_DEVICE_IDLE_MODE_CHANGED"
+    const-string v1, "android.os.action.LIGHT_DEVICE_IDLE_MODE_CHANGED"
 
-    invoke-virtual {p1, v0}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v0, v1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result p1
+    move-result v0
 
-    if-eqz p1, :cond_10
+    if-eqz v0, :cond_10
 
-    move p1, v1
+    move v0, v2
 
     goto :goto_44
 
     :sswitch_25
-    const-string v0, "android.intent.action.SCREEN_ON"
+    const-string v1, "android.intent.action.SCREEN_ON"
 
-    invoke-virtual {p1, v0}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v0, v1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result p1
+    move-result v0
 
-    if-eqz p1, :cond_10
+    if-eqz v0, :cond_10
 
-    move p1, v5
+    move v0, v6
 
     goto :goto_44
 
     :sswitch_2f
-    const-string v0, "android.intent.action.BATTERY_CHANGED"
+    const-string v1, "android.intent.action.BATTERY_CHANGED"
 
-    invoke-virtual {p1, v0}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v0, v1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result p1
+    move-result v0
 
-    if-eqz p1, :cond_10
+    if-eqz v0, :cond_10
 
-    move p1, v3
+    move v0, v4
 
     goto :goto_44
 
     :sswitch_39
-    const-string v0, "android.intent.action.SCREEN_OFF"
+    const-string v1, "android.intent.action.SCREEN_OFF"
 
-    invoke-virtual {p1, v0}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v0, v1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result p1
+    move-result v0
 
-    if-eqz p1, :cond_10
+    if-eqz v0, :cond_10
 
-    move p1, v4
+    move v0, v5
 
     goto :goto_44
 
     :goto_43
-    const/4 p1, -0x1
+    const/4 v0, -0x1
 
     :goto_44
-    if-eqz p1, :cond_70
+    if-eqz v0, :cond_70
 
-    if-eq p1, v4, :cond_70
+    if-eq v0, v5, :cond_70
 
-    if-eq p1, v3, :cond_4f
+    if-eq v0, v4, :cond_4f
 
-    if-eq p1, v2, :cond_67
+    if-eq v0, v3, :cond_67
 
-    if-eq p1, v1, :cond_67
+    if-eq v0, v2, :cond_67
 
     goto :goto_89
 
     .line 181
     :cond_4f
-    iget-object p1, p0, Lcom/android/server/power/batterysaver/BatterySaverController$1;->this$0:Lcom/android/server/power/batterysaver/BatterySaverController;
+    iget-object v0, p0, Lcom/android/server/power/batterysaver/BatterySaverController$1;->this$0:Lcom/android/server/power/batterysaver/BatterySaverController;
 
-    invoke-static {p1}, Lcom/android/server/power/batterysaver/BatterySaverController;->access$300(Lcom/android/server/power/batterysaver/BatterySaverController;)Ljava/lang/Object;
+    invoke-static {v0}, Lcom/android/server/power/batterysaver/BatterySaverController;->access$300(Lcom/android/server/power/batterysaver/BatterySaverController;)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v0
 
-    monitor-enter p1
+    monitor-enter v0
 
     .line 182
     :try_start_56
-    iget-object v0, p0, Lcom/android/server/power/batterysaver/BatterySaverController$1;->this$0:Lcom/android/server/power/batterysaver/BatterySaverController;
+    iget-object v1, p0, Lcom/android/server/power/batterysaver/BatterySaverController$1;->this$0:Lcom/android/server/power/batterysaver/BatterySaverController;
 
-    const-string/jumbo v1, "plugged"
+    const-string/jumbo v2, "plugged"
 
-    invoke-virtual {p2, v1, v5}, Landroid/content/Intent;->getIntExtra(Ljava/lang/String;I)I
+    invoke-virtual {p2, v2, v6}, Landroid/content/Intent;->getIntExtra(Ljava/lang/String;I)I
 
-    move-result p2
+    move-result v2
 
-    if-eqz p2, :cond_62
+    if-eqz v2, :cond_62
 
     goto :goto_63
 
     :cond_62
-    move v4, v5
+    move v5, v6
 
     :goto_63
-    invoke-static {v0, v4}, Lcom/android/server/power/batterysaver/BatterySaverController;->access$402(Lcom/android/server/power/batterysaver/BatterySaverController;Z)Z
+    invoke-static {v1, v5}, Lcom/android/server/power/batterysaver/BatterySaverController;->access$402(Lcom/android/server/power/batterysaver/BatterySaverController;Z)Z
 
     .line 183
-    monitor-exit p1
+    monitor-exit v0
     :try_end_67
     .catchall {:try_start_56 .. :try_end_67} :catchall_6d
 
     .line 187
     :cond_67
-    iget-object p1, p0, Lcom/android/server/power/batterysaver/BatterySaverController$1;->this$0:Lcom/android/server/power/batterysaver/BatterySaverController;
+    iget-object v0, p0, Lcom/android/server/power/batterysaver/BatterySaverController$1;->this$0:Lcom/android/server/power/batterysaver/BatterySaverController;
 
-    invoke-static {p1}, Lcom/android/server/power/batterysaver/BatterySaverController;->access$100(Lcom/android/server/power/batterysaver/BatterySaverController;)V
+    invoke-static {v0}, Lcom/android/server/power/batterysaver/BatterySaverController;->access$100(Lcom/android/server/power/batterysaver/BatterySaverController;)V
 
     goto :goto_89
 
     .line 183
     :catchall_6d
-    move-exception p2
+    move-exception v1
 
     :try_start_6e
-    monitor-exit p1
+    monitor-exit v0
     :try_end_6f
     .catchall {:try_start_6e .. :try_end_6f} :catchall_6d
 
-    throw p2
+    throw v1
 
     .line 172
     :cond_70
-    iget-object p1, p0, Lcom/android/server/power/batterysaver/BatterySaverController$1;->this$0:Lcom/android/server/power/batterysaver/BatterySaverController;
+    iget-object v0, p0, Lcom/android/server/power/batterysaver/BatterySaverController$1;->this$0:Lcom/android/server/power/batterysaver/BatterySaverController;
 
-    invoke-static {p1}, Lcom/android/server/power/batterysaver/BatterySaverController;->access$000(Lcom/android/server/power/batterysaver/BatterySaverController;)Z
+    invoke-static {v0}, Lcom/android/server/power/batterysaver/BatterySaverController;->access$000(Lcom/android/server/power/batterysaver/BatterySaverController;)Z
 
-    move-result p1
+    move-result v0
 
-    if-nez p1, :cond_7e
+    if-nez v0, :cond_7e
 
     .line 173
-    iget-object p1, p0, Lcom/android/server/power/batterysaver/BatterySaverController$1;->this$0:Lcom/android/server/power/batterysaver/BatterySaverController;
+    iget-object v0, p0, Lcom/android/server/power/batterysaver/BatterySaverController$1;->this$0:Lcom/android/server/power/batterysaver/BatterySaverController;
 
-    invoke-static {p1}, Lcom/android/server/power/batterysaver/BatterySaverController;->access$100(Lcom/android/server/power/batterysaver/BatterySaverController;)V
+    invoke-static {v0}, Lcom/android/server/power/batterysaver/BatterySaverController;->access$100(Lcom/android/server/power/batterysaver/BatterySaverController;)V
 
     .line 174
     return-void
 
     .line 177
     :cond_7e
-    iget-object p1, p0, Lcom/android/server/power/batterysaver/BatterySaverController$1;->this$0:Lcom/android/server/power/batterysaver/BatterySaverController;
+    iget-object v0, p0, Lcom/android/server/power/batterysaver/BatterySaverController$1;->this$0:Lcom/android/server/power/batterysaver/BatterySaverController;
 
-    invoke-static {p1}, Lcom/android/server/power/batterysaver/BatterySaverController;->access$200(Lcom/android/server/power/batterysaver/BatterySaverController;)Lcom/android/server/power/batterysaver/BatterySaverController$MyHandler;
+    invoke-static {v0}, Lcom/android/server/power/batterysaver/BatterySaverController;->access$200(Lcom/android/server/power/batterysaver/BatterySaverController;)Lcom/android/server/power/batterysaver/BatterySaverController$MyHandler;
 
-    move-result-object p1
+    move-result-object v0
 
-    const/4 p2, 0x5
+    const/4 v1, 0x5
 
-    invoke-virtual {p1, v5, p2}, Lcom/android/server/power/batterysaver/BatterySaverController$MyHandler;->postStateChanged(ZI)V
+    invoke-virtual {v0, v6, v1}, Lcom/android/server/power/batterysaver/BatterySaverController$MyHandler;->postStateChanged(ZI)V
 
     .line 179
     nop

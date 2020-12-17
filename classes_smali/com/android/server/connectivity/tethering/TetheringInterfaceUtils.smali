@@ -14,7 +14,8 @@
 .end method
 
 .method public static getIPv6Interface(Landroid/net/NetworkState;)Ljava/lang/String;
-    .registers 3
+    .registers 4
+    .param p0, "ns"  # Landroid/net/NetworkState;
 
     .line 69
     const/4 v0, 0x0
@@ -68,31 +69,34 @@
     nop
 
     .line 79
+    .local v0, "canTether":Z
     :goto_2a
     if-eqz v0, :cond_35
 
     .line 80
-    iget-object p0, p0, Landroid/net/NetworkState;->linkProperties:Landroid/net/LinkProperties;
+    iget-object v1, p0, Landroid/net/NetworkState;->linkProperties:Landroid/net/LinkProperties;
 
-    sget-object v0, Ljava/net/Inet6Address;->ANY:Ljava/net/InetAddress;
+    sget-object v2, Ljava/net/Inet6Address;->ANY:Ljava/net/InetAddress;
 
-    invoke-static {p0, v0}, Lcom/android/server/connectivity/tethering/TetheringInterfaceUtils;->getInterfaceForDestination(Landroid/net/LinkProperties;Ljava/net/InetAddress;)Ljava/lang/String;
+    invoke-static {v1, v2}, Lcom/android/server/connectivity/tethering/TetheringInterfaceUtils;->getInterfaceForDestination(Landroid/net/LinkProperties;Ljava/net/InetAddress;)Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v1
 
     goto :goto_36
 
     .line 81
     :cond_35
-    const/4 p0, 0x0
+    const/4 v1, 0x0
 
     .line 79
     :goto_36
-    return-object p0
+    return-object v1
 .end method
 
 .method private static getInterfaceForDestination(Landroid/net/LinkProperties;Ljava/net/InetAddress;)Ljava/lang/String;
-    .registers 3
+    .registers 4
+    .param p0, "lp"  # Landroid/net/LinkProperties;
+    .param p1, "dst"  # Ljava/net/InetAddress;
 
     .line 85
     const/4 v0, 0x0
@@ -102,32 +106,36 @@
     .line 86
     invoke-virtual {p0}, Landroid/net/LinkProperties;->getAllRoutes()Ljava/util/List;
 
-    move-result-object p0
+    move-result-object v1
 
-    invoke-static {p0, p1}, Landroid/net/RouteInfo;->selectBestRoute(Ljava/util/Collection;Ljava/net/InetAddress;)Landroid/net/RouteInfo;
+    invoke-static {v1, p1}, Landroid/net/RouteInfo;->selectBestRoute(Ljava/util/Collection;Ljava/net/InetAddress;)Landroid/net/RouteInfo;
 
-    move-result-object p0
+    move-result-object v1
 
     goto :goto_d
 
     .line 87
     :cond_c
-    move-object p0, v0
+    move-object v1, v0
+
+    :goto_d
+    nop
 
     .line 88
-    :goto_d
-    if-eqz p0, :cond_13
+    .local v1, "ri":Landroid/net/RouteInfo;
+    if-eqz v1, :cond_14
 
-    invoke-virtual {p0}, Landroid/net/RouteInfo;->getInterface()Ljava/lang/String;
+    invoke-virtual {v1}, Landroid/net/RouteInfo;->getInterface()Ljava/lang/String;
 
     move-result-object v0
 
-    :cond_13
+    :cond_14
     return-object v0
 .end method
 
 .method public static getTetheringInterfaces(Landroid/net/NetworkState;)Landroid/net/util/InterfaceSet;
-    .registers 5
+    .registers 7
+    .param p0, "ns"  # Landroid/net/NetworkState;
 
     .line 39
     const/4 v0, 0x0
@@ -142,40 +150,43 @@
     iget-object v1, p0, Landroid/net/NetworkState;->linkProperties:Landroid/net/LinkProperties;
 
     .line 44
+    .local v1, "lp":Landroid/net/LinkProperties;
     sget-object v2, Ljava/net/Inet4Address;->ANY:Ljava/net/InetAddress;
 
     invoke-static {v1, v2}, Lcom/android/server/connectivity/tethering/TetheringInterfaceUtils;->getInterfaceForDestination(Landroid/net/LinkProperties;Ljava/net/InetAddress;)Ljava/lang/String;
 
-    move-result-object v1
+    move-result-object v2
 
     .line 45
+    .local v2, "if4":Ljava/lang/String;
     invoke-static {p0}, Lcom/android/server/connectivity/tethering/TetheringInterfaceUtils;->getIPv6Interface(Landroid/net/NetworkState;)Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v3
 
     .line 47
-    if-nez v1, :cond_15
+    .local v3, "if6":Ljava/lang/String;
+    if-nez v2, :cond_15
 
-    if-nez p0, :cond_15
+    if-nez v3, :cond_15
 
     goto :goto_23
 
     :cond_15
     new-instance v0, Landroid/net/util/InterfaceSet;
 
-    const/4 v2, 0x2
+    const/4 v4, 0x2
 
-    new-array v2, v2, [Ljava/lang/String;
+    new-array v4, v4, [Ljava/lang/String;
 
-    const/4 v3, 0x0
+    const/4 v5, 0x0
 
-    aput-object v1, v2, v3
+    aput-object v2, v4, v5
 
-    const/4 v1, 0x1
+    const/4 v5, 0x1
 
-    aput-object p0, v2, v1
+    aput-object v3, v4, v5
 
-    invoke-direct {v0, v2}, Landroid/net/util/InterfaceSet;-><init>([Ljava/lang/String;)V
+    invoke-direct {v0, v4}, Landroid/net/util/InterfaceSet;-><init>([Ljava/lang/String;)V
 
     :goto_23
     return-object v0

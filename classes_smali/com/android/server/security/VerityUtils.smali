@@ -27,7 +27,9 @@
 
 # direct methods
 .method private static synthetic $closeResource(Ljava/lang/Throwable;Ljava/lang/AutoCloseable;)V
-    .registers 2
+    .registers 3
+    .param p0, "x0"  # Ljava/lang/Throwable;
+    .param p1, "x1"  # Ljava/lang/AutoCloseable;
 
     .line 103
     if-eqz p0, :cond_b
@@ -40,9 +42,9 @@
     goto :goto_e
 
     :catchall_6
-    move-exception p1
+    move-exception v0
 
-    invoke-virtual {p0, p1}, Ljava/lang/Throwable;->addSuppressed(Ljava/lang/Throwable;)V
+    invoke-virtual {p0, v0}, Ljava/lang/Throwable;->addSuppressed(Ljava/lang/Throwable;)V
 
     goto :goto_e
 
@@ -63,14 +65,15 @@
 .end method
 
 .method private static bytesToString([B)Ljava/lang/String;
-    .registers 1
+    .registers 2
+    .param p0, "bytes"  # [B
 
     .line 313
     invoke-static {p0}, Llibcore/util/HexEncoding;->encodeToString([B)Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v0
 
-    return-object p0
+    return-object v0
 .end method
 
 .method private static native constructFsverityDescriptorNative(J)[B
@@ -89,7 +92,8 @@
 .end method
 
 .method public static generateApkVerityRootHash(Ljava/lang/String;)[B
-    .registers 1
+    .registers 2
+    .param p0, "apkPath"  # Ljava/lang/String;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Ljava/security/NoSuchAlgorithmException;,
@@ -101,204 +105,205 @@
     .line 179
     invoke-static {p0}, Landroid/util/apk/ApkSignatureVerifier;->generateApkVerityRootHash(Ljava/lang/String;)[B
 
-    move-result-object p0
+    move-result-object v0
 
-    return-object p0
+    return-object v0
 .end method
 
 .method public static generateApkVeritySetupData(Ljava/lang/String;)Lcom/android/server/security/VerityUtils$SetupResult;
-    .registers 4
+    .registers 7
+    .param p0, "apkPath"  # Ljava/lang/String;
 
     .line 144
-    nop
-
-    .line 146
     const/4 v0, 0x0
 
-    :try_start_2
+    .line 146
+    .local v0, "shm":Landroid/os/SharedMemory;
+    :try_start_1
     invoke-static {p0}, Landroid/util/apk/ApkSignatureVerifier;->getVerityRootHash(Ljava/lang/String;)[B
 
     move-result-object v1
 
     .line 147
-    if-nez v1, :cond_e
+    .local v1, "signedVerityHash":[B
+    if-nez v1, :cond_11
 
     .line 151
     invoke-static {}, Lcom/android/server/security/VerityUtils$SetupResult;->skipped()Lcom/android/server/security/VerityUtils$SetupResult;
 
-    move-result-object p0
+    move-result-object v2
+    :try_end_b
+    .catch Ljava/io/IOException; {:try_start_1 .. :try_end_b} :catch_48
+    .catch Ljava/lang/SecurityException; {:try_start_1 .. :try_end_b} :catch_48
+    .catch Ljava/security/DigestException; {:try_start_1 .. :try_end_b} :catch_48
+    .catch Ljava/security/NoSuchAlgorithmException; {:try_start_1 .. :try_end_b} :catch_48
+    .catch Landroid/util/apk/SignatureNotFoundException; {:try_start_1 .. :try_end_b} :catch_48
+    .catch Landroid/system/ErrnoException; {:try_start_1 .. :try_end_b} :catch_48
+    .catchall {:try_start_1 .. :try_end_b} :catchall_46
 
     .line 168
-    nop
+    if-eqz v0, :cond_10
+
+    .line 169
+    invoke-virtual {v0}, Landroid/os/SharedMemory;->close()V
 
     .line 151
-    return-object p0
+    :cond_10
+    return-object v2
 
     .line 154
-    :cond_e
+    :cond_11
     nop
 
     .line 155
+    :try_start_12
     invoke-static {p0, v1}, Lcom/android/server/security/VerityUtils;->generateFsVerityIntoSharedMemory(Ljava/lang/String;[B)Landroid/util/Pair;
 
-    move-result-object p0
+    move-result-object v2
 
     .line 156
-    iget-object v1, p0, Landroid/util/Pair;->first:Ljava/lang/Object;
+    .local v2, "result":Landroid/util/Pair;, "Landroid/util/Pair<Landroid/os/SharedMemory;Ljava/lang/Integer;>;"
+    iget-object v3, v2, Landroid/util/Pair;->first:Ljava/lang/Object;
 
-    check-cast v1, Landroid/os/SharedMemory;
-    :try_end_17
-    .catch Ljava/io/IOException; {:try_start_2 .. :try_end_17} :catch_4a
-    .catch Ljava/lang/SecurityException; {:try_start_2 .. :try_end_17} :catch_4a
-    .catch Ljava/security/DigestException; {:try_start_2 .. :try_end_17} :catch_4a
-    .catch Ljava/security/NoSuchAlgorithmException; {:try_start_2 .. :try_end_17} :catch_4a
-    .catch Landroid/util/apk/SignatureNotFoundException; {:try_start_2 .. :try_end_17} :catch_4a
-    .catch Landroid/system/ErrnoException; {:try_start_2 .. :try_end_17} :catch_4a
-    .catchall {:try_start_2 .. :try_end_17} :catchall_48
+    check-cast v3, Landroid/os/SharedMemory;
+
+    move-object v0, v3
 
     .line 157
-    :try_start_17
-    iget-object p0, p0, Landroid/util/Pair;->second:Ljava/lang/Object;
+    iget-object v3, v2, Landroid/util/Pair;->second:Ljava/lang/Object;
 
-    check-cast p0, Ljava/lang/Integer;
+    check-cast v3, Ljava/lang/Integer;
 
-    invoke-virtual {p0}, Ljava/lang/Integer;->intValue()I
+    invoke-virtual {v3}, Ljava/lang/Integer;->intValue()I
 
-    move-result p0
+    move-result v3
 
     .line 158
-    invoke-virtual {v1}, Landroid/os/SharedMemory;->getFileDescriptor()Ljava/io/FileDescriptor;
+    .local v3, "contentSize":I
+    invoke-virtual {v0}, Landroid/os/SharedMemory;->getFileDescriptor()Ljava/io/FileDescriptor;
 
-    move-result-object v0
+    move-result-object v4
 
     .line 159
-    if-eqz v0, :cond_39
+    .local v4, "rfd":Ljava/io/FileDescriptor;
+    if-eqz v4, :cond_3d
 
-    invoke-virtual {v0}, Ljava/io/FileDescriptor;->valid()Z
+    invoke-virtual {v4}, Ljava/io/FileDescriptor;->valid()Z
 
-    move-result v2
+    move-result v5
 
-    if-nez v2, :cond_2c
+    if-nez v5, :cond_30
 
-    goto :goto_39
+    goto :goto_3d
 
     .line 162
-    :cond_2c
-    invoke-static {v0}, Landroid/system/Os;->dup(Ljava/io/FileDescriptor;)Ljava/io/FileDescriptor;
+    :cond_30
+    invoke-static {v4}, Landroid/system/Os;->dup(Ljava/io/FileDescriptor;)Ljava/io/FileDescriptor;
 
-    move-result-object v0
+    move-result-object v5
 
-    invoke-static {v0, p0}, Lcom/android/server/security/VerityUtils$SetupResult;->ok(Ljava/io/FileDescriptor;I)Lcom/android/server/security/VerityUtils$SetupResult;
+    invoke-static {v5, v3}, Lcom/android/server/security/VerityUtils$SetupResult;->ok(Ljava/io/FileDescriptor;I)Lcom/android/server/security/VerityUtils$SetupResult;
 
-    move-result-object p0
-    :try_end_34
-    .catch Ljava/io/IOException; {:try_start_17 .. :try_end_34} :catch_45
-    .catch Ljava/lang/SecurityException; {:try_start_17 .. :try_end_34} :catch_45
-    .catch Ljava/security/DigestException; {:try_start_17 .. :try_end_34} :catch_45
-    .catch Ljava/security/NoSuchAlgorithmException; {:try_start_17 .. :try_end_34} :catch_45
-    .catch Landroid/util/apk/SignatureNotFoundException; {:try_start_17 .. :try_end_34} :catch_45
-    .catch Landroid/system/ErrnoException; {:try_start_17 .. :try_end_34} :catch_45
-    .catchall {:try_start_17 .. :try_end_34} :catchall_42
+    move-result-object v5
+    :try_end_38
+    .catch Ljava/io/IOException; {:try_start_12 .. :try_end_38} :catch_48
+    .catch Ljava/lang/SecurityException; {:try_start_12 .. :try_end_38} :catch_48
+    .catch Ljava/security/DigestException; {:try_start_12 .. :try_end_38} :catch_48
+    .catch Ljava/security/NoSuchAlgorithmException; {:try_start_12 .. :try_end_38} :catch_48
+    .catch Landroid/util/apk/SignatureNotFoundException; {:try_start_12 .. :try_end_38} :catch_48
+    .catch Landroid/system/ErrnoException; {:try_start_12 .. :try_end_38} :catch_48
+    .catchall {:try_start_12 .. :try_end_38} :catchall_46
 
     .line 168
     nop
 
     .line 169
-    invoke-virtual {v1}, Landroid/os/SharedMemory;->close()V
+    invoke-virtual {v0}, Landroid/os/SharedMemory;->close()V
 
     .line 162
-    return-object p0
+    return-object v5
 
     .line 160
-    :cond_39
-    :goto_39
-    :try_start_39
+    :cond_3d
+    :goto_3d
+    :try_start_3d
     invoke-static {}, Lcom/android/server/security/VerityUtils$SetupResult;->failed()Lcom/android/server/security/VerityUtils$SetupResult;
 
-    move-result-object p0
-    :try_end_3d
-    .catch Ljava/io/IOException; {:try_start_39 .. :try_end_3d} :catch_45
-    .catch Ljava/lang/SecurityException; {:try_start_39 .. :try_end_3d} :catch_45
-    .catch Ljava/security/DigestException; {:try_start_39 .. :try_end_3d} :catch_45
-    .catch Ljava/security/NoSuchAlgorithmException; {:try_start_39 .. :try_end_3d} :catch_45
-    .catch Landroid/util/apk/SignatureNotFoundException; {:try_start_39 .. :try_end_3d} :catch_45
-    .catch Landroid/system/ErrnoException; {:try_start_39 .. :try_end_3d} :catch_45
-    .catchall {:try_start_39 .. :try_end_3d} :catchall_42
+    move-result-object v5
+    :try_end_41
+    .catch Ljava/io/IOException; {:try_start_3d .. :try_end_41} :catch_48
+    .catch Ljava/lang/SecurityException; {:try_start_3d .. :try_end_41} :catch_48
+    .catch Ljava/security/DigestException; {:try_start_3d .. :try_end_41} :catch_48
+    .catch Ljava/security/NoSuchAlgorithmException; {:try_start_3d .. :try_end_41} :catch_48
+    .catch Landroid/util/apk/SignatureNotFoundException; {:try_start_3d .. :try_end_41} :catch_48
+    .catch Landroid/system/ErrnoException; {:try_start_3d .. :try_end_41} :catch_48
+    .catchall {:try_start_3d .. :try_end_41} :catchall_46
 
     .line 168
     nop
 
     .line 169
-    invoke-virtual {v1}, Landroid/os/SharedMemory;->close()V
+    invoke-virtual {v0}, Landroid/os/SharedMemory;->close()V
 
     .line 160
-    return-object p0
+    return-object v5
 
     .line 168
-    :catchall_42
-    move-exception p0
+    .end local v1  # "signedVerityHash":[B
+    .end local v2  # "result":Landroid/util/Pair;, "Landroid/util/Pair<Landroid/os/SharedMemory;Ljava/lang/Integer;>;"
+    .end local v3  # "contentSize":I
+    .end local v4  # "rfd":Ljava/io/FileDescriptor;
+    :catchall_46
+    move-exception v1
 
-    move-object v0, v1
-
-    goto :goto_5c
-
-    .line 163
-    :catch_45
-    move-exception p0
-
-    move-object v0, v1
-
-    goto :goto_4b
-
-    .line 168
-    :catchall_48
-    move-exception p0
-
-    goto :goto_5c
+    goto :goto_5a
 
     .line 163
-    :catch_4a
-    move-exception p0
+    :catch_48
+    move-exception v1
 
     .line 165
-    :goto_4b
-    :try_start_4b
-    const-string v1, "VerityUtils"
+    .local v1, "e":Ljava/lang/Exception;
+    :try_start_49
+    const-string v2, "VerityUtils"
 
-    const-string v2, "Failed to set up apk verity: "
+    const-string v3, "Failed to set up apk verity: "
 
-    invoke-static {v1, v2, p0}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    invoke-static {v2, v3, v1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
     .line 166
     invoke-static {}, Lcom/android/server/security/VerityUtils$SetupResult;->failed()Lcom/android/server/security/VerityUtils$SetupResult;
 
-    move-result-object p0
-    :try_end_56
-    .catchall {:try_start_4b .. :try_end_56} :catchall_48
+    move-result-object v2
+    :try_end_54
+    .catchall {:try_start_49 .. :try_end_54} :catchall_46
 
     .line 168
-    if-eqz v0, :cond_5b
+    if-eqz v0, :cond_59
 
     .line 169
     invoke-virtual {v0}, Landroid/os/SharedMemory;->close()V
 
     .line 166
-    :cond_5b
-    return-object p0
+    :cond_59
+    return-object v2
 
     .line 168
-    :goto_5c
-    if-eqz v0, :cond_61
+    .end local v1  # "e":Ljava/lang/Exception;
+    :goto_5a
+    if-eqz v0, :cond_5f
 
     .line 169
     invoke-virtual {v0}, Landroid/os/SharedMemory;->close()V
 
-    :cond_61
-    throw p0
+    :cond_5f
+    throw v1
 .end method
 
 .method private static generateFsVerityIntoSharedMemory(Ljava/lang/String;[B)Landroid/util/Pair;
-    .registers 5
+    .registers 8
+    .param p0, "apkPath"  # Ljava/lang/String;
+    .param p1, "expectedRootHash"  # [B
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(",
@@ -328,113 +333,123 @@
     invoke-direct {v0, v1}, Lcom/android/server/security/VerityUtils$TrackedShmBufferFactory;-><init>(Lcom/android/server/security/VerityUtils$1;)V
 
     .line 292
+    .local v0, "shmBufferFactory":Lcom/android/server/security/VerityUtils$TrackedShmBufferFactory;
     nop
 
     .line 293
     invoke-static {p0, v0}, Landroid/util/apk/ApkSignatureVerifier;->generateApkVerity(Ljava/lang/String;Landroid/util/apk/ByteBufferFactory;)[B
 
-    move-result-object p0
+    move-result-object v1
 
     .line 296
-    invoke-static {p1, p0}, Ljava/util/Arrays;->equals([B[B)Z
+    .local v1, "generatedRootHash":[B
+    invoke-static {p1, v1}, Ljava/util/Arrays;->equals([B[B)Z
 
-    move-result v1
+    move-result v2
 
-    if-eqz v1, :cond_3c
+    if-eqz v2, :cond_3c
 
     .line 301
     invoke-virtual {v0}, Lcom/android/server/security/VerityUtils$TrackedShmBufferFactory;->getBufferLimit()I
 
-    move-result p0
+    move-result v2
 
     .line 302
+    .local v2, "contentSize":I
     invoke-virtual {v0}, Lcom/android/server/security/VerityUtils$TrackedShmBufferFactory;->releaseSharedMemory()Landroid/os/SharedMemory;
 
-    move-result-object p1
+    move-result-object v3
 
     .line 303
-    if-eqz p1, :cond_34
+    .local v3, "shm":Landroid/os/SharedMemory;
+    if-eqz v3, :cond_34
 
     .line 306
-    sget v0, Landroid/system/OsConstants;->PROT_READ:I
+    sget v4, Landroid/system/OsConstants;->PROT_READ:I
 
-    invoke-virtual {p1, v0}, Landroid/os/SharedMemory;->setProtect(I)Z
+    invoke-virtual {v3, v4}, Landroid/os/SharedMemory;->setProtect(I)Z
 
-    move-result v0
+    move-result v4
 
-    if-eqz v0, :cond_2c
+    if-eqz v4, :cond_2c
 
     .line 309
-    invoke-static {p0}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
+    invoke-static {v2}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
 
-    move-result-object p0
+    move-result-object v4
 
-    invoke-static {p1, p0}, Landroid/util/Pair;->create(Ljava/lang/Object;Ljava/lang/Object;)Landroid/util/Pair;
+    invoke-static {v3, v4}, Landroid/util/Pair;->create(Ljava/lang/Object;Ljava/lang/Object;)Landroid/util/Pair;
 
-    move-result-object p0
+    move-result-object v4
 
-    return-object p0
+    return-object v4
 
     .line 307
     :cond_2c
-    new-instance p0, Ljava/lang/SecurityException;
+    new-instance v4, Ljava/lang/SecurityException;
 
-    const-string p1, "Failed to set up shared memory correctly"
+    const-string v5, "Failed to set up shared memory correctly"
 
-    invoke-direct {p0, p1}, Ljava/lang/SecurityException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v4, v5}, Ljava/lang/SecurityException;-><init>(Ljava/lang/String;)V
 
-    throw p0
+    throw v4
 
     .line 304
     :cond_34
-    new-instance p0, Ljava/lang/IllegalStateException;
+    new-instance v4, Ljava/lang/IllegalStateException;
 
-    const-string p1, "Failed to generate verity tree into shared memory"
+    const-string v5, "Failed to generate verity tree into shared memory"
 
-    invoke-direct {p0, p1}, Ljava/lang/IllegalStateException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v4, v5}, Ljava/lang/IllegalStateException;-><init>(Ljava/lang/String;)V
 
-    throw p0
+    throw v4
 
     .line 297
+    .end local v2  # "contentSize":I
+    .end local v3  # "shm":Landroid/os/SharedMemory;
     :cond_3c
-    new-instance v0, Ljava/lang/SecurityException;
+    new-instance v2, Ljava/lang/SecurityException;
 
-    new-instance v1, Ljava/lang/StringBuilder;
+    new-instance v3, Ljava/lang/StringBuilder;
 
-    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string/jumbo v2, "verity hash mismatch: "
+    const-string/jumbo v4, "verity hash mismatch: "
 
-    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     .line 298
-    invoke-static {p0}, Lcom/android/server/security/VerityUtils;->bytesToString([B)Ljava/lang/String;
+    invoke-static {v1}, Lcom/android/server/security/VerityUtils;->bytesToString([B)Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v4
 
-    invoke-virtual {v1, p0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string p0, " != "
+    const-string v4, " != "
 
-    invoke-virtual {v1, p0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-static {p1}, Lcom/android/server/security/VerityUtils;->bytesToString([B)Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v4
 
-    invoke-virtual {v1, p0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v3
 
-    invoke-direct {v0, p0}, Ljava/lang/SecurityException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v2, v3}, Ljava/lang/SecurityException;-><init>(Ljava/lang/String;)V
 
-    throw v0
+    throw v2
 .end method
 
 .method private static generateFsverityDescriptorAndMeasurement(Ljava/io/RandomAccessFile;[BLjava/lang/String;Ljava/nio/ByteBuffer;)[B
-    .registers 10
+    .registers 16
+    .param p0, "file"  # Ljava/io/RandomAccessFile;
+    .param p1, "rootHash"  # [B
+    .param p2, "pkcs7SignaturePath"  # Ljava/lang/String;
+    .param p3, "output"  # Ljava/nio/ByteBuffer;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Ljava/io/IOException;,
@@ -443,162 +458,183 @@
         }
     .end annotation
 
+    .line 229
+    const/4 v0, 0x1
+
+    .line 230
+    .local v0, "kRootHashExtensionId":S
+    const/4 v1, 0x3
+
     .line 231
+    .local v1, "kPkcs7SignatureExtensionId":S
     invoke-virtual {p3}, Ljava/nio/ByteBuffer;->position()I
 
-    move-result v0
+    move-result v2
 
     .line 235
-    const-string v1, "SHA-256"
+    .local v2, "origPosition":I
+    const-string v3, "SHA-256"
 
-    invoke-static {v1}, Ljava/security/MessageDigest;->getInstance(Ljava/lang/String;)Ljava/security/MessageDigest;
+    invoke-static {v3}, Ljava/security/MessageDigest;->getInstance(Ljava/lang/String;)Ljava/security/MessageDigest;
 
-    move-result-object v1
+    move-result-object v3
 
     .line 238
+    .local v3, "md":Ljava/security/MessageDigest;
     invoke-virtual {p0}, Ljava/io/RandomAccessFile;->length()J
 
-    move-result-wide v2
+    move-result-wide v4
 
-    invoke-static {v2, v3}, Lcom/android/server/security/VerityUtils;->constructFsverityDescriptorNative(J)[B
+    invoke-static {v4, v5}, Lcom/android/server/security/VerityUtils;->constructFsverityDescriptorNative(J)[B
 
-    move-result-object p0
+    move-result-object v4
 
     .line 239
-    invoke-virtual {p3, p0}, Ljava/nio/ByteBuffer;->put([B)Ljava/nio/ByteBuffer;
+    .local v4, "desc":[B
+    invoke-virtual {p3, v4}, Ljava/nio/ByteBuffer;->put([B)Ljava/nio/ByteBuffer;
 
     .line 240
-    invoke-virtual {v1, p0}, Ljava/security/MessageDigest;->update([B)V
+    invoke-virtual {v3, v4}, Ljava/security/MessageDigest;->update([B)V
 
     .line 243
-    array-length p0, p1
+    array-length v5, p1
 
     .line 244
-    const/4 v2, 0x1
+    const/4 v6, 0x1
 
-    invoke-static {v2, p0}, Lcom/android/server/security/VerityUtils;->constructFsverityExtensionNative(SI)[B
+    invoke-static {v6, v5}, Lcom/android/server/security/VerityUtils;->constructFsverityExtensionNative(SI)[B
 
-    move-result-object p0
+    move-result-object v5
 
     .line 245
-    invoke-virtual {p3, p0}, Ljava/nio/ByteBuffer;->put([B)Ljava/nio/ByteBuffer;
+    .local v5, "authExt":[B
+    invoke-virtual {p3, v5}, Ljava/nio/ByteBuffer;->put([B)Ljava/nio/ByteBuffer;
 
     .line 246
     invoke-virtual {p3, p1}, Ljava/nio/ByteBuffer;->put([B)Ljava/nio/ByteBuffer;
 
     .line 247
-    invoke-virtual {v1, p0}, Ljava/security/MessageDigest;->update([B)V
+    invoke-virtual {v3, v5}, Ljava/security/MessageDigest;->update([B)V
 
     .line 248
-    invoke-virtual {v1, p1}, Ljava/security/MessageDigest;->update([B)V
+    invoke-virtual {v3, p1}, Ljava/security/MessageDigest;->update([B)V
 
     .line 251
-    const/16 p0, 0x8
+    const/16 v7, 0x8
 
-    invoke-static {p0}, Ljava/nio/ByteBuffer;->allocate(I)Ljava/nio/ByteBuffer;
+    invoke-static {v7}, Ljava/nio/ByteBuffer;->allocate(I)Ljava/nio/ByteBuffer;
 
-    move-result-object p0
+    move-result-object v7
 
-    sget-object p1, Ljava/nio/ByteOrder;->LITTLE_ENDIAN:Ljava/nio/ByteOrder;
+    sget-object v8, Ljava/nio/ByteOrder;->LITTLE_ENDIAN:Ljava/nio/ByteOrder;
 
-    invoke-virtual {p0, p1}, Ljava/nio/ByteBuffer;->order(Ljava/nio/ByteOrder;)Ljava/nio/ByteBuffer;
+    invoke-virtual {v7, v8}, Ljava/nio/ByteBuffer;->order(Ljava/nio/ByteOrder;)Ljava/nio/ByteBuffer;
+
+    move-result-object v7
 
     .line 252
-    invoke-virtual {p3, v2}, Ljava/nio/ByteBuffer;->putShort(S)Ljava/nio/ByteBuffer;
+    .local v7, "header":Ljava/nio/ByteBuffer;
+    invoke-virtual {p3, v6}, Ljava/nio/ByteBuffer;->putShort(S)Ljava/nio/ByteBuffer;
 
     .line 253
     invoke-virtual {p3}, Ljava/nio/ByteBuffer;->position()I
 
-    move-result p0
+    move-result v6
 
-    add-int/lit8 p0, p0, 0x6
+    add-int/lit8 v6, v6, 0x6
 
-    invoke-virtual {p3, p0}, Ljava/nio/ByteBuffer;->position(I)Ljava/nio/Buffer;
+    invoke-virtual {p3, v6}, Ljava/nio/ByteBuffer;->position(I)Ljava/nio/Buffer;
 
     .line 257
-    const/4 p0, 0x0
+    const/4 v6, 0x0
 
-    new-array p0, p0, [Ljava/lang/String;
+    new-array v6, v6, [Ljava/lang/String;
 
-    invoke-static {p2, p0}, Ljava/nio/file/Paths;->get(Ljava/lang/String;[Ljava/lang/String;)Ljava/nio/file/Path;
+    invoke-static {p2, v6}, Ljava/nio/file/Paths;->get(Ljava/lang/String;[Ljava/lang/String;)Ljava/nio/file/Path;
 
-    move-result-object p0
+    move-result-object v6
 
     .line 258
-    invoke-static {p0}, Ljava/nio/file/Files;->size(Ljava/nio/file/Path;)J
+    .local v6, "path":Ljava/nio/file/Path;
+    invoke-static {v6}, Ljava/nio/file/Files;->size(Ljava/nio/file/Path;)J
 
-    move-result-wide v2
+    move-result-wide v8
 
-    const-wide/16 v4, 0x2000
+    const-wide/16 v10, 0x2000
 
-    cmp-long p1, v2, v4
+    cmp-long v8, v8, v10
 
-    if-gtz p1, :cond_73
+    if-gtz v8, :cond_76
 
     .line 262
-    invoke-static {p0}, Ljava/nio/file/Files;->readAllBytes(Ljava/nio/file/Path;)[B
+    invoke-static {v6}, Ljava/nio/file/Files;->readAllBytes(Ljava/nio/file/Path;)[B
 
-    move-result-object p0
+    move-result-object v8
 
     .line 263
-    const/4 p1, 0x3
+    .local v8, "pkcs7Signature":[B
+    const/4 v9, 0x3
 
-    array-length p2, p0
+    array-length v10, v8
 
-    invoke-static {p1, p2}, Lcom/android/server/security/VerityUtils;->constructFsverityExtensionNative(SI)[B
+    invoke-static {v9, v10}, Lcom/android/server/security/VerityUtils;->constructFsverityExtensionNative(SI)[B
 
-    move-result-object p1
+    move-result-object v9
 
-    invoke-virtual {p3, p1}, Ljava/nio/ByteBuffer;->put([B)Ljava/nio/ByteBuffer;
+    invoke-virtual {p3, v9}, Ljava/nio/ByteBuffer;->put([B)Ljava/nio/ByteBuffer;
 
     .line 265
-    invoke-virtual {p3, p0}, Ljava/nio/ByteBuffer;->put([B)Ljava/nio/ByteBuffer;
+    invoke-virtual {p3, v8}, Ljava/nio/ByteBuffer;->put([B)Ljava/nio/ByteBuffer;
 
     .line 268
     invoke-virtual {p3}, Ljava/nio/ByteBuffer;->position()I
 
-    move-result p0
+    move-result v9
 
-    sub-int/2addr p0, v0
+    sub-int/2addr v9, v2
 
-    invoke-static {p0}, Lcom/android/server/security/VerityUtils;->constructFsverityFooterNative(I)[B
+    invoke-static {v9}, Lcom/android/server/security/VerityUtils;->constructFsverityFooterNative(I)[B
 
-    move-result-object p0
+    move-result-object v9
 
-    invoke-virtual {p3, p0}, Ljava/nio/ByteBuffer;->put([B)Ljava/nio/ByteBuffer;
+    invoke-virtual {p3, v9}, Ljava/nio/ByteBuffer;->put([B)Ljava/nio/ByteBuffer;
 
     .line 270
-    invoke-virtual {v1}, Ljava/security/MessageDigest;->digest()[B
+    invoke-virtual {v3}, Ljava/security/MessageDigest;->digest()[B
 
-    move-result-object p0
+    move-result-object v9
 
-    return-object p0
+    return-object v9
 
     .line 259
-    :cond_73
-    new-instance p0, Ljava/lang/IllegalArgumentException;
+    .end local v8  # "pkcs7Signature":[B
+    :cond_76
+    new-instance v8, Ljava/lang/IllegalArgumentException;
 
-    new-instance p1, Ljava/lang/StringBuilder;
+    new-instance v9, Ljava/lang/StringBuilder;
 
-    invoke-direct {p1}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v9}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string p3, "Signature size is unexpectedly large: "
+    const-string v10, "Signature size is unexpectedly large: "
 
-    invoke-virtual {p1, p3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v9, v10}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p1, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v9, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v9}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v9
 
-    invoke-direct {p0, p1}, Ljava/lang/IllegalArgumentException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v8, v9}, Ljava/lang/IllegalArgumentException;-><init>(Ljava/lang/String;)V
 
-    throw p0
+    throw v8
 .end method
 
 .method private static generateFsverityMetadata(Ljava/lang/String;Ljava/lang/String;Landroid/util/apk/ByteBufferFactory;)[B
-    .registers 5
+    .registers 9
+    .param p0, "filePath"  # Ljava/lang/String;
+    .param p1, "signaturePath"  # Ljava/lang/String;
+    .param p2, "trackedBufferFactory"  # Landroid/util/apk/ByteBufferFactory;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Ljava/io/IOException;,
@@ -615,64 +651,80 @@
     invoke-direct {v0, p0, v1}, Ljava/io/RandomAccessFile;-><init>(Ljava/lang/String;Ljava/lang/String;)V
 
     .line 205
+    .local v0, "file":Ljava/io/RandomAccessFile;
     :try_start_8
     invoke-static {v0, p2}, Landroid/util/apk/VerityBuilder;->generateFsVerityTree(Ljava/io/RandomAccessFile;Landroid/util/apk/ByteBufferFactory;)Landroid/util/apk/VerityBuilder$VerityResult;
 
-    move-result-object p0
+    move-result-object v1
 
     .line 208
-    iget-object p2, p0, Landroid/util/apk/VerityBuilder$VerityResult;->verityData:Ljava/nio/ByteBuffer;
+    .local v1, "result":Landroid/util/apk/VerityBuilder$VerityResult;
+    iget-object v2, v1, Landroid/util/apk/VerityBuilder$VerityResult;->verityData:Ljava/nio/ByteBuffer;
 
     .line 209
-    iget v1, p0, Landroid/util/apk/VerityBuilder$VerityResult;->merkleTreeSize:I
+    .local v2, "buffer":Ljava/nio/ByteBuffer;
+    iget v3, v1, Landroid/util/apk/VerityBuilder$VerityResult;->merkleTreeSize:I
 
-    invoke-virtual {p2, v1}, Ljava/nio/ByteBuffer;->position(I)Ljava/nio/Buffer;
+    invoke-virtual {v2, v3}, Ljava/nio/ByteBuffer;->position(I)Ljava/nio/Buffer;
 
     .line 211
-    iget-object p0, p0, Landroid/util/apk/VerityBuilder$VerityResult;->rootHash:[B
+    iget-object v3, v1, Landroid/util/apk/VerityBuilder$VerityResult;->rootHash:[B
 
-    invoke-static {v0, p0, p1, p2}, Lcom/android/server/security/VerityUtils;->generateFsverityDescriptorAndMeasurement(Ljava/io/RandomAccessFile;[BLjava/lang/String;Ljava/nio/ByteBuffer;)[B
+    invoke-static {v0, v3, p1, v2}, Lcom/android/server/security/VerityUtils;->generateFsverityDescriptorAndMeasurement(Ljava/io/RandomAccessFile;[BLjava/lang/String;Ljava/nio/ByteBuffer;)[B
 
-    move-result-object p0
+    move-result-object v3
 
     .line 213
-    invoke-virtual {p2}, Ljava/nio/ByteBuffer;->flip()Ljava/nio/Buffer;
+    .local v3, "measurement":[B
+    invoke-virtual {v2}, Ljava/nio/ByteBuffer;->flip()Ljava/nio/Buffer;
 
     .line 214
-    invoke-static {p0}, Lcom/android/server/security/VerityUtils;->constructFsveritySignedDataNative([B)[B
+    invoke-static {v3}, Lcom/android/server/security/VerityUtils;->constructFsveritySignedDataNative([B)[B
 
-    move-result-object p0
+    move-result-object v4
     :try_end_20
     .catchall {:try_start_8 .. :try_end_20} :catchall_25
 
     .line 215
-    const/4 p1, 0x0
+    const/4 v5, 0x0
 
-    invoke-static {p1, v0}, Lcom/android/server/security/VerityUtils;->$closeResource(Ljava/lang/Throwable;Ljava/lang/AutoCloseable;)V
+    invoke-static {v5, v0}, Lcom/android/server/security/VerityUtils;->$closeResource(Ljava/lang/Throwable;Ljava/lang/AutoCloseable;)V
 
     .line 214
-    return-object p0
+    return-object v4
 
     .line 204
+    .end local v1  # "result":Landroid/util/apk/VerityBuilder$VerityResult;
+    .end local v2  # "buffer":Ljava/nio/ByteBuffer;
+    .end local v3  # "measurement":[B
     :catchall_25
-    move-exception p0
+    move-exception v1
 
+    .end local v0  # "file":Ljava/io/RandomAccessFile;
+    .end local p0  # "filePath":Ljava/lang/String;
+    .end local p1  # "signaturePath":Ljava/lang/String;
+    .end local p2  # "trackedBufferFactory":Landroid/util/apk/ByteBufferFactory;
     :try_start_26
-    throw p0
+    throw v1
     :try_end_27
     .catchall {:try_start_26 .. :try_end_27} :catchall_27
 
     .line 215
+    .restart local v0  # "file":Ljava/io/RandomAccessFile;
+    .restart local p0  # "filePath":Ljava/lang/String;
+    .restart local p1  # "signaturePath":Ljava/lang/String;
+    .restart local p2  # "trackedBufferFactory":Landroid/util/apk/ByteBufferFactory;
     :catchall_27
-    move-exception p1
+    move-exception v2
 
-    invoke-static {p0, v0}, Lcom/android/server/security/VerityUtils;->$closeResource(Ljava/lang/Throwable;Ljava/lang/AutoCloseable;)V
+    invoke-static {v1, v0}, Lcom/android/server/security/VerityUtils;->$closeResource(Ljava/lang/Throwable;Ljava/lang/AutoCloseable;)V
 
-    throw p1
+    throw v2
 .end method
 
 .method public static getFsveritySignatureFilePath(Ljava/lang/String;)Ljava/lang/String;
-    .registers 2
+    .registers 3
+    .param p0, "filePath"  # Ljava/lang/String;
 
     .line 74
     new-instance v0, Ljava/lang/StringBuilder;
@@ -681,19 +733,20 @@
 
     invoke-virtual {v0, p0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string p0, ".fsv_sig"
+    const-string v1, ".fsv_sig"
 
-    invoke-virtual {v0, p0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v0
 
-    return-object p0
+    return-object v0
 .end method
 
 .method public static getVerityRootHash(Ljava/lang/String;)[B
-    .registers 1
+    .registers 2
+    .param p0, "apkPath"  # Ljava/lang/String;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Ljava/io/IOException;,
@@ -704,13 +757,14 @@
     .line 187
     invoke-static {p0}, Landroid/util/apk/ApkSignatureVerifier;->getVerityRootHash(Ljava/lang/String;)[B
 
-    move-result-object p0
+    move-result-object v0
 
-    return-object p0
+    return-object v0
 .end method
 
 .method public static hasFsverity(Ljava/lang/String;)Z
     .registers 4
+    .param p0, "filePath"  # Ljava/lang/String;
 
     .line 124
     invoke-static {p0}, Lcom/android/server/security/VerityUtils;->measureFsverityNative(Ljava/lang/String;)I
@@ -718,6 +772,7 @@
     move-result v0
 
     .line 125
+    .local v0, "errno":I
     if-eqz v0, :cond_2a
 
     .line 126
@@ -736,48 +791,49 @@
 
     invoke-virtual {v1, v0}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    const-string v0, ": "
+    const-string v2, ": "
 
-    invoke-virtual {v1, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v1, p0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v1
 
-    const-string v0, "VerityUtils"
+    const-string v2, "VerityUtils"
 
-    invoke-static {v0, p0}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v2, v1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 129
     :cond_28
-    const/4 p0, 0x0
+    const/4 v1, 0x0
 
-    return p0
+    return v1
 
     .line 131
     :cond_2a
-    const/4 p0, 0x1
+    const/4 v1, 0x1
 
-    return p0
+    return v1
 .end method
 
 .method public static isFsveritySignatureFile(Ljava/io/File;)Z
-    .registers 2
+    .registers 3
+    .param p0, "file"  # Ljava/io/File;
 
     .line 69
     invoke-virtual {p0}, Ljava/io/File;->getName()Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v0
 
-    const-string v0, ".fsv_sig"
+    const-string v1, ".fsv_sig"
 
-    invoke-virtual {p0, v0}, Ljava/lang/String;->endsWith(Ljava/lang/String;)Z
+    invoke-virtual {v0, v1}, Ljava/lang/String;->endsWith(Ljava/lang/String;)Z
 
-    move-result p0
+    move-result v0
 
-    return p0
+    return v0
 .end method
 
 .method private static native measureFsverityNative(Ljava/lang/String;)I
@@ -785,6 +841,8 @@
 
 .method private static roundUpToNextMultiple(JJ)J
     .registers 6
+    .param p0, "number"  # J
+    .param p2, "divisor"  # J
 
     .line 425
     const-wide v0, 0x7fffffffffffffffL
@@ -800,27 +858,29 @@
 
     sub-long v0, p2, v0
 
-    add-long/2addr p0, v0
+    add-long/2addr v0, p0
 
-    div-long/2addr p0, p2
+    div-long/2addr v0, p2
 
-    mul-long/2addr p0, p2
+    mul-long/2addr v0, p2
 
-    return-wide p0
+    return-wide v0
 
     .line 426
     :cond_12
-    new-instance p0, Ljava/lang/IllegalArgumentException;
+    new-instance v0, Ljava/lang/IllegalArgumentException;
 
-    const-string p1, "arithmetic overflow"
+    const-string v1, "arithmetic overflow"
 
-    invoke-direct {p0, p1}, Ljava/lang/IllegalArgumentException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v0, v1}, Ljava/lang/IllegalArgumentException;-><init>(Ljava/lang/String;)V
 
-    throw p0
+    throw v0
 .end method
 
 .method public static setUpFsverity(Ljava/lang/String;Ljava/lang/String;)V
-    .registers 13
+    .registers 16
+    .param p0, "filePath"  # Ljava/lang/String;
+    .param p1, "signaturePath"  # Ljava/lang/String;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Ljava/io/IOException;,
@@ -847,202 +907,235 @@
     invoke-direct {v0, v1}, Lsun/security/pkcs/PKCS7;-><init>([B)V
 
     .line 81
+    .local v0, "pkcs7":Lsun/security/pkcs/PKCS7;
     invoke-virtual {v0}, Lsun/security/pkcs/PKCS7;->getContentInfo()Lsun/security/pkcs/ContentInfo;
-
-    move-result-object v0
-
-    invoke-virtual {v0}, Lsun/security/pkcs/ContentInfo;->getContentBytes()[B
-
-    move-result-object v0
-
-    .line 88
-    new-instance v1, Lcom/android/server/security/VerityUtils$TrackedBufferFactory;
-
-    const/4 v2, 0x0
-
-    invoke-direct {v1, v2}, Lcom/android/server/security/VerityUtils$TrackedBufferFactory;-><init>(Lcom/android/server/security/VerityUtils$1;)V
-
-    .line 89
-    invoke-static {p0, p1, v1}, Lcom/android/server/security/VerityUtils;->generateFsverityMetadata(Ljava/lang/String;Ljava/lang/String;Landroid/util/apk/ByteBufferFactory;)[B
-
-    move-result-object p1
-
-    .line 91
-    new-instance v3, Ljava/io/RandomAccessFile;
-
-    const-string/jumbo v4, "rw"
-
-    invoke-direct {v3, p0, v4}, Ljava/io/RandomAccessFile;-><init>(Ljava/lang/String;Ljava/lang/String;)V
-
-    .line 92
-    :try_start_2a
-    invoke-virtual {v3}, Ljava/io/RandomAccessFile;->getChannel()Ljava/nio/channels/FileChannel;
-
-    move-result-object v4
-
-    .line 93
-    invoke-virtual {v4}, Ljava/nio/channels/FileChannel;->size()J
-
-    move-result-wide v5
-
-    const-wide/16 v7, 0x1000
-
-    invoke-static {v5, v6, v7, v8}, Lcom/android/server/security/VerityUtils;->roundUpToNextMultiple(JJ)J
-
-    move-result-wide v5
-
-    invoke-virtual {v4, v5, v6}, Ljava/nio/channels/FileChannel;->position(J)Ljava/nio/channels/FileChannel;
-
-    .line 94
-    invoke-virtual {v1}, Lcom/android/server/security/VerityUtils$TrackedBufferFactory;->getBuffer()Ljava/nio/ByteBuffer;
 
     move-result-object v1
 
+    invoke-virtual {v1}, Lsun/security/pkcs/ContentInfo;->getContentBytes()[B
+
+    move-result-object v1
+
+    .line 88
+    .local v1, "expectedMeasurement":[B
+    new-instance v2, Lcom/android/server/security/VerityUtils$TrackedBufferFactory;
+
+    const/4 v3, 0x0
+
+    invoke-direct {v2, v3}, Lcom/android/server/security/VerityUtils$TrackedBufferFactory;-><init>(Lcom/android/server/security/VerityUtils$1;)V
+
+    .line 89
+    .local v2, "bufferFactory":Lcom/android/server/security/VerityUtils$TrackedBufferFactory;
+    invoke-static {p0, p1, v2}, Lcom/android/server/security/VerityUtils;->generateFsverityMetadata(Ljava/lang/String;Ljava/lang/String;Landroid/util/apk/ByteBufferFactory;)[B
+
+    move-result-object v4
+
+    .line 91
+    .local v4, "actualMeasurement":[B
+    new-instance v5, Ljava/io/RandomAccessFile;
+
+    const-string/jumbo v6, "rw"
+
+    invoke-direct {v5, p0, v6}, Ljava/io/RandomAccessFile;-><init>(Ljava/lang/String;Ljava/lang/String;)V
+
+    .line 92
+    .local v5, "raf":Ljava/io/RandomAccessFile;
+    :try_start_2a
+    invoke-virtual {v5}, Ljava/io/RandomAccessFile;->getChannel()Ljava/nio/channels/FileChannel;
+
+    move-result-object v6
+
+    .line 93
+    .local v6, "ch":Ljava/nio/channels/FileChannel;
+    invoke-virtual {v6}, Ljava/nio/channels/FileChannel;->size()J
+
+    move-result-wide v7
+
+    const-wide/16 v9, 0x1000
+
+    invoke-static {v7, v8, v9, v10}, Lcom/android/server/security/VerityUtils;->roundUpToNextMultiple(JJ)J
+
+    move-result-wide v7
+
+    invoke-virtual {v6, v7, v8}, Ljava/nio/channels/FileChannel;->position(J)Ljava/nio/channels/FileChannel;
+
+    .line 94
+    invoke-virtual {v2}, Lcom/android/server/security/VerityUtils$TrackedBufferFactory;->getBuffer()Ljava/nio/ByteBuffer;
+
+    move-result-object v7
+
     .line 96
-    invoke-virtual {v1}, Ljava/nio/ByteBuffer;->position()I
+    .local v7, "buffer":Ljava/nio/ByteBuffer;
+    invoke-virtual {v7}, Ljava/nio/ByteBuffer;->position()I
 
-    move-result v5
+    move-result v8
 
-    int-to-long v5, v5
+    int-to-long v8, v8
 
     .line 97
-    invoke-virtual {v1}, Ljava/nio/ByteBuffer;->limit()I
+    .local v8, "offset":J
+    invoke-virtual {v7}, Ljava/nio/ByteBuffer;->limit()I
 
-    move-result v7
+    move-result v10
 
-    int-to-long v7, v7
+    int-to-long v10, v10
 
     .line 98
+    .local v10, "size":J
     :goto_49
-    cmp-long v9, v5, v7
+    cmp-long v12, v8, v10
 
-    if-gez v9, :cond_55
+    if-gez v12, :cond_55
 
     .line 99
-    invoke-virtual {v4, v1}, Ljava/nio/channels/FileChannel;->write(Ljava/nio/ByteBuffer;)I
+    invoke-virtual {v6, v7}, Ljava/nio/channels/FileChannel;->write(Ljava/nio/ByteBuffer;)I
 
-    move-result v9
+    move-result v12
     :try_end_51
     .catchall {:try_start_2a .. :try_end_51} :catchall_af
 
-    int-to-long v9, v9
+    int-to-long v12, v12
 
     .line 100
-    add-long/2addr v5, v9
+    .local v12, "s":J
+    add-long/2addr v8, v12
 
     .line 101
-    sub-long/2addr v7, v9
+    sub-long/2addr v10, v12
 
     .line 102
+    .end local v12  # "s":J
     goto :goto_49
 
     .line 103
+    .end local v6  # "ch":Ljava/nio/channels/FileChannel;
+    .end local v7  # "buffer":Ljava/nio/ByteBuffer;
+    .end local v8  # "offset":J
+    .end local v10  # "size":J
     :cond_55
-    invoke-static {v2, v3}, Lcom/android/server/security/VerityUtils;->$closeResource(Ljava/lang/Throwable;Ljava/lang/AutoCloseable;)V
+    invoke-static {v3, v5}, Lcom/android/server/security/VerityUtils;->$closeResource(Ljava/lang/Throwable;Ljava/lang/AutoCloseable;)V
 
     .line 105
-    invoke-static {v0, p1}, Ljava/util/Arrays;->equals([B[B)Z
+    .end local v5  # "raf":Ljava/io/RandomAccessFile;
+    invoke-static {v1, v4}, Ljava/util/Arrays;->equals([B[B)Z
 
-    move-result v1
+    move-result v3
 
-    if-eqz v1, :cond_88
+    if-eqz v3, :cond_88
 
     .line 112
     invoke-static {p0}, Lcom/android/server/security/VerityUtils;->enableFsverityNative(Ljava/lang/String;)I
 
-    move-result p1
+    move-result v3
 
     .line 113
-    if-nez p1, :cond_65
+    .local v3, "errno":I
+    if-nez v3, :cond_65
 
     .line 117
     return-void
 
     .line 114
     :cond_65
-    new-instance v0, Ljava/io/IOException;
+    new-instance v5, Ljava/io/IOException;
 
-    new-instance v1, Ljava/lang/StringBuilder;
+    new-instance v6, Ljava/lang/StringBuilder;
 
-    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v6}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v2, "Failed to enable fs-verity on "
+    const-string v7, "Failed to enable fs-verity on "
 
-    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v6, v7}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v1, p0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v6, p0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string p0, ": "
+    const-string v7, ": "
 
-    invoke-virtual {v1, p0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v6, v7}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     .line 115
-    invoke-static {p1}, Landroid/system/Os;->strerror(I)Ljava/lang/String;
+    invoke-static {v3}, Landroid/system/Os;->strerror(I)Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v7
 
-    invoke-virtual {v1, p0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v6, v7}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v6}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v6
 
-    invoke-direct {v0, p0}, Ljava/io/IOException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v5, v6}, Ljava/io/IOException;-><init>(Ljava/lang/String;)V
 
-    throw v0
+    throw v5
 
     .line 106
+    .end local v3  # "errno":I
     :cond_88
-    new-instance p0, Ljava/lang/SecurityException;
+    new-instance v3, Ljava/lang/SecurityException;
 
-    new-instance v1, Ljava/lang/StringBuilder;
+    new-instance v5, Ljava/lang/StringBuilder;
 
-    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v5}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v2, "fs-verity measurement mismatch: "
+    const-string v6, "fs-verity measurement mismatch: "
 
-    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     .line 107
-    invoke-static {p1}, Lcom/android/server/security/VerityUtils;->bytesToString([B)Ljava/lang/String;
+    invoke-static {v4}, Lcom/android/server/security/VerityUtils;->bytesToString([B)Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v6
 
-    invoke-virtual {v1, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string p1, " != "
+    const-string v6, " != "
 
-    invoke-virtual {v1, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     .line 108
-    invoke-static {v0}, Lcom/android/server/security/VerityUtils;->bytesToString([B)Ljava/lang/String;
+    invoke-static {v1}, Lcom/android/server/security/VerityUtils;->bytesToString([B)Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v6
 
-    invoke-virtual {v1, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v5}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v5
 
-    invoke-direct {p0, p1}, Ljava/lang/SecurityException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v3, v5}, Ljava/lang/SecurityException;-><init>(Ljava/lang/String;)V
 
-    throw p0
+    throw v3
 
     .line 91
+    .restart local v5  # "raf":Ljava/io/RandomAccessFile;
     :catchall_af
-    move-exception p0
+    move-exception v3
 
+    .end local v0  # "pkcs7":Lsun/security/pkcs/PKCS7;
+    .end local v1  # "expectedMeasurement":[B
+    .end local v2  # "bufferFactory":Lcom/android/server/security/VerityUtils$TrackedBufferFactory;
+    .end local v4  # "actualMeasurement":[B
+    .end local v5  # "raf":Ljava/io/RandomAccessFile;
+    .end local p0  # "filePath":Ljava/lang/String;
+    .end local p1  # "signaturePath":Ljava/lang/String;
     :try_start_b0
-    throw p0
+    throw v3
     :try_end_b1
     .catchall {:try_start_b0 .. :try_end_b1} :catchall_b1
 
     .line 103
+    .restart local v0  # "pkcs7":Lsun/security/pkcs/PKCS7;
+    .restart local v1  # "expectedMeasurement":[B
+    .restart local v2  # "bufferFactory":Lcom/android/server/security/VerityUtils$TrackedBufferFactory;
+    .restart local v4  # "actualMeasurement":[B
+    .restart local v5  # "raf":Ljava/io/RandomAccessFile;
+    .restart local p0  # "filePath":Ljava/lang/String;
+    .restart local p1  # "signaturePath":Ljava/lang/String;
     :catchall_b1
-    move-exception p1
+    move-exception v6
 
-    invoke-static {p0, v3}, Lcom/android/server/security/VerityUtils;->$closeResource(Ljava/lang/Throwable;Ljava/lang/AutoCloseable;)V
+    invoke-static {v3, v5}, Lcom/android/server/security/VerityUtils;->$closeResource(Ljava/lang/Throwable;Ljava/lang/AutoCloseable;)V
 
-    throw p1
+    throw v6
 .end method

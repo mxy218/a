@@ -68,6 +68,7 @@
 
 .method public setField(Ljava/lang/String;)V
     .registers 2
+    .param p1, "field"  # Ljava/lang/String;
 
     .line 50
     iput-object p1, p0, Lcom/android/server/om/DumpState;->mField:Ljava/lang/String;
@@ -78,6 +79,7 @@
 
 .method public setPackageName(Ljava/lang/String;)V
     .registers 2
+    .param p1, "packageName"  # Ljava/lang/String;
 
     .line 42
     iput-object p1, p0, Lcom/android/server/om/DumpState;->mPackageName:Ljava/lang/String;
@@ -88,6 +90,7 @@
 
 .method public setUserId(I)V
     .registers 2
+    .param p1, "userId"  # I
 
     .line 34
     iput p1, p0, Lcom/android/server/om/DumpState;->mUserId:I
@@ -98,6 +101,7 @@
 
 .method public setVerbose(Z)V
     .registers 2
+    .param p1, "verbose"  # Z
 
     .line 58
     iput-boolean p1, p0, Lcom/android/server/om/DumpState;->mVerbose:Z

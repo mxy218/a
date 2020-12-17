@@ -21,6 +21,8 @@
 # direct methods
 .method public constructor <init>(Lcom/android/server/firewall/StringFilter$ValueProvider;Ljava/lang/String;)V
     .registers 4
+    .param p1, "valueProvider"  # Lcom/android/server/firewall/StringFilter$ValueProvider;
+    .param p2, "attrValue"  # Ljava/lang/String;
 
     .line 215
     const/4 v0, 0x0
@@ -30,9 +32,9 @@
     .line 216
     invoke-static {p2}, Ljava/lang/Boolean;->parseBoolean(Ljava/lang/String;)Z
 
-    move-result p1
+    move-result v0
 
-    iput-boolean p1, p0, Lcom/android/server/firewall/StringFilter$IsNullFilter;->mIsNull:Z
+    iput-boolean v0, p0, Lcom/android/server/firewall/StringFilter$IsNullFilter;->mIsNull:Z
 
     .line 217
     return-void
@@ -40,6 +42,8 @@
 
 .method public constructor <init>(Lcom/android/server/firewall/StringFilter$ValueProvider;Z)V
     .registers 4
+    .param p1, "valueProvider"  # Lcom/android/server/firewall/StringFilter$ValueProvider;
+    .param p2, "isNull"  # Z
 
     .line 220
     const/4 v0, 0x0
@@ -56,7 +60,8 @@
 
 # virtual methods
 .method public matchesValue(Ljava/lang/String;)Z
-    .registers 5
+    .registers 6
+    .param p1, "value"  # Ljava/lang/String;
 
     .line 226
     const/4 v0, 0x1
@@ -65,17 +70,17 @@
 
     if-nez p1, :cond_6
 
-    move p1, v0
+    move v2, v0
 
     goto :goto_7
 
     :cond_6
-    move p1, v1
+    move v2, v1
 
     :goto_7
-    iget-boolean v2, p0, Lcom/android/server/firewall/StringFilter$IsNullFilter;->mIsNull:Z
+    iget-boolean v3, p0, Lcom/android/server/firewall/StringFilter$IsNullFilter;->mIsNull:Z
 
-    if-ne p1, v2, :cond_c
+    if-ne v2, v3, :cond_c
 
     goto :goto_d
 

@@ -24,25 +24,26 @@
 
 # direct methods
 .method public constructor <init>(Landroid/net/ip/IpServer;)V
-    .registers 2
+    .registers 3
+    .param p1, "ipServer"  # Landroid/net/ip/IpServer;
 
-    .line 155
+    .line 154
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
-    .line 156
+    .line 155
     iput-object p1, p0, Lcom/android/server/connectivity/Tethering$TetherState;->ipServer:Landroid/net/ip/IpServer;
 
-    .line 158
-    const/4 p1, 0x1
+    .line 157
+    const/4 v0, 0x1
 
-    iput p1, p0, Lcom/android/server/connectivity/Tethering$TetherState;->lastState:I
+    iput v0, p0, Lcom/android/server/connectivity/Tethering$TetherState;->lastState:I
+
+    .line 158
+    const/4 v0, 0x0
+
+    iput v0, p0, Lcom/android/server/connectivity/Tethering$TetherState;->lastError:I
 
     .line 159
-    const/4 p1, 0x0
-
-    iput p1, p0, Lcom/android/server/connectivity/Tethering$TetherState;->lastError:I
-
-    .line 160
     return-void
 .end method
 
@@ -51,7 +52,7 @@
 .method public isCurrentlyServing()Z
     .registers 3
 
-    .line 163
+    .line 162
     iget v0, p0, Lcom/android/server/connectivity/Tethering$TetherState;->lastState:I
 
     const/4 v1, 0x2
@@ -62,12 +63,12 @@
 
     if-eq v0, v1, :cond_a
 
-    .line 168
+    .line 167
     const/4 v0, 0x0
 
     return v0
 
-    .line 166
+    .line 165
     :cond_a
     const/4 v0, 0x1
 

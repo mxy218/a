@@ -21,6 +21,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/notification/NotificationComparator;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/notification/NotificationComparator;
 
     .line 192
     iput-object p1, p0, Lcom/android/server/notification/NotificationComparator$1;->this$0:Lcom/android/server/notification/NotificationComparator;
@@ -33,20 +34,22 @@
 
 # virtual methods
 .method public onReceive(Landroid/content/Context;Landroid/content/Intent;)V
-    .registers 4
+    .registers 5
+    .param p1, "context"  # Landroid/content/Context;
+    .param p2, "intent"  # Landroid/content/Intent;
 
     .line 195
-    iget-object p1, p0, Lcom/android/server/notification/NotificationComparator$1;->this$0:Lcom/android/server/notification/NotificationComparator;
+    iget-object v0, p0, Lcom/android/server/notification/NotificationComparator$1;->this$0:Lcom/android/server/notification/NotificationComparator;
 
     .line 196
-    const-string v0, "android.telecom.extra.CHANGE_DEFAULT_DIALER_PACKAGE_NAME"
+    const-string v1, "android.telecom.extra.CHANGE_DEFAULT_DIALER_PACKAGE_NAME"
 
-    invoke-virtual {p2, v0}, Landroid/content/Intent;->getStringExtra(Ljava/lang/String;)Ljava/lang/String;
+    invoke-virtual {p2, v1}, Landroid/content/Intent;->getStringExtra(Ljava/lang/String;)Ljava/lang/String;
 
-    move-result-object p2
+    move-result-object v1
 
     .line 195
-    invoke-static {p1, p2}, Lcom/android/server/notification/NotificationComparator;->access$002(Lcom/android/server/notification/NotificationComparator;Ljava/lang/String;)Ljava/lang/String;
+    invoke-static {v0, v1}, Lcom/android/server/notification/NotificationComparator;->access$002(Lcom/android/server/notification/NotificationComparator;Ljava/lang/String;)Ljava/lang/String;
 
     .line 197
     return-void

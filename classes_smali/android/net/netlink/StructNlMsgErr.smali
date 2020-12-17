@@ -24,32 +24,34 @@
 .end method
 
 .method public static hasAvailableSpace(Ljava/nio/ByteBuffer;)Z
-    .registers 2
+    .registers 3
+    .param p0, "byteBuffer"  # Ljava/nio/ByteBuffer;
 
     .line 36
     if-eqz p0, :cond_c
 
     invoke-virtual {p0}, Ljava/nio/ByteBuffer;->remaining()I
 
-    move-result p0
+    move-result v0
 
-    const/16 v0, 0x14
+    const/16 v1, 0x14
 
-    if-lt p0, v0, :cond_c
+    if-lt v0, v1, :cond_c
 
-    const/4 p0, 0x1
+    const/4 v0, 0x1
 
     goto :goto_d
 
     :cond_c
-    const/4 p0, 0x0
+    const/4 v0, 0x0
 
     :goto_d
-    return p0
+    return v0
 .end method
 
 .method public static parse(Ljava/nio/ByteBuffer;)Landroid/net/netlink/StructNlMsgErr;
     .registers 3
+    .param p0, "byteBuffer"  # Ljava/nio/ByteBuffer;
 
     .line 40
     invoke-static {p0}, Landroid/net/netlink/StructNlMsgErr;->hasAvailableSpace(Ljava/nio/ByteBuffer;)Z
@@ -58,9 +60,9 @@
 
     if-nez v0, :cond_8
 
-    const/4 p0, 0x0
+    const/4 v0, 0x0
 
-    return-object p0
+    return-object v0
 
     .line 45
     :cond_8
@@ -69,6 +71,7 @@
     invoke-direct {v0}, Landroid/net/netlink/StructNlMsgErr;-><init>()V
 
     .line 46
+    .local v0, "struct":Landroid/net/netlink/StructNlMsgErr;
     invoke-virtual {p0}, Ljava/nio/ByteBuffer;->getInt()I
 
     move-result v1
@@ -78,9 +81,9 @@
     .line 47
     invoke-static {p0}, Landroid/net/netlink/StructNlMsgHdr;->parse(Ljava/nio/ByteBuffer;)Landroid/net/netlink/StructNlMsgHdr;
 
-    move-result-object p0
+    move-result-object v1
 
-    iput-object p0, v0, Landroid/net/netlink/StructNlMsgErr;->msg:Landroid/net/netlink/StructNlMsgHdr;
+    iput-object v1, v0, Landroid/net/netlink/StructNlMsgErr;->msg:Landroid/net/netlink/StructNlMsgHdr;
 
     .line 48
     return-object v0
@@ -90,6 +93,7 @@
 # virtual methods
 .method public pack(Ljava/nio/ByteBuffer;)V
     .registers 3
+    .param p1, "byteBuffer"  # Ljava/nio/ByteBuffer;
 
     .line 58
     iget v0, p0, Landroid/net/netlink/StructNlMsgErr;->error:I

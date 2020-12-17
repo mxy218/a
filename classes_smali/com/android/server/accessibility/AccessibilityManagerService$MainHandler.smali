@@ -25,96 +25,103 @@
 # direct methods
 .method public constructor <init>(Lcom/android/server/accessibility/AccessibilityManagerService;Landroid/os/Looper;)V
     .registers 3
+    .param p1, "this$0"  # Lcom/android/server/accessibility/AccessibilityManagerService;
+    .param p2, "looper"  # Landroid/os/Looper;
 
-    .line 2679
+    .line 2689
     iput-object p1, p0, Lcom/android/server/accessibility/AccessibilityManagerService$MainHandler;->this$0:Lcom/android/server/accessibility/AccessibilityManagerService;
 
-    .line 2680
+    .line 2690
     invoke-direct {p0, p2}, Landroid/os/Handler;-><init>(Landroid/os/Looper;)V
 
-    .line 2681
+    .line 2691
     return-void
 .end method
 
 
 # virtual methods
 .method public handleMessage(Landroid/os/Message;)V
-    .registers 5
+    .registers 6
+    .param p1, "msg"  # Landroid/os/Message;
 
-    .line 2685
+    .line 2695
     iget v0, p1, Landroid/os/Message;->what:I
 
     const/16 v1, 0x8
 
     if-ne v0, v1, :cond_34
 
-    .line 2686
+    .line 2696
     iget-object v0, p1, Landroid/os/Message;->obj:Ljava/lang/Object;
 
     check-cast v0, Landroid/view/KeyEvent;
 
-    .line 2687
-    iget p1, p1, Landroid/os/Message;->arg1:I
+    .line 2697
+    .local v0, "event":Landroid/view/KeyEvent;
+    iget v1, p1, Landroid/os/Message;->arg1:I
 
-    .line 2688
-    iget-object v1, p0, Lcom/android/server/accessibility/AccessibilityManagerService$MainHandler;->this$0:Lcom/android/server/accessibility/AccessibilityManagerService;
+    .line 2698
+    .local v1, "policyFlags":I
+    iget-object v2, p0, Lcom/android/server/accessibility/AccessibilityManagerService$MainHandler;->this$0:Lcom/android/server/accessibility/AccessibilityManagerService;
 
-    invoke-static {v1}, Lcom/android/server/accessibility/AccessibilityManagerService;->access$100(Lcom/android/server/accessibility/AccessibilityManagerService;)Ljava/lang/Object;
+    invoke-static {v2}, Lcom/android/server/accessibility/AccessibilityManagerService;->access$100(Lcom/android/server/accessibility/AccessibilityManagerService;)Ljava/lang/Object;
 
-    move-result-object v1
+    move-result-object v2
 
-    monitor-enter v1
+    monitor-enter v2
 
-    .line 2689
+    .line 2699
     :try_start_13
-    iget-object v2, p0, Lcom/android/server/accessibility/AccessibilityManagerService$MainHandler;->this$0:Lcom/android/server/accessibility/AccessibilityManagerService;
+    iget-object v3, p0, Lcom/android/server/accessibility/AccessibilityManagerService$MainHandler;->this$0:Lcom/android/server/accessibility/AccessibilityManagerService;
 
-    invoke-static {v2}, Lcom/android/server/accessibility/AccessibilityManagerService;->access$1800(Lcom/android/server/accessibility/AccessibilityManagerService;)Z
+    invoke-static {v3}, Lcom/android/server/accessibility/AccessibilityManagerService;->access$1800(Lcom/android/server/accessibility/AccessibilityManagerService;)Z
 
-    move-result v2
+    move-result v3
 
-    if-eqz v2, :cond_2c
+    if-eqz v3, :cond_2c
 
-    iget-object v2, p0, Lcom/android/server/accessibility/AccessibilityManagerService$MainHandler;->this$0:Lcom/android/server/accessibility/AccessibilityManagerService;
+    iget-object v3, p0, Lcom/android/server/accessibility/AccessibilityManagerService$MainHandler;->this$0:Lcom/android/server/accessibility/AccessibilityManagerService;
 
-    invoke-static {v2}, Lcom/android/server/accessibility/AccessibilityManagerService;->access$1900(Lcom/android/server/accessibility/AccessibilityManagerService;)Lcom/android/server/accessibility/AccessibilityInputFilter;
+    invoke-static {v3}, Lcom/android/server/accessibility/AccessibilityManagerService;->access$1900(Lcom/android/server/accessibility/AccessibilityManagerService;)Lcom/android/server/accessibility/AccessibilityInputFilter;
 
-    move-result-object v2
+    move-result-object v3
 
-    if-eqz v2, :cond_2c
+    if-eqz v3, :cond_2c
 
-    .line 2690
-    iget-object v2, p0, Lcom/android/server/accessibility/AccessibilityManagerService$MainHandler;->this$0:Lcom/android/server/accessibility/AccessibilityManagerService;
+    .line 2700
+    iget-object v3, p0, Lcom/android/server/accessibility/AccessibilityManagerService$MainHandler;->this$0:Lcom/android/server/accessibility/AccessibilityManagerService;
 
-    invoke-static {v2}, Lcom/android/server/accessibility/AccessibilityManagerService;->access$1900(Lcom/android/server/accessibility/AccessibilityManagerService;)Lcom/android/server/accessibility/AccessibilityInputFilter;
+    invoke-static {v3}, Lcom/android/server/accessibility/AccessibilityManagerService;->access$1900(Lcom/android/server/accessibility/AccessibilityManagerService;)Lcom/android/server/accessibility/AccessibilityInputFilter;
 
-    move-result-object v2
+    move-result-object v3
 
-    invoke-virtual {v2, v0, p1}, Lcom/android/server/accessibility/AccessibilityInputFilter;->sendInputEvent(Landroid/view/InputEvent;I)V
+    invoke-virtual {v3, v0, v1}, Lcom/android/server/accessibility/AccessibilityInputFilter;->sendInputEvent(Landroid/view/InputEvent;I)V
 
-    .line 2692
+    .line 2702
     :cond_2c
-    monitor-exit v1
+    monitor-exit v2
     :try_end_2d
     .catchall {:try_start_13 .. :try_end_2d} :catchall_31
 
-    .line 2693
+    .line 2703
     invoke-virtual {v0}, Landroid/view/KeyEvent;->recycle()V
 
     goto :goto_34
 
-    .line 2692
+    .line 2702
     :catchall_31
-    move-exception p1
+    move-exception v3
 
     :try_start_32
-    monitor-exit v1
+    monitor-exit v2
     :try_end_33
     .catchall {:try_start_32 .. :try_end_33} :catchall_31
 
-    throw p1
+    throw v3
 
-    .line 2695
+    .line 2705
+    .end local v0  # "event":Landroid/view/KeyEvent;
+    .end local v1  # "policyFlags":I
     :cond_34
     :goto_34
     return-void

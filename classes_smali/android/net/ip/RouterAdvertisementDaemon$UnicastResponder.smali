@@ -50,6 +50,8 @@
 
 .method synthetic constructor <init>(Landroid/net/ip/RouterAdvertisementDaemon;Landroid/net/ip/RouterAdvertisementDaemon$1;)V
     .registers 3
+    .param p1, "x0"  # Landroid/net/ip/RouterAdvertisementDaemon;
+    .param p2, "x1"  # Landroid/net/ip/RouterAdvertisementDaemon$1;
 
     .line 656
     invoke-direct {p0, p1}, Landroid/net/ip/RouterAdvertisementDaemon$UnicastResponder;-><init>(Landroid/net/ip/RouterAdvertisementDaemon;)V
@@ -99,28 +101,30 @@
     move-result v0
 
     .line 671
+    .local v0, "rval":I
     const/4 v1, 0x1
 
     if-lt v0, v1, :cond_33
 
-    iget-object v0, p0, Landroid/net/ip/RouterAdvertisementDaemon$UnicastResponder;->mSolication:[B
+    iget-object v1, p0, Landroid/net/ip/RouterAdvertisementDaemon$UnicastResponder;->mSolication:[B
 
-    const/4 v1, 0x0
+    const/4 v2, 0x0
 
-    aget-byte v0, v0, v1
+    aget-byte v1, v1, v2
 
     invoke-static {}, Landroid/net/ip/RouterAdvertisementDaemon;->access$500()B
 
-    move-result v1
+    move-result v2
     :try_end_27
     .catch Landroid/system/ErrnoException; {:try_start_8 .. :try_end_27} :catch_34
     .catch Ljava/net/SocketException; {:try_start_8 .. :try_end_27} :catch_34
 
-    if-eq v0, v1, :cond_2a
+    if-eq v1, v2, :cond_2a
 
     goto :goto_33
 
     .line 679
+    .end local v0  # "rval":I
     :cond_2a
     nop
 
@@ -134,15 +138,18 @@
     goto :goto_0
 
     .line 672
+    .restart local v0  # "rval":I
     :cond_33
     :goto_33
     goto :goto_0
 
     .line 674
+    .end local v0  # "rval":I
     :catch_34
     move-exception v0
 
     .line 675
+    .local v0, "e":Ljava/lang/Exception;
     iget-object v1, p0, Landroid/net/ip/RouterAdvertisementDaemon$UnicastResponder;->this$0:Landroid/net/ip/RouterAdvertisementDaemon;
 
     invoke-static {v1}, Landroid/net/ip/RouterAdvertisementDaemon;->access$300(Landroid/net/ip/RouterAdvertisementDaemon;)Z
@@ -168,15 +175,16 @@
 
     invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v2
 
-    invoke-static {v1, v0}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v2}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 678
     :cond_56
     goto :goto_0
 
     .line 683
+    .end local v0  # "e":Ljava/lang/Exception;
     :cond_57
     return-void
 .end method

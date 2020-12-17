@@ -181,6 +181,7 @@
 # virtual methods
 .method removeEncapSocketRecord(I)V
     .registers 3
+    .param p1, "resourceId"  # I
 
     .line 413
     iget-object v0, p0, Lcom/android/server/IpSecService$UserRecord;->mEncapSocketRecords:Lcom/android/server/IpSecService$RefcountedResourceArray;
@@ -193,6 +194,7 @@
 
 .method removeSpiRecord(I)V
     .registers 3
+    .param p1, "resourceId"  # I
 
     .line 401
     iget-object v0, p0, Lcom/android/server/IpSecService$UserRecord;->mSpiRecords:Lcom/android/server/IpSecService$RefcountedResourceArray;
@@ -205,6 +207,7 @@
 
 .method removeTransformRecord(I)V
     .registers 3
+    .param p1, "resourceId"  # I
 
     .line 405
     iget-object v0, p0, Lcom/android/server/IpSecService$UserRecord;->mTransformRecords:Lcom/android/server/IpSecService$RefcountedResourceArray;
@@ -217,6 +220,7 @@
 
 .method removeTunnelInterfaceRecord(I)V
     .registers 3
+    .param p1, "resourceId"  # I
 
     .line 409
     iget-object v0, p0, Lcom/android/server/IpSecService$UserRecord;->mTunnelInterfaceRecords:Lcom/android/server/IpSecService$RefcountedResourceArray;

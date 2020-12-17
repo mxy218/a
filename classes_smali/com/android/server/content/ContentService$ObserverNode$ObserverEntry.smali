@@ -35,208 +35,221 @@
 
 # direct methods
 .method public constructor <init>(Lcom/android/server/content/ContentService$ObserverNode;Landroid/database/IContentObserver;ZLjava/lang/Object;IIILandroid/net/Uri;)V
-    .registers 9
+    .registers 13
+    .param p2, "o"  # Landroid/database/IContentObserver;
+    .param p3, "n"  # Z
+    .param p4, "observersLock"  # Ljava/lang/Object;
+    .param p5, "_uid"  # I
+    .param p6, "_pid"  # I
+    .param p7, "_userHandle"  # I
+    .param p8, "uri"  # Landroid/net/Uri;
 
-    .line 1367
+    .line 1372
     iput-object p1, p0, Lcom/android/server/content/ContentService$ObserverNode$ObserverEntry;->this$0:Lcom/android/server/content/ContentService$ObserverNode;
 
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
-    .line 1368
+    .line 1373
     iput-object p4, p0, Lcom/android/server/content/ContentService$ObserverNode$ObserverEntry;->observersLock:Ljava/lang/Object;
 
-    .line 1369
+    .line 1374
     iput-object p2, p0, Lcom/android/server/content/ContentService$ObserverNode$ObserverEntry;->observer:Landroid/database/IContentObserver;
 
-    .line 1370
+    .line 1375
     iput p5, p0, Lcom/android/server/content/ContentService$ObserverNode$ObserverEntry;->uid:I
 
-    .line 1371
+    .line 1376
     iput p6, p0, Lcom/android/server/content/ContentService$ObserverNode$ObserverEntry;->pid:I
 
-    .line 1372
+    .line 1377
     iput p7, p0, Lcom/android/server/content/ContentService$ObserverNode$ObserverEntry;->userHandle:I
 
-    .line 1373
+    .line 1378
     iput-boolean p3, p0, Lcom/android/server/content/ContentService$ObserverNode$ObserverEntry;->notifyForDescendants:Z
 
-    .line 1375
+    .line 1380
     invoke-static {}, Lcom/android/server/content/ContentService;->access$300()Lcom/android/internal/os/BinderDeathDispatcher;
 
     move-result-object p1
 
-    iget-object p2, p0, Lcom/android/server/content/ContentService$ObserverNode$ObserverEntry;->observer:Landroid/database/IContentObserver;
+    iget-object v0, p0, Lcom/android/server/content/ContentService$ObserverNode$ObserverEntry;->observer:Landroid/database/IContentObserver;
 
-    invoke-virtual {p1, p2, p0}, Lcom/android/internal/os/BinderDeathDispatcher;->linkToDeath(Landroid/os/IInterface;Landroid/os/IBinder$DeathRecipient;)I
+    invoke-virtual {p1, v0, p0}, Lcom/android/internal/os/BinderDeathDispatcher;->linkToDeath(Landroid/os/IInterface;Landroid/os/IBinder$DeathRecipient;)I
 
     move-result p1
 
-    .line 1376
-    const/4 p2, -0x1
+    .line 1381
+    .local p1, "entries":I
+    const/4 v0, -0x1
 
-    if-ne p1, p2, :cond_22
+    if-ne p1, v0, :cond_22
 
-    .line 1377
+    .line 1382
     invoke-virtual {p0}, Lcom/android/server/content/ContentService$ObserverNode$ObserverEntry;->binderDied()V
 
     goto :goto_95
 
-    .line 1378
+    .line 1383
     :cond_22
-    const/16 p2, 0x3e8
+    const/16 v0, 0x3e8
 
-    if-ne p1, p2, :cond_95
+    if-ne p1, v0, :cond_95
 
-    .line 1381
+    .line 1386
     invoke-static {}, Lcom/android/server/content/ContentService;->access$400()Landroid/util/ArraySet;
 
-    move-result-object p1
+    move-result-object v0
 
-    monitor-enter p1
+    monitor-enter v0
 
-    .line 1382
+    .line 1387
     :try_start_2b
     invoke-static {}, Lcom/android/server/content/ContentService;->access$400()Landroid/util/ArraySet;
 
-    move-result-object p2
+    move-result-object v1
 
-    iget p3, p0, Lcom/android/server/content/ContentService$ObserverNode$ObserverEntry;->uid:I
+    iget v2, p0, Lcom/android/server/content/ContentService$ObserverNode$ObserverEntry;->uid:I
 
-    invoke-static {p3}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
+    invoke-static {v2}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
 
-    move-result-object p3
+    move-result-object v2
 
-    invoke-virtual {p2, p3}, Landroid/util/ArraySet;->contains(Ljava/lang/Object;)Z
+    invoke-virtual {v1, v2}, Landroid/util/ArraySet;->contains(Ljava/lang/Object;)Z
 
-    move-result p2
+    move-result v1
 
-    .line 1383
-    if-nez p2, :cond_48
+    .line 1388
+    .local v1, "alreadyDetected":Z
+    if-nez v1, :cond_48
 
-    .line 1384
+    .line 1389
     invoke-static {}, Lcom/android/server/content/ContentService;->access$400()Landroid/util/ArraySet;
 
-    move-result-object p3
+    move-result-object v2
 
-    iget p4, p0, Lcom/android/server/content/ContentService$ObserverNode$ObserverEntry;->uid:I
+    iget v3, p0, Lcom/android/server/content/ContentService$ObserverNode$ObserverEntry;->uid:I
 
-    invoke-static {p4}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
+    invoke-static {v3}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
 
-    move-result-object p4
+    move-result-object v3
 
-    invoke-virtual {p3, p4}, Landroid/util/ArraySet;->add(Ljava/lang/Object;)Z
+    invoke-virtual {v2, v3}, Landroid/util/ArraySet;->add(Ljava/lang/Object;)Z
 
-    .line 1386
+    .line 1391
     :cond_48
-    monitor-exit p1
+    monitor-exit v0
     :try_end_49
     .catchall {:try_start_2b .. :try_end_49} :catchall_92
 
-    .line 1387
-    if-nez p2, :cond_95
+    .line 1392
+    if-nez v1, :cond_95
 
-    .line 1388
-    const/4 p1, 0x0
+    .line 1393
+    const/4 v0, 0x0
 
-    .line 1390
+    .line 1395
+    .local v0, "caller":Ljava/lang/String;
     :try_start_4c
     invoke-static {}, Landroid/app/AppGlobals;->getPackageManager()Landroid/content/pm/IPackageManager;
 
-    move-result-object p2
+    move-result-object v2
 
-    iget p3, p0, Lcom/android/server/content/ContentService$ObserverNode$ObserverEntry;->uid:I
+    iget v3, p0, Lcom/android/server/content/ContentService$ObserverNode$ObserverEntry;->uid:I
 
-    .line 1391
-    invoke-interface {p2, p3}, Landroid/content/pm/IPackageManager;->getPackagesForUid(I)[Ljava/lang/String;
+    .line 1396
+    invoke-interface {v2, v3}, Landroid/content/pm/IPackageManager;->getPackagesForUid(I)[Ljava/lang/String;
 
-    move-result-object p2
+    move-result-object v2
 
-    .line 1390
-    invoke-static {p2}, Lcom/android/internal/util/ArrayUtils;->firstOrNull([Ljava/lang/Object;)Ljava/lang/Object;
+    .line 1395
+    invoke-static {v2}, Lcom/android/internal/util/ArrayUtils;->firstOrNull([Ljava/lang/Object;)Ljava/lang/Object;
 
-    move-result-object p2
+    move-result-object v2
 
-    check-cast p2, Ljava/lang/String;
+    check-cast v2, Ljava/lang/String;
     :try_end_5c
     .catch Landroid/os/RemoteException; {:try_start_4c .. :try_end_5c} :catch_5e
 
-    .line 1393
-    move-object p1, p2
+    move-object v0, v2
 
+    .line 1398
     goto :goto_5f
 
-    .line 1392
+    .line 1397
     :catch_5e
-    move-exception p2
+    move-exception v2
 
-    .line 1394
+    .line 1399
     :goto_5f
-    new-instance p2, Ljava/lang/StringBuilder;
+    new-instance v2, Ljava/lang/StringBuilder;
 
-    invoke-direct {p2}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string p3, "Observer registered too many times. Leak? cpid="
+    const-string v3, "Observer registered too many times. Leak? cpid="
 
-    invoke-virtual {p2, p3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    iget p3, p0, Lcom/android/server/content/ContentService$ObserverNode$ObserverEntry;->pid:I
+    iget v3, p0, Lcom/android/server/content/ContentService$ObserverNode$ObserverEntry;->pid:I
 
-    invoke-virtual {p2, p3}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    const-string p3, " cuid="
+    const-string v3, " cuid="
 
-    invoke-virtual {p2, p3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    iget p3, p0, Lcom/android/server/content/ContentService$ObserverNode$ObserverEntry;->uid:I
+    iget v3, p0, Lcom/android/server/content/ContentService$ObserverNode$ObserverEntry;->uid:I
 
-    invoke-virtual {p2, p3}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    const-string p3, " cpkg="
+    const-string v3, " cpkg="
 
-    invoke-virtual {p2, p3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p2, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string p1, " url="
+    const-string v3, " url="
 
-    invoke-virtual {p2, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p2, p8}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, p8}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v2
 
-    const-string p2, "ContentService"
+    const-string v3, "ContentService"
 
-    invoke-static {p2, p1}, Landroid/util/Slog;->wtf(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v3, v2}, Landroid/util/Slog;->wtf(Ljava/lang/String;Ljava/lang/String;)I
 
     goto :goto_95
 
-    .line 1386
+    .line 1391
+    .end local v0  # "caller":Ljava/lang/String;
+    .end local v1  # "alreadyDetected":Z
     :catchall_92
-    move-exception p2
+    move-exception v1
 
     :try_start_93
-    monitor-exit p1
+    monitor-exit v0
     :try_end_94
     .catchall {:try_start_93 .. :try_end_94} :catchall_92
 
-    throw p2
+    throw v1
 
-    .line 1401
+    .line 1406
     :cond_95
     :goto_95
     return-void
 .end method
 
 .method static synthetic access$500(Lcom/android/server/content/ContentService$ObserverNode$ObserverEntry;)I
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/content/ContentService$ObserverNode$ObserverEntry;
 
-    .line 1358
-    iget p0, p0, Lcom/android/server/content/ContentService$ObserverNode$ObserverEntry;->userHandle:I
+    .line 1363
+    iget v0, p0, Lcom/android/server/content/ContentService$ObserverNode$ObserverEntry;->userHandle:I
 
-    return p0
+    return v0
 .end method
 
 
@@ -244,12 +257,12 @@
 .method public binderDied()V
     .registers 4
 
-    .line 1405
+    .line 1410
     iget-object v0, p0, Lcom/android/server/content/ContentService$ObserverNode$ObserverEntry;->observersLock:Ljava/lang/Object;
 
     monitor-enter v0
 
-    .line 1406
+    .line 1411
     :try_start_3
     iget-object v1, p0, Lcom/android/server/content/ContentService$ObserverNode$ObserverEntry;->this$0:Lcom/android/server/content/ContentService$ObserverNode;
 
@@ -257,13 +270,13 @@
 
     invoke-virtual {v1, v2}, Lcom/android/server/content/ContentService$ObserverNode;->removeObserverLocked(Landroid/database/IContentObserver;)Z
 
-    .line 1407
+    .line 1412
     monitor-exit v0
 
-    .line 1408
+    .line 1413
     return-void
 
-    .line 1407
+    .line 1412
     :catchall_c
     move-exception v1
 
@@ -275,84 +288,90 @@
 .end method
 
 .method public dumpLocked(Ljava/io/FileDescriptor;Ljava/io/PrintWriter;[Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Landroid/util/SparseIntArray;)V
-    .registers 7
+    .registers 9
+    .param p1, "fd"  # Ljava/io/FileDescriptor;
+    .param p2, "pw"  # Ljava/io/PrintWriter;
+    .param p3, "args"  # [Ljava/lang/String;
+    .param p4, "name"  # Ljava/lang/String;
+    .param p5, "prefix"  # Ljava/lang/String;
+    .param p6, "pidCounts"  # Landroid/util/SparseIntArray;
 
-    .line 1412
-    iget p1, p0, Lcom/android/server/content/ContentService$ObserverNode$ObserverEntry;->pid:I
+    .line 1417
+    iget v0, p0, Lcom/android/server/content/ContentService$ObserverNode$ObserverEntry;->pid:I
 
-    invoke-virtual {p6, p1}, Landroid/util/SparseIntArray;->get(I)I
+    invoke-virtual {p6, v0}, Landroid/util/SparseIntArray;->get(I)I
 
-    move-result p3
+    move-result v1
 
-    add-int/lit8 p3, p3, 0x1
+    add-int/lit8 v1, v1, 0x1
 
-    invoke-virtual {p6, p1, p3}, Landroid/util/SparseIntArray;->put(II)V
+    invoke-virtual {p6, v0, v1}, Landroid/util/SparseIntArray;->put(II)V
 
-    .line 1413
+    .line 1418
     invoke-virtual {p2, p5}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
     invoke-virtual {p2, p4}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
-    const-string p1, ": pid="
+    const-string v0, ": pid="
 
-    invoke-virtual {p2, p1}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
+    invoke-virtual {p2, v0}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
-    .line 1414
-    iget p1, p0, Lcom/android/server/content/ContentService$ObserverNode$ObserverEntry;->pid:I
+    .line 1419
+    iget v0, p0, Lcom/android/server/content/ContentService$ObserverNode$ObserverEntry;->pid:I
 
-    invoke-virtual {p2, p1}, Ljava/io/PrintWriter;->print(I)V
+    invoke-virtual {p2, v0}, Ljava/io/PrintWriter;->print(I)V
 
-    const-string p1, " uid="
+    const-string v0, " uid="
 
-    invoke-virtual {p2, p1}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
+    invoke-virtual {p2, v0}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
-    .line 1415
-    iget p1, p0, Lcom/android/server/content/ContentService$ObserverNode$ObserverEntry;->uid:I
+    .line 1420
+    iget v0, p0, Lcom/android/server/content/ContentService$ObserverNode$ObserverEntry;->uid:I
 
-    invoke-virtual {p2, p1}, Ljava/io/PrintWriter;->print(I)V
+    invoke-virtual {p2, v0}, Ljava/io/PrintWriter;->print(I)V
 
-    const-string p1, " user="
+    const-string v0, " user="
 
-    invoke-virtual {p2, p1}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
+    invoke-virtual {p2, v0}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
-    .line 1416
-    iget p1, p0, Lcom/android/server/content/ContentService$ObserverNode$ObserverEntry;->userHandle:I
+    .line 1421
+    iget v0, p0, Lcom/android/server/content/ContentService$ObserverNode$ObserverEntry;->userHandle:I
 
-    invoke-virtual {p2, p1}, Ljava/io/PrintWriter;->print(I)V
+    invoke-virtual {p2, v0}, Ljava/io/PrintWriter;->print(I)V
 
-    const-string p1, " target="
+    const-string v0, " target="
 
-    invoke-virtual {p2, p1}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
+    invoke-virtual {p2, v0}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
-    .line 1417
+    .line 1422
     nop
 
-    .line 1418
-    iget-object p1, p0, Lcom/android/server/content/ContentService$ObserverNode$ObserverEntry;->observer:Landroid/database/IContentObserver;
+    .line 1423
+    iget-object v0, p0, Lcom/android/server/content/ContentService$ObserverNode$ObserverEntry;->observer:Landroid/database/IContentObserver;
 
-    if-eqz p1, :cond_3e
+    if-eqz v0, :cond_3e
 
-    invoke-interface {p1}, Landroid/database/IContentObserver;->asBinder()Landroid/os/IBinder;
+    invoke-interface {v0}, Landroid/database/IContentObserver;->asBinder()Landroid/os/IBinder;
 
-    move-result-object p1
+    move-result-object v0
 
     goto :goto_3f
 
     :cond_3e
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    .line 1417
+    .line 1422
     :goto_3f
-    invoke-static {p1}, Ljava/lang/System;->identityHashCode(Ljava/lang/Object;)I
+    invoke-static {v0}, Ljava/lang/System;->identityHashCode(Ljava/lang/Object;)I
 
-    move-result p1
+    move-result v0
 
-    invoke-static {p1}, Ljava/lang/Integer;->toHexString(I)Ljava/lang/String;
+    invoke-static {v0}, Ljava/lang/Integer;->toHexString(I)Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    invoke-virtual {p2, p1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {p2, v0}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
-    .line 1419
+    .line 1424
     return-void
 .end method

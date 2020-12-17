@@ -34,8 +34,9 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/notification/NotificationManagerService$NotificationListeners;Lcom/android/server/notification/ManagedServices$ManagedServiceInfo;Landroid/service/notification/StatusBarNotification;Landroid/service/notification/NotificationRankingUpdate;Landroid/service/notification/NotificationStats;I)V
     .registers 7
+    .param p1, "this$1"  # Lcom/android/server/notification/NotificationManagerService$NotificationListeners;
 
-    .line 8350
+    .line 8475
     iput-object p1, p0, Lcom/android/server/notification/NotificationManagerService$NotificationListeners$3;->this$1:Lcom/android/server/notification/NotificationManagerService$NotificationListeners;
 
     iput-object p2, p0, Lcom/android/server/notification/NotificationManagerService$NotificationListeners$3;->val$info:Lcom/android/server/notification/ManagedServices$ManagedServiceInfo;
@@ -58,7 +59,7 @@
 .method public run()V
     .registers 7
 
-    .line 8353
+    .line 8478
     iget-object v0, p0, Lcom/android/server/notification/NotificationManagerService$NotificationListeners$3;->this$1:Lcom/android/server/notification/NotificationManagerService$NotificationListeners;
 
     iget-object v1, p0, Lcom/android/server/notification/NotificationManagerService$NotificationListeners$3;->val$info:Lcom/android/server/notification/ManagedServices$ManagedServiceInfo;
@@ -71,8 +72,8 @@
 
     iget v5, p0, Lcom/android/server/notification/NotificationManagerService$NotificationListeners$3;->val$reason:I
 
-    invoke-static/range {v0 .. v5}, Lcom/android/server/notification/NotificationManagerService$NotificationListeners;->access$9500(Lcom/android/server/notification/NotificationManagerService$NotificationListeners;Lcom/android/server/notification/ManagedServices$ManagedServiceInfo;Landroid/service/notification/StatusBarNotification;Landroid/service/notification/NotificationRankingUpdate;Landroid/service/notification/NotificationStats;I)V
+    invoke-static/range {v0 .. v5}, Lcom/android/server/notification/NotificationManagerService$NotificationListeners;->access$9900(Lcom/android/server/notification/NotificationManagerService$NotificationListeners;Lcom/android/server/notification/ManagedServices$ManagedServiceInfo;Landroid/service/notification/StatusBarNotification;Landroid/service/notification/NotificationRankingUpdate;Landroid/service/notification/NotificationStats;I)V
 
-    .line 8354
+    .line 8479
     return-void
 .end method

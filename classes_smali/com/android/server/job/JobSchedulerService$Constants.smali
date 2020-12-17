@@ -201,15 +201,15 @@
 
     const/16 v4, 0x8
 
-    const-string v5, "max_job_total_on_normal"
+    const-string/jumbo v5, "max_job_total_on_normal"
 
     const/4 v6, 0x6
 
-    const-string v7, "max_job_max_bg_on_normal"
+    const-string/jumbo v7, "max_job_max_bg_on_normal"
 
     const/4 v8, 0x2
 
-    const-string v9, "max_job_min_bg_on_normal"
+    const-string/jumbo v9, "max_job_min_bg_on_normal"
 
     move-object v3, v10
 
@@ -219,15 +219,15 @@
 
     const/16 v12, 0x8
 
-    const-string v13, "max_job_total_on_moderate"
+    const-string/jumbo v13, "max_job_total_on_moderate"
 
     const/4 v14, 0x4
 
-    const-string v15, "max_job_max_bg_on_moderate"
+    const-string/jumbo v15, "max_job_max_bg_on_moderate"
 
     const/16 v16, 0x2
 
-    const-string v17, "max_job_min_bg_on_moderate"
+    const-string/jumbo v17, "max_job_min_bg_on_moderate"
 
     move-object v11, v3
 
@@ -237,15 +237,15 @@
 
     const/16 v19, 0x5
 
-    const-string v20, "max_job_total_on_low"
+    const-string/jumbo v20, "max_job_total_on_low"
 
     const/16 v21, 0x1
 
-    const-string v22, "max_job_max_bg_on_low"
+    const-string/jumbo v22, "max_job_max_bg_on_low"
 
     const/16 v23, 0x1
 
-    const-string v24, "max_job_min_bg_on_low"
+    const-string/jumbo v24, "max_job_min_bg_on_low"
 
     move-object/from16 v18, v4
 
@@ -255,15 +255,15 @@
 
     const/4 v12, 0x5
 
-    const-string v13, "max_job_total_on_critical"
+    const-string/jumbo v13, "max_job_total_on_critical"
 
     const/4 v14, 0x1
 
-    const-string v15, "max_job_max_bg_on_critical"
+    const-string/jumbo v15, "max_job_max_bg_on_critical"
 
     const/16 v16, 0x1
 
-    const-string v17, "max_job_min_bg_on_critical"
+    const-string/jumbo v17, "max_job_min_bg_on_critical"
 
     move-object v11, v5
 
@@ -280,11 +280,11 @@
 
     const/16 v4, 0xa
 
-    const-string v5, "max_job_total_off_normal"
+    const-string/jumbo v5, "max_job_total_off_normal"
 
-    const-string v7, "max_job_max_bg_off_normal"
+    const-string/jumbo v7, "max_job_max_bg_off_normal"
 
-    const-string v9, "max_job_min_bg_off_normal"
+    const-string/jumbo v9, "max_job_min_bg_off_normal"
 
     move-object v3, v10
 
@@ -294,15 +294,15 @@
 
     const/16 v12, 0xa
 
-    const-string v13, "max_job_total_off_moderate"
+    const-string/jumbo v13, "max_job_total_off_moderate"
 
     const/4 v14, 0x4
 
-    const-string v15, "max_job_max_bg_off_moderate"
+    const-string/jumbo v15, "max_job_max_bg_off_moderate"
 
     const/16 v16, 0x2
 
-    const-string v17, "max_job_min_bg_off_moderate"
+    const-string/jumbo v17, "max_job_min_bg_off_moderate"
 
     move-object v11, v3
 
@@ -310,11 +310,11 @@
 
     new-instance v4, Lcom/android/server/job/JobSchedulerService$MaxJobCounts;
 
-    const-string v20, "max_job_total_off_low"
+    const-string/jumbo v20, "max_job_total_off_low"
 
-    const-string v22, "max_job_max_bg_off_low"
+    const-string/jumbo v22, "max_job_max_bg_off_low"
 
-    const-string v24, "max_job_min_bg_off_low"
+    const-string/jumbo v24, "max_job_min_bg_off_low"
 
     move-object/from16 v18, v4
 
@@ -324,15 +324,15 @@
 
     const/4 v12, 0x5
 
-    const-string v13, "max_job_total_off_critical"
+    const-string/jumbo v13, "max_job_total_off_critical"
 
     const/4 v14, 0x1
 
-    const-string v15, "max_job_max_bg_off_critical"
+    const-string/jumbo v15, "max_job_max_bg_off_critical"
 
     const/16 v16, 0x1
 
-    const-string v17, "max_job_min_bg_off_critical"
+    const-string/jumbo v17, "max_job_min_bg_off_critical"
 
     move-object v11, v5
 
@@ -379,7 +379,7 @@
 
     new-array v2, v2, [I
 
-    fill-array-data v2, :array_e2
+    fill-array-data v2, :array_fa
 
     iput-object v2, v0, Lcom/android/server/job/JobSchedulerService$Constants;->STANDBY_BEATS:[I
 
@@ -405,7 +405,7 @@
 
     return-void
 
-    :array_e2
+    :array_fa
     .array-data 4
         0x0
         0xb
@@ -418,6 +418,7 @@
 # virtual methods
 .method dump(Landroid/util/proto/ProtoOutputStream;)V
     .registers 8
+    .param p1, "proto"  # Landroid/util/proto/ProtoOutputStream;
 
     .line 745
     iget v0, p0, Lcom/android/server/job/JobSchedulerService$Constants;->MIN_IDLE_COUNT:I
@@ -551,11 +552,13 @@
     aget v3, v0, v2
 
     .line 767
+    .local v3, "period":I
     const-wide v4, 0x20500000014L
 
     invoke-virtual {p1, v4, v5, v3}, Landroid/util/proto/ProtoOutputStream;->write(JI)V
 
     .line 766
+    .end local v3  # "period":I
     add-int/lit8 v2, v2, 0x1
 
     goto :goto_ae
@@ -588,6 +591,7 @@
 
 .method dump(Lcom/android/internal/util/IndentingPrintWriter;)V
     .registers 4
+    .param p1, "pw"  # Lcom/android/internal/util/IndentingPrintWriter;
 
     .line 701
     const-string v0, "Settings:"
@@ -604,7 +608,7 @@
 
     move-result-object v0
 
-    const-string v1, "min_idle_count"
+    const-string/jumbo v1, "min_idle_count"
 
     invoke-virtual {p1, v1, v0}, Lcom/android/internal/util/IndentingPrintWriter;->printPair(Ljava/lang/String;Ljava/lang/Object;)Lcom/android/internal/util/IndentingPrintWriter;
 
@@ -619,7 +623,7 @@
 
     move-result-object v0
 
-    const-string v1, "min_charging_count"
+    const-string/jumbo v1, "min_charging_count"
 
     invoke-virtual {p1, v1, v0}, Lcom/android/internal/util/IndentingPrintWriter;->printPair(Ljava/lang/String;Ljava/lang/Object;)Lcom/android/internal/util/IndentingPrintWriter;
 
@@ -634,7 +638,7 @@
 
     move-result-object v0
 
-    const-string v1, "min_battery_not_low_count"
+    const-string/jumbo v1, "min_battery_not_low_count"
 
     invoke-virtual {p1, v1, v0}, Lcom/android/internal/util/IndentingPrintWriter;->printPair(Ljava/lang/String;Ljava/lang/Object;)Lcom/android/internal/util/IndentingPrintWriter;
 
@@ -649,7 +653,7 @@
 
     move-result-object v0
 
-    const-string v1, "min_storage_not_low_count"
+    const-string/jumbo v1, "min_storage_not_low_count"
 
     invoke-virtual {p1, v1, v0}, Lcom/android/internal/util/IndentingPrintWriter;->printPair(Ljava/lang/String;Ljava/lang/Object;)Lcom/android/internal/util/IndentingPrintWriter;
 
@@ -664,7 +668,7 @@
 
     move-result-object v0
 
-    const-string v1, "min_connectivity_count"
+    const-string/jumbo v1, "min_connectivity_count"
 
     invoke-virtual {p1, v1, v0}, Lcom/android/internal/util/IndentingPrintWriter;->printPair(Ljava/lang/String;Ljava/lang/Object;)Lcom/android/internal/util/IndentingPrintWriter;
 
@@ -679,7 +683,7 @@
 
     move-result-object v0
 
-    const-string v1, "min_content_count"
+    const-string/jumbo v1, "min_content_count"
 
     invoke-virtual {p1, v1, v0}, Lcom/android/internal/util/IndentingPrintWriter;->printPair(Ljava/lang/String;Ljava/lang/Object;)Lcom/android/internal/util/IndentingPrintWriter;
 
@@ -694,7 +698,7 @@
 
     move-result-object v0
 
-    const-string v1, "min_ready_jobs_count"
+    const-string/jumbo v1, "min_ready_jobs_count"
 
     invoke-virtual {p1, v1, v0}, Lcom/android/internal/util/IndentingPrintWriter;->printPair(Ljava/lang/String;Ljava/lang/Object;)Lcom/android/internal/util/IndentingPrintWriter;
 
@@ -724,7 +728,7 @@
 
     move-result-object v0
 
-    const-string v1, "moderate_use_factor"
+    const-string/jumbo v1, "moderate_use_factor"
 
     invoke-virtual {p1, v1, v0}, Lcom/android/internal/util/IndentingPrintWriter;->printPair(Ljava/lang/String;Ljava/lang/Object;)Lcom/android/internal/util/IndentingPrintWriter;
 
@@ -802,7 +806,7 @@
 
     move-result-object v0
 
-    const-string v1, "max_standard_reschedule_count"
+    const-string/jumbo v1, "max_standard_reschedule_count"
 
     invoke-virtual {p1, v1, v0}, Lcom/android/internal/util/IndentingPrintWriter;->printPair(Ljava/lang/String;Ljava/lang/Object;)Lcom/android/internal/util/IndentingPrintWriter;
 
@@ -817,7 +821,7 @@
 
     move-result-object v0
 
-    const-string v1, "max_work_reschedule_count"
+    const-string/jumbo v1, "max_work_reschedule_count"
 
     invoke-virtual {p1, v1, v0}, Lcom/android/internal/util/IndentingPrintWriter;->printPair(Ljava/lang/String;Ljava/lang/Object;)Lcom/android/internal/util/IndentingPrintWriter;
 
@@ -832,7 +836,7 @@
 
     move-result-object v0
 
-    const-string v1, "min_linear_backoff_time"
+    const-string/jumbo v1, "min_linear_backoff_time"
 
     invoke-virtual {p1, v1, v0}, Lcom/android/internal/util/IndentingPrintWriter;->printPair(Ljava/lang/String;Ljava/lang/Object;)Lcom/android/internal/util/IndentingPrintWriter;
 
@@ -847,7 +851,7 @@
 
     move-result-object v0
 
-    const-string v1, "min_exp_backoff_time"
+    const-string/jumbo v1, "min_exp_backoff_time"
 
     invoke-virtual {p1, v1, v0}, Lcom/android/internal/util/IndentingPrintWriter;->printPair(Ljava/lang/String;Ljava/lang/Object;)Lcom/android/internal/util/IndentingPrintWriter;
 
@@ -887,12 +891,13 @@
     .line 732
     const/4 v0, 0x1
 
-    :goto_129
+    .local v0, "i":I
+    :goto_135
     iget-object v1, p0, Lcom/android/server/job/JobSchedulerService$Constants;->STANDBY_BEATS:[I
 
     array-length v1, v1
 
-    if-ge v0, v1, :cond_13d
+    if-ge v0, v1, :cond_149
 
     .line 733
     const-string v1, ", "
@@ -909,10 +914,11 @@
     .line 732
     add-int/lit8 v0, v0, 0x1
 
-    goto :goto_129
+    goto :goto_135
 
     .line 736
-    :cond_13d
+    .end local v0  # "i":I
+    :cond_149
     const/16 v0, 0x7d
 
     invoke-virtual {p1, v0}, Lcom/android/internal/util/IndentingPrintWriter;->println(C)V
@@ -970,7 +976,8 @@
 .end method
 
 .method updateConstantsLocked(Ljava/lang/String;)V
-    .registers 8
+    .registers 9
+    .param p1, "value"  # Ljava/lang/String;
 
     .line 639
     :try_start_0
@@ -985,344 +992,346 @@
 
     .line 640
     :catch_6
-    move-exception p1
+    move-exception v0
 
     .line 643
-    const-string v0, "JobScheduler"
+    .local v0, "e":Ljava/lang/Exception;
+    const-string v1, "JobScheduler"
 
-    const-string v1, "Bad jobscheduler settings"
+    const-string v2, "Bad jobscheduler settings"
 
-    invoke-static {v0, v1, p1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    invoke-static {v1, v2, v0}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
     .line 646
+    .end local v0  # "e":Ljava/lang/Exception;
     :goto_e
-    iget-object p1, p0, Lcom/android/server/job/JobSchedulerService$Constants;->mParser:Landroid/util/KeyValueListParser;
+    iget-object v0, p0, Lcom/android/server/job/JobSchedulerService$Constants;->mParser:Landroid/util/KeyValueListParser;
 
-    const/4 v0, 0x1
+    const/4 v1, 0x1
 
-    const-string v1, "min_idle_count"
+    const-string/jumbo v2, "min_idle_count"
 
-    invoke-virtual {p1, v1, v0}, Landroid/util/KeyValueListParser;->getInt(Ljava/lang/String;I)I
+    invoke-virtual {v0, v2, v1}, Landroid/util/KeyValueListParser;->getInt(Ljava/lang/String;I)I
 
-    move-result p1
+    move-result v0
 
-    iput p1, p0, Lcom/android/server/job/JobSchedulerService$Constants;->MIN_IDLE_COUNT:I
+    iput v0, p0, Lcom/android/server/job/JobSchedulerService$Constants;->MIN_IDLE_COUNT:I
 
     .line 648
-    iget-object p1, p0, Lcom/android/server/job/JobSchedulerService$Constants;->mParser:Landroid/util/KeyValueListParser;
+    iget-object v0, p0, Lcom/android/server/job/JobSchedulerService$Constants;->mParser:Landroid/util/KeyValueListParser;
 
-    const-string v1, "min_charging_count"
+    const-string/jumbo v2, "min_charging_count"
 
-    invoke-virtual {p1, v1, v0}, Landroid/util/KeyValueListParser;->getInt(Ljava/lang/String;I)I
+    invoke-virtual {v0, v2, v1}, Landroid/util/KeyValueListParser;->getInt(Ljava/lang/String;I)I
 
-    move-result p1
+    move-result v0
 
-    iput p1, p0, Lcom/android/server/job/JobSchedulerService$Constants;->MIN_CHARGING_COUNT:I
+    iput v0, p0, Lcom/android/server/job/JobSchedulerService$Constants;->MIN_CHARGING_COUNT:I
 
     .line 650
-    iget-object p1, p0, Lcom/android/server/job/JobSchedulerService$Constants;->mParser:Landroid/util/KeyValueListParser;
+    iget-object v0, p0, Lcom/android/server/job/JobSchedulerService$Constants;->mParser:Landroid/util/KeyValueListParser;
 
-    const-string v1, "min_battery_not_low_count"
+    const-string/jumbo v2, "min_battery_not_low_count"
 
-    invoke-virtual {p1, v1, v0}, Landroid/util/KeyValueListParser;->getInt(Ljava/lang/String;I)I
+    invoke-virtual {v0, v2, v1}, Landroid/util/KeyValueListParser;->getInt(Ljava/lang/String;I)I
 
-    move-result p1
+    move-result v0
 
-    iput p1, p0, Lcom/android/server/job/JobSchedulerService$Constants;->MIN_BATTERY_NOT_LOW_COUNT:I
+    iput v0, p0, Lcom/android/server/job/JobSchedulerService$Constants;->MIN_BATTERY_NOT_LOW_COUNT:I
 
     .line 652
-    iget-object p1, p0, Lcom/android/server/job/JobSchedulerService$Constants;->mParser:Landroid/util/KeyValueListParser;
+    iget-object v0, p0, Lcom/android/server/job/JobSchedulerService$Constants;->mParser:Landroid/util/KeyValueListParser;
 
-    const-string v1, "min_storage_not_low_count"
+    const-string/jumbo v2, "min_storage_not_low_count"
 
-    invoke-virtual {p1, v1, v0}, Landroid/util/KeyValueListParser;->getInt(Ljava/lang/String;I)I
+    invoke-virtual {v0, v2, v1}, Landroid/util/KeyValueListParser;->getInt(Ljava/lang/String;I)I
 
-    move-result p1
+    move-result v0
 
-    iput p1, p0, Lcom/android/server/job/JobSchedulerService$Constants;->MIN_STORAGE_NOT_LOW_COUNT:I
+    iput v0, p0, Lcom/android/server/job/JobSchedulerService$Constants;->MIN_STORAGE_NOT_LOW_COUNT:I
 
     .line 654
-    iget-object p1, p0, Lcom/android/server/job/JobSchedulerService$Constants;->mParser:Landroid/util/KeyValueListParser;
+    iget-object v0, p0, Lcom/android/server/job/JobSchedulerService$Constants;->mParser:Landroid/util/KeyValueListParser;
 
-    const-string v1, "min_connectivity_count"
+    const-string/jumbo v2, "min_connectivity_count"
 
-    invoke-virtual {p1, v1, v0}, Landroid/util/KeyValueListParser;->getInt(Ljava/lang/String;I)I
+    invoke-virtual {v0, v2, v1}, Landroid/util/KeyValueListParser;->getInt(Ljava/lang/String;I)I
 
-    move-result p1
+    move-result v0
 
-    iput p1, p0, Lcom/android/server/job/JobSchedulerService$Constants;->MIN_CONNECTIVITY_COUNT:I
+    iput v0, p0, Lcom/android/server/job/JobSchedulerService$Constants;->MIN_CONNECTIVITY_COUNT:I
 
     .line 656
-    iget-object p1, p0, Lcom/android/server/job/JobSchedulerService$Constants;->mParser:Landroid/util/KeyValueListParser;
+    iget-object v0, p0, Lcom/android/server/job/JobSchedulerService$Constants;->mParser:Landroid/util/KeyValueListParser;
 
-    const-string v1, "min_content_count"
+    const-string/jumbo v2, "min_content_count"
 
-    invoke-virtual {p1, v1, v0}, Landroid/util/KeyValueListParser;->getInt(Ljava/lang/String;I)I
+    invoke-virtual {v0, v2, v1}, Landroid/util/KeyValueListParser;->getInt(Ljava/lang/String;I)I
 
-    move-result p1
+    move-result v0
 
-    iput p1, p0, Lcom/android/server/job/JobSchedulerService$Constants;->MIN_CONTENT_COUNT:I
+    iput v0, p0, Lcom/android/server/job/JobSchedulerService$Constants;->MIN_CONTENT_COUNT:I
 
     .line 658
-    iget-object p1, p0, Lcom/android/server/job/JobSchedulerService$Constants;->mParser:Landroid/util/KeyValueListParser;
+    iget-object v0, p0, Lcom/android/server/job/JobSchedulerService$Constants;->mParser:Landroid/util/KeyValueListParser;
 
-    const-string v1, "min_ready_jobs_count"
+    const-string/jumbo v2, "min_ready_jobs_count"
 
-    invoke-virtual {p1, v1, v0}, Landroid/util/KeyValueListParser;->getInt(Ljava/lang/String;I)I
+    invoke-virtual {v0, v2, v1}, Landroid/util/KeyValueListParser;->getInt(Ljava/lang/String;I)I
 
-    move-result p1
+    move-result v0
 
-    iput p1, p0, Lcom/android/server/job/JobSchedulerService$Constants;->MIN_READY_JOBS_COUNT:I
+    iput v0, p0, Lcom/android/server/job/JobSchedulerService$Constants;->MIN_READY_JOBS_COUNT:I
 
     .line 660
-    iget-object p1, p0, Lcom/android/server/job/JobSchedulerService$Constants;->mParser:Landroid/util/KeyValueListParser;
+    iget-object v0, p0, Lcom/android/server/job/JobSchedulerService$Constants;->mParser:Landroid/util/KeyValueListParser;
 
-    const v1, 0x3f666666  # 0.9f
+    const v2, 0x3f666666  # 0.9f
 
-    const-string v2, "heavy_use_factor"
+    const-string v3, "heavy_use_factor"
 
-    invoke-virtual {p1, v2, v1}, Landroid/util/KeyValueListParser;->getFloat(Ljava/lang/String;F)F
+    invoke-virtual {v0, v3, v2}, Landroid/util/KeyValueListParser;->getFloat(Ljava/lang/String;F)F
 
-    move-result p1
+    move-result v0
 
-    iput p1, p0, Lcom/android/server/job/JobSchedulerService$Constants;->HEAVY_USE_FACTOR:F
+    iput v0, p0, Lcom/android/server/job/JobSchedulerService$Constants;->HEAVY_USE_FACTOR:F
 
     .line 662
-    iget-object p1, p0, Lcom/android/server/job/JobSchedulerService$Constants;->mParser:Landroid/util/KeyValueListParser;
+    iget-object v0, p0, Lcom/android/server/job/JobSchedulerService$Constants;->mParser:Landroid/util/KeyValueListParser;
 
-    const/high16 v1, 0x3f000000  # 0.5f
+    const/high16 v2, 0x3f000000  # 0.5f
 
-    const-string v2, "moderate_use_factor"
+    const-string/jumbo v3, "moderate_use_factor"
 
-    invoke-virtual {p1, v2, v1}, Landroid/util/KeyValueListParser;->getFloat(Ljava/lang/String;F)F
+    invoke-virtual {v0, v3, v2}, Landroid/util/KeyValueListParser;->getFloat(Ljava/lang/String;F)F
 
-    move-result p1
+    move-result v0
 
-    iput p1, p0, Lcom/android/server/job/JobSchedulerService$Constants;->MODERATE_USE_FACTOR:F
+    iput v0, p0, Lcom/android/server/job/JobSchedulerService$Constants;->MODERATE_USE_FACTOR:F
 
     .line 665
-    iget-object p1, p0, Lcom/android/server/job/JobSchedulerService$Constants;->MAX_JOB_COUNTS_SCREEN_ON:Lcom/android/server/job/JobSchedulerService$MaxJobCountsPerMemoryTrimLevel;
+    iget-object v0, p0, Lcom/android/server/job/JobSchedulerService$Constants;->MAX_JOB_COUNTS_SCREEN_ON:Lcom/android/server/job/JobSchedulerService$MaxJobCountsPerMemoryTrimLevel;
 
-    iget-object p1, p1, Lcom/android/server/job/JobSchedulerService$MaxJobCountsPerMemoryTrimLevel;->normal:Lcom/android/server/job/JobSchedulerService$MaxJobCounts;
+    iget-object v0, v0, Lcom/android/server/job/JobSchedulerService$MaxJobCountsPerMemoryTrimLevel;->normal:Lcom/android/server/job/JobSchedulerService$MaxJobCounts;
 
-    iget-object v2, p0, Lcom/android/server/job/JobSchedulerService$Constants;->mParser:Landroid/util/KeyValueListParser;
+    iget-object v3, p0, Lcom/android/server/job/JobSchedulerService$Constants;->mParser:Landroid/util/KeyValueListParser;
 
-    invoke-virtual {p1, v2}, Lcom/android/server/job/JobSchedulerService$MaxJobCounts;->parse(Landroid/util/KeyValueListParser;)V
+    invoke-virtual {v0, v3}, Lcom/android/server/job/JobSchedulerService$MaxJobCounts;->parse(Landroid/util/KeyValueListParser;)V
 
     .line 666
-    iget-object p1, p0, Lcom/android/server/job/JobSchedulerService$Constants;->MAX_JOB_COUNTS_SCREEN_ON:Lcom/android/server/job/JobSchedulerService$MaxJobCountsPerMemoryTrimLevel;
+    iget-object v0, p0, Lcom/android/server/job/JobSchedulerService$Constants;->MAX_JOB_COUNTS_SCREEN_ON:Lcom/android/server/job/JobSchedulerService$MaxJobCountsPerMemoryTrimLevel;
 
-    iget-object p1, p1, Lcom/android/server/job/JobSchedulerService$MaxJobCountsPerMemoryTrimLevel;->moderate:Lcom/android/server/job/JobSchedulerService$MaxJobCounts;
+    iget-object v0, v0, Lcom/android/server/job/JobSchedulerService$MaxJobCountsPerMemoryTrimLevel;->moderate:Lcom/android/server/job/JobSchedulerService$MaxJobCounts;
 
-    iget-object v2, p0, Lcom/android/server/job/JobSchedulerService$Constants;->mParser:Landroid/util/KeyValueListParser;
+    iget-object v3, p0, Lcom/android/server/job/JobSchedulerService$Constants;->mParser:Landroid/util/KeyValueListParser;
 
-    invoke-virtual {p1, v2}, Lcom/android/server/job/JobSchedulerService$MaxJobCounts;->parse(Landroid/util/KeyValueListParser;)V
+    invoke-virtual {v0, v3}, Lcom/android/server/job/JobSchedulerService$MaxJobCounts;->parse(Landroid/util/KeyValueListParser;)V
 
     .line 667
-    iget-object p1, p0, Lcom/android/server/job/JobSchedulerService$Constants;->MAX_JOB_COUNTS_SCREEN_ON:Lcom/android/server/job/JobSchedulerService$MaxJobCountsPerMemoryTrimLevel;
+    iget-object v0, p0, Lcom/android/server/job/JobSchedulerService$Constants;->MAX_JOB_COUNTS_SCREEN_ON:Lcom/android/server/job/JobSchedulerService$MaxJobCountsPerMemoryTrimLevel;
 
-    iget-object p1, p1, Lcom/android/server/job/JobSchedulerService$MaxJobCountsPerMemoryTrimLevel;->low:Lcom/android/server/job/JobSchedulerService$MaxJobCounts;
+    iget-object v0, v0, Lcom/android/server/job/JobSchedulerService$MaxJobCountsPerMemoryTrimLevel;->low:Lcom/android/server/job/JobSchedulerService$MaxJobCounts;
 
-    iget-object v2, p0, Lcom/android/server/job/JobSchedulerService$Constants;->mParser:Landroid/util/KeyValueListParser;
+    iget-object v3, p0, Lcom/android/server/job/JobSchedulerService$Constants;->mParser:Landroid/util/KeyValueListParser;
 
-    invoke-virtual {p1, v2}, Lcom/android/server/job/JobSchedulerService$MaxJobCounts;->parse(Landroid/util/KeyValueListParser;)V
+    invoke-virtual {v0, v3}, Lcom/android/server/job/JobSchedulerService$MaxJobCounts;->parse(Landroid/util/KeyValueListParser;)V
 
     .line 668
-    iget-object p1, p0, Lcom/android/server/job/JobSchedulerService$Constants;->MAX_JOB_COUNTS_SCREEN_ON:Lcom/android/server/job/JobSchedulerService$MaxJobCountsPerMemoryTrimLevel;
+    iget-object v0, p0, Lcom/android/server/job/JobSchedulerService$Constants;->MAX_JOB_COUNTS_SCREEN_ON:Lcom/android/server/job/JobSchedulerService$MaxJobCountsPerMemoryTrimLevel;
 
-    iget-object p1, p1, Lcom/android/server/job/JobSchedulerService$MaxJobCountsPerMemoryTrimLevel;->critical:Lcom/android/server/job/JobSchedulerService$MaxJobCounts;
+    iget-object v0, v0, Lcom/android/server/job/JobSchedulerService$MaxJobCountsPerMemoryTrimLevel;->critical:Lcom/android/server/job/JobSchedulerService$MaxJobCounts;
 
-    iget-object v2, p0, Lcom/android/server/job/JobSchedulerService$Constants;->mParser:Landroid/util/KeyValueListParser;
+    iget-object v3, p0, Lcom/android/server/job/JobSchedulerService$Constants;->mParser:Landroid/util/KeyValueListParser;
 
-    invoke-virtual {p1, v2}, Lcom/android/server/job/JobSchedulerService$MaxJobCounts;->parse(Landroid/util/KeyValueListParser;)V
+    invoke-virtual {v0, v3}, Lcom/android/server/job/JobSchedulerService$MaxJobCounts;->parse(Landroid/util/KeyValueListParser;)V
 
     .line 670
-    iget-object p1, p0, Lcom/android/server/job/JobSchedulerService$Constants;->MAX_JOB_COUNTS_SCREEN_OFF:Lcom/android/server/job/JobSchedulerService$MaxJobCountsPerMemoryTrimLevel;
+    iget-object v0, p0, Lcom/android/server/job/JobSchedulerService$Constants;->MAX_JOB_COUNTS_SCREEN_OFF:Lcom/android/server/job/JobSchedulerService$MaxJobCountsPerMemoryTrimLevel;
 
-    iget-object p1, p1, Lcom/android/server/job/JobSchedulerService$MaxJobCountsPerMemoryTrimLevel;->normal:Lcom/android/server/job/JobSchedulerService$MaxJobCounts;
+    iget-object v0, v0, Lcom/android/server/job/JobSchedulerService$MaxJobCountsPerMemoryTrimLevel;->normal:Lcom/android/server/job/JobSchedulerService$MaxJobCounts;
 
-    iget-object v2, p0, Lcom/android/server/job/JobSchedulerService$Constants;->mParser:Landroid/util/KeyValueListParser;
+    iget-object v3, p0, Lcom/android/server/job/JobSchedulerService$Constants;->mParser:Landroid/util/KeyValueListParser;
 
-    invoke-virtual {p1, v2}, Lcom/android/server/job/JobSchedulerService$MaxJobCounts;->parse(Landroid/util/KeyValueListParser;)V
+    invoke-virtual {v0, v3}, Lcom/android/server/job/JobSchedulerService$MaxJobCounts;->parse(Landroid/util/KeyValueListParser;)V
 
     .line 671
-    iget-object p1, p0, Lcom/android/server/job/JobSchedulerService$Constants;->MAX_JOB_COUNTS_SCREEN_OFF:Lcom/android/server/job/JobSchedulerService$MaxJobCountsPerMemoryTrimLevel;
+    iget-object v0, p0, Lcom/android/server/job/JobSchedulerService$Constants;->MAX_JOB_COUNTS_SCREEN_OFF:Lcom/android/server/job/JobSchedulerService$MaxJobCountsPerMemoryTrimLevel;
 
-    iget-object p1, p1, Lcom/android/server/job/JobSchedulerService$MaxJobCountsPerMemoryTrimLevel;->moderate:Lcom/android/server/job/JobSchedulerService$MaxJobCounts;
+    iget-object v0, v0, Lcom/android/server/job/JobSchedulerService$MaxJobCountsPerMemoryTrimLevel;->moderate:Lcom/android/server/job/JobSchedulerService$MaxJobCounts;
 
-    iget-object v2, p0, Lcom/android/server/job/JobSchedulerService$Constants;->mParser:Landroid/util/KeyValueListParser;
+    iget-object v3, p0, Lcom/android/server/job/JobSchedulerService$Constants;->mParser:Landroid/util/KeyValueListParser;
 
-    invoke-virtual {p1, v2}, Lcom/android/server/job/JobSchedulerService$MaxJobCounts;->parse(Landroid/util/KeyValueListParser;)V
+    invoke-virtual {v0, v3}, Lcom/android/server/job/JobSchedulerService$MaxJobCounts;->parse(Landroid/util/KeyValueListParser;)V
 
     .line 672
-    iget-object p1, p0, Lcom/android/server/job/JobSchedulerService$Constants;->MAX_JOB_COUNTS_SCREEN_OFF:Lcom/android/server/job/JobSchedulerService$MaxJobCountsPerMemoryTrimLevel;
+    iget-object v0, p0, Lcom/android/server/job/JobSchedulerService$Constants;->MAX_JOB_COUNTS_SCREEN_OFF:Lcom/android/server/job/JobSchedulerService$MaxJobCountsPerMemoryTrimLevel;
 
-    iget-object p1, p1, Lcom/android/server/job/JobSchedulerService$MaxJobCountsPerMemoryTrimLevel;->low:Lcom/android/server/job/JobSchedulerService$MaxJobCounts;
+    iget-object v0, v0, Lcom/android/server/job/JobSchedulerService$MaxJobCountsPerMemoryTrimLevel;->low:Lcom/android/server/job/JobSchedulerService$MaxJobCounts;
 
-    iget-object v2, p0, Lcom/android/server/job/JobSchedulerService$Constants;->mParser:Landroid/util/KeyValueListParser;
+    iget-object v3, p0, Lcom/android/server/job/JobSchedulerService$Constants;->mParser:Landroid/util/KeyValueListParser;
 
-    invoke-virtual {p1, v2}, Lcom/android/server/job/JobSchedulerService$MaxJobCounts;->parse(Landroid/util/KeyValueListParser;)V
+    invoke-virtual {v0, v3}, Lcom/android/server/job/JobSchedulerService$MaxJobCounts;->parse(Landroid/util/KeyValueListParser;)V
 
     .line 673
-    iget-object p1, p0, Lcom/android/server/job/JobSchedulerService$Constants;->MAX_JOB_COUNTS_SCREEN_OFF:Lcom/android/server/job/JobSchedulerService$MaxJobCountsPerMemoryTrimLevel;
+    iget-object v0, p0, Lcom/android/server/job/JobSchedulerService$Constants;->MAX_JOB_COUNTS_SCREEN_OFF:Lcom/android/server/job/JobSchedulerService$MaxJobCountsPerMemoryTrimLevel;
 
-    iget-object p1, p1, Lcom/android/server/job/JobSchedulerService$MaxJobCountsPerMemoryTrimLevel;->critical:Lcom/android/server/job/JobSchedulerService$MaxJobCounts;
+    iget-object v0, v0, Lcom/android/server/job/JobSchedulerService$MaxJobCountsPerMemoryTrimLevel;->critical:Lcom/android/server/job/JobSchedulerService$MaxJobCounts;
 
-    iget-object v2, p0, Lcom/android/server/job/JobSchedulerService$Constants;->mParser:Landroid/util/KeyValueListParser;
+    iget-object v3, p0, Lcom/android/server/job/JobSchedulerService$Constants;->mParser:Landroid/util/KeyValueListParser;
 
-    invoke-virtual {p1, v2}, Lcom/android/server/job/JobSchedulerService$MaxJobCounts;->parse(Landroid/util/KeyValueListParser;)V
+    invoke-virtual {v0, v3}, Lcom/android/server/job/JobSchedulerService$MaxJobCounts;->parse(Landroid/util/KeyValueListParser;)V
 
     .line 675
-    iget-object p1, p0, Lcom/android/server/job/JobSchedulerService$Constants;->SCREEN_OFF_JOB_CONCURRENCY_INCREASE_DELAY_MS:Landroid/util/KeyValueListParser$IntValue;
+    iget-object v0, p0, Lcom/android/server/job/JobSchedulerService$Constants;->SCREEN_OFF_JOB_CONCURRENCY_INCREASE_DELAY_MS:Landroid/util/KeyValueListParser$IntValue;
 
-    iget-object v2, p0, Lcom/android/server/job/JobSchedulerService$Constants;->mParser:Landroid/util/KeyValueListParser;
+    iget-object v3, p0, Lcom/android/server/job/JobSchedulerService$Constants;->mParser:Landroid/util/KeyValueListParser;
 
-    invoke-virtual {p1, v2}, Landroid/util/KeyValueListParser$IntValue;->parse(Landroid/util/KeyValueListParser;)V
+    invoke-virtual {v0, v3}, Landroid/util/KeyValueListParser$IntValue;->parse(Landroid/util/KeyValueListParser;)V
 
     .line 677
-    iget-object p1, p0, Lcom/android/server/job/JobSchedulerService$Constants;->mParser:Landroid/util/KeyValueListParser;
+    iget-object v0, p0, Lcom/android/server/job/JobSchedulerService$Constants;->mParser:Landroid/util/KeyValueListParser;
 
-    const v2, 0x7fffffff
+    const v3, 0x7fffffff
 
-    const-string v3, "max_standard_reschedule_count"
+    const-string/jumbo v4, "max_standard_reschedule_count"
 
-    invoke-virtual {p1, v3, v2}, Landroid/util/KeyValueListParser;->getInt(Ljava/lang/String;I)I
+    invoke-virtual {v0, v4, v3}, Landroid/util/KeyValueListParser;->getInt(Ljava/lang/String;I)I
 
-    move-result p1
+    move-result v0
 
-    iput p1, p0, Lcom/android/server/job/JobSchedulerService$Constants;->MAX_STANDARD_RESCHEDULE_COUNT:I
+    iput v0, p0, Lcom/android/server/job/JobSchedulerService$Constants;->MAX_STANDARD_RESCHEDULE_COUNT:I
 
     .line 679
-    iget-object p1, p0, Lcom/android/server/job/JobSchedulerService$Constants;->mParser:Landroid/util/KeyValueListParser;
+    iget-object v0, p0, Lcom/android/server/job/JobSchedulerService$Constants;->mParser:Landroid/util/KeyValueListParser;
 
-    const-string v3, "max_work_reschedule_count"
+    const-string/jumbo v4, "max_work_reschedule_count"
 
-    invoke-virtual {p1, v3, v2}, Landroid/util/KeyValueListParser;->getInt(Ljava/lang/String;I)I
+    invoke-virtual {v0, v4, v3}, Landroid/util/KeyValueListParser;->getInt(Ljava/lang/String;I)I
 
-    move-result p1
+    move-result v0
 
-    iput p1, p0, Lcom/android/server/job/JobSchedulerService$Constants;->MAX_WORK_RESCHEDULE_COUNT:I
+    iput v0, p0, Lcom/android/server/job/JobSchedulerService$Constants;->MAX_WORK_RESCHEDULE_COUNT:I
 
     .line 681
-    iget-object p1, p0, Lcom/android/server/job/JobSchedulerService$Constants;->mParser:Landroid/util/KeyValueListParser;
+    iget-object v0, p0, Lcom/android/server/job/JobSchedulerService$Constants;->mParser:Landroid/util/KeyValueListParser;
 
-    const-wide/16 v2, 0x2710
+    const-wide/16 v3, 0x2710
 
-    const-string v4, "min_linear_backoff_time"
+    const-string/jumbo v5, "min_linear_backoff_time"
 
-    invoke-virtual {p1, v4, v2, v3}, Landroid/util/KeyValueListParser;->getDurationMillis(Ljava/lang/String;J)J
+    invoke-virtual {v0, v5, v3, v4}, Landroid/util/KeyValueListParser;->getDurationMillis(Ljava/lang/String;J)J
 
-    move-result-wide v4
+    move-result-wide v5
 
-    iput-wide v4, p0, Lcom/android/server/job/JobSchedulerService$Constants;->MIN_LINEAR_BACKOFF_TIME:J
+    iput-wide v5, p0, Lcom/android/server/job/JobSchedulerService$Constants;->MIN_LINEAR_BACKOFF_TIME:J
 
     .line 683
-    iget-object p1, p0, Lcom/android/server/job/JobSchedulerService$Constants;->mParser:Landroid/util/KeyValueListParser;
+    iget-object v0, p0, Lcom/android/server/job/JobSchedulerService$Constants;->mParser:Landroid/util/KeyValueListParser;
 
-    const-string v4, "min_exp_backoff_time"
+    const-string/jumbo v5, "min_exp_backoff_time"
 
-    invoke-virtual {p1, v4, v2, v3}, Landroid/util/KeyValueListParser;->getDurationMillis(Ljava/lang/String;J)J
+    invoke-virtual {v0, v5, v3, v4}, Landroid/util/KeyValueListParser;->getDurationMillis(Ljava/lang/String;J)J
 
-    move-result-wide v2
+    move-result-wide v3
 
-    iput-wide v2, p0, Lcom/android/server/job/JobSchedulerService$Constants;->MIN_EXP_BACKOFF_TIME:J
+    iput-wide v3, p0, Lcom/android/server/job/JobSchedulerService$Constants;->MIN_EXP_BACKOFF_TIME:J
 
     .line 685
-    iget-object p1, p0, Lcom/android/server/job/JobSchedulerService$Constants;->mParser:Landroid/util/KeyValueListParser;
+    iget-object v0, p0, Lcom/android/server/job/JobSchedulerService$Constants;->mParser:Landroid/util/KeyValueListParser;
 
-    const-wide/32 v2, 0xa1220
+    const-wide/32 v3, 0xa1220
 
-    const-string/jumbo v4, "standby_heartbeat_time"
+    const-string/jumbo v5, "standby_heartbeat_time"
 
-    invoke-virtual {p1, v4, v2, v3}, Landroid/util/KeyValueListParser;->getDurationMillis(Ljava/lang/String;J)J
+    invoke-virtual {v0, v5, v3, v4}, Landroid/util/KeyValueListParser;->getDurationMillis(Ljava/lang/String;J)J
 
-    move-result-wide v2
+    move-result-wide v3
 
-    iput-wide v2, p0, Lcom/android/server/job/JobSchedulerService$Constants;->STANDBY_HEARTBEAT_TIME:J
+    iput-wide v3, p0, Lcom/android/server/job/JobSchedulerService$Constants;->STANDBY_HEARTBEAT_TIME:J
 
     .line 687
-    iget-object p1, p0, Lcom/android/server/job/JobSchedulerService$Constants;->STANDBY_BEATS:[I
+    iget-object v0, p0, Lcom/android/server/job/JobSchedulerService$Constants;->STANDBY_BEATS:[I
 
-    iget-object v2, p0, Lcom/android/server/job/JobSchedulerService$Constants;->mParser:Landroid/util/KeyValueListParser;
+    iget-object v3, p0, Lcom/android/server/job/JobSchedulerService$Constants;->mParser:Landroid/util/KeyValueListParser;
 
-    const/16 v3, 0xb
+    const/16 v4, 0xb
 
-    const-string/jumbo v4, "standby_working_beats"
+    const-string/jumbo v5, "standby_working_beats"
 
-    invoke-virtual {v2, v4, v3}, Landroid/util/KeyValueListParser;->getInt(Ljava/lang/String;I)I
+    invoke-virtual {v3, v5, v4}, Landroid/util/KeyValueListParser;->getInt(Ljava/lang/String;I)I
 
-    move-result v2
+    move-result v3
 
-    aput v2, p1, v0
+    aput v3, v0, v1
 
     .line 689
-    iget-object p1, p0, Lcom/android/server/job/JobSchedulerService$Constants;->STANDBY_BEATS:[I
+    iget-object v0, p0, Lcom/android/server/job/JobSchedulerService$Constants;->STANDBY_BEATS:[I
 
-    const/4 v0, 0x2
+    const/4 v1, 0x2
 
-    iget-object v2, p0, Lcom/android/server/job/JobSchedulerService$Constants;->mParser:Landroid/util/KeyValueListParser;
+    iget-object v3, p0, Lcom/android/server/job/JobSchedulerService$Constants;->mParser:Landroid/util/KeyValueListParser;
 
-    const/16 v3, 0x2b
+    const/16 v4, 0x2b
 
-    const-string/jumbo v4, "standby_frequent_beats"
+    const-string/jumbo v5, "standby_frequent_beats"
 
-    invoke-virtual {v2, v4, v3}, Landroid/util/KeyValueListParser;->getInt(Ljava/lang/String;I)I
+    invoke-virtual {v3, v5, v4}, Landroid/util/KeyValueListParser;->getInt(Ljava/lang/String;I)I
 
-    move-result v2
+    move-result v3
 
-    aput v2, p1, v0
+    aput v3, v0, v1
 
     .line 691
-    iget-object p1, p0, Lcom/android/server/job/JobSchedulerService$Constants;->STANDBY_BEATS:[I
+    iget-object v0, p0, Lcom/android/server/job/JobSchedulerService$Constants;->STANDBY_BEATS:[I
 
-    const/4 v0, 0x3
+    const/4 v1, 0x3
 
-    iget-object v2, p0, Lcom/android/server/job/JobSchedulerService$Constants;->mParser:Landroid/util/KeyValueListParser;
+    iget-object v3, p0, Lcom/android/server/job/JobSchedulerService$Constants;->mParser:Landroid/util/KeyValueListParser;
 
-    const/16 v3, 0x82
+    const/16 v4, 0x82
 
-    const-string/jumbo v4, "standby_rare_beats"
+    const-string/jumbo v5, "standby_rare_beats"
 
-    invoke-virtual {v2, v4, v3}, Landroid/util/KeyValueListParser;->getInt(Ljava/lang/String;I)I
+    invoke-virtual {v3, v5, v4}, Landroid/util/KeyValueListParser;->getInt(Ljava/lang/String;I)I
 
-    move-result v2
+    move-result v3
 
-    aput v2, p1, v0
+    aput v3, v0, v1
 
     .line 693
-    iget-object p1, p0, Lcom/android/server/job/JobSchedulerService$Constants;->mParser:Landroid/util/KeyValueListParser;
+    iget-object v0, p0, Lcom/android/server/job/JobSchedulerService$Constants;->mParser:Landroid/util/KeyValueListParser;
 
-    const-string v0, "conn_congestion_delay_frac"
+    const-string v1, "conn_congestion_delay_frac"
 
-    invoke-virtual {p1, v0, v1}, Landroid/util/KeyValueListParser;->getFloat(Ljava/lang/String;F)F
+    invoke-virtual {v0, v1, v2}, Landroid/util/KeyValueListParser;->getFloat(Ljava/lang/String;F)F
 
-    move-result p1
+    move-result v0
 
-    iput p1, p0, Lcom/android/server/job/JobSchedulerService$Constants;->CONN_CONGESTION_DELAY_FRAC:F
+    iput v0, p0, Lcom/android/server/job/JobSchedulerService$Constants;->CONN_CONGESTION_DELAY_FRAC:F
 
     .line 695
-    iget-object p1, p0, Lcom/android/server/job/JobSchedulerService$Constants;->mParser:Landroid/util/KeyValueListParser;
+    iget-object v0, p0, Lcom/android/server/job/JobSchedulerService$Constants;->mParser:Landroid/util/KeyValueListParser;
 
-    const-string v0, "conn_prefetch_relax_frac"
+    const-string v1, "conn_prefetch_relax_frac"
 
-    invoke-virtual {p1, v0, v1}, Landroid/util/KeyValueListParser;->getFloat(Ljava/lang/String;F)F
+    invoke-virtual {v0, v1, v2}, Landroid/util/KeyValueListParser;->getFloat(Ljava/lang/String;F)F
 
-    move-result p1
+    move-result v0
 
-    iput p1, p0, Lcom/android/server/job/JobSchedulerService$Constants;->CONN_PREFETCH_RELAX_FRAC:F
+    iput v0, p0, Lcom/android/server/job/JobSchedulerService$Constants;->CONN_PREFETCH_RELAX_FRAC:F
 
     .line 697
-    iget-object p1, p0, Lcom/android/server/job/JobSchedulerService$Constants;->mParser:Landroid/util/KeyValueListParser;
+    iget-object v0, p0, Lcom/android/server/job/JobSchedulerService$Constants;->mParser:Landroid/util/KeyValueListParser;
 
-    const/4 v0, 0x0
+    const/4 v1, 0x0
 
-    const-string/jumbo v1, "use_heartbeats"
+    const-string/jumbo v2, "use_heartbeats"
 
-    invoke-virtual {p1, v1, v0}, Landroid/util/KeyValueListParser;->getBoolean(Ljava/lang/String;Z)Z
+    invoke-virtual {v0, v2, v1}, Landroid/util/KeyValueListParser;->getBoolean(Ljava/lang/String;Z)Z
 
-    move-result p1
+    move-result v0
 
-    iput-boolean p1, p0, Lcom/android/server/job/JobSchedulerService$Constants;->USE_HEARTBEATS:Z
+    iput-boolean v0, p0, Lcom/android/server/job/JobSchedulerService$Constants;->USE_HEARTBEATS:Z
 
     .line 698
     return-void

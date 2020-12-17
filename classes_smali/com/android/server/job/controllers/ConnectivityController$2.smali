@@ -21,6 +21,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/job/controllers/ConnectivityController;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/job/controllers/ConnectivityController;
 
     .line 555
     iput-object p1, p0, Lcom/android/server/job/controllers/ConnectivityController$2;->this$0:Lcom/android/server/job/controllers/ConnectivityController;
@@ -34,6 +35,7 @@
 # virtual methods
 .method public onRestrictBackgroundChanged(Z)V
     .registers 4
+    .param p1, "restrictBackground"  # Z
 
     .line 558
     invoke-static {}, Lcom/android/server/job/controllers/ConnectivityController;->access$000()Z
@@ -55,78 +57,80 @@
 
     invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    const-string v0, "JobScheduler.Connectivity"
+    const-string v1, "JobScheduler.Connectivity"
 
-    invoke-static {v0, p1}, Landroid/util/Slog;->v(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v0}, Landroid/util/Slog;->v(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 561
     :cond_1d
-    iget-object p1, p0, Lcom/android/server/job/controllers/ConnectivityController$2;->this$0:Lcom/android/server/job/controllers/ConnectivityController;
+    iget-object v0, p0, Lcom/android/server/job/controllers/ConnectivityController$2;->this$0:Lcom/android/server/job/controllers/ConnectivityController;
 
-    invoke-static {p1}, Lcom/android/server/job/controllers/ConnectivityController;->access$300(Lcom/android/server/job/controllers/ConnectivityController;)Landroid/os/Handler;
+    invoke-static {v0}, Lcom/android/server/job/controllers/ConnectivityController;->access$300(Lcom/android/server/job/controllers/ConnectivityController;)Landroid/os/Handler;
 
-    move-result-object p1
+    move-result-object v0
 
-    const/4 v0, 0x0
+    const/4 v1, 0x0
 
-    invoke-virtual {p1, v0}, Landroid/os/Handler;->obtainMessage(I)Landroid/os/Message;
+    invoke-virtual {v0, v1}, Landroid/os/Handler;->obtainMessage(I)Landroid/os/Message;
 
-    move-result-object p1
+    move-result-object v0
 
-    invoke-virtual {p1}, Landroid/os/Message;->sendToTarget()V
+    invoke-virtual {v0}, Landroid/os/Message;->sendToTarget()V
 
     .line 562
     return-void
 .end method
 
 .method public onUidRulesChanged(II)V
-    .registers 5
+    .registers 6
+    .param p1, "uid"  # I
+    .param p2, "uidRules"  # I
 
     .line 566
     invoke-static {}, Lcom/android/server/job/controllers/ConnectivityController;->access$000()Z
 
-    move-result p2
+    move-result v0
 
-    if-eqz p2, :cond_1d
+    if-eqz v0, :cond_1d
 
     .line 567
-    new-instance p2, Ljava/lang/StringBuilder;
+    new-instance v0, Ljava/lang/StringBuilder;
 
-    invoke-direct {p2}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string/jumbo v0, "onUidRulesChanged: "
+    const-string/jumbo v1, "onUidRulesChanged: "
 
-    invoke-virtual {p2, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p2, p1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p2
+    move-result-object v0
 
-    const-string v0, "JobScheduler.Connectivity"
+    const-string v1, "JobScheduler.Connectivity"
 
-    invoke-static {v0, p2}, Landroid/util/Slog;->v(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v0}, Landroid/util/Slog;->v(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 569
     :cond_1d
-    iget-object p2, p0, Lcom/android/server/job/controllers/ConnectivityController$2;->this$0:Lcom/android/server/job/controllers/ConnectivityController;
+    iget-object v0, p0, Lcom/android/server/job/controllers/ConnectivityController$2;->this$0:Lcom/android/server/job/controllers/ConnectivityController;
 
-    invoke-static {p2}, Lcom/android/server/job/controllers/ConnectivityController;->access$300(Lcom/android/server/job/controllers/ConnectivityController;)Landroid/os/Handler;
+    invoke-static {v0}, Lcom/android/server/job/controllers/ConnectivityController;->access$300(Lcom/android/server/job/controllers/ConnectivityController;)Landroid/os/Handler;
 
-    move-result-object p2
+    move-result-object v0
 
-    const/4 v0, 0x1
+    const/4 v1, 0x1
 
-    const/4 v1, 0x0
+    const/4 v2, 0x0
 
-    invoke-virtual {p2, v0, p1, v1}, Landroid/os/Handler;->obtainMessage(III)Landroid/os/Message;
+    invoke-virtual {v0, v1, p1, v2}, Landroid/os/Handler;->obtainMessage(III)Landroid/os/Message;
 
-    move-result-object p1
+    move-result-object v0
 
-    invoke-virtual {p1}, Landroid/os/Message;->sendToTarget()V
+    invoke-virtual {v0}, Landroid/os/Message;->sendToTarget()V
 
     .line 570
     return-void

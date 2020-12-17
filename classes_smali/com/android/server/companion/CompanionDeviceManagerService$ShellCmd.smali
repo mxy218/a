@@ -26,12 +26,12 @@
 .method constructor <init>(Lcom/android/server/companion/CompanionDeviceManagerService;)V
     .registers 4
 
-    .line 665
+    .line 663
     iput-object p1, p0, Lcom/android/server/companion/CompanionDeviceManagerService$ShellCmd;->this$0:Lcom/android/server/companion/CompanionDeviceManagerService;
 
     invoke-direct {p0}, Landroid/os/ShellCommand;-><init>()V
 
-    .line 666
+    .line 664
     invoke-virtual {p1}, Lcom/android/server/companion/CompanionDeviceManagerService;->getContext()Landroid/content/Context;
 
     move-result-object p1
@@ -42,14 +42,14 @@
 
     invoke-virtual {p1, v0, v1}, Landroid/content/Context;->enforceCallingOrSelfPermission(Ljava/lang/String;Ljava/lang/String;)V
 
-    .line 668
+    .line 666
     return-void
 .end method
 
 .method private getNextArgInt()I
     .registers 2
 
-    .line 694
+    .line 692
     invoke-virtual {p0}, Lcom/android/server/companion/CompanionDeviceManagerService$ShellCmd;->getNextArgRequired()Ljava/lang/String;
 
     move-result-object v0
@@ -65,13 +65,14 @@
 # virtual methods
 .method public synthetic lambda$onCommand$0$CompanionDeviceManagerService$ShellCmd(Lcom/android/server/companion/CompanionDeviceManagerService$Association;)V
     .registers 5
+    .param p1, "a"  # Lcom/android/server/companion/CompanionDeviceManagerService$Association;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Ljava/lang/Exception;
         }
     .end annotation
 
-    .line 676
+    .line 674
     invoke-virtual {p0}, Lcom/android/server/companion/CompanionDeviceManagerService$ShellCmd;->getOutPrintWriter()Ljava/io/PrintWriter;
 
     move-result-object v0
@@ -88,25 +89,26 @@
 
     invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    iget-object p1, p1, Lcom/android/server/companion/CompanionDeviceManagerService$Association;->deviceAddress:Ljava/lang/String;
+    iget-object v2, p1, Lcom/android/server/companion/CompanionDeviceManagerService$Association;->deviceAddress:Ljava/lang/String;
 
-    invoke-virtual {v1, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v1
 
-    .line 677
-    invoke-virtual {v0, p1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    .line 675
+    invoke-virtual {v0, v1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
-    .line 676
+    .line 674
     return-void
 .end method
 
 .method public onCommand(Ljava/lang/String;)I
     .registers 7
+    .param p1, "cmd"  # Ljava/lang/String;
 
-    .line 672
+    .line 670
     invoke-virtual {p1}, Ljava/lang/String;->hashCode()I
 
     move-result v0
@@ -130,7 +132,7 @@
     if-eq v0, v1, :cond_17
 
     :cond_16
-    goto :goto_35
+    goto :goto_36
 
     :cond_17
     const-string v0, "associate"
@@ -143,7 +145,7 @@
 
     move v0, v4
 
-    goto :goto_36
+    goto :goto_37
 
     :cond_21
     const-string v0, "disassociate"
@@ -156,10 +158,10 @@
 
     move v0, v3
 
-    goto :goto_36
+    goto :goto_37
 
     :cond_2b
-    const-string v0, "list"
+    const-string/jumbo v0, "list"
 
     invoke-virtual {p1, v0}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
@@ -169,99 +171,99 @@
 
     move v0, v2
 
-    goto :goto_36
-
-    :goto_35
-    const/4 v0, -0x1
+    goto :goto_37
 
     :goto_36
-    if-eqz v0, :cond_65
+    const/4 v0, -0x1
 
-    if-eq v0, v4, :cond_53
+    :goto_37
+    if-eqz v0, :cond_66
 
-    if-eq v0, v3, :cond_41
+    if-eq v0, v4, :cond_54
 
-    .line 688
-    invoke-virtual {p0, p1}, Lcom/android/server/companion/CompanionDeviceManagerService$ShellCmd;->handleDefaultCommands(Ljava/lang/String;)I
-
-    move-result p1
-
-    return p1
-
-    .line 685
-    :cond_41
-    iget-object p1, p0, Lcom/android/server/companion/CompanionDeviceManagerService$ShellCmd;->this$0:Lcom/android/server/companion/CompanionDeviceManagerService;
-
-    invoke-direct {p0}, Lcom/android/server/companion/CompanionDeviceManagerService$ShellCmd;->getNextArgInt()I
-
-    move-result v0
-
-    invoke-virtual {p0}, Lcom/android/server/companion/CompanionDeviceManagerService$ShellCmd;->getNextArgRequired()Ljava/lang/String;
-
-    move-result-object v1
-
-    invoke-virtual {p0}, Lcom/android/server/companion/CompanionDeviceManagerService$ShellCmd;->getNextArgRequired()Ljava/lang/String;
-
-    move-result-object v3
-
-    invoke-virtual {p1, v0, v1, v3}, Lcom/android/server/companion/CompanionDeviceManagerService;->removeAssociation(ILjava/lang/String;Ljava/lang/String;)V
+    if-eq v0, v3, :cond_42
 
     .line 686
-    goto :goto_78
-
-    .line 681
-    :cond_53
-    iget-object p1, p0, Lcom/android/server/companion/CompanionDeviceManagerService$ShellCmd;->this$0:Lcom/android/server/companion/CompanionDeviceManagerService;
-
-    invoke-direct {p0}, Lcom/android/server/companion/CompanionDeviceManagerService$ShellCmd;->getNextArgInt()I
+    invoke-virtual {p0, p1}, Lcom/android/server/companion/CompanionDeviceManagerService$ShellCmd;->handleDefaultCommands(Ljava/lang/String;)I
 
     move-result v0
 
-    invoke-virtual {p0}, Lcom/android/server/companion/CompanionDeviceManagerService$ShellCmd;->getNextArgRequired()Ljava/lang/String;
+    return v0
 
-    move-result-object v1
+    .line 683
+    :cond_42
+    iget-object v0, p0, Lcom/android/server/companion/CompanionDeviceManagerService$ShellCmd;->this$0:Lcom/android/server/companion/CompanionDeviceManagerService;
+
+    invoke-direct {p0}, Lcom/android/server/companion/CompanionDeviceManagerService$ShellCmd;->getNextArgInt()I
+
+    move-result v1
 
     invoke-virtual {p0}, Lcom/android/server/companion/CompanionDeviceManagerService$ShellCmd;->getNextArgRequired()Ljava/lang/String;
 
     move-result-object v3
 
-    invoke-virtual {p1, v0, v1, v3}, Lcom/android/server/companion/CompanionDeviceManagerService;->addAssociation(ILjava/lang/String;Ljava/lang/String;)V
+    invoke-virtual {p0}, Lcom/android/server/companion/CompanionDeviceManagerService$ShellCmd;->getNextArgRequired()Ljava/lang/String;
 
-    .line 682
-    goto :goto_78
+    move-result-object v4
 
-    .line 674
-    :cond_65
-    iget-object p1, p0, Lcom/android/server/companion/CompanionDeviceManagerService$ShellCmd;->this$0:Lcom/android/server/companion/CompanionDeviceManagerService;
+    invoke-virtual {v0, v1, v3, v4}, Lcom/android/server/companion/CompanionDeviceManagerService;->removeAssociation(ILjava/lang/String;Ljava/lang/String;)V
 
-    .line 675
+    .line 684
+    goto :goto_79
+
+    .line 679
+    :cond_54
+    iget-object v0, p0, Lcom/android/server/companion/CompanionDeviceManagerService$ShellCmd;->this$0:Lcom/android/server/companion/CompanionDeviceManagerService;
+
     invoke-direct {p0}, Lcom/android/server/companion/CompanionDeviceManagerService$ShellCmd;->getNextArgInt()I
 
-    move-result v0
+    move-result v1
 
-    invoke-static {p1, v0}, Lcom/android/server/companion/CompanionDeviceManagerService;->access$1500(Lcom/android/server/companion/CompanionDeviceManagerService;I)Ljava/util/Set;
+    invoke-virtual {p0}, Lcom/android/server/companion/CompanionDeviceManagerService$ShellCmd;->getNextArgRequired()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v3
 
-    new-instance v0, Lcom/android/server/companion/-$$Lambda$CompanionDeviceManagerService$ShellCmd$spuk4wZBlDmxSJgcFgRkfptYY8g;
+    invoke-virtual {p0}, Lcom/android/server/companion/CompanionDeviceManagerService$ShellCmd;->getNextArgRequired()Ljava/lang/String;
 
-    invoke-direct {v0, p0}, Lcom/android/server/companion/-$$Lambda$CompanionDeviceManagerService$ShellCmd$spuk4wZBlDmxSJgcFgRkfptYY8g;-><init>(Lcom/android/server/companion/CompanionDeviceManagerService$ShellCmd;)V
+    move-result-object v4
 
-    .line 674
-    invoke-static {p1, v0}, Lcom/android/internal/util/CollectionUtils;->forEach(Ljava/util/Set;Lcom/android/internal/util/FunctionalUtils$ThrowingConsumer;)V
+    invoke-virtual {v0, v1, v3, v4}, Lcom/android/server/companion/CompanionDeviceManagerService;->addAssociation(ILjava/lang/String;Ljava/lang/String;)V
 
-    .line 678
+    .line 680
+    goto :goto_79
+
+    .line 672
+    :cond_66
+    iget-object v0, p0, Lcom/android/server/companion/CompanionDeviceManagerService$ShellCmd;->this$0:Lcom/android/server/companion/CompanionDeviceManagerService;
+
+    .line 673
+    invoke-direct {p0}, Lcom/android/server/companion/CompanionDeviceManagerService$ShellCmd;->getNextArgInt()I
+
+    move-result v1
+
+    invoke-static {v0, v1}, Lcom/android/server/companion/CompanionDeviceManagerService;->access$1500(Lcom/android/server/companion/CompanionDeviceManagerService;I)Ljava/util/Set;
+
+    move-result-object v0
+
+    new-instance v1, Lcom/android/server/companion/-$$Lambda$CompanionDeviceManagerService$ShellCmd$spuk4wZBlDmxSJgcFgRkfptYY8g;
+
+    invoke-direct {v1, p0}, Lcom/android/server/companion/-$$Lambda$CompanionDeviceManagerService$ShellCmd$spuk4wZBlDmxSJgcFgRkfptYY8g;-><init>(Lcom/android/server/companion/CompanionDeviceManagerService$ShellCmd;)V
+
+    .line 672
+    invoke-static {v0, v1}, Lcom/android/internal/util/CollectionUtils;->forEach(Ljava/util/Set;Lcom/android/internal/util/FunctionalUtils$ThrowingConsumer;)V
+
+    .line 676
     nop
 
-    .line 690
-    :goto_78
+    .line 688
+    :goto_79
     return v2
 .end method
 
 .method public onHelp()V
     .registers 3
 
-    .line 699
+    .line 697
     invoke-virtual {p0}, Lcom/android/server/companion/CompanionDeviceManagerService$ShellCmd;->getOutPrintWriter()Ljava/io/PrintWriter;
 
     move-result-object v0
@@ -270,6 +272,6 @@
 
     invoke-virtual {v0, v1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
-    .line 700
+    .line 698
     return-void
 .end method

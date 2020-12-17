@@ -64,6 +64,9 @@
 # direct methods
 .method constructor <init>(Landroid/view/autofill/AutofillId;Lcom/android/server/autofill/ViewState$Listener;I)V
     .registers 4
+    .param p1, "id"  # Landroid/view/autofill/AutofillId;
+    .param p2, "listener"  # Lcom/android/server/autofill/ViewState$Listener;
+    .param p3, "state"  # I
 
     .line 90
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -83,6 +86,7 @@
 
 .method static getStateAsString(I)Ljava/lang/String;
     .registers 3
+    .param p0, "state"  # I
 
     .line 152
     const-class v0, Lcom/android/server/autofill/ViewState;
@@ -91,20 +95,22 @@
 
     invoke-static {v0, v1, p0}, Landroid/util/DebugUtils;->flagsToString(Ljava/lang/Class;Ljava/lang/String;I)Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v0
 
-    return-object p0
+    return-object v0
 .end method
 
 
 # virtual methods
 .method dump(Ljava/lang/String;Ljava/io/PrintWriter;)V
     .registers 4
+    .param p1, "prefix"  # Ljava/lang/String;
+    .param p2, "pw"  # Ljava/io/PrintWriter;
 
     .line 235
     invoke-virtual {p2, p1}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
-    const-string v0, "id:"
+    const-string/jumbo v0, "id:"
 
     invoke-virtual {p2, v0}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
@@ -115,7 +121,7 @@
     .line 236
     iget-object v0, p0, Lcom/android/server/autofill/ViewState;->mDatasetId:Ljava/lang/String;
 
-    if-eqz v0, :cond_1e
+    if-eqz v0, :cond_1f
 
     .line 237
     invoke-virtual {p2, p1}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
@@ -129,7 +135,7 @@
     invoke-virtual {p2, v0}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
     .line 239
-    :cond_1e
+    :cond_1f
     invoke-virtual {p2, p1}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
     const-string/jumbo v0, "state:"
@@ -145,7 +151,7 @@
     .line 240
     iget-object v0, p0, Lcom/android/server/autofill/ViewState;->mResponse:Landroid/service/autofill/FillResponse;
 
-    if-eqz v0, :cond_44
+    if-eqz v0, :cond_45
 
     .line 241
     invoke-virtual {p2, p1}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
@@ -163,10 +169,10 @@
     invoke-virtual {p2, v0}, Ljava/io/PrintWriter;->println(I)V
 
     .line 243
-    :cond_44
+    :cond_45
     iget-object v0, p0, Lcom/android/server/autofill/ViewState;->mCurrentValue:Landroid/view/autofill/AutofillValue;
 
-    if-eqz v0, :cond_55
+    if-eqz v0, :cond_56
 
     .line 244
     invoke-virtual {p2, p1}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
@@ -180,10 +186,10 @@
     invoke-virtual {p2, v0}, Ljava/io/PrintWriter;->println(Ljava/lang/Object;)V
 
     .line 246
-    :cond_55
+    :cond_56
     iget-object v0, p0, Lcom/android/server/autofill/ViewState;->mAutofilledValue:Landroid/view/autofill/AutofillValue;
 
-    if-eqz v0, :cond_66
+    if-eqz v0, :cond_67
 
     .line 247
     invoke-virtual {p2, p1}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
@@ -197,10 +203,10 @@
     invoke-virtual {p2, v0}, Ljava/io/PrintWriter;->println(Ljava/lang/Object;)V
 
     .line 249
-    :cond_66
+    :cond_67
     iget-object v0, p0, Lcom/android/server/autofill/ViewState;->mSanitizedValue:Landroid/view/autofill/AutofillValue;
 
-    if-eqz v0, :cond_78
+    if-eqz v0, :cond_79
 
     .line 250
     invoke-virtual {p2, p1}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
@@ -214,24 +220,24 @@
     invoke-virtual {p2, v0}, Ljava/io/PrintWriter;->println(Ljava/lang/Object;)V
 
     .line 252
-    :cond_78
+    :cond_79
     iget-object v0, p0, Lcom/android/server/autofill/ViewState;->mVirtualBounds:Landroid/graphics/Rect;
 
-    if-eqz v0, :cond_8a
+    if-eqz v0, :cond_8b
 
     .line 253
     invoke-virtual {p2, p1}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
-    const-string/jumbo p1, "virtualBounds:"
+    const-string/jumbo v0, "virtualBounds:"
 
-    invoke-virtual {p2, p1}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
+    invoke-virtual {p2, v0}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
-    iget-object p1, p0, Lcom/android/server/autofill/ViewState;->mVirtualBounds:Landroid/graphics/Rect;
+    iget-object v0, p0, Lcom/android/server/autofill/ViewState;->mVirtualBounds:Landroid/graphics/Rect;
 
-    invoke-virtual {p2, p1}, Ljava/io/PrintWriter;->println(Ljava/lang/Object;)V
+    invoke-virtual {p2, v0}, Ljava/io/PrintWriter;->println(Ljava/lang/Object;)V
 
     .line 255
-    :cond_8a
+    :cond_8b
     return-void
 .end method
 
@@ -312,7 +318,8 @@
 .end method
 
 .method maybeCallOnFillReady(I)V
-    .registers 5
+    .registers 6
+    .param p1, "flags"  # I
 
     .line 199
     iget v0, p0, Lcom/android/server/autofill/ViewState;->mState:I
@@ -321,44 +328,44 @@
 
     if-eqz v0, :cond_33
 
-    and-int/lit8 p1, p1, 0x1
+    and-int/lit8 v0, p1, 0x1
 
-    if-nez p1, :cond_33
+    if-nez v0, :cond_33
 
     .line 200
-    sget-boolean p1, Lcom/android/server/autofill/Helper;->sDebug:Z
+    sget-boolean v0, Lcom/android/server/autofill/Helper;->sDebug:Z
 
-    if-eqz p1, :cond_32
+    if-eqz v0, :cond_32
 
-    new-instance p1, Ljava/lang/StringBuilder;
+    new-instance v0, Ljava/lang/StringBuilder;
 
-    invoke-direct {p1}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v0, "Ignoring UI for "
+    const-string v1, "Ignoring UI for "
 
-    invoke-virtual {p1, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    iget-object v0, p0, Lcom/android/server/autofill/ViewState;->id:Landroid/view/autofill/AutofillId;
+    iget-object v1, p0, Lcom/android/server/autofill/ViewState;->id:Landroid/view/autofill/AutofillId;
 
-    invoke-virtual {p1, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
-    const-string v0, " on "
+    const-string v1, " on "
 
-    invoke-virtual {p1, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {p0}, Lcom/android/server/autofill/ViewState;->getStateAsString()Ljava/lang/String;
 
+    move-result-object v1
+
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
     move-result-object v0
 
-    invoke-virtual {p1, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    const-string v1, "ViewState"
 
-    invoke-virtual {p1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
-
-    move-result-object p1
-
-    const-string v0, "ViewState"
-
-    invoke-static {v0, p1}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v0}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 201
     :cond_32
@@ -366,36 +373,36 @@
 
     .line 204
     :cond_33
-    iget-object p1, p0, Lcom/android/server/autofill/ViewState;->mResponse:Landroid/service/autofill/FillResponse;
+    iget-object v0, p0, Lcom/android/server/autofill/ViewState;->mResponse:Landroid/service/autofill/FillResponse;
 
-    if-eqz p1, :cond_50
+    if-eqz v0, :cond_50
 
     .line 205
-    invoke-virtual {p1}, Landroid/service/autofill/FillResponse;->getDatasets()Ljava/util/List;
+    invoke-virtual {v0}, Landroid/service/autofill/FillResponse;->getDatasets()Ljava/util/List;
 
-    move-result-object p1
+    move-result-object v0
 
-    if-nez p1, :cond_45
-
-    iget-object p1, p0, Lcom/android/server/autofill/ViewState;->mResponse:Landroid/service/autofill/FillResponse;
-
-    invoke-virtual {p1}, Landroid/service/autofill/FillResponse;->getAuthentication()Landroid/content/IntentSender;
-
-    move-result-object p1
-
-    if-eqz p1, :cond_50
-
-    .line 206
-    :cond_45
-    iget-object p1, p0, Lcom/android/server/autofill/ViewState;->mListener:Lcom/android/server/autofill/ViewState$Listener;
+    if-nez v0, :cond_45
 
     iget-object v0, p0, Lcom/android/server/autofill/ViewState;->mResponse:Landroid/service/autofill/FillResponse;
 
-    iget-object v1, p0, Lcom/android/server/autofill/ViewState;->id:Landroid/view/autofill/AutofillId;
+    invoke-virtual {v0}, Landroid/service/autofill/FillResponse;->getAuthentication()Landroid/content/IntentSender;
 
-    iget-object v2, p0, Lcom/android/server/autofill/ViewState;->mCurrentValue:Landroid/view/autofill/AutofillValue;
+    move-result-object v0
 
-    invoke-interface {p1, v0, v1, v2}, Lcom/android/server/autofill/ViewState$Listener;->onFillReady(Landroid/service/autofill/FillResponse;Landroid/view/autofill/AutofillId;Landroid/view/autofill/AutofillValue;)V
+    if-eqz v0, :cond_50
+
+    .line 206
+    :cond_45
+    iget-object v0, p0, Lcom/android/server/autofill/ViewState;->mListener:Lcom/android/server/autofill/ViewState$Listener;
+
+    iget-object v1, p0, Lcom/android/server/autofill/ViewState;->mResponse:Landroid/service/autofill/FillResponse;
+
+    iget-object v2, p0, Lcom/android/server/autofill/ViewState;->id:Landroid/view/autofill/AutofillId;
+
+    iget-object v3, p0, Lcom/android/server/autofill/ViewState;->mCurrentValue:Landroid/view/autofill/AutofillValue;
+
+    invoke-interface {v0, v1, v2, v3}, Lcom/android/server/autofill/ViewState$Listener;->onFillReady(Landroid/service/autofill/FillResponse;Landroid/view/autofill/AutofillId;Landroid/view/autofill/AutofillValue;)V
 
     .line 209
     :cond_50
@@ -403,16 +410,17 @@
 .end method
 
 .method resetState(I)V
-    .registers 3
+    .registers 4
+    .param p1, "state"  # I
 
     .line 167
     iget v0, p0, Lcom/android/server/autofill/ViewState;->mState:I
 
-    not-int p1, p1
+    not-int v1, p1
 
-    and-int/2addr p1, v0
+    and-int/2addr v0, v1
 
-    iput p1, p0, Lcom/android/server/autofill/ViewState;->mState:I
+    iput v0, p0, Lcom/android/server/autofill/ViewState;->mState:I
 
     .line 168
     return-void
@@ -420,6 +428,7 @@
 
 .method setAutofilledValue(Landroid/view/autofill/AutofillValue;)V
     .registers 2
+    .param p1, "value"  # Landroid/view/autofill/AutofillValue;
 
     .line 122
     iput-object p1, p0, Lcom/android/server/autofill/ViewState;->mAutofilledValue:Landroid/view/autofill/AutofillValue;
@@ -430,6 +439,7 @@
 
 .method setCurrentValue(Landroid/view/autofill/AutofillValue;)V
     .registers 2
+    .param p1, "value"  # Landroid/view/autofill/AutofillValue;
 
     .line 113
     iput-object p1, p0, Lcom/android/server/autofill/ViewState;->mCurrentValue:Landroid/view/autofill/AutofillValue;
@@ -440,6 +450,7 @@
 
 .method setDatasetId(Ljava/lang/String;)V
     .registers 2
+    .param p1, "datasetId"  # Ljava/lang/String;
 
     .line 176
     iput-object p1, p0, Lcom/android/server/autofill/ViewState;->mDatasetId:Ljava/lang/String;
@@ -450,6 +461,7 @@
 
 .method setResponse(Landroid/service/autofill/FillResponse;)V
     .registers 2
+    .param p1, "response"  # Landroid/service/autofill/FillResponse;
 
     .line 140
     iput-object p1, p0, Lcom/android/server/autofill/ViewState;->mResponse:Landroid/service/autofill/FillResponse;
@@ -460,6 +472,7 @@
 
 .method setSanitizedValue(Landroid/view/autofill/AutofillValue;)V
     .registers 2
+    .param p1, "value"  # Landroid/view/autofill/AutofillValue;
 
     .line 131
     iput-object p1, p0, Lcom/android/server/autofill/ViewState;->mSanitizedValue:Landroid/view/autofill/AutofillValue;
@@ -470,6 +483,7 @@
 
 .method setState(I)V
     .registers 4
+    .param p1, "state"  # I
 
     .line 156
     iget v0, p0, Lcom/android/server/autofill/ViewState;->mState:I
@@ -496,11 +510,11 @@
     if-ne p1, v0, :cond_14
 
     .line 162
-    iget p1, p0, Lcom/android/server/autofill/ViewState;->mState:I
+    iget v0, p0, Lcom/android/server/autofill/ViewState;->mState:I
 
-    or-int/lit16 p1, p1, 0x800
+    or-int/lit16 v0, v0, 0x800
 
-    iput p1, p0, Lcom/android/server/autofill/ViewState;->mState:I
+    iput v0, p0, Lcom/android/server/autofill/ViewState;->mState:I
 
     .line 164
     :cond_14
@@ -521,10 +535,13 @@
 
     invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
+    move-result-object v0
+
     .line 214
+    .local v0, "builder":Ljava/lang/StringBuilder;
     iget-object v1, p0, Lcom/android/server/autofill/ViewState;->mDatasetId:Ljava/lang/String;
 
-    if-eqz v1, :cond_1a
+    if-eqz v1, :cond_1b
 
     .line 215
     const-string v1, ", datasetId:"
@@ -536,7 +553,7 @@
     invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     .line 217
-    :cond_1a
+    :cond_1b
     const-string v1, ", state:"
 
     invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
@@ -550,7 +567,7 @@
     .line 218
     iget-object v1, p0, Lcom/android/server/autofill/ViewState;->mCurrentValue:Landroid/view/autofill/AutofillValue;
 
-    if-eqz v1, :cond_34
+    if-eqz v1, :cond_35
 
     .line 219
     const-string v1, ", currentValue:"
@@ -562,10 +579,10 @@
     invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
     .line 221
-    :cond_34
+    :cond_35
     iget-object v1, p0, Lcom/android/server/autofill/ViewState;->mAutofilledValue:Landroid/view/autofill/AutofillValue;
 
-    if-eqz v1, :cond_42
+    if-eqz v1, :cond_43
 
     .line 222
     const-string v1, ", autofilledValue:"
@@ -577,10 +594,10 @@
     invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
     .line 224
-    :cond_42
+    :cond_43
     iget-object v1, p0, Lcom/android/server/autofill/ViewState;->mSanitizedValue:Landroid/view/autofill/AutofillValue;
 
-    if-eqz v1, :cond_50
+    if-eqz v1, :cond_51
 
     .line 225
     const-string v1, ", sanitizedValue:"
@@ -592,10 +609,10 @@
     invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
     .line 227
-    :cond_50
+    :cond_51
     iget-object v1, p0, Lcom/android/server/autofill/ViewState;->mVirtualBounds:Landroid/graphics/Rect;
 
-    if-eqz v1, :cond_5e
+    if-eqz v1, :cond_5f
 
     .line 228
     const-string v1, ", virtualBounds:"
@@ -607,7 +624,7 @@
     invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
     .line 230
-    :cond_5e
+    :cond_5f
     const-string v1, "]"
 
     invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
@@ -615,13 +632,16 @@
     .line 231
     invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v1
 
-    return-object v0
+    return-object v1
 .end method
 
 .method update(Landroid/view/autofill/AutofillValue;Landroid/graphics/Rect;I)V
     .registers 4
+    .param p1, "autofillValue"  # Landroid/view/autofill/AutofillValue;
+    .param p2, "virtualBounds"  # Landroid/graphics/Rect;
+    .param p3, "flags"  # I
 
     .line 183
     if-eqz p1, :cond_4

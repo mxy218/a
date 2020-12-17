@@ -49,6 +49,8 @@
 
 .method public onDhcpServerCreated(ILandroid/net/dhcp/IDhcpServer;)V
     .registers 3
+    .param p1, "statusCode"  # I
+    .param p2, "server"  # Landroid/net/dhcp/IDhcpServer;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;

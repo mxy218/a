@@ -18,15 +18,20 @@
 
 # direct methods
 .method constructor <init>(Landroid/content/IntentFilter;I[Landroid/content/ComponentName;Landroid/content/ComponentName;Z)V
-    .registers 12
+    .registers 13
+    .param p1, "filter"  # Landroid/content/IntentFilter;
+    .param p2, "match"  # I
+    .param p3, "set"  # [Landroid/content/ComponentName;
+    .param p4, "activity"  # Landroid/content/ComponentName;
+    .param p5, "always"  # Z
 
     .line 40
     invoke-direct {p0, p1}, Landroid/content/IntentFilter;-><init>(Landroid/content/IntentFilter;)V
 
     .line 41
-    new-instance p1, Lcom/android/server/pm/PreferredComponent;
+    new-instance v6, Lcom/android/server/pm/PreferredComponent;
 
-    move-object v0, p1
+    move-object v0, v6
 
     move-object v1, p0
 
@@ -40,7 +45,7 @@
 
     invoke-direct/range {v0 .. v5}, Lcom/android/server/pm/PreferredComponent;-><init>(Lcom/android/server/pm/PreferredComponent$Callbacks;I[Landroid/content/ComponentName;Landroid/content/ComponentName;Z)V
 
-    iput-object p1, p0, Lcom/android/server/pm/PreferredActivity;->mPref:Lcom/android/server/pm/PreferredComponent;
+    iput-object v6, p0, Lcom/android/server/pm/PreferredActivity;->mPref:Lcom/android/server/pm/PreferredComponent;
 
     .line 42
     return-void
@@ -48,6 +53,7 @@
 
 .method constructor <init>(Lorg/xmlpull/v1/XmlPullParser;)V
     .registers 3
+    .param p1, "parser"  # Lorg/xmlpull/v1/XmlPullParser;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Lorg/xmlpull/v1/XmlPullParserException;,
@@ -72,7 +78,9 @@
 
 # virtual methods
 .method public onReadTag(Ljava/lang/String;Lorg/xmlpull/v1/XmlPullParser;)Z
-    .registers 5
+    .registers 6
+    .param p1, "tagName"  # Ljava/lang/String;
+    .param p2, "parser"  # Lorg/xmlpull/v1/XmlPullParser;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Lorg/xmlpull/v1/XmlPullParserException;,
@@ -85,9 +93,9 @@
 
     invoke-virtual {p1, v0}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result p1
+    move-result v0
 
-    if-eqz p1, :cond_c
+    if-eqz v0, :cond_c
 
     .line 61
     invoke-virtual {p0, p2}, Lcom/android/server/pm/PreferredActivity;->readFromXml(Lorg/xmlpull/v1/XmlPullParser;)V
@@ -96,38 +104,38 @@
 
     .line 67
     :cond_c
-    const/4 p1, 0x5
+    const/4 v0, 0x5
 
-    new-instance v0, Ljava/lang/StringBuilder;
+    new-instance v1, Ljava/lang/StringBuilder;
 
-    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v1, "Unknown element under <preferred-activities>: "
+    const-string v2, "Unknown element under <preferred-activities>: "
 
-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     .line 68
     invoke-interface {p2}, Lorg/xmlpull/v1/XmlPullParser;->getName()Ljava/lang/String;
 
+    move-result-object v2
+
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
     move-result-object v1
 
-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
-
-    move-result-object v0
-
     .line 67
-    invoke-static {p1, v0}, Lcom/android/server/pm/PackageManagerService;->reportSettingsProblem(ILjava/lang/String;)V
+    invoke-static {v0, v1}, Lcom/android/server/pm/PackageManagerService;->reportSettingsProblem(ILjava/lang/String;)V
 
     .line 69
     invoke-static {p2}, Lcom/android/internal/util/XmlUtils;->skipCurrentTag(Lorg/xmlpull/v1/XmlPullParser;)V
 
     .line 71
     :goto_28
-    const/4 p1, 0x1
+    const/4 v0, 0x1
 
-    return p1
+    return v0
 .end method
 
 .method public toString()Ljava/lang/String;
@@ -180,7 +188,9 @@
 .end method
 
 .method public writeToXml(Lorg/xmlpull/v1/XmlSerializer;Z)V
-    .registers 4
+    .registers 5
+    .param p1, "serializer"  # Lorg/xmlpull/v1/XmlSerializer;
+    .param p2, "full"  # Z
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Ljava/io/IOException;
@@ -193,17 +203,17 @@
     invoke-virtual {v0, p1, p2}, Lcom/android/server/pm/PreferredComponent;->writeToXml(Lorg/xmlpull/v1/XmlSerializer;Z)V
 
     .line 50
-    const-string p2, "filter"
+    const-string v0, "filter"
 
-    const/4 v0, 0x0
+    const/4 v1, 0x0
 
-    invoke-interface {p1, v0, p2}, Lorg/xmlpull/v1/XmlSerializer;->startTag(Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
+    invoke-interface {p1, v1, v0}, Lorg/xmlpull/v1/XmlSerializer;->startTag(Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
 
     .line 51
     invoke-super {p0, p1}, Landroid/content/IntentFilter;->writeToXml(Lorg/xmlpull/v1/XmlSerializer;)V
 
     .line 52
-    invoke-interface {p1, v0, p2}, Lorg/xmlpull/v1/XmlSerializer;->endTag(Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
+    invoke-interface {p1, v1, v0}, Lorg/xmlpull/v1/XmlSerializer;->endTag(Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
 
     .line 53
     return-void

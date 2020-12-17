@@ -35,36 +35,42 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/wm/LocalAnimationAdapter$AnimationSpec;Landroid/view/SurfaceControl;Ljava/lang/Runnable;)V
     .registers 4
+    .param p1, "animSpec"  # Lcom/android/server/wm/LocalAnimationAdapter$AnimationSpec;
+    .param p2, "leash"  # Landroid/view/SurfaceControl;
+    .param p3, "finishCallback"  # Ljava/lang/Runnable;
 
-    .line 268
+    .line 317
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
-    .line 269
+    .line 318
     iput-object p1, p0, Lcom/android/server/wm/SurfaceAnimationRunner$RunningAnimation;->mAnimSpec:Lcom/android/server/wm/LocalAnimationAdapter$AnimationSpec;
 
-    .line 270
+    .line 319
     iput-object p2, p0, Lcom/android/server/wm/SurfaceAnimationRunner$RunningAnimation;->mLeash:Landroid/view/SurfaceControl;
 
-    .line 271
+    .line 320
     iput-object p3, p0, Lcom/android/server/wm/SurfaceAnimationRunner$RunningAnimation;->mFinishCallback:Ljava/lang/Runnable;
 
-    .line 272
+    .line 321
     return-void
 .end method
 
 .method static synthetic access$000(Lcom/android/server/wm/SurfaceAnimationRunner$RunningAnimation;)Z
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/wm/SurfaceAnimationRunner$RunningAnimation;
 
-    .line 259
-    iget-boolean p0, p0, Lcom/android/server/wm/SurfaceAnimationRunner$RunningAnimation;->mCancelled:Z
+    .line 308
+    iget-boolean v0, p0, Lcom/android/server/wm/SurfaceAnimationRunner$RunningAnimation;->mCancelled:Z
 
-    return p0
+    return v0
 .end method
 
 .method static synthetic access$002(Lcom/android/server/wm/SurfaceAnimationRunner$RunningAnimation;Z)Z
     .registers 2
+    .param p0, "x0"  # Lcom/android/server/wm/SurfaceAnimationRunner$RunningAnimation;
+    .param p1, "x1"  # Z
 
-    .line 259
+    .line 308
     iput-boolean p1, p0, Lcom/android/server/wm/SurfaceAnimationRunner$RunningAnimation;->mCancelled:Z
 
     return p1

@@ -32,6 +32,8 @@
 # direct methods
 .method private constructor <init>(Ljava/util/List;Ljava/security/cert/X509Certificate;[B)V
     .registers 4
+    .param p2, "signerCert"  # Ljava/security/cert/X509Certificate;
+    .param p3, "signature"  # [B
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(",
@@ -44,6 +46,7 @@
     .end annotation
 
     .line 47
+    .local p1, "intermediateCerts":Ljava/util/List;, "Ljava/util/List<Ljava/security/cert/X509Certificate;>;"
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
     .line 48
@@ -60,7 +63,8 @@
 .end method
 
 .method public static parse([B)Lcom/android/server/locksettings/recoverablekeystore/certificate/SigXml;
-    .registers 4
+    .registers 6
+    .param p0, "bytes"  # [B
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Lcom/android/server/locksettings/recoverablekeystore/certificate/CertParsingException;
@@ -70,33 +74,35 @@
     .line 87
     invoke-static {p0}, Lcom/android/server/locksettings/recoverablekeystore/certificate/CertUtils;->getXmlRootNode([B)Lorg/w3c/dom/Element;
 
-    move-result-object p0
+    move-result-object v0
 
     .line 88
-    new-instance v0, Lcom/android/server/locksettings/recoverablekeystore/certificate/SigXml;
+    .local v0, "rootNode":Lorg/w3c/dom/Element;
+    new-instance v1, Lcom/android/server/locksettings/recoverablekeystore/certificate/SigXml;
 
     .line 89
-    invoke-static {p0}, Lcom/android/server/locksettings/recoverablekeystore/certificate/SigXml;->parseIntermediateCerts(Lorg/w3c/dom/Element;)Ljava/util/List;
-
-    move-result-object v1
-
-    invoke-static {p0}, Lcom/android/server/locksettings/recoverablekeystore/certificate/SigXml;->parseSignerCert(Lorg/w3c/dom/Element;)Ljava/security/cert/X509Certificate;
+    invoke-static {v0}, Lcom/android/server/locksettings/recoverablekeystore/certificate/SigXml;->parseIntermediateCerts(Lorg/w3c/dom/Element;)Ljava/util/List;
 
     move-result-object v2
 
+    invoke-static {v0}, Lcom/android/server/locksettings/recoverablekeystore/certificate/SigXml;->parseSignerCert(Lorg/w3c/dom/Element;)Ljava/security/cert/X509Certificate;
+
+    move-result-object v3
+
     .line 90
-    invoke-static {p0}, Lcom/android/server/locksettings/recoverablekeystore/certificate/SigXml;->parseFileSignature(Lorg/w3c/dom/Element;)[B
+    invoke-static {v0}, Lcom/android/server/locksettings/recoverablekeystore/certificate/SigXml;->parseFileSignature(Lorg/w3c/dom/Element;)[B
 
-    move-result-object p0
+    move-result-object v4
 
-    invoke-direct {v0, v1, v2, p0}, Lcom/android/server/locksettings/recoverablekeystore/certificate/SigXml;-><init>(Ljava/util/List;Ljava/security/cert/X509Certificate;[B)V
+    invoke-direct {v1, v2, v3, v4}, Lcom/android/server/locksettings/recoverablekeystore/certificate/SigXml;-><init>(Ljava/util/List;Ljava/security/cert/X509Certificate;[B)V
 
     .line 88
-    return-object v0
+    return-object v1
 .end method
 
 .method private static parseFileSignature(Lorg/w3c/dom/Element;)[B
     .registers 3
+    .param p0, "rootNode"  # Lorg/w3c/dom/Element;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Lcom/android/server/locksettings/recoverablekeystore/certificate/CertParsingException;
@@ -115,26 +121,28 @@
 
     invoke-static {v1, p0, v0}, Lcom/android/server/locksettings/recoverablekeystore/certificate/CertUtils;->getXmlNodeContents(ILorg/w3c/dom/Element;[Ljava/lang/String;)Ljava/util/List;
 
-    move-result-object p0
+    move-result-object v0
 
     .line 119
-    const/4 v0, 0x0
+    .local v0, "contents":Ljava/util/List;, "Ljava/util/List<Ljava/lang/String;>;"
+    const/4 v1, 0x0
 
-    invoke-interface {p0, v0}, Ljava/util/List;->get(I)Ljava/lang/Object;
+    invoke-interface {v0, v1}, Ljava/util/List;->get(I)Ljava/lang/Object;
 
-    move-result-object p0
+    move-result-object v1
 
-    check-cast p0, Ljava/lang/String;
+    check-cast v1, Ljava/lang/String;
 
-    invoke-static {p0}, Lcom/android/server/locksettings/recoverablekeystore/certificate/CertUtils;->decodeBase64(Ljava/lang/String;)[B
+    invoke-static {v1}, Lcom/android/server/locksettings/recoverablekeystore/certificate/CertUtils;->decodeBase64(Ljava/lang/String;)[B
 
-    move-result-object p0
+    move-result-object v1
 
-    return-object p0
+    return-object v1
 .end method
 
 .method private static parseIntermediateCerts(Lorg/w3c/dom/Element;)Ljava/util/List;
-    .registers 3
+    .registers 6
+    .param p0, "rootNode"  # Lorg/w3c/dom/Element;
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(",
@@ -153,7 +161,7 @@
     .end annotation
 
     .line 95
-    const-string v0, "intermediates"
+    const-string/jumbo v0, "intermediates"
 
     const-string v1, "cert"
 
@@ -166,56 +174,61 @@
 
     invoke-static {v1, p0, v0}, Lcom/android/server/locksettings/recoverablekeystore/certificate/CertUtils;->getXmlNodeContents(ILorg/w3c/dom/Element;[Ljava/lang/String;)Ljava/util/List;
 
-    move-result-object p0
+    move-result-object v0
 
     .line 101
-    new-instance v0, Ljava/util/ArrayList;
+    .local v0, "contents":Ljava/util/List;, "Ljava/util/List<Ljava/lang/String;>;"
+    new-instance v1, Ljava/util/ArrayList;
 
-    invoke-direct {v0}, Ljava/util/ArrayList;-><init>()V
+    invoke-direct {v1}, Ljava/util/ArrayList;-><init>()V
 
     .line 102
-    invoke-interface {p0}, Ljava/util/List;->iterator()Ljava/util/Iterator;
+    .local v1, "res":Ljava/util/List;, "Ljava/util/List<Ljava/security/cert/X509Certificate;>;"
+    invoke-interface {v0}, Ljava/util/List;->iterator()Ljava/util/Iterator;
 
-    move-result-object p0
+    move-result-object v2
 
-    :goto_16
-    invoke-interface {p0}, Ljava/util/Iterator;->hasNext()Z
+    :goto_17
+    invoke-interface {v2}, Ljava/util/Iterator;->hasNext()Z
 
-    move-result v1
+    move-result v3
 
-    if-eqz v1, :cond_2e
+    if-eqz v3, :cond_2f
 
-    invoke-interface {p0}, Ljava/util/Iterator;->next()Ljava/lang/Object;
+    invoke-interface {v2}, Ljava/util/Iterator;->next()Ljava/lang/Object;
 
-    move-result-object v1
+    move-result-object v3
 
-    check-cast v1, Ljava/lang/String;
+    check-cast v3, Ljava/lang/String;
 
     .line 103
-    invoke-static {v1}, Lcom/android/server/locksettings/recoverablekeystore/certificate/CertUtils;->decodeBase64(Ljava/lang/String;)[B
+    .local v3, "content":Ljava/lang/String;
+    invoke-static {v3}, Lcom/android/server/locksettings/recoverablekeystore/certificate/CertUtils;->decodeBase64(Ljava/lang/String;)[B
 
-    move-result-object v1
+    move-result-object v4
 
-    invoke-static {v1}, Lcom/android/server/locksettings/recoverablekeystore/certificate/CertUtils;->decodeCert([B)Ljava/security/cert/X509Certificate;
+    invoke-static {v4}, Lcom/android/server/locksettings/recoverablekeystore/certificate/CertUtils;->decodeCert([B)Ljava/security/cert/X509Certificate;
 
-    move-result-object v1
+    move-result-object v4
 
-    invoke-interface {v0, v1}, Ljava/util/List;->add(Ljava/lang/Object;)Z
+    invoke-interface {v1, v4}, Ljava/util/List;->add(Ljava/lang/Object;)Z
 
     .line 104
-    goto :goto_16
+    .end local v3  # "content":Ljava/lang/String;
+    goto :goto_17
 
     .line 105
-    :cond_2e
-    invoke-static {v0}, Ljava/util/Collections;->unmodifiableList(Ljava/util/List;)Ljava/util/List;
+    :cond_2f
+    invoke-static {v1}, Ljava/util/Collections;->unmodifiableList(Ljava/util/List;)Ljava/util/List;
 
-    move-result-object p0
+    move-result-object v2
 
-    return-object p0
+    return-object v2
 .end method
 
 .method private static parseSignerCert(Lorg/w3c/dom/Element;)Ljava/security/cert/X509Certificate;
     .registers 3
+    .param p0, "rootNode"  # Lorg/w3c/dom/Element;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Lcom/android/server/locksettings/recoverablekeystore/certificate/CertParsingException;
@@ -234,32 +247,35 @@
 
     invoke-static {v1, p0, v0}, Lcom/android/server/locksettings/recoverablekeystore/certificate/CertUtils;->getXmlNodeContents(ILorg/w3c/dom/Element;[Ljava/lang/String;)Ljava/util/List;
 
-    move-result-object p0
+    move-result-object v0
 
     .line 112
-    const/4 v0, 0x0
+    .local v0, "contents":Ljava/util/List;, "Ljava/util/List<Ljava/lang/String;>;"
+    const/4 v1, 0x0
 
-    invoke-interface {p0, v0}, Ljava/util/List;->get(I)Ljava/lang/Object;
+    invoke-interface {v0, v1}, Ljava/util/List;->get(I)Ljava/lang/Object;
 
-    move-result-object p0
+    move-result-object v1
 
-    check-cast p0, Ljava/lang/String;
+    check-cast v1, Ljava/lang/String;
 
-    invoke-static {p0}, Lcom/android/server/locksettings/recoverablekeystore/certificate/CertUtils;->decodeBase64(Ljava/lang/String;)[B
+    invoke-static {v1}, Lcom/android/server/locksettings/recoverablekeystore/certificate/CertUtils;->decodeBase64(Ljava/lang/String;)[B
 
-    move-result-object p0
+    move-result-object v1
 
-    invoke-static {p0}, Lcom/android/server/locksettings/recoverablekeystore/certificate/CertUtils;->decodeCert([B)Ljava/security/cert/X509Certificate;
+    invoke-static {v1}, Lcom/android/server/locksettings/recoverablekeystore/certificate/CertUtils;->decodeCert([B)Ljava/security/cert/X509Certificate;
 
-    move-result-object p0
+    move-result-object v1
 
-    return-object p0
+    return-object v1
 .end method
 
 
 # virtual methods
 .method public verifyFileSignature(Ljava/security/cert/X509Certificate;[B)V
     .registers 4
+    .param p1, "trustedRoot"  # Ljava/security/cert/X509Certificate;
+    .param p2, "signedFileBytes"  # [B
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Lcom/android/server/locksettings/recoverablekeystore/certificate/CertValidationException;
@@ -277,6 +293,9 @@
 
 .method verifyFileSignature(Ljava/security/cert/X509Certificate;[BLjava/util/Date;)V
     .registers 6
+    .param p1, "trustedRoot"  # Ljava/security/cert/X509Certificate;
+    .param p2, "signedFileBytes"  # [B
+    .param p3, "validationDate"  # Ljava/util/Date;
     .annotation build Lcom/android/internal/annotations/VisibleForTesting;
     .end annotation
 
@@ -294,15 +313,15 @@
     invoke-static {p3, p1, v0, v1}, Lcom/android/server/locksettings/recoverablekeystore/certificate/CertUtils;->validateCert(Ljava/util/Date;Ljava/security/cert/X509Certificate;Ljava/util/List;Ljava/security/cert/X509Certificate;)Ljava/security/cert/CertPath;
 
     .line 75
-    iget-object p1, p0, Lcom/android/server/locksettings/recoverablekeystore/certificate/SigXml;->signerCert:Ljava/security/cert/X509Certificate;
+    iget-object v0, p0, Lcom/android/server/locksettings/recoverablekeystore/certificate/SigXml;->signerCert:Ljava/security/cert/X509Certificate;
 
-    invoke-virtual {p1}, Ljava/security/cert/X509Certificate;->getPublicKey()Ljava/security/PublicKey;
+    invoke-virtual {v0}, Ljava/security/cert/X509Certificate;->getPublicKey()Ljava/security/PublicKey;
 
-    move-result-object p1
+    move-result-object v0
 
-    iget-object p3, p0, Lcom/android/server/locksettings/recoverablekeystore/certificate/SigXml;->signature:[B
+    iget-object v1, p0, Lcom/android/server/locksettings/recoverablekeystore/certificate/SigXml;->signature:[B
 
-    invoke-static {p1, p3, p2}, Lcom/android/server/locksettings/recoverablekeystore/certificate/CertUtils;->verifyRsaSha256Signature(Ljava/security/PublicKey;[B[B)V
+    invoke-static {v0, v1, p2}, Lcom/android/server/locksettings/recoverablekeystore/certificate/CertUtils;->verifyRsaSha256Signature(Ljava/security/PublicKey;[B[B)V
 
     .line 76
     return-void

@@ -108,189 +108,205 @@
 
 # direct methods
 .method public constructor <init>(Lcom/android/server/policy/WindowOrientationListener;Landroid/content/Context;)V
-    .registers 11
+    .registers 13
+    .param p1, "this$0"  # Lcom/android/server/policy/WindowOrientationListener;
+    .param p2, "context"  # Landroid/content/Context;
 
-    .line 567
+    .line 570
     iput-object p1, p0, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->this$0:Lcom/android/server/policy/WindowOrientationListener;
 
     invoke-direct {p0, p1}, Lcom/android/server/policy/WindowOrientationListener$OrientationJudge;-><init>(Lcom/android/server/policy/WindowOrientationListener;)V
 
-    .line 522
-    const/4 p1, 0x4
+    .line 525
+    const/4 v0, 0x4
 
-    new-array v0, p1, [[I
+    new-array v1, v0, [[I
 
-    const/4 v1, 0x2
+    const/4 v2, 0x2
 
-    new-array v2, v1, [I
+    new-array v3, v2, [I
 
-    fill-array-data v2, :array_8e
+    fill-array-data v3, :array_92
 
-    const/4 v3, 0x0
+    const/4 v4, 0x0
 
-    aput-object v2, v0, v3
+    aput-object v3, v1, v4
 
-    new-array v2, v1, [I
+    new-array v3, v2, [I
 
-    fill-array-data v2, :array_96
+    fill-array-data v3, :array_9a
 
-    const/4 v4, 0x1
+    const/4 v5, 0x1
 
-    aput-object v2, v0, v4
+    aput-object v3, v1, v5
 
-    new-array v2, v1, [I
+    new-array v3, v2, [I
 
-    fill-array-data v2, :array_9e
+    fill-array-data v3, :array_a2
 
-    aput-object v2, v0, v1
+    aput-object v3, v1, v2
 
-    new-array v1, v1, [I
+    new-array v2, v2, [I
 
-    fill-array-data v1, :array_a6
+    fill-array-data v2, :array_aa
 
-    const/4 v2, 0x3
+    const/4 v3, 0x3
 
-    aput-object v1, v0, v2
+    aput-object v2, v1, v3
 
-    iput-object v0, p0, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->mTiltToleranceConfig:[[I
+    iput-object v1, p0, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->mTiltToleranceConfig:[[I
 
-    .line 555
-    const-wide/high16 v0, -0x8000000000000000L
+    .line 558
+    const-wide/high16 v1, -0x8000000000000000L
 
-    iput-wide v0, p0, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->mTouchEndedTimestampNanos:J
+    iput-wide v1, p0, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->mTouchEndedTimestampNanos:J
 
-    .line 563
-    const/16 v0, 0xc8
+    .line 566
+    const/16 v1, 0xc8
 
-    new-array v1, v0, [F
+    new-array v2, v1, [F
 
-    iput-object v1, p0, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->mTiltHistory:[F
+    iput-object v2, p0, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->mTiltHistory:[F
 
-    .line 564
-    new-array v0, v0, [J
+    .line 567
+    new-array v1, v1, [J
 
-    iput-object v0, p0, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->mTiltHistoryTimestampNanos:[J
+    iput-object v1, p0, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->mTiltHistoryTimestampNanos:[J
 
-    .line 569
+    .line 572
     invoke-virtual {p2}, Landroid/content/Context;->getResources()Landroid/content/res/Resources;
 
-    move-result-object p2
+    move-result-object v1
 
-    const v0, 0x1070017
+    const v2, 0x1070016
 
-    invoke-virtual {p2, v0}, Landroid/content/res/Resources;->getIntArray(I)[I
+    invoke-virtual {v1, v2}, Landroid/content/res/Resources;->getIntArray(I)[I
 
-    move-result-object p2
-
-    .line 571
-    array-length v0, p2
-
-    const-string v1, "WindowOrientationListener"
-
-    const/16 v2, 0x8
-
-    if-ne v0, v2, :cond_88
-
-    .line 572
-    move v0, v3
-
-    :goto_4b
-    if-ge v0, p1, :cond_8d
-
-    .line 573
-    mul-int/lit8 v2, v0, 0x2
-
-    aget v5, p2, v2
+    move-result-object v1
 
     .line 574
-    add-int/2addr v2, v4
+    .local v1, "tiltTolerance":[I
+    array-length v2, v1
 
-    aget v2, p2, v2
+    const-string v3, "WindowOrientationListener"
+
+    const/16 v6, 0x8
+
+    if-ne v2, v6, :cond_8b
 
     .line 575
-    const/16 v6, -0x5a
+    const/4 v2, 0x0
 
-    if-lt v5, v6, :cond_69
-
-    if-gt v5, v2, :cond_69
-
-    const/16 v6, 0x5a
-
-    if-gt v2, v6, :cond_69
+    .local v2, "i":I
+    :goto_4b
+    if-ge v2, v0, :cond_8a
 
     .line 576
-    iget-object v6, p0, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->mTiltToleranceConfig:[[I
+    mul-int/lit8 v6, v2, 0x2
 
-    aget-object v7, v6, v0
-
-    aput v5, v7, v3
+    aget v6, v1, v6
 
     .line 577
-    aget-object v5, v6, v0
+    .local v6, "min":I
+    mul-int/lit8 v7, v2, 0x2
 
-    aput v2, v5, v4
+    add-int/2addr v7, v5
 
-    goto :goto_85
+    aget v7, v1, v7
+
+    .line 578
+    .local v7, "max":I
+    const/16 v8, -0x5a
+
+    if-lt v6, v8, :cond_6b
+
+    if-gt v6, v7, :cond_6b
+
+    const/16 v8, 0x5a
+
+    if-gt v7, v8, :cond_6b
 
     .line 579
-    :cond_69
-    new-instance v6, Ljava/lang/StringBuilder;
+    iget-object v8, p0, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->mTiltToleranceConfig:[[I
 
-    invoke-direct {v6}, Ljava/lang/StringBuilder;-><init>()V
+    aget-object v9, v8, v2
 
-    const-string v7, "config_autoRotationTiltTolerance contains invalid range: min="
+    aput v6, v9, v4
 
-    invoke-virtual {v6, v7}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    .line 580
+    aget-object v8, v8, v2
 
-    invoke-virtual {v6, v5}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    aput v7, v8, v5
 
-    const-string v5, ", max="
+    goto :goto_87
 
-    invoke-virtual {v6, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    .line 582
+    :cond_6b
+    new-instance v8, Ljava/lang/StringBuilder;
 
-    invoke-virtual {v6, v2}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-direct {v8}, Ljava/lang/StringBuilder;-><init>()V
 
-    invoke-virtual {v6}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    const-string v9, "config_autoRotationTiltTolerance contains invalid range: min="
 
-    move-result-object v2
+    invoke-virtual {v8, v9}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-static {v1, v2}, Landroid/util/Slog;->wtf(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-virtual {v8, v6}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    .line 572
-    :goto_85
-    add-int/lit8 v0, v0, 0x1
+    const-string v9, ", max="
+
+    invoke-virtual {v8, v9}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v8, v7}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v8}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v8
+
+    invoke-static {v3, v8}, Landroid/util/Slog;->wtf(Ljava/lang/String;Ljava/lang/String;)I
+
+    .line 575
+    .end local v6  # "min":I
+    .end local v7  # "max":I
+    :goto_87
+    add-int/lit8 v2, v2, 0x1
 
     goto :goto_4b
 
-    .line 584
-    :cond_88
-    const-string p1, "config_autoRotationTiltTolerance should have exactly 8 elements"
+    .end local v2  # "i":I
+    :cond_8a
+    goto :goto_90
 
-    invoke-static {v1, p1}, Landroid/util/Slog;->wtf(Ljava/lang/String;Ljava/lang/String;)I
+    .line 587
+    :cond_8b
+    const-string v0, "config_autoRotationTiltTolerance should have exactly 8 elements"
 
-    .line 586
-    :cond_8d
+    invoke-static {v3, v0}, Landroid/util/Slog;->wtf(Ljava/lang/String;Ljava/lang/String;)I
+
+    .line 589
+    :goto_90
     return-void
 
-    :array_8e
+    nop
+
+    :array_92
     .array-data 4
         -0x19
         0x46
     .end array-data
 
-    :array_96
+    :array_9a
     .array-data 4
         -0x19
         0x41
     .end array-data
 
-    :array_9e
+    :array_a2
     .array-data 4
         -0x19
         0x3c
     .end array-data
 
-    :array_a6
+    :array_aa
     .array-data 4
         -0x19
         0x41
@@ -298,59 +314,61 @@
 .end method
 
 .method private addTiltHistoryEntryLocked(JF)V
-    .registers 6
+    .registers 8
+    .param p1, "now"  # J
+    .param p3, "tilt"  # F
 
-    .line 977
+    .line 985
     iget-object v0, p0, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->mTiltHistory:[F
 
     iget v1, p0, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->mTiltHistoryIndex:I
 
     aput p3, v0, v1
 
-    .line 978
-    iget-object p3, p0, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->mTiltHistoryTimestampNanos:[J
+    .line 986
+    iget-object v0, p0, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->mTiltHistoryTimestampNanos:[J
 
-    aput-wide p1, p3, v1
+    aput-wide p1, v0, v1
 
-    .line 979
+    .line 987
     add-int/lit8 v1, v1, 0x1
 
     rem-int/lit16 v1, v1, 0xc8
 
     iput v1, p0, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->mTiltHistoryIndex:I
 
-    .line 980
-    iget p1, p0, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->mTiltHistoryIndex:I
+    .line 988
+    iget v1, p0, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->mTiltHistoryIndex:I
 
-    const-wide/high16 v0, -0x8000000000000000L
+    const-wide/high16 v2, -0x8000000000000000L
 
-    aput-wide v0, p3, p1
+    aput-wide v2, v0, v1
 
-    .line 981
+    .line 989
     return-void
 .end method
 
 .method private clearPredictedRotationLocked()V
     .registers 3
 
-    .line 955
+    .line 963
     const/4 v0, -0x1
 
     iput v0, p0, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->mPredictedRotation:I
 
-    .line 956
+    .line 964
     const-wide/high16 v0, -0x8000000000000000L
 
     iput-wide v0, p0, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->mPredictedRotationTimestampNanos:J
 
-    .line 957
+    .line 965
     return-void
 .end method
 
 .method private clearTiltHistoryLocked()V
     .registers 5
 
-    .line 972
+    .line 980
     iget-object v0, p0, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->mTiltHistoryTimestampNanos:[J
 
     const/4 v1, 0x0
@@ -359,45 +377,47 @@
 
     aput-wide v2, v0, v1
 
-    .line 973
+    .line 981
     const/4 v0, 0x1
 
     iput v0, p0, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->mTiltHistoryIndex:I
 
-    .line 974
+    .line 982
     return-void
 .end method
 
 .method private getLastTiltLocked()F
     .registers 3
 
-    .line 1015
+    .line 1023
     iget v0, p0, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->mTiltHistoryIndex:I
 
     invoke-direct {p0, v0}, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->nextTiltHistoryIndexLocked(I)I
 
     move-result v0
 
-    .line 1016
+    .line 1024
+    .local v0, "index":I
     if-ltz v0, :cond_d
 
     iget-object v1, p0, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->mTiltHistory:[F
 
-    aget v0, v1, v0
+    aget v1, v1, v0
 
     goto :goto_f
 
     :cond_d
-    const/high16 v0, 0x7fc00000  # Float.NaN
+    const/high16 v1, 0x7fc00000  # Float.NaN
 
     :goto_f
-    return v0
+    return v1
 .end method
 
 .method private isAcceleratingLocked(F)Z
     .registers 3
+    .param p1, "magnitude"  # F
 
-    .line 967
+    .line 975
     const v0, 0x40b9d014
 
     cmpg-float v0, p1, v0
@@ -406,39 +426,43 @@
 
     const v0, 0x415ce80a
 
-    cmpl-float p1, p1, v0
+    cmpl-float v0, p1, v0
 
-    if-lez p1, :cond_f
+    if-lez v0, :cond_f
 
     goto :goto_11
 
     :cond_f
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
     goto :goto_12
 
     :cond_11
     :goto_11
-    const/4 p1, 0x1
+    const/4 v0, 0x1
 
     :goto_12
-    return p1
+    return v0
 .end method
 
 .method private isFlatLocked(J)Z
     .registers 8
+    .param p1, "now"  # J
 
-    .line 984
+    .line 992
     iget v0, p0, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->mTiltHistoryIndex:I
 
+    .local v0, "i":I
     :cond_2
     invoke-direct {p0, v0}, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->nextTiltHistoryIndexLocked(I)I
 
-    move-result v0
+    move-result v1
 
-    if-ltz v0, :cond_21
+    move v0, v1
 
-    .line 985
+    if-ltz v1, :cond_22
+
+    .line 993
     iget-object v1, p0, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->mTiltHistory:[F
 
     aget v1, v1, v0
@@ -447,13 +471,13 @@
 
     cmpg-float v1, v1, v2
 
-    if-gez v1, :cond_13
+    if-gez v1, :cond_14
 
-    .line 986
-    goto :goto_21
+    .line 994
+    goto :goto_22
 
-    .line 988
-    :cond_13
+    .line 996
+    :cond_14
     iget-object v1, p0, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->mTiltHistoryTimestampNanos:[J
 
     aget-wide v1, v1, v0
@@ -466,33 +490,37 @@
 
     if-gtz v1, :cond_2
 
-    .line 990
-    const/4 p1, 0x1
+    .line 998
+    const/4 v1, 0x1
 
-    return p1
+    return v1
 
-    .line 993
-    :cond_21
-    :goto_21
-    const/4 p1, 0x0
+    .line 1001
+    .end local v0  # "i":I
+    :cond_22
+    :goto_22
+    const/4 v0, 0x0
 
-    return p1
+    return v0
 .end method
 
 .method private isOrientationAngleAcceptableLocked(II)Z
     .registers 8
+    .param p1, "rotation"  # I
+    .param p2, "orientationAngle"  # I
 
-    .line 874
+    .line 876
     iget-object v0, p0, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->this$0:Lcom/android/server/policy/WindowOrientationListener;
 
-    invoke-static {v0}, Lcom/android/server/policy/WindowOrientationListener;->access$300(Lcom/android/server/policy/WindowOrientationListener;)I
+    invoke-static {v0}, Lcom/android/server/policy/WindowOrientationListener;->access$200(Lcom/android/server/policy/WindowOrientationListener;)I
 
     move-result v0
 
-    .line 875
+    .line 877
+    .local v0, "currentRotation":I
     if-ltz v0, :cond_3d
 
-    .line 880
+    .line 882
     const/16 v1, 0x2d
 
     const/4 v2, 0x0
@@ -505,7 +533,7 @@
 
     if-ne p1, v3, :cond_26
 
-    .line 882
+    .line 884
     :cond_13
     mul-int/lit8 v3, p1, 0x5a
 
@@ -513,75 +541,80 @@
 
     add-int/lit8 v3, v3, 0x16
 
-    .line 884
+    .line 886
+    .local v3, "lowerBound":I
     if-nez p1, :cond_23
 
-    .line 885
+    .line 887
     const/16 v4, 0x13b
 
     if-lt p2, v4, :cond_26
 
-    add-int/lit16 v3, v3, 0x168
+    add-int/lit16 v4, v3, 0x168
 
-    if-ge p2, v3, :cond_26
+    if-ge p2, v4, :cond_26
 
-    .line 886
+    .line 888
     return v2
 
-    .line 889
+    .line 891
     :cond_23
     if-ge p2, v3, :cond_26
 
-    .line 890
+    .line 892
     return v2
 
-    .line 899
+    .line 901
+    .end local v3  # "lowerBound":I
     :cond_26
     if-eq p1, v0, :cond_2e
 
-    add-int/lit8 v0, v0, 0x3
+    add-int/lit8 v3, v0, 0x3
 
-    rem-int/lit8 v0, v0, 0x4
+    rem-int/lit8 v3, v3, 0x4
 
-    if-ne p1, v0, :cond_3d
-
-    .line 901
-    :cond_2e
-    mul-int/lit8 v0, p1, 0x5a
-
-    add-int/2addr v0, v1
-
-    add-int/lit8 v0, v0, -0x16
+    if-ne p1, v3, :cond_3d
 
     .line 903
-    if-nez p1, :cond_3a
+    :cond_2e
+    mul-int/lit8 v3, p1, 0x5a
 
-    .line 904
-    if-gt p2, v1, :cond_3d
+    add-int/2addr v3, v1
 
-    if-le p2, v0, :cond_3d
+    add-int/lit8 v3, v3, -0x16
 
     .line 905
+    .local v3, "upperBound":I
+    if-nez p1, :cond_3a
+
+    .line 906
+    if-gt p2, v1, :cond_3d
+
+    if-le p2, v3, :cond_3d
+
+    .line 907
     return v2
 
-    .line 908
+    .line 910
     :cond_3a
-    if-le p2, v0, :cond_3d
+    if-le p2, v3, :cond_3d
 
-    .line 909
+    .line 911
     return v2
 
-    .line 914
+    .line 916
+    .end local v3  # "upperBound":I
     :cond_3d
-    const/4 p1, 0x1
+    const/4 v1, 0x1
 
-    return p1
+    return v1
 .end method
 
 .method private isPredictedRotationAcceptableLocked(J)Z
     .registers 11
+    .param p1, "now"  # J
 
-    .line 923
+    .line 925
     iget-wide v0, p0, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->mPredictedRotationTimestampNanos:J
 
     const-wide/32 v2, 0x2625a00
@@ -594,10 +627,10 @@
 
     if-gez v0, :cond_c
 
-    .line 924
+    .line 926
     return v1
 
-    .line 928
+    .line 930
     :cond_c
     iget-wide v2, p0, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->mFlatTimestampNanos:J
 
@@ -609,10 +642,10 @@
 
     if-gez v0, :cond_17
 
-    .line 929
+    .line 931
     return v1
 
-    .line 934
+    .line 936
     :cond_17
     iget-wide v2, p0, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->mSwingTimestampNanos:J
 
@@ -624,10 +657,10 @@
 
     if-gez v0, :cond_22
 
-    .line 935
+    .line 937
     return v1
 
-    .line 939
+    .line 941
     :cond_22
     iget-wide v2, p0, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->mAccelerationTimestampNanos:J
 
@@ -637,51 +670,75 @@
 
     if-gez v0, :cond_2a
 
-    .line 941
+    .line 943
     return v1
 
-    .line 945
+    .line 947
     :cond_2a
     iget-boolean v0, p0, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->mTouched:Z
 
-    if-nez v0, :cond_38
+    if-nez v0, :cond_47
 
     iget-wide v2, p0, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->mTouchEndedTimestampNanos:J
 
     add-long/2addr v2, v4
 
-    cmp-long p1, p1, v2
+    cmp-long v0, p1, v2
 
-    if-gez p1, :cond_36
+    if-gez v0, :cond_36
 
-    goto :goto_38
+    goto :goto_47
 
-    .line 951
+    .line 953
     :cond_36
-    const/4 p1, 0x1
+    const-class v0, Lcom/android/server/wm/FlymeWindowManagerInternal;
 
-    return p1
+    invoke-static {v0}, Lcom/android/server/LocalServices;->getService(Ljava/lang/Class;)Ljava/lang/Object;
 
-    .line 947
-    :cond_38
-    :goto_38
+    move-result-object v0
+
+    check-cast v0, Lcom/android/server/wm/FlymeWindowManagerInternal;
+
+    invoke-virtual {v0}, Lcom/android/server/wm/FlymeWindowManagerInternal;->isLockOrientationForSensor()Z
+
+    move-result v0
+
+    if-eqz v0, :cond_45
+
+    .line 954
+    return v1
+
+    .line 959
+    :cond_45
+    const/4 v0, 0x1
+
+    return v0
+
+    .line 949
+    :cond_47
+    :goto_47
     return v1
 .end method
 
 .method private isSwingingLocked(JF)Z
     .registers 9
+    .param p1, "now"  # J
+    .param p3, "tilt"  # F
 
-    .line 997
+    .line 1005
     iget v0, p0, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->mTiltHistoryIndex:I
 
+    .local v0, "i":I
     :cond_2
     invoke-direct {p0, v0}, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->nextTiltHistoryIndexLocked(I)I
 
-    move-result v0
+    move-result v1
 
-    if-ltz v0, :cond_22
+    move v0, v1
 
-    .line 998
+    if-ltz v1, :cond_23
+
+    .line 1006
     iget-object v1, p0, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->mTiltHistoryTimestampNanos:[J
 
     aget-wide v1, v1, v0
@@ -692,13 +749,13 @@
 
     cmp-long v1, v1, p1
 
-    if-gez v1, :cond_15
+    if-gez v1, :cond_16
 
-    .line 999
-    goto :goto_22
+    .line 1007
+    goto :goto_23
 
-    .line 1001
-    :cond_15
+    .line 1009
+    :cond_16
     iget-object v1, p0, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->mTiltHistory:[F
 
     aget v1, v1, v0
@@ -711,23 +768,26 @@
 
     if-gtz v1, :cond_2
 
-    .line 1003
-    const/4 p1, 0x1
+    .line 1011
+    const/4 v1, 0x1
 
-    return p1
+    return v1
 
-    .line 1006
-    :cond_22
-    :goto_22
-    const/4 p1, 0x0
+    .line 1014
+    .end local v0  # "i":I
+    :cond_23
+    :goto_23
+    const/4 v0, 0x0
 
-    return p1
+    return v0
 .end method
 
 .method private isTiltAngleAcceptableLocked(II)Z
     .registers 7
+    .param p1, "rotation"  # I
+    .param p2, "tiltAngle"  # I
 
-    .line 860
+    .line 862
     iget-object v0, p0, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->mTiltToleranceConfig:[[I
 
     aget-object v1, v0, p1
@@ -740,11 +800,11 @@
 
     if-lt p2, v1, :cond_11
 
-    aget-object p1, v0, p1
+    aget-object v0, v0, p1
 
-    aget p1, p1, v3
+    aget v0, v0, v3
 
-    if-gt p2, p1, :cond_11
+    if-gt p2, v0, :cond_11
 
     move v2, v3
 
@@ -753,76 +813,90 @@
 .end method
 
 .method private nextTiltHistoryIndexLocked(I)I
-    .registers 6
+    .registers 7
+    .param p1, "index"  # I
 
-    .line 1010
-    if-nez p1, :cond_4
+    .line 1018
+    if-nez p1, :cond_5
 
-    const/16 p1, 0xc8
+    const/16 v0, 0xc8
 
-    :cond_4
-    add-int/lit8 p1, p1, -0x1
+    goto :goto_6
 
-    .line 1011
-    iget-object v0, p0, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->mTiltHistoryTimestampNanos:[J
+    :cond_5
+    move v0, p1
 
-    aget-wide v0, v0, p1
+    :goto_6
+    add-int/lit8 v0, v0, -0x1
 
-    const-wide/high16 v2, -0x8000000000000000L
+    .line 1019
+    .end local p1  # "index":I
+    .local v0, "index":I
+    iget-object p1, p0, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->mTiltHistoryTimestampNanos:[J
 
-    cmp-long v0, v0, v2
+    aget-wide v1, p1, v0
 
-    if-eqz v0, :cond_11
+    const-wide/high16 v3, -0x8000000000000000L
 
-    goto :goto_12
+    cmp-long p1, v1, v3
 
-    :cond_11
+    if-eqz p1, :cond_14
+
+    move p1, v0
+
+    goto :goto_15
+
+    :cond_14
     const/4 p1, -0x1
 
-    :goto_12
+    :goto_15
     return p1
 .end method
 
 .method private remainingMS(JJ)F
-    .registers 6
+    .registers 7
+    .param p1, "now"  # J
+    .param p3, "until"  # J
 
-    .line 1020
+    .line 1028
     cmp-long v0, p1, p3
 
     if-ltz v0, :cond_6
 
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    goto :goto_c
+    goto :goto_d
 
     :cond_6
-    sub-long/2addr p3, p1
+    sub-long v0, p3, p1
 
-    long-to-float p1, p3
+    long-to-float v0, v0
 
-    const p2, 0x358637bd  # 1.0E-6f
+    const v1, 0x358637bd  # 1.0E-6f
 
-    mul-float/2addr p1, p2
+    mul-float/2addr v0, v1
 
-    :goto_c
-    return p1
+    :goto_d
+    return v0
 .end method
 
 .method private updatePredictedRotationLocked(JI)V
     .registers 5
+    .param p1, "now"  # J
+    .param p3, "rotation"  # I
 
-    .line 960
+    .line 968
     iget v0, p0, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->mPredictedRotation:I
 
     if-eq v0, p3, :cond_8
 
-    .line 961
+    .line 969
     iput p3, p0, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->mPredictedRotation:I
 
-    .line 962
+    .line 970
     iput-wide p1, p0, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->mPredictedRotationTimestampNanos:J
 
-    .line 964
+    .line 972
     :cond_8
     return-void
 .end method
@@ -830,9 +904,11 @@
 
 # virtual methods
 .method public dumpLocked(Ljava/io/PrintWriter;Ljava/lang/String;)V
-    .registers 8
+    .registers 10
+    .param p1, "pw"  # Ljava/io/PrintWriter;
+    .param p2, "prefix"  # Ljava/lang/String;
 
-    .line 595
+    .line 598
     new-instance v0, Ljava/lang/StringBuilder;
 
     invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
@@ -849,63 +925,6 @@
 
     invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
-    .line 596
-    new-instance v0, Ljava/lang/StringBuilder;
-
-    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
-
-    invoke-virtual {v0, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    const-string p2, "  "
-
-    invoke-virtual {v0, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
-
-    move-result-object p2
-
-    .line 597
-    new-instance v0, Ljava/lang/StringBuilder;
-
-    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
-
-    invoke-virtual {v0, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    const-string v1, "mProposedRotation="
-
-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    iget v1, p0, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->mProposedRotation:I
-
-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
-
-    move-result-object v0
-
-    invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
-
-    .line 598
-    new-instance v0, Ljava/lang/StringBuilder;
-
-    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
-
-    invoke-virtual {v0, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    const-string v1, "mPredictedRotation="
-
-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    iget v1, p0, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->mPredictedRotation:I
-
-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
-
-    move-result-object v0
-
-    invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
-
     .line 599
     new-instance v0, Ljava/lang/StringBuilder;
 
@@ -913,19 +932,13 @@
 
     invoke-virtual {v0, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string v1, "mLastFilteredX="
+    const-string v1, "  "
 
     invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    iget v1, p0, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->mLastFilteredX:F
-
-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(F)Ljava/lang/StringBuilder;
-
     invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v0
-
-    invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    move-result-object p2
 
     .line 600
     new-instance v0, Ljava/lang/StringBuilder;
@@ -934,13 +947,13 @@
 
     invoke-virtual {v0, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string v1, "mLastFilteredY="
+    const-string/jumbo v1, "mProposedRotation="
 
     invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    iget v1, p0, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->mLastFilteredY:F
+    iget v1, p0, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->mProposedRotation:I
 
-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(F)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
     invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
@@ -955,7 +968,70 @@
 
     invoke-virtual {v0, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string v1, "mLastFilteredZ="
+    const-string/jumbo v1, "mPredictedRotation="
+
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    iget v1, p0, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->mPredictedRotation:I
+
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v0
+
+    invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+
+    .line 602
+    new-instance v0, Ljava/lang/StringBuilder;
+
+    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
+
+    invoke-virtual {v0, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    const-string/jumbo v1, "mLastFilteredX="
+
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    iget v1, p0, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->mLastFilteredX:F
+
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(F)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v0
+
+    invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+
+    .line 603
+    new-instance v0, Ljava/lang/StringBuilder;
+
+    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
+
+    invoke-virtual {v0, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    const-string/jumbo v1, "mLastFilteredY="
+
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    iget v1, p0, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->mLastFilteredY:F
+
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(F)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v0
+
+    invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+
+    .line 604
+    new-instance v0, Ljava/lang/StringBuilder;
+
+    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
+
+    invoke-virtual {v0, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    const-string/jumbo v1, "mLastFilteredZ="
 
     invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
@@ -969,7 +1045,7 @@
 
     invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
-    .line 602
+    .line 605
     invoke-static {}, Landroid/os/SystemClock;->elapsedRealtimeNanos()J
 
     move-result-wide v0
@@ -978,14 +1054,15 @@
 
     sub-long/2addr v0, v2
 
-    .line 603
+    .line 606
+    .local v0, "delta":J
     new-instance v2, Ljava/lang/StringBuilder;
 
     invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
 
     invoke-virtual {v2, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string v3, "mLastFilteredTimestampNanos="
+    const-string/jumbo v3, "mLastFilteredTimestampNanos="
 
     invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
@@ -997,242 +1074,244 @@
 
     invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    long-to-float v0, v0
+    long-to-float v3, v0
 
-    const v1, 0x358637bd  # 1.0E-6f
+    const v4, 0x358637bd  # 1.0E-6f
 
-    mul-float/2addr v0, v1
+    mul-float/2addr v3, v4
 
-    invoke-virtual {v2, v0}, Ljava/lang/StringBuilder;->append(F)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(F)Ljava/lang/StringBuilder;
 
-    const-string/jumbo v0, "ms ago)"
+    const-string/jumbo v3, "ms ago)"
 
-    invoke-virtual {v2, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v2
 
-    invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {p1, v2}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
-    .line 605
-    new-instance v0, Ljava/lang/StringBuilder;
+    .line 608
+    new-instance v2, Ljava/lang/StringBuilder;
 
-    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
 
-    invoke-virtual {v0, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string v1, "mTiltHistory={last: "
+    const-string/jumbo v3, "mTiltHistory={last: "
 
-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-direct {p0}, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->getLastTiltLocked()F
 
-    move-result v1
+    move-result v3
 
-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(F)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(F)Ljava/lang/StringBuilder;
 
-    const-string/jumbo v1, "}"
+    const-string/jumbo v3, "}"
 
-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v2
 
-    invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
-
-    .line 606
-    new-instance v0, Ljava/lang/StringBuilder;
-
-    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
-
-    invoke-virtual {v0, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    const-string v1, "mFlat="
-
-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    iget-boolean v1, p0, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->mFlat:Z
-
-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Z)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
-
-    move-result-object v0
-
-    invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
-
-    .line 607
-    new-instance v0, Ljava/lang/StringBuilder;
-
-    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
-
-    invoke-virtual {v0, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    const-string v1, "mSwinging="
-
-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    iget-boolean v1, p0, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->mSwinging:Z
-
-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Z)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
-
-    move-result-object v0
-
-    invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
-
-    .line 608
-    new-instance v0, Ljava/lang/StringBuilder;
-
-    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
-
-    invoke-virtual {v0, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    const-string v1, "mAccelerating="
-
-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    iget-boolean v1, p0, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->mAccelerating:Z
-
-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Z)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
-
-    move-result-object v0
-
-    invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {p1, v2}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
     .line 609
-    new-instance v0, Ljava/lang/StringBuilder;
+    new-instance v2, Ljava/lang/StringBuilder;
 
-    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
 
-    invoke-virtual {v0, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string v1, "mOverhead="
+    const-string/jumbo v3, "mFlat="
 
-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    iget-boolean v1, p0, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->mOverhead:Z
+    iget-boolean v3, p0, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->mFlat:Z
 
-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Z)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Z)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v2
 
-    invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {p1, v2}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
     .line 610
-    new-instance v0, Ljava/lang/StringBuilder;
+    new-instance v2, Ljava/lang/StringBuilder;
 
-    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
 
-    invoke-virtual {v0, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string v1, "mTouched="
+    const-string/jumbo v3, "mSwinging="
 
-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    iget-boolean v1, p0, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->mTouched:Z
+    iget-boolean v3, p0, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->mSwinging:Z
 
-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Z)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Z)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v2
 
-    invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {p1, v2}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
     .line 611
-    new-instance v0, Ljava/lang/StringBuilder;
+    new-instance v2, Ljava/lang/StringBuilder;
 
-    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
 
-    invoke-virtual {v0, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string p2, "mTiltToleranceConfig=["
+    const-string/jumbo v3, "mAccelerating="
 
-    invoke-virtual {v0, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    iget-boolean v3, p0, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->mAccelerating:Z
 
-    move-result-object p2
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Z)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p1, p2}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
+    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v2
+
+    invoke-virtual {p1, v2}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
     .line 612
-    const/4 p2, 0x0
+    new-instance v2, Ljava/lang/StringBuilder;
 
-    move v0, p2
+    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
 
-    :goto_189
-    const/4 v1, 0x4
+    invoke-virtual {v2, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string v2, "]"
+    const-string/jumbo v3, "mOverhead="
 
-    if-ge v0, v1, :cond_1b6
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    iget-boolean v3, p0, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->mOverhead:Z
+
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Z)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v2
+
+    invoke-virtual {p1, v2}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
     .line 613
-    const-string v1, ", "
+    new-instance v2, Ljava/lang/StringBuilder;
 
-    if-eqz v0, :cond_195
+    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
+
+    invoke-virtual {v2, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    const-string/jumbo v3, "mTouched="
+
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    iget-boolean v3, p0, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->mTouched:Z
+
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Z)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v2
+
+    invoke-virtual {p1, v2}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
     .line 614
-    invoke-virtual {p1, v1}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
+    new-instance v2, Ljava/lang/StringBuilder;
+
+    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
+
+    invoke-virtual {v2, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    const-string/jumbo v3, "mTiltToleranceConfig=["
+
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v2
+
+    invoke-virtual {p1, v2}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
+
+    .line 615
+    const/4 v2, 0x0
+
+    .local v2, "i":I
+    :goto_195
+    const/4 v3, 0x4
+
+    const-string v4, "]"
+
+    if-ge v2, v3, :cond_1c3
 
     .line 616
-    :cond_195
-    const-string v3, "["
+    const-string v3, ", "
 
-    invoke-virtual {p1, v3}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
+    if-eqz v2, :cond_1a1
 
     .line 617
+    invoke-virtual {p1, v3}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
+
+    .line 619
+    :cond_1a1
+    const-string v5, "["
+
+    invoke-virtual {p1, v5}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
+
+    .line 620
+    iget-object v5, p0, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->mTiltToleranceConfig:[[I
+
+    aget-object v5, v5, v2
+
+    const/4 v6, 0x0
+
+    aget v5, v5, v6
+
+    invoke-virtual {p1, v5}, Ljava/io/PrintWriter;->print(I)V
+
+    .line 621
+    invoke-virtual {p1, v3}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
+
+    .line 622
     iget-object v3, p0, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->mTiltToleranceConfig:[[I
 
-    aget-object v3, v3, v0
+    aget-object v3, v3, v2
 
-    aget v3, v3, p2
+    const/4 v5, 0x1
+
+    aget v3, v3, v5
 
     invoke-virtual {p1, v3}, Ljava/io/PrintWriter;->print(I)V
 
-    .line 618
-    invoke-virtual {p1, v1}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
-
-    .line 619
-    iget-object v1, p0, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->mTiltToleranceConfig:[[I
-
-    aget-object v1, v1, v0
-
-    const/4 v3, 0x1
-
-    aget v1, v1, v3
-
-    invoke-virtual {p1, v1}, Ljava/io/PrintWriter;->print(I)V
-
-    .line 620
-    invoke-virtual {p1, v2}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
-
-    .line 612
-    add-int/lit8 v0, v0, 0x1
-
-    goto :goto_189
-
-    .line 622
-    :cond_1b6
-    invoke-virtual {p1, v2}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
-
     .line 623
+    invoke-virtual {p1, v4}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
+
+    .line 615
+    add-int/lit8 v2, v2, 0x1
+
+    goto :goto_195
+
+    .line 625
+    .end local v2  # "i":I
+    :cond_1c3
+    invoke-virtual {p1, v4}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+
+    .line 626
     return-void
 .end method
 
 .method public getProposedRotationLocked()I
     .registers 2
 
-    .line 590
+    .line 593
     iget v0, p0, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->mProposedRotation:I
 
     return v0
@@ -1240,57 +1319,63 @@
 
 .method public onAccuracyChanged(Landroid/hardware/Sensor;I)V
     .registers 3
+    .param p1, "sensor"  # Landroid/hardware/Sensor;
+    .param p2, "accuracy"  # I
 
-    .line 627
+    .line 630
     return-void
 .end method
 
 .method public onSensorChanged(Landroid/hardware/SensorEvent;)V
-    .registers 19
+    .registers 27
+    .param p1, "event"  # Landroid/hardware/SensorEvent;
 
-    .line 634
-    move-object/from16 v0, p0
+    .line 637
+    move-object/from16 v1, p0
 
-    move-object/from16 v1, p1
+    move-object/from16 v2, p1
 
-    iget-object v2, v0, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->this$0:Lcom/android/server/policy/WindowOrientationListener;
+    iget-object v0, v1, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->this$0:Lcom/android/server/policy/WindowOrientationListener;
 
-    invoke-static {v2}, Lcom/android/server/policy/WindowOrientationListener;->access$000(Lcom/android/server/policy/WindowOrientationListener;)Ljava/lang/Object;
+    invoke-static {v0}, Lcom/android/server/policy/WindowOrientationListener;->access$000(Lcom/android/server/policy/WindowOrientationListener;)Ljava/lang/Object;
 
-    move-result-object v2
+    move-result-object v3
 
-    monitor-enter v2
+    monitor-enter v3
 
-    .line 638
+    .line 641
     :try_start_b
-    iget-object v3, v1, Landroid/hardware/SensorEvent;->values:[F
+    iget-object v0, v2, Landroid/hardware/SensorEvent;->values:[F
 
     const/4 v4, 0x0
 
-    aget v3, v3, v4
+    aget v0, v0, v4
 
-    .line 639
-    iget-object v5, v1, Landroid/hardware/SensorEvent;->values:[F
+    .line 642
+    .local v0, "x":F
+    iget-object v5, v2, Landroid/hardware/SensorEvent;->values:[F
 
     const/4 v6, 0x1
 
     aget v5, v5, v6
 
-    .line 640
-    iget-object v7, v1, Landroid/hardware/SensorEvent;->values:[F
+    .line 643
+    .local v5, "y":F
+    iget-object v7, v2, Landroid/hardware/SensorEvent;->values:[F
 
     const/4 v8, 0x2
 
     aget v7, v7, v8
 
-    .line 642
+    .line 645
+    .local v7, "z":F
     invoke-static {}, Lcom/android/server/policy/WindowOrientationListener;->access$100()Z
 
     move-result v8
 
     if-eqz v8, :cond_5b
 
-    .line 643
+    .line 646
     const-string v8, "WindowOrientationListener"
 
     new-instance v9, Ljava/lang/StringBuilder;
@@ -1301,7 +1386,7 @@
 
     invoke-virtual {v9, v10}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v9, v3}, Ljava/lang/StringBuilder;->append(F)Ljava/lang/StringBuilder;
+    invoke-virtual {v9, v0}, Ljava/lang/StringBuilder;->append(F)Ljava/lang/StringBuilder;
 
     const-string v10, ", y="
 
@@ -1319,7 +1404,7 @@
 
     invoke-virtual {v9, v10}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    mul-float v10, v3, v3
+    mul-float v10, v0, v0
 
     mul-float v11, v5, v5
 
@@ -1331,7 +1416,7 @@
 
     float-to-double v10, v10
 
-    .line 645
+    .line 648
     invoke-static {v10, v11}, Ljava/lang/Math;->sqrt(D)D
 
     move-result-wide v10
@@ -1342,240 +1427,258 @@
 
     move-result-object v9
 
-    .line 643
+    .line 646
     invoke-static {v8, v9}, Landroid/util/Slog;->v(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 652
-    :cond_5b
-    iget-object v8, v0, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->this$0:Lcom/android/server/policy/WindowOrientationListener;
-
-    invoke-static {v8}, Lcom/android/server/policy/WindowOrientationListener;->access$200(Lcom/android/server/policy/WindowOrientationListener;)Z
-
-    move-result v8
-
-    if-eqz v8, :cond_68
-
-    .line 653
-    invoke-static {}, Landroid/os/SystemClock;->elapsedRealtimeNanos()J
-
-    move-result-wide v8
-
-    goto :goto_6a
-
-    :cond_68
-    iget-wide v8, v1, Landroid/hardware/SensorEvent;->timestamp:J
-
-    .line 654
-    :goto_6a
-    iget-wide v10, v0, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->mLastFilteredTimestampNanos:J
-
     .line 655
-    sub-long v12, v8, v10
+    :cond_5b
+    iget-wide v8, v2, Landroid/hardware/SensorEvent;->timestamp:J
 
-    long-to-float v1, v12
-
-    const v12, 0x358637bd  # 1.0E-6f
-
-    mul-float/2addr v1, v12
+    .line 656
+    .local v8, "now":J
+    iget-wide v10, v1, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->mLastFilteredTimestampNanos:J
 
     .line 657
-    cmp-long v13, v8, v10
+    .local v10, "then":J
+    sub-long v12, v8, v10
 
-    if-ltz v13, :cond_ea
+    long-to-float v12, v12
 
-    const-wide/32 v13, 0x3b9aca00
+    const v13, 0x358637bd  # 1.0E-6f
 
-    add-long/2addr v10, v13
+    mul-float/2addr v12, v13
 
-    cmp-long v10, v8, v10
+    .line 659
+    .local v12, "timeDeltaMS":F
+    cmp-long v14, v8, v10
 
-    if-gtz v10, :cond_ea
+    if-ltz v14, :cond_ec
 
-    const/4 v10, 0x0
+    const-wide/32 v14, 0x3b9aca00
 
-    cmpl-float v11, v3, v10
+    add-long/2addr v14, v10
 
-    if-nez v11, :cond_8d
+    cmp-long v14, v8, v14
 
-    cmpl-float v11, v5, v10
+    if-gtz v14, :cond_ec
 
-    if-nez v11, :cond_8d
+    const/4 v14, 0x0
 
-    cmpl-float v10, v7, v10
+    cmpl-float v15, v0, v14
 
-    if-nez v10, :cond_8d
+    if-nez v15, :cond_80
 
-    goto :goto_ea
+    cmpl-float v15, v5, v14
 
-    .line 666
-    :cond_8d
-    const/high16 v10, 0x43480000  # 200.0f
+    if-nez v15, :cond_80
 
-    add-float/2addr v10, v1
+    cmpl-float v14, v7, v14
 
-    div-float v10, v1, v10
+    if-nez v14, :cond_80
 
-    .line 667
-    iget v11, v0, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->mLastFilteredX:F
-
-    sub-float/2addr v3, v11
-
-    mul-float/2addr v3, v10
-
-    iget v11, v0, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->mLastFilteredX:F
-
-    add-float/2addr v3, v11
+    goto :goto_ec
 
     .line 668
-    iget v11, v0, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->mLastFilteredY:F
+    :cond_80
+    const/high16 v14, 0x43480000  # 200.0f
 
-    sub-float/2addr v5, v11
+    add-float/2addr v14, v12
 
-    mul-float/2addr v5, v10
-
-    iget v11, v0, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->mLastFilteredY:F
-
-    add-float/2addr v5, v11
+    div-float v14, v12, v14
 
     .line 669
-    iget v11, v0, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->mLastFilteredZ:F
+    .local v14, "alpha":F
+    iget v15, v1, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->mLastFilteredX:F
 
-    sub-float/2addr v7, v11
+    sub-float v15, v0, v15
 
-    mul-float/2addr v10, v7
+    mul-float/2addr v15, v14
 
-    iget v7, v0, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->mLastFilteredZ:F
+    iget v13, v1, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->mLastFilteredX:F
 
-    add-float/2addr v7, v10
+    add-float v0, v15, v13
 
     .line 670
-    invoke-static {}, Lcom/android/server/policy/WindowOrientationListener;->access$100()Z
+    iget v13, v1, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->mLastFilteredY:F
 
-    move-result v10
+    sub-float v13, v5, v13
 
-    if-eqz v10, :cond_e8
+    mul-float/2addr v13, v14
+
+    iget v15, v1, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->mLastFilteredY:F
+
+    add-float v5, v13, v15
 
     .line 671
-    const-string v10, "WindowOrientationListener"
+    iget v13, v1, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->mLastFilteredZ:F
 
-    new-instance v11, Ljava/lang/StringBuilder;
+    sub-float v13, v7, v13
 
-    invoke-direct {v11}, Ljava/lang/StringBuilder;-><init>()V
+    mul-float/2addr v13, v14
 
-    const-string v13, "Filtered acceleration vector: x="
+    iget v15, v1, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->mLastFilteredZ:F
 
-    invoke-virtual {v11, v13}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    add-float v7, v13, v15
 
-    invoke-virtual {v11, v3}, Ljava/lang/StringBuilder;->append(F)Ljava/lang/StringBuilder;
+    .line 672
+    invoke-static {}, Lcom/android/server/policy/WindowOrientationListener;->access$100()Z
 
-    const-string v13, ", y="
+    move-result v13
 
-    invoke-virtual {v11, v13}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v11, v5}, Ljava/lang/StringBuilder;->append(F)Ljava/lang/StringBuilder;
-
-    const-string v13, ", z="
-
-    invoke-virtual {v11, v13}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v11, v7}, Ljava/lang/StringBuilder;->append(F)Ljava/lang/StringBuilder;
-
-    const-string v13, ", magnitude="
-
-    invoke-virtual {v11, v13}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    mul-float v13, v3, v3
-
-    mul-float v14, v5, v5
-
-    add-float/2addr v13, v14
-
-    mul-float v14, v7, v7
-
-    add-float/2addr v13, v14
-
-    float-to-double v13, v13
+    if-eqz v13, :cond_e6
 
     .line 673
-    invoke-static {v13, v14}, Ljava/lang/Math;->sqrt(D)D
+    const-string v13, "WindowOrientationListener"
 
-    move-result-wide v13
+    new-instance v15, Ljava/lang/StringBuilder;
 
-    invoke-virtual {v11, v13, v14}, Ljava/lang/StringBuilder;->append(D)Ljava/lang/StringBuilder;
+    invoke-direct {v15}, Ljava/lang/StringBuilder;-><init>()V
 
-    invoke-virtual {v11}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    const-string v4, "Filtered acceleration vector: x="
 
-    move-result-object v11
+    invoke-virtual {v15, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    .line 671
-    invoke-static {v10, v11}, Landroid/util/Slog;->v(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-virtual {v15, v0}, Ljava/lang/StringBuilder;->append(F)Ljava/lang/StringBuilder;
+
+    const-string v4, ", y="
+
+    invoke-virtual {v15, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v15, v5}, Ljava/lang/StringBuilder;->append(F)Ljava/lang/StringBuilder;
+
+    const-string v4, ", z="
+
+    invoke-virtual {v15, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v15, v7}, Ljava/lang/StringBuilder;->append(F)Ljava/lang/StringBuilder;
+
+    const-string v4, ", magnitude="
+
+    invoke-virtual {v15, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    mul-float v4, v0, v0
+
+    mul-float v18, v5, v5
+
+    add-float v4, v4, v18
+
+    mul-float v18, v7, v7
+
+    add-float v4, v4, v18
+
+    move/from16 v19, v7
+
+    .end local v7  # "z":F
+    .local v19, "z":F
+    float-to-double v6, v4
 
     .line 675
-    :cond_e8
-    move v10, v4
+    invoke-static {v6, v7}, Ljava/lang/Math;->sqrt(D)D
 
-    goto :goto_fb
+    move-result-wide v6
 
-    .line 660
-    :cond_ea
-    :goto_ea
-    invoke-static {}, Lcom/android/server/policy/WindowOrientationListener;->access$100()Z
+    invoke-virtual {v15, v6, v7}, Ljava/lang/StringBuilder;->append(D)Ljava/lang/StringBuilder;
 
-    move-result v10
+    invoke-virtual {v15}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    if-eqz v10, :cond_f7
+    move-result-object v4
 
-    .line 661
-    const-string v10, "WindowOrientationListener"
+    .line 673
+    invoke-static {v13, v4}, Landroid/util/Slog;->v(Ljava/lang/String;Ljava/lang/String;)I
 
-    const-string v11, "Resetting orientation listener."
+    goto :goto_e8
 
-    invoke-static {v10, v11}, Landroid/util/Slog;->v(Ljava/lang/String;Ljava/lang/String;)I
-
-    .line 663
-    :cond_f7
-    invoke-virtual {v0, v6}, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->resetLocked(Z)V
-
-    .line 664
-    move v10, v6
+    .line 672
+    .end local v19  # "z":F
+    .restart local v7  # "z":F
+    :cond_e6
+    move/from16 v19, v7
 
     .line 677
-    :goto_fb
-    iput-wide v8, v0, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->mLastFilteredTimestampNanos:J
+    .end local v7  # "z":F
+    .restart local v19  # "z":F
+    :goto_e8
+    const/4 v4, 0x0
 
-    .line 678
-    iput v3, v0, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->mLastFilteredX:F
+    move/from16 v7, v19
+
+    .end local v14  # "alpha":F
+    .local v4, "skipSample":Z
+    goto :goto_fe
+
+    .line 662
+    .end local v4  # "skipSample":Z
+    .end local v19  # "z":F
+    .restart local v7  # "z":F
+    :cond_ec
+    :goto_ec
+    invoke-static {}, Lcom/android/server/policy/WindowOrientationListener;->access$100()Z
+
+    move-result v4
+
+    if-eqz v4, :cond_f9
+
+    .line 663
+    const-string v4, "WindowOrientationListener"
+
+    const-string v6, "Resetting orientation listener."
+
+    invoke-static {v4, v6}, Landroid/util/Slog;->v(Ljava/lang/String;Ljava/lang/String;)I
+
+    .line 665
+    :cond_f9
+    const/4 v4, 0x1
+
+    invoke-virtual {v1, v4}, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->resetLocked(Z)V
+
+    .line 666
+    const/4 v4, 0x1
 
     .line 679
-    iput v5, v0, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->mLastFilteredY:F
+    .restart local v4  # "skipSample":Z
+    :goto_fe
+    iput-wide v8, v1, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->mLastFilteredTimestampNanos:J
 
     .line 680
-    iput v7, v0, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->mLastFilteredZ:F
+    iput v0, v1, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->mLastFilteredX:F
+
+    .line 681
+    iput v5, v1, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->mLastFilteredY:F
 
     .line 682
-    nop
-
-    .line 683
-    nop
+    iput v7, v1, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->mLastFilteredZ:F
 
     .line 684
-    nop
+    const/4 v6, 0x0
 
     .line 685
-    if-nez v10, :cond_25d
+    .local v6, "isAccelerating":Z
+    const/4 v13, 0x0
+
+    .line 686
+    .local v13, "isFlat":Z
+    const/4 v14, 0x0
 
     .line 687
-    mul-float v10, v3, v3
+    .local v14, "isSwinging":Z
+    if-nez v4, :cond_28e
 
-    mul-float v11, v5, v5
+    .line 689
+    mul-float v15, v0, v0
 
-    add-float/2addr v10, v11
+    mul-float v19, v5, v5
 
-    mul-float v11, v7, v7
+    add-float v15, v15, v19
 
-    add-float/2addr v10, v11
+    mul-float v19, v7, v7
 
-    float-to-double v10, v10
+    add-float v15, v15, v19
+
+    move-wide/from16 v19, v10
+
+    .end local v10  # "then":J
+    .local v19, "then":J
+    float-to-double v10, v15
 
     invoke-static {v10, v11}, Ljava/lang/Math;->sqrt(D)D
 
@@ -1583,749 +1686,926 @@
 
     double-to-float v10, v10
 
-    .line 688
+    .line 690
+    .local v10, "magnitude":F
     const/high16 v11, 0x3f800000  # 1.0f
 
     cmpg-float v11, v10, v11
 
-    if-gez v11, :cond_12e
+    if-gez v11, :cond_13b
 
-    .line 689
+    .line 691
     invoke-static {}, Lcom/android/server/policy/WindowOrientationListener;->access$100()Z
-
-    move-result v3
-
-    if-eqz v3, :cond_129
-
-    .line 690
-    const-string v3, "WindowOrientationListener"
-
-    const-string v5, "Ignoring sensor data, magnitude too close to zero."
-
-    invoke-static {v3, v5}, Landroid/util/Slog;->v(Ljava/lang/String;Ljava/lang/String;)I
-
-    .line 692
-    :cond_129
-    invoke-direct/range {p0 .. p0}, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->clearPredictedRotationLocked()V
-
-    goto/16 :goto_25d
-
-    .line 696
-    :cond_12e
-    invoke-direct {v0, v10}, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->isAcceleratingLocked(F)Z
 
     move-result v11
 
-    if-eqz v11, :cond_139
+    if-eqz v11, :cond_130
 
-    .line 697
-    nop
+    .line 692
+    const-string v11, "WindowOrientationListener"
+
+    const-string v15, "Ignoring sensor data, magnitude too close to zero."
+
+    invoke-static {v11, v15}, Landroid/util/Slog;->v(Ljava/lang/String;Ljava/lang/String;)I
+
+    .line 694
+    :cond_130
+    invoke-direct/range {p0 .. p0}, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->clearPredictedRotationLocked()V
+
+    move/from16 v18, v0
+
+    move/from16 v22, v4
+
+    move v0, v5
+
+    move v15, v7
+
+    goto/16 :goto_296
 
     .line 698
-    iput-wide v8, v0, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->mAccelerationTimestampNanos:J
+    :cond_13b
+    invoke-direct {v1, v10}, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->isAcceleratingLocked(F)Z
 
-    move v11, v6
+    move-result v11
 
-    goto :goto_13a
+    if-eqz v11, :cond_144
 
-    .line 696
-    :cond_139
-    move v11, v4
+    .line 699
+    const/4 v6, 0x1
 
-    .line 707
-    :goto_13a
-    div-float/2addr v7, v10
-
-    float-to-double v13, v7
-
-    .line 708
-    invoke-static {v13, v14}, Ljava/lang/Math;->asin(D)D
-
-    move-result-wide v13
-
-    const-wide v15, 0x404ca5dc20000000L  # 57.295780181884766
-
-    mul-double/2addr v13, v15
-
-    .line 707
-    invoke-static {v13, v14}, Ljava/lang/Math;->round(D)J
-
-    move-result-wide v13
-
-    long-to-int v7, v13
+    .line 700
+    iput-wide v8, v1, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->mAccelerationTimestampNanos:J
 
     .line 709
-    int-to-float v10, v7
+    :cond_144
+    div-float v11, v7, v10
 
-    invoke-direct {v0, v8, v9, v10}, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->addTiltHistoryEntryLocked(JF)V
+    move/from16 v21, v6
 
-    .line 712
-    invoke-direct {v0, v8, v9}, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->isFlatLocked(J)Z
+    move v15, v7
 
-    move-result v13
+    .end local v6  # "isAccelerating":Z
+    .end local v7  # "z":F
+    .local v15, "z":F
+    .local v21, "isAccelerating":Z
+    float-to-double v6, v11
 
-    if-eqz v13, :cond_15a
+    .line 710
+    invoke-static {v6, v7}, Ljava/lang/Math;->asin(D)D
 
-    .line 713
-    nop
+    move-result-wide v6
+
+    const-wide v22, 0x404ca5dc20000000L  # 57.295780181884766
+
+    mul-double v6, v6, v22
+
+    .line 709
+    invoke-static {v6, v7}, Ljava/lang/Math;->round(D)J
+
+    move-result-wide v6
+
+    long-to-int v6, v6
+
+    .line 711
+    .local v6, "tiltAngle":I
+    int-to-float v7, v6
+
+    invoke-direct {v1, v8, v9, v7}, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->addTiltHistoryEntryLocked(JF)V
 
     .line 714
-    iput-wide v8, v0, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->mFlatTimestampNanos:J
+    invoke-direct {v1, v8, v9}, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->isFlatLocked(J)Z
 
-    move v13, v6
+    move-result v7
 
-    goto :goto_15b
+    if-eqz v7, :cond_167
 
-    .line 712
-    :cond_15a
-    move v13, v4
+    .line 715
+    const/4 v13, 0x1
 
     .line 716
-    :goto_15b
-    invoke-direct {v0, v8, v9, v10}, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->isSwingingLocked(JF)Z
-
-    move-result v10
-
-    if-eqz v10, :cond_166
-
-    .line 717
-    nop
+    iput-wide v8, v1, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->mFlatTimestampNanos:J
 
     .line 718
-    iput-wide v8, v0, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->mSwingTimestampNanos:J
+    :cond_167
+    int-to-float v7, v6
 
-    move v10, v6
+    invoke-direct {v1, v8, v9, v7}, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->isSwingingLocked(JF)Z
 
-    goto :goto_167
+    move-result v7
 
-    .line 716
-    :cond_166
-    move v10, v4
+    if-eqz v7, :cond_171
 
-    .line 723
-    :goto_167
-    const/16 v14, -0x28
+    .line 719
+    const/4 v14, 0x1
 
-    if-gt v7, v14, :cond_16e
-
-    .line 724
-    iput-boolean v6, v0, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->mOverhead:Z
-
-    goto :goto_174
+    .line 720
+    iput-wide v8, v1, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->mSwingTimestampNanos:J
 
     .line 725
-    :cond_16e
-    const/16 v6, -0xf
+    :cond_171
+    const/16 v7, -0x28
 
-    if-lt v7, v6, :cond_174
+    if-gt v6, v7, :cond_179
 
     .line 726
-    iput-boolean v4, v0, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->mOverhead:Z
+    const/4 v7, 0x1
+
+    iput-boolean v7, v1, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->mOverhead:Z
+
+    goto :goto_180
+
+    .line 727
+    :cond_179
+    const/16 v7, -0xf
+
+    if-lt v6, v7, :cond_180
 
     .line 728
-    :cond_174
-    :goto_174
-    iget-boolean v6, v0, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->mOverhead:Z
+    const/4 v7, 0x0
 
-    if-eqz v6, :cond_19b
-
-    .line 729
-    invoke-static {}, Lcom/android/server/policy/WindowOrientationListener;->access$100()Z
-
-    move-result v3
-
-    if-eqz v3, :cond_194
+    iput-boolean v7, v1, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->mOverhead:Z
 
     .line 730
-    const-string v3, "WindowOrientationListener"
+    :cond_180
+    :goto_180
+    iget-boolean v7, v1, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->mOverhead:Z
 
-    new-instance v4, Ljava/lang/StringBuilder;
+    if-eqz v7, :cond_1ad
 
-    invoke-direct {v4}, Ljava/lang/StringBuilder;-><init>()V
+    .line 731
+    invoke-static {}, Lcom/android/server/policy/WindowOrientationListener;->access$100()Z
 
-    const-string v5, "Ignoring sensor data, device is overhead: tiltAngle="
+    move-result v7
 
-    invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    if-eqz v7, :cond_1a0
 
-    invoke-virtual {v4, v7}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    .line 732
+    const-string v7, "WindowOrientationListener"
 
-    invoke-virtual {v4}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    new-instance v11, Ljava/lang/StringBuilder;
 
-    move-result-object v4
+    invoke-direct {v11}, Ljava/lang/StringBuilder;-><init>()V
 
-    invoke-static {v3, v4}, Landroid/util/Slog;->v(Ljava/lang/String;Ljava/lang/String;)I
+    const-string v2, "Ignoring sensor data, device is overhead: tiltAngle="
 
-    .line 733
-    :cond_194
-    invoke-direct/range {p0 .. p0}, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->clearPredictedRotationLocked()V
+    invoke-virtual {v11, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    move/from16 p1, v13
+    invoke-virtual {v11, v6}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    goto/16 :goto_25a
+    invoke-virtual {v11}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    .line 734
-    :cond_19b
-    invoke-static {v7}, Ljava/lang/Math;->abs(I)I
+    move-result-object v2
 
-    move-result v6
-
-    const/16 v14, 0x50
-
-    if-le v6, v14, :cond_1c6
+    invoke-static {v7, v2}, Landroid/util/Slog;->v(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 735
-    invoke-static {}, Lcom/android/server/policy/WindowOrientationListener;->access$100()Z
+    :cond_1a0
+    invoke-direct/range {p0 .. p0}, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->clearPredictedRotationLocked()V
 
-    move-result v3
+    move/from16 v18, v0
 
-    if-eqz v3, :cond_1bf
+    move/from16 v22, v4
+
+    move v0, v5
+
+    move v2, v13
+
+    move/from16 v17, v14
+
+    goto/16 :goto_289
 
     .line 736
-    const-string v3, "WindowOrientationListener"
+    :cond_1ad
+    invoke-static {v6}, Ljava/lang/Math;->abs(I)I
 
-    new-instance v4, Ljava/lang/StringBuilder;
+    move-result v2
 
-    invoke-direct {v4}, Ljava/lang/StringBuilder;-><init>()V
+    const/16 v7, 0x50
 
-    const-string v5, "Ignoring sensor data, tilt angle too high: tiltAngle="
+    if-le v2, v7, :cond_1de
 
-    invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v4, v7}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v4}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
-
-    move-result-object v4
-
-    invoke-static {v3, v4}, Landroid/util/Slog;->v(Ljava/lang/String;Ljava/lang/String;)I
-
-    .line 739
-    :cond_1bf
-    invoke-direct/range {p0 .. p0}, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->clearPredictedRotationLocked()V
-
-    move/from16 p1, v13
-
-    goto/16 :goto_25a
-
-    .line 744
-    :cond_1c6
-    neg-float v3, v3
-
-    move/from16 p1, v13
-
-    float-to-double v12, v3
-
-    float-to-double v4, v5
-
-    .line 745
-    invoke-static {v12, v13, v4, v5}, Ljava/lang/Math;->atan2(DD)D
-
-    move-result-wide v4
-
-    neg-double v4, v4
-
-    mul-double/2addr v4, v15
-
-    .line 744
-    invoke-static {v4, v5}, Ljava/lang/Math;->round(D)J
-
-    move-result-wide v4
-
-    long-to-int v4, v4
-
-    .line 746
-    if-gez v4, :cond_1da
-
-    .line 748
-    add-int/lit16 v4, v4, 0x168
-
-    .line 752
-    :cond_1da
-    add-int/lit8 v5, v4, 0x2d
-
-    div-int/lit8 v5, v5, 0x5a
-
-    .line 753
-    const/4 v12, 0x4
-
-    if-ne v5, v12, :cond_1e3
-
-    .line 754
-    const/4 v3, 0x0
-
-    goto :goto_1e4
-
-    .line 753
-    :cond_1e3
-    move v3, v5
-
-    .line 758
-    :goto_1e4
-    invoke-direct {v0, v3, v7}, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->isTiltAngleAcceptableLocked(II)Z
-
-    move-result v5
-
-    if-eqz v5, :cond_233
-
-    .line 759
-    invoke-direct {v0, v3, v4}, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->isOrientationAngleAcceptableLocked(II)Z
-
-    move-result v5
-
-    if-eqz v5, :cond_233
-
-    .line 761
-    invoke-direct {v0, v8, v9, v3}, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->updatePredictedRotationLocked(JI)V
-
-    .line 762
+    .line 737
     invoke-static {}, Lcom/android/server/policy/WindowOrientationListener;->access$100()Z
 
-    move-result v3
+    move-result v2
 
-    if-eqz v3, :cond_25a
+    if-eqz v2, :cond_1d1
 
-    .line 763
-    const-string v3, "WindowOrientationListener"
-
-    new-instance v5, Ljava/lang/StringBuilder;
-
-    invoke-direct {v5}, Ljava/lang/StringBuilder;-><init>()V
-
-    const-string v12, "Predicted: tiltAngle="
-
-    invoke-virtual {v5, v12}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v5, v7}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
-
-    const-string v7, ", orientationAngle="
-
-    invoke-virtual {v5, v7}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v5, v4}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
-
-    const-string v4, ", predictedRotation="
-
-    invoke-virtual {v5, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    iget v4, v0, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->mPredictedRotation:I
-
-    invoke-virtual {v5, v4}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
-
-    const-string v4, ", predictedRotationAgeMS="
-
-    invoke-virtual {v5, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    iget-wide v12, v0, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->mPredictedRotationTimestampNanos:J
-
-    sub-long v12, v8, v12
-
-    long-to-float v4, v12
-
-    const v6, 0x358637bd  # 1.0E-6f
-
-    mul-float/2addr v4, v6
-
-    invoke-virtual {v5, v4}, Ljava/lang/StringBuilder;->append(F)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v5}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
-
-    move-result-object v4
-
-    invoke-static {v3, v4}, Landroid/util/Slog;->v(Ljava/lang/String;Ljava/lang/String;)I
-
-    goto :goto_25a
-
-    .line 772
-    :cond_233
-    invoke-static {}, Lcom/android/server/policy/WindowOrientationListener;->access$100()Z
-
-    move-result v3
-
-    if-eqz v3, :cond_257
-
-    .line 773
-    const-string v3, "WindowOrientationListener"
-
-    new-instance v5, Ljava/lang/StringBuilder;
-
-    invoke-direct {v5}, Ljava/lang/StringBuilder;-><init>()V
-
-    const-string v6, "Ignoring sensor data, no predicted rotation: tiltAngle="
-
-    invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v5, v7}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
-
-    const-string v6, ", orientationAngle="
-
-    invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v5, v4}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v5}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
-
-    move-result-object v4
-
-    invoke-static {v3, v4}, Landroid/util/Slog;->v(Ljava/lang/String;Ljava/lang/String;)I
-
-    .line 777
-    :cond_257
-    invoke-direct/range {p0 .. p0}, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->clearPredictedRotationLocked()V
-
-    .line 782
-    :cond_25a
-    :goto_25a
-    move/from16 v3, p1
-
-    goto :goto_260
-
-    :cond_25d
-    :goto_25d
-    const/4 v3, 0x0
-
-    const/4 v10, 0x0
-
-    const/4 v11, 0x0
-
-    :goto_260
-    iput-boolean v3, v0, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->mFlat:Z
-
-    .line 783
-    iput-boolean v10, v0, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->mSwinging:Z
-
-    .line 784
-    iput-boolean v11, v0, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->mAccelerating:Z
-
-    .line 787
-    iget v4, v0, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->mProposedRotation:I
-
-    .line 788
-    iget v5, v0, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->mPredictedRotation:I
-
-    if-ltz v5, :cond_272
-
-    invoke-direct {v0, v8, v9}, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->isPredictedRotationAcceptableLocked(J)Z
-
-    move-result v5
-
-    if-eqz v5, :cond_276
-
-    .line 789
-    :cond_272
-    iget v5, v0, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->mPredictedRotation:I
-
-    iput v5, v0, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->mProposedRotation:I
-
-    .line 791
-    :cond_276
-    iget v5, v0, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->mProposedRotation:I
-
-    .line 794
-    invoke-static {}, Lcom/android/server/policy/WindowOrientationListener;->access$100()Z
-
-    move-result v6
-
-    if-eqz v6, :cond_334
-
-    .line 795
-    const-string v6, "WindowOrientationListener"
+    .line 738
+    const-string v2, "WindowOrientationListener"
 
     new-instance v7, Ljava/lang/StringBuilder;
 
     invoke-direct {v7}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v12, "Result: currentRotation="
+    const-string v11, "Ignoring sensor data, tilt angle too high: tiltAngle="
 
-    invoke-virtual {v7, v12}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v7, v11}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    iget-object v12, v0, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->this$0:Lcom/android/server/policy/WindowOrientationListener;
-
-    invoke-static {v12}, Lcom/android/server/policy/WindowOrientationListener;->access$300(Lcom/android/server/policy/WindowOrientationListener;)I
-
-    move-result v12
-
-    invoke-virtual {v7, v12}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
-
-    const-string v12, ", proposedRotation="
-
-    invoke-virtual {v7, v12}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v7, v5}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
-
-    const-string v12, ", predictedRotation="
-
-    invoke-virtual {v7, v12}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    iget v12, v0, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->mPredictedRotation:I
-
-    invoke-virtual {v7, v12}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
-
-    const-string v12, ", timeDeltaMS="
-
-    invoke-virtual {v7, v12}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v7, v1}, Ljava/lang/StringBuilder;->append(F)Ljava/lang/StringBuilder;
-
-    const-string v1, ", isAccelerating="
-
-    invoke-virtual {v7, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v7, v11}, Ljava/lang/StringBuilder;->append(Z)Ljava/lang/StringBuilder;
-
-    const-string v1, ", isFlat="
-
-    invoke-virtual {v7, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v7, v3}, Ljava/lang/StringBuilder;->append(Z)Ljava/lang/StringBuilder;
-
-    const-string v1, ", isSwinging="
-
-    invoke-virtual {v7, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v7, v10}, Ljava/lang/StringBuilder;->append(Z)Ljava/lang/StringBuilder;
-
-    const-string v1, ", isOverhead="
-
-    invoke-virtual {v7, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    iget-boolean v1, v0, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->mOverhead:Z
-
-    invoke-virtual {v7, v1}, Ljava/lang/StringBuilder;->append(Z)Ljava/lang/StringBuilder;
-
-    const-string v1, ", isTouched="
-
-    invoke-virtual {v7, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    iget-boolean v1, v0, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->mTouched:Z
-
-    invoke-virtual {v7, v1}, Ljava/lang/StringBuilder;->append(Z)Ljava/lang/StringBuilder;
-
-    const-string v1, ", timeUntilSettledMS="
-
-    invoke-virtual {v7, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    iget-wide v10, v0, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->mPredictedRotationTimestampNanos:J
-
-    const-wide/32 v12, 0x2625a00
-
-    add-long/2addr v10, v12
-
-    .line 804
-    invoke-direct {v0, v8, v9, v10, v11}, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->remainingMS(JJ)F
-
-    move-result v1
-
-    invoke-virtual {v7, v1}, Ljava/lang/StringBuilder;->append(F)Ljava/lang/StringBuilder;
-
-    const-string v1, ", timeUntilAccelerationDelayExpiredMS="
-
-    invoke-virtual {v7, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    iget-wide v10, v0, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->mAccelerationTimestampNanos:J
-
-    const-wide/32 v12, 0x1dcd6500
-
-    add-long/2addr v10, v12
-
-    .line 806
-    invoke-direct {v0, v8, v9, v10, v11}, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->remainingMS(JJ)F
-
-    move-result v1
-
-    invoke-virtual {v7, v1}, Ljava/lang/StringBuilder;->append(F)Ljava/lang/StringBuilder;
-
-    const-string v1, ", timeUntilFlatDelayExpiredMS="
-
-    invoke-virtual {v7, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    iget-wide v10, v0, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->mFlatTimestampNanos:J
-
-    add-long/2addr v10, v12
-
-    .line 808
-    invoke-direct {v0, v8, v9, v10, v11}, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->remainingMS(JJ)F
-
-    move-result v1
-
-    invoke-virtual {v7, v1}, Ljava/lang/StringBuilder;->append(F)Ljava/lang/StringBuilder;
-
-    const-string v1, ", timeUntilSwingDelayExpiredMS="
-
-    invoke-virtual {v7, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    iget-wide v10, v0, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->mSwingTimestampNanos:J
-
-    const-wide/32 v14, 0x11e1a300
-
-    add-long/2addr v10, v14
-
-    .line 810
-    invoke-direct {v0, v8, v9, v10, v11}, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->remainingMS(JJ)F
-
-    move-result v1
-
-    invoke-virtual {v7, v1}, Ljava/lang/StringBuilder;->append(F)Ljava/lang/StringBuilder;
-
-    const-string v1, ", timeUntilTouchDelayExpiredMS="
-
-    invoke-virtual {v7, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    iget-wide v10, v0, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->mTouchEndedTimestampNanos:J
-
-    add-long/2addr v10, v12
-
-    .line 812
-    invoke-direct {v0, v8, v9, v10, v11}, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->remainingMS(JJ)F
-
-    move-result v1
-
-    invoke-virtual {v7, v1}, Ljava/lang/StringBuilder;->append(F)Ljava/lang/StringBuilder;
+    invoke-virtual {v7, v6}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
     invoke-virtual {v7}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v1
+    move-result-object v7
 
-    .line 795
-    invoke-static {v6, v1}, Landroid/util/Slog;->v(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v2, v7}, Landroid/util/Slog;->v(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 815
-    :cond_334
-    monitor-exit v2
-    :try_end_335
-    .catchall {:try_start_b .. :try_end_335} :catchall_363
+    .line 741
+    :cond_1d1
+    invoke-direct/range {p0 .. p0}, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->clearPredictedRotationLocked()V
 
-    .line 818
-    if-eq v5, v4, :cond_362
+    move/from16 v18, v0
 
-    if-ltz v5, :cond_362
+    move/from16 v22, v4
 
-    .line 819
+    move v0, v5
+
+    move v2, v13
+
+    move/from16 v17, v14
+
+    goto/16 :goto_289
+
+    .line 746
+    :cond_1de
+    neg-float v2, v0
+
+    move v7, v10
+
+    .end local v10  # "magnitude":F
+    .local v7, "magnitude":F
+    float-to-double v10, v2
+
+    move v2, v13
+
+    move/from16 v17, v14
+
+    .end local v13  # "isFlat":Z
+    .end local v14  # "isSwinging":Z
+    .local v2, "isFlat":Z
+    .local v17, "isSwinging":Z
+    float-to-double v13, v5
+
+    .line 747
+    invoke-static {v10, v11, v13, v14}, Ljava/lang/Math;->atan2(DD)D
+
+    move-result-wide v10
+
+    neg-double v10, v10
+
+    mul-double v10, v10, v22
+
+    .line 746
+    invoke-static {v10, v11}, Ljava/lang/Math;->round(D)J
+
+    move-result-wide v10
+
+    long-to-int v10, v10
+
+    .line 748
+    .local v10, "orientationAngle":I
+    if-gez v10, :cond_1f5
+
+    .line 750
+    add-int/lit16 v10, v10, 0x168
+
+    .line 754
+    :cond_1f5
+    add-int/lit8 v11, v10, 0x2d
+
+    div-int/lit8 v11, v11, 0x5a
+
+    .line 755
+    .local v11, "nearestRotation":I
+    const/4 v13, 0x4
+
+    if-ne v11, v13, :cond_1fd
+
+    .line 756
+    const/4 v11, 0x0
+
+    .line 760
+    :cond_1fd
+    invoke-direct {v1, v11, v6}, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->isTiltAngleAcceptableLocked(II)Z
+
+    move-result v13
+
+    if-eqz v13, :cond_25d
+
+    .line 761
+    invoke-direct {v1, v11, v10}, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->isOrientationAngleAcceptableLocked(II)Z
+
+    move-result v13
+
+    if-eqz v13, :cond_257
+
+    .line 763
+    invoke-direct {v1, v8, v9, v11}, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->updatePredictedRotationLocked(JI)V
+
+    .line 764
     invoke-static {}, Lcom/android/server/policy/WindowOrientationListener;->access$100()Z
 
-    move-result v1
+    move-result v13
 
-    if-eqz v1, :cond_35d
+    if-eqz v13, :cond_251
+
+    .line 765
+    const-string v13, "WindowOrientationListener"
+
+    new-instance v14, Ljava/lang/StringBuilder;
+
+    invoke-direct {v14}, Ljava/lang/StringBuilder;-><init>()V
+
+    move/from16 v18, v0
+
+    .end local v0  # "x":F
+    .local v18, "x":F
+    const-string v0, "Predicted: tiltAngle="
+
+    invoke-virtual {v14, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v14, v6}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+
+    const-string v0, ", orientationAngle="
+
+    invoke-virtual {v14, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v14, v10}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+
+    const-string v0, ", predictedRotation="
+
+    invoke-virtual {v14, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    iget v0, v1, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->mPredictedRotation:I
+
+    invoke-virtual {v14, v0}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+
+    const-string v0, ", predictedRotationAgeMS="
+
+    invoke-virtual {v14, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    move/from16 v22, v4
+
+    move v0, v5
+
+    .end local v4  # "skipSample":Z
+    .end local v5  # "y":F
+    .local v0, "y":F
+    .local v22, "skipSample":Z
+    iget-wide v4, v1, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->mPredictedRotationTimestampNanos:J
+
+    sub-long v4, v8, v4
+
+    long-to-float v4, v4
+
+    const v5, 0x358637bd  # 1.0E-6f
+
+    mul-float/2addr v4, v5
+
+    invoke-virtual {v14, v4}, Ljava/lang/StringBuilder;->append(F)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v14}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v4
+
+    invoke-static {v13, v4}, Landroid/util/Slog;->v(Ljava/lang/String;Ljava/lang/String;)I
+
+    goto :goto_289
+
+    .line 764
+    .end local v18  # "x":F
+    .end local v22  # "skipSample":Z
+    .local v0, "x":F
+    .restart local v4  # "skipSample":Z
+    .restart local v5  # "y":F
+    :cond_251
+    move/from16 v18, v0
+
+    move/from16 v22, v4
+
+    move v0, v5
+
+    .end local v4  # "skipSample":Z
+    .end local v5  # "y":F
+    .local v0, "y":F
+    .restart local v18  # "x":F
+    .restart local v22  # "skipSample":Z
+    goto :goto_289
+
+    .line 761
+    .end local v18  # "x":F
+    .end local v22  # "skipSample":Z
+    .local v0, "x":F
+    .restart local v4  # "skipSample":Z
+    .restart local v5  # "y":F
+    :cond_257
+    move/from16 v18, v0
+
+    move/from16 v22, v4
+
+    move v0, v5
+
+    .end local v4  # "skipSample":Z
+    .end local v5  # "y":F
+    .local v0, "y":F
+    .restart local v18  # "x":F
+    .restart local v22  # "skipSample":Z
+    goto :goto_262
+
+    .line 760
+    .end local v18  # "x":F
+    .end local v22  # "skipSample":Z
+    .local v0, "x":F
+    .restart local v4  # "skipSample":Z
+    .restart local v5  # "y":F
+    :cond_25d
+    move/from16 v18, v0
+
+    move/from16 v22, v4
+
+    move v0, v5
+
+    .line 774
+    .end local v4  # "skipSample":Z
+    .end local v5  # "y":F
+    .local v0, "y":F
+    .restart local v18  # "x":F
+    .restart local v22  # "skipSample":Z
+    :goto_262
+    invoke-static {}, Lcom/android/server/policy/WindowOrientationListener;->access$100()Z
+
+    move-result v4
+
+    if-eqz v4, :cond_286
+
+    .line 775
+    const-string v4, "WindowOrientationListener"
+
+    new-instance v5, Ljava/lang/StringBuilder;
+
+    invoke-direct {v5}, Ljava/lang/StringBuilder;-><init>()V
+
+    const-string v13, "Ignoring sensor data, no predicted rotation: tiltAngle="
+
+    invoke-virtual {v5, v13}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+
+    const-string v13, ", orientationAngle="
+
+    invoke-virtual {v5, v13}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v5, v10}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v5}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v5
+
+    invoke-static {v4, v5}, Landroid/util/Slog;->v(Ljava/lang/String;Ljava/lang/String;)I
+
+    .line 779
+    :cond_286
+    invoke-direct/range {p0 .. p0}, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->clearPredictedRotationLocked()V
+
+    .line 784
+    .end local v2  # "isFlat":Z
+    .end local v6  # "tiltAngle":I
+    .end local v7  # "magnitude":F
+    .end local v10  # "orientationAngle":I
+    .end local v11  # "nearestRotation":I
+    .end local v17  # "isSwinging":Z
+    .end local v18  # "x":F
+    .end local v22  # "skipSample":Z
+    .local v0, "x":F
+    .restart local v4  # "skipSample":Z
+    .restart local v5  # "y":F
+    .restart local v13  # "isFlat":Z
+    .restart local v14  # "isSwinging":Z
+    :goto_289
+    move/from16 v14, v17
+
+    move/from16 v6, v21
+
+    .end local v4  # "skipSample":Z
+    .end local v5  # "y":F
+    .end local v13  # "isFlat":Z
+    .end local v14  # "isSwinging":Z
+    .local v0, "y":F
+    .restart local v2  # "isFlat":Z
+    .restart local v17  # "isSwinging":Z
+    .restart local v18  # "x":F
+    .restart local v22  # "skipSample":Z
+    goto :goto_297
+
+    .line 687
+    .end local v2  # "isFlat":Z
+    .end local v15  # "z":F
+    .end local v17  # "isSwinging":Z
+    .end local v18  # "x":F
+    .end local v19  # "then":J
+    .end local v21  # "isAccelerating":Z
+    .end local v22  # "skipSample":Z
+    .local v0, "x":F
+    .restart local v4  # "skipSample":Z
+    .restart local v5  # "y":F
+    .local v6, "isAccelerating":Z
+    .local v7, "z":F
+    .local v10, "then":J
+    .restart local v13  # "isFlat":Z
+    .restart local v14  # "isSwinging":Z
+    :cond_28e
+    move/from16 v18, v0
+
+    move/from16 v22, v4
+
+    move v0, v5
+
+    move v15, v7
+
+    move-wide/from16 v19, v10
+
+    .line 784
+    .end local v4  # "skipSample":Z
+    .end local v5  # "y":F
+    .end local v7  # "z":F
+    .end local v10  # "then":J
+    .local v0, "y":F
+    .restart local v15  # "z":F
+    .restart local v18  # "x":F
+    .restart local v19  # "then":J
+    .restart local v22  # "skipSample":Z
+    :goto_296
+    move v2, v13
+
+    .end local v13  # "isFlat":Z
+    .restart local v2  # "isFlat":Z
+    :goto_297
+    iput-boolean v2, v1, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->mFlat:Z
+
+    .line 785
+    iput-boolean v14, v1, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->mSwinging:Z
+
+    .line 786
+    iput-boolean v6, v1, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->mAccelerating:Z
+
+    .line 789
+    iget v4, v1, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->mProposedRotation:I
+
+    .line 790
+    .local v4, "oldProposedRotation":I
+    iget v5, v1, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->mPredictedRotation:I
+
+    if-ltz v5, :cond_2a9
+
+    invoke-direct {v1, v8, v9}, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->isPredictedRotationAcceptableLocked(J)Z
+
+    move-result v5
+
+    if-eqz v5, :cond_2ad
+
+    .line 791
+    :cond_2a9
+    iget v5, v1, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->mPredictedRotation:I
+
+    iput v5, v1, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->mProposedRotation:I
+
+    .line 793
+    :cond_2ad
+    iget v5, v1, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->mProposedRotation:I
+
+    .line 796
+    .local v5, "proposedRotation":I
+    invoke-static {}, Lcom/android/server/policy/WindowOrientationListener;->access$100()Z
+
+    move-result v7
+
+    if-eqz v7, :cond_372
+
+    .line 797
+    const-string v7, "WindowOrientationListener"
+
+    new-instance v10, Ljava/lang/StringBuilder;
+
+    invoke-direct {v10}, Ljava/lang/StringBuilder;-><init>()V
+
+    const-string v11, "Result: currentRotation="
+
+    invoke-virtual {v10, v11}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    iget-object v11, v1, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->this$0:Lcom/android/server/policy/WindowOrientationListener;
+
+    invoke-static {v11}, Lcom/android/server/policy/WindowOrientationListener;->access$200(Lcom/android/server/policy/WindowOrientationListener;)I
+
+    move-result v11
+
+    invoke-virtual {v10, v11}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+
+    const-string v11, ", proposedRotation="
+
+    invoke-virtual {v10, v11}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v10, v5}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+
+    const-string v11, ", predictedRotation="
+
+    invoke-virtual {v10, v11}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    iget v11, v1, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->mPredictedRotation:I
+
+    invoke-virtual {v10, v11}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+
+    const-string v11, ", timeDeltaMS="
+
+    invoke-virtual {v10, v11}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v10, v12}, Ljava/lang/StringBuilder;->append(F)Ljava/lang/StringBuilder;
+
+    const-string v11, ", isAccelerating="
+
+    invoke-virtual {v10, v11}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v10, v6}, Ljava/lang/StringBuilder;->append(Z)Ljava/lang/StringBuilder;
+
+    const-string v11, ", isFlat="
+
+    invoke-virtual {v10, v11}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v10, v2}, Ljava/lang/StringBuilder;->append(Z)Ljava/lang/StringBuilder;
+
+    const-string v11, ", isSwinging="
+
+    invoke-virtual {v10, v11}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v10, v14}, Ljava/lang/StringBuilder;->append(Z)Ljava/lang/StringBuilder;
+
+    const-string v11, ", isOverhead="
+
+    invoke-virtual {v10, v11}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    iget-boolean v11, v1, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->mOverhead:Z
+
+    invoke-virtual {v10, v11}, Ljava/lang/StringBuilder;->append(Z)Ljava/lang/StringBuilder;
+
+    const-string v11, ", isTouched="
+
+    invoke-virtual {v10, v11}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    iget-boolean v11, v1, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->mTouched:Z
+
+    invoke-virtual {v10, v11}, Ljava/lang/StringBuilder;->append(Z)Ljava/lang/StringBuilder;
+
+    const-string v11, ", timeUntilSettledMS="
+
+    invoke-virtual {v10, v11}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    move v13, v12
+
+    .end local v12  # "timeDeltaMS":F
+    .local v13, "timeDeltaMS":F
+    iget-wide v11, v1, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->mPredictedRotationTimestampNanos:J
+
+    const-wide/32 v16, 0x2625a00
+
+    add-long v11, v11, v16
+
+    .line 806
+    invoke-direct {v1, v8, v9, v11, v12}, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->remainingMS(JJ)F
+
+    move-result v11
+
+    invoke-virtual {v10, v11}, Ljava/lang/StringBuilder;->append(F)Ljava/lang/StringBuilder;
+
+    const-string v11, ", timeUntilAccelerationDelayExpiredMS="
+
+    invoke-virtual {v10, v11}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    iget-wide v11, v1, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->mAccelerationTimestampNanos:J
+
+    const-wide/32 v16, 0x1dcd6500
+
+    add-long v11, v11, v16
+
+    .line 808
+    invoke-direct {v1, v8, v9, v11, v12}, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->remainingMS(JJ)F
+
+    move-result v11
+
+    invoke-virtual {v10, v11}, Ljava/lang/StringBuilder;->append(F)Ljava/lang/StringBuilder;
+
+    const-string v11, ", timeUntilFlatDelayExpiredMS="
+
+    invoke-virtual {v10, v11}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    iget-wide v11, v1, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->mFlatTimestampNanos:J
+
+    add-long v11, v11, v16
+
+    .line 810
+    invoke-direct {v1, v8, v9, v11, v12}, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->remainingMS(JJ)F
+
+    move-result v11
+
+    invoke-virtual {v10, v11}, Ljava/lang/StringBuilder;->append(F)Ljava/lang/StringBuilder;
+
+    const-string v11, ", timeUntilSwingDelayExpiredMS="
+
+    invoke-virtual {v10, v11}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    iget-wide v11, v1, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->mSwingTimestampNanos:J
+
+    const-wide/32 v23, 0x11e1a300
+
+    add-long v11, v11, v23
+
+    .line 812
+    invoke-direct {v1, v8, v9, v11, v12}, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->remainingMS(JJ)F
+
+    move-result v11
+
+    invoke-virtual {v10, v11}, Ljava/lang/StringBuilder;->append(F)Ljava/lang/StringBuilder;
+
+    const-string v11, ", timeUntilTouchDelayExpiredMS="
+
+    invoke-virtual {v10, v11}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    iget-wide v11, v1, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->mTouchEndedTimestampNanos:J
+
+    add-long v11, v11, v16
+
+    .line 814
+    invoke-direct {v1, v8, v9, v11, v12}, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->remainingMS(JJ)F
+
+    move-result v11
+
+    invoke-virtual {v10, v11}, Ljava/lang/StringBuilder;->append(F)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v10}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v10
+
+    .line 797
+    invoke-static {v7, v10}, Landroid/util/Slog;->v(Ljava/lang/String;Ljava/lang/String;)I
+
+    goto :goto_373
+
+    .line 796
+    .end local v13  # "timeDeltaMS":F
+    .restart local v12  # "timeDeltaMS":F
+    :cond_372
+    move v13, v12
+
+    .line 817
+    .end local v0  # "y":F
+    .end local v2  # "isFlat":Z
+    .end local v6  # "isAccelerating":Z
+    .end local v8  # "now":J
+    .end local v12  # "timeDeltaMS":F
+    .end local v14  # "isSwinging":Z
+    .end local v15  # "z":F
+    .end local v18  # "x":F
+    .end local v19  # "then":J
+    .end local v22  # "skipSample":Z
+    :goto_373
+    monitor-exit v3
+    :try_end_374
+    .catchall {:try_start_b .. :try_end_374} :catchall_3a2
 
     .line 820
-    new-instance v1, Ljava/lang/StringBuilder;
+    if-eq v5, v4, :cond_3a1
 
-    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
+    if-ltz v5, :cond_3a1
+
+    .line 821
+    invoke-static {}, Lcom/android/server/policy/WindowOrientationListener;->access$100()Z
+
+    move-result v0
+
+    if-eqz v0, :cond_39c
+
+    .line 822
+    new-instance v0, Ljava/lang/StringBuilder;
+
+    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
 
     const-string v2, "Proposed rotation changed!  proposedRotation="
 
-    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v1, v5}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v5}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
     const-string v2, ", oldProposedRotation="
 
-    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v1, v4}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v4}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v1
+    move-result-object v0
 
     const-string v2, "WindowOrientationListener"
 
-    invoke-static {v2, v1}, Landroid/util/Slog;->v(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v2, v0}, Landroid/util/Slog;->v(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 823
-    :cond_35d
-    iget-object v0, v0, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->this$0:Lcom/android/server/policy/WindowOrientationListener;
+    .line 825
+    :cond_39c
+    iget-object v0, v1, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->this$0:Lcom/android/server/policy/WindowOrientationListener;
 
     invoke-virtual {v0, v5}, Lcom/android/server/policy/WindowOrientationListener;->onProposedRotationChanged(I)V
 
-    .line 825
-    :cond_362
+    .line 827
+    :cond_3a1
     return-void
 
-    .line 815
-    :catchall_363
+    .line 817
+    .end local v4  # "oldProposedRotation":I
+    .end local v5  # "proposedRotation":I
+    :catchall_3a2
     move-exception v0
 
-    :try_start_364
-    monitor-exit v2
-    :try_end_365
-    .catchall {:try_start_364 .. :try_end_365} :catchall_363
+    :try_start_3a3
+    monitor-exit v3
+    :try_end_3a4
+    .catchall {:try_start_3a3 .. :try_end_3a4} :catchall_3a2
 
     throw v0
 .end method
 
 .method public onTouchEndLocked(J)V
     .registers 4
+    .param p1, "whenElapsedNanos"  # J
 
-    .line 834
+    .line 836
     const/4 v0, 0x0
 
     iput-boolean v0, p0, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->mTouched:Z
 
-    .line 835
+    .line 837
     iput-wide p1, p0, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->mTouchEndedTimestampNanos:J
 
-    .line 836
+    .line 838
     return-void
 .end method
 
 .method public onTouchStartLocked()V
     .registers 2
 
-    .line 829
+    .line 831
     const/4 v0, 0x1
 
     iput-boolean v0, p0, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->mTouched:Z
 
-    .line 830
+    .line 832
     return-void
 .end method
 
 .method public resetLocked(Z)V
-    .registers 4
+    .registers 5
+    .param p1, "clearCurrentRotation"  # Z
 
-    .line 840
+    .line 842
     const-wide/high16 v0, -0x8000000000000000L
 
     iput-wide v0, p0, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->mLastFilteredTimestampNanos:J
 
-    .line 841
+    .line 843
     if-eqz p1, :cond_9
 
-    .line 842
-    const/4 p1, -0x1
-
-    iput p1, p0, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->mProposedRotation:I
-
     .line 844
+    const/4 v2, -0x1
+
+    iput v2, p0, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->mProposedRotation:I
+
+    .line 846
     :cond_9
     iput-wide v0, p0, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->mFlatTimestampNanos:J
 
-    .line 845
-    const/4 p1, 0x0
-
-    iput-boolean p1, p0, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->mFlat:Z
-
-    .line 846
-    iput-wide v0, p0, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->mSwingTimestampNanos:J
-
     .line 847
-    iput-boolean p1, p0, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->mSwinging:Z
+    const/4 v2, 0x0
+
+    iput-boolean v2, p0, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->mFlat:Z
 
     .line 848
-    iput-wide v0, p0, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->mAccelerationTimestampNanos:J
+    iput-wide v0, p0, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->mSwingTimestampNanos:J
 
     .line 849
-    iput-boolean p1, p0, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->mAccelerating:Z
+    iput-boolean v2, p0, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->mSwinging:Z
 
     .line 850
-    iput-boolean p1, p0, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->mOverhead:Z
+    iput-wide v0, p0, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->mAccelerationTimestampNanos:J
 
     .line 851
-    invoke-direct {p0}, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->clearPredictedRotationLocked()V
+    iput-boolean v2, p0, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->mAccelerating:Z
 
     .line 852
-    invoke-direct {p0}, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->clearTiltHistoryLocked()V
+    iput-boolean v2, p0, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->mOverhead:Z
 
     .line 853
+    invoke-direct {p0}, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->clearPredictedRotationLocked()V
+
+    .line 854
+    invoke-direct {p0}, Lcom/android/server/policy/WindowOrientationListener$AccelSensorJudge;->clearTiltHistoryLocked()V
+
+    .line 855
     return-void
 .end method

@@ -21,8 +21,10 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/input/InputManagerService;Landroid/os/Handler;)V
     .registers 3
+    .param p1, "this$0"  # Lcom/android/server/input/InputManagerService;
+    .param p2, "x0"  # Landroid/os/Handler;
 
-    .line 1629
+    .line 1591
     iput-object p1, p0, Lcom/android/server/input/InputManagerService$10;->this$0:Lcom/android/server/input/InputManagerService;
 
     invoke-direct {p0, p2}, Landroid/database/ContentObserver;-><init>(Landroid/os/Handler;)V
@@ -33,13 +35,14 @@
 
 # virtual methods
 .method public onChange(Z)V
-    .registers 2
+    .registers 3
+    .param p1, "selfChange"  # Z
 
-    .line 1632
-    iget-object p1, p0, Lcom/android/server/input/InputManagerService$10;->this$0:Lcom/android/server/input/InputManagerService;
+    .line 1594
+    iget-object v0, p0, Lcom/android/server/input/InputManagerService$10;->this$0:Lcom/android/server/input/InputManagerService;
 
-    invoke-static {p1}, Lcom/android/server/input/InputManagerService;->access$200(Lcom/android/server/input/InputManagerService;)V
+    invoke-virtual {v0}, Lcom/android/server/input/InputManagerService;->updateShowTouchesFromSettings()V
 
-    .line 1633
+    .line 1595
     return-void
 .end method

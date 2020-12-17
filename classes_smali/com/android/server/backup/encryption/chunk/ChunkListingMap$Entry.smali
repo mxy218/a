@@ -23,6 +23,8 @@
 # direct methods
 .method private constructor <init>(JI)V
     .registers 4
+    .param p1, "start"  # J
+    .param p3, "length"  # I
 
     .line 94
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -39,6 +41,9 @@
 
 .method synthetic constructor <init>(JILcom/android/server/backup/encryption/chunk/ChunkListingMap$1;)V
     .registers 5
+    .param p1, "x0"  # J
+    .param p3, "x1"  # I
+    .param p4, "x2"  # Lcom/android/server/backup/encryption/chunk/ChunkListingMap$1;
 
     .line 90
     invoke-direct {p0, p1, p2, p3}, Lcom/android/server/backup/encryption/chunk/ChunkListingMap$Entry;-><init>(JI)V

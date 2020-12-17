@@ -26,6 +26,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/wm/ImmersiveModeConfirmation$ClingWindowView;Landroid/view/View;)V
     .registers 3
+    .param p1, "this$1"  # Lcom/android/server/wm/ImmersiveModeConfirmation$ClingWindowView;
 
     .line 299
     iput-object p1, p0, Lcom/android/server/wm/ImmersiveModeConfirmation$ClingWindowView$5;->this$1:Lcom/android/server/wm/ImmersiveModeConfirmation$ClingWindowView;

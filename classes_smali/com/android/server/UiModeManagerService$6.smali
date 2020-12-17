@@ -1,5 +1,5 @@
 .class Lcom/android/server/UiModeManagerService$6;
-.super Landroid/service/vr/IVrStateCallbacks$Stub;
+.super Landroid/database/ContentObserver;
 .source "UiModeManagerService.java"
 
 
@@ -19,63 +19,93 @@
 
 
 # direct methods
-.method constructor <init>(Lcom/android/server/UiModeManagerService;)V
-    .registers 2
+.method constructor <init>(Lcom/android/server/UiModeManagerService;Landroid/os/Handler;)V
+    .registers 3
+    .param p1, "this$0"  # Lcom/android/server/UiModeManagerService;
+    .param p2, "x0"  # Landroid/os/Handler;
 
-    .line 241
+    .line 205
     iput-object p1, p0, Lcom/android/server/UiModeManagerService$6;->this$0:Lcom/android/server/UiModeManagerService;
 
-    invoke-direct {p0}, Landroid/service/vr/IVrStateCallbacks$Stub;-><init>()V
+    invoke-direct {p0, p2}, Landroid/database/ContentObserver;-><init>(Landroid/os/Handler;)V
 
     return-void
 .end method
 
 
 # virtual methods
-.method public onVrStateChanged(Z)V
-    .registers 4
+.method public onChange(ZLandroid/net/Uri;)V
+    .registers 7
+    .param p1, "selfChange"  # Z
+    .param p2, "uri"  # Landroid/net/Uri;
 
-    .line 244
+    .line 209
     iget-object v0, p0, Lcom/android/server/UiModeManagerService$6;->this$0:Lcom/android/server/UiModeManagerService;
 
-    iget-object v0, v0, Lcom/android/server/UiModeManagerService;->mLock:Ljava/lang/Object;
+    invoke-static {v0}, Lcom/android/server/UiModeManagerService;->access$600(Lcom/android/server/UiModeManagerService;)Z
 
-    monitor-enter v0
+    move-result v0
 
-    .line 245
-    :try_start_5
+    if-eqz v0, :cond_3a
+
+    .line 210
+    iget-object v0, p0, Lcom/android/server/UiModeManagerService$6;->this$0:Lcom/android/server/UiModeManagerService;
+
+    const/4 v1, 0x1
+
+    invoke-static {v0, v1}, Lcom/android/server/UiModeManagerService;->access$702(Lcom/android/server/UiModeManagerService;Z)Z
+
+    .line 211
+    iget-object v0, p0, Lcom/android/server/UiModeManagerService$6;->this$0:Lcom/android/server/UiModeManagerService;
+
+    invoke-virtual {v0}, Lcom/android/server/UiModeManagerService;->getContext()Landroid/content/Context;
+
+    move-result-object v0
+
+    invoke-virtual {v0}, Landroid/content/Context;->getContentResolver()Landroid/content/ContentResolver;
+
+    move-result-object v0
+
     iget-object v1, p0, Lcom/android/server/UiModeManagerService$6;->this$0:Lcom/android/server/UiModeManagerService;
 
-    invoke-static {v1, p1}, Lcom/android/server/UiModeManagerService;->access$702(Lcom/android/server/UiModeManagerService;Z)Z
+    invoke-static {v1}, Lcom/android/server/UiModeManagerService;->access$800(Lcom/android/server/UiModeManagerService;)Landroid/database/ContentObserver;
 
-    .line 246
-    iget-object p1, p0, Lcom/android/server/UiModeManagerService$6;->this$0:Lcom/android/server/UiModeManagerService;
+    move-result-object v1
 
-    iget-boolean p1, p1, Lcom/android/server/UiModeManagerService;->mSystemReady:Z
+    invoke-virtual {v0, v1}, Landroid/content/ContentResolver;->unregisterContentObserver(Landroid/database/ContentObserver;)V
 
-    if-eqz p1, :cond_16
+    .line 213
+    iget-object v0, p0, Lcom/android/server/UiModeManagerService$6;->this$0:Lcom/android/server/UiModeManagerService;
 
-    .line 247
-    iget-object p1, p0, Lcom/android/server/UiModeManagerService$6;->this$0:Lcom/android/server/UiModeManagerService;
+    invoke-virtual {v0}, Lcom/android/server/UiModeManagerService;->getContext()Landroid/content/Context;
 
-    const/4 v1, 0x0
+    move-result-object v0
 
-    invoke-virtual {p1, v1, v1}, Lcom/android/server/UiModeManagerService;->updateLocked(II)V
+    .line 214
+    .local v0, "context":Landroid/content/Context;
+    iget-object v1, p0, Lcom/android/server/UiModeManagerService$6;->this$0:Lcom/android/server/UiModeManagerService;
 
-    .line 249
-    :cond_16
-    monitor-exit v0
+    invoke-virtual {v0}, Landroid/content/Context;->getResources()Landroid/content/res/Resources;
 
-    .line 250
+    move-result-object v2
+
+    .line 215
+    invoke-static {}, Landroid/os/UserHandle;->getCallingUserId()I
+
+    move-result v3
+
+    .line 214
+    invoke-static {v1, v0, v2, v3}, Lcom/android/server/UiModeManagerService;->access$900(Lcom/android/server/UiModeManagerService;Landroid/content/Context;Landroid/content/res/Resources;I)Z
+
+    .line 216
+    iget-object v1, p0, Lcom/android/server/UiModeManagerService$6;->this$0:Lcom/android/server/UiModeManagerService;
+
+    const/4 v2, 0x0
+
+    invoke-virtual {v1, v2, v2}, Lcom/android/server/UiModeManagerService;->updateLocked(II)V
+
+    .line 218
+    .end local v0  # "context":Landroid/content/Context;
+    :cond_3a
     return-void
-
-    .line 249
-    :catchall_18
-    move-exception p1
-
-    monitor-exit v0
-    :try_end_1a
-    .catchall {:try_start_5 .. :try_end_1a} :catchall_18
-
-    throw p1
 .end method

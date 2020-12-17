@@ -36,6 +36,8 @@
 # virtual methods
 .method amendRegion(Landroid/graphics/Region;Landroid/graphics/Rect;)V
     .registers 6
+    .param p1, "region"  # Landroid/graphics/Region;
+    .param p2, "bounds"  # Landroid/graphics/Rect;
 
     .line 47
     iget-object v0, p0, Lcom/android/server/wm/TapExcludeRegionHolder;->mTapExcludeRegions:Landroid/util/SparseArray;
@@ -46,6 +48,7 @@
 
     add-int/lit8 v0, v0, -0x1
 
+    .local v0, "i":I
     :goto_8
     if-ltz v0, :cond_21
 
@@ -59,6 +62,7 @@
     check-cast v1, Landroid/graphics/Region;
 
     .line 49
+    .local v1, "r":Landroid/graphics/Region;
     if-eqz p2, :cond_19
 
     .line 50
@@ -73,40 +77,21 @@
     invoke-virtual {p1, v1, v2}, Landroid/graphics/Region;->op(Landroid/graphics/Region;Landroid/graphics/Region$Op;)Z
 
     .line 47
+    .end local v1  # "r":Landroid/graphics/Region;
     add-int/lit8 v0, v0, -0x1
 
     goto :goto_8
 
     .line 54
+    .end local v0  # "i":I
     :cond_21
     return-void
 .end method
 
-.method isEmpty()Z
-    .registers 2
-
-    .line 60
-    iget-object v0, p0, Lcom/android/server/wm/TapExcludeRegionHolder;->mTapExcludeRegions:Landroid/util/SparseArray;
-
-    invoke-virtual {v0}, Landroid/util/SparseArray;->size()I
-
-    move-result v0
-
-    if-nez v0, :cond_a
-
-    const/4 v0, 0x1
-
-    goto :goto_b
-
-    :cond_a
-    const/4 v0, 0x0
-
-    :goto_b
-    return v0
-.end method
-
 .method updateRegion(ILandroid/graphics/Region;)V
     .registers 4
+    .param p1, "regionId"  # I
+    .param p2, "region"  # Landroid/graphics/Region;
 
     .line 33
     iget-object v0, p0, Lcom/android/server/wm/TapExcludeRegionHolder;->mTapExcludeRegions:Landroid/util/SparseArray;

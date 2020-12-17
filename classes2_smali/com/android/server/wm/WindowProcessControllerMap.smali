@@ -52,7 +52,8 @@
 .end method
 
 .method private removeProcessFromUidMap(Lcom/android/server/wm/WindowProcessController;)V
-    .registers 5
+    .registers 6
+    .param p1, "proc"  # Lcom/android/server/wm/WindowProcessController;
 
     .line 74
     if-nez p1, :cond_3
@@ -65,6 +66,7 @@
     iget v0, p1, Lcom/android/server/wm/WindowProcessController;->mUid:I
 
     .line 78
+    .local v0, "uid":I
     iget-object v1, p0, Lcom/android/server/wm/WindowProcessControllerMap;->mUidMap:Ljava/util/Map;
 
     invoke-static {v0}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
@@ -78,6 +80,7 @@
     check-cast v1, Landroid/util/ArraySet;
 
     .line 79
+    .local v1, "procSet":Landroid/util/ArraySet;, "Landroid/util/ArraySet<Lcom/android/server/wm/WindowProcessController;>;"
     if-eqz v1, :cond_25
 
     .line 80
@@ -86,18 +89,18 @@
     .line 81
     invoke-virtual {v1}, Landroid/util/ArraySet;->isEmpty()Z
 
-    move-result p1
+    move-result v2
 
-    if-eqz p1, :cond_25
+    if-eqz v2, :cond_25
 
     .line 82
-    iget-object p1, p0, Lcom/android/server/wm/WindowProcessControllerMap;->mUidMap:Ljava/util/Map;
+    iget-object v2, p0, Lcom/android/server/wm/WindowProcessControllerMap;->mUidMap:Ljava/util/Map;
 
     invoke-static {v0}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
 
-    move-result-object v0
+    move-result-object v3
 
-    invoke-interface {p1, v0}, Ljava/util/Map;->remove(Ljava/lang/Object;)Ljava/lang/Object;
+    invoke-interface {v2, v3}, Ljava/util/Map;->remove(Ljava/lang/Object;)Ljava/lang/Object;
 
     .line 85
     :cond_25
@@ -125,21 +128,23 @@
 
 .method getProcess(I)Lcom/android/server/wm/WindowProcessController;
     .registers 3
+    .param p1, "pid"  # I
 
     .line 34
     iget-object v0, p0, Lcom/android/server/wm/WindowProcessControllerMap;->mPidMap:Landroid/util/SparseArray;
 
     invoke-virtual {v0, p1}, Landroid/util/SparseArray;->get(I)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v0
 
-    check-cast p1, Lcom/android/server/wm/WindowProcessController;
+    check-cast v0, Lcom/android/server/wm/WindowProcessController;
 
-    return-object p1
+    return-object v0
 .end method
 
 .method getProcesses(I)Landroid/util/ArraySet;
-    .registers 3
+    .registers 4
+    .param p1, "uid"  # I
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(I)",
@@ -154,19 +159,21 @@
 
     invoke-static {p1}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
 
-    move-result-object p1
+    move-result-object v1
 
-    invoke-interface {v0, p1}, Ljava/util/Map;->get(Ljava/lang/Object;)Ljava/lang/Object;
+    invoke-interface {v0, v1}, Ljava/util/Map;->get(Ljava/lang/Object;)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v0
 
-    check-cast p1, Landroid/util/ArraySet;
+    check-cast v0, Landroid/util/ArraySet;
 
-    return-object p1
+    return-object v0
 .end method
 
 .method put(ILcom/android/server/wm/WindowProcessController;)V
-    .registers 6
+    .registers 8
+    .param p1, "pid"  # I
+    .param p2, "proc"  # Lcom/android/server/wm/WindowProcessController;
 
     .line 49
     iget-object v0, p0, Lcom/android/server/wm/WindowProcessControllerMap;->mPidMap:Landroid/util/SparseArray;
@@ -178,6 +185,7 @@
     check-cast v0, Lcom/android/server/wm/WindowProcessController;
 
     .line 50
+    .local v0, "prevProc":Lcom/android/server/wm/WindowProcessController;
     if-eqz v0, :cond_d
 
     .line 51
@@ -185,41 +193,43 @@
 
     .line 54
     :cond_d
-    iget-object v0, p0, Lcom/android/server/wm/WindowProcessControllerMap;->mPidMap:Landroid/util/SparseArray;
+    iget-object v1, p0, Lcom/android/server/wm/WindowProcessControllerMap;->mPidMap:Landroid/util/SparseArray;
 
-    invoke-virtual {v0, p1, p2}, Landroid/util/SparseArray;->put(ILjava/lang/Object;)V
+    invoke-virtual {v1, p1, p2}, Landroid/util/SparseArray;->put(ILjava/lang/Object;)V
 
     .line 56
-    iget p1, p2, Lcom/android/server/wm/WindowProcessController;->mUid:I
+    iget v1, p2, Lcom/android/server/wm/WindowProcessController;->mUid:I
 
     .line 57
-    iget-object v0, p0, Lcom/android/server/wm/WindowProcessControllerMap;->mUidMap:Ljava/util/Map;
+    .local v1, "uid":I
+    iget-object v2, p0, Lcom/android/server/wm/WindowProcessControllerMap;->mUidMap:Ljava/util/Map;
 
-    invoke-static {p1}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
+    invoke-static {v1}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
 
-    move-result-object v1
+    move-result-object v3
 
-    new-instance v2, Landroid/util/ArraySet;
+    new-instance v4, Landroid/util/ArraySet;
 
-    invoke-direct {v2}, Landroid/util/ArraySet;-><init>()V
+    invoke-direct {v4}, Landroid/util/ArraySet;-><init>()V
 
-    invoke-interface {v0, v1, v2}, Ljava/util/Map;->getOrDefault(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+    invoke-interface {v2, v3, v4}, Ljava/util/Map;->getOrDefault(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
 
-    move-result-object v0
+    move-result-object v2
 
-    check-cast v0, Landroid/util/ArraySet;
+    check-cast v2, Landroid/util/ArraySet;
 
     .line 59
-    invoke-virtual {v0, p2}, Landroid/util/ArraySet;->add(Ljava/lang/Object;)Z
+    .local v2, "procSet":Landroid/util/ArraySet;, "Landroid/util/ArraySet<Lcom/android/server/wm/WindowProcessController;>;"
+    invoke-virtual {v2, p2}, Landroid/util/ArraySet;->add(Ljava/lang/Object;)Z
 
     .line 60
-    iget-object p2, p0, Lcom/android/server/wm/WindowProcessControllerMap;->mUidMap:Ljava/util/Map;
+    iget-object v3, p0, Lcom/android/server/wm/WindowProcessControllerMap;->mUidMap:Ljava/util/Map;
 
-    invoke-static {p1}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
+    invoke-static {v1}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
 
-    move-result-object p1
+    move-result-object v4
 
-    invoke-interface {p2, p1, v0}, Ljava/util/Map;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+    invoke-interface {v3, v4, v2}, Ljava/util/Map;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
 
     .line 61
     return-void
@@ -227,6 +237,7 @@
 
 .method remove(I)V
     .registers 4
+    .param p1, "pid"  # I
 
     .line 64
     iget-object v0, p0, Lcom/android/server/wm/WindowProcessControllerMap;->mPidMap:Landroid/util/SparseArray;
@@ -238,6 +249,7 @@
     check-cast v0, Lcom/android/server/wm/WindowProcessController;
 
     .line 65
+    .local v0, "proc":Lcom/android/server/wm/WindowProcessController;
     if-eqz v0, :cond_12
 
     .line 67

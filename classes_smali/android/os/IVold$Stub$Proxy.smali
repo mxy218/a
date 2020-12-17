@@ -28,6 +28,7 @@
 # direct methods
 .method constructor <init>(Landroid/os/IBinder;)V
     .registers 2
+    .param p1, "remote"  # Landroid/os/IBinder;
 
     .line 1014
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -43,6 +44,8 @@
 # virtual methods
 .method public abortChanges(Ljava/lang/String;Z)V
     .registers 8
+    .param p1, "device"  # Ljava/lang/String;
+    .param p2, "retry"  # Z
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -55,11 +58,13 @@
     move-result-object v0
 
     .line 2199
+    .local v0, "_data":Landroid/os/Parcel;
     invoke-static {}, Landroid/os/Parcel;->obtain()Landroid/os/Parcel;
 
     move-result-object v1
 
     .line 2201
+    .local v1, "_reply":Landroid/os/Parcel;
     :try_start_8
     const-string v2, "android.os.IVold"
 
@@ -93,20 +98,21 @@
     move-result v2
 
     .line 2205
+    .local v2, "_status":Z
     if-nez v2, :cond_37
 
     invoke-static {}, Landroid/os/IVold$Stub;->getDefaultImpl()Landroid/os/IVold;
 
-    move-result-object v2
+    move-result-object v3
 
-    if-eqz v2, :cond_37
+    if-eqz v3, :cond_37
 
     .line 2206
     invoke-static {}, Landroid/os/IVold$Stub;->getDefaultImpl()Landroid/os/IVold;
 
-    move-result-object v2
+    move-result-object v3
 
-    invoke-interface {v2, p1, p2}, Landroid/os/IVold;->abortChanges(Ljava/lang/String;Z)V
+    invoke-interface {v3, p1, p2}, Landroid/os/IVold;->abortChanges(Ljava/lang/String;Z)V
     :try_end_30
     .catchall {:try_start_8 .. :try_end_30} :catchall_42
 
@@ -127,6 +133,7 @@
     .catchall {:try_start_37 .. :try_end_3a} :catchall_42
 
     .line 2212
+    .end local v2  # "_status":Z
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
 
     .line 2213
@@ -140,18 +147,19 @@
 
     .line 2212
     :catchall_42
-    move-exception p1
+    move-exception v2
 
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
 
     .line 2213
     invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
 
-    throw p1
+    throw v2
 .end method
 
 .method public abortIdleMaint(Landroid/os/IVoldTaskListener;)V
     .registers 7
+    .param p1, "listener"  # Landroid/os/IVoldTaskListener;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -164,11 +172,13 @@
     move-result-object v0
 
     .line 1518
+    .local v0, "_data":Landroid/os/Parcel;
     invoke-static {}, Landroid/os/Parcel;->obtain()Landroid/os/Parcel;
 
     move-result-object v1
 
     .line 1520
+    .local v1, "_reply":Landroid/os/Parcel;
     :try_start_8
     const-string v2, "android.os.IVold"
 
@@ -201,20 +211,21 @@
     move-result v2
 
     .line 1523
+    .local v2, "_status":Z
     if-nez v2, :cond_37
 
     invoke-static {}, Landroid/os/IVold$Stub;->getDefaultImpl()Landroid/os/IVold;
 
-    move-result-object v2
+    move-result-object v3
 
-    if-eqz v2, :cond_37
+    if-eqz v3, :cond_37
 
     .line 1524
     invoke-static {}, Landroid/os/IVold$Stub;->getDefaultImpl()Landroid/os/IVold;
 
-    move-result-object v2
+    move-result-object v3
 
-    invoke-interface {v2, p1}, Landroid/os/IVold;->abortIdleMaint(Landroid/os/IVoldTaskListener;)V
+    invoke-interface {v3, p1}, Landroid/os/IVold;->abortIdleMaint(Landroid/os/IVoldTaskListener;)V
     :try_end_30
     .catchall {:try_start_8 .. :try_end_30} :catchall_42
 
@@ -235,6 +246,7 @@
     .catchall {:try_start_37 .. :try_end_3a} :catchall_42
 
     .line 1530
+    .end local v2  # "_status":Z
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
 
     .line 1531
@@ -248,18 +260,20 @@
 
     .line 1530
     :catchall_42
-    move-exception p1
+    move-exception v2
 
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
 
     .line 1531
     invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
 
-    throw p1
+    throw v2
 .end method
 
 .method public addAppIds([Ljava/lang/String;[I)V
     .registers 8
+    .param p1, "packageNames"  # [Ljava/lang/String;
+    .param p2, "appIds"  # [I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -272,11 +286,13 @@
     move-result-object v0
 
     .line 1178
+    .local v0, "_data":Landroid/os/Parcel;
     invoke-static {}, Landroid/os/Parcel;->obtain()Landroid/os/Parcel;
 
     move-result-object v1
 
     .line 1180
+    .local v1, "_reply":Landroid/os/Parcel;
     :try_start_8
     const-string v2, "android.os.IVold"
 
@@ -300,20 +316,21 @@
     move-result v2
 
     .line 1184
+    .local v2, "_status":Z
     if-nez v2, :cond_32
 
     invoke-static {}, Landroid/os/IVold$Stub;->getDefaultImpl()Landroid/os/IVold;
 
-    move-result-object v2
+    move-result-object v3
 
-    if-eqz v2, :cond_32
+    if-eqz v3, :cond_32
 
     .line 1185
     invoke-static {}, Landroid/os/IVold$Stub;->getDefaultImpl()Landroid/os/IVold;
 
-    move-result-object v2
+    move-result-object v3
 
-    invoke-interface {v2, p1, p2}, Landroid/os/IVold;->addAppIds([Ljava/lang/String;[I)V
+    invoke-interface {v3, p1, p2}, Landroid/os/IVold;->addAppIds([Ljava/lang/String;[I)V
     :try_end_2b
     .catchall {:try_start_8 .. :try_end_2b} :catchall_3d
 
@@ -334,6 +351,7 @@
     .catchall {:try_start_32 .. :try_end_35} :catchall_3d
 
     .line 1191
+    .end local v2  # "_status":Z
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
 
     .line 1192
@@ -347,18 +365,20 @@
 
     .line 1191
     :catchall_3d
-    move-exception p1
+    move-exception v2
 
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
 
     .line 1192
     invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
 
-    throw p1
+    throw v2
 .end method
 
 .method public addSandboxIds([I[Ljava/lang/String;)V
     .registers 8
+    .param p1, "appIds"  # [I
+    .param p2, "sandboxIds"  # [Ljava/lang/String;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -371,11 +391,13 @@
     move-result-object v0
 
     .line 1198
+    .local v0, "_data":Landroid/os/Parcel;
     invoke-static {}, Landroid/os/Parcel;->obtain()Landroid/os/Parcel;
 
     move-result-object v1
 
     .line 1200
+    .local v1, "_reply":Landroid/os/Parcel;
     :try_start_8
     const-string v2, "android.os.IVold"
 
@@ -399,20 +421,21 @@
     move-result v2
 
     .line 1204
+    .local v2, "_status":Z
     if-nez v2, :cond_32
 
     invoke-static {}, Landroid/os/IVold$Stub;->getDefaultImpl()Landroid/os/IVold;
 
-    move-result-object v2
+    move-result-object v3
 
-    if-eqz v2, :cond_32
+    if-eqz v3, :cond_32
 
     .line 1205
     invoke-static {}, Landroid/os/IVold$Stub;->getDefaultImpl()Landroid/os/IVold;
 
-    move-result-object v2
+    move-result-object v3
 
-    invoke-interface {v2, p1, p2}, Landroid/os/IVold;->addSandboxIds([I[Ljava/lang/String;)V
+    invoke-interface {v3, p1, p2}, Landroid/os/IVold;->addSandboxIds([I[Ljava/lang/String;)V
     :try_end_2b
     .catchall {:try_start_8 .. :try_end_2b} :catchall_3d
 
@@ -433,6 +456,7 @@
     .catchall {:try_start_32 .. :try_end_35} :catchall_3d
 
     .line 1211
+    .end local v2  # "_status":Z
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
 
     .line 1212
@@ -446,18 +470,22 @@
 
     .line 1211
     :catchall_3d
-    move-exception p1
+    move-exception v2
 
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
 
     .line 1212
     invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
 
-    throw p1
+    throw v2
 .end method
 
 .method public addUserKeyAuth(IILjava/lang/String;Ljava/lang/String;)V
     .registers 10
+    .param p1, "userId"  # I
+    .param p2, "userSerial"  # I
+    .param p3, "token"  # Ljava/lang/String;
+    .param p4, "secret"  # Ljava/lang/String;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -470,11 +498,13 @@
     move-result-object v0
 
     .line 1950
+    .local v0, "_data":Landroid/os/Parcel;
     invoke-static {}, Landroid/os/Parcel;->obtain()Landroid/os/Parcel;
 
     move-result-object v1
 
     .line 1952
+    .local v1, "_reply":Landroid/os/Parcel;
     :try_start_8
     const-string v2, "android.os.IVold"
 
@@ -504,20 +534,21 @@
     move-result v2
 
     .line 1958
+    .local v2, "_status":Z
     if-nez v2, :cond_38
 
     invoke-static {}, Landroid/os/IVold$Stub;->getDefaultImpl()Landroid/os/IVold;
 
-    move-result-object v2
+    move-result-object v3
 
-    if-eqz v2, :cond_38
+    if-eqz v3, :cond_38
 
     .line 1959
     invoke-static {}, Landroid/os/IVold$Stub;->getDefaultImpl()Landroid/os/IVold;
 
-    move-result-object v2
+    move-result-object v3
 
-    invoke-interface {v2, p1, p2, p3, p4}, Landroid/os/IVold;->addUserKeyAuth(IILjava/lang/String;Ljava/lang/String;)V
+    invoke-interface {v3, p1, p2, p3, p4}, Landroid/os/IVold;->addUserKeyAuth(IILjava/lang/String;Ljava/lang/String;)V
     :try_end_31
     .catchall {:try_start_8 .. :try_end_31} :catchall_43
 
@@ -538,6 +569,7 @@
     .catchall {:try_start_38 .. :try_end_3b} :catchall_43
 
     .line 1965
+    .end local v2  # "_status":Z
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
 
     .line 1966
@@ -551,14 +583,14 @@
 
     .line 1965
     :catchall_43
-    move-exception p1
+    move-exception v2
 
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
 
     .line 1966
     invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
 
-    throw p1
+    throw v2
 .end method
 
 .method public asBinder()Landroid/os/IBinder;
@@ -572,6 +604,8 @@
 
 .method public benchmark(Ljava/lang/String;Landroid/os/IVoldTaskListener;)V
     .registers 8
+    .param p1, "volId"  # Ljava/lang/String;
+    .param p2, "listener"  # Landroid/os/IVoldTaskListener;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -584,11 +618,13 @@
     move-result-object v0
 
     .line 1338
+    .local v0, "_data":Landroid/os/Parcel;
     invoke-static {}, Landroid/os/Parcel;->obtain()Landroid/os/Parcel;
 
     move-result-object v1
 
     .line 1340
+    .local v1, "_reply":Landroid/os/Parcel;
     :try_start_8
     const-string v2, "android.os.IVold"
 
@@ -624,20 +660,21 @@
     move-result v2
 
     .line 1344
+    .local v2, "_status":Z
     if-nez v2, :cond_3a
 
     invoke-static {}, Landroid/os/IVold$Stub;->getDefaultImpl()Landroid/os/IVold;
 
-    move-result-object v2
+    move-result-object v3
 
-    if-eqz v2, :cond_3a
+    if-eqz v3, :cond_3a
 
     .line 1345
     invoke-static {}, Landroid/os/IVold$Stub;->getDefaultImpl()Landroid/os/IVold;
 
-    move-result-object v2
+    move-result-object v3
 
-    invoke-interface {v2, p1, p2}, Landroid/os/IVold;->benchmark(Ljava/lang/String;Landroid/os/IVoldTaskListener;)V
+    invoke-interface {v3, p1, p2}, Landroid/os/IVold;->benchmark(Ljava/lang/String;Landroid/os/IVoldTaskListener;)V
     :try_end_33
     .catchall {:try_start_8 .. :try_end_33} :catchall_45
 
@@ -658,6 +695,7 @@
     .catchall {:try_start_3a .. :try_end_3d} :catchall_45
 
     .line 1351
+    .end local v2  # "_status":Z
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
 
     .line 1352
@@ -671,18 +709,19 @@
 
     .line 1351
     :catchall_45
-    move-exception p1
+    move-exception v2
 
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
 
     .line 1352
     invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
 
-    throw p1
+    throw v2
 .end method
 
 .method public checkEncryption(Ljava/lang/String;)V
     .registers 7
+    .param p1, "volId"  # Ljava/lang/String;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -695,11 +734,13 @@
     move-result-object v0
 
     .line 1358
+    .local v0, "_data":Landroid/os/Parcel;
     invoke-static {}, Landroid/os/Parcel;->obtain()Landroid/os/Parcel;
 
     move-result-object v1
 
     .line 1360
+    .local v1, "_reply":Landroid/os/Parcel;
     :try_start_8
     const-string v2, "android.os.IVold"
 
@@ -720,20 +761,21 @@
     move-result v2
 
     .line 1363
+    .local v2, "_status":Z
     if-nez v2, :cond_2f
 
     invoke-static {}, Landroid/os/IVold$Stub;->getDefaultImpl()Landroid/os/IVold;
 
-    move-result-object v2
+    move-result-object v3
 
-    if-eqz v2, :cond_2f
+    if-eqz v3, :cond_2f
 
     .line 1364
     invoke-static {}, Landroid/os/IVold$Stub;->getDefaultImpl()Landroid/os/IVold;
 
-    move-result-object v2
+    move-result-object v3
 
-    invoke-interface {v2, p1}, Landroid/os/IVold;->checkEncryption(Ljava/lang/String;)V
+    invoke-interface {v3, p1}, Landroid/os/IVold;->checkEncryption(Ljava/lang/String;)V
     :try_end_28
     .catchall {:try_start_8 .. :try_end_28} :catchall_3a
 
@@ -754,6 +796,7 @@
     .catchall {:try_start_2f .. :try_end_32} :catchall_3a
 
     .line 1370
+    .end local v2  # "_status":Z
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
 
     .line 1371
@@ -767,18 +810,22 @@
 
     .line 1370
     :catchall_3a
-    move-exception p1
+    move-exception v2
 
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
 
     .line 1371
     invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
 
-    throw p1
+    throw v2
 .end method
 
 .method public clearUserKeyAuth(IILjava/lang/String;Ljava/lang/String;)V
     .registers 10
+    .param p1, "userId"  # I
+    .param p2, "userSerial"  # I
+    .param p3, "token"  # Ljava/lang/String;
+    .param p4, "secret"  # Ljava/lang/String;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -791,11 +838,13 @@
     move-result-object v0
 
     .line 1972
+    .local v0, "_data":Landroid/os/Parcel;
     invoke-static {}, Landroid/os/Parcel;->obtain()Landroid/os/Parcel;
 
     move-result-object v1
 
     .line 1974
+    .local v1, "_reply":Landroid/os/Parcel;
     :try_start_8
     const-string v2, "android.os.IVold"
 
@@ -825,20 +874,21 @@
     move-result v2
 
     .line 1980
+    .local v2, "_status":Z
     if-nez v2, :cond_38
 
     invoke-static {}, Landroid/os/IVold$Stub;->getDefaultImpl()Landroid/os/IVold;
 
-    move-result-object v2
+    move-result-object v3
 
-    if-eqz v2, :cond_38
+    if-eqz v3, :cond_38
 
     .line 1981
     invoke-static {}, Landroid/os/IVold$Stub;->getDefaultImpl()Landroid/os/IVold;
 
-    move-result-object v2
+    move-result-object v3
 
-    invoke-interface {v2, p1, p2, p3, p4}, Landroid/os/IVold;->clearUserKeyAuth(IILjava/lang/String;Ljava/lang/String;)V
+    invoke-interface {v3, p1, p2, p3, p4}, Landroid/os/IVold;->clearUserKeyAuth(IILjava/lang/String;Ljava/lang/String;)V
     :try_end_31
     .catchall {:try_start_8 .. :try_end_31} :catchall_43
 
@@ -859,6 +909,7 @@
     .catchall {:try_start_38 .. :try_end_3b} :catchall_43
 
     .line 1987
+    .end local v2  # "_status":Z
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
 
     .line 1988
@@ -872,14 +923,14 @@
 
     .line 1987
     :catchall_43
-    move-exception p1
+    move-exception v2
 
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
 
     .line 1988
     invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
 
-    throw p1
+    throw v2
 .end method
 
 .method public commitChanges()V
@@ -896,11 +947,13 @@
     move-result-object v0
 
     .line 2219
+    .local v0, "_data":Landroid/os/Parcel;
     invoke-static {}, Landroid/os/Parcel;->obtain()Landroid/os/Parcel;
 
     move-result-object v1
 
     .line 2221
+    .local v1, "_reply":Landroid/os/Parcel;
     :try_start_8
     const-string v2, "android.os.IVold"
 
@@ -918,20 +971,21 @@
     move-result v2
 
     .line 2223
+    .local v2, "_status":Z
     if-nez v2, :cond_2c
 
     invoke-static {}, Landroid/os/IVold$Stub;->getDefaultImpl()Landroid/os/IVold;
 
-    move-result-object v2
+    move-result-object v3
 
-    if-eqz v2, :cond_2c
+    if-eqz v3, :cond_2c
 
     .line 2224
     invoke-static {}, Landroid/os/IVold$Stub;->getDefaultImpl()Landroid/os/IVold;
 
-    move-result-object v2
+    move-result-object v3
 
-    invoke-interface {v2}, Landroid/os/IVold;->commitChanges()V
+    invoke-interface {v3}, Landroid/os/IVold;->commitChanges()V
     :try_end_25
     .catchall {:try_start_8 .. :try_end_25} :catchall_37
 
@@ -952,6 +1006,7 @@
     .catchall {:try_start_2c .. :try_end_2f} :catchall_37
 
     .line 2230
+    .end local v2  # "_status":Z
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
 
     .line 2231
@@ -977,6 +1032,9 @@
 
 .method public createObb(Ljava/lang/String;Ljava/lang/String;I)Ljava/lang/String;
     .registers 9
+    .param p1, "sourcePath"  # Ljava/lang/String;
+    .param p2, "sourceKey"  # Ljava/lang/String;
+    .param p3, "ownerGid"  # I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -989,11 +1047,13 @@
     move-result-object v0
 
     .line 1437
+    .local v0, "_data":Landroid/os/Parcel;
     invoke-static {}, Landroid/os/Parcel;->obtain()Landroid/os/Parcel;
 
     move-result-object v1
 
     .line 1440
+    .local v1, "_reply":Landroid/os/Parcel;
     :try_start_8
     const-string v2, "android.os.IVold"
 
@@ -1020,24 +1080,25 @@
     move-result v2
 
     .line 1445
+    .local v2, "_status":Z
     if-nez v2, :cond_36
 
     invoke-static {}, Landroid/os/IVold$Stub;->getDefaultImpl()Landroid/os/IVold;
 
-    move-result-object v2
+    move-result-object v3
 
-    if-eqz v2, :cond_36
+    if-eqz v3, :cond_36
 
     .line 1446
     invoke-static {}, Landroid/os/IVold$Stub;->getDefaultImpl()Landroid/os/IVold;
 
-    move-result-object v2
+    move-result-object v3
 
-    invoke-interface {v2, p1, p2, p3}, Landroid/os/IVold;->createObb(Ljava/lang/String;Ljava/lang/String;I)Ljava/lang/String;
+    invoke-interface {v3, p1, p2, p3}, Landroid/os/IVold;->createObb(Ljava/lang/String;Ljava/lang/String;I)Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v3
     :try_end_2f
-    .catchall {:try_start_8 .. :try_end_2f} :catchall_45
+    .catchall {:try_start_8 .. :try_end_2f} :catchall_46
 
     .line 1452
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
@@ -1046,7 +1107,7 @@
     invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
 
     .line 1446
-    return-object p1
+    return-object v3
 
     .line 1448
     :cond_36
@@ -1056,11 +1117,14 @@
     .line 1449
     invoke-virtual {v1}, Landroid/os/Parcel;->readString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v3
     :try_end_3d
-    .catchall {:try_start_36 .. :try_end_3d} :catchall_45
+    .catchall {:try_start_36 .. :try_end_3d} :catchall_46
+
+    move-object v2, v3
 
     .line 1452
+    .local v2, "_result":Ljava/lang/String;
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
 
     .line 1453
@@ -1070,22 +1134,28 @@
     nop
 
     .line 1455
-    return-object p1
+    return-object v2
 
     .line 1452
-    :catchall_45
-    move-exception p1
+    .end local v2  # "_result":Ljava/lang/String;
+    :catchall_46
+    move-exception v2
 
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
 
     .line 1453
     invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
 
-    throw p1
+    throw v2
 .end method
 
 .method public createStubVolume(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
-    .registers 15
+    .registers 16
+    .param p1, "sourcePath"  # Ljava/lang/String;
+    .param p2, "mountPath"  # Ljava/lang/String;
+    .param p3, "fsType"  # Ljava/lang/String;
+    .param p4, "fsUuid"  # Ljava/lang/String;
+    .param p5, "fsLabel"  # Ljava/lang/String;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -1098,11 +1168,13 @@
     move-result-object v0
 
     .line 2372
+    .local v0, "_data":Landroid/os/Parcel;
     invoke-static {}, Landroid/os/Parcel;->obtain()Landroid/os/Parcel;
 
     move-result-object v1
 
     .line 2375
+    .local v1, "_reply":Landroid/os/Parcel;
     :try_start_8
     const-string v2, "android.os.IVold"
 
@@ -1135,34 +1207,35 @@
     move-result v2
 
     .line 2382
+    .local v2, "_status":Z
     if-nez v2, :cond_41
 
     invoke-static {}, Landroid/os/IVold$Stub;->getDefaultImpl()Landroid/os/IVold;
 
-    move-result-object v2
+    move-result-object v3
 
-    if-eqz v2, :cond_41
+    if-eqz v3, :cond_41
 
     .line 2383
     invoke-static {}, Landroid/os/IVold$Stub;->getDefaultImpl()Landroid/os/IVold;
 
+    move-result-object v4
+
+    move-object v5, p1
+
+    move-object v6, p2
+
+    move-object v7, p3
+
+    move-object v8, p4
+
+    move-object v9, p5
+
+    invoke-interface/range {v4 .. v9}, Landroid/os/IVold;->createStubVolume(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+
     move-result-object v3
-
-    move-object v4, p1
-
-    move-object v5, p2
-
-    move-object v6, p3
-
-    move-object v7, p4
-
-    move-object v8, p5
-
-    invoke-interface/range {v3 .. v8}, Landroid/os/IVold;->createStubVolume(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
-
-    move-result-object p1
     :try_end_3a
-    .catchall {:try_start_8 .. :try_end_3a} :catchall_50
+    .catchall {:try_start_8 .. :try_end_3a} :catchall_51
 
     .line 2389
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
@@ -1171,7 +1244,7 @@
     invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
 
     .line 2383
-    return-object p1
+    return-object v3
 
     .line 2385
     :cond_41
@@ -1181,11 +1254,14 @@
     .line 2386
     invoke-virtual {v1}, Landroid/os/Parcel;->readString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v3
     :try_end_48
-    .catchall {:try_start_41 .. :try_end_48} :catchall_50
+    .catchall {:try_start_41 .. :try_end_48} :catchall_51
+
+    move-object v2, v3
 
     .line 2389
+    .local v2, "_result":Ljava/lang/String;
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
 
     .line 2390
@@ -1195,22 +1271,26 @@
     nop
 
     .line 2392
-    return-object p1
+    return-object v2
 
     .line 2389
-    :catchall_50
-    move-exception p1
+    .end local v2  # "_result":Ljava/lang/String;
+    :catchall_51
+    move-exception v2
 
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
 
     .line 2390
     invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
 
-    throw p1
+    throw v2
 .end method
 
 .method public createUserKey(IIZ)V
     .registers 9
+    .param p1, "userId"  # I
+    .param p2, "userSerial"  # I
+    .param p3, "ephemeral"  # Z
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -1223,11 +1303,13 @@
     move-result-object v0
 
     .line 1910
+    .local v0, "_data":Landroid/os/Parcel;
     invoke-static {}, Landroid/os/Parcel;->obtain()Landroid/os/Parcel;
 
     move-result-object v1
 
     .line 1912
+    .local v1, "_reply":Landroid/os/Parcel;
     :try_start_8
     const-string v2, "android.os.IVold"
 
@@ -1264,20 +1346,21 @@
     move-result v2
 
     .line 1917
+    .local v2, "_status":Z
     if-nez v2, :cond_3a
 
     invoke-static {}, Landroid/os/IVold$Stub;->getDefaultImpl()Landroid/os/IVold;
 
-    move-result-object v2
+    move-result-object v3
 
-    if-eqz v2, :cond_3a
+    if-eqz v3, :cond_3a
 
     .line 1918
     invoke-static {}, Landroid/os/IVold$Stub;->getDefaultImpl()Landroid/os/IVold;
 
-    move-result-object v2
+    move-result-object v3
 
-    invoke-interface {v2, p1, p2, p3}, Landroid/os/IVold;->createUserKey(IIZ)V
+    invoke-interface {v3, p1, p2, p3}, Landroid/os/IVold;->createUserKey(IIZ)V
     :try_end_33
     .catchall {:try_start_8 .. :try_end_33} :catchall_45
 
@@ -1298,6 +1381,7 @@
     .catchall {:try_start_3a .. :try_end_3d} :catchall_45
 
     .line 1924
+    .end local v2  # "_status":Z
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
 
     .line 1925
@@ -1311,18 +1395,19 @@
 
     .line 1924
     :catchall_45
-    move-exception p1
+    move-exception v2
 
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
 
     .line 1925
     invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
 
-    throw p1
+    throw v2
 .end method
 
 .method public destroyObb(Ljava/lang/String;)V
     .registers 7
+    .param p1, "volId"  # Ljava/lang/String;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -1335,11 +1420,13 @@
     move-result-object v0
 
     .line 1460
+    .local v0, "_data":Landroid/os/Parcel;
     invoke-static {}, Landroid/os/Parcel;->obtain()Landroid/os/Parcel;
 
     move-result-object v1
 
     .line 1462
+    .local v1, "_reply":Landroid/os/Parcel;
     :try_start_8
     const-string v2, "android.os.IVold"
 
@@ -1360,20 +1447,21 @@
     move-result v2
 
     .line 1465
+    .local v2, "_status":Z
     if-nez v2, :cond_2f
 
     invoke-static {}, Landroid/os/IVold$Stub;->getDefaultImpl()Landroid/os/IVold;
 
-    move-result-object v2
+    move-result-object v3
 
-    if-eqz v2, :cond_2f
+    if-eqz v3, :cond_2f
 
     .line 1466
     invoke-static {}, Landroid/os/IVold$Stub;->getDefaultImpl()Landroid/os/IVold;
 
-    move-result-object v2
+    move-result-object v3
 
-    invoke-interface {v2, p1}, Landroid/os/IVold;->destroyObb(Ljava/lang/String;)V
+    invoke-interface {v3, p1}, Landroid/os/IVold;->destroyObb(Ljava/lang/String;)V
     :try_end_28
     .catchall {:try_start_8 .. :try_end_28} :catchall_3a
 
@@ -1394,6 +1482,7 @@
     .catchall {:try_start_2f .. :try_end_32} :catchall_3a
 
     .line 1472
+    .end local v2  # "_status":Z
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
 
     .line 1473
@@ -1407,18 +1496,21 @@
 
     .line 1472
     :catchall_3a
-    move-exception p1
+    move-exception v2
 
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
 
     .line 1473
     invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
 
-    throw p1
+    throw v2
 .end method
 
 .method public destroySandboxForApp(Ljava/lang/String;Ljava/lang/String;I)V
     .registers 9
+    .param p1, "packageName"  # Ljava/lang/String;
+    .param p2, "sandboxId"  # Ljava/lang/String;
+    .param p3, "userId"  # I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -1431,11 +1523,13 @@
     move-result-object v0
 
     .line 2119
+    .local v0, "_data":Landroid/os/Parcel;
     invoke-static {}, Landroid/os/Parcel;->obtain()Landroid/os/Parcel;
 
     move-result-object v1
 
     .line 2121
+    .local v1, "_reply":Landroid/os/Parcel;
     :try_start_8
     const-string v2, "android.os.IVold"
 
@@ -1462,20 +1556,21 @@
     move-result v2
 
     .line 2126
+    .local v2, "_status":Z
     if-nez v2, :cond_35
 
     invoke-static {}, Landroid/os/IVold$Stub;->getDefaultImpl()Landroid/os/IVold;
 
-    move-result-object v2
+    move-result-object v3
 
-    if-eqz v2, :cond_35
+    if-eqz v3, :cond_35
 
     .line 2127
     invoke-static {}, Landroid/os/IVold$Stub;->getDefaultImpl()Landroid/os/IVold;
 
-    move-result-object v2
+    move-result-object v3
 
-    invoke-interface {v2, p1, p2, p3}, Landroid/os/IVold;->destroySandboxForApp(Ljava/lang/String;Ljava/lang/String;I)V
+    invoke-interface {v3, p1, p2, p3}, Landroid/os/IVold;->destroySandboxForApp(Ljava/lang/String;Ljava/lang/String;I)V
     :try_end_2e
     .catchall {:try_start_8 .. :try_end_2e} :catchall_40
 
@@ -1496,6 +1591,7 @@
     .catchall {:try_start_35 .. :try_end_38} :catchall_40
 
     .line 2133
+    .end local v2  # "_status":Z
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
 
     .line 2134
@@ -1509,18 +1605,19 @@
 
     .line 2133
     :catchall_40
-    move-exception p1
+    move-exception v2
 
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
 
     .line 2134
     invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
 
-    throw p1
+    throw v2
 .end method
 
 .method public destroyStubVolume(Ljava/lang/String;)V
     .registers 7
+    .param p1, "volId"  # Ljava/lang/String;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -1533,11 +1630,13 @@
     move-result-object v0
 
     .line 2397
+    .local v0, "_data":Landroid/os/Parcel;
     invoke-static {}, Landroid/os/Parcel;->obtain()Landroid/os/Parcel;
 
     move-result-object v1
 
     .line 2399
+    .local v1, "_reply":Landroid/os/Parcel;
     :try_start_8
     const-string v2, "android.os.IVold"
 
@@ -1558,20 +1657,21 @@
     move-result v2
 
     .line 2402
+    .local v2, "_status":Z
     if-nez v2, :cond_2f
 
     invoke-static {}, Landroid/os/IVold$Stub;->getDefaultImpl()Landroid/os/IVold;
 
-    move-result-object v2
+    move-result-object v3
 
-    if-eqz v2, :cond_2f
+    if-eqz v3, :cond_2f
 
     .line 2403
     invoke-static {}, Landroid/os/IVold$Stub;->getDefaultImpl()Landroid/os/IVold;
 
-    move-result-object v2
+    move-result-object v3
 
-    invoke-interface {v2, p1}, Landroid/os/IVold;->destroyStubVolume(Ljava/lang/String;)V
+    invoke-interface {v3, p1}, Landroid/os/IVold;->destroyStubVolume(Ljava/lang/String;)V
     :try_end_28
     .catchall {:try_start_8 .. :try_end_28} :catchall_3a
 
@@ -1592,6 +1692,7 @@
     .catchall {:try_start_2f .. :try_end_32} :catchall_3a
 
     .line 2409
+    .end local v2  # "_status":Z
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
 
     .line 2410
@@ -1605,18 +1706,19 @@
 
     .line 2409
     :catchall_3a
-    move-exception p1
+    move-exception v2
 
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
 
     .line 2410
     invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
 
-    throw p1
+    throw v2
 .end method
 
 .method public destroyUserKey(I)V
     .registers 7
+    .param p1, "userId"  # I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -1629,11 +1731,13 @@
     move-result-object v0
 
     .line 1931
+    .local v0, "_data":Landroid/os/Parcel;
     invoke-static {}, Landroid/os/Parcel;->obtain()Landroid/os/Parcel;
 
     move-result-object v1
 
     .line 1933
+    .local v1, "_reply":Landroid/os/Parcel;
     :try_start_8
     const-string v2, "android.os.IVold"
 
@@ -1654,20 +1758,21 @@
     move-result v2
 
     .line 1936
+    .local v2, "_status":Z
     if-nez v2, :cond_2f
 
     invoke-static {}, Landroid/os/IVold$Stub;->getDefaultImpl()Landroid/os/IVold;
 
-    move-result-object v2
+    move-result-object v3
 
-    if-eqz v2, :cond_2f
+    if-eqz v3, :cond_2f
 
     .line 1937
     invoke-static {}, Landroid/os/IVold$Stub;->getDefaultImpl()Landroid/os/IVold;
 
-    move-result-object v2
+    move-result-object v3
 
-    invoke-interface {v2, p1}, Landroid/os/IVold;->destroyUserKey(I)V
+    invoke-interface {v3, p1}, Landroid/os/IVold;->destroyUserKey(I)V
     :try_end_28
     .catchall {:try_start_8 .. :try_end_28} :catchall_3a
 
@@ -1688,6 +1793,7 @@
     .catchall {:try_start_2f .. :try_end_32} :catchall_3a
 
     .line 1943
+    .end local v2  # "_status":Z
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
 
     .line 1944
@@ -1701,18 +1807,21 @@
 
     .line 1943
     :catchall_3a
-    move-exception p1
+    move-exception v2
 
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
 
     .line 1944
     invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
 
-    throw p1
+    throw v2
 .end method
 
 .method public destroyUserStorage(Ljava/lang/String;II)V
     .registers 9
+    .param p1, "uuid"  # Ljava/lang/String;
+    .param p2, "userId"  # I
+    .param p3, "storageFlags"  # I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -1725,11 +1834,13 @@
     move-result-object v0
 
     .line 2076
+    .local v0, "_data":Landroid/os/Parcel;
     invoke-static {}, Landroid/os/Parcel;->obtain()Landroid/os/Parcel;
 
     move-result-object v1
 
     .line 2078
+    .local v1, "_reply":Landroid/os/Parcel;
     :try_start_8
     const-string v2, "android.os.IVold"
 
@@ -1756,20 +1867,21 @@
     move-result v2
 
     .line 2083
+    .local v2, "_status":Z
     if-nez v2, :cond_35
 
     invoke-static {}, Landroid/os/IVold$Stub;->getDefaultImpl()Landroid/os/IVold;
 
-    move-result-object v2
+    move-result-object v3
 
-    if-eqz v2, :cond_35
+    if-eqz v3, :cond_35
 
     .line 2084
     invoke-static {}, Landroid/os/IVold$Stub;->getDefaultImpl()Landroid/os/IVold;
 
-    move-result-object v2
+    move-result-object v3
 
-    invoke-interface {v2, p1, p2, p3}, Landroid/os/IVold;->destroyUserStorage(Ljava/lang/String;II)V
+    invoke-interface {v3, p1, p2, p3}, Landroid/os/IVold;->destroyUserStorage(Ljava/lang/String;II)V
     :try_end_2e
     .catchall {:try_start_8 .. :try_end_2e} :catchall_40
 
@@ -1790,6 +1902,7 @@
     .catchall {:try_start_35 .. :try_end_38} :catchall_40
 
     .line 2090
+    .end local v2  # "_status":Z
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
 
     .line 2091
@@ -1803,18 +1916,20 @@
 
     .line 2090
     :catchall_40
-    move-exception p1
+    move-exception v2
 
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
 
     .line 2091
     invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
 
-    throw p1
+    throw v2
 .end method
 
 .method public encryptFstab(Ljava/lang/String;Ljava/lang/String;)V
     .registers 8
+    .param p1, "blkDevice"  # Ljava/lang/String;
+    .param p2, "mountPoint"  # Ljava/lang/String;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -1827,11 +1942,13 @@
     move-result-object v0
 
     .line 1890
+    .local v0, "_data":Landroid/os/Parcel;
     invoke-static {}, Landroid/os/Parcel;->obtain()Landroid/os/Parcel;
 
     move-result-object v1
 
     .line 1892
+    .local v1, "_reply":Landroid/os/Parcel;
     :try_start_8
     const-string v2, "android.os.IVold"
 
@@ -1855,20 +1972,21 @@
     move-result v2
 
     .line 1896
+    .local v2, "_status":Z
     if-nez v2, :cond_32
 
     invoke-static {}, Landroid/os/IVold$Stub;->getDefaultImpl()Landroid/os/IVold;
 
-    move-result-object v2
+    move-result-object v3
 
-    if-eqz v2, :cond_32
+    if-eqz v3, :cond_32
 
     .line 1897
     invoke-static {}, Landroid/os/IVold$Stub;->getDefaultImpl()Landroid/os/IVold;
 
-    move-result-object v2
+    move-result-object v3
 
-    invoke-interface {v2, p1, p2}, Landroid/os/IVold;->encryptFstab(Ljava/lang/String;Ljava/lang/String;)V
+    invoke-interface {v3, p1, p2}, Landroid/os/IVold;->encryptFstab(Ljava/lang/String;Ljava/lang/String;)V
     :try_end_2b
     .catchall {:try_start_8 .. :try_end_2b} :catchall_3d
 
@@ -1889,6 +2007,7 @@
     .catchall {:try_start_32 .. :try_end_35} :catchall_3d
 
     .line 1903
+    .end local v2  # "_status":Z
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
 
     .line 1904
@@ -1902,14 +2021,14 @@
 
     .line 1903
     :catchall_3d
-    move-exception p1
+    move-exception v2
 
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
 
     .line 1904
     invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
 
-    throw p1
+    throw v2
 .end method
 
 .method public fbeEnable()V
@@ -1926,11 +2045,13 @@
     move-result-object v0
 
     .line 1796
+    .local v0, "_data":Landroid/os/Parcel;
     invoke-static {}, Landroid/os/Parcel;->obtain()Landroid/os/Parcel;
 
     move-result-object v1
 
     .line 1798
+    .local v1, "_reply":Landroid/os/Parcel;
     :try_start_8
     const-string v2, "android.os.IVold"
 
@@ -1948,20 +2069,21 @@
     move-result v2
 
     .line 1800
+    .local v2, "_status":Z
     if-nez v2, :cond_2c
 
     invoke-static {}, Landroid/os/IVold$Stub;->getDefaultImpl()Landroid/os/IVold;
 
-    move-result-object v2
+    move-result-object v3
 
-    if-eqz v2, :cond_2c
+    if-eqz v3, :cond_2c
 
     .line 1801
     invoke-static {}, Landroid/os/IVold$Stub;->getDefaultImpl()Landroid/os/IVold;
 
-    move-result-object v2
+    move-result-object v3
 
-    invoke-interface {v2}, Landroid/os/IVold;->fbeEnable()V
+    invoke-interface {v3}, Landroid/os/IVold;->fbeEnable()V
     :try_end_25
     .catchall {:try_start_8 .. :try_end_25} :catchall_37
 
@@ -1982,6 +2104,7 @@
     .catchall {:try_start_2c .. :try_end_2f} :catchall_37
 
     .line 1807
+    .end local v2  # "_status":Z
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
 
     .line 1808
@@ -2007,6 +2130,9 @@
 
 .method public fdeChangePassword(ILjava/lang/String;Ljava/lang/String;)V
     .registers 9
+    .param p1, "passwordType"  # I
+    .param p2, "currentPassword"  # Ljava/lang/String;
+    .param p3, "password"  # Ljava/lang/String;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -2019,11 +2145,13 @@
     move-result-object v0
 
     .line 1657
+    .local v0, "_data":Landroid/os/Parcel;
     invoke-static {}, Landroid/os/Parcel;->obtain()Landroid/os/Parcel;
 
     move-result-object v1
 
     .line 1659
+    .local v1, "_reply":Landroid/os/Parcel;
     :try_start_8
     const-string v2, "android.os.IVold"
 
@@ -2050,20 +2178,21 @@
     move-result v2
 
     .line 1664
+    .local v2, "_status":Z
     if-nez v2, :cond_35
 
     invoke-static {}, Landroid/os/IVold$Stub;->getDefaultImpl()Landroid/os/IVold;
 
-    move-result-object v2
+    move-result-object v3
 
-    if-eqz v2, :cond_35
+    if-eqz v3, :cond_35
 
     .line 1665
     invoke-static {}, Landroid/os/IVold$Stub;->getDefaultImpl()Landroid/os/IVold;
 
-    move-result-object v2
+    move-result-object v3
 
-    invoke-interface {v2, p1, p2, p3}, Landroid/os/IVold;->fdeChangePassword(ILjava/lang/String;Ljava/lang/String;)V
+    invoke-interface {v3, p1, p2, p3}, Landroid/os/IVold;->fdeChangePassword(ILjava/lang/String;Ljava/lang/String;)V
     :try_end_2e
     .catchall {:try_start_8 .. :try_end_2e} :catchall_40
 
@@ -2084,6 +2213,7 @@
     .catchall {:try_start_35 .. :try_end_38} :catchall_40
 
     .line 1671
+    .end local v2  # "_status":Z
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
 
     .line 1672
@@ -2097,18 +2227,19 @@
 
     .line 1671
     :catchall_40
-    move-exception p1
+    move-exception v2
 
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
 
     .line 1672
     invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
 
-    throw p1
+    throw v2
 .end method
 
 .method public fdeCheckPassword(Ljava/lang/String;)V
     .registers 7
+    .param p1, "password"  # Ljava/lang/String;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -2121,11 +2252,13 @@
     move-result-object v0
 
     .line 1579
+    .local v0, "_data":Landroid/os/Parcel;
     invoke-static {}, Landroid/os/Parcel;->obtain()Landroid/os/Parcel;
 
     move-result-object v1
 
     .line 1581
+    .local v1, "_reply":Landroid/os/Parcel;
     :try_start_8
     const-string v2, "android.os.IVold"
 
@@ -2146,20 +2279,21 @@
     move-result v2
 
     .line 1584
+    .local v2, "_status":Z
     if-nez v2, :cond_2f
 
     invoke-static {}, Landroid/os/IVold$Stub;->getDefaultImpl()Landroid/os/IVold;
 
-    move-result-object v2
+    move-result-object v3
 
-    if-eqz v2, :cond_2f
+    if-eqz v3, :cond_2f
 
     .line 1585
     invoke-static {}, Landroid/os/IVold$Stub;->getDefaultImpl()Landroid/os/IVold;
 
-    move-result-object v2
+    move-result-object v3
 
-    invoke-interface {v2, p1}, Landroid/os/IVold;->fdeCheckPassword(Ljava/lang/String;)V
+    invoke-interface {v3, p1}, Landroid/os/IVold;->fdeCheckPassword(Ljava/lang/String;)V
     :try_end_28
     .catchall {:try_start_8 .. :try_end_28} :catchall_3a
 
@@ -2180,6 +2314,7 @@
     .catchall {:try_start_2f .. :try_end_32} :catchall_3a
 
     .line 1591
+    .end local v2  # "_status":Z
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
 
     .line 1592
@@ -2193,14 +2328,14 @@
 
     .line 1591
     :catchall_3a
-    move-exception p1
+    move-exception v2
 
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
 
     .line 1592
     invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
 
-    throw p1
+    throw v2
 .end method
 
 .method public fdeClearPassword()V
@@ -2217,11 +2352,13 @@
     move-result-object v0
 
     .line 1778
+    .local v0, "_data":Landroid/os/Parcel;
     invoke-static {}, Landroid/os/Parcel;->obtain()Landroid/os/Parcel;
 
     move-result-object v1
 
     .line 1780
+    .local v1, "_reply":Landroid/os/Parcel;
     :try_start_8
     const-string v2, "android.os.IVold"
 
@@ -2239,20 +2376,21 @@
     move-result v2
 
     .line 1782
+    .local v2, "_status":Z
     if-nez v2, :cond_2c
 
     invoke-static {}, Landroid/os/IVold$Stub;->getDefaultImpl()Landroid/os/IVold;
 
-    move-result-object v2
+    move-result-object v3
 
-    if-eqz v2, :cond_2c
+    if-eqz v3, :cond_2c
 
     .line 1783
     invoke-static {}, Landroid/os/IVold$Stub;->getDefaultImpl()Landroid/os/IVold;
 
-    move-result-object v2
+    move-result-object v3
 
-    invoke-interface {v2}, Landroid/os/IVold;->fdeClearPassword()V
+    invoke-interface {v3}, Landroid/os/IVold;->fdeClearPassword()V
     :try_end_25
     .catchall {:try_start_8 .. :try_end_25} :catchall_37
 
@@ -2273,6 +2411,7 @@
     .catchall {:try_start_2c .. :try_end_2f} :catchall_37
 
     .line 1789
+    .end local v2  # "_status":Z
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
 
     .line 1790
@@ -2310,11 +2449,13 @@
     move-result-object v0
 
     .line 1616
+    .local v0, "_data":Landroid/os/Parcel;
     invoke-static {}, Landroid/os/Parcel;->obtain()Landroid/os/Parcel;
 
     move-result-object v1
 
     .line 1619
+    .local v1, "_reply":Landroid/os/Parcel;
     :try_start_8
     const-string v2, "android.os.IVold"
 
@@ -2332,24 +2473,25 @@
     move-result v2
 
     .line 1621
+    .local v2, "_status":Z
     if-nez v2, :cond_2d
 
     invoke-static {}, Landroid/os/IVold$Stub;->getDefaultImpl()Landroid/os/IVold;
 
-    move-result-object v2
+    move-result-object v3
 
-    if-eqz v2, :cond_2d
+    if-eqz v3, :cond_2d
 
     .line 1622
     invoke-static {}, Landroid/os/IVold$Stub;->getDefaultImpl()Landroid/os/IVold;
 
-    move-result-object v2
+    move-result-object v3
 
-    invoke-interface {v2}, Landroid/os/IVold;->fdeComplete()I
+    invoke-interface {v3}, Landroid/os/IVold;->fdeComplete()I
 
-    move-result v2
+    move-result v3
     :try_end_26
-    .catchall {:try_start_8 .. :try_end_26} :catchall_3c
+    .catchall {:try_start_8 .. :try_end_26} :catchall_3d
 
     .line 1628
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
@@ -2358,7 +2500,7 @@
     invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
 
     .line 1622
-    return v2
+    return v3
 
     .line 1624
     :cond_2d
@@ -2368,11 +2510,14 @@
     .line 1625
     invoke-virtual {v1}, Landroid/os/Parcel;->readInt()I
 
-    move-result v2
+    move-result v3
     :try_end_34
-    .catchall {:try_start_2d .. :try_end_34} :catchall_3c
+    .catchall {:try_start_2d .. :try_end_34} :catchall_3d
+
+    move v2, v3
 
     .line 1628
+    .local v2, "_result":I
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
 
     .line 1629
@@ -2385,7 +2530,8 @@
     return v2
 
     .line 1628
-    :catchall_3c
+    .end local v2  # "_result":I
+    :catchall_3d
     move-exception v2
 
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
@@ -2398,6 +2544,9 @@
 
 .method public fdeEnable(ILjava/lang/String;I)V
     .registers 9
+    .param p1, "passwordType"  # I
+    .param p2, "password"  # Ljava/lang/String;
+    .param p3, "encryptionFlags"  # I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -2410,11 +2559,13 @@
     move-result-object v0
 
     .line 1636
+    .local v0, "_data":Landroid/os/Parcel;
     invoke-static {}, Landroid/os/Parcel;->obtain()Landroid/os/Parcel;
 
     move-result-object v1
 
     .line 1638
+    .local v1, "_reply":Landroid/os/Parcel;
     :try_start_8
     const-string v2, "android.os.IVold"
 
@@ -2441,20 +2592,21 @@
     move-result v2
 
     .line 1643
+    .local v2, "_status":Z
     if-nez v2, :cond_35
 
     invoke-static {}, Landroid/os/IVold$Stub;->getDefaultImpl()Landroid/os/IVold;
 
-    move-result-object v2
+    move-result-object v3
 
-    if-eqz v2, :cond_35
+    if-eqz v3, :cond_35
 
     .line 1644
     invoke-static {}, Landroid/os/IVold$Stub;->getDefaultImpl()Landroid/os/IVold;
 
-    move-result-object v2
+    move-result-object v3
 
-    invoke-interface {v2, p1, p2, p3}, Landroid/os/IVold;->fdeEnable(ILjava/lang/String;I)V
+    invoke-interface {v3, p1, p2, p3}, Landroid/os/IVold;->fdeEnable(ILjava/lang/String;I)V
     :try_end_2e
     .catchall {:try_start_8 .. :try_end_2e} :catchall_40
 
@@ -2475,6 +2627,7 @@
     .catchall {:try_start_35 .. :try_end_38} :catchall_40
 
     .line 1650
+    .end local v2  # "_status":Z
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
 
     .line 1651
@@ -2488,18 +2641,19 @@
 
     .line 1650
     :catchall_40
-    move-exception p1
+    move-exception v2
 
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
 
     .line 1651
     invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
 
-    throw p1
+    throw v2
 .end method
 
 .method public fdeGetField(Ljava/lang/String;)Ljava/lang/String;
     .registers 7
+    .param p1, "key"  # Ljava/lang/String;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -2512,11 +2666,13 @@
     move-result-object v0
 
     .line 1697
+    .local v0, "_data":Landroid/os/Parcel;
     invoke-static {}, Landroid/os/Parcel;->obtain()Landroid/os/Parcel;
 
     move-result-object v1
 
     .line 1700
+    .local v1, "_reply":Landroid/os/Parcel;
     :try_start_8
     const-string v2, "android.os.IVold"
 
@@ -2537,24 +2693,25 @@
     move-result v2
 
     .line 1703
+    .local v2, "_status":Z
     if-nez v2, :cond_30
 
     invoke-static {}, Landroid/os/IVold$Stub;->getDefaultImpl()Landroid/os/IVold;
 
-    move-result-object v2
+    move-result-object v3
 
-    if-eqz v2, :cond_30
+    if-eqz v3, :cond_30
 
     .line 1704
     invoke-static {}, Landroid/os/IVold$Stub;->getDefaultImpl()Landroid/os/IVold;
 
-    move-result-object v2
+    move-result-object v3
 
-    invoke-interface {v2, p1}, Landroid/os/IVold;->fdeGetField(Ljava/lang/String;)Ljava/lang/String;
+    invoke-interface {v3, p1}, Landroid/os/IVold;->fdeGetField(Ljava/lang/String;)Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v3
     :try_end_29
-    .catchall {:try_start_8 .. :try_end_29} :catchall_3f
+    .catchall {:try_start_8 .. :try_end_29} :catchall_40
 
     .line 1710
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
@@ -2563,7 +2720,7 @@
     invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
 
     .line 1704
-    return-object p1
+    return-object v3
 
     .line 1706
     :cond_30
@@ -2573,11 +2730,14 @@
     .line 1707
     invoke-virtual {v1}, Landroid/os/Parcel;->readString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v3
     :try_end_37
-    .catchall {:try_start_30 .. :try_end_37} :catchall_3f
+    .catchall {:try_start_30 .. :try_end_37} :catchall_40
+
+    move-object v2, v3
 
     .line 1710
+    .local v2, "_result":Ljava/lang/String;
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
 
     .line 1711
@@ -2587,18 +2747,19 @@
     nop
 
     .line 1713
-    return-object p1
+    return-object v2
 
     .line 1710
-    :catchall_3f
-    move-exception p1
+    .end local v2  # "_result":Ljava/lang/String;
+    :catchall_40
+    move-exception v2
 
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
 
     .line 1711
     invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
 
-    throw p1
+    throw v2
 .end method
 
 .method public fdeGetPassword()Ljava/lang/String;
@@ -2615,11 +2776,13 @@
     move-result-object v0
 
     .line 1758
+    .local v0, "_data":Landroid/os/Parcel;
     invoke-static {}, Landroid/os/Parcel;->obtain()Landroid/os/Parcel;
 
     move-result-object v1
 
     .line 1761
+    .local v1, "_reply":Landroid/os/Parcel;
     :try_start_8
     const-string v2, "android.os.IVold"
 
@@ -2637,24 +2800,25 @@
     move-result v2
 
     .line 1763
+    .local v2, "_status":Z
     if-nez v2, :cond_2d
 
     invoke-static {}, Landroid/os/IVold$Stub;->getDefaultImpl()Landroid/os/IVold;
 
-    move-result-object v2
+    move-result-object v3
 
-    if-eqz v2, :cond_2d
+    if-eqz v3, :cond_2d
 
     .line 1764
     invoke-static {}, Landroid/os/IVold$Stub;->getDefaultImpl()Landroid/os/IVold;
 
-    move-result-object v2
+    move-result-object v3
 
-    invoke-interface {v2}, Landroid/os/IVold;->fdeGetPassword()Ljava/lang/String;
+    invoke-interface {v3}, Landroid/os/IVold;->fdeGetPassword()Ljava/lang/String;
 
-    move-result-object v2
+    move-result-object v3
     :try_end_26
-    .catchall {:try_start_8 .. :try_end_26} :catchall_3c
+    .catchall {:try_start_8 .. :try_end_26} :catchall_3d
 
     .line 1770
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
@@ -2663,7 +2827,7 @@
     invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
 
     .line 1764
-    return-object v2
+    return-object v3
 
     .line 1766
     :cond_2d
@@ -2673,11 +2837,14 @@
     .line 1767
     invoke-virtual {v1}, Landroid/os/Parcel;->readString()Ljava/lang/String;
 
-    move-result-object v2
+    move-result-object v3
     :try_end_34
-    .catchall {:try_start_2d .. :try_end_34} :catchall_3c
+    .catchall {:try_start_2d .. :try_end_34} :catchall_3d
+
+    move-object v2, v3
 
     .line 1770
+    .local v2, "_result":Ljava/lang/String;
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
 
     .line 1771
@@ -2690,7 +2857,8 @@
     return-object v2
 
     .line 1770
-    :catchall_3c
+    .end local v2  # "_result":Ljava/lang/String;
+    :catchall_3d
     move-exception v2
 
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
@@ -2715,11 +2883,13 @@
     move-result-object v0
 
     .line 1738
+    .local v0, "_data":Landroid/os/Parcel;
     invoke-static {}, Landroid/os/Parcel;->obtain()Landroid/os/Parcel;
 
     move-result-object v1
 
     .line 1741
+    .local v1, "_reply":Landroid/os/Parcel;
     :try_start_8
     const-string v2, "android.os.IVold"
 
@@ -2737,24 +2907,25 @@
     move-result v2
 
     .line 1743
+    .local v2, "_status":Z
     if-nez v2, :cond_2d
 
     invoke-static {}, Landroid/os/IVold$Stub;->getDefaultImpl()Landroid/os/IVold;
 
-    move-result-object v2
+    move-result-object v3
 
-    if-eqz v2, :cond_2d
+    if-eqz v3, :cond_2d
 
     .line 1744
     invoke-static {}, Landroid/os/IVold$Stub;->getDefaultImpl()Landroid/os/IVold;
 
-    move-result-object v2
+    move-result-object v3
 
-    invoke-interface {v2}, Landroid/os/IVold;->fdeGetPasswordType()I
+    invoke-interface {v3}, Landroid/os/IVold;->fdeGetPasswordType()I
 
-    move-result v2
+    move-result v3
     :try_end_26
-    .catchall {:try_start_8 .. :try_end_26} :catchall_3c
+    .catchall {:try_start_8 .. :try_end_26} :catchall_3d
 
     .line 1750
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
@@ -2763,7 +2934,7 @@
     invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
 
     .line 1744
-    return v2
+    return v3
 
     .line 1746
     :cond_2d
@@ -2773,11 +2944,14 @@
     .line 1747
     invoke-virtual {v1}, Landroid/os/Parcel;->readInt()I
 
-    move-result v2
+    move-result v3
     :try_end_34
-    .catchall {:try_start_2d .. :try_end_34} :catchall_3c
+    .catchall {:try_start_2d .. :try_end_34} :catchall_3d
+
+    move v2, v3
 
     .line 1750
+    .local v2, "_result":I
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
 
     .line 1751
@@ -2790,7 +2964,8 @@
     return v2
 
     .line 1750
-    :catchall_3c
+    .end local v2  # "_result":I
+    :catchall_3d
     move-exception v2
 
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
@@ -2815,11 +2990,13 @@
     move-result-object v0
 
     .line 1598
+    .local v0, "_data":Landroid/os/Parcel;
     invoke-static {}, Landroid/os/Parcel;->obtain()Landroid/os/Parcel;
 
     move-result-object v1
 
     .line 1600
+    .local v1, "_reply":Landroid/os/Parcel;
     :try_start_8
     const-string v2, "android.os.IVold"
 
@@ -2837,20 +3014,21 @@
     move-result v2
 
     .line 1602
+    .local v2, "_status":Z
     if-nez v2, :cond_2c
 
     invoke-static {}, Landroid/os/IVold$Stub;->getDefaultImpl()Landroid/os/IVold;
 
-    move-result-object v2
+    move-result-object v3
 
-    if-eqz v2, :cond_2c
+    if-eqz v3, :cond_2c
 
     .line 1603
     invoke-static {}, Landroid/os/IVold$Stub;->getDefaultImpl()Landroid/os/IVold;
 
-    move-result-object v2
+    move-result-object v3
 
-    invoke-interface {v2}, Landroid/os/IVold;->fdeRestart()V
+    invoke-interface {v3}, Landroid/os/IVold;->fdeRestart()V
     :try_end_25
     .catchall {:try_start_8 .. :try_end_25} :catchall_37
 
@@ -2871,6 +3049,7 @@
     .catchall {:try_start_2c .. :try_end_2f} :catchall_37
 
     .line 1609
+    .end local v2  # "_status":Z
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
 
     .line 1610
@@ -2896,6 +3075,8 @@
 
 .method public fdeSetField(Ljava/lang/String;Ljava/lang/String;)V
     .registers 8
+    .param p1, "key"  # Ljava/lang/String;
+    .param p2, "value"  # Ljava/lang/String;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -2908,11 +3089,13 @@
     move-result-object v0
 
     .line 1718
+    .local v0, "_data":Landroid/os/Parcel;
     invoke-static {}, Landroid/os/Parcel;->obtain()Landroid/os/Parcel;
 
     move-result-object v1
 
     .line 1720
+    .local v1, "_reply":Landroid/os/Parcel;
     :try_start_8
     const-string v2, "android.os.IVold"
 
@@ -2936,20 +3119,21 @@
     move-result v2
 
     .line 1724
+    .local v2, "_status":Z
     if-nez v2, :cond_32
 
     invoke-static {}, Landroid/os/IVold$Stub;->getDefaultImpl()Landroid/os/IVold;
 
-    move-result-object v2
+    move-result-object v3
 
-    if-eqz v2, :cond_32
+    if-eqz v3, :cond_32
 
     .line 1725
     invoke-static {}, Landroid/os/IVold$Stub;->getDefaultImpl()Landroid/os/IVold;
 
-    move-result-object v2
+    move-result-object v3
 
-    invoke-interface {v2, p1, p2}, Landroid/os/IVold;->fdeSetField(Ljava/lang/String;Ljava/lang/String;)V
+    invoke-interface {v3, p1, p2}, Landroid/os/IVold;->fdeSetField(Ljava/lang/String;Ljava/lang/String;)V
     :try_end_2b
     .catchall {:try_start_8 .. :try_end_2b} :catchall_3d
 
@@ -2970,6 +3154,7 @@
     .catchall {:try_start_32 .. :try_end_35} :catchall_3d
 
     .line 1731
+    .end local v2  # "_status":Z
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
 
     .line 1732
@@ -2983,18 +3168,19 @@
 
     .line 1731
     :catchall_3d
-    move-exception p1
+    move-exception v2
 
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
 
     .line 1732
     invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
 
-    throw p1
+    throw v2
 .end method
 
 .method public fdeVerifyPassword(Ljava/lang/String;)V
     .registers 7
+    .param p1, "password"  # Ljava/lang/String;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -3007,11 +3193,13 @@
     move-result-object v0
 
     .line 1678
+    .local v0, "_data":Landroid/os/Parcel;
     invoke-static {}, Landroid/os/Parcel;->obtain()Landroid/os/Parcel;
 
     move-result-object v1
 
     .line 1680
+    .local v1, "_reply":Landroid/os/Parcel;
     :try_start_8
     const-string v2, "android.os.IVold"
 
@@ -3032,20 +3220,21 @@
     move-result v2
 
     .line 1683
+    .local v2, "_status":Z
     if-nez v2, :cond_2f
 
     invoke-static {}, Landroid/os/IVold$Stub;->getDefaultImpl()Landroid/os/IVold;
 
-    move-result-object v2
+    move-result-object v3
 
-    if-eqz v2, :cond_2f
+    if-eqz v3, :cond_2f
 
     .line 1684
     invoke-static {}, Landroid/os/IVold$Stub;->getDefaultImpl()Landroid/os/IVold;
 
-    move-result-object v2
+    move-result-object v3
 
-    invoke-interface {v2, p1}, Landroid/os/IVold;->fdeVerifyPassword(Ljava/lang/String;)V
+    invoke-interface {v3, p1}, Landroid/os/IVold;->fdeVerifyPassword(Ljava/lang/String;)V
     :try_end_28
     .catchall {:try_start_8 .. :try_end_28} :catchall_3a
 
@@ -3066,6 +3255,7 @@
     .catchall {:try_start_2f .. :try_end_32} :catchall_3a
 
     .line 1690
+    .end local v2  # "_status":Z
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
 
     .line 1691
@@ -3079,18 +3269,19 @@
 
     .line 1690
     :catchall_3a
-    move-exception p1
+    move-exception v2
 
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
 
     .line 1691
     invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
 
-    throw p1
+    throw v2
 .end method
 
 .method public fixateNewestUserKeyAuth(I)V
     .registers 7
+    .param p1, "userId"  # I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -3103,11 +3294,13 @@
     move-result-object v0
 
     .line 1994
+    .local v0, "_data":Landroid/os/Parcel;
     invoke-static {}, Landroid/os/Parcel;->obtain()Landroid/os/Parcel;
 
     move-result-object v1
 
     .line 1996
+    .local v1, "_reply":Landroid/os/Parcel;
     :try_start_8
     const-string v2, "android.os.IVold"
 
@@ -3128,20 +3321,21 @@
     move-result v2
 
     .line 1999
+    .local v2, "_status":Z
     if-nez v2, :cond_2f
 
     invoke-static {}, Landroid/os/IVold$Stub;->getDefaultImpl()Landroid/os/IVold;
 
-    move-result-object v2
+    move-result-object v3
 
-    if-eqz v2, :cond_2f
+    if-eqz v3, :cond_2f
 
     .line 2000
     invoke-static {}, Landroid/os/IVold$Stub;->getDefaultImpl()Landroid/os/IVold;
 
-    move-result-object v2
+    move-result-object v3
 
-    invoke-interface {v2, p1}, Landroid/os/IVold;->fixateNewestUserKeyAuth(I)V
+    invoke-interface {v3, p1}, Landroid/os/IVold;->fixateNewestUserKeyAuth(I)V
     :try_end_28
     .catchall {:try_start_8 .. :try_end_28} :catchall_3a
 
@@ -3162,6 +3356,7 @@
     .catchall {:try_start_2f .. :try_end_32} :catchall_3a
 
     .line 2006
+    .end local v2  # "_status":Z
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
 
     .line 2007
@@ -3175,18 +3370,20 @@
 
     .line 2006
     :catchall_3a
-    move-exception p1
+    move-exception v2
 
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
 
     .line 2007
     invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
 
-    throw p1
+    throw v2
 .end method
 
 .method public forgetPartition(Ljava/lang/String;Ljava/lang/String;)V
     .registers 8
+    .param p1, "partGuid"  # Ljava/lang/String;
+    .param p2, "fsUuid"  # Ljava/lang/String;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -3199,11 +3396,13 @@
     move-result-object v0
 
     .line 1258
+    .local v0, "_data":Landroid/os/Parcel;
     invoke-static {}, Landroid/os/Parcel;->obtain()Landroid/os/Parcel;
 
     move-result-object v1
 
     .line 1260
+    .local v1, "_reply":Landroid/os/Parcel;
     :try_start_8
     const-string v2, "android.os.IVold"
 
@@ -3227,20 +3426,21 @@
     move-result v2
 
     .line 1264
+    .local v2, "_status":Z
     if-nez v2, :cond_32
 
     invoke-static {}, Landroid/os/IVold$Stub;->getDefaultImpl()Landroid/os/IVold;
 
-    move-result-object v2
+    move-result-object v3
 
-    if-eqz v2, :cond_32
+    if-eqz v3, :cond_32
 
     .line 1265
     invoke-static {}, Landroid/os/IVold$Stub;->getDefaultImpl()Landroid/os/IVold;
 
-    move-result-object v2
+    move-result-object v3
 
-    invoke-interface {v2, p1, p2}, Landroid/os/IVold;->forgetPartition(Ljava/lang/String;Ljava/lang/String;)V
+    invoke-interface {v3, p1, p2}, Landroid/os/IVold;->forgetPartition(Ljava/lang/String;Ljava/lang/String;)V
     :try_end_2b
     .catchall {:try_start_8 .. :try_end_2b} :catchall_3d
 
@@ -3261,6 +3461,7 @@
     .catchall {:try_start_32 .. :try_end_35} :catchall_3d
 
     .line 1271
+    .end local v2  # "_status":Z
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
 
     .line 1272
@@ -3274,18 +3475,20 @@
 
     .line 1271
     :catchall_3d
-    move-exception p1
+    move-exception v2
 
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
 
     .line 1272
     invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
 
-    throw p1
+    throw v2
 .end method
 
 .method public format(Ljava/lang/String;Ljava/lang/String;)V
     .registers 8
+    .param p1, "volId"  # Ljava/lang/String;
+    .param p2, "fsType"  # Ljava/lang/String;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -3298,11 +3501,13 @@
     move-result-object v0
 
     .line 1318
+    .local v0, "_data":Landroid/os/Parcel;
     invoke-static {}, Landroid/os/Parcel;->obtain()Landroid/os/Parcel;
 
     move-result-object v1
 
     .line 1320
+    .local v1, "_reply":Landroid/os/Parcel;
     :try_start_8
     const-string v2, "android.os.IVold"
 
@@ -3326,20 +3531,21 @@
     move-result v2
 
     .line 1324
+    .local v2, "_status":Z
     if-nez v2, :cond_32
 
     invoke-static {}, Landroid/os/IVold$Stub;->getDefaultImpl()Landroid/os/IVold;
 
-    move-result-object v2
+    move-result-object v3
 
-    if-eqz v2, :cond_32
+    if-eqz v3, :cond_32
 
     .line 1325
     invoke-static {}, Landroid/os/IVold$Stub;->getDefaultImpl()Landroid/os/IVold;
 
-    move-result-object v2
+    move-result-object v3
 
-    invoke-interface {v2, p1, p2}, Landroid/os/IVold;->format(Ljava/lang/String;Ljava/lang/String;)V
+    invoke-interface {v3, p1, p2}, Landroid/os/IVold;->format(Ljava/lang/String;Ljava/lang/String;)V
     :try_end_2b
     .catchall {:try_start_8 .. :try_end_2b} :catchall_3d
 
@@ -3360,6 +3566,7 @@
     .catchall {:try_start_32 .. :try_end_35} :catchall_3d
 
     .line 1331
+    .end local v2  # "_status":Z
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
 
     .line 1332
@@ -3373,18 +3580,20 @@
 
     .line 1331
     :catchall_3d
-    move-exception p1
+    move-exception v2
 
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
 
     .line 1332
     invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
 
-    throw p1
+    throw v2
 .end method
 
 .method public fstrim(ILandroid/os/IVoldTaskListener;)V
     .registers 8
+    .param p1, "fstrimFlags"  # I
+    .param p2, "listener"  # Landroid/os/IVoldTaskListener;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -3397,11 +3606,13 @@
     move-result-object v0
 
     .line 1479
+    .local v0, "_data":Landroid/os/Parcel;
     invoke-static {}, Landroid/os/Parcel;->obtain()Landroid/os/Parcel;
 
     move-result-object v1
 
     .line 1481
+    .local v1, "_reply":Landroid/os/Parcel;
     :try_start_8
     const-string v2, "android.os.IVold"
 
@@ -3437,20 +3648,21 @@
     move-result v2
 
     .line 1485
+    .local v2, "_status":Z
     if-nez v2, :cond_3a
 
     invoke-static {}, Landroid/os/IVold$Stub;->getDefaultImpl()Landroid/os/IVold;
 
-    move-result-object v2
+    move-result-object v3
 
-    if-eqz v2, :cond_3a
+    if-eqz v3, :cond_3a
 
     .line 1486
     invoke-static {}, Landroid/os/IVold$Stub;->getDefaultImpl()Landroid/os/IVold;
 
-    move-result-object v2
+    move-result-object v3
 
-    invoke-interface {v2, p1, p2}, Landroid/os/IVold;->fstrim(ILandroid/os/IVoldTaskListener;)V
+    invoke-interface {v3, p1, p2}, Landroid/os/IVold;->fstrim(ILandroid/os/IVoldTaskListener;)V
     :try_end_33
     .catchall {:try_start_8 .. :try_end_33} :catchall_45
 
@@ -3471,6 +3683,7 @@
     .catchall {:try_start_3a .. :try_end_3d} :catchall_45
 
     .line 1492
+    .end local v2  # "_status":Z
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
 
     .line 1493
@@ -3484,14 +3697,14 @@
 
     .line 1492
     :catchall_45
-    move-exception p1
+    move-exception v2
 
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
 
     .line 1493
     invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
 
-    throw p1
+    throw v2
 .end method
 
 .method public getInterfaceDescriptor()Ljava/lang/String;
@@ -3517,11 +3730,13 @@
     move-result-object v0
 
     .line 1832
+    .local v0, "_data":Landroid/os/Parcel;
     invoke-static {}, Landroid/os/Parcel;->obtain()Landroid/os/Parcel;
 
     move-result-object v1
 
     .line 1834
+    .local v1, "_reply":Landroid/os/Parcel;
     :try_start_8
     const-string v2, "android.os.IVold"
 
@@ -3539,20 +3754,21 @@
     move-result v2
 
     .line 1836
+    .local v2, "_status":Z
     if-nez v2, :cond_2c
 
     invoke-static {}, Landroid/os/IVold$Stub;->getDefaultImpl()Landroid/os/IVold;
 
-    move-result-object v2
+    move-result-object v3
 
-    if-eqz v2, :cond_2c
+    if-eqz v3, :cond_2c
 
     .line 1837
     invoke-static {}, Landroid/os/IVold$Stub;->getDefaultImpl()Landroid/os/IVold;
 
-    move-result-object v2
+    move-result-object v3
 
-    invoke-interface {v2}, Landroid/os/IVold;->initUser0()V
+    invoke-interface {v3}, Landroid/os/IVold;->initUser0()V
     :try_end_25
     .catchall {:try_start_8 .. :try_end_25} :catchall_37
 
@@ -3573,6 +3789,7 @@
     .catchall {:try_start_2c .. :try_end_2f} :catchall_37
 
     .line 1843
+    .end local v2  # "_status":Z
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
 
     .line 1844
@@ -3610,11 +3827,13 @@
     move-result-object v0
 
     .line 1850
+    .local v0, "_data":Landroid/os/Parcel;
     invoke-static {}, Landroid/os/Parcel;->obtain()Landroid/os/Parcel;
 
     move-result-object v1
 
     .line 1853
+    .local v1, "_reply":Landroid/os/Parcel;
     :try_start_8
     const-string v2, "android.os.IVold"
 
@@ -3632,24 +3851,25 @@
     move-result v2
 
     .line 1855
+    .local v2, "_status":Z
     if-nez v2, :cond_2d
 
     invoke-static {}, Landroid/os/IVold$Stub;->getDefaultImpl()Landroid/os/IVold;
 
-    move-result-object v2
+    move-result-object v3
 
-    if-eqz v2, :cond_2d
+    if-eqz v3, :cond_2d
 
     .line 1856
     invoke-static {}, Landroid/os/IVold$Stub;->getDefaultImpl()Landroid/os/IVold;
 
-    move-result-object v2
+    move-result-object v3
 
-    invoke-interface {v2}, Landroid/os/IVold;->isConvertibleToFbe()Z
+    invoke-interface {v3}, Landroid/os/IVold;->isConvertibleToFbe()Z
 
-    move-result v2
+    move-result v3
     :try_end_26
-    .catchall {:try_start_8 .. :try_end_26} :catchall_3f
+    .catchall {:try_start_8 .. :try_end_26} :catchall_40
 
     .line 1862
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
@@ -3658,7 +3878,7 @@
     invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
 
     .line 1856
-    return v2
+    return v3
 
     .line 1858
     :cond_2d
@@ -3668,16 +3888,19 @@
     .line 1859
     invoke-virtual {v1}, Landroid/os/Parcel;->readInt()I
 
-    move-result v2
+    move-result v3
     :try_end_34
-    .catchall {:try_start_2d .. :try_end_34} :catchall_3f
+    .catchall {:try_start_2d .. :try_end_34} :catchall_40
 
-    if-eqz v2, :cond_37
+    if-eqz v3, :cond_37
 
     const/4 v4, 0x1
 
-    .line 1862
     :cond_37
+    move v2, v4
+
+    .line 1862
+    .local v2, "_result":Z
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
 
     .line 1863
@@ -3687,10 +3910,11 @@
     nop
 
     .line 1865
-    return v4
+    return v2
 
     .line 1862
-    :catchall_3f
+    .end local v2  # "_result":Z
+    :catchall_40
     move-exception v2
 
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
@@ -3703,6 +3927,7 @@
 
 .method public lockUserKey(I)V
     .registers 7
+    .param p1, "userId"  # I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -3715,11 +3940,13 @@
     move-result-object v0
 
     .line 2035
+    .local v0, "_data":Landroid/os/Parcel;
     invoke-static {}, Landroid/os/Parcel;->obtain()Landroid/os/Parcel;
 
     move-result-object v1
 
     .line 2037
+    .local v1, "_reply":Landroid/os/Parcel;
     :try_start_8
     const-string v2, "android.os.IVold"
 
@@ -3740,20 +3967,21 @@
     move-result v2
 
     .line 2040
+    .local v2, "_status":Z
     if-nez v2, :cond_2f
 
     invoke-static {}, Landroid/os/IVold$Stub;->getDefaultImpl()Landroid/os/IVold;
 
-    move-result-object v2
+    move-result-object v3
 
-    if-eqz v2, :cond_2f
+    if-eqz v3, :cond_2f
 
     .line 2041
     invoke-static {}, Landroid/os/IVold$Stub;->getDefaultImpl()Landroid/os/IVold;
 
-    move-result-object v2
+    move-result-object v3
 
-    invoke-interface {v2, p1}, Landroid/os/IVold;->lockUserKey(I)V
+    invoke-interface {v3, p1}, Landroid/os/IVold;->lockUserKey(I)V
     :try_end_28
     .catchall {:try_start_8 .. :try_end_28} :catchall_3a
 
@@ -3774,6 +4002,7 @@
     .catchall {:try_start_2f .. :try_end_32} :catchall_3a
 
     .line 2047
+    .end local v2  # "_status":Z
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
 
     .line 2048
@@ -3787,14 +4016,14 @@
 
     .line 2047
     :catchall_3a
-    move-exception p1
+    move-exception v2
 
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
 
     .line 2048
     invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
 
-    throw p1
+    throw v2
 .end method
 
 .method public markBootAttempt()V
@@ -3811,11 +4040,13 @@
     move-result-object v0
 
     .line 2294
+    .local v0, "_data":Landroid/os/Parcel;
     invoke-static {}, Landroid/os/Parcel;->obtain()Landroid/os/Parcel;
 
     move-result-object v1
 
     .line 2296
+    .local v1, "_reply":Landroid/os/Parcel;
     :try_start_8
     const-string v2, "android.os.IVold"
 
@@ -3833,20 +4064,21 @@
     move-result v2
 
     .line 2298
+    .local v2, "_status":Z
     if-nez v2, :cond_2c
 
     invoke-static {}, Landroid/os/IVold$Stub;->getDefaultImpl()Landroid/os/IVold;
 
-    move-result-object v2
+    move-result-object v3
 
-    if-eqz v2, :cond_2c
+    if-eqz v3, :cond_2c
 
     .line 2299
     invoke-static {}, Landroid/os/IVold$Stub;->getDefaultImpl()Landroid/os/IVold;
 
-    move-result-object v2
+    move-result-object v3
 
-    invoke-interface {v2}, Landroid/os/IVold;->markBootAttempt()V
+    invoke-interface {v3}, Landroid/os/IVold;->markBootAttempt()V
     :try_end_25
     .catchall {:try_start_8 .. :try_end_25} :catchall_37
 
@@ -3867,6 +4099,7 @@
     .catchall {:try_start_2c .. :try_end_2f} :catchall_37
 
     .line 2305
+    .end local v2  # "_status":Z
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
 
     .line 2306
@@ -3892,6 +4125,7 @@
 
 .method public mkdirs(Ljava/lang/String;)V
     .registers 7
+    .param p1, "path"  # Ljava/lang/String;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -3904,11 +4138,13 @@
     move-result-object v0
 
     .line 1418
+    .local v0, "_data":Landroid/os/Parcel;
     invoke-static {}, Landroid/os/Parcel;->obtain()Landroid/os/Parcel;
 
     move-result-object v1
 
     .line 1420
+    .local v1, "_reply":Landroid/os/Parcel;
     :try_start_8
     const-string v2, "android.os.IVold"
 
@@ -3929,20 +4165,21 @@
     move-result v2
 
     .line 1423
+    .local v2, "_status":Z
     if-nez v2, :cond_2f
 
     invoke-static {}, Landroid/os/IVold$Stub;->getDefaultImpl()Landroid/os/IVold;
 
-    move-result-object v2
+    move-result-object v3
 
-    if-eqz v2, :cond_2f
+    if-eqz v3, :cond_2f
 
     .line 1424
     invoke-static {}, Landroid/os/IVold$Stub;->getDefaultImpl()Landroid/os/IVold;
 
-    move-result-object v2
+    move-result-object v3
 
-    invoke-interface {v2, p1}, Landroid/os/IVold;->mkdirs(Ljava/lang/String;)V
+    invoke-interface {v3, p1}, Landroid/os/IVold;->mkdirs(Ljava/lang/String;)V
     :try_end_28
     .catchall {:try_start_8 .. :try_end_28} :catchall_3a
 
@@ -3963,6 +4200,7 @@
     .catchall {:try_start_2f .. :try_end_32} :catchall_3a
 
     .line 1430
+    .end local v2  # "_status":Z
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
 
     .line 1431
@@ -3976,14 +4214,14 @@
 
     .line 1430
     :catchall_3a
-    move-exception p1
+    move-exception v2
 
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
 
     .line 1431
     invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
 
-    throw p1
+    throw v2
 .end method
 
 .method public monitor()V
@@ -4000,11 +4238,13 @@
     move-result-object v0
 
     .line 1047
+    .local v0, "_data":Landroid/os/Parcel;
     invoke-static {}, Landroid/os/Parcel;->obtain()Landroid/os/Parcel;
 
     move-result-object v1
 
     .line 1049
+    .local v1, "_reply":Landroid/os/Parcel;
     :try_start_8
     const-string v2, "android.os.IVold"
 
@@ -4022,20 +4262,21 @@
     move-result v2
 
     .line 1051
+    .local v2, "_status":Z
     if-nez v2, :cond_2b
 
     invoke-static {}, Landroid/os/IVold$Stub;->getDefaultImpl()Landroid/os/IVold;
 
-    move-result-object v2
+    move-result-object v3
 
-    if-eqz v2, :cond_2b
+    if-eqz v3, :cond_2b
 
     .line 1052
     invoke-static {}, Landroid/os/IVold$Stub;->getDefaultImpl()Landroid/os/IVold;
 
-    move-result-object v2
+    move-result-object v3
 
-    invoke-interface {v2}, Landroid/os/IVold;->monitor()V
+    invoke-interface {v3}, Landroid/os/IVold;->monitor()V
     :try_end_24
     .catchall {:try_start_8 .. :try_end_24} :catchall_36
 
@@ -4056,6 +4297,7 @@
     .catchall {:try_start_2b .. :try_end_2e} :catchall_36
 
     .line 1058
+    .end local v2  # "_status":Z
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
 
     .line 1059
@@ -4081,6 +4323,9 @@
 
 .method public mount(Ljava/lang/String;II)V
     .registers 9
+    .param p1, "volId"  # Ljava/lang/String;
+    .param p2, "mountFlags"  # I
+    .param p3, "mountUserId"  # I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -4093,11 +4338,13 @@
     move-result-object v0
 
     .line 1278
+    .local v0, "_data":Landroid/os/Parcel;
     invoke-static {}, Landroid/os/Parcel;->obtain()Landroid/os/Parcel;
 
     move-result-object v1
 
     .line 1280
+    .local v1, "_reply":Landroid/os/Parcel;
     :try_start_8
     const-string v2, "android.os.IVold"
 
@@ -4124,20 +4371,21 @@
     move-result v2
 
     .line 1285
+    .local v2, "_status":Z
     if-nez v2, :cond_35
 
     invoke-static {}, Landroid/os/IVold$Stub;->getDefaultImpl()Landroid/os/IVold;
 
-    move-result-object v2
+    move-result-object v3
 
-    if-eqz v2, :cond_35
+    if-eqz v3, :cond_35
 
     .line 1286
     invoke-static {}, Landroid/os/IVold$Stub;->getDefaultImpl()Landroid/os/IVold;
 
-    move-result-object v2
+    move-result-object v3
 
-    invoke-interface {v2, p1, p2, p3}, Landroid/os/IVold;->mount(Ljava/lang/String;II)V
+    invoke-interface {v3, p1, p2, p3}, Landroid/os/IVold;->mount(Ljava/lang/String;II)V
     :try_end_2e
     .catchall {:try_start_8 .. :try_end_2e} :catchall_40
 
@@ -4158,6 +4406,7 @@
     .catchall {:try_start_35 .. :try_end_38} :catchall_40
 
     .line 1292
+    .end local v2  # "_status":Z
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
 
     .line 1293
@@ -4171,18 +4420,20 @@
 
     .line 1292
     :catchall_40
-    move-exception p1
+    move-exception v2
 
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
 
     .line 1293
     invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
 
-    throw p1
+    throw v2
 .end method
 
 .method public mountAppFuse(II)Ljava/io/FileDescriptor;
     .registers 8
+    .param p1, "uid"  # I
+    .param p2, "mountId"  # I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -4195,11 +4446,13 @@
     move-result-object v0
 
     .line 1537
+    .local v0, "_data":Landroid/os/Parcel;
     invoke-static {}, Landroid/os/Parcel;->obtain()Landroid/os/Parcel;
 
     move-result-object v1
 
     .line 1540
+    .local v1, "_reply":Landroid/os/Parcel;
     :try_start_8
     const-string v2, "android.os.IVold"
 
@@ -4223,24 +4476,25 @@
     move-result v2
 
     .line 1544
+    .local v2, "_status":Z
     if-nez v2, :cond_33
 
     invoke-static {}, Landroid/os/IVold$Stub;->getDefaultImpl()Landroid/os/IVold;
 
-    move-result-object v2
+    move-result-object v3
 
-    if-eqz v2, :cond_33
+    if-eqz v3, :cond_33
 
     .line 1545
     invoke-static {}, Landroid/os/IVold$Stub;->getDefaultImpl()Landroid/os/IVold;
 
-    move-result-object v2
+    move-result-object v3
 
-    invoke-interface {v2, p1, p2}, Landroid/os/IVold;->mountAppFuse(II)Ljava/io/FileDescriptor;
+    invoke-interface {v3, p1, p2}, Landroid/os/IVold;->mountAppFuse(II)Ljava/io/FileDescriptor;
 
-    move-result-object p1
+    move-result-object v3
     :try_end_2c
-    .catchall {:try_start_8 .. :try_end_2c} :catchall_42
+    .catchall {:try_start_8 .. :try_end_2c} :catchall_43
 
     .line 1551
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
@@ -4249,7 +4503,7 @@
     invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
 
     .line 1545
-    return-object p1
+    return-object v3
 
     .line 1547
     :cond_33
@@ -4259,11 +4513,14 @@
     .line 1548
     invoke-virtual {v1}, Landroid/os/Parcel;->readRawFileDescriptor()Ljava/io/FileDescriptor;
 
-    move-result-object p1
+    move-result-object v3
     :try_end_3a
-    .catchall {:try_start_33 .. :try_end_3a} :catchall_42
+    .catchall {:try_start_33 .. :try_end_3a} :catchall_43
+
+    move-object v2, v3
 
     .line 1551
+    .local v2, "_result":Ljava/io/FileDescriptor;
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
 
     .line 1552
@@ -4273,18 +4530,19 @@
     nop
 
     .line 1554
-    return-object p1
+    return-object v2
 
     .line 1551
-    :catchall_42
-    move-exception p1
+    .end local v2  # "_result":Ljava/io/FileDescriptor;
+    :catchall_43
+    move-exception v2
 
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
 
     .line 1552
     invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
 
-    throw p1
+    throw v2
 .end method
 
 .method public mountDefaultEncrypted()V
@@ -4301,11 +4559,13 @@
     move-result-object v0
 
     .line 1814
+    .local v0, "_data":Landroid/os/Parcel;
     invoke-static {}, Landroid/os/Parcel;->obtain()Landroid/os/Parcel;
 
     move-result-object v1
 
     .line 1816
+    .local v1, "_reply":Landroid/os/Parcel;
     :try_start_8
     const-string v2, "android.os.IVold"
 
@@ -4323,20 +4583,21 @@
     move-result v2
 
     .line 1818
+    .local v2, "_status":Z
     if-nez v2, :cond_2c
 
     invoke-static {}, Landroid/os/IVold$Stub;->getDefaultImpl()Landroid/os/IVold;
 
-    move-result-object v2
+    move-result-object v3
 
-    if-eqz v2, :cond_2c
+    if-eqz v3, :cond_2c
 
     .line 1819
     invoke-static {}, Landroid/os/IVold$Stub;->getDefaultImpl()Landroid/os/IVold;
 
-    move-result-object v2
+    move-result-object v3
 
-    invoke-interface {v2}, Landroid/os/IVold;->mountDefaultEncrypted()V
+    invoke-interface {v3}, Landroid/os/IVold;->mountDefaultEncrypted()V
     :try_end_25
     .catchall {:try_start_8 .. :try_end_25} :catchall_37
 
@@ -4357,6 +4618,7 @@
     .catchall {:try_start_2c .. :try_end_2f} :catchall_37
 
     .line 1825
+    .end local v2  # "_status":Z
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
 
     .line 1826
@@ -4382,6 +4644,8 @@
 
 .method public mountFstab(Ljava/lang/String;Ljava/lang/String;)V
     .registers 8
+    .param p1, "blkDevice"  # Ljava/lang/String;
+    .param p2, "mountPoint"  # Ljava/lang/String;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -4394,11 +4658,13 @@
     move-result-object v0
 
     .line 1870
+    .local v0, "_data":Landroid/os/Parcel;
     invoke-static {}, Landroid/os/Parcel;->obtain()Landroid/os/Parcel;
 
     move-result-object v1
 
     .line 1872
+    .local v1, "_reply":Landroid/os/Parcel;
     :try_start_8
     const-string v2, "android.os.IVold"
 
@@ -4422,20 +4688,21 @@
     move-result v2
 
     .line 1876
+    .local v2, "_status":Z
     if-nez v2, :cond_32
 
     invoke-static {}, Landroid/os/IVold$Stub;->getDefaultImpl()Landroid/os/IVold;
 
-    move-result-object v2
+    move-result-object v3
 
-    if-eqz v2, :cond_32
+    if-eqz v3, :cond_32
 
     .line 1877
     invoke-static {}, Landroid/os/IVold$Stub;->getDefaultImpl()Landroid/os/IVold;
 
-    move-result-object v2
+    move-result-object v3
 
-    invoke-interface {v2, p1, p2}, Landroid/os/IVold;->mountFstab(Ljava/lang/String;Ljava/lang/String;)V
+    invoke-interface {v3, p1, p2}, Landroid/os/IVold;->mountFstab(Ljava/lang/String;Ljava/lang/String;)V
     :try_end_2b
     .catchall {:try_start_8 .. :try_end_2b} :catchall_3d
 
@@ -4456,6 +4723,7 @@
     .catchall {:try_start_32 .. :try_end_35} :catchall_3d
 
     .line 1883
+    .end local v2  # "_status":Z
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
 
     .line 1884
@@ -4469,18 +4737,21 @@
 
     .line 1883
     :catchall_3d
-    move-exception p1
+    move-exception v2
 
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
 
     .line 1884
     invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
 
-    throw p1
+    throw v2
 .end method
 
 .method public moveStorage(Ljava/lang/String;Ljava/lang/String;Landroid/os/IVoldTaskListener;)V
     .registers 9
+    .param p1, "fromVolId"  # Ljava/lang/String;
+    .param p2, "toVolId"  # Ljava/lang/String;
+    .param p3, "listener"  # Landroid/os/IVoldTaskListener;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -4493,11 +4764,13 @@
     move-result-object v0
 
     .line 1377
+    .local v0, "_data":Landroid/os/Parcel;
     invoke-static {}, Landroid/os/Parcel;->obtain()Landroid/os/Parcel;
 
     move-result-object v1
 
     .line 1379
+    .local v1, "_reply":Landroid/os/Parcel;
     :try_start_8
     const-string v2, "android.os.IVold"
 
@@ -4536,20 +4809,21 @@
     move-result v2
 
     .line 1384
+    .local v2, "_status":Z
     if-nez v2, :cond_3d
 
     invoke-static {}, Landroid/os/IVold$Stub;->getDefaultImpl()Landroid/os/IVold;
 
-    move-result-object v2
+    move-result-object v3
 
-    if-eqz v2, :cond_3d
+    if-eqz v3, :cond_3d
 
     .line 1385
     invoke-static {}, Landroid/os/IVold$Stub;->getDefaultImpl()Landroid/os/IVold;
 
-    move-result-object v2
+    move-result-object v3
 
-    invoke-interface {v2, p1, p2, p3}, Landroid/os/IVold;->moveStorage(Ljava/lang/String;Ljava/lang/String;Landroid/os/IVoldTaskListener;)V
+    invoke-interface {v3, p1, p2, p3}, Landroid/os/IVold;->moveStorage(Ljava/lang/String;Ljava/lang/String;Landroid/os/IVoldTaskListener;)V
     :try_end_36
     .catchall {:try_start_8 .. :try_end_36} :catchall_48
 
@@ -4570,6 +4844,7 @@
     .catchall {:try_start_3d .. :try_end_40} :catchall_48
 
     .line 1391
+    .end local v2  # "_status":Z
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
 
     .line 1392
@@ -4583,14 +4858,14 @@
 
     .line 1391
     :catchall_48
-    move-exception p1
+    move-exception v2
 
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
 
     .line 1392
     invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
 
-    throw p1
+    throw v2
 .end method
 
 .method public needsCheckpoint()Z
@@ -4607,11 +4882,13 @@
     move-result-object v0
 
     .line 2159
+    .local v0, "_data":Landroid/os/Parcel;
     invoke-static {}, Landroid/os/Parcel;->obtain()Landroid/os/Parcel;
 
     move-result-object v1
 
     .line 2162
+    .local v1, "_reply":Landroid/os/Parcel;
     :try_start_8
     const-string v2, "android.os.IVold"
 
@@ -4629,24 +4906,25 @@
     move-result v2
 
     .line 2164
+    .local v2, "_status":Z
     if-nez v2, :cond_2d
 
     invoke-static {}, Landroid/os/IVold$Stub;->getDefaultImpl()Landroid/os/IVold;
 
-    move-result-object v2
+    move-result-object v3
 
-    if-eqz v2, :cond_2d
+    if-eqz v3, :cond_2d
 
     .line 2165
     invoke-static {}, Landroid/os/IVold$Stub;->getDefaultImpl()Landroid/os/IVold;
 
-    move-result-object v2
+    move-result-object v3
 
-    invoke-interface {v2}, Landroid/os/IVold;->needsCheckpoint()Z
+    invoke-interface {v3}, Landroid/os/IVold;->needsCheckpoint()Z
 
-    move-result v2
+    move-result v3
     :try_end_26
-    .catchall {:try_start_8 .. :try_end_26} :catchall_3f
+    .catchall {:try_start_8 .. :try_end_26} :catchall_40
 
     .line 2171
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
@@ -4655,7 +4933,7 @@
     invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
 
     .line 2165
-    return v2
+    return v3
 
     .line 2167
     :cond_2d
@@ -4665,16 +4943,19 @@
     .line 2168
     invoke-virtual {v1}, Landroid/os/Parcel;->readInt()I
 
-    move-result v2
+    move-result v3
     :try_end_34
-    .catchall {:try_start_2d .. :try_end_34} :catchall_3f
+    .catchall {:try_start_2d .. :try_end_34} :catchall_40
 
-    if-eqz v2, :cond_37
+    if-eqz v3, :cond_37
 
     const/4 v4, 0x1
 
-    .line 2171
     :cond_37
+    move v2, v4
+
+    .line 2171
+    .local v2, "_result":Z
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
 
     .line 2172
@@ -4684,10 +4965,11 @@
     nop
 
     .line 2174
-    return v4
+    return v2
 
     .line 2171
-    :catchall_3f
+    .end local v2  # "_result":Z
+    :catchall_40
     move-exception v2
 
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
@@ -4712,11 +4994,13 @@
     move-result-object v0
 
     .line 2179
+    .local v0, "_data":Landroid/os/Parcel;
     invoke-static {}, Landroid/os/Parcel;->obtain()Landroid/os/Parcel;
 
     move-result-object v1
 
     .line 2182
+    .local v1, "_reply":Landroid/os/Parcel;
     :try_start_8
     const-string v2, "android.os.IVold"
 
@@ -4734,24 +5018,25 @@
     move-result v2
 
     .line 2184
+    .local v2, "_status":Z
     if-nez v2, :cond_2d
 
     invoke-static {}, Landroid/os/IVold$Stub;->getDefaultImpl()Landroid/os/IVold;
 
-    move-result-object v2
+    move-result-object v3
 
-    if-eqz v2, :cond_2d
+    if-eqz v3, :cond_2d
 
     .line 2185
     invoke-static {}, Landroid/os/IVold$Stub;->getDefaultImpl()Landroid/os/IVold;
 
-    move-result-object v2
+    move-result-object v3
 
-    invoke-interface {v2}, Landroid/os/IVold;->needsRollback()Z
+    invoke-interface {v3}, Landroid/os/IVold;->needsRollback()Z
 
-    move-result v2
+    move-result v3
     :try_end_26
-    .catchall {:try_start_8 .. :try_end_26} :catchall_3f
+    .catchall {:try_start_8 .. :try_end_26} :catchall_40
 
     .line 2191
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
@@ -4760,7 +5045,7 @@
     invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
 
     .line 2185
-    return v2
+    return v3
 
     .line 2187
     :cond_2d
@@ -4770,16 +5055,19 @@
     .line 2188
     invoke-virtual {v1}, Landroid/os/Parcel;->readInt()I
 
-    move-result v2
+    move-result v3
     :try_end_34
-    .catchall {:try_start_2d .. :try_end_34} :catchall_3f
+    .catchall {:try_start_2d .. :try_end_34} :catchall_40
 
-    if-eqz v2, :cond_37
+    if-eqz v3, :cond_37
 
     const/4 v4, 0x1
 
-    .line 2191
     :cond_37
+    move v2, v4
+
+    .line 2191
+    .local v2, "_result":Z
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
 
     .line 2192
@@ -4789,10 +5077,11 @@
     nop
 
     .line 2194
-    return v4
+    return v2
 
     .line 2191
-    :catchall_3f
+    .end local v2  # "_result":Z
+    :catchall_40
     move-exception v2
 
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
@@ -4805,6 +5094,7 @@
 
 .method public onSecureKeyguardStateChanged(Z)V
     .registers 7
+    .param p1, "isShowing"  # Z
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -4817,11 +5107,13 @@
     move-result-object v0
 
     .line 1218
+    .local v0, "_data":Landroid/os/Parcel;
     invoke-static {}, Landroid/os/Parcel;->obtain()Landroid/os/Parcel;
 
     move-result-object v1
 
     .line 1220
+    .local v1, "_reply":Landroid/os/Parcel;
     :try_start_8
     const-string v2, "android.os.IVold"
 
@@ -4852,20 +5144,21 @@
     move-result v2
 
     .line 1223
+    .local v2, "_status":Z
     if-nez v2, :cond_34
 
     invoke-static {}, Landroid/os/IVold$Stub;->getDefaultImpl()Landroid/os/IVold;
 
-    move-result-object v2
+    move-result-object v3
 
-    if-eqz v2, :cond_34
+    if-eqz v3, :cond_34
 
     .line 1224
     invoke-static {}, Landroid/os/IVold$Stub;->getDefaultImpl()Landroid/os/IVold;
 
-    move-result-object v2
+    move-result-object v3
 
-    invoke-interface {v2, p1}, Landroid/os/IVold;->onSecureKeyguardStateChanged(Z)V
+    invoke-interface {v3, p1}, Landroid/os/IVold;->onSecureKeyguardStateChanged(Z)V
     :try_end_2d
     .catchall {:try_start_8 .. :try_end_2d} :catchall_3f
 
@@ -4886,6 +5179,7 @@
     .catchall {:try_start_34 .. :try_end_37} :catchall_3f
 
     .line 1230
+    .end local v2  # "_status":Z
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
 
     .line 1231
@@ -4899,18 +5193,20 @@
 
     .line 1230
     :catchall_3f
-    move-exception p1
+    move-exception v2
 
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
 
     .line 1231
     invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
 
-    throw p1
+    throw v2
 .end method
 
 .method public onUserAdded(II)V
     .registers 8
+    .param p1, "userId"  # I
+    .param p2, "userSerial"  # I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -4923,11 +5219,13 @@
     move-result-object v0
 
     .line 1101
+    .local v0, "_data":Landroid/os/Parcel;
     invoke-static {}, Landroid/os/Parcel;->obtain()Landroid/os/Parcel;
 
     move-result-object v1
 
     .line 1103
+    .local v1, "_reply":Landroid/os/Parcel;
     :try_start_8
     const-string v2, "android.os.IVold"
 
@@ -4951,20 +5249,21 @@
     move-result v2
 
     .line 1107
+    .local v2, "_status":Z
     if-nez v2, :cond_31
 
     invoke-static {}, Landroid/os/IVold$Stub;->getDefaultImpl()Landroid/os/IVold;
 
-    move-result-object v2
+    move-result-object v3
 
-    if-eqz v2, :cond_31
+    if-eqz v3, :cond_31
 
     .line 1108
     invoke-static {}, Landroid/os/IVold$Stub;->getDefaultImpl()Landroid/os/IVold;
 
-    move-result-object v2
+    move-result-object v3
 
-    invoke-interface {v2, p1, p2}, Landroid/os/IVold;->onUserAdded(II)V
+    invoke-interface {v3, p1, p2}, Landroid/os/IVold;->onUserAdded(II)V
     :try_end_2a
     .catchall {:try_start_8 .. :try_end_2a} :catchall_3c
 
@@ -4985,6 +5284,7 @@
     .catchall {:try_start_31 .. :try_end_34} :catchall_3c
 
     .line 1114
+    .end local v2  # "_status":Z
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
 
     .line 1115
@@ -4998,18 +5298,19 @@
 
     .line 1114
     :catchall_3c
-    move-exception p1
+    move-exception v2
 
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
 
     .line 1115
     invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
 
-    throw p1
+    throw v2
 .end method
 
 .method public onUserRemoved(I)V
     .registers 7
+    .param p1, "userId"  # I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -5022,11 +5323,13 @@
     move-result-object v0
 
     .line 1121
+    .local v0, "_data":Landroid/os/Parcel;
     invoke-static {}, Landroid/os/Parcel;->obtain()Landroid/os/Parcel;
 
     move-result-object v1
 
     .line 1123
+    .local v1, "_reply":Landroid/os/Parcel;
     :try_start_8
     const-string v2, "android.os.IVold"
 
@@ -5047,20 +5350,21 @@
     move-result v2
 
     .line 1126
+    .local v2, "_status":Z
     if-nez v2, :cond_2e
 
     invoke-static {}, Landroid/os/IVold$Stub;->getDefaultImpl()Landroid/os/IVold;
 
-    move-result-object v2
+    move-result-object v3
 
-    if-eqz v2, :cond_2e
+    if-eqz v3, :cond_2e
 
     .line 1127
     invoke-static {}, Landroid/os/IVold$Stub;->getDefaultImpl()Landroid/os/IVold;
 
-    move-result-object v2
+    move-result-object v3
 
-    invoke-interface {v2, p1}, Landroid/os/IVold;->onUserRemoved(I)V
+    invoke-interface {v3, p1}, Landroid/os/IVold;->onUserRemoved(I)V
     :try_end_27
     .catchall {:try_start_8 .. :try_end_27} :catchall_39
 
@@ -5081,6 +5385,7 @@
     .catchall {:try_start_2e .. :try_end_31} :catchall_39
 
     .line 1133
+    .end local v2  # "_status":Z
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
 
     .line 1134
@@ -5094,18 +5399,19 @@
 
     .line 1133
     :catchall_39
-    move-exception p1
+    move-exception v2
 
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
 
     .line 1134
     invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
 
-    throw p1
+    throw v2
 .end method
 
 .method public onUserStarted(I)V
     .registers 7
+    .param p1, "userId"  # I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -5118,11 +5424,13 @@
     move-result-object v0
 
     .line 1140
+    .local v0, "_data":Landroid/os/Parcel;
     invoke-static {}, Landroid/os/Parcel;->obtain()Landroid/os/Parcel;
 
     move-result-object v1
 
     .line 1142
+    .local v1, "_reply":Landroid/os/Parcel;
     :try_start_8
     const-string v2, "android.os.IVold"
 
@@ -5143,20 +5451,21 @@
     move-result v2
 
     .line 1145
+    .local v2, "_status":Z
     if-nez v2, :cond_2e
 
     invoke-static {}, Landroid/os/IVold$Stub;->getDefaultImpl()Landroid/os/IVold;
 
-    move-result-object v2
+    move-result-object v3
 
-    if-eqz v2, :cond_2e
+    if-eqz v3, :cond_2e
 
     .line 1146
     invoke-static {}, Landroid/os/IVold$Stub;->getDefaultImpl()Landroid/os/IVold;
 
-    move-result-object v2
+    move-result-object v3
 
-    invoke-interface {v2, p1}, Landroid/os/IVold;->onUserStarted(I)V
+    invoke-interface {v3, p1}, Landroid/os/IVold;->onUserStarted(I)V
     :try_end_27
     .catchall {:try_start_8 .. :try_end_27} :catchall_39
 
@@ -5177,6 +5486,7 @@
     .catchall {:try_start_2e .. :try_end_31} :catchall_39
 
     .line 1152
+    .end local v2  # "_status":Z
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
 
     .line 1153
@@ -5190,18 +5500,19 @@
 
     .line 1152
     :catchall_39
-    move-exception p1
+    move-exception v2
 
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
 
     .line 1153
     invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
 
-    throw p1
+    throw v2
 .end method
 
 .method public onUserStopped(I)V
     .registers 7
+    .param p1, "userId"  # I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -5214,11 +5525,13 @@
     move-result-object v0
 
     .line 1159
+    .local v0, "_data":Landroid/os/Parcel;
     invoke-static {}, Landroid/os/Parcel;->obtain()Landroid/os/Parcel;
 
     move-result-object v1
 
     .line 1161
+    .local v1, "_reply":Landroid/os/Parcel;
     :try_start_8
     const-string v2, "android.os.IVold"
 
@@ -5239,20 +5552,21 @@
     move-result v2
 
     .line 1164
+    .local v2, "_status":Z
     if-nez v2, :cond_2f
 
     invoke-static {}, Landroid/os/IVold$Stub;->getDefaultImpl()Landroid/os/IVold;
 
-    move-result-object v2
+    move-result-object v3
 
-    if-eqz v2, :cond_2f
+    if-eqz v3, :cond_2f
 
     .line 1165
     invoke-static {}, Landroid/os/IVold$Stub;->getDefaultImpl()Landroid/os/IVold;
 
-    move-result-object v2
+    move-result-object v3
 
-    invoke-interface {v2, p1}, Landroid/os/IVold;->onUserStopped(I)V
+    invoke-interface {v3, p1}, Landroid/os/IVold;->onUserStopped(I)V
     :try_end_28
     .catchall {:try_start_8 .. :try_end_28} :catchall_3a
 
@@ -5273,6 +5587,7 @@
     .catchall {:try_start_2f .. :try_end_32} :catchall_3a
 
     .line 1171
+    .end local v2  # "_status":Z
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
 
     .line 1172
@@ -5286,18 +5601,22 @@
 
     .line 1171
     :catchall_3a
-    move-exception p1
+    move-exception v2
 
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
 
     .line 1172
     invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
 
-    throw p1
+    throw v2
 .end method
 
 .method public openAppFuseFile(IIII)Ljava/io/FileDescriptor;
     .registers 10
+    .param p1, "uid"  # I
+    .param p2, "mountId"  # I
+    .param p3, "fileId"  # I
+    .param p4, "flags"  # I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -5310,11 +5629,13 @@
     move-result-object v0
 
     .line 2416
+    .local v0, "_data":Landroid/os/Parcel;
     invoke-static {}, Landroid/os/Parcel;->obtain()Landroid/os/Parcel;
 
     move-result-object v1
 
     .line 2419
+    .local v1, "_reply":Landroid/os/Parcel;
     :try_start_8
     const-string v2, "android.os.IVold"
 
@@ -5344,24 +5665,25 @@
     move-result v2
 
     .line 2425
+    .local v2, "_status":Z
     if-nez v2, :cond_39
 
     invoke-static {}, Landroid/os/IVold$Stub;->getDefaultImpl()Landroid/os/IVold;
 
-    move-result-object v2
+    move-result-object v3
 
-    if-eqz v2, :cond_39
+    if-eqz v3, :cond_39
 
     .line 2426
     invoke-static {}, Landroid/os/IVold$Stub;->getDefaultImpl()Landroid/os/IVold;
 
-    move-result-object v2
+    move-result-object v3
 
-    invoke-interface {v2, p1, p2, p3, p4}, Landroid/os/IVold;->openAppFuseFile(IIII)Ljava/io/FileDescriptor;
+    invoke-interface {v3, p1, p2, p3, p4}, Landroid/os/IVold;->openAppFuseFile(IIII)Ljava/io/FileDescriptor;
 
-    move-result-object p1
+    move-result-object v3
     :try_end_32
-    .catchall {:try_start_8 .. :try_end_32} :catchall_48
+    .catchall {:try_start_8 .. :try_end_32} :catchall_49
 
     .line 2432
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
@@ -5370,7 +5692,7 @@
     invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
 
     .line 2426
-    return-object p1
+    return-object v3
 
     .line 2428
     :cond_39
@@ -5380,11 +5702,14 @@
     .line 2429
     invoke-virtual {v1}, Landroid/os/Parcel;->readRawFileDescriptor()Ljava/io/FileDescriptor;
 
-    move-result-object p1
+    move-result-object v3
     :try_end_40
-    .catchall {:try_start_39 .. :try_end_40} :catchall_48
+    .catchall {:try_start_39 .. :try_end_40} :catchall_49
+
+    move-object v2, v3
 
     .line 2432
+    .local v2, "_result":Ljava/io/FileDescriptor;
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
 
     .line 2433
@@ -5394,22 +5719,26 @@
     nop
 
     .line 2435
-    return-object p1
+    return-object v2
 
     .line 2432
-    :catchall_48
-    move-exception p1
+    .end local v2  # "_result":Ljava/io/FileDescriptor;
+    :catchall_49
+    move-exception v2
 
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
 
     .line 2433
     invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
 
-    throw p1
+    throw v2
 .end method
 
 .method public partition(Ljava/lang/String;II)V
     .registers 9
+    .param p1, "diskId"  # Ljava/lang/String;
+    .param p2, "partitionType"  # I
+    .param p3, "ratio"  # I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -5422,11 +5751,13 @@
     move-result-object v0
 
     .line 1237
+    .local v0, "_data":Landroid/os/Parcel;
     invoke-static {}, Landroid/os/Parcel;->obtain()Landroid/os/Parcel;
 
     move-result-object v1
 
     .line 1239
+    .local v1, "_reply":Landroid/os/Parcel;
     :try_start_8
     const-string v2, "android.os.IVold"
 
@@ -5453,20 +5784,21 @@
     move-result v2
 
     .line 1244
+    .local v2, "_status":Z
     if-nez v2, :cond_35
 
     invoke-static {}, Landroid/os/IVold$Stub;->getDefaultImpl()Landroid/os/IVold;
 
-    move-result-object v2
+    move-result-object v3
 
-    if-eqz v2, :cond_35
+    if-eqz v3, :cond_35
 
     .line 1245
     invoke-static {}, Landroid/os/IVold$Stub;->getDefaultImpl()Landroid/os/IVold;
 
-    move-result-object v2
+    move-result-object v3
 
-    invoke-interface {v2, p1, p2, p3}, Landroid/os/IVold;->partition(Ljava/lang/String;II)V
+    invoke-interface {v3, p1, p2, p3}, Landroid/os/IVold;->partition(Ljava/lang/String;II)V
     :try_end_2e
     .catchall {:try_start_8 .. :try_end_2e} :catchall_40
 
@@ -5487,6 +5819,7 @@
     .catchall {:try_start_35 .. :try_end_38} :catchall_40
 
     .line 1251
+    .end local v2  # "_status":Z
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
 
     .line 1252
@@ -5500,14 +5833,14 @@
 
     .line 1251
     :catchall_40
-    move-exception p1
+    move-exception v2
 
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
 
     .line 1252
     invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
 
-    throw p1
+    throw v2
 .end method
 
 .method public prepareCheckpoint()V
@@ -5524,11 +5857,13 @@
     move-result-object v0
 
     .line 2237
+    .local v0, "_data":Landroid/os/Parcel;
     invoke-static {}, Landroid/os/Parcel;->obtain()Landroid/os/Parcel;
 
     move-result-object v1
 
     .line 2239
+    .local v1, "_reply":Landroid/os/Parcel;
     :try_start_8
     const-string v2, "android.os.IVold"
 
@@ -5546,20 +5881,21 @@
     move-result v2
 
     .line 2241
+    .local v2, "_status":Z
     if-nez v2, :cond_2c
 
     invoke-static {}, Landroid/os/IVold$Stub;->getDefaultImpl()Landroid/os/IVold;
 
-    move-result-object v2
+    move-result-object v3
 
-    if-eqz v2, :cond_2c
+    if-eqz v3, :cond_2c
 
     .line 2242
     invoke-static {}, Landroid/os/IVold$Stub;->getDefaultImpl()Landroid/os/IVold;
 
-    move-result-object v2
+    move-result-object v3
 
-    invoke-interface {v2}, Landroid/os/IVold;->prepareCheckpoint()V
+    invoke-interface {v3}, Landroid/os/IVold;->prepareCheckpoint()V
     :try_end_25
     .catchall {:try_start_8 .. :try_end_25} :catchall_37
 
@@ -5580,6 +5916,7 @@
     .catchall {:try_start_2c .. :try_end_2f} :catchall_37
 
     .line 2248
+    .end local v2  # "_status":Z
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
 
     .line 2249
@@ -5605,6 +5942,10 @@
 
 .method public prepareSandboxForApp(Ljava/lang/String;ILjava/lang/String;I)V
     .registers 10
+    .param p1, "packageName"  # Ljava/lang/String;
+    .param p2, "appId"  # I
+    .param p3, "sandboxId"  # Ljava/lang/String;
+    .param p4, "userId"  # I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -5617,11 +5958,13 @@
     move-result-object v0
 
     .line 2097
+    .local v0, "_data":Landroid/os/Parcel;
     invoke-static {}, Landroid/os/Parcel;->obtain()Landroid/os/Parcel;
 
     move-result-object v1
 
     .line 2099
+    .local v1, "_reply":Landroid/os/Parcel;
     :try_start_8
     const-string v2, "android.os.IVold"
 
@@ -5651,20 +5994,21 @@
     move-result v2
 
     .line 2105
+    .local v2, "_status":Z
     if-nez v2, :cond_38
 
     invoke-static {}, Landroid/os/IVold$Stub;->getDefaultImpl()Landroid/os/IVold;
 
-    move-result-object v2
+    move-result-object v3
 
-    if-eqz v2, :cond_38
+    if-eqz v3, :cond_38
 
     .line 2106
     invoke-static {}, Landroid/os/IVold$Stub;->getDefaultImpl()Landroid/os/IVold;
 
-    move-result-object v2
+    move-result-object v3
 
-    invoke-interface {v2, p1, p2, p3, p4}, Landroid/os/IVold;->prepareSandboxForApp(Ljava/lang/String;ILjava/lang/String;I)V
+    invoke-interface {v3, p1, p2, p3, p4}, Landroid/os/IVold;->prepareSandboxForApp(Ljava/lang/String;ILjava/lang/String;I)V
     :try_end_31
     .catchall {:try_start_8 .. :try_end_31} :catchall_43
 
@@ -5685,6 +6029,7 @@
     .catchall {:try_start_38 .. :try_end_3b} :catchall_43
 
     .line 2112
+    .end local v2  # "_status":Z
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
 
     .line 2113
@@ -5698,18 +6043,22 @@
 
     .line 2112
     :catchall_43
-    move-exception p1
+    move-exception v2
 
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
 
     .line 2113
     invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
 
-    throw p1
+    throw v2
 .end method
 
 .method public prepareUserStorage(Ljava/lang/String;III)V
     .registers 10
+    .param p1, "uuid"  # Ljava/lang/String;
+    .param p2, "userId"  # I
+    .param p3, "userSerial"  # I
+    .param p4, "storageFlags"  # I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -5722,11 +6071,13 @@
     move-result-object v0
 
     .line 2054
+    .local v0, "_data":Landroid/os/Parcel;
     invoke-static {}, Landroid/os/Parcel;->obtain()Landroid/os/Parcel;
 
     move-result-object v1
 
     .line 2056
+    .local v1, "_reply":Landroid/os/Parcel;
     :try_start_8
     const-string v2, "android.os.IVold"
 
@@ -5756,20 +6107,21 @@
     move-result v2
 
     .line 2062
+    .local v2, "_status":Z
     if-nez v2, :cond_38
 
     invoke-static {}, Landroid/os/IVold$Stub;->getDefaultImpl()Landroid/os/IVold;
 
-    move-result-object v2
+    move-result-object v3
 
-    if-eqz v2, :cond_38
+    if-eqz v3, :cond_38
 
     .line 2063
     invoke-static {}, Landroid/os/IVold$Stub;->getDefaultImpl()Landroid/os/IVold;
 
-    move-result-object v2
+    move-result-object v3
 
-    invoke-interface {v2, p1, p2, p3, p4}, Landroid/os/IVold;->prepareUserStorage(Ljava/lang/String;III)V
+    invoke-interface {v3, p1, p2, p3, p4}, Landroid/os/IVold;->prepareUserStorage(Ljava/lang/String;III)V
     :try_end_31
     .catchall {:try_start_8 .. :try_end_31} :catchall_43
 
@@ -5790,6 +6142,7 @@
     .catchall {:try_start_38 .. :try_end_3b} :catchall_43
 
     .line 2069
+    .end local v2  # "_status":Z
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
 
     .line 2070
@@ -5803,18 +6156,20 @@
 
     .line 2069
     :catchall_43
-    move-exception p1
+    move-exception v2
 
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
 
     .line 2070
     invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
 
-    throw p1
+    throw v2
 .end method
 
 .method public remountUid(II)V
     .registers 8
+    .param p1, "uid"  # I
+    .param p2, "remountMode"  # I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -5827,11 +6182,13 @@
     move-result-object v0
 
     .line 1398
+    .local v0, "_data":Landroid/os/Parcel;
     invoke-static {}, Landroid/os/Parcel;->obtain()Landroid/os/Parcel;
 
     move-result-object v1
 
     .line 1400
+    .local v1, "_reply":Landroid/os/Parcel;
     :try_start_8
     const-string v2, "android.os.IVold"
 
@@ -5855,20 +6212,21 @@
     move-result v2
 
     .line 1404
+    .local v2, "_status":Z
     if-nez v2, :cond_32
 
     invoke-static {}, Landroid/os/IVold$Stub;->getDefaultImpl()Landroid/os/IVold;
 
-    move-result-object v2
+    move-result-object v3
 
-    if-eqz v2, :cond_32
+    if-eqz v3, :cond_32
 
     .line 1405
     invoke-static {}, Landroid/os/IVold$Stub;->getDefaultImpl()Landroid/os/IVold;
 
-    move-result-object v2
+    move-result-object v3
 
-    invoke-interface {v2, p1, p2}, Landroid/os/IVold;->remountUid(II)V
+    invoke-interface {v3, p1, p2}, Landroid/os/IVold;->remountUid(II)V
     :try_end_2b
     .catchall {:try_start_8 .. :try_end_2b} :catchall_3d
 
@@ -5889,6 +6247,7 @@
     .catchall {:try_start_32 .. :try_end_35} :catchall_3d
 
     .line 1411
+    .end local v2  # "_status":Z
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
 
     .line 1412
@@ -5902,14 +6261,14 @@
 
     .line 1411
     :catchall_3d
-    move-exception p1
+    move-exception v2
 
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
 
     .line 1412
     invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
 
-    throw p1
+    throw v2
 .end method
 
 .method public reset()V
@@ -5926,11 +6285,13 @@
     move-result-object v0
 
     .line 1065
+    .local v0, "_data":Landroid/os/Parcel;
     invoke-static {}, Landroid/os/Parcel;->obtain()Landroid/os/Parcel;
 
     move-result-object v1
 
     .line 1067
+    .local v1, "_reply":Landroid/os/Parcel;
     :try_start_8
     const-string v2, "android.os.IVold"
 
@@ -5948,20 +6309,21 @@
     move-result v2
 
     .line 1069
+    .local v2, "_status":Z
     if-nez v2, :cond_2b
 
     invoke-static {}, Landroid/os/IVold$Stub;->getDefaultImpl()Landroid/os/IVold;
 
-    move-result-object v2
+    move-result-object v3
 
-    if-eqz v2, :cond_2b
+    if-eqz v3, :cond_2b
 
     .line 1070
     invoke-static {}, Landroid/os/IVold$Stub;->getDefaultImpl()Landroid/os/IVold;
 
-    move-result-object v2
+    move-result-object v3
 
-    invoke-interface {v2}, Landroid/os/IVold;->reset()V
+    invoke-interface {v3}, Landroid/os/IVold;->reset()V
     :try_end_24
     .catchall {:try_start_8 .. :try_end_24} :catchall_36
 
@@ -5982,6 +6344,7 @@
     .catchall {:try_start_2b .. :try_end_2e} :catchall_36
 
     .line 1076
+    .end local v2  # "_status":Z
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
 
     .line 1077
@@ -6007,6 +6370,7 @@
 
 .method public restoreCheckpoint(Ljava/lang/String;)V
     .registers 7
+    .param p1, "device"  # Ljava/lang/String;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -6019,11 +6383,13 @@
     move-result-object v0
 
     .line 2255
+    .local v0, "_data":Landroid/os/Parcel;
     invoke-static {}, Landroid/os/Parcel;->obtain()Landroid/os/Parcel;
 
     move-result-object v1
 
     .line 2257
+    .local v1, "_reply":Landroid/os/Parcel;
     :try_start_8
     const-string v2, "android.os.IVold"
 
@@ -6044,20 +6410,21 @@
     move-result v2
 
     .line 2260
+    .local v2, "_status":Z
     if-nez v2, :cond_2f
 
     invoke-static {}, Landroid/os/IVold$Stub;->getDefaultImpl()Landroid/os/IVold;
 
-    move-result-object v2
+    move-result-object v3
 
-    if-eqz v2, :cond_2f
+    if-eqz v3, :cond_2f
 
     .line 2261
     invoke-static {}, Landroid/os/IVold$Stub;->getDefaultImpl()Landroid/os/IVold;
 
-    move-result-object v2
+    move-result-object v3
 
-    invoke-interface {v2, p1}, Landroid/os/IVold;->restoreCheckpoint(Ljava/lang/String;)V
+    invoke-interface {v3, p1}, Landroid/os/IVold;->restoreCheckpoint(Ljava/lang/String;)V
     :try_end_28
     .catchall {:try_start_8 .. :try_end_28} :catchall_3a
 
@@ -6078,6 +6445,7 @@
     .catchall {:try_start_2f .. :try_end_32} :catchall_3a
 
     .line 2267
+    .end local v2  # "_status":Z
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
 
     .line 2268
@@ -6091,18 +6459,20 @@
 
     .line 2267
     :catchall_3a
-    move-exception p1
+    move-exception v2
 
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
 
     .line 2268
     invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
 
-    throw p1
+    throw v2
 .end method
 
 .method public restoreCheckpointPart(Ljava/lang/String;I)V
     .registers 8
+    .param p1, "device"  # Ljava/lang/String;
+    .param p2, "count"  # I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -6115,11 +6485,13 @@
     move-result-object v0
 
     .line 2274
+    .local v0, "_data":Landroid/os/Parcel;
     invoke-static {}, Landroid/os/Parcel;->obtain()Landroid/os/Parcel;
 
     move-result-object v1
 
     .line 2276
+    .local v1, "_reply":Landroid/os/Parcel;
     :try_start_8
     const-string v2, "android.os.IVold"
 
@@ -6143,20 +6515,21 @@
     move-result v2
 
     .line 2280
+    .local v2, "_status":Z
     if-nez v2, :cond_32
 
     invoke-static {}, Landroid/os/IVold$Stub;->getDefaultImpl()Landroid/os/IVold;
 
-    move-result-object v2
+    move-result-object v3
 
-    if-eqz v2, :cond_32
+    if-eqz v3, :cond_32
 
     .line 2281
     invoke-static {}, Landroid/os/IVold$Stub;->getDefaultImpl()Landroid/os/IVold;
 
-    move-result-object v2
+    move-result-object v3
 
-    invoke-interface {v2, p1, p2}, Landroid/os/IVold;->restoreCheckpointPart(Ljava/lang/String;I)V
+    invoke-interface {v3, p1, p2}, Landroid/os/IVold;->restoreCheckpointPart(Ljava/lang/String;I)V
     :try_end_2b
     .catchall {:try_start_8 .. :try_end_2b} :catchall_3d
 
@@ -6177,6 +6550,7 @@
     .catchall {:try_start_32 .. :try_end_35} :catchall_3d
 
     .line 2287
+    .end local v2  # "_status":Z
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
 
     .line 2288
@@ -6190,18 +6564,19 @@
 
     .line 2287
     :catchall_3d
-    move-exception p1
+    move-exception v2
 
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
 
     .line 2288
     invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
 
-    throw p1
+    throw v2
 .end method
 
 .method public runIdleMaint(Landroid/os/IVoldTaskListener;)V
     .registers 7
+    .param p1, "listener"  # Landroid/os/IVoldTaskListener;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -6214,11 +6589,13 @@
     move-result-object v0
 
     .line 1499
+    .local v0, "_data":Landroid/os/Parcel;
     invoke-static {}, Landroid/os/Parcel;->obtain()Landroid/os/Parcel;
 
     move-result-object v1
 
     .line 1501
+    .local v1, "_reply":Landroid/os/Parcel;
     :try_start_8
     const-string v2, "android.os.IVold"
 
@@ -6251,20 +6628,21 @@
     move-result v2
 
     .line 1504
+    .local v2, "_status":Z
     if-nez v2, :cond_37
 
     invoke-static {}, Landroid/os/IVold$Stub;->getDefaultImpl()Landroid/os/IVold;
 
-    move-result-object v2
+    move-result-object v3
 
-    if-eqz v2, :cond_37
+    if-eqz v3, :cond_37
 
     .line 1505
     invoke-static {}, Landroid/os/IVold$Stub;->getDefaultImpl()Landroid/os/IVold;
 
-    move-result-object v2
+    move-result-object v3
 
-    invoke-interface {v2, p1}, Landroid/os/IVold;->runIdleMaint(Landroid/os/IVoldTaskListener;)V
+    invoke-interface {v3, p1}, Landroid/os/IVold;->runIdleMaint(Landroid/os/IVoldTaskListener;)V
     :try_end_30
     .catchall {:try_start_8 .. :try_end_30} :catchall_42
 
@@ -6285,6 +6663,7 @@
     .catchall {:try_start_37 .. :try_end_3a} :catchall_42
 
     .line 1511
+    .end local v2  # "_status":Z
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
 
     .line 1512
@@ -6298,18 +6677,19 @@
 
     .line 1511
     :catchall_42
-    move-exception p1
+    move-exception v2
 
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
 
     .line 1512
     invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
 
-    throw p1
+    throw v2
 .end method
 
 .method public setListener(Landroid/os/IVoldListener;)V
     .registers 7
+    .param p1, "listener"  # Landroid/os/IVoldListener;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -6322,11 +6702,13 @@
     move-result-object v0
 
     .line 1028
+    .local v0, "_data":Landroid/os/Parcel;
     invoke-static {}, Landroid/os/Parcel;->obtain()Landroid/os/Parcel;
 
     move-result-object v1
 
     .line 1030
+    .local v1, "_reply":Landroid/os/Parcel;
     :try_start_8
     const-string v2, "android.os.IVold"
 
@@ -6359,20 +6741,21 @@
     move-result v2
 
     .line 1033
+    .local v2, "_status":Z
     if-nez v2, :cond_36
 
     invoke-static {}, Landroid/os/IVold$Stub;->getDefaultImpl()Landroid/os/IVold;
 
-    move-result-object v2
+    move-result-object v3
 
-    if-eqz v2, :cond_36
+    if-eqz v3, :cond_36
 
     .line 1034
     invoke-static {}, Landroid/os/IVold$Stub;->getDefaultImpl()Landroid/os/IVold;
 
-    move-result-object v2
+    move-result-object v3
 
-    invoke-interface {v2, p1}, Landroid/os/IVold;->setListener(Landroid/os/IVoldListener;)V
+    invoke-interface {v3, p1}, Landroid/os/IVold;->setListener(Landroid/os/IVoldListener;)V
     :try_end_2f
     .catchall {:try_start_8 .. :try_end_2f} :catchall_41
 
@@ -6393,6 +6776,7 @@
     .catchall {:try_start_36 .. :try_end_39} :catchall_41
 
     .line 1040
+    .end local v2  # "_status":Z
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
 
     .line 1041
@@ -6406,14 +6790,14 @@
 
     .line 1040
     :catchall_41
-    move-exception p1
+    move-exception v2
 
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
 
     .line 1041
     invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
 
-    throw p1
+    throw v2
 .end method
 
 .method public shutdown()V
@@ -6430,11 +6814,13 @@
     move-result-object v0
 
     .line 1083
+    .local v0, "_data":Landroid/os/Parcel;
     invoke-static {}, Landroid/os/Parcel;->obtain()Landroid/os/Parcel;
 
     move-result-object v1
 
     .line 1085
+    .local v1, "_reply":Landroid/os/Parcel;
     :try_start_8
     const-string v2, "android.os.IVold"
 
@@ -6452,20 +6838,21 @@
     move-result v2
 
     .line 1087
+    .local v2, "_status":Z
     if-nez v2, :cond_2b
 
     invoke-static {}, Landroid/os/IVold$Stub;->getDefaultImpl()Landroid/os/IVold;
 
-    move-result-object v2
+    move-result-object v3
 
-    if-eqz v2, :cond_2b
+    if-eqz v3, :cond_2b
 
     .line 1088
     invoke-static {}, Landroid/os/IVold$Stub;->getDefaultImpl()Landroid/os/IVold;
 
-    move-result-object v2
+    move-result-object v3
 
-    invoke-interface {v2}, Landroid/os/IVold;->shutdown()V
+    invoke-interface {v3}, Landroid/os/IVold;->shutdown()V
     :try_end_24
     .catchall {:try_start_8 .. :try_end_24} :catchall_36
 
@@ -6486,6 +6873,7 @@
     .catchall {:try_start_2b .. :try_end_2e} :catchall_36
 
     .line 1094
+    .end local v2  # "_status":Z
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
 
     .line 1095
@@ -6511,6 +6899,7 @@
 
 .method public startCheckpoint(I)V
     .registers 7
+    .param p1, "retry"  # I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -6523,11 +6912,13 @@
     move-result-object v0
 
     .line 2140
+    .local v0, "_data":Landroid/os/Parcel;
     invoke-static {}, Landroid/os/Parcel;->obtain()Landroid/os/Parcel;
 
     move-result-object v1
 
     .line 2142
+    .local v1, "_reply":Landroid/os/Parcel;
     :try_start_8
     const-string v2, "android.os.IVold"
 
@@ -6548,20 +6939,21 @@
     move-result v2
 
     .line 2145
+    .local v2, "_status":Z
     if-nez v2, :cond_2f
 
     invoke-static {}, Landroid/os/IVold$Stub;->getDefaultImpl()Landroid/os/IVold;
 
-    move-result-object v2
+    move-result-object v3
 
-    if-eqz v2, :cond_2f
+    if-eqz v3, :cond_2f
 
     .line 2146
     invoke-static {}, Landroid/os/IVold$Stub;->getDefaultImpl()Landroid/os/IVold;
 
-    move-result-object v2
+    move-result-object v3
 
-    invoke-interface {v2, p1}, Landroid/os/IVold;->startCheckpoint(I)V
+    invoke-interface {v3, p1}, Landroid/os/IVold;->startCheckpoint(I)V
     :try_end_28
     .catchall {:try_start_8 .. :try_end_28} :catchall_3a
 
@@ -6582,6 +6974,7 @@
     .catchall {:try_start_2f .. :try_end_32} :catchall_3a
 
     .line 2152
+    .end local v2  # "_status":Z
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
 
     .line 2153
@@ -6595,14 +6988,14 @@
 
     .line 2152
     :catchall_3a
-    move-exception p1
+    move-exception v2
 
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
 
     .line 2153
     invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
 
-    throw p1
+    throw v2
 .end method
 
 .method public supportsBlockCheckpoint()Z
@@ -6619,11 +7012,13 @@
     move-result-object v0
 
     .line 2332
+    .local v0, "_data":Landroid/os/Parcel;
     invoke-static {}, Landroid/os/Parcel;->obtain()Landroid/os/Parcel;
 
     move-result-object v1
 
     .line 2335
+    .local v1, "_reply":Landroid/os/Parcel;
     :try_start_8
     const-string v2, "android.os.IVold"
 
@@ -6641,24 +7036,25 @@
     move-result v2
 
     .line 2337
+    .local v2, "_status":Z
     if-nez v2, :cond_2d
 
     invoke-static {}, Landroid/os/IVold$Stub;->getDefaultImpl()Landroid/os/IVold;
 
-    move-result-object v2
+    move-result-object v3
 
-    if-eqz v2, :cond_2d
+    if-eqz v3, :cond_2d
 
     .line 2338
     invoke-static {}, Landroid/os/IVold$Stub;->getDefaultImpl()Landroid/os/IVold;
 
-    move-result-object v2
+    move-result-object v3
 
-    invoke-interface {v2}, Landroid/os/IVold;->supportsBlockCheckpoint()Z
+    invoke-interface {v3}, Landroid/os/IVold;->supportsBlockCheckpoint()Z
 
-    move-result v2
+    move-result v3
     :try_end_26
-    .catchall {:try_start_8 .. :try_end_26} :catchall_3f
+    .catchall {:try_start_8 .. :try_end_26} :catchall_40
 
     .line 2344
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
@@ -6667,7 +7063,7 @@
     invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
 
     .line 2338
-    return v2
+    return v3
 
     .line 2340
     :cond_2d
@@ -6677,16 +7073,19 @@
     .line 2341
     invoke-virtual {v1}, Landroid/os/Parcel;->readInt()I
 
-    move-result v2
+    move-result v3
     :try_end_34
-    .catchall {:try_start_2d .. :try_end_34} :catchall_3f
+    .catchall {:try_start_2d .. :try_end_34} :catchall_40
 
-    if-eqz v2, :cond_37
+    if-eqz v3, :cond_37
 
     const/4 v4, 0x1
 
-    .line 2344
     :cond_37
+    move v2, v4
+
+    .line 2344
+    .local v2, "_result":Z
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
 
     .line 2345
@@ -6696,10 +7095,11 @@
     nop
 
     .line 2347
-    return v4
+    return v2
 
     .line 2344
-    :catchall_3f
+    .end local v2  # "_result":Z
+    :catchall_40
     move-exception v2
 
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
@@ -6724,11 +7124,13 @@
     move-result-object v0
 
     .line 2312
+    .local v0, "_data":Landroid/os/Parcel;
     invoke-static {}, Landroid/os/Parcel;->obtain()Landroid/os/Parcel;
 
     move-result-object v1
 
     .line 2315
+    .local v1, "_reply":Landroid/os/Parcel;
     :try_start_8
     const-string v2, "android.os.IVold"
 
@@ -6746,24 +7148,25 @@
     move-result v2
 
     .line 2317
+    .local v2, "_status":Z
     if-nez v2, :cond_2d
 
     invoke-static {}, Landroid/os/IVold$Stub;->getDefaultImpl()Landroid/os/IVold;
 
-    move-result-object v2
+    move-result-object v3
 
-    if-eqz v2, :cond_2d
+    if-eqz v3, :cond_2d
 
     .line 2318
     invoke-static {}, Landroid/os/IVold$Stub;->getDefaultImpl()Landroid/os/IVold;
 
-    move-result-object v2
+    move-result-object v3
 
-    invoke-interface {v2}, Landroid/os/IVold;->supportsCheckpoint()Z
+    invoke-interface {v3}, Landroid/os/IVold;->supportsCheckpoint()Z
 
-    move-result v2
+    move-result v3
     :try_end_26
-    .catchall {:try_start_8 .. :try_end_26} :catchall_3f
+    .catchall {:try_start_8 .. :try_end_26} :catchall_40
 
     .line 2324
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
@@ -6772,7 +7175,7 @@
     invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
 
     .line 2318
-    return v2
+    return v3
 
     .line 2320
     :cond_2d
@@ -6782,16 +7185,19 @@
     .line 2321
     invoke-virtual {v1}, Landroid/os/Parcel;->readInt()I
 
-    move-result v2
+    move-result v3
     :try_end_34
-    .catchall {:try_start_2d .. :try_end_34} :catchall_3f
+    .catchall {:try_start_2d .. :try_end_34} :catchall_40
 
-    if-eqz v2, :cond_37
+    if-eqz v3, :cond_37
 
     const/4 v4, 0x1
 
-    .line 2324
     :cond_37
+    move v2, v4
+
+    .line 2324
+    .local v2, "_result":Z
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
 
     .line 2325
@@ -6801,10 +7207,11 @@
     nop
 
     .line 2327
-    return v4
+    return v2
 
     .line 2324
-    :catchall_3f
+    .end local v2  # "_result":Z
+    :catchall_40
     move-exception v2
 
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
@@ -6829,11 +7236,13 @@
     move-result-object v0
 
     .line 2352
+    .local v0, "_data":Landroid/os/Parcel;
     invoke-static {}, Landroid/os/Parcel;->obtain()Landroid/os/Parcel;
 
     move-result-object v1
 
     .line 2355
+    .local v1, "_reply":Landroid/os/Parcel;
     :try_start_8
     const-string v2, "android.os.IVold"
 
@@ -6851,24 +7260,25 @@
     move-result v2
 
     .line 2357
+    .local v2, "_status":Z
     if-nez v2, :cond_2d
 
     invoke-static {}, Landroid/os/IVold$Stub;->getDefaultImpl()Landroid/os/IVold;
 
-    move-result-object v2
+    move-result-object v3
 
-    if-eqz v2, :cond_2d
+    if-eqz v3, :cond_2d
 
     .line 2358
     invoke-static {}, Landroid/os/IVold$Stub;->getDefaultImpl()Landroid/os/IVold;
 
-    move-result-object v2
+    move-result-object v3
 
-    invoke-interface {v2}, Landroid/os/IVold;->supportsFileCheckpoint()Z
+    invoke-interface {v3}, Landroid/os/IVold;->supportsFileCheckpoint()Z
 
-    move-result v2
+    move-result v3
     :try_end_26
-    .catchall {:try_start_8 .. :try_end_26} :catchall_3f
+    .catchall {:try_start_8 .. :try_end_26} :catchall_40
 
     .line 2364
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
@@ -6877,7 +7287,7 @@
     invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
 
     .line 2358
-    return v2
+    return v3
 
     .line 2360
     :cond_2d
@@ -6887,16 +7297,19 @@
     .line 2361
     invoke-virtual {v1}, Landroid/os/Parcel;->readInt()I
 
-    move-result v2
+    move-result v3
     :try_end_34
-    .catchall {:try_start_2d .. :try_end_34} :catchall_3f
+    .catchall {:try_start_2d .. :try_end_34} :catchall_40
 
-    if-eqz v2, :cond_37
+    if-eqz v3, :cond_37
 
     const/4 v4, 0x1
 
-    .line 2364
     :cond_37
+    move v2, v4
+
+    .line 2364
+    .local v2, "_result":Z
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
 
     .line 2365
@@ -6906,10 +7319,11 @@
     nop
 
     .line 2367
-    return v4
+    return v2
 
     .line 2364
-    :catchall_3f
+    .end local v2  # "_result":Z
+    :catchall_40
     move-exception v2
 
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
@@ -6922,6 +7336,10 @@
 
 .method public unlockUserKey(IILjava/lang/String;Ljava/lang/String;)V
     .registers 10
+    .param p1, "userId"  # I
+    .param p2, "userSerial"  # I
+    .param p3, "token"  # Ljava/lang/String;
+    .param p4, "secret"  # Ljava/lang/String;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -6934,11 +7352,13 @@
     move-result-object v0
 
     .line 2013
+    .local v0, "_data":Landroid/os/Parcel;
     invoke-static {}, Landroid/os/Parcel;->obtain()Landroid/os/Parcel;
 
     move-result-object v1
 
     .line 2015
+    .local v1, "_reply":Landroid/os/Parcel;
     :try_start_8
     const-string v2, "android.os.IVold"
 
@@ -6968,20 +7388,21 @@
     move-result v2
 
     .line 2021
+    .local v2, "_status":Z
     if-nez v2, :cond_38
 
     invoke-static {}, Landroid/os/IVold$Stub;->getDefaultImpl()Landroid/os/IVold;
 
-    move-result-object v2
+    move-result-object v3
 
-    if-eqz v2, :cond_38
+    if-eqz v3, :cond_38
 
     .line 2022
     invoke-static {}, Landroid/os/IVold$Stub;->getDefaultImpl()Landroid/os/IVold;
 
-    move-result-object v2
+    move-result-object v3
 
-    invoke-interface {v2, p1, p2, p3, p4}, Landroid/os/IVold;->unlockUserKey(IILjava/lang/String;Ljava/lang/String;)V
+    invoke-interface {v3, p1, p2, p3, p4}, Landroid/os/IVold;->unlockUserKey(IILjava/lang/String;Ljava/lang/String;)V
     :try_end_31
     .catchall {:try_start_8 .. :try_end_31} :catchall_43
 
@@ -7002,6 +7423,7 @@
     .catchall {:try_start_38 .. :try_end_3b} :catchall_43
 
     .line 2028
+    .end local v2  # "_status":Z
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
 
     .line 2029
@@ -7015,18 +7437,19 @@
 
     .line 2028
     :catchall_43
-    move-exception p1
+    move-exception v2
 
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
 
     .line 2029
     invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
 
-    throw p1
+    throw v2
 .end method
 
 .method public unmount(Ljava/lang/String;)V
     .registers 7
+    .param p1, "volId"  # Ljava/lang/String;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -7039,11 +7462,13 @@
     move-result-object v0
 
     .line 1299
+    .local v0, "_data":Landroid/os/Parcel;
     invoke-static {}, Landroid/os/Parcel;->obtain()Landroid/os/Parcel;
 
     move-result-object v1
 
     .line 1301
+    .local v1, "_reply":Landroid/os/Parcel;
     :try_start_8
     const-string v2, "android.os.IVold"
 
@@ -7064,20 +7489,21 @@
     move-result v2
 
     .line 1304
+    .local v2, "_status":Z
     if-nez v2, :cond_2f
 
     invoke-static {}, Landroid/os/IVold$Stub;->getDefaultImpl()Landroid/os/IVold;
 
-    move-result-object v2
+    move-result-object v3
 
-    if-eqz v2, :cond_2f
+    if-eqz v3, :cond_2f
 
     .line 1305
     invoke-static {}, Landroid/os/IVold$Stub;->getDefaultImpl()Landroid/os/IVold;
 
-    move-result-object v2
+    move-result-object v3
 
-    invoke-interface {v2, p1}, Landroid/os/IVold;->unmount(Ljava/lang/String;)V
+    invoke-interface {v3, p1}, Landroid/os/IVold;->unmount(Ljava/lang/String;)V
     :try_end_28
     .catchall {:try_start_8 .. :try_end_28} :catchall_3a
 
@@ -7098,6 +7524,7 @@
     .catchall {:try_start_2f .. :try_end_32} :catchall_3a
 
     .line 1311
+    .end local v2  # "_status":Z
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
 
     .line 1312
@@ -7111,18 +7538,20 @@
 
     .line 1311
     :catchall_3a
-    move-exception p1
+    move-exception v2
 
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
 
     .line 1312
     invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
 
-    throw p1
+    throw v2
 .end method
 
 .method public unmountAppFuse(II)V
     .registers 8
+    .param p1, "uid"  # I
+    .param p2, "mountId"  # I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -7135,11 +7564,13 @@
     move-result-object v0
 
     .line 1559
+    .local v0, "_data":Landroid/os/Parcel;
     invoke-static {}, Landroid/os/Parcel;->obtain()Landroid/os/Parcel;
 
     move-result-object v1
 
     .line 1561
+    .local v1, "_reply":Landroid/os/Parcel;
     :try_start_8
     const-string v2, "android.os.IVold"
 
@@ -7163,20 +7594,21 @@
     move-result v2
 
     .line 1565
+    .local v2, "_status":Z
     if-nez v2, :cond_32
 
     invoke-static {}, Landroid/os/IVold$Stub;->getDefaultImpl()Landroid/os/IVold;
 
-    move-result-object v2
+    move-result-object v3
 
-    if-eqz v2, :cond_32
+    if-eqz v3, :cond_32
 
     .line 1566
     invoke-static {}, Landroid/os/IVold$Stub;->getDefaultImpl()Landroid/os/IVold;
 
-    move-result-object v2
+    move-result-object v3
 
-    invoke-interface {v2, p1, p2}, Landroid/os/IVold;->unmountAppFuse(II)V
+    invoke-interface {v3, p1, p2}, Landroid/os/IVold;->unmountAppFuse(II)V
     :try_end_2b
     .catchall {:try_start_8 .. :try_end_2b} :catchall_3d
 
@@ -7197,6 +7629,7 @@
     .catchall {:try_start_32 .. :try_end_35} :catchall_3d
 
     .line 1572
+    .end local v2  # "_status":Z
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
 
     .line 1573
@@ -7210,12 +7643,12 @@
 
     .line 1572
     :catchall_3d
-    move-exception p1
+    move-exception v2
 
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
 
     .line 1573
     invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
 
-    throw p1
+    throw v2
 .end method

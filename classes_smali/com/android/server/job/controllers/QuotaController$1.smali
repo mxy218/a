@@ -24,6 +24,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/job/controllers/QuotaController;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/job/controllers/QuotaController;
 
     .line 468
     iput-object p1, p0, Lcom/android/server/job/controllers/QuotaController$1;->this$0:Lcom/android/server/job/controllers/QuotaController;

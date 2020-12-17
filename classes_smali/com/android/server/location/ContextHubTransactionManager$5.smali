@@ -25,6 +25,9 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/location/ContextHubTransactionManager;IIILandroid/hardware/location/IContextHubTransactionCallback;)V
     .registers 6
+    .param p1, "this$0"  # Lcom/android/server/location/ContextHubTransactionManager;
+    .param p2, "id"  # I
+    .param p3, "type"  # I
 
     .line 264
     iput-object p1, p0, Lcom/android/server/location/ContextHubTransactionManager$5;->this$0:Lcom/android/server/location/ContextHubTransactionManager;
@@ -41,7 +44,8 @@
 
 # virtual methods
 .method onQueryResponse(ILjava/util/List;)V
-    .registers 4
+    .registers 6
+    .param p1, "result"  # I
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(I",
@@ -52,6 +56,7 @@
     .end annotation
 
     .line 284
+    .local p2, "nanoAppStateList":Ljava/util/List;, "Ljava/util/List<Landroid/hardware/location/NanoAppState;>;"
     :try_start_0
     iget-object v0, p0, Lcom/android/server/location/ContextHubTransactionManager$5;->val$onCompleteCallback:Landroid/hardware/location/IContextHubTransactionCallback;
 
@@ -64,16 +69,18 @@
 
     .line 285
     :catch_6
-    move-exception p1
+    move-exception v0
 
     .line 286
-    const-string p2, "ContextHubTransactionManager"
+    .local v0, "e":Landroid/os/RemoteException;
+    const-string v1, "ContextHubTransactionManager"
 
-    const-string v0, "RemoteException while calling client onQueryComplete"
+    const-string v2, "RemoteException while calling client onQueryComplete"
 
-    invoke-static {p2, v0, p1}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    invoke-static {v1, v2, v0}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
     .line 288
+    .end local v0  # "e":Landroid/os/RemoteException;
     :goto_e
     return-void
 .end method
@@ -104,6 +111,7 @@
     move-exception v0
 
     .line 270
+    .local v0, "e":Landroid/os/RemoteException;
     const-string v1, "ContextHubTransactionManager"
 
     const-string v2, "RemoteException while trying to query for nanoapps"
@@ -111,13 +119,14 @@
     invoke-static {v1, v2, v0}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
     .line 271
-    const/4 v0, 0x1
+    const/4 v1, 0x1
 
-    return v0
+    return v1
 .end method
 
 .method onTransactionComplete(I)V
     .registers 3
+    .param p1, "result"  # I
 
     .line 277
     invoke-static {}, Ljava/util/Collections;->emptyList()Ljava/util/List;

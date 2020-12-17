@@ -66,6 +66,7 @@
 
 .method public constructor <init>(Ljava/lang/Object;)V
     .registers 3
+    .param p1, "globalAmLock"  # Ljava/lang/Object;
 
     .line 134
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -93,136 +94,157 @@
 .end method
 
 .method static synthetic access$000(Lcom/android/server/wm/VrController;)Ljava/lang/Object;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/wm/VrController;
 
     .line 50
-    iget-object p0, p0, Lcom/android/server/wm/VrController;->mGlobalAmLock:Ljava/lang/Object;
+    iget-object v0, p0, Lcom/android/server/wm/VrController;->mGlobalAmLock:Ljava/lang/Object;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$100(Lcom/android/server/wm/VrController;IIZ)I
-    .registers 4
+    .registers 5
+    .param p0, "x0"  # Lcom/android/server/wm/VrController;
+    .param p1, "x1"  # I
+    .param p2, "x2"  # I
+    .param p3, "x3"  # Z
 
     .line 50
     invoke-direct {p0, p1, p2, p3}, Lcom/android/server/wm/VrController;->setVrRenderThreadLocked(IIZ)I
 
-    move-result p0
+    move-result v0
 
-    return p0
+    return v0
 .end method
 
 .method static synthetic access$272(Lcom/android/server/wm/VrController;I)I
     .registers 3
+    .param p0, "x0"  # Lcom/android/server/wm/VrController;
+    .param p1, "x1"  # I
 
     .line 50
     iget v0, p0, Lcom/android/server/wm/VrController;->mVrState:I
 
-    and-int/2addr p1, v0
+    and-int/2addr v0, p1
 
-    iput p1, p0, Lcom/android/server/wm/VrController;->mVrState:I
+    iput v0, p0, Lcom/android/server/wm/VrController;->mVrState:I
 
-    return p1
+    return v0
 .end method
 
 .method static synthetic access$276(Lcom/android/server/wm/VrController;I)I
     .registers 3
+    .param p0, "x0"  # Lcom/android/server/wm/VrController;
+    .param p1, "x1"  # I
 
     .line 50
     iget v0, p0, Lcom/android/server/wm/VrController;->mVrState:I
 
-    or-int/2addr p1, v0
+    or-int/2addr v0, p1
 
-    iput p1, p0, Lcom/android/server/wm/VrController;->mVrState:I
+    iput v0, p0, Lcom/android/server/wm/VrController;->mVrState:I
 
-    return p1
+    return v0
 .end method
 
 .method static synthetic access$300(Lcom/android/server/wm/VrController;IZ)I
-    .registers 3
+    .registers 4
+    .param p0, "x0"  # Lcom/android/server/wm/VrController;
+    .param p1, "x1"  # I
+    .param p2, "x2"  # Z
 
     .line 50
     invoke-direct {p0, p1, p2}, Lcom/android/server/wm/VrController;->setPersistentVrRenderThreadLocked(IZ)I
 
-    move-result p0
+    move-result v0
 
-    return p0
+    return v0
 .end method
 
 .method private changeVrModeLocked(ZLcom/android/server/wm/WindowProcessController;)Z
-    .registers 5
+    .registers 8
+    .param p1, "vrMode"  # Z
+    .param p2, "proc"  # Lcom/android/server/wm/WindowProcessController;
 
     .line 292
     iget v0, p0, Lcom/android/server/wm/VrController;->mVrState:I
 
     .line 296
-    if-eqz p1, :cond_9
+    .local v0, "oldVrState":I
+    const/4 v1, 0x1
+
+    if-eqz p1, :cond_b
 
     .line 297
-    or-int/lit8 p1, v0, 0x1
+    iget v2, p0, Lcom/android/server/wm/VrController;->mVrState:I
 
-    iput p1, p0, Lcom/android/server/wm/VrController;->mVrState:I
+    or-int/2addr v2, v1
 
-    goto :goto_d
+    iput v2, p0, Lcom/android/server/wm/VrController;->mVrState:I
+
+    goto :goto_11
 
     .line 299
-    :cond_9
-    and-int/lit8 p1, v0, -0x2
+    :cond_b
+    iget v2, p0, Lcom/android/server/wm/VrController;->mVrState:I
 
-    iput p1, p0, Lcom/android/server/wm/VrController;->mVrState:I
+    and-int/lit8 v2, v2, -0x2
+
+    iput v2, p0, Lcom/android/server/wm/VrController;->mVrState:I
 
     .line 302
-    :goto_d
-    iget p1, p0, Lcom/android/server/wm/VrController;->mVrState:I
+    :goto_11
+    iget v2, p0, Lcom/android/server/wm/VrController;->mVrState:I
 
-    const/4 v1, 0x0
+    const/4 v3, 0x0
 
-    if-eq v0, p1, :cond_14
+    if-eq v0, v2, :cond_17
 
-    const/4 p1, 0x1
+    goto :goto_18
 
-    goto :goto_15
-
-    :cond_14
-    move p1, v1
+    :cond_17
+    move v1, v3
 
     .line 304
-    :goto_15
-    if-eqz p1, :cond_2a
+    .local v1, "changed":Z
+    :goto_18
+    if-eqz v1, :cond_2d
 
     .line 305
-    if-eqz p2, :cond_27
+    if-eqz p2, :cond_2a
 
     .line 306
-    iget v0, p2, Lcom/android/server/wm/WindowProcessController;->mVrThreadTid:I
+    iget v2, p2, Lcom/android/server/wm/WindowProcessController;->mVrThreadTid:I
 
-    if-lez v0, :cond_2a
+    if-lez v2, :cond_2d
 
     .line 307
-    iget v0, p2, Lcom/android/server/wm/WindowProcessController;->mVrThreadTid:I
+    iget v2, p2, Lcom/android/server/wm/WindowProcessController;->mVrThreadTid:I
 
     .line 308
     invoke-virtual {p2}, Lcom/android/server/wm/WindowProcessController;->getCurrentSchedulingGroup()I
 
-    move-result p2
+    move-result v4
 
     .line 307
-    invoke-direct {p0, v0, p2, v1}, Lcom/android/server/wm/VrController;->setVrRenderThreadLocked(IIZ)I
+    invoke-direct {p0, v2, v4, v3}, Lcom/android/server/wm/VrController;->setVrRenderThreadLocked(IIZ)I
 
-    goto :goto_2a
+    goto :goto_2d
 
     .line 311
-    :cond_27
-    invoke-direct {p0, v1}, Lcom/android/server/wm/VrController;->clearVrRenderThreadLocked(Z)V
+    :cond_2a
+    invoke-direct {p0, v3}, Lcom/android/server/wm/VrController;->clearVrRenderThreadLocked(Z)V
 
     .line 314
-    :cond_2a
-    :goto_2a
-    return p1
+    :cond_2d
+    :goto_2d
+    return v1
 .end method
 
 .method private clearVrRenderThreadLocked(Z)V
     .registers 3
+    .param p1, "suppressLogs"  # Z
 
     .line 410
     const/4 v0, 0x0
@@ -234,27 +256,29 @@
 .end method
 
 .method private enforceThreadInProcess(II)V
-    .registers 3
+    .registers 5
+    .param p1, "tid"  # I
+    .param p2, "pid"  # I
 
     .line 418
     invoke-static {p2, p1}, Landroid/os/Process;->isThreadInProcess(II)Z
 
-    move-result p1
+    move-result v0
 
-    if-eqz p1, :cond_7
+    if-eqz v0, :cond_7
 
     .line 421
     return-void
 
     .line 419
     :cond_7
-    new-instance p1, Ljava/lang/IllegalArgumentException;
+    new-instance v0, Ljava/lang/IllegalArgumentException;
 
-    const-string p2, "VR thread does not belong to process"
+    const-string v1, "VR thread does not belong to process"
 
-    invoke-direct {p1, p2}, Ljava/lang/IllegalArgumentException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v0, v1}, Ljava/lang/IllegalArgumentException;-><init>(Ljava/lang/String;)V
 
-    throw p1
+    throw v0
 .end method
 
 .method private hasPersistentVrFlagSet()Z
@@ -300,7 +324,9 @@
 .end method
 
 .method private setPersistentVrRenderThreadLocked(IZ)I
-    .registers 4
+    .registers 5
+    .param p1, "newTid"  # I
+    .param p2, "suppressLogs"  # Z
 
     .line 360
     invoke-direct {p0}, Lcom/android/server/wm/VrController;->hasPersistentVrFlagSet()Z
@@ -313,29 +339,32 @@
     if-nez p2, :cond_f
 
     .line 362
-    const-string p1, "VrController"
+    const-string v0, "VrController"
 
-    const-string p2, "Failed to set persistent VR thread, system not in persistent VR mode."
+    const-string v1, "Failed to set persistent VR thread, system not in persistent VR mode."
 
-    invoke-static {p1, p2}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v0, v1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 365
     :cond_f
-    iget p1, p0, Lcom/android/server/wm/VrController;->mVrRenderThreadTid:I
+    iget v0, p0, Lcom/android/server/wm/VrController;->mVrRenderThreadTid:I
 
-    return p1
+    return v0
 
     .line 367
     :cond_12
     invoke-direct {p0, p1, p2}, Lcom/android/server/wm/VrController;->updateVrRenderThreadLocked(IZ)I
 
-    move-result p1
+    move-result v0
 
-    return p1
+    return v0
 .end method
 
 .method private setVrRenderThreadLocked(IIZ)I
-    .registers 7
+    .registers 9
+    .param p1, "newTid"  # I
+    .param p2, "schedGroup"  # I
+    .param p3, "suppressLogs"  # Z
 
     .line 386
     invoke-direct {p0}, Lcom/android/server/wm/VrController;->inVrMode()Z
@@ -343,11 +372,13 @@
     move-result v0
 
     .line 387
+    .local v0, "inVr":Z
     invoke-direct {p0}, Lcom/android/server/wm/VrController;->hasPersistentVrFlagSet()Z
 
     move-result v1
 
     .line 388
+    .local v1, "inPersistentVr":Z
     if-eqz v0, :cond_15
 
     if-nez v1, :cond_15
@@ -362,68 +393,67 @@
     :cond_10
     invoke-direct {p0, p1, p3}, Lcom/android/server/wm/VrController;->updateVrRenderThreadLocked(IZ)I
 
-    move-result p1
+    move-result v2
 
-    return p1
+    return v2
 
     .line 389
     :cond_15
     :goto_15
-    if-nez p3, :cond_3a
+    if-nez p3, :cond_38
 
     .line 390
-    nop
+    const-string v2, "caller is not the current top application."
 
     .line 391
-    if-nez v0, :cond_1d
+    .local v2, "reason":Ljava/lang/String;
+    if-nez v0, :cond_1e
 
     .line 392
-    const-string p1, "system not in VR mode."
+    const-string v2, "system not in VR mode."
 
-    goto :goto_24
+    goto :goto_22
 
     .line 393
-    :cond_1d
+    :cond_1e
     if-eqz v1, :cond_22
 
     .line 394
-    const-string p1, "system in persistent VR mode."
-
-    goto :goto_24
-
-    .line 393
-    :cond_22
-    const-string p1, "caller is not the current top application."
+    const-string v2, "system in persistent VR mode."
 
     .line 396
-    :goto_24
-    new-instance p2, Ljava/lang/StringBuilder;
+    :cond_22
+    :goto_22
+    new-instance v3, Ljava/lang/StringBuilder;
 
-    invoke-direct {p2}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string p3, "Failed to set VR thread, "
+    const-string v4, "Failed to set VR thread, "
 
-    invoke-virtual {p2, p3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p2, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v3
 
-    const-string p2, "VrController"
+    const-string v4, "VrController"
 
-    invoke-static {p2, p1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v4, v3}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 398
-    :cond_3a
-    iget p1, p0, Lcom/android/server/wm/VrController;->mVrRenderThreadTid:I
+    .end local v2  # "reason":Ljava/lang/String;
+    :cond_38
+    iget v2, p0, Lcom/android/server/wm/VrController;->mVrRenderThreadTid:I
 
-    return p1
+    return v2
 .end method
 
 .method private updateVrRenderThreadLocked(IZ)I
     .registers 4
+    .param p1, "newTid"  # I
+    .param p2, "suppressLogs"  # Z
 
     .line 330
     iget v0, p0, Lcom/android/server/wm/VrController;->mVrRenderThreadTid:I
@@ -453,15 +483,15 @@
     iput p1, p0, Lcom/android/server/wm/VrController;->mVrRenderThreadTid:I
 
     .line 341
-    iget p1, p0, Lcom/android/server/wm/VrController;->mVrRenderThreadTid:I
+    iget v0, p0, Lcom/android/server/wm/VrController;->mVrRenderThreadTid:I
 
-    invoke-static {p1, p2}, Lcom/android/server/am/ActivityManagerService;->scheduleAsFifoPriority(IZ)Z
+    invoke-static {v0, p2}, Lcom/android/server/am/ActivityManagerService;->scheduleAsFifoPriority(IZ)Z
 
     .line 343
     :cond_16
-    iget p1, p0, Lcom/android/server/wm/VrController;->mVrRenderThreadTid:I
+    iget v0, p0, Lcom/android/server/wm/VrController;->mVrRenderThreadTid:I
 
-    return p1
+    return v0
 .end method
 
 
@@ -479,6 +509,7 @@
     check-cast v0, Lcom/android/server/vr/VrManagerInternal;
 
     .line 143
+    .local v0, "vrManagerInternal":Lcom/android/server/vr/VrManagerInternal;
     if-eqz v0, :cond_f
 
     .line 144
@@ -492,7 +523,8 @@
 .end method
 
 .method public onTopProcChangedLocked(Lcom/android/server/wm/WindowProcessController;)V
-    .registers 5
+    .registers 6
+    .param p1, "proc"  # Lcom/android/server/wm/WindowProcessController;
 
     .line 157
     invoke-virtual {p1}, Lcom/android/server/wm/WindowProcessController;->getCurrentSchedulingGroup()I
@@ -500,6 +532,7 @@
     move-result v0
 
     .line 158
+    .local v0, "curSchedGroup":I
     const/4 v1, 0x1
 
     const/4 v2, 0x3
@@ -507,19 +540,19 @@
     if-ne v0, v2, :cond_e
 
     .line 159
-    iget p1, p1, Lcom/android/server/wm/WindowProcessController;->mVrThreadTid:I
+    iget v2, p1, Lcom/android/server/wm/WindowProcessController;->mVrThreadTid:I
 
-    invoke-direct {p0, p1, v0, v1}, Lcom/android/server/wm/VrController;->setVrRenderThreadLocked(IIZ)I
+    invoke-direct {p0, v2, v0, v1}, Lcom/android/server/wm/VrController;->setVrRenderThreadLocked(IIZ)I
 
     goto :goto_17
 
     .line 161
     :cond_e
-    iget p1, p1, Lcom/android/server/wm/WindowProcessController;->mVrThreadTid:I
+    iget v2, p1, Lcom/android/server/wm/WindowProcessController;->mVrThreadTid:I
 
-    iget v0, p0, Lcom/android/server/wm/VrController;->mVrRenderThreadTid:I
+    iget v3, p0, Lcom/android/server/wm/VrController;->mVrRenderThreadTid:I
 
-    if-ne p1, v0, :cond_17
+    if-ne v2, v3, :cond_17
 
     .line 162
     invoke-direct {p0, v1}, Lcom/android/server/wm/VrController;->clearVrRenderThreadLocked(Z)V
@@ -531,7 +564,8 @@
 .end method
 
 .method public onVrModeChanged(Lcom/android/server/wm/ActivityRecord;)Z
-    .registers 11
+    .registers 13
+    .param p1, "record"  # Lcom/android/server/wm/ActivityRecord;
 
     .line 176
     const-class v0, Lcom/android/server/vr/VrManagerInternal;
@@ -540,111 +574,162 @@
 
     move-result-object v0
 
-    move-object v1, v0
-
-    check-cast v1, Lcom/android/server/vr/VrManagerInternal;
+    check-cast v0, Lcom/android/server/vr/VrManagerInternal;
 
     .line 177
-    const/4 v0, 0x0
+    .local v0, "vrService":Lcom/android/server/vr/VrManagerInternal;
+    const/4 v1, 0x0
 
-    if-nez v1, :cond_d
+    if-nez v0, :cond_c
 
     .line 179
-    return v0
+    return v1
 
     .line 185
-    :cond_d
+    :cond_c
     const/4 v2, -0x1
 
     .line 186
-    nop
+    .local v2, "processId":I
+    const/4 v5, 0x0
 
     .line 187
-    iget-object v3, p0, Lcom/android/server/wm/VrController;->mGlobalAmLock:Ljava/lang/Object;
+    .local v5, "changed":Z
+    iget-object v7, p0, Lcom/android/server/wm/VrController;->mGlobalAmLock:Ljava/lang/Object;
 
-    monitor-enter v3
+    monitor-enter v7
 
     .line 188
-    :try_start_12
-    iget-object v4, p1, Lcom/android/server/wm/ActivityRecord;->requestedVrComponent:Landroid/content/ComponentName;
+    :try_start_11
+    iget-object v3, p1, Lcom/android/server/wm/ActivityRecord;->requestedVrComponent:Landroid/content/ComponentName;
 
-    if-eqz v4, :cond_17
+    if-eqz v3, :cond_16
 
-    const/4 v0, 0x1
+    const/4 v1, 0x1
+
+    :cond_16
+    move v8, v1
 
     .line 189
-    :cond_17
-    iget-object v4, p1, Lcom/android/server/wm/ActivityRecord;->requestedVrComponent:Landroid/content/ComponentName;
+    .local v8, "vrMode":Z
+    iget-object v3, p1, Lcom/android/server/wm/ActivityRecord;->requestedVrComponent:Landroid/content/ComponentName;
 
     .line 190
-    iget v5, p1, Lcom/android/server/wm/ActivityRecord;->mUserId:I
+    .local v3, "requestedPackage":Landroid/content/ComponentName;
+    iget v4, p1, Lcom/android/server/wm/ActivityRecord;->mUserId:I
 
     .line 191
-    iget-object v6, p1, Lcom/android/server/wm/ActivityRecord;->info:Landroid/content/pm/ActivityInfo;
+    .local v4, "userId":I
+    iget-object v1, p1, Lcom/android/server/wm/ActivityRecord;->info:Landroid/content/pm/ActivityInfo;
 
-    invoke-virtual {v6}, Landroid/content/pm/ActivityInfo;->getComponentName()Landroid/content/ComponentName;
+    invoke-virtual {v1}, Landroid/content/pm/ActivityInfo;->getComponentName()Landroid/content/ComponentName;
 
     move-result-object v6
 
     .line 194
-    iget-object v7, p1, Lcom/android/server/wm/ActivityRecord;->app:Lcom/android/server/wm/WindowProcessController;
+    .local v6, "callingPackage":Landroid/content/ComponentName;
+    iget-object v1, p1, Lcom/android/server/wm/ActivityRecord;->app:Lcom/android/server/wm/WindowProcessController;
 
-    invoke-direct {p0, v0, v7}, Lcom/android/server/wm/VrController;->changeVrModeLocked(ZLcom/android/server/wm/WindowProcessController;)Z
+    invoke-direct {p0, v8, v1}, Lcom/android/server/wm/VrController;->changeVrModeLocked(ZLcom/android/server/wm/WindowProcessController;)Z
 
-    move-result v7
+    move-result v1
+    :try_end_27
+    .catchall {:try_start_11 .. :try_end_27} :catchall_44
+
+    move v9, v1
 
     .line 196
-    iget-object v8, p1, Lcom/android/server/wm/ActivityRecord;->app:Lcom/android/server/wm/WindowProcessController;
+    .end local v5  # "changed":Z
+    .local v9, "changed":Z
+    :try_start_28
+    iget-object v1, p1, Lcom/android/server/wm/ActivityRecord;->app:Lcom/android/server/wm/WindowProcessController;
 
-    if-eqz v8, :cond_32
+    if-eqz v1, :cond_34
 
     .line 197
-    iget-object p1, p1, Lcom/android/server/wm/ActivityRecord;->app:Lcom/android/server/wm/WindowProcessController;
+    iget-object v1, p1, Lcom/android/server/wm/ActivityRecord;->app:Lcom/android/server/wm/WindowProcessController;
 
-    invoke-virtual {p1}, Lcom/android/server/wm/WindowProcessController;->getPid()I
+    invoke-virtual {v1}, Lcom/android/server/wm/WindowProcessController;->getPid()I
 
-    move-result p1
+    move-result v1
+    :try_end_32
+    .catchall {:try_start_28 .. :try_end_32} :catchall_41
 
-    goto :goto_33
+    move v10, v1
+
+    .end local v2  # "processId":I
+    .local v1, "processId":I
+    goto :goto_35
 
     .line 196
-    :cond_32
-    move p1, v2
+    .end local v1  # "processId":I
+    .restart local v2  # "processId":I
+    :cond_34
+    move v10, v2
 
     .line 199
-    :goto_33
-    monitor-exit v3
-    :try_end_34
-    .catchall {:try_start_12 .. :try_end_34} :catchall_3c
+    .end local v2  # "processId":I
+    .local v10, "processId":I
+    :goto_35
+    :try_start_35
+    monitor-exit v7
+    :try_end_36
+    .catchall {:try_start_35 .. :try_end_36} :catchall_3d
 
     .line 203
-    move v2, v0
+    move-object v1, v0
 
-    move-object v3, v4
+    move v2, v8
 
-    move v4, v5
-
-    move v5, p1
+    move v5, v10
 
     invoke-virtual/range {v1 .. v6}, Lcom/android/server/vr/VrManagerInternal;->setVrMode(ZLandroid/content/ComponentName;IILandroid/content/ComponentName;)V
 
     .line 204
-    return v7
+    return v9
 
     .line 199
-    :catchall_3c
-    move-exception p1
+    .end local v3  # "requestedPackage":Landroid/content/ComponentName;
+    .end local v4  # "userId":I
+    .end local v6  # "callingPackage":Landroid/content/ComponentName;
+    .end local v8  # "vrMode":Z
+    :catchall_3d
+    move-exception v1
 
-    :try_start_3d
-    monitor-exit v3
-    :try_end_3e
-    .catchall {:try_start_3d .. :try_end_3e} :catchall_3c
+    move v5, v9
 
-    throw p1
+    move v2, v10
+
+    goto :goto_45
+
+    .end local v10  # "processId":I
+    .restart local v2  # "processId":I
+    :catchall_41
+    move-exception v1
+
+    move v5, v9
+
+    goto :goto_45
+
+    .end local v9  # "changed":Z
+    .restart local v5  # "changed":Z
+    :catchall_44
+    move-exception v1
+
+    :goto_45
+    :try_start_45
+    monitor-exit v7
+    :try_end_46
+    .catchall {:try_start_45 .. :try_end_46} :catchall_44
+
+    throw v1
 .end method
 
 .method public setPersistentVrThreadLocked(IILcom/android/server/wm/WindowProcessController;)V
     .registers 6
+    .param p1, "tid"  # I
+    .param p2, "pid"  # I
+    .param p3, "proc"  # Lcom/android/server/wm/WindowProcessController;
 
     .line 257
     invoke-direct {p0}, Lcom/android/server/wm/VrController;->hasPersistentVrFlagSet()Z
@@ -656,9 +741,9 @@
     if-nez v0, :cond_e
 
     .line 258
-    const-string p1, "Persistent VR thread may only be set in persistent VR mode!"
+    const-string v0, "Persistent VR thread may only be set in persistent VR mode!"
 
-    invoke-static {v1, p1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v0}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 259
     return-void
@@ -668,9 +753,9 @@
     if-nez p3, :cond_16
 
     .line 262
-    const-string p1, "Persistent VR thread not set, calling process doesn\'t exist!"
+    const-string v0, "Persistent VR thread not set, calling process doesn\'t exist!"
 
-    invoke-static {v1, p1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v0}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 263
     return-void
@@ -684,16 +769,19 @@
 
     .line 268
     :cond_1b
-    const/4 p2, 0x0
+    const/4 v0, 0x0
 
-    invoke-direct {p0, p1, p2}, Lcom/android/server/wm/VrController;->setPersistentVrRenderThreadLocked(IZ)I
+    invoke-direct {p0, p1, v0}, Lcom/android/server/wm/VrController;->setPersistentVrRenderThreadLocked(IZ)I
 
     .line 269
     return-void
 .end method
 
 .method public setVrThreadLocked(IILcom/android/server/wm/WindowProcessController;)V
-    .registers 6
+    .registers 7
+    .param p1, "tid"  # I
+    .param p2, "pid"  # I
+    .param p3, "proc"  # Lcom/android/server/wm/WindowProcessController;
 
     .line 223
     invoke-direct {p0}, Lcom/android/server/wm/VrController;->hasPersistentVrFlagSet()Z
@@ -705,9 +793,9 @@
     if-eqz v0, :cond_e
 
     .line 224
-    const-string p1, "VR thread cannot be set in persistent VR mode!"
+    const-string v0, "VR thread cannot be set in persistent VR mode!"
 
-    invoke-static {v1, p1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v0}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 225
     return-void
@@ -717,9 +805,9 @@
     if-nez p3, :cond_16
 
     .line 228
-    const-string p1, "Persistent VR thread not set, calling process doesn\'t exist!"
+    const-string v0, "Persistent VR thread not set, calling process doesn\'t exist!"
 
-    invoke-static {v1, p1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v0}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 229
     return-void
@@ -735,16 +823,16 @@
     :cond_1b
     invoke-direct {p0}, Lcom/android/server/wm/VrController;->inVrMode()Z
 
-    move-result p2
+    move-result v0
 
-    const/4 v0, 0x0
+    const/4 v2, 0x0
 
-    if-nez p2, :cond_28
+    if-nez v0, :cond_28
 
     .line 235
-    const-string p2, "VR thread cannot be set when not in VR mode!"
+    const-string v0, "VR thread cannot be set when not in VR mode!"
 
-    invoke-static {v1, p2}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v0}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
     goto :goto_2f
 
@@ -752,21 +840,18 @@
     :cond_28
     invoke-virtual {p3}, Lcom/android/server/wm/WindowProcessController;->getCurrentSchedulingGroup()I
 
-    move-result p2
+    move-result v0
 
-    invoke-direct {p0, p1, p2, v0}, Lcom/android/server/wm/VrController;->setVrRenderThreadLocked(IIZ)I
+    invoke-direct {p0, p1, v0, v2}, Lcom/android/server/wm/VrController;->setVrRenderThreadLocked(IIZ)I
 
     .line 239
     :goto_2f
     if-lez p1, :cond_32
 
-    goto :goto_33
+    move v2, p1
 
     :cond_32
-    move p1, v0
-
-    :goto_33
-    iput p1, p3, Lcom/android/server/wm/WindowProcessController;->mVrThreadTid:I
+    iput v2, p3, Lcom/android/server/wm/WindowProcessController;->mVrThreadTid:I
 
     .line 240
     return-void
@@ -829,35 +914,38 @@
 .end method
 
 .method writeToProto(Landroid/util/proto/ProtoOutputStream;J)V
-    .registers 10
+    .registers 12
+    .param p1, "proto"  # Landroid/util/proto/ProtoOutputStream;
+    .param p2, "fieldId"  # J
 
     .line 445
     invoke-virtual {p1, p2, p3}, Landroid/util/proto/ProtoOutputStream;->start(J)J
 
-    move-result-wide p2
+    move-result-wide v0
 
     .line 446
-    iget v3, p0, Lcom/android/server/wm/VrController;->mVrState:I
+    .local v0, "token":J
+    iget v5, p0, Lcom/android/server/wm/VrController;->mVrState:I
 
-    sget-object v4, Lcom/android/server/wm/VrController;->ORIG_ENUMS:[I
+    sget-object v6, Lcom/android/server/wm/VrController;->ORIG_ENUMS:[I
 
-    sget-object v5, Lcom/android/server/wm/VrController;->PROTO_ENUMS:[I
+    sget-object v7, Lcom/android/server/wm/VrController;->PROTO_ENUMS:[I
 
-    const-wide v1, 0x20e00000001L
+    const-wide v3, 0x20e00000001L
 
-    move-object v0, p1
+    move-object v2, p1
 
-    invoke-static/range {v0 .. v5}, Landroid/util/proto/ProtoUtils;->writeBitWiseFlagsToProtoEnum(Landroid/util/proto/ProtoOutputStream;JI[I[I)V
+    invoke-static/range {v2 .. v7}, Landroid/util/proto/ProtoUtils;->writeBitWiseFlagsToProtoEnum(Landroid/util/proto/ProtoOutputStream;JI[I[I)V
 
     .line 448
-    iget v0, p0, Lcom/android/server/wm/VrController;->mVrRenderThreadTid:I
+    iget v2, p0, Lcom/android/server/wm/VrController;->mVrRenderThreadTid:I
 
-    const-wide v1, 0x10500000002L
+    const-wide v3, 0x10500000002L
 
-    invoke-virtual {p1, v1, v2, v0}, Landroid/util/proto/ProtoOutputStream;->write(JI)V
+    invoke-virtual {p1, v3, v4, v2}, Landroid/util/proto/ProtoOutputStream;->write(JI)V
 
     .line 449
-    invoke-virtual {p1, p2, p3}, Landroid/util/proto/ProtoOutputStream;->end(J)V
+    invoke-virtual {p1, v0, v1}, Landroid/util/proto/ProtoOutputStream;->end(J)V
 
     .line 450
     return-void

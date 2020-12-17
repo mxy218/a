@@ -22,7 +22,7 @@
 .method private constructor <init>(Landroid/net/ip/IpServer;)V
     .registers 2
 
-    .line 273
+    .line 284
     iput-object p1, p0, Landroid/net/ip/IpServer$OnHandlerStatusCallback;->this$0:Landroid/net/ip/IpServer;
 
     invoke-direct {p0}, Landroid/net/INetworkStackStatusCallback$Stub;-><init>()V
@@ -32,8 +32,10 @@
 
 .method synthetic constructor <init>(Landroid/net/ip/IpServer;Landroid/net/ip/IpServer$1;)V
     .registers 3
+    .param p1, "x0"  # Landroid/net/ip/IpServer;
+    .param p2, "x1"  # Landroid/net/ip/IpServer$1;
 
-    .line 273
+    .line 284
     invoke-direct {p0, p1}, Landroid/net/ip/IpServer$OnHandlerStatusCallback;-><init>(Landroid/net/ip/IpServer;)V
 
     return-void
@@ -47,7 +49,7 @@
 .method public getInterfaceVersion()I
     .registers 2
 
-    .line 283
+    .line 294
     const/4 v0, 0x3
 
     return v0
@@ -55,8 +57,9 @@
 
 .method public synthetic lambda$onStatusAvailable$0$IpServer$OnHandlerStatusCallback(I)V
     .registers 2
+    .param p1, "statusCode"  # I
 
-    .line 276
+    .line 287
     invoke-virtual {p0, p1}, Landroid/net/ip/IpServer$OnHandlerStatusCallback;->callback(I)V
 
     return-void
@@ -64,8 +67,9 @@
 
 .method public onStatusAvailable(I)V
     .registers 4
+    .param p1, "statusCode"  # I
 
-    .line 276
+    .line 287
     iget-object v0, p0, Landroid/net/ip/IpServer$OnHandlerStatusCallback;->this$0:Landroid/net/ip/IpServer;
 
     invoke-virtual {v0}, Landroid/net/ip/IpServer;->getHandler()Landroid/os/Handler;
@@ -78,6 +82,6 @@
 
     invoke-virtual {v0, v1}, Landroid/os/Handler;->post(Ljava/lang/Runnable;)Z
 
-    .line 277
+    .line 288
     return-void
 .end method

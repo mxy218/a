@@ -55,6 +55,9 @@
 # direct methods
 .method private constructor <init>(JJLjava/util/ArrayList;Z)V
     .registers 9
+    .param p1, "versionCode"  # J
+    .param p3, "lastUpdateTime"  # J
+    .param p6, "isShadow"  # Z
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(JJ",
@@ -64,6 +67,7 @@
     .end annotation
 
     .line 82
+    .local p5, "sigHashes":Ljava/util/ArrayList;, "Ljava/util/ArrayList<[B>;"
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
     .line 67
@@ -87,99 +91,106 @@
     iput-object p5, p0, Lcom/android/server/pm/ShortcutPackageInfo;->mSigHashes:Ljava/util/ArrayList;
 
     .line 87
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    iput-boolean p1, p0, Lcom/android/server/pm/ShortcutPackageInfo;->mBackupAllowed:Z
+    iput-boolean v0, p0, Lcom/android/server/pm/ShortcutPackageInfo;->mBackupAllowed:Z
 
     .line 88
-    iput-boolean p1, p0, Lcom/android/server/pm/ShortcutPackageInfo;->mBackupSourceBackupAllowed:Z
+    iput-boolean v0, p0, Lcom/android/server/pm/ShortcutPackageInfo;->mBackupSourceBackupAllowed:Z
 
     .line 89
     return-void
 .end method
 
 .method public static generateForInstalledPackageForTest(Lcom/android/server/pm/ShortcutService;Ljava/lang/String;I)Lcom/android/server/pm/ShortcutPackageInfo;
-    .registers 10
+    .registers 14
+    .param p0, "s"  # Lcom/android/server/pm/ShortcutService;
+    .param p1, "packageName"  # Ljava/lang/String;
+    .param p2, "packageUserId"  # I
     .annotation build Lcom/android/internal/annotations/VisibleForTesting;
     .end annotation
 
     .line 166
     invoke-virtual {p0, p1, p2}, Lcom/android/server/pm/ShortcutService;->getPackageInfoWithSignatures(Ljava/lang/String;I)Landroid/content/pm/PackageInfo;
 
-    move-result-object p0
+    move-result-object v0
 
     .line 168
-    iget-object p2, p0, Landroid/content/pm/PackageInfo;->signingInfo:Landroid/content/pm/SigningInfo;
+    .local v0, "pi":Landroid/content/pm/PackageInfo;
+    iget-object v1, v0, Landroid/content/pm/PackageInfo;->signingInfo:Landroid/content/pm/SigningInfo;
 
     .line 169
-    if-nez p2, :cond_20
+    .local v1, "signingInfo":Landroid/content/pm/SigningInfo;
+    if-nez v1, :cond_20
 
     .line 170
-    new-instance p0, Ljava/lang/StringBuilder;
+    new-instance v2, Ljava/lang/StringBuilder;
 
-    invoke-direct {p0}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string p2, "Can\'t get signatures: package="
+    const-string v3, "Can\'t get signatures: package="
 
-    invoke-virtual {p0, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v2
 
-    const-string p1, "ShortcutService"
+    const-string v3, "ShortcutService"
 
-    invoke-static {p1, p0}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v3, v2}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 171
-    const/4 p0, 0x0
+    const/4 v2, 0x0
 
-    return-object p0
+    return-object v2
 
     .line 174
     :cond_20
-    invoke-virtual {p2}, Landroid/content/pm/SigningInfo;->getApkContentsSigners()[Landroid/content/pm/Signature;
+    invoke-virtual {v1}, Landroid/content/pm/SigningInfo;->getApkContentsSigners()[Landroid/content/pm/Signature;
 
-    move-result-object p1
+    move-result-object v2
 
     .line 175
-    new-instance p2, Lcom/android/server/pm/ShortcutPackageInfo;
+    .local v2, "signatures":[Landroid/content/pm/Signature;
+    new-instance v10, Lcom/android/server/pm/ShortcutPackageInfo;
 
-    invoke-virtual {p0}, Landroid/content/pm/PackageInfo;->getLongVersionCode()J
+    invoke-virtual {v0}, Landroid/content/pm/PackageInfo;->getLongVersionCode()J
 
-    move-result-wide v1
+    move-result-wide v4
 
-    iget-wide v3, p0, Landroid/content/pm/PackageInfo;->lastUpdateTime:J
+    iget-wide v6, v0, Landroid/content/pm/PackageInfo;->lastUpdateTime:J
 
     .line 176
-    invoke-static {p1}, Lcom/android/server/backup/BackupUtils;->hashSignatureArray([Landroid/content/pm/Signature;)Ljava/util/ArrayList;
+    invoke-static {v2}, Lcom/android/server/backup/BackupUtils;->hashSignatureArray([Landroid/content/pm/Signature;)Ljava/util/ArrayList;
 
-    move-result-object v5
+    move-result-object v8
 
-    const/4 v6, 0x0
+    const/4 v9, 0x0
 
-    move-object v0, p2
+    move-object v3, v10
 
-    invoke-direct/range {v0 .. v6}, Lcom/android/server/pm/ShortcutPackageInfo;-><init>(JJLjava/util/ArrayList;Z)V
+    invoke-direct/range {v3 .. v9}, Lcom/android/server/pm/ShortcutPackageInfo;-><init>(JJLjava/util/ArrayList;Z)V
 
     .line 178
-    invoke-static {p0}, Lcom/android/server/pm/ShortcutService;->shouldBackupApp(Landroid/content/pm/PackageInfo;)Z
+    .local v3, "ret":Lcom/android/server/pm/ShortcutPackageInfo;
+    invoke-static {v0}, Lcom/android/server/pm/ShortcutService;->shouldBackupApp(Landroid/content/pm/PackageInfo;)Z
 
-    move-result p1
+    move-result v4
 
-    iput-boolean p1, p2, Lcom/android/server/pm/ShortcutPackageInfo;->mBackupSourceBackupAllowed:Z
+    iput-boolean v4, v3, Lcom/android/server/pm/ShortcutPackageInfo;->mBackupSourceBackupAllowed:Z
 
     .line 179
-    invoke-virtual {p0}, Landroid/content/pm/PackageInfo;->getLongVersionCode()J
+    invoke-virtual {v0}, Landroid/content/pm/PackageInfo;->getLongVersionCode()J
 
-    move-result-wide p0
+    move-result-wide v4
 
-    iput-wide p0, p2, Lcom/android/server/pm/ShortcutPackageInfo;->mBackupSourceVersionCode:J
+    iput-wide v4, v3, Lcom/android/server/pm/ShortcutPackageInfo;->mBackupSourceVersionCode:J
 
     .line 180
-    return-object p2
+    return-object v3
 .end method
 
 .method public static newEmpty()Lcom/android/server/pm/ShortcutPackageInfo;
@@ -210,127 +221,133 @@
 
 # virtual methods
 .method public canRestoreTo(Lcom/android/server/pm/ShortcutService;Landroid/content/pm/PackageInfo;Z)I
-    .registers 9
+    .registers 11
+    .param p1, "s"  # Lcom/android/server/pm/ShortcutService;
+    .param p2, "currentPackage"  # Landroid/content/pm/PackageInfo;
+    .param p3, "anyVersionOkay"  # Z
 
     .line 144
-    const-class p1, Landroid/content/pm/PackageManagerInternal;
+    const-class v0, Landroid/content/pm/PackageManagerInternal;
 
-    invoke-static {p1}, Lcom/android/server/LocalServices;->getService(Ljava/lang/Class;)Ljava/lang/Object;
+    invoke-static {v0}, Lcom/android/server/LocalServices;->getService(Ljava/lang/Class;)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v0
 
-    check-cast p1, Landroid/content/pm/PackageManagerInternal;
+    check-cast v0, Landroid/content/pm/PackageManagerInternal;
 
     .line 145
-    iget-object v0, p0, Lcom/android/server/pm/ShortcutPackageInfo;->mSigHashes:Ljava/util/ArrayList;
+    .local v0, "pmi":Landroid/content/pm/PackageManagerInternal;
+    iget-object v1, p0, Lcom/android/server/pm/ShortcutPackageInfo;->mSigHashes:Ljava/util/ArrayList;
 
-    invoke-static {v0, p2, p1}, Lcom/android/server/backup/BackupUtils;->signaturesMatch(Ljava/util/ArrayList;Landroid/content/pm/PackageInfo;Landroid/content/pm/PackageManagerInternal;)Z
+    invoke-static {v1, p2, v0}, Lcom/android/server/backup/BackupUtils;->signaturesMatch(Ljava/util/ArrayList;Landroid/content/pm/PackageInfo;Landroid/content/pm/PackageManagerInternal;)Z
 
-    move-result p1
+    move-result v1
 
-    const-string v0, "ShortcutService"
+    const-string v2, "ShortcutService"
 
-    if-nez p1, :cond_1a
+    if-nez v1, :cond_1a
 
     .line 146
-    const-string p1, "Can\'t restore: Package signature mismatch"
+    const-string v1, "Can\'t restore: Package signature mismatch"
 
-    invoke-static {v0, p1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v2, v1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 147
-    const/16 p1, 0x66
+    const/16 v1, 0x66
 
-    return p1
+    return v1
 
     .line 149
     :cond_1a
     invoke-static {p2}, Lcom/android/server/pm/ShortcutService;->shouldBackupApp(Landroid/content/pm/PackageInfo;)Z
 
-    move-result p1
+    move-result v1
 
-    if-eqz p1, :cond_55
+    if-eqz v1, :cond_55
 
-    iget-boolean p1, p0, Lcom/android/server/pm/ShortcutPackageInfo;->mBackupSourceBackupAllowed:Z
+    iget-boolean v1, p0, Lcom/android/server/pm/ShortcutPackageInfo;->mBackupSourceBackupAllowed:Z
 
-    if-nez p1, :cond_25
+    if-nez v1, :cond_25
 
     goto :goto_55
 
     .line 154
     :cond_25
-    const/4 p1, 0x0
+    const/4 v1, 0x0
 
     if-nez p3, :cond_54
 
     invoke-virtual {p2}, Landroid/content/pm/PackageInfo;->getLongVersionCode()J
 
-    move-result-wide v1
+    move-result-wide v3
 
-    iget-wide v3, p0, Lcom/android/server/pm/ShortcutPackageInfo;->mBackupSourceVersionCode:J
+    iget-wide v5, p0, Lcom/android/server/pm/ShortcutPackageInfo;->mBackupSourceVersionCode:J
 
-    cmp-long p3, v1, v3
+    cmp-long v3, v3, v5
 
-    if-gez p3, :cond_54
+    if-gez v3, :cond_54
 
     .line 155
-    const/4 p3, 0x2
+    const/4 v3, 0x2
 
-    new-array p3, p3, [Ljava/lang/Object;
+    new-array v3, v3, [Ljava/lang/Object;
 
     .line 157
     invoke-virtual {p2}, Landroid/content/pm/PackageInfo;->getLongVersionCode()J
 
-    move-result-wide v1
+    move-result-wide v4
 
-    invoke-static {v1, v2}, Ljava/lang/Long;->valueOf(J)Ljava/lang/Long;
+    invoke-static {v4, v5}, Ljava/lang/Long;->valueOf(J)Ljava/lang/Long;
 
-    move-result-object p2
+    move-result-object v4
 
-    aput-object p2, p3, p1
+    aput-object v4, v3, v1
 
-    const/4 p1, 0x1
+    const/4 v1, 0x1
 
-    iget-wide v1, p0, Lcom/android/server/pm/ShortcutPackageInfo;->mBackupSourceVersionCode:J
+    iget-wide v4, p0, Lcom/android/server/pm/ShortcutPackageInfo;->mBackupSourceVersionCode:J
 
-    invoke-static {v1, v2}, Ljava/lang/Long;->valueOf(J)Ljava/lang/Long;
+    invoke-static {v4, v5}, Ljava/lang/Long;->valueOf(J)Ljava/lang/Long;
 
-    move-result-object p2
+    move-result-object v4
 
-    aput-object p2, p3, p1
+    aput-object v4, v3, v1
 
     .line 155
-    const-string p1, "Can\'t restore: package current version %d < backed up version %d"
+    const-string v1, "Can\'t restore: package current version %d < backed up version %d"
 
-    invoke-static {p1, p3}, Ljava/lang/String;->format(Ljava/lang/String;[Ljava/lang/Object;)Ljava/lang/String;
+    invoke-static {v1, v3}, Ljava/lang/String;->format(Ljava/lang/String;[Ljava/lang/Object;)Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v1
 
-    invoke-static {v0, p1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v2, v1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 158
-    const/16 p1, 0x64
+    const/16 v1, 0x64
 
-    return p1
+    return v1
 
     .line 160
     :cond_54
-    return p1
+    return v1
 
     .line 151
     :cond_55
     :goto_55
-    const-string p1, "Can\'t restore: package didn\'t or doesn\'t allow backup"
+    const-string v1, "Can\'t restore: package didn\'t or doesn\'t allow backup"
 
-    invoke-static {v0, p1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v2, v1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 152
-    const/16 p1, 0x65
+    const/16 v1, 0x65
 
-    return p1
+    return v1
 .end method
 
 .method public dump(Ljava/io/PrintWriter;Ljava/lang/String;)V
     .registers 7
+    .param p1, "pw"  # Ljava/io/PrintWriter;
+    .param p2, "prefix"  # Ljava/lang/String;
 
     .line 318
     invoke-virtual {p1}, Ljava/io/PrintWriter;->println()V
@@ -473,6 +490,7 @@
     .line 358
     const/4 v0, 0x0
 
+    .local v0, "i":I
     :goto_84
     iget-object v1, p0, Lcom/android/server/pm/ShortcutPackageInfo;->mSigHashes:Ljava/util/ArrayList;
 
@@ -516,6 +534,7 @@
     goto :goto_84
 
     .line 364
+    .end local v0  # "i":I
     :cond_ab
     return-void
 .end method
@@ -600,7 +619,9 @@
 .end method
 
 .method public loadFromXml(Lorg/xmlpull/v1/XmlPullParser;Z)V
-    .registers 21
+    .registers 22
+    .param p1, "parser"  # Lorg/xmlpull/v1/XmlPullParser;
+    .param p2, "fromBackup"  # Z
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Ljava/io/IOException;,
@@ -622,16 +643,18 @@
     move-result-wide v4
 
     .line 245
-    const-string v6, "last_udpate_time"
+    .local v4, "versionCode":J
+    const-string/jumbo v6, "last_udpate_time"
 
     invoke-static {v1, v6}, Lcom/android/server/pm/ShortcutService;->parseLongAttribute(Lorg/xmlpull/v1/XmlPullParser;Ljava/lang/String;)J
 
     move-result-wide v6
 
     .line 249
+    .local v6, "lastUpdateTime":J
     const/4 v9, 0x1
 
-    if-nez p2, :cond_22
+    if-nez p2, :cond_23
 
     .line 250
     const-string/jumbo v10, "shadow"
@@ -640,21 +663,22 @@
 
     move-result v10
 
-    if-eqz v10, :cond_20
-
-    goto :goto_22
-
-    :cond_20
-    const/4 v10, 0x0
+    if-eqz v10, :cond_21
 
     goto :goto_23
 
-    :cond_22
-    :goto_22
+    :cond_21
+    const/4 v10, 0x0
+
+    goto :goto_24
+
+    :cond_23
+    :goto_23
     move v10, v9
 
     .line 254
-    :goto_23
+    .local v10, "shadow":Z
+    :goto_24
     const-string v11, "bk_src_version"
 
     invoke-static {v1, v11, v2, v3}, Lcom/android/server/pm/ShortcutService;->parseLongAttribute(Lorg/xmlpull/v1/XmlPullParser;Ljava/lang/String;J)J
@@ -662,6 +686,7 @@
     move-result-wide v11
 
     .line 261
+    .local v11, "backupSourceVersion":J
     const-string v13, "allow-backup"
 
     invoke-static {v1, v13, v9}, Lcom/android/server/pm/ShortcutService;->parseBooleanAttribute(Lorg/xmlpull/v1/XmlPullParser;Ljava/lang/String;Z)Z
@@ -669,6 +694,7 @@
     move-result v13
 
     .line 263
+    .local v13, "backupAllowed":Z
     const-string v14, "bk_src_backup-allowed"
 
     invoke-static {v1, v14, v9}, Lcom/android/server/pm/ShortcutService;->parseBooleanAttribute(Lorg/xmlpull/v1/XmlPullParser;Ljava/lang/String;Z)Z
@@ -676,150 +702,197 @@
     move-result v14
 
     .line 266
+    .local v14, "backupSourceBackupAllowed":Z
     new-instance v15, Ljava/util/ArrayList;
 
     invoke-direct {v15}, Ljava/util/ArrayList;-><init>()V
 
     .line 268
+    .local v15, "hashes":Ljava/util/ArrayList;, "Ljava/util/ArrayList<[B>;"
     invoke-interface/range {p1 .. p1}, Lorg/xmlpull/v1/XmlPullParser;->getDepth()I
 
     move-result v8
 
     .line 270
-    :goto_3e
+    .local v8, "outerDepth":I
+    :goto_3f
     invoke-interface/range {p1 .. p1}, Lorg/xmlpull/v1/XmlPullParser;->next()I
 
     move-result v2
 
-    if-eq v2, v9, :cond_9e
+    move v3, v2
 
-    const/4 v3, 0x3
+    .local v3, "type":I
+    if-eq v2, v9, :cond_a8
 
-    if-ne v2, v3, :cond_4d
+    const/4 v2, 0x3
+
+    if-ne v3, v2, :cond_55
 
     .line 271
     invoke-interface/range {p1 .. p1}, Lorg/xmlpull/v1/XmlPullParser;->getDepth()I
 
-    move-result v3
+    move-result v2
 
-    if-le v3, v8, :cond_9e
+    if-le v2, v8, :cond_50
+
+    goto :goto_55
+
+    :cond_50
+    move/from16 v16, v3
+
+    move/from16 v18, v8
+
+    goto :goto_ac
 
     .line 272
-    :cond_4d
-    const/4 v3, 0x2
+    :cond_55
+    :goto_55
+    const/4 v2, 0x2
 
-    if-eq v2, v3, :cond_53
+    if-eq v3, v2, :cond_5b
 
     .line 273
     const-wide/16 v2, -0x1
 
-    goto :goto_3e
+    goto :goto_3f
 
     .line 275
-    :cond_53
+    :cond_5b
     invoke-interface/range {p1 .. p1}, Lorg/xmlpull/v1/XmlPullParser;->getDepth()I
 
     move-result v2
 
     .line 276
+    .local v2, "depth":I
     invoke-interface/range {p1 .. p1}, Lorg/xmlpull/v1/XmlPullParser;->getName()Ljava/lang/String;
 
-    move-result-object v3
+    move-result-object v9
 
     .line 278
-    add-int/lit8 v9, v8, 0x1
+    .local v9, "tag":Ljava/lang/String;
+    move/from16 v16, v3
 
-    if-ne v2, v9, :cond_93
+    .end local v3  # "type":I
+    .local v16, "type":I
+    add-int/lit8 v3, v8, 0x1
+
+    if-ne v2, v3, :cond_9d
 
     .line 279
-    invoke-virtual {v3}, Ljava/lang/String;->hashCode()I
+    invoke-virtual {v9}, Ljava/lang/String;->hashCode()I
 
-    move-result v9
+    move-result v3
 
-    move/from16 v17, v8
+    move/from16 v18, v8
 
+    .end local v8  # "outerDepth":I
+    .local v18, "outerDepth":I
     const v8, 0x3ffd98b8
 
-    if-eq v9, v8, :cond_6b
+    if-eq v3, v8, :cond_75
 
-    :cond_6a
-    goto :goto_77
+    :cond_74
+    goto :goto_81
 
-    :cond_6b
-    const-string/jumbo v8, "signature"
+    :cond_75
+    const-string/jumbo v3, "signature"
 
-    invoke-virtual {v3, v8}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v9, v3}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result v8
+    move-result v3
 
-    if-eqz v8, :cond_6a
+    if-eqz v3, :cond_74
 
-    const/16 v16, 0x0
+    const/16 v17, 0x0
 
-    goto :goto_79
+    goto :goto_83
 
-    :goto_77
-    const/16 v16, -0x1
+    :goto_81
+    const/16 v17, -0x1
 
-    :goto_79
-    if-eqz v16, :cond_7c
+    :goto_83
+    if-eqz v17, :cond_86
 
-    goto :goto_95
+    goto :goto_9f
 
     .line 281
-    :cond_7c
-    const-string v2, "hash"
+    :cond_86
+    const-string v3, "hash"
 
-    invoke-static {v1, v2}, Lcom/android/server/pm/ShortcutService;->parseStringAttribute(Lorg/xmlpull/v1/XmlPullParser;Ljava/lang/String;)Ljava/lang/String;
-
-    move-result-object v2
-
-    .line 284
-    invoke-static {}, Ljava/util/Base64;->getDecoder()Ljava/util/Base64$Decoder;
+    invoke-static {v1, v3}, Lcom/android/server/pm/ShortcutService;->parseStringAttribute(Lorg/xmlpull/v1/XmlPullParser;Ljava/lang/String;)Ljava/lang/String;
 
     move-result-object v3
 
-    invoke-virtual {v3, v2}, Ljava/util/Base64$Decoder;->decode(Ljava/lang/String;)[B
+    .line 284
+    .local v3, "hash":Ljava/lang/String;
+    invoke-static {}, Ljava/util/Base64;->getDecoder()Ljava/util/Base64$Decoder;
 
-    move-result-object v2
+    move-result-object v8
+
+    invoke-virtual {v8, v3}, Ljava/util/Base64$Decoder;->decode(Ljava/lang/String;)[B
+
+    move-result-object v8
 
     .line 285
-    invoke-virtual {v15, v2}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
+    .local v8, "decoded":[B
+    invoke-virtual {v15, v8}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
 
     .line 286
-    move/from16 v8, v17
+    move/from16 v8, v18
 
     const-wide/16 v2, -0x1
 
     const/4 v9, 0x1
 
-    goto :goto_3e
+    goto :goto_3f
 
     .line 278
-    :cond_93
-    move/from16 v17, v8
+    .end local v3  # "hash":Ljava/lang/String;
+    .end local v18  # "outerDepth":I
+    .local v8, "outerDepth":I
+    :cond_9d
+    move/from16 v18, v8
 
     .line 290
-    :goto_95
-    invoke-static {v2, v3}, Lcom/android/server/pm/ShortcutService;->warnForInvalidTag(ILjava/lang/String;)V
+    .end local v8  # "outerDepth":I
+    .restart local v18  # "outerDepth":I
+    :goto_9f
+    invoke-static {v2, v9}, Lcom/android/server/pm/ShortcutService;->warnForInvalidTag(ILjava/lang/String;)V
 
     .line 291
-    move/from16 v8, v17
+    .end local v2  # "depth":I
+    .end local v9  # "tag":Ljava/lang/String;
+    move/from16 v8, v18
 
     const-wide/16 v2, -0x1
 
     const/4 v9, 0x1
 
-    goto :goto_3e
+    goto :goto_3f
+
+    .line 270
+    .end local v16  # "type":I
+    .end local v18  # "outerDepth":I
+    .local v3, "type":I
+    .restart local v8  # "outerDepth":I
+    :cond_a8
+    move/from16 v16, v3
+
+    move/from16 v18, v8
 
     .line 294
-    :cond_9e
-    if-eqz p2, :cond_a9
+    .end local v3  # "type":I
+    .end local v8  # "outerDepth":I
+    .restart local v16  # "type":I
+    .restart local v18  # "outerDepth":I
+    :goto_ac
+    if-eqz p2, :cond_b7
 
     .line 295
-    const-wide/16 v1, -0x1
+    const-wide/16 v2, -0x1
 
-    iput-wide v1, v0, Lcom/android/server/pm/ShortcutPackageInfo;->mVersionCode:J
+    iput-wide v2, v0, Lcom/android/server/pm/ShortcutPackageInfo;->mVersionCode:J
 
     .line 296
     iput-wide v4, v0, Lcom/android/server/pm/ShortcutPackageInfo;->mBackupSourceVersionCode:J
@@ -827,10 +900,10 @@
     .line 297
     iput-boolean v13, v0, Lcom/android/server/pm/ShortcutPackageInfo;->mBackupSourceBackupAllowed:Z
 
-    goto :goto_af
+    goto :goto_bd
 
     .line 299
-    :cond_a9
+    :cond_b7
     iput-wide v4, v0, Lcom/android/server/pm/ShortcutPackageInfo;->mVersionCode:J
 
     .line 300
@@ -840,7 +913,7 @@
     iput-boolean v14, v0, Lcom/android/server/pm/ShortcutPackageInfo;->mBackupSourceBackupAllowed:Z
 
     .line 303
-    :goto_af
+    :goto_bd
     iput-wide v6, v0, Lcom/android/server/pm/ShortcutPackageInfo;->mLastUpdateTime:J
 
     .line 304
@@ -850,19 +923,21 @@
     iput-object v15, v0, Lcom/android/server/pm/ShortcutPackageInfo;->mSigHashes:Ljava/util/ArrayList;
 
     .line 313
-    const/4 v1, 0x0
+    const/4 v2, 0x0
 
-    iput-boolean v1, v0, Lcom/android/server/pm/ShortcutPackageInfo;->mBackupAllowed:Z
+    iput-boolean v2, v0, Lcom/android/server/pm/ShortcutPackageInfo;->mBackupAllowed:Z
 
     .line 314
-    iput-boolean v1, v0, Lcom/android/server/pm/ShortcutPackageInfo;->mBackupAllowedInitialized:Z
+    iput-boolean v2, v0, Lcom/android/server/pm/ShortcutPackageInfo;->mBackupAllowedInitialized:Z
 
     .line 315
     return-void
 .end method
 
 .method public refreshSignature(Lcom/android/server/pm/ShortcutService;Lcom/android/server/pm/ShortcutPackageItem;)V
-    .registers 5
+    .registers 8
+    .param p1, "s"  # Lcom/android/server/pm/ShortcutService;
+    .param p2, "pkg"  # Lcom/android/server/pm/ShortcutPackageItem;
 
     .line 184
     iget-boolean v0, p0, Lcom/android/server/pm/ShortcutPackageInfo;->mIsShadow:Z
@@ -891,16 +966,16 @@
     .line 186
     invoke-virtual {p2}, Lcom/android/server/pm/ShortcutPackageItem;->getOwnerUserId()I
 
-    move-result p2
+    move-result v1
 
-    invoke-virtual {v0, p2}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
     invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p2
+    move-result-object v0
 
     .line 185
-    invoke-virtual {p1, p2}, Lcom/android/server/pm/ShortcutService;->wtf(Ljava/lang/String;)V
+    invoke-virtual {p1, v0}, Lcom/android/server/pm/ShortcutService;->wtf(Ljava/lang/String;)V
 
     .line 187
     return-void
@@ -921,91 +996,97 @@
     .line 190
     invoke-virtual {p1, v0, v1}, Lcom/android/server/pm/ShortcutService;->getPackageInfoWithSignatures(Ljava/lang/String;I)Landroid/content/pm/PackageInfo;
 
-    move-result-object p1
+    move-result-object v0
 
     .line 192
-    const-string v0, "ShortcutService"
+    .local v0, "pi":Landroid/content/pm/PackageInfo;
+    const-string v1, "ShortcutService"
 
-    if-nez p1, :cond_53
+    if-nez v0, :cond_53
 
     .line 193
-    new-instance p1, Ljava/lang/StringBuilder;
+    new-instance v2, Ljava/lang/StringBuilder;
 
-    invoke-direct {p1}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v1, "Package not found: "
+    const-string v3, "Package not found: "
 
-    invoke-virtual {p1, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {p2}, Lcom/android/server/pm/ShortcutPackageItem;->getPackageName()Ljava/lang/String;
 
-    move-result-object p2
+    move-result-object v3
 
-    invoke-virtual {p1, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v2
 
-    invoke-static {v0, p1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v2}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 194
     return-void
 
     .line 197
     :cond_53
-    iget-object p1, p1, Landroid/content/pm/PackageInfo;->signingInfo:Landroid/content/pm/SigningInfo;
+    iget-object v2, v0, Landroid/content/pm/PackageInfo;->signingInfo:Landroid/content/pm/SigningInfo;
 
     .line 198
-    if-nez p1, :cond_75
+    .local v2, "signingInfo":Landroid/content/pm/SigningInfo;
+    if-nez v2, :cond_75
 
     .line 199
-    new-instance p1, Ljava/lang/StringBuilder;
+    new-instance v3, Ljava/lang/StringBuilder;
 
-    invoke-direct {p1}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v1, "Not refreshing signature for "
+    const-string v4, "Not refreshing signature for "
 
-    invoke-virtual {p1, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {p2}, Lcom/android/server/pm/ShortcutPackageItem;->getPackageName()Ljava/lang/String;
 
-    move-result-object p2
+    move-result-object v4
 
-    invoke-virtual {p1, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string p2, " since it appears to have no signing info."
+    const-string v4, " since it appears to have no signing info."
 
-    invoke-virtual {p1, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v3
 
-    invoke-static {v0, p1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v3}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 201
     return-void
 
     .line 204
     :cond_75
-    invoke-virtual {p1}, Landroid/content/pm/SigningInfo;->getApkContentsSigners()[Landroid/content/pm/Signature;
+    invoke-virtual {v2}, Landroid/content/pm/SigningInfo;->getApkContentsSigners()[Landroid/content/pm/Signature;
 
-    move-result-object p1
+    move-result-object v1
 
     .line 205
-    invoke-static {p1}, Lcom/android/server/backup/BackupUtils;->hashSignatureArray([Landroid/content/pm/Signature;)Ljava/util/ArrayList;
+    .local v1, "signatures":[Landroid/content/pm/Signature;
+    invoke-static {v1}, Lcom/android/server/backup/BackupUtils;->hashSignatureArray([Landroid/content/pm/Signature;)Ljava/util/ArrayList;
 
-    move-result-object p1
+    move-result-object v3
 
-    iput-object p1, p0, Lcom/android/server/pm/ShortcutPackageInfo;->mSigHashes:Ljava/util/ArrayList;
+    iput-object v3, p0, Lcom/android/server/pm/ShortcutPackageInfo;->mSigHashes:Ljava/util/ArrayList;
 
     .line 206
     return-void
 .end method
 
 .method public saveToXml(Lcom/android/server/pm/ShortcutService;Lorg/xmlpull/v1/XmlSerializer;Z)V
-    .registers 8
+    .registers 10
+    .param p1, "s"  # Lcom/android/server/pm/ShortcutService;
+    .param p2, "out"  # Lorg/xmlpull/v1/XmlSerializer;
+    .param p3, "forBackup"  # Z
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Ljava/io/IOException;
@@ -1015,122 +1096,126 @@
     .line 210
     if-eqz p3, :cond_b
 
-    iget-boolean p3, p0, Lcom/android/server/pm/ShortcutPackageInfo;->mBackupAllowedInitialized:Z
+    iget-boolean v0, p0, Lcom/android/server/pm/ShortcutPackageInfo;->mBackupAllowedInitialized:Z
 
-    if-nez p3, :cond_b
+    if-nez v0, :cond_b
 
     .line 211
-    const-string p3, "Backup happened before mBackupAllowed is initialized."
+    const-string v0, "Backup happened before mBackupAllowed is initialized."
 
-    invoke-virtual {p1, p3}, Lcom/android/server/pm/ShortcutService;->wtf(Ljava/lang/String;)V
+    invoke-virtual {p1, v0}, Lcom/android/server/pm/ShortcutService;->wtf(Ljava/lang/String;)V
 
     .line 214
     :cond_b
-    const-string/jumbo p1, "package-info"
+    const-string/jumbo v0, "package-info"
 
-    const/4 p3, 0x0
+    const/4 v1, 0x0
 
-    invoke-interface {p2, p3, p1}, Lorg/xmlpull/v1/XmlSerializer;->startTag(Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
+    invoke-interface {p2, v1, v0}, Lorg/xmlpull/v1/XmlSerializer;->startTag(Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
 
     .line 216
-    iget-wide v0, p0, Lcom/android/server/pm/ShortcutPackageInfo;->mVersionCode:J
+    iget-wide v2, p0, Lcom/android/server/pm/ShortcutPackageInfo;->mVersionCode:J
 
-    const-string/jumbo v2, "version"
+    const-string/jumbo v4, "version"
 
-    invoke-static {p2, v2, v0, v1}, Lcom/android/server/pm/ShortcutService;->writeAttr(Lorg/xmlpull/v1/XmlSerializer;Ljava/lang/String;J)V
+    invoke-static {p2, v4, v2, v3}, Lcom/android/server/pm/ShortcutService;->writeAttr(Lorg/xmlpull/v1/XmlSerializer;Ljava/lang/String;J)V
 
     .line 217
-    iget-wide v0, p0, Lcom/android/server/pm/ShortcutPackageInfo;->mLastUpdateTime:J
+    iget-wide v2, p0, Lcom/android/server/pm/ShortcutPackageInfo;->mLastUpdateTime:J
 
-    const-string v2, "last_udpate_time"
+    const-string/jumbo v4, "last_udpate_time"
 
-    invoke-static {p2, v2, v0, v1}, Lcom/android/server/pm/ShortcutService;->writeAttr(Lorg/xmlpull/v1/XmlSerializer;Ljava/lang/String;J)V
+    invoke-static {p2, v4, v2, v3}, Lcom/android/server/pm/ShortcutService;->writeAttr(Lorg/xmlpull/v1/XmlSerializer;Ljava/lang/String;J)V
 
     .line 218
-    iget-boolean v0, p0, Lcom/android/server/pm/ShortcutPackageInfo;->mIsShadow:Z
+    iget-boolean v2, p0, Lcom/android/server/pm/ShortcutPackageInfo;->mIsShadow:Z
 
-    const-string/jumbo v1, "shadow"
+    const-string/jumbo v3, "shadow"
 
-    invoke-static {p2, v1, v0}, Lcom/android/server/pm/ShortcutService;->writeAttr(Lorg/xmlpull/v1/XmlSerializer;Ljava/lang/String;Z)V
+    invoke-static {p2, v3, v2}, Lcom/android/server/pm/ShortcutService;->writeAttr(Lorg/xmlpull/v1/XmlSerializer;Ljava/lang/String;Z)V
 
     .line 219
-    iget-boolean v0, p0, Lcom/android/server/pm/ShortcutPackageInfo;->mBackupAllowed:Z
+    iget-boolean v2, p0, Lcom/android/server/pm/ShortcutPackageInfo;->mBackupAllowed:Z
 
-    const-string v1, "allow-backup"
+    const-string v3, "allow-backup"
 
-    invoke-static {p2, v1, v0}, Lcom/android/server/pm/ShortcutService;->writeAttr(Lorg/xmlpull/v1/XmlSerializer;Ljava/lang/String;Z)V
+    invoke-static {p2, v3, v2}, Lcom/android/server/pm/ShortcutService;->writeAttr(Lorg/xmlpull/v1/XmlSerializer;Ljava/lang/String;Z)V
 
     .line 223
-    iget-boolean v0, p0, Lcom/android/server/pm/ShortcutPackageInfo;->mBackupAllowedInitialized:Z
+    iget-boolean v2, p0, Lcom/android/server/pm/ShortcutPackageInfo;->mBackupAllowedInitialized:Z
 
-    const-string v1, "allow-backup-initialized"
+    const-string v3, "allow-backup-initialized"
 
-    invoke-static {p2, v1, v0}, Lcom/android/server/pm/ShortcutService;->writeAttr(Lorg/xmlpull/v1/XmlSerializer;Ljava/lang/String;Z)V
+    invoke-static {p2, v3, v2}, Lcom/android/server/pm/ShortcutService;->writeAttr(Lorg/xmlpull/v1/XmlSerializer;Ljava/lang/String;Z)V
 
     .line 225
-    iget-wide v0, p0, Lcom/android/server/pm/ShortcutPackageInfo;->mBackupSourceVersionCode:J
+    iget-wide v2, p0, Lcom/android/server/pm/ShortcutPackageInfo;->mBackupSourceVersionCode:J
 
-    const-string v2, "bk_src_version"
+    const-string v4, "bk_src_version"
 
-    invoke-static {p2, v2, v0, v1}, Lcom/android/server/pm/ShortcutService;->writeAttr(Lorg/xmlpull/v1/XmlSerializer;Ljava/lang/String;J)V
+    invoke-static {p2, v4, v2, v3}, Lcom/android/server/pm/ShortcutService;->writeAttr(Lorg/xmlpull/v1/XmlSerializer;Ljava/lang/String;J)V
 
     .line 226
-    iget-boolean v0, p0, Lcom/android/server/pm/ShortcutPackageInfo;->mBackupSourceBackupAllowed:Z
+    iget-boolean v2, p0, Lcom/android/server/pm/ShortcutPackageInfo;->mBackupSourceBackupAllowed:Z
 
-    const-string v1, "bk_src_backup-allowed"
+    const-string v3, "bk_src_backup-allowed"
 
-    invoke-static {p2, v1, v0}, Lcom/android/server/pm/ShortcutService;->writeAttr(Lorg/xmlpull/v1/XmlSerializer;Ljava/lang/String;Z)V
+    invoke-static {p2, v3, v2}, Lcom/android/server/pm/ShortcutService;->writeAttr(Lorg/xmlpull/v1/XmlSerializer;Ljava/lang/String;Z)V
 
     .line 230
-    const/4 v0, 0x0
+    const/4 v2, 0x0
 
-    :goto_46
-    iget-object v1, p0, Lcom/android/server/pm/ShortcutPackageInfo;->mSigHashes:Ljava/util/ArrayList;
+    .local v2, "i":I
+    :goto_47
+    iget-object v3, p0, Lcom/android/server/pm/ShortcutPackageInfo;->mSigHashes:Ljava/util/ArrayList;
 
-    invoke-virtual {v1}, Ljava/util/ArrayList;->size()I
+    invoke-virtual {v3}, Ljava/util/ArrayList;->size()I
 
-    move-result v1
+    move-result v3
 
-    if-ge v0, v1, :cond_6f
+    if-ge v2, v3, :cond_70
 
     .line 231
-    const-string/jumbo v1, "signature"
+    const-string/jumbo v3, "signature"
 
-    invoke-interface {p2, p3, v1}, Lorg/xmlpull/v1/XmlSerializer;->startTag(Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
+    invoke-interface {p2, v1, v3}, Lorg/xmlpull/v1/XmlSerializer;->startTag(Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
 
     .line 232
     invoke-static {}, Ljava/util/Base64;->getEncoder()Ljava/util/Base64$Encoder;
 
-    move-result-object v2
+    move-result-object v4
 
-    iget-object v3, p0, Lcom/android/server/pm/ShortcutPackageInfo;->mSigHashes:Ljava/util/ArrayList;
+    iget-object v5, p0, Lcom/android/server/pm/ShortcutPackageInfo;->mSigHashes:Ljava/util/ArrayList;
 
-    invoke-virtual {v3, v0}, Ljava/util/ArrayList;->get(I)Ljava/lang/Object;
+    invoke-virtual {v5, v2}, Ljava/util/ArrayList;->get(I)Ljava/lang/Object;
 
-    move-result-object v3
+    move-result-object v5
 
-    check-cast v3, [B
+    check-cast v5, [B
 
-    invoke-virtual {v2, v3}, Ljava/util/Base64$Encoder;->encodeToString([B)Ljava/lang/String;
+    invoke-virtual {v4, v5}, Ljava/util/Base64$Encoder;->encodeToString([B)Ljava/lang/String;
 
-    move-result-object v2
+    move-result-object v4
 
     .line 233
-    const-string v3, "hash"
+    .local v4, "encoded":Ljava/lang/String;
+    const-string v5, "hash"
 
-    invoke-static {p2, v3, v2}, Lcom/android/server/pm/ShortcutService;->writeAttr(Lorg/xmlpull/v1/XmlSerializer;Ljava/lang/String;Ljava/lang/CharSequence;)V
+    invoke-static {p2, v5, v4}, Lcom/android/server/pm/ShortcutService;->writeAttr(Lorg/xmlpull/v1/XmlSerializer;Ljava/lang/String;Ljava/lang/CharSequence;)V
 
     .line 234
-    invoke-interface {p2, p3, v1}, Lorg/xmlpull/v1/XmlSerializer;->endTag(Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
+    invoke-interface {p2, v1, v3}, Lorg/xmlpull/v1/XmlSerializer;->endTag(Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
 
     .line 230
-    add-int/lit8 v0, v0, 0x1
+    .end local v4  # "encoded":Ljava/lang/String;
+    add-int/lit8 v2, v2, 0x1
 
-    goto :goto_46
+    goto :goto_47
 
     .line 236
-    :cond_6f
-    invoke-interface {p2, p3, p1}, Lorg/xmlpull/v1/XmlSerializer;->endTag(Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
+    .end local v2  # "i":I
+    :cond_70
+    invoke-interface {p2, v1, v0}, Lorg/xmlpull/v1/XmlSerializer;->endTag(Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
 
     .line 237
     return-void
@@ -1138,6 +1223,7 @@
 
 .method public setShadow(Z)V
     .registers 2
+    .param p1, "shadow"  # Z
 
     .line 101
     iput-boolean p1, p0, Lcom/android/server/pm/ShortcutPackageInfo;->mIsShadow:Z
@@ -1148,6 +1234,7 @@
 
 .method public updateFromPackageInfo(Landroid/content/pm/PackageInfo;)V
     .registers 4
+    .param p1, "pi"  # Landroid/content/pm/PackageInfo;
 
     .line 130
     if-eqz p1, :cond_15
@@ -1167,14 +1254,14 @@
     .line 133
     invoke-static {p1}, Lcom/android/server/pm/ShortcutService;->shouldBackupApp(Landroid/content/pm/PackageInfo;)Z
 
-    move-result p1
+    move-result v0
 
-    iput-boolean p1, p0, Lcom/android/server/pm/ShortcutPackageInfo;->mBackupAllowed:Z
+    iput-boolean v0, p0, Lcom/android/server/pm/ShortcutPackageInfo;->mBackupAllowed:Z
 
     .line 134
-    const/4 p1, 0x1
+    const/4 v0, 0x1
 
-    iput-boolean p1, p0, Lcom/android/server/pm/ShortcutPackageInfo;->mBackupAllowedInitialized:Z
+    iput-boolean v0, p0, Lcom/android/server/pm/ShortcutPackageInfo;->mBackupAllowedInitialized:Z
 
     .line 136
     :cond_15

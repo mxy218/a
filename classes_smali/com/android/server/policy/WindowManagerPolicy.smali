@@ -55,32 +55,33 @@
 # direct methods
 .method public static userRotationModeToString(I)Ljava/lang/String;
     .registers 2
+    .param p0, "mode"  # I
 
-    .line 1454
+    .line 1477
     if-eqz p0, :cond_d
 
     const/4 v0, 0x1
 
     if-eq p0, v0, :cond_a
 
-    .line 1460
+    .line 1483
     invoke-static {p0}, Ljava/lang/Integer;->toString(I)Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v0
 
-    return-object p0
+    return-object v0
 
-    .line 1458
+    .line 1481
     :cond_a
-    const-string p0, "USER_ROTATION_LOCKED"
+    const-string v0, "USER_ROTATION_LOCKED"
 
-    return-object p0
+    return-object v0
 
-    .line 1456
+    .line 1479
     :cond_d
-    const-string p0, "USER_ROTATION_FREE"
+    const-string v0, "USER_ROTATION_FREE"
 
-    return-object p0
+    return-object v0
 .end method
 
 
@@ -106,7 +107,7 @@
 .method public abstract checkShowToOwnerOnly(Landroid/view/WindowManager$LayoutParams;)Z
 .end method
 
-.method public abstract createHiddenByKeyguardExit(ZZZ)Landroid/view/animation/Animation;
+.method public abstract createHiddenByKeyguardExit(ZZ)Landroid/view/animation/Animation;
 .end method
 
 .method public abstract createKeyguardWallpaperExit(Z)Landroid/view/animation/Animation;
@@ -116,6 +117,9 @@
 .end method
 
 .method public abstract dispatchUnhandledKey(Lcom/android/server/policy/WindowManagerPolicy$WindowState;Landroid/view/KeyEvent;I)Landroid/view/KeyEvent;
+.end method
+
+.method public abstract dispatcherWaitToCheckSystemGesture(Landroid/view/MotionEvent;I)Z
 .end method
 
 .method public abstract dump(Ljava/lang/String;Ljava/io/PrintWriter;[Ljava/lang/String;)V
@@ -139,7 +143,7 @@
 .method public getFoldedArea()Landroid/graphics/Rect;
     .registers 2
 
-    .line 1491
+    .line 1514
     new-instance v0, Landroid/graphics/Rect;
 
     invoke-direct {v0}, Landroid/graphics/Rect;-><init>()V
@@ -152,11 +156,12 @@
 
 .method public getSubWindowLayerFromTypeLw(I)I
     .registers 4
+    .param p1, "type"  # I
 
-    .line 912
+    .line 935
     packed-switch p1, :pswitch_data_26
 
-    .line 925
+    .line 948
     new-instance v0, Ljava/lang/StringBuilder;
 
     invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
@@ -169,46 +174,46 @@
 
     invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    const-string v0, "WindowManager"
+    const-string v1, "WindowManager"
 
-    invoke-static {v0, p1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v0}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 926
-    const/4 p1, 0x0
+    .line 949
+    const/4 v0, 0x0
 
-    return p1
+    return v0
 
-    .line 923
+    .line 946
     :pswitch_1b  #0x3ed
-    const/4 p1, 0x3
+    const/4 v0, 0x3
 
-    return p1
+    return v0
 
-    .line 919
+    .line 942
     :pswitch_1d  #0x3ec
-    const/4 p1, -0x1
+    const/4 v0, -0x1
 
-    return p1
+    return v0
 
-    .line 921
+    .line 944
     :pswitch_1f  #0x3ea
-    const/4 p1, 0x2
+    const/4 v0, 0x2
 
-    return p1
+    return v0
 
-    .line 917
+    .line 940
     :pswitch_21  #0x3e9
-    const/4 p1, -0x2
+    const/4 v0, -0x2
 
-    return p1
+    return v0
 
-    .line 915
+    .line 938
     :pswitch_23  #0x3e8, 0x3eb
-    const/4 p1, 0x1
+    const/4 v0, 0x1
 
-    return p1
+    return v0
 
     nop
 
@@ -227,39 +232,42 @@
 .end method
 
 .method public getWindowLayerFromTypeLw(I)I
-    .registers 3
+    .registers 4
+    .param p1, "type"  # I
 
-    .line 776
+    .line 786
     invoke-static {p1}, Landroid/view/WindowManager$LayoutParams;->isSystemAlertWindowType(I)Z
 
     move-result v0
 
     if-nez v0, :cond_c
 
-    .line 780
+    .line 790
     const/4 v0, 0x0
 
     invoke-interface {p0, p1, v0}, Lcom/android/server/policy/WindowManagerPolicy;->getWindowLayerFromTypeLw(IZ)I
 
-    move-result p1
+    move-result v0
 
-    return p1
+    return v0
 
-    .line 777
+    .line 787
     :cond_c
-    new-instance p1, Ljava/lang/IllegalArgumentException;
+    new-instance v0, Ljava/lang/IllegalArgumentException;
 
-    const-string v0, "Use getWindowLayerFromTypeLw() or getWindowLayerLw() for alert window types"
+    const-string v1, "Use getWindowLayerFromTypeLw() or getWindowLayerLw() for alert window types"
 
-    invoke-direct {p1, v0}, Ljava/lang/IllegalArgumentException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v0, v1}, Ljava/lang/IllegalArgumentException;-><init>(Ljava/lang/String;)V
 
-    throw p1
+    throw v0
 .end method
 
 .method public getWindowLayerFromTypeLw(IZ)I
     .registers 6
+    .param p1, "type"  # I
+    .param p2, "canAddInternalSystemWindow"  # Z
 
-    .line 798
+    .line 808
     const/4 v0, 0x1
 
     const/4 v1, 0x2
@@ -270,303 +278,357 @@
 
     if-gt p1, v2, :cond_9
 
-    .line 799
+    .line 809
     return v1
-
-    .line 802
-    :cond_9
-    const/16 v2, 0xa
-
-    packed-switch p1, :pswitch_data_84
-
-    .line 897
-    :pswitch_e  #0x7d4, 0x7e9, 0x7ec, 0x7ed
-    new-instance p2, Ljava/lang/StringBuilder;
-
-    invoke-direct {p2}, Ljava/lang/StringBuilder;-><init>()V
-
-    const-string v0, "Unknown window type: "
-
-    invoke-virtual {p2, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {p2, p1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
-
-    invoke-virtual {p2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
-
-    move-result-object p1
-
-    const-string p2, "WindowManager"
-
-    invoke-static {p2, p1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
-
-    .line 898
-    return v1
-
-    .line 837
-    :pswitch_25  #0x7f6
-    const/16 p1, 0xc
-
-    return p1
-
-    .line 872
-    :pswitch_28  #0x7f4
-    const/16 p1, 0x19
-
-    return p1
 
     .line 812
-    :pswitch_2b  #0x7f3
+    :cond_9
+    const/16 v2, 0x7ea
+
+    if-eq p1, v2, :cond_9f
+
+    const/16 v2, 0x7eb
+
+    if-eq p1, v2, :cond_9c
+
+    const/16 v2, 0xa
+
+    packed-switch p1, :pswitch_data_a2
+
+    packed-switch p1, :pswitch_data_ae
+
+    packed-switch p1, :pswitch_data_da
+
+    packed-switch p1, :pswitch_data_f0
+
+    .line 920
+    new-instance v0, Ljava/lang/StringBuilder;
+
+    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
+
+    const-string v2, "Unknown window type: "
+
+    invoke-virtual {v0, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v0
+
+    const-string v2, "WindowManager"
+
+    invoke-static {v2, v0}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
+
+    .line 921
     return v1
 
-    .line 810
-    :pswitch_2c  #0x7f2
+    .line 908
+    :pswitch_36  #0x807
+    const/16 v0, 0x31
+
+    return v0
+
+    .line 917
+    :pswitch_39  #0x806
+    const/16 v0, 0x36
+
+    return v0
+
+    .line 915
+    :pswitch_3c  #0x805, 0x808
     return v1
 
-    .line 888
-    :pswitch_2d  #0x7f0
-    const/16 p1, 0x1e
+    .line 912
+    :pswitch_3d  #0x804
+    const/16 v0, 0x34
 
-    return p1
+    return v0
+
+    .line 910
+    :pswitch_40  #0x803
+    const/16 v0, 0x33
+
+    return v0
+
+    .line 847
+    :pswitch_43  #0x7f6
+    const/16 v0, 0xc
+
+    return v0
+
+    .line 882
+    :pswitch_46  #0x7f4
+    const/16 v0, 0x19
+
+    return v0
+
+    .line 822
+    :pswitch_49  #0x7f3
+    return v1
 
     .line 820
-    :pswitch_30  #0x7ef
-    const/4 p1, 0x5
+    :pswitch_4a  #0x7f2
+    return v1
 
-    return p1
+    .line 898
+    :pswitch_4b  #0x7f0
+    const/16 v0, 0x1e
 
-    .line 808
-    :pswitch_32  #0x7ee, 0x7f5
+    return v0
+
+    .line 830
+    :pswitch_4e  #0x7ef
+    const/4 v0, 0x5
+
+    return v0
+
+    .line 818
+    :pswitch_50  #0x7ee, 0x7f5
     return v1
 
     .line 878
-    :pswitch_33  #0x7eb
-    const/16 p1, 0x1b
+    :pswitch_51  #0x7e8
+    const/16 v0, 0x18
 
-    return p1
-
-    .line 881
-    :pswitch_36  #0x7ea
-    const/16 p1, 0x1c
-
-    return p1
-
-    .line 868
-    :pswitch_39  #0x7e8
-    const/16 p1, 0x18
-
-    return p1
-
-    .line 840
-    :pswitch_3c  #0x7e7
-    const/16 p1, 0xe
-
-    return p1
-
-    .line 822
-    :pswitch_3f  #0x7e6
-    const/4 p1, 0x6
-
-    return p1
-
-    .line 892
-    :pswitch_41  #0x7e5
-    const/16 p1, 0x20
-
-    return p1
-
-    .line 858
-    :pswitch_44  #0x7e4
-    const/16 p1, 0x15
-
-    return p1
-
-    .line 865
-    :pswitch_47  #0x7e3
-    const/16 p1, 0x17
-
-    return p1
-
-    .line 895
-    :pswitch_4a  #0x7e2
-    const/16 p1, 0x21
-
-    return p1
-
-    .line 852
-    :pswitch_4d  #0x7e1
-    const/16 p1, 0x13
-
-    return p1
-
-    .line 885
-    :pswitch_50  #0x7e0
-    const/16 p1, 0x1d
-
-    return p1
-
-    .line 890
-    :pswitch_53  #0x7df
-    const/16 p1, 0x1f
-
-    return p1
-
-    .line 850
-    :pswitch_56  #0x7de
-    const/16 p1, 0x12
-
-    return p1
-
-    .line 805
-    :pswitch_59  #0x7dd
     return v0
 
-    .line 846
-    :pswitch_5a  #0x7dc
-    const/16 p1, 0x10
+    .line 850
+    :pswitch_54  #0x7e7
+    const/16 v0, 0xe
 
-    return p1
+    return v0
 
-    .line 843
-    :pswitch_5d  #0x7db
-    const/16 p1, 0xf
+    .line 832
+    :pswitch_57  #0x7e6
+    const/4 v0, 0x6
 
-    return p1
+    return v0
+
+    .line 902
+    :pswitch_59  #0x7e5
+    const/16 v0, 0x20
+
+    return v0
+
+    .line 868
+    :pswitch_5c  #0x7e4
+    const/16 v0, 0x15
+
+    return v0
 
     .line 875
-    :pswitch_60  #0x7da
-    if-eqz p2, :cond_64
+    :pswitch_5f  #0x7e3
+    const/16 v0, 0x17
 
-    const/16 v2, 0x1a
+    return v0
 
-    :cond_64
-    return v2
+    .line 905
+    :pswitch_62  #0x7e2
+    const/16 v0, 0x21
 
-    .line 854
-    :pswitch_65  #0x7d9
-    const/16 p1, 0x14
-
-    return p1
-
-    .line 824
-    :pswitch_68  #0x7d8
-    const/4 p1, 0x7
-
-    return p1
-
-    .line 830
-    :pswitch_6a  #0x7d7
-    const/16 p1, 0x9
-
-    return p1
+    return v0
 
     .line 862
-    :pswitch_6d  #0x7d6
-    if-eqz p2, :cond_72
+    :pswitch_65  #0x7e1
+    const/16 v0, 0x13
 
-    const/16 p1, 0x16
+    return v0
 
-    goto :goto_74
+    .line 895
+    :pswitch_68  #0x7e0
+    const/16 v0, 0x1d
 
-    :cond_72
-    const/16 p1, 0xb
+    return v0
 
-    :goto_74
-    return p1
+    .line 900
+    :pswitch_6b  #0x7df
+    const/16 v0, 0x1f
 
-    .line 827
-    :pswitch_75  #0x7d5
-    const/16 p1, 0x8
+    return v0
 
-    return p1
+    .line 860
+    :pswitch_6e  #0x7de
+    const/16 v0, 0x12
 
-    .line 835
-    :pswitch_78  #0x7d3
+    return v0
+
+    .line 815
+    :pswitch_71  #0x7dd
+    return v0
+
+    .line 856
+    :pswitch_72  #0x7dc
+    const/16 v0, 0x10
+
+    return v0
+
+    .line 853
+    :pswitch_75  #0x7db
+    const/16 v0, 0xf
+
+    return v0
+
+    .line 885
+    :pswitch_78  #0x7da
     if-eqz p2, :cond_7c
 
-    const/16 v2, 0xd
+    const/16 v2, 0x1a
 
     :cond_7c
     return v2
 
-    .line 814
-    :pswitch_7d  #0x7d2
-    const/4 p1, 0x3
+    .line 864
+    :pswitch_7d  #0x7d9
+    const/16 v0, 0x14
 
-    return p1
+    return v0
 
-    .line 817
-    :pswitch_7f  #0x7d1, 0x7f1
-    const/4 p1, 0x4
+    .line 834
+    :pswitch_80  #0x7d8
+    const/4 v0, 0x7
 
-    return p1
+    return v0
 
-    .line 848
-    :pswitch_81  #0x7d0
-    const/16 p1, 0x11
+    .line 840
+    :pswitch_82  #0x7d7
+    const/16 v0, 0x9
 
-    return p1
+    return v0
 
-    :pswitch_data_84
+    .line 872
+    :pswitch_85  #0x7d6
+    if-eqz p2, :cond_8a
+
+    const/16 v0, 0x16
+
+    goto :goto_8c
+
+    :cond_8a
+    const/16 v0, 0xb
+
+    :goto_8c
+    return v0
+
+    .line 837
+    :pswitch_8d  #0x7d5
+    const/16 v0, 0x8
+
+    return v0
+
+    .line 845
+    :pswitch_90  #0x7d3
+    if-eqz p2, :cond_94
+
+    const/16 v2, 0xd
+
+    :cond_94
+    return v2
+
+    .line 824
+    :pswitch_95  #0x7d2
+    const/4 v0, 0x3
+
+    return v0
+
+    .line 827
+    :pswitch_97  #0x7d1, 0x7f1
+    const/4 v0, 0x4
+
+    return v0
+
+    .line 858
+    :pswitch_99  #0x7d0
+    const/16 v0, 0x11
+
+    return v0
+
+    .line 888
+    :cond_9c
+    const/16 v0, 0x1b
+
+    return v0
+
+    .line 891
+    :cond_9f
+    const/16 v0, 0x1c
+
+    return v0
+
+    :pswitch_data_a2
     .packed-switch 0x7d0
-        :pswitch_81  #000007d0
-        :pswitch_7f  #000007d1
-        :pswitch_7d  #000007d2
-        :pswitch_78  #000007d3
-        :pswitch_e  #000007d4
-        :pswitch_75  #000007d5
-        :pswitch_6d  #000007d6
-        :pswitch_6a  #000007d7
-        :pswitch_68  #000007d8
-        :pswitch_65  #000007d9
-        :pswitch_60  #000007da
-        :pswitch_5d  #000007db
-        :pswitch_5a  #000007dc
-        :pswitch_59  #000007dd
-        :pswitch_56  #000007de
-        :pswitch_53  #000007df
-        :pswitch_50  #000007e0
-        :pswitch_4d  #000007e1
-        :pswitch_4a  #000007e2
-        :pswitch_47  #000007e3
-        :pswitch_44  #000007e4
-        :pswitch_41  #000007e5
-        :pswitch_3f  #000007e6
-        :pswitch_3c  #000007e7
-        :pswitch_39  #000007e8
-        :pswitch_e  #000007e9
-        :pswitch_36  #000007ea
-        :pswitch_33  #000007eb
-        :pswitch_e  #000007ec
-        :pswitch_e  #000007ed
-        :pswitch_32  #000007ee
-        :pswitch_30  #000007ef
-        :pswitch_2d  #000007f0
-        :pswitch_7f  #000007f1
-        :pswitch_2c  #000007f2
-        :pswitch_2b  #000007f3
-        :pswitch_28  #000007f4
-        :pswitch_32  #000007f5
-        :pswitch_25  #000007f6
+        :pswitch_99  #000007d0
+        :pswitch_97  #000007d1
+        :pswitch_95  #000007d2
+        :pswitch_90  #000007d3
+    .end packed-switch
+
+    :pswitch_data_ae
+    .packed-switch 0x7d5
+        :pswitch_8d  #000007d5
+        :pswitch_85  #000007d6
+        :pswitch_82  #000007d7
+        :pswitch_80  #000007d8
+        :pswitch_7d  #000007d9
+        :pswitch_78  #000007da
+        :pswitch_75  #000007db
+        :pswitch_72  #000007dc
+        :pswitch_71  #000007dd
+        :pswitch_6e  #000007de
+        :pswitch_6b  #000007df
+        :pswitch_68  #000007e0
+        :pswitch_65  #000007e1
+        :pswitch_62  #000007e2
+        :pswitch_5f  #000007e3
+        :pswitch_5c  #000007e4
+        :pswitch_59  #000007e5
+        :pswitch_57  #000007e6
+        :pswitch_54  #000007e7
+        :pswitch_51  #000007e8
+    .end packed-switch
+
+    :pswitch_data_da
+    .packed-switch 0x7ee
+        :pswitch_50  #000007ee
+        :pswitch_4e  #000007ef
+        :pswitch_4b  #000007f0
+        :pswitch_97  #000007f1
+        :pswitch_4a  #000007f2
+        :pswitch_49  #000007f3
+        :pswitch_46  #000007f4
+        :pswitch_50  #000007f5
+        :pswitch_43  #000007f6
+    .end packed-switch
+
+    :pswitch_data_f0
+    .packed-switch 0x803
+        :pswitch_40  #00000803
+        :pswitch_3d  #00000804
+        :pswitch_3c  #00000805
+        :pswitch_39  #00000806
+        :pswitch_36  #00000807
+        :pswitch_3c  #00000808
     .end packed-switch
 .end method
 
 .method public getWindowLayerLw(Lcom/android/server/policy/WindowManagerPolicy$WindowState;)I
-    .registers 3
+    .registers 4
+    .param p1, "win"  # Lcom/android/server/policy/WindowManagerPolicy$WindowState;
 
-    .line 765
+    .line 775
     invoke-interface {p1}, Lcom/android/server/policy/WindowManagerPolicy$WindowState;->getBaseType()I
 
     move-result v0
 
     invoke-interface {p1}, Lcom/android/server/policy/WindowManagerPolicy$WindowState;->canAddInternalSystemWindow()Z
 
-    move-result p1
+    move-result v1
 
-    invoke-interface {p0, v0, p1}, Lcom/android/server/policy/WindowManagerPolicy;->getWindowLayerFromTypeLw(IZ)I
+    invoke-interface {p0, v0, v1}, Lcom/android/server/policy/WindowManagerPolicy;->getWindowLayerFromTypeLw(IZ)I
 
-    move-result p1
+    move-result v0
 
-    return p1
+    return v0
 .end method
 
 .method public abstract hasNavigationBar()Z
@@ -585,6 +647,9 @@
 .end method
 
 .method public abstract interceptKeyBeforeQueueing(Landroid/view/KeyEvent;I)I
+.end method
+
+.method public abstract interceptMotionBeforeDispatching(Landroid/view/MotionEvent;II)J
 .end method
 
 .method public abstract interceptMotionBeforeQueueingNonInteractive(IJI)I
@@ -608,6 +673,15 @@
 .method public abstract isKeyguardShowingAndNotOccluded()Z
 .end method
 
+.method public isKeyguardShowingOrOccluded()Z
+    .registers 2
+
+    .line 1539
+    const/4 v0, 0x0
+
+    return v0
+.end method
+
 .method public abstract isKeyguardTrustedLw()Z
 .end method
 
@@ -629,6 +703,9 @@
 .method public abstract lockNow(Landroid/os/Bundle;)V
 .end method
 
+.method public abstract mzInterceptMotionBeforeQueueing(Landroid/view/MotionEvent;I)I
+.end method
+
 .method public abstract notifyCameraLensCoverSwitchChanged(JZ)V
 .end method
 
@@ -640,8 +717,9 @@
 
 .method public onDefaultDisplayFocusChangedLw(Lcom/android/server/policy/WindowManagerPolicy$WindowState;)V
     .registers 2
+    .param p1, "newFocus"  # Lcom/android/server/policy/WindowManagerPolicy$WindowState;
 
-    .line 1497
+    .line 1520
     return-void
 .end method
 
@@ -656,12 +734,21 @@
 
 .method public registerDisplayFoldListener(Landroid/view/IDisplayFoldListener;)V
     .registers 2
+    .param p1, "listener"  # Landroid/view/IDisplayFoldListener;
 
-    .line 1473
+    .line 1496
     return-void
 .end method
 
 .method public abstract registerShortcutKey(JLcom/android/internal/policy/IShortcutService;)V
+    .annotation system Ldalvik/annotation/Throws;
+        value = {
+            Landroid/os/RemoteException;
+        }
+    .end annotation
+.end method
+
+.method public abstract registerSystemGestureListener(Ljava/lang/String;ILandroid/view/ISystemGestureListener;)V
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -698,8 +785,9 @@
 
 .method public setDismissImeOnBackKeyPressed(Z)V
     .registers 2
+    .param p1, "newValue"  # Z
 
-    .line 1360
+    .line 1383
     return-void
 .end method
 
@@ -711,8 +799,9 @@
 
 .method public setOverrideFoldedArea(Landroid/graphics/Rect;)V
     .registers 2
+    .param p1, "area"  # Landroid/graphics/Rect;
 
-    .line 1485
+    .line 1508
     return-void
 .end method
 
@@ -757,9 +846,13 @@
 
 .method public unregisterDisplayFoldListener(Landroid/view/IDisplayFoldListener;)V
     .registers 2
+    .param p1, "listener"  # Landroid/view/IDisplayFoldListener;
 
-    .line 1478
+    .line 1501
     return-void
+.end method
+
+.method public abstract unregisterSystemGestureListener(Ljava/lang/String;ILandroid/view/ISystemGestureListener;)V
 .end method
 
 .method public abstract userActivity()V

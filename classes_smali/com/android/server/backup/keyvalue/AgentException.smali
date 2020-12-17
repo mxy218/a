@@ -10,6 +10,7 @@
 # direct methods
 .method private constructor <init>(Z)V
     .registers 2
+    .param p1, "transitory"  # Z
 
     .line 51
     invoke-direct {p0}, Lcom/android/server/backup/keyvalue/BackupException;-><init>()V
@@ -23,6 +24,8 @@
 
 .method private constructor <init>(ZLjava/lang/Exception;)V
     .registers 3
+    .param p1, "transitory"  # Z
+    .param p2, "cause"  # Ljava/lang/Exception;
 
     .line 56
     invoke-direct {p0, p2}, Lcom/android/server/backup/keyvalue/BackupException;-><init>(Ljava/lang/Exception;)V
@@ -49,6 +52,7 @@
 
 .method static permanent(Ljava/lang/Exception;)Lcom/android/server/backup/keyvalue/AgentException;
     .registers 3
+    .param p0, "cause"  # Ljava/lang/Exception;
 
     .line 46
     new-instance v0, Lcom/android/server/backup/keyvalue/AgentException;
@@ -75,6 +79,7 @@
 
 .method static transitory(Ljava/lang/Exception;)Lcom/android/server/backup/keyvalue/AgentException;
     .registers 3
+    .param p0, "cause"  # Ljava/lang/Exception;
 
     .line 38
     new-instance v0, Lcom/android/server/backup/keyvalue/AgentException;

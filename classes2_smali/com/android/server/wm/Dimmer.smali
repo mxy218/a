@@ -36,6 +36,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/wm/WindowContainer;)V
     .registers 3
+    .param p1, "host"  # Lcom/android/server/wm/WindowContainer;
 
     .line 163
     sget-object v0, Lcom/android/server/wm/-$$Lambda$yACUZqn1Ak-GL14-Nu3kHUSaLX0;->INSTANCE:Lcom/android/server/wm/-$$Lambda$yACUZqn1Ak-GL14-Nu3kHUSaLX0;
@@ -48,6 +49,8 @@
 
 .method constructor <init>(Lcom/android/server/wm/WindowContainer;Lcom/android/server/wm/Dimmer$SurfaceAnimatorStarter;)V
     .registers 3
+    .param p1, "host"  # Lcom/android/server/wm/WindowContainer;
+    .param p2, "surfaceAnimatorStarter"  # Lcom/android/server/wm/Dimmer$SurfaceAnimatorStarter;
 
     .line 166
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -63,16 +66,21 @@
 .end method
 
 .method static synthetic access$000(Lcom/android/server/wm/Dimmer;)Lcom/android/server/wm/WindowContainer;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/wm/Dimmer;
 
     .line 38
-    iget-object p0, p0, Lcom/android/server/wm/Dimmer;->mHost:Lcom/android/server/wm/WindowContainer;
+    iget-object v0, p0, Lcom/android/server/wm/Dimmer;->mHost:Lcom/android/server/wm/WindowContainer;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method private dim(Landroid/view/SurfaceControl$Transaction;Lcom/android/server/wm/WindowContainer;IF)V
-    .registers 7
+    .registers 8
+    .param p1, "t"  # Landroid/view/SurfaceControl$Transaction;
+    .param p2, "container"  # Lcom/android/server/wm/WindowContainer;
+    .param p3, "relativeLayer"  # I
+    .param p4, "alpha"  # F
 
     .line 205
     invoke-direct {p0, p2}, Lcom/android/server/wm/Dimmer;->getDimState(Lcom/android/server/wm/WindowContainer;)Lcom/android/server/wm/Dimmer$DimState;
@@ -80,6 +88,7 @@
     move-result-object v0
 
     .line 207
+    .local v0, "d":Lcom/android/server/wm/Dimmer$DimState;
     if-nez v0, :cond_7
 
     .line 208
@@ -94,37 +103,38 @@
 
     invoke-virtual {p2}, Lcom/android/server/wm/WindowContainer;->getSurfaceControl()Landroid/view/SurfaceControl;
 
-    move-result-object p2
+    move-result-object v2
 
-    invoke-virtual {p1, v1, p2, p3}, Landroid/view/SurfaceControl$Transaction;->setRelativeLayer(Landroid/view/SurfaceControl;Landroid/view/SurfaceControl;I)Landroid/view/SurfaceControl$Transaction;
+    invoke-virtual {p1, v1, v2, p3}, Landroid/view/SurfaceControl$Transaction;->setRelativeLayer(Landroid/view/SurfaceControl;Landroid/view/SurfaceControl;I)Landroid/view/SurfaceControl$Transaction;
 
     goto :goto_1b
 
     .line 217
     :cond_13
-    iget-object p2, v0, Lcom/android/server/wm/Dimmer$DimState;->mDimLayer:Landroid/view/SurfaceControl;
+    iget-object v1, v0, Lcom/android/server/wm/Dimmer$DimState;->mDimLayer:Landroid/view/SurfaceControl;
 
-    const p3, 0x7fffffff
+    const v2, 0x7fffffff
 
-    invoke-virtual {p1, p2, p3}, Landroid/view/SurfaceControl$Transaction;->setLayer(Landroid/view/SurfaceControl;I)Landroid/view/SurfaceControl$Transaction;
+    invoke-virtual {p1, v1, v2}, Landroid/view/SurfaceControl$Transaction;->setLayer(Landroid/view/SurfaceControl;I)Landroid/view/SurfaceControl$Transaction;
 
     .line 219
     :goto_1b
-    iget-object p2, v0, Lcom/android/server/wm/Dimmer$DimState;->mDimLayer:Landroid/view/SurfaceControl;
+    iget-object v1, v0, Lcom/android/server/wm/Dimmer$DimState;->mDimLayer:Landroid/view/SurfaceControl;
 
-    invoke-virtual {p1, p2, p4}, Landroid/view/SurfaceControl$Transaction;->setAlpha(Landroid/view/SurfaceControl;F)Landroid/view/SurfaceControl$Transaction;
+    invoke-virtual {p1, v1, p4}, Landroid/view/SurfaceControl$Transaction;->setAlpha(Landroid/view/SurfaceControl;F)Landroid/view/SurfaceControl$Transaction;
 
     .line 221
-    const/4 p1, 0x1
+    const/4 v1, 0x1
 
-    iput-boolean p1, v0, Lcom/android/server/wm/Dimmer$DimState;->mDimming:Z
+    iput-boolean v1, v0, Lcom/android/server/wm/Dimmer$DimState;->mDimming:Z
 
     .line 222
     return-void
 .end method
 
 .method private getDimDuration(Lcom/android/server/wm/WindowContainer;)J
-    .registers 4
+    .registers 5
+    .param p1, "container"  # Lcom/android/server/wm/WindowContainer;
 
     .line 351
     if-nez p1, :cond_5
@@ -136,32 +146,34 @@
 
     .line 356
     :cond_5
-    iget-object p1, p1, Lcom/android/server/wm/WindowContainer;->mSurfaceAnimator:Lcom/android/server/wm/SurfaceAnimator;
+    iget-object v0, p1, Lcom/android/server/wm/WindowContainer;->mSurfaceAnimator:Lcom/android/server/wm/SurfaceAnimator;
 
-    invoke-virtual {p1}, Lcom/android/server/wm/SurfaceAnimator;->getAnimation()Lcom/android/server/wm/AnimationAdapter;
+    invoke-virtual {v0}, Lcom/android/server/wm/SurfaceAnimator;->getAnimation()Lcom/android/server/wm/AnimationAdapter;
 
-    move-result-object p1
+    move-result-object v0
 
     .line 357
-    if-nez p1, :cond_10
+    .local v0, "animationAdapter":Lcom/android/server/wm/AnimationAdapter;
+    if-nez v0, :cond_10
 
-    const-wide/16 v0, 0xc8
+    const-wide/16 v1, 0xc8
 
     goto :goto_14
 
     .line 358
     :cond_10
-    invoke-interface {p1}, Lcom/android/server/wm/AnimationAdapter;->getDurationHint()J
+    invoke-interface {v0}, Lcom/android/server/wm/AnimationAdapter;->getDurationHint()J
 
-    move-result-wide v0
+    move-result-wide v1
 
     .line 357
     :goto_14
-    return-wide v0
+    return-wide v1
 .end method
 
 .method private getDimState(Lcom/android/server/wm/WindowContainer;)Lcom/android/server/wm/Dimmer$DimState;
-    .registers 4
+    .registers 5
+    .param p1, "container"  # Lcom/android/server/wm/WindowContainer;
 
     .line 183
     iget-object v0, p0, Lcom/android/server/wm/Dimmer;->mDimState:Lcom/android/server/wm/Dimmer$DimState;
@@ -175,6 +187,7 @@
     move-result-object v0
 
     .line 186
+    .local v0, "ctl":Landroid/view/SurfaceControl;
     new-instance v1, Lcom/android/server/wm/Dimmer$DimState;
 
     invoke-direct {v1, p0, v0}, Lcom/android/server/wm/Dimmer$DimState;-><init>(Lcom/android/server/wm/Dimmer;Landroid/view/SurfaceControl;)V
@@ -185,15 +198,16 @@
     if-nez p1, :cond_16
 
     .line 192
-    iget-object v0, p0, Lcom/android/server/wm/Dimmer;->mDimState:Lcom/android/server/wm/Dimmer$DimState;
+    iget-object v1, p0, Lcom/android/server/wm/Dimmer;->mDimState:Lcom/android/server/wm/Dimmer$DimState;
 
-    const/4 v1, 0x1
+    const/4 v2, 0x1
 
-    iput-boolean v1, v0, Lcom/android/server/wm/Dimmer$DimState;->mDontReset:Z
+    iput-boolean v2, v1, Lcom/android/server/wm/Dimmer$DimState;->mDontReset:Z
     :try_end_16
     .catch Landroid/view/Surface$OutOfResourcesException; {:try_start_4 .. :try_end_16} :catch_17
 
     .line 196
+    .end local v0  # "ctl":Landroid/view/SurfaceControl;
     :cond_16
     goto :goto_1f
 
@@ -202,21 +216,23 @@
     move-exception v0
 
     .line 195
-    const-string v0, "WindowManager"
+    .local v0, "e":Landroid/view/Surface$OutOfResourcesException;
+    const-string v1, "WindowManager"
 
-    const-string v1, "OutOfResourcesException creating dim surface"
+    const-string v2, "OutOfResourcesException creating dim surface"
 
-    invoke-static {v0, v1}, Landroid/util/Log;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v2}, Landroid/util/Log;->w(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 199
+    .end local v0  # "e":Landroid/view/Surface$OutOfResourcesException;
     :cond_1f
     :goto_1f
     iput-object p1, p0, Lcom/android/server/wm/Dimmer;->mLastRequestedDimContainer:Lcom/android/server/wm/WindowContainer;
 
     .line 200
-    iget-object p1, p0, Lcom/android/server/wm/Dimmer;->mDimState:Lcom/android/server/wm/Dimmer$DimState;
+    iget-object v0, p0, Lcom/android/server/wm/Dimmer;->mDimState:Lcom/android/server/wm/Dimmer$DimState;
 
-    return-object p1
+    return-object v0
 .end method
 
 .method private makeDimLayer()Landroid/view/SurfaceControl;
@@ -283,6 +299,11 @@
 
 .method private startAnim(Lcom/android/server/wm/WindowContainer;Lcom/android/server/wm/SurfaceAnimator;Landroid/view/SurfaceControl$Transaction;FF)V
     .registers 11
+    .param p1, "container"  # Lcom/android/server/wm/WindowContainer;
+    .param p2, "animator"  # Lcom/android/server/wm/SurfaceAnimator;
+    .param p3, "t"  # Landroid/view/SurfaceControl$Transaction;
+    .param p4, "startAlpha"  # F
+    .param p5, "endAlpha"  # F
 
     .line 343
     iget-object v0, p0, Lcom/android/server/wm/Dimmer;->mSurfaceAnimatorStarter:Lcom/android/server/wm/Dimmer$SurfaceAnimatorStarter;
@@ -298,18 +319,18 @@
 
     invoke-direct {v2, p4, p5, v3, v4}, Lcom/android/server/wm/Dimmer$AlphaAnimationSpec;-><init>(FFJ)V
 
-    iget-object p1, p0, Lcom/android/server/wm/Dimmer;->mHost:Lcom/android/server/wm/WindowContainer;
+    iget-object v3, p0, Lcom/android/server/wm/Dimmer;->mHost:Lcom/android/server/wm/WindowContainer;
 
-    iget-object p1, p1, Lcom/android/server/wm/WindowContainer;->mWmService:Lcom/android/server/wm/WindowManagerService;
+    iget-object v3, v3, Lcom/android/server/wm/WindowContainer;->mWmService:Lcom/android/server/wm/WindowManagerService;
 
-    iget-object p1, p1, Lcom/android/server/wm/WindowManagerService;->mSurfaceAnimationRunner:Lcom/android/server/wm/SurfaceAnimationRunner;
+    iget-object v3, v3, Lcom/android/server/wm/WindowManagerService;->mSurfaceAnimationRunner:Lcom/android/server/wm/SurfaceAnimationRunner;
 
-    invoke-direct {v1, v2, p1}, Lcom/android/server/wm/LocalAnimationAdapter;-><init>(Lcom/android/server/wm/LocalAnimationAdapter$AnimationSpec;Lcom/android/server/wm/SurfaceAnimationRunner;)V
+    invoke-direct {v1, v2, v3}, Lcom/android/server/wm/LocalAnimationAdapter;-><init>(Lcom/android/server/wm/LocalAnimationAdapter$AnimationSpec;Lcom/android/server/wm/SurfaceAnimationRunner;)V
 
     .line 343
-    const/4 p1, 0x0
+    const/4 v2, 0x0
 
-    invoke-interface {v0, p2, p3, v1, p1}, Lcom/android/server/wm/Dimmer$SurfaceAnimatorStarter;->startAnimation(Lcom/android/server/wm/SurfaceAnimator;Landroid/view/SurfaceControl$Transaction;Lcom/android/server/wm/AnimationAdapter;Z)V
+    invoke-interface {v0, p2, p3, v1, v2}, Lcom/android/server/wm/Dimmer$SurfaceAnimatorStarter;->startAnimation(Lcom/android/server/wm/SurfaceAnimator;Landroid/view/SurfaceControl$Transaction;Lcom/android/server/wm/AnimationAdapter;Z)V
 
     .line 346
     return-void
@@ -317,6 +338,9 @@
 
 .method private startDimEnter(Lcom/android/server/wm/WindowContainer;Lcom/android/server/wm/SurfaceAnimator;Landroid/view/SurfaceControl$Transaction;)V
     .registers 10
+    .param p1, "container"  # Lcom/android/server/wm/WindowContainer;
+    .param p2, "animator"  # Lcom/android/server/wm/SurfaceAnimator;
+    .param p3, "t"  # Landroid/view/SurfaceControl$Transaction;
 
     .line 333
     const/4 v4, 0x0
@@ -339,6 +363,9 @@
 
 .method private startDimExit(Lcom/android/server/wm/WindowContainer;Lcom/android/server/wm/SurfaceAnimator;Landroid/view/SurfaceControl$Transaction;)V
     .registers 10
+    .param p1, "container"  # Lcom/android/server/wm/WindowContainer;
+    .param p2, "animator"  # Lcom/android/server/wm/SurfaceAnimator;
+    .param p3, "t"  # Landroid/view/SurfaceControl$Transaction;
 
     .line 338
     const/high16 v4, 0x3f800000  # 1.0f
@@ -363,6 +390,8 @@
 # virtual methods
 .method dimAbove(Landroid/view/SurfaceControl$Transaction;F)V
     .registers 5
+    .param p1, "t"  # Landroid/view/SurfaceControl$Transaction;
+    .param p2, "alpha"  # F
 
     .line 247
     const/4 v0, 0x0
@@ -377,6 +406,9 @@
 
 .method dimAbove(Landroid/view/SurfaceControl$Transaction;Lcom/android/server/wm/WindowContainer;F)V
     .registers 5
+    .param p1, "t"  # Landroid/view/SurfaceControl$Transaction;
+    .param p2, "container"  # Lcom/android/server/wm/WindowContainer;
+    .param p3, "alpha"  # F
 
     .line 260
     const/4 v0, 0x1
@@ -389,6 +421,9 @@
 
 .method dimBelow(Landroid/view/SurfaceControl$Transaction;Lcom/android/server/wm/WindowContainer;F)V
     .registers 5
+    .param p1, "t"  # Landroid/view/SurfaceControl$Transaction;
+    .param p2, "container"  # Lcom/android/server/wm/WindowContainer;
+    .param p3, "alpha"  # F
 
     .line 272
     const/4 v0, -0x1
@@ -442,7 +477,8 @@
 .end method
 
 .method stopDim(Landroid/view/SurfaceControl$Transaction;)V
-    .registers 3
+    .registers 4
+    .param p1, "t"  # Landroid/view/SurfaceControl$Transaction;
 
     .line 230
     iget-object v0, p0, Lcom/android/server/wm/Dimmer;->mDimState:Lcom/android/server/wm/Dimmer$DimState;
@@ -455,14 +491,14 @@
     invoke-virtual {p1, v0}, Landroid/view/SurfaceControl$Transaction;->hide(Landroid/view/SurfaceControl;)Landroid/view/SurfaceControl$Transaction;
 
     .line 232
-    iget-object p1, p0, Lcom/android/server/wm/Dimmer;->mDimState:Lcom/android/server/wm/Dimmer$DimState;
+    iget-object v0, p0, Lcom/android/server/wm/Dimmer;->mDimState:Lcom/android/server/wm/Dimmer$DimState;
 
-    const/4 v0, 0x0
+    const/4 v1, 0x0
 
-    iput-boolean v0, p1, Lcom/android/server/wm/Dimmer$DimState;->isVisible:Z
+    iput-boolean v1, v0, Lcom/android/server/wm/Dimmer$DimState;->isVisible:Z
 
     .line 233
-    iput-boolean v0, p1, Lcom/android/server/wm/Dimmer$DimState;->mDontReset:Z
+    iput-boolean v1, v0, Lcom/android/server/wm/Dimmer$DimState;->mDontReset:Z
 
     .line 235
     :cond_10
@@ -471,6 +507,8 @@
 
 .method updateDims(Landroid/view/SurfaceControl$Transaction;Landroid/graphics/Rect;)Z
     .registers 6
+    .param p1, "t"  # Landroid/view/SurfaceControl$Transaction;
+    .param p2, "bounds"  # Landroid/graphics/Rect;
 
     .line 304
     iget-object v0, p0, Lcom/android/server/wm/Dimmer;->mDimState:Lcom/android/server/wm/Dimmer$DimState;
@@ -489,48 +527,48 @@
     if-nez v0, :cond_2f
 
     .line 309
-    iget-object p2, p0, Lcom/android/server/wm/Dimmer;->mDimState:Lcom/android/server/wm/Dimmer$DimState;
+    iget-object v0, p0, Lcom/android/server/wm/Dimmer;->mDimState:Lcom/android/server/wm/Dimmer$DimState;
 
-    iget-boolean p2, p2, Lcom/android/server/wm/Dimmer$DimState;->mAnimateExit:Z
+    iget-boolean v0, v0, Lcom/android/server/wm/Dimmer$DimState;->mAnimateExit:Z
 
-    if-nez p2, :cond_22
+    if-nez v0, :cond_22
 
     .line 310
-    iget-object p2, p0, Lcom/android/server/wm/Dimmer;->mDimState:Lcom/android/server/wm/Dimmer$DimState;
+    iget-object v0, p0, Lcom/android/server/wm/Dimmer;->mDimState:Lcom/android/server/wm/Dimmer$DimState;
 
-    iget-object p2, p2, Lcom/android/server/wm/Dimmer$DimState;->mDimLayer:Landroid/view/SurfaceControl;
+    iget-object v0, v0, Lcom/android/server/wm/Dimmer$DimState;->mDimLayer:Landroid/view/SurfaceControl;
 
-    invoke-virtual {p2}, Landroid/view/SurfaceControl;->isValid()Z
+    invoke-virtual {v0}, Landroid/view/SurfaceControl;->isValid()Z
 
-    move-result p2
+    move-result v0
 
-    if-eqz p2, :cond_2b
+    if-eqz v0, :cond_2b
 
     .line 311
-    iget-object p2, p0, Lcom/android/server/wm/Dimmer;->mDimState:Lcom/android/server/wm/Dimmer$DimState;
+    iget-object v0, p0, Lcom/android/server/wm/Dimmer;->mDimState:Lcom/android/server/wm/Dimmer$DimState;
 
-    iget-object p2, p2, Lcom/android/server/wm/Dimmer$DimState;->mDimLayer:Landroid/view/SurfaceControl;
+    iget-object v0, v0, Lcom/android/server/wm/Dimmer$DimState;->mDimLayer:Landroid/view/SurfaceControl;
 
-    invoke-virtual {p1, p2}, Landroid/view/SurfaceControl$Transaction;->remove(Landroid/view/SurfaceControl;)Landroid/view/SurfaceControl$Transaction;
+    invoke-virtual {p1, v0}, Landroid/view/SurfaceControl$Transaction;->remove(Landroid/view/SurfaceControl;)Landroid/view/SurfaceControl$Transaction;
 
     goto :goto_2b
 
     .line 314
     :cond_22
-    iget-object p2, p0, Lcom/android/server/wm/Dimmer;->mLastRequestedDimContainer:Lcom/android/server/wm/WindowContainer;
+    iget-object v0, p0, Lcom/android/server/wm/Dimmer;->mLastRequestedDimContainer:Lcom/android/server/wm/WindowContainer;
 
-    iget-object v0, p0, Lcom/android/server/wm/Dimmer;->mDimState:Lcom/android/server/wm/Dimmer$DimState;
+    iget-object v2, p0, Lcom/android/server/wm/Dimmer;->mDimState:Lcom/android/server/wm/Dimmer$DimState;
 
-    iget-object v0, v0, Lcom/android/server/wm/Dimmer$DimState;->mSurfaceAnimator:Lcom/android/server/wm/SurfaceAnimator;
+    iget-object v2, v2, Lcom/android/server/wm/Dimmer$DimState;->mSurfaceAnimator:Lcom/android/server/wm/SurfaceAnimator;
 
-    invoke-direct {p0, p2, v0, p1}, Lcom/android/server/wm/Dimmer;->startDimExit(Lcom/android/server/wm/WindowContainer;Lcom/android/server/wm/SurfaceAnimator;Landroid/view/SurfaceControl$Transaction;)V
+    invoke-direct {p0, v0, v2, p1}, Lcom/android/server/wm/Dimmer;->startDimExit(Lcom/android/server/wm/WindowContainer;Lcom/android/server/wm/SurfaceAnimator;Landroid/view/SurfaceControl$Transaction;)V
 
     .line 316
     :cond_2b
     :goto_2b
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    iput-object p1, p0, Lcom/android/server/wm/Dimmer;->mDimState:Lcom/android/server/wm/Dimmer$DimState;
+    iput-object v0, p0, Lcom/android/server/wm/Dimmer;->mDimState:Lcom/android/server/wm/Dimmer$DimState;
 
     .line 317
     return v1
@@ -562,39 +600,39 @@
 
     invoke-virtual {p2}, Landroid/graphics/Rect;->height()I
 
-    move-result p2
+    move-result v2
 
-    invoke-virtual {p1, v0, v1, p2}, Landroid/view/SurfaceControl$Transaction;->setWindowCrop(Landroid/view/SurfaceControl;II)Landroid/view/SurfaceControl$Transaction;
+    invoke-virtual {p1, v0, v1, v2}, Landroid/view/SurfaceControl$Transaction;->setWindowCrop(Landroid/view/SurfaceControl;II)Landroid/view/SurfaceControl$Transaction;
 
     .line 322
-    iget-object p2, p0, Lcom/android/server/wm/Dimmer;->mDimState:Lcom/android/server/wm/Dimmer$DimState;
+    iget-object v0, p0, Lcom/android/server/wm/Dimmer;->mDimState:Lcom/android/server/wm/Dimmer$DimState;
 
-    iget-boolean p2, p2, Lcom/android/server/wm/Dimmer$DimState;->isVisible:Z
+    iget-boolean v0, v0, Lcom/android/server/wm/Dimmer$DimState;->isVisible:Z
 
-    const/4 v0, 0x1
+    const/4 v1, 0x1
 
-    if-nez p2, :cond_64
+    if-nez v0, :cond_64
 
     .line 323
-    iget-object p2, p0, Lcom/android/server/wm/Dimmer;->mDimState:Lcom/android/server/wm/Dimmer$DimState;
+    iget-object v0, p0, Lcom/android/server/wm/Dimmer;->mDimState:Lcom/android/server/wm/Dimmer$DimState;
 
-    iput-boolean v0, p2, Lcom/android/server/wm/Dimmer$DimState;->isVisible:Z
+    iput-boolean v1, v0, Lcom/android/server/wm/Dimmer$DimState;->isVisible:Z
 
     .line 324
-    iget-object p2, p2, Lcom/android/server/wm/Dimmer$DimState;->mDimLayer:Landroid/view/SurfaceControl;
+    iget-object v0, v0, Lcom/android/server/wm/Dimmer$DimState;->mDimLayer:Landroid/view/SurfaceControl;
 
-    invoke-virtual {p1, p2}, Landroid/view/SurfaceControl$Transaction;->show(Landroid/view/SurfaceControl;)Landroid/view/SurfaceControl$Transaction;
+    invoke-virtual {p1, v0}, Landroid/view/SurfaceControl$Transaction;->show(Landroid/view/SurfaceControl;)Landroid/view/SurfaceControl$Transaction;
 
     .line 325
-    iget-object p2, p0, Lcom/android/server/wm/Dimmer;->mLastRequestedDimContainer:Lcom/android/server/wm/WindowContainer;
+    iget-object v0, p0, Lcom/android/server/wm/Dimmer;->mLastRequestedDimContainer:Lcom/android/server/wm/WindowContainer;
 
-    iget-object v1, p0, Lcom/android/server/wm/Dimmer;->mDimState:Lcom/android/server/wm/Dimmer$DimState;
+    iget-object v2, p0, Lcom/android/server/wm/Dimmer;->mDimState:Lcom/android/server/wm/Dimmer$DimState;
 
-    iget-object v1, v1, Lcom/android/server/wm/Dimmer$DimState;->mSurfaceAnimator:Lcom/android/server/wm/SurfaceAnimator;
+    iget-object v2, v2, Lcom/android/server/wm/Dimmer$DimState;->mSurfaceAnimator:Lcom/android/server/wm/SurfaceAnimator;
 
-    invoke-direct {p0, p2, v1, p1}, Lcom/android/server/wm/Dimmer;->startDimEnter(Lcom/android/server/wm/WindowContainer;Lcom/android/server/wm/SurfaceAnimator;Landroid/view/SurfaceControl$Transaction;)V
+    invoke-direct {p0, v0, v2, p1}, Lcom/android/server/wm/Dimmer;->startDimEnter(Lcom/android/server/wm/WindowContainer;Lcom/android/server/wm/SurfaceAnimator;Landroid/view/SurfaceControl$Transaction;)V
 
     .line 327
     :cond_64
-    return v0
+    return v1
 .end method

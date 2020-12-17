@@ -34,13 +34,13 @@
 
 .field private static final DEFAULT_GC_TIMEOUT:J = 0x1388L
 
-.field private static final DEFAULT_MAX_CACHED_PROCESSES:I = 0x20
+.field private static DEFAULT_MAX_CACHED_PROCESSES:I = 0x0
 
 .field private static final DEFAULT_MAX_SERVICE_INACTIVITY:J = 0x1b7740L
 
 .field private static final DEFAULT_MEMORY_INFO_THROTTLE_TIME:J = 0x493e0L
 
-.field private static final DEFAULT_POWER_CHECK_INTERVAL:J = 0x493e0L
+.field private static final DEFAULT_POWER_CHECK_INTERVAL:J
 
 .field private static final DEFAULT_POWER_CHECK_MAX_CPU_1:I = 0x19
 
@@ -67,6 +67,8 @@
 .field private static final DEFAULT_TOP_TO_FGS_GRACE_DURATION:J = 0x3a98L
 
 .field private static final DEFAULT_USAGE_STATS_INTERACTION_INTERVAL:J = 0x6ddd00L
+
+.field static EMPTY_APP_PERCENT:I = 0x0
 
 .field private static final ENABLE_AUTOMATIC_SYSTEM_SERVER_HEAP_DUMPS_URI:Landroid/net/Uri;
 
@@ -135,6 +137,16 @@
 .field private static final MIN_AUTOMATIC_HEAP_DUMP_PSS_THRESHOLD_BYTES:J = 0x19000L
 
 .field private static final TAG:Ljava/lang/String; = "ActivityManagerConstants"
+
+.field static TRIM_CACHE_PERCENT:I
+
+.field static TRIM_EMPTY_PERCENT:I
+
+.field static TRIM_ENABLE_MEMORY:J
+
+.field static USE_TRIM_SETTINGS:Z
+
+.field public static mPerf:Landroid/util/BoostFramework;
 
 
 # instance fields
@@ -229,9 +241,65 @@
 
 # direct methods
 .method static constructor <clinit>()V
-    .registers 1
+    .registers 4
 
-    .line 295
+    .line 84
+    const/16 v0, 0x20
+
+    sput v0, Lcom/android/server/am/ActivityManagerConstants;->DEFAULT_MAX_CACHED_PROCESSES:I
+
+    .line 95
+    sget-boolean v0, Lcom/android/server/am/ActivityManagerDebugConfig;->DEBUG_POWER_QUICK:Z
+
+    const/4 v1, 0x1
+
+    if-eqz v0, :cond_b
+
+    move v0, v1
+
+    goto :goto_c
+
+    :cond_b
+    const/4 v0, 0x5
+
+    :goto_c
+    mul-int/lit8 v0, v0, 0x3c
+
+    mul-int/lit16 v0, v0, 0x3e8
+
+    int-to-long v2, v0
+
+    sput-wide v2, Lcom/android/server/am/ActivityManagerConstants;->DEFAULT_POWER_CHECK_INTERVAL:J
+
+    .line 277
+    new-instance v0, Landroid/util/BoostFramework;
+
+    invoke-direct {v0}, Landroid/util/BoostFramework;-><init>()V
+
+    sput-object v0, Lcom/android/server/am/ActivityManagerConstants;->mPerf:Landroid/util/BoostFramework;
+
+    .line 279
+    sput-boolean v1, Lcom/android/server/am/ActivityManagerConstants;->USE_TRIM_SETTINGS:Z
+
+    .line 280
+    const/16 v0, 0x32
+
+    sput v0, Lcom/android/server/am/ActivityManagerConstants;->EMPTY_APP_PERCENT:I
+
+    .line 281
+    const/16 v0, 0x64
+
+    sput v0, Lcom/android/server/am/ActivityManagerConstants;->TRIM_EMPTY_PERCENT:I
+
+    .line 282
+    sput v0, Lcom/android/server/am/ActivityManagerConstants;->TRIM_CACHE_PERCENT:I
+
+    .line 283
+    const-wide/32 v0, 0x40000000
+
+    sput-wide v0, Lcom/android/server/am/ActivityManagerConstants;->TRIM_ENABLE_MEMORY:J
+
+    .line 307
     const-string v0, "activity_manager_constants"
 
     invoke-static {v0}, Landroid/provider/Settings$Global;->getUriFor(Ljava/lang/String;)Landroid/net/Uri;
@@ -240,7 +308,7 @@
 
     sput-object v0, Lcom/android/server/am/ActivityManagerConstants;->ACTIVITY_MANAGER_CONSTANTS_URI:Landroid/net/Uri;
 
-    .line 298
+    .line 310
     const-string v0, "activity_starts_logging_enabled"
 
     invoke-static {v0}, Landroid/provider/Settings$Global;->getUriFor(Ljava/lang/String;)Landroid/net/Uri;
@@ -249,10 +317,10 @@
 
     sput-object v0, Lcom/android/server/am/ActivityManagerConstants;->ACTIVITY_STARTS_LOGGING_ENABLED_URI:Landroid/net/Uri;
 
-    .line 301
+    .line 313
     nop
 
-    .line 302
+    .line 314
     const-string v0, "enable_automatic_system_server_heap_dumps"
 
     invoke-static {v0}, Landroid/provider/Settings$Global;->getUriFor(Ljava/lang/String;)Landroid/net/Uri;
@@ -261,232 +329,382 @@
 
     sput-object v0, Lcom/android/server/am/ActivityManagerConstants;->ENABLE_AUTOMATIC_SYSTEM_SERVER_HEAP_DUMPS_URI:Landroid/net/Uri;
 
-    .line 301
+    .line 313
     return-void
 .end method
 
 .method constructor <init>(Landroid/content/Context;Lcom/android/server/am/ActivityManagerService;Landroid/os/Handler;)V
     .registers 14
+    .param p1, "context"  # Landroid/content/Context;
+    .param p2, "service"  # Lcom/android/server/am/ActivityManagerService;
+    .param p3, "handler"  # Landroid/os/Handler;
 
-    .line 327
+    .line 339
     invoke-direct {p0, p3}, Landroid/database/ContentObserver;-><init>(Landroid/os/Handler;)V
 
-    .line 128
-    const/16 p3, 0x20
+    .line 131
+    sget v0, Lcom/android/server/am/ActivityManagerConstants;->DEFAULT_MAX_CACHED_PROCESSES:I
 
-    iput p3, p0, Lcom/android/server/am/ActivityManagerConstants;->MAX_CACHED_PROCESSES:I
+    iput v0, p0, Lcom/android/server/am/ActivityManagerConstants;->MAX_CACHED_PROCESSES:I
 
-    .line 132
+    .line 135
     const-wide/32 v0, 0xea60
 
     iput-wide v0, p0, Lcom/android/server/am/ActivityManagerConstants;->BACKGROUND_SETTLE_TIME:J
 
-    .line 137
+    .line 140
     const-wide/16 v2, 0x7d0
 
     iput-wide v2, p0, Lcom/android/server/am/ActivityManagerConstants;->FGSERVICE_MIN_SHOWN_TIME:J
 
-    .line 142
+    .line 145
     const-wide/16 v2, 0xbb8
 
     iput-wide v2, p0, Lcom/android/server/am/ActivityManagerConstants;->FGSERVICE_MIN_REPORT_TIME:J
 
-    .line 148
+    .line 151
     const-wide/16 v2, 0x3e8
 
     iput-wide v2, p0, Lcom/android/server/am/ActivityManagerConstants;->FGSERVICE_SCREEN_ON_BEFORE_TIME:J
 
-    .line 153
+    .line 156
     const-wide/16 v4, 0x1388
 
     iput-wide v4, p0, Lcom/android/server/am/ActivityManagerConstants;->FGSERVICE_SCREEN_ON_AFTER_TIME:J
 
-    .line 158
+    .line 161
     const-wide/16 v6, 0x4e20
 
     iput-wide v6, p0, Lcom/android/server/am/ActivityManagerConstants;->CONTENT_PROVIDER_RETAIN_TIME:J
 
-    .line 161
+    .line 164
     iput-wide v4, p0, Lcom/android/server/am/ActivityManagerConstants;->GC_TIMEOUT:J
 
-    .line 164
+    .line 167
     iput-wide v0, p0, Lcom/android/server/am/ActivityManagerConstants;->GC_MIN_INTERVAL:J
 
-    .line 167
+    .line 170
     const-wide/32 v4, 0x124f80
 
     iput-wide v4, p0, Lcom/android/server/am/ActivityManagerConstants;->FULL_PSS_MIN_INTERVAL:J
 
-    .line 171
+    .line 174
     const-wide/32 v4, 0x493e0
 
     iput-wide v4, p0, Lcom/android/server/am/ActivityManagerConstants;->FULL_PSS_LOWERED_INTERVAL:J
 
-    .line 175
-    iput-wide v4, p0, Lcom/android/server/am/ActivityManagerConstants;->POWER_CHECK_INTERVAL:J
+    .line 178
+    sget-wide v6, Lcom/android/server/am/ActivityManagerConstants;->DEFAULT_POWER_CHECK_INTERVAL:J
 
-    .line 179
-    const/16 p3, 0x19
+    iput-wide v6, p0, Lcom/android/server/am/ActivityManagerConstants;->POWER_CHECK_INTERVAL:J
 
-    iput p3, p0, Lcom/android/server/am/ActivityManagerConstants;->POWER_CHECK_MAX_CPU_1:I
+    .line 182
+    const/16 v6, 0x19
 
-    .line 184
-    iput p3, p0, Lcom/android/server/am/ActivityManagerConstants;->POWER_CHECK_MAX_CPU_2:I
+    iput v6, p0, Lcom/android/server/am/ActivityManagerConstants;->POWER_CHECK_MAX_CPU_1:I
 
-    .line 188
-    const/16 p3, 0xa
+    .line 187
+    iput v6, p0, Lcom/android/server/am/ActivityManagerConstants;->POWER_CHECK_MAX_CPU_2:I
 
-    iput p3, p0, Lcom/android/server/am/ActivityManagerConstants;->POWER_CHECK_MAX_CPU_3:I
+    .line 191
+    const/16 v6, 0xa
 
-    .line 192
-    const/4 p3, 0x2
+    iput v6, p0, Lcom/android/server/am/ActivityManagerConstants;->POWER_CHECK_MAX_CPU_3:I
 
-    iput p3, p0, Lcom/android/server/am/ActivityManagerConstants;->POWER_CHECK_MAX_CPU_4:I
+    .line 195
+    const/4 v6, 0x2
 
-    .line 196
+    iput v6, p0, Lcom/android/server/am/ActivityManagerConstants;->POWER_CHECK_MAX_CPU_4:I
+
+    .line 199
     const-wide/32 v6, 0x1b7740
 
     iput-wide v6, p0, Lcom/android/server/am/ActivityManagerConstants;->SERVICE_USAGE_INTERACTION_TIME:J
 
-    .line 200
+    .line 203
     const-wide/32 v8, 0x6ddd00
 
     iput-wide v8, p0, Lcom/android/server/am/ActivityManagerConstants;->USAGE_STATS_INTERACTION_INTERVAL:J
 
-    .line 204
+    .line 207
     iput-wide v2, p0, Lcom/android/server/am/ActivityManagerConstants;->SERVICE_RESTART_DURATION:J
 
-    .line 208
+    .line 211
     iput-wide v0, p0, Lcom/android/server/am/ActivityManagerConstants;->SERVICE_RESET_RUN_DURATION:J
 
-    .line 212
-    const/4 p3, 0x4
+    .line 215
+    const/4 v0, 0x4
 
-    iput p3, p0, Lcom/android/server/am/ActivityManagerConstants;->SERVICE_RESTART_DURATION_FACTOR:I
+    iput v0, p0, Lcom/android/server/am/ActivityManagerConstants;->SERVICE_RESTART_DURATION_FACTOR:I
 
-    .line 217
+    .line 220
     const-wide/16 v0, 0x2710
 
     iput-wide v0, p0, Lcom/android/server/am/ActivityManagerConstants;->SERVICE_MIN_RESTART_TIME_BETWEEN:J
 
-    .line 222
+    .line 225
     iput-wide v6, p0, Lcom/android/server/am/ActivityManagerConstants;->MAX_SERVICE_INACTIVITY:J
 
-    .line 226
+    .line 229
     const-wide/16 v2, 0x3a98
 
     iput-wide v2, p0, Lcom/android/server/am/ActivityManagerConstants;->BG_START_TIMEOUT:J
 
-    .line 229
+    .line 232
     iput-wide v0, p0, Lcom/android/server/am/ActivityManagerConstants;->SERVICE_BG_ACTIVITY_START_TIMEOUT:J
 
-    .line 232
+    .line 235
     iput-wide v6, p0, Lcom/android/server/am/ActivityManagerConstants;->BOUND_SERVICE_CRASH_RESTART_DURATION:J
 
-    .line 235
+    .line 238
     const-wide/16 v0, 0x10
 
     iput-wide v0, p0, Lcom/android/server/am/ActivityManagerConstants;->BOUND_SERVICE_MAX_CRASH_RETRY:J
 
-    .line 238
-    const/4 p3, 0x1
+    .line 241
+    const/4 v0, 0x1
 
-    iput-boolean p3, p0, Lcom/android/server/am/ActivityManagerConstants;->FLAG_PROCESS_START_ASYNC:Z
+    iput-boolean v0, p0, Lcom/android/server/am/ActivityManagerConstants;->FLAG_PROCESS_START_ASYNC:Z
 
-    .line 242
+    .line 245
     iput-wide v4, p0, Lcom/android/server/am/ActivityManagerConstants;->MEMORY_INFO_THROTTLE_TIME:J
 
-    .line 246
+    .line 249
     iput-wide v2, p0, Lcom/android/server/am/ActivityManagerConstants;->TOP_TO_FGS_GRACE_DURATION:J
 
-    .line 259
-    new-instance v0, Landroid/util/KeyValueListParser;
+    .line 262
+    new-instance v1, Landroid/util/KeyValueListParser;
 
-    const/16 v1, 0x2c
+    const/16 v2, 0x2c
 
-    invoke-direct {v0, v1}, Landroid/util/KeyValueListParser;-><init>(C)V
+    invoke-direct {v1, v2}, Landroid/util/KeyValueListParser;-><init>(C)V
 
-    iput-object v0, p0, Lcom/android/server/am/ActivityManagerConstants;->mParser:Landroid/util/KeyValueListParser;
+    iput-object v1, p0, Lcom/android/server/am/ActivityManagerConstants;->mParser:Landroid/util/KeyValueListParser;
 
-    .line 261
-    const/4 v0, -0x1
+    .line 264
+    const/4 v1, -0x1
 
-    iput v0, p0, Lcom/android/server/am/ActivityManagerConstants;->mOverrideMaxCachedProcesses:I
+    iput v1, p0, Lcom/android/server/am/ActivityManagerConstants;->mOverrideMaxCachedProcesses:I
 
-    .line 304
-    new-instance v0, Lcom/android/server/am/ActivityManagerConstants$1;
+    .line 316
+    new-instance v1, Lcom/android/server/am/ActivityManagerConstants$1;
 
-    invoke-direct {v0, p0}, Lcom/android/server/am/ActivityManagerConstants$1;-><init>(Lcom/android/server/am/ActivityManagerConstants;)V
+    invoke-direct {v1, p0}, Lcom/android/server/am/ActivityManagerConstants$1;-><init>(Lcom/android/server/am/ActivityManagerConstants;)V
 
-    iput-object v0, p0, Lcom/android/server/am/ActivityManagerConstants;->mOnDeviceConfigChangedListener:Landroid/provider/DeviceConfig$OnPropertiesChangedListener;
+    iput-object v1, p0, Lcom/android/server/am/ActivityManagerConstants;->mOnDeviceConfigChangedListener:Landroid/provider/DeviceConfig$OnPropertiesChangedListener;
 
-    .line 328
+    .line 340
     iput-object p2, p0, Lcom/android/server/am/ActivityManagerConstants;->mService:Lcom/android/server/am/ActivityManagerService;
 
-    .line 329
-    sget-boolean p2, Landroid/os/Build;->IS_DEBUGGABLE:Z
+    .line 341
+    sget-boolean v1, Landroid/os/Build;->IS_DEBUGGABLE:Z
 
-    if-eqz p2, :cond_8e
+    if-eqz v1, :cond_90
 
-    .line 330
+    .line 342
     invoke-virtual {p1}, Landroid/content/Context;->getResources()Landroid/content/res/Resources;
 
-    move-result-object p2
+    move-result-object v1
 
-    const v0, 0x1110047
+    const v2, 0x1110044
 
-    invoke-virtual {p2, v0}, Landroid/content/res/Resources;->getBoolean(I)Z
+    invoke-virtual {v1, v2}, Landroid/content/res/Resources;->getBoolean(I)Z
 
-    move-result p2
+    move-result v1
 
-    if-eqz p2, :cond_8e
+    if-eqz v1, :cond_90
 
-    goto :goto_8f
+    goto :goto_91
 
-    :cond_8e
-    const/4 p3, 0x0
+    :cond_90
+    const/4 v0, 0x0
 
-    :goto_8f
-    iput-boolean p3, p0, Lcom/android/server/am/ActivityManagerConstants;->mSystemServerAutomaticHeapDumpEnabled:Z
+    :goto_91
+    iput-boolean v0, p0, Lcom/android/server/am/ActivityManagerConstants;->mSystemServerAutomaticHeapDumpEnabled:Z
 
-    .line 332
+    .line 344
     invoke-virtual {p1}, Landroid/content/Context;->getPackageName()Ljava/lang/String;
 
-    move-result-object p2
+    move-result-object v0
 
-    iput-object p2, p0, Lcom/android/server/am/ActivityManagerConstants;->mSystemServerAutomaticHeapDumpPackageName:Ljava/lang/String;
+    iput-object v0, p0, Lcom/android/server/am/ActivityManagerConstants;->mSystemServerAutomaticHeapDumpPackageName:Ljava/lang/String;
 
-    .line 333
-    const-wide/32 p2, 0x19000
+    .line 345
+    const-wide/32 v0, 0x19000
 
-    .line 335
+    .line 347
     invoke-virtual {p1}, Landroid/content/Context;->getResources()Landroid/content/res/Resources;
 
-    move-result-object p1
+    move-result-object v2
 
-    const v0, 0x10e0032
+    const v3, 0x10e0032
 
-    invoke-virtual {p1, v0}, Landroid/content/res/Resources;->getInteger(I)I
+    invoke-virtual {v2, v3}, Landroid/content/res/Resources;->getInteger(I)I
 
-    move-result p1
+    move-result v2
 
-    int-to-long v0, p1
+    int-to-long v2, v2
 
-    .line 333
-    invoke-static {p2, p3, v0, v1}, Ljava/lang/Math;->max(JJ)J
+    .line 345
+    invoke-static {v0, v1, v2, v3}, Ljava/lang/Math;->max(JJ)J
 
-    move-result-wide p1
+    move-result-wide v0
 
-    iput-wide p1, p0, Lcom/android/server/am/ActivityManagerConstants;->mSystemServerAutomaticHeapDumpPssThresholdBytes:J
+    iput-wide v0, p0, Lcom/android/server/am/ActivityManagerConstants;->mSystemServerAutomaticHeapDumpPssThresholdBytes:J
 
-    .line 337
+    .line 350
+    const-string/jumbo v0, "kona"
+
+    const-string/jumbo v1, "ro.product.board"
+
+    invoke-static {v1, v0}, Landroid/os/SystemProperties;->get(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+
+    move-result-object v1
+
+    invoke-virtual {v0, v1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+
+    move-result v0
+
+    if-eqz v0, :cond_13c
+
+    sget-object v0, Lcom/android/server/am/ActivityManagerConstants;->mPerf:Landroid/util/BoostFramework;
+
+    if-eqz v0, :cond_13c
+
+    .line 352
+    nop
+
+    .line 353
+    const-string/jumbo v1, "ro.vendor.qti.sys.fw.bg_apps_limit"
+
+    const-string v2, "32"
+
+    invoke-virtual {v0, v1, v2}, Landroid/util/BoostFramework;->perfGetProp(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+
+    move-result-object v0
+
+    .line 352
+    invoke-static {v0}, Ljava/lang/Integer;->valueOf(Ljava/lang/String;)Ljava/lang/Integer;
+
+    move-result-object v0
+
+    invoke-virtual {v0}, Ljava/lang/Integer;->intValue()I
+
+    move-result v0
+
+    iput v0, p0, Lcom/android/server/am/ActivityManagerConstants;->MAX_CACHED_PROCESSES:I
+
+    sput v0, Lcom/android/server/am/ActivityManagerConstants;->DEFAULT_MAX_CACHED_PROCESSES:I
+
+    .line 356
+    sget-object v0, Lcom/android/server/am/ActivityManagerConstants;->mPerf:Landroid/util/BoostFramework;
+
+    const-string/jumbo v1, "ro.vendor.qti.sys.fw.use_trim_settings"
+
+    const-string/jumbo v2, "true"
+
+    invoke-virtual {v0, v1, v2}, Landroid/util/BoostFramework;->perfGetProp(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+
+    move-result-object v0
+
+    invoke-static {v0}, Ljava/lang/Boolean;->parseBoolean(Ljava/lang/String;)Z
+
+    move-result v0
+
+    sput-boolean v0, Lcom/android/server/am/ActivityManagerConstants;->USE_TRIM_SETTINGS:Z
+
+    .line 357
+    sget-object v0, Lcom/android/server/am/ActivityManagerConstants;->mPerf:Landroid/util/BoostFramework;
+
+    const-string/jumbo v1, "ro.vendor.qti.sys.fw.empty_app_percent"
+
+    const-string v2, "50"
+
+    invoke-virtual {v0, v1, v2}, Landroid/util/BoostFramework;->perfGetProp(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+
+    move-result-object v0
+
+    invoke-static {v0}, Ljava/lang/Integer;->valueOf(Ljava/lang/String;)Ljava/lang/Integer;
+
+    move-result-object v0
+
+    invoke-virtual {v0}, Ljava/lang/Integer;->intValue()I
+
+    move-result v0
+
+    sput v0, Lcom/android/server/am/ActivityManagerConstants;->EMPTY_APP_PERCENT:I
+
+    .line 358
+    sget-object v0, Lcom/android/server/am/ActivityManagerConstants;->mPerf:Landroid/util/BoostFramework;
+
+    const-string v1, "100"
+
+    const-string/jumbo v2, "ro.vendor.qti.sys.fw.trim_empty_percent"
+
+    invoke-virtual {v0, v2, v1}, Landroid/util/BoostFramework;->perfGetProp(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+
+    move-result-object v0
+
+    invoke-static {v0}, Ljava/lang/Integer;->valueOf(Ljava/lang/String;)Ljava/lang/Integer;
+
+    move-result-object v0
+
+    invoke-virtual {v0}, Ljava/lang/Integer;->intValue()I
+
+    move-result v0
+
+    sput v0, Lcom/android/server/am/ActivityManagerConstants;->TRIM_EMPTY_PERCENT:I
+
+    .line 359
+    sget-object v0, Lcom/android/server/am/ActivityManagerConstants;->mPerf:Landroid/util/BoostFramework;
+
+    const-string/jumbo v2, "ro.vendor.qti.sys.fw.trim_cache_percent"
+
+    invoke-virtual {v0, v2, v1}, Landroid/util/BoostFramework;->perfGetProp(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+
+    move-result-object v0
+
+    invoke-static {v0}, Ljava/lang/Integer;->valueOf(Ljava/lang/String;)Ljava/lang/Integer;
+
+    move-result-object v0
+
+    invoke-virtual {v0}, Ljava/lang/Integer;->intValue()I
+
+    move-result v0
+
+    sput v0, Lcom/android/server/am/ActivityManagerConstants;->TRIM_CACHE_PERCENT:I
+
+    .line 360
+    sget-object v0, Lcom/android/server/am/ActivityManagerConstants;->mPerf:Landroid/util/BoostFramework;
+
+    const-string/jumbo v1, "ro.vendor.qti.sys.fw.trim_enable_memory"
+
+    const-string v2, "1073741824"
+
+    invoke-virtual {v0, v1, v2}, Landroid/util/BoostFramework;->perfGetProp(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+
+    move-result-object v0
+
+    invoke-static {v0}, Ljava/lang/Long;->valueOf(Ljava/lang/String;)Ljava/lang/Long;
+
+    move-result-object v0
+
+    invoke-virtual {v0}, Ljava/lang/Long;->longValue()J
+
+    move-result-wide v0
+
+    sput-wide v0, Lcom/android/server/am/ActivityManagerConstants;->TRIM_ENABLE_MEMORY:J
+
+    .line 362
+    :cond_13c
     return-void
 .end method
 
 .method static synthetic access$000(Lcom/android/server/am/ActivityManagerConstants;)V
     .registers 1
+    .param p0, "x0"  # Lcom/android/server/am/ActivityManagerConstants;
 
-    .line 41
+    .line 44
     invoke-direct {p0}, Lcom/android/server/am/ActivityManagerConstants;->updateMaxCachedProcesses()V
 
     return-void
@@ -494,26 +712,139 @@
 
 .method static synthetic access$100(Lcom/android/server/am/ActivityManagerConstants;)V
     .registers 1
+    .param p0, "x0"  # Lcom/android/server/am/ActivityManagerConstants;
 
-    .line 41
+    .line 44
     invoke-direct {p0}, Lcom/android/server/am/ActivityManagerConstants;->updateBackgroundActivityStarts()V
 
     return-void
 .end method
 
+.method public static allowTrim()Z
+    .registers 4
+
+    .line 284
+    invoke-static {}, Landroid/os/Process;->getTotalMemory()J
+
+    move-result-wide v0
+
+    sget-wide v2, Lcom/android/server/am/ActivityManagerConstants;->TRIM_ENABLE_MEMORY:J
+
+    cmp-long v0, v0, v2
+
+    if-gez v0, :cond_c
+
+    const/4 v0, 0x1
+
+    goto :goto_d
+
+    :cond_c
+    const/4 v0, 0x0
+
+    :goto_d
+    return v0
+.end method
+
 .method public static computeEmptyProcessLimit(I)I
-    .registers 1
+    .registers 2
+    .param p0, "totalProcessLimit"  # I
 
-    .line 369
-    div-int/lit8 p0, p0, 0x2
+    .line 394
+    sget-boolean v0, Lcom/android/server/am/ActivityManagerConstants;->USE_TRIM_SETTINGS:Z
 
-    return p0
+    if-eqz v0, :cond_10
+
+    invoke-static {}, Lcom/android/server/am/ActivityManagerConstants;->allowTrim()Z
+
+    move-result v0
+
+    if-eqz v0, :cond_10
+
+    .line 395
+    sget v0, Lcom/android/server/am/ActivityManagerConstants;->EMPTY_APP_PERCENT:I
+
+    mul-int/2addr v0, p0
+
+    div-int/lit8 v0, v0, 0x64
+
+    return v0
+
+    .line 397
+    :cond_10
+    div-int/lit8 v0, p0, 0x2
+
+    return v0
+.end method
+
+.method public static computeTrimCachedApps(II)I
+    .registers 3
+    .param p0, "rawMaxEmptyProcesses"  # I
+    .param p1, "totalProcessLimit"  # I
+
+    .line 410
+    sget-boolean v0, Lcom/android/server/am/ActivityManagerConstants;->USE_TRIM_SETTINGS:Z
+
+    if-eqz v0, :cond_10
+
+    invoke-static {}, Lcom/android/server/am/ActivityManagerConstants;->allowTrim()Z
+
+    move-result v0
+
+    if-eqz v0, :cond_10
+
+    .line 411
+    sget v0, Lcom/android/server/am/ActivityManagerConstants;->TRIM_CACHE_PERCENT:I
+
+    mul-int/2addr v0, p1
+
+    div-int/lit8 v0, v0, 0x64
+
+    return v0
+
+    .line 413
+    :cond_10
+    sub-int v0, p1, p0
+
+    div-int/lit8 v0, v0, 0x3
+
+    return v0
+.end method
+
+.method public static computeTrimEmptyApps(I)I
+    .registers 2
+    .param p0, "rawMaxEmptyProcesses"  # I
+
+    .line 402
+    sget-boolean v0, Lcom/android/server/am/ActivityManagerConstants;->USE_TRIM_SETTINGS:Z
+
+    if-eqz v0, :cond_10
+
+    invoke-static {}, Lcom/android/server/am/ActivityManagerConstants;->allowTrim()Z
+
+    move-result v0
+
+    if-eqz v0, :cond_10
+
+    .line 403
+    sget v0, Lcom/android/server/am/ActivityManagerConstants;->TRIM_EMPTY_PERCENT:I
+
+    mul-int/2addr v0, p0
+
+    div-int/lit8 v0, v0, 0x64
+
+    return v0
+
+    .line 405
+    :cond_10
+    div-int/lit8 v0, p0, 0x2
+
+    return v0
 .end method
 
 .method private updateActivityStartsLoggingEnabled()V
     .registers 4
 
-    .line 464
+    .line 509
     iget-object v0, p0, Lcom/android/server/am/ActivityManagerConstants;->mResolver:Landroid/content/ContentResolver;
 
     const/4 v1, 0x1
@@ -534,14 +865,14 @@
     :goto_d
     iput-boolean v1, p0, Lcom/android/server/am/ActivityManagerConstants;->mFlagActivityStartsLoggingEnabled:Z
 
-    .line 466
+    .line 511
     return-void
 .end method
 
 .method private updateBackgroundActivityStarts()V
     .registers 4
 
-    .line 469
+    .line 514
     const-string v0, "activity_manager"
 
     const-string v1, "default_background_activity_starts_enabled"
@@ -554,14 +885,14 @@
 
     iput-boolean v0, p0, Lcom/android/server/am/ActivityManagerConstants;->mFlagBackgroundActivityStartsEnabled:Z
 
-    .line 473
+    .line 518
     return-void
 .end method
 
 .method private updateConstants()V
-    .registers 14
+    .registers 15
 
-    .line 385
+    .line 430
     iget-object v0, p0, Lcom/android/server/am/ActivityManagerConstants;->mResolver:Landroid/content/ContentResolver;
 
     const-string v1, "activity_manager_constants"
@@ -570,7 +901,8 @@
 
     move-result-object v0
 
-    .line 387
+    .line 432
+    .local v0, "setting":Ljava/lang/String;
     iget-object v1, p0, Lcom/android/server/am/ActivityManagerConstants;->mService:Lcom/android/server/am/ActivityManagerService;
 
     monitor-enter v1
@@ -578,7 +910,7 @@
     :try_start_b
     invoke-static {}, Lcom/android/server/am/ActivityManagerService;->boostPriorityForLockedSection()V
 
-    .line 389
+    .line 434
     iget-object v2, p0, Lcom/android/server/am/ActivityManagerConstants;->mParser:Landroid/util/KeyValueListParser;
 
     invoke-virtual {v2, v0}, Landroid/util/KeyValueListParser;->setString(Ljava/lang/String;)V
@@ -586,429 +918,433 @@
     .catch Ljava/lang/IllegalArgumentException; {:try_start_b .. :try_end_13} :catch_17
     .catchall {:try_start_b .. :try_end_13} :catchall_14
 
-    .line 394
+    .line 439
     goto :goto_1f
 
-    .line 460
+    .line 505
     :catchall_14
-    move-exception v0
+    move-exception v2
 
-    goto/16 :goto_182
+    goto/16 :goto_185
 
-    .line 390
+    .line 435
     :catch_17
-    move-exception v0
+    move-exception v2
 
-    .line 393
+    .line 438
+    .local v2, "e":Ljava/lang/IllegalArgumentException;
     :try_start_18
-    const-string v2, "ActivityManagerConstants"
+    const-string v3, "ActivityManagerConstants"
 
-    const-string v3, "Bad activity manager config settings"
+    const-string v4, "Bad activity manager config settings"
 
-    invoke-static {v2, v3, v0}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    invoke-static {v3, v4, v2}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
-    .line 395
+    .line 440
+    .end local v2  # "e":Ljava/lang/IllegalArgumentException;
     :goto_1f
-    iget-object v0, p0, Lcom/android/server/am/ActivityManagerConstants;->mParser:Landroid/util/KeyValueListParser;
+    iget-object v2, p0, Lcom/android/server/am/ActivityManagerConstants;->mParser:Landroid/util/KeyValueListParser;
 
-    const-string v2, "background_settle_time"
+    const-string v3, "background_settle_time"
 
-    const-wide/32 v3, 0xea60
+    const-wide/32 v4, 0xea60
 
-    invoke-virtual {v0, v2, v3, v4}, Landroid/util/KeyValueListParser;->getLong(Ljava/lang/String;J)J
+    invoke-virtual {v2, v3, v4, v5}, Landroid/util/KeyValueListParser;->getLong(Ljava/lang/String;J)J
 
-    move-result-wide v5
+    move-result-wide v2
 
-    iput-wide v5, p0, Lcom/android/server/am/ActivityManagerConstants;->BACKGROUND_SETTLE_TIME:J
+    iput-wide v2, p0, Lcom/android/server/am/ActivityManagerConstants;->BACKGROUND_SETTLE_TIME:J
 
-    .line 397
-    iget-object v0, p0, Lcom/android/server/am/ActivityManagerConstants;->mParser:Landroid/util/KeyValueListParser;
+    .line 442
+    iget-object v2, p0, Lcom/android/server/am/ActivityManagerConstants;->mParser:Landroid/util/KeyValueListParser;
 
-    const-string v2, "fgservice_min_shown_time"
+    const-string v3, "fgservice_min_shown_time"
 
-    const-wide/16 v5, 0x7d0
+    const-wide/16 v6, 0x7d0
 
-    invoke-virtual {v0, v2, v5, v6}, Landroid/util/KeyValueListParser;->getLong(Ljava/lang/String;J)J
+    invoke-virtual {v2, v3, v6, v7}, Landroid/util/KeyValueListParser;->getLong(Ljava/lang/String;J)J
 
-    move-result-wide v5
+    move-result-wide v2
 
-    iput-wide v5, p0, Lcom/android/server/am/ActivityManagerConstants;->FGSERVICE_MIN_SHOWN_TIME:J
+    iput-wide v2, p0, Lcom/android/server/am/ActivityManagerConstants;->FGSERVICE_MIN_SHOWN_TIME:J
 
-    .line 399
-    iget-object v0, p0, Lcom/android/server/am/ActivityManagerConstants;->mParser:Landroid/util/KeyValueListParser;
+    .line 444
+    iget-object v2, p0, Lcom/android/server/am/ActivityManagerConstants;->mParser:Landroid/util/KeyValueListParser;
 
-    const-string v2, "fgservice_min_report_time"
+    const-string v3, "fgservice_min_report_time"
 
-    const-wide/16 v5, 0xbb8
+    const-wide/16 v6, 0xbb8
 
-    invoke-virtual {v0, v2, v5, v6}, Landroid/util/KeyValueListParser;->getLong(Ljava/lang/String;J)J
+    invoke-virtual {v2, v3, v6, v7}, Landroid/util/KeyValueListParser;->getLong(Ljava/lang/String;J)J
 
-    move-result-wide v5
+    move-result-wide v2
 
-    iput-wide v5, p0, Lcom/android/server/am/ActivityManagerConstants;->FGSERVICE_MIN_REPORT_TIME:J
+    iput-wide v2, p0, Lcom/android/server/am/ActivityManagerConstants;->FGSERVICE_MIN_REPORT_TIME:J
 
-    .line 401
-    iget-object v0, p0, Lcom/android/server/am/ActivityManagerConstants;->mParser:Landroid/util/KeyValueListParser;
+    .line 446
+    iget-object v2, p0, Lcom/android/server/am/ActivityManagerConstants;->mParser:Landroid/util/KeyValueListParser;
 
-    const-string v2, "fgservice_screen_on_before_time"
+    const-string v3, "fgservice_screen_on_before_time"
 
-    const-wide/16 v5, 0x3e8
+    const-wide/16 v6, 0x3e8
 
-    invoke-virtual {v0, v2, v5, v6}, Landroid/util/KeyValueListParser;->getLong(Ljava/lang/String;J)J
+    invoke-virtual {v2, v3, v6, v7}, Landroid/util/KeyValueListParser;->getLong(Ljava/lang/String;J)J
 
-    move-result-wide v7
+    move-result-wide v2
 
-    iput-wide v7, p0, Lcom/android/server/am/ActivityManagerConstants;->FGSERVICE_SCREEN_ON_BEFORE_TIME:J
+    iput-wide v2, p0, Lcom/android/server/am/ActivityManagerConstants;->FGSERVICE_SCREEN_ON_BEFORE_TIME:J
 
-    .line 403
-    iget-object v0, p0, Lcom/android/server/am/ActivityManagerConstants;->mParser:Landroid/util/KeyValueListParser;
+    .line 448
+    iget-object v2, p0, Lcom/android/server/am/ActivityManagerConstants;->mParser:Landroid/util/KeyValueListParser;
 
-    const-string v2, "fgservice_screen_on_after_time"
+    const-string v3, "fgservice_screen_on_after_time"
 
-    const-wide/16 v7, 0x1388
+    const-wide/16 v8, 0x1388
 
-    invoke-virtual {v0, v2, v7, v8}, Landroid/util/KeyValueListParser;->getLong(Ljava/lang/String;J)J
+    invoke-virtual {v2, v3, v8, v9}, Landroid/util/KeyValueListParser;->getLong(Ljava/lang/String;J)J
 
-    move-result-wide v9
+    move-result-wide v2
 
-    iput-wide v9, p0, Lcom/android/server/am/ActivityManagerConstants;->FGSERVICE_SCREEN_ON_AFTER_TIME:J
+    iput-wide v2, p0, Lcom/android/server/am/ActivityManagerConstants;->FGSERVICE_SCREEN_ON_AFTER_TIME:J
 
-    .line 405
-    iget-object v0, p0, Lcom/android/server/am/ActivityManagerConstants;->mParser:Landroid/util/KeyValueListParser;
+    .line 450
+    iget-object v2, p0, Lcom/android/server/am/ActivityManagerConstants;->mParser:Landroid/util/KeyValueListParser;
 
-    const-string v2, "content_provider_retain_time"
+    const-string v3, "content_provider_retain_time"
 
-    const-wide/16 v9, 0x4e20
+    const-wide/16 v10, 0x4e20
 
-    invoke-virtual {v0, v2, v9, v10}, Landroid/util/KeyValueListParser;->getLong(Ljava/lang/String;J)J
+    invoke-virtual {v2, v3, v10, v11}, Landroid/util/KeyValueListParser;->getLong(Ljava/lang/String;J)J
 
-    move-result-wide v9
+    move-result-wide v2
 
-    iput-wide v9, p0, Lcom/android/server/am/ActivityManagerConstants;->CONTENT_PROVIDER_RETAIN_TIME:J
+    iput-wide v2, p0, Lcom/android/server/am/ActivityManagerConstants;->CONTENT_PROVIDER_RETAIN_TIME:J
 
-    .line 407
-    iget-object v0, p0, Lcom/android/server/am/ActivityManagerConstants;->mParser:Landroid/util/KeyValueListParser;
+    .line 452
+    iget-object v2, p0, Lcom/android/server/am/ActivityManagerConstants;->mParser:Landroid/util/KeyValueListParser;
 
-    const-string v2, "gc_timeout"
+    const-string v3, "gc_timeout"
 
-    invoke-virtual {v0, v2, v7, v8}, Landroid/util/KeyValueListParser;->getLong(Ljava/lang/String;J)J
+    invoke-virtual {v2, v3, v8, v9}, Landroid/util/KeyValueListParser;->getLong(Ljava/lang/String;J)J
 
-    move-result-wide v7
+    move-result-wide v2
 
-    iput-wide v7, p0, Lcom/android/server/am/ActivityManagerConstants;->GC_TIMEOUT:J
+    iput-wide v2, p0, Lcom/android/server/am/ActivityManagerConstants;->GC_TIMEOUT:J
 
-    .line 409
-    iget-object v0, p0, Lcom/android/server/am/ActivityManagerConstants;->mParser:Landroid/util/KeyValueListParser;
+    .line 454
+    iget-object v2, p0, Lcom/android/server/am/ActivityManagerConstants;->mParser:Landroid/util/KeyValueListParser;
 
-    const-string v2, "gc_min_interval"
+    const-string v3, "gc_min_interval"
 
-    invoke-virtual {v0, v2, v3, v4}, Landroid/util/KeyValueListParser;->getLong(Ljava/lang/String;J)J
+    invoke-virtual {v2, v3, v4, v5}, Landroid/util/KeyValueListParser;->getLong(Ljava/lang/String;J)J
 
-    move-result-wide v7
+    move-result-wide v2
 
-    iput-wide v7, p0, Lcom/android/server/am/ActivityManagerConstants;->GC_MIN_INTERVAL:J
+    iput-wide v2, p0, Lcom/android/server/am/ActivityManagerConstants;->GC_MIN_INTERVAL:J
 
-    .line 411
-    iget-object v0, p0, Lcom/android/server/am/ActivityManagerConstants;->mParser:Landroid/util/KeyValueListParser;
+    .line 456
+    iget-object v2, p0, Lcom/android/server/am/ActivityManagerConstants;->mParser:Landroid/util/KeyValueListParser;
 
-    const-string v2, "full_pss_min_interval"
+    const-string v3, "full_pss_min_interval"
 
-    const-wide/32 v7, 0x124f80
+    const-wide/32 v8, 0x124f80
 
-    invoke-virtual {v0, v2, v7, v8}, Landroid/util/KeyValueListParser;->getLong(Ljava/lang/String;J)J
+    invoke-virtual {v2, v3, v8, v9}, Landroid/util/KeyValueListParser;->getLong(Ljava/lang/String;J)J
 
-    move-result-wide v7
+    move-result-wide v2
 
-    iput-wide v7, p0, Lcom/android/server/am/ActivityManagerConstants;->FULL_PSS_MIN_INTERVAL:J
+    iput-wide v2, p0, Lcom/android/server/am/ActivityManagerConstants;->FULL_PSS_MIN_INTERVAL:J
 
-    .line 413
-    iget-object v0, p0, Lcom/android/server/am/ActivityManagerConstants;->mParser:Landroid/util/KeyValueListParser;
+    .line 458
+    iget-object v2, p0, Lcom/android/server/am/ActivityManagerConstants;->mParser:Landroid/util/KeyValueListParser;
 
-    const-string v2, "full_pss_lowered_interval"
+    const-string v3, "full_pss_lowered_interval"
 
-    const-wide/32 v7, 0x493e0
+    const-wide/32 v8, 0x493e0
 
-    invoke-virtual {v0, v2, v7, v8}, Landroid/util/KeyValueListParser;->getLong(Ljava/lang/String;J)J
+    invoke-virtual {v2, v3, v8, v9}, Landroid/util/KeyValueListParser;->getLong(Ljava/lang/String;J)J
 
-    move-result-wide v9
+    move-result-wide v2
 
-    iput-wide v9, p0, Lcom/android/server/am/ActivityManagerConstants;->FULL_PSS_LOWERED_INTERVAL:J
+    iput-wide v2, p0, Lcom/android/server/am/ActivityManagerConstants;->FULL_PSS_LOWERED_INTERVAL:J
 
-    .line 415
-    iget-object v0, p0, Lcom/android/server/am/ActivityManagerConstants;->mParser:Landroid/util/KeyValueListParser;
+    .line 460
+    iget-object v2, p0, Lcom/android/server/am/ActivityManagerConstants;->mParser:Landroid/util/KeyValueListParser;
 
-    const-string/jumbo v2, "power_check_interval"
+    const-string/jumbo v3, "power_check_interval"
 
-    invoke-virtual {v0, v2, v7, v8}, Landroid/util/KeyValueListParser;->getLong(Ljava/lang/String;J)J
+    sget-wide v10, Lcom/android/server/am/ActivityManagerConstants;->DEFAULT_POWER_CHECK_INTERVAL:J
 
-    move-result-wide v9
+    invoke-virtual {v2, v3, v10, v11}, Landroid/util/KeyValueListParser;->getLong(Ljava/lang/String;J)J
 
-    iput-wide v9, p0, Lcom/android/server/am/ActivityManagerConstants;->POWER_CHECK_INTERVAL:J
+    move-result-wide v2
 
-    .line 417
-    iget-object v0, p0, Lcom/android/server/am/ActivityManagerConstants;->mParser:Landroid/util/KeyValueListParser;
+    iput-wide v2, p0, Lcom/android/server/am/ActivityManagerConstants;->POWER_CHECK_INTERVAL:J
 
-    const-string/jumbo v2, "power_check_max_cpu_1"
+    .line 462
+    iget-object v2, p0, Lcom/android/server/am/ActivityManagerConstants;->mParser:Landroid/util/KeyValueListParser;
 
-    const/16 v9, 0x19
+    const-string/jumbo v3, "power_check_max_cpu_1"
 
-    invoke-virtual {v0, v2, v9}, Landroid/util/KeyValueListParser;->getInt(Ljava/lang/String;I)I
+    const/16 v10, 0x19
 
-    move-result v0
+    invoke-virtual {v2, v3, v10}, Landroid/util/KeyValueListParser;->getInt(Ljava/lang/String;I)I
 
-    iput v0, p0, Lcom/android/server/am/ActivityManagerConstants;->POWER_CHECK_MAX_CPU_1:I
+    move-result v2
 
-    .line 419
-    iget-object v0, p0, Lcom/android/server/am/ActivityManagerConstants;->mParser:Landroid/util/KeyValueListParser;
+    iput v2, p0, Lcom/android/server/am/ActivityManagerConstants;->POWER_CHECK_MAX_CPU_1:I
 
-    const-string/jumbo v2, "power_check_max_cpu_2"
+    .line 464
+    iget-object v2, p0, Lcom/android/server/am/ActivityManagerConstants;->mParser:Landroid/util/KeyValueListParser;
 
-    invoke-virtual {v0, v2, v9}, Landroid/util/KeyValueListParser;->getInt(Ljava/lang/String;I)I
+    const-string/jumbo v3, "power_check_max_cpu_2"
 
-    move-result v0
+    invoke-virtual {v2, v3, v10}, Landroid/util/KeyValueListParser;->getInt(Ljava/lang/String;I)I
 
-    iput v0, p0, Lcom/android/server/am/ActivityManagerConstants;->POWER_CHECK_MAX_CPU_2:I
+    move-result v2
 
-    .line 421
-    iget-object v0, p0, Lcom/android/server/am/ActivityManagerConstants;->mParser:Landroid/util/KeyValueListParser;
+    iput v2, p0, Lcom/android/server/am/ActivityManagerConstants;->POWER_CHECK_MAX_CPU_2:I
 
-    const-string/jumbo v2, "power_check_max_cpu_3"
+    .line 466
+    iget-object v2, p0, Lcom/android/server/am/ActivityManagerConstants;->mParser:Landroid/util/KeyValueListParser;
 
-    const/16 v9, 0xa
+    const-string/jumbo v3, "power_check_max_cpu_3"
 
-    invoke-virtual {v0, v2, v9}, Landroid/util/KeyValueListParser;->getInt(Ljava/lang/String;I)I
+    const/16 v10, 0xa
 
-    move-result v0
+    invoke-virtual {v2, v3, v10}, Landroid/util/KeyValueListParser;->getInt(Ljava/lang/String;I)I
 
-    iput v0, p0, Lcom/android/server/am/ActivityManagerConstants;->POWER_CHECK_MAX_CPU_3:I
+    move-result v2
 
-    .line 423
-    iget-object v0, p0, Lcom/android/server/am/ActivityManagerConstants;->mParser:Landroid/util/KeyValueListParser;
+    iput v2, p0, Lcom/android/server/am/ActivityManagerConstants;->POWER_CHECK_MAX_CPU_3:I
 
-    const-string/jumbo v2, "power_check_max_cpu_4"
+    .line 468
+    iget-object v2, p0, Lcom/android/server/am/ActivityManagerConstants;->mParser:Landroid/util/KeyValueListParser;
 
-    const/4 v9, 0x2
+    const-string/jumbo v3, "power_check_max_cpu_4"
 
-    invoke-virtual {v0, v2, v9}, Landroid/util/KeyValueListParser;->getInt(Ljava/lang/String;I)I
+    const/4 v10, 0x2
 
-    move-result v0
+    invoke-virtual {v2, v3, v10}, Landroid/util/KeyValueListParser;->getInt(Ljava/lang/String;I)I
 
-    iput v0, p0, Lcom/android/server/am/ActivityManagerConstants;->POWER_CHECK_MAX_CPU_4:I
+    move-result v2
 
-    .line 425
-    iget-object v0, p0, Lcom/android/server/am/ActivityManagerConstants;->mParser:Landroid/util/KeyValueListParser;
+    iput v2, p0, Lcom/android/server/am/ActivityManagerConstants;->POWER_CHECK_MAX_CPU_4:I
 
-    const-string/jumbo v2, "service_usage_interaction_time"
+    .line 470
+    iget-object v2, p0, Lcom/android/server/am/ActivityManagerConstants;->mParser:Landroid/util/KeyValueListParser;
 
-    const-wide/32 v9, 0x1b7740
+    const-string/jumbo v3, "service_usage_interaction_time"
 
-    invoke-virtual {v0, v2, v9, v10}, Landroid/util/KeyValueListParser;->getLong(Ljava/lang/String;J)J
+    const-wide/32 v10, 0x1b7740
 
-    move-result-wide v11
+    invoke-virtual {v2, v3, v10, v11}, Landroid/util/KeyValueListParser;->getLong(Ljava/lang/String;J)J
 
-    iput-wide v11, p0, Lcom/android/server/am/ActivityManagerConstants;->SERVICE_USAGE_INTERACTION_TIME:J
+    move-result-wide v2
 
-    .line 427
-    iget-object v0, p0, Lcom/android/server/am/ActivityManagerConstants;->mParser:Landroid/util/KeyValueListParser;
+    iput-wide v2, p0, Lcom/android/server/am/ActivityManagerConstants;->SERVICE_USAGE_INTERACTION_TIME:J
 
-    const-string/jumbo v2, "usage_stats_interaction_interval"
+    .line 472
+    iget-object v2, p0, Lcom/android/server/am/ActivityManagerConstants;->mParser:Landroid/util/KeyValueListParser;
 
-    const-wide/32 v11, 0x6ddd00
+    const-string/jumbo v3, "usage_stats_interaction_interval"
 
-    invoke-virtual {v0, v2, v11, v12}, Landroid/util/KeyValueListParser;->getLong(Ljava/lang/String;J)J
+    const-wide/32 v12, 0x6ddd00
 
-    move-result-wide v11
+    invoke-virtual {v2, v3, v12, v13}, Landroid/util/KeyValueListParser;->getLong(Ljava/lang/String;J)J
 
-    iput-wide v11, p0, Lcom/android/server/am/ActivityManagerConstants;->USAGE_STATS_INTERACTION_INTERVAL:J
+    move-result-wide v2
 
-    .line 429
-    iget-object v0, p0, Lcom/android/server/am/ActivityManagerConstants;->mParser:Landroid/util/KeyValueListParser;
+    iput-wide v2, p0, Lcom/android/server/am/ActivityManagerConstants;->USAGE_STATS_INTERACTION_INTERVAL:J
 
-    const-string/jumbo v2, "service_restart_duration"
+    .line 474
+    iget-object v2, p0, Lcom/android/server/am/ActivityManagerConstants;->mParser:Landroid/util/KeyValueListParser;
 
-    invoke-virtual {v0, v2, v5, v6}, Landroid/util/KeyValueListParser;->getLong(Ljava/lang/String;J)J
+    const-string/jumbo v3, "service_restart_duration"
 
-    move-result-wide v5
+    invoke-virtual {v2, v3, v6, v7}, Landroid/util/KeyValueListParser;->getLong(Ljava/lang/String;J)J
 
-    iput-wide v5, p0, Lcom/android/server/am/ActivityManagerConstants;->SERVICE_RESTART_DURATION:J
+    move-result-wide v2
 
-    .line 431
-    iget-object v0, p0, Lcom/android/server/am/ActivityManagerConstants;->mParser:Landroid/util/KeyValueListParser;
+    iput-wide v2, p0, Lcom/android/server/am/ActivityManagerConstants;->SERVICE_RESTART_DURATION:J
 
-    const-string/jumbo v2, "service_reset_run_duration"
+    .line 476
+    iget-object v2, p0, Lcom/android/server/am/ActivityManagerConstants;->mParser:Landroid/util/KeyValueListParser;
 
-    invoke-virtual {v0, v2, v3, v4}, Landroid/util/KeyValueListParser;->getLong(Ljava/lang/String;J)J
+    const-string/jumbo v3, "service_reset_run_duration"
+
+    invoke-virtual {v2, v3, v4, v5}, Landroid/util/KeyValueListParser;->getLong(Ljava/lang/String;J)J
 
     move-result-wide v2
 
     iput-wide v2, p0, Lcom/android/server/am/ActivityManagerConstants;->SERVICE_RESET_RUN_DURATION:J
 
-    .line 433
-    iget-object v0, p0, Lcom/android/server/am/ActivityManagerConstants;->mParser:Landroid/util/KeyValueListParser;
+    .line 478
+    iget-object v2, p0, Lcom/android/server/am/ActivityManagerConstants;->mParser:Landroid/util/KeyValueListParser;
 
-    const-string/jumbo v2, "service_restart_duration_factor"
+    const-string/jumbo v3, "service_restart_duration_factor"
 
-    const/4 v3, 0x4
+    const/4 v4, 0x4
 
-    invoke-virtual {v0, v2, v3}, Landroid/util/KeyValueListParser;->getInt(Ljava/lang/String;I)I
+    invoke-virtual {v2, v3, v4}, Landroid/util/KeyValueListParser;->getInt(Ljava/lang/String;I)I
 
-    move-result v0
+    move-result v2
 
-    iput v0, p0, Lcom/android/server/am/ActivityManagerConstants;->SERVICE_RESTART_DURATION_FACTOR:I
+    iput v2, p0, Lcom/android/server/am/ActivityManagerConstants;->SERVICE_RESTART_DURATION_FACTOR:I
 
-    .line 435
-    iget-object v0, p0, Lcom/android/server/am/ActivityManagerConstants;->mParser:Landroid/util/KeyValueListParser;
+    .line 480
+    iget-object v2, p0, Lcom/android/server/am/ActivityManagerConstants;->mParser:Landroid/util/KeyValueListParser;
 
-    const-string/jumbo v2, "service_min_restart_time_between"
+    const-string/jumbo v3, "service_min_restart_time_between"
 
-    const-wide/16 v3, 0x2710
+    const-wide/16 v4, 0x2710
 
-    invoke-virtual {v0, v2, v3, v4}, Landroid/util/KeyValueListParser;->getLong(Ljava/lang/String;J)J
+    invoke-virtual {v2, v3, v4, v5}, Landroid/util/KeyValueListParser;->getLong(Ljava/lang/String;J)J
 
-    move-result-wide v5
+    move-result-wide v2
 
-    iput-wide v5, p0, Lcom/android/server/am/ActivityManagerConstants;->SERVICE_MIN_RESTART_TIME_BETWEEN:J
+    iput-wide v2, p0, Lcom/android/server/am/ActivityManagerConstants;->SERVICE_MIN_RESTART_TIME_BETWEEN:J
 
-    .line 437
-    iget-object v0, p0, Lcom/android/server/am/ActivityManagerConstants;->mParser:Landroid/util/KeyValueListParser;
+    .line 482
+    iget-object v2, p0, Lcom/android/server/am/ActivityManagerConstants;->mParser:Landroid/util/KeyValueListParser;
 
-    const-string/jumbo v2, "service_max_inactivity"
+    const-string/jumbo v3, "service_max_inactivity"
 
-    invoke-virtual {v0, v2, v9, v10}, Landroid/util/KeyValueListParser;->getLong(Ljava/lang/String;J)J
+    invoke-virtual {v2, v3, v10, v11}, Landroid/util/KeyValueListParser;->getLong(Ljava/lang/String;J)J
 
-    move-result-wide v5
+    move-result-wide v2
 
-    iput-wide v5, p0, Lcom/android/server/am/ActivityManagerConstants;->MAX_SERVICE_INACTIVITY:J
+    iput-wide v2, p0, Lcom/android/server/am/ActivityManagerConstants;->MAX_SERVICE_INACTIVITY:J
 
-    .line 439
-    iget-object v0, p0, Lcom/android/server/am/ActivityManagerConstants;->mParser:Landroid/util/KeyValueListParser;
+    .line 484
+    iget-object v2, p0, Lcom/android/server/am/ActivityManagerConstants;->mParser:Landroid/util/KeyValueListParser;
 
-    const-string/jumbo v2, "service_bg_start_timeout"
+    const-string/jumbo v3, "service_bg_start_timeout"
 
-    const-wide/16 v5, 0x3a98
+    const-wide/16 v6, 0x3a98
 
-    invoke-virtual {v0, v2, v5, v6}, Landroid/util/KeyValueListParser;->getLong(Ljava/lang/String;J)J
+    invoke-virtual {v2, v3, v6, v7}, Landroid/util/KeyValueListParser;->getLong(Ljava/lang/String;J)J
 
-    move-result-wide v11
+    move-result-wide v2
 
-    iput-wide v11, p0, Lcom/android/server/am/ActivityManagerConstants;->BG_START_TIMEOUT:J
+    iput-wide v2, p0, Lcom/android/server/am/ActivityManagerConstants;->BG_START_TIMEOUT:J
 
-    .line 441
-    iget-object v0, p0, Lcom/android/server/am/ActivityManagerConstants;->mParser:Landroid/util/KeyValueListParser;
+    .line 486
+    iget-object v2, p0, Lcom/android/server/am/ActivityManagerConstants;->mParser:Landroid/util/KeyValueListParser;
 
-    const-string/jumbo v2, "service_bg_activity_start_timeout"
+    const-string/jumbo v3, "service_bg_activity_start_timeout"
 
-    invoke-virtual {v0, v2, v3, v4}, Landroid/util/KeyValueListParser;->getLong(Ljava/lang/String;J)J
+    invoke-virtual {v2, v3, v4, v5}, Landroid/util/KeyValueListParser;->getLong(Ljava/lang/String;J)J
 
     move-result-wide v2
 
     iput-wide v2, p0, Lcom/android/server/am/ActivityManagerConstants;->SERVICE_BG_ACTIVITY_START_TIMEOUT:J
 
-    .line 444
-    iget-object v0, p0, Lcom/android/server/am/ActivityManagerConstants;->mParser:Landroid/util/KeyValueListParser;
+    .line 489
+    iget-object v2, p0, Lcom/android/server/am/ActivityManagerConstants;->mParser:Landroid/util/KeyValueListParser;
 
-    const-string/jumbo v2, "service_crash_restart_duration"
+    const-string/jumbo v3, "service_crash_restart_duration"
 
-    invoke-virtual {v0, v2, v9, v10}, Landroid/util/KeyValueListParser;->getLong(Ljava/lang/String;J)J
+    invoke-virtual {v2, v3, v10, v11}, Landroid/util/KeyValueListParser;->getLong(Ljava/lang/String;J)J
 
     move-result-wide v2
 
     iput-wide v2, p0, Lcom/android/server/am/ActivityManagerConstants;->BOUND_SERVICE_CRASH_RESTART_DURATION:J
 
-    .line 447
-    iget-object v0, p0, Lcom/android/server/am/ActivityManagerConstants;->mParser:Landroid/util/KeyValueListParser;
+    .line 492
+    iget-object v2, p0, Lcom/android/server/am/ActivityManagerConstants;->mParser:Landroid/util/KeyValueListParser;
 
-    const-string/jumbo v2, "service_crash_max_retry"
+    const-string/jumbo v3, "service_crash_max_retry"
 
-    const/16 v3, 0x10
+    const/16 v4, 0x10
 
-    invoke-virtual {v0, v2, v3}, Landroid/util/KeyValueListParser;->getInt(Ljava/lang/String;I)I
+    invoke-virtual {v2, v3, v4}, Landroid/util/KeyValueListParser;->getInt(Ljava/lang/String;I)I
 
-    move-result v0
+    move-result v2
 
-    int-to-long v2, v0
+    int-to-long v2, v2
 
     iput-wide v2, p0, Lcom/android/server/am/ActivityManagerConstants;->BOUND_SERVICE_MAX_CRASH_RETRY:J
 
-    .line 449
-    iget-object v0, p0, Lcom/android/server/am/ActivityManagerConstants;->mParser:Landroid/util/KeyValueListParser;
+    .line 494
+    iget-object v2, p0, Lcom/android/server/am/ActivityManagerConstants;->mParser:Landroid/util/KeyValueListParser;
 
-    const-string/jumbo v2, "process_start_async"
+    const-string/jumbo v3, "process_start_async"
 
-    const/4 v3, 0x1
+    const/4 v4, 0x1
 
-    invoke-virtual {v0, v2, v3}, Landroid/util/KeyValueListParser;->getBoolean(Ljava/lang/String;Z)Z
+    invoke-virtual {v2, v3, v4}, Landroid/util/KeyValueListParser;->getBoolean(Ljava/lang/String;Z)Z
 
-    move-result v0
+    move-result v2
 
-    iput-boolean v0, p0, Lcom/android/server/am/ActivityManagerConstants;->FLAG_PROCESS_START_ASYNC:Z
+    iput-boolean v2, p0, Lcom/android/server/am/ActivityManagerConstants;->FLAG_PROCESS_START_ASYNC:Z
 
-    .line 451
-    iget-object v0, p0, Lcom/android/server/am/ActivityManagerConstants;->mParser:Landroid/util/KeyValueListParser;
+    .line 496
+    iget-object v2, p0, Lcom/android/server/am/ActivityManagerConstants;->mParser:Landroid/util/KeyValueListParser;
 
-    const-string v2, "memory_info_throttle_time"
+    const-string/jumbo v3, "memory_info_throttle_time"
 
-    invoke-virtual {v0, v2, v7, v8}, Landroid/util/KeyValueListParser;->getLong(Ljava/lang/String;J)J
+    invoke-virtual {v2, v3, v8, v9}, Landroid/util/KeyValueListParser;->getLong(Ljava/lang/String;J)J
 
     move-result-wide v2
 
     iput-wide v2, p0, Lcom/android/server/am/ActivityManagerConstants;->MEMORY_INFO_THROTTLE_TIME:J
 
-    .line 453
-    iget-object v0, p0, Lcom/android/server/am/ActivityManagerConstants;->mParser:Landroid/util/KeyValueListParser;
+    .line 498
+    iget-object v2, p0, Lcom/android/server/am/ActivityManagerConstants;->mParser:Landroid/util/KeyValueListParser;
 
-    const-string/jumbo v2, "top_to_fgs_grace_duration"
+    const-string/jumbo v3, "top_to_fgs_grace_duration"
 
-    invoke-virtual {v0, v2, v5, v6}, Landroid/util/KeyValueListParser;->getDurationMillis(Ljava/lang/String;J)J
+    invoke-virtual {v2, v3, v6, v7}, Landroid/util/KeyValueListParser;->getDurationMillis(Ljava/lang/String;J)J
 
     move-result-wide v2
 
     iput-wide v2, p0, Lcom/android/server/am/ActivityManagerConstants;->TOP_TO_FGS_GRACE_DURATION:J
 
-    .line 459
+    .line 504
     invoke-direct {p0}, Lcom/android/server/am/ActivityManagerConstants;->updateMaxCachedProcesses()V
 
-    .line 460
+    .line 505
     monitor-exit v1
-    :try_end_17e
-    .catchall {:try_start_18 .. :try_end_17e} :catchall_14
+    :try_end_181
+    .catchall {:try_start_18 .. :try_end_181} :catchall_14
 
     invoke-static {}, Lcom/android/server/am/ActivityManagerService;->resetPriorityAfterLockedSection()V
 
-    .line 461
+    .line 506
     return-void
 
-    .line 460
-    :goto_182
-    :try_start_182
+    .line 505
+    :goto_185
+    :try_start_185
     monitor-exit v1
-    :try_end_183
-    .catchall {:try_start_182 .. :try_end_183} :catchall_14
+    :try_end_186
+    .catchall {:try_start_185 .. :try_end_186} :catchall_14
 
     invoke-static {}, Lcom/android/server/am/ActivityManagerService;->resetPriorityAfterLockedSection()V
 
-    throw v0
+    throw v2
 .end method
 
 .method private updateEnableAutomaticSystemServerHeapDumps()V
-    .registers 9
+    .registers 10
 
-    .line 476
+    .line 521
     iget-boolean v0, p0, Lcom/android/server/am/ActivityManagerConstants;->mSystemServerAutomaticHeapDumpEnabled:Z
 
     if-nez v0, :cond_d
 
-    .line 477
+    .line 522
     const-string v0, "ActivityManagerConstants"
 
     const-string/jumbo v1, "updateEnableAutomaticSystemServerHeapDumps called when leak detection disabled"
 
     invoke-static {v0, v1}, Landroid/util/Slog;->wtf(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 480
+    .line 525
     return-void
 
-    .line 484
+    .line 529
     :cond_d
     iget-object v0, p0, Lcom/android/server/am/ActivityManagerConstants;->mResolver:Landroid/content/ContentResolver;
 
@@ -1027,144 +1363,155 @@
     :cond_19
     const/4 v1, 0x0
 
-    .line 488
     :goto_1a
-    if-eqz v1, :cond_1f
+    move v0, v1
 
-    iget-wide v0, p0, Lcom/android/server/am/ActivityManagerConstants;->mSystemServerAutomaticHeapDumpPssThresholdBytes:J
+    .line 533
+    .local v0, "enabled":Z
+    if-eqz v0, :cond_20
 
-    goto :goto_21
+    iget-wide v1, p0, Lcom/android/server/am/ActivityManagerConstants;->mSystemServerAutomaticHeapDumpPssThresholdBytes:J
 
-    :cond_1f
-    const-wide/16 v0, 0x0
+    goto :goto_22
 
-    :goto_21
-    move-wide v5, v0
+    :cond_20
+    const-wide/16 v1, 0x0
 
-    .line 489
-    iget-object v2, p0, Lcom/android/server/am/ActivityManagerConstants;->mService:Lcom/android/server/am/ActivityManagerService;
+    :goto_22
+    move-wide v6, v1
 
-    const/4 v3, 0x0
+    .line 534
+    .local v6, "threshold":J
+    iget-object v3, p0, Lcom/android/server/am/ActivityManagerConstants;->mService:Lcom/android/server/am/ActivityManagerService;
 
     const/4 v4, 0x0
 
-    iget-object v7, p0, Lcom/android/server/am/ActivityManagerConstants;->mSystemServerAutomaticHeapDumpPackageName:Ljava/lang/String;
+    const/4 v5, 0x0
 
-    invoke-virtual/range {v2 .. v7}, Lcom/android/server/am/ActivityManagerService;->setDumpHeapDebugLimit(Ljava/lang/String;IJLjava/lang/String;)V
+    iget-object v8, p0, Lcom/android/server/am/ActivityManagerConstants;->mSystemServerAutomaticHeapDumpPackageName:Ljava/lang/String;
 
-    .line 491
+    invoke-virtual/range {v3 .. v8}, Lcom/android/server/am/ActivityManagerService;->setDumpHeapDebugLimit(Ljava/lang/String;IJLjava/lang/String;)V
+
+    .line 536
     return-void
 .end method
 
 .method private updateMaxCachedProcesses()V
-    .registers 6
+    .registers 5
 
-    .line 494
+    .line 539
     const-string v0, "activity_manager"
 
-    const-string v1, "max_cached_processes"
+    const-string/jumbo v1, "max_cached_processes"
 
     invoke-static {v0, v1}, Landroid/provider/DeviceConfig;->getProperty(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
 
     move-result-object v0
 
-    .line 497
-    const/16 v1, 0x20
+    .line 542
+    .local v0, "maxCachedProcessesFlag":Ljava/lang/String;
+    :try_start_9
+    iget v1, p0, Lcom/android/server/am/ActivityManagerConstants;->mOverrideMaxCachedProcesses:I
 
-    :try_start_a
-    iget v2, p0, Lcom/android/server/am/ActivityManagerConstants;->mOverrideMaxCachedProcesses:I
+    if-gez v1, :cond_1b
 
-    if-gez v2, :cond_1b
-
-    .line 498
+    .line 543
     invoke-static {v0}, Landroid/text/TextUtils;->isEmpty(Ljava/lang/CharSequence;)Z
 
-    move-result v2
+    move-result v1
 
-    if-eqz v2, :cond_16
+    if-eqz v1, :cond_16
 
-    .line 499
-    move v2, v1
+    .line 544
+    sget v1, Lcom/android/server/am/ActivityManagerConstants;->DEFAULT_MAX_CACHED_PROCESSES:I
 
     goto :goto_1d
 
     :cond_16
     invoke-static {v0}, Ljava/lang/Integer;->parseInt(Ljava/lang/String;)I
 
-    move-result v2
+    move-result v1
 
     goto :goto_1d
 
-    .line 500
+    .line 545
     :cond_1b
-    iget v2, p0, Lcom/android/server/am/ActivityManagerConstants;->mOverrideMaxCachedProcesses:I
+    iget v1, p0, Lcom/android/server/am/ActivityManagerConstants;->mOverrideMaxCachedProcesses:I
 
     :goto_1d
-    iput v2, p0, Lcom/android/server/am/ActivityManagerConstants;->CUR_MAX_CACHED_PROCESSES:I
+    iput v1, p0, Lcom/android/server/am/ActivityManagerConstants;->CUR_MAX_CACHED_PROCESSES:I
     :try_end_1f
-    .catch Ljava/lang/NumberFormatException; {:try_start_a .. :try_end_1f} :catch_20
+    .catch Ljava/lang/NumberFormatException; {:try_start_9 .. :try_end_1f} :catch_20
 
-    .line 506
-    goto :goto_39
+    .line 551
+    goto :goto_3b
 
-    .line 501
+    .line 546
     :catch_20
-    move-exception v2
+    move-exception v1
 
-    .line 503
-    new-instance v3, Ljava/lang/StringBuilder;
+    .line 548
+    .local v1, "e":Ljava/lang/NumberFormatException;
+    new-instance v2, Ljava/lang/StringBuilder;
 
-    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v4, "Unable to parse flag for max_cached_processes: "
+    const-string v3, "Unable to parse flag for max_cached_processes: "
 
-    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v3, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v2
 
     const-string v3, "ActivityManagerConstants"
 
-    invoke-static {v3, v0, v2}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    invoke-static {v3, v2, v1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
-    .line 505
-    iput v1, p0, Lcom/android/server/am/ActivityManagerConstants;->CUR_MAX_CACHED_PROCESSES:I
+    .line 550
+    sget v2, Lcom/android/server/am/ActivityManagerConstants;->DEFAULT_MAX_CACHED_PROCESSES:I
 
-    .line 507
-    :goto_39
-    iget v0, p0, Lcom/android/server/am/ActivityManagerConstants;->CUR_MAX_CACHED_PROCESSES:I
+    iput v2, p0, Lcom/android/server/am/ActivityManagerConstants;->CUR_MAX_CACHED_PROCESSES:I
 
-    invoke-static {v0}, Lcom/android/server/am/ActivityManagerConstants;->computeEmptyProcessLimit(I)I
+    .line 552
+    .end local v1  # "e":Ljava/lang/NumberFormatException;
+    :goto_3b
+    iget v1, p0, Lcom/android/server/am/ActivityManagerConstants;->CUR_MAX_CACHED_PROCESSES:I
 
-    move-result v0
+    invoke-static {v1}, Lcom/android/server/am/ActivityManagerConstants;->computeEmptyProcessLimit(I)I
 
-    iput v0, p0, Lcom/android/server/am/ActivityManagerConstants;->CUR_MAX_EMPTY_PROCESSES:I
+    move-result v1
 
-    .line 512
-    iget v0, p0, Lcom/android/server/am/ActivityManagerConstants;->MAX_CACHED_PROCESSES:I
+    iput v1, p0, Lcom/android/server/am/ActivityManagerConstants;->CUR_MAX_EMPTY_PROCESSES:I
 
-    invoke-static {v0}, Lcom/android/server/am/ActivityManagerConstants;->computeEmptyProcessLimit(I)I
-
-    move-result v0
-
-    .line 513
-    div-int/lit8 v1, v0, 0x2
-
-    iput v1, p0, Lcom/android/server/am/ActivityManagerConstants;->CUR_TRIM_EMPTY_PROCESSES:I
-
-    .line 514
+    .line 557
     iget v1, p0, Lcom/android/server/am/ActivityManagerConstants;->MAX_CACHED_PROCESSES:I
 
-    sub-int/2addr v1, v0
+    invoke-static {v1}, Lcom/android/server/am/ActivityManagerConstants;->computeEmptyProcessLimit(I)I
 
-    div-int/lit8 v1, v1, 0x3
+    move-result v1
 
-    iput v1, p0, Lcom/android/server/am/ActivityManagerConstants;->CUR_TRIM_CACHED_PROCESSES:I
+    .line 558
+    .local v1, "rawMaxEmptyProcesses":I
+    invoke-static {v1}, Lcom/android/server/am/ActivityManagerConstants;->computeTrimEmptyApps(I)I
 
-    .line 515
+    move-result v2
+
+    iput v2, p0, Lcom/android/server/am/ActivityManagerConstants;->CUR_TRIM_EMPTY_PROCESSES:I
+
+    .line 559
+    iget v2, p0, Lcom/android/server/am/ActivityManagerConstants;->MAX_CACHED_PROCESSES:I
+
+    .line 560
+    invoke-static {v1, v2}, Lcom/android/server/am/ActivityManagerConstants;->computeTrimCachedApps(II)I
+
+    move-result v2
+
+    iput v2, p0, Lcom/android/server/am/ActivityManagerConstants;->CUR_TRIM_CACHED_PROCESSES:I
+
+    .line 561
     return-void
 .end method
 
@@ -1172,18 +1519,19 @@
 # virtual methods
 .method dump(Ljava/io/PrintWriter;)V
     .registers 6
+    .param p1, "pw"  # Ljava/io/PrintWriter;
 
-    .line 518
+    .line 564
     const-string v0, "ACTIVITY MANAGER SETTINGS (dumpsys activity settings) activity_manager_constants:"
 
     invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
-    .line 521
+    .line 567
     const-string v0, "  "
 
     invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
-    const-string v1, "max_cached_processes"
+    const-string/jumbo v1, "max_cached_processes"
 
     invoke-virtual {p1, v1}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
@@ -1191,12 +1539,12 @@
 
     invoke-virtual {p1, v1}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
-    .line 522
+    .line 568
     iget v2, p0, Lcom/android/server/am/ActivityManagerConstants;->MAX_CACHED_PROCESSES:I
 
     invoke-virtual {p1, v2}, Ljava/io/PrintWriter;->println(I)V
 
-    .line 523
+    .line 569
     invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
     const-string v2, "background_settle_time"
@@ -1205,12 +1553,12 @@
 
     invoke-virtual {p1, v1}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
-    .line 524
+    .line 570
     iget-wide v2, p0, Lcom/android/server/am/ActivityManagerConstants;->BACKGROUND_SETTLE_TIME:J
 
     invoke-virtual {p1, v2, v3}, Ljava/io/PrintWriter;->println(J)V
 
-    .line 525
+    .line 571
     invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
     const-string v2, "fgservice_min_shown_time"
@@ -1219,12 +1567,12 @@
 
     invoke-virtual {p1, v1}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
-    .line 526
+    .line 572
     iget-wide v2, p0, Lcom/android/server/am/ActivityManagerConstants;->FGSERVICE_MIN_SHOWN_TIME:J
 
     invoke-virtual {p1, v2, v3}, Ljava/io/PrintWriter;->println(J)V
 
-    .line 527
+    .line 573
     invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
     const-string v2, "fgservice_min_report_time"
@@ -1233,12 +1581,12 @@
 
     invoke-virtual {p1, v1}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
-    .line 528
+    .line 574
     iget-wide v2, p0, Lcom/android/server/am/ActivityManagerConstants;->FGSERVICE_MIN_REPORT_TIME:J
 
     invoke-virtual {p1, v2, v3}, Ljava/io/PrintWriter;->println(J)V
 
-    .line 529
+    .line 575
     invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
     const-string v2, "fgservice_screen_on_before_time"
@@ -1247,12 +1595,12 @@
 
     invoke-virtual {p1, v1}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
-    .line 530
+    .line 576
     iget-wide v2, p0, Lcom/android/server/am/ActivityManagerConstants;->FGSERVICE_SCREEN_ON_BEFORE_TIME:J
 
     invoke-virtual {p1, v2, v3}, Ljava/io/PrintWriter;->println(J)V
 
-    .line 531
+    .line 577
     invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
     const-string v2, "fgservice_screen_on_after_time"
@@ -1261,12 +1609,12 @@
 
     invoke-virtual {p1, v1}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
-    .line 532
+    .line 578
     iget-wide v2, p0, Lcom/android/server/am/ActivityManagerConstants;->FGSERVICE_SCREEN_ON_AFTER_TIME:J
 
     invoke-virtual {p1, v2, v3}, Ljava/io/PrintWriter;->println(J)V
 
-    .line 533
+    .line 579
     invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
     const-string v2, "content_provider_retain_time"
@@ -1275,12 +1623,12 @@
 
     invoke-virtual {p1, v1}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
-    .line 534
+    .line 580
     iget-wide v2, p0, Lcom/android/server/am/ActivityManagerConstants;->CONTENT_PROVIDER_RETAIN_TIME:J
 
     invoke-virtual {p1, v2, v3}, Ljava/io/PrintWriter;->println(J)V
 
-    .line 535
+    .line 581
     invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
     const-string v2, "gc_timeout"
@@ -1289,12 +1637,12 @@
 
     invoke-virtual {p1, v1}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
-    .line 536
+    .line 582
     iget-wide v2, p0, Lcom/android/server/am/ActivityManagerConstants;->GC_TIMEOUT:J
 
     invoke-virtual {p1, v2, v3}, Ljava/io/PrintWriter;->println(J)V
 
-    .line 537
+    .line 583
     invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
     const-string v2, "gc_min_interval"
@@ -1303,12 +1651,12 @@
 
     invoke-virtual {p1, v1}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
-    .line 538
+    .line 584
     iget-wide v2, p0, Lcom/android/server/am/ActivityManagerConstants;->GC_MIN_INTERVAL:J
 
     invoke-virtual {p1, v2, v3}, Ljava/io/PrintWriter;->println(J)V
 
-    .line 539
+    .line 585
     invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
     const-string v2, "full_pss_min_interval"
@@ -1317,12 +1665,12 @@
 
     invoke-virtual {p1, v1}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
-    .line 540
+    .line 586
     iget-wide v2, p0, Lcom/android/server/am/ActivityManagerConstants;->FULL_PSS_MIN_INTERVAL:J
 
     invoke-virtual {p1, v2, v3}, Ljava/io/PrintWriter;->println(J)V
 
-    .line 541
+    .line 587
     invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
     const-string v2, "full_pss_lowered_interval"
@@ -1331,12 +1679,12 @@
 
     invoke-virtual {p1, v1}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
-    .line 542
+    .line 588
     iget-wide v2, p0, Lcom/android/server/am/ActivityManagerConstants;->FULL_PSS_LOWERED_INTERVAL:J
 
     invoke-virtual {p1, v2, v3}, Ljava/io/PrintWriter;->println(J)V
 
-    .line 543
+    .line 589
     invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
     const-string/jumbo v2, "power_check_interval"
@@ -1345,12 +1693,12 @@
 
     invoke-virtual {p1, v1}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
-    .line 544
+    .line 590
     iget-wide v2, p0, Lcom/android/server/am/ActivityManagerConstants;->POWER_CHECK_INTERVAL:J
 
     invoke-virtual {p1, v2, v3}, Ljava/io/PrintWriter;->println(J)V
 
-    .line 545
+    .line 591
     invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
     const-string/jumbo v2, "power_check_max_cpu_1"
@@ -1359,12 +1707,12 @@
 
     invoke-virtual {p1, v1}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
-    .line 546
+    .line 592
     iget v2, p0, Lcom/android/server/am/ActivityManagerConstants;->POWER_CHECK_MAX_CPU_1:I
 
     invoke-virtual {p1, v2}, Ljava/io/PrintWriter;->println(I)V
 
-    .line 547
+    .line 593
     invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
     const-string/jumbo v2, "power_check_max_cpu_2"
@@ -1373,12 +1721,12 @@
 
     invoke-virtual {p1, v1}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
-    .line 548
+    .line 594
     iget v2, p0, Lcom/android/server/am/ActivityManagerConstants;->POWER_CHECK_MAX_CPU_2:I
 
     invoke-virtual {p1, v2}, Ljava/io/PrintWriter;->println(I)V
 
-    .line 549
+    .line 595
     invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
     const-string/jumbo v2, "power_check_max_cpu_3"
@@ -1387,12 +1735,12 @@
 
     invoke-virtual {p1, v1}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
-    .line 550
+    .line 596
     iget v2, p0, Lcom/android/server/am/ActivityManagerConstants;->POWER_CHECK_MAX_CPU_3:I
 
     invoke-virtual {p1, v2}, Ljava/io/PrintWriter;->println(I)V
 
-    .line 551
+    .line 597
     invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
     const-string/jumbo v2, "power_check_max_cpu_4"
@@ -1401,12 +1749,12 @@
 
     invoke-virtual {p1, v1}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
-    .line 552
+    .line 598
     iget v2, p0, Lcom/android/server/am/ActivityManagerConstants;->POWER_CHECK_MAX_CPU_4:I
 
     invoke-virtual {p1, v2}, Ljava/io/PrintWriter;->println(I)V
 
-    .line 553
+    .line 599
     invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
     const-string/jumbo v2, "service_usage_interaction_time"
@@ -1415,12 +1763,12 @@
 
     invoke-virtual {p1, v1}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
-    .line 554
+    .line 600
     iget-wide v2, p0, Lcom/android/server/am/ActivityManagerConstants;->SERVICE_USAGE_INTERACTION_TIME:J
 
     invoke-virtual {p1, v2, v3}, Ljava/io/PrintWriter;->println(J)V
 
-    .line 555
+    .line 601
     invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
     const-string/jumbo v2, "usage_stats_interaction_interval"
@@ -1429,12 +1777,12 @@
 
     invoke-virtual {p1, v1}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
-    .line 556
+    .line 602
     iget-wide v2, p0, Lcom/android/server/am/ActivityManagerConstants;->USAGE_STATS_INTERACTION_INTERVAL:J
 
     invoke-virtual {p1, v2, v3}, Ljava/io/PrintWriter;->println(J)V
 
-    .line 557
+    .line 603
     invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
     const-string/jumbo v2, "service_restart_duration"
@@ -1443,12 +1791,12 @@
 
     invoke-virtual {p1, v1}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
-    .line 558
+    .line 604
     iget-wide v2, p0, Lcom/android/server/am/ActivityManagerConstants;->SERVICE_RESTART_DURATION:J
 
     invoke-virtual {p1, v2, v3}, Ljava/io/PrintWriter;->println(J)V
 
-    .line 559
+    .line 605
     invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
     const-string/jumbo v2, "service_reset_run_duration"
@@ -1457,12 +1805,12 @@
 
     invoke-virtual {p1, v1}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
-    .line 560
+    .line 606
     iget-wide v2, p0, Lcom/android/server/am/ActivityManagerConstants;->SERVICE_RESET_RUN_DURATION:J
 
     invoke-virtual {p1, v2, v3}, Ljava/io/PrintWriter;->println(J)V
 
-    .line 561
+    .line 607
     invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
     const-string/jumbo v2, "service_restart_duration_factor"
@@ -1471,12 +1819,12 @@
 
     invoke-virtual {p1, v1}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
-    .line 562
+    .line 608
     iget v2, p0, Lcom/android/server/am/ActivityManagerConstants;->SERVICE_RESTART_DURATION_FACTOR:I
 
     invoke-virtual {p1, v2}, Ljava/io/PrintWriter;->println(I)V
 
-    .line 563
+    .line 609
     invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
     const-string/jumbo v2, "service_min_restart_time_between"
@@ -1485,12 +1833,12 @@
 
     invoke-virtual {p1, v1}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
-    .line 564
+    .line 610
     iget-wide v2, p0, Lcom/android/server/am/ActivityManagerConstants;->SERVICE_MIN_RESTART_TIME_BETWEEN:J
 
     invoke-virtual {p1, v2, v3}, Ljava/io/PrintWriter;->println(J)V
 
-    .line 565
+    .line 611
     invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
     const-string/jumbo v2, "service_max_inactivity"
@@ -1499,12 +1847,12 @@
 
     invoke-virtual {p1, v1}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
-    .line 566
+    .line 612
     iget-wide v2, p0, Lcom/android/server/am/ActivityManagerConstants;->MAX_SERVICE_INACTIVITY:J
 
     invoke-virtual {p1, v2, v3}, Ljava/io/PrintWriter;->println(J)V
 
-    .line 567
+    .line 613
     invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
     const-string/jumbo v2, "service_bg_start_timeout"
@@ -1513,12 +1861,12 @@
 
     invoke-virtual {p1, v1}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
-    .line 568
+    .line 614
     iget-wide v2, p0, Lcom/android/server/am/ActivityManagerConstants;->BG_START_TIMEOUT:J
 
     invoke-virtual {p1, v2, v3}, Ljava/io/PrintWriter;->println(J)V
 
-    .line 569
+    .line 615
     invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
     const-string/jumbo v2, "service_bg_activity_start_timeout"
@@ -1527,12 +1875,12 @@
 
     invoke-virtual {p1, v1}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
-    .line 570
+    .line 616
     iget-wide v2, p0, Lcom/android/server/am/ActivityManagerConstants;->SERVICE_BG_ACTIVITY_START_TIMEOUT:J
 
     invoke-virtual {p1, v2, v3}, Ljava/io/PrintWriter;->println(J)V
 
-    .line 571
+    .line 617
     invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
     const-string/jumbo v2, "service_crash_restart_duration"
@@ -1541,12 +1889,12 @@
 
     invoke-virtual {p1, v1}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
-    .line 572
+    .line 618
     iget-wide v2, p0, Lcom/android/server/am/ActivityManagerConstants;->BOUND_SERVICE_CRASH_RESTART_DURATION:J
 
     invoke-virtual {p1, v2, v3}, Ljava/io/PrintWriter;->println(J)V
 
-    .line 573
+    .line 619
     invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
     const-string/jumbo v2, "service_crash_max_retry"
@@ -1555,12 +1903,12 @@
 
     invoke-virtual {p1, v1}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
-    .line 574
+    .line 620
     iget-wide v2, p0, Lcom/android/server/am/ActivityManagerConstants;->BOUND_SERVICE_MAX_CRASH_RETRY:J
 
     invoke-virtual {p1, v2, v3}, Ljava/io/PrintWriter;->println(J)V
 
-    .line 575
+    .line 621
     invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
     const-string/jumbo v2, "process_start_async"
@@ -1569,26 +1917,26 @@
 
     invoke-virtual {p1, v1}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
-    .line 576
+    .line 622
     iget-boolean v2, p0, Lcom/android/server/am/ActivityManagerConstants;->FLAG_PROCESS_START_ASYNC:Z
 
     invoke-virtual {p1, v2}, Ljava/io/PrintWriter;->println(Z)V
 
-    .line 577
+    .line 623
     invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
-    const-string v2, "memory_info_throttle_time"
+    const-string/jumbo v2, "memory_info_throttle_time"
 
     invoke-virtual {p1, v2}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
     invoke-virtual {p1, v1}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
-    .line 578
+    .line 624
     iget-wide v2, p0, Lcom/android/server/am/ActivityManagerConstants;->MEMORY_INFO_THROTTLE_TIME:J
 
     invoke-virtual {p1, v2, v3}, Ljava/io/PrintWriter;->println(J)V
 
-    .line 579
+    .line 625
     invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
     const-string/jumbo v0, "top_to_fgs_grace_duration"
@@ -1597,20 +1945,20 @@
 
     invoke-virtual {p1, v1}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
-    .line 580
+    .line 626
     iget-wide v0, p0, Lcom/android/server/am/ActivityManagerConstants;->TOP_TO_FGS_GRACE_DURATION:J
 
     invoke-virtual {p1, v0, v1}, Ljava/io/PrintWriter;->println(J)V
 
-    .line 582
+    .line 628
     invoke-virtual {p1}, Ljava/io/PrintWriter;->println()V
 
-    .line 583
+    .line 629
     iget v0, p0, Lcom/android/server/am/ActivityManagerConstants;->mOverrideMaxCachedProcesses:I
 
-    if-ltz v0, :cond_20c
+    if-ltz v0, :cond_20e
 
-    .line 584
+    .line 630
     const-string v0, "  mOverrideMaxCachedProcesses="
 
     invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
@@ -1619,8 +1967,8 @@
 
     invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->println(I)V
 
-    .line 586
-    :cond_20c
+    .line 632
+    :cond_20e
     const-string v0, "  CUR_MAX_CACHED_PROCESSES="
 
     invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
@@ -1629,7 +1977,7 @@
 
     invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->println(I)V
 
-    .line 587
+    .line 633
     const-string v0, "  CUR_MAX_EMPTY_PROCESSES="
 
     invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
@@ -1638,7 +1986,7 @@
 
     invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->println(I)V
 
-    .line 588
+    .line 634
     const-string v0, "  CUR_TRIM_EMPTY_PROCESSES="
 
     invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
@@ -1647,7 +1995,7 @@
 
     invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->println(I)V
 
-    .line 589
+    .line 635
     const-string v0, "  CUR_TRIM_CACHED_PROCESSES="
 
     invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
@@ -1656,71 +2004,73 @@
 
     invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->println(I)V
 
-    .line 590
+    .line 636
     return-void
 .end method
 
 .method public getOverrideMaxCachedProcesses()I
     .registers 2
 
-    .line 365
+    .line 390
     iget v0, p0, Lcom/android/server/am/ActivityManagerConstants;->mOverrideMaxCachedProcesses:I
 
     return v0
 .end method
 
 .method public onChange(ZLandroid/net/Uri;)V
-    .registers 3
+    .registers 4
+    .param p1, "selfChange"  # Z
+    .param p2, "uri"  # Landroid/net/Uri;
 
-    .line 374
+    .line 419
     if-nez p2, :cond_3
 
     return-void
 
-    .line 375
+    .line 420
     :cond_3
-    sget-object p1, Lcom/android/server/am/ActivityManagerConstants;->ACTIVITY_MANAGER_CONSTANTS_URI:Landroid/net/Uri;
+    sget-object v0, Lcom/android/server/am/ActivityManagerConstants;->ACTIVITY_MANAGER_CONSTANTS_URI:Landroid/net/Uri;
 
-    invoke-virtual {p1, p2}, Landroid/net/Uri;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v0, p2}, Landroid/net/Uri;->equals(Ljava/lang/Object;)Z
 
-    move-result p1
+    move-result v0
 
-    if-eqz p1, :cond_f
+    if-eqz v0, :cond_f
 
-    .line 376
+    .line 421
     invoke-direct {p0}, Lcom/android/server/am/ActivityManagerConstants;->updateConstants()V
 
     goto :goto_26
 
-    .line 377
+    .line 422
     :cond_f
-    sget-object p1, Lcom/android/server/am/ActivityManagerConstants;->ACTIVITY_STARTS_LOGGING_ENABLED_URI:Landroid/net/Uri;
+    sget-object v0, Lcom/android/server/am/ActivityManagerConstants;->ACTIVITY_STARTS_LOGGING_ENABLED_URI:Landroid/net/Uri;
 
-    invoke-virtual {p1, p2}, Landroid/net/Uri;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v0, p2}, Landroid/net/Uri;->equals(Ljava/lang/Object;)Z
 
-    move-result p1
+    move-result v0
 
-    if-eqz p1, :cond_1b
+    if-eqz v0, :cond_1b
 
-    .line 378
+    .line 423
     invoke-direct {p0}, Lcom/android/server/am/ActivityManagerConstants;->updateActivityStartsLoggingEnabled()V
 
     goto :goto_26
 
-    .line 379
+    .line 424
     :cond_1b
-    sget-object p1, Lcom/android/server/am/ActivityManagerConstants;->ENABLE_AUTOMATIC_SYSTEM_SERVER_HEAP_DUMPS_URI:Landroid/net/Uri;
+    sget-object v0, Lcom/android/server/am/ActivityManagerConstants;->ENABLE_AUTOMATIC_SYSTEM_SERVER_HEAP_DUMPS_URI:Landroid/net/Uri;
 
-    invoke-virtual {p1, p2}, Landroid/net/Uri;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v0, p2}, Landroid/net/Uri;->equals(Ljava/lang/Object;)Z
 
-    move-result p1
+    move-result v0
 
-    if-eqz p1, :cond_26
+    if-eqz v0, :cond_26
 
-    .line 380
+    .line 425
     invoke-direct {p0}, Lcom/android/server/am/ActivityManagerConstants;->updateEnableAutomaticSystemServerHeapDumps()V
 
-    .line 382
+    .line 427
     :cond_26
     :goto_26
     return-void
@@ -1728,92 +2078,94 @@
 
 .method public setOverrideMaxCachedProcesses(I)V
     .registers 2
+    .param p1, "value"  # I
 
-    .line 360
+    .line 385
     iput p1, p0, Lcom/android/server/am/ActivityManagerConstants;->mOverrideMaxCachedProcesses:I
 
-    .line 361
+    .line 386
     invoke-direct {p0}, Lcom/android/server/am/ActivityManagerConstants;->updateMaxCachedProcesses()V
 
-    .line 362
+    .line 387
     return-void
 .end method
 
 .method public start(Landroid/content/ContentResolver;)V
-    .registers 4
+    .registers 5
+    .param p1, "resolver"  # Landroid/content/ContentResolver;
 
-    .line 340
+    .line 365
     iput-object p1, p0, Lcom/android/server/am/ActivityManagerConstants;->mResolver:Landroid/content/ContentResolver;
 
-    .line 341
-    iget-object p1, p0, Lcom/android/server/am/ActivityManagerConstants;->mResolver:Landroid/content/ContentResolver;
+    .line 366
+    iget-object v0, p0, Lcom/android/server/am/ActivityManagerConstants;->mResolver:Landroid/content/ContentResolver;
 
-    sget-object v0, Lcom/android/server/am/ActivityManagerConstants;->ACTIVITY_MANAGER_CONSTANTS_URI:Landroid/net/Uri;
+    sget-object v1, Lcom/android/server/am/ActivityManagerConstants;->ACTIVITY_MANAGER_CONSTANTS_URI:Landroid/net/Uri;
 
-    const/4 v1, 0x0
+    const/4 v2, 0x0
 
-    invoke-virtual {p1, v0, v1, p0}, Landroid/content/ContentResolver;->registerContentObserver(Landroid/net/Uri;ZLandroid/database/ContentObserver;)V
+    invoke-virtual {v0, v1, v2, p0}, Landroid/content/ContentResolver;->registerContentObserver(Landroid/net/Uri;ZLandroid/database/ContentObserver;)V
 
-    .line 342
-    iget-object p1, p0, Lcom/android/server/am/ActivityManagerConstants;->mResolver:Landroid/content/ContentResolver;
+    .line 367
+    iget-object v0, p0, Lcom/android/server/am/ActivityManagerConstants;->mResolver:Landroid/content/ContentResolver;
 
-    sget-object v0, Lcom/android/server/am/ActivityManagerConstants;->ACTIVITY_STARTS_LOGGING_ENABLED_URI:Landroid/net/Uri;
+    sget-object v1, Lcom/android/server/am/ActivityManagerConstants;->ACTIVITY_STARTS_LOGGING_ENABLED_URI:Landroid/net/Uri;
 
-    invoke-virtual {p1, v0, v1, p0}, Landroid/content/ContentResolver;->registerContentObserver(Landroid/net/Uri;ZLandroid/database/ContentObserver;)V
+    invoke-virtual {v0, v1, v2, p0}, Landroid/content/ContentResolver;->registerContentObserver(Landroid/net/Uri;ZLandroid/database/ContentObserver;)V
 
-    .line 343
-    iget-boolean p1, p0, Lcom/android/server/am/ActivityManagerConstants;->mSystemServerAutomaticHeapDumpEnabled:Z
+    .line 368
+    iget-boolean v0, p0, Lcom/android/server/am/ActivityManagerConstants;->mSystemServerAutomaticHeapDumpEnabled:Z
 
-    if-eqz p1, :cond_1c
+    if-eqz v0, :cond_1c
 
-    .line 344
-    iget-object p1, p0, Lcom/android/server/am/ActivityManagerConstants;->mResolver:Landroid/content/ContentResolver;
+    .line 369
+    iget-object v0, p0, Lcom/android/server/am/ActivityManagerConstants;->mResolver:Landroid/content/ContentResolver;
 
-    sget-object v0, Lcom/android/server/am/ActivityManagerConstants;->ENABLE_AUTOMATIC_SYSTEM_SERVER_HEAP_DUMPS_URI:Landroid/net/Uri;
+    sget-object v1, Lcom/android/server/am/ActivityManagerConstants;->ENABLE_AUTOMATIC_SYSTEM_SERVER_HEAP_DUMPS_URI:Landroid/net/Uri;
 
-    invoke-virtual {p1, v0, v1, p0}, Landroid/content/ContentResolver;->registerContentObserver(Landroid/net/Uri;ZLandroid/database/ContentObserver;)V
+    invoke-virtual {v0, v1, v2, p0}, Landroid/content/ContentResolver;->registerContentObserver(Landroid/net/Uri;ZLandroid/database/ContentObserver;)V
 
-    .line 347
+    .line 372
     :cond_1c
     invoke-direct {p0}, Lcom/android/server/am/ActivityManagerConstants;->updateConstants()V
 
-    .line 348
-    iget-boolean p1, p0, Lcom/android/server/am/ActivityManagerConstants;->mSystemServerAutomaticHeapDumpEnabled:Z
+    .line 373
+    iget-boolean v0, p0, Lcom/android/server/am/ActivityManagerConstants;->mSystemServerAutomaticHeapDumpEnabled:Z
 
-    if-eqz p1, :cond_26
+    if-eqz v0, :cond_26
 
-    .line 349
+    .line 374
     invoke-direct {p0}, Lcom/android/server/am/ActivityManagerConstants;->updateEnableAutomaticSystemServerHeapDumps()V
 
-    .line 351
+    .line 376
     :cond_26
     nop
 
-    .line 352
+    .line 377
     invoke-static {}, Landroid/app/ActivityThread;->currentApplication()Landroid/app/Application;
 
-    move-result-object p1
+    move-result-object v0
 
-    invoke-virtual {p1}, Landroid/app/Application;->getMainExecutor()Ljava/util/concurrent/Executor;
+    invoke-virtual {v0}, Landroid/app/Application;->getMainExecutor()Ljava/util/concurrent/Executor;
 
-    move-result-object p1
+    move-result-object v0
 
-    iget-object v0, p0, Lcom/android/server/am/ActivityManagerConstants;->mOnDeviceConfigChangedListener:Landroid/provider/DeviceConfig$OnPropertiesChangedListener;
+    iget-object v1, p0, Lcom/android/server/am/ActivityManagerConstants;->mOnDeviceConfigChangedListener:Landroid/provider/DeviceConfig$OnPropertiesChangedListener;
 
-    .line 351
-    const-string v1, "activity_manager"
+    .line 376
+    const-string v2, "activity_manager"
 
-    invoke-static {v1, p1, v0}, Landroid/provider/DeviceConfig;->addOnPropertiesChangedListener(Ljava/lang/String;Ljava/util/concurrent/Executor;Landroid/provider/DeviceConfig$OnPropertiesChangedListener;)V
+    invoke-static {v2, v0, v1}, Landroid/provider/DeviceConfig;->addOnPropertiesChangedListener(Ljava/lang/String;Ljava/util/concurrent/Executor;Landroid/provider/DeviceConfig$OnPropertiesChangedListener;)V
 
-    .line 354
+    .line 379
     invoke-direct {p0}, Lcom/android/server/am/ActivityManagerConstants;->updateMaxCachedProcesses()V
 
-    .line 355
+    .line 380
     invoke-direct {p0}, Lcom/android/server/am/ActivityManagerConstants;->updateActivityStartsLoggingEnabled()V
 
-    .line 356
+    .line 381
     invoke-direct {p0}, Lcom/android/server/am/ActivityManagerConstants;->updateBackgroundActivityStarts()V
 
-    .line 357
+    .line 382
     return-void
 .end method

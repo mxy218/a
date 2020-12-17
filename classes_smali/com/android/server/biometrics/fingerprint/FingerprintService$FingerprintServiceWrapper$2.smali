@@ -20,14 +20,29 @@
 
 # direct methods
 .method constructor <init>(Lcom/android/server/biometrics/fingerprint/FingerprintService$FingerprintServiceWrapper;Landroid/content/Context;Lcom/android/server/biometrics/Constants;Lcom/android/server/biometrics/BiometricServiceBase$DaemonWrapper;JLandroid/os/IBinder;Lcom/android/server/biometrics/BiometricServiceBase$ServiceListener;IIIZLjava/lang/String;Lcom/android/server/biometrics/BiometricUtils;)V
-    .registers 29
+    .registers 31
+    .param p1, "this$1"  # Lcom/android/server/biometrics/fingerprint/FingerprintService$FingerprintServiceWrapper;
+    .param p2, "context"  # Landroid/content/Context;
+    .param p3, "constants"  # Lcom/android/server/biometrics/Constants;
+    .param p4, "daemon"  # Lcom/android/server/biometrics/BiometricServiceBase$DaemonWrapper;
+    .param p5, "halDeviceId"  # J
+    .param p7, "token"  # Landroid/os/IBinder;
+    .param p8, "listener"  # Lcom/android/server/biometrics/BiometricServiceBase$ServiceListener;
+    .param p9, "biometricId"  # I
+    .param p10, "groupId"  # I
+    .param p11, "userId"  # I
+    .param p12, "restricted"  # Z
+    .param p13, "owner"  # Ljava/lang/String;
+    .param p14, "utils"  # Lcom/android/server/biometrics/BiometricUtils;
 
-    .line 305
-    move-object v0, p0
+    .line 321
+    move-object/from16 v14, p0
 
-    move-object v1, p1
+    move-object/from16 v15, p1
 
-    iput-object v1, v0, Lcom/android/server/biometrics/fingerprint/FingerprintService$FingerprintServiceWrapper$2;->this$1:Lcom/android/server/biometrics/fingerprint/FingerprintService$FingerprintServiceWrapper;
+    iput-object v15, v14, Lcom/android/server/biometrics/fingerprint/FingerprintService$FingerprintServiceWrapper$2;->this$1:Lcom/android/server/biometrics/fingerprint/FingerprintService$FingerprintServiceWrapper;
+
+    move-object/from16 v0, p0
 
     move-object/from16 v1, p2
 
@@ -63,7 +78,7 @@
 .method protected statsModality()I
     .registers 2
 
-    .line 308
+    .line 324
     iget-object v0, p0, Lcom/android/server/biometrics/fingerprint/FingerprintService$FingerprintServiceWrapper$2;->this$1:Lcom/android/server/biometrics/fingerprint/FingerprintService$FingerprintServiceWrapper;
 
     iget-object v0, v0, Lcom/android/server/biometrics/fingerprint/FingerprintService$FingerprintServiceWrapper;->this$0:Lcom/android/server/biometrics/fingerprint/FingerprintService;

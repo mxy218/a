@@ -32,17 +32,17 @@
 .method private constructor <init>()V
     .registers 2
 
-    .line 3280
+    .line 3270
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
-    .line 3281
+    .line 3271
     new-instance v0, Ljava/util/concurrent/LinkedBlockingQueue;
 
     invoke-direct {v0}, Ljava/util/concurrent/LinkedBlockingQueue;-><init>()V
 
     iput-object v0, p0, Lcom/android/server/pm/PackageManagerShellCommand$LocalIntentReceiver;->mResult:Ljava/util/concurrent/LinkedBlockingQueue;
 
-    .line 3283
+    .line 3273
     new-instance v0, Lcom/android/server/pm/PackageManagerShellCommand$LocalIntentReceiver$1;
 
     invoke-direct {v0, p0}, Lcom/android/server/pm/PackageManagerShellCommand$LocalIntentReceiver$1;-><init>(Lcom/android/server/pm/PackageManagerShellCommand$LocalIntentReceiver;)V
@@ -54,20 +54,22 @@
 
 .method synthetic constructor <init>(Lcom/android/server/pm/PackageManagerShellCommand$1;)V
     .registers 2
+    .param p1, "x0"  # Lcom/android/server/pm/PackageManagerShellCommand$1;
 
-    .line 3280
+    .line 3270
     invoke-direct {p0}, Lcom/android/server/pm/PackageManagerShellCommand$LocalIntentReceiver;-><init>()V
 
     return-void
 .end method
 
 .method static synthetic access$500(Lcom/android/server/pm/PackageManagerShellCommand$LocalIntentReceiver;)Ljava/util/concurrent/LinkedBlockingQueue;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/pm/PackageManagerShellCommand$LocalIntentReceiver;
 
-    .line 3280
-    iget-object p0, p0, Lcom/android/server/pm/PackageManagerShellCommand$LocalIntentReceiver;->mResult:Ljava/util/concurrent/LinkedBlockingQueue;
+    .line 3270
+    iget-object v0, p0, Lcom/android/server/pm/PackageManagerShellCommand$LocalIntentReceiver;->mResult:Ljava/util/concurrent/LinkedBlockingQueue;
 
-    return-object p0
+    return-object v0
 .end method
 
 
@@ -75,7 +77,7 @@
 .method public getIntentSender()Landroid/content/IntentSender;
     .registers 3
 
-    .line 3296
+    .line 3286
     new-instance v0, Landroid/content/IntentSender;
 
     iget-object v1, p0, Lcom/android/server/pm/PackageManagerShellCommand$LocalIntentReceiver;->mLocalSender:Landroid/content/IIntentSender$Stub;
@@ -88,7 +90,7 @@
 .method public getResult()Landroid/content/Intent;
     .registers 3
 
-    .line 3301
+    .line 3291
     :try_start_0
     iget-object v0, p0, Lcom/android/server/pm/PackageManagerShellCommand$LocalIntentReceiver;->mResult:Ljava/util/concurrent/LinkedBlockingQueue;
 
@@ -102,11 +104,12 @@
 
     return-object v0
 
-    .line 3302
+    .line 3292
     :catch_9
     move-exception v0
 
-    .line 3303
+    .line 3293
+    .local v0, "e":Ljava/lang/InterruptedException;
     new-instance v1, Ljava/lang/RuntimeException;
 
     invoke-direct {v1, v0}, Ljava/lang/RuntimeException;-><init>(Ljava/lang/Throwable;)V

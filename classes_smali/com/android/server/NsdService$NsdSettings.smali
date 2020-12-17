@@ -19,19 +19,21 @@
 
 # direct methods
 .method public static makeDefault(Landroid/content/Context;)Lcom/android/server/NsdService$NsdSettings;
-    .registers 2
+    .registers 3
+    .param p0, "context"  # Landroid/content/Context;
 
     .line 894
     invoke-virtual {p0}, Landroid/content/Context;->getContentResolver()Landroid/content/ContentResolver;
 
-    move-result-object p0
+    move-result-object v0
 
     .line 895
-    new-instance v0, Lcom/android/server/NsdService$NsdSettings$1;
+    .local v0, "resolver":Landroid/content/ContentResolver;
+    new-instance v1, Lcom/android/server/NsdService$NsdSettings$1;
 
-    invoke-direct {v0, p0}, Lcom/android/server/NsdService$NsdSettings$1;-><init>(Landroid/content/ContentResolver;)V
+    invoke-direct {v1, v0}, Lcom/android/server/NsdService$NsdSettings$1;-><init>(Landroid/content/ContentResolver;)V
 
-    return-object v0
+    return-object v1
 .end method
 
 

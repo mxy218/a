@@ -30,6 +30,10 @@
 # direct methods
 .method public constructor <init>(Ljava/lang/String;[B[B[B)V
     .registers 5
+    .param p1, "sessionId"  # Ljava/lang/String;
+    .param p2, "lskfHash"  # [B
+    .param p3, "keyClaimant"  # [B
+    .param p4, "vaultParams"  # [B
 
     .line 148
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -51,12 +55,13 @@
 .end method
 
 .method static synthetic access$000(Lcom/android/server/locksettings/recoverablekeystore/storage/RecoverySessionStorage$Entry;)Ljava/lang/String;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/locksettings/recoverablekeystore/storage/RecoverySessionStorage$Entry;
 
     .line 139
-    iget-object p0, p0, Lcom/android/server/locksettings/recoverablekeystore/storage/RecoverySessionStorage$Entry;->mSessionId:Ljava/lang/String;
+    iget-object v0, p0, Lcom/android/server/locksettings/recoverablekeystore/storage/RecoverySessionStorage$Entry;->mSessionId:Ljava/lang/String;
 
-    return-object p0
+    return-object v0
 .end method
 
 

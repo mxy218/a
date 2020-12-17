@@ -106,13 +106,37 @@
 .end method
 
 .method private getStateForUser(Landroid/content/Context;I)Lcom/android/server/biometrics/fingerprint/FingerprintUserState;
-    .registers 4
-
-    .line 85
-    monitor-enter p0
+    .registers 5
+    .param p1, "ctx"  # Landroid/content/Context;
+    .param p2, "userId"  # I
 
     .line 86
-    :try_start_1
+    invoke-static {p2}, Landroid/os/UserHandle;->isMultiOpenUserId(I)Z
+
+    move-result v0
+
+    if-eqz v0, :cond_7
+
+    .line 87
+    const/4 p2, 0x0
+
+    .line 90
+    :cond_7
+    monitor-enter p0
+
+    .line 92
+    :try_start_8
+    invoke-static {p2}, Landroid/os/UserHandle;->isMultiOpenUserId(I)Z
+
+    move-result v0
+
+    if-eqz v0, :cond_f
+
+    .line 93
+    const/4 p2, 0x0
+
+    .line 96
+    :cond_f
     iget-object v0, p0, Lcom/android/server/biometrics/fingerprint/FingerprintUtils;->mUsers:Landroid/util/SparseArray;
 
     invoke-virtual {v0, p2}, Landroid/util/SparseArray;->get(I)Ljava/lang/Object;
@@ -121,54 +145,63 @@
 
     check-cast v0, Lcom/android/server/biometrics/fingerprint/FingerprintUserState;
 
-    .line 87
-    if-nez v0, :cond_15
+    .line 97
+    .local v0, "state":Lcom/android/server/biometrics/fingerprint/FingerprintUserState;
+    if-nez v0, :cond_24
 
-    .line 88
-    new-instance v0, Lcom/android/server/biometrics/fingerprint/FingerprintUserState;
+    .line 98
+    new-instance v1, Lcom/android/server/biometrics/fingerprint/FingerprintUserState;
 
-    invoke-direct {v0, p1, p2}, Lcom/android/server/biometrics/fingerprint/FingerprintUserState;-><init>(Landroid/content/Context;I)V
+    invoke-direct {v1, p1, p2}, Lcom/android/server/biometrics/fingerprint/FingerprintUserState;-><init>(Landroid/content/Context;I)V
 
-    .line 89
-    iget-object p1, p0, Lcom/android/server/biometrics/fingerprint/FingerprintUtils;->mUsers:Landroid/util/SparseArray;
+    move-object v0, v1
 
-    invoke-virtual {p1, p2, v0}, Landroid/util/SparseArray;->put(ILjava/lang/Object;)V
+    .line 99
+    iget-object v1, p0, Lcom/android/server/biometrics/fingerprint/FingerprintUtils;->mUsers:Landroid/util/SparseArray;
 
-    .line 91
-    :cond_15
+    invoke-virtual {v1, p2, v0}, Landroid/util/SparseArray;->put(ILjava/lang/Object;)V
+
+    .line 101
+    :cond_24
     monitor-exit p0
 
     return-object v0
 
-    .line 92
-    :catchall_17
-    move-exception p1
+    .line 102
+    .end local v0  # "state":Lcom/android/server/biometrics/fingerprint/FingerprintUserState;
+    :catchall_26
+    move-exception v0
 
     monitor-exit p0
-    :try_end_19
-    .catchall {:try_start_1 .. :try_end_19} :catchall_17
+    :try_end_28
+    .catchall {:try_start_8 .. :try_end_28} :catchall_26
 
-    throw p1
+    throw v0
 .end method
 
 
 # virtual methods
 .method public addBiometricForUser(Landroid/content/Context;ILandroid/hardware/biometrics/BiometricAuthenticator$Identifier;)V
-    .registers 4
+    .registers 5
+    .param p1, "context"  # Landroid/content/Context;
+    .param p2, "userId"  # I
+    .param p3, "identifier"  # Landroid/hardware/biometrics/BiometricAuthenticator$Identifier;
 
     .line 61
     invoke-direct {p0, p1, p2}, Lcom/android/server/biometrics/fingerprint/FingerprintUtils;->getStateForUser(Landroid/content/Context;I)Lcom/android/server/biometrics/fingerprint/FingerprintUserState;
 
-    move-result-object p1
+    move-result-object v0
 
-    invoke-virtual {p1, p3}, Lcom/android/server/biometrics/fingerprint/FingerprintUserState;->addBiometric(Landroid/hardware/biometrics/BiometricAuthenticator$Identifier;)V
+    invoke-virtual {v0, p3}, Lcom/android/server/biometrics/fingerprint/FingerprintUserState;->addBiometric(Landroid/hardware/biometrics/BiometricAuthenticator$Identifier;)V
 
     .line 62
     return-void
 .end method
 
 .method public getBiometricsForUser(Landroid/content/Context;I)Ljava/util/List;
-    .registers 3
+    .registers 4
+    .param p1, "ctx"  # Landroid/content/Context;
+    .param p2, "userId"  # I
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(",
@@ -183,39 +216,44 @@
     .line 55
     invoke-direct {p0, p1, p2}, Lcom/android/server/biometrics/fingerprint/FingerprintUtils;->getStateForUser(Landroid/content/Context;I)Lcom/android/server/biometrics/fingerprint/FingerprintUserState;
 
-    move-result-object p1
+    move-result-object v0
 
-    invoke-virtual {p1}, Lcom/android/server/biometrics/fingerprint/FingerprintUserState;->getBiometrics()Ljava/util/List;
+    invoke-virtual {v0}, Lcom/android/server/biometrics/fingerprint/FingerprintUserState;->getBiometrics()Ljava/util/List;
 
-    move-result-object p1
+    move-result-object v0
 
-    return-object p1
+    return-object v0
 .end method
 
 .method public getUniqueName(Landroid/content/Context;I)Ljava/lang/CharSequence;
-    .registers 3
+    .registers 4
+    .param p1, "context"  # Landroid/content/Context;
+    .param p2, "userId"  # I
 
     .line 81
     invoke-direct {p0, p1, p2}, Lcom/android/server/biometrics/fingerprint/FingerprintUtils;->getStateForUser(Landroid/content/Context;I)Lcom/android/server/biometrics/fingerprint/FingerprintUserState;
 
-    move-result-object p1
+    move-result-object v0
 
-    invoke-virtual {p1}, Lcom/android/server/biometrics/fingerprint/FingerprintUserState;->getUniqueName()Ljava/lang/String;
+    invoke-virtual {v0}, Lcom/android/server/biometrics/fingerprint/FingerprintUserState;->getUniqueName()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    return-object p1
+    return-object v0
 .end method
 
 .method public removeBiometricForUser(Landroid/content/Context;II)V
-    .registers 4
+    .registers 5
+    .param p1, "context"  # Landroid/content/Context;
+    .param p2, "userId"  # I
+    .param p3, "fingerId"  # I
 
     .line 66
     invoke-direct {p0, p1, p2}, Lcom/android/server/biometrics/fingerprint/FingerprintUtils;->getStateForUser(Landroid/content/Context;I)Lcom/android/server/biometrics/fingerprint/FingerprintUserState;
 
-    move-result-object p1
+    move-result-object v0
 
-    invoke-virtual {p1, p3}, Lcom/android/server/biometrics/fingerprint/FingerprintUserState;->removeBiometric(I)V
+    invoke-virtual {v0, p3}, Lcom/android/server/biometrics/fingerprint/FingerprintUserState;->removeBiometric(I)V
 
     .line 67
     return-void
@@ -223,6 +261,10 @@
 
 .method public renameBiometricForUser(Landroid/content/Context;IILjava/lang/CharSequence;)V
     .registers 6
+    .param p1, "context"  # Landroid/content/Context;
+    .param p2, "userId"  # I
+    .param p3, "fingerId"  # I
+    .param p4, "name"  # Ljava/lang/CharSequence;
 
     .line 72
     invoke-static {p4}, Landroid/text/TextUtils;->isEmpty(Ljava/lang/CharSequence;)Z
@@ -238,9 +280,9 @@
     :cond_7
     invoke-direct {p0, p1, p2}, Lcom/android/server/biometrics/fingerprint/FingerprintUtils;->getStateForUser(Landroid/content/Context;I)Lcom/android/server/biometrics/fingerprint/FingerprintUserState;
 
-    move-result-object p1
+    move-result-object v0
 
-    invoke-virtual {p1, p3, p4}, Lcom/android/server/biometrics/fingerprint/FingerprintUserState;->renameBiometric(ILjava/lang/CharSequence;)V
+    invoke-virtual {v0, p3, p4}, Lcom/android/server/biometrics/fingerprint/FingerprintUserState;->renameBiometric(ILjava/lang/CharSequence;)V
 
     .line 77
     return-void

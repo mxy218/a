@@ -26,8 +26,9 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/audio/AudioService;Landroid/media/IVolumeController;)V
     .registers 3
+    .param p1, "this$0"  # Lcom/android/server/audio/AudioService;
 
-    .line 6601
+    .line 7657
     iput-object p1, p0, Lcom/android/server/audio/AudioService$4;->this$0:Lcom/android/server/audio/AudioService;
 
     iput-object p2, p0, Lcom/android/server/audio/AudioService$4;->val$controller:Landroid/media/IVolumeController;
@@ -42,10 +43,10 @@
 .method public binderDied()V
     .registers 3
 
-    .line 6604
+    .line 7660
     iget-object v0, p0, Lcom/android/server/audio/AudioService$4;->this$0:Lcom/android/server/audio/AudioService;
 
-    invoke-static {v0}, Lcom/android/server/audio/AudioService;->access$9000(Lcom/android/server/audio/AudioService;)Lcom/android/server/audio/AudioService$VolumeController;
+    invoke-static {v0}, Lcom/android/server/audio/AudioService;->access$9900(Lcom/android/server/audio/AudioService;)Lcom/android/server/audio/AudioService$VolumeController;
 
     move-result-object v0
 
@@ -57,21 +58,21 @@
 
     if-eqz v0, :cond_1b
 
-    .line 6605
+    .line 7661
     const-string v0, "AS.AudioService"
 
     const-string v1, "Current remote volume controller died, unregistering"
 
     invoke-static {v0, v1}, Landroid/util/Log;->w(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 6606
+    .line 7662
     iget-object v0, p0, Lcom/android/server/audio/AudioService$4;->this$0:Lcom/android/server/audio/AudioService;
 
     const/4 v1, 0x0
 
     invoke-virtual {v0, v1}, Lcom/android/server/audio/AudioService;->setVolumeController(Landroid/media/IVolumeController;)V
 
-    .line 6608
+    .line 7664
     :cond_1b
     return-void
 .end method

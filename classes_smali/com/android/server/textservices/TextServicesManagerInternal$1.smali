@@ -27,10 +27,11 @@
 
 # virtual methods
 .method public getCurrentSpellCheckerForUser(I)Landroid/view/textservice/SpellCheckerInfo;
-    .registers 2
+    .registers 3
+    .param p1, "userId"  # I
 
     .line 50
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    return-object p1
+    return-object v0
 .end method

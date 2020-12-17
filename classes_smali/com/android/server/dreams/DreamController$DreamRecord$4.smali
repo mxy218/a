@@ -21,6 +21,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/dreams/DreamController$DreamRecord;)V
     .registers 2
+    .param p1, "this$1"  # Lcom/android/server/dreams/DreamController$DreamRecord;
 
     .line 368
     iput-object p1, p0, Lcom/android/server/dreams/DreamController$DreamRecord$4;->this$1:Lcom/android/server/dreams/DreamController$DreamRecord;
@@ -33,7 +34,8 @@
 
 # virtual methods
 .method public sendResult(Landroid/os/Bundle;)V
-    .registers 3
+    .registers 4
+    .param p1, "data"  # Landroid/os/Bundle;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -41,19 +43,19 @@
     .end annotation
 
     .line 372
-    iget-object p1, p0, Lcom/android/server/dreams/DreamController$DreamRecord$4;->this$1:Lcom/android/server/dreams/DreamController$DreamRecord;
-
-    iget-object p1, p1, Lcom/android/server/dreams/DreamController$DreamRecord;->this$0:Lcom/android/server/dreams/DreamController;
-
-    invoke-static {p1}, Lcom/android/server/dreams/DreamController;->access$200(Lcom/android/server/dreams/DreamController;)Landroid/os/Handler;
-
-    move-result-object p1
-
     iget-object v0, p0, Lcom/android/server/dreams/DreamController$DreamRecord$4;->this$1:Lcom/android/server/dreams/DreamController$DreamRecord;
 
-    iget-object v0, v0, Lcom/android/server/dreams/DreamController$DreamRecord;->mReleaseWakeLockIfNeeded:Ljava/lang/Runnable;
+    iget-object v0, v0, Lcom/android/server/dreams/DreamController$DreamRecord;->this$0:Lcom/android/server/dreams/DreamController;
 
-    invoke-virtual {p1, v0}, Landroid/os/Handler;->post(Ljava/lang/Runnable;)Z
+    invoke-static {v0}, Lcom/android/server/dreams/DreamController;->access$200(Lcom/android/server/dreams/DreamController;)Landroid/os/Handler;
+
+    move-result-object v0
+
+    iget-object v1, p0, Lcom/android/server/dreams/DreamController$DreamRecord$4;->this$1:Lcom/android/server/dreams/DreamController$DreamRecord;
+
+    iget-object v1, v1, Lcom/android/server/dreams/DreamController$DreamRecord;->mReleaseWakeLockIfNeeded:Ljava/lang/Runnable;
+
+    invoke-virtual {v0, v1}, Landroid/os/Handler;->post(Ljava/lang/Runnable;)Z
 
     .line 373
     return-void

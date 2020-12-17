@@ -21,7 +21,7 @@
 .method constructor <init>()V
     .registers 1
 
-    .line 323
+    .line 331
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
     return-void
@@ -30,9 +30,10 @@
 
 # virtual methods
 .method public accept(Ljava/io/File;)Z
-    .registers 4
+    .registers 5
+    .param p1, "file"  # Ljava/io/File;
 
-    .line 326
+    .line 334
     invoke-virtual {p1}, Ljava/io/File;->isDirectory()Z
 
     move-result v0
@@ -43,25 +44,25 @@
 
     return v1
 
-    .line 327
+    .line 335
     :cond_8
     invoke-virtual {p1}, Ljava/io/File;->getName()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    const-string v0, ".removed"
+    const-string v2, ".removed"
 
-    invoke-virtual {p1, v0}, Ljava/lang/String;->endsWith(Ljava/lang/String;)Z
+    invoke-virtual {v0, v2}, Ljava/lang/String;->endsWith(Ljava/lang/String;)Z
 
-    move-result p1
+    move-result v0
 
-    if-nez p1, :cond_15
+    if-nez v0, :cond_15
 
     return v1
 
-    .line 328
+    .line 336
     :cond_15
-    const/4 p1, 0x1
+    const/4 v0, 0x1
 
-    return p1
+    return v0
 .end method

@@ -20,6 +20,9 @@
 # direct methods
 .method private constructor <init>(Lcom/android/server/backup/encryption/chunk/ChunkHash;[B[B)V
     .registers 4
+    .param p1, "key"  # Lcom/android/server/backup/encryption/chunk/ChunkHash;
+    .param p2, "nonce"  # [B
+    .param p3, "encryptedBytes"  # [B
 
     .line 51
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -39,6 +42,9 @@
 
 .method public static create(Lcom/android/server/backup/encryption/chunk/ChunkHash;[B[B)Lcom/android/server/backup/encryption/chunking/EncryptedChunk;
     .registers 5
+    .param p0, "key"  # Lcom/android/server/backup/encryption/chunk/ChunkHash;
+    .param p1, "nonce"  # [B
+    .param p2, "encryptedBytes"  # [B
 
     .line 42
     array-length v0, p1
@@ -79,7 +85,8 @@
 .end method
 
 .method public equals(Ljava/lang/Object;)Z
-    .registers 6
+    .registers 7
+    .param p1, "o"  # Ljava/lang/Object;
 
     .line 74
     const/4 v0, 0x1
@@ -102,48 +109,51 @@
 
     .line 81
     :cond_a
-    check-cast p1, Lcom/android/server/backup/encryption/chunking/EncryptedChunk;
+    move-object v1, p1
+
+    check-cast v1, Lcom/android/server/backup/encryption/chunking/EncryptedChunk;
 
     .line 82
-    iget-object v1, p0, Lcom/android/server/backup/encryption/chunking/EncryptedChunk;->mEncryptedBytes:[B
+    .local v1, "encryptedChunkOrdering":Lcom/android/server/backup/encryption/chunking/EncryptedChunk;
+    iget-object v3, p0, Lcom/android/server/backup/encryption/chunking/EncryptedChunk;->mEncryptedBytes:[B
 
-    iget-object v3, p1, Lcom/android/server/backup/encryption/chunking/EncryptedChunk;->mEncryptedBytes:[B
+    iget-object v4, v1, Lcom/android/server/backup/encryption/chunking/EncryptedChunk;->mEncryptedBytes:[B
 
-    invoke-static {v1, v3}, Ljava/util/Arrays;->equals([B[B)Z
+    invoke-static {v3, v4}, Ljava/util/Arrays;->equals([B[B)Z
 
-    move-result v1
+    move-result v3
 
-    if-eqz v1, :cond_2b
+    if-eqz v3, :cond_2c
 
-    iget-object v1, p0, Lcom/android/server/backup/encryption/chunking/EncryptedChunk;->mNonce:[B
+    iget-object v3, p0, Lcom/android/server/backup/encryption/chunking/EncryptedChunk;->mNonce:[B
 
-    iget-object v3, p1, Lcom/android/server/backup/encryption/chunking/EncryptedChunk;->mNonce:[B
+    iget-object v4, v1, Lcom/android/server/backup/encryption/chunking/EncryptedChunk;->mNonce:[B
 
     .line 83
-    invoke-static {v1, v3}, Ljava/util/Arrays;->equals([B[B)Z
+    invoke-static {v3, v4}, Ljava/util/Arrays;->equals([B[B)Z
 
-    move-result v1
+    move-result v3
 
-    if-eqz v1, :cond_2b
+    if-eqz v3, :cond_2c
 
-    iget-object v1, p0, Lcom/android/server/backup/encryption/chunking/EncryptedChunk;->mKey:Lcom/android/server/backup/encryption/chunk/ChunkHash;
+    iget-object v3, p0, Lcom/android/server/backup/encryption/chunking/EncryptedChunk;->mKey:Lcom/android/server/backup/encryption/chunk/ChunkHash;
 
-    iget-object p1, p1, Lcom/android/server/backup/encryption/chunking/EncryptedChunk;->mKey:Lcom/android/server/backup/encryption/chunk/ChunkHash;
+    iget-object v4, v1, Lcom/android/server/backup/encryption/chunking/EncryptedChunk;->mKey:Lcom/android/server/backup/encryption/chunk/ChunkHash;
 
     .line 84
-    invoke-virtual {v1, p1}, Lcom/android/server/backup/encryption/chunk/ChunkHash;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v3, v4}, Lcom/android/server/backup/encryption/chunk/ChunkHash;->equals(Ljava/lang/Object;)Z
 
-    move-result p1
+    move-result v3
 
-    if-eqz p1, :cond_2b
+    if-eqz v3, :cond_2c
 
-    goto :goto_2c
+    goto :goto_2d
 
-    :cond_2b
+    :cond_2c
     move v0, v2
 
     .line 82
-    :goto_2c
+    :goto_2d
     return v0
 .end method
 

@@ -53,457 +53,515 @@
 # direct methods
 .method private constructor <init>(Ljava/lang/String;)V
     .registers 3
+    .param p1, "name"  # Ljava/lang/String;
 
-    .line 121
+    .line 115
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
-    .line 107
+    .line 101
     const/4 v0, 0x0
 
     iput v0, p0, Lcom/android/server/wm/DisplayWindowSettings$Entry;->mWindowingMode:I
 
-    .line 108
+    .line 102
     iput v0, p0, Lcom/android/server/wm/DisplayWindowSettings$Entry;->mUserRotationMode:I
 
-    .line 109
+    .line 103
     iput v0, p0, Lcom/android/server/wm/DisplayWindowSettings$Entry;->mUserRotation:I
 
-    .line 113
+    .line 107
     iput v0, p0, Lcom/android/server/wm/DisplayWindowSettings$Entry;->mForcedScalingMode:I
 
-    .line 114
+    .line 108
     iput v0, p0, Lcom/android/server/wm/DisplayWindowSettings$Entry;->mRemoveContentMode:I
 
-    .line 115
+    .line 109
     iput-boolean v0, p0, Lcom/android/server/wm/DisplayWindowSettings$Entry;->mShouldShowWithInsecureKeyguard:Z
 
-    .line 116
+    .line 110
     iput-boolean v0, p0, Lcom/android/server/wm/DisplayWindowSettings$Entry;->mShouldShowSystemDecors:Z
 
-    .line 117
+    .line 111
     iput-boolean v0, p0, Lcom/android/server/wm/DisplayWindowSettings$Entry;->mShouldShowIme:Z
 
-    .line 118
+    .line 112
     iput v0, p0, Lcom/android/server/wm/DisplayWindowSettings$Entry;->mFixedToUserRotation:I
 
-    .line 122
+    .line 116
     iput-object p1, p0, Lcom/android/server/wm/DisplayWindowSettings$Entry;->mName:Ljava/lang/String;
 
-    .line 123
+    .line 117
     return-void
 .end method
 
 .method synthetic constructor <init>(Ljava/lang/String;Lcom/android/server/wm/DisplayWindowSettings$1;)V
     .registers 3
+    .param p1, "x0"  # Ljava/lang/String;
+    .param p2, "x1"  # Lcom/android/server/wm/DisplayWindowSettings$1;
 
-    .line 101
+    .line 95
     invoke-direct {p0, p1}, Lcom/android/server/wm/DisplayWindowSettings$Entry;-><init>(Ljava/lang/String;)V
 
     return-void
 .end method
 
 .method private constructor <init>(Ljava/lang/String;Lcom/android/server/wm/DisplayWindowSettings$Entry;)V
-    .registers 3
+    .registers 4
+    .param p1, "name"  # Ljava/lang/String;
+    .param p2, "copyFrom"  # Lcom/android/server/wm/DisplayWindowSettings$Entry;
 
-    .line 126
+    .line 120
     invoke-direct {p0, p1}, Lcom/android/server/wm/DisplayWindowSettings$Entry;-><init>(Ljava/lang/String;)V
 
-    .line 127
-    iget p1, p2, Lcom/android/server/wm/DisplayWindowSettings$Entry;->mOverscanLeft:I
+    .line 121
+    iget v0, p2, Lcom/android/server/wm/DisplayWindowSettings$Entry;->mOverscanLeft:I
 
-    iput p1, p0, Lcom/android/server/wm/DisplayWindowSettings$Entry;->mOverscanLeft:I
+    iput v0, p0, Lcom/android/server/wm/DisplayWindowSettings$Entry;->mOverscanLeft:I
+
+    .line 122
+    iget v0, p2, Lcom/android/server/wm/DisplayWindowSettings$Entry;->mOverscanTop:I
+
+    iput v0, p0, Lcom/android/server/wm/DisplayWindowSettings$Entry;->mOverscanTop:I
+
+    .line 123
+    iget v0, p2, Lcom/android/server/wm/DisplayWindowSettings$Entry;->mOverscanRight:I
+
+    iput v0, p0, Lcom/android/server/wm/DisplayWindowSettings$Entry;->mOverscanRight:I
+
+    .line 124
+    iget v0, p2, Lcom/android/server/wm/DisplayWindowSettings$Entry;->mOverscanBottom:I
+
+    iput v0, p0, Lcom/android/server/wm/DisplayWindowSettings$Entry;->mOverscanBottom:I
+
+    .line 125
+    iget v0, p2, Lcom/android/server/wm/DisplayWindowSettings$Entry;->mWindowingMode:I
+
+    iput v0, p0, Lcom/android/server/wm/DisplayWindowSettings$Entry;->mWindowingMode:I
+
+    .line 126
+    iget v0, p2, Lcom/android/server/wm/DisplayWindowSettings$Entry;->mUserRotationMode:I
+
+    iput v0, p0, Lcom/android/server/wm/DisplayWindowSettings$Entry;->mUserRotationMode:I
+
+    .line 127
+    iget v0, p2, Lcom/android/server/wm/DisplayWindowSettings$Entry;->mUserRotation:I
+
+    iput v0, p0, Lcom/android/server/wm/DisplayWindowSettings$Entry;->mUserRotation:I
 
     .line 128
-    iget p1, p2, Lcom/android/server/wm/DisplayWindowSettings$Entry;->mOverscanTop:I
+    iget v0, p2, Lcom/android/server/wm/DisplayWindowSettings$Entry;->mForcedWidth:I
 
-    iput p1, p0, Lcom/android/server/wm/DisplayWindowSettings$Entry;->mOverscanTop:I
+    iput v0, p0, Lcom/android/server/wm/DisplayWindowSettings$Entry;->mForcedWidth:I
 
     .line 129
-    iget p1, p2, Lcom/android/server/wm/DisplayWindowSettings$Entry;->mOverscanRight:I
+    iget v0, p2, Lcom/android/server/wm/DisplayWindowSettings$Entry;->mForcedHeight:I
 
-    iput p1, p0, Lcom/android/server/wm/DisplayWindowSettings$Entry;->mOverscanRight:I
+    iput v0, p0, Lcom/android/server/wm/DisplayWindowSettings$Entry;->mForcedHeight:I
 
     .line 130
-    iget p1, p2, Lcom/android/server/wm/DisplayWindowSettings$Entry;->mOverscanBottom:I
+    iget v0, p2, Lcom/android/server/wm/DisplayWindowSettings$Entry;->mForcedDensity:I
 
-    iput p1, p0, Lcom/android/server/wm/DisplayWindowSettings$Entry;->mOverscanBottom:I
+    iput v0, p0, Lcom/android/server/wm/DisplayWindowSettings$Entry;->mForcedDensity:I
 
     .line 131
-    iget p1, p2, Lcom/android/server/wm/DisplayWindowSettings$Entry;->mWindowingMode:I
+    iget v0, p2, Lcom/android/server/wm/DisplayWindowSettings$Entry;->mForcedScalingMode:I
 
-    iput p1, p0, Lcom/android/server/wm/DisplayWindowSettings$Entry;->mWindowingMode:I
+    iput v0, p0, Lcom/android/server/wm/DisplayWindowSettings$Entry;->mForcedScalingMode:I
 
     .line 132
-    iget p1, p2, Lcom/android/server/wm/DisplayWindowSettings$Entry;->mUserRotationMode:I
+    iget v0, p2, Lcom/android/server/wm/DisplayWindowSettings$Entry;->mRemoveContentMode:I
 
-    iput p1, p0, Lcom/android/server/wm/DisplayWindowSettings$Entry;->mUserRotationMode:I
+    iput v0, p0, Lcom/android/server/wm/DisplayWindowSettings$Entry;->mRemoveContentMode:I
 
     .line 133
-    iget p1, p2, Lcom/android/server/wm/DisplayWindowSettings$Entry;->mUserRotation:I
+    iget-boolean v0, p2, Lcom/android/server/wm/DisplayWindowSettings$Entry;->mShouldShowWithInsecureKeyguard:Z
 
-    iput p1, p0, Lcom/android/server/wm/DisplayWindowSettings$Entry;->mUserRotation:I
+    iput-boolean v0, p0, Lcom/android/server/wm/DisplayWindowSettings$Entry;->mShouldShowWithInsecureKeyguard:Z
 
     .line 134
-    iget p1, p2, Lcom/android/server/wm/DisplayWindowSettings$Entry;->mForcedWidth:I
+    iget-boolean v0, p2, Lcom/android/server/wm/DisplayWindowSettings$Entry;->mShouldShowSystemDecors:Z
 
-    iput p1, p0, Lcom/android/server/wm/DisplayWindowSettings$Entry;->mForcedWidth:I
+    iput-boolean v0, p0, Lcom/android/server/wm/DisplayWindowSettings$Entry;->mShouldShowSystemDecors:Z
 
     .line 135
-    iget p1, p2, Lcom/android/server/wm/DisplayWindowSettings$Entry;->mForcedHeight:I
+    iget-boolean v0, p2, Lcom/android/server/wm/DisplayWindowSettings$Entry;->mShouldShowIme:Z
 
-    iput p1, p0, Lcom/android/server/wm/DisplayWindowSettings$Entry;->mForcedHeight:I
+    iput-boolean v0, p0, Lcom/android/server/wm/DisplayWindowSettings$Entry;->mShouldShowIme:Z
 
     .line 136
-    iget p1, p2, Lcom/android/server/wm/DisplayWindowSettings$Entry;->mForcedDensity:I
+    iget v0, p2, Lcom/android/server/wm/DisplayWindowSettings$Entry;->mFixedToUserRotation:I
 
-    iput p1, p0, Lcom/android/server/wm/DisplayWindowSettings$Entry;->mForcedDensity:I
+    iput v0, p0, Lcom/android/server/wm/DisplayWindowSettings$Entry;->mFixedToUserRotation:I
 
     .line 137
-    iget p1, p2, Lcom/android/server/wm/DisplayWindowSettings$Entry;->mForcedScalingMode:I
-
-    iput p1, p0, Lcom/android/server/wm/DisplayWindowSettings$Entry;->mForcedScalingMode:I
-
-    .line 138
-    iget p1, p2, Lcom/android/server/wm/DisplayWindowSettings$Entry;->mRemoveContentMode:I
-
-    iput p1, p0, Lcom/android/server/wm/DisplayWindowSettings$Entry;->mRemoveContentMode:I
-
-    .line 139
-    iget-boolean p1, p2, Lcom/android/server/wm/DisplayWindowSettings$Entry;->mShouldShowWithInsecureKeyguard:Z
-
-    iput-boolean p1, p0, Lcom/android/server/wm/DisplayWindowSettings$Entry;->mShouldShowWithInsecureKeyguard:Z
-
-    .line 140
-    iget-boolean p1, p2, Lcom/android/server/wm/DisplayWindowSettings$Entry;->mShouldShowSystemDecors:Z
-
-    iput-boolean p1, p0, Lcom/android/server/wm/DisplayWindowSettings$Entry;->mShouldShowSystemDecors:Z
-
-    .line 141
-    iget-boolean p1, p2, Lcom/android/server/wm/DisplayWindowSettings$Entry;->mShouldShowIme:Z
-
-    iput-boolean p1, p0, Lcom/android/server/wm/DisplayWindowSettings$Entry;->mShouldShowIme:Z
-
-    .line 142
-    iget p1, p2, Lcom/android/server/wm/DisplayWindowSettings$Entry;->mFixedToUserRotation:I
-
-    iput p1, p0, Lcom/android/server/wm/DisplayWindowSettings$Entry;->mFixedToUserRotation:I
-
-    .line 143
     return-void
 .end method
 
 .method synthetic constructor <init>(Ljava/lang/String;Lcom/android/server/wm/DisplayWindowSettings$Entry;Lcom/android/server/wm/DisplayWindowSettings$1;)V
     .registers 4
+    .param p1, "x0"  # Ljava/lang/String;
+    .param p2, "x1"  # Lcom/android/server/wm/DisplayWindowSettings$Entry;
+    .param p3, "x2"  # Lcom/android/server/wm/DisplayWindowSettings$1;
 
-    .line 101
+    .line 95
     invoke-direct {p0, p1, p2}, Lcom/android/server/wm/DisplayWindowSettings$Entry;-><init>(Ljava/lang/String;Lcom/android/server/wm/DisplayWindowSettings$Entry;)V
 
     return-void
 .end method
 
 .method static synthetic access$1000(Lcom/android/server/wm/DisplayWindowSettings$Entry;)I
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/wm/DisplayWindowSettings$Entry;
 
-    .line 101
-    iget p0, p0, Lcom/android/server/wm/DisplayWindowSettings$Entry;->mForcedHeight:I
+    .line 95
+    iget v0, p0, Lcom/android/server/wm/DisplayWindowSettings$Entry;->mForcedHeight:I
 
-    return p0
+    return v0
 .end method
 
 .method static synthetic access$1002(Lcom/android/server/wm/DisplayWindowSettings$Entry;I)I
     .registers 2
+    .param p0, "x0"  # Lcom/android/server/wm/DisplayWindowSettings$Entry;
+    .param p1, "x1"  # I
 
-    .line 101
+    .line 95
     iput p1, p0, Lcom/android/server/wm/DisplayWindowSettings$Entry;->mForcedHeight:I
 
     return p1
 .end method
 
 .method static synthetic access$1100(Lcom/android/server/wm/DisplayWindowSettings$Entry;)I
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/wm/DisplayWindowSettings$Entry;
 
-    .line 101
-    iget p0, p0, Lcom/android/server/wm/DisplayWindowSettings$Entry;->mForcedDensity:I
+    .line 95
+    iget v0, p0, Lcom/android/server/wm/DisplayWindowSettings$Entry;->mForcedDensity:I
 
-    return p0
+    return v0
 .end method
 
 .method static synthetic access$1102(Lcom/android/server/wm/DisplayWindowSettings$Entry;I)I
     .registers 2
+    .param p0, "x0"  # Lcom/android/server/wm/DisplayWindowSettings$Entry;
+    .param p1, "x1"  # I
 
-    .line 101
+    .line 95
     iput p1, p0, Lcom/android/server/wm/DisplayWindowSettings$Entry;->mForcedDensity:I
 
     return p1
 .end method
 
 .method static synthetic access$1200(Lcom/android/server/wm/DisplayWindowSettings$Entry;)I
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/wm/DisplayWindowSettings$Entry;
 
-    .line 101
-    iget p0, p0, Lcom/android/server/wm/DisplayWindowSettings$Entry;->mForcedScalingMode:I
+    .line 95
+    iget v0, p0, Lcom/android/server/wm/DisplayWindowSettings$Entry;->mForcedScalingMode:I
 
-    return p0
+    return v0
 .end method
 
 .method static synthetic access$1202(Lcom/android/server/wm/DisplayWindowSettings$Entry;I)I
     .registers 2
+    .param p0, "x0"  # Lcom/android/server/wm/DisplayWindowSettings$Entry;
+    .param p1, "x1"  # I
 
-    .line 101
+    .line 95
     iput p1, p0, Lcom/android/server/wm/DisplayWindowSettings$Entry;->mForcedScalingMode:I
 
     return p1
 .end method
 
 .method static synthetic access$1300(Lcom/android/server/wm/DisplayWindowSettings$Entry;)I
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/wm/DisplayWindowSettings$Entry;
 
-    .line 101
-    iget p0, p0, Lcom/android/server/wm/DisplayWindowSettings$Entry;->mFixedToUserRotation:I
+    .line 95
+    iget v0, p0, Lcom/android/server/wm/DisplayWindowSettings$Entry;->mFixedToUserRotation:I
 
-    return p0
+    return v0
 .end method
 
 .method static synthetic access$1302(Lcom/android/server/wm/DisplayWindowSettings$Entry;I)I
     .registers 2
+    .param p0, "x0"  # Lcom/android/server/wm/DisplayWindowSettings$Entry;
+    .param p1, "x1"  # I
 
-    .line 101
+    .line 95
     iput p1, p0, Lcom/android/server/wm/DisplayWindowSettings$Entry;->mFixedToUserRotation:I
 
     return p1
 .end method
 
 .method static synthetic access$1400(Lcom/android/server/wm/DisplayWindowSettings$Entry;)I
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/wm/DisplayWindowSettings$Entry;
 
-    .line 101
-    iget p0, p0, Lcom/android/server/wm/DisplayWindowSettings$Entry;->mWindowingMode:I
+    .line 95
+    iget v0, p0, Lcom/android/server/wm/DisplayWindowSettings$Entry;->mWindowingMode:I
 
-    return p0
+    return v0
 .end method
 
 .method static synthetic access$1402(Lcom/android/server/wm/DisplayWindowSettings$Entry;I)I
     .registers 2
+    .param p0, "x0"  # Lcom/android/server/wm/DisplayWindowSettings$Entry;
+    .param p1, "x1"  # I
 
-    .line 101
+    .line 95
     iput p1, p0, Lcom/android/server/wm/DisplayWindowSettings$Entry;->mWindowingMode:I
 
     return p1
 .end method
 
 .method static synthetic access$1500(Lcom/android/server/wm/DisplayWindowSettings$Entry;)I
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/wm/DisplayWindowSettings$Entry;
 
-    .line 101
-    iget p0, p0, Lcom/android/server/wm/DisplayWindowSettings$Entry;->mRemoveContentMode:I
+    .line 95
+    iget v0, p0, Lcom/android/server/wm/DisplayWindowSettings$Entry;->mRemoveContentMode:I
 
-    return p0
+    return v0
 .end method
 
 .method static synthetic access$1502(Lcom/android/server/wm/DisplayWindowSettings$Entry;I)I
     .registers 2
+    .param p0, "x0"  # Lcom/android/server/wm/DisplayWindowSettings$Entry;
+    .param p1, "x1"  # I
 
-    .line 101
+    .line 95
     iput p1, p0, Lcom/android/server/wm/DisplayWindowSettings$Entry;->mRemoveContentMode:I
 
     return p1
 .end method
 
 .method static synthetic access$1600(Lcom/android/server/wm/DisplayWindowSettings$Entry;)Z
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/wm/DisplayWindowSettings$Entry;
 
-    .line 101
-    iget-boolean p0, p0, Lcom/android/server/wm/DisplayWindowSettings$Entry;->mShouldShowWithInsecureKeyguard:Z
+    .line 95
+    iget-boolean v0, p0, Lcom/android/server/wm/DisplayWindowSettings$Entry;->mShouldShowWithInsecureKeyguard:Z
 
-    return p0
+    return v0
 .end method
 
 .method static synthetic access$1602(Lcom/android/server/wm/DisplayWindowSettings$Entry;Z)Z
     .registers 2
+    .param p0, "x0"  # Lcom/android/server/wm/DisplayWindowSettings$Entry;
+    .param p1, "x1"  # Z
 
-    .line 101
+    .line 95
     iput-boolean p1, p0, Lcom/android/server/wm/DisplayWindowSettings$Entry;->mShouldShowWithInsecureKeyguard:Z
 
     return p1
 .end method
 
 .method static synthetic access$1700(Lcom/android/server/wm/DisplayWindowSettings$Entry;)Z
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/wm/DisplayWindowSettings$Entry;
 
-    .line 101
-    iget-boolean p0, p0, Lcom/android/server/wm/DisplayWindowSettings$Entry;->mShouldShowSystemDecors:Z
+    .line 95
+    iget-boolean v0, p0, Lcom/android/server/wm/DisplayWindowSettings$Entry;->mShouldShowSystemDecors:Z
 
-    return p0
+    return v0
 .end method
 
 .method static synthetic access$1702(Lcom/android/server/wm/DisplayWindowSettings$Entry;Z)Z
     .registers 2
+    .param p0, "x0"  # Lcom/android/server/wm/DisplayWindowSettings$Entry;
+    .param p1, "x1"  # Z
 
-    .line 101
+    .line 95
     iput-boolean p1, p0, Lcom/android/server/wm/DisplayWindowSettings$Entry;->mShouldShowSystemDecors:Z
 
     return p1
 .end method
 
 .method static synthetic access$1800(Lcom/android/server/wm/DisplayWindowSettings$Entry;)Z
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/wm/DisplayWindowSettings$Entry;
 
-    .line 101
-    iget-boolean p0, p0, Lcom/android/server/wm/DisplayWindowSettings$Entry;->mShouldShowIme:Z
+    .line 95
+    iget-boolean v0, p0, Lcom/android/server/wm/DisplayWindowSettings$Entry;->mShouldShowIme:Z
 
-    return p0
+    return v0
 .end method
 
 .method static synthetic access$1802(Lcom/android/server/wm/DisplayWindowSettings$Entry;Z)Z
     .registers 2
+    .param p0, "x0"  # Lcom/android/server/wm/DisplayWindowSettings$Entry;
+    .param p1, "x1"  # Z
 
-    .line 101
+    .line 95
     iput-boolean p1, p0, Lcom/android/server/wm/DisplayWindowSettings$Entry;->mShouldShowIme:Z
 
     return p1
 .end method
 
 .method static synthetic access$1900(Lcom/android/server/wm/DisplayWindowSettings$Entry;)Z
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/wm/DisplayWindowSettings$Entry;
 
-    .line 101
+    .line 95
     invoke-direct {p0}, Lcom/android/server/wm/DisplayWindowSettings$Entry;->isEmpty()Z
 
-    move-result p0
+    move-result v0
 
-    return p0
+    return v0
 .end method
 
 .method static synthetic access$200(Lcom/android/server/wm/DisplayWindowSettings$Entry;)Ljava/lang/String;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/wm/DisplayWindowSettings$Entry;
 
-    .line 101
-    iget-object p0, p0, Lcom/android/server/wm/DisplayWindowSettings$Entry;->mName:Ljava/lang/String;
+    .line 95
+    iget-object v0, p0, Lcom/android/server/wm/DisplayWindowSettings$Entry;->mName:Ljava/lang/String;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$300(Lcom/android/server/wm/DisplayWindowSettings$Entry;)I
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/wm/DisplayWindowSettings$Entry;
 
-    .line 101
-    iget p0, p0, Lcom/android/server/wm/DisplayWindowSettings$Entry;->mOverscanLeft:I
+    .line 95
+    iget v0, p0, Lcom/android/server/wm/DisplayWindowSettings$Entry;->mOverscanLeft:I
 
-    return p0
+    return v0
 .end method
 
 .method static synthetic access$302(Lcom/android/server/wm/DisplayWindowSettings$Entry;I)I
     .registers 2
+    .param p0, "x0"  # Lcom/android/server/wm/DisplayWindowSettings$Entry;
+    .param p1, "x1"  # I
 
-    .line 101
+    .line 95
     iput p1, p0, Lcom/android/server/wm/DisplayWindowSettings$Entry;->mOverscanLeft:I
 
     return p1
 .end method
 
 .method static synthetic access$400(Lcom/android/server/wm/DisplayWindowSettings$Entry;)I
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/wm/DisplayWindowSettings$Entry;
 
-    .line 101
-    iget p0, p0, Lcom/android/server/wm/DisplayWindowSettings$Entry;->mOverscanTop:I
+    .line 95
+    iget v0, p0, Lcom/android/server/wm/DisplayWindowSettings$Entry;->mOverscanTop:I
 
-    return p0
+    return v0
 .end method
 
 .method static synthetic access$402(Lcom/android/server/wm/DisplayWindowSettings$Entry;I)I
     .registers 2
+    .param p0, "x0"  # Lcom/android/server/wm/DisplayWindowSettings$Entry;
+    .param p1, "x1"  # I
 
-    .line 101
+    .line 95
     iput p1, p0, Lcom/android/server/wm/DisplayWindowSettings$Entry;->mOverscanTop:I
 
     return p1
 .end method
 
 .method static synthetic access$500(Lcom/android/server/wm/DisplayWindowSettings$Entry;)I
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/wm/DisplayWindowSettings$Entry;
 
-    .line 101
-    iget p0, p0, Lcom/android/server/wm/DisplayWindowSettings$Entry;->mOverscanRight:I
+    .line 95
+    iget v0, p0, Lcom/android/server/wm/DisplayWindowSettings$Entry;->mOverscanRight:I
 
-    return p0
+    return v0
 .end method
 
 .method static synthetic access$502(Lcom/android/server/wm/DisplayWindowSettings$Entry;I)I
     .registers 2
+    .param p0, "x0"  # Lcom/android/server/wm/DisplayWindowSettings$Entry;
+    .param p1, "x1"  # I
 
-    .line 101
+    .line 95
     iput p1, p0, Lcom/android/server/wm/DisplayWindowSettings$Entry;->mOverscanRight:I
 
     return p1
 .end method
 
 .method static synthetic access$600(Lcom/android/server/wm/DisplayWindowSettings$Entry;)I
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/wm/DisplayWindowSettings$Entry;
 
-    .line 101
-    iget p0, p0, Lcom/android/server/wm/DisplayWindowSettings$Entry;->mOverscanBottom:I
+    .line 95
+    iget v0, p0, Lcom/android/server/wm/DisplayWindowSettings$Entry;->mOverscanBottom:I
 
-    return p0
+    return v0
 .end method
 
 .method static synthetic access$602(Lcom/android/server/wm/DisplayWindowSettings$Entry;I)I
     .registers 2
+    .param p0, "x0"  # Lcom/android/server/wm/DisplayWindowSettings$Entry;
+    .param p1, "x1"  # I
 
-    .line 101
+    .line 95
     iput p1, p0, Lcom/android/server/wm/DisplayWindowSettings$Entry;->mOverscanBottom:I
 
     return p1
 .end method
 
 .method static synthetic access$700(Lcom/android/server/wm/DisplayWindowSettings$Entry;)I
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/wm/DisplayWindowSettings$Entry;
 
-    .line 101
-    iget p0, p0, Lcom/android/server/wm/DisplayWindowSettings$Entry;->mUserRotationMode:I
+    .line 95
+    iget v0, p0, Lcom/android/server/wm/DisplayWindowSettings$Entry;->mUserRotationMode:I
 
-    return p0
+    return v0
 .end method
 
 .method static synthetic access$702(Lcom/android/server/wm/DisplayWindowSettings$Entry;I)I
     .registers 2
+    .param p0, "x0"  # Lcom/android/server/wm/DisplayWindowSettings$Entry;
+    .param p1, "x1"  # I
 
-    .line 101
+    .line 95
     iput p1, p0, Lcom/android/server/wm/DisplayWindowSettings$Entry;->mUserRotationMode:I
 
     return p1
 .end method
 
 .method static synthetic access$800(Lcom/android/server/wm/DisplayWindowSettings$Entry;)I
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/wm/DisplayWindowSettings$Entry;
 
-    .line 101
-    iget p0, p0, Lcom/android/server/wm/DisplayWindowSettings$Entry;->mUserRotation:I
+    .line 95
+    iget v0, p0, Lcom/android/server/wm/DisplayWindowSettings$Entry;->mUserRotation:I
 
-    return p0
+    return v0
 .end method
 
 .method static synthetic access$802(Lcom/android/server/wm/DisplayWindowSettings$Entry;I)I
     .registers 2
+    .param p0, "x0"  # Lcom/android/server/wm/DisplayWindowSettings$Entry;
+    .param p1, "x1"  # I
 
-    .line 101
+    .line 95
     iput p1, p0, Lcom/android/server/wm/DisplayWindowSettings$Entry;->mUserRotation:I
 
     return p1
 .end method
 
 .method static synthetic access$900(Lcom/android/server/wm/DisplayWindowSettings$Entry;)I
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/wm/DisplayWindowSettings$Entry;
 
-    .line 101
-    iget p0, p0, Lcom/android/server/wm/DisplayWindowSettings$Entry;->mForcedWidth:I
+    .line 95
+    iget v0, p0, Lcom/android/server/wm/DisplayWindowSettings$Entry;->mForcedWidth:I
 
-    return p0
+    return v0
 .end method
 
 .method static synthetic access$902(Lcom/android/server/wm/DisplayWindowSettings$Entry;I)I
     .registers 2
+    .param p0, "x0"  # Lcom/android/server/wm/DisplayWindowSettings$Entry;
+    .param p1, "x1"  # I
 
-    .line 101
+    .line 95
     iput p1, p0, Lcom/android/server/wm/DisplayWindowSettings$Entry;->mForcedWidth:I
 
     return p1
@@ -512,7 +570,7 @@
 .method private isEmpty()Z
     .registers 2
 
-    .line 147
+    .line 141
     iget v0, p0, Lcom/android/server/wm/DisplayWindowSettings$Entry;->mOverscanLeft:I
 
     if-nez v0, :cond_42

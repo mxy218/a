@@ -24,6 +24,7 @@
 # virtual methods
 .method public report(Lcom/android/server/usb/descriptors/report/ReportCanvas;)V
     .registers 2
+    .param p1, "canvas"  # Lcom/android/server/usb/descriptors/report/ReportCanvas;
 
     .line 33
     return-void
@@ -31,6 +32,7 @@
 
 .method public shortReport(Lcom/android/server/usb/descriptors/report/ReportCanvas;)V
     .registers 2
+    .param p1, "canvas"  # Lcom/android/server/usb/descriptors/report/ReportCanvas;
 
     .line 40
     return-void

@@ -121,7 +121,12 @@
 
 # direct methods
 .method public constructor <init>(Ljava/lang/Object;Landroid/content/Context;Landroid/os/Looper;Lcom/android/server/power/batterysaver/BatterySaverPolicy;Lcom/android/server/power/batterysaver/BatterySavingStats;)V
-    .registers 7
+    .registers 9
+    .param p1, "lock"  # Ljava/lang/Object;
+    .param p2, "context"  # Landroid/content/Context;
+    .param p3, "looper"  # Landroid/os/Looper;
+    .param p4, "policy"  # Lcom/android/server/power/batterysaver/BatterySaverPolicy;
+    .param p5, "batterySavingStats"  # Lcom/android/server/power/batterysaver/BatterySavingStats;
 
     .line 197
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -147,64 +152,66 @@
     iput-object p2, p0, Lcom/android/server/power/batterysaver/BatterySaverController;->mContext:Landroid/content/Context;
 
     .line 200
-    new-instance p1, Lcom/android/server/power/batterysaver/BatterySaverController$MyHandler;
+    new-instance v0, Lcom/android/server/power/batterysaver/BatterySaverController$MyHandler;
 
-    invoke-direct {p1, p0, p3}, Lcom/android/server/power/batterysaver/BatterySaverController$MyHandler;-><init>(Lcom/android/server/power/batterysaver/BatterySaverController;Landroid/os/Looper;)V
+    invoke-direct {v0, p0, p3}, Lcom/android/server/power/batterysaver/BatterySaverController$MyHandler;-><init>(Lcom/android/server/power/batterysaver/BatterySaverController;Landroid/os/Looper;)V
 
-    iput-object p1, p0, Lcom/android/server/power/batterysaver/BatterySaverController;->mHandler:Lcom/android/server/power/batterysaver/BatterySaverController$MyHandler;
+    iput-object v0, p0, Lcom/android/server/power/batterysaver/BatterySaverController;->mHandler:Lcom/android/server/power/batterysaver/BatterySaverController$MyHandler;
 
     .line 201
     iput-object p4, p0, Lcom/android/server/power/batterysaver/BatterySaverController;->mBatterySaverPolicy:Lcom/android/server/power/batterysaver/BatterySaverPolicy;
 
     .line 202
-    iget-object p1, p0, Lcom/android/server/power/batterysaver/BatterySaverController;->mBatterySaverPolicy:Lcom/android/server/power/batterysaver/BatterySaverPolicy;
+    iget-object v0, p0, Lcom/android/server/power/batterysaver/BatterySaverController;->mBatterySaverPolicy:Lcom/android/server/power/batterysaver/BatterySaverPolicy;
 
-    invoke-virtual {p1, p0}, Lcom/android/server/power/batterysaver/BatterySaverPolicy;->addListener(Lcom/android/server/power/batterysaver/BatterySaverPolicy$BatterySaverPolicyListener;)V
+    invoke-virtual {v0, p0}, Lcom/android/server/power/batterysaver/BatterySaverPolicy;->addListener(Lcom/android/server/power/batterysaver/BatterySaverPolicy$BatterySaverPolicyListener;)V
 
     .line 203
-    new-instance p1, Lcom/android/server/power/batterysaver/FileUpdater;
+    new-instance v0, Lcom/android/server/power/batterysaver/FileUpdater;
 
-    invoke-direct {p1, p2}, Lcom/android/server/power/batterysaver/FileUpdater;-><init>(Landroid/content/Context;)V
+    invoke-direct {v0, p2}, Lcom/android/server/power/batterysaver/FileUpdater;-><init>(Landroid/content/Context;)V
 
-    iput-object p1, p0, Lcom/android/server/power/batterysaver/BatterySaverController;->mFileUpdater:Lcom/android/server/power/batterysaver/FileUpdater;
+    iput-object v0, p0, Lcom/android/server/power/batterysaver/BatterySaverController;->mFileUpdater:Lcom/android/server/power/batterysaver/FileUpdater;
 
     .line 204
     iput-object p5, p0, Lcom/android/server/power/batterysaver/BatterySaverController;->mBatterySavingStats:Lcom/android/server/power/batterysaver/BatterySavingStats;
 
     .line 207
-    const/4 p1, 0x1
+    const/4 v0, 0x1
 
-    new-array p1, p1, [Lcom/android/server/power/batterysaver/BatterySaverController$Plugin;
+    new-array v0, v0, [Lcom/android/server/power/batterysaver/BatterySaverController$Plugin;
 
-    new-instance p2, Lcom/android/server/power/batterysaver/BatterySaverLocationPlugin;
+    new-instance v1, Lcom/android/server/power/batterysaver/BatterySaverLocationPlugin;
 
-    iget-object p3, p0, Lcom/android/server/power/batterysaver/BatterySaverController;->mContext:Landroid/content/Context;
+    iget-object v2, p0, Lcom/android/server/power/batterysaver/BatterySaverController;->mContext:Landroid/content/Context;
 
-    invoke-direct {p2, p3}, Lcom/android/server/power/batterysaver/BatterySaverLocationPlugin;-><init>(Landroid/content/Context;)V
+    invoke-direct {v1, v2}, Lcom/android/server/power/batterysaver/BatterySaverLocationPlugin;-><init>(Landroid/content/Context;)V
 
-    const/4 p3, 0x0
+    const/4 v2, 0x0
 
-    aput-object p2, p1, p3
+    aput-object v1, v0, v2
 
-    iput-object p1, p0, Lcom/android/server/power/batterysaver/BatterySaverController;->mPlugins:[Lcom/android/server/power/batterysaver/BatterySaverController$Plugin;
+    iput-object v0, p0, Lcom/android/server/power/batterysaver/BatterySaverController;->mPlugins:[Lcom/android/server/power/batterysaver/BatterySaverController$Plugin;
 
     .line 210
     return-void
 .end method
 
 .method static synthetic access$000(Lcom/android/server/power/batterysaver/BatterySaverController;)Z
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/power/batterysaver/BatterySaverController;
 
     .line 59
     invoke-direct {p0}, Lcom/android/server/power/batterysaver/BatterySaverController;->isPolicyEnabled()Z
 
-    move-result p0
+    move-result v0
 
-    return p0
+    return v0
 .end method
 
 .method static synthetic access$100(Lcom/android/server/power/batterysaver/BatterySaverController;)V
     .registers 1
+    .param p0, "x0"  # Lcom/android/server/power/batterysaver/BatterySaverController;
 
     .line 59
     invoke-direct {p0}, Lcom/android/server/power/batterysaver/BatterySaverController;->updateBatterySavingStats()V
@@ -213,25 +220,29 @@
 .end method
 
 .method static synthetic access$200(Lcom/android/server/power/batterysaver/BatterySaverController;)Lcom/android/server/power/batterysaver/BatterySaverController$MyHandler;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/power/batterysaver/BatterySaverController;
 
     .line 59
-    iget-object p0, p0, Lcom/android/server/power/batterysaver/BatterySaverController;->mHandler:Lcom/android/server/power/batterysaver/BatterySaverController$MyHandler;
+    iget-object v0, p0, Lcom/android/server/power/batterysaver/BatterySaverController;->mHandler:Lcom/android/server/power/batterysaver/BatterySaverController$MyHandler;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$300(Lcom/android/server/power/batterysaver/BatterySaverController;)Ljava/lang/Object;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/power/batterysaver/BatterySaverController;
 
     .line 59
-    iget-object p0, p0, Lcom/android/server/power/batterysaver/BatterySaverController;->mLock:Ljava/lang/Object;
+    iget-object v0, p0, Lcom/android/server/power/batterysaver/BatterySaverController;->mLock:Ljava/lang/Object;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$402(Lcom/android/server/power/batterysaver/BatterySaverController;Z)Z
     .registers 2
+    .param p0, "x0"  # Lcom/android/server/power/batterysaver/BatterySaverController;
+    .param p1, "x1"  # Z
 
     .line 59
     iput-boolean p1, p0, Lcom/android/server/power/batterysaver/BatterySaverController;->mIsPluggedIn:Z
@@ -240,12 +251,13 @@
 .end method
 
 .method static synthetic access$500(Lcom/android/server/power/batterysaver/BatterySaverController;)[Lcom/android/server/power/batterysaver/BatterySaverController$Plugin;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/power/batterysaver/BatterySaverController;
 
     .line 59
-    iget-object p0, p0, Lcom/android/server/power/batterysaver/BatterySaverController;->mPlugins:[Lcom/android/server/power/batterysaver/BatterySaverController$Plugin;
+    iget-object v0, p0, Lcom/android/server/power/batterysaver/BatterySaverController;->mPlugins:[Lcom/android/server/power/batterysaver/BatterySaverController$Plugin;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method private getPowerManager()Landroid/os/PowerManager;
@@ -330,6 +342,7 @@
 
 .method static reasonToString(I)Ljava/lang/String;
     .registers 3
+    .param p0, "reason"  # I
 
     .line 122
     packed-switch p0, :pswitch_data_3e
@@ -347,87 +360,87 @@
 
     invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v0
 
-    return-object p0
+    return-object v0
 
     .line 148
     :pswitch_15  #0xc
-    const-string/jumbo p0, "timeout"
+    const-string/jumbo v0, "timeout"
 
-    return-object p0
+    return-object v0
 
     .line 146
     :pswitch_19  #0xb
-    const-string p0, "Adaptive Power Savings changed"
+    const-string v0, "Adaptive Power Savings changed"
 
-    return-object p0
+    return-object v0
 
     .line 144
     :pswitch_1c  #0xa
-    const-string p0, "Dynamic Warning Auto OFF"
+    const-string v0, "Dynamic Warning Auto OFF"
 
-    return-object p0
+    return-object v0
 
     .line 142
     :pswitch_1f  #0x9
-    const-string p0, "Dynamic Warning Auto ON"
+    const-string v0, "Dynamic Warning Auto ON"
 
-    return-object p0
+    return-object v0
 
     .line 140
     :pswitch_22  #0x8
-    const-string p0, "Setting changed"
+    const-string v0, "Setting changed"
 
-    return-object p0
+    return-object v0
 
     .line 138
     :pswitch_25  #0x7
-    const-string p0, "Plugged in"
+    const-string v0, "Plugged in"
 
-    return-object p0
+    return-object v0
 
     .line 136
     :pswitch_28  #0x6
-    const-string p0, "Policy changed"
+    const-string v0, "Policy changed"
 
-    return-object p0
+    return-object v0
 
     .line 134
     :pswitch_2b  #0x5
-    const-string p0, "Interactivity changed"
+    const-string v0, "Interactivity changed"
 
-    return-object p0
+    return-object v0
 
     .line 132
     :pswitch_2e  #0x4
-    const-string p0, "Sticky restore"
+    const-string v0, "Sticky restore"
 
-    return-object p0
+    return-object v0
 
     .line 130
     :pswitch_31  #0x3
-    const-string p0, "Manual OFF"
+    const-string v0, "Manual OFF"
 
-    return-object p0
+    return-object v0
 
     .line 128
     :pswitch_34  #0x2
-    const-string p0, "Manual ON"
+    const-string v0, "Manual ON"
 
-    return-object p0
+    return-object v0
 
     .line 126
     :pswitch_37  #0x1
-    const-string p0, "Percentage Auto OFF"
+    const-string v0, "Percentage Auto OFF"
 
-    return-object p0
+    return-object v0
 
     .line 124
     :pswitch_3a  #0x0
-    const-string p0, "Percentage Auto ON"
+    const-string v0, "Percentage Auto ON"
 
-    return-object p0
+    return-object v0
 
     nop
 
@@ -450,7 +463,7 @@
 .end method
 
 .method private updateBatterySavingStats()V
-    .registers 9
+    .registers 10
 
     .line 503
     invoke-direct {p0}, Lcom/android/server/power/batterysaver/BatterySaverController;->getPowerManager()Landroid/os/PowerManager;
@@ -458,14 +471,15 @@
     move-result-object v0
 
     .line 504
+    .local v0, "pm":Landroid/os/PowerManager;
     if-nez v0, :cond_e
 
     .line 505
-    const-string v0, "BatterySaverController"
+    const-string v1, "BatterySaverController"
 
-    const-string v1, "PowerManager not initialized"
+    const-string v2, "PowerManager not initialized"
 
-    invoke-static {v0, v1}, Landroid/util/Slog;->wtf(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v2}, Landroid/util/Slog;->wtf(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 506
     return-void
@@ -477,6 +491,7 @@
     move-result v1
 
     .line 510
+    .local v1, "isInteractive":Z
     invoke-virtual {v0}, Landroid/os/PowerManager;->isDeviceIdleMode()Z
 
     move-result v2
@@ -489,7 +504,7 @@
 
     if-eqz v2, :cond_1d
 
-    move v0, v3
+    move v2, v3
 
     goto :goto_26
 
@@ -497,92 +512,95 @@
     :cond_1d
     invoke-virtual {v0}, Landroid/os/PowerManager;->isLightDeviceIdleMode()Z
 
-    move-result v0
+    move-result v2
 
-    if-eqz v0, :cond_25
+    if-eqz v2, :cond_25
 
-    move v0, v4
+    move v2, v4
 
     goto :goto_26
 
     .line 512
     :cond_25
-    move v0, v5
+    move v2, v5
+
+    :goto_26
+    nop
 
     .line 514
-    :goto_26
-    iget-object v2, p0, Lcom/android/server/power/batterysaver/BatterySaverController;->mLock:Ljava/lang/Object;
+    .local v2, "dozeMode":I
+    iget-object v6, p0, Lcom/android/server/power/batterysaver/BatterySaverController;->mLock:Ljava/lang/Object;
 
-    monitor-enter v2
+    monitor-enter v6
 
     .line 515
-    :try_start_29
-    iget-boolean v6, p0, Lcom/android/server/power/batterysaver/BatterySaverController;->mIsPluggedIn:Z
+    :try_start_2a
+    iget-boolean v7, p0, Lcom/android/server/power/batterysaver/BatterySaverController;->mIsPluggedIn:Z
 
-    if-eqz v6, :cond_34
+    if-eqz v7, :cond_35
 
     .line 516
-    iget-object v0, p0, Lcom/android/server/power/batterysaver/BatterySaverController;->mBatterySavingStats:Lcom/android/server/power/batterysaver/BatterySavingStats;
+    iget-object v3, p0, Lcom/android/server/power/batterysaver/BatterySaverController;->mBatterySavingStats:Lcom/android/server/power/batterysaver/BatterySavingStats;
 
-    invoke-virtual {v0}, Lcom/android/server/power/batterysaver/BatterySavingStats;->startCharging()V
+    invoke-virtual {v3}, Lcom/android/server/power/batterysaver/BatterySavingStats;->startCharging()V
 
     .line 517
-    monitor-exit v2
+    monitor-exit v6
 
     return-void
 
     .line 519
-    :cond_34
-    iget-object v6, p0, Lcom/android/server/power/batterysaver/BatterySaverController;->mBatterySavingStats:Lcom/android/server/power/batterysaver/BatterySavingStats;
+    :cond_35
+    iget-object v7, p0, Lcom/android/server/power/batterysaver/BatterySaverController;->mBatterySavingStats:Lcom/android/server/power/batterysaver/BatterySavingStats;
 
     .line 520
-    iget-boolean v7, p0, Lcom/android/server/power/batterysaver/BatterySaverController;->mFullEnabled:Z
+    iget-boolean v8, p0, Lcom/android/server/power/batterysaver/BatterySaverController;->mFullEnabled:Z
 
-    if-eqz v7, :cond_3c
+    if-eqz v8, :cond_3d
 
     move v3, v4
 
-    goto :goto_42
+    goto :goto_43
 
     .line 521
-    :cond_3c
-    iget-boolean v7, p0, Lcom/android/server/power/batterysaver/BatterySaverController;->mAdaptiveEnabled:Z
+    :cond_3d
+    iget-boolean v8, p0, Lcom/android/server/power/batterysaver/BatterySaverController;->mAdaptiveEnabled:Z
 
-    if-eqz v7, :cond_41
+    if-eqz v8, :cond_42
 
-    goto :goto_42
+    goto :goto_43
 
-    :cond_41
+    :cond_42
     move v3, v5
 
     .line 522
-    :goto_42
-    if-eqz v1, :cond_45
+    :goto_43
+    if-eqz v1, :cond_46
 
-    goto :goto_46
+    goto :goto_47
 
-    :cond_45
+    :cond_46
     move v4, v5
 
     .line 519
-    :goto_46
-    invoke-virtual {v6, v3, v4, v0}, Lcom/android/server/power/batterysaver/BatterySavingStats;->transitionState(III)V
+    :goto_47
+    invoke-virtual {v7, v3, v4, v2}, Lcom/android/server/power/batterysaver/BatterySavingStats;->transitionState(III)V
 
     .line 524
-    monitor-exit v2
+    monitor-exit v6
 
     .line 525
     return-void
 
     .line 524
-    :catchall_4b
-    move-exception v0
+    :catchall_4c
+    move-exception v3
 
-    monitor-exit v2
-    :try_end_4d
-    .catchall {:try_start_29 .. :try_end_4d} :catchall_4b
+    monitor-exit v6
+    :try_end_4e
+    .catchall {:try_start_2a .. :try_end_4e} :catchall_4c
 
-    throw v0
+    throw v3
 .end method
 
 .method private updatePolicyLevelLocked()Z
@@ -638,6 +656,7 @@
 # virtual methods
 .method public addListener(Landroid/os/PowerManagerInternal$LowPowerModeListener;)V
     .registers 4
+    .param p1, "listener"  # Landroid/os/PowerManagerInternal$LowPowerModeListener;
 
     .line 216
     iget-object v0, p0, Lcom/android/server/power/batterysaver/BatterySaverController;->mLock:Ljava/lang/Object;
@@ -658,17 +677,19 @@
 
     .line 218
     :catchall_a
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_c
     .catchall {:try_start_3 .. :try_end_c} :catchall_a
 
-    throw p1
+    throw v1
 .end method
 
 .method public enableBatterySaver(ZI)V
-    .registers 5
+    .registers 6
+    .param p1, "enable"  # Z
+    .param p2, "reason"  # I
     .annotation build Lcom/android/internal/annotations/VisibleForTesting;
     .end annotation
 
@@ -695,16 +716,16 @@
     .line 301
     invoke-direct {p0}, Lcom/android/server/power/batterysaver/BatterySaverController;->updatePolicyLevelLocked()Z
 
-    move-result p1
+    move-result v1
 
-    if-eqz p1, :cond_17
+    if-eqz v1, :cond_17
 
     .line 302
-    iget-object p1, p0, Lcom/android/server/power/batterysaver/BatterySaverController;->mHandler:Lcom/android/server/power/batterysaver/BatterySaverController$MyHandler;
+    iget-object v1, p0, Lcom/android/server/power/batterysaver/BatterySaverController;->mHandler:Lcom/android/server/power/batterysaver/BatterySaverController$MyHandler;
 
-    const/4 v1, 0x1
+    const/4 v2, 0x1
 
-    invoke-virtual {p1, v1, p2}, Lcom/android/server/power/batterysaver/BatterySaverController$MyHandler;->postStateChanged(ZI)V
+    invoke-virtual {v1, v2, p2}, Lcom/android/server/power/batterysaver/BatterySaverController$MyHandler;->postStateChanged(ZI)V
 
     .line 304
     :cond_17
@@ -715,13 +736,13 @@
 
     .line 304
     :catchall_19
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_1b
     .catchall {:try_start_3 .. :try_end_1b} :catchall_19
 
-    throw p1
+    throw v1
 .end method
 
 .method public getBatterySaverPolicy()Lcom/android/server/power/batterysaver/BatterySaverPolicy;
@@ -735,6 +756,8 @@
 
 .method handleBatterySaverStateChanged(ZI)V
     .registers 14
+    .param p1, "sendBroadcast"  # Z
+    .param p2, "reason"  # I
 
     .line 425
     invoke-direct {p0}, Lcom/android/server/power/batterysaver/BatterySaverController;->getPowerManager()Landroid/os/PowerManager;
@@ -746,6 +769,7 @@
     move-result v0
 
     .line 428
+    .local v0, "isInteractive":Z
     iget-object v8, p0, Lcom/android/server/power/batterysaver/BatterySaverController;->mLock:Ljava/lang/Object;
 
     monitor-enter v8
@@ -767,62 +791,65 @@
     goto :goto_18
 
     :cond_16
-    move v10, v9
+    move v1, v9
 
     goto :goto_19
 
     :cond_18
     :goto_18
-    move v10, v2
+    move v1, v2
+
+    :goto_19
+    move v10, v1
 
     .line 432
-    :goto_19
+    .local v10, "enabled":Z
     iget-boolean v1, p0, Lcom/android/server/power/batterysaver/BatterySaverController;->mFullPreviouslyEnabled:Z
 
-    if-eqz v1, :cond_1f
+    if-eqz v1, :cond_20
 
     move v1, v2
 
-    goto :goto_20
+    goto :goto_21
 
-    :cond_1f
+    :cond_20
     move v1, v9
 
     .line 433
-    :goto_20
+    :goto_21
     iget-boolean v3, p0, Lcom/android/server/power/batterysaver/BatterySaverController;->mAdaptivePreviouslyEnabled:Z
 
-    if-eqz v3, :cond_26
+    if-eqz v3, :cond_27
 
     move v3, v2
 
-    goto :goto_27
+    goto :goto_28
 
-    :cond_26
+    :cond_27
     move v3, v9
 
     .line 434
-    :goto_27
+    :goto_28
     iget-boolean v4, p0, Lcom/android/server/power/batterysaver/BatterySaverController;->mFullEnabled:Z
 
-    if-eqz v4, :cond_2d
+    if-eqz v4, :cond_2e
 
     move v4, v2
 
-    goto :goto_2e
+    goto :goto_2f
 
-    :cond_2d
+    :cond_2e
     move v4, v9
 
     .line 435
-    :goto_2e
+    :goto_2f
     iget-boolean v5, p0, Lcom/android/server/power/batterysaver/BatterySaverController;->mAdaptiveEnabled:Z
 
     .line 436
     nop
 
     .line 437
-    if-eqz v10, :cond_3a
+    if-eqz v10, :cond_3b
 
     iget-object v2, p0, Lcom/android/server/power/batterysaver/BatterySaverController;->mBatterySaverPolicy:Lcom/android/server/power/batterysaver/BatterySaverPolicy;
 
@@ -830,12 +857,12 @@
 
     move-result-object v2
 
-    goto :goto_3c
+    goto :goto_3d
 
-    :cond_3a
+    :cond_3b
     const-string v2, ""
 
-    :goto_3c
+    :goto_3d
     move-object v6, v2
 
     .line 431
@@ -852,231 +879,252 @@
     invoke-static/range {v1 .. v7}, Lcom/android/server/EventLogTags;->writeBatterySaverMode(IIIIILjava/lang/String;I)V
 
     .line 440
-    iget-boolean p2, p0, Lcom/android/server/power/batterysaver/BatterySaverController;->mFullEnabled:Z
+    iget-boolean v1, p0, Lcom/android/server/power/batterysaver/BatterySaverController;->mFullEnabled:Z
 
-    iput-boolean p2, p0, Lcom/android/server/power/batterysaver/BatterySaverController;->mFullPreviouslyEnabled:Z
+    iput-boolean v1, p0, Lcom/android/server/power/batterysaver/BatterySaverController;->mFullPreviouslyEnabled:Z
 
     .line 441
-    iget-boolean p2, p0, Lcom/android/server/power/batterysaver/BatterySaverController;->mAdaptiveEnabled:Z
+    iget-boolean v1, p0, Lcom/android/server/power/batterysaver/BatterySaverController;->mAdaptiveEnabled:Z
 
-    iput-boolean p2, p0, Lcom/android/server/power/batterysaver/BatterySaverController;->mAdaptivePreviouslyEnabled:Z
+    iput-boolean v1, p0, Lcom/android/server/power/batterysaver/BatterySaverController;->mAdaptivePreviouslyEnabled:Z
 
     .line 443
-    iget-object p2, p0, Lcom/android/server/power/batterysaver/BatterySaverController;->mListeners:Ljava/util/ArrayList;
+    iget-object v1, p0, Lcom/android/server/power/batterysaver/BatterySaverController;->mListeners:Ljava/util/ArrayList;
 
-    new-array v1, v9, [Landroid/os/PowerManagerInternal$LowPowerModeListener;
+    new-array v2, v9, [Landroid/os/PowerManagerInternal$LowPowerModeListener;
 
-    invoke-virtual {p2, v1}, Ljava/util/ArrayList;->toArray([Ljava/lang/Object;)[Ljava/lang/Object;
-
-    move-result-object p2
-
-    check-cast p2, [Landroid/os/PowerManagerInternal$LowPowerModeListener;
-
-    .line 445
-    iput-boolean v0, p0, Lcom/android/server/power/batterysaver/BatterySaverController;->mIsInteractive:Z
-
-    .line 447
-    if-eqz v10, :cond_62
-
-    .line 448
-    iget-object v1, p0, Lcom/android/server/power/batterysaver/BatterySaverController;->mBatterySaverPolicy:Lcom/android/server/power/batterysaver/BatterySaverPolicy;
-
-    invoke-virtual {v1, v0}, Lcom/android/server/power/batterysaver/BatterySaverPolicy;->getFileValues(Z)Landroid/util/ArrayMap;
-
-    move-result-object v0
-
-    goto :goto_63
-
-    .line 450
-    :cond_62
-    const/4 v0, 0x0
-
-    .line 452
-    :goto_63
-    monitor-exit v8
-    :try_end_64
-    .catchall {:try_start_b .. :try_end_64} :catchall_f2
-
-    .line 454
-    const-class v1, Landroid/os/PowerManagerInternal;
-
-    invoke-static {v1}, Lcom/android/server/LocalServices;->getService(Ljava/lang/Class;)Ljava/lang/Object;
+    invoke-virtual {v1, v2}, Ljava/util/ArrayList;->toArray([Ljava/lang/Object;)[Ljava/lang/Object;
 
     move-result-object v1
 
-    check-cast v1, Landroid/os/PowerManagerInternal;
+    check-cast v1, [Landroid/os/PowerManagerInternal$LowPowerModeListener;
+
+    .line 445
+    .local v1, "listeners":[Landroid/os/PowerManagerInternal$LowPowerModeListener;
+    iput-boolean v0, p0, Lcom/android/server/power/batterysaver/BatterySaverController;->mIsInteractive:Z
+
+    .line 447
+    if-eqz v10, :cond_63
+
+    .line 448
+    iget-object v2, p0, Lcom/android/server/power/batterysaver/BatterySaverController;->mBatterySaverPolicy:Lcom/android/server/power/batterysaver/BatterySaverPolicy;
+
+    invoke-virtual {v2, v0}, Lcom/android/server/power/batterysaver/BatterySaverPolicy;->getFileValues(Z)Landroid/util/ArrayMap;
+
+    move-result-object v2
+
+    .local v2, "fileValues":Landroid/util/ArrayMap;, "Landroid/util/ArrayMap<Ljava/lang/String;Ljava/lang/String;>;"
+    goto :goto_64
+
+    .line 450
+    .end local v2  # "fileValues":Landroid/util/ArrayMap;, "Landroid/util/ArrayMap<Ljava/lang/String;Ljava/lang/String;>;"
+    :cond_63
+    const/4 v2, 0x0
+
+    .line 452
+    .restart local v2  # "fileValues":Landroid/util/ArrayMap;, "Landroid/util/ArrayMap<Ljava/lang/String;Ljava/lang/String;>;"
+    :goto_64
+    monitor-exit v8
+    :try_end_65
+    .catchall {:try_start_b .. :try_end_65} :catchall_f6
+
+    .line 454
+    const-class v3, Landroid/os/PowerManagerInternal;
+
+    invoke-static {v3}, Lcom/android/server/LocalServices;->getService(Ljava/lang/Class;)Ljava/lang/Object;
+
+    move-result-object v3
+
+    check-cast v3, Landroid/os/PowerManagerInternal;
 
     .line 455
-    if-eqz v1, :cond_76
+    .local v3, "pmi":Landroid/os/PowerManagerInternal;
+    if-eqz v3, :cond_77
 
     .line 456
-    const/4 v2, 0x5
+    const/4 v4, 0x5
 
     invoke-virtual {p0}, Lcom/android/server/power/batterysaver/BatterySaverController;->isEnabled()Z
 
-    move-result v3
+    move-result v5
 
-    invoke-virtual {v1, v2, v3}, Landroid/os/PowerManagerInternal;->powerHint(II)V
+    invoke-virtual {v3, v4, v5}, Landroid/os/PowerManagerInternal;->powerHint(II)V
 
     .line 459
-    :cond_76
+    :cond_77
     invoke-direct {p0}, Lcom/android/server/power/batterysaver/BatterySaverController;->updateBatterySavingStats()V
 
     .line 461
-    invoke-static {v0}, Lcom/android/internal/util/ArrayUtils;->isEmpty(Ljava/util/Map;)Z
+    invoke-static {v2}, Lcom/android/internal/util/ArrayUtils;->isEmpty(Ljava/util/Map;)Z
 
-    move-result v1
+    move-result v4
 
-    if-eqz v1, :cond_85
+    if-eqz v4, :cond_86
 
     .line 462
-    iget-object v0, p0, Lcom/android/server/power/batterysaver/BatterySaverController;->mFileUpdater:Lcom/android/server/power/batterysaver/FileUpdater;
+    iget-object v4, p0, Lcom/android/server/power/batterysaver/BatterySaverController;->mFileUpdater:Lcom/android/server/power/batterysaver/FileUpdater;
 
-    invoke-virtual {v0}, Lcom/android/server/power/batterysaver/FileUpdater;->restoreDefault()V
+    invoke-virtual {v4}, Lcom/android/server/power/batterysaver/FileUpdater;->restoreDefault()V
 
-    goto :goto_8a
+    goto :goto_8b
 
     .line 464
-    :cond_85
-    iget-object v1, p0, Lcom/android/server/power/batterysaver/BatterySaverController;->mFileUpdater:Lcom/android/server/power/batterysaver/FileUpdater;
+    :cond_86
+    iget-object v4, p0, Lcom/android/server/power/batterysaver/BatterySaverController;->mFileUpdater:Lcom/android/server/power/batterysaver/FileUpdater;
 
-    invoke-virtual {v1, v0}, Lcom/android/server/power/batterysaver/FileUpdater;->writeFiles(Landroid/util/ArrayMap;)V
+    invoke-virtual {v4, v2}, Lcom/android/server/power/batterysaver/FileUpdater;->writeFiles(Landroid/util/ArrayMap;)V
 
     .line 467
-    :goto_8a
-    iget-object v0, p0, Lcom/android/server/power/batterysaver/BatterySaverController;->mPlugins:[Lcom/android/server/power/batterysaver/BatterySaverController$Plugin;
+    :goto_8b
+    iget-object v4, p0, Lcom/android/server/power/batterysaver/BatterySaverController;->mPlugins:[Lcom/android/server/power/batterysaver/BatterySaverController$Plugin;
 
-    array-length v1, v0
+    array-length v5, v4
 
-    move v2, v9
+    move v6, v9
 
-    :goto_8e
-    if-ge v2, v1, :cond_98
+    :goto_8f
+    if-ge v6, v5, :cond_99
 
-    aget-object v3, v0, v2
+    aget-object v7, v4, v6
 
     .line 468
-    invoke-interface {v3, p0}, Lcom/android/server/power/batterysaver/BatterySaverController$Plugin;->onBatterySaverChanged(Lcom/android/server/power/batterysaver/BatterySaverController;)V
+    .local v7, "p":Lcom/android/server/power/batterysaver/BatterySaverController$Plugin;
+    invoke-interface {v7, p0}, Lcom/android/server/power/batterysaver/BatterySaverController$Plugin;->onBatterySaverChanged(Lcom/android/server/power/batterysaver/BatterySaverController;)V
 
     .line 467
-    add-int/lit8 v2, v2, 0x1
+    .end local v7  # "p":Lcom/android/server/power/batterysaver/BatterySaverController$Plugin;
+    add-int/lit8 v6, v6, 0x1
 
-    goto :goto_8e
+    goto :goto_8f
 
     .line 471
-    :cond_98
-    if-eqz p1, :cond_f1
+    :cond_99
+    if-eqz p1, :cond_f5
 
     .line 479
-    new-instance p1, Landroid/content/Intent;
+    new-instance v4, Landroid/content/Intent;
 
-    const-string v0, "android.os.action.POWER_SAVE_MODE_CHANGING"
+    const-string v5, "android.os.action.POWER_SAVE_MODE_CHANGING"
 
-    invoke-direct {p1, v0}, Landroid/content/Intent;-><init>(Ljava/lang/String;)V
+    invoke-direct {v4, v5}, Landroid/content/Intent;-><init>(Ljava/lang/String;)V
 
     .line 480
     invoke-virtual {p0}, Lcom/android/server/power/batterysaver/BatterySaverController;->isEnabled()Z
 
-    move-result v0
+    move-result v5
 
-    const-string v1, "mode"
+    const-string/jumbo v6, "mode"
 
-    invoke-virtual {p1, v1, v0}, Landroid/content/Intent;->putExtra(Ljava/lang/String;Z)Landroid/content/Intent;
+    invoke-virtual {v4, v6, v5}, Landroid/content/Intent;->putExtra(Ljava/lang/String;Z)Landroid/content/Intent;
 
-    move-result-object p1
+    move-result-object v4
 
     .line 481
-    const/high16 v0, 0x40000000  # 2.0f
+    const/high16 v5, 0x40000000  # 2.0f
 
-    invoke-virtual {p1, v0}, Landroid/content/Intent;->addFlags(I)Landroid/content/Intent;
+    invoke-virtual {v4, v5}, Landroid/content/Intent;->addFlags(I)Landroid/content/Intent;
 
-    move-result-object p1
+    move-result-object v4
 
     .line 482
-    iget-object v1, p0, Lcom/android/server/power/batterysaver/BatterySaverController;->mContext:Landroid/content/Context;
+    .local v4, "intent":Landroid/content/Intent;
+    iget-object v6, p0, Lcom/android/server/power/batterysaver/BatterySaverController;->mContext:Landroid/content/Context;
 
-    sget-object v2, Landroid/os/UserHandle;->ALL:Landroid/os/UserHandle;
+    sget-object v7, Landroid/os/UserHandle;->ALL:Landroid/os/UserHandle;
 
-    invoke-virtual {v1, p1, v2}, Landroid/content/Context;->sendBroadcastAsUser(Landroid/content/Intent;Landroid/os/UserHandle;)V
+    invoke-virtual {v6, v4, v7}, Landroid/content/Context;->sendBroadcastAsUser(Landroid/content/Intent;Landroid/os/UserHandle;)V
 
     .line 484
-    new-instance p1, Landroid/content/Intent;
+    new-instance v6, Landroid/content/Intent;
 
-    const-string v1, "android.os.action.POWER_SAVE_MODE_CHANGED"
+    const-string v7, "android.os.action.POWER_SAVE_MODE_CHANGED"
 
-    invoke-direct {p1, v1}, Landroid/content/Intent;-><init>(Ljava/lang/String;)V
+    invoke-direct {v6, v7}, Landroid/content/Intent;-><init>(Ljava/lang/String;)V
+
+    move-object v4, v6
 
     .line 485
-    invoke-virtual {p1, v0}, Landroid/content/Intent;->addFlags(I)Landroid/content/Intent;
+    invoke-virtual {v4, v5}, Landroid/content/Intent;->addFlags(I)Landroid/content/Intent;
 
     .line 486
-    iget-object v1, p0, Lcom/android/server/power/batterysaver/BatterySaverController;->mContext:Landroid/content/Context;
+    iget-object v6, p0, Lcom/android/server/power/batterysaver/BatterySaverController;->mContext:Landroid/content/Context;
 
-    sget-object v2, Landroid/os/UserHandle;->ALL:Landroid/os/UserHandle;
+    sget-object v7, Landroid/os/UserHandle;->ALL:Landroid/os/UserHandle;
 
-    invoke-virtual {v1, p1, v2}, Landroid/content/Context;->sendBroadcastAsUser(Landroid/content/Intent;Landroid/os/UserHandle;)V
+    invoke-virtual {v6, v4, v7}, Landroid/content/Context;->sendBroadcastAsUser(Landroid/content/Intent;Landroid/os/UserHandle;)V
 
     .line 489
-    new-instance p1, Landroid/content/Intent;
+    new-instance v6, Landroid/content/Intent;
 
-    const-string v1, "android.os.action.POWER_SAVE_MODE_CHANGED_INTERNAL"
+    const-string v7, "android.os.action.POWER_SAVE_MODE_CHANGED_INTERNAL"
 
-    invoke-direct {p1, v1}, Landroid/content/Intent;-><init>(Ljava/lang/String;)V
+    invoke-direct {v6, v7}, Landroid/content/Intent;-><init>(Ljava/lang/String;)V
+
+    move-object v4, v6
 
     .line 490
-    invoke-virtual {p1, v0}, Landroid/content/Intent;->addFlags(I)Landroid/content/Intent;
+    invoke-virtual {v4, v5}, Landroid/content/Intent;->addFlags(I)Landroid/content/Intent;
 
     .line 491
-    iget-object v0, p0, Lcom/android/server/power/batterysaver/BatterySaverController;->mContext:Landroid/content/Context;
+    iget-object v5, p0, Lcom/android/server/power/batterysaver/BatterySaverController;->mContext:Landroid/content/Context;
 
-    sget-object v1, Landroid/os/UserHandle;->ALL:Landroid/os/UserHandle;
+    sget-object v6, Landroid/os/UserHandle;->ALL:Landroid/os/UserHandle;
 
-    const-string v2, "android.permission.DEVICE_POWER"
+    const-string v7, "android.permission.DEVICE_POWER"
 
-    invoke-virtual {v0, p1, v1, v2}, Landroid/content/Context;->sendBroadcastAsUser(Landroid/content/Intent;Landroid/os/UserHandle;Ljava/lang/String;)V
+    invoke-virtual {v5, v4, v6, v7}, Landroid/content/Context;->sendBroadcastAsUser(Landroid/content/Intent;Landroid/os/UserHandle;Ljava/lang/String;)V
 
     .line 494
-    array-length p1, p2
+    array-length v5, v1
 
-    :goto_dd
-    if-ge v9, p1, :cond_f1
+    :goto_e1
+    if-ge v9, v5, :cond_f5
 
-    aget-object v0, p2, v9
+    aget-object v6, v1, v9
 
     .line 495
-    iget-object v1, p0, Lcom/android/server/power/batterysaver/BatterySaverController;->mBatterySaverPolicy:Lcom/android/server/power/batterysaver/BatterySaverPolicy;
+    .local v6, "listener":Landroid/os/PowerManagerInternal$LowPowerModeListener;
+    iget-object v7, p0, Lcom/android/server/power/batterysaver/BatterySaverController;->mBatterySaverPolicy:Lcom/android/server/power/batterysaver/BatterySaverPolicy;
 
     .line 496
-    invoke-interface {v0}, Landroid/os/PowerManagerInternal$LowPowerModeListener;->getServiceType()I
+    invoke-interface {v6}, Landroid/os/PowerManagerInternal$LowPowerModeListener;->getServiceType()I
 
-    move-result v2
+    move-result v8
 
-    invoke-virtual {v1, v2}, Lcom/android/server/power/batterysaver/BatterySaverPolicy;->getBatterySaverPolicy(I)Landroid/os/PowerSaveState;
+    invoke-virtual {v7, v8}, Lcom/android/server/power/batterysaver/BatterySaverPolicy;->getBatterySaverPolicy(I)Landroid/os/PowerSaveState;
 
-    move-result-object v1
+    move-result-object v7
 
     .line 497
-    invoke-interface {v0, v1}, Landroid/os/PowerManagerInternal$LowPowerModeListener;->onLowPowerModeChanged(Landroid/os/PowerSaveState;)V
+    .local v7, "result":Landroid/os/PowerSaveState;
+    invoke-interface {v6, v7}, Landroid/os/PowerManagerInternal$LowPowerModeListener;->onLowPowerModeChanged(Landroid/os/PowerSaveState;)V
 
     .line 494
+    .end local v6  # "listener":Landroid/os/PowerManagerInternal$LowPowerModeListener;
+    .end local v7  # "result":Landroid/os/PowerSaveState;
     add-int/lit8 v9, v9, 0x1
 
-    goto :goto_dd
+    goto :goto_e1
 
     .line 500
-    :cond_f1
+    .end local v4  # "intent":Landroid/content/Intent;
+    :cond_f5
     return-void
 
     .line 452
-    :catchall_f2
-    move-exception p1
+    .end local v1  # "listeners":[Landroid/os/PowerManagerInternal$LowPowerModeListener;
+    .end local v2  # "fileValues":Landroid/util/ArrayMap;, "Landroid/util/ArrayMap<Ljava/lang/String;Ljava/lang/String;>;"
+    .end local v3  # "pmi":Landroid/os/PowerManagerInternal;
+    .end local v10  # "enabled":Z
+    :catchall_f6
+    move-exception v1
 
-    :try_start_f3
+    :try_start_f7
     monitor-exit v8
-    :try_end_f4
-    .catchall {:try_start_f3 .. :try_end_f4} :catchall_f2
+    :try_end_f8
+    .catchall {:try_start_f7 .. :try_end_f8} :catchall_f6
 
-    throw p1
+    throw v1
 .end method
 
 .method isAdaptiveEnabled()Z
@@ -1245,27 +1293,28 @@
 .end method
 
 .method public onBatterySaverPolicyChanged(Lcom/android/server/power/batterysaver/BatterySaverPolicy;)V
-    .registers 4
+    .registers 5
+    .param p1, "policy"  # Lcom/android/server/power/batterysaver/BatterySaverPolicy;
 
     .line 247
     invoke-direct {p0}, Lcom/android/server/power/batterysaver/BatterySaverController;->isPolicyEnabled()Z
 
-    move-result p1
+    move-result v0
 
-    if-nez p1, :cond_7
+    if-nez v0, :cond_7
 
     .line 248
     return-void
 
     .line 250
     :cond_7
-    iget-object p1, p0, Lcom/android/server/power/batterysaver/BatterySaverController;->mHandler:Lcom/android/server/power/batterysaver/BatterySaverController$MyHandler;
+    iget-object v0, p0, Lcom/android/server/power/batterysaver/BatterySaverController;->mHandler:Lcom/android/server/power/batterysaver/BatterySaverController$MyHandler;
 
-    const/4 v0, 0x1
+    const/4 v1, 0x1
 
-    const/4 v1, 0x6
+    const/4 v2, 0x6
 
-    invoke-virtual {p1, v0, v1}, Lcom/android/server/power/batterysaver/BatterySaverController$MyHandler;->postStateChanged(ZI)V
+    invoke-virtual {v0, v1, v2}, Lcom/android/server/power/batterysaver/BatterySaverController$MyHandler;->postStateChanged(ZI)V
 
     .line 251
     return-void
@@ -1273,6 +1322,7 @@
 
 .method resetAdaptivePolicyLocked(I)Z
     .registers 4
+    .param p1, "reason"  # I
 
     .line 369
     iget-object v0, p0, Lcom/android/server/power/batterysaver/BatterySaverController;->mBatterySaverPolicy:Lcom/android/server/power/batterysaver/BatterySaverPolicy;
@@ -1295,13 +1345,15 @@
 
     .line 373
     :cond_f
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    return p1
+    return v0
 .end method
 
 .method setAdaptivePolicyEnabledLocked(ZI)Z
     .registers 5
+    .param p1, "enabled"  # Z
+    .param p2, "reason"  # I
 
     .line 377
     iget-boolean v0, p0, Lcom/android/server/power/batterysaver/BatterySaverController;->mAdaptiveEnabled:Z
@@ -1320,19 +1372,19 @@
     .line 381
     invoke-direct {p0}, Lcom/android/server/power/batterysaver/BatterySaverController;->updatePolicyLevelLocked()Z
 
-    move-result p1
+    move-result v0
 
-    if-eqz p1, :cond_15
+    if-eqz v0, :cond_15
 
     .line 382
-    iget-object p1, p0, Lcom/android/server/power/batterysaver/BatterySaverController;->mHandler:Lcom/android/server/power/batterysaver/BatterySaverController$MyHandler;
+    iget-object v0, p0, Lcom/android/server/power/batterysaver/BatterySaverController;->mHandler:Lcom/android/server/power/batterysaver/BatterySaverController$MyHandler;
 
-    const/4 v0, 0x1
+    const/4 v1, 0x1
 
-    invoke-virtual {p1, v0, p2}, Lcom/android/server/power/batterysaver/BatterySaverController$MyHandler;->postStateChanged(ZI)V
+    invoke-virtual {v0, v1, p2}, Lcom/android/server/power/batterysaver/BatterySaverController$MyHandler;->postStateChanged(ZI)V
 
     .line 383
-    return v0
+    return v1
 
     .line 385
     :cond_15
@@ -1340,51 +1392,58 @@
 .end method
 
 .method setAdaptivePolicyLocked(Landroid/os/BatterySaverPolicyConfig;I)Z
-    .registers 3
+    .registers 4
+    .param p1, "config"  # Landroid/os/BatterySaverPolicyConfig;
+    .param p2, "reason"  # I
 
     .line 357
     invoke-static {p1}, Lcom/android/server/power/batterysaver/BatterySaverPolicy$Policy;->fromConfig(Landroid/os/BatterySaverPolicyConfig;)Lcom/android/server/power/batterysaver/BatterySaverPolicy$Policy;
 
-    move-result-object p1
+    move-result-object v0
 
-    invoke-virtual {p0, p1, p2}, Lcom/android/server/power/batterysaver/BatterySaverController;->setAdaptivePolicyLocked(Lcom/android/server/power/batterysaver/BatterySaverPolicy$Policy;I)Z
+    invoke-virtual {p0, v0, p2}, Lcom/android/server/power/batterysaver/BatterySaverController;->setAdaptivePolicyLocked(Lcom/android/server/power/batterysaver/BatterySaverPolicy$Policy;I)Z
 
-    move-result p1
+    move-result v0
 
-    return p1
+    return v0
 .end method
 
 .method setAdaptivePolicyLocked(Lcom/android/server/power/batterysaver/BatterySaverPolicy$Policy;I)Z
-    .registers 4
+    .registers 5
+    .param p1, "policy"  # Lcom/android/server/power/batterysaver/BatterySaverPolicy$Policy;
+    .param p2, "reason"  # I
 
     .line 361
     iget-object v0, p0, Lcom/android/server/power/batterysaver/BatterySaverController;->mBatterySaverPolicy:Lcom/android/server/power/batterysaver/BatterySaverPolicy;
 
     invoke-virtual {v0, p1}, Lcom/android/server/power/batterysaver/BatterySaverPolicy;->setAdaptivePolicyLocked(Lcom/android/server/power/batterysaver/BatterySaverPolicy$Policy;)Z
 
-    move-result p1
+    move-result v0
 
-    if-eqz p1, :cond_f
+    if-eqz v0, :cond_f
 
     .line 362
-    iget-object p1, p0, Lcom/android/server/power/batterysaver/BatterySaverController;->mHandler:Lcom/android/server/power/batterysaver/BatterySaverController$MyHandler;
+    iget-object v0, p0, Lcom/android/server/power/batterysaver/BatterySaverController;->mHandler:Lcom/android/server/power/batterysaver/BatterySaverController$MyHandler;
 
-    const/4 v0, 0x1
+    const/4 v1, 0x1
 
-    invoke-virtual {p1, v0, p2}, Lcom/android/server/power/batterysaver/BatterySaverController$MyHandler;->postStateChanged(ZI)V
+    invoke-virtual {v0, v1, p2}, Lcom/android/server/power/batterysaver/BatterySaverController$MyHandler;->postStateChanged(ZI)V
 
     .line 363
-    return v0
+    return v1
 
     .line 365
     :cond_f
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    return p1
+    return v0
 .end method
 
 .method setAdaptivePolicyLocked(Ljava/lang/String;Ljava/lang/String;I)Z
-    .registers 4
+    .registers 5
+    .param p1, "settings"  # Ljava/lang/String;
+    .param p2, "deviceSpecificSettings"  # Ljava/lang/String;
+    .param p3, "reason"  # I
 
     .line 351
     nop
@@ -1392,14 +1451,14 @@
     .line 352
     invoke-static {p1, p2}, Lcom/android/server/power/batterysaver/BatterySaverPolicy$Policy;->fromSettings(Ljava/lang/String;Ljava/lang/String;)Lcom/android/server/power/batterysaver/BatterySaverPolicy$Policy;
 
-    move-result-object p1
+    move-result-object v0
 
     .line 351
-    invoke-virtual {p0, p1, p3}, Lcom/android/server/power/batterysaver/BatterySaverController;->setAdaptivePolicyLocked(Lcom/android/server/power/batterysaver/BatterySaverPolicy$Policy;I)Z
+    invoke-virtual {p0, v0, p3}, Lcom/android/server/power/batterysaver/BatterySaverController;->setAdaptivePolicyLocked(Lcom/android/server/power/batterysaver/BatterySaverPolicy$Policy;I)Z
 
-    move-result p1
+    move-result v0
 
-    return p1
+    return v0
 .end method
 
 .method public systemReady()V
@@ -1413,6 +1472,7 @@
     invoke-direct {v0, v1}, Landroid/content/IntentFilter;-><init>(Ljava/lang/String;)V
 
     .line 226
+    .local v0, "filter":Landroid/content/IntentFilter;
     const-string v1, "android.intent.action.SCREEN_OFF"
 
     invoke-virtual {v0, v1}, Landroid/content/IntentFilter;->addAction(Ljava/lang/String;)V
@@ -1440,28 +1500,28 @@
     invoke-virtual {v1, v2, v0}, Landroid/content/Context;->registerReceiver(Landroid/content/BroadcastReceiver;Landroid/content/IntentFilter;)Landroid/content/Intent;
 
     .line 232
-    iget-object v0, p0, Lcom/android/server/power/batterysaver/BatterySaverController;->mFileUpdater:Lcom/android/server/power/batterysaver/FileUpdater;
+    iget-object v1, p0, Lcom/android/server/power/batterysaver/BatterySaverController;->mFileUpdater:Lcom/android/server/power/batterysaver/FileUpdater;
 
-    const-class v1, Landroid/app/ActivityManagerInternal;
+    const-class v2, Landroid/app/ActivityManagerInternal;
 
-    invoke-static {v1}, Lcom/android/server/LocalServices;->getService(Ljava/lang/Class;)Ljava/lang/Object;
+    invoke-static {v2}, Lcom/android/server/LocalServices;->getService(Ljava/lang/Class;)Ljava/lang/Object;
 
-    move-result-object v1
+    move-result-object v2
 
-    check-cast v1, Landroid/app/ActivityManagerInternal;
+    check-cast v2, Landroid/app/ActivityManagerInternal;
 
     .line 233
-    invoke-virtual {v1}, Landroid/app/ActivityManagerInternal;->isRuntimeRestarted()Z
+    invoke-virtual {v2}, Landroid/app/ActivityManagerInternal;->isRuntimeRestarted()Z
 
-    move-result v1
+    move-result v2
 
     .line 232
-    invoke-virtual {v0, v1}, Lcom/android/server/power/batterysaver/FileUpdater;->systemReady(Z)V
+    invoke-virtual {v1, v2}, Lcom/android/server/power/batterysaver/FileUpdater;->systemReady(Z)V
 
     .line 234
-    iget-object v0, p0, Lcom/android/server/power/batterysaver/BatterySaverController;->mHandler:Lcom/android/server/power/batterysaver/BatterySaverController$MyHandler;
+    iget-object v1, p0, Lcom/android/server/power/batterysaver/BatterySaverController;->mHandler:Lcom/android/server/power/batterysaver/BatterySaverController$MyHandler;
 
-    invoke-virtual {v0}, Lcom/android/server/power/batterysaver/BatterySaverController$MyHandler;->postSystemReady()V
+    invoke-virtual {v1}, Lcom/android/server/power/batterysaver/BatterySaverController$MyHandler;->postSystemReady()V
 
     .line 235
     return-void

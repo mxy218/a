@@ -17,7 +17,8 @@
 
 # direct methods
 .method public constructor <init>(Landroid/content/Context;)V
-    .registers 3
+    .registers 4
+    .param p1, "context"  # Landroid/content/Context;
 
     .line 61
     invoke-direct {p0}, Landroid/os/IHardwarePropertiesManager$Stub;-><init>()V
@@ -33,46 +34,50 @@
     iput-object p1, p0, Lcom/android/server/HardwarePropertiesManagerService;->mContext:Landroid/content/Context;
 
     .line 63
-    iget-object p1, p0, Lcom/android/server/HardwarePropertiesManagerService;->mContext:Landroid/content/Context;
+    iget-object v0, p0, Lcom/android/server/HardwarePropertiesManagerService;->mContext:Landroid/content/Context;
 
-    const-string v0, "appops"
+    const-string v1, "appops"
 
-    invoke-virtual {p1, v0}, Landroid/content/Context;->getSystemService(Ljava/lang/String;)Ljava/lang/Object;
+    invoke-virtual {v0, v1}, Landroid/content/Context;->getSystemService(Ljava/lang/String;)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v0
 
-    check-cast p1, Landroid/app/AppOpsManager;
+    check-cast v0, Landroid/app/AppOpsManager;
 
-    iput-object p1, p0, Lcom/android/server/HardwarePropertiesManagerService;->mAppOps:Landroid/app/AppOpsManager;
+    iput-object v0, p0, Lcom/android/server/HardwarePropertiesManagerService;->mAppOps:Landroid/app/AppOpsManager;
 
     .line 64
-    iget-object p1, p0, Lcom/android/server/HardwarePropertiesManagerService;->mLock:Ljava/lang/Object;
+    iget-object v0, p0, Lcom/android/server/HardwarePropertiesManagerService;->mLock:Ljava/lang/Object;
 
-    monitor-enter p1
+    monitor-enter v0
 
     .line 65
     :try_start_1b
     invoke-static {}, Lcom/android/server/HardwarePropertiesManagerService;->nativeInit()V
 
     .line 66
-    monitor-exit p1
+    monitor-exit v0
 
     .line 67
     return-void
 
     .line 66
     :catchall_20
-    move-exception v0
+    move-exception v1
 
-    monitor-exit p1
+    monitor-exit v0
     :try_end_22
     .catchall {:try_start_1b .. :try_end_22} :catchall_20
 
-    throw v0
+    throw v1
 .end method
 
 .method private dumpTempValues(Ljava/lang/String;Ljava/io/PrintWriter;ILjava/lang/String;)V
     .registers 19
+    .param p1, "pkg"  # Ljava/lang/String;
+    .param p2, "pw"  # Ljava/io/PrintWriter;
+    .param p3, "type"  # I
+    .param p4, "typeLabel"  # Ljava/lang/String;
 
     .line 111
     const-string/jumbo v5, "temperatures: "
@@ -127,7 +132,13 @@
 .end method
 
 .method private dumpTempValues(Ljava/lang/String;Ljava/io/PrintWriter;ILjava/lang/String;Ljava/lang/String;I)V
-    .registers 8
+    .registers 9
+    .param p1, "pkg"  # Ljava/lang/String;
+    .param p2, "pw"  # Ljava/io/PrintWriter;
+    .param p3, "type"  # I
+    .param p4, "typeLabel"  # Ljava/lang/String;
+    .param p5, "subLabel"  # Ljava/lang/String;
+    .param p6, "valueType"  # I
 
     .line 123
     new-instance v0, Ljava/lang/StringBuilder;
@@ -140,26 +151,27 @@
 
     invoke-virtual {p0, p1, p3, p6}, Lcom/android/server/HardwarePropertiesManagerService;->getDeviceTemperatures(Ljava/lang/String;II)[F
 
-    move-result-object p1
+    move-result-object v1
 
-    invoke-static {p1}, Ljava/util/Arrays;->toString([F)Ljava/lang/String;
+    invoke-static {v1}, Ljava/util/Arrays;->toString([F)Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v1
 
-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    invoke-virtual {p2, p1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {p2, v0}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
     .line 125
     return-void
 .end method
 
 .method private enforceHardwarePropertiesRetrievalAllowed(Ljava/lang/String;)V
-    .registers 6
+    .registers 7
+    .param p1, "callingPackage"  # Ljava/lang/String;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Ljava/lang/SecurityException;
@@ -185,6 +197,7 @@
     move-result v0
 
     .line 165
+    .local v0, "userId":I
     const-class v1, Lcom/android/server/vr/VrManagerInternal;
 
     invoke-static {v1}, Lcom/android/server/LocalServices;->getService(Ljava/lang/Class;)Ljava/lang/Object;
@@ -194,6 +207,7 @@
     check-cast v1, Lcom/android/server/vr/VrManagerInternal;
 
     .line 166
+    .local v1, "vrService":Lcom/android/server/vr/VrManagerInternal;
     iget-object v2, p0, Lcom/android/server/HardwarePropertiesManagerService;->mContext:Landroid/content/Context;
 
     const-class v3, Landroid/app/admin/DevicePolicyManager;
@@ -205,43 +219,44 @@
     check-cast v2, Landroid/app/admin/DevicePolicyManager;
 
     .line 167
+    .local v2, "dpm":Landroid/app/admin/DevicePolicyManager;
     invoke-virtual {v2, p1}, Landroid/app/admin/DevicePolicyManager;->isDeviceOwnerApp(Ljava/lang/String;)Z
 
-    move-result v2
+    move-result v3
 
-    if-nez v2, :cond_44
+    if-nez v3, :cond_44
 
-    iget-object v2, p0, Lcom/android/server/HardwarePropertiesManagerService;->mContext:Landroid/content/Context;
+    iget-object v3, p0, Lcom/android/server/HardwarePropertiesManagerService;->mContext:Landroid/content/Context;
 
     .line 168
-    const-string v3, "android.permission.DEVICE_POWER"
+    const-string v4, "android.permission.DEVICE_POWER"
 
-    invoke-virtual {v2, v3}, Landroid/content/Context;->checkCallingOrSelfPermission(Ljava/lang/String;)I
+    invoke-virtual {v3, v4}, Landroid/content/Context;->checkCallingOrSelfPermission(Ljava/lang/String;)I
 
-    move-result v2
+    move-result v3
 
-    if-eqz v2, :cond_44
+    if-eqz v3, :cond_44
 
     if-eqz v1, :cond_3c
 
     .line 170
     invoke-virtual {v1, p1, v0}, Lcom/android/server/vr/VrManagerInternal;->isCurrentVrListener(Ljava/lang/String;I)Z
 
-    move-result p1
+    move-result v3
 
-    if-eqz p1, :cond_3c
+    if-eqz v3, :cond_3c
 
     goto :goto_44
 
     .line 171
     :cond_3c
-    new-instance p1, Ljava/lang/SecurityException;
+    new-instance v3, Ljava/lang/SecurityException;
 
-    const-string v0, "The caller is neither a device owner, nor holding the DEVICE_POWER permission, nor the current VrListener."
+    const-string v4, "The caller is neither a device owner, nor holding the DEVICE_POWER permission, nor the current VrListener."
 
-    invoke-direct {p1, v0}, Ljava/lang/SecurityException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v3, v4}, Ljava/lang/SecurityException;-><init>(Ljava/lang/String;)V
 
-    throw p1
+    throw v3
 
     .line 174
     :cond_44
@@ -270,6 +285,7 @@
     move-result-object v0
 
     .line 103
+    .local v0, "packages":[Ljava/lang/String;
     if-eqz v0, :cond_17
 
     array-length v1, v0
@@ -279,15 +295,15 @@
     .line 104
     const/4 v1, 0x0
 
-    aget-object v0, v0, v1
+    aget-object v1, v0, v1
 
-    return-object v0
+    return-object v1
 
     .line 106
     :cond_17
-    const-string/jumbo v0, "unknown"
+    const-string/jumbo v1, "unknown"
 
-    return-object v0
+    return-object v1
 .end method
 
 .method private static native nativeGetCpuUsages()[Landroid/os/CpuUsageInfo;
@@ -305,167 +321,177 @@
 
 # virtual methods
 .method protected dump(Ljava/io/FileDescriptor;Ljava/io/PrintWriter;[Ljava/lang/String;)V
-    .registers 7
+    .registers 12
+    .param p1, "fd"  # Ljava/io/FileDescriptor;
+    .param p2, "pw"  # Ljava/io/PrintWriter;
+    .param p3, "args"  # [Ljava/lang/String;
 
     .line 129
-    iget-object p1, p0, Lcom/android/server/HardwarePropertiesManagerService;->mContext:Landroid/content/Context;
+    iget-object v0, p0, Lcom/android/server/HardwarePropertiesManagerService;->mContext:Landroid/content/Context;
 
-    const-string p3, "HardwarePropertiesManagerService"
+    const-string v1, "HardwarePropertiesManagerService"
 
-    invoke-static {p1, p3, p2}, Lcom/android/internal/util/DumpUtils;->checkDumpPermission(Landroid/content/Context;Ljava/lang/String;Ljava/io/PrintWriter;)Z
+    invoke-static {v0, v1, p2}, Lcom/android/internal/util/DumpUtils;->checkDumpPermission(Landroid/content/Context;Ljava/lang/String;Ljava/io/PrintWriter;)Z
 
-    move-result p1
+    move-result v0
 
-    if-nez p1, :cond_b
+    if-nez v0, :cond_b
 
     return-void
 
     .line 130
     :cond_b
-    const-string p1, "****** Dump of HardwarePropertiesManagerService ******"
+    const-string v0, "****** Dump of HardwarePropertiesManagerService ******"
 
-    invoke-virtual {p2, p1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {p2, v0}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
     .line 132
     invoke-direct {p0}, Lcom/android/server/HardwarePropertiesManagerService;->getCallingPackageName()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
     .line 133
-    const/4 p3, 0x0
+    .local v0, "PKG":Ljava/lang/String;
+    const/4 v1, 0x0
 
-    const-string v0, "CPU "
+    const-string v2, "CPU "
 
-    invoke-direct {p0, p1, p2, p3, v0}, Lcom/android/server/HardwarePropertiesManagerService;->dumpTempValues(Ljava/lang/String;Ljava/io/PrintWriter;ILjava/lang/String;)V
+    invoke-direct {p0, v0, p2, v1, v2}, Lcom/android/server/HardwarePropertiesManagerService;->dumpTempValues(Ljava/lang/String;Ljava/io/PrintWriter;ILjava/lang/String;)V
 
     .line 134
-    const/4 v0, 0x1
+    const/4 v1, 0x1
 
-    const-string v1, "GPU "
+    const-string v2, "GPU "
 
-    invoke-direct {p0, p1, p2, v0, v1}, Lcom/android/server/HardwarePropertiesManagerService;->dumpTempValues(Ljava/lang/String;Ljava/io/PrintWriter;ILjava/lang/String;)V
+    invoke-direct {p0, v0, p2, v1, v2}, Lcom/android/server/HardwarePropertiesManagerService;->dumpTempValues(Ljava/lang/String;Ljava/io/PrintWriter;ILjava/lang/String;)V
 
     .line 135
-    const/4 v0, 0x2
+    const/4 v1, 0x2
 
-    const-string v1, "Battery "
+    const-string v2, "Battery "
 
-    invoke-direct {p0, p1, p2, v0, v1}, Lcom/android/server/HardwarePropertiesManagerService;->dumpTempValues(Ljava/lang/String;Ljava/io/PrintWriter;ILjava/lang/String;)V
+    invoke-direct {p0, v0, p2, v1, v2}, Lcom/android/server/HardwarePropertiesManagerService;->dumpTempValues(Ljava/lang/String;Ljava/io/PrintWriter;ILjava/lang/String;)V
 
     .line 136
-    const/4 v0, 0x3
+    const/4 v1, 0x3
 
-    const-string v1, "Skin "
+    const-string v2, "Skin "
 
-    invoke-direct {p0, p1, p2, v0, v1}, Lcom/android/server/HardwarePropertiesManagerService;->dumpTempValues(Ljava/lang/String;Ljava/io/PrintWriter;ILjava/lang/String;)V
+    invoke-direct {p0, v0, p2, v1, v2}, Lcom/android/server/HardwarePropertiesManagerService;->dumpTempValues(Ljava/lang/String;Ljava/io/PrintWriter;ILjava/lang/String;)V
 
     .line 138
-    invoke-virtual {p0, p1}, Lcom/android/server/HardwarePropertiesManagerService;->getFanSpeeds(Ljava/lang/String;)[F
+    invoke-virtual {p0, v0}, Lcom/android/server/HardwarePropertiesManagerService;->getFanSpeeds(Ljava/lang/String;)[F
 
-    move-result-object v0
+    move-result-object v1
 
     .line 139
-    new-instance v1, Ljava/lang/StringBuilder;
+    .local v1, "fanSpeeds":[F
+    new-instance v2, Ljava/lang/StringBuilder;
 
-    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v2, "Fan speed: "
+    const-string v3, "Fan speed: "
 
-    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-static {v0}, Ljava/util/Arrays;->toString([F)Ljava/lang/String;
+    invoke-static {v1}, Ljava/util/Arrays;->toString([F)Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v3
 
-    invoke-virtual {v1, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string v0, "\n"
+    const-string v3, "\n"
 
-    invoke-virtual {v1, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v2
 
-    invoke-virtual {p2, v0}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {p2, v2}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
     .line 141
-    invoke-virtual {p0, p1}, Lcom/android/server/HardwarePropertiesManagerService;->getCpuUsages(Ljava/lang/String;)[Landroid/os/CpuUsageInfo;
+    invoke-virtual {p0, v0}, Lcom/android/server/HardwarePropertiesManagerService;->getCpuUsages(Ljava/lang/String;)[Landroid/os/CpuUsageInfo;
 
-    move-result-object p1
+    move-result-object v2
 
     .line 142
-    nop
+    .local v2, "cpuUsageInfos":[Landroid/os/CpuUsageInfo;
+    const/4 v3, 0x0
 
     .line 143
-    nop
+    .local v3, "core":I
+    const/4 v4, 0x0
 
+    .local v4, "i":I
     :goto_53
-    array-length v0, p1
+    array-length v5, v2
 
-    if-ge p3, v0, :cond_89
+    if-ge v4, v5, :cond_89
 
     .line 144
-    new-instance v0, Ljava/lang/StringBuilder;
+    new-instance v5, Ljava/lang/StringBuilder;
 
-    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v5}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v1, "Cpu usage of core: "
+    const-string v6, "Cpu usage of core: "
 
-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0, p3}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v5, v4}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    const-string v1, ", active = "
+    const-string v6, ", active = "
 
-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    aget-object v1, p1, p3
+    aget-object v6, v2, v4
 
     .line 145
-    invoke-virtual {v1}, Landroid/os/CpuUsageInfo;->getActive()J
+    invoke-virtual {v6}, Landroid/os/CpuUsageInfo;->getActive()J
 
-    move-result-wide v1
+    move-result-wide v6
 
-    invoke-virtual {v0, v1, v2}, Ljava/lang/StringBuilder;->append(J)Ljava/lang/StringBuilder;
+    invoke-virtual {v5, v6, v7}, Ljava/lang/StringBuilder;->append(J)Ljava/lang/StringBuilder;
 
-    const-string v1, ", total = "
+    const-string v6, ", total = "
 
-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    aget-object v1, p1, p3
+    aget-object v6, v2, v4
 
     .line 146
-    invoke-virtual {v1}, Landroid/os/CpuUsageInfo;->getTotal()J
+    invoke-virtual {v6}, Landroid/os/CpuUsageInfo;->getTotal()J
 
-    move-result-wide v1
+    move-result-wide v6
 
-    invoke-virtual {v0, v1, v2}, Ljava/lang/StringBuilder;->append(J)Ljava/lang/StringBuilder;
+    invoke-virtual {v5, v6, v7}, Ljava/lang/StringBuilder;->append(J)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v5}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v5
 
     .line 144
-    invoke-virtual {p2, v0}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {p2, v5}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
     .line 143
-    add-int/lit8 p3, p3, 0x1
+    add-int/lit8 v4, v4, 0x1
 
     goto :goto_53
 
     .line 148
+    .end local v4  # "i":I
     :cond_89
-    const-string p1, "****** End of HardwarePropertiesManagerService dump ******"
+    const-string v4, "****** End of HardwarePropertiesManagerService dump ******"
 
-    invoke-virtual {p2, p1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {p2, v4}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
     .line 149
     return-void
 .end method
 
 .method public getCpuUsages(Ljava/lang/String;)[Landroid/os/CpuUsageInfo;
-    .registers 3
+    .registers 4
+    .param p1, "callingPackage"  # Ljava/lang/String;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Ljava/lang/SecurityException;
@@ -476,33 +502,36 @@
     invoke-direct {p0, p1}, Lcom/android/server/HardwarePropertiesManagerService;->enforceHardwarePropertiesRetrievalAllowed(Ljava/lang/String;)V
 
     .line 85
-    iget-object p1, p0, Lcom/android/server/HardwarePropertiesManagerService;->mLock:Ljava/lang/Object;
+    iget-object v0, p0, Lcom/android/server/HardwarePropertiesManagerService;->mLock:Ljava/lang/Object;
 
-    monitor-enter p1
+    monitor-enter v0
 
     .line 86
     :try_start_6
     invoke-static {}, Lcom/android/server/HardwarePropertiesManagerService;->nativeGetCpuUsages()[Landroid/os/CpuUsageInfo;
 
-    move-result-object v0
+    move-result-object v1
 
-    monitor-exit p1
+    monitor-exit v0
 
-    return-object v0
+    return-object v1
 
     .line 87
     :catchall_c
-    move-exception v0
+    move-exception v1
 
-    monitor-exit p1
+    monitor-exit v0
     :try_end_e
     .catchall {:try_start_6 .. :try_end_e} :catchall_c
 
-    throw v0
+    throw v1
 .end method
 
 .method public getDeviceTemperatures(Ljava/lang/String;II)[F
-    .registers 4
+    .registers 6
+    .param p1, "callingPackage"  # Ljava/lang/String;
+    .param p2, "type"  # I
+    .param p3, "source"  # I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Ljava/lang/SecurityException;
@@ -513,33 +542,34 @@
     invoke-direct {p0, p1}, Lcom/android/server/HardwarePropertiesManagerService;->enforceHardwarePropertiesRetrievalAllowed(Ljava/lang/String;)V
 
     .line 75
-    iget-object p1, p0, Lcom/android/server/HardwarePropertiesManagerService;->mLock:Ljava/lang/Object;
+    iget-object v0, p0, Lcom/android/server/HardwarePropertiesManagerService;->mLock:Ljava/lang/Object;
 
-    monitor-enter p1
+    monitor-enter v0
 
     .line 76
     :try_start_6
     invoke-static {p2, p3}, Lcom/android/server/HardwarePropertiesManagerService;->nativeGetDeviceTemperatures(II)[F
 
-    move-result-object p2
+    move-result-object v1
 
-    monitor-exit p1
+    monitor-exit v0
 
-    return-object p2
+    return-object v1
 
     .line 77
     :catchall_c
-    move-exception p2
+    move-exception v1
 
-    monitor-exit p1
+    monitor-exit v0
     :try_end_e
     .catchall {:try_start_6 .. :try_end_e} :catchall_c
 
-    throw p2
+    throw v1
 .end method
 
 .method public getFanSpeeds(Ljava/lang/String;)[F
-    .registers 3
+    .registers 4
+    .param p1, "callingPackage"  # Ljava/lang/String;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Ljava/lang/SecurityException;
@@ -550,27 +580,27 @@
     invoke-direct {p0, p1}, Lcom/android/server/HardwarePropertiesManagerService;->enforceHardwarePropertiesRetrievalAllowed(Ljava/lang/String;)V
 
     .line 95
-    iget-object p1, p0, Lcom/android/server/HardwarePropertiesManagerService;->mLock:Ljava/lang/Object;
+    iget-object v0, p0, Lcom/android/server/HardwarePropertiesManagerService;->mLock:Ljava/lang/Object;
 
-    monitor-enter p1
+    monitor-enter v0
 
     .line 96
     :try_start_6
     invoke-static {}, Lcom/android/server/HardwarePropertiesManagerService;->nativeGetFanSpeeds()[F
 
-    move-result-object v0
+    move-result-object v1
 
-    monitor-exit p1
+    monitor-exit v0
 
-    return-object v0
+    return-object v1
 
     .line 97
     :catchall_c
-    move-exception v0
+    move-exception v1
 
-    monitor-exit p1
+    monitor-exit v0
     :try_end_e
     .catchall {:try_start_6 .. :try_end_e} :catchall_c
 
-    throw v0
+    throw v1
 .end method

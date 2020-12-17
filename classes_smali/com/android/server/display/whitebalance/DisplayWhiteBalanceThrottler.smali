@@ -32,6 +32,11 @@
 # direct methods
 .method constructor <init>(II[F[F[F)V
     .registers 12
+    .param p1, "increaseDebounce"  # I
+    .param p2, "decreaseDebounce"  # I
+    .param p3, "baseThresholds"  # [F
+    .param p4, "increaseThresholds"  # [F
+    .param p5, "decreaseThresholds"  # [F
 
     .line 71
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -80,6 +85,7 @@
 
 .method private computeThresholds(F)V
     .registers 5
+    .param p1, "value"  # F
 
     .line 213
     iget-object v0, p0, Lcom/android/server/display/whitebalance/DisplayWhiteBalanceThrottler;->mBaseThresholds:[F
@@ -89,6 +95,7 @@
     move-result v0
 
     .line 214
+    .local v0, "index":I
     iget-object v1, p0, Lcom/android/server/display/whitebalance/DisplayWhiteBalanceThrottler;->mIncreaseThresholds:[F
 
     aget v1, v1, v0
@@ -104,13 +111,13 @@
     .line 215
     iget-object v1, p0, Lcom/android/server/display/whitebalance/DisplayWhiteBalanceThrottler;->mDecreaseThresholds:[F
 
-    aget v0, v1, v0
+    aget v1, v1, v0
 
-    sub-float/2addr v2, v0
+    sub-float/2addr v2, v1
 
-    mul-float/2addr p1, v2
+    mul-float/2addr v2, p1
 
-    iput p1, p0, Lcom/android/server/display/whitebalance/DisplayWhiteBalanceThrottler;->mDecreaseThreshold:F
+    iput v2, p0, Lcom/android/server/display/whitebalance/DisplayWhiteBalanceThrottler;->mDecreaseThreshold:F
 
     .line 216
     return-void
@@ -118,10 +125,13 @@
 
 .method private getHighestIndexBefore(F[F)I
     .registers 5
+    .param p1, "value"  # F
+    .param p2, "values"  # [F
 
     .line 219
     const/4 v0, 0x0
 
+    .local v0, "i":I
     :goto_1
     array-length v1, p2
 
@@ -144,31 +154,34 @@
     goto :goto_1
 
     .line 224
+    .end local v0  # "i":I
     :cond_e
-    array-length p1, p2
+    array-length v0, p2
 
-    add-int/lit8 p1, p1, -0x1
+    add-int/lit8 v0, v0, -0x1
 
-    return p1
+    return v0
 .end method
 
 .method private static isValidMapping([F[F)Z
     .registers 7
+    .param p0, "x"  # [F
+    .param p1, "y"  # [F
 
     .line 166
     const/4 v0, 0x0
 
-    if-eqz p0, :cond_3d
+    if-eqz p0, :cond_3c
 
-    if-eqz p1, :cond_3d
+    if-eqz p1, :cond_3c
 
     array-length v1, p0
 
-    if-eqz v1, :cond_3d
+    if-eqz v1, :cond_3c
 
     array-length v1, p1
 
-    if-eqz v1, :cond_3d
+    if-eqz v1, :cond_3c
 
     array-length v1, p0
 
@@ -176,83 +189,86 @@
 
     if-eq v1, v2, :cond_10
 
-    goto :goto_3d
+    goto :goto_3c
 
     .line 169
     :cond_10
     const/high16 v1, -0x40800000  # -1.0f
 
     .line 170
-    move v2, v1
+    .local v1, "prevX":F
+    const/4 v2, 0x0
 
-    move v1, v0
-
-    :goto_14
+    .local v2, "i":I
+    :goto_13
     array-length v3, p0
 
-    if-ge v1, v3, :cond_3b
+    if-ge v2, v3, :cond_3a
 
     .line 171
-    aget v3, p0, v1
+    aget v3, p0, v2
 
     invoke-static {v3}, Ljava/lang/Float;->isNaN(F)Z
 
     move-result v3
 
-    if-nez v3, :cond_3a
+    if-nez v3, :cond_39
 
-    aget v3, p1, v1
+    aget v3, p1, v2
 
     invoke-static {v3}, Ljava/lang/Float;->isNaN(F)Z
 
     move-result v3
 
-    if-nez v3, :cond_3a
+    if-nez v3, :cond_39
 
-    aget v3, p0, v1
+    aget v3, p0, v2
 
     const/4 v4, 0x0
 
     cmpg-float v3, v3, v4
 
-    if-ltz v3, :cond_3a
+    if-ltz v3, :cond_39
 
-    aget v3, p0, v1
+    aget v3, p0, v2
 
-    cmpl-float v2, v2, v3
+    cmpl-float v3, v1, v3
 
-    if-ltz v2, :cond_35
+    if-ltz v3, :cond_34
 
-    goto :goto_3a
+    goto :goto_39
 
     .line 174
-    :cond_35
-    aget v2, p0, v1
+    :cond_34
+    aget v1, p0, v2
 
     .line 170
-    add-int/lit8 v1, v1, 0x1
+    add-int/lit8 v2, v2, 0x1
 
-    goto :goto_14
+    goto :goto_13
 
     .line 172
-    :cond_3a
-    :goto_3a
+    :cond_39
+    :goto_39
     return v0
 
     .line 176
-    :cond_3b
-    const/4 p0, 0x1
+    .end local v2  # "i":I
+    :cond_3a
+    const/4 v0, 0x1
 
-    return p0
+    return v0
 
     .line 167
-    :cond_3d
-    :goto_3d
+    .end local v1  # "prevX":F
+    :cond_3c
+    :goto_3c
     return v0
 .end method
 
 .method private tooClose(F)Z
     .registers 6
+    .param p1, "value"  # F
 
     .line 198
     iget v0, p0, Lcom/android/server/display/whitebalance/DisplayWhiteBalanceThrottler;->mLastValue:F
@@ -269,22 +285,28 @@
     iget v0, p0, Lcom/android/server/display/whitebalance/DisplayWhiteBalanceThrottler;->mIncreaseThreshold:F
 
     .line 200
+    .local v0, "threshold":F
     cmpg-float v3, p1, v0
 
     if-gez v3, :cond_f
 
-    goto :goto_19
+    goto :goto_10
 
     :cond_f
     move v1, v2
 
+    .local v1, "tooClose":Z
+    :goto_10
     goto :goto_19
 
     .line 202
+    .end local v0  # "threshold":F
+    .end local v1  # "tooClose":Z
     :cond_11
     iget v0, p0, Lcom/android/server/display/whitebalance/DisplayWhiteBalanceThrottler;->mDecreaseThreshold:F
 
     .line 203
+    .restart local v0  # "threshold":F
     cmpl-float v3, p1, v0
 
     if-lez v3, :cond_18
@@ -295,6 +317,7 @@
     move v1, v2
 
     .line 205
+    .restart local v1  # "tooClose":Z
     :goto_19
     iget-boolean v2, p0, Lcom/android/server/display/whitebalance/DisplayWhiteBalanceThrottler;->mLoggingEnabled:Z
 
@@ -320,30 +343,30 @@
     invoke-virtual {v2, p1}, Ljava/lang/StringBuilder;->append(F)Ljava/lang/StringBuilder;
 
     .line 207
-    cmpl-float p1, p1, v0
+    cmpl-float v3, p1, v0
 
-    if-lez p1, :cond_37
+    if-lez v3, :cond_37
 
-    const-string p1, " > "
+    const-string v3, " > "
 
     goto :goto_39
 
     :cond_37
-    const-string p1, " < "
+    const-string v3, " < "
 
     :goto_39
-    invoke-virtual {v2, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v2, v0}, Ljava/lang/StringBuilder;->append(F)Ljava/lang/StringBuilder;
 
     invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v2
 
     .line 206
-    const-string v0, "DisplayWhiteBalanceThrottler"
+    const-string v3, "DisplayWhiteBalanceThrottler"
 
-    invoke-static {v0, p1}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v3, v2}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 209
     :cond_48
@@ -351,7 +374,8 @@
 .end method
 
 .method private tooSoon(F)Z
-    .registers 8
+    .registers 9
+    .param p1, "value"  # F
 
     .line 180
     invoke-static {}, Ljava/lang/System;->currentTimeMillis()J
@@ -359,102 +383,112 @@
     move-result-wide v0
 
     .line 182
+    .local v0, "time":J
     iget v2, p0, Lcom/android/server/display/whitebalance/DisplayWhiteBalanceThrottler;->mLastValue:F
 
-    cmpl-float p1, p1, v2
+    cmpl-float v2, p1, v2
 
-    if-lez p1, :cond_11
+    if-lez v2, :cond_11
 
     .line 183
     iget-wide v2, p0, Lcom/android/server/display/whitebalance/DisplayWhiteBalanceThrottler;->mLastTime:J
 
-    iget p1, p0, Lcom/android/server/display/whitebalance/DisplayWhiteBalanceThrottler;->mIncreaseDebounce:I
+    iget v4, p0, Lcom/android/server/display/whitebalance/DisplayWhiteBalanceThrottler;->mIncreaseDebounce:I
 
-    int-to-long v4, p1
+    int-to-long v4, v4
 
     add-long/2addr v2, v4
 
+    .local v2, "earliestTime":J
     goto :goto_17
 
     .line 185
+    .end local v2  # "earliestTime":J
     :cond_11
     iget-wide v2, p0, Lcom/android/server/display/whitebalance/DisplayWhiteBalanceThrottler;->mLastTime:J
 
-    iget p1, p0, Lcom/android/server/display/whitebalance/DisplayWhiteBalanceThrottler;->mDecreaseDebounce:I
+    iget v4, p0, Lcom/android/server/display/whitebalance/DisplayWhiteBalanceThrottler;->mDecreaseDebounce:I
 
-    int-to-long v4, p1
+    int-to-long v4, v4
 
     add-long/2addr v2, v4
 
     .line 187
+    .restart local v2  # "earliestTime":J
     :goto_17
-    cmp-long p1, v0, v2
+    cmp-long v4, v0, v2
 
-    if-gez p1, :cond_1d
+    if-gez v4, :cond_1d
 
-    const/4 p1, 0x1
+    const/4 v4, 0x1
 
     goto :goto_1e
 
     :cond_1d
-    const/4 p1, 0x0
+    const/4 v4, 0x0
 
     .line 188
+    .local v4, "tooSoon":Z
     :goto_1e
-    iget-boolean v4, p0, Lcom/android/server/display/whitebalance/DisplayWhiteBalanceThrottler;->mLoggingEnabled:Z
+    iget-boolean v5, p0, Lcom/android/server/display/whitebalance/DisplayWhiteBalanceThrottler;->mLoggingEnabled:Z
 
-    if-eqz v4, :cond_4b
+    if-eqz v5, :cond_4c
 
     .line 189
-    new-instance v4, Ljava/lang/StringBuilder;
+    new-instance v5, Ljava/lang/StringBuilder;
 
-    invoke-direct {v4}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v5}, Ljava/lang/StringBuilder;-><init>()V
 
-    if-eqz p1, :cond_2d
+    if-eqz v4, :cond_2d
 
-    const-string/jumbo v5, "too soon: "
+    const-string/jumbo v6, "too soon: "
 
-    goto :goto_2f
+    goto :goto_30
 
     :cond_2d
-    const-string v5, "late enough: "
+    const-string/jumbo v6, "late enough: "
 
-    :goto_2f
-    invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    :goto_30
+    invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v4, v0, v1}, Ljava/lang/StringBuilder;->append(J)Ljava/lang/StringBuilder;
+    invoke-virtual {v5, v0, v1}, Ljava/lang/StringBuilder;->append(J)Ljava/lang/StringBuilder;
 
     .line 190
-    if-eqz p1, :cond_3a
+    if-eqz v4, :cond_3b
 
-    const-string v0, " < "
+    const-string v6, " < "
 
-    goto :goto_3c
+    goto :goto_3d
 
-    :cond_3a
-    const-string v0, " > "
+    :cond_3b
+    const-string v6, " > "
 
-    :goto_3c
-    invoke-virtual {v4, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    :goto_3d
+    invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v4, v2, v3}, Ljava/lang/StringBuilder;->append(J)Ljava/lang/StringBuilder;
+    invoke-virtual {v5, v2, v3}, Ljava/lang/StringBuilder;->append(J)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v4}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v5}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v5
 
     .line 189
-    const-string v1, "DisplayWhiteBalanceThrottler"
+    const-string v6, "DisplayWhiteBalanceThrottler"
 
-    invoke-static {v1, v0}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v6, v5}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 192
-    :cond_4b
-    return p1
+    :cond_4c
+    return v4
 .end method
 
 .method private validateArguments(FF[F[F[F)V
-    .registers 7
+    .registers 8
+    .param p1, "increaseDebounce"  # F
+    .param p2, "decreaseDebounce"  # F
+    .param p3, "baseThresholds"  # [F
+    .param p4, "increaseThresholds"  # [F
+    .param p5, "decreaseThresholds"  # [F
 
     .line 149
     invoke-static {p1}, Ljava/lang/Float;->isNaN(F)Z
@@ -465,77 +499,77 @@
 
     const/4 v0, 0x0
 
-    cmpg-float p1, p1, v0
+    cmpg-float v1, p1, v0
 
-    if-ltz p1, :cond_3a
+    if-ltz v1, :cond_3a
 
     .line 152
     invoke-static {p2}, Ljava/lang/Float;->isNaN(F)Z
 
-    move-result p1
+    move-result v1
 
-    if-nez p1, :cond_32
+    if-nez v1, :cond_32
 
-    cmpg-float p1, p2, v0
+    cmpg-float v0, p2, v0
 
-    if-ltz p1, :cond_32
+    if-ltz v0, :cond_32
 
     .line 155
     invoke-static {p3, p4}, Lcom/android/server/display/whitebalance/DisplayWhiteBalanceThrottler;->isValidMapping([F[F)Z
 
-    move-result p1
+    move-result v0
 
-    if-eqz p1, :cond_2a
+    if-eqz v0, :cond_2a
 
     .line 159
     invoke-static {p3, p5}, Lcom/android/server/display/whitebalance/DisplayWhiteBalanceThrottler;->isValidMapping([F[F)Z
 
-    move-result p1
+    move-result v0
 
-    if-eqz p1, :cond_22
+    if-eqz v0, :cond_22
 
     .line 163
     return-void
 
     .line 160
     :cond_22
-    new-instance p1, Ljava/lang/IllegalArgumentException;
+    new-instance v0, Ljava/lang/IllegalArgumentException;
 
-    const-string p2, "baseThresholds to decreaseThresholds is not a valid mapping."
+    const-string v1, "baseThresholds to decreaseThresholds is not a valid mapping."
 
-    invoke-direct {p1, p2}, Ljava/lang/IllegalArgumentException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v0, v1}, Ljava/lang/IllegalArgumentException;-><init>(Ljava/lang/String;)V
 
-    throw p1
+    throw v0
 
     .line 156
     :cond_2a
-    new-instance p1, Ljava/lang/IllegalArgumentException;
+    new-instance v0, Ljava/lang/IllegalArgumentException;
 
-    const-string p2, "baseThresholds to increaseThresholds is not a valid mapping."
+    const-string v1, "baseThresholds to increaseThresholds is not a valid mapping."
 
-    invoke-direct {p1, p2}, Ljava/lang/IllegalArgumentException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v0, v1}, Ljava/lang/IllegalArgumentException;-><init>(Ljava/lang/String;)V
 
-    throw p1
+    throw v0
 
     .line 153
     :cond_32
-    new-instance p1, Ljava/lang/IllegalArgumentException;
+    new-instance v0, Ljava/lang/IllegalArgumentException;
 
-    const-string p2, "decreaseDebounce must be a non-negative number."
+    const-string v1, "decreaseDebounce must be a non-negative number."
 
-    invoke-direct {p1, p2}, Ljava/lang/IllegalArgumentException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v0, v1}, Ljava/lang/IllegalArgumentException;-><init>(Ljava/lang/String;)V
 
-    throw p1
+    throw v0
 
     .line 150
     :cond_3a
-    new-instance p1, Ljava/lang/IllegalArgumentException;
+    new-instance v0, Ljava/lang/IllegalArgumentException;
 
-    const-string p2, "increaseDebounce must be a non-negative number."
+    const-string/jumbo v1, "increaseDebounce must be a non-negative number."
 
-    invoke-direct {p1, p2}, Ljava/lang/IllegalArgumentException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v0, v1}, Ljava/lang/IllegalArgumentException;-><init>(Ljava/lang/String;)V
 
-    throw p1
+    throw v0
 .end method
 
 
@@ -565,6 +599,7 @@
 
 .method public dump(Ljava/io/PrintWriter;)V
     .registers 5
+    .param p1, "writer"  # Ljava/io/PrintWriter;
 
     .line 134
     const-string v0, "  DisplayWhiteBalanceThrottler"
@@ -779,6 +814,7 @@
 
 .method public setLoggingEnabled(Z)Z
     .registers 3
+    .param p1, "loggingEnabled"  # Z
 
     .line 120
     iget-boolean v0, p0, Lcom/android/server/display/whitebalance/DisplayWhiteBalanceThrottler;->mLoggingEnabled:Z
@@ -786,22 +822,23 @@
     if-ne v0, p1, :cond_6
 
     .line 121
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    return p1
+    return v0
 
     .line 123
     :cond_6
     iput-boolean p1, p0, Lcom/android/server/display/whitebalance/DisplayWhiteBalanceThrottler;->mLoggingEnabled:Z
 
     .line 124
-    const/4 p1, 0x1
+    const/4 v0, 0x1
 
-    return p1
+    return v0
 .end method
 
 .method public throttle(F)Z
     .registers 6
+    .param p1, "value"  # F
 
     .line 92
     iget-wide v0, p0, Lcom/android/server/display/whitebalance/DisplayWhiteBalanceThrottler;->mLastTime:J
@@ -826,9 +863,9 @@
 
     .line 93
     :cond_14
-    const/4 p1, 0x1
+    const/4 v0, 0x1
 
-    return p1
+    return v0
 
     .line 95
     :cond_16
@@ -845,7 +882,7 @@
     iput p1, p0, Lcom/android/server/display/whitebalance/DisplayWhiteBalanceThrottler;->mLastValue:F
 
     .line 98
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    return p1
+    return v0
 .end method

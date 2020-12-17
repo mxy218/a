@@ -18,6 +18,7 @@
 # direct methods
 .method public varargs constructor <init>([Ljava/lang/String;)V
     .registers 6
+    .param p1, "names"  # [Ljava/lang/String;
 
     .line 31
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -28,6 +29,7 @@
     invoke-direct {v0}, Ljava/util/HashSet;-><init>()V
 
     .line 33
+    .local v0, "nameSet":Ljava/util/Set;, "Ljava/util/Set<Ljava/lang/String;>;"
     array-length v1, p1
 
     const/4 v2, 0x0
@@ -38,11 +40,13 @@
     aget-object v3, p1, v2
 
     .line 34
+    .local v3, "name":Ljava/lang/String;
     if-eqz v3, :cond_13
 
     invoke-interface {v0, v3}, Ljava/util/Set;->add(Ljava/lang/Object;)Z
 
     .line 33
+    .end local v3  # "name":Ljava/lang/String;
     :cond_13
     add-int/lit8 v2, v2, 0x1
 
@@ -52,9 +56,9 @@
     :cond_16
     invoke-static {v0}, Ljava/util/Collections;->unmodifiableSet(Ljava/util/Set;)Ljava/util/Set;
 
-    move-result-object p1
+    move-result-object v1
 
-    iput-object p1, p0, Landroid/net/util/InterfaceSet;->ifnames:Ljava/util/Set;
+    iput-object v1, p0, Landroid/net/util/InterfaceSet;->ifnames:Ljava/util/Set;
 
     .line 37
     return-void
@@ -63,38 +67,41 @@
 
 # virtual methods
 .method public equals(Ljava/lang/Object;)Z
-    .registers 3
+    .registers 4
+    .param p1, "obj"  # Ljava/lang/Object;
 
     .line 48
-    if-eqz p1, :cond_14
+    if-eqz p1, :cond_15
 
     instance-of v0, p1, Landroid/net/util/InterfaceSet;
 
-    if-eqz v0, :cond_14
+    if-eqz v0, :cond_15
 
     iget-object v0, p0, Landroid/net/util/InterfaceSet;->ifnames:Ljava/util/Set;
 
-    check-cast p1, Landroid/net/util/InterfaceSet;
+    move-object v1, p1
 
-    iget-object p1, p1, Landroid/net/util/InterfaceSet;->ifnames:Ljava/util/Set;
+    check-cast v1, Landroid/net/util/InterfaceSet;
+
+    iget-object v1, v1, Landroid/net/util/InterfaceSet;->ifnames:Ljava/util/Set;
 
     .line 50
-    invoke-interface {v0, p1}, Ljava/util/Set;->equals(Ljava/lang/Object;)Z
+    invoke-interface {v0, v1}, Ljava/util/Set;->equals(Ljava/lang/Object;)Z
 
-    move-result p1
+    move-result v0
 
-    if-eqz p1, :cond_14
+    if-eqz v0, :cond_15
 
-    const/4 p1, 0x1
+    const/4 v0, 0x1
 
-    goto :goto_15
+    goto :goto_16
 
-    :cond_14
-    const/4 p1, 0x0
+    :cond_15
+    const/4 v0, 0x0
 
     .line 48
-    :goto_15
-    return p1
+    :goto_16
+    return v0
 .end method
 
 .method public toString()Ljava/lang/String;
@@ -112,6 +119,7 @@
     invoke-direct {v0, v1, v2, v3}, Ljava/util/StringJoiner;-><init>(Ljava/lang/CharSequence;Ljava/lang/CharSequence;Ljava/lang/CharSequence;)V
 
     .line 42
+    .local v0, "sj":Ljava/util/StringJoiner;
     iget-object v1, p0, Landroid/net/util/InterfaceSet;->ifnames:Ljava/util/Set;
 
     invoke-interface {v1}, Ljava/util/Set;->iterator()Ljava/util/Iterator;
@@ -131,15 +139,17 @@
 
     check-cast v2, Ljava/lang/String;
 
+    .local v2, "ifname":Ljava/lang/String;
     invoke-virtual {v0, v2}, Ljava/util/StringJoiner;->add(Ljava/lang/CharSequence;)Ljava/util/StringJoiner;
 
     goto :goto_11
 
     .line 43
+    .end local v2  # "ifname":Ljava/lang/String;
     :cond_21
     invoke-virtual {v0}, Ljava/util/StringJoiner;->toString()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v1
 
-    return-object v0
+    return-object v1
 .end method

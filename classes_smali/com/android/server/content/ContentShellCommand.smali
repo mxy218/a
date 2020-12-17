@@ -10,6 +10,7 @@
 # direct methods
 .method constructor <init>(Landroid/content/IContentService;)V
     .registers 2
+    .param p1, "service"  # Landroid/content/IContentService;
 
     .line 28
     invoke-direct {p0}, Landroid/os/ShellCommand;-><init>()V
@@ -43,7 +44,8 @@
 
 # virtual methods
 .method public onCommand(Ljava/lang/String;)I
-    .registers 6
+    .registers 7
+    .param p1, "cmd"  # Ljava/lang/String;
 
     .line 34
     if-nez p1, :cond_7
@@ -51,9 +53,9 @@
     .line 35
     invoke-virtual {p0, p1}, Lcom/android/server/content/ContentShellCommand;->handleDefaultCommands(Ljava/lang/String;)I
 
-    move-result p1
+    move-result v0
 
-    return p1
+    return v0
 
     .line 38
     :cond_7
@@ -62,6 +64,7 @@
     move-result-object v0
 
     .line 40
+    .local v0, "pw":Ljava/io/PrintWriter;
     const/4 v1, -0x1
 
     :try_start_c
@@ -98,42 +101,44 @@
     .line 44
     invoke-virtual {p0, p1}, Lcom/android/server/content/ContentShellCommand;->handleDefaultCommands(Ljava/lang/String;)I
 
-    move-result p1
+    move-result v1
 
-    return p1
+    return v1
 
     .line 42
     :cond_29
     invoke-direct {p0}, Lcom/android/server/content/ContentShellCommand;->runResetTodayStats()I
 
-    move-result p1
+    move-result v1
     :try_end_2d
     .catch Landroid/os/RemoteException; {:try_start_c .. :try_end_2d} :catch_2e
 
-    return p1
+    return v1
 
     .line 46
     :catch_2e
-    move-exception p1
+    move-exception v2
 
     .line 47
-    new-instance v2, Ljava/lang/StringBuilder;
+    .local v2, "e":Landroid/os/RemoteException;
+    new-instance v3, Ljava/lang/StringBuilder;
 
-    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v3, "Remote exception: "
+    const-string v4, "Remote exception: "
 
-    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v2, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v3
 
-    invoke-virtual {v0, p1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {v0, v3}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
     .line 49
+    .end local v2  # "e":Landroid/os/RemoteException;
     return v1
 .end method
 
@@ -146,6 +151,7 @@
     move-result-object v0
 
     .line 60
+    .local v0, "pw":Ljava/io/PrintWriter;
     const-string v1, "Content service commands:"
 
     invoke-virtual {v0, v1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V

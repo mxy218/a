@@ -30,7 +30,7 @@
 .method constructor <init>()V
     .registers 1
 
-    .line 249
+    .line 250
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
     return-void
@@ -39,7 +39,9 @@
 
 # virtual methods
 .method public combine(Lcom/android/server/usage/IntervalStats;ZLjava/util/List;)V
-    .registers 7
+    .registers 9
+    .param p1, "stats"  # Lcom/android/server/usage/IntervalStats;
+    .param p2, "mutable"  # Z
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(",
@@ -51,56 +53,79 @@
         }
     .end annotation
 
-    .line 253
+    .line 254
+    .local p3, "accResult":Ljava/util/List;, "Ljava/util/List<Landroid/app/usage/UsageStats;>;"
     if-nez p2, :cond_c
 
-    .line 254
-    iget-object p1, p1, Lcom/android/server/usage/IntervalStats;->packageStats:Landroid/util/ArrayMap;
-
-    invoke-virtual {p1}, Landroid/util/ArrayMap;->values()Ljava/util/Collection;
-
-    move-result-object p1
-
-    invoke-interface {p3, p1}, Ljava/util/List;->addAll(Ljava/util/Collection;)Z
-
     .line 255
+    iget-object v0, p1, Lcom/android/server/usage/IntervalStats;->packageStats:Landroid/util/ArrayMap;
+
+    invoke-virtual {v0}, Landroid/util/ArrayMap;->values()Ljava/util/Collection;
+
+    move-result-object v0
+
+    invoke-interface {p3, v0}, Ljava/util/List;->addAll(Ljava/util/Collection;)Z
+
+    .line 256
     return-void
 
-    .line 258
-    :cond_c
-    iget-object p2, p1, Lcom/android/server/usage/IntervalStats;->packageStats:Landroid/util/ArrayMap;
-
-    invoke-virtual {p2}, Landroid/util/ArrayMap;->size()I
-
-    move-result p2
-
     .line 259
-    const/4 v0, 0x0
+    :cond_c
+    iget-object v0, p1, Lcom/android/server/usage/IntervalStats;->packageStats:Landroid/util/ArrayMap;
 
-    :goto_13
-    if-ge v0, p2, :cond_28
+    invoke-virtual {v0}, Landroid/util/ArrayMap;->size()I
+
+    move-result v0
 
     .line 260
-    new-instance v1, Landroid/app/usage/UsageStats;
+    .local v0, "statCount":I
+    const/4 v1, 0x0
 
-    iget-object v2, p1, Lcom/android/server/usage/IntervalStats;->packageStats:Landroid/util/ArrayMap;
+    .local v1, "i":I
+    :goto_13
+    if-ge v1, v0, :cond_33
 
-    invoke-virtual {v2, v0}, Landroid/util/ArrayMap;->valueAt(I)Ljava/lang/Object;
+    .line 263
+    new-instance v2, Landroid/app/usage/UsageStats;
 
-    move-result-object v2
+    iget-object v3, p1, Lcom/android/server/usage/IntervalStats;->packageStats:Landroid/util/ArrayMap;
 
-    check-cast v2, Landroid/app/usage/UsageStats;
+    invoke-virtual {v3, v1}, Landroid/util/ArrayMap;->valueAt(I)Ljava/lang/Object;
 
-    invoke-direct {v1, v2}, Landroid/app/usage/UsageStats;-><init>(Landroid/app/usage/UsageStats;)V
+    move-result-object v3
 
-    invoke-interface {p3, v1}, Ljava/util/List;->add(Ljava/lang/Object;)Z
+    check-cast v3, Landroid/app/usage/UsageStats;
 
-    .line 259
-    add-int/lit8 v0, v0, 0x1
+    invoke-direct {v2, v3}, Landroid/app/usage/UsageStats;-><init>(Landroid/app/usage/UsageStats;)V
+
+    .line 264
+    .local v2, "s":Landroid/app/usage/UsageStats;
+    iget-object v3, v2, Landroid/app/usage/UsageStats;->mPackageName:Ljava/lang/String;
+
+    const-string v4, "com.meizu.regservice"
+
+    invoke-virtual {v4, v3}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+
+    move-result v3
+
+    if-eqz v3, :cond_2d
+
+    .line 265
+    goto :goto_30
+
+    .line 267
+    :cond_2d
+    invoke-interface {p3, v2}, Ljava/util/List;->add(Ljava/lang/Object;)Z
+
+    .line 260
+    .end local v2  # "s":Landroid/app/usage/UsageStats;
+    :goto_30
+    add-int/lit8 v1, v1, 0x1
 
     goto :goto_13
 
-    .line 262
-    :cond_28
+    .line 270
+    .end local v1  # "i":I
+    :cond_33
     return-void
 .end method

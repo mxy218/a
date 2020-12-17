@@ -26,8 +26,9 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/power/Notifier;I)V
     .registers 3
+    .param p1, "this$0"  # Lcom/android/server/power/Notifier;
 
-    .line 465
+    .line 486
     iput-object p1, p0, Lcom/android/server/power/Notifier$3;->this$0:Lcom/android/server/power/Notifier;
 
     iput p2, p0, Lcom/android/server/power/Notifier$3;->val$why:I
@@ -42,7 +43,7 @@
 .method public run()V
     .registers 3
 
-    .line 468
+    .line 489
     iget-object v0, p0, Lcom/android/server/power/Notifier$3;->this$0:Lcom/android/server/power/Notifier;
 
     invoke-static {v0}, Lcom/android/server/power/Notifier;->access$300(Lcom/android/server/power/Notifier;)Lcom/android/server/policy/WindowManagerPolicy;
@@ -53,6 +54,6 @@
 
     invoke-interface {v0, v1}, Lcom/android/server/policy/WindowManagerPolicy;->startedGoingToSleep(I)V
 
-    .line 469
+    .line 490
     return-void
 .end method

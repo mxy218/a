@@ -31,93 +31,99 @@
 # direct methods
 .method constructor <init>(Landroid/app/IUiModeManager;)V
     .registers 2
+    .param p1, "iface"  # Landroid/app/IUiModeManager;
 
-    .line 1039
+    .line 870
     invoke-direct {p0}, Landroid/os/ShellCommand;-><init>()V
 
-    .line 1040
+    .line 871
     iput-object p1, p0, Lcom/android/server/UiModeManagerService$Shell;->mInterface:Landroid/app/IUiModeManager;
 
-    .line 1041
+    .line 872
     return-void
 .end method
 
-.method static synthetic access$2400(I)Ljava/lang/String;
-    .registers 1
+.method static synthetic access$1600(I)Ljava/lang/String;
+    .registers 2
+    .param p0, "x0"  # I
 
-    .line 1032
+    .line 863
     invoke-static {p0}, Lcom/android/server/UiModeManagerService$Shell;->nightModeToStr(I)Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v0
 
-    return-object p0
+    return-object v0
 .end method
 
 .method private handleNightMode()I
-    .registers 4
+    .registers 6
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
         }
     .end annotation
 
-    .line 1074
+    .line 905
     invoke-virtual {p0}, Lcom/android/server/UiModeManagerService$Shell;->getErrPrintWriter()Ljava/io/PrintWriter;
 
     move-result-object v0
 
-    .line 1075
+    .line 906
+    .local v0, "err":Ljava/io/PrintWriter;
     invoke-virtual {p0}, Lcom/android/server/UiModeManagerService$Shell;->getNextArg()Ljava/lang/String;
 
     move-result-object v1
 
-    .line 1076
+    .line 907
+    .local v1, "modeStr":Ljava/lang/String;
     const/4 v2, 0x0
 
     if-nez v1, :cond_f
 
-    .line 1077
+    .line 908
     invoke-direct {p0}, Lcom/android/server/UiModeManagerService$Shell;->printCurrentNightMode()V
 
-    .line 1078
+    .line 909
     return v2
 
-    .line 1081
+    .line 912
     :cond_f
     invoke-static {v1}, Lcom/android/server/UiModeManagerService$Shell;->strToNightMode(Ljava/lang/String;)I
 
-    move-result v1
+    move-result v3
 
-    .line 1082
-    if-ltz v1, :cond_1e
+    .line 913
+    .local v3, "mode":I
+    if-ltz v3, :cond_1e
 
-    .line 1083
-    iget-object v0, p0, Lcom/android/server/UiModeManagerService$Shell;->mInterface:Landroid/app/IUiModeManager;
+    .line 914
+    iget-object v4, p0, Lcom/android/server/UiModeManagerService$Shell;->mInterface:Landroid/app/IUiModeManager;
 
-    invoke-interface {v0, v1}, Landroid/app/IUiModeManager;->setNightMode(I)V
+    invoke-interface {v4, v3}, Landroid/app/IUiModeManager;->setNightMode(I)V
 
-    .line 1084
+    .line 915
     invoke-direct {p0}, Lcom/android/server/UiModeManagerService$Shell;->printCurrentNightMode()V
 
-    .line 1085
+    .line 916
     return v2
 
-    .line 1087
+    .line 918
     :cond_1e
-    const-string v1, "Error: mode must be \'yes\', \'no\', or \'auto\'"
+    const-string v2, "Error: mode must be \'yes\', \'no\', or \'auto\'"
 
-    invoke-virtual {v0, v1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {v0, v2}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
-    .line 1089
-    const/4 v0, -0x1
+    .line 920
+    const/4 v2, -0x1
 
-    return v0
+    return v2
 .end method
 
 .method private static nightModeToStr(I)Ljava/lang/String;
     .registers 2
+    .param p0, "mode"  # I
 
-    .line 1101
+    .line 932
     if-eqz p0, :cond_14
 
     const/4 v0, 0x1
@@ -128,80 +134,84 @@
 
     if-eq p0, v0, :cond_c
 
-    .line 1109
-    const-string/jumbo p0, "unknown"
+    .line 940
+    const-string/jumbo v0, "unknown"
 
-    return-object p0
+    return-object v0
 
-    .line 1103
+    .line 934
     :cond_c
-    const-string/jumbo p0, "yes"
+    const-string/jumbo v0, "yes"
 
-    return-object p0
+    return-object v0
 
-    .line 1105
+    .line 936
     :cond_10
-    const-string/jumbo p0, "no"
+    const-string/jumbo v0, "no"
 
-    return-object p0
+    return-object v0
 
-    .line 1107
+    .line 938
     :cond_14
-    const-string p0, "auto"
+    const-string v0, "auto"
 
-    return-object p0
+    return-object v0
 .end method
 
 .method private printCurrentNightMode()V
-    .registers 5
+    .registers 6
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
         }
     .end annotation
 
-    .line 1094
+    .line 925
     invoke-virtual {p0}, Lcom/android/server/UiModeManagerService$Shell;->getOutPrintWriter()Ljava/io/PrintWriter;
 
     move-result-object v0
 
-    .line 1095
+    .line 926
+    .local v0, "pw":Ljava/io/PrintWriter;
     iget-object v1, p0, Lcom/android/server/UiModeManagerService$Shell;->mInterface:Landroid/app/IUiModeManager;
 
     invoke-interface {v1}, Landroid/app/IUiModeManager;->getNightMode()I
 
     move-result v1
 
-    .line 1096
+    .line 927
+    .local v1, "currMode":I
     invoke-static {v1}, Lcom/android/server/UiModeManagerService$Shell;->nightModeToStr(I)Ljava/lang/String;
 
-    move-result-object v1
+    move-result-object v2
 
-    .line 1097
-    new-instance v2, Ljava/lang/StringBuilder;
+    .line 928
+    .local v2, "currModeStr":Ljava/lang/String;
+    new-instance v3, Ljava/lang/StringBuilder;
 
-    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v3, "Night mode: "
+    const-string v4, "Night mode: "
 
-    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v2, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v1
+    move-result-object v3
 
-    invoke-virtual {v0, v1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {v0, v3}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
-    .line 1098
+    .line 929
     return-void
 .end method
 
 .method private static strToNightMode(Ljava/lang/String;)I
     .registers 7
+    .param p0, "modeStr"  # Ljava/lang/String;
 
-    .line 1114
+    .line 945
     invoke-virtual {p0}, Ljava/lang/String;->hashCode()I
 
     move-result v0
@@ -234,11 +244,11 @@
 
     invoke-virtual {p0, v0}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result p0
+    move-result v0
 
-    if-eqz p0, :cond_16
+    if-eqz v0, :cond_16
 
-    move p0, v4
+    move v0, v4
 
     goto :goto_38
 
@@ -247,11 +257,11 @@
 
     invoke-virtual {p0, v0}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result p0
+    move-result v0
 
-    if-eqz p0, :cond_16
+    if-eqz v0, :cond_16
 
-    move p0, v2
+    move v0, v2
 
     goto :goto_38
 
@@ -260,36 +270,36 @@
 
     invoke-virtual {p0, v0}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result p0
+    move-result v0
 
-    if-eqz p0, :cond_16
+    if-eqz v0, :cond_16
 
-    move p0, v5
+    move v0, v5
 
     goto :goto_38
 
     :goto_37
-    move p0, v3
+    move v0, v3
 
     :goto_38
-    if-eqz p0, :cond_41
+    if-eqz v0, :cond_41
 
-    if-eq p0, v5, :cond_40
+    if-eq v0, v5, :cond_40
 
-    if-eq p0, v4, :cond_3f
+    if-eq v0, v4, :cond_3f
 
-    .line 1122
+    .line 953
     return v3
 
-    .line 1120
+    .line 951
     :cond_3f
     return v2
 
-    .line 1118
+    .line 949
     :cond_40
     return v5
 
-    .line 1116
+    .line 947
     :cond_41
     return v4
 .end method
@@ -297,19 +307,20 @@
 
 # virtual methods
 .method public onCommand(Ljava/lang/String;)I
-    .registers 6
+    .registers 7
+    .param p1, "cmd"  # Ljava/lang/String;
 
-    .line 1055
+    .line 886
     if-nez p1, :cond_7
 
-    .line 1056
+    .line 887
     invoke-virtual {p0, p1}, Lcom/android/server/UiModeManagerService$Shell;->handleDefaultCommands(Ljava/lang/String;)I
 
-    move-result p1
+    move-result v0
 
-    return p1
+    return v0
 
-    .line 1060
+    .line 891
     :cond_7
     const/4 v0, -0x1
 
@@ -344,86 +355,91 @@
     :goto_1e
     if-eqz v1, :cond_25
 
-    .line 1064
+    .line 895
     invoke-virtual {p0, p1}, Lcom/android/server/UiModeManagerService$Shell;->handleDefaultCommands(Ljava/lang/String;)I
 
-    move-result p1
+    move-result v0
 
-    return p1
+    return v0
 
-    .line 1062
+    .line 893
     :cond_25
     invoke-direct {p0}, Lcom/android/server/UiModeManagerService$Shell;->handleNightMode()I
 
-    move-result p1
+    move-result v0
     :try_end_29
     .catch Landroid/os/RemoteException; {:try_start_8 .. :try_end_29} :catch_2a
 
-    return p1
+    return v0
 
-    .line 1066
+    .line 897
     :catch_2a
-    move-exception p1
+    move-exception v1
 
-    .line 1067
+    .line 898
+    .local v1, "e":Landroid/os/RemoteException;
     invoke-virtual {p0}, Lcom/android/server/UiModeManagerService$Shell;->getErrPrintWriter()Ljava/io/PrintWriter;
 
-    move-result-object v1
+    move-result-object v2
 
-    .line 1068
-    new-instance v2, Ljava/lang/StringBuilder;
+    .line 899
+    .local v2, "err":Ljava/io/PrintWriter;
+    new-instance v3, Ljava/lang/StringBuilder;
 
-    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v3, "Remote exception: "
+    const-string v4, "Remote exception: "
 
-    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v2, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v3
 
-    invoke-virtual {v1, p1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {v2, v3}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
-    .line 1070
+    .line 901
+    .end local v1  # "e":Landroid/os/RemoteException;
+    .end local v2  # "err":Ljava/io/PrintWriter;
     return v0
 .end method
 
 .method public onHelp()V
     .registers 3
 
-    .line 1045
+    .line 876
     invoke-virtual {p0}, Lcom/android/server/UiModeManagerService$Shell;->getOutPrintWriter()Ljava/io/PrintWriter;
 
     move-result-object v0
 
-    .line 1046
+    .line 877
+    .local v0, "pw":Ljava/io/PrintWriter;
     const-string v1, "UiModeManager service (uimode) commands:"
 
     invoke-virtual {v0, v1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
-    .line 1047
+    .line 878
     const-string v1, "  help"
 
     invoke-virtual {v0, v1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
-    .line 1048
+    .line 879
     const-string v1, "    Print this help text."
 
     invoke-virtual {v0, v1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
-    .line 1049
+    .line 880
     const-string v1, "  night [yes|no|auto]"
 
     invoke-virtual {v0, v1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
-    .line 1050
+    .line 881
     const-string v1, "    Set or read night mode."
 
     invoke-virtual {v0, v1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
-    .line 1051
+    .line 882
     return-void
 .end method

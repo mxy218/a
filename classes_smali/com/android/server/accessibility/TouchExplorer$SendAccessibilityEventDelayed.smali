@@ -28,6 +28,8 @@
 # direct methods
 .method public constructor <init>(Lcom/android/server/accessibility/TouchExplorer;II)V
     .registers 4
+    .param p2, "eventType"  # I
+    .param p3, "delay"  # I
 
     .line 1304
     iput-object p1, p0, Lcom/android/server/accessibility/TouchExplorer$SendAccessibilityEventDelayed;->this$0:Lcom/android/server/accessibility/TouchExplorer;

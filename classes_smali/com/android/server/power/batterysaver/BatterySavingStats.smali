@@ -93,6 +93,7 @@
 # direct methods
 .method public constructor <init>(Ljava/lang/Object;)V
     .registers 4
+    .param p1, "lock"  # Ljava/lang/Object;
     .annotation build Lcom/android/internal/annotations/VisibleForTesting;
     .end annotation
 
@@ -128,22 +129,28 @@
     iput-object p1, p0, Lcom/android/server/power/batterysaver/BatterySavingStats;->mLock:Ljava/lang/Object;
 
     .line 174
-    const-class p1, Landroid/os/BatteryManagerInternal;
+    const-class v0, Landroid/os/BatteryManagerInternal;
 
-    invoke-static {p1}, Lcom/android/server/LocalServices;->getService(Ljava/lang/Class;)Ljava/lang/Object;
+    invoke-static {v0}, Lcom/android/server/LocalServices;->getService(Ljava/lang/Class;)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v0
 
-    check-cast p1, Landroid/os/BatteryManagerInternal;
+    check-cast v0, Landroid/os/BatteryManagerInternal;
 
-    iput-object p1, p0, Lcom/android/server/power/batterysaver/BatterySavingStats;->mBatteryManagerInternal:Landroid/os/BatteryManagerInternal;
+    iput-object v0, p0, Lcom/android/server/power/batterysaver/BatterySavingStats;->mBatteryManagerInternal:Landroid/os/BatteryManagerInternal;
 
     .line 175
     return-void
 .end method
 
 .method private dumpLineLocked(Ljava/io/PrintWriter;Ljava/lang/String;ILjava/lang/String;ILjava/lang/String;)V
-    .registers 11
+    .registers 16
+    .param p1, "pw"  # Ljava/io/PrintWriter;
+    .param p2, "indent"  # Ljava/lang/String;
+    .param p3, "interactiveState"  # I
+    .param p4, "interactiveLabel"  # Ljava/lang/String;
+    .param p5, "dozeState"  # I
+    .param p6, "dozeLabel"  # Ljava/lang/String;
 
     .line 433
     invoke-virtual {p1, p2}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
@@ -152,154 +159,159 @@
     invoke-virtual {p1, p6}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
     .line 435
-    const-string p2, " "
+    const-string v0, " "
 
-    invoke-virtual {p1, p2}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
+    invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
     .line 436
     invoke-virtual {p1, p4}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
     .line 437
-    const-string p2, ": "
+    const-string v0, ": "
 
-    invoke-virtual {p1, p2}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
+    invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
     .line 439
-    const/4 p2, 0x0
+    const/4 v0, 0x0
 
-    invoke-direct {p0, p2, p3, p5}, Lcom/android/server/power/batterysaver/BatterySavingStats;->getStat(III)Lcom/android/server/power/batterysaver/BatterySavingStats$Stat;
+    invoke-direct {p0, v0, p3, p5}, Lcom/android/server/power/batterysaver/BatterySavingStats;->getStat(III)Lcom/android/server/power/batterysaver/BatterySavingStats$Stat;
 
-    move-result-object p4
+    move-result-object v1
 
     .line 440
-    const/4 p6, 0x1
+    .local v1, "offStat":Lcom/android/server/power/batterysaver/BatterySavingStats$Stat;
+    const/4 v2, 0x1
 
-    invoke-direct {p0, p6, p3, p5}, Lcom/android/server/power/batterysaver/BatterySavingStats;->getStat(III)Lcom/android/server/power/batterysaver/BatterySavingStats$Stat;
+    invoke-direct {p0, v2, p3, p5}, Lcom/android/server/power/batterysaver/BatterySavingStats;->getStat(III)Lcom/android/server/power/batterysaver/BatterySavingStats$Stat;
 
-    move-result-object p3
+    move-result-object v3
 
     .line 442
-    const/16 p5, 0x8
+    .local v3, "onStat":Lcom/android/server/power/batterysaver/BatterySavingStats$Stat;
+    const/16 v4, 0x8
 
-    new-array p5, p5, [Ljava/lang/Object;
+    new-array v4, v4, [Ljava/lang/Object;
 
     .line 443
-    invoke-virtual {p4}, Lcom/android/server/power/batterysaver/BatterySavingStats$Stat;->totalMinutes()J
+    invoke-virtual {v1}, Lcom/android/server/power/batterysaver/BatterySavingStats$Stat;->totalMinutes()J
 
-    move-result-wide v0
+    move-result-wide v5
 
-    invoke-static {v0, v1}, Ljava/lang/Long;->valueOf(J)Ljava/lang/Long;
+    invoke-static {v5, v6}, Ljava/lang/Long;->valueOf(J)Ljava/lang/Long;
+
+    move-result-object v5
+
+    aput-object v5, v4, v0
+
+    iget v0, v1, Lcom/android/server/power/batterysaver/BatterySavingStats$Stat;->totalBatteryDrain:I
+
+    div-int/lit16 v0, v0, 0x3e8
+
+    .line 444
+    invoke-static {v0}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
 
     move-result-object v0
 
-    aput-object v0, p5, p2
+    aput-object v0, v4, v2
 
-    iget p2, p4, Lcom/android/server/power/batterysaver/BatterySavingStats$Stat;->totalBatteryDrain:I
-
-    div-int/lit16 p2, p2, 0x3e8
-
-    .line 444
-    invoke-static {p2}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
-
-    move-result-object p2
-
-    aput-object p2, p5, p6
-
-    iget p2, p4, Lcom/android/server/power/batterysaver/BatterySavingStats$Stat;->totalBatteryDrainPercent:I
+    iget v0, v1, Lcom/android/server/power/batterysaver/BatterySavingStats$Stat;->totalBatteryDrainPercent:I
 
     .line 445
-    invoke-static {p2}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
+    invoke-static {v0}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
 
-    move-result-object p2
+    move-result-object v0
 
-    const/4 p6, 0x2
+    const/4 v2, 0x2
 
-    aput-object p2, p5, p6
+    aput-object v0, v4, v2
 
     .line 446
-    invoke-virtual {p4}, Lcom/android/server/power/batterysaver/BatterySavingStats$Stat;->drainPerHour()D
+    invoke-virtual {v1}, Lcom/android/server/power/batterysaver/BatterySavingStats$Stat;->drainPerHour()D
 
-    move-result-wide v0
+    move-result-wide v5
 
-    const-wide v2, 0x408f400000000000L  # 1000.0
+    const-wide v7, 0x408f400000000000L  # 1000.0
 
-    div-double/2addr v0, v2
+    div-double/2addr v5, v7
 
-    invoke-static {v0, v1}, Ljava/lang/Double;->valueOf(D)Ljava/lang/Double;
+    invoke-static {v5, v6}, Ljava/lang/Double;->valueOf(D)Ljava/lang/Double;
 
-    move-result-object p2
+    move-result-object v0
 
-    const/4 p4, 0x3
+    const/4 v2, 0x3
 
-    aput-object p2, p5, p4
+    aput-object v0, v4, v2
 
     .line 447
-    invoke-virtual {p3}, Lcom/android/server/power/batterysaver/BatterySavingStats$Stat;->totalMinutes()J
+    invoke-virtual {v3}, Lcom/android/server/power/batterysaver/BatterySavingStats$Stat;->totalMinutes()J
 
-    move-result-wide v0
+    move-result-wide v5
 
-    invoke-static {v0, v1}, Ljava/lang/Long;->valueOf(J)Ljava/lang/Long;
+    invoke-static {v5, v6}, Ljava/lang/Long;->valueOf(J)Ljava/lang/Long;
 
-    move-result-object p2
+    move-result-object v0
 
-    const/4 p4, 0x4
+    const/4 v2, 0x4
 
-    aput-object p2, p5, p4
+    aput-object v0, v4, v2
 
-    iget p2, p3, Lcom/android/server/power/batterysaver/BatterySavingStats$Stat;->totalBatteryDrain:I
+    iget v0, v3, Lcom/android/server/power/batterysaver/BatterySavingStats$Stat;->totalBatteryDrain:I
 
-    div-int/lit16 p2, p2, 0x3e8
+    div-int/lit16 v0, v0, 0x3e8
 
     .line 448
-    invoke-static {p2}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
+    invoke-static {v0}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
 
-    move-result-object p2
+    move-result-object v0
 
-    const/4 p4, 0x5
+    const/4 v2, 0x5
 
-    aput-object p2, p5, p4
+    aput-object v0, v4, v2
 
-    iget p2, p3, Lcom/android/server/power/batterysaver/BatterySavingStats$Stat;->totalBatteryDrainPercent:I
+    iget v0, v3, Lcom/android/server/power/batterysaver/BatterySavingStats$Stat;->totalBatteryDrainPercent:I
 
     .line 449
-    invoke-static {p2}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
+    invoke-static {v0}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
 
-    move-result-object p2
+    move-result-object v0
 
-    const/4 p4, 0x6
+    const/4 v2, 0x6
 
-    aput-object p2, p5, p4
+    aput-object v0, v4, v2
 
     .line 450
-    invoke-virtual {p3}, Lcom/android/server/power/batterysaver/BatterySavingStats$Stat;->drainPerHour()D
+    invoke-virtual {v3}, Lcom/android/server/power/batterysaver/BatterySavingStats$Stat;->drainPerHour()D
 
-    move-result-wide p2
+    move-result-wide v5
 
-    div-double/2addr p2, v2
+    div-double/2addr v5, v7
 
-    invoke-static {p2, p3}, Ljava/lang/Double;->valueOf(D)Ljava/lang/Double;
+    invoke-static {v5, v6}, Ljava/lang/Double;->valueOf(D)Ljava/lang/Double;
 
-    move-result-object p2
+    move-result-object v0
 
-    const/4 p3, 0x7
+    const/4 v2, 0x7
 
-    aput-object p2, p5, p3
+    aput-object v0, v4, v2
 
     .line 442
-    const-string p2, "%6dm %6dmAh(%3d%%) %8.1fmAh/h     %6dm %6dmAh(%3d%%) %8.1fmAh/h"
+    const-string v0, "%6dm %6dmAh(%3d%%) %8.1fmAh/h     %6dm %6dmAh(%3d%%) %8.1fmAh/h"
 
-    invoke-static {p2, p5}, Ljava/lang/String;->format(Ljava/lang/String;[Ljava/lang/Object;)Ljava/lang/String;
+    invoke-static {v0, v4}, Ljava/lang/String;->format(Ljava/lang/String;[Ljava/lang/Object;)Ljava/lang/String;
 
-    move-result-object p2
+    move-result-object v0
 
-    invoke-virtual {p1, p2}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
     .line 451
     return-void
 .end method
 
 .method private endLastStateLocked(JII)V
-    .registers 22
+    .registers 26
+    .param p1, "now"  # J
+    .param p3, "batteryLevel"  # I
+    .param p4, "batteryPercent"  # I
     .annotation build Lcom/android/internal/annotations/GuardedBy;
         value = {
             "mLock"
@@ -323,83 +335,87 @@
     move-result-object v1
 
     .line 315
+    .local v1, "stat":Lcom/android/server/power/batterysaver/BatterySavingStats$Stat;
     move/from16 v2, p3
 
     iput v2, v1, Lcom/android/server/power/batterysaver/BatterySavingStats$Stat;->endBatteryLevel:I
 
     .line 316
-    move/from16 v2, p4
+    move/from16 v3, p4
 
-    iput v2, v1, Lcom/android/server/power/batterysaver/BatterySavingStats$Stat;->endBatteryPercent:I
+    iput v3, v1, Lcom/android/server/power/batterysaver/BatterySavingStats$Stat;->endBatteryPercent:I
 
     .line 317
-    move-wide/from16 v2, p1
+    move-wide/from16 v4, p1
 
-    iput-wide v2, v1, Lcom/android/server/power/batterysaver/BatterySavingStats$Stat;->endTime:J
+    iput-wide v4, v1, Lcom/android/server/power/batterysaver/BatterySavingStats$Stat;->endTime:J
 
     .line 319
-    iget-wide v2, v1, Lcom/android/server/power/batterysaver/BatterySavingStats$Stat;->endTime:J
+    iget-wide v6, v1, Lcom/android/server/power/batterysaver/BatterySavingStats$Stat;->endTime:J
 
-    iget-wide v4, v1, Lcom/android/server/power/batterysaver/BatterySavingStats$Stat;->startTime:J
+    iget-wide v8, v1, Lcom/android/server/power/batterysaver/BatterySavingStats$Stat;->startTime:J
 
-    sub-long v9, v2, v4
+    sub-long/2addr v6, v8
 
     .line 320
-    iget v2, v1, Lcom/android/server/power/batterysaver/BatterySavingStats$Stat;->startBatteryLevel:I
+    .local v6, "deltaTime":J
+    iget v8, v1, Lcom/android/server/power/batterysaver/BatterySavingStats$Stat;->startBatteryLevel:I
 
-    iget v3, v1, Lcom/android/server/power/batterysaver/BatterySavingStats$Stat;->endBatteryLevel:I
+    iget v9, v1, Lcom/android/server/power/batterysaver/BatterySavingStats$Stat;->endBatteryLevel:I
 
-    sub-int v11, v2, v3
+    sub-int/2addr v8, v9
 
     .line 321
-    iget v2, v1, Lcom/android/server/power/batterysaver/BatterySavingStats$Stat;->startBatteryPercent:I
+    .local v8, "deltaDrain":I
+    iget v9, v1, Lcom/android/server/power/batterysaver/BatterySavingStats$Stat;->startBatteryPercent:I
 
-    iget v3, v1, Lcom/android/server/power/batterysaver/BatterySavingStats$Stat;->endBatteryPercent:I
+    iget v10, v1, Lcom/android/server/power/batterysaver/BatterySavingStats$Stat;->endBatteryPercent:I
 
-    sub-int v12, v2, v3
+    sub-int/2addr v9, v10
 
     .line 323
-    iget-wide v2, v1, Lcom/android/server/power/batterysaver/BatterySavingStats$Stat;->totalTimeMillis:J
+    .local v9, "deltaPercent":I
+    iget-wide v10, v1, Lcom/android/server/power/batterysaver/BatterySavingStats$Stat;->totalTimeMillis:J
 
-    add-long/2addr v2, v9
+    add-long/2addr v10, v6
 
-    iput-wide v2, v1, Lcom/android/server/power/batterysaver/BatterySavingStats$Stat;->totalTimeMillis:J
+    iput-wide v10, v1, Lcom/android/server/power/batterysaver/BatterySavingStats$Stat;->totalTimeMillis:J
 
     .line 324
-    iget v2, v1, Lcom/android/server/power/batterysaver/BatterySavingStats$Stat;->totalBatteryDrain:I
+    iget v10, v1, Lcom/android/server/power/batterysaver/BatterySavingStats$Stat;->totalBatteryDrain:I
 
-    add-int/2addr v2, v11
+    add-int/2addr v10, v8
 
-    iput v2, v1, Lcom/android/server/power/batterysaver/BatterySavingStats$Stat;->totalBatteryDrain:I
+    iput v10, v1, Lcom/android/server/power/batterysaver/BatterySavingStats$Stat;->totalBatteryDrain:I
 
     .line 325
-    iget v2, v1, Lcom/android/server/power/batterysaver/BatterySavingStats$Stat;->totalBatteryDrainPercent:I
+    iget v10, v1, Lcom/android/server/power/batterysaver/BatterySavingStats$Stat;->totalBatteryDrainPercent:I
 
-    add-int/2addr v2, v12
+    add-int/2addr v10, v9
 
-    iput v2, v1, Lcom/android/server/power/batterysaver/BatterySavingStats$Stat;->totalBatteryDrainPercent:I
+    iput v10, v1, Lcom/android/server/power/batterysaver/BatterySavingStats$Stat;->totalBatteryDrainPercent:I
 
     .line 336
-    iget v2, v0, Lcom/android/server/power/batterysaver/BatterySavingStats;->mCurrentState:I
+    iget v10, v0, Lcom/android/server/power/batterysaver/BatterySavingStats;->mCurrentState:I
 
     .line 337
-    invoke-static {v2}, Lcom/android/server/power/batterysaver/BatterySavingStats$BatterySaverState;->fromIndex(I)I
+    invoke-static {v10}, Lcom/android/server/power/batterysaver/BatterySavingStats$BatterySaverState;->fromIndex(I)I
 
-    move-result v6
+    move-result v10
 
-    iget v2, v0, Lcom/android/server/power/batterysaver/BatterySavingStats;->mCurrentState:I
+    iget v11, v0, Lcom/android/server/power/batterysaver/BatterySavingStats;->mCurrentState:I
 
     .line 338
-    invoke-static {v2}, Lcom/android/server/power/batterysaver/BatterySavingStats$InteractiveState;->fromIndex(I)I
+    invoke-static {v11}, Lcom/android/server/power/batterysaver/BatterySavingStats$InteractiveState;->fromIndex(I)I
 
-    move-result v7
+    move-result v11
 
-    iget v0, v0, Lcom/android/server/power/batterysaver/BatterySavingStats;->mCurrentState:I
+    iget v12, v0, Lcom/android/server/power/batterysaver/BatterySavingStats;->mCurrentState:I
 
     .line 339
-    invoke-static {v0}, Lcom/android/server/power/batterysaver/BatterySavingStats$DozeState;->fromIndex(I)I
+    invoke-static {v12}, Lcom/android/server/power/batterysaver/BatterySavingStats$DozeState;->fromIndex(I)I
 
-    move-result v8
+    move-result v12
 
     iget-wide v13, v1, Lcom/android/server/power/batterysaver/BatterySavingStats$Stat;->totalTimeMillis:J
 
@@ -408,9 +424,19 @@
     iget v0, v1, Lcom/android/server/power/batterysaver/BatterySavingStats$Stat;->totalBatteryDrainPercent:I
 
     .line 336
-    move/from16 v16, v0
+    move-wide/from16 v17, v13
 
-    invoke-static/range {v6 .. v16}, Lcom/android/server/EventLogTags;->writeBatterySavingStats(IIIJIIJII)V
+    move-wide v13, v6
+
+    move/from16 v19, v15
+
+    move v15, v8
+
+    move/from16 v16, v9
+
+    move/from16 v20, v0
+
+    invoke-static/range {v10 .. v20}, Lcom/android/server/EventLogTags;->writeBatterySavingStats(IIIJIIJII)V
 
     .line 347
     return-void
@@ -455,22 +481,29 @@
 .end method
 
 .method private getStat(III)Lcom/android/server/power/batterysaver/BatterySavingStats$Stat;
-    .registers 4
+    .registers 5
+    .param p1, "batterySaverState"  # I
+    .param p2, "interactiveState"  # I
+    .param p3, "dozeState"  # I
 
     .line 234
     invoke-static {p1, p2, p3}, Lcom/android/server/power/batterysaver/BatterySavingStats;->statesToIndex(III)I
 
-    move-result p1
+    move-result v0
 
-    invoke-virtual {p0, p1}, Lcom/android/server/power/batterysaver/BatterySavingStats;->getStat(I)Lcom/android/server/power/batterysaver/BatterySavingStats$Stat;
+    invoke-virtual {p0, v0}, Lcom/android/server/power/batterysaver/BatterySavingStats;->getStat(I)Lcom/android/server/power/batterysaver/BatterySavingStats$Stat;
 
-    move-result-object p1
+    move-result-object v0
 
-    return-object p1
+    return-object v0
 .end method
 
 .method private startNewStateLocked(IJII)V
-    .registers 6
+    .registers 9
+    .param p1, "newState"  # I
+    .param p2, "now"  # J
+    .param p4, "batteryLevel"  # I
+    .param p5, "batteryPercent"  # I
     .annotation build Lcom/android/internal/annotations/GuardedBy;
         value = {
             "mLock"
@@ -481,32 +514,33 @@
     iput p1, p0, Lcom/android/server/power/batterysaver/BatterySavingStats;->mCurrentState:I
 
     .line 356
-    iget p1, p0, Lcom/android/server/power/batterysaver/BatterySavingStats;->mCurrentState:I
+    iget v0, p0, Lcom/android/server/power/batterysaver/BatterySavingStats;->mCurrentState:I
 
-    if-gez p1, :cond_7
+    if-gez v0, :cond_7
 
     .line 357
     return-void
 
     .line 360
     :cond_7
-    invoke-virtual {p0, p1}, Lcom/android/server/power/batterysaver/BatterySavingStats;->getStat(I)Lcom/android/server/power/batterysaver/BatterySavingStats$Stat;
+    invoke-virtual {p0, v0}, Lcom/android/server/power/batterysaver/BatterySavingStats;->getStat(I)Lcom/android/server/power/batterysaver/BatterySavingStats$Stat;
 
-    move-result-object p1
+    move-result-object v0
 
     .line 361
-    iput p4, p1, Lcom/android/server/power/batterysaver/BatterySavingStats$Stat;->startBatteryLevel:I
+    .local v0, "stat":Lcom/android/server/power/batterysaver/BatterySavingStats$Stat;
+    iput p4, v0, Lcom/android/server/power/batterysaver/BatterySavingStats$Stat;->startBatteryLevel:I
 
     .line 362
-    iput p5, p1, Lcom/android/server/power/batterysaver/BatterySavingStats$Stat;->startBatteryPercent:I
+    iput p5, v0, Lcom/android/server/power/batterysaver/BatterySavingStats$Stat;->startBatteryPercent:I
 
     .line 363
-    iput-wide p2, p1, Lcom/android/server/power/batterysaver/BatterySavingStats$Stat;->startTime:J
+    iput-wide p2, v0, Lcom/android/server/power/batterysaver/BatterySavingStats$Stat;->startTime:J
 
     .line 364
-    const-wide/16 p2, 0x0
+    const-wide/16 v1, 0x0
 
-    iput-wide p2, p1, Lcom/android/server/power/batterysaver/BatterySavingStats$Stat;->endTime:J
+    iput-wide v1, v0, Lcom/android/server/power/batterysaver/BatterySavingStats$Stat;->endTime:J
 
     .line 365
     return-void
@@ -514,6 +548,7 @@
 
 .method static stateToString(I)Ljava/lang/String;
     .registers 3
+    .param p0, "state"  # I
     .annotation build Lcom/android/internal/annotations/VisibleForTesting;
     .end annotation
 
@@ -559,58 +594,63 @@
     .line 212
     invoke-static {p0}, Lcom/android/server/power/batterysaver/BatterySavingStats$DozeState;->fromIndex(I)I
 
-    move-result p0
+    move-result v1
 
-    invoke-virtual {v0, p0}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
     invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v0
 
     .line 210
-    return-object p0
+    return-object v0
 
     .line 206
     :cond_34
-    const-string p0, "NotInitialized"
+    const-string v0, "NotInitialized"
 
-    return-object p0
+    return-object v0
 
     .line 208
     :cond_37
-    const-string p0, "Charging"
+    const-string v0, "Charging"
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static statesToIndex(III)I
-    .registers 3
+    .registers 5
+    .param p0, "batterySaverState"  # I
+    .param p1, "interactiveState"  # I
+    .param p2, "dozeState"  # I
     .annotation build Lcom/android/internal/annotations/VisibleForTesting;
     .end annotation
 
     .line 193
-    and-int/lit8 p0, p0, 0x3
+    and-int/lit8 v0, p0, 0x3
 
     .line 194
-    and-int/lit8 p1, p1, 0x1
+    .local v0, "ret":I
+    and-int/lit8 v1, p1, 0x1
 
-    shl-int/lit8 p1, p1, 0x2
+    shl-int/lit8 v1, v1, 0x2
 
-    or-int/2addr p0, p1
+    or-int/2addr v0, v1
 
     .line 195
-    and-int/lit8 p1, p2, 0x3
+    and-int/lit8 v1, p2, 0x3
 
-    shl-int/lit8 p1, p1, 0x3
+    shl-int/lit8 v1, v1, 0x3
 
-    or-int/2addr p0, p1
+    or-int/2addr v0, v1
 
     .line 196
-    return p0
+    return v0
 .end method
 
 .method private transitionStateLocked(I)V
-    .registers 10
+    .registers 14
+    .param p1, "newState"  # I
     .annotation build Lcom/android/internal/annotations/GuardedBy;
         value = {
             "mLock"
@@ -629,95 +669,110 @@
     :cond_5
     invoke-virtual {p0}, Lcom/android/server/power/batterysaver/BatterySavingStats;->injectCurrentTime()J
 
-    move-result-wide v3
+    move-result-wide v7
 
     .line 287
+    .local v7, "now":J
     invoke-virtual {p0}, Lcom/android/server/power/batterysaver/BatterySavingStats;->injectBatteryLevel()I
-
-    move-result v5
-
-    .line 288
-    invoke-virtual {p0}, Lcom/android/server/power/batterysaver/BatterySavingStats;->injectBatteryPercent()I
-
-    move-result v6
-
-    .line 290
-    iget v0, p0, Lcom/android/server/power/batterysaver/BatterySavingStats;->mCurrentState:I
-
-    .line 291
-    invoke-static {v0}, Lcom/android/server/power/batterysaver/BatterySavingStats$BatterySaverState;->fromIndex(I)I
 
     move-result v0
 
-    const/4 v1, 0x0
+    .line 288
+    .local v0, "batteryLevel":I
+    invoke-virtual {p0}, Lcom/android/server/power/batterysaver/BatterySavingStats;->injectBatteryPercent()I
 
-    const/4 v2, 0x1
+    move-result v9
 
-    if-eqz v0, :cond_1d
+    .line 290
+    .local v9, "batteryPercent":I
+    iget v1, p0, Lcom/android/server/power/batterysaver/BatterySavingStats;->mCurrentState:I
 
-    move v0, v2
+    .line 291
+    invoke-static {v1}, Lcom/android/server/power/batterysaver/BatterySavingStats$BatterySaverState;->fromIndex(I)I
+
+    move-result v1
+
+    const/4 v2, 0x0
+
+    const/4 v3, 0x1
+
+    if-eqz v1, :cond_1d
+
+    move v1, v3
 
     goto :goto_1e
 
     :cond_1d
-    move v0, v1
+    move v1, v2
+
+    :goto_1e
+    move v10, v1
 
     .line 292
-    :goto_1e
+    .local v10, "oldBatterySaverEnabled":Z
     nop
 
     .line 293
     invoke-static {p1}, Lcom/android/server/power/batterysaver/BatterySavingStats$BatterySaverState;->fromIndex(I)I
 
-    move-result v7
+    move-result v1
 
-    if-eqz v7, :cond_26
+    if-eqz v1, :cond_27
 
-    move v1, v2
+    move v2, v3
+
+    :cond_27
+    move v11, v2
 
     .line 294
-    :cond_26
-    if-eq v0, v1, :cond_3e
+    .local v11, "newBatterySaverEnabled":Z
+    if-eq v10, v11, :cond_40
 
     .line 295
-    iput-boolean v1, p0, Lcom/android/server/power/batterysaver/BatterySavingStats;->mIsBatterySaverEnabled:Z
+    iput-boolean v11, p0, Lcom/android/server/power/batterysaver/BatterySavingStats;->mIsBatterySaverEnabled:Z
 
     .line 296
-    if-eqz v1, :cond_38
+    if-eqz v11, :cond_3a
 
     .line 297
-    iget v0, p0, Lcom/android/server/power/batterysaver/BatterySavingStats;->mBatterySaverEnabledCount:I
+    iget v1, p0, Lcom/android/server/power/batterysaver/BatterySavingStats;->mBatterySaverEnabledCount:I
 
-    add-int/2addr v0, v2
+    add-int/2addr v1, v3
 
-    iput v0, p0, Lcom/android/server/power/batterysaver/BatterySavingStats;->mBatterySaverEnabledCount:I
+    iput v1, p0, Lcom/android/server/power/batterysaver/BatterySavingStats;->mBatterySaverEnabledCount:I
 
     .line 298
     invoke-virtual {p0}, Lcom/android/server/power/batterysaver/BatterySavingStats;->injectCurrentTime()J
 
-    move-result-wide v0
+    move-result-wide v1
 
-    iput-wide v0, p0, Lcom/android/server/power/batterysaver/BatterySavingStats;->mLastBatterySaverEnabledTime:J
+    iput-wide v1, p0, Lcom/android/server/power/batterysaver/BatterySavingStats;->mLastBatterySaverEnabledTime:J
 
-    goto :goto_3e
+    goto :goto_40
 
     .line 300
-    :cond_38
+    :cond_3a
     invoke-virtual {p0}, Lcom/android/server/power/batterysaver/BatterySavingStats;->injectCurrentTime()J
 
-    move-result-wide v0
+    move-result-wide v1
 
-    iput-wide v0, p0, Lcom/android/server/power/batterysaver/BatterySavingStats;->mLastBatterySaverDisabledTime:J
+    iput-wide v1, p0, Lcom/android/server/power/batterysaver/BatterySavingStats;->mLastBatterySaverDisabledTime:J
 
     .line 304
-    :cond_3e
-    :goto_3e
-    invoke-direct {p0, v3, v4, v5, v6}, Lcom/android/server/power/batterysaver/BatterySavingStats;->endLastStateLocked(JII)V
+    :cond_40
+    :goto_40
+    invoke-direct {p0, v7, v8, v0, v9}, Lcom/android/server/power/batterysaver/BatterySavingStats;->endLastStateLocked(JII)V
 
     .line 305
     move-object v1, p0
 
     move v2, p1
+
+    move-wide v3, v7
+
+    move v5, v0
+
+    move v6, v9
 
     invoke-direct/range {v1 .. v6}, Lcom/android/server/power/batterysaver/BatterySavingStats;->startNewStateLocked(IJII)V
 
@@ -728,225 +783,244 @@
 
 # virtual methods
 .method public dump(Ljava/io/PrintWriter;Ljava/lang/String;)V
-    .registers 18
+    .registers 19
+    .param p1, "pw"  # Ljava/io/PrintWriter;
+    .param p2, "indent"  # Ljava/lang/String;
 
     .line 368
-    move-object v0, p0
+    move-object/from16 v8, p0
 
-    move-object/from16 v8, p1
+    move-object/from16 v9, p1
 
-    iget-object v9, v0, Lcom/android/server/power/batterysaver/BatterySavingStats;->mLock:Ljava/lang/Object;
+    iget-object v10, v8, Lcom/android/server/power/batterysaver/BatterySavingStats;->mLock:Ljava/lang/Object;
 
-    monitor-enter v9
+    monitor-enter v10
 
     .line 369
-    :try_start_6
+    :try_start_7
     invoke-virtual/range {p1 .. p2}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
     .line 370
-    const-string v1, "Battery saving stats:"
+    const-string v0, "Battery saving stats:"
 
-    invoke-virtual {v8, v1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {v9, v0}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
     .line 372
-    new-instance v1, Ljava/lang/StringBuilder;
+    new-instance v0, Ljava/lang/StringBuilder;
 
-    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
+    :try_end_14
+    .catchall {:try_start_7 .. :try_end_14} :catchall_12c
 
-    move-object/from16 v2, p2
+    move-object/from16 v1, p2
 
-    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    :try_start_16
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     const-string v2, "  "
 
-    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v10
+    move-result-object v0
+    :try_end_22
+    .catchall {:try_start_16 .. :try_end_22} :catchall_12a
+
+    move-object v11, v0
 
     .line 374
+    .end local p2  # "indent":Ljava/lang/String;
+    .local v11, "indent":Ljava/lang/String;
+    :try_start_23
     invoke-static {}, Ljava/lang/System;->currentTimeMillis()J
 
-    move-result-wide v1
+    move-result-wide v0
+
+    move-wide v12, v0
 
     .line 375
-    invoke-virtual {p0}, Lcom/android/server/power/batterysaver/BatterySavingStats;->injectCurrentTime()J
+    .local v12, "now":J
+    invoke-virtual/range {p0 .. p0}, Lcom/android/server/power/batterysaver/BatterySavingStats;->injectCurrentTime()J
 
-    move-result-wide v3
+    move-result-wide v0
+
+    move-wide v14, v0
 
     .line 376
-    new-instance v5, Ljava/text/SimpleDateFormat;
+    .local v14, "nowElapsed":J
+    new-instance v0, Ljava/text/SimpleDateFormat;
 
-    const-string/jumbo v6, "yyyy-MM-dd HH:mm:ss.SSS"
+    const-string/jumbo v1, "yyyy-MM-dd HH:mm:ss.SSS"
 
-    invoke-direct {v5, v6}, Ljava/text/SimpleDateFormat;-><init>(Ljava/lang/String;)V
+    invoke-direct {v0, v1}, Ljava/text/SimpleDateFormat;-><init>(Ljava/lang/String;)V
 
     .line 378
-    invoke-virtual {v8, v10}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
+    .local v0, "sdf":Ljava/text/SimpleDateFormat;
+    invoke-virtual {v9, v11}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
     .line 379
-    const-string v6, "Battery Saver is currently: "
+    const-string v1, "Battery Saver is currently: "
 
-    invoke-virtual {v8, v6}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
+    invoke-virtual {v9, v1}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
     .line 380
-    iget-boolean v6, v0, Lcom/android/server/power/batterysaver/BatterySavingStats;->mIsBatterySaverEnabled:Z
+    iget-boolean v1, v8, Lcom/android/server/power/batterysaver/BatterySavingStats;->mIsBatterySaverEnabled:Z
 
-    if-eqz v6, :cond_40
+    if-eqz v1, :cond_44
 
-    const-string v6, "ON"
+    const-string v1, "ON"
 
-    goto :goto_42
+    goto :goto_46
 
-    :cond_40
-    const-string v6, "OFF"
+    :cond_44
+    const-string v1, "OFF"
 
-    :goto_42
-    invoke-virtual {v8, v6}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    :goto_46
+    invoke-virtual {v9, v1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
     .line 381
-    iget-wide v6, v0, Lcom/android/server/power/batterysaver/BatterySavingStats;->mLastBatterySaverEnabledTime:J
+    iget-wide v1, v8, Lcom/android/server/power/batterysaver/BatterySavingStats;->mLastBatterySaverEnabledTime:J
 
-    const-wide/16 v11, 0x0
+    const-wide/16 v3, 0x0
 
-    cmp-long v6, v6, v11
+    cmp-long v1, v1, v3
 
-    if-lez v6, :cond_78
+    if-lez v1, :cond_7c
 
     .line 382
-    invoke-virtual {v8, v10}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
+    invoke-virtual {v9, v11}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
     .line 383
-    const-string v6, "  "
+    const-string v1, "  "
 
-    invoke-virtual {v8, v6}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
+    invoke-virtual {v9, v1}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
     .line 384
-    const-string v6, "Last ON time: "
+    const-string v1, "Last ON time: "
 
-    invoke-virtual {v8, v6}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
+    invoke-virtual {v9, v1}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
     .line 385
-    new-instance v6, Ljava/util/Date;
+    new-instance v1, Ljava/util/Date;
 
-    sub-long v13, v1, v3
+    sub-long v5, v12, v14
 
-    iget-wide v11, v0, Lcom/android/server/power/batterysaver/BatterySavingStats;->mLastBatterySaverEnabledTime:J
+    iget-wide v3, v8, Lcom/android/server/power/batterysaver/BatterySavingStats;->mLastBatterySaverEnabledTime:J
 
-    add-long/2addr v13, v11
+    add-long/2addr v5, v3
 
-    invoke-direct {v6, v13, v14}, Ljava/util/Date;-><init>(J)V
+    invoke-direct {v1, v5, v6}, Ljava/util/Date;-><init>(J)V
 
-    invoke-virtual {v5, v6}, Ljava/text/SimpleDateFormat;->format(Ljava/util/Date;)Ljava/lang/String;
+    invoke-virtual {v0, v1}, Ljava/text/SimpleDateFormat;->format(Ljava/util/Date;)Ljava/lang/String;
 
-    move-result-object v6
+    move-result-object v1
 
-    invoke-virtual {v8, v6}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
+    invoke-virtual {v9, v1}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
     .line 386
-    const-string v6, " "
+    const-string v1, " "
 
-    invoke-virtual {v8, v6}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
+    invoke-virtual {v9, v1}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
     .line 387
-    iget-wide v6, v0, Lcom/android/server/power/batterysaver/BatterySavingStats;->mLastBatterySaverEnabledTime:J
+    iget-wide v1, v8, Lcom/android/server/power/batterysaver/BatterySavingStats;->mLastBatterySaverEnabledTime:J
 
-    invoke-static {v6, v7, v3, v4, v8}, Landroid/util/TimeUtils;->formatDuration(JJLjava/io/PrintWriter;)V
+    invoke-static {v1, v2, v14, v15, v9}, Landroid/util/TimeUtils;->formatDuration(JJLjava/io/PrintWriter;)V
 
     .line 388
     invoke-virtual/range {p1 .. p1}, Ljava/io/PrintWriter;->println()V
 
     .line 391
-    :cond_78
-    iget-wide v6, v0, Lcom/android/server/power/batterysaver/BatterySavingStats;->mLastBatterySaverDisabledTime:J
+    :cond_7c
+    iget-wide v1, v8, Lcom/android/server/power/batterysaver/BatterySavingStats;->mLastBatterySaverDisabledTime:J
 
-    const-wide/16 v11, 0x0
+    const-wide/16 v3, 0x0
 
-    cmp-long v6, v6, v11
+    cmp-long v1, v1, v3
 
-    if-lez v6, :cond_aa
+    if-lez v1, :cond_af
 
     .line 392
-    invoke-virtual {v8, v10}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
+    invoke-virtual {v9, v11}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
     .line 393
-    const-string v6, "  "
+    const-string v1, "  "
 
-    invoke-virtual {v8, v6}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
+    invoke-virtual {v9, v1}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
     .line 394
-    const-string v6, "Last OFF time: "
+    const-string v1, "Last OFF time: "
 
-    invoke-virtual {v8, v6}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
+    invoke-virtual {v9, v1}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
     .line 395
-    new-instance v6, Ljava/util/Date;
+    new-instance v1, Ljava/util/Date;
 
-    sub-long/2addr v1, v3
+    sub-long v2, v12, v14
 
-    iget-wide v11, v0, Lcom/android/server/power/batterysaver/BatterySavingStats;->mLastBatterySaverDisabledTime:J
+    iget-wide v4, v8, Lcom/android/server/power/batterysaver/BatterySavingStats;->mLastBatterySaverDisabledTime:J
 
-    add-long/2addr v1, v11
+    add-long/2addr v2, v4
 
-    invoke-direct {v6, v1, v2}, Ljava/util/Date;-><init>(J)V
+    invoke-direct {v1, v2, v3}, Ljava/util/Date;-><init>(J)V
 
-    invoke-virtual {v5, v6}, Ljava/text/SimpleDateFormat;->format(Ljava/util/Date;)Ljava/lang/String;
+    invoke-virtual {v0, v1}, Ljava/text/SimpleDateFormat;->format(Ljava/util/Date;)Ljava/lang/String;
 
     move-result-object v1
 
-    invoke-virtual {v8, v1}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
+    invoke-virtual {v9, v1}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
     .line 396
     const-string v1, " "
 
-    invoke-virtual {v8, v1}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
+    invoke-virtual {v9, v1}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
     .line 397
-    iget-wide v1, v0, Lcom/android/server/power/batterysaver/BatterySavingStats;->mLastBatterySaverDisabledTime:J
+    iget-wide v1, v8, Lcom/android/server/power/batterysaver/BatterySavingStats;->mLastBatterySaverDisabledTime:J
 
-    invoke-static {v1, v2, v3, v4, v8}, Landroid/util/TimeUtils;->formatDuration(JJLjava/io/PrintWriter;)V
+    invoke-static {v1, v2, v14, v15, v9}, Landroid/util/TimeUtils;->formatDuration(JJLjava/io/PrintWriter;)V
 
     .line 398
     invoke-virtual/range {p1 .. p1}, Ljava/io/PrintWriter;->println()V
 
     .line 401
-    :cond_aa
-    invoke-virtual {v8, v10}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
+    :cond_af
+    invoke-virtual {v9, v11}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
     .line 402
     const-string v1, "  "
 
-    invoke-virtual {v8, v1}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
+    invoke-virtual {v9, v1}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
     .line 403
     const-string v1, "Times enabled: "
 
-    invoke-virtual {v8, v1}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
+    invoke-virtual {v9, v1}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
     .line 404
-    iget v1, v0, Lcom/android/server/power/batterysaver/BatterySavingStats;->mBatterySaverEnabledCount:I
+    iget v1, v8, Lcom/android/server/power/batterysaver/BatterySavingStats;->mBatterySaverEnabledCount:I
 
-    invoke-virtual {v8, v1}, Ljava/io/PrintWriter;->println(I)V
+    invoke-virtual {v9, v1}, Ljava/io/PrintWriter;->println(I)V
 
     .line 406
     invoke-virtual/range {p1 .. p1}, Ljava/io/PrintWriter;->println()V
 
     .line 408
-    invoke-virtual {v8, v10}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
+    invoke-virtual {v9, v11}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
     .line 409
     const-string v1, "Drain stats:"
 
-    invoke-virtual {v8, v1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {v9, v1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
     .line 411
-    invoke-virtual {v8, v10}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
+    invoke-virtual {v9, v11}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
     .line 412
     const-string v1, "                   Battery saver OFF                          ON"
 
-    invoke-virtual {v8, v1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {v9, v1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
     .line 413
     const/4 v4, 0x0
@@ -957,11 +1031,11 @@
 
     const-string v7, "NonDoze"
 
-    move-object v1, p0
+    move-object/from16 v1, p0
 
     move-object/from16 v2, p1
 
-    move-object v3, v10
+    move-object v3, v11
 
     invoke-direct/range {v1 .. v7}, Lcom/android/server/power/batterysaver/BatterySavingStats;->dumpLineLocked(Ljava/io/PrintWriter;Ljava/lang/String;ILjava/lang/String;ILjava/lang/String;)V
 
@@ -974,11 +1048,11 @@
 
     const-string v7, "       "
 
-    move-object v1, p0
+    move-object/from16 v1, p0
 
     move-object/from16 v2, p1
 
-    move-object v3, v10
+    move-object v3, v11
 
     invoke-direct/range {v1 .. v7}, Lcom/android/server/power/batterysaver/BatterySavingStats;->dumpLineLocked(Ljava/io/PrintWriter;Ljava/lang/String;ILjava/lang/String;ILjava/lang/String;)V
 
@@ -991,11 +1065,11 @@
 
     const-string v7, "Deep   "
 
-    move-object v1, p0
+    move-object/from16 v1, p0
 
     move-object/from16 v2, p1
 
-    move-object v3, v10
+    move-object v3, v11
 
     invoke-direct/range {v1 .. v7}, Lcom/android/server/power/batterysaver/BatterySavingStats;->dumpLineLocked(Ljava/io/PrintWriter;Ljava/lang/String;ILjava/lang/String;ILjava/lang/String;)V
 
@@ -1008,11 +1082,11 @@
 
     const-string v7, "       "
 
-    move-object v1, p0
+    move-object/from16 v1, p0
 
     move-object/from16 v2, p1
 
-    move-object v3, v10
+    move-object v3, v11
 
     invoke-direct/range {v1 .. v7}, Lcom/android/server/power/batterysaver/BatterySavingStats;->dumpLineLocked(Ljava/io/PrintWriter;Ljava/lang/String;ILjava/lang/String;ILjava/lang/String;)V
 
@@ -1025,11 +1099,11 @@
 
     const-string v7, "Light  "
 
-    move-object v1, p0
+    move-object/from16 v1, p0
 
     move-object/from16 v2, p1
 
-    move-object v3, v10
+    move-object v3, v11
 
     invoke-direct/range {v1 .. v7}, Lcom/android/server/power/batterysaver/BatterySavingStats;->dumpLineLocked(Ljava/io/PrintWriter;Ljava/lang/String;ILjava/lang/String;ILjava/lang/String;)V
 
@@ -1042,33 +1116,57 @@
 
     const-string v7, "       "
 
-    move-object v1, p0
+    move-object/from16 v1, p0
 
     move-object/from16 v2, p1
 
-    move-object v3, v10
+    move-object v3, v11
 
     invoke-direct/range {v1 .. v7}, Lcom/android/server/power/batterysaver/BatterySavingStats;->dumpLineLocked(Ljava/io/PrintWriter;Ljava/lang/String;ILjava/lang/String;ILjava/lang/String;)V
 
     .line 427
-    monitor-exit v9
+    .end local v0  # "sdf":Ljava/text/SimpleDateFormat;
+    .end local v12  # "now":J
+    .end local v14  # "nowElapsed":J
+    monitor-exit v10
 
     .line 428
     return-void
 
     .line 427
-    :catchall_11f
+    .end local v11  # "indent":Ljava/lang/String;
+    .restart local p2  # "indent":Ljava/lang/String;
+    :catchall_12a
     move-exception v0
 
-    monitor-exit v9
-    :try_end_121
-    .catchall {:try_start_6 .. :try_end_121} :catchall_11f
+    goto :goto_12f
+
+    :catchall_12c
+    move-exception v0
+
+    move-object/from16 v1, p2
+
+    :goto_12f
+    move-object v11, v1
+
+    .end local p2  # "indent":Ljava/lang/String;
+    .restart local v11  # "indent":Ljava/lang/String;
+    :goto_130
+    monitor-exit v10
+    :try_end_131
+    .catchall {:try_start_23 .. :try_end_131} :catchall_132
 
     throw v0
+
+    :catchall_132
+    move-exception v0
+
+    goto :goto_130
 .end method
 
 .method getStat(I)Lcom/android/server/power/batterysaver/BatterySavingStats$Stat;
-    .registers 5
+    .registers 6
+    .param p1, "stateIndex"  # I
     .annotation build Lcom/android/internal/annotations/VisibleForTesting;
     .end annotation
 
@@ -1092,41 +1190,45 @@
     check-cast v1, Lcom/android/server/power/batterysaver/BatterySavingStats$Stat;
 
     .line 222
-    if-nez v1, :cond_1f
+    .local v1, "stat":Lcom/android/server/power/batterysaver/BatterySavingStats$Stat;
+    if-nez v1, :cond_20
 
     .line 223
-    new-instance v1, Lcom/android/server/power/batterysaver/BatterySavingStats$Stat;
+    new-instance v2, Lcom/android/server/power/batterysaver/BatterySavingStats$Stat;
 
-    invoke-direct {v1}, Lcom/android/server/power/batterysaver/BatterySavingStats$Stat;-><init>()V
+    invoke-direct {v2}, Lcom/android/server/power/batterysaver/BatterySavingStats$Stat;-><init>()V
+
+    move-object v1, v2
 
     .line 224
     iget-object v2, p0, Lcom/android/server/power/batterysaver/BatterySavingStats;->mStats:Landroid/util/ArrayMap;
 
     invoke-static {p1}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
 
-    move-result-object p1
+    move-result-object v3
 
-    invoke-virtual {v2, p1, v1}, Landroid/util/ArrayMap;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+    invoke-virtual {v2, v3, v1}, Landroid/util/ArrayMap;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
 
     .line 226
-    :cond_1f
+    :cond_20
     monitor-exit v0
 
     return-object v1
 
     .line 227
-    :catchall_21
-    move-exception p1
+    .end local v1  # "stat":Lcom/android/server/power/batterysaver/BatterySavingStats$Stat;
+    :catchall_22
+    move-exception v1
 
     monitor-exit v0
-    :try_end_23
-    .catchall {:try_start_3 .. :try_end_23} :catchall_21
+    :try_end_24
+    .catchall {:try_start_3 .. :try_end_24} :catchall_22
 
-    throw p1
+    throw v1
 .end method
 
 .method injectBatteryLevel()I
-    .registers 2
+    .registers 3
     .annotation build Lcom/android/internal/annotations/VisibleForTesting;
     .end annotation
 
@@ -1136,24 +1238,25 @@
     move-result-object v0
 
     .line 245
+    .local v0, "bmi":Landroid/os/BatteryManagerInternal;
     if-nez v0, :cond_8
 
     .line 246
-    const/4 v0, 0x0
+    const/4 v1, 0x0
 
-    return v0
+    return v1
 
     .line 248
     :cond_8
     invoke-virtual {v0}, Landroid/os/BatteryManagerInternal;->getBatteryChargeCounter()I
 
-    move-result v0
+    move-result v1
 
-    return v0
+    return v1
 .end method
 
 .method injectBatteryPercent()I
-    .registers 2
+    .registers 3
     .annotation build Lcom/android/internal/annotations/VisibleForTesting;
     .end annotation
 
@@ -1163,20 +1266,21 @@
     move-result-object v0
 
     .line 254
+    .local v0, "bmi":Landroid/os/BatteryManagerInternal;
     if-nez v0, :cond_8
 
     .line 255
-    const/4 v0, 0x0
+    const/4 v1, 0x0
 
-    return v0
+    return v1
 
     .line 257
     :cond_8
     invoke-virtual {v0}, Landroid/os/BatteryManagerInternal;->getBatteryLevel()I
 
-    move-result v0
+    move-result v1
 
-    return v0
+    return v1
 .end method
 
 .method injectCurrentTime()J
@@ -1224,7 +1328,10 @@
 .end method
 
 .method public transitionState(III)V
-    .registers 5
+    .registers 6
+    .param p1, "batterySaverState"  # I
+    .param p2, "interactiveState"  # I
+    .param p3, "dozeState"  # I
 
     .line 265
     iget-object v0, p0, Lcom/android/server/power/batterysaver/BatterySavingStats;->mLock:Ljava/lang/Object;
@@ -1235,12 +1342,14 @@
     :try_start_3
     invoke-static {p1, p2, p3}, Lcom/android/server/power/batterysaver/BatterySavingStats;->statesToIndex(III)I
 
-    move-result p1
+    move-result v1
 
     .line 268
-    invoke-direct {p0, p1}, Lcom/android/server/power/batterysaver/BatterySavingStats;->transitionStateLocked(I)V
+    .local v1, "newState":I
+    invoke-direct {p0, v1}, Lcom/android/server/power/batterysaver/BatterySavingStats;->transitionStateLocked(I)V
 
     .line 269
+    .end local v1  # "newState":I
     monitor-exit v0
 
     .line 270
@@ -1248,11 +1357,11 @@
 
     .line 269
     :catchall_c
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_e
     .catchall {:try_start_3 .. :try_end_e} :catchall_c
 
-    throw p1
+    throw v1
 .end method

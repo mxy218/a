@@ -24,8 +24,9 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/net/NetworkStatsObservers;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/net/NetworkStatsObservers;
 
-    .line 131
+    .line 132
     iput-object p1, p0, Lcom/android/server/net/NetworkStatsObservers$1;->this$0:Lcom/android/server/net/NetworkStatsObservers;
 
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -36,9 +37,10 @@
 
 # virtual methods
 .method public handleMessage(Landroid/os/Message;)Z
-    .registers 5
+    .registers 6
+    .param p1, "msg"  # Landroid/os/Message;
 
-    .line 134
+    .line 135
     iget v0, p1, Landroid/os/Message;->what:I
 
     const/4 v1, 0x1
@@ -53,25 +55,25 @@
 
     if-eq v0, v2, :cond_d
 
-    .line 148
-    const/4 p1, 0x0
+    .line 149
+    const/4 v0, 0x0
 
-    return p1
+    return v0
 
-    .line 144
+    .line 145
     :cond_d
     iget-object v0, p0, Lcom/android/server/net/NetworkStatsObservers$1;->this$0:Lcom/android/server/net/NetworkStatsObservers;
 
-    iget-object p1, p1, Landroid/os/Message;->obj:Ljava/lang/Object;
+    iget-object v2, p1, Landroid/os/Message;->obj:Ljava/lang/Object;
 
-    check-cast p1, Lcom/android/server/net/NetworkStatsObservers$StatsContext;
+    check-cast v2, Lcom/android/server/net/NetworkStatsObservers$StatsContext;
 
-    invoke-static {v0, p1}, Lcom/android/server/net/NetworkStatsObservers;->access$200(Lcom/android/server/net/NetworkStatsObservers;Lcom/android/server/net/NetworkStatsObservers$StatsContext;)V
+    invoke-static {v0, v2}, Lcom/android/server/net/NetworkStatsObservers;->access$200(Lcom/android/server/net/NetworkStatsObservers;Lcom/android/server/net/NetworkStatsObservers$StatsContext;)V
 
-    .line 145
+    .line 146
     return v1
 
-    .line 140
+    .line 141
     :cond_17
     iget-object v0, p0, Lcom/android/server/net/NetworkStatsObservers$1;->this$0:Lcom/android/server/net/NetworkStatsObservers;
 
@@ -79,23 +81,23 @@
 
     check-cast v2, Landroid/net/DataUsageRequest;
 
-    iget p1, p1, Landroid/os/Message;->arg1:I
+    iget v3, p1, Landroid/os/Message;->arg1:I
 
-    invoke-static {v0, v2, p1}, Lcom/android/server/net/NetworkStatsObservers;->access$100(Lcom/android/server/net/NetworkStatsObservers;Landroid/net/DataUsageRequest;I)V
+    invoke-static {v0, v2, v3}, Lcom/android/server/net/NetworkStatsObservers;->access$100(Lcom/android/server/net/NetworkStatsObservers;Landroid/net/DataUsageRequest;I)V
 
-    .line 141
+    .line 142
     return v1
 
-    .line 136
+    .line 137
     :cond_23
     iget-object v0, p0, Lcom/android/server/net/NetworkStatsObservers$1;->this$0:Lcom/android/server/net/NetworkStatsObservers;
 
-    iget-object p1, p1, Landroid/os/Message;->obj:Ljava/lang/Object;
+    iget-object v2, p1, Landroid/os/Message;->obj:Ljava/lang/Object;
 
-    check-cast p1, Lcom/android/server/net/NetworkStatsObservers$RequestInfo;
+    check-cast v2, Lcom/android/server/net/NetworkStatsObservers$RequestInfo;
 
-    invoke-static {v0, p1}, Lcom/android/server/net/NetworkStatsObservers;->access$000(Lcom/android/server/net/NetworkStatsObservers;Lcom/android/server/net/NetworkStatsObservers$RequestInfo;)V
+    invoke-static {v0, v2}, Lcom/android/server/net/NetworkStatsObservers;->access$000(Lcom/android/server/net/NetworkStatsObservers;Lcom/android/server/net/NetworkStatsObservers$RequestInfo;)V
 
-    .line 137
+    .line 138
     return v1
 .end method

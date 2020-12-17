@@ -21,6 +21,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/textservices/TextServicesManagerService$Lifecycle;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/textservices/TextServicesManagerService$Lifecycle;
 
     .line 284
     iput-object p1, p0, Lcom/android/server/textservices/TextServicesManagerService$Lifecycle$1;->this$0:Lcom/android/server/textservices/TextServicesManagerService$Lifecycle;
@@ -34,6 +35,7 @@
 # virtual methods
 .method public getCurrentSpellCheckerForUser(I)Landroid/view/textservice/SpellCheckerInfo;
     .registers 3
+    .param p1, "userId"  # I
 
     .line 288
     iget-object v0, p0, Lcom/android/server/textservices/TextServicesManagerService$Lifecycle$1;->this$0:Lcom/android/server/textservices/TextServicesManagerService$Lifecycle;
@@ -44,7 +46,7 @@
 
     invoke-static {v0, p1}, Lcom/android/server/textservices/TextServicesManagerService;->access$900(Lcom/android/server/textservices/TextServicesManagerService;I)Landroid/view/textservice/SpellCheckerInfo;
 
-    move-result-object p1
+    move-result-object v0
 
-    return-object p1
+    return-object v0
 .end method

@@ -16,7 +16,9 @@
 
 # direct methods
 .method constructor <init>(Lcom/android/server/backup/restore/FullRestoreEngine;Landroid/os/ParcelFileDescriptor;)V
-    .registers 4
+    .registers 6
+    .param p1, "engine"  # Lcom/android/server/backup/restore/FullRestoreEngine;
+    .param p2, "engineSocket"  # Landroid/os/ParcelFileDescriptor;
 
     .line 16
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -30,20 +32,20 @@
     invoke-virtual {p1, v0}, Lcom/android/server/backup/restore/FullRestoreEngine;->setRunning(Z)V
 
     .line 22
-    new-instance p1, Ljava/io/FileInputStream;
+    new-instance v1, Ljava/io/FileInputStream;
 
     invoke-virtual {p2}, Landroid/os/ParcelFileDescriptor;->getFileDescriptor()Ljava/io/FileDescriptor;
 
-    move-result-object p2
+    move-result-object v2
 
-    invoke-direct {p1, p2, v0}, Ljava/io/FileInputStream;-><init>(Ljava/io/FileDescriptor;Z)V
+    invoke-direct {v1, v2, v0}, Ljava/io/FileInputStream;-><init>(Ljava/io/FileDescriptor;Z)V
 
-    iput-object p1, p0, Lcom/android/server/backup/restore/FullRestoreEngineThread;->mEngineStream:Ljava/io/InputStream;
+    iput-object v1, p0, Lcom/android/server/backup/restore/FullRestoreEngineThread;->mEngineStream:Ljava/io/InputStream;
 
     .line 24
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    iput-boolean p1, p0, Lcom/android/server/backup/restore/FullRestoreEngineThread;->mMustKillAgent:Z
+    iput-boolean v0, p0, Lcom/android/server/backup/restore/FullRestoreEngineThread;->mMustKillAgent:Z
 
     .line 25
     return-void
@@ -51,6 +53,8 @@
 
 .method constructor <init>(Lcom/android/server/backup/restore/FullRestoreEngine;Ljava/io/InputStream;)V
     .registers 4
+    .param p1, "engine"  # Lcom/android/server/backup/restore/FullRestoreEngine;
+    .param p2, "inputStream"  # Ljava/io/InputStream;
 
     .line 28
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V

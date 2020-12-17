@@ -14,6 +14,9 @@
 # direct methods
 .method public constructor <init>(Lcom/android/server/backup/transport/TransportClient;Landroid/content/pm/PackageInfo;Lcom/android/server/backup/internal/OnTaskFinishedListener;)V
     .registers 4
+    .param p1, "transportClient"  # Lcom/android/server/backup/transport/TransportClient;
+    .param p2, "packageInfo"  # Landroid/content/pm/PackageInfo;
+    .param p3, "listener"  # Lcom/android/server/backup/internal/OnTaskFinishedListener;
 
     .line 32
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V

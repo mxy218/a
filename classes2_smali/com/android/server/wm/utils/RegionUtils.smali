@@ -14,7 +14,8 @@
 .end method
 
 .method public static forEachRectReverse(Landroid/graphics/Region;Ljava/util/function/Consumer;)V
-    .registers 5
+    .registers 6
+    .param p0, "region"  # Landroid/graphics/Region;
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(",
@@ -26,43 +27,47 @@
     .end annotation
 
     .line 59
+    .local p1, "rectConsumer":Ljava/util/function/Consumer;, "Ljava/util/function/Consumer<Landroid/graphics/Rect;>;"
     new-instance v0, Landroid/graphics/RegionIterator;
 
     invoke-direct {v0, p0}, Landroid/graphics/RegionIterator;-><init>(Landroid/graphics/Region;)V
 
     .line 60
-    new-instance p0, Ljava/util/ArrayList;
+    .local v0, "it":Landroid/graphics/RegionIterator;
+    new-instance v1, Ljava/util/ArrayList;
 
-    invoke-direct {p0}, Ljava/util/ArrayList;-><init>()V
+    invoke-direct {v1}, Ljava/util/ArrayList;-><init>()V
 
     .line 61
-    new-instance v1, Landroid/graphics/Rect;
-
-    invoke-direct {v1}, Landroid/graphics/Rect;-><init>()V
-
-    .line 62
-    :goto_f
-    invoke-virtual {v0, v1}, Landroid/graphics/RegionIterator;->next(Landroid/graphics/Rect;)Z
-
-    move-result v2
-
-    if-eqz v2, :cond_1e
-
-    .line 63
+    .local v1, "rects":Ljava/util/ArrayList;, "Ljava/util/ArrayList<Landroid/graphics/Rect;>;"
     new-instance v2, Landroid/graphics/Rect;
 
-    invoke-direct {v2, v1}, Landroid/graphics/Rect;-><init>(Landroid/graphics/Rect;)V
+    invoke-direct {v2}, Landroid/graphics/Rect;-><init>()V
 
-    invoke-virtual {p0, v2}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
+    .line 62
+    .local v2, "rect":Landroid/graphics/Rect;
+    :goto_f
+    invoke-virtual {v0, v2}, Landroid/graphics/RegionIterator;->next(Landroid/graphics/Rect;)Z
+
+    move-result v3
+
+    if-eqz v3, :cond_1e
+
+    .line 63
+    new-instance v3, Landroid/graphics/Rect;
+
+    invoke-direct {v3, v2}, Landroid/graphics/Rect;-><init>(Landroid/graphics/Rect;)V
+
+    invoke-virtual {v1, v3}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
 
     goto :goto_f
 
     .line 67
     :cond_1e
-    invoke-static {p0}, Ljava/util/Collections;->reverse(Ljava/util/List;)V
+    invoke-static {v1}, Ljava/util/Collections;->reverse(Ljava/util/List;)V
 
     .line 68
-    invoke-virtual {p0, p1}, Ljava/util/ArrayList;->forEach(Ljava/util/function/Consumer;)V
+    invoke-virtual {v1, p1}, Ljava/util/ArrayList;->forEach(Ljava/util/function/Consumer;)V
 
     .line 69
     return-void
@@ -70,6 +75,7 @@
 
 .method public static rectListToRegion(Ljava/util/List;Landroid/graphics/Region;)V
     .registers 5
+    .param p1, "outRegion"  # Landroid/graphics/Region;
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(",
@@ -82,6 +88,7 @@
     .end annotation
 
     .line 43
+    .local p0, "rects":Ljava/util/List;, "Ljava/util/List<Landroid/graphics/Rect;>;"
     invoke-virtual {p1}, Landroid/graphics/Region;->setEmpty()V
 
     .line 44
@@ -90,8 +97,10 @@
     move-result v0
 
     .line 45
+    .local v0, "n":I
     const/4 v1, 0x0
 
+    .local v1, "i":I
     :goto_8
     if-ge v1, v0, :cond_16
 
@@ -110,6 +119,7 @@
     goto :goto_8
 
     .line 48
+    .end local v1  # "i":I
     :cond_16
     return-void
 .end method

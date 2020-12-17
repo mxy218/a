@@ -20,7 +20,11 @@
 .end method
 
 .method private dumpDescriptor(Lcom/android/server/usb/descriptors/ByteStream;IBLjava/lang/StringBuilder;)V
-    .registers 8
+    .registers 9
+    .param p1, "stream"  # Lcom/android/server/usb/descriptors/ByteStream;
+    .param p2, "length"  # I
+    .param p3, "type"  # B
+    .param p4, "builder"  # Ljava/lang/StringBuilder;
 
     .line 45
     const-string v0, "<p>"
@@ -56,66 +60,68 @@
     .line 48
     invoke-static {p3}, Lcom/android/server/usb/descriptors/report/UsbStrings;->getDescriptorName(B)Ljava/lang/String;
 
-    move-result-object p3
-
-    invoke-virtual {v0, p3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    const-string p3, "</b><br>"
-
-    invoke-virtual {v0, p3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
-
-    move-result-object p3
-
-    .line 46
-    invoke-virtual {p4, p3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    .line 49
-    const/4 p3, 0x2
-
-    :goto_37
-    if-ge p3, p2, :cond_5d
-
-    .line 50
-    new-instance v0, Ljava/lang/StringBuilder;
-
-    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
-
-    const-string v2, "0x"
-
-    invoke-virtual {v0, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {p1}, Lcom/android/server/usb/descriptors/ByteStream;->getByte()B
-
-    move-result v2
-
-    and-int/lit16 v2, v2, 0xff
-
-    invoke-static {v2}, Ljava/lang/Integer;->toHexString(I)Ljava/lang/String;
-
     move-result-object v2
 
     invoke-virtual {v0, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    const-string v2, "</b><br>"
+
+    invoke-virtual {v0, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
     move-result-object v0
 
+    .line 46
     invoke-virtual {p4, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     .line 49
-    add-int/lit8 p3, p3, 0x1
+    const/4 v0, 0x2
+
+    .local v0, "index":I
+    :goto_37
+    if-ge v0, p2, :cond_5d
+
+    .line 50
+    new-instance v2, Ljava/lang/StringBuilder;
+
+    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
+
+    const-string v3, "0x"
+
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {p1}, Lcom/android/server/usb/descriptors/ByteStream;->getByte()B
+
+    move-result v3
+
+    and-int/lit16 v3, v3, 0xff
+
+    invoke-static {v3}, Ljava/lang/Integer;->toHexString(I)Ljava/lang/String;
+
+    move-result-object v3
+
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v2, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v2
+
+    invoke-virtual {p4, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    .line 49
+    add-int/lit8 v0, v0, 0x1
 
     goto :goto_37
 
     .line 52
+    .end local v0  # "index":I
     :cond_5d
-    const-string p1, "</p>"
+    const-string v0, "</p>"
 
-    invoke-virtual {p4, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {p4, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     .line 54
     return-void
@@ -124,49 +130,57 @@
 
 # virtual methods
 .method public parseDescriptors(Landroid/hardware/usb/UsbDeviceConnection;[BLjava/lang/StringBuilder;)V
-    .registers 5
+    .registers 7
+    .param p1, "connection"  # Landroid/hardware/usb/UsbDeviceConnection;
+    .param p2, "descriptors"  # [B
+    .param p3, "builder"  # Ljava/lang/StringBuilder;
 
     .line 63
-    const-string p1, "<tt>"
+    const-string v0, "<tt>"
 
-    invoke-virtual {p3, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {p3, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     .line 64
-    new-instance p1, Lcom/android/server/usb/descriptors/ByteStream;
+    new-instance v0, Lcom/android/server/usb/descriptors/ByteStream;
 
-    invoke-direct {p1, p2}, Lcom/android/server/usb/descriptors/ByteStream;-><init>([B)V
+    invoke-direct {v0, p2}, Lcom/android/server/usb/descriptors/ByteStream;-><init>([B)V
 
     .line 65
+    .local v0, "stream":Lcom/android/server/usb/descriptors/ByteStream;
     :goto_a
-    invoke-virtual {p1}, Lcom/android/server/usb/descriptors/ByteStream;->available()I
+    invoke-virtual {v0}, Lcom/android/server/usb/descriptors/ByteStream;->available()I
 
-    move-result p2
+    move-result v1
 
-    if-lez p2, :cond_1e
+    if-lez v1, :cond_1e
 
     .line 66
-    invoke-virtual {p1}, Lcom/android/server/usb/descriptors/ByteStream;->getByte()B
+    invoke-virtual {v0}, Lcom/android/server/usb/descriptors/ByteStream;->getByte()B
 
-    move-result p2
+    move-result v1
 
-    and-int/lit16 p2, p2, 0xff
+    and-int/lit16 v1, v1, 0xff
 
     .line 67
-    invoke-virtual {p1}, Lcom/android/server/usb/descriptors/ByteStream;->getByte()B
+    .local v1, "length":I
+    invoke-virtual {v0}, Lcom/android/server/usb/descriptors/ByteStream;->getByte()B
 
-    move-result v0
+    move-result v2
 
     .line 68
-    invoke-direct {p0, p1, p2, v0, p3}, Lcom/android/server/usb/descriptors/UsbBinaryParser;->dumpDescriptor(Lcom/android/server/usb/descriptors/ByteStream;IBLjava/lang/StringBuilder;)V
+    .local v2, "type":B
+    invoke-direct {p0, v0, v1, v2, p3}, Lcom/android/server/usb/descriptors/UsbBinaryParser;->dumpDescriptor(Lcom/android/server/usb/descriptors/ByteStream;IBLjava/lang/StringBuilder;)V
 
     .line 69
+    .end local v1  # "length":I
+    .end local v2  # "type":B
     goto :goto_a
 
     .line 70
     :cond_1e
-    const-string p1, "</tt>"
+    const-string v1, "</tt>"
 
-    invoke-virtual {p3, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {p3, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     .line 71
     return-void

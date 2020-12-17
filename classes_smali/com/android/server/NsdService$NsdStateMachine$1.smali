@@ -21,6 +21,8 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/NsdService$NsdStateMachine;Landroid/os/Handler;)V
     .registers 3
+    .param p1, "this$1"  # Lcom/android/server/NsdService$NsdStateMachine;
+    .param p2, "x0"  # Landroid/os/Handler;
 
     .line 101
     iput-object p1, p0, Lcom/android/server/NsdService$NsdStateMachine$1;->this$1:Lcom/android/server/NsdService$NsdStateMachine;
@@ -33,22 +35,23 @@
 
 # virtual methods
 .method public onChange(Z)V
-    .registers 3
+    .registers 4
+    .param p1, "selfChange"  # Z
 
     .line 104
-    iget-object p1, p0, Lcom/android/server/NsdService$NsdStateMachine$1;->this$1:Lcom/android/server/NsdService$NsdStateMachine;
-
-    iget-object p1, p1, Lcom/android/server/NsdService$NsdStateMachine;->this$0:Lcom/android/server/NsdService;
-
     iget-object v0, p0, Lcom/android/server/NsdService$NsdStateMachine$1;->this$1:Lcom/android/server/NsdService$NsdStateMachine;
 
     iget-object v0, v0, Lcom/android/server/NsdService$NsdStateMachine;->this$0:Lcom/android/server/NsdService;
 
-    invoke-static {v0}, Lcom/android/server/NsdService;->access$000(Lcom/android/server/NsdService;)Z
+    iget-object v1, p0, Lcom/android/server/NsdService$NsdStateMachine$1;->this$1:Lcom/android/server/NsdService$NsdStateMachine;
 
-    move-result v0
+    iget-object v1, v1, Lcom/android/server/NsdService$NsdStateMachine;->this$0:Lcom/android/server/NsdService;
 
-    invoke-static {p1, v0}, Lcom/android/server/NsdService;->access$100(Lcom/android/server/NsdService;Z)V
+    invoke-static {v1}, Lcom/android/server/NsdService;->access$000(Lcom/android/server/NsdService;)Z
+
+    move-result v1
+
+    invoke-static {v0, v1}, Lcom/android/server/NsdService;->access$100(Lcom/android/server/NsdService;Z)V
 
     .line 105
     return-void

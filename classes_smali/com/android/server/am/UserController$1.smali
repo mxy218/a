@@ -23,8 +23,9 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/am/UserController;Landroid/content/pm/UserInfo;)V
     .registers 3
+    .param p1, "this$0"  # Lcom/android/server/am/UserController;
 
-    .line 553
+    .line 545
     iput-object p1, p0, Lcom/android/server/am/UserController$1;->this$0:Lcom/android/server/am/UserController;
 
     iput-object p2, p0, Lcom/android/server/am/UserController$1;->val$userInfo:Landroid/content/pm/UserInfo;
@@ -37,25 +38,32 @@
 
 # virtual methods
 .method public performReceive(Landroid/content/Intent;ILjava/lang/String;Landroid/os/Bundle;ZZI)V
-    .registers 8
+    .registers 10
+    .param p1, "intent"  # Landroid/content/Intent;
+    .param p2, "resultCode"  # I
+    .param p3, "data"  # Ljava/lang/String;
+    .param p4, "extras"  # Landroid/os/Bundle;
+    .param p5, "ordered"  # Z
+    .param p6, "sticky"  # Z
+    .param p7, "sendingUser"  # I
 
-    .line 559
-    iget-object p1, p0, Lcom/android/server/am/UserController$1;->this$0:Lcom/android/server/am/UserController;
+    .line 551
+    iget-object v0, p0, Lcom/android/server/am/UserController$1;->this$0:Lcom/android/server/am/UserController;
 
-    invoke-static {p1}, Lcom/android/server/am/UserController;->access$100(Lcom/android/server/am/UserController;)Lcom/android/server/am/UserController$Injector;
+    invoke-static {v0}, Lcom/android/server/am/UserController;->access$100(Lcom/android/server/am/UserController;)Lcom/android/server/am/UserController$Injector;
 
-    move-result-object p1
+    move-result-object v0
 
-    invoke-virtual {p1}, Lcom/android/server/am/UserController$Injector;->getUserManager()Lcom/android/server/pm/UserManagerService;
+    invoke-virtual {v0}, Lcom/android/server/am/UserController$Injector;->getUserManager()Lcom/android/server/pm/UserManagerService;
 
-    move-result-object p1
+    move-result-object v0
 
-    iget-object p2, p0, Lcom/android/server/am/UserController$1;->val$userInfo:Landroid/content/pm/UserInfo;
+    iget-object v1, p0, Lcom/android/server/am/UserController$1;->val$userInfo:Landroid/content/pm/UserInfo;
 
-    iget p2, p2, Landroid/content/pm/UserInfo;->id:I
+    iget v1, v1, Landroid/content/pm/UserInfo;->id:I
 
-    invoke-virtual {p1, p2}, Lcom/android/server/pm/UserManagerService;->makeInitialized(I)V
+    invoke-virtual {v0, v1}, Lcom/android/server/pm/UserManagerService;->makeInitialized(I)V
 
-    .line 560
+    .line 552
     return-void
 .end method

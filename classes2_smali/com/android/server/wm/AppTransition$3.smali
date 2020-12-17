@@ -26,8 +26,9 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/wm/AppTransition;Landroid/os/IRemoteCallback;)V
     .registers 3
+    .param p1, "this$0"  # Lcom/android/server/wm/AppTransition;
 
-    .line 1407
+    .line 1437
     iput-object p1, p0, Lcom/android/server/wm/AppTransition$3;->this$0:Lcom/android/server/wm/AppTransition;
 
     iput-object p2, p0, Lcom/android/server/wm/AppTransition$3;->val$callback:Landroid/os/IRemoteCallback;
@@ -39,8 +40,9 @@
 
 .method static synthetic lambda$onAnimationEnd$0(Landroid/os/IRemoteCallback;)V
     .registers 1
+    .param p0, "x$0"  # Landroid/os/IRemoteCallback;
 
-    .line 1414
+    .line 1444
     invoke-static {p0}, Lcom/android/server/wm/AppTransition;->access$200(Landroid/os/IRemoteCallback;)V
 
     return-void
@@ -49,37 +51,40 @@
 
 # virtual methods
 .method public onAnimationEnd(Landroid/view/animation/Animation;)V
-    .registers 4
+    .registers 5
+    .param p1, "animation"  # Landroid/view/animation/Animation;
 
-    .line 1413
-    iget-object p1, p0, Lcom/android/server/wm/AppTransition$3;->this$0:Lcom/android/server/wm/AppTransition;
+    .line 1443
+    iget-object v0, p0, Lcom/android/server/wm/AppTransition$3;->this$0:Lcom/android/server/wm/AppTransition;
 
-    iget-object p1, p1, Lcom/android/server/wm/AppTransition;->mHandler:Landroid/os/Handler;
+    iget-object v0, v0, Lcom/android/server/wm/AppTransition;->mHandler:Landroid/os/Handler;
 
-    sget-object v0, Lcom/android/server/wm/-$$Lambda$AppTransition$3$llbNiZO5SMSamZHTNM_5S77eNNU;->INSTANCE:Lcom/android/server/wm/-$$Lambda$AppTransition$3$llbNiZO5SMSamZHTNM_5S77eNNU;
+    sget-object v1, Lcom/android/server/wm/-$$Lambda$AppTransition$3$llbNiZO5SMSamZHTNM_5S77eNNU;->INSTANCE:Lcom/android/server/wm/-$$Lambda$AppTransition$3$llbNiZO5SMSamZHTNM_5S77eNNU;
 
-    iget-object v1, p0, Lcom/android/server/wm/AppTransition$3;->val$callback:Landroid/os/IRemoteCallback;
+    iget-object v2, p0, Lcom/android/server/wm/AppTransition$3;->val$callback:Landroid/os/IRemoteCallback;
 
-    invoke-static {v0, v1}, Lcom/android/internal/util/function/pooled/PooledLambda;->obtainMessage(Ljava/util/function/Consumer;Ljava/lang/Object;)Landroid/os/Message;
+    invoke-static {v1, v2}, Lcom/android/internal/util/function/pooled/PooledLambda;->obtainMessage(Ljava/util/function/Consumer;Ljava/lang/Object;)Landroid/os/Message;
 
-    move-result-object v0
+    move-result-object v1
 
-    invoke-virtual {p1, v0}, Landroid/os/Handler;->sendMessage(Landroid/os/Message;)Z
+    invoke-virtual {v0, v1}, Landroid/os/Handler;->sendMessage(Landroid/os/Message;)Z
 
-    .line 1415
+    .line 1445
     return-void
 .end method
 
 .method public onAnimationRepeat(Landroid/view/animation/Animation;)V
     .registers 2
+    .param p1, "animation"  # Landroid/view/animation/Animation;
 
-    .line 1418
+    .line 1448
     return-void
 .end method
 
 .method public onAnimationStart(Landroid/view/animation/Animation;)V
     .registers 2
+    .param p1, "animation"  # Landroid/view/animation/Animation;
 
-    .line 1409
+    .line 1439
     return-void
 .end method

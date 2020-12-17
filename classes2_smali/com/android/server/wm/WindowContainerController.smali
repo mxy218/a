@@ -46,7 +46,8 @@
 
 # direct methods
 .method constructor <init>(Lcom/android/server/wm/WindowContainerListener;Lcom/android/server/wm/WindowManagerService;)V
-    .registers 3
+    .registers 5
+    .param p2, "service"  # Lcom/android/server/wm/WindowManagerService;
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(TI;",
@@ -56,6 +57,8 @@
     .end annotation
 
     .line 42
+    .local p0, "this":Lcom/android/server/wm/WindowContainerController;, "Lcom/android/server/wm/WindowContainerController<TE;TI;>;"
+    .local p1, "listener":Lcom/android/server/wm/WindowContainerListener;, "TI;"
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
     .line 43
@@ -65,31 +68,31 @@
     iput-object p2, p0, Lcom/android/server/wm/WindowContainerController;->mService:Lcom/android/server/wm/WindowManagerService;
 
     .line 45
-    iget-object p1, p0, Lcom/android/server/wm/WindowContainerController;->mService:Lcom/android/server/wm/WindowManagerService;
+    iget-object v0, p0, Lcom/android/server/wm/WindowContainerController;->mService:Lcom/android/server/wm/WindowManagerService;
 
-    const/4 p2, 0x0
+    const/4 v1, 0x0
 
-    if-eqz p1, :cond_f
+    if-eqz v0, :cond_f
 
-    iget-object p1, p1, Lcom/android/server/wm/WindowManagerService;->mRoot:Lcom/android/server/wm/RootWindowContainer;
+    iget-object v0, v0, Lcom/android/server/wm/WindowManagerService;->mRoot:Lcom/android/server/wm/RootWindowContainer;
 
     goto :goto_10
 
     :cond_f
-    move-object p1, p2
+    move-object v0, v1
 
     :goto_10
-    iput-object p1, p0, Lcom/android/server/wm/WindowContainerController;->mRoot:Lcom/android/server/wm/RootWindowContainer;
+    iput-object v0, p0, Lcom/android/server/wm/WindowContainerController;->mRoot:Lcom/android/server/wm/RootWindowContainer;
 
     .line 46
-    iget-object p1, p0, Lcom/android/server/wm/WindowContainerController;->mService:Lcom/android/server/wm/WindowManagerService;
+    iget-object v0, p0, Lcom/android/server/wm/WindowContainerController;->mService:Lcom/android/server/wm/WindowManagerService;
 
-    if-eqz p1, :cond_18
+    if-eqz v0, :cond_18
 
-    iget-object p2, p1, Lcom/android/server/wm/WindowManagerService;->mGlobalLock:Lcom/android/server/wm/WindowManagerGlobalLock;
+    iget-object v1, v0, Lcom/android/server/wm/WindowManagerService;->mGlobalLock:Lcom/android/server/wm/WindowManagerGlobalLock;
 
     :cond_18
-    iput-object p2, p0, Lcom/android/server/wm/WindowContainerController;->mGlobalLock:Lcom/android/server/wm/WindowManagerGlobalLock;
+    iput-object v1, p0, Lcom/android/server/wm/WindowContainerController;->mGlobalLock:Lcom/android/server/wm/WindowManagerGlobalLock;
 
     .line 47
     return-void
@@ -99,8 +102,10 @@
 # virtual methods
 .method public onRequestedOverrideConfigurationChanged(Landroid/content/res/Configuration;)V
     .registers 4
+    .param p1, "overrideConfiguration"  # Landroid/content/res/Configuration;
 
     .line 76
+    .local p0, "this":Lcom/android/server/wm/WindowContainerController;, "Lcom/android/server/wm/WindowContainerController<TE;TI;>;"
     iget-object v0, p0, Lcom/android/server/wm/WindowContainerController;->mGlobalLock:Lcom/android/server/wm/WindowManagerGlobalLock;
 
     monitor-enter v0
@@ -141,7 +146,7 @@
 
     .line 81
     :catchall_19
-    move-exception p1
+    move-exception v1
 
     :try_start_1a
     monitor-exit v0
@@ -150,13 +155,14 @@
 
     invoke-static {}, Lcom/android/server/wm/WindowManagerService;->resetPriorityAfterLockedSection()V
 
-    throw p1
+    throw v1
 .end method
 
 .method removeContainer()V
     .registers 3
 
     .line 63
+    .local p0, "this":Lcom/android/server/wm/WindowContainerController;, "Lcom/android/server/wm/WindowContainerController<TE;TI;>;"
     iget-object v0, p0, Lcom/android/server/wm/WindowContainerController;->mContainer:Lcom/android/server/wm/WindowContainer;
 
     if-nez v0, :cond_5
@@ -195,6 +201,8 @@
     .end annotation
 
     .line 50
+    .local p0, "this":Lcom/android/server/wm/WindowContainerController;, "Lcom/android/server/wm/WindowContainerController<TE;TI;>;"
+    .local p1, "container":Lcom/android/server/wm/WindowContainer;, "TE;"
     iget-object v0, p0, Lcom/android/server/wm/WindowContainerController;->mContainer:Lcom/android/server/wm/WindowContainer;
 
     if-eqz v0, :cond_30
@@ -217,25 +225,25 @@
 
     invoke-virtual {v1, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
-    const-string p1, " for controller="
+    const-string v2, " for controller="
 
-    invoke-virtual {v1, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v1, p0}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
-    const-string p1, " Already set to="
+    const-string v2, " Already set to="
 
-    invoke-virtual {v1, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    iget-object p1, p0, Lcom/android/server/wm/WindowContainerController;->mContainer:Lcom/android/server/wm/WindowContainer;
+    iget-object v2, p0, Lcom/android/server/wm/WindowContainerController;->mContainer:Lcom/android/server/wm/WindowContainer;
 
-    invoke-virtual {v1, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v1
 
-    invoke-direct {v0, p1}, Ljava/lang/IllegalArgumentException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v0, v1}, Ljava/lang/IllegalArgumentException;-><init>(Ljava/lang/String;)V
 
     throw v0
 
@@ -245,16 +253,16 @@
     iput-object p1, p0, Lcom/android/server/wm/WindowContainerController;->mContainer:Lcom/android/server/wm/WindowContainer;
 
     .line 55
-    iget-object p1, p0, Lcom/android/server/wm/WindowContainerController;->mContainer:Lcom/android/server/wm/WindowContainer;
+    iget-object v0, p0, Lcom/android/server/wm/WindowContainerController;->mContainer:Lcom/android/server/wm/WindowContainer;
 
-    if-eqz p1, :cond_3d
+    if-eqz v0, :cond_3d
 
-    iget-object p1, p0, Lcom/android/server/wm/WindowContainerController;->mListener:Lcom/android/server/wm/WindowContainerListener;
+    iget-object v0, p0, Lcom/android/server/wm/WindowContainerController;->mListener:Lcom/android/server/wm/WindowContainerListener;
 
-    if-eqz p1, :cond_3d
+    if-eqz v0, :cond_3d
 
     .line 56
-    invoke-interface {p1, p0}, Lcom/android/server/wm/WindowContainerListener;->registerConfigurationChangeListener(Lcom/android/server/wm/ConfigurationContainerListener;)V
+    invoke-interface {v0, p0}, Lcom/android/server/wm/WindowContainerListener;->registerConfigurationChangeListener(Lcom/android/server/wm/ConfigurationContainerListener;)V
 
     .line 58
     :cond_3d

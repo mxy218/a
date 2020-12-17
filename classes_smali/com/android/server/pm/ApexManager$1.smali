@@ -21,6 +21,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/pm/ApexManager;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/pm/ApexManager;
 
     .line 105
     iput-object p1, p0, Lcom/android/server/pm/ApexManager$1;->this$0:Lcom/android/server/pm/ApexManager;
@@ -33,21 +34,23 @@
 
 # virtual methods
 .method public onReceive(Landroid/content/Context;Landroid/content/Intent;)V
-    .registers 3
+    .registers 4
+    .param p1, "context"  # Landroid/content/Context;
+    .param p2, "intent"  # Landroid/content/Intent;
 
     .line 108
-    iget-object p1, p0, Lcom/android/server/pm/ApexManager$1;->this$0:Lcom/android/server/pm/ApexManager;
+    iget-object v0, p0, Lcom/android/server/pm/ApexManager$1;->this$0:Lcom/android/server/pm/ApexManager;
 
-    invoke-virtual {p1}, Lcom/android/server/pm/ApexManager;->onBootCompleted()V
+    invoke-virtual {v0}, Lcom/android/server/pm/ApexManager;->onBootCompleted()V
 
     .line 109
-    iget-object p1, p0, Lcom/android/server/pm/ApexManager$1;->this$0:Lcom/android/server/pm/ApexManager;
+    iget-object v0, p0, Lcom/android/server/pm/ApexManager$1;->this$0:Lcom/android/server/pm/ApexManager;
 
-    invoke-static {p1}, Lcom/android/server/pm/ApexManager;->access$000(Lcom/android/server/pm/ApexManager;)Landroid/content/Context;
+    invoke-static {v0}, Lcom/android/server/pm/ApexManager;->access$000(Lcom/android/server/pm/ApexManager;)Landroid/content/Context;
 
-    move-result-object p1
+    move-result-object v0
 
-    invoke-virtual {p1, p0}, Landroid/content/Context;->unregisterReceiver(Landroid/content/BroadcastReceiver;)V
+    invoke-virtual {v0, p0}, Landroid/content/Context;->unregisterReceiver(Landroid/content/BroadcastReceiver;)V
 
     .line 110
     return-void

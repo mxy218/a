@@ -32,6 +32,7 @@
 
 .method private constructor <init>(Lcom/android/server/firewall/Filter;)V
     .registers 2
+    .param p1, "child"  # Lcom/android/server/firewall/Filter;
 
     .line 30
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -45,6 +46,8 @@
 
 .method synthetic constructor <init>(Lcom/android/server/firewall/Filter;Lcom/android/server/firewall/NotFilter$1;)V
     .registers 3
+    .param p1, "x0"  # Lcom/android/server/firewall/Filter;
+    .param p2, "x1"  # Lcom/android/server/firewall/NotFilter$1;
 
     .line 27
     invoke-direct {p0, p1}, Lcom/android/server/firewall/NotFilter;-><init>(Lcom/android/server/firewall/Filter;)V
@@ -56,6 +59,13 @@
 # virtual methods
 .method public matches(Lcom/android/server/firewall/IntentFirewall;Landroid/content/ComponentName;Landroid/content/Intent;IILjava/lang/String;I)Z
     .registers 16
+    .param p1, "ifw"  # Lcom/android/server/firewall/IntentFirewall;
+    .param p2, "resolvedComponent"  # Landroid/content/ComponentName;
+    .param p3, "intent"  # Landroid/content/Intent;
+    .param p4, "callerUid"  # I
+    .param p5, "callerPid"  # I
+    .param p6, "resolvedType"  # Ljava/lang/String;
+    .param p7, "receivingUid"  # I
 
     .line 37
     iget-object v0, p0, Lcom/android/server/firewall/NotFilter;->mChild:Lcom/android/server/firewall/Filter;
@@ -76,9 +86,9 @@
 
     invoke-interface/range {v0 .. v7}, Lcom/android/server/firewall/Filter;->matches(Lcom/android/server/firewall/IntentFirewall;Landroid/content/ComponentName;Landroid/content/Intent;IILjava/lang/String;I)Z
 
-    move-result p1
+    move-result v0
 
-    xor-int/lit8 p1, p1, 0x1
+    xor-int/lit8 v0, v0, 0x1
 
-    return p1
+    return v0
 .end method

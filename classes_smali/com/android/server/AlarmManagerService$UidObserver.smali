@@ -21,8 +21,9 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/AlarmManagerService;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/AlarmManagerService;
 
-    .line 4408
+    .line 4664
     iput-object p1, p0, Lcom/android/server/AlarmManagerService$UidObserver;->this$0:Lcom/android/server/AlarmManagerService;
 
     invoke-direct {p0}, Landroid/app/IUidObserver$Stub;-><init>()V
@@ -34,57 +35,67 @@
 # virtual methods
 .method public onUidActive(I)V
     .registers 2
+    .param p1, "uid"  # I
 
-    .line 4419
+    .line 4675
     return-void
 .end method
 
 .method public onUidCachedChanged(IZ)V
     .registers 3
+    .param p1, "uid"  # I
+    .param p2, "cached"  # Z
 
-    .line 4428
+    .line 4684
     return-void
 .end method
 
 .method public onUidGone(IZ)V
-    .registers 3
+    .registers 4
+    .param p1, "uid"  # I
+    .param p2, "disabled"  # Z
 
-    .line 4413
+    .line 4669
     if-eqz p2, :cond_9
 
-    .line 4414
-    iget-object p2, p0, Lcom/android/server/AlarmManagerService$UidObserver;->this$0:Lcom/android/server/AlarmManagerService;
+    .line 4670
+    iget-object v0, p0, Lcom/android/server/AlarmManagerService$UidObserver;->this$0:Lcom/android/server/AlarmManagerService;
 
-    iget-object p2, p2, Lcom/android/server/AlarmManagerService;->mHandler:Lcom/android/server/AlarmManagerService$AlarmHandler;
+    iget-object v0, v0, Lcom/android/server/AlarmManagerService;->mHandler:Lcom/android/server/AlarmManagerService$AlarmHandler;
 
-    invoke-virtual {p2, p1}, Lcom/android/server/AlarmManagerService$AlarmHandler;->postRemoveForStopped(I)V
+    invoke-virtual {v0, p1}, Lcom/android/server/AlarmManagerService$AlarmHandler;->postRemoveForStopped(I)V
 
-    .line 4416
+    .line 4672
     :cond_9
     return-void
 .end method
 
 .method public onUidIdle(IZ)V
-    .registers 3
+    .registers 4
+    .param p1, "uid"  # I
+    .param p2, "disabled"  # Z
 
-    .line 4422
+    .line 4678
     if-eqz p2, :cond_9
 
-    .line 4423
-    iget-object p2, p0, Lcom/android/server/AlarmManagerService$UidObserver;->this$0:Lcom/android/server/AlarmManagerService;
+    .line 4679
+    iget-object v0, p0, Lcom/android/server/AlarmManagerService$UidObserver;->this$0:Lcom/android/server/AlarmManagerService;
 
-    iget-object p2, p2, Lcom/android/server/AlarmManagerService;->mHandler:Lcom/android/server/AlarmManagerService$AlarmHandler;
+    iget-object v0, v0, Lcom/android/server/AlarmManagerService;->mHandler:Lcom/android/server/AlarmManagerService$AlarmHandler;
 
-    invoke-virtual {p2, p1}, Lcom/android/server/AlarmManagerService$AlarmHandler;->postRemoveForStopped(I)V
+    invoke-virtual {v0, p1}, Lcom/android/server/AlarmManagerService$AlarmHandler;->postRemoveForStopped(I)V
 
-    .line 4425
+    .line 4681
     :cond_9
     return-void
 .end method
 
 .method public onUidStateChanged(IIJ)V
     .registers 5
+    .param p1, "uid"  # I
+    .param p2, "procState"  # I
+    .param p3, "procStateSeq"  # J
 
-    .line 4410
+    .line 4666
     return-void
 .end method

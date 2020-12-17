@@ -23,16 +23,17 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/input/InputManagerService;Landroid/view/InputChannel;)V
     .registers 3
+    .param p2, "channel"  # Landroid/view/InputChannel;
 
-    .line 2250
+    .line 2165
     iput-object p1, p0, Lcom/android/server/input/InputManagerService$InputMonitorHost;->this$0:Lcom/android/server/input/InputManagerService;
 
     invoke-direct {p0}, Landroid/view/IInputMonitorHost$Stub;-><init>()V
 
-    .line 2251
+    .line 2166
     iput-object p2, p0, Lcom/android/server/input/InputManagerService$InputMonitorHost;->mInputChannel:Landroid/view/InputChannel;
 
-    .line 2252
+    .line 2167
     return-void
 .end method
 
@@ -41,33 +42,33 @@
 .method public dispose()V
     .registers 4
 
-    .line 2261
+    .line 2176
     iget-object v0, p0, Lcom/android/server/input/InputManagerService$InputMonitorHost;->this$0:Lcom/android/server/input/InputManagerService;
 
-    invoke-static {v0}, Lcom/android/server/input/InputManagerService;->access$1300(Lcom/android/server/input/InputManagerService;)J
+    invoke-static {v0}, Lcom/android/server/input/InputManagerService;->access$900(Lcom/android/server/input/InputManagerService;)J
 
     move-result-wide v0
 
     iget-object v2, p0, Lcom/android/server/input/InputManagerService$InputMonitorHost;->mInputChannel:Landroid/view/InputChannel;
 
-    invoke-static {v0, v1, v2}, Lcom/android/server/input/InputManagerService;->access$1600(JLandroid/view/InputChannel;)V
+    invoke-static {v0, v1, v2}, Lcom/android/server/input/InputManagerService;->access$1200(JLandroid/view/InputChannel;)V
 
-    .line 2262
+    .line 2177
     iget-object v0, p0, Lcom/android/server/input/InputManagerService$InputMonitorHost;->mInputChannel:Landroid/view/InputChannel;
 
     invoke-virtual {v0}, Landroid/view/InputChannel;->dispose()V
 
-    .line 2263
+    .line 2178
     return-void
 .end method
 
 .method public pilferPointers()V
     .registers 4
 
-    .line 2256
+    .line 2171
     iget-object v0, p0, Lcom/android/server/input/InputManagerService$InputMonitorHost;->this$0:Lcom/android/server/input/InputManagerService;
 
-    invoke-static {v0}, Lcom/android/server/input/InputManagerService;->access$1300(Lcom/android/server/input/InputManagerService;)J
+    invoke-static {v0}, Lcom/android/server/input/InputManagerService;->access$900(Lcom/android/server/input/InputManagerService;)J
 
     move-result-wide v0
 
@@ -75,8 +76,8 @@
 
     move-result-object v2
 
-    invoke-static {v0, v1, v2}, Lcom/android/server/input/InputManagerService;->access$1500(JLandroid/os/IBinder;)V
+    invoke-static {v0, v1, v2}, Lcom/android/server/input/InputManagerService;->access$1100(JLandroid/os/IBinder;)V
 
-    .line 2257
+    .line 2172
     return-void
 .end method

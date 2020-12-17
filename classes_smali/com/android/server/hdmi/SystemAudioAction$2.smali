@@ -24,6 +24,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/hdmi/SystemAudioAction;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/hdmi/SystemAudioAction;
 
     .line 96
     iput-object p1, p0, Lcom/android/server/hdmi/SystemAudioAction$2;->this$0:Lcom/android/server/hdmi/SystemAudioAction;
@@ -36,7 +37,8 @@
 
 # virtual methods
 .method public onSendCompleted(I)V
-    .registers 4
+    .registers 5
+    .param p1, "error"  # I
 
     .line 99
     if-eqz p1, :cond_24
@@ -54,25 +56,25 @@
 
     invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    const/4 v0, 0x0
+    const/4 v1, 0x0
 
-    new-array v1, v0, [Ljava/lang/Object;
+    new-array v2, v1, [Ljava/lang/Object;
 
-    invoke-static {p1, v1}, Lcom/android/server/hdmi/HdmiLogger;->debug(Ljava/lang/String;[Ljava/lang/Object;)V
+    invoke-static {v0, v2}, Lcom/android/server/hdmi/HdmiLogger;->debug(Ljava/lang/String;[Ljava/lang/Object;)V
 
     .line 101
-    iget-object p1, p0, Lcom/android/server/hdmi/SystemAudioAction$2;->this$0:Lcom/android/server/hdmi/SystemAudioAction;
+    iget-object v0, p0, Lcom/android/server/hdmi/SystemAudioAction$2;->this$0:Lcom/android/server/hdmi/SystemAudioAction;
 
-    invoke-virtual {p1, v0}, Lcom/android/server/hdmi/SystemAudioAction;->setSystemAudioMode(Z)V
+    invoke-virtual {v0, v1}, Lcom/android/server/hdmi/SystemAudioAction;->setSystemAudioMode(Z)V
 
     .line 102
-    iget-object p1, p0, Lcom/android/server/hdmi/SystemAudioAction$2;->this$0:Lcom/android/server/hdmi/SystemAudioAction;
+    iget-object v0, p0, Lcom/android/server/hdmi/SystemAudioAction$2;->this$0:Lcom/android/server/hdmi/SystemAudioAction;
 
-    const/4 v0, 0x7
+    const/4 v1, 0x7
 
-    invoke-virtual {p1, v0}, Lcom/android/server/hdmi/SystemAudioAction;->finishWithCallback(I)V
+    invoke-virtual {v0, v1}, Lcom/android/server/hdmi/SystemAudioAction;->finishWithCallback(I)V
 
     .line 104
     :cond_24

@@ -21,6 +21,7 @@
 # direct methods
 .method public constructor <init>(Lcom/android/server/wm/CompatModePackages;Landroid/os/Looper;)V
     .registers 4
+    .param p2, "looper"  # Landroid/os/Looper;
 
     .line 73
     iput-object p1, p0, Lcom/android/server/wm/CompatModePackages$CompatHandler;->this$0:Lcom/android/server/wm/CompatModePackages;
@@ -39,22 +40,23 @@
 
 # virtual methods
 .method public handleMessage(Landroid/os/Message;)V
-    .registers 3
+    .registers 4
+    .param p1, "msg"  # Landroid/os/Message;
 
     .line 79
-    iget p1, p1, Landroid/os/Message;->what:I
+    iget v0, p1, Landroid/os/Message;->what:I
 
-    const/16 v0, 0x12c
+    const/16 v1, 0x12c
 
-    if-eq p1, v0, :cond_7
+    if-eq v0, v1, :cond_7
 
     goto :goto_c
 
     .line 81
     :cond_7
-    iget-object p1, p0, Lcom/android/server/wm/CompatModePackages$CompatHandler;->this$0:Lcom/android/server/wm/CompatModePackages;
+    iget-object v0, p0, Lcom/android/server/wm/CompatModePackages$CompatHandler;->this$0:Lcom/android/server/wm/CompatModePackages;
 
-    invoke-static {p1}, Lcom/android/server/wm/CompatModePackages;->access$000(Lcom/android/server/wm/CompatModePackages;)V
+    invoke-static {v0}, Lcom/android/server/wm/CompatModePackages;->access$000(Lcom/android/server/wm/CompatModePackages;)V
 
     .line 84
     :goto_c

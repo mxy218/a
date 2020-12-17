@@ -26,17 +26,19 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/am/ActivityManagerService;Lcom/android/server/am/ProcessStatsService;)V
     .registers 3
+    .param p1, "service"  # Lcom/android/server/am/ActivityManagerService;
+    .param p2, "mProcessStats"  # Lcom/android/server/am/ProcessStatsService;
 
-    .line 16771
+    .line 17647
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
-    .line 16772
+    .line 17648
     iput-object p1, p0, Lcom/android/server/am/ActivityManagerService$ProcStatsRunnable;->mService:Lcom/android/server/am/ActivityManagerService;
 
-    .line 16773
+    .line 17649
     iput-object p2, p0, Lcom/android/server/am/ActivityManagerService$ProcStatsRunnable;->mProcessStats:Lcom/android/server/am/ProcessStatsService;
 
-    .line 16774
+    .line 17650
     return-void
 .end method
 
@@ -45,7 +47,7 @@
 .method public run()V
     .registers 3
 
-    .line 16777
+    .line 17653
     iget-object v0, p0, Lcom/android/server/am/ActivityManagerService$ProcStatsRunnable;->mService:Lcom/android/server/am/ActivityManagerService;
 
     monitor-enter v0
@@ -53,22 +55,22 @@
     :try_start_3
     invoke-static {}, Lcom/android/server/am/ActivityManagerService;->boostPriorityForLockedSection()V
 
-    .line 16778
+    .line 17654
     iget-object v1, p0, Lcom/android/server/am/ActivityManagerService$ProcStatsRunnable;->mProcessStats:Lcom/android/server/am/ProcessStatsService;
 
     invoke-virtual {v1}, Lcom/android/server/am/ProcessStatsService;->writeStateAsyncLocked()V
 
-    .line 16779
+    .line 17655
     monitor-exit v0
     :try_end_c
     .catchall {:try_start_3 .. :try_end_c} :catchall_10
 
     invoke-static {}, Lcom/android/server/am/ActivityManagerService;->resetPriorityAfterLockedSection()V
 
-    .line 16780
+    .line 17656
     return-void
 
-    .line 16779
+    .line 17655
     :catchall_10
     move-exception v1
 

@@ -30,6 +30,7 @@
 # direct methods
 .method constructor <init>(Landroid/content/Context;)V
     .registers 5
+    .param p1, "context"  # Landroid/content/Context;
 
     .line 104
     const-string/jumbo v0, "recoverablekeystore.db"
@@ -45,7 +46,12 @@
 .end method
 
 .method private static addColumnToTable(Landroid/database/sqlite/SQLiteDatabase;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V
-    .registers 7
+    .registers 8
+    .param p0, "db"  # Landroid/database/sqlite/SQLiteDatabase;
+    .param p1, "tableName"  # Ljava/lang/String;
+    .param p2, "column"  # Ljava/lang/String;
+    .param p3, "columnType"  # Ljava/lang/String;
+    .param p4, "defaultStr"  # Ljava/lang/String;
 
     .line 200
     new-instance v0, Ljava/lang/StringBuilder;
@@ -87,65 +93,66 @@
 
     invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string p1, " ADD COLUMN "
+    const-string v1, " ADD COLUMN "
 
-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v0, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string p1, " "
+    const-string v1, " "
 
-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v0, p3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
     .line 203
+    .local v0, "alterStr":Ljava/lang/String;
     if-eqz p4, :cond_60
 
     invoke-virtual {p4}, Ljava/lang/String;->isEmpty()Z
 
-    move-result p2
+    move-result v1
 
-    if-nez p2, :cond_60
+    if-nez v1, :cond_60
 
     .line 204
-    new-instance p2, Ljava/lang/StringBuilder;
+    new-instance v1, Ljava/lang/StringBuilder;
 
-    invoke-direct {p2}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
 
-    invoke-virtual {p2, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string p1, " DEFAULT "
+    const-string v2, " DEFAULT "
 
-    invoke-virtual {p2, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p2, p4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, p4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
     .line 207
     :cond_60
-    new-instance p2, Ljava/lang/StringBuilder;
+    new-instance v1, Ljava/lang/StringBuilder;
 
-    invoke-direct {p2}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
 
-    invoke-virtual {p2, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string p1, ";"
+    const-string v2, ";"
 
-    invoke-virtual {p2, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v1
 
-    invoke-virtual {p0, p1}, Landroid/database/sqlite/SQLiteDatabase;->execSQL(Ljava/lang/String;)V
+    invoke-virtual {p0, v1}, Landroid/database/sqlite/SQLiteDatabase;->execSQL(Ljava/lang/String;)V
 
     .line 208
     return-void
@@ -153,6 +160,7 @@
 
 .method private dropAllKnownTables(Landroid/database/sqlite/SQLiteDatabase;)V
     .registers 3
+    .param p1, "db"  # Landroid/database/sqlite/SQLiteDatabase;
 
     .line 156
     const-string v0, "DROP TABLE IF EXISTS keys"
@@ -180,6 +188,7 @@
 
 .method private upgradeDbForVersion3(Landroid/database/sqlite/SQLiteDatabase;)V
     .registers 6
+    .param p1, "db"  # Landroid/database/sqlite/SQLiteDatabase;
 
     .line 164
     const/4 v0, 0x0
@@ -205,6 +214,7 @@
 
 .method private upgradeDbForVersion4(Landroid/database/sqlite/SQLiteDatabase;)V
     .registers 6
+    .param p1, "db"  # Landroid/database/sqlite/SQLiteDatabase;
 
     .line 172
     const-string v0, "RecoverableKeyStoreDbHp"
@@ -235,6 +245,7 @@
 
 .method private upgradeDbForVersion5(Landroid/database/sqlite/SQLiteDatabase;)V
     .registers 6
+    .param p1, "db"  # Landroid/database/sqlite/SQLiteDatabase;
 
     .line 182
     const-string v0, "RecoverableKeyStoreDbHp"
@@ -244,9 +255,9 @@
     invoke-static {v0, v1}, Landroid/util/Log;->d(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 184
-    const-string v0, "keys"
+    const-string/jumbo v0, "keys"
 
-    const-string v1, "key_metadata"
+    const-string/jumbo v1, "key_metadata"
 
     const-string v2, "BLOB"
 
@@ -260,6 +271,7 @@
 
 .method private upgradeDbForVersion6(Landroid/database/sqlite/SQLiteDatabase;)V
     .registers 6
+    .param p1, "db"  # Landroid/database/sqlite/SQLiteDatabase;
 
     .line 189
     const-string v0, "RecoverableKeyStoreDbHp"
@@ -287,6 +299,7 @@
 # virtual methods
 .method public onCreate(Landroid/database/sqlite/SQLiteDatabase;)V
     .registers 3
+    .param p1, "db"  # Landroid/database/sqlite/SQLiteDatabase;
 
     .line 109
     const-string v0, "CREATE TABLE keys( _id INTEGER PRIMARY KEY,user_id INTEGER,uid INTEGER,alias TEXT,nonce BLOB,wrapped_key BLOB,platform_key_generation_id INTEGER,last_synced_at INTEGER,recovery_status INTEGER,key_metadata BLOB,UNIQUE(uid,alias))"
@@ -313,14 +326,17 @@
 .end method
 
 .method public onDowngrade(Landroid/database/sqlite/SQLiteDatabase;II)V
-    .registers 4
+    .registers 6
+    .param p1, "db"  # Landroid/database/sqlite/SQLiteDatabase;
+    .param p2, "oldVersion"  # I
+    .param p3, "newVersion"  # I
 
     .line 117
-    const-string p2, "RecoverableKeyStoreDbHp"
+    const-string v0, "RecoverableKeyStoreDbHp"
 
-    const-string p3, "Recreating recoverablekeystore after unexpected version downgrade."
+    const-string v1, "Recreating recoverablekeystore after unexpected version downgrade."
 
-    invoke-static {p2, p3}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v0, v1}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 118
     invoke-direct {p0, p1}, Lcom/android/server/locksettings/recoverablekeystore/storage/RecoverableKeyStoreDbHelper;->dropAllKnownTables(Landroid/database/sqlite/SQLiteDatabase;)V
@@ -333,7 +349,10 @@
 .end method
 
 .method public onUpgrade(Landroid/database/sqlite/SQLiteDatabase;II)V
-    .registers 5
+    .registers 6
+    .param p1, "db"  # Landroid/database/sqlite/SQLiteDatabase;
+    .param p2, "oldVersion"  # I
+    .param p3, "newVersion"  # I
 
     .line 124
     const/4 v0, 0x2
@@ -361,7 +380,7 @@
     invoke-direct {p0, p1}, Lcom/android/server/locksettings/recoverablekeystore/storage/RecoverableKeyStoreDbHelper;->upgradeDbForVersion3(Landroid/database/sqlite/SQLiteDatabase;)V
 
     .line 132
-    move p2, v0
+    const/4 p2, 0x3
 
     .line 135
     :cond_13
@@ -375,7 +394,7 @@
     invoke-direct {p0, p1}, Lcom/android/server/locksettings/recoverablekeystore/storage/RecoverableKeyStoreDbHelper;->upgradeDbForVersion4(Landroid/database/sqlite/SQLiteDatabase;)V
 
     .line 137
-    move p2, v0
+    const/4 p2, 0x4
 
     .line 140
     :cond_1c
@@ -389,7 +408,7 @@
     invoke-direct {p0, p1}, Lcom/android/server/locksettings/recoverablekeystore/storage/RecoverableKeyStoreDbHelper;->upgradeDbForVersion5(Landroid/database/sqlite/SQLiteDatabase;)V
 
     .line 142
-    move p2, v0
+    const/4 p2, 0x5
 
     .line 145
     :cond_25
@@ -403,18 +422,18 @@
     invoke-direct {p0, p1}, Lcom/android/server/locksettings/recoverablekeystore/storage/RecoverableKeyStoreDbHelper;->upgradeDbForVersion6(Landroid/database/sqlite/SQLiteDatabase;)V
 
     .line 147
-    move p2, v0
+    const/4 p2, 0x6
 
     .line 150
     :cond_2e
     if-eq p2, p3, :cond_37
 
     .line 151
-    const-string p1, "RecoverableKeyStoreDbHp"
+    const-string v0, "RecoverableKeyStoreDbHp"
 
-    const-string p2, "Failed to update recoverablekeystore database to the most recent version"
+    const-string v1, "Failed to update recoverablekeystore database to the most recent version"
 
-    invoke-static {p1, p2}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v0, v1}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 153
     :cond_37

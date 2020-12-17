@@ -72,6 +72,9 @@
 
 .method public constructor <init>(Landroid/content/Context;Landroid/content/ComponentName;I)V
     .registers 5
+    .param p1, "context"  # Landroid/content/Context;
+    .param p2, "componentName"  # Landroid/content/ComponentName;
+    .param p3, "userId"  # I
 
     .line 65
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -93,11 +96,11 @@
     iput p3, p0, Lcom/android/server/media/RemoteDisplayProviderProxy;->mUserId:I
 
     .line 69
-    new-instance p1, Landroid/os/Handler;
+    new-instance v0, Landroid/os/Handler;
 
-    invoke-direct {p1}, Landroid/os/Handler;-><init>()V
+    invoke-direct {v0}, Landroid/os/Handler;-><init>()V
 
-    iput-object p1, p0, Lcom/android/server/media/RemoteDisplayProviderProxy;->mHandler:Landroid/os/Handler;
+    iput-object v0, p0, Lcom/android/server/media/RemoteDisplayProviderProxy;->mHandler:Landroid/os/Handler;
 
     .line 70
     return-void
@@ -105,6 +108,8 @@
 
 .method static synthetic access$002(Lcom/android/server/media/RemoteDisplayProviderProxy;Z)Z
     .registers 2
+    .param p0, "x0"  # Lcom/android/server/media/RemoteDisplayProviderProxy;
+    .param p1, "x1"  # Z
 
     .line 41
     iput-boolean p1, p0, Lcom/android/server/media/RemoteDisplayProviderProxy;->mScheduledDisplayStateChangedCallback:Z
@@ -113,25 +118,29 @@
 .end method
 
 .method static synthetic access$100(Lcom/android/server/media/RemoteDisplayProviderProxy;)Lcom/android/server/media/RemoteDisplayProviderProxy$Callback;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/media/RemoteDisplayProviderProxy;
 
     .line 41
-    iget-object p0, p0, Lcom/android/server/media/RemoteDisplayProviderProxy;->mDisplayStateCallback:Lcom/android/server/media/RemoteDisplayProviderProxy$Callback;
+    iget-object v0, p0, Lcom/android/server/media/RemoteDisplayProviderProxy;->mDisplayStateCallback:Lcom/android/server/media/RemoteDisplayProviderProxy$Callback;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$200(Lcom/android/server/media/RemoteDisplayProviderProxy;)Landroid/media/RemoteDisplayState;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/media/RemoteDisplayProviderProxy;
 
     .line 41
-    iget-object p0, p0, Lcom/android/server/media/RemoteDisplayProviderProxy;->mDisplayState:Landroid/media/RemoteDisplayState;
+    iget-object v0, p0, Lcom/android/server/media/RemoteDisplayProviderProxy;->mDisplayState:Landroid/media/RemoteDisplayState;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$300(Lcom/android/server/media/RemoteDisplayProviderProxy;Lcom/android/server/media/RemoteDisplayProviderProxy$Connection;)V
     .registers 2
+    .param p0, "x0"  # Lcom/android/server/media/RemoteDisplayProviderProxy;
+    .param p1, "x1"  # Lcom/android/server/media/RemoteDisplayProviderProxy$Connection;
 
     .line 41
     invoke-direct {p0, p1}, Lcom/android/server/media/RemoteDisplayProviderProxy;->onConnectionReady(Lcom/android/server/media/RemoteDisplayProviderProxy$Connection;)V
@@ -140,16 +149,19 @@
 .end method
 
 .method static synthetic access$400(Lcom/android/server/media/RemoteDisplayProviderProxy;)Landroid/os/Handler;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/media/RemoteDisplayProviderProxy;
 
     .line 41
-    iget-object p0, p0, Lcom/android/server/media/RemoteDisplayProviderProxy;->mHandler:Landroid/os/Handler;
+    iget-object v0, p0, Lcom/android/server/media/RemoteDisplayProviderProxy;->mHandler:Landroid/os/Handler;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$500(Lcom/android/server/media/RemoteDisplayProviderProxy;Lcom/android/server/media/RemoteDisplayProviderProxy$Connection;)V
     .registers 2
+    .param p0, "x0"  # Lcom/android/server/media/RemoteDisplayProviderProxy;
+    .param p1, "x1"  # Lcom/android/server/media/RemoteDisplayProviderProxy$Connection;
 
     .line 41
     invoke-direct {p0, p1}, Lcom/android/server/media/RemoteDisplayProviderProxy;->onConnectionDied(Lcom/android/server/media/RemoteDisplayProviderProxy$Connection;)V
@@ -159,6 +171,9 @@
 
 .method static synthetic access$600(Lcom/android/server/media/RemoteDisplayProviderProxy;Lcom/android/server/media/RemoteDisplayProviderProxy$Connection;Landroid/media/RemoteDisplayState;)V
     .registers 3
+    .param p0, "x0"  # Lcom/android/server/media/RemoteDisplayProviderProxy;
+    .param p1, "x1"  # Lcom/android/server/media/RemoteDisplayProviderProxy$Connection;
+    .param p2, "x2"  # Landroid/media/RemoteDisplayState;
 
     .line 41
     invoke-direct {p0, p1, p2}, Lcom/android/server/media/RemoteDisplayProviderProxy;->onDisplayStateChanged(Lcom/android/server/media/RemoteDisplayProviderProxy$Connection;Landroid/media/RemoteDisplayState;)V
@@ -209,6 +224,7 @@
     invoke-direct {v1, v3}, Landroid/content/Intent;-><init>(Ljava/lang/String;)V
 
     .line 191
+    .local v1, "service":Landroid/content/Intent;
     iget-object v3, p0, Lcom/android/server/media/RemoteDisplayProviderProxy;->mComponentName:Landroid/content/ComponentName;
 
     invoke-virtual {v1, v3}, Landroid/content/Intent;->setComponent(Landroid/content/ComponentName;)Landroid/content/Intent;
@@ -227,50 +243,20 @@
 
     invoke-virtual {v3, v1, p0, v4, v5}, Landroid/content/Context;->bindServiceAsUser(Landroid/content/Intent;Landroid/content/ServiceConnection;ILandroid/os/UserHandle;)Z
 
-    move-result v1
+    move-result v3
 
-    iput-boolean v1, p0, Lcom/android/server/media/RemoteDisplayProviderProxy;->mBound:Z
+    iput-boolean v3, p0, Lcom/android/server/media/RemoteDisplayProviderProxy;->mBound:Z
 
     .line 196
-    iget-boolean v1, p0, Lcom/android/server/media/RemoteDisplayProviderProxy;->mBound:Z
+    iget-boolean v3, p0, Lcom/android/server/media/RemoteDisplayProviderProxy;->mBound:Z
 
-    if-nez v1, :cond_58
+    if-nez v3, :cond_58
 
-    sget-boolean v1, Lcom/android/server/media/RemoteDisplayProviderProxy;->DEBUG:Z
-
-    if-eqz v1, :cond_58
-
-    .line 197
-    new-instance v1, Ljava/lang/StringBuilder;
-
-    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
-
-    invoke-virtual {v1, p0}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v1, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
-
-    move-result-object v1
-
-    invoke-static {v2, v1}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
-    :try_end_58
-    .catch Ljava/lang/SecurityException; {:try_start_2c .. :try_end_58} :catch_59
-
-    .line 203
-    :cond_58
-    goto :goto_70
-
-    .line 199
-    :catch_59
-    move-exception v1
-
-    .line 200
     sget-boolean v3, Lcom/android/server/media/RemoteDisplayProviderProxy;->DEBUG:Z
 
-    if-eqz v3, :cond_70
+    if-eqz v3, :cond_58
 
-    .line 201
+    .line 197
     new-instance v3, Ljava/lang/StringBuilder;
 
     invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
@@ -281,11 +267,44 @@
 
     invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
+    move-result-object v3
+
+    invoke-static {v2, v3}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
+    :try_end_58
+    .catch Ljava/lang/SecurityException; {:try_start_2c .. :try_end_58} :catch_59
+
+    .line 203
+    :cond_58
+    goto :goto_70
+
+    .line 199
+    :catch_59
+    move-exception v3
+
+    .line 200
+    .local v3, "ex":Ljava/lang/SecurityException;
+    sget-boolean v4, Lcom/android/server/media/RemoteDisplayProviderProxy;->DEBUG:Z
+
+    if-eqz v4, :cond_70
+
+    .line 201
+    new-instance v4, Ljava/lang/StringBuilder;
+
+    invoke-direct {v4}, Ljava/lang/StringBuilder;-><init>()V
+
+    invoke-virtual {v4, p0}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v4, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v4}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
     move-result-object v0
 
-    invoke-static {v2, v0, v1}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    invoke-static {v2, v0, v3}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
     .line 205
+    .end local v1  # "service":Landroid/content/Intent;
+    .end local v3  # "ex":Ljava/lang/SecurityException;
     :cond_70
     :goto_70
     return-void
@@ -332,7 +351,8 @@
 .end method
 
 .method private onConnectionDied(Lcom/android/server/media/RemoteDisplayProviderProxy$Connection;)V
-    .registers 3
+    .registers 4
+    .param p1, "connection"  # Lcom/android/server/media/RemoteDisplayProviderProxy$Connection;
 
     .line 266
     iget-object v0, p0, Lcom/android/server/media/RemoteDisplayProviderProxy;->mActiveConnection:Lcom/android/server/media/RemoteDisplayProviderProxy$Connection;
@@ -340,28 +360,28 @@
     if-ne v0, p1, :cond_21
 
     .line 267
-    sget-boolean p1, Lcom/android/server/media/RemoteDisplayProviderProxy;->DEBUG:Z
+    sget-boolean v0, Lcom/android/server/media/RemoteDisplayProviderProxy;->DEBUG:Z
 
-    if-eqz p1, :cond_1e
+    if-eqz v0, :cond_1e
 
     .line 268
-    new-instance p1, Ljava/lang/StringBuilder;
+    new-instance v0, Ljava/lang/StringBuilder;
 
-    invoke-direct {p1}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
 
-    invoke-virtual {p1, p0}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, p0}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
-    const-string v0, ": Service connection died"
+    const-string v1, ": Service connection died"
 
-    invoke-virtual {p1, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    const-string v0, "RemoteDisplayProvider"
+    const-string v1, "RemoteDisplayProvider"
 
-    invoke-static {v0, p1}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v0}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 270
     :cond_1e
@@ -373,7 +393,8 @@
 .end method
 
 .method private onConnectionReady(Lcom/android/server/media/RemoteDisplayProviderProxy$Connection;)V
-    .registers 3
+    .registers 4
+    .param p1, "connection"  # Lcom/android/server/media/RemoteDisplayProviderProxy$Connection;
 
     .line 253
     iget-object v0, p0, Lcom/android/server/media/RemoteDisplayProviderProxy;->mActiveConnection:Lcom/android/server/media/RemoteDisplayProviderProxy$Connection;
@@ -381,28 +402,28 @@
     if-ne v0, p1, :cond_17
 
     .line 254
-    const/4 p1, 0x1
+    const/4 v1, 0x1
 
-    iput-boolean p1, p0, Lcom/android/server/media/RemoteDisplayProviderProxy;->mConnectionReady:Z
+    iput-boolean v1, p0, Lcom/android/server/media/RemoteDisplayProviderProxy;->mConnectionReady:Z
 
     .line 256
-    iget p1, p0, Lcom/android/server/media/RemoteDisplayProviderProxy;->mDiscoveryMode:I
+    iget v1, p0, Lcom/android/server/media/RemoteDisplayProviderProxy;->mDiscoveryMode:I
 
-    if-eqz p1, :cond_e
+    if-eqz v1, :cond_e
 
     .line 257
-    invoke-virtual {v0, p1}, Lcom/android/server/media/RemoteDisplayProviderProxy$Connection;->setDiscoveryMode(I)V
+    invoke-virtual {v0, v1}, Lcom/android/server/media/RemoteDisplayProviderProxy$Connection;->setDiscoveryMode(I)V
 
     .line 259
     :cond_e
-    iget-object p1, p0, Lcom/android/server/media/RemoteDisplayProviderProxy;->mSelectedDisplayId:Ljava/lang/String;
+    iget-object v0, p0, Lcom/android/server/media/RemoteDisplayProviderProxy;->mSelectedDisplayId:Ljava/lang/String;
 
-    if-eqz p1, :cond_17
+    if-eqz v0, :cond_17
 
     .line 260
-    iget-object v0, p0, Lcom/android/server/media/RemoteDisplayProviderProxy;->mActiveConnection:Lcom/android/server/media/RemoteDisplayProviderProxy$Connection;
+    iget-object v1, p0, Lcom/android/server/media/RemoteDisplayProviderProxy;->mActiveConnection:Lcom/android/server/media/RemoteDisplayProviderProxy$Connection;
 
-    invoke-virtual {v0, p1}, Lcom/android/server/media/RemoteDisplayProviderProxy$Connection;->connect(Ljava/lang/String;)V
+    invoke-virtual {v1, v0}, Lcom/android/server/media/RemoteDisplayProviderProxy$Connection;->connect(Ljava/lang/String;)V
 
     .line 263
     :cond_17
@@ -410,7 +431,9 @@
 .end method
 
 .method private onDisplayStateChanged(Lcom/android/server/media/RemoteDisplayProviderProxy$Connection;Landroid/media/RemoteDisplayState;)V
-    .registers 4
+    .registers 5
+    .param p1, "connection"  # Lcom/android/server/media/RemoteDisplayProviderProxy$Connection;
+    .param p2, "state"  # Landroid/media/RemoteDisplayState;
 
     .line 275
     iget-object v0, p0, Lcom/android/server/media/RemoteDisplayProviderProxy;->mActiveConnection:Lcom/android/server/media/RemoteDisplayProviderProxy$Connection;
@@ -418,30 +441,30 @@
     if-ne v0, p1, :cond_24
 
     .line 276
-    sget-boolean p1, Lcom/android/server/media/RemoteDisplayProviderProxy;->DEBUG:Z
+    sget-boolean v0, Lcom/android/server/media/RemoteDisplayProviderProxy;->DEBUG:Z
 
-    if-eqz p1, :cond_21
+    if-eqz v0, :cond_21
 
     .line 277
-    new-instance p1, Ljava/lang/StringBuilder;
+    new-instance v0, Ljava/lang/StringBuilder;
 
-    invoke-direct {p1}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
 
-    invoke-virtual {p1, p0}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, p0}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
-    const-string v0, ": State changed, state="
+    const-string v1, ": State changed, state="
 
-    invoke-virtual {p1, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p1, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    const-string v0, "RemoteDisplayProvider"
+    const-string v1, "RemoteDisplayProvider"
 
-    invoke-static {v0, p1}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v0}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 279
     :cond_21
@@ -453,7 +476,8 @@
 .end method
 
 .method private setDisplayState(Landroid/media/RemoteDisplayState;)V
-    .registers 3
+    .registers 4
+    .param p1, "state"  # Landroid/media/RemoteDisplayState;
 
     .line 296
     iget-object v0, p0, Lcom/android/server/media/RemoteDisplayProviderProxy;->mDisplayState:Landroid/media/RemoteDisplayState;
@@ -468,21 +492,21 @@
     iput-object p1, p0, Lcom/android/server/media/RemoteDisplayProviderProxy;->mDisplayState:Landroid/media/RemoteDisplayState;
 
     .line 298
-    iget-boolean p1, p0, Lcom/android/server/media/RemoteDisplayProviderProxy;->mScheduledDisplayStateChangedCallback:Z
+    iget-boolean v0, p0, Lcom/android/server/media/RemoteDisplayProviderProxy;->mScheduledDisplayStateChangedCallback:Z
 
-    if-nez p1, :cond_18
+    if-nez v0, :cond_18
 
     .line 299
-    const/4 p1, 0x1
+    const/4 v0, 0x1
 
-    iput-boolean p1, p0, Lcom/android/server/media/RemoteDisplayProviderProxy;->mScheduledDisplayStateChangedCallback:Z
+    iput-boolean v0, p0, Lcom/android/server/media/RemoteDisplayProviderProxy;->mScheduledDisplayStateChangedCallback:Z
 
     .line 300
-    iget-object p1, p0, Lcom/android/server/media/RemoteDisplayProviderProxy;->mHandler:Landroid/os/Handler;
+    iget-object v0, p0, Lcom/android/server/media/RemoteDisplayProviderProxy;->mHandler:Landroid/os/Handler;
 
-    iget-object v0, p0, Lcom/android/server/media/RemoteDisplayProviderProxy;->mDisplayStateChanged:Ljava/lang/Runnable;
+    iget-object v1, p0, Lcom/android/server/media/RemoteDisplayProviderProxy;->mDisplayStateChanged:Ljava/lang/Runnable;
 
-    invoke-virtual {p1, v0}, Landroid/os/Handler;->post(Ljava/lang/Runnable;)Z
+    invoke-virtual {v0, v1}, Landroid/os/Handler;->post(Ljava/lang/Runnable;)Z
 
     .line 303
     :cond_18
@@ -598,6 +622,7 @@
 # virtual methods
 .method public adjustDisplayVolume(I)V
     .registers 4
+    .param p1, "delta"  # I
 
     .line 122
     iget-boolean v0, p0, Lcom/android/server/media/RemoteDisplayProviderProxy;->mConnectionReady:Z
@@ -620,6 +645,8 @@
 
 .method public dump(Ljava/io/PrintWriter;Ljava/lang/String;)V
     .registers 5
+    .param p1, "pw"  # Ljava/io/PrintWriter;
+    .param p2, "prefix"  # Ljava/lang/String;
 
     .line 73
     new-instance v0, Ljava/lang/StringBuilder;
@@ -792,19 +819,19 @@
 
     invoke-virtual {v0, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string p2, "  mDisplayState="
+    const-string v1, "  mDisplayState="
 
-    invoke-virtual {v0, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    iget-object p2, p0, Lcom/android/server/media/RemoteDisplayProviderProxy;->mDisplayState:Landroid/media/RemoteDisplayState;
+    iget-object v1, p0, Lcom/android/server/media/RemoteDisplayProviderProxy;->mDisplayState:Landroid/media/RemoteDisplayState;
 
-    invoke-virtual {v0, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p2
+    move-result-object v0
 
-    invoke-virtual {p1, p2}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
     .line 82
     return-void
@@ -834,6 +861,8 @@
 
 .method public hasComponentName(Ljava/lang/String;Ljava/lang/String;)Z
     .registers 4
+    .param p1, "packageName"  # Ljava/lang/String;
+    .param p2, "className"  # Ljava/lang/String;
 
     .line 128
     iget-object v0, p0, Lcom/android/server/media/RemoteDisplayProviderProxy;->mComponentName:Landroid/content/ComponentName;
@@ -844,67 +873,69 @@
 
     invoke-virtual {v0, p1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result p1
+    move-result v0
 
-    if-eqz p1, :cond_1a
+    if-eqz v0, :cond_1a
 
-    iget-object p1, p0, Lcom/android/server/media/RemoteDisplayProviderProxy;->mComponentName:Landroid/content/ComponentName;
+    iget-object v0, p0, Lcom/android/server/media/RemoteDisplayProviderProxy;->mComponentName:Landroid/content/ComponentName;
 
     .line 129
-    invoke-virtual {p1}, Landroid/content/ComponentName;->getClassName()Ljava/lang/String;
+    invoke-virtual {v0}, Landroid/content/ComponentName;->getClassName()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    invoke-virtual {p1, p2}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v0, p2}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result p1
+    move-result v0
 
-    if-eqz p1, :cond_1a
+    if-eqz v0, :cond_1a
 
-    const/4 p1, 0x1
+    const/4 v0, 0x1
 
     goto :goto_1b
 
     :cond_1a
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
     .line 128
     :goto_1b
-    return p1
+    return v0
 .end method
 
 .method public onServiceConnected(Landroid/content/ComponentName;Landroid/os/IBinder;)V
-    .registers 5
+    .registers 8
+    .param p1, "name"  # Landroid/content/ComponentName;
+    .param p2, "service"  # Landroid/os/IBinder;
 
     .line 221
-    sget-boolean p1, Lcom/android/server/media/RemoteDisplayProviderProxy;->DEBUG:Z
+    sget-boolean v0, Lcom/android/server/media/RemoteDisplayProviderProxy;->DEBUG:Z
 
-    const-string v0, "RemoteDisplayProvider"
+    const-string v1, "RemoteDisplayProvider"
 
-    if-eqz p1, :cond_1a
+    if-eqz v0, :cond_1a
 
     .line 222
-    new-instance p1, Ljava/lang/StringBuilder;
+    new-instance v0, Ljava/lang/StringBuilder;
 
-    invoke-direct {p1}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
 
-    invoke-virtual {p1, p0}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, p0}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
-    const-string v1, ": Connected"
+    const-string v2, ": Connected"
 
-    invoke-virtual {p1, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    invoke-static {v0, p1}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v0}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 225
     :cond_1a
-    iget-boolean p1, p0, Lcom/android/server/media/RemoteDisplayProviderProxy;->mBound:Z
+    iget-boolean v0, p0, Lcom/android/server/media/RemoteDisplayProviderProxy;->mBound:Z
 
-    if-eqz p1, :cond_62
+    if-eqz v0, :cond_62
 
     .line 226
     invoke-direct {p0}, Lcom/android/server/media/RemoteDisplayProviderProxy;->disconnect()V
@@ -912,106 +943,111 @@
     .line 228
     invoke-static {p2}, Landroid/media/IRemoteDisplayProvider$Stub;->asInterface(Landroid/os/IBinder;)Landroid/media/IRemoteDisplayProvider;
 
-    move-result-object p1
+    move-result-object v0
 
     .line 229
-    if-eqz p1, :cond_4e
+    .local v0, "provider":Landroid/media/IRemoteDisplayProvider;
+    if-eqz v0, :cond_4e
 
     .line 230
-    new-instance p2, Lcom/android/server/media/RemoteDisplayProviderProxy$Connection;
+    new-instance v2, Lcom/android/server/media/RemoteDisplayProviderProxy$Connection;
 
-    invoke-direct {p2, p0, p1}, Lcom/android/server/media/RemoteDisplayProviderProxy$Connection;-><init>(Lcom/android/server/media/RemoteDisplayProviderProxy;Landroid/media/IRemoteDisplayProvider;)V
+    invoke-direct {v2, p0, v0}, Lcom/android/server/media/RemoteDisplayProviderProxy$Connection;-><init>(Lcom/android/server/media/RemoteDisplayProviderProxy;Landroid/media/IRemoteDisplayProvider;)V
 
     .line 231
-    invoke-virtual {p2}, Lcom/android/server/media/RemoteDisplayProviderProxy$Connection;->register()Z
+    .local v2, "connection":Lcom/android/server/media/RemoteDisplayProviderProxy$Connection;
+    invoke-virtual {v2}, Lcom/android/server/media/RemoteDisplayProviderProxy$Connection;->register()Z
 
-    move-result p1
+    move-result v3
 
-    if-eqz p1, :cond_35
+    if-eqz v3, :cond_35
 
     .line 232
-    iput-object p2, p0, Lcom/android/server/media/RemoteDisplayProviderProxy;->mActiveConnection:Lcom/android/server/media/RemoteDisplayProviderProxy$Connection;
+    iput-object v2, p0, Lcom/android/server/media/RemoteDisplayProviderProxy;->mActiveConnection:Lcom/android/server/media/RemoteDisplayProviderProxy$Connection;
 
     goto :goto_4d
 
     .line 234
     :cond_35
-    sget-boolean p1, Lcom/android/server/media/RemoteDisplayProviderProxy;->DEBUG:Z
+    sget-boolean v3, Lcom/android/server/media/RemoteDisplayProviderProxy;->DEBUG:Z
 
-    if-eqz p1, :cond_4d
+    if-eqz v3, :cond_4d
 
     .line 235
-    new-instance p1, Ljava/lang/StringBuilder;
+    new-instance v3, Ljava/lang/StringBuilder;
 
-    invoke-direct {p1}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
 
-    invoke-virtual {p1, p0}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, p0}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
-    const-string p2, ": Registration failed"
+    const-string v4, ": Registration failed"
 
-    invoke-virtual {p1, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v3
 
-    invoke-static {v0, p1}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v3}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 238
+    .end local v2  # "connection":Lcom/android/server/media/RemoteDisplayProviderProxy$Connection;
     :cond_4d
     :goto_4d
     goto :goto_62
 
     .line 239
     :cond_4e
-    new-instance p1, Ljava/lang/StringBuilder;
+    new-instance v2, Ljava/lang/StringBuilder;
 
-    invoke-direct {p1}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
 
-    invoke-virtual {p1, p0}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, p0}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
-    const-string p2, ": Service returned invalid remote display provider binder"
+    const-string v3, ": Service returned invalid remote display provider binder"
 
-    invoke-virtual {p1, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v2
 
-    invoke-static {v0, p1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v2}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 242
+    .end local v0  # "provider":Landroid/media/IRemoteDisplayProvider;
     :cond_62
     :goto_62
     return-void
 .end method
 
 .method public onServiceDisconnected(Landroid/content/ComponentName;)V
-    .registers 3
+    .registers 4
+    .param p1, "name"  # Landroid/content/ComponentName;
 
     .line 246
-    sget-boolean p1, Lcom/android/server/media/RemoteDisplayProviderProxy;->DEBUG:Z
+    sget-boolean v0, Lcom/android/server/media/RemoteDisplayProviderProxy;->DEBUG:Z
 
-    if-eqz p1, :cond_1a
+    if-eqz v0, :cond_1a
 
     .line 247
-    new-instance p1, Ljava/lang/StringBuilder;
+    new-instance v0, Ljava/lang/StringBuilder;
 
-    invoke-direct {p1}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
 
-    invoke-virtual {p1, p0}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, p0}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
-    const-string v0, ": Service disconnected"
+    const-string v1, ": Service disconnected"
 
-    invoke-virtual {p1, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    const-string v0, "RemoteDisplayProvider"
+    const-string v1, "RemoteDisplayProvider"
 
-    invoke-static {v0, p1}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v0}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 249
     :cond_1a
@@ -1048,6 +1084,7 @@
 
 .method public setCallback(Lcom/android/server/media/RemoteDisplayProviderProxy$Callback;)V
     .registers 2
+    .param p1, "callback"  # Lcom/android/server/media/RemoteDisplayProviderProxy$Callback;
 
     .line 85
     iput-object p1, p0, Lcom/android/server/media/RemoteDisplayProviderProxy;->mDisplayStateCallback:Lcom/android/server/media/RemoteDisplayProviderProxy$Callback;
@@ -1058,6 +1095,7 @@
 
 .method public setDiscoveryMode(I)V
     .registers 3
+    .param p1, "mode"  # I
 
     .line 93
     iget v0, p0, Lcom/android/server/media/RemoteDisplayProviderProxy;->mDiscoveryMode:I
@@ -1088,6 +1126,7 @@
 
 .method public setDisplayVolume(I)V
     .registers 4
+    .param p1, "volume"  # I
 
     .line 116
     iget-boolean v0, p0, Lcom/android/server/media/RemoteDisplayProviderProxy;->mConnectionReady:Z
@@ -1110,6 +1149,7 @@
 
 .method public setSelectedDisplay(Ljava/lang/String;)V
     .registers 4
+    .param p1, "id"  # Ljava/lang/String;
 
     .line 103
     iget-object v0, p0, Lcom/android/server/media/RemoteDisplayProviderProxy;->mSelectedDisplayId:Ljava/lang/String;

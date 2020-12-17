@@ -22,7 +22,8 @@
 
 # direct methods
 .method constructor <init>(Lcom/android/server/attention/AttentionManagerService$AttentionManagerServiceShellCommand;)V
-    .registers 2
+    .registers 3
+    .param p1, "this$1"  # Lcom/android/server/attention/AttentionManagerService$AttentionManagerServiceShellCommand;
 
     .line 679
     iput-object p1, p0, Lcom/android/server/attention/AttentionManagerService$AttentionManagerServiceShellCommand$TestableAttentionCallbackInternal;->this$1:Lcom/android/server/attention/AttentionManagerService$AttentionManagerServiceShellCommand;
@@ -30,9 +31,9 @@
     invoke-direct {p0}, Landroid/attention/AttentionManagerInternal$AttentionCallbackInternal;-><init>()V
 
     .line 680
-    const/4 p1, -0x1
+    const/4 v0, -0x1
 
-    iput p1, p0, Lcom/android/server/attention/AttentionManagerService$AttentionManagerServiceShellCommand$TestableAttentionCallbackInternal;->mLastCallbackCode:I
+    iput v0, p0, Lcom/android/server/attention/AttentionManagerService$AttentionManagerServiceShellCommand$TestableAttentionCallbackInternal;->mLastCallbackCode:I
 
     return-void
 .end method
@@ -50,6 +51,7 @@
 
 .method public onFailure(I)V
     .registers 2
+    .param p1, "error"  # I
 
     .line 689
     iput p1, p0, Lcom/android/server/attention/AttentionManagerService$AttentionManagerServiceShellCommand$TestableAttentionCallbackInternal;->mLastCallbackCode:I
@@ -60,6 +62,8 @@
 
 .method public onSuccess(IJ)V
     .registers 4
+    .param p1, "result"  # I
+    .param p2, "timestamp"  # J
 
     .line 684
     iput p1, p0, Lcom/android/server/attention/AttentionManagerService$AttentionManagerServiceShellCommand$TestableAttentionCallbackInternal;->mLastCallbackCode:I

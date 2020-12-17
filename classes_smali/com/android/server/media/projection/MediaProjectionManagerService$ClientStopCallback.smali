@@ -24,6 +24,7 @@
 # direct methods
 .method public constructor <init>(Landroid/media/projection/IMediaProjectionCallback;)V
     .registers 2
+    .param p1, "callback"  # Landroid/media/projection/IMediaProjectionCallback;
 
     .line 681
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -56,6 +57,7 @@
     move-exception v0
 
     .line 690
+    .local v0, "e":Landroid/os/RemoteException;
     const-string v1, "MediaProjectionManagerService"
 
     const-string v2, "Failed to notify media projection has stopped"
@@ -63,6 +65,7 @@
     invoke-static {v1, v2, v0}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
     .line 692
+    .end local v0  # "e":Landroid/os/RemoteException;
     :goto_e
     return-void
 .end method

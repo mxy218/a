@@ -21,6 +21,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/vr/VrManagerService;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/vr/VrManagerService;
 
     .line 808
     iput-object p1, p0, Lcom/android/server/vr/VrManagerService$5;->this$0:Lcom/android/server/vr/VrManagerService;
@@ -33,25 +34,27 @@
 
 # virtual methods
 .method public onReceive(Landroid/content/Context;Landroid/content/Intent;)V
-    .registers 3
+    .registers 5
+    .param p1, "context"  # Landroid/content/Context;
+    .param p2, "intent"  # Landroid/content/Intent;
 
     .line 811
     invoke-virtual {p2}, Landroid/content/Intent;->getAction()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    const-string p2, "android.intent.action.USER_UNLOCKED"
+    const-string v1, "android.intent.action.USER_UNLOCKED"
 
-    invoke-virtual {p2, p1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v1, v0}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result p1
+    move-result v0
 
-    if-eqz p1, :cond_11
+    if-eqz v0, :cond_11
 
     .line 812
-    iget-object p1, p0, Lcom/android/server/vr/VrManagerService$5;->this$0:Lcom/android/server/vr/VrManagerService;
+    iget-object v0, p0, Lcom/android/server/vr/VrManagerService$5;->this$0:Lcom/android/server/vr/VrManagerService;
 
-    invoke-static {p1}, Lcom/android/server/vr/VrManagerService;->access$3800(Lcom/android/server/vr/VrManagerService;)V
+    invoke-static {v0}, Lcom/android/server/vr/VrManagerService;->access$3800(Lcom/android/server/vr/VrManagerService;)V
 
     .line 814
     :cond_11

@@ -29,14 +29,16 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/wm/ActivityTaskManagerService;Landroid/os/Looper;)V
     .registers 3
+    .param p1, "this$0"  # Lcom/android/server/wm/ActivityTaskManagerService;
+    .param p2, "looper"  # Landroid/os/Looper;
 
-    .line 6104
+    .line 6162
     iput-object p1, p0, Lcom/android/server/wm/ActivityTaskManagerService$H;->this$0:Lcom/android/server/wm/ActivityTaskManagerService;
 
-    .line 6105
+    .line 6163
     invoke-direct {p0, p2}, Landroid/os/Handler;-><init>(Landroid/os/Looper;)V
 
-    .line 6106
+    .line 6164
     return-void
 .end method
 
@@ -44,8 +46,9 @@
 # virtual methods
 .method public handleMessage(Landroid/os/Message;)V
     .registers 4
+    .param p1, "msg"  # Landroid/os/Message;
 
-    .line 6110
+    .line 6168
     iget v0, p1, Landroid/os/Message;->what:I
 
     const/4 v1, 0x1
@@ -54,20 +57,22 @@
 
     goto :goto_11
 
-    .line 6112
+    .line 6170
     :cond_6
-    iget-object p1, p1, Landroid/os/Message;->obj:Ljava/lang/Object;
+    iget-object v0, p1, Landroid/os/Message;->obj:Ljava/lang/Object;
 
-    check-cast p1, Lcom/android/server/am/AppTimeTracker;
+    check-cast v0, Lcom/android/server/am/AppTimeTracker;
 
-    .line 6113
-    iget-object v0, p0, Lcom/android/server/wm/ActivityTaskManagerService$H;->this$0:Lcom/android/server/wm/ActivityTaskManagerService;
+    .line 6171
+    .local v0, "tracker":Lcom/android/server/am/AppTimeTracker;
+    iget-object v1, p0, Lcom/android/server/wm/ActivityTaskManagerService$H;->this$0:Lcom/android/server/wm/ActivityTaskManagerService;
 
-    iget-object v0, v0, Lcom/android/server/wm/ActivityTaskManagerService;->mContext:Landroid/content/Context;
+    iget-object v1, v1, Lcom/android/server/wm/ActivityTaskManagerService;->mContext:Landroid/content/Context;
 
-    invoke-virtual {p1, v0}, Lcom/android/server/am/AppTimeTracker;->deliverResult(Landroid/content/Context;)V
+    invoke-virtual {v0, v1}, Lcom/android/server/am/AppTimeTracker;->deliverResult(Landroid/content/Context;)V
 
-    .line 6116
+    .line 6174
+    .end local v0  # "tracker":Lcom/android/server/am/AppTimeTracker;
     :goto_11
     return-void
 .end method

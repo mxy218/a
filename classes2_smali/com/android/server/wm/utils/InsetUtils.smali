@@ -16,6 +16,8 @@
 
 .method public static addInsets(Landroid/graphics/Rect;Landroid/graphics/Rect;)V
     .registers 4
+    .param p0, "inOutInsets"  # Landroid/graphics/Rect;
+    .param p1, "insetsToAdd"  # Landroid/graphics/Rect;
 
     .line 63
     iget v0, p0, Landroid/graphics/Rect;->left:I
@@ -47,9 +49,9 @@
     .line 66
     iget v0, p0, Landroid/graphics/Rect;->bottom:I
 
-    iget p1, p1, Landroid/graphics/Rect;->bottom:I
+    iget v1, p1, Landroid/graphics/Rect;->bottom:I
 
-    add-int/2addr v0, p1
+    add-int/2addr v0, v1
 
     iput v0, p0, Landroid/graphics/Rect;->bottom:I
 
@@ -58,7 +60,10 @@
 .end method
 
 .method public static insetsBetweenFrames(Landroid/graphics/Rect;Landroid/graphics/Rect;Landroid/graphics/Rect;)V
-    .registers 10
+    .registers 11
+    .param p0, "outerFrame"  # Landroid/graphics/Rect;
+    .param p1, "innerFrame"  # Landroid/graphics/Rect;
+    .param p2, "outInsets"  # Landroid/graphics/Rect;
 
     .line 82
     if-nez p1, :cond_6
@@ -76,11 +81,13 @@
     move-result v0
 
     .line 87
+    .local v0, "w":I
     invoke-virtual {p0}, Landroid/graphics/Rect;->height()I
 
     move-result v1
 
     .line 88
+    .local v1, "h":I
     iget v2, p1, Landroid/graphics/Rect;->left:I
 
     iget v3, p0, Landroid/graphics/Rect;->left:I
@@ -126,113 +133,165 @@
 
     invoke-static {v0, v5}, Ljava/lang/Math;->min(II)I
 
-    move-result v0
+    move-result v5
 
-    iget p0, p0, Landroid/graphics/Rect;->bottom:I
+    iget v6, p0, Landroid/graphics/Rect;->bottom:I
 
-    iget p1, p1, Landroid/graphics/Rect;->bottom:I
+    iget v7, p1, Landroid/graphics/Rect;->bottom:I
 
-    sub-int/2addr p0, p1
+    sub-int/2addr v6, v7
 
     .line 92
-    invoke-static {v3, p0}, Ljava/lang/Math;->max(II)I
+    invoke-static {v3, v6}, Ljava/lang/Math;->max(II)I
 
-    move-result p0
+    move-result v3
 
-    invoke-static {v1, p0}, Ljava/lang/Math;->min(II)I
+    invoke-static {v1, v3}, Ljava/lang/Math;->min(II)I
 
-    move-result p0
+    move-result v3
 
     .line 88
-    invoke-virtual {p2, v2, v4, v0, p0}, Landroid/graphics/Rect;->set(IIII)V
+    invoke-virtual {p2, v2, v4, v5, v3}, Landroid/graphics/Rect;->set(IIII)V
 
     .line 93
     return-void
 .end method
 
+.method public static minInsets(Landroid/graphics/Rect;Landroid/graphics/Rect;)Landroid/graphics/Rect;
+    .registers 8
+    .param p0, "rect1"  # Landroid/graphics/Rect;
+    .param p1, "rect2"  # Landroid/graphics/Rect;
+
+    .line 101
+    new-instance v0, Landroid/graphics/Rect;
+
+    iget v1, p0, Landroid/graphics/Rect;->left:I
+
+    iget v2, p1, Landroid/graphics/Rect;->left:I
+
+    invoke-static {v1, v2}, Ljava/lang/Math;->min(II)I
+
+    move-result v1
+
+    iget v2, p0, Landroid/graphics/Rect;->top:I
+
+    iget v3, p1, Landroid/graphics/Rect;->top:I
+
+    .line 102
+    invoke-static {v2, v3}, Ljava/lang/Math;->min(II)I
+
+    move-result v2
+
+    iget v3, p0, Landroid/graphics/Rect;->right:I
+
+    iget v4, p1, Landroid/graphics/Rect;->right:I
+
+    .line 103
+    invoke-static {v3, v4}, Ljava/lang/Math;->min(II)I
+
+    move-result v3
+
+    iget v4, p0, Landroid/graphics/Rect;->bottom:I
+
+    iget v5, p1, Landroid/graphics/Rect;->bottom:I
+
+    .line 104
+    invoke-static {v4, v5}, Ljava/lang/Math;->min(II)I
+
+    move-result v4
+
+    invoke-direct {v0, v1, v2, v3, v4}, Landroid/graphics/Rect;-><init>(IIII)V
+
+    .line 101
+    return-object v0
+.end method
+
 .method public static rotateInsets(Landroid/graphics/Rect;I)V
-    .registers 5
+    .registers 7
+    .param p0, "inOutInsets"  # Landroid/graphics/Rect;
+    .param p1, "rotationDelta"  # I
 
     .line 41
-    nop
+    move-object v0, p0
 
     .line 42
+    .local v0, "r":Landroid/graphics/Rect;
     if-eqz p1, :cond_48
 
-    const/4 v0, 0x1
+    const/4 v1, 0x1
 
-    if-eq p1, v0, :cond_3b
+    if-eq p1, v1, :cond_3b
 
-    const/4 v0, 0x2
+    const/4 v1, 0x2
 
-    if-eq p1, v0, :cond_2f
+    if-eq p1, v1, :cond_2f
 
-    const/4 v0, 0x3
+    const/4 v1, 0x3
 
-    if-ne p1, v0, :cond_18
+    if-ne p1, v1, :cond_18
 
     .line 52
-    iget p1, p0, Landroid/graphics/Rect;->bottom:I
+    iget v1, v0, Landroid/graphics/Rect;->bottom:I
 
-    iget v0, p0, Landroid/graphics/Rect;->left:I
+    iget v2, v0, Landroid/graphics/Rect;->left:I
 
-    iget v1, p0, Landroid/graphics/Rect;->top:I
+    iget v3, v0, Landroid/graphics/Rect;->top:I
 
-    iget v2, p0, Landroid/graphics/Rect;->right:I
+    iget v4, v0, Landroid/graphics/Rect;->right:I
 
-    invoke-virtual {p0, p1, v0, v1, v2}, Landroid/graphics/Rect;->set(IIII)V
+    invoke-virtual {v0, v1, v2, v3, v4}, Landroid/graphics/Rect;->set(IIII)V
 
     .line 53
     goto :goto_47
 
     .line 55
     :cond_18
-    new-instance p0, Ljava/lang/IllegalArgumentException;
+    new-instance v1, Ljava/lang/IllegalArgumentException;
 
-    new-instance v0, Ljava/lang/StringBuilder;
+    new-instance v2, Ljava/lang/StringBuilder;
 
-    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v1, "Unknown rotation: "
+    const-string v3, "Unknown rotation: "
 
-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, p1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v2
 
-    invoke-direct {p0, p1}, Ljava/lang/IllegalArgumentException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v1, v2}, Ljava/lang/IllegalArgumentException;-><init>(Ljava/lang/String;)V
 
-    throw p0
+    throw v1
 
     .line 49
     :cond_2f
-    iget p1, p0, Landroid/graphics/Rect;->right:I
+    iget v1, v0, Landroid/graphics/Rect;->right:I
 
-    iget v0, p0, Landroid/graphics/Rect;->bottom:I
+    iget v2, v0, Landroid/graphics/Rect;->bottom:I
 
-    iget v1, p0, Landroid/graphics/Rect;->left:I
+    iget v3, v0, Landroid/graphics/Rect;->left:I
 
-    iget v2, p0, Landroid/graphics/Rect;->top:I
+    iget v4, v0, Landroid/graphics/Rect;->top:I
 
-    invoke-virtual {p0, p1, v0, v1, v2}, Landroid/graphics/Rect;->set(IIII)V
+    invoke-virtual {v0, v1, v2, v3, v4}, Landroid/graphics/Rect;->set(IIII)V
 
     .line 50
     goto :goto_47
 
     .line 46
     :cond_3b
-    iget p1, p0, Landroid/graphics/Rect;->top:I
+    iget v1, v0, Landroid/graphics/Rect;->top:I
 
-    iget v0, p0, Landroid/graphics/Rect;->right:I
+    iget v2, v0, Landroid/graphics/Rect;->right:I
 
-    iget v1, p0, Landroid/graphics/Rect;->bottom:I
+    iget v3, v0, Landroid/graphics/Rect;->bottom:I
 
-    iget v2, p0, Landroid/graphics/Rect;->left:I
+    iget v4, v0, Landroid/graphics/Rect;->left:I
 
-    invoke-virtual {p0, p1, v0, v1, v2}, Landroid/graphics/Rect;->set(IIII)V
+    invoke-virtual {v0, v1, v2, v3, v4}, Landroid/graphics/Rect;->set(IIII)V
 
     .line 47
     nop

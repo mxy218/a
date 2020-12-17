@@ -18,8 +18,8 @@
 .method public getInterfaceVersion()I
     .registers 2
 
-    .line 29
-    const/4 v0, 0x3
+    .line 31
+    const/4 v0, 0x0
 
     return v0
 .end method

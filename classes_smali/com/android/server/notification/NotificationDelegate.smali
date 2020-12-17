@@ -10,6 +10,12 @@
 .method public abstract onClearAll(III)V
 .end method
 
+.method public abstract onClearAll(IIII)V
+.end method
+
+.method public abstract onGroupChildRemoved(Ljava/lang/String;)V
+.end method
+
 .method public abstract onNotificationActionClick(IILjava/lang/String;ILandroid/app/Notification$Action;Lcom/android/internal/statusbar/NotificationVisibility;Z)V
 .end method
 
@@ -17,6 +23,9 @@
 .end method
 
 .method public abstract onNotificationClear(IILjava/lang/String;Ljava/lang/String;IILjava/lang/String;IILcom/android/internal/statusbar/NotificationVisibility;)V
+.end method
+
+.method public abstract onNotificationClearForReason(IILjava/lang/String;Ljava/lang/String;III)V
 .end method
 
 .method public abstract onNotificationClick(IILjava/lang/String;Lcom/android/internal/statusbar/NotificationVisibility;)V
@@ -40,6 +49,9 @@
 .method public abstract onNotificationSmartSuggestionsAdded(Ljava/lang/String;IIZZ)V
 .end method
 
+.method public abstract onNotificationUserFilter(Ljava/lang/String;Ljava/lang/String;III)V
+.end method
+
 .method public abstract onNotificationVisibilityChanged([Lcom/android/internal/statusbar/NotificationVisibility;[Lcom/android/internal/statusbar/NotificationVisibility;)V
 .end method
 
@@ -50,4 +62,7 @@
 .end method
 
 .method public abstract onSetDisabled(I)V
+.end method
+
+.method public abstract resetKeyguardPeriodNotifications()V
 .end method

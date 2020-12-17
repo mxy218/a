@@ -1,5 +1,5 @@
 .class Lcom/android/server/ConnectivityService$6;
-.super Landroid/content/BroadcastReceiver;
+.super Landroid/net/NetworkPolicyManager$Listener;
 .source "ConnectivityService.java"
 
 
@@ -21,216 +21,116 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/ConnectivityService;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/ConnectivityService;
 
-    .line 5082
+    .line 1921
     iput-object p1, p0, Lcom/android/server/ConnectivityService$6;->this$0:Lcom/android/server/ConnectivityService;
 
-    invoke-direct {p0}, Landroid/content/BroadcastReceiver;-><init>()V
+    invoke-direct {p0}, Landroid/net/NetworkPolicyManager$Listener;-><init>()V
 
     return-void
 .end method
 
 
 # virtual methods
-.method public onReceive(Landroid/content/Context;Landroid/content/Intent;)V
-    .registers 7
+.method public onRestrictBackgroundChanged(Z)V
+    .registers 6
+    .param p1, "restrictBackground"  # Z
 
-    .line 5085
-    iget-object p1, p0, Lcom/android/server/ConnectivityService$6;->this$0:Lcom/android/server/ConnectivityService;
+    .line 1930
+    new-instance v0, Ljava/lang/StringBuilder;
 
-    invoke-static {p1}, Lcom/android/server/ConnectivityService;->access$5300(Lcom/android/server/ConnectivityService;)V
+    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
 
-    .line 5086
-    invoke-virtual {p2}, Landroid/content/Intent;->getAction()Ljava/lang/String;
+    const-string/jumbo v1, "onRestrictBackgroundChanged(restrictBackground="
 
-    move-result-object p1
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    .line 5087
-    const/16 v0, -0x2710
+    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Z)Ljava/lang/StringBuilder;
 
-    const-string v1, "android.intent.extra.user_handle"
+    const-string v1, ")"
 
-    invoke-virtual {p2, v1, v0}, Landroid/content/Intent;->getIntExtra(Ljava/lang/String;I)I
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    move-result v1
+    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    .line 5088
-    const-string v2, "android.intent.extra.UID"
+    move-result-object v0
 
-    const/4 v3, -0x1
+    invoke-static {v0}, Lcom/android/server/ConnectivityService;->access$200(Ljava/lang/String;)V
 
-    invoke-virtual {p2, v2, v3}, Landroid/content/Intent;->getIntExtra(Ljava/lang/String;I)I
+    .line 1932
+    iget-object v0, p0, Lcom/android/server/ConnectivityService$6;->this$0:Lcom/android/server/ConnectivityService;
 
-    move-result v2
+    invoke-static {v0}, Lcom/android/server/ConnectivityService;->access$100(Lcom/android/server/ConnectivityService;)Lcom/android/server/ConnectivityService$InternalHandler;
 
-    .line 5089
-    invoke-virtual {p2}, Landroid/content/Intent;->getData()Landroid/net/Uri;
+    move-result-object v0
 
-    move-result-object v3
+    iget-object v1, p0, Lcom/android/server/ConnectivityService$6;->this$0:Lcom/android/server/ConnectivityService;
 
-    .line 5091
-    if-eqz v3, :cond_23
+    invoke-static {v1}, Lcom/android/server/ConnectivityService;->access$100(Lcom/android/server/ConnectivityService;)Lcom/android/server/ConnectivityService$InternalHandler;
 
-    invoke-virtual {v3}, Landroid/net/Uri;->getSchemeSpecificPart()Ljava/lang/String;
+    move-result-object v1
 
-    move-result-object v3
+    .line 1933
+    const/4 v2, 0x0
 
-    goto :goto_24
+    .line 1932
+    const/16 v3, 0x28
 
-    :cond_23
-    const/4 v3, 0x0
+    invoke-virtual {v1, v3, p1, v2}, Lcom/android/server/ConnectivityService$InternalHandler;->obtainMessage(III)Landroid/os/Message;
 
-    .line 5092
-    :goto_24
-    if-ne v1, v0, :cond_27
+    move-result-object v1
 
+    invoke-virtual {v0, v1}, Lcom/android/server/ConnectivityService$InternalHandler;->sendMessage(Landroid/os/Message;)Z
+
+    .line 1936
+    if-eqz p1, :cond_41
+
+    .line 1937
+    const-string/jumbo v0, "onRestrictBackgroundChanged(true): disabling tethering"
+
+    invoke-static {v0}, Lcom/android/server/ConnectivityService;->access$200(Ljava/lang/String;)V
+
+    .line 1938
+    iget-object v0, p0, Lcom/android/server/ConnectivityService$6;->this$0:Lcom/android/server/ConnectivityService;
+
+    invoke-static {v0}, Lcom/android/server/ConnectivityService;->access$1000(Lcom/android/server/ConnectivityService;)Lcom/android/server/connectivity/Tethering;
+
+    move-result-object v0
+
+    invoke-virtual {v0}, Lcom/android/server/connectivity/Tethering;->untetherAll()V
+
+    .line 1940
+    :cond_41
     return-void
+.end method
 
-    .line 5094
-    :cond_27
-    const-string v0, "android.intent.action.USER_STARTED"
+.method public onUidRulesChanged(II)V
+    .registers 6
+    .param p1, "uid"  # I
+    .param p2, "uidRules"  # I
 
-    invoke-virtual {v0, p1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    .line 1924
+    iget-object v0, p0, Lcom/android/server/ConnectivityService$6;->this$0:Lcom/android/server/ConnectivityService;
 
-    move-result v0
+    invoke-static {v0}, Lcom/android/server/ConnectivityService;->access$100(Lcom/android/server/ConnectivityService;)Lcom/android/server/ConnectivityService$InternalHandler;
 
-    if-eqz v0, :cond_35
+    move-result-object v0
 
-    .line 5095
-    iget-object p1, p0, Lcom/android/server/ConnectivityService$6;->this$0:Lcom/android/server/ConnectivityService;
+    iget-object v1, p0, Lcom/android/server/ConnectivityService$6;->this$0:Lcom/android/server/ConnectivityService;
 
-    invoke-static {p1, v1}, Lcom/android/server/ConnectivityService;->access$5400(Lcom/android/server/ConnectivityService;I)V
+    invoke-static {v1}, Lcom/android/server/ConnectivityService;->access$100(Lcom/android/server/ConnectivityService;)Lcom/android/server/ConnectivityService$InternalHandler;
 
-    goto :goto_9d
+    move-result-object v1
 
-    .line 5096
-    :cond_35
-    const-string v0, "android.intent.action.USER_STOPPED"
+    const/16 v2, 0x27
 
-    invoke-virtual {v0, p1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v1, v2, p1, p2}, Lcom/android/server/ConnectivityService$InternalHandler;->obtainMessage(III)Landroid/os/Message;
 
-    move-result v0
+    move-result-object v1
 
-    if-eqz v0, :cond_43
+    invoke-virtual {v0, v1}, Lcom/android/server/ConnectivityService$InternalHandler;->sendMessage(Landroid/os/Message;)Z
 
-    .line 5097
-    iget-object p1, p0, Lcom/android/server/ConnectivityService$6;->this$0:Lcom/android/server/ConnectivityService;
-
-    invoke-static {p1, v1}, Lcom/android/server/ConnectivityService;->access$5500(Lcom/android/server/ConnectivityService;I)V
-
-    goto :goto_9d
-
-    .line 5098
-    :cond_43
-    const-string v0, "android.intent.action.USER_ADDED"
-
-    invoke-virtual {v0, p1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
-
-    move-result v0
-
-    if-eqz v0, :cond_51
-
-    .line 5099
-    iget-object p1, p0, Lcom/android/server/ConnectivityService$6;->this$0:Lcom/android/server/ConnectivityService;
-
-    invoke-static {p1, v1}, Lcom/android/server/ConnectivityService;->access$5600(Lcom/android/server/ConnectivityService;I)V
-
-    goto :goto_9d
-
-    .line 5100
-    :cond_51
-    const-string v0, "android.intent.action.USER_REMOVED"
-
-    invoke-virtual {v0, p1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
-
-    move-result v0
-
-    if-eqz v0, :cond_5f
-
-    .line 5101
-    iget-object p1, p0, Lcom/android/server/ConnectivityService$6;->this$0:Lcom/android/server/ConnectivityService;
-
-    invoke-static {p1, v1}, Lcom/android/server/ConnectivityService;->access$5700(Lcom/android/server/ConnectivityService;I)V
-
-    goto :goto_9d
-
-    .line 5102
-    :cond_5f
-    const-string v0, "android.intent.action.USER_UNLOCKED"
-
-    invoke-virtual {v0, p1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
-
-    move-result v0
-
-    if-eqz v0, :cond_6d
-
-    .line 5103
-    iget-object p1, p0, Lcom/android/server/ConnectivityService$6;->this$0:Lcom/android/server/ConnectivityService;
-
-    invoke-static {p1, v1}, Lcom/android/server/ConnectivityService;->access$5800(Lcom/android/server/ConnectivityService;I)V
-
-    goto :goto_9d
-
-    .line 5104
-    :cond_6d
-    const-string v0, "android.intent.action.PACKAGE_ADDED"
-
-    invoke-virtual {v0, p1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
-
-    move-result v0
-
-    if-eqz v0, :cond_7b
-
-    .line 5105
-    iget-object p1, p0, Lcom/android/server/ConnectivityService$6;->this$0:Lcom/android/server/ConnectivityService;
-
-    invoke-static {p1, v3, v2}, Lcom/android/server/ConnectivityService;->access$5900(Lcom/android/server/ConnectivityService;Ljava/lang/String;I)V
-
-    goto :goto_9d
-
-    .line 5106
-    :cond_7b
-    const-string v0, "android.intent.action.PACKAGE_REPLACED"
-
-    invoke-virtual {v0, p1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
-
-    move-result v0
-
-    if-eqz v0, :cond_89
-
-    .line 5107
-    iget-object p1, p0, Lcom/android/server/ConnectivityService$6;->this$0:Lcom/android/server/ConnectivityService;
-
-    invoke-static {p1, v3, v2}, Lcom/android/server/ConnectivityService;->access$6000(Lcom/android/server/ConnectivityService;Ljava/lang/String;I)V
-
-    goto :goto_9d
-
-    .line 5108
-    :cond_89
-    const-string v0, "android.intent.action.PACKAGE_REMOVED"
-
-    invoke-virtual {v0, p1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
-
-    move-result p1
-
-    if-eqz p1, :cond_9d
-
-    .line 5109
-    const/4 p1, 0x0
-
-    const-string v0, "android.intent.extra.REPLACING"
-
-    invoke-virtual {p2, v0, p1}, Landroid/content/Intent;->getBooleanExtra(Ljava/lang/String;Z)Z
-
-    move-result p1
-
-    .line 5111
-    iget-object p2, p0, Lcom/android/server/ConnectivityService$6;->this$0:Lcom/android/server/ConnectivityService;
-
-    invoke-static {p2, v3, v2, p1}, Lcom/android/server/ConnectivityService;->access$6100(Lcom/android/server/ConnectivityService;Ljava/lang/String;IZ)V
-
-    .line 5113
-    :cond_9d
-    :goto_9d
+    .line 1925
     return-void
 .end method

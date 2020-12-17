@@ -23,6 +23,8 @@
 # direct methods
 .method public constructor <init>(Lcom/android/server/net/watchlist/HarmfulDigests;Lcom/android/server/net/watchlist/HarmfulDigests;)V
     .registers 3
+    .param p1, "crc32Digests"  # Lcom/android/server/net/watchlist/HarmfulDigests;
+    .param p2, "sha256Digests"  # Lcom/android/server/net/watchlist/HarmfulDigests;
 
     .line 72
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V

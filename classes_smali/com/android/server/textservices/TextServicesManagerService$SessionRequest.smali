@@ -29,6 +29,11 @@
 # direct methods
 .method constructor <init>(ILjava/lang/String;Lcom/android/internal/textservice/ITextServicesSessionListener;Lcom/android/internal/textservice/ISpellCheckerSessionListener;Landroid/os/Bundle;)V
     .registers 6
+    .param p1, "uid"  # I
+    .param p2, "locale"  # Ljava/lang/String;
+    .param p3, "tsListener"  # Lcom/android/internal/textservice/ITextServicesSessionListener;
+    .param p4, "scListener"  # Lcom/android/internal/textservice/ISpellCheckerSessionListener;
+    .param p5, "bundle"  # Landroid/os/Bundle;
 
     .line 829
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V

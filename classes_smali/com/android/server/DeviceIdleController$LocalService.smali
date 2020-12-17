@@ -21,8 +21,9 @@
 # direct methods
 .method public constructor <init>(Lcom/android/server/DeviceIdleController;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/DeviceIdleController;
 
-    .line 1761
+    .line 1644
     iput-object p1, p0, Lcom/android/server/DeviceIdleController$LocalService;->this$0:Lcom/android/server/DeviceIdleController;
 
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -34,8 +35,14 @@
 # virtual methods
 .method public addPowerSaveTempWhitelistApp(ILjava/lang/String;JIZLjava/lang/String;)V
     .registers 16
+    .param p1, "callingUid"  # I
+    .param p2, "packageName"  # Ljava/lang/String;
+    .param p3, "duration"  # J
+    .param p5, "userId"  # I
+    .param p6, "sync"  # Z
+    .param p7, "reason"  # Ljava/lang/String;
 
-    .line 1784
+    .line 1667
     iget-object v0, p0, Lcom/android/server/DeviceIdleController$LocalService;->this$0:Lcom/android/server/DeviceIdleController;
 
     move v1, p1
@@ -52,14 +59,18 @@
 
     invoke-virtual/range {v0 .. v7}, Lcom/android/server/DeviceIdleController;->addPowerSaveTempWhitelistAppInternal(ILjava/lang/String;JIZLjava/lang/String;)V
 
-    .line 1786
+    .line 1669
     return-void
 .end method
 
 .method public addPowerSaveTempWhitelistAppDirect(IJZLjava/lang/String;)V
     .registers 13
+    .param p1, "uid"  # I
+    .param p2, "duration"  # J
+    .param p4, "sync"  # Z
+    .param p5, "reason"  # Ljava/lang/String;
 
-    .line 1791
+    .line 1674
     iget-object v0, p0, Lcom/android/server/DeviceIdleController$LocalService;->this$0:Lcom/android/server/DeviceIdleController;
 
     const/4 v1, 0x0
@@ -74,26 +85,27 @@
 
     invoke-virtual/range {v0 .. v6}, Lcom/android/server/DeviceIdleController;->addPowerSaveTempWhitelistAppDirectInternal(IIJZLjava/lang/String;)V
 
-    .line 1792
+    .line 1675
     return-void
 .end method
 
 .method public exitIdle(Ljava/lang/String;)V
     .registers 3
+    .param p1, "reason"  # Ljava/lang/String;
 
-    .line 1778
+    .line 1661
     iget-object v0, p0, Lcom/android/server/DeviceIdleController$LocalService;->this$0:Lcom/android/server/DeviceIdleController;
 
     invoke-virtual {v0, p1}, Lcom/android/server/DeviceIdleController;->exitIdleInternal(Ljava/lang/String;)V
 
-    .line 1779
+    .line 1662
     return-void
 .end method
 
 .method public getNotificationWhitelistDuration()J
     .registers 3
 
-    .line 1796
+    .line 1679
     iget-object v0, p0, Lcom/android/server/DeviceIdleController$LocalService;->this$0:Lcom/android/server/DeviceIdleController;
 
     invoke-static {v0}, Lcom/android/server/DeviceIdleController;->access$100(Lcom/android/server/DeviceIdleController;)Lcom/android/server/DeviceIdleController$Constants;
@@ -108,7 +120,7 @@
 .method public getPowerSaveTempWhitelistAppIds()[I
     .registers 2
 
-    .line 1824
+    .line 1707
     iget-object v0, p0, Lcom/android/server/DeviceIdleController$LocalService;->this$0:Lcom/android/server/DeviceIdleController;
 
     invoke-virtual {v0}, Lcom/android/server/DeviceIdleController;->getAppIdTempWhitelistInternal()[I
@@ -121,7 +133,7 @@
 .method public getPowerSaveWhitelistUserAppIds()[I
     .registers 2
 
-    .line 1820
+    .line 1703
     iget-object v0, p0, Lcom/android/server/DeviceIdleController$LocalService;->this$0:Lcom/android/server/DeviceIdleController;
 
     invoke-virtual {v0}, Lcom/android/server/DeviceIdleController;->getPowerSaveWhitelistUserAppIds()[I
@@ -133,116 +145,101 @@
 
 .method public isAppOnWhitelist(I)Z
     .registers 3
+    .param p1, "appid"  # I
 
-    .line 1810
+    .line 1693
     iget-object v0, p0, Lcom/android/server/DeviceIdleController$LocalService;->this$0:Lcom/android/server/DeviceIdleController;
 
     invoke-virtual {v0, p1}, Lcom/android/server/DeviceIdleController;->isAppOnWhitelistInternal(I)Z
 
-    move-result p1
+    move-result v0
 
-    return p1
+    return v0
 .end method
 
 .method public onConstraintStateChanged(Lcom/android/server/deviceidle/IDeviceIdleConstraint;Z)V
     .registers 5
+    .param p1, "constraint"  # Lcom/android/server/deviceidle/IDeviceIdleConstraint;
+    .param p2, "active"  # Z
 
-    .line 1763
+    .line 1646
     iget-object v0, p0, Lcom/android/server/DeviceIdleController$LocalService;->this$0:Lcom/android/server/DeviceIdleController;
 
     monitor-enter v0
 
-    .line 1764
+    .line 1647
     :try_start_3
     iget-object v1, p0, Lcom/android/server/DeviceIdleController$LocalService;->this$0:Lcom/android/server/DeviceIdleController;
 
-    invoke-static {v1, p1, p2}, Lcom/android/server/DeviceIdleController;->access$1600(Lcom/android/server/DeviceIdleController;Lcom/android/server/deviceidle/IDeviceIdleConstraint;Z)V
+    invoke-static {v1, p1, p2}, Lcom/android/server/DeviceIdleController;->access$1300(Lcom/android/server/DeviceIdleController;Lcom/android/server/deviceidle/IDeviceIdleConstraint;Z)V
 
-    .line 1765
+    .line 1648
     monitor-exit v0
 
-    .line 1766
+    .line 1649
     return-void
 
-    .line 1765
+    .line 1648
     :catchall_a
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_c
     .catchall {:try_start_3 .. :try_end_c} :catchall_a
 
-    throw p1
+    throw v1
 .end method
 
 .method public registerDeviceIdleConstraint(Lcom/android/server/deviceidle/IDeviceIdleConstraint;Ljava/lang/String;I)V
     .registers 5
+    .param p1, "constraint"  # Lcom/android/server/deviceidle/IDeviceIdleConstraint;
+    .param p2, "name"  # Ljava/lang/String;
+    .param p3, "minState"  # I
 
-    .line 1770
+    .line 1653
     iget-object v0, p0, Lcom/android/server/DeviceIdleController$LocalService;->this$0:Lcom/android/server/DeviceIdleController;
 
-    invoke-static {v0, p1, p2, p3}, Lcom/android/server/DeviceIdleController;->access$1700(Lcom/android/server/DeviceIdleController;Lcom/android/server/deviceidle/IDeviceIdleConstraint;Ljava/lang/String;I)V
+    invoke-static {v0, p1, p2, p3}, Lcom/android/server/DeviceIdleController;->access$1400(Lcom/android/server/DeviceIdleController;Lcom/android/server/deviceidle/IDeviceIdleConstraint;Ljava/lang/String;I)V
 
-    .line 1771
-    return-void
-.end method
-
-.method public registerStationaryListener(Lcom/android/server/DeviceIdleController$StationaryListener;)V
-    .registers 3
-
-    .line 1833
-    iget-object v0, p0, Lcom/android/server/DeviceIdleController$LocalService;->this$0:Lcom/android/server/DeviceIdleController;
-
-    invoke-virtual {v0, p1}, Lcom/android/server/DeviceIdleController;->registerStationaryListener(Lcom/android/server/DeviceIdleController$StationaryListener;)V
-
-    .line 1834
+    .line 1654
     return-void
 .end method
 
 .method public setAlarmsActive(Z)V
     .registers 3
+    .param p1, "active"  # Z
 
-    .line 1805
+    .line 1688
     iget-object v0, p0, Lcom/android/server/DeviceIdleController$LocalService;->this$0:Lcom/android/server/DeviceIdleController;
 
     invoke-virtual {v0, p1}, Lcom/android/server/DeviceIdleController;->setAlarmsActive(Z)V
 
-    .line 1806
+    .line 1689
     return-void
 .end method
 
 .method public setJobsActive(Z)V
     .registers 3
+    .param p1, "active"  # Z
 
-    .line 1800
+    .line 1683
     iget-object v0, p0, Lcom/android/server/DeviceIdleController$LocalService;->this$0:Lcom/android/server/DeviceIdleController;
 
     invoke-virtual {v0, p1}, Lcom/android/server/DeviceIdleController;->setJobsActive(Z)V
 
-    .line 1801
+    .line 1684
     return-void
 .end method
 
 .method public unregisterDeviceIdleConstraint(Lcom/android/server/deviceidle/IDeviceIdleConstraint;)V
     .registers 3
+    .param p1, "constraint"  # Lcom/android/server/deviceidle/IDeviceIdleConstraint;
 
-    .line 1774
+    .line 1657
     iget-object v0, p0, Lcom/android/server/DeviceIdleController$LocalService;->this$0:Lcom/android/server/DeviceIdleController;
 
-    invoke-static {v0, p1}, Lcom/android/server/DeviceIdleController;->access$1800(Lcom/android/server/DeviceIdleController;Lcom/android/server/deviceidle/IDeviceIdleConstraint;)V
+    invoke-static {v0, p1}, Lcom/android/server/DeviceIdleController;->access$1500(Lcom/android/server/DeviceIdleController;Lcom/android/server/deviceidle/IDeviceIdleConstraint;)V
 
-    .line 1775
-    return-void
-.end method
-
-.method public unregisterStationaryListener(Lcom/android/server/DeviceIdleController$StationaryListener;)V
-    .registers 3
-
-    .line 1842
-    iget-object v0, p0, Lcom/android/server/DeviceIdleController$LocalService;->this$0:Lcom/android/server/DeviceIdleController;
-
-    invoke-static {v0, p1}, Lcom/android/server/DeviceIdleController;->access$1900(Lcom/android/server/DeviceIdleController;Lcom/android/server/DeviceIdleController$StationaryListener;)V
-
-    .line 1843
+    .line 1658
     return-void
 .end method

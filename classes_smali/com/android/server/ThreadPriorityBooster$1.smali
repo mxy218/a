@@ -29,6 +29,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/ThreadPriorityBooster;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/ThreadPriorityBooster;
 
     .line 34
     iput-object p1, p0, Lcom/android/server/ThreadPriorityBooster$1;->this$0:Lcom/android/server/ThreadPriorityBooster;

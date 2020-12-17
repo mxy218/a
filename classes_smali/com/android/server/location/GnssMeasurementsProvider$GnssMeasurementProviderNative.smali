@@ -41,14 +41,15 @@
 .end method
 
 .method public startMeasurementCollection(Z)Z
-    .registers 2
+    .registers 3
+    .param p1, "enableFullTracking"  # Z
 
     .line 167
     invoke-static {p1}, Lcom/android/server/location/GnssMeasurementsProvider;->access$100(Z)Z
 
-    move-result p1
+    move-result v0
 
-    return p1
+    return v0
 .end method
 
 .method public stopMeasurementCollection()Z

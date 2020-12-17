@@ -22,14 +22,13 @@
 
 .field private final mHostingZygote:I
 
-.field private final mIsTopApp:Z
-
 
 # direct methods
 .method public constructor <init>(Ljava/lang/String;)V
-    .registers 9
+    .registers 8
+    .param p1, "hostingType"  # Ljava/lang/String;
 
-    .line 61
+    .line 58
     const/4 v2, 0x0
 
     const/4 v3, 0x0
@@ -38,91 +37,71 @@
 
     const/4 v5, -0x1
 
-    const/4 v6, 0x0
-
     move-object v0, p0
 
     move-object v1, p1
 
-    invoke-direct/range {v0 .. v6}, Lcom/android/server/am/HostingRecord;-><init>(Ljava/lang/String;Ljava/lang/String;ILjava/lang/String;IZ)V
+    invoke-direct/range {v0 .. v5}, Lcom/android/server/am/HostingRecord;-><init>(Ljava/lang/String;Ljava/lang/String;ILjava/lang/String;I)V
 
-    .line 63
+    .line 59
     return-void
 .end method
 
 .method public constructor <init>(Ljava/lang/String;Landroid/content/ComponentName;)V
     .registers 4
+    .param p1, "hostingType"  # Ljava/lang/String;
+    .param p2, "hostingName"  # Landroid/content/ComponentName;
 
-    .line 66
+    .line 62
     const/4 v0, 0x0
 
     invoke-direct {p0, p1, p2, v0}, Lcom/android/server/am/HostingRecord;-><init>(Ljava/lang/String;Landroid/content/ComponentName;I)V
 
-    .line 67
+    .line 63
     return-void
 .end method
 
 .method private constructor <init>(Ljava/lang/String;Landroid/content/ComponentName;I)V
-    .registers 4
-
-    .line 79
-    invoke-virtual {p2}, Landroid/content/ComponentName;->toShortString()Ljava/lang/String;
-
-    move-result-object p2
-
-    invoke-direct {p0, p1, p2, p3}, Lcom/android/server/am/HostingRecord;-><init>(Ljava/lang/String;Ljava/lang/String;I)V
-
-    .line 80
-    return-void
-.end method
-
-.method public constructor <init>(Ljava/lang/String;Landroid/content/ComponentName;Z)V
-    .registers 11
+    .registers 5
+    .param p1, "hostingType"  # Ljava/lang/String;
+    .param p2, "hostingName"  # Landroid/content/ComponentName;
+    .param p3, "hostingZygote"  # I
 
     .line 70
     invoke-virtual {p2}, Landroid/content/ComponentName;->toShortString()Ljava/lang/String;
 
-    move-result-object v2
+    move-result-object v0
 
-    const/4 v3, 0x0
+    invoke-direct {p0, p1, v0, p3}, Lcom/android/server/am/HostingRecord;-><init>(Ljava/lang/String;Ljava/lang/String;I)V
 
-    const/4 v4, 0x0
-
-    const/4 v5, -0x1
-
-    move-object v0, p0
-
-    move-object v1, p1
-
-    move v6, p3
-
-    invoke-direct/range {v0 .. v6}, Lcom/android/server/am/HostingRecord;-><init>(Ljava/lang/String;Ljava/lang/String;ILjava/lang/String;IZ)V
-
-    .line 72
+    .line 71
     return-void
 .end method
 
 .method public constructor <init>(Ljava/lang/String;Ljava/lang/String;)V
     .registers 4
+    .param p1, "hostingType"  # Ljava/lang/String;
+    .param p2, "hostingName"  # Ljava/lang/String;
 
-    .line 75
+    .line 66
     const/4 v0, 0x0
 
     invoke-direct {p0, p1, p2, v0}, Lcom/android/server/am/HostingRecord;-><init>(Ljava/lang/String;Ljava/lang/String;I)V
 
-    .line 76
+    .line 67
     return-void
 .end method
 
 .method private constructor <init>(Ljava/lang/String;Ljava/lang/String;I)V
-    .registers 11
+    .registers 10
+    .param p1, "hostingType"  # Ljava/lang/String;
+    .param p2, "hostingName"  # Ljava/lang/String;
+    .param p3, "hostingZygote"  # I
 
-    .line 83
+    .line 74
     const/4 v4, 0x0
 
     const/4 v5, -0x1
-
-    const/4 v6, 0x0
 
     move-object v0, p0
 
@@ -132,45 +111,50 @@
 
     move v3, p3
 
-    invoke-direct/range {v0 .. v6}, Lcom/android/server/am/HostingRecord;-><init>(Ljava/lang/String;Ljava/lang/String;ILjava/lang/String;IZ)V
+    invoke-direct/range {v0 .. v5}, Lcom/android/server/am/HostingRecord;-><init>(Ljava/lang/String;Ljava/lang/String;ILjava/lang/String;I)V
 
-    .line 85
+    .line 75
     return-void
 .end method
 
-.method private constructor <init>(Ljava/lang/String;Ljava/lang/String;ILjava/lang/String;IZ)V
-    .registers 7
+.method private constructor <init>(Ljava/lang/String;Ljava/lang/String;ILjava/lang/String;I)V
+    .registers 6
+    .param p1, "hostingType"  # Ljava/lang/String;
+    .param p2, "hostingName"  # Ljava/lang/String;
+    .param p3, "hostingZygote"  # I
+    .param p4, "definingPackageName"  # Ljava/lang/String;
+    .param p5, "definingUid"  # I
 
-    .line 88
+    .line 78
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
-    .line 89
+    .line 79
     iput-object p1, p0, Lcom/android/server/am/HostingRecord;->mHostingType:Ljava/lang/String;
 
-    .line 90
+    .line 80
     iput-object p2, p0, Lcom/android/server/am/HostingRecord;->mHostingName:Ljava/lang/String;
 
-    .line 91
+    .line 81
     iput p3, p0, Lcom/android/server/am/HostingRecord;->mHostingZygote:I
 
-    .line 92
+    .line 82
     iput-object p4, p0, Lcom/android/server/am/HostingRecord;->mDefiningPackageName:Ljava/lang/String;
 
-    .line 93
+    .line 83
     iput p5, p0, Lcom/android/server/am/HostingRecord;->mDefiningUid:I
 
-    .line 94
-    iput-boolean p6, p0, Lcom/android/server/am/HostingRecord;->mIsTopApp:Z
-
-    .line 95
+    .line 84
     return-void
 .end method
 
 .method public static byAppZygote(Landroid/content/ComponentName;Ljava/lang/String;I)Lcom/android/server/am/HostingRecord;
-    .registers 11
+    .registers 10
+    .param p0, "hostingName"  # Landroid/content/ComponentName;
+    .param p1, "definingPackageName"  # Ljava/lang/String;
+    .param p2, "definingUid"  # I
 
-    .line 147
-    new-instance v7, Lcom/android/server/am/HostingRecord;
+    .line 132
+    new-instance v6, Lcom/android/server/am/HostingRecord;
 
     invoke-virtual {p0}, Landroid/content/ComponentName;->toShortString()Ljava/lang/String;
 
@@ -180,34 +164,33 @@
 
     const/4 v3, 0x2
 
-    const/4 v6, 0x0
-
-    move-object v0, v7
+    move-object v0, v6
 
     move-object v4, p1
 
     move v5, p2
 
-    invoke-direct/range {v0 .. v6}, Lcom/android/server/am/HostingRecord;-><init>(Ljava/lang/String;Ljava/lang/String;ILjava/lang/String;IZ)V
+    invoke-direct/range {v0 .. v5}, Lcom/android/server/am/HostingRecord;-><init>(Ljava/lang/String;Ljava/lang/String;ILjava/lang/String;I)V
 
-    return-object v7
+    return-object v6
 .end method
 
 .method public static byWebviewZygote(Landroid/content/ComponentName;)Lcom/android/server/am/HostingRecord;
-    .registers 4
+    .registers 5
+    .param p0, "hostingName"  # Landroid/content/ComponentName;
 
-    .line 135
+    .line 120
     new-instance v0, Lcom/android/server/am/HostingRecord;
 
     invoke-virtual {p0}, Landroid/content/ComponentName;->toShortString()Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v1
 
-    const-string v1, ""
+    const-string v2, ""
 
-    const/4 v2, 0x1
+    const/4 v3, 0x1
 
-    invoke-direct {v0, v1, p0, v2}, Lcom/android/server/am/HostingRecord;-><init>(Ljava/lang/String;Ljava/lang/String;I)V
+    invoke-direct {v0, v2, v1, v3}, Lcom/android/server/am/HostingRecord;-><init>(Ljava/lang/String;Ljava/lang/String;I)V
 
     return-object v0
 .end method
@@ -217,7 +200,7 @@
 .method public getDefiningPackageName()Ljava/lang/String;
     .registers 2
 
-    .line 126
+    .line 111
     iget-object v0, p0, Lcom/android/server/am/HostingRecord;->mDefiningPackageName:Ljava/lang/String;
 
     return-object v0
@@ -226,7 +209,7 @@
 .method public getDefiningUid()I
     .registers 2
 
-    .line 116
+    .line 101
     iget v0, p0, Lcom/android/server/am/HostingRecord;->mDefiningUid:I
 
     return v0
@@ -235,7 +218,7 @@
 .method public getName()Ljava/lang/String;
     .registers 2
 
-    .line 102
+    .line 91
     iget-object v0, p0, Lcom/android/server/am/HostingRecord;->mHostingName:Ljava/lang/String;
 
     return-object v0
@@ -244,25 +227,16 @@
 .method public getType()Ljava/lang/String;
     .registers 2
 
-    .line 98
+    .line 87
     iget-object v0, p0, Lcom/android/server/am/HostingRecord;->mHostingType:Ljava/lang/String;
 
     return-object v0
 .end method
 
-.method public isTopApp()Z
-    .registers 2
-
-    .line 106
-    iget-boolean v0, p0, Lcom/android/server/am/HostingRecord;->mIsTopApp:Z
-
-    return v0
-.end method
-
 .method public usesAppZygote()Z
     .registers 3
 
-    .line 155
+    .line 140
     iget v0, p0, Lcom/android/server/am/HostingRecord;->mHostingZygote:I
 
     const/4 v1, 0x2
@@ -283,7 +257,7 @@
 .method public usesWebviewZygote()Z
     .registers 3
 
-    .line 162
+    .line 147
     iget v0, p0, Lcom/android/server/am/HostingRecord;->mHostingZygote:I
 
     const/4 v1, 0x1

@@ -40,6 +40,13 @@
 # direct methods
 .method constructor <init>(Landroid/content/Context;Landroid/hardware/contexthub/V1_0/IContexthub;Lcom/android/server/location/ContextHubClientManager;Landroid/hardware/location/ContextHubInfo;SLandroid/app/PendingIntent;J)V
     .registers 10
+    .param p1, "context"  # Landroid/content/Context;
+    .param p2, "contextHubProxy"  # Landroid/hardware/contexthub/V1_0/IContexthub;
+    .param p3, "clientManager"  # Lcom/android/server/location/ContextHubClientManager;
+    .param p4, "contextHubInfo"  # Landroid/hardware/location/ContextHubInfo;
+    .param p5, "hostEndPointId"  # S
+    .param p6, "pendingIntent"  # Landroid/app/PendingIntent;
+    .param p7, "nanoAppId"  # J
 
     .line 153
     invoke-direct {p0}, Landroid/hardware/location/IContextHubClient$Stub;-><init>()V
@@ -70,11 +77,11 @@
     iput-short p5, p0, Lcom/android/server/location/ContextHubClientBroker;->mHostEndPointId:S
 
     .line 159
-    new-instance p1, Lcom/android/server/location/ContextHubClientBroker$PendingIntentRequest;
+    new-instance v0, Lcom/android/server/location/ContextHubClientBroker$PendingIntentRequest;
 
-    invoke-direct {p1, p0, p6, p7, p8}, Lcom/android/server/location/ContextHubClientBroker$PendingIntentRequest;-><init>(Lcom/android/server/location/ContextHubClientBroker;Landroid/app/PendingIntent;J)V
+    invoke-direct {v0, p0, p6, p7, p8}, Lcom/android/server/location/ContextHubClientBroker$PendingIntentRequest;-><init>(Lcom/android/server/location/ContextHubClientBroker;Landroid/app/PendingIntent;J)V
 
-    iput-object p1, p0, Lcom/android/server/location/ContextHubClientBroker;->mPendingIntentRequest:Lcom/android/server/location/ContextHubClientBroker$PendingIntentRequest;
+    iput-object v0, p0, Lcom/android/server/location/ContextHubClientBroker;->mPendingIntentRequest:Lcom/android/server/location/ContextHubClientBroker$PendingIntentRequest;
 
     .line 160
     return-void
@@ -82,6 +89,12 @@
 
 .method constructor <init>(Landroid/content/Context;Landroid/hardware/contexthub/V1_0/IContexthub;Lcom/android/server/location/ContextHubClientManager;Landroid/hardware/location/ContextHubInfo;SLandroid/hardware/location/IContextHubClientCallback;)V
     .registers 8
+    .param p1, "context"  # Landroid/content/Context;
+    .param p2, "contextHubProxy"  # Landroid/hardware/contexthub/V1_0/IContexthub;
+    .param p3, "clientManager"  # Lcom/android/server/location/ContextHubClientManager;
+    .param p4, "contextHubInfo"  # Landroid/hardware/location/ContextHubInfo;
+    .param p5, "hostEndPointId"  # S
+    .param p6, "callback"  # Landroid/hardware/location/IContextHubClientCallback;
 
     .line 140
     invoke-direct {p0}, Landroid/hardware/location/IContextHubClient$Stub;-><init>()V
@@ -115,18 +128,19 @@
     iput-object p6, p0, Lcom/android/server/location/ContextHubClientBroker;->mCallbackInterface:Landroid/hardware/location/IContextHubClientCallback;
 
     .line 147
-    new-instance p1, Lcom/android/server/location/ContextHubClientBroker$PendingIntentRequest;
+    new-instance v0, Lcom/android/server/location/ContextHubClientBroker$PendingIntentRequest;
 
-    invoke-direct {p1, p0}, Lcom/android/server/location/ContextHubClientBroker$PendingIntentRequest;-><init>(Lcom/android/server/location/ContextHubClientBroker;)V
+    invoke-direct {v0, p0}, Lcom/android/server/location/ContextHubClientBroker$PendingIntentRequest;-><init>(Lcom/android/server/location/ContextHubClientBroker;)V
 
-    iput-object p1, p0, Lcom/android/server/location/ContextHubClientBroker;->mPendingIntentRequest:Lcom/android/server/location/ContextHubClientBroker$PendingIntentRequest;
+    iput-object v0, p0, Lcom/android/server/location/ContextHubClientBroker;->mPendingIntentRequest:Lcom/android/server/location/ContextHubClientBroker$PendingIntentRequest;
 
     .line 148
     return-void
 .end method
 
 .method private createIntent(I)Landroid/content/Intent;
-    .registers 4
+    .registers 5
+    .param p1, "eventType"  # I
 
     .line 338
     new-instance v0, Landroid/content/Intent;
@@ -134,40 +148,46 @@
     invoke-direct {v0}, Landroid/content/Intent;-><init>()V
 
     .line 339
+    .local v0, "intent":Landroid/content/Intent;
     const-string v1, "android.hardware.location.extra.EVENT_TYPE"
 
     invoke-virtual {v0, v1, p1}, Landroid/content/Intent;->putExtra(Ljava/lang/String;I)Landroid/content/Intent;
 
     .line 340
-    iget-object p1, p0, Lcom/android/server/location/ContextHubClientBroker;->mAttachedContextHubInfo:Landroid/hardware/location/ContextHubInfo;
+    iget-object v1, p0, Lcom/android/server/location/ContextHubClientBroker;->mAttachedContextHubInfo:Landroid/hardware/location/ContextHubInfo;
 
-    const-string v1, "android.hardware.location.extra.CONTEXT_HUB_INFO"
+    const-string v2, "android.hardware.location.extra.CONTEXT_HUB_INFO"
 
-    invoke-virtual {v0, v1, p1}, Landroid/content/Intent;->putExtra(Ljava/lang/String;Landroid/os/Parcelable;)Landroid/content/Intent;
+    invoke-virtual {v0, v2, v1}, Landroid/content/Intent;->putExtra(Ljava/lang/String;Landroid/os/Parcelable;)Landroid/content/Intent;
 
     .line 341
     return-object v0
 .end method
 
 .method private createIntent(IJ)Landroid/content/Intent;
-    .registers 5
+    .registers 6
+    .param p1, "eventType"  # I
+    .param p2, "nanoAppId"  # J
 
     .line 353
     invoke-direct {p0, p1}, Lcom/android/server/location/ContextHubClientBroker;->createIntent(I)Landroid/content/Intent;
 
-    move-result-object p1
+    move-result-object v0
 
     .line 354
-    const-string v0, "android.hardware.location.extra.NANOAPP_ID"
+    .local v0, "intent":Landroid/content/Intent;
+    const-string v1, "android.hardware.location.extra.NANOAPP_ID"
 
-    invoke-virtual {p1, v0, p2, p3}, Landroid/content/Intent;->putExtra(Ljava/lang/String;J)Landroid/content/Intent;
+    invoke-virtual {v0, v1, p2, p3}, Landroid/content/Intent;->putExtra(Ljava/lang/String;J)Landroid/content/Intent;
 
     .line 355
-    return-object p1
+    return-object v0
 .end method
 
 .method private doSendPendingIntent(Landroid/app/PendingIntent;Landroid/content/Intent;)V
     .registers 11
+    .param p1, "pendingIntent"  # Landroid/app/PendingIntent;
+    .param p2, "intent"  # Landroid/content/Intent;
 
     .line 390
     :try_start_0
@@ -196,43 +216,46 @@
 
     .line 394
     :catch_e
-    move-exception p1
+    move-exception v0
 
     .line 396
-    new-instance p1, Ljava/lang/StringBuilder;
+    .local v0, "e":Landroid/app/PendingIntent$CanceledException;
+    new-instance v1, Ljava/lang/StringBuilder;
 
-    invoke-direct {p1}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string p2, "PendingIntent has been canceled, unregistering from client (host endpoint ID "
+    const-string v2, "PendingIntent has been canceled, unregistering from client (host endpoint ID "
 
-    invoke-virtual {p1, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    iget-short p2, p0, Lcom/android/server/location/ContextHubClientBroker;->mHostEndPointId:S
+    iget-short v2, p0, Lcom/android/server/location/ContextHubClientBroker;->mHostEndPointId:S
 
-    invoke-virtual {p1, p2}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    const-string p2, ")"
+    const-string v2, ")"
 
-    invoke-virtual {p1, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v1
 
-    const-string p2, "ContextHubClientBroker"
+    const-string v2, "ContextHubClientBroker"
 
-    invoke-static {p2, p1}, Landroid/util/Log;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v2, v1}, Landroid/util/Log;->w(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 398
     invoke-virtual {p0}, Lcom/android/server/location/ContextHubClientBroker;->close()V
 
     .line 400
+    .end local v0  # "e":Landroid/app/PendingIntent$CanceledException;
     :goto_2f
     return-void
 .end method
 
 .method private declared-synchronized invokeCallback(Lcom/android/server/location/ContextHubClientBroker$CallbackConsumer;)V
-    .registers 5
+    .registers 6
+    .param p1, "consumer"  # Lcom/android/server/location/ContextHubClientBroker$CallbackConsumer;
 
     monitor-enter p0
 
@@ -257,38 +280,41 @@
     goto :goto_29
 
     .line 324
+    .end local p0  # "this":Lcom/android/server/location/ContextHubClientBroker;
     :catch_b
-    move-exception p1
+    move-exception v0
 
     .line 325
+    .local v0, "e":Landroid/os/RemoteException;
     :try_start_c
-    const-string v0, "ContextHubClientBroker"
+    const-string v1, "ContextHubClientBroker"
 
-    new-instance v1, Ljava/lang/StringBuilder;
+    new-instance v2, Ljava/lang/StringBuilder;
 
-    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v2, "RemoteException while invoking client callback (host endpoint ID = "
+    const-string v3, "RemoteException while invoking client callback (host endpoint ID = "
 
-    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    iget-short v2, p0, Lcom/android/server/location/ContextHubClientBroker;->mHostEndPointId:S
+    iget-short v3, p0, Lcom/android/server/location/ContextHubClientBroker;->mHostEndPointId:S
 
-    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    const-string v2, ")"
+    const-string v3, ")"
 
-    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v1
+    move-result-object v2
 
-    invoke-static {v0, v1, p1}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    invoke-static {v1, v2, v0}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
     :try_end_29
     .catchall {:try_start_c .. :try_end_29} :catchall_2b
 
     .line 329
+    .end local v0  # "e":Landroid/os/RemoteException;
     :cond_29
     :goto_29
     monitor-exit p0
@@ -296,6 +322,7 @@
     return-void
 
     .line 320
+    .end local p1  # "consumer":Lcom/android/server/location/ContextHubClientBroker$CallbackConsumer;
     :catchall_2b
     move-exception p1
 
@@ -319,6 +346,7 @@
 
     return v0
 
+    .end local p0  # "this":Lcom/android/server/location/ContextHubClientBroker;
     :catchall_5
     move-exception v0
 
@@ -329,6 +357,7 @@
 
 .method static synthetic lambda$onHubReset$6(Landroid/hardware/location/IContextHubClientCallback;)V
     .registers 1
+    .param p0, "callback"  # Landroid/hardware/location/IContextHubClientCallback;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -343,6 +372,9 @@
 
 .method static synthetic lambda$onNanoAppAborted$8(JILandroid/hardware/location/IContextHubClientCallback;)V
     .registers 4
+    .param p0, "nanoAppId"  # J
+    .param p2, "abortCode"  # I
+    .param p3, "callback"  # Landroid/hardware/location/IContextHubClientCallback;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -357,6 +389,8 @@
 
 .method static synthetic lambda$onNanoAppLoaded$2(JLandroid/hardware/location/IContextHubClientCallback;)V
     .registers 3
+    .param p0, "nanoAppId"  # J
+    .param p2, "callback"  # Landroid/hardware/location/IContextHubClientCallback;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -371,6 +405,8 @@
 
 .method static synthetic lambda$onNanoAppUnloaded$4(JLandroid/hardware/location/IContextHubClientCallback;)V
     .registers 3
+    .param p0, "nanoAppId"  # J
+    .param p2, "callback"  # Landroid/hardware/location/IContextHubClientCallback;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -385,6 +421,8 @@
 
 .method static synthetic lambda$sendMessageToClient$0(Landroid/hardware/location/NanoAppMessage;Landroid/hardware/location/IContextHubClientCallback;)V
     .registers 2
+    .param p0, "message"  # Landroid/hardware/location/NanoAppMessage;
+    .param p1, "callback"  # Landroid/hardware/location/IContextHubClientCallback;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -425,6 +463,7 @@
     iput-object v0, p0, Lcom/android/server/location/ContextHubClientBroker;->mCallbackInterface:Landroid/hardware/location/IContextHubClientCallback;
 
     .line 417
+    .end local p0  # "this":Lcom/android/server/location/ContextHubClientBroker;
     :cond_12
     iget-object v0, p0, Lcom/android/server/location/ContextHubClientBroker;->mPendingIntentRequest:Lcom/android/server/location/ContextHubClientBroker$PendingIntentRequest;
 
@@ -466,7 +505,7 @@
 .end method
 
 .method private declared-synchronized sendPendingIntent(Ljava/util/function/Supplier;)V
-    .registers 3
+    .registers 4
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(",
@@ -476,6 +515,7 @@
         }
     .end annotation
 
+    .local p1, "supplier":Ljava/util/function/Supplier;, "Ljava/util/function/Supplier<Landroid/content/Intent;>;"
     monitor-enter p0
 
     .line 364
@@ -497,21 +537,23 @@
 
     invoke-interface {p1}, Ljava/util/function/Supplier;->get()Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v1
 
-    check-cast p1, Landroid/content/Intent;
+    check-cast v1, Landroid/content/Intent;
 
-    invoke-direct {p0, v0, p1}, Lcom/android/server/location/ContextHubClientBroker;->doSendPendingIntent(Landroid/app/PendingIntent;Landroid/content/Intent;)V
+    invoke-direct {p0, v0, v1}, Lcom/android/server/location/ContextHubClientBroker;->doSendPendingIntent(Landroid/app/PendingIntent;Landroid/content/Intent;)V
     :try_end_18
     .catchall {:try_start_1 .. :try_end_18} :catchall_1a
 
     .line 367
+    .end local p0  # "this":Lcom/android/server/location/ContextHubClientBroker;
     :cond_18
     monitor-exit p0
 
     return-void
 
     .line 363
+    .end local p1  # "supplier":Ljava/util/function/Supplier;, "Ljava/util/function/Supplier<Landroid/content/Intent;>;"
     :catchall_1a
     move-exception p1
 
@@ -522,6 +564,7 @@
 
 .method private declared-synchronized sendPendingIntent(Ljava/util/function/Supplier;J)V
     .registers 6
+    .param p2, "nanoAppId"  # J
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(",
@@ -531,6 +574,7 @@
         }
     .end annotation
 
+    .local p1, "supplier":Ljava/util/function/Supplier;, "Ljava/util/function/Supplier<Landroid/content/Intent;>;"
     monitor-enter p0
 
     .line 376
@@ -550,34 +594,37 @@
 
     move-result-wide v0
 
-    cmp-long p2, v0, p2
+    cmp-long v0, v0, p2
 
-    if-nez p2, :cond_22
+    if-nez v0, :cond_22
 
     .line 378
-    iget-object p2, p0, Lcom/android/server/location/ContextHubClientBroker;->mPendingIntentRequest:Lcom/android/server/location/ContextHubClientBroker$PendingIntentRequest;
+    iget-object v0, p0, Lcom/android/server/location/ContextHubClientBroker;->mPendingIntentRequest:Lcom/android/server/location/ContextHubClientBroker$PendingIntentRequest;
 
-    invoke-virtual {p2}, Lcom/android/server/location/ContextHubClientBroker$PendingIntentRequest;->getPendingIntent()Landroid/app/PendingIntent;
+    invoke-virtual {v0}, Lcom/android/server/location/ContextHubClientBroker$PendingIntentRequest;->getPendingIntent()Landroid/app/PendingIntent;
 
-    move-result-object p2
+    move-result-object v0
 
     invoke-interface {p1}, Ljava/util/function/Supplier;->get()Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v1
 
-    check-cast p1, Landroid/content/Intent;
+    check-cast v1, Landroid/content/Intent;
 
-    invoke-direct {p0, p2, p1}, Lcom/android/server/location/ContextHubClientBroker;->doSendPendingIntent(Landroid/app/PendingIntent;Landroid/content/Intent;)V
+    invoke-direct {p0, v0, v1}, Lcom/android/server/location/ContextHubClientBroker;->doSendPendingIntent(Landroid/app/PendingIntent;Landroid/content/Intent;)V
     :try_end_22
     .catchall {:try_start_1 .. :try_end_22} :catchall_24
 
     .line 380
+    .end local p0  # "this":Lcom/android/server/location/ContextHubClientBroker;
     :cond_22
     monitor-exit p0
 
     return-void
 
     .line 375
+    .end local p1  # "supplier":Ljava/util/function/Supplier;, "Ljava/util/function/Supplier<Landroid/content/Intent;>;"
+    .end local p2  # "nanoAppId":J
     :catchall_24
     move-exception p1
 
@@ -683,21 +730,26 @@
 .end method
 
 .method hasPendingIntent(Landroid/app/PendingIntent;J)Z
-    .registers 7
+    .registers 8
+    .param p1, "intent"  # Landroid/app/PendingIntent;
+    .param p2, "nanoAppId"  # J
 
     .line 294
-    nop
+    const/4 v0, 0x0
 
     .line 296
+    .local v0, "pendingIntent":Landroid/app/PendingIntent;
     monitor-enter p0
 
     .line 297
     :try_start_2
-    iget-object v0, p0, Lcom/android/server/location/ContextHubClientBroker;->mPendingIntentRequest:Lcom/android/server/location/ContextHubClientBroker$PendingIntentRequest;
+    iget-object v1, p0, Lcom/android/server/location/ContextHubClientBroker;->mPendingIntentRequest:Lcom/android/server/location/ContextHubClientBroker$PendingIntentRequest;
 
-    invoke-virtual {v0}, Lcom/android/server/location/ContextHubClientBroker$PendingIntentRequest;->getPendingIntent()Landroid/app/PendingIntent;
+    invoke-virtual {v1}, Lcom/android/server/location/ContextHubClientBroker$PendingIntentRequest;->getPendingIntent()Landroid/app/PendingIntent;
 
-    move-result-object v0
+    move-result-object v1
+
+    move-object v0, v1
 
     .line 298
     iget-object v1, p0, Lcom/android/server/location/ContextHubClientBroker;->mPendingIntentRequest:Lcom/android/server/location/ContextHubClientBroker$PendingIntentRequest;
@@ -707,43 +759,45 @@
     move-result-wide v1
 
     .line 299
+    .local v1, "intentNanoAppId":J
     monitor-exit p0
-    :try_end_f
-    .catchall {:try_start_2 .. :try_end_f} :catchall_1f
+    :try_end_10
+    .catchall {:try_start_2 .. :try_end_10} :catchall_20
 
     .line 300
-    if-eqz v0, :cond_1d
+    if-eqz v0, :cond_1e
 
     invoke-virtual {v0, p1}, Landroid/app/PendingIntent;->equals(Ljava/lang/Object;)Z
 
-    move-result p1
+    move-result v3
 
-    if-eqz p1, :cond_1d
+    if-eqz v3, :cond_1e
 
-    cmp-long p1, v1, p2
+    cmp-long v3, v1, p2
 
-    if-nez p1, :cond_1d
+    if-nez v3, :cond_1e
 
-    const/4 p1, 0x1
+    const/4 v3, 0x1
 
-    goto :goto_1e
+    goto :goto_1f
 
-    :cond_1d
-    const/4 p1, 0x0
+    :cond_1e
+    const/4 v3, 0x0
 
-    :goto_1e
-    return p1
+    :goto_1f
+    return v3
 
     .line 299
-    :catchall_1f
-    move-exception p1
+    .end local v1  # "intentNanoAppId":J
+    :catchall_20
+    move-exception v1
 
-    :try_start_20
+    :try_start_21
     monitor-exit p0
-    :try_end_21
-    .catchall {:try_start_20 .. :try_end_21} :catchall_1f
+    :try_end_22
+    .catchall {:try_start_21 .. :try_end_22} :catchall_20
 
-    throw p1
+    throw v1
 .end method
 
 .method public synthetic lambda$onHubReset$7$ContextHubClientBroker()Landroid/content/Intent;
@@ -760,54 +814,59 @@
 .end method
 
 .method public synthetic lambda$onNanoAppAborted$9$ContextHubClientBroker(JI)Landroid/content/Intent;
-    .registers 5
+    .registers 6
+    .param p1, "nanoAppId"  # J
+    .param p3, "abortCode"  # I
 
     .line 283
     const/4 v0, 0x4
 
     invoke-direct {p0, v0, p1, p2}, Lcom/android/server/location/ContextHubClientBroker;->createIntent(IJ)Landroid/content/Intent;
 
-    move-result-object p1
+    move-result-object v0
 
     .line 284
-    const-string p2, "android.hardware.location.extra.NANOAPP_ABORT_CODE"
+    const-string v1, "android.hardware.location.extra.NANOAPP_ABORT_CODE"
 
-    invoke-virtual {p1, p2, p3}, Landroid/content/Intent;->putExtra(Ljava/lang/String;I)Landroid/content/Intent;
+    invoke-virtual {v0, v1, p3}, Landroid/content/Intent;->putExtra(Ljava/lang/String;I)Landroid/content/Intent;
 
-    move-result-object p1
+    move-result-object v0
 
     .line 283
-    return-object p1
+    return-object v0
 .end method
 
 .method public synthetic lambda$onNanoAppLoaded$3$ContextHubClientBroker(J)Landroid/content/Intent;
     .registers 4
+    .param p1, "nanoAppId"  # J
 
     .line 251
     const/4 v0, 0x0
 
     invoke-direct {p0, v0, p1, p2}, Lcom/android/server/location/ContextHubClientBroker;->createIntent(IJ)Landroid/content/Intent;
 
-    move-result-object p1
+    move-result-object v0
 
-    return-object p1
+    return-object v0
 .end method
 
 .method public synthetic lambda$onNanoAppUnloaded$5$ContextHubClientBroker(J)Landroid/content/Intent;
     .registers 4
+    .param p1, "nanoAppId"  # J
 
     .line 262
     const/4 v0, 0x1
 
     invoke-direct {p0, v0, p1, p2}, Lcom/android/server/location/ContextHubClientBroker;->createIntent(IJ)Landroid/content/Intent;
 
-    move-result-object p1
+    move-result-object v0
 
-    return-object p1
+    return-object v0
 .end method
 
 .method public synthetic lambda$sendMessageToClient$1$ContextHubClientBroker(Landroid/hardware/location/NanoAppMessage;)Landroid/content/Intent;
     .registers 5
+    .param p1, "message"  # Landroid/hardware/location/NanoAppMessage;
 
     .line 238
     invoke-virtual {p1}, Landroid/hardware/location/NanoAppMessage;->getNanoAppId()J
@@ -825,10 +884,10 @@
 
     invoke-virtual {v0, v1, p1}, Landroid/content/Intent;->putExtra(Ljava/lang/String;Landroid/os/Parcelable;)Landroid/content/Intent;
 
-    move-result-object p1
+    move-result-object v0
 
     .line 238
-    return-object p1
+    return-object v0
 .end method
 
 .method onHubReset()V
@@ -852,6 +911,8 @@
 
 .method onNanoAppAborted(JI)V
     .registers 5
+    .param p1, "nanoAppId"  # J
+    .param p3, "abortCode"  # I
 
     .line 280
     new-instance v0, Lcom/android/server/location/-$$Lambda$ContextHubClientBroker$euuUV-nmBEuGSQnmknMVANWcP88;
@@ -863,6 +924,7 @@
     .line 282
     new-instance v0, Lcom/android/server/location/-$$Lambda$ContextHubClientBroker$B9OxjmBvqPB3gqJ7VRMqEIw1cbY;
 
+    .local v0, "supplier":Ljava/util/function/Supplier;, "Ljava/util/function/Supplier<Landroid/content/Intent;>;"
     invoke-direct {v0, p0, p1, p2, p3}, Lcom/android/server/location/-$$Lambda$ContextHubClientBroker$B9OxjmBvqPB3gqJ7VRMqEIw1cbY;-><init>(Lcom/android/server/location/ContextHubClientBroker;JI)V
 
     .line 285
@@ -874,6 +936,7 @@
 
 .method onNanoAppLoaded(J)V
     .registers 4
+    .param p1, "nanoAppId"  # J
 
     .line 249
     new-instance v0, Lcom/android/server/location/-$$Lambda$ContextHubClientBroker$ykmLCadaR6NcV4R42i4K8zw4AWs;
@@ -895,6 +958,7 @@
 
 .method onNanoAppUnloaded(J)V
     .registers 4
+    .param p1, "nanoAppId"  # J
 
     .line 260
     new-instance v0, Lcom/android/server/location/-$$Lambda$ContextHubClientBroker$iBGtMeLZ6k5dYJZb_VEUfBBYh9s;
@@ -916,6 +980,7 @@
 
 .method sendMessageToClient(Landroid/hardware/location/NanoAppMessage;)V
     .registers 5
+    .param p1, "message"  # Landroid/hardware/location/NanoAppMessage;
 
     .line 235
     new-instance v0, Lcom/android/server/location/-$$Lambda$ContextHubClientBroker$CFacmt7807NhDDkp6CgbkeGnMvQ;
@@ -927,6 +992,7 @@
     .line 237
     new-instance v0, Lcom/android/server/location/-$$Lambda$ContextHubClientBroker$P9IUEzaG4gP8jALe00of9jdlrGw;
 
+    .local v0, "supplier":Ljava/util/function/Supplier;, "Ljava/util/function/Supplier<Landroid/content/Intent;>;"
     invoke-direct {v0, p0, p1}, Lcom/android/server/location/-$$Lambda$ContextHubClientBroker$P9IUEzaG4gP8jALe00of9jdlrGw;-><init>(Lcom/android/server/location/ContextHubClientBroker;Landroid/hardware/location/NanoAppMessage;)V
 
     .line 240
@@ -941,7 +1007,8 @@
 .end method
 
 .method public sendMessageToNanoApp(Landroid/hardware/location/NanoAppMessage;)I
-    .registers 7
+    .registers 8
+    .param p1, "message"  # Landroid/hardware/location/NanoAppMessage;
 
     .line 171
     iget-object v0, p0, Lcom/android/server/location/ContextHubClientBroker;->mContext:Landroid/content/Context;
@@ -953,11 +1020,9 @@
 
     move-result v0
 
-    const/4 v1, 0x1
+    const-string v1, "ContextHubClientBroker"
 
-    const-string v2, "ContextHubClientBroker"
-
-    if-eqz v0, :cond_3e
+    if-eqz v0, :cond_3c
 
     .line 175
     iget-short v0, p0, Lcom/android/server/location/ContextHubClientBroker;->mHostEndPointId:S
@@ -965,76 +1030,85 @@
     .line 176
     invoke-static {v0, p1}, Lcom/android/server/location/ContextHubServiceUtil;->createHidlContextHubMessage(SLandroid/hardware/location/NanoAppMessage;)Landroid/hardware/contexthub/V1_0/ContextHubMsg;
 
-    move-result-object p1
+    move-result-object v0
 
     .line 178
-    iget-object v0, p0, Lcom/android/server/location/ContextHubClientBroker;->mAttachedContextHubInfo:Landroid/hardware/location/ContextHubInfo;
+    .local v0, "messageToNanoApp":Landroid/hardware/contexthub/V1_0/ContextHubMsg;
+    iget-object v2, p0, Lcom/android/server/location/ContextHubClientBroker;->mAttachedContextHubInfo:Landroid/hardware/location/ContextHubInfo;
 
-    invoke-virtual {v0}, Landroid/hardware/location/ContextHubInfo;->getId()I
+    invoke-virtual {v2}, Landroid/hardware/location/ContextHubInfo;->getId()I
+
+    move-result v2
+
+    .line 180
+    .local v2, "contextHubId":I
+    :try_start_19
+    iget-object v3, p0, Lcom/android/server/location/ContextHubClientBroker;->mContextHubProxy:Landroid/hardware/contexthub/V1_0/IContexthub;
+
+    invoke-interface {v3, v2, v0}, Landroid/hardware/contexthub/V1_0/IContexthub;->sendMessageToHub(ILandroid/hardware/contexthub/V1_0/ContextHubMsg;)I
+
+    move-result v1
+    :try_end_1f
+    .catch Landroid/os/RemoteException; {:try_start_19 .. :try_end_1f} :catch_20
+
+    .line 185
+    .local v1, "result":I
+    goto :goto_3b
+
+    .line 181
+    .end local v1  # "result":I
+    :catch_20
+    move-exception v3
+
+    .line 182
+    .local v3, "e":Landroid/os/RemoteException;
+    new-instance v4, Ljava/lang/StringBuilder;
+
+    invoke-direct {v4}, Ljava/lang/StringBuilder;-><init>()V
+
+    const-string v5, "RemoteException in sendMessageToNanoApp (target hub ID = "
+
+    invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v4, v2}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+
+    const-string v5, ")"
+
+    invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v4}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v4
+
+    invoke-static {v1, v4, v3}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+
+    .line 184
+    const/4 v1, 0x1
+
+    .line 186
+    .end local v0  # "messageToNanoApp":Landroid/hardware/contexthub/V1_0/ContextHubMsg;
+    .end local v2  # "contextHubId":I
+    .end local v3  # "e":Landroid/os/RemoteException;
+    .restart local v1  # "result":I
+    :goto_3b
+    goto :goto_42
+
+    .line 187
+    .end local v1  # "result":I
+    :cond_3c
+    const-string v0, "Failed to send message to nanoapp: client connection is closed"
+
+    invoke-static {v1, v0}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;)I
+
+    .line 188
+    const/4 v1, 0x1
+
+    .line 191
+    .restart local v1  # "result":I
+    :goto_42
+    invoke-static {v1}, Lcom/android/server/location/ContextHubServiceUtil;->toTransactionResult(I)I
 
     move-result v0
 
-    .line 180
-    :try_start_1a
-    iget-object v3, p0, Lcom/android/server/location/ContextHubClientBroker;->mContextHubProxy:Landroid/hardware/contexthub/V1_0/IContexthub;
-
-    invoke-interface {v3, v0, p1}, Landroid/hardware/contexthub/V1_0/IContexthub;->sendMessageToHub(ILandroid/hardware/contexthub/V1_0/ContextHubMsg;)I
-
-    move-result p1
-    :try_end_20
-    .catch Landroid/os/RemoteException; {:try_start_1a .. :try_end_20} :catch_22
-
-    .line 185
-    move v1, p1
-
-    goto :goto_3d
-
-    .line 181
-    :catch_22
-    move-exception p1
-
-    .line 182
-    new-instance v3, Ljava/lang/StringBuilder;
-
-    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
-
-    const-string v4, "RemoteException in sendMessageToNanoApp (target hub ID = "
-
-    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v3, v0}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
-
-    const-string v0, ")"
-
-    invoke-virtual {v3, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
-
-    move-result-object v0
-
-    invoke-static {v2, v0, p1}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
-
-    .line 184
-    nop
-
-    .line 186
-    :goto_3d
-    goto :goto_44
-
-    .line 187
-    :cond_3e
-    const-string p1, "Failed to send message to nanoapp: client connection is closed"
-
-    invoke-static {v2, p1}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;)I
-
-    .line 188
-    nop
-
-    .line 191
-    :goto_44
-    invoke-static {v1}, Lcom/android/server/location/ContextHubServiceUtil;->toTransactionResult(I)I
-
-    move-result p1
-
-    return p1
+    return v0
 .end method

@@ -51,6 +51,11 @@
 
 .method public constructor <init>(Lcom/android/server/display/DisplayManagerService$SyncRoot;Landroid/content/Context;Landroid/os/Handler;Lcom/android/server/display/DisplayAdapter$Listener;Ljava/lang/String;)V
     .registers 6
+    .param p1, "syncRoot"  # Lcom/android/server/display/DisplayManagerService$SyncRoot;
+    .param p2, "context"  # Landroid/content/Context;
+    .param p3, "handler"  # Landroid/os/Handler;
+    .param p4, "listener"  # Lcom/android/server/display/DisplayAdapter$Listener;
+    .param p5, "name"  # Ljava/lang/String;
 
     .line 54
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -75,16 +80,20 @@
 .end method
 
 .method static synthetic access$000(Lcom/android/server/display/DisplayAdapter;)Lcom/android/server/display/DisplayAdapter$Listener;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/display/DisplayAdapter;
 
     .line 36
-    iget-object p0, p0, Lcom/android/server/display/DisplayAdapter;->mListener:Lcom/android/server/display/DisplayAdapter$Listener;
+    iget-object v0, p0, Lcom/android/server/display/DisplayAdapter;->mListener:Lcom/android/server/display/DisplayAdapter$Listener;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method public static createMode(IIF)Landroid/view/Display$Mode;
     .registers 5
+    .param p0, "width"  # I
+    .param p1, "height"  # I
+    .param p2, "refreshRate"  # F
 
     .line 133
     new-instance v0, Landroid/view/Display$Mode;
@@ -106,6 +115,7 @@
 # virtual methods
 .method public dumpLocked(Ljava/io/PrintWriter;)V
     .registers 2
+    .param p1, "pw"  # Ljava/io/PrintWriter;
 
     .line 105
     return-void
@@ -156,6 +166,8 @@
 
 .method protected final sendDisplayDeviceEventLocked(Lcom/android/server/display/DisplayDevice;I)V
     .registers 5
+    .param p1, "device"  # Lcom/android/server/display/DisplayDevice;
+    .param p2, "event"  # I
 
     .line 112
     iget-object v0, p0, Lcom/android/server/display/DisplayAdapter;->mHandler:Landroid/os/Handler;

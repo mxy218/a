@@ -25,6 +25,8 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/tv/TvInputManagerService;Lcom/android/server/tv/TvInputManagerService$SessionState;[Landroid/view/InputChannel;)V
     .registers 4
+    .param p2, "sessionState"  # Lcom/android/server/tv/TvInputManagerService$SessionState;
+    .param p3, "channels"  # [Landroid/view/InputChannel;
 
     .line 2426
     iput-object p1, p0, Lcom/android/server/tv/TvInputManagerService$SessionCallback;->this$0:Lcom/android/server/tv/TvInputManagerService;
@@ -42,7 +44,8 @@
 .end method
 
 .method private addSessionTokenToClientStateLocked(Landroid/media/tv/ITvInputSession;)Z
-    .registers 8
+    .registers 10
+    .param p1, "session"  # Landroid/media/tv/ITvInputSession;
 
     .line 2454
     const-string v0, "TvInputManagerService"
@@ -52,126 +55,137 @@
     :try_start_3
     invoke-interface {p1}, Landroid/media/tv/ITvInputSession;->asBinder()Landroid/os/IBinder;
 
-    move-result-object p1
+    move-result-object v2
 
-    iget-object v2, p0, Lcom/android/server/tv/TvInputManagerService$SessionCallback;->mSessionState:Lcom/android/server/tv/TvInputManagerService$SessionState;
+    iget-object v3, p0, Lcom/android/server/tv/TvInputManagerService$SessionCallback;->mSessionState:Lcom/android/server/tv/TvInputManagerService$SessionState;
 
-    invoke-interface {p1, v2, v1}, Landroid/os/IBinder;->linkToDeath(Landroid/os/IBinder$DeathRecipient;I)V
+    invoke-interface {v2, v3, v1}, Landroid/os/IBinder;->linkToDeath(Landroid/os/IBinder$DeathRecipient;I)V
     :try_end_c
-    .catch Landroid/os/RemoteException; {:try_start_3 .. :try_end_c} :catch_5e
+    .catch Landroid/os/RemoteException; {:try_start_3 .. :try_end_c} :catch_5f
 
     .line 2458
     nop
 
     .line 2460
-    iget-object p1, p0, Lcom/android/server/tv/TvInputManagerService$SessionCallback;->mSessionState:Lcom/android/server/tv/TvInputManagerService$SessionState;
+    iget-object v2, p0, Lcom/android/server/tv/TvInputManagerService$SessionCallback;->mSessionState:Lcom/android/server/tv/TvInputManagerService$SessionState;
 
-    invoke-static {p1}, Lcom/android/server/tv/TvInputManagerService$SessionState;->access$2300(Lcom/android/server/tv/TvInputManagerService$SessionState;)Landroid/media/tv/ITvInputClient;
-
-    move-result-object p1
-
-    invoke-interface {p1}, Landroid/media/tv/ITvInputClient;->asBinder()Landroid/os/IBinder;
-
-    move-result-object p1
-
-    .line 2461
-    iget-object v2, p0, Lcom/android/server/tv/TvInputManagerService$SessionCallback;->this$0:Lcom/android/server/tv/TvInputManagerService;
-
-    iget-object v3, p0, Lcom/android/server/tv/TvInputManagerService$SessionCallback;->mSessionState:Lcom/android/server/tv/TvInputManagerService$SessionState;
-
-    invoke-static {v3}, Lcom/android/server/tv/TvInputManagerService$SessionState;->access$2500(Lcom/android/server/tv/TvInputManagerService$SessionState;)I
-
-    move-result v3
-
-    invoke-static {v2, v3}, Lcom/android/server/tv/TvInputManagerService;->access$4200(Lcom/android/server/tv/TvInputManagerService;I)Lcom/android/server/tv/TvInputManagerService$UserState;
+    invoke-static {v2}, Lcom/android/server/tv/TvInputManagerService$SessionState;->access$2300(Lcom/android/server/tv/TvInputManagerService$SessionState;)Landroid/media/tv/ITvInputClient;
 
     move-result-object v2
 
+    invoke-interface {v2}, Landroid/media/tv/ITvInputClient;->asBinder()Landroid/os/IBinder;
+
+    move-result-object v2
+
+    .line 2461
+    .local v2, "clientToken":Landroid/os/IBinder;
+    iget-object v3, p0, Lcom/android/server/tv/TvInputManagerService$SessionCallback;->this$0:Lcom/android/server/tv/TvInputManagerService;
+
+    iget-object v4, p0, Lcom/android/server/tv/TvInputManagerService$SessionCallback;->mSessionState:Lcom/android/server/tv/TvInputManagerService$SessionState;
+
+    invoke-static {v4}, Lcom/android/server/tv/TvInputManagerService$SessionState;->access$2500(Lcom/android/server/tv/TvInputManagerService$SessionState;)I
+
+    move-result v4
+
+    invoke-static {v3, v4}, Lcom/android/server/tv/TvInputManagerService;->access$4200(Lcom/android/server/tv/TvInputManagerService;I)Lcom/android/server/tv/TvInputManagerService$UserState;
+
+    move-result-object v3
+
     .line 2462
-    invoke-static {v2}, Lcom/android/server/tv/TvInputManagerService$UserState;->access$2800(Lcom/android/server/tv/TvInputManagerService$UserState;)Ljava/util/Map;
+    .local v3, "userState":Lcom/android/server/tv/TvInputManagerService$UserState;
+    invoke-static {v3}, Lcom/android/server/tv/TvInputManagerService$UserState;->access$2800(Lcom/android/server/tv/TvInputManagerService$UserState;)Ljava/util/Map;
 
-    move-result-object v3
+    move-result-object v4
 
-    invoke-interface {v3, p1}, Ljava/util/Map;->get(Ljava/lang/Object;)Ljava/lang/Object;
+    invoke-interface {v4, v2}, Ljava/util/Map;->get(Ljava/lang/Object;)Ljava/lang/Object;
 
-    move-result-object v3
+    move-result-object v4
 
-    check-cast v3, Lcom/android/server/tv/TvInputManagerService$ClientState;
+    check-cast v4, Lcom/android/server/tv/TvInputManagerService$ClientState;
 
     .line 2463
-    if-nez v3, :cond_4f
+    .local v4, "clientState":Lcom/android/server/tv/TvInputManagerService$ClientState;
+    if-nez v4, :cond_50
 
     .line 2464
-    new-instance v3, Lcom/android/server/tv/TvInputManagerService$ClientState;
+    new-instance v5, Lcom/android/server/tv/TvInputManagerService$ClientState;
 
-    iget-object v4, p0, Lcom/android/server/tv/TvInputManagerService$SessionCallback;->this$0:Lcom/android/server/tv/TvInputManagerService;
+    iget-object v6, p0, Lcom/android/server/tv/TvInputManagerService$SessionCallback;->this$0:Lcom/android/server/tv/TvInputManagerService;
 
-    iget-object v5, p0, Lcom/android/server/tv/TvInputManagerService$SessionCallback;->mSessionState:Lcom/android/server/tv/TvInputManagerService$SessionState;
+    iget-object v7, p0, Lcom/android/server/tv/TvInputManagerService$SessionCallback;->mSessionState:Lcom/android/server/tv/TvInputManagerService$SessionState;
 
-    invoke-static {v5}, Lcom/android/server/tv/TvInputManagerService$SessionState;->access$2500(Lcom/android/server/tv/TvInputManagerService$SessionState;)I
+    invoke-static {v7}, Lcom/android/server/tv/TvInputManagerService$SessionState;->access$2500(Lcom/android/server/tv/TvInputManagerService$SessionState;)I
 
-    move-result v5
+    move-result v7
 
-    invoke-direct {v3, v4, p1, v5}, Lcom/android/server/tv/TvInputManagerService$ClientState;-><init>(Lcom/android/server/tv/TvInputManagerService;Landroid/os/IBinder;I)V
+    invoke-direct {v5, v6, v2, v7}, Lcom/android/server/tv/TvInputManagerService$ClientState;-><init>(Lcom/android/server/tv/TvInputManagerService;Landroid/os/IBinder;I)V
+
+    move-object v4, v5
 
     .line 2466
-    :try_start_3c
-    invoke-interface {p1, v3, v1}, Landroid/os/IBinder;->linkToDeath(Landroid/os/IBinder$DeathRecipient;I)V
-    :try_end_3f
-    .catch Landroid/os/RemoteException; {:try_start_3c .. :try_end_3f} :catch_48
+    :try_start_3d
+    invoke-interface {v2, v4, v1}, Landroid/os/IBinder;->linkToDeath(Landroid/os/IBinder$DeathRecipient;I)V
+    :try_end_40
+    .catch Landroid/os/RemoteException; {:try_start_3d .. :try_end_40} :catch_49
 
     .line 2470
     nop
 
     .line 2471
-    invoke-static {v2}, Lcom/android/server/tv/TvInputManagerService$UserState;->access$2800(Lcom/android/server/tv/TvInputManagerService$UserState;)Ljava/util/Map;
+    invoke-static {v3}, Lcom/android/server/tv/TvInputManagerService$UserState;->access$2800(Lcom/android/server/tv/TvInputManagerService$UserState;)Ljava/util/Map;
 
     move-result-object v0
 
-    invoke-interface {v0, p1, v3}, Ljava/util/Map;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+    invoke-interface {v0, v2, v4}, Ljava/util/Map;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
 
-    goto :goto_4f
+    goto :goto_50
 
     .line 2467
-    :catch_48
-    move-exception p1
+    :catch_49
+    move-exception v5
 
     .line 2468
-    const-string v2, "client process has already died"
+    .local v5, "e":Landroid/os/RemoteException;
+    const-string v6, "client process has already died"
 
-    invoke-static {v0, v2, p1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    invoke-static {v0, v6, v5}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
     .line 2469
     return v1
 
     .line 2473
-    :cond_4f
-    :goto_4f
-    invoke-static {v3}, Lcom/android/server/tv/TvInputManagerService$ClientState;->access$3800(Lcom/android/server/tv/TvInputManagerService$ClientState;)Ljava/util/List;
-
-    move-result-object p1
-
-    iget-object v0, p0, Lcom/android/server/tv/TvInputManagerService$SessionCallback;->mSessionState:Lcom/android/server/tv/TvInputManagerService$SessionState;
-
-    invoke-static {v0}, Lcom/android/server/tv/TvInputManagerService$SessionState;->access$2600(Lcom/android/server/tv/TvInputManagerService$SessionState;)Landroid/os/IBinder;
+    .end local v5  # "e":Landroid/os/RemoteException;
+    :cond_50
+    :goto_50
+    invoke-static {v4}, Lcom/android/server/tv/TvInputManagerService$ClientState;->access$3800(Lcom/android/server/tv/TvInputManagerService$ClientState;)Ljava/util/List;
 
     move-result-object v0
 
-    invoke-interface {p1, v0}, Ljava/util/List;->add(Ljava/lang/Object;)Z
+    iget-object v1, p0, Lcom/android/server/tv/TvInputManagerService$SessionCallback;->mSessionState:Lcom/android/server/tv/TvInputManagerService$SessionState;
+
+    invoke-static {v1}, Lcom/android/server/tv/TvInputManagerService$SessionState;->access$2600(Lcom/android/server/tv/TvInputManagerService$SessionState;)Landroid/os/IBinder;
+
+    move-result-object v1
+
+    invoke-interface {v0, v1}, Ljava/util/List;->add(Ljava/lang/Object;)Z
 
     .line 2474
-    const/4 p1, 0x1
+    const/4 v0, 0x1
 
-    return p1
+    return v0
 
     .line 2455
-    :catch_5e
-    move-exception p1
+    .end local v2  # "clientToken":Landroid/os/IBinder;
+    .end local v3  # "userState":Lcom/android/server/tv/TvInputManagerService$UserState;
+    .end local v4  # "clientState":Lcom/android/server/tv/TvInputManagerService$ClientState;
+    :catch_5f
+    move-exception v2
 
     .line 2456
-    const-string/jumbo v2, "session process has already died"
+    .local v2, "e":Landroid/os/RemoteException;
+    const-string/jumbo v3, "session process has already died"
 
-    invoke-static {v0, v2, p1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    invoke-static {v0, v3, v2}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
     .line 2457
     return v1
@@ -180,7 +194,8 @@
 
 # virtual methods
 .method public onChannelRetuned(Landroid/net/Uri;)V
-    .registers 5
+    .registers 6
+    .param p1, "channelUri"  # Landroid/net/Uri;
 
     .line 2479
     iget-object v0, p0, Lcom/android/server/tv/TvInputManagerService$SessionCallback;->this$0:Lcom/android/server/tv/TvInputManagerService;
@@ -238,17 +253,19 @@
 
     .line 2492
     :catch_28
-    move-exception p1
+    move-exception v1
 
     .line 2493
+    .local v1, "e":Landroid/os/RemoteException;
     :try_start_29
-    const-string v1, "TvInputManagerService"
+    const-string v2, "TvInputManagerService"
 
-    const-string v2, "error in onChannelRetuned"
+    const-string v3, "error in onChannelRetuned"
 
-    invoke-static {v1, v2, p1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    invoke-static {v2, v3, v1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
     .line 2495
+    .end local v1  # "e":Landroid/os/RemoteException;
     :goto_30
     monitor-exit v0
 
@@ -264,13 +281,13 @@
 
     .line 2495
     :catchall_34
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_36
     .catchall {:try_start_29 .. :try_end_36} :catchall_34
 
-    throw p1
+    throw v1
 .end method
 
 .method public onContentAllowed()V
@@ -335,6 +352,7 @@
     move-exception v1
 
     .line 2578
+    .local v1, "e":Landroid/os/RemoteException;
     :try_start_29
     const-string v2, "TvInputManagerService"
 
@@ -343,6 +361,7 @@
     invoke-static {v2, v3, v1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
     .line 2580
+    .end local v1  # "e":Landroid/os/RemoteException;
     :goto_30
     monitor-exit v0
 
@@ -368,7 +387,8 @@
 .end method
 
 .method public onContentBlocked(Ljava/lang/String;)V
-    .registers 5
+    .registers 6
+    .param p1, "rating"  # Ljava/lang/String;
 
     .line 2585
     iget-object v0, p0, Lcom/android/server/tv/TvInputManagerService$SessionCallback;->this$0:Lcom/android/server/tv/TvInputManagerService;
@@ -426,17 +446,19 @@
 
     .line 2594
     :catch_28
-    move-exception p1
+    move-exception v1
 
     .line 2595
+    .local v1, "e":Landroid/os/RemoteException;
     :try_start_29
-    const-string v1, "TvInputManagerService"
+    const-string v2, "TvInputManagerService"
 
-    const-string v2, "error in onContentBlocked"
+    const-string v3, "error in onContentBlocked"
 
-    invoke-static {v1, v2, p1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    invoke-static {v2, v3, v1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
     .line 2597
+    .end local v1  # "e":Landroid/os/RemoteException;
     :goto_30
     monitor-exit v0
 
@@ -452,17 +474,18 @@
 
     .line 2597
     :catchall_34
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_36
     .catchall {:try_start_29 .. :try_end_36} :catchall_34
 
-    throw p1
+    throw v1
 .end method
 
 .method public onError(I)V
-    .registers 5
+    .registers 6
+    .param p1, "error"  # I
 
     .line 2729
     iget-object v0, p0, Lcom/android/server/tv/TvInputManagerService$SessionCallback;->this$0:Lcom/android/server/tv/TvInputManagerService;
@@ -520,17 +543,19 @@
 
     .line 2738
     :catch_28
-    move-exception p1
+    move-exception v1
 
     .line 2739
+    .local v1, "e":Landroid/os/RemoteException;
     :try_start_29
-    const-string v1, "TvInputManagerService"
+    const-string v2, "TvInputManagerService"
 
-    const-string v2, "error in onError"
+    const-string v3, "error in onError"
 
-    invoke-static {v1, v2, p1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    invoke-static {v2, v3, v1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
     .line 2741
+    .end local v1  # "e":Landroid/os/RemoteException;
     :goto_30
     monitor-exit v0
 
@@ -546,17 +571,21 @@
 
     .line 2741
     :catchall_34
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_36
     .catchall {:try_start_29 .. :try_end_36} :catchall_34
 
-    throw p1
+    throw v1
 .end method
 
 .method public onLayoutSurface(IIII)V
     .registers 13
+    .param p1, "left"  # I
+    .param p2, "top"  # I
+    .param p3, "right"  # I
+    .param p4, "bottom"  # I
 
     .line 2602
     iget-object v0, p0, Lcom/android/server/tv/TvInputManagerService$SessionCallback;->this$0:Lcom/android/server/tv/TvInputManagerService;
@@ -624,17 +653,19 @@
 
     .line 2613
     :catch_2c
-    move-exception p1
+    move-exception v1
 
     .line 2614
+    .local v1, "e":Landroid/os/RemoteException;
     :try_start_2d
-    const-string p2, "TvInputManagerService"
+    const-string v2, "TvInputManagerService"
 
-    const-string p3, "error in onLayoutSurface"
+    const-string v3, "error in onLayoutSurface"
 
-    invoke-static {p2, p3, p1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    invoke-static {v2, v3, v1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
     .line 2616
+    .end local v1  # "e":Landroid/os/RemoteException;
     :goto_34
     monitor-exit v0
 
@@ -650,17 +681,18 @@
 
     .line 2616
     :catchall_38
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_3a
     .catchall {:try_start_2d .. :try_end_3a} :catchall_38
 
-    throw p1
+    throw v1
 .end method
 
 .method public onRecordingStopped(Landroid/net/Uri;)V
-    .registers 5
+    .registers 6
+    .param p1, "recordedProgramUri"  # Landroid/net/Uri;
 
     .line 2710
     iget-object v0, p0, Lcom/android/server/tv/TvInputManagerService$SessionCallback;->this$0:Lcom/android/server/tv/TvInputManagerService;
@@ -718,17 +750,19 @@
 
     .line 2720
     :catch_28
-    move-exception p1
+    move-exception v1
 
     .line 2721
+    .local v1, "e":Landroid/os/RemoteException;
     :try_start_29
-    const-string v1, "TvInputManagerService"
+    const-string v2, "TvInputManagerService"
 
-    const-string v2, "error in onRecordingStopped"
+    const-string v3, "error in onRecordingStopped"
 
-    invoke-static {v1, v2, p1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    invoke-static {v2, v3, v1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
     .line 2723
+    .end local v1  # "e":Landroid/os/RemoteException;
     :goto_30
     monitor-exit v0
 
@@ -744,17 +778,19 @@
 
     .line 2723
     :catchall_34
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_36
     .catchall {:try_start_29 .. :try_end_36} :catchall_34
 
-    throw p1
+    throw v1
 .end method
 
 .method public onSessionCreated(Landroid/media/tv/ITvInputSession;Landroid/os/IBinder;)V
-    .registers 12
+    .registers 14
+    .param p1, "session"  # Landroid/media/tv/ITvInputSession;
+    .param p2, "hardwareSessionToken"  # Landroid/os/IBinder;
 
     .line 2436
     iget-object v0, p0, Lcom/android/server/tv/TvInputManagerService$SessionCallback;->this$0:Lcom/android/server/tv/TvInputManagerService;
@@ -777,108 +813,108 @@
     invoke-static {v1, p2}, Lcom/android/server/tv/TvInputManagerService$SessionState;->access$2702(Lcom/android/server/tv/TvInputManagerService$SessionState;Landroid/os/IBinder;)Landroid/os/IBinder;
 
     .line 2439
-    const/4 p2, 0x0
+    const/4 v1, 0x0
 
     if-eqz p1, :cond_3c
 
     invoke-direct {p0, p1}, Lcom/android/server/tv/TvInputManagerService$SessionCallback;->addSessionTokenToClientStateLocked(Landroid/media/tv/ITvInputSession;)Z
 
-    move-result p1
+    move-result v2
 
-    if-eqz p1, :cond_3c
+    if-eqz v2, :cond_3c
 
     .line 2440
-    iget-object v1, p0, Lcom/android/server/tv/TvInputManagerService$SessionCallback;->this$0:Lcom/android/server/tv/TvInputManagerService;
+    iget-object v3, p0, Lcom/android/server/tv/TvInputManagerService$SessionCallback;->this$0:Lcom/android/server/tv/TvInputManagerService;
 
-    iget-object p1, p0, Lcom/android/server/tv/TvInputManagerService$SessionCallback;->mSessionState:Lcom/android/server/tv/TvInputManagerService$SessionState;
+    iget-object v2, p0, Lcom/android/server/tv/TvInputManagerService$SessionCallback;->mSessionState:Lcom/android/server/tv/TvInputManagerService$SessionState;
 
-    invoke-static {p1}, Lcom/android/server/tv/TvInputManagerService$SessionState;->access$2300(Lcom/android/server/tv/TvInputManagerService$SessionState;)Landroid/media/tv/ITvInputClient;
-
-    move-result-object v2
-
-    iget-object p1, p0, Lcom/android/server/tv/TvInputManagerService$SessionCallback;->mSessionState:Lcom/android/server/tv/TvInputManagerService$SessionState;
-
-    .line 2441
-    invoke-static {p1}, Lcom/android/server/tv/TvInputManagerService$SessionState;->access$3600(Lcom/android/server/tv/TvInputManagerService$SessionState;)Ljava/lang/String;
-
-    move-result-object v3
-
-    iget-object p1, p0, Lcom/android/server/tv/TvInputManagerService$SessionCallback;->mSessionState:Lcom/android/server/tv/TvInputManagerService$SessionState;
-
-    invoke-static {p1}, Lcom/android/server/tv/TvInputManagerService$SessionState;->access$2600(Lcom/android/server/tv/TvInputManagerService$SessionState;)Landroid/os/IBinder;
+    invoke-static {v2}, Lcom/android/server/tv/TvInputManagerService$SessionState;->access$2300(Lcom/android/server/tv/TvInputManagerService$SessionState;)Landroid/media/tv/ITvInputClient;
 
     move-result-object v4
 
-    iget-object p1, p0, Lcom/android/server/tv/TvInputManagerService$SessionCallback;->mChannels:[Landroid/view/InputChannel;
+    iget-object v2, p0, Lcom/android/server/tv/TvInputManagerService$SessionCallback;->mSessionState:Lcom/android/server/tv/TvInputManagerService$SessionState;
 
-    aget-object v5, p1, p2
+    .line 2441
+    invoke-static {v2}, Lcom/android/server/tv/TvInputManagerService$SessionState;->access$3600(Lcom/android/server/tv/TvInputManagerService$SessionState;)Ljava/lang/String;
 
-    iget-object p1, p0, Lcom/android/server/tv/TvInputManagerService$SessionCallback;->mSessionState:Lcom/android/server/tv/TvInputManagerService$SessionState;
+    move-result-object v5
+
+    iget-object v2, p0, Lcom/android/server/tv/TvInputManagerService$SessionCallback;->mSessionState:Lcom/android/server/tv/TvInputManagerService$SessionState;
+
+    invoke-static {v2}, Lcom/android/server/tv/TvInputManagerService$SessionState;->access$2600(Lcom/android/server/tv/TvInputManagerService$SessionState;)Landroid/os/IBinder;
+
+    move-result-object v6
+
+    iget-object v2, p0, Lcom/android/server/tv/TvInputManagerService$SessionCallback;->mChannels:[Landroid/view/InputChannel;
+
+    aget-object v7, v2, v1
+
+    iget-object v2, p0, Lcom/android/server/tv/TvInputManagerService$SessionCallback;->mSessionState:Lcom/android/server/tv/TvInputManagerService$SessionState;
 
     .line 2442
-    invoke-static {p1}, Lcom/android/server/tv/TvInputManagerService$SessionState;->access$2400(Lcom/android/server/tv/TvInputManagerService$SessionState;)I
+    invoke-static {v2}, Lcom/android/server/tv/TvInputManagerService$SessionState;->access$2400(Lcom/android/server/tv/TvInputManagerService$SessionState;)I
 
-    move-result v6
+    move-result v8
 
     .line 2440
-    invoke-static/range {v1 .. v6}, Lcom/android/server/tv/TvInputManagerService;->access$4700(Lcom/android/server/tv/TvInputManagerService;Landroid/media/tv/ITvInputClient;Ljava/lang/String;Landroid/os/IBinder;Landroid/view/InputChannel;I)V
+    invoke-static/range {v3 .. v8}, Lcom/android/server/tv/TvInputManagerService;->access$4700(Lcom/android/server/tv/TvInputManagerService;Landroid/media/tv/ITvInputClient;Ljava/lang/String;Landroid/os/IBinder;Landroid/view/InputChannel;I)V
 
     goto :goto_66
 
     .line 2444
     :cond_3c
-    iget-object p1, p0, Lcom/android/server/tv/TvInputManagerService$SessionCallback;->this$0:Lcom/android/server/tv/TvInputManagerService;
+    iget-object v2, p0, Lcom/android/server/tv/TvInputManagerService$SessionCallback;->this$0:Lcom/android/server/tv/TvInputManagerService;
 
-    iget-object v1, p0, Lcom/android/server/tv/TvInputManagerService$SessionCallback;->mSessionState:Lcom/android/server/tv/TvInputManagerService$SessionState;
+    iget-object v3, p0, Lcom/android/server/tv/TvInputManagerService$SessionCallback;->mSessionState:Lcom/android/server/tv/TvInputManagerService$SessionState;
 
-    invoke-static {v1}, Lcom/android/server/tv/TvInputManagerService$SessionState;->access$2600(Lcom/android/server/tv/TvInputManagerService$SessionState;)Landroid/os/IBinder;
+    invoke-static {v3}, Lcom/android/server/tv/TvInputManagerService$SessionState;->access$2600(Lcom/android/server/tv/TvInputManagerService$SessionState;)Landroid/os/IBinder;
 
-    move-result-object v1
+    move-result-object v3
+
+    iget-object v4, p0, Lcom/android/server/tv/TvInputManagerService$SessionCallback;->mSessionState:Lcom/android/server/tv/TvInputManagerService$SessionState;
+
+    invoke-static {v4}, Lcom/android/server/tv/TvInputManagerService$SessionState;->access$2500(Lcom/android/server/tv/TvInputManagerService$SessionState;)I
+
+    move-result v4
+
+    invoke-static {v2, v3, v4}, Lcom/android/server/tv/TvInputManagerService;->access$5000(Lcom/android/server/tv/TvInputManagerService;Landroid/os/IBinder;I)V
+
+    .line 2445
+    iget-object v5, p0, Lcom/android/server/tv/TvInputManagerService$SessionCallback;->this$0:Lcom/android/server/tv/TvInputManagerService;
 
     iget-object v2, p0, Lcom/android/server/tv/TvInputManagerService$SessionCallback;->mSessionState:Lcom/android/server/tv/TvInputManagerService$SessionState;
 
-    invoke-static {v2}, Lcom/android/server/tv/TvInputManagerService$SessionState;->access$2500(Lcom/android/server/tv/TvInputManagerService$SessionState;)I
+    invoke-static {v2}, Lcom/android/server/tv/TvInputManagerService$SessionState;->access$2300(Lcom/android/server/tv/TvInputManagerService$SessionState;)Landroid/media/tv/ITvInputClient;
 
-    move-result v2
+    move-result-object v6
 
-    invoke-static {p1, v1, v2}, Lcom/android/server/tv/TvInputManagerService;->access$5000(Lcom/android/server/tv/TvInputManagerService;Landroid/os/IBinder;I)V
-
-    .line 2445
-    iget-object v3, p0, Lcom/android/server/tv/TvInputManagerService$SessionCallback;->this$0:Lcom/android/server/tv/TvInputManagerService;
-
-    iget-object p1, p0, Lcom/android/server/tv/TvInputManagerService$SessionCallback;->mSessionState:Lcom/android/server/tv/TvInputManagerService$SessionState;
-
-    invoke-static {p1}, Lcom/android/server/tv/TvInputManagerService$SessionState;->access$2300(Lcom/android/server/tv/TvInputManagerService$SessionState;)Landroid/media/tv/ITvInputClient;
-
-    move-result-object v4
-
-    iget-object p1, p0, Lcom/android/server/tv/TvInputManagerService$SessionCallback;->mSessionState:Lcom/android/server/tv/TvInputManagerService$SessionState;
+    iget-object v2, p0, Lcom/android/server/tv/TvInputManagerService$SessionCallback;->mSessionState:Lcom/android/server/tv/TvInputManagerService$SessionState;
 
     .line 2446
-    invoke-static {p1}, Lcom/android/server/tv/TvInputManagerService$SessionState;->access$3600(Lcom/android/server/tv/TvInputManagerService$SessionState;)Ljava/lang/String;
+    invoke-static {v2}, Lcom/android/server/tv/TvInputManagerService$SessionState;->access$3600(Lcom/android/server/tv/TvInputManagerService$SessionState;)Ljava/lang/String;
 
-    move-result-object v5
+    move-result-object v7
 
-    const/4 v6, 0x0
+    const/4 v8, 0x0
 
-    const/4 v7, 0x0
+    const/4 v9, 0x0
 
-    iget-object p1, p0, Lcom/android/server/tv/TvInputManagerService$SessionCallback;->mSessionState:Lcom/android/server/tv/TvInputManagerService$SessionState;
+    iget-object v2, p0, Lcom/android/server/tv/TvInputManagerService$SessionCallback;->mSessionState:Lcom/android/server/tv/TvInputManagerService$SessionState;
 
-    invoke-static {p1}, Lcom/android/server/tv/TvInputManagerService$SessionState;->access$2400(Lcom/android/server/tv/TvInputManagerService$SessionState;)I
+    invoke-static {v2}, Lcom/android/server/tv/TvInputManagerService$SessionState;->access$2400(Lcom/android/server/tv/TvInputManagerService$SessionState;)I
 
-    move-result v8
+    move-result v10
 
     .line 2445
-    invoke-static/range {v3 .. v8}, Lcom/android/server/tv/TvInputManagerService;->access$4700(Lcom/android/server/tv/TvInputManagerService;Landroid/media/tv/ITvInputClient;Ljava/lang/String;Landroid/os/IBinder;Landroid/view/InputChannel;I)V
+    invoke-static/range {v5 .. v10}, Lcom/android/server/tv/TvInputManagerService;->access$4700(Lcom/android/server/tv/TvInputManagerService;Landroid/media/tv/ITvInputClient;Ljava/lang/String;Landroid/os/IBinder;Landroid/view/InputChannel;I)V
 
     .line 2448
     :goto_66
-    iget-object p1, p0, Lcom/android/server/tv/TvInputManagerService$SessionCallback;->mChannels:[Landroid/view/InputChannel;
+    iget-object v2, p0, Lcom/android/server/tv/TvInputManagerService$SessionCallback;->mChannels:[Landroid/view/InputChannel;
 
-    aget-object p1, p1, p2
+    aget-object v1, v2, v1
 
-    invoke-virtual {p1}, Landroid/view/InputChannel;->dispose()V
+    invoke-virtual {v1}, Landroid/view/InputChannel;->dispose()V
 
     .line 2449
     monitor-exit v0
@@ -888,17 +924,19 @@
 
     .line 2449
     :catchall_6f
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_71
     .catchall {:try_start_7 .. :try_end_71} :catchall_6f
 
-    throw p1
+    throw v1
 .end method
 
 .method public onSessionEvent(Ljava/lang/String;Landroid/os/Bundle;)V
-    .registers 6
+    .registers 7
+    .param p1, "eventType"  # Ljava/lang/String;
+    .param p2, "eventArgs"  # Landroid/os/Bundle;
 
     .line 2621
     iget-object v0, p0, Lcom/android/server/tv/TvInputManagerService$SessionCallback;->this$0:Lcom/android/server/tv/TvInputManagerService;
@@ -956,17 +994,19 @@
 
     .line 2631
     :catch_28
-    move-exception p1
+    move-exception v1
 
     .line 2632
+    .local v1, "e":Landroid/os/RemoteException;
     :try_start_29
-    const-string p2, "TvInputManagerService"
+    const-string v2, "TvInputManagerService"
 
-    const-string v1, "error in onSessionEvent"
+    const-string v3, "error in onSessionEvent"
 
-    invoke-static {p2, v1, p1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    invoke-static {v2, v3, v1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
     .line 2634
+    .end local v1  # "e":Landroid/os/RemoteException;
     :goto_30
     monitor-exit v0
 
@@ -982,17 +1022,18 @@
 
     .line 2634
     :catchall_34
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_36
     .catchall {:try_start_29 .. :try_end_36} :catchall_34
 
-    throw p1
+    throw v1
 .end method
 
 .method public onTimeShiftCurrentPositionChanged(J)V
-    .registers 6
+    .registers 7
+    .param p1, "timeMs"  # J
 
     .line 2673
     iget-object v0, p0, Lcom/android/server/tv/TvInputManagerService$SessionCallback;->this$0:Lcom/android/server/tv/TvInputManagerService;
@@ -1052,17 +1093,19 @@
 
     .line 2683
     :catch_28
-    move-exception p1
+    move-exception v1
 
     .line 2684
+    .local v1, "e":Landroid/os/RemoteException;
     :try_start_29
-    const-string p2, "TvInputManagerService"
+    const-string v2, "TvInputManagerService"
 
-    const-string v1, "error in onTimeShiftCurrentPositionChanged"
+    const-string v3, "error in onTimeShiftCurrentPositionChanged"
 
-    invoke-static {p2, v1, p1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    invoke-static {v2, v3, v1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
     .line 2686
+    .end local v1  # "e":Landroid/os/RemoteException;
     :goto_30
     monitor-exit v0
 
@@ -1078,17 +1121,18 @@
 
     .line 2686
     :catchall_34
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_36
     .catchall {:try_start_29 .. :try_end_36} :catchall_34
 
-    throw p1
+    throw v1
 .end method
 
 .method public onTimeShiftStartPositionChanged(J)V
-    .registers 6
+    .registers 7
+    .param p1, "timeMs"  # J
 
     .line 2656
     iget-object v0, p0, Lcom/android/server/tv/TvInputManagerService$SessionCallback;->this$0:Lcom/android/server/tv/TvInputManagerService;
@@ -1146,17 +1190,19 @@
 
     .line 2665
     :catch_28
-    move-exception p1
+    move-exception v1
 
     .line 2666
+    .local v1, "e":Landroid/os/RemoteException;
     :try_start_29
-    const-string p2, "TvInputManagerService"
+    const-string v2, "TvInputManagerService"
 
-    const-string v1, "error in onTimeShiftStartPositionChanged"
+    const-string v3, "error in onTimeShiftStartPositionChanged"
 
-    invoke-static {p2, v1, p1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    invoke-static {v2, v3, v1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
     .line 2668
+    .end local v1  # "e":Landroid/os/RemoteException;
     :goto_30
     monitor-exit v0
 
@@ -1172,17 +1218,18 @@
 
     .line 2668
     :catchall_34
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_36
     .catchall {:try_start_29 .. :try_end_36} :catchall_34
 
-    throw p1
+    throw v1
 .end method
 
 .method public onTimeShiftStatusChanged(I)V
-    .registers 5
+    .registers 6
+    .param p1, "status"  # I
 
     .line 2639
     iget-object v0, p0, Lcom/android/server/tv/TvInputManagerService$SessionCallback;->this$0:Lcom/android/server/tv/TvInputManagerService;
@@ -1240,17 +1287,19 @@
 
     .line 2648
     :catch_28
-    move-exception p1
+    move-exception v1
 
     .line 2649
+    .local v1, "e":Landroid/os/RemoteException;
     :try_start_29
-    const-string v1, "TvInputManagerService"
+    const-string v2, "TvInputManagerService"
 
-    const-string v2, "error in onTimeShiftStatusChanged"
+    const-string v3, "error in onTimeShiftStatusChanged"
 
-    invoke-static {v1, v2, p1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    invoke-static {v2, v3, v1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
     .line 2651
+    .end local v1  # "e":Landroid/os/RemoteException;
     :goto_30
     monitor-exit v0
 
@@ -1266,17 +1315,19 @@
 
     .line 2651
     :catchall_34
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_36
     .catchall {:try_start_29 .. :try_end_36} :catchall_34
 
-    throw p1
+    throw v1
 .end method
 
 .method public onTrackSelected(ILjava/lang/String;)V
-    .registers 6
+    .registers 7
+    .param p1, "type"  # I
+    .param p2, "trackId"  # Ljava/lang/String;
 
     .line 2517
     iget-object v0, p0, Lcom/android/server/tv/TvInputManagerService$SessionCallback;->this$0:Lcom/android/server/tv/TvInputManagerService;
@@ -1334,17 +1385,19 @@
 
     .line 2526
     :catch_28
-    move-exception p1
+    move-exception v1
 
     .line 2527
+    .local v1, "e":Landroid/os/RemoteException;
     :try_start_29
-    const-string p2, "TvInputManagerService"
+    const-string v2, "TvInputManagerService"
 
-    const-string v1, "error in onTrackSelected"
+    const-string v3, "error in onTrackSelected"
 
-    invoke-static {p2, v1, p1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    invoke-static {v2, v3, v1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
     .line 2529
+    .end local v1  # "e":Landroid/os/RemoteException;
     :goto_30
     monitor-exit v0
 
@@ -1360,17 +1413,17 @@
 
     .line 2529
     :catchall_34
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_36
     .catchall {:try_start_29 .. :try_end_36} :catchall_34
 
-    throw p1
+    throw v1
 .end method
 
 .method public onTracksChanged(Ljava/util/List;)V
-    .registers 5
+    .registers 6
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(",
@@ -1381,6 +1434,7 @@
     .end annotation
 
     .line 2500
+    .local p1, "tracks":Ljava/util/List;, "Ljava/util/List<Landroid/media/tv/TvTrackInfo;>;"
     iget-object v0, p0, Lcom/android/server/tv/TvInputManagerService$SessionCallback;->this$0:Lcom/android/server/tv/TvInputManagerService;
 
     invoke-static {v0}, Lcom/android/server/tv/TvInputManagerService;->access$200(Lcom/android/server/tv/TvInputManagerService;)Ljava/lang/Object;
@@ -1436,17 +1490,19 @@
 
     .line 2509
     :catch_28
-    move-exception p1
+    move-exception v1
 
     .line 2510
+    .local v1, "e":Landroid/os/RemoteException;
     :try_start_29
-    const-string v1, "TvInputManagerService"
+    const-string v2, "TvInputManagerService"
 
-    const-string v2, "error in onTracksChanged"
+    const-string v3, "error in onTracksChanged"
 
-    invoke-static {v1, v2, p1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    invoke-static {v2, v3, v1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
     .line 2512
+    .end local v1  # "e":Landroid/os/RemoteException;
     :goto_30
     monitor-exit v0
 
@@ -1462,17 +1518,18 @@
 
     .line 2512
     :catchall_34
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_36
     .catchall {:try_start_29 .. :try_end_36} :catchall_34
 
-    throw p1
+    throw v1
 .end method
 
 .method public onTuned(Landroid/net/Uri;)V
-    .registers 5
+    .registers 6
+    .param p1, "channelUri"  # Landroid/net/Uri;
 
     .line 2692
     iget-object v0, p0, Lcom/android/server/tv/TvInputManagerService$SessionCallback;->this$0:Lcom/android/server/tv/TvInputManagerService;
@@ -1530,17 +1587,19 @@
 
     .line 2701
     :catch_28
-    move-exception p1
+    move-exception v1
 
     .line 2702
+    .local v1, "e":Landroid/os/RemoteException;
     :try_start_29
-    const-string v1, "TvInputManagerService"
+    const-string v2, "TvInputManagerService"
 
-    const-string v2, "error in onTuned"
+    const-string v3, "error in onTuned"
 
-    invoke-static {v1, v2, p1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    invoke-static {v2, v3, v1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
     .line 2704
+    .end local v1  # "e":Landroid/os/RemoteException;
     :goto_30
     monitor-exit v0
 
@@ -1556,13 +1615,13 @@
 
     .line 2704
     :catchall_34
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_36
     .catchall {:try_start_29 .. :try_end_36} :catchall_34
 
-    throw p1
+    throw v1
 .end method
 
 .method public onVideoAvailable()V
@@ -1627,6 +1686,7 @@
     move-exception v1
 
     .line 2544
+    .local v1, "e":Landroid/os/RemoteException;
     :try_start_29
     const-string v2, "TvInputManagerService"
 
@@ -1635,6 +1695,7 @@
     invoke-static {v2, v3, v1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
     .line 2546
+    .end local v1  # "e":Landroid/os/RemoteException;
     :goto_30
     monitor-exit v0
 
@@ -1660,7 +1721,8 @@
 .end method
 
 .method public onVideoUnavailable(I)V
-    .registers 5
+    .registers 6
+    .param p1, "reason"  # I
 
     .line 2551
     iget-object v0, p0, Lcom/android/server/tv/TvInputManagerService$SessionCallback;->this$0:Lcom/android/server/tv/TvInputManagerService;
@@ -1718,17 +1780,19 @@
 
     .line 2560
     :catch_28
-    move-exception p1
+    move-exception v1
 
     .line 2561
+    .local v1, "e":Landroid/os/RemoteException;
     :try_start_29
-    const-string v1, "TvInputManagerService"
+    const-string v2, "TvInputManagerService"
 
-    const-string v2, "error in onVideoUnavailable"
+    const-string v3, "error in onVideoUnavailable"
 
-    invoke-static {v1, v2, p1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    invoke-static {v2, v3, v1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
     .line 2563
+    .end local v1  # "e":Landroid/os/RemoteException;
     :goto_30
     monitor-exit v0
 
@@ -1744,11 +1808,11 @@
 
     .line 2563
     :catchall_34
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_36
     .catchall {:try_start_29 .. :try_end_36} :catchall_34
 
-    throw p1
+    throw v1
 .end method

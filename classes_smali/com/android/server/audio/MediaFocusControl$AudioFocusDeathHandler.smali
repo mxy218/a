@@ -26,6 +26,8 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/audio/MediaFocusControl;Landroid/os/IBinder;)V
     .registers 3
+    .param p1, "this$0"  # Lcom/android/server/audio/MediaFocusControl;
+    .param p2, "cb"  # Landroid/os/IBinder;
 
     .line 402
     iput-object p1, p0, Lcom/android/server/audio/MediaFocusControl$AudioFocusDeathHandler;->this$0:Lcom/android/server/audio/MediaFocusControl;

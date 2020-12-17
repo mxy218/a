@@ -26,6 +26,15 @@
 # direct methods
 .method private constructor <init>(Lcom/android/server/backup/transport/TransportClient;Landroid/app/backup/IRestoreObserver;Landroid/app/backup/IBackupManagerMonitor;JLandroid/content/pm/PackageInfo;IZ[Ljava/lang/String;Lcom/android/server/backup/internal/OnTaskFinishedListener;)V
     .registers 11
+    .param p1, "transportClient"  # Lcom/android/server/backup/transport/TransportClient;
+    .param p2, "observer"  # Landroid/app/backup/IRestoreObserver;
+    .param p3, "monitor"  # Landroid/app/backup/IBackupManagerMonitor;
+    .param p4, "token"  # J
+    .param p6, "packageInfo"  # Landroid/content/pm/PackageInfo;
+    .param p7, "pmToken"  # I
+    .param p8, "isSystemRestore"  # Z
+    .param p9, "filterSet"  # [Ljava/lang/String;
+    .param p10, "listener"  # Lcom/android/server/backup/internal/OnTaskFinishedListener;
 
     .line 137
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -63,6 +72,11 @@
 
 .method public static createForRestoreAll(Lcom/android/server/backup/transport/TransportClient;Landroid/app/backup/IRestoreObserver;Landroid/app/backup/IBackupManagerMonitor;JLcom/android/server/backup/internal/OnTaskFinishedListener;)Lcom/android/server/backup/params/RestoreParams;
     .registers 18
+    .param p0, "transportClient"  # Lcom/android/server/backup/transport/TransportClient;
+    .param p1, "observer"  # Landroid/app/backup/IRestoreObserver;
+    .param p2, "monitor"  # Landroid/app/backup/IBackupManagerMonitor;
+    .param p3, "token"  # J
+    .param p5, "listener"  # Lcom/android/server/backup/internal/OnTaskFinishedListener;
 
     .line 93
     new-instance v11, Lcom/android/server/backup/params/RestoreParams;
@@ -94,6 +108,13 @@
 
 .method public static createForRestoreAtInstall(Lcom/android/server/backup/transport/TransportClient;Landroid/app/backup/IRestoreObserver;Landroid/app/backup/IBackupManagerMonitor;JLjava/lang/String;ILcom/android/server/backup/internal/OnTaskFinishedListener;)Lcom/android/server/backup/params/RestoreParams;
     .registers 20
+    .param p0, "transportClient"  # Lcom/android/server/backup/transport/TransportClient;
+    .param p1, "observer"  # Landroid/app/backup/IRestoreObserver;
+    .param p2, "monitor"  # Landroid/app/backup/IBackupManagerMonitor;
+    .param p3, "token"  # J
+    .param p5, "packageName"  # Ljava/lang/String;
+    .param p6, "pmToken"  # I
+    .param p7, "listener"  # Lcom/android/server/backup/internal/OnTaskFinishedListener;
 
     .line 71
     const/4 v0, 0x1
@@ -105,6 +126,7 @@
     aput-object p5, v10, v0
 
     .line 72
+    .local v10, "filterSet":[Ljava/lang/String;
     new-instance v0, Lcom/android/server/backup/params/RestoreParams;
 
     const/4 v7, 0x0
@@ -132,6 +154,13 @@
 
 .method public static createForRestorePackages(Lcom/android/server/backup/transport/TransportClient;Landroid/app/backup/IRestoreObserver;Landroid/app/backup/IBackupManagerMonitor;J[Ljava/lang/String;ZLcom/android/server/backup/internal/OnTaskFinishedListener;)Lcom/android/server/backup/params/RestoreParams;
     .registers 20
+    .param p0, "transportClient"  # Lcom/android/server/backup/transport/TransportClient;
+    .param p1, "observer"  # Landroid/app/backup/IRestoreObserver;
+    .param p2, "monitor"  # Landroid/app/backup/IBackupManagerMonitor;
+    .param p3, "token"  # J
+    .param p5, "filterSet"  # [Ljava/lang/String;
+    .param p6, "isSystemRestore"  # Z
+    .param p7, "listener"  # Lcom/android/server/backup/internal/OnTaskFinishedListener;
 
     .line 116
     new-instance v11, Lcom/android/server/backup/params/RestoreParams;
@@ -163,6 +192,12 @@
 
 .method public static createForSinglePackage(Lcom/android/server/backup/transport/TransportClient;Landroid/app/backup/IRestoreObserver;Landroid/app/backup/IBackupManagerMonitor;JLandroid/content/pm/PackageInfo;Lcom/android/server/backup/internal/OnTaskFinishedListener;)Lcom/android/server/backup/params/RestoreParams;
     .registers 19
+    .param p0, "transportClient"  # Lcom/android/server/backup/transport/TransportClient;
+    .param p1, "observer"  # Landroid/app/backup/IRestoreObserver;
+    .param p2, "monitor"  # Landroid/app/backup/IBackupManagerMonitor;
+    .param p3, "token"  # J
+    .param p5, "packageInfo"  # Landroid/content/pm/PackageInfo;
+    .param p6, "listener"  # Lcom/android/server/backup/internal/OnTaskFinishedListener;
 
     .line 48
     new-instance v11, Lcom/android/server/backup/params/RestoreParams;

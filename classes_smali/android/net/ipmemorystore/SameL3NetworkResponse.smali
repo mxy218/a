@@ -29,7 +29,8 @@
 
 # direct methods
 .method public constructor <init>(Landroid/net/ipmemorystore/SameL3NetworkResponseParcelable;)V
-    .registers 4
+    .registers 5
+    .param p1, "parceled"  # Landroid/net/ipmemorystore/SameL3NetworkResponseParcelable;
     .annotation build Lcom/android/internal/annotations/VisibleForTesting;
     .end annotation
 
@@ -38,9 +39,9 @@
 
     iget-object v1, p1, Landroid/net/ipmemorystore/SameL3NetworkResponseParcelable;->l2Key2:Ljava/lang/String;
 
-    iget p1, p1, Landroid/net/ipmemorystore/SameL3NetworkResponseParcelable;->confidence:F
+    iget v2, p1, Landroid/net/ipmemorystore/SameL3NetworkResponseParcelable;->confidence:F
 
-    invoke-direct {p0, v0, v1, p1}, Landroid/net/ipmemorystore/SameL3NetworkResponse;-><init>(Ljava/lang/String;Ljava/lang/String;F)V
+    invoke-direct {p0, v0, v1, v2}, Landroid/net/ipmemorystore/SameL3NetworkResponse;-><init>(Ljava/lang/String;Ljava/lang/String;F)V
 
     .line 106
     return-void
@@ -48,6 +49,9 @@
 
 .method public constructor <init>(Ljava/lang/String;Ljava/lang/String;F)V
     .registers 4
+    .param p1, "l2Key1"  # Ljava/lang/String;
+    .param p2, "l2Key2"  # Ljava/lang/String;
+    .param p3, "confidence"  # F
 
     .line 96
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -68,7 +72,8 @@
 
 # virtual methods
 .method public equals(Ljava/lang/Object;)Z
-    .registers 5
+    .registers 6
+    .param p1, "o"  # Ljava/lang/Object;
 
     .line 122
     instance-of v0, p1, Landroid/net/ipmemorystore/SameL3NetworkResponse;
@@ -81,40 +86,43 @@
 
     .line 123
     :cond_6
-    check-cast p1, Landroid/net/ipmemorystore/SameL3NetworkResponse;
+    move-object v0, p1
+
+    check-cast v0, Landroid/net/ipmemorystore/SameL3NetworkResponse;
 
     .line 124
-    iget-object v0, p0, Landroid/net/ipmemorystore/SameL3NetworkResponse;->l2Key1:Ljava/lang/String;
+    .local v0, "other":Landroid/net/ipmemorystore/SameL3NetworkResponse;
+    iget-object v2, p0, Landroid/net/ipmemorystore/SameL3NetworkResponse;->l2Key1:Ljava/lang/String;
 
-    iget-object v2, p1, Landroid/net/ipmemorystore/SameL3NetworkResponse;->l2Key1:Ljava/lang/String;
+    iget-object v3, v0, Landroid/net/ipmemorystore/SameL3NetworkResponse;->l2Key1:Ljava/lang/String;
 
-    invoke-virtual {v0, v2}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v2, v3}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result v0
+    move-result v2
 
-    if-eqz v0, :cond_25
+    if-eqz v2, :cond_26
 
-    iget-object v0, p0, Landroid/net/ipmemorystore/SameL3NetworkResponse;->l2Key2:Ljava/lang/String;
+    iget-object v2, p0, Landroid/net/ipmemorystore/SameL3NetworkResponse;->l2Key2:Ljava/lang/String;
 
-    iget-object v2, p1, Landroid/net/ipmemorystore/SameL3NetworkResponse;->l2Key2:Ljava/lang/String;
+    iget-object v3, v0, Landroid/net/ipmemorystore/SameL3NetworkResponse;->l2Key2:Ljava/lang/String;
 
-    invoke-virtual {v0, v2}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v2, v3}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result v0
+    move-result v2
 
-    if-eqz v0, :cond_25
+    if-eqz v2, :cond_26
 
-    iget v0, p0, Landroid/net/ipmemorystore/SameL3NetworkResponse;->confidence:F
+    iget v2, p0, Landroid/net/ipmemorystore/SameL3NetworkResponse;->confidence:F
 
-    iget p1, p1, Landroid/net/ipmemorystore/SameL3NetworkResponse;->confidence:F
+    iget v3, v0, Landroid/net/ipmemorystore/SameL3NetworkResponse;->confidence:F
 
-    cmpl-float p1, v0, p1
+    cmpl-float v2, v2, v3
 
-    if-nez p1, :cond_25
+    if-nez v2, :cond_26
 
     const/4 v1, 0x1
 
-    :cond_25
+    :cond_26
     return v1
 .end method
 
@@ -216,6 +224,7 @@
     invoke-direct {v0}, Landroid/net/ipmemorystore/SameL3NetworkResponseParcelable;-><init>()V
 
     .line 112
+    .local v0, "parcelable":Landroid/net/ipmemorystore/SameL3NetworkResponseParcelable;
     iget-object v1, p0, Landroid/net/ipmemorystore/SameL3NetworkResponse;->l2Key1:Ljava/lang/String;
 
     iput-object v1, v0, Landroid/net/ipmemorystore/SameL3NetworkResponseParcelable;->l2Key1:Ljava/lang/String;

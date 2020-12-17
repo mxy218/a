@@ -97,6 +97,8 @@
 # direct methods
 .method private constructor <init>(Landroid/content/Context;I)V
     .registers 4
+    .param p1, "context"  # Landroid/content/Context;
+    .param p2, "userId"  # I
 
     .line 2156
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -168,6 +170,9 @@
 
 .method synthetic constructor <init>(Landroid/content/Context;ILcom/android/server/tv/TvInputManagerService$1;)V
     .registers 4
+    .param p1, "x0"  # Landroid/content/Context;
+    .param p2, "x1"  # I
+    .param p3, "x2"  # Lcom/android/server/tv/TvInputManagerService$1;
 
     .line 2126
     invoke-direct {p0, p1, p2}, Lcom/android/server/tv/TvInputManagerService$UserState;-><init>(Landroid/content/Context;I)V
@@ -176,16 +181,19 @@
 .end method
 
 .method static synthetic access$1200(Lcom/android/server/tv/TvInputManagerService$UserState;)Ljava/util/Map;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/tv/TvInputManagerService$UserState;
 
     .line 2126
-    iget-object p0, p0, Lcom/android/server/tv/TvInputManagerService$UserState;->inputMap:Ljava/util/Map;
+    iget-object v0, p0, Lcom/android/server/tv/TvInputManagerService$UserState;->inputMap:Ljava/util/Map;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$1202(Lcom/android/server/tv/TvInputManagerService$UserState;Ljava/util/Map;)Ljava/util/Map;
     .registers 2
+    .param p0, "x0"  # Lcom/android/server/tv/TvInputManagerService$UserState;
+    .param p1, "x1"  # Ljava/util/Map;
 
     .line 2126
     iput-object p1, p0, Lcom/android/server/tv/TvInputManagerService$UserState;->inputMap:Ljava/util/Map;
@@ -194,52 +202,59 @@
 .end method
 
 .method static synthetic access$1500(Lcom/android/server/tv/TvInputManagerService$UserState;)Ljava/util/List;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/tv/TvInputManagerService$UserState;
 
     .line 2126
-    iget-object p0, p0, Lcom/android/server/tv/TvInputManagerService$UserState;->contentRatingSystemList:Ljava/util/List;
+    iget-object v0, p0, Lcom/android/server/tv/TvInputManagerService$UserState;->contentRatingSystemList:Ljava/util/List;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$1600(Lcom/android/server/tv/TvInputManagerService$UserState;)Ljava/util/Map;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/tv/TvInputManagerService$UserState;
 
     .line 2126
-    iget-object p0, p0, Lcom/android/server/tv/TvInputManagerService$UserState;->sessionStateMap:Ljava/util/Map;
+    iget-object v0, p0, Lcom/android/server/tv/TvInputManagerService$UserState;->sessionStateMap:Ljava/util/Map;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$2800(Lcom/android/server/tv/TvInputManagerService$UserState;)Ljava/util/Map;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/tv/TvInputManagerService$UserState;
 
     .line 2126
-    iget-object p0, p0, Lcom/android/server/tv/TvInputManagerService$UserState;->clientStateMap:Ljava/util/Map;
+    iget-object v0, p0, Lcom/android/server/tv/TvInputManagerService$UserState;->clientStateMap:Ljava/util/Map;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$2900(Lcom/android/server/tv/TvInputManagerService$UserState;)Ljava/util/Set;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/tv/TvInputManagerService$UserState;
 
     .line 2126
-    iget-object p0, p0, Lcom/android/server/tv/TvInputManagerService$UserState;->callbackSet:Ljava/util/Set;
+    iget-object v0, p0, Lcom/android/server/tv/TvInputManagerService$UserState;->callbackSet:Ljava/util/Set;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$3000(Lcom/android/server/tv/TvInputManagerService$UserState;)Landroid/os/IBinder;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/tv/TvInputManagerService$UserState;
 
     .line 2126
-    iget-object p0, p0, Lcom/android/server/tv/TvInputManagerService$UserState;->mainSessionToken:Landroid/os/IBinder;
+    iget-object v0, p0, Lcom/android/server/tv/TvInputManagerService$UserState;->mainSessionToken:Landroid/os/IBinder;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$3002(Lcom/android/server/tv/TvInputManagerService$UserState;Landroid/os/IBinder;)Landroid/os/IBinder;
     .registers 2
+    .param p0, "x0"  # Lcom/android/server/tv/TvInputManagerService$UserState;
+    .param p1, "x1"  # Landroid/os/IBinder;
 
     .line 2126
     iput-object p1, p0, Lcom/android/server/tv/TvInputManagerService$UserState;->mainSessionToken:Landroid/os/IBinder;
@@ -248,28 +263,31 @@
 .end method
 
 .method static synthetic access$4600(Lcom/android/server/tv/TvInputManagerService$UserState;)Lcom/android/server/tv/PersistentDataStore;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/tv/TvInputManagerService$UserState;
 
     .line 2126
-    iget-object p0, p0, Lcom/android/server/tv/TvInputManagerService$UserState;->persistentDataStore:Lcom/android/server/tv/PersistentDataStore;
+    iget-object v0, p0, Lcom/android/server/tv/TvInputManagerService$UserState;->persistentDataStore:Lcom/android/server/tv/PersistentDataStore;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$800(Lcom/android/server/tv/TvInputManagerService$UserState;)Ljava/util/Set;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/tv/TvInputManagerService$UserState;
 
     .line 2126
-    iget-object p0, p0, Lcom/android/server/tv/TvInputManagerService$UserState;->packageSet:Ljava/util/Set;
+    iget-object v0, p0, Lcom/android/server/tv/TvInputManagerService$UserState;->packageSet:Ljava/util/Set;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$900(Lcom/android/server/tv/TvInputManagerService$UserState;)Ljava/util/Map;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/tv/TvInputManagerService$UserState;
 
     .line 2126
-    iget-object p0, p0, Lcom/android/server/tv/TvInputManagerService$UserState;->serviceStateMap:Ljava/util/Map;
+    iget-object v0, p0, Lcom/android/server/tv/TvInputManagerService$UserState;->serviceStateMap:Ljava/util/Map;
 
-    return-object p0
+    return-object v0
 .end method

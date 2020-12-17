@@ -48,6 +48,8 @@
 # direct methods
 .method private constructor <init>(Ljava/lang/Object;Ljava/lang/String;Lcom/android/server/location/CallerIdentity;Ljava/util/function/Consumer;)V
     .registers 6
+    .param p2, "listenerName"  # Ljava/lang/String;
+    .param p3, "callerIdentity"  # Lcom/android/server/location/CallerIdentity;
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(TT",
@@ -61,25 +63,34 @@
         }
     .end annotation
 
-    .line 2931
+    .line 3164
+    .local p0, "this":Lcom/android/server/LocationManagerService$LinkedListener;, "Lcom/android/server/LocationManagerService$LinkedListener<TTListener;>;"
+    .local p1, "listener":Ljava/lang/Object;, "TTListener;"
+    .local p4, "binderDeathCallback":Ljava/util/function/Consumer;, "Ljava/util/function/Consumer<TTListener;>;"
     const/4 v0, 0x0
 
     invoke-direct {p0, p3, p2, v0}, Lcom/android/server/LocationManagerService$LinkedListenerBase;-><init>(Lcom/android/server/location/CallerIdentity;Ljava/lang/String;Lcom/android/server/LocationManagerService$1;)V
 
-    .line 2932
+    .line 3165
     iput-object p1, p0, Lcom/android/server/LocationManagerService$LinkedListener;->mListener:Ljava/lang/Object;
 
-    .line 2933
+    .line 3166
     iput-object p4, p0, Lcom/android/server/LocationManagerService$LinkedListener;->mBinderDeathCallback:Ljava/util/function/Consumer;
 
-    .line 2934
+    .line 3167
     return-void
 .end method
 
 .method synthetic constructor <init>(Ljava/lang/Object;Ljava/lang/String;Lcom/android/server/location/CallerIdentity;Ljava/util/function/Consumer;Lcom/android/server/LocationManagerService$1;)V
     .registers 6
+    .param p1, "x0"  # Ljava/lang/Object;
+    .param p2, "x1"  # Ljava/lang/String;
+    .param p3, "x2"  # Lcom/android/server/location/CallerIdentity;
+    .param p4, "x3"  # Ljava/util/function/Consumer;
+    .param p5, "x4"  # Lcom/android/server/LocationManagerService$1;
 
-    .line 2924
+    .line 3157
+    .local p0, "this":Lcom/android/server/LocationManagerService$LinkedListener;, "Lcom/android/server/LocationManagerService$LinkedListener<TTListener;>;"
     invoke-direct {p0, p1, p2, p3, p4}, Lcom/android/server/LocationManagerService$LinkedListener;-><init>(Ljava/lang/Object;Ljava/lang/String;Lcom/android/server/location/CallerIdentity;Ljava/util/function/Consumer;)V
 
     return-void
@@ -90,11 +101,8 @@
 .method public binderDied()V
     .registers 3
 
-    .line 2938
-    sget-boolean v0, Lcom/android/server/LocationManagerService;->D:Z
-
-    if-eqz v0, :cond_21
-
+    .line 3171
+    .local p0, "this":Lcom/android/server/LocationManagerService$LinkedListener;, "Lcom/android/server/LocationManagerService$LinkedListener<TTListener;>;"
     new-instance v0, Ljava/lang/StringBuilder;
 
     invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
@@ -119,14 +127,13 @@
 
     invoke-static {v1, v0}, Landroid/util/Log;->d(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 2939
-    :cond_21
+    .line 3172
     iget-object v0, p0, Lcom/android/server/LocationManagerService$LinkedListener;->mBinderDeathCallback:Ljava/util/function/Consumer;
 
     iget-object v1, p0, Lcom/android/server/LocationManagerService$LinkedListener;->mListener:Ljava/lang/Object;
 
     invoke-interface {v0, v1}, Ljava/util/function/Consumer;->accept(Ljava/lang/Object;)V
 
-    .line 2940
+    .line 3173
     return-void
 .end method

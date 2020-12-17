@@ -48,19 +48,19 @@
 .method private constructor <init>(Lcom/android/server/StorageManagerService;)V
     .registers 2
 
-    .line 3944
+    .line 4057
     iput-object p1, p0, Lcom/android/server/StorageManagerService$StorageManagerInternalImpl;->this$0:Lcom/android/server/StorageManagerService;
 
     invoke-direct {p0}, Landroid/os/storage/StorageManagerInternal;-><init>()V
 
-    .line 3946
+    .line 4059
     new-instance p1, Ljava/util/concurrent/CopyOnWriteArrayList;
 
     invoke-direct {p1}, Ljava/util/concurrent/CopyOnWriteArrayList;-><init>()V
 
     iput-object p1, p0, Lcom/android/server/StorageManagerService$StorageManagerInternalImpl;->mPolicies:Ljava/util/concurrent/CopyOnWriteArrayList;
 
-    .line 3949
+    .line 4062
     new-instance p1, Ljava/util/ArrayList;
 
     invoke-direct {p1}, Ljava/util/ArrayList;-><init>()V
@@ -72,8 +72,10 @@
 
 .method synthetic constructor <init>(Lcom/android/server/StorageManagerService;Lcom/android/server/StorageManagerService$1;)V
     .registers 3
+    .param p1, "x0"  # Lcom/android/server/StorageManagerService;
+    .param p2, "x1"  # Lcom/android/server/StorageManagerService$1;
 
-    .line 3944
+    .line 4057
     invoke-direct {p0, p1}, Lcom/android/server/StorageManagerService$StorageManagerInternalImpl;-><init>(Lcom/android/server/StorageManagerService;)V
 
     return-void
@@ -83,73 +85,77 @@
 # virtual methods
 .method public addExternalStoragePolicy(Landroid/os/storage/StorageManagerInternal$ExternalStorageMountPolicy;)V
     .registers 3
+    .param p1, "policy"  # Landroid/os/storage/StorageManagerInternal$ExternalStorageMountPolicy;
 
-    .line 3956
+    .line 4069
     iget-object v0, p0, Lcom/android/server/StorageManagerService$StorageManagerInternalImpl;->mPolicies:Ljava/util/concurrent/CopyOnWriteArrayList;
 
     invoke-virtual {v0, p1}, Ljava/util/concurrent/CopyOnWriteArrayList;->add(Ljava/lang/Object;)Z
 
-    .line 3957
+    .line 4070
     return-void
 .end method
 
 .method public addResetListener(Landroid/os/storage/StorageManagerInternal$ResetListener;)V
     .registers 4
+    .param p1, "listener"  # Landroid/os/storage/StorageManagerInternal$ResetListener;
 
-    .line 3995
+    .line 4108
     iget-object v0, p0, Lcom/android/server/StorageManagerService$StorageManagerInternalImpl;->mResetListeners:Ljava/util/List;
 
     monitor-enter v0
 
-    .line 3996
+    .line 4109
     :try_start_3
     iget-object v1, p0, Lcom/android/server/StorageManagerService$StorageManagerInternalImpl;->mResetListeners:Ljava/util/List;
 
     invoke-interface {v1, p1}, Ljava/util/List;->add(Ljava/lang/Object;)Z
 
-    .line 3997
+    .line 4110
     monitor-exit v0
 
-    .line 3998
+    .line 4111
     return-void
 
-    .line 3997
+    .line 4110
     :catchall_a
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_c
     .catchall {:try_start_3 .. :try_end_c} :catchall_a
 
-    throw p1
+    throw v1
 .end method
 
 .method public getExternalStorageMountMode(ILjava/lang/String;)I
     .registers 8
+    .param p1, "uid"  # I
+    .param p2, "packageName"  # Ljava/lang/String;
 
-    .line 3967
+    .line 4080
     invoke-static {}, Lcom/android/server/StorageManagerService;->access$4700()Z
 
     move-result v0
 
     if-eqz v0, :cond_d
 
-    .line 3968
+    .line 4081
     iget-object v0, p0, Lcom/android/server/StorageManagerService$StorageManagerInternalImpl;->this$0:Lcom/android/server/StorageManagerService;
 
     invoke-static {v0, p1, p2}, Lcom/android/server/StorageManagerService;->access$4800(Lcom/android/server/StorageManagerService;ILjava/lang/String;)I
 
-    move-result p1
+    move-result v0
 
-    return p1
+    return v0
 
-    .line 3971
+    .line 4084
     :cond_d
     const/4 v0, 0x0
 
-    if-nez p2, :cond_1f
+    if-nez p2, :cond_20
 
-    .line 3972
+    .line 4085
     :try_start_10
     iget-object v1, p0, Lcom/android/server/StorageManagerService$StorageManagerInternalImpl;->this$0:Lcom/android/server/StorageManagerService;
 
@@ -161,98 +167,107 @@
 
     move-result-object v1
 
-    .line 3973
-    aget-object p2, v1, v0
+    .line 4086
+    .local v1, "packagesForUid":[Ljava/lang/String;
+    aget-object v2, v1, v0
     :try_end_1c
-    .catch Landroid/os/RemoteException; {:try_start_10 .. :try_end_1c} :catch_1d
+    .catch Landroid/os/RemoteException; {:try_start_10 .. :try_end_1c} :catch_1e
 
-    goto :goto_1f
-
-    .line 3975
-    :catch_1d
-    move-exception v1
+    move-object p2, v2
 
     goto :goto_20
 
-    .line 3977
-    :cond_1f
-    :goto_1f
-    nop
+    .line 4088
+    .end local v1  # "packagesForUid":[Ljava/lang/String;
+    :catch_1e
+    move-exception v1
 
-    .line 3979
+    goto :goto_21
+
+    .line 4090
+    :cond_20
     :goto_20
     nop
 
-    .line 3980
-    iget-object v1, p0, Lcom/android/server/StorageManagerService$StorageManagerInternalImpl;->mPolicies:Ljava/util/concurrent/CopyOnWriteArrayList;
+    .line 4092
+    :goto_21
+    const v1, 0x7fffffff
 
-    invoke-virtual {v1}, Ljava/util/concurrent/CopyOnWriteArrayList;->iterator()Ljava/util/Iterator;
+    .line 4093
+    .local v1, "mountMode":I
+    iget-object v2, p0, Lcom/android/server/StorageManagerService$StorageManagerInternalImpl;->mPolicies:Ljava/util/concurrent/CopyOnWriteArrayList;
 
-    move-result-object v1
+    invoke-virtual {v2}, Ljava/util/concurrent/CopyOnWriteArrayList;->iterator()Ljava/util/Iterator;
 
-    const v2, 0x7fffffff
+    move-result-object v2
 
-    move v3, v2
-
-    :goto_2b
-    invoke-interface {v1}, Ljava/util/Iterator;->hasNext()Z
-
-    move-result v4
-
-    if-eqz v4, :cond_43
-
-    invoke-interface {v1}, Ljava/util/Iterator;->next()Ljava/lang/Object;
-
-    move-result-object v4
-
-    check-cast v4, Landroid/os/storage/StorageManagerInternal$ExternalStorageMountPolicy;
-
-    .line 3981
-    invoke-interface {v4, p1, p2}, Landroid/os/storage/StorageManagerInternal$ExternalStorageMountPolicy;->getMountMode(ILjava/lang/String;)I
-
-    move-result v4
-
-    .line 3982
-    if-nez v4, :cond_3e
-
-    .line 3983
-    return v0
-
-    .line 3985
-    :cond_3e
-    invoke-static {v3, v4}, Ljava/lang/Math;->min(II)I
+    :goto_2a
+    invoke-interface {v2}, Ljava/util/Iterator;->hasNext()Z
 
     move-result v3
 
-    .line 3986
-    goto :goto_2b
+    if-eqz v3, :cond_42
 
-    .line 3987
-    :cond_43
-    if-ne v3, v2, :cond_46
+    invoke-interface {v2}, Ljava/util/Iterator;->next()Ljava/lang/Object;
 
-    .line 3988
+    move-result-object v3
+
+    check-cast v3, Landroid/os/storage/StorageManagerInternal$ExternalStorageMountPolicy;
+
+    .line 4094
+    .local v3, "policy":Landroid/os/storage/StorageManagerInternal$ExternalStorageMountPolicy;
+    invoke-interface {v3, p1, p2}, Landroid/os/storage/StorageManagerInternal$ExternalStorageMountPolicy;->getMountMode(ILjava/lang/String;)I
+
+    move-result v4
+
+    .line 4095
+    .local v4, "policyMode":I
+    if-nez v4, :cond_3d
+
+    .line 4096
     return v0
 
-    .line 3990
-    :cond_46
-    return v3
+    .line 4098
+    :cond_3d
+    invoke-static {v1, v4}, Ljava/lang/Math;->min(II)I
+
+    move-result v1
+
+    .line 4099
+    .end local v3  # "policy":Landroid/os/storage/StorageManagerInternal$ExternalStorageMountPolicy;
+    .end local v4  # "policyMode":I
+    goto :goto_2a
+
+    .line 4100
+    :cond_42
+    const v2, 0x7fffffff
+
+    if-ne v1, v2, :cond_48
+
+    .line 4101
+    return v0
+
+    .line 4103
+    :cond_48
+    return v1
 .end method
 
 .method public hasExternalStorage(ILjava/lang/String;)Z
-    .registers 7
+    .registers 8
+    .param p1, "uid"  # I
+    .param p2, "packageName"  # Ljava/lang/String;
 
-    .line 4011
+    .line 4124
     const/4 v0, 0x1
 
     const/16 v1, 0x3e8
 
     if-ne p1, v1, :cond_6
 
-    .line 4012
+    .line 4125
     return v0
 
-    .line 4014
+    .line 4127
     :cond_6
     invoke-static {}, Lcom/android/server/StorageManagerService;->access$4700()Z
 
@@ -262,14 +277,14 @@
 
     if-eqz v1, :cond_18
 
-    .line 4015
+    .line 4128
     iget-object v1, p0, Lcom/android/server/StorageManagerService$StorageManagerInternalImpl;->this$0:Lcom/android/server/StorageManagerService;
 
     invoke-static {v1, p1, p2}, Lcom/android/server/StorageManagerService;->access$4800(Lcom/android/server/StorageManagerService;ILjava/lang/String;)I
 
-    move-result p1
+    move-result v1
 
-    if-eqz p1, :cond_16
+    if-eqz v1, :cond_16
 
     goto :goto_17
 
@@ -279,7 +294,7 @@
     :goto_17
     return v0
 
-    .line 4018
+    .line 4131
     :cond_18
     iget-object v1, p0, Lcom/android/server/StorageManagerService$StorageManagerInternalImpl;->mPolicies:Ljava/util/concurrent/CopyOnWriteArrayList;
 
@@ -300,124 +315,140 @@
 
     check-cast v3, Landroid/os/storage/StorageManagerInternal$ExternalStorageMountPolicy;
 
-    .line 4019
+    .line 4132
+    .local v3, "policy":Landroid/os/storage/StorageManagerInternal$ExternalStorageMountPolicy;
     invoke-interface {v3, p1, p2}, Landroid/os/storage/StorageManagerInternal$ExternalStorageMountPolicy;->hasExternalStorage(ILjava/lang/String;)Z
 
-    move-result v3
+    move-result v4
 
-    .line 4020
-    if-nez v3, :cond_31
+    .line 4133
+    .local v4, "policyHasStorage":Z
+    if-nez v4, :cond_31
 
-    .line 4021
+    .line 4134
     return v2
 
-    .line 4023
+    .line 4136
+    .end local v3  # "policy":Landroid/os/storage/StorageManagerInternal$ExternalStorageMountPolicy;
+    .end local v4  # "policyHasStorage":Z
     :cond_31
     goto :goto_1e
 
-    .line 4024
+    .line 4137
     :cond_32
     return v0
 .end method
 
 .method public onAppOpsChanged(IILjava/lang/String;I)V
-    .registers 7
+    .registers 9
+    .param p1, "code"  # I
+    .param p2, "uid"  # I
+    .param p3, "packageName"  # Ljava/lang/String;
+    .param p4, "mode"  # I
 
-    .line 4029
+    .line 4142
     if-nez p4, :cond_30
 
-    const/16 p4, 0x3b
+    const/16 v0, 0x3b
 
-    if-eq p1, p4, :cond_e
+    if-eq p1, v0, :cond_e
 
-    const/16 p4, 0x3c
+    const/16 v0, 0x3c
 
-    if-eq p1, p4, :cond_e
+    if-eq p1, v0, :cond_e
 
-    const/16 p4, 0x42
+    const/16 v0, 0x42
 
-    if-ne p1, p4, :cond_30
+    if-ne p1, v0, :cond_30
 
-    .line 4032
+    .line 4145
     :cond_e
     invoke-static {}, Landroid/os/Binder;->clearCallingIdentity()J
 
     move-result-wide v0
 
-    .line 4034
+    .line 4147
+    .local v0, "token":J
     :try_start_12
-    const-class p1, Landroid/os/UserManagerInternal;
+    const-class v2, Landroid/os/UserManagerInternal;
 
-    .line 4035
-    invoke-static {p1}, Lcom/android/server/LocalServices;->getService(Ljava/lang/Class;)Ljava/lang/Object;
+    .line 4148
+    invoke-static {v2}, Lcom/android/server/LocalServices;->getService(Ljava/lang/Class;)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v2
 
-    check-cast p1, Landroid/os/UserManagerInternal;
+    check-cast v2, Landroid/os/UserManagerInternal;
 
-    .line 4036
+    .line 4149
+    .local v2, "userManagerInternal":Landroid/os/UserManagerInternal;
     invoke-static {p2}, Landroid/os/UserHandle;->getUserId(I)I
 
-    move-result p4
+    move-result v3
 
-    invoke-virtual {p1, p4}, Landroid/os/UserManagerInternal;->isUserInitialized(I)Z
+    invoke-virtual {v2, v3}, Landroid/os/UserManagerInternal;->isUserInitialized(I)Z
 
-    move-result p1
+    move-result v3
 
-    if-eqz p1, :cond_27
+    if-eqz v3, :cond_27
 
-    .line 4037
+    .line 4150
     invoke-virtual {p0, p2, p3}, Lcom/android/server/StorageManagerService$StorageManagerInternalImpl;->onExternalStoragePolicyChanged(ILjava/lang/String;)V
     :try_end_27
     .catchall {:try_start_12 .. :try_end_27} :catchall_2b
 
-    .line 4040
+    .line 4153
+    .end local v2  # "userManagerInternal":Landroid/os/UserManagerInternal;
     :cond_27
     invoke-static {v0, v1}, Landroid/os/Binder;->restoreCallingIdentity(J)V
 
-    .line 4041
+    .line 4154
     goto :goto_30
 
-    .line 4040
+    .line 4153
     :catchall_2b
-    move-exception p1
+    move-exception v2
 
     invoke-static {v0, v1}, Landroid/os/Binder;->restoreCallingIdentity(J)V
 
-    throw p1
+    throw v2
 
-    .line 4043
+    .line 4156
+    .end local v0  # "token":J
     :cond_30
     :goto_30
     return-void
 .end method
 
 .method public onExternalStoragePolicyChanged(ILjava/lang/String;)V
-    .registers 4
+    .registers 5
+    .param p1, "uid"  # I
+    .param p2, "packageName"  # Ljava/lang/String;
 
-    .line 3961
+    .line 4074
     invoke-virtual {p0, p1, p2}, Lcom/android/server/StorageManagerService$StorageManagerInternalImpl;->getExternalStorageMountMode(ILjava/lang/String;)I
 
-    move-result p2
+    move-result v0
 
-    .line 3962
-    iget-object v0, p0, Lcom/android/server/StorageManagerService$StorageManagerInternalImpl;->this$0:Lcom/android/server/StorageManagerService;
+    .line 4075
+    .local v0, "mountMode":I
+    iget-object v1, p0, Lcom/android/server/StorageManagerService$StorageManagerInternalImpl;->this$0:Lcom/android/server/StorageManagerService;
 
-    invoke-static {v0, p1, p2}, Lcom/android/server/StorageManagerService;->access$4900(Lcom/android/server/StorageManagerService;II)V
+    invoke-static {v1, p1, v0}, Lcom/android/server/StorageManagerService;->access$4900(Lcom/android/server/StorageManagerService;II)V
 
-    .line 3963
+    .line 4076
     return-void
 .end method
 
 .method public onReset(Landroid/os/IVold;)V
     .registers 5
+    .param p1, "vold"  # Landroid/os/IVold;
 
-    .line 4001
+    .line 4114
     iget-object v0, p0, Lcom/android/server/StorageManagerService$StorageManagerInternalImpl;->mResetListeners:Ljava/util/List;
 
     monitor-enter v0
 
-    .line 4002
+    .line 4115
     :try_start_3
     iget-object v1, p0, Lcom/android/server/StorageManagerService$StorageManagerInternalImpl;->mResetListeners:Ljava/util/List;
 
@@ -438,26 +469,28 @@
 
     check-cast v2, Landroid/os/storage/StorageManagerInternal$ResetListener;
 
-    .line 4003
+    .line 4116
+    .local v2, "listener":Landroid/os/storage/StorageManagerInternal$ResetListener;
     invoke-interface {v2, p1}, Landroid/os/storage/StorageManagerInternal$ResetListener;->onReset(Landroid/os/IVold;)V
 
-    .line 4004
+    .line 4117
+    .end local v2  # "listener":Landroid/os/storage/StorageManagerInternal$ResetListener;
     goto :goto_9
 
-    .line 4005
+    .line 4118
     :cond_19
     monitor-exit v0
 
-    .line 4006
+    .line 4119
     return-void
 
-    .line 4005
+    .line 4118
     :catchall_1b
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_1d
     .catchall {:try_start_3 .. :try_end_1d} :catchall_1b
 
-    throw p1
+    throw v1
 .end method

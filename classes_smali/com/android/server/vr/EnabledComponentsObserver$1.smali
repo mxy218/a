@@ -34,6 +34,10 @@
 # virtual methods
 .method public onHandleForceStop(Landroid/content/Intent;[Ljava/lang/String;IZ)Z
     .registers 6
+    .param p1, "intent"  # Landroid/content/Intent;
+    .param p2, "packages"  # [Ljava/lang/String;
+    .param p3, "uid"  # I
+    .param p4, "doit"  # Z
 
     .line 135
     iget-object v0, p0, Lcom/android/server/vr/EnabledComponentsObserver$1;->val$o:Lcom/android/server/vr/EnabledComponentsObserver;
@@ -43,30 +47,33 @@
     .line 137
     invoke-super {p0, p1, p2, p3, p4}, Lcom/android/internal/content/PackageMonitor;->onHandleForceStop(Landroid/content/Intent;[Ljava/lang/String;IZ)Z
 
-    move-result p1
+    move-result v0
 
-    return p1
+    return v0
 .end method
 
 .method public onPackageDisappeared(Ljava/lang/String;I)V
-    .registers 3
+    .registers 4
+    .param p1, "packageName"  # Ljava/lang/String;
+    .param p2, "reason"  # I
 
     .line 122
-    iget-object p1, p0, Lcom/android/server/vr/EnabledComponentsObserver$1;->val$o:Lcom/android/server/vr/EnabledComponentsObserver;
+    iget-object v0, p0, Lcom/android/server/vr/EnabledComponentsObserver$1;->val$o:Lcom/android/server/vr/EnabledComponentsObserver;
 
-    invoke-virtual {p1}, Lcom/android/server/vr/EnabledComponentsObserver;->onPackagesChanged()V
+    invoke-virtual {v0}, Lcom/android/server/vr/EnabledComponentsObserver;->onPackagesChanged()V
 
     .line 124
     return-void
 .end method
 
 .method public onPackageModified(Ljava/lang/String;)V
-    .registers 2
+    .registers 3
+    .param p1, "packageName"  # Ljava/lang/String;
 
     .line 128
-    iget-object p1, p0, Lcom/android/server/vr/EnabledComponentsObserver$1;->val$o:Lcom/android/server/vr/EnabledComponentsObserver;
+    iget-object v0, p0, Lcom/android/server/vr/EnabledComponentsObserver$1;->val$o:Lcom/android/server/vr/EnabledComponentsObserver;
 
-    invoke-virtual {p1}, Lcom/android/server/vr/EnabledComponentsObserver;->onPackagesChanged()V
+    invoke-virtual {v0}, Lcom/android/server/vr/EnabledComponentsObserver;->onPackagesChanged()V
 
     .line 130
     return-void

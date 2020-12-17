@@ -37,8 +37,9 @@
 # direct methods
 .method public static cameraLensStateToString(I)Ljava/lang/String;
     .registers 2
+    .param p0, "lens"  # I
 
-    .line 615
+    .line 625
     const/4 v0, -0x1
 
     if-eq p0, v0, :cond_13
@@ -49,36 +50,37 @@
 
     if-eq p0, v0, :cond_d
 
-    .line 623
+    .line 633
     invoke-static {p0}, Ljava/lang/Integer;->toString(I)Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v0
 
-    return-object p0
+    return-object v0
 
-    .line 621
+    .line 631
     :cond_d
-    const-string p0, "CAMERA_LENS_COVERED"
+    const-string v0, "CAMERA_LENS_COVERED"
 
-    return-object p0
+    return-object v0
 
-    .line 619
+    .line 629
     :cond_10
-    const-string p0, "CAMERA_LENS_UNCOVERED"
+    const-string v0, "CAMERA_LENS_UNCOVERED"
 
-    return-object p0
+    return-object v0
 
-    .line 617
+    .line 627
     :cond_13
-    const-string p0, "CAMERA_LENS_COVER_ABSENT"
+    const-string v0, "CAMERA_LENS_COVER_ABSENT"
 
-    return-object p0
+    return-object v0
 .end method
 
 .method public static lidStateToString(I)Ljava/lang/String;
     .registers 2
+    .param p0, "lid"  # I
 
-    .line 599
+    .line 609
     const/4 v0, -0x1
 
     if-eq p0, v0, :cond_13
@@ -89,30 +91,30 @@
 
     if-eq p0, v0, :cond_d
 
-    .line 607
+    .line 617
     invoke-static {p0}, Ljava/lang/Integer;->toString(I)Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v0
 
-    return-object p0
+    return-object v0
 
-    .line 605
+    .line 615
     :cond_d
-    const-string p0, "LID_OPEN"
+    const-string v0, "LID_OPEN"
 
-    return-object p0
+    return-object v0
 
-    .line 603
+    .line 613
     :cond_10
-    const-string p0, "LID_CLOSED"
+    const-string v0, "LID_CLOSED"
 
-    return-object p0
+    return-object v0
 
-    .line 601
+    .line 611
     :cond_13
-    const-string p0, "LID_ABSENT"
+    const-string v0, "LID_ABSENT"
 
-    return-object p0
+    return-object v0
 .end method
 
 
@@ -154,9 +156,6 @@
 .end method
 
 .method public abstract reboot(Z)V
-.end method
-
-.method public abstract reboot(ZLjava/lang/String;)V
 .end method
 
 .method public abstract rebootSafeMode(Z)V

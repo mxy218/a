@@ -28,7 +28,7 @@
 .method public constructor <init>()V
     .registers 1
 
-    .line 1005
+    .line 992
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
     return-void
@@ -37,81 +37,91 @@
 
 # virtual methods
 .method public addSample(J)V
-    .registers 15
+    .registers 20
+    .param p1, "sample"  # J
 
-    .line 1014
-    iget-wide v0, p0, Lcom/android/server/notification/NotificationUsageStats$Aggregate;->numSamples:J
+    .line 1001
+    move-object/from16 v0, p0
 
-    const-wide/16 v2, 0x1
+    iget-wide v1, v0, Lcom/android/server/notification/NotificationUsageStats$Aggregate;->numSamples:J
 
-    add-long/2addr v0, v2
+    const-wide/16 v3, 0x1
 
-    iput-wide v0, p0, Lcom/android/server/notification/NotificationUsageStats$Aggregate;->numSamples:J
+    add-long/2addr v1, v3
 
-    .line 1015
-    iget-wide v0, p0, Lcom/android/server/notification/NotificationUsageStats$Aggregate;->numSamples:J
+    iput-wide v1, v0, Lcom/android/server/notification/NotificationUsageStats$Aggregate;->numSamples:J
 
-    long-to-double v4, v0
+    .line 1002
+    iget-wide v1, v0, Lcom/android/server/notification/NotificationUsageStats$Aggregate;->numSamples:J
 
-    .line 1016
-    long-to-double p1, p1
+    long-to-double v5, v1
 
-    iget-wide v6, p0, Lcom/android/server/notification/NotificationUsageStats$Aggregate;->avg:D
+    .line 1003
+    .local v5, "n":D
+    move-wide/from16 v7, p1
 
-    sub-double/2addr p1, v6
+    long-to-double v9, v7
 
-    .line 1017
-    const-wide/high16 v8, 0x3ff0000000000000L  # 1.0
+    iget-wide v11, v0, Lcom/android/server/notification/NotificationUsageStats$Aggregate;->avg:D
 
-    div-double v10, v8, v4
+    sub-double/2addr v9, v11
 
-    mul-double/2addr v10, p1
+    .line 1004
+    .local v9, "delta":D
+    const-wide/high16 v13, 0x3ff0000000000000L  # 1.0
 
-    add-double/2addr v6, v10
+    div-double v15, v13, v5
 
-    iput-wide v6, p0, Lcom/android/server/notification/NotificationUsageStats$Aggregate;->avg:D
+    mul-double/2addr v15, v9
 
-    .line 1018
-    iget-wide v6, p0, Lcom/android/server/notification/NotificationUsageStats$Aggregate;->sum2:D
+    add-double/2addr v11, v15
 
-    sub-double v10, v4, v8
+    iput-wide v11, v0, Lcom/android/server/notification/NotificationUsageStats$Aggregate;->avg:D
 
-    div-double v4, v10, v4
+    .line 1005
+    iget-wide v11, v0, Lcom/android/server/notification/NotificationUsageStats$Aggregate;->sum2:D
 
-    mul-double/2addr v4, p1
+    sub-double v15, v5, v13
 
-    mul-double/2addr v4, p1
+    div-double/2addr v15, v5
 
-    add-double/2addr v6, v4
+    mul-double/2addr v15, v9
 
-    iput-wide v6, p0, Lcom/android/server/notification/NotificationUsageStats$Aggregate;->sum2:D
+    mul-double/2addr v15, v9
 
-    .line 1019
-    cmp-long p1, v0, v2
+    add-double/2addr v11, v15
 
-    if-nez p1, :cond_26
+    iput-wide v11, v0, Lcom/android/server/notification/NotificationUsageStats$Aggregate;->sum2:D
 
-    goto :goto_27
+    .line 1006
+    cmp-long v1, v1, v3
 
-    :cond_26
-    move-wide v8, v10
+    if-nez v1, :cond_29
 
-    .line 1020
-    :goto_27
-    iget-wide p1, p0, Lcom/android/server/notification/NotificationUsageStats$Aggregate;->sum2:D
+    goto :goto_2b
 
-    div-double/2addr p1, v8
+    :cond_29
+    sub-double v13, v5, v13
 
-    iput-wide p1, p0, Lcom/android/server/notification/NotificationUsageStats$Aggregate;->var:D
+    :goto_2b
+    move-wide v1, v13
 
-    .line 1021
+    .line 1007
+    .local v1, "divisor":D
+    iget-wide v3, v0, Lcom/android/server/notification/NotificationUsageStats$Aggregate;->sum2:D
+
+    div-double/2addr v3, v1
+
+    iput-wide v3, v0, Lcom/android/server/notification/NotificationUsageStats$Aggregate;->var:D
+
+    .line 1008
     return-void
 .end method
 
 .method public toString()Ljava/lang/String;
     .registers 4
 
-    .line 1025
+    .line 1012
     new-instance v0, Ljava/lang/StringBuilder;
 
     invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V

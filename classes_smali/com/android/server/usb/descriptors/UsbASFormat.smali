@@ -28,6 +28,11 @@
 # direct methods
 .method public constructor <init>(IBBBI)V
     .registers 6
+    .param p1, "length"  # I
+    .param p2, "type"  # B
+    .param p3, "subtype"  # B
+    .param p4, "formatType"  # B
+    .param p5, "mSubclass"  # I
 
     .line 44
     invoke-direct {p0, p1, p2, p3, p5}, Lcom/android/server/usb/descriptors/UsbACInterface;-><init>(IBBI)V
@@ -40,133 +45,151 @@
 .end method
 
 .method public static allocDescriptor(Lcom/android/server/usb/descriptors/UsbDescriptorParser;Lcom/android/server/usb/descriptors/ByteStream;IBBI)Lcom/android/server/usb/descriptors/UsbDescriptor;
-    .registers 12
+    .registers 15
+    .param p0, "parser"  # Lcom/android/server/usb/descriptors/UsbDescriptorParser;
+    .param p1, "stream"  # Lcom/android/server/usb/descriptors/ByteStream;
+    .param p2, "length"  # I
+    .param p3, "type"  # B
+    .param p4, "subtype"  # B
+    .param p5, "subclass"  # I
 
     .line 72
     invoke-virtual {p1}, Lcom/android/server/usb/descriptors/ByteStream;->getByte()B
 
-    move-result v4
+    move-result v6
 
     .line 73
+    .local v6, "formatType":B
     invoke-virtual {p0}, Lcom/android/server/usb/descriptors/UsbDescriptorParser;->getACInterfaceSpec()I
 
-    move-result p0
+    move-result v7
 
     .line 75
-    const/4 p1, 0x1
+    .local v7, "acInterfaceSpec":I
+    const/4 v0, 0x1
 
-    const/16 v0, 0x200
+    const/16 v1, 0x200
 
-    if-eq v4, p1, :cond_41
+    if-eq v6, v0, :cond_45
 
-    const/4 p1, 0x2
+    const/4 v0, 0x2
 
-    if-eq v4, p1, :cond_29
+    if-eq v6, v0, :cond_2b
 
-    const/4 p0, 0x3
+    const/4 v0, 0x3
 
-    if-eq v4, p0, :cond_1e
+    if-eq v6, v0, :cond_1f
 
     .line 97
-    new-instance p0, Lcom/android/server/usb/descriptors/UsbASFormat;
+    new-instance v8, Lcom/android/server/usb/descriptors/UsbASFormat;
 
-    move-object v0, p0
+    move-object v0, v8
 
     move v1, p2
 
     move v2, p3
 
     move v3, p4
+
+    move v4, v6
 
     move v5, p5
 
     invoke-direct/range {v0 .. v5}, Lcom/android/server/usb/descriptors/UsbASFormat;-><init>(IBBBI)V
 
-    return-object p0
+    return-object v8
 
     .line 92
-    :cond_1e
-    new-instance p0, Lcom/android/server/usb/descriptors/Usb20ASFormatIII;
+    :cond_1f
+    new-instance v8, Lcom/android/server/usb/descriptors/Usb20ASFormatIII;
 
-    move-object v0, p0
+    move-object v0, v8
 
     move v1, p2
 
     move v2, p3
 
     move v3, p4
+
+    move v4, v6
 
     move v5, p5
 
     invoke-direct/range {v0 .. v5}, Lcom/android/server/usb/descriptors/Usb20ASFormatIII;-><init>(IBBBI)V
 
-    return-object p0
+    return-object v8
 
     .line 84
-    :cond_29
-    if-ne p0, v0, :cond_36
+    :cond_2b
+    if-ne v7, v1, :cond_39
 
     .line 85
-    new-instance p0, Lcom/android/server/usb/descriptors/Usb20ASFormatII;
+    new-instance v8, Lcom/android/server/usb/descriptors/Usb20ASFormatII;
 
-    move-object v0, p0
+    move-object v0, v8
 
     move v1, p2
 
     move v2, p3
 
     move v3, p4
+
+    move v4, v6
 
     move v5, p5
 
     invoke-direct/range {v0 .. v5}, Lcom/android/server/usb/descriptors/Usb20ASFormatII;-><init>(IBBBI)V
 
-    return-object p0
+    return-object v8
 
     .line 87
-    :cond_36
-    new-instance p0, Lcom/android/server/usb/descriptors/Usb10ASFormatII;
+    :cond_39
+    new-instance v8, Lcom/android/server/usb/descriptors/Usb10ASFormatII;
 
-    move-object v0, p0
+    move-object v0, v8
 
     move v1, p2
 
     move v2, p3
 
     move v3, p4
+
+    move v4, v6
 
     move v5, p5
 
     invoke-direct/range {v0 .. v5}, Lcom/android/server/usb/descriptors/Usb10ASFormatII;-><init>(IBBBI)V
 
-    return-object p0
+    return-object v8
 
     .line 77
-    :cond_41
-    if-ne p0, v0, :cond_4e
+    :cond_45
+    if-ne v7, v1, :cond_53
 
     .line 78
-    new-instance p0, Lcom/android/server/usb/descriptors/Usb20ASFormatI;
+    new-instance v8, Lcom/android/server/usb/descriptors/Usb20ASFormatI;
 
-    move-object v0, p0
+    move-object v0, v8
 
     move v1, p2
 
     move v2, p3
 
     move v3, p4
+
+    move v4, v6
 
     move v5, p5
 
     invoke-direct/range {v0 .. v5}, Lcom/android/server/usb/descriptors/Usb20ASFormatI;-><init>(IBBBI)V
 
-    return-object p0
+    return-object v8
 
     .line 80
-    :cond_4e
-    new-instance p0, Lcom/android/server/usb/descriptors/Usb10ASFormatI;
+    :cond_53
+    new-instance v8, Lcom/android/server/usb/descriptors/Usb10ASFormatI;
 
-    move-object v0, p0
+    move-object v0, v8
 
     move v1, p2
 
@@ -174,11 +197,13 @@
 
     move v3, p4
 
+    move v4, v6
+
     move v5, p5
 
     invoke-direct/range {v0 .. v5}, Lcom/android/server/usb/descriptors/Usb10ASFormatI;-><init>(IBBBI)V
 
-    return-object p0
+    return-object v8
 .end method
 
 
@@ -221,6 +246,7 @@
 
 .method public report(Lcom/android/server/usb/descriptors/report/ReportCanvas;)V
     .registers 4
+    .param p1, "canvas"  # Lcom/android/server/usb/descriptors/report/ReportCanvas;
 
     .line 103
     invoke-super {p0, p1}, Lcom/android/server/usb/descriptors/UsbACInterface;->report(Lcom/android/server/usb/descriptors/report/ReportCanvas;)V

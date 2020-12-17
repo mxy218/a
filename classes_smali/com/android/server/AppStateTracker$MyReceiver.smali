@@ -32,6 +32,8 @@
 
 .method synthetic constructor <init>(Lcom/android/server/AppStateTracker;Lcom/android/server/AppStateTracker$1;)V
     .registers 3
+    .param p1, "x0"  # Lcom/android/server/AppStateTracker;
+    .param p2, "x1"  # Lcom/android/server/AppStateTracker$1;
 
     .line 678
     invoke-direct {p0, p1}, Lcom/android/server/AppStateTracker$MyReceiver;-><init>(Lcom/android/server/AppStateTracker;)V
@@ -42,108 +44,112 @@
 
 # virtual methods
 .method public onReceive(Landroid/content/Context;Landroid/content/Intent;)V
-    .registers 6
+    .registers 7
+    .param p1, "context"  # Landroid/content/Context;
+    .param p2, "intent"  # Landroid/content/Intent;
 
     .line 681
     invoke-virtual {p2}, Landroid/content/Intent;->getAction()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    const-string v0, "android.intent.action.USER_REMOVED"
+    const-string v1, "android.intent.action.USER_REMOVED"
 
-    invoke-virtual {v0, p1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v1, v0}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result p1
+    move-result v0
 
-    if-eqz p1, :cond_1f
+    if-eqz v0, :cond_1f
 
     .line 682
-    const/4 p1, -0x1
+    const/4 v0, -0x1
 
-    const-string v0, "android.intent.extra.user_handle"
+    const-string v1, "android.intent.extra.user_handle"
 
-    invoke-virtual {p2, v0, p1}, Landroid/content/Intent;->getIntExtra(Ljava/lang/String;I)I
+    invoke-virtual {p2, v1, v0}, Landroid/content/Intent;->getIntExtra(Ljava/lang/String;I)I
 
-    move-result p1
+    move-result v0
 
     .line 683
-    if-lez p1, :cond_4b
+    .local v0, "userId":I
+    if-lez v0, :cond_4b
 
     .line 684
-    iget-object p2, p0, Lcom/android/server/AppStateTracker$MyReceiver;->this$0:Lcom/android/server/AppStateTracker;
+    iget-object v1, p0, Lcom/android/server/AppStateTracker$MyReceiver;->this$0:Lcom/android/server/AppStateTracker;
 
-    invoke-static {p2}, Lcom/android/server/AppStateTracker;->access$200(Lcom/android/server/AppStateTracker;)Lcom/android/server/AppStateTracker$MyHandler;
+    invoke-static {v1}, Lcom/android/server/AppStateTracker;->access$200(Lcom/android/server/AppStateTracker;)Lcom/android/server/AppStateTracker$MyHandler;
 
-    move-result-object p2
+    move-result-object v1
 
-    invoke-virtual {p2, p1}, Lcom/android/server/AppStateTracker$MyHandler;->doUserRemoved(I)V
+    invoke-virtual {v1, v0}, Lcom/android/server/AppStateTracker$MyHandler;->doUserRemoved(I)V
 
     goto :goto_4b
 
     .line 686
+    .end local v0  # "userId":I
     :cond_1f
     invoke-virtual {p2}, Landroid/content/Intent;->getAction()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    const-string v0, "android.intent.action.BATTERY_CHANGED"
+    const-string v1, "android.intent.action.BATTERY_CHANGED"
 
-    invoke-virtual {v0, p1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v1, v0}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result p1
+    move-result v0
 
-    if-eqz p1, :cond_4b
+    if-eqz v0, :cond_4b
 
     .line 687
-    iget-object p1, p0, Lcom/android/server/AppStateTracker$MyReceiver;->this$0:Lcom/android/server/AppStateTracker;
+    iget-object v0, p0, Lcom/android/server/AppStateTracker$MyReceiver;->this$0:Lcom/android/server/AppStateTracker;
 
-    invoke-static {p1}, Lcom/android/server/AppStateTracker;->access$100(Lcom/android/server/AppStateTracker;)Ljava/lang/Object;
+    invoke-static {v0}, Lcom/android/server/AppStateTracker;->access$100(Lcom/android/server/AppStateTracker;)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v0
 
-    monitor-enter p1
+    monitor-enter v0
 
     .line 688
     :try_start_32
-    iget-object v0, p0, Lcom/android/server/AppStateTracker$MyReceiver;->this$0:Lcom/android/server/AppStateTracker;
+    iget-object v1, p0, Lcom/android/server/AppStateTracker$MyReceiver;->this$0:Lcom/android/server/AppStateTracker;
 
-    const-string/jumbo v1, "plugged"
+    const-string/jumbo v2, "plugged"
 
-    const/4 v2, 0x0
+    const/4 v3, 0x0
 
-    invoke-virtual {p2, v1, v2}, Landroid/content/Intent;->getIntExtra(Ljava/lang/String;I)I
+    invoke-virtual {p2, v2, v3}, Landroid/content/Intent;->getIntExtra(Ljava/lang/String;I)I
 
-    move-result p2
+    move-result v2
 
-    if-eqz p2, :cond_3f
+    if-eqz v2, :cond_3f
 
-    const/4 v2, 0x1
+    const/4 v3, 0x1
 
     :cond_3f
-    iput-boolean v2, v0, Lcom/android/server/AppStateTracker;->mIsPluggedIn:Z
+    iput-boolean v3, v1, Lcom/android/server/AppStateTracker;->mIsPluggedIn:Z
 
     .line 689
-    monitor-exit p1
+    monitor-exit v0
     :try_end_42
     .catchall {:try_start_32 .. :try_end_42} :catchall_48
 
     .line 690
-    iget-object p1, p0, Lcom/android/server/AppStateTracker$MyReceiver;->this$0:Lcom/android/server/AppStateTracker;
+    iget-object v0, p0, Lcom/android/server/AppStateTracker$MyReceiver;->this$0:Lcom/android/server/AppStateTracker;
 
-    invoke-static {p1}, Lcom/android/server/AppStateTracker;->access$300(Lcom/android/server/AppStateTracker;)V
+    invoke-static {v0}, Lcom/android/server/AppStateTracker;->access$300(Lcom/android/server/AppStateTracker;)V
 
     goto :goto_4c
 
     .line 689
     :catchall_48
-    move-exception p2
+    move-exception v1
 
     :try_start_49
-    monitor-exit p1
+    monitor-exit v0
     :try_end_4a
     .catchall {:try_start_49 .. :try_end_4a} :catchall_48
 
-    throw p2
+    throw v1
 
     .line 686
     :cond_4b

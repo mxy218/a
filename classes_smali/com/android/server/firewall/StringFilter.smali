@@ -110,7 +110,7 @@
     .line 283
     new-instance v0, Lcom/android/server/firewall/StringFilter$6;
 
-    const-string v1, "mime-type"
+    const-string/jumbo v1, "mime-type"
 
     invoke-direct {v0, v1}, Lcom/android/server/firewall/StringFilter$6;-><init>(Ljava/lang/String;)V
 
@@ -157,6 +157,7 @@
 
 .method private constructor <init>(Lcom/android/server/firewall/StringFilter$ValueProvider;)V
     .registers 2
+    .param p1, "valueProvider"  # Lcom/android/server/firewall/StringFilter$ValueProvider;
 
     .line 39
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -170,6 +171,8 @@
 
 .method synthetic constructor <init>(Lcom/android/server/firewall/StringFilter$ValueProvider;Lcom/android/server/firewall/StringFilter$1;)V
     .registers 3
+    .param p1, "x0"  # Lcom/android/server/firewall/StringFilter$ValueProvider;
+    .param p2, "x1"  # Lcom/android/server/firewall/StringFilter$1;
 
     .line 29
     invoke-direct {p0, p1}, Lcom/android/server/firewall/StringFilter;-><init>(Lcom/android/server/firewall/StringFilter$ValueProvider;)V
@@ -179,6 +182,9 @@
 
 .method private static getFilter(Lcom/android/server/firewall/StringFilter$ValueProvider;Lorg/xmlpull/v1/XmlPullParser;I)Lcom/android/server/firewall/StringFilter;
     .registers 7
+    .param p0, "valueProvider"  # Lcom/android/server/firewall/StringFilter$ValueProvider;
+    .param p1, "parser"  # Lorg/xmlpull/v1/XmlPullParser;
+    .param p2, "attributeIndex"  # I
 
     .line 79
     invoke-interface {p1, p2}, Lorg/xmlpull/v1/XmlPullParser;->getAttributeName(I)Ljava/lang/String;
@@ -186,6 +192,7 @@
     move-result-object v0
 
     .line 81
+    .local v0, "attributeName":Ljava/lang/String;
     const/4 v1, 0x0
 
     invoke-virtual {v0, v1}, Ljava/lang/String;->charAt(I)C
@@ -196,11 +203,11 @@
 
     const/4 v3, 0x0
 
-    if-eq v1, v2, :cond_85
+    if-eq v1, v2, :cond_86
 
     const/16 v2, 0x65
 
-    if-eq v1, v2, :cond_72
+    if-eq v1, v2, :cond_73
 
     const/16 v2, 0x69
 
@@ -227,26 +234,26 @@
 
     invoke-virtual {v0, v1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result v0
+    move-result v1
 
-    if-nez v0, :cond_2d
+    if-nez v1, :cond_2d
 
     .line 94
     return-object v3
 
     .line 96
     :cond_2d
-    new-instance v0, Lcom/android/server/firewall/StringFilter$StartsWithFilter;
+    new-instance v1, Lcom/android/server/firewall/StringFilter$StartsWithFilter;
 
     .line 97
     invoke-interface {p1, p2}, Lorg/xmlpull/v1/XmlPullParser;->getAttributeValue(I)Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v2
 
-    invoke-direct {v0, p0, p1}, Lcom/android/server/firewall/StringFilter$StartsWithFilter;-><init>(Lcom/android/server/firewall/StringFilter$ValueProvider;Ljava/lang/String;)V
+    invoke-direct {v1, p0, v2}, Lcom/android/server/firewall/StringFilter$StartsWithFilter;-><init>(Lcom/android/server/firewall/StringFilter$ValueProvider;Ljava/lang/String;)V
 
     .line 96
-    return-object v0
+    return-object v1
 
     .line 110
     :cond_37
@@ -254,24 +261,24 @@
 
     invoke-virtual {v0, v1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result v0
+    move-result v1
 
-    if-nez v0, :cond_41
+    if-nez v1, :cond_41
 
     .line 111
     return-object v3
 
     .line 113
     :cond_41
-    new-instance v0, Lcom/android/server/firewall/StringFilter$RegexFilter;
+    new-instance v1, Lcom/android/server/firewall/StringFilter$RegexFilter;
 
     invoke-interface {p1, p2}, Lorg/xmlpull/v1/XmlPullParser;->getAttributeValue(I)Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v2
 
-    invoke-direct {v0, p0, p1}, Lcom/android/server/firewall/StringFilter$RegexFilter;-><init>(Lcom/android/server/firewall/StringFilter$ValueProvider;Ljava/lang/String;)V
+    invoke-direct {v1, p0, v2}, Lcom/android/server/firewall/StringFilter$RegexFilter;-><init>(Lcom/android/server/firewall/StringFilter$ValueProvider;Ljava/lang/String;)V
 
-    return-object v0
+    return-object v1
 
     .line 104
     :cond_4b
@@ -279,105 +286,107 @@
 
     invoke-virtual {v0, v1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result v0
+    move-result v1
 
-    if-nez v0, :cond_55
+    if-nez v1, :cond_55
 
     .line 105
     return-object v3
 
     .line 107
     :cond_55
-    new-instance v0, Lcom/android/server/firewall/StringFilter$PatternStringFilter;
+    new-instance v1, Lcom/android/server/firewall/StringFilter$PatternStringFilter;
 
     .line 108
     invoke-interface {p1, p2}, Lorg/xmlpull/v1/XmlPullParser;->getAttributeValue(I)Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v2
 
-    invoke-direct {v0, p0, p1}, Lcom/android/server/firewall/StringFilter$PatternStringFilter;-><init>(Lcom/android/server/firewall/StringFilter$ValueProvider;Ljava/lang/String;)V
+    invoke-direct {v1, p0, v2}, Lcom/android/server/firewall/StringFilter$PatternStringFilter;-><init>(Lcom/android/server/firewall/StringFilter$ValueProvider;Ljava/lang/String;)V
 
     .line 107
-    return-object v0
+    return-object v1
 
     .line 88
     :cond_5f
-    const-string v1, "isNull"
+    const-string/jumbo v1, "isNull"
 
     invoke-virtual {v0, v1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result v0
+    move-result v1
 
-    if-nez v0, :cond_68
+    if-nez v1, :cond_69
 
     .line 89
     return-object v3
 
     .line 91
-    :cond_68
-    new-instance v0, Lcom/android/server/firewall/StringFilter$IsNullFilter;
+    :cond_69
+    new-instance v1, Lcom/android/server/firewall/StringFilter$IsNullFilter;
 
     invoke-interface {p1, p2}, Lorg/xmlpull/v1/XmlPullParser;->getAttributeValue(I)Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v2
 
-    invoke-direct {v0, p0, p1}, Lcom/android/server/firewall/StringFilter$IsNullFilter;-><init>(Lcom/android/server/firewall/StringFilter$ValueProvider;Ljava/lang/String;)V
+    invoke-direct {v1, p0, v2}, Lcom/android/server/firewall/StringFilter$IsNullFilter;-><init>(Lcom/android/server/firewall/StringFilter$ValueProvider;Ljava/lang/String;)V
 
-    return-object v0
+    return-object v1
 
     .line 83
-    :cond_72
+    :cond_73
     const-string v1, "equals"
 
     invoke-virtual {v0, v1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result v0
+    move-result v1
 
-    if-nez v0, :cond_7b
+    if-nez v1, :cond_7c
 
     .line 84
     return-object v3
 
     .line 86
-    :cond_7b
-    new-instance v0, Lcom/android/server/firewall/StringFilter$EqualsFilter;
+    :cond_7c
+    new-instance v1, Lcom/android/server/firewall/StringFilter$EqualsFilter;
 
     invoke-interface {p1, p2}, Lorg/xmlpull/v1/XmlPullParser;->getAttributeValue(I)Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v2
 
-    invoke-direct {v0, p0, p1}, Lcom/android/server/firewall/StringFilter$EqualsFilter;-><init>(Lcom/android/server/firewall/StringFilter$ValueProvider;Ljava/lang/String;)V
+    invoke-direct {v1, p0, v2}, Lcom/android/server/firewall/StringFilter$EqualsFilter;-><init>(Lcom/android/server/firewall/StringFilter$ValueProvider;Ljava/lang/String;)V
 
-    return-object v0
+    return-object v1
 
     .line 99
-    :cond_85
+    :cond_86
     const-string v1, "contains"
 
     invoke-virtual {v0, v1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result v0
+    move-result v1
 
-    if-nez v0, :cond_8e
+    if-nez v1, :cond_8f
 
     .line 100
     return-object v3
 
     .line 102
-    :cond_8e
-    new-instance v0, Lcom/android/server/firewall/StringFilter$ContainsFilter;
+    :cond_8f
+    new-instance v1, Lcom/android/server/firewall/StringFilter$ContainsFilter;
 
     invoke-interface {p1, p2}, Lorg/xmlpull/v1/XmlPullParser;->getAttributeValue(I)Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v2
 
-    invoke-direct {v0, p0, p1}, Lcom/android/server/firewall/StringFilter$ContainsFilter;-><init>(Lcom/android/server/firewall/StringFilter$ValueProvider;Ljava/lang/String;)V
+    invoke-direct {v1, p0, v2}, Lcom/android/server/firewall/StringFilter$ContainsFilter;-><init>(Lcom/android/server/firewall/StringFilter$ValueProvider;Ljava/lang/String;)V
 
-    return-object v0
+    return-object v1
 .end method
 
 .method public static readFromXml(Lcom/android/server/firewall/StringFilter$ValueProvider;Lorg/xmlpull/v1/XmlPullParser;)Lcom/android/server/firewall/StringFilter;
-    .registers 6
+    .registers 7
+    .param p0, "valueProvider"  # Lcom/android/server/firewall/StringFilter$ValueProvider;
+    .param p1, "parser"  # Lorg/xmlpull/v1/XmlPullParser;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Ljava/io/IOException;,
@@ -386,89 +395,100 @@
     .end annotation
 
     .line 56
-    nop
-
-    .line 58
     const/4 v0, 0x0
 
+    .line 58
+    .local v0, "filter":Lcom/android/server/firewall/StringFilter;
     const/4 v1, 0x0
 
-    move-object v2, v1
-
-    move v1, v0
-
-    :goto_5
+    .local v1, "i":I
+    :goto_2
     invoke-interface {p1}, Lorg/xmlpull/v1/XmlPullParser;->getAttributeCount()I
 
-    move-result v3
+    move-result v2
 
-    if-ge v1, v3, :cond_20
+    if-ge v1, v2, :cond_1d
 
     .line 59
     invoke-static {p0, p1, v1}, Lcom/android/server/firewall/StringFilter;->getFilter(Lcom/android/server/firewall/StringFilter$ValueProvider;Lorg/xmlpull/v1/XmlPullParser;I)Lcom/android/server/firewall/StringFilter;
 
-    move-result-object v3
+    move-result-object v2
 
     .line 60
-    if-eqz v3, :cond_1d
+    .local v2, "newFilter":Lcom/android/server/firewall/StringFilter;
+    if-eqz v2, :cond_1a
 
     .line 61
-    if-nez v2, :cond_15
+    if-nez v0, :cond_12
 
     .line 64
-    move-object v2, v3
+    move-object v0, v2
 
-    goto :goto_1d
+    goto :goto_1a
 
     .line 62
-    :cond_15
-    new-instance p0, Lorg/xmlpull/v1/XmlPullParserException;
+    :cond_12
+    new-instance v3, Lorg/xmlpull/v1/XmlPullParserException;
 
-    const-string p1, "Multiple string filter attributes found"
+    const-string v4, "Multiple string filter attributes found"
 
-    invoke-direct {p0, p1}, Lorg/xmlpull/v1/XmlPullParserException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v3, v4}, Lorg/xmlpull/v1/XmlPullParserException;-><init>(Ljava/lang/String;)V
 
-    throw p0
+    throw v3
 
     .line 58
-    :cond_1d
-    :goto_1d
+    .end local v2  # "newFilter":Lcom/android/server/firewall/StringFilter;
+    :cond_1a
+    :goto_1a
     add-int/lit8 v1, v1, 0x1
 
-    goto :goto_5
+    goto :goto_2
 
     .line 68
-    :cond_20
-    if-nez v2, :cond_27
+    .end local v1  # "i":I
+    :cond_1d
+    if-nez v0, :cond_26
 
     .line 71
-    new-instance v2, Lcom/android/server/firewall/StringFilter$IsNullFilter;
+    new-instance v1, Lcom/android/server/firewall/StringFilter$IsNullFilter;
 
-    invoke-direct {v2, p0, v0}, Lcom/android/server/firewall/StringFilter$IsNullFilter;-><init>(Lcom/android/server/firewall/StringFilter$ValueProvider;Z)V
+    const/4 v2, 0x0
+
+    invoke-direct {v1, p0, v2}, Lcom/android/server/firewall/StringFilter$IsNullFilter;-><init>(Lcom/android/server/firewall/StringFilter$ValueProvider;Z)V
+
+    move-object v0, v1
 
     .line 74
-    :cond_27
-    return-object v2
+    :cond_26
+    return-object v0
 .end method
 
 
 # virtual methods
 .method public matches(Lcom/android/server/firewall/IntentFirewall;Landroid/content/ComponentName;Landroid/content/Intent;IILjava/lang/String;I)Z
-    .registers 8
+    .registers 10
+    .param p1, "ifw"  # Lcom/android/server/firewall/IntentFirewall;
+    .param p2, "resolvedComponent"  # Landroid/content/ComponentName;
+    .param p3, "intent"  # Landroid/content/Intent;
+    .param p4, "callerUid"  # I
+    .param p5, "callerPid"  # I
+    .param p6, "resolvedType"  # Ljava/lang/String;
+    .param p7, "receivingUid"  # I
 
     .line 123
-    iget-object p1, p0, Lcom/android/server/firewall/StringFilter;->mValueProvider:Lcom/android/server/firewall/StringFilter$ValueProvider;
+    iget-object v0, p0, Lcom/android/server/firewall/StringFilter;->mValueProvider:Lcom/android/server/firewall/StringFilter$ValueProvider;
 
-    invoke-virtual {p1, p2, p3, p6}, Lcom/android/server/firewall/StringFilter$ValueProvider;->getValue(Landroid/content/ComponentName;Landroid/content/Intent;Ljava/lang/String;)Ljava/lang/String;
+    invoke-virtual {v0, p2, p3, p6}, Lcom/android/server/firewall/StringFilter$ValueProvider;->getValue(Landroid/content/ComponentName;Landroid/content/Intent;Ljava/lang/String;)Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
     .line 124
-    invoke-virtual {p0, p1}, Lcom/android/server/firewall/StringFilter;->matchesValue(Ljava/lang/String;)Z
+    .local v0, "value":Ljava/lang/String;
+    invoke-virtual {p0, v0}, Lcom/android/server/firewall/StringFilter;->matchesValue(Ljava/lang/String;)Z
 
-    move-result p1
+    move-result v1
 
-    return p1
+    return v1
 .end method
 
 .method protected abstract matchesValue(Ljava/lang/String;)Z

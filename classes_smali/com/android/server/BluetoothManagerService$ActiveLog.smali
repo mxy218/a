@@ -29,25 +29,29 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/BluetoothManagerService;ILjava/lang/String;ZJ)V
     .registers 7
+    .param p2, "reason"  # I
+    .param p3, "packageName"  # Ljava/lang/String;
+    .param p4, "enable"  # Z
+    .param p5, "timestamp"  # J
 
-    .line 186
+    .line 225
     iput-object p1, p0, Lcom/android/server/BluetoothManagerService$ActiveLog;->this$0:Lcom/android/server/BluetoothManagerService;
 
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
-    .line 187
+    .line 226
     iput p2, p0, Lcom/android/server/BluetoothManagerService$ActiveLog;->mReason:I
 
-    .line 188
+    .line 227
     iput-object p3, p0, Lcom/android/server/BluetoothManagerService$ActiveLog;->mPackageName:Ljava/lang/String;
 
-    .line 189
+    .line 228
     iput-boolean p4, p0, Lcom/android/server/BluetoothManagerService$ActiveLog;->mEnable:Z
 
-    .line 190
+    .line 229
     iput-wide p5, p0, Lcom/android/server/BluetoothManagerService$ActiveLog;->mTimestamp:J
 
-    .line 191
+    .line 230
     return-void
 .end method
 
@@ -56,7 +60,7 @@
 .method public toString()Ljava/lang/String;
     .registers 4
 
-    .line 194
+    .line 233
     new-instance v0, Ljava/lang/StringBuilder;
 
     invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
@@ -89,7 +93,7 @@
 
     iget v1, p0, Lcom/android/server/BluetoothManagerService$ActiveLog;->mReason:I
 
-    .line 195
+    .line 234
     invoke-static {v1}, Lcom/android/server/BluetoothManagerService;->access$100(I)Ljava/lang/String;
 
     move-result-object v1
@@ -108,6 +112,6 @@
 
     move-result-object v0
 
-    .line 194
+    .line 233
     return-object v0
 .end method

@@ -21,8 +21,9 @@
 # direct methods
 .method constructor <init>(Landroid/net/ip/IpServer;)V
     .registers 2
+    .param p1, "this$0"  # Landroid/net/ip/IpServer;
 
-    .line 724
+    .line 746
     iput-object p1, p0, Landroid/net/ip/IpServer$BaseServingState;->this$0:Landroid/net/ip/IpServer;
 
     invoke-direct {p0}, Lcom/android/internal/util/State;-><init>()V
@@ -33,59 +34,103 @@
 
 # virtual methods
 .method public enter()V
-    .registers 5
+    .registers 7
 
-    .line 727
+    .line 750
     iget-object v0, p0, Landroid/net/ip/IpServer$BaseServingState;->this$0:Landroid/net/ip/IpServer;
 
-    invoke-static {v0}, Landroid/net/ip/IpServer;->access$1400(Landroid/net/ip/IpServer;)Z
+    const/4 v1, 0x0
+
+    invoke-static {v0, v1}, Landroid/net/ip/IpServer;->access$1402(Landroid/net/ip/IpServer;Z)Z
+
+    .line 752
+    new-instance v0, Ljava/lang/StringBuilder;
+
+    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
+
+    const-string v1, "["
+
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    iget-object v2, p0, Landroid/net/ip/IpServer$BaseServingState;->this$0:Landroid/net/ip/IpServer;
+
+    invoke-static {v2}, Landroid/net/ip/IpServer;->access$1500(Landroid/net/ip/IpServer;)Ljava/lang/String;
+
+    move-result-object v2
+
+    invoke-virtual {v0, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    const-string v2, "] BaseServingState enter mLastError = "
+
+    invoke-virtual {v0, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    iget-object v2, p0, Landroid/net/ip/IpServer$BaseServingState;->this$0:Landroid/net/ip/IpServer;
+
+    invoke-static {v2}, Landroid/net/ip/IpServer;->access$000(Landroid/net/ip/IpServer;)I
+
+    move-result v2
+
+    invoke-virtual {v0, v2}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v0
+
+    const-string v2, "IpServer"
+
+    invoke-static {v2, v0}, Landroid/util/Log;->d(Ljava/lang/String;Ljava/lang/String;)I
+
+    .line 753
+    iget-object v0, p0, Landroid/net/ip/IpServer$BaseServingState;->this$0:Landroid/net/ip/IpServer;
+
+    invoke-static {v0}, Landroid/net/ip/IpServer;->access$1600(Landroid/net/ip/IpServer;)Z
 
     move-result v0
 
-    if-nez v0, :cond_10
+    if-nez v0, :cond_40
 
-    .line 728
+    .line 754
     iget-object v0, p0, Landroid/net/ip/IpServer$BaseServingState;->this$0:Landroid/net/ip/IpServer;
 
     const/16 v1, 0xa
 
     invoke-static {v0, v1}, Landroid/net/ip/IpServer;->access$002(Landroid/net/ip/IpServer;I)I
 
-    .line 729
+    .line 755
     return-void
 
-    .line 733
-    :cond_10
-    :try_start_10
+    .line 759
+    :cond_40
+    :try_start_40
     iget-object v0, p0, Landroid/net/ip/IpServer$BaseServingState;->this$0:Landroid/net/ip/IpServer;
 
-    invoke-static {v0}, Landroid/net/ip/IpServer;->access$1600(Landroid/net/ip/IpServer;)Landroid/os/INetworkManagementService;
+    invoke-static {v0}, Landroid/net/ip/IpServer;->access$1700(Landroid/net/ip/IpServer;)Landroid/os/INetworkManagementService;
 
     move-result-object v0
 
-    iget-object v1, p0, Landroid/net/ip/IpServer$BaseServingState;->this$0:Landroid/net/ip/IpServer;
+    iget-object v3, p0, Landroid/net/ip/IpServer$BaseServingState;->this$0:Landroid/net/ip/IpServer;
 
-    invoke-static {v1}, Landroid/net/ip/IpServer;->access$1500(Landroid/net/ip/IpServer;)Ljava/lang/String;
+    invoke-static {v3}, Landroid/net/ip/IpServer;->access$1500(Landroid/net/ip/IpServer;)Ljava/lang/String;
 
-    move-result-object v1
+    move-result-object v3
 
-    invoke-interface {v0, v1}, Landroid/os/INetworkManagementService;->tetherInterface(Ljava/lang/String;)V
-    :try_end_1f
-    .catch Ljava/lang/Exception; {:try_start_10 .. :try_end_1f} :catch_35
+    invoke-interface {v0, v3}, Landroid/os/INetworkManagementService;->tetherInterface(Ljava/lang/String;)V
+    :try_end_4f
+    .catch Ljava/lang/Exception; {:try_start_40 .. :try_end_4f} :catch_65
 
-    .line 738
+    .line 765
     nop
 
-    .line 740
+    .line 767
     iget-object v0, p0, Landroid/net/ip/IpServer$BaseServingState;->this$0:Landroid/net/ip/IpServer;
 
-    invoke-static {v0}, Landroid/net/ip/IpServer;->access$1700(Landroid/net/ip/IpServer;)Z
+    invoke-static {v0}, Landroid/net/ip/IpServer;->access$1800(Landroid/net/ip/IpServer;)Z
 
     move-result v0
 
-    if-nez v0, :cond_34
+    if-nez v0, :cond_64
 
-    .line 741
+    .line 768
     iget-object v0, p0, Landroid/net/ip/IpServer$BaseServingState;->this$0:Landroid/net/ip/IpServer;
 
     invoke-static {v0}, Landroid/net/ip/IpServer;->access$300(Landroid/net/ip/IpServer;)Landroid/net/util/SharedLog;
@@ -96,64 +141,106 @@
 
     invoke-virtual {v0, v1}, Landroid/net/util/SharedLog;->e(Ljava/lang/String;)V
 
-    .line 743
+    .line 770
     return-void
 
-    .line 745
-    :cond_34
+    .line 772
+    :cond_64
     return-void
 
-    .line 734
-    :catch_35
+    .line 760
+    :catch_65
     move-exception v0
 
-    .line 735
+    .line 761
+    .local v0, "e":Ljava/lang/Exception;
+    iget-object v3, p0, Landroid/net/ip/IpServer$BaseServingState;->this$0:Landroid/net/ip/IpServer;
+
+    invoke-static {v3}, Landroid/net/ip/IpServer;->access$300(Landroid/net/ip/IpServer;)Landroid/net/util/SharedLog;
+
+    move-result-object v3
+
+    new-instance v4, Ljava/lang/StringBuilder;
+
+    invoke-direct {v4}, Ljava/lang/StringBuilder;-><init>()V
+
+    const-string v5, "Error Tethering: "
+
+    invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v4, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v4}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v4
+
+    invoke-virtual {v3, v4}, Landroid/net/util/SharedLog;->e(Ljava/lang/String;)V
+
+    .line 762
+    iget-object v3, p0, Landroid/net/ip/IpServer$BaseServingState;->this$0:Landroid/net/ip/IpServer;
+
+    const/4 v4, 0x6
+
+    invoke-static {v3, v4}, Landroid/net/ip/IpServer;->access$002(Landroid/net/ip/IpServer;I)I
+
+    .line 763
+    new-instance v3, Ljava/lang/StringBuilder;
+
+    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
+
+    invoke-virtual {v3, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
     iget-object v1, p0, Landroid/net/ip/IpServer$BaseServingState;->this$0:Landroid/net/ip/IpServer;
 
-    invoke-static {v1}, Landroid/net/ip/IpServer;->access$300(Landroid/net/ip/IpServer;)Landroid/net/util/SharedLog;
+    invoke-static {v1}, Landroid/net/ip/IpServer;->access$1500(Landroid/net/ip/IpServer;)Ljava/lang/String;
 
     move-result-object v1
 
-    new-instance v2, Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
+    const-string v1, "] Error Tethering: "
 
-    const-string v3, "Error Tethering: "
+    invoke-virtual {v3, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v2, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    move-result-object v1
 
-    move-result-object v0
+    invoke-static {v2, v1}, Landroid/util/Log;->d(Ljava/lang/String;Ljava/lang/String;)I
 
-    invoke-virtual {v1, v0}, Landroid/net/util/SharedLog;->e(Ljava/lang/String;)V
-
-    .line 736
-    iget-object v0, p0, Landroid/net/ip/IpServer$BaseServingState;->this$0:Landroid/net/ip/IpServer;
-
-    const/4 v1, 0x6
-
-    invoke-static {v0, v1}, Landroid/net/ip/IpServer;->access$002(Landroid/net/ip/IpServer;I)I
-
-    .line 737
+    .line 764
     return-void
 .end method
 
 .method public exit()V
     .registers 5
 
-    .line 752
+    .line 777
     iget-object v0, p0, Landroid/net/ip/IpServer$BaseServingState;->this$0:Landroid/net/ip/IpServer;
 
-    invoke-static {v0}, Landroid/net/ip/IpServer;->access$1800(Landroid/net/ip/IpServer;)V
+    const/4 v1, 0x1
 
-    .line 755
-    :try_start_5
+    invoke-static {v0, v1}, Landroid/net/ip/IpServer;->access$1402(Landroid/net/ip/IpServer;Z)Z
+
+    .line 782
     iget-object v0, p0, Landroid/net/ip/IpServer$BaseServingState;->this$0:Landroid/net/ip/IpServer;
 
-    invoke-static {v0}, Landroid/net/ip/IpServer;->access$1600(Landroid/net/ip/IpServer;)Landroid/os/INetworkManagementService;
+    invoke-static {v0}, Landroid/net/ip/IpServer;->access$1900(Landroid/net/ip/IpServer;)V
+
+    .line 786
+    const-string v0, "IpServer"
+
+    const-string/jumbo v1, "untetherInterface before stopIPv6"
+
+    invoke-static {v0, v1}, Landroid/util/Log;->d(Ljava/lang/String;Ljava/lang/String;)I
+
+    .line 789
+    :try_start_13
+    iget-object v0, p0, Landroid/net/ip/IpServer$BaseServingState;->this$0:Landroid/net/ip/IpServer;
+
+    invoke-static {v0}, Landroid/net/ip/IpServer;->access$1700(Landroid/net/ip/IpServer;)Landroid/os/INetworkManagementService;
 
     move-result-object v0
 
@@ -164,24 +251,25 @@
     move-result-object v1
 
     invoke-interface {v0, v1}, Landroid/os/INetworkManagementService;->untetherInterface(Ljava/lang/String;)V
-    :try_end_14
-    .catch Ljava/lang/Exception; {:try_start_5 .. :try_end_14} :catch_15
+    :try_end_22
+    .catch Ljava/lang/Exception; {:try_start_13 .. :try_end_22} :catch_23
 
-    .line 759
-    goto :goto_36
+    .line 793
+    goto :goto_44
 
-    .line 756
-    :catch_15
+    .line 790
+    :catch_23
     move-exception v0
 
-    .line 757
+    .line 791
+    .local v0, "e":Ljava/lang/Exception;
     iget-object v1, p0, Landroid/net/ip/IpServer$BaseServingState;->this$0:Landroid/net/ip/IpServer;
 
     const/4 v2, 0x7
 
     invoke-static {v1, v2}, Landroid/net/ip/IpServer;->access$002(Landroid/net/ip/IpServer;I)I
 
-    .line 758
+    .line 792
     iget-object v1, p0, Landroid/net/ip/IpServer$BaseServingState;->this$0:Landroid/net/ip/IpServer;
 
     invoke-static {v1}, Landroid/net/ip/IpServer;->access$300(Landroid/net/ip/IpServer;)Landroid/net/util/SharedLog;
@@ -200,115 +288,122 @@
 
     invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v2
 
-    invoke-virtual {v1, v0}, Landroid/net/util/SharedLog;->e(Ljava/lang/String;)V
+    invoke-virtual {v1, v2}, Landroid/net/util/SharedLog;->e(Ljava/lang/String;)V
 
-    .line 761
-    :goto_36
+    .line 795
+    .end local v0  # "e":Ljava/lang/Exception;
+    :goto_44
     iget-object v0, p0, Landroid/net/ip/IpServer$BaseServingState;->this$0:Landroid/net/ip/IpServer;
 
     invoke-static {v0}, Landroid/net/ip/IpServer;->access$1900(Landroid/net/ip/IpServer;)V
 
-    .line 763
+    .line 797
     iget-object v0, p0, Landroid/net/ip/IpServer$BaseServingState;->this$0:Landroid/net/ip/IpServer;
 
     invoke-static {v0}, Landroid/net/ip/IpServer;->access$2000(Landroid/net/ip/IpServer;)V
 
-    .line 764
+    .line 799
+    iget-object v0, p0, Landroid/net/ip/IpServer$BaseServingState;->this$0:Landroid/net/ip/IpServer;
+
+    invoke-static {v0}, Landroid/net/ip/IpServer;->access$2100(Landroid/net/ip/IpServer;)V
+
+    .line 800
     return-void
 .end method
 
 .method public processMessage(Landroid/os/Message;)Z
     .registers 4
+    .param p1, "message"  # Landroid/os/Message;
 
-    .line 768
+    .line 804
     iget-object v0, p0, Landroid/net/ip/IpServer$BaseServingState;->this$0:Landroid/net/ip/IpServer;
 
     iget v1, p1, Landroid/os/Message;->what:I
 
     invoke-static {v0, p0, v1}, Landroid/net/ip/IpServer;->access$900(Landroid/net/ip/IpServer;Lcom/android/internal/util/State;I)V
 
-    .line 769
+    .line 805
     iget v0, p1, Landroid/os/Message;->what:I
 
     packed-switch v0, :pswitch_data_44
 
-    .line 791
+    .line 827
     :pswitch_c  #0x50069, 0x5006a, 0x50070
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    return p1
+    return v0
 
-    .line 779
+    .line 815
     :pswitch_e  #0x50071
     iget-object v0, p0, Landroid/net/ip/IpServer$BaseServingState;->this$0:Landroid/net/ip/IpServer;
 
-    iget-object p1, p1, Landroid/os/Message;->obj:Ljava/lang/Object;
+    iget-object v1, p1, Landroid/os/Message;->obj:Ljava/lang/Object;
 
-    check-cast p1, Landroid/net/LinkProperties;
+    check-cast v1, Landroid/net/LinkProperties;
 
-    invoke-static {v0, p1}, Landroid/net/ip/IpServer;->access$1300(Landroid/net/ip/IpServer;Landroid/net/LinkProperties;)V
+    invoke-static {v0, v1}, Landroid/net/ip/IpServer;->access$1300(Landroid/net/ip/IpServer;Landroid/net/LinkProperties;)V
 
-    .line 780
-    iget-object p1, p0, Landroid/net/ip/IpServer$BaseServingState;->this$0:Landroid/net/ip/IpServer;
+    .line 816
+    iget-object v0, p0, Landroid/net/ip/IpServer$BaseServingState;->this$0:Landroid/net/ip/IpServer;
 
-    invoke-static {p1}, Landroid/net/ip/IpServer;->access$2100(Landroid/net/ip/IpServer;)V
+    invoke-static {v0}, Landroid/net/ip/IpServer;->access$2200(Landroid/net/ip/IpServer;)V
 
-    .line 781
+    .line 817
     goto :goto_41
 
-    .line 787
+    .line 823
     :pswitch_1d  #0x5006b, 0x5006c, 0x5006d, 0x5006e, 0x5006f
-    iget-object p1, p0, Landroid/net/ip/IpServer$BaseServingState;->this$0:Landroid/net/ip/IpServer;
+    iget-object v0, p0, Landroid/net/ip/IpServer$BaseServingState;->this$0:Landroid/net/ip/IpServer;
 
-    const/4 v0, 0x5
+    const/4 v1, 0x5
 
-    invoke-static {p1, v0}, Landroid/net/ip/IpServer;->access$002(Landroid/net/ip/IpServer;I)I
+    invoke-static {v0, v1}, Landroid/net/ip/IpServer;->access$002(Landroid/net/ip/IpServer;I)I
 
-    .line 788
-    iget-object p1, p0, Landroid/net/ip/IpServer$BaseServingState;->this$0:Landroid/net/ip/IpServer;
+    .line 824
+    iget-object v0, p0, Landroid/net/ip/IpServer$BaseServingState;->this$0:Landroid/net/ip/IpServer;
 
-    invoke-static {p1}, Landroid/net/ip/IpServer;->access$100(Landroid/net/ip/IpServer;)Lcom/android/internal/util/State;
+    invoke-static {v0}, Landroid/net/ip/IpServer;->access$100(Landroid/net/ip/IpServer;)Lcom/android/internal/util/State;
 
-    move-result-object v0
+    move-result-object v1
 
-    invoke-virtual {p1, v0}, Landroid/net/ip/IpServer;->transitionTo(Lcom/android/internal/util/IState;)V
+    invoke-virtual {v0, v1}, Landroid/net/ip/IpServer;->transitionTo(Lcom/android/internal/util/IState;)V
 
-    .line 789
+    .line 825
     goto :goto_41
 
-    .line 775
+    .line 811
     :pswitch_2d  #0x50068
-    iget-object p1, p0, Landroid/net/ip/IpServer$BaseServingState;->this$0:Landroid/net/ip/IpServer;
+    iget-object v0, p0, Landroid/net/ip/IpServer$BaseServingState;->this$0:Landroid/net/ip/IpServer;
 
-    invoke-static {p1}, Landroid/net/ip/IpServer;->access$1200(Landroid/net/ip/IpServer;)Lcom/android/internal/util/State;
+    invoke-static {v0}, Landroid/net/ip/IpServer;->access$1200(Landroid/net/ip/IpServer;)Lcom/android/internal/util/State;
 
-    move-result-object v0
+    move-result-object v1
 
-    invoke-virtual {p1, v0}, Landroid/net/ip/IpServer;->transitionTo(Lcom/android/internal/util/IState;)V
+    invoke-virtual {v0, v1}, Landroid/net/ip/IpServer;->transitionTo(Lcom/android/internal/util/IState;)V
 
-    .line 777
+    .line 813
     goto :goto_41
 
-    .line 771
+    .line 807
     :pswitch_37  #0x50067
-    iget-object p1, p0, Landroid/net/ip/IpServer$BaseServingState;->this$0:Landroid/net/ip/IpServer;
+    iget-object v0, p0, Landroid/net/ip/IpServer$BaseServingState;->this$0:Landroid/net/ip/IpServer;
 
-    invoke-static {p1}, Landroid/net/ip/IpServer;->access$100(Landroid/net/ip/IpServer;)Lcom/android/internal/util/State;
+    invoke-static {v0}, Landroid/net/ip/IpServer;->access$100(Landroid/net/ip/IpServer;)Lcom/android/internal/util/State;
 
-    move-result-object v0
+    move-result-object v1
 
-    invoke-virtual {p1, v0}, Landroid/net/ip/IpServer;->transitionTo(Lcom/android/internal/util/IState;)V
+    invoke-virtual {v0, v1}, Landroid/net/ip/IpServer;->transitionTo(Lcom/android/internal/util/IState;)V
 
-    .line 773
+    .line 809
     nop
 
-    .line 793
+    .line 829
     :goto_41
-    const/4 p1, 0x1
+    const/4 v0, 0x1
 
-    return p1
+    return v0
 
     nop
 

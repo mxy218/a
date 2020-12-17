@@ -132,6 +132,8 @@
 
 .method constructor <init>(Landroid/os/Looper;Lcom/android/server/devicepolicy/DevicePolicyManagerService;)V
     .registers 5
+    .param p1, "looper"  # Landroid/os/Looper;
+    .param p2, "dpm"  # Lcom/android/server/devicepolicy/DevicePolicyManagerService;
 
     .line 119
     const-wide/16 v0, 0x0
@@ -144,6 +146,9 @@
 
 .method constructor <init>(Landroid/os/Looper;Lcom/android/server/devicepolicy/DevicePolicyManagerService;J)V
     .registers 7
+    .param p1, "looper"  # Landroid/os/Looper;
+    .param p2, "dpm"  # Lcom/android/server/devicepolicy/DevicePolicyManagerService;
+    .param p3, "id"  # J
     .annotation build Lcom/android/internal/annotations/VisibleForTesting;
     .end annotation
 
@@ -156,46 +161,46 @@
     iput-wide v0, p0, Lcom/android/server/devicepolicy/NetworkLoggingHandler;->mLastFinalizationNanos:J
 
     .line 78
-    new-instance p1, Lcom/android/server/devicepolicy/NetworkLoggingHandler$1;
+    new-instance v0, Lcom/android/server/devicepolicy/NetworkLoggingHandler$1;
 
-    invoke-direct {p1, p0}, Lcom/android/server/devicepolicy/NetworkLoggingHandler$1;-><init>(Lcom/android/server/devicepolicy/NetworkLoggingHandler;)V
+    invoke-direct {v0, p0}, Lcom/android/server/devicepolicy/NetworkLoggingHandler$1;-><init>(Lcom/android/server/devicepolicy/NetworkLoggingHandler;)V
 
-    iput-object p1, p0, Lcom/android/server/devicepolicy/NetworkLoggingHandler;->mBatchTimeoutAlarmListener:Landroid/app/AlarmManager$OnAlarmListener;
+    iput-object v0, p0, Lcom/android/server/devicepolicy/NetworkLoggingHandler;->mBatchTimeoutAlarmListener:Landroid/app/AlarmManager$OnAlarmListener;
 
     .line 97
-    new-instance p1, Ljava/util/ArrayList;
+    new-instance v0, Ljava/util/ArrayList;
 
-    invoke-direct {p1}, Ljava/util/ArrayList;-><init>()V
+    invoke-direct {v0}, Ljava/util/ArrayList;-><init>()V
 
-    iput-object p1, p0, Lcom/android/server/devicepolicy/NetworkLoggingHandler;->mNetworkEvents:Ljava/util/ArrayList;
+    iput-object v0, p0, Lcom/android/server/devicepolicy/NetworkLoggingHandler;->mNetworkEvents:Ljava/util/ArrayList;
 
     .line 104
-    new-instance p1, Landroid/util/LongSparseArray;
+    new-instance v0, Landroid/util/LongSparseArray;
 
-    const/4 v0, 0x5
+    const/4 v1, 0x5
 
-    invoke-direct {p1, v0}, Landroid/util/LongSparseArray;-><init>(I)V
+    invoke-direct {v0, v1}, Landroid/util/LongSparseArray;-><init>(I)V
 
-    iput-object p1, p0, Lcom/android/server/devicepolicy/NetworkLoggingHandler;->mBatches:Landroid/util/LongSparseArray;
+    iput-object v0, p0, Lcom/android/server/devicepolicy/NetworkLoggingHandler;->mBatches:Landroid/util/LongSparseArray;
 
     .line 108
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    iput-boolean p1, p0, Lcom/android/server/devicepolicy/NetworkLoggingHandler;->mPaused:Z
+    iput-boolean v0, p0, Lcom/android/server/devicepolicy/NetworkLoggingHandler;->mPaused:Z
 
     .line 125
     iput-object p2, p0, Lcom/android/server/devicepolicy/NetworkLoggingHandler;->mDpm:Lcom/android/server/devicepolicy/DevicePolicyManagerService;
 
     .line 126
-    iget-object p1, p0, Lcom/android/server/devicepolicy/NetworkLoggingHandler;->mDpm:Lcom/android/server/devicepolicy/DevicePolicyManagerService;
+    iget-object v0, p0, Lcom/android/server/devicepolicy/NetworkLoggingHandler;->mDpm:Lcom/android/server/devicepolicy/DevicePolicyManagerService;
 
-    iget-object p1, p1, Lcom/android/server/devicepolicy/DevicePolicyManagerService;->mInjector:Lcom/android/server/devicepolicy/DevicePolicyManagerService$Injector;
+    iget-object v0, v0, Lcom/android/server/devicepolicy/DevicePolicyManagerService;->mInjector:Lcom/android/server/devicepolicy/DevicePolicyManagerService$Injector;
 
-    invoke-virtual {p1}, Lcom/android/server/devicepolicy/DevicePolicyManagerService$Injector;->getAlarmManager()Landroid/app/AlarmManager;
+    invoke-virtual {v0}, Lcom/android/server/devicepolicy/DevicePolicyManagerService$Injector;->getAlarmManager()Landroid/app/AlarmManager;
 
-    move-result-object p1
+    move-result-object v0
 
-    iput-object p1, p0, Lcom/android/server/devicepolicy/NetworkLoggingHandler;->mAlarmManager:Landroid/app/AlarmManager;
+    iput-object v0, p0, Lcom/android/server/devicepolicy/NetworkLoggingHandler;->mAlarmManager:Landroid/app/AlarmManager;
 
     .line 127
     iput-wide p3, p0, Lcom/android/server/devicepolicy/NetworkLoggingHandler;->mId:J
@@ -214,27 +219,31 @@
 .end method
 
 .method static synthetic access$100(Lcom/android/server/devicepolicy/NetworkLoggingHandler;)Ljava/util/ArrayList;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/devicepolicy/NetworkLoggingHandler;
 
     .line 43
-    iget-object p0, p0, Lcom/android/server/devicepolicy/NetworkLoggingHandler;->mNetworkEvents:Ljava/util/ArrayList;
+    iget-object v0, p0, Lcom/android/server/devicepolicy/NetworkLoggingHandler;->mNetworkEvents:Ljava/util/ArrayList;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$200(Lcom/android/server/devicepolicy/NetworkLoggingHandler;)Landroid/os/Bundle;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/devicepolicy/NetworkLoggingHandler;
 
     .line 43
     invoke-direct {p0}, Lcom/android/server/devicepolicy/NetworkLoggingHandler;->finalizeBatchAndBuildDeviceOwnerMessageLocked()Landroid/os/Bundle;
 
-    move-result-object p0
+    move-result-object v0
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$300(Lcom/android/server/devicepolicy/NetworkLoggingHandler;Landroid/os/Bundle;)V
     .registers 2
+    .param p0, "x0"  # Lcom/android/server/devicepolicy/NetworkLoggingHandler;
+    .param p1, "x1"  # Landroid/os/Bundle;
 
     .line 43
     invoke-direct {p0, p1}, Lcom/android/server/devicepolicy/NetworkLoggingHandler;->notifyDeviceOwner(Landroid/os/Bundle;)V
@@ -256,6 +265,7 @@
     invoke-direct {v0}, Landroid/os/Bundle;-><init>()V
 
     .line 264
+    .local v0, "extras":Landroid/os/Bundle;
     iget-object v1, p0, Lcom/android/server/devicepolicy/NetworkLoggingHandler;->mBatches:Landroid/util/LongSparseArray;
 
     invoke-virtual {v1}, Landroid/util/LongSparseArray;->size()I
@@ -275,6 +285,7 @@
     move-result v1
 
     .line 265
+    .local v1, "lastBatchSize":I
     iget-wide v2, p0, Lcom/android/server/devicepolicy/NetworkLoggingHandler;->mCurrentBatchToken:J
 
     const-string v4, "android.app.extra.EXTRA_NETWORK_LOGS_TOKEN"
@@ -291,7 +302,7 @@
 .end method
 
 .method private finalizeBatchAndBuildDeviceOwnerMessageLocked()Landroid/os/Bundle;
-    .registers 9
+    .registers 10
     .annotation build Lcom/android/internal/annotations/GuardedBy;
         value = {
             "this"
@@ -306,61 +317,158 @@
     iput-wide v0, p0, Lcom/android/server/devicepolicy/NetworkLoggingHandler;->mLastFinalizationNanos:J
 
     .line 225
-    nop
+    const/4 v0, 0x0
 
     .line 226
-    iget-object v0, p0, Lcom/android/server/devicepolicy/NetworkLoggingHandler;->mNetworkEvents:Ljava/util/ArrayList;
+    .local v0, "notificationExtras":Landroid/os/Bundle;
+    iget-object v1, p0, Lcom/android/server/devicepolicy/NetworkLoggingHandler;->mNetworkEvents:Ljava/util/ArrayList;
 
-    invoke-virtual {v0}, Ljava/util/ArrayList;->size()I
-
-    move-result v0
-
-    if-lez v0, :cond_81
-
-    .line 228
-    iget-object v0, p0, Lcom/android/server/devicepolicy/NetworkLoggingHandler;->mNetworkEvents:Ljava/util/ArrayList;
-
-    invoke-virtual {v0}, Ljava/util/ArrayList;->iterator()Ljava/util/Iterator;
-
-    move-result-object v0
-
-    :goto_15
-    invoke-interface {v0}, Ljava/util/Iterator;->hasNext()Z
+    invoke-virtual {v1}, Ljava/util/ArrayList;->size()I
 
     move-result v1
 
-    const-wide/16 v2, 0x1
+    if-lez v1, :cond_81
 
-    if-eqz v1, :cond_54
+    .line 228
+    iget-object v1, p0, Lcom/android/server/devicepolicy/NetworkLoggingHandler;->mNetworkEvents:Ljava/util/ArrayList;
 
-    invoke-interface {v0}, Ljava/util/Iterator;->next()Ljava/lang/Object;
+    invoke-virtual {v1}, Ljava/util/ArrayList;->iterator()Ljava/util/Iterator;
 
     move-result-object v1
 
-    check-cast v1, Landroid/app/admin/NetworkEvent;
+    :goto_15
+    invoke-interface {v1}, Ljava/util/Iterator;->hasNext()Z
+
+    move-result v2
+
+    const-wide/16 v3, 0x1
+
+    if-eqz v2, :cond_54
+
+    invoke-interface {v1}, Ljava/util/Iterator;->next()Ljava/lang/Object;
+
+    move-result-object v2
+
+    check-cast v2, Landroid/app/admin/NetworkEvent;
 
     .line 229
-    iget-wide v4, p0, Lcom/android/server/devicepolicy/NetworkLoggingHandler;->mId:J
+    .local v2, "event":Landroid/app/admin/NetworkEvent;
+    iget-wide v5, p0, Lcom/android/server/devicepolicy/NetworkLoggingHandler;->mId:J
 
-    invoke-virtual {v1, v4, v5}, Landroid/app/admin/NetworkEvent;->setId(J)V
+    invoke-virtual {v2, v5, v6}, Landroid/app/admin/NetworkEvent;->setId(J)V
 
     .line 230
-    iget-wide v4, p0, Lcom/android/server/devicepolicy/NetworkLoggingHandler;->mId:J
+    iget-wide v5, p0, Lcom/android/server/devicepolicy/NetworkLoggingHandler;->mId:J
 
-    const-wide v6, 0x7fffffffffffffffL
+    const-wide v7, 0x7fffffffffffffffL
 
-    cmp-long v1, v4, v6
+    cmp-long v7, v5, v7
 
-    if-nez v1, :cond_50
+    if-nez v7, :cond_50
 
     .line 231
+    sget-object v3, Lcom/android/server/devicepolicy/NetworkLoggingHandler;->TAG:Ljava/lang/String;
+
+    new-instance v4, Ljava/lang/StringBuilder;
+
+    invoke-direct {v4}, Ljava/lang/StringBuilder;-><init>()V
+
+    const-string v5, "Reached maximum id value; wrapping around ."
+
+    invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    iget-wide v5, p0, Lcom/android/server/devicepolicy/NetworkLoggingHandler;->mCurrentBatchToken:J
+
+    invoke-virtual {v4, v5, v6}, Ljava/lang/StringBuilder;->append(J)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v4}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v4
+
+    invoke-static {v3, v4}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
+
+    .line 232
+    const-wide/16 v3, 0x0
+
+    iput-wide v3, p0, Lcom/android/server/devicepolicy/NetworkLoggingHandler;->mId:J
+
+    goto :goto_53
+
+    .line 234
+    :cond_50
+    add-long/2addr v5, v3
+
+    iput-wide v5, p0, Lcom/android/server/devicepolicy/NetworkLoggingHandler;->mId:J
+
+    .line 236
+    .end local v2  # "event":Landroid/app/admin/NetworkEvent;
+    :goto_53
+    goto :goto_15
+
+    .line 238
+    :cond_54
+    iget-object v1, p0, Lcom/android/server/devicepolicy/NetworkLoggingHandler;->mBatches:Landroid/util/LongSparseArray;
+
+    invoke-virtual {v1}, Landroid/util/LongSparseArray;->size()I
+
+    move-result v1
+
+    const/4 v2, 0x5
+
+    if-lt v1, v2, :cond_63
+
+    .line 240
+    iget-object v1, p0, Lcom/android/server/devicepolicy/NetworkLoggingHandler;->mBatches:Landroid/util/LongSparseArray;
+
+    const/4 v2, 0x0
+
+    invoke-virtual {v1, v2}, Landroid/util/LongSparseArray;->removeAt(I)V
+
+    .line 242
+    :cond_63
+    iget-wide v1, p0, Lcom/android/server/devicepolicy/NetworkLoggingHandler;->mCurrentBatchToken:J
+
+    add-long/2addr v1, v3
+
+    iput-wide v1, p0, Lcom/android/server/devicepolicy/NetworkLoggingHandler;->mCurrentBatchToken:J
+
+    .line 243
+    iget-object v1, p0, Lcom/android/server/devicepolicy/NetworkLoggingHandler;->mBatches:Landroid/util/LongSparseArray;
+
+    iget-wide v2, p0, Lcom/android/server/devicepolicy/NetworkLoggingHandler;->mCurrentBatchToken:J
+
+    iget-object v4, p0, Lcom/android/server/devicepolicy/NetworkLoggingHandler;->mNetworkEvents:Ljava/util/ArrayList;
+
+    invoke-virtual {v1, v2, v3, v4}, Landroid/util/LongSparseArray;->append(JLjava/lang/Object;)V
+
+    .line 244
+    new-instance v1, Ljava/util/ArrayList;
+
+    invoke-direct {v1}, Ljava/util/ArrayList;-><init>()V
+
+    iput-object v1, p0, Lcom/android/server/devicepolicy/NetworkLoggingHandler;->mNetworkEvents:Ljava/util/ArrayList;
+
+    .line 245
+    iget-boolean v1, p0, Lcom/android/server/devicepolicy/NetworkLoggingHandler;->mPaused:Z
+
+    if-nez v1, :cond_99
+
+    .line 246
+    invoke-direct {p0}, Lcom/android/server/devicepolicy/NetworkLoggingHandler;->buildDeviceOwnerMessageLocked()Landroid/os/Bundle;
+
+    move-result-object v0
+
+    goto :goto_99
+
+    .line 251
+    :cond_81
     sget-object v1, Lcom/android/server/devicepolicy/NetworkLoggingHandler;->TAG:Ljava/lang/String;
 
     new-instance v2, Ljava/lang/StringBuilder;
 
     invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v3, "Reached maximum id value; wrapping around ."
+    const-string v3, "Was about to finalize the batch, but there were no events to send to the DPC, the batchToken of last available batch: "
 
     invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
@@ -372,107 +480,11 @@
 
     move-result-object v2
 
-    invoke-static {v1, v2}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
-
-    .line 232
-    const-wide/16 v1, 0x0
-
-    iput-wide v1, p0, Lcom/android/server/devicepolicy/NetworkLoggingHandler;->mId:J
-
-    goto :goto_53
-
-    .line 234
-    :cond_50
-    add-long/2addr v4, v2
-
-    iput-wide v4, p0, Lcom/android/server/devicepolicy/NetworkLoggingHandler;->mId:J
-
-    .line 236
-    :goto_53
-    goto :goto_15
-
-    .line 238
-    :cond_54
-    iget-object v0, p0, Lcom/android/server/devicepolicy/NetworkLoggingHandler;->mBatches:Landroid/util/LongSparseArray;
-
-    invoke-virtual {v0}, Landroid/util/LongSparseArray;->size()I
-
-    move-result v0
-
-    const/4 v1, 0x5
-
-    if-lt v0, v1, :cond_63
-
-    .line 240
-    iget-object v0, p0, Lcom/android/server/devicepolicy/NetworkLoggingHandler;->mBatches:Landroid/util/LongSparseArray;
-
-    const/4 v1, 0x0
-
-    invoke-virtual {v0, v1}, Landroid/util/LongSparseArray;->removeAt(I)V
-
-    .line 242
-    :cond_63
-    iget-wide v0, p0, Lcom/android/server/devicepolicy/NetworkLoggingHandler;->mCurrentBatchToken:J
-
-    add-long/2addr v0, v2
-
-    iput-wide v0, p0, Lcom/android/server/devicepolicy/NetworkLoggingHandler;->mCurrentBatchToken:J
-
-    .line 243
-    iget-object v0, p0, Lcom/android/server/devicepolicy/NetworkLoggingHandler;->mBatches:Landroid/util/LongSparseArray;
-
-    iget-wide v1, p0, Lcom/android/server/devicepolicy/NetworkLoggingHandler;->mCurrentBatchToken:J
-
-    iget-object v3, p0, Lcom/android/server/devicepolicy/NetworkLoggingHandler;->mNetworkEvents:Ljava/util/ArrayList;
-
-    invoke-virtual {v0, v1, v2, v3}, Landroid/util/LongSparseArray;->append(JLjava/lang/Object;)V
-
-    .line 244
-    new-instance v0, Ljava/util/ArrayList;
-
-    invoke-direct {v0}, Ljava/util/ArrayList;-><init>()V
-
-    iput-object v0, p0, Lcom/android/server/devicepolicy/NetworkLoggingHandler;->mNetworkEvents:Ljava/util/ArrayList;
-
-    .line 245
-    iget-boolean v0, p0, Lcom/android/server/devicepolicy/NetworkLoggingHandler;->mPaused:Z
-
-    if-nez v0, :cond_99
-
-    .line 246
-    invoke-direct {p0}, Lcom/android/server/devicepolicy/NetworkLoggingHandler;->buildDeviceOwnerMessageLocked()Landroid/os/Bundle;
-
-    move-result-object v0
-
-    goto :goto_9a
-
-    .line 251
-    :cond_81
-    sget-object v0, Lcom/android/server/devicepolicy/NetworkLoggingHandler;->TAG:Ljava/lang/String;
-
-    new-instance v1, Ljava/lang/StringBuilder;
-
-    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
-
-    const-string v2, "Was about to finalize the batch, but there were no events to send to the DPC, the batchToken of last available batch: "
-
-    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    iget-wide v2, p0, Lcom/android/server/devicepolicy/NetworkLoggingHandler;->mCurrentBatchToken:J
-
-    invoke-virtual {v1, v2, v3}, Ljava/lang/StringBuilder;->append(J)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
-
-    move-result-object v1
-
-    invoke-static {v0, v1}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v2}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 255
     :cond_99
-    const/4 v0, 0x0
-
-    :goto_9a
+    :goto_99
     invoke-virtual {p0}, Lcom/android/server/devicepolicy/NetworkLoggingHandler;->scheduleBatchFinalization()V
 
     .line 256
@@ -481,6 +493,7 @@
 
 .method private notifyDeviceOwner(Landroid/os/Bundle;)V
     .registers 7
+    .param p1, "extras"  # Landroid/os/Bundle;
 
     .line 273
     sget-object v0, Lcom/android/server/devicepolicy/NetworkLoggingHandler;->TAG:Ljava/lang/String;
@@ -519,11 +532,11 @@
     if-eqz v0, :cond_2c
 
     .line 276
-    sget-object p1, Lcom/android/server/devicepolicy/NetworkLoggingHandler;->TAG:Ljava/lang/String;
+    sget-object v0, Lcom/android/server/devicepolicy/NetworkLoggingHandler;->TAG:Ljava/lang/String;
 
-    const-string v0, "Shouldn\'t be called with NetworkLoggingHandler lock held"
+    const-string v1, "Shouldn\'t be called with NetworkLoggingHandler lock held"
 
-    invoke-static {p1, v0}, Landroid/util/Slog;->wtfStack(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v0, v1}, Landroid/util/Slog;->wtfStack(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 277
     return-void
@@ -575,6 +588,7 @@
     return-void
 
     .line 215
+    .end local p0  # "this":Lcom/android/server/devicepolicy/NetworkLoggingHandler;
     :catchall_16
     move-exception v0
 
@@ -584,7 +598,7 @@
 .end method
 
 .method forceBatchFinalization()J
-    .registers 6
+    .registers 7
 
     .line 173
     monitor-enter p0
@@ -605,6 +619,7 @@
     sub-long/2addr v0, v2
 
     .line 176
+    .local v0, "toWaitNanos":J
     const-wide/16 v2, 0x0
 
     cmp-long v4, v0, v2
@@ -616,51 +631,56 @@
 
     invoke-virtual {v2, v0, v1}, Ljava/util/concurrent/TimeUnit;->toMillis(J)J
 
-    move-result-wide v0
+    move-result-wide v2
 
-    const-wide/16 v2, 0x1
+    const-wide/16 v4, 0x1
 
-    add-long/2addr v0, v2
+    add-long/2addr v2, v4
 
     monitor-exit p0
 
-    return-wide v0
+    return-wide v2
 
     .line 179
     :cond_1c
     invoke-direct {p0}, Lcom/android/server/devicepolicy/NetworkLoggingHandler;->finalizeBatchAndBuildDeviceOwnerMessageLocked()Landroid/os/Bundle;
 
-    move-result-object v0
+    move-result-object v4
+
+    move-object v0, v4
 
     .line 180
+    .local v0, "notificationExtras":Landroid/os/Bundle;
     monitor-exit p0
-    :try_end_21
-    .catchall {:try_start_1 .. :try_end_21} :catchall_27
+    :try_end_22
+    .catchall {:try_start_1 .. :try_end_22} :catchall_28
 
     .line 181
-    if-eqz v0, :cond_26
+    if-eqz v0, :cond_27
 
     .line 182
     invoke-direct {p0, v0}, Lcom/android/server/devicepolicy/NetworkLoggingHandler;->notifyDeviceOwner(Landroid/os/Bundle;)V
 
     .line 184
-    :cond_26
+    :cond_27
     return-wide v2
 
     .line 180
-    :catchall_27
+    .end local v0  # "notificationExtras":Landroid/os/Bundle;
+    :catchall_28
     move-exception v0
 
-    :try_start_28
+    :try_start_29
     monitor-exit p0
-    :try_end_29
-    .catchall {:try_start_28 .. :try_end_29} :catchall_27
+    :try_end_2a
+    .catchall {:try_start_29 .. :try_end_2a} :catchall_28
 
     throw v0
 .end method
 
 .method public handleMessage(Landroid/os/Message;)V
-    .registers 4
+    .registers 6
+    .param p1, "msg"  # Landroid/os/Message;
 
     .line 132
     iget v0, p1, Landroid/os/Message;->what:I
@@ -670,94 +690,103 @@
     if-eq v0, v1, :cond_d
 
     .line 150
-    sget-object p1, Lcom/android/server/devicepolicy/NetworkLoggingHandler;->TAG:Ljava/lang/String;
+    sget-object v0, Lcom/android/server/devicepolicy/NetworkLoggingHandler;->TAG:Ljava/lang/String;
 
-    const-string v0, "NetworkLoggingHandler received an unknown of message."
+    const-string v1, "NetworkLoggingHandler received an unknown of message."
 
-    invoke-static {p1, v0}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v0, v1}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
 
-    goto :goto_3b
+    goto :goto_3c
 
     .line 134
     :cond_d
     invoke-virtual {p1}, Landroid/os/Message;->getData()Landroid/os/Bundle;
 
-    move-result-object p1
+    move-result-object v0
 
-    const-string/jumbo v0, "network_event"
+    const-string/jumbo v1, "network_event"
 
-    invoke-virtual {p1, v0}, Landroid/os/Bundle;->getParcelable(Ljava/lang/String;)Landroid/os/Parcelable;
+    invoke-virtual {v0, v1}, Landroid/os/Bundle;->getParcelable(Ljava/lang/String;)Landroid/os/Parcelable;
 
-    move-result-object p1
+    move-result-object v0
 
-    check-cast p1, Landroid/app/admin/NetworkEvent;
+    check-cast v0, Landroid/app/admin/NetworkEvent;
 
     .line 135
-    if-eqz p1, :cond_3b
+    .local v0, "networkEvent":Landroid/app/admin/NetworkEvent;
+    if-eqz v0, :cond_3c
 
     .line 136
-    const/4 v0, 0x0
+    const/4 v1, 0x0
 
     .line 137
+    .local v1, "notificationExtras":Landroid/os/Bundle;
     monitor-enter p0
 
     .line 138
     :try_start_1e
-    iget-object v1, p0, Lcom/android/server/devicepolicy/NetworkLoggingHandler;->mNetworkEvents:Ljava/util/ArrayList;
+    iget-object v2, p0, Lcom/android/server/devicepolicy/NetworkLoggingHandler;->mNetworkEvents:Ljava/util/ArrayList;
 
-    invoke-virtual {v1, p1}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
+    invoke-virtual {v2, v0}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
 
     .line 139
-    iget-object p1, p0, Lcom/android/server/devicepolicy/NetworkLoggingHandler;->mNetworkEvents:Ljava/util/ArrayList;
+    iget-object v2, p0, Lcom/android/server/devicepolicy/NetworkLoggingHandler;->mNetworkEvents:Ljava/util/ArrayList;
 
-    invoke-virtual {p1}, Ljava/util/ArrayList;->size()I
+    invoke-virtual {v2}, Ljava/util/ArrayList;->size()I
 
-    move-result p1
+    move-result v2
 
-    const/16 v1, 0x4b0
+    const/16 v3, 0x4b0
 
-    if-lt p1, v1, :cond_31
+    if-lt v2, v3, :cond_32
 
     .line 140
     invoke-direct {p0}, Lcom/android/server/devicepolicy/NetworkLoggingHandler;->finalizeBatchAndBuildDeviceOwnerMessageLocked()Landroid/os/Bundle;
 
-    move-result-object v0
+    move-result-object v2
+
+    move-object v1, v2
 
     .line 142
-    :cond_31
+    :cond_32
     monitor-exit p0
-    :try_end_32
-    .catchall {:try_start_1e .. :try_end_32} :catchall_38
+    :try_end_33
+    .catchall {:try_start_1e .. :try_end_33} :catchall_39
 
     .line 143
-    if-eqz v0, :cond_37
+    if-eqz v1, :cond_38
 
     .line 144
-    invoke-direct {p0, v0}, Lcom/android/server/devicepolicy/NetworkLoggingHandler;->notifyDeviceOwner(Landroid/os/Bundle;)V
+    invoke-direct {p0, v1}, Lcom/android/server/devicepolicy/NetworkLoggingHandler;->notifyDeviceOwner(Landroid/os/Bundle;)V
 
     .line 146
-    :cond_37
-    goto :goto_3b
+    .end local v1  # "notificationExtras":Landroid/os/Bundle;
+    :cond_38
+    goto :goto_3c
 
     .line 142
-    :catchall_38
-    move-exception p1
+    .restart local v1  # "notificationExtras":Landroid/os/Bundle;
+    :catchall_39
+    move-exception v2
 
-    :try_start_39
+    :try_start_3a
     monitor-exit p0
-    :try_end_3a
-    .catchall {:try_start_39 .. :try_end_3a} :catchall_38
+    :try_end_3b
+    .catchall {:try_start_3a .. :try_end_3b} :catchall_39
 
-    throw p1
+    throw v2
 
     .line 154
-    :cond_3b
-    :goto_3b
+    .end local v0  # "networkEvent":Landroid/app/admin/NetworkEvent;
+    .end local v1  # "notificationExtras":Landroid/os/Bundle;
+    :cond_3c
+    :goto_3c
     return-void
 .end method
 
 .method public synthetic lambda$retrieveFullLogBatch$0$NetworkLoggingHandler(J)V
     .registers 7
+    .param p1, "batchToken"  # J
 
     .line 294
     monitor-enter p0
@@ -801,13 +830,13 @@
 
     .line 298
     :catchall_1c
-    move-exception p1
+    move-exception v0
 
     monitor-exit p0
     :try_end_1e
     .catchall {:try_start_1 .. :try_end_1e} :catchall_1c
 
-    throw p1
+    throw v0
 .end method
 
 .method declared-synchronized pause()V
@@ -836,6 +865,7 @@
     return-void
 
     .line 187
+    .end local p0  # "this":Lcom/android/server/devicepolicy/NetworkLoggingHandler;
     :catchall_d
     move-exception v0
 
@@ -845,26 +875,27 @@
 .end method
 
 .method resume()V
-    .registers 5
+    .registers 6
 
     .line 193
-    nop
+    const/4 v0, 0x0
 
     .line 194
+    .local v0, "notificationExtras":Landroid/os/Bundle;
     monitor-enter p0
 
     .line 195
     :try_start_2
-    iget-boolean v0, p0, Lcom/android/server/devicepolicy/NetworkLoggingHandler;->mPaused:Z
+    iget-boolean v1, p0, Lcom/android/server/devicepolicy/NetworkLoggingHandler;->mPaused:Z
 
-    if-nez v0, :cond_f
+    if-nez v1, :cond_f
 
     .line 196
-    sget-object v0, Lcom/android/server/devicepolicy/NetworkLoggingHandler;->TAG:Ljava/lang/String;
+    sget-object v1, Lcom/android/server/devicepolicy/NetworkLoggingHandler;->TAG:Ljava/lang/String;
 
-    const-string v1, "Attempted to resume network logging, but logging is not paused."
+    const-string v2, "Attempted to resume network logging, but logging is not paused."
 
-    invoke-static {v0, v1}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v2}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 197
     monitor-exit p0
@@ -873,55 +904,55 @@
 
     .line 200
     :cond_f
-    sget-object v0, Lcom/android/server/devicepolicy/NetworkLoggingHandler;->TAG:Ljava/lang/String;
+    sget-object v1, Lcom/android/server/devicepolicy/NetworkLoggingHandler;->TAG:Ljava/lang/String;
 
-    new-instance v1, Ljava/lang/StringBuilder;
+    new-instance v2, Ljava/lang/StringBuilder;
 
-    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v2, "Resumed network logging. Current batch="
+    const-string v3, "Resumed network logging. Current batch="
 
-    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    iget-wide v2, p0, Lcom/android/server/devicepolicy/NetworkLoggingHandler;->mCurrentBatchToken:J
+    iget-wide v3, p0, Lcom/android/server/devicepolicy/NetworkLoggingHandler;->mCurrentBatchToken:J
 
-    invoke-virtual {v1, v2, v3}, Ljava/lang/StringBuilder;->append(J)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3, v4}, Ljava/lang/StringBuilder;->append(J)Ljava/lang/StringBuilder;
 
-    const-string v2, ", LastRetrievedBatch="
+    const-string v3, ", LastRetrievedBatch="
 
-    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    iget-wide v2, p0, Lcom/android/server/devicepolicy/NetworkLoggingHandler;->mLastRetrievedBatchToken:J
+    iget-wide v3, p0, Lcom/android/server/devicepolicy/NetworkLoggingHandler;->mLastRetrievedBatchToken:J
 
-    invoke-virtual {v1, v2, v3}, Ljava/lang/StringBuilder;->append(J)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3, v4}, Ljava/lang/StringBuilder;->append(J)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v1
+    move-result-object v2
 
-    invoke-static {v0, v1}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v2}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 202
-    const/4 v0, 0x0
+    const/4 v1, 0x0
 
-    iput-boolean v0, p0, Lcom/android/server/devicepolicy/NetworkLoggingHandler;->mPaused:Z
+    iput-boolean v1, p0, Lcom/android/server/devicepolicy/NetworkLoggingHandler;->mPaused:Z
 
     .line 205
-    iget-object v0, p0, Lcom/android/server/devicepolicy/NetworkLoggingHandler;->mBatches:Landroid/util/LongSparseArray;
+    iget-object v1, p0, Lcom/android/server/devicepolicy/NetworkLoggingHandler;->mBatches:Landroid/util/LongSparseArray;
 
-    invoke-virtual {v0}, Landroid/util/LongSparseArray;->size()I
+    invoke-virtual {v1}, Landroid/util/LongSparseArray;->size()I
 
-    move-result v0
+    move-result v1
 
-    if-lez v0, :cond_4c
+    if-lez v1, :cond_4c
 
-    iget-wide v0, p0, Lcom/android/server/devicepolicy/NetworkLoggingHandler;->mLastRetrievedBatchToken:J
+    iget-wide v1, p0, Lcom/android/server/devicepolicy/NetworkLoggingHandler;->mLastRetrievedBatchToken:J
 
-    iget-wide v2, p0, Lcom/android/server/devicepolicy/NetworkLoggingHandler;->mCurrentBatchToken:J
+    iget-wide v3, p0, Lcom/android/server/devicepolicy/NetworkLoggingHandler;->mCurrentBatchToken:J
 
-    cmp-long v0, v0, v2
+    cmp-long v1, v1, v3
 
-    if-eqz v0, :cond_4c
+    if-eqz v1, :cond_4c
 
     .line 206
     invoke-virtual {p0}, Lcom/android/server/devicepolicy/NetworkLoggingHandler;->scheduleBatchFinalization()V
@@ -929,43 +960,41 @@
     .line 207
     invoke-direct {p0}, Lcom/android/server/devicepolicy/NetworkLoggingHandler;->buildDeviceOwnerMessageLocked()Landroid/os/Bundle;
 
-    move-result-object v0
+    move-result-object v1
 
-    goto :goto_4d
+    move-object v0, v1
 
     .line 209
     :cond_4c
-    const/4 v0, 0x0
-
-    :goto_4d
     monitor-exit p0
-    :try_end_4e
-    .catchall {:try_start_2 .. :try_end_4e} :catchall_54
+    :try_end_4d
+    .catchall {:try_start_2 .. :try_end_4d} :catchall_53
 
     .line 210
-    if-eqz v0, :cond_53
+    if-eqz v0, :cond_52
 
     .line 211
     invoke-direct {p0, v0}, Lcom/android/server/devicepolicy/NetworkLoggingHandler;->notifyDeviceOwner(Landroid/os/Bundle;)V
 
     .line 213
-    :cond_53
+    :cond_52
     return-void
 
     .line 209
-    :catchall_54
-    move-exception v0
+    :catchall_53
+    move-exception v1
 
-    :try_start_55
+    :try_start_54
     monitor-exit p0
-    :try_end_56
-    .catchall {:try_start_55 .. :try_end_56} :catchall_54
+    :try_end_55
+    .catchall {:try_start_54 .. :try_end_55} :catchall_53
 
-    throw v0
+    throw v1
 .end method
 
 .method declared-synchronized retrieveFullLogBatch(J)Ljava/util/List;
     .registers 7
+    .param p1, "batchToken"  # J
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(J)",
@@ -988,14 +1017,15 @@
     .catchall {:try_start_1 .. :try_end_7} :catchall_23
 
     .line 284
+    .local v0, "index":I
     if-gez v0, :cond_c
 
     .line 286
-    const/4 p1, 0x0
+    const/4 v1, 0x0
 
     monitor-exit p0
 
-    return-object p1
+    return-object v1
 
     .line 293
     :cond_c
@@ -1012,21 +1042,24 @@
     iput-wide p1, p0, Lcom/android/server/devicepolicy/NetworkLoggingHandler;->mLastRetrievedBatchToken:J
 
     .line 302
-    iget-object p1, p0, Lcom/android/server/devicepolicy/NetworkLoggingHandler;->mBatches:Landroid/util/LongSparseArray;
+    iget-object v1, p0, Lcom/android/server/devicepolicy/NetworkLoggingHandler;->mBatches:Landroid/util/LongSparseArray;
 
-    invoke-virtual {p1, v0}, Landroid/util/LongSparseArray;->valueAt(I)Ljava/lang/Object;
+    invoke-virtual {v1, v0}, Landroid/util/LongSparseArray;->valueAt(I)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v1
 
-    check-cast p1, Ljava/util/List;
+    check-cast v1, Ljava/util/List;
     :try_end_21
     .catchall {:try_start_c .. :try_end_21} :catchall_23
 
     monitor-exit p0
 
-    return-object p1
+    return-object v1
 
     .line 282
+    .end local v0  # "index":I
+    .end local p0  # "this":Lcom/android/server/devicepolicy/NetworkLoggingHandler;
+    .end local p1  # "batchToken":J
     :catchall_23
     move-exception p1
 
@@ -1045,9 +1078,10 @@
 
     const-wide/32 v2, 0x5265c0
 
-    add-long v6, v0, v2
+    add-long/2addr v0, v2
 
     .line 160
+    .local v0, "when":J
     iget-object v4, p0, Lcom/android/server/devicepolicy/NetworkLoggingHandler;->mAlarmManager:Landroid/app/AlarmManager;
 
     iget-object v11, p0, Lcom/android/server/devicepolicy/NetworkLoggingHandler;->mBatchTimeoutAlarmListener:Landroid/app/AlarmManager$OnAlarmListener;
@@ -1058,16 +1092,18 @@
 
     const-string v10, "NetworkLogging.batchTimeout"
 
+    move-wide v6, v0
+
     move-object v12, p0
 
     invoke-virtual/range {v4 .. v12}, Landroid/app/AlarmManager;->setWindow(IJJLjava/lang/String;Landroid/app/AlarmManager$OnAlarmListener;Landroid/os/Handler;)V
 
     .line 163
-    sget-object v0, Lcom/android/server/devicepolicy/NetworkLoggingHandler;->TAG:Ljava/lang/String;
+    sget-object v2, Lcom/android/server/devicepolicy/NetworkLoggingHandler;->TAG:Ljava/lang/String;
 
-    const-string v1, "Scheduled a new batch finalization alarm 5400000ms from now."
+    const-string v3, "Scheduled a new batch finalization alarm 5400000ms from now."
 
-    invoke-static {v0, v1}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v2, v3}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 165
     return-void

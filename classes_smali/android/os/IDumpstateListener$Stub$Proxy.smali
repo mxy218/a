@@ -28,6 +28,7 @@
 # direct methods
 .method constructor <init>(Landroid/os/IBinder;)V
     .registers 2
+    .param p1, "remote"  # Landroid/os/IBinder;
 
     .line 173
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -61,6 +62,7 @@
 
 .method public onError(I)V
     .registers 7
+    .param p1, "errorCode"  # I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -73,11 +75,13 @@
     move-result-object v0
 
     .line 214
+    .local v0, "_data":Landroid/os/Parcel;
     invoke-static {}, Landroid/os/Parcel;->obtain()Landroid/os/Parcel;
 
     move-result-object v1
 
     .line 216
+    .local v1, "_reply":Landroid/os/Parcel;
     :try_start_8
     const-string v2, "android.os.IDumpstateListener"
 
@@ -98,20 +102,21 @@
     move-result v2
 
     .line 219
+    .local v2, "_status":Z
     if-nez v2, :cond_2e
 
     invoke-static {}, Landroid/os/IDumpstateListener$Stub;->getDefaultImpl()Landroid/os/IDumpstateListener;
 
-    move-result-object v2
+    move-result-object v3
 
-    if-eqz v2, :cond_2e
+    if-eqz v3, :cond_2e
 
     .line 220
     invoke-static {}, Landroid/os/IDumpstateListener$Stub;->getDefaultImpl()Landroid/os/IDumpstateListener;
 
-    move-result-object v2
+    move-result-object v3
 
-    invoke-interface {v2, p1}, Landroid/os/IDumpstateListener;->onError(I)V
+    invoke-interface {v3, p1}, Landroid/os/IDumpstateListener;->onError(I)V
     :try_end_27
     .catchall {:try_start_8 .. :try_end_27} :catchall_39
 
@@ -132,6 +137,7 @@
     .catchall {:try_start_2e .. :try_end_31} :catchall_39
 
     .line 226
+    .end local v2  # "_status":Z
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
 
     .line 227
@@ -145,14 +151,14 @@
 
     .line 226
     :catchall_39
-    move-exception p1
+    move-exception v2
 
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
 
     .line 227
     invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
 
-    throw p1
+    throw v2
 .end method
 
 .method public onFinished()V
@@ -169,11 +175,13 @@
     move-result-object v0
 
     .line 236
+    .local v0, "_data":Landroid/os/Parcel;
     invoke-static {}, Landroid/os/Parcel;->obtain()Landroid/os/Parcel;
 
     move-result-object v1
 
     .line 238
+    .local v1, "_reply":Landroid/os/Parcel;
     :try_start_8
     const-string v2, "android.os.IDumpstateListener"
 
@@ -191,20 +199,21 @@
     move-result v2
 
     .line 240
+    .local v2, "_status":Z
     if-nez v2, :cond_2b
 
     invoke-static {}, Landroid/os/IDumpstateListener$Stub;->getDefaultImpl()Landroid/os/IDumpstateListener;
 
-    move-result-object v2
+    move-result-object v3
 
-    if-eqz v2, :cond_2b
+    if-eqz v3, :cond_2b
 
     .line 241
     invoke-static {}, Landroid/os/IDumpstateListener$Stub;->getDefaultImpl()Landroid/os/IDumpstateListener;
 
-    move-result-object v2
+    move-result-object v3
 
-    invoke-interface {v2}, Landroid/os/IDumpstateListener;->onFinished()V
+    invoke-interface {v3}, Landroid/os/IDumpstateListener;->onFinished()V
     :try_end_24
     .catchall {:try_start_8 .. :try_end_24} :catchall_36
 
@@ -225,6 +234,7 @@
     .catchall {:try_start_2b .. :try_end_2e} :catchall_36
 
     .line 247
+    .end local v2  # "_status":Z
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
 
     .line 248
@@ -250,6 +260,7 @@
 
 .method public onMaxProgressUpdated(I)V
     .registers 7
+    .param p1, "maxProgress"  # I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -262,11 +273,13 @@
     move-result-object v0
 
     .line 275
+    .local v0, "_data":Landroid/os/Parcel;
     invoke-static {}, Landroid/os/Parcel;->obtain()Landroid/os/Parcel;
 
     move-result-object v1
 
     .line 277
+    .local v1, "_reply":Landroid/os/Parcel;
     :try_start_8
     const-string v2, "android.os.IDumpstateListener"
 
@@ -287,20 +300,21 @@
     move-result v2
 
     .line 280
+    .local v2, "_status":Z
     if-nez v2, :cond_2e
 
     invoke-static {}, Landroid/os/IDumpstateListener$Stub;->getDefaultImpl()Landroid/os/IDumpstateListener;
 
-    move-result-object v2
+    move-result-object v3
 
-    if-eqz v2, :cond_2e
+    if-eqz v3, :cond_2e
 
     .line 281
     invoke-static {}, Landroid/os/IDumpstateListener$Stub;->getDefaultImpl()Landroid/os/IDumpstateListener;
 
-    move-result-object v2
+    move-result-object v3
 
-    invoke-interface {v2, p1}, Landroid/os/IDumpstateListener;->onMaxProgressUpdated(I)V
+    invoke-interface {v3, p1}, Landroid/os/IDumpstateListener;->onMaxProgressUpdated(I)V
     :try_end_27
     .catchall {:try_start_8 .. :try_end_27} :catchall_39
 
@@ -321,6 +335,7 @@
     .catchall {:try_start_2e .. :try_end_31} :catchall_39
 
     .line 287
+    .end local v2  # "_status":Z
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
 
     .line 288
@@ -334,18 +349,19 @@
 
     .line 287
     :catchall_39
-    move-exception p1
+    move-exception v2
 
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
 
     .line 288
     invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
 
-    throw p1
+    throw v2
 .end method
 
 .method public onProgress(I)V
     .registers 7
+    .param p1, "progress"  # I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -358,11 +374,13 @@
     move-result-object v0
 
     .line 192
+    .local v0, "_data":Landroid/os/Parcel;
     invoke-static {}, Landroid/os/Parcel;->obtain()Landroid/os/Parcel;
 
     move-result-object v1
 
     .line 194
+    .local v1, "_reply":Landroid/os/Parcel;
     :try_start_8
     const-string v2, "android.os.IDumpstateListener"
 
@@ -383,20 +401,21 @@
     move-result v2
 
     .line 197
+    .local v2, "_status":Z
     if-nez v2, :cond_2e
 
     invoke-static {}, Landroid/os/IDumpstateListener$Stub;->getDefaultImpl()Landroid/os/IDumpstateListener;
 
-    move-result-object v2
+    move-result-object v3
 
-    if-eqz v2, :cond_2e
+    if-eqz v3, :cond_2e
 
     .line 198
     invoke-static {}, Landroid/os/IDumpstateListener$Stub;->getDefaultImpl()Landroid/os/IDumpstateListener;
 
-    move-result-object v2
+    move-result-object v3
 
-    invoke-interface {v2, p1}, Landroid/os/IDumpstateListener;->onProgress(I)V
+    invoke-interface {v3, p1}, Landroid/os/IDumpstateListener;->onProgress(I)V
     :try_end_27
     .catchall {:try_start_8 .. :try_end_27} :catchall_39
 
@@ -417,6 +436,7 @@
     .catchall {:try_start_2e .. :try_end_31} :catchall_39
 
     .line 204
+    .end local v2  # "_status":Z
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
 
     .line 205
@@ -430,18 +450,19 @@
 
     .line 204
     :catchall_39
-    move-exception p1
+    move-exception v2
 
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
 
     .line 205
     invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
 
-    throw p1
+    throw v2
 .end method
 
 .method public onProgressUpdated(I)V
     .registers 7
+    .param p1, "progress"  # I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -454,11 +475,13 @@
     move-result-object v0
 
     .line 256
+    .local v0, "_data":Landroid/os/Parcel;
     invoke-static {}, Landroid/os/Parcel;->obtain()Landroid/os/Parcel;
 
     move-result-object v1
 
     .line 258
+    .local v1, "_reply":Landroid/os/Parcel;
     :try_start_8
     const-string v2, "android.os.IDumpstateListener"
 
@@ -479,20 +502,21 @@
     move-result v2
 
     .line 261
+    .local v2, "_status":Z
     if-nez v2, :cond_2e
 
     invoke-static {}, Landroid/os/IDumpstateListener$Stub;->getDefaultImpl()Landroid/os/IDumpstateListener;
 
-    move-result-object v2
+    move-result-object v3
 
-    if-eqz v2, :cond_2e
+    if-eqz v3, :cond_2e
 
     .line 262
     invoke-static {}, Landroid/os/IDumpstateListener$Stub;->getDefaultImpl()Landroid/os/IDumpstateListener;
 
-    move-result-object v2
+    move-result-object v3
 
-    invoke-interface {v2, p1}, Landroid/os/IDumpstateListener;->onProgressUpdated(I)V
+    invoke-interface {v3, p1}, Landroid/os/IDumpstateListener;->onProgressUpdated(I)V
     :try_end_27
     .catchall {:try_start_8 .. :try_end_27} :catchall_39
 
@@ -513,6 +537,7 @@
     .catchall {:try_start_2e .. :try_end_31} :catchall_39
 
     .line 268
+    .end local v2  # "_status":Z
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
 
     .line 269
@@ -526,18 +551,22 @@
 
     .line 268
     :catchall_39
-    move-exception p1
+    move-exception v2
 
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
 
     .line 269
     invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
 
-    throw p1
+    throw v2
 .end method
 
 .method public onSectionComplete(Ljava/lang/String;III)V
     .registers 10
+    .param p1, "name"  # Ljava/lang/String;
+    .param p2, "status"  # I
+    .param p3, "size"  # I
+    .param p4, "durationMs"  # I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -550,11 +579,13 @@
     move-result-object v0
 
     .line 305
+    .local v0, "_data":Landroid/os/Parcel;
     invoke-static {}, Landroid/os/Parcel;->obtain()Landroid/os/Parcel;
 
     move-result-object v1
 
     .line 307
+    .local v1, "_reply":Landroid/os/Parcel;
     :try_start_8
     const-string v2, "android.os.IDumpstateListener"
 
@@ -584,20 +615,21 @@
     move-result v2
 
     .line 313
+    .local v2, "_status":Z
     if-nez v2, :cond_37
 
     invoke-static {}, Landroid/os/IDumpstateListener$Stub;->getDefaultImpl()Landroid/os/IDumpstateListener;
 
-    move-result-object v2
+    move-result-object v3
 
-    if-eqz v2, :cond_37
+    if-eqz v3, :cond_37
 
     .line 314
     invoke-static {}, Landroid/os/IDumpstateListener$Stub;->getDefaultImpl()Landroid/os/IDumpstateListener;
 
-    move-result-object v2
+    move-result-object v3
 
-    invoke-interface {v2, p1, p2, p3, p4}, Landroid/os/IDumpstateListener;->onSectionComplete(Ljava/lang/String;III)V
+    invoke-interface {v3, p1, p2, p3, p4}, Landroid/os/IDumpstateListener;->onSectionComplete(Ljava/lang/String;III)V
     :try_end_30
     .catchall {:try_start_8 .. :try_end_30} :catchall_42
 
@@ -618,6 +650,7 @@
     .catchall {:try_start_37 .. :try_end_3a} :catchall_42
 
     .line 320
+    .end local v2  # "_status":Z
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
 
     .line 321
@@ -631,12 +664,12 @@
 
     .line 320
     :catchall_42
-    move-exception p1
+    move-exception v2
 
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
 
     .line 321
     invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
 
-    throw p1
+    throw v2
 .end method

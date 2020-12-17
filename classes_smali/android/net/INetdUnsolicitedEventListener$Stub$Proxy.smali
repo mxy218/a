@@ -30,6 +30,7 @@
 # direct methods
 .method constructor <init>(Landroid/os/IBinder;)V
     .registers 3
+    .param p1, "remote"  # Landroid/os/IBinder;
 
     .line 238
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -87,11 +88,13 @@
     move-result-object v0
 
     .line 448
+    .local v0, "data":Landroid/os/Parcel;
     invoke-static {}, Landroid/os/Parcel;->obtain()Landroid/os/Parcel;
 
     move-result-object v1
 
     .line 450
+    .local v1, "reply":Landroid/os/Parcel;
     :try_start_d
     const-string v2, "android.net.INetdUnsolicitedEventListener"
 
@@ -139,6 +142,8 @@
     throw v2
 
     .line 459
+    .end local v0  # "data":Landroid/os/Parcel;
+    .end local v1  # "reply":Landroid/os/Parcel;
     :cond_33
     :goto_33
     iget v0, p0, Landroid/net/INetdUnsolicitedEventListener$Stub$Proxy;->mCachedVersion:I
@@ -148,6 +153,7 @@
 
 .method public onInterfaceAdded(Ljava/lang/String;)V
     .registers 7
+    .param p1, "ifName"  # Ljava/lang/String;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -160,6 +166,7 @@
     move-result-object v0
 
     .line 346
+    .local v0, "_data":Landroid/os/Parcel;
     :try_start_4
     const-string v1, "android.net.INetdUnsolicitedEventListener"
 
@@ -182,20 +189,21 @@
     move-result v1
 
     .line 349
+    .local v1, "_status":Z
     if-nez v1, :cond_28
 
     invoke-static {}, Landroid/net/INetdUnsolicitedEventListener$Stub;->getDefaultImpl()Landroid/net/INetdUnsolicitedEventListener;
 
-    move-result-object v1
+    move-result-object v2
 
-    if-eqz v1, :cond_28
+    if-eqz v2, :cond_28
 
     .line 350
     invoke-static {}, Landroid/net/INetdUnsolicitedEventListener$Stub;->getDefaultImpl()Landroid/net/INetdUnsolicitedEventListener;
 
-    move-result-object v1
+    move-result-object v2
 
-    invoke-interface {v1, p1}, Landroid/net/INetdUnsolicitedEventListener;->onInterfaceAdded(Ljava/lang/String;)V
+    invoke-interface {v2, p1}, Landroid/net/INetdUnsolicitedEventListener;->onInterfaceAdded(Ljava/lang/String;)V
     :try_end_24
     .catchall {:try_start_4 .. :try_end_24} :catchall_2d
 
@@ -206,6 +214,7 @@
     return-void
 
     .line 355
+    .end local v1  # "_status":Z
     :cond_28
     invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
 
@@ -217,15 +226,19 @@
 
     .line 355
     :catchall_2d
-    move-exception p1
+    move-exception v1
 
     invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
 
-    throw p1
+    throw v1
 .end method
 
 .method public onInterfaceAddressRemoved(Ljava/lang/String;Ljava/lang/String;II)V
     .registers 10
+    .param p1, "addr"  # Ljava/lang/String;
+    .param p2, "ifName"  # Ljava/lang/String;
+    .param p3, "flags"  # I
+    .param p4, "scope"  # I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -238,6 +251,7 @@
     move-result-object v0
 
     .line 327
+    .local v0, "_data":Landroid/os/Parcel;
     :try_start_4
     const-string v1, "android.net.INetdUnsolicitedEventListener"
 
@@ -269,20 +283,21 @@
     move-result v1
 
     .line 333
+    .local v1, "_status":Z
     if-nez v1, :cond_31
 
     invoke-static {}, Landroid/net/INetdUnsolicitedEventListener$Stub;->getDefaultImpl()Landroid/net/INetdUnsolicitedEventListener;
 
-    move-result-object v1
+    move-result-object v2
 
-    if-eqz v1, :cond_31
+    if-eqz v2, :cond_31
 
     .line 334
     invoke-static {}, Landroid/net/INetdUnsolicitedEventListener$Stub;->getDefaultImpl()Landroid/net/INetdUnsolicitedEventListener;
 
-    move-result-object v1
+    move-result-object v2
 
-    invoke-interface {v1, p1, p2, p3, p4}, Landroid/net/INetdUnsolicitedEventListener;->onInterfaceAddressRemoved(Ljava/lang/String;Ljava/lang/String;II)V
+    invoke-interface {v2, p1, p2, p3, p4}, Landroid/net/INetdUnsolicitedEventListener;->onInterfaceAddressRemoved(Ljava/lang/String;Ljava/lang/String;II)V
     :try_end_2d
     .catchall {:try_start_4 .. :try_end_2d} :catchall_36
 
@@ -293,6 +308,7 @@
     return-void
 
     .line 339
+    .end local v1  # "_status":Z
     :cond_31
     invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
 
@@ -304,15 +320,19 @@
 
     .line 339
     :catchall_36
-    move-exception p1
+    move-exception v1
 
     invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
 
-    throw p1
+    throw v1
 .end method
 
 .method public onInterfaceAddressUpdated(Ljava/lang/String;Ljava/lang/String;II)V
     .registers 10
+    .param p1, "addr"  # Ljava/lang/String;
+    .param p2, "ifName"  # Ljava/lang/String;
+    .param p3, "flags"  # I
+    .param p4, "scope"  # I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -325,6 +345,7 @@
     move-result-object v0
 
     .line 308
+    .local v0, "_data":Landroid/os/Parcel;
     :try_start_4
     const-string v1, "android.net.INetdUnsolicitedEventListener"
 
@@ -356,20 +377,21 @@
     move-result v1
 
     .line 314
+    .local v1, "_status":Z
     if-nez v1, :cond_31
 
     invoke-static {}, Landroid/net/INetdUnsolicitedEventListener$Stub;->getDefaultImpl()Landroid/net/INetdUnsolicitedEventListener;
 
-    move-result-object v1
+    move-result-object v2
 
-    if-eqz v1, :cond_31
+    if-eqz v2, :cond_31
 
     .line 315
     invoke-static {}, Landroid/net/INetdUnsolicitedEventListener$Stub;->getDefaultImpl()Landroid/net/INetdUnsolicitedEventListener;
 
-    move-result-object v1
+    move-result-object v2
 
-    invoke-interface {v1, p1, p2, p3, p4}, Landroid/net/INetdUnsolicitedEventListener;->onInterfaceAddressUpdated(Ljava/lang/String;Ljava/lang/String;II)V
+    invoke-interface {v2, p1, p2, p3, p4}, Landroid/net/INetdUnsolicitedEventListener;->onInterfaceAddressUpdated(Ljava/lang/String;Ljava/lang/String;II)V
     :try_end_2d
     .catchall {:try_start_4 .. :try_end_2d} :catchall_36
 
@@ -380,6 +402,7 @@
     return-void
 
     .line 320
+    .end local v1  # "_status":Z
     :cond_31
     invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
 
@@ -391,15 +414,17 @@
 
     .line 320
     :catchall_36
-    move-exception p1
+    move-exception v1
 
     invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
 
-    throw p1
+    throw v1
 .end method
 
 .method public onInterfaceChanged(Ljava/lang/String;Z)V
     .registers 8
+    .param p1, "ifName"  # Ljava/lang/String;
+    .param p2, "up"  # Z
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -412,6 +437,7 @@
     move-result-object v0
 
     .line 378
+    .local v0, "_data":Landroid/os/Parcel;
     :try_start_4
     const-string v1, "android.net.INetdUnsolicitedEventListener"
 
@@ -447,20 +473,21 @@
     move-result v1
 
     .line 382
+    .local v1, "_status":Z
     if-nez v1, :cond_31
 
     invoke-static {}, Landroid/net/INetdUnsolicitedEventListener$Stub;->getDefaultImpl()Landroid/net/INetdUnsolicitedEventListener;
 
-    move-result-object v1
+    move-result-object v2
 
-    if-eqz v1, :cond_31
+    if-eqz v2, :cond_31
 
     .line 383
     invoke-static {}, Landroid/net/INetdUnsolicitedEventListener$Stub;->getDefaultImpl()Landroid/net/INetdUnsolicitedEventListener;
 
-    move-result-object v1
+    move-result-object v2
 
-    invoke-interface {v1, p1, p2}, Landroid/net/INetdUnsolicitedEventListener;->onInterfaceChanged(Ljava/lang/String;Z)V
+    invoke-interface {v2, p1, p2}, Landroid/net/INetdUnsolicitedEventListener;->onInterfaceChanged(Ljava/lang/String;Z)V
     :try_end_2d
     .catchall {:try_start_4 .. :try_end_2d} :catchall_36
 
@@ -471,6 +498,7 @@
     return-void
 
     .line 388
+    .end local v1  # "_status":Z
     :cond_31
     invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
 
@@ -482,15 +510,19 @@
 
     .line 388
     :catchall_36
-    move-exception p1
+    move-exception v1
 
     invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
 
-    throw p1
+    throw v1
 .end method
 
 .method public onInterfaceClassActivityChanged(ZIJI)V
-    .registers 14
+    .registers 15
+    .param p1, "isActive"  # Z
+    .param p2, "timerLabel"  # I
+    .param p3, "timestampNs"  # J
+    .param p5, "uid"  # I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -503,6 +535,7 @@
     move-result-object v0
 
     .line 254
+    .local v0, "_data":Landroid/os/Parcel;
     :try_start_4
     const-string v1, "android.net.INetdUnsolicitedEventListener"
 
@@ -542,28 +575,29 @@
     move-result v1
 
     .line 260
+    .local v1, "_status":Z
     if-nez v1, :cond_39
 
     invoke-static {}, Landroid/net/INetdUnsolicitedEventListener$Stub;->getDefaultImpl()Landroid/net/INetdUnsolicitedEventListener;
 
-    move-result-object v1
+    move-result-object v2
 
-    if-eqz v1, :cond_39
+    if-eqz v2, :cond_39
 
     .line 261
     invoke-static {}, Landroid/net/INetdUnsolicitedEventListener$Stub;->getDefaultImpl()Landroid/net/INetdUnsolicitedEventListener;
 
-    move-result-object v2
+    move-result-object v3
 
-    move v3, p1
+    move v4, p1
 
-    move v4, p2
+    move v5, p2
 
-    move-wide v5, p3
+    move-wide v6, p3
 
-    move v7, p5
+    move v8, p5
 
-    invoke-interface/range {v2 .. v7}, Landroid/net/INetdUnsolicitedEventListener;->onInterfaceClassActivityChanged(ZIJI)V
+    invoke-interface/range {v3 .. v8}, Landroid/net/INetdUnsolicitedEventListener;->onInterfaceClassActivityChanged(ZIJI)V
     :try_end_35
     .catchall {:try_start_4 .. :try_end_35} :catchall_3e
 
@@ -574,6 +608,7 @@
     return-void
 
     .line 266
+    .end local v1  # "_status":Z
     :cond_39
     invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
 
@@ -585,15 +620,18 @@
 
     .line 266
     :catchall_3e
-    move-exception p1
+    move-exception v1
 
     invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
 
-    throw p1
+    throw v1
 .end method
 
 .method public onInterfaceDnsServerInfo(Ljava/lang/String;J[Ljava/lang/String;)V
     .registers 10
+    .param p1, "ifName"  # Ljava/lang/String;
+    .param p2, "lifetimeS"  # J
+    .param p4, "servers"  # [Ljava/lang/String;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -606,6 +644,7 @@
     move-result-object v0
 
     .line 290
+    .local v0, "_data":Landroid/os/Parcel;
     :try_start_4
     const-string v1, "android.net.INetdUnsolicitedEventListener"
 
@@ -634,20 +673,21 @@
     move-result v1
 
     .line 295
+    .local v1, "_status":Z
     if-nez v1, :cond_2e
 
     invoke-static {}, Landroid/net/INetdUnsolicitedEventListener$Stub;->getDefaultImpl()Landroid/net/INetdUnsolicitedEventListener;
 
-    move-result-object v1
+    move-result-object v2
 
-    if-eqz v1, :cond_2e
+    if-eqz v2, :cond_2e
 
     .line 296
     invoke-static {}, Landroid/net/INetdUnsolicitedEventListener$Stub;->getDefaultImpl()Landroid/net/INetdUnsolicitedEventListener;
 
-    move-result-object v1
+    move-result-object v2
 
-    invoke-interface {v1, p1, p2, p3, p4}, Landroid/net/INetdUnsolicitedEventListener;->onInterfaceDnsServerInfo(Ljava/lang/String;J[Ljava/lang/String;)V
+    invoke-interface {v2, p1, p2, p3, p4}, Landroid/net/INetdUnsolicitedEventListener;->onInterfaceDnsServerInfo(Ljava/lang/String;J[Ljava/lang/String;)V
     :try_end_2a
     .catchall {:try_start_4 .. :try_end_2a} :catchall_33
 
@@ -658,6 +698,7 @@
     return-void
 
     .line 301
+    .end local v1  # "_status":Z
     :cond_2e
     invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
 
@@ -669,15 +710,17 @@
 
     .line 301
     :catchall_33
-    move-exception p1
+    move-exception v1
 
     invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
 
-    throw p1
+    throw v1
 .end method
 
 .method public onInterfaceLinkStateChanged(Ljava/lang/String;Z)V
     .registers 8
+    .param p1, "ifName"  # Ljava/lang/String;
+    .param p2, "up"  # Z
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -690,6 +733,7 @@
     move-result-object v0
 
     .line 395
+    .local v0, "_data":Landroid/os/Parcel;
     :try_start_4
     const-string v1, "android.net.INetdUnsolicitedEventListener"
 
@@ -725,20 +769,21 @@
     move-result v1
 
     .line 399
+    .local v1, "_status":Z
     if-nez v1, :cond_31
 
     invoke-static {}, Landroid/net/INetdUnsolicitedEventListener$Stub;->getDefaultImpl()Landroid/net/INetdUnsolicitedEventListener;
 
-    move-result-object v1
+    move-result-object v2
 
-    if-eqz v1, :cond_31
+    if-eqz v2, :cond_31
 
     .line 400
     invoke-static {}, Landroid/net/INetdUnsolicitedEventListener$Stub;->getDefaultImpl()Landroid/net/INetdUnsolicitedEventListener;
 
-    move-result-object v1
+    move-result-object v2
 
-    invoke-interface {v1, p1, p2}, Landroid/net/INetdUnsolicitedEventListener;->onInterfaceLinkStateChanged(Ljava/lang/String;Z)V
+    invoke-interface {v2, p1, p2}, Landroid/net/INetdUnsolicitedEventListener;->onInterfaceLinkStateChanged(Ljava/lang/String;Z)V
     :try_end_2d
     .catchall {:try_start_4 .. :try_end_2d} :catchall_36
 
@@ -749,6 +794,7 @@
     return-void
 
     .line 405
+    .end local v1  # "_status":Z
     :cond_31
     invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
 
@@ -760,15 +806,16 @@
 
     .line 405
     :catchall_36
-    move-exception p1
+    move-exception v1
 
     invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
 
-    throw p1
+    throw v1
 .end method
 
 .method public onInterfaceRemoved(Ljava/lang/String;)V
     .registers 7
+    .param p1, "ifName"  # Ljava/lang/String;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -781,6 +828,7 @@
     move-result-object v0
 
     .line 362
+    .local v0, "_data":Landroid/os/Parcel;
     :try_start_4
     const-string v1, "android.net.INetdUnsolicitedEventListener"
 
@@ -803,20 +851,21 @@
     move-result v1
 
     .line 365
+    .local v1, "_status":Z
     if-nez v1, :cond_28
 
     invoke-static {}, Landroid/net/INetdUnsolicitedEventListener$Stub;->getDefaultImpl()Landroid/net/INetdUnsolicitedEventListener;
 
-    move-result-object v1
+    move-result-object v2
 
-    if-eqz v1, :cond_28
+    if-eqz v2, :cond_28
 
     .line 366
     invoke-static {}, Landroid/net/INetdUnsolicitedEventListener$Stub;->getDefaultImpl()Landroid/net/INetdUnsolicitedEventListener;
 
-    move-result-object v1
+    move-result-object v2
 
-    invoke-interface {v1, p1}, Landroid/net/INetdUnsolicitedEventListener;->onInterfaceRemoved(Ljava/lang/String;)V
+    invoke-interface {v2, p1}, Landroid/net/INetdUnsolicitedEventListener;->onInterfaceRemoved(Ljava/lang/String;)V
     :try_end_24
     .catchall {:try_start_4 .. :try_end_24} :catchall_2d
 
@@ -827,6 +876,7 @@
     return-void
 
     .line 371
+    .end local v1  # "_status":Z
     :cond_28
     invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
 
@@ -838,15 +888,17 @@
 
     .line 371
     :catchall_2d
-    move-exception p1
+    move-exception v1
 
     invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
 
-    throw p1
+    throw v1
 .end method
 
 .method public onQuotaLimitReached(Ljava/lang/String;Ljava/lang/String;)V
     .registers 8
+    .param p1, "alertName"  # Ljava/lang/String;
+    .param p2, "ifName"  # Ljava/lang/String;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -859,6 +911,7 @@
     move-result-object v0
 
     .line 273
+    .local v0, "_data":Landroid/os/Parcel;
     :try_start_4
     const-string v1, "android.net.INetdUnsolicitedEventListener"
 
@@ -884,20 +937,21 @@
     move-result v1
 
     .line 277
+    .local v1, "_status":Z
     if-nez v1, :cond_2b
 
     invoke-static {}, Landroid/net/INetdUnsolicitedEventListener$Stub;->getDefaultImpl()Landroid/net/INetdUnsolicitedEventListener;
 
-    move-result-object v1
+    move-result-object v2
 
-    if-eqz v1, :cond_2b
+    if-eqz v2, :cond_2b
 
     .line 278
     invoke-static {}, Landroid/net/INetdUnsolicitedEventListener$Stub;->getDefaultImpl()Landroid/net/INetdUnsolicitedEventListener;
 
-    move-result-object v1
+    move-result-object v2
 
-    invoke-interface {v1, p1, p2}, Landroid/net/INetdUnsolicitedEventListener;->onQuotaLimitReached(Ljava/lang/String;Ljava/lang/String;)V
+    invoke-interface {v2, p1, p2}, Landroid/net/INetdUnsolicitedEventListener;->onQuotaLimitReached(Ljava/lang/String;Ljava/lang/String;)V
     :try_end_27
     .catchall {:try_start_4 .. :try_end_27} :catchall_30
 
@@ -908,6 +962,7 @@
     return-void
 
     .line 283
+    .end local v1  # "_status":Z
     :cond_2b
     invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
 
@@ -919,15 +974,19 @@
 
     .line 283
     :catchall_30
-    move-exception p1
+    move-exception v1
 
     invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
 
-    throw p1
+    throw v1
 .end method
 
 .method public onRouteChanged(ZLjava/lang/String;Ljava/lang/String;Ljava/lang/String;)V
     .registers 10
+    .param p1, "updated"  # Z
+    .param p2, "route"  # Ljava/lang/String;
+    .param p3, "gateway"  # Ljava/lang/String;
+    .param p4, "ifName"  # Ljava/lang/String;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -940,6 +999,7 @@
     move-result-object v0
 
     .line 412
+    .local v0, "_data":Landroid/os/Parcel;
     :try_start_4
     const-string v1, "android.net.INetdUnsolicitedEventListener"
 
@@ -981,20 +1041,21 @@
     move-result v1
 
     .line 418
+    .local v1, "_status":Z
     if-nez v1, :cond_37
 
     invoke-static {}, Landroid/net/INetdUnsolicitedEventListener$Stub;->getDefaultImpl()Landroid/net/INetdUnsolicitedEventListener;
 
-    move-result-object v1
+    move-result-object v2
 
-    if-eqz v1, :cond_37
+    if-eqz v2, :cond_37
 
     .line 419
     invoke-static {}, Landroid/net/INetdUnsolicitedEventListener$Stub;->getDefaultImpl()Landroid/net/INetdUnsolicitedEventListener;
 
-    move-result-object v1
+    move-result-object v2
 
-    invoke-interface {v1, p1, p2, p3, p4}, Landroid/net/INetdUnsolicitedEventListener;->onRouteChanged(ZLjava/lang/String;Ljava/lang/String;Ljava/lang/String;)V
+    invoke-interface {v2, p1, p2, p3, p4}, Landroid/net/INetdUnsolicitedEventListener;->onRouteChanged(ZLjava/lang/String;Ljava/lang/String;Ljava/lang/String;)V
     :try_end_33
     .catchall {:try_start_4 .. :try_end_33} :catchall_3c
 
@@ -1005,6 +1066,7 @@
     return-void
 
     .line 424
+    .end local v1  # "_status":Z
     :cond_37
     invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
 
@@ -1016,15 +1078,17 @@
 
     .line 424
     :catchall_3c
-    move-exception p1
+    move-exception v1
 
     invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
 
-    throw p1
+    throw v1
 .end method
 
 .method public onStrictCleartextDetected(ILjava/lang/String;)V
     .registers 8
+    .param p1, "uid"  # I
+    .param p2, "hex"  # Ljava/lang/String;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -1037,6 +1101,7 @@
     move-result-object v0
 
     .line 431
+    .local v0, "_data":Landroid/os/Parcel;
     :try_start_4
     const-string v1, "android.net.INetdUnsolicitedEventListener"
 
@@ -1062,20 +1127,21 @@
     move-result v1
 
     .line 435
+    .local v1, "_status":Z
     if-nez v1, :cond_2c
 
     invoke-static {}, Landroid/net/INetdUnsolicitedEventListener$Stub;->getDefaultImpl()Landroid/net/INetdUnsolicitedEventListener;
 
-    move-result-object v1
+    move-result-object v2
 
-    if-eqz v1, :cond_2c
+    if-eqz v2, :cond_2c
 
     .line 436
     invoke-static {}, Landroid/net/INetdUnsolicitedEventListener$Stub;->getDefaultImpl()Landroid/net/INetdUnsolicitedEventListener;
 
-    move-result-object v1
+    move-result-object v2
 
-    invoke-interface {v1, p1, p2}, Landroid/net/INetdUnsolicitedEventListener;->onStrictCleartextDetected(ILjava/lang/String;)V
+    invoke-interface {v2, p1, p2}, Landroid/net/INetdUnsolicitedEventListener;->onStrictCleartextDetected(ILjava/lang/String;)V
     :try_end_28
     .catchall {:try_start_4 .. :try_end_28} :catchall_31
 
@@ -1086,6 +1152,7 @@
     return-void
 
     .line 441
+    .end local v1  # "_status":Z
     :cond_2c
     invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
 
@@ -1097,9 +1164,9 @@
 
     .line 441
     :catchall_31
-    move-exception p1
+    move-exception v1
 
     invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
 
-    throw p1
+    throw v1
 .end method

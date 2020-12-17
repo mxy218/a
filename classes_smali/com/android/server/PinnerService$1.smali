@@ -21,8 +21,9 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/PinnerService;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/PinnerService;
 
-    .line 140
+    .line 141
     iput-object p1, p0, Lcom/android/server/PinnerService$1;->this$0:Lcom/android/server/PinnerService;
 
     invoke-direct {p0}, Landroid/content/BroadcastReceiver;-><init>()V
@@ -33,47 +34,55 @@
 
 # virtual methods
 .method public onReceive(Landroid/content/Context;Landroid/content/Intent;)V
-    .registers 4
-
-    .line 144
-    invoke-virtual {p2}, Landroid/content/Intent;->getAction()Ljava/lang/String;
-
-    move-result-object p1
-
-    const-string v0, "android.intent.action.PACKAGE_REPLACED"
-
-    invoke-virtual {v0, p1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
-
-    move-result p1
-
-    if-eqz p1, :cond_22
+    .registers 8
+    .param p1, "context"  # Landroid/content/Context;
+    .param p2, "intent"  # Landroid/content/Intent;
 
     .line 145
-    invoke-virtual {p2}, Landroid/content/Intent;->getData()Landroid/net/Uri;
+    invoke-virtual {p2}, Landroid/content/Intent;->getAction()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
+
+    const-string v1, "android.intent.action.PACKAGE_REPLACED"
+
+    invoke-virtual {v1, v0}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+
+    move-result v0
+
+    if-eqz v0, :cond_22
 
     .line 146
-    invoke-virtual {p1}, Landroid/net/Uri;->getSchemeSpecificPart()Ljava/lang/String;
+    invoke-virtual {p2}, Landroid/content/Intent;->getData()Landroid/net/Uri;
 
-    move-result-object p1
+    move-result-object v0
 
     .line 147
-    new-instance p2, Landroid/util/ArraySet;
+    .local v0, "packageUri":Landroid/net/Uri;
+    invoke-virtual {v0}, Landroid/net/Uri;->getSchemeSpecificPart()Ljava/lang/String;
 
-    invoke-direct {p2}, Landroid/util/ArraySet;-><init>()V
+    move-result-object v1
 
     .line 148
-    invoke-virtual {p2, p1}, Landroid/util/ArraySet;->add(Ljava/lang/Object;)Z
+    .local v1, "packageName":Ljava/lang/String;
+    new-instance v2, Landroid/util/ArraySet;
+
+    invoke-direct {v2}, Landroid/util/ArraySet;-><init>()V
 
     .line 149
-    iget-object p1, p0, Lcom/android/server/PinnerService$1;->this$0:Lcom/android/server/PinnerService;
+    .local v2, "updatedPackages":Landroid/util/ArraySet;, "Landroid/util/ArraySet<Ljava/lang/String;>;"
+    invoke-virtual {v2, v1}, Landroid/util/ArraySet;->add(Ljava/lang/Object;)Z
 
-    const/4 v0, 0x1
+    .line 150
+    iget-object v3, p0, Lcom/android/server/PinnerService$1;->this$0:Lcom/android/server/PinnerService;
 
-    invoke-virtual {p1, p2, v0}, Lcom/android/server/PinnerService;->update(Landroid/util/ArraySet;Z)V
+    const/4 v4, 0x1
 
-    .line 151
+    invoke-virtual {v3, v2, v4}, Lcom/android/server/PinnerService;->update(Landroid/util/ArraySet;Z)V
+
+    .line 152
+    .end local v0  # "packageUri":Landroid/net/Uri;
+    .end local v1  # "packageName":Ljava/lang/String;
+    .end local v2  # "updatedPackages":Landroid/util/ArraySet;, "Landroid/util/ArraySet<Ljava/lang/String;>;"
     :cond_22
     return-void
 .end method

@@ -24,6 +24,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/location/LocationBasedCountryDetector;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/location/LocationBasedCountryDetector;
 
     .line 176
     iput-object p1, p0, Lcom/android/server/location/LocationBasedCountryDetector$1;->this$0:Lcom/android/server/location/LocationBasedCountryDetector;
@@ -37,6 +38,7 @@
 # virtual methods
 .method public onLocationChanged(Landroid/location/Location;)V
     .registers 3
+    .param p1, "location"  # Landroid/location/Location;
 
     .line 179
     if-eqz p1, :cond_c
@@ -58,6 +60,7 @@
 
 .method public onProviderDisabled(Ljava/lang/String;)V
     .registers 2
+    .param p1, "provider"  # Ljava/lang/String;
 
     .line 186
     return-void
@@ -65,6 +68,7 @@
 
 .method public onProviderEnabled(Ljava/lang/String;)V
     .registers 2
+    .param p1, "provider"  # Ljava/lang/String;
 
     .line 189
     return-void
@@ -72,6 +76,9 @@
 
 .method public onStatusChanged(Ljava/lang/String;ILandroid/os/Bundle;)V
     .registers 4
+    .param p1, "provider"  # Ljava/lang/String;
+    .param p2, "status"  # I
+    .param p3, "extras"  # Landroid/os/Bundle;
 
     .line 192
     return-void

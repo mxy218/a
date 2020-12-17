@@ -30,7 +30,10 @@
 
 # direct methods
 .method constructor <init>(IILandroid/media/AudioRecordingConfiguration;)V
-    .registers 4
+    .registers 5
+    .param p1, "event"  # I
+    .param p2, "riid"  # I
+    .param p3, "config"  # Landroid/media/AudioRecordingConfiguration;
 
     .line 535
     invoke-direct {p0}, Lcom/android/server/audio/AudioEventLogger$Event;-><init>()V
@@ -47,49 +50,49 @@
     .line 539
     invoke-virtual {p3}, Landroid/media/AudioRecordingConfiguration;->getClientUid()I
 
-    move-result p1
+    move-result v0
 
-    iput p1, p0, Lcom/android/server/audio/RecordingActivityMonitor$RecordingEvent;->mClientUid:I
+    iput v0, p0, Lcom/android/server/audio/RecordingActivityMonitor$RecordingEvent;->mClientUid:I
 
     .line 540
     invoke-virtual {p3}, Landroid/media/AudioRecordingConfiguration;->getClientAudioSessionId()I
 
-    move-result p1
+    move-result v0
 
-    iput p1, p0, Lcom/android/server/audio/RecordingActivityMonitor$RecordingEvent;->mSession:I
+    iput v0, p0, Lcom/android/server/audio/RecordingActivityMonitor$RecordingEvent;->mSession:I
 
     .line 541
     invoke-virtual {p3}, Landroid/media/AudioRecordingConfiguration;->getClientAudioSource()I
 
-    move-result p1
+    move-result v0
 
-    iput p1, p0, Lcom/android/server/audio/RecordingActivityMonitor$RecordingEvent;->mSource:I
+    iput v0, p0, Lcom/android/server/audio/RecordingActivityMonitor$RecordingEvent;->mSource:I
 
     .line 542
     invoke-virtual {p3}, Landroid/media/AudioRecordingConfiguration;->getClientPackageName()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    iput-object p1, p0, Lcom/android/server/audio/RecordingActivityMonitor$RecordingEvent;->mPackName:Ljava/lang/String;
+    iput-object v0, p0, Lcom/android/server/audio/RecordingActivityMonitor$RecordingEvent;->mPackName:Ljava/lang/String;
 
     goto :goto_2c
 
     .line 544
     :cond_22
-    const/4 p1, -0x1
+    const/4 v0, -0x1
 
-    iput p1, p0, Lcom/android/server/audio/RecordingActivityMonitor$RecordingEvent;->mClientUid:I
+    iput v0, p0, Lcom/android/server/audio/RecordingActivityMonitor$RecordingEvent;->mClientUid:I
 
     .line 545
-    iput p1, p0, Lcom/android/server/audio/RecordingActivityMonitor$RecordingEvent;->mSession:I
+    iput v0, p0, Lcom/android/server/audio/RecordingActivityMonitor$RecordingEvent;->mSession:I
 
     .line 546
-    iput p1, p0, Lcom/android/server/audio/RecordingActivityMonitor$RecordingEvent;->mSource:I
+    iput v0, p0, Lcom/android/server/audio/RecordingActivityMonitor$RecordingEvent;->mSource:I
 
     .line 547
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    iput-object p1, p0, Lcom/android/server/audio/RecordingActivityMonitor$RecordingEvent;->mPackName:Ljava/lang/String;
+    iput-object v0, p0, Lcom/android/server/audio/RecordingActivityMonitor$RecordingEvent;->mPackName:Ljava/lang/String;
 
     .line 549
     :goto_2c
@@ -98,6 +101,7 @@
 
 .method private static recordEventToString(I)Ljava/lang/String;
     .registers 3
+    .param p0, "recEvent"  # I
 
     .line 552
     if-eqz p0, :cond_2f
@@ -125,39 +129,39 @@
 
     invoke-virtual {v0, p0}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    const-string p0, ")"
+    const-string v1, ")"
 
-    invoke-virtual {v0, p0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v0
 
-    return-object p0
+    return-object v0
 
     .line 560
     :cond_23
-    const-string/jumbo p0, "release"
+    const-string/jumbo v0, "release"
 
-    return-object p0
+    return-object v0
 
     .line 556
     :cond_27
-    const-string/jumbo p0, "update"
+    const-string/jumbo v0, "update"
 
-    return-object p0
+    return-object v0
 
     .line 558
     :cond_2b
-    const-string/jumbo p0, "stop"
+    const-string/jumbo v0, "stop"
 
-    return-object p0
+    return-object v0
 
     .line 554
     :cond_2f
-    const-string/jumbo p0, "start"
+    const-string/jumbo v0, "start"
 
-    return-object p0
+    return-object v0
 .end method
 
 

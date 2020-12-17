@@ -38,17 +38,17 @@
 .method private constructor <init>()V
     .registers 2
 
-    .line 674
+    .line 581
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
-    .line 675
+    .line 582
     new-instance v0, Ljava/lang/Object;
 
     invoke-direct {v0}, Ljava/lang/Object;-><init>()V
 
     iput-object v0, p0, Lcom/android/server/soundtrigger/SoundTriggerService$NumOps;->mLock:Ljava/lang/Object;
 
-    .line 677
+    .line 584
     const/16 v0, 0x18
 
     new-array v0, v0, [I
@@ -60,8 +60,9 @@
 
 .method synthetic constructor <init>(Lcom/android/server/soundtrigger/SoundTriggerService$1;)V
     .registers 2
+    .param p1, "x0"  # Lcom/android/server/soundtrigger/SoundTriggerService$1;
 
-    .line 674
+    .line 581
     invoke-direct {p0}, Lcom/android/server/soundtrigger/SoundTriggerService$NumOps;-><init>()V
 
     return-void
@@ -70,14 +71,15 @@
 
 # virtual methods
 .method addOp(J)V
-    .registers 7
+    .registers 9
+    .param p1, "currentTime"  # J
 
-    .line 711
+    .line 618
     iget-object v0, p0, Lcom/android/server/soundtrigger/SoundTriggerService$NumOps;->mLock:Ljava/lang/Object;
 
     monitor-enter v0
 
-    .line 712
+    .line 619
     :try_start_3
     sget-object v1, Ljava/util/concurrent/TimeUnit;->HOURS:Ljava/util/concurrent/TimeUnit;
 
@@ -85,52 +87,55 @@
 
     invoke-virtual {v1, p1, p2, v2}, Ljava/util/concurrent/TimeUnit;->convert(JLjava/util/concurrent/TimeUnit;)J
 
-    move-result-wide p1
+    move-result-wide v1
 
-    .line 714
-    iget-object v1, p0, Lcom/android/server/soundtrigger/SoundTriggerService$NumOps;->mNumOps:[I
+    .line 621
+    .local v1, "numHoursSinceBoot":J
+    iget-object v3, p0, Lcom/android/server/soundtrigger/SoundTriggerService$NumOps;->mNumOps:[I
 
-    const-wide/16 v2, 0x18
+    const-wide/16 v4, 0x18
 
-    rem-long v2, p1, v2
+    rem-long v4, v1, v4
 
-    long-to-int v2, v2
+    long-to-int v4, v4
 
-    aget v3, v1, v2
+    aget v5, v3, v4
 
-    add-int/lit8 v3, v3, 0x1
+    add-int/lit8 v5, v5, 0x1
 
-    aput v3, v1, v2
+    aput v5, v3, v4
 
-    .line 715
-    iput-wide p1, p0, Lcom/android/server/soundtrigger/SoundTriggerService$NumOps;->mLastOpsHourSinceBoot:J
+    .line 622
+    iput-wide v1, p0, Lcom/android/server/soundtrigger/SoundTriggerService$NumOps;->mLastOpsHourSinceBoot:J
 
-    .line 716
+    .line 623
+    .end local v1  # "numHoursSinceBoot":J
     monitor-exit v0
 
-    .line 717
+    .line 624
     return-void
 
-    .line 716
+    .line 623
     :catchall_1c
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_1e
     .catchall {:try_start_3 .. :try_end_1e} :catchall_1c
 
-    throw p1
+    throw v1
 .end method
 
 .method clearOldOps(J)V
-    .registers 11
+    .registers 13
+    .param p1, "currentTime"  # J
 
-    .line 691
+    .line 598
     iget-object v0, p0, Lcom/android/server/soundtrigger/SoundTriggerService$NumOps;->mLock:Ljava/lang/Object;
 
     monitor-enter v0
 
-    .line 692
+    .line 599
     :try_start_3
     sget-object v1, Ljava/util/concurrent/TimeUnit;->HOURS:Ljava/util/concurrent/TimeUnit;
 
@@ -138,110 +143,118 @@
 
     invoke-virtual {v1, p1, p2, v2}, Ljava/util/concurrent/TimeUnit;->convert(JLjava/util/concurrent/TimeUnit;)J
 
-    move-result-wide p1
+    move-result-wide v1
 
-    .line 697
-    iget-wide v1, p0, Lcom/android/server/soundtrigger/SoundTriggerService$NumOps;->mLastOpsHourSinceBoot:J
+    .line 604
+    .local v1, "numHoursSinceBoot":J
+    iget-wide v3, p0, Lcom/android/server/soundtrigger/SoundTriggerService$NumOps;->mLastOpsHourSinceBoot:J
 
-    const-wide/16 v3, 0x0
+    const-wide/16 v5, 0x0
 
-    cmp-long v1, v1, v3
+    cmp-long v3, v3, v5
 
-    if-eqz v1, :cond_27
+    if-eqz v3, :cond_28
 
-    .line 698
-    iget-wide v1, p0, Lcom/android/server/soundtrigger/SoundTriggerService$NumOps;->mLastOpsHourSinceBoot:J
+    .line 605
+    iget-wide v3, p0, Lcom/android/server/soundtrigger/SoundTriggerService$NumOps;->mLastOpsHourSinceBoot:J
 
-    const-wide/16 v3, 0x1
+    const-wide/16 v5, 0x1
 
-    :goto_17
-    add-long/2addr v1, v3
+    add-long/2addr v3, v5
 
-    cmp-long v5, v1, p1
+    .local v3, "hour":J
+    :goto_18
+    cmp-long v7, v3, v1
 
-    if-gtz v5, :cond_27
+    if-gtz v7, :cond_28
 
-    .line 699
-    iget-object v5, p0, Lcom/android/server/soundtrigger/SoundTriggerService$NumOps;->mNumOps:[I
+    .line 606
+    iget-object v7, p0, Lcom/android/server/soundtrigger/SoundTriggerService$NumOps;->mNumOps:[I
 
-    const-wide/16 v6, 0x18
+    const-wide/16 v8, 0x18
 
-    rem-long v6, v1, v6
+    rem-long v8, v3, v8
 
-    long-to-int v6, v6
+    long-to-int v8, v8
 
-    const/4 v7, 0x0
+    const/4 v9, 0x0
 
-    aput v7, v5, v6
+    aput v9, v7, v8
 
-    .line 698
-    goto :goto_17
+    .line 605
+    add-long/2addr v3, v5
 
-    .line 702
-    :cond_27
+    goto :goto_18
+
+    .line 609
+    .end local v1  # "numHoursSinceBoot":J
+    .end local v3  # "hour":J
+    :cond_28
     monitor-exit v0
 
-    .line 703
+    .line 610
     return-void
 
-    .line 702
-    :catchall_29
-    move-exception p1
+    .line 609
+    :catchall_2a
+    move-exception v1
 
     monitor-exit v0
-    :try_end_2b
-    .catchall {:try_start_3 .. :try_end_2b} :catchall_29
+    :try_end_2c
+    .catchall {:try_start_3 .. :try_end_2c} :catchall_2a
 
-    throw p1
+    throw v1
 .end method
 
 .method getOpsAdded()I
     .registers 5
 
-    .line 725
+    .line 632
     iget-object v0, p0, Lcom/android/server/soundtrigger/SoundTriggerService$NumOps;->mLock:Ljava/lang/Object;
 
     monitor-enter v0
 
-    .line 726
-    nop
-
-    .line 727
+    .line 633
     const/4 v1, 0x0
 
-    move v2, v1
+    .line 634
+    .local v1, "totalOperationsInLastDay":I
+    const/4 v2, 0x0
 
-    :goto_6
+    .local v2, "i":I
+    :goto_5
     const/16 v3, 0x18
 
-    if-ge v1, v3, :cond_12
+    if-ge v2, v3, :cond_11
 
-    .line 728
-    :try_start_a
+    .line 635
+    :try_start_9
     iget-object v3, p0, Lcom/android/server/soundtrigger/SoundTriggerService$NumOps;->mNumOps:[I
 
-    aget v3, v3, v1
+    aget v3, v3, v2
 
-    add-int/2addr v2, v3
+    add-int/2addr v1, v3
 
-    .line 727
-    add-int/lit8 v1, v1, 0x1
+    .line 634
+    add-int/lit8 v2, v2, 0x1
 
-    goto :goto_6
+    goto :goto_5
 
-    .line 731
-    :cond_12
+    .line 638
+    .end local v2  # "i":I
+    :cond_11
     monitor-exit v0
 
-    return v2
+    return v1
 
-    .line 732
-    :catchall_14
+    .line 639
+    .end local v1  # "totalOperationsInLastDay":I
+    :catchall_13
     move-exception v1
 
     monitor-exit v0
-    :try_end_16
-    .catchall {:try_start_a .. :try_end_16} :catchall_14
+    :try_end_15
+    .catchall {:try_start_9 .. :try_end_15} :catchall_13
 
     throw v1
 .end method

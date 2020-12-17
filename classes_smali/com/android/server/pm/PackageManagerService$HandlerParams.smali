@@ -27,16 +27,17 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/pm/PackageManagerService;Landroid/os/UserHandle;)V
     .registers 3
+    .param p2, "user"  # Landroid/os/UserHandle;
 
-    .line 14934
+    .line 15431
     iput-object p1, p0, Lcom/android/server/pm/PackageManagerService$HandlerParams;->this$0:Lcom/android/server/pm/PackageManagerService;
 
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
-    .line 14935
+    .line 15432
     iput-object p2, p0, Lcom/android/server/pm/PackageManagerService$HandlerParams;->mUser:Landroid/os/UserHandle;
 
-    .line 14936
+    .line 15433
     return-void
 .end method
 
@@ -45,19 +46,19 @@
 .method getRollbackUser()Landroid/os/UserHandle;
     .registers 3
 
-    .line 14950
+    .line 15447
     iget-object v0, p0, Lcom/android/server/pm/PackageManagerService$HandlerParams;->mUser:Landroid/os/UserHandle;
 
     sget-object v1, Landroid/os/UserHandle;->ALL:Landroid/os/UserHandle;
 
     if-ne v0, v1, :cond_9
 
-    .line 14951
+    .line 15448
     sget-object v0, Landroid/os/UserHandle;->SYSTEM:Landroid/os/UserHandle;
 
     return-object v0
 
-    .line 14953
+    .line 15450
     :cond_9
     iget-object v0, p0, Lcom/android/server/pm/PackageManagerService$HandlerParams;->mUser:Landroid/os/UserHandle;
 
@@ -67,7 +68,7 @@
 .method getUser()Landroid/os/UserHandle;
     .registers 2
 
-    .line 14939
+    .line 15436
     iget-object v0, p0, Lcom/android/server/pm/PackageManagerService$HandlerParams;->mUser:Landroid/os/UserHandle;
 
     return-object v0
@@ -81,33 +82,67 @@
 
 .method setTraceCookie(I)Lcom/android/server/pm/PackageManagerService$HandlerParams;
     .registers 2
+    .param p1, "traceCookie"  # I
 
-    .line 14962
+    .line 15459
     iput p1, p0, Lcom/android/server/pm/PackageManagerService$HandlerParams;->traceCookie:I
 
-    .line 14963
+    .line 15460
     return-object p0
 .end method
 
 .method setTraceMethod(Ljava/lang/String;)Lcom/android/server/pm/PackageManagerService$HandlerParams;
     .registers 2
+    .param p1, "traceMethod"  # Ljava/lang/String;
 
-    .line 14957
+    .line 15454
     iput-object p1, p0, Lcom/android/server/pm/PackageManagerService$HandlerParams;->traceMethod:Ljava/lang/String;
 
-    .line 14958
+    .line 15455
     return-object p0
 .end method
 
 .method final startCopy()V
-    .registers 1
+    .registers 3
 
-    .line 14968
+    .line 15464
+    sget-boolean v0, Lcom/android/server/pm/PackageManagerService;->DEBUG_INSTALL:Z
+
+    if-eqz v0, :cond_25
+
+    new-instance v0, Ljava/lang/StringBuilder;
+
+    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
+
+    const-string/jumbo v1, "startCopy "
+
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    iget-object v1, p0, Lcom/android/server/pm/PackageManagerService$HandlerParams;->mUser:Landroid/os/UserHandle;
+
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+
+    const-string v1, ": "
+
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v0, p0}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v0
+
+    const-string v1, "PackageManager"
+
+    invoke-static {v1, v0}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
+
+    .line 15465
+    :cond_25
     invoke-virtual {p0}, Lcom/android/server/pm/PackageManagerService$HandlerParams;->handleStartCopy()V
 
-    .line 14969
+    .line 15466
     invoke-virtual {p0}, Lcom/android/server/pm/PackageManagerService$HandlerParams;->handleReturnCode()V
 
-    .line 14970
+    .line 15467
     return-void
 .end method

@@ -25,24 +25,28 @@
 # direct methods
 .method constructor <init>(Ljava/lang/String;IF)V
     .registers 4
+    .param p1, "tag"  # Ljava/lang/String;
+    .param p2, "horizon"  # I
+    .param p3, "intercept"  # F
 
-    .line 182
+    .line 181
     invoke-direct {p0, p1, p2}, Lcom/android/server/display/whitebalance/AmbientFilter;-><init>(Ljava/lang/String;I)V
 
-    .line 183
+    .line 182
     invoke-direct {p0, p3}, Lcom/android/server/display/whitebalance/AmbientFilter$WeightedMovingAverageAmbientFilter;->validateArguments(F)V
 
-    .line 184
+    .line 183
     iput p3, p0, Lcom/android/server/display/whitebalance/AmbientFilter$WeightedMovingAverageAmbientFilter;->mIntercept:F
 
-    .line 185
+    .line 184
     return-void
 .end method
 
 .method private antiderivative(F)F
     .registers 4
+    .param p1, "x"  # F
 
-    .line 252
+    .line 251
     const/high16 v0, 0x3f000000  # 0.5f
 
     mul-float/2addr v0, p1
@@ -59,121 +63,129 @@
 .end method
 
 .method private calculateIntegral(FF)F
-    .registers 3
+    .registers 5
+    .param p1, "from"  # F
+    .param p2, "to"  # F
 
-    .line 247
+    .line 246
     invoke-direct {p0, p2}, Lcom/android/server/display/whitebalance/AmbientFilter$WeightedMovingAverageAmbientFilter;->antiderivative(F)F
 
-    move-result p2
+    move-result v0
 
     invoke-direct {p0, p1}, Lcom/android/server/display/whitebalance/AmbientFilter$WeightedMovingAverageAmbientFilter;->antiderivative(F)F
 
-    move-result p1
+    move-result v1
 
-    sub-float/2addr p2, p1
+    sub-float/2addr v0, v1
 
-    return p2
+    return v0
 .end method
 
 .method private getWeights(JLcom/android/server/display/utils/RollingBuffer;)[F
-    .registers 14
+    .registers 13
+    .param p1, "time"  # J
+    .param p3, "buffer"  # Lcom/android/server/display/utils/RollingBuffer;
 
-    .line 231
+    .line 230
     invoke-virtual {p3}, Lcom/android/server/display/utils/RollingBuffer;->size()I
 
     move-result v0
 
     new-array v0, v0, [F
 
-    .line 232
+    .line 231
+    .local v0, "weights":[F
     const/4 v1, 0x0
 
     invoke-virtual {p3, v1}, Lcom/android/server/display/utils/RollingBuffer;->getTime(I)J
 
     move-result-wide v1
 
+    .line 232
+    .local v1, "startTime":J
+    const/4 v3, 0x0
+
     .line 233
-    nop
+    .local v3, "previousTime":F
+    const/4 v4, 0x1
+
+    .local v4, "i":I
+    :goto_d
+    array-length v5, v0
+
+    const/high16 v6, 0x447a0000  # 1000.0f
+
+    if-ge v4, v5, :cond_25
 
     .line 234
-    const/4 v3, 0x1
-
-    const/4 v4, 0x0
-
-    move v5, v4
-
-    move v4, v3
-
-    :goto_10
-    array-length v6, v0
-
-    const/high16 v7, 0x447a0000  # 1000.0f
-
-    if-ge v4, v6, :cond_29
-
-    .line 235
     invoke-virtual {p3, v4}, Lcom/android/server/display/utils/RollingBuffer;->getTime(I)J
 
-    move-result-wide v8
+    move-result-wide v7
 
-    sub-long/2addr v8, v1
+    sub-long/2addr v7, v1
 
-    long-to-float v6, v8
+    long-to-float v5, v7
 
-    div-float/2addr v6, v7
+    div-float/2addr v5, v6
+
+    .line 235
+    .local v5, "currentTime":F
+    invoke-direct {p0, v3, v5}, Lcom/android/server/display/whitebalance/AmbientFilter$WeightedMovingAverageAmbientFilter;->calculateIntegral(FF)F
+
+    move-result v6
 
     .line 236
-    invoke-direct {p0, v5, v6}, Lcom/android/server/display/whitebalance/AmbientFilter$WeightedMovingAverageAmbientFilter;->calculateIntegral(FF)F
+    .local v6, "weight":F
+    add-int/lit8 v7, v4, -0x1
+
+    aput v6, v0, v7
+
+    .line 237
+    move v3, v5
+
+    .line 233
+    .end local v5  # "currentTime":F
+    .end local v6  # "weight":F
+    add-int/lit8 v4, v4, 0x1
+
+    goto :goto_d
+
+    .line 239
+    .end local v4  # "i":I
+    :cond_25
+    const-wide/16 v4, 0x64
+
+    add-long/2addr v4, p1
+
+    sub-long/2addr v4, v1
+
+    long-to-float v4, v4
+
+    div-float/2addr v4, v6
+
+    .line 240
+    .local v4, "lastTime":F
+    invoke-direct {p0, v3, v4}, Lcom/android/server/display/whitebalance/AmbientFilter$WeightedMovingAverageAmbientFilter;->calculateIntegral(FF)F
 
     move-result v5
 
-    .line 237
-    add-int/lit8 v7, v4, -0x1
-
-    aput v5, v0, v7
-
-    .line 238
-    nop
-
-    .line 234
-    add-int/lit8 v4, v4, 0x1
-
-    move v5, v6
-
-    goto :goto_10
-
-    .line 240
-    :cond_29
-    const-wide/16 v8, 0x64
-
-    add-long/2addr p1, v8
-
-    sub-long/2addr p1, v1
-
-    long-to-float p1, p1
-
-    div-float/2addr p1, v7
-
     .line 241
-    invoke-direct {p0, v5, p1}, Lcom/android/server/display/whitebalance/AmbientFilter$WeightedMovingAverageAmbientFilter;->calculateIntegral(FF)F
+    .local v5, "lastWeight":F
+    array-length v6, v0
 
-    move-result p1
+    add-int/lit8 v6, v6, -0x1
+
+    aput v5, v0, v6
 
     .line 242
-    array-length p2, v0
-
-    sub-int/2addr p2, v3
-
-    aput p1, v0, p2
-
-    .line 243
     return-object v0
 .end method
 
 .method private validateArguments(F)V
-    .registers 3
+    .registers 4
+    .param p1, "intercept"  # F
 
-    .line 225
+    .line 224
     invoke-static {p1}, Ljava/lang/Float;->isNaN(F)Z
 
     move-result v0
@@ -182,33 +194,34 @@
 
     const/4 v0, 0x0
 
-    cmpg-float p1, p1, v0
+    cmpg-float v0, p1, v0
 
-    if-ltz p1, :cond_c
+    if-ltz v0, :cond_c
 
-    .line 228
+    .line 227
     return-void
 
-    .line 226
+    .line 225
     :cond_c
-    new-instance p1, Ljava/lang/IllegalArgumentException;
+    new-instance v0, Ljava/lang/IllegalArgumentException;
 
-    const-string v0, "intercept must be a non-negative number"
+    const-string/jumbo v1, "intercept must be a non-negative number"
 
-    invoke-direct {p1, v0}, Ljava/lang/IllegalArgumentException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v0, v1}, Ljava/lang/IllegalArgumentException;-><init>(Ljava/lang/String;)V
 
-    throw p1
+    throw v0
 .end method
 
 
 # virtual methods
 .method public dump(Ljava/io/PrintWriter;)V
     .registers 4
+    .param p1, "writer"  # Ljava/io/PrintWriter;
 
-    .line 192
+    .line 191
     invoke-super {p0, p1}, Lcom/android/server/display/whitebalance/AmbientFilter;->dump(Ljava/io/PrintWriter;)V
 
-    .line 193
+    .line 192
     new-instance v0, Ljava/lang/StringBuilder;
 
     invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
@@ -227,94 +240,101 @@
 
     invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
-    .line 194
+    .line 193
     return-void
 .end method
 
 .method protected filter(JLcom/android/server/display/utils/RollingBuffer;)F
-    .registers 9
+    .registers 11
+    .param p1, "time"  # J
+    .param p3, "buffer"  # Lcom/android/server/display/utils/RollingBuffer;
 
-    .line 203
+    .line 202
     invoke-virtual {p3}, Lcom/android/server/display/utils/RollingBuffer;->isEmpty()Z
 
     move-result v0
 
     if-eqz v0, :cond_9
 
-    .line 204
-    const/high16 p1, -0x40800000  # -1.0f
+    .line 203
+    const/high16 v0, -0x40800000  # -1.0f
 
-    return p1
+    return v0
 
-    .line 206
+    .line 205
     :cond_9
-    nop
-
-    .line 207
-    nop
-
-    .line 208
-    invoke-direct {p0, p1, p2, p3}, Lcom/android/server/display/whitebalance/AmbientFilter$WeightedMovingAverageAmbientFilter;->getWeights(JLcom/android/server/display/utils/RollingBuffer;)[F
-
-    move-result-object p1
-
-    .line 212
-    const/4 p2, 0x0
-
     const/4 v0, 0x0
 
-    move v1, v0
+    .line 206
+    .local v0, "total":F
+    const/4 v1, 0x0
 
-    move v2, v1
+    .line 207
+    .local v1, "totalWeight":F
+    invoke-direct {p0, p1, p2, p3}, Lcom/android/server/display/whitebalance/AmbientFilter$WeightedMovingAverageAmbientFilter;->getWeights(JLcom/android/server/display/utils/RollingBuffer;)[F
 
-    :goto_13
-    array-length v3, p1
+    move-result-object v2
 
-    if-ge p2, v3, :cond_22
+    .line 211
+    .local v2, "weights":[F
+    const/4 v3, 0x0
+
+    .local v3, "i":I
+    :goto_10
+    array-length v4, v2
+
+    if-ge v3, v4, :cond_20
+
+    .line 212
+    invoke-virtual {p3, v3}, Lcom/android/server/display/utils/RollingBuffer;->getValue(I)F
+
+    move-result v4
 
     .line 213
-    invoke-virtual {p3, p2}, Lcom/android/server/display/utils/RollingBuffer;->getValue(I)F
+    .local v4, "value":F
+    aget v5, v2, v3
+
+    .line 214
+    .local v5, "weight":F
+    mul-float v6, v5, v4
+
+    add-float/2addr v0, v6
+
+    .line 215
+    add-float/2addr v1, v5
+
+    .line 211
+    .end local v4  # "value":F
+    .end local v5  # "weight":F
+    add-int/lit8 v3, v3, 0x1
+
+    goto :goto_10
+
+    .line 217
+    .end local v3  # "i":I
+    :cond_20
+    const/4 v3, 0x0
+
+    cmpl-float v3, v1, v3
+
+    if-nez v3, :cond_30
+
+    .line 218
+    invoke-virtual {p3}, Lcom/android/server/display/utils/RollingBuffer;->size()I
 
     move-result v3
 
-    .line 214
-    aget v4, p1, p2
+    add-int/lit8 v3, v3, -0x1
 
-    .line 215
-    mul-float/2addr v3, v4
+    invoke-virtual {p3, v3}, Lcom/android/server/display/utils/RollingBuffer;->getValue(I)F
 
-    add-float/2addr v2, v3
+    move-result v3
 
-    .line 216
-    add-float/2addr v1, v4
+    return v3
 
-    .line 212
-    add-int/lit8 p2, p2, 0x1
+    .line 220
+    :cond_30
+    div-float v3, v0, v1
 
-    goto :goto_13
-
-    .line 218
-    :cond_22
-    cmpl-float p1, v1, v0
-
-    if-nez p1, :cond_31
-
-    .line 219
-    invoke-virtual {p3}, Lcom/android/server/display/utils/RollingBuffer;->size()I
-
-    move-result p1
-
-    add-int/lit8 p1, p1, -0x1
-
-    invoke-virtual {p3, p1}, Lcom/android/server/display/utils/RollingBuffer;->getValue(I)F
-
-    move-result p1
-
-    return p1
-
-    .line 221
-    :cond_31
-    div-float/2addr v2, v1
-
-    return v2
+    return v3
 .end method

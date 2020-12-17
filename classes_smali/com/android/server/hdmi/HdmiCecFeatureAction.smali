@@ -45,6 +45,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/hdmi/HdmiCecLocalDevice;)V
     .registers 3
+    .param p1, "source"  # Lcom/android/server/hdmi/HdmiCecLocalDevice;
 
     .line 64
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -58,26 +59,26 @@
     iput-object p1, p0, Lcom/android/server/hdmi/HdmiCecFeatureAction;->mSource:Lcom/android/server/hdmi/HdmiCecLocalDevice;
 
     .line 66
-    iget-object p1, p0, Lcom/android/server/hdmi/HdmiCecFeatureAction;->mSource:Lcom/android/server/hdmi/HdmiCecLocalDevice;
+    iget-object v0, p0, Lcom/android/server/hdmi/HdmiCecFeatureAction;->mSource:Lcom/android/server/hdmi/HdmiCecLocalDevice;
 
-    invoke-virtual {p1}, Lcom/android/server/hdmi/HdmiCecLocalDevice;->getService()Lcom/android/server/hdmi/HdmiControlService;
+    invoke-virtual {v0}, Lcom/android/server/hdmi/HdmiCecLocalDevice;->getService()Lcom/android/server/hdmi/HdmiControlService;
 
-    move-result-object p1
+    move-result-object v0
 
-    iput-object p1, p0, Lcom/android/server/hdmi/HdmiCecFeatureAction;->mService:Lcom/android/server/hdmi/HdmiControlService;
+    iput-object v0, p0, Lcom/android/server/hdmi/HdmiCecFeatureAction;->mService:Lcom/android/server/hdmi/HdmiControlService;
 
     .line 67
-    iget-object p1, p0, Lcom/android/server/hdmi/HdmiCecFeatureAction;->mService:Lcom/android/server/hdmi/HdmiControlService;
+    iget-object v0, p0, Lcom/android/server/hdmi/HdmiCecFeatureAction;->mService:Lcom/android/server/hdmi/HdmiControlService;
 
-    invoke-virtual {p1}, Lcom/android/server/hdmi/HdmiControlService;->getServiceLooper()Landroid/os/Looper;
+    invoke-virtual {v0}, Lcom/android/server/hdmi/HdmiControlService;->getServiceLooper()Landroid/os/Looper;
 
-    move-result-object p1
+    move-result-object v0
 
-    invoke-direct {p0, p1}, Lcom/android/server/hdmi/HdmiCecFeatureAction;->createActionTimer(Landroid/os/Looper;)Lcom/android/server/hdmi/HdmiCecFeatureAction$ActionTimer;
+    invoke-direct {p0, v0}, Lcom/android/server/hdmi/HdmiCecFeatureAction;->createActionTimer(Landroid/os/Looper;)Lcom/android/server/hdmi/HdmiCecFeatureAction$ActionTimer;
 
-    move-result-object p1
+    move-result-object v0
 
-    iput-object p1, p0, Lcom/android/server/hdmi/HdmiCecFeatureAction;->mActionTimer:Lcom/android/server/hdmi/HdmiCecFeatureAction$ActionTimer;
+    iput-object v0, p0, Lcom/android/server/hdmi/HdmiCecFeatureAction;->mActionTimer:Lcom/android/server/hdmi/HdmiCecFeatureAction$ActionTimer;
 
     .line 68
     return-void
@@ -85,6 +86,7 @@
 
 .method private createActionTimer(Landroid/os/Looper;)Lcom/android/server/hdmi/HdmiCecFeatureAction$ActionTimer;
     .registers 3
+    .param p1, "looper"  # Landroid/os/Looper;
 
     .line 156
     new-instance v0, Lcom/android/server/hdmi/HdmiCecFeatureAction$ActionTimerHandler;
@@ -98,6 +100,7 @@
 # virtual methods
 .method protected final addAndStartAction(Lcom/android/server/hdmi/HdmiCecFeatureAction;)V
     .registers 3
+    .param p1, "action"  # Lcom/android/server/hdmi/HdmiCecFeatureAction;
 
     .line 179
     iget-object v0, p0, Lcom/android/server/hdmi/HdmiCecFeatureAction;->mSource:Lcom/android/server/hdmi/HdmiCecLocalDevice;
@@ -109,7 +112,9 @@
 .end method
 
 .method protected final addOnFinishedCallback(Lcom/android/server/hdmi/HdmiCecFeatureAction;Ljava/lang/Runnable;)V
-    .registers 4
+    .registers 5
+    .param p1, "action"  # Lcom/android/server/hdmi/HdmiCecFeatureAction;
+    .param p2, "runnable"  # Ljava/lang/Runnable;
 
     .line 280
     iget-object v0, p0, Lcom/android/server/hdmi/HdmiCecFeatureAction;->mOnFinishedCallbacks:Ljava/util/ArrayList;
@@ -129,9 +134,9 @@
 
     invoke-static {p1, p2}, Landroid/util/Pair;->create(Ljava/lang/Object;Ljava/lang/Object;)Landroid/util/Pair;
 
-    move-result-object p1
+    move-result-object v1
 
-    invoke-virtual {v0, p1}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
+    invoke-virtual {v0, v1}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
 
     .line 284
     return-void
@@ -139,6 +144,8 @@
 
 .method protected addTimer(II)V
     .registers 6
+    .param p1, "state"  # I
+    .param p2, "delayMillis"  # I
 
     .line 162
     iget-object v0, p0, Lcom/android/server/hdmi/HdmiCecFeatureAction;->mActionTimer:Lcom/android/server/hdmi/HdmiCecFeatureAction$ActionTimer;
@@ -192,7 +199,8 @@
 .end method
 
 .method finish(Z)V
-    .registers 4
+    .registers 5
+    .param p1, "removeSelf"  # Z
 
     .line 233
     invoke-virtual {p0}, Lcom/android/server/hdmi/HdmiCecFeatureAction;->clear()V
@@ -205,53 +213,55 @@
 
     .line 237
     :cond_8
-    iget-object p1, p0, Lcom/android/server/hdmi/HdmiCecFeatureAction;->mOnFinishedCallbacks:Ljava/util/ArrayList;
+    iget-object v0, p0, Lcom/android/server/hdmi/HdmiCecFeatureAction;->mOnFinishedCallbacks:Ljava/util/ArrayList;
 
-    if-eqz p1, :cond_2f
+    if-eqz v0, :cond_2f
 
     .line 238
-    invoke-virtual {p1}, Ljava/util/ArrayList;->iterator()Ljava/util/Iterator;
-
-    move-result-object p1
-
-    :goto_10
-    invoke-interface {p1}, Ljava/util/Iterator;->hasNext()Z
-
-    move-result v0
-
-    if-eqz v0, :cond_2c
-
-    invoke-interface {p1}, Ljava/util/Iterator;->next()Ljava/lang/Object;
+    invoke-virtual {v0}, Ljava/util/ArrayList;->iterator()Ljava/util/Iterator;
 
     move-result-object v0
 
-    check-cast v0, Landroid/util/Pair;
+    :goto_10
+    invoke-interface {v0}, Ljava/util/Iterator;->hasNext()Z
+
+    move-result v1
+
+    if-eqz v1, :cond_2c
+
+    invoke-interface {v0}, Ljava/util/Iterator;->next()Ljava/lang/Object;
+
+    move-result-object v1
+
+    check-cast v1, Landroid/util/Pair;
 
     .line 239
-    iget-object v1, v0, Landroid/util/Pair;->first:Ljava/lang/Object;
+    .local v1, "actionCallbackPair":Landroid/util/Pair;, "Landroid/util/Pair<Lcom/android/server/hdmi/HdmiCecFeatureAction;Ljava/lang/Runnable;>;"
+    iget-object v2, v1, Landroid/util/Pair;->first:Ljava/lang/Object;
 
-    check-cast v1, Lcom/android/server/hdmi/HdmiCecFeatureAction;
+    check-cast v2, Lcom/android/server/hdmi/HdmiCecFeatureAction;
 
-    iget v1, v1, Lcom/android/server/hdmi/HdmiCecFeatureAction;->mState:I
+    iget v2, v2, Lcom/android/server/hdmi/HdmiCecFeatureAction;->mState:I
 
-    if-eqz v1, :cond_2b
+    if-eqz v2, :cond_2b
 
     .line 240
-    iget-object v0, v0, Landroid/util/Pair;->second:Ljava/lang/Object;
+    iget-object v2, v1, Landroid/util/Pair;->second:Ljava/lang/Object;
 
-    check-cast v0, Ljava/lang/Runnable;
+    check-cast v2, Ljava/lang/Runnable;
 
-    invoke-interface {v0}, Ljava/lang/Runnable;->run()V
+    invoke-interface {v2}, Ljava/lang/Runnable;->run()V
 
     .line 242
+    .end local v1  # "actionCallbackPair":Landroid/util/Pair;, "Landroid/util/Pair<Lcom/android/server/hdmi/HdmiCecFeatureAction;Ljava/lang/Runnable;>;"
     :cond_2b
     goto :goto_10
 
     .line 243
     :cond_2c
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    iput-object p1, p0, Lcom/android/server/hdmi/HdmiCecFeatureAction;->mOnFinishedCallbacks:Ljava/util/ArrayList;
+    iput-object v0, p0, Lcom/android/server/hdmi/HdmiCecFeatureAction;->mOnFinishedCallbacks:Ljava/util/ArrayList;
 
     .line 245
     :cond_2f
@@ -273,13 +283,14 @@
     .end annotation
 
     .line 183
+    .local p1, "clazz":Ljava/lang/Class;, "Ljava/lang/Class<TT;>;"
     iget-object v0, p0, Lcom/android/server/hdmi/HdmiCecFeatureAction;->mSource:Lcom/android/server/hdmi/HdmiCecLocalDevice;
 
     invoke-virtual {v0, p1}, Lcom/android/server/hdmi/HdmiCecLocalDevice;->getActions(Ljava/lang/Class;)Ljava/util/List;
 
-    move-result-object p1
+    move-result-object v0
 
-    return-object p1
+    return-object v0
 .end method
 
 .method protected final getCecMessageCache()Lcom/android/server/hdmi/HdmiCecMessageCache;
@@ -354,6 +365,9 @@
 
 .method protected final pollDevices(Lcom/android/server/hdmi/HdmiControlService$DevicePollingCallback;II)V
     .registers 6
+    .param p1, "callback"  # Lcom/android/server/hdmi/HdmiControlService$DevicePollingCallback;
+    .param p2, "pickStrategy"  # I
+    .param p3, "retryCount"  # I
 
     .line 211
     iget-object v0, p0, Lcom/android/server/hdmi/HdmiCecFeatureAction;->mService:Lcom/android/server/hdmi/HdmiControlService;
@@ -373,6 +387,7 @@
 
 .method protected final removeAction(Lcom/android/server/hdmi/HdmiCecFeatureAction;)V
     .registers 3
+    .param p1, "action"  # Lcom/android/server/hdmi/HdmiCecFeatureAction;
 
     .line 197
     iget-object v0, p0, Lcom/android/server/hdmi/HdmiCecFeatureAction;->mSource:Lcom/android/server/hdmi/HdmiCecLocalDevice;
@@ -396,6 +411,7 @@
     .end annotation
 
     .line 201
+    .local p1, "clazz":Ljava/lang/Class;, "Ljava/lang/Class<TT;>;"
     iget-object v0, p0, Lcom/android/server/hdmi/HdmiCecFeatureAction;->mSource:Lcom/android/server/hdmi/HdmiCecLocalDevice;
 
     const/4 v1, 0x0
@@ -408,6 +424,7 @@
 
 .method protected final removeActionExcept(Ljava/lang/Class;Lcom/android/server/hdmi/HdmiCecFeatureAction;)V
     .registers 4
+    .param p2, "exception"  # Lcom/android/server/hdmi/HdmiCecFeatureAction;
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "<T:",
@@ -421,6 +438,7 @@
     .end annotation
 
     .line 206
+    .local p1, "clazz":Ljava/lang/Class;, "Ljava/lang/Class<TT;>;"
     iget-object v0, p0, Lcom/android/server/hdmi/HdmiCecFeatureAction;->mSource:Lcom/android/server/hdmi/HdmiCecLocalDevice;
 
     invoke-virtual {v0, p1, p2}, Lcom/android/server/hdmi/HdmiCecLocalDevice;->removeActionExcept(Ljava/lang/Class;Lcom/android/server/hdmi/HdmiCecFeatureAction;)V
@@ -431,6 +449,7 @@
 
 .method protected final sendCommand(Lcom/android/server/hdmi/HdmiCecMessage;)V
     .registers 3
+    .param p1, "cmd"  # Lcom/android/server/hdmi/HdmiCecMessage;
 
     .line 170
     iget-object v0, p0, Lcom/android/server/hdmi/HdmiCecFeatureAction;->mService:Lcom/android/server/hdmi/HdmiControlService;
@@ -443,6 +462,8 @@
 
 .method protected final sendCommand(Lcom/android/server/hdmi/HdmiCecMessage;Lcom/android/server/hdmi/HdmiControlService$SendMessageCallback;)V
     .registers 4
+    .param p1, "cmd"  # Lcom/android/server/hdmi/HdmiCecMessage;
+    .param p2, "callback"  # Lcom/android/server/hdmi/HdmiControlService$SendMessageCallback;
 
     .line 175
     iget-object v0, p0, Lcom/android/server/hdmi/HdmiCecFeatureAction;->mService:Lcom/android/server/hdmi/HdmiControlService;
@@ -455,6 +476,8 @@
 
 .method protected final sendUserControlPressedAndReleased(II)V
     .registers 4
+    .param p1, "targetAddress"  # I
+    .param p2, "uiCommand"  # I
 
     .line 276
     iget-object v0, p0, Lcom/android/server/hdmi/HdmiCecFeatureAction;->mSource:Lcom/android/server/hdmi/HdmiCecLocalDevice;
@@ -467,6 +490,7 @@
 
 .method setActionTimer(Lcom/android/server/hdmi/HdmiCecFeatureAction$ActionTimer;)V
     .registers 2
+    .param p1, "actionTimer"  # Lcom/android/server/hdmi/HdmiCecFeatureAction$ActionTimer;
     .annotation build Lcom/android/internal/annotations/VisibleForTesting;
     .end annotation
 

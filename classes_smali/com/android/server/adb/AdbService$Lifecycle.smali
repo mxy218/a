@@ -21,6 +21,7 @@
 # direct methods
 .method public constructor <init>(Landroid/content/Context;)V
     .registers 2
+    .param p1, "context"  # Landroid/content/Context;
 
     .line 65
     invoke-direct {p0, p1}, Lcom/android/server/SystemService;-><init>(Landroid/content/Context;)V
@@ -33,6 +34,7 @@
 # virtual methods
 .method public onBootPhase(I)V
     .registers 3
+    .param p1, "phase"  # I
 
     .line 76
     const/16 v0, 0x226
@@ -40,9 +42,9 @@
     if-ne p1, v0, :cond_a
 
     .line 77
-    iget-object p1, p0, Lcom/android/server/adb/AdbService$Lifecycle;->mAdbService:Lcom/android/server/adb/AdbService;
+    iget-object v0, p0, Lcom/android/server/adb/AdbService$Lifecycle;->mAdbService:Lcom/android/server/adb/AdbService;
 
-    invoke-virtual {p1}, Lcom/android/server/adb/AdbService;->systemReady()V
+    invoke-virtual {v0}, Lcom/android/server/adb/AdbService;->systemReady()V
 
     goto :goto_13
 
@@ -53,9 +55,9 @@
     if-ne p1, v0, :cond_13
 
     .line 79
-    iget-object p1, p0, Lcom/android/server/adb/AdbService$Lifecycle;->mAdbService:Lcom/android/server/adb/AdbService;
+    iget-object v0, p0, Lcom/android/server/adb/AdbService$Lifecycle;->mAdbService:Lcom/android/server/adb/AdbService;
 
-    invoke-virtual {p1}, Lcom/android/server/adb/AdbService;->bootCompleted()V
+    invoke-virtual {v0}, Lcom/android/server/adb/AdbService;->bootCompleted()V
 
     .line 81
     :cond_13

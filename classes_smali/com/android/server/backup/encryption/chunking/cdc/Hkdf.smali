@@ -40,6 +40,9 @@
 
 .method static hkdf([B[B[B)[B
     .registers 4
+    .param p0, "masterKey"  # [B
+    .param p1, "salt"  # [B
+    .param p2, "data"  # [B
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Ljava/security/InvalidKeyException;
@@ -64,17 +67,19 @@
     .line 55
     invoke-static {p0, p1}, Lcom/android/server/backup/encryption/chunking/cdc/Hkdf;->hkdfSha256Extract([B[B)[B
 
-    move-result-object p0
+    move-result-object v0
 
-    invoke-static {p0, p2}, Lcom/android/server/backup/encryption/chunking/cdc/Hkdf;->hkdfSha256Expand([B[B)[B
+    invoke-static {v0, p2}, Lcom/android/server/backup/encryption/chunking/cdc/Hkdf;->hkdfSha256Expand([B[B)[B
 
-    move-result-object p0
+    move-result-object v0
 
-    return-object p0
+    return-object v0
 .end method
 
 .method private static hkdfSha256Expand([B[B)[B
     .registers 5
+    .param p0, "pseudoRandomKey"  # [B
+    .param p1, "info"  # [B
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Ljava/security/InvalidKeyException;
@@ -92,6 +97,7 @@
     .catch Ljava/security/NoSuchAlgorithmException; {:try_start_0 .. :try_end_6} :catch_1e
 
     .line 108
+    .local v0, "sha256":Ljavax/crypto/Mac;
     nop
 
     .line 109
@@ -107,31 +113,35 @@
     invoke-virtual {v0, p1}, Ljavax/crypto/Mac;->update([B)V
 
     .line 112
-    sget-object p0, Lcom/android/server/backup/encryption/chunking/cdc/Hkdf;->CONSTANT_01:[B
+    sget-object v1, Lcom/android/server/backup/encryption/chunking/cdc/Hkdf;->CONSTANT_01:[B
 
-    invoke-virtual {v0, p0}, Ljavax/crypto/Mac;->update([B)V
+    invoke-virtual {v0, v1}, Ljavax/crypto/Mac;->update([B)V
 
     .line 113
     invoke-virtual {v0}, Ljavax/crypto/Mac;->doFinal()[B
 
-    move-result-object p0
+    move-result-object v1
 
-    return-object p0
+    return-object v1
 
     .line 105
+    .end local v0  # "sha256":Ljavax/crypto/Mac;
     :catch_1e
-    move-exception p0
+    move-exception v0
 
     .line 107
-    new-instance p1, Ljava/lang/AssertionError;
+    .local v0, "e":Ljava/security/NoSuchAlgorithmException;
+    new-instance v1, Ljava/lang/AssertionError;
 
-    invoke-direct {p1, p0}, Ljava/lang/AssertionError;-><init>(Ljava/lang/Object;)V
+    invoke-direct {v1, v0}, Ljava/lang/AssertionError;-><init>(Ljava/lang/Object;)V
 
-    throw p1
+    throw v1
 .end method
 
 .method private static hkdfSha256Extract([B[B)[B
     .registers 5
+    .param p0, "inputKeyMaterial"  # [B
+    .param p1, "salt"  # [B
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Ljava/security/InvalidKeyException;
@@ -149,6 +159,7 @@
     .catch Ljava/security/NoSuchAlgorithmException; {:try_start_0 .. :try_end_6} :catch_16
 
     .line 81
+    .local v0, "sha256":Ljavax/crypto/Mac;
     nop
 
     .line 82
@@ -163,18 +174,20 @@
     .line 84
     invoke-virtual {v0, p0}, Ljavax/crypto/Mac;->doFinal([B)[B
 
-    move-result-object p0
+    move-result-object v1
 
-    return-object p0
+    return-object v1
 
     .line 78
+    .end local v0  # "sha256":Ljavax/crypto/Mac;
     :catch_16
-    move-exception p0
+    move-exception v0
 
     .line 80
-    new-instance p1, Ljava/lang/AssertionError;
+    .local v0, "e":Ljava/security/NoSuchAlgorithmException;
+    new-instance v1, Ljava/lang/AssertionError;
 
-    invoke-direct {p1, p0}, Ljava/lang/AssertionError;-><init>(Ljava/lang/Object;)V
+    invoke-direct {v1, v0}, Ljava/lang/AssertionError;-><init>(Ljava/lang/Object;)V
 
-    throw p1
+    throw v1
 .end method

@@ -8,7 +8,7 @@
 
 # annotations
 .annotation system Ldalvik/annotation/EnclosingMethod;
-    value = Lcom/android/server/notification/ValidateNotificationPeople;->getContactAffinity(Landroid/os/UserHandle;Landroid/os/Bundle;IF)F
+    value = Lcom/android/server/notification/ValidateNotificationPeople;->getContactAffinity(Landroid/os/UserHandle;Landroid/os/Bundle;IF[Z)F
 .end annotation
 
 .annotation system Ldalvik/annotation/InnerClass;
@@ -28,8 +28,9 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/notification/ValidateNotificationPeople;Lcom/android/server/notification/ValidateNotificationPeople$PeopleRankingReconsideration;Ljava/util/concurrent/Semaphore;)V
     .registers 4
+    .param p1, "this$0"  # Lcom/android/server/notification/ValidateNotificationPeople;
 
-    .line 176
+    .line 197
     iput-object p1, p0, Lcom/android/server/notification/ValidateNotificationPeople$2;->this$0:Lcom/android/server/notification/ValidateNotificationPeople;
 
     iput-object p2, p0, Lcom/android/server/notification/ValidateNotificationPeople$2;->val$prr:Lcom/android/server/notification/ValidateNotificationPeople$PeopleRankingReconsideration;
@@ -46,16 +47,16 @@
 .method public run()V
     .registers 2
 
-    .line 179
+    .line 200
     iget-object v0, p0, Lcom/android/server/notification/ValidateNotificationPeople$2;->val$prr:Lcom/android/server/notification/ValidateNotificationPeople$PeopleRankingReconsideration;
 
     invoke-virtual {v0}, Lcom/android/server/notification/ValidateNotificationPeople$PeopleRankingReconsideration;->work()V
 
-    .line 180
+    .line 201
     iget-object v0, p0, Lcom/android/server/notification/ValidateNotificationPeople$2;->val$s:Ljava/util/concurrent/Semaphore;
 
     invoke-virtual {v0}, Ljava/util/concurrent/Semaphore;->release()V
 
-    .line 181
+    .line 202
     return-void
 .end method

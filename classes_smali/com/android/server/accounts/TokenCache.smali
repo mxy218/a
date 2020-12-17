@@ -41,7 +41,11 @@
 
 # virtual methods
 .method public get(Landroid/accounts/Account;Ljava/lang/String;Ljava/lang/String;[B)Ljava/lang/String;
-    .registers 7
+    .registers 11
+    .param p1, "account"  # Landroid/accounts/Account;
+    .param p2, "tokenType"  # Ljava/lang/String;
+    .param p3, "packageName"  # Ljava/lang/String;
+    .param p4, "sigDigest"  # [B
 
     .line 221
     new-instance v0, Lcom/android/server/accounts/TokenCache$Key;
@@ -49,53 +53,62 @@
     invoke-direct {v0, p1, p2, p3, p4}, Lcom/android/server/accounts/TokenCache$Key;-><init>(Landroid/accounts/Account;Ljava/lang/String;Ljava/lang/String;[B)V
 
     .line 222
-    iget-object p2, p0, Lcom/android/server/accounts/TokenCache;->mCachedTokens:Lcom/android/server/accounts/TokenCache$TokenLruCache;
+    .local v0, "k":Lcom/android/server/accounts/TokenCache$Key;
+    iget-object v1, p0, Lcom/android/server/accounts/TokenCache;->mCachedTokens:Lcom/android/server/accounts/TokenCache$TokenLruCache;
 
-    invoke-virtual {p2, v0}, Lcom/android/server/accounts/TokenCache$TokenLruCache;->get(Ljava/lang/Object;)Ljava/lang/Object;
+    invoke-virtual {v1, v0}, Lcom/android/server/accounts/TokenCache$TokenLruCache;->get(Ljava/lang/Object;)Ljava/lang/Object;
 
-    move-result-object p2
+    move-result-object v1
 
-    check-cast p2, Lcom/android/server/accounts/TokenCache$Value;
+    check-cast v1, Lcom/android/server/accounts/TokenCache$Value;
 
     .line 223
+    .local v1, "v":Lcom/android/server/accounts/TokenCache$Value;
     invoke-static {}, Ljava/lang/System;->currentTimeMillis()J
 
-    move-result-wide p3
+    move-result-wide v2
 
     .line 224
-    if-eqz p2, :cond_1c
+    .local v2, "currentTime":J
+    if-eqz v1, :cond_1c
 
-    iget-wide v0, p2, Lcom/android/server/accounts/TokenCache$Value;->expiryEpochMillis:J
+    iget-wide v4, v1, Lcom/android/server/accounts/TokenCache$Value;->expiryEpochMillis:J
 
-    cmp-long p3, p3, v0
+    cmp-long v4, v2, v4
 
-    if-gez p3, :cond_1c
+    if-gez v4, :cond_1c
 
     .line 225
-    iget-object p1, p2, Lcom/android/server/accounts/TokenCache$Value;->token:Ljava/lang/String;
+    iget-object v4, v1, Lcom/android/server/accounts/TokenCache$Value;->token:Ljava/lang/String;
 
-    return-object p1
+    return-object v4
 
     .line 226
     :cond_1c
-    if-eqz p2, :cond_25
+    if-eqz v1, :cond_25
 
     .line 227
-    iget-object p1, p1, Landroid/accounts/Account;->type:Ljava/lang/String;
+    iget-object v4, p1, Landroid/accounts/Account;->type:Ljava/lang/String;
 
-    iget-object p2, p2, Lcom/android/server/accounts/TokenCache$Value;->token:Ljava/lang/String;
+    iget-object v5, v1, Lcom/android/server/accounts/TokenCache$Value;->token:Ljava/lang/String;
 
-    invoke-virtual {p0, p1, p2}, Lcom/android/server/accounts/TokenCache;->remove(Ljava/lang/String;Ljava/lang/String;)V
+    invoke-virtual {p0, v4, v5}, Lcom/android/server/accounts/TokenCache;->remove(Ljava/lang/String;Ljava/lang/String;)V
 
     .line 229
     :cond_25
-    const/4 p1, 0x0
+    const/4 v4, 0x0
 
-    return-object p1
+    return-object v4
 .end method
 
 .method public put(Landroid/accounts/Account;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;[BJ)V
-    .registers 10
+    .registers 11
+    .param p1, "account"  # Landroid/accounts/Account;
+    .param p2, "token"  # Ljava/lang/String;
+    .param p3, "tokenType"  # Ljava/lang/String;
+    .param p4, "packageName"  # Ljava/lang/String;
+    .param p5, "sigDigest"  # [B
+    .param p6, "expiryMillis"  # J
 
     .line 196
     invoke-static {p1}, Lcom/android/internal/util/Preconditions;->checkNotNull(Ljava/lang/Object;)Ljava/lang/Object;
@@ -120,19 +133,23 @@
     invoke-direct {v0, p1, p3, p4, p5}, Lcom/android/server/accounts/TokenCache$Key;-><init>(Landroid/accounts/Account;Ljava/lang/String;Ljava/lang/String;[B)V
 
     .line 201
-    new-instance p1, Lcom/android/server/accounts/TokenCache$Value;
+    .local v0, "k":Lcom/android/server/accounts/TokenCache$Key;
+    new-instance v1, Lcom/android/server/accounts/TokenCache$Value;
 
-    invoke-direct {p1, p2, p6, p7}, Lcom/android/server/accounts/TokenCache$Value;-><init>(Ljava/lang/String;J)V
+    invoke-direct {v1, p2, p6, p7}, Lcom/android/server/accounts/TokenCache$Value;-><init>(Ljava/lang/String;J)V
 
     .line 202
-    iget-object p2, p0, Lcom/android/server/accounts/TokenCache;->mCachedTokens:Lcom/android/server/accounts/TokenCache$TokenLruCache;
+    .local v1, "v":Lcom/android/server/accounts/TokenCache$Value;
+    iget-object v2, p0, Lcom/android/server/accounts/TokenCache;->mCachedTokens:Lcom/android/server/accounts/TokenCache$TokenLruCache;
 
-    invoke-virtual {p2, v0, p1}, Lcom/android/server/accounts/TokenCache$TokenLruCache;->putToken(Lcom/android/server/accounts/TokenCache$Key;Lcom/android/server/accounts/TokenCache$Value;)V
+    invoke-virtual {v2, v0, v1}, Lcom/android/server/accounts/TokenCache$TokenLruCache;->putToken(Lcom/android/server/accounts/TokenCache$Key;Lcom/android/server/accounts/TokenCache$Value;)V
 
     .line 203
     return-void
 
     .line 198
+    .end local v0  # "k":Lcom/android/server/accounts/TokenCache$Key;
+    .end local v1  # "v":Lcom/android/server/accounts/TokenCache$Value;
     :cond_1e
     :goto_1e
     return-void
@@ -140,6 +157,7 @@
 
 .method public remove(Landroid/accounts/Account;)V
     .registers 3
+    .param p1, "account"  # Landroid/accounts/Account;
 
     .line 214
     iget-object v0, p0, Lcom/android/server/accounts/TokenCache;->mCachedTokens:Lcom/android/server/accounts/TokenCache$TokenLruCache;
@@ -152,6 +170,8 @@
 
 .method public remove(Ljava/lang/String;Ljava/lang/String;)V
     .registers 4
+    .param p1, "accountType"  # Ljava/lang/String;
+    .param p2, "token"  # Ljava/lang/String;
 
     .line 210
     iget-object v0, p0, Lcom/android/server/accounts/TokenCache;->mCachedTokens:Lcom/android/server/accounts/TokenCache$TokenLruCache;

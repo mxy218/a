@@ -3,12 +3,12 @@
 .source "InputMethodManagerService.java"
 
 # interfaces
-.implements Landroid/content/DialogInterface$OnCancelListener;
+.implements Lcom/android/server/inputmethod/GameModeController$GameModeControllerCallback;
 
 
 # annotations
 .annotation system Ldalvik/annotation/EnclosingMethod;
-    value = Lcom/android/server/inputmethod/InputMethodManagerService;->showInputMethodMenu(ZI)V
+    value = Lcom/android/server/inputmethod/InputMethodManagerService;-><init>(Landroid/content/Context;)V
 .end annotation
 
 .annotation system Ldalvik/annotation/InnerClass;
@@ -24,8 +24,9 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/inputmethod/InputMethodManagerService;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/inputmethod/InputMethodManagerService;
 
-    .line 4199
+    .line 1548
     iput-object p1, p0, Lcom/android/server/inputmethod/InputMethodManagerService$3;->this$0:Lcom/android/server/inputmethod/InputMethodManagerService;
 
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -35,14 +36,15 @@
 
 
 # virtual methods
-.method public onCancel(Landroid/content/DialogInterface;)V
-    .registers 2
+.method public onShouldUseGameKeyboardChanged(Z)V
+    .registers 3
+    .param p1, "useGameKeyboard"  # Z
 
-    .line 4202
-    iget-object p1, p0, Lcom/android/server/inputmethod/InputMethodManagerService$3;->this$0:Lcom/android/server/inputmethod/InputMethodManagerService;
+    .line 1551
+    iget-object v0, p0, Lcom/android/server/inputmethod/InputMethodManagerService$3;->this$0:Lcom/android/server/inputmethod/InputMethodManagerService;
 
-    invoke-virtual {p1}, Lcom/android/server/inputmethod/InputMethodManagerService;->hideInputMethodMenu()V
+    invoke-static {v0, p1}, Lcom/android/server/inputmethod/InputMethodManagerService;->access$1200(Lcom/android/server/inputmethod/InputMethodManagerService;Z)Z
 
-    .line 4203
+    .line 1552
     return-void
 .end method

@@ -59,6 +59,7 @@
 
 .method synthetic constructor <init>(Lcom/android/server/backup/utils/RestoreUtils$1;)V
     .registers 2
+    .param p1, "x0"  # Lcom/android/server/backup/utils/RestoreUtils$1;
 
     .line 203
     invoke-direct {p0}, Lcom/android/server/backup/utils/RestoreUtils$LocalIntentReceiver;-><init>()V
@@ -67,16 +68,19 @@
 .end method
 
 .method static synthetic access$100(Lcom/android/server/backup/utils/RestoreUtils$LocalIntentReceiver;)Ljava/lang/Object;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/backup/utils/RestoreUtils$LocalIntentReceiver;
 
     .line 203
-    iget-object p0, p0, Lcom/android/server/backup/utils/RestoreUtils$LocalIntentReceiver;->mLock:Ljava/lang/Object;
+    iget-object v0, p0, Lcom/android/server/backup/utils/RestoreUtils$LocalIntentReceiver;->mLock:Ljava/lang/Object;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$202(Lcom/android/server/backup/utils/RestoreUtils$LocalIntentReceiver;Landroid/content/Intent;)Landroid/content/Intent;
     .registers 2
+    .param p0, "x0"  # Lcom/android/server/backup/utils/RestoreUtils$LocalIntentReceiver;
+    .param p1, "x1"  # Landroid/content/Intent;
 
     .line 203
     iput-object p1, p0, Lcom/android/server/backup/utils/RestoreUtils$LocalIntentReceiver;->mResult:Landroid/content/Intent;

@@ -36,7 +36,12 @@
 
 # direct methods
 .method constructor <init>(Lcom/android/server/incident/PendingReports;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;ILandroid/os/IIncidentAuthListener;)V
-    .registers 7
+    .registers 9
+    .param p2, "callingPackage"  # Ljava/lang/String;
+    .param p3, "receiverClass"  # Ljava/lang/String;
+    .param p4, "reportId"  # Ljava/lang/String;
+    .param p5, "flags"  # I
+    .param p6, "listener"  # Landroid/os/IIncidentAuthListener;
 
     .line 85
     iput-object p1, p0, Lcom/android/server/incident/PendingReports$PendingReportRec;->this$0:Lcom/android/server/incident/PendingReports;
@@ -62,16 +67,16 @@
     .line 90
     invoke-static {}, Landroid/os/SystemClock;->elapsedRealtime()J
 
-    move-result-wide p1
+    move-result-wide v0
 
-    iput-wide p1, p0, Lcom/android/server/incident/PendingReports$PendingReportRec;->addedRealtime:J
+    iput-wide v0, p0, Lcom/android/server/incident/PendingReports$PendingReportRec;->addedRealtime:J
 
     .line 91
     invoke-static {}, Ljava/lang/System;->currentTimeMillis()J
 
-    move-result-wide p1
+    move-result-wide v0
 
-    iput-wide p1, p0, Lcom/android/server/incident/PendingReports$PendingReportRec;->addedWalltime:J
+    iput-wide v0, p0, Lcom/android/server/incident/PendingReports$PendingReportRec;->addedWalltime:J
 
     .line 92
     iput-object p3, p0, Lcom/android/server/incident/PendingReports$PendingReportRec;->receiverClass:Ljava/lang/String;
@@ -121,7 +126,7 @@
 
     move-result-object v1
 
-    const-string v2, "id"
+    const-string/jumbo v2, "id"
 
     invoke-virtual {v0, v2, v1}, Landroid/net/Uri$Builder;->appendQueryParameter(Ljava/lang/String;Ljava/lang/String;)Landroid/net/Uri$Builder;
 
@@ -164,15 +169,16 @@
     move-result-object v0
 
     .line 109
+    .local v0, "builder":Landroid/net/Uri$Builder;
     iget-object v1, p0, Lcom/android/server/incident/PendingReports$PendingReportRec;->receiverClass:Ljava/lang/String;
 
-    if-eqz v1, :cond_57
+    if-eqz v1, :cond_58
 
     invoke-virtual {v1}, Ljava/lang/String;->length()I
 
     move-result v1
 
-    if-lez v1, :cond_57
+    if-lez v1, :cond_58
 
     .line 110
     iget-object v1, p0, Lcom/android/server/incident/PendingReports$PendingReportRec;->receiverClass:Ljava/lang/String;
@@ -182,16 +188,16 @@
     invoke-virtual {v0, v2, v1}, Landroid/net/Uri$Builder;->appendQueryParameter(Ljava/lang/String;Ljava/lang/String;)Landroid/net/Uri$Builder;
 
     .line 113
-    :cond_57
+    :cond_58
     iget-object v1, p0, Lcom/android/server/incident/PendingReports$PendingReportRec;->reportId:Ljava/lang/String;
 
-    if-eqz v1, :cond_69
+    if-eqz v1, :cond_6a
 
     invoke-virtual {v1}, Ljava/lang/String;->length()I
 
     move-result v1
 
-    if-lez v1, :cond_69
+    if-lez v1, :cond_6a
 
     .line 114
     iget-object v1, p0, Lcom/android/server/incident/PendingReports$PendingReportRec;->reportId:Ljava/lang/String;
@@ -201,10 +207,10 @@
     invoke-virtual {v0, v2, v1}, Landroid/net/Uri$Builder;->appendQueryParameter(Ljava/lang/String;Ljava/lang/String;)Landroid/net/Uri$Builder;
 
     .line 116
-    :cond_69
+    :cond_6a
     invoke-virtual {v0}, Landroid/net/Uri$Builder;->build()Landroid/net/Uri;
 
-    move-result-object v0
+    move-result-object v1
 
-    return-object v0
+    return-object v1
 .end method

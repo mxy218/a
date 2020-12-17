@@ -17,6 +17,7 @@
 # virtual methods
 .method public installPacketFilter([B)V
     .registers 2
+    .param p1, "filter"  # [B
 
     .line 96
     return-void
@@ -24,6 +25,7 @@
 
 .method public onIpClientCreated(Landroid/net/ip/IIpClient;)V
     .registers 2
+    .param p1, "ipClient"  # Landroid/net/ip/IIpClient;
 
     .line 38
     return-void
@@ -31,6 +33,7 @@
 
 .method public onLinkPropertiesChange(Landroid/net/LinkProperties;)V
     .registers 2
+    .param p1, "newLp"  # Landroid/net/LinkProperties;
 
     .line 81
     return-void
@@ -38,6 +41,7 @@
 
 .method public onNewDhcpResults(Landroid/net/DhcpResults;)V
     .registers 2
+    .param p1, "dhcpResults"  # Landroid/net/DhcpResults;
 
     .line 66
     return-void
@@ -59,6 +63,7 @@
 
 .method public onProvisioningFailure(Landroid/net/LinkProperties;)V
     .registers 2
+    .param p1, "newLp"  # Landroid/net/LinkProperties;
 
     .line 76
     return-void
@@ -66,6 +71,7 @@
 
 .method public onProvisioningSuccess(Landroid/net/LinkProperties;)V
     .registers 2
+    .param p1, "newLp"  # Landroid/net/LinkProperties;
 
     .line 71
     return-void
@@ -80,6 +86,7 @@
 
 .method public onReachabilityLost(Ljava/lang/String;)V
     .registers 2
+    .param p1, "logMsg"  # Ljava/lang/String;
 
     .line 86
     return-void
@@ -87,6 +94,7 @@
 
 .method public setFallbackMulticastFilter(Z)V
     .registers 2
+    .param p1, "enabled"  # Z
 
     .line 112
     return-void
@@ -94,6 +102,7 @@
 
 .method public setNeighborDiscoveryOffload(Z)V
     .registers 2
+    .param p1, "enable"  # Z
 
     .line 118
     return-void

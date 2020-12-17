@@ -21,6 +21,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/OldNetworkTimeUpdateService;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/OldNetworkTimeUpdateService;
 
     .line 146
     iput-object p1, p0, Lcom/android/server/OldNetworkTimeUpdateService$1;->this$0:Lcom/android/server/OldNetworkTimeUpdateService;
@@ -33,22 +34,24 @@
 
 # virtual methods
 .method public onReceive(Landroid/content/Context;Landroid/content/Intent;)V
-    .registers 3
+    .registers 5
+    .param p1, "context"  # Landroid/content/Context;
+    .param p2, "intent"  # Landroid/content/Intent;
 
     .line 149
-    iget-object p1, p0, Lcom/android/server/OldNetworkTimeUpdateService$1;->this$0:Lcom/android/server/OldNetworkTimeUpdateService;
+    iget-object v0, p0, Lcom/android/server/OldNetworkTimeUpdateService$1;->this$0:Lcom/android/server/OldNetworkTimeUpdateService;
 
-    invoke-static {p1}, Lcom/android/server/OldNetworkTimeUpdateService;->access$100(Lcom/android/server/OldNetworkTimeUpdateService;)Landroid/os/Handler;
+    invoke-static {v0}, Lcom/android/server/OldNetworkTimeUpdateService;->access$100(Lcom/android/server/OldNetworkTimeUpdateService;)Landroid/os/Handler;
 
-    move-result-object p1
+    move-result-object v0
 
-    const/4 p2, 0x2
+    const/4 v1, 0x2
 
-    invoke-virtual {p1, p2}, Landroid/os/Handler;->obtainMessage(I)Landroid/os/Message;
+    invoke-virtual {v0, v1}, Landroid/os/Handler;->obtainMessage(I)Landroid/os/Message;
 
-    move-result-object p1
+    move-result-object v0
 
-    invoke-virtual {p1}, Landroid/os/Message;->sendToTarget()V
+    invoke-virtual {v0}, Landroid/os/Message;->sendToTarget()V
 
     .line 150
     return-void

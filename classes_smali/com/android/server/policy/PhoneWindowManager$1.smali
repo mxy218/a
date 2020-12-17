@@ -24,8 +24,9 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/policy/PhoneWindowManager;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/policy/PhoneWindowManager;
 
-    .line 448
+    .line 441
     iput-object p1, p0, Lcom/android/server/policy/PhoneWindowManager$1;->this$0:Lcom/android/server/policy/PhoneWindowManager;
 
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -38,7 +39,19 @@
 .method public run()V
     .registers 3
 
-    .line 452
+    .line 444
+    sget-boolean v0, Lcom/android/server/policy/PhoneWindowManager;->DEBUG_WAKEUP:Z
+
+    if-eqz v0, :cond_b
+
+    const-string v0, "WindowManager"
+
+    const-string v1, "All windows ready for display!"
+
+    invoke-static {v0, v1}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
+
+    .line 445
+    :cond_b
     iget-object v0, p0, Lcom/android/server/policy/PhoneWindowManager$1;->this$0:Lcom/android/server/policy/PhoneWindowManager;
 
     iget-object v0, v0, Lcom/android/server/policy/PhoneWindowManager;->mHandler:Landroid/os/Handler;
@@ -47,6 +60,6 @@
 
     invoke-virtual {v0, v1}, Landroid/os/Handler;->sendEmptyMessage(I)Z
 
-    .line 453
+    .line 446
     return-void
 .end method

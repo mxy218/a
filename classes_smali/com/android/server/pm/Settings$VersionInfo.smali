@@ -48,7 +48,7 @@
     iput v0, p0, Lcom/android/server/pm/Settings$VersionInfo;->databaseVersion:I
 
     .line 323
-    sget-object v0, Landroid/os/Build;->DATE:Ljava/lang/String;
+    sget-object v0, Landroid/os/Build;->FINGERPRINT:Ljava/lang/String;
 
     iput-object v0, p0, Lcom/android/server/pm/Settings$VersionInfo;->fingerprint:Ljava/lang/String;
 

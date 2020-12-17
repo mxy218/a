@@ -21,7 +21,7 @@
 .method constructor <init>()V
     .registers 1
 
-    .line 116
+    .line 181
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
     return-void
@@ -31,24 +31,27 @@
 # virtual methods
 .method public onDisplayAdded(I)V
     .registers 2
+    .param p1, "displayId"  # I
 
-    .line 120
+    .line 185
     return-void
 .end method
 
 .method public onDisplayChanged(I)V
     .registers 2
+    .param p1, "displayId"  # I
 
-    .line 128
+    .line 193
     invoke-static {}, Lcom/android/server/audio/RotationHelper;->updateOrientation()V
 
-    .line 129
+    .line 194
     return-void
 .end method
 
 .method public onDisplayRemoved(I)V
     .registers 2
+    .param p1, "displayId"  # I
 
-    .line 124
+    .line 189
     return-void
 .end method

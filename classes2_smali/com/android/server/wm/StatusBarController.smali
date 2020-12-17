@@ -10,6 +10,7 @@
 # direct methods
 .method constructor <init>(I)V
     .registers 11
+    .param p1, "displayId"  # I
 
     .line 88
     const-string v1, "StatusBar"
@@ -33,11 +34,11 @@
     invoke-direct/range {v0 .. v8}, Lcom/android/server/wm/BarController;-><init>(Ljava/lang/String;IIIIIII)V
 
     .line 35
-    new-instance p1, Lcom/android/server/wm/StatusBarController$1;
+    new-instance v0, Lcom/android/server/wm/StatusBarController$1;
 
-    invoke-direct {p1, p0}, Lcom/android/server/wm/StatusBarController$1;-><init>(Lcom/android/server/wm/StatusBarController;)V
+    invoke-direct {v0, p0}, Lcom/android/server/wm/StatusBarController$1;-><init>(Lcom/android/server/wm/StatusBarController;)V
 
-    iput-object p1, p0, Lcom/android/server/wm/StatusBarController;->mAppTransitionListener:Lcom/android/server/wm/WindowManagerInternal$AppTransitionListener;
+    iput-object v0, p0, Lcom/android/server/wm/StatusBarController;->mAppTransitionListener:Lcom/android/server/wm/WindowManagerInternal$AppTransitionListener;
 
     .line 96
     return-void
@@ -56,6 +57,7 @@
 
 .method setTopAppHidesStatusBar(Z)V
     .registers 3
+    .param p1, "hidesStatusBar"  # Z
 
     .line 99
     invoke-virtual {p0}, Lcom/android/server/wm/StatusBarController;->getStatusBarInternal()Lcom/android/server/statusbar/StatusBarManagerInternal;
@@ -63,6 +65,7 @@
     move-result-object v0
 
     .line 100
+    .local v0, "statusBar":Lcom/android/server/statusbar/StatusBarManagerInternal;
     if-eqz v0, :cond_9
 
     .line 101

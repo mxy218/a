@@ -30,6 +30,8 @@
 # direct methods
 .method constructor <init>(Landroid/attention/AttentionManagerInternal$AttentionCallbackInternal;Landroid/service/attention/IAttentionCallback;)V
     .registers 3
+    .param p1, "callbackInternal"  # Landroid/attention/AttentionManagerInternal$AttentionCallbackInternal;
+    .param p2, "iAttentionCallback"  # Landroid/service/attention/IAttentionCallback;
 
     .line 444
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -45,25 +47,29 @@
 .end method
 
 .method static synthetic access$1100(Lcom/android/server/attention/AttentionManagerService$AttentionCheck;)Landroid/attention/AttentionManagerInternal$AttentionCallbackInternal;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/attention/AttentionManagerService$AttentionCheck;
 
     .line 437
-    iget-object p0, p0, Lcom/android/server/attention/AttentionManagerService$AttentionCheck;->mCallbackInternal:Landroid/attention/AttentionManagerInternal$AttentionCallbackInternal;
+    iget-object v0, p0, Lcom/android/server/attention/AttentionManagerService$AttentionCheck;->mCallbackInternal:Landroid/attention/AttentionManagerInternal$AttentionCallbackInternal;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$700(Lcom/android/server/attention/AttentionManagerService$AttentionCheck;)Z
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/attention/AttentionManagerService$AttentionCheck;
 
     .line 437
-    iget-boolean p0, p0, Lcom/android/server/attention/AttentionManagerService$AttentionCheck;->mIsDispatched:Z
+    iget-boolean v0, p0, Lcom/android/server/attention/AttentionManagerService$AttentionCheck;->mIsDispatched:Z
 
-    return p0
+    return v0
 .end method
 
 .method static synthetic access$702(Lcom/android/server/attention/AttentionManagerService$AttentionCheck;Z)Z
     .registers 2
+    .param p0, "x0"  # Lcom/android/server/attention/AttentionManagerService$AttentionCheck;
+    .param p1, "x1"  # Z
 
     .line 437
     iput-boolean p1, p0, Lcom/android/server/attention/AttentionManagerService$AttentionCheck;->mIsDispatched:Z
@@ -72,16 +78,19 @@
 .end method
 
 .method static synthetic access$800(Lcom/android/server/attention/AttentionManagerService$AttentionCheck;)Z
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/attention/AttentionManagerService$AttentionCheck;
 
     .line 437
-    iget-boolean p0, p0, Lcom/android/server/attention/AttentionManagerService$AttentionCheck;->mIsFulfilled:Z
+    iget-boolean v0, p0, Lcom/android/server/attention/AttentionManagerService$AttentionCheck;->mIsFulfilled:Z
 
-    return p0
+    return v0
 .end method
 
 .method static synthetic access$802(Lcom/android/server/attention/AttentionManagerService$AttentionCheck;Z)Z
     .registers 2
+    .param p0, "x0"  # Lcom/android/server/attention/AttentionManagerService$AttentionCheck;
+    .param p1, "x1"  # Z
 
     .line 437
     iput-boolean p1, p0, Lcom/android/server/attention/AttentionManagerService$AttentionCheck;->mIsFulfilled:Z
@@ -90,12 +99,13 @@
 .end method
 
 .method static synthetic access$900(Lcom/android/server/attention/AttentionManagerService$AttentionCheck;)Landroid/service/attention/IAttentionCallback;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/attention/AttentionManagerService$AttentionCheck;
 
     .line 437
-    iget-object p0, p0, Lcom/android/server/attention/AttentionManagerService$AttentionCheck;->mIAttentionCallback:Landroid/service/attention/IAttentionCallback;
+    iget-object v0, p0, Lcom/android/server/attention/AttentionManagerService$AttentionCheck;->mIAttentionCallback:Landroid/service/attention/IAttentionCallback;
 
-    return-object p0
+    return-object v0
 .end method
 
 

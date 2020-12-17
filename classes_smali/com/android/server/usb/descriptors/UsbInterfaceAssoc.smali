@@ -24,6 +24,8 @@
 # direct methods
 .method public constructor <init>(IB)V
     .registers 3
+    .param p1, "length"  # I
+    .param p2, "type"  # B
 
     .line 37
     invoke-direct {p0, p1, p2}, Lcom/android/server/usb/descriptors/UsbDescriptor;-><init>(IB)V
@@ -90,6 +92,7 @@
 
 .method public parseRawDescriptors(Lcom/android/server/usb/descriptors/ByteStream;)I
     .registers 3
+    .param p1, "stream"  # Lcom/android/server/usb/descriptors/ByteStream;
 
     .line 66
     invoke-virtual {p1}, Lcom/android/server/usb/descriptors/ByteStream;->getByte()B
@@ -129,12 +132,12 @@
     .line 71
     invoke-virtual {p1}, Lcom/android/server/usb/descriptors/ByteStream;->getByte()B
 
-    move-result p1
+    move-result v0
 
-    iput-byte p1, p0, Lcom/android/server/usb/descriptors/UsbInterfaceAssoc;->mFunction:B
+    iput-byte v0, p0, Lcom/android/server/usb/descriptors/UsbInterfaceAssoc;->mFunction:B
 
     .line 73
-    iget p1, p0, Lcom/android/server/usb/descriptors/UsbInterfaceAssoc;->mLength:I
+    iget v0, p0, Lcom/android/server/usb/descriptors/UsbInterfaceAssoc;->mLength:I
 
-    return p1
+    return v0
 .end method

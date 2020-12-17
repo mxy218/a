@@ -22,7 +22,7 @@
 .method private constructor <init>(Lcom/android/server/pm/PackageManagerService;)V
     .registers 2
 
-    .line 24352
+    .line 25101
     iput-object p1, p0, Lcom/android/server/pm/PackageManagerService$PackageManagerNative;->this$0:Lcom/android/server/pm/PackageManagerService;
 
     invoke-direct {p0}, Landroid/content/pm/IPackageManagerNative$Stub;-><init>()V
@@ -32,8 +32,10 @@
 
 .method synthetic constructor <init>(Lcom/android/server/pm/PackageManagerService;Lcom/android/server/pm/PackageManagerService$1;)V
     .registers 3
+    .param p1, "x0"  # Lcom/android/server/pm/PackageManagerService;
+    .param p2, "x1"  # Lcom/android/server/pm/PackageManagerService$1;
 
-    .line 24352
+    .line 25101
     invoke-direct {p0, p1}, Lcom/android/server/pm/PackageManagerService$PackageManagerNative;-><init>(Lcom/android/server/pm/PackageManagerService;)V
 
     return-void
@@ -42,79 +44,84 @@
 
 # virtual methods
 .method public getInstallerForPackage(Ljava/lang/String;)Ljava/lang/String;
-    .registers 5
+    .registers 6
+    .param p1, "packageName"  # Ljava/lang/String;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
         }
     .end annotation
 
-    .line 24368
+    .line 25117
     iget-object v0, p0, Lcom/android/server/pm/PackageManagerService$PackageManagerNative;->this$0:Lcom/android/server/pm/PackageManagerService;
 
     invoke-virtual {v0, p1}, Lcom/android/server/pm/PackageManagerService;->getInstallerPackageName(Ljava/lang/String;)Ljava/lang/String;
 
     move-result-object v0
 
-    .line 24369
+    .line 25118
+    .local v0, "installerName":Ljava/lang/String;
     invoke-static {v0}, Landroid/text/TextUtils;->isEmpty(Ljava/lang/CharSequence;)Z
 
     move-result v1
 
     if-nez v1, :cond_d
 
-    .line 24370
+    .line 25119
     return-object v0
 
-    .line 24373
+    .line 25122
     :cond_d
     invoke-static {}, Landroid/os/Binder;->getCallingUid()I
 
-    move-result v0
+    move-result v1
 
-    invoke-static {v0}, Landroid/os/UserHandle;->getUserId(I)I
+    invoke-static {v1}, Landroid/os/UserHandle;->getUserId(I)I
 
-    move-result v0
+    move-result v1
 
-    .line 24374
-    iget-object v1, p0, Lcom/android/server/pm/PackageManagerService$PackageManagerNative;->this$0:Lcom/android/server/pm/PackageManagerService;
+    .line 25123
+    .local v1, "callingUser":I
+    iget-object v2, p0, Lcom/android/server/pm/PackageManagerService$PackageManagerNative;->this$0:Lcom/android/server/pm/PackageManagerService;
 
-    const/4 v2, 0x0
+    const/4 v3, 0x0
 
-    invoke-virtual {v1, p1, v2, v0}, Lcom/android/server/pm/PackageManagerService;->getApplicationInfo(Ljava/lang/String;II)Landroid/content/pm/ApplicationInfo;
+    invoke-virtual {v2, p1, v3, v1}, Lcom/android/server/pm/PackageManagerService;->getApplicationInfo(Ljava/lang/String;II)Landroid/content/pm/ApplicationInfo;
 
-    move-result-object p1
+    move-result-object v2
 
-    .line 24377
-    if-eqz p1, :cond_28
+    .line 25126
+    .local v2, "appInfo":Landroid/content/pm/ApplicationInfo;
+    if-eqz v2, :cond_28
 
-    iget p1, p1, Landroid/content/pm/ApplicationInfo;->flags:I
+    iget v3, v2, Landroid/content/pm/ApplicationInfo;->flags:I
 
-    and-int/lit8 p1, p1, 0x1
+    and-int/lit8 v3, v3, 0x1
 
-    if-eqz p1, :cond_28
+    if-eqz v3, :cond_28
 
-    .line 24378
-    const-string/jumbo p1, "preload"
+    .line 25127
+    const-string/jumbo v3, "preload"
 
-    return-object p1
+    return-object v3
 
-    .line 24380
+    .line 25129
     :cond_28
-    const-string p1, ""
+    const-string v3, ""
 
-    return-object p1
+    return-object v3
 .end method
 
 .method public getLocationFlags(Ljava/lang/String;)I
-    .registers 5
+    .registers 7
+    .param p1, "packageName"  # Ljava/lang/String;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
         }
     .end annotation
 
-    .line 24422
+    .line 25171
     invoke-static {}, Landroid/os/Binder;->getCallingUid()I
 
     move-result v0
@@ -123,76 +130,78 @@
 
     move-result v0
 
-    .line 24423
+    .line 25172
+    .local v0, "callingUser":I
     iget-object v1, p0, Lcom/android/server/pm/PackageManagerService$PackageManagerNative;->this$0:Lcom/android/server/pm/PackageManagerService;
 
     const/4 v2, 0x0
 
     invoke-virtual {v1, p1, v2, v0}, Lcom/android/server/pm/PackageManagerService;->getApplicationInfo(Ljava/lang/String;II)Landroid/content/pm/ApplicationInfo;
 
-    move-result-object v0
+    move-result-object v1
 
-    .line 24426
-    if-eqz v0, :cond_28
+    .line 25175
+    .local v1, "appInfo":Landroid/content/pm/ApplicationInfo;
+    if-eqz v1, :cond_28
 
-    .line 24430
-    invoke-virtual {v0}, Landroid/content/pm/ApplicationInfo;->isSystemApp()Z
+    .line 25179
+    invoke-virtual {v1}, Landroid/content/pm/ApplicationInfo;->isSystemApp()Z
 
-    move-result p1
+    move-result v3
 
-    .line 24431
-    invoke-virtual {v0}, Landroid/content/pm/ApplicationInfo;->isVendor()Z
+    .line 25180
+    invoke-virtual {v1}, Landroid/content/pm/ApplicationInfo;->isVendor()Z
 
-    move-result v1
+    move-result v4
 
-    if-eqz v1, :cond_1d
+    if-eqz v4, :cond_1d
 
-    const/4 v1, 0x2
+    const/4 v4, 0x2
 
     goto :goto_1e
 
     :cond_1d
-    move v1, v2
+    move v4, v2
 
     :goto_1e
-    or-int/2addr p1, v1
+    or-int/2addr v3, v4
 
-    .line 24432
-    invoke-virtual {v0}, Landroid/content/pm/ApplicationInfo;->isProduct()Z
+    .line 25181
+    invoke-virtual {v1}, Landroid/content/pm/ApplicationInfo;->isProduct()Z
 
-    move-result v0
+    move-result v4
 
-    if-eqz v0, :cond_26
+    if-eqz v4, :cond_26
 
     const/4 v2, 0x4
 
     :cond_26
-    or-int/2addr p1, v2
+    or-int/2addr v2, v3
 
-    .line 24430
-    return p1
+    .line 25179
+    return v2
 
-    .line 24427
+    .line 25176
     :cond_28
-    new-instance v0, Landroid/os/RemoteException;
+    new-instance v2, Landroid/os/RemoteException;
 
-    new-instance v1, Ljava/lang/StringBuilder;
+    new-instance v3, Ljava/lang/StringBuilder;
 
-    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v2, "Couldn\'t get ApplicationInfo for package "
+    const-string v4, "Couldn\'t get ApplicationInfo for package "
 
-    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v1, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v3
 
-    invoke-direct {v0, p1}, Landroid/os/RemoteException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v2, v3}, Landroid/os/RemoteException;-><init>(Ljava/lang/String;)V
 
-    throw v0
+    throw v2
 .end method
 
 .method public getModuleMetadataPackageName()Ljava/lang/String;
@@ -203,10 +212,10 @@
         }
     .end annotation
 
-    .line 24437
+    .line 25186
     iget-object v0, p0, Lcom/android/server/pm/PackageManagerService$PackageManagerNative;->this$0:Lcom/android/server/pm/PackageManagerService;
 
-    invoke-static {v0}, Lcom/android/server/pm/PackageManagerService;->access$5600(Lcom/android/server/pm/PackageManagerService;)Lcom/android/server/pm/ModuleInfoProvider;
+    invoke-static {v0}, Lcom/android/server/pm/PackageManagerService;->access$6000(Lcom/android/server/pm/PackageManagerService;)Lcom/android/server/pm/ModuleInfoProvider;
 
     move-result-object v0
 
@@ -218,58 +227,63 @@
 .end method
 
 .method public getNamesForUids([I)[Ljava/lang/String;
-    .registers 4
+    .registers 5
+    .param p1, "uids"  # [I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
         }
     .end annotation
 
-    .line 24355
+    .line 25104
     iget-object v0, p0, Lcom/android/server/pm/PackageManagerService$PackageManagerNative;->this$0:Lcom/android/server/pm/PackageManagerService;
 
     invoke-virtual {v0, p1}, Lcom/android/server/pm/PackageManagerService;->getNamesForUids([I)[Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    .line 24357
-    array-length v0, p1
+    .line 25106
+    .local v0, "results":[Ljava/lang/String;
+    array-length v1, v0
 
-    add-int/lit8 v0, v0, -0x1
+    add-int/lit8 v1, v1, -0x1
 
+    .local v1, "i":I
     :goto_9
-    if-ltz v0, :cond_16
+    if-ltz v1, :cond_16
 
-    .line 24358
-    aget-object v1, p1, v0
+    .line 25107
+    aget-object v2, v0, v1
 
-    if-nez v1, :cond_13
+    if-nez v2, :cond_13
 
-    .line 24359
-    const-string v1, ""
+    .line 25108
+    const-string v2, ""
 
-    aput-object v1, p1, v0
+    aput-object v2, v0, v1
 
-    .line 24357
+    .line 25106
     :cond_13
-    add-int/lit8 v0, v0, -0x1
+    add-int/lit8 v1, v1, -0x1
 
     goto :goto_9
 
-    .line 24362
+    .line 25111
+    .end local v1  # "i":I
     :cond_16
-    return-object p1
+    return-object v0
 .end method
 
 .method public getTargetSdkVersionForPackage(Ljava/lang/String;)I
-    .registers 5
+    .registers 7
+    .param p1, "packageName"  # Ljava/lang/String;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
         }
     .end annotation
 
-    .line 24399
+    .line 25148
     invoke-static {}, Landroid/os/Binder;->getCallingUid()I
 
     move-result v0
@@ -278,55 +292,58 @@
 
     move-result v0
 
-    .line 24400
+    .line 25149
+    .local v0, "callingUser":I
     iget-object v1, p0, Lcom/android/server/pm/PackageManagerService$PackageManagerNative;->this$0:Lcom/android/server/pm/PackageManagerService;
 
     const/4 v2, 0x0
 
     invoke-virtual {v1, p1, v2, v0}, Lcom/android/server/pm/PackageManagerService;->getApplicationInfo(Ljava/lang/String;II)Landroid/content/pm/ApplicationInfo;
 
-    move-result-object v0
+    move-result-object v1
 
-    .line 24401
-    if-eqz v0, :cond_14
+    .line 25150
+    .local v1, "info":Landroid/content/pm/ApplicationInfo;
+    if-eqz v1, :cond_14
 
-    .line 24405
-    iget p1, v0, Landroid/content/pm/ApplicationInfo;->targetSdkVersion:I
+    .line 25154
+    iget v2, v1, Landroid/content/pm/ApplicationInfo;->targetSdkVersion:I
 
-    return p1
+    return v2
 
-    .line 24402
+    .line 25151
     :cond_14
-    new-instance v0, Landroid/os/RemoteException;
+    new-instance v2, Landroid/os/RemoteException;
 
-    new-instance v1, Ljava/lang/StringBuilder;
+    new-instance v3, Ljava/lang/StringBuilder;
 
-    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v2, "Couldn\'t get ApplicationInfo for package "
+    const-string v4, "Couldn\'t get ApplicationInfo for package "
 
-    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v1, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v3
 
-    invoke-direct {v0, p1}, Landroid/os/RemoteException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v2, v3}, Landroid/os/RemoteException;-><init>(Ljava/lang/String;)V
 
-    throw v0
+    throw v2
 .end method
 
 .method public getVersionCodeForPackage(Ljava/lang/String;)J
-    .registers 5
+    .registers 6
+    .param p1, "packageName"  # Ljava/lang/String;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
         }
     .end annotation
 
-    .line 24386
+    .line 25135
     :try_start_0
     invoke-static {}, Landroid/os/Binder;->getCallingUid()I
 
@@ -336,36 +353,40 @@
 
     move-result v0
 
-    .line 24387
+    .line 25136
+    .local v0, "callingUser":I
     iget-object v1, p0, Lcom/android/server/pm/PackageManagerService$PackageManagerNative;->this$0:Lcom/android/server/pm/PackageManagerService;
 
     const/4 v2, 0x0
 
     invoke-virtual {v1, p1, v2, v0}, Lcom/android/server/pm/PackageManagerService;->getPackageInfo(Ljava/lang/String;II)Landroid/content/pm/PackageInfo;
 
-    move-result-object p1
+    move-result-object v1
 
-    .line 24388
-    if-eqz p1, :cond_16
+    .line 25137
+    .local v1, "pInfo":Landroid/content/pm/PackageInfo;
+    if-eqz v1, :cond_16
 
-    .line 24389
-    invoke-virtual {p1}, Landroid/content/pm/PackageInfo;->getLongVersionCode()J
+    .line 25138
+    invoke-virtual {v1}, Landroid/content/pm/PackageInfo;->getLongVersionCode()J
 
-    move-result-wide v0
+    move-result-wide v2
     :try_end_15
     .catch Ljava/lang/Exception; {:try_start_0 .. :try_end_15} :catch_17
 
-    return-wide v0
+    return-wide v2
 
-    .line 24392
+    .line 25141
+    .end local v0  # "callingUser":I
+    .end local v1  # "pInfo":Landroid/content/pm/PackageInfo;
     :cond_16
     goto :goto_18
 
-    .line 24391
+    .line 25140
     :catch_17
-    move-exception p1
+    move-exception v0
 
-    .line 24393
+    .line 25142
     :goto_18
     const-wide/16 v0, 0x0
 
@@ -374,13 +395,14 @@
 
 .method public isAudioPlaybackCaptureAllowed([Ljava/lang/String;)[Z
     .registers 8
+    .param p1, "packageNames"  # [Ljava/lang/String;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
         }
     .end annotation
 
-    .line 24411
+    .line 25160
     invoke-static {}, Landroid/os/Binder;->getCallingUid()I
 
     move-result v0
@@ -389,20 +411,23 @@
 
     move-result v0
 
-    .line 24412
+    .line 25161
+    .local v0, "callingUser":I
     array-length v1, p1
 
     new-array v1, v1, [Z
 
-    .line 24413
+    .line 25162
+    .local v1, "results":[Z
     array-length v2, v1
 
     add-int/lit8 v2, v2, -0x1
 
+    .local v2, "i":I
     :goto_e
     if-ltz v2, :cond_25
 
-    .line 24414
+    .line 25163
     iget-object v3, p0, Lcom/android/server/pm/PackageManagerService$PackageManagerNative;->this$0:Lcom/android/server/pm/PackageManagerService;
 
     aget-object v4, p1, v2
@@ -413,7 +438,8 @@
 
     move-result-object v3
 
-    .line 24415
+    .line 25164
+    .local v3, "appInfo":Landroid/content/pm/ApplicationInfo;
     if-nez v3, :cond_1c
 
     goto :goto_20
@@ -426,12 +452,14 @@
     :goto_20
     aput-boolean v5, v1, v2
 
-    .line 24413
+    .line 25162
+    .end local v3  # "appInfo":Landroid/content/pm/ApplicationInfo;
     add-int/lit8 v2, v2, -0x1
 
     goto :goto_e
 
-    .line 24417
+    .line 25166
+    .end local v2  # "i":I
     :cond_25
     return-object v1
 .end method

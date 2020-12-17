@@ -9,22 +9,25 @@
 
 # direct methods
 .method constructor <init>(Landroid/net/netlink/StructNlMsgHdr;)V
-    .registers 2
+    .registers 3
+    .param p1, "header"  # Landroid/net/netlink/StructNlMsgHdr;
 
     .line 46
     invoke-direct {p0, p1}, Landroid/net/netlink/NetlinkMessage;-><init>(Landroid/net/netlink/StructNlMsgHdr;)V
 
     .line 47
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    iput-object p1, p0, Landroid/net/netlink/NetlinkErrorMessage;->mNlMsgErr:Landroid/net/netlink/StructNlMsgErr;
+    iput-object v0, p0, Landroid/net/netlink/NetlinkErrorMessage;->mNlMsgErr:Landroid/net/netlink/StructNlMsgErr;
 
     .line 48
     return-void
 .end method
 
 .method public static parse(Landroid/net/netlink/StructNlMsgHdr;Ljava/nio/ByteBuffer;)Landroid/net/netlink/NetlinkErrorMessage;
-    .registers 3
+    .registers 4
+    .param p0, "header"  # Landroid/net/netlink/StructNlMsgHdr;
+    .param p1, "byteBuffer"  # Ljava/nio/ByteBuffer;
 
     .line 33
     new-instance v0, Landroid/net/netlink/NetlinkErrorMessage;
@@ -32,21 +35,22 @@
     invoke-direct {v0, p0}, Landroid/net/netlink/NetlinkErrorMessage;-><init>(Landroid/net/netlink/StructNlMsgHdr;)V
 
     .line 35
+    .local v0, "errorMsg":Landroid/net/netlink/NetlinkErrorMessage;
     invoke-static {p1}, Landroid/net/netlink/StructNlMsgErr;->parse(Ljava/nio/ByteBuffer;)Landroid/net/netlink/StructNlMsgErr;
 
-    move-result-object p0
+    move-result-object v1
 
-    iput-object p0, v0, Landroid/net/netlink/NetlinkErrorMessage;->mNlMsgErr:Landroid/net/netlink/StructNlMsgErr;
+    iput-object v1, v0, Landroid/net/netlink/NetlinkErrorMessage;->mNlMsgErr:Landroid/net/netlink/StructNlMsgErr;
 
     .line 36
-    iget-object p0, v0, Landroid/net/netlink/NetlinkErrorMessage;->mNlMsgErr:Landroid/net/netlink/StructNlMsgErr;
+    iget-object v1, v0, Landroid/net/netlink/NetlinkErrorMessage;->mNlMsgErr:Landroid/net/netlink/StructNlMsgErr;
 
-    if-nez p0, :cond_11
+    if-nez v1, :cond_11
 
     .line 37
-    const/4 p0, 0x0
+    const/4 v1, 0x0
 
-    return-object p0
+    return-object v1
 
     .line 40
     :cond_11

@@ -24,8 +24,9 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/power/WirelessChargerDetector;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/power/WirelessChargerDetector;
 
-    .line 382
+    .line 384
     iput-object p1, p0, Lcom/android/server/power/WirelessChargerDetector$2;->this$0:Lcom/android/server/power/WirelessChargerDetector;
 
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -38,7 +39,7 @@
 .method public run()V
     .registers 3
 
-    .line 385
+    .line 387
     iget-object v0, p0, Lcom/android/server/power/WirelessChargerDetector$2;->this$0:Lcom/android/server/power/WirelessChargerDetector;
 
     invoke-static {v0}, Lcom/android/server/power/WirelessChargerDetector;->access$000(Lcom/android/server/power/WirelessChargerDetector;)Ljava/lang/Object;
@@ -47,19 +48,19 @@
 
     monitor-enter v0
 
-    .line 386
+    .line 388
     :try_start_7
     iget-object v1, p0, Lcom/android/server/power/WirelessChargerDetector$2;->this$0:Lcom/android/server/power/WirelessChargerDetector;
 
     invoke-static {v1}, Lcom/android/server/power/WirelessChargerDetector;->access$200(Lcom/android/server/power/WirelessChargerDetector;)V
 
-    .line 387
+    .line 389
     monitor-exit v0
 
-    .line 388
+    .line 390
     return-void
 
-    .line 387
+    .line 389
     :catchall_e
     move-exception v1
 

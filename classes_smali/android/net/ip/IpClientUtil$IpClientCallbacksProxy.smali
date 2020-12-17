@@ -21,6 +21,7 @@
 # direct methods
 .method public constructor <init>(Landroid/net/ip/IpClientCallbacks;)V
     .registers 2
+    .param p1, "cb"  # Landroid/net/ip/IpClientCallbacks;
 
     .line 92
     invoke-direct {p0}, Landroid/net/ip/IIpClientCallbacks$Stub;-><init>()V
@@ -45,6 +46,7 @@
 
 .method public installPacketFilter([B)V
     .registers 3
+    .param p1, "filter"  # [B
 
     .line 153
     iget-object v0, p0, Landroid/net/ip/IpClientUtil$IpClientCallbacksProxy;->mCb:Landroid/net/ip/IpClientCallbacks;
@@ -57,6 +59,7 @@
 
 .method public onIpClientCreated(Landroid/net/ip/IIpClient;)V
     .registers 3
+    .param p1, "ipClient"  # Landroid/net/ip/IIpClient;
 
     .line 98
     iget-object v0, p0, Landroid/net/ip/IpClientUtil$IpClientCallbacksProxy;->mCb:Landroid/net/ip/IpClientCallbacks;
@@ -69,6 +72,7 @@
 
 .method public onLinkPropertiesChange(Landroid/net/LinkProperties;)V
     .registers 3
+    .param p1, "newLp"  # Landroid/net/LinkProperties;
 
     .line 134
     iget-object v0, p0, Landroid/net/ip/IpClientUtil$IpClientCallbacksProxy;->mCb:Landroid/net/ip/IpClientCallbacks;
@@ -80,16 +84,17 @@
 .end method
 
 .method public onNewDhcpResults(Landroid/net/DhcpResultsParcelable;)V
-    .registers 3
+    .registers 4
+    .param p1, "dhcpResults"  # Landroid/net/DhcpResultsParcelable;
 
     .line 119
     iget-object v0, p0, Landroid/net/ip/IpClientUtil$IpClientCallbacksProxy;->mCb:Landroid/net/ip/IpClientCallbacks;
 
     invoke-static {p1}, Landroid/net/shared/IpConfigurationParcelableUtil;->fromStableParcelable(Landroid/net/DhcpResultsParcelable;)Landroid/net/DhcpResults;
 
-    move-result-object p1
+    move-result-object v1
 
-    invoke-virtual {v0, p1}, Landroid/net/ip/IpClientCallbacks;->onNewDhcpResults(Landroid/net/DhcpResults;)V
+    invoke-virtual {v0, v1}, Landroid/net/ip/IpClientCallbacks;->onNewDhcpResults(Landroid/net/DhcpResults;)V
 
     .line 120
     return-void
@@ -121,6 +126,7 @@
 
 .method public onProvisioningFailure(Landroid/net/LinkProperties;)V
     .registers 3
+    .param p1, "newLp"  # Landroid/net/LinkProperties;
 
     .line 128
     iget-object v0, p0, Landroid/net/ip/IpClientUtil$IpClientCallbacksProxy;->mCb:Landroid/net/ip/IpClientCallbacks;
@@ -133,6 +139,7 @@
 
 .method public onProvisioningSuccess(Landroid/net/LinkProperties;)V
     .registers 3
+    .param p1, "newLp"  # Landroid/net/LinkProperties;
 
     .line 124
     iget-object v0, p0, Landroid/net/ip/IpClientUtil$IpClientCallbacksProxy;->mCb:Landroid/net/ip/IpClientCallbacks;
@@ -157,6 +164,7 @@
 
 .method public onReachabilityLost(Ljava/lang/String;)V
     .registers 3
+    .param p1, "logMsg"  # Ljava/lang/String;
 
     .line 141
     iget-object v0, p0, Landroid/net/ip/IpClientUtil$IpClientCallbacksProxy;->mCb:Landroid/net/ip/IpClientCallbacks;
@@ -169,6 +177,7 @@
 
 .method public setFallbackMulticastFilter(Z)V
     .registers 3
+    .param p1, "enabled"  # Z
 
     .line 169
     iget-object v0, p0, Landroid/net/ip/IpClientUtil$IpClientCallbacksProxy;->mCb:Landroid/net/ip/IpClientCallbacks;
@@ -181,6 +190,7 @@
 
 .method public setNeighborDiscoveryOffload(Z)V
     .registers 3
+    .param p1, "enable"  # Z
 
     .line 176
     iget-object v0, p0, Landroid/net/ip/IpClientUtil$IpClientCallbacksProxy;->mCb:Landroid/net/ip/IpClientCallbacks;

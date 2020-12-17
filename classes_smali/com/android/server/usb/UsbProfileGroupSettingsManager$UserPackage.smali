@@ -26,6 +26,8 @@
 # direct methods
 .method private constructor <init>(Ljava/lang/String;Landroid/os/UserHandle;)V
     .registers 3
+    .param p1, "packageName"  # Ljava/lang/String;
+    .param p2, "user"  # Landroid/os/UserHandle;
 
     .line 135
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -42,6 +44,9 @@
 
 .method synthetic constructor <init>(Ljava/lang/String;Landroid/os/UserHandle;Lcom/android/server/usb/UsbProfileGroupSettingsManager$1;)V
     .registers 4
+    .param p1, "x0"  # Ljava/lang/String;
+    .param p2, "x1"  # Landroid/os/UserHandle;
+    .param p3, "x2"  # Lcom/android/server/usb/UsbProfileGroupSettingsManager$1;
 
     .line 122
     invoke-direct {p0, p1, p2}, Lcom/android/server/usb/UsbProfileGroupSettingsManager$UserPackage;-><init>(Ljava/lang/String;Landroid/os/UserHandle;)V
@@ -52,44 +57,49 @@
 
 # virtual methods
 .method public dump(Lcom/android/internal/util/dump/DualDumpOutputStream;Ljava/lang/String;J)V
-    .registers 8
+    .registers 11
+    .param p1, "dump"  # Lcom/android/internal/util/dump/DualDumpOutputStream;
+    .param p2, "idName"  # Ljava/lang/String;
+    .param p3, "id"  # J
 
     .line 164
     invoke-virtual {p1, p2, p3, p4}, Lcom/android/internal/util/dump/DualDumpOutputStream;->start(Ljava/lang/String;J)J
 
-    move-result-wide p2
+    move-result-wide v0
 
     .line 166
-    iget-object p4, p0, Lcom/android/server/usb/UsbProfileGroupSettingsManager$UserPackage;->user:Landroid/os/UserHandle;
+    .local v0, "token":J
+    iget-object v2, p0, Lcom/android/server/usb/UsbProfileGroupSettingsManager$UserPackage;->user:Landroid/os/UserHandle;
 
-    invoke-virtual {p4}, Landroid/os/UserHandle;->getIdentifier()I
+    invoke-virtual {v2}, Landroid/os/UserHandle;->getIdentifier()I
 
-    move-result p4
+    move-result v2
 
-    const-string/jumbo v0, "user_id"
+    const-string/jumbo v3, "user_id"
 
-    const-wide v1, 0x10500000001L
+    const-wide v4, 0x10500000001L
 
-    invoke-virtual {p1, v0, v1, v2, p4}, Lcom/android/internal/util/dump/DualDumpOutputStream;->write(Ljava/lang/String;JI)V
+    invoke-virtual {p1, v3, v4, v5, v2}, Lcom/android/internal/util/dump/DualDumpOutputStream;->write(Ljava/lang/String;JI)V
 
     .line 167
-    iget-object p4, p0, Lcom/android/server/usb/UsbProfileGroupSettingsManager$UserPackage;->packageName:Ljava/lang/String;
+    iget-object v2, p0, Lcom/android/server/usb/UsbProfileGroupSettingsManager$UserPackage;->packageName:Ljava/lang/String;
 
-    const-string/jumbo v0, "package_name"
+    const-string/jumbo v3, "package_name"
 
-    const-wide v1, 0x10900000002L
+    const-wide v4, 0x10900000002L
 
-    invoke-virtual {p1, v0, v1, v2, p4}, Lcom/android/internal/util/dump/DualDumpOutputStream;->write(Ljava/lang/String;JLjava/lang/String;)V
+    invoke-virtual {p1, v3, v4, v5, v2}, Lcom/android/internal/util/dump/DualDumpOutputStream;->write(Ljava/lang/String;JLjava/lang/String;)V
 
     .line 169
-    invoke-virtual {p1, p2, p3}, Lcom/android/internal/util/dump/DualDumpOutputStream;->end(J)V
+    invoke-virtual {p1, v0, v1}, Lcom/android/internal/util/dump/DualDumpOutputStream;->end(J)V
 
     .line 170
     return-void
 .end method
 
 .method public equals(Ljava/lang/Object;)Z
-    .registers 5
+    .registers 6
+    .param p1, "obj"  # Ljava/lang/Object;
 
     .line 142
     instance-of v0, p1, Lcom/android/server/usb/UsbProfileGroupSettingsManager$UserPackage;
@@ -103,37 +113,40 @@
 
     .line 145
     :cond_6
-    check-cast p1, Lcom/android/server/usb/UsbProfileGroupSettingsManager$UserPackage;
+    move-object v0, p1
+
+    check-cast v0, Lcom/android/server/usb/UsbProfileGroupSettingsManager$UserPackage;
 
     .line 147
-    iget-object v0, p0, Lcom/android/server/usb/UsbProfileGroupSettingsManager$UserPackage;->user:Landroid/os/UserHandle;
+    .local v0, "other":Lcom/android/server/usb/UsbProfileGroupSettingsManager$UserPackage;
+    iget-object v2, p0, Lcom/android/server/usb/UsbProfileGroupSettingsManager$UserPackage;->user:Landroid/os/UserHandle;
 
-    iget-object v2, p1, Lcom/android/server/usb/UsbProfileGroupSettingsManager$UserPackage;->user:Landroid/os/UserHandle;
+    iget-object v3, v0, Lcom/android/server/usb/UsbProfileGroupSettingsManager$UserPackage;->user:Landroid/os/UserHandle;
 
-    invoke-virtual {v0, v2}, Landroid/os/UserHandle;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v2, v3}, Landroid/os/UserHandle;->equals(Ljava/lang/Object;)Z
 
-    move-result v0
+    move-result v2
 
-    if-eqz v0, :cond_1d
+    if-eqz v2, :cond_1e
 
-    iget-object v0, p0, Lcom/android/server/usb/UsbProfileGroupSettingsManager$UserPackage;->packageName:Ljava/lang/String;
+    iget-object v2, p0, Lcom/android/server/usb/UsbProfileGroupSettingsManager$UserPackage;->packageName:Ljava/lang/String;
 
-    iget-object p1, p1, Lcom/android/server/usb/UsbProfileGroupSettingsManager$UserPackage;->packageName:Ljava/lang/String;
+    iget-object v3, v0, Lcom/android/server/usb/UsbProfileGroupSettingsManager$UserPackage;->packageName:Ljava/lang/String;
 
-    invoke-virtual {v0, p1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v2, v3}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result p1
+    move-result v2
 
-    if-eqz p1, :cond_1d
+    if-eqz v2, :cond_1e
 
     const/4 v1, 0x1
 
-    :cond_1d
+    :cond_1e
     return v1
 .end method
 
 .method public hashCode()I
-    .registers 3
+    .registers 4
 
     .line 153
     iget-object v0, p0, Lcom/android/server/usb/UsbProfileGroupSettingsManager$UserPackage;->user:Landroid/os/UserHandle;
@@ -143,18 +156,21 @@
     move-result v0
 
     .line 154
-    mul-int/lit8 v0, v0, 0x1f
+    .local v0, "result":I
+    mul-int/lit8 v1, v0, 0x1f
 
-    iget-object v1, p0, Lcom/android/server/usb/UsbProfileGroupSettingsManager$UserPackage;->packageName:Ljava/lang/String;
+    iget-object v2, p0, Lcom/android/server/usb/UsbProfileGroupSettingsManager$UserPackage;->packageName:Ljava/lang/String;
 
-    invoke-virtual {v1}, Ljava/lang/String;->hashCode()I
+    invoke-virtual {v2}, Ljava/lang/String;->hashCode()I
 
-    move-result v1
+    move-result v2
 
-    add-int/2addr v0, v1
+    add-int/2addr v1, v2
 
     .line 155
-    return v0
+    .end local v0  # "result":I
+    .local v1, "result":I
+    return v1
 .end method
 
 .method public toString()Ljava/lang/String;

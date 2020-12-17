@@ -17,7 +17,9 @@
 
 # direct methods
 .method public constructor <init>(Ljavax/crypto/SecretKey;[B)V
-    .registers 5
+    .registers 10
+    .param p1, "secretKey"  # Ljavax/crypto/SecretKey;
+    .param p2, "salt"  # [B
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Ljava/security/InvalidKeyException;
@@ -49,60 +51,65 @@
     .line 61
     invoke-interface {p1}, Ljavax/crypto/SecretKey;->getEncoded()[B
 
-    move-result-object p1
-
-    .line 62
-    if-eqz p1, :cond_36
-
-    .line 65
-    sget-object v0, Ljava/nio/charset/StandardCharsets;->UTF_8:Ljava/nio/charset/Charset;
-
-    .line 66
-    const-string v1, "RabinFingerprint64Mixer"
-
-    invoke-virtual {v1, v0}, Ljava/lang/String;->getBytes(Ljava/nio/charset/Charset;)[B
-
     move-result-object v0
 
-    invoke-static {p1, p2, v0}, Lcom/android/server/backup/encryption/chunking/cdc/Hkdf;->hkdf([B[B[B)[B
+    .line 62
+    .local v0, "keyBytes":[B
+    if-eqz v0, :cond_36
 
-    move-result-object p1
+    .line 65
+    sget-object v1, Ljava/nio/charset/StandardCharsets;->UTF_8:Ljava/nio/charset/Charset;
+
+    .line 66
+    const-string v2, "RabinFingerprint64Mixer"
+
+    invoke-virtual {v2, v1}, Ljava/lang/String;->getBytes(Ljava/nio/charset/Charset;)[B
+
+    move-result-object v1
+
+    invoke-static {v0, p2, v1}, Lcom/android/server/backup/encryption/chunking/cdc/Hkdf;->hkdf([B[B[B)[B
+
+    move-result-object v1
 
     .line 67
-    invoke-static {p1}, Ljava/nio/ByteBuffer;->wrap([B)Ljava/nio/ByteBuffer;
+    .local v1, "derivedKey":[B
+    invoke-static {v1}, Ljava/nio/ByteBuffer;->wrap([B)Ljava/nio/ByteBuffer;
 
-    move-result-object p1
+    move-result-object v2
 
     .line 68
-    invoke-virtual {p1}, Ljava/nio/ByteBuffer;->getLong()J
+    .local v2, "buffer":Ljava/nio/ByteBuffer;
+    invoke-virtual {v2}, Ljava/nio/ByteBuffer;->getLong()J
 
-    move-result-wide v0
+    move-result-wide v3
 
-    iput-wide v0, p0, Lcom/android/server/backup/encryption/chunking/cdc/FingerprintMixer;->mAddend:J
+    iput-wide v3, p0, Lcom/android/server/backup/encryption/chunking/cdc/FingerprintMixer;->mAddend:J
 
     .line 71
-    invoke-virtual {p1}, Ljava/nio/ByteBuffer;->getLong()J
+    invoke-virtual {v2}, Ljava/nio/ByteBuffer;->getLong()J
 
-    move-result-wide p1
+    move-result-wide v3
 
-    const-wide/16 v0, 0x1
+    const-wide/16 v5, 0x1
 
-    or-long/2addr p1, v0
+    or-long/2addr v3, v5
 
-    iput-wide p1, p0, Lcom/android/server/backup/encryption/chunking/cdc/FingerprintMixer;->mMultiplicand:J
+    iput-wide v3, p0, Lcom/android/server/backup/encryption/chunking/cdc/FingerprintMixer;->mMultiplicand:J
 
     .line 72
     return-void
 
     .line 63
+    .end local v1  # "derivedKey":[B
+    .end local v2  # "buffer":Ljava/nio/ByteBuffer;
     :cond_36
-    new-instance p1, Ljava/security/InvalidKeyException;
+    new-instance v1, Ljava/security/InvalidKeyException;
 
-    const-string p2, "SecretKey must support encoding for FingerprintMixer."
+    const-string v2, "SecretKey must support encoding for FingerprintMixer."
 
-    invoke-direct {p1, p2}, Ljava/security/InvalidKeyException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v1, v2}, Ljava/security/InvalidKeyException;-><init>(Ljava/lang/String;)V
 
-    throw p1
+    throw v1
 .end method
 
 
@@ -126,16 +133,17 @@
 .end method
 
 .method mix(J)J
-    .registers 5
+    .registers 7
+    .param p1, "fingerprint"  # J
 
     .line 83
     iget-wide v0, p0, Lcom/android/server/backup/encryption/chunking/cdc/FingerprintMixer;->mAddend:J
 
-    add-long/2addr p1, v0
+    add-long/2addr v0, p1
 
-    iget-wide v0, p0, Lcom/android/server/backup/encryption/chunking/cdc/FingerprintMixer;->mMultiplicand:J
+    iget-wide v2, p0, Lcom/android/server/backup/encryption/chunking/cdc/FingerprintMixer;->mMultiplicand:J
 
-    mul-long/2addr p1, v0
+    mul-long/2addr v0, v2
 
-    return-wide p1
+    return-wide v0
 .end method

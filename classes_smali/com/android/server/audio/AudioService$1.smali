@@ -24,8 +24,9 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/audio/AudioService;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/audio/AudioService;
 
-    .line 427
+    .line 471
     iput-object p1, p0, Lcom/android/server/audio/AudioService$1;->this$0:Lcom/android/server/audio/AudioService;
 
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -36,37 +37,36 @@
 
 # virtual methods
 .method public onError(I)V
-    .registers 9
+    .registers 10
+    .param p1, "error"  # I
 
-    .line 429
+    .line 473
     const/16 v0, 0x64
 
     if-eq p1, v0, :cond_5
 
     goto :goto_2a
 
-    .line 431
+    .line 475
     :cond_5
-    iget-object p1, p0, Lcom/android/server/audio/AudioService$1;->this$0:Lcom/android/server/audio/AudioService;
+    iget-object v0, p0, Lcom/android/server/audio/AudioService$1;->this$0:Lcom/android/server/audio/AudioService;
 
-    invoke-static {p1}, Lcom/android/server/audio/AudioService;->access$000(Lcom/android/server/audio/AudioService;)Lcom/android/server/audio/RecordingActivityMonitor;
-
-    move-result-object p1
-
-    invoke-virtual {p1}, Lcom/android/server/audio/RecordingActivityMonitor;->onAudioServerDied()V
-
-    .line 433
-    iget-object p1, p0, Lcom/android/server/audio/AudioService$1;->this$0:Lcom/android/server/audio/AudioService;
-
-    invoke-static {p1}, Lcom/android/server/audio/AudioService;->access$100(Lcom/android/server/audio/AudioService;)Lcom/android/server/audio/AudioService$AudioHandler;
+    invoke-static {v0}, Lcom/android/server/audio/AudioService;->access$000(Lcom/android/server/audio/AudioService;)Lcom/android/server/audio/RecordingActivityMonitor;
 
     move-result-object v0
 
-    const/4 v1, 0x4
+    invoke-virtual {v0}, Lcom/android/server/audio/RecordingActivityMonitor;->onAudioServerDied()V
 
-    const/4 v2, 0x1
+    .line 477
+    iget-object v0, p0, Lcom/android/server/audio/AudioService$1;->this$0:Lcom/android/server/audio/AudioService;
 
-    const/4 v3, 0x0
+    invoke-static {v0}, Lcom/android/server/audio/AudioService;->access$100(Lcom/android/server/audio/AudioService;)Lcom/android/server/audio/AudioService$AudioHandler;
+
+    move-result-object v1
+
+    const/4 v2, 0x4
+
+    const/4 v3, 0x1
 
     const/4 v4, 0x0
 
@@ -74,25 +74,27 @@
 
     const/4 v6, 0x0
 
-    invoke-static/range {v0 .. v6}, Lcom/android/server/audio/AudioService;->access$200(Landroid/os/Handler;IIIILjava/lang/Object;I)V
+    const/4 v7, 0x0
 
-    .line 435
-    iget-object p1, p0, Lcom/android/server/audio/AudioService$1;->this$0:Lcom/android/server/audio/AudioService;
+    invoke-static/range {v1 .. v7}, Lcom/android/server/audio/AudioService;->access$200(Landroid/os/Handler;IIIILjava/lang/Object;I)V
 
-    invoke-static {p1}, Lcom/android/server/audio/AudioService;->access$100(Lcom/android/server/audio/AudioService;)Lcom/android/server/audio/AudioService$AudioHandler;
+    .line 479
+    iget-object v0, p0, Lcom/android/server/audio/AudioService$1;->this$0:Lcom/android/server/audio/AudioService;
 
-    move-result-object v0
+    invoke-static {v0}, Lcom/android/server/audio/AudioService;->access$100(Lcom/android/server/audio/AudioService;)Lcom/android/server/audio/AudioService$AudioHandler;
 
-    const/16 v1, 0x17
+    move-result-object v1
 
-    const/4 v2, 0x2
+    const/16 v2, 0x17
 
-    invoke-static/range {v0 .. v6}, Lcom/android/server/audio/AudioService;->access$200(Landroid/os/Handler;IIIILjava/lang/Object;I)V
+    const/4 v3, 0x2
 
-    .line 437
+    invoke-static/range {v1 .. v7}, Lcom/android/server/audio/AudioService;->access$200(Landroid/os/Handler;IIIILjava/lang/Object;I)V
+
+    .line 481
     nop
 
-    .line 441
+    .line 485
     :goto_2a
     return-void
 .end method

@@ -21,6 +21,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/AppStateTracker;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/AppStateTracker;
 
     .line 695
     iput-object p1, p0, Lcom/android/server/AppStateTracker$StandbyTracker;->this$0:Lcom/android/server/AppStateTracker;
@@ -33,50 +34,58 @@
 
 # virtual methods
 .method public onAppIdleStateChanged(Ljava/lang/String;IZII)V
-    .registers 6
+    .registers 8
+    .param p1, "packageName"  # Ljava/lang/String;
+    .param p2, "userId"  # I
+    .param p3, "idle"  # Z
+    .param p4, "bucket"  # I
+    .param p5, "reason"  # I
 
     .line 704
-    const/4 p3, 0x5
+    const/4 v0, 0x5
 
-    if-ne p4, p3, :cond_e
+    if-ne p4, v0, :cond_e
 
     .line 705
-    iget-object p3, p0, Lcom/android/server/AppStateTracker$StandbyTracker;->this$0:Lcom/android/server/AppStateTracker;
+    iget-object v0, p0, Lcom/android/server/AppStateTracker$StandbyTracker;->this$0:Lcom/android/server/AppStateTracker;
 
-    invoke-static {p3}, Lcom/android/server/AppStateTracker;->access$700(Lcom/android/server/AppStateTracker;)Landroid/util/SparseSetArray;
+    invoke-static {v0}, Lcom/android/server/AppStateTracker;->access$700(Lcom/android/server/AppStateTracker;)Landroid/util/SparseSetArray;
 
-    move-result-object p3
+    move-result-object v0
 
-    invoke-virtual {p3, p2, p1}, Landroid/util/SparseSetArray;->add(ILjava/lang/Object;)Z
+    invoke-virtual {v0, p2, p1}, Landroid/util/SparseSetArray;->add(ILjava/lang/Object;)Z
 
-    move-result p1
+    move-result v0
 
+    .local v0, "changed":Z
     goto :goto_18
 
     .line 707
+    .end local v0  # "changed":Z
     :cond_e
-    iget-object p3, p0, Lcom/android/server/AppStateTracker$StandbyTracker;->this$0:Lcom/android/server/AppStateTracker;
+    iget-object v0, p0, Lcom/android/server/AppStateTracker$StandbyTracker;->this$0:Lcom/android/server/AppStateTracker;
 
-    invoke-static {p3}, Lcom/android/server/AppStateTracker;->access$700(Lcom/android/server/AppStateTracker;)Landroid/util/SparseSetArray;
+    invoke-static {v0}, Lcom/android/server/AppStateTracker;->access$700(Lcom/android/server/AppStateTracker;)Landroid/util/SparseSetArray;
 
-    move-result-object p3
+    move-result-object v0
 
-    invoke-virtual {p3, p2, p1}, Landroid/util/SparseSetArray;->remove(ILjava/lang/Object;)Z
+    invoke-virtual {v0, p2, p1}, Landroid/util/SparseSetArray;->remove(ILjava/lang/Object;)Z
 
-    move-result p1
+    move-result v0
 
     .line 709
+    .restart local v0  # "changed":Z
     :goto_18
-    if-eqz p1, :cond_23
+    if-eqz v0, :cond_23
 
     .line 710
-    iget-object p1, p0, Lcom/android/server/AppStateTracker$StandbyTracker;->this$0:Lcom/android/server/AppStateTracker;
+    iget-object v1, p0, Lcom/android/server/AppStateTracker$StandbyTracker;->this$0:Lcom/android/server/AppStateTracker;
 
-    invoke-static {p1}, Lcom/android/server/AppStateTracker;->access$200(Lcom/android/server/AppStateTracker;)Lcom/android/server/AppStateTracker$MyHandler;
+    invoke-static {v1}, Lcom/android/server/AppStateTracker;->access$200(Lcom/android/server/AppStateTracker;)Lcom/android/server/AppStateTracker$MyHandler;
 
-    move-result-object p1
+    move-result-object v1
 
-    invoke-virtual {p1}, Lcom/android/server/AppStateTracker$MyHandler;->notifyExemptChanged()V
+    invoke-virtual {v1}, Lcom/android/server/AppStateTracker$MyHandler;->notifyExemptChanged()V
 
     .line 712
     :cond_23
@@ -85,6 +94,7 @@
 
 .method public onParoleStateChanged(Z)V
     .registers 2
+    .param p1, "isParoleOn"  # Z
 
     .line 716
     return-void

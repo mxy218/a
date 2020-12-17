@@ -25,16 +25,18 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/soundtrigger/SoundTriggerService;Landroid/content/Context;)V
     .registers 3
+    .param p1, "this$0"  # Lcom/android/server/soundtrigger/SoundTriggerService;
+    .param p2, "context"  # Landroid/content/Context;
 
-    .line 1322
+    .line 1229
     iput-object p1, p0, Lcom/android/server/soundtrigger/SoundTriggerService$LocalSoundTriggerService;->this$0:Lcom/android/server/soundtrigger/SoundTriggerService;
 
     invoke-direct {p0}, Lcom/android/server/soundtrigger/SoundTriggerInternal;-><init>()V
 
-    .line 1323
+    .line 1230
     iput-object p2, p0, Lcom/android/server/soundtrigger/SoundTriggerService$LocalSoundTriggerService;->mContext:Landroid/content/Context;
 
-    .line 1324
+    .line 1231
     return-void
 .end method
 
@@ -43,20 +45,20 @@
 
     monitor-enter p0
 
-    .line 1368
+    .line 1272
     :try_start_1
     iget-object v0, p0, Lcom/android/server/soundtrigger/SoundTriggerService$LocalSoundTriggerService;->mSoundTriggerHelper:Lcom/android/server/soundtrigger/SoundTriggerHelper;
 
     if-nez v0, :cond_1d
 
-    .line 1369
+    .line 1273
     const-string v0, "SoundTriggerService"
 
     const-string v1, "SoundTriggerHelper not initialized."
 
     invoke-static {v0, v1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 1371
+    .line 1275
     invoke-static {}, Lcom/android/server/soundtrigger/SoundTriggerService;->access$200()Lcom/android/server/soundtrigger/SoundTriggerLogger;
 
     move-result-object v0
@@ -71,14 +73,15 @@
     :try_end_1a
     .catchall {:try_start_1 .. :try_end_1a} :catchall_20
 
-    .line 1374
+    .line 1278
     const/4 v0, 0x0
 
     monitor-exit p0
 
     return v0
 
-    .line 1376
+    .line 1280
+    .end local p0  # "this":Lcom/android/server/soundtrigger/SoundTriggerService$LocalSoundTriggerService;
     :cond_1d
     const/4 v0, 0x1
 
@@ -86,7 +89,7 @@
 
     return v0
 
-    .line 1367
+    .line 1271
     :catchall_20
     move-exception v0
 
@@ -99,8 +102,11 @@
 # virtual methods
 .method public dump(Ljava/io/FileDescriptor;Ljava/io/PrintWriter;[Ljava/lang/String;)V
     .registers 5
+    .param p1, "fd"  # Ljava/io/FileDescriptor;
+    .param p2, "pw"  # Ljava/io/PrintWriter;
+    .param p3, "args"  # [Ljava/lang/String;
 
-    .line 1358
+    .line 1265
     invoke-direct {p0}, Lcom/android/server/soundtrigger/SoundTriggerService$LocalSoundTriggerService;->isInitialized()Z
 
     move-result v0
@@ -109,36 +115,27 @@
 
     return-void
 
-    .line 1359
+    .line 1266
     :cond_7
     iget-object v0, p0, Lcom/android/server/soundtrigger/SoundTriggerService$LocalSoundTriggerService;->mSoundTriggerHelper:Lcom/android/server/soundtrigger/SoundTriggerHelper;
 
     invoke-virtual {v0, p1, p2, p3}, Lcom/android/server/soundtrigger/SoundTriggerHelper;->dump(Ljava/io/FileDescriptor;Ljava/io/PrintWriter;[Ljava/lang/String;)V
 
-    .line 1361
+    .line 1268
     invoke-static {}, Lcom/android/server/soundtrigger/SoundTriggerService;->access$200()Lcom/android/server/soundtrigger/SoundTriggerLogger;
 
-    move-result-object p1
+    move-result-object v0
 
-    invoke-virtual {p1, p2}, Lcom/android/server/soundtrigger/SoundTriggerLogger;->dump(Ljava/io/PrintWriter;)V
+    invoke-virtual {v0, p2}, Lcom/android/server/soundtrigger/SoundTriggerLogger;->dump(Ljava/io/PrintWriter;)V
 
-    .line 1364
-    iget-object p1, p0, Lcom/android/server/soundtrigger/SoundTriggerService$LocalSoundTriggerService;->this$0:Lcom/android/server/soundtrigger/SoundTriggerService;
-
-    invoke-static {p1}, Lcom/android/server/soundtrigger/SoundTriggerService;->access$400(Lcom/android/server/soundtrigger/SoundTriggerService;)Lcom/android/server/soundtrigger/SoundTriggerService$SoundModelStatTracker;
-
-    move-result-object p1
-
-    invoke-virtual {p1, p2}, Lcom/android/server/soundtrigger/SoundTriggerService$SoundModelStatTracker;->dump(Ljava/io/PrintWriter;)V
-
-    .line 1365
+    .line 1269
     return-void
 .end method
 
 .method public getModuleProperties()Landroid/hardware/soundtrigger/SoundTrigger$ModuleProperties;
     .registers 2
 
-    .line 1346
+    .line 1253
     invoke-direct {p0}, Lcom/android/server/soundtrigger/SoundTriggerService$LocalSoundTriggerService;->isInitialized()Z
 
     move-result v0
@@ -149,7 +146,7 @@
 
     return-object v0
 
-    .line 1347
+    .line 1254
     :cond_8
     iget-object v0, p0, Lcom/android/server/soundtrigger/SoundTriggerService$LocalSoundTriggerService;->mSoundTriggerHelper:Lcom/android/server/soundtrigger/SoundTriggerHelper;
 
@@ -162,21 +159,24 @@
 
 .method declared-synchronized setSoundTriggerHelper(Lcom/android/server/soundtrigger/SoundTriggerHelper;)V
     .registers 2
+    .param p1, "helper"  # Lcom/android/server/soundtrigger/SoundTriggerHelper;
 
     monitor-enter p0
 
-    .line 1327
+    .line 1234
     :try_start_1
     iput-object p1, p0, Lcom/android/server/soundtrigger/SoundTriggerService$LocalSoundTriggerService;->mSoundTriggerHelper:Lcom/android/server/soundtrigger/SoundTriggerHelper;
     :try_end_3
     .catchall {:try_start_1 .. :try_end_3} :catchall_5
 
-    .line 1328
+    .line 1235
     monitor-exit p0
 
     return-void
 
-    .line 1326
+    .line 1233
+    .end local p0  # "this":Lcom/android/server/soundtrigger/SoundTriggerService$LocalSoundTriggerService;
+    .end local p1  # "helper":Lcom/android/server/soundtrigger/SoundTriggerHelper;
     :catchall_5
     move-exception p1
 
@@ -187,35 +187,41 @@
 
 .method public startRecognition(ILandroid/hardware/soundtrigger/SoundTrigger$KeyphraseSoundModel;Landroid/hardware/soundtrigger/IRecognitionStatusCallback;Landroid/hardware/soundtrigger/SoundTrigger$RecognitionConfig;)I
     .registers 6
+    .param p1, "keyphraseId"  # I
+    .param p2, "soundModel"  # Landroid/hardware/soundtrigger/SoundTrigger$KeyphraseSoundModel;
+    .param p3, "listener"  # Landroid/hardware/soundtrigger/IRecognitionStatusCallback;
+    .param p4, "recognitionConfig"  # Landroid/hardware/soundtrigger/SoundTrigger$RecognitionConfig;
 
-    .line 1333
+    .line 1240
     invoke-direct {p0}, Lcom/android/server/soundtrigger/SoundTriggerService$LocalSoundTriggerService;->isInitialized()Z
 
     move-result v0
 
     if-nez v0, :cond_9
 
-    const/high16 p1, -0x80000000
+    const/high16 v0, -0x80000000
 
-    return p1
+    return v0
 
-    .line 1334
+    .line 1241
     :cond_9
     iget-object v0, p0, Lcom/android/server/soundtrigger/SoundTriggerService$LocalSoundTriggerService;->mSoundTriggerHelper:Lcom/android/server/soundtrigger/SoundTriggerHelper;
 
     invoke-virtual {v0, p1, p2, p3, p4}, Lcom/android/server/soundtrigger/SoundTriggerHelper;->startKeyphraseRecognition(ILandroid/hardware/soundtrigger/SoundTrigger$KeyphraseSoundModel;Landroid/hardware/soundtrigger/IRecognitionStatusCallback;Landroid/hardware/soundtrigger/SoundTrigger$RecognitionConfig;)I
 
-    move-result p1
+    move-result v0
 
-    return p1
+    return v0
 .end method
 
 .method public declared-synchronized stopRecognition(ILandroid/hardware/soundtrigger/IRecognitionStatusCallback;)I
     .registers 4
+    .param p1, "keyphraseId"  # I
+    .param p2, "listener"  # Landroid/hardware/soundtrigger/IRecognitionStatusCallback;
 
     monitor-enter p0
 
-    .line 1340
+    .line 1247
     :try_start_1
     invoke-direct {p0}, Lcom/android/server/soundtrigger/SoundTriggerService$LocalSoundTriggerService;->isInitialized()Z
 
@@ -225,28 +231,31 @@
 
     if-nez v0, :cond_b
 
-    const/high16 p1, -0x80000000
+    const/high16 v0, -0x80000000
 
     monitor-exit p0
 
-    return p1
+    return v0
 
-    .line 1341
+    .line 1248
     :cond_b
     :try_start_b
     iget-object v0, p0, Lcom/android/server/soundtrigger/SoundTriggerService$LocalSoundTriggerService;->mSoundTriggerHelper:Lcom/android/server/soundtrigger/SoundTriggerHelper;
 
     invoke-virtual {v0, p1, p2}, Lcom/android/server/soundtrigger/SoundTriggerHelper;->stopKeyphraseRecognition(ILandroid/hardware/soundtrigger/IRecognitionStatusCallback;)I
 
-    move-result p1
+    move-result v0
     :try_end_11
     .catchall {:try_start_b .. :try_end_11} :catchall_13
 
     monitor-exit p0
 
-    return p1
+    return v0
 
-    .line 1339
+    .line 1246
+    .end local p0  # "this":Lcom/android/server/soundtrigger/SoundTriggerService$LocalSoundTriggerService;
+    .end local p1  # "keyphraseId":I
+    .end local p2  # "listener":Landroid/hardware/soundtrigger/IRecognitionStatusCallback;
     :catchall_13
     move-exception p1
 
@@ -257,25 +266,26 @@
 
 .method public unloadKeyphraseModel(I)I
     .registers 3
+    .param p1, "keyphraseId"  # I
 
-    .line 1352
+    .line 1259
     invoke-direct {p0}, Lcom/android/server/soundtrigger/SoundTriggerService$LocalSoundTriggerService;->isInitialized()Z
 
     move-result v0
 
     if-nez v0, :cond_9
 
-    const/high16 p1, -0x80000000
+    const/high16 v0, -0x80000000
 
-    return p1
+    return v0
 
-    .line 1353
+    .line 1260
     :cond_9
     iget-object v0, p0, Lcom/android/server/soundtrigger/SoundTriggerService$LocalSoundTriggerService;->mSoundTriggerHelper:Lcom/android/server/soundtrigger/SoundTriggerHelper;
 
     invoke-virtual {v0, p1}, Lcom/android/server/soundtrigger/SoundTriggerHelper;->unloadKeyphraseSoundModel(I)I
 
-    move-result p1
+    move-result v0
 
-    return p1
+    return v0
 .end method

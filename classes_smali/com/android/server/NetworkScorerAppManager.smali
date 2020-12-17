@@ -57,6 +57,7 @@
 
 .method public constructor <init>(Landroid/content/Context;)V
     .registers 3
+    .param p1, "context"  # Landroid/content/Context;
 
     .line 55
     new-instance v0, Lcom/android/server/NetworkScorerAppManager$SettingsFacade;
@@ -71,6 +72,8 @@
 
 .method public constructor <init>(Landroid/content/Context;Lcom/android/server/NetworkScorerAppManager$SettingsFacade;)V
     .registers 3
+    .param p1, "context"  # Landroid/content/Context;
+    .param p2, "settingsFacade"  # Lcom/android/server/NetworkScorerAppManager$SettingsFacade;
     .annotation build Lcom/android/internal/annotations/VisibleForTesting;
     .end annotation
 
@@ -89,6 +92,8 @@
 
 .method private canAccessLocation(ILjava/lang/String;)Z
     .registers 7
+    .param p1, "uid"  # I
+    .param p2, "packageName"  # Ljava/lang/String;
 
     .line 213
     iget-object v0, p0, Lcom/android/server/NetworkScorerAppManager;->mContext:Landroid/content/Context;
@@ -98,6 +103,7 @@
     move-result-object v0
 
     .line 214
+    .local v0, "pm":Landroid/content/pm/PackageManager;
     iget-object v1, p0, Lcom/android/server/NetworkScorerAppManager;->mContext:Landroid/content/Context;
 
     .line 215
@@ -110,6 +116,7 @@
     check-cast v1, Landroid/app/AppOpsManager;
 
     .line 216
+    .local v1, "appOpsManager":Landroid/app/AppOpsManager;
     invoke-direct {p0}, Lcom/android/server/NetworkScorerAppManager;->isLocationModeEnabled()Z
 
     move-result v2
@@ -123,16 +130,16 @@
 
     invoke-virtual {v0, v2, p2}, Landroid/content/pm/PackageManager;->checkPermission(Ljava/lang/String;Ljava/lang/String;)I
 
-    move-result v0
+    move-result v2
 
-    if-nez v0, :cond_27
+    if-nez v2, :cond_27
 
     .line 219
     invoke-virtual {v1, v3, p1, p2}, Landroid/app/AppOpsManager;->noteOp(IILjava/lang/String;)I
 
-    move-result p1
+    move-result v2
 
-    if-nez p1, :cond_27
+    if-nez v2, :cond_27
 
     const/4 v3, 0x1
 
@@ -147,7 +154,8 @@
 .end method
 
 .method private findUseOpenWifiNetworksActivity(Landroid/content/pm/ServiceInfo;)Landroid/content/ComponentName;
-    .registers 7
+    .registers 9
+    .param p1, "serviceInfo"  # Landroid/content/pm/ServiceInfo;
 
     .line 122
     iget-object v0, p1, Landroid/content/pm/ServiceInfo;->metaData:Landroid/os/Bundle;
@@ -174,15 +182,15 @@
 
     invoke-virtual {p1}, Landroid/content/pm/ServiceInfo;->getComponentName()Landroid/content/ComponentName;
 
-    move-result-object p1
+    move-result-object v3
 
-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    invoke-static {v1, p1}, Landroid/util/Log;->d(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v0}, Landroid/util/Log;->d(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 126
     :cond_23
@@ -200,6 +208,7 @@
     move-result-object v0
 
     .line 130
+    .local v0, "useOpenWifiPackage":Ljava/lang/String;
     invoke-static {v0}, Landroid/text/TextUtils;->isEmpty(Ljava/lang/CharSequence;)Z
 
     move-result v3
@@ -207,32 +216,32 @@
     if-eqz v3, :cond_4f
 
     .line 131
-    sget-boolean v0, Lcom/android/server/NetworkScorerAppManager;->DEBUG:Z
+    sget-boolean v3, Lcom/android/server/NetworkScorerAppManager;->DEBUG:Z
 
-    if-eqz v0, :cond_4e
+    if-eqz v3, :cond_4e
 
     .line 132
-    new-instance v0, Ljava/lang/StringBuilder;
+    new-instance v3, Ljava/lang/StringBuilder;
 
-    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v3, "No use_open_wifi_package metadata found on "
+    const-string v4, "No use_open_wifi_package metadata found on "
 
-    invoke-virtual {v0, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     .line 133
     invoke-virtual {p1}, Landroid/content/pm/ServiceInfo;->getComponentName()Landroid/content/ComponentName;
 
-    move-result-object p1
+    move-result-object v4
 
-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v3
 
     .line 132
-    invoke-static {v1, p1}, Landroid/util/Log;->d(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v3}, Landroid/util/Log;->d(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 135
     :cond_4e
@@ -240,75 +249,77 @@
 
     .line 137
     :cond_4f
-    new-instance p1, Landroid/content/Intent;
+    new-instance v3, Landroid/content/Intent;
 
-    const-string v3, "android.net.scoring.CUSTOM_ENABLE"
+    const-string v4, "android.net.scoring.CUSTOM_ENABLE"
 
-    invoke-direct {p1, v3}, Landroid/content/Intent;-><init>(Ljava/lang/String;)V
+    invoke-direct {v3, v4}, Landroid/content/Intent;-><init>(Ljava/lang/String;)V
 
     .line 138
-    invoke-virtual {p1, v0}, Landroid/content/Intent;->setPackage(Ljava/lang/String;)Landroid/content/Intent;
+    invoke-virtual {v3, v0}, Landroid/content/Intent;->setPackage(Ljava/lang/String;)Landroid/content/Intent;
 
-    move-result-object p1
+    move-result-object v3
 
     .line 139
-    iget-object v0, p0, Lcom/android/server/NetworkScorerAppManager;->mContext:Landroid/content/Context;
+    .local v3, "enableUseOpenWifiIntent":Landroid/content/Intent;
+    iget-object v4, p0, Lcom/android/server/NetworkScorerAppManager;->mContext:Landroid/content/Context;
 
-    invoke-virtual {v0}, Landroid/content/Context;->getPackageManager()Landroid/content/pm/PackageManager;
+    invoke-virtual {v4}, Landroid/content/Context;->getPackageManager()Landroid/content/pm/PackageManager;
 
-    move-result-object v0
+    move-result-object v4
 
-    const/4 v3, 0x0
+    const/4 v5, 0x0
 
     .line 140
-    invoke-virtual {v0, p1, v3}, Landroid/content/pm/PackageManager;->resolveActivity(Landroid/content/Intent;I)Landroid/content/pm/ResolveInfo;
+    invoke-virtual {v4, v3, v5}, Landroid/content/pm/PackageManager;->resolveActivity(Landroid/content/Intent;I)Landroid/content/pm/ResolveInfo;
 
-    move-result-object v0
+    move-result-object v4
 
     .line 141
-    sget-boolean v3, Lcom/android/server/NetworkScorerAppManager;->VERBOSE:Z
+    .local v4, "resolveActivityInfo":Landroid/content/pm/ResolveInfo;
+    sget-boolean v5, Lcom/android/server/NetworkScorerAppManager;->VERBOSE:Z
 
-    if-eqz v3, :cond_85
+    if-eqz v5, :cond_85
 
     .line 142
-    new-instance v3, Ljava/lang/StringBuilder;
+    new-instance v5, Ljava/lang/StringBuilder;
 
-    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v5}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v4, "Resolved "
+    const-string v6, "Resolved "
 
-    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v3, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    invoke-virtual {v5, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
-    const-string p1, " to "
+    const-string v6, " to "
 
-    invoke-virtual {v3, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v3, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    invoke-virtual {v5, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v5}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v5
 
-    invoke-static {v1, p1}, Landroid/util/Log;->d(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v5}, Landroid/util/Log;->d(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 145
     :cond_85
-    if-eqz v0, :cond_92
+    if-eqz v4, :cond_92
 
-    iget-object p1, v0, Landroid/content/pm/ResolveInfo;->activityInfo:Landroid/content/pm/ActivityInfo;
+    iget-object v1, v4, Landroid/content/pm/ResolveInfo;->activityInfo:Landroid/content/pm/ActivityInfo;
 
-    if-eqz p1, :cond_92
+    if-eqz v1, :cond_92
 
     .line 146
-    iget-object p1, v0, Landroid/content/pm/ResolveInfo;->activityInfo:Landroid/content/pm/ActivityInfo;
+    iget-object v1, v4, Landroid/content/pm/ResolveInfo;->activityInfo:Landroid/content/pm/ActivityInfo;
 
-    invoke-virtual {p1}, Landroid/content/pm/ActivityInfo;->getComponentName()Landroid/content/ComponentName;
+    invoke-virtual {v1}, Landroid/content/pm/ActivityInfo;->getComponentName()Landroid/content/ComponentName;
 
-    move-result-object p1
+    move-result-object v1
 
-    return-object p1
+    return-object v1
 
     .line 149
     :cond_92
@@ -325,7 +336,7 @@
 
     move-result-object v0
 
-    const v1, 0x1040161
+    const v1, 0x104015b
 
     invoke-virtual {v0, v1}, Landroid/content/res/Resources;->getString(I)Ljava/lang/String;
 
@@ -336,6 +347,7 @@
 
 .method private static getNetworkAvailableNotificationChannelId(Landroid/content/pm/ServiceInfo;)Ljava/lang/String;
     .registers 3
+    .param p0, "serviceInfo"  # Landroid/content/pm/ServiceInfo;
 
     .line 154
     iget-object v0, p0, Landroid/content/pm/ServiceInfo;->metaData:Landroid/os/Bundle;
@@ -358,35 +370,35 @@
 
     invoke-virtual {p0}, Landroid/content/pm/ServiceInfo;->getComponentName()Landroid/content/ComponentName;
 
-    move-result-object p0
+    move-result-object v1
 
-    invoke-virtual {v0, p0}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v0
 
-    const-string v0, "NetworkScorerAppManager"
+    const-string v1, "NetworkScorerAppManager"
 
-    invoke-static {v0, p0}, Landroid/util/Log;->d(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v0}, Landroid/util/Log;->d(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 158
     :cond_22
-    const/4 p0, 0x0
+    const/4 v0, 0x0
 
-    return-object p0
+    return-object v0
 
     .line 161
     :cond_24
-    iget-object p0, p0, Landroid/content/pm/ServiceInfo;->metaData:Landroid/os/Bundle;
+    iget-object v0, p0, Landroid/content/pm/ServiceInfo;->metaData:Landroid/os/Bundle;
 
-    const-string v0, "android.net.wifi.notification_channel_id_network_available"
+    const-string v1, "android.net.wifi.notification_channel_id_network_available"
 
-    invoke-virtual {p0, v0}, Landroid/os/Bundle;->getString(Ljava/lang/String;)Ljava/lang/String;
+    invoke-virtual {v0, v1}, Landroid/os/Bundle;->getString(Ljava/lang/String;)Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v0
 
-    return-object p0
+    return-object v0
 .end method
 
 .method private getNetworkRecommendationsEnabledSetting()I
@@ -427,6 +439,8 @@
 
 .method private getRecommendationServiceLabel(Landroid/content/pm/ServiceInfo;Landroid/content/pm/PackageManager;)Ljava/lang/String;
     .registers 5
+    .param p1, "serviceInfo"  # Landroid/content/pm/ServiceInfo;
+    .param p2, "pm"  # Landroid/content/pm/PackageManager;
 
     .line 109
     iget-object v0, p1, Landroid/content/pm/ServiceInfo;->metaData:Landroid/os/Bundle;
@@ -444,6 +458,7 @@
     move-result-object v0
 
     .line 112
+    .local v0, "label":Ljava/lang/String;
     invoke-static {v0}, Landroid/text/TextUtils;->isEmpty(Ljava/lang/CharSequence;)Z
 
     move-result v1
@@ -454,29 +469,32 @@
     return-object v0
 
     .line 116
+    .end local v0  # "label":Ljava/lang/String;
     :cond_13
     invoke-virtual {p1, p2}, Landroid/content/pm/ServiceInfo;->loadLabel(Landroid/content/pm/PackageManager;)Ljava/lang/CharSequence;
 
-    move-result-object p1
+    move-result-object v0
 
     .line 117
-    if-nez p1, :cond_1b
+    .local v0, "label":Ljava/lang/CharSequence;
+    if-nez v0, :cond_1b
 
-    const/4 p1, 0x0
+    const/4 v1, 0x0
 
     goto :goto_1f
 
     :cond_1b
-    invoke-interface {p1}, Ljava/lang/CharSequence;->toString()Ljava/lang/String;
+    invoke-interface {v0}, Ljava/lang/CharSequence;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v1
 
     :goto_1f
-    return-object p1
+    return-object v1
 .end method
 
 .method private getScorer(Ljava/lang/String;)Landroid/net/NetworkScorerAppData;
     .registers 7
+    .param p1, "packageName"  # Ljava/lang/String;
 
     .line 185
     invoke-static {p1}, Landroid/text/TextUtils;->isEmpty(Ljava/lang/CharSequence;)Z
@@ -497,8 +515,10 @@
     move-result-object v0
 
     .line 191
+    .local v0, "apps":Ljava/util/List;, "Ljava/util/List<Landroid/net/NetworkScorerAppData;>;"
     const/4 v2, 0x0
 
+    .local v2, "i":I
     :goto_d
     invoke-interface {v0}, Ljava/util/List;->size()I
 
@@ -514,6 +534,7 @@
     check-cast v3, Landroid/net/NetworkScorerAppData;
 
     .line 193
+    .local v3, "app":Landroid/net/NetworkScorerAppData;
     invoke-virtual {v3}, Landroid/net/NetworkScorerAppData;->getRecommendationServicePackageName()Ljava/lang/String;
 
     move-result-object v4
@@ -528,18 +549,22 @@
     return-object v3
 
     .line 191
+    .end local v3  # "app":Landroid/net/NetworkScorerAppData;
     :cond_24
     add-int/lit8 v2, v2, 0x1
 
     goto :goto_d
 
     .line 198
+    .end local v2  # "i":I
     :cond_27
     return-object v1
 .end method
 
 .method private hasPermissions(ILjava/lang/String;)Z
     .registers 4
+    .param p1, "uid"  # I
+    .param p2, "packageName"  # Ljava/lang/String;
 
     .line 202
     invoke-direct {p0, p2}, Lcom/android/server/NetworkScorerAppManager;->hasScoreNetworksPermission(Ljava/lang/String;)Z
@@ -551,24 +576,25 @@
     .line 203
     invoke-direct {p0, p1, p2}, Lcom/android/server/NetworkScorerAppManager;->canAccessLocation(ILjava/lang/String;)Z
 
-    move-result p1
+    move-result v0
 
-    if-eqz p1, :cond_e
+    if-eqz v0, :cond_e
 
-    const/4 p1, 0x1
+    const/4 v0, 0x1
 
     goto :goto_f
 
     :cond_e
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
     .line 202
     :goto_f
-    return p1
+    return v0
 .end method
 
 .method private hasScoreNetworksPermission(Ljava/lang/String;)Z
     .registers 4
+    .param p1, "packageName"  # Ljava/lang/String;
 
     .line 207
     iget-object v0, p0, Lcom/android/server/NetworkScorerAppManager;->mContext:Landroid/content/Context;
@@ -578,23 +604,24 @@
     move-result-object v0
 
     .line 208
+    .local v0, "pm":Landroid/content/pm/PackageManager;
     const-string v1, "android.permission.SCORE_NETWORKS"
 
     invoke-virtual {v0, v1, p1}, Landroid/content/pm/PackageManager;->checkPermission(Ljava/lang/String;Ljava/lang/String;)I
 
-    move-result p1
+    move-result v1
 
-    if-nez p1, :cond_10
+    if-nez v1, :cond_10
 
-    const/4 p1, 0x1
+    const/4 v1, 0x1
 
     goto :goto_11
 
     :cond_10
-    const/4 p1, 0x0
+    const/4 v1, 0x0
 
     :goto_11
-    return p1
+    return v1
 .end method
 
 .method private isLocationModeEnabled()Z
@@ -607,22 +634,23 @@
 
     const/4 v2, 0x0
 
-    const-string v3, "location_mode"
+    const-string/jumbo v3, "location_mode"
 
     invoke-virtual {v0, v1, v3, v2}, Lcom/android/server/NetworkScorerAppManager$SettingsFacade;->getSecureInt(Landroid/content/Context;Ljava/lang/String;I)I
 
     move-result v0
 
-    if-eqz v0, :cond_e
+    if-eqz v0, :cond_f
 
     const/4 v2, 0x1
 
-    :cond_e
+    :cond_f
     return v2
 .end method
 
 .method private setNetworkRecommendationsEnabledSetting(I)V
     .registers 5
+    .param p1, "value"  # I
 
     .line 384
     iget-object v0, p0, Lcom/android/server/NetworkScorerAppManager;->mSettingsFacade:Lcom/android/server/NetworkScorerAppManager$SettingsFacade;
@@ -651,11 +679,11 @@
 
     invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    const-string v0, "NetworkScorerAppManager"
+    const-string v1, "NetworkScorerAppManager"
 
-    invoke-static {v0, p1}, Landroid/util/Log;->d(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v0}, Landroid/util/Log;->d(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 389
     :cond_25
@@ -664,6 +692,7 @@
 
 .method private setNetworkRecommendationsPackage(Ljava/lang/String;)V
     .registers 5
+    .param p1, "packageName"  # Ljava/lang/String;
 
     .line 372
     iget-object v0, p0, Lcom/android/server/NetworkScorerAppManager;->mSettingsFacade:Lcom/android/server/NetworkScorerAppManager$SettingsFacade;
@@ -692,11 +721,11 @@
 
     invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    const-string v0, "NetworkScorerAppManager"
+    const-string v1, "NetworkScorerAppManager"
 
-    invoke-static {v0, p1}, Landroid/util/Log;->d(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v0}, Landroid/util/Log;->d(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 377
     :cond_25
@@ -716,30 +745,31 @@
     move-result v0
 
     .line 177
+    .local v0, "enabledSetting":I
     const/4 v1, -0x1
 
     if-ne v0, v1, :cond_9
 
     .line 178
-    const/4 v0, 0x0
+    const/4 v1, 0x0
 
-    return-object v0
+    return-object v1
 
     .line 181
     :cond_9
     invoke-direct {p0}, Lcom/android/server/NetworkScorerAppManager;->getNetworkRecommendationsPackage()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v1
 
-    invoke-direct {p0, v0}, Lcom/android/server/NetworkScorerAppManager;->getScorer(Ljava/lang/String;)Landroid/net/NetworkScorerAppData;
+    invoke-direct {p0, v1}, Lcom/android/server/NetworkScorerAppManager;->getScorer(Ljava/lang/String;)Landroid/net/NetworkScorerAppData;
 
-    move-result-object v0
+    move-result-object v1
 
-    return-object v0
+    return-object v1
 .end method
 
 .method public getAllValidScorers()Ljava/util/List;
-    .registers 14
+    .registers 18
     .annotation build Lcom/android/internal/annotations/VisibleForTesting;
     .end annotation
 
@@ -753,219 +783,248 @@
     .end annotation
 
     .line 70
-    sget-boolean v0, Lcom/android/server/NetworkScorerAppManager;->VERBOSE:Z
+    move-object/from16 v0, p0
 
-    const-string v1, "NetworkScorerAppManager"
+    sget-boolean v1, Lcom/android/server/NetworkScorerAppManager;->VERBOSE:Z
 
-    if-eqz v0, :cond_b
+    const-string v2, "NetworkScorerAppManager"
 
-    const-string v0, "getAllValidScorers()"
+    if-eqz v1, :cond_d
 
-    invoke-static {v1, v0}, Landroid/util/Log;->v(Ljava/lang/String;Ljava/lang/String;)I
+    const-string v1, "getAllValidScorers()"
+
+    invoke-static {v2, v1}, Landroid/util/Log;->v(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 71
-    :cond_b
-    iget-object v0, p0, Lcom/android/server/NetworkScorerAppManager;->mContext:Landroid/content/Context;
+    :cond_d
+    iget-object v1, v0, Lcom/android/server/NetworkScorerAppManager;->mContext:Landroid/content/Context;
 
-    invoke-virtual {v0}, Landroid/content/Context;->getPackageManager()Landroid/content/pm/PackageManager;
+    invoke-virtual {v1}, Landroid/content/Context;->getPackageManager()Landroid/content/pm/PackageManager;
 
-    move-result-object v0
+    move-result-object v1
 
     .line 72
-    new-instance v2, Landroid/content/Intent;
+    .local v1, "pm":Landroid/content/pm/PackageManager;
+    new-instance v3, Landroid/content/Intent;
 
-    const-string v3, "android.net.action.RECOMMEND_NETWORKS"
+    const-string v4, "android.net.action.RECOMMEND_NETWORKS"
 
-    invoke-direct {v2, v3}, Landroid/content/Intent;-><init>(Ljava/lang/String;)V
+    invoke-direct {v3, v4}, Landroid/content/Intent;-><init>(Ljava/lang/String;)V
 
     .line 73
-    const/16 v3, 0x80
+    .local v3, "serviceIntent":Landroid/content/Intent;
+    const/16 v4, 0x80
 
     .line 74
-    invoke-virtual {v0, v2, v3}, Landroid/content/pm/PackageManager;->queryIntentServices(Landroid/content/Intent;I)Ljava/util/List;
+    invoke-virtual {v1, v3, v4}, Landroid/content/pm/PackageManager;->queryIntentServices(Landroid/content/Intent;I)Ljava/util/List;
 
-    move-result-object v3
+    move-result-object v4
 
     .line 75
-    if-eqz v3, :cond_a5
+    .local v4, "resolveInfos":Ljava/util/List;, "Ljava/util/List<Landroid/content/pm/ResolveInfo;>;"
+    if-eqz v4, :cond_ae
 
-    invoke-interface {v3}, Ljava/util/List;->isEmpty()Z
-
-    move-result v4
-
-    if-eqz v4, :cond_28
-
-    goto/16 :goto_a5
-
-    .line 80
-    :cond_28
-    new-instance v2, Ljava/util/ArrayList;
-
-    invoke-direct {v2}, Ljava/util/ArrayList;-><init>()V
-
-    .line 81
-    const/4 v4, 0x0
-
-    :goto_2e
-    invoke-interface {v3}, Ljava/util/List;->size()I
+    invoke-interface {v4}, Ljava/util/List;->isEmpty()Z
 
     move-result v5
 
-    if-ge v4, v5, :cond_a4
+    if-eqz v5, :cond_2a
+
+    goto/16 :goto_ae
+
+    .line 80
+    :cond_2a
+    new-instance v5, Ljava/util/ArrayList;
+
+    invoke-direct {v5}, Ljava/util/ArrayList;-><init>()V
+
+    .line 81
+    .local v5, "appDataList":Ljava/util/List;, "Ljava/util/List<Landroid/net/NetworkScorerAppData;>;"
+    const/4 v6, 0x0
+
+    .local v6, "i":I
+    :goto_30
+    invoke-interface {v4}, Ljava/util/List;->size()I
+
+    move-result v7
+
+    if-ge v6, v7, :cond_ad
 
     .line 82
-    invoke-interface {v3, v4}, Ljava/util/List;->get(I)Ljava/lang/Object;
+    invoke-interface {v4, v6}, Ljava/util/List;->get(I)Ljava/lang/Object;
 
-    move-result-object v5
+    move-result-object v7
 
-    check-cast v5, Landroid/content/pm/ResolveInfo;
+    check-cast v7, Landroid/content/pm/ResolveInfo;
 
-    iget-object v5, v5, Landroid/content/pm/ResolveInfo;->serviceInfo:Landroid/content/pm/ServiceInfo;
+    iget-object v7, v7, Landroid/content/pm/ResolveInfo;->serviceInfo:Landroid/content/pm/ServiceInfo;
 
     .line 83
-    iget-object v6, v5, Landroid/content/pm/ServiceInfo;->applicationInfo:Landroid/content/pm/ApplicationInfo;
+    .local v7, "serviceInfo":Landroid/content/pm/ServiceInfo;
+    iget-object v8, v7, Landroid/content/pm/ServiceInfo;->applicationInfo:Landroid/content/pm/ApplicationInfo;
 
-    iget v6, v6, Landroid/content/pm/ApplicationInfo;->uid:I
+    iget v8, v8, Landroid/content/pm/ApplicationInfo;->uid:I
 
-    iget-object v7, v5, Landroid/content/pm/ServiceInfo;->packageName:Ljava/lang/String;
+    iget-object v9, v7, Landroid/content/pm/ServiceInfo;->packageName:Ljava/lang/String;
 
-    invoke-direct {p0, v6, v7}, Lcom/android/server/NetworkScorerAppManager;->hasPermissions(ILjava/lang/String;)Z
+    invoke-direct {v0, v8, v9}, Lcom/android/server/NetworkScorerAppManager;->hasPermissions(ILjava/lang/String;)Z
 
-    move-result v6
+    move-result v8
 
-    if-eqz v6, :cond_87
+    if-eqz v8, :cond_8e
 
     .line 84
-    sget-boolean v6, Lcom/android/server/NetworkScorerAppManager;->VERBOSE:Z
+    sget-boolean v8, Lcom/android/server/NetworkScorerAppManager;->VERBOSE:Z
 
-    if-eqz v6, :cond_62
+    if-eqz v8, :cond_64
 
     .line 85
-    new-instance v6, Ljava/lang/StringBuilder;
+    new-instance v8, Ljava/lang/StringBuilder;
 
-    invoke-direct {v6}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v8}, Ljava/lang/StringBuilder;-><init>()V
 
-    iget-object v7, v5, Landroid/content/pm/ServiceInfo;->packageName:Ljava/lang/String;
+    iget-object v9, v7, Landroid/content/pm/ServiceInfo;->packageName:Ljava/lang/String;
 
-    invoke-virtual {v6, v7}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v8, v9}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string v7, " is a valid scorer/recommender."
+    const-string v9, " is a valid scorer/recommender."
 
-    invoke-virtual {v6, v7}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v8, v9}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v6}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v8}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v6
+    move-result-object v8
 
-    invoke-static {v1, v6}, Landroid/util/Log;->v(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v2, v8}, Landroid/util/Log;->v(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 87
-    :cond_62
-    new-instance v9, Landroid/content/ComponentName;
+    :cond_64
+    new-instance v11, Landroid/content/ComponentName;
 
-    iget-object v6, v5, Landroid/content/pm/ServiceInfo;->packageName:Ljava/lang/String;
+    iget-object v8, v7, Landroid/content/pm/ServiceInfo;->packageName:Ljava/lang/String;
 
-    iget-object v7, v5, Landroid/content/pm/ServiceInfo;->name:Ljava/lang/String;
+    iget-object v9, v7, Landroid/content/pm/ServiceInfo;->name:Ljava/lang/String;
 
-    invoke-direct {v9, v6, v7}, Landroid/content/ComponentName;-><init>(Ljava/lang/String;Ljava/lang/String;)V
+    invoke-direct {v11, v8, v9}, Landroid/content/ComponentName;-><init>(Ljava/lang/String;Ljava/lang/String;)V
 
     .line 89
-    invoke-direct {p0, v5, v0}, Lcom/android/server/NetworkScorerAppManager;->getRecommendationServiceLabel(Landroid/content/pm/ServiceInfo;Landroid/content/pm/PackageManager;)Ljava/lang/String;
+    .local v11, "serviceComponentName":Landroid/content/ComponentName;
+    invoke-direct {v0, v7, v1}, Lcom/android/server/NetworkScorerAppManager;->getRecommendationServiceLabel(Landroid/content/pm/ServiceInfo;Landroid/content/pm/PackageManager;)Ljava/lang/String;
 
-    move-result-object v10
+    move-result-object v8
 
     .line 90
+    .local v8, "serviceLabel":Ljava/lang/String;
     nop
 
     .line 91
-    invoke-direct {p0, v5}, Lcom/android/server/NetworkScorerAppManager;->findUseOpenWifiNetworksActivity(Landroid/content/pm/ServiceInfo;)Landroid/content/ComponentName;
+    invoke-direct {v0, v7}, Lcom/android/server/NetworkScorerAppManager;->findUseOpenWifiNetworksActivity(Landroid/content/pm/ServiceInfo;)Landroid/content/ComponentName;
 
-    move-result-object v11
+    move-result-object v15
 
     .line 92
+    .local v15, "useOpenWifiNetworksActivity":Landroid/content/ComponentName;
     nop
 
     .line 93
-    invoke-static {v5}, Lcom/android/server/NetworkScorerAppManager;->getNetworkAvailableNotificationChannelId(Landroid/content/pm/ServiceInfo;)Ljava/lang/String;
+    invoke-static {v7}, Lcom/android/server/NetworkScorerAppManager;->getNetworkAvailableNotificationChannelId(Landroid/content/pm/ServiceInfo;)Ljava/lang/String;
 
-    move-result-object v12
+    move-result-object v16
 
     .line 94
-    new-instance v6, Landroid/net/NetworkScorerAppData;
+    .local v16, "networkAvailableNotificationChannelId":Ljava/lang/String;
+    new-instance v14, Landroid/net/NetworkScorerAppData;
 
-    iget-object v5, v5, Landroid/content/pm/ServiceInfo;->applicationInfo:Landroid/content/pm/ApplicationInfo;
+    iget-object v9, v7, Landroid/content/pm/ServiceInfo;->applicationInfo:Landroid/content/pm/ApplicationInfo;
 
-    iget v8, v5, Landroid/content/pm/ApplicationInfo;->uid:I
+    iget v10, v9, Landroid/content/pm/ApplicationInfo;->uid:I
 
-    move-object v7, v6
+    move-object v9, v14
 
-    invoke-direct/range {v7 .. v12}, Landroid/net/NetworkScorerAppData;-><init>(ILandroid/content/ComponentName;Ljava/lang/String;Landroid/content/ComponentName;Ljava/lang/String;)V
+    move-object v12, v8
 
-    invoke-interface {v2, v6}, Ljava/util/List;->add(Ljava/lang/Object;)Z
+    move-object v13, v15
+
+    move-object v0, v14
+
+    move-object/from16 v14, v16
+
+    invoke-direct/range {v9 .. v14}, Landroid/net/NetworkScorerAppData;-><init>(ILandroid/content/ComponentName;Ljava/lang/String;Landroid/content/ComponentName;Ljava/lang/String;)V
+
+    invoke-interface {v5, v0}, Ljava/util/List;->add(Ljava/lang/Object;)Z
 
     .line 98
-    goto :goto_a1
+    .end local v8  # "serviceLabel":Ljava/lang/String;
+    .end local v11  # "serviceComponentName":Landroid/content/ComponentName;
+    .end local v15  # "useOpenWifiNetworksActivity":Landroid/content/ComponentName;
+    .end local v16  # "networkAvailableNotificationChannelId":Ljava/lang/String;
+    goto :goto_a8
 
     .line 99
-    :cond_87
-    sget-boolean v6, Lcom/android/server/NetworkScorerAppManager;->VERBOSE:Z
+    :cond_8e
+    sget-boolean v0, Lcom/android/server/NetworkScorerAppManager;->VERBOSE:Z
 
-    if-eqz v6, :cond_a1
-
-    new-instance v6, Ljava/lang/StringBuilder;
-
-    invoke-direct {v6}, Ljava/lang/StringBuilder;-><init>()V
-
-    iget-object v5, v5, Landroid/content/pm/ServiceInfo;->packageName:Ljava/lang/String;
-
-    invoke-virtual {v6, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    const-string v5, " is NOT a valid scorer/recommender."
-
-    invoke-virtual {v6, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v6}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
-
-    move-result-object v5
-
-    invoke-static {v1, v5}, Landroid/util/Log;->v(Ljava/lang/String;Ljava/lang/String;)I
-
-    .line 81
-    :cond_a1
-    :goto_a1
-    add-int/lit8 v4, v4, 0x1
-
-    goto :goto_2e
-
-    .line 104
-    :cond_a4
-    return-object v2
-
-    .line 76
-    :cond_a5
-    :goto_a5
-    sget-boolean v0, Lcom/android/server/NetworkScorerAppManager;->DEBUG:Z
-
-    if-eqz v0, :cond_bd
+    if-eqz v0, :cond_a8
 
     new-instance v0, Ljava/lang/StringBuilder;
 
     invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v3, "Found 0 Services able to handle "
+    iget-object v8, v7, Landroid/content/pm/ServiceInfo;->packageName:Ljava/lang/String;
 
-    invoke-virtual {v0, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v8}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    const-string v8, " is NOT a valid scorer/recommender."
+
+    invoke-virtual {v0, v8}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
     move-result-object v0
 
-    invoke-static {v1, v0}, Landroid/util/Log;->d(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v2, v0}, Landroid/util/Log;->v(Ljava/lang/String;Ljava/lang/String;)I
+
+    .line 81
+    .end local v7  # "serviceInfo":Landroid/content/pm/ServiceInfo;
+    :cond_a8
+    :goto_a8
+    add-int/lit8 v6, v6, 0x1
+
+    move-object/from16 v0, p0
+
+    goto :goto_30
+
+    .line 104
+    .end local v6  # "i":I
+    :cond_ad
+    return-object v5
+
+    .line 76
+    .end local v5  # "appDataList":Ljava/util/List;, "Ljava/util/List<Landroid/net/NetworkScorerAppData;>;"
+    :cond_ae
+    :goto_ae
+    sget-boolean v0, Lcom/android/server/NetworkScorerAppManager;->DEBUG:Z
+
+    if-eqz v0, :cond_c6
+
+    new-instance v0, Ljava/lang/StringBuilder;
+
+    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
+
+    const-string v5, "Found 0 Services able to handle "
+
+    invoke-virtual {v0, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v0, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v0
+
+    invoke-static {v2, v0}, Landroid/util/Log;->d(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 77
-    :cond_bd
+    :cond_c6
     invoke-static {}, Ljava/util/Collections;->emptyList()Ljava/util/List;
 
     move-result-object v0
@@ -974,7 +1033,7 @@
 .end method
 
 .method public migrateNetworkScorerAppSettingIfNeeded()V
-    .registers 8
+    .registers 12
     .annotation build Lcom/android/internal/annotations/VisibleForTesting;
     .end annotation
 
@@ -991,6 +1050,7 @@
     move-result-object v0
 
     .line 318
+    .local v0, "scorerAppPkgNameSetting":Ljava/lang/String;
     invoke-static {v0}, Landroid/text/TextUtils;->isEmpty(Ljava/lang/CharSequence;)Z
 
     move-result v1
@@ -1007,6 +1067,7 @@
     move-result-object v1
 
     .line 324
+    .local v1, "currentAppData":Landroid/net/NetworkScorerAppData;
     if-nez v1, :cond_19
 
     .line 326
@@ -1048,129 +1109,134 @@
     .line 338
     invoke-virtual {v1}, Landroid/net/NetworkScorerAppData;->getEnableUseOpenWifiActivity()Landroid/content/ComponentName;
 
-    move-result-object v1
-
-    .line 339
-    iget-object v3, p0, Lcom/android/server/NetworkScorerAppManager;->mSettingsFacade:Lcom/android/server/NetworkScorerAppManager$SettingsFacade;
-
-    iget-object v5, p0, Lcom/android/server/NetworkScorerAppManager;->mContext:Landroid/content/Context;
-
-    .line 340
-    const-string/jumbo v6, "use_open_wifi_package"
-
-    invoke-virtual {v3, v5, v6}, Lcom/android/server/NetworkScorerAppManager$SettingsFacade;->getString(Landroid/content/Context;Ljava/lang/String;)Ljava/lang/String;
-
     move-result-object v3
 
+    .line 339
+    .local v3, "enableUseOpenWifiActivity":Landroid/content/ComponentName;
+    iget-object v5, p0, Lcom/android/server/NetworkScorerAppManager;->mSettingsFacade:Lcom/android/server/NetworkScorerAppManager$SettingsFacade;
+
+    iget-object v6, p0, Lcom/android/server/NetworkScorerAppManager;->mContext:Landroid/content/Context;
+
+    .line 340
+    const-string/jumbo v7, "use_open_wifi_package"
+
+    invoke-virtual {v5, v6, v7}, Lcom/android/server/NetworkScorerAppManager$SettingsFacade;->getString(Landroid/content/Context;Ljava/lang/String;)Ljava/lang/String;
+
+    move-result-object v5
+
     .line 341
-    invoke-static {v3}, Landroid/text/TextUtils;->isEmpty(Ljava/lang/CharSequence;)Z
+    .local v5, "useOpenWifiSetting":Ljava/lang/String;
+    invoke-static {v5}, Landroid/text/TextUtils;->isEmpty(Ljava/lang/CharSequence;)Z
 
-    move-result v3
+    move-result v6
 
-    const-string v5, "\'."
+    const-string v8, "\'."
+
+    if-eqz v6, :cond_7e
 
     if-eqz v3, :cond_7e
 
-    if-eqz v1, :cond_7e
-
     .line 343
-    invoke-virtual {v1}, Landroid/content/ComponentName;->getPackageName()Ljava/lang/String;
+    invoke-virtual {v3}, Landroid/content/ComponentName;->getPackageName()Ljava/lang/String;
 
-    move-result-object v1
+    move-result-object v6
 
-    invoke-virtual {v0, v1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v0, v6}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result v1
+    move-result v6
 
-    if-eqz v1, :cond_7e
+    if-eqz v6, :cond_7e
 
     .line 344
-    iget-object v1, p0, Lcom/android/server/NetworkScorerAppManager;->mSettingsFacade:Lcom/android/server/NetworkScorerAppManager$SettingsFacade;
+    iget-object v6, p0, Lcom/android/server/NetworkScorerAppManager;->mSettingsFacade:Lcom/android/server/NetworkScorerAppManager$SettingsFacade;
 
-    iget-object v3, p0, Lcom/android/server/NetworkScorerAppManager;->mContext:Landroid/content/Context;
+    iget-object v9, p0, Lcom/android/server/NetworkScorerAppManager;->mContext:Landroid/content/Context;
 
-    invoke-virtual {v1, v3, v6, v0}, Lcom/android/server/NetworkScorerAppManager$SettingsFacade;->putString(Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)Z
+    invoke-virtual {v6, v9, v7, v0}, Lcom/android/server/NetworkScorerAppManager$SettingsFacade;->putString(Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)Z
 
     .line 346
-    sget-boolean v1, Lcom/android/server/NetworkScorerAppManager;->DEBUG:Z
+    sget-boolean v6, Lcom/android/server/NetworkScorerAppManager;->DEBUG:Z
 
-    if-eqz v1, :cond_7e
+    if-eqz v6, :cond_7e
 
     .line 347
-    new-instance v1, Ljava/lang/StringBuilder;
+    new-instance v6, Ljava/lang/StringBuilder;
 
-    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v6}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v3, "Settings.Global.USE_OPEN_WIFI_PACKAGE set to \'"
+    const-string v9, "Settings.Global.USE_OPEN_WIFI_PACKAGE set to \'"
 
-    invoke-virtual {v1, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v6, v9}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v1, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v6, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v1, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v6, v8}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v6}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v6
 
-    invoke-static {v4, v0}, Landroid/util/Log;->d(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v4, v6}, Landroid/util/Log;->d(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 353
     :cond_7e
-    iget-object v0, p0, Lcom/android/server/NetworkScorerAppManager;->mSettingsFacade:Lcom/android/server/NetworkScorerAppManager$SettingsFacade;
+    iget-object v6, p0, Lcom/android/server/NetworkScorerAppManager;->mSettingsFacade:Lcom/android/server/NetworkScorerAppManager$SettingsFacade;
 
-    iget-object v1, p0, Lcom/android/server/NetworkScorerAppManager;->mContext:Landroid/content/Context;
+    iget-object v9, p0, Lcom/android/server/NetworkScorerAppManager;->mContext:Landroid/content/Context;
 
-    const/4 v3, 0x0
+    const/4 v10, 0x0
 
-    invoke-virtual {v0, v1, v2, v3}, Lcom/android/server/NetworkScorerAppManager$SettingsFacade;->putString(Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)Z
+    invoke-virtual {v6, v9, v2, v10}, Lcom/android/server/NetworkScorerAppManager$SettingsFacade;->putString(Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)Z
 
     .line 354
-    sget-boolean v0, Lcom/android/server/NetworkScorerAppManager;->DEBUG:Z
+    sget-boolean v2, Lcom/android/server/NetworkScorerAppManager;->DEBUG:Z
 
-    if-eqz v0, :cond_ae
+    if-eqz v2, :cond_ae
 
     .line 355
-    const-string v0, "Settings.Global.NETWORK_SCORER_APP migration complete."
+    const-string v2, "Settings.Global.NETWORK_SCORER_APP migration complete."
 
-    invoke-static {v4, v0}, Landroid/util/Log;->d(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v4, v2}, Landroid/util/Log;->d(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 356
-    iget-object v0, p0, Lcom/android/server/NetworkScorerAppManager;->mSettingsFacade:Lcom/android/server/NetworkScorerAppManager$SettingsFacade;
+    iget-object v2, p0, Lcom/android/server/NetworkScorerAppManager;->mSettingsFacade:Lcom/android/server/NetworkScorerAppManager$SettingsFacade;
 
-    iget-object v1, p0, Lcom/android/server/NetworkScorerAppManager;->mContext:Landroid/content/Context;
+    iget-object v6, p0, Lcom/android/server/NetworkScorerAppManager;->mContext:Landroid/content/Context;
 
     .line 357
-    invoke-virtual {v0, v1, v6}, Lcom/android/server/NetworkScorerAppManager$SettingsFacade;->getString(Landroid/content/Context;Ljava/lang/String;)Ljava/lang/String;
+    invoke-virtual {v2, v6, v7}, Lcom/android/server/NetworkScorerAppManager$SettingsFacade;->getString(Landroid/content/Context;Ljava/lang/String;)Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v2
 
     .line 358
-    new-instance v1, Ljava/lang/StringBuilder;
+    .local v2, "setting":Ljava/lang/String;
+    new-instance v6, Ljava/lang/StringBuilder;
 
-    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v6}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v2, "Settings.Global.USE_OPEN_WIFI_PACKAGE is: \'"
+    const-string v7, "Settings.Global.USE_OPEN_WIFI_PACKAGE is: \'"
 
-    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v6, v7}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v1, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v6, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v1, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v6, v8}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v6}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v6
 
-    invoke-static {v4, v0}, Landroid/util/Log;->d(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v4, v6}, Landroid/util/Log;->d(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 360
+    .end local v2  # "setting":Ljava/lang/String;
     :cond_ae
     return-void
 .end method
 
 .method public setActiveScorer(Ljava/lang/String;)Z
     .registers 7
+    .param p1, "packageName"  # Ljava/lang/String;
     .annotation build Lcom/android/internal/annotations/VisibleForTesting;
     .end annotation
 
@@ -1180,6 +1246,7 @@
     move-result-object v0
 
     .line 243
+    .local v0, "oldPackageName":Ljava/lang/String;
     invoke-static {v0, p1}, Landroid/text/TextUtils;->equals(Ljava/lang/CharSequence;Ljava/lang/CharSequence;)Z
 
     move-result v1
@@ -1202,31 +1269,31 @@
     if-eqz v1, :cond_31
 
     .line 249
-    new-instance p1, Ljava/lang/StringBuilder;
+    new-instance v1, Ljava/lang/StringBuilder;
 
-    invoke-direct {p1}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v1, "Network scorer forced off, was: "
+    const-string v4, "Network scorer forced off, was: "
 
-    invoke-virtual {p1, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p1, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v1
 
-    invoke-static {v3, p1}, Landroid/util/Log;->i(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v3, v1}, Landroid/util/Log;->i(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 250
-    const/4 p1, 0x0
+    const/4 v1, 0x0
 
-    invoke-direct {p0, p1}, Lcom/android/server/NetworkScorerAppManager;->setNetworkRecommendationsPackage(Ljava/lang/String;)V
+    invoke-direct {p0, v1}, Lcom/android/server/NetworkScorerAppManager;->setNetworkRecommendationsPackage(Ljava/lang/String;)V
 
     .line 251
-    const/4 p1, -0x1
+    const/4 v1, -0x1
 
-    invoke-direct {p0, p1}, Lcom/android/server/NetworkScorerAppManager;->setNetworkRecommendationsEnabledSetting(I)V
+    invoke-direct {p0, v1}, Lcom/android/server/NetworkScorerAppManager;->setNetworkRecommendationsEnabledSetting(I)V
 
     .line 253
     return v2
@@ -1250,17 +1317,17 @@
 
     invoke-virtual {v1, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string v0, " to "
+    const-string v4, " to "
 
-    invoke-virtual {v1, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v1, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v1
 
-    invoke-static {v3, v0}, Landroid/util/Log;->i(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v3, v1}, Landroid/util/Log;->i(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 259
     invoke-direct {p0, p1}, Lcom/android/server/NetworkScorerAppManager;->setNetworkRecommendationsPackage(Ljava/lang/String;)V
@@ -1273,30 +1340,30 @@
 
     .line 263
     :cond_5a
-    new-instance v0, Ljava/lang/StringBuilder;
+    new-instance v1, Ljava/lang/StringBuilder;
 
-    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v1, "Requested network scorer is not valid: "
+    const-string v2, "Requested network scorer is not valid: "
 
-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v1
 
-    invoke-static {v3, p1}, Landroid/util/Log;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v3, v1}, Landroid/util/Log;->w(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 264
-    const/4 p1, 0x0
+    const/4 v1, 0x0
 
-    return p1
+    return v1
 .end method
 
 .method public updateState()V
-    .registers 6
+    .registers 8
     .annotation build Lcom/android/internal/annotations/VisibleForTesting;
     .end annotation
 
@@ -1306,6 +1373,7 @@
     move-result v0
 
     .line 281
+    .local v0, "enabledSetting":I
     const-string v1, "NetworkScorerAppManager"
 
     const/4 v2, -0x1
@@ -1313,13 +1381,13 @@
     if-ne v0, v2, :cond_13
 
     .line 283
-    sget-boolean v0, Lcom/android/server/NetworkScorerAppManager;->DEBUG:Z
+    sget-boolean v2, Lcom/android/server/NetworkScorerAppManager;->DEBUG:Z
 
-    if-eqz v0, :cond_12
+    if-eqz v2, :cond_12
 
-    const-string v0, "Recommendations forced off."
+    const-string v2, "Recommendations forced off."
 
-    invoke-static {v1, v0}, Landroid/util/Log;->d(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v2}, Landroid/util/Log;->d(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 284
     :cond_12
@@ -1329,100 +1397,103 @@
     :cond_13
     invoke-direct {p0}, Lcom/android/server/NetworkScorerAppManager;->getNetworkRecommendationsPackage()Ljava/lang/String;
 
-    move-result-object v0
-
-    .line 289
-    invoke-direct {p0, v0}, Lcom/android/server/NetworkScorerAppManager;->getScorer(Ljava/lang/String;)Landroid/net/NetworkScorerAppData;
-
     move-result-object v2
 
-    const/4 v3, 0x1
+    .line 289
+    .local v2, "currentPackageName":Ljava/lang/String;
+    invoke-direct {p0, v2}, Lcom/android/server/NetworkScorerAppManager;->getScorer(Ljava/lang/String;)Landroid/net/NetworkScorerAppData;
 
-    if-eqz v2, :cond_3a
+    move-result-object v3
+
+    if-eqz v3, :cond_3a
 
     .line 290
-    sget-boolean v2, Lcom/android/server/NetworkScorerAppManager;->VERBOSE:Z
+    sget-boolean v3, Lcom/android/server/NetworkScorerAppManager;->VERBOSE:Z
 
-    if-eqz v2, :cond_36
+    if-eqz v3, :cond_35
 
-    new-instance v2, Ljava/lang/StringBuilder;
+    new-instance v3, Ljava/lang/StringBuilder;
 
-    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
 
-    invoke-virtual {v2, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string v0, " is the active scorer."
+    const-string v4, " is the active scorer."
 
-    invoke-virtual {v2, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v3
 
-    invoke-static {v1, v0}, Landroid/util/Log;->v(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v3}, Landroid/util/Log;->v(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 291
-    :cond_36
-    invoke-direct {p0, v3}, Lcom/android/server/NetworkScorerAppManager;->setNetworkRecommendationsEnabledSetting(I)V
+    :cond_35
+    const/4 v1, 0x1
+
+    invoke-direct {p0, v1}, Lcom/android/server/NetworkScorerAppManager;->setNetworkRecommendationsEnabledSetting(I)V
 
     .line 292
     return-void
 
     .line 295
     :cond_3a
-    const/4 v2, 0x0
+    const/4 v3, 0x0
 
     .line 297
+    .local v3, "newEnabledSetting":I
     invoke-direct {p0}, Lcom/android/server/NetworkScorerAppManager;->getDefaultPackageSetting()Ljava/lang/String;
 
     move-result-object v4
 
     .line 298
-    invoke-static {v0, v4}, Landroid/text/TextUtils;->equals(Ljava/lang/CharSequence;Ljava/lang/CharSequence;)Z
+    .local v4, "defaultPackageName":Ljava/lang/String;
+    invoke-static {v2, v4}, Landroid/text/TextUtils;->equals(Ljava/lang/CharSequence;Ljava/lang/CharSequence;)Z
 
-    move-result v0
+    move-result v5
 
-    if-nez v0, :cond_67
+    if-nez v5, :cond_67
 
     .line 299
     invoke-direct {p0, v4}, Lcom/android/server/NetworkScorerAppManager;->getScorer(Ljava/lang/String;)Landroid/net/NetworkScorerAppData;
 
-    move-result-object v0
+    move-result-object v5
 
-    if-eqz v0, :cond_67
+    if-eqz v5, :cond_67
 
     .line 300
-    sget-boolean v0, Lcom/android/server/NetworkScorerAppManager;->DEBUG:Z
+    sget-boolean v5, Lcom/android/server/NetworkScorerAppManager;->DEBUG:Z
 
-    if-eqz v0, :cond_63
+    if-eqz v5, :cond_63
 
     .line 301
-    new-instance v0, Ljava/lang/StringBuilder;
+    new-instance v5, Ljava/lang/StringBuilder;
 
-    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v5}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v2, "Defaulting the network recommendations app to: "
+    const-string v6, "Defaulting the network recommendations app to: "
 
-    invoke-virtual {v0, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v5, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v5}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v5
 
-    invoke-static {v1, v0}, Landroid/util/Log;->d(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v5}, Landroid/util/Log;->d(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 304
     :cond_63
     invoke-direct {p0, v4}, Lcom/android/server/NetworkScorerAppManager;->setNetworkRecommendationsPackage(Ljava/lang/String;)V
 
     .line 305
-    move v2, v3
+    const/4 v3, 0x1
 
     .line 308
     :cond_67
-    invoke-direct {p0, v2}, Lcom/android/server/NetworkScorerAppManager;->setNetworkRecommendationsEnabledSetting(I)V
+    invoke-direct {p0, v3}, Lcom/android/server/NetworkScorerAppManager;->setNetworkRecommendationsEnabledSetting(I)V
 
     .line 309
     return-void

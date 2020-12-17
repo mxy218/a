@@ -1,5 +1,5 @@
 .class Lcom/android/server/UiModeManagerService$5;
-.super Landroid/content/BroadcastReceiver;
+.super Landroid/service/vr/IVrStateCallbacks$Stub;
 .source "UiModeManagerService.java"
 
 
@@ -21,53 +21,63 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/UiModeManagerService;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/UiModeManagerService;
 
-    .line 230
+    .line 193
     iput-object p1, p0, Lcom/android/server/UiModeManagerService$5;->this$0:Lcom/android/server/UiModeManagerService;
 
-    invoke-direct {p0}, Landroid/content/BroadcastReceiver;-><init>()V
+    invoke-direct {p0}, Landroid/service/vr/IVrStateCallbacks$Stub;-><init>()V
 
     return-void
 .end method
 
 
 # virtual methods
-.method public onReceive(Landroid/content/Context;Landroid/content/Intent;)V
-    .registers 4
+.method public onVrStateChanged(Z)V
+    .registers 5
+    .param p1, "enabled"  # Z
 
-    .line 233
-    iget-object p1, p0, Lcom/android/server/UiModeManagerService$5;->this$0:Lcom/android/server/UiModeManagerService;
+    .line 196
+    iget-object v0, p0, Lcom/android/server/UiModeManagerService$5;->this$0:Lcom/android/server/UiModeManagerService;
 
-    iget-object p1, p1, Lcom/android/server/UiModeManagerService;->mLock:Ljava/lang/Object;
+    iget-object v0, v0, Lcom/android/server/UiModeManagerService;->mLock:Ljava/lang/Object;
 
-    monitor-enter p1
+    monitor-enter v0
 
-    .line 235
+    .line 197
     :try_start_5
-    iget-object p2, p0, Lcom/android/server/UiModeManagerService$5;->this$0:Lcom/android/server/UiModeManagerService;
+    iget-object v1, p0, Lcom/android/server/UiModeManagerService$5;->this$0:Lcom/android/server/UiModeManagerService;
 
-    invoke-static {p2}, Lcom/android/server/UiModeManagerService;->access$600(Lcom/android/server/UiModeManagerService;)V
+    invoke-static {v1, p1}, Lcom/android/server/UiModeManagerService;->access$502(Lcom/android/server/UiModeManagerService;Z)Z
 
-    .line 236
-    iget-object p2, p0, Lcom/android/server/UiModeManagerService$5;->this$0:Lcom/android/server/UiModeManagerService;
+    .line 198
+    iget-object v1, p0, Lcom/android/server/UiModeManagerService$5;->this$0:Lcom/android/server/UiModeManagerService;
 
-    const/4 v0, 0x0
+    iget-boolean v1, v1, Lcom/android/server/UiModeManagerService;->mSystemReady:Z
 
-    invoke-virtual {p2, v0, v0}, Lcom/android/server/UiModeManagerService;->updateLocked(II)V
+    if-eqz v1, :cond_16
 
-    .line 237
-    monitor-exit p1
+    .line 199
+    iget-object v1, p0, Lcom/android/server/UiModeManagerService$5;->this$0:Lcom/android/server/UiModeManagerService;
 
-    .line 238
+    const/4 v2, 0x0
+
+    invoke-virtual {v1, v2, v2}, Lcom/android/server/UiModeManagerService;->updateLocked(II)V
+
+    .line 201
+    :cond_16
+    monitor-exit v0
+
+    .line 202
     return-void
 
-    .line 237
-    :catchall_12
-    move-exception p2
+    .line 201
+    :catchall_18
+    move-exception v1
 
-    monitor-exit p1
-    :try_end_14
-    .catchall {:try_start_5 .. :try_end_14} :catchall_12
+    monitor-exit v0
+    :try_end_1a
+    .catchall {:try_start_5 .. :try_end_1a} :catchall_18
 
-    throw p2
+    throw v1
 .end method

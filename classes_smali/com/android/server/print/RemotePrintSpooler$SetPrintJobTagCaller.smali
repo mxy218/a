@@ -48,6 +48,9 @@
 
 .method static synthetic access$900(Lcom/android/server/print/RemotePrintSpooler$SetPrintJobTagCaller;Ljava/lang/Object;I)V
     .registers 3
+    .param p0, "x0"  # Lcom/android/server/print/RemotePrintSpooler$SetPrintJobTagCaller;
+    .param p1, "x1"  # Ljava/lang/Object;
+    .param p2, "x2"  # I
 
     .line 784
     invoke-virtual {p0, p1, p2}, Lcom/android/server/print/RemotePrintSpooler$SetPrintJobTagCaller;->onRemoteMethodResult(Ljava/lang/Object;I)V
@@ -59,6 +62,9 @@
 # virtual methods
 .method public setPrintJobTag(Landroid/print/IPrintSpooler;Landroid/print/PrintJobId;Ljava/lang/String;)Z
     .registers 6
+    .param p1, "target"  # Landroid/print/IPrintSpooler;
+    .param p2, "printJobId"  # Landroid/print/PrintJobId;
+    .param p3, "tag"  # Ljava/lang/String;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;,
@@ -72,6 +78,7 @@
     move-result v0
 
     .line 800
+    .local v0, "sequence":I
     iget-object v1, p0, Lcom/android/server/print/RemotePrintSpooler$SetPrintJobTagCaller;->mCallback:Landroid/print/IPrintSpoolerCallbacks;
 
     invoke-interface {p1, p2, p3, v1, v0}, Landroid/print/IPrintSpooler;->setPrintJobTag(Landroid/print/PrintJobId;Ljava/lang/String;Landroid/print/IPrintSpoolerCallbacks;I)V
@@ -79,13 +86,13 @@
     .line 801
     invoke-virtual {p0, v0}, Lcom/android/server/print/RemotePrintSpooler$SetPrintJobTagCaller;->getResultTimed(I)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v1
 
-    check-cast p1, Ljava/lang/Boolean;
+    check-cast v1, Ljava/lang/Boolean;
 
-    invoke-virtual {p1}, Ljava/lang/Boolean;->booleanValue()Z
+    invoke-virtual {v1}, Ljava/lang/Boolean;->booleanValue()Z
 
-    move-result p1
+    move-result v1
 
-    return p1
+    return v1
 .end method

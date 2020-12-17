@@ -24,6 +24,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/oemlock/OemLockService;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/oemlock/OemLockService;
 
     .line 91
     iput-object p1, p0, Lcom/android/server/oemlock/OemLockService$1;->this$0:Lcom/android/server/oemlock/OemLockService;
@@ -36,51 +37,56 @@
 
 # virtual methods
 .method public onUserRestrictionsChanged(ILandroid/os/Bundle;Landroid/os/Bundle;)V
-    .registers 5
+    .registers 7
+    .param p1, "userId"  # I
+    .param p2, "newRestrictions"  # Landroid/os/Bundle;
+    .param p3, "prevRestrictions"  # Landroid/os/Bundle;
 
     .line 96
-    const-string/jumbo p1, "no_factory_reset"
+    const-string/jumbo v0, "no_factory_reset"
 
-    filled-new-array {p1}, [Ljava/lang/String;
+    filled-new-array {v0}, [Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v1
 
-    invoke-static {p3, p2, v0}, Lcom/android/server/pm/UserRestrictionsUtils;->restrictionsChanged(Landroid/os/Bundle;Landroid/os/Bundle;[Ljava/lang/String;)Z
+    invoke-static {p3, p2, v1}, Lcom/android/server/pm/UserRestrictionsUtils;->restrictionsChanged(Landroid/os/Bundle;Landroid/os/Bundle;[Ljava/lang/String;)Z
 
-    move-result p3
+    move-result v1
 
-    if-eqz p3, :cond_25
+    if-eqz v1, :cond_25
 
     .line 98
     nop
 
     .line 99
-    invoke-virtual {p2, p1}, Landroid/os/Bundle;->getBoolean(Ljava/lang/String;)Z
+    invoke-virtual {p2, v0}, Landroid/os/Bundle;->getBoolean(Ljava/lang/String;)Z
 
-    move-result p1
+    move-result v0
+
+    xor-int/lit8 v0, v0, 0x1
 
     .line 100
-    xor-int/lit8 p1, p1, 0x1
-
-    if-nez p1, :cond_25
+    .local v0, "unlockAllowedByAdmin":Z
+    if-nez v0, :cond_25
 
     .line 101
-    iget-object p1, p0, Lcom/android/server/oemlock/OemLockService$1;->this$0:Lcom/android/server/oemlock/OemLockService;
+    iget-object v1, p0, Lcom/android/server/oemlock/OemLockService$1;->this$0:Lcom/android/server/oemlock/OemLockService;
 
-    invoke-static {p1}, Lcom/android/server/oemlock/OemLockService;->access$000(Lcom/android/server/oemlock/OemLockService;)Lcom/android/server/oemlock/OemLock;
+    invoke-static {v1}, Lcom/android/server/oemlock/OemLockService;->access$000(Lcom/android/server/oemlock/OemLockService;)Lcom/android/server/oemlock/OemLock;
 
-    move-result-object p1
+    move-result-object v1
 
-    const/4 p2, 0x0
+    const/4 v2, 0x0
 
-    invoke-virtual {p1, p2}, Lcom/android/server/oemlock/OemLock;->setOemUnlockAllowedByDevice(Z)V
+    invoke-virtual {v1, v2}, Lcom/android/server/oemlock/OemLock;->setOemUnlockAllowedByDevice(Z)V
 
     .line 102
-    iget-object p1, p0, Lcom/android/server/oemlock/OemLockService$1;->this$0:Lcom/android/server/oemlock/OemLockService;
+    iget-object v1, p0, Lcom/android/server/oemlock/OemLockService$1;->this$0:Lcom/android/server/oemlock/OemLockService;
 
-    invoke-static {p1, p2}, Lcom/android/server/oemlock/OemLockService;->access$100(Lcom/android/server/oemlock/OemLockService;Z)V
+    invoke-static {v1, v2}, Lcom/android/server/oemlock/OemLockService;->access$100(Lcom/android/server/oemlock/OemLockService;Z)V
 
     .line 105
+    .end local v0  # "unlockAllowedByAdmin":Z
     :cond_25
     return-void
 .end method

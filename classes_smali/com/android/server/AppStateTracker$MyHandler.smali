@@ -51,6 +51,7 @@
 # direct methods
 .method public constructor <init>(Lcom/android/server/AppStateTracker;Landroid/os/Looper;)V
     .registers 3
+    .param p2, "looper"  # Landroid/os/Looper;
 
     .line 742
     iput-object p1, p0, Lcom/android/server/AppStateTracker$MyHandler;->this$0:Lcom/android/server/AppStateTracker;
@@ -64,6 +65,8 @@
 
 .method private removeUid(IZ)V
     .registers 5
+    .param p1, "uid"  # I
+    .param p2, "remove"  # Z
 
     .line 949
     iget-object v0, p0, Lcom/android/server/AppStateTracker$MyHandler;->this$0:Lcom/android/server/AppStateTracker;
@@ -103,18 +106,18 @@
 
     invoke-static {v1, p1, p2}, Lcom/android/server/AppStateTracker;->access$1800(Landroid/util/SparseBooleanArray;IZ)Z
 
-    move-result p2
+    move-result v1
 
-    if-eqz p2, :cond_2d
+    if-eqz v1, :cond_2d
 
     .line 954
-    iget-object p2, p0, Lcom/android/server/AppStateTracker$MyHandler;->this$0:Lcom/android/server/AppStateTracker;
+    iget-object v1, p0, Lcom/android/server/AppStateTracker$MyHandler;->this$0:Lcom/android/server/AppStateTracker;
 
-    invoke-static {p2}, Lcom/android/server/AppStateTracker;->access$200(Lcom/android/server/AppStateTracker;)Lcom/android/server/AppStateTracker$MyHandler;
+    invoke-static {v1}, Lcom/android/server/AppStateTracker;->access$200(Lcom/android/server/AppStateTracker;)Lcom/android/server/AppStateTracker$MyHandler;
 
-    move-result-object p2
+    move-result-object v1
 
-    invoke-virtual {p2, p1}, Lcom/android/server/AppStateTracker$MyHandler;->notifyUidForegroundStateChanged(I)V
+    invoke-virtual {v1, p1}, Lcom/android/server/AppStateTracker$MyHandler;->notifyUidForegroundStateChanged(I)V
 
     .line 956
     :cond_2d
@@ -125,19 +128,20 @@
 
     .line 956
     :catchall_2f
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_31
     .catchall {:try_start_7 .. :try_end_31} :catchall_2f
 
-    throw p1
+    throw v1
 .end method
 
 
 # virtual methods
 .method public doUserRemoved(I)V
     .registers 4
+    .param p1, "userId"  # I
 
     .line 789
     const/16 v0, 0x8
@@ -146,9 +150,9 @@
 
     invoke-virtual {p0, v0, p1, v1}, Lcom/android/server/AppStateTracker$MyHandler;->obtainMessage(III)Landroid/os/Message;
 
-    move-result-object p1
+    move-result-object v0
 
-    invoke-virtual {p1}, Landroid/os/Message;->sendToTarget()V
+    invoke-virtual {v0}, Landroid/os/Message;->sendToTarget()V
 
     .line 790
     return-void
@@ -156,13 +160,14 @@
 
 .method public handleMessage(Landroid/os/Message;)V
     .registers 11
+    .param p1, "msg"  # Landroid/os/Message;
 
     .line 810
     iget v0, p1, Landroid/os/Message;->what:I
 
     const/16 v1, 0x8
 
-    if-eq v0, v1, :cond_17b
+    if-eq v0, v1, :cond_17d
 
     .line 817
     iget-object v0, p0, Lcom/android/server/AppStateTracker$MyHandler;->this$0:Lcom/android/server/AppStateTracker;
@@ -190,13 +195,16 @@
     :cond_15
     monitor-exit v0
     :try_end_16
-    .catchall {:try_start_d .. :try_end_16} :catchall_178
+    .catchall {:try_start_d .. :try_end_16} :catchall_17a
 
     .line 822
     iget-object v0, p0, Lcom/android/server/AppStateTracker$MyHandler;->this$0:Lcom/android/server/AppStateTracker;
 
     .line 824
-    invoke-static {v0}, Lcom/android/server/AppStateTracker;->access$800(Lcom/android/server/AppStateTracker;)Lcom/android/internal/util/StatLogger;
+    .local v0, "sender":Lcom/android/server/AppStateTracker;
+    iget-object v2, p0, Lcom/android/server/AppStateTracker$MyHandler;->this$0:Lcom/android/server/AppStateTracker;
+
+    invoke-static {v2}, Lcom/android/server/AppStateTracker;->access$800(Lcom/android/server/AppStateTracker;)Lcom/android/internal/util/StatLogger;
 
     move-result-object v2
 
@@ -205,367 +213,79 @@
     move-result-wide v2
 
     .line 825
+    .local v2, "start":J
     iget v4, p1, Landroid/os/Message;->what:I
 
     const/4 v5, 0x1
 
     const/4 v6, 0x0
 
-    packed-switch v4, :pswitch_data_184
+    packed-switch v4, :pswitch_data_186
 
     .line 915
-    :pswitch_27  #0x2
+    :pswitch_29  #0x2
     return-void
 
     .line 912
-    :pswitch_28  #0xe
-    iget v0, p1, Landroid/os/Message;->arg1:I
+    :pswitch_2a  #0xe
+    iget v1, p1, Landroid/os/Message;->arg1:I
 
-    iget p1, p1, Landroid/os/Message;->arg1:I
+    iget v4, p1, Landroid/os/Message;->arg1:I
 
-    if-eqz p1, :cond_2f
+    if-eqz v4, :cond_31
 
-    goto :goto_30
+    goto :goto_32
 
-    :cond_2f
+    :cond_31
     move v5, v6
 
-    :goto_30
-    invoke-virtual {p0, v0, v5}, Lcom/android/server/AppStateTracker$MyHandler;->handleUidIdle(IZ)V
+    :goto_32
+    invoke-virtual {p0, v1, v5}, Lcom/android/server/AppStateTracker$MyHandler;->handleUidIdle(IZ)V
 
     .line 913
     return-void
 
     .line 909
-    :pswitch_34  #0xd
-    iget v0, p1, Landroid/os/Message;->arg1:I
+    :pswitch_36  #0xd
+    iget v1, p1, Landroid/os/Message;->arg1:I
 
-    iget p1, p1, Landroid/os/Message;->arg1:I
+    iget v4, p1, Landroid/os/Message;->arg1:I
 
-    if-eqz p1, :cond_3b
+    if-eqz v4, :cond_3d
 
-    goto :goto_3c
+    goto :goto_3e
 
-    :cond_3b
+    :cond_3d
     move v5, v6
 
-    :goto_3c
-    invoke-virtual {p0, v0, v5}, Lcom/android/server/AppStateTracker$MyHandler;->handleUidGone(IZ)V
+    :goto_3e
+    invoke-virtual {p0, v1, v5}, Lcom/android/server/AppStateTracker$MyHandler;->handleUidGone(IZ)V
 
     .line 910
     return-void
 
     .line 906
-    :pswitch_40  #0xc
-    iget p1, p1, Landroid/os/Message;->arg1:I
+    :pswitch_42  #0xc
+    iget v1, p1, Landroid/os/Message;->arg1:I
 
-    invoke-virtual {p0, p1}, Lcom/android/server/AppStateTracker$MyHandler;->handleUidActive(I)V
+    invoke-virtual {p0, v1}, Lcom/android/server/AppStateTracker$MyHandler;->handleUidActive(I)V
 
     .line 907
     return-void
 
     .line 903
-    :pswitch_46  #0xb
-    iget v0, p1, Landroid/os/Message;->arg1:I
+    :pswitch_48  #0xb
+    iget v1, p1, Landroid/os/Message;->arg1:I
 
-    iget p1, p1, Landroid/os/Message;->arg2:I
+    iget v4, p1, Landroid/os/Message;->arg2:I
 
-    invoke-virtual {p0, v0, p1}, Lcom/android/server/AppStateTracker$MyHandler;->handleUidStateChanged(II)V
+    invoke-virtual {p0, v1, v4}, Lcom/android/server/AppStateTracker$MyHandler;->handleUidStateChanged(II)V
 
     .line 904
     return-void
 
     .line 869
-    :pswitch_4e  #0xa
-    iget-object p1, p0, Lcom/android/server/AppStateTracker$MyHandler;->this$0:Lcom/android/server/AppStateTracker;
-
-    invoke-static {p1}, Lcom/android/server/AppStateTracker;->access$900(Lcom/android/server/AppStateTracker;)[Lcom/android/server/AppStateTracker$Listener;
-
-    move-result-object p1
-
-    array-length v1, p1
-
-    :goto_55
-    if-ge v6, v1, :cond_5f
-
-    aget-object v4, p1, v6
-
-    .line 870
-    invoke-static {v4, v0}, Lcom/android/server/AppStateTracker$Listener;->access$1600(Lcom/android/server/AppStateTracker$Listener;Lcom/android/server/AppStateTracker;)V
-
-    .line 869
-    add-int/lit8 v6, v6, 0x1
-
-    goto :goto_55
-
-    .line 872
-    :cond_5f
-    iget-object p1, p0, Lcom/android/server/AppStateTracker$MyHandler;->this$0:Lcom/android/server/AppStateTracker;
-
-    invoke-static {p1}, Lcom/android/server/AppStateTracker;->access$800(Lcom/android/server/AppStateTracker;)Lcom/android/internal/util/StatLogger;
-
-    move-result-object p1
-
-    const/4 v0, 0x6
-
-    invoke-virtual {p1, v0, v2, v3}, Lcom/android/internal/util/StatLogger;->logDurationStat(IJ)J
-
-    .line 873
-    return-void
-
-    .line 885
-    :pswitch_6a  #0x9
-    iget-object p1, p0, Lcom/android/server/AppStateTracker$MyHandler;->this$0:Lcom/android/server/AppStateTracker;
-
-    invoke-static {p1}, Lcom/android/server/AppStateTracker;->access$100(Lcom/android/server/AppStateTracker;)Ljava/lang/Object;
-
-    move-result-object v0
-
-    monitor-enter v0
-
-    .line 886
-    :try_start_71
-    iget-object p1, p0, Lcom/android/server/AppStateTracker$MyHandler;->this$0:Lcom/android/server/AppStateTracker;
-
-    iget-boolean p1, p1, Lcom/android/server/AppStateTracker;->mForcedAppStandbyEnabled:Z
-
-    if-nez p1, :cond_7e
-
-    iget-object p1, p0, Lcom/android/server/AppStateTracker$MyHandler;->this$0:Lcom/android/server/AppStateTracker;
-
-    iget-boolean p1, p1, Lcom/android/server/AppStateTracker;->mForceAllAppsStandby:Z
-
-    if-nez p1, :cond_7e
-
-    goto :goto_7f
-
-    :cond_7e
-    move v5, v6
-
-    .line 887
-    :goto_7f
-    monitor-exit v0
-    :try_end_80
-    .catchall {:try_start_71 .. :try_end_80} :catchall_a0
-
-    .line 888
-    iget-object p1, p0, Lcom/android/server/AppStateTracker$MyHandler;->this$0:Lcom/android/server/AppStateTracker;
-
-    invoke-static {p1}, Lcom/android/server/AppStateTracker;->access$900(Lcom/android/server/AppStateTracker;)[Lcom/android/server/AppStateTracker$Listener;
-
-    move-result-object p1
-
-    array-length v0, p1
-
-    :goto_87
-    if-ge v6, v0, :cond_96
-
-    aget-object v4, p1, v6
-
-    .line 889
-    invoke-virtual {v4}, Lcom/android/server/AppStateTracker$Listener;->updateAllJobs()V
-
-    .line 890
-    if-eqz v5, :cond_93
-
-    .line 891
-    invoke-virtual {v4}, Lcom/android/server/AppStateTracker$Listener;->unblockAllUnrestrictedAlarms()V
-
-    .line 888
-    :cond_93
-    add-int/lit8 v6, v6, 0x1
-
-    goto :goto_87
-
-    .line 894
-    :cond_96
-    iget-object p1, p0, Lcom/android/server/AppStateTracker$MyHandler;->this$0:Lcom/android/server/AppStateTracker;
-
-    invoke-static {p1}, Lcom/android/server/AppStateTracker;->access$800(Lcom/android/server/AppStateTracker;)Lcom/android/internal/util/StatLogger;
-
-    move-result-object p1
-
-    invoke-virtual {p1, v1, v2, v3}, Lcom/android/internal/util/StatLogger;->logDurationStat(IJ)J
-
-    .line 896
-    return-void
-
-    .line 887
-    :catchall_a0
-    move-exception p1
-
-    :try_start_a1
-    monitor-exit v0
-    :try_end_a2
-    .catchall {:try_start_a1 .. :try_end_a2} :catchall_a0
-
-    throw p1
-
-    .line 899
-    :pswitch_a3  #0x8
-    iget-object v0, p0, Lcom/android/server/AppStateTracker$MyHandler;->this$0:Lcom/android/server/AppStateTracker;
-
-    iget p1, p1, Landroid/os/Message;->arg1:I
-
-    invoke-virtual {v0, p1}, Lcom/android/server/AppStateTracker;->handleUserRemoved(I)V
-
-    .line 900
-    return-void
-
-    .line 876
-    :pswitch_ab  #0x7
-    iget-object p1, p0, Lcom/android/server/AppStateTracker$MyHandler;->this$0:Lcom/android/server/AppStateTracker;
-
-    invoke-static {p1}, Lcom/android/server/AppStateTracker;->access$900(Lcom/android/server/AppStateTracker;)[Lcom/android/server/AppStateTracker$Listener;
-
-    move-result-object p1
-
-    array-length v1, p1
-
-    :goto_b2
-    if-ge v6, v1, :cond_bc
-
-    aget-object v4, p1, v6
-
-    .line 877
-    invoke-static {v4, v0}, Lcom/android/server/AppStateTracker$Listener;->access$1700(Lcom/android/server/AppStateTracker$Listener;Lcom/android/server/AppStateTracker;)V
-
-    .line 876
-    add-int/lit8 v6, v6, 0x1
-
-    goto :goto_b2
-
-    .line 879
-    :cond_bc
-    iget-object p1, p0, Lcom/android/server/AppStateTracker$MyHandler;->this$0:Lcom/android/server/AppStateTracker;
-
-    invoke-static {p1}, Lcom/android/server/AppStateTracker;->access$800(Lcom/android/server/AppStateTracker;)Lcom/android/internal/util/StatLogger;
-
-    move-result-object p1
-
-    const/4 v0, 0x7
-
-    invoke-virtual {p1, v0, v2, v3}, Lcom/android/internal/util/StatLogger;->logDurationStat(IJ)J
-
-    .line 880
-    return-void
-
-    .line 862
-    :pswitch_c7  #0x6
-    iget-object p1, p0, Lcom/android/server/AppStateTracker$MyHandler;->this$0:Lcom/android/server/AppStateTracker;
-
-    invoke-static {p1}, Lcom/android/server/AppStateTracker;->access$900(Lcom/android/server/AppStateTracker;)[Lcom/android/server/AppStateTracker$Listener;
-
-    move-result-object p1
-
-    array-length v1, p1
-
-    :goto_ce
-    if-ge v6, v1, :cond_d8
-
-    aget-object v4, p1, v6
-
-    .line 863
-    invoke-static {v4, v0}, Lcom/android/server/AppStateTracker$Listener;->access$1500(Lcom/android/server/AppStateTracker$Listener;Lcom/android/server/AppStateTracker;)V
-
-    .line 862
-    add-int/lit8 v6, v6, 0x1
-
-    goto :goto_ce
-
-    .line 865
-    :cond_d8
-    iget-object p1, p0, Lcom/android/server/AppStateTracker$MyHandler;->this$0:Lcom/android/server/AppStateTracker;
-
-    invoke-static {p1}, Lcom/android/server/AppStateTracker;->access$800(Lcom/android/server/AppStateTracker;)Lcom/android/internal/util/StatLogger;
-
-    move-result-object p1
-
-    const/4 v0, 0x5
-
-    invoke-virtual {p1, v0, v2, v3}, Lcom/android/internal/util/StatLogger;->logDurationStat(IJ)J
-
-    .line 866
-    return-void
-
-    .line 855
-    :pswitch_e3  #0x5
-    iget-object p1, p0, Lcom/android/server/AppStateTracker$MyHandler;->this$0:Lcom/android/server/AppStateTracker;
-
-    invoke-static {p1}, Lcom/android/server/AppStateTracker;->access$900(Lcom/android/server/AppStateTracker;)[Lcom/android/server/AppStateTracker$Listener;
-
-    move-result-object p1
-
-    array-length v1, p1
-
-    :goto_ea
-    if-ge v6, v1, :cond_f4
-
-    aget-object v4, p1, v6
-
-    .line 856
-    invoke-static {v4, v0}, Lcom/android/server/AppStateTracker$Listener;->access$1400(Lcom/android/server/AppStateTracker$Listener;Lcom/android/server/AppStateTracker;)V
-
-    .line 855
-    add-int/lit8 v6, v6, 0x1
-
-    goto :goto_ea
-
-    .line 858
-    :cond_f4
-    iget-object p1, p0, Lcom/android/server/AppStateTracker$MyHandler;->this$0:Lcom/android/server/AppStateTracker;
-
-    invoke-static {p1}, Lcom/android/server/AppStateTracker;->access$800(Lcom/android/server/AppStateTracker;)Lcom/android/internal/util/StatLogger;
-
-    move-result-object p1
-
-    const/4 v0, 0x4
-
-    invoke-virtual {p1, v0, v2, v3}, Lcom/android/internal/util/StatLogger;->logDurationStat(IJ)J
-
-    .line 859
-    return-void
-
-    .line 848
-    :pswitch_ff  #0x4
-    iget-object p1, p0, Lcom/android/server/AppStateTracker$MyHandler;->this$0:Lcom/android/server/AppStateTracker;
-
-    invoke-static {p1}, Lcom/android/server/AppStateTracker;->access$900(Lcom/android/server/AppStateTracker;)[Lcom/android/server/AppStateTracker$Listener;
-
-    move-result-object p1
-
-    array-length v1, p1
-
-    :goto_106
-    if-ge v6, v1, :cond_110
-
-    aget-object v4, p1, v6
-
-    .line 849
-    invoke-static {v4, v0}, Lcom/android/server/AppStateTracker$Listener;->access$1300(Lcom/android/server/AppStateTracker$Listener;Lcom/android/server/AppStateTracker;)V
-
-    .line 848
-    add-int/lit8 v6, v6, 0x1
-
-    goto :goto_106
-
-    .line 851
-    :cond_110
-    iget-object p1, p0, Lcom/android/server/AppStateTracker$MyHandler;->this$0:Lcom/android/server/AppStateTracker;
-
-    invoke-static {p1}, Lcom/android/server/AppStateTracker;->access$800(Lcom/android/server/AppStateTracker;)Lcom/android/internal/util/StatLogger;
-
-    move-result-object p1
-
-    const/4 v0, 0x3
-
-    invoke-virtual {p1, v0, v2, v3}, Lcom/android/internal/util/StatLogger;->logDurationStat(IJ)J
-
-    .line 852
-    return-void
-
-    .line 841
-    :pswitch_11b  #0x3
+    :pswitch_50  #0xa
     iget-object v1, p0, Lcom/android/server/AppStateTracker$MyHandler;->this$0:Lcom/android/server/AppStateTracker;
 
     invoke-static {v1}, Lcom/android/server/AppStateTracker;->access$900(Lcom/android/server/AppStateTracker;)[Lcom/android/server/AppStateTracker$Listener;
@@ -574,12 +294,316 @@
 
     array-length v4, v1
 
-    :goto_122
-    if-ge v6, v4, :cond_132
+    :goto_57
+    if-ge v6, v4, :cond_61
+
+    aget-object v5, v1, v6
+
+    .line 870
+    .local v5, "l":Lcom/android/server/AppStateTracker$Listener;
+    invoke-static {v5, v0}, Lcom/android/server/AppStateTracker$Listener;->access$1600(Lcom/android/server/AppStateTracker$Listener;Lcom/android/server/AppStateTracker;)V
+
+    .line 869
+    .end local v5  # "l":Lcom/android/server/AppStateTracker$Listener;
+    add-int/lit8 v6, v6, 0x1
+
+    goto :goto_57
+
+    .line 872
+    :cond_61
+    iget-object v1, p0, Lcom/android/server/AppStateTracker$MyHandler;->this$0:Lcom/android/server/AppStateTracker;
+
+    invoke-static {v1}, Lcom/android/server/AppStateTracker;->access$800(Lcom/android/server/AppStateTracker;)Lcom/android/internal/util/StatLogger;
+
+    move-result-object v1
+
+    const/4 v4, 0x6
+
+    invoke-virtual {v1, v4, v2, v3}, Lcom/android/internal/util/StatLogger;->logDurationStat(IJ)J
+
+    .line 873
+    return-void
+
+    .line 885
+    :pswitch_6c  #0x9
+    iget-object v4, p0, Lcom/android/server/AppStateTracker$MyHandler;->this$0:Lcom/android/server/AppStateTracker;
+
+    invoke-static {v4}, Lcom/android/server/AppStateTracker;->access$100(Lcom/android/server/AppStateTracker;)Ljava/lang/Object;
+
+    move-result-object v4
+
+    monitor-enter v4
+
+    .line 886
+    :try_start_73
+    iget-object v7, p0, Lcom/android/server/AppStateTracker$MyHandler;->this$0:Lcom/android/server/AppStateTracker;
+
+    iget-boolean v7, v7, Lcom/android/server/AppStateTracker;->mForcedAppStandbyEnabled:Z
+
+    if-nez v7, :cond_80
+
+    iget-object v7, p0, Lcom/android/server/AppStateTracker$MyHandler;->this$0:Lcom/android/server/AppStateTracker;
+
+    iget-boolean v7, v7, Lcom/android/server/AppStateTracker;->mForceAllAppsStandby:Z
+
+    if-nez v7, :cond_80
+
+    goto :goto_81
+
+    :cond_80
+    move v5, v6
+
+    .line 887
+    .local v5, "unblockAlarms":Z
+    :goto_81
+    monitor-exit v4
+    :try_end_82
+    .catchall {:try_start_73 .. :try_end_82} :catchall_a2
+
+    .line 888
+    iget-object v4, p0, Lcom/android/server/AppStateTracker$MyHandler;->this$0:Lcom/android/server/AppStateTracker;
+
+    invoke-static {v4}, Lcom/android/server/AppStateTracker;->access$900(Lcom/android/server/AppStateTracker;)[Lcom/android/server/AppStateTracker$Listener;
+
+    move-result-object v4
+
+    array-length v7, v4
+
+    :goto_89
+    if-ge v6, v7, :cond_98
+
+    aget-object v8, v4, v6
+
+    .line 889
+    .local v8, "l":Lcom/android/server/AppStateTracker$Listener;
+    invoke-virtual {v8}, Lcom/android/server/AppStateTracker$Listener;->updateAllJobs()V
+
+    .line 890
+    if-eqz v5, :cond_95
+
+    .line 891
+    invoke-virtual {v8}, Lcom/android/server/AppStateTracker$Listener;->unblockAllUnrestrictedAlarms()V
+
+    .line 888
+    .end local v8  # "l":Lcom/android/server/AppStateTracker$Listener;
+    :cond_95
+    add-int/lit8 v6, v6, 0x1
+
+    goto :goto_89
+
+    .line 894
+    :cond_98
+    iget-object v4, p0, Lcom/android/server/AppStateTracker$MyHandler;->this$0:Lcom/android/server/AppStateTracker;
+
+    invoke-static {v4}, Lcom/android/server/AppStateTracker;->access$800(Lcom/android/server/AppStateTracker;)Lcom/android/internal/util/StatLogger;
+
+    move-result-object v4
+
+    invoke-virtual {v4, v1, v2, v3}, Lcom/android/internal/util/StatLogger;->logDurationStat(IJ)J
+
+    .line 896
+    return-void
+
+    .line 887
+    .end local v5  # "unblockAlarms":Z
+    :catchall_a2
+    move-exception v1
+
+    :try_start_a3
+    monitor-exit v4
+    :try_end_a4
+    .catchall {:try_start_a3 .. :try_end_a4} :catchall_a2
+
+    throw v1
+
+    .line 899
+    :pswitch_a5  #0x8
+    iget-object v1, p0, Lcom/android/server/AppStateTracker$MyHandler;->this$0:Lcom/android/server/AppStateTracker;
+
+    iget v4, p1, Landroid/os/Message;->arg1:I
+
+    invoke-virtual {v1, v4}, Lcom/android/server/AppStateTracker;->handleUserRemoved(I)V
+
+    .line 900
+    return-void
+
+    .line 876
+    :pswitch_ad  #0x7
+    iget-object v1, p0, Lcom/android/server/AppStateTracker$MyHandler;->this$0:Lcom/android/server/AppStateTracker;
+
+    invoke-static {v1}, Lcom/android/server/AppStateTracker;->access$900(Lcom/android/server/AppStateTracker;)[Lcom/android/server/AppStateTracker$Listener;
+
+    move-result-object v1
+
+    array-length v4, v1
+
+    :goto_b4
+    if-ge v6, v4, :cond_be
+
+    aget-object v5, v1, v6
+
+    .line 877
+    .local v5, "l":Lcom/android/server/AppStateTracker$Listener;
+    invoke-static {v5, v0}, Lcom/android/server/AppStateTracker$Listener;->access$1700(Lcom/android/server/AppStateTracker$Listener;Lcom/android/server/AppStateTracker;)V
+
+    .line 876
+    .end local v5  # "l":Lcom/android/server/AppStateTracker$Listener;
+    add-int/lit8 v6, v6, 0x1
+
+    goto :goto_b4
+
+    .line 879
+    :cond_be
+    iget-object v1, p0, Lcom/android/server/AppStateTracker$MyHandler;->this$0:Lcom/android/server/AppStateTracker;
+
+    invoke-static {v1}, Lcom/android/server/AppStateTracker;->access$800(Lcom/android/server/AppStateTracker;)Lcom/android/internal/util/StatLogger;
+
+    move-result-object v1
+
+    const/4 v4, 0x7
+
+    invoke-virtual {v1, v4, v2, v3}, Lcom/android/internal/util/StatLogger;->logDurationStat(IJ)J
+
+    .line 880
+    return-void
+
+    .line 862
+    :pswitch_c9  #0x6
+    iget-object v1, p0, Lcom/android/server/AppStateTracker$MyHandler;->this$0:Lcom/android/server/AppStateTracker;
+
+    invoke-static {v1}, Lcom/android/server/AppStateTracker;->access$900(Lcom/android/server/AppStateTracker;)[Lcom/android/server/AppStateTracker$Listener;
+
+    move-result-object v1
+
+    array-length v4, v1
+
+    :goto_d0
+    if-ge v6, v4, :cond_da
+
+    aget-object v5, v1, v6
+
+    .line 863
+    .restart local v5  # "l":Lcom/android/server/AppStateTracker$Listener;
+    invoke-static {v5, v0}, Lcom/android/server/AppStateTracker$Listener;->access$1500(Lcom/android/server/AppStateTracker$Listener;Lcom/android/server/AppStateTracker;)V
+
+    .line 862
+    .end local v5  # "l":Lcom/android/server/AppStateTracker$Listener;
+    add-int/lit8 v6, v6, 0x1
+
+    goto :goto_d0
+
+    .line 865
+    :cond_da
+    iget-object v1, p0, Lcom/android/server/AppStateTracker$MyHandler;->this$0:Lcom/android/server/AppStateTracker;
+
+    invoke-static {v1}, Lcom/android/server/AppStateTracker;->access$800(Lcom/android/server/AppStateTracker;)Lcom/android/internal/util/StatLogger;
+
+    move-result-object v1
+
+    const/4 v4, 0x5
+
+    invoke-virtual {v1, v4, v2, v3}, Lcom/android/internal/util/StatLogger;->logDurationStat(IJ)J
+
+    .line 866
+    return-void
+
+    .line 855
+    :pswitch_e5  #0x5
+    iget-object v1, p0, Lcom/android/server/AppStateTracker$MyHandler;->this$0:Lcom/android/server/AppStateTracker;
+
+    invoke-static {v1}, Lcom/android/server/AppStateTracker;->access$900(Lcom/android/server/AppStateTracker;)[Lcom/android/server/AppStateTracker$Listener;
+
+    move-result-object v1
+
+    array-length v4, v1
+
+    :goto_ec
+    if-ge v6, v4, :cond_f6
+
+    aget-object v5, v1, v6
+
+    .line 856
+    .restart local v5  # "l":Lcom/android/server/AppStateTracker$Listener;
+    invoke-static {v5, v0}, Lcom/android/server/AppStateTracker$Listener;->access$1400(Lcom/android/server/AppStateTracker$Listener;Lcom/android/server/AppStateTracker;)V
+
+    .line 855
+    .end local v5  # "l":Lcom/android/server/AppStateTracker$Listener;
+    add-int/lit8 v6, v6, 0x1
+
+    goto :goto_ec
+
+    .line 858
+    :cond_f6
+    iget-object v1, p0, Lcom/android/server/AppStateTracker$MyHandler;->this$0:Lcom/android/server/AppStateTracker;
+
+    invoke-static {v1}, Lcom/android/server/AppStateTracker;->access$800(Lcom/android/server/AppStateTracker;)Lcom/android/internal/util/StatLogger;
+
+    move-result-object v1
+
+    const/4 v4, 0x4
+
+    invoke-virtual {v1, v4, v2, v3}, Lcom/android/internal/util/StatLogger;->logDurationStat(IJ)J
+
+    .line 859
+    return-void
+
+    .line 848
+    :pswitch_101  #0x4
+    iget-object v1, p0, Lcom/android/server/AppStateTracker$MyHandler;->this$0:Lcom/android/server/AppStateTracker;
+
+    invoke-static {v1}, Lcom/android/server/AppStateTracker;->access$900(Lcom/android/server/AppStateTracker;)[Lcom/android/server/AppStateTracker$Listener;
+
+    move-result-object v1
+
+    array-length v4, v1
+
+    :goto_108
+    if-ge v6, v4, :cond_112
+
+    aget-object v5, v1, v6
+
+    .line 849
+    .restart local v5  # "l":Lcom/android/server/AppStateTracker$Listener;
+    invoke-static {v5, v0}, Lcom/android/server/AppStateTracker$Listener;->access$1300(Lcom/android/server/AppStateTracker$Listener;Lcom/android/server/AppStateTracker;)V
+
+    .line 848
+    .end local v5  # "l":Lcom/android/server/AppStateTracker$Listener;
+    add-int/lit8 v6, v6, 0x1
+
+    goto :goto_108
+
+    .line 851
+    :cond_112
+    iget-object v1, p0, Lcom/android/server/AppStateTracker$MyHandler;->this$0:Lcom/android/server/AppStateTracker;
+
+    invoke-static {v1}, Lcom/android/server/AppStateTracker;->access$800(Lcom/android/server/AppStateTracker;)Lcom/android/internal/util/StatLogger;
+
+    move-result-object v1
+
+    const/4 v4, 0x3
+
+    invoke-virtual {v1, v4, v2, v3}, Lcom/android/internal/util/StatLogger;->logDurationStat(IJ)J
+
+    .line 852
+    return-void
+
+    .line 841
+    :pswitch_11d  #0x3
+    iget-object v1, p0, Lcom/android/server/AppStateTracker$MyHandler;->this$0:Lcom/android/server/AppStateTracker;
+
+    invoke-static {v1}, Lcom/android/server/AppStateTracker;->access$900(Lcom/android/server/AppStateTracker;)[Lcom/android/server/AppStateTracker$Listener;
+
+    move-result-object v1
+
+    array-length v4, v1
+
+    :goto_124
+    if-ge v6, v4, :cond_134
 
     aget-object v5, v1, v6
 
     .line 842
+    .restart local v5  # "l":Lcom/android/server/AppStateTracker$Listener;
     iget v7, p1, Landroid/os/Message;->arg1:I
 
     iget-object v8, p1, Landroid/os/Message;->obj:Ljava/lang/Object;
@@ -589,27 +613,28 @@
     invoke-static {v5, v0, v7, v8}, Lcom/android/server/AppStateTracker$Listener;->access$1200(Lcom/android/server/AppStateTracker$Listener;Lcom/android/server/AppStateTracker;ILjava/lang/String;)V
 
     .line 841
+    .end local v5  # "l":Lcom/android/server/AppStateTracker$Listener;
     add-int/lit8 v6, v6, 0x1
 
-    goto :goto_122
+    goto :goto_124
 
     .line 844
-    :cond_132
-    iget-object p1, p0, Lcom/android/server/AppStateTracker$MyHandler;->this$0:Lcom/android/server/AppStateTracker;
+    :cond_134
+    iget-object v1, p0, Lcom/android/server/AppStateTracker$MyHandler;->this$0:Lcom/android/server/AppStateTracker;
 
-    invoke-static {p1}, Lcom/android/server/AppStateTracker;->access$800(Lcom/android/server/AppStateTracker;)Lcom/android/internal/util/StatLogger;
+    invoke-static {v1}, Lcom/android/server/AppStateTracker;->access$800(Lcom/android/server/AppStateTracker;)Lcom/android/internal/util/StatLogger;
 
-    move-result-object p1
+    move-result-object v1
 
-    const/4 v0, 0x2
+    const/4 v4, 0x2
 
-    invoke-virtual {p1, v0, v2, v3}, Lcom/android/internal/util/StatLogger;->logDurationStat(IJ)J
+    invoke-virtual {v1, v4, v2, v3}, Lcom/android/internal/util/StatLogger;->logDurationStat(IJ)J
 
     .line 845
     return-void
 
     .line 834
-    :pswitch_13d  #0x1
+    :pswitch_13f  #0x1
     iget-object v1, p0, Lcom/android/server/AppStateTracker$MyHandler;->this$0:Lcom/android/server/AppStateTracker;
 
     invoke-static {v1}, Lcom/android/server/AppStateTracker;->access$900(Lcom/android/server/AppStateTracker;)[Lcom/android/server/AppStateTracker$Listener;
@@ -620,36 +645,38 @@
 
     move v5, v6
 
-    :goto_145
-    if-ge v5, v4, :cond_151
+    :goto_147
+    if-ge v5, v4, :cond_153
 
     aget-object v7, v1, v5
 
     .line 835
+    .local v7, "l":Lcom/android/server/AppStateTracker$Listener;
     iget v8, p1, Landroid/os/Message;->arg1:I
 
     invoke-static {v7, v0, v8}, Lcom/android/server/AppStateTracker$Listener;->access$1100(Lcom/android/server/AppStateTracker$Listener;Lcom/android/server/AppStateTracker;I)V
 
     .line 834
+    .end local v7  # "l":Lcom/android/server/AppStateTracker$Listener;
     add-int/lit8 v5, v5, 0x1
 
-    goto :goto_145
+    goto :goto_147
 
     .line 837
-    :cond_151
-    iget-object p1, p0, Lcom/android/server/AppStateTracker$MyHandler;->this$0:Lcom/android/server/AppStateTracker;
+    :cond_153
+    iget-object v1, p0, Lcom/android/server/AppStateTracker$MyHandler;->this$0:Lcom/android/server/AppStateTracker;
 
-    invoke-static {p1}, Lcom/android/server/AppStateTracker;->access$800(Lcom/android/server/AppStateTracker;)Lcom/android/internal/util/StatLogger;
+    invoke-static {v1}, Lcom/android/server/AppStateTracker;->access$800(Lcom/android/server/AppStateTracker;)Lcom/android/internal/util/StatLogger;
 
-    move-result-object p1
+    move-result-object v1
 
-    invoke-virtual {p1, v6, v2, v3}, Lcom/android/internal/util/StatLogger;->logDurationStat(IJ)J
+    invoke-virtual {v1, v6, v2, v3}, Lcom/android/internal/util/StatLogger;->logDurationStat(IJ)J
 
     .line 838
     return-void
 
     .line 827
-    :pswitch_15b  #0x0
+    :pswitch_15d  #0x0
     iget-object v1, p0, Lcom/android/server/AppStateTracker$MyHandler;->this$0:Lcom/android/server/AppStateTracker;
 
     invoke-static {v1}, Lcom/android/server/AppStateTracker;->access$900(Lcom/android/server/AppStateTracker;)[Lcom/android/server/AppStateTracker$Listener;
@@ -658,80 +685,85 @@
 
     array-length v4, v1
 
-    :goto_162
-    if-ge v6, v4, :cond_16e
+    :goto_164
+    if-ge v6, v4, :cond_170
 
     aget-object v7, v1, v6
 
     .line 828
+    .restart local v7  # "l":Lcom/android/server/AppStateTracker$Listener;
     iget v8, p1, Landroid/os/Message;->arg1:I
 
     invoke-static {v7, v0, v8}, Lcom/android/server/AppStateTracker$Listener;->access$1000(Lcom/android/server/AppStateTracker$Listener;Lcom/android/server/AppStateTracker;I)V
 
     .line 827
+    .end local v7  # "l":Lcom/android/server/AppStateTracker$Listener;
     add-int/lit8 v6, v6, 0x1
 
-    goto :goto_162
+    goto :goto_164
 
     .line 830
-    :cond_16e
-    iget-object p1, p0, Lcom/android/server/AppStateTracker$MyHandler;->this$0:Lcom/android/server/AppStateTracker;
+    :cond_170
+    iget-object v1, p0, Lcom/android/server/AppStateTracker$MyHandler;->this$0:Lcom/android/server/AppStateTracker;
 
-    invoke-static {p1}, Lcom/android/server/AppStateTracker;->access$800(Lcom/android/server/AppStateTracker;)Lcom/android/internal/util/StatLogger;
+    invoke-static {v1}, Lcom/android/server/AppStateTracker;->access$800(Lcom/android/server/AppStateTracker;)Lcom/android/internal/util/StatLogger;
 
-    move-result-object p1
+    move-result-object v1
 
-    invoke-virtual {p1, v5, v2, v3}, Lcom/android/internal/util/StatLogger;->logDurationStat(IJ)J
+    invoke-virtual {v1, v5, v2, v3}, Lcom/android/internal/util/StatLogger;->logDurationStat(IJ)J
 
     .line 831
     return-void
 
     .line 821
-    :catchall_178
-    move-exception p1
+    .end local v0  # "sender":Lcom/android/server/AppStateTracker;
+    .end local v2  # "start":J
+    :catchall_17a
+    move-exception v1
 
-    :try_start_179
+    :try_start_17b
     monitor-exit v0
-    :try_end_17a
-    .catchall {:try_start_179 .. :try_end_17a} :catchall_178
+    :try_end_17c
+    .catchall {:try_start_17b .. :try_end_17c} :catchall_17a
 
-    throw p1
+    throw v1
 
     .line 812
-    :cond_17b
+    :cond_17d
     iget-object v0, p0, Lcom/android/server/AppStateTracker$MyHandler;->this$0:Lcom/android/server/AppStateTracker;
 
-    iget p1, p1, Landroid/os/Message;->arg1:I
+    iget v1, p1, Landroid/os/Message;->arg1:I
 
-    invoke-virtual {v0, p1}, Lcom/android/server/AppStateTracker;->handleUserRemoved(I)V
+    invoke-virtual {v0, v1}, Lcom/android/server/AppStateTracker;->handleUserRemoved(I)V
 
     .line 813
     return-void
 
     nop
 
-    :pswitch_data_184
+    :pswitch_data_186
     .packed-switch 0x0
-        :pswitch_15b  #00000000
-        :pswitch_13d  #00000001
-        :pswitch_27  #00000002
-        :pswitch_11b  #00000003
-        :pswitch_ff  #00000004
-        :pswitch_e3  #00000005
-        :pswitch_c7  #00000006
-        :pswitch_ab  #00000007
-        :pswitch_a3  #00000008
-        :pswitch_6a  #00000009
-        :pswitch_4e  #0000000a
-        :pswitch_46  #0000000b
-        :pswitch_40  #0000000c
-        :pswitch_34  #0000000d
-        :pswitch_28  #0000000e
+        :pswitch_15d  #00000000
+        :pswitch_13f  #00000001
+        :pswitch_29  #00000002
+        :pswitch_11d  #00000003
+        :pswitch_101  #00000004
+        :pswitch_e5  #00000005
+        :pswitch_c9  #00000006
+        :pswitch_ad  #00000007
+        :pswitch_a5  #00000008
+        :pswitch_6c  #00000009
+        :pswitch_50  #0000000a
+        :pswitch_48  #0000000b
+        :pswitch_42  #0000000c
+        :pswitch_36  #0000000d
+        :pswitch_2a  #0000000e
     .end packed-switch
 .end method
 
 .method public handleUidActive(I)V
     .registers 4
+    .param p1, "uid"  # I
 
     .line 932
     iget-object v0, p0, Lcom/android/server/AppStateTracker$MyHandler;->this$0:Lcom/android/server/AppStateTracker;
@@ -772,41 +804,47 @@
 
     .line 936
     :catchall_1c
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_1e
     .catchall {:try_start_7 .. :try_end_1e} :catchall_1c
 
-    throw p1
+    throw v1
 .end method
 
 .method public handleUidGone(IZ)V
-    .registers 3
+    .registers 4
+    .param p1, "uid"  # I
+    .param p2, "disabled"  # Z
 
     .line 940
-    const/4 p2, 0x1
+    const/4 v0, 0x1
 
-    invoke-direct {p0, p1, p2}, Lcom/android/server/AppStateTracker$MyHandler;->removeUid(IZ)V
+    invoke-direct {p0, p1, v0}, Lcom/android/server/AppStateTracker$MyHandler;->removeUid(IZ)V
 
     .line 941
     return-void
 .end method
 
 .method public handleUidIdle(IZ)V
-    .registers 3
+    .registers 4
+    .param p1, "uid"  # I
+    .param p2, "disabled"  # Z
 
     .line 945
-    const/4 p2, 0x0
+    const/4 v0, 0x0
 
-    invoke-direct {p0, p1, p2}, Lcom/android/server/AppStateTracker$MyHandler;->removeUid(IZ)V
+    invoke-direct {p0, p1, v0}, Lcom/android/server/AppStateTracker$MyHandler;->removeUid(IZ)V
 
     .line 946
     return-void
 .end method
 
 .method public handleUidStateChanged(II)V
-    .registers 5
+    .registers 6
+    .param p1, "uid"  # I
+    .param p2, "procState"  # I
 
     .line 918
     iget-object v0, p0, Lcom/android/server/AppStateTracker$MyHandler;->this$0:Lcom/android/server/AppStateTracker;
@@ -824,49 +862,49 @@
 
     .line 920
     :try_start_a
-    iget-object p2, p0, Lcom/android/server/AppStateTracker$MyHandler;->this$0:Lcom/android/server/AppStateTracker;
+    iget-object v1, p0, Lcom/android/server/AppStateTracker$MyHandler;->this$0:Lcom/android/server/AppStateTracker;
 
-    iget-object p2, p2, Lcom/android/server/AppStateTracker;->mForegroundUids:Landroid/util/SparseBooleanArray;
+    iget-object v1, v1, Lcom/android/server/AppStateTracker;->mForegroundUids:Landroid/util/SparseBooleanArray;
 
-    const/4 v1, 0x0
+    const/4 v2, 0x0
 
-    invoke-static {p2, p1, v1}, Lcom/android/server/AppStateTracker;->access$1800(Landroid/util/SparseBooleanArray;IZ)Z
+    invoke-static {v1, p1, v2}, Lcom/android/server/AppStateTracker;->access$1800(Landroid/util/SparseBooleanArray;IZ)Z
 
-    move-result p2
+    move-result v1
 
-    if-eqz p2, :cond_32
+    if-eqz v1, :cond_32
 
     .line 921
-    iget-object p2, p0, Lcom/android/server/AppStateTracker$MyHandler;->this$0:Lcom/android/server/AppStateTracker;
+    iget-object v1, p0, Lcom/android/server/AppStateTracker$MyHandler;->this$0:Lcom/android/server/AppStateTracker;
 
-    invoke-static {p2}, Lcom/android/server/AppStateTracker;->access$200(Lcom/android/server/AppStateTracker;)Lcom/android/server/AppStateTracker$MyHandler;
+    invoke-static {v1}, Lcom/android/server/AppStateTracker;->access$200(Lcom/android/server/AppStateTracker;)Lcom/android/server/AppStateTracker$MyHandler;
 
-    move-result-object p2
+    move-result-object v1
 
-    invoke-virtual {p2, p1}, Lcom/android/server/AppStateTracker$MyHandler;->notifyUidForegroundStateChanged(I)V
+    invoke-virtual {v1, p1}, Lcom/android/server/AppStateTracker$MyHandler;->notifyUidForegroundStateChanged(I)V
 
     goto :goto_32
 
     .line 924
     :cond_1f
-    iget-object p2, p0, Lcom/android/server/AppStateTracker$MyHandler;->this$0:Lcom/android/server/AppStateTracker;
+    iget-object v1, p0, Lcom/android/server/AppStateTracker$MyHandler;->this$0:Lcom/android/server/AppStateTracker;
 
-    iget-object p2, p2, Lcom/android/server/AppStateTracker;->mForegroundUids:Landroid/util/SparseBooleanArray;
+    iget-object v1, v1, Lcom/android/server/AppStateTracker;->mForegroundUids:Landroid/util/SparseBooleanArray;
 
-    invoke-static {p2, p1}, Lcom/android/server/AppStateTracker;->access$1900(Landroid/util/SparseBooleanArray;I)Z
+    invoke-static {v1, p1}, Lcom/android/server/AppStateTracker;->access$1900(Landroid/util/SparseBooleanArray;I)Z
 
-    move-result p2
+    move-result v1
 
-    if-eqz p2, :cond_32
+    if-eqz v1, :cond_32
 
     .line 925
-    iget-object p2, p0, Lcom/android/server/AppStateTracker$MyHandler;->this$0:Lcom/android/server/AppStateTracker;
+    iget-object v1, p0, Lcom/android/server/AppStateTracker$MyHandler;->this$0:Lcom/android/server/AppStateTracker;
 
-    invoke-static {p2}, Lcom/android/server/AppStateTracker;->access$200(Lcom/android/server/AppStateTracker;)Lcom/android/server/AppStateTracker$MyHandler;
+    invoke-static {v1}, Lcom/android/server/AppStateTracker;->access$200(Lcom/android/server/AppStateTracker;)Lcom/android/server/AppStateTracker$MyHandler;
 
-    move-result-object p2
+    move-result-object v1
 
-    invoke-virtual {p2, p1}, Lcom/android/server/AppStateTracker$MyHandler;->notifyUidForegroundStateChanged(I)V
+    invoke-virtual {v1, p1}, Lcom/android/server/AppStateTracker$MyHandler;->notifyUidForegroundStateChanged(I)V
 
     .line 928
     :cond_32
@@ -878,13 +916,13 @@
 
     .line 928
     :catchall_34
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_36
     .catchall {:try_start_a .. :try_end_36} :catchall_34
 
-    throw p1
+    throw v1
 .end method
 
 .method public notifyAllUnwhitelisted()V
@@ -984,6 +1022,8 @@
 
 .method public notifyRunAnyAppOpsChanged(ILjava/lang/String;)V
     .registers 5
+    .param p1, "uid"  # I
+    .param p2, "packageName"  # Ljava/lang/String;
 
     .line 755
     const/4 v0, 0x3
@@ -992,9 +1032,9 @@
 
     invoke-virtual {p0, v0, p1, v1, p2}, Lcom/android/server/AppStateTracker$MyHandler;->obtainMessage(IIILjava/lang/Object;)Landroid/os/Message;
 
-    move-result-object p1
+    move-result-object v0
 
-    invoke-virtual {p1}, Landroid/os/Message;->sendToTarget()V
+    invoke-virtual {v0}, Landroid/os/Message;->sendToTarget()V
 
     .line 756
     return-void
@@ -1021,15 +1061,16 @@
 
 .method public notifyUidActiveStateChanged(I)V
     .registers 3
+    .param p1, "uid"  # I
 
     .line 747
     const/4 v0, 0x0
 
     invoke-virtual {p0, v0, p1, v0}, Lcom/android/server/AppStateTracker$MyHandler;->obtainMessage(III)Landroid/os/Message;
 
-    move-result-object p1
+    move-result-object v0
 
-    invoke-virtual {p1}, Landroid/os/Message;->sendToTarget()V
+    invoke-virtual {v0}, Landroid/os/Message;->sendToTarget()V
 
     .line 748
     return-void
@@ -1037,6 +1078,7 @@
 
 .method public notifyUidForegroundStateChanged(I)V
     .registers 4
+    .param p1, "uid"  # I
 
     .line 751
     const/4 v0, 0x1
@@ -1045,9 +1087,9 @@
 
     invoke-virtual {p0, v0, p1, v1}, Lcom/android/server/AppStateTracker$MyHandler;->obtainMessage(III)Landroid/os/Message;
 
-    move-result-object p1
+    move-result-object v0
 
-    invoke-virtual {p1}, Landroid/os/Message;->sendToTarget()V
+    invoke-virtual {v0}, Landroid/os/Message;->sendToTarget()V
 
     .line 752
     return-void
@@ -1055,6 +1097,7 @@
 
 .method public onUidActive(I)V
     .registers 4
+    .param p1, "uid"  # I
 
     .line 797
     const/16 v0, 0xc
@@ -1063,9 +1106,9 @@
 
     invoke-virtual {p0, v0, p1, v1}, Lcom/android/server/AppStateTracker$MyHandler;->obtainMessage(III)Landroid/os/Message;
 
-    move-result-object p1
+    move-result-object v0
 
-    invoke-virtual {p1}, Landroid/os/Message;->sendToTarget()V
+    invoke-virtual {v0}, Landroid/os/Message;->sendToTarget()V
 
     .line 798
     return-void
@@ -1073,15 +1116,17 @@
 
 .method public onUidGone(IZ)V
     .registers 4
+    .param p1, "uid"  # I
+    .param p2, "disabled"  # Z
 
     .line 801
     const/16 v0, 0xd
 
     invoke-virtual {p0, v0, p1, p2}, Lcom/android/server/AppStateTracker$MyHandler;->obtainMessage(III)Landroid/os/Message;
 
-    move-result-object p1
+    move-result-object v0
 
-    invoke-virtual {p1}, Landroid/os/Message;->sendToTarget()V
+    invoke-virtual {v0}, Landroid/os/Message;->sendToTarget()V
 
     .line 802
     return-void
@@ -1089,15 +1134,17 @@
 
 .method public onUidIdle(IZ)V
     .registers 4
+    .param p1, "uid"  # I
+    .param p2, "disabled"  # Z
 
     .line 805
     const/16 v0, 0xe
 
     invoke-virtual {p0, v0, p1, p2}, Lcom/android/server/AppStateTracker$MyHandler;->obtainMessage(III)Landroid/os/Message;
 
-    move-result-object p1
+    move-result-object v0
 
-    invoke-virtual {p1}, Landroid/os/Message;->sendToTarget()V
+    invoke-virtual {v0}, Landroid/os/Message;->sendToTarget()V
 
     .line 806
     return-void
@@ -1105,15 +1152,17 @@
 
 .method public onUidStateChanged(II)V
     .registers 4
+    .param p1, "uid"  # I
+    .param p2, "procState"  # I
 
     .line 793
     const/16 v0, 0xb
 
     invoke-virtual {p0, v0, p1, p2}, Lcom/android/server/AppStateTracker$MyHandler;->obtainMessage(III)Landroid/os/Message;
 
-    move-result-object p1
+    move-result-object v0
 
-    invoke-virtual {p1}, Landroid/os/Message;->sendToTarget()V
+    invoke-virtual {v0}, Landroid/os/Message;->sendToTarget()V
 
     .line 794
     return-void

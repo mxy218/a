@@ -42,6 +42,8 @@
 
 .method private constructor <init>(II)V
     .registers 3
+    .param p1, "lowerBound"  # I
+    .param p2, "upperBound"  # I
 
     .line 38
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -58,6 +60,9 @@
 
 .method synthetic constructor <init>(IILcom/android/server/firewall/PortFilter$1;)V
     .registers 4
+    .param p1, "x0"  # I
+    .param p2, "x1"  # I
+    .param p3, "x2"  # Lcom/android/server/firewall/PortFilter$1;
 
     .line 27
     invoke-direct {p0, p1, p2}, Lcom/android/server/firewall/PortFilter;-><init>(II)V
@@ -68,57 +73,60 @@
 
 # virtual methods
 .method public matches(Lcom/android/server/firewall/IntentFirewall;Landroid/content/ComponentName;Landroid/content/Intent;IILjava/lang/String;I)Z
-    .registers 8
+    .registers 12
+    .param p1, "ifw"  # Lcom/android/server/firewall/IntentFirewall;
+    .param p2, "resolvedComponent"  # Landroid/content/ComponentName;
+    .param p3, "intent"  # Landroid/content/Intent;
+    .param p4, "callerUid"  # I
+    .param p5, "callerPid"  # I
+    .param p6, "resolvedType"  # Ljava/lang/String;
+    .param p7, "receivingUid"  # I
 
     .line 46
-    nop
+    const/4 v0, -0x1
 
     .line 47
+    .local v0, "port":I
     invoke-virtual {p3}, Landroid/content/Intent;->getData()Landroid/net/Uri;
 
-    move-result-object p1
+    move-result-object v1
 
     .line 48
-    const/4 p2, -0x1
-
-    if-eqz p1, :cond_d
+    .local v1, "uri":Landroid/net/Uri;
+    if-eqz v1, :cond_b
 
     .line 49
-    invoke-virtual {p1}, Landroid/net/Uri;->getPort()I
+    invoke-virtual {v1}, Landroid/net/Uri;->getPort()I
 
-    move-result p1
-
-    goto :goto_e
-
-    .line 48
-    :cond_d
-    move p1, p2
+    move-result v0
 
     .line 51
-    :goto_e
-    if-eq p1, p2, :cond_1e
+    :cond_b
+    const/4 v2, -0x1
 
-    iget p3, p0, Lcom/android/server/firewall/PortFilter;->mLowerBound:I
+    if-eq v0, v2, :cond_1c
 
-    if-eq p3, p2, :cond_16
+    iget v3, p0, Lcom/android/server/firewall/PortFilter;->mLowerBound:I
 
-    if-gt p3, p1, :cond_1e
+    if-eq v3, v2, :cond_14
 
-    :cond_16
-    iget p3, p0, Lcom/android/server/firewall/PortFilter;->mUpperBound:I
+    if-gt v3, v0, :cond_1c
 
-    if-eq p3, p2, :cond_1c
+    :cond_14
+    iget v3, p0, Lcom/android/server/firewall/PortFilter;->mUpperBound:I
 
-    if-lt p3, p1, :cond_1e
+    if-eq v3, v2, :cond_1a
+
+    if-lt v3, v0, :cond_1c
+
+    :cond_1a
+    const/4 v2, 0x1
+
+    goto :goto_1d
 
     :cond_1c
-    const/4 p1, 0x1
+    const/4 v2, 0x0
 
-    goto :goto_1f
-
-    :cond_1e
-    const/4 p1, 0x0
-
-    :goto_1f
-    return p1
+    :goto_1d
+    return v2
 .end method

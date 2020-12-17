@@ -61,6 +61,7 @@
 
 .method public constructor <init>(Lcom/android/server/job/JobSchedulerInternal$JobStorePersistStats;)V
     .registers 3
+    .param p1, "source"  # Lcom/android/server/job/JobSchedulerInternal$JobStorePersistStats;
 
     .line 97
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -111,9 +112,9 @@
     iput v0, p0, Lcom/android/server/job/JobSchedulerInternal$JobStorePersistStats;->countSystemServerJobsSaved:I
 
     .line 104
-    iget p1, p1, Lcom/android/server/job/JobSchedulerInternal$JobStorePersistStats;->countSystemSyncManagerJobsSaved:I
+    iget v0, p1, Lcom/android/server/job/JobSchedulerInternal$JobStorePersistStats;->countSystemSyncManagerJobsSaved:I
 
-    iput p1, p0, Lcom/android/server/job/JobSchedulerInternal$JobStorePersistStats;->countSystemSyncManagerJobsSaved:I
+    iput v0, p0, Lcom/android/server/job/JobSchedulerInternal$JobStorePersistStats;->countSystemSyncManagerJobsSaved:I
 
     .line 105
     return-void

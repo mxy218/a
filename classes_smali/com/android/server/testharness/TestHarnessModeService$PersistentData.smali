@@ -31,6 +31,9 @@
 # direct methods
 .method constructor <init>(I[B[B)V
     .registers 4
+    .param p1, "version"  # I
+    .param p2, "adbKeys"  # [B
+    .param p3, "adbTempKeys"  # [B
 
     .line 408
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -50,6 +53,8 @@
 
 .method constructor <init>([B[B)V
     .registers 4
+    .param p1, "adbKeys"  # [B
+    .param p2, "adbTempKeys"  # [B
 
     .line 405
     const/4 v0, 0x2
@@ -61,7 +66,8 @@
 .end method
 
 .method static fromBytes([B)Lcom/android/server/testharness/TestHarnessModeService$PersistentData;
-    .registers 4
+    .registers 8
+    .param p0, "bytes"  # [B
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Lcom/android/server/testharness/TestHarnessModeService$SetUpTestHarnessModeException;
@@ -79,14 +85,16 @@
     invoke-direct {v0, v1}, Ljava/io/DataInputStream;-><init>(Ljava/io/InputStream;)V
 
     .line 417
+    .local v0, "is":Ljava/io/DataInputStream;
     invoke-virtual {v0}, Ljava/io/DataInputStream;->readInt()I
 
-    move-result p0
+    move-result v1
 
     .line 418
-    const/4 v1, 0x1
+    .local v1, "version":I
+    const/4 v2, 0x1
 
-    if-ne p0, v1, :cond_14
+    if-ne v1, v2, :cond_14
 
     .line 421
     invoke-virtual {v0}, Ljava/io/DataInputStream;->readBoolean()Z
@@ -95,44 +103,55 @@
     :cond_14
     invoke-virtual {v0}, Ljava/io/DataInputStream;->readInt()I
 
-    move-result v1
+    move-result v2
 
     .line 424
-    new-array v1, v1, [B
+    .local v2, "adbKeysLength":I
+    new-array v3, v2, [B
 
     .line 425
-    invoke-virtual {v0, v1}, Ljava/io/DataInputStream;->readFully([B)V
+    .local v3, "adbKeys":[B
+    invoke-virtual {v0, v3}, Ljava/io/DataInputStream;->readFully([B)V
 
     .line 426
     invoke-virtual {v0}, Ljava/io/DataInputStream;->readInt()I
 
-    move-result v2
+    move-result v4
 
     .line 427
-    new-array v2, v2, [B
+    .local v4, "adbTempKeysLength":I
+    new-array v5, v4, [B
 
     .line 428
-    invoke-virtual {v0, v2}, Ljava/io/DataInputStream;->readFully([B)V
+    .local v5, "adbTempKeys":[B
+    invoke-virtual {v0, v5}, Ljava/io/DataInputStream;->readFully([B)V
 
     .line 429
-    new-instance v0, Lcom/android/server/testharness/TestHarnessModeService$PersistentData;
+    new-instance v6, Lcom/android/server/testharness/TestHarnessModeService$PersistentData;
 
-    invoke-direct {v0, p0, v1, v2}, Lcom/android/server/testharness/TestHarnessModeService$PersistentData;-><init>(I[B[B)V
+    invoke-direct {v6, v1, v3, v5}, Lcom/android/server/testharness/TestHarnessModeService$PersistentData;-><init>(I[B[B)V
     :try_end_2b
     .catch Ljava/io/IOException; {:try_start_0 .. :try_end_2b} :catch_2c
 
-    return-object v0
+    return-object v6
 
     .line 430
+    .end local v0  # "is":Ljava/io/DataInputStream;
+    .end local v1  # "version":I
+    .end local v2  # "adbKeysLength":I
+    .end local v3  # "adbKeys":[B
+    .end local v4  # "adbTempKeysLength":I
+    .end local v5  # "adbTempKeys":[B
     :catch_2c
-    move-exception p0
+    move-exception v0
 
     .line 431
-    new-instance v0, Lcom/android/server/testharness/TestHarnessModeService$SetUpTestHarnessModeException;
+    .local v0, "e":Ljava/io/IOException;
+    new-instance v1, Lcom/android/server/testharness/TestHarnessModeService$SetUpTestHarnessModeException;
 
-    invoke-direct {v0, p0}, Lcom/android/server/testharness/TestHarnessModeService$SetUpTestHarnessModeException;-><init>(Ljava/lang/Exception;)V
+    invoke-direct {v1, v0}, Lcom/android/server/testharness/TestHarnessModeService$SetUpTestHarnessModeException;-><init>(Ljava/lang/Exception;)V
 
-    throw v0
+    throw v1
 .end method
 
 
@@ -147,11 +166,13 @@
     invoke-direct {v0}, Ljava/io/ByteArrayOutputStream;-><init>()V
 
     .line 438
+    .local v0, "os":Ljava/io/ByteArrayOutputStream;
     new-instance v1, Ljava/io/DataOutputStream;
 
     invoke-direct {v1, v0}, Ljava/io/DataOutputStream;-><init>(Ljava/io/OutputStream;)V
 
     .line 439
+    .local v1, "dos":Ljava/io/DataOutputStream;
     const/4 v2, 0x2
 
     invoke-virtual {v1, v2}, Ljava/io/DataOutputStream;->writeInt(I)V
@@ -186,17 +207,20 @@
     .line 445
     invoke-virtual {v0}, Ljava/io/ByteArrayOutputStream;->toByteArray()[B
 
-    move-result-object v0
+    move-result-object v2
     :try_end_2b
     .catch Ljava/io/IOException; {:try_start_0 .. :try_end_2b} :catch_2c
 
-    return-object v0
+    return-object v2
 
     .line 446
+    .end local v0  # "os":Ljava/io/ByteArrayOutputStream;
+    .end local v1  # "dos":Ljava/io/DataOutputStream;
     :catch_2c
     move-exception v0
 
     .line 447
+    .local v0, "e":Ljava/io/IOException;
     new-instance v1, Ljava/lang/RuntimeException;
 
     invoke-direct {v1, v0}, Ljava/lang/RuntimeException;-><init>(Ljava/lang/Throwable;)V

@@ -22,6 +22,8 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/am/ActivityManagerService;Z)V
     .registers 4
+    .param p1, "service"  # Lcom/android/server/am/ActivityManagerService;
+    .param p2, "postChangesToAtm"  # Z
 
     .line 29
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -72,47 +74,52 @@
 
 .method get(I)Lcom/android/server/am/UidRecord;
     .registers 3
+    .param p1, "uid"  # I
 
     .line 56
     iget-object v0, p0, Lcom/android/server/am/ActiveUids;->mActiveUids:Landroid/util/SparseArray;
 
     invoke-virtual {v0, p1}, Landroid/util/SparseArray;->get(I)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v0
 
-    check-cast p1, Lcom/android/server/am/UidRecord;
+    check-cast v0, Lcom/android/server/am/UidRecord;
 
-    return-object p1
+    return-object v0
 .end method
 
 .method indexOfKey(I)I
     .registers 3
+    .param p1, "uid"  # I
 
     .line 72
     iget-object v0, p0, Lcom/android/server/am/ActiveUids;->mActiveUids:Landroid/util/SparseArray;
 
     invoke-virtual {v0, p1}, Landroid/util/SparseArray;->indexOfKey(I)I
 
-    move-result p1
+    move-result v0
 
-    return p1
+    return v0
 .end method
 
 .method keyAt(I)I
     .registers 3
+    .param p1, "index"  # I
 
     .line 68
     iget-object v0, p0, Lcom/android/server/am/ActiveUids;->mActiveUids:Landroid/util/SparseArray;
 
     invoke-virtual {v0, p1}, Landroid/util/SparseArray;->keyAt(I)I
 
-    move-result p1
+    move-result v0
 
-    return p1
+    return v0
 .end method
 
 .method put(ILcom/android/server/am/UidRecord;)V
-    .registers 4
+    .registers 5
+    .param p1, "uid"  # I
+    .param p2, "value"  # Lcom/android/server/am/UidRecord;
 
     .line 35
     iget-object v0, p0, Lcom/android/server/am/ActiveUids;->mActiveUids:Landroid/util/SparseArray;
@@ -131,9 +138,9 @@
 
     invoke-virtual {p2}, Lcom/android/server/am/UidRecord;->getCurProcState()I
 
-    move-result p2
+    move-result v1
 
-    invoke-virtual {v0, p1, p2}, Lcom/android/server/wm/ActivityTaskManagerInternal;->onUidActive(II)V
+    invoke-virtual {v0, p1, v1}, Lcom/android/server/wm/ActivityTaskManagerInternal;->onUidActive(II)V
 
     .line 39
     :cond_14
@@ -142,6 +149,7 @@
 
 .method remove(I)V
     .registers 3
+    .param p1, "uid"  # I
 
     .line 42
     iget-object v0, p0, Lcom/android/server/am/ActiveUids;->mActiveUids:Landroid/util/SparseArray;
@@ -180,15 +188,16 @@
 
 .method valueAt(I)Lcom/android/server/am/UidRecord;
     .registers 3
+    .param p1, "index"  # I
 
     .line 64
     iget-object v0, p0, Lcom/android/server/am/ActiveUids;->mActiveUids:Landroid/util/SparseArray;
 
     invoke-virtual {v0, p1}, Landroid/util/SparseArray;->valueAt(I)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v0
 
-    check-cast p1, Lcom/android/server/am/UidRecord;
+    check-cast v0, Lcom/android/server/am/UidRecord;
 
-    return-object p1
+    return-object v0
 .end method

@@ -25,7 +25,7 @@
 .method private constructor <init>(Lcom/android/server/role/RoleManagerService;)V
     .registers 2
 
-    .line 788
+    .line 787
     iput-object p1, p0, Lcom/android/server/role/RoleManagerService$DefaultDialerProvider;->this$0:Lcom/android/server/role/RoleManagerService;
 
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -35,8 +35,10 @@
 
 .method synthetic constructor <init>(Lcom/android/server/role/RoleManagerService;Lcom/android/server/role/RoleManagerService$1;)V
     .registers 3
+    .param p1, "x0"  # Lcom/android/server/role/RoleManagerService;
+    .param p2, "x1"  # Lcom/android/server/role/RoleManagerService$1;
 
-    .line 788
+    .line 787
     invoke-direct {p0, p1}, Lcom/android/server/role/RoleManagerService$DefaultDialerProvider;-><init>(Lcom/android/server/role/RoleManagerService;)V
 
     return-void
@@ -45,26 +47,27 @@
 
 # virtual methods
 .method public getDefaultDialer(I)Ljava/lang/String;
-    .registers 3
+    .registers 4
+    .param p1, "userId"  # I
 
-    .line 793
+    .line 792
     iget-object v0, p0, Lcom/android/server/role/RoleManagerService$DefaultDialerProvider;->this$0:Lcom/android/server/role/RoleManagerService;
 
     invoke-static {v0, p1}, Lcom/android/server/role/RoleManagerService;->access$700(Lcom/android/server/role/RoleManagerService;I)Lcom/android/server/role/RoleUserState;
 
-    move-result-object p1
+    move-result-object v0
 
-    const-string v0, "android.app.role.DIALER"
+    const-string v1, "android.app.role.DIALER"
 
-    invoke-virtual {p1, v0}, Lcom/android/server/role/RoleUserState;->getRoleHolders(Ljava/lang/String;)Landroid/util/ArraySet;
+    invoke-virtual {v0, v1}, Lcom/android/server/role/RoleUserState;->getRoleHolders(Ljava/lang/String;)Landroid/util/ArraySet;
 
-    move-result-object p1
+    move-result-object v0
 
-    invoke-static {p1}, Lcom/android/internal/util/CollectionUtils;->firstOrNull(Ljava/util/Collection;)Ljava/lang/Object;
+    invoke-static {v0}, Lcom/android/internal/util/CollectionUtils;->firstOrNull(Ljava/util/Collection;)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v0
 
-    check-cast p1, Ljava/lang/String;
+    check-cast v0, Ljava/lang/String;
 
-    return-object p1
+    return-object v0
 .end method

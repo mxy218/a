@@ -45,67 +45,69 @@
 .end method
 
 .method public static schedule(Landroid/content/Context;)V
-    .registers 5
+    .registers 6
+    .param p0, "context"  # Landroid/content/Context;
 
     .line 65
-    const-string v0, "jobscheduler"
+    const-string/jumbo v0, "jobscheduler"
 
     invoke-virtual {p0, v0}, Landroid/content/Context;->getSystemService(Ljava/lang/String;)Ljava/lang/Object;
 
-    move-result-object p0
+    move-result-object v0
 
-    check-cast p0, Landroid/app/job/JobScheduler;
+    check-cast v0, Landroid/app/job/JobScheduler;
 
     .line 66
-    if-nez p0, :cond_12
+    .local v0, "js":Landroid/app/job/JobScheduler;
+    if-nez v0, :cond_13
 
     .line 67
-    const-string p0, "CameraStatsJobService"
+    const-string v1, "CameraStatsJobService"
 
-    const-string v0, "Can\'t collect camera usage stats - no Job Scheduler"
+    const-string v2, "Can\'t collect camera usage stats - no Job Scheduler"
 
-    invoke-static {p0, v0}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v2}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 68
     return-void
 
     .line 70
-    :cond_12
-    new-instance v0, Landroid/app/job/JobInfo$Builder;
+    :cond_13
+    new-instance v1, Landroid/app/job/JobInfo$Builder;
 
-    const v1, 0xca3e7a
+    const v2, 0xca3e7a
 
-    sget-object v2, Lcom/android/server/camera/CameraStatsJobService;->sCameraStatsJobServiceName:Landroid/content/ComponentName;
+    sget-object v3, Lcom/android/server/camera/CameraStatsJobService;->sCameraStatsJobServiceName:Landroid/content/ComponentName;
 
-    invoke-direct {v0, v1, v2}, Landroid/app/job/JobInfo$Builder;-><init>(ILandroid/content/ComponentName;)V
+    invoke-direct {v1, v2, v3}, Landroid/app/job/JobInfo$Builder;-><init>(ILandroid/content/ComponentName;)V
 
-    sget-object v1, Ljava/util/concurrent/TimeUnit;->DAYS:Ljava/util/concurrent/TimeUnit;
+    sget-object v2, Ljava/util/concurrent/TimeUnit;->DAYS:Ljava/util/concurrent/TimeUnit;
 
-    const-wide/16 v2, 0x1
+    const-wide/16 v3, 0x1
 
     .line 71
-    invoke-virtual {v1, v2, v3}, Ljava/util/concurrent/TimeUnit;->toMillis(J)J
+    invoke-virtual {v2, v3, v4}, Ljava/util/concurrent/TimeUnit;->toMillis(J)J
 
-    move-result-wide v1
+    move-result-wide v2
 
-    invoke-virtual {v0, v1, v2}, Landroid/app/job/JobInfo$Builder;->setMinimumLatency(J)Landroid/app/job/JobInfo$Builder;
+    invoke-virtual {v1, v2, v3}, Landroid/app/job/JobInfo$Builder;->setMinimumLatency(J)Landroid/app/job/JobInfo$Builder;
 
-    move-result-object v0
+    move-result-object v1
 
-    const/4 v1, 0x1
+    const/4 v2, 0x1
 
     .line 72
-    invoke-virtual {v0, v1}, Landroid/app/job/JobInfo$Builder;->setRequiresDeviceIdle(Z)Landroid/app/job/JobInfo$Builder;
+    invoke-virtual {v1, v2}, Landroid/app/job/JobInfo$Builder;->setRequiresDeviceIdle(Z)Landroid/app/job/JobInfo$Builder;
 
-    move-result-object v0
+    move-result-object v1
 
     .line 73
-    invoke-virtual {v0}, Landroid/app/job/JobInfo$Builder;->build()Landroid/app/job/JobInfo;
+    invoke-virtual {v1}, Landroid/app/job/JobInfo$Builder;->build()Landroid/app/job/JobInfo;
 
-    move-result-object v0
+    move-result-object v1
 
     .line 70
-    invoke-virtual {p0, v0}, Landroid/app/job/JobScheduler;->schedule(Landroid/app/job/JobInfo;)I
+    invoke-virtual {v0, v1}, Landroid/app/job/JobScheduler;->schedule(Landroid/app/job/JobInfo;)I
 
     .line 75
     return-void
@@ -114,45 +116,48 @@
 
 # virtual methods
 .method public onStartJob(Landroid/app/job/JobParameters;)Z
-    .registers 4
+    .registers 6
+    .param p1, "params"  # Landroid/app/job/JobParameters;
 
     .line 47
-    const-class p1, Lcom/android/server/camera/CameraServiceProxy;
+    const-class v0, Lcom/android/server/camera/CameraServiceProxy;
 
-    invoke-static {p1}, Lcom/android/server/LocalServices;->getService(Ljava/lang/Class;)Ljava/lang/Object;
+    invoke-static {v0}, Lcom/android/server/LocalServices;->getService(Ljava/lang/Class;)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v0
 
-    check-cast p1, Lcom/android/server/camera/CameraServiceProxy;
+    check-cast v0, Lcom/android/server/camera/CameraServiceProxy;
 
     .line 48
-    const/4 v0, 0x0
+    .local v0, "serviceProxy":Lcom/android/server/camera/CameraServiceProxy;
+    const/4 v1, 0x0
 
-    if-nez p1, :cond_13
+    if-nez v0, :cond_13
 
     .line 49
-    const-string p1, "CameraStatsJobService"
+    const-string v2, "CameraStatsJobService"
 
-    const-string v1, "Can\'t collect camera usage stats - no camera service proxy found"
+    const-string v3, "Can\'t collect camera usage stats - no camera service proxy found"
 
-    invoke-static {p1, v1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v2, v3}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 50
-    return v0
+    return v1
 
     .line 53
     :cond_13
-    invoke-virtual {p1}, Lcom/android/server/camera/CameraServiceProxy;->dumpUsageEvents()V
+    invoke-virtual {v0}, Lcom/android/server/camera/CameraServiceProxy;->dumpUsageEvents()V
 
     .line 54
-    return v0
+    return v1
 .end method
 
 .method public onStopJob(Landroid/app/job/JobParameters;)Z
-    .registers 2
+    .registers 3
+    .param p1, "params"  # Landroid/app/job/JobParameters;
 
     .line 60
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    return p1
+    return v0
 .end method

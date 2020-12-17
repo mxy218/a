@@ -25,6 +25,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/attention/AttentionManagerService;Lcom/android/server/attention/AttentionManagerService$UserState;Landroid/attention/AttentionManagerInternal$AttentionCallbackInternal;)V
     .registers 4
+    .param p1, "this$0"  # Lcom/android/server/attention/AttentionManagerService;
 
     .line 230
     iput-object p1, p0, Lcom/android/server/attention/AttentionManagerService$1;->this$0:Lcom/android/server/attention/AttentionManagerService;
@@ -42,6 +43,7 @@
 # virtual methods
 .method public onFailure(I)V
     .registers 4
+    .param p1, "error"  # I
 
     .line 252
     iget-object v0, p0, Lcom/android/server/attention/AttentionManagerService$1;->val$userState:Lcom/android/server/attention/AttentionManagerService$UserState;
@@ -80,6 +82,8 @@
 
 .method public onSuccess(IJ)V
     .registers 13
+    .param p1, "result"  # I
+    .param p2, "timestamp"  # J
 
     .line 234
     iget-object v0, p0, Lcom/android/server/attention/AttentionManagerService$1;->val$userState:Lcom/android/server/attention/AttentionManagerService$UserState;
@@ -143,21 +147,21 @@
     .catchall {:try_start_1e .. :try_end_2f} :catchall_35
 
     .line 244
-    const/16 p2, 0x8f
+    const/16 v0, 0x8f
 
-    invoke-static {p2, p1}, Landroid/util/StatsLog;->write(II)I
+    invoke-static {v0, p1}, Landroid/util/StatsLog;->write(II)I
 
     .line 247
     return-void
 
     .line 243
     :catchall_35
-    move-exception p1
+    move-exception v1
 
     :try_start_36
     monitor-exit v0
     :try_end_37
     .catchall {:try_start_36 .. :try_end_37} :catchall_35
 
-    throw p1
+    throw v1
 .end method

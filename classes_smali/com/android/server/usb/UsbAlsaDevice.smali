@@ -42,6 +42,14 @@
 # direct methods
 .method public constructor <init>(Landroid/media/IAudioService;IILjava/lang/String;ZZZZ)V
     .registers 10
+    .param p1, "audioService"  # Landroid/media/IAudioService;
+    .param p2, "card"  # I
+    .param p3, "device"  # I
+    .param p4, "deviceAddress"  # Ljava/lang/String;
+    .param p5, "hasOutput"  # Z
+    .param p6, "hasInput"  # Z
+    .param p7, "isInputHeadset"  # Z
+    .param p8, "isOutputHeadset"  # Z
 
     .line 56
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -123,6 +131,7 @@
     return v0
 
     .line 131
+    .end local p0  # "this":Lcom/android/server/usb/UsbAlsaDevice;
     :catchall_10
     move-exception v0
 
@@ -167,6 +176,7 @@
     return v0
 
     .line 141
+    .end local p0  # "this":Lcom/android/server/usb/UsbAlsaDevice;
     :catchall_10
     move-exception v0
 
@@ -196,6 +206,7 @@
     return-void
 
     .line 150
+    .end local p0  # "this":Lcom/android/server/usb/UsbAlsaDevice;
     :catchall_9
     move-exception v0
 
@@ -221,6 +232,7 @@
     invoke-virtual {v0}, Lcom/android/server/usb/UsbAlsaJackDetector;->pleaseStop()V
 
     .line 159
+    .end local p0  # "this":Lcom/android/server/usb/UsbAlsaDevice;
     :cond_a
     const/4 v0, 0x0
 
@@ -245,81 +257,90 @@
 
 # virtual methods
 .method public declared-synchronized dump(Lcom/android/internal/util/dump/DualDumpOutputStream;Ljava/lang/String;J)V
-    .registers 8
+    .registers 11
+    .param p1, "dump"  # Lcom/android/internal/util/dump/DualDumpOutputStream;
+    .param p2, "idName"  # Ljava/lang/String;
+    .param p3, "id"  # J
 
     monitor-enter p0
 
-    .line 248
+    .line 254
     :try_start_1
     invoke-virtual {p1, p2, p3, p4}, Lcom/android/internal/util/dump/DualDumpOutputStream;->start(Ljava/lang/String;J)J
 
-    move-result-wide p2
+    move-result-wide v0
 
-    .line 250
-    const-string p4, "card"
+    .line 256
+    .local v0, "token":J
+    const-string v2, "card"
 
-    const-wide v0, 0x10500000001L
+    const-wide v3, 0x10500000001L
 
-    iget v2, p0, Lcom/android/server/usb/UsbAlsaDevice;->mCardNum:I
+    iget v5, p0, Lcom/android/server/usb/UsbAlsaDevice;->mCardNum:I
 
-    invoke-virtual {p1, p4, v0, v1, v2}, Lcom/android/internal/util/dump/DualDumpOutputStream;->write(Ljava/lang/String;JI)V
-
-    .line 251
-    const-string p4, "device"
-
-    const-wide v0, 0x10500000002L
-
-    iget v2, p0, Lcom/android/server/usb/UsbAlsaDevice;->mDeviceNum:I
-
-    invoke-virtual {p1, p4, v0, v1, v2}, Lcom/android/internal/util/dump/DualDumpOutputStream;->write(Ljava/lang/String;JI)V
-
-    .line 252
-    const-string/jumbo p4, "name"
-
-    const-wide v0, 0x10900000003L
-
-    iget-object v2, p0, Lcom/android/server/usb/UsbAlsaDevice;->mDeviceName:Ljava/lang/String;
-
-    invoke-virtual {p1, p4, v0, v1, v2}, Lcom/android/internal/util/dump/DualDumpOutputStream;->write(Ljava/lang/String;JLjava/lang/String;)V
-
-    .line 253
-    const-string p4, "has_output"
-
-    const-wide v0, 0x10800000004L
-
-    iget-boolean v2, p0, Lcom/android/server/usb/UsbAlsaDevice;->mHasOutput:Z
-
-    invoke-virtual {p1, p4, v0, v1, v2}, Lcom/android/internal/util/dump/DualDumpOutputStream;->write(Ljava/lang/String;JZ)V
-
-    .line 254
-    const-string p4, "has_input"
-
-    const-wide v0, 0x10800000005L
-
-    iget-boolean v2, p0, Lcom/android/server/usb/UsbAlsaDevice;->mHasInput:Z
-
-    invoke-virtual {p1, p4, v0, v1, v2}, Lcom/android/internal/util/dump/DualDumpOutputStream;->write(Ljava/lang/String;JZ)V
-
-    .line 255
-    const-string p4, "address"
-
-    const-wide v0, 0x10900000006L
-
-    iget-object v2, p0, Lcom/android/server/usb/UsbAlsaDevice;->mDeviceAddress:Ljava/lang/String;
-
-    invoke-virtual {p1, p4, v0, v1, v2}, Lcom/android/internal/util/dump/DualDumpOutputStream;->write(Ljava/lang/String;JLjava/lang/String;)V
+    invoke-virtual {p1, v2, v3, v4, v5}, Lcom/android/internal/util/dump/DualDumpOutputStream;->write(Ljava/lang/String;JI)V
 
     .line 257
-    invoke-virtual {p1, p2, p3}, Lcom/android/internal/util/dump/DualDumpOutputStream;->end(J)V
+    const-string v2, "device"
+
+    const-wide v3, 0x10500000002L
+
+    iget v5, p0, Lcom/android/server/usb/UsbAlsaDevice;->mDeviceNum:I
+
+    invoke-virtual {p1, v2, v3, v4, v5}, Lcom/android/internal/util/dump/DualDumpOutputStream;->write(Ljava/lang/String;JI)V
+
+    .line 258
+    const-string/jumbo v2, "name"
+
+    const-wide v3, 0x10900000003L
+
+    iget-object v5, p0, Lcom/android/server/usb/UsbAlsaDevice;->mDeviceName:Ljava/lang/String;
+
+    invoke-virtual {p1, v2, v3, v4, v5}, Lcom/android/internal/util/dump/DualDumpOutputStream;->write(Ljava/lang/String;JLjava/lang/String;)V
+
+    .line 259
+    const-string v2, "has_output"
+
+    const-wide v3, 0x10800000004L
+
+    iget-boolean v5, p0, Lcom/android/server/usb/UsbAlsaDevice;->mHasOutput:Z
+
+    invoke-virtual {p1, v2, v3, v4, v5}, Lcom/android/internal/util/dump/DualDumpOutputStream;->write(Ljava/lang/String;JZ)V
+
+    .line 260
+    const-string v2, "has_input"
+
+    const-wide v3, 0x10800000005L
+
+    iget-boolean v5, p0, Lcom/android/server/usb/UsbAlsaDevice;->mHasInput:Z
+
+    invoke-virtual {p1, v2, v3, v4, v5}, Lcom/android/internal/util/dump/DualDumpOutputStream;->write(Ljava/lang/String;JZ)V
+
+    .line 261
+    const-string v2, "address"
+
+    const-wide v3, 0x10900000006L
+
+    iget-object v5, p0, Lcom/android/server/usb/UsbAlsaDevice;->mDeviceAddress:Ljava/lang/String;
+
+    invoke-virtual {p1, v2, v3, v4, v5}, Lcom/android/internal/util/dump/DualDumpOutputStream;->write(Ljava/lang/String;JLjava/lang/String;)V
+
+    .line 263
+    invoke-virtual {p1, v0, v1}, Lcom/android/internal/util/dump/DualDumpOutputStream;->end(J)V
     :try_end_51
     .catchall {:try_start_1 .. :try_end_51} :catchall_53
 
-    .line 258
+    .line 264
     monitor-exit p0
 
     return-void
 
-    .line 247
+    .line 253
+    .end local v0  # "token":J
+    .end local p0  # "this":Lcom/android/server/usb/UsbAlsaDevice;
+    .end local p1  # "dump":Lcom/android/internal/util/dump/DualDumpOutputStream;
+    .end local p2  # "idName":Ljava/lang/String;
+    .end local p3  # "id":J
     :catchall_53
     move-exception p1
 
@@ -329,62 +350,66 @@
 .end method
 
 .method public equals(Ljava/lang/Object;)Z
-    .registers 5
+    .registers 6
+    .param p1, "obj"  # Ljava/lang/Object;
 
-    .line 279
+    .line 285
     instance-of v0, p1, Lcom/android/server/usb/UsbAlsaDevice;
 
     const/4 v1, 0x0
 
     if-nez v0, :cond_6
 
-    .line 280
+    .line 286
     return v1
 
-    .line 282
+    .line 288
     :cond_6
-    check-cast p1, Lcom/android/server/usb/UsbAlsaDevice;
+    move-object v0, p1
 
-    .line 283
-    iget v0, p0, Lcom/android/server/usb/UsbAlsaDevice;->mCardNum:I
+    check-cast v0, Lcom/android/server/usb/UsbAlsaDevice;
 
-    iget v2, p1, Lcom/android/server/usb/UsbAlsaDevice;->mCardNum:I
+    .line 289
+    .local v0, "other":Lcom/android/server/usb/UsbAlsaDevice;
+    iget v2, p0, Lcom/android/server/usb/UsbAlsaDevice;->mCardNum:I
 
-    if-ne v0, v2, :cond_2d
+    iget v3, v0, Lcom/android/server/usb/UsbAlsaDevice;->mCardNum:I
 
-    iget v0, p0, Lcom/android/server/usb/UsbAlsaDevice;->mDeviceNum:I
+    if-ne v2, v3, :cond_2e
 
-    iget v2, p1, Lcom/android/server/usb/UsbAlsaDevice;->mDeviceNum:I
+    iget v2, p0, Lcom/android/server/usb/UsbAlsaDevice;->mDeviceNum:I
 
-    if-ne v0, v2, :cond_2d
+    iget v3, v0, Lcom/android/server/usb/UsbAlsaDevice;->mDeviceNum:I
 
-    iget-boolean v0, p0, Lcom/android/server/usb/UsbAlsaDevice;->mHasOutput:Z
+    if-ne v2, v3, :cond_2e
 
-    iget-boolean v2, p1, Lcom/android/server/usb/UsbAlsaDevice;->mHasOutput:Z
+    iget-boolean v2, p0, Lcom/android/server/usb/UsbAlsaDevice;->mHasOutput:Z
 
-    if-ne v0, v2, :cond_2d
+    iget-boolean v3, v0, Lcom/android/server/usb/UsbAlsaDevice;->mHasOutput:Z
 
-    iget-boolean v0, p0, Lcom/android/server/usb/UsbAlsaDevice;->mHasInput:Z
+    if-ne v2, v3, :cond_2e
 
-    iget-boolean v2, p1, Lcom/android/server/usb/UsbAlsaDevice;->mHasInput:Z
+    iget-boolean v2, p0, Lcom/android/server/usb/UsbAlsaDevice;->mHasInput:Z
 
-    if-ne v0, v2, :cond_2d
+    iget-boolean v3, v0, Lcom/android/server/usb/UsbAlsaDevice;->mHasInput:Z
 
-    iget-boolean v0, p0, Lcom/android/server/usb/UsbAlsaDevice;->mIsInputHeadset:Z
+    if-ne v2, v3, :cond_2e
 
-    iget-boolean v2, p1, Lcom/android/server/usb/UsbAlsaDevice;->mIsInputHeadset:Z
+    iget-boolean v2, p0, Lcom/android/server/usb/UsbAlsaDevice;->mIsInputHeadset:Z
 
-    if-ne v0, v2, :cond_2d
+    iget-boolean v3, v0, Lcom/android/server/usb/UsbAlsaDevice;->mIsInputHeadset:Z
 
-    iget-boolean v0, p0, Lcom/android/server/usb/UsbAlsaDevice;->mIsOutputHeadset:Z
+    if-ne v2, v3, :cond_2e
 
-    iget-boolean p1, p1, Lcom/android/server/usb/UsbAlsaDevice;->mIsOutputHeadset:Z
+    iget-boolean v2, p0, Lcom/android/server/usb/UsbAlsaDevice;->mIsOutputHeadset:Z
 
-    if-ne v0, p1, :cond_2d
+    iget-boolean v3, v0, Lcom/android/server/usb/UsbAlsaDevice;->mIsOutputHeadset:Z
+
+    if-ne v2, v3, :cond_2e
 
     const/4 v1, 0x1
 
-    :cond_2d
+    :cond_2e
     return v1
 .end method
 
@@ -470,7 +495,7 @@
 
     monitor-enter p0
 
-    .line 266
+    .line 272
     :try_start_1
     iget-object v0, p0, Lcom/android/server/usb/UsbAlsaDevice;->mDeviceName:Ljava/lang/String;
     :try_end_3
@@ -480,6 +505,7 @@
 
     return-object v0
 
+    .end local p0  # "this":Lcom/android/server/usb/UsbAlsaDevice;
     :catchall_5
     move-exception v0
 
@@ -516,63 +542,80 @@
 .end method
 
 .method public hashCode()I
-    .registers 4
-
-    .line 297
-    nop
-
-    .line 298
-    iget v0, p0, Lcom/android/server/usb/UsbAlsaDevice;->mCardNum:I
-
-    const/16 v1, 0x1f
-
-    add-int/2addr v0, v1
-
-    .line 299
-    mul-int/2addr v0, v1
-
-    iget v2, p0, Lcom/android/server/usb/UsbAlsaDevice;->mDeviceNum:I
-
-    add-int/2addr v0, v2
-
-    .line 300
-    mul-int/2addr v0, v1
-
-    iget-boolean v2, p0, Lcom/android/server/usb/UsbAlsaDevice;->mHasOutput:Z
-
-    xor-int/lit8 v2, v2, 0x1
-
-    add-int/2addr v0, v2
-
-    .line 301
-    mul-int/2addr v0, v1
-
-    iget-boolean v2, p0, Lcom/android/server/usb/UsbAlsaDevice;->mHasInput:Z
-
-    xor-int/lit8 v2, v2, 0x1
-
-    add-int/2addr v0, v2
+    .registers 5
 
     .line 302
-    mul-int/2addr v0, v1
-
-    iget-boolean v2, p0, Lcom/android/server/usb/UsbAlsaDevice;->mIsInputHeadset:Z
-
-    xor-int/lit8 v2, v2, 0x1
-
-    add-int/2addr v0, v2
+    const/16 v0, 0x1f
 
     .line 303
-    mul-int/2addr v0, v1
+    .local v0, "prime":I
+    const/4 v1, 0x1
 
-    iget-boolean v1, p0, Lcom/android/server/usb/UsbAlsaDevice;->mIsOutputHeadset:Z
+    .line 304
+    .local v1, "result":I
+    mul-int/lit8 v2, v1, 0x1f
 
-    xor-int/lit8 v1, v1, 0x1
+    iget v3, p0, Lcom/android/server/usb/UsbAlsaDevice;->mCardNum:I
 
-    add-int/2addr v0, v1
+    add-int/2addr v2, v3
 
     .line 305
-    return v0
+    .end local v1  # "result":I
+    .local v2, "result":I
+    mul-int/lit8 v1, v2, 0x1f
+
+    iget v3, p0, Lcom/android/server/usb/UsbAlsaDevice;->mDeviceNum:I
+
+    add-int/2addr v1, v3
+
+    .line 306
+    .end local v2  # "result":I
+    .restart local v1  # "result":I
+    mul-int/lit8 v2, v1, 0x1f
+
+    iget-boolean v3, p0, Lcom/android/server/usb/UsbAlsaDevice;->mHasOutput:Z
+
+    xor-int/lit8 v3, v3, 0x1
+
+    add-int/2addr v2, v3
+
+    .line 307
+    .end local v1  # "result":I
+    .restart local v2  # "result":I
+    mul-int/lit8 v1, v2, 0x1f
+
+    iget-boolean v3, p0, Lcom/android/server/usb/UsbAlsaDevice;->mHasInput:Z
+
+    xor-int/lit8 v3, v3, 0x1
+
+    add-int/2addr v1, v3
+
+    .line 308
+    .end local v2  # "result":I
+    .restart local v1  # "result":I
+    mul-int/lit8 v2, v1, 0x1f
+
+    iget-boolean v3, p0, Lcom/android/server/usb/UsbAlsaDevice;->mIsInputHeadset:Z
+
+    xor-int/lit8 v3, v3, 0x1
+
+    add-int/2addr v2, v3
+
+    .line 309
+    .end local v1  # "result":I
+    .restart local v2  # "result":I
+    mul-int/lit8 v1, v2, 0x1f
+
+    iget-boolean v3, p0, Lcom/android/server/usb/UsbAlsaDevice;->mIsOutputHeadset:Z
+
+    xor-int/lit8 v3, v3, 0x1
+
+    add-int/2addr v1, v3
+
+    .line 311
+    .end local v2  # "result":I
+    .restart local v1  # "result":I
+    return v1
 .end method
 
 .method public isInputHeadset()Z
@@ -595,24 +638,29 @@
 
 .method declared-synchronized setDeviceNameAndDescription(Ljava/lang/String;Ljava/lang/String;)V
     .registers 3
+    .param p1, "deviceName"  # Ljava/lang/String;
+    .param p2, "deviceDescription"  # Ljava/lang/String;
 
     monitor-enter p0
 
-    .line 270
+    .line 276
     :try_start_1
     iput-object p1, p0, Lcom/android/server/usb/UsbAlsaDevice;->mDeviceName:Ljava/lang/String;
 
-    .line 271
+    .line 277
     iput-object p2, p0, Lcom/android/server/usb/UsbAlsaDevice;->mDeviceDescription:Ljava/lang/String;
     :try_end_5
     .catchall {:try_start_1 .. :try_end_5} :catchall_7
 
-    .line 272
+    .line 278
     monitor-exit p0
 
     return-void
 
-    .line 269
+    .line 275
+    .end local p0  # "this":Lcom/android/server/usb/UsbAlsaDevice;
+    .end local p1  # "deviceName":Ljava/lang/String;
+    .end local p2  # "deviceDescription":Ljava/lang/String;
     :catchall_7
     move-exception p1
 
@@ -654,6 +702,7 @@
     return-void
 
     .line 163
+    .end local p0  # "this":Lcom/android/server/usb/UsbAlsaDevice;
     :catchall_11
     move-exception v0
 
@@ -687,6 +736,7 @@
     return-void
 
     .line 172
+    .end local p0  # "this":Lcom/android/server/usb/UsbAlsaDevice;
     :catchall_c
     move-exception v0
 
@@ -700,7 +750,7 @@
 
     monitor-enter p0
 
-    .line 262
+    .line 268
     :try_start_1
     new-instance v0, Ljava/lang/StringBuilder;
 
@@ -744,6 +794,7 @@
 
     return-object v0
 
+    .end local p0  # "this":Lcom/android/server/usb/UsbAlsaDevice;
     :catchall_2f
     move-exception v0
 
@@ -757,7 +808,7 @@
 
     monitor-enter p0
 
-    .line 237
+    .line 243
     :try_start_1
     new-instance v0, Ljava/lang/StringBuilder;
 
@@ -817,6 +868,7 @@
 
     return-object v0
 
+    .end local p0  # "this":Lcom/android/server/usb/UsbAlsaDevice;
     :catchall_43
     move-exception v0
 
@@ -826,7 +878,8 @@
 .end method
 
 .method public declared-synchronized updateWiredDeviceConnectionState(Z)V
-    .registers 11
+    .registers 14
+    .param p1, "enable"  # Z
 
     monitor-enter p0
 
@@ -837,13 +890,13 @@
     if-nez v0, :cond_f
 
     .line 183
-    const-string p1, "UsbAlsaDevice"
+    const-string v0, "UsbAlsaDevice"
 
-    const-string/jumbo v0, "updateWiredDeviceConnectionState on unselected AlsaDevice!"
+    const-string/jumbo v1, "updateWiredDeviceConnectionState on unselected AlsaDevice!"
 
-    invoke-static {p1, v0}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v0, v1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
     :try_end_d
-    .catchall {:try_start_1 .. :try_end_d} :catchall_a5
+    .catchall {:try_start_1 .. :try_end_d} :catchall_b2
 
     .line 184
     monitor-exit p0
@@ -851,16 +904,18 @@
     return-void
 
     .line 186
+    .end local p0  # "this":Lcom/android/server/usb/UsbAlsaDevice;
     :cond_f
     :try_start_f
     invoke-virtual {p0}, Lcom/android/server/usb/UsbAlsaDevice;->getAlsaCardDeviceString()Ljava/lang/String;
 
-    move-result-object v6
+    move-result-object v0
     :try_end_13
-    .catchall {:try_start_f .. :try_end_13} :catchall_a5
+    .catchall {:try_start_f .. :try_end_13} :catchall_b2
 
     .line 187
-    if-nez v6, :cond_17
+    .local v0, "alsaCardDeviceString":Ljava/lang/String;
+    if-nez v0, :cond_17
 
     .line 188
     monitor-exit p0
@@ -868,122 +923,161 @@
     return-void
 
     .line 192
+    .restart local p0  # "this":Lcom/android/server/usb/UsbAlsaDevice;
     :cond_17
     :try_start_17
-    iget-boolean v0, p0, Lcom/android/server/usb/UsbAlsaDevice;->mHasOutput:Z
+    iget-boolean v1, p0, Lcom/android/server/usb/UsbAlsaDevice;->mHasOutput:Z
 
     const/4 v7, 0x1
 
     const/4 v8, 0x0
 
-    if-eqz v0, :cond_59
+    if-eqz v1, :cond_64
 
     .line 193
-    iget-boolean v0, p0, Lcom/android/server/usb/UsbAlsaDevice;->mIsOutputHeadset:Z
+    iget-boolean v1, p0, Lcom/android/server/usb/UsbAlsaDevice;->mIsOutputHeadset:Z
 
-    if-eqz v0, :cond_25
+    const/high16 v2, 0x4000000
+
+    if-eqz v1, :cond_25
 
     .line 194
-    const/high16 v0, 0x4000000
+    move v1, v2
 
-    move v1, v0
-
-    goto :goto_28
+    goto :goto_27
 
     .line 195
     :cond_25
-    const/16 v0, 0x4000
+    const/16 v1, 0x4000
 
-    move v1, v0
+    :goto_27
+    nop
 
     .line 201
-    :goto_28
+    .local v1, "device":I
     invoke-direct {p0}, Lcom/android/server/usb/UsbAlsaDevice;->isOutputJackConnected()Z
 
-    move-result v0
+    move-result v3
+
+    move v9, v3
 
     .line 202
-    const-string v2, "UsbAlsaDevice"
+    .local v9, "connected":Z
+    const-string v3, "UsbAlsaDevice"
 
-    new-instance v3, Ljava/lang/StringBuilder;
+    new-instance v4, Ljava/lang/StringBuilder;
 
-    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v4}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v4, "OUTPUT JACK connected: "
+    const-string v5, "OUTPUT JACK connected: "
 
-    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v3, v0}, Ljava/lang/StringBuilder;->append(Z)Ljava/lang/StringBuilder;
+    invoke-virtual {v4, v9}, Ljava/lang/StringBuilder;->append(Z)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v4}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v3
+    move-result-object v4
 
-    invoke-static {v2, v3}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v3, v4}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 203
-    if-eqz p1, :cond_48
+    if-eqz p1, :cond_49
 
-    if-eqz v0, :cond_48
+    if-eqz v9, :cond_49
 
-    move v2, v7
+    move v3, v7
 
-    goto :goto_49
+    goto :goto_4a
 
-    :cond_48
-    move v2, v8
+    :cond_49
+    move v3, v8
+
+    :goto_4a
+    move v10, v3
 
     .line 204
-    :goto_49
-    iget v0, p0, Lcom/android/server/usb/UsbAlsaDevice;->mOutputState:I
+    .local v10, "outputState":I
+    iget v3, p0, Lcom/android/server/usb/UsbAlsaDevice;->mOutputState:I
 
-    if-eq v2, v0, :cond_59
+    if-eq v10, v3, :cond_64
 
     .line 205
-    iput v2, p0, Lcom/android/server/usb/UsbAlsaDevice;->mOutputState:I
+    iput v10, p0, Lcom/android/server/usb/UsbAlsaDevice;->mOutputState:I
 
-    .line 206
-    iget-object v0, p0, Lcom/android/server/usb/UsbAlsaDevice;->mAudioService:Landroid/media/IAudioService;
+    .line 208
+    if-ne v1, v2, :cond_57
 
-    iget-object v4, p0, Lcom/android/server/usb/UsbAlsaDevice;->mDeviceName:Ljava/lang/String;
+    .line 209
+    const/16 v1, 0x4000
 
-    const-string v5, "UsbAlsaDevice"
+    move v11, v1
 
-    move-object v3, v6
+    goto :goto_58
 
-    invoke-interface/range {v0 .. v5}, Landroid/media/IAudioService;->setWiredDeviceConnectionState(IILjava/lang/String;Ljava/lang/String;Ljava/lang/String;)V
+    .line 208
+    :cond_57
+    move v11, v1
 
-    .line 213
-    :cond_59
-    iget-boolean v0, p0, Lcom/android/server/usb/UsbAlsaDevice;->mHasInput:Z
+    .line 212
+    .end local v1  # "device":I
+    .local v11, "device":I
+    :goto_58
+    iget-object v1, p0, Lcom/android/server/usb/UsbAlsaDevice;->mAudioService:Landroid/media/IAudioService;
 
-    if-eqz v0, :cond_9a
+    iget-object v5, p0, Lcom/android/server/usb/UsbAlsaDevice;->mDeviceName:Ljava/lang/String;
 
-    .line 214
-    iget-boolean v0, p0, Lcom/android/server/usb/UsbAlsaDevice;->mIsInputHeadset:Z
+    const-string v6, "UsbAlsaDevice"
 
-    if-eqz v0, :cond_65
+    move v2, v11
 
-    const/high16 v0, -0x7e000000
+    move v3, v10
 
-    move v1, v0
+    move-object v4, v0
 
-    goto :goto_69
+    invoke-interface/range {v1 .. v6}, Landroid/media/IAudioService;->setWiredDeviceConnectionState(IILjava/lang/String;Ljava/lang/String;Ljava/lang/String;)V
 
-    .line 215
-    :cond_65
-    const v0, -0x7ffff000
+    .line 219
+    .end local v9  # "connected":Z
+    .end local v10  # "outputState":I
+    .end local v11  # "device":I
+    .end local p0  # "this":Lcom/android/server/usb/UsbAlsaDevice;
+    :cond_64
+    iget-boolean v1, p0, Lcom/android/server/usb/UsbAlsaDevice;->mHasInput:Z
 
-    move v1, v0
+    if-eqz v1, :cond_a7
 
-    .line 216
-    :goto_69
+    .line 220
+    iget-boolean v1, p0, Lcom/android/server/usb/UsbAlsaDevice;->mIsInputHeadset:Z
+
+    if-eqz v1, :cond_70
+
+    const/high16 v1, -0x7e000000
+
+    move v2, v1
+
+    goto :goto_74
+
+    .line 221
+    :cond_70
+    const v1, -0x7ffff000
+
+    move v2, v1
+
+    :goto_74
+    nop
+
+    .line 222
+    .local v2, "device":I
     invoke-direct {p0}, Lcom/android/server/usb/UsbAlsaDevice;->isInputJackConnected()Z
 
-    move-result v0
+    move-result v1
 
-    .line 217
-    const-string v2, "UsbAlsaDevice"
+    move v9, v1
+
+    .line 223
+    .restart local v9  # "connected":Z
+    const-string v1, "UsbAlsaDevice"
 
     new-instance v3, Ljava/lang/StringBuilder;
 
@@ -993,75 +1087,83 @@
 
     invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v3, v0}, Ljava/lang/StringBuilder;->append(Z)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v9}, Ljava/lang/StringBuilder;->append(Z)Ljava/lang/StringBuilder;
 
     invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
     move-result-object v3
 
-    invoke-static {v2, v3}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v3}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 218
-    if-eqz p1, :cond_89
+    .line 224
+    if-eqz p1, :cond_95
 
-    if-eqz v0, :cond_89
+    if-eqz v9, :cond_95
 
-    move v2, v7
+    goto :goto_96
 
-    goto :goto_8a
+    :cond_95
+    move v7, v8
 
-    :cond_89
-    move v2, v8
+    .line 225
+    .local v7, "inputState":I
+    :goto_96
+    iget v1, p0, Lcom/android/server/usb/UsbAlsaDevice;->mInputState:I
 
-    .line 219
-    :goto_8a
-    iget p1, p0, Lcom/android/server/usb/UsbAlsaDevice;->mInputState:I
-
-    if-eq v2, p1, :cond_9a
-
-    .line 220
-    iput v2, p0, Lcom/android/server/usb/UsbAlsaDevice;->mInputState:I
-
-    .line 221
-    iget-object v0, p0, Lcom/android/server/usb/UsbAlsaDevice;->mAudioService:Landroid/media/IAudioService;
-
-    iget-object v4, p0, Lcom/android/server/usb/UsbAlsaDevice;->mDeviceName:Ljava/lang/String;
-
-    const-string v5, "UsbAlsaDevice"
-
-    move-object v3, v6
-
-    invoke-interface/range {v0 .. v5}, Landroid/media/IAudioService;->setWiredDeviceConnectionState(IILjava/lang/String;Ljava/lang/String;Ljava/lang/String;)V
-    :try_end_9a
-    .catch Landroid/os/RemoteException; {:try_start_17 .. :try_end_9a} :catch_9b
-    .catchall {:try_start_17 .. :try_end_9a} :catchall_a5
-
-    .line 228
-    :cond_9a
-    goto :goto_a3
+    if-eq v7, v1, :cond_a7
 
     .line 226
-    :catch_9b
-    move-exception p1
+    iput v7, p0, Lcom/android/server/usb/UsbAlsaDevice;->mInputState:I
 
     .line 227
-    :try_start_9c
-    const-string p1, "UsbAlsaDevice"
+    iget-object v1, p0, Lcom/android/server/usb/UsbAlsaDevice;->mAudioService:Landroid/media/IAudioService;
 
-    const-string v0, "RemoteException in setWiredDeviceConnectionState"
+    iget-object v5, p0, Lcom/android/server/usb/UsbAlsaDevice;->mDeviceName:Ljava/lang/String;
 
-    invoke-static {p1, v0}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
-    :try_end_a3
-    .catchall {:try_start_9c .. :try_end_a3} :catchall_a5
+    const-string v6, "UsbAlsaDevice"
 
-    .line 229
-    :goto_a3
+    move v3, v7
+
+    move-object v4, v0
+
+    invoke-interface/range {v1 .. v6}, Landroid/media/IAudioService;->setWiredDeviceConnectionState(IILjava/lang/String;Ljava/lang/String;Ljava/lang/String;)V
+    :try_end_a7
+    .catch Landroid/os/RemoteException; {:try_start_17 .. :try_end_a7} :catch_a8
+    .catchall {:try_start_17 .. :try_end_a7} :catchall_b2
+
+    .line 234
+    .end local v2  # "device":I
+    .end local v7  # "inputState":I
+    .end local v9  # "connected":Z
+    :cond_a7
+    goto :goto_b0
+
+    .line 232
+    :catch_a8
+    move-exception v1
+
+    .line 233
+    .local v1, "e":Landroid/os/RemoteException;
+    :try_start_a9
+    const-string v2, "UsbAlsaDevice"
+
+    const-string v3, "RemoteException in setWiredDeviceConnectionState"
+
+    invoke-static {v2, v3}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
+    :try_end_b0
+    .catchall {:try_start_a9 .. :try_end_b0} :catchall_b2
+
+    .line 235
+    .end local v1  # "e":Landroid/os/RemoteException;
+    :goto_b0
     monitor-exit p0
 
     return-void
 
     .line 181
-    :catchall_a5
+    .end local v0  # "alsaCardDeviceString":Ljava/lang/String;
+    .end local p1  # "enable":Z
+    :catchall_b2
     move-exception p1
 
     monitor-exit p0

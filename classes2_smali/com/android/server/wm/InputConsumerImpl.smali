@@ -38,7 +38,14 @@
 
 # direct methods
 .method constructor <init>(Lcom/android/server/wm/WindowManagerService;Landroid/os/IBinder;Ljava/lang/String;Landroid/view/InputChannel;ILandroid/os/UserHandle;I)V
-    .registers 10
+    .registers 16
+    .param p1, "service"  # Lcom/android/server/wm/WindowManagerService;
+    .param p2, "token"  # Landroid/os/IBinder;
+    .param p3, "name"  # Ljava/lang/String;
+    .param p4, "inputChannel"  # Landroid/view/InputChannel;
+    .param p5, "clientPid"  # I
+    .param p6, "clientUser"  # Landroid/os/UserHandle;
+    .param p7, "displayId"  # I
 
     .line 52
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -89,29 +96,30 @@
     .line 59
     invoke-static {p3}, Landroid/view/InputChannel;->openInputChannelPair(Ljava/lang/String;)[Landroid/view/InputChannel;
 
-    move-result-object p1
+    move-result-object v0
 
     .line 60
-    const/4 p2, 0x0
+    .local v0, "channels":[Landroid/view/InputChannel;
+    const/4 v1, 0x0
 
-    aget-object p5, p1, p2
+    aget-object v2, v0, v1
 
-    iput-object p5, p0, Lcom/android/server/wm/InputConsumerImpl;->mServerChannel:Landroid/view/InputChannel;
+    iput-object v2, p0, Lcom/android/server/wm/InputConsumerImpl;->mServerChannel:Landroid/view/InputChannel;
 
     .line 61
-    const/4 p5, 0x1
+    const/4 v2, 0x1
 
     if-eqz p4, :cond_42
 
     .line 62
-    aget-object p6, p1, p5
+    aget-object v3, v0, v2
 
-    invoke-virtual {p6, p4}, Landroid/view/InputChannel;->transferTo(Landroid/view/InputChannel;)V
+    invoke-virtual {v3, p4}, Landroid/view/InputChannel;->transferTo(Landroid/view/InputChannel;)V
 
     .line 63
-    aget-object p1, p1, p5
+    aget-object v3, v0, v2
 
-    invoke-virtual {p1}, Landroid/view/InputChannel;->dispose()V
+    invoke-virtual {v3}, Landroid/view/InputChannel;->dispose()V
 
     .line 64
     iput-object p4, p0, Lcom/android/server/wm/InputConsumerImpl;->mClientChannel:Landroid/view/InputChannel;
@@ -120,177 +128,177 @@
 
     .line 66
     :cond_42
-    aget-object p1, p1, p5
+    aget-object v3, v0, v2
 
-    iput-object p1, p0, Lcom/android/server/wm/InputConsumerImpl;->mClientChannel:Landroid/view/InputChannel;
+    iput-object v3, p0, Lcom/android/server/wm/InputConsumerImpl;->mClientChannel:Landroid/view/InputChannel;
 
     .line 68
     :goto_46
-    iget-object p1, p0, Lcom/android/server/wm/InputConsumerImpl;->mService:Lcom/android/server/wm/WindowManagerService;
+    iget-object v3, p0, Lcom/android/server/wm/InputConsumerImpl;->mService:Lcom/android/server/wm/WindowManagerService;
 
-    iget-object p1, p1, Lcom/android/server/wm/WindowManagerService;->mInputManager:Lcom/android/server/input/InputManagerService;
+    iget-object v3, v3, Lcom/android/server/wm/WindowManagerService;->mInputManager:Lcom/android/server/input/InputManagerService;
 
-    iget-object p4, p0, Lcom/android/server/wm/InputConsumerImpl;->mServerChannel:Landroid/view/InputChannel;
+    iget-object v4, p0, Lcom/android/server/wm/InputConsumerImpl;->mServerChannel:Landroid/view/InputChannel;
 
-    const/4 p6, 0x0
+    const/4 v5, 0x0
 
-    invoke-virtual {p1, p4, p6}, Lcom/android/server/input/InputManagerService;->registerInputChannel(Landroid/view/InputChannel;Landroid/os/IBinder;)V
+    invoke-virtual {v3, v4, v5}, Lcom/android/server/input/InputManagerService;->registerInputChannel(Landroid/view/InputChannel;Landroid/os/IBinder;)V
 
     .line 70
-    new-instance p1, Landroid/view/InputApplicationHandle;
+    new-instance v3, Landroid/view/InputApplicationHandle;
 
-    new-instance p4, Landroid/os/Binder;
+    new-instance v4, Landroid/os/Binder;
 
-    invoke-direct {p4}, Landroid/os/Binder;-><init>()V
+    invoke-direct {v4}, Landroid/os/Binder;-><init>()V
 
-    invoke-direct {p1, p4}, Landroid/view/InputApplicationHandle;-><init>(Landroid/os/IBinder;)V
+    invoke-direct {v3, v4}, Landroid/view/InputApplicationHandle;-><init>(Landroid/os/IBinder;)V
 
-    iput-object p1, p0, Lcom/android/server/wm/InputConsumerImpl;->mApplicationHandle:Landroid/view/InputApplicationHandle;
+    iput-object v3, p0, Lcom/android/server/wm/InputConsumerImpl;->mApplicationHandle:Landroid/view/InputApplicationHandle;
 
     .line 71
-    iget-object p1, p0, Lcom/android/server/wm/InputConsumerImpl;->mApplicationHandle:Landroid/view/InputApplicationHandle;
+    iget-object v3, p0, Lcom/android/server/wm/InputConsumerImpl;->mApplicationHandle:Landroid/view/InputApplicationHandle;
 
-    iput-object p3, p1, Landroid/view/InputApplicationHandle;->name:Ljava/lang/String;
+    iput-object p3, v3, Landroid/view/InputApplicationHandle;->name:Ljava/lang/String;
 
     .line 72
-    const-wide v0, 0x12a05f200L
+    const-wide v6, 0x12a05f200L
 
-    iput-wide v0, p1, Landroid/view/InputApplicationHandle;->dispatchingTimeoutNanos:J
+    iput-wide v6, v3, Landroid/view/InputApplicationHandle;->dispatchingTimeoutNanos:J
 
     .line 75
-    new-instance p4, Landroid/view/InputWindowHandle;
+    new-instance v4, Landroid/view/InputWindowHandle;
 
-    invoke-direct {p4, p1, p6, p7}, Landroid/view/InputWindowHandle;-><init>(Landroid/view/InputApplicationHandle;Landroid/view/IWindow;I)V
+    invoke-direct {v4, v3, v5, p7}, Landroid/view/InputWindowHandle;-><init>(Landroid/view/InputApplicationHandle;Landroid/view/IWindow;I)V
 
-    iput-object p4, p0, Lcom/android/server/wm/InputConsumerImpl;->mWindowHandle:Landroid/view/InputWindowHandle;
+    iput-object v4, p0, Lcom/android/server/wm/InputConsumerImpl;->mWindowHandle:Landroid/view/InputWindowHandle;
 
     .line 76
-    iget-object p1, p0, Lcom/android/server/wm/InputConsumerImpl;->mWindowHandle:Landroid/view/InputWindowHandle;
+    iget-object v3, p0, Lcom/android/server/wm/InputConsumerImpl;->mWindowHandle:Landroid/view/InputWindowHandle;
 
-    iput-object p3, p1, Landroid/view/InputWindowHandle;->name:Ljava/lang/String;
+    iput-object p3, v3, Landroid/view/InputWindowHandle;->name:Ljava/lang/String;
 
     .line 77
-    iget-object p4, p0, Lcom/android/server/wm/InputConsumerImpl;->mServerChannel:Landroid/view/InputChannel;
+    iget-object v4, p0, Lcom/android/server/wm/InputConsumerImpl;->mServerChannel:Landroid/view/InputChannel;
 
-    invoke-virtual {p4}, Landroid/view/InputChannel;->getToken()Landroid/os/IBinder;
+    invoke-virtual {v4}, Landroid/view/InputChannel;->getToken()Landroid/os/IBinder;
 
-    move-result-object p4
+    move-result-object v4
 
-    iput-object p4, p1, Landroid/view/InputWindowHandle;->token:Landroid/os/IBinder;
+    iput-object v4, v3, Landroid/view/InputWindowHandle;->token:Landroid/os/IBinder;
 
     .line 78
-    iget-object p1, p0, Lcom/android/server/wm/InputConsumerImpl;->mWindowHandle:Landroid/view/InputWindowHandle;
+    iget-object v3, p0, Lcom/android/server/wm/InputConsumerImpl;->mWindowHandle:Landroid/view/InputWindowHandle;
 
-    const/16 p4, 0x7e6
+    const/16 v4, 0x7e6
 
-    iput p4, p1, Landroid/view/InputWindowHandle;->layoutParamsType:I
+    iput v4, v3, Landroid/view/InputWindowHandle;->layoutParamsType:I
 
     .line 79
-    iget p4, p1, Landroid/view/InputWindowHandle;->layoutParamsType:I
+    iget v4, v3, Landroid/view/InputWindowHandle;->layoutParamsType:I
 
-    invoke-direct {p0, p4}, Lcom/android/server/wm/InputConsumerImpl;->getLayerLw(I)I
+    invoke-direct {p0, v4}, Lcom/android/server/wm/InputConsumerImpl;->getLayerLw(I)I
 
-    move-result p4
+    move-result v4
 
-    iput p4, p1, Landroid/view/InputWindowHandle;->layer:I
+    iput v4, v3, Landroid/view/InputWindowHandle;->layer:I
 
     .line 80
-    iget-object p1, p0, Lcom/android/server/wm/InputConsumerImpl;->mWindowHandle:Landroid/view/InputWindowHandle;
+    iget-object v3, p0, Lcom/android/server/wm/InputConsumerImpl;->mWindowHandle:Landroid/view/InputWindowHandle;
 
-    iput p2, p1, Landroid/view/InputWindowHandle;->layoutParamsFlags:I
+    iput v1, v3, Landroid/view/InputWindowHandle;->layoutParamsFlags:I
 
     .line 81
-    iput-wide v0, p1, Landroid/view/InputWindowHandle;->dispatchingTimeoutNanos:J
+    iput-wide v6, v3, Landroid/view/InputWindowHandle;->dispatchingTimeoutNanos:J
 
     .line 83
-    iput-boolean p5, p1, Landroid/view/InputWindowHandle;->visible:Z
+    iput-boolean v2, v3, Landroid/view/InputWindowHandle;->visible:Z
 
     .line 84
-    iput-boolean p2, p1, Landroid/view/InputWindowHandle;->canReceiveKeys:Z
+    iput-boolean v1, v3, Landroid/view/InputWindowHandle;->canReceiveKeys:Z
 
     .line 85
-    iput-boolean p2, p1, Landroid/view/InputWindowHandle;->hasFocus:Z
+    iput-boolean v1, v3, Landroid/view/InputWindowHandle;->hasFocus:Z
 
     .line 86
-    iput-boolean p2, p1, Landroid/view/InputWindowHandle;->hasWallpaper:Z
+    iput-boolean v1, v3, Landroid/view/InputWindowHandle;->hasWallpaper:Z
 
     .line 87
-    iput-boolean p2, p1, Landroid/view/InputWindowHandle;->paused:Z
+    iput-boolean v1, v3, Landroid/view/InputWindowHandle;->paused:Z
 
     .line 88
     invoke-static {}, Landroid/os/Process;->myPid()I
 
-    move-result p4
+    move-result v2
 
-    iput p4, p1, Landroid/view/InputWindowHandle;->ownerPid:I
+    iput v2, v3, Landroid/view/InputWindowHandle;->ownerPid:I
 
     .line 89
-    iget-object p1, p0, Lcom/android/server/wm/InputConsumerImpl;->mWindowHandle:Landroid/view/InputWindowHandle;
+    iget-object v2, p0, Lcom/android/server/wm/InputConsumerImpl;->mWindowHandle:Landroid/view/InputWindowHandle;
 
     invoke-static {}, Landroid/os/Process;->myUid()I
 
-    move-result p4
+    move-result v3
 
-    iput p4, p1, Landroid/view/InputWindowHandle;->ownerUid:I
+    iput v3, v2, Landroid/view/InputWindowHandle;->ownerUid:I
 
     .line 90
-    iget-object p1, p0, Lcom/android/server/wm/InputConsumerImpl;->mWindowHandle:Landroid/view/InputWindowHandle;
+    iget-object v2, p0, Lcom/android/server/wm/InputConsumerImpl;->mWindowHandle:Landroid/view/InputWindowHandle;
 
-    iput p2, p1, Landroid/view/InputWindowHandle;->inputFeatures:I
+    iput v1, v2, Landroid/view/InputWindowHandle;->inputFeatures:I
 
     .line 91
-    const/high16 p2, 0x3f800000  # 1.0f
+    const/high16 v1, 0x3f800000  # 1.0f
 
-    iput p2, p1, Landroid/view/InputWindowHandle;->scaleFactor:F
-
-    .line 93
-    iget-object p1, p0, Lcom/android/server/wm/InputConsumerImpl;->mService:Lcom/android/server/wm/WindowManagerService;
-
-    iget-object p2, p1, Lcom/android/server/wm/WindowManagerService;->mRoot:Lcom/android/server/wm/RootWindowContainer;
-
-    invoke-virtual {p2, p7}, Lcom/android/server/wm/RootWindowContainer;->getDisplayContent(I)Lcom/android/server/wm/DisplayContent;
-
-    move-result-object p2
-
-    .line 94
-    invoke-virtual {p2}, Lcom/android/server/wm/DisplayContent;->getSession()Landroid/view/SurfaceSession;
-
-    move-result-object p2
+    iput v1, v2, Landroid/view/InputWindowHandle;->scaleFactor:F
 
     .line 93
-    invoke-virtual {p1, p2}, Lcom/android/server/wm/WindowManagerService;->makeSurfaceBuilder(Landroid/view/SurfaceSession;)Landroid/view/SurfaceControl$Builder;
+    iget-object v1, p0, Lcom/android/server/wm/InputConsumerImpl;->mService:Lcom/android/server/wm/WindowManagerService;
 
-    move-result-object p1
+    iget-object v2, v1, Lcom/android/server/wm/WindowManagerService;->mRoot:Lcom/android/server/wm/RootWindowContainer;
+
+    invoke-virtual {v2, p7}, Lcom/android/server/wm/RootWindowContainer;->getDisplayContent(I)Lcom/android/server/wm/DisplayContent;
+
+    move-result-object v2
 
     .line 94
-    invoke-virtual {p1}, Landroid/view/SurfaceControl$Builder;->setContainerLayer()Landroid/view/SurfaceControl$Builder;
+    invoke-virtual {v2}, Lcom/android/server/wm/DisplayContent;->getSession()Landroid/view/SurfaceSession;
 
-    move-result-object p1
+    move-result-object v2
 
-    new-instance p2, Ljava/lang/StringBuilder;
+    .line 93
+    invoke-virtual {v1, v2}, Lcom/android/server/wm/WindowManagerService;->makeSurfaceBuilder(Landroid/view/SurfaceSession;)Landroid/view/SurfaceControl$Builder;
 
-    invoke-direct {p2}, Ljava/lang/StringBuilder;-><init>()V
+    move-result-object v1
 
-    const-string p4, "Input Consumer "
+    .line 94
+    invoke-virtual {v1}, Landroid/view/SurfaceControl$Builder;->setContainerLayer()Landroid/view/SurfaceControl$Builder;
 
-    invoke-virtual {p2, p4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    move-result-object v1
 
-    invoke-virtual {p2, p3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    new-instance v2, Ljava/lang/StringBuilder;
 
-    invoke-virtual {p2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
 
-    move-result-object p2
+    const-string v3, "Input Consumer "
 
-    invoke-virtual {p1, p2}, Landroid/view/SurfaceControl$Builder;->setName(Ljava/lang/String;)Landroid/view/SurfaceControl$Builder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    move-result-object p1
+    invoke-virtual {v2, p3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v2
+
+    invoke-virtual {v1, v2}, Landroid/view/SurfaceControl$Builder;->setName(Ljava/lang/String;)Landroid/view/SurfaceControl$Builder;
+
+    move-result-object v1
 
     .line 95
-    invoke-virtual {p1}, Landroid/view/SurfaceControl$Builder;->build()Landroid/view/SurfaceControl;
+    invoke-virtual {v1}, Landroid/view/SurfaceControl$Builder;->build()Landroid/view/SurfaceControl;
 
-    move-result-object p1
+    move-result-object v1
 
-    iput-object p1, p0, Lcom/android/server/wm/InputConsumerImpl;->mInputSurface:Landroid/view/SurfaceControl;
+    iput-object v1, p0, Lcom/android/server/wm/InputConsumerImpl;->mInputSurface:Landroid/view/SurfaceControl;
 
     .line 96
     return-void
@@ -298,6 +306,7 @@
 
 .method private getLayerLw(I)I
     .registers 3
+    .param p1, "windowType"  # I
 
     .line 154
     iget-object v0, p0, Lcom/android/server/wm/InputConsumerImpl;->mService:Lcom/android/server/wm/WindowManagerService;
@@ -306,13 +315,13 @@
 
     invoke-interface {v0, p1}, Lcom/android/server/policy/WindowManagerPolicy;->getWindowLayerFromTypeLw(I)I
 
-    move-result p1
+    move-result v0
 
-    mul-int/lit16 p1, p1, 0x2710
+    mul-int/lit16 v0, v0, 0x2710
 
-    add-int/lit16 p1, p1, 0x3e8
+    add-int/lit16 v0, v0, 0x3e8
 
-    return p1
+    return v0
 .end method
 
 
@@ -349,6 +358,7 @@
     move-result-object v1
 
     .line 172
+    .local v1, "inputMonitor":Lcom/android/server/wm/InputMonitor;
     iget-object v2, p0, Lcom/android/server/wm/InputConsumerImpl;->mName:Ljava/lang/String;
 
     invoke-virtual {v1, v2}, Lcom/android/server/wm/InputMonitor;->destroyInputConsumer(Ljava/lang/String;)Z
@@ -357,6 +367,7 @@
     invoke-virtual {p0}, Lcom/android/server/wm/InputConsumerImpl;->unlinkFromDeathRecipient()V
 
     .line 174
+    .end local v1  # "inputMonitor":Lcom/android/server/wm/InputMonitor;
     monitor-exit v0
 
     .line 175
@@ -403,7 +414,10 @@
 .end method
 
 .method dump(Ljava/io/PrintWriter;Ljava/lang/String;Ljava/lang/String;)V
-    .registers 5
+    .registers 6
+    .param p1, "pw"  # Ljava/io/PrintWriter;
+    .param p2, "name"  # Ljava/lang/String;
+    .param p3, "prefix"  # Ljava/lang/String;
 
     .line 178
     new-instance v0, Ljava/lang/StringBuilder;
@@ -412,33 +426,33 @@
 
     invoke-virtual {v0, p3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string p3, "  name="
+    const-string v1, "  name="
 
-    invoke-virtual {v0, p3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v0, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    const-string p2, " pid="
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v0, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    iget p2, p0, Lcom/android/server/wm/InputConsumerImpl;->mClientPid:I
+    const-string v1, " pid="
 
-    invoke-virtual {v0, p2}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string p2, " user="
+    iget v1, p0, Lcom/android/server/wm/InputConsumerImpl;->mClientPid:I
 
-    invoke-virtual {v0, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    iget-object p2, p0, Lcom/android/server/wm/InputConsumerImpl;->mClientUser:Landroid/os/UserHandle;
+    const-string v1, " user="
 
-    invoke-virtual {v0, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    iget-object v1, p0, Lcom/android/server/wm/InputConsumerImpl;->mClientUser:Landroid/os/UserHandle;
+
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p2
+    move-result-object v0
 
-    invoke-virtual {p1, p2}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
     .line 179
     return-void
@@ -446,6 +460,7 @@
 
 .method hide(Landroid/view/SurfaceControl$Transaction;)V
     .registers 3
+    .param p1, "t"  # Landroid/view/SurfaceControl$Transaction;
 
     .line 138
     iget-object v0, p0, Lcom/android/server/wm/InputConsumerImpl;->mInputSurface:Landroid/view/SurfaceControl;
@@ -458,6 +473,9 @@
 
 .method layout(Landroid/view/SurfaceControl$Transaction;II)V
     .registers 6
+    .param p1, "t"  # Landroid/view/SurfaceControl$Transaction;
+    .param p2, "dw"  # I
+    .param p3, "dh"  # I
 
     .line 119
     iget-object v0, p0, Lcom/android/server/wm/InputConsumerImpl;->mTmpRect:Landroid/graphics/Rect;
@@ -467,9 +485,9 @@
     invoke-virtual {v0, v1, v1, p2, p3}, Landroid/graphics/Rect;->set(IIII)V
 
     .line 120
-    iget-object p2, p0, Lcom/android/server/wm/InputConsumerImpl;->mTmpRect:Landroid/graphics/Rect;
+    iget-object v0, p0, Lcom/android/server/wm/InputConsumerImpl;->mTmpRect:Landroid/graphics/Rect;
 
-    invoke-virtual {p0, p1, p2}, Lcom/android/server/wm/InputConsumerImpl;->layout(Landroid/view/SurfaceControl$Transaction;Landroid/graphics/Rect;)V
+    invoke-virtual {p0, p1, v0}, Lcom/android/server/wm/InputConsumerImpl;->layout(Landroid/view/SurfaceControl$Transaction;Landroid/graphics/Rect;)V
 
     .line 121
     return-void
@@ -477,6 +495,8 @@
 
 .method layout(Landroid/view/SurfaceControl$Transaction;Landroid/graphics/Rect;)V
     .registers 7
+    .param p1, "t"  # Landroid/view/SurfaceControl$Transaction;
+    .param p2, "r"  # Landroid/graphics/Rect;
 
     .line 124
     iget-object v0, p0, Lcom/android/server/wm/InputConsumerImpl;->mTmpClipRect:Landroid/graphics/Rect;
@@ -541,20 +561,20 @@
     invoke-virtual {p1, v0, v1}, Landroid/view/SurfaceControl$Transaction;->setWindowCrop(Landroid/view/SurfaceControl;Landroid/graphics/Rect;)Landroid/view/SurfaceControl$Transaction;
 
     .line 133
-    iget-object p1, p0, Lcom/android/server/wm/InputConsumerImpl;->mOldPosition:Landroid/graphics/Point;
+    iget-object v0, p0, Lcom/android/server/wm/InputConsumerImpl;->mOldPosition:Landroid/graphics/Point;
 
-    iget v0, p2, Landroid/graphics/Rect;->left:I
+    iget v1, p2, Landroid/graphics/Rect;->left:I
 
-    iget p2, p2, Landroid/graphics/Rect;->top:I
+    iget v2, p2, Landroid/graphics/Rect;->top:I
 
-    invoke-virtual {p1, v0, p2}, Landroid/graphics/Point;->set(II)V
+    invoke-virtual {v0, v1, v2}, Landroid/graphics/Point;->set(II)V
 
     .line 134
-    iget-object p1, p0, Lcom/android/server/wm/InputConsumerImpl;->mOldWindowCrop:Landroid/graphics/Rect;
+    iget-object v0, p0, Lcom/android/server/wm/InputConsumerImpl;->mOldWindowCrop:Landroid/graphics/Rect;
 
-    iget-object p2, p0, Lcom/android/server/wm/InputConsumerImpl;->mTmpClipRect:Landroid/graphics/Rect;
+    iget-object v1, p0, Lcom/android/server/wm/InputConsumerImpl;->mTmpClipRect:Landroid/graphics/Rect;
 
-    invoke-virtual {p1, p2}, Landroid/graphics/Rect;->set(Landroid/graphics/Rect;)V
+    invoke-virtual {v0, v1}, Landroid/graphics/Rect;->set(Landroid/graphics/Rect;)V
 
     .line 135
     return-void
@@ -594,6 +614,8 @@
 
 .method show(Landroid/view/SurfaceControl$Transaction;I)V
     .registers 5
+    .param p1, "t"  # Landroid/view/SurfaceControl$Transaction;
+    .param p2, "layer"  # I
 
     .line 148
     iget-object v0, p0, Lcom/android/server/wm/InputConsumerImpl;->mInputSurface:Landroid/view/SurfaceControl;
@@ -617,7 +639,9 @@
 .end method
 
 .method show(Landroid/view/SurfaceControl$Transaction;Lcom/android/server/wm/WindowState;)V
-    .registers 5
+    .registers 6
+    .param p1, "t"  # Landroid/view/SurfaceControl$Transaction;
+    .param p2, "w"  # Lcom/android/server/wm/WindowState;
 
     .line 142
     iget-object v0, p0, Lcom/android/server/wm/InputConsumerImpl;->mInputSurface:Landroid/view/SurfaceControl;
@@ -636,11 +660,11 @@
 
     invoke-virtual {p2}, Lcom/android/server/wm/WindowState;->getSurfaceControl()Landroid/view/SurfaceControl;
 
-    move-result-object p2
+    move-result-object v1
 
-    const/4 v1, 0x1
+    const/4 v2, 0x1
 
-    invoke-virtual {p1, v0, p2, v1}, Landroid/view/SurfaceControl$Transaction;->setRelativeLayer(Landroid/view/SurfaceControl;Landroid/view/SurfaceControl;I)Landroid/view/SurfaceControl$Transaction;
+    invoke-virtual {p1, v0, v1, v2}, Landroid/view/SurfaceControl$Transaction;->setRelativeLayer(Landroid/view/SurfaceControl;Landroid/view/SurfaceControl;I)Landroid/view/SurfaceControl$Transaction;
 
     .line 145
     return-void

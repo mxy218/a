@@ -53,6 +53,7 @@
 
 .method synthetic constructor <init>(Lcom/android/server/LockGuard$1;)V
     .registers 2
+    .param p1, "x0"  # Lcom/android/server/LockGuard$1;
 
     .line 84
     invoke-direct {p0}, Lcom/android/server/LockGuard$LockInfo;-><init>()V

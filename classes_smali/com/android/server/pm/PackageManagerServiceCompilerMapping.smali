@@ -18,13 +18,13 @@
 
     const-string v1, "boot"
 
-    const-string v2, "install"
+    const-string/jumbo v2, "install"
 
     const-string v3, "bg-dexopt"
 
     const-string v4, "ab-ota"
 
-    const-string v5, "inactive"
+    const-string/jumbo v5, "inactive"
 
     const-string/jumbo v6, "shared"
 
@@ -41,7 +41,7 @@
 
     const/4 v2, 0x7
 
-    if-ne v2, v1, :cond_30
+    if-ne v2, v1, :cond_32
 
     .line 39
     const/4 v1, 0x6
@@ -54,13 +54,13 @@
 
     move-result v0
 
-    if-eqz v0, :cond_28
+    if-eqz v0, :cond_2a
 
     .line 42
     return-void
 
     .line 40
-    :cond_28
+    :cond_2a
     new-instance v0, Ljava/lang/IllegalStateException;
 
     const-string v1, "REASON_STRINGS not correct because of shared index"
@@ -70,7 +70,7 @@
     throw v0
 
     .line 37
-    :cond_30
+    :cond_32
     new-instance v0, Ljava/lang/IllegalStateException;
 
     const-string v1, "REASON_STRINGS not correct"
@@ -93,25 +93,26 @@
     .registers 6
 
     .line 77
-    nop
-
-    .line 79
     const/4 v0, 0x0
 
+    .line 79
+    .local v0, "toThrow":Ljava/lang/RuntimeException;
     const/4 v1, 0x0
 
-    :goto_3
+    .local v1, "reason":I
+    :goto_2
     const/4 v2, 0x6
 
-    if-gt v1, v2, :cond_49
+    if-gt v1, v2, :cond_4a
 
     .line 82
-    :try_start_6
+    :try_start_5
     invoke-static {v1}, Lcom/android/server/pm/PackageManagerServiceCompilerMapping;->getSystemPropertyName(I)Ljava/lang/String;
 
     move-result-object v2
 
     .line 83
+    .local v2, "sysPropName":Ljava/lang/String;
     if-eqz v2, :cond_16
 
     invoke-virtual {v2}, Ljava/lang/String;->isEmpty()Z
@@ -124,9 +125,13 @@
     invoke-static {v1}, Lcom/android/server/pm/PackageManagerServiceCompilerMapping;->getAndCheckValidity(I)Ljava/lang/String;
 
     .line 95
-    goto :goto_46
+    nop
+
+    .end local v2  # "sysPropName":Ljava/lang/String;
+    goto :goto_47
 
     .line 84
+    .restart local v2  # "sysPropName":Ljava/lang/String;
     :cond_16
     new-instance v3, Ljava/lang/IllegalStateException;
 
@@ -140,64 +145,75 @@
 
     invoke-virtual {v4, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string v2, "\" for reason "
+    const-string v5, "\" for reason "
 
-    invoke-virtual {v4, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    sget-object v2, Lcom/android/server/pm/PackageManagerServiceCompilerMapping;->REASON_STRINGS:[Ljava/lang/String;
+    sget-object v5, Lcom/android/server/pm/PackageManagerServiceCompilerMapping;->REASON_STRINGS:[Ljava/lang/String;
 
-    aget-object v2, v2, v1
+    aget-object v5, v5, v1
 
-    invoke-virtual {v4, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v4}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v2
+    move-result-object v4
 
-    invoke-direct {v3, v2}, Ljava/lang/IllegalStateException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v3, v4}, Ljava/lang/IllegalStateException;-><init>(Ljava/lang/String;)V
 
+    .end local v0  # "toThrow":Ljava/lang/RuntimeException;
+    .end local v1  # "reason":I
     throw v3
     :try_end_39
-    .catch Ljava/lang/Exception; {:try_start_6 .. :try_end_39} :catch_39
+    .catch Ljava/lang/Exception; {:try_start_5 .. :try_end_39} :catch_39
 
     .line 90
+    .end local v2  # "sysPropName":Ljava/lang/String;
+    .restart local v0  # "toThrow":Ljava/lang/RuntimeException;
+    .restart local v1  # "reason":I
     :catch_39
     move-exception v2
 
     .line 91
-    if-nez v0, :cond_43
+    .local v2, "exc":Ljava/lang/Exception;
+    if-nez v0, :cond_44
 
     .line 92
-    new-instance v0, Ljava/lang/IllegalStateException;
+    new-instance v3, Ljava/lang/IllegalStateException;
 
-    const-string v3, "PMS compiler filter settings are bad."
+    const-string v4, "PMS compiler filter settings are bad."
 
-    invoke-direct {v0, v3}, Ljava/lang/IllegalStateException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v3, v4}, Ljava/lang/IllegalStateException;-><init>(Ljava/lang/String;)V
+
+    move-object v0, v3
 
     .line 94
-    :cond_43
+    :cond_44
     invoke-virtual {v0, v2}, Ljava/lang/RuntimeException;->addSuppressed(Ljava/lang/Throwable;)V
 
     .line 79
-    :goto_46
+    .end local v2  # "exc":Ljava/lang/Exception;
+    :goto_47
     add-int/lit8 v1, v1, 0x1
 
-    goto :goto_3
+    goto :goto_2
 
     .line 98
-    :cond_49
-    if-nez v0, :cond_4c
+    .end local v1  # "reason":I
+    :cond_4a
+    if-nez v0, :cond_4d
 
     .line 101
     return-void
 
     .line 99
-    :cond_4c
+    :cond_4d
     throw v0
 .end method
 
 .method private static getAndCheckValidity(I)Ljava/lang/String;
     .registers 6
+    .param p0, "reason"  # I
 
     .line 55
     invoke-static {p0}, Lcom/android/server/pm/PackageManagerServiceCompilerMapping;->getSystemPropertyName(I)Ljava/lang/String;
@@ -209,6 +225,7 @@
     move-result-object v0
 
     .line 56
+    .local v0, "sysPropValue":Ljava/lang/String;
     const-string v1, ")"
 
     const-string v2, "Value \""
@@ -250,23 +267,23 @@
 
     invoke-virtual {v4, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string v0, "\" not allowed (reason "
+    const-string v2, "\" not allowed (reason "
 
-    invoke-virtual {v4, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v4, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    sget-object v0, Lcom/android/server/pm/PackageManagerServiceCompilerMapping;->REASON_STRINGS:[Ljava/lang/String;
+    sget-object v2, Lcom/android/server/pm/PackageManagerServiceCompilerMapping;->REASON_STRINGS:[Ljava/lang/String;
 
-    aget-object p0, v0, p0
+    aget-object v2, v2, p0
 
-    invoke-virtual {v4, p0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v4, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v4, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v4}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v1
 
-    invoke-direct {v3, p0}, Ljava/lang/IllegalStateException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v3, v1}, Ljava/lang/IllegalStateException;-><init>(Ljava/lang/String;)V
 
     throw v3
 
@@ -282,36 +299,37 @@
 
     invoke-virtual {v4, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string v0, "\" not valid (reason "
+    const-string v2, "\" not valid (reason "
 
-    invoke-virtual {v4, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v4, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    sget-object v0, Lcom/android/server/pm/PackageManagerServiceCompilerMapping;->REASON_STRINGS:[Ljava/lang/String;
+    sget-object v2, Lcom/android/server/pm/PackageManagerServiceCompilerMapping;->REASON_STRINGS:[Ljava/lang/String;
 
-    aget-object p0, v0, p0
+    aget-object v2, v2, p0
 
-    invoke-virtual {v4, p0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v4, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v4, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v4}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v1
 
-    invoke-direct {v3, p0}, Ljava/lang/IllegalStateException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v3, v1}, Ljava/lang/IllegalStateException;-><init>(Ljava/lang/String;)V
 
     throw v3
 .end method
 
 .method public static getCompilerFilterForReason(I)Ljava/lang/String;
-    .registers 1
+    .registers 2
+    .param p0, "reason"  # I
 
     .line 104
     invoke-static {p0}, Lcom/android/server/pm/PackageManagerServiceCompilerMapping;->getAndCheckValidity(I)Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v0
 
-    return-object p0
+    return-object v0
 .end method
 
 .method public static getDefaultCompilerFilter()Ljava/lang/String;
@@ -325,6 +343,7 @@
     move-result-object v0
 
     .line 115
+    .local v0, "value":Ljava/lang/String;
     const-string/jumbo v1, "speed"
 
     if-eqz v0, :cond_21
@@ -371,6 +390,7 @@
 
 .method public static getReasonName(I)Ljava/lang/String;
     .registers 4
+    .param p0, "reason"  # I
 
     .line 128
     const/4 v0, -0x1
@@ -378,9 +398,9 @@
     if-ne p0, v0, :cond_7
 
     .line 129
-    const-string/jumbo p0, "unknown"
+    const-string/jumbo v0, "unknown"
 
-    return-object p0
+    return-object v0
 
     .line 131
     :cond_7
@@ -393,9 +413,9 @@
     if-ge p0, v1, :cond_11
 
     .line 134
-    aget-object p0, v0, p0
+    aget-object v0, v0, p0
 
-    return-object p0
+    return-object v0
 
     .line 132
     :cond_11
@@ -411,21 +431,22 @@
 
     invoke-virtual {v1, p0}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    const-string p0, " invalid"
+    const-string v2, " invalid"
 
-    invoke-virtual {v1, p0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v1
 
-    invoke-direct {v0, p0}, Ljava/lang/IllegalArgumentException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v0, v1}, Ljava/lang/IllegalArgumentException;-><init>(Ljava/lang/String;)V
 
     throw v0
 .end method
 
 .method private static getSystemPropertyName(I)Ljava/lang/String;
     .registers 4
+    .param p0, "reason"  # I
 
     .line 45
     if-ltz p0, :cond_1e
@@ -447,15 +468,15 @@
 
     sget-object v1, Lcom/android/server/pm/PackageManagerServiceCompilerMapping;->REASON_STRINGS:[Ljava/lang/String;
 
-    aget-object p0, v1, p0
+    aget-object v1, v1, p0
 
-    invoke-virtual {v0, p0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v0
 
-    return-object p0
+    return-object v0
 
     .line 46
     :cond_1e
@@ -471,21 +492,23 @@
 
     invoke-virtual {v1, p0}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    const-string p0, " invalid"
+    const-string v2, " invalid"
 
-    invoke-virtual {v1, p0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v1
 
-    invoke-direct {v0, p0}, Ljava/lang/IllegalArgumentException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v0, v1}, Ljava/lang/IllegalArgumentException;-><init>(Ljava/lang/String;)V
 
     throw v0
 .end method
 
 .method private static isFilterAllowedForReason(ILjava/lang/String;)Z
     .registers 3
+    .param p0, "reason"  # I
+    .param p1, "filter"  # Ljava/lang/String;
 
     .line 69
     const/4 v0, 0x6
@@ -494,21 +517,21 @@
 
     invoke-static {p1}, Ldalvik/system/DexFile;->isProfileGuidedCompilerFilter(Ljava/lang/String;)Z
 
-    move-result p0
+    move-result v0
 
-    if-nez p0, :cond_a
+    if-nez v0, :cond_a
 
     goto :goto_c
 
     :cond_a
-    const/4 p0, 0x0
+    const/4 v0, 0x0
 
     goto :goto_d
 
     :cond_c
     :goto_c
-    const/4 p0, 0x1
+    const/4 v0, 0x1
 
     :goto_d
-    return p0
+    return v0
 .end method

@@ -56,59 +56,60 @@
 .method public constructor <init>()V
     .registers 2
 
-    .line 53
+    .line 54
+    .local p0, "this":Lcom/android/server/wm/ConfigurationContainer;, "Lcom/android/server/wm/ConfigurationContainer<TE;>;"
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
-    .line 58
+    .line 59
     new-instance v0, Landroid/graphics/Rect;
 
     invoke-direct {v0}, Landroid/graphics/Rect;-><init>()V
 
     iput-object v0, p0, Lcom/android/server/wm/ConfigurationContainer;->mReturnBounds:Landroid/graphics/Rect;
 
-    .line 63
+    .line 64
     new-instance v0, Landroid/content/res/Configuration;
 
     invoke-direct {v0}, Landroid/content/res/Configuration;-><init>()V
 
     iput-object v0, p0, Lcom/android/server/wm/ConfigurationContainer;->mRequestedOverrideConfiguration:Landroid/content/res/Configuration;
 
-    .line 69
+    .line 70
     new-instance v0, Landroid/content/res/Configuration;
 
     invoke-direct {v0}, Landroid/content/res/Configuration;-><init>()V
 
     iput-object v0, p0, Lcom/android/server/wm/ConfigurationContainer;->mResolvedOverrideConfiguration:Landroid/content/res/Configuration;
 
-    .line 78
+    .line 79
     new-instance v0, Landroid/content/res/Configuration;
 
     invoke-direct {v0}, Landroid/content/res/Configuration;-><init>()V
 
     iput-object v0, p0, Lcom/android/server/wm/ConfigurationContainer;->mFullConfiguration:Landroid/content/res/Configuration;
 
-    .line 88
+    .line 89
     new-instance v0, Landroid/content/res/Configuration;
 
     invoke-direct {v0}, Landroid/content/res/Configuration;-><init>()V
 
     iput-object v0, p0, Lcom/android/server/wm/ConfigurationContainer;->mMergedOverrideConfiguration:Landroid/content/res/Configuration;
 
-    .line 90
+    .line 91
     new-instance v0, Ljava/util/ArrayList;
 
     invoke-direct {v0}, Ljava/util/ArrayList;-><init>()V
 
     iput-object v0, p0, Lcom/android/server/wm/ConfigurationContainer;->mChangeListeners:Ljava/util/ArrayList;
 
-    .line 93
+    .line 94
     new-instance v0, Landroid/content/res/Configuration;
 
     invoke-direct {v0}, Landroid/content/res/Configuration;-><init>()V
 
     iput-object v0, p0, Lcom/android/server/wm/ConfigurationContainer;->mTmpConfig:Landroid/content/res/Configuration;
 
-    .line 96
+    .line 97
     new-instance v0, Landroid/graphics/Rect;
 
     invoke-direct {v0}, Landroid/graphics/Rect;-><init>()V
@@ -120,13 +121,15 @@
 
 .method public static equivalentBounds(Landroid/graphics/Rect;Landroid/graphics/Rect;)Z
     .registers 3
+    .param p0, "bounds"  # Landroid/graphics/Rect;
+    .param p1, "other"  # Landroid/graphics/Rect;
 
-    .line 238
+    .line 239
     if-eq p0, p1, :cond_1f
 
     if-eqz p0, :cond_12
 
-    .line 239
+    .line 240
     invoke-virtual {p0, p1}, Landroid/graphics/Rect;->equals(Ljava/lang/Object;)Z
 
     move-result v0
@@ -144,96 +147,102 @@
     :cond_12
     if-eqz p1, :cond_1d
 
-    .line 240
+    .line 241
     invoke-virtual {p1}, Landroid/graphics/Rect;->isEmpty()Z
 
-    move-result p1
+    move-result v0
 
-    if-eqz p1, :cond_1d
+    if-eqz v0, :cond_1d
 
     if-nez p0, :cond_1d
 
     goto :goto_1f
 
     :cond_1d
-    const/4 p0, 0x0
+    const/4 v0, 0x0
 
     goto :goto_20
 
     :cond_1f
     :goto_1f
-    const/4 p0, 0x1
+    const/4 v0, 0x1
 
-    .line 238
+    .line 239
     :goto_20
-    return p0
+    return v0
 .end method
 
 
 # virtual methods
 .method containsListener(Lcom/android/server/wm/ConfigurationContainerListener;)Z
     .registers 3
+    .param p1, "listener"  # Lcom/android/server/wm/ConfigurationContainerListener;
     .annotation build Lcom/android/internal/annotations/VisibleForTesting;
     .end annotation
 
-    .line 542
+    .line 543
+    .local p0, "this":Lcom/android/server/wm/ConfigurationContainer;, "Lcom/android/server/wm/ConfigurationContainer<TE;>;"
     iget-object v0, p0, Lcom/android/server/wm/ConfigurationContainer;->mChangeListeners:Ljava/util/ArrayList;
 
     invoke-virtual {v0, p1}, Ljava/util/ArrayList;->contains(Ljava/lang/Object;)Z
 
-    move-result p1
+    move-result v0
 
-    return p1
+    return v0
 .end method
 
 .method diffRequestedOverrideBounds(Landroid/graphics/Rect;)I
     .registers 6
+    .param p1, "bounds"  # Landroid/graphics/Rect;
 
-    .line 322
+    .line 323
+    .local p0, "this":Lcom/android/server/wm/ConfigurationContainer;, "Lcom/android/server/wm/ConfigurationContainer<TE;>;"
     invoke-virtual {p0, p1}, Lcom/android/server/wm/ConfigurationContainer;->equivalentRequestedOverrideBounds(Landroid/graphics/Rect;)Z
 
     move-result v0
 
-    const/4 v1, 0x0
-
     if-eqz v0, :cond_8
 
-    .line 323
-    return v1
+    .line 324
+    const/4 v0, 0x0
 
-    .line 326
+    return v0
+
+    .line 327
     :cond_8
-    nop
+    const/4 v0, 0x0
 
-    .line 328
+    .line 329
+    .local v0, "boundsChange":I
     invoke-virtual {p0}, Lcom/android/server/wm/ConfigurationContainer;->getRequestedOverrideBounds()Landroid/graphics/Rect;
 
-    move-result-object v0
+    move-result-object v1
 
-    .line 330
+    .line 331
+    .local v1, "existingBounds":Landroid/graphics/Rect;
     if-eqz p1, :cond_1b
 
-    iget v2, v0, Landroid/graphics/Rect;->left:I
+    iget v2, v1, Landroid/graphics/Rect;->left:I
 
     iget v3, p1, Landroid/graphics/Rect;->left:I
 
     if-ne v2, v3, :cond_1b
 
-    iget v2, v0, Landroid/graphics/Rect;->top:I
+    iget v2, v1, Landroid/graphics/Rect;->top:I
 
     iget v3, p1, Landroid/graphics/Rect;->top:I
 
-    if-eq v2, v3, :cond_1c
+    if-eq v2, v3, :cond_1d
 
-    .line 332
+    .line 333
     :cond_1b
-    const/4 v1, 0x1
+    or-int/lit8 v0, v0, 0x1
 
-    .line 335
-    :cond_1c
-    if-eqz p1, :cond_32
+    .line 336
+    :cond_1d
+    if-eqz p1, :cond_33
 
-    invoke-virtual {v0}, Landroid/graphics/Rect;->width()I
+    invoke-virtual {v1}, Landroid/graphics/Rect;->width()I
 
     move-result v2
 
@@ -241,177 +250,188 @@
 
     move-result v3
 
-    if-ne v2, v3, :cond_32
+    if-ne v2, v3, :cond_33
 
-    .line 336
-    invoke-virtual {v0}, Landroid/graphics/Rect;->height()I
+    .line 337
+    invoke-virtual {v1}, Landroid/graphics/Rect;->height()I
 
-    move-result v0
+    move-result v2
 
     invoke-virtual {p1}, Landroid/graphics/Rect;->height()I
 
-    move-result p1
+    move-result v3
 
-    if-eq v0, p1, :cond_34
+    if-eq v2, v3, :cond_35
 
-    .line 337
-    :cond_32
-    or-int/lit8 v1, v1, 0x2
+    .line 338
+    :cond_33
+    or-int/lit8 v0, v0, 0x2
 
-    .line 340
-    :cond_34
-    return v1
+    .line 341
+    :cond_35
+    return v0
 .end method
 
 .method public dumpChildrenNames(Ljava/io/PrintWriter;Ljava/lang/String;)V
-    .registers 8
+    .registers 9
+    .param p1, "pw"  # Ljava/io/PrintWriter;
+    .param p2, "prefix"  # Ljava/lang/String;
 
-    .line 594
+    .line 595
+    .local p0, "this":Lcom/android/server/wm/ConfigurationContainer;, "Lcom/android/server/wm/ConfigurationContainer<TE;>;"
     new-instance v0, Ljava/lang/StringBuilder;
 
     invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
 
     invoke-virtual {v0, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string p2, " "
+    const-string v1, " "
 
-    invoke-virtual {v0, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
     move-result-object v0
 
-    .line 595
-    new-instance v1, Ljava/lang/StringBuilder;
+    .line 596
+    .local v0, "childPrefix":Ljava/lang/String;
+    new-instance v2, Ljava/lang/StringBuilder;
 
-    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
 
     invoke-virtual {p0}, Lcom/android/server/wm/ConfigurationContainer;->getName()Ljava/lang/String;
 
-    move-result-object v2
+    move-result-object v3
 
-    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string v2, " type="
+    const-string v3, " type="
 
-    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    .line 596
-    invoke-virtual {p0}, Lcom/android/server/wm/ConfigurationContainer;->getActivityType()I
-
-    move-result v2
-
-    invoke-static {v2}, Landroid/app/WindowConfiguration;->activityTypeToString(I)Ljava/lang/String;
-
-    move-result-object v2
-
-    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    const-string v2, " mode="
-
-    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     .line 597
-    invoke-virtual {p0}, Lcom/android/server/wm/ConfigurationContainer;->getWindowingMode()I
+    invoke-virtual {p0}, Lcom/android/server/wm/ConfigurationContainer;->getActivityType()I
 
-    move-result v2
+    move-result v3
 
-    invoke-static {v2}, Landroid/app/WindowConfiguration;->windowingModeToString(I)Ljava/lang/String;
-
-    move-result-object v2
-
-    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    const-string v2, " override-mode="
-
-    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    .line 598
-    invoke-virtual {p0}, Lcom/android/server/wm/ConfigurationContainer;->getRequestedOverrideWindowingMode()I
-
-    move-result v2
-
-    invoke-static {v2}, Landroid/app/WindowConfiguration;->windowingModeToString(I)Ljava/lang/String;
-
-    move-result-object v2
-
-    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
-
-    move-result-object v1
-
-    .line 595
-    invoke-virtual {p1, v1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
-
-    .line 599
-    invoke-virtual {p0}, Lcom/android/server/wm/ConfigurationContainer;->getChildCount()I
-
-    move-result v1
-
-    add-int/lit8 v1, v1, -0x1
-
-    :goto_5a
-    if-ltz v1, :cond_80
-
-    .line 600
-    invoke-virtual {p0, v1}, Lcom/android/server/wm/ConfigurationContainer;->getChildAt(I)Lcom/android/server/wm/ConfigurationContainer;
-
-    move-result-object v2
-
-    .line 601
-    new-instance v3, Ljava/lang/StringBuilder;
-
-    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
-
-    invoke-virtual {v3, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    const-string v4, "#"
-
-    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v3, v1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v3, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-static {v3}, Landroid/app/WindowConfiguration;->activityTypeToString(I)Ljava/lang/String;
 
     move-result-object v3
 
-    invoke-virtual {p1, v3}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    .line 602
-    invoke-virtual {v2, p1, v0}, Lcom/android/server/wm/ConfigurationContainer;->dumpChildrenNames(Ljava/io/PrintWriter;Ljava/lang/String;)V
+    const-string v3, " mode="
+
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    .line 598
+    invoke-virtual {p0}, Lcom/android/server/wm/ConfigurationContainer;->getWindowingMode()I
+
+    move-result v3
+
+    invoke-static {v3}, Landroid/app/WindowConfiguration;->windowingModeToString(I)Ljava/lang/String;
+
+    move-result-object v3
+
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    const-string v3, " override-mode="
+
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     .line 599
-    add-int/lit8 v1, v1, -0x1
+    invoke-virtual {p0}, Lcom/android/server/wm/ConfigurationContainer;->getRequestedOverrideWindowingMode()I
+
+    move-result v3
+
+    invoke-static {v3}, Landroid/app/WindowConfiguration;->windowingModeToString(I)Ljava/lang/String;
+
+    move-result-object v3
+
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v2
+
+    .line 596
+    invoke-virtual {p1, v2}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+
+    .line 600
+    invoke-virtual {p0}, Lcom/android/server/wm/ConfigurationContainer;->getChildCount()I
+
+    move-result v2
+
+    add-int/lit8 v2, v2, -0x1
+
+    .local v2, "i":I
+    :goto_5a
+    if-ltz v2, :cond_80
+
+    .line 601
+    invoke-virtual {p0, v2}, Lcom/android/server/wm/ConfigurationContainer;->getChildAt(I)Lcom/android/server/wm/ConfigurationContainer;
+
+    move-result-object v3
+
+    .line 602
+    .local v3, "cc":Lcom/android/server/wm/ConfigurationContainer;, "TE;"
+    new-instance v4, Ljava/lang/StringBuilder;
+
+    invoke-direct {v4}, Ljava/lang/StringBuilder;-><init>()V
+
+    invoke-virtual {v4, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    const-string v5, "#"
+
+    invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v4, v2}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v4, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v4}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v4
+
+    invoke-virtual {p1, v4}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
+
+    .line 603
+    invoke-virtual {v3, p1, v0}, Lcom/android/server/wm/ConfigurationContainer;->dumpChildrenNames(Ljava/io/PrintWriter;Ljava/lang/String;)V
+
+    .line 600
+    .end local v3  # "cc":Lcom/android/server/wm/ConfigurationContainer;, "TE;"
+    add-int/lit8 v2, v2, -0x1
 
     goto :goto_5a
 
-    .line 604
+    .line 605
+    .end local v2  # "i":I
     :cond_80
     return-void
 .end method
 
 .method public equivalentRequestedOverrideBounds(Landroid/graphics/Rect;)Z
     .registers 3
+    .param p1, "bounds"  # Landroid/graphics/Rect;
 
-    .line 231
+    .line 232
+    .local p0, "this":Lcom/android/server/wm/ConfigurationContainer;, "Lcom/android/server/wm/ConfigurationContainer<TE;>;"
     invoke-virtual {p0}, Lcom/android/server/wm/ConfigurationContainer;->getRequestedOverrideBounds()Landroid/graphics/Rect;
 
     move-result-object v0
 
     invoke-static {v0, p1}, Lcom/android/server/wm/ConfigurationContainer;->equivalentBounds(Landroid/graphics/Rect;Landroid/graphics/Rect;)Z
 
-    move-result p1
+    move-result v0
 
-    return p1
+    return v0
 .end method
 
 .method public getActivityType()I
     .registers 2
 
-    .line 441
+    .line 442
+    .local p0, "this":Lcom/android/server/wm/ConfigurationContainer;, "Lcom/android/server/wm/ConfigurationContainer<TE;>;"
     iget-object v0, p0, Lcom/android/server/wm/ConfigurationContainer;->mFullConfiguration:Landroid/content/res/Configuration;
 
     iget-object v0, v0, Landroid/content/res/Configuration;->windowConfiguration:Landroid/app/WindowConfiguration;
@@ -426,7 +446,8 @@
 .method public getBounds()Landroid/graphics/Rect;
     .registers 3
 
-    .line 249
+    .line 250
+    .local p0, "this":Lcom/android/server/wm/ConfigurationContainer;, "Lcom/android/server/wm/ConfigurationContainer<TE;>;"
     iget-object v0, p0, Lcom/android/server/wm/ConfigurationContainer;->mReturnBounds:Landroid/graphics/Rect;
 
     invoke-virtual {p0}, Lcom/android/server/wm/ConfigurationContainer;->getConfiguration()Landroid/content/res/Configuration;
@@ -441,7 +462,7 @@
 
     invoke-virtual {v0, v1}, Landroid/graphics/Rect;->set(Landroid/graphics/Rect;)V
 
-    .line 250
+    .line 251
     iget-object v0, p0, Lcom/android/server/wm/ConfigurationContainer;->mReturnBounds:Landroid/graphics/Rect;
 
     return-object v0
@@ -449,15 +470,17 @@
 
 .method public getBounds(Landroid/graphics/Rect;)V
     .registers 3
+    .param p1, "outBounds"  # Landroid/graphics/Rect;
 
-    .line 254
+    .line 255
+    .local p0, "this":Lcom/android/server/wm/ConfigurationContainer;, "Lcom/android/server/wm/ConfigurationContainer<TE;>;"
     invoke-virtual {p0}, Lcom/android/server/wm/ConfigurationContainer;->getBounds()Landroid/graphics/Rect;
 
     move-result-object v0
 
     invoke-virtual {p1, v0}, Landroid/graphics/Rect;->set(Landroid/graphics/Rect;)V
 
-    .line 255
+    .line 256
     return-void
 .end method
 
@@ -475,7 +498,8 @@
 .method public getConfiguration()Landroid/content/res/Configuration;
     .registers 2
 
-    .line 111
+    .line 112
+    .local p0, "this":Lcom/android/server/wm/ConfigurationContainer;, "Lcom/android/server/wm/ConfigurationContainer<TE;>;"
     iget-object v0, p0, Lcom/android/server/wm/ConfigurationContainer;->mFullConfiguration:Landroid/content/res/Configuration;
 
     return-object v0
@@ -484,7 +508,8 @@
 .method getLastOverrideConfigurationChanges()I
     .registers 2
 
-    .line 116
+    .line 117
+    .local p0, "this":Lcom/android/server/wm/ConfigurationContainer;, "Lcom/android/server/wm/ConfigurationContainer<TE;>;"
     iget v0, p0, Lcom/android/server/wm/ConfigurationContainer;->mLastOverrideConfigurationChanges:I
 
     return v0
@@ -493,7 +518,8 @@
 .method public getMergedOverrideConfiguration()Landroid/content/res/Configuration;
     .registers 2
 
-    .line 188
+    .line 189
+    .local p0, "this":Lcom/android/server/wm/ConfigurationContainer;, "Lcom/android/server/wm/ConfigurationContainer<TE;>;"
     iget-object v0, p0, Lcom/android/server/wm/ConfigurationContainer;->mMergedOverrideConfiguration:Landroid/content/res/Configuration;
 
     return-object v0
@@ -502,7 +528,8 @@
 .method getName()Ljava/lang/String;
     .registers 2
 
-    .line 607
+    .line 608
+    .local p0, "this":Lcom/android/server/wm/ConfigurationContainer;, "Lcom/android/server/wm/ConfigurationContainer<TE;>;"
     invoke-virtual {p0}, Ljava/lang/Object;->toString()Ljava/lang/String;
 
     move-result-object v0
@@ -514,28 +541,32 @@
 .end method
 
 .method public getPosition(Landroid/graphics/Point;)V
-    .registers 4
+    .registers 5
+    .param p1, "out"  # Landroid/graphics/Point;
 
-    .line 261
+    .line 262
+    .local p0, "this":Lcom/android/server/wm/ConfigurationContainer;, "Lcom/android/server/wm/ConfigurationContainer<TE;>;"
     invoke-virtual {p0}, Lcom/android/server/wm/ConfigurationContainer;->getBounds()Landroid/graphics/Rect;
 
     move-result-object v0
 
-    .line 262
+    .line 263
+    .local v0, "bounds":Landroid/graphics/Rect;
     iget v1, v0, Landroid/graphics/Rect;->left:I
 
-    iget v0, v0, Landroid/graphics/Rect;->top:I
+    iget v2, v0, Landroid/graphics/Rect;->top:I
 
-    invoke-virtual {p1, v1, v0}, Landroid/graphics/Point;->set(II)V
+    invoke-virtual {p1, v1, v2}, Landroid/graphics/Point;->set(II)V
 
-    .line 263
+    .line 264
     return-void
 .end method
 
 .method public getRequestedOverrideBounds()Landroid/graphics/Rect;
     .registers 3
 
-    .line 271
+    .line 272
+    .local p0, "this":Lcom/android/server/wm/ConfigurationContainer;, "Lcom/android/server/wm/ConfigurationContainer<TE;>;"
     iget-object v0, p0, Lcom/android/server/wm/ConfigurationContainer;->mReturnBounds:Landroid/graphics/Rect;
 
     invoke-virtual {p0}, Lcom/android/server/wm/ConfigurationContainer;->getRequestedOverrideConfiguration()Landroid/content/res/Configuration;
@@ -550,7 +581,7 @@
 
     invoke-virtual {v0, v1}, Landroid/graphics/Rect;->set(Landroid/graphics/Rect;)V
 
-    .line 273
+    .line 274
     iget-object v0, p0, Lcom/android/server/wm/ConfigurationContainer;->mReturnBounds:Landroid/graphics/Rect;
 
     return-object v0
@@ -558,22 +589,25 @@
 
 .method public getRequestedOverrideBounds(Landroid/graphics/Rect;)V
     .registers 3
+    .param p1, "outBounds"  # Landroid/graphics/Rect;
 
-    .line 289
+    .line 290
+    .local p0, "this":Lcom/android/server/wm/ConfigurationContainer;, "Lcom/android/server/wm/ConfigurationContainer<TE;>;"
     invoke-virtual {p0}, Lcom/android/server/wm/ConfigurationContainer;->getRequestedOverrideBounds()Landroid/graphics/Rect;
 
     move-result-object v0
 
     invoke-virtual {p1, v0}, Landroid/graphics/Rect;->set(Landroid/graphics/Rect;)V
 
-    .line 290
+    .line 291
     return-void
 .end method
 
 .method public getRequestedOverrideConfiguration()Landroid/content/res/Configuration;
     .registers 2
 
-    .line 160
+    .line 161
+    .local p0, "this":Lcom/android/server/wm/ConfigurationContainer;, "Lcom/android/server/wm/ConfigurationContainer<TE;>;"
     iget-object v0, p0, Lcom/android/server/wm/ConfigurationContainer;->mRequestedOverrideConfiguration:Landroid/content/res/Configuration;
 
     return-object v0
@@ -582,7 +616,8 @@
 .method public getRequestedOverrideWindowingMode()I
     .registers 2
 
-    .line 358
+    .line 359
+    .local p0, "this":Lcom/android/server/wm/ConfigurationContainer;, "Lcom/android/server/wm/ConfigurationContainer<TE;>;"
     iget-object v0, p0, Lcom/android/server/wm/ConfigurationContainer;->mRequestedOverrideConfiguration:Landroid/content/res/Configuration;
 
     iget-object v0, v0, Landroid/content/res/Configuration;->windowConfiguration:Landroid/app/WindowConfiguration;
@@ -597,7 +632,8 @@
 .method getResolvedOverrideConfiguration()Landroid/content/res/Configuration;
     .registers 2
 
-    .line 165
+    .line 166
+    .local p0, "this":Lcom/android/server/wm/ConfigurationContainer;, "Lcom/android/server/wm/ConfigurationContainer<TE;>;"
     iget-object v0, p0, Lcom/android/server/wm/ConfigurationContainer;->mResolvedOverrideConfiguration:Landroid/content/res/Configuration;
 
     return-object v0
@@ -606,7 +642,8 @@
 .method public getWindowConfiguration()Landroid/app/WindowConfiguration;
     .registers 2
 
-    .line 348
+    .line 349
+    .local p0, "this":Lcom/android/server/wm/ConfigurationContainer;, "Lcom/android/server/wm/ConfigurationContainer<TE;>;"
     iget-object v0, p0, Lcom/android/server/wm/ConfigurationContainer;->mFullConfiguration:Landroid/content/res/Configuration;
 
     iget-object v0, v0, Landroid/content/res/Configuration;->windowConfiguration:Landroid/app/WindowConfiguration;
@@ -617,7 +654,8 @@
 .method public getWindowingMode()I
     .registers 2
 
-    .line 353
+    .line 354
+    .local p0, "this":Lcom/android/server/wm/ConfigurationContainer;, "Lcom/android/server/wm/ConfigurationContainer<TE;>;"
     iget-object v0, p0, Lcom/android/server/wm/ConfigurationContainer;->mFullConfiguration:Landroid/content/res/Configuration;
 
     iget-object v0, v0, Landroid/content/res/Configuration;->windowConfiguration:Landroid/app/WindowConfiguration;
@@ -630,57 +668,62 @@
 .end method
 
 .method public hasCompatibleActivityType(Lcom/android/server/wm/ConfigurationContainer;)Z
-    .registers 6
+    .registers 7
+    .param p1, "other"  # Lcom/android/server/wm/ConfigurationContainer;
 
-    .line 481
+    .line 482
+    .local p0, "this":Lcom/android/server/wm/ConfigurationContainer;, "Lcom/android/server/wm/ConfigurationContainer<TE;>;"
     invoke-virtual {p0}, Lcom/android/server/wm/ConfigurationContainer;->getActivityType()I
 
     move-result v0
 
-    .line 482
+    .line 483
+    .local v0, "thisType":I
     invoke-virtual {p1}, Lcom/android/server/wm/ConfigurationContainer;->getActivityType()I
 
-    move-result p1
-
-    .line 484
-    const/4 v1, 0x1
-
-    if-ne v0, p1, :cond_c
+    move-result v1
 
     .line 485
-    return v1
+    .local v1, "otherType":I
+    const/4 v2, 0x1
 
-    .line 487
+    if-ne v0, v1, :cond_c
+
+    .line 486
+    return v2
+
+    .line 488
     :cond_c
-    const/4 v2, 0x4
+    const/4 v3, 0x4
 
-    const/4 v3, 0x0
+    const/4 v4, 0x0
 
-    if-ne v0, v2, :cond_11
+    if-ne v0, v3, :cond_11
 
-    .line 489
-    return v3
+    .line 490
+    return v4
 
-    .line 492
+    .line 493
     :cond_11
     if-eqz v0, :cond_17
 
-    if-nez p1, :cond_16
+    if-nez v1, :cond_16
 
     goto :goto_17
 
     :cond_16
-    move v1, v3
+    move v2, v4
 
     :cond_17
     :goto_17
-    return v1
+    return v2
 .end method
 
 .method public hasOverrideBounds()Z
     .registers 2
 
-    .line 281
+    .line 282
+    .local p0, "this":Lcom/android/server/wm/ConfigurationContainer;, "Lcom/android/server/wm/ConfigurationContainer<TE;>;"
     invoke-virtual {p0}, Lcom/android/server/wm/ConfigurationContainer;->getRequestedOverrideBounds()Landroid/graphics/Rect;
 
     move-result-object v0
@@ -697,7 +740,8 @@
 .method hasOverrideConfiguration()Z
     .registers 2
 
-    .line 344
+    .line 345
+    .local p0, "this":Lcom/android/server/wm/ConfigurationContainer;, "Lcom/android/server/wm/ConfigurationContainer<TE;>;"
     iget-boolean v0, p0, Lcom/android/server/wm/ConfigurationContainer;->mHasOverrideConfiguration:Z
 
     return v0
@@ -706,7 +750,8 @@
 .method public inFreeformWindowingMode()Z
     .registers 3
 
-    .line 435
+    .line 436
+    .local p0, "this":Lcom/android/server/wm/ConfigurationContainer;, "Lcom/android/server/wm/ConfigurationContainer<TE;>;"
     iget-object v0, p0, Lcom/android/server/wm/ConfigurationContainer;->mFullConfiguration:Landroid/content/res/Configuration;
 
     iget-object v0, v0, Landroid/content/res/Configuration;->windowConfiguration:Landroid/app/WindowConfiguration;
@@ -733,17 +778,19 @@
 .method public inMultiWindowMode()Z
     .registers 3
 
-    .line 392
+    .line 393
+    .local p0, "this":Lcom/android/server/wm/ConfigurationContainer;, "Lcom/android/server/wm/ConfigurationContainer<TE;>;"
     iget-object v0, p0, Lcom/android/server/wm/ConfigurationContainer;->mFullConfiguration:Landroid/content/res/Configuration;
 
     iget-object v0, v0, Landroid/content/res/Configuration;->windowConfiguration:Landroid/app/WindowConfiguration;
 
-    .line 393
+    .line 394
     invoke-virtual {v0}, Landroid/app/WindowConfiguration;->getWindowingMode()I
 
     move-result v0
 
-    .line 394
+    .line 395
+    .local v0, "windowingMode":I
     const/4 v1, 0x1
 
     if-eq v0, v1, :cond_e
@@ -762,7 +809,8 @@
 .method public inPinnedWindowingMode()Z
     .registers 3
 
-    .line 431
+    .line 432
+    .local p0, "this":Lcom/android/server/wm/ConfigurationContainer;, "Lcom/android/server/wm/ConfigurationContainer<TE;>;"
     iget-object v0, p0, Lcom/android/server/wm/ConfigurationContainer;->mFullConfiguration:Landroid/content/res/Configuration;
 
     iget-object v0, v0, Landroid/content/res/Configuration;->windowConfiguration:Landroid/app/WindowConfiguration;
@@ -789,7 +837,8 @@
 .method public inSplitScreenPrimaryWindowingMode()Z
     .registers 3
 
-    .line 416
+    .line 417
+    .local p0, "this":Lcom/android/server/wm/ConfigurationContainer;, "Lcom/android/server/wm/ConfigurationContainer<TE;>;"
     iget-object v0, p0, Lcom/android/server/wm/ConfigurationContainer;->mFullConfiguration:Landroid/content/res/Configuration;
 
     iget-object v0, v0, Landroid/content/res/Configuration;->windowConfiguration:Landroid/app/WindowConfiguration;
@@ -816,46 +865,50 @@
 .method public inSplitScreenSecondaryWindowingMode()Z
     .registers 3
 
-    .line 409
+    .line 410
+    .local p0, "this":Lcom/android/server/wm/ConfigurationContainer;, "Lcom/android/server/wm/ConfigurationContainer<TE;>;"
     iget-object v0, p0, Lcom/android/server/wm/ConfigurationContainer;->mFullConfiguration:Landroid/content/res/Configuration;
 
     iget-object v0, v0, Landroid/content/res/Configuration;->windowConfiguration:Landroid/app/WindowConfiguration;
 
-    .line 410
+    .line 411
     invoke-virtual {v0}, Landroid/app/WindowConfiguration;->getWindowingMode()I
 
     move-result v0
 
-    .line 412
+    .line 413
+    .local v0, "windowingMode":I
     const/4 v1, 0x4
 
     if-ne v0, v1, :cond_d
 
-    const/4 v0, 0x1
+    const/4 v1, 0x1
 
     goto :goto_e
 
     :cond_d
-    const/4 v0, 0x0
+    const/4 v1, 0x0
 
     :goto_e
-    return v0
+    return v1
 .end method
 
 .method public inSplitScreenWindowingMode()Z
     .registers 3
 
-    .line 400
+    .line 401
+    .local p0, "this":Lcom/android/server/wm/ConfigurationContainer;, "Lcom/android/server/wm/ConfigurationContainer<TE;>;"
     iget-object v0, p0, Lcom/android/server/wm/ConfigurationContainer;->mFullConfiguration:Landroid/content/res/Configuration;
 
     iget-object v0, v0, Landroid/content/res/Configuration;->windowConfiguration:Landroid/app/WindowConfiguration;
 
-    .line 401
+    .line 402
     invoke-virtual {v0}, Landroid/app/WindowConfiguration;->getWindowingMode()I
 
     move-result v0
 
-    .line 403
+    .line 404
+    .local v0, "windowingMode":I
     const/4 v1, 0x3
 
     if-eq v0, v1, :cond_11
@@ -867,22 +920,23 @@
     goto :goto_11
 
     :cond_f
-    const/4 v0, 0x0
+    const/4 v1, 0x0
 
     goto :goto_12
 
     :cond_11
     :goto_11
-    const/4 v0, 0x1
+    const/4 v1, 0x1
 
     :goto_12
-    return v0
+    return v1
 .end method
 
 .method public isActivityTypeAssistant()Z
     .registers 3
 
-    .line 468
+    .line 469
+    .local p0, "this":Lcom/android/server/wm/ConfigurationContainer;, "Lcom/android/server/wm/ConfigurationContainer<TE;>;"
     invoke-virtual {p0}, Lcom/android/server/wm/ConfigurationContainer;->getActivityType()I
 
     move-result v0
@@ -905,7 +959,8 @@
 .method public isActivityTypeHome()Z
     .registers 3
 
-    .line 460
+    .line 461
+    .local p0, "this":Lcom/android/server/wm/ConfigurationContainer;, "Lcom/android/server/wm/ConfigurationContainer<TE;>;"
     invoke-virtual {p0}, Lcom/android/server/wm/ConfigurationContainer;->getActivityType()I
 
     move-result v0
@@ -928,7 +983,8 @@
 .method public isActivityTypeRecents()Z
     .registers 3
 
-    .line 464
+    .line 465
+    .local p0, "this":Lcom/android/server/wm/ConfigurationContainer;, "Lcom/android/server/wm/ConfigurationContainer<TE;>;"
     invoke-virtual {p0}, Lcom/android/server/wm/ConfigurationContainer;->getActivityType()I
 
     move-result v0
@@ -951,7 +1007,8 @@
 .method public isActivityTypeStandard()Z
     .registers 3
 
-    .line 472
+    .line 473
+    .local p0, "this":Lcom/android/server/wm/ConfigurationContainer;, "Lcom/android/server/wm/ConfigurationContainer<TE;>;"
     invoke-virtual {p0}, Lcom/android/server/wm/ConfigurationContainer;->getActivityType()I
 
     move-result v0
@@ -972,12 +1029,14 @@
 .method public isActivityTypeStandardOrUndefined()Z
     .registers 3
 
-    .line 476
+    .line 477
+    .local p0, "this":Lcom/android/server/wm/ConfigurationContainer;, "Lcom/android/server/wm/ConfigurationContainer<TE;>;"
     invoke-virtual {p0}, Lcom/android/server/wm/ConfigurationContainer;->getActivityType()I
 
     move-result v0
 
-    .line 477
+    .line 478
+    .local v0, "activityType":I
     const/4 v1, 0x1
 
     if-eq v0, v1, :cond_b
@@ -997,7 +1056,8 @@
 .method public isAlwaysOnTop()Z
     .registers 2
 
-    .line 611
+    .line 612
+    .local p0, "this":Lcom/android/server/wm/ConfigurationContainer;, "Lcom/android/server/wm/ConfigurationContainer<TE;>;"
     iget-object v0, p0, Lcom/android/server/wm/ConfigurationContainer;->mFullConfiguration:Landroid/content/res/Configuration;
 
     iget-object v0, v0, Landroid/content/res/Configuration;->windowConfiguration:Landroid/app/WindowConfiguration;
@@ -1009,75 +1069,124 @@
     return v0
 .end method
 
-.method public isCompatible(II)Z
-    .registers 7
+.method public isAlwaysOnTop(Z)Z
+    .registers 3
+    .param p1, "onlyDisplay"  # Z
 
-    .line 509
+    .line 622
+    .local p0, "this":Lcom/android/server/wm/ConfigurationContainer;, "Lcom/android/server/wm/ConfigurationContainer<TE;>;"
+    iget-object v0, p0, Lcom/android/server/wm/ConfigurationContainer;->mFullConfiguration:Landroid/content/res/Configuration;
+
+    iget-object v0, v0, Landroid/content/res/Configuration;->windowConfiguration:Landroid/app/WindowConfiguration;
+
+    invoke-virtual {v0, p1}, Landroid/app/WindowConfiguration;->isAlwaysOnTop(Z)Z
+
+    move-result v0
+
+    return v0
+.end method
+
+.method public isCompatible(II)Z
+    .registers 8
+    .param p1, "windowingMode"  # I
+    .param p2, "activityType"  # I
+
+    .line 510
+    .local p0, "this":Lcom/android/server/wm/ConfigurationContainer;, "Lcom/android/server/wm/ConfigurationContainer<TE;>;"
     invoke-virtual {p0}, Lcom/android/server/wm/ConfigurationContainer;->getActivityType()I
 
     move-result v0
 
-    .line 510
+    .line 511
+    .local v0, "thisActivityType":I
     invoke-virtual {p0}, Lcom/android/server/wm/ConfigurationContainer;->getWindowingMode()I
 
     move-result v1
 
-    .line 511
+    .line 512
+    .local v1, "thisWindowingMode":I
     const/4 v2, 0x0
 
     const/4 v3, 0x1
 
     if-ne v0, p2, :cond_e
 
-    move v0, v3
+    move v4, v3
 
     goto :goto_f
 
     :cond_e
-    move v0, v2
+    move v4, v2
 
-    .line 512
+    .line 513
+    .local v4, "sameActivityType":Z
     :goto_f
     if-ne v1, p1, :cond_12
 
     move v2, v3
 
-    .line 514
+    .line 515
+    .local v2, "sameWindowingMode":Z
     :cond_12
-    if-eqz v0, :cond_17
+    if-eqz v4, :cond_17
 
     if-eqz v2, :cond_17
 
-    .line 515
+    .line 516
     return v3
 
-    .line 518
+    .line 519
     :cond_17
     if-eqz p2, :cond_1b
 
     if-ne p2, v3, :cond_21
 
-    .line 519
+    .line 520
     :cond_1b
     invoke-virtual {p0}, Lcom/android/server/wm/ConfigurationContainer;->isActivityTypeStandardOrUndefined()Z
 
-    move-result p1
+    move-result v3
 
-    if-nez p1, :cond_22
+    if-nez v3, :cond_22
 
-    .line 521
+    .line 522
     :cond_21
-    return v0
+    return v4
 
-    .line 525
+    .line 526
     :cond_22
     return v2
+.end method
+
+.method public isMzWindowMode()Z
+    .registers 3
+
+    .line 626
+    .local p0, "this":Lcom/android/server/wm/ConfigurationContainer;, "Lcom/android/server/wm/ConfigurationContainer<TE;>;"
+    invoke-virtual {p0}, Lcom/android/server/wm/ConfigurationContainer;->getWindowingMode()I
+
+    move-result v0
+
+    const/4 v1, 0x6
+
+    if-ne v0, v1, :cond_9
+
+    const/4 v0, 0x1
+
+    goto :goto_a
+
+    :cond_9
+    const/4 v0, 0x0
+
+    :goto_a
+    return v0
 .end method
 
 .method public matchParentBounds()Z
     .registers 2
 
-    .line 220
+    .line 221
+    .local p0, "this":Lcom/android/server/wm/ConfigurationContainer;, "Lcom/android/server/wm/ConfigurationContainer<TE;>;"
     invoke-virtual {p0}, Lcom/android/server/wm/ConfigurationContainer;->getRequestedOverrideBounds()Landroid/graphics/Rect;
 
     move-result-object v0
@@ -1090,204 +1199,222 @@
 .end method
 
 .method public onConfigurationChanged(Landroid/content/res/Configuration;)V
-    .registers 4
+    .registers 5
+    .param p1, "newParentConfig"  # Landroid/content/res/Configuration;
 
-    .line 124
+    .line 125
+    .local p0, "this":Lcom/android/server/wm/ConfigurationContainer;, "Lcom/android/server/wm/ConfigurationContainer<TE;>;"
     iget-object v0, p0, Lcom/android/server/wm/ConfigurationContainer;->mTmpConfig:Landroid/content/res/Configuration;
 
     iget-object v1, p0, Lcom/android/server/wm/ConfigurationContainer;->mResolvedOverrideConfiguration:Landroid/content/res/Configuration;
 
     invoke-virtual {v0, v1}, Landroid/content/res/Configuration;->setTo(Landroid/content/res/Configuration;)V
 
-    .line 125
+    .line 126
     invoke-virtual {p0, p1}, Lcom/android/server/wm/ConfigurationContainer;->resolveOverrideConfiguration(Landroid/content/res/Configuration;)V
 
-    .line 126
+    .line 127
     iget-object v0, p0, Lcom/android/server/wm/ConfigurationContainer;->mFullConfiguration:Landroid/content/res/Configuration;
 
     invoke-virtual {v0, p1}, Landroid/content/res/Configuration;->setTo(Landroid/content/res/Configuration;)V
 
-    .line 127
-    iget-object p1, p0, Lcom/android/server/wm/ConfigurationContainer;->mFullConfiguration:Landroid/content/res/Configuration;
-
-    iget-object v0, p0, Lcom/android/server/wm/ConfigurationContainer;->mResolvedOverrideConfiguration:Landroid/content/res/Configuration;
-
     .line 128
-    invoke-virtual {p1, v0}, Landroid/content/res/Configuration;->updateFrom(Landroid/content/res/Configuration;)I
+    iget-object v0, p0, Lcom/android/server/wm/ConfigurationContainer;->mFullConfiguration:Landroid/content/res/Configuration;
 
-    move-result p1
-
-    iput p1, p0, Lcom/android/server/wm/ConfigurationContainer;->mLastOverrideConfigurationChanges:I
+    iget-object v1, p0, Lcom/android/server/wm/ConfigurationContainer;->mResolvedOverrideConfiguration:Landroid/content/res/Configuration;
 
     .line 129
-    iget-object p1, p0, Lcom/android/server/wm/ConfigurationContainer;->mTmpConfig:Landroid/content/res/Configuration;
+    invoke-virtual {v0, v1}, Landroid/content/res/Configuration;->updateFrom(Landroid/content/res/Configuration;)I
 
-    iget-object v0, p0, Lcom/android/server/wm/ConfigurationContainer;->mResolvedOverrideConfiguration:Landroid/content/res/Configuration;
+    move-result v0
 
-    invoke-virtual {p1, v0}, Landroid/content/res/Configuration;->equals(Landroid/content/res/Configuration;)Z
-
-    move-result p1
-
-    if-nez p1, :cond_40
+    iput v0, p0, Lcom/android/server/wm/ConfigurationContainer;->mLastOverrideConfigurationChanges:I
 
     .line 130
+    iget-object v0, p0, Lcom/android/server/wm/ConfigurationContainer;->mTmpConfig:Landroid/content/res/Configuration;
+
+    iget-object v1, p0, Lcom/android/server/wm/ConfigurationContainer;->mResolvedOverrideConfiguration:Landroid/content/res/Configuration;
+
+    invoke-virtual {v0, v1}, Landroid/content/res/Configuration;->equals(Landroid/content/res/Configuration;)Z
+
+    move-result v0
+
+    if-nez v0, :cond_40
+
+    .line 131
     invoke-virtual {p0}, Lcom/android/server/wm/ConfigurationContainer;->onMergedOverrideConfigurationChanged()V
-
-    .line 137
-    iget-object p1, p0, Lcom/android/server/wm/ConfigurationContainer;->mChangeListeners:Ljava/util/ArrayList;
-
-    invoke-virtual {p1}, Ljava/util/ArrayList;->size()I
-
-    move-result p1
-
-    add-int/lit8 p1, p1, -0x1
-
-    :goto_2e
-    if-ltz p1, :cond_40
 
     .line 138
     iget-object v0, p0, Lcom/android/server/wm/ConfigurationContainer;->mChangeListeners:Ljava/util/ArrayList;
 
-    invoke-virtual {v0, p1}, Ljava/util/ArrayList;->get(I)Ljava/lang/Object;
+    invoke-virtual {v0}, Ljava/util/ArrayList;->size()I
 
-    move-result-object v0
+    move-result v0
 
-    check-cast v0, Lcom/android/server/wm/ConfigurationContainerListener;
+    add-int/lit8 v0, v0, -0x1
 
-    iget-object v1, p0, Lcom/android/server/wm/ConfigurationContainer;->mResolvedOverrideConfiguration:Landroid/content/res/Configuration;
+    .local v0, "i":I
+    :goto_2e
+    if-ltz v0, :cond_40
 
-    invoke-interface {v0, v1}, Lcom/android/server/wm/ConfigurationContainerListener;->onRequestedOverrideConfigurationChanged(Landroid/content/res/Configuration;)V
+    .line 139
+    iget-object v1, p0, Lcom/android/server/wm/ConfigurationContainer;->mChangeListeners:Ljava/util/ArrayList;
 
-    .line 137
-    add-int/lit8 p1, p1, -0x1
+    invoke-virtual {v1, v0}, Ljava/util/ArrayList;->get(I)Ljava/lang/Object;
+
+    move-result-object v1
+
+    check-cast v1, Lcom/android/server/wm/ConfigurationContainerListener;
+
+    iget-object v2, p0, Lcom/android/server/wm/ConfigurationContainer;->mResolvedOverrideConfiguration:Landroid/content/res/Configuration;
+
+    invoke-interface {v1, v2}, Lcom/android/server/wm/ConfigurationContainerListener;->onRequestedOverrideConfigurationChanged(Landroid/content/res/Configuration;)V
+
+    .line 138
+    add-int/lit8 v0, v0, -0x1
 
     goto :goto_2e
 
-    .line 142
-    :cond_40
-    invoke-virtual {p0}, Lcom/android/server/wm/ConfigurationContainer;->getChildCount()I
-
-    move-result p1
-
-    add-int/lit8 p1, p1, -0x1
-
-    :goto_46
-    if-ltz p1, :cond_54
-
     .line 143
-    invoke-virtual {p0, p1}, Lcom/android/server/wm/ConfigurationContainer;->getChildAt(I)Lcom/android/server/wm/ConfigurationContainer;
-
-    move-result-object v0
-
-    .line 144
-    iget-object v1, p0, Lcom/android/server/wm/ConfigurationContainer;->mFullConfiguration:Landroid/content/res/Configuration;
-
-    invoke-virtual {v0, v1}, Lcom/android/server/wm/ConfigurationContainer;->onConfigurationChanged(Landroid/content/res/Configuration;)V
-
-    .line 142
-    add-int/lit8 p1, p1, -0x1
-
-    goto :goto_46
-
-    .line 146
-    :cond_54
-    return-void
-.end method
-
-.method onMergedOverrideConfigurationChanged()V
-    .registers 3
-
-    .line 198
-    invoke-virtual {p0}, Lcom/android/server/wm/ConfigurationContainer;->getParent()Lcom/android/server/wm/ConfigurationContainer;
-
-    move-result-object v0
-
-    .line 199
-    if-eqz v0, :cond_17
-
-    .line 200
-    iget-object v1, p0, Lcom/android/server/wm/ConfigurationContainer;->mMergedOverrideConfiguration:Landroid/content/res/Configuration;
-
-    invoke-virtual {v0}, Lcom/android/server/wm/ConfigurationContainer;->getMergedOverrideConfiguration()Landroid/content/res/Configuration;
-
-    move-result-object v0
-
-    invoke-virtual {v1, v0}, Landroid/content/res/Configuration;->setTo(Landroid/content/res/Configuration;)V
-
-    .line 201
-    iget-object v0, p0, Lcom/android/server/wm/ConfigurationContainer;->mMergedOverrideConfiguration:Landroid/content/res/Configuration;
-
-    iget-object v1, p0, Lcom/android/server/wm/ConfigurationContainer;->mResolvedOverrideConfiguration:Landroid/content/res/Configuration;
-
-    invoke-virtual {v0, v1}, Landroid/content/res/Configuration;->updateFrom(Landroid/content/res/Configuration;)I
-
-    goto :goto_1e
-
-    .line 203
-    :cond_17
-    iget-object v0, p0, Lcom/android/server/wm/ConfigurationContainer;->mMergedOverrideConfiguration:Landroid/content/res/Configuration;
-
-    iget-object v1, p0, Lcom/android/server/wm/ConfigurationContainer;->mResolvedOverrideConfiguration:Landroid/content/res/Configuration;
-
-    invoke-virtual {v0, v1}, Landroid/content/res/Configuration;->setTo(Landroid/content/res/Configuration;)V
-
-    .line 205
-    :goto_1e
+    .end local v0  # "i":I
+    :cond_40
     invoke-virtual {p0}, Lcom/android/server/wm/ConfigurationContainer;->getChildCount()I
 
     move-result v0
 
     add-int/lit8 v0, v0, -0x1
 
-    :goto_24
-    if-ltz v0, :cond_30
+    .restart local v0  # "i":I
+    :goto_46
+    if-ltz v0, :cond_54
 
-    .line 206
+    .line 144
     invoke-virtual {p0, v0}, Lcom/android/server/wm/ConfigurationContainer;->getChildAt(I)Lcom/android/server/wm/ConfigurationContainer;
 
     move-result-object v1
 
-    .line 207
-    invoke-virtual {v1}, Lcom/android/server/wm/ConfigurationContainer;->onMergedOverrideConfigurationChanged()V
+    .line 145
+    .local v1, "child":Lcom/android/server/wm/ConfigurationContainer;
+    iget-object v2, p0, Lcom/android/server/wm/ConfigurationContainer;->mFullConfiguration:Landroid/content/res/Configuration;
 
-    .line 205
+    invoke-virtual {v1, v2}, Lcom/android/server/wm/ConfigurationContainer;->onConfigurationChanged(Landroid/content/res/Configuration;)V
+
+    .line 143
+    .end local v1  # "child":Lcom/android/server/wm/ConfigurationContainer;
     add-int/lit8 v0, v0, -0x1
+
+    goto :goto_46
+
+    .line 147
+    .end local v0  # "i":I
+    :cond_54
+    return-void
+.end method
+
+.method onMergedOverrideConfigurationChanged()V
+    .registers 4
+
+    .line 199
+    .local p0, "this":Lcom/android/server/wm/ConfigurationContainer;, "Lcom/android/server/wm/ConfigurationContainer<TE;>;"
+    invoke-virtual {p0}, Lcom/android/server/wm/ConfigurationContainer;->getParent()Lcom/android/server/wm/ConfigurationContainer;
+
+    move-result-object v0
+
+    .line 200
+    .local v0, "parent":Lcom/android/server/wm/ConfigurationContainer;
+    if-eqz v0, :cond_17
+
+    .line 201
+    iget-object v1, p0, Lcom/android/server/wm/ConfigurationContainer;->mMergedOverrideConfiguration:Landroid/content/res/Configuration;
+
+    invoke-virtual {v0}, Lcom/android/server/wm/ConfigurationContainer;->getMergedOverrideConfiguration()Landroid/content/res/Configuration;
+
+    move-result-object v2
+
+    invoke-virtual {v1, v2}, Landroid/content/res/Configuration;->setTo(Landroid/content/res/Configuration;)V
+
+    .line 202
+    iget-object v1, p0, Lcom/android/server/wm/ConfigurationContainer;->mMergedOverrideConfiguration:Landroid/content/res/Configuration;
+
+    iget-object v2, p0, Lcom/android/server/wm/ConfigurationContainer;->mResolvedOverrideConfiguration:Landroid/content/res/Configuration;
+
+    invoke-virtual {v1, v2}, Landroid/content/res/Configuration;->updateFrom(Landroid/content/res/Configuration;)I
+
+    goto :goto_1e
+
+    .line 204
+    :cond_17
+    iget-object v1, p0, Lcom/android/server/wm/ConfigurationContainer;->mMergedOverrideConfiguration:Landroid/content/res/Configuration;
+
+    iget-object v2, p0, Lcom/android/server/wm/ConfigurationContainer;->mResolvedOverrideConfiguration:Landroid/content/res/Configuration;
+
+    invoke-virtual {v1, v2}, Landroid/content/res/Configuration;->setTo(Landroid/content/res/Configuration;)V
+
+    .line 206
+    :goto_1e
+    invoke-virtual {p0}, Lcom/android/server/wm/ConfigurationContainer;->getChildCount()I
+
+    move-result v1
+
+    add-int/lit8 v1, v1, -0x1
+
+    .local v1, "i":I
+    :goto_24
+    if-ltz v1, :cond_30
+
+    .line 207
+    invoke-virtual {p0, v1}, Lcom/android/server/wm/ConfigurationContainer;->getChildAt(I)Lcom/android/server/wm/ConfigurationContainer;
+
+    move-result-object v2
+
+    .line 208
+    .local v2, "child":Lcom/android/server/wm/ConfigurationContainer;
+    invoke-virtual {v2}, Lcom/android/server/wm/ConfigurationContainer;->onMergedOverrideConfigurationChanged()V
+
+    .line 206
+    .end local v2  # "child":Lcom/android/server/wm/ConfigurationContainer;
+    add-int/lit8 v1, v1, -0x1
 
     goto :goto_24
 
-    .line 209
+    .line 210
+    .end local v1  # "i":I
     :cond_30
     return-void
 .end method
 
 .method onParentChanged()V
-    .registers 2
+    .registers 3
 
-    .line 549
+    .line 550
+    .local p0, "this":Lcom/android/server/wm/ConfigurationContainer;, "Lcom/android/server/wm/ConfigurationContainer<TE;>;"
     invoke-virtual {p0}, Lcom/android/server/wm/ConfigurationContainer;->getParent()Lcom/android/server/wm/ConfigurationContainer;
 
     move-result-object v0
 
-    .line 552
+    .line 553
+    .local v0, "parent":Lcom/android/server/wm/ConfigurationContainer;
     if-eqz v0, :cond_e
 
-    .line 554
-    iget-object v0, v0, Lcom/android/server/wm/ConfigurationContainer;->mFullConfiguration:Landroid/content/res/Configuration;
+    .line 555
+    iget-object v1, v0, Lcom/android/server/wm/ConfigurationContainer;->mFullConfiguration:Landroid/content/res/Configuration;
 
-    invoke-virtual {p0, v0}, Lcom/android/server/wm/ConfigurationContainer;->onConfigurationChanged(Landroid/content/res/Configuration;)V
+    invoke-virtual {p0, v1}, Lcom/android/server/wm/ConfigurationContainer;->onConfigurationChanged(Landroid/content/res/Configuration;)V
 
-    .line 556
+    .line 557
     invoke-virtual {p0}, Lcom/android/server/wm/ConfigurationContainer;->onMergedOverrideConfigurationChanged()V
 
-    .line 558
+    .line 559
     :cond_e
     return-void
 .end method
 
 .method public onRequestedOverrideConfigurationChanged(Landroid/content/res/Configuration;)V
-    .registers 3
+    .registers 4
+    .param p1, "overrideConfiguration"  # Landroid/content/res/Configuration;
 
-    .line 176
+    .line 177
+    .local p0, "this":Lcom/android/server/wm/ConfigurationContainer;, "Lcom/android/server/wm/ConfigurationContainer<TE;>;"
     sget-object v0, Landroid/content/res/Configuration;->EMPTY:Landroid/content/res/Configuration;
 
     invoke-virtual {v0, p1}, Landroid/content/res/Configuration;->equals(Landroid/content/res/Configuration;)Z
@@ -1298,39 +1425,42 @@
 
     iput-boolean v0, p0, Lcom/android/server/wm/ConfigurationContainer;->mHasOverrideConfiguration:Z
 
-    .line 177
+    .line 178
     iget-object v0, p0, Lcom/android/server/wm/ConfigurationContainer;->mRequestedOverrideConfiguration:Landroid/content/res/Configuration;
 
     invoke-virtual {v0, p1}, Landroid/content/res/Configuration;->setTo(Landroid/content/res/Configuration;)V
 
-    .line 179
+    .line 180
     invoke-virtual {p0}, Lcom/android/server/wm/ConfigurationContainer;->getParent()Lcom/android/server/wm/ConfigurationContainer;
 
-    move-result-object p1
+    move-result-object v0
 
-    .line 180
-    if-eqz p1, :cond_1a
+    .line 181
+    .local v0, "parent":Lcom/android/server/wm/ConfigurationContainer;
+    if-eqz v0, :cond_1a
 
-    invoke-virtual {p1}, Lcom/android/server/wm/ConfigurationContainer;->getConfiguration()Landroid/content/res/Configuration;
+    invoke-virtual {v0}, Lcom/android/server/wm/ConfigurationContainer;->getConfiguration()Landroid/content/res/Configuration;
 
-    move-result-object p1
+    move-result-object v1
 
     goto :goto_1c
 
     :cond_1a
-    sget-object p1, Landroid/content/res/Configuration;->EMPTY:Landroid/content/res/Configuration;
+    sget-object v1, Landroid/content/res/Configuration;->EMPTY:Landroid/content/res/Configuration;
 
     :goto_1c
-    invoke-virtual {p0, p1}, Lcom/android/server/wm/ConfigurationContainer;->onConfigurationChanged(Landroid/content/res/Configuration;)V
+    invoke-virtual {p0, v1}, Lcom/android/server/wm/ConfigurationContainer;->onConfigurationChanged(Landroid/content/res/Configuration;)V
 
-    .line 181
+    .line 182
     return-void
 .end method
 
 .method public registerConfigurationChangeListener(Lcom/android/server/wm/ConfigurationContainerListener;)V
     .registers 3
+    .param p1, "listener"  # Lcom/android/server/wm/ConfigurationContainerListener;
 
-    .line 529
+    .line 530
+    .local p0, "this":Lcom/android/server/wm/ConfigurationContainer;, "Lcom/android/server/wm/ConfigurationContainer<TE;>;"
     iget-object v0, p0, Lcom/android/server/wm/ConfigurationContainer;->mChangeListeners:Ljava/util/ArrayList;
 
     invoke-virtual {v0, p1}, Ljava/util/ArrayList;->contains(Ljava/lang/Object;)Z
@@ -1339,118 +1469,125 @@
 
     if-eqz v0, :cond_9
 
-    .line 530
+    .line 531
     return-void
 
-    .line 532
+    .line 533
     :cond_9
     iget-object v0, p0, Lcom/android/server/wm/ConfigurationContainer;->mChangeListeners:Ljava/util/ArrayList;
 
     invoke-virtual {v0, p1}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
 
-    .line 533
+    .line 534
     iget-object v0, p0, Lcom/android/server/wm/ConfigurationContainer;->mResolvedOverrideConfiguration:Landroid/content/res/Configuration;
 
     invoke-interface {p1, v0}, Lcom/android/server/wm/ConfigurationContainerListener;->onRequestedOverrideConfigurationChanged(Landroid/content/res/Configuration;)V
 
-    .line 534
+    .line 535
     return-void
 .end method
 
 .method resolveOverrideConfiguration(Landroid/content/res/Configuration;)V
-    .registers 3
-
-    .line 155
-    iget-object p1, p0, Lcom/android/server/wm/ConfigurationContainer;->mResolvedOverrideConfiguration:Landroid/content/res/Configuration;
-
-    iget-object v0, p0, Lcom/android/server/wm/ConfigurationContainer;->mRequestedOverrideConfiguration:Landroid/content/res/Configuration;
-
-    invoke-virtual {p1, v0}, Landroid/content/res/Configuration;->setTo(Landroid/content/res/Configuration;)V
+    .registers 4
+    .param p1, "newParentConfig"  # Landroid/content/res/Configuration;
 
     .line 156
+    .local p0, "this":Lcom/android/server/wm/ConfigurationContainer;, "Lcom/android/server/wm/ConfigurationContainer<TE;>;"
+    iget-object v0, p0, Lcom/android/server/wm/ConfigurationContainer;->mResolvedOverrideConfiguration:Landroid/content/res/Configuration;
+
+    iget-object v1, p0, Lcom/android/server/wm/ConfigurationContainer;->mRequestedOverrideConfiguration:Landroid/content/res/Configuration;
+
+    invoke-virtual {v0, v1}, Landroid/content/res/Configuration;->setTo(Landroid/content/res/Configuration;)V
+
+    .line 157
     return-void
 .end method
 
 .method public setActivityType(I)V
-    .registers 5
+    .registers 6
+    .param p1, "activityType"  # I
 
-    .line 446
+    .line 447
+    .local p0, "this":Lcom/android/server/wm/ConfigurationContainer;, "Lcom/android/server/wm/ConfigurationContainer<TE;>;"
     invoke-virtual {p0}, Lcom/android/server/wm/ConfigurationContainer;->getActivityType()I
 
     move-result v0
 
-    .line 447
+    .line 448
+    .local v0, "currentActivityType":I
     if-ne v0, p1, :cond_7
 
-    .line 448
-    return-void
-
-    .line 450
-    :cond_7
-    if-nez v0, :cond_1f
-
-    .line 454
-    iget-object v0, p0, Lcom/android/server/wm/ConfigurationContainer;->mTmpConfig:Landroid/content/res/Configuration;
-
-    invoke-virtual {p0}, Lcom/android/server/wm/ConfigurationContainer;->getRequestedOverrideConfiguration()Landroid/content/res/Configuration;
-
-    move-result-object v1
-
-    invoke-virtual {v0, v1}, Landroid/content/res/Configuration;->setTo(Landroid/content/res/Configuration;)V
-
-    .line 455
-    iget-object v0, p0, Lcom/android/server/wm/ConfigurationContainer;->mTmpConfig:Landroid/content/res/Configuration;
-
-    iget-object v0, v0, Landroid/content/res/Configuration;->windowConfiguration:Landroid/app/WindowConfiguration;
-
-    invoke-virtual {v0, p1}, Landroid/app/WindowConfiguration;->setActivityType(I)V
-
-    .line 456
-    iget-object p1, p0, Lcom/android/server/wm/ConfigurationContainer;->mTmpConfig:Landroid/content/res/Configuration;
-
-    invoke-virtual {p0, p1}, Lcom/android/server/wm/ConfigurationContainer;->onRequestedOverrideConfigurationChanged(Landroid/content/res/Configuration;)V
-
-    .line 457
+    .line 449
     return-void
 
     .line 451
-    :cond_1f
-    new-instance v0, Ljava/lang/IllegalStateException;
+    :cond_7
+    if-nez v0, :cond_1f
 
-    new-instance v1, Ljava/lang/StringBuilder;
+    .line 455
+    iget-object v1, p0, Lcom/android/server/wm/ConfigurationContainer;->mTmpConfig:Landroid/content/res/Configuration;
 
-    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-virtual {p0}, Lcom/android/server/wm/ConfigurationContainer;->getRequestedOverrideConfiguration()Landroid/content/res/Configuration;
 
-    const-string v2, "Can\'t change activity type once set: "
+    move-result-object v2
 
-    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Landroid/content/res/Configuration;->setTo(Landroid/content/res/Configuration;)V
 
-    invoke-virtual {v1, p0}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    .line 456
+    iget-object v1, p0, Lcom/android/server/wm/ConfigurationContainer;->mTmpConfig:Landroid/content/res/Configuration;
 
-    const-string v2, " activityType="
+    iget-object v1, v1, Landroid/content/res/Configuration;->windowConfiguration:Landroid/app/WindowConfiguration;
 
-    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, p1}, Landroid/app/WindowConfiguration;->setActivityType(I)V
+
+    .line 457
+    iget-object v1, p0, Lcom/android/server/wm/ConfigurationContainer;->mTmpConfig:Landroid/content/res/Configuration;
+
+    invoke-virtual {p0, v1}, Lcom/android/server/wm/ConfigurationContainer;->onRequestedOverrideConfigurationChanged(Landroid/content/res/Configuration;)V
+
+    .line 458
+    return-void
 
     .line 452
+    :cond_1f
+    new-instance v1, Ljava/lang/IllegalStateException;
+
+    new-instance v2, Ljava/lang/StringBuilder;
+
+    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
+
+    const-string v3, "Can\'t change activity type once set: "
+
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v2, p0}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+
+    const-string v3, " activityType="
+
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    .line 453
     invoke-static {p1}, Landroid/app/WindowConfiguration;->activityTypeToString(I)Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v3
 
-    invoke-virtual {v1, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v2
 
-    invoke-direct {v0, p1}, Ljava/lang/IllegalStateException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v1, v2}, Ljava/lang/IllegalStateException;-><init>(Ljava/lang/String;)V
 
-    throw v0
+    throw v1
 .end method
 
 .method public setAlwaysOnTop(Z)V
     .registers 4
+    .param p1, "alwaysOnTop"  # Z
 
-    .line 375
+    .line 376
+    .local p0, "this":Lcom/android/server/wm/ConfigurationContainer;, "Lcom/android/server/wm/ConfigurationContainer<TE;>;"
     iget-object v0, p0, Lcom/android/server/wm/ConfigurationContainer;->mTmpConfig:Landroid/content/res/Configuration;
 
     invoke-virtual {p0}, Lcom/android/server/wm/ConfigurationContainer;->getRequestedOverrideConfiguration()Landroid/content/res/Configuration;
@@ -1459,55 +1596,63 @@
 
     invoke-virtual {v0, v1}, Landroid/content/res/Configuration;->setTo(Landroid/content/res/Configuration;)V
 
-    .line 376
+    .line 377
     iget-object v0, p0, Lcom/android/server/wm/ConfigurationContainer;->mTmpConfig:Landroid/content/res/Configuration;
 
     iget-object v0, v0, Landroid/content/res/Configuration;->windowConfiguration:Landroid/app/WindowConfiguration;
 
     invoke-virtual {v0, p1}, Landroid/app/WindowConfiguration;->setAlwaysOnTop(Z)V
 
-    .line 377
-    iget-object p1, p0, Lcom/android/server/wm/ConfigurationContainer;->mTmpConfig:Landroid/content/res/Configuration;
-
-    invoke-virtual {p0, p1}, Lcom/android/server/wm/ConfigurationContainer;->onRequestedOverrideConfigurationChanged(Landroid/content/res/Configuration;)V
-
     .line 378
+    iget-object v0, p0, Lcom/android/server/wm/ConfigurationContainer;->mTmpConfig:Landroid/content/res/Configuration;
+
+    invoke-virtual {p0, v0}, Lcom/android/server/wm/ConfigurationContainer;->onRequestedOverrideConfigurationChanged(Landroid/content/res/Configuration;)V
+
+    .line 379
     return-void
 .end method
 
 .method public setBounds(IIII)I
     .registers 6
+    .param p1, "left"  # I
+    .param p2, "top"  # I
+    .param p3, "right"  # I
+    .param p4, "bottom"  # I
 
-    .line 317
+    .line 318
+    .local p0, "this":Lcom/android/server/wm/ConfigurationContainer;, "Lcom/android/server/wm/ConfigurationContainer<TE;>;"
     iget-object v0, p0, Lcom/android/server/wm/ConfigurationContainer;->mTmpRect:Landroid/graphics/Rect;
 
     invoke-virtual {v0, p1, p2, p3, p4}, Landroid/graphics/Rect;->set(IIII)V
 
-    .line 318
-    iget-object p1, p0, Lcom/android/server/wm/ConfigurationContainer;->mTmpRect:Landroid/graphics/Rect;
+    .line 319
+    iget-object v0, p0, Lcom/android/server/wm/ConfigurationContainer;->mTmpRect:Landroid/graphics/Rect;
 
-    invoke-virtual {p0, p1}, Lcom/android/server/wm/ConfigurationContainer;->setBounds(Landroid/graphics/Rect;)I
+    invoke-virtual {p0, v0}, Lcom/android/server/wm/ConfigurationContainer;->setBounds(Landroid/graphics/Rect;)I
 
-    move-result p1
+    move-result v0
 
-    return p1
+    return v0
 .end method
 
 .method public setBounds(Landroid/graphics/Rect;)I
     .registers 5
+    .param p1, "bounds"  # Landroid/graphics/Rect;
 
-    .line 302
+    .line 303
+    .local p0, "this":Lcom/android/server/wm/ConfigurationContainer;, "Lcom/android/server/wm/ConfigurationContainer<TE;>;"
     invoke-virtual {p0, p1}, Lcom/android/server/wm/ConfigurationContainer;->diffRequestedOverrideBounds(Landroid/graphics/Rect;)I
 
     move-result v0
 
-    .line 304
+    .line 305
+    .local v0, "boundsChange":I
     if-nez v0, :cond_7
 
-    .line 305
+    .line 306
     return v0
 
-    .line 309
+    .line 310
     :cond_7
     iget-object v1, p0, Lcom/android/server/wm/ConfigurationContainer;->mTmpConfig:Landroid/content/res/Configuration;
 
@@ -1517,26 +1662,28 @@
 
     invoke-virtual {v1, v2}, Landroid/content/res/Configuration;->setTo(Landroid/content/res/Configuration;)V
 
-    .line 310
+    .line 311
     iget-object v1, p0, Lcom/android/server/wm/ConfigurationContainer;->mTmpConfig:Landroid/content/res/Configuration;
 
     iget-object v1, v1, Landroid/content/res/Configuration;->windowConfiguration:Landroid/app/WindowConfiguration;
 
     invoke-virtual {v1, p1}, Landroid/app/WindowConfiguration;->setBounds(Landroid/graphics/Rect;)V
 
-    .line 311
-    iget-object p1, p0, Lcom/android/server/wm/ConfigurationContainer;->mTmpConfig:Landroid/content/res/Configuration;
+    .line 312
+    iget-object v1, p0, Lcom/android/server/wm/ConfigurationContainer;->mTmpConfig:Landroid/content/res/Configuration;
 
-    invoke-virtual {p0, p1}, Lcom/android/server/wm/ConfigurationContainer;->onRequestedOverrideConfigurationChanged(Landroid/content/res/Configuration;)V
+    invoke-virtual {p0, v1}, Lcom/android/server/wm/ConfigurationContainer;->onRequestedOverrideConfigurationChanged(Landroid/content/res/Configuration;)V
 
-    .line 313
+    .line 314
     return v0
 .end method
 
 .method setDisplayWindowingMode(I)V
     .registers 4
+    .param p1, "windowingMode"  # I
 
-    .line 382
+    .line 383
+    .local p0, "this":Lcom/android/server/wm/ConfigurationContainer;, "Lcom/android/server/wm/ConfigurationContainer<TE;>;"
     iget-object v0, p0, Lcom/android/server/wm/ConfigurationContainer;->mTmpConfig:Landroid/content/res/Configuration;
 
     invoke-virtual {p0}, Lcom/android/server/wm/ConfigurationContainer;->getRequestedOverrideConfiguration()Landroid/content/res/Configuration;
@@ -1545,26 +1692,28 @@
 
     invoke-virtual {v0, v1}, Landroid/content/res/Configuration;->setTo(Landroid/content/res/Configuration;)V
 
-    .line 383
+    .line 384
     iget-object v0, p0, Lcom/android/server/wm/ConfigurationContainer;->mTmpConfig:Landroid/content/res/Configuration;
 
     iget-object v0, v0, Landroid/content/res/Configuration;->windowConfiguration:Landroid/app/WindowConfiguration;
 
     invoke-virtual {v0, p1}, Landroid/app/WindowConfiguration;->setDisplayWindowingMode(I)V
 
-    .line 384
-    iget-object p1, p0, Lcom/android/server/wm/ConfigurationContainer;->mTmpConfig:Landroid/content/res/Configuration;
-
-    invoke-virtual {p0, p1}, Lcom/android/server/wm/ConfigurationContainer;->onRequestedOverrideConfigurationChanged(Landroid/content/res/Configuration;)V
-
     .line 385
+    iget-object v0, p0, Lcom/android/server/wm/ConfigurationContainer;->mTmpConfig:Landroid/content/res/Configuration;
+
+    invoke-virtual {p0, v0}, Lcom/android/server/wm/ConfigurationContainer;->onRequestedOverrideConfigurationChanged(Landroid/content/res/Configuration;)V
+
+    .line 386
     return-void
 .end method
 
 .method public setWindowingMode(I)V
     .registers 4
+    .param p1, "windowingMode"  # I
 
-    .line 363
+    .line 364
+    .local p0, "this":Lcom/android/server/wm/ConfigurationContainer;, "Lcom/android/server/wm/ConfigurationContainer<TE;>;"
     iget-object v0, p0, Lcom/android/server/wm/ConfigurationContainer;->mTmpConfig:Landroid/content/res/Configuration;
 
     invoke-virtual {p0}, Lcom/android/server/wm/ConfigurationContainer;->getRequestedOverrideConfiguration()Landroid/content/res/Configuration;
@@ -1573,26 +1722,27 @@
 
     invoke-virtual {v0, v1}, Landroid/content/res/Configuration;->setTo(Landroid/content/res/Configuration;)V
 
-    .line 364
+    .line 365
     iget-object v0, p0, Lcom/android/server/wm/ConfigurationContainer;->mTmpConfig:Landroid/content/res/Configuration;
 
     iget-object v0, v0, Landroid/content/res/Configuration;->windowConfiguration:Landroid/app/WindowConfiguration;
 
     invoke-virtual {v0, p1}, Landroid/app/WindowConfiguration;->setWindowingMode(I)V
 
-    .line 365
-    iget-object p1, p0, Lcom/android/server/wm/ConfigurationContainer;->mTmpConfig:Landroid/content/res/Configuration;
-
-    invoke-virtual {p0, p1}, Lcom/android/server/wm/ConfigurationContainer;->onRequestedOverrideConfigurationChanged(Landroid/content/res/Configuration;)V
-
     .line 366
+    iget-object v0, p0, Lcom/android/server/wm/ConfigurationContainer;->mTmpConfig:Landroid/content/res/Configuration;
+
+    invoke-virtual {p0, v0}, Lcom/android/server/wm/ConfigurationContainer;->onRequestedOverrideConfigurationChanged(Landroid/content/res/Configuration;)V
+
+    .line 367
     return-void
 .end method
 
 .method public supportsSplitScreenWindowingMode()Z
     .registers 2
 
-    .line 427
+    .line 428
+    .local p0, "this":Lcom/android/server/wm/ConfigurationContainer;, "Lcom/android/server/wm/ConfigurationContainer<TE;>;"
     iget-object v0, p0, Lcom/android/server/wm/ConfigurationContainer;->mFullConfiguration:Landroid/content/res/Configuration;
 
     iget-object v0, v0, Landroid/content/res/Configuration;->windowConfiguration:Landroid/app/WindowConfiguration;
@@ -1606,77 +1756,84 @@
 
 .method public unregisterConfigurationChangeListener(Lcom/android/server/wm/ConfigurationContainerListener;)V
     .registers 3
+    .param p1, "listener"  # Lcom/android/server/wm/ConfigurationContainerListener;
 
-    .line 537
+    .line 538
+    .local p0, "this":Lcom/android/server/wm/ConfigurationContainer;, "Lcom/android/server/wm/ConfigurationContainer<TE;>;"
     iget-object v0, p0, Lcom/android/server/wm/ConfigurationContainer;->mChangeListeners:Ljava/util/ArrayList;
 
     invoke-virtual {v0, p1}, Ljava/util/ArrayList;->remove(Ljava/lang/Object;)Z
 
-    .line 538
+    .line 539
     return-void
 .end method
 
 .method protected writeToProto(Landroid/util/proto/ProtoOutputStream;JI)V
-    .registers 10
+    .registers 12
+    .param p1, "proto"  # Landroid/util/proto/ProtoOutputStream;
+    .param p2, "fieldId"  # J
+    .param p4, "logLevel"  # I
 
-    .line 574
+    .line 575
+    .local p0, "this":Lcom/android/server/wm/ConfigurationContainer;, "Lcom/android/server/wm/ConfigurationContainer<TE;>;"
     if-eqz p4, :cond_7
 
     iget-boolean v0, p0, Lcom/android/server/wm/ConfigurationContainer;->mHasOverrideConfiguration:Z
 
     if-nez v0, :cond_7
 
-    .line 575
+    .line 576
     return-void
 
-    .line 578
+    .line 579
     :cond_7
     invoke-virtual {p1, p2, p3}, Landroid/util/proto/ProtoOutputStream;->start(J)J
 
-    move-result-wide p2
+    move-result-wide v0
 
-    .line 579
-    iget-object v0, p0, Lcom/android/server/wm/ConfigurationContainer;->mRequestedOverrideConfiguration:Landroid/content/res/Configuration;
+    .line 580
+    .local v0, "token":J
+    iget-object v2, p0, Lcom/android/server/wm/ConfigurationContainer;->mRequestedOverrideConfiguration:Landroid/content/res/Configuration;
 
-    const-wide v1, 0x10b00000001L
+    const-wide v3, 0x10b00000001L
 
-    const/4 v3, 0x2
+    const/4 v5, 0x2
 
-    const/4 v4, 0x0
+    const/4 v6, 0x0
 
-    if-ne p4, v3, :cond_18
+    if-ne p4, v5, :cond_18
 
-    const/4 v3, 0x1
+    const/4 v5, 0x1
 
     goto :goto_19
 
     :cond_18
-    move v3, v4
+    move v5, v6
 
     :goto_19
-    invoke-virtual {v0, p1, v1, v2, v3}, Landroid/content/res/Configuration;->writeToProto(Landroid/util/proto/ProtoOutputStream;JZ)V
-
-    .line 581
-    if-nez p4, :cond_32
+    invoke-virtual {v2, p1, v3, v4, v5}, Landroid/content/res/Configuration;->writeToProto(Landroid/util/proto/ProtoOutputStream;JZ)V
 
     .line 582
-    iget-object p4, p0, Lcom/android/server/wm/ConfigurationContainer;->mFullConfiguration:Landroid/content/res/Configuration;
-
-    const-wide v0, 0x10b00000002L
-
-    invoke-virtual {p4, p1, v0, v1, v4}, Landroid/content/res/Configuration;->writeToProto(Landroid/util/proto/ProtoOutputStream;JZ)V
+    if-nez p4, :cond_32
 
     .line 583
-    iget-object p4, p0, Lcom/android/server/wm/ConfigurationContainer;->mMergedOverrideConfiguration:Landroid/content/res/Configuration;
+    iget-object v2, p0, Lcom/android/server/wm/ConfigurationContainer;->mFullConfiguration:Landroid/content/res/Configuration;
 
-    const-wide v0, 0x10b00000003L
+    const-wide v3, 0x10b00000002L
 
-    invoke-virtual {p4, p1, v0, v1, v4}, Landroid/content/res/Configuration;->writeToProto(Landroid/util/proto/ProtoOutputStream;JZ)V
+    invoke-virtual {v2, p1, v3, v4, v6}, Landroid/content/res/Configuration;->writeToProto(Landroid/util/proto/ProtoOutputStream;JZ)V
 
-    .line 586
-    :cond_32
-    invoke-virtual {p1, p2, p3}, Landroid/util/proto/ProtoOutputStream;->end(J)V
+    .line 584
+    iget-object v2, p0, Lcom/android/server/wm/ConfigurationContainer;->mMergedOverrideConfiguration:Landroid/content/res/Configuration;
+
+    const-wide v3, 0x10b00000003L
+
+    invoke-virtual {v2, p1, v3, v4, v6}, Landroid/content/res/Configuration;->writeToProto(Landroid/util/proto/ProtoOutputStream;JZ)V
 
     .line 587
+    :cond_32
+    invoke-virtual {p1, v0, v1}, Landroid/util/proto/ProtoOutputStream;->end(J)V
+
+    .line 588
     return-void
 .end method

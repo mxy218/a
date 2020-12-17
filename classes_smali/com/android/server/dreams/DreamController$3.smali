@@ -26,6 +26,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/dreams/DreamController;Lcom/android/server/dreams/DreamController$DreamRecord;)V
     .registers 3
+    .param p1, "this$0"  # Lcom/android/server/dreams/DreamController;
 
     .line 247
     iput-object p1, p0, Lcom/android/server/dreams/DreamController$3;->this$0:Lcom/android/server/dreams/DreamController;

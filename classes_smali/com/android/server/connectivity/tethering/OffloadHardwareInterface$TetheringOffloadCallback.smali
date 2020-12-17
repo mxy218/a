@@ -25,6 +25,9 @@
 # direct methods
 .method public constructor <init>(Landroid/os/Handler;Lcom/android/server/connectivity/tethering/OffloadHardwareInterface$ControlCallback;Landroid/net/util/SharedLog;)V
     .registers 4
+    .param p1, "h"  # Landroid/os/Handler;
+    .param p2, "cb"  # Lcom/android/server/connectivity/tethering/OffloadHardwareInterface$ControlCallback;
+    .param p3, "sharedLog"  # Landroid/net/util/SharedLog;
 
     .line 301
     invoke-direct {p0}, Landroid/hardware/tetheroffload/control/V1_0/ITetheringOffloadCallback$Stub;-><init>()V
@@ -46,6 +49,7 @@
 # virtual methods
 .method public synthetic lambda$onEvent$0$OffloadHardwareInterface$TetheringOffloadCallback(I)V
     .registers 5
+    .param p1, "event"  # I
 
     .line 310
     const/4 v0, 0x1
@@ -83,53 +87,53 @@
 
     invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v1
 
-    invoke-virtual {v0, p1}, Landroid/net/util/SharedLog;->e(Ljava/lang/String;)V
+    invoke-virtual {v0, v1}, Landroid/net/util/SharedLog;->e(Ljava/lang/String;)V
 
     goto :goto_44
 
     .line 324
     :cond_26
-    iget-object p1, p0, Lcom/android/server/connectivity/tethering/OffloadHardwareInterface$TetheringOffloadCallback;->controlCb:Lcom/android/server/connectivity/tethering/OffloadHardwareInterface$ControlCallback;
+    iget-object v0, p0, Lcom/android/server/connectivity/tethering/OffloadHardwareInterface$TetheringOffloadCallback;->controlCb:Lcom/android/server/connectivity/tethering/OffloadHardwareInterface$ControlCallback;
 
-    invoke-virtual {p1}, Lcom/android/server/connectivity/tethering/OffloadHardwareInterface$ControlCallback;->onStoppedLimitReached()V
+    invoke-virtual {v0}, Lcom/android/server/connectivity/tethering/OffloadHardwareInterface$ControlCallback;->onStoppedLimitReached()V
 
     .line 325
     goto :goto_44
 
     .line 321
     :cond_2c
-    iget-object p1, p0, Lcom/android/server/connectivity/tethering/OffloadHardwareInterface$TetheringOffloadCallback;->controlCb:Lcom/android/server/connectivity/tethering/OffloadHardwareInterface$ControlCallback;
+    iget-object v0, p0, Lcom/android/server/connectivity/tethering/OffloadHardwareInterface$TetheringOffloadCallback;->controlCb:Lcom/android/server/connectivity/tethering/OffloadHardwareInterface$ControlCallback;
 
-    invoke-virtual {p1}, Lcom/android/server/connectivity/tethering/OffloadHardwareInterface$ControlCallback;->onSupportAvailable()V
+    invoke-virtual {v0}, Lcom/android/server/connectivity/tethering/OffloadHardwareInterface$ControlCallback;->onSupportAvailable()V
 
     .line 322
     goto :goto_44
 
     .line 318
     :cond_32
-    iget-object p1, p0, Lcom/android/server/connectivity/tethering/OffloadHardwareInterface$TetheringOffloadCallback;->controlCb:Lcom/android/server/connectivity/tethering/OffloadHardwareInterface$ControlCallback;
+    iget-object v0, p0, Lcom/android/server/connectivity/tethering/OffloadHardwareInterface$TetheringOffloadCallback;->controlCb:Lcom/android/server/connectivity/tethering/OffloadHardwareInterface$ControlCallback;
 
-    invoke-virtual {p1}, Lcom/android/server/connectivity/tethering/OffloadHardwareInterface$ControlCallback;->onStoppedUnsupported()V
+    invoke-virtual {v0}, Lcom/android/server/connectivity/tethering/OffloadHardwareInterface$ControlCallback;->onStoppedUnsupported()V
 
     .line 319
     goto :goto_44
 
     .line 315
     :cond_38
-    iget-object p1, p0, Lcom/android/server/connectivity/tethering/OffloadHardwareInterface$TetheringOffloadCallback;->controlCb:Lcom/android/server/connectivity/tethering/OffloadHardwareInterface$ControlCallback;
+    iget-object v0, p0, Lcom/android/server/connectivity/tethering/OffloadHardwareInterface$TetheringOffloadCallback;->controlCb:Lcom/android/server/connectivity/tethering/OffloadHardwareInterface$ControlCallback;
 
-    invoke-virtual {p1}, Lcom/android/server/connectivity/tethering/OffloadHardwareInterface$ControlCallback;->onStoppedError()V
+    invoke-virtual {v0}, Lcom/android/server/connectivity/tethering/OffloadHardwareInterface$ControlCallback;->onStoppedError()V
 
     .line 316
     goto :goto_44
 
     .line 312
     :cond_3e
-    iget-object p1, p0, Lcom/android/server/connectivity/tethering/OffloadHardwareInterface$TetheringOffloadCallback;->controlCb:Lcom/android/server/connectivity/tethering/OffloadHardwareInterface$ControlCallback;
+    iget-object v0, p0, Lcom/android/server/connectivity/tethering/OffloadHardwareInterface$TetheringOffloadCallback;->controlCb:Lcom/android/server/connectivity/tethering/OffloadHardwareInterface$ControlCallback;
 
-    invoke-virtual {p1}, Lcom/android/server/connectivity/tethering/OffloadHardwareInterface$ControlCallback;->onStarted()V
+    invoke-virtual {v0}, Lcom/android/server/connectivity/tethering/OffloadHardwareInterface$ControlCallback;->onStarted()V
 
     .line 313
     nop
@@ -141,6 +145,7 @@
 
 .method public synthetic lambda$updateTimeout$1$OffloadHardwareInterface$TetheringOffloadCallback(Landroid/hardware/tetheroffload/control/V1_0/NatTimeoutUpdate;)V
     .registers 8
+    .param p1, "params"  # Landroid/hardware/tetheroffload/control/V1_0/NatTimeoutUpdate;
 
     .line 335
     iget-object v0, p0, Lcom/android/server/connectivity/tethering/OffloadHardwareInterface$TetheringOffloadCallback;->controlCb:Lcom/android/server/connectivity/tethering/OffloadHardwareInterface$ControlCallback;
@@ -169,12 +174,12 @@
 
     iget-object v4, v4, Landroid/hardware/tetheroffload/control/V1_0/IPv4AddrPortPair;->addr:Ljava/lang/String;
 
-    iget-object p1, p1, Landroid/hardware/tetheroffload/control/V1_0/NatTimeoutUpdate;->dst:Landroid/hardware/tetheroffload/control/V1_0/IPv4AddrPortPair;
+    iget-object v5, p1, Landroid/hardware/tetheroffload/control/V1_0/NatTimeoutUpdate;->dst:Landroid/hardware/tetheroffload/control/V1_0/IPv4AddrPortPair;
 
-    iget-short p1, p1, Landroid/hardware/tetheroffload/control/V1_0/IPv4AddrPortPair;->port:S
+    iget-short v5, v5, Landroid/hardware/tetheroffload/control/V1_0/IPv4AddrPortPair;->port:S
 
     .line 338
-    invoke-static {p1}, Lcom/android/internal/util/BitUtils;->uint16(S)I
+    invoke-static {v5}, Lcom/android/internal/util/BitUtils;->uint16(S)I
 
     move-result v5
 
@@ -187,6 +192,7 @@
 
 .method public onEvent(I)V
     .registers 4
+    .param p1, "event"  # I
 
     .line 309
     iget-object v0, p0, Lcom/android/server/connectivity/tethering/OffloadHardwareInterface$TetheringOffloadCallback;->handler:Landroid/os/Handler;
@@ -203,6 +209,7 @@
 
 .method public updateTimeout(Landroid/hardware/tetheroffload/control/V1_0/NatTimeoutUpdate;)V
     .registers 4
+    .param p1, "params"  # Landroid/hardware/tetheroffload/control/V1_0/NatTimeoutUpdate;
 
     .line 334
     iget-object v0, p0, Lcom/android/server/connectivity/tethering/OffloadHardwareInterface$TetheringOffloadCallback;->handler:Landroid/os/Handler;

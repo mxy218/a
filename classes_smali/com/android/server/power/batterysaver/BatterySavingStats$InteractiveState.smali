@@ -28,12 +28,13 @@
 
 # direct methods
 .method public static fromIndex(I)I
-    .registers 1
+    .registers 2
+    .param p0, "index"  # I
 
     .line 77
-    shr-int/lit8 p0, p0, 0x2
+    shr-int/lit8 v0, p0, 0x2
 
-    and-int/lit8 p0, p0, 0x1
+    and-int/lit8 v0, v0, 0x1
 
-    return p0
+    return v0
 .end method

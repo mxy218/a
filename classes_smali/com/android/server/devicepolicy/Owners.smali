@@ -105,6 +105,10 @@
 # direct methods
 .method public constructor <init>(Landroid/os/UserManager;Landroid/os/UserManagerInternal;Landroid/content/pm/PackageManagerInternal;Lcom/android/server/wm/ActivityTaskManagerInternal;)V
     .registers 11
+    .param p1, "userManager"  # Landroid/os/UserManager;
+    .param p2, "userManagerInternal"  # Landroid/os/UserManagerInternal;
+    .param p3, "packageManagerInternal"  # Landroid/content/pm/PackageManagerInternal;
+    .param p4, "activityTaskManagerInternal"  # Lcom/android/server/wm/ActivityTaskManagerInternal;
 
     .line 137
     new-instance v5, Lcom/android/server/devicepolicy/Owners$Injector;
@@ -129,6 +133,11 @@
 
 .method constructor <init>(Landroid/os/UserManager;Landroid/os/UserManagerInternal;Landroid/content/pm/PackageManagerInternal;Lcom/android/server/wm/ActivityTaskManagerInternal;Lcom/android/server/devicepolicy/Owners$Injector;)V
     .registers 7
+    .param p1, "userManager"  # Landroid/os/UserManager;
+    .param p2, "userManagerInternal"  # Landroid/os/UserManagerInternal;
+    .param p3, "packageManagerInternal"  # Landroid/content/pm/PackageManagerInternal;
+    .param p4, "activityTaskManagerInternal"  # Lcom/android/server/wm/ActivityTaskManagerInternal;
+    .param p5, "injector"  # Lcom/android/server/devicepolicy/Owners$Injector;
     .annotation build Lcom/android/internal/annotations/VisibleForTesting;
     .end annotation
 
@@ -174,16 +183,19 @@
 .end method
 
 .method static synthetic access$000(Lcom/android/server/devicepolicy/Owners;)Lcom/android/server/devicepolicy/Owners$OwnerInfo;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/devicepolicy/Owners;
 
     .line 72
-    iget-object p0, p0, Lcom/android/server/devicepolicy/Owners;->mDeviceOwner:Lcom/android/server/devicepolicy/Owners$OwnerInfo;
+    iget-object v0, p0, Lcom/android/server/devicepolicy/Owners;->mDeviceOwner:Lcom/android/server/devicepolicy/Owners$OwnerInfo;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$002(Lcom/android/server/devicepolicy/Owners;Lcom/android/server/devicepolicy/Owners$OwnerInfo;)Lcom/android/server/devicepolicy/Owners$OwnerInfo;
     .registers 2
+    .param p0, "x0"  # Lcom/android/server/devicepolicy/Owners;
+    .param p1, "x1"  # Lcom/android/server/devicepolicy/Owners$OwnerInfo;
 
     .line 72
     iput-object p1, p0, Lcom/android/server/devicepolicy/Owners;->mDeviceOwner:Lcom/android/server/devicepolicy/Owners$OwnerInfo;
@@ -192,16 +204,19 @@
 .end method
 
 .method static synthetic access$100(Lcom/android/server/devicepolicy/Owners;)Landroid/app/admin/SystemUpdatePolicy;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/devicepolicy/Owners;
 
     .line 72
-    iget-object p0, p0, Lcom/android/server/devicepolicy/Owners;->mSystemUpdatePolicy:Landroid/app/admin/SystemUpdatePolicy;
+    iget-object v0, p0, Lcom/android/server/devicepolicy/Owners;->mSystemUpdatePolicy:Landroid/app/admin/SystemUpdatePolicy;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$102(Lcom/android/server/devicepolicy/Owners;Landroid/app/admin/SystemUpdatePolicy;)Landroid/app/admin/SystemUpdatePolicy;
     .registers 2
+    .param p0, "x0"  # Lcom/android/server/devicepolicy/Owners;
+    .param p1, "x1"  # Landroid/app/admin/SystemUpdatePolicy;
 
     .line 72
     iput-object p1, p0, Lcom/android/server/devicepolicy/Owners;->mSystemUpdatePolicy:Landroid/app/admin/SystemUpdatePolicy;
@@ -210,16 +225,19 @@
 .end method
 
 .method static synthetic access$200(Lcom/android/server/devicepolicy/Owners;)Landroid/app/admin/SystemUpdateInfo;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/devicepolicy/Owners;
 
     .line 72
-    iget-object p0, p0, Lcom/android/server/devicepolicy/Owners;->mSystemUpdateInfo:Landroid/app/admin/SystemUpdateInfo;
+    iget-object v0, p0, Lcom/android/server/devicepolicy/Owners;->mSystemUpdateInfo:Landroid/app/admin/SystemUpdateInfo;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$202(Lcom/android/server/devicepolicy/Owners;Landroid/app/admin/SystemUpdateInfo;)Landroid/app/admin/SystemUpdateInfo;
     .registers 2
+    .param p0, "x0"  # Lcom/android/server/devicepolicy/Owners;
+    .param p1, "x1"  # Landroid/app/admin/SystemUpdateInfo;
 
     .line 72
     iput-object p1, p0, Lcom/android/server/devicepolicy/Owners;->mSystemUpdateInfo:Landroid/app/admin/SystemUpdateInfo;
@@ -228,16 +246,19 @@
 .end method
 
 .method static synthetic access$300(Lcom/android/server/devicepolicy/Owners;)I
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/devicepolicy/Owners;
 
     .line 72
-    iget p0, p0, Lcom/android/server/devicepolicy/Owners;->mDeviceOwnerUserId:I
+    iget v0, p0, Lcom/android/server/devicepolicy/Owners;->mDeviceOwnerUserId:I
 
-    return p0
+    return v0
 .end method
 
 .method static synthetic access$302(Lcom/android/server/devicepolicy/Owners;I)I
     .registers 2
+    .param p0, "x0"  # Lcom/android/server/devicepolicy/Owners;
+    .param p1, "x1"  # I
 
     .line 72
     iput p1, p0, Lcom/android/server/devicepolicy/Owners;->mDeviceOwnerUserId:I
@@ -246,16 +267,19 @@
 .end method
 
 .method static synthetic access$400(Lcom/android/server/devicepolicy/Owners;)Ljava/time/LocalDate;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/devicepolicy/Owners;
 
     .line 72
-    iget-object p0, p0, Lcom/android/server/devicepolicy/Owners;->mSystemUpdateFreezeStart:Ljava/time/LocalDate;
+    iget-object v0, p0, Lcom/android/server/devicepolicy/Owners;->mSystemUpdateFreezeStart:Ljava/time/LocalDate;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$402(Lcom/android/server/devicepolicy/Owners;Ljava/time/LocalDate;)Ljava/time/LocalDate;
     .registers 2
+    .param p0, "x0"  # Lcom/android/server/devicepolicy/Owners;
+    .param p1, "x1"  # Ljava/time/LocalDate;
 
     .line 72
     iput-object p1, p0, Lcom/android/server/devicepolicy/Owners;->mSystemUpdateFreezeStart:Ljava/time/LocalDate;
@@ -264,16 +288,19 @@
 .end method
 
 .method static synthetic access$500(Lcom/android/server/devicepolicy/Owners;)Ljava/time/LocalDate;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/devicepolicy/Owners;
 
     .line 72
-    iget-object p0, p0, Lcom/android/server/devicepolicy/Owners;->mSystemUpdateFreezeEnd:Ljava/time/LocalDate;
+    iget-object v0, p0, Lcom/android/server/devicepolicy/Owners;->mSystemUpdateFreezeEnd:Ljava/time/LocalDate;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$502(Lcom/android/server/devicepolicy/Owners;Ljava/time/LocalDate;)Ljava/time/LocalDate;
     .registers 2
+    .param p0, "x0"  # Lcom/android/server/devicepolicy/Owners;
+    .param p1, "x1"  # Ljava/time/LocalDate;
 
     .line 72
     iput-object p1, p0, Lcom/android/server/devicepolicy/Owners;->mSystemUpdateFreezeEnd:Ljava/time/LocalDate;
@@ -282,12 +309,13 @@
 .end method
 
 .method static synthetic access$600(Lcom/android/server/devicepolicy/Owners;)Landroid/util/ArrayMap;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/devicepolicy/Owners;
 
     .line 72
-    iget-object p0, p0, Lcom/android/server/devicepolicy/Owners;->mProfileOwners:Landroid/util/ArrayMap;
+    iget-object v0, p0, Lcom/android/server/devicepolicy/Owners;->mProfileOwners:Landroid/util/ArrayMap;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method private pushToActivityTaskManagerLocked()V
@@ -316,8 +344,11 @@
     :cond_12
     const/4 v0, -0x1
 
-    .line 217
     :goto_13
+    nop
+
+    .line 217
+    .local v0, "uid":I
     iget-object v1, p0, Lcom/android/server/devicepolicy/Owners;->mActivityTaskManagerInternal:Lcom/android/server/wm/ActivityTaskManagerInternal;
 
     invoke-virtual {v1, v0}, Lcom/android/server/wm/ActivityTaskManagerInternal;->setDeviceOwnerUid(I)V
@@ -335,6 +366,7 @@
     invoke-direct {v0}, Landroid/util/SparseArray;-><init>()V
 
     .line 204
+    .local v0, "po":Landroid/util/SparseArray;, "Landroid/util/SparseArray<Ljava/lang/String;>;"
     iget-object v1, p0, Lcom/android/server/devicepolicy/Owners;->mProfileOwners:Landroid/util/ArrayMap;
 
     invoke-virtual {v1}, Landroid/util/ArrayMap;->size()I
@@ -343,6 +375,7 @@
 
     add-int/lit8 v1, v1, -0x1
 
+    .local v1, "i":I
     :goto_d
     if-ltz v1, :cond_2b
 
@@ -377,6 +410,7 @@
     goto :goto_d
 
     .line 207
+    .end local v1  # "i":I
     :cond_2b
     iget-object v1, p0, Lcom/android/server/devicepolicy/Owners;->mPackageManagerInternal:Landroid/content/pm/PackageManagerInternal;
 
@@ -403,194 +437,262 @@
 .end method
 
 .method private readLegacyOwnerFileLocked(Ljava/io/File;)Z
-    .registers 23
+    .registers 29
+    .param p1, "file"  # Ljava/io/File;
 
     .line 541
-    move-object/from16 v0, p0
+    move-object/from16 v1, p0
 
-    const-string v1, "DevicePolicyManagerService"
+    const-string v2, "DevicePolicyManagerService"
 
     invoke-virtual/range {p1 .. p1}, Ljava/io/File;->exists()Z
 
-    move-result v2
+    move-result v0
 
     const/4 v3, 0x0
 
-    if-nez v2, :cond_c
+    if-nez v0, :cond_c
 
     .line 543
     return v3
 
     .line 546
     :cond_c
-    const/4 v2, 0x1
+    const/4 v4, 0x1
 
     :try_start_d
-    new-instance v4, Landroid/util/AtomicFile;
+    new-instance v0, Landroid/util/AtomicFile;
+    :try_end_f
+    .catch Lorg/xmlpull/v1/XmlPullParserException; {:try_start_d .. :try_end_f} :catch_106
+    .catch Ljava/io/IOException; {:try_start_d .. :try_end_f} :catch_106
 
     move-object/from16 v5, p1
 
-    invoke-direct {v4, v5}, Landroid/util/AtomicFile;-><init>(Ljava/io/File;)V
+    :try_start_11
+    invoke-direct {v0, v5}, Landroid/util/AtomicFile;-><init>(Ljava/io/File;)V
 
-    invoke-virtual {v4}, Landroid/util/AtomicFile;->openRead()Ljava/io/FileInputStream;
+    invoke-virtual {v0}, Landroid/util/AtomicFile;->openRead()Ljava/io/FileInputStream;
 
-    move-result-object v4
+    move-result-object v0
 
     .line 547
+    .local v0, "input":Ljava/io/InputStream;
     invoke-static {}, Landroid/util/Xml;->newPullParser()Lorg/xmlpull/v1/XmlPullParser;
-
-    move-result-object v5
-
-    .line 548
-    sget-object v6, Ljava/nio/charset/StandardCharsets;->UTF_8:Ljava/nio/charset/Charset;
-
-    invoke-virtual {v6}, Ljava/nio/charset/Charset;->name()Ljava/lang/String;
 
     move-result-object v6
 
-    invoke-interface {v5, v4, v6}, Lorg/xmlpull/v1/XmlPullParser;->setInput(Ljava/io/InputStream;Ljava/lang/String;)V
+    .line 548
+    .local v6, "parser":Lorg/xmlpull/v1/XmlPullParser;
+    sget-object v7, Ljava/nio/charset/StandardCharsets;->UTF_8:Ljava/nio/charset/Charset;
+
+    invoke-virtual {v7}, Ljava/nio/charset/Charset;->name()Ljava/lang/String;
+
+    move-result-object v7
+
+    invoke-interface {v6, v0, v7}, Lorg/xmlpull/v1/XmlPullParser;->setInput(Ljava/io/InputStream;Ljava/lang/String;)V
 
     .line 550
     :goto_25
-    invoke-interface {v5}, Lorg/xmlpull/v1/XmlPullParser;->next()I
+    invoke-interface {v6}, Lorg/xmlpull/v1/XmlPullParser;->next()I
 
-    move-result v6
+    move-result v7
 
-    if-eq v6, v2, :cond_f6
+    move v8, v7
+
+    .local v8, "type":I
+    if-eq v7, v4, :cond_100
 
     .line 551
     const/4 v7, 0x2
 
-    if-eq v6, v7, :cond_2f
+    if-eq v8, v7, :cond_30
 
     .line 552
     goto :goto_25
 
     .line 555
-    :cond_2f
-    invoke-interface {v5}, Lorg/xmlpull/v1/XmlPullParser;->getName()Ljava/lang/String;
-
-    move-result-object v6
-
-    .line 556
-    const-string v7, "device-owner"
-
-    invoke-virtual {v6, v7}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
-
-    move-result v7
-    :try_end_39
-    .catch Lorg/xmlpull/v1/XmlPullParserException; {:try_start_d .. :try_end_39} :catch_fa
-    .catch Ljava/io/IOException; {:try_start_d .. :try_end_39} :catch_fa
-
-    const-string/jumbo v8, "package"
-
-    const-string/jumbo v9, "name"
-
-    const/4 v10, 0x0
-
-    if-eqz v7, :cond_5b
-
-    .line 557
-    :try_start_42
-    invoke-interface {v5, v10, v9}, Lorg/xmlpull/v1/XmlPullParser;->getAttributeValue(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
-
-    move-result-object v12
-
-    .line 558
-    invoke-interface {v5, v10, v8}, Lorg/xmlpull/v1/XmlPullParser;->getAttributeValue(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
-
-    move-result-object v13
-
-    .line 559
-    new-instance v6, Lcom/android/server/devicepolicy/Owners$OwnerInfo;
-
-    const/4 v14, 0x0
-
-    const/4 v15, 0x0
-
-    const/16 v16, 0x0
-
-    const/16 v17, 0x1
-
-    move-object v11, v6
-
-    invoke-direct/range {v11 .. v17}, Lcom/android/server/devicepolicy/Owners$OwnerInfo;-><init>(Ljava/lang/String;Ljava/lang/String;ZLjava/lang/String;Ljava/lang/String;Z)V
-
-    iput-object v6, v0, Lcom/android/server/devicepolicy/Owners;->mDeviceOwner:Lcom/android/server/devicepolicy/Owners$OwnerInfo;
-
-    .line 562
-    iput v3, v0, Lcom/android/server/devicepolicy/Owners;->mDeviceOwnerUserId:I
-
-    goto :goto_63
-
-    .line 563
-    :cond_5b
-    const-string v7, "device-initializer"
-
-    invoke-virtual {v6, v7}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
-
-    move-result v7
-
-    if-eqz v7, :cond_65
-
-    :goto_63
-    goto/16 :goto_dd
-
-    .line 565
-    :cond_65
-    const-string/jumbo v7, "profile-owner"
-
-    invoke-virtual {v6, v7}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
-
-    move-result v7
-
-    if-eqz v7, :cond_ce
-
-    .line 566
-    invoke-interface {v5, v10, v8}, Lorg/xmlpull/v1/XmlPullParser;->getAttributeValue(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
-
-    move-result-object v13
-
-    .line 567
-    invoke-interface {v5, v10, v9}, Lorg/xmlpull/v1/XmlPullParser;->getAttributeValue(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
-
-    move-result-object v6
-
-    .line 568
-    const-string v7, "component"
-
-    .line 569
-    invoke-interface {v5, v10, v7}, Lorg/xmlpull/v1/XmlPullParser;->getAttributeValue(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+    :cond_30
+    invoke-interface {v6}, Lorg/xmlpull/v1/XmlPullParser;->getName()Ljava/lang/String;
 
     move-result-object v7
 
+    .line 556
+    .local v7, "tag":Ljava/lang/String;
+    const-string v9, "device-owner"
+
+    invoke-virtual {v7, v9}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+
+    move-result v9
+    :try_end_3a
+    .catch Lorg/xmlpull/v1/XmlPullParserException; {:try_start_11 .. :try_end_3a} :catch_104
+    .catch Ljava/io/IOException; {:try_start_11 .. :try_end_3a} :catch_104
+
+    const-string/jumbo v10, "package"
+
+    const-string/jumbo v11, "name"
+
+    const/4 v12, 0x0
+
+    if-eqz v9, :cond_5e
+
+    .line 557
+    :try_start_43
+    invoke-interface {v6, v12, v11}, Lorg/xmlpull/v1/XmlPullParser;->getAttributeValue(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+
+    move-result-object v14
+
+    .line 558
+    .local v14, "name":Ljava/lang/String;
+    invoke-interface {v6, v12, v10}, Lorg/xmlpull/v1/XmlPullParser;->getAttributeValue(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+
+    move-result-object v15
+
+    .line 559
+    .local v15, "packageName":Ljava/lang/String;
+    new-instance v9, Lcom/android/server/devicepolicy/Owners$OwnerInfo;
+
+    const/16 v16, 0x0
+
+    const/16 v17, 0x0
+
+    const/16 v18, 0x0
+
+    const/16 v19, 0x1
+
+    move-object v13, v9
+
+    invoke-direct/range {v13 .. v19}, Lcom/android/server/devicepolicy/Owners$OwnerInfo;-><init>(Ljava/lang/String;Ljava/lang/String;ZLjava/lang/String;Ljava/lang/String;Z)V
+
+    iput-object v9, v1, Lcom/android/server/devicepolicy/Owners;->mDeviceOwner:Lcom/android/server/devicepolicy/Owners$OwnerInfo;
+
+    .line 562
+    iput v3, v1, Lcom/android/server/devicepolicy/Owners;->mDeviceOwnerUserId:I
+
+    .end local v14  # "name":Ljava/lang/String;
+    .end local v15  # "packageName":Ljava/lang/String;
+    goto :goto_66
+
+    .line 563
+    :cond_5e
+    const-string v9, "device-initializer"
+
+    invoke-virtual {v7, v9}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+
+    move-result v9
+
+    if-eqz v9, :cond_68
+
+    :goto_66
+    goto/16 :goto_e7
+
+    .line 565
+    :cond_68
+    const-string/jumbo v9, "profile-owner"
+
+    invoke-virtual {v7, v9}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+
+    move-result v9
+
+    if-eqz v9, :cond_d8
+
+    .line 566
+    invoke-interface {v6, v12, v10}, Lorg/xmlpull/v1/XmlPullParser;->getAttributeValue(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+
+    move-result-object v15
+
+    .line 567
+    .local v15, "profileOwnerPackageName":Ljava/lang/String;
+    invoke-interface {v6, v12, v11}, Lorg/xmlpull/v1/XmlPullParser;->getAttributeValue(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+
+    move-result-object v21
+
+    .line 568
+    .local v21, "profileOwnerName":Ljava/lang/String;
+    const-string v9, "component"
+
+    .line 569
+    invoke-interface {v6, v12, v9}, Lorg/xmlpull/v1/XmlPullParser;->getAttributeValue(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+
+    move-result-object v9
+
     .line 570
-    const-string/jumbo v8, "userId"
+    .local v9, "profileOwnerComponentStr":Ljava/lang/String;
+    const-string/jumbo v10, "userId"
 
-    invoke-interface {v5, v10, v8}, Lorg/xmlpull/v1/XmlPullParser;->getAttributeValue(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+    invoke-interface {v6, v12, v10}, Lorg/xmlpull/v1/XmlPullParser;->getAttributeValue(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
 
-    move-result-object v8
+    move-result-object v10
 
-    invoke-static {v8}, Ljava/lang/Integer;->parseInt(Ljava/lang/String;)I
+    invoke-static {v10}, Ljava/lang/Integer;->parseInt(Ljava/lang/String;)I
 
-    move-result v8
+    move-result v10
 
     .line 571
-    nop
+    .local v10, "userId":I
+    const/4 v11, 0x0
 
     .line 572
-    if-eqz v7, :cond_b4
+    .local v11, "profileOwnerInfo":Lcom/android/server/devicepolicy/Owners$OwnerInfo;
+    if-eqz v9, :cond_ba
 
     .line 573
-    invoke-static {v7}, Landroid/content/ComponentName;->unflattenFromString(Ljava/lang/String;)Landroid/content/ComponentName;
+    invoke-static {v9}, Landroid/content/ComponentName;->unflattenFromString(Ljava/lang/String;)Landroid/content/ComponentName;
 
-    move-result-object v16
+    move-result-object v12
 
     .line 575
-    if-eqz v16, :cond_a0
+    .local v12, "admin":Landroid/content/ComponentName;
+    if-eqz v12, :cond_a6
 
     .line 576
-    new-instance v7, Lcom/android/server/devicepolicy/Owners$OwnerInfo;
+    new-instance v13, Lcom/android/server/devicepolicy/Owners$OwnerInfo;
+
+    const/16 v23, 0x0
+
+    const/16 v24, 0x0
+
+    const/16 v25, 0x0
+
+    const/16 v26, 0x0
+
+    move-object/from16 v20, v13
+
+    move-object/from16 v22, v12
+
+    invoke-direct/range {v20 .. v26}, Lcom/android/server/devicepolicy/Owners$OwnerInfo;-><init>(Ljava/lang/String;Landroid/content/ComponentName;ZLjava/lang/String;Ljava/lang/String;Z)V
+
+    move-object v11, v13
+
+    goto :goto_ba
+
+    .line 582
+    :cond_a6
+    new-instance v13, Ljava/lang/StringBuilder;
+
+    invoke-direct {v13}, Ljava/lang/StringBuilder;-><init>()V
+
+    const-string v14, "Error parsing device-owner file. Bad component name "
+
+    invoke-virtual {v13, v14}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v13, v9}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v13}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v13
+
+    invoke-static {v2, v13}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
+
+    .line 586
+    .end local v12  # "admin":Landroid/content/ComponentName;
+    :cond_ba
+    :goto_ba
+    if-nez v11, :cond_cd
+
+    .line 587
+    new-instance v12, Lcom/android/server/devicepolicy/Owners$OwnerInfo;
+
+    const/16 v16, 0x0
 
     const/16 v17, 0x0
 
@@ -598,141 +700,125 @@
 
     const/16 v19, 0x0
 
-    const/16 v20, 0x0
+    move-object v13, v12
 
-    move-object v14, v7
+    move-object/from16 v14, v21
 
-    move-object v15, v6
+    invoke-direct/range {v13 .. v19}, Lcom/android/server/devicepolicy/Owners$OwnerInfo;-><init>(Ljava/lang/String;Ljava/lang/String;ZLjava/lang/String;Ljava/lang/String;Z)V
 
-    invoke-direct/range {v14 .. v20}, Lcom/android/server/devicepolicy/Owners$OwnerInfo;-><init>(Ljava/lang/String;Landroid/content/ComponentName;ZLjava/lang/String;Ljava/lang/String;Z)V
+    move-object v11, v12
 
-    goto :goto_b5
+    .line 592
+    :cond_cd
+    iget-object v12, v1, Lcom/android/server/devicepolicy/Owners;->mProfileOwners:Landroid/util/ArrayMap;
 
-    .line 582
-    :cond_a0
+    invoke-static {v10}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
+
+    move-result-object v13
+
+    invoke-virtual {v12, v13, v11}, Landroid/util/ArrayMap;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+
+    .line 593
+    nop
+
+    .end local v9  # "profileOwnerComponentStr":Ljava/lang/String;
+    .end local v10  # "userId":I
+    .end local v11  # "profileOwnerInfo":Lcom/android/server/devicepolicy/Owners$OwnerInfo;
+    .end local v15  # "profileOwnerPackageName":Ljava/lang/String;
+    .end local v21  # "profileOwnerName":Ljava/lang/String;
+    goto :goto_e7
+
+    :cond_d8
+    const-string/jumbo v9, "system-update-policy"
+
+    invoke-virtual {v9, v7}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+
+    move-result v9
+
+    if-eqz v9, :cond_e9
+
+    .line 594
+    invoke-static {v6}, Landroid/app/admin/SystemUpdatePolicy;->restoreFromXml(Lorg/xmlpull/v1/XmlPullParser;)Landroid/app/admin/SystemUpdatePolicy;
+
+    move-result-object v9
+
+    iput-object v9, v1, Lcom/android/server/devicepolicy/Owners;->mSystemUpdatePolicy:Landroid/app/admin/SystemUpdatePolicy;
+
+    .line 599
+    .end local v7  # "tag":Ljava/lang/String;
+    :goto_e7
+    goto/16 :goto_25
+
+    .line 596
+    .restart local v7  # "tag":Ljava/lang/String;
+    :cond_e9
+    new-instance v3, Lorg/xmlpull/v1/XmlPullParserException;
+
     new-instance v9, Ljava/lang/StringBuilder;
 
     invoke-direct {v9}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v11, "Error parsing device-owner file. Bad component name "
+    const-string v10, "Unexpected tag in device owner file: "
 
-    invoke-virtual {v9, v11}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v9, v10}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v9, v7}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v9}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v7
+    move-result-object v9
 
-    invoke-static {v1, v7}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-direct {v3, v9}, Lorg/xmlpull/v1/XmlPullParserException;-><init>(Ljava/lang/String;)V
 
-    .line 586
-    :cond_b4
-    move-object v7, v10
-
-    :goto_b5
-    if-nez v7, :cond_c4
-
-    .line 587
-    new-instance v7, Lcom/android/server/devicepolicy/Owners$OwnerInfo;
-
-    const/4 v14, 0x0
-
-    const/4 v15, 0x0
-
-    const/16 v16, 0x0
-
-    const/16 v17, 0x0
-
-    move-object v11, v7
-
-    move-object v12, v6
-
-    invoke-direct/range {v11 .. v17}, Lcom/android/server/devicepolicy/Owners$OwnerInfo;-><init>(Ljava/lang/String;Ljava/lang/String;ZLjava/lang/String;Ljava/lang/String;Z)V
-
-    .line 592
-    :cond_c4
-    iget-object v6, v0, Lcom/android/server/devicepolicy/Owners;->mProfileOwners:Landroid/util/ArrayMap;
-
-    invoke-static {v8}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
-
-    move-result-object v8
-
-    invoke-virtual {v6, v8, v7}, Landroid/util/ArrayMap;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
-
-    .line 593
-    goto :goto_dd
-
-    :cond_ce
-    const-string/jumbo v7, "system-update-policy"
-
-    invoke-virtual {v7, v6}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
-
-    move-result v7
-
-    if-eqz v7, :cond_df
-
-    .line 594
-    invoke-static {v5}, Landroid/app/admin/SystemUpdatePolicy;->restoreFromXml(Lorg/xmlpull/v1/XmlPullParser;)Landroid/app/admin/SystemUpdatePolicy;
-
-    move-result-object v6
-
-    iput-object v6, v0, Lcom/android/server/devicepolicy/Owners;->mSystemUpdatePolicy:Landroid/app/admin/SystemUpdatePolicy;
-
-    .line 599
-    :goto_dd
-    goto/16 :goto_25
-
-    .line 596
-    :cond_df
-    new-instance v0, Lorg/xmlpull/v1/XmlPullParserException;
-
-    new-instance v3, Ljava/lang/StringBuilder;
-
-    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
-
-    const-string v4, "Unexpected tag in device owner file: "
-
-    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v3, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
-
-    move-result-object v3
-
-    invoke-direct {v0, v3}, Lorg/xmlpull/v1/XmlPullParserException;-><init>(Ljava/lang/String;)V
-
-    throw v0
+    .end local p0  # "this":Lcom/android/server/devicepolicy/Owners;
+    .end local p1  # "file":Ljava/io/File;
+    throw v3
 
     .line 600
-    :cond_f6
-    invoke-virtual {v4}, Ljava/io/InputStream;->close()V
-    :try_end_f9
-    .catch Lorg/xmlpull/v1/XmlPullParserException; {:try_start_42 .. :try_end_f9} :catch_fa
-    .catch Ljava/io/IOException; {:try_start_42 .. :try_end_f9} :catch_fa
+    .end local v7  # "tag":Ljava/lang/String;
+    .restart local p0  # "this":Lcom/android/server/devicepolicy/Owners;
+    .restart local p1  # "file":Ljava/io/File;
+    :cond_100
+    invoke-virtual {v0}, Ljava/io/InputStream;->close()V
+    :try_end_103
+    .catch Lorg/xmlpull/v1/XmlPullParserException; {:try_start_43 .. :try_end_103} :catch_104
+    .catch Ljava/io/IOException; {:try_start_43 .. :try_end_103} :catch_104
 
     .line 603
-    goto :goto_100
+    .end local v0  # "input":Ljava/io/InputStream;
+    .end local v6  # "parser":Lorg/xmlpull/v1/XmlPullParser;
+    .end local v8  # "type":I
+    goto :goto_10e
 
     .line 601
-    :catch_fa
+    :catch_104
     move-exception v0
 
+    goto :goto_109
+
+    :catch_106
+    move-exception v0
+
+    move-object/from16 v5, p1
+
     .line 602
+    .local v0, "e":Ljava/lang/Exception;
+    :goto_109
     const-string v3, "Error parsing device-owner file"
 
-    invoke-static {v1, v3, v0}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    invoke-static {v2, v3, v0}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
     .line 604
-    :goto_100
-    return v2
+    .end local v0  # "e":Ljava/lang/Exception;
+    :goto_10e
+    return v4
 .end method
 
 
 # virtual methods
 .method canProfileOwnerAccessDeviceIds(I)Z
-    .registers 4
+    .registers 5
+    .param p1, "userId"  # I
 
     .line 385
     iget-object v0, p0, Lcom/android/server/devicepolicy/Owners;->mLock:Ljava/lang/Object;
@@ -745,38 +831,40 @@
 
     invoke-static {p1}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
 
-    move-result-object p1
+    move-result-object v2
 
-    invoke-virtual {v1, p1}, Landroid/util/ArrayMap;->get(Ljava/lang/Object;)Ljava/lang/Object;
+    invoke-virtual {v1, v2}, Landroid/util/ArrayMap;->get(Ljava/lang/Object;)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v1
 
-    check-cast p1, Lcom/android/server/devicepolicy/Owners$OwnerInfo;
+    check-cast v1, Lcom/android/server/devicepolicy/Owners$OwnerInfo;
 
     .line 387
-    if-eqz p1, :cond_14
+    .local v1, "profileOwner":Lcom/android/server/devicepolicy/Owners$OwnerInfo;
+    if-eqz v1, :cond_14
 
-    iget-boolean p1, p1, Lcom/android/server/devicepolicy/Owners$OwnerInfo;->canAccessDeviceIds:Z
+    iget-boolean v2, v1, Lcom/android/server/devicepolicy/Owners$OwnerInfo;->canAccessDeviceIds:Z
 
     goto :goto_15
 
     :cond_14
-    const/4 p1, 0x0
+    const/4 v2, 0x0
 
     :goto_15
     monitor-exit v0
 
-    return p1
+    return v2
 
     .line 388
+    .end local v1  # "profileOwner":Lcom/android/server/devicepolicy/Owners$OwnerInfo;
     :catchall_17
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_19
     .catchall {:try_start_3 .. :try_end_19} :catchall_17
 
-    throw p1
+    throw v1
 .end method
 
 .method clearDeviceOwner()V
@@ -864,38 +952,39 @@
 
 .method public dump(Ljava/lang/String;Ljava/io/PrintWriter;)V
     .registers 9
+    .param p1, "prefix"  # Ljava/lang/String;
+    .param p2, "pw"  # Ljava/io/PrintWriter;
 
     .line 1044
-    nop
+    const/4 v0, 0x0
 
     .line 1045
-    iget-object v0, p0, Lcom/android/server/devicepolicy/Owners;->mDeviceOwner:Lcom/android/server/devicepolicy/Owners$OwnerInfo;
+    .local v0, "needBlank":Z
+    iget-object v1, p0, Lcom/android/server/devicepolicy/Owners;->mDeviceOwner:Lcom/android/server/devicepolicy/Owners$OwnerInfo;
 
-    const-string v1, "  "
+    const-string v2, "  "
 
-    const/4 v2, 0x1
-
-    if-eqz v0, :cond_4b
+    if-eqz v1, :cond_49
 
     .line 1046
-    new-instance v0, Ljava/lang/StringBuilder;
+    new-instance v1, Ljava/lang/StringBuilder;
 
-    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
 
-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     const-string v3, "Device Owner: "
 
-    invoke-virtual {v0, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v1
 
-    invoke-virtual {p2, v0}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {p2, v1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
     .line 1047
-    iget-object v0, p0, Lcom/android/server/devicepolicy/Owners;->mDeviceOwner:Lcom/android/server/devicepolicy/Owners$OwnerInfo;
+    iget-object v1, p0, Lcom/android/server/devicepolicy/Owners;->mDeviceOwner:Lcom/android/server/devicepolicy/Owners$OwnerInfo;
 
     new-instance v3, Ljava/lang/StringBuilder;
 
@@ -903,257 +992,251 @@
 
     invoke-virtual {v3, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v3, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
     move-result-object v3
 
-    invoke-virtual {v0, v3, p2}, Lcom/android/server/devicepolicy/Owners$OwnerInfo;->dump(Ljava/lang/String;Ljava/io/PrintWriter;)V
+    invoke-virtual {v1, v3, p2}, Lcom/android/server/devicepolicy/Owners$OwnerInfo;->dump(Ljava/lang/String;Ljava/io/PrintWriter;)V
 
     .line 1048
-    new-instance v0, Ljava/lang/StringBuilder;
+    new-instance v1, Ljava/lang/StringBuilder;
 
-    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
 
-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     const-string v3, "  User ID: "
 
-    invoke-virtual {v0, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     iget v3, p0, Lcom/android/server/devicepolicy/Owners;->mDeviceOwnerUserId:I
 
-    invoke-virtual {v0, v3}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v3}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v1
 
-    invoke-virtual {p2, v0}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {p2, v1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
     .line 1049
-    move v0, v2
-
-    goto :goto_4c
-
-    .line 1045
-    :cond_4b
-    const/4 v0, 0x0
+    const/4 v0, 0x1
 
     .line 1051
-    :goto_4c
-    iget-object v3, p0, Lcom/android/server/devicepolicy/Owners;->mSystemUpdatePolicy:Landroid/app/admin/SystemUpdatePolicy;
+    :cond_49
+    iget-object v1, p0, Lcom/android/server/devicepolicy/Owners;->mSystemUpdatePolicy:Landroid/app/admin/SystemUpdatePolicy;
 
-    if-eqz v3, :cond_6f
+    if-eqz v1, :cond_6c
 
     .line 1052
-    if-eqz v0, :cond_55
+    if-eqz v0, :cond_52
 
     .line 1053
     invoke-virtual {p2}, Ljava/io/PrintWriter;->println()V
 
     .line 1055
-    :cond_55
-    new-instance v0, Ljava/lang/StringBuilder;
+    :cond_52
+    new-instance v1, Ljava/lang/StringBuilder;
 
-    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
 
-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     const-string v3, "System Update Policy: "
 
-    invoke-virtual {v0, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     iget-object v3, p0, Lcom/android/server/devicepolicy/Owners;->mSystemUpdatePolicy:Landroid/app/admin/SystemUpdatePolicy;
 
-    invoke-virtual {v0, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v1
 
-    invoke-virtual {p2, v0}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {p2, v1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
     .line 1056
-    move v0, v2
+    const/4 v0, 0x1
 
     .line 1058
-    :cond_6f
-    iget-object v3, p0, Lcom/android/server/devicepolicy/Owners;->mProfileOwners:Landroid/util/ArrayMap;
+    :cond_6c
+    iget-object v1, p0, Lcom/android/server/devicepolicy/Owners;->mProfileOwners:Landroid/util/ArrayMap;
 
-    if-eqz v3, :cond_c7
+    if-eqz v1, :cond_c3
 
     .line 1059
-    invoke-virtual {v3}, Landroid/util/ArrayMap;->entrySet()Ljava/util/Set;
+    invoke-virtual {v1}, Landroid/util/ArrayMap;->entrySet()Ljava/util/Set;
+
+    move-result-object v1
+
+    invoke-interface {v1}, Ljava/util/Set;->iterator()Ljava/util/Iterator;
+
+    move-result-object v1
+
+    :goto_78
+    invoke-interface {v1}, Ljava/util/Iterator;->hasNext()Z
+
+    move-result v3
+
+    if-eqz v3, :cond_c3
+
+    invoke-interface {v1}, Ljava/util/Iterator;->next()Ljava/lang/Object;
 
     move-result-object v3
 
-    invoke-interface {v3}, Ljava/util/Set;->iterator()Ljava/util/Iterator;
-
-    move-result-object v3
-
-    :goto_7b
-    invoke-interface {v3}, Ljava/util/Iterator;->hasNext()Z
-
-    move-result v4
-
-    if-eqz v4, :cond_c7
-
-    invoke-interface {v3}, Ljava/util/Iterator;->next()Ljava/lang/Object;
-
-    move-result-object v4
-
-    check-cast v4, Ljava/util/Map$Entry;
+    check-cast v3, Ljava/util/Map$Entry;
 
     .line 1060
-    if-eqz v0, :cond_8c
+    .local v3, "entry":Ljava/util/Map$Entry;, "Ljava/util/Map$Entry<Ljava/lang/Integer;Lcom/android/server/devicepolicy/Owners$OwnerInfo;>;"
+    if-eqz v0, :cond_89
 
     .line 1061
     invoke-virtual {p2}, Ljava/io/PrintWriter;->println()V
 
     .line 1063
-    :cond_8c
-    new-instance v0, Ljava/lang/StringBuilder;
-
-    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
-
-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    const-string v5, "Profile Owner (User "
-
-    invoke-virtual {v0, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-interface {v4}, Ljava/util/Map$Entry;->getKey()Ljava/lang/Object;
-
-    move-result-object v5
-
-    invoke-virtual {v0, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
-
-    const-string v5, "): "
-
-    invoke-virtual {v0, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
-
-    move-result-object v0
-
-    invoke-virtual {p2, v0}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
-
-    .line 1064
-    invoke-interface {v4}, Ljava/util/Map$Entry;->getValue()Ljava/lang/Object;
-
-    move-result-object v0
-
-    check-cast v0, Lcom/android/server/devicepolicy/Owners$OwnerInfo;
-
+    :cond_89
     new-instance v4, Ljava/lang/StringBuilder;
 
     invoke-direct {v4}, Ljava/lang/StringBuilder;-><init>()V
 
     invoke-virtual {v4, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v4, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    const-string v5, "Profile Owner (User "
+
+    invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-interface {v3}, Ljava/util/Map$Entry;->getKey()Ljava/lang/Object;
+
+    move-result-object v5
+
+    invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+
+    const-string v5, "): "
+
+    invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v4}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
     move-result-object v4
 
-    invoke-virtual {v0, v4, p2}, Lcom/android/server/devicepolicy/Owners$OwnerInfo;->dump(Ljava/lang/String;Ljava/io/PrintWriter;)V
+    invoke-virtual {p2, v4}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+
+    .line 1064
+    invoke-interface {v3}, Ljava/util/Map$Entry;->getValue()Ljava/lang/Object;
+
+    move-result-object v4
+
+    check-cast v4, Lcom/android/server/devicepolicy/Owners$OwnerInfo;
+
+    new-instance v5, Ljava/lang/StringBuilder;
+
+    invoke-direct {v5}, Ljava/lang/StringBuilder;-><init>()V
+
+    invoke-virtual {v5, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v5, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v5}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v5
+
+    invoke-virtual {v4, v5, p2}, Lcom/android/server/devicepolicy/Owners$OwnerInfo;->dump(Ljava/lang/String;Ljava/io/PrintWriter;)V
 
     .line 1065
-    nop
+    const/4 v0, 0x1
 
     .line 1066
-    move v0, v2
-
-    goto :goto_7b
+    .end local v3  # "entry":Ljava/util/Map$Entry;, "Ljava/util/Map$Entry<Ljava/lang/Integer;Lcom/android/server/devicepolicy/Owners$OwnerInfo;>;"
+    goto :goto_78
 
     .line 1068
-    :cond_c7
+    :cond_c3
     iget-object v1, p0, Lcom/android/server/devicepolicy/Owners;->mSystemUpdateInfo:Landroid/app/admin/SystemUpdateInfo;
 
-    if-eqz v1, :cond_ea
+    if-eqz v1, :cond_e6
 
     .line 1069
-    if-eqz v0, :cond_d0
+    if-eqz v0, :cond_cc
 
     .line 1070
     invoke-virtual {p2}, Ljava/io/PrintWriter;->println()V
 
     .line 1072
-    :cond_d0
-    new-instance v0, Ljava/lang/StringBuilder;
+    :cond_cc
+    new-instance v1, Ljava/lang/StringBuilder;
 
-    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
 
-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string v1, "Pending System Update: "
+    const-string v2, "Pending System Update: "
 
-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    iget-object v1, p0, Lcom/android/server/devicepolicy/Owners;->mSystemUpdateInfo:Landroid/app/admin/SystemUpdateInfo;
+    iget-object v2, p0, Lcom/android/server/devicepolicy/Owners;->mSystemUpdateInfo:Landroid/app/admin/SystemUpdateInfo;
 
-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v1
 
-    invoke-virtual {p2, v0}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {p2, v1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
     .line 1073
-    move v0, v2
+    const/4 v0, 0x1
 
     .line 1075
-    :cond_ea
+    :cond_e6
     iget-object v1, p0, Lcom/android/server/devicepolicy/Owners;->mSystemUpdateFreezeStart:Ljava/time/LocalDate;
 
-    if-nez v1, :cond_f2
+    if-nez v1, :cond_ee
 
     iget-object v1, p0, Lcom/android/server/devicepolicy/Owners;->mSystemUpdateFreezeEnd:Ljava/time/LocalDate;
 
-    if-eqz v1, :cond_113
+    if-eqz v1, :cond_10f
 
     .line 1076
-    :cond_f2
-    if-eqz v0, :cond_f7
+    :cond_ee
+    if-eqz v0, :cond_f3
 
     .line 1077
     invoke-virtual {p2}, Ljava/io/PrintWriter;->println()V
 
     .line 1079
-    :cond_f7
-    new-instance v0, Ljava/lang/StringBuilder;
+    :cond_f3
+    new-instance v1, Ljava/lang/StringBuilder;
 
-    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
 
-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string p1, "System update freeze record: "
+    const-string v2, "System update freeze record: "
 
-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     .line 1080
     invoke-virtual {p0}, Lcom/android/server/devicepolicy/Owners;->getSystemUpdateFreezePeriodRecordAsString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v2
 
-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v1
 
     .line 1079
-    invoke-virtual {p2, p1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {p2, v1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
     .line 1081
-    nop
+    const/4 v0, 0x1
 
     .line 1083
-    :cond_113
+    :cond_10f
     return-void
 .end method
 
@@ -1526,7 +1609,8 @@
 .end method
 
 .method getProfileOwnerComponent(I)Landroid/content/ComponentName;
-    .registers 4
+    .registers 5
+    .param p1, "userId"  # I
 
     .line 360
     iget-object v0, p0, Lcom/android/server/devicepolicy/Owners;->mLock:Ljava/lang/Object;
@@ -1539,42 +1623,45 @@
 
     invoke-static {p1}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
 
-    move-result-object p1
+    move-result-object v2
 
-    invoke-virtual {v1, p1}, Landroid/util/ArrayMap;->get(Ljava/lang/Object;)Ljava/lang/Object;
+    invoke-virtual {v1, v2}, Landroid/util/ArrayMap;->get(Ljava/lang/Object;)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v1
 
-    check-cast p1, Lcom/android/server/devicepolicy/Owners$OwnerInfo;
+    check-cast v1, Lcom/android/server/devicepolicy/Owners$OwnerInfo;
 
     .line 362
-    if-eqz p1, :cond_14
+    .local v1, "profileOwner":Lcom/android/server/devicepolicy/Owners$OwnerInfo;
+    if-eqz v1, :cond_14
 
-    iget-object p1, p1, Lcom/android/server/devicepolicy/Owners$OwnerInfo;->admin:Landroid/content/ComponentName;
+    iget-object v2, v1, Lcom/android/server/devicepolicy/Owners$OwnerInfo;->admin:Landroid/content/ComponentName;
 
     goto :goto_15
 
     :cond_14
-    const/4 p1, 0x0
+    const/4 v2, 0x0
 
     :goto_15
     monitor-exit v0
 
-    return-object p1
+    return-object v2
 
     .line 363
+    .end local v1  # "profileOwner":Lcom/android/server/devicepolicy/Owners$OwnerInfo;
     :catchall_17
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_19
     .catchall {:try_start_3 .. :try_end_19} :catchall_17
 
-    throw p1
+    throw v1
 .end method
 
 .method getProfileOwnerFile(I)Ljava/io/File;
-    .registers 4
+    .registers 5
+    .param p1, "userId"  # I
     .annotation build Lcom/android/internal/annotations/VisibleForTesting;
     .end annotation
 
@@ -1585,11 +1672,11 @@
 
     invoke-virtual {v1, p1}, Lcom/android/server/devicepolicy/Owners$Injector;->environmentGetUserSystemDirectory(I)Ljava/io/File;
 
-    move-result-object p1
+    move-result-object v1
 
-    const-string/jumbo v1, "profile_owner.xml"
+    const-string/jumbo v2, "profile_owner.xml"
 
-    invoke-direct {v0, p1, v1}, Ljava/io/File;-><init>(Ljava/io/File;Ljava/lang/String;)V
+    invoke-direct {v0, v1, v2}, Ljava/io/File;-><init>(Ljava/io/File;Ljava/lang/String;)V
 
     return-object v0
 .end method
@@ -1634,7 +1721,8 @@
 .end method
 
 .method getProfileOwnerName(I)Ljava/lang/String;
-    .registers 4
+    .registers 5
+    .param p1, "userId"  # I
 
     .line 367
     iget-object v0, p0, Lcom/android/server/devicepolicy/Owners;->mLock:Ljava/lang/Object;
@@ -1647,42 +1735,45 @@
 
     invoke-static {p1}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
 
-    move-result-object p1
+    move-result-object v2
 
-    invoke-virtual {v1, p1}, Landroid/util/ArrayMap;->get(Ljava/lang/Object;)Ljava/lang/Object;
+    invoke-virtual {v1, v2}, Landroid/util/ArrayMap;->get(Ljava/lang/Object;)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v1
 
-    check-cast p1, Lcom/android/server/devicepolicy/Owners$OwnerInfo;
+    check-cast v1, Lcom/android/server/devicepolicy/Owners$OwnerInfo;
 
     .line 369
-    if-eqz p1, :cond_14
+    .local v1, "profileOwner":Lcom/android/server/devicepolicy/Owners$OwnerInfo;
+    if-eqz v1, :cond_14
 
-    iget-object p1, p1, Lcom/android/server/devicepolicy/Owners$OwnerInfo;->name:Ljava/lang/String;
+    iget-object v2, v1, Lcom/android/server/devicepolicy/Owners$OwnerInfo;->name:Ljava/lang/String;
 
     goto :goto_15
 
     :cond_14
-    const/4 p1, 0x0
+    const/4 v2, 0x0
 
     :goto_15
     monitor-exit v0
 
-    return-object p1
+    return-object v2
 
     .line 370
+    .end local v1  # "profileOwner":Lcom/android/server/devicepolicy/Owners$OwnerInfo;
     :catchall_17
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_19
     .catchall {:try_start_3 .. :try_end_19} :catchall_17
 
-    throw p1
+    throw v1
 .end method
 
 .method getProfileOwnerPackage(I)Ljava/lang/String;
-    .registers 4
+    .registers 5
+    .param p1, "userId"  # I
 
     .line 374
     iget-object v0, p0, Lcom/android/server/devicepolicy/Owners;->mLock:Ljava/lang/Object;
@@ -1695,42 +1786,45 @@
 
     invoke-static {p1}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
 
-    move-result-object p1
+    move-result-object v2
 
-    invoke-virtual {v1, p1}, Landroid/util/ArrayMap;->get(Ljava/lang/Object;)Ljava/lang/Object;
+    invoke-virtual {v1, v2}, Landroid/util/ArrayMap;->get(Ljava/lang/Object;)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v1
 
-    check-cast p1, Lcom/android/server/devicepolicy/Owners$OwnerInfo;
+    check-cast v1, Lcom/android/server/devicepolicy/Owners$OwnerInfo;
 
     .line 376
-    if-eqz p1, :cond_14
+    .local v1, "profileOwner":Lcom/android/server/devicepolicy/Owners$OwnerInfo;
+    if-eqz v1, :cond_14
 
-    iget-object p1, p1, Lcom/android/server/devicepolicy/Owners$OwnerInfo;->packageName:Ljava/lang/String;
+    iget-object v2, v1, Lcom/android/server/devicepolicy/Owners$OwnerInfo;->packageName:Ljava/lang/String;
 
     goto :goto_15
 
     :cond_14
-    const/4 p1, 0x0
+    const/4 v2, 0x0
 
     :goto_15
     monitor-exit v0
 
-    return-object p1
+    return-object v2
 
     .line 377
+    .end local v1  # "profileOwner":Lcom/android/server/devicepolicy/Owners$OwnerInfo;
     :catchall_17
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_19
     .catchall {:try_start_3 .. :try_end_19} :catchall_17
 
-    throw p1
+    throw v1
 .end method
 
 .method getProfileOwnerUserRestrictionsNeedsMigration(I)Z
-    .registers 4
+    .registers 5
+    .param p1, "userId"  # I
 
     .line 487
     iget-object v0, p0, Lcom/android/server/devicepolicy/Owners;->mLock:Ljava/lang/Object;
@@ -1743,42 +1837,44 @@
 
     invoke-static {p1}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
 
-    move-result-object p1
+    move-result-object v2
 
-    invoke-virtual {v1, p1}, Landroid/util/ArrayMap;->get(Ljava/lang/Object;)Ljava/lang/Object;
+    invoke-virtual {v1, v2}, Landroid/util/ArrayMap;->get(Ljava/lang/Object;)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v1
 
-    check-cast p1, Lcom/android/server/devicepolicy/Owners$OwnerInfo;
+    check-cast v1, Lcom/android/server/devicepolicy/Owners$OwnerInfo;
 
     .line 489
-    if-eqz p1, :cond_17
+    .local v1, "profileOwner":Lcom/android/server/devicepolicy/Owners$OwnerInfo;
+    if-eqz v1, :cond_17
 
-    iget-boolean p1, p1, Lcom/android/server/devicepolicy/Owners$OwnerInfo;->userRestrictionsMigrated:Z
+    iget-boolean v2, v1, Lcom/android/server/devicepolicy/Owners$OwnerInfo;->userRestrictionsMigrated:Z
 
-    if-nez p1, :cond_17
+    if-nez v2, :cond_17
 
-    const/4 p1, 0x1
+    const/4 v2, 0x1
 
     goto :goto_18
 
     :cond_17
-    const/4 p1, 0x0
+    const/4 v2, 0x0
 
     :goto_18
     monitor-exit v0
 
-    return p1
+    return v2
 
     .line 490
+    .end local v1  # "profileOwner":Lcom/android/server/devicepolicy/Owners$OwnerInfo;
     :catchall_1a
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_1c
     .catchall {:try_start_3 .. :try_end_1c} :catchall_1a
 
-    throw p1
+    throw v1
 .end method
 
 .method getSystemUpdateFreezePeriodRecord()Landroid/util/Pair;
@@ -1832,6 +1928,7 @@
     invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
 
     .line 423
+    .local v0, "freezePeriodRecord":Ljava/lang/StringBuilder;
     const-string/jumbo v1, "start: "
 
     invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
@@ -1884,9 +1981,9 @@
     :goto_31
     invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v1
 
-    return-object v0
+    return-object v1
 .end method
 
 .method public getSystemUpdateInfo()Landroid/app/admin/SystemUpdateInfo;
@@ -1981,7 +2078,8 @@
 .end method
 
 .method hasProfileOwner(I)Z
-    .registers 3
+    .registers 4
+    .param p1, "userId"  # I
 
     .line 469
     iget-object v0, p0, Lcom/android/server/devicepolicy/Owners;->mLock:Ljava/lang/Object;
@@ -1992,35 +2090,36 @@
     :try_start_3
     invoke-virtual {p0, p1}, Lcom/android/server/devicepolicy/Owners;->getProfileOwnerComponent(I)Landroid/content/ComponentName;
 
-    move-result-object p1
+    move-result-object v1
 
-    if-eqz p1, :cond_b
+    if-eqz v1, :cond_b
 
-    const/4 p1, 0x1
+    const/4 v1, 0x1
 
     goto :goto_c
 
     :cond_b
-    const/4 p1, 0x0
+    const/4 v1, 0x0
 
     :goto_c
     monitor-exit v0
 
-    return p1
+    return v1
 
     .line 471
     :catchall_e
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_10
     .catchall {:try_start_3 .. :try_end_10} :catchall_e
 
-    throw p1
+    throw v1
 .end method
 
 .method isDeviceOwnerUserId(I)Z
     .registers 4
+    .param p1, "userId"  # I
 
     .line 463
     iget-object v0, p0, Lcom/android/server/devicepolicy/Owners;->mLock:Ljava/lang/Object;
@@ -2037,31 +2136,31 @@
 
     if-ne v1, p1, :cond_d
 
-    const/4 p1, 0x1
+    const/4 v1, 0x1
 
     goto :goto_e
 
     :cond_d
-    const/4 p1, 0x0
+    const/4 v1, 0x0
 
     :goto_e
     monitor-exit v0
 
-    return p1
+    return v1
 
     .line 465
     :catchall_10
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_12
     .catchall {:try_start_3 .. :try_end_12} :catchall_10
 
-    throw p1
+    throw v1
 .end method
 
 .method load()V
-    .registers 7
+    .registers 10
 
     .line 158
     iget-object v0, p0, Lcom/android/server/devicepolicy/Owners;->mLock:Ljava/lang/Object;
@@ -2075,6 +2174,7 @@
     move-result-object v1
 
     .line 162
+    .local v1, "legacy":Ljava/io/File;
     iget-object v2, p0, Lcom/android/server/devicepolicy/Owners;->mUserManager:Landroid/os/UserManager;
 
     const/4 v3, 0x1
@@ -2084,6 +2184,7 @@
     move-result-object v2
 
     .line 164
+    .local v2, "users":Ljava/util/List;, "Ljava/util/List<Landroid/content/pm/UserInfo;>;"
     invoke-direct {p0, v1}, Lcom/android/server/devicepolicy/Owners;->readLegacyOwnerFileLocked(Ljava/io/File;)Z
 
     move-result v4
@@ -2120,155 +2221,161 @@
     move-result v5
 
     .line 172
+    .local v5, "userId":I
     invoke-virtual {p0, v5}, Lcom/android/server/devicepolicy/Owners;->writeProfileOwner(I)V
 
     .line 173
+    .end local v5  # "userId":I
     goto :goto_1f
 
     .line 177
     :cond_33
     invoke-virtual {v1}, Ljava/io/File;->delete()Z
 
-    move-result v1
+    move-result v4
 
-    if-nez v1, :cond_64
+    if-nez v4, :cond_64
 
     .line 178
-    const-string v1, "DevicePolicyManagerService"
+    const-string v4, "DevicePolicyManagerService"
 
-    const-string v4, "Failed to remove the legacy setting file"
+    const-string v5, "Failed to remove the legacy setting file"
 
-    invoke-static {v1, v4}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v4, v5}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
 
     goto :goto_64
 
     .line 182
     :cond_41
-    new-instance v1, Lcom/android/server/devicepolicy/Owners$DeviceOwnerReadWriter;
+    new-instance v4, Lcom/android/server/devicepolicy/Owners$DeviceOwnerReadWriter;
 
-    invoke-direct {v1, p0}, Lcom/android/server/devicepolicy/Owners$DeviceOwnerReadWriter;-><init>(Lcom/android/server/devicepolicy/Owners;)V
+    invoke-direct {v4, p0}, Lcom/android/server/devicepolicy/Owners$DeviceOwnerReadWriter;-><init>(Lcom/android/server/devicepolicy/Owners;)V
 
-    invoke-virtual {v1}, Lcom/android/server/devicepolicy/Owners$DeviceOwnerReadWriter;->readFromFileLocked()V
+    invoke-virtual {v4}, Lcom/android/server/devicepolicy/Owners$DeviceOwnerReadWriter;->readFromFileLocked()V
 
     .line 184
     invoke-interface {v2}, Ljava/util/List;->iterator()Ljava/util/Iterator;
 
-    move-result-object v1
-
-    :goto_4d
-    invoke-interface {v1}, Ljava/util/Iterator;->hasNext()Z
-
-    move-result v4
-
-    if-eqz v4, :cond_64
-
-    invoke-interface {v1}, Ljava/util/Iterator;->next()Ljava/lang/Object;
-
     move-result-object v4
 
-    check-cast v4, Landroid/content/pm/UserInfo;
+    :goto_4d
+    invoke-interface {v4}, Ljava/util/Iterator;->hasNext()Z
+
+    move-result v5
+
+    if-eqz v5, :cond_64
+
+    invoke-interface {v4}, Ljava/util/Iterator;->next()Ljava/lang/Object;
+
+    move-result-object v5
+
+    check-cast v5, Landroid/content/pm/UserInfo;
 
     .line 185
-    new-instance v5, Lcom/android/server/devicepolicy/Owners$ProfileOwnerReadWriter;
+    .local v5, "ui":Landroid/content/pm/UserInfo;
+    new-instance v6, Lcom/android/server/devicepolicy/Owners$ProfileOwnerReadWriter;
 
-    iget v4, v4, Landroid/content/pm/UserInfo;->id:I
+    iget v7, v5, Landroid/content/pm/UserInfo;->id:I
 
-    invoke-direct {v5, p0, v4}, Lcom/android/server/devicepolicy/Owners$ProfileOwnerReadWriter;-><init>(Lcom/android/server/devicepolicy/Owners;I)V
+    invoke-direct {v6, p0, v7}, Lcom/android/server/devicepolicy/Owners$ProfileOwnerReadWriter;-><init>(Lcom/android/server/devicepolicy/Owners;I)V
 
-    invoke-virtual {v5}, Lcom/android/server/devicepolicy/Owners$ProfileOwnerReadWriter;->readFromFileLocked()V
+    invoke-virtual {v6}, Lcom/android/server/devicepolicy/Owners$ProfileOwnerReadWriter;->readFromFileLocked()V
 
     .line 186
+    .end local v5  # "ui":Landroid/content/pm/UserInfo;
     goto :goto_4d
 
     .line 188
     :cond_64
     :goto_64
-    iget-object v1, p0, Lcom/android/server/devicepolicy/Owners;->mUserManagerInternal:Landroid/os/UserManagerInternal;
+    iget-object v4, p0, Lcom/android/server/devicepolicy/Owners;->mUserManagerInternal:Landroid/os/UserManagerInternal;
 
     invoke-virtual {p0}, Lcom/android/server/devicepolicy/Owners;->hasDeviceOwner()Z
 
-    move-result v4
+    move-result v5
 
-    invoke-virtual {v1, v4}, Landroid/os/UserManagerInternal;->setDeviceManaged(Z)V
+    invoke-virtual {v4, v5}, Landroid/os/UserManagerInternal;->setDeviceManaged(Z)V
 
     .line 189
     invoke-interface {v2}, Ljava/util/List;->iterator()Ljava/util/Iterator;
 
-    move-result-object v1
+    move-result-object v4
 
     :goto_71
-    invoke-interface {v1}, Ljava/util/Iterator;->hasNext()Z
+    invoke-interface {v4}, Ljava/util/Iterator;->hasNext()Z
 
-    move-result v2
+    move-result v5
 
-    if-eqz v2, :cond_8b
+    if-eqz v5, :cond_8b
 
-    invoke-interface {v1}, Ljava/util/Iterator;->next()Ljava/lang/Object;
+    invoke-interface {v4}, Ljava/util/Iterator;->next()Ljava/lang/Object;
 
-    move-result-object v2
+    move-result-object v5
 
-    check-cast v2, Landroid/content/pm/UserInfo;
+    check-cast v5, Landroid/content/pm/UserInfo;
 
     .line 190
-    iget-object v4, p0, Lcom/android/server/devicepolicy/Owners;->mUserManagerInternal:Landroid/os/UserManagerInternal;
+    .restart local v5  # "ui":Landroid/content/pm/UserInfo;
+    iget-object v6, p0, Lcom/android/server/devicepolicy/Owners;->mUserManagerInternal:Landroid/os/UserManagerInternal;
 
-    iget v5, v2, Landroid/content/pm/UserInfo;->id:I
+    iget v7, v5, Landroid/content/pm/UserInfo;->id:I
 
-    iget v2, v2, Landroid/content/pm/UserInfo;->id:I
+    iget v8, v5, Landroid/content/pm/UserInfo;->id:I
 
-    invoke-virtual {p0, v2}, Lcom/android/server/devicepolicy/Owners;->hasProfileOwner(I)Z
+    invoke-virtual {p0, v8}, Lcom/android/server/devicepolicy/Owners;->hasProfileOwner(I)Z
 
-    move-result v2
+    move-result v8
 
-    invoke-virtual {v4, v5, v2}, Landroid/os/UserManagerInternal;->setUserManaged(IZ)V
+    invoke-virtual {v6, v7, v8}, Landroid/os/UserManagerInternal;->setUserManaged(IZ)V
 
     .line 191
+    .end local v5  # "ui":Landroid/content/pm/UserInfo;
     goto :goto_71
 
     .line 192
     :cond_8b
     invoke-virtual {p0}, Lcom/android/server/devicepolicy/Owners;->hasDeviceOwner()Z
 
-    move-result v1
+    move-result v4
 
-    if-eqz v1, :cond_b3
+    if-eqz v4, :cond_b3
 
     invoke-virtual {p0}, Lcom/android/server/devicepolicy/Owners;->getDeviceOwnerUserId()I
 
-    move-result v1
+    move-result v4
 
-    invoke-virtual {p0, v1}, Lcom/android/server/devicepolicy/Owners;->hasProfileOwner(I)Z
+    invoke-virtual {p0, v4}, Lcom/android/server/devicepolicy/Owners;->hasProfileOwner(I)Z
 
-    move-result v1
+    move-result v4
 
-    if-eqz v1, :cond_b3
+    if-eqz v4, :cond_b3
 
     .line 193
-    const-string v1, "DevicePolicyManagerService"
+    const-string v4, "DevicePolicyManagerService"
 
-    const-string v2, "User %d has both DO and PO, which is not supported"
+    const-string v5, "User %d has both DO and PO, which is not supported"
 
     new-array v3, v3, [Ljava/lang/Object;
 
-    const/4 v4, 0x0
+    const/4 v6, 0x0
 
     .line 194
     invoke-virtual {p0}, Lcom/android/server/devicepolicy/Owners;->getDeviceOwnerUserId()I
 
-    move-result v5
+    move-result v7
 
-    invoke-static {v5}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
+    invoke-static {v7}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
 
-    move-result-object v5
+    move-result-object v7
 
-    aput-object v5, v3, v4
+    aput-object v7, v3, v6
 
     .line 193
-    invoke-static {v2, v3}, Ljava/lang/String;->format(Ljava/lang/String;[Ljava/lang/Object;)Ljava/lang/String;
+    invoke-static {v5, v3}, Ljava/lang/String;->format(Ljava/lang/String;[Ljava/lang/Object;)Ljava/lang/String;
 
-    move-result-object v2
+    move-result-object v3
 
-    invoke-static {v1, v2}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v4, v3}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 196
     :cond_b3
@@ -2281,6 +2388,8 @@
     invoke-virtual {p0}, Lcom/android/server/devicepolicy/Owners;->pushToAppOpsLocked()V
 
     .line 199
+    .end local v1  # "legacy":Ljava/io/File;
+    .end local v2  # "users":Ljava/util/List;, "Ljava/util/List<Landroid/content/pm/UserInfo;>;"
     monitor-exit v0
 
     .line 200
@@ -2315,12 +2424,14 @@
     move-result-wide v0
 
     .line 657
+    .local v0, "ident":J
     :try_start_9
     new-instance v2, Landroid/util/SparseIntArray;
 
     invoke-direct {v2}, Landroid/util/SparseIntArray;-><init>()V
 
     .line 658
+    .local v2, "owners":Landroid/util/SparseIntArray;
     iget-object v3, p0, Lcom/android/server/devicepolicy/Owners;->mDeviceOwner:Lcom/android/server/devicepolicy/Owners$OwnerInfo;
 
     const v4, 0x422000
@@ -2341,6 +2452,7 @@
     move-result v3
 
     .line 662
+    .local v3, "uid":I
     if-ltz v3, :cond_28
 
     .line 663
@@ -2349,6 +2461,7 @@
     invoke-virtual {v2, v5, v3}, Landroid/util/SparseIntArray;->put(II)V
 
     .line 666
+    .end local v3  # "uid":I
     :cond_28
     iget-object v3, p0, Lcom/android/server/devicepolicy/Owners;->mProfileOwners:Landroid/util/ArrayMap;
 
@@ -2363,6 +2476,7 @@
 
     add-int/lit8 v3, v3, -0x1
 
+    .local v3, "poi":I
     :goto_34
     if-ltz v3, :cond_66
 
@@ -2399,6 +2513,7 @@
     move-result v5
 
     .line 672
+    .local v5, "uid":I
     if-ltz v5, :cond_63
 
     .line 673
@@ -2417,12 +2532,14 @@
     invoke-virtual {v2, v6, v5}, Landroid/util/SparseIntArray;->put(II)V
 
     .line 667
+    .end local v5  # "uid":I
     :cond_63
     add-int/lit8 v3, v3, -0x1
 
     goto :goto_34
 
     .line 677
+    .end local v3  # "poi":I
     :cond_66
     const-class v3, Landroid/app/AppOpsManagerInternal;
 
@@ -2433,27 +2550,32 @@
     check-cast v3, Landroid/app/AppOpsManagerInternal;
 
     .line 678
-    if-eqz v3, :cond_7b
+    .local v3, "appops":Landroid/app/AppOpsManagerInternal;
+    if-eqz v3, :cond_7c
 
     .line 679
     invoke-virtual {v2}, Landroid/util/SparseIntArray;->size()I
 
     move-result v4
 
-    if-lez v4, :cond_77
+    if-lez v4, :cond_78
 
-    goto :goto_78
+    move-object v4, v2
 
-    :cond_77
-    const/4 v2, 0x0
+    goto :goto_79
 
-    :goto_78
-    invoke-virtual {v3, v2}, Landroid/app/AppOpsManagerInternal;->setDeviceAndProfileOwners(Landroid/util/SparseIntArray;)V
-    :try_end_7b
-    .catchall {:try_start_9 .. :try_end_7b} :catchall_80
+    :cond_78
+    const/4 v4, 0x0
+
+    :goto_79
+    invoke-virtual {v3, v4}, Landroid/app/AppOpsManagerInternal;->setDeviceAndProfileOwners(Landroid/util/SparseIntArray;)V
+    :try_end_7c
+    .catchall {:try_start_9 .. :try_end_7c} :catchall_81
 
     .line 682
-    :cond_7b
+    .end local v2  # "owners":Landroid/util/SparseIntArray;
+    .end local v3  # "appops":Landroid/app/AppOpsManagerInternal;
+    :cond_7c
     invoke-static {v0, v1}, Landroid/os/Binder;->restoreCallingIdentity(J)V
 
     .line 683
@@ -2463,7 +2585,7 @@
     return-void
 
     .line 682
-    :catchall_80
+    :catchall_81
     move-exception v2
 
     invoke-static {v0, v1}, Landroid/os/Binder;->restoreCallingIdentity(J)V
@@ -2473,6 +2595,7 @@
 
 .method removeProfileOwner(I)V
     .registers 5
+    .param p1, "userId"  # I
 
     .line 324
     iget-object v0, p0, Lcom/android/server/devicepolicy/Owners;->mLock:Ljava/lang/Object;
@@ -2510,17 +2633,18 @@
 
     .line 329
     :catchall_1a
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_1c
     .catchall {:try_start_3 .. :try_end_1c} :catchall_1a
 
-    throw p1
+    throw v1
 .end method
 
 .method saveSystemUpdateInfo(Landroid/app/admin/SystemUpdateInfo;)Z
     .registers 4
+    .param p1, "newInfo"  # Landroid/app/admin/SystemUpdateInfo;
 
     .line 632
     iget-object v0, p0, Lcom/android/server/devicepolicy/Owners;->mLock:Ljava/lang/Object;
@@ -2538,65 +2662,68 @@
     if-eqz v1, :cond_e
 
     .line 635
-    const/4 p1, 0x0
+    const/4 v1, 0x0
 
     monitor-exit v0
 
-    return p1
+    return v1
 
     .line 638
     :cond_e
     iput-object p1, p0, Lcom/android/server/devicepolicy/Owners;->mSystemUpdateInfo:Landroid/app/admin/SystemUpdateInfo;
 
     .line 639
-    new-instance p1, Lcom/android/server/devicepolicy/Owners$DeviceOwnerReadWriter;
+    new-instance v1, Lcom/android/server/devicepolicy/Owners$DeviceOwnerReadWriter;
 
-    invoke-direct {p1, p0}, Lcom/android/server/devicepolicy/Owners$DeviceOwnerReadWriter;-><init>(Lcom/android/server/devicepolicy/Owners;)V
+    invoke-direct {v1, p0}, Lcom/android/server/devicepolicy/Owners$DeviceOwnerReadWriter;-><init>(Lcom/android/server/devicepolicy/Owners;)V
 
-    invoke-virtual {p1}, Lcom/android/server/devicepolicy/Owners$DeviceOwnerReadWriter;->writeToFileLocked()V
+    invoke-virtual {v1}, Lcom/android/server/devicepolicy/Owners$DeviceOwnerReadWriter;->writeToFileLocked()V
 
     .line 640
-    const/4 p1, 0x1
+    const/4 v1, 0x1
 
     monitor-exit v0
 
-    return p1
+    return v1
 
     .line 641
     :catchall_1b
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_1d
     .catchall {:try_start_3 .. :try_end_1d} :catchall_1b
 
-    throw p1
+    throw v1
 .end method
 
 .method setDeviceOwner(Landroid/content/ComponentName;Ljava/lang/String;I)V
     .registers 6
+    .param p1, "admin"  # Landroid/content/ComponentName;
+    .param p2, "ownerName"  # Ljava/lang/String;
+    .param p3, "userId"  # I
 
     .line 268
     if-gez p3, :cond_19
 
     .line 269
-    new-instance p1, Ljava/lang/StringBuilder;
+    new-instance v0, Ljava/lang/StringBuilder;
 
-    invoke-direct {p1}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string p2, "Invalid user id for device owner user: "
+    const-string v1, "Invalid user id for device owner user: "
 
-    invoke-virtual {p1, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p1, p3}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, p3}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    const-string p2, "DevicePolicyManagerService"
+    const-string v1, "DevicePolicyManagerService"
 
-    invoke-static {p2, p1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v0}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 270
     return-void
@@ -2621,17 +2748,19 @@
 
     .line 276
     :catchall_22
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_24
     .catchall {:try_start_1d .. :try_end_24} :catchall_22
 
-    throw p1
+    throw v1
 .end method
 
 .method setDeviceOwnerRemoteBugreportUriAndHash(Ljava/lang/String;Ljava/lang/String;)V
     .registers 5
+    .param p1, "remoteBugreportUri"  # Ljava/lang/String;
+    .param p2, "remoteBugreportHash"  # Ljava/lang/String;
 
     .line 506
     iget-object v0, p0, Lcom/android/server/devicepolicy/Owners;->mLock:Ljava/lang/Object;
@@ -2650,9 +2779,9 @@
     iput-object p1, v1, Lcom/android/server/devicepolicy/Owners$OwnerInfo;->remoteBugreportUri:Ljava/lang/String;
 
     .line 509
-    iget-object p1, p0, Lcom/android/server/devicepolicy/Owners;->mDeviceOwner:Lcom/android/server/devicepolicy/Owners$OwnerInfo;
+    iget-object v1, p0, Lcom/android/server/devicepolicy/Owners;->mDeviceOwner:Lcom/android/server/devicepolicy/Owners$OwnerInfo;
 
-    iput-object p2, p1, Lcom/android/server/devicepolicy/Owners$OwnerInfo;->remoteBugreportHash:Ljava/lang/String;
+    iput-object p2, v1, Lcom/android/server/devicepolicy/Owners$OwnerInfo;->remoteBugreportHash:Ljava/lang/String;
 
     .line 511
     :cond_f
@@ -2666,13 +2795,13 @@
 
     .line 512
     :catchall_14
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_16
     .catchall {:try_start_3 .. :try_end_16} :catchall_14
 
-    throw p1
+    throw v1
 .end method
 
 .method setDeviceOwnerUserRestrictionsMigrated()V
@@ -2719,6 +2848,10 @@
 
 .method setDeviceOwnerWithRestrictionsMigrated(Landroid/content/ComponentName;Ljava/lang/String;IZ)V
     .registers 14
+    .param p1, "admin"  # Landroid/content/ComponentName;
+    .param p2, "ownerName"  # Ljava/lang/String;
+    .param p3, "userId"  # I
+    .param p4, "userRestrictionsMigrated"  # Z
 
     .line 283
     iget-object v0, p0, Lcom/android/server/devicepolicy/Owners;->mLock:Ljava/lang/Object;
@@ -2751,11 +2884,11 @@
     iput p3, p0, Lcom/android/server/devicepolicy/Owners;->mDeviceOwnerUserId:I
 
     .line 292
-    iget-object p1, p0, Lcom/android/server/devicepolicy/Owners;->mUserManagerInternal:Landroid/os/UserManagerInternal;
+    iget-object v1, p0, Lcom/android/server/devicepolicy/Owners;->mUserManagerInternal:Landroid/os/UserManagerInternal;
 
-    const/4 p2, 0x1
+    const/4 v2, 0x1
 
-    invoke-virtual {p1, p2}, Landroid/os/UserManagerInternal;->setDeviceManaged(Z)V
+    invoke-virtual {v1, v2}, Landroid/os/UserManagerInternal;->setDeviceManaged(Z)V
 
     .line 293
     invoke-direct {p0}, Lcom/android/server/devicepolicy/Owners;->pushToPackageManagerLocked()V
@@ -2774,17 +2907,20 @@
 
     .line 296
     :catchall_24
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_26
     .catchall {:try_start_3 .. :try_end_26} :catchall_24
 
-    throw p1
+    throw v1
 .end method
 
 .method setProfileOwner(Landroid/content/ComponentName;Ljava/lang/String;I)V
     .registers 15
+    .param p1, "admin"  # Landroid/content/ComponentName;
+    .param p2, "ownerName"  # Ljava/lang/String;
+    .param p3, "userId"  # I
 
     .line 312
     iget-object v0, p0, Lcom/android/server/devicepolicy/Owners;->mLock:Ljava/lang/Object;
@@ -2820,11 +2956,11 @@
     invoke-virtual {v1, v2, v10}, Landroid/util/ArrayMap;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
 
     .line 317
-    iget-object p1, p0, Lcom/android/server/devicepolicy/Owners;->mUserManagerInternal:Landroid/os/UserManagerInternal;
+    iget-object v1, p0, Lcom/android/server/devicepolicy/Owners;->mUserManagerInternal:Landroid/os/UserManagerInternal;
 
-    const/4 p2, 0x1
+    const/4 v2, 0x1
 
-    invoke-virtual {p1, p3, p2}, Landroid/os/UserManagerInternal;->setUserManaged(IZ)V
+    invoke-virtual {v1, p3, v2}, Landroid/os/UserManagerInternal;->setUserManaged(IZ)V
 
     .line 318
     invoke-direct {p0}, Lcom/android/server/devicepolicy/Owners;->pushToPackageManagerLocked()V
@@ -2840,17 +2976,18 @@
 
     .line 320
     :catchall_26
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_28
     .catchall {:try_start_3 .. :try_end_28} :catchall_26
 
-    throw p1
+    throw v1
 .end method
 
 .method setProfileOwnerCanAccessDeviceIds(I)V
-    .registers 8
+    .registers 9
+    .param p1, "userId"  # I
 
     .line 528
     iget-object v0, p0, Lcom/android/server/devicepolicy/Owners;->mLock:Ljava/lang/Object;
@@ -2872,6 +3009,7 @@
     check-cast v1, Lcom/android/server/devicepolicy/Owners$OwnerInfo;
 
     .line 530
+    .local v1, "profileOwner":Lcom/android/server/devicepolicy/Owners$OwnerInfo;
     const/4 v2, 0x1
 
     if-eqz v1, :cond_15
@@ -2883,33 +3021,34 @@
 
     .line 533
     :cond_15
-    const-string v1, "DevicePolicyManagerService"
+    const-string v3, "DevicePolicyManagerService"
 
-    const-string v3, "Cannot grant Device IDs access for user %d, no profile owner."
+    const-string v4, "Cannot grant Device IDs access for user %d, no profile owner."
 
     new-array v2, v2, [Ljava/lang/Object;
 
-    const/4 v4, 0x0
+    const/4 v5, 0x0
 
     .line 534
     invoke-static {p1}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
 
-    move-result-object v5
+    move-result-object v6
 
-    aput-object v5, v2, v4
+    aput-object v6, v2, v5
 
     .line 533
-    invoke-static {v3, v2}, Ljava/lang/String;->format(Ljava/lang/String;[Ljava/lang/Object;)Ljava/lang/String;
+    invoke-static {v4, v2}, Ljava/lang/String;->format(Ljava/lang/String;[Ljava/lang/Object;)Ljava/lang/String;
 
     move-result-object v2
 
-    invoke-static {v1, v2}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v3, v2}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 536
     :goto_29
     invoke-virtual {p0, p1}, Lcom/android/server/devicepolicy/Owners;->writeProfileOwner(I)V
 
     .line 537
+    .end local v1  # "profileOwner":Lcom/android/server/devicepolicy/Owners$OwnerInfo;
     monitor-exit v0
 
     .line 538
@@ -2917,17 +3056,18 @@
 
     .line 537
     :catchall_2e
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_30
     .catchall {:try_start_3 .. :try_end_30} :catchall_2e
 
-    throw p1
+    throw v1
 .end method
 
 .method setProfileOwnerUserRestrictionsMigrated(I)V
     .registers 5
+    .param p1, "userId"  # I
 
     .line 517
     iget-object v0, p0, Lcom/android/server/devicepolicy/Owners;->mLock:Ljava/lang/Object;
@@ -2949,6 +3089,7 @@
     check-cast v1, Lcom/android/server/devicepolicy/Owners$OwnerInfo;
 
     .line 519
+    .local v1, "profileOwner":Lcom/android/server/devicepolicy/Owners$OwnerInfo;
     if-eqz v1, :cond_14
 
     .line 520
@@ -2961,6 +3102,7 @@
     invoke-virtual {p0, p1}, Lcom/android/server/devicepolicy/Owners;->writeProfileOwner(I)V
 
     .line 523
+    .end local v1  # "profileOwner":Lcom/android/server/devicepolicy/Owners$OwnerInfo;
     monitor-exit v0
 
     .line 524
@@ -2968,86 +3110,82 @@
 
     .line 523
     :catchall_19
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_1b
     .catchall {:try_start_3 .. :try_end_1b} :catchall_19
 
-    throw p1
+    throw v1
 .end method
 
 .method setSystemUpdateFreezePeriodRecord(Ljava/time/LocalDate;Ljava/time/LocalDate;)Z
     .registers 6
+    .param p1, "start"  # Ljava/time/LocalDate;
+    .param p2, "end"  # Ljava/time/LocalDate;
 
     .line 442
-    nop
+    const/4 v0, 0x0
 
     .line 443
-    iget-object v0, p0, Lcom/android/server/devicepolicy/Owners;->mLock:Ljava/lang/Object;
+    .local v0, "changed":Z
+    iget-object v1, p0, Lcom/android/server/devicepolicy/Owners;->mLock:Ljava/lang/Object;
 
-    monitor-enter v0
+    monitor-enter v1
 
     .line 444
     :try_start_4
-    iget-object v1, p0, Lcom/android/server/devicepolicy/Owners;->mSystemUpdateFreezeStart:Ljava/time/LocalDate;
+    iget-object v2, p0, Lcom/android/server/devicepolicy/Owners;->mSystemUpdateFreezeStart:Ljava/time/LocalDate;
 
-    invoke-static {v1, p1}, Ljava/util/Objects;->equals(Ljava/lang/Object;Ljava/lang/Object;)Z
+    invoke-static {v2, p1}, Ljava/util/Objects;->equals(Ljava/lang/Object;Ljava/lang/Object;)Z
 
-    move-result v1
+    move-result v2
 
-    const/4 v2, 0x1
-
-    if-nez v1, :cond_11
+    if-nez v2, :cond_f
 
     .line 445
     iput-object p1, p0, Lcom/android/server/devicepolicy/Owners;->mSystemUpdateFreezeStart:Ljava/time/LocalDate;
 
     .line 446
-    move p1, v2
-
-    goto :goto_12
-
-    .line 444
-    :cond_11
-    const/4 p1, 0x0
+    const/4 v0, 0x1
 
     .line 448
-    :goto_12
-    iget-object v1, p0, Lcom/android/server/devicepolicy/Owners;->mSystemUpdateFreezeEnd:Ljava/time/LocalDate;
+    :cond_f
+    iget-object v2, p0, Lcom/android/server/devicepolicy/Owners;->mSystemUpdateFreezeEnd:Ljava/time/LocalDate;
 
-    invoke-static {v1, p2}, Ljava/util/Objects;->equals(Ljava/lang/Object;Ljava/lang/Object;)Z
+    invoke-static {v2, p2}, Ljava/util/Objects;->equals(Ljava/lang/Object;Ljava/lang/Object;)Z
 
-    move-result v1
+    move-result v2
 
-    if-nez v1, :cond_1d
+    if-nez v2, :cond_1a
 
     .line 449
     iput-object p2, p0, Lcom/android/server/devicepolicy/Owners;->mSystemUpdateFreezeEnd:Ljava/time/LocalDate;
 
     .line 450
-    move p1, v2
+    const/4 v0, 0x1
 
     .line 452
-    :cond_1d
-    monitor-exit v0
+    :cond_1a
+    monitor-exit v1
 
     .line 453
-    return p1
+    return v0
 
     .line 452
-    :catchall_1f
-    move-exception p1
+    :catchall_1c
+    move-exception v2
 
-    monitor-exit v0
-    :try_end_21
-    .catchall {:try_start_4 .. :try_end_21} :catchall_1f
+    monitor-exit v1
+    :try_end_1e
+    .catchall {:try_start_4 .. :try_end_1e} :catchall_1c
 
-    throw p1
+    throw v2
 .end method
 
 .method setSystemUpdatePolicy(Landroid/app/admin/SystemUpdatePolicy;)V
-    .registers 3
+    .registers 4
+    .param p1, "systemUpdatePolicy"  # Landroid/app/admin/SystemUpdatePolicy;
 
     .line 404
     iget-object v0, p0, Lcom/android/server/devicepolicy/Owners;->mLock:Ljava/lang/Object;
@@ -3066,13 +3204,13 @@
 
     .line 406
     :catchall_7
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_9
     .catchall {:try_start_3 .. :try_end_9} :catchall_7
 
-    throw p1
+    throw v1
 .end method
 
 .method public systemReady()V
@@ -3111,6 +3249,7 @@
 
 .method transferDeviceOwnership(Landroid/content/ComponentName;)V
     .registers 11
+    .param p1, "target"  # Landroid/content/ComponentName;
 
     .line 346
     iget-object v0, p0, Lcom/android/server/devicepolicy/Owners;->mLock:Ljava/lang/Object;
@@ -3164,17 +3303,19 @@
 
     .line 356
     :catchall_28
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_2a
     .catchall {:try_start_3 .. :try_end_2a} :catchall_28
 
-    throw p1
+    throw v1
 .end method
 
 .method transferProfileOwner(Landroid/content/ComponentName;I)V
     .registers 13
+    .param p1, "target"  # Landroid/content/ComponentName;
+    .param p2, "userId"  # I
 
     .line 333
     iget-object v0, p0, Lcom/android/server/devicepolicy/Owners;->mLock:Ljava/lang/Object;
@@ -3196,6 +3337,7 @@
     check-cast v1, Lcom/android/server/devicepolicy/Owners$OwnerInfo;
 
     .line 335
+    .local v1, "ownerInfo":Lcom/android/server/devicepolicy/Owners$OwnerInfo;
     new-instance v9, Lcom/android/server/devicepolicy/Owners$OwnerInfo;
 
     invoke-virtual {p1}, Landroid/content/ComponentName;->getPackageName()Ljava/lang/String;
@@ -3216,14 +3358,17 @@
 
     invoke-direct/range {v2 .. v8}, Lcom/android/server/devicepolicy/Owners$OwnerInfo;-><init>(Ljava/lang/String;Landroid/content/ComponentName;ZLjava/lang/String;Ljava/lang/String;Z)V
 
+    move-object v2, v9
+
     .line 339
-    iget-object p1, p0, Lcom/android/server/devicepolicy/Owners;->mProfileOwners:Landroid/util/ArrayMap;
+    .local v2, "newOwnerInfo":Lcom/android/server/devicepolicy/Owners$OwnerInfo;
+    iget-object v3, p0, Lcom/android/server/devicepolicy/Owners;->mProfileOwners:Landroid/util/ArrayMap;
 
     invoke-static {p2}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
 
-    move-result-object p2
+    move-result-object v4
 
-    invoke-virtual {p1, p2, v9}, Landroid/util/ArrayMap;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+    invoke-virtual {v3, v4, v2}, Landroid/util/ArrayMap;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
 
     .line 340
     invoke-direct {p0}, Lcom/android/server/devicepolicy/Owners;->pushToPackageManagerLocked()V
@@ -3232,20 +3377,22 @@
     invoke-virtual {p0}, Lcom/android/server/devicepolicy/Owners;->pushToAppOpsLocked()V
 
     .line 342
+    .end local v1  # "ownerInfo":Lcom/android/server/devicepolicy/Owners$OwnerInfo;
+    .end local v2  # "newOwnerInfo":Lcom/android/server/devicepolicy/Owners$OwnerInfo;
     monitor-exit v0
 
     .line 343
     return-void
 
     .line 342
-    :catchall_33
-    move-exception p1
+    :catchall_34
+    move-exception v1
 
     monitor-exit v0
-    :try_end_35
-    .catchall {:try_start_3 .. :try_end_35} :catchall_33
+    :try_end_36
+    .catchall {:try_start_3 .. :try_end_36} :catchall_34
 
-    throw p1
+    throw v1
 .end method
 
 .method writeDeviceOwner()V
@@ -3283,6 +3430,7 @@
 
 .method writeProfileOwner(I)V
     .registers 4
+    .param p1, "userId"  # I
 
     .line 617
     iget-object v0, p0, Lcom/android/server/devicepolicy/Owners;->mLock:Ljava/lang/Object;
@@ -3305,11 +3453,11 @@
 
     .line 622
     :catchall_d
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_f
     .catchall {:try_start_3 .. :try_end_f} :catchall_d
 
-    throw p1
+    throw v1
 .end method

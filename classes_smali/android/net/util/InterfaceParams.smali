@@ -22,6 +22,9 @@
 # direct methods
 .method public constructor <init>(Ljava/lang/String;ILandroid/net/MacAddress;)V
     .registers 5
+    .param p1, "name"  # Ljava/lang/String;
+    .param p2, "index"  # I
+    .param p3, "macAddr"  # Landroid/net/MacAddress;
 
     .line 64
     const/16 v0, 0x5dc
@@ -34,6 +37,10 @@
 
 .method public constructor <init>(Ljava/lang/String;ILandroid/net/MacAddress;I)V
     .registers 8
+    .param p1, "name"  # Ljava/lang/String;
+    .param p2, "index"  # I
+    .param p3, "macAddr"  # Landroid/net/MacAddress;
+    .param p4, "defaultMtu"  # I
 
     .line 67
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -47,20 +54,20 @@
 
     xor-int/2addr v0, v1
 
-    const-string v2, "impossible interface name"
+    const-string/jumbo v2, "impossible interface name"
 
     invoke-static {v0, v2}, Lcom/android/internal/util/Preconditions;->checkArgument(ZLjava/lang/Object;)V
 
     .line 69
-    if-lez p2, :cond_11
+    if-lez p2, :cond_12
 
-    goto :goto_12
+    goto :goto_13
 
-    :cond_11
+    :cond_12
     const/4 v1, 0x0
 
-    :goto_12
-    const-string v0, "invalid interface index"
+    :goto_13
+    const-string/jumbo v0, "invalid interface index"
 
     invoke-static {v1, v0}, Lcom/android/internal/util/Preconditions;->checkArgument(ZLjava/lang/Object;)V
 
@@ -71,38 +78,42 @@
     iput p2, p0, Landroid/net/util/InterfaceParams;->index:I
 
     .line 72
-    if-eqz p3, :cond_1e
+    if-eqz p3, :cond_21
 
-    goto :goto_28
+    move-object v0, p3
 
-    :cond_1e
-    const/4 p1, 0x6
+    goto :goto_2b
 
-    new-array p1, p1, [B
+    :cond_21
+    const/4 v0, 0x6
 
-    fill-array-data p1, :array_32
+    new-array v0, v0, [B
 
-    invoke-static {p1}, Landroid/net/MacAddress;->fromBytes([B)Landroid/net/MacAddress;
+    fill-array-data v0, :array_36
 
-    move-result-object p3
+    invoke-static {v0}, Landroid/net/MacAddress;->fromBytes([B)Landroid/net/MacAddress;
 
-    :goto_28
-    iput-object p3, p0, Landroid/net/util/InterfaceParams;->macAddr:Landroid/net/MacAddress;
+    move-result-object v0
+
+    :goto_2b
+    iput-object v0, p0, Landroid/net/util/InterfaceParams;->macAddr:Landroid/net/MacAddress;
 
     .line 74
-    const/16 p1, 0x500
+    const/16 v0, 0x500
 
-    if-le p4, p1, :cond_2f
+    if-le p4, v0, :cond_32
 
-    move p1, p4
+    move v0, p4
 
-    :cond_2f
-    iput p1, p0, Landroid/net/util/InterfaceParams;->defaultMtu:I
+    :cond_32
+    iput v0, p0, Landroid/net/util/InterfaceParams;->defaultMtu:I
 
     .line 75
     return-void
 
-    :array_32
+    nop
+
+    :array_36
     .array-data 1
         0x2t
         0x0t
@@ -114,7 +125,8 @@
 .end method
 
 .method public static getByName(Ljava/lang/String;)Landroid/net/util/InterfaceParams;
-    .registers 6
+    .registers 7
+    .param p0, "name"  # Ljava/lang/String;
 
     .line 50
     invoke-static {p0}, Landroid/net/util/InterfaceParams;->getNetworkInterfaceByName(Ljava/lang/String;)Ljava/net/NetworkInterface;
@@ -122,6 +134,7 @@
     move-result-object v0
 
     .line 51
+    .local v0, "netif":Ljava/net/NetworkInterface;
     const/4 v1, 0x0
 
     if-nez v0, :cond_8
@@ -135,6 +148,7 @@
     move-result-object v2
 
     .line 57
+    .local v2, "macAddr":Landroid/net/MacAddress;
     :try_start_c
     new-instance v3, Landroid/net/util/InterfaceParams;
 
@@ -144,9 +158,9 @@
 
     invoke-virtual {v0}, Ljava/net/NetworkInterface;->getMTU()I
 
-    move-result v0
+    move-result v5
 
-    invoke-direct {v3, p0, v4, v2, v0}, Landroid/net/util/InterfaceParams;-><init>(Ljava/lang/String;ILandroid/net/MacAddress;I)V
+    invoke-direct {v3, p0, v4, v2, v5}, Landroid/net/util/InterfaceParams;-><init>(Ljava/lang/String;ILandroid/net/MacAddress;I)V
     :try_end_19
     .catch Ljava/lang/IllegalArgumentException; {:try_start_c .. :try_end_19} :catch_1a
     .catch Ljava/net/SocketException; {:try_start_c .. :try_end_19} :catch_1a
@@ -155,63 +169,68 @@
 
     .line 58
     :catch_1a
-    move-exception p0
+    move-exception v3
 
     .line 59
+    .local v3, "e":Ljava/lang/Exception;
     return-object v1
 .end method
 
 .method private static getMacAddress(Ljava/net/NetworkInterface;)Landroid/net/MacAddress;
-    .registers 1
+    .registers 3
+    .param p0, "netif"  # Ljava/net/NetworkInterface;
 
     .line 92
     :try_start_0
     invoke-virtual {p0}, Ljava/net/NetworkInterface;->getHardwareAddress()[B
 
-    move-result-object p0
+    move-result-object v0
 
-    invoke-static {p0}, Landroid/net/MacAddress;->fromBytes([B)Landroid/net/MacAddress;
+    invoke-static {v0}, Landroid/net/MacAddress;->fromBytes([B)Landroid/net/MacAddress;
 
-    move-result-object p0
+    move-result-object v0
     :try_end_8
     .catch Ljava/lang/IllegalArgumentException; {:try_start_0 .. :try_end_8} :catch_9
     .catch Ljava/lang/NullPointerException; {:try_start_0 .. :try_end_8} :catch_9
     .catch Ljava/net/SocketException; {:try_start_0 .. :try_end_8} :catch_9
 
-    return-object p0
+    return-object v0
 
     .line 93
     :catch_9
-    move-exception p0
+    move-exception v0
 
     .line 94
-    const/4 p0, 0x0
+    .local v0, "e":Ljava/lang/Exception;
+    const/4 v1, 0x0
 
-    return-object p0
+    return-object v1
 .end method
 
 .method private static getNetworkInterfaceByName(Ljava/lang/String;)Ljava/net/NetworkInterface;
-    .registers 1
+    .registers 3
+    .param p0, "name"  # Ljava/lang/String;
 
     .line 84
     :try_start_0
     invoke-static {p0}, Ljava/net/NetworkInterface;->getByName(Ljava/lang/String;)Ljava/net/NetworkInterface;
 
-    move-result-object p0
+    move-result-object v0
     :try_end_4
     .catch Ljava/lang/NullPointerException; {:try_start_0 .. :try_end_4} :catch_5
     .catch Ljava/net/SocketException; {:try_start_0 .. :try_end_4} :catch_5
 
-    return-object p0
+    return-object v0
 
     .line 85
     :catch_5
-    move-exception p0
+    move-exception v0
 
     .line 86
-    const/4 p0, 0x0
+    .local v0, "e":Ljava/lang/Exception;
+    const/4 v1, 0x0
 
-    return-object p0
+    return-object v1
 .end method
 
 

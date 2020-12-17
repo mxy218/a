@@ -21,8 +21,9 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/connectivity/Tethering$TetherMasterSM;)V
     .registers 2
+    .param p1, "this$1"  # Lcom/android/server/connectivity/Tethering$TetherMasterSM;
 
-    .line 1563
+    .line 1603
     iput-object p1, p0, Lcom/android/server/connectivity/Tethering$TetherMasterSM$SetIpForwardingEnabledErrorState;->this$1:Lcom/android/server/connectivity/Tethering$TetherMasterSM;
 
     invoke-direct {p0, p1}, Lcom/android/server/connectivity/Tethering$TetherMasterSM$ErrorState;-><init>(Lcom/android/server/connectivity/Tethering$TetherMasterSM;)V
@@ -35,8 +36,8 @@
 .method public enter()V
     .registers 3
 
-    .line 1566
-    invoke-static {}, Lcom/android/server/connectivity/Tethering;->access$2600()Ljava/lang/String;
+    .line 1606
+    invoke-static {}, Lcom/android/server/connectivity/Tethering;->access$500()Ljava/lang/String;
 
     move-result-object v0
 
@@ -44,11 +45,11 @@
 
     invoke-static {v0, v1}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 1567
+    .line 1607
     const v0, 0x5006b
 
     invoke-virtual {p0, v0}, Lcom/android/server/connectivity/Tethering$TetherMasterSM$SetIpForwardingEnabledErrorState;->notify(I)V
 
-    .line 1568
+    .line 1608
     return-void
 .end method

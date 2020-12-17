@@ -27,60 +27,62 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/net/NetworkStatsService;)V
     .registers 2
+    .param p1, "service"  # Lcom/android/server/net/NetworkStatsService;
 
-    .line 1728
+    .line 1742
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
-    .line 1729
+    .line 1743
     iput-object p1, p0, Lcom/android/server/net/NetworkStatsService$HandlerCallback;->mService:Lcom/android/server/net/NetworkStatsService;
 
-    .line 1730
+    .line 1744
     return-void
 .end method
 
 
 # virtual methods
 .method public handleMessage(Landroid/os/Message;)Z
-    .registers 4
+    .registers 5
+    .param p1, "msg"  # Landroid/os/Message;
 
-    .line 1734
-    iget p1, p1, Landroid/os/Message;->what:I
+    .line 1748
+    iget v0, p1, Landroid/os/Message;->what:I
 
-    const/4 v0, 0x1
+    const/4 v1, 0x1
 
-    if-eq p1, v0, :cond_15
+    if-eq v0, v1, :cond_15
 
-    const/4 v1, 0x2
+    const/4 v2, 0x2
 
-    if-eq p1, v1, :cond_a
+    if-eq v0, v2, :cond_a
 
-    .line 1745
-    const/4 p1, 0x0
+    .line 1759
+    const/4 v0, 0x0
 
-    return p1
+    return v0
 
-    .line 1740
+    .line 1754
     :cond_a
-    iget-object p1, p0, Lcom/android/server/net/NetworkStatsService$HandlerCallback;->mService:Lcom/android/server/net/NetworkStatsService;
+    iget-object v0, p0, Lcom/android/server/net/NetworkStatsService$HandlerCallback;->mService:Lcom/android/server/net/NetworkStatsService;
 
-    invoke-static {p1, v0}, Lcom/android/server/net/NetworkStatsService;->access$800(Lcom/android/server/net/NetworkStatsService;I)V
+    invoke-static {v0, v1}, Lcom/android/server/net/NetworkStatsService;->access$800(Lcom/android/server/net/NetworkStatsService;I)V
 
-    .line 1741
-    iget-object p1, p0, Lcom/android/server/net/NetworkStatsService$HandlerCallback;->mService:Lcom/android/server/net/NetworkStatsService;
+    .line 1755
+    iget-object v0, p0, Lcom/android/server/net/NetworkStatsService$HandlerCallback;->mService:Lcom/android/server/net/NetworkStatsService;
 
-    invoke-static {p1}, Lcom/android/server/net/NetworkStatsService;->access$900(Lcom/android/server/net/NetworkStatsService;)V
+    invoke-static {v0}, Lcom/android/server/net/NetworkStatsService;->access$900(Lcom/android/server/net/NetworkStatsService;)V
 
-    .line 1742
-    return v0
+    .line 1756
+    return v1
 
-    .line 1736
+    .line 1750
     :cond_15
-    iget-object p1, p0, Lcom/android/server/net/NetworkStatsService$HandlerCallback;->mService:Lcom/android/server/net/NetworkStatsService;
+    iget-object v0, p0, Lcom/android/server/net/NetworkStatsService$HandlerCallback;->mService:Lcom/android/server/net/NetworkStatsService;
 
-    const/4 v1, 0x3
+    const/4 v2, 0x3
 
-    invoke-static {p1, v1}, Lcom/android/server/net/NetworkStatsService;->access$800(Lcom/android/server/net/NetworkStatsService;I)V
+    invoke-static {v0, v2}, Lcom/android/server/net/NetworkStatsService;->access$800(Lcom/android/server/net/NetworkStatsService;I)V
 
-    .line 1737
-    return v0
+    .line 1751
+    return v1
 .end method

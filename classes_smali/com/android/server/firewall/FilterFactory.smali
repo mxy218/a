@@ -9,7 +9,8 @@
 
 # direct methods
 .method protected constructor <init>(Ljava/lang/String;)V
-    .registers 2
+    .registers 3
+    .param p1, "tag"  # Ljava/lang/String;
 
     .line 27
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -25,11 +26,11 @@
 
     .line 29
     :cond_8
-    new-instance p1, Ljava/lang/NullPointerException;
+    new-instance v0, Ljava/lang/NullPointerException;
 
-    invoke-direct {p1}, Ljava/lang/NullPointerException;-><init>()V
+    invoke-direct {v0}, Ljava/lang/NullPointerException;-><init>()V
 
-    throw p1
+    throw v0
 .end method
 
 

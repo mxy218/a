@@ -25,8 +25,16 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/accounts/AccountManagerService;Lcom/android/server/accounts/AccountManagerService$UserAccounts;Landroid/accounts/IAccountManagerResponse;Ljava/lang/String;ZZLjava/lang/String;ZLjava/lang/String;Ljava/lang/String;)V
     .registers 11
+    .param p1, "this$0"  # Lcom/android/server/accounts/AccountManagerService;
+    .param p2, "accounts"  # Lcom/android/server/accounts/AccountManagerService$UserAccounts;
+    .param p3, "response"  # Landroid/accounts/IAccountManagerResponse;
+    .param p4, "accountType"  # Ljava/lang/String;
+    .param p5, "expectActivityLaunch"  # Z
+    .param p6, "stripAuthTokenFromResult"  # Z
+    .param p7, "accountName"  # Ljava/lang/String;
+    .param p8, "authDetailsRequired"  # Z
 
-    .line 2769
+    .line 2748
     iput-object p1, p0, Lcom/android/server/accounts/AccountManagerService$7;->this$0:Lcom/android/server/accounts/AccountManagerService;
 
     iput-object p9, p0, Lcom/android/server/accounts/AccountManagerService$7;->val$accountType:Ljava/lang/String;
@@ -41,42 +49,47 @@
 
 # virtual methods
 .method public onResult(Landroid/os/Bundle;)V
-    .registers 4
+    .registers 5
+    .param p1, "result"  # Landroid/os/Bundle;
 
-    .line 2784
+    .line 2763
     const/4 v0, 0x1
 
     invoke-static {p1, v0}, Landroid/os/Bundle;->setDefusable(Landroid/os/Bundle;Z)Landroid/os/Bundle;
 
-    .line 2785
+    .line 2764
     if-eqz p1, :cond_18
 
-    .line 2786
+    .line 2765
     const-string v0, "authTokenLabelKey"
 
     invoke-virtual {p1, v0}, Landroid/os/Bundle;->getString(Ljava/lang/String;)Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v1
 
-    .line 2787
-    new-instance v1, Landroid/os/Bundle;
+    .line 2766
+    .local v1, "label":Ljava/lang/String;
+    new-instance v2, Landroid/os/Bundle;
 
-    invoke-direct {v1}, Landroid/os/Bundle;-><init>()V
+    invoke-direct {v2}, Landroid/os/Bundle;-><init>()V
 
-    .line 2788
-    invoke-virtual {v1, v0, p1}, Landroid/os/Bundle;->putString(Ljava/lang/String;Ljava/lang/String;)V
+    .line 2767
+    .local v2, "bundle":Landroid/os/Bundle;
+    invoke-virtual {v2, v0, v1}, Landroid/os/Bundle;->putString(Ljava/lang/String;Ljava/lang/String;)V
 
-    .line 2789
-    invoke-super {p0, v1}, Lcom/android/server/accounts/AccountManagerService$Session;->onResult(Landroid/os/Bundle;)V
+    .line 2768
+    invoke-super {p0, v2}, Lcom/android/server/accounts/AccountManagerService$Session;->onResult(Landroid/os/Bundle;)V
 
-    .line 2790
+    .line 2769
     return-void
 
-    .line 2792
+    .line 2771
+    .end local v1  # "label":Ljava/lang/String;
+    .end local v2  # "bundle":Landroid/os/Bundle;
     :cond_18
     invoke-super {p0, p1}, Lcom/android/server/accounts/AccountManagerService$Session;->onResult(Landroid/os/Bundle;)V
 
-    .line 2794
+    .line 2773
     return-void
 .end method
 
@@ -88,50 +101,51 @@
         }
     .end annotation
 
-    .line 2779
+    .line 2758
     iget-object v0, p0, Lcom/android/server/accounts/AccountManagerService$7;->mAuthenticator:Landroid/accounts/IAccountAuthenticator;
 
     iget-object v1, p0, Lcom/android/server/accounts/AccountManagerService$7;->val$authTokenType:Ljava/lang/String;
 
     invoke-interface {v0, p0, v1}, Landroid/accounts/IAccountAuthenticator;->getAuthTokenLabel(Landroid/accounts/IAccountAuthenticatorResponse;Ljava/lang/String;)V
 
-    .line 2780
+    .line 2759
     return-void
 .end method
 
 .method protected toDebugString(J)Ljava/lang/String;
-    .registers 4
+    .registers 5
+    .param p1, "now"  # J
 
-    .line 2772
+    .line 2751
     new-instance v0, Ljava/lang/StringBuilder;
 
     invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
 
     invoke-super {p0, p1, p2}, Lcom/android/server/accounts/AccountManagerService$Session;->toDebugString(J)Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v1
 
-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string p1, ", getAuthTokenLabel, "
+    const-string v1, ", getAuthTokenLabel, "
 
-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    iget-object p1, p0, Lcom/android/server/accounts/AccountManagerService$7;->val$accountType:Ljava/lang/String;
+    iget-object v1, p0, Lcom/android/server/accounts/AccountManagerService$7;->val$accountType:Ljava/lang/String;
 
-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string p1, ", authTokenType "
+    const-string v1, ", authTokenType "
 
-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    iget-object p1, p0, Lcom/android/server/accounts/AccountManagerService$7;->val$authTokenType:Ljava/lang/String;
+    iget-object v1, p0, Lcom/android/server/accounts/AccountManagerService$7;->val$authTokenType:Ljava/lang/String;
 
-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    return-object p1
+    return-object v0
 .end method

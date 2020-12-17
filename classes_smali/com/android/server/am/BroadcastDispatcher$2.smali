@@ -24,6 +24,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/am/BroadcastDispatcher;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/am/BroadcastDispatcher;
 
     .line 211
     iput-object p1, p0, Lcom/android/server/am/BroadcastDispatcher$2;->this$0:Lcom/android/server/am/BroadcastDispatcher;
@@ -47,8 +48,21 @@
 
     monitor-enter v0
 
-    .line 218
+    .line 215
     :try_start_7
+    sget-boolean v1, Lcom/android/server/am/ActivityManagerDebugConfig;->DEBUG_BROADCAST_DEFERRAL:Z
+
+    if-eqz v1, :cond_12
+
+    .line 216
+    const-string v1, "BroadcastDispatcher"
+
+    const-string v2, "Deferral recheck of pending broadcasts"
+
+    invoke-static {v1, v2}, Landroid/util/Slog;->v(Ljava/lang/String;Ljava/lang/String;)I
+
+    .line 218
+    :cond_12
     iget-object v1, p0, Lcom/android/server/am/BroadcastDispatcher$2;->this$0:Lcom/android/server/am/BroadcastDispatcher;
 
     invoke-static {v1}, Lcom/android/server/am/BroadcastDispatcher;->access$400(Lcom/android/server/am/BroadcastDispatcher;)Lcom/android/server/am/BroadcastQueue;
@@ -71,12 +85,12 @@
     return-void
 
     .line 220
-    :catchall_18
+    :catchall_23
     move-exception v1
 
     monitor-exit v0
-    :try_end_1a
-    .catchall {:try_start_7 .. :try_end_1a} :catchall_18
+    :try_end_25
+    .catchall {:try_start_7 .. :try_end_25} :catchall_23
 
     throw v1
 .end method

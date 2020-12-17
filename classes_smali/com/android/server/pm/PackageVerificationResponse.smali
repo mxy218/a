@@ -12,6 +12,8 @@
 # direct methods
 .method public constructor <init>(II)V
     .registers 3
+    .param p1, "code"  # I
+    .param p2, "callerUid"  # I
 
     .line 24
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V

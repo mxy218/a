@@ -21,6 +21,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/job/JobConcurrencyManager;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/job/JobConcurrencyManager;
 
     .line 125
     iput-object p1, p0, Lcom/android/server/job/JobConcurrencyManager$1;->this$0:Lcom/android/server/job/JobConcurrencyManager;
@@ -33,81 +34,83 @@
 
 # virtual methods
 .method public onReceive(Landroid/content/Context;Landroid/content/Intent;)V
-    .registers 6
+    .registers 8
+    .param p1, "context"  # Landroid/content/Context;
+    .param p2, "intent"  # Landroid/content/Intent;
 
     .line 128
     invoke-virtual {p2}, Landroid/content/Intent;->getAction()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    invoke-virtual {p1}, Ljava/lang/String;->hashCode()I
+    invoke-virtual {v0}, Ljava/lang/String;->hashCode()I
 
-    move-result p2
+    move-result v1
 
-    const v0, -0x7ed8ea7f
+    const v2, -0x7ed8ea7f
 
-    const/4 v1, 0x0
+    const/4 v3, 0x0
 
-    const/4 v2, 0x1
+    const/4 v4, 0x1
 
-    if-eq p2, v0, :cond_1f
+    if-eq v1, v2, :cond_1f
 
-    const v0, -0x56ac2893
+    const v2, -0x56ac2893
 
-    if-eq p2, v0, :cond_15
+    if-eq v1, v2, :cond_15
 
     :cond_14
     goto :goto_29
 
     :cond_15
-    const-string p2, "android.intent.action.SCREEN_ON"
+    const-string v1, "android.intent.action.SCREEN_ON"
 
-    invoke-virtual {p1, p2}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v0, v1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result p1
+    move-result v0
 
-    if-eqz p1, :cond_14
+    if-eqz v0, :cond_14
 
-    move p1, v1
+    move v0, v3
 
     goto :goto_2a
 
     :cond_1f
-    const-string p2, "android.intent.action.SCREEN_OFF"
+    const-string v1, "android.intent.action.SCREEN_OFF"
 
-    invoke-virtual {p1, p2}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v0, v1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result p1
+    move-result v0
 
-    if-eqz p1, :cond_14
+    if-eqz v0, :cond_14
 
-    move p1, v2
+    move v0, v4
 
     goto :goto_2a
 
     :goto_29
-    const/4 p1, -0x1
+    const/4 v0, -0x1
 
     :goto_2a
-    if-eqz p1, :cond_35
+    if-eqz v0, :cond_35
 
-    if-eq p1, v2, :cond_2f
+    if-eq v0, v4, :cond_2f
 
     goto :goto_3b
 
     .line 133
     :cond_2f
-    iget-object p1, p0, Lcom/android/server/job/JobConcurrencyManager$1;->this$0:Lcom/android/server/job/JobConcurrencyManager;
+    iget-object v0, p0, Lcom/android/server/job/JobConcurrencyManager$1;->this$0:Lcom/android/server/job/JobConcurrencyManager;
 
-    invoke-static {p1, v1}, Lcom/android/server/job/JobConcurrencyManager;->access$000(Lcom/android/server/job/JobConcurrencyManager;Z)V
+    invoke-static {v0, v3}, Lcom/android/server/job/JobConcurrencyManager;->access$000(Lcom/android/server/job/JobConcurrencyManager;Z)V
 
     goto :goto_3b
 
     .line 130
     :cond_35
-    iget-object p1, p0, Lcom/android/server/job/JobConcurrencyManager$1;->this$0:Lcom/android/server/job/JobConcurrencyManager;
+    iget-object v0, p0, Lcom/android/server/job/JobConcurrencyManager$1;->this$0:Lcom/android/server/job/JobConcurrencyManager;
 
-    invoke-static {p1, v2}, Lcom/android/server/job/JobConcurrencyManager;->access$000(Lcom/android/server/job/JobConcurrencyManager;Z)V
+    invoke-static {v0, v4}, Lcom/android/server/job/JobConcurrencyManager;->access$000(Lcom/android/server/job/JobConcurrencyManager;Z)V
 
     .line 131
     nop

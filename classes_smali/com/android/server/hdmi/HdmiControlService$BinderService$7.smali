@@ -28,6 +28,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/hdmi/HdmiControlService$BinderService;Landroid/hardware/hdmi/IHdmiControlCallback;Z)V
     .registers 4
+    .param p1, "this$1"  # Lcom/android/server/hdmi/HdmiControlService$BinderService;
 
     .line 1678
     iput-object p1, p0, Lcom/android/server/hdmi/HdmiControlService$BinderService$7;->this$1:Lcom/android/server/hdmi/HdmiControlService$BinderService;
@@ -44,7 +45,7 @@
 
 # virtual methods
 .method public run()V
-    .registers 4
+    .registers 5
 
     .line 1681
     iget-object v0, p0, Lcom/android/server/hdmi/HdmiControlService$BinderService$7;->this$1:Lcom/android/server/hdmi/HdmiControlService$BinderService;
@@ -56,25 +57,26 @@
     move-result-object v0
 
     .line 1682
+    .local v0, "tv":Lcom/android/server/hdmi/HdmiCecLocalDeviceTv;
     if-nez v0, :cond_1c
 
     .line 1683
-    const-string v0, "HdmiControlService"
+    const-string v1, "HdmiControlService"
 
-    const-string v1, "Local tv device not available"
+    const-string v2, "Local tv device not available"
 
-    invoke-static {v0, v1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v2}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 1684
-    iget-object v0, p0, Lcom/android/server/hdmi/HdmiControlService$BinderService$7;->this$1:Lcom/android/server/hdmi/HdmiControlService$BinderService;
+    iget-object v1, p0, Lcom/android/server/hdmi/HdmiControlService$BinderService$7;->this$1:Lcom/android/server/hdmi/HdmiControlService$BinderService;
 
-    iget-object v0, v0, Lcom/android/server/hdmi/HdmiControlService$BinderService;->this$0:Lcom/android/server/hdmi/HdmiControlService;
+    iget-object v1, v1, Lcom/android/server/hdmi/HdmiControlService$BinderService;->this$0:Lcom/android/server/hdmi/HdmiControlService;
 
-    iget-object v1, p0, Lcom/android/server/hdmi/HdmiControlService$BinderService$7;->val$callback:Landroid/hardware/hdmi/IHdmiControlCallback;
+    iget-object v2, p0, Lcom/android/server/hdmi/HdmiControlService$BinderService$7;->val$callback:Landroid/hardware/hdmi/IHdmiControlCallback;
 
-    const/4 v2, 0x2
+    const/4 v3, 0x2
 
-    invoke-static {v0, v1, v2}, Lcom/android/server/hdmi/HdmiControlService;->access$3000(Lcom/android/server/hdmi/HdmiControlService;Landroid/hardware/hdmi/IHdmiControlCallback;I)V
+    invoke-static {v1, v2, v3}, Lcom/android/server/hdmi/HdmiControlService;->access$3000(Lcom/android/server/hdmi/HdmiControlService;Landroid/hardware/hdmi/IHdmiControlCallback;I)V
 
     .line 1685
     return-void

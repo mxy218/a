@@ -24,7 +24,8 @@
 
 # direct methods
 .method public constructor <init>(Lcom/android/server/job/controllers/StorageController;)V
-    .registers 2
+    .registers 3
+    .param p1, "this$0"  # Lcom/android/server/job/controllers/StorageController;
 
     .line 105
     iput-object p1, p0, Lcom/android/server/job/controllers/StorageController$StorageTracker;->this$0:Lcom/android/server/job/controllers/StorageController;
@@ -32,9 +33,9 @@
     invoke-direct {p0}, Landroid/content/BroadcastReceiver;-><init>()V
 
     .line 103
-    const/4 p1, -0x1
+    const/4 v0, -0x1
 
-    iput p1, p0, Lcom/android/server/job/controllers/StorageController$StorageTracker;->mLastStorageSeq:I
+    iput v0, p0, Lcom/android/server/job/controllers/StorageController$StorageTracker;->mLastStorageSeq:I
 
     .line 106
     return-void
@@ -64,6 +65,8 @@
 
 .method public onReceive(Landroid/content/Context;Landroid/content/Intent;)V
     .registers 3
+    .param p1, "context"  # Landroid/content/Context;
+    .param p2, "intent"  # Landroid/content/Intent;
 
     .line 128
     invoke-virtual {p0, p2}, Lcom/android/server/job/controllers/StorageController$StorageTracker;->onReceiveInternal(Landroid/content/Intent;)V
@@ -73,7 +76,8 @@
 .end method
 
 .method public onReceiveInternal(Landroid/content/Intent;)V
-    .registers 6
+    .registers 7
+    .param p1, "intent"  # Landroid/content/Intent;
     .annotation build Lcom/android/internal/annotations/VisibleForTesting;
     .end annotation
 
@@ -83,124 +87,125 @@
     move-result-object v0
 
     .line 134
+    .local v0, "action":Ljava/lang/String;
     iget v1, p0, Lcom/android/server/job/controllers/StorageController$StorageTracker;->mLastStorageSeq:I
 
     const-string/jumbo v2, "seq"
 
     invoke-virtual {p1, v2, v1}, Landroid/content/Intent;->getIntExtra(Ljava/lang/String;I)I
 
-    move-result p1
+    move-result v1
 
-    iput p1, p0, Lcom/android/server/job/controllers/StorageController$StorageTracker;->mLastStorageSeq:I
+    iput v1, p0, Lcom/android/server/job/controllers/StorageController$StorageTracker;->mLastStorageSeq:I
 
     .line 136
-    const-string p1, "android.intent.action.DEVICE_STORAGE_LOW"
+    const-string v1, "android.intent.action.DEVICE_STORAGE_LOW"
 
-    invoke-virtual {p1, v0}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v1, v0}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result p1
+    move-result v1
 
-    const-string v1, "JobScheduler.Storage"
+    const-string v2, "JobScheduler.Storage"
 
-    if-eqz p1, :cond_42
+    if-eqz v1, :cond_42
 
     .line 137
     invoke-static {}, Lcom/android/server/job/controllers/StorageController;->access$000()Z
 
-    move-result p1
+    move-result v1
 
-    if-eqz p1, :cond_39
+    if-eqz v1, :cond_39
 
     .line 138
-    new-instance p1, Ljava/lang/StringBuilder;
+    new-instance v1, Ljava/lang/StringBuilder;
 
-    invoke-direct {p1}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v0, "Available storage too low to do work. @ "
+    const-string v3, "Available storage too low to do work. @ "
 
-    invoke-virtual {p1, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    sget-object v0, Lcom/android/server/job/JobSchedulerService;->sElapsedRealtimeClock:Ljava/time/Clock;
+    sget-object v3, Lcom/android/server/job/JobSchedulerService;->sElapsedRealtimeClock:Ljava/time/Clock;
 
     .line 139
-    invoke-virtual {v0}, Ljava/time/Clock;->millis()J
+    invoke-virtual {v3}, Ljava/time/Clock;->millis()J
 
-    move-result-wide v2
+    move-result-wide v3
 
-    invoke-virtual {p1, v2, v3}, Ljava/lang/StringBuilder;->append(J)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v3, v4}, Ljava/lang/StringBuilder;->append(J)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v1
 
     .line 138
-    invoke-static {v1, p1}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v2, v1}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 141
     :cond_39
-    const/4 p1, 0x1
+    const/4 v1, 0x1
 
-    iput-boolean p1, p0, Lcom/android/server/job/controllers/StorageController$StorageTracker;->mStorageLow:Z
+    iput-boolean v1, p0, Lcom/android/server/job/controllers/StorageController$StorageTracker;->mStorageLow:Z
 
     .line 142
-    iget-object p1, p0, Lcom/android/server/job/controllers/StorageController$StorageTracker;->this$0:Lcom/android/server/job/controllers/StorageController;
+    iget-object v1, p0, Lcom/android/server/job/controllers/StorageController$StorageTracker;->this$0:Lcom/android/server/job/controllers/StorageController;
 
-    invoke-static {p1}, Lcom/android/server/job/controllers/StorageController;->access$100(Lcom/android/server/job/controllers/StorageController;)V
+    invoke-static {v1}, Lcom/android/server/job/controllers/StorageController;->access$100(Lcom/android/server/job/controllers/StorageController;)V
 
     goto :goto_72
 
     .line 143
     :cond_42
-    const-string p1, "android.intent.action.DEVICE_STORAGE_OK"
+    const-string v1, "android.intent.action.DEVICE_STORAGE_OK"
 
-    invoke-virtual {p1, v0}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v1, v0}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result p1
+    move-result v1
 
-    if-eqz p1, :cond_72
+    if-eqz v1, :cond_72
 
     .line 144
     invoke-static {}, Lcom/android/server/job/controllers/StorageController;->access$000()Z
 
-    move-result p1
+    move-result v1
 
-    if-eqz p1, :cond_6a
+    if-eqz v1, :cond_6a
 
     .line 145
-    new-instance p1, Ljava/lang/StringBuilder;
+    new-instance v1, Ljava/lang/StringBuilder;
 
-    invoke-direct {p1}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v0, "Available storage high enough to do work. @ "
+    const-string v3, "Available storage high enough to do work. @ "
 
-    invoke-virtual {p1, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    sget-object v0, Lcom/android/server/job/JobSchedulerService;->sElapsedRealtimeClock:Ljava/time/Clock;
+    sget-object v3, Lcom/android/server/job/JobSchedulerService;->sElapsedRealtimeClock:Ljava/time/Clock;
 
     .line 146
-    invoke-virtual {v0}, Ljava/time/Clock;->millis()J
+    invoke-virtual {v3}, Ljava/time/Clock;->millis()J
 
-    move-result-wide v2
+    move-result-wide v3
 
-    invoke-virtual {p1, v2, v3}, Ljava/lang/StringBuilder;->append(J)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v3, v4}, Ljava/lang/StringBuilder;->append(J)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v1
 
     .line 145
-    invoke-static {v1, p1}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v2, v1}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 148
     :cond_6a
-    const/4 p1, 0x0
+    const/4 v1, 0x0
 
-    iput-boolean p1, p0, Lcom/android/server/job/controllers/StorageController$StorageTracker;->mStorageLow:Z
+    iput-boolean v1, p0, Lcom/android/server/job/controllers/StorageController$StorageTracker;->mStorageLow:Z
 
     .line 149
-    iget-object p1, p0, Lcom/android/server/job/controllers/StorageController$StorageTracker;->this$0:Lcom/android/server/job/controllers/StorageController;
+    iget-object v1, p0, Lcom/android/server/job/controllers/StorageController$StorageTracker;->this$0:Lcom/android/server/job/controllers/StorageController;
 
-    invoke-static {p1}, Lcom/android/server/job/controllers/StorageController;->access$100(Lcom/android/server/job/controllers/StorageController;)V
+    invoke-static {v1}, Lcom/android/server/job/controllers/StorageController;->access$100(Lcom/android/server/job/controllers/StorageController;)V
 
     .line 151
     :cond_72
@@ -217,6 +222,7 @@
     invoke-direct {v0}, Landroid/content/IntentFilter;-><init>()V
 
     .line 113
+    .local v0, "filter":Landroid/content/IntentFilter;
     const-string v1, "android.intent.action.DEVICE_STORAGE_LOW"
 
     invoke-virtual {v0, v1}, Landroid/content/IntentFilter;->addAction(Ljava/lang/String;)V

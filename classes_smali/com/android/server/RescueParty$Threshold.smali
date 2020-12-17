@@ -25,6 +25,9 @@
 # direct methods
 .method public constructor <init>(IIJ)V
     .registers 5
+    .param p1, "uid"  # I
+    .param p2, "triggerCount"  # I
+    .param p3, "triggerWindow"  # J
 
     .line 287
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -43,12 +46,13 @@
 .end method
 
 .method static synthetic access$000(Lcom/android/server/RescueParty$Threshold;)I
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/RescueParty$Threshold;
 
     .line 277
-    iget p0, p0, Lcom/android/server/RescueParty$Threshold;->uid:I
+    iget v0, p0, Lcom/android/server/RescueParty$Threshold;->uid:I
 
-    return p0
+    return v0
 .end method
 
 
@@ -60,7 +64,7 @@
 .end method
 
 .method public incrementAndTest()Z
-    .registers 10
+    .registers 11
 
     .line 302
     invoke-static {}, Lcom/android/server/RescueParty;->getElapsedRealtime()J
@@ -68,6 +72,7 @@
     move-result-wide v0
 
     .line 303
+    .local v0, "now":J
     invoke-virtual {p0}, Lcom/android/server/RescueParty$Threshold;->getStart()J
 
     move-result-wide v2
@@ -75,6 +80,7 @@
     sub-long v2, v0, v2
 
     .line 304
+    .local v2, "window":J
     iget-wide v4, p0, Lcom/android/server/RescueParty$Threshold;->triggerWindow:J
 
     cmp-long v4, v2, v4
@@ -98,67 +104,68 @@
     :cond_19
     invoke-virtual {p0}, Lcom/android/server/RescueParty$Threshold;->getCount()I
 
-    move-result v0
+    move-result v4
 
-    add-int/2addr v0, v6
+    add-int/2addr v4, v6
 
     .line 310
-    invoke-virtual {p0, v0}, Lcom/android/server/RescueParty$Threshold;->setCount(I)V
+    .local v4, "count":I
+    invoke-virtual {p0, v4}, Lcom/android/server/RescueParty$Threshold;->setCount(I)V
 
     .line 311
-    iget v1, p0, Lcom/android/server/RescueParty$Threshold;->uid:I
+    iget v7, p0, Lcom/android/server/RescueParty$Threshold;->uid:I
 
-    invoke-static {v1, v0, v2, v3}, Lcom/android/server/EventLogTags;->writeRescueNote(IIJ)V
+    invoke-static {v7, v4, v2, v3}, Lcom/android/server/EventLogTags;->writeRescueNote(IIJ)V
 
     .line 312
-    new-instance v1, Ljava/lang/StringBuilder;
+    new-instance v7, Ljava/lang/StringBuilder;
 
-    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v7}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v4, "Noticed "
+    const-string v8, "Noticed "
 
-    invoke-virtual {v1, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v7, v8}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v1, v0}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v7, v4}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    const-string v4, " events for UID "
+    const-string v8, " events for UID "
 
-    invoke-virtual {v1, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v7, v8}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    iget v4, p0, Lcom/android/server/RescueParty$Threshold;->uid:I
+    iget v8, p0, Lcom/android/server/RescueParty$Threshold;->uid:I
 
-    invoke-virtual {v1, v4}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v7, v8}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    const-string v4, " in last "
+    const-string v8, " in last "
 
-    invoke-virtual {v1, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v7, v8}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-wide/16 v7, 0x3e8
+    const-wide/16 v8, 0x3e8
 
-    div-long/2addr v2, v7
+    div-long v8, v2, v8
 
-    invoke-virtual {v1, v2, v3}, Ljava/lang/StringBuilder;->append(J)Ljava/lang/StringBuilder;
+    invoke-virtual {v7, v8, v9}, Ljava/lang/StringBuilder;->append(J)Ljava/lang/StringBuilder;
 
-    const-string v2, " sec"
+    const-string v8, " sec"
 
-    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v7, v8}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v7}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v1
+    move-result-object v7
 
-    const-string v2, "RescueParty"
+    const-string v8, "RescueParty"
 
-    invoke-static {v2, v1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v8, v7}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 314
-    iget v1, p0, Lcom/android/server/RescueParty$Threshold;->triggerCount:I
+    iget v7, p0, Lcom/android/server/RescueParty$Threshold;->triggerCount:I
 
-    if-lt v0, v1, :cond_5b
+    if-lt v4, v7, :cond_5c
 
     move v5, v6
 
-    :cond_5b
+    :cond_5c
     return v5
 .end method
 

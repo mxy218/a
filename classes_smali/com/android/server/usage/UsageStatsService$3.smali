@@ -21,8 +21,9 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/usage/UsageStatsService;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/usage/UsageStatsService;
 
-    .line 309
+    .line 428
     iput-object p1, p0, Lcom/android/server/usage/UsageStatsService$3;->this$0:Lcom/android/server/usage/UsageStatsService;
 
     invoke-direct {p0}, Landroid/app/IUidObserver$Stub;-><init>()V
@@ -34,55 +35,65 @@
 # virtual methods
 .method public onUidActive(I)V
     .registers 2
+    .param p1, "uid"  # I
 
-    .line 328
+    .line 447
     return-void
 .end method
 
 .method public onUidCachedChanged(IZ)V
     .registers 3
+    .param p1, "uid"  # I
+    .param p2, "cached"  # Z
 
-    .line 331
+    .line 450
     return-void
 .end method
 
 .method public onUidGone(IZ)V
-    .registers 5
+    .registers 6
+    .param p1, "uid"  # I
+    .param p2, "disabled"  # Z
 
-    .line 322
-    const/16 p2, 0x15
+    .line 441
+    const/16 v0, 0x15
 
-    const-wide/16 v0, 0x0
+    const-wide/16 v1, 0x0
 
-    invoke-virtual {p0, p1, p2, v0, v1}, Lcom/android/server/usage/UsageStatsService$3;->onUidStateChanged(IIJ)V
+    invoke-virtual {p0, p1, v0, v1, v2}, Lcom/android/server/usage/UsageStatsService$3;->onUidStateChanged(IIJ)V
 
-    .line 323
+    .line 442
     return-void
 .end method
 
 .method public onUidIdle(IZ)V
     .registers 3
+    .param p1, "uid"  # I
+    .param p2, "disabled"  # Z
 
-    .line 318
+    .line 437
     return-void
 .end method
 
 .method public onUidStateChanged(IIJ)V
-    .registers 5
+    .registers 7
+    .param p1, "uid"  # I
+    .param p2, "procState"  # I
+    .param p3, "procStateSeq"  # J
 
-    .line 312
-    iget-object p3, p0, Lcom/android/server/usage/UsageStatsService$3;->this$0:Lcom/android/server/usage/UsageStatsService;
+    .line 431
+    iget-object v0, p0, Lcom/android/server/usage/UsageStatsService$3;->this$0:Lcom/android/server/usage/UsageStatsService;
 
-    iget-object p3, p3, Lcom/android/server/usage/UsageStatsService;->mHandler:Landroid/os/Handler;
+    iget-object v0, v0, Lcom/android/server/usage/UsageStatsService;->mHandler:Landroid/os/Handler;
 
-    const/4 p4, 0x3
+    const/4 v1, 0x3
 
-    invoke-virtual {p3, p4, p1, p2}, Landroid/os/Handler;->obtainMessage(III)Landroid/os/Message;
+    invoke-virtual {v0, v1, p1, p2}, Landroid/os/Handler;->obtainMessage(III)Landroid/os/Message;
 
-    move-result-object p1
+    move-result-object v0
 
-    invoke-virtual {p1}, Landroid/os/Message;->sendToTarget()V
+    invoke-virtual {v0}, Landroid/os/Message;->sendToTarget()V
 
-    .line 313
+    .line 432
     return-void
 .end method

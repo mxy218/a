@@ -107,33 +107,37 @@
 .end method
 
 .method constructor <init>(Lcom/android/server/contentcapture/ContentCaptureManagerService;Ljava/lang/Object;ZI)V
-    .registers 5
+    .registers 7
+    .param p1, "master"  # Lcom/android/server/contentcapture/ContentCaptureManagerService;
+    .param p2, "lock"  # Ljava/lang/Object;
+    .param p3, "disabled"  # Z
+    .param p4, "userId"  # I
 
     .line 124
     invoke-direct {p0, p1, p2, p4}, Lcom/android/server/infra/AbstractPerUserSystemService;-><init>(Lcom/android/server/infra/AbstractMasterSystemService;Ljava/lang/Object;I)V
 
     .line 87
-    new-instance p1, Landroid/util/SparseArray;
+    new-instance v0, Landroid/util/SparseArray;
 
-    invoke-direct {p1}, Landroid/util/SparseArray;-><init>()V
+    invoke-direct {v0}, Landroid/util/SparseArray;-><init>()V
 
-    iput-object p1, p0, Lcom/android/server/contentcapture/ContentCapturePerUserService;->mSessions:Landroid/util/SparseArray;
+    iput-object v0, p0, Lcom/android/server/contentcapture/ContentCapturePerUserService;->mSessions:Landroid/util/SparseArray;
 
     .line 100
-    new-instance p1, Lcom/android/server/contentcapture/ContentCapturePerUserService$ContentCaptureServiceRemoteCallback;
+    new-instance v0, Lcom/android/server/contentcapture/ContentCapturePerUserService$ContentCaptureServiceRemoteCallback;
 
-    const/4 p2, 0x0
+    const/4 v1, 0x0
 
-    invoke-direct {p1, p0, p2}, Lcom/android/server/contentcapture/ContentCapturePerUserService$ContentCaptureServiceRemoteCallback;-><init>(Lcom/android/server/contentcapture/ContentCapturePerUserService;Lcom/android/server/contentcapture/ContentCapturePerUserService$1;)V
+    invoke-direct {v0, p0, v1}, Lcom/android/server/contentcapture/ContentCapturePerUserService$ContentCaptureServiceRemoteCallback;-><init>(Lcom/android/server/contentcapture/ContentCapturePerUserService;Lcom/android/server/contentcapture/ContentCapturePerUserService$1;)V
 
-    iput-object p1, p0, Lcom/android/server/contentcapture/ContentCapturePerUserService;->mRemoteServiceCallback:Lcom/android/server/contentcapture/ContentCapturePerUserService$ContentCaptureServiceRemoteCallback;
+    iput-object v0, p0, Lcom/android/server/contentcapture/ContentCapturePerUserService;->mRemoteServiceCallback:Lcom/android/server/contentcapture/ContentCapturePerUserService$ContentCaptureServiceRemoteCallback;
 
     .line 106
-    new-instance p1, Landroid/util/ArrayMap;
+    new-instance v0, Landroid/util/ArrayMap;
 
-    invoke-direct {p1}, Landroid/util/ArrayMap;-><init>()V
+    invoke-direct {v0}, Landroid/util/ArrayMap;-><init>()V
 
-    iput-object p1, p0, Lcom/android/server/contentcapture/ContentCapturePerUserService;->mConditionsByPkg:Landroid/util/ArrayMap;
+    iput-object v0, p0, Lcom/android/server/contentcapture/ContentCapturePerUserService;->mConditionsByPkg:Landroid/util/ArrayMap;
 
     .line 125
     invoke-direct {p0, p3}, Lcom/android/server/contentcapture/ContentCapturePerUserService;->updateRemoteServiceLocked(Z)V
@@ -143,86 +147,95 @@
 .end method
 
 .method static synthetic access$100(Lcom/android/server/contentcapture/ContentCapturePerUserService;)Lcom/android/server/infra/AbstractMasterSystemService;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/contentcapture/ContentCapturePerUserService;
 
     .line 80
-    iget-object p0, p0, Lcom/android/server/contentcapture/ContentCapturePerUserService;->mMaster:Lcom/android/server/infra/AbstractMasterSystemService;
+    iget-object v0, p0, Lcom/android/server/contentcapture/ContentCapturePerUserService;->mMaster:Lcom/android/server/infra/AbstractMasterSystemService;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$1000(Lcom/android/server/contentcapture/ContentCapturePerUserService;)Ljava/lang/Object;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/contentcapture/ContentCapturePerUserService;
 
     .line 80
-    iget-object p0, p0, Lcom/android/server/contentcapture/ContentCapturePerUserService;->mLock:Ljava/lang/Object;
+    iget-object v0, p0, Lcom/android/server/contentcapture/ContentCapturePerUserService;->mLock:Ljava/lang/Object;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$1100(Lcom/android/server/contentcapture/ContentCapturePerUserService;)Lcom/android/server/infra/AbstractMasterSystemService;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/contentcapture/ContentCapturePerUserService;
 
     .line 80
-    iget-object p0, p0, Lcom/android/server/contentcapture/ContentCapturePerUserService;->mMaster:Lcom/android/server/infra/AbstractMasterSystemService;
+    iget-object v0, p0, Lcom/android/server/contentcapture/ContentCapturePerUserService;->mMaster:Lcom/android/server/infra/AbstractMasterSystemService;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$1200(Lcom/android/server/contentcapture/ContentCapturePerUserService;)Lcom/android/server/infra/AbstractMasterSystemService;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/contentcapture/ContentCapturePerUserService;
 
     .line 80
-    iget-object p0, p0, Lcom/android/server/contentcapture/ContentCapturePerUserService;->mMaster:Lcom/android/server/infra/AbstractMasterSystemService;
+    iget-object v0, p0, Lcom/android/server/contentcapture/ContentCapturePerUserService;->mMaster:Lcom/android/server/infra/AbstractMasterSystemService;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$1300(Lcom/android/server/contentcapture/ContentCapturePerUserService;)Ljava/lang/Object;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/contentcapture/ContentCapturePerUserService;
 
     .line 80
-    iget-object p0, p0, Lcom/android/server/contentcapture/ContentCapturePerUserService;->mLock:Ljava/lang/Object;
+    iget-object v0, p0, Lcom/android/server/contentcapture/ContentCapturePerUserService;->mLock:Ljava/lang/Object;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$1400(Lcom/android/server/contentcapture/ContentCapturePerUserService;)Landroid/util/ArrayMap;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/contentcapture/ContentCapturePerUserService;
 
     .line 80
-    iget-object p0, p0, Lcom/android/server/contentcapture/ContentCapturePerUserService;->mConditionsByPkg:Landroid/util/ArrayMap;
+    iget-object v0, p0, Lcom/android/server/contentcapture/ContentCapturePerUserService;->mConditionsByPkg:Landroid/util/ArrayMap;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$1500(Lcom/android/server/contentcapture/ContentCapturePerUserService;)Lcom/android/server/infra/AbstractMasterSystemService;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/contentcapture/ContentCapturePerUserService;
 
     .line 80
-    iget-object p0, p0, Lcom/android/server/contentcapture/ContentCapturePerUserService;->mMaster:Lcom/android/server/infra/AbstractMasterSystemService;
+    iget-object v0, p0, Lcom/android/server/contentcapture/ContentCapturePerUserService;->mMaster:Lcom/android/server/infra/AbstractMasterSystemService;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$1600(Lcom/android/server/contentcapture/ContentCapturePerUserService;)Landroid/content/Context;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/contentcapture/ContentCapturePerUserService;
 
     .line 80
     invoke-virtual {p0}, Lcom/android/server/contentcapture/ContentCapturePerUserService;->getContext()Landroid/content/Context;
 
-    move-result-object p0
+    move-result-object v0
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$1700(Lcom/android/server/contentcapture/ContentCapturePerUserService;)I
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/contentcapture/ContentCapturePerUserService;
 
     .line 80
-    iget p0, p0, Lcom/android/server/contentcapture/ContentCapturePerUserService;->mUserId:I
+    iget v0, p0, Lcom/android/server/contentcapture/ContentCapturePerUserService;->mUserId:I
 
-    return p0
+    return v0
 .end method
 
 .method static synthetic access$200()Ljava/lang/String;
@@ -235,70 +248,78 @@
 .end method
 
 .method static synthetic access$300(Lcom/android/server/contentcapture/ContentCapturePerUserService;)I
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/contentcapture/ContentCapturePerUserService;
 
     .line 80
-    iget p0, p0, Lcom/android/server/contentcapture/ContentCapturePerUserService;->mUserId:I
+    iget v0, p0, Lcom/android/server/contentcapture/ContentCapturePerUserService;->mUserId:I
 
-    return p0
+    return v0
 .end method
 
 .method static synthetic access$400(Lcom/android/server/contentcapture/ContentCapturePerUserService;)I
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/contentcapture/ContentCapturePerUserService;
 
     .line 80
-    iget p0, p0, Lcom/android/server/contentcapture/ContentCapturePerUserService;->mUserId:I
+    iget v0, p0, Lcom/android/server/contentcapture/ContentCapturePerUserService;->mUserId:I
 
-    return p0
+    return v0
 .end method
 
 .method static synthetic access$500(Lcom/android/server/contentcapture/ContentCapturePerUserService;)Lcom/android/server/infra/AbstractMasterSystemService;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/contentcapture/ContentCapturePerUserService;
 
     .line 80
-    iget-object p0, p0, Lcom/android/server/contentcapture/ContentCapturePerUserService;->mMaster:Lcom/android/server/infra/AbstractMasterSystemService;
+    iget-object v0, p0, Lcom/android/server/contentcapture/ContentCapturePerUserService;->mMaster:Lcom/android/server/infra/AbstractMasterSystemService;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$600(Lcom/android/server/contentcapture/ContentCapturePerUserService;)Landroid/util/SparseArray;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/contentcapture/ContentCapturePerUserService;
 
     .line 80
-    iget-object p0, p0, Lcom/android/server/contentcapture/ContentCapturePerUserService;->mSessions:Landroid/util/SparseArray;
+    iget-object v0, p0, Lcom/android/server/contentcapture/ContentCapturePerUserService;->mSessions:Landroid/util/SparseArray;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$700(Lcom/android/server/contentcapture/ContentCapturePerUserService;)I
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/contentcapture/ContentCapturePerUserService;
 
     .line 80
-    iget p0, p0, Lcom/android/server/contentcapture/ContentCapturePerUserService;->mUserId:I
+    iget v0, p0, Lcom/android/server/contentcapture/ContentCapturePerUserService;->mUserId:I
 
-    return p0
+    return v0
 .end method
 
 .method static synthetic access$800(Lcom/android/server/contentcapture/ContentCapturePerUserService;)Lcom/android/server/infra/AbstractMasterSystemService;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/contentcapture/ContentCapturePerUserService;
 
     .line 80
-    iget-object p0, p0, Lcom/android/server/contentcapture/ContentCapturePerUserService;->mMaster:Lcom/android/server/infra/AbstractMasterSystemService;
+    iget-object v0, p0, Lcom/android/server/contentcapture/ContentCapturePerUserService;->mMaster:Lcom/android/server/infra/AbstractMasterSystemService;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$900(Lcom/android/server/contentcapture/ContentCapturePerUserService;)Lcom/android/server/infra/AbstractMasterSystemService;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/contentcapture/ContentCapturePerUserService;
 
     .line 80
-    iget-object p0, p0, Lcom/android/server/contentcapture/ContentCapturePerUserService;->mMaster:Lcom/android/server/infra/AbstractMasterSystemService;
+    iget-object v0, p0, Lcom/android/server/contentcapture/ContentCapturePerUserService;->mMaster:Lcom/android/server/infra/AbstractMasterSystemService;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method private assertCallerLocked(Ljava/lang/String;)V
-    .registers 8
+    .registers 10
+    .param p1, "packageName"  # Ljava/lang/String;
     .annotation build Lcom/android/internal/annotations/GuardedBy;
         value = {
             "mLock"
@@ -315,11 +336,13 @@
     move-result-object v0
 
     .line 395
+    .local v0, "pm":Landroid/content/pm/PackageManager;
     invoke-static {}, Landroid/os/Binder;->getCallingUid()I
 
     move-result v1
 
     .line 398
+    .local v1, "callingUid":I
     :try_start_c
     invoke-static {}, Landroid/os/UserHandle;->getCallingUserId()I
 
@@ -332,6 +355,7 @@
     .catch Landroid/content/pm/PackageManager$NameNotFoundException; {:try_start_c .. :try_end_14} :catch_87
 
     .line 401
+    .local v2, "packageUid":I
     nop
 
     .line 402
@@ -355,123 +379,130 @@
     .line 404
     invoke-virtual {v0, v1}, Landroid/content/pm/PackageManager;->getPackagesForUid(I)[Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v3
 
     .line 405
-    if-eqz v0, :cond_2f
+    .local v3, "packages":[Ljava/lang/String;
+    if-eqz v3, :cond_2f
 
-    const/4 v3, 0x0
+    const/4 v4, 0x0
 
-    aget-object v0, v0, v3
+    aget-object v4, v3, v4
 
     goto :goto_41
 
     :cond_2f
-    new-instance v0, Ljava/lang/StringBuilder;
+    new-instance v4, Ljava/lang/StringBuilder;
 
-    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v4}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string/jumbo v3, "uid-"
+    const-string/jumbo v5, "uid-"
 
-    invoke-virtual {v0, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v4, v1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v4}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v4
 
     .line 406
+    .local v4, "callingPackage":Ljava/lang/String;
     :goto_41
-    sget-object v3, Lcom/android/server/contentcapture/ContentCapturePerUserService;->TAG:Ljava/lang/String;
+    sget-object v5, Lcom/android/server/contentcapture/ContentCapturePerUserService;->TAG:Ljava/lang/String;
+
+    new-instance v6, Ljava/lang/StringBuilder;
+
+    invoke-direct {v6}, Ljava/lang/StringBuilder;-><init>()V
+
+    const-string v7, "App (package="
+
+    invoke-virtual {v6, v7}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v6, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    const-string v7, ", UID="
+
+    invoke-virtual {v6, v7}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v6, v1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+
+    const-string v7, ") passed package ("
+
+    invoke-virtual {v6, v7}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v6, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    const-string v7, ") owned by UID "
+
+    invoke-virtual {v6, v7}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v6, v2}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v6}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v6
+
+    invoke-static {v5, v6}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+
+    .line 409
+    new-instance v5, Ljava/lang/SecurityException;
+
+    new-instance v6, Ljava/lang/StringBuilder;
+
+    invoke-direct {v6}, Ljava/lang/StringBuilder;-><init>()V
+
+    const-string v7, "Invalid package: "
+
+    invoke-virtual {v6, v7}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v6, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v6}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v6
+
+    invoke-direct {v5, v6}, Ljava/lang/SecurityException;-><init>(Ljava/lang/String;)V
+
+    throw v5
+
+    .line 411
+    .end local v3  # "packages":[Ljava/lang/String;
+    .end local v4  # "callingPackage":Ljava/lang/String;
+    :cond_86
+    return-void
+
+    .line 399
+    .end local v2  # "packageUid":I
+    :catch_87
+    move-exception v2
+
+    .line 400
+    .local v2, "e":Landroid/content/pm/PackageManager$NameNotFoundException;
+    new-instance v3, Ljava/lang/SecurityException;
 
     new-instance v4, Ljava/lang/StringBuilder;
 
     invoke-direct {v4}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v5, "App (package="
+    const-string v5, "Could not verify UID for "
 
     invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v4, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    const-string v0, ", UID="
-
-    invoke-virtual {v4, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v4, v1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
-
-    const-string v0, ") passed package ("
-
-    invoke-virtual {v4, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
     invoke-virtual {v4, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    const-string v0, ") owned by UID "
-
-    invoke-virtual {v4, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v4, v2}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
     invoke-virtual {v4}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v4
 
-    invoke-static {v3, v0}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-direct {v3, v4}, Ljava/lang/SecurityException;-><init>(Ljava/lang/String;)V
 
-    .line 409
-    new-instance v0, Ljava/lang/SecurityException;
-
-    new-instance v1, Ljava/lang/StringBuilder;
-
-    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
-
-    const-string v2, "Invalid package: "
-
-    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v1, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
-
-    move-result-object p1
-
-    invoke-direct {v0, p1}, Ljava/lang/SecurityException;-><init>(Ljava/lang/String;)V
-
-    throw v0
-
-    .line 411
-    :cond_86
-    return-void
-
-    .line 399
-    :catch_87
-    move-exception v0
-
-    .line 400
-    new-instance v0, Ljava/lang/SecurityException;
-
-    new-instance v1, Ljava/lang/StringBuilder;
-
-    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
-
-    const-string v2, "Could not verify UID for "
-
-    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v1, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
-
-    move-result-object p1
-
-    invoke-direct {v0, p1}, Ljava/lang/SecurityException;-><init>(Ljava/lang/String;)V
-
-    throw v0
+    throw v3
 .end method
 
 .method private getSession(Landroid/os/IBinder;)Lcom/android/server/contentcapture/ContentCaptureServerSession;
     .registers 5
+    .param p1, "activityToken"  # Landroid/os/IBinder;
     .annotation build Lcom/android/internal/annotations/GuardedBy;
         value = {
             "mLock"
@@ -481,6 +512,7 @@
     .line 444
     const/4 v0, 0x0
 
+    .local v0, "i":I
     :goto_1
     iget-object v1, p0, Lcom/android/server/contentcapture/ContentCapturePerUserService;->mSessions:Landroid/util/SparseArray;
 
@@ -500,6 +532,7 @@
     check-cast v1, Lcom/android/server/contentcapture/ContentCaptureServerSession;
 
     .line 446
+    .local v1, "session":Lcom/android/server/contentcapture/ContentCaptureServerSession;
     iget-object v2, v1, Lcom/android/server/contentcapture/ContentCaptureServerSession;->mActivityToken:Landroid/os/IBinder;
 
     invoke-virtual {v2, p1}, Ljava/lang/Object;->equals(Ljava/lang/Object;)Z
@@ -512,20 +545,23 @@
     return-object v1
 
     .line 444
+    .end local v1  # "session":Lcom/android/server/contentcapture/ContentCaptureServerSession;
     :cond_1a
     add-int/lit8 v0, v0, 0x1
 
     goto :goto_1
 
     .line 450
+    .end local v0  # "i":I
     :cond_1d
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    return-object p1
+    return-object v0
 .end method
 
 .method private getSessionId(Landroid/os/IBinder;)I
     .registers 5
+    .param p1, "activityToken"  # Landroid/os/IBinder;
     .annotation build Lcom/android/internal/annotations/GuardedBy;
         value = {
             "mLock"
@@ -535,50 +571,54 @@
     .line 544
     const/4 v0, 0x0
 
-    move v1, v0
+    .local v0, "i":I
+    :goto_1
+    iget-object v1, p0, Lcom/android/server/contentcapture/ContentCapturePerUserService;->mSessions:Landroid/util/SparseArray;
 
-    :goto_2
-    iget-object v2, p0, Lcom/android/server/contentcapture/ContentCapturePerUserService;->mSessions:Landroid/util/SparseArray;
+    invoke-virtual {v1}, Landroid/util/SparseArray;->size()I
 
-    invoke-virtual {v2}, Landroid/util/SparseArray;->size()I
+    move-result v1
 
-    move-result v2
-
-    if-ge v1, v2, :cond_22
+    if-ge v0, v1, :cond_21
 
     .line 545
-    iget-object v2, p0, Lcom/android/server/contentcapture/ContentCapturePerUserService;->mSessions:Landroid/util/SparseArray;
+    iget-object v1, p0, Lcom/android/server/contentcapture/ContentCapturePerUserService;->mSessions:Landroid/util/SparseArray;
 
-    invoke-virtual {v2, v1}, Landroid/util/SparseArray;->valueAt(I)Ljava/lang/Object;
+    invoke-virtual {v1, v0}, Landroid/util/SparseArray;->valueAt(I)Ljava/lang/Object;
 
-    move-result-object v2
+    move-result-object v1
 
-    check-cast v2, Lcom/android/server/contentcapture/ContentCaptureServerSession;
+    check-cast v1, Lcom/android/server/contentcapture/ContentCaptureServerSession;
 
     .line 546
-    invoke-virtual {v2, p1}, Lcom/android/server/contentcapture/ContentCaptureServerSession;->isActivitySession(Landroid/os/IBinder;)Z
+    .local v1, "session":Lcom/android/server/contentcapture/ContentCaptureServerSession;
+    invoke-virtual {v1, p1}, Lcom/android/server/contentcapture/ContentCaptureServerSession;->isActivitySession(Landroid/os/IBinder;)Z
 
     move-result v2
 
-    if-eqz v2, :cond_1f
+    if-eqz v2, :cond_1e
 
     .line 547
-    iget-object p1, p0, Lcom/android/server/contentcapture/ContentCapturePerUserService;->mSessions:Landroid/util/SparseArray;
+    iget-object v2, p0, Lcom/android/server/contentcapture/ContentCapturePerUserService;->mSessions:Landroid/util/SparseArray;
 
-    invoke-virtual {p1, v1}, Landroid/util/SparseArray;->keyAt(I)I
+    invoke-virtual {v2, v0}, Landroid/util/SparseArray;->keyAt(I)I
 
-    move-result p1
+    move-result v2
 
-    return p1
+    return v2
 
     .line 544
-    :cond_1f
-    add-int/lit8 v1, v1, 0x1
+    .end local v1  # "session":Lcom/android/server/contentcapture/ContentCaptureServerSession;
+    :cond_1e
+    add-int/lit8 v0, v0, 0x1
 
-    goto :goto_2
+    goto :goto_1
 
     .line 550
-    :cond_22
+    .end local v0  # "i":I
+    :cond_21
+    const/4 v0, 0x0
+
     return v0
 .end method
 
@@ -633,6 +673,7 @@
     move-result v0
 
     .line 213
+    .local v0, "numSessions":I
     iget-object v1, p0, Lcom/android/server/contentcapture/ContentCapturePerUserService;->mMaster:Lcom/android/server/infra/AbstractMasterSystemService;
 
     check-cast v1, Lcom/android/server/contentcapture/ContentCaptureManagerService;
@@ -676,6 +717,7 @@
     :cond_33
     const/4 v1, 0x0
 
+    .local v1, "i":I
     :goto_34
     if-ge v1, v0, :cond_44
 
@@ -689,20 +731,24 @@
     check-cast v2, Lcom/android/server/contentcapture/ContentCaptureServerSession;
 
     .line 220
+    .local v2, "session":Lcom/android/server/contentcapture/ContentCaptureServerSession;
     invoke-virtual {v2}, Lcom/android/server/contentcapture/ContentCaptureServerSession;->resurrectLocked()V
 
     .line 218
+    .end local v2  # "session":Lcom/android/server/contentcapture/ContentCaptureServerSession;
     add-int/lit8 v1, v1, 0x1
 
     goto :goto_34
 
     .line 222
+    .end local v1  # "i":I
     :cond_44
     return-void
 .end method
 
 .method private updateRemoteServiceLocked(Z)V
-    .registers 13
+    .registers 14
+    .param p1, "disabled"  # Z
 
     .line 132
     iget-object v0, p0, Lcom/android/server/contentcapture/ContentCapturePerUserService;->mMaster:Lcom/android/server/infra/AbstractMasterSystemService;
@@ -774,25 +820,26 @@
     :cond_43
     invoke-virtual {p0}, Lcom/android/server/contentcapture/ContentCapturePerUserService;->updateServiceInfoLocked()Landroid/content/ComponentName;
 
-    move-result-object v4
+    move-result-object v0
 
     .line 143
-    if-nez v4, :cond_5a
+    .local v0, "serviceComponentName":Landroid/content/ComponentName;
+    if-nez v0, :cond_5a
 
     .line 144
-    iget-object p1, p0, Lcom/android/server/contentcapture/ContentCapturePerUserService;->mMaster:Lcom/android/server/infra/AbstractMasterSystemService;
+    iget-object v1, p0, Lcom/android/server/contentcapture/ContentCapturePerUserService;->mMaster:Lcom/android/server/infra/AbstractMasterSystemService;
 
-    check-cast p1, Lcom/android/server/contentcapture/ContentCaptureManagerService;
+    check-cast v1, Lcom/android/server/contentcapture/ContentCaptureManagerService;
 
-    iget-boolean p1, p1, Lcom/android/server/contentcapture/ContentCaptureManagerService;->debug:Z
+    iget-boolean v1, v1, Lcom/android/server/contentcapture/ContentCaptureManagerService;->debug:Z
 
-    if-eqz p1, :cond_59
+    if-eqz v1, :cond_59
 
-    sget-object p1, Lcom/android/server/contentcapture/ContentCapturePerUserService;->TAG:Ljava/lang/String;
+    sget-object v1, Lcom/android/server/contentcapture/ContentCapturePerUserService;->TAG:Ljava/lang/String;
 
-    const-string/jumbo v0, "updateRemoteService(): no service component name"
+    const-string/jumbo v2, "updateRemoteService(): no service component name"
 
-    invoke-static {p1, v0}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v2}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 145
     :cond_59
@@ -800,45 +847,45 @@
 
     .line 148
     :cond_5a
-    if-nez p1, :cond_a6
+    if-nez p1, :cond_a7
 
     .line 149
-    iget-object p1, p0, Lcom/android/server/contentcapture/ContentCapturePerUserService;->mMaster:Lcom/android/server/infra/AbstractMasterSystemService;
+    iget-object v1, p0, Lcom/android/server/contentcapture/ContentCapturePerUserService;->mMaster:Lcom/android/server/infra/AbstractMasterSystemService;
 
-    check-cast p1, Lcom/android/server/contentcapture/ContentCaptureManagerService;
+    check-cast v1, Lcom/android/server/contentcapture/ContentCaptureManagerService;
 
-    iget-boolean p1, p1, Lcom/android/server/contentcapture/ContentCaptureManagerService;->debug:Z
+    iget-boolean v1, v1, Lcom/android/server/contentcapture/ContentCaptureManagerService;->debug:Z
 
-    if-eqz p1, :cond_7b
+    if-eqz v1, :cond_7b
 
     .line 150
-    sget-object p1, Lcom/android/server/contentcapture/ContentCapturePerUserService;->TAG:Ljava/lang/String;
+    sget-object v1, Lcom/android/server/contentcapture/ContentCapturePerUserService;->TAG:Ljava/lang/String;
 
-    new-instance v0, Ljava/lang/StringBuilder;
+    new-instance v2, Ljava/lang/StringBuilder;
 
-    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string/jumbo v1, "updateRemoteService(): creating new remote service for "
+    const-string/jumbo v3, "updateRemoteService(): creating new remote service for "
 
-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v2
 
-    invoke-static {p1, v0}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v2}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 153
     :cond_7b
-    new-instance p1, Lcom/android/server/contentcapture/RemoteContentCaptureService;
+    new-instance v11, Lcom/android/server/contentcapture/RemoteContentCaptureService;
 
-    iget-object v0, p0, Lcom/android/server/contentcapture/ContentCapturePerUserService;->mMaster:Lcom/android/server/infra/AbstractMasterSystemService;
+    iget-object v1, p0, Lcom/android/server/contentcapture/ContentCapturePerUserService;->mMaster:Lcom/android/server/infra/AbstractMasterSystemService;
 
-    check-cast v0, Lcom/android/server/contentcapture/ContentCaptureManagerService;
+    check-cast v1, Lcom/android/server/contentcapture/ContentCaptureManagerService;
 
-    invoke-virtual {v0}, Lcom/android/server/contentcapture/ContentCaptureManagerService;->getContext()Landroid/content/Context;
+    invoke-virtual {v1}, Lcom/android/server/contentcapture/ContentCaptureManagerService;->getContext()Landroid/content/Context;
 
     move-result-object v2
 
@@ -846,39 +893,41 @@
 
     iget v6, p0, Lcom/android/server/contentcapture/ContentCapturePerUserService;->mUserId:I
 
-    iget-object v0, p0, Lcom/android/server/contentcapture/ContentCapturePerUserService;->mMaster:Lcom/android/server/infra/AbstractMasterSystemService;
+    iget-object v1, p0, Lcom/android/server/contentcapture/ContentCapturePerUserService;->mMaster:Lcom/android/server/infra/AbstractMasterSystemService;
 
-    check-cast v0, Lcom/android/server/contentcapture/ContentCaptureManagerService;
+    check-cast v1, Lcom/android/server/contentcapture/ContentCaptureManagerService;
 
     .line 155
-    invoke-virtual {v0}, Lcom/android/server/contentcapture/ContentCaptureManagerService;->isBindInstantServiceAllowed()Z
+    invoke-virtual {v1}, Lcom/android/server/contentcapture/ContentCaptureManagerService;->isBindInstantServiceAllowed()Z
 
     move-result v8
 
-    iget-object v0, p0, Lcom/android/server/contentcapture/ContentCapturePerUserService;->mMaster:Lcom/android/server/infra/AbstractMasterSystemService;
+    iget-object v1, p0, Lcom/android/server/contentcapture/ContentCapturePerUserService;->mMaster:Lcom/android/server/infra/AbstractMasterSystemService;
 
-    check-cast v0, Lcom/android/server/contentcapture/ContentCaptureManagerService;
+    check-cast v1, Lcom/android/server/contentcapture/ContentCaptureManagerService;
 
-    iget-boolean v9, v0, Lcom/android/server/contentcapture/ContentCaptureManagerService;->verbose:Z
+    iget-boolean v9, v1, Lcom/android/server/contentcapture/ContentCaptureManagerService;->verbose:Z
 
-    iget-object v0, p0, Lcom/android/server/contentcapture/ContentCapturePerUserService;->mMaster:Lcom/android/server/infra/AbstractMasterSystemService;
+    iget-object v1, p0, Lcom/android/server/contentcapture/ContentCapturePerUserService;->mMaster:Lcom/android/server/infra/AbstractMasterSystemService;
 
-    check-cast v0, Lcom/android/server/contentcapture/ContentCaptureManagerService;
+    check-cast v1, Lcom/android/server/contentcapture/ContentCaptureManagerService;
 
-    iget v10, v0, Lcom/android/server/contentcapture/ContentCaptureManagerService;->mDevCfgIdleUnbindTimeoutMs:I
+    iget v10, v1, Lcom/android/server/contentcapture/ContentCaptureManagerService;->mDevCfgIdleUnbindTimeoutMs:I
 
     const-string v3, "android.service.contentcapture.ContentCaptureService"
 
-    move-object v1, p1
+    move-object v1, v11
+
+    move-object v4, v0
 
     move-object v7, p0
 
     invoke-direct/range {v1 .. v10}, Lcom/android/server/contentcapture/RemoteContentCaptureService;-><init>(Landroid/content/Context;Ljava/lang/String;Landroid/content/ComponentName;Landroid/service/contentcapture/IContentCaptureServiceCallback;ILcom/android/server/contentcapture/ContentCapturePerUserService;ZZI)V
 
-    iput-object p1, p0, Lcom/android/server/contentcapture/ContentCapturePerUserService;->mRemoteService:Lcom/android/server/contentcapture/RemoteContentCaptureService;
+    iput-object v11, p0, Lcom/android/server/contentcapture/ContentCapturePerUserService;->mRemoteService:Lcom/android/server/contentcapture/RemoteContentCaptureService;
 
     .line 158
-    :cond_a6
+    :cond_a7
     return-void
 .end method
 
@@ -940,8 +989,10 @@
     move-result v0
 
     .line 470
+    .local v0, "numSessions":I
     const/4 v1, 0x0
 
+    .local v1, "i":I
     :goto_7
     if-ge v1, v0, :cond_18
 
@@ -955,20 +1006,23 @@
     check-cast v2, Lcom/android/server/contentcapture/ContentCaptureServerSession;
 
     .line 472
+    .local v2, "session":Lcom/android/server/contentcapture/ContentCaptureServerSession;
     const/4 v3, 0x1
 
     invoke-virtual {v2, v3}, Lcom/android/server/contentcapture/ContentCaptureServerSession;->destroyLocked(Z)V
 
     .line 470
+    .end local v2  # "session":Lcom/android/server/contentcapture/ContentCaptureServerSession;
     add-int/lit8 v1, v1, 0x1
 
     goto :goto_7
 
     .line 474
+    .end local v1  # "i":I
     :cond_18
-    iget-object v0, p0, Lcom/android/server/contentcapture/ContentCapturePerUserService;->mSessions:Landroid/util/SparseArray;
+    iget-object v1, p0, Lcom/android/server/contentcapture/ContentCapturePerUserService;->mSessions:Landroid/util/SparseArray;
 
-    invoke-virtual {v0}, Landroid/util/SparseArray;->clear()V
+    invoke-virtual {v1}, Landroid/util/SparseArray;->clear()V
 
     .line 475
     return-void
@@ -976,6 +1030,8 @@
 
 .method protected dumpLocked(Ljava/lang/String;Ljava/io/PrintWriter;)V
     .registers 7
+    .param p1, "prefix"  # Ljava/lang/String;
+    .param p2, "pw"  # Ljava/io/PrintWriter;
 
     .line 508
     invoke-super {p0, p1, p2}, Lcom/android/server/infra/AbstractPerUserSystemService;->dumpLocked(Ljava/lang/String;Ljava/io/PrintWriter;)V
@@ -996,6 +1052,7 @@
     move-result-object v0
 
     .line 511
+    .local v0, "prefix2":Ljava/lang/String;
     invoke-virtual {p2, p1}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
     const-string v1, "Service Info: "
@@ -1065,9 +1122,9 @@
     .line 526
     invoke-virtual {p2, p1}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
-    const-string/jumbo p1, "no sessions"
+    const-string/jumbo v1, "no sessions"
 
-    invoke-virtual {p2, p1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {p2, v1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
     goto :goto_90
 
@@ -1080,6 +1137,7 @@
     move-result v1
 
     .line 529
+    .local v1, "sessionsSize":I
     invoke-virtual {p2, p1}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
     const-string/jumbo v2, "number sessions: "
@@ -1091,6 +1149,7 @@
     .line 530
     const/4 v2, 0x0
 
+    .local v2, "i":I
     :goto_72
     if-ge v2, v1, :cond_90
 
@@ -1113,17 +1172,21 @@
     check-cast v3, Lcom/android/server/contentcapture/ContentCaptureServerSession;
 
     .line 533
+    .local v3, "session":Lcom/android/server/contentcapture/ContentCaptureServerSession;
     invoke-virtual {v3, v0, p2}, Lcom/android/server/contentcapture/ContentCaptureServerSession;->dumpLocked(Ljava/lang/String;Ljava/io/PrintWriter;)V
 
     .line 534
     invoke-virtual {p2}, Ljava/io/PrintWriter;->println()V
 
     .line 530
+    .end local v3  # "session":Lcom/android/server/contentcapture/ContentCaptureServerSession;
     add-int/lit8 v2, v2, 0x1
 
     goto :goto_72
 
     .line 537
+    .end local v1  # "sessionsSize":I
+    .end local v2  # "i":I
     :cond_90
     :goto_90
     return-void
@@ -1131,6 +1194,7 @@
 
 .method public finishSessionLocked(I)V
     .registers 6
+    .param p1, "sessionId"  # I
     .annotation build Lcom/android/internal/annotations/GuardedBy;
         value = {
             "mLock"
@@ -1158,35 +1222,36 @@
     check-cast v0, Lcom/android/server/contentcapture/ContentCaptureServerSession;
 
     .line 358
+    .local v0, "session":Lcom/android/server/contentcapture/ContentCaptureServerSession;
     if-nez v0, :cond_30
 
     .line 359
-    iget-object v0, p0, Lcom/android/server/contentcapture/ContentCapturePerUserService;->mMaster:Lcom/android/server/infra/AbstractMasterSystemService;
+    iget-object v1, p0, Lcom/android/server/contentcapture/ContentCapturePerUserService;->mMaster:Lcom/android/server/infra/AbstractMasterSystemService;
 
-    check-cast v0, Lcom/android/server/contentcapture/ContentCaptureManagerService;
+    check-cast v1, Lcom/android/server/contentcapture/ContentCaptureManagerService;
 
-    iget-boolean v0, v0, Lcom/android/server/contentcapture/ContentCaptureManagerService;->debug:Z
+    iget-boolean v1, v1, Lcom/android/server/contentcapture/ContentCaptureManagerService;->debug:Z
 
-    if-eqz v0, :cond_2f
+    if-eqz v1, :cond_2f
 
     .line 360
-    sget-object v0, Lcom/android/server/contentcapture/ContentCapturePerUserService;->TAG:Ljava/lang/String;
+    sget-object v1, Lcom/android/server/contentcapture/ContentCapturePerUserService;->TAG:Ljava/lang/String;
 
-    new-instance v1, Ljava/lang/StringBuilder;
+    new-instance v2, Ljava/lang/StringBuilder;
 
-    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v2, "finishSession(): no session with id"
+    const-string v3, "finishSession(): no session with id"
 
-    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v1, p1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, p1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v2
 
-    invoke-static {v0, p1}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v2}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 362
     :cond_2f
@@ -1216,15 +1281,15 @@
 
     invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v2
 
-    invoke-static {v1, p1}, Landroid/util/Slog;->v(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v2}, Landroid/util/Slog;->v(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 365
     :cond_4e
-    const/4 p1, 0x1
+    const/4 v1, 0x1
 
-    invoke-virtual {v0, p1}, Lcom/android/server/contentcapture/ContentCaptureServerSession;->removeSelfLocked(Z)V
+    invoke-virtual {v0, v1}, Lcom/android/server/contentcapture/ContentCaptureServerSession;->removeSelfLocked(Z)V
 
     .line 366
     return-void
@@ -1232,6 +1297,7 @@
 
 .method getContentCaptureConditionsLocked(Ljava/lang/String;)Landroid/util/ArraySet;
     .registers 3
+    .param p1, "packageName"  # Ljava/lang/String;
     .annotation build Lcom/android/internal/annotations/GuardedBy;
         value = {
             "mLock"
@@ -1254,11 +1320,11 @@
 
     invoke-virtual {v0, p1}, Landroid/util/ArrayMap;->get(Ljava/lang/Object;)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v0
 
-    check-cast p1, Landroid/util/ArraySet;
+    check-cast v0, Landroid/util/ArraySet;
 
-    return-object p1
+    return-object v0
 .end method
 
 .method public getServiceSettingsActivityLocked()Landroid/content/ComponentName;
@@ -1285,6 +1351,7 @@
     move-result-object v0
 
     .line 383
+    .local v0, "activityName":Ljava/lang/String;
     if-nez v0, :cond_d
 
     return-object v1
@@ -1300,6 +1367,7 @@
     iget-object v1, v1, Landroid/content/pm/ServiceInfo;->packageName:Ljava/lang/String;
 
     .line 386
+    .local v1, "packageName":Ljava/lang/String;
     new-instance v2, Landroid/content/ComponentName;
 
     invoke-direct {v2, v1, v0}, Landroid/content/ComponentName;-><init>(Ljava/lang/String;Ljava/lang/String;)V
@@ -1309,6 +1377,7 @@
 
 .method public isContentCaptureServiceForUserLocked(I)Z
     .registers 3
+    .param p1, "uid"  # I
     .annotation build Lcom/android/internal/annotations/GuardedBy;
         value = {
             "mLock"
@@ -1322,19 +1391,19 @@
 
     if-ne p1, v0, :cond_8
 
-    const/4 p1, 0x1
+    const/4 v0, 0x1
 
     goto :goto_9
 
     :cond_8
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
     :goto_9
-    return p1
+    return v0
 .end method
 
 .method listSessionsLocked(Ljava/util/ArrayList;)V
-    .registers 5
+    .registers 6
     .annotation build Lcom/android/internal/annotations/GuardedBy;
         value = {
             "mLock"
@@ -1351,6 +1420,7 @@
     .end annotation
 
     .line 479
+    .local p1, "output":Ljava/util/ArrayList;, "Ljava/util/ArrayList<Ljava/lang/String;>;"
     iget-object v0, p0, Lcom/android/server/contentcapture/ContentCapturePerUserService;->mSessions:Landroid/util/SparseArray;
 
     invoke-virtual {v0}, Landroid/util/SparseArray;->size()I
@@ -1358,8 +1428,10 @@
     move-result v0
 
     .line 480
+    .local v0, "numSessions":I
     const/4 v1, 0x0
 
+    .local v1, "i":I
     :goto_7
     if-ge v1, v0, :cond_1b
 
@@ -1373,24 +1445,28 @@
     check-cast v2, Lcom/android/server/contentcapture/ContentCaptureServerSession;
 
     .line 482
+    .local v2, "session":Lcom/android/server/contentcapture/ContentCaptureServerSession;
     invoke-virtual {v2}, Lcom/android/server/contentcapture/ContentCaptureServerSession;->toShortString()Ljava/lang/String;
 
-    move-result-object v2
+    move-result-object v3
 
-    invoke-virtual {p1, v2}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
+    invoke-virtual {p1, v3}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
 
     .line 480
+    .end local v2  # "session":Lcom/android/server/contentcapture/ContentCaptureServerSession;
     add-int/lit8 v1, v1, 0x1
 
     goto :goto_7
 
     .line 484
+    .end local v1  # "i":I
     :cond_1b
     return-void
 .end method
 
 .method protected newServiceInfoLocked(Landroid/content/ComponentName;)Landroid/content/pm/ServiceInfo;
     .registers 6
+    .param p1, "serviceComponent"  # Landroid/content/ComponentName;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/content/pm/PackageManager$NameNotFoundException;
@@ -1416,17 +1492,19 @@
     iput-object v0, p0, Lcom/android/server/contentcapture/ContentCapturePerUserService;->mInfo:Landroid/service/contentcapture/ContentCaptureServiceInfo;
 
     .line 165
-    iget-object p1, p0, Lcom/android/server/contentcapture/ContentCapturePerUserService;->mInfo:Landroid/service/contentcapture/ContentCaptureServiceInfo;
+    iget-object v0, p0, Lcom/android/server/contentcapture/ContentCapturePerUserService;->mInfo:Landroid/service/contentcapture/ContentCaptureServiceInfo;
 
-    invoke-virtual {p1}, Landroid/service/contentcapture/ContentCaptureServiceInfo;->getServiceInfo()Landroid/content/pm/ServiceInfo;
+    invoke-virtual {v0}, Landroid/service/contentcapture/ContentCaptureServiceInfo;->getServiceInfo()Landroid/content/pm/ServiceInfo;
 
-    move-result-object p1
+    move-result-object v0
 
-    return-object p1
+    return-object v0
 .end method
 
 .method onActivityEventLocked(Landroid/content/ComponentName;I)V
-    .registers 5
+    .registers 7
+    .param p1, "componentName"  # Landroid/content/ComponentName;
+    .param p2, "type"  # I
     .annotation build Lcom/android/internal/annotations/GuardedBy;
         value = {
             "mLock"
@@ -1439,19 +1517,19 @@
     if-nez v0, :cond_15
 
     .line 496
-    iget-object p1, p0, Lcom/android/server/contentcapture/ContentCapturePerUserService;->mMaster:Lcom/android/server/infra/AbstractMasterSystemService;
+    iget-object v0, p0, Lcom/android/server/contentcapture/ContentCapturePerUserService;->mMaster:Lcom/android/server/infra/AbstractMasterSystemService;
 
-    check-cast p1, Lcom/android/server/contentcapture/ContentCaptureManagerService;
+    check-cast v0, Lcom/android/server/contentcapture/ContentCaptureManagerService;
 
-    iget-boolean p1, p1, Lcom/android/server/contentcapture/ContentCaptureManagerService;->debug:Z
+    iget-boolean v0, v0, Lcom/android/server/contentcapture/ContentCaptureManagerService;->debug:Z
 
-    if-eqz p1, :cond_14
+    if-eqz v0, :cond_14
 
-    iget-object p1, p0, Lcom/android/server/contentcapture/ContentCapturePerUserService;->mTag:Ljava/lang/String;
+    iget-object v0, p0, Lcom/android/server/contentcapture/ContentCapturePerUserService;->mTag:Ljava/lang/String;
 
-    const-string/jumbo p2, "onActivityEvent(): no remote service"
+    const-string/jumbo v1, "onActivityEvent(): no remote service"
 
-    invoke-static {p1, p2}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v0, v1}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 497
     :cond_14
@@ -1464,37 +1542,38 @@
     invoke-direct {v0, p1, p2}, Landroid/service/contentcapture/ActivityEvent;-><init>(Landroid/content/ComponentName;I)V
 
     .line 501
-    iget-object p1, p0, Lcom/android/server/contentcapture/ContentCapturePerUserService;->mMaster:Lcom/android/server/infra/AbstractMasterSystemService;
+    .local v0, "event":Landroid/service/contentcapture/ActivityEvent;
+    iget-object v1, p0, Lcom/android/server/contentcapture/ContentCapturePerUserService;->mMaster:Lcom/android/server/infra/AbstractMasterSystemService;
 
-    check-cast p1, Lcom/android/server/contentcapture/ContentCaptureManagerService;
+    check-cast v1, Lcom/android/server/contentcapture/ContentCaptureManagerService;
 
-    iget-boolean p1, p1, Lcom/android/server/contentcapture/ContentCaptureManagerService;->verbose:Z
+    iget-boolean v1, v1, Lcom/android/server/contentcapture/ContentCaptureManagerService;->verbose:Z
 
-    if-eqz p1, :cond_39
+    if-eqz v1, :cond_39
 
-    iget-object p1, p0, Lcom/android/server/contentcapture/ContentCapturePerUserService;->mTag:Ljava/lang/String;
+    iget-object v1, p0, Lcom/android/server/contentcapture/ContentCapturePerUserService;->mTag:Ljava/lang/String;
 
-    new-instance p2, Ljava/lang/StringBuilder;
+    new-instance v2, Ljava/lang/StringBuilder;
 
-    invoke-direct {p2}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string/jumbo v1, "onActivityEvent(): "
+    const-string/jumbo v3, "onActivityEvent(): "
 
-    invoke-virtual {p2, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p2, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p2
+    move-result-object v2
 
-    invoke-static {p1, p2}, Landroid/util/Slog;->v(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v2}, Landroid/util/Slog;->v(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 503
     :cond_39
-    iget-object p1, p0, Lcom/android/server/contentcapture/ContentCapturePerUserService;->mRemoteService:Lcom/android/server/contentcapture/RemoteContentCaptureService;
+    iget-object v1, p0, Lcom/android/server/contentcapture/ContentCapturePerUserService;->mRemoteService:Lcom/android/server/contentcapture/RemoteContentCaptureService;
 
-    invoke-virtual {p1, v0}, Lcom/android/server/contentcapture/RemoteContentCaptureService;->onActivityLifecycleEvent(Landroid/service/contentcapture/ActivityEvent;)V
+    invoke-virtual {v1, v0}, Lcom/android/server/contentcapture/RemoteContentCaptureService;->onActivityLifecycleEvent(Landroid/service/contentcapture/ActivityEvent;)V
 
     .line 504
     return-void
@@ -1588,6 +1667,7 @@
     move-result v0
 
     .line 226
+    .local v0, "numSessions":I
     iget-object v1, p0, Lcom/android/server/contentcapture/ContentCapturePerUserService;->mMaster:Lcom/android/server/infra/AbstractMasterSystemService;
 
     check-cast v1, Lcom/android/server/contentcapture/ContentCaptureManagerService;
@@ -1623,6 +1703,7 @@
     :cond_29
     const/4 v1, 0x0
 
+    .local v1, "i":I
     :goto_2a
     if-ge v1, v0, :cond_3a
 
@@ -1636,20 +1717,24 @@
     check-cast v2, Lcom/android/server/contentcapture/ContentCaptureServerSession;
 
     .line 231
+    .local v2, "session":Lcom/android/server/contentcapture/ContentCaptureServerSession;
     invoke-virtual {v2}, Lcom/android/server/contentcapture/ContentCaptureServerSession;->pauseLocked()V
 
     .line 229
+    .end local v2  # "session":Lcom/android/server/contentcapture/ContentCaptureServerSession;
     add-int/lit8 v1, v1, 0x1
 
     goto :goto_2a
 
     .line 233
+    .end local v1  # "i":I
     :cond_3a
     return-void
 .end method
 
 .method public onServiceDied(Lcom/android/server/contentcapture/RemoteContentCaptureService;)V
     .registers 5
+    .param p1, "service"  # Lcom/android/server/contentcapture/RemoteContentCaptureService;
 
     .line 186
     sget-object v0, Lcom/android/server/contentcapture/ContentCapturePerUserService;->TAG:Ljava/lang/String;
@@ -1666,36 +1751,36 @@
 
     invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v1
 
-    invoke-static {v0, p1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v0, v1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 187
-    iget-object p1, p0, Lcom/android/server/contentcapture/ContentCapturePerUserService;->mLock:Ljava/lang/Object;
+    iget-object v0, p0, Lcom/android/server/contentcapture/ContentCapturePerUserService;->mLock:Ljava/lang/Object;
 
-    monitor-enter p1
+    monitor-enter v0
 
     .line 188
-    const/4 v0, 0x1
+    const/4 v1, 0x1
 
     :try_start_1b
-    iput-boolean v0, p0, Lcom/android/server/contentcapture/ContentCapturePerUserService;->mZombie:Z
+    iput-boolean v1, p0, Lcom/android/server/contentcapture/ContentCapturePerUserService;->mZombie:Z
 
     .line 189
-    monitor-exit p1
+    monitor-exit v0
 
     .line 190
     return-void
 
     .line 189
     :catchall_1f
-    move-exception v0
+    move-exception v1
 
-    monitor-exit p1
+    monitor-exit v0
     :try_end_21
     .catchall {:try_start_1b .. :try_end_21} :catchall_1f
 
-    throw v0
+    throw v1
 .end method
 
 .method public bridge synthetic onServiceDied(Ljava/lang/Object;)V
@@ -1711,6 +1796,7 @@
 
 .method public removeDataLocked(Landroid/view/contentcapture/DataRemovalRequest;)V
     .registers 3
+    .param p1, "request"  # Landroid/view/contentcapture/DataRemovalRequest;
     .annotation build Lcom/android/internal/annotations/GuardedBy;
         value = {
             "mLock"
@@ -1746,6 +1832,7 @@
 
 .method public removeSessionLocked(I)V
     .registers 3
+    .param p1, "sessionId"  # I
     .annotation build Lcom/android/internal/annotations/GuardedBy;
         value = {
             "mLock"
@@ -1762,7 +1849,9 @@
 .end method
 
 .method public sendActivityAssistDataLocked(Landroid/os/IBinder;Landroid/os/Bundle;)Z
-    .registers 6
+    .registers 10
+    .param p1, "activityToken"  # Landroid/os/IBinder;
+    .param p2, "data"  # Landroid/os/Bundle;
     .annotation build Lcom/android/internal/annotations/GuardedBy;
         value = {
             "mLock"
@@ -1775,83 +1864,100 @@
     move-result v0
 
     .line 417
+    .local v0, "id":I
     if-eqz v0, :cond_2f
 
     .line 418
-    iget-object p1, p0, Lcom/android/server/contentcapture/ContentCapturePerUserService;->mSessions:Landroid/util/SparseArray;
+    iget-object v1, p0, Lcom/android/server/contentcapture/ContentCapturePerUserService;->mSessions:Landroid/util/SparseArray;
 
-    invoke-virtual {p1, v0}, Landroid/util/SparseArray;->get(I)Ljava/lang/Object;
-
-    move-result-object p1
-
-    check-cast p1, Lcom/android/server/contentcapture/ContentCaptureServerSession;
-
-    .line 419
-    const-string v0, "data"
-
-    invoke-virtual {p2, v0}, Landroid/os/Bundle;->getBundle(Ljava/lang/String;)Landroid/os/Bundle;
-
-    move-result-object v0
-
-    .line 420
-    const-string/jumbo v1, "structure"
-
-    invoke-virtual {p2, v1}, Landroid/os/Bundle;->getParcelable(Ljava/lang/String;)Landroid/os/Parcelable;
+    invoke-virtual {v1, v0}, Landroid/util/SparseArray;->get(I)Ljava/lang/Object;
 
     move-result-object v1
 
-    check-cast v1, Landroid/app/assist/AssistStructure;
+    check-cast v1, Lcom/android/server/contentcapture/ContentCaptureServerSession;
+
+    .line 419
+    .local v1, "session":Lcom/android/server/contentcapture/ContentCaptureServerSession;
+    const-string v2, "data"
+
+    invoke-virtual {p2, v2}, Landroid/os/Bundle;->getBundle(Ljava/lang/String;)Landroid/os/Bundle;
+
+    move-result-object v2
+
+    .line 420
+    .local v2, "assistData":Landroid/os/Bundle;
+    const-string/jumbo v3, "structure"
+
+    invoke-virtual {p2, v3}, Landroid/os/Bundle;->getParcelable(Ljava/lang/String;)Landroid/os/Parcelable;
+
+    move-result-object v3
+
+    check-cast v3, Landroid/app/assist/AssistStructure;
 
     .line 421
-    const-string v2, "content"
+    .local v3, "assistStructure":Landroid/app/assist/AssistStructure;
+    const-string v4, "content"
 
-    invoke-virtual {p2, v2}, Landroid/os/Bundle;->getParcelable(Ljava/lang/String;)Landroid/os/Parcelable;
+    invoke-virtual {p2, v4}, Landroid/os/Bundle;->getParcelable(Ljava/lang/String;)Landroid/os/Parcelable;
 
-    move-result-object p2
+    move-result-object v4
 
-    check-cast p2, Landroid/app/assist/AssistContent;
+    check-cast v4, Landroid/app/assist/AssistContent;
 
     .line 422
-    new-instance v2, Landroid/service/contentcapture/SnapshotData;
+    .local v4, "assistContent":Landroid/app/assist/AssistContent;
+    new-instance v5, Landroid/service/contentcapture/SnapshotData;
 
-    invoke-direct {v2, v0, v1, p2}, Landroid/service/contentcapture/SnapshotData;-><init>(Landroid/os/Bundle;Landroid/app/assist/AssistStructure;Landroid/app/assist/AssistContent;)V
+    invoke-direct {v5, v2, v3, v4}, Landroid/service/contentcapture/SnapshotData;-><init>(Landroid/os/Bundle;Landroid/app/assist/AssistStructure;Landroid/app/assist/AssistContent;)V
 
     .line 424
-    invoke-virtual {p1, v2}, Lcom/android/server/contentcapture/ContentCaptureServerSession;->sendActivitySnapshotLocked(Landroid/service/contentcapture/SnapshotData;)V
+    .local v5, "snapshotData":Landroid/service/contentcapture/SnapshotData;
+    invoke-virtual {v1, v5}, Lcom/android/server/contentcapture/ContentCaptureServerSession;->sendActivitySnapshotLocked(Landroid/service/contentcapture/SnapshotData;)V
 
     .line 425
-    const/4 p1, 0x1
+    const/4 v6, 0x1
 
-    return p1
+    return v6
 
     .line 427
+    .end local v1  # "session":Lcom/android/server/contentcapture/ContentCaptureServerSession;
+    .end local v2  # "assistData":Landroid/os/Bundle;
+    .end local v3  # "assistStructure":Landroid/app/assist/AssistStructure;
+    .end local v4  # "assistContent":Landroid/app/assist/AssistContent;
+    .end local v5  # "snapshotData":Landroid/service/contentcapture/SnapshotData;
     :cond_2f
-    sget-object p2, Lcom/android/server/contentcapture/ContentCapturePerUserService;->TAG:Ljava/lang/String;
+    sget-object v1, Lcom/android/server/contentcapture/ContentCapturePerUserService;->TAG:Ljava/lang/String;
 
-    new-instance v0, Ljava/lang/StringBuilder;
+    new-instance v2, Ljava/lang/StringBuilder;
 
-    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v1, "Failed to notify activity assist data for activity: "
+    const-string v3, "Failed to notify activity assist data for activity: "
 
-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v2
 
-    invoke-static {p2, p1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v2}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 429
-    const/4 p1, 0x0
+    const/4 v1, 0x0
 
-    return p1
+    return v1
 .end method
 
 .method public startSessionLocked(Landroid/os/IBinder;Landroid/content/pm/ActivityPresentationInfo;IIILcom/android/internal/os/IResultReceiver;)V
-    .registers 23
+    .registers 30
+    .param p1, "activityToken"  # Landroid/os/IBinder;
+    .param p2, "activityPresentationInfo"  # Landroid/content/pm/ActivityPresentationInfo;
+    .param p3, "sessionId"  # I
+    .param p4, "uid"  # I
+    .param p5, "flags"  # I
+    .param p6, "clientReceiver"  # Lcom/android/internal/os/IResultReceiver;
     .annotation build Lcom/android/internal/annotations/GuardedBy;
         value = {
             "mLock"
@@ -1861,258 +1967,264 @@
     .line 244
     move-object/from16 v11, p0
 
-    move-object/from16 v2, p1
+    move-object/from16 v12, p1
 
-    move-object/from16 v0, p2
+    move-object/from16 v13, p2
 
-    move/from16 v12, p3
+    move/from16 v14, p3
 
-    move-object/from16 v13, p6
+    move-object/from16 v15, p6
 
-    const/4 v1, 0x0
+    const/4 v0, 0x0
 
-    if-nez v0, :cond_1a
+    if-nez v13, :cond_1a
 
     .line 245
-    sget-object v0, Lcom/android/server/contentcapture/ContentCapturePerUserService;->TAG:Ljava/lang/String;
+    sget-object v1, Lcom/android/server/contentcapture/ContentCapturePerUserService;->TAG:Ljava/lang/String;
 
     const-string v2, "basic activity info is null"
 
-    invoke-static {v0, v2}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v2}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 246
-    const/16 v0, 0x104
+    const/16 v1, 0x104
 
-    invoke-static {v13, v0, v1}, Landroid/service/contentcapture/ContentCaptureService;->setClientState(Lcom/android/internal/os/IResultReceiver;ILandroid/os/IBinder;)V
+    invoke-static {v15, v1, v0}, Landroid/service/contentcapture/ContentCaptureService;->setClientState(Lcom/android/internal/os/IResultReceiver;ILandroid/os/IBinder;)V
 
     .line 248
     return-void
 
     .line 250
     :cond_1a
-    iget v6, v0, Landroid/content/pm/ActivityPresentationInfo;->taskId:I
+    iget v10, v13, Landroid/content/pm/ActivityPresentationInfo;->taskId:I
 
     .line 251
-    iget v7, v0, Landroid/content/pm/ActivityPresentationInfo;->displayId:I
+    .local v10, "taskId":I
+    iget v9, v13, Landroid/content/pm/ActivityPresentationInfo;->displayId:I
 
     .line 252
-    iget-object v14, v0, Landroid/content/pm/ActivityPresentationInfo;->componentName:Landroid/content/ComponentName;
+    .local v9, "displayId":I
+    iget-object v8, v13, Landroid/content/pm/ActivityPresentationInfo;->componentName:Landroid/content/ComponentName;
 
     .line 253
-    iget-object v0, v11, Lcom/android/server/contentcapture/ContentCapturePerUserService;->mMaster:Lcom/android/server/infra/AbstractMasterSystemService;
+    .local v8, "componentName":Landroid/content/ComponentName;
+    iget-object v1, v11, Lcom/android/server/contentcapture/ContentCapturePerUserService;->mMaster:Lcom/android/server/infra/AbstractMasterSystemService;
 
-    check-cast v0, Lcom/android/server/contentcapture/ContentCaptureManagerService;
+    check-cast v1, Lcom/android/server/contentcapture/ContentCaptureManagerService;
 
-    iget-object v0, v0, Lcom/android/server/contentcapture/ContentCaptureManagerService;->mGlobalContentCaptureOptions:Lcom/android/server/contentcapture/ContentCaptureManagerService$GlobalContentCaptureOptions;
+    iget-object v1, v1, Lcom/android/server/contentcapture/ContentCaptureManagerService;->mGlobalContentCaptureOptions:Lcom/android/server/contentcapture/ContentCaptureManagerService$GlobalContentCaptureOptions;
+
+    iget v2, v11, Lcom/android/server/contentcapture/ContentCapturePerUserService;->mUserId:I
+
+    invoke-virtual {v1, v2, v8}, Lcom/android/server/contentcapture/ContentCaptureManagerService$GlobalContentCaptureOptions;->isWhitelisted(ILandroid/content/ComponentName;)Z
+
+    move-result v1
+
+    const/4 v2, 0x0
+
+    if-nez v1, :cond_44
+
+    iget-object v1, v11, Lcom/android/server/contentcapture/ContentCapturePerUserService;->mMaster:Lcom/android/server/infra/AbstractMasterSystemService;
+
+    check-cast v1, Lcom/android/server/contentcapture/ContentCaptureManagerService;
+
+    iget-object v1, v1, Lcom/android/server/contentcapture/ContentCaptureManagerService;->mGlobalContentCaptureOptions:Lcom/android/server/contentcapture/ContentCaptureManagerService$GlobalContentCaptureOptions;
 
     iget v3, v11, Lcom/android/server/contentcapture/ContentCapturePerUserService;->mUserId:I
 
-    invoke-virtual {v0, v3, v14}, Lcom/android/server/contentcapture/ContentCaptureManagerService$GlobalContentCaptureOptions;->isWhitelisted(ILandroid/content/ComponentName;)Z
-
-    move-result v0
-
-    const/4 v3, 0x0
-
-    if-nez v0, :cond_44
-
-    iget-object v0, v11, Lcom/android/server/contentcapture/ContentCapturePerUserService;->mMaster:Lcom/android/server/infra/AbstractMasterSystemService;
-
-    check-cast v0, Lcom/android/server/contentcapture/ContentCaptureManagerService;
-
-    iget-object v0, v0, Lcom/android/server/contentcapture/ContentCaptureManagerService;->mGlobalContentCaptureOptions:Lcom/android/server/contentcapture/ContentCaptureManagerService$GlobalContentCaptureOptions;
-
-    iget v4, v11, Lcom/android/server/contentcapture/ContentCapturePerUserService;->mUserId:I
-
     .line 255
-    invoke-virtual {v14}, Landroid/content/ComponentName;->getPackageName()Ljava/lang/String;
+    invoke-virtual {v8}, Landroid/content/ComponentName;->getPackageName()Ljava/lang/String;
 
-    move-result-object v5
+    move-result-object v4
 
     .line 254
-    invoke-virtual {v0, v4, v5}, Lcom/android/server/contentcapture/ContentCaptureManagerService$GlobalContentCaptureOptions;->isWhitelisted(ILjava/lang/String;)Z
+    invoke-virtual {v1, v3, v4}, Lcom/android/server/contentcapture/ContentCaptureManagerService$GlobalContentCaptureOptions;->isWhitelisted(ILjava/lang/String;)Z
 
-    move-result v0
+    move-result v1
 
-    if-eqz v0, :cond_42
+    if-eqz v1, :cond_42
 
     goto :goto_44
 
     :cond_42
-    move v0, v3
+    move v1, v2
 
     goto :goto_45
 
     :cond_44
     :goto_44
-    const/4 v0, 0x1
+    const/4 v1, 0x1
+
+    :goto_45
+    move v7, v1
 
     .line 256
-    :goto_45
+    .local v7, "whiteListed":Z
     invoke-virtual/range {p0 .. p0}, Lcom/android/server/contentcapture/ContentCapturePerUserService;->getServiceComponentName()Landroid/content/ComponentName;
 
-    move-result-object v4
+    move-result-object v16
 
     .line 257
+    .local v16, "serviceComponentName":Landroid/content/ComponentName;
     invoke-virtual/range {p0 .. p0}, Lcom/android/server/contentcapture/ContentCapturePerUserService;->isEnabledLocked()Z
 
-    move-result v5
+    move-result v17
 
     .line 258
-    iget-object v8, v11, Lcom/android/server/contentcapture/ContentCapturePerUserService;->mMaster:Lcom/android/server/infra/AbstractMasterSystemService;
+    .local v17, "enabled":Z
+    iget-object v1, v11, Lcom/android/server/contentcapture/ContentCapturePerUserService;->mMaster:Lcom/android/server/infra/AbstractMasterSystemService;
 
-    check-cast v8, Lcom/android/server/contentcapture/ContentCaptureManagerService;
+    check-cast v1, Lcom/android/server/contentcapture/ContentCaptureManagerService;
 
-    iget-object v8, v8, Lcom/android/server/contentcapture/ContentCaptureManagerService;->mRequestsHistory:Landroid/util/LocalLog;
+    iget-object v1, v1, Lcom/android/server/contentcapture/ContentCaptureManagerService;->mRequestsHistory:Landroid/util/LocalLog;
 
-    if-eqz v8, :cond_c8
+    if-eqz v1, :cond_ca
 
     .line 259
-    new-instance v8, Ljava/lang/StringBuilder;
+    new-instance v1, Ljava/lang/StringBuilder;
 
-    invoke-direct {v8}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v9, "id="
+    const-string/jumbo v3, "id="
 
-    invoke-virtual {v8, v9}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v8, v12}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v14}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    const-string v9, " uid="
+    const-string v3, " uid="
 
-    invoke-virtual {v8, v9}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    move/from16 v9, p4
+    move/from16 v6, p4
 
-    invoke-virtual {v8, v9}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v6}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    const-string v10, " a="
+    const-string v3, " a="
 
-    invoke-virtual {v8, v10}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     .line 261
-    invoke-static {v14}, Landroid/content/ComponentName;->flattenToShortString(Landroid/content/ComponentName;)Ljava/lang/String;
+    invoke-static {v8}, Landroid/content/ComponentName;->flattenToShortString(Landroid/content/ComponentName;)Ljava/lang/String;
 
-    move-result-object v10
+    move-result-object v3
 
-    invoke-virtual {v8, v10}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string v10, " t="
+    const-string v3, " t="
 
-    invoke-virtual {v8, v10}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v8, v6}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v10}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    const-string v10, " d="
+    const-string v3, " d="
 
-    invoke-virtual {v8, v10}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v8, v7}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v9}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    const-string v10, " s="
+    const-string v3, " s="
 
-    invoke-virtual {v8, v10}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     .line 263
-    invoke-static {v4}, Landroid/content/ComponentName;->flattenToShortString(Landroid/content/ComponentName;)Ljava/lang/String;
+    invoke-static/range {v16 .. v16}, Landroid/content/ComponentName;->flattenToShortString(Landroid/content/ComponentName;)Ljava/lang/String;
 
-    move-result-object v10
+    move-result-object v3
 
-    invoke-virtual {v8, v10}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string v10, " u="
+    const-string v3, " u="
 
-    invoke-virtual {v8, v10}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    iget v10, v11, Lcom/android/server/contentcapture/ContentCapturePerUserService;->mUserId:I
+    iget v3, v11, Lcom/android/server/contentcapture/ContentCapturePerUserService;->mUserId:I
 
-    invoke-virtual {v8, v10}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v3}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    const-string v10, " f="
+    const-string v3, " f="
 
-    invoke-virtual {v8, v10}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    move/from16 v10, p5
+    move/from16 v5, p5
 
-    invoke-virtual {v8, v10}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v5}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
     .line 264
-    if-eqz v5, :cond_ad
+    if-eqz v17, :cond_af
 
-    const-string v15, ""
+    const-string v3, ""
 
-    goto :goto_af
+    goto :goto_b1
 
-    :cond_ad
-    const-string v15, " (disabled)"
+    :cond_af
+    const-string v3, " (disabled)"
 
-    :goto_af
-    invoke-virtual {v8, v15}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    :goto_b1
+    invoke-virtual {v1, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string v15, " w="
+    const-string v3, " w="
 
-    invoke-virtual {v8, v15}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v8, v0}, Ljava/lang/StringBuilder;->append(Z)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v7}, Ljava/lang/StringBuilder;->append(Z)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v8}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v8
+    move-result-object v1
 
     .line 266
-    iget-object v15, v11, Lcom/android/server/contentcapture/ContentCapturePerUserService;->mMaster:Lcom/android/server/infra/AbstractMasterSystemService;
+    .local v1, "historyItem":Ljava/lang/String;
+    iget-object v3, v11, Lcom/android/server/contentcapture/ContentCapturePerUserService;->mMaster:Lcom/android/server/infra/AbstractMasterSystemService;
 
-    check-cast v15, Lcom/android/server/contentcapture/ContentCaptureManagerService;
+    check-cast v3, Lcom/android/server/contentcapture/ContentCaptureManagerService;
 
-    iget-object v15, v15, Lcom/android/server/contentcapture/ContentCaptureManagerService;->mRequestsHistory:Landroid/util/LocalLog;
+    iget-object v3, v3, Lcom/android/server/contentcapture/ContentCaptureManagerService;->mRequestsHistory:Landroid/util/LocalLog;
 
-    invoke-virtual {v15, v8}, Landroid/util/LocalLog;->log(Ljava/lang/String;)V
+    invoke-virtual {v3, v1}, Landroid/util/LocalLog;->log(Ljava/lang/String;)V
 
-    goto :goto_cc
+    goto :goto_ce
 
     .line 258
-    :cond_c8
-    move/from16 v9, p4
+    .end local v1  # "historyItem":Ljava/lang/String;
+    :cond_ca
+    move/from16 v6, p4
 
-    move/from16 v10, p5
+    move/from16 v5, p5
 
     .line 269
-    :goto_cc
-    const/16 v8, 0x14
-
-    if-nez v5, :cond_e7
-
-    .line 272
-    invoke-static {v13, v8, v1}, Landroid/service/contentcapture/ContentCaptureService;->setClientState(Lcom/android/internal/os/IResultReceiver;ILandroid/os/IBinder;)V
-
-    .line 275
-    const/4 v0, 0x3
-
+    :goto_ce
     const/16 v1, 0x14
 
-    const/4 v2, 0x0
+    if-nez v17, :cond_e5
 
-    move/from16 p0, p3
+    .line 272
+    invoke-static {v15, v1, v0}, Landroid/service/contentcapture/ContentCaptureService;->setClientState(Lcom/android/internal/os/IResultReceiver;ILandroid/os/IBinder;)V
 
-    move/from16 p1, v0
+    .line 275
+    const/4 v1, 0x3
 
-    move/from16 p2, v1
+    const/16 v2, 0x14
 
-    move-object/from16 p3, v4
+    const/16 v18, 0x0
 
-    move-object/from16 p4, v14
+    move/from16 v0, p3
 
-    move/from16 p5, v2
+    move-object/from16 v3, v16
 
-    invoke-static/range {p0 .. p5}, Lcom/android/server/contentcapture/ContentCaptureMetricsLogger;->writeSessionEvent(IIILandroid/content/ComponentName;Landroid/content/ComponentName;Z)V
+    move-object v4, v8
+
+    move/from16 v5, v18
+
+    invoke-static/range {v0 .. v5}, Lcom/android/server/contentcapture/ContentCaptureMetricsLogger;->writeSessionEvent(IIILandroid/content/ComponentName;Landroid/content/ComponentName;Z)V
 
     .line 279
     return-void
 
     .line 281
-    :cond_e7
-    const-string/jumbo v5, "startSession("
+    :cond_e5
+    const-string/jumbo v3, "startSession("
 
-    if-nez v4, :cond_10e
+    if-nez v16, :cond_10c
 
     .line 285
     iget-object v0, v11, Lcom/android/server/contentcapture/ContentCapturePerUserService;->mMaster:Lcom/android/server/infra/AbstractMasterSystemService;
@@ -2121,7 +2233,7 @@
 
     iget-boolean v0, v0, Lcom/android/server/contentcapture/ContentCaptureManagerService;->debug:Z
 
-    if-eqz v0, :cond_10d
+    if-eqz v0, :cond_10b
 
     .line 286
     sget-object v0, Lcom/android/server/contentcapture/ContentCapturePerUserService;->TAG:Ljava/lang/String;
@@ -2130,9 +2242,9 @@
 
     invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
 
-    invoke-virtual {v1, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v12}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
     const-string v2, "): hold your horses"
 
@@ -2145,32 +2257,32 @@
     invoke-static {v0, v1}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 288
-    :cond_10d
+    :cond_10b
     return-void
 
     .line 291
-    :cond_10e
-    if-nez v0, :cond_14a
+    :cond_10c
+    if-nez v7, :cond_141
 
     .line 292
-    iget-object v0, v11, Lcom/android/server/contentcapture/ContentCapturePerUserService;->mMaster:Lcom/android/server/infra/AbstractMasterSystemService;
+    iget-object v1, v11, Lcom/android/server/contentcapture/ContentCapturePerUserService;->mMaster:Lcom/android/server/infra/AbstractMasterSystemService;
 
-    check-cast v0, Lcom/android/server/contentcapture/ContentCaptureManagerService;
+    check-cast v1, Lcom/android/server/contentcapture/ContentCaptureManagerService;
 
-    iget-boolean v0, v0, Lcom/android/server/contentcapture/ContentCaptureManagerService;->debug:Z
+    iget-boolean v1, v1, Lcom/android/server/contentcapture/ContentCaptureManagerService;->debug:Z
 
-    if-eqz v0, :cond_131
+    if-eqz v1, :cond_12f
 
     .line 293
-    sget-object v0, Lcom/android/server/contentcapture/ContentCapturePerUserService;->TAG:Ljava/lang/String;
+    sget-object v1, Lcom/android/server/contentcapture/ContentCapturePerUserService;->TAG:Ljava/lang/String;
 
     new-instance v2, Ljava/lang/StringBuilder;
 
     invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
 
-    invoke-virtual {v2, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v2, v14}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v8}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
     const-string v3, "): package or component not whitelisted"
 
@@ -2180,257 +2292,273 @@
 
     move-result-object v2
 
-    invoke-static {v0, v2}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v2}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 296
-    :cond_131
-    const/16 v0, 0x204
-
-    invoke-static {v13, v0, v1}, Landroid/service/contentcapture/ContentCaptureService;->setClientState(Lcom/android/internal/os/IResultReceiver;ILandroid/os/IBinder;)V
-
-    .line 299
-    const/4 v0, 0x3
-
+    :cond_12f
     const/16 v1, 0x204
 
-    const/4 v2, 0x0
+    invoke-static {v15, v1, v0}, Landroid/service/contentcapture/ContentCaptureService;->setClientState(Lcom/android/internal/os/IResultReceiver;ILandroid/os/IBinder;)V
 
-    move/from16 p0, p3
+    .line 299
+    const/4 v1, 0x3
 
-    move/from16 p1, v0
+    const/16 v2, 0x204
 
-    move/from16 p2, v1
+    const/4 v5, 0x0
 
-    move-object/from16 p3, v4
+    move/from16 v0, p3
 
-    move-object/from16 p4, v14
+    move-object/from16 v3, v16
 
-    move/from16 p5, v2
+    move-object v4, v8
 
-    invoke-static/range {p0 .. p5}, Lcom/android/server/contentcapture/ContentCaptureMetricsLogger;->writeSessionEvent(IIILandroid/content/ComponentName;Landroid/content/ComponentName;Z)V
+    invoke-static/range {v0 .. v5}, Lcom/android/server/contentcapture/ContentCaptureMetricsLogger;->writeSessionEvent(IIILandroid/content/ComponentName;Landroid/content/ComponentName;Z)V
 
     .line 303
     return-void
 
     .line 306
-    :cond_14a
-    iget-object v0, v11, Lcom/android/server/contentcapture/ContentCapturePerUserService;->mSessions:Landroid/util/SparseArray;
+    :cond_141
+    iget-object v3, v11, Lcom/android/server/contentcapture/ContentCapturePerUserService;->mSessions:Landroid/util/SparseArray;
 
-    invoke-virtual {v0, v12}, Landroid/util/SparseArray;->get(I)Ljava/lang/Object;
+    invoke-virtual {v3, v14}, Landroid/util/SparseArray;->get(I)Ljava/lang/Object;
 
-    move-result-object v0
+    move-result-object v3
 
-    check-cast v0, Lcom/android/server/contentcapture/ContentCaptureServerSession;
+    move-object v5, v3
+
+    check-cast v5, Lcom/android/server/contentcapture/ContentCaptureServerSession;
 
     .line 307
-    const-string v5, ", token="
+    .local v5, "existingSession":Lcom/android/server/contentcapture/ContentCaptureServerSession;
+    const-string v3, ", token="
 
-    const-string/jumbo v15, "startSession(id="
+    const-string/jumbo v4, "startSession(id="
 
-    if-eqz v0, :cond_196
+    if-eqz v5, :cond_18b
 
     .line 308
-    sget-object v3, Lcom/android/server/contentcapture/ContentCapturePerUserService;->TAG:Ljava/lang/String;
+    sget-object v1, Lcom/android/server/contentcapture/ContentCapturePerUserService;->TAG:Ljava/lang/String;
 
-    new-instance v6, Ljava/lang/StringBuilder;
+    new-instance v2, Ljava/lang/StringBuilder;
 
-    invoke-direct {v6}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
 
-    invoke-virtual {v6, v15}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v6, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v6, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v6, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v12}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
-    const-string v2, ": ignoring because it already exists for "
+    const-string v3, ": ignoring because it already exists for "
 
-    invoke-virtual {v6, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    iget-object v0, v0, Lcom/android/server/contentcapture/ContentCaptureServerSession;->mActivityToken:Landroid/os/IBinder;
+    iget-object v3, v5, Lcom/android/server/contentcapture/ContentCaptureServerSession;->mActivityToken:Landroid/os/IBinder;
 
-    invoke-virtual {v6, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v6}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v2
 
-    invoke-static {v3, v0}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v2}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 310
-    const/16 v0, 0xc
-
-    invoke-static {v13, v0, v1}, Landroid/service/contentcapture/ContentCaptureService;->setClientState(Lcom/android/internal/os/IResultReceiver;ILandroid/os/IBinder;)V
-
-    .line 313
-    const/4 v0, 0x3
-
     const/16 v1, 0xc
 
-    const/4 v2, 0x0
+    invoke-static {v15, v1, v0}, Landroid/service/contentcapture/ContentCaptureService;->setClientState(Lcom/android/internal/os/IResultReceiver;ILandroid/os/IBinder;)V
 
-    move/from16 p0, p3
+    .line 313
+    const/4 v1, 0x3
 
-    move/from16 p1, v0
+    const/16 v2, 0xc
 
-    move/from16 p2, v1
+    const/16 v18, 0x0
 
-    move-object/from16 p3, v4
+    move/from16 v0, p3
 
-    move-object/from16 p4, v14
+    move-object/from16 v3, v16
 
-    move/from16 p5, v2
+    move-object v4, v8
 
-    invoke-static/range {p0 .. p5}, Lcom/android/server/contentcapture/ContentCaptureMetricsLogger;->writeSessionEvent(IIILandroid/content/ComponentName;Landroid/content/ComponentName;Z)V
+    move-object v13, v5
+
+    .end local v5  # "existingSession":Lcom/android/server/contentcapture/ContentCaptureServerSession;
+    .local v13, "existingSession":Lcom/android/server/contentcapture/ContentCaptureServerSession;
+    move/from16 v5, v18
+
+    invoke-static/range {v0 .. v5}, Lcom/android/server/contentcapture/ContentCaptureMetricsLogger;->writeSessionEvent(IIILandroid/content/ComponentName;Landroid/content/ComponentName;Z)V
 
     .line 317
     return-void
 
     .line 320
-    :cond_196
-    iget-object v1, v11, Lcom/android/server/contentcapture/ContentCapturePerUserService;->mRemoteService:Lcom/android/server/contentcapture/RemoteContentCaptureService;
+    .end local v13  # "existingSession":Lcom/android/server/contentcapture/ContentCaptureServerSession;
+    .restart local v5  # "existingSession":Lcom/android/server/contentcapture/ContentCaptureServerSession;
+    :cond_18b
+    move-object v13, v5
 
-    if-nez v1, :cond_19d
+    .end local v5  # "existingSession":Lcom/android/server/contentcapture/ContentCaptureServerSession;
+    .restart local v13  # "existingSession":Lcom/android/server/contentcapture/ContentCaptureServerSession;
+    iget-object v5, v11, Lcom/android/server/contentcapture/ContentCapturePerUserService;->mRemoteService:Lcom/android/server/contentcapture/RemoteContentCaptureService;
+
+    if-nez v5, :cond_193
 
     .line 321
-    invoke-direct {v11, v3}, Lcom/android/server/contentcapture/ContentCapturePerUserService;->updateRemoteServiceLocked(Z)V
+    invoke-direct {v11, v2}, Lcom/android/server/contentcapture/ContentCapturePerUserService;->updateRemoteServiceLocked(Z)V
 
     .line 324
-    :cond_19d
-    iget-object v1, v11, Lcom/android/server/contentcapture/ContentCapturePerUserService;->mRemoteService:Lcom/android/server/contentcapture/RemoteContentCaptureService;
+    :cond_193
+    iget-object v2, v11, Lcom/android/server/contentcapture/ContentCapturePerUserService;->mRemoteService:Lcom/android/server/contentcapture/RemoteContentCaptureService;
 
-    if-nez v1, :cond_1d8
+    if-nez v2, :cond_1c6
 
     .line 325
-    sget-object v1, Lcom/android/server/contentcapture/ContentCapturePerUserService;->TAG:Ljava/lang/String;
+    sget-object v2, Lcom/android/server/contentcapture/ContentCapturePerUserService;->TAG:Ljava/lang/String;
 
-    new-instance v3, Ljava/lang/StringBuilder;
+    new-instance v5, Ljava/lang/StringBuilder;
 
-    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v5}, Ljava/lang/StringBuilder;-><init>()V
 
-    invoke-virtual {v3, v15}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v5, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v3, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    invoke-virtual {v5, v13}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v3, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v5, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v3, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    invoke-virtual {v5, v12}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
-    const-string v0, ": ignoring because service is not set"
+    const-string v3, ": ignoring because service is not set"
 
-    invoke-virtual {v3, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v5, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v5}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v3
 
-    invoke-static {v1, v0}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v2, v3}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 327
-    const/4 v0, 0x0
-
-    invoke-static {v13, v8, v0}, Landroid/service/contentcapture/ContentCaptureService;->setClientState(Lcom/android/internal/os/IResultReceiver;ILandroid/os/IBinder;)V
+    invoke-static {v15, v1, v0}, Landroid/service/contentcapture/ContentCaptureService;->setClientState(Lcom/android/internal/os/IResultReceiver;ILandroid/os/IBinder;)V
 
     .line 330
-    const/4 v0, 0x3
+    const/4 v1, 0x3
 
-    const/16 v1, 0x14
+    const/16 v2, 0x14
 
-    const/4 v2, 0x0
+    const/4 v5, 0x0
 
-    move/from16 p0, p3
+    move/from16 v0, p3
 
-    move/from16 p1, v0
+    move-object/from16 v3, v16
 
-    move/from16 p2, v1
+    move-object v4, v8
 
-    move-object/from16 p3, v4
-
-    move-object/from16 p4, v14
-
-    move/from16 p5, v2
-
-    invoke-static/range {p0 .. p5}, Lcom/android/server/contentcapture/ContentCaptureMetricsLogger;->writeSessionEvent(IIILandroid/content/ComponentName;Landroid/content/ComponentName;Z)V
+    invoke-static/range {v0 .. v5}, Lcom/android/server/contentcapture/ContentCaptureMetricsLogger;->writeSessionEvent(IIILandroid/content/ComponentName;Landroid/content/ComponentName;Z)V
 
     .line 334
     return-void
 
     .line 338
-    :cond_1d8
-    invoke-virtual {v1}, Lcom/android/server/contentcapture/RemoteContentCaptureService;->ensureBoundLocked()V
+    :cond_1c6
+    invoke-virtual {v2}, Lcom/android/server/contentcapture/RemoteContentCaptureService;->ensureBoundLocked()V
 
     .line 340
-    new-instance v15, Lcom/android/server/contentcapture/ContentCaptureServerSession;
+    new-instance v18, Lcom/android/server/contentcapture/ContentCaptureServerSession;
 
     iget-object v1, v11, Lcom/android/server/contentcapture/ContentCapturePerUserService;->mLock:Ljava/lang/Object;
 
-    move-object v0, v15
+    move-object/from16 v0, v18
 
     move-object/from16 v2, p1
 
     move-object/from16 v3, p0
 
-    move-object v4, v14
+    move-object v4, v8
 
     move-object/from16 v5, p6
 
+    move v6, v10
+
+    move/from16 v19, v7
+
+    .end local v7  # "whiteListed":Z
+    .local v19, "whiteListed":Z
+    move v7, v9
+
+    move-object/from16 v20, v8
+
+    .end local v8  # "componentName":Landroid/content/ComponentName;
+    .local v20, "componentName":Landroid/content/ComponentName;
     move/from16 v8, p3
 
+    move/from16 v21, v9
+
+    .end local v9  # "displayId":I
+    .local v21, "displayId":I
     move/from16 v9, p4
 
+    move/from16 v22, v10
+
+    .end local v10  # "taskId":I
+    .local v22, "taskId":I
     move/from16 v10, p5
 
     invoke-direct/range {v0 .. v10}, Lcom/android/server/contentcapture/ContentCaptureServerSession;-><init>(Ljava/lang/Object;Landroid/os/IBinder;Lcom/android/server/contentcapture/ContentCapturePerUserService;Landroid/content/ComponentName;Lcom/android/internal/os/IResultReceiver;IIIII)V
 
     .line 343
-    iget-object v0, v11, Lcom/android/server/contentcapture/ContentCapturePerUserService;->mMaster:Lcom/android/server/infra/AbstractMasterSystemService;
+    .local v0, "newSession":Lcom/android/server/contentcapture/ContentCaptureServerSession;
+    iget-object v1, v11, Lcom/android/server/contentcapture/ContentCapturePerUserService;->mMaster:Lcom/android/server/infra/AbstractMasterSystemService;
 
-    check-cast v0, Lcom/android/server/contentcapture/ContentCaptureManagerService;
+    check-cast v1, Lcom/android/server/contentcapture/ContentCaptureManagerService;
 
-    iget-boolean v0, v0, Lcom/android/server/contentcapture/ContentCaptureManagerService;->verbose:Z
+    iget-boolean v1, v1, Lcom/android/server/contentcapture/ContentCaptureManagerService;->verbose:Z
 
-    if-eqz v0, :cond_21b
+    if-eqz v1, :cond_214
 
     .line 344
-    sget-object v0, Lcom/android/server/contentcapture/ContentCapturePerUserService;->TAG:Ljava/lang/String;
+    sget-object v1, Lcom/android/server/contentcapture/ContentCapturePerUserService;->TAG:Ljava/lang/String;
 
-    new-instance v1, Ljava/lang/StringBuilder;
+    new-instance v2, Ljava/lang/StringBuilder;
 
-    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string/jumbo v2, "startSession(): new session for "
+    const-string/jumbo v3, "startSession(): new session for "
 
-    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     .line 345
-    invoke-static {v14}, Landroid/content/ComponentName;->flattenToShortString(Landroid/content/ComponentName;)Ljava/lang/String;
+    invoke-static/range {v20 .. v20}, Landroid/content/ComponentName;->flattenToShortString(Landroid/content/ComponentName;)Ljava/lang/String;
+
+    move-result-object v3
+
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    const-string v3, " and id "
+
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v2, v14}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
     move-result-object v2
 
-    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    const-string v2, " and id "
-
-    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v1, v12}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
-
-    move-result-object v1
-
     .line 344
-    invoke-static {v0, v1}, Landroid/util/Slog;->v(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v2}, Landroid/util/Slog;->v(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 347
-    :cond_21b
-    iget-object v0, v11, Lcom/android/server/contentcapture/ContentCapturePerUserService;->mSessions:Landroid/util/SparseArray;
+    :cond_214
+    iget-object v1, v11, Lcom/android/server/contentcapture/ContentCapturePerUserService;->mSessions:Landroid/util/SparseArray;
 
-    invoke-virtual {v0, v12, v15}, Landroid/util/SparseArray;->put(ILjava/lang/Object;)V
+    invoke-virtual {v1, v14, v0}, Landroid/util/SparseArray;->put(ILjava/lang/Object;)V
 
     .line 348
-    invoke-virtual {v15, v13}, Lcom/android/server/contentcapture/ContentCaptureServerSession;->notifySessionStartedLocked(Lcom/android/internal/os/IResultReceiver;)V
+    invoke-virtual {v0, v15}, Lcom/android/server/contentcapture/ContentCaptureServerSession;->notifySessionStartedLocked(Lcom/android/internal/os/IResultReceiver;)V
 
     .line 349
     return-void
@@ -2438,6 +2566,7 @@
 
 .method protected updateLocked(Z)Z
     .registers 6
+    .param p1, "disabled"  # Z
     .annotation build Lcom/android/internal/annotations/GuardedBy;
         value = {
             "mLock"
@@ -2450,11 +2579,13 @@
     move-result v0
 
     .line 172
+    .local v0, "disabledStateChanged":Z
     if-eqz v0, :cond_1f
 
     .line 174
     const/4 v1, 0x0
 
+    .local v1, "i":I
     :goto_7
     iget-object v2, p0, Lcom/android/server/contentcapture/ContentCapturePerUserService;->mSessions:Landroid/util/SparseArray;
 
@@ -2483,6 +2614,7 @@
     goto :goto_7
 
     .line 178
+    .end local v1  # "i":I
     :cond_1f
     invoke-virtual {p0}, Lcom/android/server/contentcapture/ContentCapturePerUserService;->destroyLocked()V
 

@@ -24,6 +24,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/hdmi/HdmiCecLocalDevicePlayback;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/hdmi/HdmiCecLocalDevicePlayback;
 
     .line 95
     iput-object p1, p0, Lcom/android/server/hdmi/HdmiCecLocalDevicePlayback$1;->this$0:Lcom/android/server/hdmi/HdmiCecLocalDevicePlayback;
@@ -36,26 +37,27 @@
 
 # virtual methods
 .method public onSendCompleted(I)V
-    .registers 4
+    .registers 5
+    .param p1, "error"  # I
 
     .line 98
     if-eqz p1, :cond_11
 
     .line 99
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    new-array v0, p1, [Ljava/lang/Object;
+    new-array v1, v0, [Ljava/lang/Object;
 
-    const-string v1, "AVR did not respond to <Give System Audio Mode Status>"
+    const-string v2, "AVR did not respond to <Give System Audio Mode Status>"
 
-    invoke-static {v1, v0}, Lcom/android/server/hdmi/HdmiLogger;->debug(Ljava/lang/String;[Ljava/lang/Object;)V
+    invoke-static {v2, v1}, Lcom/android/server/hdmi/HdmiLogger;->debug(Ljava/lang/String;[Ljava/lang/Object;)V
 
     .line 101
-    iget-object v0, p0, Lcom/android/server/hdmi/HdmiCecLocalDevicePlayback$1;->this$0:Lcom/android/server/hdmi/HdmiCecLocalDevicePlayback;
+    iget-object v1, p0, Lcom/android/server/hdmi/HdmiCecLocalDevicePlayback$1;->this$0:Lcom/android/server/hdmi/HdmiCecLocalDevicePlayback;
 
-    iget-object v0, v0, Lcom/android/server/hdmi/HdmiCecLocalDevicePlayback;->mService:Lcom/android/server/hdmi/HdmiControlService;
+    iget-object v1, v1, Lcom/android/server/hdmi/HdmiCecLocalDevicePlayback;->mService:Lcom/android/server/hdmi/HdmiControlService;
 
-    invoke-virtual {v0, p1}, Lcom/android/server/hdmi/HdmiControlService;->setSystemAudioActivated(Z)V
+    invoke-virtual {v1, v0}, Lcom/android/server/hdmi/HdmiControlService;->setSystemAudioActivated(Z)V
 
     .line 103
     :cond_11

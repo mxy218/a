@@ -30,6 +30,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/hdmi/HdmiControlService$BinderService;II[B)V
     .registers 5
+    .param p1, "this$1"  # Lcom/android/server/hdmi/HdmiControlService$BinderService;
 
     .line 1939
     iput-object p1, p0, Lcom/android/server/hdmi/HdmiControlService$BinderService$17;->this$1:Lcom/android/server/hdmi/HdmiControlService$BinderService;

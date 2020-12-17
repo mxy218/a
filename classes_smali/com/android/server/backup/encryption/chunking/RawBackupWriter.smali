@@ -15,6 +15,7 @@
 # direct methods
 .method public constructor <init>(Ljava/io/OutputStream;)V
     .registers 2
+    .param p1, "outputStream"  # Ljava/io/OutputStream;
 
     .line 28
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -56,6 +57,7 @@
 
 .method public writeBytes([B)V
     .registers 6
+    .param p1, "bytes"  # [B
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Ljava/io/IOException;
@@ -70,9 +72,9 @@
     .line 35
     iget-wide v0, p0, Lcom/android/server/backup/encryption/chunking/RawBackupWriter;->bytesWritten:J
 
-    array-length p1, p1
+    array-length v2, p1
 
-    int-to-long v2, p1
+    int-to-long v2, v2
 
     add-long/2addr v0, v2
 
@@ -83,7 +85,9 @@
 .end method
 
 .method public writeChunk(JI)V
-    .registers 4
+    .registers 6
+    .param p1, "start"  # J
+    .param p3, "length"  # I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Ljava/io/IOException;
@@ -91,11 +95,11 @@
     .end annotation
 
     .line 40
-    new-instance p1, Ljava/lang/UnsupportedOperationException;
+    new-instance v0, Ljava/lang/UnsupportedOperationException;
 
-    const-string p2, "RawBackupWriter cannot write existing chunks"
+    const-string v1, "RawBackupWriter cannot write existing chunks"
 
-    invoke-direct {p1, p2}, Ljava/lang/UnsupportedOperationException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v0, v1}, Ljava/lang/UnsupportedOperationException;-><init>(Ljava/lang/String;)V
 
-    throw p1
+    throw v0
 .end method

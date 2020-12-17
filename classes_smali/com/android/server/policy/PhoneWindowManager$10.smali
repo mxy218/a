@@ -1,11 +1,14 @@
 .class Lcom/android/server/policy/PhoneWindowManager$10;
-.super Landroid/content/BroadcastReceiver;
+.super Ljava/lang/Object;
 .source "PhoneWindowManager.java"
+
+# interfaces
+.implements Lcom/android/server/policy/WindowManagerPolicy$OnKeyguardExitResult;
 
 
 # annotations
 .annotation system Ldalvik/annotation/EnclosingMethod;
-    value = Lcom/android/server/policy/PhoneWindowManager;->init(Landroid/content/Context;Landroid/view/IWindowManager;Lcom/android/server/policy/WindowManagerPolicy$WindowManagerFuncs;)V
+    value = Lcom/android/server/policy/PhoneWindowManager;->launchHomeFromHotKey(IZZ)V
 .end annotation
 
 .annotation system Ldalvik/annotation/InnerClass;
@@ -17,67 +20,49 @@
 # instance fields
 .field final synthetic this$0:Lcom/android/server/policy/PhoneWindowManager;
 
+.field final synthetic val$awakenFromDreams:Z
+
+.field final synthetic val$displayId:I
+
 
 # direct methods
-.method constructor <init>(Lcom/android/server/policy/PhoneWindowManager;)V
-    .registers 2
+.method constructor <init>(Lcom/android/server/policy/PhoneWindowManager;IZ)V
+    .registers 4
+    .param p1, "this$0"  # Lcom/android/server/policy/PhoneWindowManager;
 
-    .line 2278
+    .line 3632
     iput-object p1, p0, Lcom/android/server/policy/PhoneWindowManager$10;->this$0:Lcom/android/server/policy/PhoneWindowManager;
 
-    invoke-direct {p0}, Landroid/content/BroadcastReceiver;-><init>()V
+    iput p2, p0, Lcom/android/server/policy/PhoneWindowManager$10;->val$displayId:I
+
+    iput-boolean p3, p0, Lcom/android/server/policy/PhoneWindowManager$10;->val$awakenFromDreams:Z
+
+    invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
     return-void
 .end method
 
 
 # virtual methods
-.method public onReceive(Landroid/content/Context;Landroid/content/Intent;)V
-    .registers 3
+.method public onKeyguardExitResult(Z)V
+    .registers 6
+    .param p1, "success"  # Z
 
-    .line 2281
-    iget-object p1, p0, Lcom/android/server/policy/PhoneWindowManager$10;->this$0:Lcom/android/server/policy/PhoneWindowManager;
+    .line 3635
+    if-eqz p1, :cond_c
 
-    const/4 p2, 0x0
+    .line 3636
+    iget-object v0, p0, Lcom/android/server/policy/PhoneWindowManager$10;->this$0:Lcom/android/server/policy/PhoneWindowManager;
 
-    invoke-static {p1, p2}, Lcom/android/server/policy/PhoneWindowManager;->access$4102(Lcom/android/server/policy/PhoneWindowManager;Landroid/app/PendingIntent;)Landroid/app/PendingIntent;
+    iget v1, p0, Lcom/android/server/policy/PhoneWindowManager$10;->val$displayId:I
 
-    .line 2282
-    iget-object p1, p0, Lcom/android/server/policy/PhoneWindowManager$10;->this$0:Lcom/android/server/policy/PhoneWindowManager;
+    const/4 v2, 0x1
 
-    invoke-static {p1}, Lcom/android/server/policy/PhoneWindowManager;->access$4200(Lcom/android/server/policy/PhoneWindowManager;)Z
+    iget-boolean v3, p0, Lcom/android/server/policy/PhoneWindowManager$10;->val$awakenFromDreams:Z
 
-    move-result p1
+    invoke-virtual {v0, v1, v2, v3}, Lcom/android/server/policy/PhoneWindowManager;->startDockOrHome(IZZ)V
 
-    if-eqz p1, :cond_26
-
-    .line 2283
-    iget-object p1, p0, Lcom/android/server/policy/PhoneWindowManager$10;->this$0:Lcom/android/server/policy/PhoneWindowManager;
-
-    iget-object p1, p1, Lcom/android/server/policy/PhoneWindowManager;->mHandler:Landroid/os/Handler;
-
-    const/16 p2, 0x64
-
-    invoke-virtual {p1, p2}, Landroid/os/Handler;->removeMessages(I)V
-
-    .line 2284
-    iget-object p1, p0, Lcom/android/server/policy/PhoneWindowManager$10;->this$0:Lcom/android/server/policy/PhoneWindowManager;
-
-    iget-object p1, p1, Lcom/android/server/policy/PhoneWindowManager;->mHandler:Landroid/os/Handler;
-
-    invoke-virtual {p1, p2}, Landroid/os/Handler;->obtainMessage(I)Landroid/os/Message;
-
-    move-result-object p1
-
-    .line 2285
-    const/4 p2, 0x1
-
-    invoke-virtual {p1, p2}, Landroid/os/Message;->setAsynchronous(Z)V
-
-    .line 2286
-    invoke-virtual {p1}, Landroid/os/Message;->sendToTarget()V
-
-    .line 2288
-    :cond_26
+    .line 3638
+    :cond_c
     return-void
 .end method

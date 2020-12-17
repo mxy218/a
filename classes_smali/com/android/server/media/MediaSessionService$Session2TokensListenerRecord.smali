@@ -28,19 +28,22 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/media/MediaSessionService;Landroid/media/session/ISession2TokensListener;I)V
     .registers 4
+    .param p1, "this$0"  # Lcom/android/server/media/MediaSessionService;
+    .param p2, "listener"  # Landroid/media/session/ISession2TokensListener;
+    .param p3, "userId"  # I
 
-    .line 961
+    .line 971
     iput-object p1, p0, Lcom/android/server/media/MediaSessionService$Session2TokensListenerRecord;->this$0:Lcom/android/server/media/MediaSessionService;
 
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
-    .line 962
+    .line 972
     iput-object p2, p0, Lcom/android/server/media/MediaSessionService$Session2TokensListenerRecord;->listener:Landroid/media/session/ISession2TokensListener;
 
-    .line 963
+    .line 973
     iput p3, p0, Lcom/android/server/media/MediaSessionService$Session2TokensListenerRecord;->userId:I
 
-    .line 964
+    .line 974
     return-void
 .end method
 
@@ -49,7 +52,7 @@
 .method public binderDied()V
     .registers 3
 
-    .line 968
+    .line 978
     iget-object v0, p0, Lcom/android/server/media/MediaSessionService$Session2TokensListenerRecord;->this$0:Lcom/android/server/media/MediaSessionService;
 
     invoke-static {v0}, Lcom/android/server/media/MediaSessionService;->access$1200(Lcom/android/server/media/MediaSessionService;)Ljava/lang/Object;
@@ -58,7 +61,7 @@
 
     monitor-enter v0
 
-    .line 969
+    .line 979
     :try_start_7
     iget-object v1, p0, Lcom/android/server/media/MediaSessionService$Session2TokensListenerRecord;->this$0:Lcom/android/server/media/MediaSessionService;
 
@@ -68,13 +71,13 @@
 
     invoke-interface {v1, p0}, Ljava/util/List;->remove(Ljava/lang/Object;)Z
 
-    .line 970
+    .line 980
     monitor-exit v0
 
-    .line 971
+    .line 981
     return-void
 
-    .line 970
+    .line 980
     :catchall_12
     move-exception v1
 

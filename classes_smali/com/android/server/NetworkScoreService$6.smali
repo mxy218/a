@@ -40,6 +40,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/NetworkScoreService;Ljava/io/FileDescriptor;[Ljava/lang/String;Ljava/io/PrintWriter;)V
     .registers 5
+    .param p1, "this$0"  # Lcom/android/server/NetworkScoreService;
 
     .line 911
     iput-object p1, p0, Lcom/android/server/NetworkScoreService$6;->this$0:Lcom/android/server/NetworkScoreService;
@@ -58,19 +59,21 @@
 
 # virtual methods
 .method public accept(Landroid/net/INetworkScoreCache;Ljava/lang/Object;)V
-    .registers 5
+    .registers 7
+    .param p1, "networkScoreCache"  # Landroid/net/INetworkScoreCache;
+    .param p2, "cookie"  # Ljava/lang/Object;
 
     .line 915
     :try_start_0
     invoke-interface {p1}, Landroid/net/INetworkScoreCache;->asBinder()Landroid/os/IBinder;
 
-    move-result-object p1
+    move-result-object v0
 
-    iget-object p2, p0, Lcom/android/server/NetworkScoreService$6;->val$fd:Ljava/io/FileDescriptor;
+    iget-object v1, p0, Lcom/android/server/NetworkScoreService$6;->val$fd:Ljava/io/FileDescriptor;
 
-    iget-object v0, p0, Lcom/android/server/NetworkScoreService$6;->val$args:[Ljava/lang/String;
+    iget-object v2, p0, Lcom/android/server/NetworkScoreService$6;->val$args:[Ljava/lang/String;
 
-    invoke-static {p1, p2, v0}, Lcom/android/internal/os/TransferPipe;->dumpAsync(Landroid/os/IBinder;Ljava/io/FileDescriptor;[Ljava/lang/String;)V
+    invoke-static {v0, v1, v2}, Lcom/android/internal/os/TransferPipe;->dumpAsync(Landroid/os/IBinder;Ljava/io/FileDescriptor;[Ljava/lang/String;)V
     :try_end_b
     .catch Ljava/io/IOException; {:try_start_0 .. :try_end_b} :catch_c
     .catch Landroid/os/RemoteException; {:try_start_0 .. :try_end_b} :catch_c
@@ -80,28 +83,30 @@
 
     .line 916
     :catch_c
-    move-exception p1
+    move-exception v0
 
     .line 917
-    iget-object p2, p0, Lcom/android/server/NetworkScoreService$6;->val$writer:Ljava/io/PrintWriter;
+    .local v0, "e":Ljava/lang/Exception;
+    iget-object v1, p0, Lcom/android/server/NetworkScoreService$6;->val$writer:Ljava/io/PrintWriter;
 
-    new-instance v0, Ljava/lang/StringBuilder;
+    new-instance v2, Ljava/lang/StringBuilder;
 
-    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v1, "Failed to dump score cache: "
+    const-string v3, "Failed to dump score cache: "
 
-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v2
 
-    invoke-virtual {p2, p1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {v1, v2}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
     .line 919
+    .end local v0  # "e":Ljava/lang/Exception;
     :goto_23
     return-void
 .end method

@@ -33,6 +33,7 @@
 # direct methods
 .method public constructor <init>(Landroid/content/Context;)V
     .registers 3
+    .param p1, "c"  # Landroid/content/Context;
 
     .line 53
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -52,10 +53,11 @@
 .end method
 
 .method static synthetic access$000(Lcom/android/server/AttributeCache$Package;)Landroid/util/SparseArray;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/AttributeCache$Package;
 
     .line 49
-    iget-object p0, p0, Lcom/android/server/AttributeCache$Package;->mMap:Landroid/util/SparseArray;
+    iget-object v0, p0, Lcom/android/server/AttributeCache$Package;->mMap:Landroid/util/SparseArray;
 
-    return-object p0
+    return-object v0
 .end method

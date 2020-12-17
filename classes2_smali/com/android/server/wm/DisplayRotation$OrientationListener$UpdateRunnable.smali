@@ -26,16 +26,17 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/wm/DisplayRotation$OrientationListener;I)V
     .registers 3
+    .param p2, "rotation"  # I
 
-    .line 935
+    .line 985
     iput-object p1, p0, Lcom/android/server/wm/DisplayRotation$OrientationListener$UpdateRunnable;->this$1:Lcom/android/server/wm/DisplayRotation$OrientationListener;
 
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
-    .line 936
+    .line 986
     iput p2, p0, Lcom/android/server/wm/DisplayRotation$OrientationListener$UpdateRunnable;->mRotation:I
 
-    .line 937
+    .line 987
     return-void
 .end method
 
@@ -44,12 +45,12 @@
 .method public run()V
     .registers 4
 
-    .line 942
+    .line 992
     iget-object v0, p0, Lcom/android/server/wm/DisplayRotation$OrientationListener$UpdateRunnable;->this$1:Lcom/android/server/wm/DisplayRotation$OrientationListener;
 
     iget-object v0, v0, Lcom/android/server/wm/DisplayRotation$OrientationListener;->this$0:Lcom/android/server/wm/DisplayRotation;
 
-    invoke-static {v0}, Lcom/android/server/wm/DisplayRotation;->access$000(Lcom/android/server/wm/DisplayRotation;)Lcom/android/server/wm/WindowManagerService;
+    invoke-static {v0}, Lcom/android/server/wm/DisplayRotation;->access$200(Lcom/android/server/wm/DisplayRotation;)Lcom/android/server/wm/WindowManagerService;
 
     move-result-object v0
 
@@ -61,7 +62,7 @@
 
     invoke-virtual {v0, v2, v1}, Landroid/os/PowerManagerInternal;->powerHint(II)V
 
-    .line 943
+    .line 993
     iget-object v0, p0, Lcom/android/server/wm/DisplayRotation$OrientationListener$UpdateRunnable;->this$1:Lcom/android/server/wm/DisplayRotation$OrientationListener;
 
     iget-object v0, v0, Lcom/android/server/wm/DisplayRotation$OrientationListener;->this$0:Lcom/android/server/wm/DisplayRotation;
@@ -70,52 +71,54 @@
 
     iget-object v2, v2, Lcom/android/server/wm/DisplayRotation$OrientationListener;->this$0:Lcom/android/server/wm/DisplayRotation;
 
-    invoke-static {v2}, Lcom/android/server/wm/DisplayRotation;->access$100(Lcom/android/server/wm/DisplayRotation;)I
+    invoke-static {v2}, Lcom/android/server/wm/DisplayRotation;->access$300(Lcom/android/server/wm/DisplayRotation;)I
 
     move-result v2
 
-    invoke-static {v0, v2}, Lcom/android/server/wm/DisplayRotation;->access$200(Lcom/android/server/wm/DisplayRotation;I)Z
+    invoke-static {v0, v2}, Lcom/android/server/wm/DisplayRotation;->access$400(Lcom/android/server/wm/DisplayRotation;I)Z
 
     move-result v0
 
     if-eqz v0, :cond_35
 
-    .line 944
+    .line 994
     iget-object v0, p0, Lcom/android/server/wm/DisplayRotation$OrientationListener$UpdateRunnable;->this$1:Lcom/android/server/wm/DisplayRotation$OrientationListener;
 
     iget-object v0, v0, Lcom/android/server/wm/DisplayRotation$OrientationListener;->this$0:Lcom/android/server/wm/DisplayRotation;
 
     iget v1, p0, Lcom/android/server/wm/DisplayRotation$OrientationListener$UpdateRunnable;->mRotation:I
 
-    invoke-static {v0, v1}, Lcom/android/server/wm/DisplayRotation;->access$300(Lcom/android/server/wm/DisplayRotation;I)Z
+    invoke-static {v0, v1}, Lcom/android/server/wm/DisplayRotation;->access$500(Lcom/android/server/wm/DisplayRotation;I)Z
 
     move-result v0
 
-    .line 945
+    .line 995
+    .local v0, "isValid":Z
     iget-object v1, p0, Lcom/android/server/wm/DisplayRotation$OrientationListener$UpdateRunnable;->this$1:Lcom/android/server/wm/DisplayRotation$OrientationListener;
 
     iget-object v1, v1, Lcom/android/server/wm/DisplayRotation$OrientationListener;->this$0:Lcom/android/server/wm/DisplayRotation;
 
     iget v2, p0, Lcom/android/server/wm/DisplayRotation$OrientationListener$UpdateRunnable;->mRotation:I
 
-    invoke-static {v1, v2, v0}, Lcom/android/server/wm/DisplayRotation;->access$400(Lcom/android/server/wm/DisplayRotation;IZ)V
+    invoke-static {v1, v2, v0}, Lcom/android/server/wm/DisplayRotation;->access$600(Lcom/android/server/wm/DisplayRotation;IZ)V
 
-    .line 946
+    .line 996
+    .end local v0  # "isValid":Z
     goto :goto_40
 
-    .line 947
+    .line 997
     :cond_35
     iget-object v0, p0, Lcom/android/server/wm/DisplayRotation$OrientationListener$UpdateRunnable;->this$1:Lcom/android/server/wm/DisplayRotation$OrientationListener;
 
     iget-object v0, v0, Lcom/android/server/wm/DisplayRotation$OrientationListener;->this$0:Lcom/android/server/wm/DisplayRotation;
 
-    invoke-static {v0}, Lcom/android/server/wm/DisplayRotation;->access$000(Lcom/android/server/wm/DisplayRotation;)Lcom/android/server/wm/WindowManagerService;
+    invoke-static {v0}, Lcom/android/server/wm/DisplayRotation;->access$200(Lcom/android/server/wm/DisplayRotation;)Lcom/android/server/wm/WindowManagerService;
 
     move-result-object v0
 
     invoke-virtual {v0, v1, v1}, Lcom/android/server/wm/WindowManagerService;->updateRotation(ZZ)V
 
-    .line 950
+    .line 1000
     :goto_40
     return-void
 .end method

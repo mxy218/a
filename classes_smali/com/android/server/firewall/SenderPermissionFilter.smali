@@ -34,6 +34,7 @@
 
 .method private constructor <init>(Ljava/lang/String;)V
     .registers 2
+    .param p1, "permission"  # Ljava/lang/String;
 
     .line 31
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -47,6 +48,8 @@
 
 .method synthetic constructor <init>(Ljava/lang/String;Lcom/android/server/firewall/SenderPermissionFilter$1;)V
     .registers 3
+    .param p1, "x0"  # Ljava/lang/String;
+    .param p2, "x1"  # Lcom/android/server/firewall/SenderPermissionFilter$1;
 
     .line 26
     invoke-direct {p0, p1}, Lcom/android/server/firewall/SenderPermissionFilter;-><init>(Ljava/lang/String;)V
@@ -58,6 +61,13 @@
 # virtual methods
 .method public matches(Lcom/android/server/firewall/IntentFirewall;Landroid/content/ComponentName;Landroid/content/Intent;IILjava/lang/String;I)Z
     .registers 14
+    .param p1, "ifw"  # Lcom/android/server/firewall/IntentFirewall;
+    .param p2, "resolvedComponent"  # Landroid/content/ComponentName;
+    .param p3, "intent"  # Landroid/content/Intent;
+    .param p4, "callerUid"  # I
+    .param p5, "callerPid"  # I
+    .param p6, "resolvedType"  # Ljava/lang/String;
+    .param p7, "receivingUid"  # I
 
     .line 41
     iget-object v1, p0, Lcom/android/server/firewall/SenderPermissionFilter;->mPermission:Ljava/lang/String;
@@ -74,7 +84,7 @@
 
     invoke-virtual/range {v0 .. v5}, Lcom/android/server/firewall/IntentFirewall;->checkComponentPermission(Ljava/lang/String;IIIZ)Z
 
-    move-result p1
+    move-result v0
 
-    return p1
+    return v0
 .end method

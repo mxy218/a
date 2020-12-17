@@ -28,6 +28,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/tv/TvInputHardwareManager;Lcom/android/server/tv/TvInputHardwareManager$TvInputHardwareImpl;Landroid/media/tv/TvStreamConfig;)V
     .registers 4
+    .param p1, "this$0"  # Lcom/android/server/tv/TvInputHardwareManager;
 
     .line 475
     iput-object p1, p0, Lcom/android/server/tv/TvInputHardwareManager$2;->this$0:Lcom/android/server/tv/TvInputHardwareManager;

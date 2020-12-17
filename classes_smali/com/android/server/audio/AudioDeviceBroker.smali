@@ -41,9 +41,7 @@
 
 .field private static final MSG_IL_BTA2DP_DOCK_TIMEOUT:I = 0xa
 
-.field private static final MSG_IL_SET_A2DP_SINK_CONNECTION_STATE_CONNECTED:I = 0x1b
-
-.field private static final MSG_IL_SET_A2DP_SINK_CONNECTION_STATE_DISCONNECTED:I = 0x1c
+.field private static final MSG_IL_SET_A2DP_SINK_CONNECTION_STATE:I = 0x6
 
 .field private static final MSG_IL_SET_A2DP_SOURCE_CONNECTION_STATE:I = 0x7
 
@@ -57,13 +55,11 @@
 
 .field private static final MSG_L_A2DP_ACTIVE_DEVICE_CHANGE:I = 0x12
 
-.field private static final MSG_L_A2DP_ACTIVE_DEVICE_CHANGE_EXT:I = 0x20
+.field private static final MSG_L_A2DP_ACTIVE_DEVICE_CHANGE_EXT:I = 0x1d
 
 .field private static final MSG_L_A2DP_DEVICE_CONFIG_CHANGE:I = 0xb
 
-.field private static final MSG_L_A2DP_DEVICE_CONNECTION_CHANGE_EXT_CONNECTION:I = 0x1d
-
-.field private static final MSG_L_A2DP_DEVICE_CONNECTION_CHANGE_EXT_DISCONNECTION:I = 0x1e
+.field private static final MSG_L_A2DP_DEVICE_CONNECTION_CHANGE_EXT:I = 0x1b
 
 .field private static final MSG_L_BT_SERVICE_CONNECTED_PROFILE_A2DP:I = 0x17
 
@@ -73,9 +69,9 @@
 
 .field private static final MSG_L_BT_SERVICE_CONNECTED_PROFILE_HEARING_AID:I = 0x19
 
-.field private static final MSG_L_HEARING_AID_DEVICE_CONNECTION_CHANGE_EXT:I = 0x1f
+.field private static final MSG_L_HEARING_AID_DEVICE_CONNECTION_CHANGE_EXT:I = 0x1c
 
-.field private static final MSG_L_SCOCLIENT_DIED:I = 0x21
+.field private static final MSG_L_SCOCLIENT_DIED:I = 0x1e
 
 .field private static final MSG_L_SET_WIRED_DEVICE_CONNECTION_STATE:I = 0x2
 
@@ -83,7 +79,7 @@
 
 .field private static final MSG_RESTORE_DEVICES:I = 0x1
 
-.field private static final MSG_TOGGLE_HDMI:I = 0x6
+.field private static final MSG_TOGGLE_HDMI:I = 0x11
 
 .field private static final SENDMSG_NOOP:I = 0x1
 
@@ -140,14 +136,14 @@
 .method static constructor <clinit>()V
     .registers 2
 
-    .line 74
+    .line 80
     new-instance v0, Ljava/lang/Object;
 
     invoke-direct {v0}, Ljava/lang/Object;-><init>()V
 
     sput-object v0, Lcom/android/server/audio/AudioDeviceBroker;->sLastDeviceConnectionMsgTimeLock:Ljava/lang/Object;
 
-    .line 76
+    .line 82
     const-wide/16 v0, 0x0
 
     sput-wide v0, Lcom/android/server/audio/AudioDeviceBroker;->sLastDeviceConnectMsgTime:J
@@ -157,303 +153,258 @@
 
 .method constructor <init>(Landroid/content/Context;Lcom/android/server/audio/AudioService;)V
     .registers 4
-
-    .line 90
-    invoke-direct {p0}, Ljava/lang/Object;-><init>()V
-
-    .line 79
-    new-instance v0, Ljava/lang/Object;
-
-    invoke-direct {v0}, Ljava/lang/Object;-><init>()V
-
-    iput-object v0, p0, Lcom/android/server/audio/AudioDeviceBroker;->mDeviceStateLock:Ljava/lang/Object;
-
-    .line 87
-    new-instance v0, Ljava/lang/Object;
-
-    invoke-direct {v0}, Ljava/lang/Object;-><init>()V
-
-    iput-object v0, p0, Lcom/android/server/audio/AudioDeviceBroker;->mSetModeLock:Ljava/lang/Object;
-
-    .line 91
-    iput-object p1, p0, Lcom/android/server/audio/AudioDeviceBroker;->mContext:Landroid/content/Context;
-
-    .line 92
-    iput-object p2, p0, Lcom/android/server/audio/AudioDeviceBroker;->mAudioService:Lcom/android/server/audio/AudioService;
-
-    .line 93
-    new-instance p1, Lcom/android/server/audio/BtHelper;
-
-    invoke-direct {p1, p0}, Lcom/android/server/audio/BtHelper;-><init>(Lcom/android/server/audio/AudioDeviceBroker;)V
-
-    iput-object p1, p0, Lcom/android/server/audio/AudioDeviceBroker;->mBtHelper:Lcom/android/server/audio/BtHelper;
-
-    .line 94
-    new-instance p1, Lcom/android/server/audio/AudioDeviceInventory;
-
-    invoke-direct {p1, p0}, Lcom/android/server/audio/AudioDeviceInventory;-><init>(Lcom/android/server/audio/AudioDeviceBroker;)V
-
-    iput-object p1, p0, Lcom/android/server/audio/AudioDeviceBroker;->mDeviceInventory:Lcom/android/server/audio/AudioDeviceInventory;
+    .param p1, "context"  # Landroid/content/Context;
+    .param p2, "service"  # Lcom/android/server/audio/AudioService;
 
     .line 96
-    invoke-direct {p0}, Lcom/android/server/audio/AudioDeviceBroker;->init()V
-
-    .line 97
-    return-void
-.end method
-
-.method constructor <init>(Landroid/content/Context;Lcom/android/server/audio/AudioService;Lcom/android/server/audio/AudioDeviceInventory;)V
-    .registers 5
-
-    .line 101
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
-    .line 79
+    .line 85
     new-instance v0, Ljava/lang/Object;
 
     invoke-direct {v0}, Ljava/lang/Object;-><init>()V
 
     iput-object v0, p0, Lcom/android/server/audio/AudioDeviceBroker;->mDeviceStateLock:Ljava/lang/Object;
 
-    .line 87
+    .line 93
     new-instance v0, Ljava/lang/Object;
 
     invoke-direct {v0}, Ljava/lang/Object;-><init>()V
 
     iput-object v0, p0, Lcom/android/server/audio/AudioDeviceBroker;->mSetModeLock:Ljava/lang/Object;
 
-    .line 102
+    .line 97
     iput-object p1, p0, Lcom/android/server/audio/AudioDeviceBroker;->mContext:Landroid/content/Context;
 
-    .line 103
+    .line 98
     iput-object p2, p0, Lcom/android/server/audio/AudioDeviceBroker;->mAudioService:Lcom/android/server/audio/AudioService;
 
+    .line 99
+    invoke-direct {p0, p1}, Lcom/android/server/audio/AudioDeviceBroker;->setupMessaging(Landroid/content/Context;)V
+
+    .line 100
+    new-instance v0, Lcom/android/server/audio/BtHelper;
+
+    invoke-direct {v0, p0}, Lcom/android/server/audio/BtHelper;-><init>(Lcom/android/server/audio/AudioDeviceBroker;)V
+
+    iput-object v0, p0, Lcom/android/server/audio/AudioDeviceBroker;->mBtHelper:Lcom/android/server/audio/BtHelper;
+
+    .line 101
+    new-instance v0, Lcom/android/server/audio/AudioDeviceInventory;
+
+    invoke-direct {v0, p0}, Lcom/android/server/audio/AudioDeviceInventory;-><init>(Lcom/android/server/audio/AudioDeviceBroker;)V
+
+    iput-object v0, p0, Lcom/android/server/audio/AudioDeviceBroker;->mDeviceInventory:Lcom/android/server/audio/AudioDeviceInventory;
+
+    .line 103
+    const/4 v0, 0x0
+
+    iput v0, p0, Lcom/android/server/audio/AudioDeviceBroker;->mForcedUseForComm:I
+
     .line 104
-    new-instance p1, Lcom/android/server/audio/BtHelper;
+    iget v0, p0, Lcom/android/server/audio/AudioDeviceBroker;->mForcedUseForComm:I
 
-    invoke-direct {p1, p0}, Lcom/android/server/audio/BtHelper;-><init>(Lcom/android/server/audio/AudioDeviceBroker;)V
+    iput v0, p0, Lcom/android/server/audio/AudioDeviceBroker;->mForcedUseForCommExt:I
 
-    iput-object p1, p0, Lcom/android/server/audio/AudioDeviceBroker;->mBtHelper:Lcom/android/server/audio/BtHelper;
-
-    .line 105
-    iput-object p3, p0, Lcom/android/server/audio/AudioDeviceBroker;->mDeviceInventory:Lcom/android/server/audio/AudioDeviceInventory;
-
-    .line 107
-    invoke-direct {p0}, Lcom/android/server/audio/AudioDeviceBroker;->init()V
-
-    .line 108
+    .line 106
     return-void
 .end method
 
 .method static synthetic access$002(Lcom/android/server/audio/AudioDeviceBroker;Lcom/android/server/audio/AudioDeviceBroker$BrokerHandler;)Lcom/android/server/audio/AudioDeviceBroker$BrokerHandler;
     .registers 2
+    .param p0, "x0"  # Lcom/android/server/audio/AudioDeviceBroker;
+    .param p1, "x1"  # Lcom/android/server/audio/AudioDeviceBroker$BrokerHandler;
 
-    .line 45
+    .line 51
     iput-object p1, p0, Lcom/android/server/audio/AudioDeviceBroker;->mBrokerHandler:Lcom/android/server/audio/AudioDeviceBroker$BrokerHandler;
 
     return-object p1
 .end method
 
 .method static synthetic access$200(Lcom/android/server/audio/AudioDeviceBroker;)Ljava/lang/Object;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/audio/AudioDeviceBroker;
 
-    .line 45
-    iget-object p0, p0, Lcom/android/server/audio/AudioDeviceBroker;->mDeviceStateLock:Ljava/lang/Object;
+    .line 51
+    iget-object v0, p0, Lcom/android/server/audio/AudioDeviceBroker;->mDeviceStateLock:Ljava/lang/Object;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$300(Lcom/android/server/audio/AudioDeviceBroker;)Lcom/android/server/audio/AudioDeviceInventory;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/audio/AudioDeviceBroker;
 
-    .line 45
-    iget-object p0, p0, Lcom/android/server/audio/AudioDeviceBroker;->mDeviceInventory:Lcom/android/server/audio/AudioDeviceInventory;
+    .line 51
+    iget-object v0, p0, Lcom/android/server/audio/AudioDeviceBroker;->mDeviceInventory:Lcom/android/server/audio/AudioDeviceInventory;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$400(Lcom/android/server/audio/AudioDeviceBroker;)Lcom/android/server/audio/BtHelper;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/audio/AudioDeviceBroker;
 
-    .line 45
-    iget-object p0, p0, Lcom/android/server/audio/AudioDeviceBroker;->mBtHelper:Lcom/android/server/audio/BtHelper;
+    .line 51
+    iget-object v0, p0, Lcom/android/server/audio/AudioDeviceBroker;->mBtHelper:Lcom/android/server/audio/BtHelper;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$500(Lcom/android/server/audio/AudioDeviceBroker;IILjava/lang/String;)V
     .registers 4
+    .param p0, "x0"  # Lcom/android/server/audio/AudioDeviceBroker;
+    .param p1, "x1"  # I
+    .param p2, "x2"  # I
+    .param p3, "x3"  # Ljava/lang/String;
 
-    .line 45
+    .line 51
     invoke-direct {p0, p1, p2, p3}, Lcom/android/server/audio/AudioDeviceBroker;->onSetForceUse(IILjava/lang/String;)V
 
     return-void
 .end method
 
 .method static synthetic access$600(Lcom/android/server/audio/AudioDeviceBroker;)Lcom/android/server/audio/AudioService;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/audio/AudioDeviceBroker;
 
-    .line 45
-    iget-object p0, p0, Lcom/android/server/audio/AudioDeviceBroker;->mAudioService:Lcom/android/server/audio/AudioService;
+    .line 51
+    iget-object v0, p0, Lcom/android/server/audio/AudioDeviceBroker;->mAudioService:Lcom/android/server/audio/AudioService;
 
-    return-object p0
+    return-object v0
 .end method
 
-.method static synthetic access$700(Lcom/android/server/audio/AudioDeviceBroker;)V
-    .registers 1
+.method static synthetic access$700(Lcom/android/server/audio/AudioDeviceBroker;I)V
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/audio/AudioDeviceBroker;
+    .param p1, "x1"  # I
 
-    .line 45
-    invoke-direct {p0}, Lcom/android/server/audio/AudioDeviceBroker;->onSendBecomingNoisyIntent()V
+    .line 51
+    invoke-direct {p0, p1}, Lcom/android/server/audio/AudioDeviceBroker;->onSendBecomingNoisyIntent(I)V
 
     return-void
 .end method
 
 .method static synthetic access$800(I)Z
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # I
 
-    .line 45
+    .line 51
     invoke-static {p0}, Lcom/android/server/audio/AudioDeviceBroker;->isMessageHandledUnderWakelock(I)Z
 
-    move-result p0
+    move-result v0
 
-    return p0
+    return v0
 .end method
 
 .method static synthetic access$900(Lcom/android/server/audio/AudioDeviceBroker;)Landroid/os/PowerManager$WakeLock;
-    .registers 1
-
-    .line 45
-    iget-object p0, p0, Lcom/android/server/audio/AudioDeviceBroker;->mBrokerEventWakeLock:Landroid/os/PowerManager$WakeLock;
-
-    return-object p0
-.end method
-
-.method private init()V
     .registers 2
+    .param p0, "x0"  # Lcom/android/server/audio/AudioDeviceBroker;
 
-    .line 111
-    iget-object v0, p0, Lcom/android/server/audio/AudioDeviceBroker;->mContext:Landroid/content/Context;
+    .line 51
+    iget-object v0, p0, Lcom/android/server/audio/AudioDeviceBroker;->mBrokerEventWakeLock:Landroid/os/PowerManager$WakeLock;
 
-    invoke-direct {p0, v0}, Lcom/android/server/audio/AudioDeviceBroker;->setupMessaging(Landroid/content/Context;)V
-
-    .line 113
-    const/4 v0, 0x0
-
-    iput v0, p0, Lcom/android/server/audio/AudioDeviceBroker;->mForcedUseForComm:I
-
-    .line 114
-    iget v0, p0, Lcom/android/server/audio/AudioDeviceBroker;->mForcedUseForComm:I
-
-    iput v0, p0, Lcom/android/server/audio/AudioDeviceBroker;->mForcedUseForCommExt:I
-
-    .line 115
-    return-void
+    return-object v0
 .end method
 
 .method private static isMessageHandledUnderWakelock(I)Z
     .registers 2
+    .param p0, "msgId"  # I
 
-    .line 963
+    .line 1022
     const/4 v0, 0x2
 
-    if-eq p0, v0, :cond_1e
-
-    const/16 v0, 0x12
-
-    if-eq p0, v0, :cond_1e
+    if-eq p0, v0, :cond_22
 
     const/4 v0, 0x6
 
-    if-eq p0, v0, :cond_1e
+    if-eq p0, v0, :cond_22
 
     const/4 v0, 0x7
 
-    if-eq p0, v0, :cond_1e
+    if-eq p0, v0, :cond_22
 
     const/16 v0, 0x8
 
-    if-eq p0, v0, :cond_1e
+    if-eq p0, v0, :cond_22
 
     const/16 v0, 0xa
 
-    if-eq p0, v0, :cond_1e
+    if-eq p0, v0, :cond_22
 
     const/16 v0, 0xb
 
-    if-eq p0, v0, :cond_1e
+    if-eq p0, v0, :cond_22
 
-    packed-switch p0, :pswitch_data_20
+    const/16 v0, 0x11
 
-    .line 979
-    const/4 p0, 0x0
+    if-eq p0, v0, :cond_22
 
-    return p0
+    const/16 v0, 0x12
 
-    .line 977
-    :cond_1e
-    :pswitch_1e  #0x1b, 0x1c, 0x1d, 0x1e, 0x1f, 0x20
-    const/4 p0, 0x1
+    if-eq p0, v0, :cond_22
 
-    return p0
+    packed-switch p0, :pswitch_data_24
 
-    :pswitch_data_20
+    .line 1036
+    const/4 v0, 0x0
+
+    return v0
+
+    .line 1034
+    :cond_22
+    :pswitch_22  #0x1b, 0x1c, 0x1d
+    const/4 v0, 0x1
+
+    return v0
+
+    :pswitch_data_24
     .packed-switch 0x1b
-        :pswitch_1e  #0000001b
-        :pswitch_1e  #0000001c
-        :pswitch_1e  #0000001d
-        :pswitch_1e  #0000001e
-        :pswitch_1e  #0000001f
-        :pswitch_1e  #00000020
+        :pswitch_22  #0000001b
+        :pswitch_22  #0000001c
+        :pswitch_22  #0000001d
     .end packed-switch
 .end method
 
-.method private onSendBecomingNoisyIntent()V
+.method private onSendBecomingNoisyIntent(I)V
     .registers 4
+    .param p1, "isHeadset"  # I
 
-    .line 649
-    sget-object v0, Lcom/android/server/audio/AudioService;->sDeviceLogger:Lcom/android/server/audio/AudioEventLogger;
-
-    new-instance v1, Lcom/android/server/audio/AudioEventLogger$StringEvent;
-
-    const-string v2, "broadcast ACTION_AUDIO_BECOMING_NOISY"
-
-    invoke-direct {v1, v2}, Lcom/android/server/audio/AudioEventLogger$StringEvent;-><init>(Ljava/lang/String;)V
-
-    .line 650
-    const-string v2, "AS.AudioDeviceBroker"
-
-    invoke-virtual {v1, v2}, Lcom/android/server/audio/AudioEventLogger$StringEvent;->printLog(Ljava/lang/String;)Lcom/android/server/audio/AudioEventLogger$Event;
-
-    move-result-object v1
-
-    .line 649
-    invoke-virtual {v0, v1}, Lcom/android/server/audio/AudioEventLogger;->log(Lcom/android/server/audio/AudioEventLogger$Event;)V
-
-    .line 651
+    .line 708
     new-instance v0, Landroid/content/Intent;
 
     const-string v1, "android.media.AUDIO_BECOMING_NOISY"
 
     invoke-direct {v0, v1}, Landroid/content/Intent;-><init>(Ljava/lang/String;)V
 
+    .line 709
+    .local v0, "intent":Landroid/content/Intent;
+    const-string/jumbo v1, "isHeadset"
+
+    invoke-virtual {v0, v1, p1}, Landroid/content/Intent;->putExtra(Ljava/lang/String;I)Landroid/content/Intent;
+
+    .line 710
     invoke-direct {p0, v0}, Lcom/android/server/audio/AudioDeviceBroker;->sendBroadcastToAll(Landroid/content/Intent;)V
 
-    .line 652
+    .line 711
     return-void
 .end method
 
 .method private onSetForceUse(IILjava/lang/String;)V
     .registers 6
+    .param p1, "useCase"  # I
+    .param p2, "config"  # I
+    .param p3, "eventSource"  # Ljava/lang/String;
 
-    .line 640
+    .line 693
     const/4 v0, 0x1
 
     if-ne p1, v0, :cond_6
 
-    .line 641
+    .line 694
     invoke-virtual {p0}, Lcom/android/server/audio/AudioDeviceBroker;->postReportNewRoutes()V
 
-    .line 643
+    .line 696
     :cond_6
     sget-object v0, Lcom/android/server/audio/AudioService;->sForceUseLogger:Lcom/android/server/audio/AudioEventLogger;
 
@@ -463,67 +414,34 @@
 
     invoke-virtual {v0, v1}, Lcom/android/server/audio/AudioEventLogger;->log(Lcom/android/server/audio/AudioEventLogger$Event;)V
 
-    .line 645
+    .line 698
     invoke-static {p1, p2}, Landroid/media/AudioSystem;->setForceUse(II)I
 
-    .line 646
-    return-void
-.end method
-
-.method private removeAllA2dpConnectionEvents(Landroid/bluetooth/BluetoothDevice;)V
-    .registers 4
-
-    .line 273
-    iget-object v0, p0, Lcom/android/server/audio/AudioDeviceBroker;->mBrokerHandler:Lcom/android/server/audio/AudioDeviceBroker$BrokerHandler;
-
-    const/16 v1, 0x1e
-
-    invoke-virtual {v0, v1, p1}, Lcom/android/server/audio/AudioDeviceBroker$BrokerHandler;->removeMessages(ILjava/lang/Object;)V
-
-    .line 275
-    iget-object v0, p0, Lcom/android/server/audio/AudioDeviceBroker;->mBrokerHandler:Lcom/android/server/audio/AudioDeviceBroker$BrokerHandler;
-
-    const/16 v1, 0x1d
-
-    invoke-virtual {v0, v1, p1}, Lcom/android/server/audio/AudioDeviceBroker$BrokerHandler;->removeMessages(ILjava/lang/Object;)V
-
-    .line 277
-    iget-object v0, p0, Lcom/android/server/audio/AudioDeviceBroker;->mBrokerHandler:Lcom/android/server/audio/AudioDeviceBroker$BrokerHandler;
-
-    const/16 v1, 0x1b
-
-    invoke-virtual {v0, v1, p1}, Lcom/android/server/audio/AudioDeviceBroker$BrokerHandler;->removeMessages(ILjava/lang/Object;)V
-
-    .line 279
-    iget-object v0, p0, Lcom/android/server/audio/AudioDeviceBroker;->mBrokerHandler:Lcom/android/server/audio/AudioDeviceBroker$BrokerHandler;
-
-    const/16 v1, 0x1c
-
-    invoke-virtual {v0, v1, p1}, Lcom/android/server/audio/AudioDeviceBroker$BrokerHandler;->removeMessages(ILjava/lang/Object;)V
-
-    .line 281
+    .line 699
     return-void
 .end method
 
 .method private sendBroadcastToAll(Landroid/content/Intent;)V
     .registers 6
+    .param p1, "intent"  # Landroid/content/Intent;
 
-    .line 1081
+    .line 1137
     const/high16 v0, 0x4000000
 
     invoke-virtual {p1, v0}, Landroid/content/Intent;->addFlags(I)Landroid/content/Intent;
 
-    .line 1082
+    .line 1138
     const/high16 v0, 0x10000000
 
     invoke-virtual {p1, v0}, Landroid/content/Intent;->addFlags(I)Landroid/content/Intent;
 
-    .line 1083
+    .line 1139
     invoke-static {}, Landroid/os/Binder;->clearCallingIdentity()J
 
     move-result-wide v0
 
-    .line 1085
+    .line 1141
+    .local v0, "ident":J
     :try_start_e
     iget-object v2, p0, Lcom/android/server/audio/AudioDeviceBroker;->mContext:Landroid/content/Context;
 
@@ -533,202 +451,219 @@
     :try_end_15
     .catchall {:try_start_e .. :try_end_15} :catchall_1a
 
-    .line 1087
+    .line 1143
     invoke-static {v0, v1}, Landroid/os/Binder;->restoreCallingIdentity(J)V
 
-    .line 1088
+    .line 1144
     nop
 
-    .line 1089
+    .line 1145
     return-void
 
-    .line 1087
+    .line 1143
     :catchall_1a
-    move-exception p1
+    move-exception v2
 
     invoke-static {v0, v1}, Landroid/os/Binder;->restoreCallingIdentity(J)V
 
-    throw p1
+    throw v2
 .end method
 
 .method private sendIILMsg(IIIILjava/lang/Object;I)V
-    .registers 11
+    .registers 14
+    .param p1, "msg"  # I
+    .param p2, "existingMsgPolicy"  # I
+    .param p3, "arg1"  # I
+    .param p4, "arg2"  # I
+    .param p5, "obj"  # Ljava/lang/Object;
+    .param p6, "delay"  # I
 
-    .line 1035
+    .line 1092
     if-nez p2, :cond_8
 
-    .line 1036
-    iget-object p2, p0, Lcom/android/server/audio/AudioDeviceBroker;->mBrokerHandler:Lcom/android/server/audio/AudioDeviceBroker$BrokerHandler;
+    .line 1093
+    iget-object v0, p0, Lcom/android/server/audio/AudioDeviceBroker;->mBrokerHandler:Lcom/android/server/audio/AudioDeviceBroker$BrokerHandler;
 
-    invoke-virtual {p2, p1}, Lcom/android/server/audio/AudioDeviceBroker$BrokerHandler;->removeMessages(I)V
+    invoke-virtual {v0, p1}, Lcom/android/server/audio/AudioDeviceBroker$BrokerHandler;->removeMessages(I)V
 
     goto :goto_14
 
-    .line 1037
+    .line 1094
     :cond_8
     const/4 v0, 0x1
 
     if-ne p2, v0, :cond_14
 
-    iget-object p2, p0, Lcom/android/server/audio/AudioDeviceBroker;->mBrokerHandler:Lcom/android/server/audio/AudioDeviceBroker$BrokerHandler;
+    iget-object v0, p0, Lcom/android/server/audio/AudioDeviceBroker;->mBrokerHandler:Lcom/android/server/audio/AudioDeviceBroker$BrokerHandler;
 
-    invoke-virtual {p2, p1}, Lcom/android/server/audio/AudioDeviceBroker$BrokerHandler;->hasMessages(I)Z
+    invoke-virtual {v0, p1}, Lcom/android/server/audio/AudioDeviceBroker$BrokerHandler;->hasMessages(I)Z
 
-    move-result p2
+    move-result v0
 
-    if-eqz p2, :cond_14
+    if-eqz v0, :cond_14
 
-    .line 1038
+    .line 1095
     return-void
 
-    .line 1041
+    .line 1098
     :cond_14
     :goto_14
     invoke-static {p1}, Lcom/android/server/audio/AudioDeviceBroker;->isMessageHandledUnderWakelock(I)Z
 
-    move-result p2
+    move-result v0
 
-    if-eqz p2, :cond_31
+    if-eqz v0, :cond_31
 
-    .line 1042
+    .line 1099
     invoke-static {}, Landroid/os/Binder;->clearCallingIdentity()J
 
     move-result-wide v0
 
-    .line 1044
+    .line 1101
+    .local v0, "identity":J
     :try_start_1e
-    iget-object p2, p0, Lcom/android/server/audio/AudioDeviceBroker;->mBrokerEventWakeLock:Landroid/os/PowerManager$WakeLock;
+    iget-object v2, p0, Lcom/android/server/audio/AudioDeviceBroker;->mBrokerEventWakeLock:Landroid/os/PowerManager$WakeLock;
 
-    const-wide/16 v2, 0x1388
+    const-wide/16 v3, 0x1388
 
-    invoke-virtual {p2, v2, v3}, Landroid/os/PowerManager$WakeLock;->acquire(J)V
+    invoke-virtual {v2, v3, v4}, Landroid/os/PowerManager$WakeLock;->acquire(J)V
     :try_end_25
     .catch Ljava/lang/Exception; {:try_start_1e .. :try_end_25} :catch_26
 
-    .line 1047
+    .line 1104
     goto :goto_2e
 
-    .line 1045
+    .line 1102
     :catch_26
-    move-exception p2
+    move-exception v2
 
-    .line 1046
-    const-string v2, "AS.AudioDeviceBroker"
+    .line 1103
+    .local v2, "e":Ljava/lang/Exception;
+    const-string v3, "AS.AudioDeviceBroker"
 
-    const-string v3, "Exception acquiring wakelock"
+    const-string v4, "Exception acquiring wakelock"
 
-    invoke-static {v2, v3, p2}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    invoke-static {v3, v4, v2}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
-    .line 1048
+    .line 1105
+    .end local v2  # "e":Ljava/lang/Exception;
     :goto_2e
     invoke-static {v0, v1}, Landroid/os/Binder;->restoreCallingIdentity(J)V
 
-    .line 1051
+    .line 1108
+    .end local v0  # "identity":J
     :cond_31
-    sget-object p2, Lcom/android/server/audio/AudioDeviceBroker;->sLastDeviceConnectionMsgTimeLock:Ljava/lang/Object;
+    sget-object v0, Lcom/android/server/audio/AudioDeviceBroker;->sLastDeviceConnectionMsgTimeLock:Ljava/lang/Object;
 
-    monitor-enter p2
+    monitor-enter v0
 
-    .line 1052
+    .line 1109
     :try_start_34
     invoke-static {}, Landroid/os/SystemClock;->uptimeMillis()J
 
-    move-result-wide v0
+    move-result-wide v1
 
-    int-to-long v2, p6
+    int-to-long v3, p6
 
-    add-long/2addr v0, v2
+    add-long/2addr v1, v3
 
-    .line 1054
-    const/4 p6, 0x2
+    .line 1111
+    .local v1, "time":J
+    const/4 v3, 0x2
 
-    if-eq p1, p6, :cond_59
+    if-eq p1, v3, :cond_54
 
-    const/16 p6, 0x12
+    const/16 v3, 0x12
 
-    if-eq p1, p6, :cond_59
+    if-eq p1, v3, :cond_54
 
-    const/4 p6, 0x7
+    const/4 v3, 0x6
 
-    if-eq p1, p6, :cond_59
+    if-eq p1, v3, :cond_54
 
-    const/16 p6, 0x8
+    const/4 v3, 0x7
 
-    if-eq p1, p6, :cond_59
+    if-eq p1, v3, :cond_54
 
-    const/16 p6, 0xa
+    const/16 v3, 0x8
 
-    if-eq p1, p6, :cond_59
+    if-eq p1, v3, :cond_54
 
-    const/16 p6, 0xb
+    const/16 v3, 0xa
 
-    if-eq p1, p6, :cond_59
+    if-eq p1, v3, :cond_54
 
-    const/16 p6, 0x1b
+    const/16 v3, 0xb
 
-    if-eq p1, p6, :cond_59
+    if-eq p1, v3, :cond_54
 
-    const/16 p6, 0x1c
+    goto :goto_63
 
-    if-eq p1, p6, :cond_59
+    .line 1119
+    :cond_54
+    sget-wide v3, Lcom/android/server/audio/AudioDeviceBroker;->sLastDeviceConnectMsgTime:J
 
-    goto :goto_67
+    cmp-long v3, v3, v1
 
-    .line 1063
-    :cond_59
-    sget-wide v2, Lcom/android/server/audio/AudioDeviceBroker;->sLastDeviceConnectMsgTime:J
+    if-ltz v3, :cond_60
 
-    cmp-long p6, v2, v0
+    .line 1121
+    sget-wide v3, Lcom/android/server/audio/AudioDeviceBroker;->sLastDeviceConnectMsgTime:J
 
-    if-ltz p6, :cond_64
+    const-wide/16 v5, 0x1e
 
-    .line 1065
-    sget-wide v0, Lcom/android/server/audio/AudioDeviceBroker;->sLastDeviceConnectMsgTime:J
+    add-long/2addr v3, v5
 
-    const-wide/16 v2, 0x1e
+    move-wide v1, v3
 
-    add-long/2addr v0, v2
+    .line 1123
+    :cond_60
+    sput-wide v1, Lcom/android/server/audio/AudioDeviceBroker;->sLastDeviceConnectMsgTime:J
 
-    .line 1067
-    :cond_64
-    sput-wide v0, Lcom/android/server/audio/AudioDeviceBroker;->sLastDeviceConnectMsgTime:J
-
-    .line 1068
+    .line 1124
     nop
 
-    .line 1073
-    :goto_67
-    iget-object p6, p0, Lcom/android/server/audio/AudioDeviceBroker;->mBrokerHandler:Lcom/android/server/audio/AudioDeviceBroker$BrokerHandler;
+    .line 1129
+    :goto_63
+    iget-object v3, p0, Lcom/android/server/audio/AudioDeviceBroker;->mBrokerHandler:Lcom/android/server/audio/AudioDeviceBroker$BrokerHandler;
 
-    iget-object v2, p0, Lcom/android/server/audio/AudioDeviceBroker;->mBrokerHandler:Lcom/android/server/audio/AudioDeviceBroker$BrokerHandler;
+    iget-object v4, p0, Lcom/android/server/audio/AudioDeviceBroker;->mBrokerHandler:Lcom/android/server/audio/AudioDeviceBroker$BrokerHandler;
 
-    invoke-virtual {v2, p1, p3, p4, p5}, Lcom/android/server/audio/AudioDeviceBroker$BrokerHandler;->obtainMessage(IIILjava/lang/Object;)Landroid/os/Message;
+    invoke-virtual {v4, p1, p3, p4, p5}, Lcom/android/server/audio/AudioDeviceBroker$BrokerHandler;->obtainMessage(IIILjava/lang/Object;)Landroid/os/Message;
 
-    move-result-object p1
+    move-result-object v4
 
-    invoke-virtual {p6, p1, v0, v1}, Lcom/android/server/audio/AudioDeviceBroker$BrokerHandler;->sendMessageAtTime(Landroid/os/Message;J)Z
+    invoke-virtual {v3, v4, v1, v2}, Lcom/android/server/audio/AudioDeviceBroker$BrokerHandler;->sendMessageAtTime(Landroid/os/Message;J)Z
 
-    .line 1075
-    monitor-exit p2
+    .line 1131
+    nop
 
-    .line 1076
+    .end local v1  # "time":J
+    monitor-exit v0
+
+    .line 1132
     return-void
 
-    .line 1075
-    :catchall_74
-    move-exception p1
+    .line 1131
+    :catchall_71
+    move-exception v1
 
-    monitor-exit p2
-    :try_end_76
-    .catchall {:try_start_34 .. :try_end_76} :catchall_74
+    monitor-exit v0
+    :try_end_73
+    .catchall {:try_start_34 .. :try_end_73} :catchall_71
 
-    throw p1
+    throw v1
 .end method
 
 .method private sendIILMsgNoDelay(IIIILjava/lang/Object;)V
     .registers 13
+    .param p1, "msg"  # I
+    .param p2, "existingMsgPolicy"  # I
+    .param p3, "arg1"  # I
+    .param p4, "arg2"  # I
+    .param p5, "obj"  # Ljava/lang/Object;
 
-    .line 1030
+    .line 1087
     const/4 v6, 0x0
 
     move-object v0, p0
@@ -745,14 +680,18 @@
 
     invoke-direct/range {v0 .. v6}, Lcom/android/server/audio/AudioDeviceBroker;->sendIILMsg(IIIILjava/lang/Object;I)V
 
-    .line 1031
+    .line 1088
     return-void
 .end method
 
 .method private sendIIMsgNoDelay(IIII)V
     .registers 12
+    .param p1, "msg"  # I
+    .param p2, "existingMsgPolicy"  # I
+    .param p3, "arg1"  # I
+    .param p4, "arg2"  # I
 
-    .line 1018
+    .line 1075
     const/4 v5, 0x0
 
     const/4 v6, 0x0
@@ -769,14 +708,19 @@
 
     invoke-direct/range {v0 .. v6}, Lcom/android/server/audio/AudioDeviceBroker;->sendIILMsg(IIIILjava/lang/Object;I)V
 
-    .line 1019
+    .line 1076
     return-void
 .end method
 
 .method private sendILMsg(IIILjava/lang/Object;I)V
     .registers 13
+    .param p1, "msg"  # I
+    .param p2, "existingMsgPolicy"  # I
+    .param p3, "arg"  # I
+    .param p4, "obj"  # Ljava/lang/Object;
+    .param p5, "delay"  # I
 
-    .line 998
+    .line 1055
     const/4 v4, 0x0
 
     move-object v0, p0
@@ -793,14 +737,18 @@
 
     invoke-direct/range {v0 .. v6}, Lcom/android/server/audio/AudioDeviceBroker;->sendIILMsg(IIIILjava/lang/Object;I)V
 
-    .line 999
+    .line 1056
     return-void
 .end method
 
 .method private sendILMsgNoDelay(IIILjava/lang/Object;)V
     .registers 12
+    .param p1, "msg"  # I
+    .param p2, "existingMsgPolicy"  # I
+    .param p3, "arg"  # I
+    .param p4, "obj"  # Ljava/lang/Object;
 
-    .line 1022
+    .line 1079
     const/4 v4, 0x0
 
     const/4 v6, 0x0
@@ -817,14 +765,18 @@
 
     invoke-direct/range {v0 .. v6}, Lcom/android/server/audio/AudioDeviceBroker;->sendIILMsg(IIIILjava/lang/Object;I)V
 
-    .line 1023
+    .line 1080
     return-void
 .end method
 
 .method private sendIMsg(IIII)V
     .registers 12
+    .param p1, "msg"  # I
+    .param p2, "existingMsgPolicy"  # I
+    .param p3, "arg"  # I
+    .param p4, "delay"  # I
 
-    .line 1006
+    .line 1063
     const/4 v4, 0x0
 
     const/4 v5, 0x0
@@ -841,14 +793,17 @@
 
     invoke-direct/range {v0 .. v6}, Lcom/android/server/audio/AudioDeviceBroker;->sendIILMsg(IIIILjava/lang/Object;I)V
 
-    .line 1007
+    .line 1064
     return-void
 .end method
 
 .method private sendIMsgNoDelay(III)V
     .registers 11
+    .param p1, "msg"  # I
+    .param p2, "existingMsgPolicy"  # I
+    .param p3, "arg"  # I
 
-    .line 1014
+    .line 1071
     const/4 v4, 0x0
 
     const/4 v5, 0x0
@@ -865,14 +820,18 @@
 
     invoke-direct/range {v0 .. v6}, Lcom/android/server/audio/AudioDeviceBroker;->sendIILMsg(IIIILjava/lang/Object;I)V
 
-    .line 1015
+    .line 1072
     return-void
 .end method
 
 .method private sendLMsg(IILjava/lang/Object;I)V
     .registers 12
+    .param p1, "msg"  # I
+    .param p2, "existingMsgPolicy"  # I
+    .param p3, "obj"  # Ljava/lang/Object;
+    .param p4, "delay"  # I
 
-    .line 1002
+    .line 1059
     const/4 v3, 0x0
 
     const/4 v4, 0x0
@@ -889,14 +848,17 @@
 
     invoke-direct/range {v0 .. v6}, Lcom/android/server/audio/AudioDeviceBroker;->sendIILMsg(IIIILjava/lang/Object;I)V
 
-    .line 1003
+    .line 1060
     return-void
 .end method
 
 .method private sendLMsgNoDelay(IILjava/lang/Object;)V
     .registers 11
+    .param p1, "msg"  # I
+    .param p2, "existingMsgPolicy"  # I
+    .param p3, "obj"  # Ljava/lang/Object;
 
-    .line 1026
+    .line 1083
     const/4 v3, 0x0
 
     const/4 v4, 0x0
@@ -913,14 +875,17 @@
 
     invoke-direct/range {v0 .. v6}, Lcom/android/server/audio/AudioDeviceBroker;->sendIILMsg(IIIILjava/lang/Object;I)V
 
-    .line 1027
+    .line 1084
     return-void
 .end method
 
 .method private sendMsg(III)V
     .registers 11
+    .param p1, "msg"  # I
+    .param p2, "existingMsgPolicy"  # I
+    .param p3, "delay"  # I
 
-    .line 994
+    .line 1051
     const/4 v3, 0x0
 
     const/4 v4, 0x0
@@ -937,14 +902,16 @@
 
     invoke-direct/range {v0 .. v6}, Lcom/android/server/audio/AudioDeviceBroker;->sendIILMsg(IIIILjava/lang/Object;I)V
 
-    .line 995
+    .line 1052
     return-void
 .end method
 
 .method private sendMsgNoDelay(II)V
     .registers 10
+    .param p1, "msg"  # I
+    .param p2, "existingMsgPolicy"  # I
 
-    .line 1010
+    .line 1067
     const/4 v3, 0x0
 
     const/4 v4, 0x0
@@ -961,147 +928,188 @@
 
     invoke-direct/range {v0 .. v6}, Lcom/android/server/audio/AudioDeviceBroker;->sendIILMsg(IIIILjava/lang/Object;I)V
 
-    .line 1011
+    .line 1068
     return-void
 .end method
 
 .method private setupMessaging(Landroid/content/Context;)V
-    .registers 4
+    .registers 5
+    .param p1, "ctxt"  # Landroid/content/Context;
 
-    .line 661
+    .line 721
     const-string/jumbo v0, "power"
 
     invoke-virtual {p1, v0}, Landroid/content/Context;->getSystemService(Ljava/lang/String;)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v0
 
-    check-cast p1, Landroid/os/PowerManager;
+    check-cast v0, Landroid/os/PowerManager;
 
-    .line 662
-    const/4 v0, 0x1
+    .line 722
+    .local v0, "pm":Landroid/os/PowerManager;
+    const/4 v1, 0x1
 
-    const-string v1, "handleAudioDeviceEvent"
+    const-string v2, "handleAudioDeviceEvent"
 
-    invoke-virtual {p1, v0, v1}, Landroid/os/PowerManager;->newWakeLock(ILjava/lang/String;)Landroid/os/PowerManager$WakeLock;
+    invoke-virtual {v0, v1, v2}, Landroid/os/PowerManager;->newWakeLock(ILjava/lang/String;)Landroid/os/PowerManager$WakeLock;
 
-    move-result-object p1
+    move-result-object v1
 
-    iput-object p1, p0, Lcom/android/server/audio/AudioDeviceBroker;->mBrokerEventWakeLock:Landroid/os/PowerManager$WakeLock;
+    iput-object v1, p0, Lcom/android/server/audio/AudioDeviceBroker;->mBrokerEventWakeLock:Landroid/os/PowerManager$WakeLock;
 
-    .line 664
-    new-instance p1, Lcom/android/server/audio/AudioDeviceBroker$BrokerThread;
+    .line 724
+    new-instance v1, Lcom/android/server/audio/AudioDeviceBroker$BrokerThread;
 
-    invoke-direct {p1, p0}, Lcom/android/server/audio/AudioDeviceBroker$BrokerThread;-><init>(Lcom/android/server/audio/AudioDeviceBroker;)V
+    invoke-direct {v1, p0}, Lcom/android/server/audio/AudioDeviceBroker$BrokerThread;-><init>(Lcom/android/server/audio/AudioDeviceBroker;)V
 
-    iput-object p1, p0, Lcom/android/server/audio/AudioDeviceBroker;->mBrokerThread:Lcom/android/server/audio/AudioDeviceBroker$BrokerThread;
+    iput-object v1, p0, Lcom/android/server/audio/AudioDeviceBroker;->mBrokerThread:Lcom/android/server/audio/AudioDeviceBroker$BrokerThread;
 
-    .line 665
-    iget-object p1, p0, Lcom/android/server/audio/AudioDeviceBroker;->mBrokerThread:Lcom/android/server/audio/AudioDeviceBroker$BrokerThread;
+    .line 725
+    iget-object v1, p0, Lcom/android/server/audio/AudioDeviceBroker;->mBrokerThread:Lcom/android/server/audio/AudioDeviceBroker$BrokerThread;
 
-    invoke-virtual {p1}, Lcom/android/server/audio/AudioDeviceBroker$BrokerThread;->start()V
+    invoke-virtual {v1}, Lcom/android/server/audio/AudioDeviceBroker$BrokerThread;->start()V
 
-    .line 666
+    .line 726
     invoke-direct {p0}, Lcom/android/server/audio/AudioDeviceBroker;->waitForBrokerHandlerCreation()V
 
-    .line 667
+    .line 727
     return-void
 .end method
 
 .method private waitForBrokerHandlerCreation()V
-    .registers 3
+    .registers 4
 
-    .line 670
+    .line 730
     monitor-enter p0
 
-    .line 671
+    .line 731
     :goto_1
     :try_start_1
     iget-object v0, p0, Lcom/android/server/audio/AudioDeviceBroker;->mBrokerHandler:Lcom/android/server/audio/AudioDeviceBroker$BrokerHandler;
     :try_end_3
-    .catchall {:try_start_1 .. :try_end_3} :catchall_14
+    .catchall {:try_start_1 .. :try_end_3} :catchall_15
 
-    if-nez v0, :cond_12
+    if-nez v0, :cond_13
 
-    .line 673
+    .line 733
     :try_start_5
     invoke-virtual {p0}, Ljava/lang/Object;->wait()V
     :try_end_8
     .catch Ljava/lang/InterruptedException; {:try_start_5 .. :try_end_8} :catch_9
-    .catchall {:try_start_5 .. :try_end_8} :catchall_14
+    .catchall {:try_start_5 .. :try_end_8} :catchall_15
 
-    .line 676
-    :goto_8
+    .line 736
     goto :goto_1
 
-    .line 674
+    .line 734
     :catch_9
     move-exception v0
 
-    .line 675
+    .line 735
+    .local v0, "e":Ljava/lang/InterruptedException;
     :try_start_a
-    const-string v0, "AS.AudioDeviceBroker"
+    const-string v1, "AS.AudioDeviceBroker"
 
-    const-string v1, "Interruption while waiting on BrokerHandler"
+    const-string v2, "Interruption while waiting on BrokerHandler"
 
-    invoke-static {v0, v1}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v2}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;)I
 
-    goto :goto_8
+    .line 736
+    nop
 
-    .line 678
-    :cond_12
+    .end local v0  # "e":Ljava/lang/InterruptedException;
+    goto :goto_1
+
+    .line 738
+    :cond_13
     monitor-exit p0
 
-    .line 679
+    .line 739
     return-void
 
-    .line 678
-    :catchall_14
+    .line 738
+    :catchall_15
     move-exception v0
 
     monitor-exit p0
-    :try_end_16
-    .catchall {:try_start_a .. :try_end_16} :catchall_14
+    :try_end_17
+    .catchall {:try_start_a .. :try_end_17} :catchall_15
 
     throw v0
 .end method
 
 
 # virtual methods
+.method MzIsHifiOutDeviceConnected()Z
+    .registers 3
+
+    .line 222
+    iget-object v0, p0, Lcom/android/server/audio/AudioDeviceBroker;->mDeviceStateLock:Ljava/lang/Object;
+
+    monitor-enter v0
+
+    .line 223
+    :try_start_3
+    iget-object v1, p0, Lcom/android/server/audio/AudioDeviceBroker;->mDeviceInventory:Lcom/android/server/audio/AudioDeviceInventory;
+
+    invoke-virtual {v1}, Lcom/android/server/audio/AudioDeviceInventory;->MzIsHifiOutDeviceConnected()Z
+
+    move-result v1
+
+    monitor-exit v0
+
+    return v1
+
+    .line 224
+    :catchall_b
+    move-exception v1
+
+    monitor-exit v0
+    :try_end_d
+    .catchall {:try_start_3 .. :try_end_d} :catchall_b
+
+    throw v1
+.end method
+
 .method cancelA2dpDockTimeout()V
     .registers 3
 
-    .line 592
+    .line 647
     iget-object v0, p0, Lcom/android/server/audio/AudioDeviceBroker;->mBrokerHandler:Lcom/android/server/audio/AudioDeviceBroker$BrokerHandler;
 
     const/16 v1, 0xa
 
     invoke-virtual {v0, v1}, Lcom/android/server/audio/AudioDeviceBroker$BrokerHandler;->removeMessages(I)V
 
-    .line 593
+    .line 648
     return-void
 .end method
 
 .method checkMusicActive(ILjava/lang/String;)V
     .registers 4
+    .param p1, "deviceType"  # I
+    .param p2, "caller"  # Ljava/lang/String;
 
-    .line 455
+    .line 490
     iget-object v0, p0, Lcom/android/server/audio/AudioDeviceBroker;->mAudioService:Lcom/android/server/audio/AudioService;
 
     invoke-virtual {v0, p1, p2}, Lcom/android/server/audio/AudioService;->checkMusicActive(ILjava/lang/String;)V
 
-    .line 456
+    .line 491
     return-void
 .end method
 
 .method checkVolumeCecOnHdmiConnection(ILjava/lang/String;)V
     .registers 4
+    .param p1, "state"  # I
+    .param p2, "caller"  # Ljava/lang/String;
 
-    .line 460
+    .line 495
     iget-object v0, p0, Lcom/android/server/audio/AudioDeviceBroker;->mAudioService:Lcom/android/server/audio/AudioService;
 
     invoke-virtual {v0, p1, p2}, Lcom/android/server/audio/AudioService;->postCheckVolumeCecOnHdmiConnection(ILjava/lang/String;)V
 
-    .line 461
+    .line 496
     return-void
 .end method
 
@@ -1136,46 +1144,69 @@
     throw v1
 .end method
 
+.method protected dump(Ljava/io/PrintWriter;)V
+    .registers 3
+    .param p1, "pw"  # Ljava/io/PrintWriter;
+
+    .line 219
+    iget-object v0, p0, Lcom/android/server/audio/AudioDeviceBroker;->mDeviceInventory:Lcom/android/server/audio/AudioDeviceInventory;
+
+    invoke-virtual {v0, p1}, Lcom/android/server/audio/AudioDeviceInventory;->dump(Ljava/io/PrintWriter;)V
+
+    .line 220
+    return-void
+.end method
+
 .method getA2dpCodec(Landroid/bluetooth/BluetoothDevice;)I
     .registers 4
+    .param p1, "device"  # Landroid/bluetooth/BluetoothDevice;
 
-    .line 629
+    .line 682
     iget-object v0, p0, Lcom/android/server/audio/AudioDeviceBroker;->mDeviceStateLock:Ljava/lang/Object;
 
     monitor-enter v0
 
-    .line 630
+    .line 683
     :try_start_3
     iget-object v1, p0, Lcom/android/server/audio/AudioDeviceBroker;->mBtHelper:Lcom/android/server/audio/BtHelper;
 
     invoke-virtual {v1, p1}, Lcom/android/server/audio/BtHelper;->getA2dpCodec(Landroid/bluetooth/BluetoothDevice;)I
 
-    move-result p1
+    move-result v1
 
     monitor-exit v0
 
-    return p1
+    return v1
 
-    .line 631
+    .line 684
     :catchall_b
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_d
     .catchall {:try_start_3 .. :try_end_d} :catchall_b
 
-    throw p1
+    throw v1
+.end method
+
+.method getAudioService()Lcom/android/server/audio/AudioService;
+    .registers 2
+
+    .line 114
+    iget-object v0, p0, Lcom/android/server/audio/AudioDeviceBroker;->mAudioService:Lcom/android/server/audio/AudioService;
+
+    return-object v0
 .end method
 
 .method getBluetoothA2dpEnabled()Z
     .registers 3
 
-    .line 623
+    .line 676
     iget-object v0, p0, Lcom/android/server/audio/AudioDeviceBroker;->mDeviceStateLock:Ljava/lang/Object;
 
     monitor-enter v0
 
-    .line 624
+    .line 677
     :try_start_3
     iget-boolean v1, p0, Lcom/android/server/audio/AudioDeviceBroker;->mBluetoothA2dpEnabled:Z
 
@@ -1183,7 +1214,7 @@
 
     return v1
 
-    .line 625
+    .line 678
     :catchall_7
     move-exception v1
 
@@ -1197,7 +1228,7 @@
 .method getContentResolver()Landroid/content/ContentResolver;
     .registers 2
 
-    .line 451
+    .line 486
     iget-object v0, p0, Lcom/android/server/audio/AudioDeviceBroker;->mAudioService:Lcom/android/server/audio/AudioService;
 
     invoke-virtual {v0}, Lcom/android/server/audio/AudioService;->getContentResolver()Landroid/content/ContentResolver;
@@ -1210,7 +1241,7 @@
 .method getContext()Landroid/content/Context;
     .registers 2
 
-    .line 118
+    .line 109
     iget-object v0, p0, Lcom/android/server/audio/AudioDeviceBroker;->mContext:Landroid/content/Context;
 
     return-object v0
@@ -1219,12 +1250,12 @@
 .method getCurAudioRoutes()Landroid/media/AudioRoutesInfo;
     .registers 3
 
-    .line 362
+    .line 393
     iget-object v0, p0, Lcom/android/server/audio/AudioDeviceBroker;->mDeviceStateLock:Ljava/lang/Object;
 
     monitor-enter v0
 
-    .line 363
+    .line 394
     :try_start_3
     iget-object v1, p0, Lcom/android/server/audio/AudioDeviceBroker;->mDeviceInventory:Lcom/android/server/audio/AudioDeviceInventory;
 
@@ -1236,7 +1267,7 @@
 
     return-object v1
 
-    .line 364
+    .line 395
     :catchall_b
     move-exception v1
 
@@ -1249,21 +1280,31 @@
 
 .method getDeviceForStream(I)I
     .registers 3
+    .param p1, "streamType"  # I
 
-    .line 426
+    .line 461
     iget-object v0, p0, Lcom/android/server/audio/AudioDeviceBroker;->mAudioService:Lcom/android/server/audio/AudioService;
 
     invoke-virtual {v0, p1}, Lcom/android/server/audio/AudioService;->getDeviceForStream(I)I
 
-    move-result p1
+    move-result v0
 
-    return p1
+    return v0
+.end method
+
+.method getForcedUseForComm()I
+    .registers 2
+
+    .line 117
+    iget v0, p0, Lcom/android/server/audio/AudioDeviceBroker;->mForcedUseForComm:I
+
+    return v0
 .end method
 
 .method getModeOwnerPid()I
     .registers 2
 
-    .line 422
+    .line 457
     iget-object v0, p0, Lcom/android/server/audio/AudioDeviceBroker;->mAudioService:Lcom/android/server/audio/AudioService;
 
     invoke-virtual {v0}, Lcom/android/server/audio/AudioService;->getModeOwnerPid()I
@@ -1275,80 +1316,161 @@
 
 .method getVssVolumeForDevice(II)I
     .registers 4
+    .param p1, "streamType"  # I
+    .param p2, "device"  # I
 
-    .line 418
+    .line 453
     iget-object v0, p0, Lcom/android/server/audio/AudioDeviceBroker;->mAudioService:Lcom/android/server/audio/AudioService;
 
     invoke-virtual {v0, p1, p2}, Lcom/android/server/audio/AudioService;->getVssVolumeForDevice(II)I
 
-    move-result p1
+    move-result v0
 
-    return p1
+    return v0
 .end method
 
 .method handleCancelFailureToConnectToBtHeadsetService()V
     .registers 3
 
-    .line 584
+    .line 639
     iget-object v0, p0, Lcom/android/server/audio/AudioDeviceBroker;->mBrokerHandler:Lcom/android/server/audio/AudioDeviceBroker$BrokerHandler;
 
     const/16 v1, 0x9
 
     invoke-virtual {v0, v1}, Lcom/android/server/audio/AudioDeviceBroker$BrokerHandler;->removeMessages(I)V
 
-    .line 585
+    .line 640
     return-void
 .end method
 
 .method handleDeviceConnection(ZILjava/lang/String;Ljava/lang/String;)Z
     .registers 7
+    .param p1, "connect"  # Z
+    .param p2, "device"  # I
+    .param p3, "address"  # Ljava/lang/String;
+    .param p4, "deviceName"  # Ljava/lang/String;
 
-    .line 567
+    .line 603
     iget-object v0, p0, Lcom/android/server/audio/AudioDeviceBroker;->mDeviceStateLock:Ljava/lang/Object;
 
     monitor-enter v0
 
-    .line 568
+    .line 604
     :try_start_3
     iget-object v1, p0, Lcom/android/server/audio/AudioDeviceBroker;->mDeviceInventory:Lcom/android/server/audio/AudioDeviceInventory;
 
     invoke-virtual {v1, p1, p2, p3, p4}, Lcom/android/server/audio/AudioDeviceInventory;->handleDeviceConnection(ZILjava/lang/String;Ljava/lang/String;)Z
 
-    move-result p1
+    move-result v1
 
     monitor-exit v0
 
-    return p1
+    return v1
 
-    .line 569
+    .line 605
     :catchall_b
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_d
     .catchall {:try_start_3 .. :try_end_d} :catchall_b
 
-    throw p1
+    throw v1
 .end method
 
 .method handleFailureToConnectToBtHeadsetService(I)V
     .registers 4
+    .param p1, "delay"  # I
 
-    .line 580
+    .line 635
     const/16 v0, 0x9
 
     const/4 v1, 0x0
 
     invoke-direct {p0, v0, v1, p1}, Lcom/android/server/audio/AudioDeviceBroker;->sendMsg(III)V
 
-    .line 581
+    .line 636
+    return-void
+.end method
+
+.method handleSetA2dpSinkConnectionState(ILcom/android/server/audio/BtHelper$BluetoothA2dpDeviceInfo;)V
+    .registers 13
+    .param p1, "state"  # I
+    .param p2, "btDeviceInfo"  # Lcom/android/server/audio/BtHelper$BluetoothA2dpDeviceInfo;
+    .annotation build Lcom/android/internal/annotations/GuardedBy;
+        value = {
+            "mDeviceStateLock"
+        }
+    .end annotation
+
+    .line 611
+    const/4 v0, 0x0
+
+    const/4 v1, 0x2
+
+    if-ne p1, v1, :cond_6
+
+    .line 612
+    const/4 v1, 0x1
+
+    goto :goto_7
+
+    :cond_6
+    move v1, v0
+
+    .line 613
+    .local v1, "intState":I
+    :goto_7
+    iget-object v2, p0, Lcom/android/server/audio/AudioDeviceBroker;->mDeviceInventory:Lcom/android/server/audio/AudioDeviceInventory;
+
+    const/16 v3, 0x80
+
+    invoke-virtual {v2, v3, v1, v0}, Lcom/android/server/audio/AudioDeviceInventory;->checkSendBecomingNoisyIntent(III)I
+
+    move-result v0
+
+    .line 616
+    .local v0, "delay":I
+    if-nez p2, :cond_15
+
+    const-string/jumbo v2, "null"
+
+    goto :goto_1d
+
+    :cond_15
+    invoke-virtual {p2}, Lcom/android/server/audio/BtHelper$BluetoothA2dpDeviceInfo;->getBtDevice()Landroid/bluetooth/BluetoothDevice;
+
+    move-result-object v2
+
+    invoke-virtual {v2}, Landroid/bluetooth/BluetoothDevice;->getAddress()Ljava/lang/String;
+
+    move-result-object v2
+
+    .line 623
+    .local v2, "addr":Ljava/lang/String;
+    :goto_1d
+    const/4 v5, 0x6
+
+    const/4 v6, 0x2
+
+    move-object v4, p0
+
+    move v7, p1
+
+    move-object v8, p2
+
+    move v9, v0
+
+    invoke-direct/range {v4 .. v9}, Lcom/android/server/audio/AudioDeviceBroker;->sendILMsg(IIILjava/lang/Object;I)V
+
+    .line 625
     return-void
 .end method
 
 .method hasAudioFocusUsers()Z
     .registers 2
 
-    .line 464
+    .line 499
     iget-object v0, p0, Lcom/android/server/audio/AudioDeviceBroker;->mAudioService:Lcom/android/server/audio/AudioService;
 
     invoke-virtual {v0}, Lcom/android/server/audio/AudioService;->hasAudioFocusUsers()Z
@@ -1361,7 +1483,7 @@
 .method hasMediaDynamicPolicy()Z
     .registers 2
 
-    .line 447
+    .line 482
     iget-object v0, p0, Lcom/android/server/audio/AudioDeviceBroker;->mAudioService:Lcom/android/server/audio/AudioService;
 
     invoke-virtual {v0}, Lcom/android/server/audio/AudioService;->hasMediaDynamicPolicy()Z
@@ -1374,7 +1496,7 @@
 .method hasScheduledA2dpDockTimeout()Z
     .registers 3
 
-    .line 601
+    .line 656
     iget-object v0, p0, Lcom/android/server/audio/AudioDeviceBroker;->mBrokerHandler:Lcom/android/server/audio/AudioDeviceBroker$BrokerHandler;
 
     const/16 v1, 0xa
@@ -1388,62 +1510,33 @@
 
 .method hasScheduledA2dpSinkConnectionState(Landroid/bluetooth/BluetoothDevice;)Z
     .registers 5
+    .param p1, "btDevice"  # Landroid/bluetooth/BluetoothDevice;
 
-    .line 606
+    .line 661
     iget-object v0, p0, Lcom/android/server/audio/AudioDeviceBroker;->mBrokerHandler:Lcom/android/server/audio/AudioDeviceBroker$BrokerHandler;
 
     new-instance v1, Lcom/android/server/audio/BtHelper$BluetoothA2dpDeviceInfo;
 
     invoke-direct {v1, p1}, Lcom/android/server/audio/BtHelper$BluetoothA2dpDeviceInfo;-><init>(Landroid/bluetooth/BluetoothDevice;)V
 
-    const/16 v2, 0x1b
+    const/4 v2, 0x6
 
     invoke-virtual {v0, v2, v1}, Lcom/android/server/audio/AudioDeviceBroker$BrokerHandler;->hasMessages(ILjava/lang/Object;)Z
 
     move-result v0
 
-    if-nez v0, :cond_21
-
-    iget-object v0, p0, Lcom/android/server/audio/AudioDeviceBroker;->mBrokerHandler:Lcom/android/server/audio/AudioDeviceBroker$BrokerHandler;
-
-    const/16 v1, 0x1c
-
-    new-instance v2, Lcom/android/server/audio/BtHelper$BluetoothA2dpDeviceInfo;
-
-    invoke-direct {v2, p1}, Lcom/android/server/audio/BtHelper$BluetoothA2dpDeviceInfo;-><init>(Landroid/bluetooth/BluetoothDevice;)V
-
-    .line 608
-    invoke-virtual {v0, v1, v2}, Lcom/android/server/audio/AudioDeviceBroker$BrokerHandler;->hasMessages(ILjava/lang/Object;)Z
-
-    move-result p1
-
-    if-eqz p1, :cond_1f
-
-    goto :goto_21
-
-    :cond_1f
-    const/4 p1, 0x0
-
-    goto :goto_22
-
-    :cond_21
-    :goto_21
-    const/4 p1, 0x1
-
-    .line 606
-    :goto_22
-    return p1
+    return v0
 .end method
 
 .method isAvrcpAbsoluteVolumeSupported()Z
     .registers 3
 
-    .line 368
+    .line 399
     iget-object v0, p0, Lcom/android/server/audio/AudioDeviceBroker;->mDeviceStateLock:Ljava/lang/Object;
 
     monitor-enter v0
 
-    .line 369
+    .line 400
     :try_start_3
     iget-object v1, p0, Lcom/android/server/audio/AudioDeviceBroker;->mBtHelper:Lcom/android/server/audio/BtHelper;
 
@@ -1455,7 +1548,7 @@
 
     return v1
 
-    .line 370
+    .line 401
     :catchall_b
     move-exception v1
 
@@ -1469,12 +1562,12 @@
 .method isBluetoothA2dpOn()Z
     .registers 3
 
-    .line 374
+    .line 405
     iget-object v0, p0, Lcom/android/server/audio/AudioDeviceBroker;->mDeviceStateLock:Ljava/lang/Object;
 
     monitor-enter v0
 
-    .line 375
+    .line 406
     :try_start_3
     iget-boolean v1, p0, Lcom/android/server/audio/AudioDeviceBroker;->mBluetoothA2dpEnabled:Z
 
@@ -1482,7 +1575,7 @@
 
     return v1
 
-    .line 376
+    .line 407
     :catchall_7
     move-exception v1
 
@@ -1494,40 +1587,61 @@
 .end method
 
 .method isBluetoothScoOnForApp()Z
-    .registers 4
+    .registers 5
 
-    .line 326
+    .line 343
     iget-object v0, p0, Lcom/android/server/audio/AudioDeviceBroker;->mDeviceStateLock:Ljava/lang/Object;
 
     monitor-enter v0
 
-    .line 327
+    .line 345
     :try_start_3
+    const-string v1, "AS.AudioDeviceBroker"
+
+    new-instance v2, Ljava/lang/StringBuilder;
+
+    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
+
+    const-string v3, "In isBluetoothScoOnForApp(), mForcedUseForCommExt: "
+
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    iget v3, p0, Lcom/android/server/audio/AudioDeviceBroker;->mForcedUseForCommExt:I
+
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v2
+
+    invoke-static {v1, v2}, Landroid/util/Log;->i(Ljava/lang/String;Ljava/lang/String;)I
+
+    .line 348
     iget v1, p0, Lcom/android/server/audio/AudioDeviceBroker;->mForcedUseForCommExt:I
 
     const/4 v2, 0x3
 
-    if-ne v1, v2, :cond_a
+    if-ne v1, v2, :cond_22
 
     const/4 v1, 0x1
 
-    goto :goto_b
+    goto :goto_23
 
-    :cond_a
+    :cond_22
     const/4 v1, 0x0
 
-    :goto_b
+    :goto_23
     monitor-exit v0
 
     return v1
 
-    .line 328
-    :catchall_d
+    .line 349
+    :catchall_25
     move-exception v1
 
     monitor-exit v0
-    :try_end_f
-    .catchall {:try_start_3 .. :try_end_f} :catchall_d
+    :try_end_27
+    .catchall {:try_start_3 .. :try_end_27} :catchall_25
 
     throw v1
 .end method
@@ -1535,7 +1649,7 @@
 .method isInCommunication()Z
     .registers 2
 
-    .line 443
+    .line 478
     iget-object v0, p0, Lcom/android/server/audio/AudioDeviceBroker;->mAudioService:Lcom/android/server/audio/AudioService;
 
     invoke-virtual {v0}, Lcom/android/server/audio/AudioService;->isInCommunication()Z
@@ -1546,38 +1660,135 @@
 .end method
 
 .method isSpeakerphoneOn()Z
-    .registers 4
+    .registers 5
 
-    .line 215
+    .line 247
     iget-object v0, p0, Lcom/android/server/audio/AudioDeviceBroker;->mDeviceStateLock:Ljava/lang/Object;
 
     monitor-enter v0
 
-    .line 216
+    .line 249
     :try_start_3
+    const-string v1, "AS.AudioDeviceBroker"
+
+    new-instance v2, Ljava/lang/StringBuilder;
+
+    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
+
+    const-string v3, "In isSpeakerphoneOn(), mForcedUseForCommExt: "
+
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    iget v3, p0, Lcom/android/server/audio/AudioDeviceBroker;->mForcedUseForCommExt:I
+
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v2
+
+    invoke-static {v1, v2}, Landroid/util/Log;->i(Ljava/lang/String;Ljava/lang/String;)I
+
+    .line 251
     iget v1, p0, Lcom/android/server/audio/AudioDeviceBroker;->mForcedUseForCommExt:I
 
     const/4 v2, 0x1
 
-    if-ne v1, v2, :cond_9
+    if-ne v1, v2, :cond_21
 
-    goto :goto_a
+    goto :goto_22
 
-    :cond_9
+    :cond_21
     const/4 v2, 0x0
 
-    :goto_a
+    :goto_22
     monitor-exit v0
 
     return v2
 
-    .line 217
-    :catchall_c
+    .line 252
+    :catchall_24
     move-exception v1
 
     monitor-exit v0
-    :try_end_e
-    .catchall {:try_start_3 .. :try_end_e} :catchall_c
+    :try_end_26
+    .catchall {:try_start_3 .. :try_end_26} :catchall_24
+
+    throw v1
+.end method
+
+.method public mzSwitchBluetoothToDevice(I)V
+    .registers 16
+    .param p1, "device"  # I
+
+    .line 231
+    iget-object v0, p0, Lcom/android/server/audio/AudioDeviceBroker;->mDeviceStateLock:Ljava/lang/Object;
+
+    monitor-enter v0
+
+    .line 232
+    const/4 v1, 0x2
+
+    if-ne p1, v1, :cond_a
+
+    .line 233
+    const/4 v1, 0x1
+
+    :try_start_7
+    iput v1, p0, Lcom/android/server/audio/AudioDeviceBroker;->mForcedUseForComm:I
+
+    goto :goto_d
+
+    .line 235
+    :cond_a
+    const/4 v1, 0x0
+
+    iput v1, p0, Lcom/android/server/audio/AudioDeviceBroker;->mForcedUseForComm:I
+
+    .line 238
+    :goto_d
+    const/4 v3, 0x4
+
+    const/4 v4, 0x2
+
+    const/4 v5, 0x0
+
+    iget v6, p0, Lcom/android/server/audio/AudioDeviceBroker;->mForcedUseForComm:I
+
+    const/4 v7, 0x0
+
+    move-object v2, p0
+
+    invoke-direct/range {v2 .. v7}, Lcom/android/server/audio/AudioDeviceBroker;->sendIILMsgNoDelay(IIIILjava/lang/Object;)V
+
+    .line 240
+    const/4 v9, 0x4
+
+    const/4 v10, 0x2
+
+    const/4 v11, 0x2
+
+    iget v12, p0, Lcom/android/server/audio/AudioDeviceBroker;->mForcedUseForComm:I
+
+    const/4 v13, 0x0
+
+    move-object v8, p0
+
+    invoke-direct/range {v8 .. v13}, Lcom/android/server/audio/AudioDeviceBroker;->sendIILMsgNoDelay(IIIILjava/lang/Object;)V
+
+    .line 242
+    monitor-exit v0
+
+    .line 243
+    return-void
+
+    .line 242
+    :catchall_23
+    move-exception v1
+
+    monitor-exit v0
+    :try_end_25
+    .catchall {:try_start_7 .. :try_end_25} :catchall_23
 
     throw v1
 .end method
@@ -1585,46 +1796,13 @@
 .method onAudioServerDied()V
     .registers 6
 
-    .line 137
+    .line 139
     iget-object v0, p0, Lcom/android/server/audio/AudioDeviceBroker;->mDeviceStateLock:Ljava/lang/Object;
 
     monitor-enter v0
 
-    .line 138
-    :try_start_3
-    new-instance v1, Ljava/lang/StringBuilder;
-
-    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
-
-    const-string v2, "BT_SCO="
-
-    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    .line 139
-    iget v2, p0, Lcom/android/server/audio/AudioDeviceBroker;->mForcedUseForComm:I
-
-    const/4 v3, 0x3
-
-    if-ne v2, v3, :cond_16
-
-    const-string/jumbo v2, "on"
-
-    goto :goto_19
-
-    :cond_16
-    const-string/jumbo v2, "off"
-
-    :goto_19
-    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
-
-    move-result-object v1
-
-    .line 138
-    invoke-static {v1}, Landroid/media/AudioSystem;->setParameters(Ljava/lang/String;)I
-
     .line 140
+    :try_start_3
     iget v1, p0, Lcom/android/server/audio/AudioDeviceBroker;->mForcedUseForComm:I
 
     const-string/jumbo v2, "onAudioServerDied"
@@ -1644,8 +1822,8 @@
 
     .line 142
     monitor-exit v0
-    :try_end_36
-    .catchall {:try_start_3 .. :try_end_36} :catchall_3b
+    :try_end_16
+    .catchall {:try_start_3 .. :try_end_16} :catchall_1b
 
     .line 144
     const/4 v0, 0x1
@@ -1656,13 +1834,13 @@
     return-void
 
     .line 142
-    :catchall_3b
+    :catchall_1b
     move-exception v1
 
-    :try_start_3c
+    :try_start_1c
     monitor-exit v0
-    :try_end_3d
-    .catchall {:try_start_3c .. :try_end_3d} :catchall_3b
+    :try_end_1d
+    .catchall {:try_start_1c .. :try_end_1d} :catchall_1b
 
     throw v1
 .end method
@@ -1670,12 +1848,12 @@
 .method onSystemReady()V
     .registers 4
 
-    .line 128
+    .line 130
     iget-object v0, p0, Lcom/android/server/audio/AudioDeviceBroker;->mSetModeLock:Ljava/lang/Object;
 
     monitor-enter v0
 
-    .line 129
+    .line 131
     :try_start_3
     iget-object v1, p0, Lcom/android/server/audio/AudioDeviceBroker;->mDeviceStateLock:Ljava/lang/Object;
 
@@ -1683,27 +1861,27 @@
     :try_end_6
     .catchall {:try_start_3 .. :try_end_6} :catchall_11
 
-    .line 130
+    .line 132
     :try_start_6
     iget-object v2, p0, Lcom/android/server/audio/AudioDeviceBroker;->mBtHelper:Lcom/android/server/audio/BtHelper;
 
     invoke-virtual {v2}, Lcom/android/server/audio/BtHelper;->onSystemReady()V
 
-    .line 131
+    .line 133
     monitor-exit v1
     :try_end_c
     .catchall {:try_start_6 .. :try_end_c} :catchall_e
 
-    .line 132
+    .line 134
     :try_start_c
     monitor-exit v0
     :try_end_d
     .catchall {:try_start_c .. :try_end_d} :catchall_11
 
-    .line 133
+    .line 135
     return-void
 
-    .line 131
+    .line 133
     :catchall_e
     move-exception v2
 
@@ -1712,10 +1890,12 @@
     :try_end_10
     .catchall {:try_start_f .. :try_end_10} :catchall_e
 
+    .end local p0  # "this":Lcom/android/server/audio/AudioDeviceBroker;
     :try_start_10
     throw v2
 
-    .line 132
+    .line 134
+    .restart local p0  # "this":Lcom/android/server/audio/AudioDeviceBroker;
     :catchall_11
     move-exception v1
 
@@ -1728,61 +1908,51 @@
 
 .method postA2dpActiveDeviceChange(Lcom/android/server/audio/BtHelper$BluetoothA2dpDeviceInfo;)V
     .registers 4
+    .param p1, "btDeviceInfo"  # Lcom/android/server/audio/BtHelper$BluetoothA2dpDeviceInfo;
 
-    .line 597
+    .line 652
     const/16 v0, 0x12
 
     const/4 v1, 0x2
 
     invoke-direct {p0, v0, v1, p1}, Lcom/android/server/audio/AudioDeviceBroker;->sendLMsgNoDelay(IILjava/lang/Object;)V
 
-    .line 598
+    .line 653
     return-void
 .end method
 
 .method postA2dpSinkConnection(ILcom/android/server/audio/BtHelper$BluetoothA2dpDeviceInfo;I)V
-    .registers 11
+    .registers 10
+    .param p1, "state"  # I
+    .param p2, "btDeviceInfo"  # Lcom/android/server/audio/BtHelper$BluetoothA2dpDeviceInfo;
+    .param p3, "delay"  # I
 
-    .line 479
-    const/4 v0, 0x2
+    .line 518
+    const/4 v1, 0x6
 
-    if-ne p1, v0, :cond_7
+    const/4 v2, 0x2
 
-    .line 480
-    const/16 v0, 0x1b
+    move-object v0, p0
 
-    move v2, v0
+    move v3, p1
 
-    goto :goto_a
+    move-object v4, p2
 
-    .line 481
-    :cond_7
-    const/16 v0, 0x1c
+    move v5, p3
 
-    move v2, v0
+    invoke-direct/range {v0 .. v5}, Lcom/android/server/audio/AudioDeviceBroker;->sendILMsg(IIILjava/lang/Object;I)V
 
-    :goto_a
-    const/4 v3, 0x2
-
-    .line 479
-    move-object v1, p0
-
-    move v4, p1
-
-    move-object v5, p2
-
-    move v6, p3
-
-    invoke-direct/range {v1 .. v6}, Lcom/android/server/audio/AudioDeviceBroker;->sendILMsg(IIILjava/lang/Object;I)V
-
-    .line 484
+    .line 520
     return-void
 .end method
 
 .method postA2dpSourceConnection(ILcom/android/server/audio/BtHelper$BluetoothA2dpDeviceInfo;I)V
     .registers 10
+    .param p1, "state"  # I
+    .param p2, "btDeviceInfo"  # Lcom/android/server/audio/BtHelper$BluetoothA2dpDeviceInfo;
+    .param p3, "delay"  # I
 
-    .line 488
+    .line 524
     const/4 v1, 0x7
 
     const/4 v2, 0x2
@@ -1797,52 +1967,75 @@
 
     invoke-direct/range {v0 .. v5}, Lcom/android/server/audio/AudioDeviceBroker;->sendILMsg(IIILjava/lang/Object;I)V
 
-    .line 490
+    .line 526
+    return-void
+.end method
+
+.method postAccessoryPlugMediaMute(I)V
+    .registers 3
+    .param p1, "device"  # I
+
+    .line 449
+    iget-object v0, p0, Lcom/android/server/audio/AudioDeviceBroker;->mAudioService:Lcom/android/server/audio/AudioService;
+
+    invoke-virtual {v0, p1}, Lcom/android/server/audio/AudioService;->postAccessoryPlugMediaMute(I)V
+
+    .line 450
     return-void
 .end method
 
 .method postAccessoryPlugMediaUnmute(I)V
     .registers 3
+    .param p1, "device"  # I
 
-    .line 414
+    .line 445
     iget-object v0, p0, Lcom/android/server/audio/AudioDeviceBroker;->mAudioService:Lcom/android/server/audio/AudioService;
 
     invoke-virtual {v0, p1}, Lcom/android/server/audio/AudioService;->postAccessoryPlugMediaUnmute(I)V
 
-    .line 415
+    .line 446
     return-void
 .end method
 
 .method postApplyVolumeOnDevice(IILjava/lang/String;)V
     .registers 5
+    .param p1, "streamType"  # I
+    .param p2, "device"  # I
+    .param p3, "caller"  # Ljava/lang/String;
 
-    .line 430
+    .line 465
     iget-object v0, p0, Lcom/android/server/audio/AudioDeviceBroker;->mAudioService:Lcom/android/server/audio/AudioService;
 
     invoke-virtual {v0, p1, p2, p3}, Lcom/android/server/audio/AudioService;->postApplyVolumeOnDevice(IILjava/lang/String;)V
 
-    .line 431
+    .line 466
     return-void
 .end method
 
 .method postBluetoothA2dpDeviceConfigChange(Landroid/bluetooth/BluetoothDevice;)V
     .registers 4
+    .param p1, "device"  # Landroid/bluetooth/BluetoothDevice;
 
-    .line 392
+    .line 423
     const/16 v0, 0xb
 
     const/4 v1, 0x2
 
     invoke-direct {p0, v0, v1, p1}, Lcom/android/server/audio/AudioDeviceBroker;->sendLMsgNoDelay(IILjava/lang/Object;)V
 
-    .line 393
+    .line 424
     return-void
 .end method
 
 .method postBluetoothA2dpDeviceConfigChangeExt(Landroid/bluetooth/BluetoothDevice;IIZI)V
     .registers 13
+    .param p1, "device"  # Landroid/bluetooth/BluetoothDevice;
+    .param p2, "state"  # I
+    .param p3, "profile"  # I
+    .param p4, "suppressNoisyIntent"  # Z
+    .param p5, "a2dpVolume"  # I
 
-    .line 287
+    .line 297
     new-instance v6, Lcom/android/server/audio/AudioDeviceBroker$BtDeviceConnectionInfo;
 
     move-object v0, v6
@@ -1859,21 +2052,27 @@
 
     invoke-direct/range {v0 .. v5}, Lcom/android/server/audio/AudioDeviceBroker$BtDeviceConnectionInfo;-><init>(Landroid/bluetooth/BluetoothDevice;IIZI)V
 
-    .line 289
-    const/16 p1, 0x20
+    .line 299
+    .local v0, "info":Lcom/android/server/audio/AudioDeviceBroker$BtDeviceConnectionInfo;
+    const/16 v1, 0x1d
 
-    const/4 p2, 0x2
+    const/4 v2, 0x2
 
-    invoke-direct {p0, p1, p2, v6}, Lcom/android/server/audio/AudioDeviceBroker;->sendLMsgNoDelay(IILjava/lang/Object;)V
+    invoke-direct {p0, v1, v2, v0}, Lcom/android/server/audio/AudioDeviceBroker;->sendLMsgNoDelay(IILjava/lang/Object;)V
 
-    .line 290
+    .line 300
     return-void
 .end method
 
 .method postBluetoothA2dpDeviceConnectionStateSuppressNoisyIntent(Landroid/bluetooth/BluetoothDevice;IIZI)V
     .registers 13
+    .param p1, "device"  # Landroid/bluetooth/BluetoothDevice;
+    .param p2, "state"  # I
+    .param p3, "profile"  # I
+    .param p4, "suppressNoisyIntent"  # Z
+    .param p5, "a2dpVolume"  # I
 
-    .line 257
+    .line 285
     new-instance v6, Lcom/android/server/audio/AudioDeviceBroker$BtDeviceConnectionInfo;
 
     move-object v0, v6
@@ -1890,40 +2089,27 @@
 
     invoke-direct/range {v0 .. v5}, Lcom/android/server/audio/AudioDeviceBroker$BtDeviceConnectionInfo;-><init>(Landroid/bluetooth/BluetoothDevice;IIZI)V
 
-    .line 262
-    invoke-direct {p0, p1}, Lcom/android/server/audio/AudioDeviceBroker;->removeAllA2dpConnectionEvents(Landroid/bluetooth/BluetoothDevice;)V
+    .line 290
+    .local v0, "info":Lcom/android/server/audio/AudioDeviceBroker$BtDeviceConnectionInfo;
+    const/16 v1, 0x1b
 
-    .line 264
-    nop
+    const/4 v2, 0x2
 
-    .line 265
-    const/4 p1, 0x2
+    invoke-direct {p0, v1, v2, v0}, Lcom/android/server/audio/AudioDeviceBroker;->sendLMsgNoDelay(IILjava/lang/Object;)V
 
-    if-ne p2, p1, :cond_15
-
-    .line 266
-    const/16 p2, 0x1d
-
-    goto :goto_17
-
-    .line 267
-    :cond_15
-    const/16 p2, 0x1e
-
-    :goto_17
-    nop
-
-    .line 264
-    invoke-direct {p0, p2, p1, v6}, Lcom/android/server/audio/AudioDeviceBroker;->sendLMsgNoDelay(IILjava/lang/Object;)V
-
-    .line 269
+    .line 291
     return-void
 .end method
 
 .method postBluetoothHearingAidDeviceConnectionState(Landroid/bluetooth/BluetoothDevice;IZILjava/lang/String;)V
     .registers 13
+    .param p1, "device"  # Landroid/bluetooth/BluetoothDevice;
+    .param p2, "state"  # I
+    .param p3, "suppressNoisyIntent"  # Z
+    .param p4, "musicDevice"  # I
+    .param p5, "eventSource"  # Ljava/lang/String;
 
-    .line 313
+    .line 323
     new-instance v6, Lcom/android/server/audio/AudioDeviceBroker$HearingAidDeviceConnectionInfo;
 
     move-object v0, v6
@@ -1940,244 +2126,270 @@
 
     invoke-direct/range {v0 .. v5}, Lcom/android/server/audio/AudioDeviceBroker$HearingAidDeviceConnectionInfo;-><init>(Landroid/bluetooth/BluetoothDevice;IZILjava/lang/String;)V
 
-    .line 315
-    const/16 p1, 0x1f
+    .line 325
+    .local v0, "info":Lcom/android/server/audio/AudioDeviceBroker$HearingAidDeviceConnectionInfo;
+    const/16 v1, 0x1c
 
-    const/4 p2, 0x2
+    const/4 v2, 0x2
 
-    invoke-direct {p0, p1, p2, v6}, Lcom/android/server/audio/AudioDeviceBroker;->sendLMsgNoDelay(IILjava/lang/Object;)V
+    invoke-direct {p0, v1, v2, v0}, Lcom/android/server/audio/AudioDeviceBroker;->sendLMsgNoDelay(IILjava/lang/Object;)V
 
-    .line 316
+    .line 326
     return-void
 .end method
 
-.method postBroadcastBecomingNoisy()V
-    .registers 3
+.method postBroadcastBecomingNoisy(I)V
+    .registers 4
+    .param p1, "isHeadSet"  # I
 
-    .line 474
+    .line 512
     const/16 v0, 0xc
 
     const/4 v1, 0x0
 
-    invoke-direct {p0, v0, v1}, Lcom/android/server/audio/AudioDeviceBroker;->sendMsgNoDelay(II)V
+    invoke-direct {p0, v0, v1, p1}, Lcom/android/server/audio/AudioDeviceBroker;->sendIMsgNoDelay(III)V
 
-    .line 475
+    .line 513
     return-void
 .end method
 
 .method postBroadcastScoConnectionState(I)V
     .registers 4
+    .param p1, "state"  # I
 
-    .line 470
+    .line 505
     const/4 v0, 0x3
 
     const/4 v1, 0x2
 
     invoke-direct {p0, v0, v1, p1}, Lcom/android/server/audio/AudioDeviceBroker;->sendIMsgNoDelay(III)V
 
-    .line 471
+    .line 506
     return-void
 .end method
 
 .method postBtA2dpProfileConnected(Landroid/bluetooth/BluetoothA2dp;)V
     .registers 4
+    .param p1, "a2dpProfile"  # Landroid/bluetooth/BluetoothA2dp;
 
-    .line 523
+    .line 559
     const/16 v0, 0x17
 
     const/4 v1, 0x2
 
     invoke-direct {p0, v0, v1, p1}, Lcom/android/server/audio/AudioDeviceBroker;->sendLMsgNoDelay(IILjava/lang/Object;)V
 
-    .line 524
+    .line 560
     return-void
 .end method
 
 .method postBtA2dpSinkProfileConnected(Landroid/bluetooth/BluetoothProfile;)V
     .registers 4
+    .param p1, "profile"  # Landroid/bluetooth/BluetoothProfile;
 
-    .line 527
+    .line 563
     const/16 v0, 0x18
 
     const/4 v1, 0x2
 
     invoke-direct {p0, v0, v1, p1}, Lcom/android/server/audio/AudioDeviceBroker;->sendLMsgNoDelay(IILjava/lang/Object;)V
 
-    .line 528
+    .line 564
     return-void
 .end method
 
 .method postBtHearingAidProfileConnected(Landroid/bluetooth/BluetoothHearingAid;)V
     .registers 4
+    .param p1, "hearingAidProfile"  # Landroid/bluetooth/BluetoothHearingAid;
 
-    .line 535
+    .line 571
     const/16 v0, 0x19
 
     const/4 v1, 0x2
 
     invoke-direct {p0, v0, v1, p1}, Lcom/android/server/audio/AudioDeviceBroker;->sendLMsgNoDelay(IILjava/lang/Object;)V
 
-    .line 537
+    .line 573
     return-void
 .end method
 
 .method postBtHeasetProfileConnected(Landroid/bluetooth/BluetoothHeadset;)V
     .registers 4
+    .param p1, "headsetProfile"  # Landroid/bluetooth/BluetoothHeadset;
 
-    .line 531
+    .line 567
     const/16 v0, 0x1a
 
     const/4 v1, 0x2
 
     invoke-direct {p0, v0, v1, p1}, Lcom/android/server/audio/AudioDeviceBroker;->sendLMsgNoDelay(IILjava/lang/Object;)V
 
-    .line 532
+    .line 568
     return-void
 .end method
 
 .method postDisconnectA2dp()V
     .registers 3
 
-    .line 507
+    .line 543
     const/16 v0, 0x13
 
     const/4 v1, 0x2
 
     invoke-direct {p0, v0, v1}, Lcom/android/server/audio/AudioDeviceBroker;->sendMsgNoDelay(II)V
 
-    .line 508
+    .line 544
     return-void
 .end method
 
 .method postDisconnectA2dpSink()V
     .registers 3
 
-    .line 511
+    .line 547
     const/16 v0, 0x14
 
     const/4 v1, 0x2
 
     invoke-direct {p0, v0, v1}, Lcom/android/server/audio/AudioDeviceBroker;->sendMsgNoDelay(II)V
 
-    .line 512
+    .line 548
     return-void
 .end method
 
 .method postDisconnectBluetoothSco(I)V
     .registers 4
+    .param p1, "exceptPid"  # I
 
-    .line 388
+    .line 419
     const/16 v0, 0x10
 
     const/4 v1, 0x0
 
     invoke-direct {p0, v0, v1, p1}, Lcom/android/server/audio/AudioDeviceBroker;->sendIMsgNoDelay(III)V
 
-    .line 389
+    .line 420
     return-void
 .end method
 
 .method postDisconnectHeadset()V
     .registers 3
 
-    .line 519
+    .line 555
     const/16 v0, 0x16
 
     const/4 v1, 0x2
 
     invoke-direct {p0, v0, v1}, Lcom/android/server/audio/AudioDeviceBroker;->sendMsgNoDelay(II)V
 
-    .line 520
+    .line 556
     return-void
 .end method
 
 .method postDisconnectHearingAid()V
     .registers 3
 
-    .line 515
+    .line 551
     const/16 v0, 0x15
 
     const/4 v1, 0x2
 
     invoke-direct {p0, v0, v1}, Lcom/android/server/audio/AudioDeviceBroker;->sendMsgNoDelay(II)V
 
-    .line 516
+    .line 552
     return-void
 .end method
 
 .method postObserveDevicesForAllStreams()V
     .registers 2
 
-    .line 439
+    .line 474
     iget-object v0, p0, Lcom/android/server/audio/AudioDeviceBroker;->mAudioService:Lcom/android/server/audio/AudioService;
 
     invoke-virtual {v0}, Lcom/android/server/audio/AudioService;->postObserveDevicesForAllStreams()V
 
-    .line 440
+    .line 475
     return-void
 .end method
 
 .method postReportNewRoutes()V
     .registers 3
 
-    .line 588
+    .line 643
     const/16 v0, 0xd
 
     const/4 v1, 0x1
 
     invoke-direct {p0, v0, v1}, Lcom/android/server/audio/AudioDeviceBroker;->sendMsgNoDelay(II)V
 
-    .line 589
+    .line 644
     return-void
 .end method
 
 .method postScoClientDied(Ljava/lang/Object;)V
     .registers 4
+    .param p1, "obj"  # Ljava/lang/Object;
 
-    .line 540
-    const/16 v0, 0x21
+    .line 576
+    const/16 v0, 0x1e
 
     const/4 v1, 0x2
 
     invoke-direct {p0, v0, v1, p1}, Lcom/android/server/audio/AudioDeviceBroker;->sendLMsgNoDelay(IILjava/lang/Object;)V
 
-    .line 541
+    .line 577
     return-void
 .end method
 
 .method postSetA2dpSourceConnectionState(ILcom/android/server/audio/BtHelper$BluetoothA2dpDeviceInfo;)V
-    .registers 5
+    .registers 6
+    .param p1, "state"  # I
+    .param p2, "btDeviceInfo"  # Lcom/android/server/audio/BtHelper$BluetoothA2dpDeviceInfo;
 
-    .line 574
+    .line 629
     const/4 v0, 0x2
 
-    .line 575
-    const/4 v1, 0x7
+    if-ne p1, v0, :cond_5
 
-    invoke-direct {p0, v1, v0, p1, p2}, Lcom/android/server/audio/AudioDeviceBroker;->sendILMsgNoDelay(IIILjava/lang/Object;)V
+    const/4 v1, 0x1
 
-    .line 577
+    goto :goto_6
+
+    :cond_5
+    const/4 v1, 0x0
+
+    .line 630
+    .local v1, "intState":I
+    :goto_6
+    const/4 v2, 0x7
+
+    invoke-direct {p0, v2, v0, p1, p2}, Lcom/android/server/audio/AudioDeviceBroker;->sendILMsgNoDelay(IIILjava/lang/Object;)V
+
+    .line 632
     return-void
 .end method
 
 .method postSetAvrcpAbsoluteVolumeIndex(I)V
     .registers 4
+    .param p1, "index"  # I
 
-    .line 380
+    .line 411
     const/16 v0, 0xf
 
     const/4 v1, 0x0
 
     invoke-direct {p0, v0, v1, p1}, Lcom/android/server/audio/AudioDeviceBroker;->sendIMsgNoDelay(III)V
 
-    .line 381
+    .line 412
     return-void
 .end method
 
 .method postSetHearingAidConnectionState(ILandroid/bluetooth/BluetoothDevice;I)V
     .registers 10
+    .param p1, "state"  # I
+    .param p2, "device"  # Landroid/bluetooth/BluetoothDevice;
+    .param p3, "delay"  # I
 
-    .line 500
+    .line 536
     const/16 v1, 0x8
 
     const/4 v2, 0x2
@@ -2192,50 +2404,59 @@
 
     invoke-direct/range {v0 .. v5}, Lcom/android/server/audio/AudioDeviceBroker;->sendILMsg(IIILjava/lang/Object;I)V
 
-    .line 504
+    .line 540
     return-void
 .end method
 
 .method postSetHearingAidVolumeIndex(II)V
     .registers 5
+    .param p1, "index"  # I
+    .param p2, "streamType"  # I
 
-    .line 384
+    .line 415
     const/16 v0, 0xe
 
     const/4 v1, 0x0
 
     invoke-direct {p0, v0, v1, p1, p2}, Lcom/android/server/audio/AudioDeviceBroker;->sendIIMsgNoDelay(IIII)V
 
-    .line 385
+    .line 416
     return-void
 .end method
 
 .method postSetVolumeIndexOnDevice(IIILjava/lang/String;)V
     .registers 6
+    .param p1, "streamType"  # I
+    .param p2, "vssVolIndex"  # I
+    .param p3, "device"  # I
+    .param p4, "caller"  # Ljava/lang/String;
 
-    .line 435
+    .line 470
     iget-object v0, p0, Lcom/android/server/audio/AudioDeviceBroker;->mAudioService:Lcom/android/server/audio/AudioService;
 
     invoke-virtual {v0, p1, p2, p3, p4}, Lcom/android/server/audio/AudioService;->postSetVolumeIndexOnDevice(IIILjava/lang/String;)V
 
-    .line 436
+    .line 471
     return-void
 .end method
 
 .method postSetWiredDeviceConnectionState(Lcom/android/server/audio/AudioDeviceInventory$WiredDeviceConnectionState;I)V
     .registers 4
+    .param p1, "connectionState"  # Lcom/android/server/audio/AudioDeviceInventory$WiredDeviceConnectionState;
+    .param p2, "delay"  # I
 
-    .line 494
+    .line 530
     const/4 v0, 0x2
 
     invoke-direct {p0, v0, v0, p1, p2}, Lcom/android/server/audio/AudioDeviceBroker;->sendLMsg(IILjava/lang/Object;I)V
 
-    .line 495
+    .line 531
     return-void
 .end method
 
 .method receiveBtEvent(Landroid/content/Intent;)V
     .registers 5
+    .param p1, "intent"  # Landroid/content/Intent;
 
     .line 169
     iget-object v0, p0, Lcom/android/server/audio/AudioDeviceBroker;->mSetModeLock:Ljava/lang/Object;
@@ -2272,31 +2493,38 @@
 
     .line 172
     :catchall_e
-    move-exception p1
+    move-exception v2
 
     :try_start_f
     monitor-exit v1
     :try_end_10
     .catchall {:try_start_f .. :try_end_10} :catchall_e
 
+    .end local p0  # "this":Lcom/android/server/audio/AudioDeviceBroker;
+    .end local p1  # "intent":Landroid/content/Intent;
     :try_start_10
-    throw p1
+    throw v2
 
     .line 173
+    .restart local p0  # "this":Lcom/android/server/audio/AudioDeviceBroker;
+    .restart local p1  # "intent":Landroid/content/Intent;
     :catchall_11
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_13
     .catchall {:try_start_10 .. :try_end_13} :catchall_11
 
-    throw p1
+    throw v1
 .end method
 
 .method setA2dpDockTimeout(Ljava/lang/String;II)V
     .registers 10
+    .param p1, "address"  # Ljava/lang/String;
+    .param p2, "a2dpCodec"  # I
+    .param p3, "delayMs"  # I
 
-    .line 613
+    .line 666
     const/16 v1, 0xa
 
     const/4 v2, 0x2
@@ -2311,45 +2539,48 @@
 
     invoke-direct/range {v0 .. v5}, Lcom/android/server/audio/AudioDeviceBroker;->sendILMsg(IIILjava/lang/Object;I)V
 
-    .line 614
+    .line 667
     return-void
 .end method
 
 .method setAvrcpAbsoluteVolumeSupported(Z)V
     .registers 4
+    .param p1, "supported"  # Z
 
-    .line 617
+    .line 670
     iget-object v0, p0, Lcom/android/server/audio/AudioDeviceBroker;->mDeviceStateLock:Ljava/lang/Object;
 
     monitor-enter v0
 
-    .line 618
+    .line 671
     :try_start_3
     iget-object v1, p0, Lcom/android/server/audio/AudioDeviceBroker;->mBtHelper:Lcom/android/server/audio/BtHelper;
 
     invoke-virtual {v1, p1}, Lcom/android/server/audio/BtHelper;->setAvrcpAbsoluteVolumeSupported(Z)V
 
-    .line 619
+    .line 672
     monitor-exit v0
 
-    .line 620
+    .line 673
     return-void
 
-    .line 619
+    .line 672
     :catchall_a
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_c
     .catchall {:try_start_3 .. :try_end_c} :catchall_a
 
-    throw p1
+    throw v1
 .end method
 
 .method setBluetoothA2dpOnInt(ZLjava/lang/String;)V
-    .registers 5
+    .registers 7
+    .param p1, "on"  # Z
+    .param p2, "source"  # Ljava/lang/String;
 
-    .line 551
+    .line 587
     new-instance v0, Ljava/lang/StringBuilder;
 
     const-string/jumbo v1, "setBluetoothA2dpOn("
@@ -2358,7 +2589,7 @@
 
     invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Z)Ljava/lang/StringBuilder;
 
-    .line 552
+    .line 588
     const-string v1, ") from u/pid:"
 
     invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
@@ -2373,7 +2604,7 @@
 
     invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    .line 553
+    .line 589
     invoke-static {}, Landroid/os/Binder;->getCallingPid()I
 
     move-result v1
@@ -2388,62 +2619,65 @@
 
     invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p2
+    move-result-object v0
 
-    .line 555
-    iget-object v0, p0, Lcom/android/server/audio/AudioDeviceBroker;->mDeviceStateLock:Ljava/lang/Object;
+    .line 591
+    .local v0, "eventSource":Ljava/lang/String;
+    iget-object v1, p0, Lcom/android/server/audio/AudioDeviceBroker;->mDeviceStateLock:Ljava/lang/Object;
 
-    monitor-enter v0
+    monitor-enter v1
 
-    .line 556
+    .line 592
     :try_start_32
     iput-boolean p1, p0, Lcom/android/server/audio/AudioDeviceBroker;->mBluetoothA2dpEnabled:Z
 
-    .line 557
-    iget-object p1, p0, Lcom/android/server/audio/AudioDeviceBroker;->mBrokerHandler:Lcom/android/server/audio/AudioDeviceBroker$BrokerHandler;
+    .line 593
+    iget-object v2, p0, Lcom/android/server/audio/AudioDeviceBroker;->mBrokerHandler:Lcom/android/server/audio/AudioDeviceBroker$BrokerHandler;
 
-    const/4 v1, 0x5
+    const/4 v3, 0x5
 
-    invoke-virtual {p1, v1}, Lcom/android/server/audio/AudioDeviceBroker$BrokerHandler;->removeMessages(I)V
+    invoke-virtual {v2, v3}, Lcom/android/server/audio/AudioDeviceBroker$BrokerHandler;->removeMessages(I)V
 
-    .line 558
-    const/4 p1, 0x1
+    .line 594
+    const/4 v2, 0x1
 
-    .line 560
-    iget-boolean v1, p0, Lcom/android/server/audio/AudioDeviceBroker;->mBluetoothA2dpEnabled:Z
+    .line 596
+    iget-boolean v3, p0, Lcom/android/server/audio/AudioDeviceBroker;->mBluetoothA2dpEnabled:Z
 
-    if-eqz v1, :cond_41
+    if-eqz v3, :cond_41
 
-    const/4 v1, 0x0
+    const/4 v3, 0x0
 
     goto :goto_43
 
     :cond_41
-    const/16 v1, 0xa
+    const/16 v3, 0xa
 
-    .line 558
+    .line 594
     :goto_43
-    invoke-direct {p0, p1, v1, p2}, Lcom/android/server/audio/AudioDeviceBroker;->onSetForceUse(IILjava/lang/String;)V
+    invoke-direct {p0, v2, v3, v0}, Lcom/android/server/audio/AudioDeviceBroker;->onSetForceUse(IILjava/lang/String;)V
 
-    .line 562
-    monitor-exit v0
+    .line 598
+    monitor-exit v1
 
-    .line 563
+    .line 599
     return-void
 
-    .line 562
+    .line 598
     :catchall_48
-    move-exception p1
+    move-exception v2
 
-    monitor-exit v0
+    monitor-exit v1
     :try_end_4a
     .catchall {:try_start_32 .. :try_end_4a} :catchall_48
 
-    throw p1
+    throw v2
 .end method
 
 .method setBluetoothA2dpOn_Async(ZLjava/lang/String;)V
-    .registers 11
+    .registers 12
+    .param p1, "on"  # Z
+    .param p2, "source"  # Ljava/lang/String;
 
     .line 177
     iget-object v0, p0, Lcom/android/server/audio/AudioDeviceBroker;->mDeviceStateLock:Ljava/lang/Object;
@@ -2466,40 +2700,40 @@
     iput-boolean p1, p0, Lcom/android/server/audio/AudioDeviceBroker;->mBluetoothA2dpEnabled:Z
 
     .line 182
-    iget-object p1, p0, Lcom/android/server/audio/AudioDeviceBroker;->mBrokerHandler:Lcom/android/server/audio/AudioDeviceBroker$BrokerHandler;
+    iget-object v1, p0, Lcom/android/server/audio/AudioDeviceBroker;->mBrokerHandler:Lcom/android/server/audio/AudioDeviceBroker$BrokerHandler;
 
-    const/4 v1, 0x5
+    const/4 v2, 0x5
 
-    invoke-virtual {p1, v1}, Lcom/android/server/audio/AudioDeviceBroker$BrokerHandler;->removeMessages(I)V
+    invoke-virtual {v1, v2}, Lcom/android/server/audio/AudioDeviceBroker$BrokerHandler;->removeMessages(I)V
 
     .line 183
-    const/4 v3, 0x5
+    const/4 v4, 0x5
 
-    const/4 v4, 0x2
+    const/4 v5, 0x2
 
-    const/4 v5, 0x1
+    const/4 v6, 0x1
 
     .line 185
-    iget-boolean p1, p0, Lcom/android/server/audio/AudioDeviceBroker;->mBluetoothA2dpEnabled:Z
+    iget-boolean v1, p0, Lcom/android/server/audio/AudioDeviceBroker;->mBluetoothA2dpEnabled:Z
 
-    if-eqz p1, :cond_1a
+    if-eqz v1, :cond_1a
 
-    const/4 p1, 0x0
+    const/4 v1, 0x0
 
     goto :goto_1c
 
     :cond_1a
-    const/16 p1, 0xa
+    const/16 v1, 0xa
 
     :goto_1c
-    move v6, p1
+    move v7, v1
 
     .line 183
-    move-object v2, p0
+    move-object v3, p0
 
-    move-object v7, p2
+    move-object v8, p2
 
-    invoke-direct/range {v2 .. v7}, Lcom/android/server/audio/AudioDeviceBroker;->sendIILMsgNoDelay(IIIILjava/lang/Object;)V
+    invoke-direct/range {v3 .. v8}, Lcom/android/server/audio/AudioDeviceBroker;->sendIILMsgNoDelay(IIIILjava/lang/Object;)V
 
     .line 187
     monitor-exit v0
@@ -2509,71 +2743,135 @@
 
     .line 187
     :catchall_24
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_26
     .catchall {:try_start_3 .. :try_end_26} :catchall_24
 
-    throw p1
+    throw v1
 .end method
 
 .method setBluetoothScoOn(ZLjava/lang/String;)V
-    .registers 15
+    .registers 16
+    .param p1, "on"  # Z
+    .param p2, "eventSource"  # Ljava/lang/String;
 
-    .line 333
+    .line 354
+    new-instance v0, Ljava/lang/StringBuilder;
+
+    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
+
+    const-string/jumbo v1, "setBluetoothScoOn: "
+
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Z)Ljava/lang/StringBuilder;
+
+    const-string v1, " "
+
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v0, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v0
+
+    const-string v1, "AS.AudioDeviceBroker"
+
+    invoke-static {v1, v0}, Landroid/util/Log;->i(Ljava/lang/String;Ljava/lang/String;)I
+
+    .line 356
     iget-object v0, p0, Lcom/android/server/audio/AudioDeviceBroker;->mDeviceStateLock:Ljava/lang/Object;
 
     monitor-enter v0
 
-    .line 334
+    .line 357
     const/4 v1, 0x3
 
-    if-eqz p1, :cond_15
+    if-eqz p1, :cond_44
 
-    .line 336
-    :try_start_6
+    .line 359
+    :try_start_25
     iget-object v2, p0, Lcom/android/server/audio/AudioDeviceBroker;->mBtHelper:Lcom/android/server/audio/BtHelper;
 
     invoke-virtual {v2}, Lcom/android/server/audio/BtHelper;->isBluetoothScoOn()Z
 
     move-result v2
 
-    if-nez v2, :cond_12
+    if-nez v2, :cond_41
 
-    .line 337
+    .line 360
+    iget-object v2, p0, Lcom/android/server/audio/AudioDeviceBroker;->mBtHelper:Lcom/android/server/audio/BtHelper;
+
+    invoke-virtual {v2}, Lcom/android/server/audio/BtHelper;->isBluetoothAudioNotConnectedToEarbud()Z
+
+    move-result v2
+
+    if-eqz v2, :cond_41
+
+    .line 361
+    const-string v2, "AS.AudioDeviceBroker"
+
+    const-string/jumbo v3, "setBluetoothScoOn(true) failed because device is not in audio connected mode"
+
+    invoke-static {v2, v3}, Landroid/util/Log;->w(Ljava/lang/String;Ljava/lang/String;)I
+
+    .line 363
     iput v1, p0, Lcom/android/server/audio/AudioDeviceBroker;->mForcedUseForCommExt:I
 
-    .line 338
+    .line 364
     monitor-exit v0
 
     return-void
 
-    .line 340
-    :cond_12
+    .line 367
+    :cond_41
     iput v1, p0, Lcom/android/server/audio/AudioDeviceBroker;->mForcedUseForComm:I
 
-    goto :goto_1c
+    goto :goto_4b
 
-    .line 341
-    :cond_15
+    .line 368
+    :cond_44
     iget v2, p0, Lcom/android/server/audio/AudioDeviceBroker;->mForcedUseForComm:I
 
-    if-ne v2, v1, :cond_1c
+    if-ne v2, v1, :cond_4b
 
-    .line 342
+    .line 369
     const/4 v1, 0x0
 
     iput v1, p0, Lcom/android/server/audio/AudioDeviceBroker;->mForcedUseForComm:I
 
-    .line 344
-    :cond_1c
-    :goto_1c
+    .line 371
+    :cond_4b
+    :goto_4b
     iget v1, p0, Lcom/android/server/audio/AudioDeviceBroker;->mForcedUseForComm:I
 
     iput v1, p0, Lcom/android/server/audio/AudioDeviceBroker;->mForcedUseForCommExt:I
 
-    .line 345
+    .line 373
+    const-string v1, "AS.AudioDeviceBroker"
+
+    new-instance v2, Ljava/lang/StringBuilder;
+
+    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
+
+    const-string v3, "In setbluetoothScoOn(), mForcedUseForCommExt: "
+
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    iget v3, p0, Lcom/android/server/audio/AudioDeviceBroker;->mForcedUseForCommExt:I
+
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v2
+
+    invoke-static {v1, v2}, Landroid/util/Log;->i(Ljava/lang/String;Ljava/lang/String;)I
+
+    .line 376
     new-instance v1, Ljava/lang/StringBuilder;
 
     invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
@@ -2582,120 +2880,155 @@
 
     invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    if-eqz p1, :cond_30
+    if-eqz p1, :cond_77
 
-    const-string/jumbo p1, "on"
+    const-string/jumbo v2, "on"
 
-    goto :goto_33
+    goto :goto_7a
 
-    :cond_30
-    const-string/jumbo p1, "off"
+    :cond_77
+    const-string/jumbo v2, "off"
 
-    :goto_33
-    invoke-virtual {v1, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    :goto_7a
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v1
 
-    invoke-static {p1}, Landroid/media/AudioSystem;->setParameters(Ljava/lang/String;)I
+    invoke-static {v1}, Landroid/media/AudioSystem;->setParameters(Ljava/lang/String;)I
 
-    .line 346
-    const/4 v2, 0x4
+    .line 377
+    const/4 v3, 0x4
 
-    const/4 v3, 0x2
+    const/4 v4, 0x2
 
-    const/4 v4, 0x0
+    const/4 v5, 0x0
 
-    iget v5, p0, Lcom/android/server/audio/AudioDeviceBroker;->mForcedUseForComm:I
+    iget v6, p0, Lcom/android/server/audio/AudioDeviceBroker;->mForcedUseForComm:I
 
-    move-object v1, p0
+    move-object v2, p0
 
-    move-object v6, p2
+    move-object v7, p2
 
-    invoke-direct/range {v1 .. v6}, Lcom/android/server/audio/AudioDeviceBroker;->sendIILMsgNoDelay(IIIILjava/lang/Object;)V
+    invoke-direct/range {v2 .. v7}, Lcom/android/server/audio/AudioDeviceBroker;->sendIILMsgNoDelay(IIIILjava/lang/Object;)V
 
-    .line 348
-    const/4 v7, 0x4
-
-    const/4 v8, 0x2
+    .line 379
+    const/4 v8, 0x4
 
     const/4 v9, 0x2
 
-    iget v10, p0, Lcom/android/server/audio/AudioDeviceBroker;->mForcedUseForComm:I
+    const/4 v10, 0x2
 
-    move-object v6, p0
+    iget v11, p0, Lcom/android/server/audio/AudioDeviceBroker;->mForcedUseForComm:I
 
-    move-object v11, p2
+    move-object v7, p0
 
-    invoke-direct/range {v6 .. v11}, Lcom/android/server/audio/AudioDeviceBroker;->sendIILMsgNoDelay(IIIILjava/lang/Object;)V
+    move-object v12, p2
 
-    .line 350
+    invoke-direct/range {v7 .. v12}, Lcom/android/server/audio/AudioDeviceBroker;->sendIILMsgNoDelay(IIIILjava/lang/Object;)V
+
+    .line 381
     monitor-exit v0
-    :try_end_52
-    .catchall {:try_start_6 .. :try_end_52} :catchall_58
+    :try_end_99
+    .catchall {:try_start_25 .. :try_end_99} :catchall_9f
 
-    .line 352
-    iget-object p1, p0, Lcom/android/server/audio/AudioDeviceBroker;->mAudioService:Lcom/android/server/audio/AudioService;
+    .line 383
+    iget-object v0, p0, Lcom/android/server/audio/AudioDeviceBroker;->mAudioService:Lcom/android/server/audio/AudioService;
 
-    invoke-virtual {p1}, Lcom/android/server/audio/AudioService;->postUpdateRingerModeServiceInt()V
+    invoke-virtual {v0}, Lcom/android/server/audio/AudioService;->postUpdateRingerModeServiceInt()V
 
-    .line 353
+    .line 384
     return-void
 
-    .line 350
-    :catchall_58
-    move-exception p1
+    .line 381
+    :catchall_9f
+    move-exception v1
 
-    :try_start_59
+    :try_start_a0
     monitor-exit v0
-    :try_end_5a
-    .catchall {:try_start_59 .. :try_end_5a} :catchall_58
+    :try_end_a1
+    .catchall {:try_start_a0 .. :try_end_a1} :catchall_9f
 
-    throw p1
+    throw v1
 .end method
 
 .method setBluetoothScoOnByApp(Z)V
-    .registers 3
+    .registers 6
+    .param p1, "on"  # Z
 
-    .line 320
+    .line 330
     iget-object v0, p0, Lcom/android/server/audio/AudioDeviceBroker;->mDeviceStateLock:Ljava/lang/Object;
 
     monitor-enter v0
 
-    .line 321
-    if-eqz p1, :cond_7
+    .line 331
+    const/4 v1, 0x3
 
-    const/4 p1, 0x3
+    if-eqz p1, :cond_9
 
-    goto :goto_8
+    .line 332
+    :try_start_6
+    iput v1, p0, Lcom/android/server/audio/AudioDeviceBroker;->mForcedUseForCommExt:I
 
-    :cond_7
-    const/4 p1, 0x0
+    goto :goto_10
 
-    :goto_8
-    :try_start_8
-    iput p1, p0, Lcom/android/server/audio/AudioDeviceBroker;->mForcedUseForCommExt:I
+    .line 333
+    :cond_9
+    iget v2, p0, Lcom/android/server/audio/AudioDeviceBroker;->mForcedUseForCommExt:I
 
-    .line 322
+    if-ne v2, v1, :cond_10
+
+    .line 334
+    const/4 v1, 0x0
+
+    iput v1, p0, Lcom/android/server/audio/AudioDeviceBroker;->mForcedUseForCommExt:I
+
+    .line 336
+    :cond_10
+    :goto_10
+    const-string v1, "AS.AudioDeviceBroker"
+
+    new-instance v2, Ljava/lang/StringBuilder;
+
+    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
+
+    const-string v3, "In setBluetoothScoOnByApp(), mForcedUseForCommExt: "
+
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    iget v3, p0, Lcom/android/server/audio/AudioDeviceBroker;->mForcedUseForCommExt:I
+
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v2
+
+    invoke-static {v1, v2}, Landroid/util/Log;->i(Ljava/lang/String;Ljava/lang/String;)I
+
+    .line 339
     monitor-exit v0
 
-    .line 323
+    .line 340
     return-void
 
-    .line 322
-    :catchall_c
-    move-exception p1
+    .line 339
+    :catchall_2a
+    move-exception v1
 
     monitor-exit v0
-    :try_end_e
-    .catchall {:try_start_8 .. :try_end_e} :catchall_c
+    :try_end_2c
+    .catchall {:try_start_6 .. :try_end_2c} :catchall_2a
 
-    throw p1
+    throw v1
 .end method
 
 .method setForceUse_Async(IILjava/lang/String;)V
     .registers 10
+    .param p1, "useCase"  # I
+    .param p2, "config"  # I
+    .param p3, "eventSource"  # Ljava/lang/String;
 
     .line 148
     const/4 v1, 0x4
@@ -2717,7 +3050,9 @@
 .end method
 
 .method setSpeakerphoneOn(ZLjava/lang/String;)Z
-    .registers 8
+    .registers 10
+    .param p1, "on"  # Z
+    .param p2, "eventSource"  # Ljava/lang/String;
 
     .line 197
     iget-object v0, p0, Lcom/android/server/audio/AudioDeviceBroker;->mDeviceStateLock:Ljava/lang/Object;
@@ -2731,6 +3066,7 @@
     move-result v1
 
     .line 199
+    .local v1, "wasOn":Z
     const/4 v2, 0x1
 
     const/4 v3, 0x0
@@ -2738,16 +3074,16 @@
     if-eqz p1, :cond_17
 
     .line 200
-    iget p1, p0, Lcom/android/server/audio/AudioDeviceBroker;->mForcedUseForComm:I
+    iget v4, p0, Lcom/android/server/audio/AudioDeviceBroker;->mForcedUseForComm:I
 
-    const/4 v4, 0x3
+    const/4 v5, 0x3
 
-    if-ne p1, v4, :cond_14
+    if-ne v4, v5, :cond_14
 
     .line 201
-    const/4 p1, 0x2
+    const/4 v4, 0x2
 
-    invoke-virtual {p0, p1, v3, p2}, Lcom/android/server/audio/AudioDeviceBroker;->setForceUse_Async(IILjava/lang/String;)V
+    invoke-virtual {p0, v4, v3, p2}, Lcom/android/server/audio/AudioDeviceBroker;->setForceUse_Async(IILjava/lang/String;)V
 
     .line 203
     :cond_14
@@ -2757,9 +3093,9 @@
 
     .line 204
     :cond_17
-    iget p1, p0, Lcom/android/server/audio/AudioDeviceBroker;->mForcedUseForComm:I
+    iget v4, p0, Lcom/android/server/audio/AudioDeviceBroker;->mForcedUseForComm:I
 
-    if-ne p1, v2, :cond_1d
+    if-ne v4, v2, :cond_1d
 
     .line 205
     iput v3, p0, Lcom/android/server/audio/AudioDeviceBroker;->mForcedUseForComm:I
@@ -2767,52 +3103,79 @@
     .line 208
     :cond_1d
     :goto_1d
-    iget p1, p0, Lcom/android/server/audio/AudioDeviceBroker;->mForcedUseForComm:I
+    iget v4, p0, Lcom/android/server/audio/AudioDeviceBroker;->mForcedUseForComm:I
 
-    iput p1, p0, Lcom/android/server/audio/AudioDeviceBroker;->mForcedUseForCommExt:I
-
-    .line 209
-    iget p1, p0, Lcom/android/server/audio/AudioDeviceBroker;->mForcedUseForComm:I
-
-    invoke-virtual {p0, v3, p1, p2}, Lcom/android/server/audio/AudioDeviceBroker;->setForceUse_Async(IILjava/lang/String;)V
+    iput v4, p0, Lcom/android/server/audio/AudioDeviceBroker;->mForcedUseForCommExt:I
 
     .line 210
+    const-string v4, "AS.AudioDeviceBroker"
+
+    new-instance v5, Ljava/lang/StringBuilder;
+
+    invoke-direct {v5}, Ljava/lang/StringBuilder;-><init>()V
+
+    const-string v6, "In setSpeakerphoneOn(), mForcedUseForCommExt: "
+
+    invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    iget v6, p0, Lcom/android/server/audio/AudioDeviceBroker;->mForcedUseForCommExt:I
+
+    invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v5}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v5
+
+    invoke-static {v4, v5}, Landroid/util/Log;->i(Ljava/lang/String;Ljava/lang/String;)I
+
+    .line 212
+    iget v4, p0, Lcom/android/server/audio/AudioDeviceBroker;->mForcedUseForComm:I
+
+    invoke-virtual {p0, v3, v4, p2}, Lcom/android/server/audio/AudioDeviceBroker;->setForceUse_Async(IILjava/lang/String;)V
+
+    .line 213
     invoke-virtual {p0}, Lcom/android/server/audio/AudioDeviceBroker;->isSpeakerphoneOn()Z
 
-    move-result p1
+    move-result v4
 
-    if-eq v1, p1, :cond_2d
+    if-eq v1, v4, :cond_45
 
-    goto :goto_2e
+    goto :goto_46
 
-    :cond_2d
+    :cond_45
     move v2, v3
 
-    :goto_2e
+    :goto_46
     monitor-exit v0
 
     return v2
 
-    .line 211
-    :catchall_30
-    move-exception p1
+    .line 214
+    .end local v1  # "wasOn":Z
+    :catchall_48
+    move-exception v1
 
     monitor-exit v0
-    :try_end_32
-    .catchall {:try_start_3 .. :try_end_32} :catchall_30
+    :try_end_4a
+    .catchall {:try_start_3 .. :try_end_4a} :catchall_48
 
-    throw p1
+    throw v1
 .end method
 
 .method setWiredDeviceConnectionState(IILjava/lang/String;Ljava/lang/String;Ljava/lang/String;)V
     .registers 13
+    .param p1, "type"  # I
+    .param p2, "state"  # I
+    .param p3, "address"  # Ljava/lang/String;
+    .param p4, "name"  # Ljava/lang/String;
+    .param p5, "caller"  # Ljava/lang/String;
 
-    .line 224
+    .line 259
     iget-object v0, p0, Lcom/android/server/audio/AudioDeviceBroker;->mDeviceStateLock:Ljava/lang/Object;
 
     monitor-enter v0
 
-    .line 225
+    .line 260
     :try_start_3
     iget-object v1, p0, Lcom/android/server/audio/AudioDeviceBroker;->mDeviceInventory:Lcom/android/server/audio/AudioDeviceInventory;
 
@@ -2828,131 +3191,137 @@
 
     invoke-virtual/range {v1 .. v6}, Lcom/android/server/audio/AudioDeviceInventory;->setWiredDeviceConnectionState(IILjava/lang/String;Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 226
+    .line 261
     monitor-exit v0
 
-    .line 227
+    .line 262
     return-void
 
-    .line 226
+    .line 261
     :catchall_f
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_11
     .catchall {:try_start_3 .. :try_end_11} :catchall_f
 
-    throw p1
+    throw v1
 .end method
 
 .method startBluetoothScoForClient_Sync(Landroid/os/IBinder;ILjava/lang/String;)V
     .registers 6
+    .param p1, "cb"  # Landroid/os/IBinder;
+    .param p2, "scoAudioMode"  # I
+    .param p3, "eventSource"  # Ljava/lang/String;
     .annotation build Lcom/android/internal/annotations/GuardedBy;
         value = {
             "mSetModeLock"
         }
     .end annotation
 
-    .line 398
+    .line 429
     iget-object v0, p0, Lcom/android/server/audio/AudioDeviceBroker;->mDeviceStateLock:Ljava/lang/Object;
 
     monitor-enter v0
 
-    .line 399
+    .line 430
     :try_start_3
     iget-object v1, p0, Lcom/android/server/audio/AudioDeviceBroker;->mBtHelper:Lcom/android/server/audio/BtHelper;
 
     invoke-virtual {v1, p1, p2, p3}, Lcom/android/server/audio/BtHelper;->startBluetoothScoForClient(Landroid/os/IBinder;ILjava/lang/String;)V
 
-    .line 400
+    .line 431
     monitor-exit v0
 
-    .line 401
+    .line 432
     return-void
 
-    .line 400
+    .line 431
     :catchall_a
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_c
     .catchall {:try_start_3 .. :try_end_c} :catchall_a
 
-    throw p1
+    throw v1
 .end method
 
 .method startWatchingRoutes(Landroid/media/IAudioRoutesObserver;)Landroid/media/AudioRoutesInfo;
     .registers 4
+    .param p1, "observer"  # Landroid/media/IAudioRoutesObserver;
 
-    .line 356
+    .line 387
     iget-object v0, p0, Lcom/android/server/audio/AudioDeviceBroker;->mDeviceStateLock:Ljava/lang/Object;
 
     monitor-enter v0
 
-    .line 357
+    .line 388
     :try_start_3
     iget-object v1, p0, Lcom/android/server/audio/AudioDeviceBroker;->mDeviceInventory:Lcom/android/server/audio/AudioDeviceInventory;
 
     invoke-virtual {v1, p1}, Lcom/android/server/audio/AudioDeviceInventory;->startWatchingRoutes(Landroid/media/IAudioRoutesObserver;)Landroid/media/AudioRoutesInfo;
 
-    move-result-object p1
+    move-result-object v1
 
     monitor-exit v0
 
-    return-object p1
+    return-object v1
 
-    .line 358
+    .line 389
     :catchall_b
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_d
     .catchall {:try_start_3 .. :try_end_d} :catchall_b
 
-    throw p1
+    throw v1
 .end method
 
 .method stopBluetoothScoForClient_Sync(Landroid/os/IBinder;Ljava/lang/String;)V
     .registers 5
+    .param p1, "cb"  # Landroid/os/IBinder;
+    .param p2, "eventSource"  # Ljava/lang/String;
     .annotation build Lcom/android/internal/annotations/GuardedBy;
         value = {
             "mSetModeLock"
         }
     .end annotation
 
-    .line 405
+    .line 436
     iget-object v0, p0, Lcom/android/server/audio/AudioDeviceBroker;->mDeviceStateLock:Ljava/lang/Object;
 
     monitor-enter v0
 
-    .line 406
+    .line 437
     :try_start_3
     iget-object v1, p0, Lcom/android/server/audio/AudioDeviceBroker;->mBtHelper:Lcom/android/server/audio/BtHelper;
 
     invoke-virtual {v1, p1, p2}, Lcom/android/server/audio/BtHelper;->stopBluetoothScoForClient(Landroid/os/IBinder;Ljava/lang/String;)V
 
-    .line 407
+    .line 438
     monitor-exit v0
 
-    .line 408
+    .line 439
     return-void
 
-    .line 407
+    .line 438
     :catchall_a
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_c
     .catchall {:try_start_3 .. :try_end_c} :catchall_a
 
-    throw p1
+    throw v1
 .end method
 
 .method toggleHdmiIfConnected_Async()V
     .registers 3
 
     .line 153
-    const/4 v0, 0x6
+    const/16 v0, 0x11
 
     const/4 v1, 0x2
 

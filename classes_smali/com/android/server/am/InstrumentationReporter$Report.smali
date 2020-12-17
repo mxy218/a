@@ -31,6 +31,12 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/am/InstrumentationReporter;ILandroid/app/IInstrumentationWatcher;Landroid/content/ComponentName;ILandroid/os/Bundle;)V
     .registers 7
+    .param p1, "this$0"  # Lcom/android/server/am/InstrumentationReporter;
+    .param p2, "type"  # I
+    .param p3, "watcher"  # Landroid/app/IInstrumentationWatcher;
+    .param p4, "name"  # Landroid/content/ComponentName;
+    .param p5, "resultCode"  # I
+    .param p6, "results"  # Landroid/os/Bundle;
 
     .line 106
     iput-object p1, p0, Lcom/android/server/am/InstrumentationReporter$Report;->this$0:Lcom/android/server/am/InstrumentationReporter;

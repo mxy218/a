@@ -25,6 +25,9 @@
 # direct methods
 .method public constructor <init>(Lcom/android/server/hdmi/HdmiControlService;ILandroid/hardware/hdmi/IHdmiControlCallback;)V
     .registers 4
+    .param p1, "service"  # Lcom/android/server/hdmi/HdmiControlService;
+    .param p2, "id"  # I
+    .param p3, "callback"  # Landroid/hardware/hdmi/IHdmiControlCallback;
 
     .line 49
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -43,7 +46,8 @@
 .end method
 
 .method private invokeCallback(I)V
-    .registers 4
+    .registers 5
+    .param p1, "reason"  # I
 
     .line 74
     :try_start_0
@@ -64,28 +68,30 @@
 
     .line 77
     :catch_a
-    move-exception p1
+    move-exception v0
 
     .line 78
-    new-instance v0, Ljava/lang/StringBuilder;
+    .local v0, "e":Landroid/os/RemoteException;
+    new-instance v1, Ljava/lang/StringBuilder;
 
-    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v1, "Invoking callback failed:"
+    const-string v2, "Invoking callback failed:"
 
-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v1
 
-    const-string v0, "SelectRequestBuffer"
+    const-string v2, "SelectRequestBuffer"
 
-    invoke-static {v0, p1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v2, v1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 80
+    .end local v0  # "e":Landroid/os/RemoteException;
     :goto_21
     return-void
 .end method

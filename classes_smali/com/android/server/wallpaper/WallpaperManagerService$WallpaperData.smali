@@ -37,6 +37,8 @@
 
 .field lastDiedTime:J
 
+.field mFlymeData:Lcom/android/server/wallpaper/FlymeWallpaperService$FlymeWallpaperData;
+
 .field name:Ljava/lang/String;
 
 .field nextWallpaperComponent:Landroid/content/ComponentName;
@@ -63,23 +65,26 @@
 # direct methods
 .method constructor <init>(ILjava/lang/String;Ljava/lang/String;)V
     .registers 6
+    .param p1, "userId"  # I
+    .param p2, "inputFileName"  # Ljava/lang/String;
+    .param p3, "cropFileName"  # Ljava/lang/String;
 
-    .line 952
+    .line 979
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
-    .line 914
+    .line 939
     const-string v0, ""
 
     iput-object v0, p0, Lcom/android/server/wallpaper/WallpaperManagerService$WallpaperData;->name:Ljava/lang/String;
 
-    .line 944
+    .line 969
     new-instance v0, Landroid/os/RemoteCallbackList;
 
     invoke-direct {v0}, Landroid/os/RemoteCallbackList;-><init>()V
 
     iput-object v0, p0, Lcom/android/server/wallpaper/WallpaperManagerService$WallpaperData;->callbacks:Landroid/os/RemoteCallbackList;
 
-    .line 950
+    .line 975
     new-instance v0, Landroid/graphics/Rect;
 
     const/4 v1, 0x0
@@ -88,39 +93,48 @@
 
     iput-object v0, p0, Lcom/android/server/wallpaper/WallpaperManagerService$WallpaperData;->cropHint:Landroid/graphics/Rect;
 
-    .line 953
+    .line 980
     iput p1, p0, Lcom/android/server/wallpaper/WallpaperManagerService$WallpaperData;->userId:I
 
-    .line 954
+    .line 981
     invoke-static {p1}, Lcom/android/server/wallpaper/WallpaperManagerService;->access$000(I)Ljava/io/File;
 
-    move-result-object p1
+    move-result-object v0
 
-    .line 955
-    new-instance v0, Ljava/io/File;
+    .line 982
+    .local v0, "wallpaperDir":Ljava/io/File;
+    new-instance v1, Ljava/io/File;
 
-    invoke-direct {v0, p1, p2}, Ljava/io/File;-><init>(Ljava/io/File;Ljava/lang/String;)V
+    invoke-direct {v1, v0, p2}, Ljava/io/File;-><init>(Ljava/io/File;Ljava/lang/String;)V
 
-    iput-object v0, p0, Lcom/android/server/wallpaper/WallpaperManagerService$WallpaperData;->wallpaperFile:Ljava/io/File;
+    iput-object v1, p0, Lcom/android/server/wallpaper/WallpaperManagerService$WallpaperData;->wallpaperFile:Ljava/io/File;
 
-    .line 956
-    new-instance p2, Ljava/io/File;
+    .line 983
+    new-instance v1, Ljava/io/File;
 
-    invoke-direct {p2, p1, p3}, Ljava/io/File;-><init>(Ljava/io/File;Ljava/lang/String;)V
+    invoke-direct {v1, v0, p3}, Ljava/io/File;-><init>(Ljava/io/File;Ljava/lang/String;)V
 
-    iput-object p2, p0, Lcom/android/server/wallpaper/WallpaperManagerService$WallpaperData;->cropFile:Ljava/io/File;
+    iput-object v1, p0, Lcom/android/server/wallpaper/WallpaperManagerService$WallpaperData;->cropFile:Ljava/io/File;
 
-    .line 957
+    .line 985
+    new-instance v1, Lcom/android/server/wallpaper/FlymeWallpaperService$FlymeWallpaperData;
+
+    invoke-direct {v1}, Lcom/android/server/wallpaper/FlymeWallpaperService$FlymeWallpaperData;-><init>()V
+
+    iput-object v1, p0, Lcom/android/server/wallpaper/WallpaperManagerService$WallpaperData;->mFlymeData:Lcom/android/server/wallpaper/FlymeWallpaperService$FlymeWallpaperData;
+
+    .line 987
     return-void
 .end method
 
 .method static synthetic access$3500(Lcom/android/server/wallpaper/WallpaperManagerService$WallpaperData;)Landroid/os/RemoteCallbackList;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/wallpaper/WallpaperManagerService$WallpaperData;
 
-    .line 883
-    iget-object p0, p0, Lcom/android/server/wallpaper/WallpaperManagerService$WallpaperData;->callbacks:Landroid/os/RemoteCallbackList;
+    .line 908
+    iget-object v0, p0, Lcom/android/server/wallpaper/WallpaperManagerService$WallpaperData;->callbacks:Landroid/os/RemoteCallbackList;
 
-    return-object p0
+    return-object v0
 .end method
 
 
@@ -128,7 +142,7 @@
 .method cropExists()Z
     .registers 2
 
-    .line 961
+    .line 991
     iget-object v0, p0, Lcom/android/server/wallpaper/WallpaperManagerService$WallpaperData;->cropFile:Ljava/io/File;
 
     invoke-virtual {v0}, Ljava/io/File;->exists()Z
@@ -141,7 +155,7 @@
 .method sourceExists()Z
     .registers 2
 
-    .line 965
+    .line 995
     iget-object v0, p0, Lcom/android/server/wallpaper/WallpaperManagerService$WallpaperData;->wallpaperFile:Ljava/io/File;
 
     invoke-virtual {v0}, Ljava/io/File;->exists()Z

@@ -32,7 +32,13 @@
 
 # direct methods
 .method public constructor <init>(Ljava/lang/String;Landroid/content/ComponentName;ZLjava/lang/String;Ljava/lang/String;Z)V
-    .registers 7
+    .registers 8
+    .param p1, "name"  # Ljava/lang/String;
+    .param p2, "admin"  # Landroid/content/ComponentName;
+    .param p3, "userRestrictionsMigrated"  # Z
+    .param p4, "remoteBugreportUri"  # Ljava/lang/String;
+    .param p5, "remoteBugreportHash"  # Ljava/lang/String;
+    .param p6, "canAccessDeviceIds"  # Z
 
     .line 964
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -46,9 +52,9 @@
     .line 967
     invoke-virtual {p2}, Landroid/content/ComponentName;->getPackageName()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    iput-object p1, p0, Lcom/android/server/devicepolicy/Owners$OwnerInfo;->packageName:Ljava/lang/String;
+    iput-object v0, p0, Lcom/android/server/devicepolicy/Owners$OwnerInfo;->packageName:Ljava/lang/String;
 
     .line 968
     iput-boolean p3, p0, Lcom/android/server/devicepolicy/Owners$OwnerInfo;->userRestrictionsMigrated:Z
@@ -67,7 +73,13 @@
 .end method
 
 .method public constructor <init>(Ljava/lang/String;Ljava/lang/String;ZLjava/lang/String;Ljava/lang/String;Z)V
-    .registers 8
+    .registers 9
+    .param p1, "name"  # Ljava/lang/String;
+    .param p2, "packageName"  # Ljava/lang/String;
+    .param p3, "userRestrictionsMigrated"  # Z
+    .param p4, "remoteBugreportUri"  # Ljava/lang/String;
+    .param p5, "remoteBugreportHash"  # Ljava/lang/String;
+    .param p6, "canAccessDeviceIds"  # Z
 
     .line 953
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -79,13 +91,13 @@
     iput-object p2, p0, Lcom/android/server/devicepolicy/Owners$OwnerInfo;->packageName:Ljava/lang/String;
 
     .line 956
-    new-instance p1, Landroid/content/ComponentName;
+    new-instance v0, Landroid/content/ComponentName;
 
-    const-string v0, ""
+    const-string v1, ""
 
-    invoke-direct {p1, p2, v0}, Landroid/content/ComponentName;-><init>(Ljava/lang/String;Ljava/lang/String;)V
+    invoke-direct {v0, p2, v1}, Landroid/content/ComponentName;-><init>(Ljava/lang/String;Ljava/lang/String;)V
 
-    iput-object p1, p0, Lcom/android/server/devicepolicy/Owners$OwnerInfo;->admin:Landroid/content/ComponentName;
+    iput-object v0, p0, Lcom/android/server/devicepolicy/Owners$OwnerInfo;->admin:Landroid/content/ComponentName;
 
     .line 957
     iput-boolean p3, p0, Lcom/android/server/devicepolicy/Owners$OwnerInfo;->userRestrictionsMigrated:Z
@@ -104,151 +116,181 @@
 .end method
 
 .method public static readFromXml(Lorg/xmlpull/v1/XmlPullParser;)Lcom/android/server/devicepolicy/Owners$OwnerInfo;
-    .registers 13
+    .registers 20
+    .param p0, "parser"  # Lorg/xmlpull/v1/XmlPullParser;
 
     .line 999
-    const/4 v0, 0x0
+    move-object/from16 v0, p0
 
-    const-string/jumbo v1, "package"
+    const/4 v1, 0x0
 
-    invoke-interface {p0, v0, v1}, Lorg/xmlpull/v1/XmlPullParser;->getAttributeValue(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+    const-string/jumbo v2, "package"
 
-    move-result-object v4
-
-    .line 1000
-    const-string/jumbo v1, "name"
-
-    invoke-interface {p0, v0, v1}, Lorg/xmlpull/v1/XmlPullParser;->getAttributeValue(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
-
-    move-result-object v6
-
-    .line 1001
-    nop
-
-    .line 1002
-    const-string v1, "component"
-
-    invoke-interface {p0, v0, v1}, Lorg/xmlpull/v1/XmlPullParser;->getAttributeValue(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
-
-    move-result-object v1
-
-    .line 1003
-    nop
-
-    .line 1004
-    const-string/jumbo v2, "userRestrictionsMigrated"
-
-    invoke-interface {p0, v0, v2}, Lorg/xmlpull/v1/XmlPullParser;->getAttributeValue(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+    invoke-interface {v0, v1, v2}, Lorg/xmlpull/v1/XmlPullParser;->getAttributeValue(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
 
     move-result-object v2
 
+    .line 1000
+    .local v2, "packageName":Ljava/lang/String;
+    const-string/jumbo v3, "name"
+
+    invoke-interface {v0, v1, v3}, Lorg/xmlpull/v1/XmlPullParser;->getAttributeValue(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+
+    move-result-object v11
+
+    .line 1001
+    .local v11, "name":Ljava/lang/String;
+    nop
+
+    .line 1002
+    const-string v3, "component"
+
+    invoke-interface {v0, v1, v3}, Lorg/xmlpull/v1/XmlPullParser;->getAttributeValue(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+
+    move-result-object v12
+
+    .line 1003
+    .local v12, "componentName":Ljava/lang/String;
+    nop
+
+    .line 1004
+    const-string/jumbo v3, "userRestrictionsMigrated"
+
+    invoke-interface {v0, v1, v3}, Lorg/xmlpull/v1/XmlPullParser;->getAttributeValue(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+
+    move-result-object v13
+
     .line 1005
+    .local v13, "userRestrictionsMigratedStr":Ljava/lang/String;
     nop
 
     .line 1006
     const-string/jumbo v3, "true"
 
-    invoke-virtual {v3, v2}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v3, v13}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result v8
+    move-result v14
 
     .line 1007
-    const-string/jumbo v2, "remoteBugreportUri"
+    .local v14, "userRestrictionsMigrated":Z
+    const-string/jumbo v4, "remoteBugreportUri"
 
-    invoke-interface {p0, v0, v2}, Lorg/xmlpull/v1/XmlPullParser;->getAttributeValue(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+    invoke-interface {v0, v1, v4}, Lorg/xmlpull/v1/XmlPullParser;->getAttributeValue(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
 
-    move-result-object v9
+    move-result-object v15
 
     .line 1009
-    const-string/jumbo v2, "remoteBugreportHash"
+    .local v15, "remoteBugreportUri":Ljava/lang/String;
+    const-string/jumbo v4, "remoteBugreportHash"
 
-    invoke-interface {p0, v0, v2}, Lorg/xmlpull/v1/XmlPullParser;->getAttributeValue(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+    invoke-interface {v0, v1, v4}, Lorg/xmlpull/v1/XmlPullParser;->getAttributeValue(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
 
-    move-result-object v10
+    move-result-object v16
 
     .line 1011
+    .local v16, "remoteBugreportHash":Ljava/lang/String;
     nop
 
     .line 1012
-    const-string v2, "canAccessDeviceIds"
+    const-string v4, "canAccessDeviceIds"
 
-    invoke-interface {p0, v0, v2}, Lorg/xmlpull/v1/XmlPullParser;->getAttributeValue(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+    invoke-interface {v0, v1, v4}, Lorg/xmlpull/v1/XmlPullParser;->getAttributeValue(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v1
 
     .line 1013
+    .local v1, "canAccessDeviceIdsStr":Ljava/lang/String;
     nop
 
     .line 1014
-    invoke-virtual {v3, p0}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v3, v1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result v11
+    move-result v17
 
     .line 1017
-    if-eqz v1, :cond_65
+    .local v17, "canAccessDeviceIds":Z
+    if-eqz v12, :cond_70
 
     .line 1018
-    invoke-static {v1}, Landroid/content/ComponentName;->unflattenFromString(Ljava/lang/String;)Landroid/content/ComponentName;
+    invoke-static {v12}, Landroid/content/ComponentName;->unflattenFromString(Ljava/lang/String;)Landroid/content/ComponentName;
 
-    move-result-object v7
+    move-result-object v3
 
     .line 1019
-    if-eqz v7, :cond_4f
+    .local v3, "admin":Landroid/content/ComponentName;
+    if-eqz v3, :cond_5a
 
     .line 1020
-    new-instance p0, Lcom/android/server/devicepolicy/Owners$OwnerInfo;
+    new-instance v18, Lcom/android/server/devicepolicy/Owners$OwnerInfo;
 
-    move-object v5, p0
+    move-object/from16 v4, v18
 
-    invoke-direct/range {v5 .. v11}, Lcom/android/server/devicepolicy/Owners$OwnerInfo;-><init>(Ljava/lang/String;Landroid/content/ComponentName;ZLjava/lang/String;Ljava/lang/String;Z)V
+    move-object v5, v11
 
-    return-object p0
+    move-object v6, v3
+
+    move v7, v14
+
+    move-object v8, v15
+
+    move-object/from16 v9, v16
+
+    move/from16 v10, v17
+
+    invoke-direct/range {v4 .. v10}, Lcom/android/server/devicepolicy/Owners$OwnerInfo;-><init>(Ljava/lang/String;Landroid/content/ComponentName;ZLjava/lang/String;Ljava/lang/String;Z)V
+
+    return-object v18
 
     .line 1025
-    :cond_4f
-    new-instance p0, Ljava/lang/StringBuilder;
+    :cond_5a
+    new-instance v4, Ljava/lang/StringBuilder;
 
-    invoke-direct {p0}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v4}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v0, "Error parsing owner file. Bad component name "
+    const-string v5, "Error parsing owner file. Bad component name "
 
-    invoke-virtual {p0, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v4, v12}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v4}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v4
 
-    const-string v0, "DevicePolicyManagerService"
+    const-string v5, "DevicePolicyManagerService"
 
-    invoke-static {v0, p0}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v5, v4}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 1031
-    :cond_65
-    new-instance p0, Lcom/android/server/devicepolicy/Owners$OwnerInfo;
+    .end local v3  # "admin":Landroid/content/ComponentName;
+    :cond_70
+    new-instance v10, Lcom/android/server/devicepolicy/Owners$OwnerInfo;
 
-    move-object v2, p0
+    move-object v3, v10
 
-    move-object v3, v6
+    move-object v4, v11
 
-    move v5, v8
+    move-object v5, v2
 
-    move-object v6, v9
+    move v6, v14
 
-    move-object v7, v10
+    move-object v7, v15
 
-    move v8, v11
+    move-object/from16 v8, v16
 
-    invoke-direct/range {v2 .. v8}, Lcom/android/server/devicepolicy/Owners$OwnerInfo;-><init>(Ljava/lang/String;Ljava/lang/String;ZLjava/lang/String;Ljava/lang/String;Z)V
+    move/from16 v9, v17
 
-    return-object p0
+    invoke-direct/range {v3 .. v9}, Lcom/android/server/devicepolicy/Owners$OwnerInfo;-><init>(Ljava/lang/String;Ljava/lang/String;ZLjava/lang/String;Ljava/lang/String;Z)V
+
+    return-object v10
 .end method
 
 
 # virtual methods
 .method public dump(Ljava/lang/String;Ljava/io/PrintWriter;)V
     .registers 5
+    .param p1, "prefix"  # Ljava/lang/String;
+    .param p2, "pw"  # Ljava/io/PrintWriter;
 
     .line 1036
     new-instance v0, Ljava/lang/StringBuilder;
@@ -320,19 +362,19 @@
 
     invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string p1, "canAccessDeviceIds="
+    const-string v1, "canAccessDeviceIds="
 
-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    iget-boolean p1, p0, Lcom/android/server/devicepolicy/Owners$OwnerInfo;->canAccessDeviceIds:Z
+    iget-boolean v1, p0, Lcom/android/server/devicepolicy/Owners$OwnerInfo;->canAccessDeviceIds:Z
 
-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Z)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Z)Ljava/lang/StringBuilder;
 
     invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    invoke-virtual {p2, p1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {p2, v0}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
     .line 1040
     return-void
@@ -340,6 +382,8 @@
 
 .method public writeToXml(Lorg/xmlpull/v1/XmlSerializer;Ljava/lang/String;)V
     .registers 6
+    .param p1, "out"  # Lorg/xmlpull/v1/XmlSerializer;
+    .param p2, "tag"  # Ljava/lang/String;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Ljava/io/IOException;

@@ -14,7 +14,9 @@
 .end method
 
 .method public static checkStateInRange(II)V
-    .registers 6
+    .registers 7
+    .param p0, "state"  # I
+    .param p1, "maxValue"  # I
 
     .line 37
     const/4 v0, 0x0
@@ -40,52 +42,54 @@
     .line 43
     invoke-static {p0}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
 
-    move-result-object p0
+    move-result-object v4
 
-    aput-object p0, v3, v0
+    aput-object v4, v3, v0
 
     invoke-static {p1}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
 
-    move-result-object p0
+    move-result-object v0
 
-    aput-object p0, v3, v1
+    aput-object v0, v3, v1
 
-    const-string p0, "state out of range (value=%d, max=%d)"
+    const-string v0, "state out of range (value=%d, max=%d)"
 
-    invoke-static {p0, v3}, Ljava/lang/String;->format(Ljava/lang/String;[Ljava/lang/Object;)Ljava/lang/String;
+    invoke-static {v0, v3}, Ljava/lang/String;->format(Ljava/lang/String;[Ljava/lang/Object;)Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v0
 
-    invoke-direct {v2, p0}, Ljava/lang/IllegalArgumentException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v2, v0}, Ljava/lang/IllegalArgumentException;-><init>(Ljava/lang/String;)V
 
     throw v2
 
     .line 38
     :cond_22
-    new-instance p1, Ljava/lang/IllegalArgumentException;
+    new-instance v2, Ljava/lang/IllegalArgumentException;
 
     new-array v1, v1, [Ljava/lang/Object;
 
     .line 39
     invoke-static {p0}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
 
-    move-result-object p0
+    move-result-object v3
 
-    aput-object p0, v1, v0
+    aput-object v3, v1, v0
 
-    const-string p0, "state must be non-negative (value=%d)"
+    const-string v0, "state must be non-negative (value=%d)"
 
-    invoke-static {p0, v1}, Ljava/lang/String;->format(Ljava/lang/String;[Ljava/lang/Object;)Ljava/lang/String;
+    invoke-static {v0, v1}, Ljava/lang/String;->format(Ljava/lang/String;[Ljava/lang/Object;)Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v0
 
-    invoke-direct {p1, p0}, Ljava/lang/IllegalArgumentException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v2, v0}, Ljava/lang/IllegalArgumentException;-><init>(Ljava/lang/String;)V
 
-    throw p1
+    throw v2
 .end method
 
 .method public static checkTypeInRange(II)V
-    .registers 6
+    .registers 7
+    .param p0, "type"  # I
+    .param p1, "maxValue"  # I
 
     .line 25
     const/4 v0, 0x0
@@ -111,46 +115,46 @@
     .line 31
     invoke-static {p0}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
 
-    move-result-object p0
+    move-result-object v4
 
-    aput-object p0, v3, v0
+    aput-object v4, v3, v0
 
     invoke-static {p1}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
 
-    move-result-object p0
+    move-result-object v0
 
-    aput-object p0, v3, v1
+    aput-object v0, v3, v1
 
-    const-string p0, "type out of range (value=%d, max=%d)"
+    const-string v0, "type out of range (value=%d, max=%d)"
 
-    invoke-static {p0, v3}, Ljava/lang/String;->format(Ljava/lang/String;[Ljava/lang/Object;)Ljava/lang/String;
+    invoke-static {v0, v3}, Ljava/lang/String;->format(Ljava/lang/String;[Ljava/lang/Object;)Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v0
 
-    invoke-direct {v2, p0}, Ljava/lang/IllegalArgumentException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v2, v0}, Ljava/lang/IllegalArgumentException;-><init>(Ljava/lang/String;)V
 
     throw v2
 
     .line 26
     :cond_22
-    new-instance p1, Ljava/lang/IllegalArgumentException;
+    new-instance v2, Ljava/lang/IllegalArgumentException;
 
     new-array v1, v1, [Ljava/lang/Object;
 
     .line 27
     invoke-static {p0}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
 
-    move-result-object p0
+    move-result-object v3
 
-    aput-object p0, v1, v0
+    aput-object v3, v1, v0
 
-    const-string p0, "type must be non-negative (value=%d)"
+    const-string v0, "type must be non-negative (value=%d)"
 
-    invoke-static {p0, v1}, Ljava/lang/String;->format(Ljava/lang/String;[Ljava/lang/Object;)Ljava/lang/String;
+    invoke-static {v0, v1}, Ljava/lang/String;->format(Ljava/lang/String;[Ljava/lang/Object;)Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v0
 
-    invoke-direct {p1, p0}, Ljava/lang/IllegalArgumentException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v2, v0}, Ljava/lang/IllegalArgumentException;-><init>(Ljava/lang/String;)V
 
-    throw p1
+    throw v2
 .end method

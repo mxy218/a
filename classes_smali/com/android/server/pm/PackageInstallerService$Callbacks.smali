@@ -40,26 +40,30 @@
 
 # direct methods
 .method public constructor <init>(Landroid/os/Looper;)V
-    .registers 2
+    .registers 3
+    .param p1, "looper"  # Landroid/os/Looper;
 
-    .line 1130
+    .line 1127
     invoke-direct {p0, p1}, Landroid/os/Handler;-><init>(Landroid/os/Looper;)V
 
-    .line 1126
-    new-instance p1, Landroid/os/RemoteCallbackList;
+    .line 1123
+    new-instance v0, Landroid/os/RemoteCallbackList;
 
-    invoke-direct {p1}, Landroid/os/RemoteCallbackList;-><init>()V
+    invoke-direct {v0}, Landroid/os/RemoteCallbackList;-><init>()V
 
-    iput-object p1, p0, Lcom/android/server/pm/PackageInstallerService$Callbacks;->mCallbacks:Landroid/os/RemoteCallbackList;
+    iput-object v0, p0, Lcom/android/server/pm/PackageInstallerService$Callbacks;->mCallbacks:Landroid/os/RemoteCallbackList;
 
-    .line 1131
+    .line 1128
     return-void
 .end method
 
 .method static synthetic access$200(Lcom/android/server/pm/PackageInstallerService$Callbacks;II)V
     .registers 3
+    .param p0, "x0"  # Lcom/android/server/pm/PackageInstallerService$Callbacks;
+    .param p1, "x1"  # I
+    .param p2, "x2"  # I
 
-    .line 1119
+    .line 1116
     invoke-direct {p0, p1, p2}, Lcom/android/server/pm/PackageInstallerService$Callbacks;->notifySessionCreated(II)V
 
     return-void
@@ -67,8 +71,11 @@
 
 .method static synthetic access$500(Lcom/android/server/pm/PackageInstallerService$Callbacks;II)V
     .registers 3
+    .param p0, "x0"  # Lcom/android/server/pm/PackageInstallerService$Callbacks;
+    .param p1, "x1"  # I
+    .param p2, "x2"  # I
 
-    .line 1119
+    .line 1116
     invoke-direct {p0, p1, p2}, Lcom/android/server/pm/PackageInstallerService$Callbacks;->notifySessionBadgingChanged(II)V
 
     return-void
@@ -76,8 +83,12 @@
 
 .method static synthetic access$700(Lcom/android/server/pm/PackageInstallerService$Callbacks;IIZ)V
     .registers 4
+    .param p0, "x0"  # Lcom/android/server/pm/PackageInstallerService$Callbacks;
+    .param p1, "x1"  # I
+    .param p2, "x2"  # I
+    .param p3, "x3"  # Z
 
-    .line 1119
+    .line 1116
     invoke-direct {p0, p1, p2, p3}, Lcom/android/server/pm/PackageInstallerService$Callbacks;->notifySessionActiveChanged(IIZ)V
 
     return-void
@@ -85,8 +96,12 @@
 
 .method static synthetic access$800(Lcom/android/server/pm/PackageInstallerService$Callbacks;IIF)V
     .registers 4
+    .param p0, "x0"  # Lcom/android/server/pm/PackageInstallerService$Callbacks;
+    .param p1, "x1"  # I
+    .param p2, "x2"  # I
+    .param p3, "x3"  # F
 
-    .line 1119
+    .line 1116
     invoke-direct {p0, p1, p2, p3}, Lcom/android/server/pm/PackageInstallerService$Callbacks;->notifySessionProgressChanged(IIF)V
 
     return-void
@@ -94,16 +109,19 @@
 
 .method private invokeCallback(Landroid/content/pm/IPackageInstallerCallback;Landroid/os/Message;)V
     .registers 6
+    .param p1, "callback"  # Landroid/content/pm/IPackageInstallerCallback;
+    .param p2, "msg"  # Landroid/os/Message;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
         }
     .end annotation
 
-    .line 1160
+    .line 1157
     iget v0, p2, Landroid/os/Message;->arg1:I
 
-    .line 1161
+    .line 1158
+    .local v0, "sessionId":I
     iget v1, p2, Landroid/os/Message;->what:I
 
     const/4 v2, 0x1
@@ -128,163 +146,177 @@
 
     goto :goto_40
 
-    .line 1175
-    :cond_14
-    iget-object p2, p2, Landroid/os/Message;->obj:Ljava/lang/Object;
-
-    check-cast p2, Ljava/lang/Boolean;
-
-    invoke-virtual {p2}, Ljava/lang/Boolean;->booleanValue()Z
-
-    move-result p2
-
-    invoke-interface {p1, v0, p2}, Landroid/content/pm/IPackageInstallerCallback;->onSessionFinished(IZ)V
-
-    goto :goto_40
-
     .line 1172
-    :cond_20
-    iget-object p2, p2, Landroid/os/Message;->obj:Ljava/lang/Object;
+    :cond_14
+    iget-object v1, p2, Landroid/os/Message;->obj:Ljava/lang/Object;
 
-    check-cast p2, Ljava/lang/Float;
+    check-cast v1, Ljava/lang/Boolean;
 
-    invoke-virtual {p2}, Ljava/lang/Float;->floatValue()F
+    invoke-virtual {v1}, Ljava/lang/Boolean;->booleanValue()Z
 
-    move-result p2
+    move-result v1
 
-    invoke-interface {p1, v0, p2}, Landroid/content/pm/IPackageInstallerCallback;->onSessionProgressChanged(IF)V
+    invoke-interface {p1, v0, v1}, Landroid/content/pm/IPackageInstallerCallback;->onSessionFinished(IZ)V
 
-    .line 1173
     goto :goto_40
 
     .line 1169
-    :cond_2c
-    iget-object p2, p2, Landroid/os/Message;->obj:Ljava/lang/Object;
+    :cond_20
+    iget-object v1, p2, Landroid/os/Message;->obj:Ljava/lang/Object;
 
-    check-cast p2, Ljava/lang/Boolean;
+    check-cast v1, Ljava/lang/Float;
 
-    invoke-virtual {p2}, Ljava/lang/Boolean;->booleanValue()Z
+    invoke-virtual {v1}, Ljava/lang/Float;->floatValue()F
 
-    move-result p2
+    move-result v1
 
-    invoke-interface {p1, v0, p2}, Landroid/content/pm/IPackageInstallerCallback;->onSessionActiveChanged(IZ)V
+    invoke-interface {p1, v0, v1}, Landroid/content/pm/IPackageInstallerCallback;->onSessionProgressChanged(IF)V
 
     .line 1170
     goto :goto_40
 
     .line 1166
-    :cond_38
-    invoke-interface {p1, v0}, Landroid/content/pm/IPackageInstallerCallback;->onSessionBadgingChanged(I)V
+    :cond_2c
+    iget-object v1, p2, Landroid/os/Message;->obj:Ljava/lang/Object;
+
+    check-cast v1, Ljava/lang/Boolean;
+
+    invoke-virtual {v1}, Ljava/lang/Boolean;->booleanValue()Z
+
+    move-result v1
+
+    invoke-interface {p1, v0, v1}, Landroid/content/pm/IPackageInstallerCallback;->onSessionActiveChanged(IZ)V
 
     .line 1167
     goto :goto_40
 
     .line 1163
+    :cond_38
+    invoke-interface {p1, v0}, Landroid/content/pm/IPackageInstallerCallback;->onSessionBadgingChanged(I)V
+
+    .line 1164
+    goto :goto_40
+
+    .line 1160
     :cond_3c
     invoke-interface {p1, v0}, Landroid/content/pm/IPackageInstallerCallback;->onSessionCreated(I)V
 
-    .line 1164
+    .line 1161
     nop
 
-    .line 1178
+    .line 1175
     :goto_40
     return-void
 .end method
 
 .method private notifySessionActiveChanged(IIZ)V
-    .registers 5
+    .registers 6
+    .param p1, "sessionId"  # I
+    .param p2, "userId"  # I
+    .param p3, "active"  # Z
 
-    .line 1189
+    .line 1186
     invoke-static {p3}, Ljava/lang/Boolean;->valueOf(Z)Ljava/lang/Boolean;
 
-    move-result-object p3
+    move-result-object v0
 
-    const/4 v0, 0x3
+    const/4 v1, 0x3
 
-    invoke-virtual {p0, v0, p1, p2, p3}, Lcom/android/server/pm/PackageInstallerService$Callbacks;->obtainMessage(IIILjava/lang/Object;)Landroid/os/Message;
+    invoke-virtual {p0, v1, p1, p2, v0}, Lcom/android/server/pm/PackageInstallerService$Callbacks;->obtainMessage(IIILjava/lang/Object;)Landroid/os/Message;
 
-    move-result-object p1
+    move-result-object v0
 
-    invoke-virtual {p1}, Landroid/os/Message;->sendToTarget()V
+    invoke-virtual {v0}, Landroid/os/Message;->sendToTarget()V
 
-    .line 1190
+    .line 1187
     return-void
 .end method
 
 .method private notifySessionBadgingChanged(II)V
     .registers 4
+    .param p1, "sessionId"  # I
+    .param p2, "userId"  # I
 
-    .line 1185
+    .line 1182
     const/4 v0, 0x2
 
     invoke-virtual {p0, v0, p1, p2}, Lcom/android/server/pm/PackageInstallerService$Callbacks;->obtainMessage(III)Landroid/os/Message;
 
-    move-result-object p1
+    move-result-object v0
 
-    invoke-virtual {p1}, Landroid/os/Message;->sendToTarget()V
+    invoke-virtual {v0}, Landroid/os/Message;->sendToTarget()V
 
-    .line 1186
+    .line 1183
     return-void
 .end method
 
 .method private notifySessionCreated(II)V
     .registers 4
+    .param p1, "sessionId"  # I
+    .param p2, "userId"  # I
 
-    .line 1181
+    .line 1178
     const/4 v0, 0x1
 
     invoke-virtual {p0, v0, p1, p2}, Lcom/android/server/pm/PackageInstallerService$Callbacks;->obtainMessage(III)Landroid/os/Message;
 
-    move-result-object p1
+    move-result-object v0
 
-    invoke-virtual {p1}, Landroid/os/Message;->sendToTarget()V
+    invoke-virtual {v0}, Landroid/os/Message;->sendToTarget()V
 
-    .line 1182
+    .line 1179
     return-void
 .end method
 
 .method private notifySessionProgressChanged(IIF)V
-    .registers 5
+    .registers 6
+    .param p1, "sessionId"  # I
+    .param p2, "userId"  # I
+    .param p3, "progress"  # F
 
-    .line 1193
+    .line 1190
     invoke-static {p3}, Ljava/lang/Float;->valueOf(F)Ljava/lang/Float;
 
-    move-result-object p3
+    move-result-object v0
 
-    const/4 v0, 0x4
+    const/4 v1, 0x4
 
-    invoke-virtual {p0, v0, p1, p2, p3}, Lcom/android/server/pm/PackageInstallerService$Callbacks;->obtainMessage(IIILjava/lang/Object;)Landroid/os/Message;
+    invoke-virtual {p0, v1, p1, p2, v0}, Lcom/android/server/pm/PackageInstallerService$Callbacks;->obtainMessage(IIILjava/lang/Object;)Landroid/os/Message;
 
-    move-result-object p1
+    move-result-object v0
 
-    invoke-virtual {p1}, Landroid/os/Message;->sendToTarget()V
+    invoke-virtual {v0}, Landroid/os/Message;->sendToTarget()V
 
-    .line 1194
+    .line 1191
     return-void
 .end method
 
 
 # virtual methods
 .method public handleMessage(Landroid/os/Message;)V
-    .registers 7
+    .registers 8
+    .param p1, "msg"  # Landroid/os/Message;
 
-    .line 1143
+    .line 1140
     iget v0, p1, Landroid/os/Message;->arg2:I
 
-    .line 1144
+    .line 1141
+    .local v0, "userId":I
     iget-object v1, p0, Lcom/android/server/pm/PackageInstallerService$Callbacks;->mCallbacks:Landroid/os/RemoteCallbackList;
 
     invoke-virtual {v1}, Landroid/os/RemoteCallbackList;->beginBroadcast()I
 
     move-result v1
 
-    .line 1145
+    .line 1142
+    .local v1, "n":I
     const/4 v2, 0x0
 
+    .local v2, "i":I
     :goto_9
     if-ge v2, v1, :cond_29
 
-    .line 1146
+    .line 1143
     iget-object v3, p0, Lcom/android/server/pm/PackageInstallerService$Callbacks;->mCallbacks:Landroid/os/RemoteCallbackList;
 
     invoke-virtual {v3, v2}, Landroid/os/RemoteCallbackList;->getBroadcastItem(I)Landroid/os/IInterface;
@@ -293,7 +325,8 @@
 
     check-cast v3, Landroid/content/pm/IPackageInstallerCallback;
 
-    .line 1147
+    .line 1144
+    .local v3, "callback":Landroid/content/pm/IPackageInstallerCallback;
     iget-object v4, p0, Lcom/android/server/pm/PackageInstallerService$Callbacks;->mCallbacks:Landroid/os/RemoteCallbackList;
 
     invoke-virtual {v4, v2}, Landroid/os/RemoteCallbackList;->getBroadcastCookie(I)Ljava/lang/Object;
@@ -302,83 +335,93 @@
 
     check-cast v4, Ljava/util/function/IntPredicate;
 
-    .line 1148
+    .line 1145
+    .local v4, "userCheck":Ljava/util/function/IntPredicate;
     invoke-interface {v4, v0}, Ljava/util/function/IntPredicate;->test(I)Z
 
-    move-result v4
+    move-result v5
 
-    if-eqz v4, :cond_26
+    if-eqz v5, :cond_26
 
-    .line 1150
+    .line 1147
     :try_start_21
     invoke-direct {p0, v3, p1}, Lcom/android/server/pm/PackageInstallerService$Callbacks;->invokeCallback(Landroid/content/pm/IPackageInstallerCallback;Landroid/os/Message;)V
     :try_end_24
     .catch Landroid/os/RemoteException; {:try_start_21 .. :try_end_24} :catch_25
 
-    .line 1152
+    .line 1149
     goto :goto_26
 
-    .line 1151
+    .line 1148
     :catch_25
-    move-exception v3
+    move-exception v5
 
-    .line 1145
+    .line 1142
+    .end local v3  # "callback":Landroid/content/pm/IPackageInstallerCallback;
+    .end local v4  # "userCheck":Ljava/util/function/IntPredicate;
     :cond_26
     :goto_26
     add-int/lit8 v2, v2, 0x1
 
     goto :goto_9
 
-    .line 1155
+    .line 1152
+    .end local v2  # "i":I
     :cond_29
-    iget-object p1, p0, Lcom/android/server/pm/PackageInstallerService$Callbacks;->mCallbacks:Landroid/os/RemoteCallbackList;
+    iget-object v2, p0, Lcom/android/server/pm/PackageInstallerService$Callbacks;->mCallbacks:Landroid/os/RemoteCallbackList;
 
-    invoke-virtual {p1}, Landroid/os/RemoteCallbackList;->finishBroadcast()V
+    invoke-virtual {v2}, Landroid/os/RemoteCallbackList;->finishBroadcast()V
 
-    .line 1156
+    .line 1153
     return-void
 .end method
 
 .method public notifySessionFinished(IIZ)V
-    .registers 5
+    .registers 6
+    .param p1, "sessionId"  # I
+    .param p2, "userId"  # I
+    .param p3, "success"  # Z
 
-    .line 1197
+    .line 1194
     invoke-static {p3}, Ljava/lang/Boolean;->valueOf(Z)Ljava/lang/Boolean;
 
-    move-result-object p3
+    move-result-object v0
 
-    const/4 v0, 0x5
+    const/4 v1, 0x5
 
-    invoke-virtual {p0, v0, p1, p2, p3}, Lcom/android/server/pm/PackageInstallerService$Callbacks;->obtainMessage(IIILjava/lang/Object;)Landroid/os/Message;
+    invoke-virtual {p0, v1, p1, p2, v0}, Lcom/android/server/pm/PackageInstallerService$Callbacks;->obtainMessage(IIILjava/lang/Object;)Landroid/os/Message;
 
-    move-result-object p1
+    move-result-object v0
 
-    invoke-virtual {p1}, Landroid/os/Message;->sendToTarget()V
+    invoke-virtual {v0}, Landroid/os/Message;->sendToTarget()V
 
-    .line 1198
+    .line 1195
     return-void
 .end method
 
 .method public register(Landroid/content/pm/IPackageInstallerCallback;Ljava/util/function/IntPredicate;)V
     .registers 4
+    .param p1, "callback"  # Landroid/content/pm/IPackageInstallerCallback;
+    .param p2, "userCheck"  # Ljava/util/function/IntPredicate;
 
-    .line 1134
+    .line 1131
     iget-object v0, p0, Lcom/android/server/pm/PackageInstallerService$Callbacks;->mCallbacks:Landroid/os/RemoteCallbackList;
 
     invoke-virtual {v0, p1, p2}, Landroid/os/RemoteCallbackList;->register(Landroid/os/IInterface;Ljava/lang/Object;)Z
 
-    .line 1135
+    .line 1132
     return-void
 .end method
 
 .method public unregister(Landroid/content/pm/IPackageInstallerCallback;)V
     .registers 3
+    .param p1, "callback"  # Landroid/content/pm/IPackageInstallerCallback;
 
-    .line 1138
+    .line 1135
     iget-object v0, p0, Lcom/android/server/pm/PackageInstallerService$Callbacks;->mCallbacks:Landroid/os/RemoteCallbackList;
 
     invoke-virtual {v0, p1}, Landroid/os/RemoteCallbackList;->unregister(Landroid/os/IInterface;)Z
 
-    .line 1139
+    .line 1136
     return-void
 .end method

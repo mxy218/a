@@ -21,6 +21,13 @@
 # direct methods
 .method public constructor <init>(Lcom/android/server/usage/AppTimeLimitController;Lcom/android/server/usage/AppTimeLimitController$UserData;Lcom/android/server/usage/AppTimeLimitController$ObserverAppData;I[Ljava/lang/String;JLandroid/app/PendingIntent;)V
     .registers 9
+    .param p1, "this$0"  # Lcom/android/server/usage/AppTimeLimitController;
+    .param p2, "user"  # Lcom/android/server/usage/AppTimeLimitController$UserData;
+    .param p3, "observerApp"  # Lcom/android/server/usage/AppTimeLimitController$ObserverAppData;
+    .param p4, "observerId"  # I
+    .param p5, "observed"  # [Ljava/lang/String;
+    .param p6, "timeLimitMs"  # J
+    .param p8, "limitReachedCallback"  # Landroid/app/PendingIntent;
 
     .line 414
     iput-object p1, p0, Lcom/android/server/usage/AppTimeLimitController$AppUsageGroup;->this$0:Lcom/android/server/usage/AppTimeLimitController;
@@ -73,6 +80,7 @@
     check-cast v0, Lcom/android/server/usage/AppTimeLimitController$ObserverAppData;
 
     .line 423
+    .local v0, "observerApp":Lcom/android/server/usage/AppTimeLimitController$ObserverAppData;
     if-eqz v0, :cond_12
 
     .line 424

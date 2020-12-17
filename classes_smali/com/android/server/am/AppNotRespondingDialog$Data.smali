@@ -25,6 +25,9 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/am/ProcessRecord;Landroid/content/pm/ApplicationInfo;Z)V
     .registers 4
+    .param p1, "proc"  # Lcom/android/server/am/ProcessRecord;
+    .param p2, "aInfo"  # Landroid/content/pm/ApplicationInfo;
+    .param p3, "aboveSystem"  # Z
 
     .line 188
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V

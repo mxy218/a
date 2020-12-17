@@ -21,8 +21,9 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/DropBoxManagerService;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/DropBoxManagerService;
 
-    .line 142
+    .line 146
     iput-object p1, p0, Lcom/android/server/DropBoxManagerService$2;->this$0:Lcom/android/server/DropBoxManagerService;
 
     invoke-direct {p0}, Lcom/android/internal/os/IDropBoxManagerService$Stub;-><init>()V
@@ -34,58 +35,72 @@
 # virtual methods
 .method public add(Landroid/os/DropBoxManager$Entry;)V
     .registers 3
+    .param p1, "entry"  # Landroid/os/DropBoxManager$Entry;
 
-    .line 145
+    .line 149
     iget-object v0, p0, Lcom/android/server/DropBoxManagerService$2;->this$0:Lcom/android/server/DropBoxManagerService;
 
     invoke-virtual {v0, p1}, Lcom/android/server/DropBoxManagerService;->add(Landroid/os/DropBoxManager$Entry;)V
 
-    .line 146
+    .line 150
     return-void
 .end method
 
 .method public dump(Ljava/io/FileDescriptor;Ljava/io/PrintWriter;[Ljava/lang/String;)V
     .registers 5
+    .param p1, "fd"  # Ljava/io/FileDescriptor;
+    .param p2, "pw"  # Ljava/io/PrintWriter;
+    .param p3, "args"  # [Ljava/lang/String;
 
-    .line 160
+    .line 164
     iget-object v0, p0, Lcom/android/server/DropBoxManagerService$2;->this$0:Lcom/android/server/DropBoxManagerService;
 
     invoke-virtual {v0, p1, p2, p3}, Lcom/android/server/DropBoxManagerService;->dump(Ljava/io/FileDescriptor;Ljava/io/PrintWriter;[Ljava/lang/String;)V
 
-    .line 161
+    .line 165
     return-void
 .end method
 
 .method public getNextEntry(Ljava/lang/String;JLjava/lang/String;)Landroid/os/DropBoxManager$Entry;
     .registers 6
+    .param p1, "tag"  # Ljava/lang/String;
+    .param p2, "millis"  # J
+    .param p4, "callingPackage"  # Ljava/lang/String;
 
-    .line 155
+    .line 159
     iget-object v0, p0, Lcom/android/server/DropBoxManagerService$2;->this$0:Lcom/android/server/DropBoxManagerService;
 
     invoke-virtual {v0, p1, p2, p3, p4}, Lcom/android/server/DropBoxManagerService;->getNextEntry(Ljava/lang/String;JLjava/lang/String;)Landroid/os/DropBoxManager$Entry;
 
-    move-result-object p1
+    move-result-object v0
 
-    return-object p1
+    return-object v0
 .end method
 
 .method public isTagEnabled(Ljava/lang/String;)Z
     .registers 3
+    .param p1, "tag"  # Ljava/lang/String;
 
-    .line 150
+    .line 154
     iget-object v0, p0, Lcom/android/server/DropBoxManagerService$2;->this$0:Lcom/android/server/DropBoxManagerService;
 
     invoke-virtual {v0, p1}, Lcom/android/server/DropBoxManagerService;->isTagEnabled(Ljava/lang/String;)Z
 
-    move-result p1
+    move-result v0
 
-    return p1
+    return v0
 .end method
 
 .method public onShellCommand(Ljava/io/FileDescriptor;Ljava/io/FileDescriptor;Ljava/io/FileDescriptor;[Ljava/lang/String;Landroid/os/ShellCallback;Landroid/os/ResultReceiver;)V
     .registers 15
+    .param p1, "in"  # Ljava/io/FileDescriptor;
+    .param p2, "out"  # Ljava/io/FileDescriptor;
+    .param p3, "err"  # Ljava/io/FileDescriptor;
+    .param p4, "args"  # [Ljava/lang/String;
+    .param p5, "callback"  # Landroid/os/ShellCallback;
+    .param p6, "resultReceiver"  # Landroid/os/ResultReceiver;
 
-    .line 167
+    .line 171
     new-instance v0, Lcom/android/server/DropBoxManagerService$ShellCmd;
 
     iget-object v1, p0, Lcom/android/server/DropBoxManagerService$2;->this$0:Lcom/android/server/DropBoxManagerService;
@@ -110,6 +125,6 @@
 
     invoke-virtual/range {v0 .. v7}, Lcom/android/server/DropBoxManagerService$ShellCmd;->exec(Landroid/os/Binder;Ljava/io/FileDescriptor;Ljava/io/FileDescriptor;Ljava/io/FileDescriptor;[Ljava/lang/String;Landroid/os/ShellCallback;Landroid/os/ResultReceiver;)I
 
-    .line 168
+    .line 172
     return-void
 .end method

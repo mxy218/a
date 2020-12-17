@@ -21,6 +21,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/job/controllers/QuotaController;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/job/controllers/QuotaController;
 
     .line 475
     iput-object p1, p0, Lcom/android/server/job/controllers/QuotaController$2;->this$0:Lcom/android/server/job/controllers/QuotaController;
@@ -34,6 +35,7 @@
 # virtual methods
 .method public onUidActive(I)V
     .registers 2
+    .param p1, "uid"  # I
 
     .line 487
     return-void
@@ -41,6 +43,8 @@
 
 .method public onUidCachedChanged(IZ)V
     .registers 3
+    .param p1, "uid"  # I
+    .param p2, "cached"  # Z
 
     .line 495
     return-void
@@ -48,6 +52,8 @@
 
 .method public onUidGone(IZ)V
     .registers 3
+    .param p1, "uid"  # I
+    .param p2, "disabled"  # Z
 
     .line 483
     return-void
@@ -55,28 +61,33 @@
 
 .method public onUidIdle(IZ)V
     .registers 3
+    .param p1, "uid"  # I
+    .param p2, "disabled"  # Z
 
     .line 491
     return-void
 .end method
 
 .method public onUidStateChanged(IIJ)V
-    .registers 5
+    .registers 7
+    .param p1, "uid"  # I
+    .param p2, "procState"  # I
+    .param p3, "procStateSeq"  # J
 
     .line 478
-    iget-object p3, p0, Lcom/android/server/job/controllers/QuotaController$2;->this$0:Lcom/android/server/job/controllers/QuotaController;
+    iget-object v0, p0, Lcom/android/server/job/controllers/QuotaController$2;->this$0:Lcom/android/server/job/controllers/QuotaController;
 
-    invoke-static {p3}, Lcom/android/server/job/controllers/QuotaController;->access$300(Lcom/android/server/job/controllers/QuotaController;)Landroid/os/Handler;
+    invoke-static {v0}, Lcom/android/server/job/controllers/QuotaController;->access$300(Lcom/android/server/job/controllers/QuotaController;)Landroid/os/Handler;
 
-    move-result-object p3
+    move-result-object v0
 
-    const/4 p4, 0x3
+    const/4 v1, 0x3
 
-    invoke-virtual {p3, p4, p1, p2}, Landroid/os/Handler;->obtainMessage(III)Landroid/os/Message;
+    invoke-virtual {v0, v1, p1, p2}, Landroid/os/Handler;->obtainMessage(III)Landroid/os/Message;
 
-    move-result-object p1
+    move-result-object v0
 
-    invoke-virtual {p1}, Landroid/os/Message;->sendToTarget()V
+    invoke-virtual {v0}, Landroid/os/Message;->sendToTarget()V
 
     .line 479
     return-void

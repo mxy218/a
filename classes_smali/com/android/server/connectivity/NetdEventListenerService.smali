@@ -174,17 +174,18 @@
 
 .method public constructor <init>(Landroid/content/Context;)V
     .registers 3
+    .param p1, "context"  # Landroid/content/Context;
 
     .line 154
     const-class v0, Landroid/net/ConnectivityManager;
 
     invoke-virtual {p1, v0}, Landroid/content/Context;->getSystemService(Ljava/lang/Class;)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v0
 
-    check-cast p1, Landroid/net/ConnectivityManager;
+    check-cast v0, Landroid/net/ConnectivityManager;
 
-    invoke-direct {p0, p1}, Lcom/android/server/connectivity/NetdEventListenerService;-><init>(Landroid/net/ConnectivityManager;)V
+    invoke-direct {p0, v0}, Lcom/android/server/connectivity/NetdEventListenerService;-><init>(Landroid/net/ConnectivityManager;)V
 
     .line 155
     return-void
@@ -192,6 +193,7 @@
 
 .method public constructor <init>(Landroid/net/ConnectivityManager;)V
     .registers 5
+    .param p1, "cm"  # Landroid/net/ConnectivityManager;
     .annotation build Lcom/android/internal/annotations/VisibleForTesting;
     .end annotation
 
@@ -268,11 +270,13 @@
 
 .method private addWakeupEvent(Landroid/net/metrics/WakeupEvent;)V
     .registers 5
+    .param p1, "event"  # Landroid/net/metrics/WakeupEvent;
 
     .line 314
     iget-object v0, p1, Landroid/net/metrics/WakeupEvent;->iface:Ljava/lang/String;
 
     .line 315
+    .local v0, "iface":Ljava/lang/String;
     iget-object v1, p0, Lcom/android/server/connectivity/NetdEventListenerService;->mWakeupEvents:Lcom/android/internal/util/RingBuffer;
 
     invoke-virtual {v1, p1}, Lcom/android/internal/util/RingBuffer;->append(Ljava/lang/Object;)V
@@ -287,12 +291,15 @@
     check-cast v1, Landroid/net/metrics/WakeupStats;
 
     .line 317
-    if-nez v1, :cond_1b
+    .local v1, "stats":Landroid/net/metrics/WakeupStats;
+    if-nez v1, :cond_1c
 
     .line 318
-    new-instance v1, Landroid/net/metrics/WakeupStats;
+    new-instance v2, Landroid/net/metrics/WakeupStats;
 
-    invoke-direct {v1, v0}, Landroid/net/metrics/WakeupStats;-><init>(Ljava/lang/String;)V
+    invoke-direct {v2, v0}, Landroid/net/metrics/WakeupStats;-><init>(Ljava/lang/String;)V
+
+    move-object v1, v2
 
     .line 319
     iget-object v2, p0, Lcom/android/server/connectivity/NetdEventListenerService;->mWakeupStats:Landroid/util/ArrayMap;
@@ -300,7 +307,7 @@
     invoke-virtual {v2, v0, v1}, Landroid/util/ArrayMap;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
 
     .line 321
-    :cond_1b
+    :cond_1c
     invoke-virtual {v1, p1}, Landroid/net/metrics/WakeupStats;->countEvent(Landroid/net/metrics/WakeupEvent;)V
 
     .line 322
@@ -309,6 +316,7 @@
 
 .method private collectPendingMetricsSnapshot(J)V
     .registers 7
+    .param p1, "timeMs"  # J
 
     .line 186
     iget-wide v0, p0, Lcom/android/server/connectivity/NetdEventListenerService;->mLastSnapshot:J
@@ -332,79 +340,85 @@
     :cond_10
     invoke-static {p1, p2}, Lcom/android/server/connectivity/NetdEventListenerService;->projectSnapshotTime(J)J
 
-    move-result-wide p1
+    move-result-wide v0
 
-    iput-wide p1, p0, Lcom/android/server/connectivity/NetdEventListenerService;->mLastSnapshot:J
+    iput-wide v0, p0, Lcom/android/server/connectivity/NetdEventListenerService;->mLastSnapshot:J
 
     .line 190
-    iget-wide p1, p0, Lcom/android/server/connectivity/NetdEventListenerService;->mLastSnapshot:J
+    iget-wide v0, p0, Lcom/android/server/connectivity/NetdEventListenerService;->mLastSnapshot:J
 
-    iget-object v0, p0, Lcom/android/server/connectivity/NetdEventListenerService;->mNetworkMetrics:Landroid/util/SparseArray;
+    iget-object v2, p0, Lcom/android/server/connectivity/NetdEventListenerService;->mNetworkMetrics:Landroid/util/SparseArray;
 
     .line 191
-    invoke-static {p1, p2, v0}, Lcom/android/server/connectivity/NetdEventListenerService$NetworkMetricsSnapshot;->collect(JLandroid/util/SparseArray;)Lcom/android/server/connectivity/NetdEventListenerService$NetworkMetricsSnapshot;
+    invoke-static {v0, v1, v2}, Lcom/android/server/connectivity/NetdEventListenerService$NetworkMetricsSnapshot;->collect(JLandroid/util/SparseArray;)Lcom/android/server/connectivity/NetdEventListenerService$NetworkMetricsSnapshot;
 
-    move-result-object p1
+    move-result-object v0
 
     .line 192
-    iget-object p2, p1, Lcom/android/server/connectivity/NetdEventListenerService$NetworkMetricsSnapshot;->stats:Ljava/util/List;
+    .local v0, "snapshot":Lcom/android/server/connectivity/NetdEventListenerService$NetworkMetricsSnapshot;
+    iget-object v1, v0, Lcom/android/server/connectivity/NetdEventListenerService$NetworkMetricsSnapshot;->stats:Ljava/util/List;
 
-    invoke-interface {p2}, Ljava/util/List;->isEmpty()Z
+    invoke-interface {v1}, Ljava/util/List;->isEmpty()Z
 
-    move-result p2
+    move-result v1
 
-    if-eqz p2, :cond_27
+    if-eqz v1, :cond_27
 
     .line 193
     return-void
 
     .line 195
     :cond_27
-    iget-object p2, p0, Lcom/android/server/connectivity/NetdEventListenerService;->mNetworkMetricsSnapshots:Lcom/android/internal/util/RingBuffer;
+    iget-object v1, p0, Lcom/android/server/connectivity/NetdEventListenerService;->mNetworkMetricsSnapshots:Lcom/android/internal/util/RingBuffer;
 
-    invoke-virtual {p2, p1}, Lcom/android/internal/util/RingBuffer;->append(Ljava/lang/Object;)V
+    invoke-virtual {v1, v0}, Lcom/android/internal/util/RingBuffer;->append(Ljava/lang/Object;)V
 
     .line 196
     return-void
 .end method
 
 .method private getMetricsForNetwork(JI)Landroid/net/metrics/NetworkMetrics;
-    .registers 6
+    .registers 9
+    .param p1, "timeMs"  # J
+    .param p3, "netId"  # I
 
     .line 168
     invoke-direct {p0, p1, p2}, Lcom/android/server/connectivity/NetdEventListenerService;->collectPendingMetricsSnapshot(J)V
 
     .line 169
-    iget-object p1, p0, Lcom/android/server/connectivity/NetdEventListenerService;->mNetworkMetrics:Landroid/util/SparseArray;
+    iget-object v0, p0, Lcom/android/server/connectivity/NetdEventListenerService;->mNetworkMetrics:Landroid/util/SparseArray;
 
-    invoke-virtual {p1, p3}, Landroid/util/SparseArray;->get(I)Ljava/lang/Object;
+    invoke-virtual {v0, p3}, Landroid/util/SparseArray;->get(I)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v0
 
-    check-cast p1, Landroid/net/metrics/NetworkMetrics;
+    check-cast v0, Landroid/net/metrics/NetworkMetrics;
 
     .line 170
-    if-nez p1, :cond_1d
+    .local v0, "metrics":Landroid/net/metrics/NetworkMetrics;
+    if-nez v0, :cond_1e
 
     .line 172
-    new-instance p1, Landroid/net/metrics/NetworkMetrics;
+    new-instance v1, Landroid/net/metrics/NetworkMetrics;
 
     invoke-direct {p0, p3}, Lcom/android/server/connectivity/NetdEventListenerService;->getTransports(I)J
 
-    move-result-wide v0
+    move-result-wide v2
 
-    iget-object p2, p0, Lcom/android/server/connectivity/NetdEventListenerService;->mConnectTb:Lcom/android/internal/util/TokenBucket;
+    iget-object v4, p0, Lcom/android/server/connectivity/NetdEventListenerService;->mConnectTb:Lcom/android/internal/util/TokenBucket;
 
-    invoke-direct {p1, p3, v0, v1, p2}, Landroid/net/metrics/NetworkMetrics;-><init>(IJLcom/android/internal/util/TokenBucket;)V
+    invoke-direct {v1, p3, v2, v3, v4}, Landroid/net/metrics/NetworkMetrics;-><init>(IJLcom/android/internal/util/TokenBucket;)V
+
+    move-object v0, v1
 
     .line 173
-    iget-object p2, p0, Lcom/android/server/connectivity/NetdEventListenerService;->mNetworkMetrics:Landroid/util/SparseArray;
+    iget-object v1, p0, Lcom/android/server/connectivity/NetdEventListenerService;->mNetworkMetrics:Landroid/util/SparseArray;
 
-    invoke-virtual {p2, p3, p1}, Landroid/util/SparseArray;->put(ILjava/lang/Object;)V
+    invoke-virtual {v1, p3, v0}, Landroid/util/SparseArray;->put(ILjava/lang/Object;)V
 
     .line 175
-    :cond_1d
-    return-object p1
+    :cond_1e
+    return-object v0
 .end method
 
 .method private getNetworkMetricsSnapshots()[Lcom/android/server/connectivity/NetdEventListenerService$NetworkMetricsSnapshot;
@@ -430,7 +444,8 @@
 .end method
 
 .method private getTransports(I)J
-    .registers 4
+    .registers 5
+    .param p1, "netId"  # I
 
     .line 383
     iget-object v0, p0, Lcom/android/server/connectivity/NetdEventListenerService;->mCm:Landroid/net/ConnectivityManager;
@@ -441,89 +456,98 @@
 
     invoke-virtual {v0, v1}, Landroid/net/ConnectivityManager;->getNetworkCapabilities(Landroid/net/Network;)Landroid/net/NetworkCapabilities;
 
-    move-result-object p1
+    move-result-object v0
 
     .line 384
-    if-nez p1, :cond_10
+    .local v0, "nc":Landroid/net/NetworkCapabilities;
+    if-nez v0, :cond_10
 
     .line 385
-    const-wide/16 v0, 0x0
+    const-wide/16 v1, 0x0
 
-    return-wide v0
+    return-wide v1
 
     .line 387
     :cond_10
-    invoke-virtual {p1}, Landroid/net/NetworkCapabilities;->getTransportTypes()[I
+    invoke-virtual {v0}, Landroid/net/NetworkCapabilities;->getTransportTypes()[I
 
-    move-result-object p1
+    move-result-object v1
 
-    invoke-static {p1}, Lcom/android/internal/util/BitUtils;->packBits([I)J
+    invoke-static {v1}, Lcom/android/internal/util/BitUtils;->packBits([I)J
 
-    move-result-wide v0
+    move-result-wide v1
 
-    return-wide v0
+    return-wide v1
 .end method
 
 .method private static isValidCallerType(I)Z
-    .registers 5
+    .registers 4
+    .param p0, "callerType"  # I
 
     .line 145
     const/4 v0, 0x0
 
-    move v1, v0
+    .local v0, "i":I
+    :goto_1
+    sget-object v1, Lcom/android/server/connectivity/NetdEventListenerService;->ALLOWED_CALLBACK_TYPES:[I
 
-    :goto_2
-    sget-object v2, Lcom/android/server/connectivity/NetdEventListenerService;->ALLOWED_CALLBACK_TYPES:[I
+    array-length v2, v1
 
-    array-length v3, v2
-
-    if-ge v1, v3, :cond_10
+    if-ge v0, v2, :cond_f
 
     .line 146
-    aget v2, v2, v1
+    aget v1, v1, v0
 
-    if-ne p0, v2, :cond_d
+    if-ne p0, v1, :cond_c
 
     .line 147
-    const/4 p0, 0x1
+    const/4 v1, 0x1
 
-    return p0
+    return v1
 
     .line 145
-    :cond_d
-    add-int/lit8 v1, v1, 0x1
+    :cond_c
+    add-int/lit8 v0, v0, 0x1
 
-    goto :goto_2
+    goto :goto_1
 
     .line 150
-    :cond_10
+    .end local v0  # "i":I
+    :cond_f
+    const/4 v0, 0x0
+
     return v0
 .end method
 
 .method private static varargs maybeLog(Ljava/lang/String;[Ljava/lang/Object;)V
     .registers 2
+    .param p0, "s"  # Ljava/lang/String;
+    .param p1, "args"  # [Ljava/lang/Object;
 
     .line 392
     return-void
 .end method
 
 .method private static projectSnapshotTime(J)J
-    .registers 4
+    .registers 6
+    .param p0, "timeMs"  # J
 
     .line 164
     const-wide/32 v0, 0x493e0
 
-    div-long/2addr p0, v0
+    div-long v2, p0, v0
 
-    mul-long/2addr p0, v0
+    mul-long/2addr v2, v0
 
-    return-wide p0
+    return-wide v2
 .end method
 
 
 # virtual methods
 .method public declared-synchronized addNetdEventCallback(ILandroid/net/INetdEventCallback;)Z
-    .registers 5
+    .registers 6
+    .param p1, "callerType"  # I
+    .param p2, "callback"  # Landroid/net/INetdEventCallback;
 
     monitor-enter p0
 
@@ -536,34 +560,35 @@
     if-nez v0, :cond_20
 
     .line 128
-    sget-object p2, Lcom/android/server/connectivity/NetdEventListenerService;->TAG:Ljava/lang/String;
+    sget-object v0, Lcom/android/server/connectivity/NetdEventListenerService;->TAG:Ljava/lang/String;
 
-    new-instance v0, Ljava/lang/StringBuilder;
+    new-instance v1, Ljava/lang/StringBuilder;
 
-    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v1, "Invalid caller type: "
+    const-string v2, "Invalid caller type: "
 
-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, p1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v1
 
-    invoke-static {p2, p1}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v0, v1}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;)I
     :try_end_1d
     .catchall {:try_start_1 .. :try_end_1d} :catchall_27
 
     .line 129
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
     monitor-exit p0
 
-    return p1
+    return v0
 
     .line 131
+    .end local p0  # "this":Lcom/android/server/connectivity/NetdEventListenerService;
     :cond_20
     :try_start_20
     iget-object v0, p0, Lcom/android/server/connectivity/NetdEventListenerService;->mNetdEventCallbackList:[Landroid/net/INetdEventCallback;
@@ -573,13 +598,15 @@
     .catchall {:try_start_20 .. :try_end_24} :catchall_27
 
     .line 132
-    const/4 p1, 0x1
+    const/4 v0, 0x1
 
     monitor-exit p0
 
-    return p1
+    return v0
 
     .line 126
+    .end local p1  # "callerType":I
+    .end local p2  # "callback":Landroid/net/INetdEventCallback;
     :catchall_27
     move-exception p1
 
@@ -599,6 +626,7 @@
         }
     .end annotation
 
+    .local p1, "events":Ljava/util/List;, "Ljava/util/List<Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$IpConnectivityEvent;>;"
     monitor-enter p0
 
     .line 325
@@ -606,6 +634,7 @@
 
     move v1, v0
 
+    .local v1, "i":I
     :goto_3
     :try_start_3
     iget-object v2, p0, Lcom/android/server/connectivity/NetdEventListenerService;->mNetworkMetrics:Landroid/util/SparseArray;
@@ -628,6 +657,7 @@
     iget-object v2, v2, Landroid/net/metrics/NetworkMetrics;->connectMetrics:Landroid/net/metrics/ConnectStats;
 
     .line 327
+    .local v2, "stats":Landroid/net/metrics/ConnectStats;
     iget v3, v2, Landroid/net/metrics/ConnectStats;->eventCount:I
 
     if-nez v3, :cond_1a
@@ -639,20 +669,24 @@
     :cond_1a
     invoke-static {v2}, Lcom/android/server/connectivity/IpConnectivityEventBuilder;->toProto(Landroid/net/metrics/ConnectStats;)Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$IpConnectivityEvent;
 
-    move-result-object v2
+    move-result-object v3
 
-    invoke-interface {p1, v2}, Ljava/util/List;->add(Ljava/lang/Object;)Z
+    invoke-interface {p1, v3}, Ljava/util/List;->add(Ljava/lang/Object;)Z
 
     .line 325
+    .end local v2  # "stats":Landroid/net/metrics/ConnectStats;
     :goto_21
     add-int/lit8 v1, v1, 0x1
 
     goto :goto_3
 
     .line 332
+    .end local v1  # "i":I
+    .end local p0  # "this":Lcom/android/server/connectivity/NetdEventListenerService;
     :cond_24
     move v1, v0
 
+    .restart local v1  # "i":I
     :goto_25
     iget-object v2, p0, Lcom/android/server/connectivity/NetdEventListenerService;->mNetworkMetrics:Landroid/util/SparseArray;
 
@@ -674,6 +708,7 @@
     iget-object v2, v2, Landroid/net/metrics/NetworkMetrics;->dnsMetrics:Landroid/net/metrics/DnsEvent;
 
     .line 334
+    .local v2, "ev":Landroid/net/metrics/DnsEvent;
     iget v3, v2, Landroid/net/metrics/DnsEvent;->eventCount:I
 
     if-nez v3, :cond_3c
@@ -685,20 +720,23 @@
     :cond_3c
     invoke-static {v2}, Lcom/android/server/connectivity/IpConnectivityEventBuilder;->toProto(Landroid/net/metrics/DnsEvent;)Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$IpConnectivityEvent;
 
-    move-result-object v2
+    move-result-object v3
 
-    invoke-interface {p1, v2}, Ljava/util/List;->add(Ljava/lang/Object;)Z
+    invoke-interface {p1, v3}, Ljava/util/List;->add(Ljava/lang/Object;)Z
 
     .line 332
+    .end local v2  # "ev":Landroid/net/metrics/DnsEvent;
     :goto_43
     add-int/lit8 v1, v1, 0x1
 
     goto :goto_25
 
     .line 339
+    .end local v1  # "i":I
     :cond_46
     nop
 
+    .local v0, "i":I
     :goto_47
     iget-object v1, p0, Lcom/android/server/connectivity/NetdEventListenerService;->mWakeupStats:Landroid/util/ArrayMap;
 
@@ -729,15 +767,16 @@
     goto :goto_47
 
     .line 342
+    .end local v0  # "i":I
     :cond_61
-    iget-object p1, p0, Lcom/android/server/connectivity/NetdEventListenerService;->mNetworkMetrics:Landroid/util/SparseArray;
+    iget-object v0, p0, Lcom/android/server/connectivity/NetdEventListenerService;->mNetworkMetrics:Landroid/util/SparseArray;
 
-    invoke-virtual {p1}, Landroid/util/SparseArray;->clear()V
+    invoke-virtual {v0}, Landroid/util/SparseArray;->clear()V
 
     .line 343
-    iget-object p1, p0, Lcom/android/server/connectivity/NetdEventListenerService;->mWakeupStats:Landroid/util/ArrayMap;
+    iget-object v0, p0, Lcom/android/server/connectivity/NetdEventListenerService;->mWakeupStats:Landroid/util/ArrayMap;
 
-    invoke-virtual {p1}, Landroid/util/ArrayMap;->clear()V
+    invoke-virtual {v0}, Landroid/util/ArrayMap;->clear()V
     :try_end_6b
     .catchall {:try_start_3 .. :try_end_6b} :catchall_6d
 
@@ -747,6 +786,7 @@
     return-void
 
     .line 324
+    .end local p1  # "events":Ljava/util/List;, "Ljava/util/List<Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$IpConnectivityEvent;>;"
     :catchall_6d
     move-exception p1
 
@@ -771,6 +811,7 @@
 
 .method public declared-synchronized list(Ljava/io/PrintWriter;)V
     .registers 7
+    .param p1, "pw"  # Ljava/io/PrintWriter;
 
     monitor-enter p0
 
@@ -785,6 +826,7 @@
 
     move v1, v0
 
+    .local v1, "i":I
     :goto_8
     iget-object v2, p0, Lcom/android/server/connectivity/NetdEventListenerService;->mNetworkMetrics:Landroid/util/SparseArray;
 
@@ -813,9 +855,12 @@
     goto :goto_8
 
     .line 351
+    .end local v1  # "i":I
+    .end local p0  # "this":Lcom/android/server/connectivity/NetdEventListenerService;
     :cond_20
     move v1, v0
 
+    .restart local v1  # "i":I
     :goto_21
     iget-object v2, p0, Lcom/android/server/connectivity/NetdEventListenerService;->mNetworkMetrics:Landroid/util/SparseArray;
 
@@ -844,6 +889,7 @@
     goto :goto_21
 
     .line 354
+    .end local v1  # "i":I
     :cond_39
     const-string v1, ""
 
@@ -869,9 +915,11 @@
     aget-object v4, v1, v3
 
     .line 357
+    .local v4, "s":Lcom/android/server/connectivity/NetdEventListenerService$NetworkMetricsSnapshot;
     invoke-virtual {p1, v4}, Ljava/io/PrintWriter;->println(Ljava/lang/Object;)V
 
     .line 356
+    .end local v4  # "s":Lcom/android/server/connectivity/NetdEventListenerService$NetworkMetricsSnapshot;
     add-int/lit8 v3, v3, 0x1
 
     goto :goto_4a
@@ -890,6 +938,7 @@
     .line 361
     move v1, v0
 
+    .restart local v1  # "i":I
     :goto_60
     iget-object v2, p0, Lcom/android/server/connectivity/NetdEventListenerService;->mWakeupStats:Landroid/util/ArrayMap;
 
@@ -914,6 +963,7 @@
     goto :goto_60
 
     .line 364
+    .end local v1  # "i":I
     :cond_74
     iget-object v1, p0, Lcom/android/server/connectivity/NetdEventListenerService;->mWakeupEvents:Lcom/android/internal/util/RingBuffer;
 
@@ -931,11 +981,13 @@
     aget-object v3, v1, v0
 
     .line 365
+    .local v3, "wakeup":Landroid/net/metrics/WakeupEvent;
     invoke-virtual {p1, v3}, Ljava/io/PrintWriter;->println(Ljava/lang/Object;)V
     :try_end_84
     .catchall {:try_start_1 .. :try_end_84} :catchall_89
 
     .line 364
+    .end local v3  # "wakeup":Landroid/net/metrics/WakeupEvent;
     add-int/lit8 v0, v0, 0x1
 
     goto :goto_7d
@@ -947,6 +999,7 @@
     return-void
 
     .line 346
+    .end local p1  # "pw":Ljava/io/PrintWriter;
     :catchall_89
     move-exception p1
 
@@ -957,6 +1010,7 @@
 
 .method public declared-synchronized listAsProtos(Ljava/io/PrintWriter;)V
     .registers 5
+    .param p1, "pw"  # Ljava/io/PrintWriter;
 
     monitor-enter p0
 
@@ -965,6 +1019,7 @@
 
     move v1, v0
 
+    .local v1, "i":I
     :goto_3
     :try_start_3
     iget-object v2, p0, Lcom/android/server/connectivity/NetdEventListenerService;->mNetworkMetrics:Landroid/util/SparseArray;
@@ -998,9 +1053,12 @@
     goto :goto_3
 
     .line 373
+    .end local v1  # "i":I
+    .end local p0  # "this":Lcom/android/server/connectivity/NetdEventListenerService;
     :cond_1f
     move v1, v0
 
+    .restart local v1  # "i":I
     :goto_20
     iget-object v2, p0, Lcom/android/server/connectivity/NetdEventListenerService;->mNetworkMetrics:Landroid/util/SparseArray;
 
@@ -1033,9 +1091,11 @@
     goto :goto_20
 
     .line 376
+    .end local v1  # "i":I
     :cond_3c
     nop
 
+    .local v0, "i":I
     :goto_3d
     iget-object v1, p0, Lcom/android/server/connectivity/NetdEventListenerService;->mWakeupStats:Landroid/util/ArrayMap;
 
@@ -1068,12 +1128,14 @@
     goto :goto_3d
 
     .line 379
+    .end local v0  # "i":I
     :cond_57
     monitor-exit p0
 
     return-void
 
     .line 369
+    .end local p1  # "pw":Ljava/io/PrintWriter;
     :catchall_59
     move-exception p1
 
@@ -1083,79 +1145,120 @@
 .end method
 
 .method public declared-synchronized onConnectEvent(IIILjava/lang/String;II)V
-    .registers 15
+    .registers 24
+    .param p1, "netId"  # I
+    .param p2, "error"  # I
+    .param p3, "latencyMs"  # I
+    .param p4, "ipAddr"  # Ljava/lang/String;
+    .param p5, "port"  # I
+    .param p6, "uid"  # I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
         }
     .end annotation
 
+    move-object/from16 v1, p0
+
     monitor-enter p0
 
     .line 246
-    :try_start_1
+    :try_start_3
     invoke-static {}, Ljava/lang/System;->currentTimeMillis()J
 
-    move-result-wide v6
+    move-result-wide v2
 
     .line 247
-    invoke-direct {p0, v6, v7, p1}, Lcom/android/server/connectivity/NetdEventListenerService;->getMetricsForNetwork(JI)Landroid/net/metrics/NetworkMetrics;
+    .local v2, "timestamp":J
+    move/from16 v0, p1
 
-    move-result-object p1
+    invoke-direct {v1, v2, v3, v0}, Lcom/android/server/connectivity/NetdEventListenerService;->getMetricsForNetwork(JI)Landroid/net/metrics/NetworkMetrics;
 
-    invoke-virtual {p1, p2, p3, p4}, Landroid/net/metrics/NetworkMetrics;->addConnectResult(IILjava/lang/String;)V
+    move-result-object v4
+
+    move/from16 v10, p2
+
+    move/from16 v11, p3
+
+    move-object/from16 v12, p4
+
+    invoke-virtual {v4, v10, v11, v12}, Landroid/net/metrics/NetworkMetrics;->addConnectResult(IILjava/lang/String;)V
 
     .line 249
-    iget-object p1, p0, Lcom/android/server/connectivity/NetdEventListenerService;->mNetdEventCallbackList:[Landroid/net/INetdEventCallback;
+    iget-object v13, v1, Lcom/android/server/connectivity/NetdEventListenerService;->mNetdEventCallbackList:[Landroid/net/INetdEventCallback;
 
-    array-length p2, p1
+    array-length v14, v13
 
-    const/4 p3, 0x0
+    const/4 v4, 0x0
 
-    :goto_10
-    if-ge p3, p2, :cond_20
+    move v15, v4
 
-    aget-object v0, p1, p3
+    :goto_1b
+    if-ge v15, v14, :cond_32
+
+    aget-object v4, v13, v15
+
+    move-object/from16 v16, v4
 
     .line 250
-    if-eqz v0, :cond_1d
+    .local v16, "callback":Landroid/net/INetdEventCallback;
+    if-eqz v16, :cond_2f
 
     .line 251
-    move-object v1, p4
+    move-object/from16 v4, v16
 
-    move v2, p5
+    move-object/from16 v5, p4
 
-    move-wide v3, v6
+    move/from16 v6, p5
 
-    move v5, p6
+    move-wide v7, v2
 
-    invoke-interface/range {v0 .. v5}, Landroid/net/INetdEventCallback;->onConnectEvent(Ljava/lang/String;IJI)V
-    :try_end_1d
-    .catchall {:try_start_1 .. :try_end_1d} :catchall_22
+    move/from16 v9, p6
+
+    invoke-interface/range {v4 .. v9}, Landroid/net/INetdEventCallback;->onConnectEvent(Ljava/lang/String;IJI)V
+    :try_end_2f
+    .catchall {:try_start_3 .. :try_end_2f} :catchall_34
 
     .line 249
-    :cond_1d
-    add-int/lit8 p3, p3, 0x1
+    .end local v16  # "callback":Landroid/net/INetdEventCallback;
+    .end local p0  # "this":Lcom/android/server/connectivity/NetdEventListenerService;
+    :cond_2f
+    add-int/lit8 v15, v15, 0x1
 
-    goto :goto_10
+    goto :goto_1b
 
     .line 254
-    :cond_20
+    :cond_32
     monitor-exit p0
 
     return-void
 
     .line 245
-    :catchall_22
-    move-exception p1
+    .end local v2  # "timestamp":J
+    .end local p1  # "netId":I
+    .end local p2  # "error":I
+    .end local p3  # "latencyMs":I
+    .end local p4  # "ipAddr":Ljava/lang/String;
+    .end local p5  # "port":I
+    .end local p6  # "uid":I
+    :catchall_34
+    move-exception v0
 
     monitor-exit p0
 
-    throw p1
+    throw v0
 .end method
 
 .method public declared-synchronized onDnsEvent(IIIILjava/lang/String;[Ljava/lang/String;II)V
-    .registers 28
+    .registers 29
+    .param p1, "netId"  # I
+    .param p2, "eventType"  # I
+    .param p3, "returnCode"  # I
+    .param p4, "latencyMs"  # I
+    .param p5, "hostname"  # Ljava/lang/String;
+    .param p6, "ipAddresses"  # [Ljava/lang/String;
+    .param p7, "ipAddressesCount"  # I
+    .param p8, "uid"  # I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -1170,95 +1273,114 @@
     :try_start_3
     invoke-static {}, Ljava/lang/System;->currentTimeMillis()J
 
-    move-result-wide v12
+    move-result-wide v2
 
     .line 205
+    .local v2, "timestamp":J
     move/from16 v0, p1
 
-    invoke-direct {v1, v12, v13, v0}, Lcom/android/server/connectivity/NetdEventListenerService;->getMetricsForNetwork(JI)Landroid/net/metrics/NetworkMetrics;
+    invoke-direct {v1, v2, v3, v0}, Lcom/android/server/connectivity/NetdEventListenerService;->getMetricsForNetwork(JI)Landroid/net/metrics/NetworkMetrics;
 
-    move-result-object v2
+    move-result-object v4
 
     move/from16 v14, p2
 
     move/from16 v15, p3
 
-    move/from16 v3, p4
+    move/from16 v13, p4
 
-    invoke-virtual {v2, v14, v15, v3}, Landroid/net/metrics/NetworkMetrics;->addDnsResult(III)V
+    invoke-virtual {v4, v14, v15, v13}, Landroid/net/metrics/NetworkMetrics;->addDnsResult(III)V
 
     .line 207
     iget-object v11, v1, Lcom/android/server/connectivity/NetdEventListenerService;->mNetdEventCallbackList:[Landroid/net/INetdEventCallback;
 
-    array-length v9, v11
+    array-length v12, v11
 
-    const/4 v2, 0x0
+    const/4 v4, 0x0
 
-    move v10, v2
+    move v10, v4
 
     :goto_1b
-    if-ge v10, v9, :cond_47
+    if-ge v10, v12, :cond_4d
 
-    aget-object v2, v11, v10
+    aget-object v4, v11, v10
+
+    move-object/from16 v16, v4
 
     .line 208
-    if-eqz v2, :cond_3a
+    .local v16, "callback":Landroid/net/INetdEventCallback;
+    if-eqz v16, :cond_3e
 
     .line 209
-    move/from16 v3, p1
+    move-object/from16 v4, v16
 
-    move/from16 v4, p2
+    move/from16 v5, p1
 
-    move/from16 v5, p3
+    move/from16 v6, p2
 
-    move-object/from16 v6, p5
+    move/from16 v7, p3
 
-    move-object/from16 v7, p6
+    move-object/from16 v8, p5
 
-    move/from16 v8, p7
-
-    move/from16 v16, v9
+    move-object/from16 v9, p6
 
     move/from16 v17, v10
 
-    move-wide v9, v12
+    move/from16 v10, p7
 
     move-object/from16 v18, v11
 
-    move/from16 v11, p8
+    move/from16 v19, v12
 
-    invoke-interface/range {v2 .. v11}, Landroid/net/INetdEventCallback;->onDnsEvent(IIILjava/lang/String;[Ljava/lang/String;IJI)V
-    :try_end_39
-    .catchall {:try_start_3 .. :try_end_39} :catchall_49
+    move-wide v11, v2
 
-    goto :goto_40
+    move/from16 v13, p8
+
+    invoke-interface/range {v4 .. v13}, Landroid/net/INetdEventCallback;->onDnsEvent(IIILjava/lang/String;[Ljava/lang/String;IJI)V
+    :try_end_3d
+    .catchall {:try_start_3 .. :try_end_3d} :catchall_4f
+
+    goto :goto_44
 
     .line 208
-    :cond_3a
-    move/from16 v16, v9
-
+    .end local p0  # "this":Lcom/android/server/connectivity/NetdEventListenerService;
+    :cond_3e
     move/from16 v17, v10
 
     move-object/from16 v18, v11
 
+    move/from16 v19, v12
+
     .line 207
-    :goto_40
+    .end local v16  # "callback":Landroid/net/INetdEventCallback;
+    :goto_44
     add-int/lit8 v10, v17, 0x1
 
-    move/from16 v9, v16
+    move/from16 v13, p4
 
     move-object/from16 v11, v18
+
+    move/from16 v12, v19
 
     goto :goto_1b
 
     .line 213
-    :cond_47
+    :cond_4d
     monitor-exit p0
 
     return-void
 
     .line 203
-    :catchall_49
+    .end local v2  # "timestamp":J
+    .end local p1  # "netId":I
+    .end local p2  # "eventType":I
+    .end local p3  # "returnCode":I
+    .end local p4  # "latencyMs":I
+    .end local p5  # "hostname":Ljava/lang/String;
+    .end local p6  # "ipAddresses":[Ljava/lang/String;
+    .end local p7  # "ipAddressesCount":I
+    .end local p8  # "uid":I
+    :catchall_4f
     move-exception v0
 
     monitor-exit p0
@@ -1268,6 +1390,10 @@
 
 .method public declared-synchronized onNat64PrefixEvent(IZLjava/lang/String;I)V
     .registers 9
+    .param p1, "netId"  # I
+    .param p2, "added"  # Z
+    .param p3, "prefixString"  # Ljava/lang/String;
+    .param p4, "prefixLength"  # I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -1290,6 +1416,7 @@
     aget-object v3, v0, v2
 
     .line 222
+    .local v3, "callback":Landroid/net/INetdEventCallback;
     if-eqz v3, :cond_e
 
     .line 223
@@ -1298,6 +1425,8 @@
     .catchall {:try_start_1 .. :try_end_e} :catchall_13
 
     .line 221
+    .end local v3  # "callback":Landroid/net/INetdEventCallback;
+    .end local p0  # "this":Lcom/android/server/connectivity/NetdEventListenerService;
     :cond_e
     add-int/lit8 v2, v2, 0x1
 
@@ -1310,6 +1439,10 @@
     return-void
 
     .line 220
+    .end local p1  # "netId":I
+    .end local p2  # "added":Z
+    .end local p3  # "prefixString":Ljava/lang/String;
+    .end local p4  # "prefixLength":I
     :catchall_13
     move-exception p1
 
@@ -1320,6 +1453,10 @@
 
 .method public declared-synchronized onPrivateDnsValidationEvent(ILjava/lang/String;Ljava/lang/String;Z)V
     .registers 9
+    .param p1, "netId"  # I
+    .param p2, "ipAddress"  # Ljava/lang/String;
+    .param p3, "hostname"  # Ljava/lang/String;
+    .param p4, "validated"  # Z
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -1342,6 +1479,7 @@
     aget-object v3, v0, v2
 
     .line 235
+    .local v3, "callback":Landroid/net/INetdEventCallback;
     if-eqz v3, :cond_e
 
     .line 236
@@ -1350,6 +1488,8 @@
     .catchall {:try_start_1 .. :try_end_e} :catchall_13
 
     .line 234
+    .end local v3  # "callback":Landroid/net/INetdEventCallback;
+    .end local p0  # "this":Lcom/android/server/connectivity/NetdEventListenerService;
     :cond_e
     add-int/lit8 v2, v2, 0x1
 
@@ -1362,6 +1502,10 @@
     return-void
 
     .line 233
+    .end local p1  # "netId":I
+    .end local p2  # "ipAddress":Ljava/lang/String;
+    .end local p3  # "hostname":Ljava/lang/String;
+    .end local p4  # "validated":Z
     :catchall_13
     move-exception p1
 
@@ -1371,7 +1515,12 @@
 .end method
 
 .method public declared-synchronized onTcpSocketStatsEvent([I[I[I[I[I)V
-    .registers 14
+    .registers 15
+    .param p1, "networkIds"  # [I
+    .param p2, "sentPackets"  # [I
+    .param p3, "lostPackets"  # [I
+    .param p4, "rttsUs"  # [I
+    .param p5, "sentAckDiffsMs"  # [I
 
     monitor-enter p0
 
@@ -1410,8 +1559,10 @@
     move-result-wide v0
 
     .line 297
+    .local v0, "timestamp":J
     const/4 v2, 0x0
 
+    .local v2, "i":I
     :goto_17
     array-length v3, p1
 
@@ -1421,47 +1572,60 @@
     aget v3, p1, v2
 
     .line 299
+    .local v3, "netId":I
     aget v4, p2, v2
 
     .line 300
+    .local v4, "sent":I
     aget v5, p3, v2
 
     .line 301
+    .local v5, "lost":I
     aget v6, p4, v2
 
     .line 302
+    .local v6, "rttUs":I
     aget v7, p5, v2
 
     .line 303
+    .local v7, "sentAckDiffMs":I
     invoke-direct {p0, v0, v1, v3}, Lcom/android/server/connectivity/NetdEventListenerService;->getMetricsForNetwork(JI)Landroid/net/metrics/NetworkMetrics;
 
-    move-result-object v3
+    move-result-object v8
 
     .line 304
-    invoke-virtual {v3, v4, v5, v6, v7}, Landroid/net/metrics/NetworkMetrics;->addTcpStatsResult(IIII)V
+    invoke-virtual {v8, v4, v5, v6, v7}, Landroid/net/metrics/NetworkMetrics;->addTcpStatsResult(IIII)V
     :try_end_2b
     .catchall {:try_start_1 .. :try_end_2b} :catchall_39
 
     .line 297
+    .end local v3  # "netId":I
+    .end local v4  # "sent":I
+    .end local v5  # "lost":I
+    .end local v6  # "rttUs":I
+    .end local v7  # "sentAckDiffMs":I
     add-int/lit8 v2, v2, 0x1
 
     goto :goto_17
 
     .line 306
+    .end local v2  # "i":I
+    .end local p0  # "this":Lcom/android/server/connectivity/NetdEventListenerService;
     :cond_2e
     monitor-exit p0
 
     return-void
 
     .line 292
+    .end local v0  # "timestamp":J
     :cond_30
     :goto_30
     :try_start_30
-    sget-object p1, Lcom/android/server/connectivity/NetdEventListenerService;->TAG:Ljava/lang/String;
+    sget-object v0, Lcom/android/server/connectivity/NetdEventListenerService;->TAG:Ljava/lang/String;
 
-    const-string p2, "Mismatched lengths of TCP socket stats data arrays"
+    const-string v1, "Mismatched lengths of TCP socket stats data arrays"
 
-    invoke-static {p1, p2}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v0, v1}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;)I
     :try_end_37
     .catchall {:try_start_30 .. :try_end_37} :catchall_39
 
@@ -1471,6 +1635,11 @@
     return-void
 
     .line 287
+    .end local p1  # "networkIds":[I
+    .end local p2  # "sentPackets":[I
+    .end local p3  # "lostPackets":[I
+    .end local p4  # "rttsUs":[I
+    .end local p5  # "sentAckDiffsMs":[I
     :catchall_39
     move-exception p1
 
@@ -1480,128 +1649,151 @@
 .end method
 
 .method public declared-synchronized onWakeupEvent(Ljava/lang/String;III[BLjava/lang/String;Ljava/lang/String;IIJ)V
-    .registers 25
+    .registers 28
+    .param p1, "prefix"  # Ljava/lang/String;
+    .param p2, "uid"  # I
+    .param p3, "ethertype"  # I
+    .param p4, "ipNextHeader"  # I
+    .param p5, "dstHw"  # [B
+    .param p6, "srcIp"  # Ljava/lang/String;
+    .param p7, "dstIp"  # Ljava/lang/String;
+    .param p8, "srcPort"  # I
+    .param p9, "dstPort"  # I
+    .param p10, "timestampNs"  # J
 
-    move-object v1, p0
+    move-object/from16 v1, p0
 
     monitor-enter p0
 
     .line 259
-    :try_start_2
-    const-string v0, "iface:"
+    :try_start_3
+    const-string/jumbo v0, "iface:"
 
     const-string v2, ""
 
-    move-object v3, p1
+    move-object/from16 v3, p1
 
-    invoke-virtual {p1, v0, v2}, Ljava/lang/String;->replaceFirst(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+    invoke-virtual {v3, v0, v2}, Ljava/lang/String;->replaceFirst(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
 
-    move-result-object v5
+    move-result-object v0
 
     .line 261
-    const-wide/16 v2, 0x0
+    .local v0, "iface":Ljava/lang/String;
+    const-wide/16 v4, 0x0
 
-    cmp-long v0, p10, v2
+    cmp-long v2, p10, v4
 
-    if-lez v0, :cond_17
+    if-lez v2, :cond_1b
 
     .line 262
-    const-wide/32 v2, 0xf4240
+    const-wide/32 v4, 0xf4240
 
-    div-long v2, p10, v2
+    div-long v4, p10, v4
 
-    goto :goto_1b
+    move-wide v14, v4
+
+    .local v4, "timestampMs":J
+    goto :goto_20
 
     .line 264
-    :cond_17
+    .end local v4  # "timestampMs":J
+    .end local p0  # "this":Lcom/android/server/connectivity/NetdEventListenerService;
+    :cond_1b
     invoke-static {}, Ljava/lang/System;->currentTimeMillis()J
 
-    move-result-wide v2
+    move-result-wide v4
+
+    move-wide v14, v4
 
     .line 267
-    :goto_1b
-    new-instance v0, Landroid/net/metrics/WakeupEvent;
+    .local v14, "timestampMs":J
+    :goto_20
+    new-instance v2, Landroid/net/metrics/WakeupEvent;
 
-    invoke-direct {v0}, Landroid/net/metrics/WakeupEvent;-><init>()V
+    invoke-direct {v2}, Landroid/net/metrics/WakeupEvent;-><init>()V
 
     .line 268
-    iput-object v5, v0, Landroid/net/metrics/WakeupEvent;->iface:Ljava/lang/String;
+    .local v2, "event":Landroid/net/metrics/WakeupEvent;
+    iput-object v0, v2, Landroid/net/metrics/WakeupEvent;->iface:Ljava/lang/String;
 
     .line 269
-    iput-wide v2, v0, Landroid/net/metrics/WakeupEvent;->timestampMs:J
+    iput-wide v14, v2, Landroid/net/metrics/WakeupEvent;->timestampMs:J
 
     .line 270
-    move v2, p2
+    move/from16 v13, p2
 
-    iput v2, v0, Landroid/net/metrics/WakeupEvent;->uid:I
+    iput v13, v2, Landroid/net/metrics/WakeupEvent;->uid:I
 
     .line 271
-    move/from16 v6, p3
+    move/from16 v12, p3
 
-    iput v6, v0, Landroid/net/metrics/WakeupEvent;->ethertype:I
+    iput v12, v2, Landroid/net/metrics/WakeupEvent;->ethertype:I
 
     .line 272
     invoke-static/range {p5 .. p5}, Landroid/net/MacAddress;->fromBytes([B)Landroid/net/MacAddress;
 
-    move-result-object v3
+    move-result-object v4
 
-    iput-object v3, v0, Landroid/net/metrics/WakeupEvent;->dstHwAddr:Landroid/net/MacAddress;
+    iput-object v4, v2, Landroid/net/metrics/WakeupEvent;->dstHwAddr:Landroid/net/MacAddress;
 
     .line 273
-    move-object/from16 v8, p6
+    move-object/from16 v11, p6
 
-    iput-object v8, v0, Landroid/net/metrics/WakeupEvent;->srcIp:Ljava/lang/String;
+    iput-object v11, v2, Landroid/net/metrics/WakeupEvent;->srcIp:Ljava/lang/String;
 
     .line 274
-    move-object/from16 v9, p7
+    move-object/from16 v10, p7
 
-    iput-object v9, v0, Landroid/net/metrics/WakeupEvent;->dstIp:Ljava/lang/String;
+    iput-object v10, v2, Landroid/net/metrics/WakeupEvent;->dstIp:Ljava/lang/String;
 
     .line 275
-    move/from16 v10, p4
+    move/from16 v9, p4
 
-    iput v10, v0, Landroid/net/metrics/WakeupEvent;->ipNextHeader:I
+    iput v9, v2, Landroid/net/metrics/WakeupEvent;->ipNextHeader:I
 
     .line 276
-    move/from16 v11, p8
+    move/from16 v7, p8
 
-    iput v11, v0, Landroid/net/metrics/WakeupEvent;->srcPort:I
+    iput v7, v2, Landroid/net/metrics/WakeupEvent;->srcPort:I
 
     .line 277
-    move/from16 v12, p9
+    move/from16 v6, p9
 
-    iput v12, v0, Landroid/net/metrics/WakeupEvent;->dstPort:I
+    iput v6, v2, Landroid/net/metrics/WakeupEvent;->dstPort:I
 
     .line 278
-    invoke-direct {p0, v0}, Lcom/android/server/connectivity/NetdEventListenerService;->addWakeupEvent(Landroid/net/metrics/WakeupEvent;)V
+    invoke-direct {v1, v2}, Lcom/android/server/connectivity/NetdEventListenerService;->addWakeupEvent(Landroid/net/metrics/WakeupEvent;)V
 
     .line 280
-    iget-object v0, v0, Landroid/net/metrics/WakeupEvent;->dstHwAddr:Landroid/net/MacAddress;
+    iget-object v4, v2, Landroid/net/metrics/WakeupEvent;->dstHwAddr:Landroid/net/MacAddress;
 
-    invoke-virtual {v0}, Landroid/net/MacAddress;->toString()Ljava/lang/String;
+    invoke-virtual {v4}, Landroid/net/MacAddress;->toString()Ljava/lang/String;
 
-    move-result-object v7
+    move-result-object v8
 
     .line 281
-    const/16 v3, 0x2c
+    .local v8, "dstMac":Ljava/lang/String;
+    const/16 v4, 0x2c
 
-    move v4, p2
+    move/from16 v5, p2
 
-    move/from16 v6, p3
+    move-object v6, v0
 
-    move-object/from16 v8, p6
+    move/from16 v7, p3
 
-    move-object/from16 v9, p7
+    move-object/from16 v9, p6
 
-    move/from16 v10, p4
+    move-object/from16 v10, p7
 
-    move/from16 v11, p8
+    move/from16 v11, p4
 
-    move/from16 v12, p9
+    move/from16 v12, p8
 
-    invoke-static/range {v3 .. v12}, Landroid/util/StatsLog;->write(IILjava/lang/String;ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;III)I
-    :try_end_60
-    .catchall {:try_start_2 .. :try_end_60} :catchall_62
+    move/from16 v13, p9
+
+    invoke-static/range {v4 .. v13}, Landroid/util/StatsLog;->write(IILjava/lang/String;ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;III)I
+    :try_end_68
+    .catchall {:try_start_3 .. :try_end_68} :catchall_6a
 
     .line 283
     monitor-exit p0
@@ -1609,7 +1801,21 @@
     return-void
 
     .line 258
-    :catchall_62
+    .end local v0  # "iface":Ljava/lang/String;
+    .end local v2  # "event":Landroid/net/metrics/WakeupEvent;
+    .end local v8  # "dstMac":Ljava/lang/String;
+    .end local v14  # "timestampMs":J
+    .end local p1  # "prefix":Ljava/lang/String;
+    .end local p2  # "uid":I
+    .end local p3  # "ethertype":I
+    .end local p4  # "ipNextHeader":I
+    .end local p5  # "dstHw":[B
+    .end local p6  # "srcIp":Ljava/lang/String;
+    .end local p7  # "dstIp":Ljava/lang/String;
+    .end local p8  # "srcPort":I
+    .end local p9  # "dstPort":I
+    .end local p10  # "timestampNs":J
+    :catchall_6a
     move-exception v0
 
     monitor-exit p0
@@ -1619,6 +1825,7 @@
 
 .method public declared-synchronized removeNetdEventCallback(I)Z
     .registers 5
+    .param p1, "callerType"  # I
 
     monitor-enter p0
 
@@ -1645,20 +1852,21 @@
 
     invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v1
 
-    invoke-static {v0, p1}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v0, v1}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;)I
     :try_end_1d
     .catchall {:try_start_1 .. :try_end_1d} :catchall_28
 
     .line 138
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
     monitor-exit p0
 
-    return p1
+    return v0
 
     .line 140
+    .end local p0  # "this":Lcom/android/server/connectivity/NetdEventListenerService;
     :cond_20
     :try_start_20
     iget-object v0, p0, Lcom/android/server/connectivity/NetdEventListenerService;->mNetdEventCallbackList:[Landroid/net/INetdEventCallback;
@@ -1670,13 +1878,14 @@
     .catchall {:try_start_20 .. :try_end_25} :catchall_28
 
     .line 141
-    const/4 p1, 0x1
+    const/4 v0, 0x1
 
     monitor-exit p0
 
-    return p1
+    return v0
 
     .line 135
+    .end local p1  # "callerType":I
     :catchall_28
     move-exception p1
 

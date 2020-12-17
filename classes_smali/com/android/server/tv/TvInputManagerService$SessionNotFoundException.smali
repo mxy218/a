@@ -17,6 +17,7 @@
 # direct methods
 .method public constructor <init>(Ljava/lang/String;)V
     .registers 2
+    .param p1, "name"  # Ljava/lang/String;
 
     .line 2951
     invoke-direct {p0, p1}, Ljava/lang/IllegalArgumentException;-><init>(Ljava/lang/String;)V

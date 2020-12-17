@@ -24,8 +24,9 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/display/WifiDisplayController;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/display/WifiDisplayController;
 
-    .line 303
+    .line 389
     iput-object p1, p0, Lcom/android/server/display/WifiDisplayController$2;->this$0:Lcom/android/server/display/WifiDisplayController;
 
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -36,56 +37,87 @@
 
 # virtual methods
 .method public onFailure(I)V
-    .registers 3
+    .registers 4
+    .param p1, "reason"  # I
 
-    .line 322
-    iget-object p1, p0, Lcom/android/server/display/WifiDisplayController$2;->this$0:Lcom/android/server/display/WifiDisplayController;
+    .line 406
+    new-instance v0, Ljava/lang/StringBuilder;
 
-    const/4 v0, 0x0
+    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
 
-    invoke-static {p1, v0}, Lcom/android/server/display/WifiDisplayController;->access$102(Lcom/android/server/display/WifiDisplayController;Z)Z
+    const-string v1, "Failed to set WFD info with reason "
 
-    .line 323
-    return-void
-.end method
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-.method public onSuccess()V
-    .registers 3
+    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    .line 309
-    iget-object v0, p0, Lcom/android/server/display/WifiDisplayController$2;->this$0:Lcom/android/server/display/WifiDisplayController;
+    const-string v1, "."
 
-    invoke-static {v0}, Lcom/android/server/display/WifiDisplayController;->access$100(Lcom/android/server/display/WifiDisplayController;)Z
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    move-result v0
+    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    if-eqz v0, :cond_1e
+    move-result-object v0
 
-    .line 310
+    const-string v1, "WifiDisplayController"
+
+    invoke-static {v1, v0}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
+
+    .line 408
     iget-object v0, p0, Lcom/android/server/display/WifiDisplayController$2;->this$0:Lcom/android/server/display/WifiDisplayController;
 
     const/4 v1, 0x0
 
     invoke-static {v0, v1}, Lcom/android/server/display/WifiDisplayController;->access$102(Lcom/android/server/display/WifiDisplayController;Z)Z
 
-    .line 311
+    .line 409
+    return-void
+.end method
+
+.method public onSuccess()V
+    .registers 3
+
+    .line 393
+    const-string v0, "WifiDisplayController"
+
+    const-string v1, "Successfully set WFD info."
+
+    invoke-static {v0, v1}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
+
+    .line 395
+    iget-object v0, p0, Lcom/android/server/display/WifiDisplayController$2;->this$0:Lcom/android/server/display/WifiDisplayController;
+
+    invoke-static {v0}, Lcom/android/server/display/WifiDisplayController;->access$100(Lcom/android/server/display/WifiDisplayController;)Z
+
+    move-result v0
+
+    if-eqz v0, :cond_25
+
+    .line 396
+    iget-object v0, p0, Lcom/android/server/display/WifiDisplayController$2;->this$0:Lcom/android/server/display/WifiDisplayController;
+
+    const/4 v1, 0x0
+
+    invoke-static {v0, v1}, Lcom/android/server/display/WifiDisplayController;->access$102(Lcom/android/server/display/WifiDisplayController;Z)Z
+
+    .line 397
     iget-object v0, p0, Lcom/android/server/display/WifiDisplayController$2;->this$0:Lcom/android/server/display/WifiDisplayController;
 
     const/4 v1, 0x1
 
     invoke-static {v0, v1}, Lcom/android/server/display/WifiDisplayController;->access$202(Lcom/android/server/display/WifiDisplayController;Z)Z
 
-    .line 312
+    .line 398
     iget-object v0, p0, Lcom/android/server/display/WifiDisplayController$2;->this$0:Lcom/android/server/display/WifiDisplayController;
 
     invoke-static {v0}, Lcom/android/server/display/WifiDisplayController;->access$300(Lcom/android/server/display/WifiDisplayController;)V
 
-    .line 313
+    .line 399
     iget-object v0, p0, Lcom/android/server/display/WifiDisplayController$2;->this$0:Lcom/android/server/display/WifiDisplayController;
 
     invoke-static {v0}, Lcom/android/server/display/WifiDisplayController;->access$400(Lcom/android/server/display/WifiDisplayController;)V
 
-    .line 315
-    :cond_1e
+    .line 401
+    :cond_25
     return-void
 .end method

@@ -41,6 +41,7 @@
 # virtual methods
 .method public dpmRequiresPassword(I)Z
     .registers 3
+    .param p1, "userId"  # I
 
     .line 129
     invoke-static {}, Landroid/app/admin/DevicePolicyCache;->getInstance()Landroid/app/admin/DevicePolicyCache;
@@ -49,23 +50,24 @@
 
     invoke-virtual {v0, p1}, Landroid/app/admin/DevicePolicyCache;->getPasswordQuality(I)I
 
-    move-result p1
+    move-result v0
 
-    if-eqz p1, :cond_c
+    if-eqz v0, :cond_c
 
-    const/4 p1, 0x1
+    const/4 v0, 0x1
 
     goto :goto_d
 
     :cond_c
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
     :goto_d
-    return p1
+    return v0
 .end method
 
 .method public enableKeyguard(Z)V
     .registers 3
+    .param p1, "enabled"  # Z
 
     .line 145
     iget-object v0, p0, Lcom/android/server/wm/KeyguardDisableHandler$2;->val$policy:Lcom/android/server/policy/WindowManagerPolicy;
@@ -78,26 +80,28 @@
 
 .method public getProfileParentId(I)I
     .registers 3
+    .param p1, "userId"  # I
 
     .line 140
     iget-object v0, p0, Lcom/android/server/wm/KeyguardDisableHandler$2;->val$userManager:Landroid/os/UserManagerInternal;
 
     invoke-virtual {v0, p1}, Landroid/os/UserManagerInternal;->getProfileParentId(I)I
 
-    move-result p1
+    move-result v0
 
-    return p1
+    return v0
 .end method
 
 .method public isKeyguardSecure(I)Z
     .registers 3
+    .param p1, "userId"  # I
 
     .line 135
     iget-object v0, p0, Lcom/android/server/wm/KeyguardDisableHandler$2;->val$policy:Lcom/android/server/policy/WindowManagerPolicy;
 
     invoke-interface {v0, p1}, Lcom/android/server/policy/WindowManagerPolicy;->isKeyguardSecure(I)Z
 
-    move-result p1
+    move-result v0
 
-    return p1
+    return v0
 .end method

@@ -21,6 +21,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/trust/TrustAgentWrapper;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/trust/TrustAgentWrapper;
 
     .line 109
     iput-object p1, p0, Lcom/android/server/trust/TrustAgentWrapper$1;->this$0:Lcom/android/server/trust/TrustAgentWrapper;
@@ -33,62 +34,65 @@
 
 # virtual methods
 .method public onReceive(Landroid/content/Context;Landroid/content/Intent;)V
-    .registers 4
+    .registers 6
+    .param p1, "context"  # Landroid/content/Context;
+    .param p2, "intent"  # Landroid/content/Intent;
 
     .line 112
-    const-string p1, "componentName"
+    const-string v0, "componentName"
 
-    invoke-virtual {p2, p1}, Landroid/content/Intent;->getParcelableExtra(Ljava/lang/String;)Landroid/os/Parcelable;
+    invoke-virtual {p2, v0}, Landroid/content/Intent;->getParcelableExtra(Ljava/lang/String;)Landroid/os/Parcelable;
 
-    move-result-object p1
+    move-result-object v0
 
-    check-cast p1, Landroid/content/ComponentName;
+    check-cast v0, Landroid/content/ComponentName;
 
     .line 113
+    .local v0, "component":Landroid/content/ComponentName;
     invoke-virtual {p2}, Landroid/content/Intent;->getAction()Ljava/lang/String;
 
-    move-result-object p2
+    move-result-object v1
 
-    const-string v0, "android.server.trust.TRUST_EXPIRED_ACTION"
+    const-string v2, "android.server.trust.TRUST_EXPIRED_ACTION"
 
-    invoke-virtual {v0, p2}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v2, v1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result p2
+    move-result v1
 
-    if-eqz p2, :cond_33
+    if-eqz v1, :cond_33
 
-    iget-object p2, p0, Lcom/android/server/trust/TrustAgentWrapper$1;->this$0:Lcom/android/server/trust/TrustAgentWrapper;
+    iget-object v1, p0, Lcom/android/server/trust/TrustAgentWrapper$1;->this$0:Lcom/android/server/trust/TrustAgentWrapper;
 
     .line 114
-    invoke-static {p2}, Lcom/android/server/trust/TrustAgentWrapper;->access$000(Lcom/android/server/trust/TrustAgentWrapper;)Landroid/content/ComponentName;
+    invoke-static {v1}, Lcom/android/server/trust/TrustAgentWrapper;->access$000(Lcom/android/server/trust/TrustAgentWrapper;)Landroid/content/ComponentName;
 
-    move-result-object p2
+    move-result-object v1
 
-    invoke-virtual {p2, p1}, Landroid/content/ComponentName;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v1, v0}, Landroid/content/ComponentName;->equals(Ljava/lang/Object;)Z
 
-    move-result p1
+    move-result v1
 
-    if-eqz p1, :cond_33
+    if-eqz v1, :cond_33
 
     .line 115
-    iget-object p1, p0, Lcom/android/server/trust/TrustAgentWrapper$1;->this$0:Lcom/android/server/trust/TrustAgentWrapper;
+    iget-object v1, p0, Lcom/android/server/trust/TrustAgentWrapper$1;->this$0:Lcom/android/server/trust/TrustAgentWrapper;
 
-    invoke-static {p1}, Lcom/android/server/trust/TrustAgentWrapper;->access$100(Lcom/android/server/trust/TrustAgentWrapper;)Landroid/os/Handler;
+    invoke-static {v1}, Lcom/android/server/trust/TrustAgentWrapper;->access$100(Lcom/android/server/trust/TrustAgentWrapper;)Landroid/os/Handler;
 
-    move-result-object p1
+    move-result-object v1
 
-    const/4 p2, 0x3
+    const/4 v2, 0x3
 
-    invoke-virtual {p1, p2}, Landroid/os/Handler;->removeMessages(I)V
+    invoke-virtual {v1, v2}, Landroid/os/Handler;->removeMessages(I)V
 
     .line 116
-    iget-object p1, p0, Lcom/android/server/trust/TrustAgentWrapper$1;->this$0:Lcom/android/server/trust/TrustAgentWrapper;
+    iget-object v1, p0, Lcom/android/server/trust/TrustAgentWrapper$1;->this$0:Lcom/android/server/trust/TrustAgentWrapper;
 
-    invoke-static {p1}, Lcom/android/server/trust/TrustAgentWrapper;->access$100(Lcom/android/server/trust/TrustAgentWrapper;)Landroid/os/Handler;
+    invoke-static {v1}, Lcom/android/server/trust/TrustAgentWrapper;->access$100(Lcom/android/server/trust/TrustAgentWrapper;)Landroid/os/Handler;
 
-    move-result-object p1
+    move-result-object v1
 
-    invoke-virtual {p1, p2}, Landroid/os/Handler;->sendEmptyMessage(I)Z
+    invoke-virtual {v1, v2}, Landroid/os/Handler;->sendEmptyMessage(I)Z
 
     .line 118
     :cond_33

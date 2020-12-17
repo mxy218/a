@@ -28,8 +28,9 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/pm/UserManagerService;Landroid/os/Bundle;I)V
     .registers 4
+    .param p1, "this$0"  # Lcom/android/server/pm/UserManagerService;
 
-    .line 1779
+    .line 1729
     iput-object p1, p0, Lcom/android/server/pm/UserManagerService$2;->this$0:Lcom/android/server/pm/UserManagerService;
 
     iput-object p2, p0, Lcom/android/server/pm/UserManagerService$2;->val$effective:Landroid/os/Bundle;
@@ -46,17 +47,17 @@
 .method public run()V
     .registers 5
 
-    .line 1783
+    .line 1733
     :try_start_0
     iget-object v0, p0, Lcom/android/server/pm/UserManagerService$2;->this$0:Lcom/android/server/pm/UserManagerService;
 
-    invoke-static {v0}, Lcom/android/server/pm/UserManagerService;->access$700(Lcom/android/server/pm/UserManagerService;)Lcom/android/internal/app/IAppOpsService;
+    invoke-static {v0}, Lcom/android/server/pm/UserManagerService;->access$600(Lcom/android/server/pm/UserManagerService;)Lcom/android/internal/app/IAppOpsService;
 
     move-result-object v0
 
     iget-object v1, p0, Lcom/android/server/pm/UserManagerService$2;->val$effective:Landroid/os/Bundle;
 
-    invoke-static {}, Lcom/android/server/pm/UserManagerService;->access$600()Landroid/os/IBinder;
+    invoke-static {}, Lcom/android/server/pm/UserManagerService;->access$500()Landroid/os/IBinder;
 
     move-result-object v2
 
@@ -66,21 +67,23 @@
     :try_end_11
     .catch Landroid/os/RemoteException; {:try_start_0 .. :try_end_11} :catch_12
 
-    .line 1786
+    .line 1736
     goto :goto_1a
 
-    .line 1784
+    .line 1734
     :catch_12
     move-exception v0
 
-    .line 1785
-    const-string v0, "UserManagerService"
+    .line 1735
+    .local v0, "e":Landroid/os/RemoteException;
+    const-string v1, "UserManagerService"
 
-    const-string v1, "Unable to notify AppOpsService of UserRestrictions"
+    const-string v2, "Unable to notify AppOpsService of UserRestrictions"
 
-    invoke-static {v0, v1}, Landroid/util/Log;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v2}, Landroid/util/Log;->w(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 1787
+    .line 1737
+    .end local v0  # "e":Landroid/os/RemoteException;
     :goto_1a
     return-void
 .end method

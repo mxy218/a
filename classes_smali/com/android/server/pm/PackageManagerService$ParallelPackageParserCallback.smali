@@ -30,17 +30,18 @@
 
 # direct methods
 .method constructor <init>(Lcom/android/server/pm/PackageManagerService;)V
-    .registers 2
+    .registers 3
+    .param p1, "this$0"  # Lcom/android/server/pm/PackageManagerService;
 
-    .line 849
+    .line 923
     iput-object p1, p0, Lcom/android/server/pm/PackageManagerService$ParallelPackageParserCallback;->this$0:Lcom/android/server/pm/PackageManagerService;
 
     invoke-direct {p0, p1}, Lcom/android/server/pm/PackageManagerService$PackageParserCallback;-><init>(Lcom/android/server/pm/PackageManagerService;)V
 
-    .line 850
-    const/4 p1, 0x0
+    .line 924
+    const/4 v0, 0x0
 
-    iput-object p1, p0, Lcom/android/server/pm/PackageManagerService$ParallelPackageParserCallback;->mOverlayPackages:Ljava/util/List;
+    iput-object v0, p0, Lcom/android/server/pm/PackageManagerService$ParallelPackageParserCallback;->mOverlayPackages:Ljava/util/List;
 
     return-void
 .end method
@@ -50,14 +51,14 @@
 .method findStaticOverlayPackages()V
     .registers 5
 
-    .line 853
+    .line 927
     iget-object v0, p0, Lcom/android/server/pm/PackageManagerService$ParallelPackageParserCallback;->this$0:Lcom/android/server/pm/PackageManagerService;
 
     iget-object v0, v0, Lcom/android/server/pm/PackageManagerService;->mPackages:Landroid/util/ArrayMap;
 
     monitor-enter v0
 
-    .line 854
+    .line 928
     :try_start_5
     iget-object v1, p0, Lcom/android/server/pm/PackageManagerService$ParallelPackageParserCallback;->this$0:Lcom/android/server/pm/PackageManagerService;
 
@@ -84,41 +85,43 @@
 
     check-cast v2, Landroid/content/pm/PackageParser$Package;
 
-    .line 855
+    .line 929
+    .local v2, "p":Landroid/content/pm/PackageParser$Package;
     iget-boolean v3, v2, Landroid/content/pm/PackageParser$Package;->mOverlayIsStatic:Z
 
     if-eqz v3, :cond_31
 
-    .line 856
+    .line 930
     iget-object v3, p0, Lcom/android/server/pm/PackageManagerService$ParallelPackageParserCallback;->mOverlayPackages:Ljava/util/List;
 
     if-nez v3, :cond_2c
 
-    .line 857
+    .line 931
     new-instance v3, Ljava/util/ArrayList;
 
     invoke-direct {v3}, Ljava/util/ArrayList;-><init>()V
 
     iput-object v3, p0, Lcom/android/server/pm/PackageManagerService$ParallelPackageParserCallback;->mOverlayPackages:Ljava/util/List;
 
-    .line 859
+    .line 933
     :cond_2c
     iget-object v3, p0, Lcom/android/server/pm/PackageManagerService$ParallelPackageParserCallback;->mOverlayPackages:Ljava/util/List;
 
     invoke-interface {v3, v2}, Ljava/util/List;->add(Ljava/lang/Object;)Z
 
-    .line 861
+    .line 935
+    .end local v2  # "p":Landroid/content/pm/PackageParser$Package;
     :cond_31
     goto :goto_11
 
-    .line 862
+    .line 936
     :cond_32
     monitor-exit v0
 
-    .line 863
+    .line 937
     return-void
 
-    .line 862
+    .line 936
     :catchall_34
     move-exception v1
 
@@ -131,42 +134,47 @@
 
 .method declared-synchronized getStaticOverlayPaths(Ljava/lang/String;Ljava/lang/String;)[Ljava/lang/String;
     .registers 4
+    .param p1, "targetPackageName"  # Ljava/lang/String;
+    .param p2, "targetPath"  # Ljava/lang/String;
 
     monitor-enter p0
 
-    .line 872
+    .line 946
     :try_start_1
     iget-object v0, p0, Lcom/android/server/pm/PackageManagerService$ParallelPackageParserCallback;->mOverlayPackages:Ljava/util/List;
 
     if-nez v0, :cond_7
 
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
     goto :goto_11
 
-    .line 873
+    .line 947
     :cond_7
     iget-object v0, p0, Lcom/android/server/pm/PackageManagerService$ParallelPackageParserCallback;->mOverlayPackages:Ljava/util/List;
 
-    .line 874
+    .line 948
     invoke-virtual {p0, v0, p1}, Lcom/android/server/pm/PackageManagerService$ParallelPackageParserCallback;->getStaticOverlayPackages(Ljava/util/Collection;Ljava/lang/String;)Ljava/util/List;
 
-    move-result-object p1
+    move-result-object v0
 
-    .line 873
-    invoke-virtual {p0, p1, p2}, Lcom/android/server/pm/PackageManagerService$ParallelPackageParserCallback;->getStaticOverlayPaths(Ljava/util/List;Ljava/lang/String;)[Ljava/lang/String;
+    .line 947
+    invoke-virtual {p0, v0, p2}, Lcom/android/server/pm/PackageManagerService$ParallelPackageParserCallback;->getStaticOverlayPaths(Ljava/util/List;Ljava/lang/String;)[Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
     :try_end_11
     .catchall {:try_start_1 .. :try_end_11} :catchall_13
 
-    .line 872
+    .line 946
     :goto_11
     monitor-exit p0
 
-    return-object p1
+    return-object v0
 
-    .line 871
+    .line 945
+    .end local p0  # "this":Lcom/android/server/pm/PackageManagerService$ParallelPackageParserCallback;
+    .end local p1  # "targetPackageName":Ljava/lang/String;
+    .end local p2  # "targetPath":Ljava/lang/String;
     :catchall_13
     move-exception p1
 

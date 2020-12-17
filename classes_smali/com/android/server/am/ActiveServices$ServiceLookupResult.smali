@@ -25,18 +25,20 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/am/ActiveServices;Lcom/android/server/am/ServiceRecord;Ljava/lang/String;)V
     .registers 4
+    .param p2, "_record"  # Lcom/android/server/am/ServiceRecord;
+    .param p3, "_permission"  # Ljava/lang/String;
 
-    .line 2040
+    .line 2199
     iput-object p1, p0, Lcom/android/server/am/ActiveServices$ServiceLookupResult;->this$0:Lcom/android/server/am/ActiveServices;
 
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
-    .line 2041
+    .line 2200
     iput-object p2, p0, Lcom/android/server/am/ActiveServices$ServiceLookupResult;->record:Lcom/android/server/am/ServiceRecord;
 
-    .line 2042
+    .line 2201
     iput-object p3, p0, Lcom/android/server/am/ActiveServices$ServiceLookupResult;->permission:Ljava/lang/String;
 
-    .line 2043
+    .line 2202
     return-void
 .end method

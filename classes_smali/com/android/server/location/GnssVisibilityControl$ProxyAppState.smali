@@ -23,6 +23,7 @@
 # direct methods
 .method private constructor <init>(Z)V
     .registers 2
+    .param p1, "hasLocationPermission"  # Z
 
     .line 87
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -36,6 +37,8 @@
 
 .method synthetic constructor <init>(ZLcom/android/server/location/GnssVisibilityControl$1;)V
     .registers 3
+    .param p1, "x0"  # Z
+    .param p2, "x1"  # Lcom/android/server/location/GnssVisibilityControl$1;
 
     .line 83
     invoke-direct {p0, p1}, Lcom/android/server/location/GnssVisibilityControl$ProxyAppState;-><init>(Z)V
@@ -44,16 +47,19 @@
 .end method
 
 .method static synthetic access$100(Lcom/android/server/location/GnssVisibilityControl$ProxyAppState;)Z
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/location/GnssVisibilityControl$ProxyAppState;
 
     .line 83
-    iget-boolean p0, p0, Lcom/android/server/location/GnssVisibilityControl$ProxyAppState;->mHasLocationPermission:Z
+    iget-boolean v0, p0, Lcom/android/server/location/GnssVisibilityControl$ProxyAppState;->mHasLocationPermission:Z
 
-    return p0
+    return v0
 .end method
 
 .method static synthetic access$102(Lcom/android/server/location/GnssVisibilityControl$ProxyAppState;Z)Z
     .registers 2
+    .param p0, "x0"  # Lcom/android/server/location/GnssVisibilityControl$ProxyAppState;
+    .param p1, "x1"  # Z
 
     .line 83
     iput-boolean p1, p0, Lcom/android/server/location/GnssVisibilityControl$ProxyAppState;->mHasLocationPermission:Z
@@ -62,16 +68,19 @@
 .end method
 
 .method static synthetic access$300(Lcom/android/server/location/GnssVisibilityControl$ProxyAppState;)Z
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/location/GnssVisibilityControl$ProxyAppState;
 
     .line 83
-    iget-boolean p0, p0, Lcom/android/server/location/GnssVisibilityControl$ProxyAppState;->mIsLocationIconOn:Z
+    iget-boolean v0, p0, Lcom/android/server/location/GnssVisibilityControl$ProxyAppState;->mIsLocationIconOn:Z
 
-    return p0
+    return v0
 .end method
 
 .method static synthetic access$302(Lcom/android/server/location/GnssVisibilityControl$ProxyAppState;Z)Z
     .registers 2
+    .param p0, "x0"  # Lcom/android/server/location/GnssVisibilityControl$ProxyAppState;
+    .param p1, "x1"  # Z
 
     .line 83
     iput-boolean p1, p0, Lcom/android/server/location/GnssVisibilityControl$ProxyAppState;->mIsLocationIconOn:Z

@@ -4,8 +4,6 @@
 
 
 # static fields
-.field private static final DEBUG:Z = false
-
 .field private static final TAG:Ljava/lang/String; = "ExtendedRemoteDisplayHelper"
 
 .field private static sExtRemoteDisplayClass:Ljava/lang/Class;
@@ -19,7 +17,7 @@
 .method static constructor <clinit>()V
     .registers 5
 
-    .line 62
+    .line 61
     const-string v0, "ExtendedRemoteDisplayHelper"
 
     :try_start_2
@@ -33,30 +31,32 @@
     :try_end_a
     .catchall {:try_start_2 .. :try_end_a} :catchall_b
 
-    .line 65
+    .line 64
     goto :goto_11
 
-    .line 63
+    .line 62
     :catchall_b
     move-exception v1
 
-    .line 64
-    const-string v1, "ExtendedRemoteDisplay: not available"
+    .line 63
+    .local v1, "t":Ljava/lang/Throwable;
+    const-string v2, "ExtendedRemoteDisplay Not available."
 
-    invoke-static {v0, v1}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v0, v2}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 67
+    .line 66
+    .end local v1  # "t":Ljava/lang/Throwable;
     :goto_11
     sget-object v1, Lcom/android/server/display/ExtendedRemoteDisplayHelper;->sExtRemoteDisplayClass:Ljava/lang/Class;
 
-    if-eqz v1, :cond_55
+    if-eqz v1, :cond_56
 
-    .line 69
-    const-string v1, "ExtendedRemoteDisplay: is available, finding methods"
+    .line 68
+    const-string v1, "ExtendedRemoteDisplay Is available. Find Methods"
 
     invoke-static {v0, v1}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 71
+    .line 70
     const/4 v1, 0x4
 
     const/4 v2, 0x0
@@ -86,73 +86,79 @@
 
     aput-object v4, v1, v3
 
-    .line 73
+    .line 75
+    .local v1, "args":[Ljava/lang/Class;
     sget-object v3, Lcom/android/server/display/ExtendedRemoteDisplayHelper;->sExtRemoteDisplayClass:Ljava/lang/Class;
 
-    const-string v4, "listen"
+    const-string/jumbo v4, "listen"
 
-    .line 74
     invoke-virtual {v3, v4, v1}, Ljava/lang/Class;->getDeclaredMethod(Ljava/lang/String;[Ljava/lang/Class;)Ljava/lang/reflect/Method;
 
-    move-result-object v1
+    move-result-object v3
 
-    sput-object v1, Lcom/android/server/display/ExtendedRemoteDisplayHelper;->sExtRemoteDisplayListen:Ljava/lang/reflect/Method;
-    :try_end_3b
-    .catchall {:try_start_1c .. :try_end_3b} :catchall_3c
+    sput-object v3, Lcom/android/server/display/ExtendedRemoteDisplayHelper;->sExtRemoteDisplayListen:Ljava/lang/reflect/Method;
+    :try_end_3c
+    .catchall {:try_start_1c .. :try_end_3c} :catchall_3d
 
-    .line 77
-    goto :goto_42
-
-    .line 75
-    :catchall_3c
-    move-exception v1
+    .line 78
+    .end local v1  # "args":[Ljava/lang/Class;
+    goto :goto_43
 
     .line 76
-    const-string v1, "ExtendedRemoteDisplay.listen: not available"
+    :catchall_3d
+    move-exception v1
 
-    invoke-static {v0, v1}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
+    .line 77
+    .local v1, "t":Ljava/lang/Throwable;
+    const-string v3, "ExtendedRemoteDisplay.listen Not available."
 
-    .line 80
-    :goto_42
-    :try_start_42
-    new-array v1, v2, [Ljava/lang/Class;
+    invoke-static {v0, v3}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 81
+    .end local v1  # "t":Ljava/lang/Throwable;
+    :goto_43
+    :try_start_43
+    new-array v1, v2, [Ljava/lang/Class;
+
+    .line 82
+    .local v1, "args":[Ljava/lang/Class;
     sget-object v2, Lcom/android/server/display/ExtendedRemoteDisplayHelper;->sExtRemoteDisplayClass:Ljava/lang/Class;
 
     const-string v3, "dispose"
 
-    .line 82
     invoke-virtual {v2, v3, v1}, Ljava/lang/Class;->getDeclaredMethod(Ljava/lang/String;[Ljava/lang/Class;)Ljava/lang/reflect/Method;
 
-    move-result-object v1
+    move-result-object v2
 
-    sput-object v1, Lcom/android/server/display/ExtendedRemoteDisplayHelper;->sExtRemoteDisplayDispose:Ljava/lang/reflect/Method;
-    :try_end_4e
-    .catchall {:try_start_42 .. :try_end_4e} :catchall_4f
+    sput-object v2, Lcom/android/server/display/ExtendedRemoteDisplayHelper;->sExtRemoteDisplayDispose:Ljava/lang/reflect/Method;
+    :try_end_4f
+    .catchall {:try_start_43 .. :try_end_4f} :catchall_50
 
     .line 85
-    goto :goto_55
+    .end local v1  # "args":[Ljava/lang/Class;
+    goto :goto_56
 
     .line 83
-    :catchall_4f
+    :catchall_50
     move-exception v1
 
     .line 84
-    const-string v1, "ExtendedRemoteDisplay.dispose: not available"
+    .local v1, "t":Ljava/lang/Throwable;
+    const-string v2, "ExtendedRemoteDisplay.dispose Not available."
 
-    invoke-static {v0, v1}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v0, v2}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 87
-    :cond_55
-    :goto_55
+    .end local v1  # "t":Ljava/lang/Throwable;
+    :cond_56
+    :goto_56
     return-void
 .end method
 
 .method constructor <init>()V
     .registers 1
 
-    .line 41
+    .line 39
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
     return-void
@@ -160,11 +166,17 @@
 
 .method public static dispose(Ljava/lang/Object;)V
     .registers 4
+    .param p0, "extRemoteDisplay"  # Ljava/lang/Object;
 
-    .line 129
+    .line 130
     const-string v0, "ExtendedRemoteDisplayHelper"
 
-    :try_start_2
+    const-string v1, "ExtendedRemoteDisplay.dispose"
+
+    invoke-static {v0, v1}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
+
+    .line 132
+    :try_start_7
     sget-object v1, Lcom/android/server/display/ExtendedRemoteDisplayHelper;->sExtRemoteDisplayDispose:Ljava/lang/reflect/Method;
 
     const/4 v2, 0x0
@@ -172,202 +184,253 @@
     new-array v2, v2, [Ljava/lang/Object;
 
     invoke-virtual {v1, p0, v2}, Ljava/lang/reflect/Method;->invoke(Ljava/lang/Object;[Ljava/lang/Object;)Ljava/lang/Object;
-    :try_end_a
-    .catch Ljava/lang/reflect/InvocationTargetException; {:try_start_2 .. :try_end_a} :catch_12
-    .catch Ljava/lang/IllegalAccessException; {:try_start_2 .. :try_end_a} :catch_b
+    :try_end_f
+    .catch Ljava/lang/reflect/InvocationTargetException; {:try_start_7 .. :try_end_f} :catch_1a
+    .catch Ljava/lang/IllegalAccessException; {:try_start_7 .. :try_end_f} :catch_10
 
-    .line 142
-    goto :goto_11
-
-    .line 140
-    :catch_b
-    move-exception p0
-
-    .line 141
-    const-string v1, "ExtendedRemoteDisplay.dispose: IllegalAccessException"
-
-    invoke-static {v0, v1, p0}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    .line 146
+    goto :goto_19
 
     .line 143
-    :goto_11
+    :catch_10
+    move-exception v1
+
+    .line 144
+    .local v1, "e":Ljava/lang/IllegalAccessException;
+    const-string v2, "ExtendedRemoteDisplay.dispose-IllegalAccessException"
+
+    invoke-static {v0, v2}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
+
+    .line 145
+    invoke-virtual {v1}, Ljava/lang/IllegalAccessException;->printStackTrace()V
+
+    .line 147
+    .end local v1  # "e":Ljava/lang/IllegalAccessException;
+    :goto_19
     return-void
 
-    .line 130
-    :catch_12
-    move-exception p0
+    .line 133
+    :catch_1a
+    move-exception v1
 
-    .line 131
-    const-string v1, "ExtendedRemoteDisplay.dispose: InvocationTargetException"
+    .line 134
+    .local v1, "e":Ljava/lang/reflect/InvocationTargetException;
+    const-string v2, "ExtendedRemoteDisplay.dispose - InvocationTargetException"
 
-    invoke-static {v0, v1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v0, v2}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 132
-    invoke-virtual {p0}, Ljava/lang/reflect/InvocationTargetException;->getCause()Ljava/lang/Throwable;
+    .line 135
+    invoke-virtual {v1}, Ljava/lang/reflect/InvocationTargetException;->getCause()Ljava/lang/Throwable;
 
     move-result-object v0
 
-    .line 133
-    instance-of v1, v0, Ljava/lang/RuntimeException;
-
-    if-nez v1, :cond_2d
-
-    .line 135
-    instance-of v1, v0, Ljava/lang/Error;
-
-    if-eqz v1, :cond_27
-
     .line 136
-    check-cast v0, Ljava/lang/Error;
+    .local v0, "cause":Ljava/lang/Throwable;
+    instance-of v2, v0, Ljava/lang/RuntimeException;
 
-    throw v0
+    if-nez v2, :cond_36
 
     .line 138
-    :cond_27
-    new-instance v0, Ljava/lang/RuntimeException;
+    instance-of v2, v0, Ljava/lang/Error;
 
-    invoke-direct {v0, p0}, Ljava/lang/RuntimeException;-><init>(Ljava/lang/Throwable;)V
+    if-eqz v2, :cond_30
 
-    throw v0
+    .line 139
+    move-object v2, v0
 
-    .line 134
-    :cond_2d
-    check-cast v0, Ljava/lang/RuntimeException;
+    check-cast v2, Ljava/lang/Error;
 
-    throw v0
+    throw v2
+
+    .line 141
+    :cond_30
+    new-instance v2, Ljava/lang/RuntimeException;
+
+    invoke-direct {v2, v1}, Ljava/lang/RuntimeException;-><init>(Ljava/lang/Throwable;)V
+
+    throw v2
+
+    .line 137
+    :cond_36
+    move-object v2, v0
+
+    check-cast v2, Ljava/lang/RuntimeException;
+
+    throw v2
 .end method
 
 .method public static isAvailable()Z
-    .registers 1
+    .registers 2
 
-    .line 149
+    .line 154
     sget-object v0, Lcom/android/server/display/ExtendedRemoteDisplayHelper;->sExtRemoteDisplayClass:Ljava/lang/Class;
 
-    if-eqz v0, :cond_e
+    const-string v1, "ExtendedRemoteDisplayHelper"
+
+    if-eqz v0, :cond_15
 
     sget-object v0, Lcom/android/server/display/ExtendedRemoteDisplayHelper;->sExtRemoteDisplayDispose:Ljava/lang/reflect/Method;
 
-    if-eqz v0, :cond_e
+    if-eqz v0, :cond_15
 
     sget-object v0, Lcom/android/server/display/ExtendedRemoteDisplayHelper;->sExtRemoteDisplayListen:Ljava/lang/reflect/Method;
 
-    if-eqz v0, :cond_e
+    if-eqz v0, :cond_15
 
+    .line 157
+    const-string v0, "ExtendedRemoteDisplay isAvailable() : Available."
+
+    invoke-static {v1, v0}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
+
+    .line 158
     const/4 v0, 0x1
 
-    goto :goto_f
+    return v0
 
-    :cond_e
+    .line 160
+    :cond_15
+    const-string v0, "ExtendedRemoteDisplay isAvailable() : Not Available."
+
+    invoke-static {v1, v0}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
+
+    .line 161
     const/4 v0, 0x0
 
-    :goto_f
     return v0
 .end method
 
 .method public static listen(Ljava/lang/String;Landroid/media/RemoteDisplay$Listener;Landroid/os/Handler;Landroid/content/Context;)Ljava/lang/Object;
-    .registers 9
+    .registers 10
+    .param p0, "iface"  # Ljava/lang/String;
+    .param p1, "listener"  # Landroid/media/RemoteDisplay$Listener;
+    .param p2, "handler"  # Landroid/os/Handler;
+    .param p3, "context"  # Landroid/content/Context;
 
-    .line 99
-    const-string v0, "ExtendedRemoteDisplayHelper"
+    .line 101
+    const/4 v0, 0x0
 
     .line 102
-    sget-object v1, Lcom/android/server/display/ExtendedRemoteDisplayHelper;->sExtRemoteDisplayListen:Ljava/lang/reflect/Method;
+    .local v0, "extRemoteDisplay":Ljava/lang/Object;
+    const-string v1, "ExtendedRemoteDisplayHelper"
 
-    const/4 v2, 0x0
+    const-string v2, "ExtendedRemoteDisplay.listen"
 
-    if-eqz v1, :cond_44
+    invoke-static {v1, v2}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
+
+    .line 104
+    sget-object v2, Lcom/android/server/display/ExtendedRemoteDisplayHelper;->sExtRemoteDisplayListen:Ljava/lang/reflect/Method;
+
+    if-eqz v2, :cond_50
 
     sget-object v3, Lcom/android/server/display/ExtendedRemoteDisplayHelper;->sExtRemoteDisplayDispose:Ljava/lang/reflect/Method;
 
-    if-eqz v3, :cond_44
-
-    .line 104
-    const/4 v3, 0x4
-
-    :try_start_c
-    new-array v3, v3, [Ljava/lang/Object;
-
-    const/4 v4, 0x0
-
-    aput-object p0, v3, v4
-
-    const/4 p0, 0x1
-
-    aput-object p1, v3, p0
-
-    const/4 p0, 0x2
-
-    aput-object p2, v3, p0
-
-    const/4 p0, 0x3
-
-    aput-object p3, v3, p0
-
-    invoke-virtual {v1, v2, v3}, Ljava/lang/reflect/Method;->invoke(Ljava/lang/Object;[Ljava/lang/Object;)Ljava/lang/Object;
-
-    move-result-object v2
-    :try_end_1e
-    .catch Ljava/lang/reflect/InvocationTargetException; {:try_start_c .. :try_end_1e} :catch_26
-    .catch Ljava/lang/IllegalAccessException; {:try_start_c .. :try_end_1e} :catch_1f
-
-    .line 118
-    goto :goto_44
-
-    .line 116
-    :catch_1f
-    move-exception p0
-
-    .line 117
-    const-string p1, "ExtendedRemoteDisplay.listen: IllegalAccessException"
-
-    invoke-static {v0, p1, p0}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
-
-    goto :goto_44
+    if-eqz v3, :cond_50
 
     .line 106
+    const/4 v3, 0x0
+
+    const/4 v4, 0x4
+
+    :try_start_12
+    new-array v4, v4, [Ljava/lang/Object;
+
+    const/4 v5, 0x0
+
+    aput-object p0, v4, v5
+
+    const/4 v5, 0x1
+
+    aput-object p1, v4, v5
+
+    const/4 v5, 0x2
+
+    aput-object p2, v4, v5
+
+    const/4 v5, 0x3
+
+    aput-object p3, v4, v5
+
+    invoke-virtual {v2, v3, v4}, Ljava/lang/reflect/Method;->invoke(Ljava/lang/Object;[Ljava/lang/Object;)Ljava/lang/Object;
+
+    move-result-object v1
+    :try_end_24
+    .catch Ljava/lang/reflect/InvocationTargetException; {:try_start_12 .. :try_end_24} :catch_30
+    .catch Ljava/lang/IllegalAccessException; {:try_start_12 .. :try_end_24} :catch_26
+
+    move-object v0, v1
+
+    .line 121
+    goto :goto_50
+
+    .line 118
     :catch_26
-    move-exception p0
+    move-exception v2
 
-    .line 107
-    const-string p1, "ExtendedRemoteDisplay.listen: InvocationTargetException"
+    .line 119
+    .local v2, "e":Ljava/lang/IllegalAccessException;
+    const-string v3, "ExtendedRemoteDisplay.listen -IllegalAccessException"
 
-    invoke-static {v0, p1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
-
-    .line 108
-    invoke-virtual {p0}, Ljava/lang/reflect/InvocationTargetException;->getCause()Ljava/lang/Throwable;
-
-    move-result-object p1
-
-    .line 109
-    instance-of p2, p1, Ljava/lang/RuntimeException;
-
-    if-nez p2, :cond_41
-
-    .line 111
-    instance-of p2, p1, Ljava/lang/Error;
-
-    if-eqz p2, :cond_3b
-
-    .line 112
-    check-cast p1, Ljava/lang/Error;
-
-    throw p1
-
-    .line 114
-    :cond_3b
-    new-instance p1, Ljava/lang/RuntimeException;
-
-    invoke-direct {p1, p0}, Ljava/lang/RuntimeException;-><init>(Ljava/lang/Throwable;)V
-
-    throw p1
-
-    .line 110
-    :cond_41
-    check-cast p1, Ljava/lang/RuntimeException;
-
-    throw p1
+    invoke-static {v1, v3}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 120
-    :cond_44
-    :goto_44
-    return-object v2
+    invoke-virtual {v2}, Ljava/lang/IllegalAccessException;->printStackTrace()V
+
+    goto :goto_50
+
+    .line 108
+    .end local v2  # "e":Ljava/lang/IllegalAccessException;
+    :catch_30
+    move-exception v2
+
+    .line 109
+    .local v2, "e":Ljava/lang/reflect/InvocationTargetException;
+    const-string v3, "ExtendedRemoteDisplay.listen - InvocationTargetException"
+
+    invoke-static {v1, v3}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
+
+    .line 110
+    invoke-virtual {v2}, Ljava/lang/reflect/InvocationTargetException;->getCause()Ljava/lang/Throwable;
+
+    move-result-object v1
+
+    .line 111
+    .local v1, "cause":Ljava/lang/Throwable;
+    instance-of v3, v1, Ljava/lang/RuntimeException;
+
+    if-nez v3, :cond_4c
+
+    .line 113
+    instance-of v3, v1, Ljava/lang/Error;
+
+    if-eqz v3, :cond_46
+
+    .line 114
+    move-object v3, v1
+
+    check-cast v3, Ljava/lang/Error;
+
+    throw v3
+
+    .line 116
+    :cond_46
+    new-instance v3, Ljava/lang/RuntimeException;
+
+    invoke-direct {v3, v2}, Ljava/lang/RuntimeException;-><init>(Ljava/lang/Throwable;)V
+
+    throw v3
+
+    .line 112
+    :cond_4c
+    move-object v3, v1
+
+    check-cast v3, Ljava/lang/RuntimeException;
+
+    throw v3
+
+    .line 123
+    .end local v1  # "cause":Ljava/lang/Throwable;
+    .end local v2  # "e":Ljava/lang/reflect/InvocationTargetException;
+    :cond_50
+    :goto_50
+    return-object v0
 .end method

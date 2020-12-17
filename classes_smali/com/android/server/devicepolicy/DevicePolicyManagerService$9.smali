@@ -30,8 +30,9 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/devicepolicy/DevicePolicyManagerService;Ljava/util/List;ILjava/lang/String;)V
     .registers 5
+    .param p1, "this$0"  # Lcom/android/server/devicepolicy/DevicePolicyManagerService;
 
-    .line 12859
+    .line 12837
     iput-object p1, p0, Lcom/android/server/devicepolicy/DevicePolicyManagerService$9;->this$0:Lcom/android/server/devicepolicy/DevicePolicyManagerService;
 
     iput-object p2, p0, Lcom/android/server/devicepolicy/DevicePolicyManagerService$9;->val$packageActiveAdmins:Ljava/util/List;
@@ -50,7 +51,7 @@
 .method public run()V
     .registers 5
 
-    .line 12862
+    .line 12840
     iget-object v0, p0, Lcom/android/server/devicepolicy/DevicePolicyManagerService$9;->val$packageActiveAdmins:Ljava/util/List;
 
     invoke-interface {v0}, Ljava/util/List;->iterator()Ljava/util/Iterator;
@@ -70,17 +71,19 @@
 
     check-cast v1, Landroid/content/ComponentName;
 
-    .line 12863
+    .line 12841
+    .local v1, "activeAdmin":Landroid/content/ComponentName;
     iget-object v2, p0, Lcom/android/server/devicepolicy/DevicePolicyManagerService$9;->this$0:Lcom/android/server/devicepolicy/DevicePolicyManagerService;
 
     iget v3, p0, Lcom/android/server/devicepolicy/DevicePolicyManagerService$9;->val$userId:I
 
     invoke-static {v2, v1, v3}, Lcom/android/server/devicepolicy/DevicePolicyManagerService;->access$1900(Lcom/android/server/devicepolicy/DevicePolicyManagerService;Landroid/content/ComponentName;I)V
 
-    .line 12864
+    .line 12842
+    .end local v1  # "activeAdmin":Landroid/content/ComponentName;
     goto :goto_6
 
-    .line 12865
+    .line 12843
     :cond_1a
     iget-object v0, p0, Lcom/android/server/devicepolicy/DevicePolicyManagerService$9;->this$0:Lcom/android/server/devicepolicy/DevicePolicyManagerService;
 
@@ -90,6 +93,6 @@
 
     invoke-static {v0, v1, v2}, Lcom/android/server/devicepolicy/DevicePolicyManagerService;->access$3500(Lcom/android/server/devicepolicy/DevicePolicyManagerService;Ljava/lang/String;I)V
 
-    .line 12866
+    .line 12844
     return-void
 .end method

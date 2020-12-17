@@ -33,10 +33,10 @@
 .method private constructor <init>()V
     .registers 2
 
-    .line 1166
+    .line 1065
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
-    .line 1171
+    .line 1070
     const/16 v0, 0x10
 
     new-array v0, v0, [F
@@ -48,8 +48,9 @@
 
 .method synthetic constructor <init>(Lcom/android/server/display/color/ColorDisplayService$1;)V
     .registers 2
+    .param p1, "x0"  # Lcom/android/server/display/color/ColorDisplayService$1;
 
-    .line 1166
+    .line 1065
     invoke-direct {p0}, Lcom/android/server/display/color/ColorDisplayService$ColorMatrixEvaluator;-><init>()V
 
     return-void
@@ -60,7 +61,7 @@
 .method public bridge synthetic evaluate(FLjava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
     .registers 4
 
-    .line 1166
+    .line 1065
     check-cast p2, [F
 
     check-cast p3, [F
@@ -74,10 +75,14 @@
 
 .method public evaluate(F[F[F)[F
     .registers 8
+    .param p1, "fraction"  # F
+    .param p2, "startValue"  # [F
+    .param p3, "endValue"  # [F
 
-    .line 1175
+    .line 1074
     const/4 v0, 0x0
 
+    .local v0, "i":I
     :goto_1
     iget-object v1, p0, Lcom/android/server/display/color/ColorDisplayService$ColorMatrixEvaluator;->mResultMatrix:[F
 
@@ -85,7 +90,7 @@
 
     if-ge v0, v2, :cond_13
 
-    .line 1176
+    .line 1075
     aget v2, p2, v0
 
     aget v3, p3, v0
@@ -96,12 +101,13 @@
 
     aput v2, v1, v0
 
-    .line 1175
+    .line 1074
     add-int/lit8 v0, v0, 0x1
 
     goto :goto_1
 
-    .line 1178
+    .line 1077
+    .end local v0  # "i":I
     :cond_13
     return-object v1
 .end method

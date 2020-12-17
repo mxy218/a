@@ -24,8 +24,9 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/accessibility/AccessibilityManagerService;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/accessibility/AccessibilityManagerService;
 
-    .line 1817
+    .line 1827
     iput-object p1, p0, Lcom/android/server/accessibility/AccessibilityManagerService$3;->this$0:Lcom/android/server/accessibility/AccessibilityManagerService;
 
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -37,10 +38,12 @@
 # virtual methods
 .method public onClick(Landroid/content/DialogInterface;I)V
     .registers 3
+    .param p1, "dialog"  # Landroid/content/DialogInterface;
+    .param p2, "which"  # I
 
-    .line 1820
+    .line 1830
     invoke-interface {p1}, Landroid/content/DialogInterface;->dismiss()V
 
-    .line 1821
+    .line 1831
     return-void
 .end method

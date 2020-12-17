@@ -48,17 +48,17 @@
 .method private constructor <init>()V
     .registers 2
 
-    .line 3864
+    .line 3888
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
-    .line 3867
+    .line 3891
     new-instance v0, Ljava/util/ArrayList;
 
     invoke-direct {v0}, Ljava/util/ArrayList;-><init>()V
 
     iput-object v0, p0, Lcom/android/server/appwidget/AppWidgetServiceImpl$Provider;->widgets:Ljava/util/ArrayList;
 
-    .line 3876
+    .line 3900
     const/4 v0, -0x1
 
     iput v0, p0, Lcom/android/server/appwidget/AppWidgetServiceImpl$Provider;->tag:I
@@ -68,8 +68,9 @@
 
 .method synthetic constructor <init>(Lcom/android/server/appwidget/AppWidgetServiceImpl$1;)V
     .registers 2
+    .param p1, "x0"  # Lcom/android/server/appwidget/AppWidgetServiceImpl$1;
 
-    .line 3864
+    .line 3888
     invoke-direct {p0}, Lcom/android/server/appwidget/AppWidgetServiceImpl$Provider;-><init>()V
 
     return-void
@@ -80,7 +81,7 @@
 .method public getUserId()I
     .registers 2
 
-    .line 3879
+    .line 3903
     iget-object v0, p0, Lcom/android/server/appwidget/AppWidgetServiceImpl$Provider;->id:Lcom/android/server/appwidget/AppWidgetServiceImpl$ProviderId;
 
     iget v0, v0, Lcom/android/server/appwidget/AppWidgetServiceImpl$ProviderId;->uid:I
@@ -93,111 +94,120 @@
 .end method
 
 .method public hostedByPackageForUser(Ljava/lang/String;I)Z
-    .registers 8
+    .registers 7
+    .param p1, "packageName"  # Ljava/lang/String;
+    .param p2, "userId"  # I
 
-    .line 3889
+    .line 3913
     iget-object v0, p0, Lcom/android/server/appwidget/AppWidgetServiceImpl$Provider;->widgets:Ljava/util/ArrayList;
 
     invoke-virtual {v0}, Ljava/util/ArrayList;->size()I
 
     move-result v0
 
-    .line 3890
+    .line 3914
+    .local v0, "N":I
     const/4 v1, 0x0
 
-    move v2, v1
+    .local v1, "i":I
+    :goto_7
+    if-ge v1, v0, :cond_2a
 
-    :goto_8
-    if-ge v2, v0, :cond_2b
+    .line 3915
+    iget-object v2, p0, Lcom/android/server/appwidget/AppWidgetServiceImpl$Provider;->widgets:Ljava/util/ArrayList;
 
-    .line 3891
-    iget-object v3, p0, Lcom/android/server/appwidget/AppWidgetServiceImpl$Provider;->widgets:Ljava/util/ArrayList;
+    invoke-virtual {v2, v1}, Ljava/util/ArrayList;->get(I)Ljava/lang/Object;
 
-    invoke-virtual {v3, v2}, Ljava/util/ArrayList;->get(I)Ljava/lang/Object;
+    move-result-object v2
 
-    move-result-object v3
+    check-cast v2, Lcom/android/server/appwidget/AppWidgetServiceImpl$Widget;
 
-    check-cast v3, Lcom/android/server/appwidget/AppWidgetServiceImpl$Widget;
+    .line 3916
+    .local v2, "widget":Lcom/android/server/appwidget/AppWidgetServiceImpl$Widget;
+    iget-object v3, v2, Lcom/android/server/appwidget/AppWidgetServiceImpl$Widget;->host:Lcom/android/server/appwidget/AppWidgetServiceImpl$Host;
 
-    .line 3892
-    iget-object v4, v3, Lcom/android/server/appwidget/AppWidgetServiceImpl$Widget;->host:Lcom/android/server/appwidget/AppWidgetServiceImpl$Host;
+    iget-object v3, v3, Lcom/android/server/appwidget/AppWidgetServiceImpl$Host;->id:Lcom/android/server/appwidget/AppWidgetServiceImpl$HostId;
 
-    iget-object v4, v4, Lcom/android/server/appwidget/AppWidgetServiceImpl$Host;->id:Lcom/android/server/appwidget/AppWidgetServiceImpl$HostId;
+    iget-object v3, v3, Lcom/android/server/appwidget/AppWidgetServiceImpl$HostId;->packageName:Ljava/lang/String;
 
-    iget-object v4, v4, Lcom/android/server/appwidget/AppWidgetServiceImpl$HostId;->packageName:Ljava/lang/String;
+    invoke-virtual {p1, v3}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    invoke-virtual {p1, v4}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    move-result v3
 
-    move-result v4
+    if-eqz v3, :cond_27
 
-    if-eqz v4, :cond_28
+    iget-object v3, v2, Lcom/android/server/appwidget/AppWidgetServiceImpl$Widget;->host:Lcom/android/server/appwidget/AppWidgetServiceImpl$Host;
 
-    iget-object v3, v3, Lcom/android/server/appwidget/AppWidgetServiceImpl$Widget;->host:Lcom/android/server/appwidget/AppWidgetServiceImpl$Host;
-
-    .line 3893
+    .line 3917
     invoke-virtual {v3}, Lcom/android/server/appwidget/AppWidgetServiceImpl$Host;->getUserId()I
 
     move-result v3
 
-    if-ne v3, p2, :cond_28
+    if-ne v3, p2, :cond_27
 
-    .line 3894
-    const/4 p1, 0x1
+    .line 3918
+    const/4 v3, 0x1
 
-    return p1
+    return v3
 
-    .line 3890
-    :cond_28
-    add-int/lit8 v2, v2, 0x1
+    .line 3914
+    .end local v2  # "widget":Lcom/android/server/appwidget/AppWidgetServiceImpl$Widget;
+    :cond_27
+    add-int/lit8 v1, v1, 0x1
 
-    goto :goto_8
+    goto :goto_7
 
-    .line 3897
-    :cond_2b
+    .line 3921
+    .end local v1  # "i":I
+    :cond_2a
+    const/4 v1, 0x0
+
     return v1
 .end method
 
 .method public isInPackageForUser(Ljava/lang/String;I)Z
     .registers 4
+    .param p1, "packageName"  # Ljava/lang/String;
+    .param p2, "userId"  # I
 
-    .line 3883
+    .line 3907
     invoke-virtual {p0}, Lcom/android/server/appwidget/AppWidgetServiceImpl$Provider;->getUserId()I
 
     move-result v0
 
     if-ne v0, p2, :cond_16
 
-    iget-object p2, p0, Lcom/android/server/appwidget/AppWidgetServiceImpl$Provider;->id:Lcom/android/server/appwidget/AppWidgetServiceImpl$ProviderId;
+    iget-object v0, p0, Lcom/android/server/appwidget/AppWidgetServiceImpl$Provider;->id:Lcom/android/server/appwidget/AppWidgetServiceImpl$ProviderId;
 
-    iget-object p2, p2, Lcom/android/server/appwidget/AppWidgetServiceImpl$ProviderId;->componentName:Landroid/content/ComponentName;
+    iget-object v0, v0, Lcom/android/server/appwidget/AppWidgetServiceImpl$ProviderId;->componentName:Landroid/content/ComponentName;
 
-    .line 3884
-    invoke-virtual {p2}, Landroid/content/ComponentName;->getPackageName()Ljava/lang/String;
+    .line 3908
+    invoke-virtual {v0}, Landroid/content/ComponentName;->getPackageName()Ljava/lang/String;
 
-    move-result-object p2
+    move-result-object v0
 
-    invoke-virtual {p2, p1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v0, p1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result p1
+    move-result v0
 
-    if-eqz p1, :cond_16
+    if-eqz v0, :cond_16
 
-    const/4 p1, 0x1
+    const/4 v0, 0x1
 
     goto :goto_17
 
     :cond_16
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    .line 3883
+    .line 3907
     :goto_17
-    return p1
+    return v0
 .end method
 
 .method public isMaskedLocked()Z
     .registers 2
 
-    .line 3927
+    .line 3951
     iget-boolean v0, p0, Lcom/android/server/appwidget/AppWidgetServiceImpl$Provider;->maskedByQuietProfile:Z
 
     if-nez v0, :cond_f
@@ -226,78 +236,84 @@
 .end method
 
 .method public setMaskedByLockedProfileLocked(Z)Z
-    .registers 3
+    .registers 4
+    .param p1, "masked"  # Z
 
-    .line 3914
+    .line 3938
     iget-boolean v0, p0, Lcom/android/server/appwidget/AppWidgetServiceImpl$Provider;->maskedByLockedProfile:Z
 
-    .line 3915
+    .line 3939
+    .local v0, "oldState":Z
     iput-boolean p1, p0, Lcom/android/server/appwidget/AppWidgetServiceImpl$Provider;->maskedByLockedProfile:Z
 
-    .line 3916
+    .line 3940
     if-eq p1, v0, :cond_8
 
-    const/4 p1, 0x1
+    const/4 v1, 0x1
 
     goto :goto_9
 
     :cond_8
-    const/4 p1, 0x0
+    const/4 v1, 0x0
 
     :goto_9
-    return p1
+    return v1
 .end method
 
 .method public setMaskedByQuietProfileLocked(Z)Z
-    .registers 3
+    .registers 4
+    .param p1, "masked"  # Z
 
-    .line 3907
+    .line 3931
     iget-boolean v0, p0, Lcom/android/server/appwidget/AppWidgetServiceImpl$Provider;->maskedByQuietProfile:Z
 
-    .line 3908
+    .line 3932
+    .local v0, "oldState":Z
     iput-boolean p1, p0, Lcom/android/server/appwidget/AppWidgetServiceImpl$Provider;->maskedByQuietProfile:Z
 
-    .line 3909
+    .line 3933
     if-eq p1, v0, :cond_8
 
-    const/4 p1, 0x1
+    const/4 v1, 0x1
 
     goto :goto_9
 
     :cond_8
-    const/4 p1, 0x0
+    const/4 v1, 0x0
 
     :goto_9
-    return p1
+    return v1
 .end method
 
 .method public setMaskedBySuspendedPackageLocked(Z)Z
-    .registers 3
+    .registers 4
+    .param p1, "masked"  # Z
 
-    .line 3921
+    .line 3945
     iget-boolean v0, p0, Lcom/android/server/appwidget/AppWidgetServiceImpl$Provider;->maskedBySuspendedPackage:Z
 
-    .line 3922
+    .line 3946
+    .local v0, "oldState":Z
     iput-boolean p1, p0, Lcom/android/server/appwidget/AppWidgetServiceImpl$Provider;->maskedBySuspendedPackage:Z
 
-    .line 3923
+    .line 3947
     if-eq p1, v0, :cond_8
 
-    const/4 p1, 0x1
+    const/4 v1, 0x1
 
     goto :goto_9
 
     :cond_8
-    const/4 p1, 0x0
+    const/4 v1, 0x0
 
     :goto_9
-    return p1
+    return v1
 .end method
 
 .method public shouldBePersisted()Z
     .registers 2
 
-    .line 3931
+    .line 3955
     iget-object v0, p0, Lcom/android/server/appwidget/AppWidgetServiceImpl$Provider;->widgets:Ljava/util/ArrayList;
 
     invoke-virtual {v0}, Ljava/util/ArrayList;->isEmpty()Z
@@ -332,7 +348,7 @@
 .method public toString()Ljava/lang/String;
     .registers 3
 
-    .line 3902
+    .line 3926
     new-instance v0, Ljava/lang/StringBuilder;
 
     invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V

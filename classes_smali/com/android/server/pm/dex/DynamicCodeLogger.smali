@@ -24,6 +24,8 @@
 # direct methods
 .method constructor <init>(Landroid/content/pm/IPackageManager;Lcom/android/server/pm/Installer;)V
     .registers 4
+    .param p1, "pms"  # Landroid/content/pm/IPackageManager;
+    .param p2, "installer"  # Lcom/android/server/pm/Installer;
 
     .line 65
     new-instance v0, Lcom/android/server/pm/dex/PackageDynamicCodeLoading;
@@ -38,6 +40,9 @@
 
 .method constructor <init>(Landroid/content/pm/IPackageManager;Lcom/android/server/pm/Installer;Lcom/android/server/pm/dex/PackageDynamicCodeLoading;)V
     .registers 4
+    .param p1, "pms"  # Landroid/content/pm/IPackageManager;
+    .param p2, "installer"  # Lcom/android/server/pm/Installer;
+    .param p3, "packageDynamicCodeLoading"  # Lcom/android/server/pm/dex/PackageDynamicCodeLoading;
     .annotation build Lcom/android/internal/annotations/VisibleForTesting;
     .end annotation
 
@@ -58,7 +63,9 @@
 .end method
 
 .method private fileIsUnder(Ljava/lang/String;Ljava/lang/String;)Z
-    .registers 5
+    .registers 6
+    .param p1, "filePath"  # Ljava/lang/String;
+    .param p2, "directoryPath"  # Ljava/lang/String;
 
     .line 188
     const/4 v0, 0x0
@@ -77,31 +84,32 @@
 
     invoke-virtual {v1}, Ljava/io/File;->getCanonicalPath()Ljava/lang/String;
 
-    move-result-object p2
+    move-result-object v1
 
-    new-instance v1, Ljava/io/File;
+    new-instance v2, Ljava/io/File;
 
-    invoke-direct {v1, p1}, Ljava/io/File;-><init>(Ljava/lang/String;)V
+    invoke-direct {v2, p1}, Ljava/io/File;-><init>(Ljava/lang/String;)V
 
     .line 194
-    invoke-virtual {v1}, Ljava/io/File;->getCanonicalPath()Ljava/lang/String;
+    invoke-virtual {v2}, Ljava/io/File;->getCanonicalPath()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v2
 
     .line 193
-    invoke-static {p2, p1}, Landroid/os/FileUtils;->contains(Ljava/lang/String;Ljava/lang/String;)Z
+    invoke-static {v1, v2}, Landroid/os/FileUtils;->contains(Ljava/lang/String;Ljava/lang/String;)Z
 
-    move-result p1
+    move-result v0
     :try_end_1a
     .catch Ljava/io/IOException; {:try_start_4 .. :try_end_1a} :catch_1b
 
-    return p1
+    return v0
 
     .line 195
     :catch_1b
-    move-exception p1
+    move-exception v1
 
     .line 196
+    .local v1, "e":Ljava/io/IOException;
     return v0
 .end method
 
@@ -142,6 +150,7 @@
 
 .method getPackageDynamicCodeInfo(Ljava/lang/String;)Lcom/android/server/pm/dex/PackageDynamicCodeLoading$PackageDynamicCode;
     .registers 3
+    .param p1, "packageName"  # Ljava/lang/String;
     .annotation build Lcom/android/internal/annotations/VisibleForTesting;
     .end annotation
 
@@ -150,13 +159,14 @@
 
     invoke-virtual {v0, p1}, Lcom/android/server/pm/dex/PackageDynamicCodeLoading;->getPackageDynamicCodeInfo(Ljava/lang/String;)Lcom/android/server/pm/dex/PackageDynamicCodeLoading$PackageDynamicCode;
 
-    move-result-object p1
+    move-result-object v0
 
-    return-object p1
+    return-object v0
 .end method
 
 .method public logDynamicCodeLoading(Ljava/lang/String;)V
-    .registers 21
+    .registers 25
+    .param p1, "packageName"  # Ljava/lang/String;
 
     .line 84
     move-object/from16 v1, p0
@@ -165,136 +175,162 @@
 
     invoke-virtual/range {p0 .. p1}, Lcom/android/server/pm/dex/DynamicCodeLogger;->getPackageDynamicCodeInfo(Ljava/lang/String;)Lcom/android/server/pm/dex/PackageDynamicCodeLoading$PackageDynamicCode;
 
-    move-result-object v0
+    move-result-object v9
 
     .line 85
-    if-nez v0, :cond_b
+    .local v9, "info":Lcom/android/server/pm/dex/PackageDynamicCodeLoading$PackageDynamicCode;
+    if-nez v9, :cond_b
 
     .line 86
     return-void
 
     .line 89
     :cond_b
-    new-instance v9, Landroid/util/SparseArray;
+    new-instance v0, Landroid/util/SparseArray;
 
-    invoke-direct {v9}, Landroid/util/SparseArray;-><init>()V
+    invoke-direct {v0}, Landroid/util/SparseArray;-><init>()V
+
+    move-object v10, v0
 
     .line 90
-    nop
+    .local v10, "appInfoByUser":Landroid/util/SparseArray;, "Landroid/util/SparseArray<Landroid/content/pm/ApplicationInfo;>;"
+    const/4 v0, 0x0
 
     .line 92
-    iget-object v0, v0, Lcom/android/server/pm/dex/PackageDynamicCodeLoading$PackageDynamicCode;->mFileUsageMap:Ljava/util/Map;
+    .local v0, "needWrite":Z
+    iget-object v2, v9, Lcom/android/server/pm/dex/PackageDynamicCodeLoading$PackageDynamicCode;->mFileUsageMap:Ljava/util/Map;
 
-    invoke-interface {v0}, Ljava/util/Map;->entrySet()Ljava/util/Set;
+    invoke-interface {v2}, Ljava/util/Map;->entrySet()Ljava/util/Set;
 
-    move-result-object v0
+    move-result-object v2
 
-    invoke-interface {v0}, Ljava/util/Set;->iterator()Ljava/util/Iterator;
+    invoke-interface {v2}, Ljava/util/Set;->iterator()Ljava/util/Iterator;
 
-    move-result-object v10
+    move-result-object v11
 
-    const/4 v11, 0x0
+    move v2, v0
 
-    move v2, v11
-
+    .end local v0  # "needWrite":Z
+    .local v2, "needWrite":Z
     :goto_1d
-    invoke-interface {v10}, Ljava/util/Iterator;->hasNext()Z
+    invoke-interface {v11}, Ljava/util/Iterator;->hasNext()Z
 
     move-result v0
 
-    if-eqz v0, :cond_191
+    if-eqz v0, :cond_1b7
 
-    invoke-interface {v10}, Ljava/util/Iterator;->next()Ljava/lang/Object;
+    invoke-interface {v11}, Ljava/util/Iterator;->next()Ljava/lang/Object;
 
     move-result-object v0
 
-    check-cast v0, Ljava/util/Map$Entry;
+    move-object v12, v0
+
+    check-cast v12, Ljava/util/Map$Entry;
 
     .line 93
-    invoke-interface {v0}, Ljava/util/Map$Entry;->getKey()Ljava/lang/Object;
-
-    move-result-object v3
-
-    move-object v12, v3
-
-    check-cast v12, Ljava/lang/String;
-
-    .line 94
-    invoke-interface {v0}, Ljava/util/Map$Entry;->getValue()Ljava/lang/Object;
+    .local v12, "fileEntry":Ljava/util/Map$Entry;, "Ljava/util/Map$Entry<Ljava/lang/String;Lcom/android/server/pm/dex/PackageDynamicCodeLoading$DynamicCodeFile;>;"
+    invoke-interface {v12}, Ljava/util/Map$Entry;->getKey()Ljava/lang/Object;
 
     move-result-object v0
 
     move-object v13, v0
 
-    check-cast v13, Lcom/android/server/pm/dex/PackageDynamicCodeLoading$DynamicCodeFile;
+    check-cast v13, Ljava/lang/String;
+
+    .line 94
+    .local v13, "filePath":Ljava/lang/String;
+    invoke-interface {v12}, Ljava/util/Map$Entry;->getValue()Ljava/lang/Object;
+
+    move-result-object v0
+
+    move-object v14, v0
+
+    check-cast v14, Lcom/android/server/pm/dex/PackageDynamicCodeLoading$DynamicCodeFile;
 
     .line 95
-    iget v14, v13, Lcom/android/server/pm/dex/PackageDynamicCodeLoading$DynamicCodeFile;->mUserId:I
+    .local v14, "fileInfo":Lcom/android/server/pm/dex/PackageDynamicCodeLoading$DynamicCodeFile;
+    iget v15, v14, Lcom/android/server/pm/dex/PackageDynamicCodeLoading$DynamicCodeFile;->mUserId:I
 
     .line 97
-    invoke-virtual {v9, v14}, Landroid/util/SparseArray;->indexOfKey(I)I
+    .local v15, "userId":I
+    invoke-virtual {v10, v15}, Landroid/util/SparseArray;->indexOfKey(I)I
 
-    move-result v0
+    move-result v16
 
     .line 99
-    const-string v7, "DynamicCodeLogger"
+    .local v16, "index":I
+    const/4 v7, 0x0
 
-    if-ltz v0, :cond_4b
+    const-string v6, "DynamicCodeLogger"
+
+    if-ltz v16, :cond_4d
 
     .line 100
-    invoke-virtual {v9, v14}, Landroid/util/SparseArray;->get(I)Ljava/lang/Object;
+    invoke-virtual {v10, v15}, Landroid/util/SparseArray;->get(I)Ljava/lang/Object;
 
     move-result-object v0
 
     check-cast v0, Landroid/content/pm/ApplicationInfo;
 
-    move-object v6, v0
+    move-object v5, v0
 
-    move/from16 v16, v2
+    move/from16 v17, v2
 
-    goto :goto_8a
+    .local v0, "appInfo":Landroid/content/pm/ApplicationInfo;
+    goto :goto_8d
 
     .line 102
-    :cond_4b
-    nop
+    .end local v0  # "appInfo":Landroid/content/pm/ApplicationInfo;
+    :cond_4d
+    const/4 v3, 0x0
 
     .line 105
-    :try_start_4c
+    .local v3, "appInfo":Landroid/content/pm/ApplicationInfo;
+    :try_start_4e
     iget-object v0, v1, Lcom/android/server/pm/dex/DynamicCodeLogger;->mPackageManager:Landroid/content/pm/IPackageManager;
 
     .line 106
-    invoke-interface {v0, v8, v11, v14}, Landroid/content/pm/IPackageManager;->getPackageInfo(Ljava/lang/String;II)Landroid/content/pm/PackageInfo;
+    invoke-interface {v0, v8, v7, v15}, Landroid/content/pm/IPackageManager;->getPackageInfo(Ljava/lang/String;II)Landroid/content/pm/PackageInfo;
 
     move-result-object v0
 
     .line 107
-    if-nez v0, :cond_56
+    .local v0, "ownerInfo":Landroid/content/pm/PackageInfo;
+    if-nez v0, :cond_58
 
-    const/4 v0, 0x0
+    const/4 v4, 0x0
 
-    goto :goto_58
+    goto :goto_5a
 
-    :cond_56
-    iget-object v0, v0, Landroid/content/pm/PackageInfo;->applicationInfo:Landroid/content/pm/ApplicationInfo;
-    :try_end_58
-    .catch Landroid/os/RemoteException; {:try_start_4c .. :try_end_58} :catch_59
+    :cond_58
+    iget-object v4, v0, Landroid/content/pm/PackageInfo;->applicationInfo:Landroid/content/pm/ApplicationInfo;
+    :try_end_5a
+    .catch Landroid/os/RemoteException; {:try_start_4e .. :try_end_5a} :catch_5c
+
+    :goto_5a
+    move-object v0, v4
 
     .line 110
-    :goto_58
-    goto :goto_5b
+    .end local v3  # "appInfo":Landroid/content/pm/ApplicationInfo;
+    .local v0, "appInfo":Landroid/content/pm/ApplicationInfo;
+    goto :goto_5e
 
     .line 108
-    :catch_59
+    .end local v0  # "appInfo":Landroid/content/pm/ApplicationInfo;
+    .restart local v3  # "appInfo":Landroid/content/pm/ApplicationInfo;
+    :catch_5c
     move-exception v0
 
-    const/4 v0, 0x0
+    move-object v0, v3
 
     .line 111
-    :goto_5b
-    invoke-virtual {v9, v14, v0}, Landroid/util/SparseArray;->put(ILjava/lang/Object;)V
+    .end local v3  # "appInfo":Landroid/content/pm/ApplicationInfo;
+    .restart local v0  # "appInfo":Landroid/content/pm/ApplicationInfo;
+    :goto_5e
+    invoke-virtual {v10, v15, v0}, Landroid/util/SparseArray;->put(ILjava/lang/Object;)V
 
     .line 112
-    if-nez v0, :cond_87
+    if-nez v0, :cond_8a
 
     .line 113
     new-instance v3, Ljava/lang/StringBuilder;
@@ -311,125 +347,175 @@
 
     invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v3, v14}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v15}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
     invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
     move-result-object v3
 
-    invoke-static {v7, v3}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v6, v3}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 115
     iget-object v3, v1, Lcom/android/server/pm/dex/DynamicCodeLogger;->mPackageDynamicCodeLoading:Lcom/android/server/pm/dex/PackageDynamicCodeLoading;
 
-    invoke-virtual {v3, v8, v14}, Lcom/android/server/pm/dex/PackageDynamicCodeLoading;->removeUserPackage(Ljava/lang/String;I)Z
+    invoke-virtual {v3, v8, v15}, Lcom/android/server/pm/dex/PackageDynamicCodeLoading;->removeUserPackage(Ljava/lang/String;I)Z
 
     move-result v3
 
     or-int/2addr v2, v3
 
-    move-object v6, v0
+    move-object v5, v0
 
-    move/from16 v16, v2
+    move/from16 v17, v2
 
-    goto :goto_8a
+    goto :goto_8d
 
     .line 112
-    :cond_87
-    move-object v6, v0
+    :cond_8a
+    move-object v5, v0
 
-    move/from16 v16, v2
+    move/from16 v17, v2
 
     .line 119
-    :goto_8a
-    if-nez v6, :cond_8f
+    .end local v0  # "appInfo":Landroid/content/pm/ApplicationInfo;
+    .end local v2  # "needWrite":Z
+    .local v5, "appInfo":Landroid/content/pm/ApplicationInfo;
+    .local v17, "needWrite":Z
+    :goto_8d
+    if-nez v5, :cond_92
 
     .line 120
-    move/from16 v2, v16
+    move/from16 v2, v17
 
     goto :goto_1d
 
     .line 125
-    :cond_8f
-    iget-object v0, v6, Landroid/content/pm/ApplicationInfo;->credentialProtectedDataDir:Ljava/lang/String;
+    :cond_92
+    iget-object v0, v5, Landroid/content/pm/ApplicationInfo;->credentialProtectedDataDir:Ljava/lang/String;
 
-    invoke-direct {v1, v12, v0}, Lcom/android/server/pm/dex/DynamicCodeLogger;->fileIsUnder(Ljava/lang/String;Ljava/lang/String;)Z
+    invoke-direct {v1, v13, v0}, Lcom/android/server/pm/dex/DynamicCodeLogger;->fileIsUnder(Ljava/lang/String;Ljava/lang/String;)Z
 
     move-result v0
 
-    if-eqz v0, :cond_99
+    if-eqz v0, :cond_9e
 
     .line 126
     const/4 v0, 0x2
 
-    goto :goto_a2
+    move/from16 v18, v0
+
+    .local v0, "storageFlags":I
+    goto :goto_a9
 
     .line 127
-    :cond_99
-    iget-object v0, v6, Landroid/content/pm/ApplicationInfo;->deviceProtectedDataDir:Ljava/lang/String;
+    .end local v0  # "storageFlags":I
+    :cond_9e
+    iget-object v0, v5, Landroid/content/pm/ApplicationInfo;->deviceProtectedDataDir:Ljava/lang/String;
 
-    invoke-direct {v1, v12, v0}, Lcom/android/server/pm/dex/DynamicCodeLogger;->fileIsUnder(Ljava/lang/String;Ljava/lang/String;)Z
+    invoke-direct {v1, v13, v0}, Lcom/android/server/pm/dex/DynamicCodeLogger;->fileIsUnder(Ljava/lang/String;Ljava/lang/String;)Z
 
     move-result v0
 
-    if-eqz v0, :cond_16d
+    if-eqz v0, :cond_18d
 
     .line 128
     const/4 v0, 0x1
 
+    move/from16 v18, v0
+
     .line 135
-    :goto_a2
-    nop
+    .local v18, "storageFlags":I
+    :goto_a9
+    const/16 v19, 0x0
 
     .line 141
-    :try_start_a3
+    .local v19, "hash":[B
+    :try_start_ab
     iget-object v2, v1, Lcom/android/server/pm/dex/DynamicCodeLogger;->mInstaller:Lcom/android/server/pm/Installer;
 
-    iget v5, v6, Landroid/content/pm/ApplicationInfo;->uid:I
+    iget v0, v5, Landroid/content/pm/ApplicationInfo;->uid:I
 
-    iget-object v4, v6, Landroid/content/pm/ApplicationInfo;->volumeUuid:Ljava/lang/String;
-    :try_end_a9
-    .catch Lcom/android/server/pm/Installer$InstallerException; {:try_start_a3 .. :try_end_a9} :catch_ba
+    iget-object v4, v5, Landroid/content/pm/ApplicationInfo;->volumeUuid:Ljava/lang/String;
+    :try_end_b1
+    .catch Lcom/android/server/pm/Installer$InstallerException; {:try_start_ab .. :try_end_b1} :catch_cf
 
-    move-object v3, v12
+    move-object v3, v13
 
-    move-object/from16 v17, v4
+    move-object/from16 v20, v4
 
     move-object/from16 v4, p1
 
-    move-object v15, v6
+    move-object/from16 v21, v9
 
-    move-object/from16 v6, v17
+    move-object v9, v5
 
-    move-object v11, v7
+    .end local v5  # "appInfo":Landroid/content/pm/ApplicationInfo;
+    .local v9, "appInfo":Landroid/content/pm/ApplicationInfo;
+    .local v21, "info":Lcom/android/server/pm/dex/PackageDynamicCodeLoading$PackageDynamicCode;
+    move v5, v0
 
-    move v7, v0
+    move-object/from16 v22, v10
 
-    :try_start_b3
+    move-object v10, v6
+
+    .end local v10  # "appInfoByUser":Landroid/util/SparseArray;, "Landroid/util/SparseArray<Landroid/content/pm/ApplicationInfo;>;"
+    .local v22, "appInfoByUser":Landroid/util/SparseArray;, "Landroid/util/SparseArray<Landroid/content/pm/ApplicationInfo;>;"
+    move-object/from16 v6, v20
+
+    move-object/from16 v20, v11
+
+    move v11, v7
+
+    move/from16 v7, v18
+
+    :try_start_c4
     invoke-virtual/range {v2 .. v7}, Lcom/android/server/pm/Installer;->hashSecondaryDexFile(Ljava/lang/String;Ljava/lang/String;ILjava/lang/String;I)[B
 
     move-result-object v0
-    :try_end_b7
-    .catch Lcom/android/server/pm/Installer$InstallerException; {:try_start_b3 .. :try_end_b7} :catch_b8
+    :try_end_c8
+    .catch Lcom/android/server/pm/Installer$InstallerException; {:try_start_c4 .. :try_end_c8} :catch_cd
+
+    move-object/from16 v19, v0
 
     .line 146
-    goto :goto_de
+    move-object/from16 v2, v19
+
+    goto :goto_fb
 
     .line 143
-    :catch_b8
+    :catch_cd
     move-exception v0
 
-    goto :goto_bd
+    goto :goto_d9
 
-    :catch_ba
+    .end local v21  # "info":Lcom/android/server/pm/dex/PackageDynamicCodeLoading$PackageDynamicCode;
+    .end local v22  # "appInfoByUser":Landroid/util/SparseArray;, "Landroid/util/SparseArray<Landroid/content/pm/ApplicationInfo;>;"
+    .restart local v5  # "appInfo":Landroid/content/pm/ApplicationInfo;
+    .local v9, "info":Lcom/android/server/pm/dex/PackageDynamicCodeLoading$PackageDynamicCode;
+    .restart local v10  # "appInfoByUser":Landroid/util/SparseArray;, "Landroid/util/SparseArray<Landroid/content/pm/ApplicationInfo;>;"
+    :catch_cf
     move-exception v0
 
-    move-object v15, v6
+    move-object/from16 v21, v9
 
-    move-object v11, v7
+    move-object/from16 v22, v10
+
+    move-object/from16 v20, v11
+
+    move-object v9, v5
+
+    move-object v10, v6
+
+    move v11, v7
 
     .line 144
-    :goto_bd
+    .end local v5  # "appInfo":Landroid/content/pm/ApplicationInfo;
+    .end local v10  # "appInfoByUser":Landroid/util/SparseArray;, "Landroid/util/SparseArray<Landroid/content/pm/ApplicationInfo;>;"
+    .local v0, "e":Lcom/android/server/pm/Installer$InstallerException;
+    .local v9, "appInfo":Landroid/content/pm/ApplicationInfo;
+    .restart local v21  # "info":Lcom/android/server/pm/dex/PackageDynamicCodeLoading$PackageDynamicCode;
+    .restart local v22  # "appInfoByUser":Landroid/util/SparseArray;, "Landroid/util/SparseArray<Landroid/content/pm/ApplicationInfo;>;"
+    :goto_d9
     new-instance v2, Ljava/lang/StringBuilder;
 
     invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
@@ -438,7 +524,7 @@
 
     invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v2, v12}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v13}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     const-string v3, ": "
 
@@ -447,216 +533,253 @@
     .line 145
     invoke-virtual {v0}, Lcom/android/server/pm/Installer$InstallerException;->getMessage()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v3
 
-    invoke-virtual {v2, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v2
 
     .line 144
-    invoke-static {v11, v0}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v10, v2}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
 
-    const/4 v0, 0x0
+    move-object/from16 v2, v19
 
     .line 148
-    :goto_de
-    iget-char v2, v13, Lcom/android/server/pm/dex/PackageDynamicCodeLoading$DynamicCodeFile;->mFileType:C
+    .end local v0  # "e":Lcom/android/server/pm/Installer$InstallerException;
+    .end local v19  # "hash":[B
+    .local v2, "hash":[B
+    :goto_fb
+    iget-char v0, v14, Lcom/android/server/pm/dex/PackageDynamicCodeLoading$DynamicCodeFile;->mFileType:C
 
     const/16 v3, 0x44
 
-    if-ne v2, v3, :cond_e7
+    if-ne v0, v3, :cond_104
 
     .line 149
-    const-string v2, "dcl"
+    const-string v0, "dcl"
 
-    goto :goto_e9
+    goto :goto_106
 
     .line 150
-    :cond_e7
-    const-string v2, "dcln"
+    :cond_104
+    const-string v0, "dcln"
+
+    :goto_106
+    move-object v3, v0
 
     .line 151
-    :goto_e9
-    new-instance v3, Ljava/io/File;
+    .local v3, "subtag":Ljava/lang/String;
+    new-instance v0, Ljava/io/File;
 
-    invoke-direct {v3, v12}, Ljava/io/File;-><init>(Ljava/lang/String;)V
+    invoke-direct {v0, v13}, Ljava/io/File;-><init>(Ljava/lang/String;)V
 
-    invoke-virtual {v3}, Ljava/io/File;->getName()Ljava/lang/String;
-
-    move-result-object v3
-
-    .line 152
-    invoke-virtual {v3}, Ljava/lang/String;->getBytes()[B
-
-    move-result-object v3
-
-    invoke-static {v3}, Landroid/util/PackageUtils;->computeSha256Digest([B)Ljava/lang/String;
-
-    move-result-object v3
-
-    .line 155
-    if-eqz v0, :cond_118
-
-    array-length v4, v0
-
-    const/16 v5, 0x20
-
-    if-ne v4, v5, :cond_118
-
-    .line 156
-    new-instance v4, Ljava/lang/StringBuilder;
-
-    invoke-direct {v4}, Ljava/lang/StringBuilder;-><init>()V
-
-    invoke-virtual {v4, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(C)Ljava/lang/StringBuilder;
-
-    invoke-static {v0}, Landroid/util/ByteStringUtils;->toHexString([B)Ljava/lang/String;
-
-    move-result-object v0
-
-    invoke-virtual {v4, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v4}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
-
-    move-result-object v3
-
-    goto :goto_136
-
-    .line 158
-    :cond_118
-    new-instance v0, Ljava/lang/StringBuilder;
-
-    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
-
-    const-string v4, "Got no hash for "
-
-    invoke-virtual {v0, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v0, v12}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
-
-    move-result-object v0
-
-    invoke-static {v11, v0}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
-
-    .line 160
-    iget-object v0, v1, Lcom/android/server/pm/dex/DynamicCodeLogger;->mPackageDynamicCodeLoading:Lcom/android/server/pm/dex/PackageDynamicCodeLoading;
-
-    invoke-virtual {v0, v8, v12, v14}, Lcom/android/server/pm/dex/PackageDynamicCodeLoading;->removeFile(Ljava/lang/String;Ljava/lang/String;I)Z
-
-    move-result v0
-
-    or-int v0, v16, v0
-
-    move/from16 v16, v0
-
-    .line 163
-    :goto_136
-    iget-object v0, v13, Lcom/android/server/pm/dex/PackageDynamicCodeLoading$DynamicCodeFile;->mLoadingPackages:Ljava/util/Set;
-
-    invoke-interface {v0}, Ljava/util/Set;->iterator()Ljava/util/Iterator;
+    invoke-virtual {v0}, Ljava/io/File;->getName()Ljava/lang/String;
 
     move-result-object v4
 
-    :goto_13c
-    invoke-interface {v4}, Ljava/util/Iterator;->hasNext()Z
-
-    move-result v0
-
-    if-eqz v0, :cond_167
-
-    invoke-interface {v4}, Ljava/util/Iterator;->next()Ljava/lang/Object;
+    .line 152
+    .local v4, "fileName":Ljava/lang/String;
+    invoke-virtual {v4}, Ljava/lang/String;->getBytes()[B
 
     move-result-object v0
 
-    check-cast v0, Ljava/lang/String;
+    invoke-static {v0}, Landroid/util/PackageUtils;->computeSha256Digest([B)Ljava/lang/String;
 
-    .line 164
-    nop
+    move-result-object v0
 
-    .line 165
-    invoke-virtual {v0, v8}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    .line 155
+    .local v0, "message":Ljava/lang/String;
+    if-eqz v2, :cond_137
+
+    array-length v5, v2
+
+    const/16 v6, 0x20
+
+    if-ne v5, v6, :cond_137
+
+    .line 156
+    new-instance v5, Ljava/lang/StringBuilder;
+
+    invoke-direct {v5}, Ljava/lang/StringBuilder;-><init>()V
+
+    invoke-virtual {v5, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(C)Ljava/lang/StringBuilder;
+
+    invoke-static {v2}, Landroid/util/ByteStringUtils;->toHexString([B)Ljava/lang/String;
+
+    move-result-object v6
+
+    invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v5}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v0
+
+    move-object v5, v0
+
+    goto :goto_156
+
+    .line 158
+    :cond_137
+    new-instance v5, Ljava/lang/StringBuilder;
+
+    invoke-direct {v5}, Ljava/lang/StringBuilder;-><init>()V
+
+    const-string v6, "Got no hash for "
+
+    invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v5, v13}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v5}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v5
+
+    invoke-static {v10, v5}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
+
+    .line 160
+    iget-object v5, v1, Lcom/android/server/pm/dex/DynamicCodeLogger;->mPackageDynamicCodeLoading:Lcom/android/server/pm/dex/PackageDynamicCodeLoading;
+
+    invoke-virtual {v5, v8, v13, v15}, Lcom/android/server/pm/dex/PackageDynamicCodeLoading;->removeFile(Ljava/lang/String;Ljava/lang/String;I)Z
 
     move-result v5
 
-    const/4 v6, -0x1
+    or-int v5, v17, v5
 
-    if-eqz v5, :cond_154
+    move/from16 v17, v5
 
-    .line 166
-    iget v0, v15, Landroid/content/pm/ApplicationInfo;->uid:I
+    move-object v5, v0
 
-    const/4 v7, 0x0
+    .line 163
+    .end local v0  # "message":Ljava/lang/String;
+    .local v5, "message":Ljava/lang/String;
+    :goto_156
+    iget-object v0, v14, Lcom/android/server/pm/dex/PackageDynamicCodeLoading$DynamicCodeFile;->mLoadingPackages:Ljava/util/Set;
 
-    goto :goto_161
+    invoke-interface {v0}, Ljava/util/Set;->iterator()Ljava/util/Iterator;
 
-    .line 169
-    :cond_154
-    :try_start_154
-    iget-object v5, v1, Lcom/android/server/pm/dex/DynamicCodeLogger;->mPackageManager:Landroid/content/pm/IPackageManager;
-    :try_end_156
-    .catch Landroid/os/RemoteException; {:try_start_154 .. :try_end_156} :catch_15e
+    move-result-object v6
 
-    const/4 v7, 0x0
-
-    :try_start_157
-    invoke-interface {v5, v0, v7, v14}, Landroid/content/pm/IPackageManager;->getPackageUid(Ljava/lang/String;II)I
+    :goto_15c
+    invoke-interface {v6}, Ljava/util/Iterator;->hasNext()Z
 
     move-result v0
-    :try_end_15b
-    .catch Landroid/os/RemoteException; {:try_start_157 .. :try_end_15b} :catch_15c
+
+    if-eqz v0, :cond_183
+
+    invoke-interface {v6}, Ljava/util/Iterator;->next()Ljava/lang/Object;
+
+    move-result-object v0
+
+    move-object v7, v0
+
+    check-cast v7, Ljava/lang/String;
+
+    .line 164
+    .local v7, "loadingPackageName":Ljava/lang/String;
+    const/4 v10, -0x1
+
+    .line 165
+    .local v10, "loadingUid":I
+    invoke-virtual {v7, v8}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+
+    move-result v0
+
+    if-eqz v0, :cond_173
+
+    .line 166
+    iget v10, v9, Landroid/content/pm/ApplicationInfo;->uid:I
+
+    goto :goto_17c
+
+    .line 169
+    :cond_173
+    :try_start_173
+    iget-object v0, v1, Lcom/android/server/pm/dex/DynamicCodeLogger;->mPackageManager:Landroid/content/pm/IPackageManager;
+
+    invoke-interface {v0, v7, v11, v15}, Landroid/content/pm/IPackageManager;->getPackageUid(Ljava/lang/String;II)I
+
+    move-result v0
+    :try_end_179
+    .catch Landroid/os/RemoteException; {:try_start_173 .. :try_end_179} :catch_17b
+
+    move v10, v0
 
     .line 173
-    goto :goto_161
+    goto :goto_17c
 
     .line 171
-    :catch_15c
+    :catch_17b
     move-exception v0
-
-    goto :goto_160
-
-    :catch_15e
-    move-exception v0
-
-    const/4 v7, 0x0
-
-    :goto_160
-    move v0, v6
 
     .line 176
-    :goto_161
-    if-eq v0, v6, :cond_166
+    :goto_17c
+    const/4 v0, -0x1
+
+    if-eq v10, v0, :cond_182
 
     .line 177
-    invoke-virtual {v1, v2, v0, v3}, Lcom/android/server/pm/dex/DynamicCodeLogger;->writeDclEvent(Ljava/lang/String;ILjava/lang/String;)V
+    invoke-virtual {v1, v3, v10, v5}, Lcom/android/server/pm/dex/DynamicCodeLogger;->writeDclEvent(Ljava/lang/String;ILjava/lang/String;)V
 
     .line 179
-    :cond_166
-    goto :goto_13c
+    .end local v7  # "loadingPackageName":Ljava/lang/String;
+    .end local v10  # "loadingUid":I
+    :cond_182
+    goto :goto_15c
 
     .line 180
-    :cond_167
-    const/4 v7, 0x0
+    .end local v2  # "hash":[B
+    .end local v3  # "subtag":Ljava/lang/String;
+    .end local v4  # "fileName":Ljava/lang/String;
+    .end local v5  # "message":Ljava/lang/String;
+    .end local v9  # "appInfo":Landroid/content/pm/ApplicationInfo;
+    .end local v12  # "fileEntry":Ljava/util/Map$Entry;, "Ljava/util/Map$Entry<Ljava/lang/String;Lcom/android/server/pm/dex/PackageDynamicCodeLoading$DynamicCodeFile;>;"
+    .end local v13  # "filePath":Ljava/lang/String;
+    .end local v14  # "fileInfo":Lcom/android/server/pm/dex/PackageDynamicCodeLoading$DynamicCodeFile;
+    .end local v15  # "userId":I
+    .end local v16  # "index":I
+    .end local v18  # "storageFlags":I
+    :cond_183
+    move/from16 v2, v17
 
-    move v11, v7
+    move-object/from16 v11, v20
 
-    move/from16 v2, v16
+    move-object/from16 v9, v21
+
+    move-object/from16 v10, v22
 
     goto/16 :goto_1d
 
     .line 130
-    :cond_16d
-    move/from16 v18, v11
+    .end local v21  # "info":Lcom/android/server/pm/dex/PackageDynamicCodeLoading$PackageDynamicCode;
+    .end local v22  # "appInfoByUser":Landroid/util/SparseArray;, "Landroid/util/SparseArray<Landroid/content/pm/ApplicationInfo;>;"
+    .local v5, "appInfo":Landroid/content/pm/ApplicationInfo;
+    .local v9, "info":Lcom/android/server/pm/dex/PackageDynamicCodeLoading$PackageDynamicCode;
+    .local v10, "appInfoByUser":Landroid/util/SparseArray;, "Landroid/util/SparseArray<Landroid/content/pm/ApplicationInfo;>;"
+    .restart local v12  # "fileEntry":Ljava/util/Map$Entry;, "Ljava/util/Map$Entry<Ljava/lang/String;Lcom/android/server/pm/dex/PackageDynamicCodeLoading$DynamicCodeFile;>;"
+    .restart local v13  # "filePath":Ljava/lang/String;
+    .restart local v14  # "fileInfo":Lcom/android/server/pm/dex/PackageDynamicCodeLoading$DynamicCodeFile;
+    .restart local v15  # "userId":I
+    .restart local v16  # "index":I
+    :cond_18d
+    move-object/from16 v21, v9
 
-    move-object v11, v7
+    move-object/from16 v22, v10
 
-    move/from16 v7, v18
+    move-object/from16 v20, v11
 
+    move-object v9, v5
+
+    move-object v10, v6
+
+    .end local v5  # "appInfo":Landroid/content/pm/ApplicationInfo;
+    .end local v10  # "appInfoByUser":Landroid/util/SparseArray;, "Landroid/util/SparseArray<Landroid/content/pm/ApplicationInfo;>;"
+    .local v9, "appInfo":Landroid/content/pm/ApplicationInfo;
+    .restart local v21  # "info":Lcom/android/server/pm/dex/PackageDynamicCodeLoading$PackageDynamicCode;
+    .restart local v22  # "appInfoByUser":Landroid/util/SparseArray;, "Landroid/util/SparseArray<Landroid/content/pm/ApplicationInfo;>;"
     new-instance v0, Ljava/lang/StringBuilder;
 
     invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
@@ -665,31 +788,52 @@
 
     invoke-virtual {v0, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0, v12}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v13}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
     move-result-object v0
 
-    invoke-static {v11, v0}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v10, v0}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 131
     iget-object v0, v1, Lcom/android/server/pm/dex/DynamicCodeLogger;->mPackageDynamicCodeLoading:Lcom/android/server/pm/dex/PackageDynamicCodeLoading;
 
-    invoke-virtual {v0, v8, v12, v14}, Lcom/android/server/pm/dex/PackageDynamicCodeLoading;->removeFile(Ljava/lang/String;Ljava/lang/String;I)Z
+    invoke-virtual {v0, v8, v13, v15}, Lcom/android/server/pm/dex/PackageDynamicCodeLoading;->removeFile(Ljava/lang/String;Ljava/lang/String;I)Z
 
     move-result v0
 
-    or-int v2, v16, v0
+    or-int v2, v17, v0
 
     .line 132
-    move v11, v7
+    .end local v17  # "needWrite":Z
+    .local v2, "needWrite":Z
+    move-object/from16 v9, v21
+
+    move-object/from16 v10, v22
 
     goto/16 :goto_1d
 
     .line 182
-    :cond_191
-    if-eqz v2, :cond_198
+    .end local v12  # "fileEntry":Ljava/util/Map$Entry;, "Ljava/util/Map$Entry<Ljava/lang/String;Lcom/android/server/pm/dex/PackageDynamicCodeLoading$DynamicCodeFile;>;"
+    .end local v13  # "filePath":Ljava/lang/String;
+    .end local v14  # "fileInfo":Lcom/android/server/pm/dex/PackageDynamicCodeLoading$DynamicCodeFile;
+    .end local v15  # "userId":I
+    .end local v16  # "index":I
+    .end local v21  # "info":Lcom/android/server/pm/dex/PackageDynamicCodeLoading$PackageDynamicCode;
+    .end local v22  # "appInfoByUser":Landroid/util/SparseArray;, "Landroid/util/SparseArray<Landroid/content/pm/ApplicationInfo;>;"
+    .local v9, "info":Lcom/android/server/pm/dex/PackageDynamicCodeLoading$PackageDynamicCode;
+    .restart local v10  # "appInfoByUser":Landroid/util/SparseArray;, "Landroid/util/SparseArray<Landroid/content/pm/ApplicationInfo;>;"
+    :cond_1b7
+    move-object/from16 v21, v9
+
+    move-object/from16 v22, v10
+
+    .end local v9  # "info":Lcom/android/server/pm/dex/PackageDynamicCodeLoading$PackageDynamicCode;
+    .end local v10  # "appInfoByUser":Landroid/util/SparseArray;, "Landroid/util/SparseArray<Landroid/content/pm/ApplicationInfo;>;"
+    .restart local v21  # "info":Lcom/android/server/pm/dex/PackageDynamicCodeLoading$PackageDynamicCode;
+    .restart local v22  # "appInfoByUser":Landroid/util/SparseArray;, "Landroid/util/SparseArray<Landroid/content/pm/ApplicationInfo;>;"
+    if-eqz v2, :cond_1c2
 
     .line 183
     iget-object v0, v1, Lcom/android/server/pm/dex/DynamicCodeLogger;->mPackageDynamicCodeLoading:Lcom/android/server/pm/dex/PackageDynamicCodeLoading;
@@ -697,7 +841,7 @@
     invoke-virtual {v0}, Lcom/android/server/pm/dex/PackageDynamicCodeLoading;->maybeWriteAsync()V
 
     .line 185
-    :cond_198
+    :cond_1c2
     return-void
 .end method
 
@@ -715,6 +859,7 @@
     .end annotation
 
     .line 260
+    .local p1, "packageToUsersMap":Ljava/util/Map;, "Ljava/util/Map<Ljava/lang/String;Ljava/util/Set<Ljava/lang/Integer;>;>;"
     iget-object v0, p0, Lcom/android/server/pm/dex/DynamicCodeLogger;->mPackageDynamicCodeLoading:Lcom/android/server/pm/dex/PackageDynamicCodeLoading;
 
     invoke-virtual {v0}, Lcom/android/server/pm/dex/PackageDynamicCodeLoading;->read()V
@@ -730,6 +875,10 @@
 
 .method recordDex(ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;)V
     .registers 11
+    .param p1, "loaderUserId"  # I
+    .param p2, "dexPath"  # Ljava/lang/String;
+    .param p3, "owningPackageName"  # Ljava/lang/String;
+    .param p4, "loadingPackageName"  # Ljava/lang/String;
 
     .line 212
     iget-object v0, p0, Lcom/android/server/pm/dex/DynamicCodeLogger;->mPackageDynamicCodeLoading:Lcom/android/server/pm/dex/PackageDynamicCodeLoading;
@@ -746,14 +895,14 @@
 
     invoke-virtual/range {v0 .. v5}, Lcom/android/server/pm/dex/PackageDynamicCodeLoading;->record(Ljava/lang/String;Ljava/lang/String;IILjava/lang/String;)Z
 
-    move-result p1
+    move-result v0
 
-    if-eqz p1, :cond_13
+    if-eqz v0, :cond_13
 
     .line 214
-    iget-object p1, p0, Lcom/android/server/pm/dex/DynamicCodeLogger;->mPackageDynamicCodeLoading:Lcom/android/server/pm/dex/PackageDynamicCodeLoading;
+    iget-object v0, p0, Lcom/android/server/pm/dex/DynamicCodeLogger;->mPackageDynamicCodeLoading:Lcom/android/server/pm/dex/PackageDynamicCodeLoading;
 
-    invoke-virtual {p1}, Lcom/android/server/pm/dex/PackageDynamicCodeLoading;->maybeWriteAsync()V
+    invoke-virtual {v0}, Lcom/android/server/pm/dex/PackageDynamicCodeLoading;->maybeWriteAsync()V
 
     .line 216
     :cond_13
@@ -761,7 +910,9 @@
 .end method
 
 .method public recordNative(ILjava/lang/String;)V
-    .registers 11
+    .registers 12
+    .param p1, "loadingUid"  # I
+    .param p2, "path"  # Ljava/lang/String;
 
     .line 225
     :try_start_0
@@ -772,15 +923,16 @@
     move-result-object v0
 
     .line 226
-    if-eqz v0, :cond_26
+    .local v0, "packages":[Ljava/lang/String;
+    if-eqz v0, :cond_28
 
     array-length v1, v0
     :try_end_9
-    .catch Landroid/os/RemoteException; {:try_start_0 .. :try_end_9} :catch_27
+    .catch Landroid/os/RemoteException; {:try_start_0 .. :try_end_9} :catch_29
 
     if-nez v1, :cond_c
 
-    goto :goto_26
+    goto :goto_28
 
     .line 232
     :cond_c
@@ -789,66 +941,77 @@
     .line 234
     const/4 v1, 0x0
 
-    aget-object v7, v0, v1
+    aget-object v1, v0, v1
 
     .line 235
+    .local v1, "loadingPackageName":Ljava/lang/String;
     invoke-static {p1}, Landroid/os/UserHandle;->getUserId(I)I
 
-    move-result v6
+    move-result v8
 
     .line 237
+    .local v8, "loadingUserId":I
     iget-object v2, p0, Lcom/android/server/pm/dex/DynamicCodeLogger;->mPackageDynamicCodeLoading:Lcom/android/server/pm/dex/PackageDynamicCodeLoading;
 
     const/16 v5, 0x4e
 
-    move-object v3, v7
+    move-object v3, v1
 
     move-object v4, p2
 
+    move v6, v8
+
+    move-object v7, v1
+
     invoke-virtual/range {v2 .. v7}, Lcom/android/server/pm/dex/PackageDynamicCodeLoading;->record(Ljava/lang/String;Ljava/lang/String;IILjava/lang/String;)Z
 
-    move-result p1
+    move-result v2
 
-    if-eqz p1, :cond_25
+    if-eqz v2, :cond_27
 
     .line 239
-    iget-object p1, p0, Lcom/android/server/pm/dex/DynamicCodeLogger;->mPackageDynamicCodeLoading:Lcom/android/server/pm/dex/PackageDynamicCodeLoading;
+    iget-object v2, p0, Lcom/android/server/pm/dex/DynamicCodeLogger;->mPackageDynamicCodeLoading:Lcom/android/server/pm/dex/PackageDynamicCodeLoading;
 
-    invoke-virtual {p1}, Lcom/android/server/pm/dex/PackageDynamicCodeLoading;->maybeWriteAsync()V
+    invoke-virtual {v2}, Lcom/android/server/pm/dex/PackageDynamicCodeLoading;->maybeWriteAsync()V
 
     .line 241
-    :cond_25
+    :cond_27
     return-void
 
     .line 227
-    :cond_26
-    :goto_26
+    .end local v1  # "loadingPackageName":Ljava/lang/String;
+    .end local v8  # "loadingUserId":I
+    :cond_28
+    :goto_28
     return-void
 
     .line 229
-    :catch_27
-    move-exception p1
+    .end local v0  # "packages":[Ljava/lang/String;
+    :catch_29
+    move-exception v0
 
     .line 231
+    .local v0, "e":Landroid/os/RemoteException;
     return-void
 .end method
 
 .method removePackage(Ljava/lang/String;)V
     .registers 3
+    .param p1, "packageName"  # Ljava/lang/String;
 
     .line 248
     iget-object v0, p0, Lcom/android/server/pm/dex/DynamicCodeLogger;->mPackageDynamicCodeLoading:Lcom/android/server/pm/dex/PackageDynamicCodeLoading;
 
     invoke-virtual {v0, p1}, Lcom/android/server/pm/dex/PackageDynamicCodeLoading;->removePackage(Ljava/lang/String;)Z
 
-    move-result p1
+    move-result v0
 
-    if-eqz p1, :cond_d
+    if-eqz v0, :cond_d
 
     .line 249
-    iget-object p1, p0, Lcom/android/server/pm/dex/DynamicCodeLogger;->mPackageDynamicCodeLoading:Lcom/android/server/pm/dex/PackageDynamicCodeLoading;
+    iget-object v0, p0, Lcom/android/server/pm/dex/DynamicCodeLogger;->mPackageDynamicCodeLoading:Lcom/android/server/pm/dex/PackageDynamicCodeLoading;
 
-    invoke-virtual {p1}, Lcom/android/server/pm/dex/PackageDynamicCodeLoading;->maybeWriteAsync()V
+    invoke-virtual {v0}, Lcom/android/server/pm/dex/PackageDynamicCodeLoading;->maybeWriteAsync()V
 
     .line 251
     :cond_d
@@ -857,20 +1020,22 @@
 
 .method removeUserPackage(Ljava/lang/String;I)V
     .registers 4
+    .param p1, "packageName"  # Ljava/lang/String;
+    .param p2, "userId"  # I
 
     .line 254
     iget-object v0, p0, Lcom/android/server/pm/dex/DynamicCodeLogger;->mPackageDynamicCodeLoading:Lcom/android/server/pm/dex/PackageDynamicCodeLoading;
 
     invoke-virtual {v0, p1, p2}, Lcom/android/server/pm/dex/PackageDynamicCodeLoading;->removeUserPackage(Ljava/lang/String;I)Z
 
-    move-result p1
+    move-result v0
 
-    if-eqz p1, :cond_d
+    if-eqz v0, :cond_d
 
     .line 255
-    iget-object p1, p0, Lcom/android/server/pm/dex/DynamicCodeLogger;->mPackageDynamicCodeLoading:Lcom/android/server/pm/dex/PackageDynamicCodeLoading;
+    iget-object v0, p0, Lcom/android/server/pm/dex/DynamicCodeLogger;->mPackageDynamicCodeLoading:Lcom/android/server/pm/dex/PackageDynamicCodeLoading;
 
-    invoke-virtual {p1}, Lcom/android/server/pm/dex/PackageDynamicCodeLoading;->maybeWriteAsync()V
+    invoke-virtual {v0}, Lcom/android/server/pm/dex/PackageDynamicCodeLoading;->maybeWriteAsync()V
 
     .line 257
     :cond_d
@@ -878,7 +1043,10 @@
 .end method
 
 .method writeDclEvent(Ljava/lang/String;ILjava/lang/String;)V
-    .registers 6
+    .registers 7
+    .param p1, "subtag"  # Ljava/lang/String;
+    .param p2, "uid"  # I
+    .param p3, "message"  # Ljava/lang/String;
     .annotation build Lcom/android/internal/annotations/VisibleForTesting;
     .end annotation
 
@@ -893,19 +1061,19 @@
 
     invoke-static {p2}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
 
-    move-result-object p1
+    move-result-object v1
 
-    const/4 p2, 0x1
+    const/4 v2, 0x1
 
-    aput-object p1, v0, p2
+    aput-object v1, v0, v2
 
-    const/4 p1, 0x2
+    const/4 v1, 0x2
 
-    aput-object p3, v0, p1
+    aput-object p3, v0, v1
 
-    const p1, 0x534e4554
+    const v1, 0x534e4554
 
-    invoke-static {p1, v0}, Landroid/util/EventLog;->writeEvent(I[Ljava/lang/Object;)I
+    invoke-static {v1, v0}, Landroid/util/EventLog;->writeEvent(I[Ljava/lang/Object;)I
 
     .line 208
     return-void

@@ -30,8 +30,9 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/companion/CompanionDeviceManagerService;Landroid/companion/IFindDeviceCallback;Landroid/companion/AssociationRequest;Ljava/lang/String;)V
     .registers 5
+    .param p1, "this$0"  # Lcom/android/server/companion/CompanionDeviceManagerService;
 
-    .line 385
+    .line 383
     iput-object p1, p0, Lcom/android/server/companion/CompanionDeviceManagerService$2;->this$0:Lcom/android/server/companion/CompanionDeviceManagerService;
 
     iput-object p2, p0, Lcom/android/server/companion/CompanionDeviceManagerService$2;->val$findDeviceCallback:Landroid/companion/IFindDeviceCallback;
@@ -48,113 +49,119 @@
 
 # virtual methods
 .method public onServiceConnected(Landroid/content/ComponentName;Landroid/os/IBinder;)V
-    .registers 6
+    .registers 8
+    .param p1, "name"  # Landroid/content/ComponentName;
+    .param p2, "service"  # Landroid/os/IBinder;
 
-    .line 394
-    iget-object p1, p0, Lcom/android/server/companion/CompanionDeviceManagerService$2;->this$0:Lcom/android/server/companion/CompanionDeviceManagerService;
-
-    iget-object v0, p0, Lcom/android/server/companion/CompanionDeviceManagerService$2;->val$findDeviceCallback:Landroid/companion/IFindDeviceCallback;
-
-    invoke-static {p1, v0}, Lcom/android/server/companion/CompanionDeviceManagerService;->access$702(Lcom/android/server/companion/CompanionDeviceManagerService;Landroid/companion/IFindDeviceCallback;)Landroid/companion/IFindDeviceCallback;
-
-    .line 395
-    iget-object p1, p0, Lcom/android/server/companion/CompanionDeviceManagerService$2;->this$0:Lcom/android/server/companion/CompanionDeviceManagerService;
-
-    iget-object v0, p0, Lcom/android/server/companion/CompanionDeviceManagerService$2;->val$request:Landroid/companion/AssociationRequest;
-
-    invoke-static {p1, v0}, Lcom/android/server/companion/CompanionDeviceManagerService;->access$602(Lcom/android/server/companion/CompanionDeviceManagerService;Landroid/companion/AssociationRequest;)Landroid/companion/AssociationRequest;
-
-    .line 396
-    iget-object p1, p0, Lcom/android/server/companion/CompanionDeviceManagerService$2;->this$0:Lcom/android/server/companion/CompanionDeviceManagerService;
-
-    iget-object v0, p0, Lcom/android/server/companion/CompanionDeviceManagerService$2;->val$callingPackage:Ljava/lang/String;
-
-    invoke-static {p1, v0}, Lcom/android/server/companion/CompanionDeviceManagerService;->access$802(Lcom/android/server/companion/CompanionDeviceManagerService;Ljava/lang/String;)Ljava/lang/String;
-
-    .line 399
-    :try_start_15
-    iget-object p1, p0, Lcom/android/server/companion/CompanionDeviceManagerService$2;->this$0:Lcom/android/server/companion/CompanionDeviceManagerService;
-
-    invoke-static {p1}, Lcom/android/server/companion/CompanionDeviceManagerService;->access$700(Lcom/android/server/companion/CompanionDeviceManagerService;)Landroid/companion/IFindDeviceCallback;
-
-    move-result-object p1
-
-    invoke-interface {p1}, Landroid/companion/IFindDeviceCallback;->asBinder()Landroid/os/IBinder;
-
-    move-result-object p1
-
+    .line 392
     iget-object v0, p0, Lcom/android/server/companion/CompanionDeviceManagerService$2;->this$0:Lcom/android/server/companion/CompanionDeviceManagerService;
-
-    const/4 v1, 0x0
-
-    invoke-interface {p1, v0, v1}, Landroid/os/IBinder;->linkToDeath(Landroid/os/IBinder$DeathRecipient;I)V
-    :try_end_25
-    .catch Landroid/os/RemoteException; {:try_start_15 .. :try_end_25} :catch_44
-
-    .line 404
-    nop
-
-    .line 407
-    nop
-
-    .line 408
-    :try_start_27
-    invoke-static {p2}, Landroid/companion/ICompanionDeviceDiscoveryService$Stub;->asInterface(Landroid/os/IBinder;)Landroid/companion/ICompanionDeviceDiscoveryService;
-
-    move-result-object p1
-
-    iget-object p2, p0, Lcom/android/server/companion/CompanionDeviceManagerService$2;->val$request:Landroid/companion/AssociationRequest;
-
-    iget-object v0, p0, Lcom/android/server/companion/CompanionDeviceManagerService$2;->val$callingPackage:Ljava/lang/String;
 
     iget-object v1, p0, Lcom/android/server/companion/CompanionDeviceManagerService$2;->val$findDeviceCallback:Landroid/companion/IFindDeviceCallback;
 
-    iget-object v2, p0, Lcom/android/server/companion/CompanionDeviceManagerService$2;->this$0:Lcom/android/server/companion/CompanionDeviceManagerService;
+    invoke-static {v0, v1}, Lcom/android/server/companion/CompanionDeviceManagerService;->access$702(Lcom/android/server/companion/CompanionDeviceManagerService;Landroid/companion/IFindDeviceCallback;)Landroid/companion/IFindDeviceCallback;
 
-    .line 413
-    invoke-static {v2}, Lcom/android/server/companion/CompanionDeviceManagerService;->access$1300(Lcom/android/server/companion/CompanionDeviceManagerService;)Landroid/companion/ICompanionDeviceDiscoveryServiceCallback$Stub;
+    .line 393
+    iget-object v0, p0, Lcom/android/server/companion/CompanionDeviceManagerService$2;->this$0:Lcom/android/server/companion/CompanionDeviceManagerService;
 
-    move-result-object v2
+    iget-object v1, p0, Lcom/android/server/companion/CompanionDeviceManagerService$2;->val$request:Landroid/companion/AssociationRequest;
 
-    .line 409
-    invoke-interface {p1, p2, v0, v1, v2}, Landroid/companion/ICompanionDeviceDiscoveryService;->startDiscovery(Landroid/companion/AssociationRequest;Ljava/lang/String;Landroid/companion/IFindDeviceCallback;Landroid/companion/ICompanionDeviceDiscoveryServiceCallback;)V
+    invoke-static {v0, v1}, Lcom/android/server/companion/CompanionDeviceManagerService;->access$602(Lcom/android/server/companion/CompanionDeviceManagerService;Landroid/companion/AssociationRequest;)Landroid/companion/AssociationRequest;
+
+    .line 394
+    iget-object v0, p0, Lcom/android/server/companion/CompanionDeviceManagerService$2;->this$0:Lcom/android/server/companion/CompanionDeviceManagerService;
+
+    iget-object v1, p0, Lcom/android/server/companion/CompanionDeviceManagerService$2;->val$callingPackage:Ljava/lang/String;
+
+    invoke-static {v0, v1}, Lcom/android/server/companion/CompanionDeviceManagerService;->access$802(Lcom/android/server/companion/CompanionDeviceManagerService;Ljava/lang/String;)Ljava/lang/String;
+
+    .line 397
+    :try_start_15
+    iget-object v0, p0, Lcom/android/server/companion/CompanionDeviceManagerService$2;->this$0:Lcom/android/server/companion/CompanionDeviceManagerService;
+
+    invoke-static {v0}, Lcom/android/server/companion/CompanionDeviceManagerService;->access$700(Lcom/android/server/companion/CompanionDeviceManagerService;)Landroid/companion/IFindDeviceCallback;
+
+    move-result-object v0
+
+    invoke-interface {v0}, Landroid/companion/IFindDeviceCallback;->asBinder()Landroid/os/IBinder;
+
+    move-result-object v0
+
+    iget-object v1, p0, Lcom/android/server/companion/CompanionDeviceManagerService$2;->this$0:Lcom/android/server/companion/CompanionDeviceManagerService;
+
+    const/4 v2, 0x0
+
+    invoke-interface {v0, v1, v2}, Landroid/os/IBinder;->linkToDeath(Landroid/os/IBinder$DeathRecipient;I)V
+    :try_end_25
+    .catch Landroid/os/RemoteException; {:try_start_15 .. :try_end_25} :catch_44
+
+    .line 402
+    nop
+
+    .line 405
+    nop
+
+    .line 406
+    :try_start_27
+    invoke-static {p2}, Landroid/companion/ICompanionDeviceDiscoveryService$Stub;->asInterface(Landroid/os/IBinder;)Landroid/companion/ICompanionDeviceDiscoveryService;
+
+    move-result-object v0
+
+    iget-object v1, p0, Lcom/android/server/companion/CompanionDeviceManagerService$2;->val$request:Landroid/companion/AssociationRequest;
+
+    iget-object v2, p0, Lcom/android/server/companion/CompanionDeviceManagerService$2;->val$callingPackage:Ljava/lang/String;
+
+    iget-object v3, p0, Lcom/android/server/companion/CompanionDeviceManagerService$2;->val$findDeviceCallback:Landroid/companion/IFindDeviceCallback;
+
+    iget-object v4, p0, Lcom/android/server/companion/CompanionDeviceManagerService$2;->this$0:Lcom/android/server/companion/CompanionDeviceManagerService;
+
+    .line 411
+    invoke-static {v4}, Lcom/android/server/companion/CompanionDeviceManagerService;->access$1300(Lcom/android/server/companion/CompanionDeviceManagerService;)Landroid/companion/ICompanionDeviceDiscoveryServiceCallback$Stub;
+
+    move-result-object v4
+
+    .line 407
+    invoke-interface {v0, v1, v2, v3, v4}, Landroid/companion/ICompanionDeviceDiscoveryService;->startDiscovery(Landroid/companion/AssociationRequest;Ljava/lang/String;Landroid/companion/IFindDeviceCallback;Landroid/companion/ICompanionDeviceDiscoveryServiceCallback;)V
     :try_end_3a
     .catch Landroid/os/RemoteException; {:try_start_27 .. :try_end_3a} :catch_3b
 
-    .line 416
+    .line 414
     goto :goto_43
 
-    .line 414
+    .line 412
     :catch_3b
-    move-exception p1
+    move-exception v0
+
+    .line 413
+    .local v0, "e":Landroid/os/RemoteException;
+    const-string v1, "CompanionDeviceManagerService"
+
+    const-string v2, "Error while initiating device discovery"
+
+    invoke-static {v1, v2, v0}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
     .line 415
-    const-string p2, "CompanionDeviceManagerService"
-
-    const-string v0, "Error while initiating device discovery"
-
-    invoke-static {p2, v0, p1}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
-
-    .line 417
+    .end local v0  # "e":Landroid/os/RemoteException;
     :goto_43
     return-void
 
-    .line 401
+    .line 399
     :catch_44
-    move-exception p1
+    move-exception v0
 
-    .line 402
-    iget-object p1, p0, Lcom/android/server/companion/CompanionDeviceManagerService$2;->this$0:Lcom/android/server/companion/CompanionDeviceManagerService;
+    .line 400
+    .restart local v0  # "e":Landroid/os/RemoteException;
+    iget-object v1, p0, Lcom/android/server/companion/CompanionDeviceManagerService$2;->this$0:Lcom/android/server/companion/CompanionDeviceManagerService;
 
-    invoke-static {p1}, Lcom/android/server/companion/CompanionDeviceManagerService;->access$900(Lcom/android/server/companion/CompanionDeviceManagerService;)V
+    invoke-static {v1}, Lcom/android/server/companion/CompanionDeviceManagerService;->access$900(Lcom/android/server/companion/CompanionDeviceManagerService;)V
 
-    .line 403
+    .line 401
     return-void
 .end method
 
 .method public onServiceDisconnected(Landroid/content/ComponentName;)V
     .registers 2
+    .param p1, "name"  # Landroid/content/ComponentName;
 
-    .line 422
+    .line 420
     return-void
 .end method

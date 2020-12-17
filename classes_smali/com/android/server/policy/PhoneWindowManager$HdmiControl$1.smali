@@ -24,8 +24,9 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/policy/PhoneWindowManager$HdmiControl;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/policy/PhoneWindowManager$HdmiControl;
 
-    .line 1766
+    .line 1642
     iput-object p1, p0, Lcom/android/server/policy/PhoneWindowManager$HdmiControl$1;->this$0:Lcom/android/server/policy/PhoneWindowManager$HdmiControl;
 
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -37,11 +38,12 @@
 # virtual methods
 .method public onComplete(I)V
     .registers 4
+    .param p1, "result"  # I
 
-    .line 1769
+    .line 1645
     if-eqz p1, :cond_18
 
-    .line 1770
+    .line 1646
     new-instance v0, Ljava/lang/StringBuilder;
 
     invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
@@ -54,13 +56,13 @@
 
     invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    const-string v0, "WindowManager"
+    const-string v1, "WindowManager"
 
-    invoke-static {v0, p1}, Landroid/util/Log;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v0}, Landroid/util/Log;->w(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 1772
+    .line 1648
     :cond_18
     return-void
 .end method

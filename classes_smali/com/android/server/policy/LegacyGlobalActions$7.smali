@@ -21,6 +21,9 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/policy/LegacyGlobalActions;II)V
     .registers 4
+    .param p1, "this$0"  # Lcom/android/server/policy/LegacyGlobalActions;
+    .param p2, "x0"  # I
+    .param p3, "x1"  # I
 
     .line 506
     iput-object p1, p0, Lcom/android/server/policy/LegacyGlobalActions$7;->this$0:Lcom/android/server/policy/LegacyGlobalActions;
@@ -70,6 +73,7 @@
     move-exception v0
 
     .line 514
+    .local v0, "e":Landroid/os/RemoteException;
     const-string v1, "LegacyGlobalActions"
 
     const-string v2, "Error while trying to lock device."
@@ -77,6 +81,7 @@
     invoke-static {v1, v2, v0}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
     .line 516
+    .end local v0  # "e":Landroid/os/RemoteException;
     :goto_20
     return-void
 .end method

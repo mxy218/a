@@ -21,8 +21,9 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/net/NetworkPolicyManagerService;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/net/NetworkPolicyManagerService;
 
-    .line 1649
+    .line 1676
     iput-object p1, p0, Lcom/android/server/net/NetworkPolicyManagerService$16;->this$0:Lcom/android/server/net/NetworkPolicyManagerService;
 
     invoke-direct {p0}, Landroid/content/BroadcastReceiver;-><init>()V
@@ -33,144 +34,102 @@
 
 # virtual methods
 .method public onReceive(Landroid/content/Context;Landroid/content/Intent;)V
-    .registers 7
+    .registers 9
+    .param p1, "context"  # Landroid/content/Context;
+    .param p2, "intent"  # Landroid/content/Intent;
 
-    .line 1655
-    const-string/jumbo p1, "subscription"
-
-    invoke-virtual {p2, p1}, Landroid/content/Intent;->hasExtra(Ljava/lang/String;)Z
-
-    move-result p1
-
-    if-nez p1, :cond_a
-
-    .line 1656
-    return-void
-
-    .line 1658
-    :cond_a
-    const/4 p1, -0x1
-
-    const-string/jumbo v0, "subscription"
-
-    invoke-virtual {p2, v0, p1}, Landroid/content/Intent;->getIntExtra(Ljava/lang/String;I)I
-
-    move-result p1
-
-    .line 1662
-    iget-object p2, p0, Lcom/android/server/net/NetworkPolicyManagerService$16;->this$0:Lcom/android/server/net/NetworkPolicyManagerService;
-
-    invoke-virtual {p2}, Lcom/android/server/net/NetworkPolicyManagerService;->updateSubscriptions()V
-
-    .line 1664
-    iget-object p2, p0, Lcom/android/server/net/NetworkPolicyManagerService$16;->this$0:Lcom/android/server/net/NetworkPolicyManagerService;
-
-    iget-object p2, p2, Lcom/android/server/net/NetworkPolicyManagerService;->mUidRulesFirstLock:Ljava/lang/Object;
-
-    monitor-enter p2
-
-    .line 1665
-    :try_start_1c
+    .line 1681
     iget-object v0, p0, Lcom/android/server/net/NetworkPolicyManagerService$16;->this$0:Lcom/android/server/net/NetworkPolicyManagerService;
 
-    iget-object v0, v0, Lcom/android/server/net/NetworkPolicyManagerService;->mNetworkPoliciesSecondLock:Ljava/lang/Object;
+    invoke-static {v0}, Lcom/android/server/net/NetworkPolicyManagerService;->access$300(Lcom/android/server/net/NetworkPolicyManagerService;)V
 
-    monitor-enter v0
-    :try_end_21
-    .catchall {:try_start_1c .. :try_end_21} :catchall_5d
+    .line 1683
+    invoke-virtual {p2}, Landroid/content/Intent;->getAction()Ljava/lang/String;
 
-    .line 1666
-    :try_start_21
-    iget-object v1, p0, Lcom/android/server/net/NetworkPolicyManagerService$16;->this$0:Lcom/android/server/net/NetworkPolicyManagerService;
+    move-result-object v0
 
-    invoke-static {v1}, Lcom/android/server/net/NetworkPolicyManagerService;->access$1700(Lcom/android/server/net/NetworkPolicyManagerService;)Landroid/util/SparseArray;
+    .line 1685
+    .local v0, "action":Ljava/lang/String;
+    const-string v1, "android.net.conn.CONNECTIVITY_CHANGE"
+
+    invoke-virtual {v0, v1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+
+    move-result v1
+
+    if-eqz v1, :cond_4f
+
+    .line 1686
+    const-string/jumbo v1, "networkInfo"
+
+    invoke-virtual {p2, v1}, Landroid/content/Intent;->getExtra(Ljava/lang/String;)Ljava/lang/Object;
 
     move-result-object v1
 
-    const/4 v2, 0x0
+    check-cast v1, Landroid/net/NetworkInfo;
 
-    invoke-virtual {v1, p1, v2}, Landroid/util/SparseArray;->get(ILjava/lang/Object;)Ljava/lang/Object;
+    .line 1687
+    .local v1, "info":Landroid/net/NetworkInfo;
+    invoke-virtual {v1}, Landroid/net/NetworkInfo;->getType()I
 
-    move-result-object v1
+    move-result v2
 
-    check-cast v1, Ljava/lang/String;
+    const-string v3, "NetworkPolicy"
 
-    .line 1667
-    if-eqz v1, :cond_3b
+    const/16 v4, 0x11
 
-    .line 1668
+    if-ne v4, v2, :cond_37
+
+    sget-object v2, Landroid/net/NetworkInfo$State;->DISCONNECTED:Landroid/net/NetworkInfo$State;
+
+    .line 1688
+    invoke-virtual {v1}, Landroid/net/NetworkInfo;->getState()Landroid/net/NetworkInfo$State;
+
+    move-result-object v5
+
+    if-ne v2, v5, :cond_37
+
+    .line 1689
+    const-string v2, "handle vpn disconnect event."
+
+    invoke-static {v3, v2}, Landroid/util/Log;->d(Ljava/lang/String;Ljava/lang/String;)I
+
+    .line 1690
     iget-object v2, p0, Lcom/android/server/net/NetworkPolicyManagerService$16;->this$0:Lcom/android/server/net/NetworkPolicyManagerService;
 
-    invoke-static {v2, p1, v1}, Lcom/android/server/net/NetworkPolicyManagerService;->access$1800(Lcom/android/server/net/NetworkPolicyManagerService;ILjava/lang/String;)Z
+    invoke-virtual {v2}, Lcom/android/server/net/NetworkPolicyManagerService;->handleVpnDisconnectEvent()V
 
-    .line 1669
+    goto :goto_4f
+
+    .line 1691
+    :cond_37
+    invoke-virtual {v1}, Landroid/net/NetworkInfo;->getType()I
+
+    move-result v2
+
+    if-ne v4, v2, :cond_4f
+
+    sget-object v2, Landroid/net/NetworkInfo$State;->CONNECTED:Landroid/net/NetworkInfo$State;
+
+    .line 1692
+    invoke-virtual {v1}, Landroid/net/NetworkInfo;->getState()Landroid/net/NetworkInfo$State;
+
+    move-result-object v4
+
+    if-ne v2, v4, :cond_4f
+
+    .line 1693
+    const-string v2, "handle vpn connect event."
+
+    invoke-static {v3, v2}, Landroid/util/Log;->d(Ljava/lang/String;Ljava/lang/String;)I
+
+    .line 1694
     iget-object v2, p0, Lcom/android/server/net/NetworkPolicyManagerService$16;->this$0:Lcom/android/server/net/NetworkPolicyManagerService;
 
-    invoke-static {v2, p1, v1}, Lcom/android/server/net/NetworkPolicyManagerService;->access$1900(Lcom/android/server/net/NetworkPolicyManagerService;ILjava/lang/String;)Z
+    invoke-virtual {v2}, Lcom/android/server/net/NetworkPolicyManagerService;->handleVpnConnectEvent()V
 
-    goto :goto_51
-
-    .line 1671
-    :cond_3b
-    const-string v1, "NetworkPolicy"
-
-    new-instance v2, Ljava/lang/StringBuilder;
-
-    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
-
-    const-string v3, "Missing subscriberId for subId "
-
-    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v2, p1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
-
-    move-result-object p1
-
-    invoke-static {v1, p1}, Landroid/util/Slog;->wtf(Ljava/lang/String;Ljava/lang/String;)I
-
-    .line 1676
-    :goto_51
-    iget-object p1, p0, Lcom/android/server/net/NetworkPolicyManagerService$16;->this$0:Lcom/android/server/net/NetworkPolicyManagerService;
-
-    const/4 v1, 0x1
-
-    invoke-virtual {p1, v1}, Lcom/android/server/net/NetworkPolicyManagerService;->handleNetworkPoliciesUpdateAL(Z)V
-
-    .line 1677
-    monitor-exit v0
-    :try_end_58
-    .catchall {:try_start_21 .. :try_end_58} :catchall_5a
-
-    .line 1678
-    :try_start_58
-    monitor-exit p2
-    :try_end_59
-    .catchall {:try_start_58 .. :try_end_59} :catchall_5d
-
-    .line 1679
+    .line 1698
+    .end local v1  # "info":Landroid/net/NetworkInfo;
+    :cond_4f
+    :goto_4f
     return-void
-
-    .line 1677
-    :catchall_5a
-    move-exception p1
-
-    :try_start_5b
-    monitor-exit v0
-    :try_end_5c
-    .catchall {:try_start_5b .. :try_end_5c} :catchall_5a
-
-    :try_start_5c
-    throw p1
-
-    .line 1678
-    :catchall_5d
-    move-exception p1
-
-    monitor-exit p2
-    :try_end_5f
-    .catchall {:try_start_5c .. :try_end_5f} :catchall_5d
-
-    throw p1
 .end method

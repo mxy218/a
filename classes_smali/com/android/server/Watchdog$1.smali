@@ -17,7 +17,7 @@
 # instance fields
 .field final synthetic this$0:Lcom/android/server/Watchdog;
 
-.field final synthetic val$stack:Ljava/io/File;
+.field final synthetic val$finalStack:Ljava/io/File;
 
 .field final synthetic val$subject:Ljava/lang/String;
 
@@ -25,13 +25,15 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/Watchdog;Ljava/lang/String;Ljava/lang/String;Ljava/io/File;)V
     .registers 5
+    .param p1, "this$0"  # Lcom/android/server/Watchdog;
+    .param p2, "x0"  # Ljava/lang/String;
 
-    .line 619
+    .line 702
     iput-object p1, p0, Lcom/android/server/Watchdog$1;->this$0:Lcom/android/server/Watchdog;
 
     iput-object p3, p0, Lcom/android/server/Watchdog$1;->val$subject:Ljava/lang/String;
 
-    iput-object p4, p0, Lcom/android/server/Watchdog$1;->val$stack:Ljava/io/File;
+    iput-object p4, p0, Lcom/android/server/Watchdog$1;->val$finalStack:Ljava/io/File;
 
     invoke-direct {p0, p2}, Ljava/lang/Thread;-><init>(Ljava/lang/String;)V
 
@@ -43,14 +45,14 @@
 .method public run()V
     .registers 13
 
-    .line 623
+    .line 706
     iget-object v0, p0, Lcom/android/server/Watchdog$1;->this$0:Lcom/android/server/Watchdog;
 
     iget-object v0, v0, Lcom/android/server/Watchdog;->mActivity:Lcom/android/server/am/ActivityManagerService;
 
     if-eqz v0, :cond_1d
 
-    .line 624
+    .line 707
     iget-object v0, p0, Lcom/android/server/Watchdog$1;->this$0:Lcom/android/server/Watchdog;
 
     iget-object v1, v0, Lcom/android/server/Watchdog;->mActivity:Lcom/android/server/am/ActivityManagerService;
@@ -67,7 +69,7 @@
 
     const/4 v9, 0x0
 
-    iget-object v10, p0, Lcom/android/server/Watchdog$1;->val$stack:Ljava/io/File;
+    iget-object v10, p0, Lcom/android/server/Watchdog$1;->val$finalStack:Ljava/io/File;
 
     const/4 v11, 0x0
 
@@ -77,7 +79,7 @@
 
     invoke-virtual/range {v1 .. v11}, Lcom/android/server/am/ActivityManagerService;->addErrorToDropBox(Ljava/lang/String;Lcom/android/server/am/ProcessRecord;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lcom/android/server/am/ProcessRecord;Ljava/lang/String;Ljava/lang/String;Ljava/io/File;Landroid/app/ApplicationErrorReport$CrashInfo;)V
 
-    .line 628
+    .line 711
     :cond_1d
     const/16 v0, 0xb9
 
@@ -85,6 +87,6 @@
 
     invoke-static {v0, v1}, Landroid/util/StatsLog;->write(ILjava/lang/String;)I
 
-    .line 629
+    .line 712
     return-void
 .end method

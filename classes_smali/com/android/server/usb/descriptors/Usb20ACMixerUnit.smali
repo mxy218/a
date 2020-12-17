@@ -22,6 +22,10 @@
 # direct methods
 .method public constructor <init>(IBBI)V
     .registers 5
+    .param p1, "length"  # I
+    .param p2, "type"  # B
+    .param p3, "subtype"  # B
+    .param p4, "subClass"  # I
 
     .line 37
     invoke-direct {p0, p1, p2, p3, p4}, Lcom/android/server/usb/descriptors/UsbACMixerUnit;-><init>(IBBI)V
@@ -34,6 +38,7 @@
 # virtual methods
 .method public parseRawDescriptors(Lcom/android/server/usb/descriptors/ByteStream;)I
     .registers 6
+    .param p1, "stream"  # Lcom/android/server/usb/descriptors/ByteStream;
 
     .line 42
     invoke-super {p0, p1}, Lcom/android/server/usb/descriptors/UsbACMixerUnit;->parseRawDescriptors(Lcom/android/server/usb/descriptors/ByteStream;)I
@@ -62,6 +67,7 @@
     move-result v0
 
     .line 47
+    .local v0, "controlArraySize":I
     new-array v1, v0, [B
 
     iput-object v1, p0, Lcom/android/server/usb/descriptors/Usb20ACMixerUnit;->mControls:[B
@@ -69,6 +75,7 @@
     .line 48
     const/4 v1, 0x0
 
+    .local v1, "index":I
     :goto_1c
     if-ge v1, v0, :cond_29
 
@@ -87,22 +94,23 @@
     goto :goto_1c
 
     .line 51
+    .end local v1  # "index":I
     :cond_29
     invoke-virtual {p1}, Lcom/android/server/usb/descriptors/ByteStream;->getByte()B
 
-    move-result v0
+    move-result v1
 
-    iput-byte v0, p0, Lcom/android/server/usb/descriptors/Usb20ACMixerUnit;->mControlsMask:B
+    iput-byte v1, p0, Lcom/android/server/usb/descriptors/Usb20ACMixerUnit;->mControlsMask:B
 
     .line 52
     invoke-virtual {p1}, Lcom/android/server/usb/descriptors/ByteStream;->getByte()B
 
-    move-result p1
+    move-result v1
 
-    iput-byte p1, p0, Lcom/android/server/usb/descriptors/Usb20ACMixerUnit;->mNameID:B
+    iput-byte v1, p0, Lcom/android/server/usb/descriptors/Usb20ACMixerUnit;->mNameID:B
 
     .line 54
-    iget p1, p0, Lcom/android/server/usb/descriptors/Usb20ACMixerUnit;->mLength:I
+    iget v1, p0, Lcom/android/server/usb/descriptors/Usb20ACMixerUnit;->mLength:I
 
-    return p1
+    return v1
 .end method

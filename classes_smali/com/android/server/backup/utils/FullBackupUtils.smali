@@ -14,7 +14,9 @@
 .end method
 
 .method public static routeSocketDataToOutput(Landroid/os/ParcelFileDescriptor;Ljava/io/OutputStream;)V
-    .registers 6
+    .registers 10
+    .param p0, "inPipe"  # Landroid/os/ParcelFileDescriptor;
+    .param p1, "out"  # Ljava/io/OutputStream;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Ljava/io/IOException;
@@ -26,80 +28,94 @@
 
     invoke-virtual {p0}, Landroid/os/ParcelFileDescriptor;->getFileDescriptor()Ljava/io/FileDescriptor;
 
-    move-result-object p0
+    move-result-object v1
 
-    invoke-direct {v0, p0}, Ljava/io/FileInputStream;-><init>(Ljava/io/FileDescriptor;)V
+    invoke-direct {v0, v1}, Ljava/io/FileInputStream;-><init>(Ljava/io/FileDescriptor;)V
 
     .line 45
-    new-instance p0, Ljava/io/DataInputStream;
+    .local v0, "raw":Ljava/io/FileInputStream;
+    new-instance v1, Ljava/io/DataInputStream;
 
-    invoke-direct {p0, v0}, Ljava/io/DataInputStream;-><init>(Ljava/io/InputStream;)V
+    invoke-direct {v1, v0}, Ljava/io/DataInputStream;-><init>(Ljava/io/InputStream;)V
 
     .line 47
-    const v0, 0x8000
+    .local v1, "in":Ljava/io/DataInputStream;
+    const v2, 0x8000
 
-    new-array v0, v0, [B
+    new-array v2, v2, [B
 
     .line 49
+    .local v2, "buffer":[B
     :cond_13
-    invoke-virtual {p0}, Ljava/io/DataInputStream;->readInt()I
+    invoke-virtual {v1}, Ljava/io/DataInputStream;->readInt()I
 
-    move-result v1
+    move-result v3
 
-    if-lez v1, :cond_3a
+    move v4, v3
+
+    .local v4, "chunkTotal":I
+    if-lez v3, :cond_3b
 
     .line 50
-    :goto_19
-    if-lez v1, :cond_13
+    :goto_1a
+    if-lez v4, :cond_13
 
     .line 51
-    array-length v2, v0
+    array-length v3, v2
 
-    if-le v1, v2, :cond_20
+    if-le v4, v3, :cond_21
 
-    array-length v2, v0
+    array-length v3, v2
 
-    goto :goto_21
+    goto :goto_22
 
-    :cond_20
-    move v2, v1
+    :cond_21
+    move v3, v4
 
     .line 52
-    :goto_21
-    const/4 v3, 0x0
+    .local v3, "toRead":I
+    :goto_22
+    const/4 v5, 0x0
 
-    invoke-virtual {p0, v0, v3, v2}, Ljava/io/DataInputStream;->read([BII)I
+    invoke-virtual {v1, v2, v5, v3}, Ljava/io/DataInputStream;->read([BII)I
 
-    move-result v2
+    move-result v6
 
     .line 53
-    if-ltz v2, :cond_2d
+    .local v6, "nRead":I
+    if-ltz v6, :cond_2e
 
     .line 57
-    invoke-virtual {p1, v0, v3, v2}, Ljava/io/OutputStream;->write([BII)V
+    invoke-virtual {p1, v2, v5, v6}, Ljava/io/OutputStream;->write([BII)V
 
     .line 58
-    sub-int/2addr v1, v2
+    sub-int/2addr v4, v6
 
     .line 59
-    goto :goto_19
+    .end local v3  # "toRead":I
+    .end local v6  # "nRead":I
+    goto :goto_1a
 
     .line 54
-    :cond_2d
-    const-string p0, "BackupManagerService"
+    .restart local v3  # "toRead":I
+    .restart local v6  # "nRead":I
+    :cond_2e
+    const-string v5, "BackupManagerService"
 
-    const-string p1, "Unexpectedly reached end of file while reading data"
+    const-string v7, "Unexpectedly reached end of file while reading data"
 
-    invoke-static {p0, p1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v5, v7}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 55
-    new-instance p0, Ljava/io/EOFException;
+    new-instance v5, Ljava/io/EOFException;
 
-    invoke-direct {p0}, Ljava/io/EOFException;-><init>()V
+    invoke-direct {v5}, Ljava/io/EOFException;-><init>()V
 
-    throw p0
+    throw v5
 
     .line 61
-    :cond_3a
+    .end local v3  # "toRead":I
+    .end local v6  # "nRead":I
+    :cond_3b
     return-void
 .end method

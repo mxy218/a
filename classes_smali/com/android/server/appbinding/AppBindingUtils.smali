@@ -19,7 +19,13 @@
 .end method
 
 .method public static findService(Ljava/lang/String;ILjava/lang/String;Ljava/lang/String;Ljava/lang/Class;Landroid/content/pm/IPackageManager;Ljava/lang/StringBuilder;)Landroid/content/pm/ServiceInfo;
-    .registers 10
+    .registers 16
+    .param p0, "packageName"  # Ljava/lang/String;
+    .param p1, "userId"  # I
+    .param p2, "serviceAction"  # Ljava/lang/String;
+    .param p3, "servicePermission"  # Ljava/lang/String;
+    .param p5, "ipm"  # Landroid/content/pm/IPackageManager;
+    .param p6, "errorMessage"  # Ljava/lang/StringBuilder;
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(",
@@ -37,210 +43,219 @@
     .end annotation
 
     .line 52
+    .local p4, "serviceClassForLogging":Ljava/lang/Class;, "Ljava/lang/Class<*>;"
     invoke-virtual {p4}, Ljava/lang/Class;->getSimpleName()Ljava/lang/String;
 
-    move-result-object p4
+    move-result-object v0
 
     .line 53
-    new-instance v0, Landroid/content/Intent;
+    .local v0, "simpleClassName":Ljava/lang/String;
+    new-instance v1, Landroid/content/Intent;
 
-    invoke-direct {v0, p2}, Landroid/content/Intent;-><init>(Ljava/lang/String;)V
+    invoke-direct {v1, p2}, Landroid/content/Intent;-><init>(Ljava/lang/String;)V
 
     .line 54
-    invoke-virtual {v0, p0}, Landroid/content/Intent;->setPackage(Ljava/lang/String;)Landroid/content/Intent;
+    .local v1, "intent":Landroid/content/Intent;
+    invoke-virtual {v1, p0}, Landroid/content/Intent;->setPackage(Ljava/lang/String;)Landroid/content/Intent;
 
     .line 56
-    const/4 v1, 0x0
+    const/4 v2, 0x0
 
-    invoke-virtual {p6, v1}, Ljava/lang/StringBuilder;->setLength(I)V
+    invoke-virtual {p6, v2}, Ljava/lang/StringBuilder;->setLength(I)V
 
     .line 58
     nop
 
     .line 59
-    const/4 v2, 0x0
+    const/4 v3, 0x0
 
     :try_start_12
-    invoke-interface {p5, v0, v2, v1, p1}, Landroid/content/pm/IPackageManager;->queryIntentServices(Landroid/content/Intent;Ljava/lang/String;II)Landroid/content/pm/ParceledListSlice;
+    invoke-interface {p5, v1, v3, v2, p1}, Landroid/content/pm/IPackageManager;->queryIntentServices(Landroid/content/Intent;Ljava/lang/String;II)Landroid/content/pm/ParceledListSlice;
 
-    move-result-object p1
+    move-result-object v4
 
     .line 60
-    if-eqz p1, :cond_9f
+    .local v4, "pls":Landroid/content/pm/ParceledListSlice;, "Landroid/content/pm/ParceledListSlice<Landroid/content/pm/ResolveInfo;>;"
+    if-eqz v4, :cond_9f
 
-    invoke-virtual {p1}, Landroid/content/pm/ParceledListSlice;->getList()Ljava/util/List;
+    invoke-virtual {v4}, Landroid/content/pm/ParceledListSlice;->getList()Ljava/util/List;
 
-    move-result-object p5
+    move-result-object v5
 
-    invoke-interface {p5}, Ljava/util/List;->size()I
+    invoke-interface {v5}, Ljava/util/List;->size()I
 
-    move-result p5
+    move-result v5
 
-    if-nez p5, :cond_24
+    if-nez v5, :cond_24
 
     goto/16 :goto_9f
 
     .line 64
     :cond_24
-    invoke-virtual {p1}, Landroid/content/pm/ParceledListSlice;->getList()Ljava/util/List;
+    invoke-virtual {v4}, Landroid/content/pm/ParceledListSlice;->getList()Ljava/util/List;
 
-    move-result-object p1
+    move-result-object v5
 
     .line 67
-    invoke-interface {p1}, Ljava/util/List;->size()I
+    .local v5, "list":Ljava/util/List;, "Ljava/util/List<Landroid/content/pm/ResolveInfo;>;"
+    invoke-interface {v5}, Ljava/util/List;->size()I
 
-    move-result p2
+    move-result v6
     :try_end_2c
     .catch Landroid/os/RemoteException; {:try_start_12 .. :try_end_2c} :catch_b9
 
-    const/4 p5, 0x1
+    const/4 v7, 0x1
 
-    const-string v0, "AppBindingUtils"
+    const-string v8, "AppBindingUtils"
 
-    if-le p2, p5, :cond_5a
+    if-le v6, v7, :cond_5a
 
     .line 68
     :try_start_31
-    new-instance p1, Ljava/lang/StringBuilder;
+    new-instance v2, Ljava/lang/StringBuilder;
 
-    invoke-direct {p1}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string p2, "More than one "
+    const-string v6, "More than one "
 
-    invoke-virtual {p1, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p1, p4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string p2, "\'s found in package "
+    const-string v6, "\'s found in package "
 
-    invoke-virtual {p1, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p1, p0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, p0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string p0, ".  They\'ll all be ignored."
+    const-string v6, ".  They\'ll all be ignored."
 
-    invoke-virtual {p1, p0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v2
 
-    invoke-virtual {p6, p0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {p6, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     .line 70
     invoke-virtual {p6}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v2
 
-    invoke-static {v0, p0}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v8, v2}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 71
-    return-object v2
+    return-object v3
 
     .line 73
     :cond_5a
-    invoke-interface {p1, v1}, Ljava/util/List;->get(I)Ljava/lang/Object;
+    invoke-interface {v5, v2}, Ljava/util/List;->get(I)Ljava/lang/Object;
 
-    move-result-object p0
+    move-result-object v2
 
-    check-cast p0, Landroid/content/pm/ResolveInfo;
+    check-cast v2, Landroid/content/pm/ResolveInfo;
 
-    iget-object p0, p0, Landroid/content/pm/ResolveInfo;->serviceInfo:Landroid/content/pm/ServiceInfo;
+    iget-object v2, v2, Landroid/content/pm/ResolveInfo;->serviceInfo:Landroid/content/pm/ServiceInfo;
 
     .line 75
-    iget-object p1, p0, Landroid/content/pm/ServiceInfo;->permission:Ljava/lang/String;
+    .local v2, "si":Landroid/content/pm/ServiceInfo;
+    iget-object v6, v2, Landroid/content/pm/ServiceInfo;->permission:Ljava/lang/String;
 
-    invoke-virtual {p3, p1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {p3, v6}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result p1
+    move-result v6
 
-    if-nez p1, :cond_9e
+    if-nez v6, :cond_9e
 
     .line 76
-    new-instance p1, Ljava/lang/StringBuilder;
+    new-instance v6, Ljava/lang/StringBuilder;
 
-    invoke-direct {p1}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v6}, Ljava/lang/StringBuilder;-><init>()V
 
-    invoke-virtual {p1, p4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v6, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string p2, " "
+    const-string v7, " "
 
-    invoke-virtual {p1, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v6, v7}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     .line 77
-    invoke-virtual {p0}, Landroid/content/pm/ServiceInfo;->getComponentName()Landroid/content/ComponentName;
+    invoke-virtual {v2}, Landroid/content/pm/ServiceInfo;->getComponentName()Landroid/content/ComponentName;
 
-    move-result-object p0
+    move-result-object v7
 
-    invoke-virtual {p0}, Landroid/content/ComponentName;->flattenToShortString()Ljava/lang/String;
+    invoke-virtual {v7}, Landroid/content/ComponentName;->flattenToShortString()Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v7
 
-    invoke-virtual {p1, p0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v6, v7}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string p0, " must be protected with "
+    const-string v7, " must be protected with "
 
-    invoke-virtual {p1, p0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v6, v7}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p1, p3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v6, p3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string p0, "."
+    const-string v7, "."
 
-    invoke-virtual {p1, p0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v6, v7}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v6}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v6
 
     .line 76
-    invoke-virtual {p6, p0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {p6, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     .line 80
     invoke-virtual {p6}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v6
 
-    invoke-static {v0, p0}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v8, v6}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 81
-    return-object v2
+    return-object v3
 
     .line 83
     :cond_9e
-    return-object p0
+    return-object v2
 
     .line 61
+    .end local v2  # "si":Landroid/content/pm/ServiceInfo;
+    .end local v5  # "list":Ljava/util/List;, "Ljava/util/List<Landroid/content/pm/ResolveInfo;>;"
     :cond_9f
     :goto_9f
-    new-instance p0, Ljava/lang/StringBuilder;
+    new-instance v2, Ljava/lang/StringBuilder;
 
-    invoke-direct {p0}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string p1, "Service with "
+    const-string v5, "Service with "
 
-    invoke-virtual {p0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p0, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string p1, " not found."
+    const-string v5, " not found."
 
-    invoke-virtual {p0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v2
 
-    invoke-virtual {p6, p0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {p6, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
     :try_end_b8
     .catch Landroid/os/RemoteException; {:try_start_31 .. :try_end_b8} :catch_b9
 
     .line 62
-    return-object v2
+    return-object v3
 
     .line 84
+    .end local v4  # "pls":Landroid/content/pm/ParceledListSlice;, "Landroid/content/pm/ParceledListSlice<Landroid/content/pm/ResolveInfo;>;"
     :catch_b9
-    move-exception p0
+    move-exception v2
 
     .line 87
-    return-object v2
+    return-object v3
 .end method

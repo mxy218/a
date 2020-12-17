@@ -10,6 +10,7 @@
 # direct methods
 .method public constructor <init>(Landroid/content/Context;)V
     .registers 2
+    .param p1, "context"  # Landroid/content/Context;
 
     .line 54
     invoke-direct {p0, p1}, Lcom/android/server/biometrics/BiometricServiceBase;-><init>(Landroid/content/Context;)V
@@ -21,12 +22,14 @@
 
 # virtual methods
 .method protected checkAppOps(ILjava/lang/String;)Z
-    .registers 3
+    .registers 4
+    .param p1, "uid"  # I
+    .param p2, "opPackageName"  # Ljava/lang/String;
 
     .line 124
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    return p1
+    return v0
 .end method
 
 .method protected checkUseBiometricPermission()V
@@ -64,7 +67,8 @@
 .end method
 
 .method protected getEnrolledTemplates(I)Ljava/util/List;
-    .registers 2
+    .registers 3
+    .param p1, "userId"  # I
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(I)",
@@ -76,9 +80,9 @@
     .end annotation
 
     .line 129
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    return-object p1
+    return-object v0
 .end method
 
 .method protected getHalDeviceId()J
@@ -136,21 +140,23 @@
 .end method
 
 .method protected hasEnrolledBiometrics(I)Z
-    .registers 2
+    .registers 3
+    .param p1, "userId"  # I
 
     .line 109
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    return p1
+    return v0
 .end method
 
 .method protected hasReachedEnrollmentLimit(I)Z
-    .registers 2
+    .registers 3
+    .param p1, "userId"  # I
 
     .line 84
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    return p1
+    return v0
 .end method
 
 .method public onStart()V
@@ -174,6 +180,8 @@
 
 .method protected updateActiveGroup(ILjava/lang/String;)V
     .registers 3
+    .param p1, "userId"  # I
+    .param p2, "clientPackage"  # Ljava/lang/String;
 
     .line 90
     return-void

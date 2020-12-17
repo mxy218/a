@@ -23,8 +23,10 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/display/color/ColorDisplayService;Landroid/os/Handler;Landroid/content/ContentResolver;)V
     .registers 4
+    .param p1, "this$0"  # Lcom/android/server/display/color/ColorDisplayService;
+    .param p2, "x0"  # Landroid/os/Handler;
 
-    .line 252
+    .line 245
     iput-object p1, p0, Lcom/android/server/display/color/ColorDisplayService$1;->this$0:Lcom/android/server/display/color/ColorDisplayService;
 
     iput-object p3, p0, Lcom/android/server/display/color/ColorDisplayService$1;->val$cr:Landroid/content/ContentResolver;
@@ -37,50 +39,52 @@
 
 # virtual methods
 .method public onChange(ZLandroid/net/Uri;)V
-    .registers 3
+    .registers 5
+    .param p1, "selfChange"  # Z
+    .param p2, "uri"  # Landroid/net/Uri;
 
-    .line 255
-    iget-object p1, p0, Lcom/android/server/display/color/ColorDisplayService$1;->val$cr:Landroid/content/ContentResolver;
+    .line 248
+    iget-object v0, p0, Lcom/android/server/display/color/ColorDisplayService$1;->val$cr:Landroid/content/ContentResolver;
 
-    iget-object p2, p0, Lcom/android/server/display/color/ColorDisplayService$1;->this$0:Lcom/android/server/display/color/ColorDisplayService;
+    iget-object v1, p0, Lcom/android/server/display/color/ColorDisplayService$1;->this$0:Lcom/android/server/display/color/ColorDisplayService;
 
-    invoke-static {p2}, Lcom/android/server/display/color/ColorDisplayService;->access$300(Lcom/android/server/display/color/ColorDisplayService;)I
+    invoke-static {v1}, Lcom/android/server/display/color/ColorDisplayService;->access$300(Lcom/android/server/display/color/ColorDisplayService;)I
 
-    move-result p2
+    move-result v1
 
-    invoke-static {p1, p2}, Lcom/android/server/display/color/ColorDisplayService;->access$400(Landroid/content/ContentResolver;I)Z
+    invoke-static {v0, v1}, Lcom/android/server/display/color/ColorDisplayService;->access$400(Landroid/content/ContentResolver;I)Z
 
-    move-result p1
+    move-result v0
 
-    if-eqz p1, :cond_26
+    if-eqz v0, :cond_26
+
+    .line 249
+    iget-object v0, p0, Lcom/android/server/display/color/ColorDisplayService$1;->val$cr:Landroid/content/ContentResolver;
+
+    invoke-virtual {v0, p0}, Landroid/content/ContentResolver;->unregisterContentObserver(Landroid/database/ContentObserver;)V
+
+    .line 250
+    iget-object v0, p0, Lcom/android/server/display/color/ColorDisplayService$1;->this$0:Lcom/android/server/display/color/ColorDisplayService;
+
+    const/4 v1, 0x0
+
+    invoke-static {v0, v1}, Lcom/android/server/display/color/ColorDisplayService;->access$502(Lcom/android/server/display/color/ColorDisplayService;Landroid/database/ContentObserver;)Landroid/database/ContentObserver;
+
+    .line 252
+    iget-object v0, p0, Lcom/android/server/display/color/ColorDisplayService$1;->this$0:Lcom/android/server/display/color/ColorDisplayService;
+
+    invoke-static {v0}, Lcom/android/server/display/color/ColorDisplayService;->access$600(Lcom/android/server/display/color/ColorDisplayService;)Z
+
+    move-result v0
+
+    if-eqz v0, :cond_26
+
+    .line 253
+    iget-object v0, p0, Lcom/android/server/display/color/ColorDisplayService$1;->this$0:Lcom/android/server/display/color/ColorDisplayService;
+
+    invoke-static {v0}, Lcom/android/server/display/color/ColorDisplayService;->access$700(Lcom/android/server/display/color/ColorDisplayService;)V
 
     .line 256
-    iget-object p1, p0, Lcom/android/server/display/color/ColorDisplayService$1;->val$cr:Landroid/content/ContentResolver;
-
-    invoke-virtual {p1, p0}, Landroid/content/ContentResolver;->unregisterContentObserver(Landroid/database/ContentObserver;)V
-
-    .line 257
-    iget-object p1, p0, Lcom/android/server/display/color/ColorDisplayService$1;->this$0:Lcom/android/server/display/color/ColorDisplayService;
-
-    const/4 p2, 0x0
-
-    invoke-static {p1, p2}, Lcom/android/server/display/color/ColorDisplayService;->access$502(Lcom/android/server/display/color/ColorDisplayService;Landroid/database/ContentObserver;)Landroid/database/ContentObserver;
-
-    .line 259
-    iget-object p1, p0, Lcom/android/server/display/color/ColorDisplayService$1;->this$0:Lcom/android/server/display/color/ColorDisplayService;
-
-    invoke-static {p1}, Lcom/android/server/display/color/ColorDisplayService;->access$600(Lcom/android/server/display/color/ColorDisplayService;)Z
-
-    move-result p1
-
-    if-eqz p1, :cond_26
-
-    .line 260
-    iget-object p1, p0, Lcom/android/server/display/color/ColorDisplayService$1;->this$0:Lcom/android/server/display/color/ColorDisplayService;
-
-    invoke-static {p1}, Lcom/android/server/display/color/ColorDisplayService;->access$700(Lcom/android/server/display/color/ColorDisplayService;)V
-
-    .line 263
     :cond_26
     return-void
 .end method

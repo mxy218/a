@@ -26,8 +26,9 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/display/WifiDisplayController;[Landroid/hardware/display/WifiDisplay;)V
     .registers 3
+    .param p1, "this$0"  # Lcom/android/server/display/WifiDisplayController;
 
-    .line 490
+    .line 587
     iput-object p1, p0, Lcom/android/server/display/WifiDisplayController$9;->this$0:Lcom/android/server/display/WifiDisplayController;
 
     iput-object p2, p0, Lcom/android/server/display/WifiDisplayController$9;->val$displays:[Landroid/hardware/display/WifiDisplay;
@@ -42,7 +43,7 @@
 .method public run()V
     .registers 3
 
-    .line 493
+    .line 590
     iget-object v0, p0, Lcom/android/server/display/WifiDisplayController$9;->this$0:Lcom/android/server/display/WifiDisplayController;
 
     invoke-static {v0}, Lcom/android/server/display/WifiDisplayController;->access$500(Lcom/android/server/display/WifiDisplayController;)Lcom/android/server/display/WifiDisplayController$Listener;
@@ -53,6 +54,6 @@
 
     invoke-interface {v0, v1}, Lcom/android/server/display/WifiDisplayController$Listener;->onScanResults([Landroid/hardware/display/WifiDisplay;)V
 
-    .line 494
+    .line 591
     return-void
 .end method

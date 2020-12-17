@@ -21,8 +21,9 @@
 # direct methods
 .method protected constructor <init>(Lcom/android/server/biometrics/BiometricServiceBase;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/biometrics/BiometricServiceBase;
 
-    .line 489
+    .line 490
     iput-object p1, p0, Lcom/android/server/biometrics/BiometricServiceBase$H;->this$0:Lcom/android/server/biometrics/BiometricServiceBase;
 
     invoke-direct {p0}, Landroid/os/Handler;-><init>()V
@@ -34,15 +35,16 @@
 # virtual methods
 .method public handleMessage(Landroid/os/Message;)V
     .registers 5
+    .param p1, "msg"  # Landroid/os/Message;
 
-    .line 492
+    .line 493
     iget v0, p1, Landroid/os/Message;->what:I
 
     const/16 v1, 0xa
 
     if-eq v0, v1, :cond_23
 
-    .line 498
+    .line 499
     iget-object v0, p0, Lcom/android/server/biometrics/BiometricServiceBase$H;->this$0:Lcom/android/server/biometrics/BiometricServiceBase;
 
     invoke-virtual {v0}, Lcom/android/server/biometrics/BiometricServiceBase;->getTag()Ljava/lang/String;
@@ -57,30 +59,30 @@
 
     invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    iget p1, p1, Landroid/os/Message;->what:I
+    iget v2, p1, Landroid/os/Message;->what:I
 
-    invoke-virtual {v1, p1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
     invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v1
 
-    invoke-static {v0, p1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v0, v1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
     goto :goto_2b
 
-    .line 494
+    .line 495
     :cond_23
     iget-object v0, p0, Lcom/android/server/biometrics/BiometricServiceBase$H;->this$0:Lcom/android/server/biometrics/BiometricServiceBase;
 
-    iget p1, p1, Landroid/os/Message;->arg1:I
+    iget v1, p1, Landroid/os/Message;->arg1:I
 
-    invoke-virtual {v0, p1}, Lcom/android/server/biometrics/BiometricServiceBase;->handleUserSwitching(I)V
+    invoke-virtual {v0, v1}, Lcom/android/server/biometrics/BiometricServiceBase;->handleUserSwitching(I)V
 
-    .line 495
+    .line 496
     nop
 
-    .line 500
+    .line 501
     :goto_2b
     return-void
 .end method

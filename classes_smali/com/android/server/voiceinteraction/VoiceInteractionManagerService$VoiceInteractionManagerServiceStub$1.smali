@@ -23,8 +23,9 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/voiceinteraction/VoiceInteractionManagerService$VoiceInteractionManagerServiceStub;Landroid/os/IBinder;)V
     .registers 3
+    .param p1, "this$1"  # Lcom/android/server/voiceinteraction/VoiceInteractionManagerService$VoiceInteractionManagerServiceStub;
 
-    .line 225
+    .line 222
     iput-object p1, p0, Lcom/android/server/voiceinteraction/VoiceInteractionManagerService$VoiceInteractionManagerServiceStub$1;->this$1:Lcom/android/server/voiceinteraction/VoiceInteractionManagerService$VoiceInteractionManagerServiceStub;
 
     iput-object p2, p0, Lcom/android/server/voiceinteraction/VoiceInteractionManagerService$VoiceInteractionManagerServiceStub$1;->val$token:Landroid/os/IBinder;
@@ -39,14 +40,14 @@
 .method public onFailed()V
     .registers 1
 
-    .line 228
+    .line 225
     return-void
 .end method
 
 .method public onShown()V
     .registers 5
 
-    .line 232
+    .line 229
     iget-object v0, p0, Lcom/android/server/voiceinteraction/VoiceInteractionManagerService$VoiceInteractionManagerServiceStub$1;->this$1:Lcom/android/server/voiceinteraction/VoiceInteractionManagerService$VoiceInteractionManagerServiceStub;
 
     iget-object v0, v0, Lcom/android/server/voiceinteraction/VoiceInteractionManagerService$VoiceInteractionManagerServiceStub;->this$0:Lcom/android/server/voiceinteraction/VoiceInteractionManagerService;
@@ -73,6 +74,6 @@
 
     invoke-virtual {v0, v1, v2, v3}, Lcom/android/server/wm/ActivityTaskManagerInternal;->onLocalVoiceInteractionStarted(Landroid/os/IBinder;Landroid/service/voice/IVoiceInteractionSession;Lcom/android/internal/app/IVoiceInteractor;)V
 
-    .line 235
+    .line 232
     return-void
 .end method

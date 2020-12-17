@@ -17,7 +17,9 @@
 
 # direct methods
 .method constructor <init>(JJ)V
-    .registers 5
+    .registers 9
+    .param p1, "initIntervalMillis"  # J
+    .param p3, "maxIntervalMillis"  # J
 
     .line 12
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -29,13 +31,13 @@
     iput-wide p3, p0, Lcom/android/server/location/ExponentialBackOff;->mMaxIntervalMillis:J
 
     .line 16
-    iget-wide p1, p0, Lcom/android/server/location/ExponentialBackOff;->mInitIntervalMillis:J
+    iget-wide v0, p0, Lcom/android/server/location/ExponentialBackOff;->mInitIntervalMillis:J
 
-    const-wide/16 p3, 0x2
+    const-wide/16 v2, 0x2
 
-    div-long/2addr p1, p3
+    div-long/2addr v0, v2
 
-    iput-wide p1, p0, Lcom/android/server/location/ExponentialBackOff;->mCurrentIntervalMillis:J
+    iput-wide v0, p0, Lcom/android/server/location/ExponentialBackOff;->mCurrentIntervalMillis:J
 
     .line 17
     return-void

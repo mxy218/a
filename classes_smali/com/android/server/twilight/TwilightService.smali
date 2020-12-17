@@ -19,6 +19,8 @@
 
 
 # instance fields
+.field private final FACTOR_GMT_OFFSET_LONGITUDE:D
+
 .field protected mAlarmManager:Landroid/app/AlarmManager;
 
 .field private mBootCompleted:Z
@@ -61,76 +63,87 @@
 
 # direct methods
 .method public constructor <init>(Landroid/content/Context;)V
-    .registers 3
+    .registers 4
+    .param p1, "context"  # Landroid/content/Context;
 
-    .line 75
+    .line 79
     invoke-direct {p0, p1}, Lcom/android/server/SystemService;-><init>(Landroid/content/Context;)V
 
-    .line 57
-    new-instance p1, Landroid/util/ArrayMap;
+    .line 61
+    new-instance v0, Landroid/util/ArrayMap;
 
-    invoke-direct {p1}, Landroid/util/ArrayMap;-><init>()V
+    invoke-direct {v0}, Landroid/util/ArrayMap;-><init>()V
 
-    iput-object p1, p0, Lcom/android/server/twilight/TwilightService;->mListeners:Landroid/util/ArrayMap;
+    iput-object v0, p0, Lcom/android/server/twilight/TwilightService;->mListeners:Landroid/util/ArrayMap;
 
-    .line 76
-    new-instance p1, Landroid/os/Handler;
+    .line 342
+    const-wide v0, 0x3f71111111111111L  # 0.004166666666666667
+
+    iput-wide v0, p0, Lcom/android/server/twilight/TwilightService;->FACTOR_GMT_OFFSET_LONGITUDE:D
+
+    .line 80
+    new-instance v0, Landroid/os/Handler;
 
     invoke-static {}, Landroid/os/Looper;->getMainLooper()Landroid/os/Looper;
 
-    move-result-object v0
+    move-result-object v1
 
-    invoke-direct {p1, v0, p0}, Landroid/os/Handler;-><init>(Landroid/os/Looper;Landroid/os/Handler$Callback;)V
+    invoke-direct {v0, v1, p0}, Landroid/os/Handler;-><init>(Landroid/os/Looper;Landroid/os/Handler$Callback;)V
 
-    iput-object p1, p0, Lcom/android/server/twilight/TwilightService;->mHandler:Landroid/os/Handler;
+    iput-object v0, p0, Lcom/android/server/twilight/TwilightService;->mHandler:Landroid/os/Handler;
 
-    .line 77
+    .line 81
     return-void
 .end method
 
 .method static synthetic access$000(Lcom/android/server/twilight/TwilightService;)Landroid/util/ArrayMap;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/twilight/TwilightService;
 
-    .line 48
-    iget-object p0, p0, Lcom/android/server/twilight/TwilightService;->mListeners:Landroid/util/ArrayMap;
+    .line 52
+    iget-object v0, p0, Lcom/android/server/twilight/TwilightService;->mListeners:Landroid/util/ArrayMap;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$100(Lcom/android/server/twilight/TwilightService;)Landroid/os/Handler;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/twilight/TwilightService;
 
-    .line 48
-    iget-object p0, p0, Lcom/android/server/twilight/TwilightService;->mHandler:Landroid/os/Handler;
+    .line 52
+    iget-object v0, p0, Lcom/android/server/twilight/TwilightService;->mHandler:Landroid/os/Handler;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$200(Lcom/android/server/twilight/TwilightService;)V
     .registers 1
+    .param p0, "x0"  # Lcom/android/server/twilight/TwilightService;
 
-    .line 48
+    .line 52
     invoke-direct {p0}, Lcom/android/server/twilight/TwilightService;->updateTwilightState()V
 
     return-void
 .end method
 
 .method private static calculateTwilightState(Landroid/location/Location;J)Lcom/android/server/twilight/TwilightState;
-    .registers 12
+    .registers 13
+    .param p0, "location"  # Landroid/location/Location;
+    .param p1, "timeMillis"  # J
 
-    .line 281
+    .line 293
     if-nez p0, :cond_4
 
-    .line 282
-    const/4 p0, 0x0
+    .line 294
+    const/4 v0, 0x0
 
-    return-object p0
+    return-object v0
 
-    .line 285
+    .line 297
     :cond_4
     new-instance v0, Landroid/icu/impl/CalendarAstronomer;
 
-    .line 286
+    .line 298
     invoke-virtual {p0}, Landroid/location/Location;->getLongitude()D
 
     move-result-wide v1
@@ -141,145 +154,239 @@
 
     invoke-direct {v0, v1, v2, v3, v4}, Landroid/icu/impl/CalendarAstronomer;-><init>(DD)V
 
-    .line 288
+    .line 300
+    .local v0, "ca":Landroid/icu/impl/CalendarAstronomer;
     invoke-static {}, Landroid/icu/util/Calendar;->getInstance()Landroid/icu/util/Calendar;
 
-    move-result-object p0
-
-    .line 289
-    invoke-virtual {p0, p1, p2}, Landroid/icu/util/Calendar;->setTimeInMillis(J)V
-
-    .line 290
-    const/16 v1, 0xb
-
-    const/16 v2, 0xc
-
-    invoke-virtual {p0, v1, v2}, Landroid/icu/util/Calendar;->set(II)V
-
-    .line 291
-    const/4 v1, 0x0
-
-    invoke-virtual {p0, v2, v1}, Landroid/icu/util/Calendar;->set(II)V
-
-    .line 292
-    const/16 v2, 0xd
-
-    invoke-virtual {p0, v2, v1}, Landroid/icu/util/Calendar;->set(II)V
-
-    .line 293
-    const/16 v2, 0xe
-
-    invoke-virtual {p0, v2, v1}, Landroid/icu/util/Calendar;->set(II)V
-
-    .line 294
-    invoke-virtual {p0}, Landroid/icu/util/Calendar;->getTimeInMillis()J
-
-    move-result-wide v2
-
-    invoke-virtual {v0, v2, v3}, Landroid/icu/impl/CalendarAstronomer;->setTime(J)V
-
-    .line 296
-    const/4 v2, 0x1
-
-    invoke-virtual {v0, v2}, Landroid/icu/impl/CalendarAstronomer;->getSunRiseSet(Z)J
-
-    move-result-wide v3
-
-    .line 297
-    invoke-virtual {v0, v1}, Landroid/icu/impl/CalendarAstronomer;->getSunRiseSet(Z)J
-
-    move-result-wide v5
-
-    .line 299
-    cmp-long v7, v5, p1
-
-    const/4 v8, 0x5
-
-    if-gez v7, :cond_51
-
-    .line 300
-    invoke-virtual {p0, v8, v2}, Landroid/icu/util/Calendar;->add(II)V
+    move-result-object v1
 
     .line 301
-    invoke-virtual {p0}, Landroid/icu/util/Calendar;->getTimeInMillis()J
-
-    move-result-wide p0
-
-    invoke-virtual {v0, p0, p1}, Landroid/icu/impl/CalendarAstronomer;->setTime(J)V
+    .local v1, "noon":Landroid/icu/util/Calendar;
+    invoke-virtual {v1, p1, p2}, Landroid/icu/util/Calendar;->setTimeInMillis(J)V
 
     .line 302
-    invoke-virtual {v0, v2}, Landroid/icu/impl/CalendarAstronomer;->getSunRiseSet(Z)J
+    const/16 v2, 0xb
+
+    const/16 v3, 0xc
+
+    invoke-virtual {v1, v2, v3}, Landroid/icu/util/Calendar;->set(II)V
+
+    .line 303
+    const/4 v2, 0x0
+
+    invoke-virtual {v1, v3, v2}, Landroid/icu/util/Calendar;->set(II)V
+
+    .line 304
+    const/16 v3, 0xd
+
+    invoke-virtual {v1, v3, v2}, Landroid/icu/util/Calendar;->set(II)V
+
+    .line 305
+    const/16 v3, 0xe
+
+    invoke-virtual {v1, v3, v2}, Landroid/icu/util/Calendar;->set(II)V
+
+    .line 306
+    invoke-virtual {v1}, Landroid/icu/util/Calendar;->getTimeInMillis()J
 
     move-result-wide v3
+
+    invoke-virtual {v0, v3, v4}, Landroid/icu/impl/CalendarAstronomer;->setTime(J)V
+
+    .line 308
+    const/4 v3, 0x1
+
+    invoke-virtual {v0, v3}, Landroid/icu/impl/CalendarAstronomer;->getSunRiseSet(Z)J
+
+    move-result-wide v4
+
+    .line 309
+    .local v4, "sunriseTimeMillis":J
+    invoke-virtual {v0, v2}, Landroid/icu/impl/CalendarAstronomer;->getSunRiseSet(Z)J
+
+    move-result-wide v6
+
+    .line 311
+    .local v6, "sunsetTimeMillis":J
+    cmp-long v8, v6, p1
+
+    const/4 v9, 0x5
+
+    if-gez v8, :cond_51
+
+    .line 312
+    invoke-virtual {v1, v9, v3}, Landroid/icu/util/Calendar;->add(II)V
+
+    .line 313
+    invoke-virtual {v1}, Landroid/icu/util/Calendar;->getTimeInMillis()J
+
+    move-result-wide v8
+
+    invoke-virtual {v0, v8, v9}, Landroid/icu/impl/CalendarAstronomer;->setTime(J)V
+
+    .line 314
+    invoke-virtual {v0, v3}, Landroid/icu/impl/CalendarAstronomer;->getSunRiseSet(Z)J
+
+    move-result-wide v4
 
     goto :goto_64
 
-    .line 303
+    .line 315
     :cond_51
-    cmp-long p1, v3, p1
+    cmp-long v3, v4, p1
 
-    if-lez p1, :cond_64
+    if-lez v3, :cond_64
 
-    .line 304
-    const/4 p1, -0x1
+    .line 316
+    const/4 v3, -0x1
 
-    invoke-virtual {p0, v8, p1}, Landroid/icu/util/Calendar;->add(II)V
+    invoke-virtual {v1, v9, v3}, Landroid/icu/util/Calendar;->add(II)V
 
-    .line 305
-    invoke-virtual {p0}, Landroid/icu/util/Calendar;->getTimeInMillis()J
+    .line 317
+    invoke-virtual {v1}, Landroid/icu/util/Calendar;->getTimeInMillis()J
 
-    move-result-wide p0
+    move-result-wide v8
 
-    invoke-virtual {v0, p0, p1}, Landroid/icu/impl/CalendarAstronomer;->setTime(J)V
+    invoke-virtual {v0, v8, v9}, Landroid/icu/impl/CalendarAstronomer;->setTime(J)V
 
-    .line 306
-    invoke-virtual {v0, v1}, Landroid/icu/impl/CalendarAstronomer;->getSunRiseSet(Z)J
+    .line 318
+    invoke-virtual {v0, v2}, Landroid/icu/impl/CalendarAstronomer;->getSunRiseSet(Z)J
 
-    move-result-wide v5
+    move-result-wide v6
 
-    .line 309
+    .line 321
     :cond_64
     :goto_64
-    new-instance p0, Lcom/android/server/twilight/TwilightState;
+    new-instance v2, Lcom/android/server/twilight/TwilightState;
 
-    invoke-direct {p0, v3, v4, v5, v6}, Lcom/android/server/twilight/TwilightState;-><init>(JJ)V
+    invoke-direct {v2, v4, v5, v6, v7}, Lcom/android/server/twilight/TwilightState;-><init>(JJ)V
 
-    return-object p0
+    return-object v2
+.end method
+
+.method private getDefaultLocation()Landroid/location/Location;
+    .registers 7
+
+    .line 326
+    new-instance v0, Landroid/text/format/Time;
+
+    invoke-direct {v0}, Landroid/text/format/Time;-><init>()V
+
+    .line 327
+    .local v0, "currentTime":Landroid/text/format/Time;
+    invoke-static {}, Ljava/lang/System;->currentTimeMillis()J
+
+    move-result-wide v1
+
+    invoke-virtual {v0, v1, v2}, Landroid/text/format/Time;->set(J)V
+
+    .line 328
+    iget-wide v1, v0, Landroid/text/format/Time;->gmtoff:J
+
+    iget v3, v0, Landroid/text/format/Time;->isDst:I
+
+    if-lez v3, :cond_15
+
+    const/16 v3, 0xe10
+
+    goto :goto_16
+
+    :cond_15
+    const/4 v3, 0x0
+
+    :goto_16
+    int-to-long v3, v3
+
+    sub-long/2addr v1, v3
+
+    long-to-double v1, v1
+
+    const-wide v3, 0x3f71111111111111L  # 0.004166666666666667
+
+    mul-double/2addr v1, v3
+
+    .line 329
+    .local v1, "lngOffset":D
+    new-instance v3, Landroid/location/Location;
+
+    const-string v4, "GuangZhou China"
+
+    invoke-direct {v3, v4}, Landroid/location/Location;-><init>(Ljava/lang/String;)V
+
+    .line 330
+    .local v3, "location":Landroid/location/Location;
+    invoke-virtual {v3, v1, v2}, Landroid/location/Location;->setLongitude(D)V
+
+    .line 331
+    const-wide/high16 v4, 0x4037000000000000L  # 23.0
+
+    invoke-virtual {v3, v4, v5}, Landroid/location/Location;->setLatitude(D)V
+
+    .line 332
+    const v4, 0x48cb9d00  # 417000.0f
+
+    invoke-virtual {v3, v4}, Landroid/location/Location;->setAccuracy(F)V
+
+    .line 333
+    invoke-static {}, Ljava/lang/System;->currentTimeMillis()J
+
+    move-result-wide v4
+
+    invoke-virtual {v3, v4, v5}, Landroid/location/Location;->setTime(J)V
+
+    .line 334
+    invoke-static {}, Landroid/os/SystemClock;->elapsedRealtimeNanos()J
+
+    move-result-wide v4
+
+    invoke-virtual {v3, v4, v5}, Landroid/location/Location;->setElapsedRealtimeNanos(J)V
+
+    .line 339
+    return-object v3
 .end method
 
 .method private startListening()V
     .registers 4
 
-    .line 154
+    .line 158
     const-string v0, "TwilightService"
 
     const-string/jumbo v1, "startListening"
 
     invoke-static {v0, v1}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 157
+    .line 164
     iget-object v0, p0, Lcom/android/server/twilight/TwilightService;->mLocationManager:Landroid/location/LocationManager;
 
-    .line 158
-    invoke-static {}, Landroid/os/Looper;->getMainLooper()Landroid/os/Looper;
+    new-instance v1, Landroid/location/LocationRequest;
+
+    invoke-direct {v1}, Landroid/location/LocationRequest;-><init>()V
+
+    .line 165
+    const-string/jumbo v2, "passive"
+
+    invoke-virtual {v1, v2}, Landroid/location/LocationRequest;->setProvider(Ljava/lang/String;)Landroid/location/LocationRequest;
 
     move-result-object v1
 
-    .line 157
-    const/4 v2, 0x0
+    .line 166
+    invoke-static {}, Landroid/os/Looper;->getMainLooper()Landroid/os/Looper;
 
-    invoke-virtual {v0, v2, p0, v1}, Landroid/location/LocationManager;->requestLocationUpdates(Landroid/location/LocationRequest;Landroid/location/LocationListener;Landroid/os/Looper;)V
+    move-result-object v2
 
-    .line 161
+    .line 164
+    invoke-virtual {v0, v1, p0, v2}, Landroid/location/LocationManager;->requestLocationUpdates(Landroid/location/LocationRequest;Landroid/location/LocationListener;Landroid/os/Looper;)V
+
+    .line 169
     iget-object v0, p0, Lcom/android/server/twilight/TwilightService;->mLocationManager:Landroid/location/LocationManager;
 
     invoke-virtual {v0}, Landroid/location/LocationManager;->getLastLocation()Landroid/location/Location;
 
     move-result-object v0
 
-    if-nez v0, :cond_2e
+    if-nez v0, :cond_39
 
-    .line 162
+    .line 170
     iget-object v0, p0, Lcom/android/server/twilight/TwilightService;->mLocationManager:Landroid/location/LocationManager;
 
     const-string/jumbo v1, "network"
@@ -288,45 +395,46 @@
 
     move-result v0
 
-    if-eqz v0, :cond_2e
+    if-eqz v0, :cond_39
 
-    .line 163
+    .line 171
     iget-object v0, p0, Lcom/android/server/twilight/TwilightService;->mLocationManager:Landroid/location/LocationManager;
 
-    .line 164
+    .line 172
     invoke-static {}, Landroid/os/Looper;->getMainLooper()Landroid/os/Looper;
 
     move-result-object v2
 
-    .line 163
+    .line 171
     invoke-virtual {v0, v1, p0, v2}, Landroid/location/LocationManager;->requestSingleUpdate(Ljava/lang/String;Landroid/location/LocationListener;Landroid/os/Looper;)V
 
-    .line 169
-    :cond_2e
+    .line 177
+    :cond_39
     iget-object v0, p0, Lcom/android/server/twilight/TwilightService;->mTimeChangedReceiver:Landroid/content/BroadcastReceiver;
 
-    if-nez v0, :cond_4e
+    if-nez v0, :cond_59
 
-    .line 170
+    .line 178
     new-instance v0, Lcom/android/server/twilight/TwilightService$2;
 
     invoke-direct {v0, p0}, Lcom/android/server/twilight/TwilightService$2;-><init>(Lcom/android/server/twilight/TwilightService;)V
 
     iput-object v0, p0, Lcom/android/server/twilight/TwilightService;->mTimeChangedReceiver:Landroid/content/BroadcastReceiver;
 
-    .line 178
+    .line 186
     new-instance v0, Landroid/content/IntentFilter;
 
     const-string v1, "android.intent.action.TIME_SET"
 
     invoke-direct {v0, v1}, Landroid/content/IntentFilter;-><init>(Ljava/lang/String;)V
 
-    .line 179
+    .line 187
+    .local v0, "intentFilter":Landroid/content/IntentFilter;
     const-string v1, "android.intent.action.TIMEZONE_CHANGED"
 
     invoke-virtual {v0, v1}, Landroid/content/IntentFilter;->addAction(Ljava/lang/String;)V
 
-    .line 180
+    .line 188
     invoke-virtual {p0}, Lcom/android/server/twilight/TwilightService;->getContext()Landroid/content/Context;
 
     move-result-object v1
@@ -335,32 +443,33 @@
 
     invoke-virtual {v1, v2, v0}, Landroid/content/Context;->registerReceiver(Landroid/content/BroadcastReceiver;Landroid/content/IntentFilter;)Landroid/content/Intent;
 
-    .line 184
-    :cond_4e
+    .line 192
+    .end local v0  # "intentFilter":Landroid/content/IntentFilter;
+    :cond_59
     invoke-direct {p0}, Lcom/android/server/twilight/TwilightService;->updateTwilightState()V
 
-    .line 185
+    .line 193
     return-void
 .end method
 
 .method private stopListening()V
     .registers 4
 
-    .line 188
+    .line 196
     const-string v0, "TwilightService"
 
     const-string/jumbo v1, "stopListening"
 
     invoke-static {v0, v1}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 190
+    .line 198
     iget-object v0, p0, Lcom/android/server/twilight/TwilightService;->mTimeChangedReceiver:Landroid/content/BroadcastReceiver;
 
     const/4 v1, 0x0
 
     if-eqz v0, :cond_18
 
-    .line 191
+    .line 199
     invoke-virtual {p0}, Lcom/android/server/twilight/TwilightService;->getContext()Landroid/content/Context;
 
     move-result-object v0
@@ -369,49 +478,50 @@
 
     invoke-virtual {v0, v2}, Landroid/content/Context;->unregisterReceiver(Landroid/content/BroadcastReceiver;)V
 
-    .line 192
+    .line 200
     iput-object v1, p0, Lcom/android/server/twilight/TwilightService;->mTimeChangedReceiver:Landroid/content/BroadcastReceiver;
 
-    .line 195
+    .line 203
     :cond_18
     iget-object v0, p0, Lcom/android/server/twilight/TwilightService;->mLastTwilightState:Lcom/android/server/twilight/TwilightState;
 
     if-eqz v0, :cond_21
 
-    .line 196
+    .line 204
     iget-object v0, p0, Lcom/android/server/twilight/TwilightService;->mAlarmManager:Landroid/app/AlarmManager;
 
     invoke-virtual {v0, p0}, Landroid/app/AlarmManager;->cancel(Landroid/app/AlarmManager$OnAlarmListener;)V
 
-    .line 199
+    .line 207
     :cond_21
     iget-object v0, p0, Lcom/android/server/twilight/TwilightService;->mLocationManager:Landroid/location/LocationManager;
 
     invoke-virtual {v0, p0}, Landroid/location/LocationManager;->removeUpdates(Landroid/location/LocationListener;)V
 
-    .line 200
+    .line 208
     iput-object v1, p0, Lcom/android/server/twilight/TwilightService;->mLastLocation:Landroid/location/Location;
 
-    .line 201
+    .line 209
     return-void
 .end method
 
 .method private updateTwilightState()V
-    .registers 10
+    .registers 14
 
-    .line 205
+    .line 213
     invoke-static {}, Ljava/lang/System;->currentTimeMillis()J
 
     move-result-wide v0
 
-    .line 206
+    .line 214
+    .local v0, "currentTimeMillis":J
     iget-object v2, p0, Lcom/android/server/twilight/TwilightService;->mLastLocation:Landroid/location/Location;
 
     if-eqz v2, :cond_9
 
     goto :goto_f
 
-    .line 207
+    .line 215
     :cond_9
     iget-object v2, p0, Lcom/android/server/twilight/TwilightService;->mLocationManager:Landroid/location/LocationManager;
 
@@ -419,273 +529,301 @@
 
     move-result-object v2
 
-    .line 208
     :goto_f
-    invoke-static {v2, v0, v1}, Lcom/android/server/twilight/TwilightService;->calculateTwilightState(Landroid/location/Location;J)Lcom/android/server/twilight/TwilightState;
-
-    move-result-object v0
-
-    .line 214
-    iget-object v1, p0, Lcom/android/server/twilight/TwilightService;->mListeners:Landroid/util/ArrayMap;
-
-    monitor-enter v1
-
-    .line 215
-    :try_start_16
-    iget-object v2, p0, Lcom/android/server/twilight/TwilightService;->mLastTwilightState:Lcom/android/server/twilight/TwilightState;
-
-    invoke-static {v2, v0}, Ljava/util/Objects;->equals(Ljava/lang/Object;Ljava/lang/Object;)Z
-
-    move-result v2
-
-    if-nez v2, :cond_45
+    nop
 
     .line 216
-    iput-object v0, p0, Lcom/android/server/twilight/TwilightService;->mLastTwilightState:Lcom/android/server/twilight/TwilightState;
+    .local v2, "location":Landroid/location/Location;
+    if-nez v2, :cond_16
 
-    .line 218
-    iget-object v2, p0, Lcom/android/server/twilight/TwilightService;->mListeners:Landroid/util/ArrayMap;
+    .line 217
+    invoke-direct {p0}, Lcom/android/server/twilight/TwilightService;->getDefaultLocation()Landroid/location/Location;
 
-    invoke-virtual {v2}, Landroid/util/ArrayMap;->size()I
-
-    move-result v2
-
-    add-int/lit8 v2, v2, -0x1
-
-    :goto_28
-    if-ltz v2, :cond_45
+    move-result-object v2
 
     .line 219
-    iget-object v3, p0, Lcom/android/server/twilight/TwilightService;->mListeners:Landroid/util/ArrayMap;
-
-    invoke-virtual {v3, v2}, Landroid/util/ArrayMap;->keyAt(I)Ljava/lang/Object;
+    :cond_16
+    invoke-static {v2, v0, v1}, Lcom/android/server/twilight/TwilightService;->calculateTwilightState(Landroid/location/Location;J)Lcom/android/server/twilight/TwilightState;
 
     move-result-object v3
 
-    check-cast v3, Lcom/android/server/twilight/TwilightListener;
-
-    .line 220
+    .line 226
+    .local v3, "state":Lcom/android/server/twilight/TwilightState;
     iget-object v4, p0, Lcom/android/server/twilight/TwilightService;->mListeners:Landroid/util/ArrayMap;
 
-    invoke-virtual {v4, v2}, Landroid/util/ArrayMap;->valueAt(I)Ljava/lang/Object;
+    monitor-enter v4
 
-    move-result-object v4
+    .line 227
+    :try_start_1d
+    iget-object v5, p0, Lcom/android/server/twilight/TwilightService;->mLastTwilightState:Lcom/android/server/twilight/TwilightState;
 
-    check-cast v4, Landroid/os/Handler;
+    invoke-static {v5, v3}, Ljava/util/Objects;->equals(Ljava/lang/Object;Ljava/lang/Object;)Z
 
-    .line 221
-    new-instance v5, Lcom/android/server/twilight/TwilightService$3;
+    move-result v5
 
-    invoke-direct {v5, p0, v3, v0}, Lcom/android/server/twilight/TwilightService$3;-><init>(Lcom/android/server/twilight/TwilightService;Lcom/android/server/twilight/TwilightListener;Lcom/android/server/twilight/TwilightState;)V
+    if-nez v5, :cond_4d
 
-    invoke-virtual {v4, v5}, Landroid/os/Handler;->post(Ljava/lang/Runnable;)Z
+    .line 228
+    iput-object v3, p0, Lcom/android/server/twilight/TwilightService;->mLastTwilightState:Lcom/android/server/twilight/TwilightState;
 
-    .line 218
-    add-int/lit8 v2, v2, -0x1
+    .line 230
+    iget-object v5, p0, Lcom/android/server/twilight/TwilightService;->mListeners:Landroid/util/ArrayMap;
 
-    goto :goto_28
+    invoke-virtual {v5}, Landroid/util/ArrayMap;->size()I
 
-    .line 229
-    :cond_45
-    monitor-exit v1
-    :try_end_46
-    .catchall {:try_start_16 .. :try_end_46} :catchall_64
+    move-result v5
+
+    add-int/lit8 v5, v5, -0x1
+
+    .local v5, "i":I
+    :goto_2f
+    if-ltz v5, :cond_4d
+
+    .line 231
+    iget-object v6, p0, Lcom/android/server/twilight/TwilightService;->mListeners:Landroid/util/ArrayMap;
+
+    invoke-virtual {v6, v5}, Landroid/util/ArrayMap;->keyAt(I)Ljava/lang/Object;
+
+    move-result-object v6
+
+    check-cast v6, Lcom/android/server/twilight/TwilightListener;
 
     .line 232
-    if-eqz v0, :cond_63
+    .local v6, "listener":Lcom/android/server/twilight/TwilightListener;
+    iget-object v7, p0, Lcom/android/server/twilight/TwilightService;->mListeners:Landroid/util/ArrayMap;
+
+    invoke-virtual {v7, v5}, Landroid/util/ArrayMap;->valueAt(I)Ljava/lang/Object;
+
+    move-result-object v7
+
+    check-cast v7, Landroid/os/Handler;
 
     .line 233
-    invoke-virtual {v0}, Lcom/android/server/twilight/TwilightState;->isNight()Z
+    .local v7, "handler":Landroid/os/Handler;
+    new-instance v8, Lcom/android/server/twilight/TwilightService$3;
 
-    move-result v1
+    invoke-direct {v8, p0, v6, v3}, Lcom/android/server/twilight/TwilightService$3;-><init>(Lcom/android/server/twilight/TwilightService;Lcom/android/server/twilight/TwilightListener;Lcom/android/server/twilight/TwilightState;)V
 
-    if-eqz v1, :cond_53
+    invoke-virtual {v7, v8}, Landroid/os/Handler;->post(Ljava/lang/Runnable;)Z
 
-    .line 234
-    invoke-virtual {v0}, Lcom/android/server/twilight/TwilightState;->sunriseTimeMillis()J
+    .line 230
+    nop
 
-    move-result-wide v0
+    .end local v6  # "listener":Lcom/android/server/twilight/TwilightListener;
+    .end local v7  # "handler":Landroid/os/Handler;
+    add-int/lit8 v5, v5, -0x1
 
-    goto :goto_57
+    goto :goto_2f
 
-    :cond_53
-    invoke-virtual {v0}, Lcom/android/server/twilight/TwilightState;->sunsetTimeMillis()J
+    .line 241
+    .end local v5  # "i":I
+    :cond_4d
+    monitor-exit v4
+    :try_end_4e
+    .catchall {:try_start_1d .. :try_end_4e} :catchall_6c
 
-    move-result-wide v0
+    .line 244
+    if-eqz v3, :cond_6b
 
-    :goto_57
-    move-wide v4, v0
+    .line 245
+    invoke-virtual {v3}, Lcom/android/server/twilight/TwilightState;->isNight()Z
 
-    .line 235
-    iget-object v2, p0, Lcom/android/server/twilight/TwilightService;->mAlarmManager:Landroid/app/AlarmManager;
+    move-result v4
 
-    const/4 v3, 0x1
+    if-eqz v4, :cond_5b
 
-    iget-object v8, p0, Lcom/android/server/twilight/TwilightService;->mHandler:Landroid/os/Handler;
+    .line 246
+    invoke-virtual {v3}, Lcom/android/server/twilight/TwilightState;->sunriseTimeMillis()J
 
-    const-string v6, "TwilightService"
+    move-result-wide v4
 
-    move-object v7, p0
+    goto :goto_5f
 
-    invoke-virtual/range {v2 .. v8}, Landroid/app/AlarmManager;->setExact(IJLjava/lang/String;Landroid/app/AlarmManager$OnAlarmListener;Landroid/os/Handler;)V
+    :cond_5b
+    invoke-virtual {v3}, Lcom/android/server/twilight/TwilightState;->sunsetTimeMillis()J
 
-    .line 237
-    :cond_63
+    move-result-wide v4
+
+    :goto_5f
+    move-wide v8, v4
+
+    .line 247
+    .local v8, "triggerAtMillis":J
+    iget-object v6, p0, Lcom/android/server/twilight/TwilightService;->mAlarmManager:Landroid/app/AlarmManager;
+
+    const/4 v7, 0x1
+
+    iget-object v12, p0, Lcom/android/server/twilight/TwilightService;->mHandler:Landroid/os/Handler;
+
+    const-string v10, "TwilightService"
+
+    move-object v11, p0
+
+    invoke-virtual/range {v6 .. v12}, Landroid/app/AlarmManager;->setExact(IJLjava/lang/String;Landroid/app/AlarmManager$OnAlarmListener;Landroid/os/Handler;)V
+
+    .line 249
+    .end local v8  # "triggerAtMillis":J
+    :cond_6b
     return-void
 
-    .line 229
-    :catchall_64
-    move-exception v0
+    .line 241
+    :catchall_6c
+    move-exception v5
 
-    :try_start_65
-    monitor-exit v1
-    :try_end_66
-    .catchall {:try_start_65 .. :try_end_66} :catchall_64
+    :try_start_6d
+    monitor-exit v4
+    :try_end_6e
+    .catchall {:try_start_6d .. :try_end_6e} :catchall_6c
 
-    throw v0
+    throw v5
 .end method
 
 
 # virtual methods
 .method public handleMessage(Landroid/os/Message;)Z
-    .registers 5
-
-    .line 132
-    iget p1, p1, Landroid/os/Message;->what:I
-
-    const/4 v0, 0x1
-
-    if-eq p1, v0, :cond_18
-
-    const/4 v1, 0x2
-
-    const/4 v2, 0x0
-
-    if-eq p1, v1, :cond_a
-
-    .line 150
-    return v2
-
-    .line 142
-    :cond_a
-    iget-boolean p1, p0, Lcom/android/server/twilight/TwilightService;->mHasListeners:Z
-
-    if-eqz p1, :cond_17
-
-    .line 143
-    iput-boolean v2, p0, Lcom/android/server/twilight/TwilightService;->mHasListeners:Z
-
-    .line 144
-    iget-boolean p1, p0, Lcom/android/server/twilight/TwilightService;->mBootCompleted:Z
-
-    if-eqz p1, :cond_17
-
-    .line 145
-    invoke-direct {p0}, Lcom/android/server/twilight/TwilightService;->stopListening()V
-
-    .line 148
-    :cond_17
-    return v0
-
-    .line 134
-    :cond_18
-    iget-boolean p1, p0, Lcom/android/server/twilight/TwilightService;->mHasListeners:Z
-
-    if-nez p1, :cond_25
-
-    .line 135
-    iput-boolean v0, p0, Lcom/android/server/twilight/TwilightService;->mHasListeners:Z
+    .registers 6
+    .param p1, "msg"  # Landroid/os/Message;
 
     .line 136
-    iget-boolean p1, p0, Lcom/android/server/twilight/TwilightService;->mBootCompleted:Z
+    iget v0, p1, Landroid/os/Message;->what:I
 
-    if-eqz p1, :cond_25
+    const/4 v1, 0x1
 
-    .line 137
-    invoke-direct {p0}, Lcom/android/server/twilight/TwilightService;->startListening()V
+    if-eq v0, v1, :cond_18
+
+    const/4 v2, 0x2
+
+    const/4 v3, 0x0
+
+    if-eq v0, v2, :cond_a
+
+    .line 154
+    return v3
+
+    .line 146
+    :cond_a
+    iget-boolean v0, p0, Lcom/android/server/twilight/TwilightService;->mHasListeners:Z
+
+    if-eqz v0, :cond_17
+
+    .line 147
+    iput-boolean v3, p0, Lcom/android/server/twilight/TwilightService;->mHasListeners:Z
+
+    .line 148
+    iget-boolean v0, p0, Lcom/android/server/twilight/TwilightService;->mBootCompleted:Z
+
+    if-eqz v0, :cond_17
+
+    .line 149
+    invoke-direct {p0}, Lcom/android/server/twilight/TwilightService;->stopListening()V
+
+    .line 152
+    :cond_17
+    return v1
+
+    .line 138
+    :cond_18
+    iget-boolean v0, p0, Lcom/android/server/twilight/TwilightService;->mHasListeners:Z
+
+    if-nez v0, :cond_25
+
+    .line 139
+    iput-boolean v1, p0, Lcom/android/server/twilight/TwilightService;->mHasListeners:Z
 
     .line 140
+    iget-boolean v0, p0, Lcom/android/server/twilight/TwilightService;->mBootCompleted:Z
+
+    if-eqz v0, :cond_25
+
+    .line 141
+    invoke-direct {p0}, Lcom/android/server/twilight/TwilightService;->startListening()V
+
+    .line 144
     :cond_25
-    return v0
+    return v1
 .end method
 
 .method public onAlarm()V
     .registers 3
 
-    .line 241
+    .line 253
     const-string v0, "TwilightService"
 
     const-string/jumbo v1, "onAlarm"
 
     invoke-static {v0, v1}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 242
+    .line 254
     invoke-direct {p0}, Lcom/android/server/twilight/TwilightService;->updateTwilightState()V
 
-    .line 243
+    .line 255
     return-void
 .end method
 
 .method public onBootPhase(I)V
-    .registers 3
+    .registers 4
+    .param p1, "phase"  # I
 
-    .line 118
+    .line 122
     const/16 v0, 0x3e8
 
-    if-ne p1, v0, :cond_26
+    if-ne p1, v0, :cond_27
 
-    .line 119
+    .line 123
     invoke-virtual {p0}, Lcom/android/server/twilight/TwilightService;->getContext()Landroid/content/Context;
-
-    move-result-object p1
-
-    .line 120
-    const-string v0, "alarm"
-
-    invoke-virtual {p1, v0}, Landroid/content/Context;->getSystemService(Ljava/lang/String;)Ljava/lang/Object;
 
     move-result-object v0
 
-    check-cast v0, Landroid/app/AlarmManager;
-
-    iput-object v0, p0, Lcom/android/server/twilight/TwilightService;->mAlarmManager:Landroid/app/AlarmManager;
-
-    .line 121
-    const-string v0, "location"
-
-    invoke-virtual {p1, v0}, Landroid/content/Context;->getSystemService(Ljava/lang/String;)Ljava/lang/Object;
-
-    move-result-object p1
-
-    check-cast p1, Landroid/location/LocationManager;
-
-    iput-object p1, p0, Lcom/android/server/twilight/TwilightService;->mLocationManager:Landroid/location/LocationManager;
-
-    .line 123
-    const/4 p1, 0x1
-
-    iput-boolean p1, p0, Lcom/android/server/twilight/TwilightService;->mBootCompleted:Z
-
     .line 124
-    iget-boolean p1, p0, Lcom/android/server/twilight/TwilightService;->mHasListeners:Z
+    .local v0, "c":Landroid/content/Context;
+    const-string v1, "alarm"
 
-    if-eqz p1, :cond_26
+    invoke-virtual {v0, v1}, Landroid/content/Context;->getSystemService(Ljava/lang/String;)Ljava/lang/Object;
+
+    move-result-object v1
+
+    check-cast v1, Landroid/app/AlarmManager;
+
+    iput-object v1, p0, Lcom/android/server/twilight/TwilightService;->mAlarmManager:Landroid/app/AlarmManager;
 
     .line 125
-    invoke-direct {p0}, Lcom/android/server/twilight/TwilightService;->startListening()V
+    const-string/jumbo v1, "location"
+
+    invoke-virtual {v0, v1}, Landroid/content/Context;->getSystemService(Ljava/lang/String;)Ljava/lang/Object;
+
+    move-result-object v1
+
+    check-cast v1, Landroid/location/LocationManager;
+
+    iput-object v1, p0, Lcom/android/server/twilight/TwilightService;->mLocationManager:Landroid/location/LocationManager;
+
+    .line 127
+    const/4 v1, 0x1
+
+    iput-boolean v1, p0, Lcom/android/server/twilight/TwilightService;->mBootCompleted:Z
 
     .line 128
-    :cond_26
+    iget-boolean v1, p0, Lcom/android/server/twilight/TwilightService;->mHasListeners:Z
+
+    if-eqz v1, :cond_27
+
+    .line 129
+    invoke-direct {p0}, Lcom/android/server/twilight/TwilightService;->startListening()V
+
+    .line 132
+    .end local v0  # "c":Landroid/content/Context;
+    :cond_27
     return-void
 .end method
 
 .method public onLocationChanged(Landroid/location/Location;)V
     .registers 6
+    .param p1, "location"  # Landroid/location/Location;
 
-    .line 250
+    .line 262
     if-eqz p1, :cond_4c
 
-    .line 251
+    .line 263
     invoke-virtual {p1}, Landroid/location/Location;->getLongitude()D
 
     move-result-wide v0
@@ -704,7 +842,7 @@
 
     if-eqz v0, :cond_4c
 
-    .line 252
+    .line 264
     :cond_14
     new-instance v0, Ljava/lang/StringBuilder;
 
@@ -714,7 +852,7 @@
 
     invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    .line 253
+    .line 265
     invoke-virtual {p1}, Landroid/location/Location;->getProvider()Ljava/lang/String;
 
     move-result-object v1
@@ -725,7 +863,7 @@
 
     invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    .line 254
+    .line 266
     invoke-virtual {p1}, Landroid/location/Location;->getAccuracy()F
 
     move-result v1
@@ -736,7 +874,7 @@
 
     invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    .line 255
+    .line 267
     invoke-virtual {p1}, Landroid/location/Location;->getTime()J
 
     move-result-wide v1
@@ -747,40 +885,42 @@
 
     move-result-object v0
 
-    .line 252
+    .line 264
     const-string v1, "TwilightService"
 
     invoke-static {v1, v0}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 256
+    .line 268
     iput-object p1, p0, Lcom/android/server/twilight/TwilightService;->mLastLocation:Landroid/location/Location;
 
-    .line 257
+    .line 269
     invoke-direct {p0}, Lcom/android/server/twilight/TwilightService;->updateTwilightState()V
 
-    .line 259
+    .line 271
     :cond_4c
     return-void
 .end method
 
 .method public onProviderDisabled(Ljava/lang/String;)V
     .registers 2
+    .param p1, "provider"  # Ljava/lang/String;
 
-    .line 271
+    .line 283
     return-void
 .end method
 
 .method public onProviderEnabled(Ljava/lang/String;)V
     .registers 2
+    .param p1, "provider"  # Ljava/lang/String;
 
-    .line 267
+    .line 279
     return-void
 .end method
 
 .method public onStart()V
     .registers 3
 
-    .line 81
+    .line 85
     const-class v0, Lcom/android/server/twilight/TwilightManager;
 
     new-instance v1, Lcom/android/server/twilight/TwilightService$1;
@@ -789,13 +929,16 @@
 
     invoke-virtual {p0, v0, v1}, Lcom/android/server/twilight/TwilightService;->publishLocalService(Ljava/lang/Class;Ljava/lang/Object;)V
 
-    .line 114
+    .line 118
     return-void
 .end method
 
 .method public onStatusChanged(Ljava/lang/String;ILandroid/os/Bundle;)V
     .registers 4
+    .param p1, "provider"  # Ljava/lang/String;
+    .param p2, "status"  # I
+    .param p3, "extras"  # Landroid/os/Bundle;
 
-    .line 263
+    .line 275
     return-void
 .end method

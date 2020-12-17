@@ -24,7 +24,7 @@
 .method private constructor <init>(Lcom/android/server/input/InputManagerService;)V
     .registers 2
 
-    .line 2221
+    .line 2136
     iput-object p1, p0, Lcom/android/server/input/InputManagerService$InputFilterHost;->this$0:Lcom/android/server/input/InputManagerService;
 
     invoke-direct {p0}, Landroid/view/IInputFilterHost$Stub;-><init>()V
@@ -34,8 +34,10 @@
 
 .method synthetic constructor <init>(Lcom/android/server/input/InputManagerService;Lcom/android/server/input/InputManagerService$1;)V
     .registers 3
+    .param p1, "x0"  # Lcom/android/server/input/InputManagerService;
+    .param p2, "x1"  # Lcom/android/server/input/InputManagerService$1;
 
-    .line 2221
+    .line 2136
     invoke-direct {p0, p1}, Lcom/android/server/input/InputManagerService$InputFilterHost;-><init>(Lcom/android/server/input/InputManagerService;)V
 
     return-void
@@ -46,38 +48,40 @@
 .method public disconnectLocked()V
     .registers 2
 
-    .line 2225
+    .line 2140
     const/4 v0, 0x1
 
     iput-boolean v0, p0, Lcom/android/server/input/InputManagerService$InputFilterHost;->mDisconnected:Z
 
-    .line 2226
+    .line 2141
     return-void
 .end method
 
 .method public sendInputEvent(Landroid/view/InputEvent;I)V
     .registers 13
+    .param p1, "event"  # Landroid/view/InputEvent;
+    .param p2, "policyFlags"  # I
 
-    .line 2230
+    .line 2145
     if-eqz p1, :cond_22
 
-    .line 2234
+    .line 2149
     iget-object v0, p0, Lcom/android/server/input/InputManagerService$InputFilterHost;->this$0:Lcom/android/server/input/InputManagerService;
 
     iget-object v0, v0, Lcom/android/server/input/InputManagerService;->mInputFilterLock:Ljava/lang/Object;
 
     monitor-enter v0
 
-    .line 2235
+    .line 2150
     :try_start_7
     iget-boolean v1, p0, Lcom/android/server/input/InputManagerService$InputFilterHost;->mDisconnected:Z
 
     if-nez v1, :cond_1d
 
-    .line 2236
+    .line 2151
     iget-object v1, p0, Lcom/android/server/input/InputManagerService$InputFilterHost;->this$0:Lcom/android/server/input/InputManagerService;
 
-    invoke-static {v1}, Lcom/android/server/input/InputManagerService;->access$1300(Lcom/android/server/input/InputManagerService;)J
+    invoke-static {v1}, Lcom/android/server/input/InputManagerService;->access$900(Lcom/android/server/input/InputManagerService;)J
 
     move-result-wide v2
 
@@ -95,32 +99,32 @@
 
     move-object v4, p1
 
-    invoke-static/range {v2 .. v9}, Lcom/android/server/input/InputManagerService;->access$1400(JLandroid/view/InputEvent;IIIII)I
+    invoke-static/range {v2 .. v9}, Lcom/android/server/input/InputManagerService;->access$1000(JLandroid/view/InputEvent;IIIII)I
 
-    .line 2240
+    .line 2155
     :cond_1d
     monitor-exit v0
 
-    .line 2241
+    .line 2156
     return-void
 
-    .line 2240
+    .line 2155
     :catchall_1f
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_21
     .catchall {:try_start_7 .. :try_end_21} :catchall_1f
 
-    throw p1
+    throw v1
 
-    .line 2231
+    .line 2146
     :cond_22
-    new-instance p1, Ljava/lang/IllegalArgumentException;
+    new-instance v0, Ljava/lang/IllegalArgumentException;
 
-    const-string p2, "event must not be null"
+    const-string v1, "event must not be null"
 
-    invoke-direct {p1, p2}, Ljava/lang/IllegalArgumentException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v0, v1}, Ljava/lang/IllegalArgumentException;-><init>(Ljava/lang/String;)V
 
-    throw p1
+    throw v0
 .end method

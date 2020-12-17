@@ -21,8 +21,9 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/DropBoxManagerService$1;)V
     .registers 2
+    .param p1, "this$1"  # Lcom/android/server/DropBoxManagerService$1;
 
-    .line 129
+    .line 133
     iput-object p1, p0, Lcom/android/server/DropBoxManagerService$1$1;->this$1:Lcom/android/server/DropBoxManagerService$1;
 
     invoke-direct {p0}, Ljava/lang/Thread;-><init>()V
@@ -35,7 +36,7 @@
 .method public run()V
     .registers 4
 
-    .line 132
+    .line 136
     :try_start_0
     iget-object v0, p0, Lcom/android/server/DropBoxManagerService$1$1;->this$1:Lcom/android/server/DropBoxManagerService$1;
 
@@ -43,7 +44,7 @@
 
     invoke-static {v0}, Lcom/android/server/DropBoxManagerService;->access$100(Lcom/android/server/DropBoxManagerService;)V
 
-    .line 133
+    .line 137
     iget-object v0, p0, Lcom/android/server/DropBoxManagerService$1$1;->this$1:Lcom/android/server/DropBoxManagerService$1;
 
     iget-object v0, v0, Lcom/android/server/DropBoxManagerService$1;->this$0:Lcom/android/server/DropBoxManagerService;
@@ -52,21 +53,23 @@
     :try_end_e
     .catch Ljava/io/IOException; {:try_start_0 .. :try_end_e} :catch_f
 
-    .line 136
+    .line 140
     goto :goto_17
 
-    .line 134
+    .line 138
     :catch_f
     move-exception v0
 
-    .line 135
+    .line 139
+    .local v0, "e":Ljava/io/IOException;
     const-string v1, "DropBoxManagerService"
 
     const-string v2, "Can\'t init"
 
     invoke-static {v1, v2, v0}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
-    .line 137
+    .line 141
+    .end local v0  # "e":Ljava/io/IOException;
     :goto_17
     return-void
 .end method

@@ -6,6 +6,11 @@
 # direct methods
 .method constructor <init>(Landroid/content/Context;Landroid/os/ParcelFileDescriptor;Landroid/app/admin/StartInstallingUpdateCallback;Lcom/android/server/devicepolicy/DevicePolicyManagerService$Injector;Lcom/android/server/devicepolicy/DevicePolicyConstants;)V
     .registers 6
+    .param p1, "context"  # Landroid/content/Context;
+    .param p2, "updateFileDescriptor"  # Landroid/os/ParcelFileDescriptor;
+    .param p3, "callback"  # Landroid/app/admin/StartInstallingUpdateCallback;
+    .param p4, "injector"  # Lcom/android/server/devicepolicy/DevicePolicyManagerService$Injector;
+    .param p5, "constants"  # Lcom/android/server/devicepolicy/DevicePolicyConstants;
 
     .line 37
     invoke-direct/range {p0 .. p5}, Lcom/android/server/devicepolicy/UpdateInstaller;-><init>(Landroid/content/Context;Landroid/os/ParcelFileDescriptor;Landroid/app/admin/StartInstallingUpdateCallback;Lcom/android/server/devicepolicy/DevicePolicyManagerService$Injector;Lcom/android/server/devicepolicy/DevicePolicyConstants;)V
@@ -40,6 +45,7 @@
     move-exception v0
 
     .line 46
+    .local v0, "e":Ljava/io/IOException;
     const-string v1, "UpdateInstaller"
 
     const-string v2, "IO error while trying to install non AB update."
@@ -52,12 +58,13 @@
     .line 49
     invoke-static {v0}, Landroid/util/Log;->getStackTraceString(Ljava/lang/Throwable;)Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v2
 
     .line 47
-    invoke-virtual {p0, v1, v0}, Lcom/android/server/devicepolicy/NonAbUpdateInstaller;->notifyCallbackOnError(ILjava/lang/String;)V
+    invoke-virtual {p0, v1, v2}, Lcom/android/server/devicepolicy/NonAbUpdateInstaller;->notifyCallbackOnError(ILjava/lang/String;)V
 
     .line 51
+    .end local v0  # "e":Ljava/io/IOException;
     :goto_1b
     return-void
 .end method

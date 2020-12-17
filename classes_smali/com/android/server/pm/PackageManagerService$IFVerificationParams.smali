@@ -27,22 +27,26 @@
 # direct methods
 .method public constructor <init>(Landroid/content/pm/PackageParser$Package;ZII)V
     .registers 5
+    .param p1, "_pkg"  # Landroid/content/pm/PackageParser$Package;
+    .param p2, "_replacing"  # Z
+    .param p3, "_userId"  # I
+    .param p4, "_verifierUid"  # I
 
-    .line 993
+    .line 1065
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
-    .line 994
+    .line 1066
     iput-object p1, p0, Lcom/android/server/pm/PackageManagerService$IFVerificationParams;->pkg:Landroid/content/pm/PackageParser$Package;
 
-    .line 995
+    .line 1067
     iput-boolean p2, p0, Lcom/android/server/pm/PackageManagerService$IFVerificationParams;->replacing:Z
 
-    .line 996
+    .line 1068
     iput p3, p0, Lcom/android/server/pm/PackageManagerService$IFVerificationParams;->userId:I
 
-    .line 997
+    .line 1069
     iput p4, p0, Lcom/android/server/pm/PackageManagerService$IFVerificationParams;->verifierUid:I
 
-    .line 998
+    .line 1070
     return-void
 .end method

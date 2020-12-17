@@ -35,6 +35,14 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/IpSecService;ILjava/lang/String;Landroid/net/Network;Ljava/lang/String;Ljava/lang/String;III)V
     .registers 10
+    .param p2, "resourceId"  # I
+    .param p3, "interfaceName"  # Ljava/lang/String;
+    .param p4, "underlyingNetwork"  # Landroid/net/Network;
+    .param p5, "localAddr"  # Ljava/lang/String;
+    .param p6, "remoteAddr"  # Ljava/lang/String;
+    .param p7, "ikey"  # I
+    .param p8, "okey"  # I
+    .param p9, "intfId"  # I
 
     .line 814
     iput-object p1, p0, Lcom/android/server/IpSecService$TunnelInterfaceRecord;->this$0:Lcom/android/server/IpSecService;
@@ -68,18 +76,19 @@
 .end method
 
 .method static synthetic access$200(Lcom/android/server/IpSecService$TunnelInterfaceRecord;)Ljava/lang/String;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/IpSecService$TunnelInterfaceRecord;
 
     .line 793
-    iget-object p0, p0, Lcom/android/server/IpSecService$TunnelInterfaceRecord;->mInterfaceName:Ljava/lang/String;
+    iget-object v0, p0, Lcom/android/server/IpSecService$TunnelInterfaceRecord;->mInterfaceName:Ljava/lang/String;
 
-    return-object p0
+    return-object v0
 .end method
 
 
 # virtual methods
 .method public freeUnderlyingResources()V
-    .registers 13
+    .registers 15
 
     .line 833
     :try_start_0
@@ -94,6 +103,7 @@
     move-result-object v0
 
     .line 834
+    .local v0, "netd":Landroid/net/INetd;
     iget-object v1, p0, Lcom/android/server/IpSecService$TunnelInterfaceRecord;->mInterfaceName:Ljava/lang/String;
 
     invoke-interface {v0, v1}, Landroid/net/INetd;->ipSecRemoveTunnelInterface(Ljava/lang/String;)V
@@ -101,20 +111,21 @@
     .line 836
     invoke-static {}, Lcom/android/server/IpSecService;->access$100()[I
 
-    move-result-object v8
+    move-result-object v11
 
-    array-length v9, v8
+    array-length v12, v11
 
     const/4 v1, 0x0
 
-    move v10, v1
+    move v13, v1
 
     :goto_16
-    if-ge v10, v9, :cond_37
+    if-ge v13, v12, :cond_36
 
-    aget v11, v8, v10
+    aget v3, v11, v13
 
     .line 837
+    .local v3, "selAddrFamily":I
     iget v2, p0, Lcom/android/server/IpSecService$TunnelInterfaceRecord;->uid:I
 
     const/4 v4, 0x1
@@ -127,44 +138,45 @@
 
     move-object v1, v0
 
-    move v3, v11
-
     invoke-interface/range {v1 .. v7}, Landroid/net/INetd;->ipSecDeleteSecurityPolicy(IIIIII)V
 
     .line 844
-    iget v2, p0, Lcom/android/server/IpSecService$TunnelInterfaceRecord;->uid:I
+    iget v5, p0, Lcom/android/server/IpSecService$TunnelInterfaceRecord;->uid:I
 
-    const/4 v4, 0x0
+    const/4 v7, 0x0
 
-    iget v5, p0, Lcom/android/server/IpSecService$TunnelInterfaceRecord;->mIkey:I
+    iget v8, p0, Lcom/android/server/IpSecService$TunnelInterfaceRecord;->mIkey:I
 
-    const/4 v6, -0x1
+    const/4 v9, -0x1
 
-    iget v7, p0, Lcom/android/server/IpSecService$TunnelInterfaceRecord;->mIfId:I
+    iget v10, p0, Lcom/android/server/IpSecService$TunnelInterfaceRecord;->mIfId:I
 
-    move-object v1, v0
+    move-object v4, v0
 
-    move v3, v11
+    move v6, v3
 
-    invoke-interface/range {v1 .. v7}, Landroid/net/INetd;->ipSecDeleteSecurityPolicy(IIIIII)V
-    :try_end_34
-    .catch Landroid/os/ServiceSpecificException; {:try_start_0 .. :try_end_34} :catch_38
-    .catch Landroid/os/RemoteException; {:try_start_0 .. :try_end_34} :catch_38
+    invoke-interface/range {v4 .. v10}, Landroid/net/INetd;->ipSecDeleteSecurityPolicy(IIIIII)V
+    :try_end_33
+    .catch Landroid/os/ServiceSpecificException; {:try_start_0 .. :try_end_33} :catch_37
+    .catch Landroid/os/RemoteException; {:try_start_0 .. :try_end_33} :catch_37
 
     .line 836
-    add-int/lit8 v10, v10, 0x1
+    .end local v3  # "selAddrFamily":I
+    add-int/lit8 v13, v13, 0x1
 
     goto :goto_16
 
     .line 859
-    :cond_37
-    goto :goto_5b
+    .end local v0  # "netd":Landroid/net/INetd;
+    :cond_36
+    goto :goto_5a
 
     .line 852
-    :catch_38
+    :catch_37
     move-exception v0
 
     .line 853
+    .local v0, "e":Ljava/lang/Exception;
     new-instance v1, Ljava/lang/StringBuilder;
 
     invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
@@ -194,7 +206,8 @@
     invoke-static {v2, v1, v0}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
     .line 861
-    :goto_5b
+    .end local v0  # "e":Ljava/lang/Exception;
+    :goto_5a
     invoke-virtual {p0}, Lcom/android/server/IpSecService$TunnelInterfaceRecord;->getResourceTracker()Lcom/android/server/IpSecService$ResourceTracker;
 
     move-result-object v0

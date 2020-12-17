@@ -23,6 +23,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/autofill/AutofillManagerServiceShellCommand;Ljava/util/concurrent/CountDownLatch;)V
     .registers 3
+    .param p1, "this$0"  # Lcom/android/server/autofill/AutofillManagerServiceShellCommand;
 
     .line 352
     iput-object p1, p0, Lcom/android/server/autofill/AutofillManagerServiceShellCommand$1;->this$0:Lcom/android/server/autofill/AutofillManagerServiceShellCommand;
@@ -37,12 +38,14 @@
 
 # virtual methods
 .method public send(ILandroid/os/Bundle;)V
-    .registers 3
+    .registers 4
+    .param p1, "resultCode"  # I
+    .param p2, "resultData"  # Landroid/os/Bundle;
 
     .line 355
-    iget-object p1, p0, Lcom/android/server/autofill/AutofillManagerServiceShellCommand$1;->val$latch:Ljava/util/concurrent/CountDownLatch;
+    iget-object v0, p0, Lcom/android/server/autofill/AutofillManagerServiceShellCommand$1;->val$latch:Ljava/util/concurrent/CountDownLatch;
 
-    invoke-virtual {p1}, Ljava/util/concurrent/CountDownLatch;->countDown()V
+    invoke-virtual {v0}, Ljava/util/concurrent/CountDownLatch;->countDown()V
 
     .line 356
     return-void

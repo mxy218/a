@@ -6,6 +6,7 @@
 # direct methods
 .method public constructor <init>(Ljava/lang/Throwable;)V
     .registers 2
+    .param p1, "cause"  # Ljava/lang/Throwable;
 
     .line 24
     invoke-direct {p0, p1}, Ljava/io/IOException;-><init>(Ljava/lang/Throwable;)V

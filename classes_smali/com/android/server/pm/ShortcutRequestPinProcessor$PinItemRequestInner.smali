@@ -33,6 +33,9 @@
 # direct methods
 .method private constructor <init>(Lcom/android/server/pm/ShortcutRequestPinProcessor;Landroid/content/IntentSender;I)V
     .registers 4
+    .param p1, "processor"  # Lcom/android/server/pm/ShortcutRequestPinProcessor;
+    .param p2, "resultIntent"  # Landroid/content/IntentSender;
+    .param p3, "launcherUid"  # I
 
     .line 61
     invoke-direct {p0}, Landroid/content/pm/IPinItemRequest$Stub;-><init>()V
@@ -52,6 +55,10 @@
 
 .method synthetic constructor <init>(Lcom/android/server/pm/ShortcutRequestPinProcessor;Landroid/content/IntentSender;ILcom/android/server/pm/ShortcutRequestPinProcessor$1;)V
     .registers 5
+    .param p1, "x0"  # Lcom/android/server/pm/ShortcutRequestPinProcessor;
+    .param p2, "x1"  # Landroid/content/IntentSender;
+    .param p3, "x2"  # I
+    .param p4, "x3"  # Lcom/android/server/pm/ShortcutRequestPinProcessor$1;
 
     .line 52
     invoke-direct {p0, p1, p2, p3}, Lcom/android/server/pm/ShortcutRequestPinProcessor$PinItemRequestInner;-><init>(Lcom/android/server/pm/ShortcutRequestPinProcessor;Landroid/content/IntentSender;I)V
@@ -77,126 +84,139 @@
 
 # virtual methods
 .method public accept(Landroid/os/Bundle;)Z
-    .registers 5
+    .registers 6
+    .param p1, "options"  # Landroid/os/Bundle;
 
     .line 109
     invoke-direct {p0}, Lcom/android/server/pm/ShortcutRequestPinProcessor$PinItemRequestInner;->isCallerValid()Z
 
     move-result v0
 
-    if-eqz v0, :cond_44
+    if-eqz v0, :cond_45
 
     .line 112
     const/4 v0, 0x0
 
     .line 113
-    if-eqz p1, :cond_20
+    .local v0, "extras":Landroid/content/Intent;
+    if-eqz p1, :cond_21
 
     .line 115
     :try_start_9
     invoke-virtual {p1}, Landroid/os/Bundle;->size()I
 
     .line 116
-    new-instance v0, Landroid/content/Intent;
+    new-instance v1, Landroid/content/Intent;
 
-    invoke-direct {v0}, Landroid/content/Intent;-><init>()V
+    invoke-direct {v1}, Landroid/content/Intent;-><init>()V
 
-    invoke-virtual {v0, p1}, Landroid/content/Intent;->putExtras(Landroid/os/Bundle;)Landroid/content/Intent;
+    invoke-virtual {v1, p1}, Landroid/content/Intent;->putExtras(Landroid/os/Bundle;)Landroid/content/Intent;
 
-    move-result-object v0
+    move-result-object v1
     :try_end_15
-    .catch Ljava/lang/RuntimeException; {:try_start_9 .. :try_end_15} :catch_16
+    .catch Ljava/lang/RuntimeException; {:try_start_9 .. :try_end_15} :catch_17
+
+    move-object v0, v1
 
     .line 119
-    goto :goto_20
+    goto :goto_21
 
     .line 117
-    :catch_16
-    move-exception p1
+    :catch_17
+    move-exception v1
 
     .line 118
-    new-instance v0, Ljava/lang/IllegalArgumentException;
+    .local v1, "e":Ljava/lang/RuntimeException;
+    new-instance v2, Ljava/lang/IllegalArgumentException;
 
-    const-string/jumbo v1, "options cannot be unparceled"
+    const-string/jumbo v3, "options cannot be unparceled"
 
-    invoke-direct {v0, v1, p1}, Ljava/lang/IllegalArgumentException;-><init>(Ljava/lang/String;Ljava/lang/Throwable;)V
+    invoke-direct {v2, v3, v1}, Ljava/lang/IllegalArgumentException;-><init>(Ljava/lang/String;Ljava/lang/Throwable;)V
 
-    throw v0
+    throw v2
 
     .line 121
-    :cond_20
-    :goto_20
+    .end local v1  # "e":Ljava/lang/RuntimeException;
+    :cond_21
+    :goto_21
     monitor-enter p0
 
     .line 122
-    :try_start_21
-    iget-boolean p1, p0, Lcom/android/server/pm/ShortcutRequestPinProcessor$PinItemRequestInner;->mAccepted:Z
+    :try_start_22
+    iget-boolean v1, p0, Lcom/android/server/pm/ShortcutRequestPinProcessor$PinItemRequestInner;->mAccepted:Z
 
-    if-nez p1, :cond_39
+    if-nez v1, :cond_3a
 
     .line 125
-    const/4 p1, 0x1
+    const/4 v1, 0x1
 
-    iput-boolean p1, p0, Lcom/android/server/pm/ShortcutRequestPinProcessor$PinItemRequestInner;->mAccepted:Z
+    iput-boolean v1, p0, Lcom/android/server/pm/ShortcutRequestPinProcessor$PinItemRequestInner;->mAccepted:Z
 
     .line 126
     monitor-exit p0
-    :try_end_29
-    .catchall {:try_start_21 .. :try_end_29} :catchall_41
+    :try_end_2a
+    .catchall {:try_start_22 .. :try_end_2a} :catchall_42
 
     .line 129
     invoke-virtual {p0}, Lcom/android/server/pm/ShortcutRequestPinProcessor$PinItemRequestInner;->tryAccept()Z
 
-    move-result v1
+    move-result v2
 
-    if-eqz v1, :cond_37
+    if-eqz v2, :cond_38
 
     .line 130
-    iget-object v1, p0, Lcom/android/server/pm/ShortcutRequestPinProcessor$PinItemRequestInner;->mProcessor:Lcom/android/server/pm/ShortcutRequestPinProcessor;
+    iget-object v2, p0, Lcom/android/server/pm/ShortcutRequestPinProcessor$PinItemRequestInner;->mProcessor:Lcom/android/server/pm/ShortcutRequestPinProcessor;
 
-    iget-object v2, p0, Lcom/android/server/pm/ShortcutRequestPinProcessor$PinItemRequestInner;->mResultIntent:Landroid/content/IntentSender;
+    iget-object v3, p0, Lcom/android/server/pm/ShortcutRequestPinProcessor$PinItemRequestInner;->mResultIntent:Landroid/content/IntentSender;
 
-    invoke-virtual {v1, v2, v0}, Lcom/android/server/pm/ShortcutRequestPinProcessor;->sendResultIntent(Landroid/content/IntentSender;Landroid/content/Intent;)V
+    invoke-virtual {v2, v3, v0}, Lcom/android/server/pm/ShortcutRequestPinProcessor;->sendResultIntent(Landroid/content/IntentSender;Landroid/content/Intent;)V
 
     .line 131
-    return p1
+    return v1
 
     .line 133
-    :cond_37
-    const/4 p1, 0x0
+    :cond_38
+    const/4 v1, 0x0
 
-    return p1
+    return v1
 
     .line 123
-    :cond_39
-    :try_start_39
-    new-instance p1, Ljava/lang/IllegalStateException;
+    :cond_3a
+    :try_start_3a
+    new-instance v1, Ljava/lang/IllegalStateException;
 
-    const-string v0, "accept() called already"
+    const-string v2, "accept() called already"
 
-    invoke-direct {p1, v0}, Ljava/lang/IllegalStateException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v1, v2}, Ljava/lang/IllegalStateException;-><init>(Ljava/lang/String;)V
 
-    throw p1
+    .end local v0  # "extras":Landroid/content/Intent;
+    .end local p0  # "this":Lcom/android/server/pm/ShortcutRequestPinProcessor$PinItemRequestInner;
+    .end local p1  # "options":Landroid/os/Bundle;
+    throw v1
 
     .line 126
-    :catchall_41
-    move-exception p1
+    .restart local v0  # "extras":Landroid/content/Intent;
+    .restart local p0  # "this":Lcom/android/server/pm/ShortcutRequestPinProcessor$PinItemRequestInner;
+    .restart local p1  # "options":Landroid/os/Bundle;
+    :catchall_42
+    move-exception v1
 
     monitor-exit p0
-    :try_end_43
-    .catchall {:try_start_39 .. :try_end_43} :catchall_41
+    :try_end_44
+    .catchall {:try_start_3a .. :try_end_44} :catchall_42
 
-    throw p1
+    throw v1
 
     .line 110
-    :cond_44
-    new-instance p1, Ljava/lang/SecurityException;
+    .end local v0  # "extras":Landroid/content/Intent;
+    :cond_45
+    new-instance v0, Ljava/lang/SecurityException;
 
-    const-string v0, "Calling uid mismatch"
+    const-string v1, "Calling uid mismatch"
 
-    invoke-direct {p1, v0}, Ljava/lang/SecurityException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v0, v1}, Ljava/lang/SecurityException;-><init>(Ljava/lang/String;)V
 
-    throw p1
+    throw v0
 .end method
 
 .method public getAppWidgetProviderInfo()Landroid/appwidget/AppWidgetProviderInfo;

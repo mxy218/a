@@ -10,6 +10,7 @@
 # direct methods
 .method constructor <init>(Landroid/webkit/IWebViewUpdateService;)V
     .registers 2
+    .param p1, "service"  # Landroid/webkit/IWebViewUpdateService;
 
     .line 27
     invoke-direct {p0}, Landroid/os/ShellCommand;-><init>()V
@@ -23,6 +24,7 @@
 
 .method private enableMultiProcess(Z)I
     .registers 4
+    .param p1, "enable"  # Z
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -35,19 +37,20 @@
     move-result-object v0
 
     .line 78
+    .local v0, "pw":Ljava/io/PrintWriter;
     iget-object v1, p0, Lcom/android/server/webkit/WebViewUpdateServiceShellCommand;->mInterface:Landroid/webkit/IWebViewUpdateService;
 
     invoke-interface {v1, p1}, Landroid/webkit/IWebViewUpdateService;->enableMultiProcess(Z)V
 
     .line 79
-    const-string p1, "Success"
+    const-string v1, "Success"
 
-    invoke-virtual {v0, p1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {v0, v1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
     .line 80
-    const/4 p1, 0x0
+    const/4 v1, 0x0
 
-    return p1
+    return v1
 .end method
 
 .method private setWebViewImplementation()I
@@ -64,24 +67,26 @@
     move-result-object v0
 
     .line 57
+    .local v0, "pw":Ljava/io/PrintWriter;
     invoke-virtual {p0}, Lcom/android/server/webkit/WebViewUpdateServiceShellCommand;->getNextArg()Ljava/lang/String;
 
     move-result-object v1
 
     .line 58
+    .local v1, "shellChosenPackage":Ljava/lang/String;
     const/4 v2, 0x1
 
     if-nez v1, :cond_19
 
     .line 59
-    const-string v1, "Failed to switch, no PACKAGE provided."
+    const-string v3, "Failed to switch, no PACKAGE provided."
 
-    invoke-virtual {v0, v1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {v0, v3}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
     .line 60
-    const-string v1, ""
+    const-string v3, ""
 
-    invoke-virtual {v0, v1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {v0, v3}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
     .line 61
     invoke-virtual {p0}, Lcom/android/server/webkit/WebViewUpdateServiceShellCommand;->helpSetWebViewImplementation()V
@@ -98,6 +103,7 @@
     move-result-object v3
 
     .line 65
+    .local v3, "newPackage":Ljava/lang/String;
     invoke-virtual {v1, v3}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
     move-result v4
@@ -107,9 +113,9 @@
     if-eqz v4, :cond_2c
 
     .line 66
-    const-string v1, "Success"
+    const-string v2, "Success"
 
-    invoke-virtual {v0, v1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {v0, v2}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
     .line 67
     return v5
@@ -124,13 +130,13 @@
 
     aput-object v3, v4, v2
 
-    const-string v1, "Failed to switch to %s, the WebView implementation is now provided by %s."
+    const-string v5, "Failed to switch to %s, the WebView implementation is now provided by %s."
 
-    invoke-static {v1, v4}, Ljava/lang/String;->format(Ljava/lang/String;[Ljava/lang/Object;)Ljava/lang/String;
+    invoke-static {v5, v4}, Ljava/lang/String;->format(Ljava/lang/String;[Ljava/lang/Object;)Ljava/lang/String;
 
-    move-result-object v1
+    move-result-object v4
 
-    invoke-virtual {v0, v1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {v0, v4}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
     .line 72
     return v2
@@ -147,6 +153,7 @@
     move-result-object v0
 
     .line 85
+    .local v0, "pw":Ljava/io/PrintWriter;
     const-string v1, "  set-webview-implementation PACKAGE"
 
     invoke-virtual {v0, v1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
@@ -162,6 +169,7 @@
 
 .method public onCommand(Ljava/lang/String;)I
     .registers 9
+    .param p1, "cmd"  # Ljava/lang/String;
 
     .line 33
     if-nez p1, :cond_7
@@ -169,9 +177,9 @@
     .line 34
     invoke-virtual {p0, p1}, Lcom/android/server/webkit/WebViewUpdateServiceShellCommand;->handleDefaultCommands(Ljava/lang/String;)I
 
-    move-result p1
+    move-result v0
 
-    return p1
+    return v0
 
     .line 37
     :cond_7
@@ -180,6 +188,7 @@
     move-result-object v0
 
     .line 39
+    .local v0, "pw":Ljava/io/PrintWriter;
     const/4 v1, -0x1
 
     :try_start_c
@@ -260,58 +269,60 @@
     .line 47
     invoke-virtual {p0, p1}, Lcom/android/server/webkit/WebViewUpdateServiceShellCommand;->handleDefaultCommands(Ljava/lang/String;)I
 
-    move-result p1
+    move-result v1
 
-    return p1
+    return v1
 
     .line 45
     :cond_4e
     invoke-direct {p0, v4}, Lcom/android/server/webkit/WebViewUpdateServiceShellCommand;->enableMultiProcess(Z)I
 
-    move-result p1
+    move-result v1
 
-    return p1
+    return v1
 
     .line 43
     :cond_53
     invoke-direct {p0, v6}, Lcom/android/server/webkit/WebViewUpdateServiceShellCommand;->enableMultiProcess(Z)I
 
-    move-result p1
+    move-result v1
 
-    return p1
+    return v1
 
     .line 41
     :cond_58
     invoke-direct {p0}, Lcom/android/server/webkit/WebViewUpdateServiceShellCommand;->setWebViewImplementation()I
 
-    move-result p1
+    move-result v1
     :try_end_5c
     .catch Landroid/os/RemoteException; {:try_start_c .. :try_end_5c} :catch_5d
 
-    return p1
+    return v1
 
     .line 49
     :catch_5d
-    move-exception p1
+    move-exception v2
 
     .line 50
-    new-instance v2, Ljava/lang/StringBuilder;
+    .local v2, "e":Landroid/os/RemoteException;
+    new-instance v3, Ljava/lang/StringBuilder;
 
-    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v3, "Remote exception: "
+    const-string v4, "Remote exception: "
 
-    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v2, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v3
 
-    invoke-virtual {v0, p1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {v0, v3}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
     .line 52
+    .end local v2  # "e":Landroid/os/RemoteException;
     return v1
 .end method
 
@@ -324,6 +335,7 @@
     move-result-object v0
 
     .line 92
+    .local v0, "pw":Ljava/io/PrintWriter;
     const-string v1, "WebView updater commands:"
 
     invoke-virtual {v0, v1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V

@@ -51,7 +51,10 @@
 .end method
 
 .method public setListener(Ljava/lang/String;Landroid/os/IDumpstateListener;Z)Landroid/os/IDumpstateToken;
-    .registers 4
+    .registers 5
+    .param p1, "name"  # Ljava/lang/String;
+    .param p2, "listener"  # Landroid/os/IDumpstateListener;
+    .param p3, "getSectionDetails"  # Z
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -59,13 +62,19 @@
     .end annotation
 
     .line 25
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    return-object p1
+    return-object v0
 .end method
 
 .method public startBugreport(ILjava/lang/String;Ljava/io/FileDescriptor;Ljava/io/FileDescriptor;ILandroid/os/IDumpstateListener;)V
     .registers 7
+    .param p1, "callingUid"  # I
+    .param p2, "callingPackage"  # Ljava/lang/String;
+    .param p3, "bugreportFd"  # Ljava/io/FileDescriptor;
+    .param p4, "screenshotFd"  # Ljava/io/FileDescriptor;
+    .param p5, "bugreportMode"  # I
+    .param p6, "listener"  # Landroid/os/IDumpstateListener;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;

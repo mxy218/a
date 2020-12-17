@@ -21,8 +21,9 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/usb/UsbDeviceManager;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/usb/UsbDeviceManager;
 
-    .line 324
+    .line 377
     iput-object p1, p0, Lcom/android/server/usb/UsbDeviceManager$3;->this$0:Lcom/android/server/usb/UsbDeviceManager;
 
     invoke-direct {p0}, Landroid/content/BroadcastReceiver;-><init>()V
@@ -33,71 +34,74 @@
 
 # virtual methods
 .method public onReceive(Landroid/content/Context;Landroid/content/Intent;)V
-    .registers 5
+    .registers 7
+    .param p1, "context"  # Landroid/content/Context;
+    .param p2, "intent"  # Landroid/content/Intent;
 
-    .line 327
+    .line 380
     const-string/jumbo v0, "usb"
 
     invoke-virtual {p1, v0}, Landroid/content/Context;->getSystemService(Ljava/lang/String;)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v0
 
-    check-cast p1, Landroid/hardware/usb/UsbManager;
+    check-cast v0, Landroid/hardware/usb/UsbManager;
 
-    .line 328
-    invoke-virtual {p1}, Landroid/hardware/usb/UsbManager;->getDeviceList()Ljava/util/HashMap;
+    .line 381
+    invoke-virtual {v0}, Landroid/hardware/usb/UsbManager;->getDeviceList()Ljava/util/HashMap;
 
-    move-result-object p1
+    move-result-object v0
 
-    invoke-virtual {p1}, Ljava/util/HashMap;->entrySet()Ljava/util/Set;
+    invoke-virtual {v0}, Ljava/util/HashMap;->entrySet()Ljava/util/Set;
 
-    move-result-object p1
+    move-result-object v0
 
-    invoke-interface {p1}, Ljava/util/Set;->iterator()Ljava/util/Iterator;
+    invoke-interface {v0}, Ljava/util/Set;->iterator()Ljava/util/Iterator;
 
-    move-result-object p1
+    move-result-object v0
 
-    .line 329
+    .line 382
+    .local v0, "devices":Ljava/util/Iterator;
     invoke-virtual {p2}, Landroid/content/Intent;->getAction()Ljava/lang/String;
 
-    move-result-object p2
+    move-result-object v1
 
-    const-string v0, "android.hardware.usb.action.USB_DEVICE_ATTACHED"
+    const-string v2, "android.hardware.usb.action.USB_DEVICE_ATTACHED"
 
-    invoke-virtual {p2, v0}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v1, v2}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result p2
+    move-result v1
 
-    const/16 v0, 0xa
+    const/16 v2, 0xa
 
-    if-eqz p2, :cond_2e
+    if-eqz v1, :cond_2e
 
-    .line 330
-    iget-object p2, p0, Lcom/android/server/usb/UsbDeviceManager$3;->this$0:Lcom/android/server/usb/UsbDeviceManager;
+    .line 383
+    iget-object v1, p0, Lcom/android/server/usb/UsbDeviceManager$3;->this$0:Lcom/android/server/usb/UsbDeviceManager;
 
-    invoke-static {p2}, Lcom/android/server/usb/UsbDeviceManager;->access$000(Lcom/android/server/usb/UsbDeviceManager;)Lcom/android/server/usb/UsbDeviceManager$UsbHandler;
+    invoke-static {v1}, Lcom/android/server/usb/UsbDeviceManager;->access$100(Lcom/android/server/usb/UsbDeviceManager;)Lcom/android/server/usb/UsbDeviceManager$UsbHandler;
 
-    move-result-object p2
+    move-result-object v1
 
-    const/4 v1, 0x1
+    const/4 v3, 0x1
 
-    invoke-virtual {p2, v0, p1, v1}, Lcom/android/server/usb/UsbDeviceManager$UsbHandler;->sendMessage(ILjava/lang/Object;Z)V
+    invoke-virtual {v1, v2, v0, v3}, Lcom/android/server/usb/UsbDeviceManager$UsbHandler;->sendMessage(ILjava/lang/Object;Z)V
 
     goto :goto_38
 
-    .line 332
+    .line 385
     :cond_2e
-    iget-object p2, p0, Lcom/android/server/usb/UsbDeviceManager$3;->this$0:Lcom/android/server/usb/UsbDeviceManager;
+    iget-object v1, p0, Lcom/android/server/usb/UsbDeviceManager$3;->this$0:Lcom/android/server/usb/UsbDeviceManager;
 
-    invoke-static {p2}, Lcom/android/server/usb/UsbDeviceManager;->access$000(Lcom/android/server/usb/UsbDeviceManager;)Lcom/android/server/usb/UsbDeviceManager$UsbHandler;
+    invoke-static {v1}, Lcom/android/server/usb/UsbDeviceManager;->access$100(Lcom/android/server/usb/UsbDeviceManager;)Lcom/android/server/usb/UsbDeviceManager$UsbHandler;
 
-    move-result-object p2
+    move-result-object v1
 
-    const/4 v1, 0x0
+    const/4 v3, 0x0
 
-    invoke-virtual {p2, v0, p1, v1}, Lcom/android/server/usb/UsbDeviceManager$UsbHandler;->sendMessage(ILjava/lang/Object;Z)V
+    invoke-virtual {v1, v2, v0, v3}, Lcom/android/server/usb/UsbDeviceManager$UsbHandler;->sendMessage(ILjava/lang/Object;Z)V
 
-    .line 334
+    .line 387
     :goto_38
     return-void
 .end method

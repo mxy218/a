@@ -26,6 +26,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;Lcom/android/server/hdmi/HdmiCecMessage;)V
     .registers 3
+    .param p1, "this$0"  # Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;
 
     .line 1074
     iput-object p1, p0, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem$2;->this$0:Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;
@@ -40,50 +41,51 @@
 
 # virtual methods
 .method public onResult(Z)V
-    .registers 5
+    .registers 6
+    .param p1, "supported"  # Z
 
     .line 1076
     if-eqz p1, :cond_1a
 
     .line 1077
-    iget-object p1, p0, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem$2;->this$0:Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;
+    iget-object v0, p0, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem$2;->this$0:Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;
 
-    const/4 v0, 0x1
+    const/4 v1, 0x1
 
-    invoke-static {p1, v0}, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->access$200(Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;Z)V
+    invoke-static {v0, v1}, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->access$200(Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;Z)V
 
     .line 1078
-    iget-object p1, p0, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem$2;->this$0:Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;
+    iget-object v0, p0, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem$2;->this$0:Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;
 
-    iget-object p1, p1, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->mService:Lcom/android/server/hdmi/HdmiControlService;
+    iget-object v0, v0, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->mService:Lcom/android/server/hdmi/HdmiControlService;
 
-    iget-object v1, p0, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem$2;->this$0:Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;
+    iget-object v2, p0, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem$2;->this$0:Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;
 
-    iget v1, v1, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->mAddress:I
+    iget v2, v2, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->mAddress:I
 
-    const/16 v2, 0xf
+    const/16 v3, 0xf
 
     .line 1079
-    invoke-static {v1, v2, v0}, Lcom/android/server/hdmi/HdmiCecMessageBuilder;->buildSetSystemAudioMode(IIZ)Lcom/android/server/hdmi/HdmiCecMessage;
+    invoke-static {v2, v3, v1}, Lcom/android/server/hdmi/HdmiCecMessageBuilder;->buildSetSystemAudioMode(IIZ)Lcom/android/server/hdmi/HdmiCecMessage;
 
-    move-result-object v0
+    move-result-object v1
 
     .line 1078
-    invoke-virtual {p1, v0}, Lcom/android/server/hdmi/HdmiControlService;->sendCecCommand(Lcom/android/server/hdmi/HdmiCecMessage;)V
+    invoke-virtual {v0, v1}, Lcom/android/server/hdmi/HdmiControlService;->sendCecCommand(Lcom/android/server/hdmi/HdmiCecMessage;)V
 
     goto :goto_24
 
     .line 1082
     :cond_1a
-    iget-object p1, p0, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem$2;->this$0:Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;
+    iget-object v0, p0, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem$2;->this$0:Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;
 
-    iget-object p1, p1, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->mService:Lcom/android/server/hdmi/HdmiControlService;
+    iget-object v0, v0, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->mService:Lcom/android/server/hdmi/HdmiControlService;
 
-    iget-object v0, p0, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem$2;->val$message:Lcom/android/server/hdmi/HdmiCecMessage;
+    iget-object v1, p0, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem$2;->val$message:Lcom/android/server/hdmi/HdmiCecMessage;
 
-    const/4 v1, 0x4
+    const/4 v2, 0x4
 
-    invoke-virtual {p1, v0, v1}, Lcom/android/server/hdmi/HdmiControlService;->maySendFeatureAbortCommand(Lcom/android/server/hdmi/HdmiCecMessage;I)V
+    invoke-virtual {v0, v1, v2}, Lcom/android/server/hdmi/HdmiControlService;->maySendFeatureAbortCommand(Lcom/android/server/hdmi/HdmiCecMessage;I)V
 
     .line 1084
     :goto_24

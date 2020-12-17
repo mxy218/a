@@ -50,7 +50,8 @@
 .end method
 
 .method public final shouldProcessMotionEvent(Landroid/view/MotionEvent;)Z
-    .registers 4
+    .registers 5
+    .param p1, "event"  # Landroid/view/MotionEvent;
 
     .line 608
     iget-boolean v0, p0, Lcom/android/server/accessibility/AccessibilityInputFilter$MouseEventStreamState;->mMotionSequenceStarted:Z
@@ -66,14 +67,15 @@
     :cond_6
     invoke-virtual {p1}, Landroid/view/MotionEvent;->getActionMasked()I
 
-    move-result p1
+    move-result v0
 
     .line 613
-    if-eqz p1, :cond_11
+    .local v0, "action":I
+    if-eqz v0, :cond_11
 
-    const/4 v0, 0x7
+    const/4 v2, 0x7
 
-    if-ne p1, v0, :cond_10
+    if-ne v0, v2, :cond_10
 
     goto :goto_11
 
@@ -85,9 +87,9 @@
     iput-boolean v1, p0, Lcom/android/server/accessibility/AccessibilityInputFilter$MouseEventStreamState;->mMotionSequenceStarted:Z
 
     .line 615
-    iget-boolean p1, p0, Lcom/android/server/accessibility/AccessibilityInputFilter$MouseEventStreamState;->mMotionSequenceStarted:Z
+    iget-boolean v1, p0, Lcom/android/server/accessibility/AccessibilityInputFilter$MouseEventStreamState;->mMotionSequenceStarted:Z
 
-    return p1
+    return v1
 .end method
 
 .method public final shouldProcessScroll()Z

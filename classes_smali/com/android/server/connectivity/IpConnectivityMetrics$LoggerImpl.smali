@@ -35,6 +35,8 @@
 
 .method synthetic constructor <init>(Lcom/android/server/connectivity/IpConnectivityMetrics;Lcom/android/server/connectivity/IpConnectivityMetrics$1;)V
     .registers 3
+    .param p1, "x0"  # Lcom/android/server/connectivity/IpConnectivityMetrics;
+    .param p2, "x1"  # Lcom/android/server/connectivity/IpConnectivityMetrics$1;
 
     .line 363
     invoke-direct {p0, p1}, Lcom/android/server/connectivity/IpConnectivityMetrics$LoggerImpl;-><init>(Lcom/android/server/connectivity/IpConnectivityMetrics;)V

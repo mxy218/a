@@ -38,7 +38,7 @@
 .method public constructor <init>()V
     .registers 1
 
-    .line 541
+    .line 534
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
     return-void
@@ -49,11 +49,11 @@
 .method public reset()V
     .registers 2
 
-    .line 554
+    .line 547
     const/4 v0, 0x0
 
     iput-object v0, p0, Lcom/android/server/net/NetworkPolicyLogger$Data;->sfield1:Ljava/lang/String;
 
-    .line 555
+    .line 548
     return-void
 .end method

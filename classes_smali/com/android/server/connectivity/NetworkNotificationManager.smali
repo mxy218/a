@@ -33,7 +33,7 @@
 .method static constructor <clinit>()V
     .registers 1
 
-    .line 74
+    .line 76
     const-class v0, Lcom/android/server/connectivity/NetworkNotificationManager;
 
     invoke-virtual {v0}, Ljava/lang/Class;->getSimpleName()Ljava/lang/String;
@@ -46,43 +46,48 @@
 .end method
 
 .method public constructor <init>(Landroid/content/Context;Landroid/telephony/TelephonyManager;Landroid/app/NotificationManager;)V
-    .registers 4
-
-    .line 84
-    invoke-direct {p0}, Ljava/lang/Object;-><init>()V
-
-    .line 85
-    iput-object p1, p0, Lcom/android/server/connectivity/NetworkNotificationManager;->mContext:Landroid/content/Context;
+    .registers 5
+    .param p1, "c"  # Landroid/content/Context;
+    .param p2, "t"  # Landroid/telephony/TelephonyManager;
+    .param p3, "n"  # Landroid/app/NotificationManager;
 
     .line 86
-    iput-object p2, p0, Lcom/android/server/connectivity/NetworkNotificationManager;->mTelephonyManager:Landroid/telephony/TelephonyManager;
+    invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
     .line 87
-    iput-object p3, p0, Lcom/android/server/connectivity/NetworkNotificationManager;->mNotificationManager:Landroid/app/NotificationManager;
+    iput-object p1, p0, Lcom/android/server/connectivity/NetworkNotificationManager;->mContext:Landroid/content/Context;
 
     .line 88
-    new-instance p1, Landroid/util/SparseIntArray;
-
-    invoke-direct {p1}, Landroid/util/SparseIntArray;-><init>()V
-
-    iput-object p1, p0, Lcom/android/server/connectivity/NetworkNotificationManager;->mNotificationTypeMap:Landroid/util/SparseIntArray;
+    iput-object p2, p0, Lcom/android/server/connectivity/NetworkNotificationManager;->mTelephonyManager:Landroid/telephony/TelephonyManager;
 
     .line 89
+    iput-object p3, p0, Lcom/android/server/connectivity/NetworkNotificationManager;->mNotificationManager:Landroid/app/NotificationManager;
+
+    .line 90
+    new-instance v0, Landroid/util/SparseIntArray;
+
+    invoke-direct {v0}, Landroid/util/SparseIntArray;-><init>()V
+
+    iput-object v0, p0, Lcom/android/server/connectivity/NetworkNotificationManager;->mNotificationTypeMap:Landroid/util/SparseIntArray;
+
+    .line 91
     return-void
 .end method
 
 .method private static getFirstTransportType(Lcom/android/server/connectivity/NetworkAgentInfo;)I
     .registers 3
+    .param p0, "nai"  # Lcom/android/server/connectivity/NetworkAgentInfo;
 
-    .line 93
+    .line 95
     const/4 v0, 0x0
 
+    .local v0, "i":I
     :goto_1
     const/16 v1, 0x40
 
     if-ge v0, v1, :cond_11
 
-    .line 94
+    .line 96
     iget-object v1, p0, Lcom/android/server/connectivity/NetworkAgentInfo;->networkCapabilities:Landroid/net/NetworkCapabilities;
 
     invoke-virtual {v1, v0}, Landroid/net/NetworkCapabilities;->hasTransport(I)Z
@@ -93,170 +98,178 @@
 
     return v0
 
-    .line 93
+    .line 95
     :cond_e
     add-int/lit8 v0, v0, 0x1
 
     goto :goto_1
 
-    .line 96
+    .line 98
+    .end local v0  # "i":I
     :cond_11
-    const/4 p0, -0x1
+    const/4 v0, -0x1
 
-    return p0
+    return v0
 .end method
 
 .method private static getIcon(ILcom/android/server/connectivity/NetworkNotificationManager$NotificationType;)I
-    .registers 3
+    .registers 4
+    .param p0, "transportType"  # I
+    .param p1, "notifyType"  # Lcom/android/server/connectivity/NetworkNotificationManager$NotificationType;
 
-    .line 110
-    const/4 v0, 0x1
+    .line 112
+    const v0, 0x10807ea
 
-    if-eq p0, v0, :cond_7
+    const/4 v1, 0x1
 
-    .line 111
-    const p0, 0x10807dd
+    if-eq p0, v1, :cond_7
 
-    return p0
-
-    .line 114
-    :cond_7
-    sget-object p0, Lcom/android/server/connectivity/NetworkNotificationManager$NotificationType;->LOGGED_IN:Lcom/android/server/connectivity/NetworkNotificationManager$NotificationType;
-
-    if-ne p1, p0, :cond_f
+    .line 113
+    return v0
 
     .line 115
-    const p0, 0x1080544
+    :cond_7
+    if-ne p0, v1, :cond_d
 
-    goto :goto_12
+    .line 118
+    const v0, 0xa080290
 
-    .line 116
-    :cond_f
-    const p0, 0x10807e1
+    goto :goto_e
 
-    .line 114
-    :goto_12
-    return p0
+    .line 120
+    :cond_d
+    nop
+
+    .line 115
+    :goto_e
+    return v0
 .end method
 
 .method private static getTransportName(I)Ljava/lang/String;
-    .registers 3
+    .registers 5
+    .param p0, "transportType"  # I
 
-    .line 100
+    .line 102
     invoke-static {}, Landroid/content/res/Resources;->getSystem()Landroid/content/res/Resources;
 
     move-result-object v0
 
-    .line 101
-    const v1, 0x1070089
+    .line 103
+    .local v0, "r":Landroid/content/res/Resources;
+    const v1, 0x107007f
 
     invoke-virtual {v0, v1}, Landroid/content/res/Resources;->getStringArray(I)[Ljava/lang/String;
 
     move-result-object v1
 
-    .line 103
+    .line 105
+    .local v1, "networkTypes":[Ljava/lang/String;
     :try_start_b
-    aget-object p0, v1, p0
+    aget-object v2, v1, p0
     :try_end_d
     .catch Ljava/lang/IndexOutOfBoundsException; {:try_start_b .. :try_end_d} :catch_e
 
-    return-object p0
+    return-object v2
 
-    .line 104
+    .line 106
     :catch_e
-    move-exception p0
+    move-exception v2
 
-    .line 105
-    const p0, 0x1040458
+    .line 107
+    .local v2, "e":Ljava/lang/IndexOutOfBoundsException;
+    const v3, 0x1040457
 
-    invoke-virtual {v0, p0}, Landroid/content/res/Resources;->getString(I)Ljava/lang/String;
+    invoke-virtual {v0, v3}, Landroid/content/res/Resources;->getString(I)Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v3
 
-    return-object p0
+    return-object v3
 .end method
 
 .method static nameOf(I)Ljava/lang/String;
-    .registers 1
+    .registers 3
+    .param p0, "eventId"  # I
     .annotation build Lcom/android/internal/annotations/VisibleForTesting;
     .end annotation
 
-    .line 346
+    .line 401
     invoke-static {p0}, Lcom/android/server/connectivity/NetworkNotificationManager$NotificationType;->getFromId(I)Lcom/android/server/connectivity/NetworkNotificationManager$NotificationType;
 
-    move-result-object p0
+    move-result-object v0
 
-    .line 347
-    if-eqz p0, :cond_b
+    .line 402
+    .local v0, "t":Lcom/android/server/connectivity/NetworkNotificationManager$NotificationType;
+    if-eqz v0, :cond_b
 
-    invoke-virtual {p0}, Lcom/android/server/connectivity/NetworkNotificationManager$NotificationType;->name()Ljava/lang/String;
+    invoke-virtual {v0}, Lcom/android/server/connectivity/NetworkNotificationManager$NotificationType;->name()Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v1
 
     goto :goto_d
 
     :cond_b
-    const-string p0, "UNKNOWN"
+    const-string v1, "UNKNOWN"
 
     :goto_d
-    return-object p0
+    return-object v1
 .end method
 
 .method private static priority(Lcom/android/server/connectivity/NetworkNotificationManager$NotificationType;)I
-    .registers 3
+    .registers 4
+    .param p0, "t"  # Lcom/android/server/connectivity/NetworkNotificationManager$NotificationType;
 
-    .line 355
+    .line 410
     const/4 v0, 0x0
 
     if-nez p0, :cond_4
 
-    .line 356
+    .line 411
     return v0
 
-    .line 358
+    .line 413
     :cond_4
     sget-object v1, Lcom/android/server/connectivity/NetworkNotificationManager$1;->$SwitchMap$com$android$server$connectivity$NetworkNotificationManager$NotificationType:[I
 
     invoke-virtual {p0}, Lcom/android/server/connectivity/NetworkNotificationManager$NotificationType;->ordinal()I
 
-    move-result p0
+    move-result v2
 
-    aget p0, v1, p0
+    aget v1, v1, v2
 
-    packed-switch p0, :pswitch_data_1a
+    packed-switch v1, :pswitch_data_1a
 
-    .line 371
+    .line 426
     return v0
 
-    .line 369
+    .line 424
     :pswitch_10  #0x5, 0x6
-    const/4 p0, 0x1
+    const/4 v0, 0x1
 
-    return p0
+    return v0
 
-    .line 366
+    .line 421
     :pswitch_12  #0x4
-    const/4 p0, 0x2
+    const/4 v0, 0x2
 
-    return p0
+    return v0
 
-    .line 364
+    .line 419
     :pswitch_14  #0x3
-    const/4 p0, 0x3
+    const/4 v0, 0x3
 
-    return p0
+    return v0
 
-    .line 362
+    .line 417
     :pswitch_16  #0x2
-    const/4 p0, 0x4
+    const/4 v0, 0x4
 
-    return p0
+    return v0
 
-    .line 360
+    .line 415
     :pswitch_18  #0x1
-    const/4 p0, 0x5
+    const/4 v0, 0x5
 
-    return p0
+    return v0
 
     :pswitch_data_1a
     .packed-switch 0x1
@@ -269,39 +282,158 @@
     .end packed-switch
 .end method
 
+.method private setWifiLoginNotification(Landroid/app/Notification$Builder;Landroid/content/res/Resources;Ljava/lang/CharSequence;Ljava/lang/CharSequence;)V
+    .registers 12
+    .param p1, "builder"  # Landroid/app/Notification$Builder;
+    .param p2, "r"  # Landroid/content/res/Resources;
+    .param p3, "title"  # Ljava/lang/CharSequence;
+    .param p4, "details"  # Ljava/lang/CharSequence;
+
+    .line 319
+    invoke-interface {p4}, Ljava/lang/CharSequence;->toString()Ljava/lang/String;
+
+    move-result-object v0
+
+    invoke-static {v0}, Landroid/net/wifi/WifiInfo;->removeDoubleQuotes(Ljava/lang/String;)Ljava/lang/String;
+
+    move-result-object v0
+
+    .line 320
+    .local v0, "ssid":Ljava/lang/String;
+    new-instance v1, Landroid/content/Intent;
+
+    const-string v2, "com.meizu.intent.action.CLEAR_WIFI_PORTAL_NOTIFICATION"
+
+    invoke-direct {v1, v2}, Landroid/content/Intent;-><init>(Ljava/lang/String;)V
+
+    .line 321
+    .local v1, "ignoreIntent":Landroid/content/Intent;
+    const-string v2, "disconnect_ssid"
+
+    invoke-virtual {v1, v2, v0}, Landroid/content/Intent;->putExtra(Ljava/lang/String;Ljava/lang/String;)Landroid/content/Intent;
+
+    .line 322
+    new-instance v2, Landroid/app/Notification$Action$Builder;
+
+    .line 324
+    const v3, 0xa1000af
+
+    invoke-virtual {p2, v3}, Landroid/content/res/Resources;->getText(I)Ljava/lang/CharSequence;
+
+    move-result-object v3
+
+    iget-object v4, p0, Lcom/android/server/connectivity/NetworkNotificationManager;->mContext:Landroid/content/Context;
+
+    .line 325
+    const/4 v5, 0x0
+
+    const/high16 v6, 0x8000000
+
+    invoke-static {v4, v5, v1, v6}, Landroid/app/PendingIntent;->getBroadcast(Landroid/content/Context;ILandroid/content/Intent;I)Landroid/app/PendingIntent;
+
+    move-result-object v4
+
+    const/4 v6, 0x0
+
+    invoke-direct {v2, v6, v3, v4}, Landroid/app/Notification$Action$Builder;-><init>(Landroid/graphics/drawable/Icon;Ljava/lang/CharSequence;Landroid/app/PendingIntent;)V
+
+    .line 326
+    invoke-virtual {v2}, Landroid/app/Notification$Action$Builder;->build()Landroid/app/Notification$Action;
+
+    move-result-object v2
+
+    .line 327
+    .local v2, "ignoreAction":Landroid/app/Notification$Action;
+    invoke-virtual {p1, v2}, Landroid/app/Notification$Builder;->addAction(Landroid/app/Notification$Action;)Landroid/app/Notification$Builder;
+
+    .line 329
+    new-instance v3, Landroid/os/Bundle;
+
+    invoke-direct {v3}, Landroid/os/Bundle;-><init>()V
+
+    .line 330
+    .local v3, "extra":Landroid/os/Bundle;
+    const-string v4, "headsup"
+
+    invoke-virtual {v3, v4, v5}, Landroid/os/Bundle;->putInt(Ljava/lang/String;I)V
+
+    .line 331
+    iget-object v4, p0, Lcom/android/server/connectivity/NetworkNotificationManager;->mContext:Landroid/content/Context;
+
+    const v6, 0xa1000ae
+
+    invoke-virtual {v4, v6}, Landroid/content/Context;->getString(I)Ljava/lang/String;
+
+    move-result-object v4
+
+    .line 332
+    .local v4, "appName":Ljava/lang/String;
+    const-string v6, "android.substName"
+
+    invoke-virtual {v3, v6, v4}, Landroid/os/Bundle;->putString(Ljava/lang/String;Ljava/lang/String;)V
+
+    .line 333
+    invoke-virtual {p1, v3}, Landroid/app/Notification$Builder;->addExtras(Landroid/os/Bundle;)Landroid/app/Notification$Builder;
+
+    .line 335
+    invoke-virtual {p1, v5}, Landroid/app/Notification$Builder;->setAutoCancel(Z)Landroid/app/Notification$Builder;
+
+    .line 336
+    const/16 v5, 0x20
+
+    const/4 v6, 0x1
+
+    invoke-virtual {p1, v5, v6}, Landroid/app/Notification$Builder;->setFlag(IZ)Landroid/app/Notification$Builder;
+
+    .line 337
+    invoke-virtual {p1, v0}, Landroid/app/Notification$Builder;->setContentText(Ljava/lang/CharSequence;)Landroid/app/Notification$Builder;
+
+    .line 338
+    iget-object v5, p1, Landroid/app/Notification$Builder;->mFlymeNotificationBuilder:Landroid/app/NotificationBuilderExt;
+
+    const v6, 0xa0802d3
+
+    invoke-virtual {v5, v6}, Landroid/app/NotificationBuilderExt;->setNotificationIcon(I)V
+
+    .line 340
+    return-void
+.end method
+
 .method static tagFor(I)Ljava/lang/String;
-    .registers 3
+    .registers 4
+    .param p0, "id"  # I
     .annotation build Lcom/android/internal/annotations/VisibleForTesting;
     .end annotation
 
-    .line 341
+    .line 396
     const/4 v0, 0x1
 
     new-array v0, v0, [Ljava/lang/Object;
 
     invoke-static {p0}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
 
-    move-result-object p0
+    move-result-object v1
 
-    const/4 v1, 0x0
+    const/4 v2, 0x0
 
-    aput-object p0, v0, v1
+    aput-object v1, v0, v2
 
-    const-string p0, "ConnectivityNotification:%d"
+    const-string v1, "ConnectivityNotification:%d"
 
-    invoke-static {p0, v0}, Ljava/lang/String;->format(Ljava/lang/String;[Ljava/lang/Object;)Ljava/lang/String;
+    invoke-static {v1, v0}, Ljava/lang/String;->format(Ljava/lang/String;[Ljava/lang/Object;)Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v0
 
-    return-object p0
+    return-object v0
 .end method
 
 
 # virtual methods
 .method public clearNotification(I)V
     .registers 10
+    .param p1, "id"  # I
 
-    .line 300
+    .line 355
     iget-object v0, p0, Lcom/android/server/connectivity/NetworkNotificationManager;->mNotificationTypeMap:Landroid/util/SparseIntArray;
 
     invoke-virtual {v0, p1}, Landroid/util/SparseIntArray;->indexOfKey(I)I
@@ -310,23 +442,25 @@
 
     if-gez v0, :cond_9
 
-    .line 301
+    .line 356
     return-void
 
-    .line 303
+    .line 358
     :cond_9
     invoke-static {p1}, Lcom/android/server/connectivity/NetworkNotificationManager;->tagFor(I)Ljava/lang/String;
 
     move-result-object v0
 
-    .line 304
+    .line 359
+    .local v0, "tag":Ljava/lang/String;
     iget-object v1, p0, Lcom/android/server/connectivity/NetworkNotificationManager;->mNotificationTypeMap:Landroid/util/SparseIntArray;
 
     invoke-virtual {v1, p1}, Landroid/util/SparseIntArray;->get(I)I
 
     move-result v1
 
-    .line 306
+    .line 361
+    .local v1, "eventId":I
     sget-object v2, Lcom/android/server/connectivity/NetworkNotificationManager;->TAG:Ljava/lang/String;
 
     const/4 v3, 0x2
@@ -337,7 +471,7 @@
 
     aput-object v0, v4, v5
 
-    .line 307
+    .line 362
     invoke-static {v1}, Lcom/android/server/connectivity/NetworkNotificationManager;->nameOf(I)Ljava/lang/String;
 
     move-result-object v6
@@ -346,7 +480,7 @@
 
     aput-object v6, v4, v7
 
-    .line 306
+    .line 361
     const-string v6, "clearing notification tag=%s event=%s"
 
     invoke-static {v6, v4}, Ljava/lang/String;->format(Ljava/lang/String;[Ljava/lang/Object;)Ljava/lang/String;
@@ -355,7 +489,7 @@
 
     invoke-static {v2, v4}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 310
+    .line 365
     :try_start_2b
     iget-object v2, p0, Lcom/android/server/connectivity/NetworkNotificationManager;->mNotificationManager:Landroid/app/NotificationManager;
 
@@ -365,406 +499,399 @@
     :try_end_32
     .catch Ljava/lang/NullPointerException; {:try_start_2b .. :try_end_32} :catch_33
 
-    .line 314
+    .line 369
     goto :goto_49
 
-    .line 311
+    .line 366
     :catch_33
     move-exception v2
 
-    .line 312
+    .line 367
+    .local v2, "npe":Ljava/lang/NullPointerException;
     sget-object v4, Lcom/android/server/connectivity/NetworkNotificationManager;->TAG:Ljava/lang/String;
 
     new-array v3, v3, [Ljava/lang/Object;
 
     aput-object v0, v3, v5
 
-    .line 313
+    .line 368
     invoke-static {v1}, Lcom/android/server/connectivity/NetworkNotificationManager;->nameOf(I)Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v5
 
-    aput-object v0, v3, v7
+    aput-object v5, v3, v7
 
-    .line 312
-    const-string v0, "failed to clear notification tag=%s event=%s"
+    .line 367
+    const-string v5, "failed to clear notification tag=%s event=%s"
 
-    invoke-static {v0, v3}, Ljava/lang/String;->format(Ljava/lang/String;[Ljava/lang/Object;)Ljava/lang/String;
+    invoke-static {v5, v3}, Ljava/lang/String;->format(Ljava/lang/String;[Ljava/lang/Object;)Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v3
 
-    invoke-static {v4, v0, v2}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    invoke-static {v4, v3, v2}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
-    .line 315
+    .line 370
+    .end local v2  # "npe":Ljava/lang/NullPointerException;
     :goto_49
-    iget-object v0, p0, Lcom/android/server/connectivity/NetworkNotificationManager;->mNotificationTypeMap:Landroid/util/SparseIntArray;
+    iget-object v2, p0, Lcom/android/server/connectivity/NetworkNotificationManager;->mNotificationTypeMap:Landroid/util/SparseIntArray;
 
-    invoke-virtual {v0, p1}, Landroid/util/SparseIntArray;->delete(I)V
+    invoke-virtual {v2, p1}, Landroid/util/SparseIntArray;->delete(I)V
 
-    .line 316
+    .line 371
     return-void
 .end method
 
 .method public clearNotification(ILcom/android/server/connectivity/NetworkNotificationManager$NotificationType;)V
-    .registers 4
+    .registers 5
+    .param p1, "id"  # I
+    .param p2, "notifyType"  # Lcom/android/server/connectivity/NetworkNotificationManager$NotificationType;
 
-    .line 291
+    .line 346
     iget-object v0, p0, Lcom/android/server/connectivity/NetworkNotificationManager;->mNotificationTypeMap:Landroid/util/SparseIntArray;
 
     invoke-virtual {v0, p1}, Landroid/util/SparseIntArray;->get(I)I
 
     move-result v0
 
-    .line 292
+    .line 347
+    .local v0, "previousEventId":I
     invoke-static {v0}, Lcom/android/server/connectivity/NetworkNotificationManager$NotificationType;->getFromId(I)Lcom/android/server/connectivity/NetworkNotificationManager$NotificationType;
 
-    move-result-object v0
+    move-result-object v1
 
-    .line 293
-    if-eq p2, v0, :cond_d
+    .line 348
+    .local v1, "previousNotifyType":Lcom/android/server/connectivity/NetworkNotificationManager$NotificationType;
+    if-eq p2, v1, :cond_d
 
-    .line 294
+    .line 349
     return-void
 
-    .line 296
+    .line 351
     :cond_d
     invoke-virtual {p0, p1}, Lcom/android/server/connectivity/NetworkNotificationManager;->clearNotification(I)V
 
-    .line 297
+    .line 352
     return-void
 .end method
 
 .method public setProvNotificationVisible(ZILjava/lang/String;)V
-    .registers 12
+    .registers 14
+    .param p1, "visible"  # Z
+    .param p2, "id"  # I
+    .param p3, "action"  # Ljava/lang/String;
 
-    .line 322
-    if-eqz p1, :cond_19
+    .line 377
+    if-eqz p1, :cond_1a
 
-    .line 323
-    new-instance p1, Landroid/content/Intent;
+    .line 378
+    new-instance v0, Landroid/content/Intent;
 
-    invoke-direct {p1, p3}, Landroid/content/Intent;-><init>(Ljava/lang/String;)V
+    invoke-direct {v0, p3}, Landroid/content/Intent;-><init>(Ljava/lang/String;)V
 
-    .line 324
-    iget-object p3, p0, Lcom/android/server/connectivity/NetworkNotificationManager;->mContext:Landroid/content/Context;
+    .line 379
+    .local v0, "intent":Landroid/content/Intent;
+    iget-object v1, p0, Lcom/android/server/connectivity/NetworkNotificationManager;->mContext:Landroid/content/Context;
 
-    const/4 v0, 0x0
+    const/4 v2, 0x0
 
-    invoke-static {p3, v0, p1, v0}, Landroid/app/PendingIntent;->getBroadcast(Landroid/content/Context;ILandroid/content/Intent;I)Landroid/app/PendingIntent;
+    invoke-static {v1, v2, v0, v2}, Landroid/app/PendingIntent;->getBroadcast(Landroid/content/Context;ILandroid/content/Intent;I)Landroid/app/PendingIntent;
 
-    move-result-object v6
+    move-result-object v1
 
-    .line 325
-    sget-object v3, Lcom/android/server/connectivity/NetworkNotificationManager$NotificationType;->SIGN_IN:Lcom/android/server/connectivity/NetworkNotificationManager$NotificationType;
+    .line 380
+    .local v1, "pendingIntent":Landroid/app/PendingIntent;
+    sget-object v5, Lcom/android/server/connectivity/NetworkNotificationManager$NotificationType;->SIGN_IN:Lcom/android/server/connectivity/NetworkNotificationManager$NotificationType;
 
-    const/4 v4, 0x0
-
-    const/4 v5, 0x0
+    const/4 v6, 0x0
 
     const/4 v7, 0x0
 
-    move-object v1, p0
+    const/4 v9, 0x0
 
-    move v2, p2
+    move-object v3, p0
 
-    invoke-virtual/range {v1 .. v7}, Lcom/android/server/connectivity/NetworkNotificationManager;->showNotification(ILcom/android/server/connectivity/NetworkNotificationManager$NotificationType;Lcom/android/server/connectivity/NetworkAgentInfo;Lcom/android/server/connectivity/NetworkAgentInfo;Landroid/app/PendingIntent;Z)V
+    move v4, p2
 
-    .line 326
-    goto :goto_1c
+    move-object v8, v1
 
-    .line 327
-    :cond_19
+    invoke-virtual/range {v3 .. v9}, Lcom/android/server/connectivity/NetworkNotificationManager;->showNotification(ILcom/android/server/connectivity/NetworkNotificationManager$NotificationType;Lcom/android/server/connectivity/NetworkAgentInfo;Lcom/android/server/connectivity/NetworkAgentInfo;Landroid/app/PendingIntent;Z)V
+
+    .line 381
+    .end local v0  # "intent":Landroid/content/Intent;
+    .end local v1  # "pendingIntent":Landroid/app/PendingIntent;
+    goto :goto_1d
+
+    .line 382
+    :cond_1a
     invoke-virtual {p0, p2}, Lcom/android/server/connectivity/NetworkNotificationManager;->clearNotification(I)V
 
-    .line 329
-    :goto_1c
+    .line 384
+    :goto_1d
     return-void
 .end method
 
 .method public showNotification(ILcom/android/server/connectivity/NetworkNotificationManager$NotificationType;Lcom/android/server/connectivity/NetworkAgentInfo;Lcom/android/server/connectivity/NetworkAgentInfo;Landroid/app/PendingIntent;Z)V
-    .registers 25
+    .registers 29
+    .param p1, "id"  # I
+    .param p2, "notifyType"  # Lcom/android/server/connectivity/NetworkNotificationManager$NotificationType;
+    .param p3, "nai"  # Lcom/android/server/connectivity/NetworkAgentInfo;
+    .param p4, "switchToNai"  # Lcom/android/server/connectivity/NetworkAgentInfo;
+    .param p5, "intent"  # Landroid/app/PendingIntent;
+    .param p6, "highPriority"  # Z
 
-    .line 143
+    .line 148
     move-object/from16 v1, p0
 
     move/from16 v2, p1
 
     move-object/from16 v3, p2
 
-    move-object/from16 v0, p3
+    move-object/from16 v4, p3
 
     invoke-static/range {p1 .. p1}, Lcom/android/server/connectivity/NetworkNotificationManager;->tagFor(I)Ljava/lang/String;
 
-    move-result-object v4
+    move-result-object v5
 
-    .line 144
-    iget v5, v3, Lcom/android/server/connectivity/NetworkNotificationManager$NotificationType;->eventId:I
+    .line 149
+    .local v5, "tag":Ljava/lang/String;
+    iget v6, v3, Lcom/android/server/connectivity/NetworkNotificationManager$NotificationType;->eventId:I
 
-    .line 147
-    const/4 v6, 0x0
+    .line 152
+    .local v6, "eventId":I
+    if-eqz v4, :cond_35
 
-    invoke-static {v6}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
+    .line 153
+    invoke-static/range {p3 .. p3}, Lcom/android/server/connectivity/NetworkNotificationManager;->getFirstTransportType(Lcom/android/server/connectivity/NetworkAgentInfo;)I
+
+    move-result v0
+
+    .line 154
+    .local v0, "transportType":I
+    iget-object v7, v4, Lcom/android/server/connectivity/NetworkAgentInfo;->networkInfo:Landroid/net/NetworkInfo;
+
+    invoke-virtual {v7}, Landroid/net/NetworkInfo;->getExtraInfo()Ljava/lang/String;
 
     move-result-object v7
 
-    if-eqz v0, :cond_37
-
-    .line 148
-    invoke-static/range {p3 .. p3}, Lcom/android/server/connectivity/NetworkNotificationManager;->getFirstTransportType(Lcom/android/server/connectivity/NetworkAgentInfo;)I
+    .line 155
+    .local v7, "extraInfo":Ljava/lang/String;
+    invoke-static {v7}, Landroid/text/TextUtils;->isEmpty(Ljava/lang/CharSequence;)Z
 
     move-result v8
 
-    .line 149
-    iget-object v9, v0, Lcom/android/server/connectivity/NetworkAgentInfo;->networkInfo:Landroid/net/NetworkInfo;
+    if-eqz v8, :cond_27
 
-    invoke-virtual {v9}, Landroid/net/NetworkInfo;->getExtraInfo()Ljava/lang/String;
+    iget-object v8, v4, Lcom/android/server/connectivity/NetworkAgentInfo;->networkCapabilities:Landroid/net/NetworkCapabilities;
 
-    move-result-object v9
+    invoke-virtual {v8}, Landroid/net/NetworkCapabilities;->getSSID()Ljava/lang/String;
 
-    .line 150
-    invoke-static {v9}, Landroid/text/TextUtils;->isEmpty(Ljava/lang/CharSequence;)Z
+    move-result-object v8
 
-    move-result v10
+    goto :goto_28
 
-    if-eqz v10, :cond_2b
+    :cond_27
+    move-object v8, v7
 
-    iget-object v9, v0, Lcom/android/server/connectivity/NetworkAgentInfo;->networkCapabilities:Landroid/net/NetworkCapabilities;
+    .line 157
+    .local v8, "name":Ljava/lang/String;
+    :goto_28
+    iget-object v9, v4, Lcom/android/server/connectivity/NetworkAgentInfo;->networkCapabilities:Landroid/net/NetworkCapabilities;
 
-    invoke-virtual {v9}, Landroid/net/NetworkCapabilities;->getSSID()Ljava/lang/String;
+    const/16 v10, 0xc
 
-    move-result-object v9
+    invoke-virtual {v9, v10}, Landroid/net/NetworkCapabilities;->hasCapability(I)Z
 
-    .line 152
-    :cond_2b
-    iget-object v10, v0, Lcom/android/server/connectivity/NetworkAgentInfo;->networkCapabilities:Landroid/net/NetworkCapabilities;
+    move-result v9
 
-    const/16 v11, 0xc
-
-    invoke-virtual {v10, v11}, Landroid/net/NetworkCapabilities;->hasCapability(I)Z
-
-    move-result v10
-
-    if-nez v10, :cond_36
+    if-nez v9, :cond_33
 
     return-void
 
-    .line 153
-    :cond_36
-    goto :goto_3a
+    .line 158
+    .end local v7  # "extraInfo":Ljava/lang/String;
+    :cond_33
+    move v7, v0
 
-    .line 155
-    :cond_37
-    nop
+    goto :goto_38
 
-    .line 156
-    const/4 v9, 0x0
-
-    move v8, v6
+    .line 160
+    .end local v0  # "transportType":I
+    .end local v8  # "name":Ljava/lang/String;
+    :cond_35
+    const/4 v0, 0x0
 
     .line 161
-    :goto_3a
-    iget-object v10, v1, Lcom/android/server/connectivity/NetworkNotificationManager;->mNotificationTypeMap:Landroid/util/SparseIntArray;
+    .restart local v0  # "transportType":I
+    const/4 v8, 0x0
 
-    invoke-virtual {v10, v2}, Landroid/util/SparseIntArray;->get(I)I
+    move v7, v0
 
-    move-result v10
+    .line 166
+    .end local v0  # "transportType":I
+    .local v7, "transportType":I
+    .restart local v8  # "name":Ljava/lang/String;
+    :goto_38
+    iget-object v0, v1, Lcom/android/server/connectivity/NetworkNotificationManager;->mNotificationTypeMap:Landroid/util/SparseIntArray;
 
-    .line 162
-    invoke-static {v10}, Lcom/android/server/connectivity/NetworkNotificationManager$NotificationType;->getFromId(I)Lcom/android/server/connectivity/NetworkNotificationManager$NotificationType;
+    invoke-virtual {v0, v2}, Landroid/util/SparseIntArray;->get(I)I
+
+    move-result v9
+
+    .line 167
+    .local v9, "previousEventId":I
+    invoke-static {v9}, Lcom/android/server/connectivity/NetworkNotificationManager$NotificationType;->getFromId(I)Lcom/android/server/connectivity/NetworkNotificationManager$NotificationType;
 
     move-result-object v10
 
-    .line 163
+    .line 168
+    .local v10, "previousNotifyType":Lcom/android/server/connectivity/NetworkNotificationManager$NotificationType;
     invoke-static {v10}, Lcom/android/server/connectivity/NetworkNotificationManager;->priority(Lcom/android/server/connectivity/NetworkNotificationManager$NotificationType;)I
 
-    move-result v11
+    move-result v0
 
     invoke-static/range {p2 .. p2}, Lcom/android/server/connectivity/NetworkNotificationManager;->priority(Lcom/android/server/connectivity/NetworkNotificationManager$NotificationType;)I
 
-    move-result v12
+    move-result v11
 
-    const/4 v13, 0x3
+    const/4 v12, 0x3
 
-    const/4 v14, 0x2
+    const/4 v13, 0x2
+
+    const/4 v14, 0x0
 
     const/4 v15, 0x1
 
-    if-le v11, v12, :cond_69
-
-    .line 164
-    sget-object v0, Lcom/android/server/connectivity/NetworkNotificationManager;->TAG:Ljava/lang/String;
-
-    new-array v1, v13, [Ljava/lang/Object;
-
-    aput-object v3, v1, v6
-
-    .line 166
-    invoke-static/range {p1 .. p1}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
-
-    move-result-object v2
-
-    aput-object v2, v1, v15
-
-    aput-object v10, v1, v14
-
-    .line 164
-    const-string v2, "ignoring notification %s for network %s with existing notification %s"
-
-    invoke-static {v2, v1}, Ljava/lang/String;->format(Ljava/lang/String;[Ljava/lang/Object;)Ljava/lang/String;
-
-    move-result-object v1
-
-    invoke-static {v0, v1}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
-
-    .line 167
-    return-void
+    if-le v0, v11, :cond_69
 
     .line 169
+    sget-object v0, Lcom/android/server/connectivity/NetworkNotificationManager;->TAG:Ljava/lang/String;
+
+    new-array v11, v12, [Ljava/lang/Object;
+
+    aput-object v3, v11, v14
+
+    .line 171
+    invoke-static/range {p1 .. p1}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
+
+    move-result-object v12
+
+    aput-object v12, v11, v15
+
+    aput-object v10, v11, v13
+
+    .line 169
+    const-string/jumbo v12, "ignoring notification %s for network %s with existing notification %s"
+
+    invoke-static {v12, v11}, Ljava/lang/String;->format(Ljava/lang/String;[Ljava/lang/Object;)Ljava/lang/String;
+
+    move-result-object v11
+
+    invoke-static {v0, v11}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
+
+    .line 172
+    return-void
+
+    .line 174
     :cond_69
     invoke-virtual/range {p0 .. p1}, Lcom/android/server/connectivity/NetworkNotificationManager;->clearNotification(I)V
 
-    .line 172
-    sget-object v11, Lcom/android/server/connectivity/NetworkNotificationManager;->TAG:Ljava/lang/String;
+    .line 177
+    sget-object v0, Lcom/android/server/connectivity/NetworkNotificationManager;->TAG:Ljava/lang/String;
 
-    const/4 v12, 0x5
+    const/4 v11, 0x5
 
-    new-array v12, v12, [Ljava/lang/Object;
+    new-array v11, v11, [Ljava/lang/Object;
 
-    aput-object v4, v12, v6
+    aput-object v5, v11, v14
 
-    .line 174
-    invoke-static {v5}, Lcom/android/server/connectivity/NetworkNotificationManager;->nameOf(I)Ljava/lang/String;
-
-    move-result-object v16
-
-    aput-object v16, v12, v15
-
-    invoke-static {v8}, Lcom/android/server/connectivity/NetworkNotificationManager;->getTransportName(I)Ljava/lang/String;
+    .line 179
+    invoke-static {v6}, Lcom/android/server/connectivity/NetworkNotificationManager;->nameOf(I)Ljava/lang/String;
 
     move-result-object v16
 
-    aput-object v16, v12, v14
+    aput-object v16, v11, v15
 
-    aput-object v9, v12, v13
+    invoke-static {v7}, Lcom/android/server/connectivity/NetworkNotificationManager;->getTransportName(I)Ljava/lang/String;
 
-    const/4 v13, 0x4
+    move-result-object v16
+
+    aput-object v16, v11, v13
+
+    aput-object v8, v11, v12
+
+    const/4 v12, 0x4
 
     invoke-static/range {p6 .. p6}, Ljava/lang/Boolean;->valueOf(Z)Ljava/lang/Boolean;
 
     move-result-object v16
 
-    aput-object v16, v12, v13
-
-    .line 172
-    const-string/jumbo v13, "showNotification tag=%s event=%s transport=%s name=%s highPriority=%s"
-
-    invoke-static {v13, v12}, Ljava/lang/String;->format(Ljava/lang/String;[Ljava/lang/Object;)Ljava/lang/String;
-
-    move-result-object v12
-
-    invoke-static {v11, v12}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
+    aput-object v16, v11, v12
 
     .line 177
-    invoke-static {}, Landroid/content/res/Resources;->getSystem()Landroid/content/res/Resources;
+    const-string/jumbo v12, "showNotification tag=%s event=%s transport=%s name=%s highPriority=%s"
+
+    invoke-static {v12, v11}, Ljava/lang/String;->format(Ljava/lang/String;[Ljava/lang/Object;)Ljava/lang/String;
 
     move-result-object v11
 
-    .line 180
-    invoke-static {v8, v3}, Lcom/android/server/connectivity/NetworkNotificationManager;->getIcon(ILcom/android/server/connectivity/NetworkNotificationManager$NotificationType;)I
-
-    move-result v12
-
-    .line 181
-    sget-object v13, Lcom/android/server/connectivity/NetworkNotificationManager$NotificationType;->NO_INTERNET:Lcom/android/server/connectivity/NetworkNotificationManager$NotificationType;
-
-    const v14, 0x1040797
-
-    if-ne v3, v13, :cond_be
-
-    if-ne v8, v15, :cond_be
-
-    .line 182
-    new-array v7, v15, [Ljava/lang/Object;
-
-    iget-object v0, v0, Lcom/android/server/connectivity/NetworkAgentInfo;->networkCapabilities:Landroid/net/NetworkCapabilities;
+    invoke-static {v0, v11}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 183
-    invoke-virtual {v0}, Landroid/net/NetworkCapabilities;->getSSID()Ljava/lang/String;
+    const/4 v11, 0x0
 
-    move-result-object v0
+    .line 186
+    .local v11, "notifyWifiSignin":Z
+    invoke-static {}, Landroid/content/res/Resources;->getSystem()Landroid/content/res/Resources;
 
-    invoke-static {v0}, Landroid/net/wifi/WifiInfo;->removeDoubleQuotes(Ljava/lang/String;)Ljava/lang/String;
-
-    move-result-object v0
-
-    aput-object v0, v7, v6
-
-    .line 182
-    invoke-virtual {v11, v14, v7}, Landroid/content/res/Resources;->getString(I[Ljava/lang/Object;)Ljava/lang/String;
-
-    move-result-object v0
-
-    .line 184
-    const v7, 0x1040798
-
-    invoke-virtual {v11, v7}, Landroid/content/res/Resources;->getString(I)Ljava/lang/String;
-
-    move-result-object v7
-
-    goto/16 :goto_1d1
-
-    .line 185
-    :cond_be
-    sget-object v13, Lcom/android/server/connectivity/NetworkNotificationManager$NotificationType;->PARTIAL_CONNECTIVITY:Lcom/android/server/connectivity/NetworkNotificationManager$NotificationType;
-
-    if-ne v3, v13, :cond_e2
-
-    if-ne v8, v15, :cond_e2
-
-    .line 187
-    const v7, 0x1040453
-
-    new-array v8, v15, [Ljava/lang/Object;
-
-    iget-object v0, v0, Lcom/android/server/connectivity/NetworkAgentInfo;->networkCapabilities:Landroid/net/NetworkCapabilities;
-
-    .line 188
-    invoke-virtual {v0}, Landroid/net/NetworkCapabilities;->getSSID()Ljava/lang/String;
-
-    move-result-object v0
-
-    invoke-static {v0}, Landroid/net/wifi/WifiInfo;->removeDoubleQuotes(Ljava/lang/String;)Ljava/lang/String;
-
-    move-result-object v0
-
-    aput-object v0, v8, v6
-
-    .line 187
-    invoke-virtual {v11, v7, v8}, Landroid/content/res/Resources;->getString(I[Ljava/lang/Object;)Ljava/lang/String;
-
-    move-result-object v0
+    move-result-object v12
 
     .line 189
-    const v7, 0x1040454
+    .local v12, "r":Landroid/content/res/Resources;
+    invoke-static {v7, v3}, Lcom/android/server/connectivity/NetworkNotificationManager;->getIcon(ILcom/android/server/connectivity/NetworkNotificationManager$NotificationType;)I
 
-    invoke-virtual {v11, v7}, Landroid/content/res/Resources;->getString(I)Ljava/lang/String;
-
-    move-result-object v7
-
-    goto/16 :goto_1d1
+    move-result v13
 
     .line 190
-    :cond_e2
-    sget-object v13, Lcom/android/server/connectivity/NetworkNotificationManager$NotificationType;->LOST_INTERNET:Lcom/android/server/connectivity/NetworkNotificationManager$NotificationType;
+    .local v13, "icon":I
+    sget-object v0, Lcom/android/server/connectivity/NetworkNotificationManager;->TAG:Ljava/lang/String;
 
-    if-ne v3, v13, :cond_103
+    new-instance v14, Ljava/lang/StringBuilder;
 
-    if-ne v8, v15, :cond_103
+    invoke-direct {v14}, Ljava/lang/StringBuilder;-><init>()V
+
+    const-string/jumbo v15, "notifyType = "
+
+    invoke-virtual {v14, v15}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v14, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+
+    const-string/jumbo v15, "transportType = "
+
+    invoke-virtual {v14, v15}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v14, v7}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v14}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v14
+
+    invoke-static {v0, v14}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
+
+    .line 191
+    sget-object v0, Lcom/android/server/connectivity/NetworkNotificationManager$NotificationType;->NO_INTERNET:Lcom/android/server/connectivity/NetworkNotificationManager$NotificationType;
+
+    const v15, 0x104078f
+
+    if-ne v3, v0, :cond_e1
+
+    const/4 v14, 0x1
+
+    if-ne v7, v14, :cond_e1
 
     .line 192
-    new-array v7, v15, [Ljava/lang/Object;
+    new-array v14, v14, [Ljava/lang/Object;
 
-    iget-object v0, v0, Lcom/android/server/connectivity/NetworkAgentInfo;->networkCapabilities:Landroid/net/NetworkCapabilities;
+    iget-object v0, v4, Lcom/android/server/connectivity/NetworkAgentInfo;->networkCapabilities:Landroid/net/NetworkCapabilities;
 
     .line 193
     invoke-virtual {v0}, Landroid/net/NetworkCapabilities;->getSSID()Ljava/lang/String;
@@ -775,128 +902,307 @@
 
     move-result-object v0
 
-    aput-object v0, v7, v6
+    const/16 v16, 0x0
+
+    aput-object v0, v14, v16
 
     .line 192
-    invoke-virtual {v11, v14, v7}, Landroid/content/res/Resources;->getString(I[Ljava/lang/Object;)Ljava/lang/String;
+    invoke-virtual {v12, v15, v14}, Landroid/content/res/Resources;->getString(I[Ljava/lang/Object;)Ljava/lang/String;
 
     move-result-object v0
 
     .line 194
-    const v7, 0x1040798
+    .local v0, "title":Ljava/lang/CharSequence;
+    const v14, 0x1040790
 
-    invoke-virtual {v11, v7}, Landroid/content/res/Resources;->getString(I)Ljava/lang/String;
+    invoke-virtual {v12, v14}, Landroid/content/res/Resources;->getString(I)Ljava/lang/String;
 
-    move-result-object v7
-
-    goto/16 :goto_1d1
-
-    .line 195
-    :cond_103
-    sget-object v13, Lcom/android/server/connectivity/NetworkNotificationManager$NotificationType;->SIGN_IN:Lcom/android/server/connectivity/NetworkNotificationManager$NotificationType;
-
-    if-ne v3, v13, :cond_191
+    move-result-object v14
 
     .line 196
-    const v13, 0x104044f
-
-    if-eqz v8, :cond_147
-
-    const v14, 0x1040450
-
-    if-eq v8, v15, :cond_123
-
-    .line 222
-    new-array v0, v15, [Ljava/lang/Object;
-
-    aput-object v7, v0, v6
-
-    invoke-virtual {v11, v13, v0}, Landroid/content/res/Resources;->getString(I[Ljava/lang/Object;)Ljava/lang/String;
-
-    move-result-object v0
-
-    .line 223
-    new-array v7, v15, [Ljava/lang/Object;
-
-    aput-object v9, v7, v6
-
-    invoke-virtual {v11, v14, v7}, Landroid/content/res/Resources;->getString(I[Ljava/lang/Object;)Ljava/lang/String;
-
-    move-result-object v7
-
-    .line 224
-    goto/16 :goto_1d1
+    .local v14, "details":Ljava/lang/CharSequence;
+    return-void
 
     .line 198
-    :cond_123
-    const v8, 0x1040785
+    .end local v0  # "title":Ljava/lang/CharSequence;
+    .end local v14  # "details":Ljava/lang/CharSequence;
+    :cond_e1
+    sget-object v14, Lcom/android/server/connectivity/NetworkNotificationManager$NotificationType;->PARTIAL_CONNECTIVITY:Lcom/android/server/connectivity/NetworkNotificationManager$NotificationType;
 
-    new-array v9, v15, [Ljava/lang/Object;
+    if-ne v3, v14, :cond_107
 
-    aput-object v7, v9, v6
+    const/4 v14, 0x1
 
-    invoke-virtual {v11, v8, v9}, Landroid/content/res/Resources;->getString(I[Ljava/lang/Object;)Ljava/lang/String;
-
-    move-result-object v7
-
-    .line 199
-    new-array v8, v15, [Ljava/lang/Object;
-
-    iget-object v0, v0, Lcom/android/server/connectivity/NetworkAgentInfo;->networkCapabilities:Landroid/net/NetworkCapabilities;
+    if-ne v7, v14, :cond_107
 
     .line 200
-    invoke-virtual {v0}, Landroid/net/NetworkCapabilities;->getSSID()Ljava/lang/String;
+    const v0, 0x1040452
 
-    move-result-object v0
+    new-array v14, v14, [Ljava/lang/Object;
 
-    invoke-static {v0}, Landroid/net/wifi/WifiInfo;->removeDoubleQuotes(Ljava/lang/String;)Ljava/lang/String;
-
-    move-result-object v0
-
-    aput-object v0, v8, v6
-
-    .line 199
-    invoke-virtual {v11, v14, v8}, Landroid/content/res/Resources;->getString(I[Ljava/lang/Object;)Ljava/lang/String;
-
-    move-result-object v0
+    iget-object v15, v4, Lcom/android/server/connectivity/NetworkAgentInfo;->networkCapabilities:Landroid/net/NetworkCapabilities;
 
     .line 201
-    move-object/from16 v17, v7
+    invoke-virtual {v15}, Landroid/net/NetworkCapabilities;->getSSID()Ljava/lang/String;
 
-    move-object v7, v0
+    move-result-object v15
 
-    move-object/from16 v0, v17
+    invoke-static {v15}, Landroid/net/wifi/WifiInfo;->removeDoubleQuotes(Ljava/lang/String;)Ljava/lang/String;
 
-    goto/16 :goto_1d1
+    move-result-object v15
 
-    .line 203
-    :cond_147
-    new-array v8, v15, [Ljava/lang/Object;
+    const/16 v16, 0x0
 
-    aput-object v7, v8, v6
+    aput-object v15, v14, v16
 
-    invoke-virtual {v11, v13, v8}, Landroid/content/res/Resources;->getString(I[Ljava/lang/Object;)Ljava/lang/String;
+    .line 200
+    invoke-virtual {v12, v0, v14}, Landroid/content/res/Resources;->getString(I[Ljava/lang/Object;)Ljava/lang/String;
 
-    move-result-object v7
+    move-result-object v0
+
+    .line 202
+    .restart local v0  # "title":Ljava/lang/CharSequence;
+    const v14, 0x1040453
+
+    invoke-virtual {v12, v14}, Landroid/content/res/Resources;->getString(I)Ljava/lang/String;
+
+    move-result-object v14
+
+    .line 204
+    .restart local v14  # "details":Ljava/lang/CharSequence;
+    return-void
 
     .line 206
-    iget-object v0, v0, Lcom/android/server/connectivity/NetworkAgentInfo;->networkCapabilities:Landroid/net/NetworkCapabilities;
+    .end local v0  # "title":Ljava/lang/CharSequence;
+    .end local v14  # "details":Ljava/lang/CharSequence;
+    :cond_107
+    sget-object v14, Lcom/android/server/connectivity/NetworkNotificationManager$NotificationType;->LOST_INTERNET:Lcom/android/server/connectivity/NetworkNotificationManager$NotificationType;
+
+    if-ne v3, v14, :cond_132
+
+    const/4 v14, 0x1
+
+    if-ne v7, v14, :cond_132
+
+    .line 208
+    new-array v0, v14, [Ljava/lang/Object;
+
+    iget-object v14, v4, Lcom/android/server/connectivity/NetworkAgentInfo;->networkCapabilities:Landroid/net/NetworkCapabilities;
+
+    .line 209
+    invoke-virtual {v14}, Landroid/net/NetworkCapabilities;->getSSID()Ljava/lang/String;
+
+    move-result-object v14
+
+    invoke-static {v14}, Landroid/net/wifi/WifiInfo;->removeDoubleQuotes(Ljava/lang/String;)Ljava/lang/String;
+
+    move-result-object v14
+
+    const/16 v16, 0x0
+
+    aput-object v14, v0, v16
+
+    .line 208
+    invoke-virtual {v12, v15, v0}, Landroid/content/res/Resources;->getString(I[Ljava/lang/Object;)Ljava/lang/String;
+
+    move-result-object v0
+
+    .line 210
+    .restart local v0  # "title":Ljava/lang/CharSequence;
+    const v14, 0x1040790
+
+    invoke-virtual {v12, v14}, Landroid/content/res/Resources;->getString(I)Ljava/lang/String;
+
+    move-result-object v14
+
+    move-object/from16 v20, v8
+
+    move/from16 v21, v9
+
+    const/16 v17, 0x0
+
+    move-object v9, v0
+
+    .restart local v14  # "details":Ljava/lang/CharSequence;
+    goto/16 :goto_24d
+
+    .line 211
+    .end local v0  # "title":Ljava/lang/CharSequence;
+    .end local v14  # "details":Ljava/lang/CharSequence;
+    :cond_132
+    sget-object v0, Lcom/android/server/connectivity/NetworkNotificationManager$NotificationType;->SIGN_IN:Lcom/android/server/connectivity/NetworkNotificationManager$NotificationType;
+
+    if-ne v3, v0, :cond_203
+
+    .line 212
+    const v0, 0x104044e
+
+    if-eqz v7, :cond_19f
+
+    const/4 v15, 0x1
+
+    if-eq v7, v15, :cond_15e
+
+    .line 242
+    new-array v14, v15, [Ljava/lang/Object;
+
+    const/16 v17, 0x0
+
+    invoke-static/range {v17 .. v17}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
+
+    move-result-object v18
+
+    aput-object v18, v14, v17
+
+    invoke-virtual {v12, v0, v14}, Landroid/content/res/Resources;->getString(I[Ljava/lang/Object;)Ljava/lang/String;
+
+    move-result-object v0
+
+    .line 243
+    .restart local v0  # "title":Ljava/lang/CharSequence;
+    new-array v14, v15, [Ljava/lang/Object;
+
+    aput-object v8, v14, v17
+
+    const v15, 0x104044f
+
+    invoke-virtual {v12, v15, v14}, Landroid/content/res/Resources;->getString(I[Ljava/lang/Object;)Ljava/lang/String;
+
+    move-result-object v14
+
+    .line 244
+    .restart local v14  # "details":Ljava/lang/CharSequence;
+    move-object/from16 v20, v8
+
+    move/from16 v21, v9
+
+    move-object v9, v0
+
+    goto/16 :goto_24d
+
+    .line 214
+    .end local v0  # "title":Ljava/lang/CharSequence;
+    .end local v14  # "details":Ljava/lang/CharSequence;
+    :cond_15e
+    const/16 v17, 0x0
+
+    const v0, 0x1040785
+
+    const/4 v14, 0x1
+
+    new-array v15, v14, [Ljava/lang/Object;
+
+    invoke-static/range {v17 .. v17}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
+
+    move-result-object v18
+
+    aput-object v18, v15, v17
+
+    invoke-virtual {v12, v0, v15}, Landroid/content/res/Resources;->getString(I[Ljava/lang/Object;)Ljava/lang/String;
+
+    move-result-object v0
+
+    .line 215
+    .restart local v0  # "title":Ljava/lang/CharSequence;
+    new-array v15, v14, [Ljava/lang/Object;
+
+    iget-object v14, v4, Lcom/android/server/connectivity/NetworkAgentInfo;->networkCapabilities:Landroid/net/NetworkCapabilities;
+
+    .line 216
+    invoke-virtual {v14}, Landroid/net/NetworkCapabilities;->getSSID()Ljava/lang/String;
+
+    move-result-object v14
+
+    invoke-static {v14}, Landroid/net/wifi/WifiInfo;->removeDoubleQuotes(Ljava/lang/String;)Ljava/lang/String;
+
+    move-result-object v14
+
+    aput-object v14, v15, v17
+
+    .line 215
+    const v14, 0x104044f
+
+    invoke-virtual {v12, v14, v15}, Landroid/content/res/Resources;->getString(I[Ljava/lang/Object;)Ljava/lang/String;
+
+    move-result-object v14
+
+    .line 218
+    .restart local v14  # "details":Ljava/lang/CharSequence;
+    move-object/from16 v18, v0
+
+    const/4 v15, 0x1
+
+    .end local v0  # "title":Ljava/lang/CharSequence;
+    .local v18, "title":Ljava/lang/CharSequence;
+    new-array v0, v15, [Ljava/lang/Object;
+
+    invoke-static/range {v17 .. v17}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
+
+    move-result-object v19
+
+    aput-object v19, v0, v17
+
+    const v15, 0xa1000ad
+
+    invoke-virtual {v12, v15, v0}, Landroid/content/res/Resources;->getString(I[Ljava/lang/Object;)Ljava/lang/String;
+
+    move-result-object v0
+
+    .line 219
+    .end local v18  # "title":Ljava/lang/CharSequence;
+    .restart local v0  # "title":Ljava/lang/CharSequence;
+    const/4 v11, 0x1
+
+    .line 221
+    move-object/from16 v20, v8
+
+    move/from16 v21, v9
+
+    move-object v9, v0
+
+    goto/16 :goto_24d
+
+    .line 223
+    .end local v0  # "title":Ljava/lang/CharSequence;
+    .end local v14  # "details":Ljava/lang/CharSequence;
+    :cond_19f
+    const/16 v17, 0x0
+
+    const/4 v14, 0x1
+
+    new-array v15, v14, [Ljava/lang/Object;
+
+    invoke-static/range {v17 .. v17}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
+
+    move-result-object v14
+
+    aput-object v14, v15, v17
+
+    invoke-virtual {v12, v0, v15}, Landroid/content/res/Resources;->getString(I[Ljava/lang/Object;)Ljava/lang/String;
+
+    move-result-object v14
+
+    .line 226
+    .local v14, "title":Ljava/lang/CharSequence;
+    iget-object v0, v4, Lcom/android/server/connectivity/NetworkAgentInfo;->networkCapabilities:Landroid/net/NetworkCapabilities;
 
     invoke-virtual {v0}, Landroid/net/NetworkCapabilities;->getNetworkSpecifier()Landroid/net/NetworkSpecifier;
 
-    move-result-object v8
+    move-result-object v15
 
-    .line 207
-    const v9, 0x7fffffff
+    .line 227
+    .local v15, "specifier":Landroid/net/NetworkSpecifier;
+    const v16, 0x7fffffff
 
-    .line 208
-    instance-of v0, v8, Landroid/net/StringNetworkSpecifier;
+    .line 228
+    .local v16, "subId":I
+    instance-of v0, v15, Landroid/net/StringNetworkSpecifier;
 
-    if-eqz v0, :cond_181
+    if-eqz v0, :cond_1ee
 
-    .line 210
-    :try_start_15c
-    move-object v0, v8
+    .line 230
+    :try_start_1bb
+    move-object v0, v15
 
     check-cast v0, Landroid/net/StringNetworkSpecifier;
 
@@ -904,71 +1210,129 @@
 
     invoke-static {v0}, Ljava/lang/Integer;->parseInt(Ljava/lang/String;)I
 
-    move-result v9
-    :try_end_165
-    .catch Ljava/lang/NumberFormatException; {:try_start_15c .. :try_end_165} :catch_166
+    move-result v0
+    :try_end_1c4
+    .catch Ljava/lang/NumberFormatException; {:try_start_1bb .. :try_end_1c4} :catch_1cb
 
-    .line 215
-    goto :goto_181
+    move/from16 v16, v0
 
-    .line 212
-    :catch_166
+    .line 235
+    move-object/from16 v20, v8
+
+    move/from16 v21, v9
+
+    goto :goto_1f4
+
+    .line 232
+    :catch_1cb
     move-exception v0
 
-    .line 213
+    .line 233
+    .local v0, "e":Ljava/lang/NumberFormatException;
+    move-object/from16 v19, v0
+
+    .end local v0  # "e":Ljava/lang/NumberFormatException;
+    .local v19, "e":Ljava/lang/NumberFormatException;
     sget-object v0, Lcom/android/server/connectivity/NetworkNotificationManager;->TAG:Ljava/lang/String;
 
-    new-instance v11, Ljava/lang/StringBuilder;
+    move-object/from16 v20, v8
 
-    invoke-direct {v11}, Ljava/lang/StringBuilder;-><init>()V
+    .end local v8  # "name":Ljava/lang/String;
+    .local v20, "name":Ljava/lang/String;
+    new-instance v8, Ljava/lang/StringBuilder;
 
-    const-string v13, "NumberFormatException on "
+    invoke-direct {v8}, Ljava/lang/StringBuilder;-><init>()V
 
-    invoke-virtual {v11, v13}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    move/from16 v21, v9
 
-    check-cast v8, Landroid/net/StringNetworkSpecifier;
+    .end local v9  # "previousEventId":I
+    .local v21, "previousEventId":I
+    const-string v9, "NumberFormatException on "
 
-    iget-object v8, v8, Landroid/net/StringNetworkSpecifier;->specifier:Ljava/lang/String;
+    invoke-virtual {v8, v9}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v11, v8}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    move-object v9, v15
 
-    invoke-virtual {v11}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    check-cast v9, Landroid/net/StringNetworkSpecifier;
+
+    iget-object v9, v9, Landroid/net/StringNetworkSpecifier;->specifier:Ljava/lang/String;
+
+    invoke-virtual {v8, v9}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v8}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
     move-result-object v8
 
     invoke-static {v0, v8}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 218
-    :cond_181
-    :goto_181
-    iget-object v0, v1, Lcom/android/server/connectivity/NetworkNotificationManager;->mTelephonyManager:Landroid/telephony/TelephonyManager;
+    goto :goto_1f2
 
-    invoke-virtual {v0, v9}, Landroid/telephony/TelephonyManager;->createForSubscriptionId(I)Landroid/telephony/TelephonyManager;
+    .line 228
+    .end local v19  # "e":Ljava/lang/NumberFormatException;
+    .end local v20  # "name":Ljava/lang/String;
+    .end local v21  # "previousEventId":I
+    .restart local v8  # "name":Ljava/lang/String;
+    .restart local v9  # "previousEventId":I
+    :cond_1ee
+    move-object/from16 v20, v8
 
-    move-result-object v0
+    move/from16 v21, v9
 
-    .line 219
-    invoke-virtual {v0}, Landroid/telephony/TelephonyManager;->getNetworkOperatorName()Ljava/lang/String;
+    .line 238
+    .end local v8  # "name":Ljava/lang/String;
+    .end local v9  # "previousEventId":I
+    .restart local v20  # "name":Ljava/lang/String;
+    .restart local v21  # "previousEventId":I
+    :goto_1f2
+    move/from16 v0, v16
 
-    move-result-object v0
+    .end local v16  # "subId":I
+    .local v0, "subId":I
+    :goto_1f4
+    iget-object v8, v1, Lcom/android/server/connectivity/NetworkNotificationManager;->mTelephonyManager:Landroid/telephony/TelephonyManager;
 
-    .line 220
-    move-object/from16 v17, v7
+    invoke-virtual {v8, v0}, Landroid/telephony/TelephonyManager;->createForSubscriptionId(I)Landroid/telephony/TelephonyManager;
 
-    move-object v7, v0
+    move-result-object v8
 
-    move-object/from16 v0, v17
+    .line 239
+    invoke-virtual {v8}, Landroid/telephony/TelephonyManager;->getNetworkOperatorName()Ljava/lang/String;
 
-    goto :goto_1d1
+    move-result-object v8
 
-    .line 226
-    :cond_191
-    sget-object v7, Lcom/android/server/connectivity/NetworkNotificationManager$NotificationType;->LOGGED_IN:Lcom/android/server/connectivity/NetworkNotificationManager$NotificationType;
+    .line 240
+    .local v8, "details":Ljava/lang/CharSequence;
+    move-object v9, v14
 
-    if-ne v3, v7, :cond_1a7
+    const/16 v17, 0x0
 
-    .line 227
-    iget-object v0, v0, Lcom/android/server/connectivity/NetworkAgentInfo;->networkCapabilities:Landroid/net/NetworkCapabilities;
+    move-object v14, v8
+
+    goto :goto_24d
+
+    .line 246
+    .end local v0  # "subId":I
+    .end local v14  # "title":Ljava/lang/CharSequence;
+    .end local v15  # "specifier":Landroid/net/NetworkSpecifier;
+    .end local v20  # "name":Ljava/lang/String;
+    .end local v21  # "previousEventId":I
+    .local v8, "name":Ljava/lang/String;
+    .restart local v9  # "previousEventId":I
+    :cond_203
+    move-object/from16 v20, v8
+
+    move/from16 v21, v9
+
+    .end local v8  # "name":Ljava/lang/String;
+    .end local v9  # "previousEventId":I
+    .restart local v20  # "name":Ljava/lang/String;
+    .restart local v21  # "previousEventId":I
+    sget-object v0, Lcom/android/server/connectivity/NetworkNotificationManager$NotificationType;->LOGGED_IN:Lcom/android/server/connectivity/NetworkNotificationManager$NotificationType;
+
+    if-ne v3, v0, :cond_220
+
+    .line 247
+    iget-object v0, v4, Lcom/android/server/connectivity/NetworkAgentInfo;->networkCapabilities:Landroid/net/NetworkCapabilities;
 
     invoke-virtual {v0}, Landroid/net/NetworkCapabilities;->getSSID()Ljava/lang/String;
 
@@ -978,261 +1342,331 @@
 
     move-result-object v0
 
-    .line 228
-    const v7, 0x104011d
+    .line 248
+    .local v0, "title":Ljava/lang/CharSequence;
+    const v8, 0x1040119
 
-    invoke-virtual {v11, v7}, Landroid/content/res/Resources;->getString(I)Ljava/lang/String;
+    invoke-virtual {v12, v8}, Landroid/content/res/Resources;->getString(I)Ljava/lang/String;
 
-    move-result-object v7
+    move-result-object v14
 
-    goto :goto_1d1
+    move-object v9, v0
 
-    .line 229
-    :cond_1a7
+    const/16 v17, 0x0
+
+    .local v14, "details":Ljava/lang/CharSequence;
+    goto :goto_24d
+
+    .line 249
+    .end local v0  # "title":Ljava/lang/CharSequence;
+    .end local v14  # "details":Ljava/lang/CharSequence;
+    :cond_220
     sget-object v0, Lcom/android/server/connectivity/NetworkNotificationManager$NotificationType;->NETWORK_SWITCH:Lcom/android/server/connectivity/NetworkNotificationManager$NotificationType;
 
-    if-ne v3, v0, :cond_261
+    if-ne v3, v0, :cond_2f5
 
-    .line 230
-    invoke-static {v8}, Lcom/android/server/connectivity/NetworkNotificationManager;->getTransportName(I)Ljava/lang/String;
+    .line 250
+    invoke-static {v7}, Lcom/android/server/connectivity/NetworkNotificationManager;->getTransportName(I)Ljava/lang/String;
 
     move-result-object v0
 
-    .line 231
+    .line 251
+    .local v0, "fromTransport":Ljava/lang/String;
     invoke-static/range {p4 .. p4}, Lcom/android/server/connectivity/NetworkNotificationManager;->getFirstTransportType(Lcom/android/server/connectivity/NetworkAgentInfo;)I
 
-    move-result v7
+    move-result v8
 
-    invoke-static {v7}, Lcom/android/server/connectivity/NetworkNotificationManager;->getTransportName(I)Ljava/lang/String;
-
-    move-result-object v7
-
-    .line 232
-    const v8, 0x1040455
-
-    new-array v9, v15, [Ljava/lang/Object;
-
-    aput-object v7, v9, v6
-
-    invoke-virtual {v11, v8, v9}, Landroid/content/res/Resources;->getString(I[Ljava/lang/Object;)Ljava/lang/String;
+    invoke-static {v8}, Lcom/android/server/connectivity/NetworkNotificationManager;->getTransportName(I)Ljava/lang/String;
 
     move-result-object v8
 
-    .line 233
-    const v9, 0x1040456
-
-    const/4 v13, 0x2
-
-    new-array v13, v13, [Ljava/lang/Object;
-
-    aput-object v7, v13, v6
-
-    aput-object v0, v13, v15
-
-    invoke-virtual {v11, v9, v13}, Landroid/content/res/Resources;->getString(I[Ljava/lang/Object;)Ljava/lang/String;
-
-    move-result-object v7
-
-    .line 235
-    move-object v0, v8
-
-    .line 250
-    :goto_1d1
-    if-eqz v10, :cond_1d5
-
-    move v8, v15
-
-    goto :goto_1d6
-
-    :cond_1d5
-    move v8, v6
-
-    .line 251
-    :goto_1d6
-    if-eqz p6, :cond_1dd
-
-    if-nez v8, :cond_1dd
-
     .line 252
-    sget-object v8, Lcom/android/internal/notification/SystemNotificationChannels;->NETWORK_ALERTS:Ljava/lang/String;
+    .local v8, "toTransport":Ljava/lang/String;
+    const v9, 0x1040454
 
-    goto :goto_1df
+    const/4 v14, 0x1
 
-    .line 253
-    :cond_1dd
-    sget-object v8, Lcom/android/internal/notification/SystemNotificationChannels;->NETWORK_STATUS:Ljava/lang/String;
+    new-array v15, v14, [Ljava/lang/Object;
 
-    .line 254
-    :goto_1df
-    new-instance v9, Landroid/app/Notification$Builder;
+    const/16 v17, 0x0
 
-    iget-object v10, v1, Lcom/android/server/connectivity/NetworkNotificationManager;->mContext:Landroid/content/Context;
+    aput-object v8, v15, v17
 
-    invoke-direct {v9, v10, v8}, Landroid/app/Notification$Builder;-><init>(Landroid/content/Context;Ljava/lang/String;)V
-
-    .line 255
-    invoke-static {}, Ljava/lang/System;->currentTimeMillis()J
-
-    move-result-wide v10
-
-    invoke-virtual {v9, v10, v11}, Landroid/app/Notification$Builder;->setWhen(J)Landroid/app/Notification$Builder;
+    invoke-virtual {v12, v9, v15}, Landroid/content/res/Resources;->getString(I[Ljava/lang/Object;)Ljava/lang/String;
 
     move-result-object v9
 
-    sget-object v10, Lcom/android/server/connectivity/NetworkNotificationManager$NotificationType;->NETWORK_SWITCH:Lcom/android/server/connectivity/NetworkNotificationManager$NotificationType;
+    .line 253
+    .local v9, "title":Ljava/lang/CharSequence;
+    const/4 v15, 0x2
 
-    if-ne v3, v10, :cond_1f3
+    new-array v15, v15, [Ljava/lang/Object;
 
-    move v6, v15
+    aput-object v8, v15, v17
 
-    .line 256
-    :cond_1f3
-    invoke-virtual {v9, v6}, Landroid/app/Notification$Builder;->setShowWhen(Z)Landroid/app/Notification$Builder;
+    aput-object v0, v15, v14
 
-    move-result-object v6
+    const v14, 0x1040455
 
-    .line 257
-    invoke-virtual {v6, v12}, Landroid/app/Notification$Builder;->setSmallIcon(I)Landroid/app/Notification$Builder;
+    invoke-virtual {v12, v14, v15}, Landroid/content/res/Resources;->getString(I[Ljava/lang/Object;)Ljava/lang/String;
 
-    move-result-object v6
+    move-result-object v14
 
-    .line 258
-    invoke-virtual {v6, v15}, Landroid/app/Notification$Builder;->setAutoCancel(Z)Landroid/app/Notification$Builder;
-
-    move-result-object v6
-
-    .line 259
-    invoke-virtual {v6, v0}, Landroid/app/Notification$Builder;->setTicker(Ljava/lang/CharSequence;)Landroid/app/Notification$Builder;
-
-    move-result-object v6
-
-    iget-object v9, v1, Lcom/android/server/connectivity/NetworkNotificationManager;->mContext:Landroid/content/Context;
-
-    const v10, 0x106001c
-
-    .line 260
-    invoke-virtual {v9, v10}, Landroid/content/Context;->getColor(I)I
-
-    move-result v9
-
-    invoke-virtual {v6, v9}, Landroid/app/Notification$Builder;->setColor(I)Landroid/app/Notification$Builder;
-
-    move-result-object v6
-
-    .line 262
-    invoke-virtual {v6, v0}, Landroid/app/Notification$Builder;->setContentTitle(Ljava/lang/CharSequence;)Landroid/app/Notification$Builder;
-
-    move-result-object v0
-
-    .line 263
-    move-object/from16 v6, p5
-
-    invoke-virtual {v0, v6}, Landroid/app/Notification$Builder;->setContentIntent(Landroid/app/PendingIntent;)Landroid/app/Notification$Builder;
-
-    move-result-object v0
-
-    .line 264
-    invoke-virtual {v0, v15}, Landroid/app/Notification$Builder;->setLocalOnly(Z)Landroid/app/Notification$Builder;
-
-    move-result-object v0
-
-    .line 265
-    invoke-virtual {v0, v15}, Landroid/app/Notification$Builder;->setOnlyAlertOnce(Z)Landroid/app/Notification$Builder;
-
-    move-result-object v0
-
-    .line 267
-    sget-object v6, Lcom/android/server/connectivity/NetworkNotificationManager$NotificationType;->NETWORK_SWITCH:Lcom/android/server/connectivity/NetworkNotificationManager$NotificationType;
-
-    if-ne v3, v6, :cond_233
-
-    .line 268
-    new-instance v6, Landroid/app/Notification$BigTextStyle;
-
-    invoke-direct {v6}, Landroid/app/Notification$BigTextStyle;-><init>()V
-
-    invoke-virtual {v6, v7}, Landroid/app/Notification$BigTextStyle;->bigText(Ljava/lang/CharSequence;)Landroid/app/Notification$BigTextStyle;
-
-    move-result-object v6
-
-    invoke-virtual {v0, v6}, Landroid/app/Notification$Builder;->setStyle(Landroid/app/Notification$Style;)Landroid/app/Notification$Builder;
-
-    goto :goto_236
+    .line 255
+    .end local v0  # "fromTransport":Ljava/lang/String;
+    .end local v8  # "toTransport":Ljava/lang/String;
+    .restart local v14  # "details":Ljava/lang/CharSequence;
+    nop
 
     .line 270
-    :cond_233
-    invoke-virtual {v0, v7}, Landroid/app/Notification$Builder;->setContentText(Ljava/lang/CharSequence;)Landroid/app/Notification$Builder;
+    :goto_24d
+    if-eqz v10, :cond_251
+
+    const/4 v0, 0x1
+
+    goto :goto_253
+
+    :cond_251
+    move/from16 v0, v17
+
+    :goto_253
+    move v8, v0
+
+    .line 271
+    .local v8, "hasPreviousNotification":Z
+    if-eqz p6, :cond_25b
+
+    if-nez v8, :cond_25b
+
+    .line 272
+    sget-object v0, Lcom/android/internal/notification/SystemNotificationChannels;->NETWORK_ALERTS:Ljava/lang/String;
+
+    goto :goto_25d
 
     .line 273
-    :goto_236
-    sget-object v6, Lcom/android/server/connectivity/NetworkNotificationManager$NotificationType;->SIGN_IN:Lcom/android/server/connectivity/NetworkNotificationManager$NotificationType;
+    :cond_25b
+    sget-object v0, Lcom/android/internal/notification/SystemNotificationChannels;->NETWORK_STATUS:Ljava/lang/String;
 
-    if-ne v3, v6, :cond_246
+    :goto_25d
+    move-object v15, v0
 
     .line 274
-    new-instance v3, Landroid/app/Notification$TvExtender;
+    .local v15, "channelId":Ljava/lang/String;
+    new-instance v0, Landroid/app/Notification$Builder;
 
-    invoke-direct {v3}, Landroid/app/Notification$TvExtender;-><init>()V
+    iget-object v4, v1, Lcom/android/server/connectivity/NetworkNotificationManager;->mContext:Landroid/content/Context;
 
-    invoke-virtual {v3, v8}, Landroid/app/Notification$TvExtender;->setChannelId(Ljava/lang/String;)Landroid/app/Notification$TvExtender;
+    invoke-direct {v0, v4, v15}, Landroid/app/Notification$Builder;-><init>(Landroid/content/Context;Ljava/lang/String;)V
 
-    move-result-object v3
+    .line 275
+    move v4, v7
 
-    invoke-virtual {v0, v3}, Landroid/app/Notification$Builder;->extend(Landroid/app/Notification$Extender;)Landroid/app/Notification$Builder;
+    move/from16 v16, v8
+
+    .end local v7  # "transportType":I
+    .end local v8  # "hasPreviousNotification":Z
+    .local v4, "transportType":I
+    .local v16, "hasPreviousNotification":Z
+    invoke-static {}, Ljava/lang/System;->currentTimeMillis()J
+
+    move-result-wide v7
+
+    invoke-virtual {v0, v7, v8}, Landroid/app/Notification$Builder;->setWhen(J)Landroid/app/Notification$Builder;
+
+    move-result-object v0
+
+    sget-object v7, Lcom/android/server/connectivity/NetworkNotificationManager$NotificationType;->NETWORK_SWITCH:Lcom/android/server/connectivity/NetworkNotificationManager$NotificationType;
+
+    if-ne v3, v7, :cond_276
+
+    const/4 v7, 0x1
+
+    goto :goto_278
+
+    :cond_276
+    move/from16 v7, v17
+
+    .line 276
+    :goto_278
+    invoke-virtual {v0, v7}, Landroid/app/Notification$Builder;->setShowWhen(Z)Landroid/app/Notification$Builder;
+
+    move-result-object v0
 
     .line 277
-    :cond_246
-    invoke-virtual {v0}, Landroid/app/Notification$Builder;->build()Landroid/app/Notification;
+    invoke-virtual {v0, v13}, Landroid/app/Notification$Builder;->setSmallIcon(I)Landroid/app/Notification$Builder;
+
+    move-result-object v0
+
+    .line 278
+    const/4 v7, 0x1
+
+    invoke-virtual {v0, v7}, Landroid/app/Notification$Builder;->setAutoCancel(Z)Landroid/app/Notification$Builder;
 
     move-result-object v0
 
     .line 279
-    iget-object v3, v1, Lcom/android/server/connectivity/NetworkNotificationManager;->mNotificationTypeMap:Landroid/util/SparseIntArray;
+    invoke-virtual {v0, v9}, Landroid/app/Notification$Builder;->setTicker(Ljava/lang/CharSequence;)Landroid/app/Notification$Builder;
 
-    invoke-virtual {v3, v2, v5}, Landroid/util/SparseIntArray;->put(II)V
+    move-result-object v0
 
-    .line 281
-    :try_start_24f
-    iget-object v1, v1, Lcom/android/server/connectivity/NetworkNotificationManager;->mNotificationManager:Landroid/app/NotificationManager;
+    iget-object v7, v1, Lcom/android/server/connectivity/NetworkNotificationManager;->mContext:Landroid/content/Context;
 
-    sget-object v2, Landroid/os/UserHandle;->ALL:Landroid/os/UserHandle;
+    const v8, 0x106001c
 
-    invoke-virtual {v1, v4, v5, v0, v2}, Landroid/app/NotificationManager;->notifyAsUser(Ljava/lang/String;ILandroid/app/Notification;Landroid/os/UserHandle;)V
-    :try_end_256
-    .catch Ljava/lang/NullPointerException; {:try_start_24f .. :try_end_256} :catch_257
+    .line 280
+    invoke-virtual {v7, v8}, Landroid/content/Context;->getColor(I)I
 
-    .line 284
-    goto :goto_260
+    move-result v7
+
+    invoke-virtual {v0, v7}, Landroid/app/Notification$Builder;->setColor(I)Landroid/app/Notification$Builder;
+
+    move-result-object v0
 
     .line 282
-    :catch_257
-    move-exception v0
+    invoke-virtual {v0, v9}, Landroid/app/Notification$Builder;->setContentTitle(Ljava/lang/CharSequence;)Landroid/app/Notification$Builder;
+
+    move-result-object v0
 
     .line 283
+    move-object/from16 v7, p5
+
+    invoke-virtual {v0, v7}, Landroid/app/Notification$Builder;->setContentIntent(Landroid/app/PendingIntent;)Landroid/app/Notification$Builder;
+
+    move-result-object v0
+
+    .line 284
+    const/4 v8, 0x1
+
+    invoke-virtual {v0, v8}, Landroid/app/Notification$Builder;->setLocalOnly(Z)Landroid/app/Notification$Builder;
+
+    move-result-object v0
+
+    .line 285
+    invoke-virtual {v0, v8}, Landroid/app/Notification$Builder;->setOnlyAlertOnce(Z)Landroid/app/Notification$Builder;
+
+    move-result-object v8
+
+    .line 287
+    .local v8, "builder":Landroid/app/Notification$Builder;
+    sget-object v0, Lcom/android/server/connectivity/NetworkNotificationManager$NotificationType;->NETWORK_SWITCH:Lcom/android/server/connectivity/NetworkNotificationManager$NotificationType;
+
+    if-ne v3, v0, :cond_2ba
+
+    .line 288
+    new-instance v0, Landroid/app/Notification$BigTextStyle;
+
+    invoke-direct {v0}, Landroid/app/Notification$BigTextStyle;-><init>()V
+
+    invoke-virtual {v0, v14}, Landroid/app/Notification$BigTextStyle;->bigText(Ljava/lang/CharSequence;)Landroid/app/Notification$BigTextStyle;
+
+    move-result-object v0
+
+    invoke-virtual {v8, v0}, Landroid/app/Notification$Builder;->setStyle(Landroid/app/Notification$Style;)Landroid/app/Notification$Builder;
+
+    goto :goto_2bd
+
+    .line 290
+    :cond_2ba
+    invoke-virtual {v8, v14}, Landroid/app/Notification$Builder;->setContentText(Ljava/lang/CharSequence;)Landroid/app/Notification$Builder;
+
+    .line 293
+    :goto_2bd
+    sget-object v0, Lcom/android/server/connectivity/NetworkNotificationManager$NotificationType;->SIGN_IN:Lcom/android/server/connectivity/NetworkNotificationManager$NotificationType;
+
+    if-ne v3, v0, :cond_2cd
+
+    .line 294
+    new-instance v0, Landroid/app/Notification$TvExtender;
+
+    invoke-direct {v0}, Landroid/app/Notification$TvExtender;-><init>()V
+
+    invoke-virtual {v0, v15}, Landroid/app/Notification$TvExtender;->setChannelId(Ljava/lang/String;)Landroid/app/Notification$TvExtender;
+
+    move-result-object v0
+
+    invoke-virtual {v8, v0}, Landroid/app/Notification$Builder;->extend(Landroid/app/Notification$Extender;)Landroid/app/Notification$Builder;
+
+    .line 298
+    :cond_2cd
+    if-eqz v11, :cond_2d2
+
+    .line 299
+    invoke-direct {v1, v8, v12, v9, v14}, Lcom/android/server/connectivity/NetworkNotificationManager;->setWifiLoginNotification(Landroid/app/Notification$Builder;Landroid/content/res/Resources;Ljava/lang/CharSequence;Ljava/lang/CharSequence;)V
+
+    .line 304
+    :cond_2d2
+    iget-object v0, v8, Landroid/app/Notification$Builder;->mFlymeNotificationBuilder:Landroid/app/NotificationBuilderExt;
+
+    const v7, 0xa0801c4
+
+    invoke-virtual {v0, v7}, Landroid/app/NotificationBuilderExt;->setNotificationIcon(I)V
+
+    .line 306
+    invoke-virtual {v8}, Landroid/app/Notification$Builder;->build()Landroid/app/Notification;
+
+    move-result-object v7
+
+    .line 308
+    .local v7, "notification":Landroid/app/Notification;
+    iget-object v0, v1, Lcom/android/server/connectivity/NetworkNotificationManager;->mNotificationTypeMap:Landroid/util/SparseIntArray;
+
+    invoke-virtual {v0, v2, v6}, Landroid/util/SparseIntArray;->put(II)V
+
+    .line 310
+    :try_start_2e3
+    iget-object v0, v1, Lcom/android/server/connectivity/NetworkNotificationManager;->mNotificationManager:Landroid/app/NotificationManager;
+
+    sget-object v1, Landroid/os/UserHandle;->ALL:Landroid/os/UserHandle;
+
+    invoke-virtual {v0, v5, v6, v7, v1}, Landroid/app/NotificationManager;->notifyAsUser(Ljava/lang/String;ILandroid/app/Notification;Landroid/os/UserHandle;)V
+    :try_end_2ea
+    .catch Ljava/lang/NullPointerException; {:try_start_2e3 .. :try_end_2ea} :catch_2eb
+
+    .line 313
+    goto :goto_2f4
+
+    .line 311
+    :catch_2eb
+    move-exception v0
+
+    .line 312
+    .local v0, "npe":Ljava/lang/NullPointerException;
     sget-object v1, Lcom/android/server/connectivity/NetworkNotificationManager;->TAG:Ljava/lang/String;
 
     const-string/jumbo v2, "setNotificationVisible: visible notificationManager error"
 
     invoke-static {v1, v2, v0}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
-    .line 285
-    :goto_260
+    .line 314
+    .end local v0  # "npe":Ljava/lang/NullPointerException;
+    :goto_2f4
     return-void
 
-    .line 235
-    :cond_261
+    .line 255
+    .end local v4  # "transportType":I
+    .end local v8  # "builder":Landroid/app/Notification$Builder;
+    .end local v9  # "title":Ljava/lang/CharSequence;
+    .end local v14  # "details":Ljava/lang/CharSequence;
+    .end local v15  # "channelId":Ljava/lang/String;
+    .end local v16  # "hasPreviousNotification":Z
+    .local v7, "transportType":I
+    :cond_2f5
+    move v4, v7
+
+    .end local v7  # "transportType":I
+    .restart local v4  # "transportType":I
     sget-object v0, Lcom/android/server/connectivity/NetworkNotificationManager$NotificationType;->NO_INTERNET:Lcom/android/server/connectivity/NetworkNotificationManager$NotificationType;
 
-    if-eq v3, v0, :cond_28d
+    if-eq v3, v0, :cond_322
 
     sget-object v0, Lcom/android/server/connectivity/NetworkNotificationManager$NotificationType;->PARTIAL_CONNECTIVITY:Lcom/android/server/connectivity/NetworkNotificationManager$NotificationType;
 
-    if-ne v3, v0, :cond_26a
+    if-ne v3, v0, :cond_2ff
 
-    goto :goto_28d
+    goto :goto_322
 
-    .line 241
-    :cond_26a
+    .line 261
+    :cond_2ff
     sget-object v0, Lcom/android/server/connectivity/NetworkNotificationManager;->TAG:Ljava/lang/String;
 
     new-instance v1, Ljava/lang/StringBuilder;
@@ -1249,8 +1683,8 @@
 
     invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    .line 242
-    invoke-static {v8}, Lcom/android/server/connectivity/NetworkNotificationManager;->getTransportName(I)Ljava/lang/String;
+    .line 262
+    invoke-static {v4}, Lcom/android/server/connectivity/NetworkNotificationManager;->getTransportName(I)Ljava/lang/String;
 
     move-result-object v2
 
@@ -1260,73 +1694,78 @@
 
     move-result-object v1
 
-    .line 241
+    .line 261
     invoke-static {v0, v1}, Landroid/util/Slog;->wtf(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 243
+    .line 263
     return-void
 
-    .line 239
-    :cond_28d
-    :goto_28d
+    .line 259
+    :cond_322
+    :goto_322
     return-void
 .end method
 
 .method public showToast(Lcom/android/server/connectivity/NetworkAgentInfo;Lcom/android/server/connectivity/NetworkAgentInfo;)V
-    .registers 6
+    .registers 9
+    .param p1, "fromNai"  # Lcom/android/server/connectivity/NetworkAgentInfo;
+    .param p2, "toNai"  # Lcom/android/server/connectivity/NetworkAgentInfo;
 
-    .line 332
+    .line 387
     invoke-static {p1}, Lcom/android/server/connectivity/NetworkNotificationManager;->getFirstTransportType(Lcom/android/server/connectivity/NetworkAgentInfo;)I
 
-    move-result p1
+    move-result v0
 
-    invoke-static {p1}, Lcom/android/server/connectivity/NetworkNotificationManager;->getTransportName(I)Ljava/lang/String;
-
-    move-result-object p1
-
-    .line 333
-    invoke-static {p2}, Lcom/android/server/connectivity/NetworkNotificationManager;->getFirstTransportType(Lcom/android/server/connectivity/NetworkAgentInfo;)I
-
-    move-result p2
-
-    invoke-static {p2}, Lcom/android/server/connectivity/NetworkNotificationManager;->getTransportName(I)Ljava/lang/String;
-
-    move-result-object p2
-
-    .line 334
-    iget-object v0, p0, Lcom/android/server/connectivity/NetworkNotificationManager;->mContext:Landroid/content/Context;
-
-    invoke-virtual {v0}, Landroid/content/Context;->getResources()Landroid/content/res/Resources;
+    invoke-static {v0}, Lcom/android/server/connectivity/NetworkNotificationManager;->getTransportName(I)Ljava/lang/String;
 
     move-result-object v0
 
-    const/4 v1, 0x2
+    .line 388
+    .local v0, "fromTransport":Ljava/lang/String;
+    invoke-static {p2}, Lcom/android/server/connectivity/NetworkNotificationManager;->getFirstTransportType(Lcom/android/server/connectivity/NetworkAgentInfo;)I
 
-    new-array v1, v1, [Ljava/lang/Object;
+    move-result v1
 
-    const/4 v2, 0x0
+    invoke-static {v1}, Lcom/android/server/connectivity/NetworkNotificationManager;->getTransportName(I)Ljava/lang/String;
 
-    aput-object p1, v1, v2
+    move-result-object v1
 
-    const/4 p1, 0x1
+    .line 389
+    .local v1, "toTransport":Ljava/lang/String;
+    iget-object v2, p0, Lcom/android/server/connectivity/NetworkNotificationManager;->mContext:Landroid/content/Context;
 
-    aput-object p2, v1, p1
+    invoke-virtual {v2}, Landroid/content/Context;->getResources()Landroid/content/res/Resources;
 
-    const p2, 0x1040457
+    move-result-object v2
 
-    invoke-virtual {v0, p2, v1}, Landroid/content/res/Resources;->getString(I[Ljava/lang/Object;)Ljava/lang/String;
+    const/4 v3, 0x2
 
-    move-result-object p2
+    new-array v3, v3, [Ljava/lang/Object;
 
-    .line 336
-    iget-object v0, p0, Lcom/android/server/connectivity/NetworkNotificationManager;->mContext:Landroid/content/Context;
+    const/4 v4, 0x0
 
-    invoke-static {v0, p2, p1}, Landroid/widget/Toast;->makeText(Landroid/content/Context;Ljava/lang/CharSequence;I)Landroid/widget/Toast;
+    aput-object v0, v3, v4
 
-    move-result-object p1
+    const/4 v4, 0x1
 
-    invoke-virtual {p1}, Landroid/widget/Toast;->show()V
+    aput-object v1, v3, v4
 
-    .line 337
+    const v5, 0x1040456
+
+    invoke-virtual {v2, v5, v3}, Landroid/content/res/Resources;->getString(I[Ljava/lang/Object;)Ljava/lang/String;
+
+    move-result-object v2
+
+    .line 391
+    .local v2, "text":Ljava/lang/String;
+    iget-object v3, p0, Lcom/android/server/connectivity/NetworkNotificationManager;->mContext:Landroid/content/Context;
+
+    invoke-static {v3, v2, v4}, Landroid/widget/Toast;->makeText(Landroid/content/Context;Ljava/lang/CharSequence;I)Landroid/widget/Toast;
+
+    move-result-object v3
+
+    invoke-virtual {v3}, Landroid/widget/Toast;->show()V
+
+    .line 392
     return-void
 .end method

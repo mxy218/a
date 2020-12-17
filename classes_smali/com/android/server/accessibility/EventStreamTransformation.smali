@@ -6,6 +6,7 @@
 # virtual methods
 .method public clearEvents(I)V
     .registers 3
+    .param p1, "inputSource"  # I
 
     .line 120
     invoke-interface {p0}, Lcom/android/server/accessibility/EventStreamTransformation;->getNext()Lcom/android/server/accessibility/EventStreamTransformation;
@@ -13,6 +14,7 @@
     move-result-object v0
 
     .line 121
+    .local v0, "next":Lcom/android/server/accessibility/EventStreamTransformation;
     if-eqz v0, :cond_9
 
     .line 122
@@ -28,6 +30,7 @@
 
 .method public onAccessibilityEvent(Landroid/view/accessibility/AccessibilityEvent;)V
     .registers 3
+    .param p1, "event"  # Landroid/view/accessibility/AccessibilityEvent;
 
     .line 94
     invoke-interface {p0}, Lcom/android/server/accessibility/EventStreamTransformation;->getNext()Lcom/android/server/accessibility/EventStreamTransformation;
@@ -35,6 +38,7 @@
     move-result-object v0
 
     .line 95
+    .local v0, "next":Lcom/android/server/accessibility/EventStreamTransformation;
     if-eqz v0, :cond_9
 
     .line 96
@@ -54,6 +58,8 @@
 
 .method public onKeyEvent(Landroid/view/KeyEvent;I)V
     .registers 4
+    .param p1, "event"  # Landroid/view/KeyEvent;
+    .param p2, "policyFlags"  # I
 
     .line 82
     invoke-interface {p0}, Lcom/android/server/accessibility/EventStreamTransformation;->getNext()Lcom/android/server/accessibility/EventStreamTransformation;
@@ -61,6 +67,7 @@
     move-result-object v0
 
     .line 83
+    .local v0, "next":Lcom/android/server/accessibility/EventStreamTransformation;
     if-eqz v0, :cond_9
 
     .line 84
@@ -73,6 +80,9 @@
 
 .method public onMotionEvent(Landroid/view/MotionEvent;Landroid/view/MotionEvent;I)V
     .registers 5
+    .param p1, "event"  # Landroid/view/MotionEvent;
+    .param p2, "rawEvent"  # Landroid/view/MotionEvent;
+    .param p3, "policyFlags"  # I
 
     .line 69
     invoke-interface {p0}, Lcom/android/server/accessibility/EventStreamTransformation;->getNext()Lcom/android/server/accessibility/EventStreamTransformation;
@@ -80,6 +90,7 @@
     move-result-object v0
 
     .line 70
+    .local v0, "next":Lcom/android/server/accessibility/EventStreamTransformation;
     if-eqz v0, :cond_9
 
     .line 71

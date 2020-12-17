@@ -37,6 +37,8 @@
 
 .method public constructor <init>(ZLjava/lang/String;)V
     .registers 3
+    .param p1, "success"  # Z
+    .param p2, "message"  # Ljava/lang/String;
 
     .line 792
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V

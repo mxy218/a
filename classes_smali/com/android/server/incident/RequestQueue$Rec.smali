@@ -27,6 +27,9 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/incident/RequestQueue;Landroid/os/IBinder;ZLjava/lang/Runnable;)V
     .registers 5
+    .param p2, "key"  # Landroid/os/IBinder;
+    .param p3, "value"  # Z
+    .param p4, "runnable"  # Ljava/lang/Runnable;
 
     .line 71
     iput-object p1, p0, Lcom/android/server/incident/RequestQueue$Rec;->this$0:Lcom/android/server/incident/RequestQueue;

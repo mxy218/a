@@ -20,17 +20,27 @@
 
 # direct methods
 .method public constructor <init>(Lcom/android/server/usage/AppTimeLimitController;Lcom/android/server/usage/AppTimeLimitController$UserData;Lcom/android/server/usage/AppTimeLimitController$ObserverAppData;I[Ljava/lang/String;JJLandroid/app/PendingIntent;)V
-    .registers 21
+    .registers 22
+    .param p1, "this$0"  # Lcom/android/server/usage/AppTimeLimitController;
+    .param p2, "user"  # Lcom/android/server/usage/AppTimeLimitController$UserData;
+    .param p3, "observerApp"  # Lcom/android/server/usage/AppTimeLimitController$ObserverAppData;
+    .param p4, "observerId"  # I
+    .param p5, "observed"  # [Ljava/lang/String;
+    .param p6, "timeLimitMs"  # J
+    .param p8, "timeUsedMs"  # J
+    .param p10, "limitReachedCallback"  # Landroid/app/PendingIntent;
 
     .line 515
     move-object v9, p0
 
-    move-object v1, p1
+    move-object v10, p1
 
-    iput-object v1, v9, Lcom/android/server/usage/AppTimeLimitController$AppUsageLimitGroup;->this$0:Lcom/android/server/usage/AppTimeLimitController;
+    iput-object v10, v9, Lcom/android/server/usage/AppTimeLimitController$AppUsageLimitGroup;->this$0:Lcom/android/server/usage/AppTimeLimitController;
 
     .line 516
     move-object v0, p0
+
+    move-object v1, p1
 
     move-object v2, p2
 
@@ -38,7 +48,7 @@
 
     move v4, p4
 
-    move-object v5, p5
+    move-object/from16 v5, p5
 
     move-wide/from16 v6, p6
 
@@ -137,6 +147,7 @@
     check-cast v0, Lcom/android/server/usage/AppTimeLimitController$ObserverAppData;
 
     .line 525
+    .local v0, "observerApp":Lcom/android/server/usage/AppTimeLimitController$ObserverAppData;
     if-eqz v0, :cond_12
 
     .line 526

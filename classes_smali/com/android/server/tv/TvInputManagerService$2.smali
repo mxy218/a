@@ -21,6 +21,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/tv/TvInputManagerService;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/tv/TvInputManagerService;
 
     .line 247
     iput-object p1, p0, Lcom/android/server/tv/TvInputManagerService$2;->this$0:Lcom/android/server/tv/TvInputManagerService;
@@ -33,55 +34,58 @@
 
 # virtual methods
 .method public onReceive(Landroid/content/Context;Landroid/content/Intent;)V
-    .registers 6
+    .registers 7
+    .param p1, "context"  # Landroid/content/Context;
+    .param p2, "intent"  # Landroid/content/Intent;
 
     .line 250
     invoke-virtual {p2}, Landroid/content/Intent;->getAction()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
     .line 251
-    const-string v0, "android.intent.action.USER_SWITCHED"
+    .local v0, "action":Ljava/lang/String;
+    const-string v1, "android.intent.action.USER_SWITCHED"
 
-    invoke-virtual {v0, p1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v1, v0}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result v0
+    move-result v1
 
-    const/4 v1, 0x0
+    const/4 v2, 0x0
 
-    const-string v2, "android.intent.extra.user_handle"
+    const-string v3, "android.intent.extra.user_handle"
 
-    if-eqz v0, :cond_19
+    if-eqz v1, :cond_19
 
     .line 252
-    iget-object p1, p0, Lcom/android/server/tv/TvInputManagerService$2;->this$0:Lcom/android/server/tv/TvInputManagerService;
+    iget-object v1, p0, Lcom/android/server/tv/TvInputManagerService$2;->this$0:Lcom/android/server/tv/TvInputManagerService;
 
-    invoke-virtual {p2, v2, v1}, Landroid/content/Intent;->getIntExtra(Ljava/lang/String;I)I
+    invoke-virtual {p2, v3, v2}, Landroid/content/Intent;->getIntExtra(Ljava/lang/String;I)I
 
-    move-result p2
+    move-result v2
 
-    invoke-static {p1, p2}, Lcom/android/server/tv/TvInputManagerService;->access$600(Lcom/android/server/tv/TvInputManagerService;I)V
+    invoke-static {v1, v2}, Lcom/android/server/tv/TvInputManagerService;->access$600(Lcom/android/server/tv/TvInputManagerService;I)V
 
     goto :goto_2a
 
     .line 253
     :cond_19
-    const-string v0, "android.intent.action.USER_REMOVED"
+    const-string v1, "android.intent.action.USER_REMOVED"
 
-    invoke-virtual {v0, p1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v1, v0}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result p1
+    move-result v1
 
-    if-eqz p1, :cond_2a
+    if-eqz v1, :cond_2a
 
     .line 254
-    iget-object p1, p0, Lcom/android/server/tv/TvInputManagerService$2;->this$0:Lcom/android/server/tv/TvInputManagerService;
+    iget-object v1, p0, Lcom/android/server/tv/TvInputManagerService$2;->this$0:Lcom/android/server/tv/TvInputManagerService;
 
-    invoke-virtual {p2, v2, v1}, Landroid/content/Intent;->getIntExtra(Ljava/lang/String;I)I
+    invoke-virtual {p2, v3, v2}, Landroid/content/Intent;->getIntExtra(Ljava/lang/String;I)I
 
-    move-result p2
+    move-result v2
 
-    invoke-static {p1, p2}, Lcom/android/server/tv/TvInputManagerService;->access$700(Lcom/android/server/tv/TvInputManagerService;I)V
+    invoke-static {v1, v2}, Lcom/android/server/tv/TvInputManagerService;->access$700(Lcom/android/server/tv/TvInputManagerService;I)V
 
     .line 256
     :cond_2a

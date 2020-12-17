@@ -20,22 +20,24 @@
 .end method
 
 .method public static hashSignature(Landroid/content/pm/Signature;)[B
-    .registers 1
+    .registers 2
+    .param p0, "signature"  # Landroid/content/pm/Signature;
 
     .line 116
     invoke-virtual {p0}, Landroid/content/pm/Signature;->toByteArray()[B
 
-    move-result-object p0
+    move-result-object v0
 
-    invoke-static {p0}, Lcom/android/server/backup/BackupUtils;->hashSignature([B)[B
+    invoke-static {v0}, Lcom/android/server/backup/BackupUtils;->hashSignature([B)[B
 
-    move-result-object p0
+    move-result-object v0
 
-    return-object p0
+    return-object v0
 .end method
 
 .method public static hashSignature([B)[B
-    .registers 2
+    .registers 4
+    .param p0, "signature"  # [B
 
     .line 106
     :try_start_0
@@ -46,36 +48,40 @@
     move-result-object v0
 
     .line 107
+    .local v0, "digest":Ljava/security/MessageDigest;
     invoke-virtual {v0, p0}, Ljava/security/MessageDigest;->update([B)V
 
     .line 108
     invoke-virtual {v0}, Ljava/security/MessageDigest;->digest()[B
 
-    move-result-object p0
+    move-result-object v1
     :try_end_d
     .catch Ljava/security/NoSuchAlgorithmException; {:try_start_0 .. :try_end_d} :catch_e
 
-    return-object p0
+    return-object v1
 
     .line 109
+    .end local v0  # "digest":Ljava/security/MessageDigest;
     :catch_e
-    move-exception p0
+    move-exception v0
 
     .line 110
-    const-string p0, "BackupUtils"
+    .local v0, "e":Ljava/security/NoSuchAlgorithmException;
+    const-string v1, "BackupUtils"
 
-    const-string v0, "No SHA-256 algorithm found!"
+    const-string v2, "No SHA-256 algorithm found!"
 
-    invoke-static {p0, v0}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v2}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 112
-    const/4 p0, 0x0
+    .end local v0  # "e":Ljava/security/NoSuchAlgorithmException;
+    const/4 v0, 0x0
 
-    return-object p0
+    return-object v0
 .end method
 
 .method public static hashSignatureArray(Ljava/util/List;)Ljava/util/ArrayList;
-    .registers 3
+    .registers 5
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(",
@@ -87,12 +93,13 @@
     .end annotation
 
     .line 132
+    .local p0, "sigs":Ljava/util/List;, "Ljava/util/List<[B>;"
     if-nez p0, :cond_4
 
     .line 133
-    const/4 p0, 0x0
+    const/4 v0, 0x0
 
-    return-object p0
+    return-object v0
 
     .line 136
     :cond_4
@@ -105,31 +112,34 @@
     invoke-direct {v0, v1}, Ljava/util/ArrayList;-><init>(I)V
 
     .line 137
+    .local v0, "hashes":Ljava/util/ArrayList;, "Ljava/util/ArrayList<[B>;"
     invoke-interface {p0}, Ljava/util/List;->iterator()Ljava/util/Iterator;
 
-    move-result-object p0
+    move-result-object v1
 
     :goto_11
-    invoke-interface {p0}, Ljava/util/Iterator;->hasNext()Z
+    invoke-interface {v1}, Ljava/util/Iterator;->hasNext()Z
 
-    move-result v1
+    move-result v2
 
-    if-eqz v1, :cond_25
+    if-eqz v2, :cond_25
 
-    invoke-interface {p0}, Ljava/util/Iterator;->next()Ljava/lang/Object;
+    invoke-interface {v1}, Ljava/util/Iterator;->next()Ljava/lang/Object;
 
-    move-result-object v1
+    move-result-object v2
 
-    check-cast v1, [B
+    check-cast v2, [B
 
     .line 138
-    invoke-static {v1}, Lcom/android/server/backup/BackupUtils;->hashSignature([B)[B
+    .local v2, "s":[B
+    invoke-static {v2}, Lcom/android/server/backup/BackupUtils;->hashSignature([B)[B
 
-    move-result-object v1
+    move-result-object v3
 
-    invoke-virtual {v0, v1}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
+    invoke-virtual {v0, v3}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
 
     .line 139
+    .end local v2  # "s":[B
     goto :goto_11
 
     .line 140
@@ -138,7 +148,8 @@
 .end method
 
 .method public static hashSignatureArray([Landroid/content/pm/Signature;)Ljava/util/ArrayList;
-    .registers 5
+    .registers 6
+    .param p0, "sigs"  # [Landroid/content/pm/Signature;
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "([",
@@ -153,9 +164,9 @@
     if-nez p0, :cond_4
 
     .line 121
-    const/4 p0, 0x0
+    const/4 v0, 0x0
 
-    return-object p0
+    return-object v0
 
     .line 124
     :cond_4
@@ -166,6 +177,7 @@
     invoke-direct {v0, v1}, Ljava/util/ArrayList;-><init>(I)V
 
     .line 125
+    .local v0, "hashes":Ljava/util/ArrayList;, "Ljava/util/ArrayList<[B>;"
     array-length v1, p0
 
     const/4 v2, 0x0
@@ -176,13 +188,15 @@
     aget-object v3, p0, v2
 
     .line 126
+    .local v3, "s":Landroid/content/pm/Signature;
     invoke-static {v3}, Lcom/android/server/backup/BackupUtils;->hashSignature(Landroid/content/pm/Signature;)[B
 
-    move-result-object v3
+    move-result-object v4
 
-    invoke-virtual {v0, v3}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
+    invoke-virtual {v0, v4}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
 
     .line 125
+    .end local v3  # "s":Landroid/content/pm/Signature;
     add-int/lit8 v2, v2, 0x1
 
     goto :goto_c
@@ -193,7 +207,9 @@
 .end method
 
 .method public static signaturesMatch(Ljava/util/ArrayList;Landroid/content/pm/PackageInfo;Landroid/content/pm/PackageManagerInternal;)Z
-    .registers 10
+    .registers 14
+    .param p1, "target"  # Landroid/content/pm/PackageInfo;
+    .param p2, "pmi"  # Landroid/content/pm/PackageManagerInternal;
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(",
@@ -206,15 +222,16 @@
     .end annotation
 
     .line 41
+    .local p0, "storedSigHashes":Ljava/util/ArrayList;, "Ljava/util/ArrayList<[B>;"
     const/4 v0, 0x0
 
-    if-eqz p1, :cond_6c
+    if-eqz p1, :cond_6a
 
     iget-object v1, p1, Landroid/content/pm/PackageInfo;->packageName:Ljava/lang/String;
 
     if-nez v1, :cond_8
 
-    goto :goto_6c
+    goto :goto_6a
 
     .line 49
     :cond_8
@@ -247,14 +264,15 @@
     iget-object v1, p1, Landroid/content/pm/PackageInfo;->signingInfo:Landroid/content/pm/SigningInfo;
 
     .line 60
+    .local v1, "signingInfo":Landroid/content/pm/SigningInfo;
     if-nez v1, :cond_25
 
     .line 61
-    const-string p0, "BackupUtils"
+    const-string v2, "BackupUtils"
 
-    const-string/jumbo p1, "signingInfo is empty, app was either unsigned or the flag PackageManager#GET_SIGNING_CERTIFICATES was not specified"
+    const-string/jumbo v3, "signingInfo is empty, app was either unsigned or the flag PackageManager#GET_SIGNING_CERTIFICATES was not specified"
 
-    invoke-static {p0, p1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v2, v3}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 63
     return v0
@@ -266,22 +284,23 @@
     move-result v3
 
     .line 72
+    .local v3, "nStored":I
     if-ne v3, v2, :cond_38
 
     .line 78
     invoke-virtual {p0, v0}, Ljava/util/ArrayList;->get(I)Ljava/lang/Object;
 
-    move-result-object p0
+    move-result-object v0
 
-    check-cast p0, [B
+    check-cast v0, [B
 
-    iget-object p1, p1, Landroid/content/pm/PackageInfo;->packageName:Ljava/lang/String;
+    iget-object v2, p1, Landroid/content/pm/PackageInfo;->packageName:Ljava/lang/String;
 
-    invoke-virtual {p2, p0, p1}, Landroid/content/pm/PackageManagerInternal;->isDataRestoreSafe([BLjava/lang/String;)Z
+    invoke-virtual {p2, v0, v2}, Landroid/content/pm/PackageManagerInternal;->isDataRestoreSafe([BLjava/lang/String;)Z
 
-    move-result p0
+    move-result v0
 
-    return p0
+    return v0
 
     .line 83
     :cond_38
@@ -290,87 +309,95 @@
     .line 84
     invoke-virtual {v1}, Landroid/content/pm/SigningInfo;->getApkContentsSigners()[Landroid/content/pm/Signature;
 
-    move-result-object p1
+    move-result-object v4
 
-    invoke-static {p1}, Lcom/android/server/backup/BackupUtils;->hashSignatureArray([Landroid/content/pm/Signature;)Ljava/util/ArrayList;
+    invoke-static {v4}, Lcom/android/server/backup/BackupUtils;->hashSignatureArray([Landroid/content/pm/Signature;)Ljava/util/ArrayList;
 
-    move-result-object p1
+    move-result-object v4
 
     .line 85
-    invoke-virtual {p1}, Ljava/util/ArrayList;->size()I
-
-    move-result p2
-
-    .line 87
-    move v1, v0
-
-    :goto_46
-    if-ge v1, v3, :cond_6b
-
-    .line 88
-    nop
-
-    .line 89
-    move v4, v0
-
-    :goto_4a
-    if-ge v4, p2, :cond_64
-
-    .line 90
-    invoke-virtual {p0, v1}, Ljava/util/ArrayList;->get(I)Ljava/lang/Object;
-
-    move-result-object v5
-
-    check-cast v5, [B
-
-    invoke-virtual {p1, v4}, Ljava/util/ArrayList;->get(I)Ljava/lang/Object;
-
-    move-result-object v6
-
-    check-cast v6, [B
-
-    invoke-static {v5, v6}, Ljava/util/Arrays;->equals([B[B)Z
+    .local v4, "deviceHashes":Ljava/util/ArrayList;, "Ljava/util/ArrayList<[B>;"
+    invoke-virtual {v4}, Ljava/util/ArrayList;->size()I
 
     move-result v5
 
-    if-eqz v5, :cond_61
+    .line 87
+    .local v5, "nDevice":I
+    const/4 v6, 0x0
 
-    .line 91
-    nop
+    .local v6, "i":I
+    :goto_46
+    if-ge v6, v3, :cond_69
 
-    .line 92
-    move v4, v2
-
-    goto :goto_65
+    .line 88
+    const/4 v7, 0x0
 
     .line 89
-    :cond_61
-    add-int/lit8 v4, v4, 0x1
+    .local v7, "match":Z
+    const/4 v8, 0x0
+
+    .local v8, "j":I
+    :goto_4a
+    if-ge v8, v5, :cond_63
+
+    .line 90
+    invoke-virtual {p0, v6}, Ljava/util/ArrayList;->get(I)Ljava/lang/Object;
+
+    move-result-object v9
+
+    check-cast v9, [B
+
+    invoke-virtual {v4, v8}, Ljava/util/ArrayList;->get(I)Ljava/lang/Object;
+
+    move-result-object v10
+
+    check-cast v10, [B
+
+    invoke-static {v9, v10}, Ljava/util/Arrays;->equals([B[B)Z
+
+    move-result v9
+
+    if-eqz v9, :cond_60
+
+    .line 91
+    const/4 v7, 0x1
+
+    .line 92
+    goto :goto_63
+
+    .line 89
+    :cond_60
+    add-int/lit8 v8, v8, 0x1
 
     goto :goto_4a
 
-    :cond_64
-    move v4, v0
-
     .line 95
-    :goto_65
-    if-nez v4, :cond_68
+    .end local v8  # "j":I
+    :cond_63
+    :goto_63
+    if-nez v7, :cond_66
 
     .line 96
     return v0
 
     .line 87
-    :cond_68
-    add-int/lit8 v1, v1, 0x1
+    .end local v7  # "match":Z
+    :cond_66
+    add-int/lit8 v6, v6, 0x1
 
     goto :goto_46
 
     .line 100
-    :cond_6b
+    .end local v6  # "i":I
+    :cond_69
     return v2
 
     .line 42
-    :cond_6c
-    :goto_6c
+    .end local v1  # "signingInfo":Landroid/content/pm/SigningInfo;
+    .end local v3  # "nStored":I
+    .end local v4  # "deviceHashes":Ljava/util/ArrayList;, "Ljava/util/ArrayList<[B>;"
+    .end local v5  # "nDevice":I
+    :cond_6a
+    :goto_6a
     return v0
 .end method

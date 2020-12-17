@@ -21,8 +21,10 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/BatteryService;Landroid/os/Handler;)V
     .registers 3
+    .param p1, "this$0"  # Lcom/android/server/BatteryService;
+    .param p2, "x0"  # Landroid/os/Handler;
 
-    .line 256
+    .line 400
     iput-object p1, p0, Lcom/android/server/BatteryService$2;->this$0:Lcom/android/server/BatteryService;
 
     invoke-direct {p0, p2}, Landroid/database/ContentObserver;-><init>(Landroid/os/Handler;)V
@@ -33,36 +35,37 @@
 
 # virtual methods
 .method public onChange(Z)V
-    .registers 3
+    .registers 4
+    .param p1, "selfChange"  # Z
 
-    .line 259
-    iget-object p1, p0, Lcom/android/server/BatteryService$2;->this$0:Lcom/android/server/BatteryService;
-
-    invoke-static {p1}, Lcom/android/server/BatteryService;->access$000(Lcom/android/server/BatteryService;)Ljava/lang/Object;
-
-    move-result-object p1
-
-    monitor-enter p1
-
-    .line 260
-    :try_start_7
+    .line 403
     iget-object v0, p0, Lcom/android/server/BatteryService$2;->this$0:Lcom/android/server/BatteryService;
 
-    invoke-static {v0}, Lcom/android/server/BatteryService;->access$500(Lcom/android/server/BatteryService;)V
+    invoke-static {v0}, Lcom/android/server/BatteryService;->access$000(Lcom/android/server/BatteryService;)Ljava/lang/Object;
 
-    .line 261
-    monitor-exit p1
+    move-result-object v0
 
-    .line 262
+    monitor-enter v0
+
+    .line 404
+    :try_start_7
+    iget-object v1, p0, Lcom/android/server/BatteryService$2;->this$0:Lcom/android/server/BatteryService;
+
+    invoke-static {v1}, Lcom/android/server/BatteryService;->access$500(Lcom/android/server/BatteryService;)V
+
+    .line 405
+    monitor-exit v0
+
+    .line 406
     return-void
 
-    .line 261
+    .line 405
     :catchall_e
-    move-exception v0
+    move-exception v1
 
-    monitor-exit p1
+    monitor-exit v0
     :try_end_10
     .catchall {:try_start_7 .. :try_end_10} :catchall_e
 
-    throw v0
+    throw v1
 .end method

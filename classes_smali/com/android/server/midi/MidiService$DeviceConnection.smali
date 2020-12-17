@@ -29,6 +29,9 @@
 # direct methods
 .method public constructor <init>(Lcom/android/server/midi/MidiService;Lcom/android/server/midi/MidiService$Device;Lcom/android/server/midi/MidiService$Client;Landroid/media/midi/IMidiDeviceOpenCallback;)V
     .registers 5
+    .param p2, "device"  # Lcom/android/server/midi/MidiService$Device;
+    .param p3, "client"  # Lcom/android/server/midi/MidiService$Client;
+    .param p4, "callback"  # Landroid/media/midi/IMidiDeviceOpenCallback;
 
     .line 528
     iput-object p1, p0, Lcom/android/server/midi/MidiService$DeviceConnection;->this$0:Lcom/android/server/midi/MidiService;
@@ -86,6 +89,7 @@
 
 .method public notifyClient(Landroid/media/midi/IMidiDeviceServer;)V
     .registers 5
+    .param p1, "deviceServer"  # Landroid/media/midi/IMidiDeviceServer;
 
     .line 547
     iget-object v0, p0, Lcom/android/server/midi/MidiService$DeviceConnection;->mCallback:Landroid/media/midi/IMidiDeviceOpenCallback;
@@ -115,7 +119,7 @@
 
     .line 550
     :catch_f
-    move-exception p1
+    move-exception v0
 
     .line 553
     :goto_10

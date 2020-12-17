@@ -17,18 +17,25 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/net/NetworkStatsObservers;Landroid/net/DataUsageRequest;Landroid/os/Messenger;Landroid/os/IBinder;II)V
     .registers 7
-
-    .line 334
-    invoke-direct/range {p0 .. p6}, Lcom/android/server/net/NetworkStatsObservers$RequestInfo;-><init>(Lcom/android/server/net/NetworkStatsObservers;Landroid/net/DataUsageRequest;Landroid/os/Messenger;Landroid/os/IBinder;II)V
+    .param p1, "statsObserver"  # Lcom/android/server/net/NetworkStatsObservers;
+    .param p2, "request"  # Landroid/net/DataUsageRequest;
+    .param p3, "messenger"  # Landroid/os/Messenger;
+    .param p4, "binder"  # Landroid/os/IBinder;
+    .param p5, "callingUid"  # I
+    .param p6, "accessLevel"  # I
 
     .line 335
+    invoke-direct/range {p0 .. p6}, Lcom/android/server/net/NetworkStatsObservers$RequestInfo;-><init>(Lcom/android/server/net/NetworkStatsObservers;Landroid/net/DataUsageRequest;Landroid/os/Messenger;Landroid/os/IBinder;II)V
+
+    .line 336
     return-void
 .end method
 
 .method private getTotalBytesForNetwork(Landroid/net/NetworkTemplate;)J
     .registers 10
+    .param p1, "template"  # Landroid/net/NetworkTemplate;
 
-    .line 365
+    .line 366
     iget-object v0, p0, Lcom/android/server/net/NetworkStatsObservers$NetworkUsageRequestInfo;->mCollection:Lcom/android/server/net/NetworkStatsCollection;
 
     iget v6, p0, Lcom/android/server/net/NetworkStatsObservers$NetworkUsageRequestInfo;->mAccessLevel:I
@@ -43,14 +50,15 @@
 
     invoke-virtual/range {v0 .. v7}, Lcom/android/server/net/NetworkStatsCollection;->getSummary(Landroid/net/NetworkTemplate;JJII)Landroid/net/NetworkStats;
 
-    move-result-object p1
+    move-result-object v0
 
-    .line 368
-    invoke-virtual {p1}, Landroid/net/NetworkStats;->getTotalBytes()J
+    .line 369
+    .local v0, "stats":Landroid/net/NetworkStats;
+    invoke-virtual {v0}, Landroid/net/NetworkStats;->getTotalBytes()J
 
-    move-result-wide v0
+    move-result-wide v1
 
-    return-wide v0
+    return-wide v1
 .end method
 
 
@@ -58,7 +66,7 @@
 .method protected checkStats()Z
     .registers 5
 
-    .line 339
+    .line 340
     iget-object v0, p0, Lcom/android/server/net/NetworkStatsObservers$NetworkUsageRequestInfo;->mRequest:Landroid/net/DataUsageRequest;
 
     iget-object v0, v0, Landroid/net/DataUsageRequest;->template:Landroid/net/NetworkTemplate;
@@ -67,41 +75,45 @@
 
     move-result-wide v0
 
-    .line 344
+    .line 345
+    .local v0, "bytesSoFar":J
     iget-object v2, p0, Lcom/android/server/net/NetworkStatsObservers$NetworkUsageRequestInfo;->mRequest:Landroid/net/DataUsageRequest;
 
     iget-wide v2, v2, Landroid/net/DataUsageRequest;->thresholdInBytes:J
 
-    cmp-long v0, v0, v2
+    cmp-long v2, v0, v2
 
-    if-lez v0, :cond_12
+    if-lez v2, :cond_12
 
-    .line 345
-    const/4 v0, 0x1
+    .line 346
+    const/4 v2, 0x1
 
-    return v0
+    return v2
 
-    .line 347
+    .line 348
     :cond_12
-    const/4 v0, 0x0
+    const/4 v2, 0x0
 
-    return v0
+    return v2
 .end method
 
 .method protected recordSample(Lcom/android/server/net/NetworkStatsObservers$StatsContext;)V
-    .registers 7
+    .registers 8
+    .param p1, "statsContext"  # Lcom/android/server/net/NetworkStatsObservers$StatsContext;
 
-    .line 355
+    .line 356
     iget-object v0, p0, Lcom/android/server/net/NetworkStatsObservers$NetworkUsageRequestInfo;->mRecorder:Lcom/android/server/net/NetworkStatsRecorder;
 
     iget-object v1, p1, Lcom/android/server/net/NetworkStatsObservers$StatsContext;->mXtSnapshot:Landroid/net/NetworkStats;
 
     iget-object v2, p1, Lcom/android/server/net/NetworkStatsObservers$StatsContext;->mActiveIfaces:Landroid/util/ArrayMap;
 
-    iget-wide v3, p1, Lcom/android/server/net/NetworkStatsObservers$StatsContext;->mCurrentTime:J
+    iget-wide v4, p1, Lcom/android/server/net/NetworkStatsObservers$StatsContext;->mCurrentTime:J
 
-    invoke-virtual {v0, v1, v2, v3, v4}, Lcom/android/server/net/NetworkStatsRecorder;->recordSnapshotLocked(Landroid/net/NetworkStats;Ljava/util/Map;J)V
+    const/4 v3, 0x0
 
-    .line 357
+    invoke-virtual/range {v0 .. v5}, Lcom/android/server/net/NetworkStatsRecorder;->recordSnapshotLocked(Landroid/net/NetworkStats;Ljava/util/Map;[Lcom/android/internal/net/VpnInfo;J)V
+
+    .line 358
     return-void
 .end method

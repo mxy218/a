@@ -54,6 +54,7 @@
 
 .method public constructor <init>(Landroid/content/Context;)V
     .registers 3
+    .param p1, "context"  # Landroid/content/Context;
 
     .line 380
     invoke-direct {p0, p1}, Lcom/android/server/SystemService;-><init>(Landroid/content/Context;)V
@@ -70,12 +71,13 @@
 .end method
 
 .method static synthetic access$000(Lcom/android/server/incident/IncidentCompanionService;)Lcom/android/server/incident/PendingReports;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/incident/IncidentCompanionService;
 
     .line 51
-    iget-object p0, p0, Lcom/android/server/incident/IncidentCompanionService;->mPendingReports:Lcom/android/server/incident/PendingReports;
+    iget-object v0, p0, Lcom/android/server/incident/IncidentCompanionService;->mPendingReports:Lcom/android/server/incident/PendingReports;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$100()[Ljava/lang/String;
@@ -88,7 +90,8 @@
 .end method
 
 .method static synthetic access$200(Lcom/android/server/incident/IncidentCompanionService;)Landroid/os/IIncidentManager;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/incident/IncidentCompanionService;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -98,9 +101,9 @@
     .line 51
     invoke-direct {p0}, Lcom/android/server/incident/IncidentCompanionService;->getIIncidentManager()Landroid/os/IIncidentManager;
 
-    move-result-object p0
+    move-result-object v0
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$300()[Ljava/lang/String;
@@ -113,7 +116,8 @@
 .end method
 
 .method public static getAndValidateUser(Landroid/content/Context;)I
-    .registers 5
+    .registers 8
+    .param p0, "context"  # Landroid/content/Context;
 
     .line 424
     :try_start_0
@@ -128,77 +132,84 @@
     .catch Landroid/os/RemoteException; {:try_start_0 .. :try_end_8} :catch_34
 
     .line 428
+    .local v0, "currentUser":Landroid/content/pm/UserInfo;
     nop
 
     .line 431
     invoke-static {p0}, Landroid/os/UserManager;->get(Landroid/content/Context;)Landroid/os/UserManager;
 
-    move-result-object p0
+    move-result-object v1
 
     .line 432
-    invoke-virtual {p0}, Landroid/os/UserManager;->getPrimaryUser()Landroid/content/pm/UserInfo;
+    .local v1, "um":Landroid/os/UserManager;
+    invoke-virtual {v1}, Landroid/os/UserManager;->getPrimaryUser()Landroid/content/pm/UserInfo;
 
-    move-result-object p0
+    move-result-object v2
 
     .line 435
-    const/16 v1, -0x2710
+    .local v2, "primaryUser":Landroid/content/pm/UserInfo;
+    const/16 v3, -0x2710
 
-    const-string v2, "IncidentCompanionService"
+    const-string v4, "IncidentCompanionService"
 
     if-nez v0, :cond_1d
 
     .line 436
-    const-string p0, "No current user.  Nobody to approve the report. The report will be denied."
+    const-string v5, "No current user.  Nobody to approve the report. The report will be denied."
 
-    invoke-static {v2, p0}, Landroid/util/Log;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v4, v5}, Landroid/util/Log;->w(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 438
-    return v1
+    return v3
 
     .line 440
     :cond_1d
-    if-nez p0, :cond_25
+    if-nez v2, :cond_25
 
     .line 441
-    const-string p0, "No primary user.  Nobody to approve the report. The report will be denied."
+    const-string v5, "No primary user.  Nobody to approve the report. The report will be denied."
 
-    invoke-static {v2, p0}, Landroid/util/Log;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v4, v5}, Landroid/util/Log;->w(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 443
-    return v1
+    return v3
 
     .line 445
     :cond_25
-    iget v3, p0, Landroid/content/pm/UserInfo;->id:I
+    iget v5, v2, Landroid/content/pm/UserInfo;->id:I
 
-    iget v0, v0, Landroid/content/pm/UserInfo;->id:I
+    iget v6, v0, Landroid/content/pm/UserInfo;->id:I
 
-    if-eq v3, v0, :cond_31
+    if-eq v5, v6, :cond_31
 
     .line 446
-    const-string p0, "Only the primary user can approve bugreports, but they are not the current user. The report will be denied."
+    const-string v5, "Only the primary user can approve bugreports, but they are not the current user. The report will be denied."
 
-    invoke-static {v2, p0}, Landroid/util/Log;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v4, v5}, Landroid/util/Log;->w(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 448
-    return v1
+    return v3
 
     .line 451
     :cond_31
-    iget p0, p0, Landroid/content/pm/UserInfo;->id:I
+    iget v3, v2, Landroid/content/pm/UserInfo;->id:I
 
-    return p0
+    return v3
 
     .line 425
+    .end local v0  # "currentUser":Landroid/content/pm/UserInfo;
+    .end local v1  # "um":Landroid/os/UserManager;
+    .end local v2  # "primaryUser":Landroid/content/pm/UserInfo;
     :catch_34
-    move-exception p0
+    move-exception v0
 
     .line 427
-    new-instance v0, Ljava/lang/RuntimeException;
+    .local v0, "ex":Landroid/os/RemoteException;
+    new-instance v1, Ljava/lang/RuntimeException;
 
-    invoke-direct {v0, p0}, Ljava/lang/RuntimeException;-><init>(Ljava/lang/Throwable;)V
+    invoke-direct {v1, v0}, Ljava/lang/RuntimeException;-><init>(Ljava/lang/Throwable;)V
 
-    throw v0
+    throw v1
 .end method
 
 .method private getIIncidentManager()Landroid/os/IIncidentManager;
@@ -213,7 +224,7 @@
     nop
 
     .line 413
-    const-string v0, "incident"
+    const-string/jumbo v0, "incident"
 
     invoke-static {v0}, Landroid/os/ServiceManager;->getService(Ljava/lang/String;)Landroid/os/IBinder;
 
@@ -231,6 +242,7 @@
 # virtual methods
 .method public onBootPhase(I)V
     .registers 3
+    .param p1, "phase"  # I
 
     .line 399
     invoke-super {p0, p1}, Lcom/android/server/SystemService;->onBootPhase(I)V
@@ -244,9 +256,9 @@
 
     .line 402
     :cond_8
-    iget-object p1, p0, Lcom/android/server/incident/IncidentCompanionService;->mPendingReports:Lcom/android/server/incident/PendingReports;
+    iget-object v0, p0, Lcom/android/server/incident/IncidentCompanionService;->mPendingReports:Lcom/android/server/incident/PendingReports;
 
-    invoke-virtual {p1}, Lcom/android/server/incident/PendingReports;->onBootCompleted()V
+    invoke-virtual {v0}, Lcom/android/server/incident/PendingReports;->onBootCompleted()V
 
     .line 405
     :goto_d
@@ -263,7 +275,7 @@
 
     invoke-direct {v0, p0, v1}, Lcom/android/server/incident/IncidentCompanionService$BinderService;-><init>(Lcom/android/server/incident/IncidentCompanionService;Lcom/android/server/incident/IncidentCompanionService$1;)V
 
-    const-string v1, "incidentcompanion"
+    const-string/jumbo v1, "incidentcompanion"
 
     invoke-virtual {p0, v1, v0}, Lcom/android/server/incident/IncidentCompanionService;->publishBinderService(Ljava/lang/String;Landroid/os/IBinder;)V
 

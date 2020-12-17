@@ -15,7 +15,11 @@
 .end method
 
 .method public static transformLogicalToPhysicalCoordinates(IIILandroid/graphics/Matrix;)V
-    .registers 6
+    .registers 7
+    .param p0, "rotation"  # I
+    .param p1, "physicalWidth"  # I
+    .param p2, "physicalHeight"  # I
+    .param p3, "out"  # Landroid/graphics/Matrix;
 
     .line 76
     if-eqz p0, :cond_46
@@ -30,79 +34,79 @@
 
     if-eq p0, v0, :cond_2e
 
-    const/4 p1, 0x3
+    const/4 v0, 0x3
 
-    if-ne p0, p1, :cond_17
+    if-ne p0, v0, :cond_17
 
     .line 89
-    const/high16 p0, 0x43870000  # 270.0f
+    const/high16 v0, 0x43870000  # 270.0f
 
-    invoke-virtual {p3, p0}, Landroid/graphics/Matrix;->setRotate(F)V
+    invoke-virtual {p3, v0}, Landroid/graphics/Matrix;->setRotate(F)V
 
     .line 90
-    neg-int p0, p2
+    neg-int v0, p2
 
-    int-to-float p0, p0
+    int-to-float v0, v0
 
-    invoke-virtual {p3, p0, v1}, Landroid/graphics/Matrix;->preTranslate(FF)Z
+    invoke-virtual {p3, v0, v1}, Landroid/graphics/Matrix;->preTranslate(FF)Z
 
     .line 91
     goto :goto_4a
 
     .line 93
     :cond_17
-    new-instance p1, Ljava/lang/IllegalArgumentException;
+    new-instance v0, Ljava/lang/IllegalArgumentException;
 
-    new-instance p2, Ljava/lang/StringBuilder;
+    new-instance v1, Ljava/lang/StringBuilder;
 
-    invoke-direct {p2}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string p3, "Unknown rotation: "
+    const-string v2, "Unknown rotation: "
 
-    invoke-virtual {p2, p3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p2, p0}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, p0}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v1
 
-    invoke-direct {p1, p0}, Ljava/lang/IllegalArgumentException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v0, v1}, Ljava/lang/IllegalArgumentException;-><init>(Ljava/lang/String;)V
 
-    throw p1
+    throw v0
 
     .line 85
     :cond_2e
-    const/high16 p0, 0x43340000  # 180.0f
+    const/high16 v0, 0x43340000  # 180.0f
 
-    invoke-virtual {p3, p0}, Landroid/graphics/Matrix;->setRotate(F)V
+    invoke-virtual {p3, v0}, Landroid/graphics/Matrix;->setRotate(F)V
 
     .line 86
-    neg-int p0, p1
+    neg-int v0, p1
 
-    int-to-float p0, p0
+    int-to-float v0, v0
 
-    neg-int p1, p2
+    neg-int v1, p2
 
-    int-to-float p1, p1
+    int-to-float v1, v1
 
-    invoke-virtual {p3, p0, p1}, Landroid/graphics/Matrix;->preTranslate(FF)Z
+    invoke-virtual {p3, v0, v1}, Landroid/graphics/Matrix;->preTranslate(FF)Z
 
     .line 87
     goto :goto_4a
 
     .line 81
     :cond_3b
-    const/high16 p0, 0x42b40000  # 90.0f
+    const/high16 v0, 0x42b40000  # 90.0f
 
-    invoke-virtual {p3, p0}, Landroid/graphics/Matrix;->setRotate(F)V
+    invoke-virtual {p3, v0}, Landroid/graphics/Matrix;->setRotate(F)V
 
     .line 82
-    neg-int p0, p1
+    neg-int v0, p1
 
-    int-to-float p0, p0
+    int-to-float v0, v0
 
-    invoke-virtual {p3, v1, p0}, Landroid/graphics/Matrix;->preTranslate(FF)Z
+    invoke-virtual {p3, v1, v0}, Landroid/graphics/Matrix;->preTranslate(FF)Z
 
     .line 83
     goto :goto_4a
@@ -120,7 +124,11 @@
 .end method
 
 .method public static transformPhysicalToLogicalCoordinates(IIILandroid/graphics/Matrix;)V
-    .registers 6
+    .registers 7
+    .param p0, "rotation"  # I
+    .param p1, "physicalWidth"  # I
+    .param p2, "physicalHeight"  # I
+    .param p3, "out"  # Landroid/graphics/Matrix;
 
     .line 46
     if-eqz p0, :cond_42
@@ -135,71 +143,71 @@
 
     if-eq p0, v0, :cond_2d
 
-    const/4 p1, 0x3
+    const/4 v0, 0x3
 
-    if-ne p0, p1, :cond_16
+    if-ne p0, v0, :cond_16
 
     .line 59
-    const/high16 p0, 0x42b40000  # 90.0f
+    const/high16 v0, 0x42b40000  # 90.0f
 
-    invoke-virtual {p3, p0}, Landroid/graphics/Matrix;->setRotate(F)V
+    invoke-virtual {p3, v0}, Landroid/graphics/Matrix;->setRotate(F)V
 
     .line 60
-    int-to-float p0, p2
+    int-to-float v0, p2
 
-    invoke-virtual {p3, p0, v1}, Landroid/graphics/Matrix;->postTranslate(FF)Z
+    invoke-virtual {p3, v0, v1}, Landroid/graphics/Matrix;->postTranslate(FF)Z
 
     .line 61
     goto :goto_46
 
     .line 63
     :cond_16
-    new-instance p1, Ljava/lang/IllegalArgumentException;
+    new-instance v0, Ljava/lang/IllegalArgumentException;
 
-    new-instance p2, Ljava/lang/StringBuilder;
+    new-instance v1, Ljava/lang/StringBuilder;
 
-    invoke-direct {p2}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string p3, "Unknown rotation: "
+    const-string v2, "Unknown rotation: "
 
-    invoke-virtual {p2, p3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p2, p0}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, p0}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v1
 
-    invoke-direct {p1, p0}, Ljava/lang/IllegalArgumentException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v0, v1}, Ljava/lang/IllegalArgumentException;-><init>(Ljava/lang/String;)V
 
-    throw p1
+    throw v0
 
     .line 55
     :cond_2d
-    const/high16 p0, 0x43340000  # 180.0f
+    const/high16 v0, 0x43340000  # 180.0f
 
-    invoke-virtual {p3, p0}, Landroid/graphics/Matrix;->setRotate(F)V
+    invoke-virtual {p3, v0}, Landroid/graphics/Matrix;->setRotate(F)V
 
     .line 56
-    int-to-float p0, p1
+    int-to-float v0, p1
 
-    int-to-float p1, p2
+    int-to-float v1, p2
 
-    invoke-virtual {p3, p0, p1}, Landroid/graphics/Matrix;->postTranslate(FF)Z
+    invoke-virtual {p3, v0, v1}, Landroid/graphics/Matrix;->postTranslate(FF)Z
 
     .line 57
     goto :goto_46
 
     .line 51
     :cond_38
-    const/high16 p0, 0x43870000  # 270.0f
+    const/high16 v0, 0x43870000  # 270.0f
 
-    invoke-virtual {p3, p0}, Landroid/graphics/Matrix;->setRotate(F)V
+    invoke-virtual {p3, v0}, Landroid/graphics/Matrix;->setRotate(F)V
 
     .line 52
-    int-to-float p0, p1
+    int-to-float v0, p1
 
-    invoke-virtual {p3, v1, p0}, Landroid/graphics/Matrix;->postTranslate(FF)Z
+    invoke-virtual {p3, v1, v0}, Landroid/graphics/Matrix;->postTranslate(FF)Z
 
     .line 53
     goto :goto_46
@@ -217,48 +225,58 @@
 .end method
 
 .method public static transformRect(Landroid/graphics/Matrix;Landroid/graphics/Rect;Landroid/graphics/RectF;)V
-    .registers 5
+    .registers 7
+    .param p0, "transform"  # Landroid/graphics/Matrix;
+    .param p1, "inOutRect"  # Landroid/graphics/Rect;
+    .param p2, "tmp"  # Landroid/graphics/RectF;
 
     .line 148
-    if-nez p2, :cond_7
+    if-nez p2, :cond_8
 
     .line 149
-    new-instance p2, Landroid/graphics/RectF;
+    new-instance v0, Landroid/graphics/RectF;
 
-    invoke-direct {p2}, Landroid/graphics/RectF;-><init>()V
+    invoke-direct {v0}, Landroid/graphics/RectF;-><init>()V
+
+    move-object p2, v0
 
     .line 151
-    :cond_7
+    :cond_8
     invoke-virtual {p2, p1}, Landroid/graphics/RectF;->set(Landroid/graphics/Rect;)V
 
     .line 152
     invoke-virtual {p0, p2}, Landroid/graphics/Matrix;->mapRect(Landroid/graphics/RectF;)Z
 
     .line 153
-    iget p0, p2, Landroid/graphics/RectF;->left:F
-
-    float-to-int p0, p0
-
-    iget v0, p2, Landroid/graphics/RectF;->top:F
+    iget v0, p2, Landroid/graphics/RectF;->left:F
 
     float-to-int v0, v0
 
-    iget v1, p2, Landroid/graphics/RectF;->right:F
+    iget v1, p2, Landroid/graphics/RectF;->top:F
 
     float-to-int v1, v1
 
-    iget p2, p2, Landroid/graphics/RectF;->bottom:F
+    iget v2, p2, Landroid/graphics/RectF;->right:F
 
-    float-to-int p2, p2
+    float-to-int v2, v2
 
-    invoke-virtual {p1, p0, v0, v1, p2}, Landroid/graphics/Rect;->set(IIII)V
+    iget v3, p2, Landroid/graphics/RectF;->bottom:F
+
+    float-to-int v3, v3
+
+    invoke-virtual {p1, v0, v1, v2, v3}, Landroid/graphics/Rect;->set(IIII)V
 
     .line 154
     return-void
 .end method
 
 .method public static transformToRotation(IIIILandroid/graphics/Matrix;)V
-    .registers 7
+    .registers 9
+    .param p0, "oldRotation"  # I
+    .param p1, "newRotation"  # I
+    .param p2, "newWidth"  # I
+    .param p3, "newHeight"  # I
+    .param p4, "out"  # Landroid/graphics/Matrix;
 
     .line 130
     const/4 v0, 0x1
@@ -275,6 +293,7 @@
     const/4 v0, 0x0
 
     .line 131
+    .local v0, "flipped":Z
     :cond_8
     :goto_8
     if-eqz v0, :cond_c
@@ -287,32 +306,44 @@
     move v1, p3
 
     .line 132
+    .local v1, "h":I
     :goto_d
-    if-eqz v0, :cond_10
+    if-eqz v0, :cond_11
 
-    move p2, p3
+    move v2, p3
+
+    goto :goto_12
+
+    :cond_11
+    move v2, p2
 
     .line 134
-    :cond_10
-    new-instance p3, Landroid/graphics/Matrix;
+    .local v2, "w":I
+    :goto_12
+    new-instance v3, Landroid/graphics/Matrix;
 
-    invoke-direct {p3}, Landroid/graphics/Matrix;-><init>()V
+    invoke-direct {v3}, Landroid/graphics/Matrix;-><init>()V
 
     .line 135
-    invoke-static {p0, p2, v1, p4}, Lcom/android/server/wm/utils/CoordinateTransforms;->transformLogicalToPhysicalCoordinates(IIILandroid/graphics/Matrix;)V
+    .local v3, "tmp":Landroid/graphics/Matrix;
+    invoke-static {p0, v2, v1, p4}, Lcom/android/server/wm/utils/CoordinateTransforms;->transformLogicalToPhysicalCoordinates(IIILandroid/graphics/Matrix;)V
 
     .line 136
-    invoke-static {p1, p2, v1, p3}, Lcom/android/server/wm/utils/CoordinateTransforms;->transformPhysicalToLogicalCoordinates(IIILandroid/graphics/Matrix;)V
+    invoke-static {p1, v2, v1, v3}, Lcom/android/server/wm/utils/CoordinateTransforms;->transformPhysicalToLogicalCoordinates(IIILandroid/graphics/Matrix;)V
 
     .line 137
-    invoke-virtual {p4, p3}, Landroid/graphics/Matrix;->postConcat(Landroid/graphics/Matrix;)Z
+    invoke-virtual {p4, v3}, Landroid/graphics/Matrix;->postConcat(Landroid/graphics/Matrix;)Z
 
     .line 138
     return-void
 .end method
 
 .method public static transformToRotation(IILandroid/view/DisplayInfo;Landroid/graphics/Matrix;)V
-    .registers 7
+    .registers 8
+    .param p0, "oldRotation"  # I
+    .param p1, "newRotation"  # I
+    .param p2, "info"  # Landroid/view/DisplayInfo;
+    .param p3, "out"  # Landroid/graphics/Matrix;
 
     .line 108
     iget v0, p2, Landroid/view/DisplayInfo;->rotation:I
@@ -332,43 +363,49 @@
     :cond_b
     const/4 v1, 0x0
 
-    .line 109
     :cond_c
     :goto_c
-    if-eqz v1, :cond_11
+    move v0, v1
 
-    iget v0, p2, Landroid/view/DisplayInfo;->logicalWidth:I
+    .line 109
+    .local v0, "flipped":Z
+    if-eqz v0, :cond_12
 
-    goto :goto_13
+    iget v1, p2, Landroid/view/DisplayInfo;->logicalWidth:I
 
-    :cond_11
-    iget v0, p2, Landroid/view/DisplayInfo;->logicalHeight:I
+    goto :goto_14
+
+    :cond_12
+    iget v1, p2, Landroid/view/DisplayInfo;->logicalHeight:I
 
     .line 110
-    :goto_13
-    if-eqz v1, :cond_18
+    .local v1, "h":I
+    :goto_14
+    if-eqz v0, :cond_19
 
-    iget p2, p2, Landroid/view/DisplayInfo;->logicalHeight:I
+    iget v2, p2, Landroid/view/DisplayInfo;->logicalHeight:I
 
-    goto :goto_1a
+    goto :goto_1b
 
-    :cond_18
-    iget p2, p2, Landroid/view/DisplayInfo;->logicalWidth:I
+    :cond_19
+    iget v2, p2, Landroid/view/DisplayInfo;->logicalWidth:I
 
     .line 112
-    :goto_1a
-    new-instance v1, Landroid/graphics/Matrix;
+    .local v2, "w":I
+    :goto_1b
+    new-instance v3, Landroid/graphics/Matrix;
 
-    invoke-direct {v1}, Landroid/graphics/Matrix;-><init>()V
+    invoke-direct {v3}, Landroid/graphics/Matrix;-><init>()V
 
     .line 113
-    invoke-static {p0, p2, v0, p3}, Lcom/android/server/wm/utils/CoordinateTransforms;->transformLogicalToPhysicalCoordinates(IIILandroid/graphics/Matrix;)V
+    .local v3, "tmp":Landroid/graphics/Matrix;
+    invoke-static {p0, v2, v1, p3}, Lcom/android/server/wm/utils/CoordinateTransforms;->transformLogicalToPhysicalCoordinates(IIILandroid/graphics/Matrix;)V
 
     .line 114
-    invoke-static {p1, p2, v0, v1}, Lcom/android/server/wm/utils/CoordinateTransforms;->transformPhysicalToLogicalCoordinates(IIILandroid/graphics/Matrix;)V
+    invoke-static {p1, v2, v1, v3}, Lcom/android/server/wm/utils/CoordinateTransforms;->transformPhysicalToLogicalCoordinates(IIILandroid/graphics/Matrix;)V
 
     .line 115
-    invoke-virtual {p3, v1}, Landroid/graphics/Matrix;->postConcat(Landroid/graphics/Matrix;)Z
+    invoke-virtual {p3, v3}, Landroid/graphics/Matrix;->postConcat(Landroid/graphics/Matrix;)Z
 
     .line 116
     return-void

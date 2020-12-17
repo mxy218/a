@@ -73,14 +73,15 @@
 
 .method public static asInterface(Landroid/os/IBinder;)Landroid/net/ip/IIpClient;
     .registers 3
+    .param p0, "obj"  # Landroid/os/IBinder;
 
     .line 80
     if-nez p0, :cond_4
 
     .line 81
-    const/4 p0, 0x0
+    const/4 v0, 0x0
 
-    return-object p0
+    return-object v0
 
     .line 83
     :cond_4
@@ -91,24 +92,27 @@
     move-result-object v0
 
     .line 84
-    if-eqz v0, :cond_13
+    .local v0, "iin":Landroid/os/IInterface;
+    if-eqz v0, :cond_14
 
     instance-of v1, v0, Landroid/net/ip/IIpClient;
 
-    if-eqz v1, :cond_13
+    if-eqz v1, :cond_14
 
     .line 85
-    check-cast v0, Landroid/net/ip/IIpClient;
+    move-object v1, v0
 
-    return-object v0
+    check-cast v1, Landroid/net/ip/IIpClient;
+
+    return-object v1
 
     .line 87
-    :cond_13
-    new-instance v0, Landroid/net/ip/IIpClient$Stub$Proxy;
+    :cond_14
+    new-instance v1, Landroid/net/ip/IIpClient$Stub$Proxy;
 
-    invoke-direct {v0, p0}, Landroid/net/ip/IIpClient$Stub$Proxy;-><init>(Landroid/os/IBinder;)V
+    invoke-direct {v1, p0}, Landroid/net/ip/IIpClient$Stub$Proxy;-><init>(Landroid/os/IBinder;)V
 
-    return-object v0
+    return-object v1
 .end method
 
 .method public static getDefaultImpl()Landroid/net/ip/IIpClient;
@@ -122,6 +126,7 @@
 
 .method public static setDefaultImpl(Landroid/net/ip/IIpClient;)Z
     .registers 2
+    .param p0, "impl"  # Landroid/net/ip/IIpClient;
 
     .line 519
     sget-object v0, Landroid/net/ip/IIpClient$Stub$Proxy;->sDefaultImpl:Landroid/net/ip/IIpClient;
@@ -134,15 +139,15 @@
     sput-object p0, Landroid/net/ip/IIpClient$Stub$Proxy;->sDefaultImpl:Landroid/net/ip/IIpClient;
 
     .line 521
-    const/4 p0, 0x1
+    const/4 v0, 0x1
 
-    return p0
+    return v0
 
     .line 523
     :cond_a
-    const/4 p0, 0x0
+    const/4 v0, 0x0
 
-    return p0
+    return v0
 .end method
 
 
@@ -155,7 +160,11 @@
 .end method
 
 .method public onTransact(ILandroid/os/Parcel;Landroid/os/Parcel;I)Z
-    .registers 8
+    .registers 9
+    .param p1, "code"  # I
+    .param p2, "data"  # Landroid/os/Parcel;
+    .param p3, "reply"  # Landroid/os/Parcel;
+    .param p4, "flags"  # I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -163,322 +172,343 @@
     .end annotation
 
     .line 95
-    nop
+    const-string v0, "android.net.ip.IIpClient"
 
     .line 96
-    const v0, 0xffffff
+    .local v0, "descriptor":Ljava/lang/String;
+    const v1, 0xffffff
 
-    const/4 v1, 0x1
+    const/4 v2, 0x1
 
-    const-string v2, "android.net.ip.IIpClient"
+    if-eq p1, v1, :cond_d9
 
-    if-eq p1, v0, :cond_df
+    const v1, 0x5f4e5446
 
-    const v0, 0x5f4e5446
+    if-eq p1, v1, :cond_d5
 
-    if-eq p1, v0, :cond_db
-
-    const/4 v0, 0x0
-
-    packed-switch p1, :pswitch_data_ee
+    packed-switch p1, :pswitch_data_e8
 
     .line 234
     invoke-super {p0, p1, p2, p3, p4}, Landroid/os/Binder;->onTransact(ILandroid/os/Parcel;Landroid/os/Parcel;I)Z
 
-    move-result p1
+    move-result v1
 
-    return p1
+    return v1
 
     .line 212
-    :pswitch_17  #0xd
-    invoke-virtual {p2, v2}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
+    :pswitch_15  #0xd
+    invoke-virtual {p2, v0}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
 
     .line 214
     invoke-virtual {p2}, Landroid/os/Parcel;->readInt()I
 
-    move-result p1
+    move-result v1
 
     .line 216
+    .local v1, "_arg0":I
     invoke-virtual {p2}, Landroid/os/Parcel;->readInt()I
 
-    move-result p3
+    move-result v3
 
-    if-eqz p3, :cond_2e
+    if-eqz v3, :cond_2b
 
     .line 217
-    sget-object p3, Landroid/net/NattKeepalivePacketDataParcelable;->CREATOR:Landroid/os/Parcelable$Creator;
+    sget-object v3, Landroid/net/NattKeepalivePacketDataParcelable;->CREATOR:Landroid/os/Parcelable$Creator;
 
-    invoke-interface {p3, p2}, Landroid/os/Parcelable$Creator;->createFromParcel(Landroid/os/Parcel;)Ljava/lang/Object;
+    invoke-interface {v3, p2}, Landroid/os/Parcelable$Creator;->createFromParcel(Landroid/os/Parcel;)Ljava/lang/Object;
 
-    move-result-object p2
+    move-result-object v3
 
-    move-object v0, p2
+    check-cast v3, Landroid/net/NattKeepalivePacketDataParcelable;
 
-    check-cast v0, Landroid/net/NattKeepalivePacketDataParcelable;
-
-    goto :goto_2f
+    .local v3, "_arg1":Landroid/net/NattKeepalivePacketDataParcelable;
+    goto :goto_2c
 
     .line 220
-    :cond_2e
-    nop
+    .end local v3  # "_arg1":Landroid/net/NattKeepalivePacketDataParcelable;
+    :cond_2b
+    const/4 v3, 0x0
 
     .line 222
-    :goto_2f
-    invoke-virtual {p0, p1, v0}, Landroid/net/ip/IIpClient$Stub;->addNattKeepalivePacketFilter(ILandroid/net/NattKeepalivePacketDataParcelable;)V
+    .restart local v3  # "_arg1":Landroid/net/NattKeepalivePacketDataParcelable;
+    :goto_2c
+    invoke-virtual {p0, v1, v3}, Landroid/net/ip/IIpClient$Stub;->addNattKeepalivePacketFilter(ILandroid/net/NattKeepalivePacketDataParcelable;)V
 
     .line 223
-    return v1
+    return v2
 
     .line 202
-    :pswitch_33  #0xc
-    invoke-virtual {p2, v2}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
+    .end local v1  # "_arg0":I
+    .end local v3  # "_arg1":Landroid/net/NattKeepalivePacketDataParcelable;
+    :pswitch_30  #0xc
+    invoke-virtual {p2, v0}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
 
     .line 204
     invoke-virtual {p2}, Landroid/os/Parcel;->readString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v1
 
     .line 206
+    .local v1, "_arg0":Ljava/lang/String;
     invoke-virtual {p2}, Landroid/os/Parcel;->readString()Ljava/lang/String;
 
-    move-result-object p2
+    move-result-object v3
 
     .line 207
-    invoke-virtual {p0, p1, p2}, Landroid/net/ip/IIpClient$Stub;->setL2KeyAndGroupHint(Ljava/lang/String;Ljava/lang/String;)V
+    .local v3, "_arg1":Ljava/lang/String;
+    invoke-virtual {p0, v1, v3}, Landroid/net/ip/IIpClient$Stub;->setL2KeyAndGroupHint(Ljava/lang/String;Ljava/lang/String;)V
 
     .line 208
-    return v1
+    return v2
 
     .line 194
-    :pswitch_42  #0xb
-    invoke-virtual {p2, v2}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
+    .end local v1  # "_arg0":Ljava/lang/String;
+    .end local v3  # "_arg1":Ljava/lang/String;
+    :pswitch_3f  #0xb
+    invoke-virtual {p2, v0}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
 
     .line 196
     invoke-virtual {p2}, Landroid/os/Parcel;->readInt()I
 
-    move-result p1
+    move-result v1
 
     .line 197
-    invoke-virtual {p0, p1}, Landroid/net/ip/IIpClient$Stub;->removeKeepalivePacketFilter(I)V
+    .local v1, "_arg0":I
+    invoke-virtual {p0, v1}, Landroid/net/ip/IIpClient$Stub;->removeKeepalivePacketFilter(I)V
 
     .line 198
-    return v1
+    return v2
 
     .line 179
-    :pswitch_4d  #0xa
-    invoke-virtual {p2, v2}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
+    .end local v1  # "_arg0":I
+    :pswitch_4a  #0xa
+    invoke-virtual {p2, v0}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
 
     .line 181
     invoke-virtual {p2}, Landroid/os/Parcel;->readInt()I
 
-    move-result p1
+    move-result v1
 
     .line 183
+    .restart local v1  # "_arg0":I
     invoke-virtual {p2}, Landroid/os/Parcel;->readInt()I
 
-    move-result p3
+    move-result v3
 
-    if-eqz p3, :cond_64
+    if-eqz v3, :cond_60
 
     .line 184
-    sget-object p3, Landroid/net/TcpKeepalivePacketDataParcelable;->CREATOR:Landroid/os/Parcelable$Creator;
+    sget-object v3, Landroid/net/TcpKeepalivePacketDataParcelable;->CREATOR:Landroid/os/Parcelable$Creator;
 
-    invoke-interface {p3, p2}, Landroid/os/Parcelable$Creator;->createFromParcel(Landroid/os/Parcel;)Ljava/lang/Object;
+    invoke-interface {v3, p2}, Landroid/os/Parcelable$Creator;->createFromParcel(Landroid/os/Parcel;)Ljava/lang/Object;
 
-    move-result-object p2
+    move-result-object v3
 
-    move-object v0, p2
+    check-cast v3, Landroid/net/TcpKeepalivePacketDataParcelable;
 
-    check-cast v0, Landroid/net/TcpKeepalivePacketDataParcelable;
-
-    goto :goto_65
+    .local v3, "_arg1":Landroid/net/TcpKeepalivePacketDataParcelable;
+    goto :goto_61
 
     .line 187
-    :cond_64
-    nop
+    .end local v3  # "_arg1":Landroid/net/TcpKeepalivePacketDataParcelable;
+    :cond_60
+    const/4 v3, 0x0
 
     .line 189
-    :goto_65
-    invoke-virtual {p0, p1, v0}, Landroid/net/ip/IIpClient$Stub;->addKeepalivePacketFilter(ILandroid/net/TcpKeepalivePacketDataParcelable;)V
+    .restart local v3  # "_arg1":Landroid/net/TcpKeepalivePacketDataParcelable;
+    :goto_61
+    invoke-virtual {p0, v1, v3}, Landroid/net/ip/IIpClient$Stub;->addKeepalivePacketFilter(ILandroid/net/TcpKeepalivePacketDataParcelable;)V
 
     .line 190
-    return v1
+    return v2
 
     .line 171
-    :pswitch_69  #0x9
-    invoke-virtual {p2, v2}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
+    .end local v1  # "_arg0":I
+    .end local v3  # "_arg1":Landroid/net/TcpKeepalivePacketDataParcelable;
+    :pswitch_65  #0x9
+    invoke-virtual {p2, v0}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
 
     .line 173
     invoke-virtual {p2}, Landroid/os/Parcel;->readInt()I
 
-    move-result p1
+    move-result v1
 
-    if-eqz p1, :cond_74
+    if-eqz v1, :cond_70
 
-    move p1, v1
+    move v1, v2
 
-    goto :goto_75
+    goto :goto_71
 
-    :cond_74
-    const/4 p1, 0x0
+    :cond_70
+    const/4 v1, 0x0
 
     .line 174
-    :goto_75
-    invoke-virtual {p0, p1}, Landroid/net/ip/IIpClient$Stub;->setMulticastFilter(Z)V
+    .local v1, "_arg0":Z
+    :goto_71
+    invoke-virtual {p0, v1}, Landroid/net/ip/IIpClient$Stub;->setMulticastFilter(Z)V
 
     .line 175
-    return v1
+    return v2
 
     .line 158
-    :pswitch_79  #0x8
-    invoke-virtual {p2, v2}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
+    .end local v1  # "_arg0":Z
+    :pswitch_75  #0x8
+    invoke-virtual {p2, v0}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
 
     .line 160
     invoke-virtual {p2}, Landroid/os/Parcel;->readInt()I
 
-    move-result p1
+    move-result v1
 
-    if-eqz p1, :cond_8c
+    if-eqz v1, :cond_87
 
     .line 161
-    sget-object p1, Landroid/net/ProxyInfo;->CREATOR:Landroid/os/Parcelable$Creator;
+    sget-object v1, Landroid/net/ProxyInfo;->CREATOR:Landroid/os/Parcelable$Creator;
 
-    invoke-interface {p1, p2}, Landroid/os/Parcelable$Creator;->createFromParcel(Landroid/os/Parcel;)Ljava/lang/Object;
+    invoke-interface {v1, p2}, Landroid/os/Parcelable$Creator;->createFromParcel(Landroid/os/Parcel;)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v1
 
-    move-object v0, p1
+    check-cast v1, Landroid/net/ProxyInfo;
 
-    check-cast v0, Landroid/net/ProxyInfo;
-
-    goto :goto_8d
+    .local v1, "_arg0":Landroid/net/ProxyInfo;
+    goto :goto_88
 
     .line 164
-    :cond_8c
-    nop
+    .end local v1  # "_arg0":Landroid/net/ProxyInfo;
+    :cond_87
+    const/4 v1, 0x0
 
     .line 166
-    :goto_8d
-    invoke-virtual {p0, v0}, Landroid/net/ip/IIpClient$Stub;->setHttpProxy(Landroid/net/ProxyInfo;)V
+    .restart local v1  # "_arg0":Landroid/net/ProxyInfo;
+    :goto_88
+    invoke-virtual {p0, v1}, Landroid/net/ip/IIpClient$Stub;->setHttpProxy(Landroid/net/ProxyInfo;)V
 
     .line 167
-    return v1
+    return v2
 
     .line 150
-    :pswitch_91  #0x7
-    invoke-virtual {p2, v2}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
+    .end local v1  # "_arg0":Landroid/net/ProxyInfo;
+    :pswitch_8c  #0x7
+    invoke-virtual {p2, v0}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
 
     .line 152
     invoke-virtual {p2}, Landroid/os/Parcel;->readString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v1
 
     .line 153
-    invoke-virtual {p0, p1}, Landroid/net/ip/IIpClient$Stub;->setTcpBufferSizes(Ljava/lang/String;)V
+    .local v1, "_arg0":Ljava/lang/String;
+    invoke-virtual {p0, v1}, Landroid/net/ip/IIpClient$Stub;->setTcpBufferSizes(Ljava/lang/String;)V
 
     .line 154
-    return v1
+    return v2
 
     .line 144
-    :pswitch_9c  #0x6
-    invoke-virtual {p2, v2}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
+    .end local v1  # "_arg0":Ljava/lang/String;
+    :pswitch_97  #0x6
+    invoke-virtual {p2, v0}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
 
     .line 145
     invoke-virtual {p0}, Landroid/net/ip/IIpClient$Stub;->stop()V
 
     .line 146
-    return v1
+    return v2
 
     .line 131
-    :pswitch_a3  #0x5
-    invoke-virtual {p2, v2}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
+    :pswitch_9e  #0x5
+    invoke-virtual {p2, v0}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
 
     .line 133
     invoke-virtual {p2}, Landroid/os/Parcel;->readInt()I
 
-    move-result p1
+    move-result v1
 
-    if-eqz p1, :cond_b6
+    if-eqz v1, :cond_b0
 
     .line 134
-    sget-object p1, Landroid/net/ProvisioningConfigurationParcelable;->CREATOR:Landroid/os/Parcelable$Creator;
+    sget-object v1, Landroid/net/ProvisioningConfigurationParcelable;->CREATOR:Landroid/os/Parcelable$Creator;
 
-    invoke-interface {p1, p2}, Landroid/os/Parcelable$Creator;->createFromParcel(Landroid/os/Parcel;)Ljava/lang/Object;
+    invoke-interface {v1, p2}, Landroid/os/Parcelable$Creator;->createFromParcel(Landroid/os/Parcel;)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v1
 
-    move-object v0, p1
+    check-cast v1, Landroid/net/ProvisioningConfigurationParcelable;
 
-    check-cast v0, Landroid/net/ProvisioningConfigurationParcelable;
-
-    goto :goto_b7
+    .local v1, "_arg0":Landroid/net/ProvisioningConfigurationParcelable;
+    goto :goto_b1
 
     .line 137
-    :cond_b6
-    nop
+    .end local v1  # "_arg0":Landroid/net/ProvisioningConfigurationParcelable;
+    :cond_b0
+    const/4 v1, 0x0
 
     .line 139
-    :goto_b7
-    invoke-virtual {p0, v0}, Landroid/net/ip/IIpClient$Stub;->startProvisioning(Landroid/net/ProvisioningConfigurationParcelable;)V
+    .restart local v1  # "_arg0":Landroid/net/ProvisioningConfigurationParcelable;
+    :goto_b1
+    invoke-virtual {p0, v1}, Landroid/net/ip/IIpClient$Stub;->startProvisioning(Landroid/net/ProvisioningConfigurationParcelable;)V
 
     .line 140
-    return v1
+    return v2
 
     .line 125
-    :pswitch_bb  #0x4
-    invoke-virtual {p2, v2}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
+    .end local v1  # "_arg0":Landroid/net/ProvisioningConfigurationParcelable;
+    :pswitch_b5  #0x4
+    invoke-virtual {p2, v0}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
 
     .line 126
     invoke-virtual {p0}, Landroid/net/ip/IIpClient$Stub;->shutdown()V
 
     .line 127
-    return v1
+    return v2
 
     .line 117
-    :pswitch_c2  #0x3
-    invoke-virtual {p2, v2}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
+    :pswitch_bc  #0x3
+    invoke-virtual {p2, v0}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
 
     .line 119
     invoke-virtual {p2}, Landroid/os/Parcel;->createByteArray()[B
 
-    move-result-object p1
+    move-result-object v1
 
     .line 120
-    invoke-virtual {p0, p1}, Landroid/net/ip/IIpClient$Stub;->readPacketFilterComplete([B)V
+    .local v1, "_arg0":[B
+    invoke-virtual {p0, v1}, Landroid/net/ip/IIpClient$Stub;->readPacketFilterComplete([B)V
 
     .line 121
-    return v1
+    return v2
 
     .line 111
-    :pswitch_cd  #0x2
-    invoke-virtual {p2, v2}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
+    .end local v1  # "_arg0":[B
+    :pswitch_c7  #0x2
+    invoke-virtual {p2, v0}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
 
     .line 112
     invoke-virtual {p0}, Landroid/net/ip/IIpClient$Stub;->confirmConfiguration()V
 
     .line 113
-    return v1
+    return v2
 
     .line 105
-    :pswitch_d4  #0x1
-    invoke-virtual {p2, v2}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
+    :pswitch_ce  #0x1
+    invoke-virtual {p2, v0}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
 
     .line 106
     invoke-virtual {p0}, Landroid/net/ip/IIpClient$Stub;->completedPreDhcpAction()V
 
     .line 107
-    return v1
+    return v2
 
     .line 100
-    :cond_db
-    invoke-virtual {p3, v2}, Landroid/os/Parcel;->writeString(Ljava/lang/String;)V
+    :cond_d5
+    invoke-virtual {p3, v0}, Landroid/os/Parcel;->writeString(Ljava/lang/String;)V
 
     .line 101
-    return v1
+    return v2
 
     .line 227
-    :cond_df
-    invoke-virtual {p2, v2}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
+    :cond_d9
+    invoke-virtual {p2, v0}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
 
     .line 228
     invoke-virtual {p3}, Landroid/os/Parcel;->writeNoException()V
@@ -486,29 +516,29 @@
     .line 229
     invoke-virtual {p0}, Landroid/net/ip/IIpClient$Stub;->getInterfaceVersion()I
 
-    move-result p1
+    move-result v1
 
-    invoke-virtual {p3, p1}, Landroid/os/Parcel;->writeInt(I)V
+    invoke-virtual {p3, v1}, Landroid/os/Parcel;->writeInt(I)V
 
     .line 230
-    return v1
+    return v2
 
     nop
 
-    :pswitch_data_ee
+    :pswitch_data_e8
     .packed-switch 0x1
-        :pswitch_d4  #00000001
-        :pswitch_cd  #00000002
-        :pswitch_c2  #00000003
-        :pswitch_bb  #00000004
-        :pswitch_a3  #00000005
-        :pswitch_9c  #00000006
-        :pswitch_91  #00000007
-        :pswitch_79  #00000008
-        :pswitch_69  #00000009
-        :pswitch_4d  #0000000a
-        :pswitch_42  #0000000b
-        :pswitch_33  #0000000c
-        :pswitch_17  #0000000d
+        :pswitch_ce  #00000001
+        :pswitch_c7  #00000002
+        :pswitch_bc  #00000003
+        :pswitch_b5  #00000004
+        :pswitch_9e  #00000005
+        :pswitch_97  #00000006
+        :pswitch_8c  #00000007
+        :pswitch_75  #00000008
+        :pswitch_65  #00000009
+        :pswitch_4a  #0000000a
+        :pswitch_3f  #0000000b
+        :pswitch_30  #0000000c
+        :pswitch_15  #0000000d
     .end packed-switch
 .end method

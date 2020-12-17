@@ -23,7 +23,10 @@
 
 # direct methods
 .method public constructor <init>(Landroid/os/IBinder;ILandroid/view/autofill/IAutoFillManagerClient;)V
-    .registers 4
+    .registers 5
+    .param p1, "token"  # Landroid/os/IBinder;
+    .param p2, "sessionId"  # I
+    .param p3, "client"  # Landroid/view/autofill/IAutoFillManagerClient;
 
     .line 47
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -32,9 +35,9 @@
     iput-object p1, p0, Lcom/android/server/autofill/ui/PendingUi;->mToken:Landroid/os/IBinder;
 
     .line 49
-    const/4 p1, 0x1
+    const/4 v0, 0x1
 
-    iput p1, p0, Lcom/android/server/autofill/ui/PendingUi;->mState:I
+    iput v0, p0, Lcom/android/server/autofill/ui/PendingUi;->mState:I
 
     .line 50
     iput p2, p0, Lcom/android/server/autofill/ui/PendingUi;->sessionId:I
@@ -68,19 +71,21 @@
 
 .method public matches(Landroid/os/IBinder;)Z
     .registers 3
+    .param p1, "token"  # Landroid/os/IBinder;
 
     .line 80
     iget-object v0, p0, Lcom/android/server/autofill/ui/PendingUi;->mToken:Landroid/os/IBinder;
 
     invoke-virtual {v0, p1}, Ljava/lang/Object;->equals(Ljava/lang/Object;)Z
 
-    move-result p1
+    move-result v0
 
-    return p1
+    return v0
 .end method
 
 .method public setState(I)V
     .registers 2
+    .param p1, "state"  # I
 
     .line 66
     iput p1, p0, Lcom/android/server/autofill/ui/PendingUi;->mState:I

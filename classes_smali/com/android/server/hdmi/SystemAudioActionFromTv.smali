@@ -5,7 +5,11 @@
 
 # direct methods
 .method constructor <init>(Lcom/android/server/hdmi/HdmiCecLocalDevice;IZLandroid/hardware/hdmi/IHdmiControlCallback;)V
-    .registers 5
+    .registers 7
+    .param p1, "sourceAddress"  # Lcom/android/server/hdmi/HdmiCecLocalDevice;
+    .param p2, "avrAddress"  # I
+    .param p3, "targetStatus"  # Z
+    .param p4, "callback"  # Landroid/hardware/hdmi/IHdmiControlCallback;
 
     .line 39
     invoke-direct {p0, p1, p2, p3, p4}, Lcom/android/server/hdmi/SystemAudioAction;-><init>(Lcom/android/server/hdmi/HdmiCecLocalDevice;IZLandroid/hardware/hdmi/IHdmiControlCallback;)V
@@ -13,11 +17,11 @@
     .line 40
     invoke-virtual {p0}, Lcom/android/server/hdmi/SystemAudioActionFromTv;->getSourceAddress()I
 
-    move-result p1
+    move-result v0
 
-    const/4 p2, 0x0
+    const/4 v1, 0x0
 
-    invoke-static {p1, p2}, Lcom/android/server/hdmi/HdmiUtils;->verifyAddressType(II)V
+    invoke-static {v0, v1}, Lcom/android/server/hdmi/HdmiUtils;->verifyAddressType(II)V
 
     .line 41
     return-void

@@ -21,6 +21,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/om/OverlayManagerService;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/om/OverlayManagerService;
 
     .line 524
     iput-object p1, p0, Lcom/android/server/om/OverlayManagerService$1;->this$0:Lcom/android/server/om/OverlayManagerService;
@@ -32,6 +33,7 @@
 
 .method private enforceChangeOverlayPackagesPermission(Ljava/lang/String;)V
     .registers 4
+    .param p1, "message"  # Ljava/lang/String;
 
     .line 848
     iget-object v0, p0, Lcom/android/server/om/OverlayManagerService$1;->this$0:Lcom/android/server/om/OverlayManagerService;
@@ -50,6 +52,7 @@
 
 .method private enforceDumpPermission(Ljava/lang/String;)V
     .registers 4
+    .param p1, "message"  # Ljava/lang/String;
 
     .line 859
     iget-object v0, p0, Lcom/android/server/om/OverlayManagerService$1;->this$0:Lcom/android/server/om/OverlayManagerService;
@@ -68,6 +71,8 @@
 
 .method private handleIncomingUser(ILjava/lang/String;)I
     .registers 10
+    .param p1, "userId"  # I
+    .param p2, "message"  # Ljava/lang/String;
 
     .line 836
     invoke-static {}, Landroid/os/Binder;->getCallingPid()I
@@ -92,494 +97,518 @@
 
     invoke-static/range {v0 .. v6}, Landroid/app/ActivityManager;->handleIncomingUser(IIIZZLjava/lang/String;Ljava/lang/String;)I
 
-    move-result p1
+    move-result v0
 
-    return p1
+    return v0
 .end method
 
 
 # virtual methods
 .method protected dump(Ljava/io/FileDescriptor;Ljava/io/PrintWriter;[Ljava/lang/String;)V
     .registers 11
+    .param p1, "fd"  # Ljava/io/FileDescriptor;
+    .param p2, "pw"  # Ljava/io/PrintWriter;
+    .param p3, "args"  # [Ljava/lang/String;
 
     .line 753
-    new-instance p1, Lcom/android/server/om/DumpState;
+    new-instance v0, Lcom/android/server/om/DumpState;
 
-    invoke-direct {p1}, Lcom/android/server/om/DumpState;-><init>()V
+    invoke-direct {v0}, Lcom/android/server/om/DumpState;-><init>()V
 
     .line 754
-    const/4 v0, -0x1
+    .local v0, "dumpState":Lcom/android/server/om/DumpState;
+    invoke-static {}, Landroid/os/Binder;->getCallingUid()I
 
-    invoke-virtual {p1, v0}, Lcom/android/server/om/DumpState;->setUserId(I)V
+    move-result v1
+
+    invoke-static {v1}, Landroid/os/UserHandle;->getUserId(I)I
+
+    move-result v1
+
+    invoke-virtual {v0, v1}, Lcom/android/server/om/DumpState;->setUserId(I)V
 
     .line 756
     const/4 v1, 0x0
 
-    move v2, v1
-
     .line 757
-    :goto_b
-    array-length v3, p3
+    .local v1, "opti":I
+    :goto_11
+    array-length v2, p3
+
+    const/4 v3, 0x0
 
     const/4 v4, 0x1
 
-    if-ge v2, v3, :cond_ad
+    if-ge v1, v2, :cond_b4
 
     .line 758
-    aget-object v3, p3, v2
+    aget-object v2, p3, v1
 
     .line 759
-    if-eqz v3, :cond_ad
+    .local v2, "opt":Ljava/lang/String;
+    if-eqz v2, :cond_b4
 
-    invoke-virtual {v3}, Ljava/lang/String;->length()I
+    invoke-virtual {v2}, Ljava/lang/String;->length()I
 
     move-result v5
 
-    if-lez v5, :cond_ad
+    if-lez v5, :cond_b4
 
-    invoke-virtual {v3, v1}, Ljava/lang/String;->charAt(I)C
+    invoke-virtual {v2, v3}, Ljava/lang/String;->charAt(I)C
 
     move-result v5
 
     const/16 v6, 0x2d
 
-    if-eq v5, v6, :cond_23
+    if-eq v5, v6, :cond_2a
 
     .line 760
-    goto/16 :goto_ad
+    goto/16 :goto_b4
 
     .line 762
-    :cond_23
-    add-int/lit8 v2, v2, 0x1
+    :cond_2a
+    add-int/lit8 v1, v1, 0x1
 
     .line 764
-    const-string v5, "-h"
+    const-string v3, "-h"
 
-    invoke-virtual {v5, v3}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v3, v2}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result v5
+    move-result v3
 
-    if-eqz v5, :cond_51
+    if-eqz v3, :cond_58
 
     .line 765
-    const-string p1, "dump [-h] [--verbose] [--user USER_ID] [[FIELD] PACKAGE]"
+    const-string v3, "dump [-h] [--verbose] [--user USER_ID] [[FIELD] PACKAGE]"
 
-    invoke-virtual {p2, p1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {p2, v3}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
     .line 766
-    const-string p1, "  Print debugging information about the overlay manager."
+    const-string v3, "  Print debugging information about the overlay manager."
 
-    invoke-virtual {p2, p1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {p2, v3}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
     .line 767
-    const-string p1, "  With optional parameter PACKAGE, limit output to the specified"
+    const-string v3, "  With optional parameter PACKAGE, limit output to the specified"
 
-    invoke-virtual {p2, p1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {p2, v3}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
     .line 768
-    const-string p1, "  package. With optional parameter FIELD, limit output to"
+    const-string v3, "  package. With optional parameter FIELD, limit output to"
 
-    invoke-virtual {p2, p1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {p2, v3}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
     .line 769
-    const-string p1, "  the value of that SettingsItem field. Field names are"
+    const-string v3, "  the value of that SettingsItem field. Field names are"
 
-    invoke-virtual {p2, p1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {p2, v3}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
     .line 770
-    const-string p1, "  case insensitive and out.println the m prefix can be omitted,"
+    const-string v3, "  case insensitive and out.println the m prefix can be omitted,"
 
-    invoke-virtual {p2, p1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {p2, v3}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
     .line 771
-    const-string p1, "  so the following are equivalent: mState, mstate, State, state."
+    const-string v3, "  so the following are equivalent: mState, mstate, State, state."
 
-    invoke-virtual {p2, p1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {p2, v3}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
     .line 772
     return-void
 
     .line 773
-    :cond_51
-    const-string v5, "--user"
+    :cond_58
+    const-string v3, "--user"
 
-    invoke-virtual {v5, v3}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v3, v2}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result v5
+    move-result v3
 
-    if-eqz v5, :cond_86
+    if-eqz v3, :cond_8d
 
     .line 774
-    array-length v3, p3
-
-    if-lt v2, v3, :cond_62
+    add-int/lit8 v1, v1, 0x1
 
     .line 775
-    const-string p1, "Error: user missing argument"
+    array-length v3, p3
 
-    invoke-virtual {p2, p1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    if-lt v1, v3, :cond_6b
 
     .line 776
+    const-string v3, "Error: user missing argument"
+
+    invoke-virtual {p2, v3}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+
+    .line 777
     return-void
 
-    .line 779
-    :cond_62
-    :try_start_62
-    aget-object v3, p3, v2
+    .line 780
+    :cond_6b
+    :try_start_6b
+    aget-object v3, p3, v1
 
     invoke-static {v3}, Ljava/lang/Integer;->parseInt(Ljava/lang/String;)I
 
     move-result v3
 
-    invoke-virtual {p1, v3}, Lcom/android/server/om/DumpState;->setUserId(I)V
-    :try_end_6b
-    .catch Ljava/lang/NumberFormatException; {:try_start_62 .. :try_end_6b} :catch_6e
-
-    .line 780
-    add-int/lit8 v2, v2, 0x1
+    invoke-virtual {v0, v3}, Lcom/android/server/om/DumpState;->setUserId(I)V
+    :try_end_74
+    .catch Ljava/lang/NumberFormatException; {:try_start_6b .. :try_end_74} :catch_75
 
     .line 784
-    goto :goto_ab
+    goto :goto_b2
 
     .line 781
-    :catch_6e
-    move-exception p1
+    :catch_75
+    move-exception v3
 
     .line 782
-    new-instance p1, Ljava/lang/StringBuilder;
+    .local v3, "e":Ljava/lang/NumberFormatException;
+    new-instance v4, Ljava/lang/StringBuilder;
 
-    invoke-direct {p1}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v4}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v0, "Error: user argument is not a number: "
+    const-string v5, "Error: user argument is not a number: "
 
-    invoke-virtual {p1, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    aget-object p3, p3, v2
+    aget-object v5, p3, v1
 
-    invoke-virtual {p1, p3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v4}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v4
 
-    invoke-virtual {p2, p1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {p2, v4}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
     .line 783
     return-void
 
     .line 785
-    :cond_86
-    const-string v5, "--verbose"
+    .end local v3  # "e":Ljava/lang/NumberFormatException;
+    :cond_8d
+    const-string v3, "--verbose"
 
-    invoke-virtual {v5, v3}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v3, v2}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result v5
+    move-result v3
 
-    if-eqz v5, :cond_92
+    if-eqz v3, :cond_99
 
     .line 786
-    invoke-virtual {p1, v4}, Lcom/android/server/om/DumpState;->setVerbose(Z)V
+    invoke-virtual {v0, v4}, Lcom/android/server/om/DumpState;->setVerbose(Z)V
 
-    goto :goto_ab
+    goto :goto_b2
 
     .line 788
-    :cond_92
-    new-instance v4, Ljava/lang/StringBuilder;
+    :cond_99
+    new-instance v3, Ljava/lang/StringBuilder;
 
-    invoke-direct {v4}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v5, "Unknown argument: "
+    const-string v4, "Unknown argument: "
 
-    invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v4, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string v3, "; use -h for help"
+    const-string v4, "; use -h for help"
 
-    invoke-virtual {v4, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v4}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
     move-result-object v3
 
     invoke-virtual {p2, v3}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
     .line 790
-    :goto_ab
-    goto/16 :goto_b
+    .end local v2  # "opt":Ljava/lang/String;
+    :goto_b2
+    goto/16 :goto_11
 
     .line 791
-    :cond_ad
-    :goto_ad
-    array-length v3, p3
+    :cond_b4
+    :goto_b4
+    array-length v2, p3
 
-    if-ge v2, v3, :cond_132
+    if-ge v1, v2, :cond_13d
 
     .line 792
-    aget-object v3, p3, v2
+    aget-object v2, p3, v1
 
     .line 793
-    add-int/lit8 v2, v2, 0x1
+    .local v2, "arg":Ljava/lang/String;
+    add-int/lit8 v1, v1, 0x1
 
     .line 794
-    invoke-virtual {v3}, Ljava/lang/String;->hashCode()I
+    const/4 v5, -0x1
 
-    move-result v5
+    invoke-virtual {v2}, Ljava/lang/String;->hashCode()I
 
-    sparse-switch v5, :sswitch_data_16a
+    move-result v6
 
-    :cond_bb
-    goto/16 :goto_128
+    sparse-switch v6, :sswitch_data_176
 
-    :sswitch_bd
-    const-string v1, "basecodepath"
+    :cond_c3
+    goto/16 :goto_132
 
-    invoke-virtual {v3, v1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    :sswitch_c5
+    const-string v3, "basecodepath"
 
-    move-result v1
+    invoke-virtual {v2, v3}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    if-eqz v1, :cond_bb
+    move-result v3
 
-    const/4 v0, 0x4
+    if-eqz v3, :cond_c3
 
-    goto :goto_128
+    const/4 v3, 0x4
 
-    :sswitch_c7
+    goto :goto_133
+
+    :sswitch_cf
     const-string/jumbo v4, "packagename"
 
-    invoke-virtual {v3, v4}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v2, v4}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
     move-result v4
 
-    if-eqz v4, :cond_bb
+    if-eqz v4, :cond_c3
 
-    move v0, v1
+    goto :goto_133
 
-    goto :goto_128
+    :sswitch_d9
+    const-string/jumbo v3, "isstatic"
 
-    :sswitch_d2
-    const-string v1, "isstatic"
+    invoke-virtual {v2, v3}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    invoke-virtual {v3, v1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    move-result v3
 
-    move-result v1
+    if-eqz v3, :cond_c3
 
-    if-eqz v1, :cond_bb
+    const/4 v3, 0x7
 
-    const/4 v0, 0x7
+    goto :goto_133
 
-    goto :goto_128
+    :sswitch_e4
+    const-string/jumbo v3, "isenabled"
 
-    :sswitch_dc
-    const-string v1, "isenabled"
+    invoke-virtual {v2, v3}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    invoke-virtual {v3, v1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    move-result v3
 
-    move-result v1
+    if-eqz v3, :cond_c3
 
-    if-eqz v1, :cond_bb
+    const/4 v3, 0x6
 
-    const/4 v0, 0x6
+    goto :goto_133
 
-    goto :goto_128
+    :sswitch_ef
+    const-string/jumbo v3, "state"
 
-    :sswitch_e6
-    const-string/jumbo v1, "state"
+    invoke-virtual {v2, v3}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    invoke-virtual {v3, v1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    move-result v3
 
-    move-result v1
+    if-eqz v3, :cond_c3
 
-    if-eqz v1, :cond_bb
+    const/4 v3, 0x5
 
-    const/4 v0, 0x5
+    goto :goto_133
 
-    goto :goto_128
+    :sswitch_fa
+    const-string v3, "category"
 
-    :sswitch_f1
-    const-string v1, "category"
+    invoke-virtual {v2, v3}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    invoke-virtual {v3, v1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    move-result v3
 
-    move-result v1
+    if-eqz v3, :cond_c3
 
-    if-eqz v1, :cond_bb
+    const/16 v3, 0x9
 
-    const/16 v0, 0x9
+    goto :goto_133
 
-    goto :goto_128
+    :sswitch_105
+    const-string/jumbo v3, "userid"
 
-    :sswitch_fc
-    const-string/jumbo v1, "userid"
+    invoke-virtual {v2, v3}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    invoke-virtual {v3, v1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    move-result v3
 
-    move-result v1
+    if-eqz v3, :cond_c3
 
-    if-eqz v1, :cond_bb
+    move v3, v4
 
-    move v0, v4
+    goto :goto_133
 
-    goto :goto_128
+    :sswitch_110
+    const-string/jumbo v3, "priority"
 
-    :sswitch_107
-    const-string/jumbo v1, "priority"
+    invoke-virtual {v2, v3}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    invoke-virtual {v3, v1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    move-result v3
 
-    move-result v1
+    if-eqz v3, :cond_c3
 
-    if-eqz v1, :cond_bb
+    const/16 v3, 0x8
 
-    const/16 v0, 0x8
+    goto :goto_133
 
-    goto :goto_128
+    :sswitch_11c
+    const-string/jumbo v3, "targetpackagename"
 
-    :sswitch_113
-    const-string/jumbo v1, "targetpackagename"
+    invoke-virtual {v2, v3}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    invoke-virtual {v3, v1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    move-result v3
 
-    move-result v1
+    if-eqz v3, :cond_c3
 
-    if-eqz v1, :cond_bb
+    const/4 v3, 0x2
 
-    const/4 v0, 0x2
+    goto :goto_133
 
-    goto :goto_128
+    :sswitch_127
+    const-string/jumbo v3, "targetoverlayablename"
 
-    :sswitch_11e
-    const-string/jumbo v1, "targetoverlayablename"
+    invoke-virtual {v2, v3}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    invoke-virtual {v3, v1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    move-result v3
 
-    move-result v1
+    if-eqz v3, :cond_c3
 
-    if-eqz v1, :cond_bb
+    const/4 v3, 0x3
 
-    const/4 v0, 0x3
+    goto :goto_133
 
-    :goto_128
-    packed-switch v0, :pswitch_data_194
+    :goto_132
+    move v3, v5
+
+    :goto_133
+    packed-switch v3, :pswitch_data_1a0
 
     .line 808
-    invoke-virtual {p1, v3}, Lcom/android/server/om/DumpState;->setPackageName(Ljava/lang/String;)V
+    invoke-virtual {v0, v2}, Lcom/android/server/om/DumpState;->setPackageName(Ljava/lang/String;)V
 
-    goto :goto_132
+    goto :goto_13d
 
     .line 805
-    :pswitch_12f  #0x0, 0x1, 0x2, 0x3, 0x4, 0x5, 0x6, 0x7, 0x8, 0x9
-    invoke-virtual {p1, v3}, Lcom/android/server/om/DumpState;->setField(Ljava/lang/String;)V
+    :pswitch_13a  #0x0, 0x1, 0x2, 0x3, 0x4, 0x5, 0x6, 0x7, 0x8, 0x9
+    invoke-virtual {v0, v2}, Lcom/android/server/om/DumpState;->setField(Ljava/lang/String;)V
 
     .line 812
-    :cond_132
-    :goto_132
-    invoke-virtual {p1}, Lcom/android/server/om/DumpState;->getPackageName()Ljava/lang/String;
+    .end local v2  # "arg":Ljava/lang/String;
+    :cond_13d
+    :goto_13d
+    invoke-virtual {v0}, Lcom/android/server/om/DumpState;->getPackageName()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v2
 
-    if-nez v0, :cond_140
+    if-nez v2, :cond_14d
 
-    array-length v0, p3
+    array-length v2, p3
 
-    if-ge v2, v0, :cond_140
+    if-ge v1, v2, :cond_14d
 
     .line 813
-    aget-object p3, p3, v2
+    aget-object v2, p3, v1
 
-    invoke-virtual {p1, p3}, Lcom/android/server/om/DumpState;->setPackageName(Ljava/lang/String;)V
+    invoke-virtual {v0, v2}, Lcom/android/server/om/DumpState;->setPackageName(Ljava/lang/String;)V
+
+    .line 814
+    add-int/lit8 v1, v1, 0x1
 
     .line 817
-    :cond_140
-    const-string p3, "dump"
+    :cond_14d
+    const-string v2, "dump"
 
-    invoke-direct {p0, p3}, Lcom/android/server/om/OverlayManagerService$1;->enforceDumpPermission(Ljava/lang/String;)V
+    invoke-direct {p0, v2}, Lcom/android/server/om/OverlayManagerService$1;->enforceDumpPermission(Ljava/lang/String;)V
 
     .line 818
-    iget-object p3, p0, Lcom/android/server/om/OverlayManagerService$1;->this$0:Lcom/android/server/om/OverlayManagerService;
+    iget-object v2, p0, Lcom/android/server/om/OverlayManagerService$1;->this$0:Lcom/android/server/om/OverlayManagerService;
 
-    invoke-static {p3}, Lcom/android/server/om/OverlayManagerService;->access$400(Lcom/android/server/om/OverlayManagerService;)Ljava/lang/Object;
+    invoke-static {v2}, Lcom/android/server/om/OverlayManagerService;->access$400(Lcom/android/server/om/OverlayManagerService;)Ljava/lang/Object;
 
-    move-result-object p3
+    move-result-object v2
 
-    monitor-enter p3
+    monitor-enter v2
 
     .line 819
-    :try_start_14c
-    iget-object v0, p0, Lcom/android/server/om/OverlayManagerService$1;->this$0:Lcom/android/server/om/OverlayManagerService;
+    :try_start_159
+    iget-object v3, p0, Lcom/android/server/om/OverlayManagerService$1;->this$0:Lcom/android/server/om/OverlayManagerService;
 
-    invoke-static {v0}, Lcom/android/server/om/OverlayManagerService;->access$600(Lcom/android/server/om/OverlayManagerService;)Lcom/android/server/om/OverlayManagerServiceImpl;
+    invoke-static {v3}, Lcom/android/server/om/OverlayManagerService;->access$600(Lcom/android/server/om/OverlayManagerService;)Lcom/android/server/om/OverlayManagerServiceImpl;
 
-    move-result-object v0
+    move-result-object v3
 
-    invoke-virtual {v0, p2, p1}, Lcom/android/server/om/OverlayManagerServiceImpl;->dump(Ljava/io/PrintWriter;Lcom/android/server/om/DumpState;)V
+    invoke-virtual {v3, p2, v0}, Lcom/android/server/om/OverlayManagerServiceImpl;->dump(Ljava/io/PrintWriter;Lcom/android/server/om/DumpState;)V
 
     .line 820
-    invoke-virtual {p1}, Lcom/android/server/om/DumpState;->getPackageName()Ljava/lang/String;
+    invoke-virtual {v0}, Lcom/android/server/om/DumpState;->getPackageName()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v3
 
-    if-nez v0, :cond_164
+    if-nez v3, :cond_171
 
     .line 821
-    iget-object v0, p0, Lcom/android/server/om/OverlayManagerService$1;->this$0:Lcom/android/server/om/OverlayManagerService;
+    iget-object v3, p0, Lcom/android/server/om/OverlayManagerService$1;->this$0:Lcom/android/server/om/OverlayManagerService;
 
-    invoke-static {v0}, Lcom/android/server/om/OverlayManagerService;->access$500(Lcom/android/server/om/OverlayManagerService;)Lcom/android/server/om/OverlayManagerService$PackageManagerHelper;
+    invoke-static {v3}, Lcom/android/server/om/OverlayManagerService;->access$500(Lcom/android/server/om/OverlayManagerService;)Lcom/android/server/om/OverlayManagerService$PackageManagerHelper;
 
-    move-result-object v0
+    move-result-object v3
 
-    invoke-virtual {v0, p2, p1}, Lcom/android/server/om/OverlayManagerService$PackageManagerHelper;->dump(Ljava/io/PrintWriter;Lcom/android/server/om/DumpState;)V
+    invoke-virtual {v3, p2, v0}, Lcom/android/server/om/OverlayManagerService$PackageManagerHelper;->dump(Ljava/io/PrintWriter;Lcom/android/server/om/DumpState;)V
 
     .line 823
-    :cond_164
-    monitor-exit p3
+    :cond_171
+    monitor-exit v2
 
     .line 824
     return-void
 
     .line 823
-    :catchall_166
-    move-exception p1
+    :catchall_173
+    move-exception v3
 
-    monitor-exit p3
-    :try_end_168
-    .catchall {:try_start_14c .. :try_end_168} :catchall_166
+    monitor-exit v2
+    :try_end_175
+    .catchall {:try_start_159 .. :try_end_175} :catchall_173
 
-    throw p1
+    throw v3
 
-    nop
-
-    :sswitch_data_16a
+    :sswitch_data_176
     .sparse-switch
-        -0x685a1e7c -> :sswitch_11e
-        -0x4a674a60 -> :sswitch_113
-        -0x4577865c -> :sswitch_107
-        -0x31d4cdda -> :sswitch_fc
-        0x302bcfe -> :sswitch_f1
-        0x68ac491 -> :sswitch_e6
-        0x1a483ad7 -> :sswitch_dc
-        0x2995d418 -> :sswitch_d2
-        0x36391bd1 -> :sswitch_c7
-        0x64f6f963 -> :sswitch_bd
+        -0x685a1e7c -> :sswitch_127
+        -0x4a674a60 -> :sswitch_11c
+        -0x4577865c -> :sswitch_110
+        -0x31d4cdda -> :sswitch_105
+        0x302bcfe -> :sswitch_fa
+        0x68ac491 -> :sswitch_ef
+        0x1a483ad7 -> :sswitch_e4
+        0x2995d418 -> :sswitch_d9
+        0x36391bd1 -> :sswitch_cf
+        0x64f6f963 -> :sswitch_c5
     .end sparse-switch
 
-    :pswitch_data_194
+    :pswitch_data_1a0
     .packed-switch 0x0
-        :pswitch_12f  #00000000
-        :pswitch_12f  #00000001
-        :pswitch_12f  #00000002
-        :pswitch_12f  #00000003
-        :pswitch_12f  #00000004
-        :pswitch_12f  #00000005
-        :pswitch_12f  #00000006
-        :pswitch_12f  #00000007
-        :pswitch_12f  #00000008
-        :pswitch_12f  #00000009
+        :pswitch_13a  #00000000
+        :pswitch_13a  #00000001
+        :pswitch_13a  #00000002
+        :pswitch_13a  #00000003
+        :pswitch_13a  #00000004
+        :pswitch_13a  #00000005
+        :pswitch_13a  #00000006
+        :pswitch_13a  #00000007
+        :pswitch_13a  #00000008
+        :pswitch_13a  #00000009
     .end packed-switch
 .end method
 
 .method public getAllOverlays(I)Ljava/util/Map;
     .registers 6
+    .param p1, "userId"  # I
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(I)",
@@ -622,7 +651,9 @@
 
     invoke-direct {p0, p1, v2}, Lcom/android/server/om/OverlayManagerService$1;->handleIncomingUser(ILjava/lang/String;)I
 
-    move-result p1
+    move-result v2
+
+    move p1, v2
 
     .line 531
     iget-object v2, p0, Lcom/android/server/om/OverlayManagerService$1;->this$0:Lcom/android/server/om/OverlayManagerService;
@@ -632,11 +663,11 @@
     move-result-object v2
 
     monitor-enter v2
-    :try_end_24
-    .catchall {:try_start_3 .. :try_end_24} :catchall_36
+    :try_end_25
+    .catchall {:try_start_3 .. :try_end_25} :catchall_37
 
     .line 532
-    :try_start_24
+    :try_start_25
     iget-object v3, p0, Lcom/android/server/om/OverlayManagerService$1;->this$0:Lcom/android/server/om/OverlayManagerService;
 
     invoke-static {v3}, Lcom/android/server/om/OverlayManagerService;->access$600(Lcom/android/server/om/OverlayManagerService;)Lcom/android/server/om/OverlayManagerServiceImpl;
@@ -645,39 +676,43 @@
 
     invoke-virtual {v3, p1}, Lcom/android/server/om/OverlayManagerServiceImpl;->getOverlaysForUser(I)Ljava/util/Map;
 
-    move-result-object p1
+    move-result-object v3
 
     monitor-exit v2
-    :try_end_2f
-    .catchall {:try_start_24 .. :try_end_2f} :catchall_33
+    :try_end_30
+    .catchall {:try_start_25 .. :try_end_30} :catchall_34
 
     .line 535
     invoke-static {v0, v1}, Landroid/os/Trace;->traceEnd(J)V
 
     .line 532
-    return-object p1
+    return-object v3
 
     .line 533
-    :catchall_33
-    move-exception p1
-
-    :try_start_34
-    monitor-exit v2
-    :try_end_35
-    .catchall {:try_start_34 .. :try_end_35} :catchall_33
+    :catchall_34
+    move-exception v3
 
     :try_start_35
-    throw p1
+    monitor-exit v2
     :try_end_36
-    .catchall {:try_start_35 .. :try_end_36} :catchall_36
+    .catchall {:try_start_35 .. :try_end_36} :catchall_34
+
+    .end local p0  # "this":Lcom/android/server/om/OverlayManagerService$1;
+    .end local p1  # "userId":I
+    :try_start_36
+    throw v3
+    :try_end_37
+    .catchall {:try_start_36 .. :try_end_37} :catchall_37
 
     .line 535
-    :catchall_36
-    move-exception p1
+    .restart local p0  # "this":Lcom/android/server/om/OverlayManagerService$1;
+    .restart local p1  # "userId":I
+    :catchall_37
+    move-exception v2
 
     invoke-static {v0, v1}, Landroid/os/Trace;->traceEnd(J)V
 
-    throw p1
+    throw v2
 .end method
 
 .method public getDefaultOverlayPackages()[Ljava/lang/String;
@@ -717,6 +752,7 @@
     .catchall {:try_start_3 .. :try_end_18} :catchall_39
 
     .line 731
+    .local v2, "ident":J
     :try_start_18
     iget-object v4, p0, Lcom/android/server/om/OverlayManagerService$1;->this$0:Lcom/android/server/om/OverlayManagerService;
 
@@ -765,23 +801,30 @@
     :try_end_33
     .catchall {:try_start_32 .. :try_end_33} :catchall_31
 
+    .end local v2  # "ident":J
+    .end local p0  # "this":Lcom/android/server/om/OverlayManagerService$1;
     :try_start_33
     throw v5
     :try_end_34
     .catchall {:try_start_33 .. :try_end_34} :catchall_34
 
     .line 735
+    .restart local v2  # "ident":J
+    .restart local p0  # "this":Lcom/android/server/om/OverlayManagerService$1;
     :catchall_34
     move-exception v4
 
     :try_start_35
     invoke-static {v2, v3}, Landroid/os/Binder;->restoreCallingIdentity(J)V
 
+    .end local p0  # "this":Lcom/android/server/om/OverlayManagerService$1;
     throw v4
     :try_end_39
     .catchall {:try_start_35 .. :try_end_39} :catchall_39
 
     .line 738
+    .end local v2  # "ident":J
+    .restart local p0  # "this":Lcom/android/server/om/OverlayManagerService$1;
     :catchall_39
     move-exception v2
 
@@ -792,6 +835,8 @@
 
 .method public getOverlayInfo(Ljava/lang/String;I)Landroid/content/om/OverlayInfo;
     .registers 7
+    .param p1, "packageName"  # Ljava/lang/String;
+    .param p2, "userId"  # I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -823,25 +868,27 @@
 
     invoke-direct {p0, p2, v2}, Lcom/android/server/om/OverlayManagerService$1;->handleIncomingUser(ILjava/lang/String;)I
 
-    move-result p2
+    move-result v2
     :try_end_1d
-    .catchall {:try_start_3 .. :try_end_1d} :catchall_3d
+    .catchall {:try_start_3 .. :try_end_1d} :catchall_3e
+
+    move p2, v2
 
     .line 563
-    if-nez p1, :cond_24
+    if-nez p1, :cond_25
 
     .line 564
-    const/4 p1, 0x0
+    const/4 v2, 0x0
 
     .line 571
     invoke-static {v0, v1}, Landroid/os/Trace;->traceEnd(J)V
 
     .line 564
-    return-object p1
+    return-object v2
 
     .line 567
-    :cond_24
-    :try_start_24
+    :cond_25
+    :try_start_25
     iget-object v2, p0, Lcom/android/server/om/OverlayManagerService$1;->this$0:Lcom/android/server/om/OverlayManagerService;
 
     invoke-static {v2}, Lcom/android/server/om/OverlayManagerService;->access$400(Lcom/android/server/om/OverlayManagerService;)Ljava/lang/Object;
@@ -849,11 +896,11 @@
     move-result-object v2
 
     monitor-enter v2
-    :try_end_2b
-    .catchall {:try_start_24 .. :try_end_2b} :catchall_3d
+    :try_end_2c
+    .catchall {:try_start_25 .. :try_end_2c} :catchall_3e
 
     .line 568
-    :try_start_2b
+    :try_start_2c
     iget-object v3, p0, Lcom/android/server/om/OverlayManagerService$1;->this$0:Lcom/android/server/om/OverlayManagerService;
 
     invoke-static {v3}, Lcom/android/server/om/OverlayManagerService;->access$600(Lcom/android/server/om/OverlayManagerService;)Lcom/android/server/om/OverlayManagerServiceImpl;
@@ -862,43 +909,51 @@
 
     invoke-virtual {v3, p1, p2}, Lcom/android/server/om/OverlayManagerServiceImpl;->getOverlayInfo(Ljava/lang/String;I)Landroid/content/om/OverlayInfo;
 
-    move-result-object p1
+    move-result-object v3
 
     monitor-exit v2
-    :try_end_36
-    .catchall {:try_start_2b .. :try_end_36} :catchall_3a
+    :try_end_37
+    .catchall {:try_start_2c .. :try_end_37} :catchall_3b
 
     .line 571
     invoke-static {v0, v1}, Landroid/os/Trace;->traceEnd(J)V
 
     .line 568
-    return-object p1
+    return-object v3
 
     .line 569
-    :catchall_3a
-    move-exception p1
-
-    :try_start_3b
-    monitor-exit v2
-    :try_end_3c
-    .catchall {:try_start_3b .. :try_end_3c} :catchall_3a
+    :catchall_3b
+    move-exception v3
 
     :try_start_3c
-    throw p1
+    monitor-exit v2
     :try_end_3d
-    .catchall {:try_start_3c .. :try_end_3d} :catchall_3d
+    .catchall {:try_start_3c .. :try_end_3d} :catchall_3b
+
+    .end local p0  # "this":Lcom/android/server/om/OverlayManagerService$1;
+    .end local p1  # "packageName":Ljava/lang/String;
+    .end local p2  # "userId":I
+    :try_start_3d
+    throw v3
+    :try_end_3e
+    .catchall {:try_start_3d .. :try_end_3e} :catchall_3e
 
     .line 571
-    :catchall_3d
-    move-exception p1
+    .restart local p0  # "this":Lcom/android/server/om/OverlayManagerService$1;
+    .restart local p1  # "packageName":Ljava/lang/String;
+    .restart local p2  # "userId":I
+    :catchall_3e
+    move-exception v2
 
     invoke-static {v0, v1}, Landroid/os/Trace;->traceEnd(J)V
 
-    throw p1
+    throw v2
 .end method
 
 .method public getOverlayInfosForTarget(Ljava/lang/String;I)Ljava/util/List;
     .registers 7
+    .param p1, "targetPackageName"  # Ljava/lang/String;
+    .param p2, "userId"  # I
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(",
@@ -941,27 +996,29 @@
 
     invoke-direct {p0, p2, v2}, Lcom/android/server/om/OverlayManagerService$1;->handleIncomingUser(ILjava/lang/String;)I
 
-    move-result p2
+    move-result v2
+
+    move p2, v2
 
     .line 545
-    if-nez p1, :cond_27
+    if-nez p1, :cond_28
 
     .line 546
     invoke-static {}, Ljava/util/Collections;->emptyList()Ljava/util/List;
 
-    move-result-object p1
-    :try_end_23
-    .catchall {:try_start_3 .. :try_end_23} :catchall_40
+    move-result-object v2
+    :try_end_24
+    .catchall {:try_start_3 .. :try_end_24} :catchall_41
 
     .line 553
     invoke-static {v0, v1}, Landroid/os/Trace;->traceEnd(J)V
 
     .line 546
-    return-object p1
+    return-object v2
 
     .line 549
-    :cond_27
-    :try_start_27
+    :cond_28
+    :try_start_28
     iget-object v2, p0, Lcom/android/server/om/OverlayManagerService$1;->this$0:Lcom/android/server/om/OverlayManagerService;
 
     invoke-static {v2}, Lcom/android/server/om/OverlayManagerService;->access$400(Lcom/android/server/om/OverlayManagerService;)Ljava/lang/Object;
@@ -969,11 +1026,11 @@
     move-result-object v2
 
     monitor-enter v2
-    :try_end_2e
-    .catchall {:try_start_27 .. :try_end_2e} :catchall_40
+    :try_end_2f
+    .catchall {:try_start_28 .. :try_end_2f} :catchall_41
 
     .line 550
-    :try_start_2e
+    :try_start_2f
     iget-object v3, p0, Lcom/android/server/om/OverlayManagerService$1;->this$0:Lcom/android/server/om/OverlayManagerService;
 
     invoke-static {v3}, Lcom/android/server/om/OverlayManagerService;->access$600(Lcom/android/server/om/OverlayManagerService;)Lcom/android/server/om/OverlayManagerServiceImpl;
@@ -982,43 +1039,55 @@
 
     invoke-virtual {v3, p1, p2}, Lcom/android/server/om/OverlayManagerServiceImpl;->getOverlayInfosForTarget(Ljava/lang/String;I)Ljava/util/List;
 
-    move-result-object p1
+    move-result-object v3
 
     monitor-exit v2
-    :try_end_39
-    .catchall {:try_start_2e .. :try_end_39} :catchall_3d
+    :try_end_3a
+    .catchall {:try_start_2f .. :try_end_3a} :catchall_3e
 
     .line 553
     invoke-static {v0, v1}, Landroid/os/Trace;->traceEnd(J)V
 
     .line 550
-    return-object p1
+    return-object v3
 
     .line 551
-    :catchall_3d
-    move-exception p1
-
-    :try_start_3e
-    monitor-exit v2
-    :try_end_3f
-    .catchall {:try_start_3e .. :try_end_3f} :catchall_3d
+    :catchall_3e
+    move-exception v3
 
     :try_start_3f
-    throw p1
+    monitor-exit v2
     :try_end_40
-    .catchall {:try_start_3f .. :try_end_40} :catchall_40
+    .catchall {:try_start_3f .. :try_end_40} :catchall_3e
+
+    .end local p0  # "this":Lcom/android/server/om/OverlayManagerService$1;
+    .end local p1  # "targetPackageName":Ljava/lang/String;
+    .end local p2  # "userId":I
+    :try_start_40
+    throw v3
+    :try_end_41
+    .catchall {:try_start_40 .. :try_end_41} :catchall_41
 
     .line 553
-    :catchall_40
-    move-exception p1
+    .restart local p0  # "this":Lcom/android/server/om/OverlayManagerService$1;
+    .restart local p1  # "targetPackageName":Ljava/lang/String;
+    .restart local p2  # "userId":I
+    :catchall_41
+    move-exception v2
 
     invoke-static {v0, v1}, Landroid/os/Trace;->traceEnd(J)V
 
-    throw p1
+    throw v2
 .end method
 
 .method public onShellCommand(Ljava/io/FileDescriptor;Ljava/io/FileDescriptor;Ljava/io/FileDescriptor;[Ljava/lang/String;Landroid/os/ShellCallback;Landroid/os/ResultReceiver;)V
     .registers 15
+    .param p1, "in"  # Ljava/io/FileDescriptor;
+    .param p2, "out"  # Ljava/io/FileDescriptor;
+    .param p3, "err"  # Ljava/io/FileDescriptor;
+    .param p4, "args"  # [Ljava/lang/String;
+    .param p5, "callback"  # Landroid/os/ShellCallback;
+    .param p6, "resultReceiver"  # Landroid/os/ResultReceiver;
 
     .line 747
     new-instance v0, Lcom/android/server/om/OverlayManagerShellCommand;
@@ -1047,6 +1116,9 @@
 
 .method public setEnabled(Ljava/lang/String;ZI)Z
     .registers 10
+    .param p1, "packageName"  # Ljava/lang/String;
+    .param p2, "enable"  # Z
+    .param p3, "userId"  # I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -1089,33 +1161,36 @@
 
     invoke-direct {p0, p3, v2}, Lcom/android/server/om/OverlayManagerService$1;->handleIncomingUser(ILjava/lang/String;)I
 
-    move-result p3
+    move-result v2
     :try_end_2c
-    .catchall {:try_start_3 .. :try_end_2c} :catchall_58
+    .catchall {:try_start_3 .. :try_end_2c} :catchall_59
+
+    move p3, v2
 
     .line 582
-    if-nez p1, :cond_33
+    if-nez p1, :cond_34
 
     .line 583
-    const/4 p1, 0x0
+    const/4 v2, 0x0
 
     .line 595
     invoke-static {v0, v1}, Landroid/os/Trace;->traceEnd(J)V
 
     .line 583
-    return p1
+    return v2
 
     .line 586
-    :cond_33
-    :try_start_33
+    :cond_34
+    :try_start_34
     invoke-static {}, Landroid/os/Binder;->clearCallingIdentity()J
 
     move-result-wide v2
-    :try_end_37
-    .catchall {:try_start_33 .. :try_end_37} :catchall_58
+    :try_end_38
+    .catchall {:try_start_34 .. :try_end_38} :catchall_59
 
     .line 588
-    :try_start_37
+    .local v2, "ident":J
+    :try_start_38
     iget-object v4, p0, Lcom/android/server/om/OverlayManagerService$1;->this$0:Lcom/android/server/om/OverlayManagerService;
 
     invoke-static {v4}, Lcom/android/server/om/OverlayManagerService;->access$400(Lcom/android/server/om/OverlayManagerService;)Ljava/lang/Object;
@@ -1123,11 +1198,11 @@
     move-result-object v4
 
     monitor-enter v4
-    :try_end_3e
-    .catchall {:try_start_37 .. :try_end_3e} :catchall_53
+    :try_end_3f
+    .catchall {:try_start_38 .. :try_end_3f} :catchall_54
 
     .line 589
-    :try_start_3e
+    :try_start_3f
     iget-object v5, p0, Lcom/android/server/om/OverlayManagerService$1;->this$0:Lcom/android/server/om/OverlayManagerService;
 
     invoke-static {v5}, Lcom/android/server/om/OverlayManagerService;->access$600(Lcom/android/server/om/OverlayManagerService;)Lcom/android/server/om/OverlayManagerServiceImpl;
@@ -1136,60 +1211,82 @@
 
     invoke-virtual {v5, p1, p2, p3}, Lcom/android/server/om/OverlayManagerServiceImpl;->setEnabled(Ljava/lang/String;ZI)Z
 
-    move-result p1
+    move-result v5
 
     monitor-exit v4
-    :try_end_49
-    .catchall {:try_start_3e .. :try_end_49} :catchall_50
+    :try_end_4a
+    .catchall {:try_start_3f .. :try_end_4a} :catchall_51
 
     .line 592
-    :try_start_49
+    :try_start_4a
     invoke-static {v2, v3}, Landroid/os/Binder;->restoreCallingIdentity(J)V
-    :try_end_4c
-    .catchall {:try_start_49 .. :try_end_4c} :catchall_58
+    :try_end_4d
+    .catchall {:try_start_4a .. :try_end_4d} :catchall_59
 
     .line 595
     invoke-static {v0, v1}, Landroid/os/Trace;->traceEnd(J)V
 
     .line 589
-    return p1
+    return v5
 
     .line 590
-    :catchall_50
-    move-exception p1
-
-    :try_start_51
-    monitor-exit v4
-    :try_end_52
-    .catchall {:try_start_51 .. :try_end_52} :catchall_50
+    :catchall_51
+    move-exception v5
 
     :try_start_52
-    throw p1
+    monitor-exit v4
     :try_end_53
-    .catchall {:try_start_52 .. :try_end_53} :catchall_53
+    .catchall {:try_start_52 .. :try_end_53} :catchall_51
+
+    .end local v2  # "ident":J
+    .end local p0  # "this":Lcom/android/server/om/OverlayManagerService$1;
+    .end local p1  # "packageName":Ljava/lang/String;
+    .end local p2  # "enable":Z
+    .end local p3  # "userId":I
+    :try_start_53
+    throw v5
+    :try_end_54
+    .catchall {:try_start_53 .. :try_end_54} :catchall_54
 
     .line 592
-    :catchall_53
-    move-exception p1
+    .restart local v2  # "ident":J
+    .restart local p0  # "this":Lcom/android/server/om/OverlayManagerService$1;
+    .restart local p1  # "packageName":Ljava/lang/String;
+    .restart local p2  # "enable":Z
+    .restart local p3  # "userId":I
+    :catchall_54
+    move-exception v4
 
-    :try_start_54
+    :try_start_55
     invoke-static {v2, v3}, Landroid/os/Binder;->restoreCallingIdentity(J)V
 
-    throw p1
-    :try_end_58
-    .catchall {:try_start_54 .. :try_end_58} :catchall_58
+    .end local p0  # "this":Lcom/android/server/om/OverlayManagerService$1;
+    .end local p1  # "packageName":Ljava/lang/String;
+    .end local p2  # "enable":Z
+    .end local p3  # "userId":I
+    throw v4
+    :try_end_59
+    .catchall {:try_start_55 .. :try_end_59} :catchall_59
 
     .line 595
-    :catchall_58
-    move-exception p1
+    .end local v2  # "ident":J
+    .restart local p0  # "this":Lcom/android/server/om/OverlayManagerService$1;
+    .restart local p1  # "packageName":Ljava/lang/String;
+    .restart local p2  # "enable":Z
+    .restart local p3  # "userId":I
+    :catchall_59
+    move-exception v2
 
     invoke-static {v0, v1}, Landroid/os/Trace;->traceEnd(J)V
 
-    throw p1
+    throw v2
 .end method
 
 .method public setEnabledExclusive(Ljava/lang/String;ZI)Z
-    .registers 10
+    .registers 11
+    .param p1, "packageName"  # Ljava/lang/String;
+    .param p2, "enable"  # Z
+    .param p3, "userId"  # I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -1232,93 +1329,115 @@
 
     invoke-direct {p0, p3, v2}, Lcom/android/server/om/OverlayManagerService$1;->handleIncomingUser(ILjava/lang/String;)I
 
-    move-result p3
+    move-result v2
+
+    move p3, v2
 
     .line 606
     const/4 v2, 0x0
 
-    if-eqz p1, :cond_57
+    if-eqz p1, :cond_58
 
-    if-nez p2, :cond_32
+    if-nez p2, :cond_33
 
-    goto :goto_57
+    goto :goto_58
 
     .line 610
-    :cond_32
+    :cond_33
     invoke-static {}, Landroid/os/Binder;->clearCallingIdentity()J
 
     move-result-wide v3
-    :try_end_36
-    .catchall {:try_start_3 .. :try_end_36} :catchall_5c
+    :try_end_37
+    .catchall {:try_start_3 .. :try_end_37} :catchall_5d
 
     .line 612
-    :try_start_36
-    iget-object p2, p0, Lcom/android/server/om/OverlayManagerService$1;->this$0:Lcom/android/server/om/OverlayManagerService;
-
-    invoke-static {p2}, Lcom/android/server/om/OverlayManagerService;->access$400(Lcom/android/server/om/OverlayManagerService;)Ljava/lang/Object;
-
-    move-result-object p2
-
-    monitor-enter p2
-    :try_end_3d
-    .catchall {:try_start_36 .. :try_end_3d} :catchall_52
-
-    .line 613
-    :try_start_3d
+    .local v3, "ident":J
+    :try_start_37
     iget-object v5, p0, Lcom/android/server/om/OverlayManagerService$1;->this$0:Lcom/android/server/om/OverlayManagerService;
 
-    invoke-static {v5}, Lcom/android/server/om/OverlayManagerService;->access$600(Lcom/android/server/om/OverlayManagerService;)Lcom/android/server/om/OverlayManagerServiceImpl;
+    invoke-static {v5}, Lcom/android/server/om/OverlayManagerService;->access$400(Lcom/android/server/om/OverlayManagerService;)Ljava/lang/Object;
 
     move-result-object v5
 
-    invoke-virtual {v5, p1, v2, p3}, Lcom/android/server/om/OverlayManagerServiceImpl;->setEnabledExclusive(Ljava/lang/String;ZI)Z
+    monitor-enter v5
+    :try_end_3e
+    .catchall {:try_start_37 .. :try_end_3e} :catchall_53
 
-    move-result p1
+    .line 613
+    :try_start_3e
+    iget-object v6, p0, Lcom/android/server/om/OverlayManagerService$1;->this$0:Lcom/android/server/om/OverlayManagerService;
 
-    monitor-exit p2
-    :try_end_48
-    .catchall {:try_start_3d .. :try_end_48} :catchall_4f
+    invoke-static {v6}, Lcom/android/server/om/OverlayManagerService;->access$600(Lcom/android/server/om/OverlayManagerService;)Lcom/android/server/om/OverlayManagerServiceImpl;
+
+    move-result-object v6
+
+    invoke-virtual {v6, p1, v2, p3}, Lcom/android/server/om/OverlayManagerServiceImpl;->setEnabledExclusive(Ljava/lang/String;ZI)Z
+
+    move-result v2
+
+    monitor-exit v5
+    :try_end_49
+    .catchall {:try_start_3e .. :try_end_49} :catchall_50
 
     .line 617
-    :try_start_48
+    :try_start_49
     invoke-static {v3, v4}, Landroid/os/Binder;->restoreCallingIdentity(J)V
-    :try_end_4b
-    .catchall {:try_start_48 .. :try_end_4b} :catchall_5c
+    :try_end_4c
+    .catchall {:try_start_49 .. :try_end_4c} :catchall_5d
 
     .line 620
     invoke-static {v0, v1}, Landroid/os/Trace;->traceEnd(J)V
 
     .line 613
-    return p1
+    return v2
 
     .line 615
-    :catchall_4f
-    move-exception p1
-
-    :try_start_50
-    monitor-exit p2
-    :try_end_51
-    .catchall {:try_start_50 .. :try_end_51} :catchall_4f
+    :catchall_50
+    move-exception v2
 
     :try_start_51
-    throw p1
+    monitor-exit v5
     :try_end_52
-    .catchall {:try_start_51 .. :try_end_52} :catchall_52
+    .catchall {:try_start_51 .. :try_end_52} :catchall_50
+
+    .end local v3  # "ident":J
+    .end local p0  # "this":Lcom/android/server/om/OverlayManagerService$1;
+    .end local p1  # "packageName":Ljava/lang/String;
+    .end local p2  # "enable":Z
+    .end local p3  # "userId":I
+    :try_start_52
+    throw v2
+    :try_end_53
+    .catchall {:try_start_52 .. :try_end_53} :catchall_53
 
     .line 617
-    :catchall_52
-    move-exception p1
+    .restart local v3  # "ident":J
+    .restart local p0  # "this":Lcom/android/server/om/OverlayManagerService$1;
+    .restart local p1  # "packageName":Ljava/lang/String;
+    .restart local p2  # "enable":Z
+    .restart local p3  # "userId":I
+    :catchall_53
+    move-exception v2
 
-    :try_start_53
+    :try_start_54
     invoke-static {v3, v4}, Landroid/os/Binder;->restoreCallingIdentity(J)V
 
-    throw p1
-    :try_end_57
-    .catchall {:try_start_53 .. :try_end_57} :catchall_5c
+    .end local p0  # "this":Lcom/android/server/om/OverlayManagerService$1;
+    .end local p1  # "packageName":Ljava/lang/String;
+    .end local p2  # "enable":Z
+    .end local p3  # "userId":I
+    throw v2
+    :try_end_58
+    .catchall {:try_start_54 .. :try_end_58} :catchall_5d
 
     .line 607
-    :cond_57
-    :goto_57
+    .end local v3  # "ident":J
+    .restart local p0  # "this":Lcom/android/server/om/OverlayManagerService$1;
+    .restart local p1  # "packageName":Ljava/lang/String;
+    .restart local p2  # "enable":Z
+    .restart local p3  # "userId":I
+    :cond_58
+    :goto_58
     nop
 
     .line 620
@@ -1328,16 +1447,18 @@
     return v2
 
     .line 620
-    :catchall_5c
-    move-exception p1
+    :catchall_5d
+    move-exception v2
 
     invoke-static {v0, v1}, Landroid/os/Trace;->traceEnd(J)V
 
-    throw p1
+    throw v2
 .end method
 
 .method public setEnabledExclusiveInCategory(Ljava/lang/String;I)Z
     .registers 10
+    .param p1, "packageName"  # Ljava/lang/String;
+    .param p2, "userId"  # I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -1374,33 +1495,36 @@
 
     invoke-direct {p0, p2, v2}, Lcom/android/server/om/OverlayManagerService$1;->handleIncomingUser(ILjava/lang/String;)I
 
-    move-result p2
+    move-result v2
     :try_end_24
-    .catchall {:try_start_3 .. :try_end_24} :catchall_51
+    .catchall {:try_start_3 .. :try_end_24} :catchall_52
+
+    move p2, v2
 
     .line 631
-    if-nez p1, :cond_2b
+    if-nez p1, :cond_2c
 
     .line 632
-    const/4 p1, 0x0
+    const/4 v2, 0x0
 
     .line 645
     invoke-static {v0, v1}, Landroid/os/Trace;->traceEnd(J)V
 
     .line 632
-    return p1
+    return v2
 
     .line 635
-    :cond_2b
-    :try_start_2b
+    :cond_2c
+    :try_start_2c
     invoke-static {}, Landroid/os/Binder;->clearCallingIdentity()J
 
     move-result-wide v2
-    :try_end_2f
-    .catchall {:try_start_2b .. :try_end_2f} :catchall_51
+    :try_end_30
+    .catchall {:try_start_2c .. :try_end_30} :catchall_52
 
     .line 637
-    :try_start_2f
+    .local v2, "ident":J
+    :try_start_30
     iget-object v4, p0, Lcom/android/server/om/OverlayManagerService$1;->this$0:Lcom/android/server/om/OverlayManagerService;
 
     invoke-static {v4}, Lcom/android/server/om/OverlayManagerService;->access$400(Lcom/android/server/om/OverlayManagerService;)Ljava/lang/Object;
@@ -1408,11 +1532,11 @@
     move-result-object v4
 
     monitor-enter v4
-    :try_end_36
-    .catchall {:try_start_2f .. :try_end_36} :catchall_4c
+    :try_end_37
+    .catchall {:try_start_30 .. :try_end_37} :catchall_4d
 
     .line 638
-    :try_start_36
+    :try_start_37
     iget-object v5, p0, Lcom/android/server/om/OverlayManagerService$1;->this$0:Lcom/android/server/om/OverlayManagerService;
 
     invoke-static {v5}, Lcom/android/server/om/OverlayManagerService;->access$600(Lcom/android/server/om/OverlayManagerService;)Lcom/android/server/om/OverlayManagerServiceImpl;
@@ -1423,60 +1547,77 @@
 
     invoke-virtual {v5, p1, v6, p2}, Lcom/android/server/om/OverlayManagerServiceImpl;->setEnabledExclusive(Ljava/lang/String;ZI)Z
 
-    move-result p1
+    move-result v5
 
     monitor-exit v4
-    :try_end_42
-    .catchall {:try_start_36 .. :try_end_42} :catchall_49
+    :try_end_43
+    .catchall {:try_start_37 .. :try_end_43} :catchall_4a
 
     .line 642
-    :try_start_42
+    :try_start_43
     invoke-static {v2, v3}, Landroid/os/Binder;->restoreCallingIdentity(J)V
-    :try_end_45
-    .catchall {:try_start_42 .. :try_end_45} :catchall_51
+    :try_end_46
+    .catchall {:try_start_43 .. :try_end_46} :catchall_52
 
     .line 645
     invoke-static {v0, v1}, Landroid/os/Trace;->traceEnd(J)V
 
     .line 638
-    return p1
+    return v5
 
     .line 640
-    :catchall_49
-    move-exception p1
-
-    :try_start_4a
-    monitor-exit v4
-    :try_end_4b
-    .catchall {:try_start_4a .. :try_end_4b} :catchall_49
+    :catchall_4a
+    move-exception v5
 
     :try_start_4b
-    throw p1
+    monitor-exit v4
     :try_end_4c
-    .catchall {:try_start_4b .. :try_end_4c} :catchall_4c
+    .catchall {:try_start_4b .. :try_end_4c} :catchall_4a
+
+    .end local v2  # "ident":J
+    .end local p0  # "this":Lcom/android/server/om/OverlayManagerService$1;
+    .end local p1  # "packageName":Ljava/lang/String;
+    .end local p2  # "userId":I
+    :try_start_4c
+    throw v5
+    :try_end_4d
+    .catchall {:try_start_4c .. :try_end_4d} :catchall_4d
 
     .line 642
-    :catchall_4c
-    move-exception p1
+    .restart local v2  # "ident":J
+    .restart local p0  # "this":Lcom/android/server/om/OverlayManagerService$1;
+    .restart local p1  # "packageName":Ljava/lang/String;
+    .restart local p2  # "userId":I
+    :catchall_4d
+    move-exception v4
 
-    :try_start_4d
+    :try_start_4e
     invoke-static {v2, v3}, Landroid/os/Binder;->restoreCallingIdentity(J)V
 
-    throw p1
-    :try_end_51
-    .catchall {:try_start_4d .. :try_end_51} :catchall_51
+    .end local p0  # "this":Lcom/android/server/om/OverlayManagerService$1;
+    .end local p1  # "packageName":Ljava/lang/String;
+    .end local p2  # "userId":I
+    throw v4
+    :try_end_52
+    .catchall {:try_start_4e .. :try_end_52} :catchall_52
 
     .line 645
-    :catchall_51
-    move-exception p1
+    .end local v2  # "ident":J
+    .restart local p0  # "this":Lcom/android/server/om/OverlayManagerService$1;
+    .restart local p1  # "packageName":Ljava/lang/String;
+    .restart local p2  # "userId":I
+    :catchall_52
+    move-exception v2
 
     invoke-static {v0, v1}, Landroid/os/Trace;->traceEnd(J)V
 
-    throw p1
+    throw v2
 .end method
 
 .method public setHighestPriority(Ljava/lang/String;I)Z
     .registers 9
+    .param p1, "packageName"  # Ljava/lang/String;
+    .param p2, "userId"  # I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -1513,33 +1654,36 @@
 
     invoke-direct {p0, p2, v2}, Lcom/android/server/om/OverlayManagerService$1;->handleIncomingUser(ILjava/lang/String;)I
 
-    move-result p2
+    move-result v2
     :try_end_24
-    .catchall {:try_start_3 .. :try_end_24} :catchall_50
+    .catchall {:try_start_3 .. :try_end_24} :catchall_51
+
+    move p2, v2
 
     .line 681
-    if-nez p1, :cond_2b
+    if-nez p1, :cond_2c
 
     .line 682
-    const/4 p1, 0x0
+    const/4 v2, 0x0
 
     .line 694
     invoke-static {v0, v1}, Landroid/os/Trace;->traceEnd(J)V
 
     .line 682
-    return p1
+    return v2
 
     .line 685
-    :cond_2b
-    :try_start_2b
+    :cond_2c
+    :try_start_2c
     invoke-static {}, Landroid/os/Binder;->clearCallingIdentity()J
 
     move-result-wide v2
-    :try_end_2f
-    .catchall {:try_start_2b .. :try_end_2f} :catchall_50
+    :try_end_30
+    .catchall {:try_start_2c .. :try_end_30} :catchall_51
 
     .line 687
-    :try_start_2f
+    .local v2, "ident":J
+    :try_start_30
     iget-object v4, p0, Lcom/android/server/om/OverlayManagerService$1;->this$0:Lcom/android/server/om/OverlayManagerService;
 
     invoke-static {v4}, Lcom/android/server/om/OverlayManagerService;->access$400(Lcom/android/server/om/OverlayManagerService;)Ljava/lang/Object;
@@ -1547,11 +1691,11 @@
     move-result-object v4
 
     monitor-enter v4
-    :try_end_36
-    .catchall {:try_start_2f .. :try_end_36} :catchall_4b
+    :try_end_37
+    .catchall {:try_start_30 .. :try_end_37} :catchall_4c
 
     .line 688
-    :try_start_36
+    :try_start_37
     iget-object v5, p0, Lcom/android/server/om/OverlayManagerService$1;->this$0:Lcom/android/server/om/OverlayManagerService;
 
     invoke-static {v5}, Lcom/android/server/om/OverlayManagerService;->access$600(Lcom/android/server/om/OverlayManagerService;)Lcom/android/server/om/OverlayManagerServiceImpl;
@@ -1560,60 +1704,77 @@
 
     invoke-virtual {v5, p1, p2}, Lcom/android/server/om/OverlayManagerServiceImpl;->setHighestPriority(Ljava/lang/String;I)Z
 
-    move-result p1
+    move-result v5
 
     monitor-exit v4
-    :try_end_41
-    .catchall {:try_start_36 .. :try_end_41} :catchall_48
+    :try_end_42
+    .catchall {:try_start_37 .. :try_end_42} :catchall_49
 
     .line 691
-    :try_start_41
+    :try_start_42
     invoke-static {v2, v3}, Landroid/os/Binder;->restoreCallingIdentity(J)V
-    :try_end_44
-    .catchall {:try_start_41 .. :try_end_44} :catchall_50
+    :try_end_45
+    .catchall {:try_start_42 .. :try_end_45} :catchall_51
 
     .line 694
     invoke-static {v0, v1}, Landroid/os/Trace;->traceEnd(J)V
 
     .line 688
-    return p1
+    return v5
 
     .line 689
-    :catchall_48
-    move-exception p1
-
-    :try_start_49
-    monitor-exit v4
-    :try_end_4a
-    .catchall {:try_start_49 .. :try_end_4a} :catchall_48
+    :catchall_49
+    move-exception v5
 
     :try_start_4a
-    throw p1
+    monitor-exit v4
     :try_end_4b
-    .catchall {:try_start_4a .. :try_end_4b} :catchall_4b
+    .catchall {:try_start_4a .. :try_end_4b} :catchall_49
+
+    .end local v2  # "ident":J
+    .end local p0  # "this":Lcom/android/server/om/OverlayManagerService$1;
+    .end local p1  # "packageName":Ljava/lang/String;
+    .end local p2  # "userId":I
+    :try_start_4b
+    throw v5
+    :try_end_4c
+    .catchall {:try_start_4b .. :try_end_4c} :catchall_4c
 
     .line 691
-    :catchall_4b
-    move-exception p1
+    .restart local v2  # "ident":J
+    .restart local p0  # "this":Lcom/android/server/om/OverlayManagerService$1;
+    .restart local p1  # "packageName":Ljava/lang/String;
+    .restart local p2  # "userId":I
+    :catchall_4c
+    move-exception v4
 
-    :try_start_4c
+    :try_start_4d
     invoke-static {v2, v3}, Landroid/os/Binder;->restoreCallingIdentity(J)V
 
-    throw p1
-    :try_end_50
-    .catchall {:try_start_4c .. :try_end_50} :catchall_50
+    .end local p0  # "this":Lcom/android/server/om/OverlayManagerService$1;
+    .end local p1  # "packageName":Ljava/lang/String;
+    .end local p2  # "userId":I
+    throw v4
+    :try_end_51
+    .catchall {:try_start_4d .. :try_end_51} :catchall_51
 
     .line 694
-    :catchall_50
-    move-exception p1
+    .end local v2  # "ident":J
+    .restart local p0  # "this":Lcom/android/server/om/OverlayManagerService$1;
+    .restart local p1  # "packageName":Ljava/lang/String;
+    .restart local p2  # "userId":I
+    :catchall_51
+    move-exception v2
 
     invoke-static {v0, v1}, Landroid/os/Trace;->traceEnd(J)V
 
-    throw p1
+    throw v2
 .end method
 
 .method public setLowestPriority(Ljava/lang/String;I)Z
     .registers 9
+    .param p1, "packageName"  # Ljava/lang/String;
+    .param p2, "userId"  # I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -1650,33 +1811,36 @@
 
     invoke-direct {p0, p2, v2}, Lcom/android/server/om/OverlayManagerService$1;->handleIncomingUser(ILjava/lang/String;)I
 
-    move-result p2
+    move-result v2
     :try_end_24
-    .catchall {:try_start_3 .. :try_end_24} :catchall_50
+    .catchall {:try_start_3 .. :try_end_24} :catchall_51
+
+    move p2, v2
 
     .line 705
-    if-nez p1, :cond_2b
+    if-nez p1, :cond_2c
 
     .line 706
-    const/4 p1, 0x0
+    const/4 v2, 0x0
 
     .line 718
     invoke-static {v0, v1}, Landroid/os/Trace;->traceEnd(J)V
 
     .line 706
-    return p1
+    return v2
 
     .line 709
-    :cond_2b
-    :try_start_2b
+    :cond_2c
+    :try_start_2c
     invoke-static {}, Landroid/os/Binder;->clearCallingIdentity()J
 
     move-result-wide v2
-    :try_end_2f
-    .catchall {:try_start_2b .. :try_end_2f} :catchall_50
+    :try_end_30
+    .catchall {:try_start_2c .. :try_end_30} :catchall_51
 
     .line 711
-    :try_start_2f
+    .local v2, "ident":J
+    :try_start_30
     iget-object v4, p0, Lcom/android/server/om/OverlayManagerService$1;->this$0:Lcom/android/server/om/OverlayManagerService;
 
     invoke-static {v4}, Lcom/android/server/om/OverlayManagerService;->access$400(Lcom/android/server/om/OverlayManagerService;)Ljava/lang/Object;
@@ -1684,11 +1848,11 @@
     move-result-object v4
 
     monitor-enter v4
-    :try_end_36
-    .catchall {:try_start_2f .. :try_end_36} :catchall_4b
+    :try_end_37
+    .catchall {:try_start_30 .. :try_end_37} :catchall_4c
 
     .line 712
-    :try_start_36
+    :try_start_37
     iget-object v5, p0, Lcom/android/server/om/OverlayManagerService$1;->this$0:Lcom/android/server/om/OverlayManagerService;
 
     invoke-static {v5}, Lcom/android/server/om/OverlayManagerService;->access$600(Lcom/android/server/om/OverlayManagerService;)Lcom/android/server/om/OverlayManagerServiceImpl;
@@ -1697,60 +1861,78 @@
 
     invoke-virtual {v5, p1, p2}, Lcom/android/server/om/OverlayManagerServiceImpl;->setLowestPriority(Ljava/lang/String;I)Z
 
-    move-result p1
+    move-result v5
 
     monitor-exit v4
-    :try_end_41
-    .catchall {:try_start_36 .. :try_end_41} :catchall_48
+    :try_end_42
+    .catchall {:try_start_37 .. :try_end_42} :catchall_49
 
     .line 715
-    :try_start_41
+    :try_start_42
     invoke-static {v2, v3}, Landroid/os/Binder;->restoreCallingIdentity(J)V
-    :try_end_44
-    .catchall {:try_start_41 .. :try_end_44} :catchall_50
+    :try_end_45
+    .catchall {:try_start_42 .. :try_end_45} :catchall_51
 
     .line 718
     invoke-static {v0, v1}, Landroid/os/Trace;->traceEnd(J)V
 
     .line 712
-    return p1
+    return v5
 
     .line 713
-    :catchall_48
-    move-exception p1
-
-    :try_start_49
-    monitor-exit v4
-    :try_end_4a
-    .catchall {:try_start_49 .. :try_end_4a} :catchall_48
+    :catchall_49
+    move-exception v5
 
     :try_start_4a
-    throw p1
+    monitor-exit v4
     :try_end_4b
-    .catchall {:try_start_4a .. :try_end_4b} :catchall_4b
+    .catchall {:try_start_4a .. :try_end_4b} :catchall_49
+
+    .end local v2  # "ident":J
+    .end local p0  # "this":Lcom/android/server/om/OverlayManagerService$1;
+    .end local p1  # "packageName":Ljava/lang/String;
+    .end local p2  # "userId":I
+    :try_start_4b
+    throw v5
+    :try_end_4c
+    .catchall {:try_start_4b .. :try_end_4c} :catchall_4c
 
     .line 715
-    :catchall_4b
-    move-exception p1
+    .restart local v2  # "ident":J
+    .restart local p0  # "this":Lcom/android/server/om/OverlayManagerService$1;
+    .restart local p1  # "packageName":Ljava/lang/String;
+    .restart local p2  # "userId":I
+    :catchall_4c
+    move-exception v4
 
-    :try_start_4c
+    :try_start_4d
     invoke-static {v2, v3}, Landroid/os/Binder;->restoreCallingIdentity(J)V
 
-    throw p1
-    :try_end_50
-    .catchall {:try_start_4c .. :try_end_50} :catchall_50
+    .end local p0  # "this":Lcom/android/server/om/OverlayManagerService$1;
+    .end local p1  # "packageName":Ljava/lang/String;
+    .end local p2  # "userId":I
+    throw v4
+    :try_end_51
+    .catchall {:try_start_4d .. :try_end_51} :catchall_51
 
     .line 718
-    :catchall_50
-    move-exception p1
+    .end local v2  # "ident":J
+    .restart local p0  # "this":Lcom/android/server/om/OverlayManagerService$1;
+    .restart local p1  # "packageName":Ljava/lang/String;
+    .restart local p2  # "userId":I
+    :catchall_51
+    move-exception v2
 
     invoke-static {v0, v1}, Landroid/os/Trace;->traceEnd(J)V
 
-    throw p1
+    throw v2
 .end method
 
 .method public setPriority(Ljava/lang/String;Ljava/lang/String;I)Z
     .registers 10
+    .param p1, "packageName"  # Ljava/lang/String;
+    .param p2, "parentPackageName"  # Ljava/lang/String;
+    .param p3, "userId"  # I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -1793,25 +1975,28 @@
 
     invoke-direct {p0, p3, v2}, Lcom/android/server/om/OverlayManagerService$1;->handleIncomingUser(ILjava/lang/String;)I
 
-    move-result p3
+    move-result v2
+
+    move p3, v2
 
     .line 657
-    if-eqz p1, :cond_56
+    if-eqz p1, :cond_57
 
-    if-nez p2, :cond_31
+    if-nez p2, :cond_32
 
-    goto :goto_56
+    goto :goto_57
 
     .line 661
-    :cond_31
+    :cond_32
     invoke-static {}, Landroid/os/Binder;->clearCallingIdentity()J
 
     move-result-wide v2
-    :try_end_35
-    .catchall {:try_start_3 .. :try_end_35} :catchall_5b
+    :try_end_36
+    .catchall {:try_start_3 .. :try_end_36} :catchall_5c
 
     .line 663
-    :try_start_35
+    .local v2, "ident":J
+    :try_start_36
     iget-object v4, p0, Lcom/android/server/om/OverlayManagerService$1;->this$0:Lcom/android/server/om/OverlayManagerService;
 
     invoke-static {v4}, Lcom/android/server/om/OverlayManagerService;->access$400(Lcom/android/server/om/OverlayManagerService;)Ljava/lang/Object;
@@ -1819,11 +2004,11 @@
     move-result-object v4
 
     monitor-enter v4
-    :try_end_3c
-    .catchall {:try_start_35 .. :try_end_3c} :catchall_51
+    :try_end_3d
+    .catchall {:try_start_36 .. :try_end_3d} :catchall_52
 
     .line 664
-    :try_start_3c
+    :try_start_3d
     iget-object v5, p0, Lcom/android/server/om/OverlayManagerService$1;->this$0:Lcom/android/server/om/OverlayManagerService;
 
     invoke-static {v5}, Lcom/android/server/om/OverlayManagerService;->access$600(Lcom/android/server/om/OverlayManagerService;)Lcom/android/server/om/OverlayManagerServiceImpl;
@@ -1832,65 +2017,84 @@
 
     invoke-virtual {v5, p1, p2, p3}, Lcom/android/server/om/OverlayManagerServiceImpl;->setPriority(Ljava/lang/String;Ljava/lang/String;I)Z
 
-    move-result p1
+    move-result v5
 
     monitor-exit v4
-    :try_end_47
-    .catchall {:try_start_3c .. :try_end_47} :catchall_4e
+    :try_end_48
+    .catchall {:try_start_3d .. :try_end_48} :catchall_4f
 
     .line 667
-    :try_start_47
+    :try_start_48
     invoke-static {v2, v3}, Landroid/os/Binder;->restoreCallingIdentity(J)V
-    :try_end_4a
-    .catchall {:try_start_47 .. :try_end_4a} :catchall_5b
+    :try_end_4b
+    .catchall {:try_start_48 .. :try_end_4b} :catchall_5c
 
     .line 670
     invoke-static {v0, v1}, Landroid/os/Trace;->traceEnd(J)V
 
     .line 664
-    return p1
+    return v5
 
     .line 665
-    :catchall_4e
-    move-exception p1
-
-    :try_start_4f
-    monitor-exit v4
-    :try_end_50
-    .catchall {:try_start_4f .. :try_end_50} :catchall_4e
+    :catchall_4f
+    move-exception v5
 
     :try_start_50
-    throw p1
+    monitor-exit v4
     :try_end_51
-    .catchall {:try_start_50 .. :try_end_51} :catchall_51
+    .catchall {:try_start_50 .. :try_end_51} :catchall_4f
+
+    .end local v2  # "ident":J
+    .end local p0  # "this":Lcom/android/server/om/OverlayManagerService$1;
+    .end local p1  # "packageName":Ljava/lang/String;
+    .end local p2  # "parentPackageName":Ljava/lang/String;
+    .end local p3  # "userId":I
+    :try_start_51
+    throw v5
+    :try_end_52
+    .catchall {:try_start_51 .. :try_end_52} :catchall_52
 
     .line 667
-    :catchall_51
-    move-exception p1
+    .restart local v2  # "ident":J
+    .restart local p0  # "this":Lcom/android/server/om/OverlayManagerService$1;
+    .restart local p1  # "packageName":Ljava/lang/String;
+    .restart local p2  # "parentPackageName":Ljava/lang/String;
+    .restart local p3  # "userId":I
+    :catchall_52
+    move-exception v4
 
-    :try_start_52
+    :try_start_53
     invoke-static {v2, v3}, Landroid/os/Binder;->restoreCallingIdentity(J)V
 
-    throw p1
-    :try_end_56
-    .catchall {:try_start_52 .. :try_end_56} :catchall_5b
+    .end local p0  # "this":Lcom/android/server/om/OverlayManagerService$1;
+    .end local p1  # "packageName":Ljava/lang/String;
+    .end local p2  # "parentPackageName":Ljava/lang/String;
+    .end local p3  # "userId":I
+    throw v4
+    :try_end_57
+    .catchall {:try_start_53 .. :try_end_57} :catchall_5c
 
     .line 658
-    :cond_56
-    :goto_56
-    const/4 p1, 0x0
+    .end local v2  # "ident":J
+    .restart local p0  # "this":Lcom/android/server/om/OverlayManagerService$1;
+    .restart local p1  # "packageName":Ljava/lang/String;
+    .restart local p2  # "parentPackageName":Ljava/lang/String;
+    .restart local p3  # "userId":I
+    :cond_57
+    :goto_57
+    const/4 v2, 0x0
 
     .line 670
     invoke-static {v0, v1}, Landroid/os/Trace;->traceEnd(J)V
 
     .line 658
-    return p1
+    return v2
 
     .line 670
-    :catchall_5b
-    move-exception p1
+    :catchall_5c
+    move-exception v2
 
     invoke-static {v0, v1}, Landroid/os/Trace;->traceEnd(J)V
 
-    throw p1
+    throw v2
 .end method

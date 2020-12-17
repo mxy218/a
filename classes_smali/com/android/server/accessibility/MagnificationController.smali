@@ -59,6 +59,9 @@
 # direct methods
 .method public constructor <init>(Landroid/content/Context;Lcom/android/server/accessibility/AccessibilityManagerService;Ljava/lang/Object;)V
     .registers 12
+    .param p1, "context"  # Landroid/content/Context;
+    .param p2, "ams"  # Lcom/android/server/accessibility/AccessibilityManagerService;
+    .param p3, "lock"  # Ljava/lang/Object;
 
     .line 597
     new-instance v7, Lcom/android/server/accessibility/MagnificationController$ControllerContext;
@@ -113,6 +116,8 @@
 
 .method public constructor <init>(Lcom/android/server/accessibility/MagnificationController$ControllerContext;Ljava/lang/Object;)V
     .registers 5
+    .param p1, "ctx"  # Lcom/android/server/accessibility/MagnificationController$ControllerContext;
+    .param p2, "lock"  # Ljava/lang/Object;
     .annotation build Lcom/android/internal/annotations/VisibleForTesting;
     .end annotation
 
@@ -135,63 +140,68 @@
     iput-object p2, p0, Lcom/android/server/accessibility/MagnificationController;->mLock:Ljava/lang/Object;
 
     .line 610
-    iget-object p1, p0, Lcom/android/server/accessibility/MagnificationController;->mControllerCtx:Lcom/android/server/accessibility/MagnificationController$ControllerContext;
+    iget-object v0, p0, Lcom/android/server/accessibility/MagnificationController;->mControllerCtx:Lcom/android/server/accessibility/MagnificationController$ControllerContext;
 
-    invoke-virtual {p1}, Lcom/android/server/accessibility/MagnificationController$ControllerContext;->getContext()Landroid/content/Context;
+    invoke-virtual {v0}, Lcom/android/server/accessibility/MagnificationController$ControllerContext;->getContext()Landroid/content/Context;
 
-    move-result-object p1
+    move-result-object v0
 
-    invoke-virtual {p1}, Landroid/content/Context;->getMainLooper()Landroid/os/Looper;
+    invoke-virtual {v0}, Landroid/content/Context;->getMainLooper()Landroid/os/Looper;
 
-    move-result-object p1
+    move-result-object v0
 
-    invoke-virtual {p1}, Landroid/os/Looper;->getThread()Ljava/lang/Thread;
+    invoke-virtual {v0}, Landroid/os/Looper;->getThread()Ljava/lang/Thread;
 
-    move-result-object p1
+    move-result-object v0
 
-    invoke-virtual {p1}, Ljava/lang/Thread;->getId()J
+    invoke-virtual {v0}, Ljava/lang/Thread;->getId()J
 
-    move-result-wide p1
+    move-result-wide v0
 
-    iput-wide p1, p0, Lcom/android/server/accessibility/MagnificationController;->mMainThreadId:J
+    iput-wide v0, p0, Lcom/android/server/accessibility/MagnificationController;->mMainThreadId:J
 
     .line 611
-    new-instance p1, Lcom/android/server/accessibility/MagnificationController$ScreenStateObserver;
+    new-instance v0, Lcom/android/server/accessibility/MagnificationController$ScreenStateObserver;
 
-    iget-object p2, p0, Lcom/android/server/accessibility/MagnificationController;->mControllerCtx:Lcom/android/server/accessibility/MagnificationController$ControllerContext;
+    iget-object v1, p0, Lcom/android/server/accessibility/MagnificationController;->mControllerCtx:Lcom/android/server/accessibility/MagnificationController$ControllerContext;
 
-    invoke-virtual {p2}, Lcom/android/server/accessibility/MagnificationController$ControllerContext;->getContext()Landroid/content/Context;
+    invoke-virtual {v1}, Lcom/android/server/accessibility/MagnificationController$ControllerContext;->getContext()Landroid/content/Context;
 
-    move-result-object p2
+    move-result-object v1
 
-    invoke-direct {p1, p2, p0}, Lcom/android/server/accessibility/MagnificationController$ScreenStateObserver;-><init>(Landroid/content/Context;Lcom/android/server/accessibility/MagnificationController;)V
+    invoke-direct {v0, v1, p0}, Lcom/android/server/accessibility/MagnificationController$ScreenStateObserver;-><init>(Landroid/content/Context;Lcom/android/server/accessibility/MagnificationController;)V
 
-    iput-object p1, p0, Lcom/android/server/accessibility/MagnificationController;->mScreenStateObserver:Lcom/android/server/accessibility/MagnificationController$ScreenStateObserver;
+    iput-object v0, p0, Lcom/android/server/accessibility/MagnificationController;->mScreenStateObserver:Lcom/android/server/accessibility/MagnificationController$ScreenStateObserver;
 
     .line 612
     return-void
 .end method
 
 .method static synthetic access$000(Lcom/android/server/accessibility/MagnificationController;)Lcom/android/server/accessibility/MagnificationController$ControllerContext;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/accessibility/MagnificationController;
 
     .line 59
-    iget-object p0, p0, Lcom/android/server/accessibility/MagnificationController;->mControllerCtx:Lcom/android/server/accessibility/MagnificationController$ControllerContext;
+    iget-object v0, p0, Lcom/android/server/accessibility/MagnificationController;->mControllerCtx:Lcom/android/server/accessibility/MagnificationController$ControllerContext;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$100(Lcom/android/server/accessibility/MagnificationController;)Ljava/lang/Object;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/accessibility/MagnificationController;
 
     .line 59
-    iget-object p0, p0, Lcom/android/server/accessibility/MagnificationController;->mLock:Ljava/lang/Object;
+    iget-object v0, p0, Lcom/android/server/accessibility/MagnificationController;->mLock:Ljava/lang/Object;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$300(Lcom/android/server/accessibility/MagnificationController;IZ)V
     .registers 3
+    .param p0, "x0"  # Lcom/android/server/accessibility/MagnificationController;
+    .param p1, "x1"  # I
+    .param p2, "x2"  # Z
 
     .line 59
     invoke-direct {p0, p1, p2}, Lcom/android/server/accessibility/MagnificationController;->unregisterCallbackLocked(IZ)V
@@ -201,6 +211,7 @@
 
 .method static synthetic access$500(Lcom/android/server/accessibility/MagnificationController;)J
     .registers 3
+    .param p0, "x0"  # Lcom/android/server/accessibility/MagnificationController;
 
     .line 59
     iget-wide v0, p0, Lcom/android/server/accessibility/MagnificationController;->mMainThreadId:J
@@ -210,6 +221,7 @@
 
 .method static synthetic access$600(Lcom/android/server/accessibility/MagnificationController;)V
     .registers 1
+    .param p0, "x0"  # Lcom/android/server/accessibility/MagnificationController;
 
     .line 59
     invoke-direct {p0}, Lcom/android/server/accessibility/MagnificationController;->onScreenTurnedOff()V
@@ -244,6 +256,7 @@
     move-result-object v0
 
     .line 1092
+    .local v0, "m":Landroid/os/Message;
     iget-object v1, p0, Lcom/android/server/accessibility/MagnificationController;->mControllerCtx:Lcom/android/server/accessibility/MagnificationController$ControllerContext;
 
     invoke-virtual {v1}, Lcom/android/server/accessibility/MagnificationController$ControllerContext;->getHandler()Landroid/os/Handler;
@@ -258,6 +271,7 @@
 
 .method private resetAllIfNeeded(Z)V
     .registers 5
+    .param p1, "animate"  # Z
 
     .line 1096
     iget-object v0, p0, Lcom/android/server/accessibility/MagnificationController;->mLock:Ljava/lang/Object;
@@ -267,6 +281,7 @@
     .line 1097
     const/4 v1, 0x0
 
+    .local v1, "i":I
     :goto_4
     :try_start_4
     iget-object v2, p0, Lcom/android/server/accessibility/MagnificationController;->mDisplays:Landroid/util/SparseArray;
@@ -292,6 +307,7 @@
     goto :goto_4
 
     .line 1100
+    .end local v1  # "i":I
     :cond_18
     monitor-exit v0
 
@@ -300,87 +316,94 @@
 
     .line 1100
     :catchall_1a
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_1c
     .catchall {:try_start_4 .. :try_end_1c} :catchall_1a
 
-    throw p1
+    throw v1
 .end method
 
 .method private unregisterCallbackLocked(IZ)V
-    .registers 4
+    .registers 6
+    .param p1, "displayId"  # I
+    .param p2, "delete"  # Z
 
     .line 1127
     if-eqz p2, :cond_7
 
     .line 1128
-    iget-object p2, p0, Lcom/android/server/accessibility/MagnificationController;->mDisplays:Landroid/util/SparseArray;
+    iget-object v0, p0, Lcom/android/server/accessibility/MagnificationController;->mDisplays:Landroid/util/SparseArray;
 
-    invoke-virtual {p2, p1}, Landroid/util/SparseArray;->remove(I)V
+    invoke-virtual {v0, p1}, Landroid/util/SparseArray;->remove(I)V
 
     .line 1131
     :cond_7
-    nop
+    const/4 v0, 0x0
 
     .line 1132
-    const/4 p1, 0x0
+    .local v0, "hasRegister":Z
+    const/4 v1, 0x0
 
-    move p2, p1
+    .local v1, "i":I
+    :goto_9
+    iget-object v2, p0, Lcom/android/server/accessibility/MagnificationController;->mDisplays:Landroid/util/SparseArray;
 
-    :goto_a
-    iget-object v0, p0, Lcom/android/server/accessibility/MagnificationController;->mDisplays:Landroid/util/SparseArray;
+    invoke-virtual {v2}, Landroid/util/SparseArray;->size()I
 
-    invoke-virtual {v0}, Landroid/util/SparseArray;->size()I
+    move-result v2
+
+    if-ge v1, v2, :cond_23
+
+    .line 1133
+    iget-object v2, p0, Lcom/android/server/accessibility/MagnificationController;->mDisplays:Landroid/util/SparseArray;
+
+    invoke-virtual {v2, v1}, Landroid/util/SparseArray;->valueAt(I)Ljava/lang/Object;
+
+    move-result-object v2
+
+    check-cast v2, Lcom/android/server/accessibility/MagnificationController$DisplayMagnification;
+
+    .line 1134
+    .local v2, "display":Lcom/android/server/accessibility/MagnificationController$DisplayMagnification;
+    invoke-virtual {v2}, Lcom/android/server/accessibility/MagnificationController$DisplayMagnification;->isRegistered()Z
 
     move-result v0
 
-    if-ge p1, v0, :cond_24
-
-    .line 1133
-    iget-object p2, p0, Lcom/android/server/accessibility/MagnificationController;->mDisplays:Landroid/util/SparseArray;
-
-    invoke-virtual {p2, p1}, Landroid/util/SparseArray;->valueAt(I)Ljava/lang/Object;
-
-    move-result-object p2
-
-    check-cast p2, Lcom/android/server/accessibility/MagnificationController$DisplayMagnification;
-
-    .line 1134
-    invoke-virtual {p2}, Lcom/android/server/accessibility/MagnificationController$DisplayMagnification;->isRegistered()Z
-
-    move-result p2
-
     .line 1135
-    if-eqz p2, :cond_21
+    if-eqz v0, :cond_20
 
     .line 1136
-    goto :goto_24
+    goto :goto_23
 
     .line 1132
-    :cond_21
-    add-int/lit8 p1, p1, 0x1
+    .end local v2  # "display":Lcom/android/server/accessibility/MagnificationController$DisplayMagnification;
+    :cond_20
+    add-int/lit8 v1, v1, 0x1
 
-    goto :goto_a
+    goto :goto_9
 
     .line 1139
-    :cond_24
-    :goto_24
-    if-nez p2, :cond_2b
+    .end local v1  # "i":I
+    :cond_23
+    :goto_23
+    if-nez v0, :cond_2a
 
     .line 1140
-    iget-object p1, p0, Lcom/android/server/accessibility/MagnificationController;->mScreenStateObserver:Lcom/android/server/accessibility/MagnificationController$ScreenStateObserver;
+    iget-object v1, p0, Lcom/android/server/accessibility/MagnificationController;->mScreenStateObserver:Lcom/android/server/accessibility/MagnificationController$ScreenStateObserver;
 
-    invoke-virtual {p1}, Lcom/android/server/accessibility/MagnificationController$ScreenStateObserver;->unregister()V
+    invoke-virtual {v1}, Lcom/android/server/accessibility/MagnificationController$ScreenStateObserver;->unregister()V
 
     .line 1142
-    :cond_2b
+    :cond_2a
     return-void
 .end method
 
 .method private unregisterLocked(IZ)V
     .registers 5
+    .param p1, "displayId"  # I
+    .param p2, "delete"  # Z
 
     .line 1104
     iget-object v0, p0, Lcom/android/server/accessibility/MagnificationController;->mDisplays:Landroid/util/SparseArray;
@@ -392,6 +415,7 @@
     check-cast v0, Lcom/android/server/accessibility/MagnificationController$DisplayMagnification;
 
     .line 1105
+    .local v0, "display":Lcom/android/server/accessibility/MagnificationController$DisplayMagnification;
     if-nez v0, :cond_b
 
     .line 1106
@@ -409,9 +433,9 @@
     if-eqz p2, :cond_18
 
     .line 1110
-    iget-object p2, p0, Lcom/android/server/accessibility/MagnificationController;->mDisplays:Landroid/util/SparseArray;
+    iget-object v1, p0, Lcom/android/server/accessibility/MagnificationController;->mDisplays:Landroid/util/SparseArray;
 
-    invoke-virtual {p2, p1}, Landroid/util/SparseArray;->remove(I)V
+    invoke-virtual {v1, p1}, Landroid/util/SparseArray;->remove(I)V
 
     .line 1112
     :cond_18
@@ -421,9 +445,9 @@
     :cond_19
     invoke-virtual {v0}, Lcom/android/server/accessibility/MagnificationController$DisplayMagnification;->isMagnifying()Z
 
-    move-result p1
+    move-result v1
 
-    if-nez p1, :cond_23
+    if-nez v1, :cond_23
 
     .line 1115
     invoke-virtual {v0, p2}, Lcom/android/server/accessibility/MagnificationController$DisplayMagnification;->unregister(Z)V
@@ -442,7 +466,8 @@
 
 # virtual methods
 .method public getCenterX(I)F
-    .registers 4
+    .registers 5
+    .param p1, "displayId"  # I
 
     .line 809
     iget-object v0, p0, Lcom/android/server/accessibility/MagnificationController;->mLock:Ljava/lang/Object;
@@ -455,43 +480,46 @@
 
     invoke-virtual {v1, p1}, Landroid/util/SparseArray;->get(I)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v1
 
-    check-cast p1, Lcom/android/server/accessibility/MagnificationController$DisplayMagnification;
+    check-cast v1, Lcom/android/server/accessibility/MagnificationController$DisplayMagnification;
 
     .line 811
-    if-nez p1, :cond_10
+    .local v1, "display":Lcom/android/server/accessibility/MagnificationController$DisplayMagnification;
+    if-nez v1, :cond_10
 
     .line 812
-    const/4 p1, 0x0
+    const/4 v2, 0x0
 
     monitor-exit v0
 
-    return p1
+    return v2
 
     .line 814
     :cond_10
-    invoke-virtual {p1}, Lcom/android/server/accessibility/MagnificationController$DisplayMagnification;->getCenterX()F
+    invoke-virtual {v1}, Lcom/android/server/accessibility/MagnificationController$DisplayMagnification;->getCenterX()F
 
-    move-result p1
+    move-result v2
 
     monitor-exit v0
 
-    return p1
+    return v2
 
     .line 815
+    .end local v1  # "display":Lcom/android/server/accessibility/MagnificationController$DisplayMagnification;
     :catchall_16
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_18
     .catchall {:try_start_3 .. :try_end_18} :catchall_16
 
-    throw p1
+    throw v1
 .end method
 
 .method public getCenterY(I)F
-    .registers 4
+    .registers 5
+    .param p1, "displayId"  # I
 
     .line 843
     iget-object v0, p0, Lcom/android/server/accessibility/MagnificationController;->mLock:Ljava/lang/Object;
@@ -504,43 +532,46 @@
 
     invoke-virtual {v1, p1}, Landroid/util/SparseArray;->get(I)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v1
 
-    check-cast p1, Lcom/android/server/accessibility/MagnificationController$DisplayMagnification;
+    check-cast v1, Lcom/android/server/accessibility/MagnificationController$DisplayMagnification;
 
     .line 845
-    if-nez p1, :cond_10
+    .local v1, "display":Lcom/android/server/accessibility/MagnificationController$DisplayMagnification;
+    if-nez v1, :cond_10
 
     .line 846
-    const/4 p1, 0x0
+    const/4 v2, 0x0
 
     monitor-exit v0
 
-    return p1
+    return v2
 
     .line 848
     :cond_10
-    invoke-virtual {p1}, Lcom/android/server/accessibility/MagnificationController$DisplayMagnification;->getCenterY()F
+    invoke-virtual {v1}, Lcom/android/server/accessibility/MagnificationController$DisplayMagnification;->getCenterY()F
 
-    move-result p1
+    move-result v2
 
     monitor-exit v0
 
-    return p1
+    return v2
 
     .line 849
+    .end local v1  # "display":Lcom/android/server/accessibility/MagnificationController$DisplayMagnification;
     :catchall_16
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_18
     .catchall {:try_start_3 .. :try_end_18} :catchall_16
 
-    throw p1
+    throw v1
 .end method
 
 .method public getIdOfLastServiceToMagnify(I)I
-    .registers 4
+    .registers 5
+    .param p1, "displayId"  # I
 
     .line 979
     iget-object v0, p0, Lcom/android/server/accessibility/MagnificationController;->mLock:Ljava/lang/Object;
@@ -553,43 +584,47 @@
 
     invoke-virtual {v1, p1}, Landroid/util/SparseArray;->get(I)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v1
 
-    check-cast p1, Lcom/android/server/accessibility/MagnificationController$DisplayMagnification;
+    check-cast v1, Lcom/android/server/accessibility/MagnificationController$DisplayMagnification;
 
     .line 981
-    if-nez p1, :cond_10
+    .local v1, "display":Lcom/android/server/accessibility/MagnificationController$DisplayMagnification;
+    if-nez v1, :cond_10
 
     .line 982
-    const/4 p1, -0x1
+    const/4 v2, -0x1
 
     monitor-exit v0
 
-    return p1
+    return v2
 
     .line 984
     :cond_10
-    invoke-virtual {p1}, Lcom/android/server/accessibility/MagnificationController$DisplayMagnification;->getIdOfLastServiceToMagnify()I
+    invoke-virtual {v1}, Lcom/android/server/accessibility/MagnificationController$DisplayMagnification;->getIdOfLastServiceToMagnify()I
 
-    move-result p1
+    move-result v2
 
     monitor-exit v0
 
-    return p1
+    return v2
 
     .line 985
+    .end local v1  # "display":Lcom/android/server/accessibility/MagnificationController$DisplayMagnification;
     :catchall_16
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_18
     .catchall {:try_start_3 .. :try_end_18} :catchall_16
 
-    throw p1
+    throw v1
 .end method
 
 .method public getMagnificationBounds(ILandroid/graphics/Rect;)V
     .registers 5
+    .param p1, "displayId"  # I
+    .param p2, "outBounds"  # Landroid/graphics/Rect;
 
     .line 740
     iget-object v0, p0, Lcom/android/server/accessibility/MagnificationController;->mLock:Ljava/lang/Object;
@@ -602,12 +637,13 @@
 
     invoke-virtual {v1, p1}, Landroid/util/SparseArray;->get(I)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v1
 
-    check-cast p1, Lcom/android/server/accessibility/MagnificationController$DisplayMagnification;
+    check-cast v1, Lcom/android/server/accessibility/MagnificationController$DisplayMagnification;
 
     .line 742
-    if-nez p1, :cond_f
+    .local v1, "display":Lcom/android/server/accessibility/MagnificationController$DisplayMagnification;
+    if-nez v1, :cond_f
 
     .line 743
     monitor-exit v0
@@ -616,9 +652,10 @@
 
     .line 745
     :cond_f
-    invoke-virtual {p1, p2}, Lcom/android/server/accessibility/MagnificationController$DisplayMagnification;->getMagnificationBounds(Landroid/graphics/Rect;)V
+    invoke-virtual {v1, p2}, Lcom/android/server/accessibility/MagnificationController$DisplayMagnification;->getMagnificationBounds(Landroid/graphics/Rect;)V
 
     .line 746
+    .end local v1  # "display":Lcom/android/server/accessibility/MagnificationController$DisplayMagnification;
     monitor-exit v0
 
     .line 747
@@ -626,17 +663,19 @@
 
     .line 746
     :catchall_14
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_16
     .catchall {:try_start_3 .. :try_end_16} :catchall_14
 
-    throw p1
+    throw v1
 .end method
 
 .method public getMagnificationRegion(ILandroid/graphics/Region;)V
     .registers 5
+    .param p1, "displayId"  # I
+    .param p2, "outRegion"  # Landroid/graphics/Region;
 
     .line 758
     iget-object v0, p0, Lcom/android/server/accessibility/MagnificationController;->mLock:Ljava/lang/Object;
@@ -649,12 +688,13 @@
 
     invoke-virtual {v1, p1}, Landroid/util/SparseArray;->get(I)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v1
 
-    check-cast p1, Lcom/android/server/accessibility/MagnificationController$DisplayMagnification;
+    check-cast v1, Lcom/android/server/accessibility/MagnificationController$DisplayMagnification;
 
     .line 760
-    if-nez p1, :cond_f
+    .local v1, "display":Lcom/android/server/accessibility/MagnificationController$DisplayMagnification;
+    if-nez v1, :cond_f
 
     .line 761
     monitor-exit v0
@@ -663,9 +703,10 @@
 
     .line 763
     :cond_f
-    invoke-virtual {p1, p2}, Lcom/android/server/accessibility/MagnificationController$DisplayMagnification;->getMagnificationRegion(Landroid/graphics/Region;)V
+    invoke-virtual {v1, p2}, Lcom/android/server/accessibility/MagnificationController$DisplayMagnification;->getMagnificationRegion(Landroid/graphics/Region;)V
 
     .line 764
+    .end local v1  # "display":Lcom/android/server/accessibility/MagnificationController$DisplayMagnification;
     monitor-exit v0
 
     .line 765
@@ -673,17 +714,18 @@
 
     .line 764
     :catchall_14
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_16
     .catchall {:try_start_3 .. :try_end_16} :catchall_14
 
-    throw p1
+    throw v1
 .end method
 
 .method public getOffsetX(I)F
-    .registers 4
+    .registers 5
+    .param p1, "displayId"  # I
 
     .line 792
     iget-object v0, p0, Lcom/android/server/accessibility/MagnificationController;->mLock:Ljava/lang/Object;
@@ -696,43 +738,46 @@
 
     invoke-virtual {v1, p1}, Landroid/util/SparseArray;->get(I)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v1
 
-    check-cast p1, Lcom/android/server/accessibility/MagnificationController$DisplayMagnification;
+    check-cast v1, Lcom/android/server/accessibility/MagnificationController$DisplayMagnification;
 
     .line 794
-    if-nez p1, :cond_10
+    .local v1, "display":Lcom/android/server/accessibility/MagnificationController$DisplayMagnification;
+    if-nez v1, :cond_10
 
     .line 795
-    const/4 p1, 0x0
+    const/4 v2, 0x0
 
     monitor-exit v0
 
-    return p1
+    return v2
 
     .line 797
     :cond_10
-    invoke-virtual {p1}, Lcom/android/server/accessibility/MagnificationController$DisplayMagnification;->getOffsetX()F
+    invoke-virtual {v1}, Lcom/android/server/accessibility/MagnificationController$DisplayMagnification;->getOffsetX()F
 
-    move-result p1
+    move-result v2
 
     monitor-exit v0
 
-    return p1
+    return v2
 
     .line 798
+    .end local v1  # "display":Lcom/android/server/accessibility/MagnificationController$DisplayMagnification;
     :catchall_16
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_18
     .catchall {:try_start_3 .. :try_end_18} :catchall_16
 
-    throw p1
+    throw v1
 .end method
 
 .method public getOffsetY(I)F
-    .registers 4
+    .registers 5
+    .param p1, "displayId"  # I
 
     .line 826
     iget-object v0, p0, Lcom/android/server/accessibility/MagnificationController;->mLock:Ljava/lang/Object;
@@ -745,39 +790,41 @@
 
     invoke-virtual {v1, p1}, Landroid/util/SparseArray;->get(I)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v1
 
-    check-cast p1, Lcom/android/server/accessibility/MagnificationController$DisplayMagnification;
+    check-cast v1, Lcom/android/server/accessibility/MagnificationController$DisplayMagnification;
 
     .line 828
-    if-nez p1, :cond_10
+    .local v1, "display":Lcom/android/server/accessibility/MagnificationController$DisplayMagnification;
+    if-nez v1, :cond_10
 
     .line 829
-    const/4 p1, 0x0
+    const/4 v2, 0x0
 
     monitor-exit v0
 
-    return p1
+    return v2
 
     .line 831
     :cond_10
-    invoke-virtual {p1}, Lcom/android/server/accessibility/MagnificationController$DisplayMagnification;->getOffsetY()F
+    invoke-virtual {v1}, Lcom/android/server/accessibility/MagnificationController$DisplayMagnification;->getOffsetY()F
 
-    move-result p1
+    move-result v2
 
     monitor-exit v0
 
-    return p1
+    return v2
 
     .line 832
+    .end local v1  # "display":Lcom/android/server/accessibility/MagnificationController$DisplayMagnification;
     :catchall_16
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_18
     .catchall {:try_start_3 .. :try_end_18} :catchall_16
 
-    throw p1
+    throw v1
 .end method
 
 .method public getPersistedScale()F
@@ -796,7 +843,8 @@
 .end method
 
 .method public getScale(I)F
-    .registers 4
+    .registers 5
+    .param p1, "displayId"  # I
 
     .line 775
     iget-object v0, p0, Lcom/android/server/accessibility/MagnificationController;->mLock:Ljava/lang/Object;
@@ -809,43 +857,46 @@
 
     invoke-virtual {v1, p1}, Landroid/util/SparseArray;->get(I)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v1
 
-    check-cast p1, Lcom/android/server/accessibility/MagnificationController$DisplayMagnification;
+    check-cast v1, Lcom/android/server/accessibility/MagnificationController$DisplayMagnification;
 
     .line 777
-    if-nez p1, :cond_11
+    .local v1, "display":Lcom/android/server/accessibility/MagnificationController$DisplayMagnification;
+    if-nez v1, :cond_11
 
     .line 778
-    const/high16 p1, 0x3f800000  # 1.0f
+    const/high16 v2, 0x3f800000  # 1.0f
 
     monitor-exit v0
 
-    return p1
+    return v2
 
     .line 780
     :cond_11
-    invoke-virtual {p1}, Lcom/android/server/accessibility/MagnificationController$DisplayMagnification;->getScale()F
+    invoke-virtual {v1}, Lcom/android/server/accessibility/MagnificationController$DisplayMagnification;->getScale()F
 
-    move-result p1
+    move-result v2
 
     monitor-exit v0
 
-    return p1
+    return v2
 
     .line 781
+    .end local v1  # "display":Lcom/android/server/accessibility/MagnificationController$DisplayMagnification;
     :catchall_17
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_19
     .catchall {:try_start_3 .. :try_end_19} :catchall_17
 
-    throw p1
+    throw v1
 .end method
 
 .method public isMagnifying(I)Z
-    .registers 4
+    .registers 5
+    .param p1, "displayId"  # I
 
     .line 701
     iget-object v0, p0, Lcom/android/server/accessibility/MagnificationController;->mLock:Ljava/lang/Object;
@@ -858,43 +909,46 @@
 
     invoke-virtual {v1, p1}, Landroid/util/SparseArray;->get(I)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v1
 
-    check-cast p1, Lcom/android/server/accessibility/MagnificationController$DisplayMagnification;
+    check-cast v1, Lcom/android/server/accessibility/MagnificationController$DisplayMagnification;
 
     .line 703
-    if-nez p1, :cond_10
+    .local v1, "display":Lcom/android/server/accessibility/MagnificationController$DisplayMagnification;
+    if-nez v1, :cond_10
 
     .line 704
-    const/4 p1, 0x0
+    const/4 v2, 0x0
 
     monitor-exit v0
 
-    return p1
+    return v2
 
     .line 706
     :cond_10
-    invoke-virtual {p1}, Lcom/android/server/accessibility/MagnificationController$DisplayMagnification;->isMagnifying()Z
+    invoke-virtual {v1}, Lcom/android/server/accessibility/MagnificationController$DisplayMagnification;->isMagnifying()Z
 
-    move-result p1
+    move-result v2
 
     monitor-exit v0
 
-    return p1
+    return v2
 
     .line 707
+    .end local v1  # "display":Lcom/android/server/accessibility/MagnificationController$DisplayMagnification;
     :catchall_16
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_18
     .catchall {:try_start_3 .. :try_end_18} :catchall_16
 
-    throw p1
+    throw v1
 .end method
 
 .method public isRegistered(I)Z
-    .registers 4
+    .registers 5
+    .param p1, "displayId"  # I
 
     .line 686
     iget-object v0, p0, Lcom/android/server/accessibility/MagnificationController;->mLock:Ljava/lang/Object;
@@ -907,43 +961,48 @@
 
     invoke-virtual {v1, p1}, Landroid/util/SparseArray;->get(I)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v1
 
-    check-cast p1, Lcom/android/server/accessibility/MagnificationController$DisplayMagnification;
+    check-cast v1, Lcom/android/server/accessibility/MagnificationController$DisplayMagnification;
 
     .line 688
-    if-nez p1, :cond_10
+    .local v1, "display":Lcom/android/server/accessibility/MagnificationController$DisplayMagnification;
+    if-nez v1, :cond_10
 
     .line 689
-    const/4 p1, 0x0
+    const/4 v2, 0x0
 
     monitor-exit v0
 
-    return p1
+    return v2
 
     .line 691
     :cond_10
-    invoke-virtual {p1}, Lcom/android/server/accessibility/MagnificationController$DisplayMagnification;->isRegistered()Z
+    invoke-virtual {v1}, Lcom/android/server/accessibility/MagnificationController$DisplayMagnification;->isRegistered()Z
 
-    move-result p1
+    move-result v2
 
     monitor-exit v0
 
-    return p1
+    return v2
 
     .line 692
+    .end local v1  # "display":Lcom/android/server/accessibility/MagnificationController$DisplayMagnification;
     :catchall_16
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_18
     .catchall {:try_start_3 .. :try_end_18} :catchall_16
 
-    throw p1
+    throw v1
 .end method
 
 .method public magnificationRegionContains(IFF)Z
-    .registers 6
+    .registers 7
+    .param p1, "displayId"  # I
+    .param p2, "x"  # F
+    .param p3, "y"  # F
 
     .line 721
     iget-object v0, p0, Lcom/android/server/accessibility/MagnificationController;->mLock:Ljava/lang/Object;
@@ -956,43 +1015,49 @@
 
     invoke-virtual {v1, p1}, Landroid/util/SparseArray;->get(I)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v1
 
-    check-cast p1, Lcom/android/server/accessibility/MagnificationController$DisplayMagnification;
+    check-cast v1, Lcom/android/server/accessibility/MagnificationController$DisplayMagnification;
 
     .line 723
-    if-nez p1, :cond_10
+    .local v1, "display":Lcom/android/server/accessibility/MagnificationController$DisplayMagnification;
+    if-nez v1, :cond_10
 
     .line 724
-    const/4 p1, 0x0
+    const/4 v2, 0x0
 
     monitor-exit v0
 
-    return p1
+    return v2
 
     .line 726
     :cond_10
-    invoke-virtual {p1, p2, p3}, Lcom/android/server/accessibility/MagnificationController$DisplayMagnification;->magnificationRegionContains(FF)Z
+    invoke-virtual {v1, p2, p3}, Lcom/android/server/accessibility/MagnificationController$DisplayMagnification;->magnificationRegionContains(FF)Z
 
-    move-result p1
+    move-result v2
 
     monitor-exit v0
 
-    return p1
+    return v2
 
     .line 727
+    .end local v1  # "display":Lcom/android/server/accessibility/MagnificationController$DisplayMagnification;
     :catchall_16
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_18
     .catchall {:try_start_3 .. :try_end_18} :catchall_16
 
-    throw p1
+    throw v1
 .end method
 
 .method public offsetMagnifiedRegion(IFFI)V
     .registers 7
+    .param p1, "displayId"  # I
+    .param p2, "offsetX"  # F
+    .param p3, "offsetY"  # F
+    .param p4, "id"  # I
 
     .line 963
     iget-object v0, p0, Lcom/android/server/accessibility/MagnificationController;->mLock:Ljava/lang/Object;
@@ -1005,12 +1070,13 @@
 
     invoke-virtual {v1, p1}, Landroid/util/SparseArray;->get(I)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v1
 
-    check-cast p1, Lcom/android/server/accessibility/MagnificationController$DisplayMagnification;
+    check-cast v1, Lcom/android/server/accessibility/MagnificationController$DisplayMagnification;
 
     .line 965
-    if-nez p1, :cond_f
+    .local v1, "display":Lcom/android/server/accessibility/MagnificationController$DisplayMagnification;
+    if-nez v1, :cond_f
 
     .line 966
     monitor-exit v0
@@ -1019,9 +1085,10 @@
 
     .line 968
     :cond_f
-    invoke-virtual {p1, p2, p3, p4}, Lcom/android/server/accessibility/MagnificationController$DisplayMagnification;->offsetMagnifiedRegion(FFI)V
+    invoke-virtual {v1, p2, p3, p4}, Lcom/android/server/accessibility/MagnificationController$DisplayMagnification;->offsetMagnifiedRegion(FFI)V
 
     .line 969
+    .end local v1  # "display":Lcom/android/server/accessibility/MagnificationController$DisplayMagnification;
     monitor-exit v0
 
     .line 970
@@ -1029,17 +1096,18 @@
 
     .line 969
     :catchall_14
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_16
     .catchall {:try_start_3 .. :try_end_16} :catchall_14
 
-    throw p1
+    throw v1
 .end method
 
 .method public onDisplayRemoved(I)V
     .registers 4
+    .param p1, "displayId"  # I
 
     .line 671
     iget-object v0, p0, Lcom/android/server/accessibility/MagnificationController;->mLock:Ljava/lang/Object;
@@ -1060,13 +1128,13 @@
 
     .line 673
     :catchall_9
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_b
     .catchall {:try_start_4 .. :try_end_b} :catchall_9
 
-    throw p1
+    throw v1
 .end method
 
 .method public persistScale()V
@@ -1080,9 +1148,11 @@
     move-result v1
 
     .line 994
+    .local v1, "scale":F
     iget v2, p0, Lcom/android/server/accessibility/MagnificationController;->mUserId:I
 
     .line 996
+    .local v2, "userId":I
     new-instance v3, Lcom/android/server/accessibility/MagnificationController$1;
 
     invoke-direct {v3, p0, v1, v2}, Lcom/android/server/accessibility/MagnificationController$1;-><init>(Lcom/android/server/accessibility/MagnificationController;FI)V
@@ -1098,6 +1168,7 @@
 
 .method public register(I)V
     .registers 5
+    .param p1, "displayId"  # I
 
     .line 624
     iget-object v0, p0, Lcom/android/server/accessibility/MagnificationController;->mLock:Ljava/lang/Object;
@@ -1115,20 +1186,23 @@
     check-cast v1, Lcom/android/server/accessibility/MagnificationController$DisplayMagnification;
 
     .line 626
-    if-nez v1, :cond_12
+    .local v1, "display":Lcom/android/server/accessibility/MagnificationController$DisplayMagnification;
+    if-nez v1, :cond_13
 
     .line 627
-    new-instance v1, Lcom/android/server/accessibility/MagnificationController$DisplayMagnification;
+    new-instance v2, Lcom/android/server/accessibility/MagnificationController$DisplayMagnification;
 
-    invoke-direct {v1, p0, p1}, Lcom/android/server/accessibility/MagnificationController$DisplayMagnification;-><init>(Lcom/android/server/accessibility/MagnificationController;I)V
+    invoke-direct {v2, p0, p1}, Lcom/android/server/accessibility/MagnificationController$DisplayMagnification;-><init>(Lcom/android/server/accessibility/MagnificationController;I)V
+
+    move-object v1, v2
 
     .line 629
-    :cond_12
+    :cond_13
     invoke-virtual {v1}, Lcom/android/server/accessibility/MagnificationController$DisplayMagnification;->isRegistered()Z
 
     move-result v2
 
-    if-eqz v2, :cond_1a
+    if-eqz v2, :cond_1b
 
     .line 630
     monitor-exit v0
@@ -1136,12 +1210,12 @@
     return-void
 
     .line 632
-    :cond_1a
+    :cond_1b
     invoke-virtual {v1}, Lcom/android/server/accessibility/MagnificationController$DisplayMagnification;->register()Z
 
     move-result v2
 
-    if-eqz v2, :cond_2a
+    if-eqz v2, :cond_2b
 
     .line 633
     iget-object v2, p0, Lcom/android/server/accessibility/MagnificationController;->mDisplays:Landroid/util/SparseArray;
@@ -1149,30 +1223,33 @@
     invoke-virtual {v2, p1, v1}, Landroid/util/SparseArray;->put(ILjava/lang/Object;)V
 
     .line 634
-    iget-object p1, p0, Lcom/android/server/accessibility/MagnificationController;->mScreenStateObserver:Lcom/android/server/accessibility/MagnificationController$ScreenStateObserver;
+    iget-object v2, p0, Lcom/android/server/accessibility/MagnificationController;->mScreenStateObserver:Lcom/android/server/accessibility/MagnificationController$ScreenStateObserver;
 
-    invoke-virtual {p1}, Lcom/android/server/accessibility/MagnificationController$ScreenStateObserver;->registerIfNecessary()V
+    invoke-virtual {v2}, Lcom/android/server/accessibility/MagnificationController$ScreenStateObserver;->registerIfNecessary()V
 
     .line 636
-    :cond_2a
+    .end local v1  # "display":Lcom/android/server/accessibility/MagnificationController$DisplayMagnification;
+    :cond_2b
     monitor-exit v0
 
     .line 637
     return-void
 
     .line 636
-    :catchall_2c
-    move-exception p1
+    :catchall_2d
+    move-exception v1
 
     monitor-exit v0
-    :try_end_2e
-    .catchall {:try_start_3 .. :try_end_2e} :catchall_2c
+    :try_end_2f
+    .catchall {:try_start_3 .. :try_end_2f} :catchall_2d
 
-    throw p1
+    throw v1
 .end method
 
 .method public reset(IZ)Z
-    .registers 5
+    .registers 6
+    .param p1, "displayId"  # I
+    .param p2, "animate"  # Z
 
     .line 863
     iget-object v0, p0, Lcom/android/server/accessibility/MagnificationController;->mLock:Ljava/lang/Object;
@@ -1185,43 +1262,46 @@
 
     invoke-virtual {v1, p1}, Landroid/util/SparseArray;->get(I)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v1
 
-    check-cast p1, Lcom/android/server/accessibility/MagnificationController$DisplayMagnification;
+    check-cast v1, Lcom/android/server/accessibility/MagnificationController$DisplayMagnification;
 
     .line 865
-    if-nez p1, :cond_10
+    .local v1, "display":Lcom/android/server/accessibility/MagnificationController$DisplayMagnification;
+    if-nez v1, :cond_10
 
     .line 866
-    const/4 p1, 0x0
+    const/4 v2, 0x0
 
     monitor-exit v0
 
-    return p1
+    return v2
 
     .line 868
     :cond_10
-    invoke-virtual {p1, p2}, Lcom/android/server/accessibility/MagnificationController$DisplayMagnification;->reset(Z)Z
+    invoke-virtual {v1, p2}, Lcom/android/server/accessibility/MagnificationController$DisplayMagnification;->reset(Z)Z
 
-    move-result p1
+    move-result v2
 
     monitor-exit v0
 
-    return p1
+    return v2
 
     .line 869
+    .end local v1  # "display":Lcom/android/server/accessibility/MagnificationController$DisplayMagnification;
     :catchall_16
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_18
     .catchall {:try_start_3 .. :try_end_18} :catchall_16
 
-    throw p1
+    throw v1
 .end method
 
 .method public resetAllIfNeeded(I)V
     .registers 5
+    .param p1, "connectionId"  # I
 
     .line 1035
     iget-object v0, p0, Lcom/android/server/accessibility/MagnificationController;->mLock:Ljava/lang/Object;
@@ -1231,6 +1311,7 @@
     .line 1036
     const/4 v1, 0x0
 
+    .local v1, "i":I
     :goto_4
     :try_start_4
     iget-object v2, p0, Lcom/android/server/accessibility/MagnificationController;->mDisplays:Landroid/util/SparseArray;
@@ -1256,6 +1337,7 @@
     goto :goto_4
 
     .line 1039
+    .end local v1  # "i":I
     :cond_18
     monitor-exit v0
 
@@ -1264,17 +1346,19 @@
 
     .line 1039
     :catchall_1a
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_1c
     .catchall {:try_start_4 .. :try_end_1c} :catchall_1a
 
-    throw p1
+    throw v1
 .end method
 
 .method resetIfNeeded(II)Z
-    .registers 5
+    .registers 6
+    .param p1, "displayId"  # I
+    .param p2, "connectionId"  # I
 
     .line 1068
     iget-object v0, p0, Lcom/android/server/accessibility/MagnificationController;->mLock:Ljava/lang/Object;
@@ -1287,61 +1371,65 @@
 
     invoke-virtual {v1, p1}, Landroid/util/SparseArray;->get(I)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v1
 
-    check-cast p1, Lcom/android/server/accessibility/MagnificationController$DisplayMagnification;
+    check-cast v1, Lcom/android/server/accessibility/MagnificationController$DisplayMagnification;
 
     .line 1070
-    if-eqz p1, :cond_20
-
-    invoke-virtual {p1}, Lcom/android/server/accessibility/MagnificationController$DisplayMagnification;->isMagnifying()Z
-
-    move-result v1
-
+    .local v1, "display":Lcom/android/server/accessibility/MagnificationController$DisplayMagnification;
     if-eqz v1, :cond_20
 
+    invoke-virtual {v1}, Lcom/android/server/accessibility/MagnificationController$DisplayMagnification;->isMagnifying()Z
+
+    move-result v2
+
+    if-eqz v2, :cond_20
+
     .line 1071
-    invoke-virtual {p1}, Lcom/android/server/accessibility/MagnificationController$DisplayMagnification;->getIdOfLastServiceToMagnify()I
+    invoke-virtual {v1}, Lcom/android/server/accessibility/MagnificationController$DisplayMagnification;->getIdOfLastServiceToMagnify()I
 
-    move-result v1
+    move-result v2
 
-    if-eq p2, v1, :cond_1a
+    if-eq p2, v2, :cond_1a
 
     goto :goto_20
 
     .line 1074
     :cond_1a
-    const/4 p2, 0x1
+    const/4 v2, 0x1
 
-    invoke-virtual {p1, p2}, Lcom/android/server/accessibility/MagnificationController$DisplayMagnification;->reset(Z)Z
+    invoke-virtual {v1, v2}, Lcom/android/server/accessibility/MagnificationController$DisplayMagnification;->reset(Z)Z
 
     .line 1075
     monitor-exit v0
 
-    return p2
+    return v2
 
     .line 1072
     :cond_20
     :goto_20
-    const/4 p1, 0x0
+    const/4 v2, 0x0
 
     monitor-exit v0
 
-    return p1
+    return v2
 
     .line 1076
+    .end local v1  # "display":Lcom/android/server/accessibility/MagnificationController$DisplayMagnification;
     :catchall_23
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_25
     .catchall {:try_start_3 .. :try_end_25} :catchall_23
 
-    throw p1
+    throw v1
 .end method
 
 .method resetIfNeeded(IZ)Z
-    .registers 5
+    .registers 6
+    .param p1, "displayId"  # I
+    .param p2, "animate"  # Z
 
     .line 1050
     iget-object v0, p0, Lcom/android/server/accessibility/MagnificationController;->mLock:Ljava/lang/Object;
@@ -1354,54 +1442,61 @@
 
     invoke-virtual {v1, p1}, Landroid/util/SparseArray;->get(I)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v1
 
-    check-cast p1, Lcom/android/server/accessibility/MagnificationController$DisplayMagnification;
+    check-cast v1, Lcom/android/server/accessibility/MagnificationController$DisplayMagnification;
 
     .line 1052
-    if-eqz p1, :cond_1a
+    .local v1, "display":Lcom/android/server/accessibility/MagnificationController$DisplayMagnification;
+    if-eqz v1, :cond_1a
 
-    invoke-virtual {p1}, Lcom/android/server/accessibility/MagnificationController$DisplayMagnification;->isMagnifying()Z
+    invoke-virtual {v1}, Lcom/android/server/accessibility/MagnificationController$DisplayMagnification;->isMagnifying()Z
 
-    move-result v1
+    move-result v2
 
-    if-nez v1, :cond_14
+    if-nez v2, :cond_14
 
     goto :goto_1a
 
     .line 1055
     :cond_14
-    invoke-virtual {p1, p2}, Lcom/android/server/accessibility/MagnificationController$DisplayMagnification;->reset(Z)Z
+    invoke-virtual {v1, p2}, Lcom/android/server/accessibility/MagnificationController$DisplayMagnification;->reset(Z)Z
 
     .line 1056
-    const/4 p1, 0x1
+    const/4 v2, 0x1
 
     monitor-exit v0
 
-    return p1
+    return v2
 
     .line 1053
     :cond_1a
     :goto_1a
-    const/4 p1, 0x0
+    const/4 v2, 0x0
 
     monitor-exit v0
 
-    return p1
+    return v2
 
     .line 1057
+    .end local v1  # "display":Lcom/android/server/accessibility/MagnificationController$DisplayMagnification;
     :catchall_1d
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_1f
     .catchall {:try_start_3 .. :try_end_1f} :catchall_1d
 
-    throw p1
+    throw v1
 .end method
 
 .method public setCenter(IFFZI)Z
-    .registers 13
+    .registers 14
+    .param p1, "displayId"  # I
+    .param p2, "centerX"  # F
+    .param p3, "centerY"  # F
+    .param p4, "animate"  # Z
+    .param p5, "id"  # I
 
     .line 914
     iget-object v0, p0, Lcom/android/server/accessibility/MagnificationController;->mLock:Ljava/lang/Object;
@@ -1414,55 +1509,59 @@
 
     invoke-virtual {v1, p1}, Landroid/util/SparseArray;->get(I)Ljava/lang/Object;
 
-    move-result-object p1
-
-    move-object v1, p1
+    move-result-object v1
 
     check-cast v1, Lcom/android/server/accessibility/MagnificationController$DisplayMagnification;
 
     .line 916
-    if-nez v1, :cond_11
+    .local v1, "display":Lcom/android/server/accessibility/MagnificationController$DisplayMagnification;
+    if-nez v1, :cond_10
 
     .line 917
-    const/4 p1, 0x0
+    const/4 v2, 0x0
 
     monitor-exit v0
 
-    return p1
+    return v2
 
     .line 919
-    :cond_11
-    const/high16 v2, 0x7fc00000  # Float.NaN
+    :cond_10
+    const/high16 v3, 0x7fc00000  # Float.NaN
 
-    move v3, p2
+    move-object v2, v1
 
-    move v4, p3
+    move v4, p2
 
-    move v5, p4
+    move v5, p3
 
-    move v6, p5
+    move v6, p4
 
-    invoke-virtual/range {v1 .. v6}, Lcom/android/server/accessibility/MagnificationController$DisplayMagnification;->setScaleAndCenter(FFFZI)Z
+    move v7, p5
 
-    move-result p1
+    invoke-virtual/range {v2 .. v7}, Lcom/android/server/accessibility/MagnificationController$DisplayMagnification;->setScaleAndCenter(FFFZI)Z
+
+    move-result v2
 
     monitor-exit v0
 
-    return p1
+    return v2
 
     .line 920
+    .end local v1  # "display":Lcom/android/server/accessibility/MagnificationController$DisplayMagnification;
     :catchall_1d
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_1f
     .catchall {:try_start_3 .. :try_end_1f} :catchall_1d
 
-    throw p1
+    throw v1
 .end method
 
 .method setForceShowMagnifiableBounds(IZ)V
     .registers 5
+    .param p1, "displayId"  # I
+    .param p2, "show"  # Z
 
     .line 1080
     iget-object v0, p0, Lcom/android/server/accessibility/MagnificationController;->mLock:Ljava/lang/Object;
@@ -1475,12 +1574,13 @@
 
     invoke-virtual {v1, p1}, Landroid/util/SparseArray;->get(I)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v1
 
-    check-cast p1, Lcom/android/server/accessibility/MagnificationController$DisplayMagnification;
+    check-cast v1, Lcom/android/server/accessibility/MagnificationController$DisplayMagnification;
 
     .line 1082
-    if-nez p1, :cond_f
+    .local v1, "display":Lcom/android/server/accessibility/MagnificationController$DisplayMagnification;
+    if-nez v1, :cond_f
 
     .line 1083
     monitor-exit v0
@@ -1489,9 +1589,10 @@
 
     .line 1085
     :cond_f
-    invoke-virtual {p1, p2}, Lcom/android/server/accessibility/MagnificationController$DisplayMagnification;->setForceShowMagnifiableBounds(Z)V
+    invoke-virtual {v1, p2}, Lcom/android/server/accessibility/MagnificationController$DisplayMagnification;->setForceShowMagnifiableBounds(Z)V
 
     .line 1086
+    .end local v1  # "display":Lcom/android/server/accessibility/MagnificationController$DisplayMagnification;
     monitor-exit v0
 
     .line 1087
@@ -1499,17 +1600,23 @@
 
     .line 1086
     :catchall_14
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_16
     .catchall {:try_start_3 .. :try_end_16} :catchall_14
 
-    throw p1
+    throw v1
 .end method
 
 .method public setScale(IFFFZI)Z
-    .registers 14
+    .registers 15
+    .param p1, "displayId"  # I
+    .param p2, "scale"  # F
+    .param p3, "pivotX"  # F
+    .param p4, "pivotY"  # F
+    .param p5, "animate"  # Z
+    .param p6, "id"  # I
 
     .line 889
     iget-object v0, p0, Lcom/android/server/accessibility/MagnificationController;->mLock:Ljava/lang/Object;
@@ -1522,55 +1629,63 @@
 
     invoke-virtual {v1, p1}, Landroid/util/SparseArray;->get(I)Ljava/lang/Object;
 
-    move-result-object p1
-
-    move-object v1, p1
+    move-result-object v1
 
     check-cast v1, Lcom/android/server/accessibility/MagnificationController$DisplayMagnification;
 
     .line 891
-    if-nez v1, :cond_11
+    .local v1, "display":Lcom/android/server/accessibility/MagnificationController$DisplayMagnification;
+    if-nez v1, :cond_10
 
     .line 892
-    const/4 p1, 0x0
+    const/4 v2, 0x0
 
     monitor-exit v0
 
-    return p1
+    return v2
 
     .line 894
-    :cond_11
-    move v2, p2
+    :cond_10
+    move-object v2, v1
 
-    move v3, p3
+    move v3, p2
 
-    move v4, p4
+    move v4, p3
 
-    move v5, p5
+    move v5, p4
 
-    move v6, p6
+    move v6, p5
 
-    invoke-virtual/range {v1 .. v6}, Lcom/android/server/accessibility/MagnificationController$DisplayMagnification;->setScale(FFFZI)Z
+    move v7, p6
 
-    move-result p1
+    invoke-virtual/range {v2 .. v7}, Lcom/android/server/accessibility/MagnificationController$DisplayMagnification;->setScale(FFFZI)Z
+
+    move-result v2
 
     monitor-exit v0
 
-    return p1
+    return v2
 
     .line 895
+    .end local v1  # "display":Lcom/android/server/accessibility/MagnificationController$DisplayMagnification;
     :catchall_1c
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_1e
     .catchall {:try_start_3 .. :try_end_1e} :catchall_1c
 
-    throw p1
+    throw v1
 .end method
 
 .method public setScaleAndCenter(IFFFZI)Z
-    .registers 14
+    .registers 15
+    .param p1, "displayId"  # I
+    .param p2, "scale"  # F
+    .param p3, "centerX"  # F
+    .param p4, "centerY"  # F
+    .param p5, "animate"  # Z
+    .param p6, "id"  # I
 
     .line 942
     iget-object v0, p0, Lcom/android/server/accessibility/MagnificationController;->mLock:Ljava/lang/Object;
@@ -1583,55 +1698,58 @@
 
     invoke-virtual {v1, p1}, Landroid/util/SparseArray;->get(I)Ljava/lang/Object;
 
-    move-result-object p1
-
-    move-object v1, p1
+    move-result-object v1
 
     check-cast v1, Lcom/android/server/accessibility/MagnificationController$DisplayMagnification;
 
     .line 944
-    if-nez v1, :cond_11
+    .local v1, "display":Lcom/android/server/accessibility/MagnificationController$DisplayMagnification;
+    if-nez v1, :cond_10
 
     .line 945
-    const/4 p1, 0x0
+    const/4 v2, 0x0
 
     monitor-exit v0
 
-    return p1
+    return v2
 
     .line 947
-    :cond_11
-    move v2, p2
+    :cond_10
+    move-object v2, v1
 
-    move v3, p3
+    move v3, p2
 
-    move v4, p4
+    move v4, p3
 
-    move v5, p5
+    move v5, p4
 
-    move v6, p6
+    move v6, p5
 
-    invoke-virtual/range {v1 .. v6}, Lcom/android/server/accessibility/MagnificationController$DisplayMagnification;->setScaleAndCenter(FFFZI)Z
+    move v7, p6
 
-    move-result p1
+    invoke-virtual/range {v2 .. v7}, Lcom/android/server/accessibility/MagnificationController$DisplayMagnification;->setScaleAndCenter(FFFZI)Z
+
+    move-result v2
 
     monitor-exit v0
 
-    return p1
+    return v2
 
     .line 948
+    .end local v1  # "display":Lcom/android/server/accessibility/MagnificationController$DisplayMagnification;
     :catchall_1c
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_1e
     .catchall {:try_start_3 .. :try_end_1e} :catchall_1c
 
-    throw p1
+    throw v1
 .end method
 
 .method public setUserId(I)V
     .registers 3
+    .param p1, "userId"  # I
 
     .line 1022
     iget v0, p0, Lcom/android/server/accessibility/MagnificationController;->mUserId:I
@@ -1646,9 +1764,9 @@
     iput p1, p0, Lcom/android/server/accessibility/MagnificationController;->mUserId:I
 
     .line 1026
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    invoke-direct {p0, p1}, Lcom/android/server/accessibility/MagnificationController;->resetAllIfNeeded(Z)V
+    invoke-direct {p0, v0}, Lcom/android/server/accessibility/MagnificationController;->resetAllIfNeeded(Z)V
 
     .line 1027
     return-void
@@ -1663,12 +1781,13 @@
     invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
 
     .line 1147
+    .local v0, "builder":Ljava/lang/StringBuilder;
     const-string v1, "MagnificationController["
 
     invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     .line 1148
-    const-string v1, "mUserId="
+    const-string/jumbo v1, "mUserId="
 
     invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
@@ -1693,13 +1812,14 @@
     .line 1151
     invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v1
 
-    return-object v0
+    return-object v1
 .end method
 
 .method public unregister(I)V
     .registers 4
+    .param p1, "displayId"  # I
 
     .line 646
     iget-object v0, p0, Lcom/android/server/accessibility/MagnificationController;->mLock:Ljava/lang/Object;
@@ -1720,13 +1840,13 @@
 
     .line 648
     :catchall_9
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_b
     .catchall {:try_start_4 .. :try_end_b} :catchall_9
 
-    throw p1
+    throw v1
 .end method
 
 .method public unregisterAll()V
@@ -1746,10 +1866,12 @@
     move-result-object v1
 
     .line 659
+    .local v1, "displays":Landroid/util/SparseArray;, "Landroid/util/SparseArray<Lcom/android/server/accessibility/MagnificationController$DisplayMagnification;>;"
     const/4 v2, 0x0
 
     move v3, v2
 
+    .local v3, "i":I
     :goto_b
     invoke-virtual {v1}, Landroid/util/SparseArray;->size()I
 
@@ -1770,6 +1892,8 @@
     goto :goto_b
 
     .line 662
+    .end local v1  # "displays":Landroid/util/SparseArray;, "Landroid/util/SparseArray<Lcom/android/server/accessibility/MagnificationController$DisplayMagnification;>;"
+    .end local v3  # "i":I
     :cond_1b
     monitor-exit v0
 

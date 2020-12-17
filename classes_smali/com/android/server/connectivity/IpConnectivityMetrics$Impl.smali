@@ -31,6 +31,7 @@
 # direct methods
 .method public constructor <init>(Lcom/android/server/connectivity/IpConnectivityMetrics;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/connectivity/IpConnectivityMetrics;
 
     .line 264
     iput-object p1, p0, Lcom/android/server/connectivity/IpConnectivityMetrics$Impl;->this$0:Lcom/android/server/connectivity/IpConnectivityMetrics;
@@ -65,7 +66,7 @@
 .end method
 
 .method private enforceNetdEventListeningPermission()V
-    .registers 5
+    .registers 6
 
     .line 315
     invoke-static {}, Landroid/os/Binder;->getCallingUid()I
@@ -73,6 +74,7 @@
     move-result v0
 
     .line 316
+    .local v0, "uid":I
     const/16 v1, 0x3e8
 
     if-ne v0, v1, :cond_9
@@ -93,24 +95,25 @@
     .line 318
     invoke-static {v0}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
 
-    move-result-object v0
+    move-result-object v4
 
-    aput-object v0, v2, v3
+    aput-object v4, v2, v3
 
     .line 317
-    const-string v0, "Uid %d has no permission to listen for netd events."
+    const-string v3, "Uid %d has no permission to listen for netd events."
 
-    invoke-static {v0, v2}, Ljava/lang/String;->format(Ljava/lang/String;[Ljava/lang/Object;)Ljava/lang/String;
+    invoke-static {v3, v2}, Ljava/lang/String;->format(Ljava/lang/String;[Ljava/lang/Object;)Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v2
 
-    invoke-direct {v1, v0}, Ljava/lang/SecurityException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v1, v2}, Ljava/lang/SecurityException;-><init>(Ljava/lang/String;)V
 
     throw v1
 .end method
 
 .method private enforcePermission(Ljava/lang/String;)V
     .registers 4
+    .param p1, "what"  # Ljava/lang/String;
 
     .line 311
     iget-object v0, p0, Lcom/android/server/connectivity/IpConnectivityMetrics$Impl;->this$0:Lcom/android/server/connectivity/IpConnectivityMetrics;
@@ -131,6 +134,8 @@
 # virtual methods
 .method public addNetdEventCallback(ILandroid/net/INetdEventCallback;)Z
     .registers 4
+    .param p1, "callerType"  # I
+    .param p2, "callback"  # Landroid/net/INetdEventCallback;
 
     .line 324
     invoke-direct {p0}, Lcom/android/server/connectivity/IpConnectivityMetrics$Impl;->enforceNetdEventListeningPermission()V
@@ -143,9 +148,9 @@
     if-nez v0, :cond_b
 
     .line 326
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    return p1
+    return v0
 
     .line 328
     :cond_b
@@ -155,123 +160,127 @@
 
     invoke-virtual {v0, p1, p2}, Lcom/android/server/connectivity/NetdEventListenerService;->addNetdEventCallback(ILandroid/net/INetdEventCallback;)Z
 
-    move-result p1
+    move-result v0
 
-    return p1
+    return v0
 .end method
 
 .method public dump(Ljava/io/FileDescriptor;Ljava/io/PrintWriter;[Ljava/lang/String;)V
-    .registers 8
+    .registers 10
+    .param p1, "fd"  # Ljava/io/FileDescriptor;
+    .param p2, "pw"  # Ljava/io/PrintWriter;
+    .param p3, "args"  # [Ljava/lang/String;
 
     .line 285
     invoke-direct {p0}, Lcom/android/server/connectivity/IpConnectivityMetrics$Impl;->enforceDumpPermission()V
 
     .line 287
-    array-length p1, p3
+    array-length v0, p3
 
-    const/4 v0, 0x0
+    const/4 v1, 0x0
 
-    if-lez p1, :cond_a
+    if-lez v0, :cond_a
 
-    aget-object p1, p3, v0
+    aget-object v0, p3, v1
 
     goto :goto_c
 
     :cond_a
-    const-string p1, ""
+    const-string v0, ""
 
     .line 288
+    .local v0, "cmd":Ljava/lang/String;
     :goto_c
-    const/4 p3, -0x1
+    const/4 v2, -0x1
 
-    invoke-virtual {p1}, Ljava/lang/String;->hashCode()I
+    invoke-virtual {v0}, Ljava/lang/String;->hashCode()I
+
+    move-result v3
+
+    const v4, 0x32b09e
+
+    const/4 v5, 0x1
+
+    if-eq v3, v4, :cond_36
+
+    const v4, 0x5d03b04
+
+    if-eq v3, v4, :cond_2d
+
+    const v1, 0x65fc9e8
+
+    if-eq v3, v1, :cond_22
+
+    :cond_21
+    goto :goto_41
+
+    :cond_22
+    const-string/jumbo v1, "proto"
+
+    invoke-virtual {v0, v1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
     move-result v1
 
-    const v2, 0x32b09e
+    if-eqz v1, :cond_21
 
-    const/4 v3, 0x1
+    move v1, v5
 
-    if-eq v1, v2, :cond_36
-
-    const v2, 0x5d03b04
-
-    if-eq v1, v2, :cond_2d
-
-    const v0, 0x65fc9e8
-
-    if-eq v1, v0, :cond_22
-
-    :cond_21
-    goto :goto_40
-
-    :cond_22
-    const-string/jumbo v0, "proto"
-
-    invoke-virtual {p1, v0}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
-
-    move-result p1
-
-    if-eqz p1, :cond_21
-
-    move v0, v3
-
-    goto :goto_41
+    goto :goto_42
 
     :cond_2d
-    const-string v1, "flush"
+    const-string v3, "flush"
 
-    invoke-virtual {p1, v1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v0, v3}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result p1
+    move-result v3
 
-    if-eqz p1, :cond_21
+    if-eqz v3, :cond_21
 
-    goto :goto_41
+    goto :goto_42
 
     :cond_36
-    const-string v0, "list"
+    const-string/jumbo v1, "list"
 
-    invoke-virtual {p1, v0}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v0, v1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result p1
+    move-result v1
 
-    if-eqz p1, :cond_21
+    if-eqz v1, :cond_21
 
-    const/4 v0, 0x2
+    const/4 v1, 0x2
 
-    goto :goto_41
-
-    :goto_40
-    move v0, p3
+    goto :goto_42
 
     :goto_41
-    if-eqz v0, :cond_51
+    move v1, v2
 
-    if-eq v0, v3, :cond_4b
+    :goto_42
+    if-eqz v1, :cond_52
+
+    if-eq v1, v5, :cond_4c
 
     .line 297
-    iget-object p1, p0, Lcom/android/server/connectivity/IpConnectivityMetrics$Impl;->this$0:Lcom/android/server/connectivity/IpConnectivityMetrics;
+    iget-object v1, p0, Lcom/android/server/connectivity/IpConnectivityMetrics$Impl;->this$0:Lcom/android/server/connectivity/IpConnectivityMetrics;
 
-    invoke-static {p1, p2}, Lcom/android/server/connectivity/IpConnectivityMetrics;->access$400(Lcom/android/server/connectivity/IpConnectivityMetrics;Ljava/io/PrintWriter;)V
+    invoke-static {v1, p2}, Lcom/android/server/connectivity/IpConnectivityMetrics;->access$400(Lcom/android/server/connectivity/IpConnectivityMetrics;Ljava/io/PrintWriter;)V
 
     .line 298
     return-void
 
     .line 293
-    :cond_4b
-    iget-object p1, p0, Lcom/android/server/connectivity/IpConnectivityMetrics$Impl;->this$0:Lcom/android/server/connectivity/IpConnectivityMetrics;
+    :cond_4c
+    iget-object v1, p0, Lcom/android/server/connectivity/IpConnectivityMetrics$Impl;->this$0:Lcom/android/server/connectivity/IpConnectivityMetrics;
 
-    invoke-static {p1, p2}, Lcom/android/server/connectivity/IpConnectivityMetrics;->access$300(Lcom/android/server/connectivity/IpConnectivityMetrics;Ljava/io/PrintWriter;)V
+    invoke-static {v1, p2}, Lcom/android/server/connectivity/IpConnectivityMetrics;->access$300(Lcom/android/server/connectivity/IpConnectivityMetrics;Ljava/io/PrintWriter;)V
 
     .line 294
     return-void
 
     .line 290
-    :cond_51
-    iget-object p1, p0, Lcom/android/server/connectivity/IpConnectivityMetrics$Impl;->this$0:Lcom/android/server/connectivity/IpConnectivityMetrics;
+    :cond_52
+    iget-object v1, p0, Lcom/android/server/connectivity/IpConnectivityMetrics$Impl;->this$0:Lcom/android/server/connectivity/IpConnectivityMetrics;
 
-    invoke-static {p1, p2}, Lcom/android/server/connectivity/IpConnectivityMetrics;->access$200(Lcom/android/server/connectivity/IpConnectivityMetrics;Ljava/io/PrintWriter;)V
+    invoke-static {v1, p2}, Lcom/android/server/connectivity/IpConnectivityMetrics;->access$200(Lcom/android/server/connectivity/IpConnectivityMetrics;Ljava/io/PrintWriter;)V
 
     .line 291
     return-void
@@ -279,6 +288,7 @@
 
 .method public logEvent(Landroid/net/ConnectivityMetricsEvent;)I
     .registers 3
+    .param p1, "event"  # Landroid/net/ConnectivityMetricsEvent;
 
     .line 279
     invoke-direct {p0}, Lcom/android/server/connectivity/IpConnectivityMetrics$Impl;->enforceConnectivityInternalPermission()V
@@ -288,13 +298,14 @@
 
     invoke-static {v0, p1}, Lcom/android/server/connectivity/IpConnectivityMetrics;->access$100(Lcom/android/server/connectivity/IpConnectivityMetrics;Landroid/net/ConnectivityMetricsEvent;)I
 
-    move-result p1
+    move-result v0
 
-    return p1
+    return v0
 .end method
 
 .method public removeNetdEventCallback(I)Z
     .registers 3
+    .param p1, "callerType"  # I
 
     .line 333
     invoke-direct {p0}, Lcom/android/server/connectivity/IpConnectivityMetrics$Impl;->enforceNetdEventListeningPermission()V
@@ -307,9 +318,9 @@
     if-nez v0, :cond_b
 
     .line 336
-    const/4 p1, 0x1
+    const/4 v0, 0x1
 
-    return p1
+    return v0
 
     .line 338
     :cond_b
@@ -319,7 +330,7 @@
 
     invoke-virtual {v0, p1}, Lcom/android/server/connectivity/NetdEventListenerService;->removeNetdEventCallback(I)Z
 
-    move-result p1
+    move-result v0
 
-    return p1
+    return v0
 .end method

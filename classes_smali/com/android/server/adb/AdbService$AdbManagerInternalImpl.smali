@@ -32,6 +32,8 @@
 
 .method synthetic constructor <init>(Lcom/android/server/adb/AdbService;Lcom/android/server/adb/AdbService$1;)V
     .registers 3
+    .param p1, "x0"  # Lcom/android/server/adb/AdbService;
+    .param p2, "x1"  # Lcom/android/server/adb/AdbService$1;
 
     .line 84
     invoke-direct {p0, p1}, Lcom/android/server/adb/AdbService$AdbManagerInternalImpl;-><init>(Lcom/android/server/adb/AdbService;)V
@@ -90,6 +92,7 @@
 
 .method public registerTransport(Landroid/debug/IAdbTransport;)V
     .registers 4
+    .param p1, "transport"  # Landroid/debug/IAdbTransport;
 
     .line 87
     iget-object v0, p0, Lcom/android/server/adb/AdbService$AdbManagerInternalImpl;->this$0:Lcom/android/server/adb/AdbService;
@@ -109,7 +112,8 @@
 .end method
 
 .method public unregisterTransport(Landroid/debug/IAdbTransport;)V
-    .registers 3
+    .registers 4
+    .param p1, "transport"  # Landroid/debug/IAdbTransport;
 
     .line 92
     iget-object v0, p0, Lcom/android/server/adb/AdbService$AdbManagerInternalImpl;->this$0:Lcom/android/server/adb/AdbService;
@@ -120,9 +124,9 @@
 
     invoke-interface {p1}, Landroid/debug/IAdbTransport;->asBinder()Landroid/os/IBinder;
 
-    move-result-object p1
+    move-result-object v1
 
-    invoke-virtual {v0, p1}, Landroid/util/ArrayMap;->remove(Ljava/lang/Object;)Ljava/lang/Object;
+    invoke-virtual {v0, v1}, Landroid/util/ArrayMap;->remove(Ljava/lang/Object;)Ljava/lang/Object;
 
     .line 93
     return-void

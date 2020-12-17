@@ -38,6 +38,7 @@
 
 .method public debug(Landroid/os/NativeHandle;Ljava/util/ArrayList;)V
     .registers 3
+    .param p1, "fd"  # Landroid/os/NativeHandle;
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(",
@@ -49,6 +50,7 @@
     .end annotation
 
     .line 669
+    .local p2, "options":Ljava/util/ArrayList;, "Ljava/util/ArrayList<Ljava/lang/String;>;"
     return-void
 .end method
 
@@ -61,6 +63,7 @@
     invoke-direct {v0}, Landroid/hidl/base/V1_0/DebugInfo;-><init>()V
 
     .line 707
+    .local v0, "info":Landroid/hidl/base/V1_0/DebugInfo;
     invoke-static {}, Landroid/os/HidlSupport;->getPidIfSharable()I
 
     move-result v1
@@ -240,12 +243,14 @@
 .end method
 
 .method public final linkToDeath(Landroid/os/IHwBinder$DeathRecipient;J)Z
-    .registers 4
+    .registers 5
+    .param p1, "recipient"  # Landroid/os/IHwBinder$DeathRecipient;
+    .param p2, "cookie"  # J
 
     .line 694
-    const/4 p1, 0x1
+    const/4 v0, 0x1
 
-    return p1
+    return v0
 .end method
 
 .method public final notifySyspropsChanged()V
@@ -259,7 +264,11 @@
 .end method
 
 .method public onTransact(ILandroid/os/HwParcel;Landroid/os/HwParcel;I)V
-    .registers 12
+    .registers 16
+    .param p1, "_hidl_code"  # I
+    .param p2, "_hidl_request"  # Landroid/os/HwParcel;
+    .param p3, "_hidl_reply"  # Landroid/os/HwParcel;
+    .param p4, "_hidl_flags"  # I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -275,25 +284,28 @@
 
     const/4 v3, 0x1
 
-    packed-switch p1, :pswitch_data_2fe
+    packed-switch p1, :pswitch_data_300
 
     const-string v0, "android.hidl.base@1.0::IBase"
 
-    sparse-switch p1, :sswitch_data_31a
+    sparse-switch p1, :sswitch_data_31c
 
-    goto/16 :goto_2fc
+    goto/16 :goto_2fe
 
     .line 1096
     :sswitch_10
-    and-int/lit8 p1, p4, 0x1
+    and-int/lit8 v0, p4, 0x1
 
-    if-eqz p1, :cond_15
+    if-eqz v0, :cond_15
 
     move v2, v3
 
-    .line 1097
     :cond_15
-    if-eqz v2, :cond_2fc
+    move v0, v2
+
+    .line 1097
+    .local v0, "_hidl_is_oneway":Z
+    if-eqz v0, :cond_2fe
 
     .line 1098
     invoke-virtual {p3, v1}, Landroid/os/HwParcel;->writeStatus(I)V
@@ -302,19 +314,21 @@
     invoke-virtual {p3}, Landroid/os/HwParcel;->send()V
 
     .line 1100
-    goto/16 :goto_2fc
+    goto/16 :goto_2fe
 
     .line 1083
-    :sswitch_1f
-    and-int/lit8 p1, p4, 0x1
+    .end local v0  # "_hidl_is_oneway":Z
+    :sswitch_20
+    and-int/lit8 v4, p4, 0x1
 
-    if-eqz p1, :cond_24
+    if-eqz v4, :cond_25
 
     move v2, v3
 
     .line 1084
-    :cond_24
-    if-eq v2, v3, :cond_2e
+    .local v2, "_hidl_is_oneway":Z
+    :cond_25
+    if-eq v2, v3, :cond_2f
 
     .line 1085
     invoke-virtual {p3, v1}, Landroid/os/HwParcel;->writeStatus(I)V
@@ -323,32 +337,34 @@
     invoke-virtual {p3}, Landroid/os/HwParcel;->send()V
 
     .line 1087
-    goto/16 :goto_2fc
+    goto/16 :goto_2fe
 
     .line 1088
-    :cond_2e
+    :cond_2f
     invoke-virtual {p2, v0}, Landroid/os/HwParcel;->enforceInterface(Ljava/lang/String;)V
 
     .line 1090
     invoke-virtual {p0}, Landroid/hardware/configstore/V1_0/ISurfaceFlingerConfigs$Stub;->notifySyspropsChanged()V
 
     .line 1091
-    goto/16 :goto_2fc
+    goto/16 :goto_2fe
 
     .line 1067
-    :sswitch_36
-    and-int/lit8 p1, p4, 0x1
+    .end local v2  # "_hidl_is_oneway":Z
+    :sswitch_37
+    and-int/lit8 v4, p4, 0x1
 
-    if-eqz p1, :cond_3b
+    if-eqz v4, :cond_3c
 
-    goto :goto_3c
+    goto :goto_3d
 
-    :cond_3b
+    :cond_3c
     move v3, v2
 
     .line 1068
-    :goto_3c
-    if-eqz v3, :cond_46
+    .local v3, "_hidl_is_oneway":Z
+    :goto_3d
+    if-eqz v3, :cond_47
 
     .line 1069
     invoke-virtual {p3, v1}, Landroid/os/HwParcel;->writeStatus(I)V
@@ -357,43 +373,47 @@
     invoke-virtual {p3}, Landroid/os/HwParcel;->send()V
 
     .line 1071
-    goto/16 :goto_2fc
+    goto/16 :goto_2fe
 
     .line 1072
-    :cond_46
+    :cond_47
     invoke-virtual {p2, v0}, Landroid/os/HwParcel;->enforceInterface(Ljava/lang/String;)V
 
     .line 1074
     invoke-virtual {p0}, Landroid/hardware/configstore/V1_0/ISurfaceFlingerConfigs$Stub;->getDebugInfo()Landroid/hidl/base/V1_0/DebugInfo;
 
-    move-result-object p1
+    move-result-object v0
 
     .line 1075
+    .local v0, "_hidl_out_info":Landroid/hidl/base/V1_0/DebugInfo;
     invoke-virtual {p3, v2}, Landroid/os/HwParcel;->writeStatus(I)V
 
     .line 1076
-    invoke-virtual {p1, p3}, Landroid/hidl/base/V1_0/DebugInfo;->writeToParcel(Landroid/os/HwParcel;)V
+    invoke-virtual {v0, p3}, Landroid/hidl/base/V1_0/DebugInfo;->writeToParcel(Landroid/os/HwParcel;)V
 
     .line 1077
     invoke-virtual {p3}, Landroid/os/HwParcel;->send()V
 
     .line 1078
-    goto/16 :goto_2fc
+    goto/16 :goto_2fe
 
     .line 1052
-    :sswitch_58
-    and-int/lit8 p1, p4, 0x1
+    .end local v0  # "_hidl_out_info":Landroid/hidl/base/V1_0/DebugInfo;
+    .end local v3  # "_hidl_is_oneway":Z
+    :sswitch_59
+    and-int/lit8 v4, p4, 0x1
 
-    if-eqz p1, :cond_5d
+    if-eqz v4, :cond_5e
 
-    goto :goto_5e
+    goto :goto_5f
 
-    :cond_5d
+    :cond_5e
     move v3, v2
 
     .line 1053
-    :goto_5e
-    if-eqz v3, :cond_68
+    .restart local v3  # "_hidl_is_oneway":Z
+    :goto_5f
+    if-eqz v3, :cond_69
 
     .line 1054
     invoke-virtual {p3, v1}, Landroid/os/HwParcel;->writeStatus(I)V
@@ -402,10 +422,10 @@
     invoke-virtual {p3}, Landroid/os/HwParcel;->send()V
 
     .line 1056
-    goto/16 :goto_2fc
+    goto/16 :goto_2fe
 
     .line 1057
-    :cond_68
+    :cond_69
     invoke-virtual {p2, v0}, Landroid/os/HwParcel;->enforceInterface(Ljava/lang/String;)V
 
     .line 1059
@@ -418,19 +438,23 @@
     invoke-virtual {p3}, Landroid/os/HwParcel;->send()V
 
     .line 1062
-    goto/16 :goto_2fc
+    goto/16 :goto_2fe
 
     .line 1042
-    :sswitch_76
-    and-int/lit8 p1, p4, 0x1
+    .end local v3  # "_hidl_is_oneway":Z
+    :sswitch_77
+    and-int/lit8 v0, p4, 0x1
 
-    if-eqz p1, :cond_7b
+    if-eqz v0, :cond_7c
 
     move v2, v3
 
+    :cond_7c
+    move v0, v2
+
     .line 1043
-    :cond_7b
-    if-eqz v2, :cond_2fc
+    .local v0, "_hidl_is_oneway":Z
+    if-eqz v0, :cond_2fe
 
     .line 1044
     invoke-virtual {p3, v1}, Landroid/os/HwParcel;->writeStatus(I)V
@@ -439,19 +463,21 @@
     invoke-virtual {p3}, Landroid/os/HwParcel;->send()V
 
     .line 1046
-    goto/16 :goto_2fc
+    goto/16 :goto_2fe
 
     .line 1029
-    :sswitch_85
-    and-int/lit8 p1, p4, 0x1
+    .end local v0  # "_hidl_is_oneway":Z
+    :sswitch_87
+    and-int/lit8 v4, p4, 0x1
 
-    if-eqz p1, :cond_8a
+    if-eqz v4, :cond_8c
 
     move v2, v3
 
     .line 1030
-    :cond_8a
-    if-eq v2, v3, :cond_94
+    .restart local v2  # "_hidl_is_oneway":Z
+    :cond_8c
+    if-eq v2, v3, :cond_96
 
     .line 1031
     invoke-virtual {p3, v1}, Landroid/os/HwParcel;->writeStatus(I)V
@@ -460,32 +486,34 @@
     invoke-virtual {p3}, Landroid/os/HwParcel;->send()V
 
     .line 1033
-    goto/16 :goto_2fc
+    goto/16 :goto_2fe
 
     .line 1034
-    :cond_94
+    :cond_96
     invoke-virtual {p2, v0}, Landroid/os/HwParcel;->enforceInterface(Ljava/lang/String;)V
 
     .line 1036
     invoke-virtual {p0}, Landroid/hardware/configstore/V1_0/ISurfaceFlingerConfigs$Stub;->setHALInstrumentation()V
 
     .line 1037
-    goto/16 :goto_2fc
+    goto/16 :goto_2fe
 
     .line 990
-    :sswitch_9c
-    and-int/lit8 p1, p4, 0x1
+    .end local v2  # "_hidl_is_oneway":Z
+    :sswitch_9e
+    and-int/lit8 v4, p4, 0x1
 
-    if-eqz p1, :cond_a1
+    if-eqz v4, :cond_a3
 
-    goto :goto_a2
+    goto :goto_a4
 
-    :cond_a1
+    :cond_a3
     move v3, v2
 
     .line 991
-    :goto_a2
-    if-eqz v3, :cond_ac
+    .restart local v3  # "_hidl_is_oneway":Z
+    :goto_a4
+    if-eqz v3, :cond_ae
 
     .line 992
     invoke-virtual {p3, v1}, Landroid/os/HwParcel;->writeStatus(I)V
@@ -494,126 +522,146 @@
     invoke-virtual {p3}, Landroid/os/HwParcel;->send()V
 
     .line 994
-    goto/16 :goto_2fc
+    goto/16 :goto_2fe
 
     .line 995
-    :cond_ac
+    :cond_ae
     invoke-virtual {p2, v0}, Landroid/os/HwParcel;->enforceInterface(Ljava/lang/String;)V
 
     .line 997
     invoke-virtual {p0}, Landroid/hardware/configstore/V1_0/ISurfaceFlingerConfigs$Stub;->getHashChain()Ljava/util/ArrayList;
 
-    move-result-object p1
+    move-result-object v0
 
     .line 998
+    .local v0, "_hidl_out_hashchain":Ljava/util/ArrayList;, "Ljava/util/ArrayList<[B>;"
     invoke-virtual {p3, v2}, Landroid/os/HwParcel;->writeStatus(I)V
 
     .line 1000
-    new-instance p2, Landroid/os/HwBlob;
+    new-instance v1, Landroid/os/HwBlob;
 
-    const/16 p4, 0x10
+    const/16 v4, 0x10
 
-    invoke-direct {p2, p4}, Landroid/os/HwBlob;-><init>(I)V
+    invoke-direct {v1, v4}, Landroid/os/HwBlob;-><init>(I)V
 
     .line 1002
-    invoke-virtual {p1}, Ljava/util/ArrayList;->size()I
+    .local v1, "_hidl_blob":Landroid/os/HwBlob;
+    invoke-virtual {v0}, Ljava/util/ArrayList;->size()I
 
-    move-result p4
+    move-result v4
 
     .line 1003
-    const-wide/16 v0, 0x8
+    .local v4, "_hidl_vec_size":I
+    const-wide/16 v5, 0x8
 
-    invoke-virtual {p2, v0, v1, p4}, Landroid/os/HwBlob;->putInt32(JI)V
+    invoke-virtual {v1, v5, v6, v4}, Landroid/os/HwBlob;->putInt32(JI)V
 
     .line 1004
-    const-wide/16 v0, 0xc
+    const-wide/16 v5, 0xc
 
-    invoke-virtual {p2, v0, v1, v2}, Landroid/os/HwBlob;->putBool(JZ)V
+    invoke-virtual {v1, v5, v6, v2}, Landroid/os/HwBlob;->putBool(JZ)V
 
     .line 1005
-    new-instance v0, Landroid/os/HwBlob;
+    new-instance v2, Landroid/os/HwBlob;
 
-    mul-int/lit8 v1, p4, 0x20
+    mul-int/lit8 v5, v4, 0x20
 
-    invoke-direct {v0, v1}, Landroid/os/HwBlob;-><init>(I)V
+    invoke-direct {v2, v5}, Landroid/os/HwBlob;-><init>(I)V
 
     .line 1006
-    nop
+    .local v2, "childBlob":Landroid/os/HwBlob;
+    const/4 v5, 0x0
 
-    :goto_d3
-    if-ge v2, p4, :cond_f4
+    .local v5, "_hidl_index_0":I
+    :goto_d5
+    if-ge v5, v4, :cond_f6
 
     .line 1008
-    mul-int/lit8 v1, v2, 0x20
+    mul-int/lit8 v6, v5, 0x20
 
-    int-to-long v3, v1
+    int-to-long v6, v6
 
     .line 1009
-    invoke-virtual {p1, v2}, Ljava/util/ArrayList;->get(I)Ljava/lang/Object;
+    .local v6, "_hidl_array_offset_1":J
+    invoke-virtual {v0, v5}, Ljava/util/ArrayList;->get(I)Ljava/lang/Object;
 
-    move-result-object v1
+    move-result-object v8
 
-    check-cast v1, [B
+    check-cast v8, [B
 
     .line 1011
-    if-eqz v1, :cond_ec
+    .local v8, "_hidl_array_item_1":[B
+    if-eqz v8, :cond_ee
 
-    array-length v5, v1
+    array-length v9, v8
 
-    const/16 v6, 0x20
+    const/16 v10, 0x20
 
-    if-ne v5, v6, :cond_ec
+    if-ne v9, v10, :cond_ee
 
     .line 1015
-    invoke-virtual {v0, v3, v4, v1}, Landroid/os/HwBlob;->putInt8Array(J[B)V
+    invoke-virtual {v2, v6, v7, v8}, Landroid/os/HwBlob;->putInt8Array(J[B)V
 
     .line 1016
     nop
 
     .line 1006
-    add-int/lit8 v2, v2, 0x1
+    .end local v6  # "_hidl_array_offset_1":J
+    .end local v8  # "_hidl_array_item_1":[B
+    add-int/lit8 v5, v5, 0x1
 
-    goto :goto_d3
+    goto :goto_d5
 
     .line 1012
-    :cond_ec
-    new-instance p1, Ljava/lang/IllegalArgumentException;
+    .restart local v6  # "_hidl_array_offset_1":J
+    .restart local v8  # "_hidl_array_item_1":[B
+    :cond_ee
+    new-instance v9, Ljava/lang/IllegalArgumentException;
 
-    const-string p2, "Array element is not of the expected length"
+    const-string v10, "Array element is not of the expected length"
 
-    invoke-direct {p1, p2}, Ljava/lang/IllegalArgumentException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v9, v10}, Ljava/lang/IllegalArgumentException;-><init>(Ljava/lang/String;)V
 
-    throw p1
+    throw v9
 
     .line 1019
-    :cond_f4
-    const-wide/16 v1, 0x0
+    .end local v5  # "_hidl_index_0":I
+    .end local v6  # "_hidl_array_offset_1":J
+    .end local v8  # "_hidl_array_item_1":[B
+    :cond_f6
+    const-wide/16 v5, 0x0
 
-    invoke-virtual {p2, v1, v2, v0}, Landroid/os/HwBlob;->putBlob(JLandroid/os/HwBlob;)V
+    invoke-virtual {v1, v5, v6, v2}, Landroid/os/HwBlob;->putBlob(JLandroid/os/HwBlob;)V
 
     .line 1021
-    invoke-virtual {p3, p2}, Landroid/os/HwParcel;->writeBuffer(Landroid/os/HwBlob;)V
+    .end local v2  # "childBlob":Landroid/os/HwBlob;
+    .end local v4  # "_hidl_vec_size":I
+    invoke-virtual {p3, v1}, Landroid/os/HwParcel;->writeBuffer(Landroid/os/HwBlob;)V
 
     .line 1023
+    .end local v1  # "_hidl_blob":Landroid/os/HwBlob;
     invoke-virtual {p3}, Landroid/os/HwParcel;->send()V
 
     .line 1024
-    goto/16 :goto_2fc
+    goto/16 :goto_2fe
 
     .line 974
-    :sswitch_101
-    and-int/lit8 p1, p4, 0x1
+    .end local v0  # "_hidl_out_hashchain":Ljava/util/ArrayList;, "Ljava/util/ArrayList<[B>;"
+    .end local v3  # "_hidl_is_oneway":Z
+    :sswitch_103
+    and-int/lit8 v4, p4, 0x1
 
-    if-eqz p1, :cond_106
+    if-eqz v4, :cond_108
 
-    goto :goto_107
+    goto :goto_109
 
-    :cond_106
+    :cond_108
     move v3, v2
 
     .line 975
-    :goto_107
-    if-eqz v3, :cond_111
+    .restart local v3  # "_hidl_is_oneway":Z
+    :goto_109
+    if-eqz v3, :cond_113
 
     .line 976
     invoke-virtual {p3, v1}, Landroid/os/HwParcel;->writeStatus(I)V
@@ -622,43 +670,47 @@
     invoke-virtual {p3}, Landroid/os/HwParcel;->send()V
 
     .line 978
-    goto/16 :goto_2fc
+    goto/16 :goto_2fe
 
     .line 979
-    :cond_111
+    :cond_113
     invoke-virtual {p2, v0}, Landroid/os/HwParcel;->enforceInterface(Ljava/lang/String;)V
 
     .line 981
     invoke-virtual {p0}, Landroid/hardware/configstore/V1_0/ISurfaceFlingerConfigs$Stub;->interfaceDescriptor()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
     .line 982
+    .local v0, "_hidl_out_descriptor":Ljava/lang/String;
     invoke-virtual {p3, v2}, Landroid/os/HwParcel;->writeStatus(I)V
 
     .line 983
-    invoke-virtual {p3, p1}, Landroid/os/HwParcel;->writeString(Ljava/lang/String;)V
+    invoke-virtual {p3, v0}, Landroid/os/HwParcel;->writeString(Ljava/lang/String;)V
 
     .line 984
     invoke-virtual {p3}, Landroid/os/HwParcel;->send()V
 
     .line 985
-    goto/16 :goto_2fc
+    goto/16 :goto_2fe
 
     .line 957
-    :sswitch_123
-    and-int/lit8 p1, p4, 0x1
+    .end local v0  # "_hidl_out_descriptor":Ljava/lang/String;
+    .end local v3  # "_hidl_is_oneway":Z
+    :sswitch_125
+    and-int/lit8 v4, p4, 0x1
 
-    if-eqz p1, :cond_128
+    if-eqz v4, :cond_12a
 
-    goto :goto_129
+    goto :goto_12b
 
-    :cond_128
+    :cond_12a
     move v3, v2
 
     .line 958
-    :goto_129
-    if-eqz v3, :cond_133
+    .restart local v3  # "_hidl_is_oneway":Z
+    :goto_12b
+    if-eqz v3, :cond_135
 
     .line 959
     invoke-virtual {p3, v1}, Landroid/os/HwParcel;->writeStatus(I)V
@@ -667,24 +719,26 @@
     invoke-virtual {p3}, Landroid/os/HwParcel;->send()V
 
     .line 961
-    goto/16 :goto_2fc
+    goto/16 :goto_2fe
 
     .line 962
-    :cond_133
+    :cond_135
     invoke-virtual {p2, v0}, Landroid/os/HwParcel;->enforceInterface(Ljava/lang/String;)V
 
     .line 964
     invoke-virtual {p2}, Landroid/os/HwParcel;->readNativeHandle()Landroid/os/NativeHandle;
 
-    move-result-object p1
+    move-result-object v0
 
     .line 965
+    .local v0, "fd":Landroid/os/NativeHandle;
     invoke-virtual {p2}, Landroid/os/HwParcel;->readStringVector()Ljava/util/ArrayList;
 
-    move-result-object p2
+    move-result-object v1
 
     .line 966
-    invoke-virtual {p0, p1, p2}, Landroid/hardware/configstore/V1_0/ISurfaceFlingerConfigs$Stub;->debug(Landroid/os/NativeHandle;Ljava/util/ArrayList;)V
+    .local v1, "options":Ljava/util/ArrayList;, "Ljava/util/ArrayList<Ljava/lang/String;>;"
+    invoke-virtual {p0, v0, v1}, Landroid/hardware/configstore/V1_0/ISurfaceFlingerConfigs$Stub;->debug(Landroid/os/NativeHandle;Ljava/util/ArrayList;)V
 
     .line 967
     invoke-virtual {p3, v2}, Landroid/os/HwParcel;->writeStatus(I)V
@@ -693,22 +747,26 @@
     invoke-virtual {p3}, Landroid/os/HwParcel;->send()V
 
     .line 969
-    goto/16 :goto_2fc
+    goto/16 :goto_2fe
 
     .line 941
-    :sswitch_149
-    and-int/lit8 p1, p4, 0x1
+    .end local v0  # "fd":Landroid/os/NativeHandle;
+    .end local v1  # "options":Ljava/util/ArrayList;, "Ljava/util/ArrayList<Ljava/lang/String;>;"
+    .end local v3  # "_hidl_is_oneway":Z
+    :sswitch_14b
+    and-int/lit8 v4, p4, 0x1
 
-    if-eqz p1, :cond_14e
+    if-eqz v4, :cond_150
 
-    goto :goto_14f
+    goto :goto_151
 
-    :cond_14e
+    :cond_150
     move v3, v2
 
     .line 942
-    :goto_14f
-    if-eqz v3, :cond_159
+    .restart local v3  # "_hidl_is_oneway":Z
+    :goto_151
+    if-eqz v3, :cond_15b
 
     .line 943
     invoke-virtual {p3, v1}, Landroid/os/HwParcel;->writeStatus(I)V
@@ -717,43 +775,47 @@
     invoke-virtual {p3}, Landroid/os/HwParcel;->send()V
 
     .line 945
-    goto/16 :goto_2fc
+    goto/16 :goto_2fe
 
     .line 946
-    :cond_159
+    :cond_15b
     invoke-virtual {p2, v0}, Landroid/os/HwParcel;->enforceInterface(Ljava/lang/String;)V
 
     .line 948
     invoke-virtual {p0}, Landroid/hardware/configstore/V1_0/ISurfaceFlingerConfigs$Stub;->interfaceChain()Ljava/util/ArrayList;
 
-    move-result-object p1
+    move-result-object v0
 
     .line 949
+    .local v0, "_hidl_out_descriptors":Ljava/util/ArrayList;, "Ljava/util/ArrayList<Ljava/lang/String;>;"
     invoke-virtual {p3, v2}, Landroid/os/HwParcel;->writeStatus(I)V
 
     .line 950
-    invoke-virtual {p3, p1}, Landroid/os/HwParcel;->writeStringVector(Ljava/util/ArrayList;)V
+    invoke-virtual {p3, v0}, Landroid/os/HwParcel;->writeStringVector(Ljava/util/ArrayList;)V
 
     .line 951
     invoke-virtual {p3}, Landroid/os/HwParcel;->send()V
 
     .line 952
-    goto/16 :goto_2fc
+    goto/16 :goto_2fe
 
     .line 925
-    :pswitch_16b  #0xc
-    and-int/lit8 p1, p4, 0x1
+    .end local v0  # "_hidl_out_descriptors":Ljava/util/ArrayList;, "Ljava/util/ArrayList<Ljava/lang/String;>;"
+    .end local v3  # "_hidl_is_oneway":Z
+    :pswitch_16d  #0xc
+    and-int/lit8 v4, p4, 0x1
 
-    if-eqz p1, :cond_170
+    if-eqz v4, :cond_172
 
-    goto :goto_171
+    goto :goto_173
 
-    :cond_170
+    :cond_172
     move v3, v2
 
     .line 926
-    :goto_171
-    if-eqz v3, :cond_17b
+    .restart local v3  # "_hidl_is_oneway":Z
+    :goto_173
+    if-eqz v3, :cond_17d
 
     .line 927
     invoke-virtual {p3, v1}, Landroid/os/HwParcel;->writeStatus(I)V
@@ -762,43 +824,47 @@
     invoke-virtual {p3}, Landroid/os/HwParcel;->send()V
 
     .line 929
-    goto/16 :goto_2fc
+    goto/16 :goto_2fe
 
     .line 930
-    :cond_17b
+    :cond_17d
     invoke-virtual {p2, v0}, Landroid/os/HwParcel;->enforceInterface(Ljava/lang/String;)V
 
     .line 932
     invoke-virtual {p0}, Landroid/hardware/configstore/V1_0/ISurfaceFlingerConfigs$Stub;->startGraphicsAllocatorService()Landroid/hardware/configstore/V1_0/OptionalBool;
 
-    move-result-object p1
+    move-result-object v0
 
     .line 933
+    .local v0, "_hidl_out_value":Landroid/hardware/configstore/V1_0/OptionalBool;
     invoke-virtual {p3, v2}, Landroid/os/HwParcel;->writeStatus(I)V
 
     .line 934
-    invoke-virtual {p1, p3}, Landroid/hardware/configstore/V1_0/OptionalBool;->writeToParcel(Landroid/os/HwParcel;)V
+    invoke-virtual {v0, p3}, Landroid/hardware/configstore/V1_0/OptionalBool;->writeToParcel(Landroid/os/HwParcel;)V
 
     .line 935
     invoke-virtual {p3}, Landroid/os/HwParcel;->send()V
 
     .line 936
-    goto/16 :goto_2fc
+    goto/16 :goto_2fe
 
     .line 909
-    :pswitch_18d  #0xb
-    and-int/lit8 p1, p4, 0x1
+    .end local v0  # "_hidl_out_value":Landroid/hardware/configstore/V1_0/OptionalBool;
+    .end local v3  # "_hidl_is_oneway":Z
+    :pswitch_18f  #0xb
+    and-int/lit8 v4, p4, 0x1
 
-    if-eqz p1, :cond_192
+    if-eqz v4, :cond_194
 
-    goto :goto_193
+    goto :goto_195
 
-    :cond_192
+    :cond_194
     move v3, v2
 
     .line 910
-    :goto_193
-    if-eqz v3, :cond_19d
+    .restart local v3  # "_hidl_is_oneway":Z
+    :goto_195
+    if-eqz v3, :cond_19f
 
     .line 911
     invoke-virtual {p3, v1}, Landroid/os/HwParcel;->writeStatus(I)V
@@ -807,43 +873,47 @@
     invoke-virtual {p3}, Landroid/os/HwParcel;->send()V
 
     .line 913
-    goto/16 :goto_2fc
+    goto/16 :goto_2fe
 
     .line 914
-    :cond_19d
+    :cond_19f
     invoke-virtual {p2, v0}, Landroid/os/HwParcel;->enforceInterface(Ljava/lang/String;)V
 
     .line 916
     invoke-virtual {p0}, Landroid/hardware/configstore/V1_0/ISurfaceFlingerConfigs$Stub;->maxFrameBufferAcquiredBuffers()Landroid/hardware/configstore/V1_0/OptionalInt64;
 
-    move-result-object p1
+    move-result-object v0
 
     .line 917
+    .local v0, "_hidl_out_value":Landroid/hardware/configstore/V1_0/OptionalInt64;
     invoke-virtual {p3, v2}, Landroid/os/HwParcel;->writeStatus(I)V
 
     .line 918
-    invoke-virtual {p1, p3}, Landroid/hardware/configstore/V1_0/OptionalInt64;->writeToParcel(Landroid/os/HwParcel;)V
+    invoke-virtual {v0, p3}, Landroid/hardware/configstore/V1_0/OptionalInt64;->writeToParcel(Landroid/os/HwParcel;)V
 
     .line 919
     invoke-virtual {p3}, Landroid/os/HwParcel;->send()V
 
     .line 920
-    goto/16 :goto_2fc
+    goto/16 :goto_2fe
 
     .line 893
-    :pswitch_1af  #0xa
-    and-int/lit8 p1, p4, 0x1
+    .end local v0  # "_hidl_out_value":Landroid/hardware/configstore/V1_0/OptionalInt64;
+    .end local v3  # "_hidl_is_oneway":Z
+    :pswitch_1b1  #0xa
+    and-int/lit8 v4, p4, 0x1
 
-    if-eqz p1, :cond_1b4
+    if-eqz v4, :cond_1b6
 
-    goto :goto_1b5
+    goto :goto_1b7
 
-    :cond_1b4
+    :cond_1b6
     move v3, v2
 
     .line 894
-    :goto_1b5
-    if-eqz v3, :cond_1bf
+    .restart local v3  # "_hidl_is_oneway":Z
+    :goto_1b7
+    if-eqz v3, :cond_1c1
 
     .line 895
     invoke-virtual {p3, v1}, Landroid/os/HwParcel;->writeStatus(I)V
@@ -852,43 +922,47 @@
     invoke-virtual {p3}, Landroid/os/HwParcel;->send()V
 
     .line 897
-    goto/16 :goto_2fc
+    goto/16 :goto_2fe
 
     .line 898
-    :cond_1bf
+    :cond_1c1
     invoke-virtual {p2, v0}, Landroid/os/HwParcel;->enforceInterface(Ljava/lang/String;)V
 
     .line 900
     invoke-virtual {p0}, Landroid/hardware/configstore/V1_0/ISurfaceFlingerConfigs$Stub;->useVrFlinger()Landroid/hardware/configstore/V1_0/OptionalBool;
 
-    move-result-object p1
+    move-result-object v0
 
     .line 901
+    .local v0, "_hidl_out_value":Landroid/hardware/configstore/V1_0/OptionalBool;
     invoke-virtual {p3, v2}, Landroid/os/HwParcel;->writeStatus(I)V
 
     .line 902
-    invoke-virtual {p1, p3}, Landroid/hardware/configstore/V1_0/OptionalBool;->writeToParcel(Landroid/os/HwParcel;)V
+    invoke-virtual {v0, p3}, Landroid/hardware/configstore/V1_0/OptionalBool;->writeToParcel(Landroid/os/HwParcel;)V
 
     .line 903
     invoke-virtual {p3}, Landroid/os/HwParcel;->send()V
 
     .line 904
-    goto/16 :goto_2fc
+    goto/16 :goto_2fe
 
     .line 877
-    :pswitch_1d1  #0x9
-    and-int/lit8 p1, p4, 0x1
+    .end local v0  # "_hidl_out_value":Landroid/hardware/configstore/V1_0/OptionalBool;
+    .end local v3  # "_hidl_is_oneway":Z
+    :pswitch_1d3  #0x9
+    and-int/lit8 v4, p4, 0x1
 
-    if-eqz p1, :cond_1d6
+    if-eqz v4, :cond_1d8
 
-    goto :goto_1d7
+    goto :goto_1d9
 
-    :cond_1d6
+    :cond_1d8
     move v3, v2
 
     .line 878
-    :goto_1d7
-    if-eqz v3, :cond_1e1
+    .restart local v3  # "_hidl_is_oneway":Z
+    :goto_1d9
+    if-eqz v3, :cond_1e3
 
     .line 879
     invoke-virtual {p3, v1}, Landroid/os/HwParcel;->writeStatus(I)V
@@ -897,43 +971,47 @@
     invoke-virtual {p3}, Landroid/os/HwParcel;->send()V
 
     .line 881
-    goto/16 :goto_2fc
+    goto/16 :goto_2fe
 
     .line 882
-    :cond_1e1
+    :cond_1e3
     invoke-virtual {p2, v0}, Landroid/os/HwParcel;->enforceInterface(Ljava/lang/String;)V
 
     .line 884
     invoke-virtual {p0}, Landroid/hardware/configstore/V1_0/ISurfaceFlingerConfigs$Stub;->hasSyncFramework()Landroid/hardware/configstore/V1_0/OptionalBool;
 
-    move-result-object p1
+    move-result-object v0
 
     .line 885
+    .restart local v0  # "_hidl_out_value":Landroid/hardware/configstore/V1_0/OptionalBool;
     invoke-virtual {p3, v2}, Landroid/os/HwParcel;->writeStatus(I)V
 
     .line 886
-    invoke-virtual {p1, p3}, Landroid/hardware/configstore/V1_0/OptionalBool;->writeToParcel(Landroid/os/HwParcel;)V
+    invoke-virtual {v0, p3}, Landroid/hardware/configstore/V1_0/OptionalBool;->writeToParcel(Landroid/os/HwParcel;)V
 
     .line 887
     invoke-virtual {p3}, Landroid/os/HwParcel;->send()V
 
     .line 888
-    goto/16 :goto_2fc
+    goto/16 :goto_2fe
 
     .line 861
-    :pswitch_1f3  #0x8
-    and-int/lit8 p1, p4, 0x1
+    .end local v0  # "_hidl_out_value":Landroid/hardware/configstore/V1_0/OptionalBool;
+    .end local v3  # "_hidl_is_oneway":Z
+    :pswitch_1f5  #0x8
+    and-int/lit8 v4, p4, 0x1
 
-    if-eqz p1, :cond_1f8
+    if-eqz v4, :cond_1fa
 
-    goto :goto_1f9
+    goto :goto_1fb
 
-    :cond_1f8
+    :cond_1fa
     move v3, v2
 
     .line 862
-    :goto_1f9
-    if-eqz v3, :cond_203
+    .restart local v3  # "_hidl_is_oneway":Z
+    :goto_1fb
+    if-eqz v3, :cond_205
 
     .line 863
     invoke-virtual {p3, v1}, Landroid/os/HwParcel;->writeStatus(I)V
@@ -942,43 +1020,47 @@
     invoke-virtual {p3}, Landroid/os/HwParcel;->send()V
 
     .line 865
-    goto/16 :goto_2fc
+    goto/16 :goto_2fe
 
     .line 866
-    :cond_203
+    :cond_205
     invoke-virtual {p2, v0}, Landroid/os/HwParcel;->enforceInterface(Ljava/lang/String;)V
 
     .line 868
     invoke-virtual {p0}, Landroid/hardware/configstore/V1_0/ISurfaceFlingerConfigs$Stub;->maxVirtualDisplaySize()Landroid/hardware/configstore/V1_0/OptionalUInt64;
 
-    move-result-object p1
+    move-result-object v0
 
     .line 869
+    .local v0, "_hidl_out_value":Landroid/hardware/configstore/V1_0/OptionalUInt64;
     invoke-virtual {p3, v2}, Landroid/os/HwParcel;->writeStatus(I)V
 
     .line 870
-    invoke-virtual {p1, p3}, Landroid/hardware/configstore/V1_0/OptionalUInt64;->writeToParcel(Landroid/os/HwParcel;)V
+    invoke-virtual {v0, p3}, Landroid/hardware/configstore/V1_0/OptionalUInt64;->writeToParcel(Landroid/os/HwParcel;)V
 
     .line 871
     invoke-virtual {p3}, Landroid/os/HwParcel;->send()V
 
     .line 872
-    goto/16 :goto_2fc
+    goto/16 :goto_2fe
 
     .line 845
-    :pswitch_215  #0x7
-    and-int/lit8 p1, p4, 0x1
+    .end local v0  # "_hidl_out_value":Landroid/hardware/configstore/V1_0/OptionalUInt64;
+    .end local v3  # "_hidl_is_oneway":Z
+    :pswitch_217  #0x7
+    and-int/lit8 v4, p4, 0x1
 
-    if-eqz p1, :cond_21a
+    if-eqz v4, :cond_21c
 
-    goto :goto_21b
+    goto :goto_21d
 
-    :cond_21a
+    :cond_21c
     move v3, v2
 
     .line 846
-    :goto_21b
-    if-eqz v3, :cond_225
+    .restart local v3  # "_hidl_is_oneway":Z
+    :goto_21d
+    if-eqz v3, :cond_227
 
     .line 847
     invoke-virtual {p3, v1}, Landroid/os/HwParcel;->writeStatus(I)V
@@ -987,43 +1069,47 @@
     invoke-virtual {p3}, Landroid/os/HwParcel;->send()V
 
     .line 849
-    goto/16 :goto_2fc
+    goto/16 :goto_2fe
 
     .line 850
-    :cond_225
+    :cond_227
     invoke-virtual {p2, v0}, Landroid/os/HwParcel;->enforceInterface(Ljava/lang/String;)V
 
     .line 852
     invoke-virtual {p0}, Landroid/hardware/configstore/V1_0/ISurfaceFlingerConfigs$Stub;->useHwcForRGBtoYUV()Landroid/hardware/configstore/V1_0/OptionalBool;
 
-    move-result-object p1
+    move-result-object v0
 
     .line 853
+    .local v0, "_hidl_out_value":Landroid/hardware/configstore/V1_0/OptionalBool;
     invoke-virtual {p3, v2}, Landroid/os/HwParcel;->writeStatus(I)V
 
     .line 854
-    invoke-virtual {p1, p3}, Landroid/hardware/configstore/V1_0/OptionalBool;->writeToParcel(Landroid/os/HwParcel;)V
+    invoke-virtual {v0, p3}, Landroid/hardware/configstore/V1_0/OptionalBool;->writeToParcel(Landroid/os/HwParcel;)V
 
     .line 855
     invoke-virtual {p3}, Landroid/os/HwParcel;->send()V
 
     .line 856
-    goto/16 :goto_2fc
+    goto/16 :goto_2fe
 
     .line 829
-    :pswitch_237  #0x6
-    and-int/lit8 p1, p4, 0x1
+    .end local v0  # "_hidl_out_value":Landroid/hardware/configstore/V1_0/OptionalBool;
+    .end local v3  # "_hidl_is_oneway":Z
+    :pswitch_239  #0x6
+    and-int/lit8 v4, p4, 0x1
 
-    if-eqz p1, :cond_23c
+    if-eqz v4, :cond_23e
 
-    goto :goto_23d
+    goto :goto_23f
 
-    :cond_23c
+    :cond_23e
     move v3, v2
 
     .line 830
-    :goto_23d
-    if-eqz v3, :cond_247
+    .restart local v3  # "_hidl_is_oneway":Z
+    :goto_23f
+    if-eqz v3, :cond_249
 
     .line 831
     invoke-virtual {p3, v1}, Landroid/os/HwParcel;->writeStatus(I)V
@@ -1032,43 +1118,47 @@
     invoke-virtual {p3}, Landroid/os/HwParcel;->send()V
 
     .line 833
-    goto/16 :goto_2fc
+    goto/16 :goto_2fe
 
     .line 834
-    :cond_247
+    :cond_249
     invoke-virtual {p2, v0}, Landroid/os/HwParcel;->enforceInterface(Ljava/lang/String;)V
 
     .line 836
     invoke-virtual {p0}, Landroid/hardware/configstore/V1_0/ISurfaceFlingerConfigs$Stub;->presentTimeOffsetFromVSyncNs()Landroid/hardware/configstore/V1_0/OptionalInt64;
 
-    move-result-object p1
+    move-result-object v0
 
     .line 837
+    .local v0, "_hidl_out_value":Landroid/hardware/configstore/V1_0/OptionalInt64;
     invoke-virtual {p3, v2}, Landroid/os/HwParcel;->writeStatus(I)V
 
     .line 838
-    invoke-virtual {p1, p3}, Landroid/hardware/configstore/V1_0/OptionalInt64;->writeToParcel(Landroid/os/HwParcel;)V
+    invoke-virtual {v0, p3}, Landroid/hardware/configstore/V1_0/OptionalInt64;->writeToParcel(Landroid/os/HwParcel;)V
 
     .line 839
     invoke-virtual {p3}, Landroid/os/HwParcel;->send()V
 
     .line 840
-    goto/16 :goto_2fc
+    goto/16 :goto_2fe
 
     .line 813
-    :pswitch_259  #0x5
-    and-int/lit8 p1, p4, 0x1
+    .end local v0  # "_hidl_out_value":Landroid/hardware/configstore/V1_0/OptionalInt64;
+    .end local v3  # "_hidl_is_oneway":Z
+    :pswitch_25b  #0x5
+    and-int/lit8 v4, p4, 0x1
 
-    if-eqz p1, :cond_25e
+    if-eqz v4, :cond_260
 
-    goto :goto_25f
+    goto :goto_261
 
-    :cond_25e
+    :cond_260
     move v3, v2
 
     .line 814
-    :goto_25f
-    if-eqz v3, :cond_269
+    .restart local v3  # "_hidl_is_oneway":Z
+    :goto_261
+    if-eqz v3, :cond_26b
 
     .line 815
     invoke-virtual {p3, v1}, Landroid/os/HwParcel;->writeStatus(I)V
@@ -1077,43 +1167,47 @@
     invoke-virtual {p3}, Landroid/os/HwParcel;->send()V
 
     .line 817
-    goto/16 :goto_2fc
+    goto/16 :goto_2fe
 
     .line 818
-    :cond_269
+    :cond_26b
     invoke-virtual {p2, v0}, Landroid/os/HwParcel;->enforceInterface(Ljava/lang/String;)V
 
     .line 820
     invoke-virtual {p0}, Landroid/hardware/configstore/V1_0/ISurfaceFlingerConfigs$Stub;->hasHDRDisplay()Landroid/hardware/configstore/V1_0/OptionalBool;
 
-    move-result-object p1
+    move-result-object v0
 
     .line 821
+    .local v0, "_hidl_out_value":Landroid/hardware/configstore/V1_0/OptionalBool;
     invoke-virtual {p3, v2}, Landroid/os/HwParcel;->writeStatus(I)V
 
     .line 822
-    invoke-virtual {p1, p3}, Landroid/hardware/configstore/V1_0/OptionalBool;->writeToParcel(Landroid/os/HwParcel;)V
+    invoke-virtual {v0, p3}, Landroid/hardware/configstore/V1_0/OptionalBool;->writeToParcel(Landroid/os/HwParcel;)V
 
     .line 823
     invoke-virtual {p3}, Landroid/os/HwParcel;->send()V
 
     .line 824
-    goto/16 :goto_2fc
+    goto/16 :goto_2fe
 
     .line 797
-    :pswitch_27b  #0x4
-    and-int/lit8 p1, p4, 0x1
+    .end local v0  # "_hidl_out_value":Landroid/hardware/configstore/V1_0/OptionalBool;
+    .end local v3  # "_hidl_is_oneway":Z
+    :pswitch_27d  #0x4
+    and-int/lit8 v4, p4, 0x1
 
-    if-eqz p1, :cond_280
+    if-eqz v4, :cond_282
 
-    goto :goto_281
+    goto :goto_283
 
-    :cond_280
+    :cond_282
     move v3, v2
 
     .line 798
-    :goto_281
-    if-eqz v3, :cond_28b
+    .restart local v3  # "_hidl_is_oneway":Z
+    :goto_283
+    if-eqz v3, :cond_28d
 
     .line 799
     invoke-virtual {p3, v1}, Landroid/os/HwParcel;->writeStatus(I)V
@@ -1122,43 +1216,47 @@
     invoke-virtual {p3}, Landroid/os/HwParcel;->send()V
 
     .line 801
-    goto/16 :goto_2fc
+    goto/16 :goto_2fe
 
     .line 802
-    :cond_28b
+    :cond_28d
     invoke-virtual {p2, v0}, Landroid/os/HwParcel;->enforceInterface(Ljava/lang/String;)V
 
     .line 804
     invoke-virtual {p0}, Landroid/hardware/configstore/V1_0/ISurfaceFlingerConfigs$Stub;->hasWideColorDisplay()Landroid/hardware/configstore/V1_0/OptionalBool;
 
-    move-result-object p1
+    move-result-object v0
 
     .line 805
+    .restart local v0  # "_hidl_out_value":Landroid/hardware/configstore/V1_0/OptionalBool;
     invoke-virtual {p3, v2}, Landroid/os/HwParcel;->writeStatus(I)V
 
     .line 806
-    invoke-virtual {p1, p3}, Landroid/hardware/configstore/V1_0/OptionalBool;->writeToParcel(Landroid/os/HwParcel;)V
+    invoke-virtual {v0, p3}, Landroid/hardware/configstore/V1_0/OptionalBool;->writeToParcel(Landroid/os/HwParcel;)V
 
     .line 807
     invoke-virtual {p3}, Landroid/os/HwParcel;->send()V
 
     .line 808
-    goto :goto_2fc
+    goto :goto_2fe
 
     .line 781
-    :pswitch_29c  #0x3
-    and-int/lit8 p1, p4, 0x1
+    .end local v0  # "_hidl_out_value":Landroid/hardware/configstore/V1_0/OptionalBool;
+    .end local v3  # "_hidl_is_oneway":Z
+    :pswitch_29e  #0x3
+    and-int/lit8 v4, p4, 0x1
 
-    if-eqz p1, :cond_2a1
+    if-eqz v4, :cond_2a3
 
-    goto :goto_2a2
+    goto :goto_2a4
 
-    :cond_2a1
+    :cond_2a3
     move v3, v2
 
     .line 782
-    :goto_2a2
-    if-eqz v3, :cond_2ab
+    .restart local v3  # "_hidl_is_oneway":Z
+    :goto_2a4
+    if-eqz v3, :cond_2ad
 
     .line 783
     invoke-virtual {p3, v1}, Landroid/os/HwParcel;->writeStatus(I)V
@@ -1167,43 +1265,47 @@
     invoke-virtual {p3}, Landroid/os/HwParcel;->send()V
 
     .line 785
-    goto :goto_2fc
+    goto :goto_2fe
 
     .line 786
-    :cond_2ab
+    :cond_2ad
     invoke-virtual {p2, v0}, Landroid/os/HwParcel;->enforceInterface(Ljava/lang/String;)V
 
     .line 788
     invoke-virtual {p0}, Landroid/hardware/configstore/V1_0/ISurfaceFlingerConfigs$Stub;->useContextPriority()Landroid/hardware/configstore/V1_0/OptionalBool;
 
-    move-result-object p1
+    move-result-object v0
 
     .line 789
+    .restart local v0  # "_hidl_out_value":Landroid/hardware/configstore/V1_0/OptionalBool;
     invoke-virtual {p3, v2}, Landroid/os/HwParcel;->writeStatus(I)V
 
     .line 790
-    invoke-virtual {p1, p3}, Landroid/hardware/configstore/V1_0/OptionalBool;->writeToParcel(Landroid/os/HwParcel;)V
+    invoke-virtual {v0, p3}, Landroid/hardware/configstore/V1_0/OptionalBool;->writeToParcel(Landroid/os/HwParcel;)V
 
     .line 791
     invoke-virtual {p3}, Landroid/os/HwParcel;->send()V
 
     .line 792
-    goto :goto_2fc
+    goto :goto_2fe
 
     .line 765
-    :pswitch_2bc  #0x2
-    and-int/lit8 p1, p4, 0x1
+    .end local v0  # "_hidl_out_value":Landroid/hardware/configstore/V1_0/OptionalBool;
+    .end local v3  # "_hidl_is_oneway":Z
+    :pswitch_2be  #0x2
+    and-int/lit8 v4, p4, 0x1
 
-    if-eqz p1, :cond_2c1
+    if-eqz v4, :cond_2c3
 
-    goto :goto_2c2
+    goto :goto_2c4
 
-    :cond_2c1
+    :cond_2c3
     move v3, v2
 
     .line 766
-    :goto_2c2
-    if-eqz v3, :cond_2cb
+    .restart local v3  # "_hidl_is_oneway":Z
+    :goto_2c4
+    if-eqz v3, :cond_2cd
 
     .line 767
     invoke-virtual {p3, v1}, Landroid/os/HwParcel;->writeStatus(I)V
@@ -1212,43 +1314,47 @@
     invoke-virtual {p3}, Landroid/os/HwParcel;->send()V
 
     .line 769
-    goto :goto_2fc
+    goto :goto_2fe
 
     .line 770
-    :cond_2cb
+    :cond_2cd
     invoke-virtual {p2, v0}, Landroid/os/HwParcel;->enforceInterface(Ljava/lang/String;)V
 
     .line 772
     invoke-virtual {p0}, Landroid/hardware/configstore/V1_0/ISurfaceFlingerConfigs$Stub;->vsyncSfEventPhaseOffsetNs()Landroid/hardware/configstore/V1_0/OptionalInt64;
 
-    move-result-object p1
+    move-result-object v0
 
     .line 773
+    .local v0, "_hidl_out_value":Landroid/hardware/configstore/V1_0/OptionalInt64;
     invoke-virtual {p3, v2}, Landroid/os/HwParcel;->writeStatus(I)V
 
     .line 774
-    invoke-virtual {p1, p3}, Landroid/hardware/configstore/V1_0/OptionalInt64;->writeToParcel(Landroid/os/HwParcel;)V
+    invoke-virtual {v0, p3}, Landroid/hardware/configstore/V1_0/OptionalInt64;->writeToParcel(Landroid/os/HwParcel;)V
 
     .line 775
     invoke-virtual {p3}, Landroid/os/HwParcel;->send()V
 
     .line 776
-    goto :goto_2fc
+    goto :goto_2fe
 
     .line 749
-    :pswitch_2dc  #0x1
-    and-int/lit8 p1, p4, 0x1
+    .end local v0  # "_hidl_out_value":Landroid/hardware/configstore/V1_0/OptionalInt64;
+    .end local v3  # "_hidl_is_oneway":Z
+    :pswitch_2de  #0x1
+    and-int/lit8 v4, p4, 0x1
 
-    if-eqz p1, :cond_2e1
+    if-eqz v4, :cond_2e3
 
-    goto :goto_2e2
+    goto :goto_2e4
 
-    :cond_2e1
+    :cond_2e3
     move v3, v2
 
     .line 750
-    :goto_2e2
-    if-eqz v3, :cond_2eb
+    .restart local v3  # "_hidl_is_oneway":Z
+    :goto_2e4
+    if-eqz v3, :cond_2ed
 
     .line 751
     invoke-virtual {p3, v1}, Landroid/os/HwParcel;->writeStatus(I)V
@@ -1257,22 +1363,23 @@
     invoke-virtual {p3}, Landroid/os/HwParcel;->send()V
 
     .line 753
-    goto :goto_2fc
+    goto :goto_2fe
 
     .line 754
-    :cond_2eb
+    :cond_2ed
     invoke-virtual {p2, v0}, Landroid/os/HwParcel;->enforceInterface(Ljava/lang/String;)V
 
     .line 756
     invoke-virtual {p0}, Landroid/hardware/configstore/V1_0/ISurfaceFlingerConfigs$Stub;->vsyncEventPhaseOffsetNs()Landroid/hardware/configstore/V1_0/OptionalInt64;
 
-    move-result-object p1
+    move-result-object v0
 
     .line 757
+    .restart local v0  # "_hidl_out_value":Landroid/hardware/configstore/V1_0/OptionalInt64;
     invoke-virtual {p3, v2}, Landroid/os/HwParcel;->writeStatus(I)V
 
     .line 758
-    invoke-virtual {p1, p3}, Landroid/hardware/configstore/V1_0/OptionalInt64;->writeToParcel(Landroid/os/HwParcel;)V
+    invoke-virtual {v0, p3}, Landroid/hardware/configstore/V1_0/OptionalInt64;->writeToParcel(Landroid/os/HwParcel;)V
 
     .line 759
     invoke-virtual {p3}, Landroid/os/HwParcel;->send()V
@@ -1281,39 +1388,41 @@
     nop
 
     .line 1105
-    :cond_2fc
-    :goto_2fc
+    .end local v0  # "_hidl_out_value":Landroid/hardware/configstore/V1_0/OptionalInt64;
+    .end local v3  # "_hidl_is_oneway":Z
+    :cond_2fe
+    :goto_2fe
     return-void
 
     nop
 
-    :pswitch_data_2fe
+    :pswitch_data_300
     .packed-switch 0x1
-        :pswitch_2dc  #00000001
-        :pswitch_2bc  #00000002
-        :pswitch_29c  #00000003
-        :pswitch_27b  #00000004
-        :pswitch_259  #00000005
-        :pswitch_237  #00000006
-        :pswitch_215  #00000007
-        :pswitch_1f3  #00000008
-        :pswitch_1d1  #00000009
-        :pswitch_1af  #0000000a
-        :pswitch_18d  #0000000b
-        :pswitch_16b  #0000000c
+        :pswitch_2de  #00000001
+        :pswitch_2be  #00000002
+        :pswitch_29e  #00000003
+        :pswitch_27d  #00000004
+        :pswitch_25b  #00000005
+        :pswitch_239  #00000006
+        :pswitch_217  #00000007
+        :pswitch_1f5  #00000008
+        :pswitch_1d3  #00000009
+        :pswitch_1b1  #0000000a
+        :pswitch_18f  #0000000b
+        :pswitch_16d  #0000000c
     .end packed-switch
 
-    :sswitch_data_31a
+    :sswitch_data_31c
     .sparse-switch
-        0xf43484e -> :sswitch_149
-        0xf444247 -> :sswitch_123
-        0xf445343 -> :sswitch_101
-        0xf485348 -> :sswitch_9c
-        0xf494e54 -> :sswitch_85
-        0xf4c5444 -> :sswitch_76
-        0xf504e47 -> :sswitch_58
-        0xf524546 -> :sswitch_36
-        0xf535953 -> :sswitch_1f
+        0xf43484e -> :sswitch_14b
+        0xf444247 -> :sswitch_125
+        0xf445343 -> :sswitch_103
+        0xf485348 -> :sswitch_9e
+        0xf494e54 -> :sswitch_87
+        0xf4c5444 -> :sswitch_77
+        0xf504e47 -> :sswitch_59
+        0xf524546 -> :sswitch_37
+        0xf535953 -> :sswitch_20
         0xf555444 -> :sswitch_10
     .end sparse-switch
 .end method
@@ -1327,28 +1436,30 @@
 
 .method public queryLocalInterface(Ljava/lang/String;)Landroid/os/IHwInterface;
     .registers 3
+    .param p1, "descriptor"  # Ljava/lang/String;
 
     .line 728
     const-string v0, "android.hardware.configstore@1.0::ISurfaceFlingerConfigs"
 
     invoke-virtual {v0, p1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result p1
+    move-result v0
 
-    if-eqz p1, :cond_9
+    if-eqz v0, :cond_9
 
     .line 729
     return-object p0
 
     .line 731
     :cond_9
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    return-object p1
+    return-object v0
 .end method
 
 .method public registerAsService(Ljava/lang/String;)V
     .registers 2
+    .param p1, "serviceName"  # Ljava/lang/String;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -1395,10 +1506,11 @@
 .end method
 
 .method public final unlinkToDeath(Landroid/os/IHwBinder$DeathRecipient;)Z
-    .registers 2
+    .registers 3
+    .param p1, "recipient"  # Landroid/os/IHwBinder$DeathRecipient;
 
     .line 722
-    const/4 p1, 0x1
+    const/4 v0, 0x1
 
-    return p1
+    return v0
 .end method

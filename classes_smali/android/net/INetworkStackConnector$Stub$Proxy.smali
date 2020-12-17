@@ -30,6 +30,7 @@
 # direct methods
 .method constructor <init>(Landroid/os/IBinder;)V
     .registers 3
+    .param p1, "remote"  # Landroid/os/IBinder;
 
     .line 145
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -59,6 +60,7 @@
 
 .method public fetchIpMemoryStore(Landroid/net/IIpMemoryStoreCallbacks;)V
     .registers 7
+    .param p1, "cb"  # Landroid/net/IIpMemoryStoreCallbacks;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -71,6 +73,7 @@
     move-result-object v0
 
     .line 226
+    .local v0, "_data":Landroid/os/Parcel;
     :try_start_4
     const-string v1, "android.net.INetworkStackConnector"
 
@@ -105,20 +108,21 @@
     move-result v1
 
     .line 229
+    .local v1, "_status":Z
     if-nez v1, :cond_30
 
     invoke-static {}, Landroid/net/INetworkStackConnector$Stub;->getDefaultImpl()Landroid/net/INetworkStackConnector;
 
-    move-result-object v1
+    move-result-object v2
 
-    if-eqz v1, :cond_30
+    if-eqz v2, :cond_30
 
     .line 230
     invoke-static {}, Landroid/net/INetworkStackConnector$Stub;->getDefaultImpl()Landroid/net/INetworkStackConnector;
 
-    move-result-object v1
+    move-result-object v2
 
-    invoke-interface {v1, p1}, Landroid/net/INetworkStackConnector;->fetchIpMemoryStore(Landroid/net/IIpMemoryStoreCallbacks;)V
+    invoke-interface {v2, p1}, Landroid/net/INetworkStackConnector;->fetchIpMemoryStore(Landroid/net/IIpMemoryStoreCallbacks;)V
     :try_end_2c
     .catchall {:try_start_4 .. :try_end_2c} :catchall_35
 
@@ -129,6 +133,7 @@
     return-void
 
     .line 235
+    .end local v1  # "_status":Z
     :cond_30
     invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
 
@@ -140,11 +145,11 @@
 
     .line 235
     :catchall_35
-    move-exception p1
+    move-exception v1
 
     invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
 
-    throw p1
+    throw v1
 .end method
 
 .method public getInterfaceDescriptor()Ljava/lang/String;
@@ -177,11 +182,13 @@
     move-result-object v0
 
     .line 242
+    .local v0, "data":Landroid/os/Parcel;
     invoke-static {}, Landroid/os/Parcel;->obtain()Landroid/os/Parcel;
 
     move-result-object v1
 
     .line 244
+    .local v1, "reply":Landroid/os/Parcel;
     :try_start_d
     const-string v2, "android.net.INetworkStackConnector"
 
@@ -229,6 +236,8 @@
     throw v2
 
     .line 253
+    .end local v0  # "data":Landroid/os/Parcel;
+    .end local v1  # "reply":Landroid/os/Parcel;
     :cond_33
     :goto_33
     iget v0, p0, Landroid/net/INetworkStackConnector$Stub$Proxy;->mCachedVersion:I
@@ -238,6 +247,9 @@
 
 .method public makeDhcpServer(Ljava/lang/String;Landroid/net/dhcp/DhcpServingParamsParcel;Landroid/net/dhcp/IDhcpServerCallbacks;)V
     .registers 8
+    .param p1, "ifName"  # Ljava/lang/String;
+    .param p2, "params"  # Landroid/net/dhcp/DhcpServingParamsParcel;
+    .param p3, "cb"  # Landroid/net/dhcp/IDhcpServerCallbacks;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -250,6 +262,7 @@
     move-result-object v0
 
     .line 161
+    .local v0, "_data":Landroid/os/Parcel;
     :try_start_4
     const-string v1, "android.net.INetworkStackConnector"
 
@@ -303,20 +316,21 @@
     move-result v1
 
     .line 172
+    .local v1, "_status":Z
     if-nez v1, :cond_3f
 
     invoke-static {}, Landroid/net/INetworkStackConnector$Stub;->getDefaultImpl()Landroid/net/INetworkStackConnector;
 
-    move-result-object v1
+    move-result-object v2
 
-    if-eqz v1, :cond_3f
+    if-eqz v2, :cond_3f
 
     .line 173
     invoke-static {}, Landroid/net/INetworkStackConnector$Stub;->getDefaultImpl()Landroid/net/INetworkStackConnector;
 
-    move-result-object v1
+    move-result-object v2
 
-    invoke-interface {v1, p1, p2, p3}, Landroid/net/INetworkStackConnector;->makeDhcpServer(Ljava/lang/String;Landroid/net/dhcp/DhcpServingParamsParcel;Landroid/net/dhcp/IDhcpServerCallbacks;)V
+    invoke-interface {v2, p1, p2, p3}, Landroid/net/INetworkStackConnector;->makeDhcpServer(Ljava/lang/String;Landroid/net/dhcp/DhcpServingParamsParcel;Landroid/net/dhcp/IDhcpServerCallbacks;)V
     :try_end_3b
     .catchall {:try_start_4 .. :try_end_3b} :catchall_44
 
@@ -327,6 +341,7 @@
     return-void
 
     .line 178
+    .end local v1  # "_status":Z
     :cond_3f
     invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
 
@@ -338,15 +353,17 @@
 
     .line 178
     :catchall_44
-    move-exception p1
+    move-exception v1
 
     invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
 
-    throw p1
+    throw v1
 .end method
 
 .method public makeIpClient(Ljava/lang/String;Landroid/net/ip/IIpClientCallbacks;)V
     .registers 8
+    .param p1, "ifName"  # Ljava/lang/String;
+    .param p2, "callbacks"  # Landroid/net/ip/IIpClientCallbacks;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -359,6 +376,7 @@
     move-result-object v0
 
     .line 209
+    .local v0, "_data":Landroid/os/Parcel;
     :try_start_4
     const-string v1, "android.net.INetworkStackConnector"
 
@@ -396,20 +414,21 @@
     move-result v1
 
     .line 213
+    .local v1, "_status":Z
     if-nez v1, :cond_33
 
     invoke-static {}, Landroid/net/INetworkStackConnector$Stub;->getDefaultImpl()Landroid/net/INetworkStackConnector;
 
-    move-result-object v1
+    move-result-object v2
 
-    if-eqz v1, :cond_33
+    if-eqz v2, :cond_33
 
     .line 214
     invoke-static {}, Landroid/net/INetworkStackConnector$Stub;->getDefaultImpl()Landroid/net/INetworkStackConnector;
 
-    move-result-object v1
+    move-result-object v2
 
-    invoke-interface {v1, p1, p2}, Landroid/net/INetworkStackConnector;->makeIpClient(Ljava/lang/String;Landroid/net/ip/IIpClientCallbacks;)V
+    invoke-interface {v2, p1, p2}, Landroid/net/INetworkStackConnector;->makeIpClient(Ljava/lang/String;Landroid/net/ip/IIpClientCallbacks;)V
     :try_end_2f
     .catchall {:try_start_4 .. :try_end_2f} :catchall_38
 
@@ -420,6 +439,7 @@
     return-void
 
     .line 219
+    .end local v1  # "_status":Z
     :cond_33
     invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
 
@@ -431,15 +451,18 @@
 
     .line 219
     :catchall_38
-    move-exception p1
+    move-exception v1
 
     invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
 
-    throw p1
+    throw v1
 .end method
 
 .method public makeNetworkMonitor(Landroid/net/Network;Ljava/lang/String;Landroid/net/INetworkMonitorCallbacks;)V
     .registers 9
+    .param p1, "network"  # Landroid/net/Network;
+    .param p2, "name"  # Ljava/lang/String;
+    .param p3, "cb"  # Landroid/net/INetworkMonitorCallbacks;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -452,6 +475,7 @@
     move-result-object v0
 
     .line 185
+    .local v0, "_data":Landroid/os/Parcel;
     :try_start_4
     const-string v1, "android.net.INetworkStackConnector"
 
@@ -507,20 +531,21 @@
     move-result v1
 
     .line 196
+    .local v1, "_status":Z
     if-nez v1, :cond_40
 
     invoke-static {}, Landroid/net/INetworkStackConnector$Stub;->getDefaultImpl()Landroid/net/INetworkStackConnector;
 
-    move-result-object v1
+    move-result-object v2
 
-    if-eqz v1, :cond_40
+    if-eqz v2, :cond_40
 
     .line 197
     invoke-static {}, Landroid/net/INetworkStackConnector$Stub;->getDefaultImpl()Landroid/net/INetworkStackConnector;
 
-    move-result-object v1
+    move-result-object v2
 
-    invoke-interface {v1, p1, p2, p3}, Landroid/net/INetworkStackConnector;->makeNetworkMonitor(Landroid/net/Network;Ljava/lang/String;Landroid/net/INetworkMonitorCallbacks;)V
+    invoke-interface {v2, p1, p2, p3}, Landroid/net/INetworkStackConnector;->makeNetworkMonitor(Landroid/net/Network;Ljava/lang/String;Landroid/net/INetworkMonitorCallbacks;)V
     :try_end_3c
     .catchall {:try_start_4 .. :try_end_3c} :catchall_45
 
@@ -531,6 +556,7 @@
     return-void
 
     .line 202
+    .end local v1  # "_status":Z
     :cond_40
     invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
 
@@ -542,9 +568,9 @@
 
     .line 202
     :catchall_45
-    move-exception p1
+    move-exception v1
 
     invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
 
-    throw p1
+    throw v1
 .end method

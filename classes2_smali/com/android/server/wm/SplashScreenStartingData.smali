@@ -26,6 +26,16 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/wm/WindowManagerService;Ljava/lang/String;ILandroid/content/res/CompatibilityInfo;Ljava/lang/CharSequence;IIIILandroid/content/res/Configuration;)V
     .registers 11
+    .param p1, "service"  # Lcom/android/server/wm/WindowManagerService;
+    .param p2, "pkg"  # Ljava/lang/String;
+    .param p3, "theme"  # I
+    .param p4, "compatInfo"  # Landroid/content/res/CompatibilityInfo;
+    .param p5, "nonLocalizedLabel"  # Ljava/lang/CharSequence;
+    .param p6, "labelRes"  # I
+    .param p7, "icon"  # I
+    .param p8, "logo"  # I
+    .param p9, "windowFlags"  # I
+    .param p10, "mergedOverrideConfiguration"  # Landroid/content/res/Configuration;
 
     .line 42
     invoke-direct {p0, p1}, Lcom/android/server/wm/StartingData;-><init>(Lcom/android/server/wm/WindowManagerService;)V
@@ -65,6 +75,7 @@
 # virtual methods
 .method createStartingSurface(Lcom/android/server/wm/AppWindowToken;)Lcom/android/server/policy/WindowManagerPolicy$StartingSurface;
     .registers 15
+    .param p1, "atoken"  # Lcom/android/server/wm/AppWindowToken;
 
     .line 56
     iget-object v0, p0, Lcom/android/server/wm/SplashScreenStartingData;->mService:Lcom/android/server/wm/WindowManagerService;
@@ -94,16 +105,16 @@
     .line 58
     invoke-virtual {p1}, Lcom/android/server/wm/AppWindowToken;->getDisplayContent()Lcom/android/server/wm/DisplayContent;
 
-    move-result-object p1
+    move-result-object v0
 
-    invoke-virtual {p1}, Lcom/android/server/wm/DisplayContent;->getDisplayId()I
+    invoke-virtual {v0}, Lcom/android/server/wm/DisplayContent;->getDisplayId()I
 
     move-result v12
 
     .line 56
     invoke-interface/range {v1 .. v12}, Lcom/android/server/policy/WindowManagerPolicy;->addSplashScreen(Landroid/os/IBinder;Ljava/lang/String;ILandroid/content/res/CompatibilityInfo;Ljava/lang/CharSequence;IIIILandroid/content/res/Configuration;I)Lcom/android/server/policy/WindowManagerPolicy$StartingSurface;
 
-    move-result-object p1
+    move-result-object v0
 
-    return-object p1
+    return-object v0
 .end method

@@ -32,6 +32,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/hdmi/HdmiControlService$BinderService;III[B)V
     .registers 6
+    .param p1, "this$1"  # Lcom/android/server/hdmi/HdmiControlService$BinderService;
 
     .line 1971
     iput-object p1, p0, Lcom/android/server/hdmi/HdmiControlService$BinderService$19;->this$1:Lcom/android/server/hdmi/HdmiControlService$BinderService;
@@ -52,7 +53,7 @@
 
 # virtual methods
 .method public run()V
-    .registers 6
+    .registers 7
 
     .line 1974
     iget-object v0, p0, Lcom/android/server/hdmi/HdmiControlService$BinderService$19;->this$1:Lcom/android/server/hdmi/HdmiControlService$BinderService;
@@ -92,49 +93,50 @@
     move-result-object v0
 
     .line 1979
+    .local v0, "device":Lcom/android/server/hdmi/HdmiMhlLocalDeviceStub;
     if-nez v0, :cond_39
 
     .line 1980
-    new-instance v0, Ljava/lang/StringBuilder;
+    new-instance v2, Ljava/lang/StringBuilder;
 
-    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v2, "Invalid port id:"
+    const-string v3, "Invalid port id:"
 
-    invoke-virtual {v0, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    iget v2, p0, Lcom/android/server/hdmi/HdmiControlService$BinderService$19;->val$portId:I
+    iget v3, p0, Lcom/android/server/hdmi/HdmiControlService$BinderService$19;->val$portId:I
 
-    invoke-virtual {v0, v2}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v2
 
-    invoke-static {v1, v0}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v2}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 1981
     return-void
 
     .line 1983
     :cond_39
-    iget-object v0, p0, Lcom/android/server/hdmi/HdmiControlService$BinderService$19;->this$1:Lcom/android/server/hdmi/HdmiControlService$BinderService;
+    iget-object v1, p0, Lcom/android/server/hdmi/HdmiControlService$BinderService$19;->this$1:Lcom/android/server/hdmi/HdmiControlService$BinderService;
 
-    iget-object v0, v0, Lcom/android/server/hdmi/HdmiControlService$BinderService;->this$0:Lcom/android/server/hdmi/HdmiControlService;
+    iget-object v1, v1, Lcom/android/server/hdmi/HdmiControlService$BinderService;->this$0:Lcom/android/server/hdmi/HdmiControlService;
 
-    invoke-static {v0}, Lcom/android/server/hdmi/HdmiControlService;->access$1300(Lcom/android/server/hdmi/HdmiControlService;)Lcom/android/server/hdmi/HdmiMhlControllerStub;
+    invoke-static {v1}, Lcom/android/server/hdmi/HdmiControlService;->access$1300(Lcom/android/server/hdmi/HdmiControlService;)Lcom/android/server/hdmi/HdmiMhlControllerStub;
 
-    move-result-object v0
+    move-result-object v1
 
-    iget v1, p0, Lcom/android/server/hdmi/HdmiControlService$BinderService$19;->val$portId:I
+    iget v2, p0, Lcom/android/server/hdmi/HdmiControlService$BinderService$19;->val$portId:I
 
-    iget v2, p0, Lcom/android/server/hdmi/HdmiControlService$BinderService$19;->val$offset:I
+    iget v3, p0, Lcom/android/server/hdmi/HdmiControlService$BinderService$19;->val$offset:I
 
-    iget v3, p0, Lcom/android/server/hdmi/HdmiControlService$BinderService$19;->val$length:I
+    iget v4, p0, Lcom/android/server/hdmi/HdmiControlService$BinderService$19;->val$length:I
 
-    iget-object v4, p0, Lcom/android/server/hdmi/HdmiControlService$BinderService$19;->val$data:[B
+    iget-object v5, p0, Lcom/android/server/hdmi/HdmiControlService$BinderService$19;->val$data:[B
 
-    invoke-virtual {v0, v1, v2, v3, v4}, Lcom/android/server/hdmi/HdmiMhlControllerStub;->sendVendorCommand(III[B)V
+    invoke-virtual {v1, v2, v3, v4, v5}, Lcom/android/server/hdmi/HdmiMhlControllerStub;->sendVendorCommand(III[B)V
 
     .line 1984
     return-void

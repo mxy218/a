@@ -49,14 +49,15 @@
 
 .method public static asInterface(Landroid/os/IBinder;)Landroid/net/INetworkStackStatusCallback;
     .registers 3
+    .param p0, "obj"  # Landroid/os/IBinder;
 
     .line 44
     if-nez p0, :cond_4
 
     .line 45
-    const/4 p0, 0x0
+    const/4 v0, 0x0
 
-    return-object p0
+    return-object v0
 
     .line 47
     :cond_4
@@ -67,24 +68,27 @@
     move-result-object v0
 
     .line 48
-    if-eqz v0, :cond_13
+    .local v0, "iin":Landroid/os/IInterface;
+    if-eqz v0, :cond_14
 
     instance-of v1, v0, Landroid/net/INetworkStackStatusCallback;
 
-    if-eqz v1, :cond_13
+    if-eqz v1, :cond_14
 
     .line 49
-    check-cast v0, Landroid/net/INetworkStackStatusCallback;
+    move-object v1, v0
 
-    return-object v0
+    check-cast v1, Landroid/net/INetworkStackStatusCallback;
+
+    return-object v1
 
     .line 51
-    :cond_13
-    new-instance v0, Landroid/net/INetworkStackStatusCallback$Stub$Proxy;
+    :cond_14
+    new-instance v1, Landroid/net/INetworkStackStatusCallback$Stub$Proxy;
 
-    invoke-direct {v0, p0}, Landroid/net/INetworkStackStatusCallback$Stub$Proxy;-><init>(Landroid/os/IBinder;)V
+    invoke-direct {v1, p0}, Landroid/net/INetworkStackStatusCallback$Stub$Proxy;-><init>(Landroid/os/IBinder;)V
 
-    return-object v0
+    return-object v1
 .end method
 
 .method public static getDefaultImpl()Landroid/net/INetworkStackStatusCallback;
@@ -98,6 +102,7 @@
 
 .method public static setDefaultImpl(Landroid/net/INetworkStackStatusCallback;)Z
     .registers 2
+    .param p0, "impl"  # Landroid/net/INetworkStackStatusCallback;
 
     .line 142
     sget-object v0, Landroid/net/INetworkStackStatusCallback$Stub$Proxy;->sDefaultImpl:Landroid/net/INetworkStackStatusCallback;
@@ -110,15 +115,15 @@
     sput-object p0, Landroid/net/INetworkStackStatusCallback$Stub$Proxy;->sDefaultImpl:Landroid/net/INetworkStackStatusCallback;
 
     .line 144
-    const/4 p0, 0x1
+    const/4 v0, 0x1
 
-    return p0
+    return v0
 
     .line 146
     :cond_a
-    const/4 p0, 0x0
+    const/4 v0, 0x0
 
-    return p0
+    return v0
 .end method
 
 
@@ -132,6 +137,10 @@
 
 .method public onTransact(ILandroid/os/Parcel;Landroid/os/Parcel;I)Z
     .registers 8
+    .param p1, "code"  # I
+    .param p2, "data"  # Landroid/os/Parcel;
+    .param p3, "reply"  # Landroid/os/Parcel;
+    .param p4, "flags"  # I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -139,40 +148,39 @@
     .end annotation
 
     .line 59
-    nop
+    const-string v0, "android.net.INetworkStackStatusCallback"
 
     .line 60
-    const/4 v0, 0x1
+    .local v0, "descriptor":Ljava/lang/String;
+    const/4 v1, 0x1
 
-    const-string v1, "android.net.INetworkStackStatusCallback"
-
-    if-eq p1, v0, :cond_27
+    if-eq p1, v1, :cond_26
 
     const v2, 0xffffff
 
-    if-eq p1, v2, :cond_19
+    if-eq p1, v2, :cond_18
 
     const v2, 0x5f4e5446
 
-    if-eq p1, v2, :cond_15
+    if-eq p1, v2, :cond_14
 
     .line 84
     invoke-super {p0, p1, p2, p3, p4}, Landroid/os/Binder;->onTransact(ILandroid/os/Parcel;Landroid/os/Parcel;I)Z
 
-    move-result p1
+    move-result v1
 
-    return p1
+    return v1
 
     .line 64
-    :cond_15
-    invoke-virtual {p3, v1}, Landroid/os/Parcel;->writeString(Ljava/lang/String;)V
+    :cond_14
+    invoke-virtual {p3, v0}, Landroid/os/Parcel;->writeString(Ljava/lang/String;)V
 
     .line 65
-    return v0
+    return v1
 
     .line 77
-    :cond_19
-    invoke-virtual {p2, v1}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
+    :cond_18
+    invoke-virtual {p2, v0}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
 
     .line 78
     invoke-virtual {p3}, Landroid/os/Parcel;->writeNoException()V
@@ -180,25 +188,26 @@
     .line 79
     invoke-virtual {p0}, Landroid/net/INetworkStackStatusCallback$Stub;->getInterfaceVersion()I
 
-    move-result p1
+    move-result v2
 
-    invoke-virtual {p3, p1}, Landroid/os/Parcel;->writeInt(I)V
+    invoke-virtual {p3, v2}, Landroid/os/Parcel;->writeInt(I)V
 
     .line 80
-    return v0
+    return v1
 
     .line 69
-    :cond_27
-    invoke-virtual {p2, v1}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
+    :cond_26
+    invoke-virtual {p2, v0}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
 
     .line 71
     invoke-virtual {p2}, Landroid/os/Parcel;->readInt()I
 
-    move-result p1
+    move-result v2
 
     .line 72
-    invoke-virtual {p0, p1}, Landroid/net/INetworkStackStatusCallback$Stub;->onStatusAvailable(I)V
+    .local v2, "_arg0":I
+    invoke-virtual {p0, v2}, Landroid/net/INetworkStackStatusCallback$Stub;->onStatusAvailable(I)V
 
     .line 73
-    return v0
+    return v1
 .end method

@@ -21,6 +21,8 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/notification/CalendarTracker;Landroid/os/Handler;)V
     .registers 3
+    .param p1, "this$0"  # Lcom/android/server/notification/CalendarTracker;
+    .param p2, "x0"  # Landroid/os/Handler;
 
     .line 268
     iput-object p1, p0, Lcom/android/server/notification/CalendarTracker$1;->this$0:Lcom/android/server/notification/CalendarTracker;
@@ -34,6 +36,7 @@
 # virtual methods
 .method public onChange(Z)V
     .registers 4
+    .param p1, "selfChange"  # Z
 
     .line 278
     invoke-static {}, Lcom/android/server/notification/CalendarTracker;->access$000()Z
@@ -54,11 +57,11 @@
 
     invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    const-string v0, "ConditionProviders.CT"
+    const-string v1, "ConditionProviders.CT"
 
-    invoke-static {v0, p1}, Landroid/util/Log;->d(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v0}, Landroid/util/Log;->d(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 279
     :cond_1d
@@ -67,6 +70,8 @@
 
 .method public onChange(ZLandroid/net/Uri;)V
     .registers 5
+    .param p1, "selfChange"  # Z
+    .param p2, "u"  # Landroid/net/Uri;
 
     .line 271
     invoke-static {}, Lcom/android/server/notification/CalendarTracker;->access$000()Z
@@ -85,47 +90,47 @@
 
     invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Z)Ljava/lang/StringBuilder;
 
-    const-string p1, " uri="
+    const-string v1, " uri="
 
-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v0, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
-    const-string p1, " u="
+    const-string v1, " u="
 
-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    iget-object p1, p0, Lcom/android/server/notification/CalendarTracker$1;->this$0:Lcom/android/server/notification/CalendarTracker;
+    iget-object v1, p0, Lcom/android/server/notification/CalendarTracker$1;->this$0:Lcom/android/server/notification/CalendarTracker;
 
     .line 272
-    invoke-static {p1}, Lcom/android/server/notification/CalendarTracker;->access$100(Lcom/android/server/notification/CalendarTracker;)Landroid/content/Context;
+    invoke-static {v1}, Lcom/android/server/notification/CalendarTracker;->access$100(Lcom/android/server/notification/CalendarTracker;)Landroid/content/Context;
 
-    move-result-object p1
+    move-result-object v1
 
-    invoke-virtual {p1}, Landroid/content/Context;->getUserId()I
+    invoke-virtual {v1}, Landroid/content/Context;->getUserId()I
 
-    move-result p1
+    move-result v1
 
-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
     invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
     .line 271
-    const-string p2, "ConditionProviders.CT"
+    const-string v1, "ConditionProviders.CT"
 
-    invoke-static {p2, p1}, Landroid/util/Log;->d(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v0}, Landroid/util/Log;->d(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 273
     :cond_37
-    iget-object p1, p0, Lcom/android/server/notification/CalendarTracker$1;->this$0:Lcom/android/server/notification/CalendarTracker;
+    iget-object v0, p0, Lcom/android/server/notification/CalendarTracker$1;->this$0:Lcom/android/server/notification/CalendarTracker;
 
-    invoke-static {p1}, Lcom/android/server/notification/CalendarTracker;->access$200(Lcom/android/server/notification/CalendarTracker;)Lcom/android/server/notification/CalendarTracker$Callback;
+    invoke-static {v0}, Lcom/android/server/notification/CalendarTracker;->access$200(Lcom/android/server/notification/CalendarTracker;)Lcom/android/server/notification/CalendarTracker$Callback;
 
-    move-result-object p1
+    move-result-object v0
 
-    invoke-interface {p1}, Lcom/android/server/notification/CalendarTracker$Callback;->onChanged()V
+    invoke-interface {v0}, Lcom/android/server/notification/CalendarTracker$Callback;->onChanged()V
 
     .line 274
     return-void

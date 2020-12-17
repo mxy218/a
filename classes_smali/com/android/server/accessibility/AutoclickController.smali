@@ -44,6 +44,8 @@
 
 .method public constructor <init>(Landroid/content/Context;I)V
     .registers 3
+    .param p1, "context"  # Landroid/content/Context;
+    .param p2, "userId"  # I
 
     .line 66
     invoke-direct {p0}, Lcom/android/server/accessibility/BaseEventStreamTransformation;-><init>()V
@@ -60,6 +62,10 @@
 
 .method static synthetic access$001(Lcom/android/server/accessibility/AutoclickController;Landroid/view/MotionEvent;Landroid/view/MotionEvent;I)V
     .registers 4
+    .param p0, "x0"  # Lcom/android/server/accessibility/AutoclickController;
+    .param p1, "x1"  # Landroid/view/MotionEvent;
+    .param p2, "x2"  # Landroid/view/MotionEvent;
+    .param p3, "x3"  # I
 
     .line 55
     invoke-super {p0, p1, p2, p3}, Lcom/android/server/accessibility/BaseEventStreamTransformation;->onMotionEvent(Landroid/view/MotionEvent;Landroid/view/MotionEvent;I)V
@@ -69,6 +75,10 @@
 
 .method static synthetic access$101(Lcom/android/server/accessibility/AutoclickController;Landroid/view/MotionEvent;Landroid/view/MotionEvent;I)V
     .registers 4
+    .param p0, "x0"  # Lcom/android/server/accessibility/AutoclickController;
+    .param p1, "x1"  # Landroid/view/MotionEvent;
+    .param p2, "x2"  # Landroid/view/MotionEvent;
+    .param p3, "x3"  # I
 
     .line 55
     invoke-super {p0, p1, p2, p3}, Lcom/android/server/accessibility/BaseEventStreamTransformation;->onMotionEvent(Landroid/view/MotionEvent;Landroid/view/MotionEvent;I)V
@@ -78,6 +88,8 @@
 
 .method private handleMouseMotion(Landroid/view/MotionEvent;I)V
     .registers 5
+    .param p1, "event"  # Landroid/view/MotionEvent;
+    .param p2, "policyFlags"  # I
 
     .line 125
     invoke-virtual {p1}, Landroid/view/MotionEvent;->getActionMasked()I
@@ -88,18 +100,18 @@
 
     if-eq v0, v1, :cond_16
 
-    const/16 p1, 0x9
+    const/16 v1, 0x9
 
-    if-eq v0, p1, :cond_15
+    if-eq v0, v1, :cond_15
 
-    const/16 p1, 0xa
+    const/16 v1, 0xa
 
-    if-eq v0, p1, :cond_15
+    if-eq v0, v1, :cond_15
 
     .line 138
-    iget-object p1, p0, Lcom/android/server/accessibility/AutoclickController;->mClickScheduler:Lcom/android/server/accessibility/AutoclickController$ClickScheduler;
+    iget-object v0, p0, Lcom/android/server/accessibility/AutoclickController;->mClickScheduler:Lcom/android/server/accessibility/AutoclickController$ClickScheduler;
 
-    invoke-virtual {p1}, Lcom/android/server/accessibility/AutoclickController$ClickScheduler;->cancel()V
+    invoke-virtual {v0}, Lcom/android/server/accessibility/AutoclickController$ClickScheduler;->cancel()V
 
     goto :goto_29
 
@@ -126,9 +138,9 @@
 
     .line 130
     :cond_23
-    iget-object p1, p0, Lcom/android/server/accessibility/AutoclickController;->mClickScheduler:Lcom/android/server/accessibility/AutoclickController$ClickScheduler;
+    iget-object v0, p0, Lcom/android/server/accessibility/AutoclickController;->mClickScheduler:Lcom/android/server/accessibility/AutoclickController$ClickScheduler;
 
-    invoke-virtual {p1}, Lcom/android/server/accessibility/AutoclickController$ClickScheduler;->cancel()V
+    invoke-virtual {v0}, Lcom/android/server/accessibility/AutoclickController$ClickScheduler;->cancel()V
 
     .line 132
     nop
@@ -142,6 +154,7 @@
 # virtual methods
 .method public clearEvents(I)V
     .registers 3
+    .param p1, "inputSource"  # I
 
     .line 105
     const/16 v0, 0x2002
@@ -209,6 +222,8 @@
 
 .method public onKeyEvent(Landroid/view/KeyEvent;I)V
     .registers 5
+    .param p1, "event"  # Landroid/view/KeyEvent;
+    .param p2, "policyFlags"  # I
 
     .line 92
     iget-object v0, p0, Lcom/android/server/accessibility/AutoclickController;->mClickScheduler:Lcom/android/server/accessibility/AutoclickController$ClickScheduler;
@@ -253,7 +268,10 @@
 .end method
 
 .method public onMotionEvent(Landroid/view/MotionEvent;Landroid/view/MotionEvent;I)V
-    .registers 7
+    .registers 8
+    .param p1, "event"  # Landroid/view/MotionEvent;
+    .param p2, "rawEvent"  # Landroid/view/MotionEvent;
+    .param p3, "policyFlags"  # I
 
     .line 73
     const/16 v0, 0x2002
@@ -281,6 +299,7 @@
     invoke-direct {v0, v1}, Landroid/os/Handler;-><init>(Landroid/os/Looper;)V
 
     .line 76
+    .local v0, "handler":Landroid/os/Handler;
     new-instance v1, Lcom/android/server/accessibility/AutoclickController$ClickScheduler;
 
     const/16 v2, 0x258
@@ -299,19 +318,20 @@
     iput-object v1, p0, Lcom/android/server/accessibility/AutoclickController;->mClickDelayObserver:Lcom/android/server/accessibility/AutoclickController$ClickDelayObserver;
 
     .line 79
-    iget-object v0, p0, Lcom/android/server/accessibility/AutoclickController;->mClickDelayObserver:Lcom/android/server/accessibility/AutoclickController$ClickDelayObserver;
+    iget-object v1, p0, Lcom/android/server/accessibility/AutoclickController;->mClickDelayObserver:Lcom/android/server/accessibility/AutoclickController$ClickDelayObserver;
 
-    iget-object v1, p0, Lcom/android/server/accessibility/AutoclickController;->mContext:Landroid/content/Context;
+    iget-object v2, p0, Lcom/android/server/accessibility/AutoclickController;->mContext:Landroid/content/Context;
 
-    invoke-virtual {v1}, Landroid/content/Context;->getContentResolver()Landroid/content/ContentResolver;
+    invoke-virtual {v2}, Landroid/content/Context;->getContentResolver()Landroid/content/ContentResolver;
 
-    move-result-object v1
+    move-result-object v2
 
-    iget-object v2, p0, Lcom/android/server/accessibility/AutoclickController;->mClickScheduler:Lcom/android/server/accessibility/AutoclickController$ClickScheduler;
+    iget-object v3, p0, Lcom/android/server/accessibility/AutoclickController;->mClickScheduler:Lcom/android/server/accessibility/AutoclickController$ClickScheduler;
 
-    invoke-virtual {v0, v1, v2}, Lcom/android/server/accessibility/AutoclickController$ClickDelayObserver;->start(Landroid/content/ContentResolver;Lcom/android/server/accessibility/AutoclickController$ClickScheduler;)V
+    invoke-virtual {v1, v2, v3}, Lcom/android/server/accessibility/AutoclickController$ClickDelayObserver;->start(Landroid/content/ContentResolver;Lcom/android/server/accessibility/AutoclickController$ClickScheduler;)V
 
     .line 82
+    .end local v0  # "handler":Landroid/os/Handler;
     :cond_36
     invoke-direct {p0, p1, p3}, Lcom/android/server/accessibility/AutoclickController;->handleMouseMotion(Landroid/view/MotionEvent;I)V
 

@@ -49,6 +49,8 @@
 
 .method public onSameL3NetworkResponse(Landroid/net/ipmemorystore/StatusParcelable;Landroid/net/ipmemorystore/SameL3NetworkResponseParcelable;)V
     .registers 3
+    .param p1, "status"  # Landroid/net/ipmemorystore/StatusParcelable;
+    .param p2, "response"  # Landroid/net/ipmemorystore/SameL3NetworkResponseParcelable;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;

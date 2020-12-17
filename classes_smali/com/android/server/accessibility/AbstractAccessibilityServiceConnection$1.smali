@@ -21,8 +21,10 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/accessibility/AbstractAccessibilityServiceConnection;Landroid/os/Looper;)V
     .registers 3
+    .param p1, "this$0"  # Lcom/android/server/accessibility/AbstractAccessibilityServiceConnection;
+    .param p2, "x0"  # Landroid/os/Looper;
 
-    .line 257
+    .line 260
     iput-object p1, p0, Lcom/android/server/accessibility/AbstractAccessibilityServiceConnection$1;->this$0:Lcom/android/server/accessibility/AbstractAccessibilityServiceConnection;
 
     invoke-direct {p0, p2}, Landroid/os/Handler;-><init>(Landroid/os/Looper;)V
@@ -33,34 +35,38 @@
 
 # virtual methods
 .method public handleMessage(Landroid/os/Message;)V
-    .registers 5
+    .registers 6
+    .param p1, "message"  # Landroid/os/Message;
 
-    .line 260
+    .line 263
     iget v0, p1, Landroid/os/Message;->what:I
 
-    .line 261
+    .line 264
+    .local v0, "eventType":I
     iget-object v1, p1, Landroid/os/Message;->obj:Ljava/lang/Object;
 
     check-cast v1, Landroid/view/accessibility/AccessibilityEvent;
 
-    .line 262
-    iget p1, p1, Landroid/os/Message;->arg1:I
+    .line 265
+    .local v1, "event":Landroid/view/accessibility/AccessibilityEvent;
+    iget v2, p1, Landroid/os/Message;->arg1:I
 
-    if-eqz p1, :cond_c
+    if-eqz v2, :cond_c
 
-    const/4 p1, 0x1
+    const/4 v2, 0x1
 
     goto :goto_d
 
     :cond_c
-    const/4 p1, 0x0
+    const/4 v2, 0x0
 
-    .line 263
+    .line 266
+    .local v2, "serviceWantsEvent":Z
     :goto_d
-    iget-object v2, p0, Lcom/android/server/accessibility/AbstractAccessibilityServiceConnection$1;->this$0:Lcom/android/server/accessibility/AbstractAccessibilityServiceConnection;
+    iget-object v3, p0, Lcom/android/server/accessibility/AbstractAccessibilityServiceConnection$1;->this$0:Lcom/android/server/accessibility/AbstractAccessibilityServiceConnection;
 
-    invoke-static {v2, v0, v1, p1}, Lcom/android/server/accessibility/AbstractAccessibilityServiceConnection;->access$000(Lcom/android/server/accessibility/AbstractAccessibilityServiceConnection;ILandroid/view/accessibility/AccessibilityEvent;Z)V
+    invoke-static {v3, v0, v1, v2}, Lcom/android/server/accessibility/AbstractAccessibilityServiceConnection;->access$000(Lcom/android/server/accessibility/AbstractAccessibilityServiceConnection;ILandroid/view/accessibility/AccessibilityEvent;Z)V
 
-    .line 264
+    .line 267
     return-void
 .end method

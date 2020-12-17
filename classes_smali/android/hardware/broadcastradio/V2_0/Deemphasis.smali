@@ -21,6 +21,7 @@
 
 .method public static final dumpBitfield(B)Ljava/lang/String;
     .registers 5
+    .param p0, "o"  # B
 
     .line 18
     new-instance v0, Ljava/util/ArrayList;
@@ -28,31 +29,29 @@
     invoke-direct {v0}, Ljava/util/ArrayList;-><init>()V
 
     .line 19
-    nop
-
-    .line 20
-    and-int/lit8 v1, p0, 0x1
-
-    const/4 v2, 0x1
-
-    if-ne v1, v2, :cond_12
-
-    .line 21
-    const-string v1, "D50"
-
-    invoke-virtual {v0, v1}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
-
-    .line 22
-    int-to-byte v1, v2
-
-    goto :goto_13
-
-    .line 20
-    :cond_12
+    .local v0, "list":Ljava/util/ArrayList;, "Ljava/util/ArrayList<Ljava/lang/String;>;"
     const/4 v1, 0x0
 
+    .line 20
+    .local v1, "flipped":B
+    and-int/lit8 v2, p0, 0x1
+
+    const/4 v3, 0x1
+
+    if-ne v2, v3, :cond_13
+
+    .line 21
+    const-string v2, "D50"
+
+    invoke-virtual {v0, v2}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
+
+    .line 22
+    or-int/lit8 v2, v1, 0x1
+
+    int-to-byte v1, v2
+
     .line 24
-    :goto_13
+    :cond_13
     and-int/lit8 v2, p0, 0x2
 
     const/4 v3, 0x2
@@ -65,9 +64,9 @@
     invoke-virtual {v0, v2}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
 
     .line 26
-    or-int/lit8 v1, v1, 0x2
+    or-int/lit8 v2, v1, 0x2
 
-    int-to-byte v1, v1
+    int-to-byte v1, v2
 
     .line 28
     :cond_20
@@ -82,41 +81,42 @@
 
     invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    not-int v1, v1
+    not-int v3, v1
 
-    and-int/2addr p0, v1
+    and-int/2addr v3, p0
 
-    int-to-byte p0, p0
+    int-to-byte v3, v3
 
-    invoke-static {p0}, Ljava/lang/Byte;->toUnsignedInt(B)I
+    invoke-static {v3}, Ljava/lang/Byte;->toUnsignedInt(B)I
 
-    move-result p0
+    move-result v3
 
-    invoke-static {p0}, Ljava/lang/Integer;->toHexString(I)Ljava/lang/String;
+    invoke-static {v3}, Ljava/lang/Integer;->toHexString(I)Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v3
 
-    invoke-virtual {v2, p0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v2
 
-    invoke-virtual {v0, p0}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
+    invoke-virtual {v0, v2}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
 
     .line 31
     :cond_41
-    const-string p0, " | "
+    const-string v2, " | "
 
-    invoke-static {p0, v0}, Ljava/lang/String;->join(Ljava/lang/CharSequence;Ljava/lang/Iterable;)Ljava/lang/String;
+    invoke-static {v2, v0}, Ljava/lang/String;->join(Ljava/lang/CharSequence;Ljava/lang/Iterable;)Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v2
 
-    return-object p0
+    return-object v2
 .end method
 
 .method public static final toString(B)Ljava/lang/String;
     .registers 3
+    .param p0, "o"  # B
 
     .line 8
     const/4 v0, 0x1
@@ -124,9 +124,9 @@
     if-ne p0, v0, :cond_6
 
     .line 9
-    const-string p0, "D50"
+    const-string v0, "D50"
 
-    return-object p0
+    return-object v0
 
     .line 11
     :cond_6
@@ -135,9 +135,9 @@
     if-ne p0, v0, :cond_c
 
     .line 12
-    const-string p0, "D75"
+    const-string v0, "D75"
 
-    return-object p0
+    return-object v0
 
     .line 14
     :cond_c
@@ -151,17 +151,17 @@
 
     invoke-static {p0}, Ljava/lang/Byte;->toUnsignedInt(B)I
 
-    move-result p0
+    move-result v1
 
-    invoke-static {p0}, Ljava/lang/Integer;->toHexString(I)Ljava/lang/String;
+    invoke-static {v1}, Ljava/lang/Integer;->toHexString(I)Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v1
 
-    invoke-virtual {v0, p0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v0
 
-    return-object p0
+    return-object v0
 .end method

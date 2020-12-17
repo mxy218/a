@@ -21,6 +21,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/content/SyncManager;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/content/SyncManager;
 
     .line 427
     iput-object p1, p0, Lcom/android/server/content/SyncManager$5;->this$0:Lcom/android/server/content/SyncManager;
@@ -33,29 +34,31 @@
 
 # virtual methods
 .method public onReceive(Landroid/content/Context;Landroid/content/Intent;)V
-    .registers 3
+    .registers 5
+    .param p1, "context"  # Landroid/content/Context;
+    .param p2, "intent"  # Landroid/content/Intent;
 
     .line 430
     invoke-virtual {p2}, Landroid/content/Intent;->getAction()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    const-string p2, "android.intent.action.TIME_SET"
+    const-string v1, "android.intent.action.TIME_SET"
 
-    invoke-virtual {p2, p1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v1, v0}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result p1
+    move-result v0
 
-    if-eqz p1, :cond_16
+    if-eqz v0, :cond_16
 
     .line 431
-    iget-object p1, p0, Lcom/android/server/content/SyncManager$5;->this$0:Lcom/android/server/content/SyncManager;
+    iget-object v0, p0, Lcom/android/server/content/SyncManager$5;->this$0:Lcom/android/server/content/SyncManager;
 
-    invoke-static {p1}, Lcom/android/server/content/SyncManager;->access$800(Lcom/android/server/content/SyncManager;)Lcom/android/server/content/SyncStorageEngine;
+    invoke-static {v0}, Lcom/android/server/content/SyncManager;->access$800(Lcom/android/server/content/SyncManager;)Lcom/android/server/content/SyncStorageEngine;
 
-    move-result-object p1
+    move-result-object v0
 
-    invoke-virtual {p1}, Lcom/android/server/content/SyncStorageEngine;->setClockValid()V
+    invoke-virtual {v0}, Lcom/android/server/content/SyncStorageEngine;->setClockValid()V
 
     .line 432
     return-void

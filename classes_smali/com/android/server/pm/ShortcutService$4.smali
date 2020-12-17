@@ -21,8 +21,9 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/pm/ShortcutService;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/pm/ShortcutService;
 
-    .line 2879
+    .line 2890
     iput-object p1, p0, Lcom/android/server/pm/ShortcutService$4;->this$0:Lcom/android/server/pm/ShortcutService;
 
     invoke-direct {p0}, Landroid/content/BroadcastReceiver;-><init>()V
@@ -33,62 +34,66 @@
 
 # virtual methods
 .method public onReceive(Landroid/content/Context;Landroid/content/Intent;)V
-    .registers 4
+    .registers 6
+    .param p1, "context"  # Landroid/content/Context;
+    .param p2, "intent"  # Landroid/content/Intent;
 
-    .line 2882
-    iget-object p1, p0, Lcom/android/server/pm/ShortcutService$4;->this$0:Lcom/android/server/pm/ShortcutService;
+    .line 2893
+    iget-object v0, p0, Lcom/android/server/pm/ShortcutService$4;->this$0:Lcom/android/server/pm/ShortcutService;
 
-    invoke-static {p1}, Lcom/android/server/pm/ShortcutService;->access$700(Lcom/android/server/pm/ShortcutService;)Ljava/util/concurrent/atomic/AtomicBoolean;
+    invoke-static {v0}, Lcom/android/server/pm/ShortcutService;->access$700(Lcom/android/server/pm/ShortcutService;)Ljava/util/concurrent/atomic/AtomicBoolean;
 
-    move-result-object p1
+    move-result-object v0
 
-    invoke-virtual {p1}, Ljava/util/concurrent/atomic/AtomicBoolean;->get()Z
+    invoke-virtual {v0}, Ljava/util/concurrent/atomic/AtomicBoolean;->get()Z
 
-    move-result p1
+    move-result v0
 
-    if-nez p1, :cond_d
+    if-nez v0, :cond_d
 
-    .line 2883
+    .line 2894
     return-void
 
-    .line 2886
+    .line 2897
     :cond_d
     :try_start_d
-    const-string p1, "android.intent.action.LOCALE_CHANGED"
+    const-string v0, "android.intent.action.LOCALE_CHANGED"
 
     invoke-virtual {p2}, Landroid/content/Intent;->getAction()Ljava/lang/String;
 
-    move-result-object p2
+    move-result-object v1
 
-    invoke-virtual {p1, p2}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v0, v1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result p1
+    move-result v0
 
-    if-eqz p1, :cond_1e
+    if-eqz v0, :cond_1e
 
-    .line 2887
-    iget-object p1, p0, Lcom/android/server/pm/ShortcutService$4;->this$0:Lcom/android/server/pm/ShortcutService;
+    .line 2898
+    iget-object v0, p0, Lcom/android/server/pm/ShortcutService$4;->this$0:Lcom/android/server/pm/ShortcutService;
 
-    invoke-virtual {p1}, Lcom/android/server/pm/ShortcutService;->handleLocaleChanged()V
+    invoke-virtual {v0}, Lcom/android/server/pm/ShortcutService;->handleLocaleChanged()V
     :try_end_1e
     .catch Ljava/lang/Exception; {:try_start_d .. :try_end_1e} :catch_1f
 
-    .line 2891
+    .line 2902
     :cond_1e
     goto :goto_27
 
-    .line 2889
+    .line 2900
     :catch_1f
-    move-exception p1
+    move-exception v0
 
-    .line 2890
-    iget-object p2, p0, Lcom/android/server/pm/ShortcutService$4;->this$0:Lcom/android/server/pm/ShortcutService;
+    .line 2901
+    .local v0, "e":Ljava/lang/Exception;
+    iget-object v1, p0, Lcom/android/server/pm/ShortcutService$4;->this$0:Lcom/android/server/pm/ShortcutService;
 
-    const-string v0, "Exception in mReceiver.onReceive"
+    const-string v2, "Exception in mReceiver.onReceive"
 
-    invoke-virtual {p2, v0, p1}, Lcom/android/server/pm/ShortcutService;->wtf(Ljava/lang/String;Ljava/lang/Throwable;)V
+    invoke-virtual {v1, v2, v0}, Lcom/android/server/pm/ShortcutService;->wtf(Ljava/lang/String;Ljava/lang/Throwable;)V
 
-    .line 2892
+    .line 2903
+    .end local v0  # "e":Ljava/lang/Exception;
     :goto_27
     return-void
 .end method

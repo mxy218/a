@@ -47,6 +47,8 @@
 
 .method synthetic constructor <init>(Lcom/android/server/attention/AttentionManagerService;Lcom/android/server/attention/AttentionManagerService$1;)V
     .registers 3
+    .param p1, "x0"  # Lcom/android/server/attention/AttentionManagerService;
+    .param p2, "x1"  # Lcom/android/server/attention/AttentionManagerService$1;
 
     .line 678
     invoke-direct {p0, p1}, Lcom/android/server/attention/AttentionManagerService$AttentionManagerServiceShellCommand;-><init>(Lcom/android/server/attention/AttentionManagerService;)V
@@ -63,6 +65,7 @@
     move-result-object v0
 
     .line 766
+    .local v0, "out":Ljava/io/PrintWriter;
     iget-object v1, p0, Lcom/android/server/attention/AttentionManagerService$AttentionManagerServiceShellCommand;->this$0:Lcom/android/server/attention/AttentionManagerService;
 
     iget-object v2, p0, Lcom/android/server/attention/AttentionManagerService$AttentionManagerServiceShellCommand;->mTestableAttentionCallback:Lcom/android/server/attention/AttentionManagerService$AttentionManagerServiceShellCommand$TestableAttentionCallbackInternal;
@@ -75,9 +78,9 @@
     invoke-virtual {v0, v1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
     .line 768
-    const/4 v0, 0x0
+    const/4 v1, 0x0
 
-    return v0
+    return v1
 .end method
 
 .method private cmdCallCheckAttention()I
@@ -89,6 +92,7 @@
     move-result-object v0
 
     .line 759
+    .local v0, "out":Ljava/io/PrintWriter;
     iget-object v1, p0, Lcom/android/server/attention/AttentionManagerService$AttentionManagerServiceShellCommand;->this$0:Lcom/android/server/attention/AttentionManagerService;
 
     iget-object v2, p0, Lcom/android/server/attention/AttentionManagerService$AttentionManagerServiceShellCommand;->mTestableAttentionCallback:Lcom/android/server/attention/AttentionManagerService$AttentionManagerServiceShellCommand$TestableAttentionCallbackInternal;
@@ -100,22 +104,23 @@
     move-result v1
 
     .line 760
+    .local v1, "calledSuccessfully":Z
     if-eqz v1, :cond_14
 
-    const-string/jumbo v1, "true"
+    const-string/jumbo v2, "true"
 
     goto :goto_16
 
     :cond_14
-    const-string v1, "false"
+    const-string v2, "false"
 
     :goto_16
-    invoke-virtual {v0, v1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {v0, v2}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
     .line 761
-    const/4 v0, 0x0
+    const/4 v2, 0x0
 
-    return v0
+    return v2
 .end method
 
 .method private cmdClearTestableAttentionService()I
@@ -149,6 +154,7 @@
     move-result-object v0
 
     .line 780
+    .local v0, "out":Ljava/io/PrintWriter;
     iget-object v1, p0, Lcom/android/server/attention/AttentionManagerService$AttentionManagerServiceShellCommand;->mTestableAttentionCallback:Lcom/android/server/attention/AttentionManagerService$AttentionManagerServiceShellCommand$TestableAttentionCallbackInternal;
 
     invoke-virtual {v1}, Lcom/android/server/attention/AttentionManagerService$AttentionManagerServiceShellCommand$TestableAttentionCallbackInternal;->getLastCallbackCode()I
@@ -158,13 +164,13 @@
     invoke-virtual {v0, v1}, Ljava/io/PrintWriter;->println(I)V
 
     .line 781
-    const/4 v0, 0x0
+    const/4 v1, 0x0
 
-    return v0
+    return v1
 .end method
 
 .method private cmdResolveAttentionServiceComponent()I
-    .registers 3
+    .registers 4
 
     .line 772
     invoke-virtual {p0}, Lcom/android/server/attention/AttentionManagerService$AttentionManagerServiceShellCommand;->getOutPrintWriter()Ljava/io/PrintWriter;
@@ -172,6 +178,7 @@
     move-result-object v0
 
     .line 773
+    .local v0, "out":Ljava/io/PrintWriter;
     iget-object v1, p0, Lcom/android/server/attention/AttentionManagerService$AttentionManagerServiceShellCommand;->this$0:Lcom/android/server/attention/AttentionManagerService;
 
     invoke-static {v1}, Lcom/android/server/attention/AttentionManagerService;->access$2300(Lcom/android/server/attention/AttentionManagerService;)Landroid/content/Context;
@@ -183,28 +190,30 @@
     move-result-object v1
 
     .line 774
+    .local v1, "resolvedComponent":Landroid/content/ComponentName;
     if-eqz v1, :cond_15
 
     invoke-virtual {v1}, Landroid/content/ComponentName;->flattenToShortString()Ljava/lang/String;
 
-    move-result-object v1
+    move-result-object v2
 
     goto :goto_17
 
     :cond_15
-    const-string v1, ""
+    const-string v2, ""
 
     :goto_17
-    invoke-virtual {v0, v1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {v0, v2}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
     .line 775
-    const/4 v0, 0x0
+    const/4 v2, 0x0
 
-    return v0
+    return v2
 .end method
 
 .method private cmdSetTestableAttentionService(Ljava/lang/String;)I
     .registers 5
+    .param p1, "testingServicePackage"  # Ljava/lang/String;
 
     .line 739
     invoke-virtual {p0}, Lcom/android/server/attention/AttentionManagerService$AttentionManagerServiceShellCommand;->getOutPrintWriter()Ljava/io/PrintWriter;
@@ -212,6 +221,7 @@
     move-result-object v0
 
     .line 740
+    .local v0, "out":Ljava/io/PrintWriter;
     invoke-static {p1}, Landroid/text/TextUtils;->isEmpty(Ljava/lang/CharSequence;)Z
 
     move-result v1
@@ -233,11 +243,11 @@
     invoke-direct {p0}, Lcom/android/server/attention/AttentionManagerService$AttentionManagerServiceShellCommand;->resetStates()V
 
     .line 745
-    iget-object p1, p0, Lcom/android/server/attention/AttentionManagerService$AttentionManagerServiceShellCommand;->this$0:Lcom/android/server/attention/AttentionManagerService;
+    iget-object v1, p0, Lcom/android/server/attention/AttentionManagerService$AttentionManagerServiceShellCommand;->this$0:Lcom/android/server/attention/AttentionManagerService;
 
-    iget-object p1, p1, Lcom/android/server/attention/AttentionManagerService;->mComponentName:Landroid/content/ComponentName;
+    iget-object v1, v1, Lcom/android/server/attention/AttentionManagerService;->mComponentName:Landroid/content/ComponentName;
 
-    if-eqz p1, :cond_1f
+    if-eqz v1, :cond_1f
 
     const-string/jumbo v2, "true"
 
@@ -246,9 +256,9 @@
 
     .line 747
     :goto_22
-    const/4 p1, 0x0
+    const/4 v1, 0x0
 
-    return p1
+    return v1
 .end method
 
 .method private resetStates()V
@@ -284,6 +294,7 @@
 # virtual methods
 .method public onCommand(Ljava/lang/String;)I
     .registers 10
+    .param p1, "cmd"  # Ljava/lang/String;
 
     .line 706
     if-nez p1, :cond_7
@@ -291,9 +302,9 @@
     .line 707
     invoke-virtual {p0, p1}, Lcom/android/server/attention/AttentionManagerService$AttentionManagerServiceShellCommand;->handleDefaultCommands(Ljava/lang/String;)I
 
-    move-result p1
+    move-result v0
 
-    return p1
+    return v0
 
     .line 709
     :cond_7
@@ -302,6 +313,7 @@
     move-result-object v0
 
     .line 711
+    .local v0, "err":Ljava/io/PrintWriter;
     const/4 v1, -0x1
 
     :try_start_c
@@ -406,78 +418,78 @@
     .line 730
     invoke-virtual {p0, p1}, Lcom/android/server/attention/AttentionManagerService$AttentionManagerServiceShellCommand;->handleDefaultCommands(Ljava/lang/String;)I
 
-    move-result p1
+    move-result v1
 
-    return p1
+    return v1
 
     .line 728
     :cond_5c
     invoke-direct {p0}, Lcom/android/server/attention/AttentionManagerService$AttentionManagerServiceShellCommand;->cmdGetLastTestCallbackCode()I
 
-    move-result p1
+    move-result v1
 
-    return p1
+    return v1
 
     .line 726
     :cond_61
     invoke-direct {p0}, Lcom/android/server/attention/AttentionManagerService$AttentionManagerServiceShellCommand;->cmdClearTestableAttentionService()I
 
-    move-result p1
+    move-result v1
 
-    return p1
+    return v1
 
     .line 724
     :cond_66
     invoke-virtual {p0}, Lcom/android/server/attention/AttentionManagerService$AttentionManagerServiceShellCommand;->getNextArgRequired()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v2
 
-    invoke-direct {p0, p1}, Lcom/android/server/attention/AttentionManagerService$AttentionManagerServiceShellCommand;->cmdSetTestableAttentionService(Ljava/lang/String;)I
+    invoke-direct {p0, v2}, Lcom/android/server/attention/AttentionManagerService$AttentionManagerServiceShellCommand;->cmdSetTestableAttentionService(Ljava/lang/String;)I
 
-    move-result p1
+    move-result v1
 
-    return p1
+    return v1
 
     .line 715
     :cond_6f
     invoke-virtual {p0}, Lcom/android/server/attention/AttentionManagerService$AttentionManagerServiceShellCommand;->getNextArgRequired()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v2
 
-    invoke-virtual {p1}, Ljava/lang/String;->hashCode()I
+    invoke-virtual {v2}, Ljava/lang/String;->hashCode()I
 
-    move-result v2
+    move-result v4
 
-    const v4, 0x2d7ba210
+    const v5, 0x2d7ba210
 
-    if-eq v2, v4, :cond_8b
+    if-eq v4, v5, :cond_8b
 
-    const v4, 0x589284f6
+    const v5, 0x589284f6
 
-    if-eq v2, v4, :cond_82
+    if-eq v4, v5, :cond_82
 
     :cond_81
     goto :goto_95
 
     :cond_82
-    const-string v2, "checkAttention"
+    const-string v4, "checkAttention"
 
-    invoke-virtual {p1, v2}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v2, v4}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result p1
+    move-result v2
 
-    if-eqz p1, :cond_81
+    if-eqz v2, :cond_81
 
     goto :goto_96
 
     :cond_8b
-    const-string v2, "cancelCheckAttention"
+    const-string v3, "cancelCheckAttention"
 
-    invoke-virtual {p1, v2}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v2, v3}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result p1
+    move-result v2
 
-    if-eqz p1, :cond_81
+    if-eqz v2, :cond_81
 
     move v3, v7
 
@@ -494,64 +506,72 @@
     .line 719
     invoke-direct {p0}, Lcom/android/server/attention/AttentionManagerService$AttentionManagerServiceShellCommand;->cmdCallCancelAttention()I
 
-    move-result p1
+    move-result v1
 
-    return p1
+    return v1
 
     .line 721
     :cond_9f
-    new-instance p1, Ljava/lang/IllegalArgumentException;
+    new-instance v2, Ljava/lang/IllegalArgumentException;
 
-    const-string v2, "Invalid argument"
+    const-string v3, "Invalid argument"
 
-    invoke-direct {p1, v2}, Ljava/lang/IllegalArgumentException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v2, v3}, Ljava/lang/IllegalArgumentException;-><init>(Ljava/lang/String;)V
 
-    throw p1
+    .end local v0  # "err":Ljava/io/PrintWriter;
+    .end local p0  # "this":Lcom/android/server/attention/AttentionManagerService$AttentionManagerServiceShellCommand;
+    .end local p1  # "cmd":Ljava/lang/String;
+    throw v2
 
     .line 717
+    .restart local v0  # "err":Ljava/io/PrintWriter;
+    .restart local p0  # "this":Lcom/android/server/attention/AttentionManagerService$AttentionManagerServiceShellCommand;
+    .restart local p1  # "cmd":Ljava/lang/String;
     :cond_a7
     invoke-direct {p0}, Lcom/android/server/attention/AttentionManagerService$AttentionManagerServiceShellCommand;->cmdCallCheckAttention()I
 
-    move-result p1
+    move-result v1
 
-    return p1
+    return v1
 
     .line 713
     :cond_ac
     invoke-direct {p0}, Lcom/android/server/attention/AttentionManagerService$AttentionManagerServiceShellCommand;->cmdResolveAttentionServiceComponent()I
 
-    move-result p1
+    move-result v1
     :try_end_b0
     .catch Ljava/lang/IllegalArgumentException; {:try_start_c .. :try_end_b0} :catch_b1
 
-    return p1
+    return v1
 
     .line 732
     :catch_b1
-    move-exception p1
+    move-exception v2
 
     .line 733
-    new-instance v2, Ljava/lang/StringBuilder;
+    .local v2, "e":Ljava/lang/IllegalArgumentException;
+    new-instance v3, Ljava/lang/StringBuilder;
 
-    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v3, "Error: "
+    const-string v4, "Error: "
 
-    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p1}, Ljava/lang/IllegalArgumentException;->getMessage()Ljava/lang/String;
+    invoke-virtual {v2}, Ljava/lang/IllegalArgumentException;->getMessage()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v4
 
-    invoke-virtual {v2, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v3
 
-    invoke-virtual {v0, p1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {v0, v3}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
     .line 735
+    .end local v2  # "e":Ljava/lang/IllegalArgumentException;
     return v1
 
     nop
@@ -575,6 +595,7 @@
     move-result-object v0
 
     .line 792
+    .local v0, "out":Ljava/io/PrintWriter;
     const-string v1, "Attention commands: "
 
     invoke-virtual {v0, v1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V

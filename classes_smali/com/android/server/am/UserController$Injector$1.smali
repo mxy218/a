@@ -23,8 +23,13 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/am/UserController$Injector;Lcom/android/server/am/ActivityManagerService;ILcom/android/internal/util/ProgressReporter;ZLjava/lang/Runnable;)V
     .registers 7
+    .param p1, "this$0"  # Lcom/android/server/am/UserController$Injector;
+    .param p2, "service"  # Lcom/android/server/am/ActivityManagerService;
+    .param p3, "userId"  # I
+    .param p4, "progress"  # Lcom/android/internal/util/ProgressReporter;
+    .param p5, "quiet"  # Z
 
-    .line 2333
+    .line 2297
     iput-object p1, p0, Lcom/android/server/am/UserController$Injector$1;->this$0:Lcom/android/server/am/UserController$Injector;
 
     iput-object p6, p0, Lcom/android/server/am/UserController$Injector$1;->val$onFinish:Ljava/lang/Runnable;
@@ -39,11 +44,11 @@
 .method public onFinished()V
     .registers 2
 
-    .line 2336
+    .line 2300
     iget-object v0, p0, Lcom/android/server/am/UserController$Injector$1;->val$onFinish:Ljava/lang/Runnable;
 
     invoke-interface {v0}, Ljava/lang/Runnable;->run()V
 
-    .line 2337
+    .line 2301
     return-void
 .end method

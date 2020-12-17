@@ -25,6 +25,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/GraphicsStatsService;Lcom/android/server/GraphicsStatsService$ActiveBuffer;)V
     .registers 6
+    .param p2, "active"  # Lcom/android/server/GraphicsStatsService$ActiveBuffer;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Ljava/io/IOException;
@@ -62,17 +63,17 @@
     iput-wide v1, v0, Lcom/android/server/GraphicsStatsService$BufferInfo;->endTime:J
 
     .line 445
-    iget-object p2, p2, Lcom/android/server/GraphicsStatsService$ActiveBuffer;->mProcessBuffer:Landroid/os/MemoryFile;
+    iget-object v0, p2, Lcom/android/server/GraphicsStatsService$ActiveBuffer;->mProcessBuffer:Landroid/os/MemoryFile;
 
-    iget-object v0, p0, Lcom/android/server/GraphicsStatsService$HistoricalBuffer;->mData:[B
+    iget-object v1, p0, Lcom/android/server/GraphicsStatsService$HistoricalBuffer;->mData:[B
 
     invoke-static {p1}, Lcom/android/server/GraphicsStatsService;->access$200(Lcom/android/server/GraphicsStatsService;)I
 
     move-result p1
 
-    const/4 v1, 0x0
+    const/4 v2, 0x0
 
-    invoke-virtual {p2, v0, v1, v1, p1}, Landroid/os/MemoryFile;->readBytes([BIII)I
+    invoke-virtual {v0, v1, v2, v2, p1}, Landroid/os/MemoryFile;->readBytes([BIII)I
 
     .line 446
     return-void

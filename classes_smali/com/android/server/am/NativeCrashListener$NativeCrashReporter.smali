@@ -26,15 +26,19 @@
 
 # direct methods
 .method constructor <init>(Lcom/android/server/am/NativeCrashListener;Lcom/android/server/am/ProcessRecord;ILjava/lang/String;)V
-    .registers 5
+    .registers 6
+    .param p1, "this$0"  # Lcom/android/server/am/NativeCrashListener;
+    .param p2, "app"  # Lcom/android/server/am/ProcessRecord;
+    .param p3, "signal"  # I
+    .param p4, "report"  # Ljava/lang/String;
 
     .line 65
     iput-object p1, p0, Lcom/android/server/am/NativeCrashListener$NativeCrashReporter;->this$0:Lcom/android/server/am/NativeCrashListener;
 
     .line 66
-    const-string p1, "NativeCrashReport"
+    const-string v0, "NativeCrashReport"
 
-    invoke-direct {p0, p1}, Ljava/lang/Thread;-><init>(Ljava/lang/String;)V
+    invoke-direct {p0, v0}, Ljava/lang/Thread;-><init>(Ljava/lang/String;)V
 
     .line 67
     iput-object p2, p0, Lcom/android/server/am/NativeCrashListener$NativeCrashReporter;->mApp:Lcom/android/server/am/ProcessRecord;
@@ -63,6 +67,7 @@
     invoke-direct {v1}, Landroid/app/ApplicationErrorReport$CrashInfo;-><init>()V
 
     .line 76
+    .local v1, "ci":Landroid/app/ApplicationErrorReport$CrashInfo;
     const-string v2, "Native crash"
 
     iput-object v2, v1, Landroid/app/ApplicationErrorReport$CrashInfo;->exceptionClassName:Ljava/lang/String;
@@ -108,6 +113,7 @@
     .catch Ljava/lang/Exception; {:try_start_3 .. :try_end_2e} :catch_2f
 
     .line 88
+    .end local v1  # "ci":Landroid/app/ApplicationErrorReport$CrashInfo;
     goto :goto_37
 
     .line 86
@@ -115,6 +121,7 @@
     move-exception v0
 
     .line 87
+    .local v0, "e":Ljava/lang/Exception;
     const-string v1, "NativeCrashListener"
 
     const-string v2, "Unable to report native crash"
@@ -122,6 +129,7 @@
     invoke-static {v1, v2, v0}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
     .line 89
+    .end local v0  # "e":Ljava/lang/Exception;
     :goto_37
     return-void
 .end method

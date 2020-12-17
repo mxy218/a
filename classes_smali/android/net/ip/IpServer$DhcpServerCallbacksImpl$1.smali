@@ -20,16 +20,17 @@
 
 # direct methods
 .method constructor <init>(Landroid/net/ip/IpServer$DhcpServerCallbacksImpl;)V
-    .registers 3
+    .registers 4
+    .param p1, "this$1"  # Landroid/net/ip/IpServer$DhcpServerCallbacksImpl;
 
-    .line 313
+    .line 324
     iput-object p1, p0, Landroid/net/ip/IpServer$DhcpServerCallbacksImpl$1;->this$1:Landroid/net/ip/IpServer$DhcpServerCallbacksImpl;
 
-    iget-object p1, p1, Landroid/net/ip/IpServer$DhcpServerCallbacksImpl;->this$0:Landroid/net/ip/IpServer;
+    iget-object v0, p1, Landroid/net/ip/IpServer$DhcpServerCallbacksImpl;->this$0:Landroid/net/ip/IpServer;
 
-    const/4 v0, 0x0
+    const/4 v1, 0x0
 
-    invoke-direct {p0, p1, v0}, Landroid/net/ip/IpServer$OnHandlerStatusCallback;-><init>(Landroid/net/ip/IpServer;Landroid/net/ip/IpServer$1;)V
+    invoke-direct {p0, v0, v1}, Landroid/net/ip/IpServer$OnHandlerStatusCallback;-><init>(Landroid/net/ip/IpServer;Landroid/net/ip/IpServer$1;)V
 
     return-void
 .end method
@@ -38,13 +39,14 @@
 # virtual methods
 .method public callback(I)V
     .registers 5
+    .param p1, "startStatusCode"  # I
 
-    .line 316
+    .line 327
     const/4 v0, 0x1
 
     if-eq p1, v0, :cond_24
 
-    .line 317
+    .line 328
     iget-object v0, p0, Landroid/net/ip/IpServer$DhcpServerCallbacksImpl$1;->this$1:Landroid/net/ip/IpServer$DhcpServerCallbacksImpl;
 
     iget-object v0, v0, Landroid/net/ip/IpServer$DhcpServerCallbacksImpl;->this$0:Landroid/net/ip/IpServer;
@@ -65,16 +67,16 @@
 
     invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v1
 
-    invoke-virtual {v0, p1}, Landroid/net/util/SharedLog;->e(Ljava/lang/String;)V
+    invoke-virtual {v0, v1}, Landroid/net/util/SharedLog;->e(Ljava/lang/String;)V
 
-    .line 318
-    iget-object p1, p0, Landroid/net/ip/IpServer$DhcpServerCallbacksImpl$1;->this$1:Landroid/net/ip/IpServer$DhcpServerCallbacksImpl;
+    .line 329
+    iget-object v0, p0, Landroid/net/ip/IpServer$DhcpServerCallbacksImpl$1;->this$1:Landroid/net/ip/IpServer$DhcpServerCallbacksImpl;
 
-    invoke-static {p1}, Landroid/net/ip/IpServer$DhcpServerCallbacksImpl;->access$600(Landroid/net/ip/IpServer$DhcpServerCallbacksImpl;)V
+    invoke-static {v0}, Landroid/net/ip/IpServer$DhcpServerCallbacksImpl;->access$600(Landroid/net/ip/IpServer$DhcpServerCallbacksImpl;)V
 
-    .line 320
+    .line 331
     :cond_24
     return-void
 .end method

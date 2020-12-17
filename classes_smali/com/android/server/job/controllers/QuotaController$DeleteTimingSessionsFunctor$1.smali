@@ -33,6 +33,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/job/controllers/QuotaController$DeleteTimingSessionsFunctor;)V
     .registers 2
+    .param p1, "this$1"  # Lcom/android/server/job/controllers/QuotaController$DeleteTimingSessionsFunctor;
 
     .line 1834
     iput-object p1, p0, Lcom/android/server/job/controllers/QuotaController$DeleteTimingSessionsFunctor$1;->this$1:Lcom/android/server/job/controllers/QuotaController$DeleteTimingSessionsFunctor;
@@ -46,13 +47,14 @@
 # virtual methods
 .method public test(Lcom/android/server/job/controllers/QuotaController$TimingSession;)Z
     .registers 8
+    .param p1, "ts"  # Lcom/android/server/job/controllers/QuotaController$TimingSession;
 
     .line 1836
     iget-wide v0, p1, Lcom/android/server/job/controllers/QuotaController$TimingSession;->endTimeElapsed:J
 
-    sget-object p1, Lcom/android/server/job/JobSchedulerService;->sElapsedRealtimeClock:Ljava/time/Clock;
+    sget-object v2, Lcom/android/server/job/JobSchedulerService;->sElapsedRealtimeClock:Ljava/time/Clock;
 
-    invoke-virtual {p1}, Ljava/time/Clock;->millis()J
+    invoke-virtual {v2}, Ljava/time/Clock;->millis()J
 
     move-result-wide v2
 
@@ -60,19 +62,19 @@
 
     sub-long/2addr v2, v4
 
-    cmp-long p1, v0, v2
+    cmp-long v0, v0, v2
 
-    if-gtz p1, :cond_12
+    if-gtz v0, :cond_12
 
-    const/4 p1, 0x1
+    const/4 v0, 0x1
 
     goto :goto_13
 
     :cond_12
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
     :goto_13
-    return p1
+    return v0
 .end method
 
 .method public bridge synthetic test(Ljava/lang/Object;)Z

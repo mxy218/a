@@ -45,14 +45,15 @@
 # direct methods
 .method public constructor <init>(Lcom/android/server/devicepolicy/DevicePolicyManagerService;Landroid/os/Handler;)V
     .registers 3
+    .param p2, "handler"  # Landroid/os/Handler;
 
-    .line 11168
+    .line 11146
     iput-object p1, p0, Lcom/android/server/devicepolicy/DevicePolicyManagerService$SetupContentObserver;->this$0:Lcom/android/server/devicepolicy/DevicePolicyManagerService;
 
-    .line 11169
+    .line 11147
     invoke-direct {p0, p2}, Landroid/database/ContentObserver;-><init>(Landroid/os/Handler;)V
 
-    .line 11157
+    .line 11135
     const-string/jumbo p1, "user_setup_complete"
 
     invoke-static {p1}, Landroid/provider/Settings$Secure;->getUriFor(Ljava/lang/String;)Landroid/net/Uri;
@@ -61,7 +62,7 @@
 
     iput-object p1, p0, Lcom/android/server/devicepolicy/DevicePolicyManagerService$SetupContentObserver;->mUserSetupComplete:Landroid/net/Uri;
 
-    .line 11159
+    .line 11137
     const-string p1, "device_provisioned"
 
     invoke-static {p1}, Landroid/provider/Settings$Global;->getUriFor(Ljava/lang/String;)Landroid/net/Uri;
@@ -70,7 +71,7 @@
 
     iput-object p1, p0, Lcom/android/server/devicepolicy/DevicePolicyManagerService$SetupContentObserver;->mDeviceProvisioned:Landroid/net/Uri;
 
-    .line 11161
+    .line 11139
     const-string p1, "device_paired"
 
     invoke-static {p1}, Landroid/provider/Settings$Secure;->getUriFor(Ljava/lang/String;)Landroid/net/Uri;
@@ -79,7 +80,7 @@
 
     iput-object p1, p0, Lcom/android/server/devicepolicy/DevicePolicyManagerService$SetupContentObserver;->mPaired:Landroid/net/Uri;
 
-    .line 11162
+    .line 11140
     const-string p1, "default_input_method"
 
     invoke-static {p1}, Landroid/provider/Settings$Secure;->getUriFor(Ljava/lang/String;)Landroid/net/Uri;
@@ -88,200 +89,206 @@
 
     iput-object p1, p0, Lcom/android/server/devicepolicy/DevicePolicyManagerService$SetupContentObserver;->mDefaultImeChanged:Landroid/net/Uri;
 
-    .line 11165
+    .line 11143
     new-instance p1, Landroid/util/ArraySet;
 
     invoke-direct {p1}, Landroid/util/ArraySet;-><init>()V
 
     iput-object p1, p0, Lcom/android/server/devicepolicy/DevicePolicyManagerService$SetupContentObserver;->mUserIdsWithPendingChangesByOwner:Ljava/util/Set;
 
-    .line 11170
+    .line 11148
     return-void
 .end method
 
 .method static synthetic access$2300(Lcom/android/server/devicepolicy/DevicePolicyManagerService$SetupContentObserver;I)V
     .registers 2
+    .param p0, "x0"  # Lcom/android/server/devicepolicy/DevicePolicyManagerService$SetupContentObserver;
+    .param p1, "x1"  # I
 
-    .line 11156
+    .line 11134
     invoke-direct {p0, p1}, Lcom/android/server/devicepolicy/DevicePolicyManagerService$SetupContentObserver;->addPendingChangeByOwnerLocked(I)V
 
     return-void
 .end method
 
 .method private addPendingChangeByOwnerLocked(I)V
-    .registers 3
+    .registers 4
+    .param p1, "userId"  # I
     .annotation build Lcom/android/internal/annotations/GuardedBy;
         value = {
             "getLockObject()"
         }
     .end annotation
 
-    .line 11183
+    .line 11161
     iget-object v0, p0, Lcom/android/server/devicepolicy/DevicePolicyManagerService$SetupContentObserver;->mUserIdsWithPendingChangesByOwner:Ljava/util/Set;
 
     invoke-static {p1}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
 
-    move-result-object p1
+    move-result-object v1
 
-    invoke-interface {v0, p1}, Ljava/util/Set;->add(Ljava/lang/Object;)Z
+    invoke-interface {v0, v1}, Ljava/util/Set;->add(Ljava/lang/Object;)Z
 
-    .line 11184
+    .line 11162
     return-void
 .end method
 
 
 # virtual methods
 .method public onChange(ZLandroid/net/Uri;I)V
-    .registers 5
+    .registers 7
+    .param p1, "selfChange"  # Z
+    .param p2, "uri"  # Landroid/net/Uri;
+    .param p3, "userId"  # I
 
-    .line 11188
-    iget-object p1, p0, Lcom/android/server/devicepolicy/DevicePolicyManagerService$SetupContentObserver;->mUserSetupComplete:Landroid/net/Uri;
+    .line 11166
+    iget-object v0, p0, Lcom/android/server/devicepolicy/DevicePolicyManagerService$SetupContentObserver;->mUserSetupComplete:Landroid/net/Uri;
 
-    invoke-virtual {p1, p2}, Landroid/net/Uri;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v0, p2}, Landroid/net/Uri;->equals(Ljava/lang/Object;)Z
 
-    move-result p1
+    move-result v0
 
-    if-nez p1, :cond_68
+    if-nez v0, :cond_68
 
-    iget-object p1, p0, Lcom/android/server/devicepolicy/DevicePolicyManagerService$SetupContentObserver;->this$0:Lcom/android/server/devicepolicy/DevicePolicyManagerService;
+    iget-object v0, p0, Lcom/android/server/devicepolicy/DevicePolicyManagerService$SetupContentObserver;->this$0:Lcom/android/server/devicepolicy/DevicePolicyManagerService;
 
-    iget-boolean p1, p1, Lcom/android/server/devicepolicy/DevicePolicyManagerService;->mIsWatch:Z
+    iget-boolean v0, v0, Lcom/android/server/devicepolicy/DevicePolicyManagerService;->mIsWatch:Z
 
-    if-eqz p1, :cond_17
+    if-eqz v0, :cond_17
 
-    iget-object p1, p0, Lcom/android/server/devicepolicy/DevicePolicyManagerService$SetupContentObserver;->mPaired:Landroid/net/Uri;
+    iget-object v0, p0, Lcom/android/server/devicepolicy/DevicePolicyManagerService$SetupContentObserver;->mPaired:Landroid/net/Uri;
 
-    invoke-virtual {p1, p2}, Landroid/net/Uri;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v0, p2}, Landroid/net/Uri;->equals(Ljava/lang/Object;)Z
 
-    move-result p1
+    move-result v0
 
-    if-eqz p1, :cond_17
+    if-eqz v0, :cond_17
 
     goto :goto_68
 
-    .line 11190
+    .line 11168
     :cond_17
-    iget-object p1, p0, Lcom/android/server/devicepolicy/DevicePolicyManagerService$SetupContentObserver;->mDeviceProvisioned:Landroid/net/Uri;
+    iget-object v0, p0, Lcom/android/server/devicepolicy/DevicePolicyManagerService$SetupContentObserver;->mDeviceProvisioned:Landroid/net/Uri;
 
-    invoke-virtual {p1, p2}, Landroid/net/Uri;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v0, p2}, Landroid/net/Uri;->equals(Ljava/lang/Object;)Z
 
-    move-result p1
+    move-result v0
 
-    if-eqz p1, :cond_30
+    if-eqz v0, :cond_30
 
-    .line 11191
-    iget-object p1, p0, Lcom/android/server/devicepolicy/DevicePolicyManagerService$SetupContentObserver;->this$0:Lcom/android/server/devicepolicy/DevicePolicyManagerService;
+    .line 11169
+    iget-object v0, p0, Lcom/android/server/devicepolicy/DevicePolicyManagerService$SetupContentObserver;->this$0:Lcom/android/server/devicepolicy/DevicePolicyManagerService;
 
-    invoke-virtual {p1}, Lcom/android/server/devicepolicy/DevicePolicyManagerService;->getLockObject()Ljava/lang/Object;
+    invoke-virtual {v0}, Lcom/android/server/devicepolicy/DevicePolicyManagerService;->getLockObject()Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v0
 
-    monitor-enter p1
+    monitor-enter v0
 
-    .line 11194
+    .line 11172
     :try_start_26
-    iget-object p2, p0, Lcom/android/server/devicepolicy/DevicePolicyManagerService$SetupContentObserver;->this$0:Lcom/android/server/devicepolicy/DevicePolicyManagerService;
+    iget-object v1, p0, Lcom/android/server/devicepolicy/DevicePolicyManagerService$SetupContentObserver;->this$0:Lcom/android/server/devicepolicy/DevicePolicyManagerService;
 
-    invoke-static {p2}, Lcom/android/server/devicepolicy/DevicePolicyManagerService;->access$2400(Lcom/android/server/devicepolicy/DevicePolicyManagerService;)V
+    invoke-static {v1}, Lcom/android/server/devicepolicy/DevicePolicyManagerService;->access$2400(Lcom/android/server/devicepolicy/DevicePolicyManagerService;)V
 
-    .line 11195
-    monitor-exit p1
+    .line 11173
+    monitor-exit v0
 
     goto :goto_6d
 
     :catchall_2d
-    move-exception p2
+    move-exception v1
 
-    monitor-exit p1
+    monitor-exit v0
     :try_end_2f
     .catchall {:try_start_26 .. :try_end_2f} :catchall_2d
 
-    throw p2
+    throw v1
 
-    .line 11196
+    .line 11174
     :cond_30
-    iget-object p1, p0, Lcom/android/server/devicepolicy/DevicePolicyManagerService$SetupContentObserver;->mDefaultImeChanged:Landroid/net/Uri;
+    iget-object v0, p0, Lcom/android/server/devicepolicy/DevicePolicyManagerService$SetupContentObserver;->mDefaultImeChanged:Landroid/net/Uri;
 
-    invoke-virtual {p1, p2}, Landroid/net/Uri;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v0, p2}, Landroid/net/Uri;->equals(Ljava/lang/Object;)Z
 
-    move-result p1
+    move-result v0
 
-    if-eqz p1, :cond_6d
+    if-eqz v0, :cond_6d
 
-    .line 11197
-    iget-object p1, p0, Lcom/android/server/devicepolicy/DevicePolicyManagerService$SetupContentObserver;->this$0:Lcom/android/server/devicepolicy/DevicePolicyManagerService;
+    .line 11175
+    iget-object v0, p0, Lcom/android/server/devicepolicy/DevicePolicyManagerService$SetupContentObserver;->this$0:Lcom/android/server/devicepolicy/DevicePolicyManagerService;
 
-    invoke-virtual {p1}, Lcom/android/server/devicepolicy/DevicePolicyManagerService;->getLockObject()Ljava/lang/Object;
-
-    move-result-object p1
-
-    monitor-enter p1
-
-    .line 11198
-    :try_start_3f
-    iget-object p2, p0, Lcom/android/server/devicepolicy/DevicePolicyManagerService$SetupContentObserver;->mUserIdsWithPendingChangesByOwner:Ljava/util/Set;
-
-    invoke-static {p3}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
+    invoke-virtual {v0}, Lcom/android/server/devicepolicy/DevicePolicyManagerService;->getLockObject()Ljava/lang/Object;
 
     move-result-object v0
 
-    invoke-interface {p2, v0}, Ljava/util/Set;->contains(Ljava/lang/Object;)Z
+    monitor-enter v0
 
-    move-result p2
-
-    if-eqz p2, :cond_55
-
-    .line 11201
-    iget-object p2, p0, Lcom/android/server/devicepolicy/DevicePolicyManagerService$SetupContentObserver;->mUserIdsWithPendingChangesByOwner:Ljava/util/Set;
+    .line 11176
+    :try_start_3f
+    iget-object v1, p0, Lcom/android/server/devicepolicy/DevicePolicyManagerService$SetupContentObserver;->mUserIdsWithPendingChangesByOwner:Ljava/util/Set;
 
     invoke-static {p3}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
 
-    move-result-object p3
+    move-result-object v2
 
-    invoke-interface {p2, p3}, Ljava/util/Set;->remove(Ljava/lang/Object;)Z
+    invoke-interface {v1, v2}, Ljava/util/Set;->contains(Ljava/lang/Object;)Z
+
+    move-result v1
+
+    if-eqz v1, :cond_55
+
+    .line 11179
+    iget-object v1, p0, Lcom/android/server/devicepolicy/DevicePolicyManagerService$SetupContentObserver;->mUserIdsWithPendingChangesByOwner:Ljava/util/Set;
+
+    invoke-static {p3}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
+
+    move-result-object v2
+
+    invoke-interface {v1, v2}, Ljava/util/Set;->remove(Ljava/lang/Object;)Z
 
     goto :goto_63
 
-    .line 11205
+    .line 11183
     :cond_55
-    iget-object p2, p0, Lcom/android/server/devicepolicy/DevicePolicyManagerService$SetupContentObserver;->this$0:Lcom/android/server/devicepolicy/DevicePolicyManagerService;
+    iget-object v1, p0, Lcom/android/server/devicepolicy/DevicePolicyManagerService$SetupContentObserver;->this$0:Lcom/android/server/devicepolicy/DevicePolicyManagerService;
 
-    invoke-virtual {p2, p3}, Lcom/android/server/devicepolicy/DevicePolicyManagerService;->getUserData(I)Lcom/android/server/devicepolicy/DevicePolicyManagerService$DevicePolicyData;
+    invoke-virtual {v1, p3}, Lcom/android/server/devicepolicy/DevicePolicyManagerService;->getUserData(I)Lcom/android/server/devicepolicy/DevicePolicyManagerService$DevicePolicyData;
 
-    move-result-object p2
+    move-result-object v1
 
-    const/4 v0, 0x0
+    const/4 v2, 0x0
 
-    iput-boolean v0, p2, Lcom/android/server/devicepolicy/DevicePolicyManagerService$DevicePolicyData;->mCurrentInputMethodSet:Z
+    iput-boolean v2, v1, Lcom/android/server/devicepolicy/DevicePolicyManagerService$DevicePolicyData;->mCurrentInputMethodSet:Z
 
-    .line 11206
-    iget-object p2, p0, Lcom/android/server/devicepolicy/DevicePolicyManagerService$SetupContentObserver;->this$0:Lcom/android/server/devicepolicy/DevicePolicyManagerService;
+    .line 11184
+    iget-object v1, p0, Lcom/android/server/devicepolicy/DevicePolicyManagerService$SetupContentObserver;->this$0:Lcom/android/server/devicepolicy/DevicePolicyManagerService;
 
-    invoke-static {p2, p3}, Lcom/android/server/devicepolicy/DevicePolicyManagerService;->access$2500(Lcom/android/server/devicepolicy/DevicePolicyManagerService;I)V
+    invoke-static {v1, p3}, Lcom/android/server/devicepolicy/DevicePolicyManagerService;->access$2500(Lcom/android/server/devicepolicy/DevicePolicyManagerService;I)V
 
-    .line 11208
+    .line 11186
     :goto_63
-    monitor-exit p1
+    monitor-exit v0
 
     goto :goto_6d
 
     :catchall_65
-    move-exception p2
+    move-exception v1
 
-    monitor-exit p1
+    monitor-exit v0
     :try_end_67
     .catchall {:try_start_3f .. :try_end_67} :catchall_65
 
-    throw p2
+    throw v1
 
-    .line 11189
+    .line 11167
     :cond_68
     :goto_68
-    iget-object p1, p0, Lcom/android/server/devicepolicy/DevicePolicyManagerService$SetupContentObserver;->this$0:Lcom/android/server/devicepolicy/DevicePolicyManagerService;
+    iget-object v0, p0, Lcom/android/server/devicepolicy/DevicePolicyManagerService$SetupContentObserver;->this$0:Lcom/android/server/devicepolicy/DevicePolicyManagerService;
 
-    invoke-virtual {p1}, Lcom/android/server/devicepolicy/DevicePolicyManagerService;->updateUserSetupCompleteAndPaired()V
+    invoke-virtual {v0}, Lcom/android/server/devicepolicy/DevicePolicyManagerService;->updateUserSetupCompleteAndPaired()V
 
-    .line 11210
+    .line 11188
     :cond_6d
     :goto_6d
     return-void
@@ -290,7 +297,7 @@
 .method register()V
     .registers 5
 
-    .line 11173
+    .line 11151
     iget-object v0, p0, Lcom/android/server/devicepolicy/DevicePolicyManagerService$SetupContentObserver;->this$0:Lcom/android/server/devicepolicy/DevicePolicyManagerService;
 
     iget-object v0, v0, Lcom/android/server/devicepolicy/DevicePolicyManagerService;->mInjector:Lcom/android/server/devicepolicy/DevicePolicyManagerService$Injector;
@@ -303,7 +310,7 @@
 
     invoke-virtual {v0, v1, v3, p0, v2}, Lcom/android/server/devicepolicy/DevicePolicyManagerService$Injector;->registerContentObserver(Landroid/net/Uri;ZLandroid/database/ContentObserver;I)V
 
-    .line 11174
+    .line 11152
     iget-object v0, p0, Lcom/android/server/devicepolicy/DevicePolicyManagerService$SetupContentObserver;->this$0:Lcom/android/server/devicepolicy/DevicePolicyManagerService;
 
     iget-object v0, v0, Lcom/android/server/devicepolicy/DevicePolicyManagerService;->mInjector:Lcom/android/server/devicepolicy/DevicePolicyManagerService$Injector;
@@ -312,14 +319,14 @@
 
     invoke-virtual {v0, v1, v3, p0, v2}, Lcom/android/server/devicepolicy/DevicePolicyManagerService$Injector;->registerContentObserver(Landroid/net/Uri;ZLandroid/database/ContentObserver;I)V
 
-    .line 11175
+    .line 11153
     iget-object v0, p0, Lcom/android/server/devicepolicy/DevicePolicyManagerService$SetupContentObserver;->this$0:Lcom/android/server/devicepolicy/DevicePolicyManagerService;
 
     iget-boolean v0, v0, Lcom/android/server/devicepolicy/DevicePolicyManagerService;->mIsWatch:Z
 
     if-eqz v0, :cond_23
 
-    .line 11176
+    .line 11154
     iget-object v0, p0, Lcom/android/server/devicepolicy/DevicePolicyManagerService$SetupContentObserver;->this$0:Lcom/android/server/devicepolicy/DevicePolicyManagerService;
 
     iget-object v0, v0, Lcom/android/server/devicepolicy/DevicePolicyManagerService;->mInjector:Lcom/android/server/devicepolicy/DevicePolicyManagerService$Injector;
@@ -328,7 +335,7 @@
 
     invoke-virtual {v0, v1, v3, p0, v2}, Lcom/android/server/devicepolicy/DevicePolicyManagerService$Injector;->registerContentObserver(Landroid/net/Uri;ZLandroid/database/ContentObserver;I)V
 
-    .line 11178
+    .line 11156
     :cond_23
     iget-object v0, p0, Lcom/android/server/devicepolicy/DevicePolicyManagerService$SetupContentObserver;->this$0:Lcom/android/server/devicepolicy/DevicePolicyManagerService;
 
@@ -338,6 +345,6 @@
 
     invoke-virtual {v0, v1, v3, p0, v2}, Lcom/android/server/devicepolicy/DevicePolicyManagerService$Injector;->registerContentObserver(Landroid/net/Uri;ZLandroid/database/ContentObserver;I)V
 
-    .line 11179
+    .line 11157
     return-void
 .end method

@@ -21,6 +21,8 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/policy/LegacyGlobalActions;Landroid/os/Handler;)V
     .registers 3
+    .param p1, "this$0"  # Lcom/android/server/policy/LegacyGlobalActions;
+    .param p2, "x0"  # Landroid/os/Handler;
 
     .line 782
     iput-object p1, p0, Lcom/android/server/policy/LegacyGlobalActions$12;->this$0:Lcom/android/server/policy/LegacyGlobalActions;
@@ -33,12 +35,13 @@
 
 # virtual methods
 .method public onChange(Z)V
-    .registers 2
+    .registers 3
+    .param p1, "selfChange"  # Z
 
     .line 785
-    iget-object p1, p0, Lcom/android/server/policy/LegacyGlobalActions$12;->this$0:Lcom/android/server/policy/LegacyGlobalActions;
+    iget-object v0, p0, Lcom/android/server/policy/LegacyGlobalActions$12;->this$0:Lcom/android/server/policy/LegacyGlobalActions;
 
-    invoke-static {p1}, Lcom/android/server/policy/LegacyGlobalActions;->access$1000(Lcom/android/server/policy/LegacyGlobalActions;)V
+    invoke-static {v0}, Lcom/android/server/policy/LegacyGlobalActions;->access$1000(Lcom/android/server/policy/LegacyGlobalActions;)V
 
     .line 786
     return-void

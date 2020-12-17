@@ -34,6 +34,7 @@
 
 .method public constructor <init>(Ljava/lang/String;)V
     .registers 2
+    .param p1, "packageName"  # Ljava/lang/String;
 
     .line 37
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -48,53 +49,62 @@
 
 # virtual methods
 .method public matches(Lcom/android/server/firewall/IntentFirewall;Landroid/content/ComponentName;Landroid/content/Intent;IILjava/lang/String;I)Z
-    .registers 8
+    .registers 13
+    .param p1, "ifw"  # Lcom/android/server/firewall/IntentFirewall;
+    .param p2, "resolvedComponent"  # Landroid/content/ComponentName;
+    .param p3, "intent"  # Landroid/content/Intent;
+    .param p4, "callerUid"  # I
+    .param p5, "callerPid"  # I
+    .param p6, "resolvedType"  # Ljava/lang/String;
+    .param p7, "receivingUid"  # I
 
     .line 44
     invoke-static {}, Landroid/app/AppGlobals;->getPackageManager()Landroid/content/pm/IPackageManager;
 
-    move-result-object p1
+    move-result-object v0
 
     .line 46
-    nop
+    .local v0, "pm":Landroid/content/pm/IPackageManager;
+    const/4 v1, -0x1
 
     .line 50
-    const/4 p2, 0x0
+    .local v1, "packageUid":I
+    const/4 v2, 0x0
 
-    const/4 p3, -0x1
+    :try_start_6
+    iget-object v3, p0, Lcom/android/server/firewall/SenderPackageFilter;->mPackageName:Ljava/lang/String;
 
-    :try_start_7
-    iget-object p5, p0, Lcom/android/server/firewall/SenderPackageFilter;->mPackageName:Ljava/lang/String;
+    const/high16 v4, 0x400000
 
-    const/high16 p6, 0x400000
+    invoke-interface {v0, v3, v4, v2}, Landroid/content/pm/IPackageManager;->getPackageUid(Ljava/lang/String;II)I
 
-    invoke-interface {p1, p5, p6, p2}, Landroid/content/pm/IPackageManager;->getPackageUid(Ljava/lang/String;II)I
+    move-result v3
+    :try_end_e
+    .catch Landroid/os/RemoteException; {:try_start_6 .. :try_end_e} :catch_10
 
-    move-result p1
-    :try_end_f
-    .catch Landroid/os/RemoteException; {:try_start_7 .. :try_end_f} :catch_10
+    move v1, v3
 
     .line 54
-    goto :goto_12
+    goto :goto_11
 
     .line 52
     :catch_10
-    move-exception p1
-
-    move p1, p3
+    move-exception v3
 
     .line 56
-    :goto_12
-    if-ne p1, p3, :cond_15
+    :goto_11
+    const/4 v3, -0x1
+
+    if-ne v1, v3, :cond_15
 
     .line 57
-    return p2
+    return v2
 
     .line 60
     :cond_15
-    invoke-static {p1, p4}, Landroid/os/UserHandle;->isSameApp(II)Z
+    invoke-static {v1, p4}, Landroid/os/UserHandle;->isSameApp(II)Z
 
-    move-result p1
+    move-result v2
 
-    return p1
+    return v2
 .end method

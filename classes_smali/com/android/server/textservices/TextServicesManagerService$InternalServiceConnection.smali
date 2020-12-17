@@ -37,6 +37,7 @@
 # direct methods
 .method public constructor <init>(Lcom/android/server/textservices/TextServicesManagerService;Ljava/lang/String;Ljava/util/HashMap;)V
     .registers 4
+    .param p2, "id"  # Ljava/lang/String;
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(",
@@ -49,6 +50,7 @@
     .end annotation
 
     .line 1000
+    .local p3, "spellCheckerBindGroups":Ljava/util/HashMap;, "Ljava/util/HashMap<Ljava/lang/String;Lcom/android/server/textservices/TextServicesManagerService$SpellCheckerBindGroup;>;"
     iput-object p1, p0, Lcom/android/server/textservices/TextServicesManagerService$InternalServiceConnection;->this$0:Lcom/android/server/textservices/TextServicesManagerService;
 
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -64,25 +66,29 @@
 .end method
 
 .method static synthetic access$2100(Lcom/android/server/textservices/TextServicesManagerService$InternalServiceConnection;)Ljava/util/HashMap;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/textservices/TextServicesManagerService$InternalServiceConnection;
 
     .line 995
-    iget-object p0, p0, Lcom/android/server/textservices/TextServicesManagerService$InternalServiceConnection;->mSpellCheckerBindGroups:Ljava/util/HashMap;
+    iget-object v0, p0, Lcom/android/server/textservices/TextServicesManagerService$InternalServiceConnection;->mSpellCheckerBindGroups:Ljava/util/HashMap;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$2200(Lcom/android/server/textservices/TextServicesManagerService$InternalServiceConnection;)Ljava/lang/String;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/textservices/TextServicesManagerService$InternalServiceConnection;
 
     .line 995
-    iget-object p0, p0, Lcom/android/server/textservices/TextServicesManagerService$InternalServiceConnection;->mSciId:Ljava/lang/String;
+    iget-object v0, p0, Lcom/android/server/textservices/TextServicesManagerService$InternalServiceConnection;->mSciId:Ljava/lang/String;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method private onServiceConnectedInnerLocked(Landroid/content/ComponentName;Landroid/os/IBinder;)V
-    .registers 4
+    .registers 6
+    .param p1, "name"  # Landroid/content/ComponentName;
+    .param p2, "service"  # Landroid/os/IBinder;
 
     .line 1016
     nop
@@ -90,30 +96,32 @@
     .line 1017
     invoke-static {p2}, Lcom/android/internal/textservice/ISpellCheckerService$Stub;->asInterface(Landroid/os/IBinder;)Lcom/android/internal/textservice/ISpellCheckerService;
 
-    move-result-object p1
-
-    .line 1019
-    iget-object p2, p0, Lcom/android/server/textservices/TextServicesManagerService$InternalServiceConnection;->mSpellCheckerBindGroups:Ljava/util/HashMap;
-
-    iget-object v0, p0, Lcom/android/server/textservices/TextServicesManagerService$InternalServiceConnection;->mSciId:Ljava/lang/String;
-
-    invoke-virtual {p2, v0}, Ljava/util/HashMap;->get(Ljava/lang/Object;)Ljava/lang/Object;
-
-    move-result-object p2
-
-    check-cast p2, Lcom/android/server/textservices/TextServicesManagerService$SpellCheckerBindGroup;
-
-    .line 1020
-    if-eqz p2, :cond_1a
-
-    invoke-static {p2}, Lcom/android/server/textservices/TextServicesManagerService$SpellCheckerBindGroup;->access$100(Lcom/android/server/textservices/TextServicesManagerService$SpellCheckerBindGroup;)Lcom/android/server/textservices/TextServicesManagerService$InternalServiceConnection;
-
     move-result-object v0
 
-    if-ne p0, v0, :cond_1a
+    .line 1019
+    .local v0, "spellChecker":Lcom/android/internal/textservice/ISpellCheckerService;
+    iget-object v1, p0, Lcom/android/server/textservices/TextServicesManagerService$InternalServiceConnection;->mSpellCheckerBindGroups:Ljava/util/HashMap;
+
+    iget-object v2, p0, Lcom/android/server/textservices/TextServicesManagerService$InternalServiceConnection;->mSciId:Ljava/lang/String;
+
+    invoke-virtual {v1, v2}, Ljava/util/HashMap;->get(Ljava/lang/Object;)Ljava/lang/Object;
+
+    move-result-object v1
+
+    check-cast v1, Lcom/android/server/textservices/TextServicesManagerService$SpellCheckerBindGroup;
+
+    .line 1020
+    .local v1, "group":Lcom/android/server/textservices/TextServicesManagerService$SpellCheckerBindGroup;
+    if-eqz v1, :cond_1a
+
+    invoke-static {v1}, Lcom/android/server/textservices/TextServicesManagerService$SpellCheckerBindGroup;->access$100(Lcom/android/server/textservices/TextServicesManagerService$SpellCheckerBindGroup;)Lcom/android/server/textservices/TextServicesManagerService$InternalServiceConnection;
+
+    move-result-object v2
+
+    if-ne p0, v2, :cond_1a
 
     .line 1021
-    invoke-virtual {p2, p1}, Lcom/android/server/textservices/TextServicesManagerService$SpellCheckerBindGroup;->onServiceConnectedLocked(Lcom/android/internal/textservice/ISpellCheckerService;)V
+    invoke-virtual {v1, v0}, Lcom/android/server/textservices/TextServicesManagerService$SpellCheckerBindGroup;->onServiceConnectedLocked(Lcom/android/internal/textservice/ISpellCheckerService;)V
 
     .line 1023
     :cond_1a
@@ -121,30 +129,32 @@
 .end method
 
 .method private onServiceDisconnectedInnerLocked(Landroid/content/ComponentName;)V
-    .registers 3
+    .registers 4
+    .param p1, "name"  # Landroid/content/ComponentName;
 
     .line 1036
-    iget-object p1, p0, Lcom/android/server/textservices/TextServicesManagerService$InternalServiceConnection;->mSpellCheckerBindGroups:Ljava/util/HashMap;
+    iget-object v0, p0, Lcom/android/server/textservices/TextServicesManagerService$InternalServiceConnection;->mSpellCheckerBindGroups:Ljava/util/HashMap;
 
-    iget-object v0, p0, Lcom/android/server/textservices/TextServicesManagerService$InternalServiceConnection;->mSciId:Ljava/lang/String;
+    iget-object v1, p0, Lcom/android/server/textservices/TextServicesManagerService$InternalServiceConnection;->mSciId:Ljava/lang/String;
 
-    invoke-virtual {p1, v0}, Ljava/util/HashMap;->get(Ljava/lang/Object;)Ljava/lang/Object;
-
-    move-result-object p1
-
-    check-cast p1, Lcom/android/server/textservices/TextServicesManagerService$SpellCheckerBindGroup;
-
-    .line 1037
-    if-eqz p1, :cond_15
-
-    invoke-static {p1}, Lcom/android/server/textservices/TextServicesManagerService$SpellCheckerBindGroup;->access$100(Lcom/android/server/textservices/TextServicesManagerService$SpellCheckerBindGroup;)Lcom/android/server/textservices/TextServicesManagerService$InternalServiceConnection;
+    invoke-virtual {v0, v1}, Ljava/util/HashMap;->get(Ljava/lang/Object;)Ljava/lang/Object;
 
     move-result-object v0
 
-    if-ne p0, v0, :cond_15
+    check-cast v0, Lcom/android/server/textservices/TextServicesManagerService$SpellCheckerBindGroup;
+
+    .line 1037
+    .local v0, "group":Lcom/android/server/textservices/TextServicesManagerService$SpellCheckerBindGroup;
+    if-eqz v0, :cond_15
+
+    invoke-static {v0}, Lcom/android/server/textservices/TextServicesManagerService$SpellCheckerBindGroup;->access$100(Lcom/android/server/textservices/TextServicesManagerService$SpellCheckerBindGroup;)Lcom/android/server/textservices/TextServicesManagerService$InternalServiceConnection;
+
+    move-result-object v1
+
+    if-ne p0, v1, :cond_15
 
     .line 1038
-    invoke-virtual {p1}, Lcom/android/server/textservices/TextServicesManagerService$SpellCheckerBindGroup;->onServiceDisconnectedLocked()V
+    invoke-virtual {v0}, Lcom/android/server/textservices/TextServicesManagerService$SpellCheckerBindGroup;->onServiceDisconnectedLocked()V
 
     .line 1040
     :cond_15
@@ -154,7 +164,9 @@
 
 # virtual methods
 .method public onServiceConnected(Landroid/content/ComponentName;Landroid/os/IBinder;)V
-    .registers 4
+    .registers 5
+    .param p1, "name"  # Landroid/content/ComponentName;
+    .param p2, "service"  # Landroid/os/IBinder;
 
     .line 1007
     iget-object v0, p0, Lcom/android/server/textservices/TextServicesManagerService$InternalServiceConnection;->this$0:Lcom/android/server/textservices/TextServicesManagerService;
@@ -177,17 +189,18 @@
 
     .line 1009
     :catchall_c
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_e
     .catchall {:try_start_7 .. :try_end_e} :catchall_c
 
-    throw p1
+    throw v1
 .end method
 
 .method public onServiceDisconnected(Landroid/content/ComponentName;)V
-    .registers 3
+    .registers 4
+    .param p1, "name"  # Landroid/content/ComponentName;
 
     .line 1027
     iget-object v0, p0, Lcom/android/server/textservices/TextServicesManagerService$InternalServiceConnection;->this$0:Lcom/android/server/textservices/TextServicesManagerService;
@@ -210,11 +223,11 @@
 
     .line 1029
     :catchall_c
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_e
     .catchall {:try_start_7 .. :try_end_e} :catchall_c
 
-    throw p1
+    throw v1
 .end method

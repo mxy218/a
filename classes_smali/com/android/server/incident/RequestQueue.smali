@@ -32,6 +32,7 @@
 # direct methods
 .method constructor <init>(Landroid/os/Handler;)V
     .registers 3
+    .param p1, "handler"  # Landroid/os/Handler;
 
     .line 105
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -58,18 +59,22 @@
 .end method
 
 .method static synthetic access$000(Lcom/android/server/incident/RequestQueue;)Ljava/util/ArrayList;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/incident/RequestQueue;
 
     .line 28
-    iget-object p0, p0, Lcom/android/server/incident/RequestQueue;->mPending:Ljava/util/ArrayList;
+    iget-object v0, p0, Lcom/android/server/incident/RequestQueue;->mPending:Ljava/util/ArrayList;
 
-    return-object p0
+    return-object v0
 .end method
 
 
 # virtual methods
 .method public enqueue(Landroid/os/IBinder;ZLjava/lang/Runnable;)V
-    .registers 10
+    .registers 9
+    .param p1, "key"  # Landroid/os/IBinder;
+    .param p2, "value"  # Z
+    .param p3, "runnable"  # Ljava/lang/Runnable;
 
     .line 131
     iget-object v0, p0, Lcom/android/server/incident/RequestQueue;->mPending:Ljava/util/ArrayList;
@@ -80,108 +85,112 @@
     const/4 v1, 0x0
 
     .line 133
-    const/4 v2, 0x1
-
-    if-nez p2, :cond_2d
+    .local v1, "skip":Z
+    if-nez p2, :cond_2c
 
     .line 134
-    :try_start_7
-    iget-object v3, p0, Lcom/android/server/incident/RequestQueue;->mPending:Ljava/util/ArrayList;
+    :try_start_6
+    iget-object v2, p0, Lcom/android/server/incident/RequestQueue;->mPending:Ljava/util/ArrayList;
 
-    invoke-virtual {v3}, Ljava/util/ArrayList;->size()I
+    invoke-virtual {v2}, Ljava/util/ArrayList;->size()I
 
-    move-result v3
+    move-result v2
 
-    sub-int/2addr v3, v2
+    add-int/lit8 v2, v2, -0x1
 
+    .local v2, "i":I
     :goto_e
-    if-ltz v3, :cond_2d
+    if-ltz v2, :cond_2c
 
     .line 135
-    iget-object v4, p0, Lcom/android/server/incident/RequestQueue;->mPending:Ljava/util/ArrayList;
+    iget-object v3, p0, Lcom/android/server/incident/RequestQueue;->mPending:Ljava/util/ArrayList;
 
-    invoke-virtual {v4, v3}, Ljava/util/ArrayList;->get(I)Ljava/lang/Object;
+    invoke-virtual {v3, v2}, Ljava/util/ArrayList;->get(I)Ljava/lang/Object;
 
-    move-result-object v4
+    move-result-object v3
 
-    check-cast v4, Lcom/android/server/incident/RequestQueue$Rec;
+    check-cast v3, Lcom/android/server/incident/RequestQueue$Rec;
 
     .line 136
-    iget-object v5, v4, Lcom/android/server/incident/RequestQueue$Rec;->key:Landroid/os/IBinder;
+    .local v3, "r":Lcom/android/server/incident/RequestQueue$Rec;
+    iget-object v4, v3, Lcom/android/server/incident/RequestQueue$Rec;->key:Landroid/os/IBinder;
 
-    if-ne v5, p1, :cond_28
+    if-ne v4, p1, :cond_27
 
     .line 137
-    iget-boolean v4, v4, Lcom/android/server/incident/RequestQueue$Rec;->value:Z
+    iget-boolean v4, v3, Lcom/android/server/incident/RequestQueue$Rec;->value:Z
 
-    if-eqz v4, :cond_28
+    if-eqz v4, :cond_27
 
     .line 138
-    nop
+    const/4 v1, 0x1
 
     .line 139
-    iget-object v1, p0, Lcom/android/server/incident/RequestQueue;->mPending:Ljava/util/ArrayList;
+    iget-object v4, p0, Lcom/android/server/incident/RequestQueue;->mPending:Ljava/util/ArrayList;
 
-    invoke-virtual {v1, v3}, Ljava/util/ArrayList;->remove(I)Ljava/lang/Object;
+    invoke-virtual {v4, v2}, Ljava/util/ArrayList;->remove(I)Ljava/lang/Object;
 
     .line 140
-    move v1, v2
-
-    goto :goto_2d
+    goto :goto_2c
 
     .line 134
-    :cond_28
-    add-int/lit8 v3, v3, -0x1
+    .end local v3  # "r":Lcom/android/server/incident/RequestQueue$Rec;
+    :cond_27
+    add-int/lit8 v2, v2, -0x1
 
     goto :goto_e
 
     .line 152
-    :catchall_2b
-    move-exception p1
+    .end local v1  # "skip":Z
+    .end local v2  # "i":I
+    :catchall_2a
+    move-exception v1
 
-    goto :goto_46
+    goto :goto_45
 
     .line 145
-    :cond_2d
-    :goto_2d
-    if-nez v1, :cond_39
+    .restart local v1  # "skip":Z
+    :cond_2c
+    :goto_2c
+    if-nez v1, :cond_38
 
     .line 146
-    iget-object v1, p0, Lcom/android/server/incident/RequestQueue;->mPending:Ljava/util/ArrayList;
+    iget-object v2, p0, Lcom/android/server/incident/RequestQueue;->mPending:Ljava/util/ArrayList;
 
-    new-instance v2, Lcom/android/server/incident/RequestQueue$Rec;
+    new-instance v3, Lcom/android/server/incident/RequestQueue$Rec;
 
-    invoke-direct {v2, p0, p1, p2, p3}, Lcom/android/server/incident/RequestQueue$Rec;-><init>(Lcom/android/server/incident/RequestQueue;Landroid/os/IBinder;ZLjava/lang/Runnable;)V
+    invoke-direct {v3, p0, p1, p2, p3}, Lcom/android/server/incident/RequestQueue$Rec;-><init>(Lcom/android/server/incident/RequestQueue;Landroid/os/IBinder;ZLjava/lang/Runnable;)V
 
-    invoke-virtual {v1, v2}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
+    invoke-virtual {v2, v3}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
 
     .line 148
-    :cond_39
-    iget-boolean p1, p0, Lcom/android/server/incident/RequestQueue;->mStarted:Z
+    :cond_38
+    iget-boolean v2, p0, Lcom/android/server/incident/RequestQueue;->mStarted:Z
 
-    if-eqz p1, :cond_44
+    if-eqz v2, :cond_43
 
     .line 150
-    iget-object p1, p0, Lcom/android/server/incident/RequestQueue;->mHandler:Landroid/os/Handler;
+    iget-object v2, p0, Lcom/android/server/incident/RequestQueue;->mHandler:Landroid/os/Handler;
 
-    iget-object p2, p0, Lcom/android/server/incident/RequestQueue;->mWorker:Ljava/lang/Runnable;
+    iget-object v3, p0, Lcom/android/server/incident/RequestQueue;->mWorker:Ljava/lang/Runnable;
 
-    invoke-virtual {p1, p2}, Landroid/os/Handler;->post(Ljava/lang/Runnable;)Z
+    invoke-virtual {v2, v3}, Landroid/os/Handler;->post(Ljava/lang/Runnable;)Z
 
     .line 152
-    :cond_44
+    .end local v1  # "skip":Z
+    :cond_43
     monitor-exit v0
 
     .line 153
     return-void
 
     .line 152
-    :goto_46
+    :goto_45
     monitor-exit v0
-    :try_end_47
-    .catchall {:try_start_7 .. :try_end_47} :catchall_2b
+    :try_end_46
+    .catchall {:try_start_6 .. :try_end_46} :catchall_2a
 
-    throw p1
+    throw v1
 .end method
 
 .method public start()V

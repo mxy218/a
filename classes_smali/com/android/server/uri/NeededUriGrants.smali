@@ -24,6 +24,9 @@
 # direct methods
 .method public constructor <init>(Ljava/lang/String;II)V
     .registers 4
+    .param p1, "targetPkg"  # Ljava/lang/String;
+    .param p2, "targetUid"  # I
+    .param p3, "flags"  # I
 
     .line 31
     invoke-direct {p0}, Ljava/util/ArrayList;-><init>()V
@@ -44,64 +47,70 @@
 
 # virtual methods
 .method public writeToProto(Landroid/util/proto/ProtoOutputStream;J)V
-    .registers 9
+    .registers 11
+    .param p1, "proto"  # Landroid/util/proto/ProtoOutputStream;
+    .param p2, "fieldId"  # J
 
     .line 38
     invoke-virtual {p1, p2, p3}, Landroid/util/proto/ProtoOutputStream;->start(J)J
 
-    move-result-wide p2
+    move-result-wide v0
 
     .line 39
-    iget-object v0, p0, Lcom/android/server/uri/NeededUriGrants;->targetPkg:Ljava/lang/String;
+    .local v0, "token":J
+    iget-object v2, p0, Lcom/android/server/uri/NeededUriGrants;->targetPkg:Ljava/lang/String;
 
-    const-wide v1, 0x10900000001L
+    const-wide v3, 0x10900000001L
 
-    invoke-virtual {p1, v1, v2, v0}, Landroid/util/proto/ProtoOutputStream;->write(JLjava/lang/String;)V
+    invoke-virtual {p1, v3, v4, v2}, Landroid/util/proto/ProtoOutputStream;->write(JLjava/lang/String;)V
 
     .line 40
-    iget v0, p0, Lcom/android/server/uri/NeededUriGrants;->targetUid:I
+    iget v2, p0, Lcom/android/server/uri/NeededUriGrants;->targetUid:I
 
-    const-wide v1, 0x10500000002L
+    const-wide v3, 0x10500000002L
 
-    invoke-virtual {p1, v1, v2, v0}, Landroid/util/proto/ProtoOutputStream;->write(JI)V
+    invoke-virtual {p1, v3, v4, v2}, Landroid/util/proto/ProtoOutputStream;->write(JI)V
 
     .line 41
-    iget v0, p0, Lcom/android/server/uri/NeededUriGrants;->flags:I
+    iget v2, p0, Lcom/android/server/uri/NeededUriGrants;->flags:I
 
-    const-wide v1, 0x10500000003L
+    const-wide v3, 0x10500000003L
 
-    invoke-virtual {p1, v1, v2, v0}, Landroid/util/proto/ProtoOutputStream;->write(JI)V
+    invoke-virtual {p1, v3, v4, v2}, Landroid/util/proto/ProtoOutputStream;->write(JI)V
 
     .line 43
     invoke-virtual {p0}, Lcom/android/server/uri/NeededUriGrants;->size()I
 
-    move-result v0
+    move-result v2
 
     .line 44
-    const/4 v1, 0x0
+    .local v2, "N":I
+    const/4 v3, 0x0
 
+    .local v3, "i":I
     :goto_27
-    if-ge v1, v0, :cond_3a
+    if-ge v3, v2, :cond_3a
 
     .line 45
-    invoke-virtual {p0, v1}, Lcom/android/server/uri/NeededUriGrants;->get(I)Ljava/lang/Object;
+    invoke-virtual {p0, v3}, Lcom/android/server/uri/NeededUriGrants;->get(I)Ljava/lang/Object;
 
-    move-result-object v2
+    move-result-object v4
 
-    check-cast v2, Lcom/android/server/uri/GrantUri;
+    check-cast v4, Lcom/android/server/uri/GrantUri;
 
-    const-wide v3, 0x20b00000004L
+    const-wide v5, 0x20b00000004L
 
-    invoke-virtual {v2, p1, v3, v4}, Lcom/android/server/uri/GrantUri;->writeToProto(Landroid/util/proto/ProtoOutputStream;J)V
+    invoke-virtual {v4, p1, v5, v6}, Lcom/android/server/uri/GrantUri;->writeToProto(Landroid/util/proto/ProtoOutputStream;J)V
 
     .line 44
-    add-int/lit8 v1, v1, 0x1
+    add-int/lit8 v3, v3, 0x1
 
     goto :goto_27
 
     .line 47
+    .end local v3  # "i":I
     :cond_3a
-    invoke-virtual {p1, p2, p3}, Landroid/util/proto/ProtoOutputStream;->end(J)V
+    invoke-virtual {p1, v0, v1}, Landroid/util/proto/ProtoOutputStream;->end(J)V
 
     .line 48
     return-void

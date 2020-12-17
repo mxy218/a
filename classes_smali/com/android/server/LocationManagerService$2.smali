@@ -21,8 +21,10 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/LocationManagerService;Landroid/os/Handler;)V
     .registers 3
+    .param p1, "this$0"  # Lcom/android/server/LocationManagerService;
+    .param p2, "x0"  # Landroid/os/Handler;
 
-    .line 358
+    .line 442
     iput-object p1, p0, Lcom/android/server/LocationManagerService$2;->this$0:Lcom/android/server/LocationManagerService;
 
     invoke-direct {p0, p2}, Landroid/database/ContentObserver;-><init>(Landroid/os/Handler;)V
@@ -33,38 +35,39 @@
 
 # virtual methods
 .method public onChange(Z)V
-    .registers 4
+    .registers 5
+    .param p1, "selfChange"  # Z
 
-    .line 361
-    iget-object p1, p0, Lcom/android/server/LocationManagerService$2;->this$0:Lcom/android/server/LocationManagerService;
-
-    invoke-static {p1}, Lcom/android/server/LocationManagerService;->access$100(Lcom/android/server/LocationManagerService;)Ljava/lang/Object;
-
-    move-result-object p1
-
-    monitor-enter p1
-
-    .line 362
-    :try_start_7
+    .line 445
     iget-object v0, p0, Lcom/android/server/LocationManagerService$2;->this$0:Lcom/android/server/LocationManagerService;
 
-    const/4 v1, 0x1
+    invoke-static {v0}, Lcom/android/server/LocationManagerService;->access$100(Lcom/android/server/LocationManagerService;)Ljava/lang/Object;
 
-    invoke-static {v0, v1}, Lcom/android/server/LocationManagerService;->access$300(Lcom/android/server/LocationManagerService;Z)V
+    move-result-object v0
 
-    .line 363
-    monitor-exit p1
+    monitor-enter v0
 
-    .line 364
+    .line 446
+    :try_start_7
+    iget-object v1, p0, Lcom/android/server/LocationManagerService$2;->this$0:Lcom/android/server/LocationManagerService;
+
+    const/4 v2, 0x1
+
+    invoke-static {v1, v2}, Lcom/android/server/LocationManagerService;->access$300(Lcom/android/server/LocationManagerService;Z)V
+
+    .line 447
+    monitor-exit v0
+
+    .line 448
     return-void
 
-    .line 363
+    .line 447
     :catchall_f
-    move-exception v0
+    move-exception v1
 
-    monitor-exit p1
+    monitor-exit v0
     :try_end_11
     .catchall {:try_start_7 .. :try_end_11} :catchall_f
 
-    throw v0
+    throw v1
 .end method

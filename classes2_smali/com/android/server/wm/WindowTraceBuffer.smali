@@ -28,6 +28,7 @@
 # direct methods
 .method constructor <init>(I)V
     .registers 3
+    .param p1, "bufferCapacity"  # I
 
     .line 47
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -57,7 +58,8 @@
 .end method
 
 .method private discardOldest(I)V
-    .registers 6
+    .registers 7
+    .param p1, "protoLength"  # I
 
     .line 118
     invoke-virtual {p0}, Lcom/android/server/wm/WindowTraceBuffer;->getAvailableSpace()I
@@ -67,80 +69,88 @@
     int-to-long v0, v0
 
     .line 120
+    .local v0, "availableSpace":J
     :goto_5
     int-to-long v2, p1
 
-    cmp-long v0, v0, v2
+    cmp-long v2, v0, v2
 
-    if-gez v0, :cond_2b
+    if-gez v2, :cond_2b
 
     .line 122
-    iget-object v0, p0, Lcom/android/server/wm/WindowTraceBuffer;->mBuffer:Ljava/util/Queue;
+    iget-object v2, p0, Lcom/android/server/wm/WindowTraceBuffer;->mBuffer:Ljava/util/Queue;
 
-    invoke-interface {v0}, Ljava/util/Queue;->poll()Ljava/lang/Object;
+    invoke-interface {v2}, Ljava/util/Queue;->poll()Ljava/lang/Object;
 
-    move-result-object v0
+    move-result-object v2
 
-    check-cast v0, Landroid/util/proto/ProtoOutputStream;
+    check-cast v2, Landroid/util/proto/ProtoOutputStream;
 
     .line 123
-    if-eqz v0, :cond_23
+    .local v2, "item":Landroid/util/proto/ProtoOutputStream;
+    if-eqz v2, :cond_23
 
     .line 126
-    iget v1, p0, Lcom/android/server/wm/WindowTraceBuffer;->mBufferUsedSize:I
+    iget v3, p0, Lcom/android/server/wm/WindowTraceBuffer;->mBufferUsedSize:I
 
-    invoke-virtual {v0}, Landroid/util/proto/ProtoOutputStream;->getRawSize()I
+    invoke-virtual {v2}, Landroid/util/proto/ProtoOutputStream;->getRawSize()I
 
-    move-result v0
+    move-result v4
 
-    sub-int/2addr v1, v0
+    sub-int/2addr v3, v4
 
-    iput v1, p0, Lcom/android/server/wm/WindowTraceBuffer;->mBufferUsedSize:I
+    iput v3, p0, Lcom/android/server/wm/WindowTraceBuffer;->mBufferUsedSize:I
 
     .line 127
     invoke-virtual {p0}, Lcom/android/server/wm/WindowTraceBuffer;->getAvailableSpace()I
 
-    move-result v0
+    move-result v3
 
-    int-to-long v0, v0
+    int-to-long v0, v3
 
     .line 128
+    .end local v2  # "item":Landroid/util/proto/ProtoOutputStream;
     goto :goto_5
 
     .line 124
+    .restart local v2  # "item":Landroid/util/proto/ProtoOutputStream;
     :cond_23
-    new-instance p1, Ljava/lang/IllegalStateException;
+    new-instance v3, Ljava/lang/IllegalStateException;
 
-    const-string v0, "No element to discard from buffer"
+    const-string v4, "No element to discard from buffer"
 
-    invoke-direct {p1, v0}, Ljava/lang/IllegalStateException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v3, v4}, Ljava/lang/IllegalStateException;-><init>(Ljava/lang/String;)V
 
-    throw p1
+    throw v3
 
     .line 129
+    .end local v2  # "item":Landroid/util/proto/ProtoOutputStream;
     :cond_2b
     return-void
 .end method
 
 .method static synthetic lambda$contains$0([BLandroid/util/proto/ProtoOutputStream;)Z
-    .registers 2
+    .registers 3
+    .param p0, "other"  # [B
+    .param p1, "p"  # Landroid/util/proto/ProtoOutputStream;
 
     .line 87
     invoke-virtual {p1}, Landroid/util/proto/ProtoOutputStream;->getBytes()[B
 
-    move-result-object p1
+    move-result-object v0
 
-    invoke-static {p1, p0}, Ljava/util/Arrays;->equals([B[B)Z
+    invoke-static {v0, p0}, Ljava/util/Arrays;->equals([B[B)Z
 
-    move-result p0
+    move-result v0
 
-    return p0
+    return v0
 .end method
 
 
 # virtual methods
 .method add(Landroid/util/proto/ProtoOutputStream;)V
-    .registers 5
+    .registers 6
+    .param p1, "proto"  # Landroid/util/proto/ProtoOutputStream;
 
     .line 72
     invoke-virtual {p1}, Landroid/util/proto/ProtoOutputStream;->getRawSize()I
@@ -148,6 +158,7 @@
     move-result v0
 
     .line 73
+    .local v0, "protoLength":I
     iget v1, p0, Lcom/android/server/wm/WindowTraceBuffer;->mBufferCapacity:I
 
     if-gt v0, v1, :cond_22
@@ -167,16 +178,16 @@
     invoke-interface {v2, p1}, Ljava/util/Queue;->add(Ljava/lang/Object;)Z
 
     .line 80
-    iget p1, p0, Lcom/android/server/wm/WindowTraceBuffer;->mBufferUsedSize:I
+    iget v2, p0, Lcom/android/server/wm/WindowTraceBuffer;->mBufferUsedSize:I
 
-    add-int/2addr p1, v0
+    add-int/2addr v2, v0
 
-    iput p1, p0, Lcom/android/server/wm/WindowTraceBuffer;->mBufferUsedSize:I
+    iput v2, p0, Lcom/android/server/wm/WindowTraceBuffer;->mBufferUsedSize:I
 
     .line 81
-    iget-object p1, p0, Lcom/android/server/wm/WindowTraceBuffer;->mBufferLock:Ljava/lang/Object;
+    iget-object v2, p0, Lcom/android/server/wm/WindowTraceBuffer;->mBufferLock:Ljava/lang/Object;
 
-    invoke-virtual {p1}, Ljava/lang/Object;->notify()V
+    invoke-virtual {v2}, Ljava/lang/Object;->notify()V
 
     .line 82
     monitor-exit v1
@@ -186,47 +197,48 @@
 
     .line 82
     :catchall_1f
-    move-exception p1
+    move-exception v2
 
     monitor-exit v1
     :try_end_21
     .catchall {:try_start_b .. :try_end_21} :catchall_1f
 
-    throw p1
+    throw v2
 
     .line 74
     :cond_22
-    new-instance p1, Ljava/lang/IllegalStateException;
+    new-instance v1, Ljava/lang/IllegalStateException;
 
-    new-instance v1, Ljava/lang/StringBuilder;
+    new-instance v2, Ljava/lang/StringBuilder;
 
-    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v2, "Trace object too large for the buffer. Buffer size:"
+    const-string v3, "Trace object too large for the buffer. Buffer size:"
 
-    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    iget v2, p0, Lcom/android/server/wm/WindowTraceBuffer;->mBufferCapacity:I
+    iget v3, p0, Lcom/android/server/wm/WindowTraceBuffer;->mBufferCapacity:I
 
-    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    const-string v2, " Object size: "
+    const-string v3, " Object size: "
 
-    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v1, v0}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v0}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v2
 
-    invoke-direct {p1, v0}, Ljava/lang/IllegalStateException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v1, v2}, Ljava/lang/IllegalStateException;-><init>(Ljava/lang/String;)V
 
-    throw p1
+    throw v1
 .end method
 
 .method contains([B)Z
     .registers 4
+    .param p1, "other"  # [B
 
     .line 86
     iget-object v0, p0, Lcom/android/server/wm/WindowTraceBuffer;->mBuffer:Ljava/util/Queue;
@@ -242,10 +254,10 @@
     .line 87
     invoke-interface {v0, v1}, Ljava/util/stream/Stream;->anyMatch(Ljava/util/function/Predicate;)Z
 
-    move-result p1
+    move-result v0
 
     .line 86
-    return p1
+    return v0
 .end method
 
 .method getAvailableSpace()I
@@ -373,6 +385,7 @@
 
 .method setCapacity(I)V
     .registers 2
+    .param p1, "capacity"  # I
 
     .line 61
     iput p1, p0, Lcom/android/server/wm/WindowTraceBuffer;->mBufferCapacity:I
@@ -395,7 +408,8 @@
 .end method
 
 .method writeTraceToFile(Ljava/io/File;)V
-    .registers 8
+    .registers 9
+    .param p1, "traceFile"  # Ljava/io/File;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Ljava/io/IOException;
@@ -419,6 +433,7 @@
     .catchall {:try_start_3 .. :try_end_b} :catchall_58
 
     .line 97
+    .local v1, "os":Ljava/io/OutputStream;
     const/4 v2, 0x1
 
     const/4 v3, 0x0
@@ -427,56 +442,61 @@
     invoke-virtual {p1, v2, v3}, Ljava/io/File;->setReadable(ZZ)Z
 
     .line 98
-    new-instance p1, Landroid/util/proto/ProtoOutputStream;
+    new-instance v2, Landroid/util/proto/ProtoOutputStream;
 
-    invoke-direct {p1}, Landroid/util/proto/ProtoOutputStream;-><init>()V
+    invoke-direct {v2}, Landroid/util/proto/ProtoOutputStream;-><init>()V
 
     .line 99
-    const-wide v2, 0x10600000001L
+    .local v2, "proto":Landroid/util/proto/ProtoOutputStream;
+    const-wide v3, 0x10600000001L
 
-    const-wide v4, 0x45434152544e4957L  # 4.655612620390422E25
+    const-wide v5, 0x45434152544e4957L  # 4.655612620390422E25
 
-    invoke-virtual {p1, v2, v3, v4, v5}, Landroid/util/proto/ProtoOutputStream;->write(JJ)V
+    invoke-virtual {v2, v3, v4, v5, v6}, Landroid/util/proto/ProtoOutputStream;->write(JJ)V
 
     .line 100
-    invoke-virtual {p1}, Landroid/util/proto/ProtoOutputStream;->getBytes()[B
+    invoke-virtual {v2}, Landroid/util/proto/ProtoOutputStream;->getBytes()[B
 
-    move-result-object p1
+    move-result-object v3
 
-    invoke-virtual {v1, p1}, Ljava/io/OutputStream;->write([B)V
+    invoke-virtual {v1, v3}, Ljava/io/OutputStream;->write([B)V
 
     .line 101
-    iget-object p1, p0, Lcom/android/server/wm/WindowTraceBuffer;->mBuffer:Ljava/util/Queue;
+    iget-object v3, p0, Lcom/android/server/wm/WindowTraceBuffer;->mBuffer:Ljava/util/Queue;
 
-    invoke-interface {p1}, Ljava/util/Queue;->iterator()Ljava/util/Iterator;
+    invoke-interface {v3}, Ljava/util/Queue;->iterator()Ljava/util/Iterator;
 
-    move-result-object p1
+    move-result-object v3
 
     :goto_2f
-    invoke-interface {p1}, Ljava/util/Iterator;->hasNext()Z
+    invoke-interface {v3}, Ljava/util/Iterator;->hasNext()Z
 
-    move-result v2
+    move-result v4
 
-    if-eqz v2, :cond_44
+    if-eqz v4, :cond_44
 
-    invoke-interface {p1}, Ljava/util/Iterator;->next()Ljava/lang/Object;
+    invoke-interface {v3}, Ljava/util/Iterator;->next()Ljava/lang/Object;
 
-    move-result-object v2
+    move-result-object v4
 
-    check-cast v2, Landroid/util/proto/ProtoOutputStream;
+    check-cast v4, Landroid/util/proto/ProtoOutputStream;
 
     .line 102
-    nop
+    .local v4, "protoOutputStream":Landroid/util/proto/ProtoOutputStream;
+    move-object v2, v4
 
     .line 103
     invoke-virtual {v2}, Landroid/util/proto/ProtoOutputStream;->getBytes()[B
 
-    move-result-object v2
+    move-result-object v5
 
     .line 104
-    invoke-virtual {v1, v2}, Ljava/io/OutputStream;->write([B)V
+    .local v5, "protoBytes":[B
+    invoke-virtual {v1, v5}, Ljava/io/OutputStream;->write([B)V
 
     .line 105
+    .end local v4  # "protoOutputStream":Landroid/util/proto/ProtoOutputStream;
+    .end local v5  # "protoBytes":[B
     goto :goto_2f
 
     .line 106
@@ -486,10 +506,12 @@
     .catchall {:try_start_d .. :try_end_47} :catchall_4c
 
     .line 107
+    .end local v2  # "proto":Landroid/util/proto/ProtoOutputStream;
     :try_start_47
     invoke-virtual {v1}, Ljava/io/OutputStream;->close()V
 
     .line 108
+    .end local v1  # "os":Ljava/io/OutputStream;
     monitor-exit v0
     :try_end_4b
     .catchall {:try_start_47 .. :try_end_4b} :catchall_58
@@ -498,17 +520,24 @@
     return-void
 
     .line 96
+    .restart local v1  # "os":Ljava/io/OutputStream;
     :catchall_4c
-    move-exception p1
+    move-exception v2
 
+    .end local v1  # "os":Ljava/io/OutputStream;
+    .end local p0  # "this":Lcom/android/server/wm/WindowTraceBuffer;
+    .end local p1  # "traceFile":Ljava/io/File;
     :try_start_4d
-    throw p1
+    throw v2
     :try_end_4e
     .catchall {:try_start_4d .. :try_end_4e} :catchall_4e
 
     .line 107
+    .restart local v1  # "os":Ljava/io/OutputStream;
+    .restart local p0  # "this":Lcom/android/server/wm/WindowTraceBuffer;
+    .restart local p1  # "traceFile":Ljava/io/File;
     :catchall_4e
-    move-exception v2
+    move-exception v3
 
     :try_start_4f
     invoke-virtual {v1}, Ljava/io/OutputStream;->close()V
@@ -518,21 +547,26 @@
     goto :goto_57
 
     :catchall_53
-    move-exception v1
+    move-exception v4
 
     :try_start_54
-    invoke-virtual {p1, v1}, Ljava/lang/Throwable;->addSuppressed(Ljava/lang/Throwable;)V
+    invoke-virtual {v2, v4}, Ljava/lang/Throwable;->addSuppressed(Ljava/lang/Throwable;)V
 
+    .end local p0  # "this":Lcom/android/server/wm/WindowTraceBuffer;
+    .end local p1  # "traceFile":Ljava/io/File;
     :goto_57
-    throw v2
+    throw v3
 
     .line 108
+    .end local v1  # "os":Ljava/io/OutputStream;
+    .restart local p0  # "this":Lcom/android/server/wm/WindowTraceBuffer;
+    .restart local p1  # "traceFile":Ljava/io/File;
     :catchall_58
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_5a
     .catchall {:try_start_54 .. :try_end_5a} :catchall_58
 
-    throw p1
+    throw v1
 .end method

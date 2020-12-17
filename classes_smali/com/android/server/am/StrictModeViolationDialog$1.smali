@@ -21,6 +21,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/am/StrictModeViolationDialog;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/am/StrictModeViolationDialog;
 
     .line 85
     iput-object p1, p0, Lcom/android/server/am/StrictModeViolationDialog$1;->this$0:Lcom/android/server/am/StrictModeViolationDialog;
@@ -34,6 +35,7 @@
 # virtual methods
 .method public handleMessage(Landroid/os/Message;)V
     .registers 5
+    .param p1, "msg"  # Landroid/os/Message;
 
     .line 87
     iget-object v0, p0, Lcom/android/server/am/StrictModeViolationDialog$1;->this$0:Lcom/android/server/am/StrictModeViolationDialog;
@@ -94,21 +96,21 @@
 
     move-result-object v0
 
-    iget p1, p1, Landroid/os/Message;->what:I
+    iget v1, p1, Landroid/os/Message;->what:I
 
-    invoke-virtual {v0, p1}, Lcom/android/server/am/AppErrorResult;->set(I)V
+    invoke-virtual {v0, v1}, Lcom/android/server/am/AppErrorResult;->set(I)V
 
     .line 96
-    iget-object p1, p0, Lcom/android/server/am/StrictModeViolationDialog$1;->this$0:Lcom/android/server/am/StrictModeViolationDialog;
+    iget-object v0, p0, Lcom/android/server/am/StrictModeViolationDialog$1;->this$0:Lcom/android/server/am/StrictModeViolationDialog;
 
-    invoke-virtual {p1}, Lcom/android/server/am/StrictModeViolationDialog;->dismiss()V
+    invoke-virtual {v0}, Lcom/android/server/am/StrictModeViolationDialog;->dismiss()V
 
     .line 97
     return-void
 
     .line 91
     :catchall_3c
-    move-exception p1
+    move-exception v1
 
     :try_start_3d
     monitor-exit v0
@@ -117,5 +119,5 @@
 
     invoke-static {}, Lcom/android/server/am/ActivityManagerService;->resetPriorityAfterLockedSection()V
 
-    throw p1
+    throw v1
 .end method

@@ -39,6 +39,8 @@
 
 .method protected constructor <init>(Landroid/content/Context;Landroid/os/Handler;)V
     .registers 4
+    .param p1, "context"  # Landroid/content/Context;
+    .param p2, "handler"  # Landroid/os/Handler;
 
     .line 32
     const-string v0, "GnssStatusListenerHelper"
@@ -48,9 +50,9 @@
     .line 33
     invoke-static {}, Lcom/android/server/location/GnssLocationProvider;->isSupported()Z
 
-    move-result p1
+    move-result v0
 
-    invoke-virtual {p0, p1}, Lcom/android/server/location/GnssStatusListenerHelper;->setSupported(Z)V
+    invoke-virtual {p0, v0}, Lcom/android/server/location/GnssStatusListenerHelper;->setSupported(Z)V
 
     .line 34
     return-void
@@ -58,6 +60,9 @@
 
 .method static synthetic lambda$onFirstFix$2(ILandroid/location/IGnssStatusListener;Lcom/android/server/location/CallerIdentity;)V
     .registers 3
+    .param p0, "timeToFirstFix"  # I
+    .param p1, "listener"  # Landroid/location/IGnssStatusListener;
+    .param p2, "callerIdentity"  # Lcom/android/server/location/CallerIdentity;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -73,6 +78,8 @@
 
 .method static synthetic lambda$onStatusChanged$0(Landroid/location/IGnssStatusListener;Lcom/android/server/location/CallerIdentity;)V
     .registers 2
+    .param p0, "listener"  # Landroid/location/IGnssStatusListener;
+    .param p1, "callerIdentity"  # Lcom/android/server/location/CallerIdentity;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -88,6 +95,8 @@
 
 .method static synthetic lambda$onStatusChanged$1(Landroid/location/IGnssStatusListener;Lcom/android/server/location/CallerIdentity;)V
     .registers 2
+    .param p0, "listener"  # Landroid/location/IGnssStatusListener;
+    .param p1, "callerIdentity"  # Lcom/android/server/location/CallerIdentity;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -104,7 +113,8 @@
 
 # virtual methods
 .method protected getHandlerOperation(I)Lcom/android/server/location/RemoteListenerHelper$ListenerOperation;
-    .registers 2
+    .registers 3
+    .param p1, "result"  # I
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(I)",
@@ -115,13 +125,17 @@
     .end annotation
 
     .line 46
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    return-object p1
+    return-object v0
 .end method
 
 .method public synthetic lambda$onNmeaReceived$4$GnssStatusListenerHelper(JLjava/lang/String;Landroid/location/IGnssStatusListener;Lcom/android/server/location/CallerIdentity;)V
-    .registers 7
+    .registers 9
+    .param p1, "timestamp"  # J
+    .param p3, "nmea"  # Ljava/lang/String;
+    .param p4, "listener"  # Landroid/location/IGnssStatusListener;
+    .param p5, "callerIdentity"  # Lcom/android/server/location/CallerIdentity;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -138,13 +152,13 @@
     if-nez v0, :cond_12
 
     .line 89
-    iget-object p1, p5, Lcom/android/server/location/CallerIdentity;->mPackageName:Ljava/lang/String;
+    iget-object v0, p5, Lcom/android/server/location/CallerIdentity;->mPackageName:Ljava/lang/String;
 
-    const-string p2, "GnssStatusListenerHelper"
+    const-string v1, "GnssStatusListenerHelper"
 
-    const-string p3, "NMEA"
+    const-string v2, "NMEA"
 
-    invoke-virtual {p0, p2, p1, p3}, Lcom/android/server/location/GnssStatusListenerHelper;->logPermissionDisabledEventNotReported(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V
+    invoke-virtual {p0, v1, v0, v2}, Lcom/android/server/location/GnssStatusListenerHelper;->logPermissionDisabledEventNotReported(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V
 
     .line 90
     return-void
@@ -159,6 +173,14 @@
 
 .method public synthetic lambda$onSvStatusChanged$3$GnssStatusListenerHelper(I[I[F[F[F[FLandroid/location/IGnssStatusListener;Lcom/android/server/location/CallerIdentity;)V
     .registers 16
+    .param p1, "svCount"  # I
+    .param p2, "prnWithFlags"  # [I
+    .param p3, "cn0s"  # [F
+    .param p4, "elevations"  # [F
+    .param p5, "azimuths"  # [F
+    .param p6, "carrierFreqs"  # [F
+    .param p7, "listener"  # Landroid/location/IGnssStatusListener;
+    .param p8, "callerIdentity"  # Lcom/android/server/location/CallerIdentity;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -175,13 +197,13 @@
     if-nez v0, :cond_12
 
     .line 77
-    iget-object p1, p8, Lcom/android/server/location/CallerIdentity;->mPackageName:Ljava/lang/String;
+    iget-object v0, p8, Lcom/android/server/location/CallerIdentity;->mPackageName:Ljava/lang/String;
 
-    const-string p2, "GnssStatusListenerHelper"
+    const-string v1, "GnssStatusListenerHelper"
 
-    const-string p3, "GNSS status"
+    const-string v2, "GNSS status"
 
-    invoke-virtual {p0, p2, p1, p3}, Lcom/android/server/location/GnssStatusListenerHelper;->logPermissionDisabledEventNotReported(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V
+    invoke-virtual {p0, v1, v0, v2}, Lcom/android/server/location/GnssStatusListenerHelper;->logPermissionDisabledEventNotReported(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V
 
     .line 79
     return-void
@@ -210,6 +232,7 @@
 
 .method public onFirstFix(I)V
     .registers 3
+    .param p1, "timeToFirstFix"  # I
 
     .line 62
     new-instance v0, Lcom/android/server/location/-$$Lambda$GnssStatusListenerHelper$0MNjUouf1HJVcFD10rzoJIkzCrw;
@@ -224,6 +247,8 @@
 
 .method public onNmeaReceived(JLjava/lang/String;)V
     .registers 5
+    .param p1, "timestamp"  # J
+    .param p3, "nmea"  # Ljava/lang/String;
 
     .line 87
     new-instance v0, Lcom/android/server/location/-$$Lambda$GnssStatusListenerHelper$AtHI8E6PAjonHH1N0ZGabW0VF6c;
@@ -237,23 +262,24 @@
 .end method
 
 .method public onStatusChanged(Z)V
-    .registers 2
+    .registers 3
+    .param p1, "isNavigating"  # Z
 
     .line 50
     if-eqz p1, :cond_8
 
     .line 51
-    sget-object p1, Lcom/android/server/location/-$$Lambda$GnssStatusListenerHelper$H9Tg_OtCE9BSJiAQYs_ITHFpiHU;->INSTANCE:Lcom/android/server/location/-$$Lambda$GnssStatusListenerHelper$H9Tg_OtCE9BSJiAQYs_ITHFpiHU;
+    sget-object v0, Lcom/android/server/location/-$$Lambda$GnssStatusListenerHelper$H9Tg_OtCE9BSJiAQYs_ITHFpiHU;->INSTANCE:Lcom/android/server/location/-$$Lambda$GnssStatusListenerHelper$H9Tg_OtCE9BSJiAQYs_ITHFpiHU;
 
-    invoke-virtual {p0, p1}, Lcom/android/server/location/GnssStatusListenerHelper;->foreach(Lcom/android/server/location/RemoteListenerHelper$ListenerOperation;)V
+    invoke-virtual {p0, v0}, Lcom/android/server/location/GnssStatusListenerHelper;->foreach(Lcom/android/server/location/RemoteListenerHelper$ListenerOperation;)V
 
     goto :goto_d
 
     .line 55
     :cond_8
-    sget-object p1, Lcom/android/server/location/-$$Lambda$GnssStatusListenerHelper$6s2HBSMgP5pXrugfCvtIf9QHndI;->INSTANCE:Lcom/android/server/location/-$$Lambda$GnssStatusListenerHelper$6s2HBSMgP5pXrugfCvtIf9QHndI;
+    sget-object v0, Lcom/android/server/location/-$$Lambda$GnssStatusListenerHelper$6s2HBSMgP5pXrugfCvtIf9QHndI;->INSTANCE:Lcom/android/server/location/-$$Lambda$GnssStatusListenerHelper$6s2HBSMgP5pXrugfCvtIf9QHndI;
 
-    invoke-virtual {p0, p1}, Lcom/android/server/location/GnssStatusListenerHelper;->foreach(Lcom/android/server/location/RemoteListenerHelper$ListenerOperation;)V
+    invoke-virtual {p0, v0}, Lcom/android/server/location/GnssStatusListenerHelper;->foreach(Lcom/android/server/location/RemoteListenerHelper$ListenerOperation;)V
 
     .line 59
     :goto_d
@@ -262,6 +288,12 @@
 
 .method public onSvStatusChanged(I[I[F[F[F[F)V
     .registers 16
+    .param p1, "svCount"  # I
+    .param p2, "prnWithFlags"  # [I
+    .param p3, "cn0s"  # [F
+    .param p4, "elevations"  # [F
+    .param p5, "azimuths"  # [F
+    .param p6, "carrierFreqs"  # [F
 
     .line 75
     new-instance v8, Lcom/android/server/location/-$$Lambda$GnssStatusListenerHelper$68FOYPQxCAVSdtoWmmZNfYGGIJE;

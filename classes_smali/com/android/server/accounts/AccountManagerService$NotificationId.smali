@@ -23,25 +23,28 @@
 # direct methods
 .method constructor <init>(Ljava/lang/String;I)V
     .registers 3
+    .param p1, "tag"  # Ljava/lang/String;
+    .param p2, "type"  # I
 
-    .line 6308
+    .line 6292
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
-    .line 6309
+    .line 6293
     iput-object p1, p0, Lcom/android/server/accounts/AccountManagerService$NotificationId;->mTag:Ljava/lang/String;
 
-    .line 6310
+    .line 6294
     iput p2, p0, Lcom/android/server/accounts/AccountManagerService$NotificationId;->mId:I
 
-    .line 6311
+    .line 6295
     return-void
 .end method
 
 .method static synthetic access$3600(Lcom/android/server/accounts/AccountManagerService$NotificationId;)I
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/accounts/AccountManagerService$NotificationId;
 
-    .line 6304
-    iget p0, p0, Lcom/android/server/accounts/AccountManagerService$NotificationId;->mId:I
+    .line 6288
+    iget v0, p0, Lcom/android/server/accounts/AccountManagerService$NotificationId;->mId:I
 
-    return p0
+    return v0
 .end method

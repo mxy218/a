@@ -218,6 +218,14 @@
 
 .field private mUserReceiver:Landroid/content/BroadcastReceiver;
 
+.field private mVpnInfos:[Lcom/android/internal/net/VpnInfo;
+    .annotation build Lcom/android/internal/annotations/GuardedBy;
+        value = {
+            "mStatsLock"
+        }
+    .end annotation
+.end field
+
 .field private final mWakeLock:Landroid/os/PowerManager$WakeLock;
 
 .field private mXtRecorder:Lcom/android/server/net/NetworkStatsRecorder;
@@ -241,7 +249,7 @@
 .method static constructor <clinit>()V
     .registers 2
 
-    .line 158
+    .line 159
     const-string v0, "NetworkStats"
 
     const/4 v1, 0x3
@@ -252,7 +260,7 @@
 
     sput-boolean v1, Lcom/android/server/net/NetworkStatsService;->LOGD:Z
 
-    .line 159
+    .line 160
     const/4 v1, 0x2
 
     invoke-static {v0, v1}, Landroid/util/Log;->isLoggable(Ljava/lang/String;I)Z
@@ -266,46 +274,61 @@
 
 .method constructor <init>(Landroid/content/Context;Landroid/os/INetworkManagementService;Landroid/app/AlarmManager;Landroid/os/PowerManager$WakeLock;Ljava/time/Clock;Landroid/telephony/TelephonyManager;Lcom/android/server/net/NetworkStatsService$NetworkStatsSettings;Lcom/android/server/net/NetworkStatsObservers;Ljava/io/File;Ljava/io/File;)V
     .registers 15
+    .param p1, "context"  # Landroid/content/Context;
+    .param p2, "networkManager"  # Landroid/os/INetworkManagementService;
+    .param p3, "alarmManager"  # Landroid/app/AlarmManager;
+    .param p4, "wakeLock"  # Landroid/os/PowerManager$WakeLock;
+    .param p5, "clock"  # Ljava/time/Clock;
+    .param p6, "teleManager"  # Landroid/telephony/TelephonyManager;
+    .param p7, "settings"  # Lcom/android/server/net/NetworkStatsService$NetworkStatsSettings;
+    .param p8, "statsObservers"  # Lcom/android/server/net/NetworkStatsObservers;
+    .param p9, "systemDir"  # Ljava/io/File;
+    .param p10, "baseDir"  # Ljava/io/File;
     .annotation build Lcom/android/internal/annotations/VisibleForTesting;
     .end annotation
 
-    .line 357
+    .line 362
     invoke-direct {p0}, Landroid/net/INetworkStatsService$Stub;-><init>()V
 
-    .line 247
+    .line 248
     new-instance v0, Ljava/lang/Object;
 
     invoke-direct {v0}, Ljava/lang/Object;-><init>()V
 
     iput-object v0, p0, Lcom/android/server/net/NetworkStatsService;->mStatsLock:Ljava/lang/Object;
 
-    .line 250
+    .line 251
     new-instance v0, Landroid/util/ArrayMap;
 
     invoke-direct {v0}, Landroid/util/ArrayMap;-><init>()V
 
     iput-object v0, p0, Lcom/android/server/net/NetworkStatsService;->mActiveIfaces:Landroid/util/ArrayMap;
 
-    .line 254
+    .line 255
     new-instance v0, Landroid/util/ArrayMap;
 
     invoke-direct {v0}, Landroid/util/ArrayMap;-><init>()V
 
     iput-object v0, p0, Lcom/android/server/net/NetworkStatsService;->mActiveUidIfaces:Landroid/util/ArrayMap;
 
-    .line 262
+    .line 263
     const/4 v0, 0x0
 
     new-array v1, v0, [Ljava/lang/String;
 
     iput-object v1, p0, Lcom/android/server/net/NetworkStatsService;->mMobileIfaces:[Ljava/lang/String;
 
-    .line 266
-    new-array v0, v0, [Landroid/net/Network;
+    .line 267
+    new-array v1, v0, [Landroid/net/Network;
 
-    iput-object v0, p0, Lcom/android/server/net/NetworkStatsService;->mDefaultNetworks:[Landroid/net/Network;
+    iput-object v1, p0, Lcom/android/server/net/NetworkStatsService;->mDefaultNetworks:[Landroid/net/Network;
 
-    .line 269
+    .line 271
+    new-array v0, v0, [Lcom/android/internal/net/VpnInfo;
+
+    iput-object v0, p0, Lcom/android/server/net/NetworkStatsService;->mVpnInfos:[Lcom/android/internal/net/VpnInfo;
+
+    .line 274
     new-instance v0, Lcom/android/server/net/NetworkStatsService$DropBoxNonMonotonicObserver;
 
     const/4 v1, 0x0
@@ -314,14 +337,14 @@
 
     iput-object v0, p0, Lcom/android/server/net/NetworkStatsService;->mNonMonotonicObserver:Lcom/android/server/net/NetworkStatsService$DropBoxNonMonotonicObserver;
 
-    .line 286
+    .line 291
     new-instance v0, Landroid/util/SparseIntArray;
 
     invoke-direct {v0}, Landroid/util/SparseIntArray;-><init>()V
 
     iput-object v0, p0, Lcom/android/server/net/NetworkStatsService;->mActiveUidCounterSet:Landroid/util/SparseIntArray;
 
-    .line 289
+    .line 294
     new-instance v0, Landroid/net/NetworkStats;
 
     const-wide/16 v1, 0x0
@@ -332,200 +355,203 @@
 
     iput-object v0, p0, Lcom/android/server/net/NetworkStatsService;->mUidOperations:Landroid/net/NetworkStats;
 
-    .line 296
+    .line 301
     const-wide/32 v0, 0x200000
 
     iput-wide v0, p0, Lcom/android/server/net/NetworkStatsService;->mPersistThreshold:J
 
-    .line 304
+    .line 309
     new-instance v0, Landroid/util/SparseIntArray;
 
     invoke-direct {v0}, Landroid/util/SparseIntArray;-><init>()V
 
     iput-object v0, p0, Lcom/android/server/net/NetworkStatsService;->mOpenSessionCallsPerUid:Landroid/util/SparseIntArray;
 
-    .line 1042
+    .line 1048
     new-instance v0, Lcom/android/server/net/NetworkStatsService$2;
 
     invoke-direct {v0, p0}, Lcom/android/server/net/NetworkStatsService$2;-><init>(Lcom/android/server/net/NetworkStatsService;)V
 
     iput-object v0, p0, Lcom/android/server/net/NetworkStatsService;->mTetherReceiver:Landroid/content/BroadcastReceiver;
 
-    .line 1051
+    .line 1057
     new-instance v0, Lcom/android/server/net/NetworkStatsService$3;
 
     invoke-direct {v0, p0}, Lcom/android/server/net/NetworkStatsService$3;-><init>(Lcom/android/server/net/NetworkStatsService;)V
 
     iput-object v0, p0, Lcom/android/server/net/NetworkStatsService;->mPollReceiver:Landroid/content/BroadcastReceiver;
 
-    .line 1063
+    .line 1069
     new-instance v0, Lcom/android/server/net/NetworkStatsService$4;
 
     invoke-direct {v0, p0}, Lcom/android/server/net/NetworkStatsService$4;-><init>(Lcom/android/server/net/NetworkStatsService;)V
 
     iput-object v0, p0, Lcom/android/server/net/NetworkStatsService;->mRemovedReceiver:Landroid/content/BroadcastReceiver;
 
-    .line 1083
+    .line 1089
     new-instance v0, Lcom/android/server/net/NetworkStatsService$5;
 
     invoke-direct {v0, p0}, Lcom/android/server/net/NetworkStatsService$5;-><init>(Lcom/android/server/net/NetworkStatsService;)V
 
     iput-object v0, p0, Lcom/android/server/net/NetworkStatsService;->mUserReceiver:Landroid/content/BroadcastReceiver;
 
-    .line 1103
+    .line 1109
     new-instance v0, Lcom/android/server/net/NetworkStatsService$6;
 
     invoke-direct {v0, p0}, Lcom/android/server/net/NetworkStatsService$6;-><init>(Lcom/android/server/net/NetworkStatsService;)V
 
     iput-object v0, p0, Lcom/android/server/net/NetworkStatsService;->mShutdownReceiver:Landroid/content/BroadcastReceiver;
 
-    .line 1116
+    .line 1122
     new-instance v0, Lcom/android/server/net/NetworkStatsService$7;
 
     invoke-direct {v0, p0}, Lcom/android/server/net/NetworkStatsService$7;-><init>(Lcom/android/server/net/NetworkStatsService;)V
 
     iput-object v0, p0, Lcom/android/server/net/NetworkStatsService;->mAlertObserver:Landroid/net/INetworkManagementEventObserver;
 
-    .line 358
-    const-string v0, "missing Context"
+    .line 363
+    const-string/jumbo v0, "missing Context"
 
     invoke-static {p1, v0}, Lcom/android/internal/util/Preconditions;->checkNotNull(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v0
 
-    check-cast p1, Landroid/content/Context;
+    check-cast v0, Landroid/content/Context;
 
-    iput-object p1, p0, Lcom/android/server/net/NetworkStatsService;->mContext:Landroid/content/Context;
-
-    .line 359
-    const-string p1, "missing INetworkManagementService"
-
-    invoke-static {p2, p1}, Lcom/android/internal/util/Preconditions;->checkNotNull(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
-
-    move-result-object p1
-
-    check-cast p1, Landroid/os/INetworkManagementService;
-
-    iput-object p1, p0, Lcom/android/server/net/NetworkStatsService;->mNetworkManager:Landroid/os/INetworkManagementService;
-
-    .line 360
-    const-string p1, "missing AlarmManager"
-
-    invoke-static {p3, p1}, Lcom/android/internal/util/Preconditions;->checkNotNull(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
-
-    move-result-object p1
-
-    check-cast p1, Landroid/app/AlarmManager;
-
-    iput-object p1, p0, Lcom/android/server/net/NetworkStatsService;->mAlarmManager:Landroid/app/AlarmManager;
-
-    .line 361
-    const-string p1, "missing Clock"
-
-    invoke-static {p5, p1}, Lcom/android/internal/util/Preconditions;->checkNotNull(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
-
-    move-result-object p1
-
-    check-cast p1, Ljava/time/Clock;
-
-    iput-object p1, p0, Lcom/android/server/net/NetworkStatsService;->mClock:Ljava/time/Clock;
-
-    .line 362
-    const-string p1, "missing NetworkStatsSettings"
-
-    invoke-static {p7, p1}, Lcom/android/internal/util/Preconditions;->checkNotNull(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
-
-    move-result-object p1
-
-    check-cast p1, Lcom/android/server/net/NetworkStatsService$NetworkStatsSettings;
-
-    iput-object p1, p0, Lcom/android/server/net/NetworkStatsService;->mSettings:Lcom/android/server/net/NetworkStatsService$NetworkStatsSettings;
-
-    .line 363
-    const-string p1, "missing TelephonyManager"
-
-    invoke-static {p6, p1}, Lcom/android/internal/util/Preconditions;->checkNotNull(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
-
-    move-result-object p1
-
-    check-cast p1, Landroid/telephony/TelephonyManager;
-
-    iput-object p1, p0, Lcom/android/server/net/NetworkStatsService;->mTeleManager:Landroid/telephony/TelephonyManager;
+    iput-object v0, p0, Lcom/android/server/net/NetworkStatsService;->mContext:Landroid/content/Context;
 
     .line 364
-    const-string p1, "missing WakeLock"
+    const-string/jumbo v0, "missing INetworkManagementService"
 
-    invoke-static {p4, p1}, Lcom/android/internal/util/Preconditions;->checkNotNull(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+    invoke-static {p2, v0}, Lcom/android/internal/util/Preconditions;->checkNotNull(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v0
 
-    check-cast p1, Landroid/os/PowerManager$WakeLock;
+    check-cast v0, Landroid/os/INetworkManagementService;
 
-    iput-object p1, p0, Lcom/android/server/net/NetworkStatsService;->mWakeLock:Landroid/os/PowerManager$WakeLock;
+    iput-object v0, p0, Lcom/android/server/net/NetworkStatsService;->mNetworkManager:Landroid/os/INetworkManagementService;
 
     .line 365
-    const-string p1, "missing NetworkStatsObservers"
+    const-string/jumbo v0, "missing AlarmManager"
 
-    invoke-static {p8, p1}, Lcom/android/internal/util/Preconditions;->checkNotNull(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+    invoke-static {p3, v0}, Lcom/android/internal/util/Preconditions;->checkNotNull(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v0
 
-    check-cast p1, Lcom/android/server/net/NetworkStatsObservers;
+    check-cast v0, Landroid/app/AlarmManager;
 
-    iput-object p1, p0, Lcom/android/server/net/NetworkStatsService;->mStatsObservers:Lcom/android/server/net/NetworkStatsObservers;
+    iput-object v0, p0, Lcom/android/server/net/NetworkStatsService;->mAlarmManager:Landroid/app/AlarmManager;
 
     .line 366
-    const-string p1, "missing systemDir"
+    const-string/jumbo v0, "missing Clock"
 
-    invoke-static {p9, p1}, Lcom/android/internal/util/Preconditions;->checkNotNull(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+    invoke-static {p5, v0}, Lcom/android/internal/util/Preconditions;->checkNotNull(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v0
 
-    check-cast p1, Ljava/io/File;
+    check-cast v0, Ljava/time/Clock;
 
-    iput-object p1, p0, Lcom/android/server/net/NetworkStatsService;->mSystemDir:Ljava/io/File;
+    iput-object v0, p0, Lcom/android/server/net/NetworkStatsService;->mClock:Ljava/time/Clock;
 
     .line 367
-    const-string p1, "missing baseDir"
+    const-string/jumbo v0, "missing NetworkStatsSettings"
 
-    invoke-static {p10, p1}, Lcom/android/internal/util/Preconditions;->checkNotNull(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+    invoke-static {p7, v0}, Lcom/android/internal/util/Preconditions;->checkNotNull(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v0
 
-    check-cast p1, Ljava/io/File;
+    check-cast v0, Lcom/android/server/net/NetworkStatsService$NetworkStatsSettings;
 
-    iput-object p1, p0, Lcom/android/server/net/NetworkStatsService;->mBaseDir:Ljava/io/File;
+    iput-object v0, p0, Lcom/android/server/net/NetworkStatsService;->mSettings:Lcom/android/server/net/NetworkStatsService$NetworkStatsSettings;
 
     .line 368
-    new-instance p1, Ljava/io/File;
+    const-string/jumbo v0, "missing TelephonyManager"
 
-    const-string p2, "/sys/fs/bpf/map_netd_app_uid_stats_map"
+    invoke-static {p6, v0}, Lcom/android/internal/util/Preconditions;->checkNotNull(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
 
-    invoke-direct {p1, p2}, Ljava/io/File;-><init>(Ljava/lang/String;)V
+    move-result-object v0
 
-    invoke-virtual {p1}, Ljava/io/File;->exists()Z
+    check-cast v0, Landroid/telephony/TelephonyManager;
 
-    move-result p1
-
-    iput-boolean p1, p0, Lcom/android/server/net/NetworkStatsService;->mUseBpfTrafficStats:Z
+    iput-object v0, p0, Lcom/android/server/net/NetworkStatsService;->mTeleManager:Landroid/telephony/TelephonyManager;
 
     .line 369
+    const-string/jumbo v0, "missing WakeLock"
+
+    invoke-static {p4, v0}, Lcom/android/internal/util/Preconditions;->checkNotNull(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+
+    move-result-object v0
+
+    check-cast v0, Landroid/os/PowerManager$WakeLock;
+
+    iput-object v0, p0, Lcom/android/server/net/NetworkStatsService;->mWakeLock:Landroid/os/PowerManager$WakeLock;
+
+    .line 370
+    const-string/jumbo v0, "missing NetworkStatsObservers"
+
+    invoke-static {p8, v0}, Lcom/android/internal/util/Preconditions;->checkNotNull(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+
+    move-result-object v0
+
+    check-cast v0, Lcom/android/server/net/NetworkStatsObservers;
+
+    iput-object v0, p0, Lcom/android/server/net/NetworkStatsService;->mStatsObservers:Lcom/android/server/net/NetworkStatsObservers;
+
+    .line 371
+    const-string/jumbo v0, "missing systemDir"
+
+    invoke-static {p9, v0}, Lcom/android/internal/util/Preconditions;->checkNotNull(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+
+    move-result-object v0
+
+    check-cast v0, Ljava/io/File;
+
+    iput-object v0, p0, Lcom/android/server/net/NetworkStatsService;->mSystemDir:Ljava/io/File;
+
+    .line 372
+    const-string/jumbo v0, "missing baseDir"
+
+    invoke-static {p10, v0}, Lcom/android/internal/util/Preconditions;->checkNotNull(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+
+    move-result-object v0
+
+    check-cast v0, Ljava/io/File;
+
+    iput-object v0, p0, Lcom/android/server/net/NetworkStatsService;->mBaseDir:Ljava/io/File;
+
+    .line 373
+    new-instance v0, Ljava/io/File;
+
+    const-string v1, "/sys/fs/bpf/map_netd_app_uid_stats_map"
+
+    invoke-direct {v0, v1}, Ljava/io/File;-><init>(Ljava/lang/String;)V
+
+    invoke-virtual {v0}, Ljava/io/File;->exists()Z
+
+    move-result v0
+
+    iput-boolean v0, p0, Lcom/android/server/net/NetworkStatsService;->mUseBpfTrafficStats:Z
+
+    .line 374
     return-void
 .end method
 
 .method static synthetic access$1000(Lcom/android/server/net/NetworkStatsService;)Landroid/os/PowerManager$WakeLock;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/net/NetworkStatsService;
 
-    .line 156
-    iget-object p0, p0, Lcom/android/server/net/NetworkStatsService;->mWakeLock:Landroid/os/PowerManager$WakeLock;
+    .line 157
+    iget-object v0, p0, Lcom/android/server/net/NetworkStatsService;->mWakeLock:Landroid/os/PowerManager$WakeLock;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$1100(Lcom/android/server/net/NetworkStatsService;[I)V
     .registers 2
+    .param p0, "x0"  # Lcom/android/server/net/NetworkStatsService;
+    .param p1, "x1"  # [I
 
-    .line 156
+    .line 157
     invoke-direct {p0, p1}, Lcom/android/server/net/NetworkStatsService;->removeUidsLocked([I)V
 
     return-void
@@ -533,8 +559,10 @@
 
 .method static synthetic access$1200(Lcom/android/server/net/NetworkStatsService;I)V
     .registers 2
+    .param p0, "x0"  # Lcom/android/server/net/NetworkStatsService;
+    .param p1, "x1"  # I
 
-    .line 156
+    .line 157
     invoke-direct {p0, p1}, Lcom/android/server/net/NetworkStatsService;->removeUserLocked(I)V
 
     return-void
@@ -542,126 +570,159 @@
 
 .method static synthetic access$1300(Lcom/android/server/net/NetworkStatsService;)V
     .registers 1
+    .param p0, "x0"  # Lcom/android/server/net/NetworkStatsService;
 
-    .line 156
+    .line 157
     invoke-direct {p0}, Lcom/android/server/net/NetworkStatsService;->shutdownLocked()V
 
     return-void
 .end method
 
 .method static synthetic access$1400(Lcom/android/server/net/NetworkStatsService;)Landroid/content/Context;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/net/NetworkStatsService;
 
-    .line 156
-    iget-object p0, p0, Lcom/android/server/net/NetworkStatsService;->mContext:Landroid/content/Context;
+    .line 157
+    iget-object v0, p0, Lcom/android/server/net/NetworkStatsService;->mContext:Landroid/content/Context;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$1500(Lcom/android/server/net/NetworkStatsService;)Landroid/os/Handler;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/net/NetworkStatsService;
 
-    .line 156
-    iget-object p0, p0, Lcom/android/server/net/NetworkStatsService;->mHandler:Landroid/os/Handler;
+    .line 157
+    iget-object v0, p0, Lcom/android/server/net/NetworkStatsService;->mHandler:Landroid/os/Handler;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$1600(Lcom/android/server/net/NetworkStatsService;Landroid/net/NetworkTemplate;JJ)J
-    .registers 6
+    .registers 8
+    .param p0, "x0"  # Lcom/android/server/net/NetworkStatsService;
+    .param p1, "x1"  # Landroid/net/NetworkTemplate;
+    .param p2, "x2"  # J
+    .param p4, "x3"  # J
 
-    .line 156
+    .line 157
     invoke-direct/range {p0 .. p5}, Lcom/android/server/net/NetworkStatsService;->getNetworkTotalBytes(Landroid/net/NetworkTemplate;JJ)J
 
-    move-result-wide p0
+    move-result-wide v0
 
-    return-wide p0
+    return-wide v0
 .end method
 
 .method static synthetic access$1700(Lcom/android/server/net/NetworkStatsService;Landroid/net/NetworkTemplate;JJ)Landroid/net/NetworkStats;
-    .registers 6
+    .registers 7
+    .param p0, "x0"  # Lcom/android/server/net/NetworkStatsService;
+    .param p1, "x1"  # Landroid/net/NetworkTemplate;
+    .param p2, "x2"  # J
+    .param p4, "x3"  # J
 
-    .line 156
+    .line 157
     invoke-direct/range {p0 .. p5}, Lcom/android/server/net/NetworkStatsService;->getNetworkUidBytes(Landroid/net/NetworkTemplate;JJ)Landroid/net/NetworkStats;
 
-    move-result-object p0
+    move-result-object v0
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$1800(Lcom/android/server/net/NetworkStatsService;J)V
     .registers 3
+    .param p0, "x0"  # Lcom/android/server/net/NetworkStatsService;
+    .param p1, "x1"  # J
 
-    .line 156
+    .line 157
     invoke-direct {p0, p1, p2}, Lcom/android/server/net/NetworkStatsService;->advisePersistThreshold(J)V
 
     return-void
 .end method
 
 .method static synthetic access$200(Lcom/android/server/net/NetworkStatsService;Ljava/lang/String;)I
-    .registers 2
+    .registers 3
+    .param p0, "x0"  # Lcom/android/server/net/NetworkStatsService;
+    .param p1, "x1"  # Ljava/lang/String;
 
-    .line 156
+    .line 157
     invoke-direct {p0, p1}, Lcom/android/server/net/NetworkStatsService;->checkAccessLevel(Ljava/lang/String;)I
 
-    move-result p0
+    move-result v0
 
-    return p0
+    return v0
 .end method
 
 .method static synthetic access$300(Lcom/android/server/net/NetworkStatsService;)Ljava/lang/Object;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/net/NetworkStatsService;
 
-    .line 156
-    iget-object p0, p0, Lcom/android/server/net/NetworkStatsService;->mStatsLock:Ljava/lang/Object;
+    .line 157
+    iget-object v0, p0, Lcom/android/server/net/NetworkStatsService;->mStatsLock:Ljava/lang/Object;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$400(Lcom/android/server/net/NetworkStatsService;)Lcom/android/server/net/NetworkStatsRecorder;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/net/NetworkStatsService;
 
-    .line 156
-    iget-object p0, p0, Lcom/android/server/net/NetworkStatsService;->mUidRecorder:Lcom/android/server/net/NetworkStatsRecorder;
+    .line 157
+    iget-object v0, p0, Lcom/android/server/net/NetworkStatsService;->mUidRecorder:Lcom/android/server/net/NetworkStatsRecorder;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$500(Lcom/android/server/net/NetworkStatsService;)Lcom/android/server/net/NetworkStatsRecorder;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/net/NetworkStatsService;
 
-    .line 156
-    iget-object p0, p0, Lcom/android/server/net/NetworkStatsService;->mUidTagRecorder:Lcom/android/server/net/NetworkStatsRecorder;
+    .line 157
+    iget-object v0, p0, Lcom/android/server/net/NetworkStatsService;->mUidTagRecorder:Lcom/android/server/net/NetworkStatsRecorder;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$600(Lcom/android/server/net/NetworkStatsService;Landroid/net/NetworkTemplate;IJJII)Landroid/net/NetworkStats;
-    .registers 9
+    .registers 10
+    .param p0, "x0"  # Lcom/android/server/net/NetworkStatsService;
+    .param p1, "x1"  # Landroid/net/NetworkTemplate;
+    .param p2, "x2"  # I
+    .param p3, "x3"  # J
+    .param p5, "x4"  # J
+    .param p7, "x5"  # I
+    .param p8, "x6"  # I
 
-    .line 156
+    .line 157
     invoke-direct/range {p0 .. p8}, Lcom/android/server/net/NetworkStatsService;->internalGetSummaryForNetwork(Landroid/net/NetworkTemplate;IJJII)Landroid/net/NetworkStats;
 
-    move-result-object p0
+    move-result-object v0
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$700(Lcom/android/server/net/NetworkStatsService;Landroid/net/NetworkTemplate;IIII)Landroid/net/NetworkStatsHistory;
-    .registers 6
+    .registers 7
+    .param p0, "x0"  # Lcom/android/server/net/NetworkStatsService;
+    .param p1, "x1"  # Landroid/net/NetworkTemplate;
+    .param p2, "x2"  # I
+    .param p3, "x3"  # I
+    .param p4, "x4"  # I
+    .param p5, "x5"  # I
 
-    .line 156
+    .line 157
     invoke-direct/range {p0 .. p5}, Lcom/android/server/net/NetworkStatsService;->internalGetHistoryForNetwork(Landroid/net/NetworkTemplate;IIII)Landroid/net/NetworkStatsHistory;
 
-    move-result-object p0
+    move-result-object v0
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$800(Lcom/android/server/net/NetworkStatsService;I)V
     .registers 2
+    .param p0, "x0"  # Lcom/android/server/net/NetworkStatsService;
+    .param p1, "x1"  # I
 
-    .line 156
+    .line 157
     invoke-direct {p0, p1}, Lcom/android/server/net/NetworkStatsService;->performPoll(I)V
 
     return-void
@@ -669,8 +730,9 @@
 
 .method static synthetic access$900(Lcom/android/server/net/NetworkStatsService;)V
     .registers 1
+    .param p0, "x0"  # Lcom/android/server/net/NetworkStatsService;
 
-    .line 156
+    .line 157
     invoke-direct {p0}, Lcom/android/server/net/NetworkStatsService;->registerGlobalAlert()V
 
     return-void
@@ -678,11 +740,12 @@
 
 .method private advisePersistThreshold(J)V
     .registers 9
+    .param p1, "thresholdBytes"  # J
 
-    .line 889
+    .line 895
     invoke-direct {p0}, Lcom/android/server/net/NetworkStatsService;->assertBandwidthControlEnabled()V
 
-    .line 892
+    .line 898
     const-wide/32 v2, 0x20000
 
     const-wide/32 v4, 0x200000
@@ -695,12 +758,12 @@
 
     iput-wide v0, p0, Lcom/android/server/net/NetworkStatsService;->mPersistThreshold:J
 
-    .line 893
+    .line 899
     sget-boolean v0, Lcom/android/server/net/NetworkStatsService;->LOGV:Z
 
     if-eqz v0, :cond_34
 
-    .line 894
+    .line 900
     new-instance v0, Ljava/lang/StringBuilder;
 
     invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
@@ -711,106 +774,107 @@
 
     invoke-virtual {v0, p1, p2}, Ljava/lang/StringBuilder;->append(J)Ljava/lang/StringBuilder;
 
-    const-string p1, ", clamped to "
+    const-string v1, ", clamped to "
 
-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    iget-wide p1, p0, Lcom/android/server/net/NetworkStatsService;->mPersistThreshold:J
+    iget-wide v1, p0, Lcom/android/server/net/NetworkStatsService;->mPersistThreshold:J
 
-    invoke-virtual {v0, p1, p2}, Ljava/lang/StringBuilder;->append(J)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1, v2}, Ljava/lang/StringBuilder;->append(J)Ljava/lang/StringBuilder;
 
     invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    const-string p2, "NetworkStats"
+    const-string v1, "NetworkStats"
 
-    invoke-static {p2, p1}, Landroid/util/Slog;->v(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v0}, Landroid/util/Slog;->v(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 899
+    .line 905
     :cond_34
-    iget-object p1, p0, Lcom/android/server/net/NetworkStatsService;->mClock:Ljava/time/Clock;
+    iget-object v0, p0, Lcom/android/server/net/NetworkStatsService;->mClock:Ljava/time/Clock;
 
-    invoke-virtual {p1}, Ljava/time/Clock;->millis()J
+    invoke-virtual {v0}, Ljava/time/Clock;->millis()J
 
-    move-result-wide p1
+    move-result-wide v0
 
-    .line 900
-    iget-object v0, p0, Lcom/android/server/net/NetworkStatsService;->mStatsLock:Ljava/lang/Object;
+    .line 906
+    .local v0, "currentTime":J
+    iget-object v2, p0, Lcom/android/server/net/NetworkStatsService;->mStatsLock:Ljava/lang/Object;
 
-    monitor-enter v0
+    monitor-enter v2
 
-    .line 901
+    .line 907
     :try_start_3d
-    iget-boolean v1, p0, Lcom/android/server/net/NetworkStatsService;->mSystemReady:Z
+    iget-boolean v3, p0, Lcom/android/server/net/NetworkStatsService;->mSystemReady:Z
 
-    if-nez v1, :cond_43
+    if-nez v3, :cond_43
 
-    monitor-exit v0
+    monitor-exit v2
 
     return-void
 
-    .line 903
+    .line 909
     :cond_43
     invoke-direct {p0}, Lcom/android/server/net/NetworkStatsService;->updatePersistThresholdsLocked()V
 
-    .line 905
-    iget-object v1, p0, Lcom/android/server/net/NetworkStatsService;->mDevRecorder:Lcom/android/server/net/NetworkStatsRecorder;
+    .line 911
+    iget-object v3, p0, Lcom/android/server/net/NetworkStatsService;->mDevRecorder:Lcom/android/server/net/NetworkStatsRecorder;
 
-    invoke-virtual {v1, p1, p2}, Lcom/android/server/net/NetworkStatsRecorder;->maybePersistLocked(J)V
+    invoke-virtual {v3, v0, v1}, Lcom/android/server/net/NetworkStatsRecorder;->maybePersistLocked(J)V
 
-    .line 906
-    iget-object v1, p0, Lcom/android/server/net/NetworkStatsService;->mXtRecorder:Lcom/android/server/net/NetworkStatsRecorder;
+    .line 912
+    iget-object v3, p0, Lcom/android/server/net/NetworkStatsService;->mXtRecorder:Lcom/android/server/net/NetworkStatsRecorder;
 
-    invoke-virtual {v1, p1, p2}, Lcom/android/server/net/NetworkStatsRecorder;->maybePersistLocked(J)V
+    invoke-virtual {v3, v0, v1}, Lcom/android/server/net/NetworkStatsRecorder;->maybePersistLocked(J)V
 
-    .line 907
-    iget-object v1, p0, Lcom/android/server/net/NetworkStatsService;->mUidRecorder:Lcom/android/server/net/NetworkStatsRecorder;
+    .line 913
+    iget-object v3, p0, Lcom/android/server/net/NetworkStatsService;->mUidRecorder:Lcom/android/server/net/NetworkStatsRecorder;
 
-    invoke-virtual {v1, p1, p2}, Lcom/android/server/net/NetworkStatsRecorder;->maybePersistLocked(J)V
+    invoke-virtual {v3, v0, v1}, Lcom/android/server/net/NetworkStatsRecorder;->maybePersistLocked(J)V
 
-    .line 908
-    iget-object v1, p0, Lcom/android/server/net/NetworkStatsService;->mUidTagRecorder:Lcom/android/server/net/NetworkStatsRecorder;
+    .line 914
+    iget-object v3, p0, Lcom/android/server/net/NetworkStatsService;->mUidTagRecorder:Lcom/android/server/net/NetworkStatsRecorder;
 
-    invoke-virtual {v1, p1, p2}, Lcom/android/server/net/NetworkStatsRecorder;->maybePersistLocked(J)V
+    invoke-virtual {v3, v0, v1}, Lcom/android/server/net/NetworkStatsRecorder;->maybePersistLocked(J)V
 
-    .line 909
-    monitor-exit v0
+    .line 915
+    monitor-exit v2
     :try_end_5b
     .catchall {:try_start_3d .. :try_end_5b} :catchall_5f
 
-    .line 912
+    .line 918
     invoke-direct {p0}, Lcom/android/server/net/NetworkStatsService;->registerGlobalAlert()V
 
-    .line 913
+    .line 919
     return-void
 
-    .line 909
+    .line 915
     :catchall_5f
-    move-exception p1
+    move-exception v3
 
     :try_start_60
-    monitor-exit v0
+    monitor-exit v2
     :try_end_61
     .catchall {:try_start_60 .. :try_end_61} :catchall_5f
 
-    throw p1
+    throw v3
 .end method
 
 .method private assertBandwidthControlEnabled()V
     .registers 3
 
-    .line 1758
+    .line 1772
     invoke-direct {p0}, Lcom/android/server/net/NetworkStatsService;->isBandwidthControlEnabled()Z
 
     move-result v0
 
     if-eqz v0, :cond_7
 
-    .line 1761
+    .line 1775
     return-void
 
-    .line 1759
+    .line 1773
     :cond_7
     new-instance v0, Ljava/lang/IllegalStateException;
 
@@ -824,15 +888,15 @@
 .method private assertSystemReady()V
     .registers 3
 
-    .line 1752
+    .line 1766
     iget-boolean v0, p0, Lcom/android/server/net/NetworkStatsService;->mSystemReady:Z
 
     if-eqz v0, :cond_5
 
-    .line 1755
+    .line 1769
     return-void
 
-    .line 1753
+    .line 1767
     :cond_5
     new-instance v0, Ljava/lang/IllegalStateException;
 
@@ -844,71 +908,77 @@
 .end method
 
 .method private bootstrapStatsLocked()V
-    .registers 4
+    .registers 6
     .annotation build Lcom/android/internal/annotations/GuardedBy;
         value = {
             "mStatsLock"
         }
     .end annotation
 
-    .line 1302
+    .line 1314
     iget-object v0, p0, Lcom/android/server/net/NetworkStatsService;->mClock:Ljava/time/Clock;
 
     invoke-virtual {v0}, Ljava/time/Clock;->millis()J
 
     move-result-wide v0
 
-    .line 1305
+    .line 1317
+    .local v0, "currentTime":J
     :try_start_6
     invoke-direct {p0, v0, v1}, Lcom/android/server/net/NetworkStatsService;->recordSnapshotLocked(J)V
     :try_end_9
     .catch Ljava/lang/IllegalStateException; {:try_start_6 .. :try_end_9} :catch_c
     .catch Landroid/os/RemoteException; {:try_start_6 .. :try_end_9} :catch_a
 
-    .line 1310
+    .line 1322
     :goto_9
     goto :goto_25
 
-    .line 1308
+    .line 1320
     :catch_a
-    move-exception v0
+    move-exception v2
 
     goto :goto_25
 
-    .line 1306
+    .line 1318
     :catch_c
-    move-exception v0
+    move-exception v2
 
-    .line 1307
-    new-instance v1, Ljava/lang/StringBuilder;
+    .line 1319
+    .local v2, "e":Ljava/lang/IllegalStateException;
+    new-instance v3, Ljava/lang/StringBuilder;
 
-    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string/jumbo v2, "problem reading network stats: "
+    const-string/jumbo v4, "problem reading network stats: "
 
-    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v1, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v3
 
-    const-string v1, "NetworkStats"
+    const-string v4, "NetworkStats"
 
-    invoke-static {v1, v0}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v4, v3}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
+    .end local v2  # "e":Ljava/lang/IllegalStateException;
     goto :goto_9
 
-    .line 1311
+    .line 1323
     :goto_25
     return-void
 .end method
 
 .method private buildRecorder(Ljava/lang/String;Lcom/android/server/net/NetworkStatsService$NetworkStatsSettings$Config;Z)Lcom/android/server/net/NetworkStatsRecorder;
-    .registers 16
+    .registers 14
+    .param p1, "prefix"  # Ljava/lang/String;
+    .param p2, "config"  # Lcom/android/server/net/NetworkStatsService$NetworkStatsSettings$Config;
+    .param p3, "includeTags"  # Z
 
-    .line 442
+    .line 447
     iget-object v0, p0, Lcom/android/server/net/NetworkStatsService;->mContext:Landroid/content/Context;
 
     const-string v1, "dropbox"
@@ -917,32 +987,35 @@
 
     move-result-object v0
 
-    move-object v4, v0
+    check-cast v0, Landroid/os/DropBoxManager;
 
-    check-cast v4, Landroid/os/DropBoxManager;
+    .line 449
+    .local v0, "dropBox":Landroid/os/DropBoxManager;
+    new-instance v9, Lcom/android/server/net/NetworkStatsRecorder;
 
-    .line 444
-    new-instance v0, Lcom/android/server/net/NetworkStatsRecorder;
+    new-instance v8, Lcom/android/internal/util/FileRotator;
 
-    new-instance v2, Lcom/android/internal/util/FileRotator;
+    iget-object v2, p0, Lcom/android/server/net/NetworkStatsService;->mBaseDir:Ljava/io/File;
 
-    iget-object v6, p0, Lcom/android/server/net/NetworkStatsService;->mBaseDir:Ljava/io/File;
+    iget-wide v4, p2, Lcom/android/server/net/NetworkStatsService$NetworkStatsSettings$Config;->rotateAgeMillis:J
 
-    iget-wide v8, p2, Lcom/android/server/net/NetworkStatsService$NetworkStatsSettings$Config;->rotateAgeMillis:J
+    iget-wide v6, p2, Lcom/android/server/net/NetworkStatsService$NetworkStatsSettings$Config;->deleteAgeMillis:J
 
-    iget-wide v10, p2, Lcom/android/server/net/NetworkStatsService$NetworkStatsSettings$Config;->deleteAgeMillis:J
+    move-object v1, v8
 
-    move-object v5, v2
+    move-object v3, p1
 
-    move-object v7, p1
-
-    invoke-direct/range {v5 .. v11}, Lcom/android/internal/util/FileRotator;-><init>(Ljava/io/File;Ljava/lang/String;JJ)V
+    invoke-direct/range {v1 .. v7}, Lcom/android/internal/util/FileRotator;-><init>(Ljava/io/File;Ljava/lang/String;JJ)V
 
     iget-object v3, p0, Lcom/android/server/net/NetworkStatsService;->mNonMonotonicObserver:Lcom/android/server/net/NetworkStatsService$DropBoxNonMonotonicObserver;
 
     iget-wide v6, p2, Lcom/android/server/net/NetworkStatsService$NetworkStatsSettings$Config;->bucketDuration:J
 
-    move-object v1, v0
+    move-object v1, v9
+
+    move-object v2, v8
+
+    move-object v4, v0
 
     move-object v5, p1
 
@@ -950,143 +1023,163 @@
 
     invoke-direct/range {v1 .. v8}, Lcom/android/server/net/NetworkStatsRecorder;-><init>(Lcom/android/internal/util/FileRotator;Landroid/net/NetworkStats$NonMonotonicObserver;Landroid/os/DropBoxManager;Ljava/lang/String;JZ)V
 
-    return-object v0
+    return-object v9
 .end method
 
 .method private checkAccessLevel(Ljava/lang/String;)I
     .registers 4
+    .param p1, "callingPackage"  # Ljava/lang/String;
 
-    .line 687
+    .line 692
     iget-object v0, p0, Lcom/android/server/net/NetworkStatsService;->mContext:Landroid/content/Context;
 
-    .line 688
+    .line 693
     invoke-static {}, Landroid/os/Binder;->getCallingUid()I
 
     move-result v1
 
-    .line 687
+    .line 692
     invoke-static {v0, v1, p1}, Lcom/android/server/net/NetworkStatsAccess;->checkAccessLevel(Landroid/content/Context;ILjava/lang/String;)I
 
-    move-result p1
+    move-result v0
 
-    return p1
+    return v0
 .end method
 
 .method private checkBpfStatsEnable()Z
     .registers 2
 
-    .line 1022
+    .line 1028
     iget-boolean v0, p0, Lcom/android/server/net/NetworkStatsService;->mUseBpfTrafficStats:Z
 
     return v0
 .end method
 
 .method public static create(Landroid/content/Context;Landroid/os/INetworkManagementService;)Lcom/android/server/net/NetworkStatsService;
-    .registers 15
+    .registers 19
+    .param p0, "context"  # Landroid/content/Context;
+    .param p1, "networkManager"  # Landroid/os/INetworkManagementService;
 
-    .line 332
+    .line 337
+    move-object/from16 v11, p0
+
     const-string v0, "alarm"
 
-    invoke-virtual {p0, v0}, Landroid/content/Context;->getSystemService(Ljava/lang/String;)Ljava/lang/Object;
+    invoke-virtual {v11, v0}, Landroid/content/Context;->getSystemService(Ljava/lang/String;)Ljava/lang/Object;
 
     move-result-object v0
 
-    move-object v4, v0
+    move-object v12, v0
 
-    check-cast v4, Landroid/app/AlarmManager;
+    check-cast v12, Landroid/app/AlarmManager;
 
-    .line 333
+    .line 338
+    .local v12, "alarmManager":Landroid/app/AlarmManager;
     const-string/jumbo v0, "power"
 
-    invoke-virtual {p0, v0}, Landroid/content/Context;->getSystemService(Ljava/lang/String;)Ljava/lang/Object;
+    invoke-virtual {v11, v0}, Landroid/content/Context;->getSystemService(Ljava/lang/String;)Ljava/lang/Object;
 
     move-result-object v0
 
-    check-cast v0, Landroid/os/PowerManager;
+    move-object v13, v0
 
-    .line 334
+    check-cast v13, Landroid/os/PowerManager;
+
+    .line 339
+    .local v13, "powerManager":Landroid/os/PowerManager;
     nop
 
-    .line 335
-    const-string v12, "NetworkStats"
+    .line 340
+    const-string v14, "NetworkStats"
 
-    const/4 v1, 0x1
+    const/4 v0, 0x1
 
-    invoke-virtual {v0, v1, v12}, Landroid/os/PowerManager;->newWakeLock(ILjava/lang/String;)Landroid/os/PowerManager$WakeLock;
+    invoke-virtual {v13, v0, v14}, Landroid/os/PowerManager;->newWakeLock(ILjava/lang/String;)Landroid/os/PowerManager$WakeLock;
+
+    move-result-object v15
+
+    .line 342
+    .local v15, "wakeLock":Landroid/os/PowerManager$WakeLock;
+    new-instance v16, Lcom/android/server/net/NetworkStatsService;
+
+    .line 343
+    invoke-static {}, Lcom/android/server/net/NetworkStatsService;->getDefaultClock()Ljava/time/Clock;
 
     move-result-object v5
 
-    .line 337
-    new-instance v0, Lcom/android/server/net/NetworkStatsService;
-
-    .line 338
-    invoke-static {}, Lcom/android/server/net/NetworkStatsService;->getDefaultClock()Ljava/time/Clock;
+    invoke-static {}, Landroid/telephony/TelephonyManager;->getDefault()Landroid/telephony/TelephonyManager;
 
     move-result-object v6
 
-    invoke-static {}, Landroid/telephony/TelephonyManager;->getDefault()Landroid/telephony/TelephonyManager;
+    new-instance v7, Lcom/android/server/net/NetworkStatsService$DefaultNetworkStatsSettings;
 
-    move-result-object v7
+    invoke-direct {v7, v11}, Lcom/android/server/net/NetworkStatsService$DefaultNetworkStatsSettings;-><init>(Landroid/content/Context;)V
 
-    new-instance v8, Lcom/android/server/net/NetworkStatsService$DefaultNetworkStatsSettings;
+    new-instance v8, Lcom/android/server/net/NetworkStatsObservers;
 
-    invoke-direct {v8, p0}, Lcom/android/server/net/NetworkStatsService$DefaultNetworkStatsSettings;-><init>(Landroid/content/Context;)V
+    invoke-direct {v8}, Lcom/android/server/net/NetworkStatsObservers;-><init>()V
 
-    new-instance v9, Lcom/android/server/net/NetworkStatsObservers;
-
-    invoke-direct {v9}, Lcom/android/server/net/NetworkStatsObservers;-><init>()V
-
-    .line 340
+    .line 345
     invoke-static {}, Lcom/android/server/net/NetworkStatsService;->getDefaultSystemDir()Ljava/io/File;
 
-    move-result-object v10
+    move-result-object v9
 
     invoke-static {}, Lcom/android/server/net/NetworkStatsService;->getDefaultBaseDir()Ljava/io/File;
 
-    move-result-object v11
+    move-result-object v10
 
-    move-object v1, v0
+    move-object/from16 v0, v16
 
-    move-object v2, p0
+    move-object/from16 v1, p0
 
-    move-object v3, p1
+    move-object/from16 v2, p1
 
-    invoke-direct/range {v1 .. v11}, Lcom/android/server/net/NetworkStatsService;-><init>(Landroid/content/Context;Landroid/os/INetworkManagementService;Landroid/app/AlarmManager;Landroid/os/PowerManager$WakeLock;Ljava/time/Clock;Landroid/telephony/TelephonyManager;Lcom/android/server/net/NetworkStatsService$NetworkStatsSettings;Lcom/android/server/net/NetworkStatsObservers;Ljava/io/File;Ljava/io/File;)V
+    move-object v3, v12
 
-    .line 341
-    invoke-direct {v0}, Lcom/android/server/net/NetworkStatsService;->registerLocalService()V
+    move-object v4, v15
 
-    .line 343
-    new-instance p0, Landroid/os/HandlerThread;
-
-    invoke-direct {p0, v12}, Landroid/os/HandlerThread;-><init>(Ljava/lang/String;)V
-
-    .line 344
-    new-instance p1, Lcom/android/server/net/NetworkStatsService$HandlerCallback;
-
-    invoke-direct {p1, v0}, Lcom/android/server/net/NetworkStatsService$HandlerCallback;-><init>(Lcom/android/server/net/NetworkStatsService;)V
-
-    .line 345
-    invoke-virtual {p0}, Landroid/os/HandlerThread;->start()V
+    invoke-direct/range {v0 .. v10}, Lcom/android/server/net/NetworkStatsService;-><init>(Landroid/content/Context;Landroid/os/INetworkManagementService;Landroid/app/AlarmManager;Landroid/os/PowerManager$WakeLock;Ljava/time/Clock;Landroid/telephony/TelephonyManager;Lcom/android/server/net/NetworkStatsService$NetworkStatsSettings;Lcom/android/server/net/NetworkStatsObservers;Ljava/io/File;Ljava/io/File;)V
 
     .line 346
-    new-instance v1, Lcom/android/server/net/NetworkStatsService$NetworkStatsHandler;
-
-    invoke-virtual {p0}, Landroid/os/HandlerThread;->getLooper()Landroid/os/Looper;
-
-    move-result-object p0
-
-    invoke-direct {v1, p0, p1}, Lcom/android/server/net/NetworkStatsService$NetworkStatsHandler;-><init>(Landroid/os/Looper;Landroid/os/Handler$Callback;)V
-
-    .line 347
-    invoke-virtual {v0, v1, p1}, Lcom/android/server/net/NetworkStatsService;->setHandler(Landroid/os/Handler;Landroid/os/Handler$Callback;)V
+    .local v0, "service":Lcom/android/server/net/NetworkStatsService;
+    invoke-direct {v0}, Lcom/android/server/net/NetworkStatsService;->registerLocalService()V
 
     .line 348
+    new-instance v1, Landroid/os/HandlerThread;
+
+    invoke-direct {v1, v14}, Landroid/os/HandlerThread;-><init>(Ljava/lang/String;)V
+
+    .line 349
+    .local v1, "handlerThread":Landroid/os/HandlerThread;
+    new-instance v2, Lcom/android/server/net/NetworkStatsService$HandlerCallback;
+
+    invoke-direct {v2, v0}, Lcom/android/server/net/NetworkStatsService$HandlerCallback;-><init>(Lcom/android/server/net/NetworkStatsService;)V
+
+    .line 350
+    .local v2, "callback":Landroid/os/Handler$Callback;
+    invoke-virtual {v1}, Landroid/os/HandlerThread;->start()V
+
+    .line 351
+    new-instance v3, Lcom/android/server/net/NetworkStatsService$NetworkStatsHandler;
+
+    invoke-virtual {v1}, Landroid/os/HandlerThread;->getLooper()Landroid/os/Looper;
+
+    move-result-object v4
+
+    invoke-direct {v3, v4, v2}, Lcom/android/server/net/NetworkStatsService$NetworkStatsHandler;-><init>(Landroid/os/Looper;Landroid/os/Handler$Callback;)V
+
+    .line 352
+    .local v3, "handler":Landroid/os/Handler;
+    invoke-virtual {v0, v3, v2}, Lcom/android/server/net/NetworkStatsService;->setHandler(Landroid/os/Handler;Landroid/os/Handler$Callback;)V
+
+    .line 353
     return-object v0
 .end method
 
 .method private static dumpInterfaces(Landroid/util/proto/ProtoOutputStream;JLandroid/util/ArrayMap;)V
     .registers 10
+    .param p0, "proto"  # Landroid/util/proto/ProtoOutputStream;
+    .param p1, "tag"  # J
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(",
@@ -1099,9 +1192,11 @@
         }
     .end annotation
 
-    .line 1646
+    .line 1658
+    .local p3, "ifaces":Landroid/util/ArrayMap;, "Landroid/util/ArrayMap<Ljava/lang/String;Lcom/android/server/net/NetworkIdentitySet;>;"
     const/4 v0, 0x0
 
+    .local v0, "i":I
     :goto_1
     invoke-virtual {p3}, Landroid/util/ArrayMap;->size()I
 
@@ -1109,12 +1204,13 @@
 
     if-ge v0, v1, :cond_2d
 
-    .line 1647
+    .line 1659
     invoke-virtual {p0, p1, p2}, Landroid/util/proto/ProtoOutputStream;->start(J)J
 
     move-result-wide v1
 
-    .line 1649
+    .line 1661
+    .local v1, "start":J
     const-wide v3, 0x10900000001L
 
     invoke-virtual {p3, v0}, Landroid/util/ArrayMap;->keyAt(I)Ljava/lang/Object;
@@ -1125,7 +1221,7 @@
 
     invoke-virtual {p0, v3, v4, v5}, Landroid/util/proto/ProtoOutputStream;->write(JLjava/lang/String;)V
 
-    .line 1650
+    .line 1662
     invoke-virtual {p3, v0}, Landroid/util/ArrayMap;->valueAt(I)Ljava/lang/Object;
 
     move-result-object v3
@@ -1136,83 +1232,87 @@
 
     invoke-virtual {v3, p0, v4, v5}, Lcom/android/server/net/NetworkIdentitySet;->writeToProto(Landroid/util/proto/ProtoOutputStream;J)V
 
-    .line 1652
+    .line 1664
     invoke-virtual {p0, v1, v2}, Landroid/util/proto/ProtoOutputStream;->end(J)V
 
-    .line 1646
+    .line 1658
+    .end local v1  # "start":J
     add-int/lit8 v0, v0, 0x1
 
     goto :goto_1
 
-    .line 1654
+    .line 1666
+    .end local v0  # "i":I
     :cond_2d
     return-void
 .end method
 
 .method private dumpProtoLocked(Ljava/io/FileDescriptor;)V
-    .registers 5
+    .registers 6
+    .param p1, "fd"  # Ljava/io/FileDescriptor;
     .annotation build Lcom/android/internal/annotations/GuardedBy;
         value = {
             "mStatsLock"
         }
     .end annotation
 
-    .line 1630
+    .line 1642
     new-instance v0, Landroid/util/proto/ProtoOutputStream;
 
     invoke-direct {v0, p1}, Landroid/util/proto/ProtoOutputStream;-><init>(Ljava/io/FileDescriptor;)V
 
-    .line 1634
-    iget-object p1, p0, Lcom/android/server/net/NetworkStatsService;->mActiveIfaces:Landroid/util/ArrayMap;
+    .line 1646
+    .local v0, "proto":Landroid/util/proto/ProtoOutputStream;
+    iget-object v1, p0, Lcom/android/server/net/NetworkStatsService;->mActiveIfaces:Landroid/util/ArrayMap;
 
-    const-wide v1, 0x20b00000001L
+    const-wide v2, 0x20b00000001L
 
-    invoke-static {v0, v1, v2, p1}, Lcom/android/server/net/NetworkStatsService;->dumpInterfaces(Landroid/util/proto/ProtoOutputStream;JLandroid/util/ArrayMap;)V
+    invoke-static {v0, v2, v3, v1}, Lcom/android/server/net/NetworkStatsService;->dumpInterfaces(Landroid/util/proto/ProtoOutputStream;JLandroid/util/ArrayMap;)V
 
-    .line 1635
-    iget-object p1, p0, Lcom/android/server/net/NetworkStatsService;->mActiveUidIfaces:Landroid/util/ArrayMap;
+    .line 1647
+    iget-object v1, p0, Lcom/android/server/net/NetworkStatsService;->mActiveUidIfaces:Landroid/util/ArrayMap;
 
-    const-wide v1, 0x20b00000002L
+    const-wide v2, 0x20b00000002L
 
-    invoke-static {v0, v1, v2, p1}, Lcom/android/server/net/NetworkStatsService;->dumpInterfaces(Landroid/util/proto/ProtoOutputStream;JLandroid/util/ArrayMap;)V
+    invoke-static {v0, v2, v3, v1}, Lcom/android/server/net/NetworkStatsService;->dumpInterfaces(Landroid/util/proto/ProtoOutputStream;JLandroid/util/ArrayMap;)V
 
-    .line 1636
-    iget-object p1, p0, Lcom/android/server/net/NetworkStatsService;->mDevRecorder:Lcom/android/server/net/NetworkStatsRecorder;
+    .line 1648
+    iget-object v1, p0, Lcom/android/server/net/NetworkStatsService;->mDevRecorder:Lcom/android/server/net/NetworkStatsRecorder;
 
-    const-wide v1, 0x10b00000003L
+    const-wide v2, 0x10b00000003L
 
-    invoke-virtual {p1, v0, v1, v2}, Lcom/android/server/net/NetworkStatsRecorder;->writeToProtoLocked(Landroid/util/proto/ProtoOutputStream;J)V
+    invoke-virtual {v1, v0, v2, v3}, Lcom/android/server/net/NetworkStatsRecorder;->writeToProtoLocked(Landroid/util/proto/ProtoOutputStream;J)V
 
-    .line 1637
-    iget-object p1, p0, Lcom/android/server/net/NetworkStatsService;->mXtRecorder:Lcom/android/server/net/NetworkStatsRecorder;
+    .line 1649
+    iget-object v1, p0, Lcom/android/server/net/NetworkStatsService;->mXtRecorder:Lcom/android/server/net/NetworkStatsRecorder;
 
-    const-wide v1, 0x10b00000004L
+    const-wide v2, 0x10b00000004L
 
-    invoke-virtual {p1, v0, v1, v2}, Lcom/android/server/net/NetworkStatsRecorder;->writeToProtoLocked(Landroid/util/proto/ProtoOutputStream;J)V
+    invoke-virtual {v1, v0, v2, v3}, Lcom/android/server/net/NetworkStatsRecorder;->writeToProtoLocked(Landroid/util/proto/ProtoOutputStream;J)V
 
-    .line 1638
-    iget-object p1, p0, Lcom/android/server/net/NetworkStatsService;->mUidRecorder:Lcom/android/server/net/NetworkStatsRecorder;
+    .line 1650
+    iget-object v1, p0, Lcom/android/server/net/NetworkStatsService;->mUidRecorder:Lcom/android/server/net/NetworkStatsRecorder;
 
-    const-wide v1, 0x10b00000005L
+    const-wide v2, 0x10b00000005L
 
-    invoke-virtual {p1, v0, v1, v2}, Lcom/android/server/net/NetworkStatsRecorder;->writeToProtoLocked(Landroid/util/proto/ProtoOutputStream;J)V
+    invoke-virtual {v1, v0, v2, v3}, Lcom/android/server/net/NetworkStatsRecorder;->writeToProtoLocked(Landroid/util/proto/ProtoOutputStream;J)V
 
-    .line 1639
-    iget-object p1, p0, Lcom/android/server/net/NetworkStatsService;->mUidTagRecorder:Lcom/android/server/net/NetworkStatsRecorder;
+    .line 1651
+    iget-object v1, p0, Lcom/android/server/net/NetworkStatsService;->mUidTagRecorder:Lcom/android/server/net/NetworkStatsRecorder;
 
-    const-wide v1, 0x10b00000006L
+    const-wide v2, 0x10b00000006L
 
-    invoke-virtual {p1, v0, v1, v2}, Lcom/android/server/net/NetworkStatsRecorder;->writeToProtoLocked(Landroid/util/proto/ProtoOutputStream;J)V
+    invoke-virtual {v1, v0, v2, v3}, Lcom/android/server/net/NetworkStatsRecorder;->writeToProtoLocked(Landroid/util/proto/ProtoOutputStream;J)V
 
-    .line 1641
+    .line 1653
     invoke-virtual {v0}, Landroid/util/proto/ProtoOutputStream;->flush()V
 
-    .line 1642
+    .line 1654
     return-void
 .end method
 
 .method private static findOrCreateNetworkIdentitySet(Landroid/util/ArrayMap;Ljava/lang/Object;)Lcom/android/server/net/NetworkIdentitySet;
-    .registers 3
+    .registers 4
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "<K:",
@@ -1226,33 +1326,38 @@
         }
     .end annotation
 
-    .line 1243
+    .line 1252
+    .local p0, "map":Landroid/util/ArrayMap;, "Landroid/util/ArrayMap<TK;Lcom/android/server/net/NetworkIdentitySet;>;"
+    .local p1, "key":Ljava/lang/Object;, "TK;"
     invoke-virtual {p0, p1}, Landroid/util/ArrayMap;->get(Ljava/lang/Object;)Ljava/lang/Object;
 
     move-result-object v0
 
     check-cast v0, Lcom/android/server/net/NetworkIdentitySet;
 
-    .line 1244
-    if-nez v0, :cond_10
+    .line 1253
+    .local v0, "ident":Lcom/android/server/net/NetworkIdentitySet;
+    if-nez v0, :cond_11
 
-    .line 1245
-    new-instance v0, Lcom/android/server/net/NetworkIdentitySet;
+    .line 1254
+    new-instance v1, Lcom/android/server/net/NetworkIdentitySet;
 
-    invoke-direct {v0}, Lcom/android/server/net/NetworkIdentitySet;-><init>()V
+    invoke-direct {v1}, Lcom/android/server/net/NetworkIdentitySet;-><init>()V
 
-    .line 1246
+    move-object v0, v1
+
+    .line 1255
     invoke-virtual {p0, p1, v0}, Landroid/util/ArrayMap;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
 
-    .line 1248
-    :cond_10
+    .line 1257
+    :cond_11
     return-object v0
 .end method
 
 .method private static getDefaultBaseDir()Ljava/io/File;
     .registers 3
 
-    .line 314
+    .line 319
     new-instance v0, Ljava/io/File;
 
     invoke-static {}, Lcom/android/server/net/NetworkStatsService;->getDefaultSystemDir()Ljava/io/File;
@@ -1263,17 +1368,18 @@
 
     invoke-direct {v0, v1, v2}, Ljava/io/File;-><init>(Ljava/io/File;Ljava/lang/String;)V
 
-    .line 315
+    .line 320
+    .local v0, "baseDir":Ljava/io/File;
     invoke-virtual {v0}, Ljava/io/File;->mkdirs()Z
 
-    .line 316
+    .line 321
     return-object v0
 .end method
 
 .method private static getDefaultClock()Ljava/time/Clock;
     .registers 5
 
-    .line 320
+    .line 325
     new-instance v0, Landroid/os/BestClock;
 
     sget-object v1, Ljava/time/ZoneOffset;->UTC:Ljava/time/ZoneOffset;
@@ -1290,7 +1396,7 @@
 
     aput-object v3, v2, v4
 
-    .line 321
+    .line 326
     invoke-static {}, Ljava/time/Clock;->systemUTC()Ljava/time/Clock;
 
     move-result-object v3
@@ -1301,14 +1407,14 @@
 
     invoke-direct {v0, v1, v2}, Landroid/os/BestClock;-><init>(Ljava/time/ZoneId;[Ljava/time/Clock;)V
 
-    .line 320
+    .line 325
     return-object v0
 .end method
 
 .method private static getDefaultSystemDir()Ljava/io/File;
     .registers 3
 
-    .line 310
+    .line 315
     new-instance v0, Ljava/io/File;
 
     invoke-static {}, Landroid/os/Environment;->getDataDirectory()Ljava/io/File;
@@ -1323,57 +1429,60 @@
 .end method
 
 .method private getNetworkStatsTethering(I)Landroid/net/NetworkStats;
-    .registers 5
+    .registers 7
+    .param p1, "how"  # I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
         }
     .end annotation
 
-    .line 1717
+    .line 1731
     :try_start_0
     iget-object v0, p0, Lcom/android/server/net/NetworkStatsService;->mNetworkManager:Landroid/os/INetworkManagementService;
 
     invoke-interface {v0, p1}, Landroid/os/INetworkManagementService;->getNetworkStatsTethering(I)Landroid/net/NetworkStats;
 
-    move-result-object p1
+    move-result-object v0
     :try_end_6
     .catch Ljava/lang/IllegalStateException; {:try_start_0 .. :try_end_6} :catch_7
 
-    return-object p1
+    return-object v0
 
-    .line 1718
+    .line 1732
     :catch_7
-    move-exception p1
+    move-exception v0
 
-    .line 1719
-    const-string v0, "NetworkStats"
+    .line 1733
+    .local v0, "e":Ljava/lang/IllegalStateException;
+    const-string v1, "NetworkStats"
 
-    const-string/jumbo v1, "problem reading network stats"
+    const-string/jumbo v2, "problem reading network stats"
 
-    invoke-static {v0, v1, p1}, Landroid/util/Log;->wtf(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    invoke-static {v1, v2, v0}, Landroid/util/Log;->wtf(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
-    .line 1720
-    new-instance p1, Landroid/net/NetworkStats;
+    .line 1734
+    new-instance v1, Landroid/net/NetworkStats;
 
-    const-wide/16 v0, 0x0
+    const-wide/16 v2, 0x0
 
-    const/16 v2, 0xa
+    const/16 v4, 0xa
 
-    invoke-direct {p1, v0, v1, v2}, Landroid/net/NetworkStats;-><init>(JI)V
+    invoke-direct {v1, v2, v3, v4}, Landroid/net/NetworkStats;-><init>(JI)V
 
-    return-object p1
+    return-object v1
 .end method
 
 .method private getNetworkStatsUidDetail([Ljava/lang/String;)Landroid/net/NetworkStats;
-    .registers 7
+    .registers 8
+    .param p1, "ifaces"  # [Ljava/lang/String;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
         }
     .end annotation
 
-    .line 1666
+    .line 1680
     iget-object v0, p0, Lcom/android/server/net/NetworkStatsService;->mNetworkManager:Landroid/os/INetworkManagementService;
 
     const/4 v1, -0x1
@@ -1382,61 +1491,65 @@
 
     move-result-object v0
 
-    .line 1670
+    .line 1684
+    .local v0, "uidSnapshot":Landroid/net/NetworkStats;
     const/4 v2, 0x1
 
     invoke-direct {p0, v2}, Lcom/android/server/net/NetworkStatsService;->getNetworkStatsTethering(I)Landroid/net/NetworkStats;
 
     move-result-object v3
 
-    .line 1671
+    .line 1685
+    .local v3, "tetherSnapshot":Landroid/net/NetworkStats;
     invoke-virtual {v3, v1, p1, v1}, Landroid/net/NetworkStats;->filter(I[Ljava/lang/String;I)V
 
-    .line 1672
+    .line 1686
     iget-boolean v4, p0, Lcom/android/server/net/NetworkStatsService;->mUseBpfTrafficStats:Z
 
     invoke-static {v0, v3, v4}, Lcom/android/server/net/NetworkStatsFactory;->apply464xlatAdjustments(Landroid/net/NetworkStats;Landroid/net/NetworkStats;Z)V
 
-    .line 1674
+    .line 1688
     invoke-virtual {v0, v3}, Landroid/net/NetworkStats;->combineAllValues(Landroid/net/NetworkStats;)V
 
-    .line 1676
-    iget-object v3, p0, Lcom/android/server/net/NetworkStatsService;->mContext:Landroid/content/Context;
+    .line 1690
+    iget-object v4, p0, Lcom/android/server/net/NetworkStatsService;->mContext:Landroid/content/Context;
 
-    const-string/jumbo v4, "phone"
+    const-string/jumbo v5, "phone"
 
-    invoke-virtual {v3, v4}, Landroid/content/Context;->getSystemService(Ljava/lang/String;)Ljava/lang/Object;
+    invoke-virtual {v4, v5}, Landroid/content/Context;->getSystemService(Ljava/lang/String;)Ljava/lang/Object;
 
-    move-result-object v3
+    move-result-object v4
 
-    check-cast v3, Landroid/telephony/TelephonyManager;
+    check-cast v4, Landroid/telephony/TelephonyManager;
 
-    .line 1680
-    invoke-virtual {v3, v2}, Landroid/telephony/TelephonyManager;->getVtDataUsage(I)Landroid/net/NetworkStats;
+    .line 1694
+    .local v4, "telephonyManager":Landroid/telephony/TelephonyManager;
+    invoke-virtual {v4, v2}, Landroid/telephony/TelephonyManager;->getVtDataUsage(I)Landroid/net/NetworkStats;
 
     move-result-object v2
 
-    .line 1681
+    .line 1695
+    .local v2, "vtStats":Landroid/net/NetworkStats;
     if-eqz v2, :cond_33
 
-    .line 1682
+    .line 1696
     invoke-virtual {v2, v1, p1, v1}, Landroid/net/NetworkStats;->filter(I[Ljava/lang/String;I)V
 
-    .line 1683
-    iget-boolean p1, p0, Lcom/android/server/net/NetworkStatsService;->mUseBpfTrafficStats:Z
+    .line 1697
+    iget-boolean v1, p0, Lcom/android/server/net/NetworkStatsService;->mUseBpfTrafficStats:Z
 
-    invoke-static {v0, v2, p1}, Lcom/android/server/net/NetworkStatsFactory;->apply464xlatAdjustments(Landroid/net/NetworkStats;Landroid/net/NetworkStats;Z)V
+    invoke-static {v0, v2, v1}, Lcom/android/server/net/NetworkStatsFactory;->apply464xlatAdjustments(Landroid/net/NetworkStats;Landroid/net/NetworkStats;Z)V
 
-    .line 1685
+    .line 1699
     invoke-virtual {v0, v2}, Landroid/net/NetworkStats;->combineAllValues(Landroid/net/NetworkStats;)V
 
-    .line 1688
+    .line 1702
     :cond_33
-    iget-object p1, p0, Lcom/android/server/net/NetworkStatsService;->mUidOperations:Landroid/net/NetworkStats;
+    iget-object v1, p0, Lcom/android/server/net/NetworkStatsService;->mUidOperations:Landroid/net/NetworkStats;
 
-    invoke-virtual {v0, p1}, Landroid/net/NetworkStats;->combineAllValues(Landroid/net/NetworkStats;)V
+    invoke-virtual {v0, v1}, Landroid/net/NetworkStats;->combineAllValues(Landroid/net/NetworkStats;)V
 
-    .line 1690
+    .line 1704
     return-object v0
 .end method
 
@@ -1448,14 +1561,15 @@
         }
     .end annotation
 
-    .line 1697
+    .line 1711
     iget-object v0, p0, Lcom/android/server/net/NetworkStatsService;->mNetworkManager:Landroid/os/INetworkManagementService;
 
     invoke-interface {v0}, Landroid/os/INetworkManagementService;->getNetworkStatsSummaryXt()Landroid/net/NetworkStats;
 
     move-result-object v0
 
-    .line 1699
+    .line 1713
+    .local v0, "xtSnapshot":Landroid/net/NetworkStats;
     iget-object v1, p0, Lcom/android/server/net/NetworkStatsService;->mContext:Landroid/content/Context;
 
     const-string/jumbo v2, "phone"
@@ -1466,42 +1580,47 @@
 
     check-cast v1, Landroid/telephony/TelephonyManager;
 
-    .line 1703
+    .line 1717
+    .local v1, "telephonyManager":Landroid/telephony/TelephonyManager;
     const/4 v2, 0x0
 
     invoke-virtual {v1, v2}, Landroid/telephony/TelephonyManager;->getVtDataUsage(I)Landroid/net/NetworkStats;
 
-    move-result-object v1
+    move-result-object v2
 
-    .line 1704
-    if-eqz v1, :cond_1b
+    .line 1718
+    .local v2, "vtSnapshot":Landroid/net/NetworkStats;
+    if-eqz v2, :cond_1b
 
-    .line 1705
-    invoke-virtual {v0, v1}, Landroid/net/NetworkStats;->combineAllValues(Landroid/net/NetworkStats;)V
+    .line 1719
+    invoke-virtual {v0, v2}, Landroid/net/NetworkStats;->combineAllValues(Landroid/net/NetworkStats;)V
 
-    .line 1708
+    .line 1722
     :cond_1b
     return-object v0
 .end method
 
 .method private getNetworkTotalBytes(Landroid/net/NetworkTemplate;JJ)J
     .registers 15
-
-    .line 751
-    invoke-direct {p0}, Lcom/android/server/net/NetworkStatsService;->assertSystemReady()V
-
-    .line 752
-    invoke-direct {p0}, Lcom/android/server/net/NetworkStatsService;->assertBandwidthControlEnabled()V
+    .param p1, "template"  # Landroid/net/NetworkTemplate;
+    .param p2, "start"  # J
+    .param p4, "end"  # J
 
     .line 756
+    invoke-direct {p0}, Lcom/android/server/net/NetworkStatsService;->assertSystemReady()V
+
+    .line 757
+    invoke-direct {p0}, Lcom/android/server/net/NetworkStatsService;->assertBandwidthControlEnabled()V
+
+    .line 761
     nop
 
-    .line 758
+    .line 763
     invoke-static {}, Landroid/os/Binder;->getCallingUid()I
 
     move-result v8
 
-    .line 756
+    .line 761
     const/4 v2, 0x4
 
     const/4 v7, 0x3
@@ -1516,32 +1635,35 @@
 
     invoke-direct/range {v0 .. v8}, Lcom/android/server/net/NetworkStatsService;->internalGetSummaryForNetwork(Landroid/net/NetworkTemplate;IJJII)Landroid/net/NetworkStats;
 
-    move-result-object p1
+    move-result-object v0
 
-    .line 758
-    invoke-virtual {p1}, Landroid/net/NetworkStats;->getTotalBytes()J
+    .line 763
+    invoke-virtual {v0}, Landroid/net/NetworkStats;->getTotalBytes()J
 
-    move-result-wide p1
+    move-result-wide v0
 
-    .line 756
-    return-wide p1
+    .line 761
+    return-wide v0
 .end method
 
 .method private getNetworkUidBytes(Landroid/net/NetworkTemplate;JJ)Landroid/net/NetworkStats;
     .registers 16
+    .param p1, "template"  # Landroid/net/NetworkTemplate;
+    .param p2, "start"  # J
+    .param p4, "end"  # J
 
-    .line 762
+    .line 767
     invoke-direct {p0}, Lcom/android/server/net/NetworkStatsService;->assertSystemReady()V
 
-    .line 763
+    .line 768
     invoke-direct {p0}, Lcom/android/server/net/NetworkStatsService;->assertBandwidthControlEnabled()V
 
-    .line 766
+    .line 771
     iget-object v0, p0, Lcom/android/server/net/NetworkStatsService;->mStatsLock:Ljava/lang/Object;
 
     monitor-enter v0
 
-    .line 767
+    .line 772
     :try_start_9
     iget-object v1, p0, Lcom/android/server/net/NetworkStatsService;->mUidRecorder:Lcom/android/server/net/NetworkStatsRecorder;
 
@@ -1549,12 +1671,13 @@
 
     move-result-object v2
 
-    .line 768
+    .line 773
+    .local v2, "uidComplete":Lcom/android/server/net/NetworkStatsCollection;
     monitor-exit v0
     :try_end_10
     .catchall {:try_start_9 .. :try_end_10} :catchall_1b
 
-    .line 769
+    .line 774
     const/4 v8, 0x3
 
     const/16 v9, 0x3e8
@@ -1567,33 +1690,37 @@
 
     invoke-virtual/range {v2 .. v9}, Lcom/android/server/net/NetworkStatsCollection;->getSummary(Landroid/net/NetworkTemplate;JJII)Landroid/net/NetworkStats;
 
-    move-result-object p1
+    move-result-object v0
 
-    return-object p1
+    return-object v0
 
-    .line 768
+    .line 773
+    .end local v2  # "uidComplete":Lcom/android/server/net/NetworkStatsCollection;
     :catchall_1b
-    move-exception p1
+    move-exception v1
 
     :try_start_1c
     monitor-exit v0
     :try_end_1d
     .catchall {:try_start_1c .. :try_end_1d} :catchall_1b
 
-    throw p1
+    throw v1
 .end method
 
 .method private getTetherStats(Ljava/lang/String;I)J
-    .registers 9
+    .registers 13
+    .param p1, "iface"  # Ljava/lang/String;
+    .param p2, "type"  # I
 
-    .line 988
+    .line 994
     const-string v0, "NetworkStats"
 
     invoke-static {}, Landroid/os/Binder;->clearCallingIdentity()J
 
     move-result-wide v1
 
-    .line 990
+    .line 996
+    .local v1, "token":J
     const/4 v3, 0x0
 
     const-wide/16 v4, 0x0
@@ -1606,221 +1733,258 @@
     .catch Landroid/os/RemoteException; {:try_start_9 .. :try_end_d} :catch_66
     .catchall {:try_start_9 .. :try_end_d} :catchall_64
 
-    .line 995
+    .line 1001
+    .local v3, "tetherSnapshot":Landroid/net/NetworkStats;
     invoke-static {v1, v2}, Landroid/os/Binder;->restoreCallingIdentity(J)V
 
-    .line 996
+    .line 1002
     nop
 
-    .line 998
-    sget-object v1, Landroid/net/NetworkStats;->IFACE_ALL:Ljava/lang/String;
-
-    const/4 v2, 0x0
-
-    if-ne p1, v1, :cond_18
-
-    .line 999
-    move-object v1, v2
-
-    goto :goto_20
-
-    .line 1001
-    :cond_18
-    new-instance v1, Ljava/util/HashSet;
-
-    invoke-direct {v1}, Ljava/util/HashSet;-><init>()V
-
-    .line 1002
-    invoke-virtual {v1, p1}, Ljava/util/HashSet;->add(Ljava/lang/Object;)Z
-
     .line 1004
-    :goto_20
-    invoke-virtual {v3, v2, v1}, Landroid/net/NetworkStats;->getTotal(Landroid/net/NetworkStats$Entry;Ljava/util/HashSet;)Landroid/net/NetworkStats$Entry;
+    sget-object v6, Landroid/net/NetworkStats;->IFACE_ALL:Ljava/lang/String;
 
-    move-result-object v1
+    if-ne p1, v6, :cond_17
 
     .line 1005
-    sget-boolean v2, Lcom/android/server/net/NetworkStatsService;->LOGD:Z
+    const/4 v6, 0x0
 
-    if-eqz v2, :cond_4c
-
-    new-instance v2, Ljava/lang/StringBuilder;
-
-    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
-
-    const-string v3, "TetherStats: iface="
-
-    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v2, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    const-string p1, " type="
-
-    invoke-virtual {v2, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v2, p2}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
-
-    const-string p1, " entry="
-
-    invoke-virtual {v2, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v2, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
-
-    move-result-object p1
-
-    invoke-static {v0, p1}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
+    .local v6, "limitIfaces":Ljava/util/HashSet;, "Ljava/util/HashSet<Ljava/lang/String;>;"
+    goto :goto_1f
 
     .line 1007
+    .end local v6  # "limitIfaces":Ljava/util/HashSet;, "Ljava/util/HashSet<Ljava/lang/String;>;"
+    :cond_17
+    new-instance v6, Ljava/util/HashSet;
+
+    invoke-direct {v6}, Ljava/util/HashSet;-><init>()V
+
+    .line 1008
+    .restart local v6  # "limitIfaces":Ljava/util/HashSet;, "Ljava/util/HashSet<Ljava/lang/String;>;"
+    invoke-virtual {v6, p1}, Ljava/util/HashSet;->add(Ljava/lang/Object;)Z
+
+    .line 1010
+    :goto_1f
+    const/4 v7, 0x0
+
+    invoke-virtual {v3, v7, v6}, Landroid/net/NetworkStats;->getTotal(Landroid/net/NetworkStats$Entry;Ljava/util/HashSet;)Landroid/net/NetworkStats$Entry;
+
+    move-result-object v7
+
+    .line 1011
+    .local v7, "entry":Landroid/net/NetworkStats$Entry;
+    sget-boolean v8, Lcom/android/server/net/NetworkStatsService;->LOGD:Z
+
+    if-eqz v8, :cond_4c
+
+    new-instance v8, Ljava/lang/StringBuilder;
+
+    invoke-direct {v8}, Ljava/lang/StringBuilder;-><init>()V
+
+    const-string v9, "TetherStats: iface="
+
+    invoke-virtual {v8, v9}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v8, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    const-string v9, " type="
+
+    invoke-virtual {v8, v9}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v8, p2}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+
+    const-string v9, " entry="
+
+    invoke-virtual {v8, v9}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v8, v7}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v8}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v8
+
+    invoke-static {v0, v8}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
+
+    .line 1013
     :cond_4c
     if-eqz p2, :cond_61
 
-    const/4 p1, 0x1
+    const/4 v0, 0x1
 
-    if-eq p2, p1, :cond_5e
+    if-eq p2, v0, :cond_5e
 
-    const/4 p1, 0x2
+    const/4 v0, 0x2
 
-    if-eq p2, p1, :cond_5b
+    if-eq p2, v0, :cond_5b
 
-    const/4 p1, 0x3
+    const/4 v0, 0x3
 
-    if-eq p2, p1, :cond_58
+    if-eq p2, v0, :cond_58
+
+    .line 1023
+    return-wide v4
+
+    .line 1021
+    :cond_58
+    iget-wide v4, v7, Landroid/net/NetworkStats$Entry;->txPackets:J
+
+    return-wide v4
+
+    .line 1019
+    :cond_5b
+    iget-wide v4, v7, Landroid/net/NetworkStats$Entry;->txBytes:J
+
+    return-wide v4
 
     .line 1017
+    :cond_5e
+    iget-wide v4, v7, Landroid/net/NetworkStats$Entry;->rxPackets:J
+
     return-wide v4
 
     .line 1015
-    :cond_58
-    iget-wide p1, v1, Landroid/net/NetworkStats$Entry;->txPackets:J
-
-    return-wide p1
-
-    .line 1013
-    :cond_5b
-    iget-wide p1, v1, Landroid/net/NetworkStats$Entry;->txBytes:J
-
-    return-wide p1
-
-    .line 1011
-    :cond_5e
-    iget-wide p1, v1, Landroid/net/NetworkStats$Entry;->rxPackets:J
-
-    return-wide p1
-
-    .line 1009
     :cond_61
-    iget-wide p1, v1, Landroid/net/NetworkStats$Entry;->rxBytes:J
+    iget-wide v4, v7, Landroid/net/NetworkStats$Entry;->rxBytes:J
 
-    return-wide p1
+    return-wide v4
 
-    .line 995
+    .line 1001
+    .end local v3  # "tetherSnapshot":Landroid/net/NetworkStats;
+    .end local v6  # "limitIfaces":Ljava/util/HashSet;, "Ljava/util/HashSet<Ljava/lang/String;>;"
+    .end local v7  # "entry":Landroid/net/NetworkStats$Entry;
     :catchall_64
-    move-exception p1
+    move-exception v0
 
     goto :goto_80
 
-    .line 991
+    .line 997
     :catch_66
-    move-exception p1
+    move-exception v3
 
-    .line 992
+    .line 998
+    .local v3, "e":Landroid/os/RemoteException;
     :try_start_67
-    new-instance p2, Ljava/lang/StringBuilder;
+    new-instance v6, Ljava/lang/StringBuilder;
 
-    invoke-direct {p2}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v6}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v3, "Error get TetherStats: "
+    const-string v7, "Error get TetherStats: "
 
-    invoke-virtual {p2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v6, v7}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p2, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    invoke-virtual {v6, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v6}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v6
 
-    invoke-static {v0, p1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v0, v6}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
     :try_end_7b
     .catchall {:try_start_67 .. :try_end_7b} :catchall_64
 
-    .line 993
+    .line 999
     nop
 
-    .line 995
+    .line 1001
     invoke-static {v1, v2}, Landroid/os/Binder;->restoreCallingIdentity(J)V
 
-    .line 993
+    .line 999
     return-wide v4
 
-    .line 995
+    .line 1001
+    .end local v3  # "e":Landroid/os/RemoteException;
     :goto_80
     invoke-static {v1, v2}, Landroid/os/Binder;->restoreCallingIdentity(J)V
 
-    throw p1
+    throw v0
 .end method
 
 .method private internalGetHistoryForNetwork(Landroid/net/NetworkTemplate;IIII)Landroid/net/NetworkStatsHistory;
-    .registers 20
+    .registers 23
+    .param p1, "template"  # Landroid/net/NetworkTemplate;
+    .param p2, "flags"  # I
+    .param p3, "fields"  # I
+    .param p4, "accessLevel"  # I
+    .param p5, "callingUid"  # I
 
-    .line 742
-    move-object v0, p0
+    .line 747
+    move-object/from16 v1, p0
 
     invoke-direct/range {p0 .. p2}, Lcom/android/server/net/NetworkStatsService;->resolveSubscriptionPlan(Landroid/net/NetworkTemplate;I)Landroid/telephony/SubscriptionPlan;
 
-    move-result-object v2
+    move-result-object v15
 
-    .line 743
-    iget-object v13, v0, Lcom/android/server/net/NetworkStatsService;->mStatsLock:Ljava/lang/Object;
+    .line 748
+    .local v15, "augmentPlan":Landroid/telephony/SubscriptionPlan;
+    iget-object v14, v1, Lcom/android/server/net/NetworkStatsService;->mStatsLock:Ljava/lang/Object;
 
-    monitor-enter v13
+    monitor-enter v14
 
-    .line 744
-    :try_start_8
-    iget-object v0, v0, Lcom/android/server/net/NetworkStatsService;->mXtStatsCached:Lcom/android/server/net/NetworkStatsCollection;
+    .line 749
+    :try_start_9
+    iget-object v2, v1, Lcom/android/server/net/NetworkStatsService;->mXtStatsCached:Lcom/android/server/net/NetworkStatsCollection;
+    :try_end_b
+    .catchall {:try_start_9 .. :try_end_b} :catchall_28
 
-    const/4 v3, -0x1
+    const/4 v5, -0x1
 
-    const/4 v4, -0x1
+    const/4 v6, -0x1
 
-    const/4 v5, 0x0
+    const/4 v7, 0x0
 
-    const-wide/high16 v7, -0x8000000000000000L
+    const-wide/high16 v9, -0x8000000000000000L
 
-    const-wide v9, 0x7fffffffffffffffL
+    const-wide v11, 0x7fffffffffffffffL
 
-    move-object v1, p1
+    move-object/from16 v3, p1
 
-    move/from16 v6, p3
+    move-object v4, v15
 
-    move/from16 v11, p4
+    move/from16 v8, p3
 
-    move/from16 v12, p5
+    move/from16 v13, p4
 
-    invoke-virtual/range {v0 .. v12}, Lcom/android/server/net/NetworkStatsCollection;->getHistory(Landroid/net/NetworkTemplate;Landroid/telephony/SubscriptionPlan;IIIIJJII)Landroid/net/NetworkStatsHistory;
+    move-object/from16 v16, v14
+
+    move/from16 v14, p5
+
+    :try_start_20
+    invoke-virtual/range {v2 .. v14}, Lcom/android/server/net/NetworkStatsCollection;->getHistory(Landroid/net/NetworkTemplate;Landroid/telephony/SubscriptionPlan;IIIIJJII)Landroid/net/NetworkStatsHistory;
 
     move-result-object v0
 
-    monitor-exit v13
+    monitor-exit v16
 
     return-object v0
 
-    .line 747
-    :catchall_21
+    .line 752
+    :catchall_26
     move-exception v0
 
-    monitor-exit v13
-    :try_end_23
-    .catchall {:try_start_8 .. :try_end_23} :catchall_21
+    goto :goto_2b
+
+    :catchall_28
+    move-exception v0
+
+    move-object/from16 v16, v14
+
+    :goto_2b
+    monitor-exit v16
+    :try_end_2c
+    .catchall {:try_start_20 .. :try_end_2c} :catchall_26
 
     throw v0
 .end method
 
 .method private internalGetSummaryForNetwork(Landroid/net/NetworkTemplate;IJJII)Landroid/net/NetworkStats;
-    .registers 32
+    .registers 34
+    .param p1, "template"  # Landroid/net/NetworkTemplate;
+    .param p2, "flags"  # I
+    .param p3, "start"  # J
+    .param p5, "end"  # J
+    .param p7, "accessLevel"  # I
+    .param p8, "callingUid"  # I
 
-    .line 721
+    .line 726
     const/4 v3, -0x1
 
     move-object/from16 v0, p0
@@ -1835,57 +1999,65 @@
 
     invoke-direct/range {v0 .. v5}, Lcom/android/server/net/NetworkStatsService;->internalGetHistoryForNetwork(Landroid/net/NetworkTemplate;IIII)Landroid/net/NetworkStatsHistory;
 
-    move-result-object v4
+    move-result-object v0
 
-    .line 724
+    .line 729
+    .local v0, "history":Landroid/net/NetworkStatsHistory;
     invoke-static {}, Ljava/lang/System;->currentTimeMillis()J
 
-    move-result-wide v9
+    move-result-wide v1
 
-    .line 725
+    .line 730
+    .local v1, "now":J
     const/4 v11, 0x0
+
+    move-object v4, v0
 
     move-wide/from16 v5, p3
 
     move-wide/from16 v7, p5
 
+    move-wide v9, v1
+
     invoke-virtual/range {v4 .. v11}, Landroid/net/NetworkStatsHistory;->getValues(JJJLandroid/net/NetworkStatsHistory$Entry;)Landroid/net/NetworkStatsHistory$Entry;
 
-    move-result-object v0
+    move-result-object v3
 
-    .line 727
-    new-instance v1, Landroid/net/NetworkStats;
+    .line 732
+    .local v3, "entry":Landroid/net/NetworkStatsHistory$Entry;
+    new-instance v4, Landroid/net/NetworkStats;
 
-    sub-long v2, p5, p3
+    sub-long v5, p5, p3
 
-    const/4 v4, 0x1
+    const/4 v7, 0x1
 
-    invoke-direct {v1, v2, v3, v4}, Landroid/net/NetworkStats;-><init>(JI)V
+    invoke-direct {v4, v5, v6, v7}, Landroid/net/NetworkStats;-><init>(JI)V
 
-    .line 728
-    new-instance v2, Landroid/net/NetworkStats$Entry;
+    .line 733
+    .local v4, "stats":Landroid/net/NetworkStats;
+    new-instance v12, Landroid/net/NetworkStats$Entry;
 
-    move-object v5, v2
+    move-object v5, v12
 
     sget-object v6, Landroid/net/NetworkStats;->IFACE_ALL:Ljava/lang/String;
 
-    iget-wide v13, v0, Landroid/net/NetworkStatsHistory$Entry;->rxBytes:J
+    iget-wide v13, v3, Landroid/net/NetworkStatsHistory$Entry;->rxBytes:J
 
-    iget-wide v3, v0, Landroid/net/NetworkStatsHistory$Entry;->rxPackets:J
+    iget-wide v7, v3, Landroid/net/NetworkStatsHistory$Entry;->rxPackets:J
 
-    move-wide v15, v3
+    move-wide v15, v7
 
-    iget-wide v3, v0, Landroid/net/NetworkStatsHistory$Entry;->txBytes:J
+    iget-wide v7, v3, Landroid/net/NetworkStatsHistory$Entry;->txBytes:J
 
-    move-wide/from16 v17, v3
+    move-wide/from16 v17, v7
 
-    iget-wide v3, v0, Landroid/net/NetworkStatsHistory$Entry;->txPackets:J
+    iget-wide v7, v3, Landroid/net/NetworkStatsHistory$Entry;->txPackets:J
 
-    move-wide/from16 v19, v3
+    move-wide/from16 v19, v7
 
-    iget-wide v3, v0, Landroid/net/NetworkStatsHistory$Entry;->operations:J
+    iget-wide v7, v3, Landroid/net/NetworkStatsHistory$Entry;->operations:J
 
-    move-wide/from16 v21, v3
+    move-wide/from16 v21, v7
 
     const/4 v7, -0x1
 
@@ -1897,25 +2069,34 @@
 
     const/4 v11, -0x1
 
-    const/4 v12, -0x1
+    const/16 v23, -0x1
+
+    move-object/from16 v24, v0
+
+    move-object v0, v12
+
+    .end local v0  # "history":Landroid/net/NetworkStatsHistory;
+    .local v24, "history":Landroid/net/NetworkStatsHistory;
+    move/from16 v12, v23
 
     invoke-direct/range {v5 .. v22}, Landroid/net/NetworkStats$Entry;-><init>(Ljava/lang/String;IIIIIIJJJJJ)V
 
-    invoke-virtual {v1, v2}, Landroid/net/NetworkStats;->addValues(Landroid/net/NetworkStats$Entry;)Landroid/net/NetworkStats;
+    invoke-virtual {v4, v0}, Landroid/net/NetworkStats;->addValues(Landroid/net/NetworkStats$Entry;)Landroid/net/NetworkStats;
 
-    .line 731
-    return-object v1
+    .line 736
+    return-object v4
 .end method
 
 .method private isBandwidthControlEnabled()Z
-    .registers 4
+    .registers 5
 
-    .line 1764
+    .line 1778
     invoke-static {}, Landroid/os/Binder;->clearCallingIdentity()J
 
     move-result-wide v0
 
-    .line 1766
+    .line 1780
+    .local v0, "token":J
     :try_start_4
     iget-object v2, p0, Lcom/android/server/net/NetworkStatsService;->mNetworkManager:Landroid/os/INetworkManagementService;
 
@@ -1926,13 +2107,13 @@
     .catch Landroid/os/RemoteException; {:try_start_4 .. :try_end_a} :catch_13
     .catchall {:try_start_4 .. :try_end_a} :catchall_e
 
-    .line 1771
+    .line 1785
     invoke-static {v0, v1}, Landroid/os/Binder;->restoreCallingIdentity(J)V
 
-    .line 1766
+    .line 1780
     return v2
 
-    .line 1771
+    .line 1785
     :catchall_e
     move-exception v2
 
@@ -1940,45 +2121,48 @@
 
     throw v2
 
-    .line 1767
+    .line 1781
     :catch_13
     move-exception v2
 
-    .line 1769
-    const/4 v2, 0x0
+    .line 1783
+    .local v2, "e":Landroid/os/RemoteException;
+    const/4 v3, 0x0
 
-    .line 1771
+    .line 1785
     invoke-static {v0, v1}, Landroid/os/Binder;->restoreCallingIdentity(J)V
 
-    .line 1769
-    return v2
+    .line 1783
+    return v3
 .end method
 
 .method private isRateLimitedForPoll(I)Z
-    .registers 9
+    .registers 11
+    .param p1, "callingUid"  # I
 
-    .line 541
+    .line 546
     const/4 v0, 0x0
 
     const/16 v1, 0x3e8
 
     if-ne p1, v1, :cond_6
 
-    .line 542
+    .line 547
     return v0
 
-    .line 546
+    .line 551
     :cond_6
     invoke-static {}, Landroid/os/SystemClock;->elapsedRealtime()J
 
     move-result-wide v1
 
-    .line 547
+    .line 552
+    .local v1, "now":J
     iget-object v3, p0, Lcom/android/server/net/NetworkStatsService;->mOpenSessionCallsPerUid:Landroid/util/SparseIntArray;
 
     monitor-enter v3
 
-    .line 548
+    .line 553
     :try_start_d
     iget-object v4, p0, Lcom/android/server/net/NetworkStatsService;->mOpenSessionCallsPerUid:Landroid/util/SparseIntArray;
 
@@ -1986,58 +2170,60 @@
 
     move-result v4
 
-    .line 549
+    .line 554
+    .local v4, "calls":I
     iget-object v5, p0, Lcom/android/server/net/NetworkStatsService;->mOpenSessionCallsPerUid:Landroid/util/SparseIntArray;
 
-    const/4 v6, 0x1
+    add-int/lit8 v6, v4, 0x1
 
-    add-int/2addr v4, v6
+    invoke-virtual {v5, p1, v6}, Landroid/util/SparseIntArray;->put(II)V
 
-    invoke-virtual {v5, p1, v4}, Landroid/util/SparseIntArray;->put(II)V
+    .line 555
+    iget-wide v5, p0, Lcom/android/server/net/NetworkStatsService;->mLastStatsSessionPoll:J
 
-    .line 550
-    iget-wide v4, p0, Lcom/android/server/net/NetworkStatsService;->mLastStatsSessionPoll:J
-
-    .line 551
+    .line 556
+    .local v5, "lastCallTime":J
     iput-wide v1, p0, Lcom/android/server/net/NetworkStatsService;->mLastStatsSessionPoll:J
 
-    .line 552
+    .line 557
+    .end local v4  # "calls":I
     monitor-exit v3
 
-    .line 554
-    sub-long/2addr v1, v4
+    .line 559
+    sub-long v3, v1, v5
 
-    const-wide/16 v3, 0x3a98
+    const-wide/16 v7, 0x3a98
 
-    cmp-long p1, v1, v3
+    cmp-long v3, v3, v7
 
-    if-gez p1, :cond_27
+    if-gez v3, :cond_28
 
-    move v0, v6
+    const/4 v0, 0x1
 
-    :cond_27
+    :cond_28
     return v0
 
-    .line 552
-    :catchall_28
-    move-exception p1
+    .line 557
+    .end local v5  # "lastCallTime":J
+    :catchall_29
+    move-exception v0
 
     monitor-exit v3
-    :try_end_2a
-    .catchall {:try_start_d .. :try_end_2a} :catchall_28
+    :try_end_2b
+    .catchall {:try_start_d .. :try_end_2b} :catchall_29
 
-    throw p1
+    throw v0
 .end method
 
 .method private maybeUpgradeLegacyStatsLocked()V
-    .registers 6
+    .registers 7
     .annotation build Lcom/android/internal/annotations/GuardedBy;
         value = {
             "mStatsLock"
         }
     .end annotation
 
-    .line 472
+    .line 477
     const-string/jumbo v0, "problem during legacy upgrade"
 
     const-string v1, "NetworkStats"
@@ -2051,99 +2237,109 @@
 
     invoke-direct {v2, v3, v4}, Ljava/io/File;-><init>(Ljava/io/File;Ljava/lang/String;)V
 
-    .line 473
+    .line 478
+    .local v2, "file":Ljava/io/File;
     invoke-virtual {v2}, Ljava/io/File;->exists()Z
 
     move-result v3
 
     if-eqz v3, :cond_1d
 
-    .line 474
+    .line 479
     iget-object v3, p0, Lcom/android/server/net/NetworkStatsService;->mDevRecorder:Lcom/android/server/net/NetworkStatsRecorder;
 
     invoke-virtual {v3, v2}, Lcom/android/server/net/NetworkStatsRecorder;->importLegacyNetworkLocked(Ljava/io/File;)V
-
-    .line 475
-    invoke-virtual {v2}, Ljava/io/File;->delete()Z
-
-    .line 478
-    :cond_1d
-    new-instance v2, Ljava/io/File;
-
-    iget-object v3, p0, Lcom/android/server/net/NetworkStatsService;->mSystemDir:Ljava/io/File;
-
-    const-string/jumbo v4, "netstats_xt.bin"
-
-    invoke-direct {v2, v3, v4}, Ljava/io/File;-><init>(Ljava/io/File;Ljava/lang/String;)V
-
-    .line 479
-    invoke-virtual {v2}, Ljava/io/File;->exists()Z
-
-    move-result v3
-
-    if-eqz v3, :cond_30
 
     .line 480
     invoke-virtual {v2}, Ljava/io/File;->delete()Z
 
     .line 483
-    :cond_30
-    new-instance v2, Ljava/io/File;
+    :cond_1d
+    new-instance v3, Ljava/io/File;
 
-    iget-object v3, p0, Lcom/android/server/net/NetworkStatsService;->mSystemDir:Ljava/io/File;
+    iget-object v4, p0, Lcom/android/server/net/NetworkStatsService;->mSystemDir:Ljava/io/File;
 
-    const-string/jumbo v4, "netstats_uid.bin"
+    const-string/jumbo v5, "netstats_xt.bin"
 
-    invoke-direct {v2, v3, v4}, Ljava/io/File;-><init>(Ljava/io/File;Ljava/lang/String;)V
+    invoke-direct {v3, v4, v5}, Ljava/io/File;-><init>(Ljava/io/File;Ljava/lang/String;)V
+
+    move-object v2, v3
 
     .line 484
     invoke-virtual {v2}, Ljava/io/File;->exists()Z
 
     move-result v3
 
-    if-eqz v3, :cond_57
+    if-eqz v3, :cond_31
 
     .line 485
+    invoke-virtual {v2}, Ljava/io/File;->delete()Z
+
+    .line 488
+    :cond_31
+    new-instance v3, Ljava/io/File;
+
+    iget-object v4, p0, Lcom/android/server/net/NetworkStatsService;->mSystemDir:Ljava/io/File;
+
+    const-string/jumbo v5, "netstats_uid.bin"
+
+    invoke-direct {v3, v4, v5}, Ljava/io/File;-><init>(Ljava/io/File;Ljava/lang/String;)V
+
+    move-object v2, v3
+
+    .line 489
+    invoke-virtual {v2}, Ljava/io/File;->exists()Z
+
+    move-result v3
+
+    if-eqz v3, :cond_4f
+
+    .line 490
     iget-object v3, p0, Lcom/android/server/net/NetworkStatsService;->mUidRecorder:Lcom/android/server/net/NetworkStatsRecorder;
 
     invoke-virtual {v3, v2}, Lcom/android/server/net/NetworkStatsRecorder;->importLegacyUidLocked(Ljava/io/File;)V
 
-    .line 486
+    .line 491
     iget-object v3, p0, Lcom/android/server/net/NetworkStatsService;->mUidTagRecorder:Lcom/android/server/net/NetworkStatsRecorder;
 
     invoke-virtual {v3, v2}, Lcom/android/server/net/NetworkStatsRecorder;->importLegacyUidLocked(Ljava/io/File;)V
 
-    .line 487
-    invoke-virtual {v2}, Ljava/io/File;->delete()Z
-    :try_end_4d
-    .catch Ljava/io/IOException; {:try_start_5 .. :try_end_4d} :catch_53
-    .catch Ljava/lang/OutOfMemoryError; {:try_start_5 .. :try_end_4d} :catch_4e
-
-    goto :goto_57
-
-    .line 491
-    :catch_4e
-    move-exception v2
-
     .line 492
-    invoke-static {v1, v0, v2}, Landroid/util/Log;->wtf(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    invoke-virtual {v2}, Ljava/io/File;->delete()Z
+    :try_end_4f
+    .catch Ljava/io/IOException; {:try_start_5 .. :try_end_4f} :catch_55
+    .catch Ljava/lang/OutOfMemoryError; {:try_start_5 .. :try_end_4f} :catch_50
 
-    goto :goto_58
+    .line 498
+    :cond_4f
+    goto :goto_5a
 
-    .line 489
-    :catch_53
+    .line 496
+    .end local v2  # "file":Ljava/io/File;
+    :catch_50
     move-exception v2
 
-    .line 490
+    .line 497
+    .local v2, "e":Ljava/lang/OutOfMemoryError;
     invoke-static {v1, v0, v2}, Landroid/util/Log;->wtf(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
-    .line 493
-    :cond_57
-    :goto_57
-    nop
+    goto :goto_5a
 
     .line 494
-    :goto_58
+    .end local v2  # "e":Ljava/lang/OutOfMemoryError;
+    :catch_55
+    move-exception v2
+
+    .line 495
+    .local v2, "e":Ljava/io/IOException;
+    invoke-static {v1, v0, v2}, Landroid/util/Log;->wtf(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+
+    .line 498
+    .end local v2  # "e":Ljava/io/IOException;
+    nop
+
+    .line 499
+    :goto_5a
     return-void
 .end method
 
@@ -2157,84 +2353,93 @@
 .end method
 
 .method private openSessionInternal(ILjava/lang/String;)Landroid/net/INetworkStatsSession;
-    .registers 7
+    .registers 8
+    .param p1, "flags"  # I
+    .param p2, "callingPackage"  # Ljava/lang/String;
 
-    .line 558
+    .line 563
     invoke-direct {p0}, Lcom/android/server/net/NetworkStatsService;->assertBandwidthControlEnabled()V
 
-    .line 560
+    .line 565
     invoke-static {}, Landroid/os/Binder;->getCallingUid()I
 
     move-result v0
 
-    .line 561
+    .line 566
+    .local v0, "callingUid":I
     invoke-direct {p0, v0}, Lcom/android/server/net/NetworkStatsService;->isRateLimitedForPoll(I)Z
 
     move-result v1
 
     if-eqz v1, :cond_10
 
-    .line 562
-    and-int/lit8 p1, p1, -0x2
+    .line 567
+    and-int/lit8 v1, p1, -0x2
 
     goto :goto_11
 
-    .line 563
+    .line 568
     :cond_10
+    move v1, p1
+
+    :goto_11
     nop
 
-    .line 564
-    :goto_11
-    and-int/lit8 v1, p1, 0x3
+    .line 569
+    .local v1, "usedFlags":I
+    and-int/lit8 v2, v1, 0x3
 
-    if-eqz v1, :cond_26
-
-    .line 566
-    invoke-static {}, Landroid/os/Binder;->clearCallingIdentity()J
-
-    move-result-wide v1
-
-    .line 568
-    const/4 v3, 0x3
-
-    :try_start_1a
-    invoke-direct {p0, v3}, Lcom/android/server/net/NetworkStatsService;->performPoll(I)V
-    :try_end_1d
-    .catchall {:try_start_1a .. :try_end_1d} :catchall_21
-
-    .line 570
-    invoke-static {v1, v2}, Landroid/os/Binder;->restoreCallingIdentity(J)V
+    if-eqz v2, :cond_27
 
     .line 571
-    goto :goto_26
+    invoke-static {}, Landroid/os/Binder;->clearCallingIdentity()J
 
-    .line 570
-    :catchall_21
-    move-exception p1
+    move-result-wide v2
 
-    invoke-static {v1, v2}, Landroid/os/Binder;->restoreCallingIdentity(J)V
+    .line 573
+    .local v2, "ident":J
+    const/4 v4, 0x3
 
-    throw p1
+    :try_start_1b
+    invoke-direct {p0, v4}, Lcom/android/server/net/NetworkStatsService;->performPoll(I)V
+    :try_end_1e
+    .catchall {:try_start_1b .. :try_end_1e} :catchall_22
 
-    .line 577
-    :cond_26
-    :goto_26
-    new-instance v1, Lcom/android/server/net/NetworkStatsService$1;
+    .line 575
+    invoke-static {v2, v3}, Landroid/os/Binder;->restoreCallingIdentity(J)V
 
-    invoke-direct {v1, p0, v0, p2, p1}, Lcom/android/server/net/NetworkStatsService$1;-><init>(Lcom/android/server/net/NetworkStatsService;ILjava/lang/String;I)V
+    .line 576
+    goto :goto_27
 
-    return-object v1
+    .line 575
+    :catchall_22
+    move-exception v4
+
+    invoke-static {v2, v3}, Landroid/os/Binder;->restoreCallingIdentity(J)V
+
+    throw v4
+
+    .line 582
+    .end local v2  # "ident":J
+    :cond_27
+    :goto_27
+    new-instance v2, Lcom/android/server/net/NetworkStatsService$1;
+
+    invoke-direct {v2, p0, v0, p2, v1}, Lcom/android/server/net/NetworkStatsService$1;-><init>(Lcom/android/server/net/NetworkStatsService;ILjava/lang/String;I)V
+
+    return-object v2
 .end method
 
 .method private performPoll(I)V
-    .registers 4
+    .registers 5
+    .param p1, "flags"  # I
 
-    .line 1314
+    .line 1326
     iget-object v0, p0, Lcom/android/server/net/NetworkStatsService;->mStatsLock:Ljava/lang/Object;
 
     monitor-enter v0
 
-    .line 1315
+    .line 1327
     :try_start_3
     iget-object v1, p0, Lcom/android/server/net/NetworkStatsService;->mWakeLock:Landroid/os/PowerManager$WakeLock;
 
@@ -2242,64 +2447,69 @@
     :try_end_8
     .catchall {:try_start_3 .. :try_end_8} :catchall_1a
 
-    .line 1318
+    .line 1330
     :try_start_8
     invoke-direct {p0, p1}, Lcom/android/server/net/NetworkStatsService;->performPollLocked(I)V
     :try_end_b
     .catchall {:try_start_8 .. :try_end_b} :catchall_13
 
-    .line 1320
+    .line 1332
     :try_start_b
-    iget-object p1, p0, Lcom/android/server/net/NetworkStatsService;->mWakeLock:Landroid/os/PowerManager$WakeLock;
-
-    invoke-virtual {p1}, Landroid/os/PowerManager$WakeLock;->release()V
-
-    .line 1321
-    nop
-
-    .line 1322
-    monitor-exit v0
-
-    .line 1323
-    return-void
-
-    .line 1320
-    :catchall_13
-    move-exception p1
-
     iget-object v1, p0, Lcom/android/server/net/NetworkStatsService;->mWakeLock:Landroid/os/PowerManager$WakeLock;
 
     invoke-virtual {v1}, Landroid/os/PowerManager$WakeLock;->release()V
 
-    throw p1
+    .line 1333
+    nop
 
-    .line 1322
+    .line 1334
+    monitor-exit v0
+
+    .line 1335
+    return-void
+
+    .line 1332
+    :catchall_13
+    move-exception v1
+
+    iget-object v2, p0, Lcom/android/server/net/NetworkStatsService;->mWakeLock:Landroid/os/PowerManager$WakeLock;
+
+    invoke-virtual {v2}, Landroid/os/PowerManager$WakeLock;->release()V
+
+    .end local p0  # "this":Lcom/android/server/net/NetworkStatsService;
+    .end local p1  # "flags":I
+    throw v1
+
+    .line 1334
+    .restart local p0  # "this":Lcom/android/server/net/NetworkStatsService;
+    .restart local p1  # "flags":I
     :catchall_1a
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_1c
     .catchall {:try_start_b .. :try_end_1c} :catchall_1a
 
-    throw p1
+    throw v1
 .end method
 
 .method private performPollLocked(I)V
-    .registers 11
+    .registers 13
+    .param p1, "flags"  # I
     .annotation build Lcom/android/internal/annotations/GuardedBy;
         value = {
             "mStatsLock"
         }
     .end annotation
 
-    .line 1331
+    .line 1343
     iget-boolean v0, p0, Lcom/android/server/net/NetworkStatsService;->mSystemReady:Z
 
     if-nez v0, :cond_5
 
     return-void
 
-    .line 1332
+    .line 1344
     :cond_5
     sget-boolean v0, Lcom/android/server/net/NetworkStatsService;->LOGV:Z
 
@@ -2331,7 +2541,7 @@
 
     invoke-static {v1, v0}, Landroid/util/Slog;->v(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 1333
+    .line 1345
     :cond_29
     const-wide/32 v2, 0x200000
 
@@ -2339,7 +2549,7 @@
 
     invoke-static {v2, v3, v0}, Landroid/os/Trace;->traceBegin(JLjava/lang/String;)V
 
-    .line 1335
+    .line 1347
     and-int/lit8 v0, p1, 0x1
 
     const/4 v4, 0x0
@@ -2355,7 +2565,8 @@
     :cond_3a
     move v0, v4
 
-    .line 1336
+    .line 1348
+    .local v0, "persistNetwork":Z
     :goto_3b
     and-int/lit8 v6, p1, 0x2
 
@@ -2368,221 +2579,251 @@
     :cond_41
     move v6, v4
 
-    .line 1337
+    .line 1349
+    .local v6, "persistUid":Z
     :goto_42
-    and-int/lit16 p1, p1, 0x100
+    and-int/lit16 v7, p1, 0x100
 
-    if-eqz p1, :cond_47
+    if-eqz v7, :cond_47
 
     move v4, v5
 
-    .line 1340
+    .line 1352
+    .local v4, "persistForce":Z
     :cond_47
-    iget-object p1, p0, Lcom/android/server/net/NetworkStatsService;->mClock:Ljava/time/Clock;
+    iget-object v5, p0, Lcom/android/server/net/NetworkStatsService;->mClock:Ljava/time/Clock;
 
-    invoke-virtual {p1}, Ljava/time/Clock;->millis()J
+    invoke-virtual {v5}, Ljava/time/Clock;->millis()J
 
     move-result-wide v7
 
-    .line 1343
+    .line 1355
+    .local v7, "currentTime":J
     :try_start_4d
     invoke-direct {p0, v7, v8}, Lcom/android/server/net/NetworkStatsService;->recordSnapshotLocked(J)V
     :try_end_50
     .catch Ljava/lang/IllegalStateException; {:try_start_4d .. :try_end_50} :catch_ae
     .catch Landroid/os/RemoteException; {:try_start_4d .. :try_end_50} :catch_ac
 
-    .line 1350
+    .line 1362
     nop
 
-    .line 1353
-    const-string p1, "[persisting]"
+    .line 1365
+    const-string v1, "[persisting]"
 
-    invoke-static {v2, v3, p1}, Landroid/os/Trace;->traceBegin(JLjava/lang/String;)V
+    invoke-static {v2, v3, v1}, Landroid/os/Trace;->traceBegin(JLjava/lang/String;)V
 
-    .line 1354
+    .line 1366
     if-eqz v4, :cond_6d
 
-    .line 1355
-    iget-object p1, p0, Lcom/android/server/net/NetworkStatsService;->mDevRecorder:Lcom/android/server/net/NetworkStatsRecorder;
+    .line 1367
+    iget-object v1, p0, Lcom/android/server/net/NetworkStatsService;->mDevRecorder:Lcom/android/server/net/NetworkStatsRecorder;
 
-    invoke-virtual {p1, v7, v8}, Lcom/android/server/net/NetworkStatsRecorder;->forcePersistLocked(J)V
+    invoke-virtual {v1, v7, v8}, Lcom/android/server/net/NetworkStatsRecorder;->forcePersistLocked(J)V
 
-    .line 1356
-    iget-object p1, p0, Lcom/android/server/net/NetworkStatsService;->mXtRecorder:Lcom/android/server/net/NetworkStatsRecorder;
+    .line 1368
+    iget-object v1, p0, Lcom/android/server/net/NetworkStatsService;->mXtRecorder:Lcom/android/server/net/NetworkStatsRecorder;
 
-    invoke-virtual {p1, v7, v8}, Lcom/android/server/net/NetworkStatsRecorder;->forcePersistLocked(J)V
+    invoke-virtual {v1, v7, v8}, Lcom/android/server/net/NetworkStatsRecorder;->forcePersistLocked(J)V
 
-    .line 1357
-    iget-object p1, p0, Lcom/android/server/net/NetworkStatsService;->mUidRecorder:Lcom/android/server/net/NetworkStatsRecorder;
+    .line 1369
+    iget-object v1, p0, Lcom/android/server/net/NetworkStatsService;->mUidRecorder:Lcom/android/server/net/NetworkStatsRecorder;
 
-    invoke-virtual {p1, v7, v8}, Lcom/android/server/net/NetworkStatsRecorder;->forcePersistLocked(J)V
+    invoke-virtual {v1, v7, v8}, Lcom/android/server/net/NetworkStatsRecorder;->forcePersistLocked(J)V
 
-    .line 1358
-    iget-object p1, p0, Lcom/android/server/net/NetworkStatsService;->mUidTagRecorder:Lcom/android/server/net/NetworkStatsRecorder;
+    .line 1370
+    iget-object v1, p0, Lcom/android/server/net/NetworkStatsService;->mUidTagRecorder:Lcom/android/server/net/NetworkStatsRecorder;
 
-    invoke-virtual {p1, v7, v8}, Lcom/android/server/net/NetworkStatsRecorder;->forcePersistLocked(J)V
+    invoke-virtual {v1, v7, v8}, Lcom/android/server/net/NetworkStatsRecorder;->forcePersistLocked(J)V
 
     goto :goto_85
 
-    .line 1360
+    .line 1372
     :cond_6d
     if-eqz v0, :cond_79
 
-    .line 1361
-    iget-object p1, p0, Lcom/android/server/net/NetworkStatsService;->mDevRecorder:Lcom/android/server/net/NetworkStatsRecorder;
+    .line 1373
+    iget-object v1, p0, Lcom/android/server/net/NetworkStatsService;->mDevRecorder:Lcom/android/server/net/NetworkStatsRecorder;
 
-    invoke-virtual {p1, v7, v8}, Lcom/android/server/net/NetworkStatsRecorder;->maybePersistLocked(J)V
+    invoke-virtual {v1, v7, v8}, Lcom/android/server/net/NetworkStatsRecorder;->maybePersistLocked(J)V
 
-    .line 1362
-    iget-object p1, p0, Lcom/android/server/net/NetworkStatsService;->mXtRecorder:Lcom/android/server/net/NetworkStatsRecorder;
+    .line 1374
+    iget-object v1, p0, Lcom/android/server/net/NetworkStatsService;->mXtRecorder:Lcom/android/server/net/NetworkStatsRecorder;
 
-    invoke-virtual {p1, v7, v8}, Lcom/android/server/net/NetworkStatsRecorder;->maybePersistLocked(J)V
+    invoke-virtual {v1, v7, v8}, Lcom/android/server/net/NetworkStatsRecorder;->maybePersistLocked(J)V
 
-    .line 1364
+    .line 1376
     :cond_79
     if-eqz v6, :cond_85
 
-    .line 1365
-    iget-object p1, p0, Lcom/android/server/net/NetworkStatsService;->mUidRecorder:Lcom/android/server/net/NetworkStatsRecorder;
+    .line 1377
+    iget-object v1, p0, Lcom/android/server/net/NetworkStatsService;->mUidRecorder:Lcom/android/server/net/NetworkStatsRecorder;
 
-    invoke-virtual {p1, v7, v8}, Lcom/android/server/net/NetworkStatsRecorder;->maybePersistLocked(J)V
+    invoke-virtual {v1, v7, v8}, Lcom/android/server/net/NetworkStatsRecorder;->maybePersistLocked(J)V
 
-    .line 1366
-    iget-object p1, p0, Lcom/android/server/net/NetworkStatsService;->mUidTagRecorder:Lcom/android/server/net/NetworkStatsRecorder;
+    .line 1378
+    iget-object v1, p0, Lcom/android/server/net/NetworkStatsService;->mUidTagRecorder:Lcom/android/server/net/NetworkStatsRecorder;
 
-    invoke-virtual {p1, v7, v8}, Lcom/android/server/net/NetworkStatsRecorder;->maybePersistLocked(J)V
+    invoke-virtual {v1, v7, v8}, Lcom/android/server/net/NetworkStatsRecorder;->maybePersistLocked(J)V
 
-    .line 1369
+    .line 1381
     :cond_85
     :goto_85
     invoke-static {v2, v3}, Landroid/os/Trace;->traceEnd(J)V
 
-    .line 1371
-    iget-object p1, p0, Lcom/android/server/net/NetworkStatsService;->mSettings:Lcom/android/server/net/NetworkStatsService$NetworkStatsSettings;
+    .line 1383
+    iget-object v1, p0, Lcom/android/server/net/NetworkStatsService;->mSettings:Lcom/android/server/net/NetworkStatsService$NetworkStatsSettings;
 
-    invoke-interface {p1}, Lcom/android/server/net/NetworkStatsService$NetworkStatsSettings;->getSampleEnabled()Z
+    invoke-interface {v1}, Lcom/android/server/net/NetworkStatsService$NetworkStatsSettings;->getSampleEnabled()Z
 
-    move-result p1
+    move-result v1
 
-    if-eqz p1, :cond_93
+    if-eqz v1, :cond_93
 
-    .line 1373
+    .line 1385
     invoke-direct {p0}, Lcom/android/server/net/NetworkStatsService;->performSampleLocked()V
 
-    .line 1377
+    .line 1389
     :cond_93
-    new-instance p1, Landroid/content/Intent;
+    new-instance v1, Landroid/content/Intent;
 
-    const-string v0, "com.android.server.action.NETWORK_STATS_UPDATED"
+    const-string v5, "com.android.server.action.NETWORK_STATS_UPDATED"
 
-    invoke-direct {p1, v0}, Landroid/content/Intent;-><init>(Ljava/lang/String;)V
+    invoke-direct {v1, v5}, Landroid/content/Intent;-><init>(Ljava/lang/String;)V
 
-    .line 1378
-    const/high16 v0, 0x40000000  # 2.0f
+    .line 1390
+    .local v1, "updatedIntent":Landroid/content/Intent;
+    const/high16 v5, 0x40000000  # 2.0f
 
-    invoke-virtual {p1, v0}, Landroid/content/Intent;->setFlags(I)Landroid/content/Intent;
+    invoke-virtual {v1, v5}, Landroid/content/Intent;->setFlags(I)Landroid/content/Intent;
 
-    .line 1379
-    iget-object v0, p0, Lcom/android/server/net/NetworkStatsService;->mContext:Landroid/content/Context;
+    .line 1391
+    iget-object v5, p0, Lcom/android/server/net/NetworkStatsService;->mContext:Landroid/content/Context;
 
-    sget-object v1, Landroid/os/UserHandle;->ALL:Landroid/os/UserHandle;
+    sget-object v9, Landroid/os/UserHandle;->ALL:Landroid/os/UserHandle;
 
-    const-string v4, "android.permission.READ_NETWORK_USAGE_HISTORY"
+    const-string v10, "android.permission.READ_NETWORK_USAGE_HISTORY"
 
-    invoke-virtual {v0, p1, v1, v4}, Landroid/content/Context;->sendBroadcastAsUser(Landroid/content/Intent;Landroid/os/UserHandle;Ljava/lang/String;)V
+    invoke-virtual {v5, v1, v9, v10}, Landroid/content/Context;->sendBroadcastAsUser(Landroid/content/Intent;Landroid/os/UserHandle;Ljava/lang/String;)V
 
-    .line 1382
+    .line 1394
     invoke-static {v2, v3}, Landroid/os/Trace;->traceEnd(J)V
 
-    .line 1383
+    .line 1395
     return-void
 
-    .line 1347
+    .line 1359
+    .end local v1  # "updatedIntent":Landroid/content/Intent;
     :catch_ac
-    move-exception p1
+    move-exception v1
 
-    .line 1349
+    .line 1361
+    .local v1, "e":Landroid/os/RemoteException;
     return-void
 
-    .line 1344
+    .line 1356
+    .end local v1  # "e":Landroid/os/RemoteException;
     :catch_ae
-    move-exception p1
+    move-exception v2
 
-    .line 1345
-    const-string/jumbo v0, "problem reading network stats"
+    .line 1357
+    .local v2, "e":Ljava/lang/IllegalStateException;
+    const-string/jumbo v3, "problem reading network stats"
 
-    invoke-static {v1, v0, p1}, Landroid/util/Log;->wtf(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    invoke-static {v1, v3, v2}, Landroid/util/Log;->wtf(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
-    .line 1346
+    .line 1358
     return-void
 .end method
 
 .method private performSampleLocked()V
-    .registers 55
+    .registers 57
     .annotation build Lcom/android/internal/annotations/GuardedBy;
         value = {
             "mStatsLock"
         }
     .end annotation
 
-    .line 1391
+    .line 1403
     move-object/from16 v0, p0
 
     iget-object v1, v0, Lcom/android/server/net/NetworkStatsService;->mClock:Ljava/time/Clock;
 
     invoke-virtual {v1}, Ljava/time/Clock;->millis()J
 
-    move-result-wide v1
+    move-result-wide v54
 
-    move-wide/from16 v52, v1
+    .local v54, "currentTime":J
+    move-wide/from16 v52, v54
 
-    move-wide/from16 v26, v1
+    move-wide/from16 v26, v54
 
-    .line 1399
+    .line 1411
     invoke-static {}, Landroid/net/NetworkTemplate;->buildTemplateMobileWildcard()Landroid/net/NetworkTemplate;
 
     move-result-object v1
 
-    .line 1400
+    .line 1412
+    .local v1, "template":Landroid/net/NetworkTemplate;
     iget-object v2, v0, Lcom/android/server/net/NetworkStatsService;->mDevRecorder:Lcom/android/server/net/NetworkStatsRecorder;
-
-    invoke-virtual {v2, v1}, Lcom/android/server/net/NetworkStatsRecorder;->getTotalSinceBootLocked(Landroid/net/NetworkTemplate;)Landroid/net/NetworkStats$Entry;
-
-    move-result-object v8
-
-    .line 1401
-    iget-object v2, v0, Lcom/android/server/net/NetworkStatsService;->mXtRecorder:Lcom/android/server/net/NetworkStatsRecorder;
 
     invoke-virtual {v2, v1}, Lcom/android/server/net/NetworkStatsRecorder;->getTotalSinceBootLocked(Landroid/net/NetworkTemplate;)Landroid/net/NetworkStats$Entry;
 
     move-result-object v14
 
-    .line 1402
+    .line 1413
+    .local v14, "devTotal":Landroid/net/NetworkStats$Entry;
+    iget-object v2, v0, Lcom/android/server/net/NetworkStatsService;->mXtRecorder:Lcom/android/server/net/NetworkStatsRecorder;
+
+    invoke-virtual {v2, v1}, Lcom/android/server/net/NetworkStatsRecorder;->getTotalSinceBootLocked(Landroid/net/NetworkTemplate;)Landroid/net/NetworkStats$Entry;
+
+    move-result-object v15
+
+    .line 1414
+    .local v15, "xtTotal":Landroid/net/NetworkStats$Entry;
     iget-object v2, v0, Lcom/android/server/net/NetworkStatsService;->mUidRecorder:Lcom/android/server/net/NetworkStatsRecorder;
 
     invoke-virtual {v2, v1}, Lcom/android/server/net/NetworkStatsRecorder;->getTotalSinceBootLocked(Landroid/net/NetworkTemplate;)Landroid/net/NetworkStats$Entry;
 
-    move-result-object v1
+    move-result-object v12
 
-    .line 1404
-    iget-wide v2, v8, Landroid/net/NetworkStats$Entry;->rxBytes:J
+    .line 1416
+    .local v12, "uidTotal":Landroid/net/NetworkStats$Entry;
+    iget-wide v2, v14, Landroid/net/NetworkStats$Entry;->rxBytes:J
 
-    iget-wide v4, v8, Landroid/net/NetworkStats$Entry;->rxPackets:J
+    iget-wide v4, v14, Landroid/net/NetworkStats$Entry;->rxPackets:J
 
-    iget-wide v6, v8, Landroid/net/NetworkStats$Entry;->txBytes:J
+    iget-wide v6, v14, Landroid/net/NetworkStats$Entry;->txBytes:J
 
-    iget-wide v8, v8, Landroid/net/NetworkStats$Entry;->txPackets:J
+    iget-wide v8, v14, Landroid/net/NetworkStats$Entry;->txPackets:J
 
-    iget-wide v10, v14, Landroid/net/NetworkStats$Entry;->rxBytes:J
+    iget-wide v10, v15, Landroid/net/NetworkStats$Entry;->rxBytes:J
 
-    iget-wide v12, v14, Landroid/net/NetworkStats$Entry;->rxPackets:J
+    move-object/from16 v16, v12
 
-    move-wide/from16 v28, v2
+    .end local v12  # "uidTotal":Landroid/net/NetworkStats$Entry;
+    .local v16, "uidTotal":Landroid/net/NetworkStats$Entry;
+    iget-wide v12, v15, Landroid/net/NetworkStats$Entry;->rxPackets:J
 
-    iget-wide v2, v14, Landroid/net/NetworkStats$Entry;->txBytes:J
+    move-object/from16 v28, v1
 
-    move-object v0, v14
+    move-object/from16 v1, v16
 
+    .end local v16  # "uidTotal":Landroid/net/NetworkStats$Entry;
+    .local v1, "uidTotal":Landroid/net/NetworkStats$Entry;
+    .local v28, "template":Landroid/net/NetworkTemplate;
+    move-wide/from16 v29, v2
+
+    iget-wide v2, v15, Landroid/net/NetworkStats$Entry;->txBytes:J
+
+    move-object/from16 v31, v14
+
+    move-object v0, v15
+
+    .end local v14  # "devTotal":Landroid/net/NetworkStats$Entry;
+    .end local v15  # "xtTotal":Landroid/net/NetworkStats$Entry;
+    .local v0, "xtTotal":Landroid/net/NetworkStats$Entry;
+    .local v31, "devTotal":Landroid/net/NetworkStats$Entry;
     move-wide v14, v2
 
     iget-wide v2, v0, Landroid/net/NetworkStats$Entry;->txPackets:J
@@ -2601,99 +2842,104 @@
 
     move-wide/from16 v22, v2
 
-    iget-wide v0, v1, Landroid/net/NetworkStats$Entry;->txPackets:J
+    iget-wide v2, v1, Landroid/net/NetworkStats$Entry;->txPackets:J
 
-    move-wide/from16 v24, v0
+    move-wide/from16 v24, v2
 
-    move-wide/from16 v2, v28
+    move-wide/from16 v2, v29
 
     invoke-static/range {v2 .. v27}, Lcom/android/server/EventLogTags;->writeNetstatsMobileSample(JJJJJJJJJJJJJ)V
 
-    .line 1411
+    .line 1423
     invoke-static {}, Landroid/net/NetworkTemplate;->buildTemplateWifiWildcard()Landroid/net/NetworkTemplate;
-
-    move-result-object v0
-
-    .line 1412
-    move-object/from16 v1, p0
-
-    iget-object v2, v1, Lcom/android/server/net/NetworkStatsService;->mDevRecorder:Lcom/android/server/net/NetworkStatsRecorder;
-
-    invoke-virtual {v2, v0}, Lcom/android/server/net/NetworkStatsRecorder;->getTotalSinceBootLocked(Landroid/net/NetworkTemplate;)Landroid/net/NetworkStats$Entry;
 
     move-result-object v2
 
-    .line 1413
-    iget-object v3, v1, Lcom/android/server/net/NetworkStatsService;->mXtRecorder:Lcom/android/server/net/NetworkStatsRecorder;
+    .line 1424
+    .end local v28  # "template":Landroid/net/NetworkTemplate;
+    .local v2, "template":Landroid/net/NetworkTemplate;
+    move-object/from16 v3, p0
 
-    invoke-virtual {v3, v0}, Lcom/android/server/net/NetworkStatsRecorder;->getTotalSinceBootLocked(Landroid/net/NetworkTemplate;)Landroid/net/NetworkStats$Entry;
+    iget-object v4, v3, Lcom/android/server/net/NetworkStatsService;->mDevRecorder:Lcom/android/server/net/NetworkStatsRecorder;
 
-    move-result-object v3
+    invoke-virtual {v4, v2}, Lcom/android/server/net/NetworkStatsRecorder;->getTotalSinceBootLocked(Landroid/net/NetworkTemplate;)Landroid/net/NetworkStats$Entry;
 
-    .line 1414
-    iget-object v1, v1, Lcom/android/server/net/NetworkStatsService;->mUidRecorder:Lcom/android/server/net/NetworkStatsRecorder;
+    move-result-object v4
 
-    invoke-virtual {v1, v0}, Lcom/android/server/net/NetworkStatsRecorder;->getTotalSinceBootLocked(Landroid/net/NetworkTemplate;)Landroid/net/NetworkStats$Entry;
+    .line 1425
+    .end local v31  # "devTotal":Landroid/net/NetworkStats$Entry;
+    .local v4, "devTotal":Landroid/net/NetworkStats$Entry;
+    iget-object v5, v3, Lcom/android/server/net/NetworkStatsService;->mXtRecorder:Lcom/android/server/net/NetworkStatsRecorder;
+
+    invoke-virtual {v5, v2}, Lcom/android/server/net/NetworkStatsRecorder;->getTotalSinceBootLocked(Landroid/net/NetworkTemplate;)Landroid/net/NetworkStats$Entry;
 
     move-result-object v0
 
-    .line 1416
-    iget-wide v4, v2, Landroid/net/NetworkStats$Entry;->rxBytes:J
+    .line 1426
+    iget-object v5, v3, Lcom/android/server/net/NetworkStatsService;->mUidRecorder:Lcom/android/server/net/NetworkStatsRecorder;
 
-    move-wide/from16 v28, v4
+    invoke-virtual {v5, v2}, Lcom/android/server/net/NetworkStatsRecorder;->getTotalSinceBootLocked(Landroid/net/NetworkTemplate;)Landroid/net/NetworkStats$Entry;
 
-    iget-wide v4, v2, Landroid/net/NetworkStats$Entry;->rxPackets:J
+    move-result-object v1
 
-    move-wide/from16 v30, v4
+    .line 1428
+    iget-wide v5, v4, Landroid/net/NetworkStats$Entry;->rxBytes:J
 
-    iget-wide v4, v2, Landroid/net/NetworkStats$Entry;->txBytes:J
+    move-wide/from16 v28, v5
 
-    move-wide/from16 v32, v4
+    iget-wide v5, v4, Landroid/net/NetworkStats$Entry;->rxPackets:J
 
-    iget-wide v1, v2, Landroid/net/NetworkStats$Entry;->txPackets:J
+    move-wide/from16 v30, v5
 
-    move-wide/from16 v34, v1
+    iget-wide v5, v4, Landroid/net/NetworkStats$Entry;->txBytes:J
 
-    iget-wide v1, v3, Landroid/net/NetworkStats$Entry;->rxBytes:J
+    move-wide/from16 v32, v5
 
-    move-wide/from16 v36, v1
+    iget-wide v5, v4, Landroid/net/NetworkStats$Entry;->txPackets:J
 
-    iget-wide v1, v3, Landroid/net/NetworkStats$Entry;->rxPackets:J
+    move-wide/from16 v34, v5
 
-    move-wide/from16 v38, v1
+    iget-wide v5, v0, Landroid/net/NetworkStats$Entry;->rxBytes:J
 
-    iget-wide v1, v3, Landroid/net/NetworkStats$Entry;->txBytes:J
+    move-wide/from16 v36, v5
 
-    move-wide/from16 v40, v1
+    iget-wide v5, v0, Landroid/net/NetworkStats$Entry;->rxPackets:J
 
-    iget-wide v1, v3, Landroid/net/NetworkStats$Entry;->txPackets:J
+    move-wide/from16 v38, v5
 
-    move-wide/from16 v42, v1
+    iget-wide v5, v0, Landroid/net/NetworkStats$Entry;->txBytes:J
 
-    iget-wide v1, v0, Landroid/net/NetworkStats$Entry;->rxBytes:J
+    move-wide/from16 v40, v5
 
-    move-wide/from16 v44, v1
+    iget-wide v5, v0, Landroid/net/NetworkStats$Entry;->txPackets:J
 
-    iget-wide v1, v0, Landroid/net/NetworkStats$Entry;->rxPackets:J
+    move-wide/from16 v42, v5
 
-    move-wide/from16 v46, v1
+    iget-wide v5, v1, Landroid/net/NetworkStats$Entry;->rxBytes:J
 
-    iget-wide v1, v0, Landroid/net/NetworkStats$Entry;->txBytes:J
+    move-wide/from16 v44, v5
 
-    move-wide/from16 v48, v1
+    iget-wide v5, v1, Landroid/net/NetworkStats$Entry;->rxPackets:J
 
-    iget-wide v0, v0, Landroid/net/NetworkStats$Entry;->txPackets:J
+    move-wide/from16 v46, v5
 
-    move-wide/from16 v50, v0
+    iget-wide v5, v1, Landroid/net/NetworkStats$Entry;->txBytes:J
+
+    move-wide/from16 v48, v5
+
+    iget-wide v5, v1, Landroid/net/NetworkStats$Entry;->txPackets:J
+
+    move-wide/from16 v50, v5
 
     invoke-static/range {v28 .. v53}, Lcom/android/server/EventLogTags;->writeNetstatsWifiSample(JJJJJJJJJJJJJ)V
 
-    .line 1421
+    .line 1433
     return-void
 .end method
 
 .method private recordSnapshotLocked(J)V
-    .registers 13
+    .registers 19
+    .param p1, "currentTime"  # J
     .annotation build Lcom/android/internal/annotations/GuardedBy;
         value = {
             "mStatsLock"
@@ -2706,159 +2952,189 @@
         }
     .end annotation
 
-    .line 1255
-    const-wide/32 v0, 0x200000
+    .line 1264
+    move-object/from16 v0, p0
 
-    const-string/jumbo v2, "snapshotUid"
+    const-wide/32 v1, 0x200000
 
-    invoke-static {v0, v1, v2}, Landroid/os/Trace;->traceBegin(JLjava/lang/String;)V
+    const-string/jumbo v3, "snapshotUid"
 
-    .line 1256
-    sget-object v2, Landroid/net/NetworkStats;->INTERFACES_ALL:[Ljava/lang/String;
+    invoke-static {v1, v2, v3}, Landroid/os/Trace;->traceBegin(JLjava/lang/String;)V
 
-    invoke-direct {p0, v2}, Lcom/android/server/net/NetworkStatsService;->getNetworkStatsUidDetail([Ljava/lang/String;)Landroid/net/NetworkStats;
+    .line 1265
+    sget-object v3, Landroid/net/NetworkStats;->INTERFACES_ALL:[Ljava/lang/String;
 
-    move-result-object v5
-
-    .line 1257
-    invoke-static {v0, v1}, Landroid/os/Trace;->traceEnd(J)V
-
-    .line 1258
-    const-string/jumbo v2, "snapshotXt"
-
-    invoke-static {v0, v1, v2}, Landroid/os/Trace;->traceBegin(JLjava/lang/String;)V
-
-    .line 1259
-    invoke-direct {p0}, Lcom/android/server/net/NetworkStatsService;->getNetworkStatsXt()Landroid/net/NetworkStats;
-
-    move-result-object v4
-
-    .line 1260
-    invoke-static {v0, v1}, Landroid/os/Trace;->traceEnd(J)V
-
-    .line 1261
-    const-string/jumbo v2, "snapshotDev"
-
-    invoke-static {v0, v1, v2}, Landroid/os/Trace;->traceBegin(JLjava/lang/String;)V
-
-    .line 1262
-    iget-object v2, p0, Lcom/android/server/net/NetworkStatsService;->mNetworkManager:Landroid/os/INetworkManagementService;
-
-    invoke-interface {v2}, Landroid/os/INetworkManagementService;->getNetworkStatsSummaryDev()Landroid/net/NetworkStats;
-
-    move-result-object v2
-
-    .line 1263
-    invoke-static {v0, v1}, Landroid/os/Trace;->traceEnd(J)V
-
-    .line 1267
-    const-string/jumbo v3, "snapshotTether"
-
-    invoke-static {v0, v1, v3}, Landroid/os/Trace;->traceBegin(JLjava/lang/String;)V
-
-    .line 1268
-    const/4 v3, 0x0
-
-    invoke-direct {p0, v3}, Lcom/android/server/net/NetworkStatsService;->getNetworkStatsTethering(I)Landroid/net/NetworkStats;
+    invoke-direct {v0, v3}, Lcom/android/server/net/NetworkStatsService;->getNetworkStatsUidDetail([Ljava/lang/String;)Landroid/net/NetworkStats;
 
     move-result-object v3
 
+    .line 1266
+    .local v3, "uidSnapshot":Landroid/net/NetworkStats;
+    invoke-static {v1, v2}, Landroid/os/Trace;->traceEnd(J)V
+
+    .line 1267
+    const-string/jumbo v4, "snapshotXt"
+
+    invoke-static {v1, v2, v4}, Landroid/os/Trace;->traceBegin(JLjava/lang/String;)V
+
+    .line 1268
+    invoke-direct/range {p0 .. p0}, Lcom/android/server/net/NetworkStatsService;->getNetworkStatsXt()Landroid/net/NetworkStats;
+
+    move-result-object v12
+
     .line 1269
-    invoke-static {v0, v1}, Landroid/os/Trace;->traceEnd(J)V
+    .local v12, "xtSnapshot":Landroid/net/NetworkStats;
+    invoke-static {v1, v2}, Landroid/os/Trace;->traceEnd(J)V
 
     .line 1270
-    invoke-virtual {v4, v3}, Landroid/net/NetworkStats;->combineAllValues(Landroid/net/NetworkStats;)V
+    const-string/jumbo v4, "snapshotDev"
+
+    invoke-static {v1, v2, v4}, Landroid/os/Trace;->traceBegin(JLjava/lang/String;)V
 
     .line 1271
-    invoke-virtual {v2, v3}, Landroid/net/NetworkStats;->combineAllValues(Landroid/net/NetworkStats;)V
+    iget-object v4, v0, Lcom/android/server/net/NetworkStatsService;->mNetworkManager:Landroid/os/INetworkManagementService;
 
-    .line 1275
-    const-string/jumbo v3, "recordDev"
+    invoke-interface {v4}, Landroid/os/INetworkManagementService;->getNetworkStatsSummaryDev()Landroid/net/NetworkStats;
 
-    invoke-static {v0, v1, v3}, Landroid/os/Trace;->traceBegin(JLjava/lang/String;)V
+    move-result-object v13
+
+    .line 1272
+    .local v13, "devSnapshot":Landroid/net/NetworkStats;
+    invoke-static {v1, v2}, Landroid/os/Trace;->traceEnd(J)V
 
     .line 1276
-    iget-object v3, p0, Lcom/android/server/net/NetworkStatsService;->mDevRecorder:Lcom/android/server/net/NetworkStatsRecorder;
+    const-string/jumbo v4, "snapshotTether"
 
-    iget-object v6, p0, Lcom/android/server/net/NetworkStatsService;->mActiveIfaces:Landroid/util/ArrayMap;
-
-    invoke-virtual {v3, v2, v6, p1, p2}, Lcom/android/server/net/NetworkStatsRecorder;->recordSnapshotLocked(Landroid/net/NetworkStats;Ljava/util/Map;J)V
+    invoke-static {v1, v2, v4}, Landroid/os/Trace;->traceBegin(JLjava/lang/String;)V
 
     .line 1277
-    invoke-static {v0, v1}, Landroid/os/Trace;->traceEnd(J)V
+    const/4 v4, 0x0
+
+    invoke-direct {v0, v4}, Lcom/android/server/net/NetworkStatsService;->getNetworkStatsTethering(I)Landroid/net/NetworkStats;
+
+    move-result-object v14
 
     .line 1278
-    const-string/jumbo v2, "recordXt"
-
-    invoke-static {v0, v1, v2}, Landroid/os/Trace;->traceBegin(JLjava/lang/String;)V
+    .local v14, "tetherSnapshot":Landroid/net/NetworkStats;
+    invoke-static {v1, v2}, Landroid/os/Trace;->traceEnd(J)V
 
     .line 1279
-    iget-object v2, p0, Lcom/android/server/net/NetworkStatsService;->mXtRecorder:Lcom/android/server/net/NetworkStatsRecorder;
-
-    iget-object v3, p0, Lcom/android/server/net/NetworkStatsService;->mActiveIfaces:Landroid/util/ArrayMap;
-
-    invoke-virtual {v2, v4, v3, p1, p2}, Lcom/android/server/net/NetworkStatsRecorder;->recordSnapshotLocked(Landroid/net/NetworkStats;Ljava/util/Map;J)V
+    invoke-virtual {v12, v14}, Landroid/net/NetworkStats;->combineAllValues(Landroid/net/NetworkStats;)V
 
     .line 1280
-    invoke-static {v0, v1}, Landroid/os/Trace;->traceEnd(J)V
-
-    .line 1283
-    const-string/jumbo v2, "recordUid"
-
-    invoke-static {v0, v1, v2}, Landroid/os/Trace;->traceBegin(JLjava/lang/String;)V
+    invoke-virtual {v13, v14}, Landroid/net/NetworkStats;->combineAllValues(Landroid/net/NetworkStats;)V
 
     .line 1284
-    iget-object v2, p0, Lcom/android/server/net/NetworkStatsService;->mUidRecorder:Lcom/android/server/net/NetworkStatsRecorder;
+    const-string/jumbo v4, "recordDev"
 
-    iget-object v3, p0, Lcom/android/server/net/NetworkStatsService;->mActiveUidIfaces:Landroid/util/ArrayMap;
-
-    invoke-virtual {v2, v5, v3, p1, p2}, Lcom/android/server/net/NetworkStatsRecorder;->recordSnapshotLocked(Landroid/net/NetworkStats;Ljava/util/Map;J)V
+    invoke-static {v1, v2, v4}, Landroid/os/Trace;->traceBegin(JLjava/lang/String;)V
 
     .line 1285
-    invoke-static {v0, v1}, Landroid/os/Trace;->traceEnd(J)V
+    iget-object v5, v0, Lcom/android/server/net/NetworkStatsService;->mDevRecorder:Lcom/android/server/net/NetworkStatsRecorder;
 
-    .line 1286
-    const-string/jumbo v2, "recordUidTag"
+    iget-object v7, v0, Lcom/android/server/net/NetworkStatsService;->mActiveIfaces:Landroid/util/ArrayMap;
 
-    invoke-static {v0, v1, v2}, Landroid/os/Trace;->traceBegin(JLjava/lang/String;)V
+    const/4 v8, 0x0
+
+    move-object v6, v13
+
+    move-wide/from16 v9, p1
+
+    invoke-virtual/range {v5 .. v10}, Lcom/android/server/net/NetworkStatsRecorder;->recordSnapshotLocked(Landroid/net/NetworkStats;Ljava/util/Map;[Lcom/android/internal/net/VpnInfo;J)V
 
     .line 1287
-    iget-object v2, p0, Lcom/android/server/net/NetworkStatsService;->mUidTagRecorder:Lcom/android/server/net/NetworkStatsRecorder;
-
-    iget-object v3, p0, Lcom/android/server/net/NetworkStatsService;->mActiveUidIfaces:Landroid/util/ArrayMap;
-
-    invoke-virtual {v2, v5, v3, p1, p2}, Lcom/android/server/net/NetworkStatsRecorder;->recordSnapshotLocked(Landroid/net/NetworkStats;Ljava/util/Map;J)V
+    invoke-static {v1, v2}, Landroid/os/Trace;->traceEnd(J)V
 
     .line 1288
-    invoke-static {v0, v1}, Landroid/os/Trace;->traceEnd(J)V
+    const-string/jumbo v4, "recordXt"
 
-    .line 1292
-    iget-object v3, p0, Lcom/android/server/net/NetworkStatsService;->mStatsObservers:Lcom/android/server/net/NetworkStatsObservers;
+    invoke-static {v1, v2, v4}, Landroid/os/Trace;->traceBegin(JLjava/lang/String;)V
 
-    new-instance v6, Landroid/util/ArrayMap;
+    .line 1289
+    iget-object v5, v0, Lcom/android/server/net/NetworkStatsService;->mXtRecorder:Lcom/android/server/net/NetworkStatsRecorder;
 
-    iget-object v0, p0, Lcom/android/server/net/NetworkStatsService;->mActiveIfaces:Landroid/util/ArrayMap;
+    iget-object v7, v0, Lcom/android/server/net/NetworkStatsService;->mActiveIfaces:Landroid/util/ArrayMap;
 
-    invoke-direct {v6, v0}, Landroid/util/ArrayMap;-><init>(Landroid/util/ArrayMap;)V
+    move-object v6, v12
+
+    invoke-virtual/range {v5 .. v10}, Lcom/android/server/net/NetworkStatsRecorder;->recordSnapshotLocked(Landroid/net/NetworkStats;Ljava/util/Map;[Lcom/android/internal/net/VpnInfo;J)V
+
+    .line 1291
+    invoke-static {v1, v2}, Landroid/os/Trace;->traceEnd(J)V
+
+    .line 1294
+    iget-object v15, v0, Lcom/android/server/net/NetworkStatsService;->mVpnInfos:[Lcom/android/internal/net/VpnInfo;
+
+    .line 1295
+    .local v15, "vpnArray":[Lcom/android/internal/net/VpnInfo;
+    const-string/jumbo v4, "recordUid"
+
+    invoke-static {v1, v2, v4}, Landroid/os/Trace;->traceBegin(JLjava/lang/String;)V
+
+    .line 1296
+    iget-object v4, v0, Lcom/android/server/net/NetworkStatsService;->mUidRecorder:Lcom/android/server/net/NetworkStatsRecorder;
+
+    iget-object v6, v0, Lcom/android/server/net/NetworkStatsService;->mActiveUidIfaces:Landroid/util/ArrayMap;
+
+    move-object v5, v3
+
+    move-object v7, v15
+
+    move-wide/from16 v8, p1
+
+    invoke-virtual/range {v4 .. v9}, Lcom/android/server/net/NetworkStatsRecorder;->recordSnapshotLocked(Landroid/net/NetworkStats;Ljava/util/Map;[Lcom/android/internal/net/VpnInfo;J)V
+
+    .line 1297
+    invoke-static {v1, v2}, Landroid/os/Trace;->traceEnd(J)V
+
+    .line 1298
+    const-string/jumbo v4, "recordUidTag"
+
+    invoke-static {v1, v2, v4}, Landroid/os/Trace;->traceBegin(JLjava/lang/String;)V
+
+    .line 1299
+    iget-object v4, v0, Lcom/android/server/net/NetworkStatsService;->mUidTagRecorder:Lcom/android/server/net/NetworkStatsRecorder;
+
+    iget-object v6, v0, Lcom/android/server/net/NetworkStatsService;->mActiveUidIfaces:Landroid/util/ArrayMap;
+
+    invoke-virtual/range {v4 .. v9}, Lcom/android/server/net/NetworkStatsRecorder;->recordSnapshotLocked(Landroid/net/NetworkStats;Ljava/util/Map;[Lcom/android/internal/net/VpnInfo;J)V
+
+    .line 1300
+    invoke-static {v1, v2}, Landroid/os/Trace;->traceEnd(J)V
+
+    .line 1304
+    iget-object v4, v0, Lcom/android/server/net/NetworkStatsService;->mStatsObservers:Lcom/android/server/net/NetworkStatsObservers;
 
     new-instance v7, Landroid/util/ArrayMap;
 
-    iget-object v0, p0, Lcom/android/server/net/NetworkStatsService;->mActiveUidIfaces:Landroid/util/ArrayMap;
+    iget-object v1, v0, Lcom/android/server/net/NetworkStatsService;->mActiveIfaces:Landroid/util/ArrayMap;
 
-    invoke-direct {v7, v0}, Landroid/util/ArrayMap;-><init>(Landroid/util/ArrayMap;)V
+    invoke-direct {v7, v1}, Landroid/util/ArrayMap;-><init>(Landroid/util/ArrayMap;)V
 
-    move-wide v8, p1
+    new-instance v8, Landroid/util/ArrayMap;
 
-    invoke-virtual/range {v3 .. v9}, Lcom/android/server/net/NetworkStatsObservers;->updateStats(Landroid/net/NetworkStats;Landroid/net/NetworkStats;Landroid/util/ArrayMap;Landroid/util/ArrayMap;J)V
+    iget-object v1, v0, Lcom/android/server/net/NetworkStatsService;->mActiveUidIfaces:Landroid/util/ArrayMap;
 
-    .line 1294
+    invoke-direct {v8, v1}, Landroid/util/ArrayMap;-><init>(Landroid/util/ArrayMap;)V
+
+    move-object v5, v12
+
+    move-object v6, v3
+
+    move-object v9, v15
+
+    move-wide/from16 v10, p1
+
+    invoke-virtual/range {v4 .. v11}, Lcom/android/server/net/NetworkStatsObservers;->updateStats(Landroid/net/NetworkStats;Landroid/net/NetworkStats;Landroid/util/ArrayMap;Landroid/util/ArrayMap;[Lcom/android/internal/net/VpnInfo;J)V
+
+    .line 1306
     return-void
 .end method
 
 .method private registerGlobalAlert()V
     .registers 4
 
-    .line 520
+    .line 525
     :try_start_0
     iget-object v0, p0, Lcom/android/server/net/NetworkStatsService;->mNetworkManager:Landroid/os/INetworkManagementService;
 
@@ -2871,17 +3147,18 @@
 
     goto :goto_22
 
-    .line 523
+    .line 528
     :catch_8
     move-exception v0
 
     goto :goto_23
 
-    .line 521
+    .line 526
     :catch_a
     move-exception v0
 
-    .line 522
+    .line 527
+    .local v0, "e":Ljava/lang/IllegalStateException;
     new-instance v1, Ljava/lang/StringBuilder;
 
     invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
@@ -2894,17 +3171,18 @@
 
     invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v1
 
-    const-string v1, "NetworkStats"
+    const-string v2, "NetworkStats"
 
-    invoke-static {v1, v0}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v2, v1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 525
+    .line 530
+    .end local v0  # "e":Ljava/lang/IllegalStateException;
     :goto_22
     nop
 
-    .line 526
+    .line 531
     :goto_23
     return-void
 .end method
@@ -2912,7 +3190,7 @@
 .method private registerLocalService()V
     .registers 4
 
-    .line 372
+    .line 377
     const-class v0, Lcom/android/server/net/NetworkStatsManagerInternal;
 
     new-instance v1, Lcom/android/server/net/NetworkStatsService$NetworkStatsManagerInternalImpl;
@@ -2923,24 +3201,24 @@
 
     invoke-static {v0, v1}, Lcom/android/server/LocalServices;->addService(Ljava/lang/Class;Ljava/lang/Object;)V
 
-    .line 374
+    .line 379
     return-void
 .end method
 
 .method private registerPollAlarmLocked()V
-    .registers 9
+    .registers 11
 
-    .line 501
+    .line 506
     iget-object v0, p0, Lcom/android/server/net/NetworkStatsService;->mPollIntent:Landroid/app/PendingIntent;
 
     if-eqz v0, :cond_9
 
-    .line 502
+    .line 507
     iget-object v1, p0, Lcom/android/server/net/NetworkStatsService;->mAlarmManager:Landroid/app/AlarmManager;
 
     invoke-virtual {v1, v0}, Landroid/app/AlarmManager;->cancel(Landroid/app/PendingIntent;)V
 
-    .line 505
+    .line 510
     :cond_9
     iget-object v0, p0, Lcom/android/server/net/NetworkStatsService;->mContext:Landroid/content/Context;
 
@@ -2958,41 +3236,45 @@
 
     iput-object v0, p0, Lcom/android/server/net/NetworkStatsService;->mPollIntent:Landroid/app/PendingIntent;
 
-    .line 508
+    .line 513
     invoke-static {}, Landroid/os/SystemClock;->elapsedRealtime()J
 
-    move-result-wide v3
+    move-result-wide v8
 
-    .line 509
+    .line 514
+    .local v8, "currentRealtime":J
     iget-object v1, p0, Lcom/android/server/net/NetworkStatsService;->mAlarmManager:Landroid/app/AlarmManager;
 
     const/4 v2, 0x3
 
     iget-object v0, p0, Lcom/android/server/net/NetworkStatsService;->mSettings:Lcom/android/server/net/NetworkStatsService$NetworkStatsSettings;
 
-    .line 510
+    .line 515
     invoke-interface {v0}, Lcom/android/server/net/NetworkStatsService$NetworkStatsSettings;->getPollInterval()J
 
     move-result-wide v5
 
     iget-object v7, p0, Lcom/android/server/net/NetworkStatsService;->mPollIntent:Landroid/app/PendingIntent;
 
-    .line 509
+    .line 514
+    move-wide v3, v8
+
     invoke-virtual/range {v1 .. v7}, Landroid/app/AlarmManager;->setInexactRepeating(IJJLandroid/app/PendingIntent;)V
 
-    .line 511
+    .line 516
     return-void
 .end method
 
 .method private varargs removeUidsLocked([I)V
     .registers 5
+    .param p1, "uids"  # [I
     .annotation build Lcom/android/internal/annotations/GuardedBy;
         value = {
             "mStatsLock"
         }
     .end annotation
 
-    .line 1428
+    .line 1440
     sget-boolean v0, Lcom/android/server/net/NetworkStatsService;->LOGV:Z
 
     if-eqz v0, :cond_1f
@@ -3019,23 +3301,23 @@
 
     invoke-static {v1, v0}, Landroid/util/Slog;->v(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 1431
+    .line 1443
     :cond_1f
     const/4 v0, 0x3
 
     invoke-direct {p0, v0}, Lcom/android/server/net/NetworkStatsService;->performPollLocked(I)V
 
-    .line 1433
+    .line 1445
     iget-object v0, p0, Lcom/android/server/net/NetworkStatsService;->mUidRecorder:Lcom/android/server/net/NetworkStatsRecorder;
 
     invoke-virtual {v0, p1}, Lcom/android/server/net/NetworkStatsRecorder;->removeUidsLocked([I)V
 
-    .line 1434
+    .line 1446
     iget-object v0, p0, Lcom/android/server/net/NetworkStatsService;->mUidTagRecorder:Lcom/android/server/net/NetworkStatsRecorder;
 
     invoke-virtual {v0, p1}, Lcom/android/server/net/NetworkStatsRecorder;->removeUidsLocked([I)V
 
-    .line 1437
+    .line 1449
     array-length v0, p1
 
     const/4 v1, 0x0
@@ -3045,28 +3327,31 @@
 
     aget v2, p1, v1
 
-    .line 1438
+    .line 1450
+    .local v2, "uid":I
     invoke-static {v2}, Lcom/android/server/NetworkManagementSocketTagger;->resetKernelUidStats(I)V
 
-    .line 1437
+    .line 1449
+    .end local v2  # "uid":I
     add-int/lit8 v1, v1, 0x1
 
     goto :goto_2f
 
-    .line 1440
+    .line 1452
     :cond_39
     return-void
 .end method
 
 .method private removeUserLocked(I)V
-    .registers 5
+    .registers 7
+    .param p1, "userId"  # I
     .annotation build Lcom/android/internal/annotations/GuardedBy;
         value = {
             "mStatsLock"
         }
     .end annotation
 
-    .line 1447
+    .line 1459
     sget-boolean v0, Lcom/android/server/net/NetworkStatsService;->LOGV:Z
 
     if-eqz v0, :cond_1b
@@ -3089,13 +3374,14 @@
 
     invoke-static {v1, v0}, Landroid/util/Slog;->v(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 1450
+    .line 1462
     :cond_1b
     const/4 v0, 0x0
 
     new-array v0, v0, [I
 
-    .line 1451
+    .line 1463
+    .local v0, "uids":[I
     iget-object v1, p0, Lcom/android/server/net/NetworkStatsService;->mContext:Landroid/content/Context;
 
     invoke-virtual {v1}, Landroid/content/Context;->getPackageManager()Landroid/content/pm/PackageManager;
@@ -3108,157 +3394,166 @@
 
     move-result-object v1
 
-    .line 1454
+    .line 1466
+    .local v1, "apps":Ljava/util/List;, "Ljava/util/List<Landroid/content/pm/ApplicationInfo;>;"
     invoke-interface {v1}, Ljava/util/List;->iterator()Ljava/util/Iterator;
-
-    move-result-object v1
-
-    :goto_2f
-    invoke-interface {v1}, Ljava/util/Iterator;->hasNext()Z
-
-    move-result v2
-
-    if-eqz v2, :cond_46
-
-    invoke-interface {v1}, Ljava/util/Iterator;->next()Ljava/lang/Object;
 
     move-result-object v2
 
-    check-cast v2, Landroid/content/pm/ApplicationInfo;
+    :goto_2f
+    invoke-interface {v2}, Ljava/util/Iterator;->hasNext()Z
 
-    .line 1455
-    iget v2, v2, Landroid/content/pm/ApplicationInfo;->uid:I
+    move-result v3
 
-    invoke-static {p1, v2}, Landroid/os/UserHandle;->getUid(II)I
+    if-eqz v3, :cond_46
 
-    move-result v2
+    invoke-interface {v2}, Ljava/util/Iterator;->next()Ljava/lang/Object;
 
-    .line 1456
-    invoke-static {v0, v2}, Lcom/android/internal/util/ArrayUtils;->appendInt([II)[I
+    move-result-object v3
+
+    check-cast v3, Landroid/content/pm/ApplicationInfo;
+
+    .line 1467
+    .local v3, "app":Landroid/content/pm/ApplicationInfo;
+    iget v4, v3, Landroid/content/pm/ApplicationInfo;->uid:I
+
+    invoke-static {p1, v4}, Landroid/os/UserHandle;->getUid(II)I
+
+    move-result v4
+
+    .line 1468
+    .local v4, "uid":I
+    invoke-static {v0, v4}, Lcom/android/internal/util/ArrayUtils;->appendInt([II)[I
 
     move-result-object v0
 
-    .line 1457
+    .line 1469
+    .end local v3  # "app":Landroid/content/pm/ApplicationInfo;
+    .end local v4  # "uid":I
     goto :goto_2f
 
-    .line 1459
+    .line 1471
     :cond_46
     invoke-direct {p0, v0}, Lcom/android/server/net/NetworkStatsService;->removeUidsLocked([I)V
 
-    .line 1460
+    .line 1472
     return-void
 .end method
 
 .method private resolveSubscriptionPlan(Landroid/net/NetworkTemplate;I)Landroid/telephony/SubscriptionPlan;
-    .registers 6
+    .registers 9
+    .param p1, "template"  # Landroid/net/NetworkTemplate;
+    .param p2, "flags"  # I
 
-    .line 697
-    nop
+    .line 702
+    const/4 v0, 0x0
 
-    .line 698
-    and-int/lit8 p2, p2, 0x4
+    .line 703
+    .local v0, "plan":Landroid/telephony/SubscriptionPlan;
+    and-int/lit8 v1, p2, 0x4
 
-    if-eqz p2, :cond_59
+    if-eqz v1, :cond_5a
 
-    iget-object p2, p0, Lcom/android/server/net/NetworkStatsService;->mSettings:Lcom/android/server/net/NetworkStatsService$NetworkStatsSettings;
+    iget-object v1, p0, Lcom/android/server/net/NetworkStatsService;->mSettings:Lcom/android/server/net/NetworkStatsService$NetworkStatsSettings;
 
-    .line 699
-    invoke-interface {p2}, Lcom/android/server/net/NetworkStatsService$NetworkStatsSettings;->getAugmentEnabled()Z
+    .line 704
+    invoke-interface {v1}, Lcom/android/server/net/NetworkStatsService$NetworkStatsSettings;->getAugmentEnabled()Z
 
-    move-result p2
+    move-result v1
 
-    if-eqz p2, :cond_59
+    if-eqz v1, :cond_5a
 
-    .line 700
-    sget-boolean p2, Lcom/android/server/net/NetworkStatsService;->LOGD:Z
+    .line 705
+    sget-boolean v1, Lcom/android/server/net/NetworkStatsService;->LOGD:Z
 
-    const-string v0, "NetworkStats"
+    const-string v2, "NetworkStats"
 
-    if-eqz p2, :cond_27
+    if-eqz v1, :cond_27
 
-    new-instance p2, Ljava/lang/StringBuilder;
+    new-instance v1, Ljava/lang/StringBuilder;
 
-    invoke-direct {p2}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v1, "Resolving plan for "
+    const-string v3, "Resolving plan for "
 
-    invoke-virtual {p2, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p2, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p2
+    move-result-object v1
 
-    invoke-static {v0, p2}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v2, v1}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 701
+    .line 706
     :cond_27
     invoke-static {}, Landroid/os/Binder;->clearCallingIdentity()J
 
-    move-result-wide v1
-
-    .line 703
-    :try_start_2b
-    const-class p2, Lcom/android/server/net/NetworkPolicyManagerInternal;
-
-    invoke-static {p2}, Lcom/android/server/LocalServices;->getService(Ljava/lang/Class;)Ljava/lang/Object;
-
-    move-result-object p2
-
-    check-cast p2, Lcom/android/server/net/NetworkPolicyManagerInternal;
-
-    .line 704
-    invoke-virtual {p2, p1}, Lcom/android/server/net/NetworkPolicyManagerInternal;->getSubscriptionPlan(Landroid/net/NetworkTemplate;)Landroid/telephony/SubscriptionPlan;
-
-    move-result-object p1
-    :try_end_37
-    .catchall {:try_start_2b .. :try_end_37} :catchall_54
-
-    .line 706
-    invoke-static {v1, v2}, Landroid/os/Binder;->restoreCallingIdentity(J)V
-
-    .line 707
-    nop
+    move-result-wide v3
 
     .line 708
-    sget-boolean p2, Lcom/android/server/net/NetworkStatsService;->LOGD:Z
+    .local v3, "token":J
+    :try_start_2b
+    const-class v1, Lcom/android/server/net/NetworkPolicyManagerInternal;
 
-    if-eqz p2, :cond_5a
+    invoke-static {v1}, Lcom/android/server/LocalServices;->getService(Ljava/lang/Class;)Ljava/lang/Object;
 
-    new-instance p2, Ljava/lang/StringBuilder;
+    move-result-object v1
 
-    invoke-direct {p2}, Ljava/lang/StringBuilder;-><init>()V
+    check-cast v1, Lcom/android/server/net/NetworkPolicyManagerInternal;
 
-    const-string v1, "Resolved to plan "
+    .line 709
+    invoke-virtual {v1, p1}, Lcom/android/server/net/NetworkPolicyManagerInternal;->getSubscriptionPlan(Landroid/net/NetworkTemplate;)Landroid/telephony/SubscriptionPlan;
 
-    invoke-virtual {p2, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    move-result-object v1
+    :try_end_37
+    .catchall {:try_start_2b .. :try_end_37} :catchall_55
 
-    invoke-virtual {p2, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    move-object v0, v1
 
-    invoke-virtual {p2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    .line 711
+    invoke-static {v3, v4}, Landroid/os/Binder;->restoreCallingIdentity(J)V
 
-    move-result-object p2
+    .line 712
+    nop
 
-    invoke-static {v0, p2}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
+    .line 713
+    sget-boolean v1, Lcom/android/server/net/NetworkStatsService;->LOGD:Z
+
+    if-eqz v1, :cond_5a
+
+    new-instance v1, Ljava/lang/StringBuilder;
+
+    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
+
+    const-string v5, "Resolved to plan "
+
+    invoke-virtual {v1, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v1, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v1
+
+    invoke-static {v2, v1}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
 
     goto :goto_5a
 
-    .line 706
-    :catchall_54
-    move-exception p1
+    .line 711
+    :catchall_55
+    move-exception v1
 
-    invoke-static {v1, v2}, Landroid/os/Binder;->restoreCallingIdentity(J)V
+    invoke-static {v3, v4}, Landroid/os/Binder;->restoreCallingIdentity(J)V
 
-    throw p1
+    throw v1
 
-    .line 710
-    :cond_59
-    const/4 p1, 0x0
-
+    .line 715
+    .end local v3  # "token":J
     :cond_5a
     :goto_5a
-    return-object p1
+    return-object v0
 .end method
 
 .method private shutdownLocked()V
@@ -3269,147 +3564,167 @@
         }
     .end annotation
 
-    .line 451
+    .line 456
     iget-object v0, p0, Lcom/android/server/net/NetworkStatsService;->mContext:Landroid/content/Context;
 
     iget-object v1, p0, Lcom/android/server/net/NetworkStatsService;->mTetherReceiver:Landroid/content/BroadcastReceiver;
 
     invoke-virtual {v0, v1}, Landroid/content/Context;->unregisterReceiver(Landroid/content/BroadcastReceiver;)V
 
-    .line 452
+    .line 457
     iget-object v0, p0, Lcom/android/server/net/NetworkStatsService;->mContext:Landroid/content/Context;
 
     iget-object v1, p0, Lcom/android/server/net/NetworkStatsService;->mPollReceiver:Landroid/content/BroadcastReceiver;
 
     invoke-virtual {v0, v1}, Landroid/content/Context;->unregisterReceiver(Landroid/content/BroadcastReceiver;)V
 
-    .line 453
+    .line 458
     iget-object v0, p0, Lcom/android/server/net/NetworkStatsService;->mContext:Landroid/content/Context;
 
     iget-object v1, p0, Lcom/android/server/net/NetworkStatsService;->mRemovedReceiver:Landroid/content/BroadcastReceiver;
 
     invoke-virtual {v0, v1}, Landroid/content/Context;->unregisterReceiver(Landroid/content/BroadcastReceiver;)V
 
-    .line 454
+    .line 459
     iget-object v0, p0, Lcom/android/server/net/NetworkStatsService;->mContext:Landroid/content/Context;
 
     iget-object v1, p0, Lcom/android/server/net/NetworkStatsService;->mUserReceiver:Landroid/content/BroadcastReceiver;
 
     invoke-virtual {v0, v1}, Landroid/content/Context;->unregisterReceiver(Landroid/content/BroadcastReceiver;)V
 
-    .line 455
+    .line 460
     iget-object v0, p0, Lcom/android/server/net/NetworkStatsService;->mContext:Landroid/content/Context;
 
     iget-object v1, p0, Lcom/android/server/net/NetworkStatsService;->mShutdownReceiver:Landroid/content/BroadcastReceiver;
 
     invoke-virtual {v0, v1}, Landroid/content/Context;->unregisterReceiver(Landroid/content/BroadcastReceiver;)V
 
-    .line 457
+    .line 462
     iget-object v0, p0, Lcom/android/server/net/NetworkStatsService;->mClock:Ljava/time/Clock;
 
     invoke-virtual {v0}, Ljava/time/Clock;->millis()J
 
     move-result-wide v0
 
-    .line 460
+    .line 465
+    .local v0, "currentTime":J
     iget-object v2, p0, Lcom/android/server/net/NetworkStatsService;->mDevRecorder:Lcom/android/server/net/NetworkStatsRecorder;
 
     invoke-virtual {v2, v0, v1}, Lcom/android/server/net/NetworkStatsRecorder;->forcePersistLocked(J)V
 
-    .line 461
+    .line 466
     iget-object v2, p0, Lcom/android/server/net/NetworkStatsService;->mXtRecorder:Lcom/android/server/net/NetworkStatsRecorder;
 
     invoke-virtual {v2, v0, v1}, Lcom/android/server/net/NetworkStatsRecorder;->forcePersistLocked(J)V
 
-    .line 462
+    .line 467
     iget-object v2, p0, Lcom/android/server/net/NetworkStatsService;->mUidRecorder:Lcom/android/server/net/NetworkStatsRecorder;
 
     invoke-virtual {v2, v0, v1}, Lcom/android/server/net/NetworkStatsRecorder;->forcePersistLocked(J)V
 
-    .line 463
+    .line 468
     iget-object v2, p0, Lcom/android/server/net/NetworkStatsService;->mUidTagRecorder:Lcom/android/server/net/NetworkStatsRecorder;
 
     invoke-virtual {v2, v0, v1}, Lcom/android/server/net/NetworkStatsRecorder;->forcePersistLocked(J)V
 
-    .line 465
-    const/4 v0, 0x0
+    .line 470
+    const/4 v2, 0x0
 
-    iput-boolean v0, p0, Lcom/android/server/net/NetworkStatsService;->mSystemReady:Z
+    iput-boolean v2, p0, Lcom/android/server/net/NetworkStatsService;->mSystemReady:Z
 
-    .line 466
+    .line 471
     return-void
 .end method
 
-.method private updateIfaces([Landroid/net/Network;[Landroid/net/NetworkState;Ljava/lang/String;)V
-    .registers 6
+.method private updateIfaces([Landroid/net/Network;[Lcom/android/internal/net/VpnInfo;[Landroid/net/NetworkState;Ljava/lang/String;)V
+    .registers 8
+    .param p1, "defaultNetworks"  # [Landroid/net/Network;
+    .param p2, "vpnArray"  # [Lcom/android/internal/net/VpnInfo;
+    .param p3, "networkStates"  # [Landroid/net/NetworkState;
+    .param p4, "activeIface"  # Ljava/lang/String;
 
-    .line 1137
+    .line 1144
     iget-object v0, p0, Lcom/android/server/net/NetworkStatsService;->mStatsLock:Ljava/lang/Object;
 
     monitor-enter v0
 
-    .line 1138
+    .line 1145
     :try_start_3
     iget-object v1, p0, Lcom/android/server/net/NetworkStatsService;->mWakeLock:Landroid/os/PowerManager$WakeLock;
 
     invoke-virtual {v1}, Landroid/os/PowerManager$WakeLock;->acquire()V
     :try_end_8
-    .catchall {:try_start_3 .. :try_end_8} :catchall_1c
+    .catchall {:try_start_3 .. :try_end_8} :catchall_1e
 
-    .line 1140
+    .line 1147
     :try_start_8
-    iput-object p3, p0, Lcom/android/server/net/NetworkStatsService;->mActiveIface:Ljava/lang/String;
+    iput-object p2, p0, Lcom/android/server/net/NetworkStatsService;->mVpnInfos:[Lcom/android/internal/net/VpnInfo;
 
-    .line 1141
-    invoke-direct {p0, p1, p2}, Lcom/android/server/net/NetworkStatsService;->updateIfacesLocked([Landroid/net/Network;[Landroid/net/NetworkState;)V
-    :try_end_d
-    .catchall {:try_start_8 .. :try_end_d} :catchall_15
+    .line 1148
+    iput-object p4, p0, Lcom/android/server/net/NetworkStatsService;->mActiveIface:Ljava/lang/String;
 
-    .line 1143
-    :try_start_d
-    iget-object p1, p0, Lcom/android/server/net/NetworkStatsService;->mWakeLock:Landroid/os/PowerManager$WakeLock;
+    .line 1149
+    invoke-direct {p0, p1, p3}, Lcom/android/server/net/NetworkStatsService;->updateIfacesLocked([Landroid/net/Network;[Landroid/net/NetworkState;)V
+    :try_end_f
+    .catchall {:try_start_8 .. :try_end_f} :catchall_17
 
-    invoke-virtual {p1}, Landroid/os/PowerManager$WakeLock;->release()V
+    .line 1151
+    :try_start_f
+    iget-object v1, p0, Lcom/android/server/net/NetworkStatsService;->mWakeLock:Landroid/os/PowerManager$WakeLock;
 
-    .line 1144
+    invoke-virtual {v1}, Landroid/os/PowerManager$WakeLock;->release()V
+
+    .line 1152
     nop
 
-    .line 1145
+    .line 1153
     monitor-exit v0
 
-    .line 1146
+    .line 1154
     return-void
 
-    .line 1143
-    :catchall_15
-    move-exception p1
+    .line 1151
+    :catchall_17
+    move-exception v1
 
-    iget-object p2, p0, Lcom/android/server/net/NetworkStatsService;->mWakeLock:Landroid/os/PowerManager$WakeLock;
+    iget-object v2, p0, Lcom/android/server/net/NetworkStatsService;->mWakeLock:Landroid/os/PowerManager$WakeLock;
 
-    invoke-virtual {p2}, Landroid/os/PowerManager$WakeLock;->release()V
+    invoke-virtual {v2}, Landroid/os/PowerManager$WakeLock;->release()V
 
-    throw p1
+    .end local p0  # "this":Lcom/android/server/net/NetworkStatsService;
+    .end local p1  # "defaultNetworks":[Landroid/net/Network;
+    .end local p2  # "vpnArray":[Lcom/android/internal/net/VpnInfo;
+    .end local p3  # "networkStates":[Landroid/net/NetworkState;
+    .end local p4  # "activeIface":Ljava/lang/String;
+    throw v1
 
-    .line 1145
-    :catchall_1c
-    move-exception p1
+    .line 1153
+    .restart local p0  # "this":Lcom/android/server/net/NetworkStatsService;
+    .restart local p1  # "defaultNetworks":[Landroid/net/Network;
+    .restart local p2  # "vpnArray":[Lcom/android/internal/net/VpnInfo;
+    .restart local p3  # "networkStates":[Landroid/net/NetworkState;
+    .restart local p4  # "activeIface":Ljava/lang/String;
+    :catchall_1e
+    move-exception v1
 
     monitor-exit v0
-    :try_end_1e
-    .catchall {:try_start_d .. :try_end_1e} :catchall_1c
+    :try_end_20
+    .catchall {:try_start_f .. :try_end_20} :catchall_1e
 
-    throw p1
+    throw v1
 .end method
 
 .method private updateIfacesLocked([Landroid/net/Network;[Landroid/net/NetworkState;)V
-    .registers 21
+    .registers 23
+    .param p1, "defaultNetworks"  # [Landroid/net/Network;
+    .param p2, "states"  # [Landroid/net/NetworkState;
     .annotation build Lcom/android/internal/annotations/GuardedBy;
         value = {
             "mStatsLock"
         }
     .end annotation
 
-    .line 1155
+    .line 1164
     move-object/from16 v0, p0
 
     move-object/from16 v1, p1
@@ -3422,7 +3737,7 @@
 
     return-void
 
-    .line 1156
+    .line 1165
     :cond_b
     sget-boolean v3, Lcom/android/server/net/NetworkStatsService;->LOGV:Z
 
@@ -3434,281 +3749,300 @@
 
     invoke-static {v3, v4}, Landroid/util/Slog;->v(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 1164
+    .line 1173
     :cond_17
     const/4 v3, 0x1
 
     invoke-direct {v0, v3}, Lcom/android/server/net/NetworkStatsService;->performPollLocked(I)V
 
-    .line 1167
+    .line 1176
     iget-object v3, v0, Lcom/android/server/net/NetworkStatsService;->mActiveIfaces:Landroid/util/ArrayMap;
 
     invoke-virtual {v3}, Landroid/util/ArrayMap;->clear()V
 
-    .line 1168
+    .line 1177
     iget-object v3, v0, Lcom/android/server/net/NetworkStatsService;->mActiveUidIfaces:Landroid/util/ArrayMap;
 
     invoke-virtual {v3}, Landroid/util/ArrayMap;->clear()V
 
-    .line 1169
+    .line 1178
     if-eqz v1, :cond_29
 
-    .line 1171
+    .line 1180
     iput-object v1, v0, Lcom/android/server/net/NetworkStatsService;->mDefaultNetworks:[Landroid/net/Network;
 
-    .line 1174
+    .line 1183
     :cond_29
-    new-instance v1, Landroid/util/ArraySet;
+    new-instance v3, Landroid/util/ArraySet;
 
-    invoke-direct {v1}, Landroid/util/ArraySet;-><init>()V
+    invoke-direct {v3}, Landroid/util/ArraySet;-><init>()V
 
-    .line 1175
-    array-length v3, v2
+    .line 1184
+    .local v3, "mobileIfaces":Landroid/util/ArraySet;, "Landroid/util/ArraySet<Ljava/lang/String;>;"
+    array-length v4, v2
 
-    const/4 v4, 0x0
+    const/4 v5, 0x0
 
     :goto_30
-    if-ge v4, v3, :cond_f4
+    if-ge v5, v4, :cond_f4
 
-    aget-object v5, v2, v4
+    aget-object v6, v2, v5
 
-    .line 1176
-    iget-object v6, v5, Landroid/net/NetworkState;->networkInfo:Landroid/net/NetworkInfo;
+    .line 1185
+    .local v6, "state":Landroid/net/NetworkState;
+    iget-object v7, v6, Landroid/net/NetworkState;->networkInfo:Landroid/net/NetworkInfo;
 
-    invoke-virtual {v6}, Landroid/net/NetworkInfo;->isConnected()Z
-
-    move-result v6
-
-    if-eqz v6, :cond_f0
-
-    .line 1177
-    iget-object v6, v5, Landroid/net/NetworkState;->networkInfo:Landroid/net/NetworkInfo;
-
-    invoke-virtual {v6}, Landroid/net/NetworkInfo;->getType()I
-
-    move-result v6
-
-    invoke-static {v6}, Landroid/net/ConnectivityManager;->isNetworkTypeMobile(I)Z
-
-    move-result v6
-
-    .line 1178
-    iget-object v7, v0, Lcom/android/server/net/NetworkStatsService;->mDefaultNetworks:[Landroid/net/Network;
-
-    iget-object v8, v5, Landroid/net/NetworkState;->network:Landroid/net/Network;
-
-    invoke-static {v7, v8}, Lcom/android/internal/util/ArrayUtils;->contains([Ljava/lang/Object;Ljava/lang/Object;)Z
+    invoke-virtual {v7}, Landroid/net/NetworkInfo;->isConnected()Z
 
     move-result v7
 
-    .line 1179
-    iget-object v8, v0, Lcom/android/server/net/NetworkStatsService;->mContext:Landroid/content/Context;
-
-    invoke-static {v8, v5, v7}, Landroid/net/NetworkIdentity;->buildNetworkIdentity(Landroid/content/Context;Landroid/net/NetworkState;Z)Landroid/net/NetworkIdentity;
-
-    move-result-object v7
-
-    .line 1184
-    iget-object v8, v5, Landroid/net/NetworkState;->linkProperties:Landroid/net/LinkProperties;
-
-    invoke-virtual {v8}, Landroid/net/LinkProperties;->getInterfaceName()Ljava/lang/String;
-
-    move-result-object v8
-
-    .line 1185
-    if-eqz v8, :cond_b5
+    if-eqz v7, :cond_f0
 
     .line 1186
-    iget-object v9, v0, Lcom/android/server/net/NetworkStatsService;->mActiveIfaces:Landroid/util/ArrayMap;
+    iget-object v7, v6, Landroid/net/NetworkState;->networkInfo:Landroid/net/NetworkInfo;
 
-    invoke-static {v9, v8}, Lcom/android/server/net/NetworkStatsService;->findOrCreateNetworkIdentitySet(Landroid/util/ArrayMap;Ljava/lang/Object;)Lcom/android/server/net/NetworkIdentitySet;
+    invoke-virtual {v7}, Landroid/net/NetworkInfo;->getType()I
 
-    move-result-object v9
+    move-result v7
 
-    invoke-virtual {v9, v7}, Lcom/android/server/net/NetworkIdentitySet;->add(Ljava/lang/Object;)Z
+    invoke-static {v7}, Landroid/net/ConnectivityManager;->isNetworkTypeMobile(I)Z
+
+    move-result v7
 
     .line 1187
-    iget-object v9, v0, Lcom/android/server/net/NetworkStatsService;->mActiveUidIfaces:Landroid/util/ArrayMap;
+    .local v7, "isMobile":Z
+    iget-object v8, v0, Lcom/android/server/net/NetworkStatsService;->mDefaultNetworks:[Landroid/net/Network;
 
-    invoke-static {v9, v8}, Lcom/android/server/net/NetworkStatsService;->findOrCreateNetworkIdentitySet(Landroid/util/ArrayMap;Ljava/lang/Object;)Lcom/android/server/net/NetworkIdentitySet;
+    iget-object v9, v6, Landroid/net/NetworkState;->network:Landroid/net/Network;
+
+    invoke-static {v8, v9}, Lcom/android/internal/util/ArrayUtils;->contains([Ljava/lang/Object;Ljava/lang/Object;)Z
+
+    move-result v8
+
+    .line 1188
+    .local v8, "isDefault":Z
+    iget-object v9, v0, Lcom/android/server/net/NetworkStatsService;->mContext:Landroid/content/Context;
+
+    invoke-static {v9, v6, v8}, Landroid/net/NetworkIdentity;->buildNetworkIdentity(Landroid/content/Context;Landroid/net/NetworkState;Z)Landroid/net/NetworkIdentity;
 
     move-result-object v9
 
-    invoke-virtual {v9, v7}, Lcom/android/server/net/NetworkIdentitySet;->add(Ljava/lang/Object;)Z
+    .line 1193
+    .local v9, "ident":Landroid/net/NetworkIdentity;
+    iget-object v10, v6, Landroid/net/NetworkState;->linkProperties:Landroid/net/LinkProperties;
+
+    invoke-virtual {v10}, Landroid/net/LinkProperties;->getInterfaceName()Ljava/lang/String;
+
+    move-result-object v10
 
     .line 1194
-    iget-object v9, v5, Landroid/net/NetworkState;->networkCapabilities:Landroid/net/NetworkCapabilities;
-
-    const/4 v10, 0x4
-
-    invoke-virtual {v9, v10}, Landroid/net/NetworkCapabilities;->hasCapability(I)Z
-
-    move-result v9
-
-    if-eqz v9, :cond_b0
+    .local v10, "baseIface":Ljava/lang/String;
+    if-eqz v10, :cond_b5
 
     .line 1195
-    invoke-virtual {v7}, Landroid/net/NetworkIdentity;->getMetered()Z
+    iget-object v11, v0, Lcom/android/server/net/NetworkStatsService;->mActiveIfaces:Landroid/util/ArrayMap;
 
-    move-result v9
+    invoke-static {v11, v10}, Lcom/android/server/net/NetworkStatsService;->findOrCreateNetworkIdentitySet(Landroid/util/ArrayMap;Ljava/lang/Object;)Lcom/android/server/net/NetworkIdentitySet;
 
-    if-nez v9, :cond_b0
+    move-result-object v11
 
-    .line 1198
-    new-instance v9, Landroid/net/NetworkIdentity;
+    invoke-virtual {v11, v9}, Lcom/android/server/net/NetworkIdentitySet;->add(Ljava/lang/Object;)Z
 
-    invoke-virtual {v7}, Landroid/net/NetworkIdentity;->getType()I
+    .line 1196
+    iget-object v11, v0, Lcom/android/server/net/NetworkStatsService;->mActiveUidIfaces:Landroid/util/ArrayMap;
+
+    invoke-static {v11, v10}, Lcom/android/server/net/NetworkStatsService;->findOrCreateNetworkIdentitySet(Landroid/util/ArrayMap;Ljava/lang/Object;)Lcom/android/server/net/NetworkIdentitySet;
+
+    move-result-object v11
+
+    invoke-virtual {v11, v9}, Lcom/android/server/net/NetworkIdentitySet;->add(Ljava/lang/Object;)Z
+
+    .line 1203
+    iget-object v11, v6, Landroid/net/NetworkState;->networkCapabilities:Landroid/net/NetworkCapabilities;
+
+    const/4 v12, 0x4
+
+    invoke-virtual {v11, v12}, Landroid/net/NetworkCapabilities;->hasCapability(I)Z
 
     move-result v11
 
-    .line 1199
-    invoke-virtual {v7}, Landroid/net/NetworkIdentity;->getSubType()I
+    if-eqz v11, :cond_b0
 
-    move-result v12
+    .line 1204
+    invoke-virtual {v9}, Landroid/net/NetworkIdentity;->getMetered()Z
 
-    invoke-virtual {v7}, Landroid/net/NetworkIdentity;->getSubscriberId()Ljava/lang/String;
+    move-result v11
+
+    if-nez v11, :cond_b0
+
+    .line 1207
+    new-instance v11, Landroid/net/NetworkIdentity;
+
+    invoke-virtual {v9}, Landroid/net/NetworkIdentity;->getType()I
+
+    move-result v13
+
+    .line 1208
+    invoke-virtual {v9}, Landroid/net/NetworkIdentity;->getSubType()I
+
+    move-result v14
+
+    invoke-virtual {v9}, Landroid/net/NetworkIdentity;->getSubscriberId()Ljava/lang/String;
+
+    move-result-object v15
+
+    invoke-virtual {v9}, Landroid/net/NetworkIdentity;->getNetworkId()Ljava/lang/String;
+
+    move-result-object v16
+
+    .line 1209
+    invoke-virtual {v9}, Landroid/net/NetworkIdentity;->getRoaming()Z
+
+    move-result v17
+
+    const/16 v18, 0x1
+
+    const/16 v19, 0x1
+
+    move-object v12, v11
+
+    invoke-direct/range {v12 .. v19}, Landroid/net/NetworkIdentity;-><init>(IILjava/lang/String;Ljava/lang/String;ZZZ)V
+
+    .line 1211
+    .local v11, "vtIdent":Landroid/net/NetworkIdentity;
+    iget-object v12, v0, Lcom/android/server/net/NetworkStatsService;->mActiveIfaces:Landroid/util/ArrayMap;
+
+    const-string/jumbo v13, "vt_data0"
+
+    invoke-static {v12, v13}, Lcom/android/server/net/NetworkStatsService;->findOrCreateNetworkIdentitySet(Landroid/util/ArrayMap;Ljava/lang/Object;)Lcom/android/server/net/NetworkIdentitySet;
+
+    move-result-object v12
+
+    invoke-virtual {v12, v11}, Lcom/android/server/net/NetworkIdentitySet;->add(Ljava/lang/Object;)Z
+
+    .line 1212
+    iget-object v12, v0, Lcom/android/server/net/NetworkStatsService;->mActiveUidIfaces:Landroid/util/ArrayMap;
+
+    invoke-static {v12, v13}, Lcom/android/server/net/NetworkStatsService;->findOrCreateNetworkIdentitySet(Landroid/util/ArrayMap;Ljava/lang/Object;)Lcom/android/server/net/NetworkIdentitySet;
+
+    move-result-object v12
+
+    invoke-virtual {v12, v11}, Lcom/android/server/net/NetworkIdentitySet;->add(Ljava/lang/Object;)Z
+
+    .line 1215
+    .end local v11  # "vtIdent":Landroid/net/NetworkIdentity;
+    :cond_b0
+    if-eqz v7, :cond_b5
+
+    .line 1216
+    invoke-virtual {v3, v10}, Landroid/util/ArraySet;->add(Ljava/lang/Object;)Z
+
+    .line 1229
+    :cond_b5
+    iget-object v11, v6, Landroid/net/NetworkState;->linkProperties:Landroid/net/LinkProperties;
+
+    invoke-virtual {v11}, Landroid/net/LinkProperties;->getStackedLinks()Ljava/util/List;
+
+    move-result-object v11
+
+    .line 1230
+    .local v11, "stackedLinks":Ljava/util/List;, "Ljava/util/List<Landroid/net/LinkProperties;>;"
+    invoke-interface {v11}, Ljava/util/List;->iterator()Ljava/util/Iterator;
+
+    move-result-object v12
+
+    :goto_bf
+    invoke-interface {v12}, Ljava/util/Iterator;->hasNext()Z
+
+    move-result v13
+
+    if-eqz v13, :cond_f0
+
+    invoke-interface {v12}, Ljava/util/Iterator;->next()Ljava/lang/Object;
 
     move-result-object v13
 
-    invoke-virtual {v7}, Landroid/net/NetworkIdentity;->getNetworkId()Ljava/lang/String;
+    check-cast v13, Landroid/net/LinkProperties;
+
+    .line 1231
+    .local v13, "stackedLink":Landroid/net/LinkProperties;
+    invoke-virtual {v13}, Landroid/net/LinkProperties;->getInterfaceName()Ljava/lang/String;
 
     move-result-object v14
 
-    .line 1200
-    invoke-virtual {v7}, Landroid/net/NetworkIdentity;->getRoaming()Z
-
-    move-result v15
-
-    const/16 v16, 0x1
-
-    const/16 v17, 0x1
-
-    move-object v10, v9
-
-    invoke-direct/range {v10 .. v17}, Landroid/net/NetworkIdentity;-><init>(IILjava/lang/String;Ljava/lang/String;ZZZ)V
-
-    .line 1202
-    iget-object v10, v0, Lcom/android/server/net/NetworkStatsService;->mActiveIfaces:Landroid/util/ArrayMap;
-
-    const-string/jumbo v11, "vt_data0"
-
-    invoke-static {v10, v11}, Lcom/android/server/net/NetworkStatsService;->findOrCreateNetworkIdentitySet(Landroid/util/ArrayMap;Ljava/lang/Object;)Lcom/android/server/net/NetworkIdentitySet;
-
-    move-result-object v10
-
-    invoke-virtual {v10, v9}, Lcom/android/server/net/NetworkIdentitySet;->add(Ljava/lang/Object;)Z
-
-    .line 1203
-    iget-object v10, v0, Lcom/android/server/net/NetworkStatsService;->mActiveUidIfaces:Landroid/util/ArrayMap;
-
-    invoke-static {v10, v11}, Lcom/android/server/net/NetworkStatsService;->findOrCreateNetworkIdentitySet(Landroid/util/ArrayMap;Ljava/lang/Object;)Lcom/android/server/net/NetworkIdentitySet;
-
-    move-result-object v10
-
-    invoke-virtual {v10, v9}, Lcom/android/server/net/NetworkIdentitySet;->add(Ljava/lang/Object;)Z
-
-    .line 1206
-    :cond_b0
-    if-eqz v6, :cond_b5
-
-    .line 1207
-    invoke-virtual {v1, v8}, Landroid/util/ArraySet;->add(Ljava/lang/Object;)Z
-
-    .line 1220
-    :cond_b5
-    iget-object v5, v5, Landroid/net/NetworkState;->linkProperties:Landroid/net/LinkProperties;
-
-    invoke-virtual {v5}, Landroid/net/LinkProperties;->getStackedLinks()Ljava/util/List;
-
-    move-result-object v5
-
-    .line 1221
-    invoke-interface {v5}, Ljava/util/List;->iterator()Ljava/util/Iterator;
-
-    move-result-object v5
-
-    :goto_bf
-    invoke-interface {v5}, Ljava/util/Iterator;->hasNext()Z
-
-    move-result v9
-
-    if-eqz v9, :cond_f0
-
-    invoke-interface {v5}, Ljava/util/Iterator;->next()Ljava/lang/Object;
-
-    move-result-object v9
-
-    check-cast v9, Landroid/net/LinkProperties;
-
-    .line 1222
-    invoke-virtual {v9}, Landroid/net/LinkProperties;->getInterfaceName()Ljava/lang/String;
-
-    move-result-object v9
-
-    .line 1223
-    if-eqz v9, :cond_ef
-
-    .line 1224
-    iget-boolean v10, v0, Lcom/android/server/net/NetworkStatsService;->mUseBpfTrafficStats:Z
-
-    if-eqz v10, :cond_de
-
-    .line 1225
-    iget-object v10, v0, Lcom/android/server/net/NetworkStatsService;->mActiveIfaces:Landroid/util/ArrayMap;
-
-    invoke-static {v10, v9}, Lcom/android/server/net/NetworkStatsService;->findOrCreateNetworkIdentitySet(Landroid/util/ArrayMap;Ljava/lang/Object;)Lcom/android/server/net/NetworkIdentitySet;
-
-    move-result-object v10
-
-    invoke-virtual {v10, v7}, Lcom/android/server/net/NetworkIdentitySet;->add(Ljava/lang/Object;)Z
-
-    .line 1227
-    :cond_de
-    iget-object v10, v0, Lcom/android/server/net/NetworkStatsService;->mActiveUidIfaces:Landroid/util/ArrayMap;
-
-    invoke-static {v10, v9}, Lcom/android/server/net/NetworkStatsService;->findOrCreateNetworkIdentitySet(Landroid/util/ArrayMap;Ljava/lang/Object;)Lcom/android/server/net/NetworkIdentitySet;
-
-    move-result-object v10
-
-    invoke-virtual {v10, v7}, Lcom/android/server/net/NetworkIdentitySet;->add(Ljava/lang/Object;)Z
-
-    .line 1228
-    if-eqz v6, :cond_ec
-
-    .line 1229
-    invoke-virtual {v1, v9}, Landroid/util/ArraySet;->add(Ljava/lang/Object;)Z
-
     .line 1232
-    :cond_ec
-    invoke-static {v9, v8}, Lcom/android/server/net/NetworkStatsFactory;->noteStackedIface(Ljava/lang/String;Ljava/lang/String;)V
+    .local v14, "stackedIface":Ljava/lang/String;
+    if-eqz v14, :cond_ef
+
+    .line 1233
+    iget-boolean v15, v0, Lcom/android/server/net/NetworkStatsService;->mUseBpfTrafficStats:Z
+
+    if-eqz v15, :cond_de
 
     .line 1234
+    iget-object v15, v0, Lcom/android/server/net/NetworkStatsService;->mActiveIfaces:Landroid/util/ArrayMap;
+
+    invoke-static {v15, v14}, Lcom/android/server/net/NetworkStatsService;->findOrCreateNetworkIdentitySet(Landroid/util/ArrayMap;Ljava/lang/Object;)Lcom/android/server/net/NetworkIdentitySet;
+
+    move-result-object v15
+
+    invoke-virtual {v15, v9}, Lcom/android/server/net/NetworkIdentitySet;->add(Ljava/lang/Object;)Z
+
+    .line 1236
+    :cond_de
+    iget-object v15, v0, Lcom/android/server/net/NetworkStatsService;->mActiveUidIfaces:Landroid/util/ArrayMap;
+
+    invoke-static {v15, v14}, Lcom/android/server/net/NetworkStatsService;->findOrCreateNetworkIdentitySet(Landroid/util/ArrayMap;Ljava/lang/Object;)Lcom/android/server/net/NetworkIdentitySet;
+
+    move-result-object v15
+
+    invoke-virtual {v15, v9}, Lcom/android/server/net/NetworkIdentitySet;->add(Ljava/lang/Object;)Z
+
+    .line 1237
+    if-eqz v7, :cond_ec
+
+    .line 1238
+    invoke-virtual {v3, v14}, Landroid/util/ArraySet;->add(Ljava/lang/Object;)Z
+
+    .line 1241
+    :cond_ec
+    invoke-static {v14, v10}, Lcom/android/server/net/NetworkStatsFactory;->noteStackedIface(Ljava/lang/String;Ljava/lang/String;)V
+
+    .line 1243
+    .end local v13  # "stackedLink":Landroid/net/LinkProperties;
+    .end local v14  # "stackedIface":Ljava/lang/String;
     :cond_ef
     goto :goto_bf
 
-    .line 1175
+    .line 1184
+    .end local v6  # "state":Landroid/net/NetworkState;
+    .end local v7  # "isMobile":Z
+    .end local v8  # "isDefault":Z
+    .end local v9  # "ident":Landroid/net/NetworkIdentity;
+    .end local v10  # "baseIface":Ljava/lang/String;
+    .end local v11  # "stackedLinks":Ljava/util/List;, "Ljava/util/List<Landroid/net/LinkProperties;>;"
     :cond_f0
-    add-int/lit8 v4, v4, 0x1
+    add-int/lit8 v5, v5, 0x1
 
     goto/16 :goto_30
 
-    .line 1238
+    .line 1247
     :cond_f4
-    invoke-virtual {v1}, Landroid/util/ArraySet;->size()I
+    invoke-virtual {v3}, Landroid/util/ArraySet;->size()I
 
-    move-result v2
+    move-result v4
 
-    new-array v2, v2, [Ljava/lang/String;
+    new-array v4, v4, [Ljava/lang/String;
 
-    invoke-virtual {v1, v2}, Landroid/util/ArraySet;->toArray([Ljava/lang/Object;)[Ljava/lang/Object;
+    invoke-virtual {v3, v4}, Landroid/util/ArraySet;->toArray([Ljava/lang/Object;)[Ljava/lang/Object;
 
-    move-result-object v1
+    move-result-object v4
 
-    check-cast v1, [Ljava/lang/String;
+    check-cast v4, [Ljava/lang/String;
 
-    iput-object v1, v0, Lcom/android/server/net/NetworkStatsService;->mMobileIfaces:[Ljava/lang/String;
+    iput-object v4, v0, Lcom/android/server/net/NetworkStatsService;->mMobileIfaces:[Ljava/lang/String;
 
-    .line 1239
+    .line 1248
     return-void
 .end method
 
@@ -3720,7 +4054,7 @@
         }
     .end annotation
 
-    .line 1032
+    .line 1038
     iget-object v0, p0, Lcom/android/server/net/NetworkStatsService;->mDevRecorder:Lcom/android/server/net/NetworkStatsRecorder;
 
     iget-object v1, p0, Lcom/android/server/net/NetworkStatsService;->mSettings:Lcom/android/server/net/NetworkStatsService$NetworkStatsSettings;
@@ -3733,7 +4067,7 @@
 
     invoke-virtual {v0, v1, v2}, Lcom/android/server/net/NetworkStatsRecorder;->setPersistThreshold(J)V
 
-    .line 1033
+    .line 1039
     iget-object v0, p0, Lcom/android/server/net/NetworkStatsService;->mXtRecorder:Lcom/android/server/net/NetworkStatsRecorder;
 
     iget-object v1, p0, Lcom/android/server/net/NetworkStatsService;->mSettings:Lcom/android/server/net/NetworkStatsService$NetworkStatsSettings;
@@ -3746,7 +4080,7 @@
 
     invoke-virtual {v0, v1, v2}, Lcom/android/server/net/NetworkStatsRecorder;->setPersistThreshold(J)V
 
-    .line 1034
+    .line 1040
     iget-object v0, p0, Lcom/android/server/net/NetworkStatsService;->mUidRecorder:Lcom/android/server/net/NetworkStatsRecorder;
 
     iget-object v1, p0, Lcom/android/server/net/NetworkStatsService;->mSettings:Lcom/android/server/net/NetworkStatsService$NetworkStatsSettings;
@@ -3759,7 +4093,7 @@
 
     invoke-virtual {v0, v1, v2}, Lcom/android/server/net/NetworkStatsRecorder;->setPersistThreshold(J)V
 
-    .line 1035
+    .line 1041
     iget-object v0, p0, Lcom/android/server/net/NetworkStatsService;->mUidTagRecorder:Lcom/android/server/net/NetworkStatsRecorder;
 
     iget-object v1, p0, Lcom/android/server/net/NetworkStatsService;->mSettings:Lcom/android/server/net/NetworkStatsService$NetworkStatsSettings;
@@ -3772,7 +4106,7 @@
 
     invoke-virtual {v0, v1, v2}, Lcom/android/server/net/NetworkStatsRecorder;->setPersistThreshold(J)V
 
-    .line 1036
+    .line 1042
     iget-object v0, p0, Lcom/android/server/net/NetworkStatsService;->mSettings:Lcom/android/server/net/NetworkStatsService$NetworkStatsSettings;
 
     iget-wide v1, p0, Lcom/android/server/net/NetworkStatsService;->mPersistThreshold:J
@@ -3783,27 +4117,30 @@
 
     iput-wide v0, p0, Lcom/android/server/net/NetworkStatsService;->mGlobalAlertBytes:J
 
-    .line 1037
+    .line 1043
     return-void
 .end method
 
 
 # virtual methods
 .method protected dump(Ljava/io/FileDescriptor;Ljava/io/PrintWriter;[Ljava/lang/String;)V
-    .registers 22
+    .registers 27
+    .param p1, "fd"  # Ljava/io/FileDescriptor;
+    .param p2, "rawWriter"  # Ljava/io/PrintWriter;
+    .param p3, "args"  # [Ljava/lang/String;
 
-    .line 1501
+    .line 1513
     move-object/from16 v1, p0
 
     move-object/from16 v8, p2
 
-    move-object/from16 v2, p3
+    move-object/from16 v9, p3
 
     iget-object v0, v1, Lcom/android/server/net/NetworkStatsService;->mContext:Landroid/content/Context;
 
-    const-string v3, "NetworkStats"
+    const-string v2, "NetworkStats"
 
-    invoke-static {v0, v3, v8}, Lcom/android/internal/util/DumpUtils;->checkDumpPermission(Landroid/content/Context;Ljava/lang/String;Ljava/io/PrintWriter;)Z
+    invoke-static {v0, v2, v8}, Lcom/android/internal/util/DumpUtils;->checkDumpPermission(Landroid/content/Context;Ljava/lang/String;Ljava/io/PrintWriter;)Z
 
     move-result v0
 
@@ -3811,691 +4148,894 @@
 
     return-void
 
-    .line 1503
+    .line 1515
     :cond_11
-    const-wide/32 v3, 0x5265c00
+    const-wide/32 v2, 0x5265c00
 
-    .line 1504
-    new-instance v5, Ljava/util/HashSet;
+    .line 1516
+    .local v2, "duration":J
+    new-instance v0, Ljava/util/HashSet;
 
-    invoke-direct {v5}, Ljava/util/HashSet;-><init>()V
+    invoke-direct {v0}, Ljava/util/HashSet;-><init>()V
 
-    .line 1505
-    array-length v6, v2
+    move-object v10, v0
 
-    const/4 v7, 0x0
+    .line 1517
+    .local v10, "argSet":Ljava/util/HashSet;, "Ljava/util/HashSet<Ljava/lang/String;>;"
+    array-length v4, v9
 
-    move-wide v9, v3
+    const/4 v5, 0x0
 
-    move v3, v7
+    move-wide v11, v2
 
-    :goto_1d
-    if-ge v3, v6, :cond_3b
+    move v2, v5
 
-    aget-object v0, v2, v3
+    .end local v2  # "duration":J
+    .local v11, "duration":J
+    :goto_1e
+    if-ge v2, v4, :cond_3d
 
-    .line 1506
-    invoke-virtual {v5, v0}, Ljava/util/HashSet;->add(Ljava/lang/Object;)Z
+    aget-object v3, v9, v2
 
-    .line 1508
-    const-string v4, "--duration="
+    .line 1518
+    .local v3, "arg":Ljava/lang/String;
+    invoke-virtual {v10, v3}, Ljava/util/HashSet;->add(Ljava/lang/Object;)Z
 
-    invoke-virtual {v0, v4}, Ljava/lang/String;->startsWith(Ljava/lang/String;)Z
+    .line 1520
+    const-string v0, "--duration="
 
-    move-result v4
+    invoke-virtual {v3, v0}, Ljava/lang/String;->startsWith(Ljava/lang/String;)Z
 
-    if-eqz v4, :cond_38
+    move-result v0
 
-    .line 1510
-    const/16 v4, 0xb
+    if-eqz v0, :cond_3a
 
-    :try_start_2e
-    invoke-virtual {v0, v4}, Ljava/lang/String;->substring(I)Ljava/lang/String;
+    .line 1522
+    const/16 v0, 0xb
+
+    :try_start_2f
+    invoke-virtual {v3, v0}, Ljava/lang/String;->substring(I)Ljava/lang/String;
 
     move-result-object v0
 
     invoke-static {v0}, Ljava/lang/Long;->parseLong(Ljava/lang/String;)J
 
-    move-result-wide v9
-    :try_end_36
-    .catch Ljava/lang/NumberFormatException; {:try_start_2e .. :try_end_36} :catch_37
+    move-result-wide v6
+    :try_end_37
+    .catch Ljava/lang/NumberFormatException; {:try_start_2f .. :try_end_37} :catch_39
 
-    .line 1512
-    goto :goto_38
+    .line 1524
+    .end local v11  # "duration":J
+    .local v6, "duration":J
+    move-wide v11, v6
 
-    .line 1511
-    :catch_37
+    goto :goto_3a
+
+    .line 1523
+    .end local v6  # "duration":J
+    .restart local v11  # "duration":J
+    :catch_39
     move-exception v0
 
-    .line 1505
-    :cond_38
-    :goto_38
-    add-int/lit8 v3, v3, 0x1
-
-    goto :goto_1d
-
     .line 1517
-    :cond_3b
+    .end local v3  # "arg":Ljava/lang/String;
+    :cond_3a
+    :goto_3a
+    add-int/lit8 v2, v2, 0x1
+
+    goto :goto_1e
+
+    .line 1529
+    :cond_3d
     const-string v0, "--poll"
 
-    invoke-virtual {v5, v0}, Ljava/util/HashSet;->contains(Ljava/lang/Object;)Z
+    invoke-virtual {v10, v0}, Ljava/util/HashSet;->contains(Ljava/lang/Object;)Z
 
     move-result v0
 
-    const/4 v3, 0x1
+    const/4 v2, 0x1
 
-    if-nez v0, :cond_50
+    if-nez v0, :cond_52
 
     const-string/jumbo v0, "poll"
 
-    invoke-virtual {v5, v0}, Ljava/util/HashSet;->contains(Ljava/lang/Object;)Z
+    invoke-virtual {v10, v0}, Ljava/util/HashSet;->contains(Ljava/lang/Object;)Z
 
     move-result v0
 
-    if-eqz v0, :cond_4e
+    if-eqz v0, :cond_50
 
-    goto :goto_50
-
-    :cond_4e
-    move v0, v7
-
-    goto :goto_51
+    goto :goto_52
 
     :cond_50
-    :goto_50
-    move v0, v3
+    move v0, v5
 
-    .line 1518
-    :goto_51
-    const-string v4, "--checkin"
+    goto :goto_53
 
-    invoke-virtual {v5, v4}, Ljava/util/HashSet;->contains(Ljava/lang/Object;)Z
+    :cond_52
+    :goto_52
+    move v0, v2
 
-    move-result v4
+    :goto_53
+    move v13, v0
 
-    .line 1519
-    const-string v6, "--full"
+    .line 1530
+    .local v13, "poll":Z
+    const-string v0, "--checkin"
 
-    invoke-virtual {v5, v6}, Ljava/util/HashSet;->contains(Ljava/lang/Object;)Z
+    invoke-virtual {v10, v0}, Ljava/util/HashSet;->contains(Ljava/lang/Object;)Z
 
-    move-result v6
+    move-result v14
 
-    if-nez v6, :cond_6a
+    .line 1531
+    .local v14, "checkin":Z
+    const-string v0, "--full"
 
-    const-string v6, "full"
+    invoke-virtual {v10, v0}, Ljava/util/HashSet;->contains(Ljava/lang/Object;)Z
 
-    invoke-virtual {v5, v6}, Ljava/util/HashSet;->contains(Ljava/lang/Object;)Z
+    move-result v0
 
-    move-result v6
+    if-nez v0, :cond_6d
 
-    if-eqz v6, :cond_68
+    const-string v0, "full"
 
-    goto :goto_6a
+    invoke-virtual {v10, v0}, Ljava/util/HashSet;->contains(Ljava/lang/Object;)Z
 
-    :cond_68
-    move v6, v7
+    move-result v0
 
-    goto :goto_6b
+    if-eqz v0, :cond_6b
 
-    :cond_6a
-    :goto_6a
-    move v6, v3
+    goto :goto_6d
 
-    .line 1520
-    :goto_6b
-    const-string v11, "--uid"
+    :cond_6b
+    move v0, v5
 
-    invoke-virtual {v5, v11}, Ljava/util/HashSet;->contains(Ljava/lang/Object;)Z
+    goto :goto_6e
 
-    move-result v11
+    :cond_6d
+    :goto_6d
+    move v0, v2
 
-    if-nez v11, :cond_7e
+    :goto_6e
+    move v15, v0
 
-    const-string v11, "detail"
+    .line 1532
+    .local v15, "fullHistory":Z
+    const-string v0, "--uid"
 
-    invoke-virtual {v5, v11}, Ljava/util/HashSet;->contains(Ljava/lang/Object;)Z
+    invoke-virtual {v10, v0}, Ljava/util/HashSet;->contains(Ljava/lang/Object;)Z
 
-    move-result v11
+    move-result v0
 
-    if-eqz v11, :cond_7c
+    if-nez v0, :cond_82
 
-    goto :goto_7e
+    const-string v0, "detail"
 
-    :cond_7c
-    move v11, v7
+    invoke-virtual {v10, v0}, Ljava/util/HashSet;->contains(Ljava/lang/Object;)Z
 
-    goto :goto_7f
+    move-result v0
 
-    :cond_7e
-    :goto_7e
-    move v11, v3
+    if-eqz v0, :cond_80
 
-    .line 1521
-    :goto_7f
-    const-string v12, "--tag"
+    goto :goto_82
 
-    invoke-virtual {v5, v12}, Ljava/util/HashSet;->contains(Ljava/lang/Object;)Z
+    :cond_80
+    move v0, v5
 
-    move-result v12
+    goto :goto_83
 
-    if-nez v12, :cond_92
+    :cond_82
+    :goto_82
+    move v0, v2
 
-    const-string v12, "detail"
+    :goto_83
+    move/from16 v16, v0
 
-    invoke-virtual {v5, v12}, Ljava/util/HashSet;->contains(Ljava/lang/Object;)Z
+    .line 1533
+    .local v16, "includeUid":Z
+    const-string v0, "--tag"
 
-    move-result v5
+    invoke-virtual {v10, v0}, Ljava/util/HashSet;->contains(Ljava/lang/Object;)Z
 
-    if-eqz v5, :cond_90
+    move-result v0
 
-    goto :goto_92
+    if-nez v0, :cond_97
 
-    :cond_90
-    move v12, v7
+    const-string v0, "detail"
 
-    goto :goto_93
+    invoke-virtual {v10, v0}, Ljava/util/HashSet;->contains(Ljava/lang/Object;)Z
 
-    :cond_92
-    :goto_92
-    move v12, v3
+    move-result v0
 
-    .line 1523
-    :goto_93
-    new-instance v13, Lcom/android/internal/util/IndentingPrintWriter;
+    if-eqz v0, :cond_96
 
-    const-string v5, "  "
+    goto :goto_97
 
-    invoke-direct {v13, v8, v5}, Lcom/android/internal/util/IndentingPrintWriter;-><init>(Ljava/io/Writer;Ljava/lang/String;)V
+    :cond_96
+    move v2, v5
 
-    .line 1525
-    iget-object v14, v1, Lcom/android/server/net/NetworkStatsService;->mStatsLock:Ljava/lang/Object;
+    :cond_97
+    :goto_97
+    move/from16 v17, v2
 
-    monitor-enter v14
+    .line 1535
+    .local v17, "includeTag":Z
+    new-instance v0, Lcom/android/internal/util/IndentingPrintWriter;
 
-    .line 1526
-    :try_start_9d
-    array-length v5, v2
+    const-string v2, "  "
 
-    if-lez v5, :cond_af
+    invoke-direct {v0, v8, v2}, Lcom/android/internal/util/IndentingPrintWriter;-><init>(Ljava/io/Writer;Ljava/lang/String;)V
 
-    const-string v5, "--proto"
+    move-object v6, v0
 
-    aget-object v2, v2, v7
+    .line 1537
+    .local v6, "pw":Lcom/android/internal/util/IndentingPrintWriter;
+    iget-object v7, v1, Lcom/android/server/net/NetworkStatsService;->mStatsLock:Ljava/lang/Object;
 
-    invoke-virtual {v5, v2}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    monitor-enter v7
 
-    move-result v2
+    .line 1538
+    :try_start_a4
+    array-length v0, v9
+    :try_end_a5
+    .catchall {:try_start_a4 .. :try_end_a5} :catchall_254
 
-    if-eqz v2, :cond_af
+    if-lez v0, :cond_be
 
-    .line 1528
+    :try_start_a7
+    const-string v0, "--proto"
+
+    aget-object v2, v9, v5
+
+    invoke-virtual {v0, v2}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+
+    move-result v0
+
+    if-eqz v0, :cond_be
+
+    .line 1540
     invoke-direct/range {p0 .. p1}, Lcom/android/server/net/NetworkStatsService;->dumpProtoLocked(Ljava/io/FileDescriptor;)V
 
-    .line 1529
-    monitor-exit v14
+    .line 1541
+    monitor-exit v7
 
     return-void
 
-    .line 1532
-    :cond_af
-    if-eqz v0, :cond_bd
+    .line 1637
+    :catchall_b6
+    move-exception v0
 
-    .line 1533
+    move-object v8, v6
+
+    move-object/from16 v22, v7
+
+    move-object/from16 v18, v10
+
+    goto/16 :goto_25a
+
+    .line 1544
+    :cond_be
+    if-eqz v13, :cond_cc
+
+    .line 1545
     const/16 v0, 0x103
 
     invoke-direct {v1, v0}, Lcom/android/server/net/NetworkStatsService;->performPollLocked(I)V
 
-    .line 1534
+    .line 1546
     const-string v0, "Forced poll"
 
-    invoke-virtual {v13, v0}, Lcom/android/internal/util/IndentingPrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {v6, v0}, Lcom/android/internal/util/IndentingPrintWriter;->println(Ljava/lang/String;)V
 
-    .line 1535
-    monitor-exit v14
+    .line 1547
+    monitor-exit v7
+    :try_end_cb
+    .catchall {:try_start_a7 .. :try_end_cb} :catchall_b6
 
     return-void
 
-    .line 1538
-    :cond_bd
-    if-eqz v4, :cond_112
+    .line 1550
+    :cond_cc
+    if-eqz v14, :cond_134
 
-    .line 1539
+    .line 1551
+    :try_start_ce
     invoke-static {}, Ljava/lang/System;->currentTimeMillis()J
 
-    move-result-wide v15
+    move-result-wide v2
 
-    .line 1540
-    sub-long v9, v15, v9
+    move-wide/from16 v18, v2
 
-    .line 1542
+    .line 1552
+    .local v18, "end":J
+    sub-long v20, v18, v11
+
+    .line 1554
+    .local v20, "start":J
     const-string/jumbo v0, "v1,"
 
-    invoke-virtual {v13, v0}, Lcom/android/internal/util/IndentingPrintWriter;->print(Ljava/lang/String;)V
+    invoke-virtual {v6, v0}, Lcom/android/internal/util/IndentingPrintWriter;->print(Ljava/lang/String;)V
 
-    .line 1543
+    .line 1555
     const-wide/16 v2, 0x3e8
 
-    div-long v4, v9, v2
+    div-long v4, v20, v2
 
-    invoke-virtual {v13, v4, v5}, Lcom/android/internal/util/IndentingPrintWriter;->print(J)V
+    invoke-virtual {v6, v4, v5}, Lcom/android/internal/util/IndentingPrintWriter;->print(J)V
 
     const/16 v0, 0x2c
 
-    invoke-virtual {v13, v0}, Lcom/android/internal/util/IndentingPrintWriter;->print(C)V
+    invoke-virtual {v6, v0}, Lcom/android/internal/util/IndentingPrintWriter;->print(C)V
 
-    .line 1544
-    div-long v2, v15, v2
+    .line 1556
+    div-long v2, v18, v2
 
-    invoke-virtual {v13, v2, v3}, Lcom/android/internal/util/IndentingPrintWriter;->print(J)V
+    invoke-virtual {v6, v2, v3}, Lcom/android/internal/util/IndentingPrintWriter;->print(J)V
 
-    invoke-virtual {v13}, Lcom/android/internal/util/IndentingPrintWriter;->println()V
+    invoke-virtual {v6}, Lcom/android/internal/util/IndentingPrintWriter;->println()V
 
-    .line 1546
+    .line 1558
     const-string/jumbo v0, "xt"
 
-    invoke-virtual {v13, v0}, Lcom/android/internal/util/IndentingPrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {v6, v0}, Lcom/android/internal/util/IndentingPrintWriter;->println(Ljava/lang/String;)V
 
-    .line 1547
+    .line 1559
     iget-object v2, v1, Lcom/android/server/net/NetworkStatsService;->mXtRecorder:Lcom/android/server/net/NetworkStatsRecorder;
+    :try_end_f8
+    .catchall {:try_start_ce .. :try_end_f8} :catchall_12c
 
     move-object/from16 v3, p2
 
-    move-wide v4, v9
+    move-wide/from16 v4, v20
 
-    move-wide v6, v15
+    move-object v8, v6
 
+    move-object/from16 v22, v7
+
+    .end local v6  # "pw":Lcom/android/internal/util/IndentingPrintWriter;
+    .local v8, "pw":Lcom/android/internal/util/IndentingPrintWriter;
+    move-wide/from16 v6, v18
+
+    :try_start_101
     invoke-virtual/range {v2 .. v7}, Lcom/android/server/net/NetworkStatsRecorder;->dumpCheckin(Ljava/io/PrintWriter;JJ)V
 
-    .line 1549
-    if-eqz v11, :cond_ff
+    .line 1561
+    if-eqz v16, :cond_117
 
-    .line 1550
+    .line 1562
     const-string/jumbo v0, "uid"
 
-    invoke-virtual {v13, v0}, Lcom/android/internal/util/IndentingPrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {v8, v0}, Lcom/android/internal/util/IndentingPrintWriter;->println(Ljava/lang/String;)V
 
-    .line 1551
+    .line 1563
     iget-object v2, v1, Lcom/android/server/net/NetworkStatsService;->mUidRecorder:Lcom/android/server/net/NetworkStatsRecorder;
 
     move-object/from16 v3, p2
 
-    move-wide v4, v9
+    move-wide/from16 v4, v20
 
-    move-wide v6, v15
+    move-wide/from16 v6, v18
 
     invoke-virtual/range {v2 .. v7}, Lcom/android/server/net/NetworkStatsRecorder;->dumpCheckin(Ljava/io/PrintWriter;JJ)V
 
-    .line 1553
-    :cond_ff
-    if-eqz v12, :cond_110
+    .line 1565
+    :cond_117
+    if-eqz v17, :cond_12a
 
-    .line 1554
+    .line 1566
     const-string/jumbo v0, "tag"
 
-    invoke-virtual {v13, v0}, Lcom/android/internal/util/IndentingPrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {v8, v0}, Lcom/android/internal/util/IndentingPrintWriter;->println(Ljava/lang/String;)V
 
-    .line 1555
-    iget-object v1, v1, Lcom/android/server/net/NetworkStatsService;->mUidTagRecorder:Lcom/android/server/net/NetworkStatsRecorder;
+    .line 1567
+    iget-object v2, v1, Lcom/android/server/net/NetworkStatsService;->mUidTagRecorder:Lcom/android/server/net/NetworkStatsRecorder;
 
-    move-object/from16 v2, p2
+    move-object/from16 v3, p2
 
-    move-wide v3, v9
+    move-wide/from16 v4, v20
 
-    move-wide v5, v15
+    move-wide/from16 v6, v18
 
-    invoke-virtual/range {v1 .. v6}, Lcom/android/server/net/NetworkStatsRecorder;->dumpCheckin(Ljava/io/PrintWriter;JJ)V
+    invoke-virtual/range {v2 .. v7}, Lcom/android/server/net/NetworkStatsRecorder;->dumpCheckin(Ljava/io/PrintWriter;JJ)V
 
-    .line 1557
-    :cond_110
-    monitor-exit v14
+    .line 1569
+    :cond_12a
+    monitor-exit v22
+    :try_end_12b
+    .catchall {:try_start_101 .. :try_end_12b} :catchall_166
 
     return-void
 
-    .line 1560
-    :cond_112
+    .line 1637
+    .end local v8  # "pw":Lcom/android/internal/util/IndentingPrintWriter;
+    .end local v18  # "end":J
+    .end local v20  # "start":J
+    .restart local v6  # "pw":Lcom/android/internal/util/IndentingPrintWriter;
+    :catchall_12c
+    move-exception v0
+
+    move-object v8, v6
+
+    move-object/from16 v22, v7
+
+    move-object/from16 v18, v10
+
+    .end local v6  # "pw":Lcom/android/internal/util/IndentingPrintWriter;
+    .restart local v8  # "pw":Lcom/android/internal/util/IndentingPrintWriter;
+    goto/16 :goto_25a
+
+    .line 1572
+    .end local v8  # "pw":Lcom/android/internal/util/IndentingPrintWriter;
+    .restart local v6  # "pw":Lcom/android/internal/util/IndentingPrintWriter;
+    :cond_134
+    move-object v8, v6
+
+    move-object/from16 v22, v7
+
+    .end local v6  # "pw":Lcom/android/internal/util/IndentingPrintWriter;
+    .restart local v8  # "pw":Lcom/android/internal/util/IndentingPrintWriter;
+    :try_start_137
     const-string v0, "Active interfaces:"
 
-    invoke-virtual {v13, v0}, Lcom/android/internal/util/IndentingPrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {v8, v0}, Lcom/android/internal/util/IndentingPrintWriter;->println(Ljava/lang/String;)V
 
-    .line 1561
-    invoke-virtual {v13}, Lcom/android/internal/util/IndentingPrintWriter;->increaseIndent()Lcom/android/internal/util/IndentingPrintWriter;
+    .line 1573
+    invoke-virtual {v8}, Lcom/android/internal/util/IndentingPrintWriter;->increaseIndent()Lcom/android/internal/util/IndentingPrintWriter;
 
-    .line 1562
-    move v0, v7
+    .line 1574
+    move v0, v5
 
-    :goto_11b
+    .local v0, "i":I
+    :goto_140
     iget-object v2, v1, Lcom/android/server/net/NetworkStatsService;->mActiveIfaces:Landroid/util/ArrayMap;
 
     invoke-virtual {v2}, Landroid/util/ArrayMap;->size()I
 
     move-result v2
+    :try_end_146
+    .catchall {:try_start_137 .. :try_end_146} :catchall_250
 
-    if-ge v0, v2, :cond_13f
+    if-ge v0, v2, :cond_16b
 
-    .line 1563
-    const-string v2, "iface"
+    .line 1575
+    :try_start_148
+    const-string/jumbo v2, "iface"
 
-    iget-object v4, v1, Lcom/android/server/net/NetworkStatsService;->mActiveIfaces:Landroid/util/ArrayMap;
+    iget-object v3, v1, Lcom/android/server/net/NetworkStatsService;->mActiveIfaces:Landroid/util/ArrayMap;
 
-    invoke-virtual {v4, v0}, Landroid/util/ArrayMap;->keyAt(I)Ljava/lang/Object;
+    invoke-virtual {v3, v0}, Landroid/util/ArrayMap;->keyAt(I)Ljava/lang/Object;
 
-    move-result-object v4
+    move-result-object v3
 
-    invoke-virtual {v13, v2, v4}, Lcom/android/internal/util/IndentingPrintWriter;->printPair(Ljava/lang/String;Ljava/lang/Object;)Lcom/android/internal/util/IndentingPrintWriter;
+    invoke-virtual {v8, v2, v3}, Lcom/android/internal/util/IndentingPrintWriter;->printPair(Ljava/lang/String;Ljava/lang/Object;)Lcom/android/internal/util/IndentingPrintWriter;
 
-    .line 1564
-    const-string v2, "ident"
+    .line 1576
+    const-string/jumbo v2, "ident"
 
-    iget-object v4, v1, Lcom/android/server/net/NetworkStatsService;->mActiveIfaces:Landroid/util/ArrayMap;
+    iget-object v3, v1, Lcom/android/server/net/NetworkStatsService;->mActiveIfaces:Landroid/util/ArrayMap;
 
-    invoke-virtual {v4, v0}, Landroid/util/ArrayMap;->valueAt(I)Ljava/lang/Object;
+    invoke-virtual {v3, v0}, Landroid/util/ArrayMap;->valueAt(I)Ljava/lang/Object;
 
-    move-result-object v4
+    move-result-object v3
 
-    invoke-virtual {v13, v2, v4}, Lcom/android/internal/util/IndentingPrintWriter;->printPair(Ljava/lang/String;Ljava/lang/Object;)Lcom/android/internal/util/IndentingPrintWriter;
+    invoke-virtual {v8, v2, v3}, Lcom/android/internal/util/IndentingPrintWriter;->printPair(Ljava/lang/String;Ljava/lang/Object;)Lcom/android/internal/util/IndentingPrintWriter;
 
-    .line 1565
-    invoke-virtual {v13}, Lcom/android/internal/util/IndentingPrintWriter;->println()V
+    .line 1577
+    invoke-virtual {v8}, Lcom/android/internal/util/IndentingPrintWriter;->println()V
+    :try_end_163
+    .catchall {:try_start_148 .. :try_end_163} :catchall_166
 
-    .line 1562
+    .line 1574
     add-int/lit8 v0, v0, 0x1
 
-    goto :goto_11b
+    goto :goto_140
 
-    .line 1567
-    :cond_13f
-    invoke-virtual {v13}, Lcom/android/internal/util/IndentingPrintWriter;->decreaseIndent()Lcom/android/internal/util/IndentingPrintWriter;
+    .line 1637
+    .end local v0  # "i":I
+    :catchall_166
+    move-exception v0
 
-    .line 1569
+    move-object/from16 v18, v10
+
+    goto/16 :goto_25a
+
+    .line 1579
+    :cond_16b
+    :try_start_16b
+    invoke-virtual {v8}, Lcom/android/internal/util/IndentingPrintWriter;->decreaseIndent()Lcom/android/internal/util/IndentingPrintWriter;
+
+    .line 1581
     const-string v0, "Active UID interfaces:"
 
-    invoke-virtual {v13, v0}, Lcom/android/internal/util/IndentingPrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {v8, v0}, Lcom/android/internal/util/IndentingPrintWriter;->println(Ljava/lang/String;)V
 
-    .line 1570
-    invoke-virtual {v13}, Lcom/android/internal/util/IndentingPrintWriter;->increaseIndent()Lcom/android/internal/util/IndentingPrintWriter;
+    .line 1582
+    invoke-virtual {v8}, Lcom/android/internal/util/IndentingPrintWriter;->increaseIndent()Lcom/android/internal/util/IndentingPrintWriter;
 
-    .line 1571
-    move v0, v7
+    .line 1583
+    move v0, v5
 
-    :goto_14b
+    .restart local v0  # "i":I
+    :goto_177
     iget-object v2, v1, Lcom/android/server/net/NetworkStatsService;->mActiveUidIfaces:Landroid/util/ArrayMap;
 
     invoke-virtual {v2}, Landroid/util/ArrayMap;->size()I
 
     move-result v2
+    :try_end_17d
+    .catchall {:try_start_16b .. :try_end_17d} :catchall_250
 
-    if-ge v0, v2, :cond_16f
+    if-ge v0, v2, :cond_19d
 
-    .line 1572
-    const-string v2, "iface"
+    .line 1584
+    :try_start_17f
+    const-string/jumbo v2, "iface"
 
-    iget-object v4, v1, Lcom/android/server/net/NetworkStatsService;->mActiveUidIfaces:Landroid/util/ArrayMap;
+    iget-object v3, v1, Lcom/android/server/net/NetworkStatsService;->mActiveUidIfaces:Landroid/util/ArrayMap;
 
-    invoke-virtual {v4, v0}, Landroid/util/ArrayMap;->keyAt(I)Ljava/lang/Object;
+    invoke-virtual {v3, v0}, Landroid/util/ArrayMap;->keyAt(I)Ljava/lang/Object;
 
-    move-result-object v4
+    move-result-object v3
 
-    invoke-virtual {v13, v2, v4}, Lcom/android/internal/util/IndentingPrintWriter;->printPair(Ljava/lang/String;Ljava/lang/Object;)Lcom/android/internal/util/IndentingPrintWriter;
+    invoke-virtual {v8, v2, v3}, Lcom/android/internal/util/IndentingPrintWriter;->printPair(Ljava/lang/String;Ljava/lang/Object;)Lcom/android/internal/util/IndentingPrintWriter;
 
-    .line 1573
-    const-string v2, "ident"
+    .line 1585
+    const-string/jumbo v2, "ident"
 
-    iget-object v4, v1, Lcom/android/server/net/NetworkStatsService;->mActiveUidIfaces:Landroid/util/ArrayMap;
+    iget-object v3, v1, Lcom/android/server/net/NetworkStatsService;->mActiveUidIfaces:Landroid/util/ArrayMap;
 
-    invoke-virtual {v4, v0}, Landroid/util/ArrayMap;->valueAt(I)Ljava/lang/Object;
+    invoke-virtual {v3, v0}, Landroid/util/ArrayMap;->valueAt(I)Ljava/lang/Object;
 
-    move-result-object v4
+    move-result-object v3
 
-    invoke-virtual {v13, v2, v4}, Lcom/android/internal/util/IndentingPrintWriter;->printPair(Ljava/lang/String;Ljava/lang/Object;)Lcom/android/internal/util/IndentingPrintWriter;
+    invoke-virtual {v8, v2, v3}, Lcom/android/internal/util/IndentingPrintWriter;->printPair(Ljava/lang/String;Ljava/lang/Object;)Lcom/android/internal/util/IndentingPrintWriter;
 
-    .line 1574
-    invoke-virtual {v13}, Lcom/android/internal/util/IndentingPrintWriter;->println()V
+    .line 1586
+    invoke-virtual {v8}, Lcom/android/internal/util/IndentingPrintWriter;->println()V
+    :try_end_19a
+    .catchall {:try_start_17f .. :try_end_19a} :catchall_166
 
-    .line 1571
+    .line 1583
     add-int/lit8 v0, v0, 0x1
 
-    goto :goto_14b
+    goto :goto_177
 
-    .line 1576
-    :cond_16f
-    invoke-virtual {v13}, Lcom/android/internal/util/IndentingPrintWriter;->decreaseIndent()Lcom/android/internal/util/IndentingPrintWriter;
+    .line 1588
+    .end local v0  # "i":I
+    :cond_19d
+    :try_start_19d
+    invoke-virtual {v8}, Lcom/android/internal/util/IndentingPrintWriter;->decreaseIndent()Lcom/android/internal/util/IndentingPrintWriter;
 
-    .line 1580
+    .line 1592
     iget-object v2, v1, Lcom/android/server/net/NetworkStatsService;->mOpenSessionCallsPerUid:Landroid/util/SparseIntArray;
 
     monitor-enter v2
-    :try_end_175
-    .catchall {:try_start_9d .. :try_end_175} :catchall_218
+    :try_end_1a3
+    .catchall {:try_start_19d .. :try_end_1a3} :catchall_250
 
-    .line 1581
-    :try_start_175
+    .line 1593
+    :try_start_1a3
     iget-object v0, v1, Lcom/android/server/net/NetworkStatsService;->mOpenSessionCallsPerUid:Landroid/util/SparseIntArray;
 
     invoke-virtual {v0}, Landroid/util/SparseIntArray;->clone()Landroid/util/SparseIntArray;
 
     move-result-object v0
 
-    .line 1582
+    .line 1594
+    .local v0, "calls":Landroid/util/SparseIntArray;
     monitor-exit v2
-    :try_end_17c
-    .catchall {:try_start_175 .. :try_end_17c} :catchall_215
+    :try_end_1aa
+    .catchall {:try_start_1a3 .. :try_end_1aa} :catchall_249
 
-    .line 1584
-    :try_start_17c
+    .line 1596
+    :try_start_1aa
     invoke-virtual {v0}, Landroid/util/SparseIntArray;->size()I
 
     move-result v2
 
-    .line 1585
-    new-array v4, v2, [J
+    .line 1597
+    .local v2, "N":I
+    new-array v3, v2, [J
 
-    .line 1586
-    move v5, v7
+    .line 1598
+    .local v3, "values":[J
+    const/4 v4, 0x0
 
-    :goto_183
-    const/16 v8, 0x20
+    .local v4, "j":I
+    :goto_1b1
+    const/16 v6, 0x20
 
-    if-ge v5, v2, :cond_19b
+    if-ge v4, v2, :cond_1cd
 
-    .line 1587
-    invoke-virtual {v0, v5}, Landroid/util/SparseIntArray;->valueAt(I)I
+    .line 1599
+    invoke-virtual {v0, v4}, Landroid/util/SparseIntArray;->valueAt(I)I
+
+    move-result v7
+    :try_end_1b9
+    .catchall {:try_start_1aa .. :try_end_1b9} :catchall_250
+
+    move-object/from16 v18, v10
+
+    .end local v10  # "argSet":Ljava/util/HashSet;, "Ljava/util/HashSet<Ljava/lang/String;>;"
+    .local v18, "argSet":Ljava/util/HashSet;, "Ljava/util/HashSet<Ljava/lang/String;>;"
+    int-to-long v9, v7
+
+    shl-long v6, v9, v6
+
+    :try_start_1be
+    invoke-virtual {v0, v4}, Landroid/util/SparseIntArray;->keyAt(I)I
 
     move-result v9
 
     int-to-long v9, v9
 
-    shl-long v8, v9, v8
+    or-long/2addr v6, v9
 
-    invoke-virtual {v0, v5}, Landroid/util/SparseIntArray;->keyAt(I)I
+    aput-wide v6, v3, v4
 
-    move-result v10
+    .line 1598
+    add-int/lit8 v4, v4, 0x1
 
-    move v15, v11
+    move-object/from16 v9, p3
 
-    int-to-long v10, v10
+    move-object/from16 v10, v18
 
-    or-long/2addr v8, v10
+    goto :goto_1b1
 
-    aput-wide v8, v4, v5
+    .end local v18  # "argSet":Ljava/util/HashSet;, "Ljava/util/HashSet<Ljava/lang/String;>;"
+    .restart local v10  # "argSet":Ljava/util/HashSet;, "Ljava/util/HashSet<Ljava/lang/String;>;"
+    :cond_1cd
+    move-object/from16 v18, v10
 
-    .line 1586
-    add-int/lit8 v5, v5, 0x1
-
-    move v11, v15
-
-    goto :goto_183
-
-    .line 1589
-    :cond_19b
-    move v15, v11
-
-    invoke-static {v4}, Ljava/util/Arrays;->sort([J)V
-
-    .line 1591
-    const-string v0, "Top openSession callers (uid=count):"
-
-    invoke-virtual {v13, v0}, Lcom/android/internal/util/IndentingPrintWriter;->println(Ljava/lang/String;)V
-
-    .line 1592
-    invoke-virtual {v13}, Lcom/android/internal/util/IndentingPrintWriter;->increaseIndent()Lcom/android/internal/util/IndentingPrintWriter;
-
-    .line 1593
-    add-int/lit8 v0, v2, -0x14
-
-    invoke-static {v7, v0}, Ljava/lang/Math;->max(II)I
-
-    move-result v0
-
-    .line 1594
-    sub-int/2addr v2, v3
-
-    :goto_1ae
-    if-lt v2, v0, :cond_1c9
-
-    .line 1595
-    aget-wide v9, v4, v2
-
-    const-wide/16 v16, -0x1
-
-    and-long v9, v9, v16
-
-    long-to-int v3, v9
-
-    .line 1596
-    aget-wide v9, v4, v2
-
-    shr-long/2addr v9, v8
-
-    long-to-int v5, v9
-
-    .line 1597
-    invoke-virtual {v13, v3}, Lcom/android/internal/util/IndentingPrintWriter;->print(I)V
-
-    const-string v3, "="
-
-    invoke-virtual {v13, v3}, Lcom/android/internal/util/IndentingPrintWriter;->print(Ljava/lang/String;)V
-
-    invoke-virtual {v13, v5}, Lcom/android/internal/util/IndentingPrintWriter;->println(I)V
-
-    .line 1594
-    add-int/lit8 v2, v2, -0x1
-
-    goto :goto_1ae
-
-    .line 1599
-    :cond_1c9
-    invoke-virtual {v13}, Lcom/android/internal/util/IndentingPrintWriter;->decreaseIndent()Lcom/android/internal/util/IndentingPrintWriter;
-
-    .line 1600
-    invoke-virtual {v13}, Lcom/android/internal/util/IndentingPrintWriter;->println()V
-
-    .line 1602
-    const-string v0, "Dev stats:"
-
-    invoke-virtual {v13, v0}, Lcom/android/internal/util/IndentingPrintWriter;->println(Ljava/lang/String;)V
+    .line 1601
+    .end local v4  # "j":I
+    .end local v10  # "argSet":Ljava/util/HashSet;, "Ljava/util/HashSet<Ljava/lang/String;>;"
+    .restart local v18  # "argSet":Ljava/util/HashSet;, "Ljava/util/HashSet<Ljava/lang/String;>;"
+    invoke-static {v3}, Ljava/util/Arrays;->sort([J)V
 
     .line 1603
-    invoke-virtual {v13}, Lcom/android/internal/util/IndentingPrintWriter;->increaseIndent()Lcom/android/internal/util/IndentingPrintWriter;
+    const-string v4, "Top openSession callers (uid=count):"
+
+    invoke-virtual {v8, v4}, Lcom/android/internal/util/IndentingPrintWriter;->println(Ljava/lang/String;)V
 
     .line 1604
-    iget-object v0, v1, Lcom/android/server/net/NetworkStatsService;->mDevRecorder:Lcom/android/server/net/NetworkStatsRecorder;
-
-    invoke-virtual {v0, v13, v6}, Lcom/android/server/net/NetworkStatsRecorder;->dumpLocked(Lcom/android/internal/util/IndentingPrintWriter;Z)V
+    invoke-virtual {v8}, Lcom/android/internal/util/IndentingPrintWriter;->increaseIndent()Lcom/android/internal/util/IndentingPrintWriter;
 
     .line 1605
-    invoke-virtual {v13}, Lcom/android/internal/util/IndentingPrintWriter;->decreaseIndent()Lcom/android/internal/util/IndentingPrintWriter;
+    add-int/lit8 v4, v2, -0x14
+
+    invoke-static {v5, v4}, Ljava/lang/Math;->max(II)I
+
+    move-result v4
+
+    .line 1606
+    .local v4, "end":I
+    add-int/lit8 v5, v2, -0x1
+
+    .local v5, "j":I
+    :goto_1e2
+    if-lt v5, v4, :cond_1fd
 
     .line 1607
-    const-string v0, "Xt stats:"
+    aget-wide v9, v3, v5
 
-    invoke-virtual {v13, v0}, Lcom/android/internal/util/IndentingPrintWriter;->println(Ljava/lang/String;)V
+    const-wide/16 v19, -0x1
+
+    and-long v9, v9, v19
+
+    long-to-int v7, v9
 
     .line 1608
-    invoke-virtual {v13}, Lcom/android/internal/util/IndentingPrintWriter;->increaseIndent()Lcom/android/internal/util/IndentingPrintWriter;
+    .local v7, "uid":I
+    aget-wide v9, v3, v5
+
+    shr-long/2addr v9, v6
+
+    long-to-int v9, v9
 
     .line 1609
-    iget-object v0, v1, Lcom/android/server/net/NetworkStatsService;->mXtRecorder:Lcom/android/server/net/NetworkStatsRecorder;
+    .local v9, "count":I
+    invoke-virtual {v8, v7}, Lcom/android/internal/util/IndentingPrintWriter;->print(I)V
 
-    invoke-virtual {v0, v13, v6}, Lcom/android/server/net/NetworkStatsRecorder;->dumpLocked(Lcom/android/internal/util/IndentingPrintWriter;Z)V
+    const-string v10, "="
 
-    .line 1610
-    invoke-virtual {v13}, Lcom/android/internal/util/IndentingPrintWriter;->decreaseIndent()Lcom/android/internal/util/IndentingPrintWriter;
+    invoke-virtual {v8, v10}, Lcom/android/internal/util/IndentingPrintWriter;->print(Ljava/lang/String;)V
+
+    invoke-virtual {v8, v9}, Lcom/android/internal/util/IndentingPrintWriter;->println(I)V
+
+    .line 1606
+    .end local v7  # "uid":I
+    .end local v9  # "count":I
+    add-int/lit8 v5, v5, -0x1
+
+    goto :goto_1e2
+
+    .line 1611
+    .end local v5  # "j":I
+    :cond_1fd
+    invoke-virtual {v8}, Lcom/android/internal/util/IndentingPrintWriter;->decreaseIndent()Lcom/android/internal/util/IndentingPrintWriter;
 
     .line 1612
-    if-eqz v15, :cond_201
-
-    .line 1613
-    const-string v0, "UID stats:"
-
-    invoke-virtual {v13, v0}, Lcom/android/internal/util/IndentingPrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {v8}, Lcom/android/internal/util/IndentingPrintWriter;->println()V
 
     .line 1614
-    invoke-virtual {v13}, Lcom/android/internal/util/IndentingPrintWriter;->increaseIndent()Lcom/android/internal/util/IndentingPrintWriter;
+    const-string v5, "Dev stats:"
+
+    invoke-virtual {v8, v5}, Lcom/android/internal/util/IndentingPrintWriter;->println(Ljava/lang/String;)V
 
     .line 1615
-    iget-object v0, v1, Lcom/android/server/net/NetworkStatsService;->mUidRecorder:Lcom/android/server/net/NetworkStatsRecorder;
-
-    invoke-virtual {v0, v13, v6}, Lcom/android/server/net/NetworkStatsRecorder;->dumpLocked(Lcom/android/internal/util/IndentingPrintWriter;Z)V
+    invoke-virtual {v8}, Lcom/android/internal/util/IndentingPrintWriter;->increaseIndent()Lcom/android/internal/util/IndentingPrintWriter;
 
     .line 1616
-    invoke-virtual {v13}, Lcom/android/internal/util/IndentingPrintWriter;->decreaseIndent()Lcom/android/internal/util/IndentingPrintWriter;
+    iget-object v5, v1, Lcom/android/server/net/NetworkStatsService;->mDevRecorder:Lcom/android/server/net/NetworkStatsRecorder;
+
+    invoke-virtual {v5, v8, v15}, Lcom/android/server/net/NetworkStatsRecorder;->dumpLocked(Lcom/android/internal/util/IndentingPrintWriter;Z)V
+
+    .line 1617
+    invoke-virtual {v8}, Lcom/android/internal/util/IndentingPrintWriter;->decreaseIndent()Lcom/android/internal/util/IndentingPrintWriter;
 
     .line 1619
-    :cond_201
-    if-eqz v12, :cond_213
+    const-string v5, "Xt stats:"
+
+    invoke-virtual {v8, v5}, Lcom/android/internal/util/IndentingPrintWriter;->println(Ljava/lang/String;)V
 
     .line 1620
-    const-string v0, "UID tag stats:"
-
-    invoke-virtual {v13, v0}, Lcom/android/internal/util/IndentingPrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {v8}, Lcom/android/internal/util/IndentingPrintWriter;->increaseIndent()Lcom/android/internal/util/IndentingPrintWriter;
 
     .line 1621
-    invoke-virtual {v13}, Lcom/android/internal/util/IndentingPrintWriter;->increaseIndent()Lcom/android/internal/util/IndentingPrintWriter;
+    iget-object v5, v1, Lcom/android/server/net/NetworkStatsService;->mXtRecorder:Lcom/android/server/net/NetworkStatsRecorder;
+
+    invoke-virtual {v5, v8, v15}, Lcom/android/server/net/NetworkStatsRecorder;->dumpLocked(Lcom/android/internal/util/IndentingPrintWriter;Z)V
 
     .line 1622
-    iget-object v0, v1, Lcom/android/server/net/NetworkStatsService;->mUidTagRecorder:Lcom/android/server/net/NetworkStatsRecorder;
+    invoke-virtual {v8}, Lcom/android/internal/util/IndentingPrintWriter;->decreaseIndent()Lcom/android/internal/util/IndentingPrintWriter;
 
-    invoke-virtual {v0, v13, v6}, Lcom/android/server/net/NetworkStatsRecorder;->dumpLocked(Lcom/android/internal/util/IndentingPrintWriter;Z)V
-
-    .line 1623
-    invoke-virtual {v13}, Lcom/android/internal/util/IndentingPrintWriter;->decreaseIndent()Lcom/android/internal/util/IndentingPrintWriter;
+    .line 1624
+    if-eqz v16, :cond_235
 
     .line 1625
-    :cond_213
-    monitor-exit v14
-    :try_end_214
-    .catchall {:try_start_17c .. :try_end_214} :catchall_218
+    const-string v5, "UID stats:"
+
+    invoke-virtual {v8, v5}, Lcom/android/internal/util/IndentingPrintWriter;->println(Ljava/lang/String;)V
 
     .line 1626
+    invoke-virtual {v8}, Lcom/android/internal/util/IndentingPrintWriter;->increaseIndent()Lcom/android/internal/util/IndentingPrintWriter;
+
+    .line 1627
+    iget-object v5, v1, Lcom/android/server/net/NetworkStatsService;->mUidRecorder:Lcom/android/server/net/NetworkStatsRecorder;
+
+    invoke-virtual {v5, v8, v15}, Lcom/android/server/net/NetworkStatsRecorder;->dumpLocked(Lcom/android/internal/util/IndentingPrintWriter;Z)V
+
+    .line 1628
+    invoke-virtual {v8}, Lcom/android/internal/util/IndentingPrintWriter;->decreaseIndent()Lcom/android/internal/util/IndentingPrintWriter;
+
+    .line 1631
+    :cond_235
+    if-eqz v17, :cond_247
+
+    .line 1632
+    const-string v5, "UID tag stats:"
+
+    invoke-virtual {v8, v5}, Lcom/android/internal/util/IndentingPrintWriter;->println(Ljava/lang/String;)V
+
+    .line 1633
+    invoke-virtual {v8}, Lcom/android/internal/util/IndentingPrintWriter;->increaseIndent()Lcom/android/internal/util/IndentingPrintWriter;
+
+    .line 1634
+    iget-object v5, v1, Lcom/android/server/net/NetworkStatsService;->mUidTagRecorder:Lcom/android/server/net/NetworkStatsRecorder;
+
+    invoke-virtual {v5, v8, v15}, Lcom/android/server/net/NetworkStatsRecorder;->dumpLocked(Lcom/android/internal/util/IndentingPrintWriter;Z)V
+
+    .line 1635
+    invoke-virtual {v8}, Lcom/android/internal/util/IndentingPrintWriter;->decreaseIndent()Lcom/android/internal/util/IndentingPrintWriter;
+
+    .line 1637
+    .end local v0  # "calls":Landroid/util/SparseIntArray;
+    .end local v2  # "N":I
+    .end local v3  # "values":[J
+    .end local v4  # "end":I
+    :cond_247
+    monitor-exit v22
+    :try_end_248
+    .catchall {:try_start_1be .. :try_end_248} :catchall_25c
+
+    .line 1638
     return-void
 
-    .line 1582
-    :catchall_215
+    .line 1594
+    .end local v18  # "argSet":Ljava/util/HashSet;, "Ljava/util/HashSet<Ljava/lang/String;>;"
+    .restart local v10  # "argSet":Ljava/util/HashSet;, "Ljava/util/HashSet<Ljava/lang/String;>;"
+    :catchall_249
     move-exception v0
 
-    :try_start_216
+    move-object/from16 v18, v10
+
+    .end local v10  # "argSet":Ljava/util/HashSet;, "Ljava/util/HashSet<Ljava/lang/String;>;"
+    .restart local v18  # "argSet":Ljava/util/HashSet;, "Ljava/util/HashSet<Ljava/lang/String;>;"
+    :goto_24c
+    :try_start_24c
     monitor-exit v2
-    :try_end_217
-    .catchall {:try_start_216 .. :try_end_217} :catchall_215
+    :try_end_24d
+    .catchall {:try_start_24c .. :try_end_24d} :catchall_24e
 
-    :try_start_217
+    .end local v8  # "pw":Lcom/android/internal/util/IndentingPrintWriter;
+    .end local v11  # "duration":J
+    .end local v13  # "poll":Z
+    .end local v14  # "checkin":Z
+    .end local v15  # "fullHistory":Z
+    .end local v16  # "includeUid":Z
+    .end local v17  # "includeTag":Z
+    .end local v18  # "argSet":Ljava/util/HashSet;, "Ljava/util/HashSet<Ljava/lang/String;>;"
+    .end local p0  # "this":Lcom/android/server/net/NetworkStatsService;
+    .end local p1  # "fd":Ljava/io/FileDescriptor;
+    .end local p2  # "rawWriter":Ljava/io/PrintWriter;
+    .end local p3  # "args":[Ljava/lang/String;
+    :try_start_24d
     throw v0
 
-    .line 1625
-    :catchall_218
+    .restart local v8  # "pw":Lcom/android/internal/util/IndentingPrintWriter;
+    .restart local v11  # "duration":J
+    .restart local v13  # "poll":Z
+    .restart local v14  # "checkin":Z
+    .restart local v15  # "fullHistory":Z
+    .restart local v16  # "includeUid":Z
+    .restart local v17  # "includeTag":Z
+    .restart local v18  # "argSet":Ljava/util/HashSet;, "Ljava/util/HashSet<Ljava/lang/String;>;"
+    .restart local p0  # "this":Lcom/android/server/net/NetworkStatsService;
+    .restart local p1  # "fd":Ljava/io/FileDescriptor;
+    .restart local p2  # "rawWriter":Ljava/io/PrintWriter;
+    .restart local p3  # "args":[Ljava/lang/String;
+    :catchall_24e
     move-exception v0
 
-    monitor-exit v14
-    :try_end_21a
-    .catchall {:try_start_217 .. :try_end_21a} :catchall_218
+    goto :goto_24c
+
+    .line 1637
+    .end local v18  # "argSet":Ljava/util/HashSet;, "Ljava/util/HashSet<Ljava/lang/String;>;"
+    .restart local v10  # "argSet":Ljava/util/HashSet;, "Ljava/util/HashSet<Ljava/lang/String;>;"
+    :catchall_250
+    move-exception v0
+
+    move-object/from16 v18, v10
+
+    .end local v10  # "argSet":Ljava/util/HashSet;, "Ljava/util/HashSet<Ljava/lang/String;>;"
+    .restart local v18  # "argSet":Ljava/util/HashSet;, "Ljava/util/HashSet<Ljava/lang/String;>;"
+    goto :goto_25a
+
+    .end local v8  # "pw":Lcom/android/internal/util/IndentingPrintWriter;
+    .end local v18  # "argSet":Ljava/util/HashSet;, "Ljava/util/HashSet<Ljava/lang/String;>;"
+    .restart local v6  # "pw":Lcom/android/internal/util/IndentingPrintWriter;
+    .restart local v10  # "argSet":Ljava/util/HashSet;, "Ljava/util/HashSet<Ljava/lang/String;>;"
+    :catchall_254
+    move-exception v0
+
+    move-object v8, v6
+
+    move-object/from16 v22, v7
+
+    move-object/from16 v18, v10
+
+    .end local v6  # "pw":Lcom/android/internal/util/IndentingPrintWriter;
+    .end local v10  # "argSet":Ljava/util/HashSet;, "Ljava/util/HashSet<Ljava/lang/String;>;"
+    .restart local v8  # "pw":Lcom/android/internal/util/IndentingPrintWriter;
+    .restart local v18  # "argSet":Ljava/util/HashSet;, "Ljava/util/HashSet<Ljava/lang/String;>;"
+    :goto_25a
+    monitor-exit v22
+    :try_end_25b
+    .catchall {:try_start_24d .. :try_end_25b} :catchall_25c
 
     throw v0
+
+    :catchall_25c
+    move-exception v0
+
+    goto :goto_25a
 .end method
 
 .method public forceUpdate()V
     .registers 4
 
-    .line 877
+    .line 883
     iget-object v0, p0, Lcom/android/server/net/NetworkStatsService;->mContext:Landroid/content/Context;
 
     const-string v1, "android.permission.READ_NETWORK_USAGE_HISTORY"
@@ -4504,15 +5044,16 @@
 
     invoke-virtual {v0, v1, v2}, Landroid/content/Context;->enforceCallingOrSelfPermission(Ljava/lang/String;Ljava/lang/String;)V
 
-    .line 878
+    .line 884
     invoke-direct {p0}, Lcom/android/server/net/NetworkStatsService;->assertBandwidthControlEnabled()V
 
-    .line 880
+    .line 886
     invoke-static {}, Landroid/os/Binder;->clearCallingIdentity()J
 
     move-result-wide v0
 
-    .line 882
+    .line 888
+    .local v0, "token":J
     const/4 v2, 0x3
 
     :try_start_11
@@ -4520,16 +5061,16 @@
     :try_end_14
     .catchall {:try_start_11 .. :try_end_14} :catchall_19
 
-    .line 884
+    .line 890
     invoke-static {v0, v1}, Landroid/os/Binder;->restoreCallingIdentity(J)V
 
-    .line 885
+    .line 891
     nop
 
-    .line 886
+    .line 892
     return-void
 
-    .line 884
+    .line 890
     :catchall_19
     move-exception v2
 
@@ -4538,62 +5079,68 @@
     throw v2
 .end method
 
-.method public forceUpdateIfaces([Landroid/net/Network;[Landroid/net/NetworkState;Ljava/lang/String;)V
-    .registers 6
+.method public forceUpdateIfaces([Landroid/net/Network;[Lcom/android/internal/net/VpnInfo;[Landroid/net/NetworkState;Ljava/lang/String;)V
+    .registers 8
+    .param p1, "defaultNetworks"  # [Landroid/net/Network;
+    .param p2, "vpnArray"  # [Lcom/android/internal/net/VpnInfo;
+    .param p3, "networkStates"  # [Landroid/net/NetworkState;
+    .param p4, "activeIface"  # Ljava/lang/String;
 
-    .line 864
+    .line 870
     iget-object v0, p0, Lcom/android/server/net/NetworkStatsService;->mContext:Landroid/content/Context;
 
     invoke-static {v0}, Landroid/net/NetworkStack;->checkNetworkStackPermission(Landroid/content/Context;)V
 
-    .line 865
+    .line 871
     invoke-direct {p0}, Lcom/android/server/net/NetworkStatsService;->assertBandwidthControlEnabled()V
 
-    .line 867
+    .line 873
     invoke-static {}, Landroid/os/Binder;->clearCallingIdentity()J
 
     move-result-wide v0
 
-    .line 869
+    .line 875
+    .local v0, "token":J
     :try_start_c
-    invoke-direct {p0, p1, p2, p3}, Lcom/android/server/net/NetworkStatsService;->updateIfaces([Landroid/net/Network;[Landroid/net/NetworkState;Ljava/lang/String;)V
+    invoke-direct {p0, p1, p2, p3, p4}, Lcom/android/server/net/NetworkStatsService;->updateIfaces([Landroid/net/Network;[Lcom/android/internal/net/VpnInfo;[Landroid/net/NetworkState;Ljava/lang/String;)V
     :try_end_f
     .catchall {:try_start_c .. :try_end_f} :catchall_14
 
-    .line 871
+    .line 877
     invoke-static {v0, v1}, Landroid/os/Binder;->restoreCallingIdentity(J)V
 
-    .line 872
+    .line 878
     nop
 
-    .line 873
+    .line 879
     return-void
 
-    .line 871
+    .line 877
     :catchall_14
-    move-exception p1
+    move-exception v2
 
     invoke-static {v0, v1}, Landroid/os/Binder;->restoreCallingIdentity(J)V
 
-    throw p1
+    throw v2
 .end method
 
 .method public getDataLayerSnapshotForUid(I)Landroid/net/NetworkStats;
-    .registers 6
+    .registers 9
+    .param p1, "uid"  # I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
         }
     .end annotation
 
-    .line 775
+    .line 780
     invoke-static {}, Landroid/os/Binder;->getCallingUid()I
 
     move-result v0
 
     if-eq v0, p1, :cond_f
 
-    .line 776
+    .line 781
     iget-object v0, p0, Lcom/android/server/net/NetworkStatsService;->mContext:Landroid/content/Context;
 
     const-string v1, "android.permission.ACCESS_NETWORK_STATE"
@@ -4602,16 +5149,17 @@
 
     invoke-virtual {v0, v1, v2}, Landroid/content/Context;->enforceCallingOrSelfPermission(Ljava/lang/String;Ljava/lang/String;)V
 
-    .line 778
+    .line 783
     :cond_f
     invoke-direct {p0}, Lcom/android/server/net/NetworkStatsService;->assertBandwidthControlEnabled()V
 
-    .line 782
+    .line 787
     invoke-static {}, Landroid/os/Binder;->clearCallingIdentity()J
 
     move-result-wide v0
 
-    .line 785
+    .line 790
+    .local v0, "token":J
     :try_start_16
     iget-object v2, p0, Lcom/android/server/net/NetworkStatsService;->mNetworkManager:Landroid/os/INetworkManagementService;
 
@@ -4619,127 +5167,141 @@
 
     invoke-interface {v2, p1, v3}, Landroid/os/INetworkManagementService;->getNetworkStatsUidDetail(I[Ljava/lang/String;)Landroid/net/NetworkStats;
 
-    move-result-object p1
+    move-result-object v2
     :try_end_1e
     .catchall {:try_start_16 .. :try_end_1e} :catchall_4b
 
-    .line 788
+    .line 793
+    .local v2, "networkLayer":Landroid/net/NetworkStats;
     invoke-static {v0, v1}, Landroid/os/Binder;->restoreCallingIdentity(J)V
 
-    .line 789
+    .line 794
     nop
 
-    .line 792
-    iget-object v0, p0, Lcom/android/server/net/NetworkStatsService;->mUidOperations:Landroid/net/NetworkStats;
-
-    invoke-virtual {p1, v0}, Landroid/net/NetworkStats;->spliceOperationsFrom(Landroid/net/NetworkStats;)V
-
-    .line 794
-    new-instance v0, Landroid/net/NetworkStats;
-
-    .line 795
-    invoke-virtual {p1}, Landroid/net/NetworkStats;->getElapsedRealtime()J
-
-    move-result-wide v1
-
-    invoke-virtual {p1}, Landroid/net/NetworkStats;->size()I
-
-    move-result v3
-
-    invoke-direct {v0, v1, v2, v3}, Landroid/net/NetworkStats;-><init>(JI)V
-
     .line 797
-    const/4 v1, 0x0
+    iget-object v3, p0, Lcom/android/server/net/NetworkStatsService;->mUidOperations:Landroid/net/NetworkStats;
 
-    .line 798
-    const/4 v2, 0x0
-
-    :goto_36
-    invoke-virtual {p1}, Landroid/net/NetworkStats;->size()I
-
-    move-result v3
-
-    if-ge v2, v3, :cond_4a
+    invoke-virtual {v2, v3}, Landroid/net/NetworkStats;->spliceOperationsFrom(Landroid/net/NetworkStats;)V
 
     .line 799
-    invoke-virtual {p1, v2, v1}, Landroid/net/NetworkStats;->getValues(ILandroid/net/NetworkStats$Entry;)Landroid/net/NetworkStats$Entry;
-
-    move-result-object v1
+    new-instance v3, Landroid/net/NetworkStats;
 
     .line 800
-    sget-object v3, Landroid/net/NetworkStats;->IFACE_ALL:Ljava/lang/String;
+    invoke-virtual {v2}, Landroid/net/NetworkStats;->getElapsedRealtime()J
 
-    iput-object v3, v1, Landroid/net/NetworkStats$Entry;->iface:Ljava/lang/String;
+    move-result-wide v4
 
-    .line 801
-    invoke-virtual {v0, v1}, Landroid/net/NetworkStats;->combineValues(Landroid/net/NetworkStats$Entry;)Landroid/net/NetworkStats;
+    invoke-virtual {v2}, Landroid/net/NetworkStats;->size()I
 
-    .line 798
-    add-int/lit8 v2, v2, 0x1
+    move-result v6
+
+    invoke-direct {v3, v4, v5, v6}, Landroid/net/NetworkStats;-><init>(JI)V
+
+    .line 802
+    .local v3, "dataLayer":Landroid/net/NetworkStats;
+    const/4 v4, 0x0
+
+    .line 803
+    .local v4, "entry":Landroid/net/NetworkStats$Entry;
+    const/4 v5, 0x0
+
+    .local v5, "i":I
+    :goto_36
+    invoke-virtual {v2}, Landroid/net/NetworkStats;->size()I
+
+    move-result v6
+
+    if-ge v5, v6, :cond_4a
+
+    .line 804
+    invoke-virtual {v2, v5, v4}, Landroid/net/NetworkStats;->getValues(ILandroid/net/NetworkStats$Entry;)Landroid/net/NetworkStats$Entry;
+
+    move-result-object v4
+
+    .line 805
+    sget-object v6, Landroid/net/NetworkStats;->IFACE_ALL:Ljava/lang/String;
+
+    iput-object v6, v4, Landroid/net/NetworkStats$Entry;->iface:Ljava/lang/String;
+
+    .line 806
+    invoke-virtual {v3, v4}, Landroid/net/NetworkStats;->combineValues(Landroid/net/NetworkStats$Entry;)Landroid/net/NetworkStats;
+
+    .line 803
+    add-int/lit8 v5, v5, 0x1
 
     goto :goto_36
 
-    .line 804
+    .line 809
+    .end local v5  # "i":I
     :cond_4a
-    return-object v0
+    return-object v3
 
-    .line 788
+    .line 793
+    .end local v2  # "networkLayer":Landroid/net/NetworkStats;
+    .end local v3  # "dataLayer":Landroid/net/NetworkStats;
+    .end local v4  # "entry":Landroid/net/NetworkStats$Entry;
     :catchall_4b
-    move-exception p1
+    move-exception v2
 
     invoke-static {v0, v1}, Landroid/os/Binder;->restoreCallingIdentity(J)V
 
-    throw p1
+    throw v2
 .end method
 
 .method public getDetailedUidStats([Ljava/lang/String;)Landroid/net/NetworkStats;
-    .registers 5
+    .registers 7
+    .param p1, "requiredIfaces"  # [Ljava/lang/String;
 
-    .line 810
+    .line 815
     nop
 
-    .line 811
+    .line 816
     :try_start_1
     invoke-static {p1}, Lcom/android/server/net/NetworkStatsFactory;->augmentWithStackedInterfaces([Ljava/lang/String;)[Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    .line 812
-    invoke-direct {p0, p1}, Lcom/android/server/net/NetworkStatsService;->getNetworkStatsUidDetail([Ljava/lang/String;)Landroid/net/NetworkStats;
+    .line 817
+    .local v0, "ifacesToQuery":[Ljava/lang/String;
+    invoke-direct {p0, v0}, Lcom/android/server/net/NetworkStatsService;->getNetworkStatsUidDetail([Ljava/lang/String;)Landroid/net/NetworkStats;
 
-    move-result-object p1
+    move-result-object v1
     :try_end_9
     .catch Landroid/os/RemoteException; {:try_start_1 .. :try_end_9} :catch_a
 
-    return-object p1
+    return-object v1
 
-    .line 813
+    .line 818
+    .end local v0  # "ifacesToQuery":[Ljava/lang/String;
     :catch_a
-    move-exception p1
+    move-exception v0
 
-    .line 814
-    const-string v0, "NetworkStats"
+    .line 819
+    .local v0, "e":Landroid/os/RemoteException;
+    const-string v1, "NetworkStats"
 
-    const-string v1, "Error compiling UID stats"
+    const-string v2, "Error compiling UID stats"
 
-    invoke-static {v0, v1, p1}, Landroid/util/Log;->wtf(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    invoke-static {v1, v2, v0}, Landroid/util/Log;->wtf(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
-    .line 815
-    new-instance p1, Landroid/net/NetworkStats;
+    .line 820
+    new-instance v1, Landroid/net/NetworkStats;
 
-    const-wide/16 v0, 0x0
+    const-wide/16 v2, 0x0
 
-    const/4 v2, 0x0
+    const/4 v4, 0x0
 
-    invoke-direct {p1, v0, v1, v2}, Landroid/net/NetworkStats;-><init>(JI)V
+    invoke-direct {v1, v2, v3, v4}, Landroid/net/NetworkStats;-><init>(JI)V
 
-    return-object p1
+    return-object v1
 .end method
 
 .method public getIfaceStats(Ljava/lang/String;I)J
     .registers 7
+    .param p1, "iface"  # Ljava/lang/String;
+    .param p2, "type"  # I
 
-    .line 961
+    .line 967
     invoke-direct {p0}, Lcom/android/server/net/NetworkStatsService;->checkBpfStatsEnable()Z
 
     move-result v0
@@ -4748,31 +5310,32 @@
 
     move-result-wide v0
 
-    .line 962
+    .line 968
+    .local v0, "nativeIfaceStats":J
     const-wide/16 v2, -0x1
 
     cmp-long v2, v0, v2
 
     if-nez v2, :cond_f
 
-    .line 963
+    .line 969
     return-wide v0
 
-    .line 971
+    .line 977
     :cond_f
     invoke-direct {p0, p1, p2}, Lcom/android/server/net/NetworkStatsService;->getTetherStats(Ljava/lang/String;I)J
 
-    move-result-wide p1
+    move-result-wide v2
 
-    add-long/2addr v0, p1
+    add-long/2addr v2, v0
 
-    return-wide v0
+    return-wide v2
 .end method
 
 .method public getMobileIfaces()[Ljava/lang/String;
     .registers 2
 
-    .line 821
+    .line 826
     iget-object v0, p0, Lcom/android/server/net/NetworkStatsService;->mMobileIfaces:[Ljava/lang/String;
 
     return-object v0
@@ -4780,8 +5343,9 @@
 
 .method public getTotalStats(I)J
     .registers 6
+    .param p1, "type"  # I
 
-    .line 977
+    .line 983
     invoke-direct {p0}, Lcom/android/server/net/NetworkStatsService;->checkBpfStatsEnable()Z
 
     move-result v0
@@ -4790,17 +5354,18 @@
 
     move-result-wide v0
 
-    .line 978
+    .line 984
+    .local v0, "nativeTotalStats":J
     const-wide/16 v2, -0x1
 
     cmp-long v2, v0, v2
 
     if-nez v2, :cond_f
 
-    .line 979
+    .line 985
     return-wide v0
 
-    .line 982
+    .line 988
     :cond_f
     sget-object v2, Landroid/net/NetworkStats;->IFACE_ALL:Ljava/lang/String;
 
@@ -4808,117 +5373,85 @@
 
     move-result-wide v2
 
-    add-long/2addr v0, v2
+    add-long/2addr v2, v0
 
-    return-wide v0
+    return-wide v2
 .end method
 
 .method public getUidStats(II)J
-    .registers 4
+    .registers 5
+    .param p1, "uid"  # I
+    .param p2, "type"  # I
 
-    .line 956
+    .line 962
     invoke-direct {p0}, Lcom/android/server/net/NetworkStatsService;->checkBpfStatsEnable()Z
 
     move-result v0
 
     invoke-static {p1, p2, v0}, Lcom/android/server/net/NetworkStatsService;->nativeGetUidStat(IIZ)J
 
-    move-result-wide p1
+    move-result-wide v0
 
-    return-wide p1
+    return-wide v0
 .end method
 
 .method public incrementOperationCount(III)V
-    .registers 24
+    .registers 26
+    .param p1, "uid"  # I
+    .param p2, "tag"  # I
+    .param p3, "operationCount"  # I
 
-    .line 826
-    move-object/from16 v0, p0
+    .line 831
+    move-object/from16 v1, p0
 
-    move/from16 v14, p1
+    move/from16 v15, p1
 
-    move/from16 v1, p3
+    move/from16 v13, p3
 
     invoke-static {}, Landroid/os/Binder;->getCallingUid()I
 
-    move-result v2
+    move-result v0
 
-    if-eq v2, v14, :cond_15
+    if-eq v0, v15, :cond_15
 
-    .line 827
-    iget-object v2, v0, Lcom/android/server/net/NetworkStatsService;->mContext:Landroid/content/Context;
+    .line 832
+    iget-object v0, v1, Lcom/android/server/net/NetworkStatsService;->mContext:Landroid/content/Context;
 
-    const-string v3, "android.permission.UPDATE_DEVICE_STATS"
+    const-string v2, "android.permission.UPDATE_DEVICE_STATS"
 
-    const-string v4, "NetworkStats"
+    const-string v3, "NetworkStats"
 
-    invoke-virtual {v2, v3, v4}, Landroid/content/Context;->enforceCallingOrSelfPermission(Ljava/lang/String;Ljava/lang/String;)V
+    invoke-virtual {v0, v2, v3}, Landroid/content/Context;->enforceCallingOrSelfPermission(Ljava/lang/String;Ljava/lang/String;)V
 
-    .line 831
+    .line 836
     :cond_15
-    if-ltz v1, :cond_6b
-
-    .line 834
-    if-eqz p2, :cond_62
-
-    .line 838
-    iget-object v15, v0, Lcom/android/server/net/NetworkStatsService;->mStatsLock:Ljava/lang/Object;
-
-    monitor-enter v15
+    if-ltz v13, :cond_73
 
     .line 839
+    if-eqz p2, :cond_69
+
+    .line 843
+    iget-object v14, v1, Lcom/android/server/net/NetworkStatsService;->mStatsLock:Ljava/lang/Object;
+
+    monitor-enter v14
+
+    .line 844
     :try_start_1c
-    iget-object v2, v0, Lcom/android/server/net/NetworkStatsService;->mActiveUidCounterSet:Landroid/util/SparseIntArray;
+    iget-object v0, v1, Lcom/android/server/net/NetworkStatsService;->mActiveUidCounterSet:Landroid/util/SparseIntArray;
 
-    const/4 v3, 0x0
+    const/4 v2, 0x0
 
-    invoke-virtual {v2, v14, v3}, Landroid/util/SparseIntArray;->get(II)I
+    invoke-virtual {v0, v15, v2}, Landroid/util/SparseIntArray;->get(II)I
 
-    move-result v16
+    move-result v5
 
-    .line 840
-    iget-object v2, v0, Lcom/android/server/net/NetworkStatsService;->mUidOperations:Landroid/net/NetworkStats;
+    .line 845
+    .local v5, "set":I
+    iget-object v2, v1, Lcom/android/server/net/NetworkStatsService;->mUidOperations:Landroid/net/NetworkStats;
 
-    iget-object v3, v0, Lcom/android/server/net/NetworkStatsService;->mActiveIface:Ljava/lang/String;
+    iget-object v3, v1, Lcom/android/server/net/NetworkStatsService;->mActiveIface:Ljava/lang/String;
     :try_end_27
-    .catchall {:try_start_1c .. :try_end_27} :catchall_5b
-
-    const-wide/16 v6, 0x0
-
-    const-wide/16 v8, 0x0
-
-    const-wide/16 v10, 0x0
-
-    const-wide/16 v12, 0x0
-
-    int-to-long v4, v1
-
-    move-object v1, v2
-
-    move-object v2, v3
-
-    move/from16 v3, p1
-
-    move-wide/from16 v17, v4
-
-    move/from16 v4, v16
-
-    move/from16 v5, p2
-
-    move-object/from16 v19, v15
-
-    move-wide/from16 v14, v17
-
-    :try_start_3e
-    invoke-virtual/range {v1 .. v15}, Landroid/net/NetworkStats;->combineValues(Ljava/lang/String;IIIJJJJJ)Landroid/net/NetworkStats;
-
-    .line 842
-    iget-object v1, v0, Lcom/android/server/net/NetworkStatsService;->mUidOperations:Landroid/net/NetworkStats;
-
-    iget-object v2, v0, Lcom/android/server/net/NetworkStatsService;->mActiveIface:Ljava/lang/String;
-
-    const/4 v4, 0x0
-
-    const-wide/16 v5, 0x0
+    .catchall {:try_start_1c .. :try_end_27} :catchall_61
 
     const-wide/16 v7, 0x0
 
@@ -4926,59 +5459,116 @@
 
     const-wide/16 v11, 0x0
 
-    move-object v0, v1
+    const-wide/16 v16, 0x0
 
-    move-object v1, v2
+    move-object/from16 v18, v14
 
-    move/from16 v2, p1
+    int-to-long v14, v13
 
-    move/from16 v3, v16
+    move/from16 v4, p1
 
-    move-wide/from16 v13, v17
+    move/from16 v6, p2
 
-    invoke-virtual/range {v0 .. v14}, Landroid/net/NetworkStats;->combineValues(Ljava/lang/String;IIIJJJJJ)Landroid/net/NetworkStats;
+    move-object/from16 v21, v18
 
-    .line 844
-    monitor-exit v19
+    move-wide/from16 v18, v14
 
-    .line 845
+    move v15, v13
+
+    move-wide/from16 v13, v16
+
+    move-wide/from16 v15, v18
+
+    :try_start_3f
+    invoke-virtual/range {v2 .. v16}, Landroid/net/NetworkStats;->combineValues(Ljava/lang/String;IIIJJJJJ)Landroid/net/NetworkStats;
+
+    .line 847
+    iget-object v6, v1, Lcom/android/server/net/NetworkStatsService;->mUidOperations:Landroid/net/NetworkStats;
+
+    iget-object v7, v1, Lcom/android/server/net/NetworkStatsService;->mActiveIface:Ljava/lang/String;
+    :try_end_46
+    .catchall {:try_start_3f .. :try_end_46} :catchall_5d
+
+    const/4 v10, 0x0
+
+    const-wide/16 v11, 0x0
+
+    const-wide/16 v13, 0x0
+
+    const-wide/16 v15, 0x0
+
+    const-wide/16 v17, 0x0
+
+    move/from16 v2, p3
+
+    int-to-long v3, v2
+
+    move/from16 v8, p1
+
+    move v9, v5
+
+    move-wide/from16 v19, v3
+
+    :try_start_57
+    invoke-virtual/range {v6 .. v20}, Landroid/net/NetworkStats;->combineValues(Ljava/lang/String;IIIJJJJJ)Landroid/net/NetworkStats;
+
+    .line 849
+    nop
+
+    .end local v5  # "set":I
+    monitor-exit v21
+
+    .line 850
     return-void
 
-    .line 844
-    :catchall_5b
+    .line 849
+    :catchall_5d
     move-exception v0
 
-    move-object/from16 v19, v15
+    move/from16 v2, p3
 
-    :goto_5e
-    monitor-exit v19
-    :try_end_5f
-    .catchall {:try_start_3e .. :try_end_5f} :catchall_60
+    goto :goto_65
+
+    :catchall_61
+    move-exception v0
+
+    move v2, v13
+
+    move-object/from16 v21, v14
+
+    :goto_65
+    monitor-exit v21
+    :try_end_66
+    .catchall {:try_start_57 .. :try_end_66} :catchall_67
 
     throw v0
 
-    :catchall_60
+    :catchall_67
     move-exception v0
 
-    goto :goto_5e
+    goto :goto_65
 
-    .line 835
-    :cond_62
+    .line 840
+    :cond_69
+    move v2, v13
+
     new-instance v0, Ljava/lang/IllegalArgumentException;
 
-    const-string/jumbo v1, "operation count must have specific tag"
+    const-string/jumbo v3, "operation count must have specific tag"
 
-    invoke-direct {v0, v1}, Ljava/lang/IllegalArgumentException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v0, v3}, Ljava/lang/IllegalArgumentException;-><init>(Ljava/lang/String;)V
 
     throw v0
 
-    .line 832
-    :cond_6b
+    .line 837
+    :cond_73
+    move v2, v13
+
     new-instance v0, Ljava/lang/IllegalArgumentException;
 
-    const-string/jumbo v1, "operation count can only be incremented"
+    const-string/jumbo v3, "operation count can only be incremented"
 
-    invoke-direct {v0, v1}, Ljava/lang/IllegalArgumentException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v0, v3}, Ljava/lang/IllegalArgumentException;-><init>(Ljava/lang/String;)V
 
     throw v0
 .end method
@@ -4986,7 +5576,7 @@
 .method public openSession()Landroid/net/INetworkStatsSession;
     .registers 3
 
-    .line 532
+    .line 537
     const/4 v0, 0x4
 
     const/4 v1, 0x0
@@ -4999,63 +5589,72 @@
 .end method
 
 .method public openSessionForUsageStats(ILjava/lang/String;)Landroid/net/INetworkStatsSession;
-    .registers 3
+    .registers 4
+    .param p1, "flags"  # I
+    .param p2, "callingPackage"  # Ljava/lang/String;
 
-    .line 537
+    .line 542
     invoke-direct {p0, p1, p2}, Lcom/android/server/net/NetworkStatsService;->openSessionInternal(ILjava/lang/String;)Landroid/net/INetworkStatsSession;
 
-    move-result-object p1
+    move-result-object v0
 
-    return-object p1
+    return-object v0
 .end method
 
 .method public registerUsageCallback(Ljava/lang/String;Landroid/net/DataUsageRequest;Landroid/os/Messenger;Landroid/os/IBinder;)Landroid/net/DataUsageRequest;
-    .registers 14
+    .registers 15
+    .param p1, "callingPackage"  # Ljava/lang/String;
+    .param p2, "request"  # Landroid/net/DataUsageRequest;
+    .param p3, "messenger"  # Landroid/os/Messenger;
+    .param p4, "binder"  # Landroid/os/IBinder;
 
-    .line 918
+    .line 924
     const-string v0, "calling package is null"
 
     invoke-static {p1, v0}, Lcom/android/internal/util/Preconditions;->checkNotNull(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
 
-    .line 919
+    .line 925
     const-string v0, "DataUsageRequest is null"
 
     invoke-static {p2, v0}, Lcom/android/internal/util/Preconditions;->checkNotNull(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
 
-    .line 920
+    .line 926
     iget-object v0, p2, Landroid/net/DataUsageRequest;->template:Landroid/net/NetworkTemplate;
 
     const-string v1, "NetworkTemplate is null"
 
     invoke-static {v0, v1}, Lcom/android/internal/util/Preconditions;->checkNotNull(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
 
-    .line 921
-    const-string v0, "messenger is null"
+    .line 927
+    const-string/jumbo v0, "messenger is null"
 
     invoke-static {p3, v0}, Lcom/android/internal/util/Preconditions;->checkNotNull(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
 
-    .line 922
+    .line 928
     const-string v0, "binder is null"
 
     invoke-static {p4, v0}, Lcom/android/internal/util/Preconditions;->checkNotNull(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
 
-    .line 924
+    .line 930
     invoke-static {}, Landroid/os/Binder;->getCallingUid()I
 
-    move-result v5
+    move-result v0
 
-    .line 925
+    .line 931
+    .local v0, "callingUid":I
     invoke-direct {p0, p1}, Lcom/android/server/net/NetworkStatsService;->checkAccessLevel(Ljava/lang/String;)I
 
-    move-result v6
+    move-result v7
 
-    .line 927
+    .line 933
+    .local v7, "accessLevel":I
     invoke-static {}, Landroid/os/Binder;->clearCallingIdentity()J
 
-    move-result-wide v7
+    move-result-wide v8
 
-    .line 929
-    :try_start_27
+    .line 935
+    .local v8, "token":J
+    :try_start_28
     iget-object v1, p0, Lcom/android/server/net/NetworkStatsService;->mStatsObservers:Lcom/android/server/net/NetworkStatsObservers;
 
     move-object v2, p2
@@ -5064,148 +5663,162 @@
 
     move-object v4, p4
 
+    move v5, v0
+
+    move v6, v7
+
     invoke-virtual/range {v1 .. v6}, Lcom/android/server/net/NetworkStatsObservers;->register(Landroid/net/DataUsageRequest;Landroid/os/Messenger;Landroid/os/IBinder;II)Landroid/net/DataUsageRequest;
 
-    move-result-object p1
-    :try_end_30
-    .catchall {:try_start_27 .. :try_end_30} :catchall_3f
-
-    .line 932
-    invoke-static {v7, v8}, Landroid/os/Binder;->restoreCallingIdentity(J)V
-
-    .line 933
-    nop
-
-    .line 936
-    iget-object p2, p0, Lcom/android/server/net/NetworkStatsService;->mHandler:Landroid/os/Handler;
-
-    const/4 p3, 0x1
-
-    invoke-virtual {p2, p3}, Landroid/os/Handler;->obtainMessage(I)Landroid/os/Message;
-
-    move-result-object p3
-
-    invoke-virtual {p2, p3}, Landroid/os/Handler;->sendMessage(Landroid/os/Message;)Z
+    move-result-object v1
+    :try_end_33
+    .catchall {:try_start_28 .. :try_end_33} :catchall_42
 
     .line 938
-    return-object p1
+    .local v1, "normalizedRequest":Landroid/net/DataUsageRequest;
+    invoke-static {v8, v9}, Landroid/os/Binder;->restoreCallingIdentity(J)V
 
-    .line 932
-    :catchall_3f
-    move-exception p1
+    .line 939
+    nop
 
-    invoke-static {v7, v8}, Landroid/os/Binder;->restoreCallingIdentity(J)V
+    .line 942
+    iget-object v2, p0, Lcom/android/server/net/NetworkStatsService;->mHandler:Landroid/os/Handler;
 
-    throw p1
+    const/4 v3, 0x1
+
+    invoke-virtual {v2, v3}, Landroid/os/Handler;->obtainMessage(I)Landroid/os/Message;
+
+    move-result-object v3
+
+    invoke-virtual {v2, v3}, Landroid/os/Handler;->sendMessage(Landroid/os/Message;)Z
+
+    .line 944
+    return-object v1
+
+    .line 938
+    .end local v1  # "normalizedRequest":Landroid/net/DataUsageRequest;
+    :catchall_42
+    move-exception v1
+
+    invoke-static {v8, v9}, Landroid/os/Binder;->restoreCallingIdentity(J)V
+
+    throw v1
 .end method
 
 .method setHandler(Landroid/os/Handler;Landroid/os/Handler$Callback;)V
     .registers 3
+    .param p1, "handler"  # Landroid/os/Handler;
+    .param p2, "callback"  # Landroid/os/Handler$Callback;
     .annotation build Lcom/android/internal/annotations/VisibleForTesting;
     .end annotation
 
-    .line 378
+    .line 383
     iput-object p1, p0, Lcom/android/server/net/NetworkStatsService;->mHandler:Landroid/os/Handler;
 
-    .line 379
+    .line 384
     iput-object p2, p0, Lcom/android/server/net/NetworkStatsService;->mHandlerCallback:Landroid/os/Handler$Callback;
 
-    .line 380
+    .line 385
     return-void
 .end method
 
 .method setUidForeground(IZ)V
-    .registers 6
+    .registers 7
+    .param p1, "uid"  # I
+    .param p2, "uidForeground"  # Z
     .annotation build Lcom/android/internal/annotations/VisibleForTesting;
     .end annotation
 
-    .line 849
+    .line 854
     iget-object v0, p0, Lcom/android/server/net/NetworkStatsService;->mStatsLock:Ljava/lang/Object;
 
     monitor-enter v0
 
-    .line 850
+    .line 855
     const/4 v1, 0x0
 
     if-eqz p2, :cond_8
 
-    const/4 p2, 0x1
+    const/4 v2, 0x1
 
     goto :goto_9
 
     :cond_8
-    move p2, v1
+    move v2, v1
 
-    .line 851
+    .line 856
+    .local v2, "set":I
     :goto_9
     :try_start_9
-    iget-object v2, p0, Lcom/android/server/net/NetworkStatsService;->mActiveUidCounterSet:Landroid/util/SparseIntArray;
+    iget-object v3, p0, Lcom/android/server/net/NetworkStatsService;->mActiveUidCounterSet:Landroid/util/SparseIntArray;
 
-    invoke-virtual {v2, p1, v1}, Landroid/util/SparseIntArray;->get(II)I
+    invoke-virtual {v3, p1, v1}, Landroid/util/SparseIntArray;->get(II)I
 
     move-result v1
 
-    .line 852
-    if-eq v1, p2, :cond_19
+    .line 857
+    .local v1, "oldSet":I
+    if-eq v1, v2, :cond_19
 
-    .line 853
-    iget-object v1, p0, Lcom/android/server/net/NetworkStatsService;->mActiveUidCounterSet:Landroid/util/SparseIntArray;
+    .line 858
+    iget-object v3, p0, Lcom/android/server/net/NetworkStatsService;->mActiveUidCounterSet:Landroid/util/SparseIntArray;
 
-    invoke-virtual {v1, p1, p2}, Landroid/util/SparseIntArray;->put(II)V
+    invoke-virtual {v3, p1, v2}, Landroid/util/SparseIntArray;->put(II)V
 
-    .line 854
-    invoke-static {p1, p2}, Lcom/android/server/NetworkManagementSocketTagger;->setKernelCounterSet(II)V
+    .line 859
+    invoke-static {p1, v2}, Lcom/android/server/NetworkManagementSocketTagger;->setKernelCounterSet(II)V
 
-    .line 856
+    .line 861
+    .end local v1  # "oldSet":I
+    .end local v2  # "set":I
     :cond_19
     monitor-exit v0
 
-    .line 857
+    .line 862
     return-void
 
-    .line 856
+    .line 861
     :catchall_1b
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_1d
     .catchall {:try_start_9 .. :try_end_1d} :catchall_1b
 
-    throw p1
+    throw v1
 .end method
 
 .method public systemReady()V
-    .registers 7
+    .registers 9
 
-    .line 383
+    .line 388
     const/4 v0, 0x1
 
     iput-boolean v0, p0, Lcom/android/server/net/NetworkStatsService;->mSystemReady:Z
 
-    .line 385
+    .line 390
     invoke-direct {p0}, Lcom/android/server/net/NetworkStatsService;->isBandwidthControlEnabled()Z
 
     move-result v1
 
     if-nez v1, :cond_11
 
-    .line 386
+    .line 391
     const-string v0, "NetworkStats"
 
     const-string v1, "bandwidth controls disabled, unable to track stats"
 
     invoke-static {v0, v1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 387
+    .line 392
     return-void
 
-    .line 390
+    .line 395
     :cond_11
     iget-object v1, p0, Lcom/android/server/net/NetworkStatsService;->mStatsLock:Ljava/lang/Object;
 
     monitor-enter v1
 
-    .line 392
+    .line 397
     :try_start_14
     const-string v2, "dev"
 
@@ -5223,7 +5836,7 @@
 
     iput-object v2, p0, Lcom/android/server/net/NetworkStatsService;->mDevRecorder:Lcom/android/server/net/NetworkStatsRecorder;
 
-    .line 393
+    .line 398
     const-string/jumbo v2, "xt"
 
     iget-object v3, p0, Lcom/android/server/net/NetworkStatsService;->mSettings:Lcom/android/server/net/NetworkStatsService$NetworkStatsSettings;
@@ -5238,7 +5851,7 @@
 
     iput-object v2, p0, Lcom/android/server/net/NetworkStatsService;->mXtRecorder:Lcom/android/server/net/NetworkStatsRecorder;
 
-    .line 394
+    .line 399
     const-string/jumbo v2, "uid"
 
     iget-object v3, p0, Lcom/android/server/net/NetworkStatsService;->mSettings:Lcom/android/server/net/NetworkStatsService$NetworkStatsSettings;
@@ -5253,7 +5866,7 @@
 
     iput-object v2, p0, Lcom/android/server/net/NetworkStatsService;->mUidRecorder:Lcom/android/server/net/NetworkStatsRecorder;
 
-    .line 395
+    .line 400
     const-string/jumbo v2, "uid_tag"
 
     iget-object v3, p0, Lcom/android/server/net/NetworkStatsService;->mSettings:Lcom/android/server/net/NetworkStatsService$NetworkStatsSettings;
@@ -5268,13 +5881,13 @@
 
     iput-object v0, p0, Lcom/android/server/net/NetworkStatsService;->mUidTagRecorder:Lcom/android/server/net/NetworkStatsRecorder;
 
-    .line 397
+    .line 402
     invoke-direct {p0}, Lcom/android/server/net/NetworkStatsService;->updatePersistThresholdsLocked()V
 
-    .line 400
+    .line 405
     invoke-direct {p0}, Lcom/android/server/net/NetworkStatsService;->maybeUpgradeLegacyStatsLocked()V
 
-    .line 404
+    .line 409
     iget-object v0, p0, Lcom/android/server/net/NetworkStatsService;->mXtRecorder:Lcom/android/server/net/NetworkStatsRecorder;
 
     invoke-virtual {v0}, Lcom/android/server/net/NetworkStatsRecorder;->getOrLoadCompleteLocked()Lcom/android/server/net/NetworkStatsCollection;
@@ -5283,22 +5896,23 @@
 
     iput-object v0, p0, Lcom/android/server/net/NetworkStatsService;->mXtStatsCached:Lcom/android/server/net/NetworkStatsCollection;
 
-    .line 407
+    .line 412
     invoke-direct {p0}, Lcom/android/server/net/NetworkStatsService;->bootstrapStatsLocked()V
 
-    .line 408
+    .line 413
     monitor-exit v1
     :try_end_62
     .catchall {:try_start_14 .. :try_end_62} :catchall_c3
 
-    .line 411
+    .line 416
     new-instance v0, Landroid/content/IntentFilter;
 
     const-string v1, "android.net.conn.TETHER_STATE_CHANGED"
 
     invoke-direct {v0, v1}, Landroid/content/IntentFilter;-><init>(Ljava/lang/String;)V
 
-    .line 412
+    .line 417
+    .local v0, "tetherFilter":Landroid/content/IntentFilter;
     iget-object v1, p0, Lcom/android/server/net/NetworkStatsService;->mContext:Landroid/content/Context;
 
     iget-object v2, p0, Lcom/android/server/net/NetworkStatsService;->mTetherReceiver:Landroid/content/BroadcastReceiver;
@@ -5309,98 +5923,107 @@
 
     invoke-virtual {v1, v2, v0, v4, v3}, Landroid/content/Context;->registerReceiver(Landroid/content/BroadcastReceiver;Landroid/content/IntentFilter;Ljava/lang/String;Landroid/os/Handler;)Landroid/content/Intent;
 
-    .line 415
-    new-instance v0, Landroid/content/IntentFilter;
-
-    const-string v1, "com.android.server.action.NETWORK_STATS_POLL"
-
-    invoke-direct {v0, v1}, Landroid/content/IntentFilter;-><init>(Ljava/lang/String;)V
-
-    .line 416
-    iget-object v1, p0, Lcom/android/server/net/NetworkStatsService;->mContext:Landroid/content/Context;
-
-    iget-object v2, p0, Lcom/android/server/net/NetworkStatsService;->mPollReceiver:Landroid/content/BroadcastReceiver;
-
-    iget-object v3, p0, Lcom/android/server/net/NetworkStatsService;->mHandler:Landroid/os/Handler;
-
-    const-string v5, "android.permission.READ_NETWORK_USAGE_HISTORY"
-
-    invoke-virtual {v1, v2, v0, v5, v3}, Landroid/content/Context;->registerReceiver(Landroid/content/BroadcastReceiver;Landroid/content/IntentFilter;Ljava/lang/String;Landroid/os/Handler;)Landroid/content/Intent;
-
-    .line 419
-    new-instance v0, Landroid/content/IntentFilter;
-
-    const-string v1, "android.intent.action.UID_REMOVED"
-
-    invoke-direct {v0, v1}, Landroid/content/IntentFilter;-><init>(Ljava/lang/String;)V
-
     .line 420
-    iget-object v1, p0, Lcom/android/server/net/NetworkStatsService;->mContext:Landroid/content/Context;
+    new-instance v1, Landroid/content/IntentFilter;
 
-    iget-object v2, p0, Lcom/android/server/net/NetworkStatsService;->mRemovedReceiver:Landroid/content/BroadcastReceiver;
+    const-string v2, "com.android.server.action.NETWORK_STATS_POLL"
 
-    iget-object v3, p0, Lcom/android/server/net/NetworkStatsService;->mHandler:Landroid/os/Handler;
+    invoke-direct {v1, v2}, Landroid/content/IntentFilter;-><init>(Ljava/lang/String;)V
 
-    invoke-virtual {v1, v2, v0, v4, v3}, Landroid/content/Context;->registerReceiver(Landroid/content/BroadcastReceiver;Landroid/content/IntentFilter;Ljava/lang/String;Landroid/os/Handler;)Landroid/content/Intent;
+    .line 421
+    .local v1, "pollFilter":Landroid/content/IntentFilter;
+    iget-object v2, p0, Lcom/android/server/net/NetworkStatsService;->mContext:Landroid/content/Context;
 
-    .line 423
-    new-instance v0, Landroid/content/IntentFilter;
+    iget-object v3, p0, Lcom/android/server/net/NetworkStatsService;->mPollReceiver:Landroid/content/BroadcastReceiver;
 
-    const-string v1, "android.intent.action.USER_REMOVED"
+    iget-object v5, p0, Lcom/android/server/net/NetworkStatsService;->mHandler:Landroid/os/Handler;
 
-    invoke-direct {v0, v1}, Landroid/content/IntentFilter;-><init>(Ljava/lang/String;)V
+    const-string v6, "android.permission.READ_NETWORK_USAGE_HISTORY"
+
+    invoke-virtual {v2, v3, v1, v6, v5}, Landroid/content/Context;->registerReceiver(Landroid/content/BroadcastReceiver;Landroid/content/IntentFilter;Ljava/lang/String;Landroid/os/Handler;)Landroid/content/Intent;
 
     .line 424
-    iget-object v1, p0, Lcom/android/server/net/NetworkStatsService;->mContext:Landroid/content/Context;
+    new-instance v2, Landroid/content/IntentFilter;
 
-    iget-object v2, p0, Lcom/android/server/net/NetworkStatsService;->mUserReceiver:Landroid/content/BroadcastReceiver;
+    const-string v3, "android.intent.action.UID_REMOVED"
 
-    iget-object v3, p0, Lcom/android/server/net/NetworkStatsService;->mHandler:Landroid/os/Handler;
+    invoke-direct {v2, v3}, Landroid/content/IntentFilter;-><init>(Ljava/lang/String;)V
 
-    invoke-virtual {v1, v2, v0, v4, v3}, Landroid/content/Context;->registerReceiver(Landroid/content/BroadcastReceiver;Landroid/content/IntentFilter;Ljava/lang/String;Landroid/os/Handler;)Landroid/content/Intent;
+    .line 425
+    .local v2, "removedFilter":Landroid/content/IntentFilter;
+    iget-object v3, p0, Lcom/android/server/net/NetworkStatsService;->mContext:Landroid/content/Context;
 
-    .line 427
-    new-instance v0, Landroid/content/IntentFilter;
+    iget-object v5, p0, Lcom/android/server/net/NetworkStatsService;->mRemovedReceiver:Landroid/content/BroadcastReceiver;
 
-    const-string v1, "android.intent.action.ACTION_SHUTDOWN"
+    iget-object v6, p0, Lcom/android/server/net/NetworkStatsService;->mHandler:Landroid/os/Handler;
 
-    invoke-direct {v0, v1}, Landroid/content/IntentFilter;-><init>(Ljava/lang/String;)V
+    invoke-virtual {v3, v5, v2, v4, v6}, Landroid/content/Context;->registerReceiver(Landroid/content/BroadcastReceiver;Landroid/content/IntentFilter;Ljava/lang/String;Landroid/os/Handler;)Landroid/content/Intent;
 
     .line 428
-    iget-object v1, p0, Lcom/android/server/net/NetworkStatsService;->mContext:Landroid/content/Context;
+    new-instance v3, Landroid/content/IntentFilter;
 
-    iget-object v2, p0, Lcom/android/server/net/NetworkStatsService;->mShutdownReceiver:Landroid/content/BroadcastReceiver;
+    const-string v5, "android.intent.action.USER_REMOVED"
 
-    invoke-virtual {v1, v2, v0}, Landroid/content/Context;->registerReceiver(Landroid/content/BroadcastReceiver;Landroid/content/IntentFilter;)Landroid/content/Intent;
+    invoke-direct {v3, v5}, Landroid/content/IntentFilter;-><init>(Ljava/lang/String;)V
 
-    .line 431
+    .line 429
+    .local v3, "userFilter":Landroid/content/IntentFilter;
+    iget-object v5, p0, Lcom/android/server/net/NetworkStatsService;->mContext:Landroid/content/Context;
+
+    iget-object v6, p0, Lcom/android/server/net/NetworkStatsService;->mUserReceiver:Landroid/content/BroadcastReceiver;
+
+    iget-object v7, p0, Lcom/android/server/net/NetworkStatsService;->mHandler:Landroid/os/Handler;
+
+    invoke-virtual {v5, v6, v3, v4, v7}, Landroid/content/Context;->registerReceiver(Landroid/content/BroadcastReceiver;Landroid/content/IntentFilter;Ljava/lang/String;Landroid/os/Handler;)Landroid/content/Intent;
+
+    .line 432
+    new-instance v4, Landroid/content/IntentFilter;
+
+    const-string v5, "android.intent.action.ACTION_SHUTDOWN"
+
+    invoke-direct {v4, v5}, Landroid/content/IntentFilter;-><init>(Ljava/lang/String;)V
+
+    .line 433
+    .local v4, "shutdownFilter":Landroid/content/IntentFilter;
+    iget-object v5, p0, Lcom/android/server/net/NetworkStatsService;->mContext:Landroid/content/Context;
+
+    iget-object v6, p0, Lcom/android/server/net/NetworkStatsService;->mShutdownReceiver:Landroid/content/BroadcastReceiver;
+
+    invoke-virtual {v5, v6, v4}, Landroid/content/Context;->registerReceiver(Landroid/content/BroadcastReceiver;Landroid/content/IntentFilter;)Landroid/content/Intent;
+
+    .line 436
     :try_start_b3
-    iget-object v0, p0, Lcom/android/server/net/NetworkStatsService;->mNetworkManager:Landroid/os/INetworkManagementService;
+    iget-object v5, p0, Lcom/android/server/net/NetworkStatsService;->mNetworkManager:Landroid/os/INetworkManagementService;
 
-    iget-object v1, p0, Lcom/android/server/net/NetworkStatsService;->mAlertObserver:Landroid/net/INetworkManagementEventObserver;
+    iget-object v6, p0, Lcom/android/server/net/NetworkStatsService;->mAlertObserver:Landroid/net/INetworkManagementEventObserver;
 
-    invoke-interface {v0, v1}, Landroid/os/INetworkManagementService;->registerObserver(Landroid/net/INetworkManagementEventObserver;)V
+    invoke-interface {v5, v6}, Landroid/os/INetworkManagementService;->registerObserver(Landroid/net/INetworkManagementEventObserver;)V
     :try_end_ba
     .catch Landroid/os/RemoteException; {:try_start_b3 .. :try_end_ba} :catch_bb
 
-    .line 434
+    .line 439
     goto :goto_bc
 
-    .line 432
+    .line 437
     :catch_bb
-    move-exception v0
+    move-exception v5
 
-    .line 436
+    .line 441
     :goto_bc
     invoke-direct {p0}, Lcom/android/server/net/NetworkStatsService;->registerPollAlarmLocked()V
 
-    .line 437
+    .line 442
     invoke-direct {p0}, Lcom/android/server/net/NetworkStatsService;->registerGlobalAlert()V
 
-    .line 438
+    .line 443
     return-void
 
-    .line 408
+    .line 413
+    .end local v0  # "tetherFilter":Landroid/content/IntentFilter;
+    .end local v1  # "pollFilter":Landroid/content/IntentFilter;
+    .end local v2  # "removedFilter":Landroid/content/IntentFilter;
+    .end local v3  # "userFilter":Landroid/content/IntentFilter;
+    .end local v4  # "shutdownFilter":Landroid/content/IntentFilter;
     :catchall_c3
     move-exception v0
 
@@ -5414,23 +6037,26 @@
 
 .method public unregisterUsageRequest(Landroid/net/DataUsageRequest;)V
     .registers 6
+    .param p1, "request"  # Landroid/net/DataUsageRequest;
 
-    .line 943
+    .line 949
     const-string v0, "DataUsageRequest is null"
 
     invoke-static {p1, v0}, Lcom/android/internal/util/Preconditions;->checkNotNull(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
 
-    .line 945
+    .line 951
     invoke-static {}, Landroid/os/Binder;->getCallingUid()I
 
     move-result v0
 
-    .line 946
+    .line 952
+    .local v0, "callingUid":I
     invoke-static {}, Landroid/os/Binder;->clearCallingIdentity()J
 
     move-result-wide v1
 
-    .line 948
+    .line 954
+    .local v1, "token":J
     :try_start_d
     iget-object v3, p0, Lcom/android/server/net/NetworkStatsService;->mStatsObservers:Lcom/android/server/net/NetworkStatsObservers;
 
@@ -5438,20 +6064,20 @@
     :try_end_12
     .catchall {:try_start_d .. :try_end_12} :catchall_17
 
-    .line 950
+    .line 956
     invoke-static {v1, v2}, Landroid/os/Binder;->restoreCallingIdentity(J)V
 
-    .line 951
+    .line 957
     nop
 
-    .line 952
+    .line 958
     return-void
 
-    .line 950
+    .line 956
     :catchall_17
-    move-exception p1
+    move-exception v3
 
     invoke-static {v1, v2}, Landroid/os/Binder;->restoreCallingIdentity(J)V
 
-    throw p1
+    throw v3
 .end method

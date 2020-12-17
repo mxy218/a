@@ -31,6 +31,12 @@
 # direct methods
 .method constructor <init>(Landroid/content/Context;ILcom/android/server/appbinding/AppBindingConstants;Landroid/os/Handler;Lcom/android/server/appbinding/finders/AppServiceFinder;Landroid/content/ComponentName;)V
     .registers 23
+    .param p1, "context"  # Landroid/content/Context;
+    .param p2, "userId"  # I
+    .param p3, "constants"  # Lcom/android/server/appbinding/AppBindingConstants;
+    .param p4, "handler"  # Landroid/os/Handler;
+    .param p5, "finder"  # Lcom/android/server/appbinding/finders/AppServiceFinder;
+    .param p6, "componentName"  # Landroid/content/ComponentName;
 
     .line 432
     move-object/from16 v14, p0
@@ -75,15 +81,16 @@
 # virtual methods
 .method protected asInterface(Landroid/os/IBinder;)Landroid/os/IInterface;
     .registers 3
+    .param p1, "obj"  # Landroid/os/IBinder;
 
     .line 448
     iget-object v0, p0, Lcom/android/server/appbinding/AppBindingService$AppServiceConnection;->mFinder:Lcom/android/server/appbinding/finders/AppServiceFinder;
 
     invoke-virtual {v0, p1}, Lcom/android/server/appbinding/finders/AppServiceFinder;->asInterface(Landroid/os/IBinder;)Landroid/os/IInterface;
 
-    move-result-object p1
+    move-result-object v0
 
-    return-object p1
+    return-object v0
 .end method
 
 .method protected bridge synthetic asInterface(Landroid/os/IBinder;)Ljava/lang/Object;

@@ -35,6 +35,8 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/am/ServiceRecord;Landroid/content/Intent$FilterComparison;)V
     .registers 4
+    .param p1, "_service"  # Lcom/android/server/am/ServiceRecord;
+    .param p2, "_intent"  # Landroid/content/Intent$FilterComparison;
 
     .line 75
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -62,26 +64,26 @@
     .registers 6
 
     .line 81
-    nop
+    const/4 v0, 0x0
 
     .line 82
-    iget-object v0, p0, Lcom/android/server/am/IntentBindRecord;->apps:Landroid/util/ArrayMap;
+    .local v0, "flags":I
+    iget-object v1, p0, Lcom/android/server/am/IntentBindRecord;->apps:Landroid/util/ArrayMap;
 
-    invoke-virtual {v0}, Landroid/util/ArrayMap;->size()I
+    invoke-virtual {v1}, Landroid/util/ArrayMap;->size()I
 
-    move-result v0
+    move-result v1
 
-    add-int/lit8 v0, v0, -0x1
+    add-int/lit8 v1, v1, -0x1
 
-    const/4 v1, 0x0
-
-    :goto_a
-    if-ltz v0, :cond_2d
+    .local v1, "i":I
+    :goto_9
+    if-ltz v1, :cond_2c
 
     .line 83
     iget-object v2, p0, Lcom/android/server/am/IntentBindRecord;->apps:Landroid/util/ArrayMap;
 
-    invoke-virtual {v2, v0}, Landroid/util/ArrayMap;->valueAt(I)Ljava/lang/Object;
+    invoke-virtual {v2, v1}, Landroid/util/ArrayMap;->valueAt(I)Ljava/lang/Object;
 
     move-result-object v2
 
@@ -90,14 +92,16 @@
     iget-object v2, v2, Lcom/android/server/am/AppBindRecord;->connections:Landroid/util/ArraySet;
 
     .line 84
+    .local v2, "connections":Landroid/util/ArraySet;, "Landroid/util/ArraySet<Lcom/android/server/am/ConnectionRecord;>;"
     invoke-virtual {v2}, Landroid/util/ArraySet;->size()I
 
     move-result v3
 
     add-int/lit8 v3, v3, -0x1
 
-    :goto_1c
-    if-ltz v3, :cond_2a
+    .local v3, "j":I
+    :goto_1b
+    if-ltz v3, :cond_29
 
     .line 85
     invoke-virtual {v2, v3}, Landroid/util/ArraySet;->valueAt(I)Ljava/lang/Object;
@@ -108,26 +112,31 @@
 
     iget v4, v4, Lcom/android/server/am/ConnectionRecord;->flags:I
 
-    or-int/2addr v1, v4
+    or-int/2addr v0, v4
 
     .line 84
     add-int/lit8 v3, v3, -0x1
 
-    goto :goto_1c
+    goto :goto_1b
 
     .line 82
-    :cond_2a
-    add-int/lit8 v0, v0, -0x1
+    .end local v2  # "connections":Landroid/util/ArraySet;, "Landroid/util/ArraySet<Lcom/android/server/am/ConnectionRecord;>;"
+    .end local v3  # "j":I
+    :cond_29
+    add-int/lit8 v1, v1, -0x1
 
-    goto :goto_a
+    goto :goto_9
 
     .line 88
-    :cond_2d
-    return v1
+    .end local v1  # "i":I
+    :cond_2c
+    return v0
 .end method
 
 .method dump(Ljava/io/PrintWriter;Ljava/lang/String;)V
     .registers 4
+    .param p1, "pw"  # Ljava/io/PrintWriter;
+    .param p2, "prefix"  # Ljava/lang/String;
 
     .line 53
     invoke-virtual {p1, p2}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
@@ -149,11 +158,13 @@
 
 .method dumpInService(Ljava/io/PrintWriter;Ljava/lang/String;)V
     .registers 8
+    .param p1, "pw"  # Ljava/io/PrintWriter;
+    .param p2, "prefix"  # Ljava/lang/String;
 
     .line 58
     invoke-virtual {p1, p2}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
-    const-string v0, "intent={"
+    const-string/jumbo v0, "intent={"
 
     invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
@@ -229,27 +240,29 @@
     invoke-virtual {p1, v1}, Ljava/io/PrintWriter;->println(Z)V
 
     .line 66
-    nop
+    const/4 v1, 0x0
 
-    :goto_56
-    iget-object v1, p0, Lcom/android/server/am/IntentBindRecord;->apps:Landroid/util/ArrayMap;
+    .local v1, "i":I
+    :goto_57
+    iget-object v2, p0, Lcom/android/server/am/IntentBindRecord;->apps:Landroid/util/ArrayMap;
 
-    invoke-virtual {v1}, Landroid/util/ArrayMap;->size()I
+    invoke-virtual {v2}, Landroid/util/ArrayMap;->size()I
 
-    move-result v1
+    move-result v2
 
-    if-ge v2, v1, :cond_9d
+    if-ge v1, v2, :cond_9e
 
     .line 67
-    iget-object v1, p0, Lcom/android/server/am/IntentBindRecord;->apps:Landroid/util/ArrayMap;
+    iget-object v2, p0, Lcom/android/server/am/IntentBindRecord;->apps:Landroid/util/ArrayMap;
 
-    invoke-virtual {v1, v2}, Landroid/util/ArrayMap;->valueAt(I)Ljava/lang/Object;
+    invoke-virtual {v2, v1}, Landroid/util/ArrayMap;->valueAt(I)Ljava/lang/Object;
 
-    move-result-object v1
+    move-result-object v2
 
-    check-cast v1, Lcom/android/server/am/AppBindRecord;
+    check-cast v2, Lcom/android/server/am/AppBindRecord;
 
     .line 68
+    .local v2, "a":Lcom/android/server/am/AppBindRecord;
     invoke-virtual {p1, p2}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
     const-string v3, "* Client AppBindRecord{"
@@ -257,7 +270,7 @@
     invoke-virtual {p1, v3}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
     .line 69
-    invoke-static {v1}, Ljava/lang/System;->identityHashCode(Ljava/lang/Object;)I
+    invoke-static {v2}, Ljava/lang/System;->identityHashCode(Ljava/lang/Object;)I
 
     move-result v3
 
@@ -272,7 +285,7 @@
 
     invoke-virtual {p1, v3}, Ljava/io/PrintWriter;->print(C)V
 
-    iget-object v3, v1, Lcom/android/server/am/AppBindRecord;->client:Lcom/android/server/am/ProcessRecord;
+    iget-object v3, v2, Lcom/android/server/am/AppBindRecord;->client:Lcom/android/server/am/ProcessRecord;
 
     invoke-virtual {p1, v3}, Ljava/io/PrintWriter;->print(Ljava/lang/Object;)V
 
@@ -293,20 +306,22 @@
 
     move-result-object v3
 
-    invoke-virtual {v1, p1, v3}, Lcom/android/server/am/AppBindRecord;->dumpInIntentBind(Ljava/io/PrintWriter;Ljava/lang/String;)V
+    invoke-virtual {v2, p1, v3}, Lcom/android/server/am/AppBindRecord;->dumpInIntentBind(Ljava/io/PrintWriter;Ljava/lang/String;)V
 
     .line 66
-    add-int/lit8 v2, v2, 0x1
+    .end local v2  # "a":Lcom/android/server/am/AppBindRecord;
+    add-int/lit8 v1, v1, 0x1
 
-    goto :goto_56
+    goto :goto_57
 
     .line 73
-    :cond_9d
+    .end local v1  # "i":I
+    :cond_9e
     return-void
 .end method
 
 .method public toString()Ljava/lang/String;
-    .registers 8
+    .registers 9
 
     .line 92
     iget-object v0, p0, Lcom/android/server/am/IntentBindRecord;->stringName:Ljava/lang/String;
@@ -325,6 +340,7 @@
     invoke-direct {v0, v1}, Ljava/lang/StringBuilder;-><init>(I)V
 
     .line 96
+    .local v0, "sb":Ljava/lang/StringBuilder;
     const-string v1, "IntentBindRecord{"
 
     invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
@@ -380,9 +396,7 @@
     .line 105
     invoke-virtual {v1}, Landroid/content/Intent$FilterComparison;->getIntent()Landroid/content/Intent;
 
-    move-result-object v1
-
-    const/4 v3, 0x0
+    move-result-object v2
 
     const/4 v4, 0x0
 
@@ -390,9 +404,11 @@
 
     const/4 v6, 0x0
 
-    move-object v2, v0
+    const/4 v7, 0x0
 
-    invoke-virtual/range {v1 .. v6}, Landroid/content/Intent;->toShortString(Ljava/lang/StringBuilder;ZZZZ)V
+    move-object v3, v0
+
+    invoke-virtual/range {v2 .. v7}, Landroid/content/Intent;->toShortString(Ljava/lang/StringBuilder;ZZZZ)V
 
     .line 107
     :cond_4a
@@ -403,153 +419,159 @@
     .line 108
     invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v1
 
-    iput-object v0, p0, Lcom/android/server/am/IntentBindRecord;->stringName:Ljava/lang/String;
+    iput-object v1, p0, Lcom/android/server/am/IntentBindRecord;->stringName:Ljava/lang/String;
 
-    return-object v0
+    return-object v1
 .end method
 
 .method public writeToProto(Landroid/util/proto/ProtoOutputStream;J)V
-    .registers 13
+    .registers 15
+    .param p1, "proto"  # Landroid/util/proto/ProtoOutputStream;
+    .param p2, "fieldId"  # J
 
     .line 112
     invoke-virtual {p1, p2, p3}, Landroid/util/proto/ProtoOutputStream;->start(J)J
 
-    move-result-wide p2
+    move-result-wide v0
 
     .line 113
-    iget-object v0, p0, Lcom/android/server/am/IntentBindRecord;->intent:Landroid/content/Intent$FilterComparison;
+    .local v0, "token":J
+    iget-object v2, p0, Lcom/android/server/am/IntentBindRecord;->intent:Landroid/content/Intent$FilterComparison;
 
-    if-eqz v0, :cond_19
+    if-eqz v2, :cond_19
 
     .line 114
-    invoke-virtual {v0}, Landroid/content/Intent$FilterComparison;->getIntent()Landroid/content/Intent;
+    invoke-virtual {v2}, Landroid/content/Intent$FilterComparison;->getIntent()Landroid/content/Intent;
 
-    move-result-object v1
+    move-result-object v3
 
-    const-wide v3, 0x10b00000001L
-
-    const/4 v5, 0x0
-
-    const/4 v6, 0x1
+    const-wide v5, 0x10b00000001L
 
     const/4 v7, 0x0
 
-    const/4 v8, 0x0
+    const/4 v8, 0x1
 
-    move-object v2, p1
+    const/4 v9, 0x0
 
-    invoke-virtual/range {v1 .. v8}, Landroid/content/Intent;->writeToProto(Landroid/util/proto/ProtoOutputStream;JZZZZ)V
+    const/4 v10, 0x0
+
+    move-object v4, p1
+
+    invoke-virtual/range {v3 .. v10}, Landroid/content/Intent;->writeToProto(Landroid/util/proto/ProtoOutputStream;JZZZZ)V
 
     .line 117
     :cond_19
-    iget-object v0, p0, Lcom/android/server/am/IntentBindRecord;->binder:Landroid/os/IBinder;
+    iget-object v2, p0, Lcom/android/server/am/IntentBindRecord;->binder:Landroid/os/IBinder;
 
-    if-eqz v0, :cond_29
+    if-eqz v2, :cond_29
 
     .line 118
-    const-wide v1, 0x10900000002L
+    const-wide v3, 0x10900000002L
 
-    invoke-virtual {v0}, Ljava/lang/Object;->toString()Ljava/lang/String;
+    invoke-virtual {v2}, Ljava/lang/Object;->toString()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v2
 
-    invoke-virtual {p1, v1, v2, v0}, Landroid/util/proto/ProtoOutputStream;->write(JLjava/lang/String;)V
+    invoke-virtual {p1, v3, v4, v2}, Landroid/util/proto/ProtoOutputStream;->write(JLjava/lang/String;)V
 
     .line 120
     :cond_29
-    const-wide v0, 0x10800000003L
+    const-wide v2, 0x10800000003L
 
     .line 121
     invoke-virtual {p0}, Lcom/android/server/am/IntentBindRecord;->collectFlags()I
 
-    move-result v2
+    move-result v4
 
-    const/4 v3, 0x1
+    const/4 v5, 0x1
 
-    and-int/2addr v2, v3
+    and-int/2addr v4, v5
 
-    const/4 v4, 0x0
+    if-eqz v4, :cond_37
 
-    if-eqz v2, :cond_38
+    goto :goto_38
 
-    goto :goto_39
-
-    :cond_38
-    move v3, v4
+    :cond_37
+    const/4 v5, 0x0
 
     .line 120
-    :goto_39
-    invoke-virtual {p1, v0, v1, v3}, Landroid/util/proto/ProtoOutputStream;->write(JZ)V
+    :goto_38
+    invoke-virtual {p1, v2, v3, v5}, Landroid/util/proto/ProtoOutputStream;->write(JZ)V
 
     .line 122
-    const-wide v0, 0x10800000004L
+    const-wide v2, 0x10800000004L
 
-    iget-boolean v2, p0, Lcom/android/server/am/IntentBindRecord;->requested:Z
+    iget-boolean v4, p0, Lcom/android/server/am/IntentBindRecord;->requested:Z
 
-    invoke-virtual {p1, v0, v1, v2}, Landroid/util/proto/ProtoOutputStream;->write(JZ)V
+    invoke-virtual {p1, v2, v3, v4}, Landroid/util/proto/ProtoOutputStream;->write(JZ)V
 
     .line 123
-    const-wide v0, 0x10800000005L
+    const-wide v2, 0x10800000005L
 
-    iget-boolean v2, p0, Lcom/android/server/am/IntentBindRecord;->received:Z
+    iget-boolean v4, p0, Lcom/android/server/am/IntentBindRecord;->received:Z
 
-    invoke-virtual {p1, v0, v1, v2}, Landroid/util/proto/ProtoOutputStream;->write(JZ)V
+    invoke-virtual {p1, v2, v3, v4}, Landroid/util/proto/ProtoOutputStream;->write(JZ)V
 
     .line 124
-    const-wide v0, 0x10800000006L
+    const-wide v2, 0x10800000006L
 
-    iget-boolean v2, p0, Lcom/android/server/am/IntentBindRecord;->hasBound:Z
+    iget-boolean v4, p0, Lcom/android/server/am/IntentBindRecord;->hasBound:Z
 
-    invoke-virtual {p1, v0, v1, v2}, Landroid/util/proto/ProtoOutputStream;->write(JZ)V
+    invoke-virtual {p1, v2, v3, v4}, Landroid/util/proto/ProtoOutputStream;->write(JZ)V
 
     .line 125
-    const-wide v0, 0x10800000007L
+    const-wide v2, 0x10800000007L
 
-    iget-boolean v2, p0, Lcom/android/server/am/IntentBindRecord;->doRebind:Z
+    iget-boolean v4, p0, Lcom/android/server/am/IntentBindRecord;->doRebind:Z
 
-    invoke-virtual {p1, v0, v1, v2}, Landroid/util/proto/ProtoOutputStream;->write(JZ)V
+    invoke-virtual {p1, v2, v3, v4}, Landroid/util/proto/ProtoOutputStream;->write(JZ)V
 
     .line 127
-    iget-object v0, p0, Lcom/android/server/am/IntentBindRecord;->apps:Landroid/util/ArrayMap;
+    iget-object v2, p0, Lcom/android/server/am/IntentBindRecord;->apps:Landroid/util/ArrayMap;
 
-    invoke-virtual {v0}, Landroid/util/ArrayMap;->size()I
+    invoke-virtual {v2}, Landroid/util/ArrayMap;->size()I
 
-    move-result v0
+    move-result v2
 
     .line 128
-    nop
+    .local v2, "N":I
+    const/4 v3, 0x0
 
-    :goto_6b
-    if-ge v4, v0, :cond_82
+    .local v3, "i":I
+    :goto_6a
+    if-ge v3, v2, :cond_81
 
     .line 129
-    iget-object v1, p0, Lcom/android/server/am/IntentBindRecord;->apps:Landroid/util/ArrayMap;
+    iget-object v4, p0, Lcom/android/server/am/IntentBindRecord;->apps:Landroid/util/ArrayMap;
 
-    invoke-virtual {v1, v4}, Landroid/util/ArrayMap;->valueAt(I)Ljava/lang/Object;
+    invoke-virtual {v4, v3}, Landroid/util/ArrayMap;->valueAt(I)Ljava/lang/Object;
 
-    move-result-object v1
+    move-result-object v4
 
-    check-cast v1, Lcom/android/server/am/AppBindRecord;
+    check-cast v4, Lcom/android/server/am/AppBindRecord;
 
     .line 130
-    if-eqz v1, :cond_7f
+    .local v4, "a":Lcom/android/server/am/AppBindRecord;
+    if-eqz v4, :cond_7e
 
     .line 131
-    const-wide v2, 0x20b00000008L
+    const-wide v5, 0x20b00000008L
 
-    invoke-virtual {v1, p1, v2, v3}, Lcom/android/server/am/AppBindRecord;->writeToProto(Landroid/util/proto/ProtoOutputStream;J)V
+    invoke-virtual {v4, p1, v5, v6}, Lcom/android/server/am/AppBindRecord;->writeToProto(Landroid/util/proto/ProtoOutputStream;J)V
 
     .line 128
-    :cond_7f
-    add-int/lit8 v4, v4, 0x1
+    .end local v4  # "a":Lcom/android/server/am/AppBindRecord;
+    :cond_7e
+    add-int/lit8 v3, v3, 0x1
 
-    goto :goto_6b
+    goto :goto_6a
 
     .line 134
-    :cond_82
-    invoke-virtual {p1, p2, p3}, Landroid/util/proto/ProtoOutputStream;->end(J)V
+    .end local v3  # "i":I
+    :cond_81
+    invoke-virtual {p1, v0, v1}, Landroid/util/proto/ProtoOutputStream;->end(J)V
 
     .line 135
     return-void

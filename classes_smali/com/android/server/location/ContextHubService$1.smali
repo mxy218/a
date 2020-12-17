@@ -23,6 +23,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/location/ContextHubService;I)V
     .registers 3
+    .param p1, "this$0"  # Lcom/android/server/location/ContextHubService;
 
     .line 201
     iput-object p1, p0, Lcom/android/server/location/ContextHubService$1;->this$0:Lcom/android/server/location/ContextHubService;
@@ -49,6 +50,7 @@
     aput-byte v1, v0, v1
 
     .line 215
+    .local v0, "data":[B
     iget-object v1, p0, Lcom/android/server/location/ContextHubService$1;->this$0:Lcom/android/server/location/ContextHubService;
 
     iget v2, p0, Lcom/android/server/location/ContextHubService$1;->val$contextHubId:I
@@ -64,7 +66,8 @@
 .end method
 
 .method public onMessageFromNanoApp(Landroid/hardware/location/NanoAppMessage;)V
-    .registers 6
+    .registers 7
+    .param p1, "message"  # Landroid/hardware/location/NanoAppMessage;
 
     .line 204
     iget-object v0, p0, Lcom/android/server/location/ContextHubService$1;->this$0:Lcom/android/server/location/ContextHubService;
@@ -86,6 +89,7 @@
     move-result v0
 
     .line 207
+    .local v0, "nanoAppHandle":I
     iget-object v1, p0, Lcom/android/server/location/ContextHubService$1;->this$0:Lcom/android/server/location/ContextHubService;
 
     .line 208
@@ -98,10 +102,10 @@
     .line 209
     invoke-virtual {p1}, Landroid/hardware/location/NanoAppMessage;->getMessageBody()[B
 
-    move-result-object p1
+    move-result-object v4
 
     .line 207
-    invoke-static {v1, v2, v3, v0, p1}, Lcom/android/server/location/ContextHubService;->access$600(Lcom/android/server/location/ContextHubService;III[B)I
+    invoke-static {v1, v2, v3, v0, v4}, Lcom/android/server/location/ContextHubService;->access$600(Lcom/android/server/location/ContextHubService;III[B)I
 
     .line 210
     return-void
@@ -109,6 +113,8 @@
 
 .method public onNanoAppAborted(JI)V
     .registers 4
+    .param p1, "nanoAppId"  # J
+    .param p3, "abortCode"  # I
 
     .line 220
     return-void
@@ -116,6 +122,7 @@
 
 .method public onNanoAppDisabled(J)V
     .registers 3
+    .param p1, "nanoAppId"  # J
 
     .line 236
     return-void
@@ -123,6 +130,7 @@
 
 .method public onNanoAppEnabled(J)V
     .registers 3
+    .param p1, "nanoAppId"  # J
 
     .line 232
     return-void
@@ -130,6 +138,7 @@
 
 .method public onNanoAppLoaded(J)V
     .registers 3
+    .param p1, "nanoAppId"  # J
 
     .line 224
     return-void
@@ -137,6 +146,7 @@
 
 .method public onNanoAppUnloaded(J)V
     .registers 3
+    .param p1, "nanoAppId"  # J
 
     .line 228
     return-void

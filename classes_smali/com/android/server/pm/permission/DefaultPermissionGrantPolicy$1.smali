@@ -21,6 +21,8 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/pm/permission/DefaultPermissionGrantPolicy;Landroid/os/Looper;)V
     .registers 3
+    .param p1, "this$0"  # Lcom/android/server/pm/permission/DefaultPermissionGrantPolicy;
+    .param p2, "x0"  # Landroid/os/Looper;
 
     .line 223
     iput-object p1, p0, Lcom/android/server/pm/permission/DefaultPermissionGrantPolicy$1;->this$0:Lcom/android/server/pm/permission/DefaultPermissionGrantPolicy;
@@ -33,59 +35,60 @@
 
 # virtual methods
 .method public handleMessage(Landroid/os/Message;)V
-    .registers 4
+    .registers 5
+    .param p1, "msg"  # Landroid/os/Message;
 
     .line 226
-    iget p1, p1, Landroid/os/Message;->what:I
+    iget v0, p1, Landroid/os/Message;->what:I
 
-    const/4 v0, 0x1
+    const/4 v1, 0x1
 
-    if-ne p1, v0, :cond_24
+    if-ne v0, v1, :cond_24
 
     .line 227
-    iget-object p1, p0, Lcom/android/server/pm/permission/DefaultPermissionGrantPolicy$1;->this$0:Lcom/android/server/pm/permission/DefaultPermissionGrantPolicy;
-
-    invoke-static {p1}, Lcom/android/server/pm/permission/DefaultPermissionGrantPolicy;->access$000(Lcom/android/server/pm/permission/DefaultPermissionGrantPolicy;)Ljava/lang/Object;
-
-    move-result-object p1
-
-    monitor-enter p1
-
-    .line 228
-    :try_start_c
     iget-object v0, p0, Lcom/android/server/pm/permission/DefaultPermissionGrantPolicy$1;->this$0:Lcom/android/server/pm/permission/DefaultPermissionGrantPolicy;
 
-    invoke-static {v0}, Lcom/android/server/pm/permission/DefaultPermissionGrantPolicy;->access$100(Lcom/android/server/pm/permission/DefaultPermissionGrantPolicy;)Landroid/util/ArrayMap;
+    invoke-static {v0}, Lcom/android/server/pm/permission/DefaultPermissionGrantPolicy;->access$000(Lcom/android/server/pm/permission/DefaultPermissionGrantPolicy;)Ljava/lang/Object;
 
     move-result-object v0
 
-    if-nez v0, :cond_1f
+    monitor-enter v0
 
-    .line 229
-    iget-object v0, p0, Lcom/android/server/pm/permission/DefaultPermissionGrantPolicy$1;->this$0:Lcom/android/server/pm/permission/DefaultPermissionGrantPolicy;
-
+    .line 228
+    :try_start_c
     iget-object v1, p0, Lcom/android/server/pm/permission/DefaultPermissionGrantPolicy$1;->this$0:Lcom/android/server/pm/permission/DefaultPermissionGrantPolicy;
 
-    invoke-static {v1}, Lcom/android/server/pm/permission/DefaultPermissionGrantPolicy;->access$200(Lcom/android/server/pm/permission/DefaultPermissionGrantPolicy;)Landroid/util/ArrayMap;
+    invoke-static {v1}, Lcom/android/server/pm/permission/DefaultPermissionGrantPolicy;->access$100(Lcom/android/server/pm/permission/DefaultPermissionGrantPolicy;)Landroid/util/ArrayMap;
 
     move-result-object v1
 
-    invoke-static {v0, v1}, Lcom/android/server/pm/permission/DefaultPermissionGrantPolicy;->access$102(Lcom/android/server/pm/permission/DefaultPermissionGrantPolicy;Landroid/util/ArrayMap;)Landroid/util/ArrayMap;
+    if-nez v1, :cond_1f
+
+    .line 229
+    iget-object v1, p0, Lcom/android/server/pm/permission/DefaultPermissionGrantPolicy$1;->this$0:Lcom/android/server/pm/permission/DefaultPermissionGrantPolicy;
+
+    iget-object v2, p0, Lcom/android/server/pm/permission/DefaultPermissionGrantPolicy$1;->this$0:Lcom/android/server/pm/permission/DefaultPermissionGrantPolicy;
+
+    invoke-static {v2}, Lcom/android/server/pm/permission/DefaultPermissionGrantPolicy;->access$200(Lcom/android/server/pm/permission/DefaultPermissionGrantPolicy;)Landroid/util/ArrayMap;
+
+    move-result-object v2
+
+    invoke-static {v1, v2}, Lcom/android/server/pm/permission/DefaultPermissionGrantPolicy;->access$102(Lcom/android/server/pm/permission/DefaultPermissionGrantPolicy;Landroid/util/ArrayMap;)Landroid/util/ArrayMap;
 
     .line 231
     :cond_1f
-    monitor-exit p1
+    monitor-exit v0
 
     goto :goto_24
 
     :catchall_21
-    move-exception v0
+    move-exception v1
 
-    monitor-exit p1
+    monitor-exit v0
     :try_end_23
     .catchall {:try_start_c .. :try_end_23} :catchall_21
 
-    throw v0
+    throw v1
 
     .line 233
     :cond_24

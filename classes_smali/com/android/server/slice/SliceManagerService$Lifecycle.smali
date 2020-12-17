@@ -21,6 +21,7 @@
 # direct methods
 .method public constructor <init>(Landroid/content/Context;)V
     .registers 2
+    .param p1, "context"  # Landroid/content/Context;
 
     .line 596
     invoke-direct {p0, p1}, Lcom/android/server/SystemService;-><init>(Landroid/content/Context;)V
@@ -33,6 +34,7 @@
 # virtual methods
 .method public onBootPhase(I)V
     .registers 3
+    .param p1, "phase"  # I
 
     .line 607
     const/16 v0, 0x226
@@ -40,9 +42,9 @@
     if-ne p1, v0, :cond_9
 
     .line 608
-    iget-object p1, p0, Lcom/android/server/slice/SliceManagerService$Lifecycle;->mService:Lcom/android/server/slice/SliceManagerService;
+    iget-object v0, p0, Lcom/android/server/slice/SliceManagerService$Lifecycle;->mService:Lcom/android/server/slice/SliceManagerService;
 
-    invoke-static {p1}, Lcom/android/server/slice/SliceManagerService;->access$100(Lcom/android/server/slice/SliceManagerService;)V
+    invoke-static {v0}, Lcom/android/server/slice/SliceManagerService;->access$100(Lcom/android/server/slice/SliceManagerService;)V
 
     .line 610
     :cond_9
@@ -76,6 +78,7 @@
 
 .method public onStopUser(I)V
     .registers 3
+    .param p1, "userHandle"  # I
 
     .line 619
     iget-object v0, p0, Lcom/android/server/slice/SliceManagerService$Lifecycle;->mService:Lcom/android/server/slice/SliceManagerService;
@@ -88,6 +91,7 @@
 
 .method public onUnlockUser(I)V
     .registers 3
+    .param p1, "userHandle"  # I
 
     .line 614
     iget-object v0, p0, Lcom/android/server/slice/SliceManagerService$Lifecycle;->mService:Lcom/android/server/slice/SliceManagerService;

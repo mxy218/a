@@ -127,7 +127,9 @@
 
 # direct methods
 .method private static synthetic $closeResource(Ljava/lang/Throwable;Ljava/lang/AutoCloseable;)V
-    .registers 2
+    .registers 3
+    .param p0, "x0"  # Ljava/lang/Throwable;
+    .param p1, "x1"  # Ljava/lang/AutoCloseable;
 
     .line 801
     if-eqz p0, :cond_b
@@ -140,9 +142,9 @@
     goto :goto_e
 
     :catchall_6
-    move-exception p1
+    move-exception v0
 
-    invoke-virtual {p0, p1}, Ljava/lang/Throwable;->addSuppressed(Ljava/lang/Throwable;)V
+    invoke-virtual {p0, v0}, Ljava/lang/Throwable;->addSuppressed(Ljava/lang/Throwable;)V
 
     goto :goto_e
 
@@ -167,7 +169,15 @@
 .end method
 
 .method public constructor <init>(Lcom/android/server/backup/UserBackupManagerService;Lcom/android/server/backup/transport/TransportClient;Ljava/lang/String;Ljava/util/List;Lcom/android/server/backup/DataChangedJournal;Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;Lcom/android/server/backup/internal/OnTaskFinishedListener;Ljava/util/List;ZZ)V
-    .registers 13
+    .registers 14
+    .param p1, "backupManagerService"  # Lcom/android/server/backup/UserBackupManagerService;
+    .param p2, "transportClient"  # Lcom/android/server/backup/transport/TransportClient;
+    .param p3, "transportDirName"  # Ljava/lang/String;
+    .param p5, "journal"  # Lcom/android/server/backup/DataChangedJournal;
+    .param p6, "reporter"  # Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;
+    .param p7, "taskFinishedListener"  # Lcom/android/server/backup/internal/OnTaskFinishedListener;
+    .param p9, "userInitiated"  # Z
+    .param p10, "nonIncremental"  # Z
     .annotation build Lcom/android/internal/annotations/VisibleForTesting;
     .end annotation
 
@@ -190,6 +200,8 @@
     .end annotation
 
     .line 301
+    .local p4, "queue":Ljava/util/List;, "Ljava/util/List<Ljava/lang/String;>;"
+    .local p8, "pendingFullBackups":Ljava/util/List;, "Ljava/util/List<Ljava/lang/String;>;"
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
     .line 276
@@ -228,11 +240,11 @@
     iput-object p4, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mOriginalQueue:Ljava/util/List;
 
     .line 308
-    new-instance p2, Ljava/util/ArrayList;
+    new-instance v0, Ljava/util/ArrayList;
 
-    invoke-direct {p2, p4}, Ljava/util/ArrayList;-><init>(Ljava/util/Collection;)V
+    invoke-direct {v0, p4}, Ljava/util/ArrayList;-><init>(Ljava/util/Collection;)V
 
-    iput-object p2, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mQueue:Ljava/util/List;
+    iput-object v0, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mQueue:Ljava/util/List;
 
     .line 309
     iput-object p5, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mJournal:Lcom/android/server/backup/DataChangedJournal;
@@ -258,79 +270,80 @@
     .line 317
     invoke-virtual {p1}, Lcom/android/server/backup/UserBackupManagerService;->getAgentTimeoutParameters()Lcom/android/server/backup/BackupAgentTimeoutParameters;
 
-    move-result-object p2
+    move-result-object v0
 
     .line 316
-    const-string p4, "Timeout parameters cannot be null"
+    const-string v1, "Timeout parameters cannot be null"
 
-    invoke-static {p2, p4}, Lcom/android/internal/util/Preconditions;->checkNotNull(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+    invoke-static {v0, v1}, Lcom/android/internal/util/Preconditions;->checkNotNull(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
 
-    move-result-object p2
+    move-result-object v0
 
-    check-cast p2, Lcom/android/server/backup/BackupAgentTimeoutParameters;
+    check-cast v0, Lcom/android/server/backup/BackupAgentTimeoutParameters;
 
-    iput-object p2, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mAgentTimeoutParameters:Lcom/android/server/backup/BackupAgentTimeoutParameters;
+    iput-object v0, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mAgentTimeoutParameters:Lcom/android/server/backup/BackupAgentTimeoutParameters;
 
     .line 319
-    new-instance p2, Ljava/io/File;
+    new-instance v0, Ljava/io/File;
 
     invoke-virtual {p1}, Lcom/android/server/backup/UserBackupManagerService;->getBaseStateDir()Ljava/io/File;
 
-    move-result-object p4
+    move-result-object v1
 
-    invoke-direct {p2, p4, p3}, Ljava/io/File;-><init>(Ljava/io/File;Ljava/lang/String;)V
+    invoke-direct {v0, v1, p3}, Ljava/io/File;-><init>(Ljava/io/File;Ljava/lang/String;)V
 
-    iput-object p2, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mStateDirectory:Ljava/io/File;
+    iput-object v0, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mStateDirectory:Ljava/io/File;
 
     .line 320
-    iget-object p2, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mBackupManagerService:Lcom/android/server/backup/UserBackupManagerService;
+    iget-object v0, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mBackupManagerService:Lcom/android/server/backup/UserBackupManagerService;
 
-    invoke-virtual {p2}, Lcom/android/server/backup/UserBackupManagerService;->getDataDir()Ljava/io/File;
+    invoke-virtual {v0}, Lcom/android/server/backup/UserBackupManagerService;->getDataDir()Ljava/io/File;
 
-    move-result-object p2
+    move-result-object v0
 
-    iput-object p2, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mDataDirectory:Ljava/io/File;
+    iput-object v0, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mDataDirectory:Ljava/io/File;
 
     .line 321
     invoke-virtual {p1}, Lcom/android/server/backup/UserBackupManagerService;->generateRandomIntegerToken()I
 
-    move-result p2
+    move-result v0
 
-    iput p2, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mCurrentOpToken:I
+    iput v0, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mCurrentOpToken:I
 
     .line 322
-    iget-object p2, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mBackupManagerService:Lcom/android/server/backup/UserBackupManagerService;
+    iget-object v0, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mBackupManagerService:Lcom/android/server/backup/UserBackupManagerService;
 
-    invoke-virtual {p2}, Lcom/android/server/backup/UserBackupManagerService;->getQueueLock()Ljava/lang/Object;
+    invoke-virtual {v0}, Lcom/android/server/backup/UserBackupManagerService;->getQueueLock()Ljava/lang/Object;
 
-    move-result-object p2
+    move-result-object v0
 
-    iput-object p2, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mQueueLock:Ljava/lang/Object;
+    iput-object v0, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mQueueLock:Ljava/lang/Object;
 
     .line 323
-    new-instance p2, Ljava/io/File;
+    new-instance v0, Ljava/io/File;
 
-    iget-object p3, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mStateDirectory:Ljava/io/File;
+    iget-object v1, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mStateDirectory:Ljava/io/File;
 
-    const-string p4, "blank_state"
+    const-string v2, "blank_state"
 
-    invoke-direct {p2, p3, p4}, Ljava/io/File;-><init>(Ljava/io/File;Ljava/lang/String;)V
+    invoke-direct {v0, v1, v2}, Ljava/io/File;-><init>(Ljava/io/File;Ljava/lang/String;)V
 
-    iput-object p2, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mBlankStateFile:Ljava/io/File;
+    iput-object v0, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mBlankStateFile:Ljava/io/File;
 
     .line 324
     invoke-virtual {p1}, Lcom/android/server/backup/UserBackupManagerService;->getUserId()I
 
-    move-result p1
+    move-result v0
 
-    iput p1, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mUserId:I
+    iput v0, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mUserId:I
 
     .line 325
     return-void
 .end method
 
 .method private SHA1Checksum([B)Ljava/lang/String;
-    .registers 6
+    .registers 8
+    .param p1, "input"  # [B
 
     .line 763
     :try_start_0
@@ -341,74 +354,87 @@
     move-result-object v0
 
     .line 764
+    .local v0, "md":Ljava/security/MessageDigest;
     invoke-virtual {v0, p1}, Ljava/security/MessageDigest;->digest([B)[B
 
-    move-result-object p1
+    move-result-object v1
     :try_end_a
-    .catch Ljava/security/NoSuchAlgorithmException; {:try_start_0 .. :try_end_a} :catch_28
+    .catch Ljava/security/NoSuchAlgorithmException; {:try_start_0 .. :try_end_a} :catch_29
+
+    move-object v0, v1
 
     .line 768
+    .local v0, "checksum":[B
     nop
 
     .line 770
-    new-instance v0, Ljava/lang/StringBuilder;
+    new-instance v1, Ljava/lang/StringBuilder;
 
-    array-length v1, p1
+    array-length v2, v0
 
-    mul-int/lit8 v1, v1, 0x2
+    mul-int/lit8 v2, v2, 0x2
 
-    invoke-direct {v0, v1}, Ljava/lang/StringBuilder;-><init>(I)V
+    invoke-direct {v1, v2}, Ljava/lang/StringBuilder;-><init>(I)V
 
     .line 771
-    array-length v1, p1
+    .local v1, "string":Ljava/lang/StringBuilder;
+    array-length v2, v0
 
-    const/4 v2, 0x0
+    const/4 v3, 0x0
 
-    :goto_15
-    if-ge v2, v1, :cond_23
+    :goto_16
+    if-ge v3, v2, :cond_24
 
-    aget-byte v3, p1, v2
+    aget-byte v4, v0, v3
 
     .line 772
-    invoke-static {v3}, Ljava/lang/Integer;->toHexString(I)Ljava/lang/String;
+    .local v4, "item":B
+    invoke-static {v4}, Ljava/lang/Integer;->toHexString(I)Ljava/lang/String;
 
-    move-result-object v3
+    move-result-object v5
 
-    invoke-virtual {v0, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     .line 771
-    add-int/lit8 v2, v2, 0x1
+    .end local v4  # "item":B
+    add-int/lit8 v3, v3, 0x1
 
-    goto :goto_15
+    goto :goto_16
 
     .line 774
-    :cond_23
-    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    :cond_24
+    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v2
 
-    return-object p1
+    return-object v2
 
     .line 765
-    :catch_28
-    move-exception p1
+    .end local v0  # "checksum":[B
+    .end local v1  # "string":Ljava/lang/StringBuilder;
+    :catch_29
+    move-exception v0
 
     .line 766
-    iget-object v0, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mReporter:Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;
+    .local v0, "e":Ljava/security/NoSuchAlgorithmException;
+    iget-object v1, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mReporter:Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;
 
-    invoke-virtual {v0, p1}, Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;->onDigestError(Ljava/security/NoSuchAlgorithmException;)V
+    invoke-virtual {v1, v0}, Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;->onDigestError(Ljava/security/NoSuchAlgorithmException;)V
 
     .line 767
-    const-string p1, "00"
+    const-string v1, "00"
 
-    return-object p1
+    return-object v1
 .end method
 
 .method private agentDoQuotaExceeded(Landroid/app/IBackupAgent;Ljava/lang/String;J)V
     .registers 13
+    .param p1, "agent"  # Landroid/app/IBackupAgent;
+    .param p2, "packageName"  # Ljava/lang/String;
+    .param p3, "size"  # J
 
     .line 905
-    if-eqz p1, :cond_29
+    if-eqz p1, :cond_2a
 
     .line 907
     :try_start_2
@@ -422,6 +448,7 @@
     move-result-object v0
 
     .line 909
+    .local v0, "transport":Lcom/android/internal/backup/IBackupTransport;
     const/4 v1, 0x0
 
     invoke-interface {v0, p2, v1}, Lcom/android/internal/backup/IBackupTransport;->getBackupQuota(Ljava/lang/String;Z)J
@@ -429,9 +456,10 @@
     move-result-wide v6
 
     .line 910
-    new-instance p2, Lcom/android/server/backup/keyvalue/-$$Lambda$KeyValueBackupTask$XyLNsBl81S-JjG_2y6Nb3ueV0ZY;
+    .local v6, "quota":J
+    new-instance v1, Lcom/android/server/backup/keyvalue/-$$Lambda$KeyValueBackupTask$XyLNsBl81S-JjG_2y6Nb3ueV0ZY;
 
-    move-object v2, p2
+    move-object v2, v1
 
     move-object v3, p1
 
@@ -439,40 +467,48 @@
 
     invoke-direct/range {v2 .. v7}, Lcom/android/server/backup/keyvalue/-$$Lambda$KeyValueBackupTask$XyLNsBl81S-JjG_2y6Nb3ueV0ZY;-><init>(Landroid/app/IBackupAgent;JJ)V
 
-    iget-object p1, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mAgentTimeoutParameters:Lcom/android/server/backup/BackupAgentTimeoutParameters;
+    iget-object v2, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mAgentTimeoutParameters:Lcom/android/server/backup/BackupAgentTimeoutParameters;
 
     .line 912
-    invoke-virtual {p1}, Lcom/android/server/backup/BackupAgentTimeoutParameters;->getQuotaExceededTimeoutMillis()J
+    invoke-virtual {v2}, Lcom/android/server/backup/BackupAgentTimeoutParameters;->getQuotaExceededTimeoutMillis()J
 
-    move-result-wide p3
+    move-result-wide v2
 
-    const-string p1, "doQuotaExceeded()"
+    const-string v4, "doQuotaExceeded()"
 
     .line 910
-    invoke-direct {p0, p2, p3, p4, p1}, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->remoteCall(Lcom/android/server/backup/remote/RemoteCallable;JLjava/lang/String;)Lcom/android/server/backup/remote/RemoteResult;
+    invoke-direct {p0, v1, v2, v3, v4}, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->remoteCall(Lcom/android/server/backup/remote/RemoteCallable;JLjava/lang/String;)Lcom/android/server/backup/remote/RemoteResult;
     :try_end_22
-    .catch Ljava/lang/Exception; {:try_start_2 .. :try_end_22} :catch_23
+    .catch Ljava/lang/Exception; {:try_start_2 .. :try_end_22} :catch_24
 
     .line 916
-    goto :goto_29
+    nop
+
+    .end local v0  # "transport":Lcom/android/internal/backup/IBackupTransport;
+    .end local v6  # "quota":J
+    goto :goto_2a
 
     .line 914
-    :catch_23
-    move-exception p1
+    :catch_24
+    move-exception v0
 
     .line 915
-    iget-object p2, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mReporter:Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;
+    .local v0, "e":Ljava/lang/Exception;
+    iget-object v1, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mReporter:Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;
 
-    invoke-virtual {p2, p1}, Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;->onAgentDoQuotaExceededError(Ljava/lang/Exception;)V
+    invoke-virtual {v1, v0}, Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;->onAgentDoQuotaExceededError(Ljava/lang/Exception;)V
 
     .line 918
-    :cond_29
-    :goto_29
+    .end local v0  # "e":Ljava/lang/Exception;
+    :cond_2a
+    :goto_2a
     return-void
 .end method
 
 .method private agentFail(Landroid/app/IBackupAgent;Ljava/lang/String;)V
-    .registers 3
+    .registers 6
+    .param p1, "agent"  # Landroid/app/IBackupAgent;
+    .param p2, "message"  # Ljava/lang/String;
 
     .line 753
     :try_start_0
@@ -485,24 +521,27 @@
 
     .line 754
     :catch_4
-    move-exception p1
+    move-exception v0
 
     .line 755
-    iget-object p1, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mReporter:Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;
+    .local v0, "e":Ljava/lang/Exception;
+    iget-object v1, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mReporter:Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;
 
-    iget-object p2, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mCurrentPackage:Landroid/content/pm/PackageInfo;
+    iget-object v2, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mCurrentPackage:Landroid/content/pm/PackageInfo;
 
-    iget-object p2, p2, Landroid/content/pm/PackageInfo;->packageName:Ljava/lang/String;
+    iget-object v2, v2, Landroid/content/pm/PackageInfo;->packageName:Ljava/lang/String;
 
-    invoke-virtual {p1, p2}, Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;->onFailAgentError(Ljava/lang/String;)V
+    invoke-virtual {v1, v2}, Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;->onFailAgentError(Ljava/lang/String;)V
 
     .line 757
+    .end local v0  # "e":Ljava/lang/Exception;
     :goto_e
     return-void
 .end method
 
 .method private applyStateTransaction(I)V
     .registers 5
+    .param p1, "stateTransaction"  # I
 
     .line 1072
     if-eqz p1, :cond_32
@@ -516,14 +555,14 @@
     if-ne p1, v0, :cond_13
 
     .line 1082
-    iget-object p1, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mSavedStateFile:Ljava/io/File;
+    iget-object v0, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mSavedStateFile:Ljava/io/File;
 
-    invoke-virtual {p1}, Ljava/io/File;->delete()Z
+    invoke-virtual {v0}, Ljava/io/File;->delete()Z
 
     .line 1083
-    iget-object p1, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mNewStateFile:Ljava/io/File;
+    iget-object v0, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mNewStateFile:Ljava/io/File;
 
-    invoke-virtual {p1}, Ljava/io/File;->delete()Z
+    invoke-virtual {v0}, Ljava/io/File;->delete()Z
 
     .line 1084
     goto :goto_3a
@@ -544,30 +583,30 @@
 
     invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v1
 
-    invoke-direct {v0, p1}, Ljava/lang/IllegalArgumentException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v0, v1}, Ljava/lang/IllegalArgumentException;-><init>(Ljava/lang/String;)V
 
     throw v0
 
     .line 1077
     :cond_2a
-    iget-object p1, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mNewStateFile:Ljava/io/File;
+    iget-object v0, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mNewStateFile:Ljava/io/File;
 
-    if-eqz p1, :cond_3a
+    if-eqz v0, :cond_3a
 
     .line 1078
-    invoke-virtual {p1}, Ljava/io/File;->delete()Z
+    invoke-virtual {v0}, Ljava/io/File;->delete()Z
 
     goto :goto_3a
 
     .line 1074
     :cond_32
-    iget-object p1, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mNewStateFile:Ljava/io/File;
+    iget-object v0, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mNewStateFile:Ljava/io/File;
 
-    iget-object v0, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mSavedStateFile:Ljava/io/File;
+    iget-object v1, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mSavedStateFile:Ljava/io/File;
 
-    invoke-virtual {p1, v0}, Ljava/io/File;->renameTo(Ljava/io/File;)Z
+    invoke-virtual {v0, v1}, Ljava/io/File;->renameTo(Ljava/io/File;)Z
 
     .line 1075
     nop
@@ -580,6 +619,7 @@
 
 .method private backupPackage(Ljava/lang/String;)V
     .registers 3
+    .param p1, "packageName"  # Ljava/lang/String;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Lcom/android/server/backup/keyvalue/AgentException;,
@@ -595,30 +635,32 @@
     .line 469
     invoke-direct {p0, p1}, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->getPackageForBackup(Ljava/lang/String;)Landroid/content/pm/PackageInfo;
 
-    move-result-object p1
+    move-result-object v0
 
-    iput-object p1, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mCurrentPackage:Landroid/content/pm/PackageInfo;
+    iput-object v0, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mCurrentPackage:Landroid/content/pm/PackageInfo;
 
     .line 472
     :try_start_b
-    iget-object p1, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mCurrentPackage:Landroid/content/pm/PackageInfo;
+    iget-object v0, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mCurrentPackage:Landroid/content/pm/PackageInfo;
 
-    invoke-direct {p0, p1}, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->extractAgentData(Landroid/content/pm/PackageInfo;)V
+    invoke-direct {p0, v0}, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->extractAgentData(Landroid/content/pm/PackageInfo;)V
 
     .line 473
-    iget-object p1, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mCurrentPackage:Landroid/content/pm/PackageInfo;
+    iget-object v0, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mCurrentPackage:Landroid/content/pm/PackageInfo;
 
-    invoke-direct {p0, p1}, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->sendDataToTransport(Landroid/content/pm/PackageInfo;)I
+    invoke-direct {p0, v0}, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->sendDataToTransport(Landroid/content/pm/PackageInfo;)I
 
-    move-result p1
+    move-result v0
 
     .line 474
-    invoke-direct {p0, p1}, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->cleanUpAgentForTransportStatus(I)V
+    .local v0, "status":I
+    invoke-direct {p0, v0}, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->cleanUpAgentForTransportStatus(I)V
     :try_end_19
     .catch Lcom/android/server/backup/keyvalue/AgentException; {:try_start_b .. :try_end_19} :catch_1b
     .catch Lcom/android/server/backup/keyvalue/TaskException; {:try_start_b .. :try_end_19} :catch_1b
 
     .line 478
+    .end local v0  # "status":I
     nop
 
     .line 479
@@ -626,13 +668,14 @@
 
     .line 475
     :catch_1b
-    move-exception p1
+    move-exception v0
 
     .line 476
-    invoke-direct {p0, p1}, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->cleanUpAgentForError(Lcom/android/server/backup/keyvalue/BackupException;)V
+    .local v0, "e":Lcom/android/server/backup/keyvalue/BackupException;
+    invoke-direct {p0, v0}, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->cleanUpAgentForError(Lcom/android/server/backup/keyvalue/BackupException;)V
 
     .line 477
-    throw p1
+    throw v0
 .end method
 
 .method private backupPm()V
@@ -674,12 +717,14 @@
     move-result v0
 
     .line 458
+    .local v0, "status":I
     invoke-direct {p0, v0}, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->cleanUpAgentForTransportStatus(I)V
     :try_end_1e
     .catch Lcom/android/server/backup/keyvalue/AgentException; {:try_start_12 .. :try_end_1e} :catch_20
     .catch Lcom/android/server/backup/keyvalue/TaskException; {:try_start_12 .. :try_end_1e} :catch_20
 
     .line 464
+    .end local v0  # "status":I
     nop
 
     .line 465
@@ -690,6 +735,7 @@
     move-exception v0
 
     .line 460
+    .local v0, "e":Lcom/android/server/backup/keyvalue/BackupException;
     iget-object v1, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mReporter:Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;
 
     invoke-virtual {v1, v0}, Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;->onExtractPmAgentDataError(Ljava/lang/Exception;)V
@@ -700,13 +746,14 @@
     .line 463
     invoke-static {v0}, Lcom/android/server/backup/keyvalue/TaskException;->stateCompromised(Ljava/lang/Exception;)Lcom/android/server/backup/keyvalue/TaskException;
 
-    move-result-object v0
+    move-result-object v1
 
-    throw v0
+    throw v1
 .end method
 
 .method private bindAgent(Landroid/content/pm/PackageInfo;)Landroid/app/IBackupAgent;
-    .registers 5
+    .registers 6
+    .param p1, "packageInfo"  # Landroid/content/pm/PackageInfo;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Lcom/android/server/backup/keyvalue/AgentException;
@@ -717,61 +764,73 @@
     iget-object v0, p1, Landroid/content/pm/PackageInfo;->packageName:Ljava/lang/String;
 
     .line 511
+    .local v0, "packageName":Ljava/lang/String;
     :try_start_2
     iget-object v1, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mBackupManagerService:Lcom/android/server/backup/UserBackupManagerService;
 
-    iget-object p1, p1, Landroid/content/pm/PackageInfo;->applicationInfo:Landroid/content/pm/ApplicationInfo;
+    iget-object v2, p1, Landroid/content/pm/PackageInfo;->applicationInfo:Landroid/content/pm/ApplicationInfo;
 
-    const/4 v2, 0x0
+    const/4 v3, 0x0
 
     .line 512
-    invoke-virtual {v1, p1, v2}, Lcom/android/server/backup/UserBackupManagerService;->bindToAgentSynchronous(Landroid/content/pm/ApplicationInfo;I)Landroid/app/IBackupAgent;
+    invoke-virtual {v1, v2, v3}, Lcom/android/server/backup/UserBackupManagerService;->bindToAgentSynchronous(Landroid/content/pm/ApplicationInfo;I)Landroid/app/IBackupAgent;
 
-    move-result-object p1
+    move-result-object v1
 
     .line 514
-    if-eqz p1, :cond_f
+    .local v1, "agent":Landroid/app/IBackupAgent;
+    if-eqz v1, :cond_f
 
     .line 521
     nop
 
     .line 522
-    return-object p1
+    return-object v1
 
     .line 515
     :cond_f
-    iget-object p1, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mReporter:Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;
+    iget-object v2, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mReporter:Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;
 
-    invoke-virtual {p1, v0}, Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;->onAgentError(Ljava/lang/String;)V
+    invoke-virtual {v2, v0}, Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;->onAgentError(Ljava/lang/String;)V
 
     .line 516
     invoke-static {}, Lcom/android/server/backup/keyvalue/AgentException;->transitory()Lcom/android/server/backup/keyvalue/AgentException;
 
-    move-result-object p1
+    move-result-object v2
 
-    throw p1
+    .end local v0  # "packageName":Ljava/lang/String;
+    .end local p0  # "this":Lcom/android/server/backup/keyvalue/KeyValueBackupTask;
+    .end local p1  # "packageInfo":Landroid/content/pm/PackageInfo;
+    throw v2
     :try_end_19
     .catch Ljava/lang/SecurityException; {:try_start_2 .. :try_end_19} :catch_19
 
     .line 518
+    .end local v1  # "agent":Landroid/app/IBackupAgent;
+    .restart local v0  # "packageName":Ljava/lang/String;
+    .restart local p0  # "this":Lcom/android/server/backup/keyvalue/KeyValueBackupTask;
+    .restart local p1  # "packageInfo":Landroid/content/pm/PackageInfo;
     :catch_19
-    move-exception p1
+    move-exception v1
 
     .line 519
-    iget-object v1, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mReporter:Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;
+    .local v1, "e":Ljava/lang/SecurityException;
+    iget-object v2, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mReporter:Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;
 
-    invoke-virtual {v1, v0, p1}, Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;->onBindAgentError(Ljava/lang/String;Ljava/lang/SecurityException;)V
+    invoke-virtual {v2, v0, v1}, Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;->onBindAgentError(Ljava/lang/String;Ljava/lang/SecurityException;)V
 
     .line 520
-    invoke-static {p1}, Lcom/android/server/backup/keyvalue/AgentException;->transitory(Ljava/lang/Exception;)Lcom/android/server/backup/keyvalue/AgentException;
+    invoke-static {v1}, Lcom/android/server/backup/keyvalue/AgentException;->transitory(Ljava/lang/Exception;)Lcom/android/server/backup/keyvalue/AgentException;
 
-    move-result-object p1
+    move-result-object v2
 
-    throw p1
+    throw v2
 .end method
 
 .method private checkAgentResult(Landroid/content/pm/PackageInfo;Lcom/android/server/backup/remote/RemoteResult;)V
     .registers 9
+    .param p1, "packageInfo"  # Landroid/content/pm/PackageInfo;
+    .param p2, "result"  # Lcom/android/server/backup/remote/RemoteResult;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Lcom/android/server/backup/keyvalue/AgentException;,
@@ -809,18 +868,19 @@
     move-result-wide v2
 
     .line 744
+    .local v2, "resultCode":J
     const-wide/16 v4, -0x1
 
-    cmp-long p2, v2, v4
+    cmp-long v0, v2, v4
 
-    if-eqz p2, :cond_2a
+    if-eqz v0, :cond_2a
 
     .line 748
-    const-wide/16 p1, 0x0
+    const-wide/16 v4, 0x0
 
-    cmp-long p1, v2, p1
+    cmp-long v0, v2, v4
 
-    if-nez p1, :cond_25
+    if-nez v0, :cond_25
 
     goto :goto_26
 
@@ -835,62 +895,65 @@
 
     .line 745
     :cond_2a
-    iget-object p2, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mReporter:Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;
+    iget-object v0, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mReporter:Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;
 
-    invoke-virtual {p2, p1}, Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;->onAgentResultError(Landroid/content/pm/PackageInfo;)V
+    invoke-virtual {v0, p1}, Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;->onAgentResultError(Landroid/content/pm/PackageInfo;)V
 
     .line 746
     invoke-static {}, Lcom/android/server/backup/keyvalue/AgentException;->transitory()Lcom/android/server/backup/keyvalue/AgentException;
 
-    move-result-object p1
+    move-result-object v0
 
-    throw p1
+    throw v0
 
     .line 739
+    .end local v2  # "resultCode":J
     :cond_34
-    iget-object p2, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mReporter:Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;
+    iget-object v0, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mReporter:Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;
 
-    invoke-virtual {p2, p1}, Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;->onAgentTimedOut(Landroid/content/pm/PackageInfo;)V
+    invoke-virtual {v0, p1}, Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;->onAgentTimedOut(Landroid/content/pm/PackageInfo;)V
 
     .line 740
     invoke-static {}, Lcom/android/server/backup/keyvalue/AgentException;->transitory()Lcom/android/server/backup/keyvalue/AgentException;
 
-    move-result-object p1
+    move-result-object v0
 
-    throw p1
+    throw v0
 
     .line 735
     :cond_3e
-    iget-object p2, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mReporter:Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;
+    iget-object v0, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mReporter:Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;
 
-    invoke-virtual {p2, p1}, Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;->onAgentCancelled(Landroid/content/pm/PackageInfo;)V
+    invoke-virtual {v0, p1}, Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;->onAgentCancelled(Landroid/content/pm/PackageInfo;)V
 
     .line 736
     invoke-static {}, Lcom/android/server/backup/keyvalue/TaskException;->create()Lcom/android/server/backup/keyvalue/TaskException;
 
-    move-result-object p1
+    move-result-object v0
 
-    throw p1
+    throw v0
 
     .line 730
     :cond_48
     iput-boolean v1, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mCancelled:Z
 
     .line 731
-    iget-object p2, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mReporter:Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;
+    iget-object v0, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mReporter:Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;
 
-    invoke-virtual {p2, p1}, Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;->onAgentCancelled(Landroid/content/pm/PackageInfo;)V
+    invoke-virtual {v0, p1}, Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;->onAgentCancelled(Landroid/content/pm/PackageInfo;)V
 
     .line 732
     invoke-static {}, Lcom/android/server/backup/keyvalue/TaskException;->create()Lcom/android/server/backup/keyvalue/TaskException;
 
-    move-result-object p1
+    move-result-object v0
 
-    throw p1
+    throw v0
 .end method
 
 .method private checkBackupData(Landroid/content/pm/ApplicationInfo;Ljava/io/File;)V
-    .registers 7
+    .registers 9
+    .param p1, "applicationInfo"  # Landroid/content/pm/ApplicationInfo;
+    .param p2, "backupDataFile"  # Ljava/io/File;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Ljava/io/IOException;,
@@ -901,233 +964,259 @@
     .line 926
     if-eqz p1, :cond_63
 
-    iget p1, p1, Landroid/content/pm/ApplicationInfo;->flags:I
+    iget v0, p1, Landroid/content/pm/ApplicationInfo;->flags:I
 
-    and-int/lit8 p1, p1, 0x1
+    and-int/lit8 v0, v0, 0x1
 
-    if-eqz p1, :cond_9
+    if-eqz v0, :cond_9
 
     goto :goto_63
 
     .line 930
     :cond_9
-    const/high16 p1, 0x10000000
+    const/high16 v0, 0x10000000
 
     .line 931
-    invoke-static {p2, p1}, Landroid/os/ParcelFileDescriptor;->open(Ljava/io/File;I)Landroid/os/ParcelFileDescriptor;
+    invoke-static {p2, v0}, Landroid/os/ParcelFileDescriptor;->open(Ljava/io/File;I)Landroid/os/ParcelFileDescriptor;
 
-    move-result-object p1
+    move-result-object v0
 
     .line 930
-    const/4 p2, 0x0
+    .local v0, "backupData":Landroid/os/ParcelFileDescriptor;
+    const/4 v1, 0x0
 
     .line 932
     :try_start_10
-    new-instance v0, Landroid/app/backup/BackupDataInput;
+    new-instance v2, Landroid/app/backup/BackupDataInput;
 
-    invoke-virtual {p1}, Landroid/os/ParcelFileDescriptor;->getFileDescriptor()Ljava/io/FileDescriptor;
+    invoke-virtual {v0}, Landroid/os/ParcelFileDescriptor;->getFileDescriptor()Ljava/io/FileDescriptor;
 
-    move-result-object v1
+    move-result-object v3
 
-    invoke-direct {v0, v1}, Landroid/app/backup/BackupDataInput;-><init>(Ljava/io/FileDescriptor;)V
+    invoke-direct {v2, v3}, Landroid/app/backup/BackupDataInput;-><init>(Ljava/io/FileDescriptor;)V
 
     .line 933
+    .local v2, "backupDataInput":Landroid/app/backup/BackupDataInput;
     :goto_19
-    invoke-virtual {v0}, Landroid/app/backup/BackupDataInput;->readNextHeader()Z
+    invoke-virtual {v2}, Landroid/app/backup/BackupDataInput;->readNextHeader()Z
 
-    move-result v1
+    move-result v3
 
-    if-eqz v1, :cond_56
+    if-eqz v3, :cond_56
 
     .line 934
-    invoke-virtual {v0}, Landroid/app/backup/BackupDataInput;->getKey()Ljava/lang/String;
+    invoke-virtual {v2}, Landroid/app/backup/BackupDataInput;->getKey()Ljava/lang/String;
 
-    move-result-object v1
+    move-result-object v3
 
     .line 935
-    if-eqz v1, :cond_52
+    .local v3, "key":Ljava/lang/String;
+    if-eqz v3, :cond_52
 
-    const/4 v2, 0x0
+    const/4 v4, 0x0
 
-    invoke-virtual {v1, v2}, Ljava/lang/String;->charAt(I)C
+    invoke-virtual {v3, v4}, Ljava/lang/String;->charAt(I)C
 
-    move-result v2
+    move-result v4
 
-    const v3, 0xff00
+    const v5, 0xff00
 
-    if-ge v2, v3, :cond_30
+    if-ge v4, v5, :cond_30
 
     goto :goto_52
 
     .line 936
     :cond_30
-    iget-object p2, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mReporter:Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;
+    iget-object v1, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mReporter:Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;
 
-    iget-object v0, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mCurrentPackage:Landroid/content/pm/PackageInfo;
+    iget-object v4, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mCurrentPackage:Landroid/content/pm/PackageInfo;
 
-    invoke-virtual {p2, v0, v1}, Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;->onAgentIllegalKey(Landroid/content/pm/PackageInfo;Ljava/lang/String;)V
+    invoke-virtual {v1, v4, v3}, Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;->onAgentIllegalKey(Landroid/content/pm/PackageInfo;Ljava/lang/String;)V
 
     .line 938
-    iget-object p2, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mAgent:Landroid/app/IBackupAgent;
+    iget-object v1, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mAgent:Landroid/app/IBackupAgent;
 
-    new-instance v0, Ljava/lang/StringBuilder;
+    new-instance v4, Ljava/lang/StringBuilder;
 
-    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v4}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v2, "Illegal backup key: "
+    const-string v5, "Illegal backup key: "
 
-    invoke-virtual {v0, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v4, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v4}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v4
 
-    invoke-direct {p0, p2, v0}, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->agentFail(Landroid/app/IBackupAgent;Ljava/lang/String;)V
+    invoke-direct {p0, v1, v4}, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->agentFail(Landroid/app/IBackupAgent;Ljava/lang/String;)V
 
     .line 939
     invoke-static {}, Lcom/android/server/backup/keyvalue/AgentException;->permanent()Lcom/android/server/backup/keyvalue/AgentException;
 
-    move-result-object p2
+    move-result-object v1
 
-    throw p2
+    .end local v0  # "backupData":Landroid/os/ParcelFileDescriptor;
+    .end local p0  # "this":Lcom/android/server/backup/keyvalue/KeyValueBackupTask;
+    .end local p1  # "applicationInfo":Landroid/content/pm/ApplicationInfo;
+    .end local p2  # "backupDataFile":Ljava/io/File;
+    throw v1
 
     .line 941
+    .restart local v0  # "backupData":Landroid/os/ParcelFileDescriptor;
+    .restart local p0  # "this":Lcom/android/server/backup/keyvalue/KeyValueBackupTask;
+    .restart local p1  # "applicationInfo":Landroid/content/pm/ApplicationInfo;
+    .restart local p2  # "backupDataFile":Ljava/io/File;
     :cond_52
     :goto_52
-    invoke-virtual {v0}, Landroid/app/backup/BackupDataInput;->skipEntityData()V
+    invoke-virtual {v2}, Landroid/app/backup/BackupDataInput;->skipEntityData()V
     :try_end_55
     .catchall {:try_start_10 .. :try_end_55} :catchall_5a
 
     .line 942
+    .end local v3  # "key":Ljava/lang/String;
     goto :goto_19
 
     .line 943
+    .end local v2  # "backupDataInput":Landroid/app/backup/BackupDataInput;
     :cond_56
-    invoke-static {p2, p1}, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->$closeResource(Ljava/lang/Throwable;Ljava/lang/AutoCloseable;)V
+    invoke-static {v1, v0}, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->$closeResource(Ljava/lang/Throwable;Ljava/lang/AutoCloseable;)V
 
     .line 944
+    .end local v0  # "backupData":Landroid/os/ParcelFileDescriptor;
     return-void
 
     .line 930
+    .restart local v0  # "backupData":Landroid/os/ParcelFileDescriptor;
     :catchall_5a
-    move-exception p2
+    move-exception v1
 
+    .end local v0  # "backupData":Landroid/os/ParcelFileDescriptor;
+    .end local p0  # "this":Lcom/android/server/backup/keyvalue/KeyValueBackupTask;
+    .end local p1  # "applicationInfo":Landroid/content/pm/ApplicationInfo;
+    .end local p2  # "backupDataFile":Ljava/io/File;
     :try_start_5b
-    throw p2
+    throw v1
     :try_end_5c
     .catchall {:try_start_5b .. :try_end_5c} :catchall_5c
 
     .line 943
+    .restart local v0  # "backupData":Landroid/os/ParcelFileDescriptor;
+    .restart local p0  # "this":Lcom/android/server/backup/keyvalue/KeyValueBackupTask;
+    .restart local p1  # "applicationInfo":Landroid/content/pm/ApplicationInfo;
+    .restart local p2  # "backupDataFile":Ljava/io/File;
     :catchall_5c
-    move-exception v0
+    move-exception v2
 
-    if-eqz p1, :cond_62
+    if-eqz v0, :cond_62
 
-    invoke-static {p2, p1}, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->$closeResource(Ljava/lang/Throwable;Ljava/lang/AutoCloseable;)V
+    invoke-static {v1, v0}, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->$closeResource(Ljava/lang/Throwable;Ljava/lang/AutoCloseable;)V
 
     :cond_62
-    throw v0
+    throw v2
 
     .line 928
+    .end local v0  # "backupData":Landroid/os/ParcelFileDescriptor;
     :cond_63
     :goto_63
     return-void
 .end method
 
 .method private cleanUpAgent(I)V
-    .registers 4
+    .registers 5
+    .param p1, "stateTransaction"  # I
 
     .line 1049
     invoke-direct {p0, p1}, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->applyStateTransaction(I)V
 
     .line 1050
-    iget-object p1, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mBackupDataFile:Ljava/io/File;
+    iget-object v0, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mBackupDataFile:Ljava/io/File;
 
-    if-eqz p1, :cond_a
+    if-eqz v0, :cond_a
 
     .line 1051
-    invoke-virtual {p1}, Ljava/io/File;->delete()Z
+    invoke-virtual {v0}, Ljava/io/File;->delete()Z
 
     .line 1053
     :cond_a
-    iget-object p1, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mBlankStateFile:Ljava/io/File;
+    iget-object v0, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mBlankStateFile:Ljava/io/File;
 
-    invoke-virtual {p1}, Ljava/io/File;->delete()Z
+    invoke-virtual {v0}, Ljava/io/File;->delete()Z
 
     .line 1054
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    iput-object p1, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mSavedStateFile:Ljava/io/File;
+    iput-object v0, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mSavedStateFile:Ljava/io/File;
 
     .line 1055
-    iput-object p1, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mBackupDataFile:Ljava/io/File;
+    iput-object v0, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mBackupDataFile:Ljava/io/File;
 
     .line 1056
-    iput-object p1, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mNewStateFile:Ljava/io/File;
+    iput-object v0, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mNewStateFile:Ljava/io/File;
 
     .line 1057
-    iget-object v0, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mSavedState:Landroid/os/ParcelFileDescriptor;
+    iget-object v1, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mSavedState:Landroid/os/ParcelFileDescriptor;
 
-    const-string/jumbo v1, "old state"
+    const-string/jumbo v2, "old state"
 
-    invoke-direct {p0, v0, v1}, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->tryCloseFileDescriptor(Ljava/io/Closeable;Ljava/lang/String;)V
+    invoke-direct {p0, v1, v2}, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->tryCloseFileDescriptor(Ljava/io/Closeable;Ljava/lang/String;)V
 
     .line 1058
-    iget-object v0, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mBackupData:Landroid/os/ParcelFileDescriptor;
+    iget-object v1, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mBackupData:Landroid/os/ParcelFileDescriptor;
 
-    const-string v1, "backup data"
+    const-string v2, "backup data"
 
-    invoke-direct {p0, v0, v1}, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->tryCloseFileDescriptor(Ljava/io/Closeable;Ljava/lang/String;)V
+    invoke-direct {p0, v1, v2}, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->tryCloseFileDescriptor(Ljava/io/Closeable;Ljava/lang/String;)V
 
     .line 1059
-    iget-object v0, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mNewState:Landroid/os/ParcelFileDescriptor;
+    iget-object v1, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mNewState:Landroid/os/ParcelFileDescriptor;
 
-    const-string/jumbo v1, "new state"
+    const-string/jumbo v2, "new state"
 
-    invoke-direct {p0, v0, v1}, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->tryCloseFileDescriptor(Ljava/io/Closeable;Ljava/lang/String;)V
+    invoke-direct {p0, v1, v2}, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->tryCloseFileDescriptor(Ljava/io/Closeable;Ljava/lang/String;)V
 
     .line 1060
-    iput-object p1, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mSavedState:Landroid/os/ParcelFileDescriptor;
+    iput-object v0, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mSavedState:Landroid/os/ParcelFileDescriptor;
 
     .line 1061
-    iput-object p1, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mBackupData:Landroid/os/ParcelFileDescriptor;
+    iput-object v0, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mBackupData:Landroid/os/ParcelFileDescriptor;
 
     .line 1062
-    iput-object p1, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mNewState:Landroid/os/ParcelFileDescriptor;
+    iput-object v0, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mNewState:Landroid/os/ParcelFileDescriptor;
 
     .line 1065
-    iget-object v0, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mCurrentPackage:Landroid/content/pm/PackageInfo;
-
-    iget-object v0, v0, Landroid/content/pm/PackageInfo;->applicationInfo:Landroid/content/pm/ApplicationInfo;
-
-    if-eqz v0, :cond_42
-
-    .line 1066
-    iget-object v0, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mBackupManagerService:Lcom/android/server/backup/UserBackupManagerService;
-
     iget-object v1, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mCurrentPackage:Landroid/content/pm/PackageInfo;
 
     iget-object v1, v1, Landroid/content/pm/PackageInfo;->applicationInfo:Landroid/content/pm/ApplicationInfo;
 
-    invoke-virtual {v0, v1}, Lcom/android/server/backup/UserBackupManagerService;->unbindAgent(Landroid/content/pm/ApplicationInfo;)V
+    if-eqz v1, :cond_42
+
+    .line 1066
+    iget-object v1, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mBackupManagerService:Lcom/android/server/backup/UserBackupManagerService;
+
+    iget-object v2, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mCurrentPackage:Landroid/content/pm/PackageInfo;
+
+    iget-object v2, v2, Landroid/content/pm/PackageInfo;->applicationInfo:Landroid/content/pm/ApplicationInfo;
+
+    invoke-virtual {v1, v2}, Lcom/android/server/backup/UserBackupManagerService;->unbindAgent(Landroid/content/pm/ApplicationInfo;)V
 
     .line 1068
     :cond_42
-    iput-object p1, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mAgent:Landroid/app/IBackupAgent;
+    iput-object v0, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mAgent:Landroid/app/IBackupAgent;
 
     .line 1069
     return-void
 .end method
 
 .method private cleanUpAgentForError(Lcom/android/server/backup/keyvalue/BackupException;)V
-    .registers 2
+    .registers 3
+    .param p1, "exception"  # Lcom/android/server/backup/keyvalue/BackupException;
 
     .line 1027
-    const/4 p1, 0x1
+    const/4 v0, 0x1
 
-    invoke-direct {p0, p1}, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->cleanUpAgent(I)V
+    invoke-direct {p0, v0}, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->cleanUpAgent(I)V
 
     .line 1028
     return-void
@@ -1135,6 +1224,7 @@
 
 .method private cleanUpAgentForTransportStatus(I)V
     .registers 3
+    .param p1, "status"  # I
 
     .line 1035
     const/16 v0, -0x3ee
@@ -1144,26 +1234,26 @@
     if-nez p1, :cond_b
 
     .line 1037
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    invoke-direct {p0, p1}, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->cleanUpAgent(I)V
+    invoke-direct {p0, v0}, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->cleanUpAgent(I)V
 
     .line 1038
     goto :goto_16
 
     .line 1044
     :cond_b
-    new-instance p1, Ljava/lang/AssertionError;
+    new-instance v0, Ljava/lang/AssertionError;
 
-    invoke-direct {p1}, Ljava/lang/AssertionError;-><init>()V
+    invoke-direct {v0}, Ljava/lang/AssertionError;-><init>()V
 
-    throw p1
+    throw v0
 
     .line 1040
     :cond_11
-    const/4 p1, 0x2
+    const/4 v0, 0x2
 
-    invoke-direct {p0, p1}, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->cleanUpAgent(I)V
+    invoke-direct {p0, v0}, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->cleanUpAgent(I)V
 
     .line 1041
     nop
@@ -1186,6 +1276,7 @@
     .end annotation
 
     .line 436
+    .local p1, "packages":Ljava/util/List;, "Ljava/util/List<Ljava/lang/String;>;"
     new-instance v12, Lcom/android/server/backup/fullbackup/PerformFullTransportBackupTask;
 
     iget-object v1, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mBackupManagerService:Lcom/android/server/backup/UserBackupManagerService;
@@ -1201,29 +1292,29 @@
 
     invoke-interface {p1, v0}, Ljava/util/List;->toArray([Ljava/lang/Object;)[Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v0
 
-    move-object v4, p1
+    move-object v4, v0
 
     check-cast v4, [Ljava/lang/String;
 
     new-instance v7, Ljava/util/concurrent/CountDownLatch;
 
-    const/4 p1, 0x1
+    const/4 v0, 0x1
 
-    invoke-direct {v7, p1}, Ljava/util/concurrent/CountDownLatch;-><init>(I)V
+    invoke-direct {v7, v0}, Ljava/util/concurrent/CountDownLatch;-><init>(I)V
 
-    iget-object p1, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mReporter:Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;
+    iget-object v0, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mReporter:Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;
 
     .line 444
-    invoke-virtual {p1}, Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;->getObserver()Landroid/app/backup/IBackupObserver;
+    invoke-virtual {v0}, Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;->getObserver()Landroid/app/backup/IBackupObserver;
 
     move-result-object v8
 
-    iget-object p1, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mReporter:Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;
+    iget-object v0, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mReporter:Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;
 
     .line 445
-    invoke-virtual {p1}, Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;->getMonitor()Landroid/app/backup/IBackupManagerMonitor;
+    invoke-virtual {v0}, Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;->getMonitor()Landroid/app/backup/IBackupManagerMonitor;
 
     move-result-object v9
 
@@ -1265,6 +1356,7 @@
 
 .method private extractAgentData(Landroid/content/pm/PackageInfo;)V
     .registers 5
+    .param p1, "packageInfo"  # Landroid/content/pm/PackageInfo;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Lcom/android/server/backup/keyvalue/AgentException;,
@@ -1303,9 +1395,9 @@
     .catchall {:try_start_f .. :try_end_1a} :catchall_21
 
     .line 650
-    iget-object p1, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mBackupManagerService:Lcom/android/server/backup/UserBackupManagerService;
+    iget-object v1, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mBackupManagerService:Lcom/android/server/backup/UserBackupManagerService;
 
-    invoke-virtual {p1, v0}, Lcom/android/server/backup/UserBackupManagerService;->setWorkSource(Landroid/os/WorkSource;)V
+    invoke-virtual {v1, v0}, Lcom/android/server/backup/UserBackupManagerService;->setWorkSource(Landroid/os/WorkSource;)V
 
     .line 651
     nop
@@ -1315,17 +1407,19 @@
 
     .line 650
     :catchall_21
-    move-exception p1
+    move-exception v1
 
-    iget-object v1, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mBackupManagerService:Lcom/android/server/backup/UserBackupManagerService;
+    iget-object v2, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mBackupManagerService:Lcom/android/server/backup/UserBackupManagerService;
 
-    invoke-virtual {v1, v0}, Lcom/android/server/backup/UserBackupManagerService;->setWorkSource(Landroid/os/WorkSource;)V
+    invoke-virtual {v2, v0}, Lcom/android/server/backup/UserBackupManagerService;->setWorkSource(Landroid/os/WorkSource;)V
 
-    throw p1
+    throw v1
 .end method
 
 .method private extractAgentData(Landroid/content/pm/PackageInfo;Landroid/app/IBackupAgent;)V
-    .registers 12
+    .registers 14
+    .param p1, "packageInfo"  # Landroid/content/pm/PackageInfo;
+    .param p2, "agent"  # Landroid/app/IBackupAgent;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Lcom/android/server/backup/keyvalue/AgentException;,
@@ -1337,6 +1431,7 @@
     iget-object v0, p1, Landroid/content/pm/PackageInfo;->packageName:Ljava/lang/String;
 
     .line 669
+    .local v0, "packageName":Ljava/lang/String;
     iget-object v1, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mReporter:Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;
 
     invoke-virtual {v1, v0}, Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;->onExtractAgentData(Ljava/lang/String;)V
@@ -1404,166 +1499,180 @@
     invoke-virtual {v1, v2}, Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;->onAgentFilesReady(Ljava/io/File;)V
 
     .line 676
-    nop
-
-    .line 679
     const/4 v1, 0x0
 
-    :try_start_4d
+    .line 679
+    .local v1, "callingAgent":Z
+    :try_start_4c
     iget-boolean v2, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mNonIncremental:Z
 
-    if-eqz v2, :cond_54
+    if-eqz v2, :cond_53
 
     iget-object v2, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mBlankStateFile:Ljava/io/File;
 
-    goto :goto_56
+    goto :goto_55
 
-    :cond_54
+    :cond_53
     iget-object v2, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mSavedStateFile:Ljava/io/File;
 
     .line 681
-    :goto_56
+    .local v2, "savedStateFileForAgent":Ljava/io/File;
+    :goto_55
     const/high16 v3, 0x18000000
 
     .line 682
     invoke-static {v2, v3}, Landroid/os/ParcelFileDescriptor;->open(Ljava/io/File;I)Landroid/os/ParcelFileDescriptor;
 
-    move-result-object v2
+    move-result-object v3
 
-    iput-object v2, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mSavedState:Landroid/os/ParcelFileDescriptor;
+    iput-object v3, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mSavedState:Landroid/os/ParcelFileDescriptor;
 
     .line 683
-    iget-object v2, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mBackupDataFile:Ljava/io/File;
-
-    .line 684
-    const/high16 v3, 0x3c000000  # 0.0078125f
-
-    invoke-static {v2, v3}, Landroid/os/ParcelFileDescriptor;->open(Ljava/io/File;I)Landroid/os/ParcelFileDescriptor;
-
-    move-result-object v2
-
-    iput-object v2, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mBackupData:Landroid/os/ParcelFileDescriptor;
-
-    .line 686
-    iget-object v2, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mNewStateFile:Ljava/io/File;
-
-    .line 687
-    invoke-static {v2, v3}, Landroid/os/ParcelFileDescriptor;->open(Ljava/io/File;I)Landroid/os/ParcelFileDescriptor;
-
-    move-result-object v2
-
-    iput-object v2, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mNewState:Landroid/os/ParcelFileDescriptor;
-
-    .line 692
-    iget v2, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mUserId:I
-
-    if-nez v2, :cond_83
-
-    .line 693
-    iget-object v2, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mBackupDataFile:Ljava/io/File;
-
-    invoke-static {v2}, Landroid/os/SELinux;->restorecon(Ljava/io/File;)Z
-
-    move-result v2
-
-    if-nez v2, :cond_83
-
-    .line 694
-    iget-object v2, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mReporter:Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;
-
     iget-object v3, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mBackupDataFile:Ljava/io/File;
 
-    invoke-virtual {v2, v3}, Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;->onRestoreconFailed(Ljava/io/File;)V
+    .line 684
+    const/high16 v4, 0x3c000000  # 0.0078125f
+
+    invoke-static {v3, v4}, Landroid/os/ParcelFileDescriptor;->open(Ljava/io/File;I)Landroid/os/ParcelFileDescriptor;
+
+    move-result-object v3
+
+    iput-object v3, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mBackupData:Landroid/os/ParcelFileDescriptor;
+
+    .line 686
+    iget-object v3, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mNewStateFile:Ljava/io/File;
+
+    .line 687
+    invoke-static {v3, v4}, Landroid/os/ParcelFileDescriptor;->open(Ljava/io/File;I)Landroid/os/ParcelFileDescriptor;
+
+    move-result-object v3
+
+    iput-object v3, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mNewState:Landroid/os/ParcelFileDescriptor;
+
+    .line 692
+    iget v3, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mUserId:I
+
+    if-nez v3, :cond_82
+
+    .line 693
+    iget-object v3, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mBackupDataFile:Ljava/io/File;
+
+    invoke-static {v3}, Landroid/os/SELinux;->restorecon(Ljava/io/File;)Z
+
+    move-result v3
+
+    if-nez v3, :cond_82
+
+    .line 694
+    iget-object v3, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mReporter:Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;
+
+    iget-object v4, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mBackupDataFile:Ljava/io/File;
+
+    invoke-virtual {v3, v4}, Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;->onRestoreconFailed(Ljava/io/File;)V
 
     .line 698
-    :cond_83
-    iget-object v2, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mTransportClient:Lcom/android/server/backup/transport/TransportClient;
+    :cond_82
+    iget-object v3, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mTransportClient:Lcom/android/server/backup/transport/TransportClient;
 
-    const-string v3, "KVBT.extractAgentData()"
+    const-string v4, "KVBT.extractAgentData()"
 
-    invoke-virtual {v2, v3}, Lcom/android/server/backup/transport/TransportClient;->connectOrThrow(Ljava/lang/String;)Lcom/android/internal/backup/IBackupTransport;
+    invoke-virtual {v3, v4}, Lcom/android/server/backup/transport/TransportClient;->connectOrThrow(Ljava/lang/String;)Lcom/android/internal/backup/IBackupTransport;
 
-    move-result-object v2
+    move-result-object v3
 
     .line 699
-    invoke-interface {v2, v0, v1}, Lcom/android/internal/backup/IBackupTransport;->getBackupQuota(Ljava/lang/String;Z)J
+    .local v3, "transport":Lcom/android/internal/backup/IBackupTransport;
+    const/4 v4, 0x0
 
-    move-result-wide v6
+    invoke-interface {v3, v0, v4}, Lcom/android/internal/backup/IBackupTransport;->getBackupQuota(Ljava/lang/String;Z)J
+
+    move-result-wide v8
 
     .line 700
-    invoke-interface {v2}, Lcom/android/internal/backup/IBackupTransport;->getTransportFlags()I
+    .local v8, "quota":J
+    invoke-interface {v3}, Lcom/android/internal/backup/IBackupTransport;->getTransportFlags()I
 
-    move-result v8
+    move-result v10
 
     .line 702
+    .local v10, "transportFlags":I
     const/4 v1, 0x1
 
     .line 703
-    new-instance v2, Lcom/android/server/backup/keyvalue/-$$Lambda$KeyValueBackupTask$NN2H32cNizGxrUxqHgqPqGldNsA;
+    new-instance v4, Lcom/android/server/backup/keyvalue/-$$Lambda$KeyValueBackupTask$NN2H32cNizGxrUxqHgqPqGldNsA;
 
-    move-object v3, v2
+    move-object v5, v4
 
-    move-object v4, p0
+    move-object v6, p0
 
-    move-object v5, p2
+    move-object v7, p2
 
-    invoke-direct/range {v3 .. v8}, Lcom/android/server/backup/keyvalue/-$$Lambda$KeyValueBackupTask$NN2H32cNizGxrUxqHgqPqGldNsA;-><init>(Lcom/android/server/backup/keyvalue/KeyValueBackupTask;Landroid/app/IBackupAgent;JI)V
+    invoke-direct/range {v5 .. v10}, Lcom/android/server/backup/keyvalue/-$$Lambda$KeyValueBackupTask$NN2H32cNizGxrUxqHgqPqGldNsA;-><init>(Lcom/android/server/backup/keyvalue/KeyValueBackupTask;Landroid/app/IBackupAgent;JI)V
 
-    iget-object p2, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mAgentTimeoutParameters:Lcom/android/server/backup/BackupAgentTimeoutParameters;
+    iget-object v5, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mAgentTimeoutParameters:Lcom/android/server/backup/BackupAgentTimeoutParameters;
 
     .line 713
-    invoke-virtual {p2}, Lcom/android/server/backup/BackupAgentTimeoutParameters;->getKvBackupAgentTimeoutMillis()J
+    invoke-virtual {v5}, Lcom/android/server/backup/BackupAgentTimeoutParameters;->getKvBackupAgentTimeoutMillis()J
 
-    move-result-wide v3
+    move-result-wide v5
 
-    const-string p2, "doBackup()"
+    const-string v7, "doBackup()"
 
     .line 704
-    invoke-direct {p0, v2, v3, v4, p2}, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->remoteCall(Lcom/android/server/backup/remote/RemoteCallable;JLjava/lang/String;)Lcom/android/server/backup/remote/RemoteResult;
+    invoke-direct {p0, v4, v5, v6, v7}, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->remoteCall(Lcom/android/server/backup/remote/RemoteCallable;JLjava/lang/String;)Lcom/android/server/backup/remote/RemoteResult;
 
-    move-result-object p2
+    move-result-object v4
     :try_end_a8
-    .catch Ljava/lang/Exception; {:try_start_4d .. :try_end_a8} :catch_ad
+    .catch Ljava/lang/Exception; {:try_start_4c .. :try_end_a8} :catch_ae
+
+    move-object v2, v4
 
     .line 722
+    .end local v3  # "transport":Lcom/android/internal/backup/IBackupTransport;
+    .end local v8  # "quota":J
+    .end local v10  # "transportFlags":I
+    .local v2, "agentResult":Lcom/android/server/backup/remote/RemoteResult;
     nop
 
     .line 723
-    invoke-direct {p0, p1, p2}, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->checkAgentResult(Landroid/content/pm/PackageInfo;Lcom/android/server/backup/remote/RemoteResult;)V
+    invoke-direct {p0, p1, v2}, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->checkAgentResult(Landroid/content/pm/PackageInfo;Lcom/android/server/backup/remote/RemoteResult;)V
 
     .line 724
     return-void
 
     .line 715
-    :catch_ad
-    move-exception p1
+    .end local v2  # "agentResult":Lcom/android/server/backup/remote/RemoteResult;
+    :catch_ae
+    move-exception v2
 
     .line 716
-    iget-object p2, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mReporter:Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;
+    .local v2, "e":Ljava/lang/Exception;
+    iget-object v3, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mReporter:Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;
 
-    invoke-virtual {p2, v0, v1, p1}, Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;->onCallAgentDoBackupError(Ljava/lang/String;ZLjava/lang/Exception;)V
+    invoke-virtual {v3, v0, v1, v2}, Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;->onCallAgentDoBackupError(Ljava/lang/String;ZLjava/lang/Exception;)V
 
     .line 717
-    if-eqz v1, :cond_ba
+    if-eqz v1, :cond_bb
 
     .line 718
-    invoke-static {p1}, Lcom/android/server/backup/keyvalue/AgentException;->transitory(Ljava/lang/Exception;)Lcom/android/server/backup/keyvalue/AgentException;
+    invoke-static {v2}, Lcom/android/server/backup/keyvalue/AgentException;->transitory(Ljava/lang/Exception;)Lcom/android/server/backup/keyvalue/AgentException;
 
-    move-result-object p1
+    move-result-object v3
 
-    throw p1
+    throw v3
 
     .line 720
-    :cond_ba
+    :cond_bb
     invoke-static {}, Lcom/android/server/backup/keyvalue/TaskException;->create()Lcom/android/server/backup/keyvalue/TaskException;
 
-    move-result-object p1
+    move-result-object v3
 
-    throw p1
+    throw v3
 .end method
 
 .method private extractPmAgentData(Landroid/content/pm/PackageInfo;)V
     .registers 4
+    .param p1, "packageInfo"  # Landroid/content/pm/PackageInfo;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Lcom/android/server/backup/keyvalue/AgentException;,
@@ -1590,27 +1699,29 @@
     move-result-object v0
 
     .line 630
+    .local v0, "pmAgent":Landroid/app/backup/BackupAgent;
     invoke-virtual {v0}, Landroid/app/backup/BackupAgent;->onBind()Landroid/os/IBinder;
 
-    move-result-object v0
+    move-result-object v1
 
-    invoke-static {v0}, Landroid/app/IBackupAgent$Stub;->asInterface(Landroid/os/IBinder;)Landroid/app/IBackupAgent;
+    invoke-static {v1}, Landroid/app/IBackupAgent$Stub;->asInterface(Landroid/os/IBinder;)Landroid/app/IBackupAgent;
 
-    move-result-object v0
+    move-result-object v1
 
-    iput-object v0, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mAgent:Landroid/app/IBackupAgent;
+    iput-object v1, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mAgent:Landroid/app/IBackupAgent;
 
     .line 631
-    iget-object v0, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mAgent:Landroid/app/IBackupAgent;
+    iget-object v1, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mAgent:Landroid/app/IBackupAgent;
 
-    invoke-direct {p0, p1, v0}, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->extractAgentData(Landroid/content/pm/PackageInfo;Landroid/app/IBackupAgent;)V
+    invoke-direct {p0, p1, v1}, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->extractAgentData(Landroid/content/pm/PackageInfo;Landroid/app/IBackupAgent;)V
 
     .line 632
     return-void
 .end method
 
 .method private finishTask(I)V
-    .registers 7
+    .registers 9
+    .param p1, "status"  # I
 
     .line 527
     iget-object v0, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mQueue:Ljava/util/List;
@@ -1633,11 +1744,13 @@
     check-cast v1, Ljava/lang/String;
 
     .line 528
+    .local v1, "packageName":Ljava/lang/String;
     iget-object v2, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mBackupManagerService:Lcom/android/server/backup/UserBackupManagerService;
 
     invoke-virtual {v2, v1}, Lcom/android/server/backup/UserBackupManagerService;->dataChangedImpl(Ljava/lang/String;)V
 
     .line 529
+    .end local v1  # "packageName":Ljava/lang/String;
     goto :goto_6
 
     .line 533
@@ -1664,6 +1777,7 @@
     const-string v0, "KVBT.finishTask()"
 
     .line 541
+    .local v0, "callerLogString":Ljava/lang/String;
     iget-object v1, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mBackupManagerService:Lcom/android/server/backup/UserBackupManagerService;
 
     invoke-virtual {v1}, Lcom/android/server/backup/UserBackupManagerService;->getCurrentToken()J
@@ -1671,6 +1785,7 @@
     move-result-wide v1
 
     .line 542
+    .local v1, "currentToken":J
     iget-boolean v3, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mHasDataToBackup:Z
 
     if-eqz v3, :cond_58
@@ -1679,70 +1794,74 @@
 
     const-wide/16 v3, 0x0
 
-    cmp-long v1, v1, v3
+    cmp-long v3, v1, v3
 
-    if-nez v1, :cond_58
+    if-nez v3, :cond_58
 
     .line 544
     :try_start_3d
-    iget-object v1, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mTransportClient:Lcom/android/server/backup/transport/TransportClient;
+    iget-object v3, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mTransportClient:Lcom/android/server/backup/transport/TransportClient;
 
-    invoke-virtual {v1, v0}, Lcom/android/server/backup/transport/TransportClient;->connectOrThrow(Ljava/lang/String;)Lcom/android/internal/backup/IBackupTransport;
+    invoke-virtual {v3, v0}, Lcom/android/server/backup/transport/TransportClient;->connectOrThrow(Ljava/lang/String;)Lcom/android/internal/backup/IBackupTransport;
 
-    move-result-object v1
+    move-result-object v3
 
     .line 545
-    iget-object v2, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mBackupManagerService:Lcom/android/server/backup/UserBackupManagerService;
+    .local v3, "transport":Lcom/android/internal/backup/IBackupTransport;
+    iget-object v4, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mBackupManagerService:Lcom/android/server/backup/UserBackupManagerService;
 
-    invoke-interface {v1}, Lcom/android/internal/backup/IBackupTransport;->getCurrentRestoreSet()J
+    invoke-interface {v3}, Lcom/android/internal/backup/IBackupTransport;->getCurrentRestoreSet()J
 
-    move-result-wide v3
+    move-result-wide v5
 
-    invoke-virtual {v2, v3, v4}, Lcom/android/server/backup/UserBackupManagerService;->setCurrentToken(J)V
+    invoke-virtual {v4, v5, v6}, Lcom/android/server/backup/UserBackupManagerService;->setCurrentToken(J)V
 
     .line 546
-    iget-object v1, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mBackupManagerService:Lcom/android/server/backup/UserBackupManagerService;
+    iget-object v4, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mBackupManagerService:Lcom/android/server/backup/UserBackupManagerService;
 
-    invoke-virtual {v1}, Lcom/android/server/backup/UserBackupManagerService;->writeRestoreTokens()V
+    invoke-virtual {v4}, Lcom/android/server/backup/UserBackupManagerService;->writeRestoreTokens()V
     :try_end_51
     .catch Ljava/lang/Exception; {:try_start_3d .. :try_end_51} :catch_52
 
     .line 550
+    .end local v3  # "transport":Lcom/android/internal/backup/IBackupTransport;
     goto :goto_58
 
     .line 547
     :catch_52
-    move-exception v1
+    move-exception v3
 
     .line 549
-    iget-object v2, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mReporter:Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;
+    .local v3, "e":Ljava/lang/Exception;
+    iget-object v4, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mReporter:Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;
 
-    invoke-virtual {v2, v1}, Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;->onSetCurrentTokenError(Ljava/lang/Exception;)V
+    invoke-virtual {v4, v3}, Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;->onSetCurrentTokenError(Ljava/lang/Exception;)V
 
     .line 553
+    .end local v3  # "e":Ljava/lang/Exception;
     :cond_58
     :goto_58
-    iget-object v1, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mQueueLock:Ljava/lang/Object;
+    iget-object v3, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mQueueLock:Ljava/lang/Object;
 
-    monitor-enter v1
+    monitor-enter v3
 
     .line 554
     :try_start_5b
-    iget-object v2, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mBackupManagerService:Lcom/android/server/backup/UserBackupManagerService;
+    iget-object v4, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mBackupManagerService:Lcom/android/server/backup/UserBackupManagerService;
 
-    const/4 v3, 0x0
+    const/4 v5, 0x0
 
-    invoke-virtual {v2, v3}, Lcom/android/server/backup/UserBackupManagerService;->setBackupRunning(Z)V
+    invoke-virtual {v4, v5}, Lcom/android/server/backup/UserBackupManagerService;->setBackupRunning(Z)V
 
     .line 555
-    const/16 v2, -0x3e9
+    const/16 v4, -0x3e9
 
-    if-ne p1, v2, :cond_76
+    if-ne p1, v4, :cond_76
 
     .line 556
-    iget-object v2, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mReporter:Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;
+    iget-object v4, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mReporter:Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;
 
-    invoke-virtual {v2}, Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;->onTransportNotInitialized()V
+    invoke-virtual {v4}, Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;->onTransportNotInitialized()V
     :try_end_6a
     .catchall {:try_start_5b .. :try_end_6a} :catchall_cf
 
@@ -1758,21 +1877,23 @@
 
     .line 559
     :catch_6e
-    move-exception p1
+    move-exception v4
 
     .line 560
+    .local v4, "e":Ljava/lang/Exception;
     :try_start_6f
-    iget-object v2, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mReporter:Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;
+    iget-object v5, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mReporter:Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;
 
-    invoke-virtual {v2, p1}, Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;->onPendingInitializeTransportError(Ljava/lang/Exception;)V
+    invoke-virtual {v5, v4}, Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;->onPendingInitializeTransportError(Ljava/lang/Exception;)V
 
     .line 561
     const/16 p1, -0x3e8
 
     .line 564
+    .end local v4  # "e":Ljava/lang/Exception;
     :cond_76
     :goto_76
-    monitor-exit v1
+    monitor-exit v3
     :try_end_77
     .catchall {:try_start_6f .. :try_end_77} :catchall_cf
 
@@ -1780,149 +1901,152 @@
     invoke-direct {p0}, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->unregisterTask()V
 
     .line 567
-    iget-object v1, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mReporter:Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;
+    iget-object v3, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mReporter:Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;
 
-    invoke-virtual {v1}, Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;->onTaskFinished()V
+    invoke-virtual {v3}, Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;->onTaskFinished()V
 
     .line 569
-    iget-boolean v1, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mCancelled:Z
+    iget-boolean v3, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mCancelled:Z
 
-    if-eqz v1, :cond_88
+    if-eqz v3, :cond_88
 
     .line 572
-    iget-object v1, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mCancelAcknowledged:Landroid/os/ConditionVariable;
+    iget-object v3, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mCancelAcknowledged:Landroid/os/ConditionVariable;
 
-    invoke-virtual {v1}, Landroid/os/ConditionVariable;->open()V
+    invoke-virtual {v3}, Landroid/os/ConditionVariable;->open()V
 
     .line 575
     :cond_88
-    iget-boolean v1, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mCancelled:Z
+    iget-boolean v3, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mCancelled:Z
 
-    if-nez v1, :cond_ae
+    if-nez v3, :cond_ae
 
     if-nez p1, :cond_ae
 
-    iget-object v1, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mFullBackupTask:Lcom/android/server/backup/fullbackup/PerformFullTransportBackupTask;
+    iget-object v3, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mFullBackupTask:Lcom/android/server/backup/fullbackup/PerformFullTransportBackupTask;
 
-    if-eqz v1, :cond_ae
+    if-eqz v3, :cond_ae
 
-    iget-object v1, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mPendingFullBackups:Ljava/util/List;
+    iget-object v3, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mPendingFullBackups:Ljava/util/List;
 
     .line 578
-    invoke-interface {v1}, Ljava/util/List;->isEmpty()Z
+    invoke-interface {v3}, Ljava/util/List;->isEmpty()Z
 
-    move-result v1
+    move-result v3
 
-    if-nez v1, :cond_ae
+    if-nez v3, :cond_ae
 
     .line 579
-    iget-object p1, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mReporter:Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;
+    iget-object v3, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mReporter:Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;
 
-    iget-object v0, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mPendingFullBackups:Ljava/util/List;
+    iget-object v4, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mPendingFullBackups:Ljava/util/List;
 
-    invoke-virtual {p1, v0}, Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;->onStartFullBackup(Ljava/util/List;)V
+    invoke-virtual {v3, v4}, Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;->onStartFullBackup(Ljava/util/List;)V
 
     .line 584
-    new-instance p1, Ljava/lang/Thread;
+    new-instance v3, Ljava/lang/Thread;
 
-    iget-object v0, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mFullBackupTask:Lcom/android/server/backup/fullbackup/PerformFullTransportBackupTask;
+    iget-object v4, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mFullBackupTask:Lcom/android/server/backup/fullbackup/PerformFullTransportBackupTask;
 
-    const-string v1, "full-transport-requested"
+    const-string v5, "full-transport-requested"
 
-    invoke-direct {p1, v0, v1}, Ljava/lang/Thread;-><init>(Ljava/lang/Runnable;Ljava/lang/String;)V
+    invoke-direct {v3, v4, v5}, Ljava/lang/Thread;-><init>(Ljava/lang/Runnable;Ljava/lang/String;)V
 
-    invoke-virtual {p1}, Ljava/lang/Thread;->start()V
+    invoke-virtual {v3}, Ljava/lang/Thread;->start()V
 
     .line 585
     return-void
 
     .line 588
     :cond_ae
-    iget-object v1, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mFullBackupTask:Lcom/android/server/backup/fullbackup/PerformFullTransportBackupTask;
+    iget-object v3, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mFullBackupTask:Lcom/android/server/backup/fullbackup/PerformFullTransportBackupTask;
 
-    if-eqz v1, :cond_b5
+    if-eqz v3, :cond_b5
 
     .line 589
-    invoke-virtual {v1}, Lcom/android/server/backup/fullbackup/PerformFullTransportBackupTask;->unregisterTask()V
+    invoke-virtual {v3}, Lcom/android/server/backup/fullbackup/PerformFullTransportBackupTask;->unregisterTask()V
 
     .line 591
     :cond_b5
-    iget-object v1, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mTaskFinishedListener:Lcom/android/server/backup/internal/OnTaskFinishedListener;
+    iget-object v3, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mTaskFinishedListener:Lcom/android/server/backup/internal/OnTaskFinishedListener;
 
-    invoke-interface {v1, v0}, Lcom/android/server/backup/internal/OnTaskFinishedListener;->onFinished(Ljava/lang/String;)V
+    invoke-interface {v3, v0}, Lcom/android/server/backup/internal/OnTaskFinishedListener;->onFinished(Ljava/lang/String;)V
 
     .line 592
-    iget-object v0, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mReporter:Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;
+    iget-object v3, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mReporter:Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;
 
-    iget-boolean v1, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mCancelled:Z
+    iget-boolean v4, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mCancelled:Z
 
-    invoke-direct {p0, v1, p1}, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->getBackupFinishedStatus(ZI)I
+    invoke-direct {p0, v4, p1}, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->getBackupFinishedStatus(ZI)I
 
-    move-result p1
+    move-result v4
 
-    invoke-virtual {v0, p1}, Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;->onBackupFinished(I)V
+    invoke-virtual {v3, v4}, Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;->onBackupFinished(I)V
 
     .line 593
-    iget-object p1, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mBackupManagerService:Lcom/android/server/backup/UserBackupManagerService;
+    iget-object v3, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mBackupManagerService:Lcom/android/server/backup/UserBackupManagerService;
 
-    invoke-virtual {p1}, Lcom/android/server/backup/UserBackupManagerService;->getWakelock()Lcom/android/server/backup/UserBackupManagerService$BackupWakeLock;
+    invoke-virtual {v3}, Lcom/android/server/backup/UserBackupManagerService;->getWakelock()Landroid/os/PowerManager$WakeLock;
 
-    move-result-object p1
+    move-result-object v3
 
-    invoke-virtual {p1}, Lcom/android/server/backup/UserBackupManagerService$BackupWakeLock;->release()V
+    invoke-virtual {v3}, Landroid/os/PowerManager$WakeLock;->release()V
 
     .line 594
     return-void
 
     .line 564
     :catchall_cf
-    move-exception p1
+    move-exception v4
 
     :try_start_d0
-    monitor-exit v1
+    monitor-exit v3
     :try_end_d1
     .catchall {:try_start_d0 .. :try_end_d1} :catchall_cf
 
-    throw p1
+    throw v4
 .end method
 
 .method private getBackupFinishedStatus(ZI)I
-    .registers 3
+    .registers 4
+    .param p1, "cancelled"  # Z
+    .param p2, "transportStatus"  # I
 
     .line 597
     if-eqz p1, :cond_5
 
     .line 598
-    const/16 p1, -0x7d3
+    const/16 v0, -0x7d3
 
-    return p1
+    return v0
 
     .line 600
     :cond_5
-    const/16 p1, -0x3ed
+    const/16 v0, -0x3ed
 
-    if-eq p2, p1, :cond_12
+    if-eq p2, v0, :cond_12
 
-    const/16 p1, -0x3ea
+    const/16 v0, -0x3ea
 
-    if-eq p2, p1, :cond_12
+    if-eq p2, v0, :cond_12
 
     if-eqz p2, :cond_12
 
     .line 608
-    const/16 p1, -0x3e8
+    const/16 v0, -0x3e8
 
-    return p1
+    return v0
 
     .line 604
     :cond_12
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    return p1
+    return v0
 .end method
 
 .method private getPackageForBackup(Ljava/lang/String;)Landroid/content/pm/PackageInfo;
     .registers 5
+    .param p1, "packageName"  # Ljava/lang/String;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Lcom/android/server/backup/keyvalue/AgentException;
@@ -1945,12 +2069,14 @@
     .catch Landroid/content/pm/PackageManager$NameNotFoundException; {:try_start_0 .. :try_end_a} :catch_40
 
     .line 490
+    .local v0, "packageInfo":Landroid/content/pm/PackageInfo;
     nop
 
     .line 491
     iget-object v1, v0, Landroid/content/pm/PackageInfo;->applicationInfo:Landroid/content/pm/ApplicationInfo;
 
     .line 492
+    .local v1, "applicationInfo":Landroid/content/pm/ApplicationInfo;
     iget v2, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mUserId:I
 
     invoke-static {v1, v2}, Lcom/android/server/backup/utils/AppBackupUtils;->appIsEligibleForBackup(Landroid/content/pm/ApplicationInfo;I)Z
@@ -1969,57 +2095,60 @@
     .line 500
     invoke-static {v1}, Lcom/android/server/backup/utils/AppBackupUtils;->appIsStopped(Landroid/content/pm/ApplicationInfo;)Z
 
-    move-result v1
+    move-result v2
 
-    if-nez v1, :cond_22
+    if-nez v2, :cond_22
 
     .line 504
     return-object v0
 
     .line 501
     :cond_22
-    iget-object v0, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mReporter:Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;
+    iget-object v2, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mReporter:Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;
 
-    invoke-virtual {v0, p1}, Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;->onPackageStopped(Ljava/lang/String;)V
+    invoke-virtual {v2, p1}, Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;->onPackageStopped(Ljava/lang/String;)V
 
     .line 502
     invoke-static {}, Lcom/android/server/backup/keyvalue/AgentException;->permanent()Lcom/android/server/backup/keyvalue/AgentException;
 
-    move-result-object p1
+    move-result-object v2
 
-    throw p1
+    throw v2
 
     .line 497
     :cond_2c
-    iget-object v0, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mReporter:Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;
+    iget-object v2, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mReporter:Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;
 
-    invoke-virtual {v0, p1}, Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;->onPackageEligibleForFullBackup(Ljava/lang/String;)V
+    invoke-virtual {v2, p1}, Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;->onPackageEligibleForFullBackup(Ljava/lang/String;)V
 
     .line 498
     invoke-static {}, Lcom/android/server/backup/keyvalue/AgentException;->permanent()Lcom/android/server/backup/keyvalue/AgentException;
 
-    move-result-object p1
+    move-result-object v2
 
-    throw p1
+    throw v2
 
     .line 493
     :cond_36
-    iget-object v0, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mReporter:Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;
+    iget-object v2, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mReporter:Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;
 
-    invoke-virtual {v0, p1}, Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;->onPackageNotEligibleForBackup(Ljava/lang/String;)V
+    invoke-virtual {v2, p1}, Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;->onPackageNotEligibleForBackup(Ljava/lang/String;)V
 
     .line 494
     invoke-static {}, Lcom/android/server/backup/keyvalue/AgentException;->permanent()Lcom/android/server/backup/keyvalue/AgentException;
 
-    move-result-object p1
+    move-result-object v2
 
-    throw p1
+    throw v2
 
     .line 487
+    .end local v0  # "packageInfo":Landroid/content/pm/PackageInfo;
+    .end local v1  # "applicationInfo":Landroid/content/pm/ApplicationInfo;
     :catch_40
     move-exception v0
 
     .line 488
+    .local v0, "e":Landroid/content/pm/PackageManager$NameNotFoundException;
     iget-object v1, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mReporter:Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;
 
     invoke-virtual {v1, p1}, Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;->onAgentUnknown(Ljava/lang/String;)V
@@ -2027,38 +2156,47 @@
     .line 489
     invoke-static {v0}, Lcom/android/server/backup/keyvalue/AgentException;->permanent(Ljava/lang/Exception;)Lcom/android/server/backup/keyvalue/AgentException;
 
-    move-result-object p1
+    move-result-object v1
 
-    throw p1
+    throw v1
 .end method
 
 .method private getPerformBackupFlags(ZZ)I
-    .registers 3
+    .registers 6
+    .param p1, "userInitiated"  # Z
+    .param p2, "nonIncremental"  # Z
 
     .line 947
-    nop
+    move v0, p1
 
     .line 949
+    .local v0, "userInitiatedFlag":I
     if-eqz p2, :cond_5
 
     .line 950
-    const/4 p2, 0x4
+    const/4 v1, 0x4
 
     goto :goto_6
 
     .line 951
     :cond_5
-    const/4 p2, 0x2
+    const/4 v1, 0x2
+
+    :goto_6
+    nop
 
     .line 952
-    :goto_6
-    or-int/2addr p1, p2
+    .local v1, "incrementalFlag":I
+    or-int v2, v0, v1
 
-    return p1
+    return v2
 .end method
 
 .method private handleTransportStatus(ILjava/lang/String;J)V
-    .registers 6
+    .registers 7
+    .param p1, "status"  # I
+    .param p2, "packageName"  # Ljava/lang/String;
+    .param p3, "size"  # J
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Lcom/android/server/backup/keyvalue/TaskException;,
@@ -2070,9 +2208,9 @@
     if-nez p1, :cond_8
 
     .line 881
-    iget-object p1, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mReporter:Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;
+    iget-object v0, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mReporter:Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;
 
-    invoke-virtual {p1, p2, p3, p4}, Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;->onPackageBackupComplete(Ljava/lang/String;J)V
+    invoke-virtual {v0, p2, p3, p4}, Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;->onPackageBackupComplete(Ljava/lang/String;J)V
 
     .line 882
     return-void
@@ -2084,18 +2222,18 @@
     if-ne p1, v0, :cond_1a
 
     .line 885
-    iget-object p1, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mReporter:Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;
+    iget-object v0, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mReporter:Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;
 
-    iget-object p3, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mCurrentPackage:Landroid/content/pm/PackageInfo;
+    iget-object v1, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mCurrentPackage:Landroid/content/pm/PackageInfo;
 
-    invoke-virtual {p1, p3}, Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;->onPackageBackupNonIncrementalRequired(Landroid/content/pm/PackageInfo;)V
+    invoke-virtual {v0, v1}, Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;->onPackageBackupNonIncrementalRequired(Landroid/content/pm/PackageInfo;)V
 
     .line 887
-    iget-object p1, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mQueue:Ljava/util/List;
+    iget-object v0, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mQueue:Ljava/util/List;
 
-    const/4 p3, 0x0
+    const/4 v1, 0x0
 
-    invoke-interface {p1, p3, p2}, Ljava/util/List;->add(ILjava/lang/Object;)V
+    invoke-interface {v0, v1, p2}, Ljava/util/List;->add(ILjava/lang/Object;)V
 
     .line 888
     return-void
@@ -2112,51 +2250,55 @@
     if-ne p1, v0, :cond_31
 
     .line 895
-    iget-object p1, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mReporter:Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;
+    iget-object v0, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mReporter:Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;
 
-    invoke-virtual {p1, p2}, Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;->onPackageBackupQuotaExceeded(Ljava/lang/String;)V
+    invoke-virtual {v0, p2}, Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;->onPackageBackupQuotaExceeded(Ljava/lang/String;)V
 
     .line 896
-    iget-object p1, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mAgent:Landroid/app/IBackupAgent;
+    iget-object v0, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mAgent:Landroid/app/IBackupAgent;
 
-    invoke-direct {p0, p1, p2, p3, p4}, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->agentDoQuotaExceeded(Landroid/app/IBackupAgent;Ljava/lang/String;J)V
+    invoke-direct {p0, v0, p2, p3, p4}, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->agentDoQuotaExceeded(Landroid/app/IBackupAgent;Ljava/lang/String;J)V
 
     .line 897
     invoke-static {}, Lcom/android/server/backup/keyvalue/AgentException;->permanent()Lcom/android/server/backup/keyvalue/AgentException;
 
-    move-result-object p1
+    move-result-object v0
 
-    throw p1
+    throw v0
 
     .line 900
     :cond_31
-    iget-object p3, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mReporter:Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;
+    iget-object v0, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mReporter:Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;
 
-    invoke-virtual {p3, p2}, Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;->onPackageBackupTransportFailure(Ljava/lang/String;)V
+    invoke-virtual {v0, p2}, Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;->onPackageBackupTransportFailure(Ljava/lang/String;)V
 
     .line 901
     invoke-static {p1}, Lcom/android/server/backup/keyvalue/TaskException;->forStatus(I)Lcom/android/server/backup/keyvalue/TaskException;
 
-    move-result-object p1
+    move-result-object v0
 
-    throw p1
+    throw v0
 
     .line 891
     :cond_3b
-    iget-object p1, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mReporter:Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;
+    iget-object v0, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mReporter:Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;
 
-    invoke-virtual {p1, p2}, Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;->onPackageBackupRejected(Ljava/lang/String;)V
+    invoke-virtual {v0, p2}, Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;->onPackageBackupRejected(Ljava/lang/String;)V
 
     .line 892
     invoke-static {}, Lcom/android/server/backup/keyvalue/AgentException;->permanent()Lcom/android/server/backup/keyvalue/AgentException;
 
-    move-result-object p1
+    move-result-object v0
 
-    throw p1
+    throw v0
 .end method
 
 .method static synthetic lambda$agentDoQuotaExceeded$1(Landroid/app/IBackupAgent;JJLandroid/app/backup/IBackupCallback;)V
     .registers 6
+    .param p0, "agent"  # Landroid/app/IBackupAgent;
+    .param p1, "size"  # J
+    .param p3, "quota"  # J
+    .param p5, "callback"  # Landroid/app/backup/IBackupCallback;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -2193,6 +2335,8 @@
 
 .method private remoteCall(Lcom/android/server/backup/remote/RemoteCallable;JLjava/lang/String;)Lcom/android/server/backup/remote/RemoteResult;
     .registers 7
+    .param p2, "timeoutMs"  # J
+    .param p4, "logIdentifier"  # Ljava/lang/String;
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(",
@@ -2212,6 +2356,7 @@
     .end annotation
 
     .line 1103
+    .local p1, "remoteCallable":Lcom/android/server/backup/remote/RemoteCallable;, "Lcom/android/server/backup/remote/RemoteCallable<Landroid/app/backup/IBackupCallback;>;"
     new-instance v0, Lcom/android/server/backup/remote/RemoteCall;
 
     iget-boolean v1, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mCancelled:Z
@@ -2221,24 +2366,25 @@
     iput-object v0, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mPendingCall:Lcom/android/server/backup/remote/RemoteCall;
 
     .line 1104
-    iget-object p1, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mPendingCall:Lcom/android/server/backup/remote/RemoteCall;
+    iget-object v0, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mPendingCall:Lcom/android/server/backup/remote/RemoteCall;
 
-    invoke-virtual {p1}, Lcom/android/server/backup/remote/RemoteCall;->call()Lcom/android/server/backup/remote/RemoteResult;
+    invoke-virtual {v0}, Lcom/android/server/backup/remote/RemoteCall;->call()Lcom/android/server/backup/remote/RemoteResult;
 
-    move-result-object p1
+    move-result-object v0
 
     .line 1105
-    iget-object p2, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mReporter:Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;
+    .local v0, "result":Lcom/android/server/backup/remote/RemoteResult;
+    iget-object v1, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mReporter:Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;
 
-    invoke-virtual {p2, p1, p4}, Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;->onRemoteCallReturned(Lcom/android/server/backup/remote/RemoteResult;Ljava/lang/String;)V
+    invoke-virtual {v1, v0, p4}, Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;->onRemoteCallReturned(Lcom/android/server/backup/remote/RemoteResult;Ljava/lang/String;)V
 
     .line 1106
-    const/4 p2, 0x0
+    const/4 v1, 0x0
 
-    iput-object p2, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mPendingCall:Lcom/android/server/backup/remote/RemoteCall;
+    iput-object v1, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mPendingCall:Lcom/android/server/backup/remote/RemoteCall;
 
     .line 1107
-    return-object p1
+    return-object v0
 .end method
 
 .method private revertTask()V
@@ -2261,20 +2407,26 @@
     move-result-object v0
 
     .line 1005
+    .local v0, "transport":Lcom/android/internal/backup/IBackupTransport;
     invoke-interface {v0}, Lcom/android/internal/backup/IBackupTransport;->requestBackupTime()J
 
-    move-result-wide v0
+    move-result-wide v1
     :try_end_11
-    .catch Ljava/lang/Exception; {:try_start_5 .. :try_end_11} :catch_12
+    .catch Ljava/lang/Exception; {:try_start_5 .. :try_end_11} :catch_13
+
+    move-wide v0, v1
 
     .line 1010
-    goto :goto_1a
+    .local v0, "delay":J
+    goto :goto_1b
 
     .line 1006
-    :catch_12
+    .end local v0  # "delay":J
+    :catch_13
     move-exception v0
 
     .line 1007
+    .local v0, "e":Ljava/lang/Exception;
     iget-object v1, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mReporter:Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;
 
     invoke-virtual {v1, v0}, Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;->onTransportRequestBackupTimeError(Ljava/lang/Exception;)V
@@ -2283,7 +2435,8 @@
     const-wide/16 v0, 0x0
 
     .line 1011
-    :goto_1a
+    .local v0, "delay":J
+    :goto_1b
     iget-object v2, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mBackupManagerService:Lcom/android/server/backup/UserBackupManagerService;
 
     invoke-virtual {v2}, Lcom/android/server/backup/UserBackupManagerService;->getUserId()I
@@ -2307,35 +2460,37 @@
     invoke-static {v2, v3, v0, v1, v4}, Lcom/android/server/backup/KeyValueBackupJob;->schedule(ILandroid/content/Context;JLcom/android/server/backup/BackupManagerConstants;)V
 
     .line 1014
-    iget-object v0, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mOriginalQueue:Ljava/util/List;
+    iget-object v2, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mOriginalQueue:Ljava/util/List;
 
-    invoke-interface {v0}, Ljava/util/List;->iterator()Ljava/util/Iterator;
+    invoke-interface {v2}, Ljava/util/List;->iterator()Ljava/util/Iterator;
 
-    move-result-object v0
+    move-result-object v2
 
-    :goto_35
-    invoke-interface {v0}, Ljava/util/Iterator;->hasNext()Z
+    :goto_36
+    invoke-interface {v2}, Ljava/util/Iterator;->hasNext()Z
 
-    move-result v1
+    move-result v3
 
-    if-eqz v1, :cond_47
+    if-eqz v3, :cond_48
 
-    invoke-interface {v0}, Ljava/util/Iterator;->next()Ljava/lang/Object;
+    invoke-interface {v2}, Ljava/util/Iterator;->next()Ljava/lang/Object;
 
-    move-result-object v1
+    move-result-object v3
 
-    check-cast v1, Ljava/lang/String;
+    check-cast v3, Ljava/lang/String;
 
     .line 1015
-    iget-object v2, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mBackupManagerService:Lcom/android/server/backup/UserBackupManagerService;
+    .local v3, "packageName":Ljava/lang/String;
+    iget-object v4, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mBackupManagerService:Lcom/android/server/backup/UserBackupManagerService;
 
-    invoke-virtual {v2, v1}, Lcom/android/server/backup/UserBackupManagerService;->dataChangedImpl(Ljava/lang/String;)V
+    invoke-virtual {v4, v3}, Lcom/android/server/backup/UserBackupManagerService;->dataChangedImpl(Ljava/lang/String;)V
 
     .line 1016
-    goto :goto_35
+    .end local v3  # "packageName":Ljava/lang/String;
+    goto :goto_36
 
     .line 1017
-    :cond_47
+    :cond_48
     return-void
 .end method
 
@@ -2383,6 +2538,7 @@
     iget-object v0, v0, Landroid/content/pm/PackageInfo;->packageName:Ljava/lang/String;
 
     .line 833
+    .local v0, "packageName":Ljava/lang/String;
     iget-object v3, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mBackupData:Landroid/os/ParcelFileDescriptor;
 
     invoke-virtual {v3}, Landroid/os/ParcelFileDescriptor;->getFileDescriptor()Ljava/io/FileDescriptor;
@@ -2410,6 +2566,7 @@
     move v1, v2
 
     .line 836
+    .local v1, "nonIncremental":Z
     :goto_30
     iget-object v2, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mCurrentPackage:Landroid/content/pm/PackageInfo;
 
@@ -2417,23 +2574,25 @@
 
     invoke-direct {p0, v2, v3, v1}, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->transportPerformBackup(Landroid/content/pm/PackageInfo;Ljava/io/File;Z)I
 
-    move-result v1
+    move-result v2
 
     .line 837
-    iget-object v2, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mBackupDataFile:Ljava/io/File;
+    .local v2, "status":I
+    iget-object v3, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mBackupDataFile:Ljava/io/File;
 
-    invoke-virtual {v2}, Ljava/io/File;->length()J
+    invoke-virtual {v3}, Ljava/io/File;->length()J
 
-    move-result-wide v2
+    move-result-wide v3
 
-    invoke-direct {p0, v1, v0, v2, v3}, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->handleTransportStatus(ILjava/lang/String;J)V
+    invoke-direct {p0, v2, v0, v3, v4}, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->handleTransportStatus(ILjava/lang/String;J)V
 
     .line 838
-    return v1
+    return v2
 .end method
 
 .method private sendDataToTransport(Landroid/content/pm/PackageInfo;)I
-    .registers 4
+    .registers 5
+    .param p1, "packageInfo"  # Landroid/content/pm/PackageInfo;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Lcom/android/server/backup/keyvalue/AgentException;,
@@ -2445,33 +2604,43 @@
     :try_start_0
     invoke-direct {p0}, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->sendDataToTransport()I
 
-    move-result p1
+    move-result v0
     :try_end_4
     .catch Ljava/io/IOException; {:try_start_0 .. :try_end_4} :catch_5
 
-    return p1
+    return v0
 
     .line 375
     :catch_5
     move-exception v0
 
     .line 376
+    .local v0, "e":Ljava/io/IOException;
     iget-object v1, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mReporter:Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;
 
-    iget-object p1, p1, Landroid/content/pm/PackageInfo;->packageName:Ljava/lang/String;
+    iget-object v2, p1, Landroid/content/pm/PackageInfo;->packageName:Ljava/lang/String;
 
-    invoke-virtual {v1, p1, v0}, Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;->onAgentDataError(Ljava/lang/String;Ljava/io/IOException;)V
+    invoke-virtual {v1, v2, v0}, Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;->onAgentDataError(Ljava/lang/String;Ljava/io/IOException;)V
 
     .line 377
     invoke-static {v0}, Lcom/android/server/backup/keyvalue/TaskException;->causedBy(Ljava/lang/Exception;)Lcom/android/server/backup/keyvalue/TaskException;
 
-    move-result-object p1
+    move-result-object v1
 
-    throw p1
+    throw v1
 .end method
 
 .method public static start(Lcom/android/server/backup/UserBackupManagerService;Lcom/android/server/backup/transport/TransportClient;Ljava/lang/String;Ljava/util/List;Lcom/android/server/backup/DataChangedJournal;Landroid/app/backup/IBackupObserver;Landroid/app/backup/IBackupManagerMonitor;Lcom/android/server/backup/internal/OnTaskFinishedListener;Ljava/util/List;ZZ)Lcom/android/server/backup/keyvalue/KeyValueBackupTask;
-    .registers 23
+    .registers 26
+    .param p0, "backupManagerService"  # Lcom/android/server/backup/UserBackupManagerService;
+    .param p1, "transportClient"  # Lcom/android/server/backup/transport/TransportClient;
+    .param p2, "transportDirName"  # Ljava/lang/String;
+    .param p4, "dataChangedJournal"  # Lcom/android/server/backup/DataChangedJournal;
+    .param p5, "observer"  # Landroid/app/backup/IBackupObserver;
+    .param p6, "monitor"  # Landroid/app/backup/IBackupManagerMonitor;
+    .param p7, "listener"  # Lcom/android/server/backup/internal/OnTaskFinishedListener;
+    .param p9, "userInitiated"  # Z
+    .param p10, "nonIncremental"  # Z
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(",
@@ -2493,26 +2662,31 @@
     .end annotation
 
     .line 214
+    .local p3, "queue":Ljava/util/List;, "Ljava/util/List<Ljava/lang/String;>;"
+    .local p8, "pendingFullBackups":Ljava/util/List;, "Ljava/util/List<Ljava/lang/String;>;"
     new-instance v6, Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;
+
+    move-object v11, p0
+
+    move-object/from16 v12, p5
+
+    move-object/from16 v13, p6
+
+    invoke-direct {v6, p0, v12, v13}, Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;-><init>(Lcom/android/server/backup/UserBackupManagerService;Landroid/app/backup/IBackupObserver;Landroid/app/backup/IBackupManagerMonitor;)V
+
+    .line 216
+    .local v6, "reporter":Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;
+    new-instance v14, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;
+
+    move-object v0, v14
 
     move-object v1, p0
 
-    move-object/from16 v0, p5
+    move-object/from16 v2, p1
 
-    move-object/from16 v2, p6
+    move-object/from16 v3, p2
 
-    invoke-direct {v6, p0, v0, v2}, Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;-><init>(Lcom/android/server/backup/UserBackupManagerService;Landroid/app/backup/IBackupObserver;Landroid/app/backup/IBackupManagerMonitor;)V
-
-    .line 216
-    new-instance v11, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;
-
-    move-object v0, v11
-
-    move-object v2, p1
-
-    move-object v3, p2
-
-    move-object v4, p3
+    move-object/from16 v4, p3
 
     move-object/from16 v5, p4
 
@@ -2527,46 +2701,48 @@
     invoke-direct/range {v0 .. v10}, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;-><init>(Lcom/android/server/backup/UserBackupManagerService;Lcom/android/server/backup/transport/TransportClient;Ljava/lang/String;Ljava/util/List;Lcom/android/server/backup/DataChangedJournal;Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;Lcom/android/server/backup/internal/OnTaskFinishedListener;Ljava/util/List;ZZ)V
 
     .line 228
-    new-instance v0, Ljava/lang/Thread;
+    .local v0, "task":Lcom/android/server/backup/keyvalue/KeyValueBackupTask;
+    new-instance v1, Ljava/lang/Thread;
 
-    new-instance v1, Ljava/lang/StringBuilder;
+    new-instance v2, Ljava/lang/StringBuilder;
 
-    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v2, "key-value-backup-"
+    const-string/jumbo v3, "key-value-backup-"
 
-    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    sget-object v2, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->THREAD_COUNT:Ljava/util/concurrent/atomic/AtomicInteger;
+    sget-object v3, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->THREAD_COUNT:Ljava/util/concurrent/atomic/AtomicInteger;
 
-    invoke-virtual {v2}, Ljava/util/concurrent/atomic/AtomicInteger;->incrementAndGet()I
+    invoke-virtual {v3}, Ljava/util/concurrent/atomic/AtomicInteger;->incrementAndGet()I
 
-    move-result v2
+    move-result v3
 
-    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v1
+    move-result-object v2
 
-    invoke-direct {v0, v11, v1}, Ljava/lang/Thread;-><init>(Ljava/lang/Runnable;Ljava/lang/String;)V
+    invoke-direct {v1, v0, v2}, Ljava/lang/Thread;-><init>(Ljava/lang/Runnable;Ljava/lang/String;)V
 
     .line 229
-    invoke-virtual {v0}, Ljava/lang/Thread;->start()V
+    .local v1, "thread":Ljava/lang/Thread;
+    invoke-virtual {v1}, Ljava/lang/Thread;->start()V
 
     .line 230
-    invoke-virtual {v0}, Ljava/lang/Thread;->getName()Ljava/lang/String;
+    invoke-virtual {v1}, Ljava/lang/Thread;->getName()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v2
 
-    invoke-static {v0}, Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;->onNewThread(Ljava/lang/String;)V
+    invoke-static {v2}, Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;->onNewThread(Ljava/lang/String;)V
 
     .line 231
-    return-object v11
+    return-object v0
 .end method
 
 .method private startTask()V
-    .registers 8
+    .registers 9
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Lcom/android/server/backup/keyvalue/TaskException;
@@ -2580,7 +2756,7 @@
 
     move-result v0
 
-    if-nez v0, :cond_9e
+    if-nez v0, :cond_9f
 
     .line 395
     iget-object v0, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mPendingFullBackups:Ljava/util/List;
@@ -2649,139 +2825,161 @@
     const/4 v0, 0x1
 
     .line 404
+    .local v0, "backupPm":Z
     :goto_3c
     if-eqz v0, :cond_44
 
     .line 405
-    iget-object v0, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mQueue:Ljava/util/List;
+    iget-object v3, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mQueue:Ljava/util/List;
 
-    invoke-interface {v0, v2, v1}, Ljava/util/List;->add(ILjava/lang/Object;)V
+    invoke-interface {v3, v2, v1}, Ljava/util/List;->add(ILjava/lang/Object;)V
 
     goto :goto_49
 
     .line 407
     :cond_44
-    iget-object v0, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mReporter:Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;
+    iget-object v2, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mReporter:Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;
 
-    invoke-virtual {v0}, Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;->onSkipPm()V
+    invoke-virtual {v2}, Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;->onSkipPm()V
 
     .line 410
     :goto_49
-    iget-object v0, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mReporter:Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;
+    iget-object v2, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mReporter:Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;
 
-    iget-object v2, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mQueue:Ljava/util/List;
+    iget-object v3, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mQueue:Ljava/util/List;
 
-    invoke-virtual {v0, v2}, Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;->onQueueReady(Ljava/util/List;)V
+    invoke-virtual {v2, v3}, Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;->onQueueReady(Ljava/util/List;)V
 
     .line 411
-    new-instance v0, Ljava/io/File;
+    new-instance v2, Ljava/io/File;
 
-    iget-object v2, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mStateDirectory:Ljava/io/File;
+    iget-object v3, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mStateDirectory:Ljava/io/File;
 
-    invoke-direct {v0, v2, v1}, Ljava/io/File;-><init>(Ljava/io/File;Ljava/lang/String;)V
+    invoke-direct {v2, v3, v1}, Ljava/io/File;-><init>(Ljava/io/File;Ljava/lang/String;)V
+
+    move-object v1, v2
 
     .line 413
-    :try_start_57
-    iget-object v1, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mTransportClient:Lcom/android/server/backup/transport/TransportClient;
+    .local v1, "pmState":Ljava/io/File;
+    :try_start_58
+    iget-object v2, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mTransportClient:Lcom/android/server/backup/transport/TransportClient;
 
-    const-string v2, "KVBT.startTask()"
+    const-string v3, "KVBT.startTask()"
 
-    invoke-virtual {v1, v2}, Lcom/android/server/backup/transport/TransportClient;->connectOrThrow(Ljava/lang/String;)Lcom/android/internal/backup/IBackupTransport;
-
-    move-result-object v1
-
-    .line 414
-    invoke-interface {v1}, Lcom/android/internal/backup/IBackupTransport;->name()Ljava/lang/String;
+    invoke-virtual {v2, v3}, Lcom/android/server/backup/transport/TransportClient;->connectOrThrow(Ljava/lang/String;)Lcom/android/internal/backup/IBackupTransport;
 
     move-result-object v2
 
-    .line 415
-    iget-object v3, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mReporter:Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;
+    .line 414
+    .local v2, "transport":Lcom/android/internal/backup/IBackupTransport;
+    invoke-interface {v2}, Lcom/android/internal/backup/IBackupTransport;->name()Ljava/lang/String;
 
-    invoke-virtual {v3, v2}, Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;->onTransportReady(Ljava/lang/String;)V
+    move-result-object v3
+
+    .line 415
+    .local v3, "transportName":Ljava/lang/String;
+    iget-object v4, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mReporter:Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;
+
+    invoke-virtual {v4, v3}, Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;->onTransportReady(Ljava/lang/String;)V
 
     .line 418
-    invoke-virtual {v0}, Ljava/io/File;->length()J
+    invoke-virtual {v1}, Ljava/io/File;->length()J
 
-    move-result-wide v3
+    move-result-wide v4
 
-    const-wide/16 v5, 0x0
+    const-wide/16 v6, 0x0
 
-    cmp-long v0, v3, v5
+    cmp-long v4, v4, v6
 
-    if-gtz v0, :cond_8f
+    if-gtz v4, :cond_90
 
     .line 419
-    iget-object v0, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mReporter:Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;
+    iget-object v4, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mReporter:Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;
 
-    invoke-virtual {v0, v2}, Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;->onInitializeTransport(Ljava/lang/String;)V
+    invoke-virtual {v4, v3}, Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;->onInitializeTransport(Ljava/lang/String;)V
 
     .line 420
-    iget-object v0, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mBackupManagerService:Lcom/android/server/backup/UserBackupManagerService;
+    iget-object v4, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mBackupManagerService:Lcom/android/server/backup/UserBackupManagerService;
 
-    iget-object v2, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mStateDirectory:Ljava/io/File;
+    iget-object v5, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mStateDirectory:Ljava/io/File;
 
-    invoke-virtual {v0, v2}, Lcom/android/server/backup/UserBackupManagerService;->resetBackupState(Ljava/io/File;)V
+    invoke-virtual {v4, v5}, Lcom/android/server/backup/UserBackupManagerService;->resetBackupState(Ljava/io/File;)V
 
     .line 421
-    invoke-interface {v1}, Lcom/android/internal/backup/IBackupTransport;->initializeDevice()I
+    invoke-interface {v2}, Lcom/android/internal/backup/IBackupTransport;->initializeDevice()I
 
-    move-result v0
+    move-result v4
 
     .line 422
-    iget-object v1, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mReporter:Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;
+    .local v4, "status":I
+    iget-object v5, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mReporter:Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;
 
-    invoke-virtual {v1, v0}, Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;->onTransportInitialized(I)V
+    invoke-virtual {v5, v4}, Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;->onTransportInitialized(I)V
 
     .line 423
-    if-nez v0, :cond_8a
+    if-nez v4, :cond_8b
 
-    goto :goto_8f
+    goto :goto_90
 
     .line 424
-    :cond_8a
+    :cond_8b
     invoke-static {}, Lcom/android/server/backup/keyvalue/TaskException;->stateCompromised()Lcom/android/server/backup/keyvalue/TaskException;
 
-    move-result-object v0
+    move-result-object v5
 
-    throw v0
-    :try_end_8f
-    .catch Lcom/android/server/backup/keyvalue/TaskException; {:try_start_57 .. :try_end_8f} :catch_9c
-    .catch Ljava/lang/Exception; {:try_start_57 .. :try_end_8f} :catch_91
+    .end local v0  # "backupPm":Z
+    .end local v1  # "pmState":Ljava/io/File;
+    .end local p0  # "this":Lcom/android/server/backup/keyvalue/KeyValueBackupTask;
+    throw v5
+    :try_end_90
+    .catch Lcom/android/server/backup/keyvalue/TaskException; {:try_start_58 .. :try_end_90} :catch_9d
+    .catch Ljava/lang/Exception; {:try_start_58 .. :try_end_90} :catch_92
 
     .line 432
-    :cond_8f
-    :goto_8f
+    .end local v2  # "transport":Lcom/android/internal/backup/IBackupTransport;
+    .end local v3  # "transportName":Ljava/lang/String;
+    .end local v4  # "status":I
+    .restart local v0  # "backupPm":Z
+    .restart local v1  # "pmState":Ljava/io/File;
+    .restart local p0  # "this":Lcom/android/server/backup/keyvalue/KeyValueBackupTask;
+    :cond_90
+    :goto_90
     nop
 
     .line 433
     return-void
 
     .line 429
-    :catch_91
-    move-exception v0
+    :catch_92
+    move-exception v2
 
     .line 430
-    iget-object v1, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mReporter:Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;
+    .local v2, "e":Ljava/lang/Exception;
+    iget-object v3, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mReporter:Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;
 
-    invoke-virtual {v1, v0}, Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;->onInitializeTransportError(Ljava/lang/Exception;)V
+    invoke-virtual {v3, v2}, Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;->onInitializeTransportError(Ljava/lang/Exception;)V
 
     .line 431
     invoke-static {}, Lcom/android/server/backup/keyvalue/TaskException;->stateCompromised()Lcom/android/server/backup/keyvalue/TaskException;
 
-    move-result-object v0
+    move-result-object v3
 
-    throw v0
+    throw v3
 
     .line 427
-    :catch_9c
-    move-exception v0
+    .end local v2  # "e":Ljava/lang/Exception;
+    :catch_9d
+    move-exception v2
 
     .line 428
-    throw v0
+    .local v2, "e":Lcom/android/server/backup/keyvalue/TaskException;
+    throw v2
 
     .line 389
-    :cond_9e
+    .end local v0  # "backupPm":Z
+    .end local v1  # "pmState":Ljava/io/File;
+    .end local v2  # "e":Lcom/android/server/backup/keyvalue/TaskException;
+    :cond_9f
     iget-object v0, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mReporter:Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;
 
     invoke-virtual {v0}, Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;->onSkipBackup()V
@@ -2795,7 +2993,10 @@
 .end method
 
 .method private transportPerformBackup(Landroid/content/pm/PackageInfo;Ljava/io/File;Z)I
-    .registers 9
+    .registers 13
+    .param p1, "packageInfo"  # Landroid/content/pm/PackageInfo;
+    .param p2, "backupDataFile"  # Ljava/io/File;
+    .param p3, "nonIncremental"  # Z
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Lcom/android/server/backup/keyvalue/TaskException;
@@ -2806,166 +3007,207 @@
     iget-object v0, p1, Landroid/content/pm/PackageInfo;->packageName:Ljava/lang/String;
 
     .line 845
+    .local v0, "packageName":Ljava/lang/String;
     invoke-virtual {p2}, Ljava/io/File;->length()J
 
     move-result-wide v1
 
     .line 846
+    .local v1, "size":J
     const-wide/16 v3, 0x0
 
-    cmp-long v1, v1, v3
+    cmp-long v3, v1, v3
 
-    if-gtz v1, :cond_13
+    if-gtz v3, :cond_13
 
     .line 847
-    iget-object p2, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mReporter:Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;
+    iget-object v3, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mReporter:Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;
 
-    invoke-virtual {p2, p1}, Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;->onEmptyData(Landroid/content/pm/PackageInfo;)V
+    invoke-virtual {v3, p1}, Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;->onEmptyData(Landroid/content/pm/PackageInfo;)V
 
     .line 848
-    const/4 p1, 0x0
+    const/4 v3, 0x0
 
-    return p1
+    return v3
 
     .line 851
     :cond_13
-    const/4 v1, 0x1
+    const/4 v3, 0x1
 
-    iput-boolean v1, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mHasDataToBackup:Z
+    iput-boolean v3, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mHasDataToBackup:Z
 
     .line 854
-    const/high16 v1, 0x10000000
+    const/high16 v3, 0x10000000
 
     .line 855
     :try_start_18
-    invoke-static {p2, v1}, Landroid/os/ParcelFileDescriptor;->open(Ljava/io/File;I)Landroid/os/ParcelFileDescriptor;
+    invoke-static {p2, v3}, Landroid/os/ParcelFileDescriptor;->open(Ljava/io/File;I)Landroid/os/ParcelFileDescriptor;
 
-    move-result-object p2
+    move-result-object v3
     :try_end_1c
-    .catch Ljava/lang/Exception; {:try_start_18 .. :try_end_1c} :catch_5b
+    .catch Ljava/lang/Exception; {:try_start_18 .. :try_end_1c} :catch_5c
 
     .line 854
-    const/4 v1, 0x0
+    .local v3, "backupData":Landroid/os/ParcelFileDescriptor;
+    const/4 v4, 0x0
 
     .line 856
     :try_start_1d
-    iget-object v2, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mTransportClient:Lcom/android/server/backup/transport/TransportClient;
+    iget-object v5, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mTransportClient:Lcom/android/server/backup/transport/TransportClient;
 
-    const-string v3, "KVBT.transportPerformBackup()"
+    const-string v6, "KVBT.transportPerformBackup()"
 
     .line 857
-    invoke-virtual {v2, v3}, Lcom/android/server/backup/transport/TransportClient;->connectOrThrow(Ljava/lang/String;)Lcom/android/internal/backup/IBackupTransport;
+    invoke-virtual {v5, v6}, Lcom/android/server/backup/transport/TransportClient;->connectOrThrow(Ljava/lang/String;)Lcom/android/internal/backup/IBackupTransport;
 
-    move-result-object v2
+    move-result-object v5
 
     .line 858
-    iget-object v3, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mReporter:Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;
+    .local v5, "transport":Lcom/android/internal/backup/IBackupTransport;
+    iget-object v6, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mReporter:Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;
 
-    invoke-virtual {v3, v0}, Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;->onTransportPerformBackup(Ljava/lang/String;)V
+    invoke-virtual {v6, v0}, Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;->onTransportPerformBackup(Ljava/lang/String;)V
 
     .line 859
-    iget-boolean v3, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mUserInitiated:Z
+    iget-boolean v6, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mUserInitiated:Z
 
-    invoke-direct {p0, v3, p3}, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->getPerformBackupFlags(ZZ)I
+    invoke-direct {p0, v6, p3}, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->getPerformBackupFlags(ZZ)I
 
-    move-result v3
+    move-result v6
 
     .line 861
-    invoke-interface {v2, p1, p2, v3}, Lcom/android/internal/backup/IBackupTransport;->performBackup(Landroid/content/pm/PackageInfo;Landroid/os/ParcelFileDescriptor;I)I
+    .local v6, "flags":I
+    invoke-interface {v5, p1, v3, v6}, Lcom/android/internal/backup/IBackupTransport;->performBackup(Landroid/content/pm/PackageInfo;Landroid/os/ParcelFileDescriptor;I)I
 
-    move-result p1
+    move-result v7
 
     .line 862
-    if-nez p1, :cond_3a
+    .local v7, "status":I
+    if-nez v7, :cond_3b
 
     .line 863
-    invoke-interface {v2}, Lcom/android/internal/backup/IBackupTransport;->finishBackup()I
+    invoke-interface {v5}, Lcom/android/internal/backup/IBackupTransport;->finishBackup()I
 
-    move-result p1
+    move-result v8
     :try_end_3a
-    .catchall {:try_start_1d .. :try_end_3a} :catchall_52
+    .catchall {:try_start_1d .. :try_end_3a} :catchall_53
+
+    move v7, v8
 
     .line 865
-    :cond_3a
-    if-eqz p2, :cond_3f
+    .end local v5  # "transport":Lcom/android/internal/backup/IBackupTransport;
+    .end local v6  # "flags":I
+    :cond_3b
+    if-eqz v3, :cond_40
 
-    :try_start_3c
-    invoke-static {v1, p2}, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->$closeResource(Ljava/lang/Throwable;Ljava/lang/AutoCloseable;)V
-    :try_end_3f
-    .catch Ljava/lang/Exception; {:try_start_3c .. :try_end_3f} :catch_5b
+    :try_start_3d
+    invoke-static {v4, v3}, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->$closeResource(Ljava/lang/Throwable;Ljava/lang/AutoCloseable;)V
+    :try_end_40
+    .catch Ljava/lang/Exception; {:try_start_3d .. :try_end_40} :catch_5c
 
     .line 868
-    :cond_3f
+    .end local v3  # "backupData":Landroid/os/ParcelFileDescriptor;
+    :cond_40
     nop
 
     .line 870
-    if-eqz p3, :cond_51
+    if-eqz p3, :cond_52
 
-    const/16 p2, -0x3ee
+    const/16 v3, -0x3ee
 
-    if-eq p1, p2, :cond_47
+    if-eq v7, v3, :cond_48
 
-    goto :goto_51
+    goto :goto_52
 
     .line 871
-    :cond_47
-    iget-object p1, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mReporter:Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;
+    :cond_48
+    iget-object v3, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mReporter:Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;
 
-    invoke-virtual {p1, v0}, Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;->onPackageBackupNonIncrementalAndNonIncrementalRequired(Ljava/lang/String;)V
+    invoke-virtual {v3, v0}, Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;->onPackageBackupNonIncrementalAndNonIncrementalRequired(Ljava/lang/String;)V
 
     .line 872
     invoke-static {}, Lcom/android/server/backup/keyvalue/TaskException;->create()Lcom/android/server/backup/keyvalue/TaskException;
 
-    move-result-object p1
+    move-result-object v3
 
-    throw p1
+    throw v3
 
     .line 875
-    :cond_51
-    :goto_51
-    return p1
+    :cond_52
+    :goto_52
+    return v7
 
     .line 854
-    :catchall_52
-    move-exception p1
+    .end local v7  # "status":I
+    .restart local v3  # "backupData":Landroid/os/ParcelFileDescriptor;
+    :catchall_53
+    move-exception v4
 
-    :try_start_53
-    throw p1
-    :try_end_54
-    .catchall {:try_start_53 .. :try_end_54} :catchall_54
+    .end local v0  # "packageName":Ljava/lang/String;
+    .end local v1  # "size":J
+    .end local v3  # "backupData":Landroid/os/ParcelFileDescriptor;
+    .end local p0  # "this":Lcom/android/server/backup/keyvalue/KeyValueBackupTask;
+    .end local p1  # "packageInfo":Landroid/content/pm/PackageInfo;
+    .end local p2  # "backupDataFile":Ljava/io/File;
+    .end local p3  # "nonIncremental":Z
+    :try_start_54
+    throw v4
+    :try_end_55
+    .catchall {:try_start_54 .. :try_end_55} :catchall_55
 
     .line 865
-    :catchall_54
-    move-exception p3
+    .restart local v0  # "packageName":Ljava/lang/String;
+    .restart local v1  # "size":J
+    .restart local v3  # "backupData":Landroid/os/ParcelFileDescriptor;
+    .restart local p0  # "this":Lcom/android/server/backup/keyvalue/KeyValueBackupTask;
+    .restart local p1  # "packageInfo":Landroid/content/pm/PackageInfo;
+    .restart local p2  # "backupDataFile":Ljava/io/File;
+    .restart local p3  # "nonIncremental":Z
+    :catchall_55
+    move-exception v5
 
-    if-eqz p2, :cond_5a
+    if-eqz v3, :cond_5b
 
-    :try_start_57
-    invoke-static {p1, p2}, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->$closeResource(Ljava/lang/Throwable;Ljava/lang/AutoCloseable;)V
+    :try_start_58
+    invoke-static {v4, v3}, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->$closeResource(Ljava/lang/Throwable;Ljava/lang/AutoCloseable;)V
 
-    :cond_5a
-    throw p3
-    :try_end_5b
-    .catch Ljava/lang/Exception; {:try_start_57 .. :try_end_5b} :catch_5b
+    .end local v0  # "packageName":Ljava/lang/String;
+    .end local v1  # "size":J
+    .end local p0  # "this":Lcom/android/server/backup/keyvalue/KeyValueBackupTask;
+    .end local p1  # "packageInfo":Landroid/content/pm/PackageInfo;
+    .end local p2  # "backupDataFile":Ljava/io/File;
+    .end local p3  # "nonIncremental":Z
+    :cond_5b
+    throw v5
+    :try_end_5c
+    .catch Ljava/lang/Exception; {:try_start_58 .. :try_end_5c} :catch_5c
 
-    :catch_5b
-    move-exception p1
+    .end local v3  # "backupData":Landroid/os/ParcelFileDescriptor;
+    .restart local v0  # "packageName":Ljava/lang/String;
+    .restart local v1  # "size":J
+    .restart local p0  # "this":Lcom/android/server/backup/keyvalue/KeyValueBackupTask;
+    .restart local p1  # "packageInfo":Landroid/content/pm/PackageInfo;
+    .restart local p2  # "backupDataFile":Ljava/io/File;
+    .restart local p3  # "nonIncremental":Z
+    :catch_5c
+    move-exception v3
 
     .line 866
-    iget-object p2, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mReporter:Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;
+    .local v3, "e":Ljava/lang/Exception;
+    iget-object v4, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mReporter:Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;
 
-    invoke-virtual {p2, v0, p1}, Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;->onPackageBackupTransportError(Ljava/lang/String;Ljava/lang/Exception;)V
+    invoke-virtual {v4, v0, v3}, Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;->onPackageBackupTransportError(Ljava/lang/String;Ljava/lang/Exception;)V
 
     .line 867
-    invoke-static {p1}, Lcom/android/server/backup/keyvalue/TaskException;->causedBy(Ljava/lang/Exception;)Lcom/android/server/backup/keyvalue/TaskException;
+    invoke-static {v3}, Lcom/android/server/backup/keyvalue/TaskException;->causedBy(Ljava/lang/Exception;)Lcom/android/server/backup/keyvalue/TaskException;
 
-    move-result-object p1
+    move-result-object v4
 
-    throw p1
+    throw v4
 .end method
 
 .method private triggerTransportInitializationLocked()V
-    .registers 3
+    .registers 4
     .annotation build Lcom/android/internal/annotations/GuardedBy;
         value = {
             "mQueueLock"
@@ -2989,6 +3231,7 @@
     move-result-object v0
 
     .line 616
+    .local v0, "transport":Lcom/android/internal/backup/IBackupTransport;
     iget-object v1, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mBackupManagerService:Lcom/android/server/backup/UserBackupManagerService;
 
     invoke-virtual {v1}, Lcom/android/server/backup/UserBackupManagerService;->getPendingInits()Landroid/util/ArraySet;
@@ -2997,24 +3240,26 @@
 
     invoke-interface {v0}, Lcom/android/internal/backup/IBackupTransport;->name()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v2
 
-    invoke-virtual {v1, v0}, Landroid/util/ArraySet;->add(Ljava/lang/Object;)Z
+    invoke-virtual {v1, v2}, Landroid/util/ArraySet;->add(Ljava/lang/Object;)Z
 
     .line 617
     invoke-direct {p0}, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->deletePmStateFile()V
 
     .line 618
-    iget-object v0, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mBackupManagerService:Lcom/android/server/backup/UserBackupManagerService;
+    iget-object v1, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mBackupManagerService:Lcom/android/server/backup/UserBackupManagerService;
 
-    invoke-virtual {v0}, Lcom/android/server/backup/UserBackupManagerService;->backupNow()V
+    invoke-virtual {v1}, Lcom/android/server/backup/UserBackupManagerService;->backupNow()V
 
     .line 619
     return-void
 .end method
 
 .method private tryCloseFileDescriptor(Ljava/io/Closeable;Ljava/lang/String;)V
-    .registers 3
+    .registers 5
+    .param p1, "closeable"  # Ljava/io/Closeable;
+    .param p2, "logName"  # Ljava/lang/String;
 
     .line 1091
     if-eqz p1, :cond_c
@@ -3030,14 +3275,16 @@
 
     .line 1094
     :catch_6
-    move-exception p1
+    move-exception v0
 
     .line 1095
-    iget-object p1, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mReporter:Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;
+    .local v0, "e":Ljava/io/IOException;
+    iget-object v1, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mReporter:Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;
 
-    invoke-virtual {p1, p2}, Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;->onCloseFileDescriptorError(Ljava/lang/String;)V
+    invoke-virtual {v1, p2}, Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;->onCloseFileDescriptorError(Ljava/lang/String;)V
 
     .line 1098
+    .end local v0  # "e":Ljava/io/IOException;
     :cond_c
     :goto_c
     return-void
@@ -3058,7 +3305,9 @@
 .end method
 
 .method private writeWidgetPayloadIfAppropriate(Ljava/io/FileDescriptor;Ljava/lang/String;)V
-    .registers 9
+    .registers 12
+    .param p1, "fd"  # Ljava/io/FileDescriptor;
+    .param p2, "pkgName"  # Ljava/lang/String;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Ljava/io/IOException;
@@ -3073,6 +3322,7 @@
     move-result-object v0
 
     .line 780
+    .local v0, "widgetState":[B
     new-instance v1, Ljava/io/File;
 
     iget-object v2, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mStateDirectory:Ljava/io/File;
@@ -3083,23 +3333,25 @@
 
     invoke-virtual {v3, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string p2, "_widget"
+    const-string v4, "_widget"
 
-    invoke-virtual {v3, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p2
+    move-result-object v3
 
-    invoke-direct {v1, v2, p2}, Ljava/io/File;-><init>(Ljava/io/File;Ljava/lang/String;)V
+    invoke-direct {v1, v2, v3}, Ljava/io/File;-><init>(Ljava/io/File;Ljava/lang/String;)V
 
     .line 781
+    .local v1, "widgetFile":Ljava/io/File;
     invoke-virtual {v1}, Ljava/io/File;->exists()Z
 
-    move-result p2
+    move-result v2
 
     .line 782
-    if-nez p2, :cond_27
+    .local v2, "priorStateExists":Z
+    if-nez v2, :cond_27
 
     if-nez v0, :cond_27
 
@@ -3108,15 +3360,16 @@
 
     .line 785
     :cond_27
-    iget-object v2, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mReporter:Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;
+    iget-object v3, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mReporter:Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;
 
-    invoke-virtual {v2, p2, v0}, Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;->onWriteWidgetData(Z[B)V
+    invoke-virtual {v3, v2, v0}, Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;->onWriteWidgetData(Z[B)V
 
     .line 791
-    nop
+    const/4 v3, 0x0
 
     .line 792
-    const/4 v2, 0x0
+    .local v3, "newChecksum":Ljava/lang/String;
+    const/4 v4, 0x0
 
     if-eqz v0, :cond_61
 
@@ -3126,198 +3379,319 @@
     move-result-object v3
 
     .line 794
-    if-eqz p2, :cond_62
+    if-eqz v2, :cond_61
 
     .line 797
-    new-instance p2, Ljava/io/FileInputStream;
+    new-instance v5, Ljava/io/FileInputStream;
 
-    invoke-direct {p2, v1}, Ljava/io/FileInputStream;-><init>(Ljava/io/File;)V
+    invoke-direct {v5, v1}, Ljava/io/FileInputStream;-><init>(Ljava/io/File;)V
 
     .line 796
+    .local v5, "fin":Ljava/io/FileInputStream;
     nop
 
     .line 798
     :try_start_3c
-    new-instance v4, Ljava/io/DataInputStream;
+    new-instance v6, Ljava/io/DataInputStream;
 
-    invoke-direct {v4, p2}, Ljava/io/DataInputStream;-><init>(Ljava/io/InputStream;)V
+    invoke-direct {v6, v5}, Ljava/io/DataInputStream;-><init>(Ljava/io/InputStream;)V
     :try_end_41
     .catchall {:try_start_3c .. :try_end_41} :catchall_5a
 
     .line 796
+    .local v6, "in":Ljava/io/DataInputStream;
     nop
 
     .line 800
     :try_start_42
-    invoke-virtual {v4}, Ljava/io/DataInputStream;->readUTF()Ljava/lang/String;
+    invoke-virtual {v6}, Ljava/io/DataInputStream;->readUTF()Ljava/lang/String;
 
-    move-result-object v5
+    move-result-object v7
     :try_end_46
     .catchall {:try_start_42 .. :try_end_46} :catchall_53
 
     .line 801
+    .local v7, "priorChecksum":Ljava/lang/String;
     :try_start_46
-    invoke-static {v2, v4}, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->$closeResource(Ljava/lang/Throwable;Ljava/lang/AutoCloseable;)V
+    invoke-static {v4, v6}, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->$closeResource(Ljava/lang/Throwable;Ljava/lang/AutoCloseable;)V
     :try_end_49
     .catchall {:try_start_46 .. :try_end_49} :catchall_5a
 
-    invoke-static {v2, p2}, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->$closeResource(Ljava/lang/Throwable;Ljava/lang/AutoCloseable;)V
+    .end local v6  # "in":Ljava/io/DataInputStream;
+    invoke-static {v4, v5}, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->$closeResource(Ljava/lang/Throwable;Ljava/lang/AutoCloseable;)V
 
     .line 802
-    invoke-static {v3, v5}, Ljava/util/Objects;->equals(Ljava/lang/Object;Ljava/lang/Object;)Z
+    .end local v5  # "fin":Ljava/io/FileInputStream;
+    invoke-static {v3, v7}, Ljava/util/Objects;->equals(Ljava/lang/Object;Ljava/lang/Object;)Z
 
-    move-result p2
+    move-result v5
 
-    if-eqz p2, :cond_62
+    if-eqz v5, :cond_61
 
     .line 804
     return-void
 
     .line 796
+    .end local v7  # "priorChecksum":Ljava/lang/String;
+    .restart local v5  # "fin":Ljava/io/FileInputStream;
+    .restart local v6  # "in":Ljava/io/DataInputStream;
     :catchall_53
-    move-exception p1
+    move-exception v4
 
+    .end local v0  # "widgetState":[B
+    .end local v1  # "widgetFile":Ljava/io/File;
+    .end local v2  # "priorStateExists":Z
+    .end local v3  # "newChecksum":Ljava/lang/String;
+    .end local v5  # "fin":Ljava/io/FileInputStream;
+    .end local v6  # "in":Ljava/io/DataInputStream;
+    .end local p0  # "this":Lcom/android/server/backup/keyvalue/KeyValueBackupTask;
+    .end local p1  # "fd":Ljava/io/FileDescriptor;
+    .end local p2  # "pkgName":Ljava/lang/String;
     :try_start_54
-    throw p1
+    throw v4
     :try_end_55
     .catchall {:try_start_54 .. :try_end_55} :catchall_55
 
     .line 801
+    .restart local v0  # "widgetState":[B
+    .restart local v1  # "widgetFile":Ljava/io/File;
+    .restart local v2  # "priorStateExists":Z
+    .restart local v3  # "newChecksum":Ljava/lang/String;
+    .restart local v5  # "fin":Ljava/io/FileInputStream;
+    .restart local v6  # "in":Ljava/io/DataInputStream;
+    .restart local p0  # "this":Lcom/android/server/backup/keyvalue/KeyValueBackupTask;
+    .restart local p1  # "fd":Ljava/io/FileDescriptor;
+    .restart local p2  # "pkgName":Ljava/lang/String;
     :catchall_55
-    move-exception v0
+    move-exception v7
 
     :try_start_56
-    invoke-static {p1, v4}, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->$closeResource(Ljava/lang/Throwable;Ljava/lang/AutoCloseable;)V
+    invoke-static {v4, v6}, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->$closeResource(Ljava/lang/Throwable;Ljava/lang/AutoCloseable;)V
 
-    throw v0
+    .end local v0  # "widgetState":[B
+    .end local v1  # "widgetFile":Ljava/io/File;
+    .end local v2  # "priorStateExists":Z
+    .end local v3  # "newChecksum":Ljava/lang/String;
+    .end local v5  # "fin":Ljava/io/FileInputStream;
+    .end local p0  # "this":Lcom/android/server/backup/keyvalue/KeyValueBackupTask;
+    .end local p1  # "fd":Ljava/io/FileDescriptor;
+    .end local p2  # "pkgName":Ljava/lang/String;
+    throw v7
     :try_end_5a
     .catchall {:try_start_56 .. :try_end_5a} :catchall_5a
 
     .line 796
+    .end local v6  # "in":Ljava/io/DataInputStream;
+    .restart local v0  # "widgetState":[B
+    .restart local v1  # "widgetFile":Ljava/io/File;
+    .restart local v2  # "priorStateExists":Z
+    .restart local v3  # "newChecksum":Ljava/lang/String;
+    .restart local v5  # "fin":Ljava/io/FileInputStream;
+    .restart local p0  # "this":Lcom/android/server/backup/keyvalue/KeyValueBackupTask;
+    .restart local p1  # "fd":Ljava/io/FileDescriptor;
+    .restart local p2  # "pkgName":Ljava/lang/String;
     :catchall_5a
-    move-exception p1
+    move-exception v4
 
+    .end local v0  # "widgetState":[B
+    .end local v1  # "widgetFile":Ljava/io/File;
+    .end local v2  # "priorStateExists":Z
+    .end local v3  # "newChecksum":Ljava/lang/String;
+    .end local v5  # "fin":Ljava/io/FileInputStream;
+    .end local p0  # "this":Lcom/android/server/backup/keyvalue/KeyValueBackupTask;
+    .end local p1  # "fd":Ljava/io/FileDescriptor;
+    .end local p2  # "pkgName":Ljava/lang/String;
     :try_start_5b
-    throw p1
+    throw v4
     :try_end_5c
     .catchall {:try_start_5b .. :try_end_5c} :catchall_5c
 
     .line 801
+    .restart local v0  # "widgetState":[B
+    .restart local v1  # "widgetFile":Ljava/io/File;
+    .restart local v2  # "priorStateExists":Z
+    .restart local v3  # "newChecksum":Ljava/lang/String;
+    .restart local v5  # "fin":Ljava/io/FileInputStream;
+    .restart local p0  # "this":Lcom/android/server/backup/keyvalue/KeyValueBackupTask;
+    .restart local p1  # "fd":Ljava/io/FileDescriptor;
+    .restart local p2  # "pkgName":Ljava/lang/String;
     :catchall_5c
-    move-exception v0
+    move-exception v6
 
-    invoke-static {p1, p2}, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->$closeResource(Ljava/lang/Throwable;Ljava/lang/AutoCloseable;)V
+    invoke-static {v4, v5}, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->$closeResource(Ljava/lang/Throwable;Ljava/lang/AutoCloseable;)V
 
-    throw v0
-
-    .line 792
-    :cond_61
-    move-object v3, v2
+    throw v6
 
     .line 809
-    :cond_62
-    new-instance p2, Landroid/app/backup/BackupDataOutput;
+    .end local v5  # "fin":Ljava/io/FileInputStream;
+    :cond_61
+    new-instance v5, Landroid/app/backup/BackupDataOutput;
 
-    invoke-direct {p2, p1}, Landroid/app/backup/BackupDataOutput;-><init>(Ljava/io/FileDescriptor;)V
+    invoke-direct {v5, p1}, Landroid/app/backup/BackupDataOutput;-><init>(Ljava/io/FileDescriptor;)V
 
     .line 810
-    const-string/jumbo p1, "￭￭widget"
+    .local v5, "out":Landroid/app/backup/BackupDataOutput;
+    const-string/jumbo v6, "￭￭widget"
 
-    if-eqz v0, :cond_98
+    if-eqz v0, :cond_97
 
     .line 812
-    new-instance v4, Ljava/io/FileOutputStream;
+    new-instance v7, Ljava/io/FileOutputStream;
 
-    invoke-direct {v4, v1}, Ljava/io/FileOutputStream;-><init>(Ljava/io/File;)V
+    invoke-direct {v7, v1}, Ljava/io/FileOutputStream;-><init>(Ljava/io/File;)V
 
     .line 811
+    .local v7, "fout":Ljava/io/FileOutputStream;
     nop
 
     .line 813
-    :try_start_72
-    new-instance v1, Ljava/io/DataOutputStream;
+    :try_start_71
+    new-instance v8, Ljava/io/DataOutputStream;
 
-    invoke-direct {v1, v4}, Ljava/io/DataOutputStream;-><init>(Ljava/io/OutputStream;)V
-    :try_end_77
-    .catchall {:try_start_72 .. :try_end_77} :catchall_91
+    invoke-direct {v8, v7}, Ljava/io/DataOutputStream;-><init>(Ljava/io/OutputStream;)V
+    :try_end_76
+    .catchall {:try_start_71 .. :try_end_76} :catchall_90
 
     .line 811
+    .local v8, "stateOut":Ljava/io/DataOutputStream;
     nop
 
     .line 815
-    :try_start_78
-    invoke-virtual {v1, v3}, Ljava/io/DataOutputStream;->writeUTF(Ljava/lang/String;)V
-    :try_end_7b
-    .catchall {:try_start_78 .. :try_end_7b} :catchall_8a
+    :try_start_77
+    invoke-virtual {v8, v3}, Ljava/io/DataOutputStream;->writeUTF(Ljava/lang/String;)V
+    :try_end_7a
+    .catchall {:try_start_77 .. :try_end_7a} :catchall_89
 
     .line 816
-    :try_start_7b
-    invoke-static {v2, v1}, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->$closeResource(Ljava/lang/Throwable;Ljava/lang/AutoCloseable;)V
-    :try_end_7e
-    .catchall {:try_start_7b .. :try_end_7e} :catchall_91
+    :try_start_7a
+    invoke-static {v4, v8}, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->$closeResource(Ljava/lang/Throwable;Ljava/lang/AutoCloseable;)V
+    :try_end_7d
+    .catchall {:try_start_7a .. :try_end_7d} :catchall_90
 
-    invoke-static {v2, v4}, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->$closeResource(Ljava/lang/Throwable;Ljava/lang/AutoCloseable;)V
+    .end local v8  # "stateOut":Ljava/io/DataOutputStream;
+    invoke-static {v4, v7}, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->$closeResource(Ljava/lang/Throwable;Ljava/lang/AutoCloseable;)V
 
     .line 818
-    array-length v1, v0
+    .end local v7  # "fout":Ljava/io/FileOutputStream;
+    array-length v4, v0
 
-    invoke-virtual {p2, p1, v1}, Landroid/app/backup/BackupDataOutput;->writeEntityHeader(Ljava/lang/String;I)I
+    invoke-virtual {v5, v6, v4}, Landroid/app/backup/BackupDataOutput;->writeEntityHeader(Ljava/lang/String;I)I
 
     .line 819
-    array-length p1, v0
+    array-length v4, v0
 
-    invoke-virtual {p2, v0, p1}, Landroid/app/backup/BackupDataOutput;->writeEntityData([BI)I
+    invoke-virtual {v5, v0, v4}, Landroid/app/backup/BackupDataOutput;->writeEntityData([BI)I
 
-    goto :goto_9f
-
-    .line 811
-    :catchall_8a
-    move-exception p1
-
-    :try_start_8b
-    throw p1
-    :try_end_8c
-    .catchall {:try_start_8b .. :try_end_8c} :catchall_8c
-
-    .line 816
-    :catchall_8c
-    move-exception p2
-
-    :try_start_8d
-    invoke-static {p1, v1}, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->$closeResource(Ljava/lang/Throwable;Ljava/lang/AutoCloseable;)V
-
-    throw p2
-    :try_end_91
-    .catchall {:try_start_8d .. :try_end_91} :catchall_91
+    goto :goto_9e
 
     .line 811
-    :catchall_91
-    move-exception p1
+    .restart local v7  # "fout":Ljava/io/FileOutputStream;
+    .restart local v8  # "stateOut":Ljava/io/DataOutputStream;
+    :catchall_89
+    move-exception v4
 
-    :try_start_92
-    throw p1
-    :try_end_93
-    .catchall {:try_start_92 .. :try_end_93} :catchall_93
+    .end local v0  # "widgetState":[B
+    .end local v1  # "widgetFile":Ljava/io/File;
+    .end local v2  # "priorStateExists":Z
+    .end local v3  # "newChecksum":Ljava/lang/String;
+    .end local v5  # "out":Landroid/app/backup/BackupDataOutput;
+    .end local v7  # "fout":Ljava/io/FileOutputStream;
+    .end local v8  # "stateOut":Ljava/io/DataOutputStream;
+    .end local p0  # "this":Lcom/android/server/backup/keyvalue/KeyValueBackupTask;
+    .end local p1  # "fd":Ljava/io/FileDescriptor;
+    .end local p2  # "pkgName":Ljava/lang/String;
+    :try_start_8a
+    throw v4
+    :try_end_8b
+    .catchall {:try_start_8a .. :try_end_8b} :catchall_8b
 
     .line 816
-    :catchall_93
-    move-exception p2
+    .restart local v0  # "widgetState":[B
+    .restart local v1  # "widgetFile":Ljava/io/File;
+    .restart local v2  # "priorStateExists":Z
+    .restart local v3  # "newChecksum":Ljava/lang/String;
+    .restart local v5  # "out":Landroid/app/backup/BackupDataOutput;
+    .restart local v7  # "fout":Ljava/io/FileOutputStream;
+    .restart local v8  # "stateOut":Ljava/io/DataOutputStream;
+    .restart local p0  # "this":Lcom/android/server/backup/keyvalue/KeyValueBackupTask;
+    .restart local p1  # "fd":Ljava/io/FileDescriptor;
+    .restart local p2  # "pkgName":Ljava/lang/String;
+    :catchall_8b
+    move-exception v6
 
-    invoke-static {p1, v4}, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->$closeResource(Ljava/lang/Throwable;Ljava/lang/AutoCloseable;)V
+    :try_start_8c
+    invoke-static {v4, v8}, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->$closeResource(Ljava/lang/Throwable;Ljava/lang/AutoCloseable;)V
 
-    throw p2
+    .end local v0  # "widgetState":[B
+    .end local v1  # "widgetFile":Ljava/io/File;
+    .end local v2  # "priorStateExists":Z
+    .end local v3  # "newChecksum":Ljava/lang/String;
+    .end local v5  # "out":Landroid/app/backup/BackupDataOutput;
+    .end local v7  # "fout":Ljava/io/FileOutputStream;
+    .end local p0  # "this":Lcom/android/server/backup/keyvalue/KeyValueBackupTask;
+    .end local p1  # "fd":Ljava/io/FileDescriptor;
+    .end local p2  # "pkgName":Ljava/lang/String;
+    throw v6
+    :try_end_90
+    .catchall {:try_start_8c .. :try_end_90} :catchall_90
+
+    .line 811
+    .end local v8  # "stateOut":Ljava/io/DataOutputStream;
+    .restart local v0  # "widgetState":[B
+    .restart local v1  # "widgetFile":Ljava/io/File;
+    .restart local v2  # "priorStateExists":Z
+    .restart local v3  # "newChecksum":Ljava/lang/String;
+    .restart local v5  # "out":Landroid/app/backup/BackupDataOutput;
+    .restart local v7  # "fout":Ljava/io/FileOutputStream;
+    .restart local p0  # "this":Lcom/android/server/backup/keyvalue/KeyValueBackupTask;
+    .restart local p1  # "fd":Ljava/io/FileDescriptor;
+    .restart local p2  # "pkgName":Ljava/lang/String;
+    :catchall_90
+    move-exception v4
+
+    .end local v0  # "widgetState":[B
+    .end local v1  # "widgetFile":Ljava/io/File;
+    .end local v2  # "priorStateExists":Z
+    .end local v3  # "newChecksum":Ljava/lang/String;
+    .end local v5  # "out":Landroid/app/backup/BackupDataOutput;
+    .end local v7  # "fout":Ljava/io/FileOutputStream;
+    .end local p0  # "this":Lcom/android/server/backup/keyvalue/KeyValueBackupTask;
+    .end local p1  # "fd":Ljava/io/FileDescriptor;
+    .end local p2  # "pkgName":Ljava/lang/String;
+    :try_start_91
+    throw v4
+    :try_end_92
+    .catchall {:try_start_91 .. :try_end_92} :catchall_92
+
+    .line 816
+    .restart local v0  # "widgetState":[B
+    .restart local v1  # "widgetFile":Ljava/io/File;
+    .restart local v2  # "priorStateExists":Z
+    .restart local v3  # "newChecksum":Ljava/lang/String;
+    .restart local v5  # "out":Landroid/app/backup/BackupDataOutput;
+    .restart local v7  # "fout":Ljava/io/FileOutputStream;
+    .restart local p0  # "this":Lcom/android/server/backup/keyvalue/KeyValueBackupTask;
+    .restart local p1  # "fd":Ljava/io/FileDescriptor;
+    .restart local p2  # "pkgName":Ljava/lang/String;
+    :catchall_92
+    move-exception v6
+
+    invoke-static {v4, v7}, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->$closeResource(Ljava/lang/Throwable;Ljava/lang/AutoCloseable;)V
+
+    throw v6
 
     .line 822
-    :cond_98
-    const/4 v0, -0x1
+    .end local v7  # "fout":Ljava/io/FileOutputStream;
+    :cond_97
+    const/4 v4, -0x1
 
-    invoke-virtual {p2, p1, v0}, Landroid/app/backup/BackupDataOutput;->writeEntityHeader(Ljava/lang/String;I)I
+    invoke-virtual {v5, v6, v4}, Landroid/app/backup/BackupDataOutput;->writeEntityHeader(Ljava/lang/String;I)I
 
     .line 823
     invoke-virtual {v1}, Ljava/io/File;->delete()Z
 
     .line 825
-    :goto_9f
+    :goto_9e
     return-void
 .end method
 
@@ -3332,6 +3706,7 @@
 
 .method public handleCancel(Z)V
     .registers 3
+    .param p1, "cancelAll"  # Z
 
     .line 977
     const-string v0, "Can\'t partially cancel a key-value backup task"
@@ -3350,6 +3725,10 @@
 
 .method public synthetic lambda$extractAgentData$0$KeyValueBackupTask(Landroid/app/IBackupAgent;JILandroid/app/backup/IBackupCallback;)V
     .registers 14
+    .param p1, "agent"  # Landroid/app/IBackupAgent;
+    .param p2, "quota"  # J
+    .param p4, "transportFlags"  # I
+    .param p5, "callback"  # Landroid/app/backup/IBackupCallback;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -3395,6 +3774,7 @@
     iget-object v0, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mPendingCall:Lcom/android/server/backup/remote/RemoteCall;
 
     .line 988
+    .local v0, "pendingCall":Lcom/android/server/backup/remote/RemoteCall;
     if-eqz v0, :cond_f
 
     .line 989
@@ -3407,13 +3787,14 @@
 
 .method public operationComplete(J)V
     .registers 3
+    .param p1, "unusedResult"  # J
 
     .line 385
     return-void
 .end method
 
 .method public run()V
-    .registers 4
+    .registers 6
 
     .line 338
     const/16 v0, 0xa
@@ -3426,46 +3807,48 @@
     iput-boolean v0, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mHasDataToBackup:Z
 
     .line 342
-    nop
+    const/4 v1, 0x0
 
     .line 344
+    .local v1, "status":I
     :try_start_9
     invoke-direct {p0}, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->startTask()V
 
     .line 345
     :goto_c
-    iget-object v1, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mQueue:Ljava/util/List;
+    iget-object v2, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mQueue:Ljava/util/List;
 
-    invoke-interface {v1}, Ljava/util/List;->isEmpty()Z
+    invoke-interface {v2}, Ljava/util/List;->isEmpty()Z
 
-    move-result v1
+    move-result v2
 
-    if-nez v1, :cond_3d
+    if-nez v2, :cond_3d
 
-    iget-boolean v1, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mCancelled:Z
+    iget-boolean v2, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mCancelled:Z
 
-    if-nez v1, :cond_3d
+    if-nez v2, :cond_3d
 
     .line 346
-    iget-object v1, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mQueue:Ljava/util/List;
+    iget-object v2, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mQueue:Ljava/util/List;
 
-    invoke-interface {v1, v0}, Ljava/util/List;->remove(I)Ljava/lang/Object;
+    invoke-interface {v2, v0}, Ljava/util/List;->remove(I)Ljava/lang/Object;
 
-    move-result-object v1
+    move-result-object v2
 
-    check-cast v1, Ljava/lang/String;
+    check-cast v2, Ljava/lang/String;
     :try_end_20
     .catch Lcom/android/server/backup/keyvalue/TaskException; {:try_start_9 .. :try_end_20} :catch_3e
 
     .line 348
+    .local v2, "packageName":Ljava/lang/String;
     :try_start_20
-    const-string v2, "@pm@"
+    const-string v3, "@pm@"
 
-    invoke-virtual {v2, v1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v3, v2}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result v2
+    move-result v3
 
-    if-eqz v2, :cond_2c
+    if-eqz v3, :cond_2c
 
     .line 349
     invoke-direct {p0}, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->backupPm()V
@@ -3474,7 +3857,7 @@
 
     .line 351
     :cond_2c
-    invoke-direct {p0, v1}, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->backupPackage(Ljava/lang/String;)V
+    invoke-direct {p0, v2}, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->backupPackage(Ljava/lang/String;)V
     :try_end_2f
     .catch Lcom/android/server/backup/keyvalue/AgentException; {:try_start_20 .. :try_end_2f} :catch_30
     .catch Lcom/android/server/backup/keyvalue/TaskException; {:try_start_20 .. :try_end_2f} :catch_3e
@@ -3485,24 +3868,27 @@
 
     .line 353
     :catch_30
-    move-exception v2
+    move-exception v3
 
     .line 354
+    .local v3, "e":Lcom/android/server/backup/keyvalue/AgentException;
     :try_start_31
-    invoke-virtual {v2}, Lcom/android/server/backup/keyvalue/AgentException;->isTransitory()Z
+    invoke-virtual {v3}, Lcom/android/server/backup/keyvalue/AgentException;->isTransitory()Z
 
-    move-result v2
+    move-result v4
 
-    if-eqz v2, :cond_3c
+    if-eqz v4, :cond_3c
 
     .line 356
-    iget-object v2, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mBackupManagerService:Lcom/android/server/backup/UserBackupManagerService;
+    iget-object v4, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mBackupManagerService:Lcom/android/server/backup/UserBackupManagerService;
 
-    invoke-virtual {v2, v1}, Lcom/android/server/backup/UserBackupManagerService;->dataChangedImpl(Ljava/lang/String;)V
+    invoke-virtual {v4, v2}, Lcom/android/server/backup/UserBackupManagerService;->dataChangedImpl(Ljava/lang/String;)V
     :try_end_3c
     .catch Lcom/android/server/backup/keyvalue/TaskException; {:try_start_31 .. :try_end_3c} :catch_3e
 
     .line 359
+    .end local v2  # "packageName":Ljava/lang/String;
+    .end local v3  # "e":Lcom/android/server/backup/keyvalue/AgentException;
     :cond_3c
     :goto_3c
     goto :goto_c
@@ -3516,18 +3902,19 @@
     move-exception v0
 
     .line 361
+    .local v0, "e":Lcom/android/server/backup/keyvalue/TaskException;
     invoke-virtual {v0}, Lcom/android/server/backup/keyvalue/TaskException;->isStateCompromised()Z
 
-    move-result v1
+    move-result v2
 
-    if-eqz v1, :cond_4c
+    if-eqz v2, :cond_4c
 
     .line 362
-    iget-object v1, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mBackupManagerService:Lcom/android/server/backup/UserBackupManagerService;
+    iget-object v2, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mBackupManagerService:Lcom/android/server/backup/UserBackupManagerService;
 
-    iget-object v2, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mStateDirectory:Ljava/io/File;
+    iget-object v3, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->mStateDirectory:Ljava/io/File;
 
-    invoke-virtual {v1, v2}, Lcom/android/server/backup/UserBackupManagerService;->resetBackupState(Ljava/io/File;)V
+    invoke-virtual {v2, v3}, Lcom/android/server/backup/UserBackupManagerService;->resetBackupState(Ljava/io/File;)V
 
     .line 364
     :cond_4c
@@ -3536,11 +3923,12 @@
     .line 365
     invoke-virtual {v0}, Lcom/android/server/backup/keyvalue/TaskException;->getStatus()I
 
-    move-result v0
+    move-result v1
 
     .line 367
+    .end local v0  # "e":Lcom/android/server/backup/keyvalue/TaskException;
     :goto_53
-    invoke-direct {p0, v0}, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->finishTask(I)V
+    invoke-direct {p0, v1}, Lcom/android/server/backup/keyvalue/KeyValueBackupTask;->finishTask(I)V
 
     .line 368
     return-void

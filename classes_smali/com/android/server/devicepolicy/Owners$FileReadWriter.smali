@@ -21,6 +21,7 @@
 # direct methods
 .method protected constructor <init>(Ljava/io/File;)V
     .registers 2
+    .param p1, "file"  # Ljava/io/File;
 
     .line 696
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -35,7 +36,7 @@
 
 # virtual methods
 .method readFromFileLocked()V
-    .registers 8
+    .registers 10
 
     .line 754
     const-string v0, "DevicePolicyManagerService"
@@ -60,105 +61,115 @@
     invoke-direct {v1, v2}, Landroid/util/AtomicFile;-><init>(Ljava/io/File;)V
 
     .line 764
+    .local v1, "f":Landroid/util/AtomicFile;
     const/4 v2, 0x0
 
     .line 766
+    .local v2, "input":Ljava/io/InputStream;
     :try_start_13
     invoke-virtual {v1}, Landroid/util/AtomicFile;->openRead()Ljava/io/FileInputStream;
 
-    move-result-object v2
+    move-result-object v3
+
+    move-object v2, v3
 
     .line 767
     invoke-static {}, Landroid/util/Xml;->newPullParser()Lorg/xmlpull/v1/XmlPullParser;
 
-    move-result-object v1
-
-    .line 768
-    sget-object v3, Ljava/nio/charset/StandardCharsets;->UTF_8:Ljava/nio/charset/Charset;
-
-    invoke-virtual {v3}, Ljava/nio/charset/Charset;->name()Ljava/lang/String;
-
     move-result-object v3
 
-    invoke-interface {v1, v2, v3}, Lorg/xmlpull/v1/XmlPullParser;->setInput(Ljava/io/InputStream;Ljava/lang/String;)V
+    .line 768
+    .local v3, "parser":Lorg/xmlpull/v1/XmlPullParser;
+    sget-object v4, Ljava/nio/charset/StandardCharsets;->UTF_8:Ljava/nio/charset/Charset;
+
+    invoke-virtual {v4}, Ljava/nio/charset/Charset;->name()Ljava/lang/String;
+
+    move-result-object v4
+
+    invoke-interface {v3, v2, v4}, Lorg/xmlpull/v1/XmlPullParser;->setInput(Ljava/io/InputStream;Ljava/lang/String;)V
 
     .line 771
-    const/4 v3, 0x0
+    const/4 v4, 0x0
 
     .line 772
-    :cond_25
-    :goto_25
-    invoke-interface {v1}, Lorg/xmlpull/v1/XmlPullParser;->next()I
+    .local v4, "depth":I
+    :cond_26
+    :goto_26
+    invoke-interface {v3}, Lorg/xmlpull/v1/XmlPullParser;->next()I
 
-    move-result v4
+    move-result v5
 
-    const/4 v5, 0x1
+    move v6, v5
 
-    if-eq v4, v5, :cond_73
+    .local v6, "type":I
+    const/4 v7, 0x1
+
+    if-eq v5, v7, :cond_6d
 
     .line 773
-    const/4 v6, 0x2
+    const/4 v5, 0x2
 
-    if-eq v4, v6, :cond_36
+    if-eq v6, v5, :cond_38
 
     const/4 v5, 0x3
 
-    if-eq v4, v5, :cond_33
+    if-eq v6, v5, :cond_35
 
-    goto :goto_35
+    goto :goto_37
 
     .line 778
-    :cond_33
-    add-int/lit8 v3, v3, -0x1
+    :cond_35
+    add-int/lit8 v4, v4, -0x1
 
     .line 781
-    :goto_35
-    goto :goto_25
+    :goto_37
+    goto :goto_26
 
     .line 775
-    :cond_36
-    add-int/lit8 v3, v3, 0x1
+    :cond_38
+    add-int/lit8 v4, v4, 0x1
 
     .line 776
     nop
 
     .line 784
-    invoke-interface {v1}, Lorg/xmlpull/v1/XmlPullParser;->getName()Ljava/lang/String;
+    invoke-interface {v3}, Lorg/xmlpull/v1/XmlPullParser;->getName()Ljava/lang/String;
 
-    move-result-object v4
+    move-result-object v5
 
     .line 785
-    if-ne v3, v5, :cond_60
+    .local v5, "tag":Ljava/lang/String;
+    if-ne v4, v7, :cond_62
 
     .line 786
-    const-string/jumbo v5, "root"
+    const-string/jumbo v7, "root"
 
-    invoke-virtual {v5, v4}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v7, v5}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result v5
+    move-result v7
 
-    if-nez v5, :cond_25
+    if-nez v7, :cond_26
 
     .line 787
-    new-instance v1, Ljava/lang/StringBuilder;
+    new-instance v7, Ljava/lang/StringBuilder;
 
-    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v7}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v3, "Invalid root tag: "
+    const-string v8, "Invalid root tag: "
 
-    invoke-virtual {v1, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v7, v8}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v1, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v7, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v7}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v1
+    move-result-object v7
 
-    invoke-static {v0, v1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
-    :try_end_5c
-    .catch Lorg/xmlpull/v1/XmlPullParserException; {:try_start_13 .. :try_end_5c} :catch_6d
-    .catch Ljava/io/IOException; {:try_start_13 .. :try_end_5c} :catch_6d
-    .catchall {:try_start_13 .. :try_end_5c} :catchall_6b
+    invoke-static {v0, v7}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
+    :try_end_5e
+    .catch Lorg/xmlpull/v1/XmlPullParserException; {:try_start_13 .. :try_end_5e} :catch_70
+    .catch Ljava/io/IOException; {:try_start_13 .. :try_end_5e} :catch_70
+    .catchall {:try_start_13 .. :try_end_5e} :catchall_6e
 
     .line 800
     invoke-static {v2}, Llibcore/io/IoUtils;->closeQuietly(Ljava/lang/AutoCloseable;)V
@@ -167,17 +178,17 @@
     return-void
 
     .line 793
-    :cond_60
-    :try_start_60
-    invoke-virtual {p0, v1, v3, v4}, Lcom/android/server/devicepolicy/Owners$FileReadWriter;->readInner(Lorg/xmlpull/v1/XmlPullParser;ILjava/lang/String;)Z
+    :cond_62
+    :try_start_62
+    invoke-virtual {p0, v3, v4, v5}, Lcom/android/server/devicepolicy/Owners$FileReadWriter;->readInner(Lorg/xmlpull/v1/XmlPullParser;ILjava/lang/String;)Z
 
-    move-result v4
-    :try_end_64
-    .catch Lorg/xmlpull/v1/XmlPullParserException; {:try_start_60 .. :try_end_64} :catch_6d
-    .catch Ljava/io/IOException; {:try_start_60 .. :try_end_64} :catch_6d
-    .catchall {:try_start_60 .. :try_end_64} :catchall_6b
+    move-result v7
+    :try_end_66
+    .catch Lorg/xmlpull/v1/XmlPullParserException; {:try_start_62 .. :try_end_66} :catch_70
+    .catch Ljava/io/IOException; {:try_start_62 .. :try_end_66} :catch_70
+    .catchall {:try_start_62 .. :try_end_66} :catchall_6e
 
-    if-nez v4, :cond_6a
+    if-nez v7, :cond_6c
 
     .line 800
     invoke-static {v2}, Llibcore/io/IoUtils;->closeQuietly(Ljava/lang/AutoCloseable;)V
@@ -186,29 +197,40 @@
     return-void
 
     .line 796
-    :cond_6a
-    goto :goto_25
+    .end local v5  # "tag":Ljava/lang/String;
+    :cond_6c
+    goto :goto_26
 
     .line 800
-    :catchall_6b
+    .end local v3  # "parser":Lorg/xmlpull/v1/XmlPullParser;
+    .end local v4  # "depth":I
+    .end local v6  # "type":I
+    :cond_6d
+    goto :goto_77
+
+    :catchall_6e
     move-exception v0
 
-    goto :goto_78
+    goto :goto_7c
 
     .line 797
-    :catch_6d
-    move-exception v1
+    :catch_70
+    move-exception v3
 
     .line 798
-    :try_start_6e
-    const-string v3, "Error parsing owners information file"
+    .local v3, "e":Ljava/lang/Exception;
+    :try_start_71
+    const-string v4, "Error parsing owners information file"
 
-    invoke-static {v0, v3, v1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
-    :try_end_73
-    .catchall {:try_start_6e .. :try_end_73} :catchall_6b
+    invoke-static {v0, v4, v3}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    :try_end_76
+    .catchall {:try_start_71 .. :try_end_76} :catchall_6e
 
     .line 800
-    :cond_73
+    nop
+
+    .end local v3  # "e":Ljava/lang/Exception;
+    :goto_77
     invoke-static {v2}, Llibcore/io/IoUtils;->closeQuietly(Ljava/lang/AutoCloseable;)V
 
     .line 801
@@ -218,7 +240,7 @@
     return-void
 
     .line 800
-    :goto_78
+    :goto_7c
     invoke-static {v2}, Llibcore/io/IoUtils;->closeQuietly(Ljava/lang/AutoCloseable;)V
 
     throw v0
@@ -306,93 +328,98 @@
     invoke-direct {v1, v3}, Landroid/util/AtomicFile;-><init>(Ljava/io/File;)V
 
     .line 723
-    nop
-
-    .line 725
+    .local v1, "f":Landroid/util/AtomicFile;
     const/4 v3, 0x0
 
-    :try_start_3f
+    .line 725
+    .local v3, "outputStream":Ljava/io/FileOutputStream;
+    :try_start_3e
     invoke-virtual {v1}, Landroid/util/AtomicFile;->startWrite()Ljava/io/FileOutputStream;
 
     move-result-object v4
-    :try_end_43
-    .catch Ljava/io/IOException; {:try_start_3f .. :try_end_43} :catch_6f
+
+    move-object v3, v4
 
     .line 726
-    :try_start_43
-    new-instance v5, Lcom/android/internal/util/FastXmlSerializer;
+    new-instance v4, Lcom/android/internal/util/FastXmlSerializer;
 
-    invoke-direct {v5}, Lcom/android/internal/util/FastXmlSerializer;-><init>()V
+    invoke-direct {v4}, Lcom/android/internal/util/FastXmlSerializer;-><init>()V
 
     .line 727
-    sget-object v6, Ljava/nio/charset/StandardCharsets;->UTF_8:Ljava/nio/charset/Charset;
+    .local v4, "out":Lorg/xmlpull/v1/XmlSerializer;
+    sget-object v5, Ljava/nio/charset/StandardCharsets;->UTF_8:Ljava/nio/charset/Charset;
 
-    invoke-virtual {v6}, Ljava/nio/charset/Charset;->name()Ljava/lang/String;
+    invoke-virtual {v5}, Ljava/nio/charset/Charset;->name()Ljava/lang/String;
 
-    move-result-object v6
+    move-result-object v5
 
-    invoke-interface {v5, v4, v6}, Lorg/xmlpull/v1/XmlSerializer;->setOutput(Ljava/io/OutputStream;Ljava/lang/String;)V
+    invoke-interface {v4, v3, v5}, Lorg/xmlpull/v1/XmlSerializer;->setOutput(Ljava/io/OutputStream;Ljava/lang/String;)V
 
     .line 730
-    const/4 v6, 0x1
+    const/4 v5, 0x1
 
-    invoke-static {v6}, Ljava/lang/Boolean;->valueOf(Z)Ljava/lang/Boolean;
+    invoke-static {v5}, Ljava/lang/Boolean;->valueOf(Z)Ljava/lang/Boolean;
 
-    move-result-object v6
+    move-result-object v5
 
-    invoke-interface {v5, v3, v6}, Lorg/xmlpull/v1/XmlSerializer;->startDocument(Ljava/lang/String;Ljava/lang/Boolean;)V
+    const/4 v6, 0x0
+
+    invoke-interface {v4, v6, v5}, Lorg/xmlpull/v1/XmlSerializer;->startDocument(Ljava/lang/String;Ljava/lang/Boolean;)V
 
     .line 731
-    invoke-interface {v5, v3, v0}, Lorg/xmlpull/v1/XmlSerializer;->startTag(Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
+    invoke-interface {v4, v6, v0}, Lorg/xmlpull/v1/XmlSerializer;->startTag(Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
 
     .line 734
-    invoke-virtual {p0, v5}, Lcom/android/server/devicepolicy/Owners$FileReadWriter;->writeInner(Lorg/xmlpull/v1/XmlSerializer;)V
+    invoke-virtual {p0, v4}, Lcom/android/server/devicepolicy/Owners$FileReadWriter;->writeInner(Lorg/xmlpull/v1/XmlSerializer;)V
 
     .line 737
-    invoke-interface {v5, v3, v0}, Lorg/xmlpull/v1/XmlSerializer;->endTag(Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
+    invoke-interface {v4, v6, v0}, Lorg/xmlpull/v1/XmlSerializer;->endTag(Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
 
     .line 738
-    invoke-interface {v5}, Lorg/xmlpull/v1/XmlSerializer;->endDocument()V
+    invoke-interface {v4}, Lorg/xmlpull/v1/XmlSerializer;->endDocument()V
 
     .line 739
-    invoke-interface {v5}, Lorg/xmlpull/v1/XmlSerializer;->flush()V
+    invoke-interface {v4}, Lorg/xmlpull/v1/XmlSerializer;->flush()V
 
     .line 742
-    invoke-virtual {v1, v4}, Landroid/util/AtomicFile;->finishWrite(Ljava/io/FileOutputStream;)V
-    :try_end_6b
-    .catch Ljava/io/IOException; {:try_start_43 .. :try_end_6b} :catch_6d
+    invoke-virtual {v1, v3}, Landroid/util/AtomicFile;->finishWrite(Ljava/io/FileOutputStream;)V
+    :try_end_6c
+    .catch Ljava/io/IOException; {:try_start_3e .. :try_end_6c} :catch_6e
 
     .line 743
-    nop
+    const/4 v0, 0x0
 
     .line 750
-    goto :goto_7b
+    .end local v3  # "outputStream":Ljava/io/FileOutputStream;
+    .end local v4  # "out":Lorg/xmlpull/v1/XmlSerializer;
+    .local v0, "outputStream":Ljava/io/FileOutputStream;
+    goto :goto_7a
 
     .line 745
-    :catch_6d
+    .end local v0  # "outputStream":Ljava/io/FileOutputStream;
+    .restart local v3  # "outputStream":Ljava/io/FileOutputStream;
+    :catch_6e
     move-exception v0
-
-    goto :goto_71
-
-    :catch_6f
-    move-exception v0
-
-    move-object v4, v3
 
     .line 746
-    :goto_71
-    const-string v3, "Exception when writing"
+    .local v0, "e":Ljava/io/IOException;
+    const-string v4, "Exception when writing"
 
-    invoke-static {v2, v3, v0}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    invoke-static {v2, v4, v0}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
     .line 747
-    if-eqz v4, :cond_7b
+    if-eqz v3, :cond_79
 
     .line 748
-    invoke-virtual {v1, v4}, Landroid/util/AtomicFile;->failWrite(Ljava/io/FileOutputStream;)V
+    invoke-virtual {v1, v3}, Landroid/util/AtomicFile;->failWrite(Ljava/io/FileOutputStream;)V
 
     .line 751
-    :cond_7b
-    :goto_7b
+    .end local v0  # "e":Ljava/io/IOException;
+    :cond_79
+    move-object v0, v3
+
+    .end local v3  # "outputStream":Ljava/io/FileOutputStream;
+    .local v0, "outputStream":Ljava/io/FileOutputStream;
+    :goto_7a
     return-void
 .end method

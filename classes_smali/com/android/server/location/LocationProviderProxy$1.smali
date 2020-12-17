@@ -21,6 +21,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/location/LocationProviderProxy;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/location/LocationProviderProxy;
 
     .line 62
     iput-object p1, p0, Lcom/android/server/location/LocationProviderProxy$1;->this$0:Lcom/android/server/location/LocationProviderProxy;
@@ -34,6 +35,7 @@
 # virtual methods
 .method public onReportLocation(Landroid/location/Location;)V
     .registers 3
+    .param p1, "location"  # Landroid/location/Location;
 
     .line 84
     iget-object v0, p0, Lcom/android/server/location/LocationProviderProxy$1;->this$0:Lcom/android/server/location/LocationProviderProxy;
@@ -56,6 +58,7 @@
     .end annotation
 
     .line 66
+    .local p1, "packageNames":Ljava/util/List;, "Ljava/util/List<Ljava/lang/String;>;"
     iget-object v0, p0, Lcom/android/server/location/LocationProviderProxy$1;->this$0:Lcom/android/server/location/LocationProviderProxy;
 
     invoke-static {v0, p1}, Lcom/android/server/location/LocationProviderProxy;->access$000(Lcom/android/server/location/LocationProviderProxy;Ljava/util/List;)V
@@ -66,6 +69,7 @@
 
 .method public onSetEnabled(Z)V
     .registers 3
+    .param p1, "enabled"  # Z
 
     .line 72
     iget-object v0, p0, Lcom/android/server/location/LocationProviderProxy$1;->this$0:Lcom/android/server/location/LocationProviderProxy;
@@ -78,6 +82,7 @@
 
 .method public onSetProperties(Lcom/android/internal/location/ProviderProperties;)V
     .registers 3
+    .param p1, "properties"  # Lcom/android/internal/location/ProviderProperties;
 
     .line 78
     iget-object v0, p0, Lcom/android/server/location/LocationProviderProxy$1;->this$0:Lcom/android/server/location/LocationProviderProxy;

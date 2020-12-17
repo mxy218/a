@@ -21,8 +21,10 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/notification/ValidateNotificationPeople;Landroid/os/Handler;)V
     .registers 3
+    .param p1, "this$0"  # Lcom/android/server/notification/ValidateNotificationPeople;
+    .param p2, "x0"  # Landroid/os/Handler;
 
-    .line 105
+    .line 113
     iput-object p1, p0, Lcom/android/server/notification/ValidateNotificationPeople$1;->this$0:Lcom/android/server/notification/ValidateNotificationPeople;
 
     invoke-direct {p0, p2}, Landroid/database/ContentObserver;-><init>(Landroid/os/Handler;)V
@@ -33,75 +35,78 @@
 
 # virtual methods
 .method public onChange(ZLandroid/net/Uri;I)V
-    .registers 4
+    .registers 6
+    .param p1, "selfChange"  # Z
+    .param p2, "uri"  # Landroid/net/Uri;
+    .param p3, "userId"  # I
 
-    .line 108
+    .line 116
     invoke-super {p0, p1, p2, p3}, Landroid/database/ContentObserver;->onChange(ZLandroid/net/Uri;I)V
 
-    .line 109
+    .line 117
     invoke-static {}, Lcom/android/server/notification/ValidateNotificationPeople;->access$000()Z
 
-    move-result p1
+    move-result v0
 
-    if-nez p1, :cond_13
+    if-nez v0, :cond_13
 
-    iget-object p1, p0, Lcom/android/server/notification/ValidateNotificationPeople$1;->this$0:Lcom/android/server/notification/ValidateNotificationPeople;
+    iget-object v0, p0, Lcom/android/server/notification/ValidateNotificationPeople$1;->this$0:Lcom/android/server/notification/ValidateNotificationPeople;
 
-    invoke-static {p1}, Lcom/android/server/notification/ValidateNotificationPeople;->access$100(Lcom/android/server/notification/ValidateNotificationPeople;)I
+    invoke-static {v0}, Lcom/android/server/notification/ValidateNotificationPeople;->access$100(Lcom/android/server/notification/ValidateNotificationPeople;)I
 
-    move-result p1
+    move-result v0
 
-    rem-int/lit8 p1, p1, 0x64
+    rem-int/lit8 v0, v0, 0x64
 
-    if-nez p1, :cond_35
+    if-nez v0, :cond_36
 
-    .line 110
+    .line 118
     :cond_13
     invoke-static {}, Lcom/android/server/notification/ValidateNotificationPeople;->access$200()Z
 
-    move-result p1
+    move-result v0
 
-    if-eqz p1, :cond_35
+    if-eqz v0, :cond_36
 
-    new-instance p1, Ljava/lang/StringBuilder;
+    new-instance v0, Ljava/lang/StringBuilder;
 
-    invoke-direct {p1}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string p2, "mEvictionCount: "
+    const-string/jumbo v1, "mEvictionCount: "
 
-    invoke-virtual {p1, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    iget-object p2, p0, Lcom/android/server/notification/ValidateNotificationPeople$1;->this$0:Lcom/android/server/notification/ValidateNotificationPeople;
+    iget-object v1, p0, Lcom/android/server/notification/ValidateNotificationPeople$1;->this$0:Lcom/android/server/notification/ValidateNotificationPeople;
 
-    invoke-static {p2}, Lcom/android/server/notification/ValidateNotificationPeople;->access$100(Lcom/android/server/notification/ValidateNotificationPeople;)I
+    invoke-static {v1}, Lcom/android/server/notification/ValidateNotificationPeople;->access$100(Lcom/android/server/notification/ValidateNotificationPeople;)I
 
-    move-result p2
+    move-result v1
 
-    invoke-virtual {p1, p2}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    const-string p2, "ValidateNoPeople"
+    const-string v1, "ValidateNoPeople"
 
-    invoke-static {p2, p1}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v0}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 112
-    :cond_35
-    iget-object p1, p0, Lcom/android/server/notification/ValidateNotificationPeople$1;->this$0:Lcom/android/server/notification/ValidateNotificationPeople;
+    .line 120
+    :cond_36
+    iget-object v0, p0, Lcom/android/server/notification/ValidateNotificationPeople$1;->this$0:Lcom/android/server/notification/ValidateNotificationPeople;
 
-    invoke-static {p1}, Lcom/android/server/notification/ValidateNotificationPeople;->access$300(Lcom/android/server/notification/ValidateNotificationPeople;)Landroid/util/LruCache;
+    invoke-static {v0}, Lcom/android/server/notification/ValidateNotificationPeople;->access$300(Lcom/android/server/notification/ValidateNotificationPeople;)Landroid/util/LruCache;
 
-    move-result-object p1
+    move-result-object v0
 
-    invoke-virtual {p1}, Landroid/util/LruCache;->evictAll()V
+    invoke-virtual {v0}, Landroid/util/LruCache;->evictAll()V
 
-    .line 113
-    iget-object p1, p0, Lcom/android/server/notification/ValidateNotificationPeople$1;->this$0:Lcom/android/server/notification/ValidateNotificationPeople;
+    .line 121
+    iget-object v0, p0, Lcom/android/server/notification/ValidateNotificationPeople$1;->this$0:Lcom/android/server/notification/ValidateNotificationPeople;
 
-    invoke-static {p1}, Lcom/android/server/notification/ValidateNotificationPeople;->access$108(Lcom/android/server/notification/ValidateNotificationPeople;)I
+    invoke-static {v0}, Lcom/android/server/notification/ValidateNotificationPeople;->access$108(Lcom/android/server/notification/ValidateNotificationPeople;)I
 
-    .line 114
+    .line 122
     return-void
 .end method

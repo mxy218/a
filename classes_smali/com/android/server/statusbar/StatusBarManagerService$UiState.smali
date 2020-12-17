@@ -48,60 +48,60 @@
 .method private constructor <init>(Lcom/android/server/statusbar/StatusBarManagerService;)V
     .registers 3
 
-    .line 968
+    .line 941
     iput-object p1, p0, Lcom/android/server/statusbar/StatusBarManagerService$UiState;->this$0:Lcom/android/server/statusbar/StatusBarManagerService;
 
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
-    .line 969
+    .line 942
     const/4 p1, 0x0
 
     iput p1, p0, Lcom/android/server/statusbar/StatusBarManagerService$UiState;->mSystemUiVisibility:I
 
-    .line 970
+    .line 943
     iput p1, p0, Lcom/android/server/statusbar/StatusBarManagerService$UiState;->mFullscreenStackSysUiVisibility:I
 
-    .line 971
+    .line 944
     iput p1, p0, Lcom/android/server/statusbar/StatusBarManagerService$UiState;->mDockedStackSysUiVisibility:I
 
-    .line 972
+    .line 945
     new-instance v0, Landroid/graphics/Rect;
 
     invoke-direct {v0}, Landroid/graphics/Rect;-><init>()V
 
     iput-object v0, p0, Lcom/android/server/statusbar/StatusBarManagerService$UiState;->mFullscreenStackBounds:Landroid/graphics/Rect;
 
-    .line 973
+    .line 946
     new-instance v0, Landroid/graphics/Rect;
 
     invoke-direct {v0}, Landroid/graphics/Rect;-><init>()V
 
     iput-object v0, p0, Lcom/android/server/statusbar/StatusBarManagerService$UiState;->mDockedStackBounds:Landroid/graphics/Rect;
 
-    .line 974
+    .line 947
     iput-boolean p1, p0, Lcom/android/server/statusbar/StatusBarManagerService$UiState;->mMenuVisible:Z
 
-    .line 975
+    .line 948
     iput p1, p0, Lcom/android/server/statusbar/StatusBarManagerService$UiState;->mDisabled1:I
 
-    .line 976
+    .line 949
     iput p1, p0, Lcom/android/server/statusbar/StatusBarManagerService$UiState;->mDisabled2:I
 
-    .line 977
+    .line 950
     iput p1, p0, Lcom/android/server/statusbar/StatusBarManagerService$UiState;->mImeWindowVis:I
 
-    .line 978
+    .line 951
     iput p1, p0, Lcom/android/server/statusbar/StatusBarManagerService$UiState;->mImeBackDisposition:I
 
-    .line 979
+    .line 952
     iput-boolean p1, p0, Lcom/android/server/statusbar/StatusBarManagerService$UiState;->mShowImeSwitcher:Z
 
-    .line 980
+    .line 953
     const/4 v0, 0x0
 
     iput-object v0, p0, Lcom/android/server/statusbar/StatusBarManagerService$UiState;->mImeToken:Landroid/os/IBinder;
 
-    .line 981
+    .line 954
     iput-boolean p1, p0, Lcom/android/server/statusbar/StatusBarManagerService$UiState;->mNavbarColorManagedByIme:Z
 
     return-void
@@ -109,219 +109,263 @@
 
 .method synthetic constructor <init>(Lcom/android/server/statusbar/StatusBarManagerService;Lcom/android/server/statusbar/StatusBarManagerService$1;)V
     .registers 3
+    .param p1, "x0"  # Lcom/android/server/statusbar/StatusBarManagerService;
+    .param p2, "x1"  # Lcom/android/server/statusbar/StatusBarManagerService$1;
 
-    .line 968
+    .line 941
     invoke-direct {p0, p1}, Lcom/android/server/statusbar/StatusBarManagerService$UiState;-><init>(Lcom/android/server/statusbar/StatusBarManagerService;)V
 
     return-void
 .end method
 
-.method static synthetic access$1200(Lcom/android/server/statusbar/StatusBarManagerService$UiState;)I
-    .registers 1
+.method static synthetic access$1300(Lcom/android/server/statusbar/StatusBarManagerService$UiState;)I
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/statusbar/StatusBarManagerService$UiState;
 
-    .line 968
+    .line 941
     invoke-direct {p0}, Lcom/android/server/statusbar/StatusBarManagerService$UiState;->getDisabled2()I
 
-    move-result p0
+    move-result v0
 
-    return p0
+    return v0
 .end method
 
-.method static synthetic access$1400(Lcom/android/server/statusbar/StatusBarManagerService$UiState;II)Z
-    .registers 3
+.method static synthetic access$1500(Lcom/android/server/statusbar/StatusBarManagerService$UiState;II)Z
+    .registers 4
+    .param p0, "x0"  # Lcom/android/server/statusbar/StatusBarManagerService$UiState;
+    .param p1, "x1"  # I
+    .param p2, "x2"  # I
 
-    .line 968
+    .line 941
     invoke-direct {p0, p1, p2}, Lcom/android/server/statusbar/StatusBarManagerService$UiState;->disableEquals(II)Z
 
-    move-result p0
+    move-result v0
 
-    return p0
+    return v0
 .end method
 
-.method static synthetic access$1500(Lcom/android/server/statusbar/StatusBarManagerService$UiState;II)V
+.method static synthetic access$1600(Lcom/android/server/statusbar/StatusBarManagerService$UiState;II)V
     .registers 3
+    .param p0, "x0"  # Lcom/android/server/statusbar/StatusBarManagerService$UiState;
+    .param p1, "x1"  # I
+    .param p2, "x2"  # I
 
-    .line 968
+    .line 941
     invoke-direct {p0, p1, p2}, Lcom/android/server/statusbar/StatusBarManagerService$UiState;->setDisabled(II)V
 
     return-void
 .end method
 
-.method static synthetic access$1600(Lcom/android/server/statusbar/StatusBarManagerService$UiState;Z)V
+.method static synthetic access$1700(Lcom/android/server/statusbar/StatusBarManagerService$UiState;Z)V
     .registers 2
+    .param p0, "x0"  # Lcom/android/server/statusbar/StatusBarManagerService$UiState;
+    .param p1, "x1"  # Z
 
-    .line 968
+    .line 941
     invoke-direct {p0, p1}, Lcom/android/server/statusbar/StatusBarManagerService$UiState;->setMenuVisible(Z)V
 
     return-void
 .end method
 
-.method static synthetic access$1700(Lcom/android/server/statusbar/StatusBarManagerService$UiState;IIZLandroid/os/IBinder;)V
+.method static synthetic access$1800(Lcom/android/server/statusbar/StatusBarManagerService$UiState;IIZLandroid/os/IBinder;)V
     .registers 5
+    .param p0, "x0"  # Lcom/android/server/statusbar/StatusBarManagerService$UiState;
+    .param p1, "x1"  # I
+    .param p2, "x2"  # I
+    .param p3, "x3"  # Z
+    .param p4, "x4"  # Landroid/os/IBinder;
 
-    .line 968
+    .line 941
     invoke-direct {p0, p1, p2, p3, p4}, Lcom/android/server/statusbar/StatusBarManagerService$UiState;->setImeWindowState(IIZLandroid/os/IBinder;)V
 
     return-void
 .end method
 
-.method static synthetic access$1800(Lcom/android/server/statusbar/StatusBarManagerService$UiState;)Landroid/graphics/Rect;
-    .registers 1
-
-    .line 968
-    iget-object p0, p0, Lcom/android/server/statusbar/StatusBarManagerService$UiState;->mFullscreenStackBounds:Landroid/graphics/Rect;
-
-    return-object p0
-.end method
-
 .method static synthetic access$1900(Lcom/android/server/statusbar/StatusBarManagerService$UiState;)Landroid/graphics/Rect;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/statusbar/StatusBarManagerService$UiState;
 
-    .line 968
-    iget-object p0, p0, Lcom/android/server/statusbar/StatusBarManagerService$UiState;->mDockedStackBounds:Landroid/graphics/Rect;
+    .line 941
+    iget-object v0, p0, Lcom/android/server/statusbar/StatusBarManagerService$UiState;->mFullscreenStackBounds:Landroid/graphics/Rect;
 
-    return-object p0
+    return-object v0
 .end method
 
-.method static synthetic access$2000(Lcom/android/server/statusbar/StatusBarManagerService$UiState;)Z
-    .registers 1
+.method static synthetic access$2000(Lcom/android/server/statusbar/StatusBarManagerService$UiState;)Landroid/graphics/Rect;
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/statusbar/StatusBarManagerService$UiState;
 
-    .line 968
-    iget-boolean p0, p0, Lcom/android/server/statusbar/StatusBarManagerService$UiState;->mNavbarColorManagedByIme:Z
+    .line 941
+    iget-object v0, p0, Lcom/android/server/statusbar/StatusBarManagerService$UiState;->mDockedStackBounds:Landroid/graphics/Rect;
 
-    return p0
+    return-object v0
 .end method
 
-.method static synthetic access$2100(Lcom/android/server/statusbar/StatusBarManagerService$UiState;IIILandroid/graphics/Rect;Landroid/graphics/Rect;Z)Z
-    .registers 7
+.method static synthetic access$2100(Lcom/android/server/statusbar/StatusBarManagerService$UiState;)Z
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/statusbar/StatusBarManagerService$UiState;
 
-    .line 968
+    .line 941
+    iget-boolean v0, p0, Lcom/android/server/statusbar/StatusBarManagerService$UiState;->mNavbarColorManagedByIme:Z
+
+    return v0
+.end method
+
+.method static synthetic access$2200(Lcom/android/server/statusbar/StatusBarManagerService$UiState;IIILandroid/graphics/Rect;Landroid/graphics/Rect;Z)Z
+    .registers 8
+    .param p0, "x0"  # Lcom/android/server/statusbar/StatusBarManagerService$UiState;
+    .param p1, "x1"  # I
+    .param p2, "x2"  # I
+    .param p3, "x3"  # I
+    .param p4, "x4"  # Landroid/graphics/Rect;
+    .param p5, "x5"  # Landroid/graphics/Rect;
+    .param p6, "x6"  # Z
+
+    .line 941
     invoke-direct/range {p0 .. p6}, Lcom/android/server/statusbar/StatusBarManagerService$UiState;->systemUiStateEquals(IIILandroid/graphics/Rect;Landroid/graphics/Rect;Z)Z
 
-    move-result p0
+    move-result v0
 
-    return p0
+    return v0
 .end method
 
-.method static synthetic access$2200(Lcom/android/server/statusbar/StatusBarManagerService$UiState;IIILandroid/graphics/Rect;Landroid/graphics/Rect;Z)V
+.method static synthetic access$2300(Lcom/android/server/statusbar/StatusBarManagerService$UiState;IIILandroid/graphics/Rect;Landroid/graphics/Rect;Z)V
     .registers 7
+    .param p0, "x0"  # Lcom/android/server/statusbar/StatusBarManagerService$UiState;
+    .param p1, "x1"  # I
+    .param p2, "x2"  # I
+    .param p3, "x3"  # I
+    .param p4, "x4"  # Landroid/graphics/Rect;
+    .param p5, "x5"  # Landroid/graphics/Rect;
+    .param p6, "x6"  # Z
 
-    .line 968
+    .line 941
     invoke-direct/range {p0 .. p6}, Lcom/android/server/statusbar/StatusBarManagerService$UiState;->setSystemUiState(IIILandroid/graphics/Rect;Landroid/graphics/Rect;Z)V
 
     return-void
 .end method
 
-.method static synthetic access$2300(Lcom/android/server/statusbar/StatusBarManagerService$UiState;)I
-    .registers 1
+.method static synthetic access$2400(Lcom/android/server/statusbar/StatusBarManagerService$UiState;)I
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/statusbar/StatusBarManagerService$UiState;
 
-    .line 968
-    iget p0, p0, Lcom/android/server/statusbar/StatusBarManagerService$UiState;->mSystemUiVisibility:I
+    .line 941
+    iget v0, p0, Lcom/android/server/statusbar/StatusBarManagerService$UiState;->mSystemUiVisibility:I
 
-    return p0
+    return v0
 .end method
 
-.method static synthetic access$2400(Lcom/android/server/statusbar/StatusBarManagerService$UiState;)Z
-    .registers 1
+.method static synthetic access$2500(Lcom/android/server/statusbar/StatusBarManagerService$UiState;)Z
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/statusbar/StatusBarManagerService$UiState;
 
-    .line 968
-    iget-boolean p0, p0, Lcom/android/server/statusbar/StatusBarManagerService$UiState;->mMenuVisible:Z
+    .line 941
+    iget-boolean v0, p0, Lcom/android/server/statusbar/StatusBarManagerService$UiState;->mMenuVisible:Z
 
-    return p0
-.end method
-
-.method static synthetic access$2500(Lcom/android/server/statusbar/StatusBarManagerService$UiState;)I
-    .registers 1
-
-    .line 968
-    iget p0, p0, Lcom/android/server/statusbar/StatusBarManagerService$UiState;->mImeWindowVis:I
-
-    return p0
+    return v0
 .end method
 
 .method static synthetic access$2600(Lcom/android/server/statusbar/StatusBarManagerService$UiState;)I
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/statusbar/StatusBarManagerService$UiState;
 
-    .line 968
-    iget p0, p0, Lcom/android/server/statusbar/StatusBarManagerService$UiState;->mImeBackDisposition:I
+    .line 941
+    iget v0, p0, Lcom/android/server/statusbar/StatusBarManagerService$UiState;->mImeWindowVis:I
 
-    return p0
+    return v0
 .end method
 
-.method static synthetic access$2700(Lcom/android/server/statusbar/StatusBarManagerService$UiState;)Z
-    .registers 1
+.method static synthetic access$2700(Lcom/android/server/statusbar/StatusBarManagerService$UiState;)I
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/statusbar/StatusBarManagerService$UiState;
 
-    .line 968
-    iget-boolean p0, p0, Lcom/android/server/statusbar/StatusBarManagerService$UiState;->mShowImeSwitcher:Z
+    .line 941
+    iget v0, p0, Lcom/android/server/statusbar/StatusBarManagerService$UiState;->mImeBackDisposition:I
 
-    return p0
+    return v0
 .end method
 
-.method static synthetic access$2800(Lcom/android/server/statusbar/StatusBarManagerService$UiState;)I
-    .registers 1
+.method static synthetic access$2800(Lcom/android/server/statusbar/StatusBarManagerService$UiState;)Z
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/statusbar/StatusBarManagerService$UiState;
 
-    .line 968
-    iget p0, p0, Lcom/android/server/statusbar/StatusBarManagerService$UiState;->mFullscreenStackSysUiVisibility:I
+    .line 941
+    iget-boolean v0, p0, Lcom/android/server/statusbar/StatusBarManagerService$UiState;->mShowImeSwitcher:Z
 
-    return p0
+    return v0
 .end method
 
 .method static synthetic access$2900(Lcom/android/server/statusbar/StatusBarManagerService$UiState;)I
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/statusbar/StatusBarManagerService$UiState;
 
-    .line 968
-    iget p0, p0, Lcom/android/server/statusbar/StatusBarManagerService$UiState;->mDockedStackSysUiVisibility:I
+    .line 941
+    iget v0, p0, Lcom/android/server/statusbar/StatusBarManagerService$UiState;->mFullscreenStackSysUiVisibility:I
 
-    return p0
+    return v0
 .end method
 
-.method static synthetic access$3000(Lcom/android/server/statusbar/StatusBarManagerService$UiState;)Landroid/os/IBinder;
-    .registers 1
+.method static synthetic access$3000(Lcom/android/server/statusbar/StatusBarManagerService$UiState;)I
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/statusbar/StatusBarManagerService$UiState;
 
-    .line 968
-    iget-object p0, p0, Lcom/android/server/statusbar/StatusBarManagerService$UiState;->mImeToken:Landroid/os/IBinder;
+    .line 941
+    iget v0, p0, Lcom/android/server/statusbar/StatusBarManagerService$UiState;->mDockedStackSysUiVisibility:I
 
-    return-object p0
+    return v0
 .end method
 
-.method static synthetic access$3100(Lcom/android/server/statusbar/StatusBarManagerService$UiState;)I
-    .registers 1
+.method static synthetic access$3100(Lcom/android/server/statusbar/StatusBarManagerService$UiState;)Landroid/os/IBinder;
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/statusbar/StatusBarManagerService$UiState;
 
-    .line 968
+    .line 941
+    iget-object v0, p0, Lcom/android/server/statusbar/StatusBarManagerService$UiState;->mImeToken:Landroid/os/IBinder;
+
+    return-object v0
+.end method
+
+.method static synthetic access$3200(Lcom/android/server/statusbar/StatusBarManagerService$UiState;)I
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/statusbar/StatusBarManagerService$UiState;
+
+    .line 941
     invoke-direct {p0}, Lcom/android/server/statusbar/StatusBarManagerService$UiState;->getDisabled1()I
 
-    move-result p0
+    move-result v0
 
-    return p0
+    return v0
 .end method
 
 .method private disableEquals(II)Z
     .registers 4
+    .param p1, "disabled1"  # I
+    .param p2, "disabled2"  # I
 
-    .line 1005
+    .line 978
     iget v0, p0, Lcom/android/server/statusbar/StatusBarManagerService$UiState;->mDisabled1:I
 
     if-ne v0, p1, :cond_a
 
-    iget p1, p0, Lcom/android/server/statusbar/StatusBarManagerService$UiState;->mDisabled2:I
+    iget v0, p0, Lcom/android/server/statusbar/StatusBarManagerService$UiState;->mDisabled2:I
 
-    if-ne p1, p2, :cond_a
+    if-ne v0, p2, :cond_a
 
-    const/4 p1, 0x1
+    const/4 v0, 0x1
 
     goto :goto_b
 
     :cond_a
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
     :goto_b
-    return p1
+    return v0
 .end method
 
 .method private getDisabled1()I
     .registers 2
 
-    .line 984
+    .line 957
     iget v0, p0, Lcom/android/server/statusbar/StatusBarManagerService$UiState;->mDisabled1:I
 
     return v0
@@ -330,7 +374,7 @@
 .method private getDisabled2()I
     .registers 2
 
-    .line 988
+    .line 961
     iget v0, p0, Lcom/android/server/statusbar/StatusBarManagerService$UiState;->mDisabled2:I
 
     return v0
@@ -339,7 +383,7 @@
 .method private isMenuVisible()Z
     .registers 2
 
-    .line 997
+    .line 970
     iget-boolean v0, p0, Lcom/android/server/statusbar/StatusBarManagerService$UiState;->mMenuVisible:Z
 
     return v0
@@ -347,121 +391,140 @@
 
 .method private setDisabled(II)V
     .registers 3
+    .param p1, "disabled1"  # I
+    .param p2, "disabled2"  # I
 
-    .line 992
+    .line 965
     iput p1, p0, Lcom/android/server/statusbar/StatusBarManagerService$UiState;->mDisabled1:I
 
-    .line 993
+    .line 966
     iput p2, p0, Lcom/android/server/statusbar/StatusBarManagerService$UiState;->mDisabled2:I
 
-    .line 994
+    .line 967
     return-void
 .end method
 
 .method private setImeWindowState(IIZLandroid/os/IBinder;)V
     .registers 5
+    .param p1, "vis"  # I
+    .param p2, "backDisposition"  # I
+    .param p3, "showImeSwitcher"  # Z
+    .param p4, "token"  # Landroid/os/IBinder;
 
-    .line 1032
+    .line 1005
     iput p1, p0, Lcom/android/server/statusbar/StatusBarManagerService$UiState;->mImeWindowVis:I
 
-    .line 1033
+    .line 1006
     iput p2, p0, Lcom/android/server/statusbar/StatusBarManagerService$UiState;->mImeBackDisposition:I
 
-    .line 1034
+    .line 1007
     iput-boolean p3, p0, Lcom/android/server/statusbar/StatusBarManagerService$UiState;->mShowImeSwitcher:Z
 
-    .line 1035
+    .line 1008
     iput-object p4, p0, Lcom/android/server/statusbar/StatusBarManagerService$UiState;->mImeToken:Landroid/os/IBinder;
 
-    .line 1036
+    .line 1009
     return-void
 .end method
 
 .method private setMenuVisible(Z)V
     .registers 2
+    .param p1, "menuVisible"  # Z
 
-    .line 1001
+    .line 974
     iput-boolean p1, p0, Lcom/android/server/statusbar/StatusBarManagerService$UiState;->mMenuVisible:Z
 
-    .line 1002
+    .line 975
     return-void
 .end method
 
 .method private setSystemUiState(IIILandroid/graphics/Rect;Landroid/graphics/Rect;Z)V
-    .registers 7
+    .registers 8
+    .param p1, "vis"  # I
+    .param p2, "fullscreenStackVis"  # I
+    .param p3, "dockedStackVis"  # I
+    .param p4, "fullscreenBounds"  # Landroid/graphics/Rect;
+    .param p5, "dockedBounds"  # Landroid/graphics/Rect;
+    .param p6, "navbarColorManagedByIme"  # Z
 
-    .line 1011
+    .line 984
     iput p1, p0, Lcom/android/server/statusbar/StatusBarManagerService$UiState;->mSystemUiVisibility:I
 
-    .line 1012
+    .line 985
     iput p2, p0, Lcom/android/server/statusbar/StatusBarManagerService$UiState;->mFullscreenStackSysUiVisibility:I
 
-    .line 1013
+    .line 986
     iput p3, p0, Lcom/android/server/statusbar/StatusBarManagerService$UiState;->mDockedStackSysUiVisibility:I
 
-    .line 1014
-    iget-object p1, p0, Lcom/android/server/statusbar/StatusBarManagerService$UiState;->mFullscreenStackBounds:Landroid/graphics/Rect;
+    .line 987
+    iget-object v0, p0, Lcom/android/server/statusbar/StatusBarManagerService$UiState;->mFullscreenStackBounds:Landroid/graphics/Rect;
 
-    invoke-virtual {p1, p4}, Landroid/graphics/Rect;->set(Landroid/graphics/Rect;)V
+    invoke-virtual {v0, p4}, Landroid/graphics/Rect;->set(Landroid/graphics/Rect;)V
 
-    .line 1015
-    iget-object p1, p0, Lcom/android/server/statusbar/StatusBarManagerService$UiState;->mDockedStackBounds:Landroid/graphics/Rect;
+    .line 988
+    iget-object v0, p0, Lcom/android/server/statusbar/StatusBarManagerService$UiState;->mDockedStackBounds:Landroid/graphics/Rect;
 
-    invoke-virtual {p1, p5}, Landroid/graphics/Rect;->set(Landroid/graphics/Rect;)V
+    invoke-virtual {v0, p5}, Landroid/graphics/Rect;->set(Landroid/graphics/Rect;)V
 
-    .line 1016
+    .line 989
     iput-boolean p6, p0, Lcom/android/server/statusbar/StatusBarManagerService$UiState;->mNavbarColorManagedByIme:Z
 
-    .line 1017
+    .line 990
     return-void
 .end method
 
 .method private systemUiStateEquals(IIILandroid/graphics/Rect;Landroid/graphics/Rect;Z)Z
     .registers 8
+    .param p1, "vis"  # I
+    .param p2, "fullscreenStackVis"  # I
+    .param p3, "dockedStackVis"  # I
+    .param p4, "fullscreenBounds"  # Landroid/graphics/Rect;
+    .param p5, "dockedBounds"  # Landroid/graphics/Rect;
+    .param p6, "navbarColorManagedByIme"  # Z
 
-    .line 1022
+    .line 995
     iget v0, p0, Lcom/android/server/statusbar/StatusBarManagerService$UiState;->mSystemUiVisibility:I
 
     if-ne v0, p1, :cond_22
 
-    iget p1, p0, Lcom/android/server/statusbar/StatusBarManagerService$UiState;->mFullscreenStackSysUiVisibility:I
+    iget v0, p0, Lcom/android/server/statusbar/StatusBarManagerService$UiState;->mFullscreenStackSysUiVisibility:I
 
-    if-ne p1, p2, :cond_22
+    if-ne v0, p2, :cond_22
 
-    iget p1, p0, Lcom/android/server/statusbar/StatusBarManagerService$UiState;->mDockedStackSysUiVisibility:I
+    iget v0, p0, Lcom/android/server/statusbar/StatusBarManagerService$UiState;->mDockedStackSysUiVisibility:I
 
-    if-ne p1, p3, :cond_22
+    if-ne v0, p3, :cond_22
 
-    iget-object p1, p0, Lcom/android/server/statusbar/StatusBarManagerService$UiState;->mFullscreenStackBounds:Landroid/graphics/Rect;
+    iget-object v0, p0, Lcom/android/server/statusbar/StatusBarManagerService$UiState;->mFullscreenStackBounds:Landroid/graphics/Rect;
 
-    .line 1025
-    invoke-virtual {p1, p4}, Landroid/graphics/Rect;->equals(Ljava/lang/Object;)Z
+    .line 998
+    invoke-virtual {v0, p4}, Landroid/graphics/Rect;->equals(Ljava/lang/Object;)Z
 
-    move-result p1
+    move-result v0
 
-    if-eqz p1, :cond_22
+    if-eqz v0, :cond_22
 
-    iget-object p1, p0, Lcom/android/server/statusbar/StatusBarManagerService$UiState;->mDockedStackBounds:Landroid/graphics/Rect;
+    iget-object v0, p0, Lcom/android/server/statusbar/StatusBarManagerService$UiState;->mDockedStackBounds:Landroid/graphics/Rect;
 
-    .line 1026
-    invoke-virtual {p1, p5}, Landroid/graphics/Rect;->equals(Ljava/lang/Object;)Z
+    .line 999
+    invoke-virtual {v0, p5}, Landroid/graphics/Rect;->equals(Ljava/lang/Object;)Z
 
-    move-result p1
+    move-result v0
 
-    if-eqz p1, :cond_22
+    if-eqz v0, :cond_22
 
-    iget-boolean p1, p0, Lcom/android/server/statusbar/StatusBarManagerService$UiState;->mNavbarColorManagedByIme:Z
+    iget-boolean v0, p0, Lcom/android/server/statusbar/StatusBarManagerService$UiState;->mNavbarColorManagedByIme:Z
 
-    if-ne p1, p6, :cond_22
+    if-ne v0, p6, :cond_22
 
-    const/4 p1, 0x1
+    const/4 v0, 0x1
 
     goto :goto_23
 
     :cond_22
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    .line 1022
+    .line 995
     :goto_23
-    return p1
+    return v0
 .end method

@@ -24,6 +24,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/hdmi/RequestArcTerminationAction;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/hdmi/RequestArcTerminationAction;
 
     .line 45
     iput-object p1, p0, Lcom/android/server/hdmi/RequestArcTerminationAction$1;->this$0:Lcom/android/server/hdmi/RequestArcTerminationAction;
@@ -36,20 +37,21 @@
 
 # virtual methods
 .method public onSendCompleted(I)V
-    .registers 2
+    .registers 3
+    .param p1, "error"  # I
 
     .line 48
     if-eqz p1, :cond_c
 
     .line 51
-    iget-object p1, p0, Lcom/android/server/hdmi/RequestArcTerminationAction$1;->this$0:Lcom/android/server/hdmi/RequestArcTerminationAction;
+    iget-object v0, p0, Lcom/android/server/hdmi/RequestArcTerminationAction$1;->this$0:Lcom/android/server/hdmi/RequestArcTerminationAction;
 
-    invoke-virtual {p1}, Lcom/android/server/hdmi/RequestArcTerminationAction;->disableArcTransmission()V
+    invoke-virtual {v0}, Lcom/android/server/hdmi/RequestArcTerminationAction;->disableArcTransmission()V
 
     .line 52
-    iget-object p1, p0, Lcom/android/server/hdmi/RequestArcTerminationAction$1;->this$0:Lcom/android/server/hdmi/RequestArcTerminationAction;
+    iget-object v0, p0, Lcom/android/server/hdmi/RequestArcTerminationAction$1;->this$0:Lcom/android/server/hdmi/RequestArcTerminationAction;
 
-    invoke-virtual {p1}, Lcom/android/server/hdmi/RequestArcTerminationAction;->finish()V
+    invoke-virtual {v0}, Lcom/android/server/hdmi/RequestArcTerminationAction;->finish()V
 
     .line 54
     :cond_c

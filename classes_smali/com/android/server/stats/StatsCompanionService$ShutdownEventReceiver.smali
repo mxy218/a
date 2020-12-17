@@ -18,7 +18,7 @@
 .method public constructor <init>()V
     .registers 1
 
-    .line 657
+    .line 655
     invoke-direct {p0}, Landroid/content/BroadcastReceiver;-><init>()V
 
     return-void
@@ -27,127 +27,131 @@
 
 # virtual methods
 .method public onReceive(Landroid/content/Context;Landroid/content/Intent;)V
-    .registers 5
+    .registers 7
+    .param p1, "context"  # Landroid/content/Context;
+    .param p2, "intent"  # Landroid/content/Intent;
+
+    .line 661
+    invoke-virtual {p2}, Landroid/content/Intent;->getAction()Ljava/lang/String;
+
+    move-result-object v0
+
+    const-string v1, "android.intent.action.REBOOT"
+
+    invoke-virtual {v0, v1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+
+    move-result v0
+
+    if-nez v0, :cond_22
+
+    .line 662
+    invoke-virtual {p2}, Landroid/content/Intent;->getAction()Ljava/lang/String;
+
+    move-result-object v0
+
+    const-string v1, "android.intent.action.ACTION_SHUTDOWN"
+
+    invoke-virtual {v0, v1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+
+    move-result v0
+
+    if-eqz v0, :cond_21
 
     .line 663
-    invoke-virtual {p2}, Landroid/content/Intent;->getAction()Ljava/lang/String;
-
-    move-result-object p1
-
-    const-string v0, "android.intent.action.REBOOT"
-
-    invoke-virtual {p1, v0}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
-
-    move-result p1
-
-    if-nez p1, :cond_22
-
-    .line 664
-    invoke-virtual {p2}, Landroid/content/Intent;->getAction()Ljava/lang/String;
-
-    move-result-object p1
-
-    const-string v0, "android.intent.action.ACTION_SHUTDOWN"
-
-    invoke-virtual {p1, v0}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
-
-    move-result p1
-
-    if-eqz p1, :cond_21
-
-    .line 665
     invoke-virtual {p2}, Landroid/content/Intent;->getFlags()I
 
-    move-result p1
+    move-result v0
 
-    const/high16 p2, 0x10000000
+    const/high16 v1, 0x10000000
 
-    and-int/2addr p1, p2
+    and-int/2addr v0, v1
 
-    if-nez p1, :cond_22
+    if-nez v0, :cond_22
 
-    .line 666
+    .line 664
     :cond_21
     return-void
 
-    .line 669
+    .line 667
     :cond_22
-    const-string p1, "StatsCompanionService"
+    const-string v0, "StatsCompanionService"
 
-    const-string p2, "StatsCompanionService noticed a shutdown."
+    const-string v1, "StatsCompanionService noticed a shutdown."
 
-    invoke-static {p1, p2}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v0, v1}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 670
+    .line 668
     invoke-static {}, Lcom/android/server/stats/StatsCompanionService;->access$100()Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v0
 
-    monitor-enter p1
+    monitor-enter v0
 
-    .line 671
+    .line 669
     :try_start_2e
     invoke-static {}, Lcom/android/server/stats/StatsCompanionService;->access$200()Landroid/os/IStatsManager;
 
-    move-result-object p2
+    move-result-object v1
 
-    if-nez p2, :cond_3d
+    if-nez v1, :cond_3d
 
-    .line 672
-    const-string p2, "StatsCompanionService"
+    .line 670
+    const-string v1, "StatsCompanionService"
 
-    const-string v0, "Could not access statsd to inform it of a shutdown event."
+    const-string v2, "Could not access statsd to inform it of a shutdown event."
 
-    invoke-static {p2, v0}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v2}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 673
-    monitor-exit p1
+    .line 671
+    monitor-exit v0
     :try_end_3c
     .catchall {:try_start_2e .. :try_end_3c} :catchall_4f
 
     return-void
 
-    .line 676
+    .line 674
     :cond_3d
     :try_start_3d
     invoke-static {}, Lcom/android/server/stats/StatsCompanionService;->access$200()Landroid/os/IStatsManager;
 
-    move-result-object p2
+    move-result-object v1
 
-    invoke-interface {p2}, Landroid/os/IStatsManager;->informDeviceShutdown()V
+    invoke-interface {v1}, Landroid/os/IStatsManager;->informDeviceShutdown()V
     :try_end_44
     .catch Ljava/lang/Exception; {:try_start_3d .. :try_end_44} :catch_45
     .catchall {:try_start_3d .. :try_end_44} :catchall_4f
 
-    .line 679
+    .line 677
     goto :goto_4d
 
-    .line 677
+    .line 675
     :catch_45
-    move-exception p2
+    move-exception v1
+
+    .line 676
+    .local v1, "e":Ljava/lang/Exception;
+    :try_start_46
+    const-string v2, "StatsCompanionService"
+
+    const-string v3, "Failed to inform statsd of a shutdown event."
+
+    invoke-static {v2, v3, v1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
     .line 678
-    :try_start_46
-    const-string v0, "StatsCompanionService"
-
-    const-string v1, "Failed to inform statsd of a shutdown event."
-
-    invoke-static {v0, v1, p2}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
-
-    .line 680
+    .end local v1  # "e":Ljava/lang/Exception;
     :goto_4d
-    monitor-exit p1
+    monitor-exit v0
 
-    .line 681
+    .line 679
     return-void
 
-    .line 680
+    .line 678
     :catchall_4f
-    move-exception p2
+    move-exception v1
 
-    monitor-exit p1
+    monitor-exit v0
     :try_end_51
     .catchall {:try_start_46 .. :try_end_51} :catchall_4f
 
-    throw p2
+    throw v1
 .end method

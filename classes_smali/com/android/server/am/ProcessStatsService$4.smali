@@ -25,6 +25,8 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/am/ProcessStatsService;Ljava/lang/String;[Landroid/os/ParcelFileDescriptor;[B)V
     .registers 5
+    .param p1, "this$0"  # Lcom/android/server/am/ProcessStatsService;
+    .param p2, "x0"  # Ljava/lang/String;
 
     .line 677
     iput-object p1, p0, Lcom/android/server/am/ProcessStatsService$4;->this$0:Lcom/android/server/am/ProcessStatsService;
@@ -41,7 +43,7 @@
 
 # virtual methods
 .method public run()V
-    .registers 4
+    .registers 5
 
     .line 679
     new-instance v0, Landroid/os/ParcelFileDescriptor$AutoCloseOutputStream;
@@ -55,6 +57,7 @@
     invoke-direct {v0, v1}, Landroid/os/ParcelFileDescriptor$AutoCloseOutputStream;-><init>(Landroid/os/ParcelFileDescriptor;)V
 
     .line 681
+    .local v0, "fout":Ljava/io/FileOutputStream;
     :try_start_a
     iget-object v1, p0, Lcom/android/server/am/ProcessStatsService$4;->val$outData:[B
 
@@ -70,16 +73,18 @@
 
     .line 683
     :catch_13
-    move-exception v0
+    move-exception v1
 
     .line 684
-    const-string v1, "ProcessStatsService"
+    .local v1, "e":Ljava/io/IOException;
+    const-string v2, "ProcessStatsService"
 
-    const-string v2, "Failure writing pipe"
+    const-string v3, "Failure writing pipe"
 
-    invoke-static {v1, v2, v0}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    invoke-static {v2, v3, v1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
     .line 686
+    .end local v1  # "e":Ljava/io/IOException;
     :goto_1b
     return-void
 .end method

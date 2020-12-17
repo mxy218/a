@@ -34,6 +34,7 @@
 # direct methods
 .method public constructor <init>(Landroid/content/Context;)V
     .registers 5
+    .param p1, "context"  # Landroid/content/Context;
 
     .line 116
     invoke-direct {p0}, Landroid/app/backup/IBackupManager$Stub;-><init>()V
@@ -87,16 +88,17 @@
     .line 122
     invoke-static {p1}, Landroid/os/UserManager;->get(Landroid/content/Context;)Landroid/os/UserManager;
 
-    move-result-object p1
+    move-result-object v0
 
-    iput-object p1, p0, Lcom/android/server/backup/Trampoline;->mUserManager:Landroid/os/UserManager;
+    iput-object v0, p0, Lcom/android/server/backup/Trampoline;->mUserManager:Landroid/os/UserManager;
 
     .line 123
     return-void
 .end method
 
 .method private activateBackupForUserLocked(I)V
-    .registers 2
+    .registers 3
+    .param p1, "userId"  # I
     .annotation build Lcom/android/internal/annotations/GuardedBy;
         value = {
             "mStateLock"
@@ -115,9 +117,9 @@
     .line 199
     invoke-virtual {p0}, Lcom/android/server/backup/Trampoline;->getSuppressFileForSystemUser()Ljava/io/File;
 
-    move-result-object p1
+    move-result-object v0
 
-    invoke-direct {p0, p1}, Lcom/android/server/backup/Trampoline;->deleteFile(Ljava/io/File;)V
+    invoke-direct {p0, v0}, Lcom/android/server/backup/Trampoline;->deleteFile(Ljava/io/File;)V
 
     goto :goto_11
 
@@ -125,9 +127,9 @@
     :cond_a
     invoke-virtual {p0, p1}, Lcom/android/server/backup/Trampoline;->getActivatedFileForNonSystemUser(I)Ljava/io/File;
 
-    move-result-object p1
+    move-result-object v0
 
-    invoke-direct {p0, p1}, Lcom/android/server/backup/Trampoline;->createFile(Ljava/io/File;)V
+    invoke-direct {p0, v0}, Lcom/android/server/backup/Trampoline;->createFile(Ljava/io/File;)V
 
     .line 203
     :goto_11
@@ -136,6 +138,7 @@
 
 .method private createFile(Ljava/io/File;)V
     .registers 4
+    .param p1, "file"  # Ljava/io/File;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Ljava/io/IOException;
@@ -178,17 +181,17 @@
 
     invoke-virtual {p1}, Ljava/io/File;->getPath()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v1
 
-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    const-string v0, "BackupManagerService"
+    const-string v1, "BackupManagerService"
 
-    invoke-static {v0, p1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v0}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 163
     :cond_2e
@@ -196,7 +199,8 @@
 .end method
 
 .method private deactivateBackupForUserLocked(I)V
-    .registers 2
+    .registers 3
+    .param p1, "userId"  # I
     .annotation build Lcom/android/internal/annotations/GuardedBy;
         value = {
             "mStateLock"
@@ -215,9 +219,9 @@
     .line 184
     invoke-virtual {p0}, Lcom/android/server/backup/Trampoline;->getSuppressFileForSystemUser()Ljava/io/File;
 
-    move-result-object p1
+    move-result-object v0
 
-    invoke-direct {p0, p1}, Lcom/android/server/backup/Trampoline;->createFile(Ljava/io/File;)V
+    invoke-direct {p0, v0}, Lcom/android/server/backup/Trampoline;->createFile(Ljava/io/File;)V
 
     goto :goto_11
 
@@ -225,9 +229,9 @@
     :cond_a
     invoke-virtual {p0, p1}, Lcom/android/server/backup/Trampoline;->getActivatedFileForNonSystemUser(I)Ljava/io/File;
 
-    move-result-object p1
+    move-result-object v0
 
-    invoke-direct {p0, p1}, Lcom/android/server/backup/Trampoline;->deleteFile(Ljava/io/File;)V
+    invoke-direct {p0, v0}, Lcom/android/server/backup/Trampoline;->deleteFile(Ljava/io/File;)V
 
     .line 188
     :goto_11
@@ -236,6 +240,7 @@
 
 .method private deleteFile(Ljava/io/File;)V
     .registers 4
+    .param p1, "file"  # Ljava/io/File;
 
     .line 167
     invoke-virtual {p1}, Ljava/io/File;->exists()Z
@@ -266,17 +271,17 @@
 
     invoke-virtual {p1}, Ljava/io/File;->getPath()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v1
 
-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    const-string v0, "BackupManagerService"
+    const-string v1, "BackupManagerService"
 
-    invoke-static {v0, p1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v0}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 174
     :cond_27
@@ -284,7 +289,8 @@
 .end method
 
 .method private enforcePermissionsOnUser(I)V
-    .registers 4
+    .registers 6
+    .param p1, "userId"  # I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Ljava/lang/SecurityException;
@@ -301,72 +307,75 @@
 
     invoke-virtual {v0, p1}, Landroid/os/UserManager;->getUserInfo(I)Landroid/content/pm/UserInfo;
 
-    move-result-object p1
+    move-result-object v0
 
-    invoke-virtual {p1}, Landroid/content/pm/UserInfo;->isManagedProfile()Z
+    invoke-virtual {v0}, Landroid/content/pm/UserInfo;->isManagedProfile()Z
 
-    move-result p1
+    move-result v0
 
-    if-eqz p1, :cond_11
+    if-eqz v0, :cond_11
 
     goto :goto_13
 
     :cond_11
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
     goto :goto_14
 
     :cond_13
     :goto_13
-    const/4 p1, 0x1
+    const/4 v0, 0x1
 
     .line 306
+    .local v0, "isRestrictedUser":Z
     :goto_14
-    const-string v0, "No permission to configure backup activity"
+    const-string v1, "No permission to configure backup activity"
 
-    if-eqz p1, :cond_2a
+    if-eqz v0, :cond_2a
 
     .line 307
     invoke-virtual {p0}, Lcom/android/server/backup/Trampoline;->binderGetCallingUid()I
 
-    move-result p1
+    move-result v2
 
     .line 308
-    const/16 v1, 0x3e8
+    .local v2, "caller":I
+    const/16 v3, 0x3e8
 
-    if-eq p1, v1, :cond_29
+    if-eq v2, v3, :cond_29
 
-    if-nez p1, :cond_23
+    if-nez v2, :cond_23
 
     goto :goto_29
 
     .line 309
     :cond_23
-    new-instance p1, Ljava/lang/SecurityException;
+    new-instance v3, Ljava/lang/SecurityException;
 
-    invoke-direct {p1, v0}, Ljava/lang/SecurityException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v3, v1}, Ljava/lang/SecurityException;-><init>(Ljava/lang/String;)V
 
-    throw p1
+    throw v3
 
     .line 311
+    .end local v2  # "caller":I
     :cond_29
     :goto_29
     goto :goto_38
 
     .line 312
     :cond_2a
-    iget-object p1, p0, Lcom/android/server/backup/Trampoline;->mContext:Landroid/content/Context;
+    iget-object v2, p0, Lcom/android/server/backup/Trampoline;->mContext:Landroid/content/Context;
 
-    const-string v1, "android.permission.BACKUP"
+    const-string v3, "android.permission.BACKUP"
 
-    invoke-virtual {p1, v1, v0}, Landroid/content/Context;->enforceCallingOrSelfPermission(Ljava/lang/String;Ljava/lang/String;)V
+    invoke-virtual {v2, v3, v1}, Landroid/content/Context;->enforceCallingOrSelfPermission(Ljava/lang/String;Ljava/lang/String;)V
 
     .line 314
-    iget-object p1, p0, Lcom/android/server/backup/Trampoline;->mContext:Landroid/content/Context;
+    iget-object v2, p0, Lcom/android/server/backup/Trampoline;->mContext:Landroid/content/Context;
 
-    const-string v1, "android.permission.INTERACT_ACROSS_USERS_FULL"
+    const-string v3, "android.permission.INTERACT_ACROSS_USERS_FULL"
 
-    invoke-virtual {p1, v1, v0}, Landroid/content/Context;->enforceCallingOrSelfPermission(Ljava/lang/String;Ljava/lang/String;)V
+    invoke-virtual {v2, v3, v1}, Landroid/content/Context;->enforceCallingOrSelfPermission(Ljava/lang/String;Ljava/lang/String;)V
 
     .line 318
     :goto_38
@@ -375,6 +384,7 @@
 
 .method private isBackupActivatedForUser(I)Z
     .registers 4
+    .param p1, "userId"  # I
 
     .line 218
     invoke-virtual {p0}, Lcom/android/server/backup/Trampoline;->getSuppressFileForSystemUser()Ljava/io/File;
@@ -399,13 +409,13 @@
     .line 223
     invoke-virtual {p0, p1}, Lcom/android/server/backup/Trampoline;->getActivatedFileForNonSystemUser(I)Ljava/io/File;
 
-    move-result-object p1
+    move-result-object v0
 
-    invoke-virtual {p1}, Ljava/io/File;->exists()Z
+    invoke-virtual {v0}, Ljava/io/File;->exists()Z
 
-    move-result p1
+    move-result v0
 
-    if-eqz p1, :cond_19
+    if-eqz v0, :cond_19
 
     :cond_18
     const/4 v1, 0x1
@@ -417,6 +427,7 @@
 
 .method private isUserReadyForBackup(I)Z
     .registers 3
+    .param p1, "userId"  # I
 
     .line 208
     iget-object v0, p0, Lcom/android/server/backup/Trampoline;->mService:Lcom/android/server/backup/BackupManagerService;
@@ -438,24 +449,25 @@
     .line 209
     invoke-direct {p0, p1}, Lcom/android/server/backup/Trampoline;->isBackupActivatedForUser(I)Z
 
-    move-result p1
+    move-result v0
 
-    if-eqz p1, :cond_18
+    if-eqz v0, :cond_18
 
-    const/4 p1, 0x1
+    const/4 v0, 0x1
 
     goto :goto_19
 
     :cond_18
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
     .line 208
     :goto_19
-    return p1
+    return v0
 .end method
 
 .method private startServiceForUser(I)V
     .registers 4
+    .param p1, "userId"  # I
 
     .line 276
     iget-object v0, p0, Lcom/android/server/backup/Trampoline;->mService:Lcom/android/server/backup/BackupManagerService;
@@ -501,6 +513,11 @@
 # virtual methods
 .method public acknowledgeFullBackupOrRestore(IZLjava/lang/String;Ljava/lang/String;Landroid/app/backup/IFullBackupRestoreObserver;)V
     .registers 13
+    .param p1, "token"  # I
+    .param p2, "allow"  # Z
+    .param p3, "curPassword"  # Ljava/lang/String;
+    .param p4, "encryptionPassword"  # Ljava/lang/String;
+    .param p5, "observer"  # Landroid/app/backup/IFullBackupRestoreObserver;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -536,6 +553,12 @@
 
 .method public acknowledgeFullBackupOrRestoreForUser(IIZLjava/lang/String;Ljava/lang/String;Landroid/app/backup/IFullBackupRestoreObserver;)V
     .registers 15
+    .param p1, "userId"  # I
+    .param p2, "token"  # I
+    .param p3, "allow"  # Z
+    .param p4, "curPassword"  # Ljava/lang/String;
+    .param p5, "encryptionPassword"  # Ljava/lang/String;
+    .param p6, "observer"  # Landroid/app/backup/IFullBackupRestoreObserver;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -572,7 +595,18 @@
 .end method
 
 .method public adbBackup(ILandroid/os/ParcelFileDescriptor;ZZZZZZZZ[Ljava/lang/String;)V
-    .registers 24
+    .registers 25
+    .param p1, "userId"  # I
+    .param p2, "fd"  # Landroid/os/ParcelFileDescriptor;
+    .param p3, "includeApks"  # Z
+    .param p4, "includeObbs"  # Z
+    .param p5, "includeShared"  # Z
+    .param p6, "doWidgets"  # Z
+    .param p7, "allApps"  # Z
+    .param p8, "allIncludesSystem"  # Z
+    .param p9, "doCompress"  # Z
+    .param p10, "doKeyValue"  # Z
+    .param p11, "packageNames"  # [Ljava/lang/String;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -584,44 +618,52 @@
 
     move-result v0
 
-    if-eqz v0, :cond_1f
+    if-eqz v0, :cond_21
 
     .line 541
     move-object v0, p0
 
-    iget-object v0, v0, Lcom/android/server/backup/Trampoline;->mService:Lcom/android/server/backup/BackupManagerService;
+    iget-object v1, v0, Lcom/android/server/backup/Trampoline;->mService:Lcom/android/server/backup/BackupManagerService;
 
-    move v1, p1
+    move v2, p1
 
-    move-object v2, p2
+    move-object v3, p2
 
-    move v3, p3
+    move/from16 v4, p3
 
-    move/from16 v4, p4
+    move/from16 v5, p4
 
-    move/from16 v5, p5
+    move/from16 v6, p5
 
-    move/from16 v6, p6
+    move/from16 v7, p6
 
-    move/from16 v7, p7
+    move/from16 v8, p7
 
-    move/from16 v8, p8
+    move/from16 v9, p8
 
-    move/from16 v9, p9
+    move/from16 v10, p9
 
-    move/from16 v10, p10
+    move/from16 v11, p10
 
-    move-object/from16 v11, p11
+    move-object/from16 v12, p11
 
-    invoke-virtual/range {v0 .. v11}, Lcom/android/server/backup/BackupManagerService;->adbBackup(ILandroid/os/ParcelFileDescriptor;ZZZZZZZZ[Ljava/lang/String;)V
+    invoke-virtual/range {v1 .. v12}, Lcom/android/server/backup/BackupManagerService;->adbBackup(ILandroid/os/ParcelFileDescriptor;ZZZZZZZZ[Ljava/lang/String;)V
+
+    goto :goto_22
+
+    .line 540
+    :cond_21
+    move-object v0, p0
 
     .line 544
-    :cond_1f
+    :goto_22
     return-void
 .end method
 
 .method public adbRestore(ILandroid/os/ParcelFileDescriptor;)V
     .registers 4
+    .param p1, "userId"  # I
+    .param p2, "fd"  # Landroid/os/ParcelFileDescriptor;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -647,6 +689,8 @@
 
 .method public agentConnected(Ljava/lang/String;Landroid/os/IBinder;)V
     .registers 4
+    .param p1, "packageName"  # Ljava/lang/String;
+    .param p2, "agent"  # Landroid/os/IBinder;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -666,6 +710,9 @@
 
 .method public agentConnectedForUser(ILjava/lang/String;Landroid/os/IBinder;)V
     .registers 5
+    .param p1, "userId"  # I
+    .param p2, "packageName"  # Ljava/lang/String;
+    .param p3, "agent"  # Landroid/os/IBinder;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -691,6 +738,7 @@
 
 .method public agentDisconnected(Ljava/lang/String;)V
     .registers 3
+    .param p1, "packageName"  # Ljava/lang/String;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -710,6 +758,8 @@
 
 .method public agentDisconnectedForUser(ILjava/lang/String;)V
     .registers 4
+    .param p1, "userId"  # I
+    .param p2, "packageName"  # Ljava/lang/String;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -754,6 +804,7 @@
 
 .method public backupNowForUser(I)V
     .registers 3
+    .param p1, "userId"  # I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -779,6 +830,8 @@
 
 .method beginFullBackup(ILcom/android/server/backup/FullBackupJob;)Z
     .registers 4
+    .param p1, "userId"  # I
+    .param p2, "scheduledJob"  # Lcom/android/server/backup/FullBackupJob;
 
     .line 815
     invoke-direct {p0, p1}, Lcom/android/server/backup/Trampoline;->isUserReadyForBackup(I)Z
@@ -791,23 +844,26 @@
 
     invoke-virtual {v0, p1, p2}, Lcom/android/server/backup/BackupManagerService;->beginFullBackup(ILcom/android/server/backup/FullBackupJob;)Z
 
-    move-result p1
+    move-result v0
 
-    if-eqz p1, :cond_10
+    if-eqz v0, :cond_10
 
-    const/4 p1, 0x1
+    const/4 v0, 0x1
 
     goto :goto_11
 
     :cond_10
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
     :goto_11
-    return p1
+    return v0
 .end method
 
 .method public beginRestoreSessionForUser(ILjava/lang/String;Ljava/lang/String;)Landroid/app/backup/IRestoreSession;
     .registers 5
+    .param p1, "userId"  # I
+    .param p2, "packageName"  # Ljava/lang/String;
+    .param p3, "transportID"  # Ljava/lang/String;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -825,17 +881,17 @@
 
     invoke-virtual {v0, p1, p2, p3}, Lcom/android/server/backup/BackupManagerService;->beginRestoreSession(ILjava/lang/String;Ljava/lang/String;)Landroid/app/backup/IRestoreSession;
 
-    move-result-object p1
+    move-result-object v0
 
     goto :goto_e
 
     .line 725
     :cond_d
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
     .line 724
     :goto_e
-    return-object p1
+    return-object v0
 .end method
 
 .method protected binderGetCallingUid()I
@@ -885,6 +941,7 @@
 
 .method public cancelBackupsForUser(I)V
     .registers 3
+    .param p1, "userId"  # I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -910,6 +967,8 @@
 
 .method public clearBackupData(Ljava/lang/String;Ljava/lang/String;)V
     .registers 4
+    .param p1, "transportName"  # Ljava/lang/String;
+    .param p2, "packageName"  # Ljava/lang/String;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -929,6 +988,9 @@
 
 .method public clearBackupDataForUser(ILjava/lang/String;Ljava/lang/String;)V
     .registers 5
+    .param p1, "userId"  # I
+    .param p2, "transportName"  # Ljava/lang/String;
+    .param p3, "packageName"  # Ljava/lang/String;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -969,6 +1031,7 @@
 
 .method public dataChanged(Ljava/lang/String;)V
     .registers 3
+    .param p1, "packageName"  # Ljava/lang/String;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -988,6 +1051,8 @@
 
 .method public dataChangedForUser(ILjava/lang/String;)V
     .registers 4
+    .param p1, "userId"  # I
+    .param p2, "packageName"  # Ljava/lang/String;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -1013,6 +1078,9 @@
 
 .method public dump(Ljava/io/FileDescriptor;Ljava/io/PrintWriter;[Ljava/lang/String;)V
     .registers 6
+    .param p1, "fd"  # Ljava/io/FileDescriptor;
+    .param p2, "pw"  # Ljava/io/PrintWriter;
+    .param p3, "args"  # [Ljava/lang/String;
 
     .line 803
     iget-object v0, p0, Lcom/android/server/backup/Trampoline;->mContext:Landroid/content/Context;
@@ -1034,24 +1102,25 @@
     move-result v0
 
     .line 805
+    .local v0, "userId":I
     invoke-direct {p0, v0}, Lcom/android/server/backup/Trampoline;->isUserReadyForBackup(I)Z
 
-    move-result v0
+    move-result v1
 
-    if-eqz v0, :cond_1b
+    if-eqz v1, :cond_1b
 
     .line 806
-    iget-object v0, p0, Lcom/android/server/backup/Trampoline;->mService:Lcom/android/server/backup/BackupManagerService;
+    iget-object v1, p0, Lcom/android/server/backup/Trampoline;->mService:Lcom/android/server/backup/BackupManagerService;
 
-    invoke-virtual {v0, p1, p2, p3}, Lcom/android/server/backup/BackupManagerService;->dump(Ljava/io/FileDescriptor;Ljava/io/PrintWriter;[Ljava/lang/String;)V
+    invoke-virtual {v1, p1, p2, p3}, Lcom/android/server/backup/BackupManagerService;->dump(Ljava/io/FileDescriptor;Ljava/io/PrintWriter;[Ljava/lang/String;)V
 
     goto :goto_20
 
     .line 808
     :cond_1b
-    const-string p1, "Inactive"
+    const-string v1, "Inactive"
 
-    invoke-virtual {p2, p1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {p2, v1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
     .line 810
     :goto_20
@@ -1060,6 +1129,7 @@
 
 .method endFullBackup(I)V
     .registers 3
+    .param p1, "userId"  # I
 
     .line 819
     invoke-direct {p0, p1}, Lcom/android/server/backup/Trampoline;->isUserReadyForBackup(I)Z
@@ -1080,6 +1150,8 @@
 
 .method public filterAppsEligibleForBackupForUser(I[Ljava/lang/String;)[Ljava/lang/String;
     .registers 4
+    .param p1, "userId"  # I
+    .param p2, "packages"  # [Ljava/lang/String;
 
     .line 754
     invoke-direct {p0, p1}, Lcom/android/server/backup/Trampoline;->isUserReadyForBackup(I)Z
@@ -1092,21 +1164,23 @@
 
     invoke-virtual {v0, p1, p2}, Lcom/android/server/backup/BackupManagerService;->filterAppsEligibleForBackup(I[Ljava/lang/String;)[Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
     goto :goto_e
 
     .line 755
     :cond_d
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
     .line 754
     :goto_e
-    return-object p1
+    return-object v0
 .end method
 
 .method public fullTransportBackupForUser(I[Ljava/lang/String;)V
     .registers 4
+    .param p1, "userId"  # I
+    .param p2, "packageNames"  # [Ljava/lang/String;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -1132,19 +1206,22 @@
 
 .method protected getActivatedFileForNonSystemUser(I)Ljava/io/File;
     .registers 3
+    .param p1, "userId"  # I
 
     .line 150
     const-string v0, "backup-activated"
 
     invoke-static {v0, p1}, Lcom/android/server/backup/UserBackupManagerFiles;->getStateFileInSystemDir(Ljava/lang/String;I)Ljava/io/File;
 
-    move-result-object p1
+    move-result-object v0
 
-    return-object p1
+    return-object v0
 .end method
 
 .method public getAvailableRestoreTokenForUser(ILjava/lang/String;)J
-    .registers 4
+    .registers 5
+    .param p1, "userId"  # I
+    .param p2, "packageName"  # Ljava/lang/String;
 
     .line 742
     invoke-direct {p0, p1}, Lcom/android/server/backup/Trampoline;->isUserReadyForBackup(I)Z
@@ -1157,21 +1234,22 @@
 
     invoke-virtual {v0, p1, p2}, Lcom/android/server/backup/BackupManagerService;->getAvailableRestoreToken(ILjava/lang/String;)J
 
-    move-result-wide p1
+    move-result-wide v0
 
     goto :goto_f
 
     .line 743
     :cond_d
-    const-wide/16 p1, 0x0
+    const-wide/16 v0, 0x0
 
     .line 742
     :goto_f
-    return-wide p1
+    return-wide v0
 .end method
 
 .method public getConfigurationIntent(Ljava/lang/String;)Landroid/content/Intent;
     .registers 3
+    .param p1, "transport"  # Ljava/lang/String;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -1185,13 +1263,15 @@
 
     invoke-virtual {p0, v0, p1}, Lcom/android/server/backup/Trampoline;->getConfigurationIntentForUser(ILjava/lang/String;)Landroid/content/Intent;
 
-    move-result-object p1
+    move-result-object v0
 
-    return-object p1
+    return-object v0
 .end method
 
 .method public getConfigurationIntentForUser(ILjava/lang/String;)Landroid/content/Intent;
     .registers 4
+    .param p1, "userId"  # I
+    .param p2, "transport"  # Ljava/lang/String;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -1209,17 +1289,17 @@
 
     invoke-virtual {v0, p1, p2}, Lcom/android/server/backup/BackupManagerService;->getConfigurationIntent(ILjava/lang/String;)Landroid/content/Intent;
 
-    move-result-object p1
+    move-result-object v0
 
     goto :goto_e
 
     .line 681
     :cond_d
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
     .line 680
     :goto_e
-    return-object p1
+    return-object v0
 .end method
 
 .method protected getContext()Landroid/content/Context;
@@ -1253,6 +1333,7 @@
 
 .method public getCurrentTransportComponentForUser(I)Landroid/content/ComponentName;
     .registers 3
+    .param p1, "userId"  # I
 
     .line 602
     invoke-direct {p0, p1}, Lcom/android/server/backup/Trampoline;->isUserReadyForBackup(I)Z
@@ -1265,21 +1346,22 @@
 
     invoke-virtual {v0, p1}, Lcom/android/server/backup/BackupManagerService;->getCurrentTransportComponent(I)Landroid/content/ComponentName;
 
-    move-result-object p1
+    move-result-object v0
 
     goto :goto_e
 
     .line 603
     :cond_d
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
     .line 602
     :goto_e
-    return-object p1
+    return-object v0
 .end method
 
 .method public getCurrentTransportForUser(I)Ljava/lang/String;
     .registers 3
+    .param p1, "userId"  # I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -1297,19 +1379,20 @@
 
     invoke-virtual {v0, p1}, Lcom/android/server/backup/BackupManagerService;->getCurrentTransport(I)Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
     goto :goto_e
 
     :cond_d
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
     :goto_e
-    return-object p1
+    return-object v0
 .end method
 
 .method public getDataManagementIntent(Ljava/lang/String;)Landroid/content/Intent;
     .registers 3
+    .param p1, "transport"  # Ljava/lang/String;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -1323,13 +1406,15 @@
 
     invoke-virtual {p0, v0, p1}, Lcom/android/server/backup/Trampoline;->getDataManagementIntentForUser(ILjava/lang/String;)Landroid/content/Intent;
 
-    move-result-object p1
+    move-result-object v0
 
-    return-object p1
+    return-object v0
 .end method
 
 .method public getDataManagementIntentForUser(ILjava/lang/String;)Landroid/content/Intent;
     .registers 4
+    .param p1, "userId"  # I
+    .param p2, "transport"  # Ljava/lang/String;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -1347,21 +1432,23 @@
 
     invoke-virtual {v0, p1, p2}, Lcom/android/server/backup/BackupManagerService;->getDataManagementIntent(ILjava/lang/String;)Landroid/content/Intent;
 
-    move-result-object p1
+    move-result-object v0
 
     goto :goto_e
 
     .line 705
     :cond_d
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
     .line 704
     :goto_e
-    return-object p1
+    return-object v0
 .end method
 
 .method public getDataManagementLabelForUser(ILjava/lang/String;)Ljava/lang/CharSequence;
     .registers 4
+    .param p1, "userId"  # I
+    .param p2, "transport"  # Ljava/lang/String;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -1379,21 +1466,22 @@
 
     invoke-virtual {v0, p1, p2}, Lcom/android/server/backup/BackupManagerService;->getDataManagementLabel(ILjava/lang/String;)Ljava/lang/CharSequence;
 
-    move-result-object p1
+    move-result-object v0
 
     goto :goto_e
 
     .line 718
     :cond_d
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
     .line 717
     :goto_e
-    return-object p1
+    return-object v0
 .end method
 
 .method public getDestinationString(Ljava/lang/String;)Ljava/lang/String;
     .registers 3
+    .param p1, "transport"  # Ljava/lang/String;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -1407,13 +1495,15 @@
 
     invoke-virtual {p0, v0, p1}, Lcom/android/server/backup/Trampoline;->getDestinationStringForUser(ILjava/lang/String;)Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    return-object p1
+    return-object v0
 .end method
 
 .method public getDestinationStringForUser(ILjava/lang/String;)Ljava/lang/String;
     .registers 4
+    .param p1, "userId"  # I
+    .param p2, "transport"  # Ljava/lang/String;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -1431,30 +1521,31 @@
 
     invoke-virtual {v0, p1, p2}, Lcom/android/server/backup/BackupManagerService;->getDestinationString(ILjava/lang/String;)Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
     goto :goto_e
 
     .line 693
     :cond_d
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
     .line 692
     :goto_e
-    return-object p1
+    return-object v0
 .end method
 
 .method protected getRememberActivatedFileForNonSystemUser(I)Ljava/io/File;
     .registers 3
+    .param p1, "userId"  # I
 
     .line 145
     const-string v0, "backup-remember-activated"
 
     invoke-static {v0, p1}, Lcom/android/server/backup/UserBackupManagerFiles;->getStateFileInSystemDir(Ljava/lang/String;I)Ljava/io/File;
 
-    move-result-object p1
+    move-result-object v0
 
-    return-object p1
+    return-object v0
 .end method
 
 .method protected getSuppressFileForSystemUser()Ljava/io/File;
@@ -1477,7 +1568,7 @@
 .end method
 
 .method public getTransportWhitelist()[Ljava/lang/String;
-    .registers 2
+    .registers 3
 
     .line 624
     invoke-virtual {p0}, Lcom/android/server/backup/Trampoline;->binderGetCallingUserId()I
@@ -1485,29 +1576,31 @@
     move-result v0
 
     .line 625
+    .local v0, "userId":I
     invoke-direct {p0, v0}, Lcom/android/server/backup/Trampoline;->isUserReadyForBackup(I)Z
 
-    move-result v0
+    move-result v1
 
-    if-eqz v0, :cond_11
+    if-eqz v1, :cond_11
 
-    iget-object v0, p0, Lcom/android/server/backup/Trampoline;->mService:Lcom/android/server/backup/BackupManagerService;
+    iget-object v1, p0, Lcom/android/server/backup/Trampoline;->mService:Lcom/android/server/backup/BackupManagerService;
 
-    invoke-virtual {v0}, Lcom/android/server/backup/BackupManagerService;->getTransportWhitelist()[Ljava/lang/String;
+    invoke-virtual {v1}, Lcom/android/server/backup/BackupManagerService;->getTransportWhitelist()[Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v1
 
     goto :goto_12
 
     :cond_11
-    const/4 v0, 0x0
+    const/4 v1, 0x0
 
     :goto_12
-    return-object v0
+    return-object v1
 .end method
 
 .method public getUserForAncestralSerialNumber(J)Landroid/os/UserHandle;
     .registers 4
+    .param p1, "ancestralSerialNumber"  # J
 
     .line 788
     iget-object v0, p0, Lcom/android/server/backup/Trampoline;->mService:Lcom/android/server/backup/BackupManagerService;
@@ -1519,15 +1612,15 @@
 
     invoke-virtual {v0, p1, p2}, Lcom/android/server/backup/BackupManagerService;->getUserForAncestralSerialNumber(J)Landroid/os/UserHandle;
 
-    move-result-object p1
+    move-result-object v0
 
-    return-object p1
+    return-object v0
 
     .line 791
     :cond_b
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    return-object p1
+    return-object v0
 .end method
 
 .method protected getUserManager()Landroid/os/UserManager;
@@ -1540,7 +1633,7 @@
 .end method
 
 .method public hasBackupPassword()Z
-    .registers 2
+    .registers 3
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -1553,29 +1646,30 @@
     move-result v0
 
     .line 521
+    .local v0, "userId":I
     invoke-direct {p0, v0}, Lcom/android/server/backup/Trampoline;->isUserReadyForBackup(I)Z
 
-    move-result v0
+    move-result v1
 
-    if-eqz v0, :cond_14
+    if-eqz v1, :cond_14
 
-    iget-object v0, p0, Lcom/android/server/backup/Trampoline;->mService:Lcom/android/server/backup/BackupManagerService;
+    iget-object v1, p0, Lcom/android/server/backup/Trampoline;->mService:Lcom/android/server/backup/BackupManagerService;
 
-    invoke-virtual {v0}, Lcom/android/server/backup/BackupManagerService;->hasBackupPassword()Z
+    invoke-virtual {v1}, Lcom/android/server/backup/BackupManagerService;->hasBackupPassword()Z
 
-    move-result v0
+    move-result v1
 
-    if-eqz v0, :cond_14
+    if-eqz v1, :cond_14
 
-    const/4 v0, 0x1
+    const/4 v1, 0x1
 
     goto :goto_15
 
     :cond_14
-    const/4 v0, 0x0
+    const/4 v1, 0x0
 
     :goto_15
-    return v0
+    return v1
 .end method
 
 .method initializeService()V
@@ -1594,6 +1688,9 @@
 
 .method public initializeTransportsForUser(I[Ljava/lang/String;Landroid/app/backup/IBackupObserver;)V
     .registers 5
+    .param p1, "userId"  # I
+    .param p2, "transportNames"  # [Ljava/lang/String;
+    .param p3, "observer"  # Landroid/app/backup/IBackupObserver;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -1619,6 +1716,8 @@
 
 .method public isAppEligibleForBackupForUser(ILjava/lang/String;)Z
     .registers 4
+    .param p1, "userId"  # I
+    .param p2, "packageName"  # Ljava/lang/String;
 
     .line 748
     invoke-direct {p0, p1}, Lcom/android/server/backup/Trampoline;->isUserReadyForBackup(I)Z
@@ -1631,19 +1730,19 @@
 
     invoke-virtual {v0, p1, p2}, Lcom/android/server/backup/BackupManagerService;->isAppEligibleForBackup(ILjava/lang/String;)Z
 
-    move-result p1
+    move-result v0
 
-    if-eqz p1, :cond_10
+    if-eqz v0, :cond_10
 
-    const/4 p1, 0x1
+    const/4 v0, 0x1
 
     goto :goto_11
 
     :cond_10
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
     :goto_11
-    return p1
+    return v0
 .end method
 
 .method protected isBackupDisabled()Z
@@ -1683,6 +1782,7 @@
 
 .method public isBackupEnabledForUser(I)Z
     .registers 3
+    .param p1, "userId"  # I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -1700,23 +1800,24 @@
 
     invoke-virtual {v0, p1}, Lcom/android/server/backup/BackupManagerService;->isBackupEnabled(I)Z
 
-    move-result p1
+    move-result v0
 
-    if-eqz p1, :cond_10
+    if-eqz v0, :cond_10
 
-    const/4 p1, 0x1
+    const/4 v0, 0x1
 
     goto :goto_11
 
     :cond_10
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
     :goto_11
-    return p1
+    return v0
 .end method
 
 .method public isBackupServiceActive(I)Z
     .registers 4
+    .param p1, "userId"  # I
 
     .line 400
     iget-object v0, p0, Lcom/android/server/backup/Trampoline;->mStateLock:Ljava/lang/Object;
@@ -1731,31 +1832,31 @@
 
     invoke-direct {p0, p1}, Lcom/android/server/backup/Trampoline;->isBackupActivatedForUser(I)Z
 
-    move-result p1
+    move-result v1
 
-    if-eqz p1, :cond_f
+    if-eqz v1, :cond_f
 
-    const/4 p1, 0x1
+    const/4 v1, 0x1
 
     goto :goto_10
 
     :cond_f
-    const/4 p1, 0x0
+    const/4 v1, 0x0
 
     :goto_10
     monitor-exit v0
 
-    return p1
+    return v1
 
     .line 402
     :catchall_12
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_14
     .catchall {:try_start_3 .. :try_end_14} :catchall_12
 
-    throw p1
+    throw v1
 .end method
 
 .method public synthetic lambda$initializeService$0$Trampoline()V
@@ -1828,6 +1929,7 @@
 
 .method public synthetic lambda$stopUser$2$Trampoline(I)V
     .registers 4
+    .param p1, "userId"  # I
 
     .line 289
     iget-object v0, p0, Lcom/android/server/backup/Trampoline;->mService:Lcom/android/server/backup/BackupManagerService;
@@ -1865,6 +1967,7 @@
 
 .method public synthetic lambda$unlockUser$1$Trampoline(I)V
     .registers 2
+    .param p1, "userId"  # I
 
     .line 270
     invoke-direct {p0, p1}, Lcom/android/server/backup/Trampoline;->startServiceForUser(I)V
@@ -1874,6 +1977,7 @@
 
 .method public listAllTransportComponentsForUser(I)[Landroid/content/ComponentName;
     .registers 3
+    .param p1, "userId"  # I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -1891,17 +1995,17 @@
 
     invoke-virtual {v0, p1}, Lcom/android/server/backup/BackupManagerService;->listAllTransportComponents(I)[Landroid/content/ComponentName;
 
-    move-result-object p1
+    move-result-object v0
 
     goto :goto_e
 
     .line 619
     :cond_d
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
     .line 618
     :goto_e
-    return-object p1
+    return-object v0
 .end method
 
 .method public listAllTransports()[Ljava/lang/String;
@@ -1926,6 +2030,7 @@
 
 .method public listAllTransportsForUser(I)[Ljava/lang/String;
     .registers 3
+    .param p1, "userId"  # I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -1943,19 +2048,21 @@
 
     invoke-virtual {v0, p1}, Lcom/android/server/backup/BackupManagerService;->listAllTransports(I)[Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
     goto :goto_e
 
     :cond_d
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
     :goto_e
-    return-object p1
+    return-object v0
 .end method
 
 .method public opComplete(IJ)V
     .registers 5
+    .param p1, "token"  # I
+    .param p2, "result"  # J
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -1975,6 +2082,9 @@
 
 .method public opCompleteForUser(IIJ)V
     .registers 6
+    .param p1, "userId"  # I
+    .param p2, "token"  # I
+    .param p3, "result"  # J
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -2000,6 +2110,7 @@
 
 .method protected postToHandler(Ljava/lang/Runnable;)V
     .registers 3
+    .param p1, "runnable"  # Ljava/lang/Runnable;
 
     .line 239
     iget-object v0, p0, Lcom/android/server/backup/Trampoline;->mHandler:Landroid/os/Handler;
@@ -2012,6 +2123,10 @@
 
 .method public requestBackup([Ljava/lang/String;Landroid/app/backup/IBackupObserver;Landroid/app/backup/IBackupManagerMonitor;I)I
     .registers 11
+    .param p1, "packages"  # [Ljava/lang/String;
+    .param p2, "observer"  # Landroid/app/backup/IBackupObserver;
+    .param p3, "monitor"  # Landroid/app/backup/IBackupManagerMonitor;
+    .param p4, "flags"  # I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -2035,13 +2150,18 @@
 
     invoke-virtual/range {v0 .. v5}, Lcom/android/server/backup/Trampoline;->requestBackupForUser(I[Ljava/lang/String;Landroid/app/backup/IBackupObserver;Landroid/app/backup/IBackupManagerMonitor;I)I
 
-    move-result p1
+    move-result v0
 
-    return p1
+    return v0
 .end method
 
 .method public requestBackupForUser(I[Ljava/lang/String;Landroid/app/backup/IBackupObserver;Landroid/app/backup/IBackupManagerMonitor;I)I
-    .registers 12
+    .registers 13
+    .param p1, "userId"  # I
+    .param p2, "packages"  # [Ljava/lang/String;
+    .param p3, "observer"  # Landroid/app/backup/IBackupObserver;
+    .param p4, "monitor"  # Landroid/app/backup/IBackupManagerMonitor;
+    .param p5, "flags"  # I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -2056,33 +2176,35 @@
     if-nez v0, :cond_9
 
     .line 762
-    const/16 p1, -0x7d1
+    const/16 v0, -0x7d1
 
-    return p1
+    return v0
 
     .line 764
     :cond_9
-    iget-object v0, p0, Lcom/android/server/backup/Trampoline;->mService:Lcom/android/server/backup/BackupManagerService;
+    iget-object v1, p0, Lcom/android/server/backup/Trampoline;->mService:Lcom/android/server/backup/BackupManagerService;
 
-    move v1, p1
+    move v2, p1
 
-    move-object v2, p2
+    move-object v3, p2
 
-    move-object v3, p3
+    move-object v4, p3
 
-    move-object v4, p4
+    move-object v5, p4
 
-    move v5, p5
+    move v6, p5
 
-    invoke-virtual/range {v0 .. v5}, Lcom/android/server/backup/BackupManagerService;->requestBackup(I[Ljava/lang/String;Landroid/app/backup/IBackupObserver;Landroid/app/backup/IBackupManagerMonitor;I)I
+    invoke-virtual/range {v1 .. v6}, Lcom/android/server/backup/BackupManagerService;->requestBackup(I[Ljava/lang/String;Landroid/app/backup/IBackupObserver;Landroid/app/backup/IBackupManagerMonitor;I)I
 
-    move-result p1
+    move-result v0
 
-    return p1
+    return v0
 .end method
 
 .method public restoreAtInstall(Ljava/lang/String;I)V
     .registers 4
+    .param p1, "packageName"  # Ljava/lang/String;
+    .param p2, "token"  # I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -2102,6 +2224,9 @@
 
 .method public restoreAtInstallForUser(ILjava/lang/String;I)V
     .registers 5
+    .param p1, "userId"  # I
+    .param p2, "packageName"  # Ljava/lang/String;
+    .param p3, "token"  # I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -2127,6 +2252,7 @@
 
 .method public selectBackupTransport(Ljava/lang/String;)Ljava/lang/String;
     .registers 3
+    .param p1, "transport"  # Ljava/lang/String;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -2140,13 +2266,16 @@
 
     invoke-virtual {p0, v0, p1}, Lcom/android/server/backup/Trampoline;->selectBackupTransportForUser(ILjava/lang/String;)Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    return-object p1
+    return-object v0
 .end method
 
 .method public selectBackupTransportAsyncForUser(ILandroid/content/ComponentName;Landroid/app/backup/ISelectBackupTransportCallback;)V
     .registers 5
+    .param p1, "userId"  # I
+    .param p2, "transport"  # Landroid/content/ComponentName;
+    .param p3, "listener"  # Landroid/app/backup/ISelectBackupTransportCallback;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -2172,10 +2301,10 @@
     if-eqz p3, :cond_15
 
     .line 669
-    const/16 p1, -0x7d1
+    const/16 v0, -0x7d1
 
     :try_start_10
-    invoke-interface {p3, p1}, Landroid/app/backup/ISelectBackupTransportCallback;->onFailure(I)V
+    invoke-interface {p3, v0}, Landroid/app/backup/ISelectBackupTransportCallback;->onFailure(I)V
     :try_end_13
     .catch Landroid/os/RemoteException; {:try_start_10 .. :try_end_13} :catch_14
 
@@ -2184,7 +2313,7 @@
 
     .line 670
     :catch_14
-    move-exception p1
+    move-exception v0
 
     .line 675
     :cond_15
@@ -2194,6 +2323,8 @@
 
 .method public selectBackupTransportForUser(ILjava/lang/String;)Ljava/lang/String;
     .registers 4
+    .param p1, "userId"  # I
+    .param p2, "transport"  # Ljava/lang/String;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -2211,21 +2342,22 @@
 
     invoke-virtual {v0, p1, p2}, Lcom/android/server/backup/BackupManagerService;->selectBackupTransport(ILjava/lang/String;)Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
     goto :goto_e
 
     .line 653
     :cond_d
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
     .line 652
     :goto_e
-    return-object p1
+    return-object v0
 .end method
 
 .method public setAncestralSerialNumber(J)V
     .registers 4
+    .param p1, "ancestralSerialNumber"  # J
 
     .line 796
     iget-object v0, p0, Lcom/android/server/backup/Trampoline;->mService:Lcom/android/server/backup/BackupManagerService;
@@ -2244,6 +2376,7 @@
 
 .method public setAutoRestore(Z)V
     .registers 3
+    .param p1, "doAutoRestore"  # Z
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -2263,6 +2396,8 @@
 
 .method public setAutoRestoreForUser(IZ)V
     .registers 4
+    .param p1, "userId"  # I
+    .param p2, "doAutoRestore"  # Z
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -2288,6 +2423,7 @@
 
 .method public setBackupEnabled(Z)V
     .registers 3
+    .param p1, "isEnabled"  # Z
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -2307,6 +2443,8 @@
 
 .method public setBackupEnabledForUser(IZ)V
     .registers 4
+    .param p1, "userId"  # I
+    .param p2, "isEnabled"  # Z
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -2331,7 +2469,9 @@
 .end method
 
 .method public setBackupPassword(Ljava/lang/String;Ljava/lang/String;)Z
-    .registers 4
+    .registers 5
+    .param p1, "currentPw"  # Ljava/lang/String;
+    .param p2, "newPw"  # Ljava/lang/String;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -2344,33 +2484,36 @@
     move-result v0
 
     .line 515
+    .local v0, "userId":I
     invoke-direct {p0, v0}, Lcom/android/server/backup/Trampoline;->isUserReadyForBackup(I)Z
 
-    move-result v0
+    move-result v1
 
-    if-eqz v0, :cond_14
+    if-eqz v1, :cond_14
 
-    iget-object v0, p0, Lcom/android/server/backup/Trampoline;->mService:Lcom/android/server/backup/BackupManagerService;
+    iget-object v1, p0, Lcom/android/server/backup/Trampoline;->mService:Lcom/android/server/backup/BackupManagerService;
 
-    invoke-virtual {v0, p1, p2}, Lcom/android/server/backup/BackupManagerService;->setBackupPassword(Ljava/lang/String;Ljava/lang/String;)Z
+    invoke-virtual {v1, p1, p2}, Lcom/android/server/backup/BackupManagerService;->setBackupPassword(Ljava/lang/String;Ljava/lang/String;)Z
 
-    move-result p1
+    move-result v1
 
-    if-eqz p1, :cond_14
+    if-eqz v1, :cond_14
 
-    const/4 p1, 0x1
+    const/4 v1, 0x1
 
     goto :goto_15
 
     :cond_14
-    const/4 p1, 0x0
+    const/4 v1, 0x0
 
     :goto_15
-    return p1
+    return v1
 .end method
 
 .method public setBackupServiceActive(IZ)V
     .registers 7
+    .param p1, "userId"  # I
+    .param p2, "makeActive"  # Z
 
     .line 326
     invoke-direct {p0, p1}, Lcom/android/server/backup/Trampoline;->enforcePermissionsOnUser(I)V
@@ -2385,6 +2528,7 @@
     move-result-object v0
 
     .line 339
+    .local v0, "rememberFile":Ljava/io/File;
     invoke-direct {p0, v0}, Lcom/android/server/backup/Trampoline;->createFile(Ljava/io/File;)V
 
     .line 340
@@ -2393,6 +2537,7 @@
     .catch Ljava/io/IOException; {:try_start_5 .. :try_end_f} :catch_10
 
     .line 343
+    .end local v0  # "rememberFile":Ljava/io/File;
     goto :goto_18
 
     .line 341
@@ -2400,6 +2545,7 @@
     move-exception v0
 
     .line 342
+    .local v0, "e":Ljava/io/IOException;
     const-string v1, "BackupManagerService"
 
     const-string v2, "Unable to persist backup service activity"
@@ -2407,6 +2553,7 @@
     invoke-static {v1, v2, v0}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
     .line 346
+    .end local v0  # "e":Ljava/io/IOException;
     :cond_18
     :goto_18
     iget-boolean v0, p0, Lcom/android/server/backup/Trampoline;->mGlobalDisable:Z
@@ -2414,11 +2561,11 @@
     if-eqz v0, :cond_24
 
     .line 347
-    const-string p1, "BackupManagerService"
+    const-string v0, "BackupManagerService"
 
-    const-string p2, "Backup service not supported"
+    const-string v1, "Backup service not supported"
 
-    invoke-static {p1, p2}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v0, v1}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 348
     return-void
@@ -2445,12 +2592,12 @@
 
     const-string v3, ""
 
-    goto :goto_3a
+    goto :goto_3b
 
     :cond_38
-    const-string v3, "in"
+    const-string/jumbo v3, "in"
 
-    :goto_3a
+    :goto_3b
     invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     const-string v3, "active"
@@ -2464,138 +2611,153 @@
     invoke-static {v1, v2}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 353
-    if-eqz p2, :cond_7c
+    if-eqz p2, :cond_7d
 
     .line 354
-    iget-object p2, p0, Lcom/android/server/backup/Trampoline;->mService:Lcom/android/server/backup/BackupManagerService;
+    iget-object v1, p0, Lcom/android/server/backup/Trampoline;->mService:Lcom/android/server/backup/BackupManagerService;
 
-    if-nez p2, :cond_55
+    if-nez v1, :cond_56
 
     .line 355
     invoke-virtual {p0}, Lcom/android/server/backup/Trampoline;->createBackupManagerService()Lcom/android/server/backup/BackupManagerService;
 
-    move-result-object p2
+    move-result-object v1
 
-    iput-object p2, p0, Lcom/android/server/backup/Trampoline;->mService:Lcom/android/server/backup/BackupManagerService;
-    :try_end_55
-    .catchall {:try_start_27 .. :try_end_55} :catchall_8d
+    iput-object v1, p0, Lcom/android/server/backup/Trampoline;->mService:Lcom/android/server/backup/BackupManagerService;
+    :try_end_56
+    .catchall {:try_start_27 .. :try_end_56} :catchall_8e
 
     .line 358
-    :cond_55
-    :try_start_55
+    :cond_56
+    :try_start_56
     invoke-direct {p0, p1}, Lcom/android/server/backup/Trampoline;->activateBackupForUserLocked(I)V
-    :try_end_58
-    .catch Ljava/io/IOException; {:try_start_55 .. :try_end_58} :catch_59
-    .catchall {:try_start_55 .. :try_end_58} :catchall_8d
+    :try_end_59
+    .catch Ljava/io/IOException; {:try_start_56 .. :try_end_59} :catch_5a
+    .catchall {:try_start_56 .. :try_end_59} :catchall_8e
 
     .line 361
-    goto :goto_61
+    goto :goto_62
 
     .line 359
-    :catch_59
-    move-exception p2
+    :catch_5a
+    move-exception v1
 
     .line 360
-    :try_start_5a
-    const-string p2, "BackupManagerService"
+    .local v1, "e":Ljava/io/IOException;
+    :try_start_5b
+    const-string v2, "BackupManagerService"
 
-    const-string v1, "Unable to persist backup service activity"
+    const-string v3, "Unable to persist backup service activity"
 
-    invoke-static {p2, v1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v2, v3}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 365
-    :goto_61
+    .end local v1  # "e":Ljava/io/IOException;
+    :goto_62
     invoke-virtual {p0}, Lcom/android/server/backup/Trampoline;->getUserManager()Landroid/os/UserManager;
 
-    move-result-object p2
+    move-result-object v1
 
-    invoke-virtual {p2, p1}, Landroid/os/UserManager;->isUserUnlocked(I)Z
+    invoke-virtual {v1, p1}, Landroid/os/UserManager;->isUserUnlocked(I)Z
 
-    move-result p2
+    move-result v1
 
-    if-eqz p2, :cond_8b
+    if-eqz v1, :cond_8c
 
     .line 368
     invoke-static {}, Landroid/os/Binder;->clearCallingIdentity()J
 
     move-result-wide v1
-    :try_end_6f
-    .catchall {:try_start_5a .. :try_end_6f} :catchall_8d
+    :try_end_70
+    .catchall {:try_start_5b .. :try_end_70} :catchall_8e
 
     .line 370
-    :try_start_6f
+    .local v1, "oldId":J
+    :try_start_70
     invoke-direct {p0, p1}, Lcom/android/server/backup/Trampoline;->startServiceForUser(I)V
-    :try_end_72
-    .catchall {:try_start_6f .. :try_end_72} :catchall_77
+    :try_end_73
+    .catchall {:try_start_70 .. :try_end_73} :catchall_78
 
     .line 372
-    :try_start_72
+    :try_start_73
     invoke-static {v1, v2}, Landroid/os/Binder;->restoreCallingIdentity(J)V
 
     .line 373
     nop
 
     .line 374
-    goto :goto_8b
+    .end local v1  # "oldId":J
+    goto :goto_8c
 
     .line 372
-    :catchall_77
-    move-exception p1
+    .restart local v1  # "oldId":J
+    :catchall_78
+    move-exception v3
 
     invoke-static {v1, v2}, Landroid/os/Binder;->restoreCallingIdentity(J)V
 
-    throw p1
-    :try_end_7c
-    .catchall {:try_start_72 .. :try_end_7c} :catchall_8d
+    .end local p0  # "this":Lcom/android/server/backup/Trampoline;
+    .end local p1  # "userId":I
+    .end local p2  # "makeActive":Z
+    throw v3
+    :try_end_7d
+    .catchall {:try_start_73 .. :try_end_7d} :catchall_8e
 
     .line 378
-    :cond_7c
-    :try_start_7c
+    .end local v1  # "oldId":J
+    .restart local p0  # "this":Lcom/android/server/backup/Trampoline;
+    .restart local p1  # "userId":I
+    .restart local p2  # "makeActive":Z
+    :cond_7d
+    :try_start_7d
     invoke-direct {p0, p1}, Lcom/android/server/backup/Trampoline;->deactivateBackupForUserLocked(I)V
-    :try_end_7f
-    .catch Ljava/io/IOException; {:try_start_7c .. :try_end_7f} :catch_80
-    .catchall {:try_start_7c .. :try_end_7f} :catchall_8d
+    :try_end_80
+    .catch Ljava/io/IOException; {:try_start_7d .. :try_end_80} :catch_81
+    .catchall {:try_start_7d .. :try_end_80} :catchall_8e
 
     .line 381
-    goto :goto_88
+    goto :goto_89
 
     .line 379
-    :catch_80
-    move-exception p2
+    :catch_81
+    move-exception v1
 
     .line 380
-    :try_start_81
-    const-string p2, "BackupManagerService"
+    .local v1, "e":Ljava/io/IOException;
+    :try_start_82
+    const-string v2, "BackupManagerService"
 
-    const-string v1, "Unable to persist backup service inactivity"
+    const-string v3, "Unable to persist backup service inactivity"
 
-    invoke-static {p2, v1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v2, v3}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 384
-    :goto_88
+    .end local v1  # "e":Ljava/io/IOException;
+    :goto_89
     invoke-virtual {p0, p1}, Lcom/android/server/backup/Trampoline;->stopUser(I)V
 
     .line 386
-    :cond_8b
-    :goto_8b
+    :cond_8c
+    :goto_8c
     monitor-exit v0
 
     .line 387
     return-void
 
     .line 386
-    :catchall_8d
-    move-exception p1
+    :catchall_8e
+    move-exception v1
 
     monitor-exit v0
-    :try_end_8f
-    .catchall {:try_start_81 .. :try_end_8f} :catchall_8d
+    :try_end_90
+    .catchall {:try_start_82 .. :try_end_90} :catchall_8e
 
-    throw p1
+    throw v1
 .end method
 
 .method stopUser(I)V
     .registers 3
+    .param p1, "userId"  # I
 
     .line 287
     new-instance v0, Lcom/android/server/backup/-$$Lambda$Trampoline$a6uexAeN8zHcMQQ9h_KZ71UQV_A;
@@ -2610,6 +2772,7 @@
 
 .method unlockUser(I)V
     .registers 3
+    .param p1, "userId"  # I
 
     .line 270
     new-instance v0, Lcom/android/server/backup/-$$Lambda$Trampoline$_vkvTSe7bkLYa64kIjWjqjTHe7E;
@@ -2623,35 +2786,50 @@
 .end method
 
 .method public updateTransportAttributesForUser(ILandroid/content/ComponentName;Ljava/lang/String;Landroid/content/Intent;Ljava/lang/String;Landroid/content/Intent;Ljava/lang/CharSequence;)V
-    .registers 16
+    .registers 17
+    .param p1, "userId"  # I
+    .param p2, "transportComponent"  # Landroid/content/ComponentName;
+    .param p3, "name"  # Ljava/lang/String;
+    .param p4, "configurationIntent"  # Landroid/content/Intent;
+    .param p5, "currentDestinationString"  # Ljava/lang/String;
+    .param p6, "dataManagementIntent"  # Landroid/content/Intent;
+    .param p7, "dataManagementLabel"  # Ljava/lang/CharSequence;
 
     .line 637
     invoke-direct {p0, p1}, Lcom/android/server/backup/Trampoline;->isUserReadyForBackup(I)Z
 
     move-result v0
 
-    if-eqz v0, :cond_12
+    if-eqz v0, :cond_15
 
     .line 638
-    iget-object v0, p0, Lcom/android/server/backup/Trampoline;->mService:Lcom/android/server/backup/BackupManagerService;
+    move-object v0, p0
 
-    move v1, p1
+    iget-object v1, v0, Lcom/android/server/backup/Trampoline;->mService:Lcom/android/server/backup/BackupManagerService;
 
-    move-object v2, p2
+    move v2, p1
 
-    move-object v3, p3
+    move-object v3, p2
 
-    move-object v4, p4
+    move-object v4, p3
 
-    move-object v5, p5
+    move-object v5, p4
 
-    move-object v6, p6
+    move-object v6, p5
 
-    move-object v7, p7
+    move-object v7, p6
 
-    invoke-virtual/range {v0 .. v7}, Lcom/android/server/backup/BackupManagerService;->updateTransportAttributes(ILandroid/content/ComponentName;Ljava/lang/String;Landroid/content/Intent;Ljava/lang/String;Landroid/content/Intent;Ljava/lang/CharSequence;)V
+    move-object/from16 v8, p7
+
+    invoke-virtual/range {v1 .. v8}, Lcom/android/server/backup/BackupManagerService;->updateTransportAttributes(ILandroid/content/ComponentName;Ljava/lang/String;Landroid/content/Intent;Ljava/lang/String;Landroid/content/Intent;Ljava/lang/CharSequence;)V
+
+    goto :goto_16
+
+    .line 637
+    :cond_15
+    move-object v0, p0
 
     .line 647
-    :cond_12
+    :goto_16
     return-void
 .end method

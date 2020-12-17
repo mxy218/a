@@ -28,7 +28,8 @@
 .end method
 
 .method public getEncodedLengthOfChunk(Lcom/android/server/backup/encryption/chunking/EncryptedChunk;)I
-    .registers 3
+    .registers 4
+    .param p1, "chunk"  # Lcom/android/server/backup/encryption/chunking/EncryptedChunk;
 
     .line 43
     invoke-virtual {p1}, Lcom/android/server/backup/encryption/chunking/EncryptedChunk;->nonce()[B
@@ -39,17 +40,19 @@
 
     invoke-virtual {p1}, Lcom/android/server/backup/encryption/chunking/EncryptedChunk;->encryptedBytes()[B
 
-    move-result-object p1
+    move-result-object v1
 
-    array-length p1, p1
+    array-length v1, v1
 
-    add-int/2addr v0, p1
+    add-int/2addr v0, v1
 
     return v0
 .end method
 
 .method public writeChunkToWriter(Lcom/android/server/backup/encryption/chunking/BackupWriter;Lcom/android/server/backup/encryption/chunking/EncryptedChunk;)V
     .registers 4
+    .param p1, "writer"  # Lcom/android/server/backup/encryption/chunking/BackupWriter;
+    .param p2, "chunk"  # Lcom/android/server/backup/encryption/chunking/EncryptedChunk;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Ljava/io/IOException;
@@ -66,9 +69,9 @@
     .line 38
     invoke-virtual {p2}, Lcom/android/server/backup/encryption/chunking/EncryptedChunk;->encryptedBytes()[B
 
-    move-result-object p2
+    move-result-object v0
 
-    invoke-interface {p1, p2}, Lcom/android/server/backup/encryption/chunking/BackupWriter;->writeBytes([B)V
+    invoke-interface {p1, v0}, Lcom/android/server/backup/encryption/chunking/BackupWriter;->writeBytes([B)V
 
     .line 39
     return-void

@@ -18,7 +18,7 @@
 .method private constructor <init>()V
     .registers 1
 
-    .line 241
+    .line 230
     invoke-direct {p0}, Landroid/os/Binder;-><init>()V
 
     return-void
@@ -26,8 +26,9 @@
 
 .method synthetic constructor <init>(Lcom/android/server/statusbar/StatusBarShellCommand$1;)V
     .registers 2
+    .param p1, "x0"  # Lcom/android/server/statusbar/StatusBarShellCommand$1;
 
-    .line 241
+    .line 230
     invoke-direct {p0}, Lcom/android/server/statusbar/StatusBarShellCommand$StatusBarShellCommandToken;-><init>()V
 
     return-void

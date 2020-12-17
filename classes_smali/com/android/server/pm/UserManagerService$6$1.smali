@@ -21,8 +21,9 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/pm/UserManagerService$6;)V
     .registers 2
+    .param p1, "this$1"  # Lcom/android/server/pm/UserManagerService$6;
 
-    .line 3284
+    .line 3107
     iput-object p1, p0, Lcom/android/server/pm/UserManagerService$6$1;->this$1:Lcom/android/server/pm/UserManagerService$6;
 
     invoke-direct {p0}, Ljava/lang/Thread;-><init>()V
@@ -35,7 +36,7 @@
 .method public run()V
     .registers 3
 
-    .line 3288
+    .line 3111
     const-class v0, Lcom/android/server/wm/ActivityTaskManagerInternal;
 
     invoke-static {v0}, Lcom/android/server/LocalServices;->getService(Ljava/lang/Class;)Ljava/lang/Object;
@@ -48,10 +49,10 @@
 
     iget v1, v1, Lcom/android/server/pm/UserManagerService$6;->val$userHandle:I
 
-    .line 3289
+    .line 3112
     invoke-virtual {v0, v1}, Lcom/android/server/wm/ActivityTaskManagerInternal;->onUserStopped(I)V
 
-    .line 3290
+    .line 3113
     iget-object v0, p0, Lcom/android/server/pm/UserManagerService$6$1;->this$1:Lcom/android/server/pm/UserManagerService$6;
 
     iget-object v0, v0, Lcom/android/server/pm/UserManagerService$6;->this$0:Lcom/android/server/pm/UserManagerService;
@@ -60,8 +61,8 @@
 
     iget v1, v1, Lcom/android/server/pm/UserManagerService$6;->val$userHandle:I
 
-    invoke-static {v0, v1}, Lcom/android/server/pm/UserManagerService;->access$1000(Lcom/android/server/pm/UserManagerService;I)V
+    invoke-static {v0, v1}, Lcom/android/server/pm/UserManagerService;->access$900(Lcom/android/server/pm/UserManagerService;I)V
 
-    .line 3291
+    .line 3114
     return-void
 .end method

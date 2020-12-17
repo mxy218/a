@@ -66,7 +66,9 @@
 
 # virtual methods
 .method public onChange(ZLandroid/net/Uri;)V
-    .registers 3
+    .registers 4
+    .param p1, "selfChange"  # Z
+    .param p2, "uri"  # Landroid/net/Uri;
 
     .line 130
     if-nez p2, :cond_3
@@ -76,23 +78,23 @@
 
     .line 134
     :cond_3
-    iget-object p1, p0, Lcom/android/server/gpu/GpuService$SettingsObserver;->mGameDriverBlackUri:Landroid/net/Uri;
+    iget-object v0, p0, Lcom/android/server/gpu/GpuService$SettingsObserver;->mGameDriverBlackUri:Landroid/net/Uri;
 
-    invoke-virtual {p1, p2}, Landroid/net/Uri;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v0, p2}, Landroid/net/Uri;->equals(Ljava/lang/Object;)Z
 
-    move-result p1
+    move-result v0
 
-    if-eqz p1, :cond_15
+    if-eqz v0, :cond_15
 
     .line 135
-    iget-object p1, p0, Lcom/android/server/gpu/GpuService$SettingsObserver;->this$0:Lcom/android/server/gpu/GpuService;
+    iget-object v0, p0, Lcom/android/server/gpu/GpuService$SettingsObserver;->this$0:Lcom/android/server/gpu/GpuService;
 
-    invoke-static {p1}, Lcom/android/server/gpu/GpuService;->access$200(Lcom/android/server/gpu/GpuService;)V
+    invoke-static {v0}, Lcom/android/server/gpu/GpuService;->access$200(Lcom/android/server/gpu/GpuService;)V
 
     .line 136
-    iget-object p1, p0, Lcom/android/server/gpu/GpuService$SettingsObserver;->this$0:Lcom/android/server/gpu/GpuService;
+    iget-object v0, p0, Lcom/android/server/gpu/GpuService$SettingsObserver;->this$0:Lcom/android/server/gpu/GpuService;
 
-    invoke-static {p1}, Lcom/android/server/gpu/GpuService;->access$300(Lcom/android/server/gpu/GpuService;)V
+    invoke-static {v0}, Lcom/android/server/gpu/GpuService;->access$300(Lcom/android/server/gpu/GpuService;)V
 
     .line 138
     :cond_15

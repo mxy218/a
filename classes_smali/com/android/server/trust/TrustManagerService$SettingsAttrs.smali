@@ -23,6 +23,8 @@
 # direct methods
 .method public constructor <init>(Landroid/content/ComponentName;Z)V
     .registers 3
+    .param p1, "componentName"  # Landroid/content/ComponentName;
+    .param p2, "canUnlockProfile"  # Z
 
     .line 1426
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V

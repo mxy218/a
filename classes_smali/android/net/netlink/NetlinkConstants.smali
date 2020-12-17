@@ -64,53 +64,57 @@
 .end method
 
 .method public static final alignedLengthOf(I)I
-    .registers 1
+    .registers 2
+    .param p0, "length"  # I
 
     .line 46
     if-gtz p0, :cond_4
 
-    const/4 p0, 0x0
+    const/4 v0, 0x0
 
-    return p0
+    return v0
 
     .line 47
     :cond_4
-    add-int/lit8 p0, p0, 0x4
+    add-int/lit8 v0, p0, 0x4
 
-    add-int/lit8 p0, p0, -0x1
+    add-int/lit8 v0, v0, -0x1
 
-    div-int/lit8 p0, p0, 0x4
+    div-int/lit8 v0, v0, 0x4
 
-    mul-int/lit8 p0, p0, 0x4
+    mul-int/lit8 v0, v0, 0x4
 
-    return p0
+    return v0
 .end method
 
 .method public static final alignedLengthOf(S)I
-    .registers 2
+    .registers 3
+    .param p0, "length"  # S
 
     .line 41
     const v0, 0xffff
 
-    and-int/2addr p0, v0
+    and-int/2addr v0, p0
 
     .line 42
-    invoke-static {p0}, Landroid/net/netlink/NetlinkConstants;->alignedLengthOf(I)I
+    .local v0, "intLength":I
+    invoke-static {v0}, Landroid/net/netlink/NetlinkConstants;->alignedLengthOf(I)I
 
-    move-result p0
+    move-result v1
 
-    return p0
+    return v1
 .end method
 
 .method public static hexify(Ljava/nio/ByteBuffer;)Ljava/lang/String;
-    .registers 3
+    .registers 4
+    .param p0, "buffer"  # Ljava/nio/ByteBuffer;
 
     .line 69
     if-nez p0, :cond_5
 
-    const-string p0, "(null)"
+    const-string v0, "(null)"
 
-    return-object p0
+    return-object v0
 
     .line 70
     :cond_5
@@ -127,46 +131,48 @@
 
     invoke-virtual {p0}, Ljava/nio/ByteBuffer;->remaining()I
 
-    move-result p0
+    move-result v2
 
     .line 70
-    invoke-static {v0, v1, p0}, Lcom/android/internal/util/HexDump;->toHexString([BII)Ljava/lang/String;
+    invoke-static {v0, v1, v2}, Lcom/android/internal/util/HexDump;->toHexString([BII)Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v0
 
-    return-object p0
+    return-object v0
 .end method
 
 .method public static hexify([B)Ljava/lang/String;
-    .registers 1
+    .registers 2
+    .param p0, "bytes"  # [B
 
     .line 64
     if-nez p0, :cond_5
 
-    const-string p0, "(null)"
+    const-string v0, "(null)"
 
-    return-object p0
+    return-object v0
 
     .line 65
     :cond_5
     invoke-static {p0}, Lcom/android/internal/util/HexDump;->toHexString([B)Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v0
 
-    return-object p0
+    return-object v0
 .end method
 
 .method public static stringForAddressFamily(I)Ljava/lang/String;
     .registers 2
+    .param p0, "family"  # I
 
     .line 51
     sget v0, Landroid/system/OsConstants;->AF_INET:I
 
     if-ne p0, v0, :cond_7
 
-    const-string p0, "AF_INET"
+    const-string v0, "AF_INET"
 
-    return-object p0
+    return-object v0
 
     .line 52
     :cond_7
@@ -174,9 +180,9 @@
 
     if-ne p0, v0, :cond_e
 
-    const-string p0, "AF_INET6"
+    const-string v0, "AF_INET6"
 
-    return-object p0
+    return-object v0
 
     .line 53
     :cond_e
@@ -184,21 +190,22 @@
 
     if-ne p0, v0, :cond_15
 
-    const-string p0, "AF_NETLINK"
+    const-string v0, "AF_NETLINK"
 
-    return-object p0
+    return-object v0
 
     .line 54
     :cond_15
     invoke-static {p0}, Ljava/lang/String;->valueOf(I)Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v0
 
-    return-object p0
+    return-object v0
 .end method
 
 .method public static stringForNlMsgType(S)Ljava/lang/String;
     .registers 3
+    .param p0, "nlm_type"  # S
 
     .line 103
     const/4 v0, 0x1
@@ -240,141 +247,141 @@
 
     invoke-static {p0}, Ljava/lang/String;->valueOf(I)Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v1
 
-    invoke-virtual {v0, p0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v0
 
-    return-object p0
+    return-object v0
 
     .line 123
     :pswitch_33  #0x22
-    const-string p0, "RTM_GETRULE"
+    const-string v0, "RTM_GETRULE"
 
-    return-object p0
+    return-object v0
 
     .line 122
     :pswitch_36  #0x21
-    const-string p0, "RTM_DELRULE"
+    const-string v0, "RTM_DELRULE"
 
-    return-object p0
+    return-object v0
 
     .line 121
     :pswitch_39  #0x20
-    const-string p0, "RTM_NEWRULE"
+    const-string v0, "RTM_NEWRULE"
 
-    return-object p0
+    return-object v0
 
     .line 120
     :pswitch_3c  #0x1e
-    const-string p0, "RTM_GETNEIGH"
+    const-string v0, "RTM_GETNEIGH"
 
-    return-object p0
+    return-object v0
 
     .line 119
     :pswitch_3f  #0x1d
-    const-string p0, "RTM_DELNEIGH"
+    const-string v0, "RTM_DELNEIGH"
 
-    return-object p0
+    return-object v0
 
     .line 118
     :pswitch_42  #0x1c
-    const-string p0, "RTM_NEWNEIGH"
+    const-string v0, "RTM_NEWNEIGH"
 
-    return-object p0
+    return-object v0
 
     .line 117
     :pswitch_45  #0x1a
-    const-string p0, "RTM_GETROUTE"
+    const-string v0, "RTM_GETROUTE"
 
-    return-object p0
+    return-object v0
 
     .line 116
     :pswitch_48  #0x19
-    const-string p0, "RTM_DELROUTE"
+    const-string v0, "RTM_DELROUTE"
 
-    return-object p0
+    return-object v0
 
     .line 115
     :pswitch_4b  #0x18
-    const-string p0, "RTM_NEWROUTE"
+    const-string v0, "RTM_NEWROUTE"
 
-    return-object p0
+    return-object v0
 
     .line 114
     :pswitch_4e  #0x16
-    const-string p0, "RTM_GETADDR"
+    const-string v0, "RTM_GETADDR"
 
-    return-object p0
+    return-object v0
 
     .line 113
     :pswitch_51  #0x15
-    const-string p0, "RTM_DELADDR"
+    const-string v0, "RTM_DELADDR"
 
-    return-object p0
+    return-object v0
 
     .line 112
     :pswitch_54  #0x14
-    const-string p0, "RTM_NEWADDR"
+    const-string v0, "RTM_NEWADDR"
 
-    return-object p0
+    return-object v0
 
     .line 111
     :pswitch_57  #0x13
-    const-string p0, "RTM_SETLINK"
+    const-string v0, "RTM_SETLINK"
 
-    return-object p0
+    return-object v0
 
     .line 110
     :pswitch_5a  #0x12
-    const-string p0, "RTM_GETLINK"
+    const-string v0, "RTM_GETLINK"
 
-    return-object p0
+    return-object v0
 
     .line 109
     :pswitch_5d  #0x11
-    const-string p0, "RTM_DELLINK"
+    const-string v0, "RTM_DELLINK"
 
-    return-object p0
+    return-object v0
 
     .line 108
     :pswitch_60  #0x10
-    const-string p0, "RTM_NEWLINK"
+    const-string v0, "RTM_NEWLINK"
 
-    return-object p0
+    return-object v0
 
     .line 124
     :cond_63
-    const-string p0, "RTM_NEWNDUSEROPT"
+    const-string v0, "RTM_NEWNDUSEROPT"
 
-    return-object p0
+    return-object v0
 
     .line 107
     :cond_66
-    const-string p0, "NLMSG_OVERRUN"
+    const-string v0, "NLMSG_OVERRUN"
 
-    return-object p0
+    return-object v0
 
     .line 106
     :cond_69
-    const-string p0, "NLMSG_DONE"
+    const-string v0, "NLMSG_DONE"
 
-    return-object p0
+    return-object v0
 
     .line 105
     :cond_6c
-    const-string p0, "NLMSG_ERROR"
+    const-string v0, "NLMSG_ERROR"
 
-    return-object p0
+    return-object v0
 
     .line 104
     :cond_6f
-    const-string p0, "NLMSG_NOOP"
+    const-string v0, "NLMSG_NOOP"
 
-    return-object p0
+    return-object v0
 
     :pswitch_data_72
     .packed-switch 0x10
@@ -411,15 +418,16 @@
 
 .method public static stringForProtocol(I)Ljava/lang/String;
     .registers 2
+    .param p0, "protocol"  # I
 
     .line 58
     sget v0, Landroid/system/OsConstants;->IPPROTO_TCP:I
 
     if-ne p0, v0, :cond_7
 
-    const-string p0, "IPPROTO_TCP"
+    const-string v0, "IPPROTO_TCP"
 
-    return-object p0
+    return-object v0
 
     .line 59
     :cond_7
@@ -427,15 +435,15 @@
 
     if-ne p0, v0, :cond_e
 
-    const-string p0, "IPPROTO_UDP"
+    const-string v0, "IPPROTO_UDP"
 
-    return-object p0
+    return-object v0
 
     .line 60
     :cond_e
     invoke-static {p0}, Ljava/lang/String;->valueOf(I)Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v0
 
-    return-object p0
+    return-object v0
 .end method

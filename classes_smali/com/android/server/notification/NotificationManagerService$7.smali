@@ -21,8 +21,9 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/notification/NotificationManagerService;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/notification/NotificationManagerService;
 
-    .line 1699
+    .line 1772
     iput-object p1, p0, Lcom/android/server/notification/NotificationManagerService$7;->this$0:Lcom/android/server/notification/NotificationManagerService;
 
     invoke-direct {p0}, Lcom/android/server/notification/ZenModeHelper$Callback;-><init>()V
@@ -35,49 +36,49 @@
 .method public onConfigChanged()V
     .registers 2
 
-    .line 1702
+    .line 1775
     iget-object v0, p0, Lcom/android/server/notification/NotificationManagerService$7;->this$0:Lcom/android/server/notification/NotificationManagerService;
 
     invoke-virtual {v0}, Lcom/android/server/notification/NotificationManagerService;->handleSavePolicyFile()V
 
-    .line 1703
+    .line 1776
     return-void
 .end method
 
 .method onPolicyChanged()V
     .registers 3
 
-    .line 1721
+    .line 1793
     iget-object v0, p0, Lcom/android/server/notification/NotificationManagerService$7;->this$0:Lcom/android/server/notification/NotificationManagerService;
 
     const-string v1, "android.app.action.NOTIFICATION_POLICY_CHANGED"
 
-    invoke-static {v0, v1}, Lcom/android/server/notification/NotificationManagerService;->access$2800(Lcom/android/server/notification/NotificationManagerService;Ljava/lang/String;)V
+    invoke-static {v0, v1}, Lcom/android/server/notification/NotificationManagerService;->access$2700(Lcom/android/server/notification/NotificationManagerService;Ljava/lang/String;)V
 
-    .line 1722
+    .line 1794
     iget-object v0, p0, Lcom/android/server/notification/NotificationManagerService$7;->this$0:Lcom/android/server/notification/NotificationManagerService;
 
-    invoke-static {v0}, Lcom/android/server/notification/NotificationManagerService;->access$3000(Lcom/android/server/notification/NotificationManagerService;)Lcom/android/server/notification/RankingHandler;
+    invoke-static {v0}, Lcom/android/server/notification/NotificationManagerService;->access$2900(Lcom/android/server/notification/NotificationManagerService;)Lcom/android/server/notification/RankingHandler;
 
     move-result-object v0
 
     invoke-interface {v0}, Lcom/android/server/notification/RankingHandler;->requestSort()V
 
-    .line 1723
+    .line 1795
     return-void
 .end method
 
 .method onZenModeChanged()V
     .registers 5
 
-    .line 1707
+    .line 1780
     iget-object v0, p0, Lcom/android/server/notification/NotificationManagerService$7;->this$0:Lcom/android/server/notification/NotificationManagerService;
 
     const-string v1, "android.app.action.INTERRUPTION_FILTER_CHANGED"
 
-    invoke-static {v0, v1}, Lcom/android/server/notification/NotificationManagerService;->access$2800(Lcom/android/server/notification/NotificationManagerService;Ljava/lang/String;)V
+    invoke-static {v0, v1}, Lcom/android/server/notification/NotificationManagerService;->access$2700(Lcom/android/server/notification/NotificationManagerService;Ljava/lang/String;)V
 
-    .line 1708
+    .line 1781
     iget-object v0, p0, Lcom/android/server/notification/NotificationManagerService$7;->this$0:Lcom/android/server/notification/NotificationManagerService;
 
     invoke-virtual {v0}, Lcom/android/server/notification/NotificationManagerService;->getContext()Landroid/content/Context;
@@ -90,7 +91,7 @@
 
     invoke-direct {v1, v2}, Landroid/content/Intent;-><init>(Ljava/lang/String;)V
 
-    .line 1710
+    .line 1783
     const/high16 v2, 0x4000000
 
     invoke-virtual {v1, v2}, Landroid/content/Intent;->addFlags(I)Landroid/content/Intent;
@@ -99,66 +100,49 @@
 
     sget-object v2, Landroid/os/UserHandle;->ALL:Landroid/os/UserHandle;
 
-    .line 1708
+    .line 1781
     const-string v3, "android.permission.MANAGE_NOTIFICATIONS"
 
     invoke-virtual {v0, v1, v2, v3}, Landroid/content/Context;->sendBroadcastAsUser(Landroid/content/Intent;Landroid/os/UserHandle;Ljava/lang/String;)V
 
-    .line 1712
-    iget-object v0, p0, Lcom/android/server/notification/NotificationManagerService$7;->this$0:Lcom/android/server/notification/NotificationManagerService;
-
-    invoke-static {v0}, Lcom/android/server/notification/NotificationManagerService;->access$2300(Lcom/android/server/notification/NotificationManagerService;)Lorg/lineageos/internal/notification/LineageNotificationLights;
-
-    move-result-object v0
-
-    iget-object v1, p0, Lcom/android/server/notification/NotificationManagerService$7;->this$0:Lcom/android/server/notification/NotificationManagerService;
-
-    iget-object v1, v1, Lcom/android/server/notification/NotificationManagerService;->mZenModeHelper:Lcom/android/server/notification/ZenModeHelper;
-
-    invoke-virtual {v1}, Lcom/android/server/notification/ZenModeHelper;->getZenMode()I
-
-    move-result v1
-
-    invoke-virtual {v0, v1}, Lorg/lineageos/internal/notification/LineageNotificationLights;->setZenMode(I)V
-
-    .line 1713
+    .line 1785
     iget-object v0, p0, Lcom/android/server/notification/NotificationManagerService$7;->this$0:Lcom/android/server/notification/NotificationManagerService;
 
     iget-object v0, v0, Lcom/android/server/notification/NotificationManagerService;->mNotificationLock:Ljava/lang/Object;
 
     monitor-enter v0
 
-    .line 1714
-    :try_start_37
+    .line 1786
+    :try_start_26
     iget-object v1, p0, Lcom/android/server/notification/NotificationManagerService$7;->this$0:Lcom/android/server/notification/NotificationManagerService;
 
-    invoke-static {v1}, Lcom/android/server/notification/NotificationManagerService;->access$2900(Lcom/android/server/notification/NotificationManagerService;)V
+    invoke-static {v1}, Lcom/android/server/notification/NotificationManagerService;->access$2800(Lcom/android/server/notification/NotificationManagerService;)V
 
-    .line 1715
+    .line 1787
     monitor-exit v0
-    :try_end_3d
-    .catchall {:try_start_37 .. :try_end_3d} :catchall_47
+    :try_end_2c
+    .catchall {:try_start_26 .. :try_end_2c} :catchall_36
 
-    .line 1716
+    .line 1788
     iget-object v0, p0, Lcom/android/server/notification/NotificationManagerService$7;->this$0:Lcom/android/server/notification/NotificationManagerService;
 
-    invoke-static {v0}, Lcom/android/server/notification/NotificationManagerService;->access$3000(Lcom/android/server/notification/NotificationManagerService;)Lcom/android/server/notification/RankingHandler;
+    invoke-static {v0}, Lcom/android/server/notification/NotificationManagerService;->access$2900(Lcom/android/server/notification/NotificationManagerService;)Lcom/android/server/notification/RankingHandler;
 
     move-result-object v0
 
     invoke-interface {v0}, Lcom/android/server/notification/RankingHandler;->requestSort()V
 
-    .line 1717
+    .line 1789
     return-void
 
-    .line 1715
-    :catchall_47
+    .line 1787
+    :catchall_36
     move-exception v1
 
-    :try_start_48
+    :try_start_37
     monitor-exit v0
-    :try_end_49
-    .catchall {:try_start_48 .. :try_end_49} :catchall_47
+    :try_end_38
+    .catchall {:try_start_37 .. :try_end_38} :catchall_36
 
     throw v1
 .end method

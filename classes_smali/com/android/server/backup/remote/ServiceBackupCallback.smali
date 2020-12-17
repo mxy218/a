@@ -12,6 +12,8 @@
 # direct methods
 .method public constructor <init>(Landroid/app/backup/IBackupManager;I)V
     .registers 3
+    .param p1, "backupManager"  # Landroid/app/backup/IBackupManager;
+    .param p2, "token"  # I
 
     .line 34
     invoke-direct {p0}, Landroid/app/backup/IBackupCallback$Stub;-><init>()V
@@ -30,6 +32,7 @@
 # virtual methods
 .method public operationComplete(J)V
     .registers 5
+    .param p1, "result"  # J
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;

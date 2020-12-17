@@ -24,8 +24,9 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/DeviceIdleController;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/DeviceIdleController;
 
-    .line 607
+    .line 599
     iput-object p1, p0, Lcom/android/server/DeviceIdleController$2;->this$0:Lcom/android/server/DeviceIdleController;
 
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -38,12 +39,12 @@
 .method public onAlarm()V
     .registers 4
 
-    .line 610
+    .line 602
     iget-object v0, p0, Lcom/android/server/DeviceIdleController$2;->this$0:Lcom/android/server/DeviceIdleController;
 
     monitor-enter v0
 
-    .line 611
+    .line 603
     :try_start_3
     iget-object v1, p0, Lcom/android/server/DeviceIdleController$2;->this$0:Lcom/android/server/DeviceIdleController;
 
@@ -51,13 +52,13 @@
 
     invoke-virtual {v1, v2}, Lcom/android/server/DeviceIdleController;->stepLightIdleStateLocked(Ljava/lang/String;)V
 
-    .line 612
+    .line 604
     monitor-exit v0
 
-    .line 613
+    .line 605
     return-void
 
-    .line 612
+    .line 604
     :catchall_d
     move-exception v1
 

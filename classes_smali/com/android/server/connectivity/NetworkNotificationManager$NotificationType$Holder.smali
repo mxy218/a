@@ -30,7 +30,7 @@
 .method static constructor <clinit>()V
     .registers 1
 
-    .line 66
+    .line 68
     new-instance v0, Landroid/util/SparseArray;
 
     invoke-direct {v0}, Landroid/util/SparseArray;-><init>()V
@@ -43,7 +43,7 @@
 .method private constructor <init>()V
     .registers 1
 
-    .line 65
+    .line 67
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
     return-void
@@ -52,7 +52,7 @@
 .method static synthetic access$000()Landroid/util/SparseArray;
     .registers 1
 
-    .line 65
+    .line 67
     sget-object v0, Lcom/android/server/connectivity/NetworkNotificationManager$NotificationType$Holder;->sIdToTypeMap:Landroid/util/SparseArray;
 
     return-object v0

@@ -24,6 +24,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/policy/LegacyGlobalActions$BugReportAction;)V
     .registers 2
+    .param p1, "this$1"  # Lcom/android/server/policy/LegacyGlobalActions$BugReportAction;
 
     .line 366
     iput-object p1, p0, Lcom/android/server/policy/LegacyGlobalActions$BugReportAction$1;->this$1:Lcom/android/server/policy/LegacyGlobalActions$BugReportAction;

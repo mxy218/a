@@ -36,6 +36,7 @@
 
 .method synthetic constructor <init>(Lcom/android/server/accessibility/KeyEventDispatcher$1;)V
     .registers 2
+    .param p1, "x0"  # Lcom/android/server/accessibility/KeyEventDispatcher$1;
 
     .line 281
     invoke-direct {p0}, Lcom/android/server/accessibility/KeyEventDispatcher$PendingKeyEvent;-><init>()V

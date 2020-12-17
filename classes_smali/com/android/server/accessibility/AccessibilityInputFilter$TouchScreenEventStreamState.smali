@@ -55,7 +55,8 @@
 .end method
 
 .method public final shouldProcessMotionEvent(Landroid/view/MotionEvent;)Z
-    .registers 5
+    .registers 6
+    .param p1, "event"  # Landroid/view/MotionEvent;
 
     .line 640
     invoke-virtual {p1}, Landroid/view/MotionEvent;->isTouchEvent()Z
@@ -80,9 +81,9 @@
     :cond_d
     invoke-virtual {p1}, Landroid/view/MotionEvent;->getActionMasked()I
 
-    move-result p1
+    move-result v0
 
-    if-nez p1, :cond_14
+    if-nez v0, :cond_14
 
     move v1, v2
 
@@ -90,9 +91,9 @@
     iput-boolean v1, p0, Lcom/android/server/accessibility/AccessibilityInputFilter$TouchScreenEventStreamState;->mTouchSequenceStarted:Z
 
     .line 645
-    iget-boolean p1, p0, Lcom/android/server/accessibility/AccessibilityInputFilter$TouchScreenEventStreamState;->mTouchSequenceStarted:Z
+    iget-boolean v0, p0, Lcom/android/server/accessibility/AccessibilityInputFilter$TouchScreenEventStreamState;->mTouchSequenceStarted:Z
 
-    return p1
+    return v0
 
     .line 649
     :cond_19
@@ -107,11 +108,11 @@
     :cond_1e
     invoke-virtual {p1}, Landroid/view/MotionEvent;->getActionMasked()I
 
-    move-result p1
+    move-result v0
 
-    const/16 v0, 0x9
+    const/16 v3, 0x9
 
-    if-ne p1, v0, :cond_27
+    if-ne v0, v3, :cond_27
 
     move v1, v2
 
@@ -119,7 +120,7 @@
     iput-boolean v1, p0, Lcom/android/server/accessibility/AccessibilityInputFilter$TouchScreenEventStreamState;->mHoverSequenceStarted:Z
 
     .line 653
-    iget-boolean p1, p0, Lcom/android/server/accessibility/AccessibilityInputFilter$TouchScreenEventStreamState;->mHoverSequenceStarted:Z
+    iget-boolean v0, p0, Lcom/android/server/accessibility/AccessibilityInputFilter$TouchScreenEventStreamState;->mHoverSequenceStarted:Z
 
-    return p1
+    return v0
 .end method

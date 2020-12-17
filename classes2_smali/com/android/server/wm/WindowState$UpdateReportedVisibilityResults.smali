@@ -28,10 +28,10 @@
 .method constructor <init>()V
     .registers 2
 
-    .line 4865
+    .line 4768
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
-    .line 4869
+    .line 4772
     const/4 v0, 0x1
 
     iput-boolean v0, p0, Lcom/android/server/wm/WindowState$UpdateReportedVisibilityResults;->nowGone:Z
@@ -44,22 +44,22 @@
 .method reset()V
     .registers 2
 
-    .line 4872
+    .line 4775
     const/4 v0, 0x0
 
     iput v0, p0, Lcom/android/server/wm/WindowState$UpdateReportedVisibilityResults;->numInteresting:I
 
-    .line 4873
+    .line 4776
     iput v0, p0, Lcom/android/server/wm/WindowState$UpdateReportedVisibilityResults;->numVisible:I
 
-    .line 4874
+    .line 4777
     iput v0, p0, Lcom/android/server/wm/WindowState$UpdateReportedVisibilityResults;->numDrawn:I
 
-    .line 4875
+    .line 4778
     const/4 v0, 0x1
 
     iput-boolean v0, p0, Lcom/android/server/wm/WindowState$UpdateReportedVisibilityResults;->nowGone:Z
 
-    .line 4876
+    .line 4779
     return-void
 .end method

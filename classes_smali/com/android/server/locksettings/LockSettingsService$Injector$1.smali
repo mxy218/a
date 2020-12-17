@@ -26,8 +26,9 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/locksettings/LockSettingsService$Injector;Lcom/android/server/locksettings/LockSettingsStorage;)V
     .registers 3
+    .param p1, "this$0"  # Lcom/android/server/locksettings/LockSettingsService$Injector;
 
-    .line 388
+    .line 373
     iput-object p1, p0, Lcom/android/server/locksettings/LockSettingsService$Injector$1;->this$0:Lcom/android/server/locksettings/LockSettingsService$Injector;
 
     iput-object p2, p0, Lcom/android/server/locksettings/LockSettingsService$Injector$1;->val$storage:Lcom/android/server/locksettings/LockSettingsStorage;
@@ -40,9 +41,10 @@
 
 # virtual methods
 .method public initialize(Landroid/database/sqlite/SQLiteDatabase;)V
-    .registers 6
+    .registers 7
+    .param p1, "db"  # Landroid/database/sqlite/SQLiteDatabase;
 
-    .line 392
+    .line 377
     const/4 v0, 0x0
 
     const-string/jumbo v1, "ro.lockscreen.disable.default"
@@ -51,19 +53,20 @@
 
     move-result v1
 
-    .line 394
-    if-eqz v1, :cond_13
+    .line 379
+    .local v1, "lockScreenDisable":Z
+    if-eqz v1, :cond_14
 
-    .line 395
-    iget-object v1, p0, Lcom/android/server/locksettings/LockSettingsService$Injector$1;->val$storage:Lcom/android/server/locksettings/LockSettingsStorage;
+    .line 380
+    iget-object v2, p0, Lcom/android/server/locksettings/LockSettingsService$Injector$1;->val$storage:Lcom/android/server/locksettings/LockSettingsStorage;
 
-    const-string v2, "lockscreen.disabled"
+    const-string/jumbo v3, "lockscreen.disabled"
 
-    const-string v3, "1"
+    const-string v4, "1"
 
-    invoke-virtual {v1, p1, v2, v3, v0}, Lcom/android/server/locksettings/LockSettingsStorage;->writeKeyValue(Landroid/database/sqlite/SQLiteDatabase;Ljava/lang/String;Ljava/lang/String;I)V
+    invoke-virtual {v2, p1, v3, v4, v0}, Lcom/android/server/locksettings/LockSettingsStorage;->writeKeyValue(Landroid/database/sqlite/SQLiteDatabase;Ljava/lang/String;Ljava/lang/String;I)V
 
-    .line 397
-    :cond_13
+    .line 382
+    :cond_14
     return-void
 .end method

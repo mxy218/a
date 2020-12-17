@@ -24,6 +24,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/notification/EventConditionProvider;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/notification/EventConditionProvider;
 
     .line 333
     iput-object p1, p0, Lcom/android/server/notification/EventConditionProvider$4;->this$0:Lcom/android/server/notification/EventConditionProvider;

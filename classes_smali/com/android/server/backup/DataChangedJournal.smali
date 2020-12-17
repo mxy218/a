@@ -15,7 +15,9 @@
 
 # direct methods
 .method private static synthetic $closeResource(Ljava/lang/Throwable;Ljava/lang/AutoCloseable;)V
-    .registers 2
+    .registers 3
+    .param p0, "x0"  # Ljava/lang/Throwable;
+    .param p1, "x1"  # Ljava/lang/AutoCloseable;
 
     .line 65
     if-eqz p0, :cond_b
@@ -28,9 +30,9 @@
     goto :goto_e
 
     :catchall_6
-    move-exception p1
+    move-exception v0
 
-    invoke-virtual {p0, p1}, Ljava/lang/Throwable;->addSuppressed(Ljava/lang/Throwable;)V
+    invoke-virtual {p0, v0}, Ljava/lang/Throwable;->addSuppressed(Ljava/lang/Throwable;)V
 
     goto :goto_e
 
@@ -43,6 +45,7 @@
 
 .method constructor <init>(Ljava/io/File;)V
     .registers 2
+    .param p1, "file"  # Ljava/io/File;
 
     .line 51
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -55,7 +58,8 @@
 .end method
 
 .method static listJournals(Ljava/io/File;)Ljava/util/ArrayList;
-    .registers 6
+    .registers 7
+    .param p0, "journalDirectory"  # Ljava/io/File;
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(",
@@ -73,28 +77,31 @@
     invoke-direct {v0}, Ljava/util/ArrayList;-><init>()V
 
     .line 142
+    .local v0, "journals":Ljava/util/ArrayList;, "Ljava/util/ArrayList<Lcom/android/server/backup/DataChangedJournal;>;"
     invoke-virtual {p0}, Ljava/io/File;->listFiles()[Ljava/io/File;
 
-    move-result-object p0
+    move-result-object v1
 
-    array-length v1, p0
+    array-length v2, v1
 
-    const/4 v2, 0x0
+    const/4 v3, 0x0
 
     :goto_b
-    if-ge v2, v1, :cond_1a
+    if-ge v3, v2, :cond_1a
 
-    aget-object v3, p0, v2
+    aget-object v4, v1, v3
 
     .line 143
-    new-instance v4, Lcom/android/server/backup/DataChangedJournal;
+    .local v4, "file":Ljava/io/File;
+    new-instance v5, Lcom/android/server/backup/DataChangedJournal;
 
-    invoke-direct {v4, v3}, Lcom/android/server/backup/DataChangedJournal;-><init>(Ljava/io/File;)V
+    invoke-direct {v5, v4}, Lcom/android/server/backup/DataChangedJournal;-><init>(Ljava/io/File;)V
 
-    invoke-virtual {v0, v4}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
+    invoke-virtual {v0, v5}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
 
     .line 142
-    add-int/lit8 v2, v2, 0x1
+    .end local v4  # "file":Ljava/io/File;
+    add-int/lit8 v3, v3, 0x1
 
     goto :goto_b
 
@@ -105,6 +112,7 @@
 
 .method static newJournal(Ljava/io/File;)Lcom/android/server/backup/DataChangedJournal;
     .registers 4
+    .param p0, "journalDirectory"  # Ljava/io/File;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Ljava/io/IOException;
@@ -115,15 +123,15 @@
     new-instance v0, Lcom/android/server/backup/DataChangedJournal;
 
     .line 134
-    const-string v1, "journal"
+    const-string/jumbo v1, "journal"
 
     const/4 v2, 0x0
 
     invoke-static {v1, v2, p0}, Ljava/io/File;->createTempFile(Ljava/lang/String;Ljava/lang/String;Ljava/io/File;)Ljava/io/File;
 
-    move-result-object p0
+    move-result-object v1
 
-    invoke-direct {v0, p0}, Lcom/android/server/backup/DataChangedJournal;-><init>(Ljava/io/File;)V
+    invoke-direct {v0, v1}, Lcom/android/server/backup/DataChangedJournal;-><init>(Ljava/io/File;)V
 
     .line 133
     return-object v0
@@ -133,6 +141,7 @@
 # virtual methods
 .method public addPackage(Ljava/lang/String;)V
     .registers 5
+    .param p1, "packageName"  # Ljava/lang/String;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Ljava/io/IOException;
@@ -149,6 +158,7 @@
     invoke-direct {v0, v1, v2}, Ljava/io/RandomAccessFile;-><init>(Ljava/io/File;Ljava/lang/String;)V
 
     .line 63
+    .local v0, "out":Ljava/io/RandomAccessFile;
     :try_start_a
     invoke-virtual {v0}, Ljava/io/RandomAccessFile;->length()J
 
@@ -162,29 +172,37 @@
     .catchall {:try_start_a .. :try_end_14} :catchall_19
 
     .line 65
-    const/4 p1, 0x0
+    const/4 v1, 0x0
 
-    invoke-static {p1, v0}, Lcom/android/server/backup/DataChangedJournal;->$closeResource(Ljava/lang/Throwable;Ljava/lang/AutoCloseable;)V
+    invoke-static {v1, v0}, Lcom/android/server/backup/DataChangedJournal;->$closeResource(Ljava/lang/Throwable;Ljava/lang/AutoCloseable;)V
 
     .line 66
+    .end local v0  # "out":Ljava/io/RandomAccessFile;
     return-void
 
     .line 62
+    .restart local v0  # "out":Ljava/io/RandomAccessFile;
     :catchall_19
-    move-exception p1
+    move-exception v1
 
+    .end local v0  # "out":Ljava/io/RandomAccessFile;
+    .end local p0  # "this":Lcom/android/server/backup/DataChangedJournal;
+    .end local p1  # "packageName":Ljava/lang/String;
     :try_start_1a
-    throw p1
+    throw v1
     :try_end_1b
     .catchall {:try_start_1a .. :try_end_1b} :catchall_1b
 
     .line 65
+    .restart local v0  # "out":Ljava/io/RandomAccessFile;
+    .restart local p0  # "this":Lcom/android/server/backup/DataChangedJournal;
+    .restart local p1  # "packageName":Ljava/lang/String;
     :catchall_1b
-    move-exception v1
+    move-exception v2
 
-    invoke-static {p1, v0}, Lcom/android/server/backup/DataChangedJournal;->$closeResource(Ljava/lang/Throwable;Ljava/lang/AutoCloseable;)V
+    invoke-static {v1, v0}, Lcom/android/server/backup/DataChangedJournal;->$closeResource(Ljava/lang/Throwable;Ljava/lang/AutoCloseable;)V
 
-    throw v1
+    throw v2
 .end method
 
 .method public delete()Z
@@ -201,54 +219,61 @@
 .end method
 
 .method public equals(Ljava/lang/Object;)Z
-    .registers 4
+    .registers 6
+    .param p1, "object"  # Ljava/lang/Object;
 
     .line 109
     instance-of v0, p1, Lcom/android/server/backup/DataChangedJournal;
 
     const/4 v1, 0x0
 
-    if-eqz v0, :cond_1a
+    if-eqz v0, :cond_1b
 
     .line 110
-    check-cast p1, Lcom/android/server/backup/DataChangedJournal;
+    move-object v0, p1
+
+    check-cast v0, Lcom/android/server/backup/DataChangedJournal;
 
     .line 112
-    :try_start_7
-    iget-object v0, p0, Lcom/android/server/backup/DataChangedJournal;->mFile:Ljava/io/File;
+    .local v0, "that":Lcom/android/server/backup/DataChangedJournal;
+    :try_start_8
+    iget-object v2, p0, Lcom/android/server/backup/DataChangedJournal;->mFile:Ljava/io/File;
 
-    invoke-virtual {v0}, Ljava/io/File;->getCanonicalPath()Ljava/lang/String;
+    invoke-virtual {v2}, Ljava/io/File;->getCanonicalPath()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v2
 
-    iget-object p1, p1, Lcom/android/server/backup/DataChangedJournal;->mFile:Ljava/io/File;
+    iget-object v3, v0, Lcom/android/server/backup/DataChangedJournal;->mFile:Ljava/io/File;
 
-    invoke-virtual {p1}, Ljava/io/File;->getCanonicalPath()Ljava/lang/String;
+    invoke-virtual {v3}, Ljava/io/File;->getCanonicalPath()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v3
 
-    invoke-virtual {v0, p1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v2, v3}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result p1
-    :try_end_17
-    .catch Ljava/io/IOException; {:try_start_7 .. :try_end_17} :catch_18
+    move-result v1
+    :try_end_18
+    .catch Ljava/io/IOException; {:try_start_8 .. :try_end_18} :catch_19
 
-    return p1
+    return v1
 
     .line 113
-    :catch_18
-    move-exception p1
+    :catch_19
+    move-exception v2
 
     .line 114
+    .local v2, "exception":Ljava/io/IOException;
     return v1
 
     .line 117
-    :cond_1a
+    .end local v0  # "that":Lcom/android/server/backup/DataChangedJournal;
+    .end local v2  # "exception":Ljava/io/IOException;
+    :cond_1b
     return v1
 .end method
 
 .method public forEach(Ljava/util/function/Consumer;)V
-    .registers 5
+    .registers 6
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(",
@@ -265,6 +290,7 @@
     .end annotation
 
     .line 76
+    .local p1, "consumer":Ljava/util/function/Consumer;, "Ljava/util/function/Consumer<Ljava/lang/String;>;"
     new-instance v0, Ljava/io/BufferedInputStream;
 
     new-instance v1, Ljava/io/FileInputStream;
@@ -278,6 +304,7 @@
     invoke-direct {v0, v1, v2}, Ljava/io/BufferedInputStream;-><init>(Ljava/io/InputStream;I)V
 
     .line 75
+    .local v0, "bufferedInputStream":Ljava/io/BufferedInputStream;
     nop
 
     .line 78
@@ -289,6 +316,7 @@
     .catchall {:try_start_f .. :try_end_14} :catchall_32
 
     .line 75
+    .local v1, "dataInputStream":Ljava/io/DataInputStream;
     nop
 
     .line 80
@@ -306,63 +334,90 @@
     move-result-object v2
 
     .line 82
+    .local v2, "packageName":Ljava/lang/String;
     invoke-interface {p1, v2}, Ljava/util/function/Consumer;->accept(Ljava/lang/Object;)V
     :try_end_22
     .catchall {:try_start_15 .. :try_end_22} :catchall_2b
 
     .line 83
+    .end local v2  # "packageName":Ljava/lang/String;
     goto :goto_15
 
     .line 84
     :cond_23
-    const/4 p1, 0x0
+    const/4 v2, 0x0
 
     :try_start_24
-    invoke-static {p1, v1}, Lcom/android/server/backup/DataChangedJournal;->$closeResource(Ljava/lang/Throwable;Ljava/lang/AutoCloseable;)V
+    invoke-static {v2, v1}, Lcom/android/server/backup/DataChangedJournal;->$closeResource(Ljava/lang/Throwable;Ljava/lang/AutoCloseable;)V
     :try_end_27
     .catchall {:try_start_24 .. :try_end_27} :catchall_32
 
-    invoke-static {p1, v0}, Lcom/android/server/backup/DataChangedJournal;->$closeResource(Ljava/lang/Throwable;Ljava/lang/AutoCloseable;)V
+    .end local v1  # "dataInputStream":Ljava/io/DataInputStream;
+    invoke-static {v2, v0}, Lcom/android/server/backup/DataChangedJournal;->$closeResource(Ljava/lang/Throwable;Ljava/lang/AutoCloseable;)V
 
     .line 85
+    .end local v0  # "bufferedInputStream":Ljava/io/BufferedInputStream;
     return-void
 
     .line 75
+    .restart local v0  # "bufferedInputStream":Ljava/io/BufferedInputStream;
+    .restart local v1  # "dataInputStream":Ljava/io/DataInputStream;
     :catchall_2b
-    move-exception p1
+    move-exception v2
 
+    .end local v0  # "bufferedInputStream":Ljava/io/BufferedInputStream;
+    .end local v1  # "dataInputStream":Ljava/io/DataInputStream;
+    .end local p0  # "this":Lcom/android/server/backup/DataChangedJournal;
+    .end local p1  # "consumer":Ljava/util/function/Consumer;, "Ljava/util/function/Consumer<Ljava/lang/String;>;"
     :try_start_2c
-    throw p1
+    throw v2
     :try_end_2d
     .catchall {:try_start_2c .. :try_end_2d} :catchall_2d
 
     .line 84
+    .restart local v0  # "bufferedInputStream":Ljava/io/BufferedInputStream;
+    .restart local v1  # "dataInputStream":Ljava/io/DataInputStream;
+    .restart local p0  # "this":Lcom/android/server/backup/DataChangedJournal;
+    .restart local p1  # "consumer":Ljava/util/function/Consumer;, "Ljava/util/function/Consumer<Ljava/lang/String;>;"
     :catchall_2d
-    move-exception v2
+    move-exception v3
 
     :try_start_2e
-    invoke-static {p1, v1}, Lcom/android/server/backup/DataChangedJournal;->$closeResource(Ljava/lang/Throwable;Ljava/lang/AutoCloseable;)V
+    invoke-static {v2, v1}, Lcom/android/server/backup/DataChangedJournal;->$closeResource(Ljava/lang/Throwable;Ljava/lang/AutoCloseable;)V
 
-    throw v2
+    .end local v0  # "bufferedInputStream":Ljava/io/BufferedInputStream;
+    .end local p0  # "this":Lcom/android/server/backup/DataChangedJournal;
+    .end local p1  # "consumer":Ljava/util/function/Consumer;, "Ljava/util/function/Consumer<Ljava/lang/String;>;"
+    throw v3
     :try_end_32
     .catchall {:try_start_2e .. :try_end_32} :catchall_32
 
     .line 75
+    .end local v1  # "dataInputStream":Ljava/io/DataInputStream;
+    .restart local v0  # "bufferedInputStream":Ljava/io/BufferedInputStream;
+    .restart local p0  # "this":Lcom/android/server/backup/DataChangedJournal;
+    .restart local p1  # "consumer":Ljava/util/function/Consumer;, "Ljava/util/function/Consumer<Ljava/lang/String;>;"
     :catchall_32
-    move-exception p1
+    move-exception v1
 
+    .end local v0  # "bufferedInputStream":Ljava/io/BufferedInputStream;
+    .end local p0  # "this":Lcom/android/server/backup/DataChangedJournal;
+    .end local p1  # "consumer":Ljava/util/function/Consumer;, "Ljava/util/function/Consumer<Ljava/lang/String;>;"
     :try_start_33
-    throw p1
+    throw v1
     :try_end_34
     .catchall {:try_start_33 .. :try_end_34} :catchall_34
 
     .line 84
+    .restart local v0  # "bufferedInputStream":Ljava/io/BufferedInputStream;
+    .restart local p0  # "this":Lcom/android/server/backup/DataChangedJournal;
+    .restart local p1  # "consumer":Ljava/util/function/Consumer;, "Ljava/util/function/Consumer<Ljava/lang/String;>;"
     :catchall_34
-    move-exception v1
+    move-exception v2
 
-    invoke-static {p1, v0}, Lcom/android/server/backup/DataChangedJournal;->$closeResource(Ljava/lang/Throwable;Ljava/lang/AutoCloseable;)V
+    invoke-static {v1, v0}, Lcom/android/server/backup/DataChangedJournal;->$closeResource(Ljava/lang/Throwable;Ljava/lang/AutoCloseable;)V
 
-    throw v1
+    throw v2
 .end method
 
 .method public getPackages()Ljava/util/List;
@@ -388,6 +443,9 @@
     invoke-direct {v0}, Ljava/util/ArrayList;-><init>()V
 
     .line 94
+    .local v0, "packages":Ljava/util/List;, "Ljava/util/List<Ljava/lang/String;>;"
+    invoke-static {v0}, Ljava/util/Objects;->requireNonNull(Ljava/lang/Object;)Ljava/lang/Object;
+
     new-instance v1, Lcom/android/server/backup/-$$Lambda$NsJlXDEZZRYyD6JsbnCsdcb4L4A;
 
     invoke-direct {v1, v0}, Lcom/android/server/backup/-$$Lambda$NsJlXDEZZRYyD6JsbnCsdcb4L4A;-><init>(Ljava/util/List;)V

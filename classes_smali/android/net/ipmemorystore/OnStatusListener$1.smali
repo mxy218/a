@@ -43,6 +43,7 @@
 
 .method public onComplete(Landroid/net/ipmemorystore/StatusParcelable;)V
     .registers 4
+    .param p1, "statusParcelable"  # Landroid/net/ipmemorystore/StatusParcelable;
 
     .line 38
     iget-object v0, p0, Landroid/net/ipmemorystore/OnStatusListener$1;->val$listener:Landroid/net/ipmemorystore/OnStatusListener;

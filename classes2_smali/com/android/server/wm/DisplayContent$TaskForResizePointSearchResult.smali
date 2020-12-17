@@ -24,7 +24,7 @@
 .method constructor <init>()V
     .registers 1
 
-    .line 4034
+    .line 4059
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
     return-void
@@ -35,16 +35,16 @@
 .method reset()V
     .registers 2
 
-    .line 4039
+    .line 4064
     const/4 v0, 0x0
 
     iput-boolean v0, p0, Lcom/android/server/wm/DisplayContent$TaskForResizePointSearchResult;->searchDone:Z
 
-    .line 4040
+    .line 4065
     const/4 v0, 0x0
 
     iput-object v0, p0, Lcom/android/server/wm/DisplayContent$TaskForResizePointSearchResult;->taskForResize:Lcom/android/server/wm/Task;
 
-    .line 4041
+    .line 4066
     return-void
 .end method

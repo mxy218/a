@@ -21,6 +21,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/connectivity/tethering/EntitlementManager;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/connectivity/tethering/EntitlementManager;
 
     .line 492
     iput-object p1, p0, Lcom/android/server/connectivity/tethering/EntitlementManager$1;->this$0:Lcom/android/server/connectivity/tethering/EntitlementManager;
@@ -33,49 +34,53 @@
 
 # virtual methods
 .method public onReceive(Landroid/content/Context;Landroid/content/Intent;)V
-    .registers 3
+    .registers 5
+    .param p1, "context"  # Landroid/content/Context;
+    .param p2, "intent"  # Landroid/content/Intent;
 
     .line 495
     invoke-virtual {p2}, Landroid/content/Intent;->getAction()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    const-string p2, "com.android.server.connectivity.tethering.PROVISIONING_RECHECK_ALARM"
+    const-string v1, "com.android.server.connectivity.tethering.PROVISIONING_RECHECK_ALARM"
 
-    invoke-virtual {p2, p1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v1, v0}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result p1
+    move-result v0
 
-    if-eqz p1, :cond_26
+    if-eqz v0, :cond_26
 
     .line 496
-    iget-object p1, p0, Lcom/android/server/connectivity/tethering/EntitlementManager$1;->this$0:Lcom/android/server/connectivity/tethering/EntitlementManager;
+    iget-object v0, p0, Lcom/android/server/connectivity/tethering/EntitlementManager$1;->this$0:Lcom/android/server/connectivity/tethering/EntitlementManager;
 
-    invoke-static {p1}, Lcom/android/server/connectivity/tethering/EntitlementManager;->access$000(Lcom/android/server/connectivity/tethering/EntitlementManager;)Landroid/net/util/SharedLog;
+    invoke-static {v0}, Lcom/android/server/connectivity/tethering/EntitlementManager;->access$000(Lcom/android/server/connectivity/tethering/EntitlementManager;)Landroid/net/util/SharedLog;
 
-    move-result-object p1
+    move-result-object v0
 
-    const-string p2, "Received provisioning alarm"
+    const-string v1, "Received provisioning alarm"
 
-    invoke-virtual {p1, p2}, Landroid/net/util/SharedLog;->log(Ljava/lang/String;)V
+    invoke-virtual {v0, v1}, Landroid/net/util/SharedLog;->log(Ljava/lang/String;)V
 
     .line 497
-    iget-object p1, p0, Lcom/android/server/connectivity/tethering/EntitlementManager$1;->this$0:Lcom/android/server/connectivity/tethering/EntitlementManager;
+    iget-object v0, p0, Lcom/android/server/connectivity/tethering/EntitlementManager$1;->this$0:Lcom/android/server/connectivity/tethering/EntitlementManager;
 
-    invoke-static {p1}, Lcom/android/server/connectivity/tethering/EntitlementManager;->access$100(Lcom/android/server/connectivity/tethering/EntitlementManager;)Lcom/android/server/connectivity/tethering/EntitlementManager$TetheringConfigurationFetcher;
+    invoke-static {v0}, Lcom/android/server/connectivity/tethering/EntitlementManager;->access$100(Lcom/android/server/connectivity/tethering/EntitlementManager;)Lcom/android/server/connectivity/tethering/EntitlementManager$TetheringConfigurationFetcher;
 
-    move-result-object p1
+    move-result-object v0
 
-    invoke-interface {p1}, Lcom/android/server/connectivity/tethering/EntitlementManager$TetheringConfigurationFetcher;->fetchTetheringConfiguration()Lcom/android/server/connectivity/tethering/TetheringConfiguration;
+    invoke-interface {v0}, Lcom/android/server/connectivity/tethering/EntitlementManager$TetheringConfigurationFetcher;->fetchTetheringConfiguration()Lcom/android/server/connectivity/tethering/TetheringConfiguration;
 
-    move-result-object p1
+    move-result-object v0
 
     .line 498
-    iget-object p2, p0, Lcom/android/server/connectivity/tethering/EntitlementManager$1;->this$0:Lcom/android/server/connectivity/tethering/EntitlementManager;
+    .local v0, "config":Lcom/android/server/connectivity/tethering/TetheringConfiguration;
+    iget-object v1, p0, Lcom/android/server/connectivity/tethering/EntitlementManager$1;->this$0:Lcom/android/server/connectivity/tethering/EntitlementManager;
 
-    invoke-virtual {p2, p1}, Lcom/android/server/connectivity/tethering/EntitlementManager;->reevaluateSimCardProvisioning(Lcom/android/server/connectivity/tethering/TetheringConfiguration;)V
+    invoke-virtual {v1, v0}, Lcom/android/server/connectivity/tethering/EntitlementManager;->reevaluateSimCardProvisioning(Lcom/android/server/connectivity/tethering/TetheringConfiguration;)V
 
     .line 500
+    .end local v0  # "config":Lcom/android/server/connectivity/tethering/TetheringConfiguration;
     :cond_26
     return-void
 .end method

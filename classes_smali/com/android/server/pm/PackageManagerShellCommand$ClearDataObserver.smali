@@ -33,7 +33,9 @@
 
 # virtual methods
 .method public onRemoveCompleted(Ljava/lang/String;Z)V
-    .registers 3
+    .registers 4
+    .param p1, "packageName"  # Ljava/lang/String;
+    .param p2, "succeeded"  # Z
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -44,10 +46,10 @@
     monitor-enter p0
 
     .line 1756
-    const/4 p1, 0x1
+    const/4 v0, 0x1
 
     :try_start_2
-    iput-boolean p1, p0, Lcom/android/server/pm/PackageManagerShellCommand$ClearDataObserver;->finished:Z
+    iput-boolean v0, p0, Lcom/android/server/pm/PackageManagerShellCommand$ClearDataObserver;->finished:Z
 
     .line 1757
     iput-boolean p2, p0, Lcom/android/server/pm/PackageManagerShellCommand$ClearDataObserver;->result:Z
@@ -63,11 +65,11 @@
 
     .line 1759
     :catchall_b
-    move-exception p1
+    move-exception v0
 
     monitor-exit p0
     :try_end_d
     .catchall {:try_start_2 .. :try_end_d} :catchall_b
 
-    throw p1
+    throw v0
 .end method

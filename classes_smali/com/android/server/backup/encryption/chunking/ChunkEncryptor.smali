@@ -20,6 +20,8 @@
 # direct methods
 .method public constructor <init>(Ljavax/crypto/SecretKey;Ljava/security/SecureRandom;)V
     .registers 3
+    .param p1, "secretKey"  # Ljavax/crypto/SecretKey;
+    .param p2, "secureRandom"  # Ljava/security/SecureRandom;
 
     .line 44
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -43,6 +45,7 @@
     new-array v0, v0, [B
 
     .line 87
+    .local v0, "nonce":[B
     iget-object v1, p0, Lcom/android/server/backup/encryption/chunking/ChunkEncryptor;->mSecureRandom:Ljava/security/SecureRandom;
 
     invoke-virtual {v1, v0}, Ljava/security/SecureRandom;->nextBytes([B)V
@@ -55,6 +58,8 @@
 # virtual methods
 .method public encrypt(Lcom/android/server/backup/encryption/chunk/ChunkHash;[B)Lcom/android/server/backup/encryption/chunking/EncryptedChunk;
     .registers 9
+    .param p1, "plaintextHash"  # Lcom/android/server/backup/encryption/chunk/ChunkHash;
+    .param p2, "plaintext"  # [B
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Ljava/security/InvalidKeyException;,
@@ -68,6 +73,7 @@
     move-result-object v0
 
     .line 63
+    .local v0, "nonce":[B
     :try_start_4
     const-string v1, "AES/GCM/NoPadding"
 
@@ -76,6 +82,7 @@
     move-result-object v1
 
     .line 64
+    .local v1, "cipher":Ljavax/crypto/Cipher;
     const/4 v2, 0x1
 
     iget-object v3, p0, Lcom/android/server/backup/encryption/chunking/ChunkEncryptor;->mSecretKey:Ljavax/crypto/SecretKey;
@@ -99,41 +106,47 @@
     :try_start_18
     invoke-virtual {v1, p2}, Ljavax/crypto/Cipher;->doFinal([B)[B
 
-    move-result-object p2
+    move-result-object v2
     :try_end_1c
     .catch Ljavax/crypto/BadPaddingException; {:try_start_18 .. :try_end_1c} :catch_22
 
     .line 80
+    .local v2, "encryptedBytes":[B
     nop
 
     .line 82
-    invoke-static {p1, v0, p2}, Lcom/android/server/backup/encryption/chunking/EncryptedChunk;->create(Lcom/android/server/backup/encryption/chunk/ChunkHash;[B[B)Lcom/android/server/backup/encryption/chunking/EncryptedChunk;
+    invoke-static {p1, v0, v2}, Lcom/android/server/backup/encryption/chunking/EncryptedChunk;->create(Lcom/android/server/backup/encryption/chunk/ChunkHash;[B[B)Lcom/android/server/backup/encryption/chunking/EncryptedChunk;
 
-    move-result-object p1
+    move-result-object v3
 
-    return-object p1
+    return-object v3
 
     .line 77
+    .end local v2  # "encryptedBytes":[B
     :catch_22
-    move-exception p1
+    move-exception v2
 
     .line 79
-    new-instance p1, Ljava/lang/AssertionError;
+    .local v2, "e":Ljavax/crypto/BadPaddingException;
+    new-instance v3, Ljava/lang/AssertionError;
 
-    const-string p2, "Impossible: threw BadPaddingException in encrypt mode."
+    const-string v4, "Impossible: threw BadPaddingException in encrypt mode."
 
-    invoke-direct {p1, p2}, Ljava/lang/AssertionError;-><init>(Ljava/lang/Object;)V
+    invoke-direct {v3, v4}, Ljava/lang/AssertionError;-><init>(Ljava/lang/Object;)V
 
-    throw p1
+    throw v3
 
     .line 68
+    .end local v1  # "cipher":Ljavax/crypto/Cipher;
+    .end local v2  # "e":Ljavax/crypto/BadPaddingException;
     :catch_2b
-    move-exception p1
+    move-exception v1
 
     .line 72
-    new-instance p2, Ljava/lang/AssertionError;
+    .local v1, "e":Ljava/security/GeneralSecurityException;
+    new-instance v2, Ljava/lang/AssertionError;
 
-    invoke-direct {p2, p1}, Ljava/lang/AssertionError;-><init>(Ljava/lang/Object;)V
+    invoke-direct {v2, v1}, Ljava/lang/AssertionError;-><init>(Ljava/lang/Object;)V
 
-    throw p2
+    throw v2
 .end method

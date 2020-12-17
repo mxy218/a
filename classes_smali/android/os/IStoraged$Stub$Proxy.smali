@@ -28,6 +28,7 @@
 # direct methods
 .method constructor <init>(Landroid/os/IBinder;)V
     .registers 2
+    .param p1, "remote"  # Landroid/os/IBinder;
 
     .line 100
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -73,11 +74,13 @@
     move-result-object v0
 
     .line 152
+    .local v0, "_data":Landroid/os/Parcel;
     invoke-static {}, Landroid/os/Parcel;->obtain()Landroid/os/Parcel;
 
     move-result-object v1
 
     .line 155
+    .local v1, "_reply":Landroid/os/Parcel;
     :try_start_8
     const-string v2, "android.os.IStoraged"
 
@@ -95,24 +98,25 @@
     move-result v2
 
     .line 157
+    .local v2, "_status":Z
     if-nez v2, :cond_2c
 
     invoke-static {}, Landroid/os/IStoraged$Stub;->getDefaultImpl()Landroid/os/IStoraged;
 
-    move-result-object v2
+    move-result-object v3
 
-    if-eqz v2, :cond_2c
+    if-eqz v3, :cond_2c
 
     .line 158
     invoke-static {}, Landroid/os/IStoraged$Stub;->getDefaultImpl()Landroid/os/IStoraged;
 
-    move-result-object v2
+    move-result-object v3
 
-    invoke-interface {v2}, Landroid/os/IStoraged;->getRecentPerf()I
+    invoke-interface {v3}, Landroid/os/IStoraged;->getRecentPerf()I
 
-    move-result v2
+    move-result v3
     :try_end_25
-    .catchall {:try_start_8 .. :try_end_25} :catchall_3b
+    .catchall {:try_start_8 .. :try_end_25} :catchall_3c
 
     .line 164
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
@@ -121,7 +125,7 @@
     invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
 
     .line 158
-    return v2
+    return v3
 
     .line 160
     :cond_2c
@@ -131,11 +135,14 @@
     .line 161
     invoke-virtual {v1}, Landroid/os/Parcel;->readInt()I
 
-    move-result v2
+    move-result v3
     :try_end_33
-    .catchall {:try_start_2c .. :try_end_33} :catchall_3b
+    .catchall {:try_start_2c .. :try_end_33} :catchall_3c
+
+    move v2, v3
 
     .line 164
+    .local v2, "_result":I
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
 
     .line 165
@@ -148,7 +155,8 @@
     return v2
 
     .line 164
-    :catchall_3b
+    .end local v2  # "_result":I
+    :catchall_3c
     move-exception v2
 
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
@@ -161,6 +169,7 @@
 
 .method public onUserStarted(I)V
     .registers 7
+    .param p1, "userId"  # I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -173,11 +182,13 @@
     move-result-object v0
 
     .line 114
+    .local v0, "_data":Landroid/os/Parcel;
     invoke-static {}, Landroid/os/Parcel;->obtain()Landroid/os/Parcel;
 
     move-result-object v1
 
     .line 116
+    .local v1, "_reply":Landroid/os/Parcel;
     :try_start_8
     const-string v2, "android.os.IStoraged"
 
@@ -198,20 +209,21 @@
     move-result v2
 
     .line 119
+    .local v2, "_status":Z
     if-nez v2, :cond_2e
 
     invoke-static {}, Landroid/os/IStoraged$Stub;->getDefaultImpl()Landroid/os/IStoraged;
 
-    move-result-object v2
+    move-result-object v3
 
-    if-eqz v2, :cond_2e
+    if-eqz v3, :cond_2e
 
     .line 120
     invoke-static {}, Landroid/os/IStoraged$Stub;->getDefaultImpl()Landroid/os/IStoraged;
 
-    move-result-object v2
+    move-result-object v3
 
-    invoke-interface {v2, p1}, Landroid/os/IStoraged;->onUserStarted(I)V
+    invoke-interface {v3, p1}, Landroid/os/IStoraged;->onUserStarted(I)V
     :try_end_27
     .catchall {:try_start_8 .. :try_end_27} :catchall_39
 
@@ -232,6 +244,7 @@
     .catchall {:try_start_2e .. :try_end_31} :catchall_39
 
     .line 126
+    .end local v2  # "_status":Z
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
 
     .line 127
@@ -245,18 +258,19 @@
 
     .line 126
     :catchall_39
-    move-exception p1
+    move-exception v2
 
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
 
     .line 127
     invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
 
-    throw p1
+    throw v2
 .end method
 
 .method public onUserStopped(I)V
     .registers 7
+    .param p1, "userId"  # I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -269,11 +283,13 @@
     move-result-object v0
 
     .line 133
+    .local v0, "_data":Landroid/os/Parcel;
     invoke-static {}, Landroid/os/Parcel;->obtain()Landroid/os/Parcel;
 
     move-result-object v1
 
     .line 135
+    .local v1, "_reply":Landroid/os/Parcel;
     :try_start_8
     const-string v2, "android.os.IStoraged"
 
@@ -294,20 +310,21 @@
     move-result v2
 
     .line 138
+    .local v2, "_status":Z
     if-nez v2, :cond_2e
 
     invoke-static {}, Landroid/os/IStoraged$Stub;->getDefaultImpl()Landroid/os/IStoraged;
 
-    move-result-object v2
+    move-result-object v3
 
-    if-eqz v2, :cond_2e
+    if-eqz v3, :cond_2e
 
     .line 139
     invoke-static {}, Landroid/os/IStoraged$Stub;->getDefaultImpl()Landroid/os/IStoraged;
 
-    move-result-object v2
+    move-result-object v3
 
-    invoke-interface {v2, p1}, Landroid/os/IStoraged;->onUserStopped(I)V
+    invoke-interface {v3, p1}, Landroid/os/IStoraged;->onUserStopped(I)V
     :try_end_27
     .catchall {:try_start_8 .. :try_end_27} :catchall_39
 
@@ -328,6 +345,7 @@
     .catchall {:try_start_2e .. :try_end_31} :catchall_39
 
     .line 145
+    .end local v2  # "_status":Z
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
 
     .line 146
@@ -341,12 +359,12 @@
 
     .line 145
     :catchall_39
-    move-exception p1
+    move-exception v2
 
     invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
 
     .line 146
     invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
 
-    throw p1
+    throw v2
 .end method

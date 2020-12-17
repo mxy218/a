@@ -26,8 +26,9 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/input/InputManagerService;[Landroid/hardware/input/KeyboardLayout;)V
     .registers 3
+    .param p1, "this$0"  # Lcom/android/server/input/InputManagerService;
 
-    .line 1185
+    .line 1170
     iput-object p1, p0, Lcom/android/server/input/InputManagerService$8;->this$0:Lcom/android/server/input/InputManagerService;
 
     iput-object p2, p0, Lcom/android/server/input/InputManagerService$8;->val$result:[Landroid/hardware/input/KeyboardLayout;
@@ -40,15 +41,18 @@
 
 # virtual methods
 .method public visitKeyboardLayout(Landroid/content/res/Resources;ILandroid/hardware/input/KeyboardLayout;)V
-    .registers 4
+    .registers 6
+    .param p1, "resources"  # Landroid/content/res/Resources;
+    .param p2, "keyboardLayoutResId"  # I
+    .param p3, "layout"  # Landroid/hardware/input/KeyboardLayout;
 
-    .line 1189
-    iget-object p1, p0, Lcom/android/server/input/InputManagerService$8;->val$result:[Landroid/hardware/input/KeyboardLayout;
+    .line 1174
+    iget-object v0, p0, Lcom/android/server/input/InputManagerService$8;->val$result:[Landroid/hardware/input/KeyboardLayout;
 
-    const/4 p2, 0x0
+    const/4 v1, 0x0
 
-    aput-object p3, p1, p2
+    aput-object p3, v0, v1
 
-    .line 1190
+    .line 1175
     return-void
 .end method

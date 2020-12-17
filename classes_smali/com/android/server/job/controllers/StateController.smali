@@ -22,6 +22,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/job/JobSchedulerService;)V
     .registers 3
+    .param p1, "service"  # Lcom/android/server/job/JobSchedulerService;
 
     .line 46
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -49,9 +50,9 @@
     .line 51
     invoke-virtual {p1}, Lcom/android/server/job/JobSchedulerService;->getConstants()Lcom/android/server/job/JobSchedulerService$Constants;
 
-    move-result-object p1
+    move-result-object v0
 
-    iput-object p1, p0, Lcom/android/server/job/controllers/StateController;->mConstants:Lcom/android/server/job/JobSchedulerService$Constants;
+    iput-object v0, p0, Lcom/android/server/job/controllers/StateController;->mConstants:Lcom/android/server/job/JobSchedulerService$Constants;
 
     .line 52
     return-void
@@ -61,6 +62,7 @@
 # virtual methods
 .method public dumpConstants(Landroid/util/proto/ProtoOutputStream;)V
     .registers 2
+    .param p1, "proto"  # Landroid/util/proto/ProtoOutputStream;
 
     .line 144
     return-void
@@ -68,6 +70,7 @@
 
 .method public dumpConstants(Lcom/android/internal/util/IndentingPrintWriter;)V
     .registers 2
+    .param p1, "pw"  # Lcom/android/internal/util/IndentingPrintWriter;
 
     .line 140
     return-void
@@ -100,6 +103,7 @@
 
 .method public evaluateStateLocked(Lcom/android/server/job/controllers/JobStatus;)V
     .registers 2
+    .param p1, "jobStatus"  # Lcom/android/server/job/controllers/JobStatus;
 
     .line 106
     return-void
@@ -113,6 +117,8 @@
 
 .method public onAppRemovedLocked(Ljava/lang/String;I)V
     .registers 3
+    .param p1, "packageName"  # Ljava/lang/String;
+    .param p2, "uid"  # I
 
     .line 95
     return-void
@@ -134,6 +140,7 @@
 
 .method public onUserRemovedLocked(I)V
     .registers 2
+    .param p1, "userId"  # I
 
     .line 99
     return-void
@@ -141,6 +148,7 @@
 
 .method public prepareForExecutionLocked(Lcom/android/server/job/controllers/JobStatus;)V
     .registers 2
+    .param p1, "jobStatus"  # Lcom/android/server/job/controllers/JobStatus;
 
     .line 73
     return-void
@@ -148,6 +156,7 @@
 
 .method public reevaluateStateLocked(I)V
     .registers 2
+    .param p1, "uid"  # I
 
     .line 113
     return-void
@@ -155,6 +164,8 @@
 
 .method public rescheduleForFailureLocked(Lcom/android/server/job/controllers/JobStatus;Lcom/android/server/job/controllers/JobStatus;)V
     .registers 3
+    .param p1, "newJob"  # Lcom/android/server/job/controllers/JobStatus;
+    .param p2, "failureToReschedule"  # Lcom/android/server/job/controllers/JobStatus;
 
     .line 85
     return-void
@@ -162,6 +173,8 @@
 
 .method protected wouldBeReadyWithConstraintLocked(Lcom/android/server/job/controllers/JobStatus;I)Z
     .registers 6
+    .param p1, "jobStatus"  # Lcom/android/server/job/controllers/JobStatus;
+    .param p2, "constraint"  # I
 
     .line 117
     invoke-virtual {p1, p2}, Lcom/android/server/job/controllers/JobStatus;->wouldBeReadyWithConstraint(I)Z
@@ -169,6 +182,7 @@
     move-result v0
 
     .line 118
+    .local v0, "jobWouldBeReady":Z
     sget-boolean v1, Lcom/android/server/job/JobSchedulerService;->DEBUG:Z
 
     if-eqz v1, :cond_33
@@ -194,36 +208,36 @@
 
     invoke-virtual {v1, p2}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    const-string p2, " readyWithConstraint="
+    const-string v2, " readyWithConstraint="
 
-    invoke-virtual {v1, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v1, v0}, Ljava/lang/StringBuilder;->append(Z)Ljava/lang/StringBuilder;
 
     invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p2
+    move-result-object v1
 
-    const-string v1, "JobScheduler.SC"
+    const-string v2, "JobScheduler.SC"
 
-    invoke-static {v1, p2}, Landroid/util/Slog;->v(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v2, v1}, Landroid/util/Slog;->v(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 123
     :cond_33
     if-nez v0, :cond_37
 
     .line 125
-    const/4 p1, 0x0
+    const/4 v1, 0x0
 
-    return p1
+    return v1
 
     .line 130
     :cond_37
-    iget-object p2, p0, Lcom/android/server/job/controllers/StateController;->mService:Lcom/android/server/job/JobSchedulerService;
+    iget-object v1, p0, Lcom/android/server/job/controllers/StateController;->mService:Lcom/android/server/job/JobSchedulerService;
 
-    invoke-virtual {p2, p1}, Lcom/android/server/job/JobSchedulerService;->areComponentsInPlaceLocked(Lcom/android/server/job/controllers/JobStatus;)Z
+    invoke-virtual {v1, p1}, Lcom/android/server/job/JobSchedulerService;->areComponentsInPlaceLocked(Lcom/android/server/job/controllers/JobStatus;)Z
 
-    move-result p1
+    move-result v1
 
-    return p1
+    return v1
 .end method

@@ -27,6 +27,12 @@
 # direct methods
 .method constructor <init>(Landroid/content/Context;Landroid/content/ComponentName;ILcom/android/server/contentsuggestions/RemoteContentSuggestionsService$Callbacks;ZZ)V
     .registers 17
+    .param p1, "context"  # Landroid/content/Context;
+    .param p2, "serviceName"  # Landroid/content/ComponentName;
+    .param p3, "userId"  # I
+    .param p4, "callbacks"  # Lcom/android/server/contentsuggestions/RemoteContentSuggestionsService$Callbacks;
+    .param p5, "bindInstantServiceAllowed"  # Z
+    .param p6, "verbose"  # Z
 
     .line 49
     nop
@@ -74,6 +80,9 @@
 
 .method static synthetic lambda$classifyContentSelections$2(Landroid/app/contentsuggestions/ClassificationsRequest;Landroid/app/contentsuggestions/IClassificationsCallback;Landroid/service/contentsuggestions/IContentSuggestionsService;)V
     .registers 3
+    .param p0, "classificationsRequest"  # Landroid/app/contentsuggestions/ClassificationsRequest;
+    .param p1, "callback"  # Landroid/app/contentsuggestions/IClassificationsCallback;
+    .param p2, "s"  # Landroid/service/contentsuggestions/IContentSuggestionsService;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -88,6 +97,9 @@
 
 .method static synthetic lambda$notifyInteraction$3(Ljava/lang/String;Landroid/os/Bundle;Landroid/service/contentsuggestions/IContentSuggestionsService;)V
     .registers 3
+    .param p0, "requestId"  # Ljava/lang/String;
+    .param p1, "bundle"  # Landroid/os/Bundle;
+    .param p2, "s"  # Landroid/service/contentsuggestions/IContentSuggestionsService;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -102,6 +114,11 @@
 
 .method static synthetic lambda$provideContextImage$0(ILandroid/graphics/GraphicBuffer;ILandroid/os/Bundle;Landroid/service/contentsuggestions/IContentSuggestionsService;)V
     .registers 5
+    .param p0, "taskId"  # I
+    .param p1, "contextImage"  # Landroid/graphics/GraphicBuffer;
+    .param p2, "colorSpaceId"  # I
+    .param p3, "imageContextRequestExtras"  # Landroid/os/Bundle;
+    .param p4, "s"  # Landroid/service/contentsuggestions/IContentSuggestionsService;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -116,6 +133,9 @@
 
 .method static synthetic lambda$suggestContentSelections$1(Landroid/app/contentsuggestions/SelectionsRequest;Landroid/app/contentsuggestions/ISelectionsCallback;Landroid/service/contentsuggestions/IContentSuggestionsService;)V
     .registers 3
+    .param p0, "selectionsRequest"  # Landroid/app/contentsuggestions/SelectionsRequest;
+    .param p1, "selectionsCallback"  # Landroid/app/contentsuggestions/ISelectionsCallback;
+    .param p2, "s"  # Landroid/service/contentsuggestions/IContentSuggestionsService;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -132,6 +152,8 @@
 # virtual methods
 .method classifyContentSelections(Landroid/app/contentsuggestions/ClassificationsRequest;Landroid/app/contentsuggestions/IClassificationsCallback;)V
     .registers 4
+    .param p1, "classificationsRequest"  # Landroid/app/contentsuggestions/ClassificationsRequest;
+    .param p2, "callback"  # Landroid/app/contentsuggestions/IClassificationsCallback;
 
     .line 86
     new-instance v0, Lcom/android/server/contentsuggestions/-$$Lambda$RemoteContentSuggestionsService$eoGnQ2MDLLnW1UBX6wxNE1VBLAk;
@@ -165,14 +187,15 @@
 .end method
 
 .method protected getServiceInterface(Landroid/os/IBinder;)Landroid/service/contentsuggestions/IContentSuggestionsService;
-    .registers 2
+    .registers 3
+    .param p1, "service"  # Landroid/os/IBinder;
 
     .line 57
     invoke-static {p1}, Landroid/service/contentsuggestions/IContentSuggestionsService$Stub;->asInterface(Landroid/os/IBinder;)Landroid/service/contentsuggestions/IContentSuggestionsService;
 
-    move-result-object p1
+    move-result-object v0
 
-    return-object p1
+    return-object v0
 .end method
 
 .method protected getTimeoutIdleBindMillis()J
@@ -186,6 +209,8 @@
 
 .method notifyInteraction(Ljava/lang/String;Landroid/os/Bundle;)V
     .registers 4
+    .param p1, "requestId"  # Ljava/lang/String;
+    .param p2, "bundle"  # Landroid/os/Bundle;
 
     .line 90
     new-instance v0, Lcom/android/server/contentsuggestions/-$$Lambda$RemoteContentSuggestionsService$Enqw46SYVKFK9F2xX4qUcIu5_3I;
@@ -200,6 +225,10 @@
 
 .method provideContextImage(ILandroid/graphics/GraphicBuffer;ILandroid/os/Bundle;)V
     .registers 6
+    .param p1, "taskId"  # I
+    .param p2, "contextImage"  # Landroid/graphics/GraphicBuffer;
+    .param p3, "colorSpaceId"  # I
+    .param p4, "imageContextRequestExtras"  # Landroid/os/Bundle;
 
     .line 72
     new-instance v0, Lcom/android/server/contentsuggestions/-$$Lambda$RemoteContentSuggestionsService$VKh1DoMPNSPjPfnVGdsInmxuqzc;
@@ -214,6 +243,8 @@
 
 .method suggestContentSelections(Landroid/app/contentsuggestions/SelectionsRequest;Landroid/app/contentsuggestions/ISelectionsCallback;)V
     .registers 4
+    .param p1, "selectionsRequest"  # Landroid/app/contentsuggestions/SelectionsRequest;
+    .param p2, "selectionsCallback"  # Landroid/app/contentsuggestions/ISelectionsCallback;
 
     .line 79
     new-instance v0, Lcom/android/server/contentsuggestions/-$$Lambda$RemoteContentSuggestionsService$yUTbcaYlZCYTmagCkNJ3i2VCkY4;

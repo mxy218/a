@@ -23,29 +23,32 @@
 # direct methods
 .method public constructor <init>(F)V
     .registers 3
+    .param p1, "gamma"  # F
 
-    .line 328
+    .line 358
     const/16 v0, 0xff
 
     invoke-direct {p0, p1, v0}, Lcom/android/server/VibratorService$ScaleLevel;-><init>(FI)V
 
-    .line 329
+    .line 359
     return-void
 .end method
 
 .method public constructor <init>(FI)V
     .registers 3
+    .param p1, "gamma"  # F
+    .param p2, "maxAmplitude"  # I
 
-    .line 331
+    .line 361
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
-    .line 332
+    .line 362
     iput p1, p0, Lcom/android/server/VibratorService$ScaleLevel;->gamma:F
 
-    .line 333
+    .line 363
     iput p2, p0, Lcom/android/server/VibratorService$ScaleLevel;->maxAmplitude:I
 
-    .line 334
+    .line 364
     return-void
 .end method
 
@@ -54,7 +57,7 @@
 .method public toString()Ljava/lang/String;
     .registers 3
 
-    .line 338
+    .line 368
     new-instance v0, Ljava/lang/StringBuilder;
 
     invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V

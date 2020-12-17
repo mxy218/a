@@ -27,6 +27,10 @@
 # direct methods
 .method public constructor <init>(Landroid/accounts/Account;Ljava/lang/String;Ljava/lang/String;[B)V
     .registers 5
+    .param p1, "account"  # Landroid/accounts/Account;
+    .param p2, "tokenType"  # Ljava/lang/String;
+    .param p3, "packageName"  # Ljava/lang/String;
+    .param p4, "sigDigest"  # [B
 
     .line 54
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -50,77 +54,82 @@
 
 # virtual methods
 .method public equals(Ljava/lang/Object;)Z
-    .registers 5
+    .registers 6
+    .param p1, "o"  # Ljava/lang/Object;
 
     .line 63
     const/4 v0, 0x0
 
-    if-eqz p1, :cond_35
+    if-eqz p1, :cond_36
 
     instance-of v1, p1, Lcom/android/server/accounts/TokenCache$Key;
 
-    if-eqz v1, :cond_35
+    if-eqz v1, :cond_36
 
     .line 64
-    check-cast p1, Lcom/android/server/accounts/TokenCache$Key;
+    move-object v1, p1
+
+    check-cast v1, Lcom/android/server/accounts/TokenCache$Key;
 
     .line 65
-    iget-object v1, p0, Lcom/android/server/accounts/TokenCache$Key;->account:Landroid/accounts/Account;
+    .local v1, "cacheKey":Lcom/android/server/accounts/TokenCache$Key;
+    iget-object v2, p0, Lcom/android/server/accounts/TokenCache$Key;->account:Landroid/accounts/Account;
 
-    iget-object v2, p1, Lcom/android/server/accounts/TokenCache$Key;->account:Landroid/accounts/Account;
+    iget-object v3, v1, Lcom/android/server/accounts/TokenCache$Key;->account:Landroid/accounts/Account;
 
-    invoke-static {v1, v2}, Ljava/util/Objects;->equals(Ljava/lang/Object;Ljava/lang/Object;)Z
+    invoke-static {v2, v3}, Ljava/util/Objects;->equals(Ljava/lang/Object;Ljava/lang/Object;)Z
 
-    move-result v1
+    move-result v2
 
-    if-eqz v1, :cond_33
+    if-eqz v2, :cond_34
 
-    iget-object v1, p0, Lcom/android/server/accounts/TokenCache$Key;->packageName:Ljava/lang/String;
+    iget-object v2, p0, Lcom/android/server/accounts/TokenCache$Key;->packageName:Ljava/lang/String;
 
-    iget-object v2, p1, Lcom/android/server/accounts/TokenCache$Key;->packageName:Ljava/lang/String;
+    iget-object v3, v1, Lcom/android/server/accounts/TokenCache$Key;->packageName:Ljava/lang/String;
 
     .line 66
-    invoke-static {v1, v2}, Ljava/util/Objects;->equals(Ljava/lang/Object;Ljava/lang/Object;)Z
+    invoke-static {v2, v3}, Ljava/util/Objects;->equals(Ljava/lang/Object;Ljava/lang/Object;)Z
 
-    move-result v1
+    move-result v2
 
-    if-eqz v1, :cond_33
+    if-eqz v2, :cond_34
 
-    iget-object v1, p0, Lcom/android/server/accounts/TokenCache$Key;->tokenType:Ljava/lang/String;
+    iget-object v2, p0, Lcom/android/server/accounts/TokenCache$Key;->tokenType:Ljava/lang/String;
 
-    iget-object v2, p1, Lcom/android/server/accounts/TokenCache$Key;->tokenType:Ljava/lang/String;
+    iget-object v3, v1, Lcom/android/server/accounts/TokenCache$Key;->tokenType:Ljava/lang/String;
 
     .line 67
-    invoke-static {v1, v2}, Ljava/util/Objects;->equals(Ljava/lang/Object;Ljava/lang/Object;)Z
+    invoke-static {v2, v3}, Ljava/util/Objects;->equals(Ljava/lang/Object;Ljava/lang/Object;)Z
 
-    move-result v1
+    move-result v2
 
-    if-eqz v1, :cond_33
+    if-eqz v2, :cond_34
 
-    iget-object v1, p0, Lcom/android/server/accounts/TokenCache$Key;->sigDigest:[B
+    iget-object v2, p0, Lcom/android/server/accounts/TokenCache$Key;->sigDigest:[B
 
-    iget-object p1, p1, Lcom/android/server/accounts/TokenCache$Key;->sigDigest:[B
+    iget-object v3, v1, Lcom/android/server/accounts/TokenCache$Key;->sigDigest:[B
 
     .line 68
-    invoke-static {v1, p1}, Ljava/util/Arrays;->equals([B[B)Z
+    invoke-static {v2, v3}, Ljava/util/Arrays;->equals([B[B)Z
 
-    move-result p1
+    move-result v2
 
-    if-eqz p1, :cond_33
+    if-eqz v2, :cond_34
 
     const/4 v0, 0x1
 
-    goto :goto_34
+    goto :goto_35
 
-    :cond_33
+    :cond_34
     nop
 
     .line 65
-    :goto_34
+    :goto_35
     return v0
 
     .line 70
-    :cond_35
+    .end local v1  # "cacheKey":Lcom/android/server/accounts/TokenCache$Key;
+    :cond_36
     return v0
 .end method
 

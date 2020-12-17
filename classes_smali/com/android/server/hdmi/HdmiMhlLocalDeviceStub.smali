@@ -33,6 +33,8 @@
 
 .method protected constructor <init>(Lcom/android/server/hdmi/HdmiControlService;I)V
     .registers 3
+    .param p1, "service"  # Lcom/android/server/hdmi/HdmiControlService;
+    .param p2, "portId"  # I
 
     .line 16
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -69,6 +71,7 @@
 
 .method onBusOvercurrentDetected(Z)V
     .registers 2
+    .param p1, "on"  # Z
 
     .line 32
     return-void
@@ -83,6 +86,8 @@
 
 .method sendKeyEvent(IZ)V
     .registers 3
+    .param p1, "keycode"  # I
+    .param p2, "isPressed"  # Z
 
     .line 45
     return-void
@@ -97,6 +102,7 @@
 
 .method setBusMode(I)V
     .registers 2
+    .param p1, "cbusmode"  # I
 
     .line 29
     return-void
@@ -104,6 +110,8 @@
 
 .method setDeviceStatusChange(II)V
     .registers 3
+    .param p1, "adopterId"  # I
+    .param p2, "deviceId"  # I
 
     .line 35
     return-void
@@ -111,6 +119,7 @@
 
 .method turnOn(Landroid/hardware/hdmi/IHdmiControlCallback;)V
     .registers 2
+    .param p1, "callback"  # Landroid/hardware/hdmi/IHdmiControlCallback;
 
     .line 42
     return-void

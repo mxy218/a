@@ -22,15 +22,15 @@
 .method constructor <init>(Lcom/android/server/audio/AudioDeviceBroker;)V
     .registers 2
 
-    .line 683
+    .line 743
     iput-object p1, p0, Lcom/android/server/audio/AudioDeviceBroker$BrokerThread;->this$0:Lcom/android/server/audio/AudioDeviceBroker;
 
-    .line 684
+    .line 744
     const-string p1, "AudioDeviceBroker"
 
     invoke-direct {p0, p1}, Ljava/lang/Thread;-><init>(Ljava/lang/String;)V
 
-    .line 685
+    .line 745
     return-void
 .end method
 
@@ -39,15 +39,15 @@
 .method public run()V
     .registers 6
 
-    .line 690
+    .line 750
     invoke-static {}, Landroid/os/Looper;->prepare()V
 
-    .line 692
+    .line 752
     iget-object v0, p0, Lcom/android/server/audio/AudioDeviceBroker$BrokerThread;->this$0:Lcom/android/server/audio/AudioDeviceBroker;
 
     monitor-enter v0
 
-    .line 693
+    .line 753
     :try_start_6
     iget-object v1, p0, Lcom/android/server/audio/AudioDeviceBroker$BrokerThread;->this$0:Lcom/android/server/audio/AudioDeviceBroker;
 
@@ -61,23 +61,23 @@
 
     invoke-static {v1, v2}, Lcom/android/server/audio/AudioDeviceBroker;->access$002(Lcom/android/server/audio/AudioDeviceBroker;Lcom/android/server/audio/AudioDeviceBroker$BrokerHandler;)Lcom/android/server/audio/AudioDeviceBroker$BrokerHandler;
 
-    .line 696
+    .line 756
     iget-object v1, p0, Lcom/android/server/audio/AudioDeviceBroker$BrokerThread;->this$0:Lcom/android/server/audio/AudioDeviceBroker;
 
     invoke-virtual {v1}, Ljava/lang/Object;->notify()V
 
-    .line 697
+    .line 757
     monitor-exit v0
     :try_end_19
     .catchall {:try_start_6 .. :try_end_19} :catchall_1d
 
-    .line 699
+    .line 759
     invoke-static {}, Landroid/os/Looper;->loop()V
 
-    .line 700
+    .line 760
     return-void
 
-    .line 697
+    .line 757
     :catchall_1d
     move-exception v1
 

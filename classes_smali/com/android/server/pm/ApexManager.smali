@@ -62,7 +62,8 @@
 
 # direct methods
 .method constructor <init>(Landroid/content/Context;)V
-    .registers 3
+    .registers 5
+    .param p1, "context"  # Landroid/content/Context;
 
     .line 85
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -103,108 +104,115 @@
 
     .line 89
     :catch_1a
-    move-exception p1
+    move-exception v0
 
     .line 90
-    new-instance p1, Ljava/lang/IllegalStateException;
+    .local v0, "e":Landroid/os/ServiceManager$ServiceNotFoundException;
+    new-instance v1, Ljava/lang/IllegalStateException;
 
-    const-string v0, "Required service apexservice not available"
+    const-string v2, "Required service apexservice not available"
 
-    invoke-direct {p1, v0}, Ljava/lang/IllegalStateException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v1, v2}, Ljava/lang/IllegalStateException;-><init>(Ljava/lang/String;)V
 
-    throw p1
+    throw v1
 .end method
 
 .method static synthetic access$000(Lcom/android/server/pm/ApexManager;)Landroid/content/Context;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/pm/ApexManager;
 
     .line 59
-    iget-object p0, p0, Lcom/android/server/pm/ApexManager;->mContext:Landroid/content/Context;
+    iget-object v0, p0, Lcom/android/server/pm/ApexManager;->mContext:Landroid/content/Context;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method private static isActive(Landroid/content/pm/PackageInfo;)Z
-    .registers 2
+    .registers 3
+    .param p0, "packageInfo"  # Landroid/content/pm/PackageInfo;
 
     .line 394
-    iget-object p0, p0, Landroid/content/pm/PackageInfo;->applicationInfo:Landroid/content/pm/ApplicationInfo;
+    iget-object v0, p0, Landroid/content/pm/PackageInfo;->applicationInfo:Landroid/content/pm/ApplicationInfo;
 
-    iget p0, p0, Landroid/content/pm/ApplicationInfo;->flags:I
+    iget v0, v0, Landroid/content/pm/ApplicationInfo;->flags:I
 
-    const/high16 v0, 0x800000
+    const/high16 v1, 0x800000
 
-    and-int/2addr p0, v0
+    and-int/2addr v0, v1
 
-    if-eqz p0, :cond_b
+    if-eqz v0, :cond_b
 
-    const/4 p0, 0x1
+    const/4 v0, 0x1
 
     goto :goto_c
 
     :cond_b
-    const/4 p0, 0x0
+    const/4 v0, 0x0
 
     :goto_c
-    return p0
+    return v0
 .end method
 
 .method private static isFactory(Landroid/content/pm/PackageInfo;)Z
-    .registers 2
+    .registers 3
+    .param p0, "packageInfo"  # Landroid/content/pm/PackageInfo;
 
     .line 404
-    iget-object p0, p0, Landroid/content/pm/PackageInfo;->applicationInfo:Landroid/content/pm/ApplicationInfo;
+    iget-object v0, p0, Landroid/content/pm/PackageInfo;->applicationInfo:Landroid/content/pm/ApplicationInfo;
 
-    iget p0, p0, Landroid/content/pm/ApplicationInfo;->flags:I
+    iget v0, v0, Landroid/content/pm/ApplicationInfo;->flags:I
 
-    const/4 v0, 0x1
+    const/4 v1, 0x1
 
-    and-int/2addr p0, v0
+    and-int/2addr v0, v1
 
-    if-eqz p0, :cond_9
+    if-eqz v0, :cond_9
 
     goto :goto_a
 
     :cond_9
-    const/4 v0, 0x0
+    const/4 v1, 0x0
 
     :goto_a
-    return v0
+    return v1
 .end method
 
 .method static synthetic lambda$getActivePackages$0(Landroid/content/pm/PackageInfo;)Z
-    .registers 1
+    .registers 2
+    .param p0, "item"  # Landroid/content/pm/PackageInfo;
 
     .line 215
     invoke-static {p0}, Lcom/android/server/pm/ApexManager;->isActive(Landroid/content/pm/PackageInfo;)Z
 
-    move-result p0
+    move-result v0
 
-    return p0
+    return v0
 .end method
 
 .method static synthetic lambda$getFactoryPackages$1(Landroid/content/pm/PackageInfo;)Z
-    .registers 1
+    .registers 2
+    .param p0, "item"  # Landroid/content/pm/PackageInfo;
 
     .line 229
     invoke-static {p0}, Lcom/android/server/pm/ApexManager;->isFactory(Landroid/content/pm/PackageInfo;)Z
 
-    move-result p0
+    move-result v0
 
-    return p0
+    return v0
 .end method
 
 .method static synthetic lambda$getInactivePackages$2(Landroid/content/pm/PackageInfo;)Z
-    .registers 1
+    .registers 2
+    .param p0, "item"  # Landroid/content/pm/PackageInfo;
 
     .line 243
     invoke-static {p0}, Lcom/android/server/pm/ApexManager;->isActive(Landroid/content/pm/PackageInfo;)Z
 
-    move-result p0
+    move-result v0
 
-    xor-int/lit8 p0, p0, 0x1
+    xor-int/lit8 v0, v0, 0x1
 
-    return p0
+    return v0
 .end method
 
 .method private populateAllPackagesCacheIfNeeded()V
@@ -250,11 +258,13 @@
     invoke-direct {v1}, Ljava/util/HashSet;-><init>()V
 
     .line 123
+    .local v1, "activePackagesSet":Ljava/util/HashSet;, "Ljava/util/HashSet<Ljava/lang/String;>;"
     new-instance v2, Ljava/util/HashSet;
 
     invoke-direct {v2}, Ljava/util/HashSet;-><init>()V
 
     .line 124
+    .local v2, "factoryPackagesSet":Ljava/util/HashSet;, "Ljava/util/HashSet<Ljava/lang/String;>;"
     iget-object v3, p0, Lcom/android/server/pm/ApexManager;->mApexService:Landroid/apex/IApexService;
 
     invoke-interface {v3}, Landroid/apex/IApexService;->getAllPackages()[Landroid/apex/ApexInfo;
@@ -262,6 +272,7 @@
     move-result-object v3
 
     .line 125
+    .local v3, "allPkgs":[Landroid/apex/ApexInfo;
     array-length v4, v3
 
     const/4 v5, 0x0
@@ -272,6 +283,7 @@
     aget-object v6, v3, v5
 
     .line 128
+    .local v6, "ai":Landroid/apex/ApexInfo;
     new-instance v7, Ljava/io/File;
 
     iget-object v8, v6, Landroid/apex/ApexInfo;->packagePath:Ljava/lang/String;
@@ -300,6 +312,7 @@
     move-result-object v7
 
     .line 135
+    .local v7, "pkg":Landroid/content/pm/PackageInfo;
     iget-object v8, p0, Lcom/android/server/pm/ApexManager;->mAllPackagesCache:Ljava/util/List;
 
     invoke-interface {v8, v7}, Ljava/util/List;->add(Ljava/lang/Object;)Z
@@ -334,29 +347,31 @@
 
     .line 138
     :cond_61
-    new-instance v1, Ljava/lang/IllegalStateException;
+    new-instance v4, Ljava/lang/IllegalStateException;
 
-    new-instance v2, Ljava/lang/StringBuilder;
+    new-instance v5, Ljava/lang/StringBuilder;
 
-    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v5}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v3, "Two active packages have the same name: "
+    const-string v8, "Two active packages have the same name: "
 
-    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v5, v8}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    iget-object v3, v7, Landroid/content/pm/PackageInfo;->packageName:Ljava/lang/String;
+    iget-object v8, v7, Landroid/content/pm/PackageInfo;->packageName:Ljava/lang/String;
 
-    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v5, v8}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v5}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v2
+    move-result-object v5
 
-    invoke-direct {v1, v2}, Ljava/lang/IllegalStateException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v4, v5}, Ljava/lang/IllegalStateException;-><init>(Ljava/lang/String;)V
 
-    throw v1
+    .end local p0  # "this":Lcom/android/server/pm/ApexManager;
+    throw v4
 
     .line 146
+    .restart local p0  # "this":Lcom/android/server/pm/ApexManager;
     :cond_7a
     :goto_7a
     iget-boolean v8, v6, Landroid/apex/ApexInfo;->isFactory:Z
@@ -373,80 +388,93 @@
     if-nez v8, :cond_8c
 
     .line 152
-    iget-object v7, v6, Landroid/apex/ApexInfo;->packageName:Ljava/lang/String;
+    iget-object v8, v6, Landroid/apex/ApexInfo;->packageName:Ljava/lang/String;
 
-    invoke-virtual {v2, v7}, Ljava/util/HashSet;->add(Ljava/lang/Object;)Z
+    invoke-virtual {v2, v8}, Ljava/util/HashSet;->add(Ljava/lang/Object;)Z
 
     goto :goto_a5
 
     .line 148
     :cond_8c
-    new-instance v1, Ljava/lang/IllegalStateException;
+    new-instance v4, Ljava/lang/IllegalStateException;
 
-    new-instance v2, Ljava/lang/StringBuilder;
+    new-instance v5, Ljava/lang/StringBuilder;
 
-    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v5}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v3, "Two factory packages have the same name: "
+    const-string v8, "Two factory packages have the same name: "
 
-    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v5, v8}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    iget-object v3, v7, Landroid/content/pm/PackageInfo;->packageName:Ljava/lang/String;
+    iget-object v8, v7, Landroid/content/pm/PackageInfo;->packageName:Ljava/lang/String;
 
-    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v5, v8}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v5}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v2
+    move-result-object v5
 
-    invoke-direct {v1, v2}, Ljava/lang/IllegalStateException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v4, v5}, Ljava/lang/IllegalStateException;-><init>(Ljava/lang/String;)V
 
-    throw v1
+    .end local p0  # "this":Lcom/android/server/pm/ApexManager;
+    throw v4
     :try_end_a5
     .catch Landroid/content/pm/PackageParser$PackageParserException; {:try_start_3f .. :try_end_a5} :catch_a9
     .catch Landroid/os/RemoteException; {:try_start_3f .. :try_end_a5} :catch_c4
     .catchall {:try_start_3f .. :try_end_a5} :catchall_e5
 
     .line 156
+    .end local v7  # "pkg":Landroid/content/pm/PackageInfo;
+    .restart local p0  # "this":Lcom/android/server/pm/ApexManager;
     :cond_a5
     :goto_a5
     nop
 
     .line 125
+    .end local v6  # "ai":Landroid/apex/ApexInfo;
     add-int/lit8 v5, v5, 0x1
 
     goto :goto_29
 
     .line 154
+    .restart local v6  # "ai":Landroid/apex/ApexInfo;
     :catch_a9
-    move-exception v1
+    move-exception v4
 
     .line 155
+    .local v4, "pe":Landroid/content/pm/PackageParser$PackageParserException;
     :try_start_aa
-    new-instance v2, Ljava/lang/IllegalStateException;
+    new-instance v5, Ljava/lang/IllegalStateException;
 
-    new-instance v3, Ljava/lang/StringBuilder;
+    new-instance v7, Ljava/lang/StringBuilder;
 
-    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v7}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v4, "Unable to parse: "
+    const-string v8, "Unable to parse: "
 
-    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v7, v8}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v3, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    invoke-virtual {v7, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v7}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v3
+    move-result-object v7
 
-    invoke-direct {v2, v3, v1}, Ljava/lang/IllegalStateException;-><init>(Ljava/lang/String;Ljava/lang/Throwable;)V
+    invoke-direct {v5, v7, v4}, Ljava/lang/IllegalStateException;-><init>(Ljava/lang/String;Ljava/lang/Throwable;)V
 
-    throw v2
+    .end local p0  # "this":Lcom/android/server/pm/ApexManager;
+    throw v5
     :try_end_c1
     .catch Landroid/os/RemoteException; {:try_start_aa .. :try_end_c1} :catch_c4
     .catchall {:try_start_aa .. :try_end_c1} :catchall_e5
 
     .line 161
+    .end local v1  # "activePackagesSet":Ljava/util/HashSet;, "Ljava/util/HashSet<Ljava/lang/String;>;"
+    .end local v2  # "factoryPackagesSet":Ljava/util/HashSet;, "Ljava/util/HashSet<Ljava/lang/String;>;"
+    .end local v3  # "allPkgs":[Landroid/apex/ApexInfo;
+    .end local v4  # "pe":Landroid/content/pm/PackageParser$PackageParserException;
+    .end local v6  # "ai":Landroid/apex/ApexInfo;
+    .restart local p0  # "this":Lcom/android/server/pm/ApexManager;
     :cond_c1
     :goto_c1
     nop
@@ -463,6 +491,7 @@
     move-exception v1
 
     .line 159
+    .local v1, "re":Landroid/os/RemoteException;
     const-string v2, "ApexManager"
 
     new-instance v3, Ljava/lang/StringBuilder;
@@ -490,9 +519,12 @@
 
     invoke-direct {v2, v1}, Ljava/lang/RuntimeException;-><init>(Ljava/lang/Throwable;)V
 
+    .end local p0  # "this":Lcom/android/server/pm/ApexManager;
     throw v2
 
     .line 162
+    .end local v1  # "re":Landroid/os/RemoteException;
+    .restart local p0  # "this":Lcom/android/server/pm/ApexManager;
     :catchall_e5
     move-exception v1
 
@@ -526,6 +558,7 @@
     move-exception v0
 
     .line 365
+    .local v0, "re":Landroid/os/RemoteException;
     const-string v1, "ApexManager"
 
     const-string v2, "Unable to contact apexservice"
@@ -533,13 +566,15 @@
     invoke-static {v1, v2, v0}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
     .line 366
-    const/4 v0, 0x0
+    const/4 v1, 0x0
 
-    return v0
+    return v1
 .end method
 
 .method dump(Ljava/io/PrintWriter;Ljava/lang/String;)V
-    .registers 8
+    .registers 10
+    .param p1, "pw"  # Ljava/io/PrintWriter;
+    .param p2, "packageName"  # Ljava/lang/String;
 
     .line 444
     new-instance v0, Lcom/android/internal/util/IndentingPrintWriter;
@@ -551,6 +586,7 @@
     invoke-direct {v0, p1, v1, v2}, Lcom/android/internal/util/IndentingPrintWriter;-><init>(Ljava/io/Writer;Ljava/lang/String;I)V
 
     .line 446
+    .local v0, "ipw":Lcom/android/internal/util/IndentingPrintWriter;
     :try_start_9
     invoke-direct {p0}, Lcom/android/server/pm/ApexManager;->populateAllPackagesCacheIfNeeded()V
 
@@ -558,204 +594,206 @@
     invoke-virtual {v0}, Lcom/android/internal/util/IndentingPrintWriter;->println()V
 
     .line 448
-    const-string p1, "Active APEX packages:"
+    const-string v1, "Active APEX packages:"
 
-    invoke-virtual {v0, p1}, Lcom/android/internal/util/IndentingPrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {v0, v1}, Lcom/android/internal/util/IndentingPrintWriter;->println(Ljava/lang/String;)V
 
     .line 449
     invoke-virtual {p0}, Lcom/android/server/pm/ApexManager;->getActivePackages()Ljava/util/List;
 
-    move-result-object p1
+    move-result-object v1
 
-    invoke-virtual {p0, p1, p2, v0}, Lcom/android/server/pm/ApexManager;->dumpFromPackagesCache(Ljava/util/List;Ljava/lang/String;Lcom/android/internal/util/IndentingPrintWriter;)V
+    invoke-virtual {p0, v1, p2, v0}, Lcom/android/server/pm/ApexManager;->dumpFromPackagesCache(Ljava/util/List;Ljava/lang/String;Lcom/android/internal/util/IndentingPrintWriter;)V
 
     .line 450
-    const-string p1, "Inactive APEX packages:"
+    const-string v1, "Inactive APEX packages:"
 
-    invoke-virtual {v0, p1}, Lcom/android/internal/util/IndentingPrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {v0, v1}, Lcom/android/internal/util/IndentingPrintWriter;->println(Ljava/lang/String;)V
 
     .line 451
     invoke-virtual {p0}, Lcom/android/server/pm/ApexManager;->getInactivePackages()Ljava/util/List;
 
-    move-result-object p1
+    move-result-object v1
 
-    invoke-virtual {p0, p1, p2, v0}, Lcom/android/server/pm/ApexManager;->dumpFromPackagesCache(Ljava/util/List;Ljava/lang/String;Lcom/android/internal/util/IndentingPrintWriter;)V
+    invoke-virtual {p0, v1, p2, v0}, Lcom/android/server/pm/ApexManager;->dumpFromPackagesCache(Ljava/util/List;Ljava/lang/String;Lcom/android/internal/util/IndentingPrintWriter;)V
 
     .line 452
-    const-string p1, "Factory APEX packages:"
+    const-string v1, "Factory APEX packages:"
 
-    invoke-virtual {v0, p1}, Lcom/android/internal/util/IndentingPrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {v0, v1}, Lcom/android/internal/util/IndentingPrintWriter;->println(Ljava/lang/String;)V
 
     .line 453
     invoke-virtual {p0}, Lcom/android/server/pm/ApexManager;->getFactoryPackages()Ljava/util/List;
 
-    move-result-object p1
+    move-result-object v1
 
-    invoke-virtual {p0, p1, p2, v0}, Lcom/android/server/pm/ApexManager;->dumpFromPackagesCache(Ljava/util/List;Ljava/lang/String;Lcom/android/internal/util/IndentingPrintWriter;)V
+    invoke-virtual {p0, v1, p2, v0}, Lcom/android/server/pm/ApexManager;->dumpFromPackagesCache(Ljava/util/List;Ljava/lang/String;Lcom/android/internal/util/IndentingPrintWriter;)V
 
     .line 454
     invoke-virtual {v0}, Lcom/android/internal/util/IndentingPrintWriter;->increaseIndent()Lcom/android/internal/util/IndentingPrintWriter;
 
     .line 455
-    const-string p1, "APEX session state:"
+    const-string v1, "APEX session state:"
 
-    invoke-virtual {v0, p1}, Lcom/android/internal/util/IndentingPrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {v0, v1}, Lcom/android/internal/util/IndentingPrintWriter;->println(Ljava/lang/String;)V
 
     .line 456
     invoke-virtual {v0}, Lcom/android/internal/util/IndentingPrintWriter;->increaseIndent()Lcom/android/internal/util/IndentingPrintWriter;
 
     .line 457
-    iget-object p1, p0, Lcom/android/server/pm/ApexManager;->mApexService:Landroid/apex/IApexService;
+    iget-object v1, p0, Lcom/android/server/pm/ApexManager;->mApexService:Landroid/apex/IApexService;
 
-    invoke-interface {p1}, Landroid/apex/IApexService;->getSessions()[Landroid/apex/ApexSessionInfo;
+    invoke-interface {v1}, Landroid/apex/IApexService;->getSessions()[Landroid/apex/ApexSessionInfo;
 
-    move-result-object p1
+    move-result-object v1
 
     .line 458
-    array-length p2, p1
+    .local v1, "sessions":[Landroid/apex/ApexSessionInfo;
+    array-length v2, v1
 
-    const/4 v1, 0x0
+    const/4 v3, 0x0
 
     :goto_46
-    if-ge v1, p2, :cond_c2
+    if-ge v3, v2, :cond_c3
 
-    aget-object v2, p1, v1
+    aget-object v4, v1, v3
 
     .line 459
-    new-instance v3, Ljava/lang/StringBuilder;
+    .local v4, "si":Landroid/apex/ApexSessionInfo;
+    new-instance v5, Ljava/lang/StringBuilder;
 
-    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v5}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v4, "Session ID: "
+    const-string v6, "Session ID: "
 
-    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    iget v4, v2, Landroid/apex/ApexSessionInfo;->sessionId:I
+    iget v6, v4, Landroid/apex/ApexSessionInfo;->sessionId:I
 
-    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v5}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v3
+    move-result-object v5
 
-    invoke-virtual {v0, v3}, Lcom/android/internal/util/IndentingPrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {v0, v5}, Lcom/android/internal/util/IndentingPrintWriter;->println(Ljava/lang/String;)V
 
     .line 460
     invoke-virtual {v0}, Lcom/android/internal/util/IndentingPrintWriter;->increaseIndent()Lcom/android/internal/util/IndentingPrintWriter;
 
     .line 461
-    iget-boolean v3, v2, Landroid/apex/ApexSessionInfo;->isUnknown:Z
+    iget-boolean v5, v4, Landroid/apex/ApexSessionInfo;->isUnknown:Z
 
-    if-eqz v3, :cond_6d
+    if-eqz v5, :cond_6d
 
     .line 462
-    const-string v2, "State: UNKNOWN"
+    const-string v5, "State: UNKNOWN"
 
-    invoke-virtual {v0, v2}, Lcom/android/internal/util/IndentingPrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {v0, v5}, Lcom/android/internal/util/IndentingPrintWriter;->println(Ljava/lang/String;)V
 
     goto :goto_bc
 
     .line 463
     :cond_6d
-    iget-boolean v3, v2, Landroid/apex/ApexSessionInfo;->isVerified:Z
+    iget-boolean v5, v4, Landroid/apex/ApexSessionInfo;->isVerified:Z
 
-    if-eqz v3, :cond_77
+    if-eqz v5, :cond_77
 
     .line 464
-    const-string v2, "State: VERIFIED"
+    const-string v5, "State: VERIFIED"
 
-    invoke-virtual {v0, v2}, Lcom/android/internal/util/IndentingPrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {v0, v5}, Lcom/android/internal/util/IndentingPrintWriter;->println(Ljava/lang/String;)V
 
     goto :goto_bc
 
     .line 465
     :cond_77
-    iget-boolean v3, v2, Landroid/apex/ApexSessionInfo;->isStaged:Z
+    iget-boolean v5, v4, Landroid/apex/ApexSessionInfo;->isStaged:Z
 
-    if-eqz v3, :cond_81
+    if-eqz v5, :cond_81
 
     .line 466
-    const-string v2, "State: STAGED"
+    const-string v5, "State: STAGED"
 
-    invoke-virtual {v0, v2}, Lcom/android/internal/util/IndentingPrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {v0, v5}, Lcom/android/internal/util/IndentingPrintWriter;->println(Ljava/lang/String;)V
 
     goto :goto_bc
 
     .line 467
     :cond_81
-    iget-boolean v3, v2, Landroid/apex/ApexSessionInfo;->isActivated:Z
+    iget-boolean v5, v4, Landroid/apex/ApexSessionInfo;->isActivated:Z
 
-    if-eqz v3, :cond_8b
+    if-eqz v5, :cond_8b
 
     .line 468
-    const-string v2, "State: ACTIVATED"
+    const-string v5, "State: ACTIVATED"
 
-    invoke-virtual {v0, v2}, Lcom/android/internal/util/IndentingPrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {v0, v5}, Lcom/android/internal/util/IndentingPrintWriter;->println(Ljava/lang/String;)V
 
     goto :goto_bc
 
     .line 469
     :cond_8b
-    iget-boolean v3, v2, Landroid/apex/ApexSessionInfo;->isActivationFailed:Z
+    iget-boolean v5, v4, Landroid/apex/ApexSessionInfo;->isActivationFailed:Z
 
-    if-eqz v3, :cond_95
+    if-eqz v5, :cond_95
 
     .line 470
-    const-string v2, "State: ACTIVATION FAILED"
+    const-string v5, "State: ACTIVATION FAILED"
 
-    invoke-virtual {v0, v2}, Lcom/android/internal/util/IndentingPrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {v0, v5}, Lcom/android/internal/util/IndentingPrintWriter;->println(Ljava/lang/String;)V
 
     goto :goto_bc
 
     .line 471
     :cond_95
-    iget-boolean v3, v2, Landroid/apex/ApexSessionInfo;->isSuccess:Z
+    iget-boolean v5, v4, Landroid/apex/ApexSessionInfo;->isSuccess:Z
 
-    if-eqz v3, :cond_9f
+    if-eqz v5, :cond_9f
 
     .line 472
-    const-string v2, "State: SUCCESS"
+    const-string v5, "State: SUCCESS"
 
-    invoke-virtual {v0, v2}, Lcom/android/internal/util/IndentingPrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {v0, v5}, Lcom/android/internal/util/IndentingPrintWriter;->println(Ljava/lang/String;)V
 
     goto :goto_bc
 
     .line 473
     :cond_9f
-    iget-boolean v3, v2, Landroid/apex/ApexSessionInfo;->isRollbackInProgress:Z
+    iget-boolean v5, v4, Landroid/apex/ApexSessionInfo;->isRollbackInProgress:Z
 
-    if-eqz v3, :cond_a9
+    if-eqz v5, :cond_a9
 
     .line 474
-    const-string v2, "State: ROLLBACK IN PROGRESS"
+    const-string v5, "State: ROLLBACK IN PROGRESS"
 
-    invoke-virtual {v0, v2}, Lcom/android/internal/util/IndentingPrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {v0, v5}, Lcom/android/internal/util/IndentingPrintWriter;->println(Ljava/lang/String;)V
 
     goto :goto_bc
 
     .line 475
     :cond_a9
-    iget-boolean v3, v2, Landroid/apex/ApexSessionInfo;->isRolledBack:Z
+    iget-boolean v5, v4, Landroid/apex/ApexSessionInfo;->isRolledBack:Z
 
-    if-eqz v3, :cond_b3
+    if-eqz v5, :cond_b3
 
     .line 476
-    const-string v2, "State: ROLLED BACK"
+    const-string v5, "State: ROLLED BACK"
 
-    invoke-virtual {v0, v2}, Lcom/android/internal/util/IndentingPrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {v0, v5}, Lcom/android/internal/util/IndentingPrintWriter;->println(Ljava/lang/String;)V
 
     goto :goto_bc
 
     .line 477
     :cond_b3
-    iget-boolean v2, v2, Landroid/apex/ApexSessionInfo;->isRollbackFailed:Z
+    iget-boolean v5, v4, Landroid/apex/ApexSessionInfo;->isRollbackFailed:Z
 
-    if-eqz v2, :cond_bc
+    if-eqz v5, :cond_bc
 
     .line 478
-    const-string v2, "State: ROLLBACK FAILED"
+    const-string v5, "State: ROLLBACK FAILED"
 
-    invoke-virtual {v0, v2}, Lcom/android/internal/util/IndentingPrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {v0, v5}, Lcom/android/internal/util/IndentingPrintWriter;->println(Ljava/lang/String;)V
 
     .line 480
     :cond_bc
@@ -763,35 +801,45 @@
     invoke-virtual {v0}, Lcom/android/internal/util/IndentingPrintWriter;->decreaseIndent()Lcom/android/internal/util/IndentingPrintWriter;
 
     .line 458
-    add-int/lit8 v1, v1, 0x1
+    nop
+
+    .end local v4  # "si":Landroid/apex/ApexSessionInfo;
+    add-int/lit8 v3, v3, 0x1
 
     goto :goto_46
 
     .line 482
-    :cond_c2
+    :cond_c3
     invoke-virtual {v0}, Lcom/android/internal/util/IndentingPrintWriter;->decreaseIndent()Lcom/android/internal/util/IndentingPrintWriter;
-    :try_end_c5
-    .catch Landroid/os/RemoteException; {:try_start_9 .. :try_end_c5} :catch_c6
+    :try_end_c6
+    .catch Landroid/os/RemoteException; {:try_start_9 .. :try_end_c6} :catch_c8
 
     .line 485
-    goto :goto_cc
+    nop
+
+    .end local v1  # "sessions":[Landroid/apex/ApexSessionInfo;
+    goto :goto_ce
 
     .line 483
-    :catch_c6
-    move-exception p1
+    :catch_c8
+    move-exception v1
 
     .line 484
-    const-string p1, "Couldn\'t communicate with apexd."
+    .local v1, "e":Landroid/os/RemoteException;
+    const-string v2, "Couldn\'t communicate with apexd."
 
-    invoke-virtual {v0, p1}, Lcom/android/internal/util/IndentingPrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {v0, v2}, Lcom/android/internal/util/IndentingPrintWriter;->println(Ljava/lang/String;)V
 
     .line 486
-    :goto_cc
+    .end local v1  # "e":Landroid/os/RemoteException;
+    :goto_ce
     return-void
 .end method
 
 .method dumpFromPackagesCache(Ljava/util/List;Ljava/lang/String;Lcom/android/internal/util/IndentingPrintWriter;)V
-    .registers 7
+    .registers 8
+    .param p2, "packageName"  # Ljava/lang/String;
+    .param p3, "ipw"  # Lcom/android/internal/util/IndentingPrintWriter;
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(",
@@ -805,6 +853,7 @@
     .end annotation
 
     .line 418
+    .local p1, "packagesCache":Ljava/util/List;, "Ljava/util/List<Landroid/content/pm/PackageInfo;>;"
     invoke-virtual {p3}, Lcom/android/internal/util/IndentingPrintWriter;->println()V
 
     .line 419
@@ -813,130 +862,132 @@
     .line 420
     invoke-interface {p1}, Ljava/util/List;->iterator()Ljava/util/Iterator;
 
-    move-result-object p1
-
-    :goto_a
-    invoke-interface {p1}, Ljava/util/Iterator;->hasNext()Z
-
-    move-result v0
-
-    if-eqz v0, :cond_8c
-
-    invoke-interface {p1}, Ljava/util/Iterator;->next()Ljava/lang/Object;
-
     move-result-object v0
 
-    check-cast v0, Landroid/content/pm/PackageInfo;
-
-    .line 421
-    if-eqz p2, :cond_21
-
-    iget-object v1, v0, Landroid/content/pm/PackageInfo;->packageName:Ljava/lang/String;
-
-    invoke-virtual {p2, v1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    :goto_a
+    invoke-interface {v0}, Ljava/util/Iterator;->hasNext()Z
 
     move-result v1
 
-    if-nez v1, :cond_21
+    if-eqz v1, :cond_8c
+
+    invoke-interface {v0}, Ljava/util/Iterator;->next()Ljava/lang/Object;
+
+    move-result-object v1
+
+    check-cast v1, Landroid/content/pm/PackageInfo;
+
+    .line 421
+    .local v1, "pi":Landroid/content/pm/PackageInfo;
+    if-eqz p2, :cond_21
+
+    iget-object v2, v1, Landroid/content/pm/PackageInfo;->packageName:Ljava/lang/String;
+
+    invoke-virtual {p2, v2}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+
+    move-result v2
+
+    if-nez v2, :cond_21
 
     .line 422
     goto :goto_a
 
     .line 424
     :cond_21
-    iget-object v1, v0, Landroid/content/pm/PackageInfo;->packageName:Ljava/lang/String;
+    iget-object v2, v1, Landroid/content/pm/PackageInfo;->packageName:Ljava/lang/String;
 
-    invoke-virtual {p3, v1}, Lcom/android/internal/util/IndentingPrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {p3, v2}, Lcom/android/internal/util/IndentingPrintWriter;->println(Ljava/lang/String;)V
 
     .line 425
     invoke-virtual {p3}, Lcom/android/internal/util/IndentingPrintWriter;->increaseIndent()Lcom/android/internal/util/IndentingPrintWriter;
 
     .line 426
-    new-instance v1, Ljava/lang/StringBuilder;
+    new-instance v2, Ljava/lang/StringBuilder;
 
-    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v2, "Version: "
+    const-string v3, "Version: "
 
-    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    iget v2, v0, Landroid/content/pm/PackageInfo;->versionCode:I
+    iget v3, v1, Landroid/content/pm/PackageInfo;->versionCode:I
 
-    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v1
+    move-result-object v2
 
-    invoke-virtual {p3, v1}, Lcom/android/internal/util/IndentingPrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {p3, v2}, Lcom/android/internal/util/IndentingPrintWriter;->println(Ljava/lang/String;)V
 
     .line 427
-    new-instance v1, Ljava/lang/StringBuilder;
+    new-instance v2, Ljava/lang/StringBuilder;
 
-    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v2, "Path: "
+    const-string v3, "Path: "
 
-    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    iget-object v2, v0, Landroid/content/pm/PackageInfo;->applicationInfo:Landroid/content/pm/ApplicationInfo;
+    iget-object v3, v1, Landroid/content/pm/PackageInfo;->applicationInfo:Landroid/content/pm/ApplicationInfo;
 
-    iget-object v2, v2, Landroid/content/pm/ApplicationInfo;->sourceDir:Ljava/lang/String;
+    iget-object v3, v3, Landroid/content/pm/ApplicationInfo;->sourceDir:Ljava/lang/String;
 
-    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v1
+    move-result-object v2
 
-    invoke-virtual {p3, v1}, Lcom/android/internal/util/IndentingPrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {p3, v2}, Lcom/android/internal/util/IndentingPrintWriter;->println(Ljava/lang/String;)V
 
     .line 428
-    new-instance v1, Ljava/lang/StringBuilder;
+    new-instance v2, Ljava/lang/StringBuilder;
 
-    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v2, "IsActive: "
+    const-string v3, "IsActive: "
 
-    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-static {v0}, Lcom/android/server/pm/ApexManager;->isActive(Landroid/content/pm/PackageInfo;)Z
+    invoke-static {v1}, Lcom/android/server/pm/ApexManager;->isActive(Landroid/content/pm/PackageInfo;)Z
 
-    move-result v2
+    move-result v3
 
-    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Z)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Z)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v1
+    move-result-object v2
 
-    invoke-virtual {p3, v1}, Lcom/android/internal/util/IndentingPrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {p3, v2}, Lcom/android/internal/util/IndentingPrintWriter;->println(Ljava/lang/String;)V
 
     .line 429
-    new-instance v1, Ljava/lang/StringBuilder;
+    new-instance v2, Ljava/lang/StringBuilder;
 
-    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v2, "IsFactory: "
+    const-string v3, "IsFactory: "
 
-    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-static {v0}, Lcom/android/server/pm/ApexManager;->isFactory(Landroid/content/pm/PackageInfo;)Z
+    invoke-static {v1}, Lcom/android/server/pm/ApexManager;->isFactory(Landroid/content/pm/PackageInfo;)Z
 
-    move-result v0
+    move-result v3
 
-    invoke-virtual {v1, v0}, Ljava/lang/StringBuilder;->append(Z)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Z)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v2
 
-    invoke-virtual {p3, v0}, Lcom/android/internal/util/IndentingPrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {p3, v2}, Lcom/android/internal/util/IndentingPrintWriter;->println(Ljava/lang/String;)V
 
     .line 430
     invoke-virtual {p3}, Lcom/android/internal/util/IndentingPrintWriter;->decreaseIndent()Lcom/android/internal/util/IndentingPrintWriter;
 
     .line 431
+    .end local v1  # "pi":Landroid/content/pm/PackageInfo;
     goto/16 :goto_a
 
     .line 432
@@ -1083,7 +1134,9 @@
 .end method
 
 .method getPackageInfo(Ljava/lang/String;I)Landroid/content/pm/PackageInfo;
-    .registers 7
+    .registers 8
+    .param p1, "packageName"  # Ljava/lang/String;
+    .param p2, "flags"  # I
 
     .line 178
     invoke-direct {p0}, Lcom/android/server/pm/ApexManager;->populateAllPackagesCacheIfNeeded()V
@@ -1105,42 +1158,45 @@
     move v0, v1
 
     .line 180
+    .local v0, "matchActive":Z
     :goto_c
-    and-int/lit8 p2, p2, 0x2
+    and-int/lit8 v3, p2, 0x2
 
-    if-eqz p2, :cond_11
+    if-eqz v3, :cond_11
 
     move v1, v2
 
     .line 181
+    .local v1, "matchFactory":Z
     :cond_11
-    iget-object p2, p0, Lcom/android/server/pm/ApexManager;->mAllPackagesCache:Ljava/util/List;
+    iget-object v2, p0, Lcom/android/server/pm/ApexManager;->mAllPackagesCache:Ljava/util/List;
 
-    invoke-interface {p2}, Ljava/util/List;->iterator()Ljava/util/Iterator;
-
-    move-result-object p2
-
-    :goto_17
-    invoke-interface {p2}, Ljava/util/Iterator;->hasNext()Z
-
-    move-result v2
-
-    if-eqz v2, :cond_3f
-
-    invoke-interface {p2}, Ljava/util/Iterator;->next()Ljava/lang/Object;
+    invoke-interface {v2}, Ljava/util/List;->iterator()Ljava/util/Iterator;
 
     move-result-object v2
 
-    check-cast v2, Landroid/content/pm/PackageInfo;
-
-    .line 182
-    iget-object v3, v2, Landroid/content/pm/PackageInfo;->packageName:Ljava/lang/String;
-
-    invoke-virtual {v3, p1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    :goto_17
+    invoke-interface {v2}, Ljava/util/Iterator;->hasNext()Z
 
     move-result v3
 
-    if-nez v3, :cond_2c
+    if-eqz v3, :cond_3f
+
+    invoke-interface {v2}, Ljava/util/Iterator;->next()Ljava/lang/Object;
+
+    move-result-object v3
+
+    check-cast v3, Landroid/content/pm/PackageInfo;
+
+    .line 182
+    .local v3, "packageInfo":Landroid/content/pm/PackageInfo;
+    iget-object v4, v3, Landroid/content/pm/PackageInfo;->packageName:Ljava/lang/String;
+
+    invoke-virtual {v4, p1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+
+    move-result v4
+
+    if-nez v4, :cond_2c
 
     .line 183
     goto :goto_17
@@ -1149,42 +1205,46 @@
     :cond_2c
     if-eqz v0, :cond_34
 
-    invoke-static {v2}, Lcom/android/server/pm/ApexManager;->isActive(Landroid/content/pm/PackageInfo;)Z
+    invoke-static {v3}, Lcom/android/server/pm/ApexManager;->isActive(Landroid/content/pm/PackageInfo;)Z
 
-    move-result v3
+    move-result v4
 
-    if-eqz v3, :cond_3d
+    if-eqz v4, :cond_3d
 
     :cond_34
     if-eqz v1, :cond_3e
 
     .line 186
-    invoke-static {v2}, Lcom/android/server/pm/ApexManager;->isFactory(Landroid/content/pm/PackageInfo;)Z
+    invoke-static {v3}, Lcom/android/server/pm/ApexManager;->isFactory(Landroid/content/pm/PackageInfo;)Z
 
-    move-result v3
+    move-result v4
 
-    if-eqz v3, :cond_3d
+    if-eqz v4, :cond_3d
 
     goto :goto_3e
 
     .line 189
+    .end local v3  # "packageInfo":Landroid/content/pm/PackageInfo;
     :cond_3d
     goto :goto_17
 
     .line 187
+    .restart local v3  # "packageInfo":Landroid/content/pm/PackageInfo;
     :cond_3e
     :goto_3e
-    return-object v2
+    return-object v3
 
     .line 190
+    .end local v3  # "packageInfo":Landroid/content/pm/PackageInfo;
     :cond_3f
-    const/4 p1, 0x0
+    const/4 v2, 0x0
 
-    return-object p1
+    return-object v2
 .end method
 
 .method getPackageInfoForApexName(Ljava/lang/String;)Landroid/content/pm/PackageInfo;
     .registers 3
+    .param p1, "apexName"  # Ljava/lang/String;
     .annotation runtime Ljava/lang/Deprecated;
     .end annotation
 
@@ -1196,15 +1256,16 @@
 
     invoke-virtual {v0, p1}, Landroid/util/ArrayMap;->get(Ljava/lang/Object;)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v0
 
-    check-cast p1, Landroid/content/pm/PackageInfo;
+    check-cast v0, Landroid/content/pm/PackageInfo;
 
-    return-object p1
+    return-object v0
 .end method
 
 .method getStagedSessionInfo(I)Landroid/apex/ApexSessionInfo;
-    .registers 4
+    .registers 5
+    .param p1, "sessionId"  # I
 
     .line 272
     :try_start_0
@@ -1212,45 +1273,49 @@
 
     invoke-interface {v0, p1}, Landroid/apex/IApexService;->getStagedSessionInfo(I)Landroid/apex/ApexSessionInfo;
 
-    move-result-object p1
+    move-result-object v0
 
     .line 273
-    iget-boolean v0, p1, Landroid/apex/ApexSessionInfo;->isUnknown:Z
+    .local v0, "apexSessionInfo":Landroid/apex/ApexSessionInfo;
+    iget-boolean v1, v0, Landroid/apex/ApexSessionInfo;->isUnknown:Z
     :try_end_8
     .catch Landroid/os/RemoteException; {:try_start_0 .. :try_end_8} :catch_d
 
-    if-eqz v0, :cond_c
+    if-eqz v1, :cond_c
 
     .line 274
-    const/4 p1, 0x0
+    const/4 v1, 0x0
 
-    return-object p1
+    return-object v1
 
     .line 276
     :cond_c
-    return-object p1
+    return-object v0
 
     .line 277
+    .end local v0  # "apexSessionInfo":Landroid/apex/ApexSessionInfo;
     :catch_d
-    move-exception p1
+    move-exception v0
 
     .line 278
-    const-string v0, "ApexManager"
+    .local v0, "re":Landroid/os/RemoteException;
+    const-string v1, "ApexManager"
 
-    const-string v1, "Unable to contact apexservice"
+    const-string v2, "Unable to contact apexservice"
 
-    invoke-static {v0, v1, p1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    invoke-static {v1, v2, v0}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
     .line 279
-    new-instance v0, Ljava/lang/RuntimeException;
+    new-instance v1, Ljava/lang/RuntimeException;
 
-    invoke-direct {v0, p1}, Ljava/lang/RuntimeException;-><init>(Ljava/lang/Throwable;)V
+    invoke-direct {v1, v0}, Ljava/lang/RuntimeException;-><init>(Ljava/lang/Throwable;)V
 
-    throw v0
+    throw v1
 .end method
 
 .method isApexPackage(Ljava/lang/String;)Z
-    .registers 4
+    .registers 5
+    .param p1, "packageName"  # Ljava/lang/String;
 
     .line 254
     invoke-direct {p0}, Lcom/android/server/pm/ApexManager;->populateAllPackagesCacheIfNeeded()V
@@ -1276,28 +1341,30 @@
     check-cast v1, Landroid/content/pm/PackageInfo;
 
     .line 256
-    iget-object v1, v1, Landroid/content/pm/PackageInfo;->packageName:Ljava/lang/String;
+    .local v1, "packageInfo":Landroid/content/pm/PackageInfo;
+    iget-object v2, v1, Landroid/content/pm/PackageInfo;->packageName:Ljava/lang/String;
 
-    invoke-virtual {v1, p1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v2, p1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result v1
+    move-result v2
 
-    if-eqz v1, :cond_1f
+    if-eqz v2, :cond_1f
 
     .line 257
-    const/4 p1, 0x1
+    const/4 v0, 0x1
 
-    return p1
+    return v0
 
     .line 259
+    .end local v1  # "packageInfo":Landroid/content/pm/PackageInfo;
     :cond_1f
     goto :goto_9
 
     .line 260
     :cond_20
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    return p1
+    return v0
 .end method
 
 .method isApexSupported()Z
@@ -1328,7 +1395,8 @@
 .end method
 
 .method markStagedSessionReady(I)Z
-    .registers 4
+    .registers 5
+    .param p1, "sessionId"  # I
 
     .line 318
     :try_start_0
@@ -1336,33 +1404,35 @@
 
     invoke-interface {v0, p1}, Landroid/apex/IApexService;->markStagedSessionReady(I)Z
 
-    move-result p1
+    move-result v0
     :try_end_6
     .catch Landroid/os/RemoteException; {:try_start_0 .. :try_end_6} :catch_7
 
-    return p1
+    return v0
 
     .line 319
     :catch_7
-    move-exception p1
+    move-exception v0
 
     .line 320
-    const-string v0, "ApexManager"
+    .local v0, "re":Landroid/os/RemoteException;
+    const-string v1, "ApexManager"
 
-    const-string v1, "Unable to contact apexservice"
+    const-string v2, "Unable to contact apexservice"
 
-    invoke-static {v0, v1, p1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    invoke-static {v1, v2, v0}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
     .line 321
-    new-instance v0, Ljava/lang/RuntimeException;
+    new-instance v1, Ljava/lang/RuntimeException;
 
-    invoke-direct {v0, p1}, Ljava/lang/RuntimeException;-><init>(Ljava/lang/Throwable;)V
+    invoke-direct {v1, v0}, Ljava/lang/RuntimeException;-><init>(Ljava/lang/Throwable;)V
 
-    throw v0
+    throw v1
 .end method
 
 .method markStagedSessionSuccessful(I)V
     .registers 6
+    .param p1, "sessionId"  # I
 
     .line 335
     const-string v0, "ApexManager"
@@ -1383,6 +1453,7 @@
     move-exception v1
 
     .line 342
+    .local v1, "e":Ljava/lang/Exception;
     new-instance v2, Ljava/lang/StringBuilder;
 
     invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
@@ -1393,33 +1464,35 @@
 
     invoke-virtual {v2, p1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    const-string p1, " as successful"
+    const-string v3, " as successful"
 
-    invoke-virtual {v2, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v2
 
-    invoke-static {v0, p1, v1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    invoke-static {v0, v2, v1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
     .line 344
+    .end local v1  # "e":Ljava/lang/Exception;
     :goto_22
     return-void
 
     .line 336
     :catch_23
-    move-exception p1
+    move-exception v1
 
     .line 337
-    const-string v1, "Unable to contact apexservice"
+    .local v1, "re":Landroid/os/RemoteException;
+    const-string v2, "Unable to contact apexservice"
 
-    invoke-static {v0, v1, p1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    invoke-static {v0, v2, v1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
     .line 338
     new-instance v0, Ljava/lang/RuntimeException;
 
-    invoke-direct {v0, p1}, Ljava/lang/RuntimeException;-><init>(Ljava/lang/Throwable;)V
+    invoke-direct {v0, v1}, Ljava/lang/RuntimeException;-><init>(Ljava/lang/Throwable;)V
 
     throw v0
 .end method
@@ -1435,7 +1508,10 @@
 .end method
 
 .method submitStagedSession(I[ILandroid/apex/ApexInfoList;)Z
-    .registers 5
+    .registers 7
+    .param p1, "sessionId"  # I
+    .param p2, "childSessionIds"  # [I
+    .param p3, "apexInfoList"  # Landroid/apex/ApexInfoList;
 
     .line 302
     :try_start_0
@@ -1443,29 +1519,30 @@
 
     invoke-interface {v0, p1, p2, p3}, Landroid/apex/IApexService;->submitStagedSession(I[ILandroid/apex/ApexInfoList;)Z
 
-    move-result p1
+    move-result v0
     :try_end_6
     .catch Landroid/os/RemoteException; {:try_start_0 .. :try_end_6} :catch_7
 
-    return p1
+    return v0
 
     .line 303
     :catch_7
-    move-exception p1
+    move-exception v0
 
     .line 304
-    const-string p2, "ApexManager"
+    .local v0, "re":Landroid/os/RemoteException;
+    const-string v1, "ApexManager"
 
-    const-string p3, "Unable to contact apexservice"
+    const-string v2, "Unable to contact apexservice"
 
-    invoke-static {p2, p3, p1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    invoke-static {v1, v2, v0}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
     .line 305
-    new-instance p2, Ljava/lang/RuntimeException;
+    new-instance v1, Ljava/lang/RuntimeException;
 
-    invoke-direct {p2, p1}, Ljava/lang/RuntimeException;-><init>(Ljava/lang/Throwable;)V
+    invoke-direct {v1, v0}, Ljava/lang/RuntimeException;-><init>(Ljava/lang/Throwable;)V
 
-    throw p2
+    throw v1
 .end method
 
 .method systemReady()V
@@ -1491,7 +1568,8 @@
 .end method
 
 .method uninstallApex(Ljava/lang/String;)Z
-    .registers 3
+    .registers 4
+    .param p1, "apexPackagePath"  # Ljava/lang/String;
 
     .line 380
     :try_start_0
@@ -1499,23 +1577,24 @@
 
     invoke-static {p1}, Ljava/util/Collections;->singletonList(Ljava/lang/Object;)Ljava/util/List;
 
-    move-result-object p1
+    move-result-object v1
 
-    invoke-interface {v0, p1}, Landroid/apex/IApexService;->unstagePackages(Ljava/util/List;)V
+    invoke-interface {v0, v1}, Landroid/apex/IApexService;->unstagePackages(Ljava/util/List;)V
     :try_end_9
     .catch Ljava/lang/Exception; {:try_start_0 .. :try_end_9} :catch_b
 
     .line 381
-    const/4 p1, 0x1
+    const/4 v0, 0x1
 
-    return p1
+    return v0
 
     .line 382
     :catch_b
-    move-exception p1
+    move-exception v0
 
     .line 383
-    const/4 p1, 0x0
+    .local v0, "e":Ljava/lang/Exception;
+    const/4 v1, 0x0
 
-    return p1
+    return v1
 .end method

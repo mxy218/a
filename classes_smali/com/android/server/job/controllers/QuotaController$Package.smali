@@ -23,6 +23,8 @@
 # direct methods
 .method constructor <init>(ILjava/lang/String;)V
     .registers 3
+    .param p1, "userId"  # I
+    .param p2, "packageName"  # Ljava/lang/String;
 
     .line 212
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -40,42 +42,47 @@
 
 # virtual methods
 .method public equals(Ljava/lang/Object;)Z
-    .registers 5
+    .registers 6
+    .param p1, "obj"  # Ljava/lang/Object;
 
     .line 233
     instance-of v0, p1, Lcom/android/server/job/controllers/QuotaController$Package;
 
     const/4 v1, 0x0
 
-    if-eqz v0, :cond_19
+    if-eqz v0, :cond_1a
 
     .line 234
-    check-cast p1, Lcom/android/server/job/controllers/QuotaController$Package;
+    move-object v0, p1
+
+    check-cast v0, Lcom/android/server/job/controllers/QuotaController$Package;
 
     .line 235
-    iget v0, p0, Lcom/android/server/job/controllers/QuotaController$Package;->userId:I
+    .local v0, "other":Lcom/android/server/job/controllers/QuotaController$Package;
+    iget v2, p0, Lcom/android/server/job/controllers/QuotaController$Package;->userId:I
 
-    iget v2, p1, Lcom/android/server/job/controllers/QuotaController$Package;->userId:I
+    iget v3, v0, Lcom/android/server/job/controllers/QuotaController$Package;->userId:I
 
-    if-ne v0, v2, :cond_18
+    if-ne v2, v3, :cond_19
 
-    iget-object v0, p0, Lcom/android/server/job/controllers/QuotaController$Package;->packageName:Ljava/lang/String;
+    iget-object v2, p0, Lcom/android/server/job/controllers/QuotaController$Package;->packageName:Ljava/lang/String;
 
-    iget-object p1, p1, Lcom/android/server/job/controllers/QuotaController$Package;->packageName:Ljava/lang/String;
+    iget-object v3, v0, Lcom/android/server/job/controllers/QuotaController$Package;->packageName:Ljava/lang/String;
 
-    invoke-static {v0, p1}, Ljava/util/Objects;->equals(Ljava/lang/Object;Ljava/lang/Object;)Z
+    invoke-static {v2, v3}, Ljava/util/Objects;->equals(Ljava/lang/Object;Ljava/lang/Object;)Z
 
-    move-result p1
+    move-result v2
 
-    if-eqz p1, :cond_18
+    if-eqz v2, :cond_19
 
     const/4 v1, 0x1
 
-    :cond_18
+    :cond_19
     return v1
 
     .line 237
-    :cond_19
+    .end local v0  # "other":Lcom/android/server/job/controllers/QuotaController$Package;
+    :cond_1a
     return v1
 .end method
 
@@ -112,29 +119,32 @@
 .end method
 
 .method public writeToProto(Landroid/util/proto/ProtoOutputStream;J)V
-    .registers 7
+    .registers 9
+    .param p1, "proto"  # Landroid/util/proto/ProtoOutputStream;
+    .param p2, "fieldId"  # J
 
     .line 223
     invoke-virtual {p1, p2, p3}, Landroid/util/proto/ProtoOutputStream;->start(J)J
 
-    move-result-wide p2
+    move-result-wide v0
 
     .line 225
-    iget v0, p0, Lcom/android/server/job/controllers/QuotaController$Package;->userId:I
+    .local v0, "token":J
+    iget v2, p0, Lcom/android/server/job/controllers/QuotaController$Package;->userId:I
 
-    const-wide v1, 0x10500000001L
+    const-wide v3, 0x10500000001L
 
-    invoke-virtual {p1, v1, v2, v0}, Landroid/util/proto/ProtoOutputStream;->write(JI)V
+    invoke-virtual {p1, v3, v4, v2}, Landroid/util/proto/ProtoOutputStream;->write(JI)V
 
     .line 226
-    iget-object v0, p0, Lcom/android/server/job/controllers/QuotaController$Package;->packageName:Ljava/lang/String;
+    iget-object v2, p0, Lcom/android/server/job/controllers/QuotaController$Package;->packageName:Ljava/lang/String;
 
-    const-wide v1, 0x10900000002L
+    const-wide v3, 0x10900000002L
 
-    invoke-virtual {p1, v1, v2, v0}, Landroid/util/proto/ProtoOutputStream;->write(JLjava/lang/String;)V
+    invoke-virtual {p1, v3, v4, v2}, Landroid/util/proto/ProtoOutputStream;->write(JLjava/lang/String;)V
 
     .line 228
-    invoke-virtual {p1, p2, p3}, Landroid/util/proto/ProtoOutputStream;->end(J)V
+    invoke-virtual {p1, v0, v1}, Landroid/util/proto/ProtoOutputStream;->end(J)V
 
     .line 229
     return-void

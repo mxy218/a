@@ -21,6 +21,12 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/policy/LegacyGlobalActions;IIIII)V
     .registers 13
+    .param p1, "this$0"  # Lcom/android/server/policy/LegacyGlobalActions;
+    .param p2, "x0"  # I
+    .param p3, "x1"  # I
+    .param p4, "x2"  # I
+    .param p5, "x3"  # I
+    .param p6, "x4"  # I
 
     .line 228
     iput-object p1, p0, Lcom/android/server/policy/LegacyGlobalActions$1;->this$0:Lcom/android/server/policy/LegacyGlobalActions;
@@ -45,7 +51,8 @@
 
 # virtual methods
 .method protected changeStateFromPress(Z)V
-    .registers 3
+    .registers 4
+    .param p1, "buttonOn"  # Z
 
     .line 247
     iget-object v0, p0, Lcom/android/server/policy/LegacyGlobalActions$1;->this$0:Lcom/android/server/policy/LegacyGlobalActions;
@@ -79,22 +86,22 @@
     .line 252
     if-eqz p1, :cond_1c
 
-    sget-object p1, Lcom/android/internal/globalactions/ToggleAction$State;->TurningOn:Lcom/android/internal/globalactions/ToggleAction$State;
+    sget-object v0, Lcom/android/internal/globalactions/ToggleAction$State;->TurningOn:Lcom/android/internal/globalactions/ToggleAction$State;
 
     goto :goto_1e
 
     :cond_1c
-    sget-object p1, Lcom/android/internal/globalactions/ToggleAction$State;->TurningOff:Lcom/android/internal/globalactions/ToggleAction$State;
+    sget-object v0, Lcom/android/internal/globalactions/ToggleAction$State;->TurningOff:Lcom/android/internal/globalactions/ToggleAction$State;
 
     :goto_1e
-    iput-object p1, p0, Lcom/android/server/policy/LegacyGlobalActions$1;->mState:Lcom/android/internal/globalactions/ToggleAction$State;
+    iput-object v0, p0, Lcom/android/server/policy/LegacyGlobalActions$1;->mState:Lcom/android/internal/globalactions/ToggleAction$State;
 
     .line 253
-    iget-object p1, p0, Lcom/android/server/policy/LegacyGlobalActions$1;->this$0:Lcom/android/server/policy/LegacyGlobalActions;
+    iget-object v0, p0, Lcom/android/server/policy/LegacyGlobalActions$1;->this$0:Lcom/android/server/policy/LegacyGlobalActions;
 
-    iget-object v0, p0, Lcom/android/server/policy/LegacyGlobalActions$1;->mState:Lcom/android/internal/globalactions/ToggleAction$State;
+    iget-object v1, p0, Lcom/android/server/policy/LegacyGlobalActions$1;->mState:Lcom/android/internal/globalactions/ToggleAction$State;
 
-    invoke-static {p1, v0}, Lcom/android/server/policy/LegacyGlobalActions;->access$402(Lcom/android/server/policy/LegacyGlobalActions;Lcom/android/internal/globalactions/ToggleAction$State;)Lcom/android/internal/globalactions/ToggleAction$State;
+    invoke-static {v0, v1}, Lcom/android/server/policy/LegacyGlobalActions;->access$402(Lcom/android/server/policy/LegacyGlobalActions;Lcom/android/internal/globalactions/ToggleAction$State;)Lcom/android/internal/globalactions/ToggleAction$State;
 
     .line 255
     :cond_27
@@ -102,7 +109,8 @@
 .end method
 
 .method public onToggle(Z)V
-    .registers 4
+    .registers 5
+    .param p1, "on"  # Z
 
     .line 232
     iget-object v0, p0, Lcom/android/server/policy/LegacyGlobalActions$1;->this$0:Lcom/android/server/policy/LegacyGlobalActions;
@@ -128,36 +136,38 @@
     if-eqz v0, :cond_32
 
     .line 234
-    iget-object p1, p0, Lcom/android/server/policy/LegacyGlobalActions$1;->this$0:Lcom/android/server/policy/LegacyGlobalActions;
-
-    const/4 v0, 0x1
-
-    invoke-static {p1, v0}, Lcom/android/server/policy/LegacyGlobalActions;->access$102(Lcom/android/server/policy/LegacyGlobalActions;Z)Z
-
-    .line 236
-    new-instance p1, Landroid/content/Intent;
-
-    const/4 v0, 0x0
-
-    const-string v1, "com.android.internal.intent.action.ACTION_SHOW_NOTICE_ECM_BLOCK_OTHERS"
-
-    invoke-direct {p1, v1, v0}, Landroid/content/Intent;-><init>(Ljava/lang/String;Landroid/net/Uri;)V
-
-    .line 238
-    const/high16 v0, 0x10000000
-
-    invoke-virtual {p1, v0}, Landroid/content/Intent;->addFlags(I)Landroid/content/Intent;
-
-    .line 239
     iget-object v0, p0, Lcom/android/server/policy/LegacyGlobalActions$1;->this$0:Lcom/android/server/policy/LegacyGlobalActions;
 
-    invoke-static {v0}, Lcom/android/server/policy/LegacyGlobalActions;->access$200(Lcom/android/server/policy/LegacyGlobalActions;)Landroid/content/Context;
+    const/4 v1, 0x1
 
-    move-result-object v0
+    invoke-static {v0, v1}, Lcom/android/server/policy/LegacyGlobalActions;->access$102(Lcom/android/server/policy/LegacyGlobalActions;Z)Z
 
-    invoke-virtual {v0, p1}, Landroid/content/Context;->startActivity(Landroid/content/Intent;)V
+    .line 236
+    new-instance v0, Landroid/content/Intent;
+
+    const/4 v1, 0x0
+
+    const-string v2, "com.android.internal.intent.action.ACTION_SHOW_NOTICE_ECM_BLOCK_OTHERS"
+
+    invoke-direct {v0, v2, v1}, Landroid/content/Intent;-><init>(Ljava/lang/String;Landroid/net/Uri;)V
+
+    .line 238
+    .local v0, "ecmDialogIntent":Landroid/content/Intent;
+    const/high16 v1, 0x10000000
+
+    invoke-virtual {v0, v1}, Landroid/content/Intent;->addFlags(I)Landroid/content/Intent;
+
+    .line 239
+    iget-object v1, p0, Lcom/android/server/policy/LegacyGlobalActions$1;->this$0:Lcom/android/server/policy/LegacyGlobalActions;
+
+    invoke-static {v1}, Lcom/android/server/policy/LegacyGlobalActions;->access$200(Lcom/android/server/policy/LegacyGlobalActions;)Landroid/content/Context;
+
+    move-result-object v1
+
+    invoke-virtual {v1, v0}, Landroid/content/Context;->startActivity(Landroid/content/Intent;)V
 
     .line 240
+    .end local v0  # "ecmDialogIntent":Landroid/content/Intent;
     goto :goto_37
 
     .line 241

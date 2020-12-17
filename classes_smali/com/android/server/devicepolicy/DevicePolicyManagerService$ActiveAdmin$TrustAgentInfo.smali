@@ -21,6 +21,7 @@
 # direct methods
 .method constructor <init>(Landroid/os/PersistableBundle;)V
     .registers 2
+    .param p1, "bundle"  # Landroid/os/PersistableBundle;
 
     .line 1019
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V

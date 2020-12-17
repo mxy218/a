@@ -24,8 +24,9 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/audio/AudioService;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/audio/AudioService;
 
-    .line 7211
+    .line 8278
     iput-object p1, p0, Lcom/android/server/audio/AudioService$5;->this$0:Lcom/android/server/audio/AudioService;
 
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -37,15 +38,17 @@
 # virtual methods
 .method public onDynamicPolicyMixStateUpdate(Ljava/lang/String;I)V
     .registers 11
+    .param p1, "regId"  # Ljava/lang/String;
+    .param p2, "state"  # I
 
-    .line 7213
+    .line 8280
     invoke-static {p1}, Landroid/text/TextUtils;->isEmpty(Ljava/lang/CharSequence;)Z
 
     move-result v0
 
     if-nez v0, :cond_16
 
-    .line 7214
+    .line 8281
     iget-object v0, p0, Lcom/android/server/audio/AudioService$5;->this$0:Lcom/android/server/audio/AudioService;
 
     invoke-static {v0}, Lcom/android/server/audio/AudioService;->access$100(Lcom/android/server/audio/AudioService;)Lcom/android/server/audio/AudioService$AudioHandler;
@@ -66,7 +69,7 @@
 
     invoke-static/range {v1 .. v7}, Lcom/android/server/audio/AudioService;->access$200(Landroid/os/Handler;IIIILjava/lang/Object;I)V
 
-    .line 7217
+    .line 8284
     :cond_16
     return-void
 .end method

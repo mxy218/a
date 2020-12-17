@@ -31,19 +31,20 @@
 
 # direct methods
 .method constructor <init>(Lcom/android/server/am/ProcessRecord;)V
-    .registers 2
+    .registers 3
+    .param p1, "this$0"  # Lcom/android/server/am/ProcessRecord;
 
-    .line 90
+    .line 103
     iput-object p1, p0, Lcom/android/server/am/ProcessRecord$PackageList;->this$0:Lcom/android/server/am/ProcessRecord;
 
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
-    .line 91
-    new-instance p1, Landroid/util/ArrayMap;
+    .line 104
+    new-instance v0, Landroid/util/ArrayMap;
 
-    invoke-direct {p1}, Landroid/util/ArrayMap;-><init>()V
+    invoke-direct {v0}, Landroid/util/ArrayMap;-><init>()V
 
-    iput-object p1, p0, Lcom/android/server/am/ProcessRecord$PackageList;->mPkgList:Landroid/util/ArrayMap;
+    iput-object v0, p0, Lcom/android/server/am/ProcessRecord$PackageList;->mPkgList:Landroid/util/ArrayMap;
 
     return-void
 .end method
@@ -53,12 +54,12 @@
 .method clear()V
     .registers 2
 
-    .line 99
+    .line 112
     iget-object v0, p0, Lcom/android/server/am/ProcessRecord$PackageList;->mPkgList:Landroid/util/ArrayMap;
 
     invoke-virtual {v0}, Landroid/util/ArrayMap;->clear()V
 
-    .line 100
+    .line 113
     iget-object v0, p0, Lcom/android/server/am/ProcessRecord$PackageList;->this$0:Lcom/android/server/am/ProcessRecord;
 
     invoke-static {v0}, Lcom/android/server/am/ProcessRecord;->access$000(Lcom/android/server/am/ProcessRecord;)Lcom/android/server/wm/WindowProcessController;
@@ -67,57 +68,62 @@
 
     invoke-virtual {v0}, Lcom/android/server/wm/WindowProcessController;->clearPackageList()V
 
-    .line 101
+    .line 114
     return-void
 .end method
 
 .method containsKey(Ljava/lang/Object;)Z
     .registers 3
+    .param p1, "key"  # Ljava/lang/Object;
 
-    .line 120
+    .line 133
     iget-object v0, p0, Lcom/android/server/am/ProcessRecord$PackageList;->mPkgList:Landroid/util/ArrayMap;
 
     invoke-virtual {v0, p1}, Landroid/util/ArrayMap;->containsKey(Ljava/lang/Object;)Z
 
-    move-result p1
+    move-result v0
 
-    return p1
+    return v0
 .end method
 
 .method get(Ljava/lang/String;)Lcom/android/internal/app/procstats/ProcessStats$ProcessStateHolder;
     .registers 3
+    .param p1, "pkgName"  # Ljava/lang/String;
 
-    .line 116
+    .line 129
     iget-object v0, p0, Lcom/android/server/am/ProcessRecord$PackageList;->mPkgList:Landroid/util/ArrayMap;
 
     invoke-virtual {v0, p1}, Landroid/util/ArrayMap;->get(Ljava/lang/Object;)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v0
 
-    check-cast p1, Lcom/android/internal/app/procstats/ProcessStats$ProcessStateHolder;
+    check-cast v0, Lcom/android/internal/app/procstats/ProcessStats$ProcessStateHolder;
 
-    return-object p1
+    return-object v0
 .end method
 
 .method keyAt(I)Ljava/lang/String;
     .registers 3
+    .param p1, "index"  # I
 
-    .line 108
+    .line 121
     iget-object v0, p0, Lcom/android/server/am/ProcessRecord$PackageList;->mPkgList:Landroid/util/ArrayMap;
 
     invoke-virtual {v0, p1}, Landroid/util/ArrayMap;->keyAt(I)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v0
 
-    check-cast p1, Ljava/lang/String;
+    check-cast v0, Ljava/lang/String;
 
-    return-object p1
+    return-object v0
 .end method
 
 .method put(Ljava/lang/String;Lcom/android/internal/app/procstats/ProcessStats$ProcessStateHolder;)Lcom/android/internal/app/procstats/ProcessStats$ProcessStateHolder;
     .registers 4
+    .param p1, "key"  # Ljava/lang/String;
+    .param p2, "value"  # Lcom/android/internal/app/procstats/ProcessStats$ProcessStateHolder;
 
-    .line 94
+    .line 107
     iget-object v0, p0, Lcom/android/server/am/ProcessRecord$PackageList;->this$0:Lcom/android/server/am/ProcessRecord;
 
     invoke-static {v0}, Lcom/android/server/am/ProcessRecord;->access$000(Lcom/android/server/am/ProcessRecord;)Lcom/android/server/wm/WindowProcessController;
@@ -126,22 +132,22 @@
 
     invoke-virtual {v0, p1}, Lcom/android/server/wm/WindowProcessController;->addPackage(Ljava/lang/String;)V
 
-    .line 95
+    .line 108
     iget-object v0, p0, Lcom/android/server/am/ProcessRecord$PackageList;->mPkgList:Landroid/util/ArrayMap;
 
     invoke-virtual {v0, p1, p2}, Landroid/util/ArrayMap;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v0
 
-    check-cast p1, Lcom/android/internal/app/procstats/ProcessStats$ProcessStateHolder;
+    check-cast v0, Lcom/android/internal/app/procstats/ProcessStats$ProcessStateHolder;
 
-    return-object p1
+    return-object v0
 .end method
 
 .method size()I
     .registers 2
 
-    .line 104
+    .line 117
     iget-object v0, p0, Lcom/android/server/am/ProcessRecord$PackageList;->mPkgList:Landroid/util/ArrayMap;
 
     invoke-virtual {v0}, Landroid/util/ArrayMap;->size()I
@@ -153,15 +159,16 @@
 
 .method public valueAt(I)Lcom/android/internal/app/procstats/ProcessStats$ProcessStateHolder;
     .registers 3
+    .param p1, "index"  # I
 
-    .line 112
+    .line 125
     iget-object v0, p0, Lcom/android/server/am/ProcessRecord$PackageList;->mPkgList:Landroid/util/ArrayMap;
 
     invoke-virtual {v0, p1}, Landroid/util/ArrayMap;->valueAt(I)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v0
 
-    check-cast p1, Lcom/android/internal/app/procstats/ProcessStats$ProcessStateHolder;
+    check-cast v0, Lcom/android/internal/app/procstats/ProcessStats$ProcessStateHolder;
 
-    return-object p1
+    return-object v0
 .end method

@@ -6,7 +6,7 @@
 # static fields
 .field private static final BLACKLIST_CONFIG_NAME:Ljava/lang/String; = "locationPackagePrefixBlacklist"
 
-.field private static final D:Z
+.field private static final D:Z = true
 
 .field private static final TAG:Ljava/lang/String; = "LocationBlacklist"
 
@@ -26,44 +26,35 @@
 
 
 # direct methods
-.method static constructor <clinit>()V
-    .registers 1
-
-    .line 42
-    sget-boolean v0, Lcom/android/server/LocationManagerService;->D:Z
-
-    sput-boolean v0, Lcom/android/server/location/LocationBlacklist;->D:Z
-
-    return-void
-.end method
-
 .method public constructor <init>(Landroid/content/Context;Landroid/os/Handler;)V
-    .registers 4
+    .registers 5
+    .param p1, "context"  # Landroid/content/Context;
+    .param p2, "handler"  # Landroid/os/Handler;
 
     .line 56
     invoke-direct {p0, p2}, Landroid/database/ContentObserver;-><init>(Landroid/os/Handler;)V
 
     .line 47
-    new-instance p2, Ljava/lang/Object;
+    new-instance v0, Ljava/lang/Object;
 
-    invoke-direct {p2}, Ljava/lang/Object;-><init>()V
+    invoke-direct {v0}, Ljava/lang/Object;-><init>()V
 
-    iput-object p2, p0, Lcom/android/server/location/LocationBlacklist;->mLock:Ljava/lang/Object;
+    iput-object v0, p0, Lcom/android/server/location/LocationBlacklist;->mLock:Ljava/lang/Object;
 
     .line 50
-    const/4 p2, 0x0
+    const/4 v0, 0x0
 
-    new-array v0, p2, [Ljava/lang/String;
+    new-array v1, v0, [Ljava/lang/String;
 
-    iput-object v0, p0, Lcom/android/server/location/LocationBlacklist;->mWhitelist:[Ljava/lang/String;
+    iput-object v1, p0, Lcom/android/server/location/LocationBlacklist;->mWhitelist:[Ljava/lang/String;
 
     .line 51
-    new-array v0, p2, [Ljava/lang/String;
+    new-array v1, v0, [Ljava/lang/String;
 
-    iput-object v0, p0, Lcom/android/server/location/LocationBlacklist;->mBlacklist:[Ljava/lang/String;
+    iput-object v1, p0, Lcom/android/server/location/LocationBlacklist;->mBlacklist:[Ljava/lang/String;
 
     .line 53
-    iput p2, p0, Lcom/android/server/location/LocationBlacklist;->mCurrentUserId:I
+    iput v0, p0, Lcom/android/server/location/LocationBlacklist;->mCurrentUserId:I
 
     .line 57
     iput-object p1, p0, Lcom/android/server/location/LocationBlacklist;->mContext:Landroid/content/Context;
@@ -73,7 +64,8 @@
 .end method
 
 .method private getStringArrayLocked(Ljava/lang/String;)[Ljava/lang/String;
-    .registers 7
+    .registers 9
+    .param p1, "key"  # Ljava/lang/String;
 
     .line 128
     iget-object v0, p0, Lcom/android/server/location/LocationBlacklist;->mLock:Ljava/lang/Object;
@@ -92,9 +84,10 @@
 
     invoke-static {v1, p1, v2}, Landroid/provider/Settings$Secure;->getStringForUser(Landroid/content/ContentResolver;Ljava/lang/String;I)Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v1
 
     .line 131
+    .local v1, "flatString":Ljava/lang/String;
     monitor-exit v0
     :try_end_10
     .catchall {:try_start_3 .. :try_end_10} :catchall_44
@@ -102,54 +95,58 @@
     .line 132
     const/4 v0, 0x0
 
-    if-nez p1, :cond_16
+    if-nez v1, :cond_16
 
     .line 133
-    new-array p1, v0, [Ljava/lang/String;
+    new-array v0, v0, [Ljava/lang/String;
 
-    return-object p1
+    return-object v0
 
     .line 135
     :cond_16
-    const-string v1, ","
+    const-string v2, ","
 
-    invoke-virtual {p1, v1}, Ljava/lang/String;->split(Ljava/lang/String;)[Ljava/lang/String;
+    invoke-virtual {v1, v2}, Ljava/lang/String;->split(Ljava/lang/String;)[Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v2
 
     .line 136
-    new-instance v1, Ljava/util/ArrayList;
+    .local v2, "splitStrings":[Ljava/lang/String;
+    new-instance v3, Ljava/util/ArrayList;
 
-    invoke-direct {v1}, Ljava/util/ArrayList;-><init>()V
+    invoke-direct {v3}, Ljava/util/ArrayList;-><init>()V
 
     .line 137
-    array-length v2, p1
+    .local v3, "result":Ljava/util/ArrayList;, "Ljava/util/ArrayList<Ljava/lang/String;>;"
+    array-length v4, v2
 
     :goto_22
-    if-ge v0, v2, :cond_37
+    if-ge v0, v4, :cond_37
 
-    aget-object v3, p1, v0
+    aget-object v5, v2, v0
 
     .line 138
-    invoke-virtual {v3}, Ljava/lang/String;->trim()Ljava/lang/String;
+    .local v5, "pkg":Ljava/lang/String;
+    invoke-virtual {v5}, Ljava/lang/String;->trim()Ljava/lang/String;
 
-    move-result-object v3
+    move-result-object v5
 
     .line 139
-    invoke-virtual {v3}, Ljava/lang/String;->isEmpty()Z
+    invoke-virtual {v5}, Ljava/lang/String;->isEmpty()Z
 
-    move-result v4
+    move-result v6
 
-    if-eqz v4, :cond_31
+    if-eqz v6, :cond_31
 
     .line 140
     goto :goto_34
 
     .line 142
     :cond_31
-    invoke-virtual {v1, v3}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
+    invoke-virtual {v3, v5}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
 
     .line 137
+    .end local v5  # "pkg":Ljava/lang/String;
     :goto_34
     add-int/lit8 v0, v0, 0x1
 
@@ -157,34 +154,38 @@
 
     .line 144
     :cond_37
-    invoke-virtual {v1}, Ljava/util/ArrayList;->size()I
+    invoke-virtual {v3}, Ljava/util/ArrayList;->size()I
 
-    move-result p1
+    move-result v0
 
-    new-array p1, p1, [Ljava/lang/String;
+    new-array v0, v0, [Ljava/lang/String;
 
-    invoke-virtual {v1, p1}, Ljava/util/ArrayList;->toArray([Ljava/lang/Object;)[Ljava/lang/Object;
+    invoke-virtual {v3, v0}, Ljava/util/ArrayList;->toArray([Ljava/lang/Object;)[Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v0
 
-    check-cast p1, [Ljava/lang/String;
+    check-cast v0, [Ljava/lang/String;
 
-    return-object p1
+    return-object v0
 
     .line 131
+    .end local v1  # "flatString":Ljava/lang/String;
+    .end local v2  # "splitStrings":[Ljava/lang/String;
+    .end local v3  # "result":Ljava/util/ArrayList;, "Ljava/util/ArrayList<Ljava/lang/String;>;"
     :catchall_44
-    move-exception p1
+    move-exception v1
 
     :try_start_45
     monitor-exit v0
     :try_end_46
     .catchall {:try_start_45 .. :try_end_46} :catchall_44
 
-    throw p1
+    throw v1
 .end method
 
 .method private inWhitelist(Ljava/lang/String;)Z
-    .registers 8
+    .registers 9
+    .param p1, "pkg"  # Ljava/lang/String;
 
     .line 106
     iget-object v0, p0, Lcom/android/server/location/LocationBlacklist;->mLock:Ljava/lang/Object;
@@ -207,19 +208,21 @@
     aget-object v5, v1, v4
 
     .line 108
+    .local v5, "white":Ljava/lang/String;
     invoke-virtual {p1, v5}, Ljava/lang/String;->startsWith(Ljava/lang/String;)Z
 
-    move-result v5
+    move-result v6
 
-    if-eqz v5, :cond_15
+    if-eqz v6, :cond_15
 
     monitor-exit v0
 
-    const/4 p1, 0x1
+    const/4 v0, 0x1
 
-    return p1
+    return v0
 
     .line 107
+    .end local v5  # "white":Ljava/lang/String;
     :cond_15
     add-int/lit8 v4, v4, 0x1
 
@@ -234,13 +237,13 @@
 
     .line 110
     :catchall_1a
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_1c
     .catchall {:try_start_3 .. :try_end_1c} :catchall_1a
 
-    throw p1
+    throw v1
 .end method
 
 .method private reloadBlacklist()V
@@ -276,7 +279,7 @@
     .registers 4
 
     .line 69
-    const-string v0, "locationPackagePrefixWhitelist"
+    const-string/jumbo v0, "locationPackagePrefixWhitelist"
 
     invoke-direct {p0, v0}, Lcom/android/server/location/LocationBlacklist;->getStringArrayLocked(Ljava/lang/String;)[Ljava/lang/String;
 
@@ -285,37 +288,32 @@
     iput-object v0, p0, Lcom/android/server/location/LocationBlacklist;->mWhitelist:[Ljava/lang/String;
 
     .line 70
-    sget-boolean v0, Lcom/android/server/location/LocationBlacklist;->D:Z
-
-    const-string v1, "LocationBlacklist"
-
-    if-eqz v0, :cond_29
-
     new-instance v0, Ljava/lang/StringBuilder;
 
     invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string/jumbo v2, "whitelist: "
+    const-string/jumbo v1, "whitelist: "
 
-    invoke-virtual {v0, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    iget-object v2, p0, Lcom/android/server/location/LocationBlacklist;->mWhitelist:[Ljava/lang/String;
+    iget-object v1, p0, Lcom/android/server/location/LocationBlacklist;->mWhitelist:[Ljava/lang/String;
 
-    invoke-static {v2}, Ljava/util/Arrays;->toString([Ljava/lang/Object;)Ljava/lang/String;
+    invoke-static {v1}, Ljava/util/Arrays;->toString([Ljava/lang/Object;)Ljava/lang/String;
 
-    move-result-object v2
+    move-result-object v1
 
-    invoke-virtual {v0, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
     move-result-object v0
 
+    const-string v1, "LocationBlacklist"
+
     invoke-static {v1, v0}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 71
-    :cond_29
-    const-string v0, "locationPackagePrefixBlacklist"
+    const-string/jumbo v0, "locationPackagePrefixBlacklist"
 
     invoke-direct {p0, v0}, Lcom/android/server/location/LocationBlacklist;->getStringArrayLocked(Ljava/lang/String;)[Ljava/lang/String;
 
@@ -324,10 +322,6 @@
     iput-object v0, p0, Lcom/android/server/location/LocationBlacklist;->mBlacklist:[Ljava/lang/String;
 
     .line 72
-    sget-boolean v0, Lcom/android/server/location/LocationBlacklist;->D:Z
-
-    if-eqz v0, :cond_4f
-
     new-instance v0, Ljava/lang/StringBuilder;
 
     invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
@@ -351,7 +345,6 @@
     invoke-static {v1, v0}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 73
-    :cond_4f
     return-void
 .end method
 
@@ -359,13 +352,14 @@
 # virtual methods
 .method public dump(Ljava/io/PrintWriter;)V
     .registers 4
+    .param p1, "pw"  # Ljava/io/PrintWriter;
 
     .line 148
     new-instance v0, Ljava/lang/StringBuilder;
 
     invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v1, "mWhitelist="
+    const-string/jumbo v1, "mWhitelist="
 
     invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
@@ -411,7 +405,7 @@
 
     move-result-object v0
 
-    const-string v1, "locationPackagePrefixBlacklist"
+    const-string/jumbo v1, "locationPackagePrefixBlacklist"
 
     invoke-static {v1}, Landroid/provider/Settings$Secure;->getUriFor(Ljava/lang/String;)Landroid/net/Uri;
 
@@ -432,6 +426,7 @@
 
 .method public isBlacklisted(Ljava/lang/String;)Z
     .registers 9
+    .param p1, "packageName"  # Ljava/lang/String;
 
     .line 86
     iget-object v0, p0, Lcom/android/server/location/LocationBlacklist;->mLock:Ljava/lang/Object;
@@ -449,16 +444,17 @@
     move v4, v3
 
     :goto_8
-    if-ge v4, v2, :cond_41
+    if-ge v4, v2, :cond_3d
 
     aget-object v5, v1, v4
 
     .line 88
+    .local v5, "black":Ljava/lang/String;
     invoke-virtual {p1, v5}, Ljava/lang/String;->startsWith(Ljava/lang/String;)Z
 
     move-result v6
 
-    if-eqz v6, :cond_3e
+    if-eqz v6, :cond_3a
 
     .line 89
     invoke-direct {p0, p1}, Lcom/android/server/location/LocationBlacklist;->inWhitelist(Ljava/lang/String;)Z
@@ -468,14 +464,10 @@
     if-eqz v6, :cond_19
 
     .line 90
-    goto :goto_3e
+    goto :goto_3a
 
     .line 92
     :cond_19
-    sget-boolean v1, Lcom/android/server/location/LocationBlacklist;->D:Z
-
-    if-eqz v1, :cond_3b
-
     const-string v1, "LocationBlacklist"
 
     new-instance v2, Ljava/lang/StringBuilder;
@@ -488,53 +480,54 @@
 
     invoke-virtual {v2, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string p1, " matches "
+    const-string v3, " matches "
 
-    invoke-virtual {v2, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v2, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v2
 
-    invoke-static {v1, p1}, Landroid/util/Log;->d(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v2}, Landroid/util/Log;->d(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 94
-    :cond_3b
     monitor-exit v0
 
-    const/4 p1, 0x1
+    const/4 v0, 0x1
 
-    return p1
+    return v0
 
     .line 87
-    :cond_3e
-    :goto_3e
+    .end local v5  # "black":Ljava/lang/String;
+    :cond_3a
+    :goto_3a
     add-int/lit8 v4, v4, 0x1
 
     goto :goto_8
 
     .line 98
-    :cond_41
+    :cond_3d
     monitor-exit v0
 
     .line 99
     return v3
 
     .line 98
-    :catchall_43
-    move-exception p1
+    :catchall_3f
+    move-exception v1
 
     monitor-exit v0
-    :try_end_45
-    .catchall {:try_start_3 .. :try_end_45} :catchall_43
+    :try_end_41
+    .catchall {:try_start_3 .. :try_end_41} :catchall_3f
 
-    throw p1
+    throw v1
 .end method
 
 .method public onChange(Z)V
     .registers 2
+    .param p1, "selfChange"  # Z
 
     .line 116
     invoke-direct {p0}, Lcom/android/server/location/LocationBlacklist;->reloadBlacklist()V
@@ -544,7 +537,8 @@
 .end method
 
 .method public switchUser(I)V
-    .registers 3
+    .registers 4
+    .param p1, "userId"  # I
 
     .line 120
     iget-object v0, p0, Lcom/android/server/location/LocationBlacklist;->mLock:Ljava/lang/Object;
@@ -566,11 +560,11 @@
 
     .line 123
     :catchall_a
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_c
     .catchall {:try_start_3 .. :try_end_c} :catchall_a
 
-    throw p1
+    throw v1
 .end method

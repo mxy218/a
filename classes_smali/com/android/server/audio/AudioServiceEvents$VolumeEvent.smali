@@ -46,7 +46,9 @@
 
 # direct methods
 .method constructor <init>(II)V
-    .registers 3
+    .registers 4
+    .param p1, "op"  # I
+    .param p2, "index"  # I
 
     .line 130
     invoke-direct {p0}, Lcom/android/server/audio/AudioEventLogger$Event;-><init>()V
@@ -58,26 +60,29 @@
     iput p2, p0, Lcom/android/server/audio/AudioServiceEvents$VolumeEvent;->mVal1:I
 
     .line 134
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    iput p1, p0, Lcom/android/server/audio/AudioServiceEvents$VolumeEvent;->mVal2:I
+    iput v0, p0, Lcom/android/server/audio/AudioServiceEvents$VolumeEvent;->mVal2:I
 
     .line 135
-    const/4 p1, -0x1
+    const/4 v0, -0x1
 
-    iput p1, p0, Lcom/android/server/audio/AudioServiceEvents$VolumeEvent;->mStream:I
+    iput v0, p0, Lcom/android/server/audio/AudioServiceEvents$VolumeEvent;->mStream:I
 
     .line 136
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    iput-object p1, p0, Lcom/android/server/audio/AudioServiceEvents$VolumeEvent;->mCaller:Ljava/lang/String;
+    iput-object v0, p0, Lcom/android/server/audio/AudioServiceEvents$VolumeEvent;->mCaller:Ljava/lang/String;
 
     .line 137
     return-void
 .end method
 
 .method constructor <init>(III)V
-    .registers 4
+    .registers 5
+    .param p1, "op"  # I
+    .param p2, "index"  # I
+    .param p3, "gainDb"  # I
 
     .line 120
     invoke-direct {p0}, Lcom/android/server/audio/AudioEventLogger$Event;-><init>()V
@@ -92,21 +97,25 @@
     iput p3, p0, Lcom/android/server/audio/AudioServiceEvents$VolumeEvent;->mVal2:I
 
     .line 125
-    const/4 p1, -0x1
+    const/4 v0, -0x1
 
-    iput p1, p0, Lcom/android/server/audio/AudioServiceEvents$VolumeEvent;->mStream:I
+    iput v0, p0, Lcom/android/server/audio/AudioServiceEvents$VolumeEvent;->mStream:I
 
     .line 126
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    iput-object p1, p0, Lcom/android/server/audio/AudioServiceEvents$VolumeEvent;->mCaller:Ljava/lang/String;
+    iput-object v0, p0, Lcom/android/server/audio/AudioServiceEvents$VolumeEvent;->mCaller:Ljava/lang/String;
 
     .line 127
     return-void
 .end method
 
 .method constructor <init>(IIII)V
-    .registers 5
+    .registers 6
+    .param p1, "op"  # I
+    .param p2, "mode"  # I
+    .param p3, "stream"  # I
+    .param p4, "index"  # I
 
     .line 150
     invoke-direct {p0}, Lcom/android/server/audio/AudioEventLogger$Event;-><init>()V
@@ -124,9 +133,9 @@
     iput p2, p0, Lcom/android/server/audio/AudioServiceEvents$VolumeEvent;->mVal2:I
 
     .line 156
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    iput-object p1, p0, Lcom/android/server/audio/AudioServiceEvents$VolumeEvent;->mCaller:Ljava/lang/String;
+    iput-object v0, p0, Lcom/android/server/audio/AudioServiceEvents$VolumeEvent;->mCaller:Ljava/lang/String;
 
     .line 157
     return-void
@@ -134,6 +143,11 @@
 
 .method constructor <init>(IIIILjava/lang/String;)V
     .registers 6
+    .param p1, "op"  # I
+    .param p2, "stream"  # I
+    .param p3, "val1"  # I
+    .param p4, "val2"  # I
+    .param p5, "caller"  # Ljava/lang/String;
 
     .line 111
     invoke-direct {p0}, Lcom/android/server/audio/AudioEventLogger$Event;-><init>()V
@@ -158,7 +172,11 @@
 .end method
 
 .method constructor <init>(IZII)V
-    .registers 5
+    .registers 6
+    .param p1, "op"  # I
+    .param p2, "voiceActive"  # Z
+    .param p3, "stream"  # I
+    .param p4, "index"  # I
 
     .line 140
     invoke-direct {p0}, Lcom/android/server/audio/AudioEventLogger$Event;-><init>()V
@@ -176,9 +194,9 @@
     iput p2, p0, Lcom/android/server/audio/AudioServiceEvents$VolumeEvent;->mVal2:I
 
     .line 146
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    iput-object p1, p0, Lcom/android/server/audio/AudioServiceEvents$VolumeEvent;->mCaller:Ljava/lang/String;
+    iput-object v0, p0, Lcom/android/server/audio/AudioServiceEvents$VolumeEvent;->mCaller:Ljava/lang/String;
 
     .line 147
     return-void
@@ -204,7 +222,7 @@
 
     const-string v6, " flags:0x"
 
-    packed-switch v0, :pswitch_data_17e
+    packed-switch v0, :pswitch_data_180
 
     .line 211
     new-instance v0, Ljava/lang/StringBuilder;
@@ -283,12 +301,12 @@
 
     const-string v3, "active"
 
-    goto :goto_5d
+    goto :goto_5e
 
     :cond_5b
-    const-string v3, "inactive"
+    const-string/jumbo v3, "inactive"
 
-    :goto_5d
+    :goto_5e
     invoke-virtual {v0, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     .line 202
@@ -318,7 +336,7 @@
     return-object v0
 
     .line 193
-    :pswitch_79  #0x5
+    :pswitch_7a  #0x5
     new-instance v0, Ljava/lang/StringBuilder;
 
     const-string v1, "adjustStreamVolumeForUid(stream:"
@@ -372,7 +390,7 @@
     return-object v0
 
     .line 189
-    :pswitch_ae  #0x4
+    :pswitch_af  #0x4
     new-instance v0, Ljava/lang/StringBuilder;
 
     const-string/jumbo v1, "setAvrcpVolume:"
@@ -395,7 +413,7 @@
     return-object v0
 
     .line 184
-    :pswitch_c3  #0x3
+    :pswitch_c4  #0x3
     new-instance v0, Ljava/lang/StringBuilder;
 
     const-string/jumbo v1, "setHearingAidVolume:"
@@ -427,7 +445,7 @@
     return-object v0
 
     .line 177
-    :pswitch_e2  #0x2
+    :pswitch_e3  #0x2
     new-instance v0, Ljava/lang/StringBuilder;
 
     const-string/jumbo v1, "setStreamVolume(stream:"
@@ -477,7 +495,7 @@
     return-object v0
 
     .line 170
-    :pswitch_114  #0x1
+    :pswitch_115  #0x1
     new-instance v0, Ljava/lang/StringBuilder;
 
     const-string v1, "adjustStreamVolume(stream:"
@@ -531,7 +549,7 @@
     return-object v0
 
     .line 163
-    :pswitch_149  #0x0
+    :pswitch_14a  #0x0
     new-instance v0, Ljava/lang/StringBuilder;
 
     const-string v1, "adjustSuggestedStreamVolume(sugg:"
@@ -584,14 +602,16 @@
     .line 163
     return-object v0
 
-    :pswitch_data_17e
+    nop
+
+    :pswitch_data_180
     .packed-switch 0x0
-        :pswitch_149  #00000000
-        :pswitch_114  #00000001
-        :pswitch_e2  #00000002
-        :pswitch_c3  #00000003
-        :pswitch_ae  #00000004
-        :pswitch_79  #00000005
+        :pswitch_14a  #00000000
+        :pswitch_115  #00000001
+        :pswitch_e3  #00000002
+        :pswitch_c4  #00000003
+        :pswitch_af  #00000004
+        :pswitch_7a  #00000005
         :pswitch_4c  #00000006
         :pswitch_22  #00000007
     .end packed-switch

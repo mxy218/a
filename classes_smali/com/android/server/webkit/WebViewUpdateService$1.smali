@@ -21,6 +21,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/webkit/WebViewUpdateService;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/webkit/WebViewUpdateService;
 
     .line 66
     iput-object p1, p0, Lcom/android/server/webkit/WebViewUpdateService$1;->this$0:Lcom/android/server/webkit/WebViewUpdateService;
@@ -33,181 +34,184 @@
 
 # virtual methods
 .method public onReceive(Landroid/content/Context;Landroid/content/Intent;)V
-    .registers 10
+    .registers 11
+    .param p1, "context"  # Landroid/content/Context;
+    .param p2, "intent"  # Landroid/content/Intent;
 
     .line 69
-    const-string p1, "android.intent.extra.user_handle"
+    const-string v0, "android.intent.extra.user_handle"
 
-    const/16 v0, -0x2710
+    const/16 v1, -0x2710
 
-    invoke-virtual {p2, p1, v0}, Landroid/content/Intent;->getIntExtra(Ljava/lang/String;I)I
+    invoke-virtual {p2, v0, v1}, Landroid/content/Intent;->getIntExtra(Ljava/lang/String;I)I
 
-    move-result p1
+    move-result v0
 
     .line 70
+    .local v0, "userId":I
     invoke-virtual {p2}, Landroid/content/Intent;->getAction()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v1
 
-    invoke-virtual {v0}, Ljava/lang/String;->hashCode()I
+    invoke-virtual {v1}, Ljava/lang/String;->hashCode()I
 
-    move-result v1
+    move-result v2
 
-    const/4 v2, 0x0
+    const/4 v3, 0x0
 
-    const/4 v3, 0x4
+    const/4 v4, 0x4
 
-    const/4 v4, 0x3
+    const/4 v5, 0x3
 
-    const/4 v5, 0x2
+    const/4 v6, 0x2
 
-    const/4 v6, 0x1
+    const/4 v7, 0x1
 
-    sparse-switch v1, :sswitch_data_b6
+    sparse-switch v2, :sswitch_data_b6
 
     :cond_18
     goto :goto_4b
 
     :sswitch_19
-    const-string v1, "android.intent.action.PACKAGE_ADDED"
+    const-string v2, "android.intent.action.PACKAGE_ADDED"
 
-    invoke-virtual {v0, v1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v1, v2}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result v0
+    move-result v1
 
-    if-eqz v0, :cond_18
+    if-eqz v1, :cond_18
 
-    move v0, v5
+    move v1, v6
 
     goto :goto_4c
 
     :sswitch_23
-    const-string v1, "android.intent.action.PACKAGE_REMOVED"
+    const-string v2, "android.intent.action.PACKAGE_REMOVED"
 
-    invoke-virtual {v0, v1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v1, v2}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result v0
+    move-result v1
 
-    if-eqz v0, :cond_18
+    if-eqz v1, :cond_18
 
-    move v0, v2
+    move v1, v3
 
     goto :goto_4c
 
     :sswitch_2d
-    const-string v1, "android.intent.action.PACKAGE_CHANGED"
+    const-string v2, "android.intent.action.PACKAGE_CHANGED"
 
-    invoke-virtual {v0, v1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v1, v2}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result v0
+    move-result v1
 
-    if-eqz v0, :cond_18
+    if-eqz v1, :cond_18
 
-    move v0, v6
+    move v1, v7
 
     goto :goto_4c
 
     :sswitch_37
-    const-string v1, "android.intent.action.USER_STARTED"
+    const-string v2, "android.intent.action.USER_STARTED"
 
-    invoke-virtual {v0, v1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v1, v2}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result v0
+    move-result v1
 
-    if-eqz v0, :cond_18
+    if-eqz v1, :cond_18
 
-    move v0, v4
+    move v1, v5
 
     goto :goto_4c
 
     :sswitch_41
-    const-string v1, "android.intent.action.USER_REMOVED"
+    const-string v2, "android.intent.action.USER_REMOVED"
 
-    invoke-virtual {v0, v1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v1, v2}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result v0
+    move-result v1
 
-    if-eqz v0, :cond_18
+    if-eqz v1, :cond_18
 
-    move v0, v3
+    move v1, v4
 
     goto :goto_4c
 
     :goto_4b
-    const/4 v0, -0x1
+    const/4 v1, -0x1
 
     :goto_4c
-    const-string v1, "android.intent.extra.REPLACING"
+    const-string v2, "android.intent.extra.REPLACING"
 
-    if-eqz v0, :cond_9b
+    if-eqz v1, :cond_9b
 
-    if-eq v0, v6, :cond_87
+    if-eq v1, v7, :cond_87
 
-    if-eq v0, v5, :cond_6d
+    if-eq v1, v6, :cond_6d
 
-    if-eq v0, v4, :cond_63
+    if-eq v1, v5, :cond_63
 
-    if-eq v0, v3, :cond_59
+    if-eq v1, v4, :cond_59
 
     goto :goto_b4
 
     .line 99
     :cond_59
-    iget-object p2, p0, Lcom/android/server/webkit/WebViewUpdateService$1;->this$0:Lcom/android/server/webkit/WebViewUpdateService;
+    iget-object v1, p0, Lcom/android/server/webkit/WebViewUpdateService$1;->this$0:Lcom/android/server/webkit/WebViewUpdateService;
 
-    invoke-static {p2}, Lcom/android/server/webkit/WebViewUpdateService;->access$100(Lcom/android/server/webkit/WebViewUpdateService;)Lcom/android/server/webkit/WebViewUpdateServiceImpl;
+    invoke-static {v1}, Lcom/android/server/webkit/WebViewUpdateService;->access$100(Lcom/android/server/webkit/WebViewUpdateService;)Lcom/android/server/webkit/WebViewUpdateServiceImpl;
 
-    move-result-object p2
+    move-result-object v1
 
-    invoke-virtual {p2, p1}, Lcom/android/server/webkit/WebViewUpdateServiceImpl;->handleUserRemoved(I)V
+    invoke-virtual {v1, v0}, Lcom/android/server/webkit/WebViewUpdateServiceImpl;->handleUserRemoved(I)V
 
     goto :goto_b4
 
     .line 96
     :cond_63
-    iget-object p2, p0, Lcom/android/server/webkit/WebViewUpdateService$1;->this$0:Lcom/android/server/webkit/WebViewUpdateService;
+    iget-object v1, p0, Lcom/android/server/webkit/WebViewUpdateService$1;->this$0:Lcom/android/server/webkit/WebViewUpdateService;
 
-    invoke-static {p2}, Lcom/android/server/webkit/WebViewUpdateService;->access$100(Lcom/android/server/webkit/WebViewUpdateService;)Lcom/android/server/webkit/WebViewUpdateServiceImpl;
+    invoke-static {v1}, Lcom/android/server/webkit/WebViewUpdateService;->access$100(Lcom/android/server/webkit/WebViewUpdateService;)Lcom/android/server/webkit/WebViewUpdateServiceImpl;
 
-    move-result-object p2
+    move-result-object v1
 
-    invoke-virtual {p2, p1}, Lcom/android/server/webkit/WebViewUpdateServiceImpl;->handleNewUser(I)V
+    invoke-virtual {v1, v0}, Lcom/android/server/webkit/WebViewUpdateServiceImpl;->handleNewUser(I)V
 
     .line 97
     goto :goto_b4
 
     .line 91
     :cond_6d
-    iget-object v0, p0, Lcom/android/server/webkit/WebViewUpdateService$1;->this$0:Lcom/android/server/webkit/WebViewUpdateService;
+    iget-object v1, p0, Lcom/android/server/webkit/WebViewUpdateService$1;->this$0:Lcom/android/server/webkit/WebViewUpdateService;
 
-    invoke-static {v0}, Lcom/android/server/webkit/WebViewUpdateService;->access$100(Lcom/android/server/webkit/WebViewUpdateService;)Lcom/android/server/webkit/WebViewUpdateServiceImpl;
+    invoke-static {v1}, Lcom/android/server/webkit/WebViewUpdateService;->access$100(Lcom/android/server/webkit/WebViewUpdateService;)Lcom/android/server/webkit/WebViewUpdateServiceImpl;
 
-    move-result-object v0
+    move-result-object v1
 
     invoke-static {p2}, Lcom/android/server/webkit/WebViewUpdateService;->access$000(Landroid/content/Intent;)Ljava/lang/String;
 
-    move-result-object v2
+    move-result-object v3
 
     .line 92
     invoke-virtual {p2}, Landroid/content/Intent;->getExtras()Landroid/os/Bundle;
 
-    move-result-object p2
+    move-result-object v4
 
-    invoke-virtual {p2, v1}, Landroid/os/Bundle;->getBoolean(Ljava/lang/String;)Z
+    invoke-virtual {v4, v2}, Landroid/os/Bundle;->getBoolean(Ljava/lang/String;)Z
 
-    move-result p2
+    move-result v2
 
-    if-eqz p2, :cond_82
+    if-eqz v2, :cond_82
 
     .line 93
     goto :goto_83
 
     :cond_82
-    move v5, v6
+    move v6, v7
 
     .line 91
     :goto_83
-    invoke-virtual {v0, v2, v5, p1}, Lcom/android/server/webkit/WebViewUpdateServiceImpl;->packageStateChanged(Ljava/lang/String;II)V
+    invoke-virtual {v1, v3, v6, v0}, Lcom/android/server/webkit/WebViewUpdateServiceImpl;->packageStateChanged(Ljava/lang/String;II)V
 
     .line 94
     goto :goto_b4
@@ -216,22 +220,22 @@
     :cond_87
     invoke-static {p2}, Lcom/android/server/webkit/WebViewUpdateService;->entirePackageChanged(Landroid/content/Intent;)Z
 
-    move-result v0
+    move-result v1
 
-    if-eqz v0, :cond_b4
+    if-eqz v1, :cond_b4
 
     .line 86
-    iget-object v0, p0, Lcom/android/server/webkit/WebViewUpdateService$1;->this$0:Lcom/android/server/webkit/WebViewUpdateService;
+    iget-object v1, p0, Lcom/android/server/webkit/WebViewUpdateService$1;->this$0:Lcom/android/server/webkit/WebViewUpdateService;
 
-    invoke-static {v0}, Lcom/android/server/webkit/WebViewUpdateService;->access$100(Lcom/android/server/webkit/WebViewUpdateService;)Lcom/android/server/webkit/WebViewUpdateServiceImpl;
+    invoke-static {v1}, Lcom/android/server/webkit/WebViewUpdateService;->access$100(Lcom/android/server/webkit/WebViewUpdateService;)Lcom/android/server/webkit/WebViewUpdateServiceImpl;
 
-    move-result-object v0
+    move-result-object v1
 
     invoke-static {p2}, Lcom/android/server/webkit/WebViewUpdateService;->access$000(Landroid/content/Intent;)Ljava/lang/String;
 
-    move-result-object p2
+    move-result-object v2
 
-    invoke-virtual {v0, p2, v2, p1}, Lcom/android/server/webkit/WebViewUpdateServiceImpl;->packageStateChanged(Ljava/lang/String;II)V
+    invoke-virtual {v1, v2, v3, v0}, Lcom/android/server/webkit/WebViewUpdateServiceImpl;->packageStateChanged(Ljava/lang/String;II)V
 
     goto :goto_b4
 
@@ -239,29 +243,29 @@
     :cond_9b
     invoke-virtual {p2}, Landroid/content/Intent;->getExtras()Landroid/os/Bundle;
 
-    move-result-object v0
+    move-result-object v1
 
-    invoke-virtual {v0, v1}, Landroid/os/Bundle;->getBoolean(Ljava/lang/String;)Z
+    invoke-virtual {v1, v2}, Landroid/os/Bundle;->getBoolean(Ljava/lang/String;)Z
 
-    move-result v0
+    move-result v1
 
-    if-eqz v0, :cond_a6
+    if-eqz v1, :cond_a6
 
     return-void
 
     .line 79
     :cond_a6
-    iget-object v0, p0, Lcom/android/server/webkit/WebViewUpdateService$1;->this$0:Lcom/android/server/webkit/WebViewUpdateService;
+    iget-object v1, p0, Lcom/android/server/webkit/WebViewUpdateService$1;->this$0:Lcom/android/server/webkit/WebViewUpdateService;
 
-    invoke-static {v0}, Lcom/android/server/webkit/WebViewUpdateService;->access$100(Lcom/android/server/webkit/WebViewUpdateService;)Lcom/android/server/webkit/WebViewUpdateServiceImpl;
+    invoke-static {v1}, Lcom/android/server/webkit/WebViewUpdateService;->access$100(Lcom/android/server/webkit/WebViewUpdateService;)Lcom/android/server/webkit/WebViewUpdateServiceImpl;
 
-    move-result-object v0
+    move-result-object v1
 
     invoke-static {p2}, Lcom/android/server/webkit/WebViewUpdateService;->access$000(Landroid/content/Intent;)Ljava/lang/String;
 
-    move-result-object p2
+    move-result-object v2
 
-    invoke-virtual {v0, p2, v4, p1}, Lcom/android/server/webkit/WebViewUpdateServiceImpl;->packageStateChanged(Ljava/lang/String;II)V
+    invoke-virtual {v1, v2, v5, v0}, Lcom/android/server/webkit/WebViewUpdateServiceImpl;->packageStateChanged(Ljava/lang/String;II)V
 
     .line 81
     nop

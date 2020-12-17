@@ -57,6 +57,7 @@
 
 .method private report(Lcom/android/server/am/InstrumentationReporter$Report;)V
     .registers 4
+    .param p1, "report"  # Lcom/android/server/am/InstrumentationReporter$Report;
 
     .line 132
     iget-object v0, p0, Lcom/android/server/am/InstrumentationReporter;->mLock:Ljava/lang/Object;
@@ -101,9 +102,9 @@
     invoke-virtual {v1, p1}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
 
     .line 141
-    iget-object p1, p0, Lcom/android/server/am/InstrumentationReporter;->mLock:Ljava/lang/Object;
+    iget-object v1, p0, Lcom/android/server/am/InstrumentationReporter;->mLock:Ljava/lang/Object;
 
-    invoke-virtual {p1}, Ljava/lang/Object;->notifyAll()V
+    invoke-virtual {v1}, Ljava/lang/Object;->notifyAll()V
 
     .line 142
     monitor-exit v0
@@ -113,19 +114,23 @@
 
     .line 142
     :catchall_2a
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_2c
     .catchall {:try_start_3 .. :try_end_2c} :catchall_2a
 
-    throw p1
+    throw v1
 .end method
 
 
 # virtual methods
 .method public reportFinished(Landroid/app/IInstrumentationWatcher;Landroid/content/ComponentName;ILandroid/os/Bundle;)V
     .registers 13
+    .param p1, "watcher"  # Landroid/app/IInstrumentationWatcher;
+    .param p2, "name"  # Landroid/content/ComponentName;
+    .param p3, "resultCode"  # I
+    .param p4, "results"  # Landroid/os/Bundle;
 
     .line 128
     new-instance v7, Lcom/android/server/am/InstrumentationReporter$Report;
@@ -154,6 +159,10 @@
 
 .method public reportStatus(Landroid/app/IInstrumentationWatcher;Landroid/content/ComponentName;ILandroid/os/Bundle;)V
     .registers 13
+    .param p1, "watcher"  # Landroid/app/IInstrumentationWatcher;
+    .param p2, "name"  # Landroid/content/ComponentName;
+    .param p3, "resultCode"  # I
+    .param p4, "results"  # Landroid/os/Bundle;
 
     .line 120
     new-instance v7, Lcom/android/server/am/InstrumentationReporter$Report;

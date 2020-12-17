@@ -24,8 +24,9 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/am/ActivityManagerService;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/am/ActivityManagerService;
 
-    .line 8749
+    .line 9365
     iput-object p1, p0, Lcom/android/server/am/ActivityManagerService$15;->this$0:Lcom/android/server/am/ActivityManagerService;
 
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -38,20 +39,20 @@
 .method public binderDied()V
     .registers 2
 
-    .line 8752
+    .line 9368
     monitor-enter p0
 
-    .line 8753
+    .line 9369
     :try_start_1
     invoke-virtual {p0}, Ljava/lang/Object;->notifyAll()V
 
-    .line 8754
+    .line 9370
     monitor-exit p0
 
-    .line 8755
+    .line 9371
     return-void
 
-    .line 8754
+    .line 9370
     :catchall_6
     move-exception v0
 

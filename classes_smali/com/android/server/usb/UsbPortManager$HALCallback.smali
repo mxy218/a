@@ -23,6 +23,8 @@
 # direct methods
 .method constructor <init>(Lcom/android/internal/util/IndentingPrintWriter;Lcom/android/server/usb/UsbPortManager;)V
     .registers 3
+    .param p1, "pw"  # Lcom/android/internal/util/IndentingPrintWriter;
+    .param p2, "portManager"  # Lcom/android/server/usb/UsbPortManager;
 
     .line 620
     invoke-direct {p0}, Landroid/hardware/usb/V1_2/IUsbCallback$Stub;-><init>()V
@@ -40,7 +42,8 @@
 
 # virtual methods
 .method public notifyPortStatusChange(Ljava/util/ArrayList;I)V
-    .registers 23
+    .registers 22
+    .param p2, "retval"  # I
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(",
@@ -51,6 +54,7 @@
     .end annotation
 
     .line 627
+    .local p1, "currentPortStatus":Ljava/util/ArrayList;, "Ljava/util/ArrayList<Landroid/hardware/usb/V1_0/PortStatus;>;"
     move-object/from16 v0, p0
 
     iget-object v1, v0, Lcom/android/server/usb/UsbPortManager$HALCallback;->portManager:Lcom/android/server/usb/UsbPortManager;
@@ -71,11 +75,11 @@
     .line 632
     const/4 v1, 0x6
 
-    iget-object v0, v0, Lcom/android/server/usb/UsbPortManager$HALCallback;->pw:Lcom/android/internal/util/IndentingPrintWriter;
+    iget-object v2, v0, Lcom/android/server/usb/UsbPortManager$HALCallback;->pw:Lcom/android/internal/util/IndentingPrintWriter;
 
-    const-string/jumbo v2, "port status enquiry failed"
+    const-string/jumbo v3, "port status enquiry failed"
 
-    invoke-static {v1, v0, v2}, Lcom/android/server/usb/UsbPortManager;->access$100(ILcom/android/internal/util/IndentingPrintWriter;Ljava/lang/String;)V
+    invoke-static {v1, v2, v3}, Lcom/android/server/usb/UsbPortManager;->access$100(ILcom/android/internal/util/IndentingPrintWriter;Ljava/lang/String;)V
 
     .line 633
     return-void
@@ -87,6 +91,7 @@
     invoke-direct {v1}, Ljava/util/ArrayList;-><init>()V
 
     .line 638
+    .local v1, "newPortInfo":Ljava/util/ArrayList;, "Ljava/util/ArrayList<Lcom/android/server/usb/UsbPortManager$RawPortInfo;>;"
     invoke-virtual/range {p1 .. p1}, Ljava/util/ArrayList;->iterator()Ljava/util/Iterator;
 
     move-result-object v2
@@ -96,7 +101,7 @@
 
     move-result v3
 
-    if-eqz v3, :cond_71
+    if-eqz v3, :cond_67
 
     invoke-interface {v2}, Ljava/util/Iterator;->next()Ljava/lang/Object;
 
@@ -105,7 +110,8 @@
     check-cast v3, Landroid/hardware/usb/V1_0/PortStatus;
 
     .line 639
-    new-instance v15, Lcom/android/server/usb/UsbPortManager$RawPortInfo;
+    .local v3, "current":Landroid/hardware/usb/V1_0/PortStatus;
+    new-instance v18, Lcom/android/server/usb/UsbPortManager$RawPortInfo;
 
     iget-object v5, v3, Landroid/hardware/usb/V1_0/PortStatus;->portName:Ljava/lang/String;
 
@@ -127,57 +133,50 @@
 
     const/4 v14, 0x0
 
+    const/4 v15, 0x0
+
     const/16 v16, 0x0
 
     const/16 v17, 0x0
 
-    const/16 v18, 0x0
-
-    move-object v4, v15
-
-    move-object/from16 v19, v15
-
-    move/from16 v15, v16
-
-    move/from16 v16, v17
-
-    move/from16 v17, v18
+    move-object/from16 v4, v18
 
     invoke-direct/range {v4 .. v17}, Lcom/android/server/usb/UsbPortManager$RawPortInfo;-><init>(Ljava/lang/String;IIIZIZIZZIZI)V
 
     .line 647
-    move-object/from16 v4, v19
-
+    .local v4, "temp":Lcom/android/server/usb/UsbPortManager$RawPortInfo;
     invoke-virtual {v1, v4}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
 
     .line 648
-    const/4 v4, 0x4
+    const/4 v5, 0x4
 
-    iget-object v5, v0, Lcom/android/server/usb/UsbPortManager$HALCallback;->pw:Lcom/android/internal/util/IndentingPrintWriter;
+    iget-object v6, v0, Lcom/android/server/usb/UsbPortManager$HALCallback;->pw:Lcom/android/internal/util/IndentingPrintWriter;
 
-    new-instance v6, Ljava/lang/StringBuilder;
+    new-instance v7, Ljava/lang/StringBuilder;
 
-    invoke-direct {v6}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v7}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v7, "ClientCallback V1_0: "
+    const-string v8, "ClientCallback V1_0: "
 
-    invoke-virtual {v6, v7}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v7, v8}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    iget-object v3, v3, Landroid/hardware/usb/V1_0/PortStatus;->portName:Ljava/lang/String;
+    iget-object v8, v3, Landroid/hardware/usb/V1_0/PortStatus;->portName:Ljava/lang/String;
 
-    invoke-virtual {v6, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v7, v8}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v6}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v7}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v3
+    move-result-object v7
 
-    invoke-static {v4, v5, v3}, Lcom/android/server/usb/UsbPortManager;->access$100(ILcom/android/internal/util/IndentingPrintWriter;Ljava/lang/String;)V
+    invoke-static {v5, v6, v7}, Lcom/android/server/usb/UsbPortManager;->access$100(ILcom/android/internal/util/IndentingPrintWriter;Ljava/lang/String;)V
 
     .line 649
+    .end local v3  # "current":Landroid/hardware/usb/V1_0/PortStatus;
+    .end local v4  # "temp":Lcom/android/server/usb/UsbPortManager$RawPortInfo;
     goto :goto_20
 
     .line 651
-    :cond_71
+    :cond_67
     iget-object v2, v0, Lcom/android/server/usb/UsbPortManager$HALCallback;->portManager:Lcom/android/server/usb/UsbPortManager;
 
     invoke-static {v2}, Lcom/android/server/usb/UsbPortManager;->access$200(Lcom/android/server/usb/UsbPortManager;)Landroid/os/Handler;
@@ -189,38 +188,41 @@
     move-result-object v2
 
     .line 652
+    .local v2, "message":Landroid/os/Message;
     new-instance v3, Landroid/os/Bundle;
 
     invoke-direct {v3}, Landroid/os/Bundle;-><init>()V
 
     .line 653
+    .local v3, "bundle":Landroid/os/Bundle;
     const-string/jumbo v4, "port_info"
 
     invoke-virtual {v3, v4, v1}, Landroid/os/Bundle;->putParcelableArrayList(Ljava/lang/String;Ljava/util/ArrayList;)V
 
     .line 654
-    const/4 v1, 0x1
+    const/4 v4, 0x1
 
-    iput v1, v2, Landroid/os/Message;->what:I
+    iput v4, v2, Landroid/os/Message;->what:I
 
     .line 655
     invoke-virtual {v2, v3}, Landroid/os/Message;->setData(Landroid/os/Bundle;)V
 
     .line 656
-    iget-object v0, v0, Lcom/android/server/usb/UsbPortManager$HALCallback;->portManager:Lcom/android/server/usb/UsbPortManager;
+    iget-object v4, v0, Lcom/android/server/usb/UsbPortManager$HALCallback;->portManager:Lcom/android/server/usb/UsbPortManager;
 
-    invoke-static {v0}, Lcom/android/server/usb/UsbPortManager;->access$200(Lcom/android/server/usb/UsbPortManager;)Landroid/os/Handler;
+    invoke-static {v4}, Lcom/android/server/usb/UsbPortManager;->access$200(Lcom/android/server/usb/UsbPortManager;)Landroid/os/Handler;
 
-    move-result-object v0
+    move-result-object v4
 
-    invoke-virtual {v0, v2}, Landroid/os/Handler;->sendMessage(Landroid/os/Message;)Z
+    invoke-virtual {v4, v2}, Landroid/os/Handler;->sendMessage(Landroid/os/Message;)Z
 
     .line 657
     return-void
 .end method
 
 .method public notifyPortStatusChange_1_1(Ljava/util/ArrayList;I)V
-    .registers 25
+    .registers 24
+    .param p2, "retval"  # I
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(",
@@ -231,6 +233,7 @@
     .end annotation
 
     .line 662
+    .local p1, "currentPortStatus":Ljava/util/ArrayList;, "Ljava/util/ArrayList<Landroid/hardware/usb/V1_1/PortStatus_1_1;>;"
     move-object/from16 v0, p0
 
     iget-object v1, v0, Lcom/android/server/usb/UsbPortManager$HALCallback;->portManager:Lcom/android/server/usb/UsbPortManager;
@@ -251,11 +254,11 @@
     .line 667
     const/4 v1, 0x6
 
-    iget-object v0, v0, Lcom/android/server/usb/UsbPortManager$HALCallback;->pw:Lcom/android/internal/util/IndentingPrintWriter;
+    iget-object v2, v0, Lcom/android/server/usb/UsbPortManager$HALCallback;->pw:Lcom/android/internal/util/IndentingPrintWriter;
 
-    const-string/jumbo v2, "port status enquiry failed"
+    const-string/jumbo v3, "port status enquiry failed"
 
-    invoke-static {v1, v0, v2}, Lcom/android/server/usb/UsbPortManager;->access$100(ILcom/android/internal/util/IndentingPrintWriter;Ljava/lang/String;)V
+    invoke-static {v1, v2, v3}, Lcom/android/server/usb/UsbPortManager;->access$100(ILcom/android/internal/util/IndentingPrintWriter;Ljava/lang/String;)V
 
     .line 668
     return-void
@@ -267,15 +270,18 @@
     invoke-direct {v1}, Ljava/util/ArrayList;-><init>()V
 
     .line 673
+    .local v1, "newPortInfo":Ljava/util/ArrayList;, "Ljava/util/ArrayList<Lcom/android/server/usb/UsbPortManager$RawPortInfo;>;"
     invoke-virtual/range {p1 .. p1}, Ljava/util/ArrayList;->size()I
 
     move-result v2
 
     .line 674
+    .local v2, "numStatus":I
     const/4 v3, 0x0
 
+    .local v3, "i":I
     :goto_21
-    if-ge v3, v2, :cond_7f
+    if-ge v3, v2, :cond_78
 
     .line 675
     move-object/from16 v4, p1
@@ -287,7 +293,8 @@
     check-cast v5, Landroid/hardware/usb/V1_1/PortStatus_1_1;
 
     .line 676
-    new-instance v15, Lcom/android/server/usb/UsbPortManager$RawPortInfo;
+    .local v5, "current":Landroid/hardware/usb/V1_1/PortStatus_1_1;
+    new-instance v20, Lcom/android/server/usb/UsbPortManager$RawPortInfo;
 
     iget-object v6, v5, Landroid/hardware/usb/V1_1/PortStatus_1_1;->status:Landroid/hardware/usb/V1_0/PortStatus;
 
@@ -317,7 +324,7 @@
 
     iget-object v6, v5, Landroid/hardware/usb/V1_1/PortStatus_1_1;->status:Landroid/hardware/usb/V1_0/PortStatus;
 
-    iget-boolean v6, v6, Landroid/hardware/usb/V1_0/PortStatus;->canChangeDataRole:Z
+    iget-boolean v15, v6, Landroid/hardware/usb/V1_0/PortStatus;->canChangeDataRole:Z
 
     const/16 v16, 0x0
 
@@ -327,96 +334,97 @@
 
     const/16 v19, 0x0
 
-    move/from16 v20, v6
-
-    move-object v6, v15
-
-    move-object/from16 v21, v15
-
-    move/from16 v15, v20
+    move-object/from16 v6, v20
 
     invoke-direct/range {v6 .. v19}, Lcom/android/server/usb/UsbPortManager$RawPortInfo;-><init>(Ljava/lang/String;IIIZIZIZZIZI)V
 
     .line 684
-    move-object/from16 v6, v21
-
+    .local v6, "temp":Lcom/android/server/usb/UsbPortManager$RawPortInfo;
     invoke-virtual {v1, v6}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
 
     .line 685
-    const/4 v6, 0x4
+    const/4 v7, 0x4
 
-    iget-object v7, v0, Lcom/android/server/usb/UsbPortManager$HALCallback;->pw:Lcom/android/internal/util/IndentingPrintWriter;
+    iget-object v8, v0, Lcom/android/server/usb/UsbPortManager$HALCallback;->pw:Lcom/android/internal/util/IndentingPrintWriter;
 
-    new-instance v8, Ljava/lang/StringBuilder;
+    new-instance v9, Ljava/lang/StringBuilder;
 
-    invoke-direct {v8}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v9}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v9, "ClientCallback V1_1: "
+    const-string v10, "ClientCallback V1_1: "
 
-    invoke-virtual {v8, v9}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v9, v10}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    iget-object v5, v5, Landroid/hardware/usb/V1_1/PortStatus_1_1;->status:Landroid/hardware/usb/V1_0/PortStatus;
+    iget-object v10, v5, Landroid/hardware/usb/V1_1/PortStatus_1_1;->status:Landroid/hardware/usb/V1_0/PortStatus;
 
-    iget-object v5, v5, Landroid/hardware/usb/V1_0/PortStatus;->portName:Ljava/lang/String;
+    iget-object v10, v10, Landroid/hardware/usb/V1_0/PortStatus;->portName:Ljava/lang/String;
 
-    invoke-virtual {v8, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v9, v10}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v8}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v9}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v5
+    move-result-object v9
 
-    invoke-static {v6, v7, v5}, Lcom/android/server/usb/UsbPortManager;->access$100(ILcom/android/internal/util/IndentingPrintWriter;Ljava/lang/String;)V
+    invoke-static {v7, v8, v9}, Lcom/android/server/usb/UsbPortManager;->access$100(ILcom/android/internal/util/IndentingPrintWriter;Ljava/lang/String;)V
 
     .line 674
+    .end local v5  # "current":Landroid/hardware/usb/V1_1/PortStatus_1_1;
+    .end local v6  # "temp":Lcom/android/server/usb/UsbPortManager$RawPortInfo;
     add-int/lit8 v3, v3, 0x1
 
     goto :goto_21
 
+    :cond_78
+    move-object/from16 v4, p1
+
     .line 688
-    :cond_7f
-    iget-object v2, v0, Lcom/android/server/usb/UsbPortManager$HALCallback;->portManager:Lcom/android/server/usb/UsbPortManager;
+    .end local v3  # "i":I
+    iget-object v3, v0, Lcom/android/server/usb/UsbPortManager$HALCallback;->portManager:Lcom/android/server/usb/UsbPortManager;
 
-    invoke-static {v2}, Lcom/android/server/usb/UsbPortManager;->access$200(Lcom/android/server/usb/UsbPortManager;)Landroid/os/Handler;
+    invoke-static {v3}, Lcom/android/server/usb/UsbPortManager;->access$200(Lcom/android/server/usb/UsbPortManager;)Landroid/os/Handler;
 
-    move-result-object v2
+    move-result-object v3
 
-    invoke-virtual {v2}, Landroid/os/Handler;->obtainMessage()Landroid/os/Message;
+    invoke-virtual {v3}, Landroid/os/Handler;->obtainMessage()Landroid/os/Message;
 
-    move-result-object v2
+    move-result-object v3
 
     .line 689
-    new-instance v3, Landroid/os/Bundle;
+    .local v3, "message":Landroid/os/Message;
+    new-instance v5, Landroid/os/Bundle;
 
-    invoke-direct {v3}, Landroid/os/Bundle;-><init>()V
+    invoke-direct {v5}, Landroid/os/Bundle;-><init>()V
 
     .line 690
-    const-string/jumbo v4, "port_info"
+    .local v5, "bundle":Landroid/os/Bundle;
+    const-string/jumbo v6, "port_info"
 
-    invoke-virtual {v3, v4, v1}, Landroid/os/Bundle;->putParcelableArrayList(Ljava/lang/String;Ljava/util/ArrayList;)V
+    invoke-virtual {v5, v6, v1}, Landroid/os/Bundle;->putParcelableArrayList(Ljava/lang/String;Ljava/util/ArrayList;)V
 
     .line 691
-    const/4 v1, 0x1
+    const/4 v6, 0x1
 
-    iput v1, v2, Landroid/os/Message;->what:I
+    iput v6, v3, Landroid/os/Message;->what:I
 
     .line 692
-    invoke-virtual {v2, v3}, Landroid/os/Message;->setData(Landroid/os/Bundle;)V
+    invoke-virtual {v3, v5}, Landroid/os/Message;->setData(Landroid/os/Bundle;)V
 
     .line 693
-    iget-object v0, v0, Lcom/android/server/usb/UsbPortManager$HALCallback;->portManager:Lcom/android/server/usb/UsbPortManager;
+    iget-object v6, v0, Lcom/android/server/usb/UsbPortManager$HALCallback;->portManager:Lcom/android/server/usb/UsbPortManager;
 
-    invoke-static {v0}, Lcom/android/server/usb/UsbPortManager;->access$200(Lcom/android/server/usb/UsbPortManager;)Landroid/os/Handler;
+    invoke-static {v6}, Lcom/android/server/usb/UsbPortManager;->access$200(Lcom/android/server/usb/UsbPortManager;)Landroid/os/Handler;
 
-    move-result-object v0
+    move-result-object v6
 
-    invoke-virtual {v0, v2}, Landroid/os/Handler;->sendMessage(Landroid/os/Message;)Z
+    invoke-virtual {v6, v3}, Landroid/os/Handler;->sendMessage(Landroid/os/Message;)Z
 
     .line 694
     return-void
 .end method
 
 .method public notifyPortStatusChange_1_2(Ljava/util/ArrayList;I)V
-    .registers 25
+    .registers 26
+    .param p2, "retval"  # I
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(",
@@ -427,6 +435,7 @@
     .end annotation
 
     .line 698
+    .local p1, "currentPortStatus":Ljava/util/ArrayList;, "Ljava/util/ArrayList<Landroid/hardware/usb/V1_2/PortStatus;>;"
     move-object/from16 v0, p0
 
     iget-object v1, v0, Lcom/android/server/usb/UsbPortManager$HALCallback;->portManager:Lcom/android/server/usb/UsbPortManager;
@@ -447,11 +456,11 @@
     .line 703
     const/4 v1, 0x6
 
-    iget-object v0, v0, Lcom/android/server/usb/UsbPortManager$HALCallback;->pw:Lcom/android/internal/util/IndentingPrintWriter;
+    iget-object v2, v0, Lcom/android/server/usb/UsbPortManager$HALCallback;->pw:Lcom/android/internal/util/IndentingPrintWriter;
 
-    const-string/jumbo v2, "port status enquiry failed"
+    const-string/jumbo v3, "port status enquiry failed"
 
-    invoke-static {v1, v0, v2}, Lcom/android/server/usb/UsbPortManager;->access$100(ILcom/android/internal/util/IndentingPrintWriter;Ljava/lang/String;)V
+    invoke-static {v1, v2, v3}, Lcom/android/server/usb/UsbPortManager;->access$100(ILcom/android/internal/util/IndentingPrintWriter;Ljava/lang/String;)V
 
     .line 704
     return-void
@@ -463,15 +472,18 @@
     invoke-direct {v1}, Ljava/util/ArrayList;-><init>()V
 
     .line 709
+    .local v1, "newPortInfo":Ljava/util/ArrayList;, "Ljava/util/ArrayList<Lcom/android/server/usb/UsbPortManager$RawPortInfo;>;"
     invoke-virtual/range {p1 .. p1}, Ljava/util/ArrayList;->size()I
 
     move-result v2
 
     .line 710
+    .local v2, "numStatus":I
     const/4 v3, 0x0
 
+    .local v3, "i":I
     :goto_21
-    if-ge v3, v2, :cond_a5
+    if-ge v3, v2, :cond_9b
 
     .line 711
     move-object/from16 v4, p1
@@ -483,7 +495,8 @@
     check-cast v5, Landroid/hardware/usb/V1_2/PortStatus;
 
     .line 712
-    new-instance v15, Lcom/android/server/usb/UsbPortManager$RawPortInfo;
+    .local v5, "current":Landroid/hardware/usb/V1_2/PortStatus;
+    new-instance v20, Lcom/android/server/usb/UsbPortManager$RawPortInfo;
 
     iget-object v6, v5, Landroid/hardware/usb/V1_2/PortStatus;->status_1_1:Landroid/hardware/usb/V1_1/PortStatus_1_1;
 
@@ -529,178 +542,187 @@
 
     iget-object v6, v6, Landroid/hardware/usb/V1_1/PortStatus_1_1;->status:Landroid/hardware/usb/V1_0/PortStatus;
 
-    iget-boolean v6, v6, Landroid/hardware/usb/V1_0/PortStatus;->canChangeDataRole:Z
+    iget-boolean v15, v6, Landroid/hardware/usb/V1_0/PortStatus;->canChangeDataRole:Z
 
-    move/from16 p2, v2
+    iget-boolean v6, v5, Landroid/hardware/usb/V1_2/PortStatus;->supportsEnableContaminantPresenceProtection:Z
 
-    iget-boolean v2, v5, Landroid/hardware/usb/V1_2/PortStatus;->supportsEnableContaminantPresenceProtection:Z
+    move/from16 v21, v2
 
-    iget v4, v5, Landroid/hardware/usb/V1_2/PortStatus;->contaminantProtectionStatus:I
+    .end local v2  # "numStatus":I
+    .local v21, "numStatus":I
+    iget v2, v5, Landroid/hardware/usb/V1_2/PortStatus;->contaminantProtectionStatus:I
 
-    move/from16 v20, v3
+    iget-boolean v4, v5, Landroid/hardware/usb/V1_2/PortStatus;->supportsEnableContaminantPresenceDetection:Z
 
-    iget-boolean v3, v5, Landroid/hardware/usb/V1_2/PortStatus;->supportsEnableContaminantPresenceDetection:Z
+    move/from16 v22, v3
 
-    iget v0, v5, Landroid/hardware/usb/V1_2/PortStatus;->contaminantDetectionStatus:I
+    .end local v3  # "i":I
+    .local v22, "i":I
+    iget v3, v5, Landroid/hardware/usb/V1_2/PortStatus;->contaminantDetectionStatus:I
 
     move/from16 v16, v6
 
-    move-object v6, v15
+    move-object/from16 v6, v20
 
-    move-object/from16 v21, v5
+    move/from16 v17, v2
 
-    move-object v5, v15
+    move/from16 v18, v4
 
-    move/from16 v15, v16
-
-    move/from16 v16, v2
-
-    move/from16 v17, v4
-
-    move/from16 v18, v3
-
-    move/from16 v19, v0
+    move/from16 v19, v3
 
     invoke-direct/range {v6 .. v19}, Lcom/android/server/usb/UsbPortManager$RawPortInfo;-><init>(Ljava/lang/String;IIIZIZIZZIZI)V
 
+    move-object/from16 v2, v20
+
     .line 725
-    invoke-virtual {v1, v5}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
+    .local v2, "temp":Lcom/android/server/usb/UsbPortManager$RawPortInfo;
+    invoke-virtual {v1, v2}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
 
     .line 726
-    const/4 v0, 0x4
+    const/4 v3, 0x4
 
-    move-object/from16 v2, p0
+    iget-object v4, v0, Lcom/android/server/usb/UsbPortManager$HALCallback;->pw:Lcom/android/internal/util/IndentingPrintWriter;
 
-    iget-object v3, v2, Lcom/android/server/usb/UsbPortManager$HALCallback;->pw:Lcom/android/internal/util/IndentingPrintWriter;
+    new-instance v6, Ljava/lang/StringBuilder;
 
-    new-instance v4, Ljava/lang/StringBuilder;
+    invoke-direct {v6}, Ljava/lang/StringBuilder;-><init>()V
 
-    invoke-direct {v4}, Ljava/lang/StringBuilder;-><init>()V
+    const-string v7, "ClientCallback V1_2: "
 
-    const-string v5, "ClientCallback V1_2: "
+    invoke-virtual {v6, v7}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    iget-object v7, v5, Landroid/hardware/usb/V1_2/PortStatus;->status_1_1:Landroid/hardware/usb/V1_1/PortStatus_1_1;
 
-    move-object/from16 v5, v21
+    iget-object v7, v7, Landroid/hardware/usb/V1_1/PortStatus_1_1;->status:Landroid/hardware/usb/V1_0/PortStatus;
 
-    iget-object v5, v5, Landroid/hardware/usb/V1_2/PortStatus;->status_1_1:Landroid/hardware/usb/V1_1/PortStatus_1_1;
+    iget-object v7, v7, Landroid/hardware/usb/V1_0/PortStatus;->portName:Ljava/lang/String;
 
-    iget-object v5, v5, Landroid/hardware/usb/V1_1/PortStatus_1_1;->status:Landroid/hardware/usb/V1_0/PortStatus;
+    invoke-virtual {v6, v7}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    iget-object v5, v5, Landroid/hardware/usb/V1_0/PortStatus;->portName:Ljava/lang/String;
+    invoke-virtual {v6}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    move-result-object v6
 
-    invoke-virtual {v4}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
-
-    move-result-object v4
-
-    invoke-static {v0, v3, v4}, Lcom/android/server/usb/UsbPortManager;->access$100(ILcom/android/internal/util/IndentingPrintWriter;Ljava/lang/String;)V
+    invoke-static {v3, v4, v6}, Lcom/android/server/usb/UsbPortManager;->access$100(ILcom/android/internal/util/IndentingPrintWriter;Ljava/lang/String;)V
 
     .line 710
-    add-int/lit8 v3, v20, 0x1
+    .end local v2  # "temp":Lcom/android/server/usb/UsbPortManager$RawPortInfo;
+    .end local v5  # "current":Landroid/hardware/usb/V1_2/PortStatus;
+    add-int/lit8 v3, v22, 0x1
 
-    move-object v0, v2
+    move/from16 v2, v21
 
-    move/from16 v2, p2
+    .end local v22  # "i":I
+    .restart local v3  # "i":I
+    goto :goto_21
 
-    goto/16 :goto_21
+    .end local v21  # "numStatus":I
+    .local v2, "numStatus":I
+    :cond_9b
+    move/from16 v21, v2
+
+    move/from16 v22, v3
 
     .line 730
-    :cond_a5
-    move-object v2, v0
+    .end local v2  # "numStatus":I
+    .end local v3  # "i":I
+    .restart local v21  # "numStatus":I
+    iget-object v2, v0, Lcom/android/server/usb/UsbPortManager$HALCallback;->portManager:Lcom/android/server/usb/UsbPortManager;
 
-    iget-object v0, v2, Lcom/android/server/usb/UsbPortManager$HALCallback;->portManager:Lcom/android/server/usb/UsbPortManager;
+    invoke-static {v2}, Lcom/android/server/usb/UsbPortManager;->access$200(Lcom/android/server/usb/UsbPortManager;)Landroid/os/Handler;
 
-    invoke-static {v0}, Lcom/android/server/usb/UsbPortManager;->access$200(Lcom/android/server/usb/UsbPortManager;)Landroid/os/Handler;
+    move-result-object v2
 
-    move-result-object v0
+    invoke-virtual {v2}, Landroid/os/Handler;->obtainMessage()Landroid/os/Message;
 
-    invoke-virtual {v0}, Landroid/os/Handler;->obtainMessage()Landroid/os/Message;
-
-    move-result-object v0
+    move-result-object v2
 
     .line 731
+    .local v2, "message":Landroid/os/Message;
     new-instance v3, Landroid/os/Bundle;
 
     invoke-direct {v3}, Landroid/os/Bundle;-><init>()V
 
     .line 732
+    .local v3, "bundle":Landroid/os/Bundle;
     const-string/jumbo v4, "port_info"
 
     invoke-virtual {v3, v4, v1}, Landroid/os/Bundle;->putParcelableArrayList(Ljava/lang/String;Ljava/util/ArrayList;)V
 
     .line 733
-    const/4 v1, 0x1
+    const/4 v4, 0x1
 
-    iput v1, v0, Landroid/os/Message;->what:I
+    iput v4, v2, Landroid/os/Message;->what:I
 
     .line 734
-    invoke-virtual {v0, v3}, Landroid/os/Message;->setData(Landroid/os/Bundle;)V
+    invoke-virtual {v2, v3}, Landroid/os/Message;->setData(Landroid/os/Bundle;)V
 
     .line 735
-    iget-object v1, v2, Lcom/android/server/usb/UsbPortManager$HALCallback;->portManager:Lcom/android/server/usb/UsbPortManager;
+    iget-object v4, v0, Lcom/android/server/usb/UsbPortManager$HALCallback;->portManager:Lcom/android/server/usb/UsbPortManager;
 
-    invoke-static {v1}, Lcom/android/server/usb/UsbPortManager;->access$200(Lcom/android/server/usb/UsbPortManager;)Landroid/os/Handler;
+    invoke-static {v4}, Lcom/android/server/usb/UsbPortManager;->access$200(Lcom/android/server/usb/UsbPortManager;)Landroid/os/Handler;
 
-    move-result-object v1
+    move-result-object v4
 
-    invoke-virtual {v1, v0}, Landroid/os/Handler;->sendMessage(Landroid/os/Message;)Z
+    invoke-virtual {v4, v2}, Landroid/os/Handler;->sendMessage(Landroid/os/Message;)Z
 
     .line 736
     return-void
 .end method
 
 .method public notifyRoleSwitchStatus(Ljava/lang/String;Landroid/hardware/usb/V1_0/PortRole;I)V
-    .registers 5
+    .registers 8
+    .param p1, "portName"  # Ljava/lang/String;
+    .param p2, "role"  # Landroid/hardware/usb/V1_0/PortRole;
+    .param p3, "retval"  # I
 
     .line 739
     if-nez p3, :cond_1a
 
     .line 740
-    const/4 p2, 0x4
+    const/4 v0, 0x4
 
-    iget-object p3, p0, Lcom/android/server/usb/UsbPortManager$HALCallback;->pw:Lcom/android/internal/util/IndentingPrintWriter;
+    iget-object v1, p0, Lcom/android/server/usb/UsbPortManager$HALCallback;->pw:Lcom/android/internal/util/IndentingPrintWriter;
 
-    new-instance v0, Ljava/lang/StringBuilder;
+    new-instance v2, Ljava/lang/StringBuilder;
 
-    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
 
-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string p1, " role switch successful"
+    const-string v3, " role switch successful"
 
-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v2
 
-    invoke-static {p2, p3, p1}, Lcom/android/server/usb/UsbPortManager;->access$100(ILcom/android/internal/util/IndentingPrintWriter;Ljava/lang/String;)V
+    invoke-static {v0, v1, v2}, Lcom/android/server/usb/UsbPortManager;->access$100(ILcom/android/internal/util/IndentingPrintWriter;Ljava/lang/String;)V
 
     goto :goto_31
 
     .line 742
     :cond_1a
-    const/4 p2, 0x6
+    const/4 v0, 0x6
 
-    iget-object p3, p0, Lcom/android/server/usb/UsbPortManager$HALCallback;->pw:Lcom/android/internal/util/IndentingPrintWriter;
+    iget-object v1, p0, Lcom/android/server/usb/UsbPortManager$HALCallback;->pw:Lcom/android/internal/util/IndentingPrintWriter;
 
-    new-instance v0, Ljava/lang/StringBuilder;
+    new-instance v2, Ljava/lang/StringBuilder;
 
-    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
 
-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string p1, " role switch failed"
+    const-string v3, " role switch failed"
 
-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v2
 
-    invoke-static {p2, p3, p1}, Lcom/android/server/usb/UsbPortManager;->access$100(ILcom/android/internal/util/IndentingPrintWriter;Ljava/lang/String;)V
+    invoke-static {v0, v1, v2}, Lcom/android/server/usb/UsbPortManager;->access$100(ILcom/android/internal/util/IndentingPrintWriter;Ljava/lang/String;)V
 
     .line 744
     :goto_31

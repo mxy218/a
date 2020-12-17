@@ -25,6 +25,9 @@
 
 .method public onAssistDataReceivedLocked(Landroid/os/Bundle;II)V
     .registers 4
+    .param p1, "data"  # Landroid/os/Bundle;
+    .param p2, "activityIndex"  # I
+    .param p3, "activityCount"  # I
     .annotation build Lcom/android/internal/annotations/GuardedBy;
         value = {
             "mCallbacksLock"
@@ -49,6 +52,7 @@
 
 .method public onAssistScreenshotReceivedLocked(Landroid/graphics/Bitmap;)V
     .registers 2
+    .param p1, "screenshot"  # Landroid/graphics/Bitmap;
     .annotation build Lcom/android/internal/annotations/GuardedBy;
         value = {
             "mCallbacksLock"

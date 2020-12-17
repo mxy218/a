@@ -21,6 +21,8 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/appbinding/AppBindingService;Landroid/os/Handler;)V
     .registers 3
+    .param p1, "this$0"  # Lcom/android/server/appbinding/AppBindingService;
+    .param p2, "x0"  # Landroid/os/Handler;
 
     .line 200
     iput-object p1, p0, Lcom/android/server/appbinding/AppBindingService$1;->this$0:Lcom/android/server/appbinding/AppBindingService;
@@ -33,12 +35,13 @@
 
 # virtual methods
 .method public onChange(Z)V
-    .registers 2
+    .registers 3
+    .param p1, "selfChange"  # Z
 
     .line 203
-    iget-object p1, p0, Lcom/android/server/appbinding/AppBindingService$1;->this$0:Lcom/android/server/appbinding/AppBindingService;
+    iget-object v0, p0, Lcom/android/server/appbinding/AppBindingService$1;->this$0:Lcom/android/server/appbinding/AppBindingService;
 
-    invoke-static {p1}, Lcom/android/server/appbinding/AppBindingService;->access$500(Lcom/android/server/appbinding/AppBindingService;)V
+    invoke-static {v0}, Lcom/android/server/appbinding/AppBindingService;->access$500(Lcom/android/server/appbinding/AppBindingService;)V
 
     .line 204
     return-void

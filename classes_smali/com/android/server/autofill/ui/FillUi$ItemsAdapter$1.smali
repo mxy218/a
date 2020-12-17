@@ -21,6 +21,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/autofill/ui/FillUi$ItemsAdapter;)V
     .registers 2
+    .param p1, "this$1"  # Lcom/android/server/autofill/ui/FillUi$ItemsAdapter;
 
     .line 785
     iput-object p1, p0, Lcom/android/server/autofill/ui/FillUi$ItemsAdapter$1;->this$1:Lcom/android/server/autofill/ui/FillUi$ItemsAdapter;
@@ -31,20 +32,23 @@
 .end method
 
 .method static synthetic lambda$performFiltering$0(Ljava/lang/CharSequence;Lcom/android/server/autofill/ui/FillUi$ViewItem;)Z
-    .registers 2
+    .registers 3
+    .param p0, "filterText"  # Ljava/lang/CharSequence;
+    .param p1, "item"  # Lcom/android/server/autofill/ui/FillUi$ViewItem;
 
     .line 790
     invoke-virtual {p1, p0}, Lcom/android/server/autofill/ui/FillUi$ViewItem;->matches(Ljava/lang/CharSequence;)Z
 
-    move-result p0
+    move-result v0
 
-    return p0
+    return v0
 .end method
 
 
 # virtual methods
 .method protected performFiltering(Ljava/lang/CharSequence;)Landroid/widget/Filter$FilterResults;
-    .registers 4
+    .registers 5
+    .param p1, "filterText"  # Ljava/lang/CharSequence;
 
     .line 789
     iget-object v0, p0, Lcom/android/server/autofill/ui/FillUi$ItemsAdapter$1;->this$1:Lcom/android/server/autofill/ui/FillUi$ItemsAdapter;
@@ -64,117 +68,125 @@
     .line 790
     invoke-interface {v0, v1}, Ljava/util/stream/Stream;->filter(Ljava/util/function/Predicate;)Ljava/util/stream/Stream;
 
-    move-result-object p1
+    move-result-object v0
 
     .line 791
     invoke-static {}, Ljava/util/stream/Collectors;->toList()Ljava/util/stream/Collector;
 
+    move-result-object v1
+
+    invoke-interface {v0, v1}, Ljava/util/stream/Stream;->collect(Ljava/util/stream/Collector;)Ljava/lang/Object;
+
     move-result-object v0
 
-    invoke-interface {p1, v0}, Ljava/util/stream/Stream;->collect(Ljava/util/stream/Collector;)Ljava/lang/Object;
-
-    move-result-object p1
-
-    check-cast p1, Ljava/util/List;
+    check-cast v0, Ljava/util/List;
 
     .line 792
-    new-instance v0, Landroid/widget/Filter$FilterResults;
+    .local v0, "filtered":Ljava/util/List;, "Ljava/util/List<Lcom/android/server/autofill/ui/FillUi$ViewItem;>;"
+    new-instance v1, Landroid/widget/Filter$FilterResults;
 
-    invoke-direct {v0}, Landroid/widget/Filter$FilterResults;-><init>()V
+    invoke-direct {v1}, Landroid/widget/Filter$FilterResults;-><init>()V
 
     .line 793
-    iput-object p1, v0, Landroid/widget/Filter$FilterResults;->values:Ljava/lang/Object;
+    .local v1, "results":Landroid/widget/Filter$FilterResults;
+    iput-object v0, v1, Landroid/widget/Filter$FilterResults;->values:Ljava/lang/Object;
 
     .line 794
-    invoke-interface {p1}, Ljava/util/List;->size()I
+    invoke-interface {v0}, Ljava/util/List;->size()I
 
-    move-result p1
+    move-result v2
 
-    iput p1, v0, Landroid/widget/Filter$FilterResults;->count:I
+    iput v2, v1, Landroid/widget/Filter$FilterResults;->count:I
 
     .line 795
-    return-object v0
+    return-object v1
 .end method
 
 .method protected publishResults(Ljava/lang/CharSequence;Landroid/widget/Filter$FilterResults;)V
-    .registers 4
+    .registers 6
+    .param p1, "constraint"  # Ljava/lang/CharSequence;
+    .param p2, "results"  # Landroid/widget/Filter$FilterResults;
 
     .line 801
-    iget-object p1, p0, Lcom/android/server/autofill/ui/FillUi$ItemsAdapter$1;->this$1:Lcom/android/server/autofill/ui/FillUi$ItemsAdapter;
+    iget-object v0, p0, Lcom/android/server/autofill/ui/FillUi$ItemsAdapter$1;->this$1:Lcom/android/server/autofill/ui/FillUi$ItemsAdapter;
 
-    invoke-static {p1}, Lcom/android/server/autofill/ui/FillUi$ItemsAdapter;->access$800(Lcom/android/server/autofill/ui/FillUi$ItemsAdapter;)Ljava/util/List;
+    invoke-static {v0}, Lcom/android/server/autofill/ui/FillUi$ItemsAdapter;->access$800(Lcom/android/server/autofill/ui/FillUi$ItemsAdapter;)Ljava/util/List;
 
-    move-result-object p1
+    move-result-object v0
 
-    invoke-interface {p1}, Ljava/util/List;->size()I
+    invoke-interface {v0}, Ljava/util/List;->size()I
 
-    move-result p1
+    move-result v0
 
     .line 802
-    iget-object v0, p0, Lcom/android/server/autofill/ui/FillUi$ItemsAdapter$1;->this$1:Lcom/android/server/autofill/ui/FillUi$ItemsAdapter;
+    .local v0, "oldItemCount":I
+    iget-object v1, p0, Lcom/android/server/autofill/ui/FillUi$ItemsAdapter$1;->this$1:Lcom/android/server/autofill/ui/FillUi$ItemsAdapter;
 
-    invoke-static {v0}, Lcom/android/server/autofill/ui/FillUi$ItemsAdapter;->access$800(Lcom/android/server/autofill/ui/FillUi$ItemsAdapter;)Ljava/util/List;
+    invoke-static {v1}, Lcom/android/server/autofill/ui/FillUi$ItemsAdapter;->access$800(Lcom/android/server/autofill/ui/FillUi$ItemsAdapter;)Ljava/util/List;
 
-    move-result-object v0
+    move-result-object v1
 
-    invoke-interface {v0}, Ljava/util/List;->clear()V
+    invoke-interface {v1}, Ljava/util/List;->clear()V
 
     .line 803
-    iget v0, p2, Landroid/widget/Filter$FilterResults;->count:I
+    iget v1, p2, Landroid/widget/Filter$FilterResults;->count:I
 
-    if-lez v0, :cond_24
+    if-lez v1, :cond_24
 
     .line 805
-    iget-object p2, p2, Landroid/widget/Filter$FilterResults;->values:Ljava/lang/Object;
+    iget-object v1, p2, Landroid/widget/Filter$FilterResults;->values:Ljava/lang/Object;
 
-    check-cast p2, Ljava/util/List;
+    check-cast v1, Ljava/util/List;
 
     .line 806
-    iget-object v0, p0, Lcom/android/server/autofill/ui/FillUi$ItemsAdapter$1;->this$1:Lcom/android/server/autofill/ui/FillUi$ItemsAdapter;
+    .local v1, "items":Ljava/util/List;, "Ljava/util/List<Lcom/android/server/autofill/ui/FillUi$ViewItem;>;"
+    iget-object v2, p0, Lcom/android/server/autofill/ui/FillUi$ItemsAdapter$1;->this$1:Lcom/android/server/autofill/ui/FillUi$ItemsAdapter;
 
-    invoke-static {v0}, Lcom/android/server/autofill/ui/FillUi$ItemsAdapter;->access$800(Lcom/android/server/autofill/ui/FillUi$ItemsAdapter;)Ljava/util/List;
+    invoke-static {v2}, Lcom/android/server/autofill/ui/FillUi$ItemsAdapter;->access$800(Lcom/android/server/autofill/ui/FillUi$ItemsAdapter;)Ljava/util/List;
 
-    move-result-object v0
+    move-result-object v2
 
-    invoke-interface {v0, p2}, Ljava/util/List;->addAll(Ljava/util/Collection;)Z
+    invoke-interface {v2, v1}, Ljava/util/List;->addAll(Ljava/util/Collection;)Z
 
     .line 808
+    .end local v1  # "items":Ljava/util/List;, "Ljava/util/List<Lcom/android/server/autofill/ui/FillUi$ViewItem;>;"
     :cond_24
-    iget-object p2, p0, Lcom/android/server/autofill/ui/FillUi$ItemsAdapter$1;->this$1:Lcom/android/server/autofill/ui/FillUi$ItemsAdapter;
+    iget-object v1, p0, Lcom/android/server/autofill/ui/FillUi$ItemsAdapter$1;->this$1:Lcom/android/server/autofill/ui/FillUi$ItemsAdapter;
 
-    invoke-static {p2}, Lcom/android/server/autofill/ui/FillUi$ItemsAdapter;->access$800(Lcom/android/server/autofill/ui/FillUi$ItemsAdapter;)Ljava/util/List;
+    invoke-static {v1}, Lcom/android/server/autofill/ui/FillUi$ItemsAdapter;->access$800(Lcom/android/server/autofill/ui/FillUi$ItemsAdapter;)Ljava/util/List;
 
-    move-result-object p2
+    move-result-object v1
 
-    invoke-interface {p2}, Ljava/util/List;->size()I
+    invoke-interface {v1}, Ljava/util/List;->size()I
 
-    move-result p2
+    move-result v1
 
-    if-eq p1, p2, :cond_32
+    if-eq v0, v1, :cond_32
 
-    const/4 p1, 0x1
+    const/4 v1, 0x1
 
     goto :goto_33
 
     :cond_32
-    const/4 p1, 0x0
+    const/4 v1, 0x0
 
     .line 809
+    .local v1, "resultCountChanged":Z
     :goto_33
-    if-eqz p1, :cond_3c
+    if-eqz v1, :cond_3c
 
     .line 810
-    iget-object p1, p0, Lcom/android/server/autofill/ui/FillUi$ItemsAdapter$1;->this$1:Lcom/android/server/autofill/ui/FillUi$ItemsAdapter;
+    iget-object v2, p0, Lcom/android/server/autofill/ui/FillUi$ItemsAdapter$1;->this$1:Lcom/android/server/autofill/ui/FillUi$ItemsAdapter;
 
-    iget-object p1, p1, Lcom/android/server/autofill/ui/FillUi$ItemsAdapter;->this$0:Lcom/android/server/autofill/ui/FillUi;
+    iget-object v2, v2, Lcom/android/server/autofill/ui/FillUi$ItemsAdapter;->this$0:Lcom/android/server/autofill/ui/FillUi;
 
-    invoke-static {p1}, Lcom/android/server/autofill/ui/FillUi;->access$900(Lcom/android/server/autofill/ui/FillUi;)V
+    invoke-static {v2}, Lcom/android/server/autofill/ui/FillUi;->access$900(Lcom/android/server/autofill/ui/FillUi;)V
 
     .line 812
     :cond_3c
-    iget-object p1, p0, Lcom/android/server/autofill/ui/FillUi$ItemsAdapter$1;->this$1:Lcom/android/server/autofill/ui/FillUi$ItemsAdapter;
+    iget-object v2, p0, Lcom/android/server/autofill/ui/FillUi$ItemsAdapter$1;->this$1:Lcom/android/server/autofill/ui/FillUi$ItemsAdapter;
 
-    invoke-virtual {p1}, Lcom/android/server/autofill/ui/FillUi$ItemsAdapter;->notifyDataSetChanged()V
+    invoke-virtual {v2}, Lcom/android/server/autofill/ui/FillUi$ItemsAdapter;->notifyDataSetChanged()V
 
     .line 813
     return-void

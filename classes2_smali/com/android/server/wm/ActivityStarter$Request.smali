@@ -96,29 +96,29 @@
 .method constructor <init>()V
     .registers 3
 
-    .line 356
+    .line 377
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
-    .line 319
+    .line 340
     const/4 v0, 0x0
 
     iput v0, p0, Lcom/android/server/wm/ActivityStarter$Request;->callingPid:I
 
-    .line 320
+    .line 341
     const/4 v1, -0x1
 
     iput v1, p0, Lcom/android/server/wm/ActivityStarter$Request;->callingUid:I
 
-    .line 322
+    .line 343
     iput v0, p0, Lcom/android/server/wm/ActivityStarter$Request;->realCallingPid:I
 
-    .line 323
+    .line 344
     iput v1, p0, Lcom/android/server/wm/ActivityStarter$Request;->realCallingUid:I
 
-    .line 357
+    .line 378
     invoke-virtual {p0}, Lcom/android/server/wm/ActivityStarter$Request;->reset()V
 
-    .line 358
+    .line 379
     return-void
 .end method
 
@@ -127,287 +127,288 @@
 .method reset()V
     .registers 4
 
-    .line 364
+    .line 385
     const/4 v0, 0x0
 
     iput-object v0, p0, Lcom/android/server/wm/ActivityStarter$Request;->caller:Landroid/app/IApplicationThread;
 
-    .line 365
+    .line 386
     iput-object v0, p0, Lcom/android/server/wm/ActivityStarter$Request;->intent:Landroid/content/Intent;
 
-    .line 366
+    .line 387
     iput-object v0, p0, Lcom/android/server/wm/ActivityStarter$Request;->ephemeralIntent:Landroid/content/Intent;
 
-    .line 367
+    .line 388
     iput-object v0, p0, Lcom/android/server/wm/ActivityStarter$Request;->resolvedType:Ljava/lang/String;
 
-    .line 368
+    .line 389
     iput-object v0, p0, Lcom/android/server/wm/ActivityStarter$Request;->activityInfo:Landroid/content/pm/ActivityInfo;
 
-    .line 369
+    .line 390
     iput-object v0, p0, Lcom/android/server/wm/ActivityStarter$Request;->resolveInfo:Landroid/content/pm/ResolveInfo;
 
-    .line 370
+    .line 391
     iput-object v0, p0, Lcom/android/server/wm/ActivityStarter$Request;->voiceSession:Landroid/service/voice/IVoiceInteractionSession;
 
-    .line 371
+    .line 392
     iput-object v0, p0, Lcom/android/server/wm/ActivityStarter$Request;->voiceInteractor:Lcom/android/internal/app/IVoiceInteractor;
 
-    .line 372
+    .line 393
     iput-object v0, p0, Lcom/android/server/wm/ActivityStarter$Request;->resultTo:Landroid/os/IBinder;
 
-    .line 373
+    .line 394
     iput-object v0, p0, Lcom/android/server/wm/ActivityStarter$Request;->resultWho:Ljava/lang/String;
 
-    .line 374
+    .line 395
     const/4 v1, 0x0
 
     iput v1, p0, Lcom/android/server/wm/ActivityStarter$Request;->requestCode:I
 
-    .line 375
+    .line 396
     iput v1, p0, Lcom/android/server/wm/ActivityStarter$Request;->callingPid:I
 
-    .line 376
+    .line 397
     const/4 v2, -0x1
 
     iput v2, p0, Lcom/android/server/wm/ActivityStarter$Request;->callingUid:I
 
-    .line 377
+    .line 398
     iput-object v0, p0, Lcom/android/server/wm/ActivityStarter$Request;->callingPackage:Ljava/lang/String;
 
-    .line 378
+    .line 399
     iput v1, p0, Lcom/android/server/wm/ActivityStarter$Request;->realCallingPid:I
 
-    .line 379
+    .line 400
     iput v2, p0, Lcom/android/server/wm/ActivityStarter$Request;->realCallingUid:I
 
-    .line 380
+    .line 401
     iput v1, p0, Lcom/android/server/wm/ActivityStarter$Request;->startFlags:I
 
-    .line 381
+    .line 402
     iput-object v0, p0, Lcom/android/server/wm/ActivityStarter$Request;->activityOptions:Lcom/android/server/wm/SafeActivityOptions;
 
-    .line 382
+    .line 403
     iput-boolean v1, p0, Lcom/android/server/wm/ActivityStarter$Request;->ignoreTargetSecurity:Z
 
-    .line 383
+    .line 404
     iput-boolean v1, p0, Lcom/android/server/wm/ActivityStarter$Request;->componentSpecified:Z
 
-    .line 384
+    .line 405
     iput-object v0, p0, Lcom/android/server/wm/ActivityStarter$Request;->outActivity:[Lcom/android/server/wm/ActivityRecord;
 
-    .line 385
+    .line 406
     iput-object v0, p0, Lcom/android/server/wm/ActivityStarter$Request;->inTask:Lcom/android/server/wm/TaskRecord;
 
-    .line 386
+    .line 407
     iput-object v0, p0, Lcom/android/server/wm/ActivityStarter$Request;->reason:Ljava/lang/String;
 
-    .line 387
+    .line 408
     iput-object v0, p0, Lcom/android/server/wm/ActivityStarter$Request;->profilerInfo:Landroid/app/ProfilerInfo;
 
-    .line 388
+    .line 409
     iput-object v0, p0, Lcom/android/server/wm/ActivityStarter$Request;->globalConfig:Landroid/content/res/Configuration;
 
-    .line 389
+    .line 410
     iput v1, p0, Lcom/android/server/wm/ActivityStarter$Request;->userId:I
 
-    .line 390
+    .line 411
     iput-object v0, p0, Lcom/android/server/wm/ActivityStarter$Request;->waitResult:Landroid/app/WaitResult;
 
-    .line 391
+    .line 412
     iput-boolean v1, p0, Lcom/android/server/wm/ActivityStarter$Request;->mayWait:Z
 
-    .line 392
+    .line 413
     iput-boolean v1, p0, Lcom/android/server/wm/ActivityStarter$Request;->avoidMoveToFront:Z
 
-    .line 393
+    .line 414
     const/4 v2, 0x1
 
     iput-boolean v2, p0, Lcom/android/server/wm/ActivityStarter$Request;->allowPendingRemoteAnimationRegistryLookup:Z
 
-    .line 394
+    .line 415
     const/16 v2, -0x2710
 
     iput v2, p0, Lcom/android/server/wm/ActivityStarter$Request;->filterCallingUid:I
 
-    .line 395
+    .line 416
     iput-object v0, p0, Lcom/android/server/wm/ActivityStarter$Request;->originatingPendingIntent:Lcom/android/server/am/PendingIntentRecord;
 
-    .line 396
+    .line 417
     iput-boolean v1, p0, Lcom/android/server/wm/ActivityStarter$Request;->allowBackgroundActivityStart:Z
 
-    .line 397
+    .line 418
     return-void
 .end method
 
 .method set(Lcom/android/server/wm/ActivityStarter$Request;)V
     .registers 3
+    .param p1, "request"  # Lcom/android/server/wm/ActivityStarter$Request;
 
-    .line 403
+    .line 424
     iget-object v0, p1, Lcom/android/server/wm/ActivityStarter$Request;->caller:Landroid/app/IApplicationThread;
 
     iput-object v0, p0, Lcom/android/server/wm/ActivityStarter$Request;->caller:Landroid/app/IApplicationThread;
 
-    .line 404
+    .line 425
     iget-object v0, p1, Lcom/android/server/wm/ActivityStarter$Request;->intent:Landroid/content/Intent;
 
     iput-object v0, p0, Lcom/android/server/wm/ActivityStarter$Request;->intent:Landroid/content/Intent;
 
-    .line 405
+    .line 426
     iget-object v0, p1, Lcom/android/server/wm/ActivityStarter$Request;->ephemeralIntent:Landroid/content/Intent;
 
     iput-object v0, p0, Lcom/android/server/wm/ActivityStarter$Request;->ephemeralIntent:Landroid/content/Intent;
 
-    .line 406
+    .line 427
     iget-object v0, p1, Lcom/android/server/wm/ActivityStarter$Request;->resolvedType:Ljava/lang/String;
 
     iput-object v0, p0, Lcom/android/server/wm/ActivityStarter$Request;->resolvedType:Ljava/lang/String;
 
-    .line 407
+    .line 428
     iget-object v0, p1, Lcom/android/server/wm/ActivityStarter$Request;->activityInfo:Landroid/content/pm/ActivityInfo;
 
     iput-object v0, p0, Lcom/android/server/wm/ActivityStarter$Request;->activityInfo:Landroid/content/pm/ActivityInfo;
 
-    .line 408
+    .line 429
     iget-object v0, p1, Lcom/android/server/wm/ActivityStarter$Request;->resolveInfo:Landroid/content/pm/ResolveInfo;
 
     iput-object v0, p0, Lcom/android/server/wm/ActivityStarter$Request;->resolveInfo:Landroid/content/pm/ResolveInfo;
 
-    .line 409
+    .line 430
     iget-object v0, p1, Lcom/android/server/wm/ActivityStarter$Request;->voiceSession:Landroid/service/voice/IVoiceInteractionSession;
 
     iput-object v0, p0, Lcom/android/server/wm/ActivityStarter$Request;->voiceSession:Landroid/service/voice/IVoiceInteractionSession;
 
-    .line 410
+    .line 431
     iget-object v0, p1, Lcom/android/server/wm/ActivityStarter$Request;->voiceInteractor:Lcom/android/internal/app/IVoiceInteractor;
 
     iput-object v0, p0, Lcom/android/server/wm/ActivityStarter$Request;->voiceInteractor:Lcom/android/internal/app/IVoiceInteractor;
 
-    .line 411
+    .line 432
     iget-object v0, p1, Lcom/android/server/wm/ActivityStarter$Request;->resultTo:Landroid/os/IBinder;
 
     iput-object v0, p0, Lcom/android/server/wm/ActivityStarter$Request;->resultTo:Landroid/os/IBinder;
 
-    .line 412
+    .line 433
     iget-object v0, p1, Lcom/android/server/wm/ActivityStarter$Request;->resultWho:Ljava/lang/String;
 
     iput-object v0, p0, Lcom/android/server/wm/ActivityStarter$Request;->resultWho:Ljava/lang/String;
 
-    .line 413
+    .line 434
     iget v0, p1, Lcom/android/server/wm/ActivityStarter$Request;->requestCode:I
 
     iput v0, p0, Lcom/android/server/wm/ActivityStarter$Request;->requestCode:I
 
-    .line 414
+    .line 435
     iget v0, p1, Lcom/android/server/wm/ActivityStarter$Request;->callingPid:I
 
     iput v0, p0, Lcom/android/server/wm/ActivityStarter$Request;->callingPid:I
 
-    .line 415
+    .line 436
     iget v0, p1, Lcom/android/server/wm/ActivityStarter$Request;->callingUid:I
 
     iput v0, p0, Lcom/android/server/wm/ActivityStarter$Request;->callingUid:I
 
-    .line 416
+    .line 437
     iget-object v0, p1, Lcom/android/server/wm/ActivityStarter$Request;->callingPackage:Ljava/lang/String;
 
     iput-object v0, p0, Lcom/android/server/wm/ActivityStarter$Request;->callingPackage:Ljava/lang/String;
 
-    .line 417
+    .line 438
     iget v0, p1, Lcom/android/server/wm/ActivityStarter$Request;->realCallingPid:I
 
     iput v0, p0, Lcom/android/server/wm/ActivityStarter$Request;->realCallingPid:I
 
-    .line 418
+    .line 439
     iget v0, p1, Lcom/android/server/wm/ActivityStarter$Request;->realCallingUid:I
 
     iput v0, p0, Lcom/android/server/wm/ActivityStarter$Request;->realCallingUid:I
 
-    .line 419
+    .line 440
     iget v0, p1, Lcom/android/server/wm/ActivityStarter$Request;->startFlags:I
 
     iput v0, p0, Lcom/android/server/wm/ActivityStarter$Request;->startFlags:I
 
-    .line 420
+    .line 441
     iget-object v0, p1, Lcom/android/server/wm/ActivityStarter$Request;->activityOptions:Lcom/android/server/wm/SafeActivityOptions;
 
     iput-object v0, p0, Lcom/android/server/wm/ActivityStarter$Request;->activityOptions:Lcom/android/server/wm/SafeActivityOptions;
 
-    .line 421
+    .line 442
     iget-boolean v0, p1, Lcom/android/server/wm/ActivityStarter$Request;->ignoreTargetSecurity:Z
 
     iput-boolean v0, p0, Lcom/android/server/wm/ActivityStarter$Request;->ignoreTargetSecurity:Z
 
-    .line 422
+    .line 443
     iget-boolean v0, p1, Lcom/android/server/wm/ActivityStarter$Request;->componentSpecified:Z
 
     iput-boolean v0, p0, Lcom/android/server/wm/ActivityStarter$Request;->componentSpecified:Z
 
-    .line 423
+    .line 444
     iget-object v0, p1, Lcom/android/server/wm/ActivityStarter$Request;->outActivity:[Lcom/android/server/wm/ActivityRecord;
 
     iput-object v0, p0, Lcom/android/server/wm/ActivityStarter$Request;->outActivity:[Lcom/android/server/wm/ActivityRecord;
 
-    .line 424
+    .line 445
     iget-object v0, p1, Lcom/android/server/wm/ActivityStarter$Request;->inTask:Lcom/android/server/wm/TaskRecord;
 
     iput-object v0, p0, Lcom/android/server/wm/ActivityStarter$Request;->inTask:Lcom/android/server/wm/TaskRecord;
 
-    .line 425
+    .line 446
     iget-object v0, p1, Lcom/android/server/wm/ActivityStarter$Request;->reason:Ljava/lang/String;
 
     iput-object v0, p0, Lcom/android/server/wm/ActivityStarter$Request;->reason:Ljava/lang/String;
 
-    .line 426
+    .line 447
     iget-object v0, p1, Lcom/android/server/wm/ActivityStarter$Request;->profilerInfo:Landroid/app/ProfilerInfo;
 
     iput-object v0, p0, Lcom/android/server/wm/ActivityStarter$Request;->profilerInfo:Landroid/app/ProfilerInfo;
 
-    .line 427
+    .line 448
     iget-object v0, p1, Lcom/android/server/wm/ActivityStarter$Request;->globalConfig:Landroid/content/res/Configuration;
 
     iput-object v0, p0, Lcom/android/server/wm/ActivityStarter$Request;->globalConfig:Landroid/content/res/Configuration;
 
-    .line 428
+    .line 449
     iget v0, p1, Lcom/android/server/wm/ActivityStarter$Request;->userId:I
 
     iput v0, p0, Lcom/android/server/wm/ActivityStarter$Request;->userId:I
 
-    .line 429
+    .line 450
     iget-object v0, p1, Lcom/android/server/wm/ActivityStarter$Request;->waitResult:Landroid/app/WaitResult;
 
     iput-object v0, p0, Lcom/android/server/wm/ActivityStarter$Request;->waitResult:Landroid/app/WaitResult;
 
-    .line 430
+    .line 451
     iget-boolean v0, p1, Lcom/android/server/wm/ActivityStarter$Request;->mayWait:Z
 
     iput-boolean v0, p0, Lcom/android/server/wm/ActivityStarter$Request;->mayWait:Z
 
-    .line 431
+    .line 452
     iget-boolean v0, p1, Lcom/android/server/wm/ActivityStarter$Request;->avoidMoveToFront:Z
 
     iput-boolean v0, p0, Lcom/android/server/wm/ActivityStarter$Request;->avoidMoveToFront:Z
 
-    .line 432
+    .line 453
     iget-boolean v0, p1, Lcom/android/server/wm/ActivityStarter$Request;->allowPendingRemoteAnimationRegistryLookup:Z
 
     iput-boolean v0, p0, Lcom/android/server/wm/ActivityStarter$Request;->allowPendingRemoteAnimationRegistryLookup:Z
 
-    .line 434
+    .line 455
     iget v0, p1, Lcom/android/server/wm/ActivityStarter$Request;->filterCallingUid:I
 
     iput v0, p0, Lcom/android/server/wm/ActivityStarter$Request;->filterCallingUid:I
 
-    .line 435
+    .line 456
     iget-object v0, p1, Lcom/android/server/wm/ActivityStarter$Request;->originatingPendingIntent:Lcom/android/server/am/PendingIntentRecord;
 
     iput-object v0, p0, Lcom/android/server/wm/ActivityStarter$Request;->originatingPendingIntent:Lcom/android/server/am/PendingIntentRecord;
 
-    .line 436
-    iget-boolean p1, p1, Lcom/android/server/wm/ActivityStarter$Request;->allowBackgroundActivityStart:Z
+    .line 457
+    iget-boolean v0, p1, Lcom/android/server/wm/ActivityStarter$Request;->allowBackgroundActivityStart:Z
 
-    iput-boolean p1, p0, Lcom/android/server/wm/ActivityStarter$Request;->allowBackgroundActivityStart:Z
+    iput-boolean v0, p0, Lcom/android/server/wm/ActivityStarter$Request;->allowBackgroundActivityStart:Z
 
-    .line 437
+    .line 458
     return-void
 .end method

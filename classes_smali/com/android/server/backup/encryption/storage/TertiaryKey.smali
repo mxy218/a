@@ -14,6 +14,9 @@
 # direct methods
 .method public constructor <init>(Ljava/lang/String;Ljava/lang/String;[B)V
     .registers 4
+    .param p1, "secondaryKeyAlias"  # Ljava/lang/String;
+    .param p2, "packageName"  # Ljava/lang/String;
+    .param p3, "wrappedKeyBytes"  # [B
 
     .line 32
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V

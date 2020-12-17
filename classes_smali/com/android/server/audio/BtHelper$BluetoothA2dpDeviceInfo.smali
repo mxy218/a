@@ -25,56 +25,47 @@
 # direct methods
 .method constructor <init>(Landroid/bluetooth/BluetoothDevice;)V
     .registers 4
+    .param p1, "btDevice"  # Landroid/bluetooth/BluetoothDevice;
 
-    .line 122
+    .line 124
     const/4 v0, -0x1
 
     const/4 v1, 0x0
 
     invoke-direct {p0, p1, v0, v1}, Lcom/android/server/audio/BtHelper$BluetoothA2dpDeviceInfo;-><init>(Landroid/bluetooth/BluetoothDevice;II)V
 
-    .line 123
+    .line 125
     return-void
 .end method
 
 .method constructor <init>(Landroid/bluetooth/BluetoothDevice;II)V
     .registers 4
-
-    .line 125
-    invoke-direct {p0}, Ljava/lang/Object;-><init>()V
-
-    .line 126
-    iput-object p1, p0, Lcom/android/server/audio/BtHelper$BluetoothA2dpDeviceInfo;->mBtDevice:Landroid/bluetooth/BluetoothDevice;
+    .param p1, "btDevice"  # Landroid/bluetooth/BluetoothDevice;
+    .param p2, "volume"  # I
+    .param p3, "codec"  # I
 
     .line 127
-    iput p2, p0, Lcom/android/server/audio/BtHelper$BluetoothA2dpDeviceInfo;->mVolume:I
+    invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
     .line 128
-    iput p3, p0, Lcom/android/server/audio/BtHelper$BluetoothA2dpDeviceInfo;->mCodec:I
+    iput-object p1, p0, Lcom/android/server/audio/BtHelper$BluetoothA2dpDeviceInfo;->mBtDevice:Landroid/bluetooth/BluetoothDevice;
 
     .line 129
+    iput p2, p0, Lcom/android/server/audio/BtHelper$BluetoothA2dpDeviceInfo;->mVolume:I
+
+    .line 130
+    iput p3, p0, Lcom/android/server/audio/BtHelper$BluetoothA2dpDeviceInfo;->mCodec:I
+
+    .line 131
     return-void
 .end method
 
 
 # virtual methods
-.method public equals(Ljava/lang/Object;)Z
-    .registers 3
-
-    .line 146
-    iget-object v0, p0, Lcom/android/server/audio/BtHelper$BluetoothA2dpDeviceInfo;->mBtDevice:Landroid/bluetooth/BluetoothDevice;
-
-    invoke-virtual {v0, p1}, Landroid/bluetooth/BluetoothDevice;->equals(Ljava/lang/Object;)Z
-
-    move-result p1
-
-    return p1
-.end method
-
 .method public getBtDevice()Landroid/bluetooth/BluetoothDevice;
     .registers 2
 
-    .line 132
+    .line 134
     iget-object v0, p0, Lcom/android/server/audio/BtHelper$BluetoothA2dpDeviceInfo;->mBtDevice:Landroid/bluetooth/BluetoothDevice;
 
     return-object v0
@@ -83,7 +74,7 @@
 .method public getCodec()I
     .registers 2
 
-    .line 140
+    .line 142
     iget v0, p0, Lcom/android/server/audio/BtHelper$BluetoothA2dpDeviceInfo;->mCodec:I
 
     return v0
@@ -92,7 +83,7 @@
 .method public getVolume()I
     .registers 2
 
-    .line 136
+    .line 138
     iget v0, p0, Lcom/android/server/audio/BtHelper$BluetoothA2dpDeviceInfo;->mVolume:I
 
     return v0

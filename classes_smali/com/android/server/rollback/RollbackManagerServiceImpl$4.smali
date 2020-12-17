@@ -21,8 +21,9 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/rollback/RollbackManagerServiceImpl;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/rollback/RollbackManagerServiceImpl;
 
-    .line 269
+    .line 268
     iput-object p1, p0, Lcom/android/server/rollback/RollbackManagerServiceImpl$4;->this$0:Lcom/android/server/rollback/RollbackManagerServiceImpl;
 
     invoke-direct {p0}, Landroid/content/BroadcastReceiver;-><init>()V
@@ -33,61 +34,68 @@
 
 # virtual methods
 .method public onReceive(Landroid/content/Context;Landroid/content/Intent;)V
-    .registers 5
+    .registers 6
+    .param p1, "context"  # Landroid/content/Context;
+    .param p2, "intent"  # Landroid/content/Intent;
 
-    .line 272
+    .line 271
     invoke-virtual {p2}, Landroid/content/Intent;->getAction()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
+
+    .line 272
+    .local v0, "action":Ljava/lang/String;
+    const-string v1, "android.intent.action.PACKAGE_REPLACED"
+
+    invoke-virtual {v1, v0}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+
+    move-result v1
+
+    if-eqz v1, :cond_19
 
     .line 273
-    const-string v0, "android.intent.action.PACKAGE_REPLACED"
+    invoke-virtual {p2}, Landroid/content/Intent;->getData()Landroid/net/Uri;
 
-    invoke-virtual {v0, p1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    move-result-object v1
 
-    move-result v0
+    invoke-virtual {v1}, Landroid/net/Uri;->getSchemeSpecificPart()Ljava/lang/String;
 
-    if-eqz v0, :cond_19
+    move-result-object v1
 
     .line 274
-    invoke-virtual {p2}, Landroid/content/Intent;->getData()Landroid/net/Uri;
+    .local v1, "packageName":Ljava/lang/String;
+    iget-object v2, p0, Lcom/android/server/rollback/RollbackManagerServiceImpl$4;->this$0:Lcom/android/server/rollback/RollbackManagerServiceImpl;
 
-    move-result-object v0
+    invoke-static {v2, v1}, Lcom/android/server/rollback/RollbackManagerServiceImpl;->access$600(Lcom/android/server/rollback/RollbackManagerServiceImpl;Ljava/lang/String;)V
 
-    invoke-virtual {v0}, Landroid/net/Uri;->getSchemeSpecificPart()Ljava/lang/String;
+    .line 276
+    .end local v1  # "packageName":Ljava/lang/String;
+    :cond_19
+    const-string v1, "android.intent.action.PACKAGE_FULLY_REMOVED"
 
-    move-result-object v0
+    invoke-virtual {v1, v0}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    .line 275
-    iget-object v1, p0, Lcom/android/server/rollback/RollbackManagerServiceImpl$4;->this$0:Lcom/android/server/rollback/RollbackManagerServiceImpl;
+    move-result v1
 
-    invoke-static {v1, v0}, Lcom/android/server/rollback/RollbackManagerServiceImpl;->access$600(Lcom/android/server/rollback/RollbackManagerServiceImpl;Ljava/lang/String;)V
+    if-eqz v1, :cond_2e
 
     .line 277
-    :cond_19
-    const-string v0, "android.intent.action.PACKAGE_FULLY_REMOVED"
-
-    invoke-virtual {v0, p1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
-
-    move-result p1
-
-    if-eqz p1, :cond_2e
-
-    .line 278
     invoke-virtual {p2}, Landroid/content/Intent;->getData()Landroid/net/Uri;
 
-    move-result-object p1
+    move-result-object v1
 
-    invoke-virtual {p1}, Landroid/net/Uri;->getSchemeSpecificPart()Ljava/lang/String;
+    invoke-virtual {v1}, Landroid/net/Uri;->getSchemeSpecificPart()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v1
 
-    .line 279
-    iget-object p2, p0, Lcom/android/server/rollback/RollbackManagerServiceImpl$4;->this$0:Lcom/android/server/rollback/RollbackManagerServiceImpl;
+    .line 278
+    .restart local v1  # "packageName":Ljava/lang/String;
+    iget-object v2, p0, Lcom/android/server/rollback/RollbackManagerServiceImpl$4;->this$0:Lcom/android/server/rollback/RollbackManagerServiceImpl;
 
-    invoke-static {p2, p1}, Lcom/android/server/rollback/RollbackManagerServiceImpl;->access$700(Lcom/android/server/rollback/RollbackManagerServiceImpl;Ljava/lang/String;)V
+    invoke-static {v2, v1}, Lcom/android/server/rollback/RollbackManagerServiceImpl;->access$700(Lcom/android/server/rollback/RollbackManagerServiceImpl;Ljava/lang/String;)V
 
-    .line 281
+    .line 280
+    .end local v1  # "packageName":Ljava/lang/String;
     :cond_2e
     return-void
 .end method

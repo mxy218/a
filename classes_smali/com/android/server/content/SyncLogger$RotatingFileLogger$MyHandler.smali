@@ -25,6 +25,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/content/SyncLogger$RotatingFileLogger;Landroid/os/Looper;)V
     .registers 3
+    .param p2, "looper"  # Landroid/os/Looper;
 
     .line 295
     iput-object p1, p0, Lcom/android/server/content/SyncLogger$RotatingFileLogger$MyHandler;->this$0:Lcom/android/server/content/SyncLogger$RotatingFileLogger;
@@ -39,7 +40,8 @@
 
 # virtual methods
 .method public handleMessage(Landroid/os/Message;)V
-    .registers 5
+    .registers 6
+    .param p1, "msg"  # Landroid/os/Message;
 
     .line 306
     iget v0, p1, Landroid/os/Message;->what:I
@@ -62,11 +64,11 @@
 
     move-result-wide v1
 
-    iget-object p1, p1, Landroid/os/Message;->obj:Ljava/lang/Object;
+    iget-object v3, p1, Landroid/os/Message;->obj:Ljava/lang/Object;
 
-    check-cast p1, [Ljava/lang/Object;
+    check-cast v3, [Ljava/lang/Object;
 
-    invoke-virtual {v0, v1, v2, p1}, Lcom/android/server/content/SyncLogger$RotatingFileLogger;->logInner(J[Ljava/lang/Object;)V
+    invoke-virtual {v0, v1, v2, v3}, Lcom/android/server/content/SyncLogger$RotatingFileLogger;->logInner(J[Ljava/lang/Object;)V
 
     .line 312
     :goto_17
@@ -74,7 +76,9 @@
 .end method
 
 .method public log(J[Ljava/lang/Object;)V
-    .registers 5
+    .registers 7
+    .param p1, "now"  # J
+    .param p3, "message"  # [Ljava/lang/Object;
 
     .line 300
     invoke-static {p1, p2}, Lcom/android/internal/util/IntPair;->first(J)I
@@ -83,16 +87,16 @@
 
     invoke-static {p1, p2}, Lcom/android/internal/util/IntPair;->second(J)I
 
-    move-result p1
+    move-result v1
 
-    const/4 p2, 0x1
+    const/4 v2, 0x1
 
-    invoke-virtual {p0, p2, v0, p1, p3}, Lcom/android/server/content/SyncLogger$RotatingFileLogger$MyHandler;->obtainMessage(IIILjava/lang/Object;)Landroid/os/Message;
+    invoke-virtual {p0, v2, v0, v1, p3}, Lcom/android/server/content/SyncLogger$RotatingFileLogger$MyHandler;->obtainMessage(IIILjava/lang/Object;)Landroid/os/Message;
 
-    move-result-object p1
+    move-result-object v0
 
     .line 301
-    invoke-virtual {p1}, Landroid/os/Message;->sendToTarget()V
+    invoke-virtual {v0}, Landroid/os/Message;->sendToTarget()V
 
     .line 302
     return-void

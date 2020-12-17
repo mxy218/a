@@ -39,7 +39,9 @@
 
 # virtual methods
 .method public compare(Lcom/android/server/pm/Policy;Lcom/android/server/pm/Policy;)I
-    .registers 8
+    .registers 10
+    .param p1, "p1"  # Lcom/android/server/pm/Policy;
+    .param p2, "p2"  # Lcom/android/server/pm/Policy;
 
     .line 700
     invoke-virtual {p1}, Lcom/android/server/pm/Policy;->hasInnerPackages()Z
@@ -57,9 +59,9 @@
     .line 701
     invoke-virtual {p1}, Lcom/android/server/pm/Policy;->hasInnerPackages()Z
 
-    move-result p1
+    move-result v0
 
-    if-eqz p1, :cond_12
+    if-eqz v0, :cond_12
 
     const/4 v2, -0x1
 
@@ -122,52 +124,56 @@
     move-result-object v0
 
     .line 714
+    .local v0, "p1Packages":Ljava/util/Map;, "Ljava/util/Map<Ljava/lang/String;Ljava/lang/String;>;"
     invoke-virtual {p2}, Lcom/android/server/pm/Policy;->getInnerPackages()Ljava/util/Map;
 
-    move-result-object p2
+    move-result-object v4
 
     .line 715
+    .local v4, "p2Packages":Ljava/util/Map;, "Ljava/util/Map<Ljava/lang/String;Ljava/lang/String;>;"
     invoke-interface {v0}, Ljava/util/Map;->keySet()Ljava/util/Set;
 
-    move-result-object v0
+    move-result-object v5
 
-    invoke-interface {p2}, Ljava/util/Map;->keySet()Ljava/util/Set;
+    invoke-interface {v4}, Ljava/util/Map;->keySet()Ljava/util/Set;
 
-    move-result-object p2
+    move-result-object v6
 
-    invoke-static {v0, p2}, Ljava/util/Collections;->disjoint(Ljava/util/Collection;Ljava/util/Collection;)Z
+    invoke-static {v5, v6}, Ljava/util/Collections;->disjoint(Ljava/util/Collection;Ljava/util/Collection;)Z
 
-    move-result p2
+    move-result v5
 
-    if-nez p2, :cond_71
+    if-nez v5, :cond_71
 
     .line 716
     iput-boolean v2, p0, Lcom/android/server/pm/PolicyComparator;->duplicateFound:Z
 
     .line 717
-    new-instance p2, Ljava/lang/StringBuilder;
+    new-instance v2, Ljava/lang/StringBuilder;
 
-    invoke-direct {p2}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
 
-    invoke-virtual {p2, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {p1}, Lcom/android/server/pm/Policy;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v1
 
-    invoke-virtual {p2, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v1
 
-    invoke-static {v3, p1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v3, v1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 721
+    .end local v0  # "p1Packages":Ljava/util/Map;, "Ljava/util/Map<Ljava/lang/String;Ljava/lang/String;>;"
+    .end local v4  # "p2Packages":Ljava/util/Map;, "Ljava/util/Map<Ljava/lang/String;Ljava/lang/String;>;"
     :cond_71
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    return p1
+    return v0
 .end method
 
 .method public bridge synthetic compare(Ljava/lang/Object;Ljava/lang/Object;)I

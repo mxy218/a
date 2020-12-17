@@ -23,6 +23,8 @@
 # direct methods
 .method constructor <init>(Ljava/lang/String;[B)V
     .registers 3
+    .param p1, "hash"  # Ljava/lang/String;
+    .param p2, "salt"  # [B
 
     .line 255
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V

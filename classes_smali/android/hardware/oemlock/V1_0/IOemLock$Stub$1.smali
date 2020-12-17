@@ -26,6 +26,7 @@
 # direct methods
 .method constructor <init>(Landroid/hardware/oemlock/V1_0/IOemLock$Stub;Landroid/os/HwParcel;)V
     .registers 3
+    .param p1, "this$0"  # Landroid/hardware/oemlock/V1_0/IOemLock$Stub;
 
     .line 581
     iput-object p1, p0, Landroid/hardware/oemlock/V1_0/IOemLock$Stub$1;->this$0:Landroid/hardware/oemlock/V1_0/IOemLock$Stub;
@@ -41,6 +42,8 @@
 # virtual methods
 .method public onValues(ILjava/lang/String;)V
     .registers 5
+    .param p1, "status"  # I
+    .param p2, "name"  # Ljava/lang/String;
 
     .line 584
     iget-object v0, p0, Landroid/hardware/oemlock/V1_0/IOemLock$Stub$1;->val$_hidl_reply:Landroid/os/HwParcel;
@@ -55,14 +58,14 @@
     invoke-virtual {v0, p1}, Landroid/os/HwParcel;->writeInt32(I)V
 
     .line 586
-    iget-object p1, p0, Landroid/hardware/oemlock/V1_0/IOemLock$Stub$1;->val$_hidl_reply:Landroid/os/HwParcel;
+    iget-object v0, p0, Landroid/hardware/oemlock/V1_0/IOemLock$Stub$1;->val$_hidl_reply:Landroid/os/HwParcel;
 
-    invoke-virtual {p1, p2}, Landroid/os/HwParcel;->writeString(Ljava/lang/String;)V
+    invoke-virtual {v0, p2}, Landroid/os/HwParcel;->writeString(Ljava/lang/String;)V
 
     .line 587
-    iget-object p1, p0, Landroid/hardware/oemlock/V1_0/IOemLock$Stub$1;->val$_hidl_reply:Landroid/os/HwParcel;
+    iget-object v0, p0, Landroid/hardware/oemlock/V1_0/IOemLock$Stub$1;->val$_hidl_reply:Landroid/os/HwParcel;
 
-    invoke-virtual {p1}, Landroid/os/HwParcel;->send()V
+    invoke-virtual {v0}, Landroid/os/HwParcel;->send()V
 
     .line 588
     return-void

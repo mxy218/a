@@ -92,6 +92,8 @@
 # direct methods
 .method public constructor <init>(Landroid/content/Context;Ljava/util/function/BiConsumer;Landroid/os/Handler;)V
     .registers 6
+    .param p1, "context"  # Landroid/content/Context;
+    .param p3, "callbackHandler"  # Landroid/os/Handler;
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(",
@@ -106,6 +108,8 @@
     .end annotation
 
     .line 66
+    .local p0, "this":Lcom/android/server/appbinding/finders/AppServiceFinder;, "Lcom/android/server/appbinding/finders/AppServiceFinder<TTServiceType;TTServiceInterfaceType;>;"
+    .local p2, "listener":Ljava/util/function/BiConsumer;, "Ljava/util/function/BiConsumer<Lcom/android/server/appbinding/finders/AppServiceFinder;Ljava/lang/Integer;>;"
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
     .line 53
@@ -165,8 +169,11 @@
 
 .method public dump(Ljava/lang/String;Ljava/io/PrintWriter;)V
     .registers 7
+    .param p1, "prefix"  # Ljava/lang/String;
+    .param p2, "pw"  # Ljava/io/PrintWriter;
 
     .line 196
+    .local p0, "this":Lcom/android/server/appbinding/finders/AppServiceFinder;, "Lcom/android/server/appbinding/finders/AppServiceFinder<TTServiceType;TTServiceInterfaceType;>;"
     invoke-virtual {p2, p1}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
     .line 197
@@ -192,6 +199,7 @@
     .line 202
     const/4 v1, 0x0
 
+    .local v1, "i":I
     :goto_16
     :try_start_16
     iget-object v2, p0, Lcom/android/server/appbinding/finders/AppServiceFinder;->mTargetPackages:Landroid/util/SparseArray;
@@ -210,6 +218,7 @@
     move-result v2
 
     .line 204
+    .local v2, "userId":I
     invoke-virtual {p2, p1}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
     .line 205
@@ -278,21 +287,23 @@
 
     invoke-virtual {v3, v2}, Landroid/util/SparseArray;->get(I)Ljava/lang/Object;
 
-    move-result-object v2
+    move-result-object v3
 
-    check-cast v2, Ljava/lang/String;
+    check-cast v3, Ljava/lang/String;
 
-    invoke-virtual {p2, v2}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
+    invoke-virtual {p2, v3}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
     .line 222
     invoke-virtual {p2}, Ljava/io/PrintWriter;->println()V
 
     .line 202
+    .end local v2  # "userId":I
     add-int/lit8 v1, v1, 0x1
 
     goto :goto_16
 
     .line 224
+    .end local v1  # "i":I
     :cond_75
     monitor-exit v0
 
@@ -301,19 +312,21 @@
 
     .line 224
     :catchall_77
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_79
     .catchall {:try_start_16 .. :try_end_79} :catchall_77
 
-    throw p1
+    throw v1
 .end method
 
 .method public dumpSimple(Ljava/io/PrintWriter;)V
     .registers 6
+    .param p1, "pw"  # Ljava/io/PrintWriter;
 
     .line 229
+    .local p0, "this":Lcom/android/server/appbinding/finders/AppServiceFinder;, "Lcom/android/server/appbinding/finders/AppServiceFinder<TTServiceType;TTServiceInterfaceType;>;"
     iget-object v0, p0, Lcom/android/server/appbinding/finders/AppServiceFinder;->mLock:Ljava/lang/Object;
 
     monitor-enter v0
@@ -321,6 +334,7 @@
     .line 230
     const/4 v1, 0x0
 
+    .local v1, "i":I
     :goto_4
     :try_start_4
     iget-object v2, p0, Lcom/android/server/appbinding/finders/AppServiceFinder;->mTargetPackages:Landroid/util/SparseArray;
@@ -339,6 +353,7 @@
     move-result v2
 
     .line 232
+    .local v2, "userId":I
     const-string v3, "finder,"
 
     invoke-virtual {p1, v3}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
@@ -398,21 +413,23 @@
 
     invoke-virtual {v3, v2}, Landroid/util/SparseArray;->get(I)Ljava/lang/Object;
 
-    move-result-object v2
+    move-result-object v3
 
-    check-cast v2, Ljava/lang/String;
+    check-cast v3, Ljava/lang/String;
 
-    invoke-virtual {p1, v2}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
+    invoke-virtual {p1, v3}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
     .line 242
     invoke-virtual {p1}, Ljava/io/PrintWriter;->println()V
 
     .line 230
+    .end local v2  # "userId":I
     add-int/lit8 v1, v1, 0x1
 
     goto :goto_4
 
     .line 244
+    .end local v1  # "i":I
     :cond_5a
     monitor-exit v0
 
@@ -421,19 +438,23 @@
 
     .line 244
     :catchall_5c
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_5e
     .catchall {:try_start_4 .. :try_end_5e} :catchall_5c
 
-    throw p1
+    throw v1
 .end method
 
 .method public final findService(ILandroid/content/pm/IPackageManager;Lcom/android/server/appbinding/AppBindingConstants;)Landroid/content/pm/ServiceInfo;
     .registers 14
+    .param p1, "userId"  # I
+    .param p2, "ipm"  # Landroid/content/pm/IPackageManager;
+    .param p3, "constants"  # Lcom/android/server/appbinding/AppBindingConstants;
 
     .line 100
+    .local p0, "this":Lcom/android/server/appbinding/finders/AppServiceFinder;, "Lcom/android/server/appbinding/finders/AppServiceFinder<TTServiceType;TTServiceInterfaceType;>;"
     iget-object v0, p0, Lcom/android/server/appbinding/finders/AppServiceFinder;->mLock:Ljava/lang/Object;
 
     monitor-enter v0
@@ -459,43 +480,47 @@
     .line 105
     invoke-virtual {p0, p3}, Lcom/android/server/appbinding/finders/AppServiceFinder;->isEnabled(Lcom/android/server/appbinding/AppBindingConstants;)Z
 
-    move-result p3
+    move-result v1
 
-    if-nez p3, :cond_41
+    if-nez v1, :cond_43
+
+    .line 106
+    const-string v1, "feature disabled"
 
     .line 107
-    iget-object p2, p0, Lcom/android/server/appbinding/finders/AppServiceFinder;->mLastMessages:Landroid/util/SparseArray;
+    .local v1, "message":Ljava/lang/String;
+    iget-object v3, p0, Lcom/android/server/appbinding/finders/AppServiceFinder;->mLastMessages:Landroid/util/SparseArray;
 
-    const-string p3, "feature disabled"
+    const-string v4, "feature disabled"
 
-    invoke-virtual {p2, p1, p3}, Landroid/util/SparseArray;->put(ILjava/lang/Object;)V
+    invoke-virtual {v3, p1, v4}, Landroid/util/SparseArray;->put(ILjava/lang/Object;)V
 
     .line 108
-    const-string p1, "AppBindingService"
+    const-string v3, "AppBindingService"
 
-    new-instance p2, Ljava/lang/StringBuilder;
+    new-instance v4, Ljava/lang/StringBuilder;
 
-    invoke-direct {p2}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v4}, Ljava/lang/StringBuilder;-><init>()V
 
     invoke-virtual {p0}, Lcom/android/server/appbinding/finders/AppServiceFinder;->getAppDescription()Ljava/lang/String;
 
-    move-result-object p3
+    move-result-object v5
 
-    invoke-virtual {p2, p3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string p3, " "
+    const-string v5, " "
 
-    invoke-virtual {p2, p3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string p3, "feature disabled"
+    const-string v5, "feature disabled"
 
-    invoke-virtual {p2, p3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v4}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p2
+    move-result-object v4
 
-    invoke-static {p1, p2}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v3, v4}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 109
     monitor-exit v0
@@ -503,53 +528,59 @@
     return-object v2
 
     .line 112
-    :cond_41
+    .end local v1  # "message":Ljava/lang/String;
+    :cond_43
     invoke-virtual {p0, p1}, Lcom/android/server/appbinding/finders/AppServiceFinder;->getTargetPackage(I)Ljava/lang/String;
-
-    move-result-object v3
-
-    .line 116
-    if-nez v3, :cond_77
-
-    .line 118
-    iget-object p2, p0, Lcom/android/server/appbinding/finders/AppServiceFinder;->mLastMessages:Landroid/util/SparseArray;
-
-    const-string p3, "Target package not found"
-
-    invoke-virtual {p2, p1, p3}, Landroid/util/SparseArray;->put(ILjava/lang/Object;)V
-
-    .line 119
-    const-string p2, "AppBindingService"
-
-    new-instance p3, Ljava/lang/StringBuilder;
-
-    invoke-direct {p3}, Ljava/lang/StringBuilder;-><init>()V
-
-    invoke-virtual {p0}, Lcom/android/server/appbinding/finders/AppServiceFinder;->getAppDescription()Ljava/lang/String;
 
     move-result-object v1
 
-    invoke-virtual {p3, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    .line 116
+    .local v1, "targetPackage":Ljava/lang/String;
+    if-nez v1, :cond_7b
 
-    const-string v1, " u"
+    .line 117
+    const-string v3, "Target package not found"
 
-    invoke-virtual {p3, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    .line 118
+    .local v3, "message":Ljava/lang/String;
+    iget-object v4, p0, Lcom/android/server/appbinding/finders/AppServiceFinder;->mLastMessages:Landroid/util/SparseArray;
 
-    invoke-virtual {p3, p1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    const-string v5, "Target package not found"
 
-    const-string p1, " "
+    invoke-virtual {v4, p1, v5}, Landroid/util/SparseArray;->put(ILjava/lang/Object;)V
 
-    invoke-virtual {p3, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    .line 119
+    const-string v4, "AppBindingService"
 
-    const-string p1, "Target package not found"
+    new-instance v5, Ljava/lang/StringBuilder;
 
-    invoke-virtual {p3, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-direct {v5}, Ljava/lang/StringBuilder;-><init>()V
 
-    invoke-virtual {p3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {p0}, Lcom/android/server/appbinding/finders/AppServiceFinder;->getAppDescription()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v6
 
-    invoke-static {p2, p1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    const-string v6, " u"
+
+    invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v5, p1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+
+    const-string v6, " "
+
+    invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    const-string v6, "Target package not found"
+
+    invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v5}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v5
+
+    invoke-static {v4, v5}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 120
     monitor-exit v0
@@ -557,17 +588,19 @@
     return-object v2
 
     .line 122
-    :cond_77
-    iget-object p3, p0, Lcom/android/server/appbinding/finders/AppServiceFinder;->mTargetPackages:Landroid/util/SparseArray;
+    .end local v3  # "message":Ljava/lang/String;
+    :cond_7b
+    iget-object v3, p0, Lcom/android/server/appbinding/finders/AppServiceFinder;->mTargetPackages:Landroid/util/SparseArray;
 
-    invoke-virtual {p3, p1, v3}, Landroid/util/SparseArray;->put(ILjava/lang/Object;)V
+    invoke-virtual {v3, p1, v1}, Landroid/util/SparseArray;->put(ILjava/lang/Object;)V
 
     .line 124
-    new-instance p3, Ljava/lang/StringBuilder;
+    new-instance v9, Ljava/lang/StringBuilder;
 
-    invoke-direct {p3}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v9}, Ljava/lang/StringBuilder;-><init>()V
 
     .line 125
+    .local v9, "errorMessage":Ljava/lang/StringBuilder;
     nop
 
     .line 128
@@ -586,28 +619,30 @@
     move-result-object v7
 
     .line 125
+    move-object v3, v1
+
     move v4, p1
 
     move-object v8, p2
 
-    move-object v9, p3
-
     invoke-static/range {v3 .. v9}, Lcom/android/server/appbinding/AppBindingUtils;->findService(Ljava/lang/String;ILjava/lang/String;Ljava/lang/String;Ljava/lang/Class;Landroid/content/pm/IPackageManager;Ljava/lang/StringBuilder;)Landroid/content/pm/ServiceInfo;
 
-    move-result-object p2
+    move-result-object v3
 
     .line 134
-    if-nez p2, :cond_a2
+    .local v3, "service":Landroid/content/pm/ServiceInfo;
+    if-nez v3, :cond_a6
 
     .line 135
-    invoke-virtual {p3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v9}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p2
+    move-result-object v4
 
     .line 136
-    iget-object p3, p0, Lcom/android/server/appbinding/finders/AppServiceFinder;->mLastMessages:Landroid/util/SparseArray;
+    .local v4, "message":Ljava/lang/String;
+    iget-object v5, p0, Lcom/android/server/appbinding/finders/AppServiceFinder;->mLastMessages:Landroid/util/SparseArray;
 
-    invoke-virtual {p3, p1, p2}, Landroid/util/SparseArray;->put(ILjava/lang/Object;)V
+    invoke-virtual {v5, p1, v4}, Landroid/util/SparseArray;->put(ILjava/lang/Object;)V
 
     .line 142
     monitor-exit v0
@@ -615,56 +650,67 @@
     return-object v2
 
     .line 144
-    :cond_a2
-    invoke-virtual {p0, p2}, Lcom/android/server/appbinding/finders/AppServiceFinder;->validateService(Landroid/content/pm/ServiceInfo;)Ljava/lang/String;
+    .end local v4  # "message":Ljava/lang/String;
+    :cond_a6
+    invoke-virtual {p0, v3}, Lcom/android/server/appbinding/finders/AppServiceFinder;->validateService(Landroid/content/pm/ServiceInfo;)Ljava/lang/String;
 
-    move-result-object p3
+    move-result-object v4
 
     .line 145
-    if-eqz p3, :cond_b4
+    .local v4, "error":Ljava/lang/String;
+    if-eqz v4, :cond_b8
 
     .line 146
-    iget-object p2, p0, Lcom/android/server/appbinding/finders/AppServiceFinder;->mLastMessages:Landroid/util/SparseArray;
+    iget-object v5, p0, Lcom/android/server/appbinding/finders/AppServiceFinder;->mLastMessages:Landroid/util/SparseArray;
 
-    invoke-virtual {p2, p1, p3}, Landroid/util/SparseArray;->put(ILjava/lang/Object;)V
+    invoke-virtual {v5, p1, v4}, Landroid/util/SparseArray;->put(ILjava/lang/Object;)V
 
     .line 147
-    const-string p1, "AppBindingService"
+    const-string v5, "AppBindingService"
 
-    invoke-static {p1, p3}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v5, v4}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 148
     monitor-exit v0
 
     return-object v2
 
+    .line 151
+    :cond_b8
+    const-string v2, "Valid service found"
+
     .line 152
-    :cond_b4
-    iget-object p3, p0, Lcom/android/server/appbinding/finders/AppServiceFinder;->mLastMessages:Landroid/util/SparseArray;
+    .local v2, "message":Ljava/lang/String;
+    iget-object v5, p0, Lcom/android/server/appbinding/finders/AppServiceFinder;->mLastMessages:Landroid/util/SparseArray;
 
-    const-string v1, "Valid service found"
+    const-string v6, "Valid service found"
 
-    invoke-virtual {p3, p1, v1}, Landroid/util/SparseArray;->put(ILjava/lang/Object;)V
+    invoke-virtual {v5, p1, v6}, Landroid/util/SparseArray;->put(ILjava/lang/Object;)V
 
     .line 153
-    iget-object p3, p0, Lcom/android/server/appbinding/finders/AppServiceFinder;->mTargetServices:Landroid/util/SparseArray;
+    iget-object v5, p0, Lcom/android/server/appbinding/finders/AppServiceFinder;->mTargetServices:Landroid/util/SparseArray;
 
-    invoke-virtual {p3, p1, p2}, Landroid/util/SparseArray;->put(ILjava/lang/Object;)V
+    invoke-virtual {v5, p1, v3}, Landroid/util/SparseArray;->put(ILjava/lang/Object;)V
 
     .line 154
     monitor-exit v0
 
-    return-object p2
+    return-object v3
 
     .line 155
-    :catchall_c2
-    move-exception p1
+    .end local v1  # "targetPackage":Ljava/lang/String;
+    .end local v2  # "message":Ljava/lang/String;
+    .end local v3  # "service":Landroid/content/pm/ServiceInfo;
+    .end local v4  # "error":Ljava/lang/String;
+    .end local v9  # "errorMessage":Ljava/lang/StringBuilder;
+    :catchall_c8
+    move-exception v1
 
     monitor-exit v0
-    :try_end_c4
-    .catchall {:try_start_3 .. :try_end_c4} :catchall_c2
+    :try_end_ca
+    .catchall {:try_start_3 .. :try_end_ca} :catchall_c8
 
-    throw p1
+    throw v1
 .end method
 
 .method public abstract getAppDescription()Ljava/lang/String;
@@ -693,18 +739,22 @@
 .end method
 
 .method protected isEnabled(Lcom/android/server/appbinding/AppBindingConstants;)Z
-    .registers 2
+    .registers 3
+    .param p1, "constants"  # Lcom/android/server/appbinding/AppBindingConstants;
 
     .line 74
-    const/4 p1, 0x1
+    .local p0, "this":Lcom/android/server/appbinding/finders/AppServiceFinder;, "Lcom/android/server/appbinding/finders/AppServiceFinder<TTServiceType;TTServiceInterfaceType;>;"
+    const/4 v0, 0x1
 
-    return p1
+    return v0
 .end method
 
 .method public onUserRemoved(I)V
     .registers 4
+    .param p1, "userId"  # I
 
     .line 87
+    .local p0, "this":Lcom/android/server/appbinding/finders/AppServiceFinder;, "Lcom/android/server/appbinding/finders/AppServiceFinder<TTServiceType;TTServiceInterfaceType;>;"
     iget-object v0, p0, Lcom/android/server/appbinding/finders/AppServiceFinder;->mLock:Ljava/lang/Object;
 
     monitor-enter v0
@@ -733,27 +783,30 @@
 
     .line 91
     :catchall_14
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_16
     .catchall {:try_start_3 .. :try_end_16} :catchall_14
 
-    throw p1
+    throw v1
 .end method
 
 .method public startMonitoring()V
     .registers 1
 
     .line 83
+    .local p0, "this":Lcom/android/server/appbinding/finders/AppServiceFinder;, "Lcom/android/server/appbinding/finders/AppServiceFinder<TTServiceType;TTServiceInterfaceType;>;"
     return-void
 .end method
 
 .method protected validateService(Landroid/content/pm/ServiceInfo;)Ljava/lang/String;
-    .registers 2
+    .registers 3
+    .param p1, "service"  # Landroid/content/pm/ServiceInfo;
 
     .line 188
-    const/4 p1, 0x0
+    .local p0, "this":Lcom/android/server/appbinding/finders/AppServiceFinder;, "Lcom/android/server/appbinding/finders/AppServiceFinder<TTServiceType;TTServiceInterfaceType;>;"
+    const/4 v0, 0x0
 
-    return-object p1
+    return-object v0
 .end method

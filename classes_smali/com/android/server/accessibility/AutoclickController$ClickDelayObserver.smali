@@ -26,19 +26,21 @@
 
 # direct methods
 .method public constructor <init>(ILandroid/os/Handler;)V
-    .registers 3
+    .registers 4
+    .param p1, "userId"  # I
+    .param p2, "handler"  # Landroid/os/Handler;
 
     .line 156
     invoke-direct {p0, p2}, Landroid/database/ContentObserver;-><init>(Landroid/os/Handler;)V
 
     .line 148
-    const-string p2, "accessibility_autoclick_delay"
+    const-string v0, "accessibility_autoclick_delay"
 
-    invoke-static {p2}, Landroid/provider/Settings$Secure;->getUriFor(Ljava/lang/String;)Landroid/net/Uri;
+    invoke-static {v0}, Landroid/provider/Settings$Secure;->getUriFor(Ljava/lang/String;)Landroid/net/Uri;
 
-    move-result-object p2
+    move-result-object v0
 
-    iput-object p2, p0, Lcom/android/server/accessibility/AutoclickController$ClickDelayObserver;->mAutoclickDelaySettingUri:Landroid/net/Uri;
+    iput-object v0, p0, Lcom/android/server/accessibility/AutoclickController$ClickDelayObserver;->mAutoclickDelaySettingUri:Landroid/net/Uri;
 
     .line 157
     iput p1, p0, Lcom/android/server/accessibility/AutoclickController$ClickDelayObserver;->mUserId:I
@@ -50,42 +52,48 @@
 
 # virtual methods
 .method public onChange(ZLandroid/net/Uri;)V
-    .registers 5
+    .registers 7
+    .param p1, "selfChange"  # Z
+    .param p2, "uri"  # Landroid/net/Uri;
 
     .line 208
-    iget-object p1, p0, Lcom/android/server/accessibility/AutoclickController$ClickDelayObserver;->mAutoclickDelaySettingUri:Landroid/net/Uri;
+    iget-object v0, p0, Lcom/android/server/accessibility/AutoclickController$ClickDelayObserver;->mAutoclickDelaySettingUri:Landroid/net/Uri;
 
-    invoke-virtual {p1, p2}, Landroid/net/Uri;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v0, p2}, Landroid/net/Uri;->equals(Ljava/lang/Object;)Z
 
-    move-result p1
+    move-result v0
 
-    if-eqz p1, :cond_19
+    if-eqz v0, :cond_19
 
     .line 209
-    iget-object p1, p0, Lcom/android/server/accessibility/AutoclickController$ClickDelayObserver;->mContentResolver:Landroid/content/ContentResolver;
+    iget-object v0, p0, Lcom/android/server/accessibility/AutoclickController$ClickDelayObserver;->mContentResolver:Landroid/content/ContentResolver;
 
-    const/16 p2, 0x258
+    const/16 v1, 0x258
 
-    iget v0, p0, Lcom/android/server/accessibility/AutoclickController$ClickDelayObserver;->mUserId:I
+    iget v2, p0, Lcom/android/server/accessibility/AutoclickController$ClickDelayObserver;->mUserId:I
 
-    const-string v1, "accessibility_autoclick_delay"
+    const-string v3, "accessibility_autoclick_delay"
 
-    invoke-static {p1, v1, p2, v0}, Landroid/provider/Settings$Secure;->getIntForUser(Landroid/content/ContentResolver;Ljava/lang/String;II)I
+    invoke-static {v0, v3, v1, v2}, Landroid/provider/Settings$Secure;->getIntForUser(Landroid/content/ContentResolver;Ljava/lang/String;II)I
 
-    move-result p1
+    move-result v0
 
     .line 212
-    iget-object p2, p0, Lcom/android/server/accessibility/AutoclickController$ClickDelayObserver;->mClickScheduler:Lcom/android/server/accessibility/AutoclickController$ClickScheduler;
+    .local v0, "delay":I
+    iget-object v1, p0, Lcom/android/server/accessibility/AutoclickController$ClickDelayObserver;->mClickScheduler:Lcom/android/server/accessibility/AutoclickController$ClickScheduler;
 
-    invoke-virtual {p2, p1}, Lcom/android/server/accessibility/AutoclickController$ClickScheduler;->updateDelay(I)V
+    invoke-virtual {v1, v0}, Lcom/android/server/accessibility/AutoclickController$ClickScheduler;->updateDelay(I)V
 
     .line 214
+    .end local v0  # "delay":I
     :cond_19
     return-void
 .end method
 
 .method public start(Landroid/content/ContentResolver;Lcom/android/server/accessibility/AutoclickController$ClickScheduler;)V
-    .registers 5
+    .registers 7
+    .param p1, "contentResolver"  # Landroid/content/ContentResolver;
+    .param p2, "clickScheduler"  # Lcom/android/server/accessibility/AutoclickController$ClickScheduler;
 
     .line 173
     iget-object v0, p0, Lcom/android/server/accessibility/AutoclickController$ClickDelayObserver;->mContentResolver:Landroid/content/ContentResolver;
@@ -109,55 +117,55 @@
     iput-object p2, p0, Lcom/android/server/accessibility/AutoclickController$ClickDelayObserver;->mClickScheduler:Lcom/android/server/accessibility/AutoclickController$ClickScheduler;
 
     .line 185
-    iget-object p1, p0, Lcom/android/server/accessibility/AutoclickController$ClickDelayObserver;->mContentResolver:Landroid/content/ContentResolver;
+    iget-object v0, p0, Lcom/android/server/accessibility/AutoclickController$ClickDelayObserver;->mContentResolver:Landroid/content/ContentResolver;
 
-    iget-object p2, p0, Lcom/android/server/accessibility/AutoclickController$ClickDelayObserver;->mAutoclickDelaySettingUri:Landroid/net/Uri;
+    iget-object v1, p0, Lcom/android/server/accessibility/AutoclickController$ClickDelayObserver;->mAutoclickDelaySettingUri:Landroid/net/Uri;
 
-    const/4 v0, 0x0
+    const/4 v2, 0x0
 
-    iget v1, p0, Lcom/android/server/accessibility/AutoclickController$ClickDelayObserver;->mUserId:I
+    iget v3, p0, Lcom/android/server/accessibility/AutoclickController$ClickDelayObserver;->mUserId:I
 
-    invoke-virtual {p1, p2, v0, p0, v1}, Landroid/content/ContentResolver;->registerContentObserver(Landroid/net/Uri;ZLandroid/database/ContentObserver;I)V
+    invoke-virtual {v0, v1, v2, p0, v3}, Landroid/content/ContentResolver;->registerContentObserver(Landroid/net/Uri;ZLandroid/database/ContentObserver;I)V
 
     .line 189
-    const/4 p1, 0x1
+    const/4 v0, 0x1
 
-    iget-object p2, p0, Lcom/android/server/accessibility/AutoclickController$ClickDelayObserver;->mAutoclickDelaySettingUri:Landroid/net/Uri;
+    iget-object v1, p0, Lcom/android/server/accessibility/AutoclickController$ClickDelayObserver;->mAutoclickDelaySettingUri:Landroid/net/Uri;
 
-    invoke-virtual {p0, p1, p2}, Lcom/android/server/accessibility/AutoclickController$ClickDelayObserver;->onChange(ZLandroid/net/Uri;)V
+    invoke-virtual {p0, v0, v1}, Lcom/android/server/accessibility/AutoclickController$ClickDelayObserver;->onChange(ZLandroid/net/Uri;)V
 
     .line 190
     return-void
 
     .line 180
     :cond_21
-    new-instance p1, Ljava/lang/NullPointerException;
+    new-instance v0, Ljava/lang/NullPointerException;
 
-    const-string p2, "clickScheduler not set."
+    const-string v1, "clickScheduler not set."
 
-    invoke-direct {p1, p2}, Ljava/lang/NullPointerException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v0, v1}, Ljava/lang/NullPointerException;-><init>(Ljava/lang/String;)V
 
-    throw p1
+    throw v0
 
     .line 177
     :cond_29
-    new-instance p1, Ljava/lang/NullPointerException;
+    new-instance v0, Ljava/lang/NullPointerException;
 
-    const-string p2, "contentResolver not set."
+    const-string v1, "contentResolver not set."
 
-    invoke-direct {p1, p2}, Ljava/lang/NullPointerException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v0, v1}, Ljava/lang/NullPointerException;-><init>(Ljava/lang/String;)V
 
-    throw p1
+    throw v0
 
     .line 174
     :cond_31
-    new-instance p1, Ljava/lang/IllegalStateException;
+    new-instance v0, Ljava/lang/IllegalStateException;
 
-    const-string p2, "Observer already started."
+    const-string v1, "Observer already started."
 
-    invoke-direct {p1, p2}, Ljava/lang/IllegalStateException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v0, v1}, Ljava/lang/IllegalStateException;-><init>(Ljava/lang/String;)V
 
-    throw p1
+    throw v0
 .end method
 
 .method public stop()V

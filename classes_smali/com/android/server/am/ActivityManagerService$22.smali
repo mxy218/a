@@ -32,7 +32,7 @@
 .method constructor <init>()V
     .registers 1
 
-    .line 11717
+    .line 12438
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
     return-void
@@ -56,7 +56,9 @@
         }
     .end annotation
 
-    .line 11721
+    .line 12442
+    .local p1, "object1":Landroid/util/Pair;, "Landroid/util/Pair<Lcom/android/server/am/ProcessRecord;Ljava/lang/Integer;>;"
+    .local p2, "object2":Landroid/util/Pair;, "Landroid/util/Pair<Lcom/android/server/am/ProcessRecord;Ljava/lang/Integer;>;"
     iget-object v0, p1, Landroid/util/Pair;->first:Ljava/lang/Object;
 
     check-cast v0, Lcom/android/server/am/ProcessRecord;
@@ -75,20 +77,20 @@
 
     if-eq v0, v1, :cond_21
 
-    .line 11722
-    iget-object p1, p1, Landroid/util/Pair;->first:Ljava/lang/Object;
+    .line 12443
+    iget-object v0, p1, Landroid/util/Pair;->first:Ljava/lang/Object;
 
-    check-cast p1, Lcom/android/server/am/ProcessRecord;
+    check-cast v0, Lcom/android/server/am/ProcessRecord;
 
-    iget p1, p1, Lcom/android/server/am/ProcessRecord;->setAdj:I
+    iget v0, v0, Lcom/android/server/am/ProcessRecord;->setAdj:I
 
-    iget-object p2, p2, Landroid/util/Pair;->first:Ljava/lang/Object;
+    iget-object v1, p2, Landroid/util/Pair;->first:Ljava/lang/Object;
 
-    check-cast p2, Lcom/android/server/am/ProcessRecord;
+    check-cast v1, Lcom/android/server/am/ProcessRecord;
 
-    iget p2, p2, Lcom/android/server/am/ProcessRecord;->setAdj:I
+    iget v1, v1, Lcom/android/server/am/ProcessRecord;->setAdj:I
 
-    if-le p1, p2, :cond_1f
+    if-le v0, v1, :cond_1f
 
     goto :goto_20
 
@@ -98,7 +100,7 @@
     :goto_20
     return v2
 
-    .line 11724
+    .line 12445
     :cond_21
     iget-object v0, p1, Landroid/util/Pair;->first:Ljava/lang/Object;
 
@@ -114,20 +116,20 @@
 
     if-eq v0, v1, :cond_40
 
-    .line 11725
-    iget-object p1, p1, Landroid/util/Pair;->first:Ljava/lang/Object;
+    .line 12446
+    iget-object v0, p1, Landroid/util/Pair;->first:Ljava/lang/Object;
 
-    check-cast p1, Lcom/android/server/am/ProcessRecord;
+    check-cast v0, Lcom/android/server/am/ProcessRecord;
 
-    iget p1, p1, Lcom/android/server/am/ProcessRecord;->setProcState:I
+    iget v0, v0, Lcom/android/server/am/ProcessRecord;->setProcState:I
 
-    iget-object p2, p2, Landroid/util/Pair;->first:Ljava/lang/Object;
+    iget-object v1, p2, Landroid/util/Pair;->first:Ljava/lang/Object;
 
-    check-cast p2, Lcom/android/server/am/ProcessRecord;
+    check-cast v1, Lcom/android/server/am/ProcessRecord;
 
-    iget p2, p2, Lcom/android/server/am/ProcessRecord;->setProcState:I
+    iget v1, v1, Lcom/android/server/am/ProcessRecord;->setProcState:I
 
-    if-le p1, p2, :cond_3e
+    if-le v0, v1, :cond_3e
 
     goto :goto_3f
 
@@ -137,7 +139,7 @@
     :goto_3f
     return v2
 
-    .line 11727
+    .line 12448
     :cond_40
     iget-object v0, p1, Landroid/util/Pair;->second:Ljava/lang/Object;
 
@@ -157,24 +159,24 @@
 
     if-eq v0, v1, :cond_67
 
-    .line 11728
-    iget-object p1, p1, Landroid/util/Pair;->second:Ljava/lang/Object;
+    .line 12449
+    iget-object v0, p1, Landroid/util/Pair;->second:Ljava/lang/Object;
 
-    check-cast p1, Ljava/lang/Integer;
+    check-cast v0, Ljava/lang/Integer;
 
-    invoke-virtual {p1}, Ljava/lang/Integer;->intValue()I
+    invoke-virtual {v0}, Ljava/lang/Integer;->intValue()I
 
-    move-result p1
+    move-result v0
 
-    iget-object p2, p2, Landroid/util/Pair;->second:Ljava/lang/Object;
+    iget-object v1, p2, Landroid/util/Pair;->second:Ljava/lang/Object;
 
-    check-cast p2, Ljava/lang/Integer;
+    check-cast v1, Ljava/lang/Integer;
 
-    invoke-virtual {p2}, Ljava/lang/Integer;->intValue()I
+    invoke-virtual {v1}, Ljava/lang/Integer;->intValue()I
 
-    move-result p2
+    move-result v1
 
-    if-le p1, p2, :cond_65
+    if-le v0, v1, :cond_65
 
     goto :goto_66
 
@@ -184,17 +186,17 @@
     :goto_66
     return v2
 
-    .line 11730
+    .line 12451
     :cond_67
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    return p1
+    return v0
 .end method
 
 .method public bridge synthetic compare(Ljava/lang/Object;Ljava/lang/Object;)I
     .registers 3
 
-    .line 11717
+    .line 12438
     check-cast p1, Landroid/util/Pair;
 
     check-cast p2, Landroid/util/Pair;

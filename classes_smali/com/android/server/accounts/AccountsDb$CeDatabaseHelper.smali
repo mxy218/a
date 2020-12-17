@@ -17,6 +17,8 @@
 # direct methods
 .method constructor <init>(Landroid/content/Context;Ljava/lang/String;)V
     .registers 5
+    .param p1, "context"  # Landroid/content/Context;
+    .param p2, "ceDatabaseName"  # Ljava/lang/String;
 
     .line 200
     const/4 v0, 0x0
@@ -30,7 +32,10 @@
 .end method
 
 .method static create(Landroid/content/Context;Ljava/io/File;Ljava/io/File;)Lcom/android/server/accounts/AccountsDb$CeDatabaseHelper;
-    .registers 7
+    .registers 9
+    .param p0, "context"  # Landroid/content/Context;
+    .param p1, "preNDatabaseFile"  # Ljava/io/File;
+    .param p2, "ceDatabaseFile"  # Ljava/io/File;
 
     .line 289
     invoke-virtual {p2}, Ljava/io/File;->exists()Z
@@ -38,6 +43,7 @@
     move-result v0
 
     .line 290
+    .local v0, "newDbExists":Z
     const-string v1, "AccountsDb"
 
     const/4 v2, 0x2
@@ -88,13 +94,14 @@
     const/4 v2, 0x0
 
     .line 296
+    .local v2, "removeOldDb":Z
     if-nez v0, :cond_42
 
     invoke-virtual {p1}, Ljava/io/File;->exists()Z
 
-    move-result v0
+    move-result v3
 
-    if-eqz v0, :cond_42
+    if-eqz v3, :cond_42
 
     .line 297
     invoke-static {p1, p2}, Lcom/android/server/accounts/AccountsDb$CeDatabaseHelper;->migratePreNDbToCe(Ljava/io/File;Ljava/io/File;)Z
@@ -103,71 +110,73 @@
 
     .line 300
     :cond_42
-    new-instance v0, Lcom/android/server/accounts/AccountsDb$CeDatabaseHelper;
+    new-instance v3, Lcom/android/server/accounts/AccountsDb$CeDatabaseHelper;
 
     invoke-virtual {p2}, Ljava/io/File;->getPath()Ljava/lang/String;
 
-    move-result-object p2
+    move-result-object v4
 
-    invoke-direct {v0, p0, p2}, Lcom/android/server/accounts/AccountsDb$CeDatabaseHelper;-><init>(Landroid/content/Context;Ljava/lang/String;)V
+    invoke-direct {v3, p0, v4}, Lcom/android/server/accounts/AccountsDb$CeDatabaseHelper;-><init>(Landroid/content/Context;Ljava/lang/String;)V
 
     .line 301
-    invoke-virtual {v0}, Lcom/android/server/accounts/AccountsDb$CeDatabaseHelper;->getWritableDatabase()Landroid/database/sqlite/SQLiteDatabase;
+    .local v3, "ceHelper":Lcom/android/server/accounts/AccountsDb$CeDatabaseHelper;
+    invoke-virtual {v3}, Lcom/android/server/accounts/AccountsDb$CeDatabaseHelper;->getWritableDatabase()Landroid/database/sqlite/SQLiteDatabase;
 
     .line 302
-    invoke-virtual {v0}, Lcom/android/server/accounts/AccountsDb$CeDatabaseHelper;->close()V
+    invoke-virtual {v3}, Lcom/android/server/accounts/AccountsDb$CeDatabaseHelper;->close()V
 
     .line 303
     if-eqz v2, :cond_81
 
     .line 304
-    new-instance p0, Ljava/lang/StringBuilder;
+    new-instance v4, Ljava/lang/StringBuilder;
 
-    invoke-direct {p0}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v4}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string p2, "Migration complete - removing pre-N db "
+    const-string v5, "Migration complete - removing pre-N db "
 
-    invoke-virtual {p0, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    invoke-virtual {v4, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v4}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v4
 
-    invoke-static {v1, p0}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v4}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 305
     invoke-static {p1}, Landroid/database/sqlite/SQLiteDatabase;->deleteDatabase(Ljava/io/File;)Z
 
-    move-result p0
+    move-result v4
 
-    if-nez p0, :cond_81
+    if-nez v4, :cond_81
 
     .line 306
-    new-instance p0, Ljava/lang/StringBuilder;
+    new-instance v4, Ljava/lang/StringBuilder;
 
-    invoke-direct {p0}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v4}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string p2, "Cannot remove pre-N db "
+    const-string v5, "Cannot remove pre-N db "
 
-    invoke-virtual {p0, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    invoke-virtual {v4, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v4}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v4
 
-    invoke-static {v1, p0}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v4}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 309
     :cond_81
-    return-object v0
+    return-object v3
 .end method
 
 .method private createAccountsDeletionTrigger(Landroid/database/sqlite/SQLiteDatabase;)V
     .registers 3
+    .param p1, "db"  # Landroid/database/sqlite/SQLiteDatabase;
 
     .line 235
     const-string v0, " CREATE TRIGGER accountsDelete DELETE ON accounts BEGIN   DELETE FROM authtokens     WHERE accounts_id=OLD._id ;   DELETE FROM extras     WHERE accounts_id=OLD._id ; END"
@@ -180,6 +189,8 @@
 
 .method private static migratePreNDbToCe(Ljava/io/File;Ljava/io/File;)Z
     .registers 6
+    .param p0, "oldDbFile"  # Ljava/io/File;
+    .param p1, "ceDbFile"  # Ljava/io/File;
 
     .line 313
     new-instance v0, Ljava/lang/StringBuilder;
@@ -216,15 +227,16 @@
     nop
 
     .line 322
-    const/4 p0, 0x1
+    const/4 v0, 0x1
 
-    return p0
+    return v0
 
     .line 316
     :catch_24
     move-exception v0
 
     .line 317
+    .local v0, "e":Ljava/io/IOException;
     new-instance v2, Ljava/lang/StringBuilder;
 
     invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
@@ -243,23 +255,24 @@
 
     invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v2
 
-    invoke-static {v1, p0, v0}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    invoke-static {v1, v2, v0}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
     .line 319
     invoke-static {p1}, Lcom/android/server/accounts/AccountsDb;->deleteDbFileWarnIfFailed(Ljava/io/File;)V
 
     .line 320
-    const/4 p0, 0x0
+    const/4 v1, 0x0
 
-    return p0
+    return v1
 .end method
 
 
 # virtual methods
 .method public onCreate(Landroid/database/sqlite/SQLiteDatabase;)V
     .registers 4
+    .param p1, "db"  # Landroid/database/sqlite/SQLiteDatabase;
 
     .line 209
     new-instance v0, Ljava/lang/StringBuilder;
@@ -307,14 +320,17 @@
 .end method
 
 .method public onDowngrade(Landroid/database/sqlite/SQLiteDatabase;II)V
-    .registers 4
+    .registers 6
+    .param p1, "db"  # Landroid/database/sqlite/SQLiteDatabase;
+    .param p2, "oldVersion"  # I
+    .param p3, "newVersion"  # I
 
     .line 270
-    const-string p2, "AccountsDb"
+    const-string v0, "AccountsDb"
 
-    const-string/jumbo p3, "onDowngrade: recreate accounts CE table"
+    const-string/jumbo v1, "onDowngrade: recreate accounts CE table"
 
-    invoke-static {p2, p3}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v0, v1}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 271
     invoke-static {p1}, Lcom/android/server/accounts/AccountsDb;->access$100(Landroid/database/sqlite/SQLiteDatabase;)V
@@ -327,22 +343,23 @@
 .end method
 
 .method public onOpen(Landroid/database/sqlite/SQLiteDatabase;)V
-    .registers 3
+    .registers 4
+    .param p1, "db"  # Landroid/database/sqlite/SQLiteDatabase;
 
     .line 277
-    const-string p1, "AccountsDb"
+    const-string v0, "AccountsDb"
 
-    const/4 v0, 0x2
+    const/4 v1, 0x2
 
-    invoke-static {p1, v0}, Landroid/util/Log;->isLoggable(Ljava/lang/String;I)Z
+    invoke-static {v0, v1}, Landroid/util/Log;->isLoggable(Ljava/lang/String;I)Z
 
-    move-result v0
+    move-result v1
 
-    if-eqz v0, :cond_f
+    if-eqz v1, :cond_f
 
-    const-string/jumbo v0, "opened database accounts_ce.db"
+    const-string/jumbo v1, "opened database accounts_ce.db"
 
-    invoke-static {p1, v0}, Landroid/util/Log;->v(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v0, v1}, Landroid/util/Log;->v(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 278
     :cond_f
@@ -351,6 +368,9 @@
 
 .method public onUpgrade(Landroid/database/sqlite/SQLiteDatabase;II)V
     .registers 8
+    .param p1, "db"  # Landroid/database/sqlite/SQLiteDatabase;
+    .param p2, "oldVersion"  # I
+    .param p3, "newVersion"  # I
 
     .line 247
     new-instance v0, Ljava/lang/StringBuilder;
@@ -449,25 +469,25 @@
     if-eq p2, p3, :cond_7c
 
     .line 264
-    new-instance p1, Ljava/lang/StringBuilder;
+    new-instance v0, Ljava/lang/StringBuilder;
 
-    invoke-direct {p1}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v0, "failed to upgrade version "
+    const-string v3, "failed to upgrade version "
 
-    invoke-virtual {p1, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p1, p2}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, p2}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p1, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p1, p3}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, p3}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    invoke-static {v2, p1}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v2, v0}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 266
     :cond_7c

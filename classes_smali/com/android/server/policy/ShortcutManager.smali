@@ -56,6 +56,7 @@
 # direct methods
 .method public constructor <init>(Landroid/content/Context;)V
     .registers 3
+    .param p1, "context"  # Landroid/content/Context;
 
     .line 60
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -85,479 +86,632 @@
 .end method
 
 .method private loadShortcuts()V
-    .registers 16
+    .registers 23
 
     .line 105
-    const-string v0, "Got exception parsing bookmarks."
+    move-object/from16 v1, p0
 
-    const-string v1, "ShortcutManager"
+    const-string v2, "Got exception parsing bookmarks."
 
-    iget-object v2, p0, Lcom/android/server/policy/ShortcutManager;->mContext:Landroid/content/Context;
+    const-string v3, "ShortcutManager"
 
-    invoke-virtual {v2}, Landroid/content/Context;->getPackageManager()Landroid/content/pm/PackageManager;
+    iget-object v0, v1, Lcom/android/server/policy/ShortcutManager;->mContext:Landroid/content/Context;
 
-    move-result-object v2
-
-    .line 107
-    :try_start_a
-    iget-object v3, p0, Lcom/android/server/policy/ShortcutManager;->mContext:Landroid/content/Context;
-
-    invoke-virtual {v3}, Landroid/content/Context;->getResources()Landroid/content/res/Resources;
-
-    move-result-object v3
-
-    const v4, 0x1170004
-
-    invoke-virtual {v3, v4}, Landroid/content/res/Resources;->getXml(I)Landroid/content/res/XmlResourceParser;
-
-    move-result-object v3
-
-    .line 109
-    const-string v4, "bookmarks"
-
-    invoke-static {v3, v4}, Lcom/android/internal/util/XmlUtils;->beginDocument(Lorg/xmlpull/v1/XmlPullParser;Ljava/lang/String;)V
-
-    .line 112
-    :goto_1c
-    invoke-static {v3}, Lcom/android/internal/util/XmlUtils;->nextElement(Lorg/xmlpull/v1/XmlPullParser;)V
-
-    .line 114
-    invoke-interface {v3}, Landroid/content/res/XmlResourceParser;->getEventType()I
-
-    move-result v4
-
-    const/4 v5, 0x1
-
-    if-ne v4, v5, :cond_28
-
-    .line 115
-    goto/16 :goto_12a
-
-    .line 118
-    :cond_28
-    const-string v4, "bookmark"
-
-    invoke-interface {v3}, Landroid/content/res/XmlResourceParser;->getName()Ljava/lang/String;
-
-    move-result-object v6
-
-    invoke-virtual {v4, v6}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
-
-    move-result v4
-
-    if-nez v4, :cond_36
-
-    .line 119
-    goto/16 :goto_12a
-
-    .line 122
-    :cond_36
-    const-string/jumbo v4, "package"
-
-    const/4 v6, 0x0
-
-    invoke-interface {v3, v6, v4}, Landroid/content/res/XmlResourceParser;->getAttributeValue(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+    invoke-virtual {v0}, Landroid/content/Context;->getPackageManager()Landroid/content/pm/PackageManager;
 
     move-result-object v4
 
-    .line 123
-    const-string v7, "class"
+    .line 107
+    .local v4, "packageManager":Landroid/content/pm/PackageManager;
+    :try_start_c
+    iget-object v0, v1, Lcom/android/server/policy/ShortcutManager;->mContext:Landroid/content/Context;
 
-    invoke-interface {v3, v6, v7}, Landroid/content/res/XmlResourceParser;->getAttributeValue(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+    invoke-virtual {v0}, Landroid/content/Context;->getResources()Landroid/content/res/Resources;
+
+    move-result-object v0
+
+    const v5, 0x1170004
+
+    invoke-virtual {v0, v5}, Landroid/content/res/Resources;->getXml(I)Landroid/content/res/XmlResourceParser;
+
+    move-result-object v0
+
+    move-object v5, v0
+
+    .line 109
+    .local v5, "parser":Landroid/content/res/XmlResourceParser;
+    const-string v0, "bookmarks"
+
+    invoke-static {v5, v0}, Lcom/android/internal/util/XmlUtils;->beginDocument(Lorg/xmlpull/v1/XmlPullParser;Ljava/lang/String;)V
+
+    .line 112
+    :goto_1f
+    invoke-static {v5}, Lcom/android/internal/util/XmlUtils;->nextElement(Lorg/xmlpull/v1/XmlPullParser;)V
+
+    .line 114
+    invoke-interface {v5}, Landroid/content/res/XmlResourceParser;->getEventType()I
+
+    move-result v0
+
+    const/4 v6, 0x1
+
+    if-ne v0, v6, :cond_2b
+
+    .line 115
+    goto/16 :goto_15a
+
+    .line 118
+    :cond_2b
+    const-string v0, "bookmark"
+
+    invoke-interface {v5}, Landroid/content/res/XmlResourceParser;->getName()Ljava/lang/String;
 
     move-result-object v7
 
+    invoke-virtual {v0, v7}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+
+    move-result v0
+
+    if-nez v0, :cond_39
+
+    .line 119
+    goto/16 :goto_15a
+
+    .line 122
+    :cond_39
+    const-string/jumbo v0, "package"
+
+    const/4 v7, 0x0
+
+    invoke-interface {v5, v7, v0}, Landroid/content/res/XmlResourceParser;->getAttributeValue(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+
+    move-result-object v0
+
+    move-object v8, v0
+
+    .line 123
+    .local v8, "packageName":Ljava/lang/String;
+    const-string v0, "class"
+
+    invoke-interface {v5, v7, v0}, Landroid/content/res/XmlResourceParser;->getAttributeValue(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+
+    move-result-object v0
+
+    move-object v9, v0
+
     .line 124
-    const-string/jumbo v8, "shortcut"
+    .local v9, "className":Ljava/lang/String;
+    const-string/jumbo v0, "shortcut"
 
-    invoke-interface {v3, v6, v8}, Landroid/content/res/XmlResourceParser;->getAttributeValue(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+    invoke-interface {v5, v7, v0}, Landroid/content/res/XmlResourceParser;->getAttributeValue(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
 
-    move-result-object v8
+    move-result-object v0
+
+    move-object v10, v0
 
     .line 125
-    const-string v9, "category"
+    .local v10, "shortcutName":Ljava/lang/String;
+    const-string v0, "category"
 
-    invoke-interface {v3, v6, v9}, Landroid/content/res/XmlResourceParser;->getAttributeValue(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+    invoke-interface {v5, v7, v0}, Landroid/content/res/XmlResourceParser;->getAttributeValue(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
 
-    move-result-object v9
+    move-result-object v0
+
+    move-object v11, v0
 
     .line 126
-    const-string/jumbo v10, "shift"
+    .local v11, "categoryName":Ljava/lang/String;
+    const-string/jumbo v0, "shift"
 
-    invoke-interface {v3, v6, v10}, Landroid/content/res/XmlResourceParser;->getAttributeValue(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+    invoke-interface {v5, v7, v0}, Landroid/content/res/XmlResourceParser;->getAttributeValue(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
 
-    move-result-object v6
+    move-result-object v0
+
+    move-object v7, v0
 
     .line 128
-    invoke-static {v8}, Landroid/text/TextUtils;->isEmpty(Ljava/lang/CharSequence;)Z
+    .local v7, "shiftName":Ljava/lang/String;
+    invoke-static {v10}, Landroid/text/TextUtils;->isEmpty(Ljava/lang/CharSequence;)Z
 
-    move-result v10
-    :try_end_5c
-    .catch Lorg/xmlpull/v1/XmlPullParserException; {:try_start_a .. :try_end_5c} :catch_126
-    .catch Ljava/io/IOException; {:try_start_a .. :try_end_5c} :catch_121
+    move-result v0
+    :try_end_64
+    .catch Lorg/xmlpull/v1/XmlPullParserException; {:try_start_c .. :try_end_64} :catch_156
+    .catch Ljava/io/IOException; {:try_start_c .. :try_end_64} :catch_151
 
-    const-string v11, "/"
+    const-string v12, "/"
 
-    if-eqz v10, :cond_7b
+    if-eqz v0, :cond_83
 
     .line 129
-    :try_start_60
-    new-instance v5, Ljava/lang/StringBuilder;
+    :try_start_68
+    new-instance v0, Ljava/lang/StringBuilder;
 
-    invoke-direct {v5}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
 
     const-string v6, "Unable to get shortcut for: "
 
-    invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v5, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v8}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v5, v11}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v12}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v5, v7}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v9}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v5}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v4
+    move-result-object v0
 
-    invoke-static {v1, v4}, Landroid/util/Log;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v3, v0}, Landroid/util/Log;->w(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 130
-    goto :goto_1c
+    goto :goto_1f
 
     .line 133
-    :cond_7b
-    const/4 v10, 0x0
+    :cond_83
+    const/4 v13, 0x0
 
-    invoke-virtual {v8, v10}, Ljava/lang/String;->charAt(I)C
+    invoke-virtual {v10, v13}, Ljava/lang/String;->charAt(I)C
 
-    move-result v12
+    move-result v0
+
+    move v14, v0
 
     .line 134
-    if-eqz v6, :cond_8d
+    .local v14, "shortcutChar":I
+    if-eqz v7, :cond_96
 
-    const-string/jumbo v13, "true"
+    const-string/jumbo v0, "true"
 
-    invoke-virtual {v6, v13}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v7, v0}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result v6
-    :try_end_89
-    .catch Lorg/xmlpull/v1/XmlPullParserException; {:try_start_60 .. :try_end_89} :catch_126
-    .catch Ljava/io/IOException; {:try_start_60 .. :try_end_89} :catch_121
+    move-result v0
+    :try_end_92
+    .catch Lorg/xmlpull/v1/XmlPullParserException; {:try_start_68 .. :try_end_92} :catch_156
+    .catch Ljava/io/IOException; {:try_start_68 .. :try_end_92} :catch_151
 
-    if-eqz v6, :cond_8d
+    if-eqz v0, :cond_96
 
-    move v6, v5
+    move v0, v6
 
-    goto :goto_8e
+    goto :goto_97
 
-    :cond_8d
-    move v6, v10
+    :cond_96
+    move v0, v13
+
+    :goto_97
+    move v15, v0
 
     .line 138
-    :goto_8e
+    .local v15, "isShiftShortcut":Z
     const-string v13, "android.intent.action.MAIN"
 
-    if-eqz v4, :cond_ea
+    if-eqz v8, :cond_113
 
-    if-eqz v7, :cond_ea
+    if-eqz v9, :cond_113
 
     .line 139
-    nop
+    const/16 v17, 0x0
 
     .line 140
-    :try_start_95
-    new-instance v8, Landroid/content/ComponentName;
+    .local v17, "info":Landroid/content/pm/ActivityInfo;
+    :try_start_a0
+    new-instance v0, Landroid/content/ComponentName;
 
-    invoke-direct {v8, v4, v7}, Landroid/content/ComponentName;-><init>(Ljava/lang/String;Ljava/lang/String;)V
-    :try_end_9a
-    .catch Lorg/xmlpull/v1/XmlPullParserException; {:try_start_95 .. :try_end_9a} :catch_126
-    .catch Ljava/io/IOException; {:try_start_95 .. :try_end_9a} :catch_121
+    invoke-direct {v0, v8, v9}, Landroid/content/ComponentName;-><init>(Ljava/lang/String;Ljava/lang/String;)V
+    :try_end_a5
+    .catch Lorg/xmlpull/v1/XmlPullParserException; {:try_start_a0 .. :try_end_a5} :catch_156
+    .catch Ljava/io/IOException; {:try_start_a0 .. :try_end_a5} :catch_151
+
+    move-object/from16 v18, v0
 
     .line 142
-    const v9, 0xc2000
+    .local v18, "componentName":Landroid/content/ComponentName;
+    const v6, 0xc2000
 
-    :try_start_9d
-    invoke-virtual {v2, v8, v9}, Landroid/content/pm/PackageManager;->getActivityInfo(Landroid/content/ComponentName;I)Landroid/content/pm/ActivityInfo;
+    move-object/from16 v20, v5
 
-    move-result-object v4
-    :try_end_a1
-    .catch Landroid/content/pm/PackageManager$NameNotFoundException; {:try_start_9d .. :try_end_a1} :catch_a2
-    .catch Lorg/xmlpull/v1/XmlPullParserException; {:try_start_9d .. :try_end_a1} :catch_126
-    .catch Ljava/io/IOException; {:try_start_9d .. :try_end_a1} :catch_121
+    move-object/from16 v5, v18
+
+    .end local v18  # "componentName":Landroid/content/ComponentName;
+    .local v5, "componentName":Landroid/content/ComponentName;
+    .local v20, "parser":Landroid/content/res/XmlResourceParser;
+    :try_start_ae
+    invoke-virtual {v4, v5, v6}, Landroid/content/pm/PackageManager;->getActivityInfo(Landroid/content/ComponentName;I)Landroid/content/pm/ActivityInfo;
+
+    move-result-object v0
+    :try_end_b2
+    .catch Landroid/content/pm/PackageManager$NameNotFoundException; {:try_start_ae .. :try_end_b2} :catch_b3
+    .catch Lorg/xmlpull/v1/XmlPullParserException; {:try_start_ae .. :try_end_b2} :catch_156
+    .catch Ljava/io/IOException; {:try_start_ae .. :try_end_b2} :catch_151
 
     .line 160
-    goto :goto_b7
+    .end local v17  # "info":Landroid/content/pm/ActivityInfo;
+    .local v0, "info":Landroid/content/pm/ActivityInfo;
+    goto :goto_d9
 
     .line 146
-    :catch_a2
-    move-exception v8
+    .end local v0  # "info":Landroid/content/pm/ActivityInfo;
+    .restart local v17  # "info":Landroid/content/pm/ActivityInfo;
+    :catch_b3
+    move-exception v0
+
+    move-object/from16 v18, v0
+
+    move-object/from16 v21, v18
 
     .line 147
-    :try_start_a3
-    new-array v5, v5, [Ljava/lang/String;
+    .local v21, "e":Landroid/content/pm/PackageManager$NameNotFoundException;
+    const/4 v6, 0x1
 
-    aput-object v4, v5, v10
+    :try_start_b9
+    new-array v0, v6, [Ljava/lang/String;
 
-    invoke-virtual {v2, v5}, Landroid/content/pm/PackageManager;->canonicalToCurrentPackageNames([Ljava/lang/String;)[Ljava/lang/String;
+    const/4 v6, 0x0
 
-    move-result-object v5
+    aput-object v8, v0, v6
+
+    invoke-virtual {v4, v0}, Landroid/content/pm/PackageManager;->canonicalToCurrentPackageNames([Ljava/lang/String;)[Ljava/lang/String;
+
+    move-result-object v0
+
+    move-object v6, v0
 
     .line 149
-    new-instance v14, Landroid/content/ComponentName;
+    .local v6, "packages":[Ljava/lang/String;
+    new-instance v0, Landroid/content/ComponentName;
 
-    aget-object v5, v5, v10
+    move-object/from16 v19, v5
 
-    invoke-direct {v14, v5, v7}, Landroid/content/ComponentName;-><init>(Ljava/lang/String;Ljava/lang/String;)V
-    :try_end_b2
-    .catch Lorg/xmlpull/v1/XmlPullParserException; {:try_start_a3 .. :try_end_b2} :catch_126
-    .catch Ljava/io/IOException; {:try_start_a3 .. :try_end_b2} :catch_121
+    const/16 v16, 0x0
+
+    .end local v5  # "componentName":Landroid/content/ComponentName;
+    .local v19, "componentName":Landroid/content/ComponentName;
+    aget-object v5, v6, v16
+
+    invoke-direct {v0, v5, v9}, Landroid/content/ComponentName;-><init>(Ljava/lang/String;Ljava/lang/String;)V
+    :try_end_ce
+    .catch Lorg/xmlpull/v1/XmlPullParserException; {:try_start_b9 .. :try_end_ce} :catch_156
+    .catch Ljava/io/IOException; {:try_start_b9 .. :try_end_ce} :catch_151
+
+    move-object v5, v0
 
     .line 151
-    :try_start_b2
-    invoke-virtual {v2, v14, v9}, Landroid/content/pm/PackageManager;->getActivityInfo(Landroid/content/ComponentName;I)Landroid/content/pm/ActivityInfo;
+    .end local v19  # "componentName":Landroid/content/ComponentName;
+    .restart local v5  # "componentName":Landroid/content/ComponentName;
+    move-object/from16 v16, v6
 
-    move-result-object v4
-    :try_end_b6
-    .catch Landroid/content/pm/PackageManager$NameNotFoundException; {:try_start_b2 .. :try_end_b6} :catch_cd
-    .catch Lorg/xmlpull/v1/XmlPullParserException; {:try_start_b2 .. :try_end_b6} :catch_126
-    .catch Ljava/io/IOException; {:try_start_b2 .. :try_end_b6} :catch_121
+    const v6, 0xc2000
+
+    .end local v6  # "packages":[Ljava/lang/String;
+    .local v16, "packages":[Ljava/lang/String;
+    :try_start_d4
+    invoke-virtual {v4, v5, v6}, Landroid/content/pm/PackageManager;->getActivityInfo(Landroid/content/ComponentName;I)Landroid/content/pm/ActivityInfo;
+
+    move-result-object v0
+    :try_end_d8
+    .catch Landroid/content/pm/PackageManager$NameNotFoundException; {:try_start_d4 .. :try_end_d8} :catch_f0
+    .catch Lorg/xmlpull/v1/XmlPullParserException; {:try_start_d4 .. :try_end_d8} :catch_156
+    .catch Ljava/io/IOException; {:try_start_d4 .. :try_end_d8} :catch_151
 
     .line 159
-    move-object v8, v14
+    .end local v17  # "info":Landroid/content/pm/ActivityInfo;
+    .restart local v0  # "info":Landroid/content/pm/ActivityInfo;
+    nop
 
     .line 162
-    :goto_b7
-    :try_start_b7
-    new-instance v5, Landroid/content/Intent;
+    .end local v16  # "packages":[Ljava/lang/String;
+    .end local v21  # "e":Landroid/content/pm/PackageManager$NameNotFoundException;
+    :goto_d9
+    :try_start_d9
+    new-instance v6, Landroid/content/Intent;
 
-    invoke-direct {v5, v13}, Landroid/content/Intent;-><init>(Ljava/lang/String;)V
+    invoke-direct {v6, v13}, Landroid/content/Intent;-><init>(Ljava/lang/String;)V
 
     .line 163
-    const-string v7, "android.intent.category.LAUNCHER"
+    .local v6, "intent":Landroid/content/Intent;
+    const-string v12, "android.intent.category.LAUNCHER"
 
-    invoke-virtual {v5, v7}, Landroid/content/Intent;->addCategory(Ljava/lang/String;)Landroid/content/Intent;
+    invoke-virtual {v6, v12}, Landroid/content/Intent;->addCategory(Ljava/lang/String;)Landroid/content/Intent;
 
     .line 164
-    invoke-virtual {v5, v8}, Landroid/content/Intent;->setComponent(Landroid/content/ComponentName;)Landroid/content/Intent;
+    invoke-virtual {v6, v5}, Landroid/content/Intent;->setComponent(Landroid/content/ComponentName;)Landroid/content/Intent;
 
     .line 165
-    invoke-virtual {v4, v2}, Landroid/content/pm/ActivityInfo;->loadLabel(Landroid/content/pm/PackageManager;)Ljava/lang/CharSequence;
+    invoke-virtual {v0, v4}, Landroid/content/pm/ActivityInfo;->loadLabel(Landroid/content/pm/PackageManager;)Ljava/lang/CharSequence;
 
-    move-result-object v4
+    move-result-object v12
 
-    invoke-interface {v4}, Ljava/lang/CharSequence;->toString()Ljava/lang/String;
+    invoke-interface {v12}, Ljava/lang/CharSequence;->toString()Ljava/lang/String;
 
-    move-result-object v4
+    move-result-object v12
+
+    move-object v0, v12
 
     .line 166
-    goto :goto_f2
+    .end local v5  # "componentName":Landroid/content/ComponentName;
+    .local v0, "title":Ljava/lang/String;
+    goto :goto_11e
 
     .line 155
-    :catch_cd
-    move-exception v5
+    .end local v0  # "title":Ljava/lang/String;
+    .end local v6  # "intent":Landroid/content/Intent;
+    .restart local v5  # "componentName":Landroid/content/ComponentName;
+    .restart local v16  # "packages":[Ljava/lang/String;
+    .restart local v17  # "info":Landroid/content/pm/ActivityInfo;
+    .restart local v21  # "e":Landroid/content/pm/PackageManager$NameNotFoundException;
+    :catch_f0
+    move-exception v0
+
+    move-object v6, v0
+
+    move-object v0, v6
 
     .line 156
-    new-instance v5, Ljava/lang/StringBuilder;
+    .local v0, "e1":Landroid/content/pm/PackageManager$NameNotFoundException;
+    new-instance v6, Ljava/lang/StringBuilder;
 
-    invoke-direct {v5}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v6}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v6, "Unable to add bookmark: "
+    const-string v13, "Unable to add bookmark: "
 
-    invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v6, v13}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v5, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v6, v8}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v5, v11}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v6, v12}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v5, v7}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v6, v9}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v5}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v6}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v4
+    move-result-object v6
 
-    invoke-static {v1, v4, v8}, Landroid/util/Log;->w(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    move-object/from16 v12, v21
+
+    .end local v21  # "e":Landroid/content/pm/PackageManager$NameNotFoundException;
+    .local v12, "e":Landroid/content/pm/PackageManager$NameNotFoundException;
+    invoke-static {v3, v6, v12}, Landroid/util/Log;->w(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
     .line 158
-    goto/16 :goto_1c
+    move-object/from16 v5, v20
+
+    goto/16 :goto_1f
+
+    .line 138
+    .end local v0  # "e1":Landroid/content/pm/PackageManager$NameNotFoundException;
+    .end local v12  # "e":Landroid/content/pm/PackageManager$NameNotFoundException;
+    .end local v16  # "packages":[Ljava/lang/String;
+    .end local v17  # "info":Landroid/content/pm/ActivityInfo;
+    .end local v20  # "parser":Landroid/content/res/XmlResourceParser;
+    .local v5, "parser":Landroid/content/res/XmlResourceParser;
+    :cond_113
+    move-object/from16 v20, v5
 
     .line 166
-    :cond_ea
-    if-eqz v9, :cond_106
+    .end local v5  # "parser":Landroid/content/res/XmlResourceParser;
+    .restart local v20  # "parser":Landroid/content/res/XmlResourceParser;
+    if-eqz v11, :cond_134
 
     .line 167
-    invoke-static {v13, v9}, Landroid/content/Intent;->makeMainSelectorActivity(Ljava/lang/String;Ljava/lang/String;)Landroid/content/Intent;
+    invoke-static {v13, v11}, Landroid/content/Intent;->makeMainSelectorActivity(Ljava/lang/String;Ljava/lang/String;)Landroid/content/Intent;
 
-    move-result-object v5
+    move-result-object v0
+
+    move-object v6, v0
 
     .line 168
-    const-string v4, ""
+    .restart local v6  # "intent":Landroid/content/Intent;
+    const-string v0, ""
 
     .line 175
-    :goto_f2
-    new-instance v7, Lcom/android/server/policy/ShortcutManager$ShortcutInfo;
+    .local v0, "title":Ljava/lang/String;
+    :goto_11e
+    new-instance v5, Lcom/android/server/policy/ShortcutManager$ShortcutInfo;
 
-    invoke-direct {v7, v4, v5}, Lcom/android/server/policy/ShortcutManager$ShortcutInfo;-><init>(Ljava/lang/String;Landroid/content/Intent;)V
+    invoke-direct {v5, v0, v6}, Lcom/android/server/policy/ShortcutManager$ShortcutInfo;-><init>(Ljava/lang/String;Landroid/content/Intent;)V
 
     .line 176
-    if-eqz v6, :cond_ff
+    .local v5, "shortcut":Lcom/android/server/policy/ShortcutManager$ShortcutInfo;
+    if-eqz v15, :cond_12b
 
     .line 177
-    iget-object v4, p0, Lcom/android/server/policy/ShortcutManager;->mShiftShortcuts:Landroid/util/SparseArray;
+    iget-object v12, v1, Lcom/android/server/policy/ShortcutManager;->mShiftShortcuts:Landroid/util/SparseArray;
 
-    invoke-virtual {v4, v12, v7}, Landroid/util/SparseArray;->put(ILjava/lang/Object;)V
+    invoke-virtual {v12, v14, v5}, Landroid/util/SparseArray;->put(ILjava/lang/Object;)V
 
-    goto :goto_104
+    goto :goto_130
 
     .line 179
-    :cond_ff
-    iget-object v4, p0, Lcom/android/server/policy/ShortcutManager;->mShortcuts:Landroid/util/SparseArray;
+    :cond_12b
+    iget-object v12, v1, Lcom/android/server/policy/ShortcutManager;->mShortcuts:Landroid/util/SparseArray;
 
-    invoke-virtual {v4, v12, v7}, Landroid/util/SparseArray;->put(ILjava/lang/Object;)V
+    invoke-virtual {v12, v14, v5}, Landroid/util/SparseArray;->put(ILjava/lang/Object;)V
 
     .line 181
-    :goto_104
-    goto/16 :goto_1c
+    .end local v0  # "title":Ljava/lang/String;
+    .end local v5  # "shortcut":Lcom/android/server/policy/ShortcutManager$ShortcutInfo;
+    .end local v6  # "intent":Landroid/content/Intent;
+    .end local v7  # "shiftName":Ljava/lang/String;
+    .end local v8  # "packageName":Ljava/lang/String;
+    .end local v9  # "className":Ljava/lang/String;
+    .end local v10  # "shortcutName":Ljava/lang/String;
+    .end local v11  # "categoryName":Ljava/lang/String;
+    .end local v14  # "shortcutChar":I
+    .end local v15  # "isShiftShortcut":Z
+    :goto_130
+    move-object/from16 v5, v20
+
+    goto/16 :goto_1f
 
     .line 170
-    :cond_106
-    new-instance v4, Ljava/lang/StringBuilder;
+    .restart local v7  # "shiftName":Ljava/lang/String;
+    .restart local v8  # "packageName":Ljava/lang/String;
+    .restart local v9  # "className":Ljava/lang/String;
+    .restart local v10  # "shortcutName":Ljava/lang/String;
+    .restart local v11  # "categoryName":Ljava/lang/String;
+    .restart local v14  # "shortcutChar":I
+    .restart local v15  # "isShiftShortcut":Z
+    :cond_134
+    new-instance v0, Ljava/lang/StringBuilder;
 
-    invoke-direct {v4}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
 
     const-string v5, "Unable to add bookmark for shortcut "
 
-    invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v4, v8}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v10}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     const-string v5, ": missing package/class or category attributes"
 
-    invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v4}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v4
+    move-result-object v0
 
-    invoke-static {v1, v4}, Landroid/util/Log;->w(Ljava/lang/String;Ljava/lang/String;)I
-    :try_end_11f
-    .catch Lorg/xmlpull/v1/XmlPullParserException; {:try_start_b7 .. :try_end_11f} :catch_126
-    .catch Ljava/io/IOException; {:try_start_b7 .. :try_end_11f} :catch_121
+    invoke-static {v3, v0}, Landroid/util/Log;->w(Ljava/lang/String;Ljava/lang/String;)I
+    :try_end_14d
+    .catch Lorg/xmlpull/v1/XmlPullParserException; {:try_start_d9 .. :try_end_14d} :catch_156
+    .catch Ljava/io/IOException; {:try_start_d9 .. :try_end_14d} :catch_151
 
     .line 172
-    goto/16 :goto_1c
+    move-object/from16 v5, v20
+
+    goto/16 :goto_1f
 
     .line 184
-    :catch_121
-    move-exception v2
+    .end local v7  # "shiftName":Ljava/lang/String;
+    .end local v8  # "packageName":Ljava/lang/String;
+    .end local v9  # "className":Ljava/lang/String;
+    .end local v10  # "shortcutName":Ljava/lang/String;
+    .end local v11  # "categoryName":Ljava/lang/String;
+    .end local v14  # "shortcutChar":I
+    .end local v15  # "isShiftShortcut":Z
+    .end local v20  # "parser":Landroid/content/res/XmlResourceParser;
+    :catch_151
+    move-exception v0
 
     .line 185
-    invoke-static {v1, v0, v2}, Landroid/util/Log;->w(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    .local v0, "e":Ljava/io/IOException;
+    invoke-static {v3, v2, v0}, Landroid/util/Log;->w(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
-    goto :goto_12b
+    goto :goto_15b
 
     .line 182
-    :catch_126
-    move-exception v2
+    .end local v0  # "e":Ljava/io/IOException;
+    :catch_156
+    move-exception v0
 
     .line 183
-    invoke-static {v1, v0, v2}, Landroid/util/Log;->w(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    .local v0, "e":Lorg/xmlpull/v1/XmlPullParserException;
+    invoke-static {v3, v2, v0}, Landroid/util/Log;->w(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
     .line 186
-    :goto_12a
+    .end local v0  # "e":Lorg/xmlpull/v1/XmlPullParserException;
+    :goto_15a
     nop
 
     .line 187
-    :goto_12b
+    :goto_15b
     return-void
 .end method
 
 
 # virtual methods
 .method public getIntent(Landroid/view/KeyCharacterMap;II)Landroid/content/Intent;
-    .registers 6
+    .registers 9
+    .param p1, "kcm"  # Landroid/view/KeyCharacterMap;
+    .param p2, "keyCode"  # I
+    .param p3, "metaState"  # I
 
     .line 81
-    nop
+    const/4 v0, 0x0
 
     .line 84
-    and-int/lit8 v0, p3, 0x1
+    .local v0, "shortcut":Lcom/android/server/policy/ShortcutManager$ShortcutInfo;
+    and-int/lit8 v1, p3, 0x1
 
-    const/4 v1, 0x1
+    const/4 v2, 0x1
 
-    if-ne v0, v1, :cond_7
+    if-ne v1, v2, :cond_7
 
     goto :goto_8
 
     :cond_7
-    const/4 v1, 0x0
+    const/4 v2, 0x0
+
+    :goto_8
+    move v1, v2
 
     .line 85
-    :goto_8
-    if-eqz v1, :cond_d
+    .local v1, "isShiftOn":Z
+    if-eqz v1, :cond_e
 
-    iget-object v0, p0, Lcom/android/server/policy/ShortcutManager;->mShiftShortcuts:Landroid/util/SparseArray;
+    iget-object v2, p0, Lcom/android/server/policy/ShortcutManager;->mShiftShortcuts:Landroid/util/SparseArray;
 
-    goto :goto_f
+    goto :goto_10
 
-    :cond_d
-    iget-object v0, p0, Lcom/android/server/policy/ShortcutManager;->mShortcuts:Landroid/util/SparseArray;
+    :cond_e
+    iget-object v2, p0, Lcom/android/server/policy/ShortcutManager;->mShortcuts:Landroid/util/SparseArray;
 
     .line 88
-    :goto_f
+    .local v2, "shortcutMap":Landroid/util/SparseArray;, "Landroid/util/SparseArray<Lcom/android/server/policy/ShortcutManager$ShortcutInfo;>;"
+    :goto_10
     invoke-virtual {p1, p2, p3}, Landroid/view/KeyCharacterMap;->get(II)I
 
-    move-result p3
+    move-result v3
 
     .line 89
-    const/4 v1, 0x0
-
-    if-eqz p3, :cond_1d
+    .local v3, "shortcutChar":I
+    if-eqz v3, :cond_1d
 
     .line 90
-    invoke-virtual {v0, p3}, Landroid/util/SparseArray;->get(I)Ljava/lang/Object;
+    invoke-virtual {v2, v3}, Landroid/util/SparseArray;->get(I)Ljava/lang/Object;
 
-    move-result-object p3
+    move-result-object v4
 
-    check-cast p3, Lcom/android/server/policy/ShortcutManager$ShortcutInfo;
+    move-object v0, v4
 
-    goto :goto_1e
-
-    .line 89
-    :cond_1d
-    move-object p3, v1
+    check-cast v0, Lcom/android/server/policy/ShortcutManager$ShortcutInfo;
 
     .line 94
-    :goto_1e
-    if-nez p3, :cond_31
+    :cond_1d
+    if-nez v0, :cond_30
 
     .line 95
     invoke-virtual {p1, p2}, Landroid/view/KeyCharacterMap;->getDisplayLabel(I)C
 
-    move-result p1
+    move-result v4
 
-    invoke-static {p1}, Ljava/lang/Character;->toLowerCase(C)C
+    invoke-static {v4}, Ljava/lang/Character;->toLowerCase(C)C
 
-    move-result p1
+    move-result v3
 
     .line 96
-    if-eqz p1, :cond_31
+    if-eqz v3, :cond_30
 
     .line 97
-    invoke-virtual {v0, p1}, Landroid/util/SparseArray;->get(I)Ljava/lang/Object;
+    invoke-virtual {v2, v3}, Landroid/util/SparseArray;->get(I)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v4
 
-    move-object p3, p1
+    move-object v0, v4
 
-    check-cast p3, Lcom/android/server/policy/ShortcutManager$ShortcutInfo;
+    check-cast v0, Lcom/android/server/policy/ShortcutManager$ShortcutInfo;
 
     .line 101
-    :cond_31
-    if-eqz p3, :cond_35
+    :cond_30
+    if-eqz v0, :cond_35
 
-    iget-object v1, p3, Lcom/android/server/policy/ShortcutManager$ShortcutInfo;->intent:Landroid/content/Intent;
+    iget-object v4, v0, Lcom/android/server/policy/ShortcutManager$ShortcutInfo;->intent:Landroid/content/Intent;
+
+    goto :goto_36
 
     :cond_35
-    return-object v1
+    const/4 v4, 0x0
+
+    :goto_36
+    return-object v4
 .end method

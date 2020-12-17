@@ -24,19 +24,21 @@
 
 # direct methods
 .method public constructor <init>(Lcom/android/server/PinnerService;Landroid/os/Looper;)V
-    .registers 4
+    .registers 5
+    .param p1, "this$0"  # Lcom/android/server/PinnerService;
+    .param p2, "looper"  # Landroid/os/Looper;
 
-    .line 986
+    .line 992
     iput-object p1, p0, Lcom/android/server/PinnerService$PinnerHandler;->this$0:Lcom/android/server/PinnerService;
 
-    .line 987
-    const/4 p1, 0x0
+    .line 993
+    const/4 v0, 0x0
 
-    const/4 v0, 0x1
+    const/4 v1, 0x1
 
-    invoke-direct {p0, p2, p1, v0}, Landroid/os/Handler;-><init>(Landroid/os/Looper;Landroid/os/Handler$Callback;Z)V
+    invoke-direct {p0, p2, v0, v1}, Landroid/os/Handler;-><init>(Landroid/os/Looper;Landroid/os/Handler$Callback;Z)V
 
-    .line 988
+    .line 994
     return-void
 .end method
 
@@ -44,29 +46,30 @@
 # virtual methods
 .method public handleMessage(Landroid/os/Message;)V
     .registers 4
+    .param p1, "msg"  # Landroid/os/Message;
 
-    .line 992
+    .line 998
     iget v0, p1, Landroid/os/Message;->what:I
 
     const/16 v1, 0xfa1
 
     if-eq v0, v1, :cond_a
 
-    .line 1000
+    .line 1006
     invoke-super {p0, p1}, Landroid/os/Handler;->handleMessage(Landroid/os/Message;)V
 
     goto :goto_10
 
-    .line 995
+    .line 1001
     :cond_a
-    iget-object p1, p0, Lcom/android/server/PinnerService$PinnerHandler;->this$0:Lcom/android/server/PinnerService;
+    iget-object v0, p0, Lcom/android/server/PinnerService$PinnerHandler;->this$0:Lcom/android/server/PinnerService;
 
-    invoke-static {p1}, Lcom/android/server/PinnerService;->access$1400(Lcom/android/server/PinnerService;)V
+    invoke-static {v0}, Lcom/android/server/PinnerService;->access$1400(Lcom/android/server/PinnerService;)V
 
-    .line 997
+    .line 1003
     nop
 
-    .line 1002
+    .line 1008
     :goto_10
     return-void
 .end method

@@ -115,7 +115,9 @@
 .end method
 
 .method static isPrivilegedApp(II)Z
-    .registers 4
+    .registers 7
+    .param p0, "callerUid"  # I
+    .param p1, "callerPid"  # I
 
     .line 41
     const/4 v0, 0x1
@@ -141,45 +143,49 @@
     :cond_10
     invoke-static {}, Landroid/app/AppGlobals;->getPackageManager()Landroid/content/pm/IPackageManager;
 
-    move-result-object p1
+    move-result-object v1
 
     .line 48
-    const/4 v1, 0x0
+    .local v1, "pm":Landroid/content/pm/IPackageManager;
+    const/4 v2, 0x0
 
     :try_start_15
-    invoke-interface {p1, p0}, Landroid/content/pm/IPackageManager;->getPrivateFlagsForUid(I)I
+    invoke-interface {v1, p0}, Landroid/content/pm/IPackageManager;->getPrivateFlagsForUid(I)I
 
-    move-result p0
+    move-result v3
     :try_end_19
     .catch Landroid/os/RemoteException; {:try_start_15 .. :try_end_19} :catch_20
 
-    and-int/lit8 p0, p0, 0x8
+    and-int/lit8 v3, v3, 0x8
 
-    if-eqz p0, :cond_1e
+    if-eqz v3, :cond_1e
 
     goto :goto_1f
 
     :cond_1e
-    move v0, v1
+    move v0, v2
 
     :goto_1f
     return v0
 
     .line 50
     :catch_20
-    move-exception p0
+    move-exception v0
 
     .line 51
-    const-string p1, "IntentFirewall"
+    .local v0, "ex":Landroid/os/RemoteException;
+    const-string v3, "IntentFirewall"
 
-    const-string v0, "Remote exception while retrieving uid flags"
+    const-string v4, "Remote exception while retrieving uid flags"
 
-    invoke-static {p1, v0, p0}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    invoke-static {v3, v4, v0}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
     .line 55
-    return v1
+    .end local v0  # "ex":Landroid/os/RemoteException;
+    return v2
 
     .line 43
+    .end local v1  # "pm":Landroid/content/pm/IPackageManager;
     :cond_29
     :goto_29
     return v0

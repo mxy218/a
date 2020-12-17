@@ -102,7 +102,7 @@
 
     move-result-object v0
 
-    const v1, 0x10401ad
+    const v1, 0x10401a7
 
     invoke-virtual {v0, v1}, Landroid/content/res/Resources;->getString(I)Ljava/lang/String;
 
@@ -119,7 +119,12 @@
 .end method
 
 .method public constructor <init>(Landroid/content/Context;Lcom/android/internal/util/StateMachine;Landroid/net/util/SharedLog;ILcom/android/server/connectivity/MockableSystemProperties;)V
-    .registers 7
+    .registers 12
+    .param p1, "ctx"  # Landroid/content/Context;
+    .param p2, "tetherMasterSM"  # Lcom/android/internal/util/StateMachine;
+    .param p3, "log"  # Landroid/net/util/SharedLog;
+    .param p4, "permissionChangeMessageCode"  # I
+    .param p5, "systemProperties"  # Lcom/android/server/connectivity/MockableSystemProperties;
 
     .line 114
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -148,37 +153,37 @@
     iput-object p1, p0, Lcom/android/server/connectivity/tethering/EntitlementManager;->mContext:Landroid/content/Context;
 
     .line 117
-    sget-object p1, Lcom/android/server/connectivity/tethering/EntitlementManager;->TAG:Ljava/lang/String;
+    sget-object v0, Lcom/android/server/connectivity/tethering/EntitlementManager;->TAG:Ljava/lang/String;
 
-    invoke-virtual {p3, p1}, Landroid/net/util/SharedLog;->forSubComponent(Ljava/lang/String;)Landroid/net/util/SharedLog;
+    invoke-virtual {p3, v0}, Landroid/net/util/SharedLog;->forSubComponent(Ljava/lang/String;)Landroid/net/util/SharedLog;
 
-    move-result-object p1
+    move-result-object v0
 
-    iput-object p1, p0, Lcom/android/server/connectivity/tethering/EntitlementManager;->mLog:Landroid/net/util/SharedLog;
+    iput-object v0, p0, Lcom/android/server/connectivity/tethering/EntitlementManager;->mLog:Landroid/net/util/SharedLog;
 
     .line 118
-    new-instance p1, Landroid/util/ArraySet;
+    new-instance v0, Landroid/util/ArraySet;
 
-    invoke-direct {p1}, Landroid/util/ArraySet;-><init>()V
+    invoke-direct {v0}, Landroid/util/ArraySet;-><init>()V
 
-    iput-object p1, p0, Lcom/android/server/connectivity/tethering/EntitlementManager;->mCurrentTethers:Landroid/util/ArraySet;
+    iput-object v0, p0, Lcom/android/server/connectivity/tethering/EntitlementManager;->mCurrentTethers:Landroid/util/ArraySet;
 
     .line 119
-    new-instance p1, Landroid/util/SparseIntArray;
+    new-instance v0, Landroid/util/SparseIntArray;
 
-    invoke-direct {p1}, Landroid/util/SparseIntArray;-><init>()V
+    invoke-direct {v0}, Landroid/util/SparseIntArray;-><init>()V
 
-    iput-object p1, p0, Lcom/android/server/connectivity/tethering/EntitlementManager;->mCellularPermitted:Landroid/util/SparseIntArray;
+    iput-object v0, p0, Lcom/android/server/connectivity/tethering/EntitlementManager;->mCellularPermitted:Landroid/util/SparseIntArray;
 
     .line 120
     iput-object p5, p0, Lcom/android/server/connectivity/tethering/EntitlementManager;->mSystemProperties:Lcom/android/server/connectivity/MockableSystemProperties;
 
     .line 121
-    new-instance p1, Landroid/util/SparseIntArray;
+    new-instance v0, Landroid/util/SparseIntArray;
 
-    invoke-direct {p1}, Landroid/util/SparseIntArray;-><init>()V
+    invoke-direct {v0}, Landroid/util/SparseIntArray;-><init>()V
 
-    iput-object p1, p0, Lcom/android/server/connectivity/tethering/EntitlementManager;->mEntitlementCacheValue:Landroid/util/SparseIntArray;
+    iput-object v0, p0, Lcom/android/server/connectivity/tethering/EntitlementManager;->mEntitlementCacheValue:Landroid/util/SparseIntArray;
 
     .line 122
     iput-object p2, p0, Lcom/android/server/connectivity/tethering/EntitlementManager;->mTetherMasterSM:Lcom/android/internal/util/StateMachine;
@@ -189,71 +194,78 @@
     .line 124
     invoke-virtual {p2}, Lcom/android/internal/util/StateMachine;->getHandler()Landroid/os/Handler;
 
-    move-result-object p1
+    move-result-object v0
 
     .line 127
-    new-instance p2, Lcom/android/server/connectivity/tethering/EntitlementManager$EntitlementHandler;
+    .local v0, "masterHandler":Landroid/os/Handler;
+    new-instance v1, Lcom/android/server/connectivity/tethering/EntitlementManager$EntitlementHandler;
 
-    invoke-virtual {p1}, Landroid/os/Handler;->getLooper()Landroid/os/Looper;
+    invoke-virtual {v0}, Landroid/os/Handler;->getLooper()Landroid/os/Looper;
 
-    move-result-object p1
+    move-result-object v2
 
-    invoke-direct {p2, p0, p1}, Lcom/android/server/connectivity/tethering/EntitlementManager$EntitlementHandler;-><init>(Lcom/android/server/connectivity/tethering/EntitlementManager;Landroid/os/Looper;)V
+    invoke-direct {v1, p0, v2}, Lcom/android/server/connectivity/tethering/EntitlementManager$EntitlementHandler;-><init>(Lcom/android/server/connectivity/tethering/EntitlementManager;Landroid/os/Looper;)V
 
-    iput-object p2, p0, Lcom/android/server/connectivity/tethering/EntitlementManager;->mHandler:Lcom/android/server/connectivity/tethering/EntitlementManager$EntitlementHandler;
+    iput-object v1, p0, Lcom/android/server/connectivity/tethering/EntitlementManager;->mHandler:Lcom/android/server/connectivity/tethering/EntitlementManager$EntitlementHandler;
 
     .line 128
-    iget-object p1, p0, Lcom/android/server/connectivity/tethering/EntitlementManager;->mContext:Landroid/content/Context;
+    iget-object v1, p0, Lcom/android/server/connectivity/tethering/EntitlementManager;->mContext:Landroid/content/Context;
 
-    iget-object p2, p0, Lcom/android/server/connectivity/tethering/EntitlementManager;->mReceiver:Landroid/content/BroadcastReceiver;
+    iget-object v2, p0, Lcom/android/server/connectivity/tethering/EntitlementManager;->mReceiver:Landroid/content/BroadcastReceiver;
 
-    new-instance p3, Landroid/content/IntentFilter;
+    new-instance v3, Landroid/content/IntentFilter;
 
-    const-string p4, "com.android.server.connectivity.tethering.PROVISIONING_RECHECK_ALARM"
+    const-string v4, "com.android.server.connectivity.tethering.PROVISIONING_RECHECK_ALARM"
 
-    invoke-direct {p3, p4}, Landroid/content/IntentFilter;-><init>(Ljava/lang/String;)V
+    invoke-direct {v3, v4}, Landroid/content/IntentFilter;-><init>(Ljava/lang/String;)V
 
-    iget-object p4, p0, Lcom/android/server/connectivity/tethering/EntitlementManager;->mHandler:Lcom/android/server/connectivity/tethering/EntitlementManager$EntitlementHandler;
+    iget-object v4, p0, Lcom/android/server/connectivity/tethering/EntitlementManager;->mHandler:Lcom/android/server/connectivity/tethering/EntitlementManager$EntitlementHandler;
 
-    const/4 p5, 0x0
+    const/4 v5, 0x0
 
-    invoke-virtual {p1, p2, p3, p5, p4}, Landroid/content/Context;->registerReceiver(Landroid/content/BroadcastReceiver;Landroid/content/IntentFilter;Ljava/lang/String;Landroid/os/Handler;)Landroid/content/Intent;
+    invoke-virtual {v1, v2, v3, v5, v4}, Landroid/content/Context;->registerReceiver(Landroid/content/BroadcastReceiver;Landroid/content/IntentFilter;Ljava/lang/String;Landroid/os/Handler;)Landroid/content/Intent;
 
     .line 130
     return-void
 .end method
 
 .method static synthetic access$000(Lcom/android/server/connectivity/tethering/EntitlementManager;)Landroid/net/util/SharedLog;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/connectivity/tethering/EntitlementManager;
 
     .line 70
-    iget-object p0, p0, Lcom/android/server/connectivity/tethering/EntitlementManager;->mLog:Landroid/net/util/SharedLog;
+    iget-object v0, p0, Lcom/android/server/connectivity/tethering/EntitlementManager;->mLog:Landroid/net/util/SharedLog;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$100(Lcom/android/server/connectivity/tethering/EntitlementManager;)Lcom/android/server/connectivity/tethering/EntitlementManager$TetheringConfigurationFetcher;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/connectivity/tethering/EntitlementManager;
 
     .line 70
-    iget-object p0, p0, Lcom/android/server/connectivity/tethering/EntitlementManager;->mFetcher:Lcom/android/server/connectivity/tethering/EntitlementManager$TetheringConfigurationFetcher;
+    iget-object v0, p0, Lcom/android/server/connectivity/tethering/EntitlementManager;->mFetcher:Lcom/android/server/connectivity/tethering/EntitlementManager$TetheringConfigurationFetcher;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$200(I)Z
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # I
 
     .line 70
     invoke-static {p0}, Lcom/android/server/connectivity/tethering/EntitlementManager;->toBool(I)Z
 
-    move-result p0
+    move-result v0
 
-    return p0
+    return v0
 .end method
 
 .method static synthetic access$300(Lcom/android/server/connectivity/tethering/EntitlementManager;IZ)V
     .registers 3
+    .param p0, "x0"  # Lcom/android/server/connectivity/tethering/EntitlementManager;
+    .param p1, "x1"  # I
+    .param p2, "x2"  # Z
 
     .line 70
     invoke-direct {p0, p1, p2}, Lcom/android/server/connectivity/tethering/EntitlementManager;->handleStartProvisioningIfNeeded(IZ)V
@@ -263,6 +275,8 @@
 
 .method static synthetic access$400(Lcom/android/server/connectivity/tethering/EntitlementManager;I)V
     .registers 2
+    .param p0, "x0"  # Lcom/android/server/connectivity/tethering/EntitlementManager;
+    .param p1, "x1"  # I
 
     .line 70
     invoke-direct {p0, p1}, Lcom/android/server/connectivity/tethering/EntitlementManager;->handleStopProvisioningIfNeeded(I)V
@@ -272,6 +286,8 @@
 
 .method static synthetic access$500(Lcom/android/server/connectivity/tethering/EntitlementManager;Z)V
     .registers 2
+    .param p0, "x0"  # Lcom/android/server/connectivity/tethering/EntitlementManager;
+    .param p1, "x1"  # Z
 
     .line 70
     invoke-direct {p0, p1}, Lcom/android/server/connectivity/tethering/EntitlementManager;->handleNotifyUpstream(Z)V
@@ -281,6 +297,8 @@
 
 .method static synthetic access$600(Lcom/android/server/connectivity/tethering/EntitlementManager;Lcom/android/server/connectivity/tethering/TetheringConfiguration;)V
     .registers 2
+    .param p0, "x0"  # Lcom/android/server/connectivity/tethering/EntitlementManager;
+    .param p1, "x1"  # Lcom/android/server/connectivity/tethering/TetheringConfiguration;
 
     .line 70
     invoke-direct {p0, p1}, Lcom/android/server/connectivity/tethering/EntitlementManager;->handleMaybeRunProvisioning(Lcom/android/server/connectivity/tethering/TetheringConfiguration;)V
@@ -290,6 +308,10 @@
 
 .method static synthetic access$700(Lcom/android/server/connectivity/tethering/EntitlementManager;ILandroid/os/ResultReceiver;Z)V
     .registers 4
+    .param p0, "x0"  # Lcom/android/server/connectivity/tethering/EntitlementManager;
+    .param p1, "x1"  # I
+    .param p2, "x2"  # Landroid/os/ResultReceiver;
+    .param p3, "x3"  # Z
 
     .line 70
     invoke-direct {p0, p1, p2, p3}, Lcom/android/server/connectivity/tethering/EntitlementManager;->handleGetLatestTetheringEntitlementValue(ILandroid/os/ResultReceiver;Z)V
@@ -298,27 +320,34 @@
 .end method
 
 .method static synthetic access$800(Lcom/android/server/connectivity/tethering/EntitlementManager;II)I
-    .registers 3
+    .registers 4
+    .param p0, "x0"  # Lcom/android/server/connectivity/tethering/EntitlementManager;
+    .param p1, "x1"  # I
+    .param p2, "x2"  # I
 
     .line 70
     invoke-direct {p0, p1, p2}, Lcom/android/server/connectivity/tethering/EntitlementManager;->updateEntitlementCacheValue(II)I
 
-    move-result p0
+    move-result v0
 
-    return p0
+    return v0
 .end method
 
 .method static synthetic access$900(Lcom/android/server/connectivity/tethering/EntitlementManager;)Lcom/android/server/connectivity/tethering/EntitlementManager$OnUiEntitlementFailedListener;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/connectivity/tethering/EntitlementManager;
 
     .line 70
-    iget-object p0, p0, Lcom/android/server/connectivity/tethering/EntitlementManager;->mListener:Lcom/android/server/connectivity/tethering/EntitlementManager$OnUiEntitlementFailedListener;
+    iget-object v0, p0, Lcom/android/server/connectivity/tethering/EntitlementManager;->mListener:Lcom/android/server/connectivity/tethering/EntitlementManager$OnUiEntitlementFailedListener;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method private buildProxyReceiver(IZLandroid/os/ResultReceiver;)Landroid/os/ResultReceiver;
     .registers 11
+    .param p1, "type"  # I
+    .param p2, "notifyFail"  # Z
+    .param p3, "receiver"  # Landroid/os/ResultReceiver;
 
     .line 596
     new-instance v6, Lcom/android/server/connectivity/tethering/EntitlementManager$2;
@@ -338,11 +367,12 @@
     invoke-direct/range {v0 .. v5}, Lcom/android/server/connectivity/tethering/EntitlementManager$2;-><init>(Lcom/android/server/connectivity/tethering/EntitlementManager;Landroid/os/Handler;IZLandroid/os/ResultReceiver;)V
 
     .line 608
-    invoke-direct {p0, v6}, Lcom/android/server/connectivity/tethering/EntitlementManager;->writeToParcel(Landroid/os/ResultReceiver;)Landroid/os/ResultReceiver;
+    .local v0, "rr":Landroid/os/ResultReceiver;
+    invoke-direct {p0, v0}, Lcom/android/server/connectivity/tethering/EntitlementManager;->writeToParcel(Landroid/os/ResultReceiver;)Landroid/os/ResultReceiver;
 
-    move-result-object p1
+    move-result-object v1
 
-    return-object p1
+    return-object v1
 .end method
 
 .method private cancelTetherProvisioningRechecks()V
@@ -365,58 +395,65 @@
     check-cast v0, Landroid/app/AlarmManager;
 
     .line 436
+    .local v0, "alarmManager":Landroid/app/AlarmManager;
     iget-object v1, p0, Lcom/android/server/connectivity/tethering/EntitlementManager;->mProvisioningRecheckAlarm:Landroid/app/PendingIntent;
 
     invoke-virtual {v0, v1}, Landroid/app/AlarmManager;->cancel(Landroid/app/PendingIntent;)V
 
     .line 437
-    const/4 v0, 0x0
+    const/4 v1, 0x0
 
-    iput-object v0, p0, Lcom/android/server/connectivity/tethering/EntitlementManager;->mProvisioningRecheckAlarm:Landroid/app/PendingIntent;
+    iput-object v1, p0, Lcom/android/server/connectivity/tethering/EntitlementManager;->mProvisioningRecheckAlarm:Landroid/app/PendingIntent;
 
     .line 439
+    .end local v0  # "alarmManager":Landroid/app/AlarmManager;
     :cond_16
     return-void
 .end method
 
 .method private carrierConfigAffirmsEntitlementCheckNotRequired(Lcom/android/server/connectivity/tethering/TetheringConfiguration;)Z
-    .registers 3
+    .registers 5
+    .param p1, "config"  # Lcom/android/server/connectivity/tethering/TetheringConfiguration;
 
     .line 353
     invoke-virtual {p0, p1}, Lcom/android/server/connectivity/tethering/EntitlementManager;->getCarrierConfig(Lcom/android/server/connectivity/tethering/TetheringConfiguration;)Landroid/os/PersistableBundle;
 
-    move-result-object p1
+    move-result-object v0
 
     .line 354
-    if-nez p1, :cond_8
+    .local v0, "carrierConfig":Landroid/os/PersistableBundle;
+    if-nez v0, :cond_8
 
-    const/4 p1, 0x0
+    const/4 v1, 0x0
 
-    return p1
+    return v1
 
     .line 357
     :cond_8
-    const-string/jumbo v0, "require_entitlement_checks_bool"
+    const-string/jumbo v1, "require_entitlement_checks_bool"
 
-    invoke-virtual {p1, v0}, Landroid/os/PersistableBundle;->getBoolean(Ljava/lang/String;)Z
+    invoke-virtual {v0, v1}, Landroid/os/PersistableBundle;->getBoolean(Ljava/lang/String;)Z
 
-    move-result p1
+    move-result v1
 
     .line 359
-    xor-int/lit8 p1, p1, 0x1
+    .local v1, "isEntitlementCheckRequired":Z
+    xor-int/lit8 v2, v1, 0x1
 
-    return p1
+    return v2
 .end method
 
 .method private static encodeBool(Z)I
     .registers 1
+    .param p0, "b"  # Z
 
     .line 540
     return p0
 .end method
 
 .method private static errorString(I)Ljava/lang/String;
-    .registers 3
+    .registers 4
+    .param p0, "value"  # I
 
     .line 585
     if-eqz p0, :cond_21
@@ -438,44 +475,46 @@
 
     invoke-static {p0}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
 
-    move-result-object p0
+    move-result-object v2
 
-    aput-object p0, v0, v1
+    aput-object v2, v0, v1
 
-    const-string p0, "UNKNOWN ERROR (%d)"
+    const-string v1, "UNKNOWN ERROR (%d)"
 
-    invoke-static {p0, v0}, Ljava/lang/String;->format(Ljava/lang/String;[Ljava/lang/Object;)Ljava/lang/String;
+    invoke-static {v1, v0}, Ljava/lang/String;->format(Ljava/lang/String;[Ljava/lang/Object;)Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v0
 
-    return-object p0
+    return-object v0
 
     .line 586
     :cond_1b
-    const-string p0, "TETHER_ERROR_ENTITLEMENT_UNKONWN"
+    const-string v0, "TETHER_ERROR_ENTITLEMENT_UNKONWN"
 
-    return-object p0
+    return-object v0
 
     .line 588
     :cond_1e
-    const-string p0, "TETHER_ERROR_PROVISION_FAILED"
+    const-string v0, "TETHER_ERROR_PROVISION_FAILED"
 
-    return-object p0
+    return-object v0
 
     .line 587
     :cond_21
-    const-string p0, "TETHER_ERROR_NO_ERROR"
+    const-string v0, "TETHER_ERROR_NO_ERROR"
 
-    return-object p0
+    return-object v0
 .end method
 
 .method private evaluateCellularPermission(Lcom/android/server/connectivity/tethering/TetheringConfiguration;)V
     .registers 6
+    .param p1, "config"  # Lcom/android/server/connectivity/tethering/TetheringConfiguration;
 
     .line 442
     iget-boolean v0, p0, Lcom/android/server/connectivity/tethering/EntitlementManager;->mCellularUpstreamPermitted:Z
 
     .line 443
+    .local v0, "oldPermitted":Z
     invoke-virtual {p0, p1}, Lcom/android/server/connectivity/tethering/EntitlementManager;->isTetherProvisioningRequired(Lcom/android/server/connectivity/tethering/TetheringConfiguration;)Z
 
     move-result v1
@@ -507,46 +546,46 @@
     if-eq v1, v0, :cond_38
 
     .line 452
-    iget-object v0, p0, Lcom/android/server/connectivity/tethering/EntitlementManager;->mLog:Landroid/net/util/SharedLog;
+    iget-object v1, p0, Lcom/android/server/connectivity/tethering/EntitlementManager;->mLog:Landroid/net/util/SharedLog;
 
-    new-instance v1, Ljava/lang/StringBuilder;
+    new-instance v2, Ljava/lang/StringBuilder;
 
-    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v2, "Cellular permission change: "
+    const-string v3, "Cellular permission change: "
 
-    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    iget-boolean v2, p0, Lcom/android/server/connectivity/tethering/EntitlementManager;->mCellularUpstreamPermitted:Z
+    iget-boolean v3, p0, Lcom/android/server/connectivity/tethering/EntitlementManager;->mCellularUpstreamPermitted:Z
 
-    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Z)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Z)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v1
+    move-result-object v2
 
-    invoke-virtual {v0, v1}, Landroid/net/util/SharedLog;->log(Ljava/lang/String;)V
+    invoke-virtual {v1, v2}, Landroid/net/util/SharedLog;->log(Ljava/lang/String;)V
 
     .line 453
-    iget-object v0, p0, Lcom/android/server/connectivity/tethering/EntitlementManager;->mTetherMasterSM:Lcom/android/internal/util/StateMachine;
+    iget-object v1, p0, Lcom/android/server/connectivity/tethering/EntitlementManager;->mTetherMasterSM:Lcom/android/internal/util/StateMachine;
 
-    iget v1, p0, Lcom/android/server/connectivity/tethering/EntitlementManager;->mPermissionChangeMessageCode:I
+    iget v2, p0, Lcom/android/server/connectivity/tethering/EntitlementManager;->mPermissionChangeMessageCode:I
 
-    invoke-virtual {v0, v1}, Lcom/android/internal/util/StateMachine;->sendMessage(I)V
+    invoke-virtual {v1, v2}, Lcom/android/internal/util/StateMachine;->sendMessage(I)V
 
     .line 457
     :cond_38
-    iget-boolean v0, p0, Lcom/android/server/connectivity/tethering/EntitlementManager;->mCellularUpstreamPermitted:Z
+    iget-boolean v1, p0, Lcom/android/server/connectivity/tethering/EntitlementManager;->mCellularUpstreamPermitted:Z
 
-    if-eqz v0, :cond_48
+    if-eqz v1, :cond_48
 
-    iget-object v0, p0, Lcom/android/server/connectivity/tethering/EntitlementManager;->mCellularPermitted:Landroid/util/SparseIntArray;
+    iget-object v1, p0, Lcom/android/server/connectivity/tethering/EntitlementManager;->mCellularPermitted:Landroid/util/SparseIntArray;
 
-    invoke-virtual {v0}, Landroid/util/SparseIntArray;->size()I
+    invoke-virtual {v1}, Landroid/util/SparseIntArray;->size()I
 
-    move-result v0
+    move-result v1
 
-    if-lez v0, :cond_48
+    if-lez v1, :cond_48
 
     .line 458
     invoke-direct {p0, p1}, Lcom/android/server/connectivity/tethering/EntitlementManager;->scheduleProvisioningRechecks(Lcom/android/server/connectivity/tethering/TetheringConfiguration;)V
@@ -564,6 +603,9 @@
 
 .method private handleGetLatestTetheringEntitlementValue(ILandroid/os/ResultReceiver;Z)V
     .registers 9
+    .param p1, "downstream"  # I
+    .param p2, "receiver"  # Landroid/os/ResultReceiver;
+    .param p3, "showEntitlementUi"  # Z
 
     .line 660
     iget-object v0, p0, Lcom/android/server/connectivity/tethering/EntitlementManager;->mFetcher:Lcom/android/server/connectivity/tethering/EntitlementManager$TetheringConfigurationFetcher;
@@ -573,6 +615,7 @@
     move-result-object v0
 
     .line 661
+    .local v0, "config":Lcom/android/server/connectivity/tethering/TetheringConfiguration;
     invoke-virtual {p0, v0}, Lcom/android/server/connectivity/tethering/EntitlementManager;->isTetherProvisioningRequired(Lcom/android/server/connectivity/tethering/TetheringConfiguration;)Z
 
     move-result v1
@@ -600,6 +643,7 @@
     move-result v1
 
     .line 668
+    .local v1, "cacheValue":I
     if-eqz v1, :cond_29
 
     if-nez p3, :cond_1f
@@ -610,16 +654,18 @@
     :cond_1f
     invoke-direct {p0, p1, v3, p2}, Lcom/android/server/connectivity/tethering/EntitlementManager;->buildProxyReceiver(IZLandroid/os/ResultReceiver;)Landroid/os/ResultReceiver;
 
-    move-result-object p2
+    move-result-object v2
 
     .line 672
-    iget p3, v0, Lcom/android/server/connectivity/tethering/TetheringConfiguration;->subId:I
+    .local v2, "proxy":Landroid/os/ResultReceiver;
+    iget v3, v0, Lcom/android/server/connectivity/tethering/TetheringConfiguration;->subId:I
 
-    invoke-virtual {p0, p1, p3, p2}, Lcom/android/server/connectivity/tethering/EntitlementManager;->runUiTetherProvisioning(IILandroid/os/ResultReceiver;)V
+    invoke-virtual {p0, p1, v3, v2}, Lcom/android/server/connectivity/tethering/EntitlementManager;->runUiTetherProvisioning(IILandroid/os/ResultReceiver;)V
 
     goto :goto_2c
 
     .line 669
+    .end local v2  # "proxy":Landroid/os/ResultReceiver;
     :cond_29
     :goto_29
     invoke-virtual {p2, v1, v2}, Landroid/os/ResultReceiver;->send(ILandroid/os/Bundle;)V
@@ -631,6 +677,7 @@
 
 .method private handleMaybeRunProvisioning(Lcom/android/server/connectivity/tethering/TetheringConfiguration;)V
     .registers 6
+    .param p1, "config"  # Lcom/android/server/connectivity/tethering/TetheringConfiguration;
 
     .line 258
     iget-object v0, p0, Lcom/android/server/connectivity/tethering/EntitlementManager;->mCurrentTethers:Landroid/util/ArraySet;
@@ -671,6 +718,7 @@
     check-cast v1, Ljava/lang/Integer;
 
     .line 267
+    .local v1, "downstream":Ljava/lang/Integer;
     iget-object v2, p0, Lcom/android/server/connectivity/tethering/EntitlementManager;->mCellularPermitted:Landroid/util/SparseIntArray;
 
     invoke-virtual {v1}, Ljava/lang/Integer;->intValue()I
@@ -696,11 +744,11 @@
     .line 270
     invoke-virtual {v1}, Ljava/lang/Integer;->intValue()I
 
-    move-result v1
+    move-result v2
 
-    iget v2, p1, Lcom/android/server/connectivity/tethering/TetheringConfiguration;->subId:I
+    iget v3, p1, Lcom/android/server/connectivity/tethering/TetheringConfiguration;->subId:I
 
-    invoke-direct {p0, v1, v2}, Lcom/android/server/connectivity/tethering/EntitlementManager;->runUiTetherProvisioning(II)V
+    invoke-direct {p0, v2, v3}, Lcom/android/server/connectivity/tethering/EntitlementManager;->runUiTetherProvisioning(II)V
 
     goto :goto_47
 
@@ -708,13 +756,14 @@
     :cond_3e
     invoke-virtual {v1}, Ljava/lang/Integer;->intValue()I
 
-    move-result v1
+    move-result v2
 
-    iget v2, p1, Lcom/android/server/connectivity/tethering/TetheringConfiguration;->subId:I
+    iget v3, p1, Lcom/android/server/connectivity/tethering/TetheringConfiguration;->subId:I
 
-    invoke-virtual {p0, v1, v2}, Lcom/android/server/connectivity/tethering/EntitlementManager;->runSilentTetherProvisioning(II)V
+    invoke-virtual {p0, v2, v3}, Lcom/android/server/connectivity/tethering/EntitlementManager;->runSilentTetherProvisioning(II)V
 
     .line 275
+    .end local v1  # "downstream":Ljava/lang/Integer;
     :cond_47
     :goto_47
     goto :goto_15
@@ -730,33 +779,38 @@
 .end method
 
 .method private handleNotifyUpstream(Z)V
-    .registers 2
+    .registers 3
+    .param p1, "isCellular"  # Z
 
     .line 244
     iput-boolean p1, p0, Lcom/android/server/connectivity/tethering/EntitlementManager;->mUsingCellularAsUpstream:Z
 
     .line 246
-    iget-boolean p1, p0, Lcom/android/server/connectivity/tethering/EntitlementManager;->mUsingCellularAsUpstream:Z
+    iget-boolean v0, p0, Lcom/android/server/connectivity/tethering/EntitlementManager;->mUsingCellularAsUpstream:Z
 
-    if-eqz p1, :cond_f
+    if-eqz v0, :cond_f
 
     .line 247
-    iget-object p1, p0, Lcom/android/server/connectivity/tethering/EntitlementManager;->mFetcher:Lcom/android/server/connectivity/tethering/EntitlementManager$TetheringConfigurationFetcher;
+    iget-object v0, p0, Lcom/android/server/connectivity/tethering/EntitlementManager;->mFetcher:Lcom/android/server/connectivity/tethering/EntitlementManager$TetheringConfigurationFetcher;
 
-    invoke-interface {p1}, Lcom/android/server/connectivity/tethering/EntitlementManager$TetheringConfigurationFetcher;->fetchTetheringConfiguration()Lcom/android/server/connectivity/tethering/TetheringConfiguration;
+    invoke-interface {v0}, Lcom/android/server/connectivity/tethering/EntitlementManager$TetheringConfigurationFetcher;->fetchTetheringConfiguration()Lcom/android/server/connectivity/tethering/TetheringConfiguration;
 
-    move-result-object p1
+    move-result-object v0
 
     .line 248
-    invoke-direct {p0, p1}, Lcom/android/server/connectivity/tethering/EntitlementManager;->handleMaybeRunProvisioning(Lcom/android/server/connectivity/tethering/TetheringConfiguration;)V
+    .local v0, "config":Lcom/android/server/connectivity/tethering/TetheringConfiguration;
+    invoke-direct {p0, v0}, Lcom/android/server/connectivity/tethering/EntitlementManager;->handleMaybeRunProvisioning(Lcom/android/server/connectivity/tethering/TetheringConfiguration;)V
 
     .line 250
+    .end local v0  # "config":Lcom/android/server/connectivity/tethering/TetheringConfiguration;
     :cond_f
     return-void
 .end method
 
 .method private handleStartProvisioningIfNeeded(IZ)V
     .registers 6
+    .param p1, "type"  # I
+    .param p2, "showProvisioningUi"  # Z
 
     .line 181
     invoke-static {p1}, Lcom/android/server/connectivity/tethering/EntitlementManager;->isValidDownstreamType(I)Z
@@ -798,6 +852,7 @@
     move-result-object v0
 
     .line 186
+    .local v0, "config":Lcom/android/server/connectivity/tethering/TetheringConfiguration;
     invoke-virtual {p0, v0}, Lcom/android/server/connectivity/tethering/EntitlementManager;->isTetherProvisioningRequired(Lcom/android/server/connectivity/tethering/TetheringConfiguration;)Z
 
     move-result v1
@@ -828,17 +883,17 @@
     if-eqz p2, :cond_3f
 
     .line 196
-    iget p2, v0, Lcom/android/server/connectivity/tethering/TetheringConfiguration;->subId:I
+    iget v1, v0, Lcom/android/server/connectivity/tethering/TetheringConfiguration;->subId:I
 
-    invoke-direct {p0, p1, p2}, Lcom/android/server/connectivity/tethering/EntitlementManager;->runUiTetherProvisioning(II)V
+    invoke-direct {p0, p1, v1}, Lcom/android/server/connectivity/tethering/EntitlementManager;->runUiTetherProvisioning(II)V
 
     goto :goto_44
 
     .line 198
     :cond_3f
-    iget p2, v0, Lcom/android/server/connectivity/tethering/TetheringConfiguration;->subId:I
+    iget v1, v0, Lcom/android/server/connectivity/tethering/TetheringConfiguration;->subId:I
 
-    invoke-virtual {p0, p1, p2}, Lcom/android/server/connectivity/tethering/EntitlementManager;->runSilentTetherProvisioning(II)V
+    invoke-virtual {p0, p1, v1}, Lcom/android/server/connectivity/tethering/EntitlementManager;->runSilentTetherProvisioning(II)V
 
     .line 200
     :goto_44
@@ -848,19 +903,19 @@
 
     .line 202
     :cond_47
-    iget-boolean p1, p0, Lcom/android/server/connectivity/tethering/EntitlementManager;->mNeedReRunProvisioningUi:Z
+    iget-boolean v1, p0, Lcom/android/server/connectivity/tethering/EntitlementManager;->mNeedReRunProvisioningUi:Z
 
-    or-int/2addr p1, p2
+    or-int/2addr v1, p2
 
-    iput-boolean p1, p0, Lcom/android/server/connectivity/tethering/EntitlementManager;->mNeedReRunProvisioningUi:Z
+    iput-boolean v1, p0, Lcom/android/server/connectivity/tethering/EntitlementManager;->mNeedReRunProvisioningUi:Z
 
     goto :goto_50
 
     .line 205
     :cond_4d
-    const/4 p1, 0x1
+    const/4 v1, 0x1
 
-    iput-boolean p1, p0, Lcom/android/server/connectivity/tethering/EntitlementManager;->mCellularUpstreamPermitted:Z
+    iput-boolean v1, p0, Lcom/android/server/connectivity/tethering/EntitlementManager;->mCellularUpstreamPermitted:Z
 
     .line 207
     :goto_50
@@ -869,6 +924,7 @@
 
 .method private handleStopProvisioningIfNeeded(I)V
     .registers 4
+    .param p1, "type"  # I
 
     .line 219
     invoke-static {p1}, Lcom/android/server/connectivity/tethering/EntitlementManager;->isValidDownstreamType(I)Z
@@ -898,6 +954,7 @@
 
 .method private static isValidDownstreamType(I)Z
     .registers 3
+    .param p0, "type"  # I
 
     .line 544
     const/4 v0, 0x1
@@ -911,9 +968,9 @@
     if-eq p0, v1, :cond_a
 
     .line 550
-    const/4 p0, 0x0
+    const/4 v0, 0x0
 
-    return p0
+    return v0
 
     .line 548
     :cond_a
@@ -922,6 +979,8 @@
 
 .method private runUiTetherProvisioning(II)V
     .registers 5
+    .param p1, "type"  # I
+    .param p2, "subId"  # I
 
     .line 388
     const/4 v0, 0x1
@@ -933,6 +992,7 @@
     move-result-object v0
 
     .line 389
+    .local v0, "receiver":Landroid/os/ResultReceiver;
     invoke-virtual {p0, p1, p2, v0}, Lcom/android/server/connectivity/tethering/EntitlementManager;->runUiTetherProvisioning(IILandroid/os/ResultReceiver;)V
 
     .line 390
@@ -940,98 +1000,115 @@
 .end method
 
 .method private scheduleProvisioningRechecks(Lcom/android/server/connectivity/tethering/TetheringConfiguration;)V
-    .registers 10
+    .registers 16
+    .param p1, "config"  # Lcom/android/server/connectivity/tethering/TetheringConfiguration;
 
     .line 417
     iget-object v0, p0, Lcom/android/server/connectivity/tethering/EntitlementManager;->mProvisioningRecheckAlarm:Landroid/app/PendingIntent;
 
-    if-nez v0, :cond_35
+    if-nez v0, :cond_37
 
     .line 418
-    iget p1, p1, Lcom/android/server/connectivity/tethering/TetheringConfiguration;->provisioningCheckPeriod:I
+    iget v0, p1, Lcom/android/server/connectivity/tethering/TetheringConfiguration;->provisioningCheckPeriod:I
 
     .line 419
-    if-gtz p1, :cond_9
+    .local v0, "period":I
+    if-gtz v0, :cond_9
 
     return-void
 
     .line 421
     :cond_9
-    new-instance v0, Landroid/content/Intent;
+    new-instance v1, Landroid/content/Intent;
 
-    const-string v1, "com.android.server.connectivity.tethering.PROVISIONING_RECHECK_ALARM"
+    const-string v2, "com.android.server.connectivity.tethering.PROVISIONING_RECHECK_ALARM"
 
-    invoke-direct {v0, v1}, Landroid/content/Intent;-><init>(Ljava/lang/String;)V
+    invoke-direct {v1, v2}, Landroid/content/Intent;-><init>(Ljava/lang/String;)V
 
     .line 422
-    iget-object v1, p0, Lcom/android/server/connectivity/tethering/EntitlementManager;->mContext:Landroid/content/Context;
+    .local v1, "intent":Landroid/content/Intent;
+    iget-object v2, p0, Lcom/android/server/connectivity/tethering/EntitlementManager;->mContext:Landroid/content/Context;
 
-    const/4 v2, 0x0
+    const/4 v3, 0x0
 
-    invoke-static {v1, v2, v0, v2}, Landroid/app/PendingIntent;->getBroadcast(Landroid/content/Context;ILandroid/content/Intent;I)Landroid/app/PendingIntent;
+    invoke-static {v2, v3, v1, v3}, Landroid/app/PendingIntent;->getBroadcast(Landroid/content/Context;ILandroid/content/Intent;I)Landroid/app/PendingIntent;
 
-    move-result-object v0
+    move-result-object v2
 
-    iput-object v0, p0, Lcom/android/server/connectivity/tethering/EntitlementManager;->mProvisioningRecheckAlarm:Landroid/app/PendingIntent;
+    iput-object v2, p0, Lcom/android/server/connectivity/tethering/EntitlementManager;->mProvisioningRecheckAlarm:Landroid/app/PendingIntent;
 
     .line 423
-    iget-object v0, p0, Lcom/android/server/connectivity/tethering/EntitlementManager;->mContext:Landroid/content/Context;
+    iget-object v2, p0, Lcom/android/server/connectivity/tethering/EntitlementManager;->mContext:Landroid/content/Context;
 
-    const-string v1, "alarm"
+    const-string v3, "alarm"
 
-    invoke-virtual {v0, v1}, Landroid/content/Context;->getSystemService(Ljava/lang/String;)Ljava/lang/Object;
+    invoke-virtual {v2, v3}, Landroid/content/Context;->getSystemService(Ljava/lang/String;)Ljava/lang/Object;
 
-    move-result-object v0
+    move-result-object v2
 
-    move-object v1, v0
-
-    check-cast v1, Landroid/app/AlarmManager;
+    check-cast v2, Landroid/app/AlarmManager;
 
     .line 425
-    const v0, 0x36ee80
+    .local v2, "alarmManager":Landroid/app/AlarmManager;
+    const v3, 0x36ee80
 
-    mul-int/2addr p1, v0
+    mul-int/2addr v3, v0
 
-    int-to-long v5, p1
+    int-to-long v10, v3
 
     .line 426
+    .local v10, "periodMs":J
     invoke-static {}, Landroid/os/SystemClock;->elapsedRealtime()J
 
-    move-result-wide v2
+    move-result-wide v3
 
-    add-long v3, v2, v5
+    add-long v12, v3, v10
 
     .line 427
-    const/4 v2, 0x3
+    .local v12, "firstAlarmTime":J
+    const/4 v4, 0x3
 
-    iget-object v7, p0, Lcom/android/server/connectivity/tethering/EntitlementManager;->mProvisioningRecheckAlarm:Landroid/app/PendingIntent;
+    iget-object v9, p0, Lcom/android/server/connectivity/tethering/EntitlementManager;->mProvisioningRecheckAlarm:Landroid/app/PendingIntent;
 
-    invoke-virtual/range {v1 .. v7}, Landroid/app/AlarmManager;->setRepeating(IJJLandroid/app/PendingIntent;)V
+    move-object v3, v2
+
+    move-wide v5, v12
+
+    move-wide v7, v10
+
+    invoke-virtual/range {v3 .. v9}, Landroid/app/AlarmManager;->setRepeating(IJJLandroid/app/PendingIntent;)V
 
     .line 430
-    :cond_35
+    .end local v0  # "period":I
+    .end local v1  # "intent":Landroid/content/Intent;
+    .end local v2  # "alarmManager":Landroid/app/AlarmManager;
+    .end local v10  # "periodMs":J
+    .end local v12  # "firstAlarmTime":J
+    :cond_37
     return-void
 .end method
 
 .method private static toBool(I)Z
-    .registers 1
+    .registers 2
+    .param p0, "encodedBoolean"  # I
 
     .line 536
     if-eqz p0, :cond_4
 
-    const/4 p0, 0x1
+    const/4 v0, 0x1
 
     goto :goto_5
 
     :cond_4
-    const/4 p0, 0x0
+    const/4 v0, 0x0
 
     :goto_5
-    return p0
+    return v0
 .end method
 
 .method private static typeString(I)Ljava/lang/String;
-    .registers 3
+    .registers 4
+    .param p0, "type"  # I
 
     .line 574
     const/4 v0, -0x1
@@ -1055,45 +1132,47 @@
 
     invoke-static {p0}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
 
-    move-result-object p0
+    move-result-object v2
 
-    aput-object p0, v0, v1
+    aput-object v2, v0, v1
 
-    const-string p0, "TETHERING UNKNOWN TYPE (%d)"
+    const-string v1, "TETHERING UNKNOWN TYPE (%d)"
 
-    invoke-static {p0, v0}, Ljava/lang/String;->format(Ljava/lang/String;[Ljava/lang/Object;)Ljava/lang/String;
+    invoke-static {v1, v0}, Ljava/lang/String;->format(Ljava/lang/String;[Ljava/lang/Object;)Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v0
 
-    return-object p0
+    return-object v0
 
     .line 575
     :cond_1b
-    const-string p0, "TETHERING_BLUETOOTH"
+    const-string v0, "TETHERING_BLUETOOTH"
 
-    return-object p0
+    return-object v0
 
     .line 577
     :cond_1e
-    const-string p0, "TETHERING_USB"
+    const-string v0, "TETHERING_USB"
 
-    return-object p0
+    return-object v0
 
     .line 578
     :cond_21
-    const-string p0, "TETHERING_WIFI"
+    const-string v0, "TETHERING_WIFI"
 
-    return-object p0
+    return-object v0
 
     .line 576
     :cond_24
-    const-string p0, "TETHERING_INVALID"
+    const-string v0, "TETHERING_INVALID"
 
-    return-object p0
+    return-object v0
 .end method
 
 .method private updateEntitlementCacheValue(II)I
-    .registers 4
+    .registers 5
+    .param p1, "type"  # I
+    .param p2, "resultCode"  # I
 
     .line 640
     if-nez p2, :cond_8
@@ -1108,18 +1187,19 @@
 
     .line 644
     :cond_8
-    iget-object p2, p0, Lcom/android/server/connectivity/tethering/EntitlementManager;->mEntitlementCacheValue:Landroid/util/SparseIntArray;
+    iget-object v0, p0, Lcom/android/server/connectivity/tethering/EntitlementManager;->mEntitlementCacheValue:Landroid/util/SparseIntArray;
 
-    const/16 v0, 0xb
+    const/16 v1, 0xb
 
-    invoke-virtual {p2, p1, v0}, Landroid/util/SparseIntArray;->put(II)V
+    invoke-virtual {v0, p1, v1}, Landroid/util/SparseIntArray;->put(II)V
 
     .line 645
-    return v0
+    return v1
 .end method
 
 .method private writeToParcel(Landroid/os/ResultReceiver;)Landroid/os/ResultReceiver;
     .registers 4
+    .param p1, "receiver"  # Landroid/os/ResultReceiver;
 
     .line 621
     invoke-static {}, Landroid/os/Parcel;->obtain()Landroid/os/Parcel;
@@ -1127,6 +1207,7 @@
     move-result-object v0
 
     .line 622
+    .local v0, "parcel":Landroid/os/Parcel;
     const/4 v1, 0x0
 
     invoke-virtual {p1, v0, v1}, Landroid/os/ResultReceiver;->writeToParcel(Landroid/os/Parcel;I)V
@@ -1135,25 +1216,28 @@
     invoke-virtual {v0, v1}, Landroid/os/Parcel;->setDataPosition(I)V
 
     .line 624
-    sget-object p1, Landroid/os/ResultReceiver;->CREATOR:Landroid/os/Parcelable$Creator;
+    sget-object v1, Landroid/os/ResultReceiver;->CREATOR:Landroid/os/Parcelable$Creator;
 
-    invoke-interface {p1, v0}, Landroid/os/Parcelable$Creator;->createFromParcel(Landroid/os/Parcel;)Ljava/lang/Object;
+    invoke-interface {v1, v0}, Landroid/os/Parcelable$Creator;->createFromParcel(Landroid/os/Parcel;)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v1
 
-    check-cast p1, Landroid/os/ResultReceiver;
+    check-cast v1, Landroid/os/ResultReceiver;
 
     .line 625
+    .local v1, "receiverForSending":Landroid/os/ResultReceiver;
     invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
 
     .line 626
-    return-object p1
+    return-object v1
 .end method
 
 
 # virtual methods
 .method protected addDownstreamMapping(II)V
     .registers 7
+    .param p1, "type"  # I
+    .param p2, "resultCode"  # I
 
     .line 472
     iget-object v0, p0, Lcom/android/server/connectivity/tethering/EntitlementManager;->mLog:Landroid/net/util/SharedLog;
@@ -1220,14 +1304,15 @@
     invoke-virtual {v0, p1, p2}, Landroid/util/SparseIntArray;->put(II)V
 
     .line 477
-    iget-object p1, p0, Lcom/android/server/connectivity/tethering/EntitlementManager;->mFetcher:Lcom/android/server/connectivity/tethering/EntitlementManager$TetheringConfigurationFetcher;
+    iget-object v0, p0, Lcom/android/server/connectivity/tethering/EntitlementManager;->mFetcher:Lcom/android/server/connectivity/tethering/EntitlementManager$TetheringConfigurationFetcher;
 
-    invoke-interface {p1}, Lcom/android/server/connectivity/tethering/EntitlementManager$TetheringConfigurationFetcher;->fetchTetheringConfiguration()Lcom/android/server/connectivity/tethering/TetheringConfiguration;
+    invoke-interface {v0}, Lcom/android/server/connectivity/tethering/EntitlementManager$TetheringConfigurationFetcher;->fetchTetheringConfiguration()Lcom/android/server/connectivity/tethering/TetheringConfiguration;
 
-    move-result-object p1
+    move-result-object v0
 
     .line 478
-    invoke-direct {p0, p1}, Lcom/android/server/connectivity/tethering/EntitlementManager;->evaluateCellularPermission(Lcom/android/server/connectivity/tethering/TetheringConfiguration;)V
+    .local v0, "config":Lcom/android/server/connectivity/tethering/TetheringConfiguration;
+    invoke-direct {p0, v0}, Lcom/android/server/connectivity/tethering/EntitlementManager;->evaluateCellularPermission(Lcom/android/server/connectivity/tethering/TetheringConfiguration;)V
 
     .line 479
     return-void
@@ -1235,9 +1320,10 @@
 
 .method public dump(Ljava/io/PrintWriter;)V
     .registers 6
+    .param p1, "pw"  # Ljava/io/PrintWriter;
 
     .line 559
-    const-string v0, "mCellularUpstreamPermitted: "
+    const-string/jumbo v0, "mCellularUpstreamPermitted: "
 
     invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
@@ -1253,12 +1339,12 @@
 
     move-result-object v0
 
-    :goto_10
+    :goto_11
     invoke-interface {v0}, Ljava/util/Iterator;->hasNext()Z
 
     move-result v1
 
-    if-eqz v1, :cond_56
+    if-eqz v1, :cond_57
 
     invoke-interface {v0}, Ljava/util/Iterator;->next()Ljava/lang/Object;
 
@@ -1267,6 +1353,7 @@
     check-cast v1, Ljava/lang/Integer;
 
     .line 562
+    .local v1, "type":Ljava/lang/Integer;
     const-string v2, "Type: "
 
     invoke-virtual {p1, v2}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
@@ -1295,7 +1382,7 @@
 
     const/4 v3, -0x1
 
-    if-le v2, v3, :cond_50
+    if-le v2, v3, :cond_51
 
     .line 565
     const-string v2, ", Value: "
@@ -1307,37 +1394,39 @@
 
     invoke-virtual {v1}, Ljava/lang/Integer;->intValue()I
 
-    move-result v1
+    move-result v3
 
-    invoke-virtual {v2, v1}, Landroid/util/SparseIntArray;->get(I)I
+    invoke-virtual {v2, v3}, Landroid/util/SparseIntArray;->get(I)I
 
-    move-result v1
+    move-result v2
 
-    invoke-static {v1}, Lcom/android/server/connectivity/tethering/EntitlementManager;->errorString(I)Ljava/lang/String;
+    invoke-static {v2}, Lcom/android/server/connectivity/tethering/EntitlementManager;->errorString(I)Ljava/lang/String;
 
-    move-result-object v1
+    move-result-object v2
 
-    invoke-virtual {p1, v1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {p1, v2}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
-    goto :goto_55
+    goto :goto_56
 
     .line 568
-    :cond_50
-    const-string v1, ", Value: empty"
+    :cond_51
+    const-string v2, ", Value: empty"
 
-    invoke-virtual {p1, v1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {p1, v2}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
     .line 570
-    :goto_55
-    goto :goto_10
+    .end local v1  # "type":Ljava/lang/Integer;
+    :goto_56
+    goto :goto_11
 
     .line 571
-    :cond_56
+    :cond_57
     return-void
 .end method
 
 .method public getCarrierConfig(Lcom/android/server/connectivity/tethering/TetheringConfiguration;)Landroid/os/PersistableBundle;
-    .registers 4
+    .registers 6
+    .param p1, "config"  # Lcom/android/server/connectivity/tethering/TetheringConfiguration;
 
     .line 332
     iget-object v0, p0, Lcom/android/server/connectivity/tethering/EntitlementManager;->mContext:Landroid/content/Context;
@@ -1352,6 +1441,7 @@
     check-cast v0, Landroid/telephony/CarrierConfigManager;
 
     .line 334
+    .local v0, "configManager":Landroid/telephony/CarrierConfigManager;
     const/4 v1, 0x0
 
     if-nez v0, :cond_e
@@ -1360,21 +1450,22 @@
 
     .line 336
     :cond_e
-    iget p1, p1, Lcom/android/server/connectivity/tethering/TetheringConfiguration;->subId:I
+    iget v2, p1, Lcom/android/server/connectivity/tethering/TetheringConfiguration;->subId:I
 
-    invoke-virtual {v0, p1}, Landroid/telephony/CarrierConfigManager;->getConfigForSubId(I)Landroid/os/PersistableBundle;
+    invoke-virtual {v0, v2}, Landroid/telephony/CarrierConfigManager;->getConfigForSubId(I)Landroid/os/PersistableBundle;
 
-    move-result-object p1
+    move-result-object v2
 
     .line 338
-    invoke-static {p1}, Landroid/telephony/CarrierConfigManager;->isConfigForIdentifiedCarrier(Landroid/os/PersistableBundle;)Z
+    .local v2, "carrierConfig":Landroid/os/PersistableBundle;
+    invoke-static {v2}, Landroid/telephony/CarrierConfigManager;->isConfigForIdentifiedCarrier(Landroid/os/PersistableBundle;)Z
 
-    move-result v0
+    move-result v3
 
-    if-eqz v0, :cond_1b
+    if-eqz v3, :cond_1b
 
     .line 339
-    return-object p1
+    return-object v2
 
     .line 342
     :cond_1b
@@ -1382,7 +1473,10 @@
 .end method
 
 .method public getLatestTetheringEntitlementResult(ILandroid/os/ResultReceiver;Z)V
-    .registers 6
+    .registers 7
+    .param p1, "downstream"  # I
+    .param p2, "receiver"  # Landroid/os/ResultReceiver;
+    .param p3, "showEntitlementUi"  # Z
 
     .line 652
     iget-object v0, p0, Lcom/android/server/connectivity/tethering/EntitlementManager;->mHandler:Lcom/android/server/connectivity/tethering/EntitlementManager$EntitlementHandler;
@@ -1390,16 +1484,16 @@
     .line 653
     invoke-static {p3}, Lcom/android/server/connectivity/tethering/EntitlementManager;->encodeBool(Z)I
 
-    move-result p3
+    move-result v1
 
     .line 652
-    const/4 v1, 0x4
+    const/4 v2, 0x4
 
-    invoke-virtual {v0, v1, p1, p3, p2}, Lcom/android/server/connectivity/tethering/EntitlementManager$EntitlementHandler;->obtainMessage(IIILjava/lang/Object;)Landroid/os/Message;
+    invoke-virtual {v0, v2, p1, v1, p2}, Lcom/android/server/connectivity/tethering/EntitlementManager$EntitlementHandler;->obtainMessage(IIILjava/lang/Object;)Landroid/os/Message;
 
-    move-result-object p1
+    move-result-object v1
 
-    invoke-virtual {v0, p1}, Lcom/android/server/connectivity/tethering/EntitlementManager$EntitlementHandler;->sendMessage(Landroid/os/Message;)Z
+    invoke-virtual {v0, v1}, Lcom/android/server/connectivity/tethering/EntitlementManager$EntitlementHandler;->sendMessage(Landroid/os/Message;)Z
 
     .line 655
     return-void
@@ -1416,6 +1510,7 @@
 
 .method protected isTetherProvisioningRequired(Lcom/android/server/connectivity/tethering/TetheringConfiguration;)Z
     .registers 5
+    .param p1, "config"  # Lcom/android/server/connectivity/tethering/TetheringConfiguration;
     .annotation build Lcom/android/internal/annotations/VisibleForTesting;
     .end annotation
 
@@ -1453,13 +1548,13 @@
 
     .line 293
     :cond_19
-    iget-object p1, p1, Lcom/android/server/connectivity/tethering/TetheringConfiguration;->provisioningApp:[Ljava/lang/String;
+    iget-object v0, p1, Lcom/android/server/connectivity/tethering/TetheringConfiguration;->provisioningApp:[Ljava/lang/String;
 
-    array-length p1, p1
+    array-length v0, v0
 
-    const/4 v0, 0x2
+    const/4 v2, 0x2
 
-    if-ne p1, v0, :cond_20
+    if-ne v0, v2, :cond_20
 
     const/4 v1, 0x1
 
@@ -1491,7 +1586,8 @@
 .end method
 
 .method public notifyUpstream(Z)V
-    .registers 5
+    .registers 6
+    .param p1, "isCellular"  # Z
 
     .line 234
     iget-object v0, p0, Lcom/android/server/connectivity/tethering/EntitlementManager;->mHandler:Lcom/android/server/connectivity/tethering/EntitlementManager$EntitlementHandler;
@@ -1499,18 +1595,18 @@
     .line 235
     invoke-static {p1}, Lcom/android/server/connectivity/tethering/EntitlementManager;->encodeBool(Z)I
 
-    move-result p1
+    move-result v1
 
     .line 234
-    const/4 v1, 0x2
+    const/4 v2, 0x2
 
-    const/4 v2, 0x0
+    const/4 v3, 0x0
 
-    invoke-virtual {v0, v1, p1, v2}, Lcom/android/server/connectivity/tethering/EntitlementManager$EntitlementHandler;->obtainMessage(III)Landroid/os/Message;
+    invoke-virtual {v0, v2, v1, v3}, Lcom/android/server/connectivity/tethering/EntitlementManager$EntitlementHandler;->obtainMessage(III)Landroid/os/Message;
 
-    move-result-object p1
+    move-result-object v1
 
-    invoke-virtual {v0, p1}, Lcom/android/server/connectivity/tethering/EntitlementManager$EntitlementHandler;->sendMessage(Landroid/os/Message;)Z
+    invoke-virtual {v0, v1}, Lcom/android/server/connectivity/tethering/EntitlementManager$EntitlementHandler;->sendMessage(Landroid/os/Message;)Z
 
     .line 236
     return-void
@@ -1518,6 +1614,7 @@
 
 .method public reevaluateSimCardProvisioning(Lcom/android/server/connectivity/tethering/TetheringConfiguration;)V
     .registers 4
+    .param p1, "config"  # Lcom/android/server/connectivity/tethering/TetheringConfiguration;
 
     .line 308
     iget-object v0, p0, Lcom/android/server/connectivity/tethering/EntitlementManager;->mHandler:Lcom/android/server/connectivity/tethering/EntitlementManager$EntitlementHandler;
@@ -1590,6 +1687,7 @@
 
 .method protected removeDownstreamMapping(I)V
     .registers 5
+    .param p1, "type"  # I
 
     .line 486
     iget-object v0, p0, Lcom/android/server/connectivity/tethering/EntitlementManager;->mLog:Landroid/net/util/SharedLog;
@@ -1616,21 +1714,24 @@
     invoke-virtual {v0, p1}, Landroid/util/SparseIntArray;->delete(I)V
 
     .line 488
-    iget-object p1, p0, Lcom/android/server/connectivity/tethering/EntitlementManager;->mFetcher:Lcom/android/server/connectivity/tethering/EntitlementManager$TetheringConfigurationFetcher;
+    iget-object v0, p0, Lcom/android/server/connectivity/tethering/EntitlementManager;->mFetcher:Lcom/android/server/connectivity/tethering/EntitlementManager$TetheringConfigurationFetcher;
 
-    invoke-interface {p1}, Lcom/android/server/connectivity/tethering/EntitlementManager$TetheringConfigurationFetcher;->fetchTetheringConfiguration()Lcom/android/server/connectivity/tethering/TetheringConfiguration;
+    invoke-interface {v0}, Lcom/android/server/connectivity/tethering/EntitlementManager$TetheringConfigurationFetcher;->fetchTetheringConfiguration()Lcom/android/server/connectivity/tethering/TetheringConfiguration;
 
-    move-result-object p1
+    move-result-object v0
 
     .line 489
-    invoke-direct {p0, p1}, Lcom/android/server/connectivity/tethering/EntitlementManager;->evaluateCellularPermission(Lcom/android/server/connectivity/tethering/TetheringConfiguration;)V
+    .local v0, "config":Lcom/android/server/connectivity/tethering/TetheringConfiguration;
+    invoke-direct {p0, v0}, Lcom/android/server/connectivity/tethering/EntitlementManager;->evaluateCellularPermission(Lcom/android/server/connectivity/tethering/TetheringConfiguration;)V
 
     .line 490
     return-void
 .end method
 
 .method protected runSilentTetherProvisioning(II)V
-    .registers 6
+    .registers 9
+    .param p1, "type"  # I
+    .param p2, "subId"  # I
     .annotation build Lcom/android/internal/annotations/VisibleForTesting;
     .end annotation
 
@@ -1644,54 +1745,57 @@
     move-result-object v0
 
     .line 373
+    .local v0, "receiver":Landroid/os/ResultReceiver;
     new-instance v1, Landroid/content/Intent;
 
     invoke-direct {v1}, Landroid/content/Intent;-><init>()V
 
     .line 374
+    .local v1, "intent":Landroid/content/Intent;
     const-string v2, "extraAddTetherType"
 
     invoke-virtual {v1, v2, p1}, Landroid/content/Intent;->putExtra(Ljava/lang/String;I)Landroid/content/Intent;
 
     .line 375
-    const-string p1, "extraRunProvision"
+    const-string v2, "extraRunProvision"
 
-    const/4 v2, 0x1
+    const/4 v3, 0x1
 
-    invoke-virtual {v1, p1, v2}, Landroid/content/Intent;->putExtra(Ljava/lang/String;Z)Landroid/content/Intent;
+    invoke-virtual {v1, v2, v3}, Landroid/content/Intent;->putExtra(Ljava/lang/String;Z)Landroid/content/Intent;
 
     .line 376
-    const-string p1, "extraProvisionCallback"
+    const-string v2, "extraProvisionCallback"
 
-    invoke-virtual {v1, p1, v0}, Landroid/content/Intent;->putExtra(Ljava/lang/String;Landroid/os/Parcelable;)Landroid/content/Intent;
+    invoke-virtual {v1, v2, v0}, Landroid/content/Intent;->putExtra(Ljava/lang/String;Landroid/os/Parcelable;)Landroid/content/Intent;
 
     .line 377
-    const-string/jumbo p1, "subId"
+    const-string/jumbo v2, "subId"
 
-    invoke-virtual {v1, p1, p2}, Landroid/content/Intent;->putExtra(Ljava/lang/String;I)Landroid/content/Intent;
+    invoke-virtual {v1, v2, p2}, Landroid/content/Intent;->putExtra(Ljava/lang/String;I)Landroid/content/Intent;
 
     .line 378
-    sget-object p1, Lcom/android/server/connectivity/tethering/EntitlementManager;->TETHER_SERVICE:Landroid/content/ComponentName;
+    sget-object v2, Lcom/android/server/connectivity/tethering/EntitlementManager;->TETHER_SERVICE:Landroid/content/ComponentName;
 
-    invoke-virtual {v1, p1}, Landroid/content/Intent;->setComponent(Landroid/content/ComponentName;)Landroid/content/Intent;
+    invoke-virtual {v1, v2}, Landroid/content/Intent;->setComponent(Landroid/content/ComponentName;)Landroid/content/Intent;
 
     .line 379
     invoke-static {}, Landroid/os/Binder;->clearCallingIdentity()J
 
-    move-result-wide p1
+    move-result-wide v2
 
     .line 381
+    .local v2, "ident":J
     :try_start_2a
-    iget-object v0, p0, Lcom/android/server/connectivity/tethering/EntitlementManager;->mContext:Landroid/content/Context;
+    iget-object v4, p0, Lcom/android/server/connectivity/tethering/EntitlementManager;->mContext:Landroid/content/Context;
 
-    sget-object v2, Landroid/os/UserHandle;->CURRENT:Landroid/os/UserHandle;
+    sget-object v5, Landroid/os/UserHandle;->CURRENT:Landroid/os/UserHandle;
 
-    invoke-virtual {v0, v1, v2}, Landroid/content/Context;->startServiceAsUser(Landroid/content/Intent;Landroid/os/UserHandle;)Landroid/content/ComponentName;
+    invoke-virtual {v4, v1, v5}, Landroid/content/Context;->startServiceAsUser(Landroid/content/Intent;Landroid/os/UserHandle;)Landroid/content/ComponentName;
     :try_end_31
     .catchall {:try_start_2a .. :try_end_31} :catchall_36
 
     .line 383
-    invoke-static {p1, p2}, Landroid/os/Binder;->restoreCallingIdentity(J)V
+    invoke-static {v2, v3}, Landroid/os/Binder;->restoreCallingIdentity(J)V
 
     .line 384
     nop
@@ -1701,15 +1805,18 @@
 
     .line 383
     :catchall_36
-    move-exception v0
+    move-exception v4
 
-    invoke-static {p1, p2}, Landroid/os/Binder;->restoreCallingIdentity(J)V
+    invoke-static {v2, v3}, Landroid/os/Binder;->restoreCallingIdentity(J)V
 
-    throw v0
+    throw v4
 .end method
 
 .method protected runUiTetherProvisioning(IILandroid/os/ResultReceiver;)V
-    .registers 6
+    .registers 9
+    .param p1, "type"  # I
+    .param p2, "subId"  # I
+    .param p3, "receiver"  # Landroid/os/ResultReceiver;
     .annotation build Lcom/android/internal/annotations/VisibleForTesting;
     .end annotation
 
@@ -1721,42 +1828,44 @@
     invoke-direct {v0, v1}, Landroid/content/Intent;-><init>(Ljava/lang/String;)V
 
     .line 403
+    .local v0, "intent":Landroid/content/Intent;
     const-string v1, "extraAddTetherType"
 
     invoke-virtual {v0, v1, p1}, Landroid/content/Intent;->putExtra(Ljava/lang/String;I)Landroid/content/Intent;
 
     .line 404
-    const-string p1, "extraProvisionCallback"
+    const-string v1, "extraProvisionCallback"
 
-    invoke-virtual {v0, p1, p3}, Landroid/content/Intent;->putExtra(Ljava/lang/String;Landroid/os/Parcelable;)Landroid/content/Intent;
+    invoke-virtual {v0, v1, p3}, Landroid/content/Intent;->putExtra(Ljava/lang/String;Landroid/os/Parcelable;)Landroid/content/Intent;
 
     .line 405
-    const-string/jumbo p1, "subId"
+    const-string/jumbo v1, "subId"
 
-    invoke-virtual {v0, p1, p2}, Landroid/content/Intent;->putExtra(Ljava/lang/String;I)Landroid/content/Intent;
+    invoke-virtual {v0, v1, p2}, Landroid/content/Intent;->putExtra(Ljava/lang/String;I)Landroid/content/Intent;
 
     .line 406
-    const/high16 p1, 0x10000000
+    const/high16 v1, 0x10000000
 
-    invoke-virtual {v0, p1}, Landroid/content/Intent;->addFlags(I)Landroid/content/Intent;
+    invoke-virtual {v0, v1}, Landroid/content/Intent;->addFlags(I)Landroid/content/Intent;
 
     .line 407
     invoke-static {}, Landroid/os/Binder;->clearCallingIdentity()J
 
-    move-result-wide p1
+    move-result-wide v1
 
     .line 409
+    .local v1, "ident":J
     :try_start_20
-    iget-object p3, p0, Lcom/android/server/connectivity/tethering/EntitlementManager;->mContext:Landroid/content/Context;
+    iget-object v3, p0, Lcom/android/server/connectivity/tethering/EntitlementManager;->mContext:Landroid/content/Context;
 
-    sget-object v1, Landroid/os/UserHandle;->CURRENT:Landroid/os/UserHandle;
+    sget-object v4, Landroid/os/UserHandle;->CURRENT:Landroid/os/UserHandle;
 
-    invoke-virtual {p3, v0, v1}, Landroid/content/Context;->startActivityAsUser(Landroid/content/Intent;Landroid/os/UserHandle;)V
+    invoke-virtual {v3, v0, v4}, Landroid/content/Context;->startActivityAsUser(Landroid/content/Intent;Landroid/os/UserHandle;)V
     :try_end_27
     .catchall {:try_start_20 .. :try_end_27} :catchall_2c
 
     .line 411
-    invoke-static {p1, p2}, Landroid/os/Binder;->restoreCallingIdentity(J)V
+    invoke-static {v1, v2}, Landroid/os/Binder;->restoreCallingIdentity(J)V
 
     .line 412
     nop
@@ -1766,15 +1875,16 @@
 
     .line 411
     :catchall_2c
-    move-exception p3
+    move-exception v3
 
-    invoke-static {p1, p2}, Landroid/os/Binder;->restoreCallingIdentity(J)V
+    invoke-static {v1, v2}, Landroid/os/Binder;->restoreCallingIdentity(J)V
 
-    throw p3
+    throw v3
 .end method
 
 .method public setOnUiEntitlementFailedListener(Lcom/android/server/connectivity/tethering/EntitlementManager$OnUiEntitlementFailedListener;)V
     .registers 2
+    .param p1, "listener"  # Lcom/android/server/connectivity/tethering/EntitlementManager$OnUiEntitlementFailedListener;
 
     .line 133
     iput-object p1, p0, Lcom/android/server/connectivity/tethering/EntitlementManager;->mListener:Lcom/android/server/connectivity/tethering/EntitlementManager$OnUiEntitlementFailedListener;
@@ -1785,6 +1895,7 @@
 
 .method public setTetheringConfigurationFetcher(Lcom/android/server/connectivity/tethering/EntitlementManager$TetheringConfigurationFetcher;)V
     .registers 2
+    .param p1, "fetcher"  # Lcom/android/server/connectivity/tethering/EntitlementManager$TetheringConfigurationFetcher;
 
     .line 147
     iput-object p1, p0, Lcom/android/server/connectivity/tethering/EntitlementManager;->mFetcher:Lcom/android/server/connectivity/tethering/EntitlementManager$TetheringConfigurationFetcher;
@@ -1794,7 +1905,9 @@
 .end method
 
 .method public startProvisioningIfNeeded(IZ)V
-    .registers 5
+    .registers 6
+    .param p1, "downstreamType"  # I
+    .param p2, "showProvisioningUi"  # Z
 
     .line 176
     iget-object v0, p0, Lcom/android/server/connectivity/tethering/EntitlementManager;->mHandler:Lcom/android/server/connectivity/tethering/EntitlementManager$EntitlementHandler;
@@ -1802,16 +1915,16 @@
     .line 177
     invoke-static {p2}, Lcom/android/server/connectivity/tethering/EntitlementManager;->encodeBool(Z)I
 
-    move-result p2
+    move-result v1
 
     .line 176
-    const/4 v1, 0x0
+    const/4 v2, 0x0
 
-    invoke-virtual {v0, v1, p1, p2}, Lcom/android/server/connectivity/tethering/EntitlementManager$EntitlementHandler;->obtainMessage(III)Landroid/os/Message;
+    invoke-virtual {v0, v2, p1, v1}, Lcom/android/server/connectivity/tethering/EntitlementManager$EntitlementHandler;->obtainMessage(III)Landroid/os/Message;
 
-    move-result-object p1
+    move-result-object v1
 
-    invoke-virtual {v0, p1}, Lcom/android/server/connectivity/tethering/EntitlementManager$EntitlementHandler;->sendMessage(Landroid/os/Message;)Z
+    invoke-virtual {v0, v1}, Lcom/android/server/connectivity/tethering/EntitlementManager$EntitlementHandler;->sendMessage(Landroid/os/Message;)Z
 
     .line 178
     return-void
@@ -1819,6 +1932,7 @@
 
 .method public stopProvisioningIfNeeded(I)V
     .registers 5
+    .param p1, "type"  # I
 
     .line 215
     iget-object v0, p0, Lcom/android/server/connectivity/tethering/EntitlementManager;->mHandler:Lcom/android/server/connectivity/tethering/EntitlementManager$EntitlementHandler;
@@ -1829,9 +1943,9 @@
 
     invoke-virtual {v0, v1, p1, v2}, Lcom/android/server/connectivity/tethering/EntitlementManager$EntitlementHandler;->obtainMessage(III)Landroid/os/Message;
 
-    move-result-object p1
+    move-result-object v1
 
-    invoke-virtual {v0, p1}, Lcom/android/server/connectivity/tethering/EntitlementManager$EntitlementHandler;->sendMessage(Landroid/os/Message;)Z
+    invoke-virtual {v0, v1}, Lcom/android/server/connectivity/tethering/EntitlementManager$EntitlementHandler;->sendMessage(Landroid/os/Message;)Z
 
     .line 216
     return-void

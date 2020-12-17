@@ -21,6 +21,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/job/JobSchedulerService;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/job/JobSchedulerService;
 
     .line 1351
     iput-object p1, p0, Lcom/android/server/job/JobSchedulerService$3;->this$0:Lcom/android/server/job/JobSchedulerService;
@@ -33,44 +34,46 @@
 
 # virtual methods
 .method public onReceive(Landroid/content/Context;Landroid/content/Intent;)V
-    .registers 5
+    .registers 6
+    .param p1, "context"  # Landroid/content/Context;
+    .param p2, "intent"  # Landroid/content/Intent;
 
     .line 1354
     invoke-virtual {p2}, Landroid/content/Intent;->getAction()Ljava/lang/String;
 
-    move-result-object p2
+    move-result-object v0
 
-    const-string v0, "android.intent.action.TIME_SET"
+    const-string v1, "android.intent.action.TIME_SET"
 
-    invoke-virtual {v0, p2}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v1, v0}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result p2
+    move-result v0
 
-    if-eqz p2, :cond_33
+    if-eqz v0, :cond_33
 
     .line 1357
-    iget-object p2, p0, Lcom/android/server/job/JobSchedulerService$3;->this$0:Lcom/android/server/job/JobSchedulerService;
+    iget-object v0, p0, Lcom/android/server/job/JobSchedulerService$3;->this$0:Lcom/android/server/job/JobSchedulerService;
 
-    iget-object p2, p2, Lcom/android/server/job/JobSchedulerService;->mJobs:Lcom/android/server/job/JobStore;
+    iget-object v0, v0, Lcom/android/server/job/JobSchedulerService;->mJobs:Lcom/android/server/job/JobStore;
 
-    sget-object v0, Lcom/android/server/job/JobSchedulerService;->sSystemClock:Ljava/time/Clock;
+    sget-object v1, Lcom/android/server/job/JobSchedulerService;->sSystemClock:Ljava/time/Clock;
 
-    invoke-virtual {v0}, Ljava/time/Clock;->millis()J
+    invoke-virtual {v1}, Ljava/time/Clock;->millis()J
 
-    move-result-wide v0
+    move-result-wide v1
 
-    invoke-virtual {p2, v0, v1}, Lcom/android/server/job/JobStore;->clockNowValidToInflate(J)Z
+    invoke-virtual {v0, v1, v2}, Lcom/android/server/job/JobStore;->clockNowValidToInflate(J)Z
 
-    move-result p2
+    move-result v0
 
-    if-eqz p2, :cond_33
+    if-eqz v0, :cond_33
 
     .line 1358
-    const-string p2, "JobScheduler"
+    const-string v0, "JobScheduler"
 
-    const-string v0, "RTC now valid; recalculating persisted job windows"
+    const-string v1, "RTC now valid; recalculating persisted job windows"
 
-    invoke-static {p2, v0}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v0, v1}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 1361
     invoke-virtual {p1, p0}, Landroid/content/Context;->unregisterReceiver(Landroid/content/BroadcastReceiver;)V
@@ -78,15 +81,15 @@
     .line 1365
     invoke-static {}, Lcom/android/server/FgThread;->getHandler()Landroid/os/Handler;
 
-    move-result-object p1
+    move-result-object v0
 
-    iget-object p2, p0, Lcom/android/server/job/JobSchedulerService$3;->this$0:Lcom/android/server/job/JobSchedulerService;
+    iget-object v1, p0, Lcom/android/server/job/JobSchedulerService$3;->this$0:Lcom/android/server/job/JobSchedulerService;
 
-    invoke-static {p2}, Lcom/android/server/job/JobSchedulerService;->access$200(Lcom/android/server/job/JobSchedulerService;)Ljava/lang/Runnable;
+    invoke-static {v1}, Lcom/android/server/job/JobSchedulerService;->access$200(Lcom/android/server/job/JobSchedulerService;)Ljava/lang/Runnable;
 
-    move-result-object p2
+    move-result-object v1
 
-    invoke-virtual {p1, p2}, Landroid/os/Handler;->post(Ljava/lang/Runnable;)Z
+    invoke-virtual {v0, v1}, Landroid/os/Handler;->post(Ljava/lang/Runnable;)Z
 
     .line 1368
     :cond_33

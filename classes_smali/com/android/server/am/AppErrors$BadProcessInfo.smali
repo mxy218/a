@@ -27,22 +27,26 @@
 # direct methods
 .method constructor <init>(JLjava/lang/String;Ljava/lang/String;Ljava/lang/String;)V
     .registers 6
-
-    .line 913
-    invoke-direct {p0}, Ljava/lang/Object;-><init>()V
-
-    .line 914
-    iput-wide p1, p0, Lcom/android/server/am/AppErrors$BadProcessInfo;->time:J
-
-    .line 915
-    iput-object p3, p0, Lcom/android/server/am/AppErrors$BadProcessInfo;->shortMsg:Ljava/lang/String;
-
-    .line 916
-    iput-object p4, p0, Lcom/android/server/am/AppErrors$BadProcessInfo;->longMsg:Ljava/lang/String;
+    .param p1, "time"  # J
+    .param p3, "shortMsg"  # Ljava/lang/String;
+    .param p4, "longMsg"  # Ljava/lang/String;
+    .param p5, "stack"  # Ljava/lang/String;
 
     .line 917
-    iput-object p5, p0, Lcom/android/server/am/AppErrors$BadProcessInfo;->stack:Ljava/lang/String;
+    invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
     .line 918
+    iput-wide p1, p0, Lcom/android/server/am/AppErrors$BadProcessInfo;->time:J
+
+    .line 919
+    iput-object p3, p0, Lcom/android/server/am/AppErrors$BadProcessInfo;->shortMsg:Ljava/lang/String;
+
+    .line 920
+    iput-object p4, p0, Lcom/android/server/am/AppErrors$BadProcessInfo;->longMsg:Ljava/lang/String;
+
+    .line 921
+    iput-object p5, p0, Lcom/android/server/am/AppErrors$BadProcessInfo;->stack:Ljava/lang/String;
+
+    .line 922
     return-void
 .end method

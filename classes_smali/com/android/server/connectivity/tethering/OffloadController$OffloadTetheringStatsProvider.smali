@@ -32,6 +32,8 @@
 
 .method synthetic constructor <init>(Lcom/android/server/connectivity/tethering/OffloadController;Lcom/android/server/connectivity/tethering/OffloadController$1;)V
     .registers 3
+    .param p1, "x0"  # Lcom/android/server/connectivity/tethering/OffloadController;
+    .param p2, "x1"  # Lcom/android/server/connectivity/tethering/OffloadController$1;
 
     .line 255
     invoke-direct {p0, p1}, Lcom/android/server/connectivity/tethering/OffloadController$OffloadTetheringStatsProvider;-><init>(Lcom/android/server/connectivity/tethering/OffloadController;)V
@@ -42,11 +44,13 @@
 
 # virtual methods
 .method public getTetherStats(I)Landroid/net/NetworkStats;
-    .registers 8
+    .registers 10
+    .param p1, "how"  # I
 
     .line 261
     new-instance v0, Lcom/android/server/connectivity/tethering/-$$Lambda$OffloadController$OffloadTetheringStatsProvider$3TF0NI3fE8A-xW0925oMv3YzAOk;
 
+    .local v0, "updateStats":Ljava/lang/Runnable;
     invoke-direct {v0, p0}, Lcom/android/server/connectivity/tethering/-$$Lambda$OffloadController$OffloadTetheringStatsProvider$3TF0NI3fE8A-xW0925oMv3YzAOk;-><init>(Lcom/android/server/connectivity/tethering/OffloadController$OffloadTetheringStatsProvider;)V
 
     .line 262
@@ -83,105 +87,111 @@
 
     .line 268
     :goto_22
-    new-instance v0, Landroid/net/NetworkStats;
+    new-instance v1, Landroid/net/NetworkStats;
 
     invoke-static {}, Landroid/os/SystemClock;->elapsedRealtime()J
 
-    move-result-wide v1
+    move-result-wide v2
 
-    const/4 v3, 0x0
+    const/4 v4, 0x0
 
-    invoke-direct {v0, v1, v2, v3}, Landroid/net/NetworkStats;-><init>(JI)V
+    invoke-direct {v1, v2, v3, v4}, Landroid/net/NetworkStats;-><init>(JI)V
 
     .line 269
-    new-instance v1, Landroid/net/NetworkStats$Entry;
+    .local v1, "stats":Landroid/net/NetworkStats;
+    new-instance v2, Landroid/net/NetworkStats$Entry;
 
-    invoke-direct {v1}, Landroid/net/NetworkStats$Entry;-><init>()V
+    invoke-direct {v2}, Landroid/net/NetworkStats$Entry;-><init>()V
 
     .line 270
-    iput v3, v1, Landroid/net/NetworkStats$Entry;->set:I
+    .local v2, "entry":Landroid/net/NetworkStats$Entry;
+    iput v4, v2, Landroid/net/NetworkStats$Entry;->set:I
 
     .line 271
-    iput v3, v1, Landroid/net/NetworkStats$Entry;->tag:I
+    iput v4, v2, Landroid/net/NetworkStats$Entry;->tag:I
 
     .line 272
-    const/4 v2, 0x1
+    const/4 v3, 0x1
 
-    if-ne p1, v2, :cond_3a
+    if-ne p1, v3, :cond_3a
 
-    const/4 p1, -0x5
+    const/4 v3, -0x5
 
     goto :goto_3b
 
     :cond_3a
-    const/4 p1, -0x1
+    const/4 v3, -0x1
 
     :goto_3b
-    iput p1, v1, Landroid/net/NetworkStats$Entry;->uid:I
+    iput v3, v2, Landroid/net/NetworkStats$Entry;->uid:I
 
     .line 274
-    iget-object p1, p0, Lcom/android/server/connectivity/tethering/OffloadController$OffloadTetheringStatsProvider;->this$0:Lcom/android/server/connectivity/tethering/OffloadController;
+    iget-object v3, p0, Lcom/android/server/connectivity/tethering/OffloadController$OffloadTetheringStatsProvider;->this$0:Lcom/android/server/connectivity/tethering/OffloadController;
 
-    invoke-static {p1}, Lcom/android/server/connectivity/tethering/OffloadController;->access$1100(Lcom/android/server/connectivity/tethering/OffloadController;)Ljava/util/concurrent/ConcurrentHashMap;
-
-    move-result-object p1
-
-    invoke-virtual {p1}, Ljava/util/concurrent/ConcurrentHashMap;->entrySet()Ljava/util/Set;
-
-    move-result-object p1
-
-    invoke-interface {p1}, Ljava/util/Set;->iterator()Ljava/util/Iterator;
-
-    move-result-object p1
-
-    :goto_4b
-    invoke-interface {p1}, Ljava/util/Iterator;->hasNext()Z
-
-    move-result v2
-
-    if-eqz v2, :cond_71
-
-    invoke-interface {p1}, Ljava/util/Iterator;->next()Ljava/lang/Object;
-
-    move-result-object v2
-
-    check-cast v2, Ljava/util/Map$Entry;
-
-    .line 275
-    invoke-interface {v2}, Ljava/util/Map$Entry;->getValue()Ljava/lang/Object;
+    invoke-static {v3}, Lcom/android/server/connectivity/tethering/OffloadController;->access$1100(Lcom/android/server/connectivity/tethering/OffloadController;)Ljava/util/concurrent/ConcurrentHashMap;
 
     move-result-object v3
 
-    check-cast v3, Lcom/android/server/connectivity/tethering/OffloadHardwareInterface$ForwardedStats;
+    invoke-virtual {v3}, Ljava/util/concurrent/ConcurrentHashMap;->entrySet()Ljava/util/Set;
+
+    move-result-object v3
+
+    invoke-interface {v3}, Ljava/util/Set;->iterator()Ljava/util/Iterator;
+
+    move-result-object v3
+
+    :goto_4b
+    invoke-interface {v3}, Ljava/util/Iterator;->hasNext()Z
+
+    move-result v4
+
+    if-eqz v4, :cond_71
+
+    invoke-interface {v3}, Ljava/util/Iterator;->next()Ljava/lang/Object;
+
+    move-result-object v4
+
+    check-cast v4, Ljava/util/Map$Entry;
+
+    .line 275
+    .local v4, "kv":Ljava/util/Map$Entry;, "Ljava/util/Map$Entry<Ljava/lang/String;Lcom/android/server/connectivity/tethering/OffloadHardwareInterface$ForwardedStats;>;"
+    invoke-interface {v4}, Ljava/util/Map$Entry;->getValue()Ljava/lang/Object;
+
+    move-result-object v5
+
+    check-cast v5, Lcom/android/server/connectivity/tethering/OffloadHardwareInterface$ForwardedStats;
 
     .line 276
-    invoke-interface {v2}, Ljava/util/Map$Entry;->getKey()Ljava/lang/Object;
+    .local v5, "value":Lcom/android/server/connectivity/tethering/OffloadHardwareInterface$ForwardedStats;
+    invoke-interface {v4}, Ljava/util/Map$Entry;->getKey()Ljava/lang/Object;
 
-    move-result-object v2
+    move-result-object v6
 
-    check-cast v2, Ljava/lang/String;
+    check-cast v6, Ljava/lang/String;
 
-    iput-object v2, v1, Landroid/net/NetworkStats$Entry;->iface:Ljava/lang/String;
+    iput-object v6, v2, Landroid/net/NetworkStats$Entry;->iface:Ljava/lang/String;
 
     .line 277
-    iget-wide v4, v3, Lcom/android/server/connectivity/tethering/OffloadHardwareInterface$ForwardedStats;->rxBytes:J
+    iget-wide v6, v5, Lcom/android/server/connectivity/tethering/OffloadHardwareInterface$ForwardedStats;->rxBytes:J
 
-    iput-wide v4, v1, Landroid/net/NetworkStats$Entry;->rxBytes:J
+    iput-wide v6, v2, Landroid/net/NetworkStats$Entry;->rxBytes:J
 
     .line 278
-    iget-wide v2, v3, Lcom/android/server/connectivity/tethering/OffloadHardwareInterface$ForwardedStats;->txBytes:J
+    iget-wide v6, v5, Lcom/android/server/connectivity/tethering/OffloadHardwareInterface$ForwardedStats;->txBytes:J
 
-    iput-wide v2, v1, Landroid/net/NetworkStats$Entry;->txBytes:J
+    iput-wide v6, v2, Landroid/net/NetworkStats$Entry;->txBytes:J
 
     .line 279
-    invoke-virtual {v0, v1}, Landroid/net/NetworkStats;->addValues(Landroid/net/NetworkStats$Entry;)Landroid/net/NetworkStats;
+    invoke-virtual {v1, v2}, Landroid/net/NetworkStats;->addValues(Landroid/net/NetworkStats$Entry;)Landroid/net/NetworkStats;
 
     .line 280
+    .end local v4  # "kv":Ljava/util/Map$Entry;, "Ljava/util/Map$Entry<Ljava/lang/String;Lcom/android/server/connectivity/tethering/OffloadHardwareInterface$ForwardedStats;>;"
+    .end local v5  # "value":Lcom/android/server/connectivity/tethering/OffloadHardwareInterface$ForwardedStats;
     goto :goto_4b
 
     .line 282
     :cond_71
-    return-object v0
+    return-object v1
 .end method
 
 .method public synthetic lambda$getTetherStats$0$OffloadController$OffloadTetheringStatsProvider()V
@@ -197,6 +207,8 @@
 
 .method public synthetic lambda$setInterfaceQuota$1$OffloadController$OffloadTetheringStatsProvider(JLjava/lang/String;)V
     .registers 6
+    .param p1, "quotaBytes"  # J
+    .param p3, "iface"  # Ljava/lang/String;
 
     .line 288
     const-wide/16 v0, -0x1
@@ -206,13 +218,13 @@
     if-nez v0, :cond_10
 
     .line 289
-    iget-object p1, p0, Lcom/android/server/connectivity/tethering/OffloadController$OffloadTetheringStatsProvider;->this$0:Lcom/android/server/connectivity/tethering/OffloadController;
+    iget-object v0, p0, Lcom/android/server/connectivity/tethering/OffloadController$OffloadTetheringStatsProvider;->this$0:Lcom/android/server/connectivity/tethering/OffloadController;
 
-    invoke-static {p1}, Lcom/android/server/connectivity/tethering/OffloadController;->access$1200(Lcom/android/server/connectivity/tethering/OffloadController;)Ljava/util/HashMap;
+    invoke-static {v0}, Lcom/android/server/connectivity/tethering/OffloadController;->access$1200(Lcom/android/server/connectivity/tethering/OffloadController;)Ljava/util/HashMap;
 
-    move-result-object p1
+    move-result-object v0
 
-    invoke-virtual {p1, p3}, Ljava/util/HashMap;->remove(Ljava/lang/Object;)Ljava/lang/Object;
+    invoke-virtual {v0, p3}, Ljava/util/HashMap;->remove(Ljava/lang/Object;)Ljava/lang/Object;
 
     goto :goto_1d
 
@@ -226,15 +238,15 @@
 
     invoke-static {p1, p2}, Ljava/lang/Long;->valueOf(J)Ljava/lang/Long;
 
-    move-result-object p1
+    move-result-object v1
 
-    invoke-virtual {v0, p3, p1}, Ljava/util/HashMap;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+    invoke-virtual {v0, p3, v1}, Ljava/util/HashMap;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
 
     .line 293
     :goto_1d
-    iget-object p1, p0, Lcom/android/server/connectivity/tethering/OffloadController$OffloadTetheringStatsProvider;->this$0:Lcom/android/server/connectivity/tethering/OffloadController;
+    iget-object v0, p0, Lcom/android/server/connectivity/tethering/OffloadController$OffloadTetheringStatsProvider;->this$0:Lcom/android/server/connectivity/tethering/OffloadController;
 
-    invoke-static {p1, p3}, Lcom/android/server/connectivity/tethering/OffloadController;->access$1300(Lcom/android/server/connectivity/tethering/OffloadController;Ljava/lang/String;)Z
+    invoke-static {v0, p3}, Lcom/android/server/connectivity/tethering/OffloadController;->access$1300(Lcom/android/server/connectivity/tethering/OffloadController;Ljava/lang/String;)Z
 
     .line 294
     return-void
@@ -242,6 +254,8 @@
 
 .method public setInterfaceQuota(Ljava/lang/String;J)V
     .registers 6
+    .param p1, "iface"  # Ljava/lang/String;
+    .param p2, "quotaBytes"  # J
 
     .line 287
     iget-object v0, p0, Lcom/android/server/connectivity/tethering/OffloadController$OffloadTetheringStatsProvider;->this$0:Lcom/android/server/connectivity/tethering/OffloadController;

@@ -21,8 +21,9 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/PinnerService;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/PinnerService;
 
-    .line 288
+    .line 289
     iput-object p1, p0, Lcom/android/server/PinnerService$3;->this$0:Lcom/android/server/PinnerService;
 
     invoke-direct {p0}, Landroid/app/IUidObserver$Stub;-><init>()V
@@ -31,23 +32,31 @@
 .end method
 
 .method static synthetic lambda$onUidActive$1(Ljava/lang/Object;I)V
-    .registers 2
+    .registers 3
+    .param p0, "rec$"  # Ljava/lang/Object;
+    .param p1, "x$0"  # I
 
-    .line 298
-    check-cast p0, Lcom/android/server/PinnerService;
+    .line 299
+    move-object v0, p0
 
-    invoke-static {p0, p1}, Lcom/android/server/PinnerService;->access$300(Lcom/android/server/PinnerService;I)V
+    check-cast v0, Lcom/android/server/PinnerService;
+
+    invoke-static {v0, p1}, Lcom/android/server/PinnerService;->access$300(Lcom/android/server/PinnerService;I)V
 
     return-void
 .end method
 
 .method static synthetic lambda$onUidGone$0(Ljava/lang/Object;I)V
-    .registers 2
+    .registers 3
+    .param p0, "rec$"  # Ljava/lang/Object;
+    .param p1, "x$0"  # I
 
-    .line 292
-    check-cast p0, Lcom/android/server/PinnerService;
+    .line 293
+    move-object v0, p0
 
-    invoke-static {p0, p1}, Lcom/android/server/PinnerService;->access$400(Lcom/android/server/PinnerService;I)V
+    check-cast v0, Lcom/android/server/PinnerService;
+
+    invoke-static {v0, p1}, Lcom/android/server/PinnerService;->access$400(Lcom/android/server/PinnerService;I)V
 
     return-void
 .end method
@@ -55,14 +64,15 @@
 
 # virtual methods
 .method public onUidActive(I)V
-    .registers 5
+    .registers 6
+    .param p1, "uid"  # I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
         }
     .end annotation
 
-    .line 297
+    .line 298
     iget-object v0, p0, Lcom/android/server/PinnerService$3;->this$0:Lcom/android/server/PinnerService;
 
     invoke-static {v0}, Lcom/android/server/PinnerService;->access$200(Lcom/android/server/PinnerService;)Lcom/android/server/PinnerService$PinnerHandler;
@@ -73,89 +83,98 @@
 
     iget-object v2, p0, Lcom/android/server/PinnerService$3;->this$0:Lcom/android/server/PinnerService;
 
-    .line 298
+    .line 299
     invoke-static {p1}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
 
-    move-result-object p1
+    move-result-object v3
 
-    .line 297
-    invoke-static {v1, v2, p1}, Lcom/android/internal/util/function/pooled/PooledLambda;->obtainMessage(Ljava/util/function/BiConsumer;Ljava/lang/Object;Ljava/lang/Object;)Landroid/os/Message;
+    .line 298
+    invoke-static {v1, v2, v3}, Lcom/android/internal/util/function/pooled/PooledLambda;->obtainMessage(Ljava/util/function/BiConsumer;Ljava/lang/Object;Ljava/lang/Object;)Landroid/os/Message;
 
-    move-result-object p1
+    move-result-object v1
 
-    invoke-virtual {v0, p1}, Lcom/android/server/PinnerService$PinnerHandler;->sendMessage(Landroid/os/Message;)Z
+    invoke-virtual {v0, v1}, Lcom/android/server/PinnerService$PinnerHandler;->sendMessage(Landroid/os/Message;)Z
 
-    .line 299
+    .line 300
     return-void
 .end method
 
 .method public onUidCachedChanged(IZ)V
     .registers 3
+    .param p1, "uid"  # I
+    .param p2, "cached"  # Z
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
         }
     .end annotation
 
-    .line 312
+    .line 313
     return-void
 .end method
 
 .method public onUidGone(IZ)V
-    .registers 5
+    .registers 7
+    .param p1, "uid"  # I
+    .param p2, "disabled"  # Z
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
         }
     .end annotation
 
-    .line 291
-    iget-object p2, p0, Lcom/android/server/PinnerService$3;->this$0:Lcom/android/server/PinnerService;
-
-    invoke-static {p2}, Lcom/android/server/PinnerService;->access$200(Lcom/android/server/PinnerService;)Lcom/android/server/PinnerService$PinnerHandler;
-
-    move-result-object p2
-
-    sget-object v0, Lcom/android/server/-$$Lambda$PinnerService$3$RQBbrt9b8esLBxJImxDgVTsP34I;->INSTANCE:Lcom/android/server/-$$Lambda$PinnerService$3$RQBbrt9b8esLBxJImxDgVTsP34I;
-
-    iget-object v1, p0, Lcom/android/server/PinnerService$3;->this$0:Lcom/android/server/PinnerService;
-
     .line 292
-    invoke-static {p1}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
+    iget-object v0, p0, Lcom/android/server/PinnerService$3;->this$0:Lcom/android/server/PinnerService;
 
-    move-result-object p1
+    invoke-static {v0}, Lcom/android/server/PinnerService;->access$200(Lcom/android/server/PinnerService;)Lcom/android/server/PinnerService$PinnerHandler;
 
-    .line 291
-    invoke-static {v0, v1, p1}, Lcom/android/internal/util/function/pooled/PooledLambda;->obtainMessage(Ljava/util/function/BiConsumer;Ljava/lang/Object;Ljava/lang/Object;)Landroid/os/Message;
+    move-result-object v0
 
-    move-result-object p1
+    sget-object v1, Lcom/android/server/-$$Lambda$PinnerService$3$RQBbrt9b8esLBxJImxDgVTsP34I;->INSTANCE:Lcom/android/server/-$$Lambda$PinnerService$3$RQBbrt9b8esLBxJImxDgVTsP34I;
 
-    invoke-virtual {p2, p1}, Lcom/android/server/PinnerService$PinnerHandler;->sendMessage(Landroid/os/Message;)Z
+    iget-object v2, p0, Lcom/android/server/PinnerService$3;->this$0:Lcom/android/server/PinnerService;
 
     .line 293
+    invoke-static {p1}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
+
+    move-result-object v3
+
+    .line 292
+    invoke-static {v1, v2, v3}, Lcom/android/internal/util/function/pooled/PooledLambda;->obtainMessage(Ljava/util/function/BiConsumer;Ljava/lang/Object;Ljava/lang/Object;)Landroid/os/Message;
+
+    move-result-object v1
+
+    invoke-virtual {v0, v1}, Lcom/android/server/PinnerService$PinnerHandler;->sendMessage(Landroid/os/Message;)Z
+
+    .line 294
     return-void
 .end method
 
 .method public onUidIdle(IZ)V
     .registers 3
+    .param p1, "uid"  # I
+    .param p2, "disabled"  # Z
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
         }
     .end annotation
 
-    .line 303
+    .line 304
     return-void
 .end method
 
 .method public onUidStateChanged(IIJ)V
     .registers 5
+    .param p1, "uid"  # I
+    .param p2, "procState"  # I
+    .param p3, "procStateSeq"  # J
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
         }
     .end annotation
 
-    .line 308
+    .line 309
     return-void
 .end method

@@ -29,6 +29,14 @@
 # direct methods
 .method private constructor <init>(Lcom/android/server/pm/ShortcutRequestPinProcessor;Landroid/content/pm/ShortcutInfo;Landroid/content/pm/ShortcutInfo;Landroid/content/IntentSender;Ljava/lang/String;IIZ)V
     .registers 10
+    .param p1, "processor"  # Lcom/android/server/pm/ShortcutRequestPinProcessor;
+    .param p2, "shortcutOriginal"  # Landroid/content/pm/ShortcutInfo;
+    .param p3, "shortcutForLauncher"  # Landroid/content/pm/ShortcutInfo;
+    .param p4, "resultIntent"  # Landroid/content/IntentSender;
+    .param p5, "launcherPackage"  # Ljava/lang/String;
+    .param p6, "launcherUserId"  # I
+    .param p7, "launcherUid"  # I
+    .param p8, "preExisting"  # Z
 
     .line 190
     const/4 v0, 0x0
@@ -56,6 +64,15 @@
 
 .method synthetic constructor <init>(Lcom/android/server/pm/ShortcutRequestPinProcessor;Landroid/content/pm/ShortcutInfo;Landroid/content/pm/ShortcutInfo;Landroid/content/IntentSender;Ljava/lang/String;IIZLcom/android/server/pm/ShortcutRequestPinProcessor$1;)V
     .registers 10
+    .param p1, "x0"  # Lcom/android/server/pm/ShortcutRequestPinProcessor;
+    .param p2, "x1"  # Landroid/content/pm/ShortcutInfo;
+    .param p3, "x2"  # Landroid/content/pm/ShortcutInfo;
+    .param p4, "x3"  # Landroid/content/IntentSender;
+    .param p5, "x4"  # Ljava/lang/String;
+    .param p6, "x5"  # I
+    .param p7, "x6"  # I
+    .param p8, "x7"  # Z
+    .param p9, "x8"  # Lcom/android/server/pm/ShortcutRequestPinProcessor$1;
 
     .line 172
     invoke-direct/range {p0 .. p8}, Lcom/android/server/pm/ShortcutRequestPinProcessor$PinShortcutRequestInner;-><init>(Lcom/android/server/pm/ShortcutRequestPinProcessor;Landroid/content/pm/ShortcutInfo;Landroid/content/pm/ShortcutInfo;Landroid/content/IntentSender;Ljava/lang/String;IIZ)V

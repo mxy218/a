@@ -29,18 +29,22 @@
     .end annotation
 
     .line 39
+    .local p0, "sets":Landroid/util/SparseArray;, "Landroid/util/SparseArray<Ljava/util/HashSet<TV;>;>;"
     new-instance v0, Ljava/util/HashSet;
 
     invoke-direct {v0}, Ljava/util/HashSet;-><init>()V
 
     .line 40
+    .local v0, "unionSet":Ljava/util/HashSet;, "Ljava/util/HashSet<TV;>;"
     invoke-virtual {p0}, Landroid/util/SparseArray;->size()I
 
     move-result v1
 
     .line 41
+    .local v1, "n":I
     const/4 v2, 0x0
 
+    .local v2, "i":I
     :goto_a
     if-ge v2, v1, :cond_1a
 
@@ -52,18 +56,21 @@
     check-cast v3, Ljava/util/HashSet;
 
     .line 43
+    .local v3, "ithSet":Ljava/util/HashSet;, "Ljava/util/HashSet<TV;>;"
     if-eqz v3, :cond_17
 
     .line 44
     invoke-virtual {v0, v3}, Ljava/util/HashSet;->addAll(Ljava/util/Collection;)Z
 
     .line 41
+    .end local v3  # "ithSet":Ljava/util/HashSet;, "Ljava/util/HashSet<TV;>;"
     :cond_17
     add-int/lit8 v2, v2, 0x1
 
     goto :goto_a
 
     .line 47
+    .end local v2  # "i":I
     :cond_1a
     return-object v0
 .end method

@@ -60,7 +60,10 @@
 
 # direct methods
 .method public constructor <init>(Landroid/content/Context;Lcom/android/server/backup/Trampoline;Landroid/os/HandlerThread;)V
-    .registers 5
+    .registers 9
+    .param p1, "context"  # Landroid/content/Context;
+    .param p2, "trampoline"  # Lcom/android/server/backup/Trampoline;
+    .param p3, "backupThread"  # Landroid/os/HandlerThread;
 
     .line 111
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -82,67 +85,68 @@
     .line 112
     invoke-static {p1}, Lcom/android/internal/util/Preconditions;->checkNotNull(Ljava/lang/Object;)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v0
 
-    check-cast p1, Landroid/content/Context;
+    check-cast v0, Landroid/content/Context;
 
-    iput-object p1, p0, Lcom/android/server/backup/BackupManagerService;->mContext:Landroid/content/Context;
+    iput-object v0, p0, Lcom/android/server/backup/BackupManagerService;->mContext:Landroid/content/Context;
 
     .line 113
     invoke-static {p2}, Lcom/android/internal/util/Preconditions;->checkNotNull(Ljava/lang/Object;)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v0
 
-    check-cast p1, Lcom/android/server/backup/Trampoline;
+    check-cast v0, Lcom/android/server/backup/Trampoline;
 
-    iput-object p1, p0, Lcom/android/server/backup/BackupManagerService;->mTrampoline:Lcom/android/server/backup/Trampoline;
+    iput-object v0, p0, Lcom/android/server/backup/BackupManagerService;->mTrampoline:Lcom/android/server/backup/Trampoline;
 
     .line 114
     invoke-static {p3}, Lcom/android/internal/util/Preconditions;->checkNotNull(Ljava/lang/Object;)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v0
 
-    check-cast p1, Landroid/os/HandlerThread;
+    check-cast v0, Landroid/os/HandlerThread;
 
-    iput-object p1, p0, Lcom/android/server/backup/BackupManagerService;->mBackupThread:Landroid/os/HandlerThread;
+    iput-object v0, p0, Lcom/android/server/backup/BackupManagerService;->mBackupThread:Landroid/os/HandlerThread;
 
     .line 117
     invoke-static {}, Lcom/android/server/SystemConfig;->getInstance()Lcom/android/server/SystemConfig;
 
-    move-result-object p1
+    move-result-object v0
 
     .line 118
-    invoke-virtual {p1}, Lcom/android/server/SystemConfig;->getBackupTransportWhitelist()Landroid/util/ArraySet;
+    .local v0, "systemConfig":Lcom/android/server/SystemConfig;
+    invoke-virtual {v0}, Lcom/android/server/SystemConfig;->getBackupTransportWhitelist()Landroid/util/ArraySet;
 
-    move-result-object p1
+    move-result-object v1
 
-    iput-object p1, p0, Lcom/android/server/backup/BackupManagerService;->mTransportWhitelist:Ljava/util/Set;
+    iput-object v1, p0, Lcom/android/server/backup/BackupManagerService;->mTransportWhitelist:Ljava/util/Set;
 
     .line 119
-    iget-object p1, p0, Lcom/android/server/backup/BackupManagerService;->mTransportWhitelist:Ljava/util/Set;
+    iget-object v1, p0, Lcom/android/server/backup/BackupManagerService;->mTransportWhitelist:Ljava/util/Set;
 
-    if-nez p1, :cond_3d
+    if-nez v1, :cond_3d
 
     .line 120
     invoke-static {}, Ljava/util/Collections;->emptySet()Ljava/util/Set;
 
-    move-result-object p1
+    move-result-object v1
 
-    iput-object p1, p0, Lcom/android/server/backup/BackupManagerService;->mTransportWhitelist:Ljava/util/Set;
+    iput-object v1, p0, Lcom/android/server/backup/BackupManagerService;->mTransportWhitelist:Ljava/util/Set;
 
     .line 123
     :cond_3d
-    iget-object p1, p0, Lcom/android/server/backup/BackupManagerService;->mContext:Landroid/content/Context;
+    iget-object v1, p0, Lcom/android/server/backup/BackupManagerService;->mContext:Landroid/content/Context;
 
-    iget-object p2, p0, Lcom/android/server/backup/BackupManagerService;->mUserRemovedReceiver:Landroid/content/BroadcastReceiver;
+    iget-object v2, p0, Lcom/android/server/backup/BackupManagerService;->mUserRemovedReceiver:Landroid/content/BroadcastReceiver;
 
-    new-instance p3, Landroid/content/IntentFilter;
+    new-instance v3, Landroid/content/IntentFilter;
 
-    const-string v0, "android.intent.action.USER_REMOVED"
+    const-string v4, "android.intent.action.USER_REMOVED"
 
-    invoke-direct {p3, v0}, Landroid/content/IntentFilter;-><init>(Ljava/lang/String;)V
+    invoke-direct {v3, v4}, Landroid/content/IntentFilter;-><init>(Ljava/lang/String;)V
 
-    invoke-virtual {p1, p2, p3}, Landroid/content/Context;->registerReceiver(Landroid/content/BroadcastReceiver;Landroid/content/IntentFilter;)Landroid/content/Intent;
+    invoke-virtual {v1, v2, v3}, Landroid/content/Context;->registerReceiver(Landroid/content/BroadcastReceiver;Landroid/content/IntentFilter;)Landroid/content/Intent;
 
     .line 125
     return-void
@@ -150,6 +154,8 @@
 
 .method static synthetic access$000(Lcom/android/server/backup/BackupManagerService;I)V
     .registers 2
+    .param p0, "x0"  # Lcom/android/server/backup/BackupManagerService;
+    .param p1, "x1"  # I
 
     .line 69
     invoke-direct {p0, p1}, Lcom/android/server/backup/BackupManagerService;->onRemovedNonSystemUser(I)V
@@ -168,6 +174,7 @@
 
 .method static synthetic access$102(Lcom/android/server/backup/Trampoline;)Lcom/android/server/backup/Trampoline;
     .registers 1
+    .param p0, "x0"  # Lcom/android/server/backup/Trampoline;
 
     .line 69
     sput-object p0, Lcom/android/server/backup/BackupManagerService;->sInstance:Lcom/android/server/backup/Trampoline;
@@ -176,7 +183,9 @@
 .end method
 
 .method private enforceCallingPermissionOnUserId(ILjava/lang/String;)V
-    .registers 4
+    .registers 5
+    .param p1, "userId"  # I
+    .param p2, "message"  # Ljava/lang/String;
 
     .line 149
     invoke-static {}, Landroid/os/Binder;->getCallingUserHandle()Landroid/os/UserHandle;
@@ -190,11 +199,11 @@
     if-eq v0, p1, :cond_11
 
     .line 150
-    iget-object p1, p0, Lcom/android/server/backup/BackupManagerService;->mContext:Landroid/content/Context;
+    iget-object v0, p0, Lcom/android/server/backup/BackupManagerService;->mContext:Landroid/content/Context;
 
-    const-string v0, "android.permission.INTERACT_ACROSS_USERS_FULL"
+    const-string v1, "android.permission.INTERACT_ACROSS_USERS_FULL"
 
-    invoke-virtual {p1, v0, p2}, Landroid/content/Context;->enforceCallingOrSelfPermission(Ljava/lang/String;Ljava/lang/String;)V
+    invoke-virtual {v0, v1, p2}, Landroid/content/Context;->enforceCallingOrSelfPermission(Ljava/lang/String;Ljava/lang/String;)V
 
     .line 153
     :cond_11
@@ -211,7 +220,8 @@
 .end method
 
 .method private onRemovedNonSystemUser(I)V
-    .registers 5
+    .registers 6
+    .param p1, "userId"  # I
 
     .line 134
     new-instance v0, Ljava/lang/StringBuilder;
@@ -238,28 +248,29 @@
     move-result-object v0
 
     .line 136
+    .local v0, "dir":Ljava/io/File;
     invoke-static {v0}, Landroid/os/FileUtils;->deleteContentsAndDir(Ljava/io/File;)Z
 
-    move-result v0
+    move-result v2
 
-    if-nez v0, :cond_34
+    if-nez v2, :cond_34
 
     .line 137
-    new-instance v0, Ljava/lang/StringBuilder;
+    new-instance v2, Ljava/lang/StringBuilder;
 
-    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v2, "Failed to delete state dir for removed user: "
+    const-string v3, "Failed to delete state dir for removed user: "
 
-    invoke-virtual {v0, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, p1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v2
 
-    invoke-static {v1, p1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v2}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 139
     :cond_34
@@ -270,6 +281,12 @@
 # virtual methods
 .method public acknowledgeAdbBackupOrRestore(IIZLjava/lang/String;Ljava/lang/String;Landroid/app/backup/IFullBackupRestoreObserver;)V
     .registers 14
+    .param p1, "userId"  # I
+    .param p2, "token"  # I
+    .param p3, "allow"  # Z
+    .param p4, "currentPassword"  # Ljava/lang/String;
+    .param p5, "encryptionPassword"  # Ljava/lang/String;
+    .param p6, "observer"  # Landroid/app/backup/IFullBackupRestoreObserver;
 
     .line 841
     nop
@@ -279,12 +296,15 @@
 
     invoke-virtual {p0, p1, v0}, Lcom/android/server/backup/BackupManagerService;->getServiceForUserIfCallerHasPermission(ILjava/lang/String;)Lcom/android/server/backup/UserBackupManagerService;
 
-    move-result-object v1
+    move-result-object v0
 
     .line 844
-    if-eqz v1, :cond_11
+    .local v0, "userBackupManagerService":Lcom/android/server/backup/UserBackupManagerService;
+    if-eqz v0, :cond_12
 
     .line 845
+    move-object v1, v0
+
     move v2, p2
 
     move v3, p3
@@ -298,12 +318,23 @@
     invoke-virtual/range {v1 .. v6}, Lcom/android/server/backup/UserBackupManagerService;->acknowledgeAdbBackupOrRestore(IZLjava/lang/String;Ljava/lang/String;Landroid/app/backup/IFullBackupRestoreObserver;)V
 
     .line 848
-    :cond_11
+    :cond_12
     return-void
 .end method
 
 .method public adbBackup(ILandroid/os/ParcelFileDescriptor;ZZZZZZZZ[Ljava/lang/String;)V
-    .registers 24
+    .registers 26
+    .param p1, "userId"  # I
+    .param p2, "fd"  # Landroid/os/ParcelFileDescriptor;
+    .param p3, "includeApks"  # Z
+    .param p4, "includeObbs"  # Z
+    .param p5, "includeShared"  # Z
+    .param p6, "doWidgets"  # Z
+    .param p7, "doAllApps"  # Z
+    .param p8, "includeSystem"  # Z
+    .param p9, "doCompress"  # Z
+    .param p10, "doKeyValue"  # Z
+    .param p11, "packageNames"  # [Ljava/lang/String;
 
     .line 798
     nop
@@ -317,41 +348,46 @@
 
     invoke-virtual {p0, p1, v0}, Lcom/android/server/backup/BackupManagerService;->getServiceForUserIfCallerHasPermission(ILjava/lang/String;)Lcom/android/server/backup/UserBackupManagerService;
 
-    move-result-object v1
+    move-result-object v0
 
     .line 801
-    if-eqz v1, :cond_20
+    .local v0, "userBackupManagerService":Lcom/android/server/backup/UserBackupManagerService;
+    if-eqz v0, :cond_23
 
     .line 802
-    move-object v2, p2
+    move-object v3, v0
 
-    move v3, p3
+    move-object/from16 v4, p2
 
-    move/from16 v4, p4
+    move/from16 v5, p3
 
-    move/from16 v5, p5
+    move/from16 v6, p4
 
-    move/from16 v6, p6
+    move/from16 v7, p5
 
-    move/from16 v7, p7
+    move/from16 v8, p6
 
-    move/from16 v8, p8
+    move/from16 v9, p7
 
-    move/from16 v9, p9
+    move/from16 v10, p8
 
-    move/from16 v10, p10
+    move/from16 v11, p9
 
-    move-object/from16 v11, p11
+    move/from16 v12, p10
 
-    invoke-virtual/range {v1 .. v11}, Lcom/android/server/backup/UserBackupManagerService;->adbBackup(Landroid/os/ParcelFileDescriptor;ZZZZZZZZ[Ljava/lang/String;)V
+    move-object/from16 v13, p11
+
+    invoke-virtual/range {v3 .. v13}, Lcom/android/server/backup/UserBackupManagerService;->adbBackup(Landroid/os/ParcelFileDescriptor;ZZZZZZZZ[Ljava/lang/String;)V
 
     .line 814
-    :cond_20
+    :cond_23
     return-void
 .end method
 
 .method public adbRestore(ILandroid/os/ParcelFileDescriptor;)V
     .registers 4
+    .param p1, "userId"  # I
+    .param p2, "fd"  # Landroid/os/ParcelFileDescriptor;
 
     .line 822
     nop
@@ -361,13 +397,14 @@
 
     invoke-virtual {p0, p1, v0}, Lcom/android/server/backup/BackupManagerService;->getServiceForUserIfCallerHasPermission(ILjava/lang/String;)Lcom/android/server/backup/UserBackupManagerService;
 
-    move-result-object p1
+    move-result-object v0
 
     .line 825
-    if-eqz p1, :cond_c
+    .local v0, "userBackupManagerService":Lcom/android/server/backup/UserBackupManagerService;
+    if-eqz v0, :cond_c
 
     .line 826
-    invoke-virtual {p1, p2}, Lcom/android/server/backup/UserBackupManagerService;->adbRestore(Landroid/os/ParcelFileDescriptor;)V
+    invoke-virtual {v0, p2}, Lcom/android/server/backup/UserBackupManagerService;->adbRestore(Landroid/os/ParcelFileDescriptor;)V
 
     .line 828
     :cond_c
@@ -376,6 +413,9 @@
 
 .method public agentConnected(ILjava/lang/String;Landroid/os/IBinder;)V
     .registers 5
+    .param p1, "userId"  # I
+    .param p2, "packageName"  # Ljava/lang/String;
+    .param p3, "agentBinder"  # Landroid/os/IBinder;
 
     .line 263
     nop
@@ -385,13 +425,14 @@
 
     invoke-virtual {p0, p1, v0}, Lcom/android/server/backup/BackupManagerService;->getServiceForUserIfCallerHasPermission(ILjava/lang/String;)Lcom/android/server/backup/UserBackupManagerService;
 
-    move-result-object p1
+    move-result-object v0
 
     .line 266
-    if-eqz p1, :cond_c
+    .local v0, "userBackupManagerService":Lcom/android/server/backup/UserBackupManagerService;
+    if-eqz v0, :cond_c
 
     .line 267
-    invoke-virtual {p1, p2, p3}, Lcom/android/server/backup/UserBackupManagerService;->agentConnected(Ljava/lang/String;Landroid/os/IBinder;)V
+    invoke-virtual {v0, p2, p3}, Lcom/android/server/backup/UserBackupManagerService;->agentConnected(Ljava/lang/String;Landroid/os/IBinder;)V
 
     .line 269
     :cond_c
@@ -400,6 +441,8 @@
 
 .method public agentDisconnected(ILjava/lang/String;)V
     .registers 4
+    .param p1, "userId"  # I
+    .param p2, "packageName"  # Ljava/lang/String;
 
     .line 276
     nop
@@ -409,13 +452,14 @@
 
     invoke-virtual {p0, p1, v0}, Lcom/android/server/backup/BackupManagerService;->getServiceForUserIfCallerHasPermission(ILjava/lang/String;)Lcom/android/server/backup/UserBackupManagerService;
 
-    move-result-object p1
+    move-result-object v0
 
     .line 279
-    if-eqz p1, :cond_c
+    .local v0, "userBackupManagerService":Lcom/android/server/backup/UserBackupManagerService;
+    if-eqz v0, :cond_c
 
     .line 280
-    invoke-virtual {p1, p2}, Lcom/android/server/backup/UserBackupManagerService;->agentDisconnected(Ljava/lang/String;)V
+    invoke-virtual {v0, p2}, Lcom/android/server/backup/UserBackupManagerService;->agentDisconnected(Ljava/lang/String;)V
 
     .line 282
     :cond_c
@@ -424,6 +468,7 @@
 
 .method public backupNow(I)V
     .registers 3
+    .param p1, "userId"  # I
 
     .line 635
     nop
@@ -433,13 +478,14 @@
 
     invoke-virtual {p0, p1, v0}, Lcom/android/server/backup/BackupManagerService;->getServiceForUserIfCallerHasPermission(ILjava/lang/String;)Lcom/android/server/backup/UserBackupManagerService;
 
-    move-result-object p1
+    move-result-object v0
 
     .line 638
-    if-eqz p1, :cond_c
+    .local v0, "userBackupManagerService":Lcom/android/server/backup/UserBackupManagerService;
+    if-eqz v0, :cond_c
 
     .line 639
-    invoke-virtual {p1}, Lcom/android/server/backup/UserBackupManagerService;->backupNow()V
+    invoke-virtual {v0}, Lcom/android/server/backup/UserBackupManagerService;->backupNow()V
 
     .line 641
     :cond_c
@@ -447,7 +493,9 @@
 .end method
 
 .method public beginFullBackup(ILcom/android/server/backup/FullBackupJob;)Z
-    .registers 4
+    .registers 5
+    .param p1, "userId"  # I
+    .param p2, "scheduledJob"  # Lcom/android/server/backup/FullBackupJob;
 
     .line 680
     nop
@@ -457,32 +505,36 @@
 
     invoke-virtual {p0, p1, v0}, Lcom/android/server/backup/BackupManagerService;->getServiceForUserIfCallerHasPermission(ILjava/lang/String;)Lcom/android/server/backup/UserBackupManagerService;
 
-    move-result-object p1
+    move-result-object v0
 
     .line 683
-    if-eqz p1, :cond_11
+    .local v0, "userBackupManagerService":Lcom/android/server/backup/UserBackupManagerService;
+    if-eqz v0, :cond_11
 
     .line 684
-    invoke-virtual {p1, p2}, Lcom/android/server/backup/UserBackupManagerService;->beginFullBackup(Lcom/android/server/backup/FullBackupJob;)Z
+    invoke-virtual {v0, p2}, Lcom/android/server/backup/UserBackupManagerService;->beginFullBackup(Lcom/android/server/backup/FullBackupJob;)Z
 
-    move-result p1
+    move-result v1
 
-    if-eqz p1, :cond_11
+    if-eqz v1, :cond_11
 
-    const/4 p1, 0x1
+    const/4 v1, 0x1
 
     goto :goto_12
 
     :cond_11
-    const/4 p1, 0x0
+    const/4 v1, 0x0
 
     .line 683
     :goto_12
-    return p1
+    return v1
 .end method
 
 .method public beginRestoreSession(ILjava/lang/String;Ljava/lang/String;)Landroid/app/backup/IRestoreSession;
-    .registers 5
+    .registers 6
+    .param p1, "userId"  # I
+    .param p2, "packageName"  # Ljava/lang/String;
+    .param p3, "transportName"  # Ljava/lang/String;
 
     .line 736
     nop
@@ -492,29 +544,31 @@
 
     invoke-virtual {p0, p1, v0}, Lcom/android/server/backup/BackupManagerService;->getServiceForUserIfCallerHasPermission(ILjava/lang/String;)Lcom/android/server/backup/UserBackupManagerService;
 
-    move-result-object p1
+    move-result-object v0
 
     .line 739
-    if-nez p1, :cond_b
+    .local v0, "userBackupManagerService":Lcom/android/server/backup/UserBackupManagerService;
+    if-nez v0, :cond_b
 
     .line 740
-    const/4 p1, 0x0
+    const/4 v1, 0x0
 
     goto :goto_f
 
     .line 741
     :cond_b
-    invoke-virtual {p1, p2, p3}, Lcom/android/server/backup/UserBackupManagerService;->beginRestoreSession(Ljava/lang/String;Ljava/lang/String;)Landroid/app/backup/IRestoreSession;
+    invoke-virtual {v0, p2, p3}, Lcom/android/server/backup/UserBackupManagerService;->beginRestoreSession(Ljava/lang/String;Ljava/lang/String;)Landroid/app/backup/IRestoreSession;
 
-    move-result-object p1
+    move-result-object v1
 
     .line 739
     :goto_f
-    return-object p1
+    return-object v1
 .end method
 
 .method public cancelBackups(I)V
     .registers 3
+    .param p1, "userId"  # I
 
     .line 663
     nop
@@ -524,13 +578,14 @@
 
     invoke-virtual {p0, p1, v0}, Lcom/android/server/backup/BackupManagerService;->getServiceForUserIfCallerHasPermission(ILjava/lang/String;)Lcom/android/server/backup/UserBackupManagerService;
 
-    move-result-object p1
+    move-result-object v0
 
     .line 666
-    if-eqz p1, :cond_c
+    .local v0, "userBackupManagerService":Lcom/android/server/backup/UserBackupManagerService;
+    if-eqz v0, :cond_c
 
     .line 667
-    invoke-virtual {p1}, Lcom/android/server/backup/UserBackupManagerService;->cancelBackups()V
+    invoke-virtual {v0}, Lcom/android/server/backup/UserBackupManagerService;->cancelBackups()V
 
     .line 669
     :cond_c
@@ -539,6 +594,9 @@
 
 .method public clearBackupData(ILjava/lang/String;Ljava/lang/String;)V
     .registers 5
+    .param p1, "userId"  # I
+    .param p2, "transportName"  # Ljava/lang/String;
+    .param p3, "packageName"  # Ljava/lang/String;
 
     .line 317
     nop
@@ -548,13 +606,14 @@
 
     invoke-virtual {p0, p1, v0}, Lcom/android/server/backup/BackupManagerService;->getServiceForUserIfCallerHasPermission(ILjava/lang/String;)Lcom/android/server/backup/UserBackupManagerService;
 
-    move-result-object p1
+    move-result-object v0
 
     .line 320
-    if-eqz p1, :cond_c
+    .local v0, "userBackupManagerService":Lcom/android/server/backup/UserBackupManagerService;
+    if-eqz v0, :cond_c
 
     .line 321
-    invoke-virtual {p1, p2, p3}, Lcom/android/server/backup/UserBackupManagerService;->clearBackupData(Ljava/lang/String;Ljava/lang/String;)V
+    invoke-virtual {v0, p2, p3}, Lcom/android/server/backup/UserBackupManagerService;->clearBackupData(Ljava/lang/String;Ljava/lang/String;)V
 
     .line 323
     :cond_c
@@ -563,6 +622,8 @@
 
 .method public dataChanged(ILjava/lang/String;)V
     .registers 4
+    .param p1, "userId"  # I
+    .param p2, "packageName"  # Ljava/lang/String;
 
     .line 250
     nop
@@ -572,13 +633,14 @@
 
     invoke-virtual {p0, p1, v0}, Lcom/android/server/backup/BackupManagerService;->getServiceForUserIfCallerHasPermission(ILjava/lang/String;)Lcom/android/server/backup/UserBackupManagerService;
 
-    move-result-object p1
+    move-result-object v0
 
     .line 253
-    if-eqz p1, :cond_c
+    .local v0, "userBackupManagerService":Lcom/android/server/backup/UserBackupManagerService;
+    if-eqz v0, :cond_c
 
     .line 254
-    invoke-virtual {p1, p2}, Lcom/android/server/backup/UserBackupManagerService;->dataChanged(Ljava/lang/String;)V
+    invoke-virtual {v0, p2}, Lcom/android/server/backup/UserBackupManagerService;->dataChanged(Ljava/lang/String;)V
 
     .line 256
     :cond_c
@@ -586,7 +648,10 @@
 .end method
 
 .method public dump(Ljava/io/FileDescriptor;Ljava/io/PrintWriter;[Ljava/lang/String;)V
-    .registers 9
+    .registers 10
+    .param p1, "fd"  # Ljava/io/FileDescriptor;
+    .param p2, "pw"  # Ljava/io/PrintWriter;
+    .param p3, "args"  # [Ljava/lang/String;
 
     .line 856
     iget-object v0, p0, Lcom/android/server/backup/BackupManagerService;->mContext:Landroid/content/Context;
@@ -619,57 +684,59 @@
     aget-object v3, p3, v2
 
     .line 862
+    .local v3, "arg":Ljava/lang/String;
     invoke-virtual {v3}, Ljava/lang/String;->toLowerCase()Ljava/lang/String;
 
-    move-result-object v3
+    move-result-object v4
 
-    const-string/jumbo v4, "users"
+    const-string/jumbo v5, "users"
 
-    invoke-virtual {v4, v3}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v5, v4}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result v3
+    move-result v4
 
-    if-eqz v3, :cond_50
+    if-eqz v4, :cond_50
 
     .line 863
-    const-string p1, "Backup Manager is running for users:"
+    const-string v0, "Backup Manager is running for users:"
 
-    invoke-virtual {p2, p1}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
+    invoke-virtual {p2, v0}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
     .line 864
-    nop
+    const/4 v0, 0x0
 
+    .local v0, "i":I
     :goto_27
-    iget-object p1, p0, Lcom/android/server/backup/BackupManagerService;->mServiceUsers:Landroid/util/SparseArray;
+    iget-object v1, p0, Lcom/android/server/backup/BackupManagerService;->mServiceUsers:Landroid/util/SparseArray;
 
-    invoke-virtual {p1}, Landroid/util/SparseArray;->size()I
+    invoke-virtual {v1}, Landroid/util/SparseArray;->size()I
 
-    move-result p1
+    move-result v1
 
-    if-ge v0, p1, :cond_4c
+    if-ge v0, v1, :cond_4c
 
     .line 865
-    new-instance p1, Ljava/lang/StringBuilder;
+    new-instance v1, Ljava/lang/StringBuilder;
 
-    invoke-direct {p1}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string p3, " "
+    const-string v2, " "
 
-    invoke-virtual {p1, p3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    iget-object p3, p0, Lcom/android/server/backup/BackupManagerService;->mServiceUsers:Landroid/util/SparseArray;
+    iget-object v2, p0, Lcom/android/server/backup/BackupManagerService;->mServiceUsers:Landroid/util/SparseArray;
 
-    invoke-virtual {p3, v0}, Landroid/util/SparseArray;->keyAt(I)I
+    invoke-virtual {v2, v0}, Landroid/util/SparseArray;->keyAt(I)I
 
-    move-result p3
+    move-result v2
 
-    invoke-virtual {p1, p3}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v1
 
-    invoke-virtual {p2, p1}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
+    invoke-virtual {p2, v1}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
     .line 864
     add-int/lit8 v0, v0, 0x1
@@ -677,6 +744,7 @@
     goto :goto_27
 
     .line 867
+    .end local v0  # "i":I
     :cond_4c
     invoke-virtual {p2}, Ljava/io/PrintWriter;->println()V
 
@@ -684,6 +752,7 @@
     return-void
 
     .line 861
+    .end local v3  # "arg":Ljava/lang/String;
     :cond_50
     add-int/lit8 v2, v2, 0x1
 
@@ -701,6 +770,7 @@
     move-result-object v0
 
     .line 876
+    .local v0, "userBackupManagerService":Lcom/android/server/backup/UserBackupManagerService;
     if-eqz v0, :cond_5f
 
     .line 877
@@ -713,6 +783,7 @@
 
 .method public endFullBackup(I)V
     .registers 3
+    .param p1, "userId"  # I
 
     .line 692
     nop
@@ -722,13 +793,14 @@
 
     invoke-virtual {p0, p1, v0}, Lcom/android/server/backup/BackupManagerService;->getServiceForUserIfCallerHasPermission(ILjava/lang/String;)Lcom/android/server/backup/UserBackupManagerService;
 
-    move-result-object p1
+    move-result-object v0
 
     .line 695
-    if-eqz p1, :cond_c
+    .local v0, "userBackupManagerService":Lcom/android/server/backup/UserBackupManagerService;
+    if-eqz v0, :cond_c
 
     .line 696
-    invoke-virtual {p1}, Lcom/android/server/backup/UserBackupManagerService;->endFullBackup()V
+    invoke-virtual {v0}, Lcom/android/server/backup/UserBackupManagerService;->endFullBackup()V
 
     .line 698
     :cond_c
@@ -736,7 +808,9 @@
 .end method
 
 .method public filterAppsEligibleForBackup(I[Ljava/lang/String;)[Ljava/lang/String;
-    .registers 4
+    .registers 5
+    .param p1, "userId"  # I
+    .param p2, "packages"  # [Ljava/lang/String;
 
     .line 622
     nop
@@ -746,29 +820,32 @@
 
     invoke-virtual {p0, p1, v0}, Lcom/android/server/backup/BackupManagerService;->getServiceForUserIfCallerHasPermission(ILjava/lang/String;)Lcom/android/server/backup/UserBackupManagerService;
 
-    move-result-object p1
+    move-result-object v0
 
     .line 625
-    if-nez p1, :cond_b
+    .local v0, "userBackupManagerService":Lcom/android/server/backup/UserBackupManagerService;
+    if-nez v0, :cond_b
 
     .line 626
-    const/4 p1, 0x0
+    const/4 v1, 0x0
 
     goto :goto_f
 
     .line 627
     :cond_b
-    invoke-virtual {p1, p2}, Lcom/android/server/backup/UserBackupManagerService;->filterAppsEligibleForBackup([Ljava/lang/String;)[Ljava/lang/String;
+    invoke-virtual {v0, p2}, Lcom/android/server/backup/UserBackupManagerService;->filterAppsEligibleForBackup([Ljava/lang/String;)[Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v1
 
     .line 625
     :goto_f
-    return-object p1
+    return-object v1
 .end method
 
 .method public fullTransportBackup(I[Ljava/lang/String;)V
     .registers 4
+    .param p1, "userId"  # I
+    .param p2, "packageNames"  # [Ljava/lang/String;
 
     .line 704
     nop
@@ -778,13 +855,14 @@
 
     invoke-virtual {p0, p1, v0}, Lcom/android/server/backup/BackupManagerService;->getServiceForUserIfCallerHasPermission(ILjava/lang/String;)Lcom/android/server/backup/UserBackupManagerService;
 
-    move-result-object p1
+    move-result-object v0
 
     .line 707
-    if-eqz p1, :cond_c
+    .local v0, "userBackupManagerService":Lcom/android/server/backup/UserBackupManagerService;
+    if-eqz v0, :cond_c
 
     .line 708
-    invoke-virtual {p1, p2}, Lcom/android/server/backup/UserBackupManagerService;->fullTransportBackup([Ljava/lang/String;)V
+    invoke-virtual {v0, p2}, Lcom/android/server/backup/UserBackupManagerService;->fullTransportBackup([Ljava/lang/String;)V
 
     .line 710
     :cond_c
@@ -792,7 +870,9 @@
 .end method
 
 .method public getAvailableRestoreToken(ILjava/lang/String;)J
-    .registers 4
+    .registers 6
+    .param p1, "userId"  # I
+    .param p2, "packageName"  # Ljava/lang/String;
 
     .line 749
     nop
@@ -802,29 +882,32 @@
 
     invoke-virtual {p0, p1, v0}, Lcom/android/server/backup/BackupManagerService;->getServiceForUserIfCallerHasPermission(ILjava/lang/String;)Lcom/android/server/backup/UserBackupManagerService;
 
-    move-result-object p1
+    move-result-object v0
 
     .line 752
-    if-nez p1, :cond_c
+    .local v0, "userBackupManagerService":Lcom/android/server/backup/UserBackupManagerService;
+    if-nez v0, :cond_c
 
     .line 753
-    const-wide/16 p1, 0x0
+    const-wide/16 v1, 0x0
 
     goto :goto_10
 
     .line 754
     :cond_c
-    invoke-virtual {p1, p2}, Lcom/android/server/backup/UserBackupManagerService;->getAvailableRestoreToken(Ljava/lang/String;)J
+    invoke-virtual {v0, p2}, Lcom/android/server/backup/UserBackupManagerService;->getAvailableRestoreToken(Ljava/lang/String;)J
 
-    move-result-wide p1
+    move-result-wide v1
 
     .line 752
     :goto_10
-    return-wide p1
+    return-wide v1
 .end method
 
 .method public getConfigurationIntent(ILjava/lang/String;)Landroid/content/Intent;
-    .registers 4
+    .registers 5
+    .param p1, "userId"  # I
+    .param p2, "transportName"  # Ljava/lang/String;
 
     .line 470
     nop
@@ -834,29 +917,31 @@
 
     invoke-virtual {p0, p1, v0}, Lcom/android/server/backup/BackupManagerService;->getServiceForUserIfCallerHasPermission(ILjava/lang/String;)Lcom/android/server/backup/UserBackupManagerService;
 
-    move-result-object p1
+    move-result-object v0
 
     .line 473
-    if-nez p1, :cond_b
+    .local v0, "userBackupManagerService":Lcom/android/server/backup/UserBackupManagerService;
+    if-nez v0, :cond_b
 
     .line 474
-    const/4 p1, 0x0
+    const/4 v1, 0x0
 
     goto :goto_f
 
     .line 475
     :cond_b
-    invoke-virtual {p1, p2}, Lcom/android/server/backup/UserBackupManagerService;->getConfigurationIntent(Ljava/lang/String;)Landroid/content/Intent;
+    invoke-virtual {v0, p2}, Lcom/android/server/backup/UserBackupManagerService;->getConfigurationIntent(Ljava/lang/String;)Landroid/content/Intent;
 
-    move-result-object p1
+    move-result-object v1
 
     .line 473
     :goto_f
-    return-object p1
+    return-object v1
 .end method
 
 .method public getCurrentTransport(I)Ljava/lang/String;
-    .registers 3
+    .registers 4
+    .param p1, "userId"  # I
 
     .line 328
     nop
@@ -866,29 +951,31 @@
 
     invoke-virtual {p0, p1, v0}, Lcom/android/server/backup/BackupManagerService;->getServiceForUserIfCallerHasPermission(ILjava/lang/String;)Lcom/android/server/backup/UserBackupManagerService;
 
-    move-result-object p1
+    move-result-object v0
 
     .line 331
-    if-nez p1, :cond_b
+    .local v0, "userBackupManagerService":Lcom/android/server/backup/UserBackupManagerService;
+    if-nez v0, :cond_b
 
     .line 332
-    const/4 p1, 0x0
+    const/4 v1, 0x0
 
     goto :goto_f
 
     .line 333
     :cond_b
-    invoke-virtual {p1}, Lcom/android/server/backup/UserBackupManagerService;->getCurrentTransport()Ljava/lang/String;
+    invoke-virtual {v0}, Lcom/android/server/backup/UserBackupManagerService;->getCurrentTransport()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v1
 
     .line 331
     :goto_f
-    return-object p1
+    return-object v1
 .end method
 
 .method public getCurrentTransportComponent(I)Landroid/content/ComponentName;
-    .registers 3
+    .registers 4
+    .param p1, "userId"  # I
 
     .line 342
     nop
@@ -898,29 +985,32 @@
 
     invoke-virtual {p0, p1, v0}, Lcom/android/server/backup/BackupManagerService;->getServiceForUserIfCallerHasPermission(ILjava/lang/String;)Lcom/android/server/backup/UserBackupManagerService;
 
-    move-result-object p1
+    move-result-object v0
 
     .line 345
-    if-nez p1, :cond_b
+    .local v0, "userBackupManagerService":Lcom/android/server/backup/UserBackupManagerService;
+    if-nez v0, :cond_b
 
     .line 346
-    const/4 p1, 0x0
+    const/4 v1, 0x0
 
     goto :goto_f
 
     .line 347
     :cond_b
-    invoke-virtual {p1}, Lcom/android/server/backup/UserBackupManagerService;->getCurrentTransportComponent()Landroid/content/ComponentName;
+    invoke-virtual {v0}, Lcom/android/server/backup/UserBackupManagerService;->getCurrentTransportComponent()Landroid/content/ComponentName;
 
-    move-result-object p1
+    move-result-object v1
 
     .line 345
     :goto_f
-    return-object p1
+    return-object v1
 .end method
 
 .method public getDataManagementIntent(ILjava/lang/String;)Landroid/content/Intent;
-    .registers 4
+    .registers 5
+    .param p1, "userId"  # I
+    .param p2, "transportName"  # Ljava/lang/String;
 
     .line 548
     nop
@@ -930,29 +1020,32 @@
 
     invoke-virtual {p0, p1, v0}, Lcom/android/server/backup/BackupManagerService;->getServiceForUserIfCallerHasPermission(ILjava/lang/String;)Lcom/android/server/backup/UserBackupManagerService;
 
-    move-result-object p1
+    move-result-object v0
 
     .line 551
-    if-nez p1, :cond_b
+    .local v0, "userBackupManagerService":Lcom/android/server/backup/UserBackupManagerService;
+    if-nez v0, :cond_b
 
     .line 552
-    const/4 p1, 0x0
+    const/4 v1, 0x0
 
     goto :goto_f
 
     .line 553
     :cond_b
-    invoke-virtual {p1, p2}, Lcom/android/server/backup/UserBackupManagerService;->getDataManagementIntent(Ljava/lang/String;)Landroid/content/Intent;
+    invoke-virtual {v0, p2}, Lcom/android/server/backup/UserBackupManagerService;->getDataManagementIntent(Ljava/lang/String;)Landroid/content/Intent;
 
-    move-result-object p1
+    move-result-object v1
 
     .line 551
     :goto_f
-    return-object p1
+    return-object v1
 .end method
 
 .method public getDataManagementLabel(ILjava/lang/String;)Ljava/lang/CharSequence;
-    .registers 4
+    .registers 5
+    .param p1, "userId"  # I
+    .param p2, "transportName"  # Ljava/lang/String;
 
     .line 562
     nop
@@ -962,29 +1055,32 @@
 
     invoke-virtual {p0, p1, v0}, Lcom/android/server/backup/BackupManagerService;->getServiceForUserIfCallerHasPermission(ILjava/lang/String;)Lcom/android/server/backup/UserBackupManagerService;
 
-    move-result-object p1
+    move-result-object v0
 
     .line 565
-    if-nez p1, :cond_b
+    .local v0, "userBackupManagerService":Lcom/android/server/backup/UserBackupManagerService;
+    if-nez v0, :cond_b
 
     .line 566
-    const/4 p1, 0x0
+    const/4 v1, 0x0
 
     goto :goto_f
 
     .line 567
     :cond_b
-    invoke-virtual {p1, p2}, Lcom/android/server/backup/UserBackupManagerService;->getDataManagementLabel(Ljava/lang/String;)Ljava/lang/CharSequence;
+    invoke-virtual {v0, p2}, Lcom/android/server/backup/UserBackupManagerService;->getDataManagementLabel(Ljava/lang/String;)Ljava/lang/CharSequence;
 
-    move-result-object p1
+    move-result-object v1
 
     .line 565
     :goto_f
-    return-object p1
+    return-object v1
 .end method
 
 .method public getDestinationString(ILjava/lang/String;)Ljava/lang/String;
-    .registers 4
+    .registers 5
+    .param p1, "userId"  # I
+    .param p2, "transportName"  # Ljava/lang/String;
 
     .line 537
     nop
@@ -994,29 +1090,32 @@
 
     invoke-virtual {p0, p1, v0}, Lcom/android/server/backup/BackupManagerService;->getServiceForUserIfCallerHasPermission(ILjava/lang/String;)Lcom/android/server/backup/UserBackupManagerService;
 
-    move-result-object p1
+    move-result-object v0
 
     .line 540
-    if-nez p1, :cond_b
+    .local v0, "userBackupManagerService":Lcom/android/server/backup/UserBackupManagerService;
+    if-nez v0, :cond_b
 
     .line 541
-    const/4 p1, 0x0
+    const/4 v1, 0x0
 
     goto :goto_f
 
     .line 542
     :cond_b
-    invoke-virtual {p1, p2}, Lcom/android/server/backup/UserBackupManagerService;->getDestinationString(Ljava/lang/String;)Ljava/lang/String;
+    invoke-virtual {v0, p2}, Lcom/android/server/backup/UserBackupManagerService;->getDestinationString(Ljava/lang/String;)Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v1
 
     .line 540
     :goto_f
-    return-object p1
+    return-object v1
 .end method
 
 .method getServiceForUserIfCallerHasPermission(ILjava/lang/String;)Lcom/android/server/backup/UserBackupManagerService;
     .registers 6
+    .param p1, "userId"  # I
+    .param p2, "caller"  # Ljava/lang/String;
     .annotation build Lcom/android/internal/annotations/VisibleForTesting;
     .end annotation
 
@@ -1033,6 +1132,7 @@
     check-cast v0, Lcom/android/server/backup/UserBackupManagerService;
 
     .line 227
+    .local v0, "userBackupManagerService":Lcom/android/server/backup/UserBackupManagerService;
     if-nez v0, :cond_2b
 
     .line 228
@@ -1046,19 +1146,19 @@
 
     invoke-virtual {v1, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string p2, " for unknown user: "
+    const-string v2, " for unknown user: "
 
-    invoke-virtual {v1, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v1, p1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
     invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v1
 
-    const-string p2, "BackupManagerService"
+    const-string v2, "BackupManagerService"
 
-    invoke-static {p2, p1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v2, v1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 230
     :cond_2b
@@ -1086,7 +1186,7 @@
 .end method
 
 .method public getTransportWhitelist()[Ljava/lang/String;
-    .registers 5
+    .registers 6
 
     .line 376
     iget-object v0, p0, Lcom/android/server/backup/BackupManagerService;->mTransportWhitelist:Ljava/util/Set;
@@ -1098,42 +1198,46 @@
     new-array v0, v0, [Ljava/lang/String;
 
     .line 377
-    nop
+    .local v0, "whitelistedTransports":[Ljava/lang/String;
+    const/4 v1, 0x0
 
     .line 378
-    iget-object v1, p0, Lcom/android/server/backup/BackupManagerService;->mTransportWhitelist:Ljava/util/Set;
+    .local v1, "i":I
+    iget-object v2, p0, Lcom/android/server/backup/BackupManagerService;->mTransportWhitelist:Ljava/util/Set;
 
-    invoke-interface {v1}, Ljava/util/Set;->iterator()Ljava/util/Iterator;
+    invoke-interface {v2}, Ljava/util/Set;->iterator()Ljava/util/Iterator;
 
-    move-result-object v1
+    move-result-object v2
 
-    const/4 v2, 0x0
-
-    :goto_10
-    invoke-interface {v1}, Ljava/util/Iterator;->hasNext()Z
+    :goto_f
+    invoke-interface {v2}, Ljava/util/Iterator;->hasNext()Z
 
     move-result v3
 
     if-eqz v3, :cond_25
 
-    invoke-interface {v1}, Ljava/util/Iterator;->next()Ljava/lang/Object;
+    invoke-interface {v2}, Ljava/util/Iterator;->next()Ljava/lang/Object;
 
     move-result-object v3
 
     check-cast v3, Landroid/content/ComponentName;
 
     .line 379
+    .local v3, "component":Landroid/content/ComponentName;
     invoke-virtual {v3}, Landroid/content/ComponentName;->flattenToShortString()Ljava/lang/String;
 
-    move-result-object v3
+    move-result-object v4
 
-    aput-object v3, v0, v2
+    aput-object v4, v0, v1
 
     .line 380
-    add-int/lit8 v2, v2, 0x1
+    nop
+
+    .end local v3  # "component":Landroid/content/ComponentName;
+    add-int/lit8 v1, v1, 0x1
 
     .line 381
-    goto :goto_10
+    goto :goto_f
 
     .line 382
     :cond_25
@@ -1141,7 +1245,8 @@
 .end method
 
 .method public getUserForAncestralSerialNumber(J)Landroid/os/UserHandle;
-    .registers 10
+    .registers 13
+    .param p1, "ancestralSerialNumber"  # J
 
     .line 504
     invoke-static {}, Landroid/os/Binder;->getCallingUserHandle()Landroid/os/UserHandle;
@@ -1153,11 +1258,13 @@
     move-result v0
 
     .line 505
+    .local v0, "callingUserId":I
     invoke-static {}, Landroid/os/Binder;->clearCallingIdentity()J
 
     move-result-wide v1
 
     .line 508
+    .local v1, "oldId":J
     :try_start_c
     iget-object v3, p0, Lcom/android/server/backup/BackupManagerService;->mContext:Landroid/content/Context;
 
@@ -1173,55 +1280,60 @@
 
     invoke-virtual {v3, v0, v4}, Landroid/os/UserManager;->getProfileIds(IZ)[I
 
-    move-result-object v0
+    move-result-object v3
     :try_end_1b
     .catchall {:try_start_c .. :try_end_1b} :catchall_42
 
     .line 511
+    .local v3, "userIds":[I
     invoke-static {v1, v2}, Landroid/os/Binder;->restoreCallingIdentity(J)V
 
     .line 512
     nop
 
     .line 514
-    array-length v1, v0
+    array-length v5, v3
 
     :goto_20
-    if-ge v4, v1, :cond_40
+    if-ge v4, v5, :cond_40
 
-    aget v2, v0, v4
+    aget v6, v3, v4
 
     .line 515
+    .local v6, "userId":I
     invoke-virtual {p0}, Lcom/android/server/backup/BackupManagerService;->getServiceUsers()Landroid/util/SparseArray;
 
-    move-result-object v3
+    move-result-object v7
 
-    invoke-virtual {v3, v2}, Landroid/util/SparseArray;->get(I)Ljava/lang/Object;
+    invoke-virtual {v7, v6}, Landroid/util/SparseArray;->get(I)Ljava/lang/Object;
 
-    move-result-object v3
+    move-result-object v7
 
-    check-cast v3, Lcom/android/server/backup/UserBackupManagerService;
+    check-cast v7, Lcom/android/server/backup/UserBackupManagerService;
 
     .line 516
-    if-eqz v3, :cond_3d
+    .local v7, "userBackupManagerService":Lcom/android/server/backup/UserBackupManagerService;
+    if-eqz v7, :cond_3d
 
     .line 517
-    invoke-virtual {v3}, Lcom/android/server/backup/UserBackupManagerService;->getAncestralSerialNumber()J
+    invoke-virtual {v7}, Lcom/android/server/backup/UserBackupManagerService;->getAncestralSerialNumber()J
 
-    move-result-wide v5
+    move-result-wide v8
 
-    cmp-long v3, v5, p1
+    cmp-long v8, v8, p1
 
-    if-nez v3, :cond_3d
+    if-nez v8, :cond_3d
 
     .line 518
-    invoke-static {v2}, Landroid/os/UserHandle;->of(I)Landroid/os/UserHandle;
+    invoke-static {v6}, Landroid/os/UserHandle;->of(I)Landroid/os/UserHandle;
 
-    move-result-object p1
+    move-result-object v4
 
-    return-object p1
+    return-object v4
 
     .line 514
+    .end local v6  # "userId":I
+    .end local v7  # "userBackupManagerService":Lcom/android/server/backup/UserBackupManagerService;
     :cond_3d
     add-int/lit8 v4, v4, 0x1
 
@@ -1229,21 +1341,22 @@
 
     .line 523
     :cond_40
-    const/4 p1, 0x0
+    const/4 v4, 0x0
 
-    return-object p1
+    return-object v4
 
     .line 511
+    .end local v3  # "userIds":[I
     :catchall_42
-    move-exception p1
+    move-exception v3
 
     invoke-static {v1, v2}, Landroid/os/Binder;->restoreCallingIdentity(J)V
 
-    throw p1
+    throw v3
 .end method
 
 .method public hasBackupPassword()Z
-    .registers 3
+    .registers 4
 
     .line 773
     nop
@@ -1258,13 +1371,14 @@
     move-result-object v1
 
     .line 777
+    .local v1, "userBackupManagerService":Lcom/android/server/backup/UserBackupManagerService;
     if-eqz v1, :cond_11
 
     invoke-virtual {v1}, Lcom/android/server/backup/UserBackupManagerService;->hasBackupPassword()Z
 
-    move-result v1
+    move-result v2
 
-    if-eqz v1, :cond_11
+    if-eqz v2, :cond_11
 
     const/4 v0, 0x1
 
@@ -1274,162 +1388,178 @@
 
 .method public initializeTransports(I[Ljava/lang/String;Landroid/app/backup/IBackupObserver;)V
     .registers 5
+    .param p1, "userId"  # I
+    .param p2, "transportNames"  # [Ljava/lang/String;
+    .param p3, "observer"  # Landroid/app/backup/IBackupObserver;
 
     .line 304
     nop
 
     .line 305
-    const-string v0, "initializeTransports()"
+    const-string/jumbo v0, "initializeTransports()"
 
     invoke-virtual {p0, p1, v0}, Lcom/android/server/backup/BackupManagerService;->getServiceForUserIfCallerHasPermission(ILjava/lang/String;)Lcom/android/server/backup/UserBackupManagerService;
 
-    move-result-object p1
+    move-result-object v0
 
     .line 307
-    if-eqz p1, :cond_c
+    .local v0, "userBackupManagerService":Lcom/android/server/backup/UserBackupManagerService;
+    if-eqz v0, :cond_d
 
     .line 308
-    invoke-virtual {p1, p2, p3}, Lcom/android/server/backup/UserBackupManagerService;->initializeTransports([Ljava/lang/String;Landroid/app/backup/IBackupObserver;)V
+    invoke-virtual {v0, p2, p3}, Lcom/android/server/backup/UserBackupManagerService;->initializeTransports([Ljava/lang/String;Landroid/app/backup/IBackupObserver;)V
 
     .line 310
-    :cond_c
+    :cond_d
     return-void
 .end method
 
 .method public isAppEligibleForBackup(ILjava/lang/String;)Z
-    .registers 4
+    .registers 5
+    .param p1, "userId"  # I
+    .param p2, "packageName"  # Ljava/lang/String;
 
     .line 610
     nop
 
     .line 611
-    const-string v0, "isAppEligibleForBackup()"
+    const-string/jumbo v0, "isAppEligibleForBackup()"
 
     invoke-virtual {p0, p1, v0}, Lcom/android/server/backup/BackupManagerService;->getServiceForUserIfCallerHasPermission(ILjava/lang/String;)Lcom/android/server/backup/UserBackupManagerService;
 
-    move-result-object p1
+    move-result-object v0
 
     .line 613
-    if-eqz p1, :cond_11
+    .local v0, "userBackupManagerService":Lcom/android/server/backup/UserBackupManagerService;
+    if-eqz v0, :cond_12
 
     .line 614
-    invoke-virtual {p1, p2}, Lcom/android/server/backup/UserBackupManagerService;->isAppEligibleForBackup(Ljava/lang/String;)Z
+    invoke-virtual {v0, p2}, Lcom/android/server/backup/UserBackupManagerService;->isAppEligibleForBackup(Ljava/lang/String;)Z
 
-    move-result p1
+    move-result v1
 
-    if-eqz p1, :cond_11
+    if-eqz v1, :cond_12
 
-    const/4 p1, 0x1
+    const/4 v1, 0x1
 
-    goto :goto_12
+    goto :goto_13
 
-    :cond_11
-    const/4 p1, 0x0
+    :cond_12
+    const/4 v1, 0x0
 
     .line 613
-    :goto_12
-    return p1
+    :goto_13
+    return v1
 .end method
 
 .method public isBackupEnabled(I)Z
-    .registers 3
+    .registers 4
+    .param p1, "userId"  # I
 
     .line 598
     nop
 
     .line 599
-    const-string v0, "isBackupEnabled()"
+    const-string/jumbo v0, "isBackupEnabled()"
 
     invoke-virtual {p0, p1, v0}, Lcom/android/server/backup/BackupManagerService;->getServiceForUserIfCallerHasPermission(ILjava/lang/String;)Lcom/android/server/backup/UserBackupManagerService;
 
-    move-result-object p1
+    move-result-object v0
 
     .line 601
-    if-eqz p1, :cond_11
+    .local v0, "userBackupManagerService":Lcom/android/server/backup/UserBackupManagerService;
+    if-eqz v0, :cond_12
 
-    invoke-virtual {p1}, Lcom/android/server/backup/UserBackupManagerService;->isBackupEnabled()Z
+    invoke-virtual {v0}, Lcom/android/server/backup/UserBackupManagerService;->isBackupEnabled()Z
 
-    move-result p1
+    move-result v1
 
-    if-eqz p1, :cond_11
+    if-eqz v1, :cond_12
 
-    const/4 p1, 0x1
+    const/4 v1, 0x1
 
-    goto :goto_12
+    goto :goto_13
 
-    :cond_11
-    const/4 p1, 0x0
+    :cond_12
+    const/4 v1, 0x0
 
-    :goto_12
-    return p1
+    :goto_13
+    return v1
 .end method
 
 .method public listAllTransportComponents(I)[Landroid/content/ComponentName;
-    .registers 3
+    .registers 4
+    .param p1, "userId"  # I
 
     .line 364
     nop
 
     .line 365
-    const-string v0, "listAllTransportComponents()"
+    const-string/jumbo v0, "listAllTransportComponents()"
 
     invoke-virtual {p0, p1, v0}, Lcom/android/server/backup/BackupManagerService;->getServiceForUserIfCallerHasPermission(ILjava/lang/String;)Lcom/android/server/backup/UserBackupManagerService;
 
-    move-result-object p1
+    move-result-object v0
 
     .line 367
-    if-nez p1, :cond_b
+    .local v0, "userBackupManagerService":Lcom/android/server/backup/UserBackupManagerService;
+    if-nez v0, :cond_c
 
     .line 368
-    const/4 p1, 0x0
+    const/4 v1, 0x0
 
-    goto :goto_f
+    goto :goto_10
 
     .line 369
-    :cond_b
-    invoke-virtual {p1}, Lcom/android/server/backup/UserBackupManagerService;->listAllTransportComponents()[Landroid/content/ComponentName;
+    :cond_c
+    invoke-virtual {v0}, Lcom/android/server/backup/UserBackupManagerService;->listAllTransportComponents()[Landroid/content/ComponentName;
 
-    move-result-object p1
+    move-result-object v1
 
     .line 367
-    :goto_f
-    return-object p1
+    :goto_10
+    return-object v1
 .end method
 
 .method public listAllTransports(I)[Ljava/lang/String;
-    .registers 3
+    .registers 4
+    .param p1, "userId"  # I
 
     .line 353
     nop
 
     .line 354
-    const-string v0, "listAllTransports()"
+    const-string/jumbo v0, "listAllTransports()"
 
     invoke-virtual {p0, p1, v0}, Lcom/android/server/backup/BackupManagerService;->getServiceForUserIfCallerHasPermission(ILjava/lang/String;)Lcom/android/server/backup/UserBackupManagerService;
 
-    move-result-object p1
+    move-result-object v0
 
     .line 356
-    if-nez p1, :cond_b
+    .local v0, "userBackupManagerService":Lcom/android/server/backup/UserBackupManagerService;
+    if-nez v0, :cond_c
 
     .line 357
-    const/4 p1, 0x0
+    const/4 v1, 0x0
 
-    goto :goto_f
+    goto :goto_10
 
     .line 358
-    :cond_b
-    invoke-virtual {p1}, Lcom/android/server/backup/UserBackupManagerService;->listAllTransports()[Ljava/lang/String;
+    :cond_c
+    invoke-virtual {v0}, Lcom/android/server/backup/UserBackupManagerService;->listAllTransports()[Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v1
 
     .line 356
-    :goto_f
-    return-object p1
+    :goto_10
+    return-object v1
 .end method
 
 .method public opComplete(IIJ)V
     .registers 6
+    .param p1, "userId"  # I
+    .param p2, "token"  # I
+    .param p3, "result"  # J
 
     .line 289
     nop
@@ -1439,13 +1569,14 @@
 
     invoke-virtual {p0, p1, v0}, Lcom/android/server/backup/BackupManagerService;->getServiceForUserIfCallerHasPermission(ILjava/lang/String;)Lcom/android/server/backup/UserBackupManagerService;
 
-    move-result-object p1
+    move-result-object v0
 
     .line 292
-    if-eqz p1, :cond_d
+    .local v0, "userBackupManagerService":Lcom/android/server/backup/UserBackupManagerService;
+    if-eqz v0, :cond_d
 
     .line 293
-    invoke-virtual {p1, p2, p3, p4}, Lcom/android/server/backup/UserBackupManagerService;->opComplete(IJ)V
+    invoke-virtual {v0, p2, p3, p4}, Lcom/android/server/backup/UserBackupManagerService;->opComplete(IJ)V
 
     .line 295
     :cond_d
@@ -1453,7 +1584,12 @@
 .end method
 
 .method public requestBackup(I[Ljava/lang/String;Landroid/app/backup/IBackupObserver;Landroid/app/backup/IBackupManagerMonitor;I)I
-    .registers 7
+    .registers 8
+    .param p1, "userId"  # I
+    .param p2, "packages"  # [Ljava/lang/String;
+    .param p3, "observer"  # Landroid/app/backup/IBackupObserver;
+    .param p4, "monitor"  # Landroid/app/backup/IBackupManagerMonitor;
+    .param p5, "flags"  # I
 
     .line 653
     nop
@@ -1463,29 +1599,33 @@
 
     invoke-virtual {p0, p1, v0}, Lcom/android/server/backup/BackupManagerService;->getServiceForUserIfCallerHasPermission(ILjava/lang/String;)Lcom/android/server/backup/UserBackupManagerService;
 
-    move-result-object p1
+    move-result-object v0
 
     .line 656
-    if-nez p1, :cond_d
+    .local v0, "userBackupManagerService":Lcom/android/server/backup/UserBackupManagerService;
+    if-nez v0, :cond_d
 
     .line 657
-    const/16 p1, -0x7d1
+    const/16 v1, -0x7d1
 
     goto :goto_11
 
     .line 658
     :cond_d
-    invoke-virtual {p1, p2, p3, p4, p5}, Lcom/android/server/backup/UserBackupManagerService;->requestBackup([Ljava/lang/String;Landroid/app/backup/IBackupObserver;Landroid/app/backup/IBackupManagerMonitor;I)I
+    invoke-virtual {v0, p2, p3, p4, p5}, Lcom/android/server/backup/UserBackupManagerService;->requestBackup([Ljava/lang/String;Landroid/app/backup/IBackupObserver;Landroid/app/backup/IBackupManagerMonitor;I)I
 
-    move-result p1
+    move-result v1
 
     .line 656
     :goto_11
-    return p1
+    return v1
 .end method
 
 .method public restoreAtInstall(ILjava/lang/String;I)V
     .registers 5
+    .param p1, "userId"  # I
+    .param p2, "packageName"  # Ljava/lang/String;
+    .param p3, "token"  # I
 
     .line 721
     nop
@@ -1495,13 +1635,14 @@
 
     invoke-virtual {p0, p1, v0}, Lcom/android/server/backup/BackupManagerService;->getServiceForUserIfCallerHasPermission(ILjava/lang/String;)Lcom/android/server/backup/UserBackupManagerService;
 
-    move-result-object p1
+    move-result-object v0
 
     .line 724
-    if-eqz p1, :cond_d
+    .local v0, "userBackupManagerService":Lcom/android/server/backup/UserBackupManagerService;
+    if-eqz v0, :cond_d
 
     .line 725
-    invoke-virtual {p1, p2, p3}, Lcom/android/server/backup/UserBackupManagerService;->restoreAtInstall(Ljava/lang/String;I)V
+    invoke-virtual {v0, p2, p3}, Lcom/android/server/backup/UserBackupManagerService;->restoreAtInstall(Ljava/lang/String;I)V
 
     .line 727
     :cond_d
@@ -1509,7 +1650,9 @@
 .end method
 
 .method public selectBackupTransport(ILjava/lang/String;)Ljava/lang/String;
-    .registers 4
+    .registers 5
+    .param p1, "userId"  # I
+    .param p2, "transportName"  # Ljava/lang/String;
     .annotation runtime Ljava/lang/Deprecated;
     .end annotation
 
@@ -1521,29 +1664,33 @@
 
     invoke-virtual {p0, p1, v0}, Lcom/android/server/backup/BackupManagerService;->getServiceForUserIfCallerHasPermission(ILjava/lang/String;)Lcom/android/server/backup/UserBackupManagerService;
 
-    move-result-object p1
+    move-result-object v0
 
     .line 442
-    if-nez p1, :cond_c
+    .local v0, "userBackupManagerService":Lcom/android/server/backup/UserBackupManagerService;
+    if-nez v0, :cond_c
 
     .line 443
-    const/4 p1, 0x0
+    const/4 v1, 0x0
 
     goto :goto_10
 
     .line 444
     :cond_c
-    invoke-virtual {p1, p2}, Lcom/android/server/backup/UserBackupManagerService;->selectBackupTransport(Ljava/lang/String;)Ljava/lang/String;
+    invoke-virtual {v0, p2}, Lcom/android/server/backup/UserBackupManagerService;->selectBackupTransport(Ljava/lang/String;)Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v1
 
     .line 442
     :goto_10
-    return-object p1
+    return-object v1
 .end method
 
 .method public selectBackupTransportAsync(ILandroid/content/ComponentName;Landroid/app/backup/ISelectBackupTransportCallback;)V
     .registers 5
+    .param p1, "userId"  # I
+    .param p2, "transportComponent"  # Landroid/content/ComponentName;
+    .param p3, "listener"  # Landroid/app/backup/ISelectBackupTransportCallback;
 
     .line 455
     nop
@@ -1553,13 +1700,14 @@
 
     invoke-virtual {p0, p1, v0}, Lcom/android/server/backup/BackupManagerService;->getServiceForUserIfCallerHasPermission(ILjava/lang/String;)Lcom/android/server/backup/UserBackupManagerService;
 
-    move-result-object p1
+    move-result-object v0
 
     .line 458
-    if-eqz p1, :cond_d
+    .local v0, "userBackupManagerService":Lcom/android/server/backup/UserBackupManagerService;
+    if-eqz v0, :cond_d
 
     .line 459
-    invoke-virtual {p1, p2, p3}, Lcom/android/server/backup/UserBackupManagerService;->selectBackupTransportAsync(Landroid/content/ComponentName;Landroid/app/backup/ISelectBackupTransportCallback;)V
+    invoke-virtual {v0, p2, p3}, Lcom/android/server/backup/UserBackupManagerService;->selectBackupTransportAsync(Landroid/content/ComponentName;Landroid/app/backup/ISelectBackupTransportCallback;)V
 
     .line 461
     :cond_d
@@ -1568,6 +1716,7 @@
 
 .method public setAncestralSerialNumber(J)V
     .registers 5
+    .param p1, "ancestralSerialNumber"  # J
 
     .line 485
     nop
@@ -1589,6 +1738,7 @@
     move-result-object v0
 
     .line 490
+    .local v0, "userBackupManagerService":Lcom/android/server/backup/UserBackupManagerService;
     if-eqz v0, :cond_15
 
     .line 491
@@ -1601,6 +1751,8 @@
 
 .method public setAutoRestore(IZ)V
     .registers 4
+    .param p1, "userId"  # I
+    .param p2, "autoRestore"  # Z
 
     .line 586
     nop
@@ -1610,13 +1762,14 @@
 
     invoke-virtual {p0, p1, v0}, Lcom/android/server/backup/BackupManagerService;->getServiceForUserIfCallerHasPermission(ILjava/lang/String;)Lcom/android/server/backup/UserBackupManagerService;
 
-    move-result-object p1
+    move-result-object v0
 
     .line 589
-    if-eqz p1, :cond_d
+    .local v0, "userBackupManagerService":Lcom/android/server/backup/UserBackupManagerService;
+    if-eqz v0, :cond_d
 
     .line 590
-    invoke-virtual {p1, p2}, Lcom/android/server/backup/UserBackupManagerService;->setAutoRestore(Z)V
+    invoke-virtual {v0, p2}, Lcom/android/server/backup/UserBackupManagerService;->setAutoRestore(Z)V
 
     .line 592
     :cond_d
@@ -1625,6 +1778,8 @@
 
 .method public setBackupEnabled(IZ)V
     .registers 4
+    .param p1, "userId"  # I
+    .param p2, "enable"  # Z
 
     .line 576
     nop
@@ -1634,13 +1789,14 @@
 
     invoke-virtual {p0, p1, v0}, Lcom/android/server/backup/BackupManagerService;->getServiceForUserIfCallerHasPermission(ILjava/lang/String;)Lcom/android/server/backup/UserBackupManagerService;
 
-    move-result-object p1
+    move-result-object v0
 
     .line 579
-    if-eqz p1, :cond_d
+    .local v0, "userBackupManagerService":Lcom/android/server/backup/UserBackupManagerService;
+    if-eqz v0, :cond_d
 
     .line 580
-    invoke-virtual {p1, p2}, Lcom/android/server/backup/UserBackupManagerService;->setBackupEnabled(Z)V
+    invoke-virtual {v0, p2}, Lcom/android/server/backup/UserBackupManagerService;->setBackupEnabled(Z)V
 
     .line 582
     :cond_d
@@ -1648,7 +1804,9 @@
 .end method
 
 .method public setBackupPassword(Ljava/lang/String;Ljava/lang/String;)Z
-    .registers 5
+    .registers 6
+    .param p1, "currentPassword"  # Ljava/lang/String;
+    .param p2, "newPassword"  # Ljava/lang/String;
 
     .line 763
     nop
@@ -1663,14 +1821,15 @@
     move-result-object v1
 
     .line 767
+    .local v1, "userBackupManagerService":Lcom/android/server/backup/UserBackupManagerService;
     if-eqz v1, :cond_13
 
     .line 768
     invoke-virtual {v1, p1, p2}, Lcom/android/server/backup/UserBackupManagerService;->setBackupPassword(Ljava/lang/String;Ljava/lang/String;)Z
 
-    move-result p1
+    move-result v2
 
-    if-eqz p1, :cond_13
+    if-eqz v2, :cond_13
 
     const/4 v0, 0x1
 
@@ -1686,6 +1845,7 @@
 
 .method protected startServiceForUser(I)V
     .registers 5
+    .param p1, "userId"  # I
     .annotation build Lcom/android/internal/annotations/VisibleForTesting;
     .end annotation
 
@@ -1709,17 +1869,17 @@
 
     invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    const-string p1, " already started, so not starting again"
+    const-string v1, " already started, so not starting again"
 
-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    const-string v0, "BackupManagerService"
+    const-string v1, "BackupManagerService"
 
-    invoke-static {v0, p1}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v0}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 167
     return-void
@@ -1738,6 +1898,7 @@
     move-result-object v0
 
     .line 173
+    .local v0, "userBackupManagerService":Lcom/android/server/backup/UserBackupManagerService;
     invoke-virtual {p0, p1, v0}, Lcom/android/server/backup/BackupManagerService;->startServiceForUser(ILcom/android/server/backup/UserBackupManagerService;)V
 
     .line 174
@@ -1745,7 +1906,9 @@
 .end method
 
 .method startServiceForUser(ILcom/android/server/backup/UserBackupManagerService;)V
-    .registers 5
+    .registers 6
+    .param p1, "userId"  # I
+    .param p2, "userBackupManagerService"  # Lcom/android/server/backup/UserBackupManagerService;
 
     .line 181
     iget-object v0, p0, Lcom/android/server/backup/BackupManagerService;->mServiceUsers:Landroid/util/SparseArray;
@@ -1755,9 +1918,9 @@
     .line 183
     const-wide/16 v0, 0x40
 
-    const-string p1, "backup enable"
+    const-string v2, "backup enable"
 
-    invoke-static {v0, v1, p1}, Landroid/os/Trace;->traceBegin(JLjava/lang/String;)V
+    invoke-static {v0, v1, v2}, Landroid/os/Trace;->traceBegin(JLjava/lang/String;)V
 
     .line 184
     invoke-virtual {p2}, Lcom/android/server/backup/UserBackupManagerService;->initializeBackupEnableState()V
@@ -1770,7 +1933,8 @@
 .end method
 
 .method protected stopServiceForUser(I)V
-    .registers 3
+    .registers 4
+    .param p1, "userId"  # I
     .annotation build Lcom/android/internal/annotations/VisibleForTesting;
     .end annotation
 
@@ -1784,20 +1948,21 @@
     check-cast v0, Lcom/android/server/backup/UserBackupManagerService;
 
     .line 193
+    .local v0, "userBackupManagerService":Lcom/android/server/backup/UserBackupManagerService;
     if-eqz v0, :cond_17
 
     .line 194
     invoke-virtual {v0}, Lcom/android/server/backup/UserBackupManagerService;->tearDownService()V
 
     .line 196
-    iget-object v0, p0, Lcom/android/server/backup/BackupManagerService;->mContext:Landroid/content/Context;
+    iget-object v1, p0, Lcom/android/server/backup/BackupManagerService;->mContext:Landroid/content/Context;
 
-    invoke-static {p1, v0}, Lcom/android/server/backup/KeyValueBackupJob;->cancel(ILandroid/content/Context;)V
+    invoke-static {p1, v1}, Lcom/android/server/backup/KeyValueBackupJob;->cancel(ILandroid/content/Context;)V
 
     .line 197
-    iget-object v0, p0, Lcom/android/server/backup/BackupManagerService;->mContext:Landroid/content/Context;
+    iget-object v1, p0, Lcom/android/server/backup/BackupManagerService;->mContext:Landroid/content/Context;
 
-    invoke-static {p1, v0}, Lcom/android/server/backup/FullBackupJob;->cancel(ILandroid/content/Context;)V
+    invoke-static {p1, v1}, Lcom/android/server/backup/FullBackupJob;->cancel(ILandroid/content/Context;)V
 
     .line 199
     :cond_17
@@ -1806,6 +1971,13 @@
 
 .method public updateTransportAttributes(ILandroid/content/ComponentName;Ljava/lang/String;Landroid/content/Intent;Ljava/lang/String;Landroid/content/Intent;Ljava/lang/CharSequence;)V
     .registers 16
+    .param p1, "userId"  # I
+    .param p2, "transportComponent"  # Landroid/content/ComponentName;
+    .param p3, "name"  # Ljava/lang/String;
+    .param p4, "configurationIntent"  # Landroid/content/Intent;
+    .param p5, "currentDestinationString"  # Ljava/lang/String;
+    .param p6, "dataManagementIntent"  # Landroid/content/Intent;
+    .param p7, "dataManagementLabel"  # Ljava/lang/CharSequence;
 
     .line 416
     nop
@@ -1815,12 +1987,15 @@
 
     invoke-virtual {p0, p1, v0}, Lcom/android/server/backup/BackupManagerService;->getServiceForUserIfCallerHasPermission(ILjava/lang/String;)Lcom/android/server/backup/UserBackupManagerService;
 
-    move-result-object v1
+    move-result-object v0
 
     .line 419
-    if-eqz v1, :cond_13
+    .local v0, "userBackupManagerService":Lcom/android/server/backup/UserBackupManagerService;
+    if-eqz v0, :cond_14
 
     .line 420
+    move-object v1, v0
+
     move-object v2, p2
 
     move-object v3, p3
@@ -1836,6 +2011,6 @@
     invoke-virtual/range {v1 .. v7}, Lcom/android/server/backup/UserBackupManagerService;->updateTransportAttributes(Landroid/content/ComponentName;Ljava/lang/String;Landroid/content/Intent;Ljava/lang/String;Landroid/content/Intent;Ljava/lang/CharSequence;)V
 
     .line 428
-    :cond_13
+    :cond_14
     return-void
 .end method

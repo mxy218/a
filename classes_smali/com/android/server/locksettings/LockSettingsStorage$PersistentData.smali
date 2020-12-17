@@ -42,7 +42,7 @@
 .method static constructor <clinit>()V
     .registers 4
 
-    .line 678
+    .line 655
     new-instance v0, Lcom/android/server/locksettings/LockSettingsStorage$PersistentData;
 
     const/4 v1, 0x0
@@ -60,30 +60,35 @@
 
 .method private constructor <init>(III[B)V
     .registers 5
+    .param p1, "type"  # I
+    .param p2, "userId"  # I
+    .param p3, "qualityForUi"  # I
+    .param p4, "payload"  # [B
 
-    .line 686
+    .line 663
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
-    .line 687
+    .line 664
     iput p1, p0, Lcom/android/server/locksettings/LockSettingsStorage$PersistentData;->type:I
 
-    .line 688
+    .line 665
     iput p2, p0, Lcom/android/server/locksettings/LockSettingsStorage$PersistentData;->userId:I
 
-    .line 689
+    .line 666
     iput p3, p0, Lcom/android/server/locksettings/LockSettingsStorage$PersistentData;->qualityForUi:I
 
-    .line 690
+    .line 667
     iput-object p4, p0, Lcom/android/server/locksettings/LockSettingsStorage$PersistentData;->payload:[B
 
-    .line 691
+    .line 668
     return-void
 .end method
 
 .method public static fromBytes([B)Lcom/android/server/locksettings/LockSettingsStorage$PersistentData;
-    .registers 9
+    .registers 11
+    .param p0, "frpData"  # [B
 
-    .line 694
+    .line 671
     const-string v0, "LockSettingsStorage"
 
     if-eqz p0, :cond_58
@@ -94,7 +99,7 @@
 
     goto :goto_58
 
-    .line 698
+    .line 675
     :cond_8
     new-instance v1, Ljava/io/DataInputStream;
 
@@ -104,130 +109,148 @@
 
     invoke-direct {v1, v2}, Ljava/io/DataInputStream;-><init>(Ljava/io/InputStream;)V
 
-    .line 700
+    .line 677
+    .local v1, "is":Ljava/io/DataInputStream;
     :try_start_12
     invoke-virtual {v1}, Ljava/io/DataInputStream;->readByte()B
 
     move-result v2
 
-    .line 701
+    .line 678
+    .local v2, "version":B
     const/4 v3, 0x1
 
     if-ne v2, v3, :cond_38
 
-    .line 702
+    .line 679
     invoke-virtual {v1}, Ljava/io/DataInputStream;->readByte()B
-
-    move-result v2
-
-    and-int/lit16 v2, v2, 0xff
-
-    .line 703
-    invoke-virtual {v1}, Ljava/io/DataInputStream;->readInt()I
 
     move-result v3
 
-    .line 704
+    and-int/lit16 v3, v3, 0xff
+
+    .line 680
+    .local v3, "type":I
     invoke-virtual {v1}, Ljava/io/DataInputStream;->readInt()I
 
-    move-result v1
+    move-result v4
 
-    .line 705
-    array-length v4, p0
+    .line 681
+    .local v4, "userId":I
+    invoke-virtual {v1}, Ljava/io/DataInputStream;->readInt()I
 
-    const/16 v5, 0xa
+    move-result v5
 
-    sub-int/2addr v4, v5
+    .line 682
+    .local v5, "qualityForUi":I
+    array-length v6, p0
 
-    new-array v4, v4, [B
+    const/16 v7, 0xa
 
-    .line 706
-    const/4 v6, 0x0
+    sub-int/2addr v6, v7
 
-    array-length v7, v4
+    new-array v6, v6, [B
 
-    invoke-static {p0, v5, v4, v6, v7}, Ljava/lang/System;->arraycopy(Ljava/lang/Object;ILjava/lang/Object;II)V
+    .line 683
+    .local v6, "payload":[B
+    const/4 v8, 0x0
 
-    .line 707
-    new-instance p0, Lcom/android/server/locksettings/LockSettingsStorage$PersistentData;
+    array-length v9, v6
 
-    invoke-direct {p0, v2, v3, v1, v4}, Lcom/android/server/locksettings/LockSettingsStorage$PersistentData;-><init>(III[B)V
+    invoke-static {p0, v7, v6, v8, v9}, Ljava/lang/System;->arraycopy(Ljava/lang/Object;ILjava/lang/Object;II)V
 
-    return-object p0
+    .line 684
+    new-instance v7, Lcom/android/server/locksettings/LockSettingsStorage$PersistentData;
 
-    .line 709
+    invoke-direct {v7, v3, v4, v5, v6}, Lcom/android/server/locksettings/LockSettingsStorage$PersistentData;-><init>(III[B)V
+
+    return-object v7
+
+    .line 686
+    .end local v3  # "type":I
+    .end local v4  # "userId":I
+    .end local v5  # "qualityForUi":I
+    .end local v6  # "payload":[B
     :cond_38
-    new-instance p0, Ljava/lang/StringBuilder;
+    new-instance v3, Ljava/lang/StringBuilder;
 
-    invoke-direct {p0}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v1, "Unknown PersistentData version code: "
+    const-string v4, "Unknown PersistentData version code: "
 
-    invoke-virtual {p0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p0, v2}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v2}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v3
 
-    invoke-static {v0, p0}, Landroid/util/Slog;->wtf(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v0, v3}, Landroid/util/Slog;->wtf(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 710
-    sget-object p0, Lcom/android/server/locksettings/LockSettingsStorage$PersistentData;->NONE:Lcom/android/server/locksettings/LockSettingsStorage$PersistentData;
+    .line 687
+    sget-object v0, Lcom/android/server/locksettings/LockSettingsStorage$PersistentData;->NONE:Lcom/android/server/locksettings/LockSettingsStorage$PersistentData;
     :try_end_4e
     .catch Ljava/io/IOException; {:try_start_12 .. :try_end_4e} :catch_4f
 
-    return-object p0
+    return-object v0
 
-    .line 712
+    .line 689
+    .end local v2  # "version":B
     :catch_4f
-    move-exception p0
+    move-exception v2
 
-    .line 713
-    const-string v1, "Could not parse PersistentData"
+    .line 690
+    .local v2, "e":Ljava/io/IOException;
+    const-string v3, "Could not parse PersistentData"
 
-    invoke-static {v0, v1, p0}, Landroid/util/Slog;->wtf(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    invoke-static {v0, v3, v2}, Landroid/util/Slog;->wtf(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
-    .line 714
-    sget-object p0, Lcom/android/server/locksettings/LockSettingsStorage$PersistentData;->NONE:Lcom/android/server/locksettings/LockSettingsStorage$PersistentData;
+    .line 691
+    sget-object v0, Lcom/android/server/locksettings/LockSettingsStorage$PersistentData;->NONE:Lcom/android/server/locksettings/LockSettingsStorage$PersistentData;
 
-    return-object p0
+    return-object v0
 
-    .line 695
+    .line 672
+    .end local v1  # "is":Ljava/io/DataInputStream;
+    .end local v2  # "e":Ljava/io/IOException;
     :cond_58
     :goto_58
-    sget-object p0, Lcom/android/server/locksettings/LockSettingsStorage$PersistentData;->NONE:Lcom/android/server/locksettings/LockSettingsStorage$PersistentData;
+    sget-object v0, Lcom/android/server/locksettings/LockSettingsStorage$PersistentData;->NONE:Lcom/android/server/locksettings/LockSettingsStorage$PersistentData;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method public static toBytes(III[B)[B
-    .registers 7
+    .registers 9
+    .param p0, "persistentType"  # I
+    .param p1, "userId"  # I
+    .param p2, "qualityForUi"  # I
+    .param p3, "payload"  # [B
 
-    .line 720
+    .line 697
     const/4 v0, 0x0
 
     const/4 v1, 0x1
 
     if-nez p0, :cond_e
 
-    .line 721
+    .line 698
     if-nez p3, :cond_7
 
     move v0, v1
 
     :cond_7
-    const-string p0, "TYPE_NONE must have empty payload"
+    const-string v1, "TYPE_NONE must have empty payload"
 
-    invoke-static {v0, p0}, Lcom/android/internal/util/Preconditions;->checkArgument(ZLjava/lang/Object;)V
+    invoke-static {v0, v1}, Lcom/android/internal/util/Preconditions;->checkArgument(ZLjava/lang/Object;)V
 
-    .line 723
-    const/4 p0, 0x0
+    .line 700
+    const/4 v0, 0x0
 
-    return-object p0
+    return-object v0
 
-    .line 725
+    .line 702
     :cond_e
     if-eqz p3, :cond_14
 
@@ -242,7 +265,7 @@
 
     invoke-static {v0, v2}, Lcom/android/internal/util/Preconditions;->checkArgument(ZLjava/lang/Object;)V
 
-    .line 728
+    .line 705
     new-instance v0, Ljava/io/ByteArrayOutputStream;
 
     array-length v2, p3
@@ -251,49 +274,52 @@
 
     invoke-direct {v0, v2}, Ljava/io/ByteArrayOutputStream;-><init>(I)V
 
-    .line 730
+    .line 707
+    .local v0, "os":Ljava/io/ByteArrayOutputStream;
     new-instance v2, Ljava/io/DataOutputStream;
 
     invoke-direct {v2, v0}, Ljava/io/DataOutputStream;-><init>(Ljava/io/OutputStream;)V
 
-    .line 732
+    .line 709
+    .local v2, "dos":Ljava/io/DataOutputStream;
     :try_start_26
     invoke-virtual {v2, v1}, Ljava/io/DataOutputStream;->writeByte(I)V
 
-    .line 733
+    .line 710
     invoke-virtual {v2, p0}, Ljava/io/DataOutputStream;->writeByte(I)V
 
-    .line 734
+    .line 711
     invoke-virtual {v2, p1}, Ljava/io/DataOutputStream;->writeInt(I)V
 
-    .line 735
+    .line 712
     invoke-virtual {v2, p2}, Ljava/io/DataOutputStream;->writeInt(I)V
 
-    .line 736
+    .line 713
     invoke-virtual {v2, p3}, Ljava/io/DataOutputStream;->write([B)V
     :try_end_35
     .catch Ljava/io/IOException; {:try_start_26 .. :try_end_35} :catch_3b
 
-    .line 739
+    .line 716
     nop
 
-    .line 740
+    .line 717
     invoke-virtual {v0}, Ljava/io/ByteArrayOutputStream;->toByteArray()[B
 
-    move-result-object p0
+    move-result-object v1
 
-    return-object p0
+    return-object v1
 
-    .line 737
+    .line 714
     :catch_3b
-    move-exception p0
+    move-exception v1
 
-    .line 738
-    new-instance p0, Ljava/lang/RuntimeException;
+    .line 715
+    .local v1, "e":Ljava/io/IOException;
+    new-instance v3, Ljava/lang/RuntimeException;
 
-    const-string p1, "ByteArrayOutputStream cannot throw IOException"
+    const-string v4, "ByteArrayOutputStream cannot throw IOException"
 
-    invoke-direct {p0, p1}, Ljava/lang/RuntimeException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v3, v4}, Ljava/lang/RuntimeException;-><init>(Ljava/lang/String;)V
 
-    throw p0
+    throw v3
 .end method

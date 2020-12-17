@@ -26,7 +26,7 @@
     .registers 1
 
     .line 42
-    const-string v0, "media.swcodec"
+    const-string/jumbo v0, "media.swcodec"
 
     filled-new-array {v0}, [Ljava/lang/String;
 
@@ -74,6 +74,7 @@
 
 .method private disableCpusetBoost(I)I
     .registers 10
+    .param p1, "pid"  # I
 
     .line 180
     const-string v0, " back to group default"
@@ -83,6 +84,7 @@
     iget v2, p0, Lcom/android/server/os/SchedulingPolicyService;->mBoostedPid:I
 
     .line 183
+    .local v2, "boostedPid":I
     const/4 v3, -0x1
 
     iput v3, p0, Lcom/android/server/os/SchedulingPolicyService;->mBoostedPid:I
@@ -109,11 +111,11 @@
 
     .line 189
     :catchall_15
-    move-exception p1
+    move-exception v0
 
     iput-object v6, p0, Lcom/android/server/os/SchedulingPolicyService;->mClient:Landroid/os/IBinder;
 
-    throw p1
+    throw v0
 
     .line 187
     :catch_19
@@ -129,23 +131,23 @@
 
     .line 197
     :try_start_1e
-    new-instance v2, Ljava/lang/StringBuilder;
+    new-instance v4, Ljava/lang/StringBuilder;
 
-    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v4}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v4, "Moving "
+    const-string v6, "Moving "
 
-    invoke-virtual {v2, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v4, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v2, p1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v4, p1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v2, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v4, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v4}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v2
+    move-result-object v4
 
-    invoke-static {v1, v2}, Landroid/util/Log;->i(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v4}, Landroid/util/Log;->i(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 198
     invoke-static {p1, v3}, Landroid/os/Process;->setProcessGroup(II)V
@@ -157,28 +159,30 @@
 
     .line 199
     :catch_39
-    move-exception v2
+    move-exception v3
 
     .line 200
-    new-instance v2, Ljava/lang/StringBuilder;
+    .local v3, "e":Ljava/lang/Exception;
+    new-instance v4, Ljava/lang/StringBuilder;
 
-    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v4}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v3, "Couldn\'t move pid "
+    const-string v6, "Couldn\'t move pid "
 
-    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v4, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v2, p1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v4, p1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v2, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v4, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v4}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    invoke-static {v1, p1}, Landroid/util/Log;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v0}, Landroid/util/Log;->w(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 204
+    .end local v3  # "e":Ljava/lang/Exception;
     :cond_51
     :goto_51
     return v5
@@ -186,6 +190,8 @@
 
 .method private enableCpusetBoost(ILandroid/os/IBinder;)I
     .registers 9
+    .param p1, "pid"  # I
+    .param p2, "client"  # Landroid/os/IBinder;
 
     .line 141
     const-string v0, "SchedulingPolicyService"
@@ -225,11 +231,11 @@
 
     .line 154
     :catchall_16
-    move-exception p1
+    move-exception v0
 
     iput-object v4, p0, Lcom/android/server/os/SchedulingPolicyService;->mClient:Landroid/os/IBinder;
 
-    throw p1
+    throw v0
 
     .line 152
     :catch_1a
@@ -287,30 +293,31 @@
 
     .line 168
     :catch_47
-    move-exception p1
+    move-exception v3
 
     .line 169
-    new-instance v3, Ljava/lang/StringBuilder;
+    .local v3, "e":Ljava/lang/Exception;
+    new-instance v4, Ljava/lang/StringBuilder;
 
-    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v4}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v4, "Failed enableCpusetBoost: "
+    const-string v5, "Failed enableCpusetBoost: "
 
-    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v3, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    invoke-virtual {v4, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v4}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v4
 
-    invoke-static {v0, p1}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v0, v4}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 172
     :try_start_5c
-    iget-object p1, p0, Lcom/android/server/os/SchedulingPolicyService;->mDeathRecipient:Landroid/os/IBinder$DeathRecipient;
+    iget-object v0, p0, Lcom/android/server/os/SchedulingPolicyService;->mDeathRecipient:Landroid/os/IBinder$DeathRecipient;
 
-    invoke-interface {p2, p1, v2}, Landroid/os/IBinder;->unlinkToDeath(Landroid/os/IBinder$DeathRecipient;I)Z
+    invoke-interface {p2, v0, v2}, Landroid/os/IBinder;->unlinkToDeath(Landroid/os/IBinder$DeathRecipient;I)Z
     :try_end_61
     .catch Ljava/lang/Exception; {:try_start_5c .. :try_end_61} :catch_62
 
@@ -318,12 +325,13 @@
 
     .line 173
     :catch_62
-    move-exception p1
+    move-exception v0
 
     :goto_63
     nop
 
     .line 176
+    .end local v3  # "e":Ljava/lang/Exception;
     return v1
 .end method
 
@@ -400,6 +408,7 @@
     move-result-object v1
 
     .line 72
+    .local v1, "nativePids":[I
     if-eqz v1, :cond_1e
 
     array-length v2, v1
@@ -416,11 +425,12 @@
     iput v3, p0, Lcom/android/server/os/SchedulingPolicyService;->mBoostedPid:I
 
     .line 74
-    aget v1, v1, v2
+    aget v2, v1, v2
 
-    invoke-direct {p0, v1}, Lcom/android/server/os/SchedulingPolicyService;->disableCpusetBoost(I)I
+    invoke-direct {p0, v2}, Lcom/android/server/os/SchedulingPolicyService;->disableCpusetBoost(I)I
 
     .line 77
+    .end local v1  # "nativePids":[I
     :cond_1e
     monitor-exit v0
 
@@ -440,6 +450,8 @@
 
 .method public requestCpusetBoost(ZLandroid/os/IBinder;)I
     .registers 7
+    .param p1, "enable"  # Z
+    .param p2, "client"  # Landroid/os/IBinder;
 
     .line 120
     invoke-static {}, Landroid/os/Binder;->getCallingPid()I
@@ -475,6 +487,7 @@
     move-result-object v0
 
     .line 126
+    .local v0, "nativePids":[I
     if-eqz v0, :cond_3a
 
     array-length v1, v0
@@ -498,53 +511,57 @@
 
     .line 133
     :try_start_27
-    aget p1, v0, v2
+    aget v2, v0, v2
 
-    invoke-direct {p0, p1, p2}, Lcom/android/server/os/SchedulingPolicyService;->enableCpusetBoost(ILandroid/os/IBinder;)I
+    invoke-direct {p0, v2, p2}, Lcom/android/server/os/SchedulingPolicyService;->enableCpusetBoost(ILandroid/os/IBinder;)I
 
-    move-result p1
+    move-result v2
 
     monitor-exit v1
 
-    return p1
+    return v2
 
     .line 135
     :cond_2f
-    aget p1, v0, v2
+    aget v2, v0, v2
 
-    invoke-direct {p0, p1}, Lcom/android/server/os/SchedulingPolicyService;->disableCpusetBoost(I)I
+    invoke-direct {p0, v2}, Lcom/android/server/os/SchedulingPolicyService;->disableCpusetBoost(I)I
 
-    move-result p1
+    move-result v2
 
     monitor-exit v1
 
-    return p1
+    return v2
 
     .line 137
     :catchall_37
-    move-exception p1
+    move-exception v2
 
     monitor-exit v1
     :try_end_39
     .catchall {:try_start_27 .. :try_end_39} :catchall_37
 
-    throw p1
+    throw v2
 
     .line 127
     :cond_3a
     :goto_3a
-    const-string p1, "SchedulingPolicyService"
+    const-string v1, "SchedulingPolicyService"
 
-    const-string/jumbo p2, "requestCpusetBoost: can\'t find media.codec process"
+    const-string/jumbo v3, "requestCpusetBoost: can\'t find media.codec process"
 
-    invoke-static {p1, p2}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v3}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 128
     return v2
 .end method
 
 .method public requestPriority(IIIZ)I
-    .registers 8
+    .registers 10
+    .param p1, "pid"  # I
+    .param p2, "tid"  # I
+    .param p3, "prio"  # I
+    .param p4, "isForApp"  # Z
 
     .line 92
     invoke-direct {p0}, Lcom/android/server/os/SchedulingPolicyService;->isPermitted()Z
@@ -576,29 +593,29 @@
     :cond_14
     invoke-static {}, Landroid/os/Binder;->getCallingUid()I
 
-    move-result p1
+    move-result v0
 
-    const/16 v0, 0x3ea
+    const/16 v2, 0x3ea
 
-    const-string v2, "SchedulingPolicyService"
+    const-string v3, "SchedulingPolicyService"
 
-    if-eq p1, v0, :cond_3d
+    if-eq v0, v2, :cond_3d
 
     .line 99
     if-nez p4, :cond_22
 
     .line 100
-    const/4 p1, 0x4
+    const/4 v0, 0x4
 
     goto :goto_23
 
     :cond_22
-    const/4 p1, 0x6
+    const/4 v0, 0x6
 
     .line 99
     :goto_23
     :try_start_23
-    invoke-static {p2, p1}, Landroid/os/Process;->setThreadGroup(II)V
+    invoke-static {p2, v0}, Landroid/os/Process;->setThreadGroup(II)V
     :try_end_26
     .catch Ljava/lang/RuntimeException; {:try_start_23 .. :try_end_26} :catch_27
 
@@ -607,35 +624,37 @@
 
     .line 101
     :catch_27
-    move-exception p1
+    move-exception v0
 
     .line 102
-    new-instance p2, Ljava/lang/StringBuilder;
+    .local v0, "e":Ljava/lang/RuntimeException;
+    new-instance v2, Ljava/lang/StringBuilder;
 
-    invoke-direct {p2}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string p3, "Failed setThreadGroup: "
+    const-string v4, "Failed setThreadGroup: "
 
-    invoke-virtual {p2, p3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p2, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v2
 
-    invoke-static {v2, p1}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v3, v2}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 103
     return v1
 
     .line 108
+    .end local v0  # "e":Ljava/lang/RuntimeException;
     :cond_3d
     :goto_3d
-    const p1, 0x40000001  # 2.0000002f
+    const v0, 0x40000001  # 2.0000002f
 
     :try_start_40
-    invoke-static {p2, p1, p3}, Landroid/os/Process;->setThreadScheduler(III)V
+    invoke-static {p2, v0, p3}, Landroid/os/Process;->setThreadScheduler(III)V
     :try_end_43
     .catch Ljava/lang/RuntimeException; {:try_start_40 .. :try_end_43} :catch_46
 
@@ -643,35 +662,37 @@
     nop
 
     .line 114
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    return p1
+    return v0
 
     .line 110
     :catch_46
-    move-exception p1
+    move-exception v0
 
     .line 111
-    new-instance p2, Ljava/lang/StringBuilder;
+    .restart local v0  # "e":Ljava/lang/RuntimeException;
+    new-instance v2, Ljava/lang/StringBuilder;
 
-    invoke-direct {p2}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string p3, "Failed setThreadScheduler: "
+    const-string v4, "Failed setThreadScheduler: "
 
-    invoke-virtual {p2, p3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p2, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v2
 
-    invoke-static {v2, p1}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v3, v2}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 112
     return v1
 
     .line 94
+    .end local v0  # "e":Ljava/lang/RuntimeException;
     :cond_5c
     :goto_5c
     return v1

@@ -42,7 +42,9 @@
 
 # direct methods
 .method constructor <init>(Lcom/android/server/SensorPrivacyService;Landroid/content/Context;)V
-    .registers 5
+    .registers 6
+    .param p1, "this$0"  # Lcom/android/server/SensorPrivacyService;
+    .param p2, "context"  # Landroid/content/Context;
 
     .line 82
     iput-object p1, p0, Lcom/android/server/SensorPrivacyService$SensorPrivacyServiceImpl;->this$0:Lcom/android/server/SensorPrivacyService;
@@ -60,72 +62,74 @@
     iput-object p2, p0, Lcom/android/server/SensorPrivacyService$SensorPrivacyServiceImpl;->mContext:Landroid/content/Context;
 
     .line 84
-    new-instance p2, Lcom/android/server/SensorPrivacyService$SensorPrivacyHandler;
+    new-instance v0, Lcom/android/server/SensorPrivacyService$SensorPrivacyHandler;
 
     invoke-static {}, Lcom/android/server/FgThread;->get()Lcom/android/server/FgThread;
 
-    move-result-object v0
+    move-result-object v1
 
-    invoke-virtual {v0}, Lcom/android/server/FgThread;->getLooper()Landroid/os/Looper;
+    invoke-virtual {v1}, Lcom/android/server/FgThread;->getLooper()Landroid/os/Looper;
 
-    move-result-object v0
+    move-result-object v1
 
-    iget-object v1, p0, Lcom/android/server/SensorPrivacyService$SensorPrivacyServiceImpl;->mContext:Landroid/content/Context;
+    iget-object v2, p0, Lcom/android/server/SensorPrivacyService$SensorPrivacyServiceImpl;->mContext:Landroid/content/Context;
 
-    invoke-direct {p2, p1, v0, v1}, Lcom/android/server/SensorPrivacyService$SensorPrivacyHandler;-><init>(Lcom/android/server/SensorPrivacyService;Landroid/os/Looper;Landroid/content/Context;)V
+    invoke-direct {v0, p1, v1, v2}, Lcom/android/server/SensorPrivacyService$SensorPrivacyHandler;-><init>(Lcom/android/server/SensorPrivacyService;Landroid/os/Looper;Landroid/content/Context;)V
 
-    iput-object p2, p0, Lcom/android/server/SensorPrivacyService$SensorPrivacyServiceImpl;->mHandler:Lcom/android/server/SensorPrivacyService$SensorPrivacyHandler;
+    iput-object v0, p0, Lcom/android/server/SensorPrivacyService$SensorPrivacyServiceImpl;->mHandler:Lcom/android/server/SensorPrivacyService$SensorPrivacyHandler;
 
     .line 85
-    new-instance p1, Ljava/io/File;
+    new-instance v0, Ljava/io/File;
 
     invoke-static {}, Landroid/os/Environment;->getDataSystemDirectory()Ljava/io/File;
 
-    move-result-object p2
+    move-result-object v1
 
-    const-string/jumbo v0, "sensor_privacy.xml"
+    const-string/jumbo v2, "sensor_privacy.xml"
 
-    invoke-direct {p1, p2, v0}, Ljava/io/File;-><init>(Ljava/io/File;Ljava/lang/String;)V
+    invoke-direct {v0, v1, v2}, Ljava/io/File;-><init>(Ljava/io/File;Ljava/lang/String;)V
 
     .line 87
-    new-instance p2, Landroid/util/AtomicFile;
+    .local v0, "sensorPrivacyFile":Ljava/io/File;
+    new-instance v1, Landroid/util/AtomicFile;
 
-    invoke-direct {p2, p1}, Landroid/util/AtomicFile;-><init>(Ljava/io/File;)V
+    invoke-direct {v1, v0}, Landroid/util/AtomicFile;-><init>(Ljava/io/File;)V
 
-    iput-object p2, p0, Lcom/android/server/SensorPrivacyService$SensorPrivacyServiceImpl;->mAtomicFile:Landroid/util/AtomicFile;
+    iput-object v1, p0, Lcom/android/server/SensorPrivacyService$SensorPrivacyServiceImpl;->mAtomicFile:Landroid/util/AtomicFile;
 
     .line 88
-    iget-object p1, p0, Lcom/android/server/SensorPrivacyService$SensorPrivacyServiceImpl;->mLock:Ljava/lang/Object;
+    iget-object v1, p0, Lcom/android/server/SensorPrivacyService$SensorPrivacyServiceImpl;->mLock:Ljava/lang/Object;
 
-    monitor-enter p1
+    monitor-enter v1
 
     .line 89
     :try_start_35
     invoke-direct {p0}, Lcom/android/server/SensorPrivacyService$SensorPrivacyServiceImpl;->readPersistedSensorPrivacyEnabledLocked()Z
 
-    move-result p2
+    move-result v2
 
-    iput-boolean p2, p0, Lcom/android/server/SensorPrivacyService$SensorPrivacyServiceImpl;->mEnabled:Z
+    iput-boolean v2, p0, Lcom/android/server/SensorPrivacyService$SensorPrivacyServiceImpl;->mEnabled:Z
 
     .line 90
-    monitor-exit p1
+    monitor-exit v1
 
     .line 91
     return-void
 
     .line 90
     :catchall_3d
-    move-exception p2
+    move-exception v2
 
-    monitor-exit p1
+    monitor-exit v1
     :try_end_3f
     .catchall {:try_start_35 .. :try_end_3f} :catchall_3d
 
-    throw p2
+    throw v2
 .end method
 
 .method static synthetic access$100(Lcom/android/server/SensorPrivacyService$SensorPrivacyServiceImpl;)V
     .registers 1
+    .param p0, "x0"  # Lcom/android/server/SensorPrivacyService$SensorPrivacyServiceImpl;
 
     .line 72
     invoke-direct {p0}, Lcom/android/server/SensorPrivacyService$SensorPrivacyServiceImpl;->persistSensorPrivacyState()V
@@ -170,52 +174,52 @@
     monitor-enter v0
 
     .line 177
-    nop
-
-    .line 179
     const/4 v1, 0x0
 
-    :try_start_5
+    .line 179
+    .local v1, "outputStream":Ljava/io/FileOutputStream;
+    :try_start_4
     new-instance v2, Lcom/android/internal/util/FastXmlSerializer;
 
     invoke-direct {v2}, Lcom/android/internal/util/FastXmlSerializer;-><init>()V
 
     .line 180
+    .local v2, "serializer":Lorg/xmlpull/v1/XmlSerializer;
     iget-object v3, p0, Lcom/android/server/SensorPrivacyService$SensorPrivacyServiceImpl;->mAtomicFile:Landroid/util/AtomicFile;
 
     invoke-virtual {v3}, Landroid/util/AtomicFile;->startWrite()Ljava/io/FileOutputStream;
 
     move-result-object v3
-    :try_end_10
-    .catch Ljava/io/IOException; {:try_start_5 .. :try_end_10} :catch_45
-    .catchall {:try_start_5 .. :try_end_10} :catchall_43
+
+    move-object v1, v3
 
     .line 181
-    :try_start_10
-    sget-object v4, Ljava/nio/charset/StandardCharsets;->UTF_8:Ljava/nio/charset/Charset;
+    sget-object v3, Ljava/nio/charset/StandardCharsets;->UTF_8:Ljava/nio/charset/Charset;
 
-    invoke-virtual {v4}, Ljava/nio/charset/Charset;->name()Ljava/lang/String;
+    invoke-virtual {v3}, Ljava/nio/charset/Charset;->name()Ljava/lang/String;
 
-    move-result-object v4
+    move-result-object v3
 
-    invoke-interface {v2, v3, v4}, Lorg/xmlpull/v1/XmlSerializer;->setOutput(Ljava/io/OutputStream;Ljava/lang/String;)V
+    invoke-interface {v2, v1, v3}, Lorg/xmlpull/v1/XmlSerializer;->setOutput(Ljava/io/OutputStream;Ljava/lang/String;)V
 
     .line 182
-    const/4 v4, 0x1
+    const/4 v3, 0x1
 
-    invoke-static {v4}, Ljava/lang/Boolean;->valueOf(Z)Ljava/lang/Boolean;
+    invoke-static {v3}, Ljava/lang/Boolean;->valueOf(Z)Ljava/lang/Boolean;
 
-    move-result-object v4
+    move-result-object v3
 
-    invoke-interface {v2, v1, v4}, Lorg/xmlpull/v1/XmlSerializer;->startDocument(Ljava/lang/String;Ljava/lang/Boolean;)V
+    const/4 v4, 0x0
+
+    invoke-interface {v2, v4, v3}, Lorg/xmlpull/v1/XmlSerializer;->startDocument(Ljava/lang/String;Ljava/lang/Boolean;)V
 
     .line 183
-    const-string/jumbo v4, "sensor-privacy"
+    const-string/jumbo v3, "sensor-privacy"
 
-    invoke-interface {v2, v1, v4}, Lorg/xmlpull/v1/XmlSerializer;->startTag(Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
+    invoke-interface {v2, v4, v3}, Lorg/xmlpull/v1/XmlSerializer;->startTag(Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
 
     .line 184
-    const-string v4, "enabled"
+    const-string v3, "enabled"
 
     iget-boolean v5, p0, Lcom/android/server/SensorPrivacyService$SensorPrivacyServiceImpl;->mEnabled:Z
 
@@ -223,73 +227,68 @@
 
     move-result-object v5
 
-    invoke-interface {v2, v1, v4, v5}, Lorg/xmlpull/v1/XmlSerializer;->attribute(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
+    invoke-interface {v2, v4, v3, v5}, Lorg/xmlpull/v1/XmlSerializer;->attribute(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
 
     .line 185
-    const-string/jumbo v4, "sensor-privacy"
+    const-string/jumbo v3, "sensor-privacy"
 
-    invoke-interface {v2, v1, v4}, Lorg/xmlpull/v1/XmlSerializer;->endTag(Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
+    invoke-interface {v2, v4, v3}, Lorg/xmlpull/v1/XmlSerializer;->endTag(Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
 
     .line 186
     invoke-interface {v2}, Lorg/xmlpull/v1/XmlSerializer;->endDocument()V
 
     .line 187
-    iget-object v1, p0, Lcom/android/server/SensorPrivacyService$SensorPrivacyServiceImpl;->mAtomicFile:Landroid/util/AtomicFile;
+    iget-object v3, p0, Lcom/android/server/SensorPrivacyService$SensorPrivacyServiceImpl;->mAtomicFile:Landroid/util/AtomicFile;
 
-    invoke-virtual {v1, v3}, Landroid/util/AtomicFile;->finishWrite(Ljava/io/FileOutputStream;)V
-    :try_end_40
-    .catch Ljava/io/IOException; {:try_start_10 .. :try_end_40} :catch_41
-    .catchall {:try_start_10 .. :try_end_40} :catchall_43
+    invoke-virtual {v3, v1}, Landroid/util/AtomicFile;->finishWrite(Ljava/io/FileOutputStream;)V
+    :try_end_41
+    .catch Ljava/io/IOException; {:try_start_4 .. :try_end_41} :catch_44
+    .catchall {:try_start_4 .. :try_end_41} :catchall_42
 
     .line 191
-    goto :goto_54
-
-    .line 188
-    :catch_41
-    move-exception v1
-
-    goto :goto_48
+    .end local v2  # "serializer":Lorg/xmlpull/v1/XmlSerializer;
+    goto :goto_51
 
     .line 192
-    :catchall_43
+    .end local v1  # "outputStream":Ljava/io/FileOutputStream;
+    :catchall_42
     move-exception v1
 
-    goto :goto_56
+    goto :goto_53
 
     .line 188
-    :catch_45
+    .restart local v1  # "outputStream":Ljava/io/FileOutputStream;
+    :catch_44
     move-exception v2
 
-    move-object v3, v1
-
-    move-object v1, v2
-
     .line 189
-    :goto_48
-    :try_start_48
-    const-string v2, "SensorPrivacyService"
+    .local v2, "e":Ljava/io/IOException;
+    :try_start_45
+    const-string v3, "SensorPrivacyService"
 
     const-string v4, "Caught an exception persisting the sensor privacy state: "
 
-    invoke-static {v2, v4, v1}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    invoke-static {v3, v4, v2}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
     .line 190
-    iget-object v1, p0, Lcom/android/server/SensorPrivacyService$SensorPrivacyServiceImpl;->mAtomicFile:Landroid/util/AtomicFile;
+    iget-object v3, p0, Lcom/android/server/SensorPrivacyService$SensorPrivacyServiceImpl;->mAtomicFile:Landroid/util/AtomicFile;
 
-    invoke-virtual {v1, v3}, Landroid/util/AtomicFile;->failWrite(Ljava/io/FileOutputStream;)V
+    invoke-virtual {v3, v1}, Landroid/util/AtomicFile;->failWrite(Ljava/io/FileOutputStream;)V
 
     .line 192
-    :goto_54
+    .end local v1  # "outputStream":Ljava/io/FileOutputStream;
+    .end local v2  # "e":Ljava/io/IOException;
+    :goto_51
     monitor-exit v0
 
     .line 193
     return-void
 
     .line 192
-    :goto_56
+    :goto_53
     monitor-exit v0
-    :try_end_57
-    .catchall {:try_start_48 .. :try_end_57} :catchall_43
+    :try_end_54
+    .catchall {:try_start_45 .. :try_end_54} :catchall_42
 
     throw v1
 .end method
@@ -304,12 +303,12 @@
 
     move-result v0
 
-    const/4 v1, 0x0
-
     if-nez v0, :cond_a
 
     .line 152
-    return v1
+    const/4 v0, 0x0
+
+    return v0
 
     .line 155
     :cond_a
@@ -320,131 +319,152 @@
 
     move-result-object v0
     :try_end_10
-    .catch Ljava/io/IOException; {:try_start_a .. :try_end_10} :catch_4d
-    .catch Lorg/xmlpull/v1/XmlPullParserException; {:try_start_a .. :try_end_10} :catch_4d
+    .catch Ljava/io/IOException; {:try_start_a .. :try_end_10} :catch_4e
+    .catch Lorg/xmlpull/v1/XmlPullParserException; {:try_start_a .. :try_end_10} :catch_4e
 
     .line 156
+    .local v0, "inputStream":Ljava/io/FileInputStream;
     :try_start_10
     invoke-static {}, Landroid/util/Xml;->newPullParser()Lorg/xmlpull/v1/XmlPullParser;
 
-    move-result-object v2
+    move-result-object v1
 
     .line 157
-    sget-object v3, Ljava/nio/charset/StandardCharsets;->UTF_8:Ljava/nio/charset/Charset;
+    .local v1, "parser":Lorg/xmlpull/v1/XmlPullParser;
+    sget-object v2, Ljava/nio/charset/StandardCharsets;->UTF_8:Ljava/nio/charset/Charset;
 
-    invoke-virtual {v3}, Ljava/nio/charset/Charset;->name()Ljava/lang/String;
+    invoke-virtual {v2}, Ljava/nio/charset/Charset;->name()Ljava/lang/String;
 
-    move-result-object v3
+    move-result-object v2
 
-    invoke-interface {v2, v0, v3}, Lorg/xmlpull/v1/XmlPullParser;->setInput(Ljava/io/InputStream;Ljava/lang/String;)V
+    invoke-interface {v1, v0, v2}, Lorg/xmlpull/v1/XmlPullParser;->setInput(Ljava/io/InputStream;Ljava/lang/String;)V
 
     .line 158
-    const-string/jumbo v3, "sensor-privacy"
+    const-string/jumbo v2, "sensor-privacy"
 
-    invoke-static {v2, v3}, Lcom/android/internal/util/XmlUtils;->beginDocument(Lorg/xmlpull/v1/XmlPullParser;Ljava/lang/String;)V
+    invoke-static {v1, v2}, Lcom/android/internal/util/XmlUtils;->beginDocument(Lorg/xmlpull/v1/XmlPullParser;Ljava/lang/String;)V
 
     .line 159
-    invoke-interface {v2}, Lorg/xmlpull/v1/XmlPullParser;->next()I
+    invoke-interface {v1}, Lorg/xmlpull/v1/XmlPullParser;->next()I
 
     .line 160
-    invoke-interface {v2}, Lorg/xmlpull/v1/XmlPullParser;->getName()Ljava/lang/String;
+    invoke-interface {v1}, Lorg/xmlpull/v1/XmlPullParser;->getName()Ljava/lang/String;
+
+    move-result-object v2
 
     .line 161
+    .local v2, "tagName":Ljava/lang/String;
     const/4 v3, 0x0
 
     const-string v4, "enabled"
 
-    invoke-interface {v2, v3, v4}, Lorg/xmlpull/v1/XmlPullParser;->getAttributeValue(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+    invoke-interface {v1, v3, v4}, Lorg/xmlpull/v1/XmlPullParser;->getAttributeValue(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
 
-    move-result-object v2
+    move-result-object v3
 
-    invoke-static {v2}, Ljava/lang/Boolean;->valueOf(Ljava/lang/String;)Ljava/lang/Boolean;
+    invoke-static {v3}, Ljava/lang/Boolean;->valueOf(Ljava/lang/String;)Ljava/lang/Boolean;
 
-    move-result-object v2
+    move-result-object v3
 
-    invoke-virtual {v2}, Ljava/lang/Boolean;->booleanValue()Z
+    invoke-virtual {v3}, Ljava/lang/Boolean;->booleanValue()Z
 
-    move-result v2
-    :try_end_38
-    .catchall {:try_start_10 .. :try_end_38} :catchall_3f
+    move-result v3
+    :try_end_39
+    .catchall {:try_start_10 .. :try_end_39} :catchall_40
+
+    move v1, v3
 
     .line 162
-    if-eqz v0, :cond_3d
+    .end local v2  # "tagName":Ljava/lang/String;
+    .local v1, "enabled":Z
+    if-eqz v0, :cond_3f
 
-    :try_start_3a
+    :try_start_3c
     invoke-virtual {v0}, Ljava/io/FileInputStream;->close()V
-    :try_end_3d
-    .catch Ljava/io/IOException; {:try_start_3a .. :try_end_3d} :catch_4d
-    .catch Lorg/xmlpull/v1/XmlPullParserException; {:try_start_3a .. :try_end_3d} :catch_4d
+    :try_end_3f
+    .catch Ljava/io/IOException; {:try_start_3c .. :try_end_3f} :catch_4e
+    .catch Lorg/xmlpull/v1/XmlPullParserException; {:try_start_3c .. :try_end_3f} :catch_4e
 
     .line 168
-    :cond_3d
-    move v1, v2
-
-    goto :goto_5b
+    .end local v0  # "inputStream":Ljava/io/FileInputStream;
+    :cond_3f
+    goto :goto_5c
 
     .line 155
-    :catchall_3f
-    move-exception v2
+    .end local v1  # "enabled":Z
+    .restart local v0  # "inputStream":Ljava/io/FileInputStream;
+    :catchall_40
+    move-exception v1
 
-    :try_start_40
-    throw v2
-    :try_end_41
-    .catchall {:try_start_40 .. :try_end_41} :catchall_41
+    .end local v0  # "inputStream":Ljava/io/FileInputStream;
+    .end local p0  # "this":Lcom/android/server/SensorPrivacyService$SensorPrivacyServiceImpl;
+    :try_start_41
+    throw v1
+    :try_end_42
+    .catchall {:try_start_41 .. :try_end_42} :catchall_42
 
     .line 162
-    :catchall_41
+    .restart local v0  # "inputStream":Ljava/io/FileInputStream;
+    .restart local p0  # "this":Lcom/android/server/SensorPrivacyService$SensorPrivacyServiceImpl;
+    :catchall_42
+    move-exception v2
+
+    if-eqz v0, :cond_4d
+
+    :try_start_45
+    invoke-virtual {v0}, Ljava/io/FileInputStream;->close()V
+    :try_end_48
+    .catchall {:try_start_45 .. :try_end_48} :catchall_49
+
+    goto :goto_4d
+
+    :catchall_49
     move-exception v3
 
-    if-eqz v0, :cond_4c
+    :try_start_4a
+    invoke-virtual {v1, v3}, Ljava/lang/Throwable;->addSuppressed(Ljava/lang/Throwable;)V
 
-    :try_start_44
-    invoke-virtual {v0}, Ljava/io/FileInputStream;->close()V
-    :try_end_47
-    .catchall {:try_start_44 .. :try_end_47} :catchall_48
+    .end local p0  # "this":Lcom/android/server/SensorPrivacyService$SensorPrivacyServiceImpl;
+    :cond_4d
+    :goto_4d
+    throw v2
+    :try_end_4e
+    .catch Ljava/io/IOException; {:try_start_4a .. :try_end_4e} :catch_4e
+    .catch Lorg/xmlpull/v1/XmlPullParserException; {:try_start_4a .. :try_end_4e} :catch_4e
 
-    goto :goto_4c
-
-    :catchall_48
-    move-exception v0
-
-    :try_start_49
-    invoke-virtual {v2, v0}, Ljava/lang/Throwable;->addSuppressed(Ljava/lang/Throwable;)V
-
-    :cond_4c
-    :goto_4c
-    throw v3
-    :try_end_4d
-    .catch Ljava/io/IOException; {:try_start_49 .. :try_end_4d} :catch_4d
-    .catch Lorg/xmlpull/v1/XmlPullParserException; {:try_start_49 .. :try_end_4d} :catch_4d
-
-    :catch_4d
+    .end local v0  # "inputStream":Ljava/io/FileInputStream;
+    .restart local p0  # "this":Lcom/android/server/SensorPrivacyService$SensorPrivacyServiceImpl;
+    :catch_4e
     move-exception v0
 
     .line 163
-    const-string v2, "SensorPrivacyService"
+    .local v0, "e":Ljava/lang/Exception;
+    const-string v1, "SensorPrivacyService"
 
-    const-string v3, "Caught an exception reading the state from storage: "
+    const-string v2, "Caught an exception reading the state from storage: "
 
-    invoke-static {v2, v3, v0}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    invoke-static {v1, v2, v0}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
     .line 166
-    iget-object v0, p0, Lcom/android/server/SensorPrivacyService$SensorPrivacyServiceImpl;->mAtomicFile:Landroid/util/AtomicFile;
+    iget-object v1, p0, Lcom/android/server/SensorPrivacyService$SensorPrivacyServiceImpl;->mAtomicFile:Landroid/util/AtomicFile;
 
-    invoke-virtual {v0}, Landroid/util/AtomicFile;->delete()V
+    invoke-virtual {v1}, Landroid/util/AtomicFile;->delete()V
 
     .line 167
-    nop
+    const/4 v1, 0x0
 
     .line 169
-    :goto_5b
+    .end local v0  # "e":Ljava/lang/Exception;
+    .restart local v1  # "enabled":Z
+    :goto_5c
     return v1
 .end method
 
 
 # virtual methods
 .method public addSensorPrivacyListener(Landroid/hardware/ISensorPrivacyListener;)V
-    .registers 3
+    .registers 4
+    .param p1, "listener"  # Landroid/hardware/ISensorPrivacyListener;
 
     .line 200
     if-eqz p1, :cond_8
@@ -459,13 +479,13 @@
 
     .line 201
     :cond_8
-    new-instance p1, Ljava/lang/NullPointerException;
+    new-instance v0, Ljava/lang/NullPointerException;
 
-    const-string v0, "listener cannot be null"
+    const-string/jumbo v1, "listener cannot be null"
 
-    invoke-direct {p1, v0}, Ljava/lang/NullPointerException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v0, v1}, Ljava/lang/NullPointerException;-><init>(Ljava/lang/String;)V
 
-    throw p1
+    throw v0
 .end method
 
 .method public isSensorPrivacyEnabled()Z
@@ -496,7 +516,8 @@
 .end method
 
 .method public removeSensorPrivacyListener(Landroid/hardware/ISensorPrivacyListener;)V
-    .registers 3
+    .registers 4
+    .param p1, "listener"  # Landroid/hardware/ISensorPrivacyListener;
 
     .line 211
     if-eqz p1, :cond_8
@@ -511,17 +532,18 @@
 
     .line 212
     :cond_8
-    new-instance p1, Ljava/lang/NullPointerException;
+    new-instance v0, Ljava/lang/NullPointerException;
 
-    const-string v0, "listener cannot be null"
+    const-string/jumbo v1, "listener cannot be null"
 
-    invoke-direct {p1, v0}, Ljava/lang/NullPointerException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v0, v1}, Ljava/lang/NullPointerException;-><init>(Ljava/lang/String;)V
 
-    throw p1
+    throw v0
 .end method
 
 .method public setSensorPrivacy(Z)V
     .registers 8
+    .param p1, "enable"  # Z
 
     .line 99
     invoke-direct {p0}, Lcom/android/server/SensorPrivacyService$SensorPrivacyServiceImpl;->enforceSensorPrivacyPermission()V
@@ -535,113 +557,107 @@
     :try_start_6
     iput-boolean p1, p0, Lcom/android/server/SensorPrivacyService$SensorPrivacyServiceImpl;->mEnabled:Z
     :try_end_8
-    .catchall {:try_start_6 .. :try_end_8} :catchall_5c
+    .catchall {:try_start_6 .. :try_end_8} :catchall_59
 
     .line 102
-    nop
-
-    .line 104
     const/4 v1, 0x0
 
-    :try_start_a
+    .line 104
+    .local v1, "outputStream":Ljava/io/FileOutputStream;
+    :try_start_9
     new-instance v2, Lcom/android/internal/util/FastXmlSerializer;
 
     invoke-direct {v2}, Lcom/android/internal/util/FastXmlSerializer;-><init>()V
 
     .line 105
+    .local v2, "serializer":Lorg/xmlpull/v1/XmlSerializer;
     iget-object v3, p0, Lcom/android/server/SensorPrivacyService$SensorPrivacyServiceImpl;->mAtomicFile:Landroid/util/AtomicFile;
 
     invoke-virtual {v3}, Landroid/util/AtomicFile;->startWrite()Ljava/io/FileOutputStream;
 
     move-result-object v3
-    :try_end_15
-    .catch Ljava/io/IOException; {:try_start_a .. :try_end_15} :catch_46
-    .catchall {:try_start_a .. :try_end_15} :catchall_5c
+
+    move-object v1, v3
 
     .line 106
-    :try_start_15
-    sget-object v4, Ljava/nio/charset/StandardCharsets;->UTF_8:Ljava/nio/charset/Charset;
+    sget-object v3, Ljava/nio/charset/StandardCharsets;->UTF_8:Ljava/nio/charset/Charset;
 
-    invoke-virtual {v4}, Ljava/nio/charset/Charset;->name()Ljava/lang/String;
+    invoke-virtual {v3}, Ljava/nio/charset/Charset;->name()Ljava/lang/String;
 
-    move-result-object v4
+    move-result-object v3
 
-    invoke-interface {v2, v3, v4}, Lorg/xmlpull/v1/XmlSerializer;->setOutput(Ljava/io/OutputStream;Ljava/lang/String;)V
+    invoke-interface {v2, v1, v3}, Lorg/xmlpull/v1/XmlSerializer;->setOutput(Ljava/io/OutputStream;Ljava/lang/String;)V
 
     .line 107
-    const/4 v4, 0x1
+    const/4 v3, 0x1
 
-    invoke-static {v4}, Ljava/lang/Boolean;->valueOf(Z)Ljava/lang/Boolean;
+    invoke-static {v3}, Ljava/lang/Boolean;->valueOf(Z)Ljava/lang/Boolean;
 
-    move-result-object v4
+    move-result-object v3
 
-    invoke-interface {v2, v1, v4}, Lorg/xmlpull/v1/XmlSerializer;->startDocument(Ljava/lang/String;Ljava/lang/Boolean;)V
+    const/4 v4, 0x0
+
+    invoke-interface {v2, v4, v3}, Lorg/xmlpull/v1/XmlSerializer;->startDocument(Ljava/lang/String;Ljava/lang/Boolean;)V
 
     .line 108
-    const-string/jumbo v4, "sensor-privacy"
+    const-string/jumbo v3, "sensor-privacy"
 
-    invoke-interface {v2, v1, v4}, Lorg/xmlpull/v1/XmlSerializer;->startTag(Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
+    invoke-interface {v2, v4, v3}, Lorg/xmlpull/v1/XmlSerializer;->startTag(Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
 
     .line 109
-    const-string v4, "enabled"
+    const-string v3, "enabled"
 
     invoke-static {p1}, Ljava/lang/String;->valueOf(Z)Ljava/lang/String;
 
     move-result-object v5
 
-    invoke-interface {v2, v1, v4, v5}, Lorg/xmlpull/v1/XmlSerializer;->attribute(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
+    invoke-interface {v2, v4, v3, v5}, Lorg/xmlpull/v1/XmlSerializer;->attribute(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
 
     .line 110
-    const-string/jumbo v4, "sensor-privacy"
+    const-string/jumbo v3, "sensor-privacy"
 
-    invoke-interface {v2, v1, v4}, Lorg/xmlpull/v1/XmlSerializer;->endTag(Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
+    invoke-interface {v2, v4, v3}, Lorg/xmlpull/v1/XmlSerializer;->endTag(Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
 
     .line 111
     invoke-interface {v2}, Lorg/xmlpull/v1/XmlSerializer;->endDocument()V
 
     .line 112
-    iget-object v1, p0, Lcom/android/server/SensorPrivacyService$SensorPrivacyServiceImpl;->mAtomicFile:Landroid/util/AtomicFile;
+    iget-object v3, p0, Lcom/android/server/SensorPrivacyService$SensorPrivacyServiceImpl;->mAtomicFile:Landroid/util/AtomicFile;
 
-    invoke-virtual {v1, v3}, Landroid/util/AtomicFile;->finishWrite(Ljava/io/FileOutputStream;)V
-    :try_end_43
-    .catch Ljava/io/IOException; {:try_start_15 .. :try_end_43} :catch_44
-    .catchall {:try_start_15 .. :try_end_43} :catchall_5c
+    invoke-virtual {v3, v1}, Landroid/util/AtomicFile;->finishWrite(Ljava/io/FileOutputStream;)V
+    :try_end_44
+    .catch Ljava/io/IOException; {:try_start_9 .. :try_end_44} :catch_45
+    .catchall {:try_start_9 .. :try_end_44} :catchall_59
 
     .line 116
-    goto :goto_55
+    .end local v2  # "serializer":Lorg/xmlpull/v1/XmlSerializer;
+    goto :goto_52
 
     .line 113
-    :catch_44
-    move-exception v1
-
-    goto :goto_49
-
-    :catch_46
+    :catch_45
     move-exception v2
 
-    move-object v3, v1
-
-    move-object v1, v2
-
     .line 114
-    :goto_49
-    :try_start_49
-    const-string v2, "SensorPrivacyService"
+    .local v2, "e":Ljava/io/IOException;
+    :try_start_46
+    const-string v3, "SensorPrivacyService"
 
     const-string v4, "Caught an exception persisting the sensor privacy state: "
 
-    invoke-static {v2, v4, v1}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    invoke-static {v3, v4, v2}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
     .line 115
-    iget-object v1, p0, Lcom/android/server/SensorPrivacyService$SensorPrivacyServiceImpl;->mAtomicFile:Landroid/util/AtomicFile;
+    iget-object v3, p0, Lcom/android/server/SensorPrivacyService$SensorPrivacyServiceImpl;->mAtomicFile:Landroid/util/AtomicFile;
 
-    invoke-virtual {v1, v3}, Landroid/util/AtomicFile;->failWrite(Ljava/io/FileOutputStream;)V
+    invoke-virtual {v3, v1}, Landroid/util/AtomicFile;->failWrite(Ljava/io/FileOutputStream;)V
 
     .line 117
-    :goto_55
+    .end local v1  # "outputStream":Ljava/io/FileOutputStream;
+    .end local v2  # "e":Ljava/io/IOException;
+    :goto_52
     monitor-exit v0
-    :try_end_56
-    .catchall {:try_start_49 .. :try_end_56} :catchall_5c
+    :try_end_53
+    .catchall {:try_start_46 .. :try_end_53} :catchall_59
 
     .line 118
     iget-object v0, p0, Lcom/android/server/SensorPrivacyService$SensorPrivacyServiceImpl;->mHandler:Lcom/android/server/SensorPrivacyService$SensorPrivacyHandler;
@@ -652,13 +668,13 @@
     return-void
 
     .line 117
-    :catchall_5c
-    move-exception p1
+    :catchall_59
+    move-exception v1
 
-    :try_start_5d
+    :try_start_5a
     monitor-exit v0
-    :try_end_5e
-    .catchall {:try_start_5d .. :try_end_5e} :catchall_5c
+    :try_end_5b
+    .catchall {:try_start_5a .. :try_end_5b} :catchall_59
 
-    throw p1
+    throw v1
 .end method

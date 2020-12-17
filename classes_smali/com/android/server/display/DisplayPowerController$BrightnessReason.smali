@@ -60,7 +60,7 @@
 .method private constructor <init>(Lcom/android/server/display/DisplayPowerController;)V
     .registers 2
 
-    .line 2015
+    .line 2217
     iput-object p1, p0, Lcom/android/server/display/DisplayPowerController$BrightnessReason;->this$0:Lcom/android/server/display/DisplayPowerController;
 
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -70,81 +70,82 @@
 
 .method synthetic constructor <init>(Lcom/android/server/display/DisplayPowerController;Lcom/android/server/display/DisplayPowerController$1;)V
     .registers 3
+    .param p1, "x0"  # Lcom/android/server/display/DisplayPowerController;
+    .param p2, "x1"  # Lcom/android/server/display/DisplayPowerController$1;
 
-    .line 2015
+    .line 2217
     invoke-direct {p0, p1}, Lcom/android/server/display/DisplayPowerController$BrightnessReason;-><init>(Lcom/android/server/display/DisplayPowerController;)V
 
     return-void
 .end method
 
 .method private reasonToString(I)Ljava/lang/String;
-    .registers 2
+    .registers 3
+    .param p1, "reason"  # I
 
-    .line 2112
+    .line 2314
     packed-switch p1, :pswitch_data_28
 
-    .line 2122
+    .line 2324
     invoke-static {p1}, Ljava/lang/Integer;->toString(I)Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    return-object p1
+    return-object v0
 
-    .line 2121
+    .line 2323
     :pswitch_8  #0x9
-    const-string p1, "boost"
+    const-string v0, "boost"
 
-    return-object p1
+    return-object v0
 
-    .line 2120
+    .line 2322
     :pswitch_b  #0x8
-    const-string/jumbo p1, "temporary"
+    const-string/jumbo v0, "temporary"
 
-    return-object p1
+    return-object v0
 
-    .line 2119
+    .line 2321
     :pswitch_f  #0x7
-    const-string/jumbo p1, "override"
+    const-string/jumbo v0, "override"
 
-    return-object p1
+    return-object v0
 
-    .line 2118
+    .line 2320
     :pswitch_13  #0x6
-    const-string/jumbo p1, "vr"
+    const-string/jumbo v0, "vr"
 
-    return-object p1
+    return-object v0
 
-    .line 2117
+    .line 2319
     :pswitch_17  #0x5
-    const-string/jumbo p1, "screen_off"
+    const-string/jumbo v0, "screen_off"
 
-    return-object p1
+    return-object v0
 
-    .line 2116
+    .line 2318
     :pswitch_1b  #0x4
-    const-string p1, "automatic"
+    const-string v0, "automatic"
 
-    return-object p1
+    return-object v0
 
-    .line 2115
+    .line 2317
     :pswitch_1e  #0x3
-    const-string p1, "doze_default"
+    const-string v0, "doze_default"
 
-    return-object p1
+    return-object v0
 
-    .line 2114
+    .line 2316
     :pswitch_21  #0x2
-    const-string p1, "doze"
+    const-string v0, "doze"
 
-    return-object p1
+    return-object v0
 
-    .line 2113
+    .line 2315
     :pswitch_24  #0x1
-    const-string p1, "manual"
+    const-string/jumbo v0, "manual"
 
-    return-object p1
-
-    nop
+    return-object v0
 
     :pswitch_data_28
     .packed-switch 0x1
@@ -164,64 +165,71 @@
 # virtual methods
 .method public addModifier(I)V
     .registers 3
+    .param p1, "modifier"  # I
 
-    .line 2069
+    .line 2271
     iget v0, p0, Lcom/android/server/display/DisplayPowerController$BrightnessReason;->modifier:I
 
-    or-int/2addr p1, v0
+    or-int/2addr v0, p1
 
-    invoke-virtual {p0, p1}, Lcom/android/server/display/DisplayPowerController$BrightnessReason;->setModifier(I)V
+    invoke-virtual {p0, v0}, Lcom/android/server/display/DisplayPowerController$BrightnessReason;->setModifier(I)V
 
-    .line 2070
+    .line 2272
     return-void
 .end method
 
 .method public equals(Ljava/lang/Object;)Z
-    .registers 5
+    .registers 6
+    .param p1, "obj"  # Ljava/lang/Object;
 
-    .line 2074
+    .line 2276
     const/4 v0, 0x0
 
-    if-eqz p1, :cond_18
+    if-eqz p1, :cond_19
 
     instance-of v1, p1, Lcom/android/server/display/DisplayPowerController$BrightnessReason;
 
     if-nez v1, :cond_8
 
-    goto :goto_18
+    goto :goto_19
 
-    .line 2077
+    .line 2279
     :cond_8
-    check-cast p1, Lcom/android/server/display/DisplayPowerController$BrightnessReason;
+    move-object v1, p1
 
-    .line 2078
-    iget v1, p1, Lcom/android/server/display/DisplayPowerController$BrightnessReason;->reason:I
+    check-cast v1, Lcom/android/server/display/DisplayPowerController$BrightnessReason;
 
-    iget v2, p0, Lcom/android/server/display/DisplayPowerController$BrightnessReason;->reason:I
+    .line 2280
+    .local v1, "other":Lcom/android/server/display/DisplayPowerController$BrightnessReason;
+    iget v2, v1, Lcom/android/server/display/DisplayPowerController$BrightnessReason;->reason:I
 
-    if-ne v1, v2, :cond_17
+    iget v3, p0, Lcom/android/server/display/DisplayPowerController$BrightnessReason;->reason:I
 
-    iget p1, p1, Lcom/android/server/display/DisplayPowerController$BrightnessReason;->modifier:I
+    if-ne v2, v3, :cond_18
 
-    iget v1, p0, Lcom/android/server/display/DisplayPowerController$BrightnessReason;->modifier:I
+    iget v2, v1, Lcom/android/server/display/DisplayPowerController$BrightnessReason;->modifier:I
 
-    if-ne p1, v1, :cond_17
+    iget v3, p0, Lcom/android/server/display/DisplayPowerController$BrightnessReason;->modifier:I
+
+    if-ne v2, v3, :cond_18
 
     const/4 v0, 0x1
 
-    :cond_17
+    :cond_18
     return v0
 
-    .line 2075
-    :cond_18
-    :goto_18
+    .line 2277
+    .end local v1  # "other":Lcom/android/server/display/DisplayPowerController$BrightnessReason;
+    :cond_19
+    :goto_19
     return v0
 .end method
 
 .method public set(Lcom/android/server/display/DisplayPowerController$BrightnessReason;)V
     .registers 4
+    .param p1, "other"  # Lcom/android/server/display/DisplayPowerController$BrightnessReason;
 
-    .line 2047
+    .line 2249
     const/4 v0, 0x0
 
     if-nez p1, :cond_5
@@ -236,7 +244,7 @@
     :goto_7
     invoke-virtual {p0, v1}, Lcom/android/server/display/DisplayPowerController$BrightnessReason;->setReason(I)V
 
-    .line 2048
+    .line 2250
     if-nez p1, :cond_d
 
     goto :goto_f
@@ -247,19 +255,20 @@
     :goto_f
     invoke-virtual {p0, v0}, Lcom/android/server/display/DisplayPowerController$BrightnessReason;->setModifier(I)V
 
-    .line 2049
+    .line 2251
     return-void
 .end method
 
 .method public setModifier(I)V
     .registers 4
+    .param p1, "modifier"  # I
 
-    .line 2060
+    .line 2262
     and-int/lit8 v0, p1, -0x4
 
     if-eqz v0, :cond_1f
 
-    .line 2061
+    .line 2263
     new-instance v0, Ljava/lang/StringBuilder;
 
     invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
@@ -268,37 +277,38 @@
 
     invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    .line 2062
+    .line 2264
     invoke-static {p1}, Ljava/lang/Integer;->toHexString(I)Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v1
 
-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    .line 2061
-    const-string v0, "DisplayPowerController"
+    .line 2263
+    const-string v1, "DisplayPowerController"
 
-    invoke-static {v0, p1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v0}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
     goto :goto_21
 
-    .line 2064
+    .line 2266
     :cond_1f
     iput p1, p0, Lcom/android/server/display/DisplayPowerController$BrightnessReason;->modifier:I
 
-    .line 2066
+    .line 2268
     :goto_21
     return-void
 .end method
 
 .method public setReason(I)V
     .registers 4
+    .param p1, "reason"  # I
 
-    .line 2052
+    .line 2254
     if-ltz p1, :cond_a
 
     const/16 v0, 0x9
@@ -307,13 +317,13 @@
 
     goto :goto_a
 
-    .line 2055
+    .line 2257
     :cond_7
     iput p1, p0, Lcom/android/server/display/DisplayPowerController$BrightnessReason;->reason:I
 
     goto :goto_20
 
-    .line 2053
+    .line 2255
     :cond_a
     :goto_a
     new-instance v0, Ljava/lang/StringBuilder;
@@ -328,13 +338,13 @@
 
     invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    const-string v0, "DisplayPowerController"
+    const-string v1, "DisplayPowerController"
 
-    invoke-static {v0, p1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v0}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 2057
+    .line 2259
     :goto_20
     return-void
 .end method
@@ -342,7 +352,7 @@
 .method public toString()Ljava/lang/String;
     .registers 2
 
-    .line 2083
+    .line 2285
     const/4 v0, 0x0
 
     invoke-virtual {p0, v0}, Lcom/android/server/display/DisplayPowerController$BrightnessReason;->toString(I)Ljava/lang/String;
@@ -353,14 +363,16 @@
 .end method
 
 .method public toString(I)Ljava/lang/String;
-    .registers 5
+    .registers 6
+    .param p1, "adjustments"  # I
 
-    .line 2087
+    .line 2289
     new-instance v0, Ljava/lang/StringBuilder;
 
     invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
 
-    .line 2088
+    .line 2290
+    .local v0, "sb":Ljava/lang/StringBuilder;
     iget v1, p0, Lcom/android/server/display/DisplayPowerController$BrightnessReason;->reason:I
 
     invoke-direct {p0, v1}, Lcom/android/server/display/DisplayPowerController$BrightnessReason;->reasonToString(I)Ljava/lang/String;
@@ -369,93 +381,94 @@
 
     invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    .line 2089
+    .line 2291
     const-string v1, " ["
 
     invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    .line 2090
+    .line 2292
     and-int/lit8 v1, p1, 0x1
 
     if-eqz v1, :cond_1c
 
-    .line 2091
+    .line 2293
     const-string v1, " temp_adj"
 
     invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    .line 2093
+    .line 2295
     :cond_1c
-    and-int/lit8 p1, p1, 0x2
+    and-int/lit8 v1, p1, 0x2
 
-    if-eqz p1, :cond_25
+    if-eqz v1, :cond_25
 
-    .line 2094
-    const-string p1, " auto_adj"
+    .line 2296
+    const-string v1, " auto_adj"
 
-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    .line 2096
+    .line 2298
     :cond_25
-    iget p1, p0, Lcom/android/server/display/DisplayPowerController$BrightnessReason;->modifier:I
+    iget v1, p0, Lcom/android/server/display/DisplayPowerController$BrightnessReason;->modifier:I
 
-    and-int/lit8 p1, p1, 0x2
+    and-int/lit8 v1, v1, 0x2
 
-    if-eqz p1, :cond_30
+    if-eqz v1, :cond_30
 
-    .line 2097
-    const-string p1, " low_pwr"
+    .line 2299
+    const-string v1, " low_pwr"
 
-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    .line 2099
+    .line 2301
     :cond_30
-    iget p1, p0, Lcom/android/server/display/DisplayPowerController$BrightnessReason;->modifier:I
+    iget v1, p0, Lcom/android/server/display/DisplayPowerController$BrightnessReason;->modifier:I
 
-    and-int/lit8 p1, p1, 0x1
+    and-int/lit8 v1, v1, 0x1
 
-    if-eqz p1, :cond_3b
+    if-eqz v1, :cond_3b
 
-    .line 2100
-    const-string p1, " dim"
+    .line 2302
+    const-string v1, " dim"
 
-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    .line 2102
+    .line 2304
     :cond_3b
     invoke-virtual {v0}, Ljava/lang/StringBuilder;->length()I
 
-    move-result p1
-
-    .line 2103
-    add-int/lit8 v1, p1, -0x1
-
-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->charAt(I)C
-
     move-result v1
 
-    const/16 v2, 0x5b
+    .line 2305
+    .local v1, "strlen":I
+    add-int/lit8 v2, v1, -0x1
 
-    if-ne v1, v2, :cond_4f
+    invoke-virtual {v0, v2}, Ljava/lang/StringBuilder;->charAt(I)C
 
-    .line 2104
-    add-int/lit8 p1, p1, -0x2
+    move-result v2
 
-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->setLength(I)V
+    const/16 v3, 0x5b
+
+    if-ne v2, v3, :cond_4f
+
+    .line 2306
+    add-int/lit8 v2, v1, -0x2
+
+    invoke-virtual {v0, v2}, Ljava/lang/StringBuilder;->setLength(I)V
 
     goto :goto_54
 
-    .line 2106
+    .line 2308
     :cond_4f
-    const-string p1, " ]"
+    const-string v2, " ]"
 
-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    .line 2108
+    .line 2310
     :goto_54
     invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v2
 
-    return-object p1
+    return-object v2
 .end method

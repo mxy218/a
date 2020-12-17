@@ -101,6 +101,7 @@
 
 .method protected constructor <init>(J)V
     .registers 3
+    .param p1, "sequenceId"  # J
 
     .line 58
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -114,6 +115,7 @@
 
 .method protected constructor <init>(Landroid/os/Parcel;)V
     .registers 4
+    .param p1, "p"  # Landroid/os/Parcel;
 
     .line 323
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -130,18 +132,20 @@
 .end method
 
 .method static synthetic access$000(I)Ljava/lang/Class;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # I
 
     .line 50
     invoke-static {p0}, Lcom/google/android/startop/iorap/AppLaunchEvent;->getClassFromTypeIndex(I)Ljava/lang/Class;
 
-    move-result-object p0
+    move-result-object v0
 
-    return-object p0
+    return-object v0
 .end method
 
 .method private static getClassFromTypeIndex(I)Ljava/lang/Class;
     .registers 3
+    .param p0, "typeIndex"  # I
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(I)",
@@ -160,15 +164,15 @@
     if-ge p0, v1, :cond_a
 
     .line 338
-    aget-object p0, v0, p0
+    aget-object v0, v0, p0
 
-    return-object p0
+    return-object v0
 
     .line 340
     :cond_a
-    const/4 p0, 0x0
+    const/4 v0, 0x0
 
-    return-object p0
+    return-object v0
 .end method
 
 .method private getTypeIndex()I
@@ -177,6 +181,7 @@
     .line 328
     const/4 v0, 0x0
 
+    .local v0, "i":I
     :goto_1
     sget-object v1, Lcom/google/android/startop/iorap/AppLaunchEvent;->sTypes:[Ljava/lang/Class;
 
@@ -207,6 +212,7 @@
     goto :goto_1
 
     .line 333
+    .end local v0  # "i":I
     :cond_16
     new-instance v0, Ljava/lang/AssertionError;
 
@@ -246,49 +252,53 @@
 
 .method protected equals(Lcom/google/android/startop/iorap/AppLaunchEvent;)Z
     .registers 6
+    .param p1, "other"  # Lcom/google/android/startop/iorap/AppLaunchEvent;
 
     .line 71
     iget-wide v0, p0, Lcom/google/android/startop/iorap/AppLaunchEvent;->sequenceId:J
 
     iget-wide v2, p1, Lcom/google/android/startop/iorap/AppLaunchEvent;->sequenceId:J
 
-    cmp-long p1, v0, v2
+    cmp-long v0, v0, v2
 
-    if-nez p1, :cond_a
+    if-nez v0, :cond_a
 
-    const/4 p1, 0x1
+    const/4 v0, 0x1
 
     goto :goto_b
 
     :cond_a
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
     :goto_b
-    return p1
+    return v0
 .end method
 
 .method public equals(Ljava/lang/Object;)Z
     .registers 3
+    .param p1, "other"  # Ljava/lang/Object;
 
     .line 64
     instance-of v0, p1, Lcom/google/android/startop/iorap/AppLaunchEvent;
 
-    if-eqz v0, :cond_b
+    if-eqz v0, :cond_c
 
     .line 65
-    check-cast p1, Lcom/google/android/startop/iorap/AppLaunchEvent;
+    move-object v0, p1
 
-    invoke-virtual {p0, p1}, Lcom/google/android/startop/iorap/AppLaunchEvent;->equals(Lcom/google/android/startop/iorap/AppLaunchEvent;)Z
+    check-cast v0, Lcom/google/android/startop/iorap/AppLaunchEvent;
 
-    move-result p1
+    invoke-virtual {p0, v0}, Lcom/google/android/startop/iorap/AppLaunchEvent;->equals(Lcom/google/android/startop/iorap/AppLaunchEvent;)Z
 
-    return p1
+    move-result v0
+
+    return v0
 
     .line 67
-    :cond_b
-    const/4 p1, 0x0
+    :cond_c
+    const/4 v0, 0x0
 
-    return p1
+    return v0
 .end method
 
 .method public toString()Ljava/lang/String;
@@ -352,6 +362,8 @@
 
 .method public writeToParcel(Landroid/os/Parcel;I)V
     .registers 4
+    .param p1, "p"  # Landroid/os/Parcel;
+    .param p2, "flags"  # I
 
     .line 283
     invoke-direct {p0}, Lcom/google/android/startop/iorap/AppLaunchEvent;->getTypeIndex()I
@@ -369,6 +381,8 @@
 
 .method protected writeToParcelImpl(Landroid/os/Parcel;I)V
     .registers 5
+    .param p1, "p"  # Landroid/os/Parcel;
+    .param p2, "flags"  # I
 
     .line 320
     iget-wide v0, p0, Lcom/google/android/startop/iorap/AppLaunchEvent;->sequenceId:J

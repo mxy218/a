@@ -23,6 +23,9 @@
 # direct methods
 .method private constructor <init>(Landroid/content/Context;ILjava/lang/String;)V
     .registers 6
+    .param p1, "context"  # Landroid/content/Context;
+    .param p2, "userId"  # I
+    .param p3, "deDatabaseName"  # Ljava/lang/String;
 
     .line 513
     const/4 v0, 0x0
@@ -40,6 +43,10 @@
 
 .method synthetic constructor <init>(Landroid/content/Context;ILjava/lang/String;Lcom/android/server/accounts/AccountsDb$1;)V
     .registers 5
+    .param p1, "x0"  # Landroid/content/Context;
+    .param p2, "x1"  # I
+    .param p3, "x2"  # Ljava/lang/String;
+    .param p4, "x3"  # Lcom/android/server/accounts/AccountsDb$1;
 
     .line 507
     invoke-direct {p0, p1, p2, p3}, Lcom/android/server/accounts/AccountsDb$DeDatabaseHelper;-><init>(Landroid/content/Context;ILjava/lang/String;)V
@@ -48,16 +55,19 @@
 .end method
 
 .method static synthetic access$700(Lcom/android/server/accounts/AccountsDb$DeDatabaseHelper;)Z
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/accounts/AccountsDb$DeDatabaseHelper;
 
     .line 507
-    iget-boolean p0, p0, Lcom/android/server/accounts/AccountsDb$DeDatabaseHelper;->mCeAttached:Z
+    iget-boolean v0, p0, Lcom/android/server/accounts/AccountsDb$DeDatabaseHelper;->mCeAttached:Z
 
-    return p0
+    return v0
 .end method
 
 .method static synthetic access$702(Lcom/android/server/accounts/AccountsDb$DeDatabaseHelper;Z)Z
     .registers 2
+    .param p0, "x0"  # Lcom/android/server/accounts/AccountsDb$DeDatabaseHelper;
+    .param p1, "x1"  # Z
 
     .line 507
     iput-boolean p1, p0, Lcom/android/server/accounts/AccountsDb$DeDatabaseHelper;->mCeAttached:Z
@@ -67,6 +77,8 @@
 
 .method static synthetic access$900(Lcom/android/server/accounts/AccountsDb$DeDatabaseHelper;Ljava/io/File;)V
     .registers 2
+    .param p0, "x0"  # Lcom/android/server/accounts/AccountsDb$DeDatabaseHelper;
+    .param p1, "x1"  # Ljava/io/File;
 
     .line 507
     invoke-direct {p0, p1}, Lcom/android/server/accounts/AccountsDb$DeDatabaseHelper;->migratePreNDbToDe(Ljava/io/File;)V
@@ -76,6 +88,7 @@
 
 .method private createAccountsDeletionTrigger(Landroid/database/sqlite/SQLiteDatabase;)V
     .registers 3
+    .param p1, "db"  # Landroid/database/sqlite/SQLiteDatabase;
 
     .line 554
     const-string v0, " CREATE TRIGGER accountsDelete DELETE ON accounts BEGIN   DELETE FROM grants     WHERE accounts_id=OLD._id ; END"
@@ -88,6 +101,7 @@
 
 .method private createAccountsDeletionVisibilityCleanupTrigger(Landroid/database/sqlite/SQLiteDatabase;)V
     .registers 3
+    .param p1, "db"  # Landroid/database/sqlite/SQLiteDatabase;
 
     .line 592
     const-string v0, " CREATE TRIGGER accountsDeleteVisibility DELETE ON accounts BEGIN   DELETE FROM visibility     WHERE accounts_id=OLD._id ; END"
@@ -100,6 +114,7 @@
 
 .method private createAccountsVisibilityTable(Landroid/database/sqlite/SQLiteDatabase;)V
     .registers 3
+    .param p1, "db"  # Landroid/database/sqlite/SQLiteDatabase;
 
     .line 572
     const-string v0, "CREATE TABLE visibility ( accounts_id INTEGER NOT NULL, _package TEXT NOT NULL, value INTEGER, PRIMARY KEY(accounts_id,_package))"
@@ -112,6 +127,7 @@
 
 .method static createDebugTable(Landroid/database/sqlite/SQLiteDatabase;)V
     .registers 3
+    .param p0, "db"  # Landroid/database/sqlite/SQLiteDatabase;
 
     .line 580
     new-instance v0, Ljava/lang/StringBuilder;
@@ -245,6 +261,7 @@
 
 .method private createGrantsTable(Landroid/database/sqlite/SQLiteDatabase;)V
     .registers 3
+    .param p1, "db"  # Landroid/database/sqlite/SQLiteDatabase;
 
     .line 563
     const-string v0, "CREATE TABLE grants (  accounts_id INTEGER NOT NULL, auth_token_type STRING NOT NULL,  uid INTEGER NOT NULL,  UNIQUE (accounts_id,auth_token_type,uid))"
@@ -257,6 +274,7 @@
 
 .method private createSharedAccountsTable(Landroid/database/sqlite/SQLiteDatabase;)V
     .registers 3
+    .param p1, "db"  # Landroid/database/sqlite/SQLiteDatabase;
 
     .line 546
     const-string v0, "CREATE TABLE shared_accounts ( _id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT NOT NULL, type TEXT NOT NULL, UNIQUE(name,type))"
@@ -268,7 +286,8 @@
 .end method
 
 .method private migratePreNDbToDe(Ljava/io/File;)V
-    .registers 6
+    .registers 7
+    .param p1, "preNDbFile"  # Ljava/io/File;
 
     .line 654
     new-instance v0, Ljava/lang/StringBuilder;
@@ -295,6 +314,7 @@
     move-result-object v0
 
     .line 656
+    .local v0, "db":Landroid/database/sqlite/SQLiteDatabase;
     new-instance v1, Ljava/lang/StringBuilder;
 
     invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
@@ -305,177 +325,177 @@
 
     invoke-virtual {p1}, Ljava/io/File;->getPath()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v2
 
-    invoke-virtual {v1, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string p1, "\' AS preNDb"
+    const-string v2, "\' AS preNDb"
 
-    invoke-virtual {v1, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v1
 
-    invoke-virtual {v0, p1}, Landroid/database/sqlite/SQLiteDatabase;->execSQL(Ljava/lang/String;)V
+    invoke-virtual {v0, v1}, Landroid/database/sqlite/SQLiteDatabase;->execSQL(Ljava/lang/String;)V
 
     .line 657
     invoke-virtual {v0}, Landroid/database/sqlite/SQLiteDatabase;->beginTransaction()V
 
     .line 659
-    const-string p1, "INSERT INTO accounts(_id,name,type, previous_name, last_password_entry_time_millis_epoch) SELECT _id,name,type, previous_name, last_password_entry_time_millis_epoch FROM preNDb.accounts"
+    const-string v1, "INSERT INTO accounts(_id,name,type, previous_name, last_password_entry_time_millis_epoch) SELECT _id,name,type, previous_name, last_password_entry_time_millis_epoch FROM preNDb.accounts"
 
-    invoke-virtual {v0, p1}, Landroid/database/sqlite/SQLiteDatabase;->execSQL(Ljava/lang/String;)V
+    invoke-virtual {v0, v1}, Landroid/database/sqlite/SQLiteDatabase;->execSQL(Ljava/lang/String;)V
 
     .line 667
-    const-string p1, "INSERT INTO shared_accounts(_id,name,type) SELECT _id,name,type FROM preNDb.shared_accounts"
+    const-string v1, "INSERT INTO shared_accounts(_id,name,type) SELECT _id,name,type FROM preNDb.shared_accounts"
 
-    invoke-virtual {v0, p1}, Landroid/database/sqlite/SQLiteDatabase;->execSQL(Ljava/lang/String;)V
+    invoke-virtual {v0, v1}, Landroid/database/sqlite/SQLiteDatabase;->execSQL(Ljava/lang/String;)V
 
     .line 672
-    new-instance p1, Ljava/lang/StringBuilder;
+    new-instance v1, Ljava/lang/StringBuilder;
 
-    invoke-direct {p1}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v1, "INSERT INTO "
+    const-string v2, "INSERT INTO "
 
-    invoke-virtual {p1, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-static {}, Lcom/android/server/accounts/AccountsDb;->access$000()Ljava/lang/String;
 
-    move-result-object v1
+    move-result-object v2
 
-    invoke-virtual {p1, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string v1, "("
+    const-string v2, "("
 
-    invoke-virtual {p1, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string v1, "_id"
+    const-string v2, "_id"
 
-    invoke-virtual {p1, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string v2, ","
+    const-string v3, ","
 
-    invoke-virtual {p1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     .line 673
     invoke-static {}, Lcom/android/server/accounts/AccountsDb;->access$200()Ljava/lang/String;
 
-    move-result-object v3
+    move-result-object v4
 
-    invoke-virtual {p1, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     .line 674
     invoke-static {}, Lcom/android/server/accounts/AccountsDb;->access$300()Ljava/lang/String;
 
-    move-result-object v3
+    move-result-object v4
 
-    invoke-virtual {p1, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-static {}, Lcom/android/server/accounts/AccountsDb;->access$400()Ljava/lang/String;
 
-    move-result-object v3
+    move-result-object v4
 
-    invoke-virtual {p1, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     .line 675
     invoke-static {}, Lcom/android/server/accounts/AccountsDb;->access$500()Ljava/lang/String;
 
-    move-result-object v3
+    move-result-object v4
 
-    invoke-virtual {p1, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-static {}, Lcom/android/server/accounts/AccountsDb;->access$600()Ljava/lang/String;
 
-    move-result-object v3
+    move-result-object v4
 
-    invoke-virtual {p1, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string v3, ") SELECT "
+    const-string v4, ") SELECT "
 
-    invoke-virtual {p1, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p1, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     .line 676
     invoke-static {}, Lcom/android/server/accounts/AccountsDb;->access$200()Ljava/lang/String;
 
-    move-result-object v1
+    move-result-object v2
 
-    invoke-virtual {p1, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     .line 677
     invoke-static {}, Lcom/android/server/accounts/AccountsDb;->access$300()Ljava/lang/String;
 
-    move-result-object v1
+    move-result-object v2
 
-    invoke-virtual {p1, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-static {}, Lcom/android/server/accounts/AccountsDb;->access$400()Ljava/lang/String;
 
-    move-result-object v1
+    move-result-object v2
 
-    invoke-virtual {p1, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     .line 678
     invoke-static {}, Lcom/android/server/accounts/AccountsDb;->access$500()Ljava/lang/String;
 
-    move-result-object v1
+    move-result-object v2
 
-    invoke-virtual {p1, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-static {}, Lcom/android/server/accounts/AccountsDb;->access$600()Ljava/lang/String;
 
-    move-result-object v1
+    move-result-object v2
 
-    invoke-virtual {p1, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string v1, " FROM preNDb."
+    const-string v2, " FROM preNDb."
 
-    invoke-virtual {p1, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     .line 679
     invoke-static {}, Lcom/android/server/accounts/AccountsDb;->access$000()Ljava/lang/String;
 
+    move-result-object v2
+
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
     move-result-object v1
 
-    invoke-virtual {p1, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {p1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
-
-    move-result-object p1
-
     .line 672
-    invoke-virtual {v0, p1}, Landroid/database/sqlite/SQLiteDatabase;->execSQL(Ljava/lang/String;)V
+    invoke-virtual {v0, v1}, Landroid/database/sqlite/SQLiteDatabase;->execSQL(Ljava/lang/String;)V
 
     .line 681
-    const-string p1, "INSERT INTO grants(accounts_id,auth_token_type,uid) SELECT accounts_id,auth_token_type,uid FROM preNDb.grants"
+    const-string v1, "INSERT INTO grants(accounts_id,auth_token_type,uid) SELECT accounts_id,auth_token_type,uid FROM preNDb.grants"
 
-    invoke-virtual {v0, p1}, Landroid/database/sqlite/SQLiteDatabase;->execSQL(Ljava/lang/String;)V
+    invoke-virtual {v0, v1}, Landroid/database/sqlite/SQLiteDatabase;->execSQL(Ljava/lang/String;)V
 
     .line 687
-    const-string p1, "INSERT INTO meta(key,value) SELECT key,value FROM preNDb.meta"
+    const-string v1, "INSERT INTO meta(key,value) SELECT key,value FROM preNDb.meta"
 
-    invoke-virtual {v0, p1}, Landroid/database/sqlite/SQLiteDatabase;->execSQL(Ljava/lang/String;)V
+    invoke-virtual {v0, v1}, Landroid/database/sqlite/SQLiteDatabase;->execSQL(Ljava/lang/String;)V
 
     .line 690
     invoke-virtual {v0}, Landroid/database/sqlite/SQLiteDatabase;->setTransactionSuccessful()V
@@ -484,9 +504,9 @@
     invoke-virtual {v0}, Landroid/database/sqlite/SQLiteDatabase;->endTransaction()V
 
     .line 693
-    const-string p1, "DETACH DATABASE preNDb"
+    const-string v1, "DETACH DATABASE preNDb"
 
-    invoke-virtual {v0, p1}, Landroid/database/sqlite/SQLiteDatabase;->execSQL(Ljava/lang/String;)V
+    invoke-virtual {v0, v1}, Landroid/database/sqlite/SQLiteDatabase;->execSQL(Ljava/lang/String;)V
 
     .line 694
     return-void
@@ -588,6 +608,7 @@
 
 .method public onCreate(Landroid/database/sqlite/SQLiteDatabase;)V
     .registers 4
+    .param p1, "db"  # Landroid/database/sqlite/SQLiteDatabase;
 
     .line 524
     new-instance v0, Ljava/lang/StringBuilder;
@@ -643,14 +664,17 @@
 .end method
 
 .method public onDowngrade(Landroid/database/sqlite/SQLiteDatabase;II)V
-    .registers 4
+    .registers 6
+    .param p1, "db"  # Landroid/database/sqlite/SQLiteDatabase;
+    .param p2, "oldVersion"  # I
+    .param p3, "newVersion"  # I
 
     .line 627
-    const-string p2, "AccountsDb"
+    const-string v0, "AccountsDb"
 
-    const-string/jumbo p3, "onDowngrade: recreate accounts DE table"
+    const-string/jumbo v1, "onDowngrade: recreate accounts DE table"
 
-    invoke-static {p2, p3}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v0, v1}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 628
     invoke-static {p1}, Lcom/android/server/accounts/AccountsDb;->access$100(Landroid/database/sqlite/SQLiteDatabase;)V
@@ -663,22 +687,23 @@
 .end method
 
 .method public onOpen(Landroid/database/sqlite/SQLiteDatabase;)V
-    .registers 3
+    .registers 4
+    .param p1, "db"  # Landroid/database/sqlite/SQLiteDatabase;
 
     .line 650
-    const-string p1, "AccountsDb"
+    const-string v0, "AccountsDb"
 
-    const/4 v0, 0x2
+    const/4 v1, 0x2
 
-    invoke-static {p1, v0}, Landroid/util/Log;->isLoggable(Ljava/lang/String;I)Z
+    invoke-static {v0, v1}, Landroid/util/Log;->isLoggable(Ljava/lang/String;I)Z
 
-    move-result v0
+    move-result v1
 
-    if-eqz v0, :cond_f
+    if-eqz v1, :cond_f
 
-    const-string/jumbo v0, "opened database accounts_de.db"
+    const-string/jumbo v1, "opened database accounts_de.db"
 
-    invoke-static {p1, v0}, Landroid/util/Log;->v(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v0, v1}, Landroid/util/Log;->v(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 651
     :cond_f
@@ -686,7 +711,10 @@
 .end method
 
 .method public onUpgrade(Landroid/database/sqlite/SQLiteDatabase;II)V
-    .registers 7
+    .registers 8
+    .param p1, "db"  # Landroid/database/sqlite/SQLiteDatabase;
+    .param p2, "oldVersion"  # I
+    .param p3, "newVersion"  # I
 
     .line 603
     new-instance v0, Ljava/lang/StringBuilder;
@@ -757,25 +785,25 @@
     if-eq p2, p3, :cond_5a
 
     .line 621
-    new-instance p1, Ljava/lang/StringBuilder;
+    new-instance v0, Ljava/lang/StringBuilder;
 
-    invoke-direct {p1}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v0, "failed to upgrade version "
+    const-string v3, "failed to upgrade version "
 
-    invoke-virtual {p1, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p1, p2}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, p2}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p1, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p1, p3}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, p3}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    invoke-static {v2, p1}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v2, v0}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 623
     :cond_5a

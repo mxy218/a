@@ -26,6 +26,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/hdmi/PowerStatusMonitorAction;I)V
     .registers 3
+    .param p1, "this$0"  # Lcom/android/server/hdmi/PowerStatusMonitorAction;
 
     .line 120
     iput-object p1, p0, Lcom/android/server/hdmi/PowerStatusMonitorAction$1;->this$0:Lcom/android/server/hdmi/PowerStatusMonitorAction;
@@ -40,21 +41,22 @@
 
 # virtual methods
 .method public onSendCompleted(I)V
-    .registers 5
+    .registers 6
+    .param p1, "error"  # I
 
     .line 125
     if-eqz p1, :cond_b
 
     .line 126
-    iget-object p1, p0, Lcom/android/server/hdmi/PowerStatusMonitorAction$1;->this$0:Lcom/android/server/hdmi/PowerStatusMonitorAction;
+    iget-object v0, p0, Lcom/android/server/hdmi/PowerStatusMonitorAction$1;->this$0:Lcom/android/server/hdmi/PowerStatusMonitorAction;
 
-    iget v0, p0, Lcom/android/server/hdmi/PowerStatusMonitorAction$1;->val$logicalAddress:I
+    iget v1, p0, Lcom/android/server/hdmi/PowerStatusMonitorAction$1;->val$logicalAddress:I
 
-    const/4 v1, -0x1
+    const/4 v2, -0x1
 
-    const/4 v2, 0x1
+    const/4 v3, 0x1
 
-    invoke-static {p1, v0, v1, v2}, Lcom/android/server/hdmi/PowerStatusMonitorAction;->access$000(Lcom/android/server/hdmi/PowerStatusMonitorAction;IIZ)V
+    invoke-static {v0, v1, v2, v3}, Lcom/android/server/hdmi/PowerStatusMonitorAction;->access$000(Lcom/android/server/hdmi/PowerStatusMonitorAction;IIZ)V
 
     .line 128
     :cond_b

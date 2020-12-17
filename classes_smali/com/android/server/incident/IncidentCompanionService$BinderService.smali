@@ -32,6 +32,8 @@
 
 .method synthetic constructor <init>(Lcom/android/server/incident/IncidentCompanionService;Lcom/android/server/incident/IncidentCompanionService$1;)V
     .registers 3
+    .param p1, "x0"  # Lcom/android/server/incident/IncidentCompanionService;
+    .param p2, "x1"  # Lcom/android/server/incident/IncidentCompanionService$1;
 
     .line 77
     invoke-direct {p0, p1}, Lcom/android/server/incident/IncidentCompanionService$BinderService;-><init>(Lcom/android/server/incident/IncidentCompanionService;)V
@@ -40,7 +42,8 @@
 .end method
 
 .method private dumpRestrictedImages(Ljava/io/FileDescriptor;)V
-    .registers 10
+    .registers 12
+    .param p1, "fd"  # Ljava/io/FileDescriptor;
 
     .line 288
     sget-boolean v0, Landroid/os/Build;->IS_ENG:Z
@@ -67,75 +70,81 @@
     move-result-object v0
 
     .line 293
-    const v1, 0x107005f
+    .local v0, "res":Landroid/content/res/Resources;
+    const v1, 0x1070054
 
     invoke-virtual {v0, v1}, Landroid/content/res/Resources;->getStringArray(I)[Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v1
 
     .line 295
-    array-length v1, v0
+    .local v1, "services":[Ljava/lang/String;
+    array-length v2, v1
 
     .line 296
-    const/4 v2, 0x0
+    .local v2, "servicesCount":I
+    const/4 v3, 0x0
 
+    .local v3, "i":I
     :goto_1c
-    if-ge v2, v1, :cond_75
+    if-ge v3, v2, :cond_75
 
     .line 297
-    aget-object v3, v0, v2
+    aget-object v4, v1, v3
 
     .line 298
-    new-instance v4, Ljava/lang/StringBuilder;
+    .local v4, "name":Ljava/lang/String;
+    new-instance v5, Ljava/lang/StringBuilder;
 
-    invoke-direct {v4}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v5}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v5, "Looking up service "
+    const-string v6, "Looking up service "
 
-    invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v4, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v5, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v4}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v5}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v4
+    move-result-object v5
 
-    const-string v5, "IncidentCompanionService"
+    const-string v6, "IncidentCompanionService"
 
-    invoke-static {v5, v4}, Landroid/util/Log;->d(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v6, v5}, Landroid/util/Log;->d(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 299
-    invoke-static {v3}, Landroid/os/ServiceManager;->getService(Ljava/lang/String;)Landroid/os/IBinder;
+    invoke-static {v4}, Landroid/os/ServiceManager;->getService(Ljava/lang/String;)Landroid/os/IBinder;
 
-    move-result-object v4
+    move-result-object v5
 
     .line 300
-    if-eqz v4, :cond_72
+    .local v5, "service":Landroid/os/IBinder;
+    if-eqz v5, :cond_72
 
     .line 301
-    new-instance v6, Ljava/lang/StringBuilder;
+    new-instance v7, Ljava/lang/StringBuilder;
 
-    invoke-direct {v6}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v7}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v7, "Calling dump on service: "
+    const-string v8, "Calling dump on service: "
 
-    invoke-virtual {v6, v7}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v7, v8}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v6, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v7, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v6}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v7}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v6
+    move-result-object v7
 
-    invoke-static {v5, v6}, Landroid/util/Log;->d(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v6, v7}, Landroid/util/Log;->d(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 303
     :try_start_50
     invoke-static {}, Lcom/android/server/incident/IncidentCompanionService;->access$300()[Ljava/lang/String;
 
-    move-result-object v6
+    move-result-object v7
 
-    invoke-interface {v4, p1, v6}, Landroid/os/IBinder;->dump(Ljava/io/FileDescriptor;[Ljava/lang/String;)V
+    invoke-interface {v5, p1, v7}, Landroid/os/IBinder;->dump(Ljava/io/FileDescriptor;[Ljava/lang/String;)V
     :try_end_57
     .catch Landroid/os/RemoteException; {:try_start_50 .. :try_end_57} :catch_58
 
@@ -144,43 +153,49 @@
 
     .line 304
     :catch_58
-    move-exception v4
+    move-exception v7
 
     .line 305
-    new-instance v6, Ljava/lang/StringBuilder;
+    .local v7, "ex":Landroid/os/RemoteException;
+    new-instance v8, Ljava/lang/StringBuilder;
 
-    invoke-direct {v6}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v8}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v7, "dump --restricted_image of "
+    const-string v9, "dump --restricted_image of "
 
-    invoke-virtual {v6, v7}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v8, v9}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v6, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v8, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string v3, " threw"
+    const-string v9, " threw"
 
-    invoke-virtual {v6, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v8, v9}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v6}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v8}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v3
+    move-result-object v8
 
-    invoke-static {v5, v3, v4}, Landroid/util/Log;->w(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    invoke-static {v6, v8, v7}, Landroid/util/Log;->w(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
     .line 296
+    .end local v4  # "name":Ljava/lang/String;
+    .end local v5  # "service":Landroid/os/IBinder;
+    .end local v7  # "ex":Landroid/os/RemoteException;
     :cond_72
     :goto_72
-    add-int/lit8 v2, v2, 0x1
+    add-int/lit8 v3, v3, 0x1
 
     goto :goto_1c
 
     .line 309
+    .end local v3  # "i":I
     :cond_75
     return-void
 .end method
 
 .method private enforceAccessReportsPermissions(Ljava/lang/String;)V
     .registers 5
+    .param p1, "pkg"  # Ljava/lang/String;
 
     .line 341
     iget-object v0, p0, Lcom/android/server/incident/IncidentCompanionService$BinderService;->this$0:Lcom/android/server/incident/IncidentCompanionService;
@@ -253,7 +268,8 @@
 .end method
 
 .method private enforceCallerIsSameApp(Ljava/lang/String;)V
-    .registers 8
+    .registers 9
+    .param p1, "pkg"  # Ljava/lang/String;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Ljava/lang/SecurityException;
@@ -269,11 +285,13 @@
     move-result v1
 
     .line 360
+    .local v1, "uid":I
     invoke-static {}, Landroid/os/UserHandle;->getCallingUserId()I
 
     move-result v2
 
     .line 361
+    .local v2, "userId":I
     iget-object v3, p0, Lcom/android/server/incident/IncidentCompanionService$BinderService;->this$0:Lcom/android/server/incident/IncidentCompanionService;
 
     invoke-virtual {v3}, Lcom/android/server/incident/IncidentCompanionService;->getContext()Landroid/content/Context;
@@ -289,89 +307,108 @@
     .line 362
     invoke-virtual {v3, p1, v4, v2}, Landroid/content/pm/PackageManager;->getApplicationInfoAsUser(Ljava/lang/String;II)Landroid/content/pm/ApplicationInfo;
 
-    move-result-object v2
+    move-result-object v3
 
     .line 363
-    if-eqz v2, :cond_4e
+    .local v3, "ai":Landroid/content/pm/ApplicationInfo;
+    if-eqz v3, :cond_4e
 
     .line 366
-    iget v3, v2, Landroid/content/pm/ApplicationInfo;->uid:I
+    iget v4, v3, Landroid/content/pm/ApplicationInfo;->uid:I
 
-    invoke-static {v3, v1}, Landroid/os/UserHandle;->isSameApp(II)Z
+    invoke-static {v4, v1}, Landroid/os/UserHandle;->isSameApp(II)Z
 
-    move-result v3
+    move-result v4
 
-    if-eqz v3, :cond_25
+    if-eqz v4, :cond_25
 
     .line 372
+    .end local v1  # "uid":I
+    .end local v2  # "userId":I
+    .end local v3  # "ai":Landroid/content/pm/ApplicationInfo;
     nop
 
     .line 373
     return-void
 
     .line 367
+    .restart local v1  # "uid":I
+    .restart local v2  # "userId":I
+    .restart local v3  # "ai":Landroid/content/pm/ApplicationInfo;
     :cond_25
-    new-instance v3, Ljava/lang/SecurityException;
+    new-instance v4, Ljava/lang/SecurityException;
 
-    new-instance v4, Ljava/lang/StringBuilder;
+    new-instance v5, Ljava/lang/StringBuilder;
 
-    invoke-direct {v4}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v5}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v5, "Calling uid "
+    const-string v6, "Calling uid "
 
-    invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v4, v1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v5, v1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    const-string v1, " gave package "
+    const-string v6, " gave package "
 
-    invoke-virtual {v4, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v4, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v5, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string v1, " which is owned by uid "
+    const-string v6, " which is owned by uid "
 
-    invoke-virtual {v4, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    iget v1, v2, Landroid/content/pm/ApplicationInfo;->uid:I
+    iget v6, v3, Landroid/content/pm/ApplicationInfo;->uid:I
 
-    invoke-virtual {v4, v1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v4}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v5}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v1
+    move-result-object v5
 
-    invoke-direct {v3, v1}, Ljava/lang/SecurityException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v4, v5}, Ljava/lang/SecurityException;-><init>(Ljava/lang/String;)V
 
-    throw v3
+    .end local p0  # "this":Lcom/android/server/incident/IncidentCompanionService$BinderService;
+    .end local p1  # "pkg":Ljava/lang/String;
+    throw v4
 
     .line 364
+    .restart local p0  # "this":Lcom/android/server/incident/IncidentCompanionService$BinderService;
+    .restart local p1  # "pkg":Ljava/lang/String;
     :cond_4e
-    new-instance v1, Ljava/lang/SecurityException;
+    new-instance v4, Ljava/lang/SecurityException;
 
-    new-instance v2, Ljava/lang/StringBuilder;
+    new-instance v5, Ljava/lang/StringBuilder;
 
-    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v5}, Ljava/lang/StringBuilder;-><init>()V
 
-    invoke-virtual {v2, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v5, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v2, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v5, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v5}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v2
+    move-result-object v5
 
-    invoke-direct {v1, v2}, Ljava/lang/SecurityException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v4, v5}, Ljava/lang/SecurityException;-><init>(Ljava/lang/String;)V
 
-    throw v1
+    .end local p0  # "this":Lcom/android/server/incident/IncidentCompanionService$BinderService;
+    .end local p1  # "pkg":Ljava/lang/String;
+    throw v4
     :try_end_63
     .catch Landroid/content/pm/PackageManager$NameNotFoundException; {:try_start_2 .. :try_end_63} :catch_63
 
     .line 370
+    .end local v1  # "uid":I
+    .end local v2  # "userId":I
+    .end local v3  # "ai":Landroid/content/pm/ApplicationInfo;
+    .restart local p0  # "this":Lcom/android/server/incident/IncidentCompanionService$BinderService;
+    .restart local p1  # "pkg":Ljava/lang/String;
     :catch_63
     move-exception v1
 
     .line 371
+    .local v1, "re":Landroid/content/pm/PackageManager$NameNotFoundException;
     new-instance v2, Ljava/lang/SecurityException;
 
     new-instance v3, Ljava/lang/StringBuilder;
@@ -382,17 +419,17 @@
 
     invoke-virtual {v3, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string p1, "\n"
+    const-string v0, "\n"
 
-    invoke-virtual {v3, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v3, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    invoke-direct {v2, p1}, Ljava/lang/SecurityException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v2, v0}, Ljava/lang/SecurityException;-><init>(Ljava/lang/String;)V
 
     throw v2
 .end method
@@ -421,6 +458,7 @@
 # virtual methods
 .method public approveReport(Ljava/lang/String;)V
     .registers 5
+    .param p1, "uri"  # Ljava/lang/String;
 
     .line 167
     invoke-direct {p0}, Lcom/android/server/incident/IncidentCompanionService$BinderService;->enforceAuthorizePermission()V
@@ -431,6 +469,7 @@
     move-result-wide v0
 
     .line 171
+    .local v0, "ident":J
     :try_start_7
     iget-object v2, p0, Lcom/android/server/incident/IncidentCompanionService$BinderService;->this$0:Lcom/android/server/incident/IncidentCompanionService;
 
@@ -453,15 +492,21 @@
 
     .line 173
     :catchall_15
-    move-exception p1
+    move-exception v2
 
     invoke-static {v0, v1}, Landroid/os/Binder;->restoreCallingIdentity(J)V
 
-    throw p1
+    throw v2
 .end method
 
 .method public authorizeReport(ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;ILandroid/os/IIncidentAuthListener;)V
-    .registers 17
+    .registers 18
+    .param p1, "callingUid"  # I
+    .param p2, "callingPackage"  # Ljava/lang/String;
+    .param p3, "receiverClass"  # Ljava/lang/String;
+    .param p4, "reportId"  # Ljava/lang/String;
+    .param p5, "flags"  # I
+    .param p6, "listener"  # Landroid/os/IIncidentAuthListener;
 
     .line 88
     invoke-direct {p0}, Lcom/android/server/incident/IncidentCompanionService$BinderService;->enforceRequestAuthorizationPermission()V
@@ -472,30 +517,31 @@
     move-result-wide v1
 
     .line 92
-    move-object v0, p0
+    .local v1, "ident":J
+    move-object v3, p0
 
     :try_start_8
-    iget-object v0, v0, Lcom/android/server/incident/IncidentCompanionService$BinderService;->this$0:Lcom/android/server/incident/IncidentCompanionService;
+    iget-object v0, v3, Lcom/android/server/incident/IncidentCompanionService$BinderService;->this$0:Lcom/android/server/incident/IncidentCompanionService;
 
     invoke-static {v0}, Lcom/android/server/incident/IncidentCompanionService;->access$000(Lcom/android/server/incident/IncidentCompanionService;)Lcom/android/server/incident/PendingReports;
 
-    move-result-object v3
+    move-result-object v4
 
-    move v4, p1
+    move v5, p1
 
-    move-object v5, p2
+    move-object v6, p2
 
-    move-object v6, p3
+    move-object v7, p3
 
-    move-object v7, p4
+    move-object v8, p4
 
-    move v8, p5
+    move/from16 v9, p5
 
-    move-object/from16 v9, p6
+    move-object/from16 v10, p6
 
-    invoke-virtual/range {v3 .. v9}, Lcom/android/server/incident/PendingReports;->authorizeReport(ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;ILandroid/os/IIncidentAuthListener;)V
-    :try_end_18
-    .catchall {:try_start_8 .. :try_end_18} :catchall_1d
+    invoke-virtual/range {v4 .. v10}, Lcom/android/server/incident/PendingReports;->authorizeReport(ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;ILandroid/os/IIncidentAuthListener;)V
+    :try_end_19
+    .catchall {:try_start_8 .. :try_end_19} :catchall_1e
 
     .line 95
     invoke-static {v1, v2}, Landroid/os/Binder;->restoreCallingIdentity(J)V
@@ -507,7 +553,7 @@
     return-void
 
     .line 95
-    :catchall_1d
+    :catchall_1e
     move-exception v0
 
     invoke-static {v1, v2}, Landroid/os/Binder;->restoreCallingIdentity(J)V
@@ -517,6 +563,7 @@
 
 .method public cancelAuthorization(Landroid/os/IIncidentAuthListener;)V
     .registers 5
+    .param p1, "listener"  # Landroid/os/IIncidentAuthListener;
 
     .line 108
     invoke-direct {p0}, Lcom/android/server/incident/IncidentCompanionService$BinderService;->enforceRequestAuthorizationPermission()V
@@ -527,6 +574,7 @@
     move-result-wide v0
 
     .line 114
+    .local v0, "ident":J
     :try_start_7
     iget-object v2, p0, Lcom/android/server/incident/IncidentCompanionService$BinderService;->this$0:Lcom/android/server/incident/IncidentCompanionService;
 
@@ -549,15 +597,16 @@
 
     .line 116
     :catchall_15
-    move-exception p1
+    move-exception v2
 
     invoke-static {v0, v1}, Landroid/os/Binder;->restoreCallingIdentity(J)V
 
-    throw p1
+    throw v2
 .end method
 
 .method public deleteAllIncidentReports(Ljava/lang/String;)V
     .registers 5
+    .param p1, "pkg"  # Ljava/lang/String;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -582,6 +631,7 @@
     move-result-wide v0
 
     .line 239
+    .local v0, "ident":J
     :try_start_f
     iget-object v2, p0, Lcom/android/server/incident/IncidentCompanionService$BinderService;->this$0:Lcom/android/server/incident/IncidentCompanionService;
 
@@ -604,25 +654,29 @@
 
     .line 241
     :catchall_1d
-    move-exception p1
+    move-exception v2
 
     invoke-static {v0, v1}, Landroid/os/Binder;->restoreCallingIdentity(J)V
 
-    throw p1
+    throw v2
 
     .line 233
+    .end local v0  # "ident":J
     :cond_22
-    new-instance p1, Ljava/lang/RuntimeException;
+    new-instance v0, Ljava/lang/RuntimeException;
 
-    const-string v0, "Invalid pkg"
+    const-string v1, "Invalid pkg"
 
-    invoke-direct {p1, v0}, Ljava/lang/RuntimeException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v0, v1}, Ljava/lang/RuntimeException;-><init>(Ljava/lang/String;)V
 
-    throw p1
+    throw v0
 .end method
 
 .method public deleteIncidentReports(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V
     .registers 7
+    .param p1, "pkg"  # Ljava/lang/String;
+    .param p2, "cls"  # Ljava/lang/String;
+    .param p3, "id"  # Ljava/lang/String;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -664,6 +718,7 @@
     move-result-wide v0
 
     .line 221
+    .local v0, "ident":J
     :try_start_1f
     iget-object v2, p0, Lcom/android/server/incident/IncidentCompanionService$BinderService;->this$0:Lcom/android/server/incident/IncidentCompanionService;
 
@@ -686,25 +741,27 @@
 
     .line 223
     :catchall_2d
-    move-exception p1
+    move-exception v2
 
     invoke-static {v0, v1}, Landroid/os/Binder;->restoreCallingIdentity(J)V
 
-    throw p1
+    throw v2
 
     .line 215
+    .end local v0  # "ident":J
     :cond_32
-    new-instance p1, Ljava/lang/RuntimeException;
+    new-instance v0, Ljava/lang/RuntimeException;
 
-    const-string p2, "Invalid pkg, cls or id"
+    const-string v1, "Invalid pkg, cls or id"
 
-    invoke-direct {p1, p2}, Ljava/lang/RuntimeException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v0, v1}, Ljava/lang/RuntimeException;-><init>(Ljava/lang/String;)V
 
-    throw p1
+    throw v0
 .end method
 
 .method public denyReport(Ljava/lang/String;)V
     .registers 5
+    .param p1, "uri"  # Ljava/lang/String;
 
     .line 182
     invoke-direct {p0}, Lcom/android/server/incident/IncidentCompanionService$BinderService;->enforceAuthorizePermission()V
@@ -715,6 +772,7 @@
     move-result-wide v0
 
     .line 186
+    .local v0, "ident":J
     :try_start_7
     iget-object v2, p0, Lcom/android/server/incident/IncidentCompanionService$BinderService;->this$0:Lcom/android/server/incident/IncidentCompanionService;
 
@@ -737,15 +795,18 @@
 
     .line 188
     :catchall_15
-    move-exception p1
+    move-exception v2
 
     invoke-static {v0, v1}, Landroid/os/Binder;->restoreCallingIdentity(J)V
 
-    throw p1
+    throw v2
 .end method
 
 .method protected dump(Ljava/io/FileDescriptor;Ljava/io/PrintWriter;[Ljava/lang/String;)V
     .registers 6
+    .param p1, "fd"  # Ljava/io/FileDescriptor;
+    .param p2, "writer"  # Ljava/io/PrintWriter;
+    .param p3, "args"  # [Ljava/lang/String;
 
     .line 270
     iget-object v0, p0, Lcom/android/server/incident/IncidentCompanionService$BinderService;->this$0:Lcom/android/server/incident/IncidentCompanionService;
@@ -807,6 +868,9 @@
 
 .method public getIncidentReport(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Landroid/os/IncidentManager$IncidentReport;
     .registers 7
+    .param p1, "pkg"  # Ljava/lang/String;
+    .param p2, "cls"  # Ljava/lang/String;
+    .param p3, "id"  # Ljava/lang/String;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -848,6 +912,7 @@
     move-result-wide v0
 
     .line 259
+    .local v0, "ident":J
     :try_start_1f
     iget-object v2, p0, Lcom/android/server/incident/IncidentCompanionService$BinderService;->this$0:Lcom/android/server/incident/IncidentCompanionService;
 
@@ -857,7 +922,7 @@
 
     invoke-interface {v2, p1, p2, p3}, Landroid/os/IIncidentManager;->getIncidentReport(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Landroid/os/IncidentManager$IncidentReport;
 
-    move-result-object p1
+    move-result-object v2
     :try_end_29
     .catchall {:try_start_1f .. :try_end_29} :catchall_2d
 
@@ -865,29 +930,32 @@
     invoke-static {v0, v1}, Landroid/os/Binder;->restoreCallingIdentity(J)V
 
     .line 259
-    return-object p1
+    return-object v2
 
     .line 261
     :catchall_2d
-    move-exception p1
+    move-exception v2
 
     invoke-static {v0, v1}, Landroid/os/Binder;->restoreCallingIdentity(J)V
 
-    throw p1
+    throw v2
 
     .line 253
+    .end local v0  # "ident":J
     :cond_32
-    new-instance p1, Ljava/lang/RuntimeException;
+    new-instance v0, Ljava/lang/RuntimeException;
 
-    const-string p2, "Invalid pkg, cls or id"
+    const-string v1, "Invalid pkg, cls or id"
 
-    invoke-direct {p1, p2}, Ljava/lang/RuntimeException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v0, v1}, Ljava/lang/RuntimeException;-><init>(Ljava/lang/String;)V
 
-    throw p1
+    throw v0
 .end method
 
 .method public getIncidentReportList(Ljava/lang/String;Ljava/lang/String;)Ljava/util/List;
     .registers 6
+    .param p1, "pkg"  # Ljava/lang/String;
+    .param p2, "cls"  # Ljava/lang/String;
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(",
@@ -917,6 +985,7 @@
     move-result-wide v0
 
     .line 201
+    .local v0, "ident":J
     :try_start_8
     iget-object v2, p0, Lcom/android/server/incident/IncidentCompanionService$BinderService;->this$0:Lcom/android/server/incident/IncidentCompanionService;
 
@@ -926,7 +995,7 @@
 
     invoke-interface {v2, p1, p2}, Landroid/os/IIncidentManager;->getIncidentReportList(Ljava/lang/String;Ljava/lang/String;)Ljava/util/List;
 
-    move-result-object p1
+    move-result-object v2
     :try_end_12
     .catchall {:try_start_8 .. :try_end_12} :catchall_16
 
@@ -934,15 +1003,15 @@
     invoke-static {v0, v1}, Landroid/os/Binder;->restoreCallingIdentity(J)V
 
     .line 201
-    return-object p1
+    return-object v2
 
     .line 203
     :catchall_16
-    move-exception p1
+    move-exception v2
 
     invoke-static {v0, v1}, Landroid/os/Binder;->restoreCallingIdentity(J)V
 
-    throw p1
+    throw v2
 .end method
 
 .method public getPendingReports()Ljava/util/List;
@@ -974,7 +1043,9 @@
 .end method
 
 .method public sendReportReadyBroadcast(Ljava/lang/String;Ljava/lang/String;)V
-    .registers 9
+    .registers 11
+    .param p1, "pkg"  # Ljava/lang/String;
+    .param p2, "cls"  # Ljava/lang/String;
 
     .line 125
     invoke-direct {p0}, Lcom/android/server/incident/IncidentCompanionService$BinderService;->enforceRequestAuthorizationPermission()V
@@ -985,6 +1056,7 @@
     move-result-wide v0
 
     .line 129
+    .local v0, "ident":J
     :try_start_7
     iget-object v2, p0, Lcom/android/server/incident/IncidentCompanionService$BinderService;->this$0:Lcom/android/server/incident/IncidentCompanionService;
 
@@ -993,6 +1065,7 @@
     move-result-object v2
 
     .line 131
+    .local v2, "context":Landroid/content/Context;
     invoke-static {v2}, Lcom/android/server/incident/IncidentCompanionService;->getAndValidateUser(Landroid/content/Context;)I
 
     move-result v3
@@ -1000,6 +1073,7 @@
     .catchall {:try_start_7 .. :try_end_11} :catchall_64
 
     .line 132
+    .local v3, "primaryUser":I
     const/16 v4, -0x2710
 
     if-ne v3, v4, :cond_19
@@ -1020,6 +1094,7 @@
     invoke-direct {v4, v5}, Landroid/content/Intent;-><init>(Ljava/lang/String;)V
 
     .line 137
+    .local v4, "intent":Landroid/content/Intent;
     new-instance v5, Landroid/content/ComponentName;
 
     invoke-direct {v5, p1, p2}, Landroid/content/ComponentName;-><init>(Ljava/lang/String;Ljava/lang/String;)V
@@ -1027,41 +1102,41 @@
     invoke-virtual {v4, v5}, Landroid/content/Intent;->setComponent(Landroid/content/ComponentName;)Landroid/content/Intent;
 
     .line 139
-    const-string p1, "IncidentCompanionService"
+    const-string v5, "IncidentCompanionService"
 
-    new-instance p2, Ljava/lang/StringBuilder;
+    new-instance v6, Ljava/lang/StringBuilder;
 
-    invoke-direct {p2}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v6}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string/jumbo v5, "sendReportReadyBroadcast sending primaryUser="
+    const-string/jumbo v7, "sendReportReadyBroadcast sending primaryUser="
 
-    invoke-virtual {p2, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v6, v7}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p2, v3}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v6, v3}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    const-string v5, " userHandle="
+    const-string v7, " userHandle="
 
-    invoke-virtual {p2, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v6, v7}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     .line 140
     invoke-static {v3}, Landroid/os/UserHandle;->getUserHandleForUid(I)Landroid/os/UserHandle;
 
-    move-result-object v5
+    move-result-object v7
 
-    invoke-virtual {p2, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    invoke-virtual {v6, v7}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
-    const-string v5, " intent="
+    const-string v7, " intent="
 
-    invoke-virtual {p2, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v6, v7}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p2, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    invoke-virtual {v6, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v6}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p2
+    move-result-object v6
 
     .line 139
-    invoke-static {p1, p2}, Landroid/util/Log;->d(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v5, v6}, Landroid/util/Log;->d(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 144
     nop
@@ -1069,19 +1144,22 @@
     .line 145
     invoke-static {v3}, Landroid/os/UserHandle;->getUserHandleForUid(I)Landroid/os/UserHandle;
 
-    move-result-object p1
+    move-result-object v5
 
     .line 146
     invoke-static {}, Lcom/android/server/incident/IncidentCompanionService;->access$100()[Ljava/lang/String;
 
-    move-result-object p2
+    move-result-object v6
 
     .line 144
-    invoke-virtual {v2, v4, p1, p2}, Landroid/content/Context;->sendBroadcastAsUserMultiplePermissions(Landroid/content/Intent;Landroid/os/UserHandle;[Ljava/lang/String;)V
+    invoke-virtual {v2, v4, v5, v6}, Landroid/content/Context;->sendBroadcastAsUserMultiplePermissions(Landroid/content/Intent;Landroid/os/UserHandle;[Ljava/lang/String;)V
     :try_end_5f
     .catchall {:try_start_19 .. :try_end_5f} :catchall_64
 
     .line 148
+    .end local v2  # "context":Landroid/content/Context;
+    .end local v3  # "primaryUser":I
+    .end local v4  # "intent":Landroid/content/Intent;
     invoke-static {v0, v1}, Landroid/os/Binder;->restoreCallingIdentity(J)V
 
     .line 149
@@ -1092,9 +1170,9 @@
 
     .line 148
     :catchall_64
-    move-exception p1
+    move-exception v2
 
     invoke-static {v0, v1}, Landroid/os/Binder;->restoreCallingIdentity(J)V
 
-    throw p1
+    throw v2
 .end method

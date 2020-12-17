@@ -46,6 +46,7 @@
 # direct methods
 .method protected constructor <init>(Landroid/content/Context;)V
     .registers 3
+    .param p1, "context"  # Landroid/content/Context;
 
     .line 62
     const/4 v0, 0x0
@@ -92,7 +93,7 @@
 .end method
 
 .method private refresh()V
-    .registers 7
+    .registers 8
 
     .line 80
     iget-object v0, p0, Lcom/android/server/content/SyncManagerConstants;->mLock:Ljava/lang/Object;
@@ -114,20 +115,22 @@
     move-result-object v1
 
     .line 84
+    .local v1, "newValue":Ljava/lang/String;
     new-instance v2, Landroid/util/KeyValueListParser;
 
     const/16 v3, 0x2c
 
     invoke-direct {v2, v3}, Landroid/util/KeyValueListParser;-><init>(C)V
     :try_end_17
-    .catchall {:try_start_3 .. :try_end_17} :catchall_66
+    .catchall {:try_start_3 .. :try_end_17} :catchall_69
 
     .line 86
+    .local v2, "parser":Landroid/util/KeyValueListParser;
     :try_start_17
     invoke-virtual {v2, v1}, Landroid/util/KeyValueListParser;->setString(Ljava/lang/String;)V
     :try_end_1a
     .catch Ljava/lang/IllegalArgumentException; {:try_start_17 .. :try_end_1a} :catch_1b
-    .catchall {:try_start_17 .. :try_end_1a} :catchall_66
+    .catchall {:try_start_17 .. :try_end_1a} :catchall_69
 
     .line 89
     goto :goto_32
@@ -137,94 +140,98 @@
     move-exception v3
 
     .line 88
+    .local v3, "e":Ljava/lang/IllegalArgumentException;
     :try_start_1c
-    const-string v3, "SyncManagerConfig"
+    const-string v4, "SyncManagerConfig"
 
-    new-instance v4, Ljava/lang/StringBuilder;
+    new-instance v5, Ljava/lang/StringBuilder;
 
-    invoke-direct {v4}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v5}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v5, "Bad constants: "
+    const-string v6, "Bad constants: "
 
-    invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v4, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v5, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v4}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v5}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v1
+    move-result-object v5
 
-    invoke-static {v3, v1}, Landroid/util/Slog;->wtf(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v4, v5}, Landroid/util/Slog;->wtf(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 91
+    .end local v3  # "e":Ljava/lang/IllegalArgumentException;
     :goto_32
-    const-string v1, "initial_sync_retry_time_in_seconds"
+    const-string/jumbo v3, "initial_sync_retry_time_in_seconds"
 
-    const/16 v3, 0x1e
+    const/16 v4, 0x1e
 
-    invoke-virtual {v2, v1, v3}, Landroid/util/KeyValueListParser;->getInt(Ljava/lang/String;I)I
+    invoke-virtual {v2, v3, v4}, Landroid/util/KeyValueListParser;->getInt(Ljava/lang/String;I)I
 
-    move-result v1
+    move-result v3
 
-    iput v1, p0, Lcom/android/server/content/SyncManagerConstants;->mInitialSyncRetryTimeInSeconds:I
+    iput v3, p0, Lcom/android/server/content/SyncManagerConstants;->mInitialSyncRetryTimeInSeconds:I
 
     .line 95
-    const-string v1, "max_sync_retry_time_in_seconds"
+    const-string/jumbo v3, "max_sync_retry_time_in_seconds"
 
-    const/16 v3, 0xe10
+    const/16 v4, 0xe10
 
-    invoke-virtual {v2, v1, v3}, Landroid/util/KeyValueListParser;->getInt(Ljava/lang/String;I)I
+    invoke-virtual {v2, v3, v4}, Landroid/util/KeyValueListParser;->getInt(Ljava/lang/String;I)I
 
-    move-result v1
+    move-result v3
 
-    iput v1, p0, Lcom/android/server/content/SyncManagerConstants;->mMaxSyncRetryTimeInSeconds:I
+    iput v3, p0, Lcom/android/server/content/SyncManagerConstants;->mMaxSyncRetryTimeInSeconds:I
 
     .line 99
-    const-string/jumbo v1, "retry_time_increase_factor"
+    const-string/jumbo v3, "retry_time_increase_factor"
 
-    const/high16 v3, 0x40000000  # 2.0f
+    const/high16 v4, 0x40000000  # 2.0f
 
-    invoke-virtual {v2, v1, v3}, Landroid/util/KeyValueListParser;->getFloat(Ljava/lang/String;F)F
+    invoke-virtual {v2, v3, v4}, Landroid/util/KeyValueListParser;->getFloat(Ljava/lang/String;F)F
 
-    move-result v1
+    move-result v3
 
-    iput v1, p0, Lcom/android/server/content/SyncManagerConstants;->mRetryTimeIncreaseFactor:F
+    iput v3, p0, Lcom/android/server/content/SyncManagerConstants;->mRetryTimeIncreaseFactor:F
 
     .line 103
-    const-string v1, "max_retries_with_app_standby_exemption"
+    const-string/jumbo v3, "max_retries_with_app_standby_exemption"
 
-    const/4 v3, 0x5
+    const/4 v4, 0x5
 
-    invoke-virtual {v2, v1, v3}, Landroid/util/KeyValueListParser;->getInt(Ljava/lang/String;I)I
+    invoke-virtual {v2, v3, v4}, Landroid/util/KeyValueListParser;->getInt(Ljava/lang/String;I)I
 
-    move-result v1
+    move-result v3
 
-    iput v1, p0, Lcom/android/server/content/SyncManagerConstants;->mMaxRetriesWithAppStandbyExemption:I
+    iput v3, p0, Lcom/android/server/content/SyncManagerConstants;->mMaxRetriesWithAppStandbyExemption:I
 
     .line 107
-    const-string v1, "exemption_temp_whitelist_duration_in_seconds"
+    const-string v3, "exemption_temp_whitelist_duration_in_seconds"
 
-    const/16 v3, 0x258
+    const/16 v4, 0x258
 
-    invoke-virtual {v2, v1, v3}, Landroid/util/KeyValueListParser;->getInt(Ljava/lang/String;I)I
+    invoke-virtual {v2, v3, v4}, Landroid/util/KeyValueListParser;->getInt(Ljava/lang/String;I)I
 
-    move-result v1
+    move-result v3
 
-    iput v1, p0, Lcom/android/server/content/SyncManagerConstants;->mKeyExemptionTempWhitelistDurationInSeconds:I
+    iput v3, p0, Lcom/android/server/content/SyncManagerConstants;->mKeyExemptionTempWhitelistDurationInSeconds:I
 
     .line 111
+    .end local v1  # "newValue":Ljava/lang/String;
+    .end local v2  # "parser":Landroid/util/KeyValueListParser;
     monitor-exit v0
 
     .line 112
     return-void
 
     .line 111
-    :catchall_66
+    :catchall_69
     move-exception v1
 
     monitor-exit v0
-    :try_end_68
-    .catchall {:try_start_1c .. :try_end_68} :catchall_66
+    :try_end_6b
+    .catchall {:try_start_1c .. :try_end_6b} :catchall_69
 
     throw v1
 .end method
@@ -233,6 +240,8 @@
 # virtual methods
 .method public dump(Ljava/io/PrintWriter;Ljava/lang/String;)V
     .registers 5
+    .param p1, "pw"  # Ljava/io/PrintWriter;
+    .param p2, "prefix"  # Ljava/lang/String;
 
     .line 145
     iget-object v0, p0, Lcom/android/server/content/SyncManagerConstants;->mLock:Ljava/lang/Object;
@@ -304,14 +313,14 @@
     invoke-virtual {p1, p2}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
     .line 166
-    const-string p2, "  mKeyExemptionTempWhitelistDurationInSeconds="
+    const-string v1, "  mKeyExemptionTempWhitelistDurationInSeconds="
 
-    invoke-virtual {p1, p2}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
+    invoke-virtual {p1, v1}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
     .line 167
-    iget p2, p0, Lcom/android/server/content/SyncManagerConstants;->mKeyExemptionTempWhitelistDurationInSeconds:I
+    iget v1, p0, Lcom/android/server/content/SyncManagerConstants;->mKeyExemptionTempWhitelistDurationInSeconds:I
 
-    invoke-virtual {p1, p2}, Ljava/io/PrintWriter;->println(I)V
+    invoke-virtual {p1, v1}, Ljava/io/PrintWriter;->println(I)V
 
     .line 168
     monitor-exit v0
@@ -321,13 +330,13 @@
 
     .line 168
     :catchall_4e
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_50
     .catchall {:try_start_3 .. :try_end_50} :catchall_4e
 
-    throw p1
+    throw v1
 .end method
 
 .method public getInitialSyncRetryTimeInSeconds()I
@@ -494,6 +503,7 @@
 
 .method public onChange(Z)V
     .registers 2
+    .param p1, "selfChange"  # Z
 
     .line 76
     invoke-direct {p0}, Lcom/android/server/content/SyncManagerConstants;->refresh()V

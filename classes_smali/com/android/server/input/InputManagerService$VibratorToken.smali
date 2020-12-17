@@ -32,22 +32,25 @@
 # direct methods
 .method public constructor <init>(Lcom/android/server/input/InputManagerService;ILandroid/os/IBinder;I)V
     .registers 5
+    .param p2, "deviceId"  # I
+    .param p3, "token"  # Landroid/os/IBinder;
+    .param p4, "tokenValue"  # I
 
-    .line 2362
+    .line 2277
     iput-object p1, p0, Lcom/android/server/input/InputManagerService$VibratorToken;->this$0:Lcom/android/server/input/InputManagerService;
 
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
-    .line 2363
+    .line 2278
     iput p2, p0, Lcom/android/server/input/InputManagerService$VibratorToken;->mDeviceId:I
 
-    .line 2364
+    .line 2279
     iput-object p3, p0, Lcom/android/server/input/InputManagerService$VibratorToken;->mToken:Landroid/os/IBinder;
 
-    .line 2365
+    .line 2280
     iput p4, p0, Lcom/android/server/input/InputManagerService$VibratorToken;->mTokenValue:I
 
-    .line 2366
+    .line 2281
     return-void
 .end method
 
@@ -56,11 +59,11 @@
 .method public binderDied()V
     .registers 2
 
-    .line 2373
+    .line 2288
     iget-object v0, p0, Lcom/android/server/input/InputManagerService$VibratorToken;->this$0:Lcom/android/server/input/InputManagerService;
 
     invoke-virtual {v0, p0}, Lcom/android/server/input/InputManagerService;->onVibratorTokenDied(Lcom/android/server/input/InputManagerService$VibratorToken;)V
 
-    .line 2374
+    .line 2289
     return-void
 .end method

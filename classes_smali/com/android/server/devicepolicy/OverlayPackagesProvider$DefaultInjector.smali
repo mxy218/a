@@ -29,6 +29,7 @@
 
 .method synthetic constructor <init>(Lcom/android/server/devicepolicy/OverlayPackagesProvider$1;)V
     .registers 2
+    .param p1, "x0"  # Lcom/android/server/devicepolicy/OverlayPackagesProvider$1;
 
     .line 69
     invoke-direct {p0}, Lcom/android/server/devicepolicy/OverlayPackagesProvider$DefaultInjector;-><init>()V
@@ -40,6 +41,7 @@
 # virtual methods
 .method public getInputMethodListAsUser(I)Ljava/util/List;
     .registers 3
+    .param p1, "userId"  # I
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(I)",
@@ -56,9 +58,9 @@
 
     invoke-virtual {v0, p1}, Lcom/android/server/inputmethod/InputMethodManagerInternal;->getInputMethodListAsUser(I)Ljava/util/List;
 
-    move-result-object p1
+    move-result-object v0
 
-    return-object p1
+    return-object v0
 .end method
 
 .method public isPerProfileImeEnabled()Z

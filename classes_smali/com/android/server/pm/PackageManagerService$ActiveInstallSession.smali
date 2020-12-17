@@ -35,35 +35,43 @@
 # direct methods
 .method constructor <init>(Ljava/lang/String;Ljava/io/File;Landroid/content/pm/IPackageInstallObserver2;Landroid/content/pm/PackageInstaller$SessionParams;Ljava/lang/String;ILandroid/os/UserHandle;Landroid/content/pm/PackageParser$SigningDetails;)V
     .registers 9
+    .param p1, "packageName"  # Ljava/lang/String;
+    .param p2, "stagedDir"  # Ljava/io/File;
+    .param p3, "observer"  # Landroid/content/pm/IPackageInstallObserver2;
+    .param p4, "sessionParams"  # Landroid/content/pm/PackageInstaller$SessionParams;
+    .param p5, "installerPackageName"  # Ljava/lang/String;
+    .param p6, "installerUid"  # I
+    .param p7, "user"  # Landroid/os/UserHandle;
+    .param p8, "signingDetails"  # Landroid/content/pm/PackageParser$SigningDetails;
 
-    .line 25797
+    .line 26570
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
-    .line 25798
+    .line 26571
     iput-object p1, p0, Lcom/android/server/pm/PackageManagerService$ActiveInstallSession;->mPackageName:Ljava/lang/String;
 
-    .line 25799
+    .line 26572
     iput-object p2, p0, Lcom/android/server/pm/PackageManagerService$ActiveInstallSession;->mStagedDir:Ljava/io/File;
 
-    .line 25800
+    .line 26573
     iput-object p3, p0, Lcom/android/server/pm/PackageManagerService$ActiveInstallSession;->mObserver:Landroid/content/pm/IPackageInstallObserver2;
 
-    .line 25801
+    .line 26574
     iput-object p4, p0, Lcom/android/server/pm/PackageManagerService$ActiveInstallSession;->mSessionParams:Landroid/content/pm/PackageInstaller$SessionParams;
 
-    .line 25802
+    .line 26575
     iput-object p5, p0, Lcom/android/server/pm/PackageManagerService$ActiveInstallSession;->mInstallerPackageName:Ljava/lang/String;
 
-    .line 25803
+    .line 26576
     iput p6, p0, Lcom/android/server/pm/PackageManagerService$ActiveInstallSession;->mInstallerUid:I
 
-    .line 25804
+    .line 26577
     iput-object p7, p0, Lcom/android/server/pm/PackageManagerService$ActiveInstallSession;->mUser:Landroid/os/UserHandle;
 
-    .line 25805
+    .line 26578
     iput-object p8, p0, Lcom/android/server/pm/PackageManagerService$ActiveInstallSession;->mSigningDetails:Landroid/content/pm/PackageParser$SigningDetails;
 
-    .line 25806
+    .line 26579
     return-void
 .end method
 
@@ -72,7 +80,7 @@
 .method public getInstallerPackageName()Ljava/lang/String;
     .registers 2
 
-    .line 25825
+    .line 26598
     iget-object v0, p0, Lcom/android/server/pm/PackageManagerService$ActiveInstallSession;->mInstallerPackageName:Ljava/lang/String;
 
     return-object v0
@@ -81,7 +89,7 @@
 .method public getInstallerUid()I
     .registers 2
 
-    .line 25829
+    .line 26602
     iget v0, p0, Lcom/android/server/pm/PackageManagerService$ActiveInstallSession;->mInstallerUid:I
 
     return v0
@@ -90,7 +98,7 @@
 .method public getObserver()Landroid/content/pm/IPackageInstallObserver2;
     .registers 2
 
-    .line 25817
+    .line 26590
     iget-object v0, p0, Lcom/android/server/pm/PackageManagerService$ActiveInstallSession;->mObserver:Landroid/content/pm/IPackageInstallObserver2;
 
     return-object v0
@@ -99,7 +107,7 @@
 .method public getPackageName()Ljava/lang/String;
     .registers 2
 
-    .line 25809
+    .line 26582
     iget-object v0, p0, Lcom/android/server/pm/PackageManagerService$ActiveInstallSession;->mPackageName:Ljava/lang/String;
 
     return-object v0
@@ -108,7 +116,7 @@
 .method public getSessionParams()Landroid/content/pm/PackageInstaller$SessionParams;
     .registers 2
 
-    .line 25821
+    .line 26594
     iget-object v0, p0, Lcom/android/server/pm/PackageManagerService$ActiveInstallSession;->mSessionParams:Landroid/content/pm/PackageInstaller$SessionParams;
 
     return-object v0
@@ -117,7 +125,7 @@
 .method public getSigningDetails()Landroid/content/pm/PackageParser$SigningDetails;
     .registers 2
 
-    .line 25837
+    .line 26610
     iget-object v0, p0, Lcom/android/server/pm/PackageManagerService$ActiveInstallSession;->mSigningDetails:Landroid/content/pm/PackageParser$SigningDetails;
 
     return-object v0
@@ -126,7 +134,7 @@
 .method public getStagedDir()Ljava/io/File;
     .registers 2
 
-    .line 25813
+    .line 26586
     iget-object v0, p0, Lcom/android/server/pm/PackageManagerService$ActiveInstallSession;->mStagedDir:Ljava/io/File;
 
     return-object v0
@@ -135,7 +143,7 @@
 .method public getUser()Landroid/os/UserHandle;
     .registers 2
 
-    .line 25833
+    .line 26606
     iget-object v0, p0, Lcom/android/server/pm/PackageManagerService$ActiveInstallSession;->mUser:Landroid/os/UserHandle;
 
     return-object v0

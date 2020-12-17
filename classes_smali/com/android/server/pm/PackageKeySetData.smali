@@ -49,6 +49,7 @@
 
 .method constructor <init>(Lcom/android/server/pm/PackageKeySetData;)V
     .registers 4
+    .param p1, "original"  # Lcom/android/server/pm/PackageKeySetData;
 
     .line 38
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -77,9 +78,9 @@
     .line 41
     iget-object v0, p0, Lcom/android/server/pm/PackageKeySetData;->mKeySetAliases:Landroid/util/ArrayMap;
 
-    iget-object p1, p1, Lcom/android/server/pm/PackageKeySetData;->mKeySetAliases:Landroid/util/ArrayMap;
+    iget-object v1, p1, Lcom/android/server/pm/PackageKeySetData;->mKeySetAliases:Landroid/util/ArrayMap;
 
-    invoke-virtual {v0, p1}, Landroid/util/ArrayMap;->putAll(Landroid/util/ArrayMap;)V
+    invoke-virtual {v0, v1}, Landroid/util/ArrayMap;->putAll(Landroid/util/ArrayMap;)V
 
     .line 42
     return-void
@@ -88,23 +89,26 @@
 
 # virtual methods
 .method protected addDefinedKeySet(JLjava/lang/String;)V
-    .registers 5
+    .registers 6
+    .param p1, "ks"  # J
+    .param p3, "alias"  # Ljava/lang/String;
 
     .line 106
     iget-object v0, p0, Lcom/android/server/pm/PackageKeySetData;->mKeySetAliases:Landroid/util/ArrayMap;
 
     invoke-static {p1, p2}, Ljava/lang/Long;->valueOf(J)Ljava/lang/Long;
 
-    move-result-object p1
+    move-result-object v1
 
-    invoke-virtual {v0, p3, p1}, Landroid/util/ArrayMap;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+    invoke-virtual {v0, p3, v1}, Landroid/util/ArrayMap;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
 
     .line 107
     return-void
 .end method
 
 .method protected addUpgradeKeySet(Ljava/lang/String;)V
-    .registers 5
+    .registers 6
+    .param p1, "alias"  # Ljava/lang/String;
 
     .line 54
     if-nez p1, :cond_3
@@ -123,62 +127,64 @@
     check-cast v0, Ljava/lang/Long;
 
     .line 60
+    .local v0, "ks":Ljava/lang/Long;
     if-eqz v0, :cond_1a
 
     .line 61
-    iget-object p1, p0, Lcom/android/server/pm/PackageKeySetData;->mUpgradeKeySets:[J
+    iget-object v1, p0, Lcom/android/server/pm/PackageKeySetData;->mUpgradeKeySets:[J
 
     invoke-virtual {v0}, Ljava/lang/Long;->longValue()J
 
-    move-result-wide v0
+    move-result-wide v2
 
-    invoke-static {p1, v0, v1}, Lcom/android/internal/util/ArrayUtils;->appendLong([JJ)[J
+    invoke-static {v1, v2, v3}, Lcom/android/internal/util/ArrayUtils;->appendLong([JJ)[J
 
-    move-result-object p1
+    move-result-object v1
 
-    iput-object p1, p0, Lcom/android/server/pm/PackageKeySetData;->mUpgradeKeySets:[J
+    iput-object v1, p0, Lcom/android/server/pm/PackageKeySetData;->mUpgradeKeySets:[J
 
     .line 66
     return-void
 
     .line 63
     :cond_1a
-    new-instance v0, Ljava/lang/IllegalArgumentException;
+    new-instance v1, Ljava/lang/IllegalArgumentException;
 
-    new-instance v1, Ljava/lang/StringBuilder;
+    new-instance v2, Ljava/lang/StringBuilder;
 
-    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v2, "Upgrade keyset alias "
+    const-string v3, "Upgrade keyset alias "
 
-    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v1, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string p1, "does not refer to a defined keyset alias!"
+    const-string v3, "does not refer to a defined keyset alias!"
 
-    invoke-virtual {v1, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v2
 
-    invoke-direct {v0, p1}, Ljava/lang/IllegalArgumentException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v1, v2}, Ljava/lang/IllegalArgumentException;-><init>(Ljava/lang/String;)V
 
-    throw v0
+    throw v1
 .end method
 
 .method protected addUpgradeKeySetById(J)V
     .registers 4
+    .param p1, "ks"  # J
 
     .line 74
     iget-object v0, p0, Lcom/android/server/pm/PackageKeySetData;->mUpgradeKeySets:[J
 
     invoke-static {v0, p1, p2}, Lcom/android/internal/util/ArrayUtils;->appendLong([JJ)[J
 
-    move-result-object p1
+    move-result-object v0
 
-    iput-object p1, p0, Lcom/android/server/pm/PackageKeySetData;->mUpgradeKeySets:[J
+    iput-object v0, p0, Lcom/android/server/pm/PackageKeySetData;->mUpgradeKeySets:[J
 
     .line 75
     return-void
@@ -303,6 +309,7 @@
     .end annotation
 
     .line 96
+    .local p1, "newAliases":Landroid/util/ArrayMap;, "Landroid/util/ArrayMap<Ljava/lang/String;Ljava/lang/Long;>;"
     invoke-virtual {p0}, Lcom/android/server/pm/PackageKeySetData;->removeAllDefinedKeySets()V
 
     .line 99
@@ -311,8 +318,10 @@
     move-result v0
 
     .line 100
+    .local v0, "newAliasSize":I
     const/4 v1, 0x0
 
+    .local v1, "i":I
     :goto_8
     if-ge v1, v0, :cond_1e
 
@@ -339,12 +348,14 @@
     goto :goto_8
 
     .line 103
+    .end local v1  # "i":I
     :cond_1e
     return-void
 .end method
 
 .method protected setProperSigningKeySet(J)V
     .registers 3
+    .param p1, "ks"  # J
 
     .line 45
     iput-wide p1, p0, Lcom/android/server/pm/PackageKeySetData;->mProperSigningKeySet:J

@@ -1307,10 +1307,12 @@
 
 .method static androidKeyToCecKey(I)[B
     .registers 4
+    .param p0, "keycode"  # I
 
     .line 403
     const/4 v0, 0x0
 
+    .local v0, "i":I
     :goto_1
     sget-object v1, Lcom/android/server/hdmi/HdmiCecKeycode;->KEYCODE_ENTRIES:[Lcom/android/server/hdmi/HdmiCecKeycode$KeycodeEntry;
 
@@ -1326,30 +1328,35 @@
     move-result-object v1
 
     .line 405
+    .local v1, "cecKeycodeAndParams":[B
     if-eqz v1, :cond_f
 
     .line 406
     return-object v1
 
     .line 403
+    .end local v1  # "cecKeycodeAndParams":[B
     :cond_f
     add-int/lit8 v0, v0, 0x1
 
     goto :goto_1
 
     .line 409
+    .end local v0  # "i":I
     :cond_12
-    const/4 p0, 0x0
+    const/4 v0, 0x0
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static cecKeycodeAndParamsToAndroidKey([B)I
     .registers 5
+    .param p0, "cecKeycodeAndParams"  # [B
 
     .line 420
     const/4 v0, 0x0
 
+    .local v0, "i":I
     :goto_1
     sget-object v1, Lcom/android/server/hdmi/HdmiCecKeycode;->KEYCODE_ENTRIES:[Lcom/android/server/hdmi/HdmiCecKeycode$KeycodeEntry;
 
@@ -1367,116 +1374,128 @@
     move-result v1
 
     .line 422
+    .local v1, "androidKey":I
     if-eq v1, v3, :cond_10
 
     .line 423
     return v1
 
     .line 420
+    .end local v1  # "androidKey":I
     :cond_10
     add-int/lit8 v0, v0, 0x1
 
     goto :goto_1
 
     .line 426
+    .end local v0  # "i":I
     :cond_13
     return v3
 .end method
 
 .method public static getMuteKey(Z)I
-    .registers 1
+    .registers 2
+    .param p0, "muting"  # Z
 
     .line 479
-    const/16 p0, 0x43
+    const/16 v0, 0x43
 
-    return p0
+    return v0
 .end method
 
 .method private static intToSingleByteArray(I)[B
-    .registers 3
+    .registers 4
+    .param p0, "value"  # I
 
     .line 233
     const/4 v0, 0x1
 
     new-array v0, v0, [B
 
-    and-int/lit16 p0, p0, 0xff
+    and-int/lit16 v1, p0, 0xff
 
-    int-to-byte p0, p0
+    int-to-byte v1, v1
 
-    const/4 v1, 0x0
+    const/4 v2, 0x0
 
-    aput-byte p0, v0, v1
+    aput-byte v1, v0, v2
 
     return-object v0
 .end method
 
 .method static isRepeatableKey(I)Z
-    .registers 5
+    .registers 4
+    .param p0, "androidKeycode"  # I
 
     .line 436
     const/4 v0, 0x0
 
-    move v1, v0
+    .local v0, "i":I
+    :goto_1
+    sget-object v1, Lcom/android/server/hdmi/HdmiCecKeycode;->KEYCODE_ENTRIES:[Lcom/android/server/hdmi/HdmiCecKeycode$KeycodeEntry;
 
-    :goto_2
-    sget-object v2, Lcom/android/server/hdmi/HdmiCecKeycode;->KEYCODE_ENTRIES:[Lcom/android/server/hdmi/HdmiCecKeycode$KeycodeEntry;
+    array-length v2, v1
 
-    array-length v3, v2
-
-    if-ge v1, v3, :cond_17
+    if-ge v0, v2, :cond_16
 
     .line 437
-    aget-object v2, v2, v1
+    aget-object v1, v1, v0
 
-    invoke-static {v2, p0}, Lcom/android/server/hdmi/HdmiCecKeycode$KeycodeEntry;->access$500(Lcom/android/server/hdmi/HdmiCecKeycode$KeycodeEntry;I)Ljava/lang/Boolean;
+    invoke-static {v1, p0}, Lcom/android/server/hdmi/HdmiCecKeycode$KeycodeEntry;->access$500(Lcom/android/server/hdmi/HdmiCecKeycode$KeycodeEntry;I)Ljava/lang/Boolean;
 
-    move-result-object v2
+    move-result-object v1
 
     .line 438
-    if-eqz v2, :cond_14
+    .local v1, "isRepeatable":Ljava/lang/Boolean;
+    if-eqz v1, :cond_13
 
     .line 439
-    invoke-virtual {v2}, Ljava/lang/Boolean;->booleanValue()Z
+    invoke-virtual {v1}, Ljava/lang/Boolean;->booleanValue()Z
 
-    move-result p0
+    move-result v2
 
-    return p0
+    return v2
 
     .line 436
-    :cond_14
-    add-int/lit8 v1, v1, 0x1
+    .end local v1  # "isRepeatable":Ljava/lang/Boolean;
+    :cond_13
+    add-int/lit8 v0, v0, 0x1
 
-    goto :goto_2
+    goto :goto_1
 
     .line 442
-    :cond_17
+    .end local v0  # "i":I
+    :cond_16
+    const/4 v0, 0x0
+
     return v0
 .end method
 
 .method static isSupportedKeycode(I)Z
-    .registers 1
+    .registers 2
+    .param p0, "androidKeycode"  # I
 
     .line 449
     invoke-static {p0}, Lcom/android/server/hdmi/HdmiCecKeycode;->androidKeyToCecKey(I)[B
 
-    move-result-object p0
+    move-result-object v0
 
-    if-eqz p0, :cond_8
+    if-eqz v0, :cond_8
 
-    const/4 p0, 0x1
+    const/4 v0, 0x1
 
     goto :goto_9
 
     :cond_8
-    const/4 p0, 0x0
+    const/4 v0, 0x0
 
     :goto_9
-    return p0
+    return v0
 .end method
 
 .method static isVolumeKeycode(I)Z
-    .registers 3
+    .registers 4
+    .param p0, "androidKeycode"  # I
 
     .line 457
     invoke-static {p0}, Lcom/android/server/hdmi/HdmiCecKeycode;->androidKeyToCecKey(I)[B
@@ -1488,31 +1507,32 @@
     aget-byte v0, v0, v1
 
     .line 458
+    .local v0, "cecKeyCode":I
     invoke-static {p0}, Lcom/android/server/hdmi/HdmiCecKeycode;->isSupportedKeycode(I)Z
 
-    move-result p0
+    move-result v2
 
-    if-eqz p0, :cond_22
+    if-eqz v2, :cond_22
 
-    const/16 p0, 0x41
+    const/16 v2, 0x41
 
-    if-eq v0, p0, :cond_21
+    if-eq v0, v2, :cond_21
 
-    const/16 p0, 0x42
+    const/16 v2, 0x42
 
-    if-eq v0, p0, :cond_21
+    if-eq v0, v2, :cond_21
 
-    const/16 p0, 0x43
+    const/16 v2, 0x43
 
-    if-eq v0, p0, :cond_21
+    if-eq v0, v2, :cond_21
 
-    const/16 p0, 0x65
+    const/16 v2, 0x65
 
-    if-eq v0, p0, :cond_21
+    if-eq v0, v2, :cond_21
 
-    const/16 p0, 0x66
+    const/16 v2, 0x66
 
-    if-ne v0, p0, :cond_22
+    if-ne v0, v2, :cond_22
 
     :cond_21
     const/4 v1, 0x1

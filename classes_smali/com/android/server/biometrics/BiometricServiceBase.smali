@@ -29,6 +29,8 @@
 # static fields
 .field private static final CANCEL_TIMEOUT_LIMIT:J = 0xbb8L
 
+.field private static final CLEANUP_UNKNOWN_TEMPLATES:Z = true
+
 .field protected static final DEBUG:Z = true
 
 .field private static final KEY_LOCKOUT_RESET_USER:Ljava/lang/String; = "lockout_reset_user"
@@ -53,8 +55,6 @@
 .end field
 
 .field private mBiometricService:Landroid/hardware/biometrics/IBiometricService;
-
-.field private final mCleanupUnusedFingerprints:Z
 
 .field private final mContext:Landroid/content/Context;
 
@@ -95,8 +95,6 @@
 
 .field private final mMetricsLogger:Lcom/android/internal/logging/MetricsLogger;
 
-.field private final mOnTaskStackChangedRunnable:Ljava/lang/Runnable;
-
 .field private mPendingClient:Lcom/android/server/biometrics/ClientMonitor;
 
 .field protected mPerformanceMap:Ljava/util/HashMap;
@@ -111,8 +109,6 @@
 .end field
 
 .field private mPerformanceStats:Lcom/android/server/biometrics/BiometricServiceBase$PerformanceStats;
-
-.field private final mPostResetRunnableForAllClients:Z
 
 .field private final mPowerManager:Landroid/os/PowerManager;
 
@@ -140,11 +136,12 @@
 # direct methods
 .method public constructor <init>(Landroid/content/Context;)V
     .registers 4
+    .param p1, "context"  # Landroid/content/Context;
 
-    .line 646
+    .line 640
     invoke-direct {p0, p1}, Lcom/android/server/SystemService;-><init>(Landroid/content/Context;)V
 
-    .line 88
+    .line 91
     new-instance v0, Lcom/android/server/biometrics/BiometricServiceBase$BiometricTaskStackListener;
 
     const/4 v1, 0x0
@@ -153,105 +150,98 @@
 
     iput-object v0, p0, Lcom/android/server/biometrics/BiometricServiceBase;->mTaskStackListener:Lcom/android/server/biometrics/BiometricServiceBase$BiometricTaskStackListener;
 
-    .line 89
+    .line 92
     new-instance v0, Lcom/android/server/biometrics/BiometricServiceBase$ResetClientStateRunnable;
 
     invoke-direct {v0, p0, v1}, Lcom/android/server/biometrics/BiometricServiceBase$ResetClientStateRunnable;-><init>(Lcom/android/server/biometrics/BiometricServiceBase;Lcom/android/server/biometrics/BiometricServiceBase$1;)V
 
     iput-object v0, p0, Lcom/android/server/biometrics/BiometricServiceBase;->mResetClientState:Lcom/android/server/biometrics/BiometricServiceBase$ResetClientStateRunnable;
 
-    .line 90
+    .line 93
     new-instance v0, Ljava/util/ArrayList;
 
     invoke-direct {v0}, Ljava/util/ArrayList;-><init>()V
 
     iput-object v0, p0, Lcom/android/server/biometrics/BiometricServiceBase;->mLockoutMonitors:Ljava/util/ArrayList;
 
-    .line 93
+    .line 96
     new-instance v0, Ljava/util/HashMap;
 
     invoke-direct {v0}, Ljava/util/HashMap;-><init>()V
 
-    .line 94
+    .line 97
     invoke-static {v0}, Ljava/util/Collections;->synchronizedMap(Ljava/util/Map;)Ljava/util/Map;
 
     move-result-object v0
 
     iput-object v0, p0, Lcom/android/server/biometrics/BiometricServiceBase;->mAuthenticatorIds:Ljava/util/Map;
 
-    .line 96
+    .line 99
     new-instance v0, Lcom/android/server/biometrics/BiometricServiceBase$H;
 
     invoke-direct {v0, p0}, Lcom/android/server/biometrics/BiometricServiceBase$H;-><init>(Lcom/android/server/biometrics/BiometricServiceBase;)V
 
     iput-object v0, p0, Lcom/android/server/biometrics/BiometricServiceBase;->mHandler:Lcom/android/server/biometrics/BiometricServiceBase$H;
 
-    .line 98
+    .line 101
     new-instance v0, Landroid/os/Binder;
 
     invoke-direct {v0}, Landroid/os/Binder;-><init>()V
 
     iput-object v0, p0, Lcom/android/server/biometrics/BiometricServiceBase;->mToken:Landroid/os/IBinder;
 
-    .line 99
+    .line 102
     new-instance v0, Ljava/util/ArrayList;
 
     invoke-direct {v0}, Ljava/util/ArrayList;-><init>()V
 
     iput-object v0, p0, Lcom/android/server/biometrics/BiometricServiceBase;->mUnknownHALTemplates:Ljava/util/ArrayList;
 
-    .line 105
+    .line 108
     const/16 v0, -0x2710
 
     iput v0, p0, Lcom/android/server/biometrics/BiometricServiceBase;->mCurrentUserId:I
 
-    .line 110
+    .line 113
     new-instance v0, Ljava/util/HashMap;
 
     invoke-direct {v0}, Ljava/util/HashMap;-><init>()V
 
     iput-object v0, p0, Lcom/android/server/biometrics/BiometricServiceBase;->mPerformanceMap:Ljava/util/HashMap;
 
-    .line 112
+    .line 115
     new-instance v0, Ljava/util/HashMap;
 
     invoke-direct {v0}, Ljava/util/HashMap;-><init>()V
 
     iput-object v0, p0, Lcom/android/server/biometrics/BiometricServiceBase;->mCryptoPerformanceMap:Ljava/util/HashMap;
 
-    .line 503
-    new-instance v0, Lcom/android/server/biometrics/BiometricServiceBase$1;
-
-    invoke-direct {v0, p0}, Lcom/android/server/biometrics/BiometricServiceBase$1;-><init>(Lcom/android/server/biometrics/BiometricServiceBase;)V
-
-    iput-object v0, p0, Lcom/android/server/biometrics/BiometricServiceBase;->mOnTaskStackChangedRunnable:Ljava/lang/Runnable;
-
-    .line 647
+    .line 641
     iput-object p1, p0, Lcom/android/server/biometrics/BiometricServiceBase;->mContext:Landroid/content/Context;
 
-    .line 648
+    .line 642
     nop
 
-    .line 649
+    .line 643
     const-string/jumbo v0, "statusbar"
 
     invoke-static {v0}, Landroid/os/ServiceManager;->getService(Ljava/lang/String;)Landroid/os/IBinder;
 
     move-result-object v0
 
-    .line 648
+    .line 642
     invoke-static {v0}, Lcom/android/internal/statusbar/IStatusBarService$Stub;->asInterface(Landroid/os/IBinder;)Lcom/android/internal/statusbar/IStatusBarService;
 
     move-result-object v0
 
     iput-object v0, p0, Lcom/android/server/biometrics/BiometricServiceBase;->mStatusBarService:Lcom/android/internal/statusbar/IStatusBarService;
 
-    .line 650
+    .line 644
     invoke-virtual {p1}, Landroid/content/Context;->getResources()Landroid/content/res/Resources;
 
     move-result-object v0
 
-    const v1, 0x104018a
+    const v1, 0x1040184
 
     invoke-virtual {v0, v1}, Landroid/content/res/Resources;->getString(I)Ljava/lang/String;
 
@@ -261,14 +251,14 @@
 
     move-result-object v0
 
-    .line 651
+    .line 645
     invoke-virtual {v0}, Landroid/content/ComponentName;->getPackageName()Ljava/lang/String;
 
     move-result-object v0
 
     iput-object v0, p0, Lcom/android/server/biometrics/BiometricServiceBase;->mKeyguardPackage:Ljava/lang/String;
 
-    .line 652
+    .line 646
     const-class v0, Landroid/app/AppOpsManager;
 
     invoke-virtual {p1, v0}, Landroid/content/Context;->getSystemService(Ljava/lang/Class;)Ljava/lang/Object;
@@ -279,179 +269,167 @@
 
     iput-object v0, p0, Lcom/android/server/biometrics/BiometricServiceBase;->mAppOps:Landroid/app/AppOpsManager;
 
-    .line 653
+    .line 647
     const-string v0, "activity_task"
 
     invoke-virtual {p1, v0}, Landroid/content/Context;->getSystemService(Ljava/lang/String;)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v0
 
-    check-cast p1, Landroid/app/ActivityTaskManager;
+    check-cast v0, Landroid/app/ActivityTaskManager;
 
-    .line 654
+    .line 648
     invoke-static {}, Landroid/app/ActivityTaskManager;->getService()Landroid/app/IActivityTaskManager;
 
-    move-result-object p1
+    move-result-object v0
 
-    iput-object p1, p0, Lcom/android/server/biometrics/BiometricServiceBase;->mActivityTaskManager:Landroid/app/IActivityTaskManager;
+    iput-object v0, p0, Lcom/android/server/biometrics/BiometricServiceBase;->mActivityTaskManager:Landroid/app/IActivityTaskManager;
 
-    .line 655
-    iget-object p1, p0, Lcom/android/server/biometrics/BiometricServiceBase;->mContext:Landroid/content/Context;
+    .line 649
+    iget-object v0, p0, Lcom/android/server/biometrics/BiometricServiceBase;->mContext:Landroid/content/Context;
 
-    const-class v0, Landroid/os/PowerManager;
+    const-class v1, Landroid/os/PowerManager;
 
-    invoke-virtual {p1, v0}, Landroid/content/Context;->getSystemService(Ljava/lang/Class;)Ljava/lang/Object;
+    invoke-virtual {v0, v1}, Landroid/content/Context;->getSystemService(Ljava/lang/Class;)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v0
 
-    check-cast p1, Landroid/os/PowerManager;
+    check-cast v0, Landroid/os/PowerManager;
 
-    iput-object p1, p0, Lcom/android/server/biometrics/BiometricServiceBase;->mPowerManager:Landroid/os/PowerManager;
+    iput-object v0, p0, Lcom/android/server/biometrics/BiometricServiceBase;->mPowerManager:Landroid/os/PowerManager;
 
-    .line 656
-    iget-object p1, p0, Lcom/android/server/biometrics/BiometricServiceBase;->mContext:Landroid/content/Context;
+    .line 650
+    iget-object v0, p0, Lcom/android/server/biometrics/BiometricServiceBase;->mContext:Landroid/content/Context;
 
-    invoke-static {p1}, Landroid/os/UserManager;->get(Landroid/content/Context;)Landroid/os/UserManager;
+    invoke-static {v0}, Landroid/os/UserManager;->get(Landroid/content/Context;)Landroid/os/UserManager;
 
-    move-result-object p1
+    move-result-object v0
 
-    iput-object p1, p0, Lcom/android/server/biometrics/BiometricServiceBase;->mUserManager:Landroid/os/UserManager;
+    iput-object v0, p0, Lcom/android/server/biometrics/BiometricServiceBase;->mUserManager:Landroid/os/UserManager;
 
-    .line 657
-    new-instance p1, Lcom/android/internal/logging/MetricsLogger;
+    .line 651
+    new-instance v0, Lcom/android/internal/logging/MetricsLogger;
 
-    invoke-direct {p1}, Lcom/android/internal/logging/MetricsLogger;-><init>()V
+    invoke-direct {v0}, Lcom/android/internal/logging/MetricsLogger;-><init>()V
 
-    iput-object p1, p0, Lcom/android/server/biometrics/BiometricServiceBase;->mMetricsLogger:Lcom/android/internal/logging/MetricsLogger;
+    iput-object v0, p0, Lcom/android/server/biometrics/BiometricServiceBase;->mMetricsLogger:Lcom/android/internal/logging/MetricsLogger;
 
-    .line 658
-    iget-object p1, p0, Lcom/android/server/biometrics/BiometricServiceBase;->mContext:Landroid/content/Context;
-
-    invoke-virtual {p1}, Landroid/content/Context;->getResources()Landroid/content/res/Resources;
-
-    move-result-object p1
-
-    const v0, 0x1110085
-
-    invoke-virtual {p1, v0}, Landroid/content/res/Resources;->getBoolean(I)Z
-
-    move-result p1
-
-    iput-boolean p1, p0, Lcom/android/server/biometrics/BiometricServiceBase;->mPostResetRunnableForAllClients:Z
-
-    .line 660
-    iget-object p1, p0, Lcom/android/server/biometrics/BiometricServiceBase;->mContext:Landroid/content/Context;
-
-    invoke-virtual {p1}, Landroid/content/Context;->getResources()Landroid/content/res/Resources;
-
-    move-result-object p1
-
-    const v0, 0x1110044
-
-    invoke-virtual {p1, v0}, Landroid/content/res/Resources;->getBoolean(I)Z
-
-    move-result p1
-
-    iput-boolean p1, p0, Lcom/android/server/biometrics/BiometricServiceBase;->mCleanupUnusedFingerprints:Z
-
-    .line 662
+    .line 652
     return-void
 .end method
 
 .method static synthetic access$1000(Lcom/android/server/biometrics/BiometricServiceBase;)Landroid/os/PowerManager;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/biometrics/BiometricServiceBase;
 
-    .line 71
-    iget-object p0, p0, Lcom/android/server/biometrics/BiometricServiceBase;->mPowerManager:Landroid/os/PowerManager;
+    .line 75
+    iget-object v0, p0, Lcom/android/server/biometrics/BiometricServiceBase;->mPowerManager:Landroid/os/PowerManager;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$1200(Lcom/android/server/biometrics/BiometricServiceBase;Lcom/android/server/biometrics/BiometricServiceBase$LockoutResetMonitor;)V
     .registers 2
+    .param p0, "x0"  # Lcom/android/server/biometrics/BiometricServiceBase;
+    .param p1, "x1"  # Lcom/android/server/biometrics/BiometricServiceBase$LockoutResetMonitor;
 
-    .line 71
+    .line 75
     invoke-direct {p0, p1}, Lcom/android/server/biometrics/BiometricServiceBase;->removeLockoutResetCallback(Lcom/android/server/biometrics/BiometricServiceBase$LockoutResetMonitor;)V
 
     return-void
 .end method
 
-.method static synthetic access$200(Lcom/android/server/biometrics/BiometricServiceBase;)Lcom/android/server/biometrics/BiometricServiceBase$BiometricTaskStackListener;
-    .registers 1
+.method static synthetic access$200(Lcom/android/server/biometrics/BiometricServiceBase;Ljava/lang/String;)Z
+    .registers 3
+    .param p0, "x0"  # Lcom/android/server/biometrics/BiometricServiceBase;
+    .param p1, "x1"  # Ljava/lang/String;
 
-    .line 71
-    iget-object p0, p0, Lcom/android/server/biometrics/BiometricServiceBase;->mTaskStackListener:Lcom/android/server/biometrics/BiometricServiceBase$BiometricTaskStackListener;
+    .line 75
+    invoke-direct {p0, p1}, Lcom/android/server/biometrics/BiometricServiceBase;->isKeyguard(Ljava/lang/String;)Z
 
-    return-object p0
+    move-result v0
+
+    return v0
 .end method
 
-.method static synthetic access$300(Lcom/android/server/biometrics/BiometricServiceBase;)Landroid/app/IActivityTaskManager;
-    .registers 1
+.method static synthetic access$300(Lcom/android/server/biometrics/BiometricServiceBase;)Lcom/android/server/biometrics/BiometricServiceBase$BiometricTaskStackListener;
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/biometrics/BiometricServiceBase;
 
-    .line 71
-    iget-object p0, p0, Lcom/android/server/biometrics/BiometricServiceBase;->mActivityTaskManager:Landroid/app/IActivityTaskManager;
+    .line 75
+    iget-object v0, p0, Lcom/android/server/biometrics/BiometricServiceBase;->mTaskStackListener:Lcom/android/server/biometrics/BiometricServiceBase$BiometricTaskStackListener;
 
-    return-object p0
+    return-object v0
 .end method
 
-.method static synthetic access$400(Lcom/android/server/biometrics/BiometricServiceBase;)V
-    .registers 1
+.method static synthetic access$400(Lcom/android/server/biometrics/BiometricServiceBase;)Landroid/app/IActivityTaskManager;
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/biometrics/BiometricServiceBase;
 
-    .line 71
+    .line 75
+    iget-object v0, p0, Lcom/android/server/biometrics/BiometricServiceBase;->mActivityTaskManager:Landroid/app/IActivityTaskManager;
+
+    return-object v0
+.end method
+
+.method static synthetic access$500(Lcom/android/server/biometrics/BiometricServiceBase;)V
+    .registers 1
+    .param p0, "x0"  # Lcom/android/server/biometrics/BiometricServiceBase;
+
+    .line 75
     invoke-direct {p0}, Lcom/android/server/biometrics/BiometricServiceBase;->userActivity()V
 
     return-void
 .end method
 
-.method static synthetic access$500(Lcom/android/server/biometrics/BiometricServiceBase;)Lcom/android/server/biometrics/BiometricServiceBase$PerformanceStats;
-    .registers 1
-
-    .line 71
-    iget-object p0, p0, Lcom/android/server/biometrics/BiometricServiceBase;->mPerformanceStats:Lcom/android/server/biometrics/BiometricServiceBase$PerformanceStats;
-
-    return-object p0
-.end method
-
-.method static synthetic access$600(Lcom/android/server/biometrics/BiometricServiceBase;)Lcom/android/server/biometrics/ClientMonitor;
-    .registers 1
-
-    .line 71
-    iget-object p0, p0, Lcom/android/server/biometrics/BiometricServiceBase;->mCurrentClient:Lcom/android/server/biometrics/ClientMonitor;
-
-    return-object p0
-.end method
-
-.method static synthetic access$602(Lcom/android/server/biometrics/BiometricServiceBase;Lcom/android/server/biometrics/ClientMonitor;)Lcom/android/server/biometrics/ClientMonitor;
+.method static synthetic access$600(Lcom/android/server/biometrics/BiometricServiceBase;)Lcom/android/server/biometrics/BiometricServiceBase$PerformanceStats;
     .registers 2
+    .param p0, "x0"  # Lcom/android/server/biometrics/BiometricServiceBase;
 
-    .line 71
+    .line 75
+    iget-object v0, p0, Lcom/android/server/biometrics/BiometricServiceBase;->mPerformanceStats:Lcom/android/server/biometrics/BiometricServiceBase$PerformanceStats;
+
+    return-object v0
+.end method
+
+.method static synthetic access$700(Lcom/android/server/biometrics/BiometricServiceBase;)Lcom/android/server/biometrics/ClientMonitor;
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/biometrics/BiometricServiceBase;
+
+    .line 75
+    iget-object v0, p0, Lcom/android/server/biometrics/BiometricServiceBase;->mCurrentClient:Lcom/android/server/biometrics/ClientMonitor;
+
+    return-object v0
+.end method
+
+.method static synthetic access$702(Lcom/android/server/biometrics/BiometricServiceBase;Lcom/android/server/biometrics/ClientMonitor;)Lcom/android/server/biometrics/ClientMonitor;
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/biometrics/BiometricServiceBase;
+    .param p1, "x1"  # Lcom/android/server/biometrics/ClientMonitor;
+
+    .line 75
     iput-object p1, p0, Lcom/android/server/biometrics/BiometricServiceBase;->mCurrentClient:Lcom/android/server/biometrics/ClientMonitor;
 
     return-object p1
 .end method
 
-.method static synthetic access$700(Lcom/android/server/biometrics/BiometricServiceBase;)Ljava/lang/Runnable;
-    .registers 1
-
-    .line 71
-    iget-object p0, p0, Lcom/android/server/biometrics/BiometricServiceBase;->mOnTaskStackChangedRunnable:Ljava/lang/Runnable;
-
-    return-object p0
-.end method
-
 .method static synthetic access$800(Lcom/android/server/biometrics/BiometricServiceBase;)Lcom/android/server/biometrics/ClientMonitor;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/biometrics/BiometricServiceBase;
 
-    .line 71
-    iget-object p0, p0, Lcom/android/server/biometrics/BiometricServiceBase;->mPendingClient:Lcom/android/server/biometrics/ClientMonitor;
+    .line 75
+    iget-object v0, p0, Lcom/android/server/biometrics/BiometricServiceBase;->mPendingClient:Lcom/android/server/biometrics/ClientMonitor;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$900(Lcom/android/server/biometrics/BiometricServiceBase;Lcom/android/server/biometrics/ClientMonitor;Z)V
     .registers 3
+    .param p0, "x0"  # Lcom/android/server/biometrics/BiometricServiceBase;
+    .param p1, "x1"  # Lcom/android/server/biometrics/ClientMonitor;
+    .param p2, "x2"  # Z
 
-    .line 71
+    .line 75
     invoke-direct {p0, p1, p2}, Lcom/android/server/biometrics/BiometricServiceBase;->startClient(Lcom/android/server/biometrics/ClientMonitor;Z)V
 
     return-void
@@ -460,7 +438,7 @@
 .method private clearEnumerateState()V
     .registers 3
 
-    .line 1237
+    .line 1226
     invoke-virtual {p0}, Lcom/android/server/biometrics/BiometricServiceBase;->getTag()Ljava/lang/String;
 
     move-result-object v0
@@ -469,19 +447,20 @@
 
     invoke-static {v0, v1}, Landroid/util/Slog;->v(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 1238
+    .line 1227
     iget-object v0, p0, Lcom/android/server/biometrics/BiometricServiceBase;->mUnknownHALTemplates:Ljava/util/ArrayList;
 
     invoke-virtual {v0}, Ljava/util/ArrayList;->clear()V
 
-    .line 1239
+    .line 1228
     return-void
 .end method
 
 .method private enumerateUser(I)V
-    .registers 18
+    .registers 20
+    .param p1, "userId"  # I
 
-    .line 1268
+    .line 1257
     move-object/from16 v14, p0
 
     invoke-virtual/range {p0 .. p0}, Lcom/android/server/biometrics/BiometricServiceBase;->getTag()Ljava/lang/String;
@@ -496,9 +475,9 @@
 
     invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    move/from16 v9, p1
+    move/from16 v15, p1
 
-    invoke-virtual {v1, v9}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v15}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
     const-string v2, ")"
 
@@ -510,7 +489,7 @@
 
     invoke-static {v0, v1}, Landroid/util/Slog;->v(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 1270
+    .line 1259
     invoke-virtual/range {p0 .. p0}, Lcom/android/server/biometrics/BiometricServiceBase;->getManageBiometricPermission()Ljava/lang/String;
 
     move-result-object v0
@@ -519,22 +498,26 @@
 
     move-result v0
 
-    .line 1271
     xor-int/lit8 v10, v0, 0x1
 
-    .line 1272
+    .line 1260
+    .local v10, "restricted":Z
+    nop
+
+    .line 1261
     invoke-virtual/range {p0 .. p1}, Lcom/android/server/biometrics/BiometricServiceBase;->getEnrolledTemplates(I)Ljava/util/List;
 
-    move-result-object v12
+    move-result-object v16
 
-    .line 1274
-    new-instance v15, Lcom/android/server/biometrics/BiometricServiceBase$InternalEnumerateClient;
+    .line 1263
+    .local v16, "enrolledList":Ljava/util/List;, "Ljava/util/List<+Landroid/hardware/biometrics/BiometricAuthenticator$Identifier;>;"
+    new-instance v17, Lcom/android/server/biometrics/BiometricServiceBase$InternalEnumerateClient;
 
     invoke-virtual/range {p0 .. p0}, Lcom/android/server/biometrics/BiometricServiceBase;->getContext()Landroid/content/Context;
 
     move-result-object v2
 
-    .line 1275
+    .line 1264
     invoke-virtual/range {p0 .. p0}, Lcom/android/server/biometrics/BiometricServiceBase;->getDaemonWrapper()Lcom/android/server/biometrics/BiometricServiceBase$DaemonWrapper;
 
     move-result-object v3
@@ -545,7 +528,7 @@
 
     const/4 v7, 0x0
 
-    .line 1276
+    .line 1265
     invoke-virtual/range {p0 .. p0}, Lcom/android/server/biometrics/BiometricServiceBase;->getContext()Landroid/content/Context;
 
     move-result-object v0
@@ -554,12 +537,12 @@
 
     move-result-object v11
 
-    .line 1277
+    .line 1266
     invoke-virtual/range {p0 .. p0}, Lcom/android/server/biometrics/BiometricServiceBase;->getBiometricUtils()Lcom/android/server/biometrics/BiometricUtils;
 
     move-result-object v13
 
-    move-object v0, v15
+    move-object/from16 v0, v17
 
     move-object/from16 v1, p0
 
@@ -567,63 +550,71 @@
 
     move/from16 v9, p1
 
+    move-object/from16 v12, v16
+
     invoke-direct/range {v0 .. v13}, Lcom/android/server/biometrics/BiometricServiceBase$InternalEnumerateClient;-><init>(Lcom/android/server/biometrics/BiometricServiceBase;Landroid/content/Context;Lcom/android/server/biometrics/BiometricServiceBase$DaemonWrapper;JLandroid/os/IBinder;Lcom/android/server/biometrics/BiometricServiceBase$ServiceListener;IIZLjava/lang/String;Ljava/util/List;Lcom/android/server/biometrics/BiometricUtils;)V
 
-    .line 1278
-    invoke-virtual {v14, v15}, Lcom/android/server/biometrics/BiometricServiceBase;->enumerateInternal(Lcom/android/server/biometrics/EnumerateClient;)V
+    .line 1267
+    .local v0, "client":Lcom/android/server/biometrics/BiometricServiceBase$InternalEnumerateClient;
+    invoke-virtual {v14, v0}, Lcom/android/server/biometrics/BiometricServiceBase;->enumerateInternal(Lcom/android/server/biometrics/EnumerateClient;)V
 
-    .line 1279
+    .line 1268
     return-void
 .end method
 
 .method private getEffectiveUserId(I)I
     .registers 5
+    .param p1, "userId"  # I
 
-    .line 1322
+    .line 1311
     iget-object v0, p0, Lcom/android/server/biometrics/BiometricServiceBase;->mContext:Landroid/content/Context;
 
     invoke-static {v0}, Landroid/os/UserManager;->get(Landroid/content/Context;)Landroid/os/UserManager;
 
     move-result-object v0
 
-    .line 1323
+    .line 1312
+    .local v0, "um":Landroid/os/UserManager;
     if-eqz v0, :cond_14
 
-    .line 1324
+    .line 1313
     invoke-static {}, Landroid/os/Binder;->clearCallingIdentity()J
 
     move-result-wide v1
 
-    .line 1325
+    .line 1314
+    .local v1, "callingIdentity":J
     invoke-virtual {v0, p1}, Landroid/os/UserManager;->getCredentialOwnerProfile(I)I
 
     move-result p1
 
-    .line 1326
+    .line 1315
     invoke-static {v1, v2}, Landroid/os/Binder;->restoreCallingIdentity(J)V
 
-    .line 1327
+    .line 1316
+    .end local v1  # "callingIdentity":J
     goto :goto_1d
 
-    .line 1328
+    .line 1317
     :cond_14
     invoke-virtual {p0}, Lcom/android/server/biometrics/BiometricServiceBase;->getTag()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v1
 
-    const-string v1, "Unable to acquire UserManager"
+    const-string v2, "Unable to acquire UserManager"
 
-    invoke-static {v0, v1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v2}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 1330
+    .line 1319
     :goto_1d
     return p1
 .end method
 
 .method private isCurrentClient(Ljava/lang/String;)Z
     .registers 3
+    .param p1, "opPackageName"  # Ljava/lang/String;
 
-    .line 1013
+    .line 1006
     iget-object v0, p0, Lcom/android/server/biometrics/BiometricServiceBase;->mCurrentClient:Lcom/android/server/biometrics/ClientMonitor;
 
     if-eqz v0, :cond_10
@@ -634,190 +625,222 @@
 
     invoke-virtual {v0, p1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result p1
+    move-result v0
 
-    if-eqz p1, :cond_10
+    if-eqz v0, :cond_10
 
-    const/4 p1, 0x1
+    const/4 v0, 0x1
 
     goto :goto_11
 
     :cond_10
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
     :goto_11
-    return p1
+    return v0
 .end method
 
 .method private isForegroundActivity(II)Z
     .registers 9
+    .param p1, "uid"  # I
+    .param p2, "pid"  # I
 
-    .line 1026
-    const/4 v0, 0x0
-
-    :try_start_1
-    invoke-static {}, Landroid/app/ActivityManager;->getService()Landroid/app/IActivityManager;
-
-    move-result-object v1
-
-    invoke-interface {v1}, Landroid/app/IActivityManager;->getRunningAppProcesses()Ljava/util/List;
-
-    move-result-object v1
-
-    .line 1027
-    invoke-interface {v1}, Ljava/util/List;->size()I
-
-    move-result v2
-
-    .line 1028
-    move v3, v0
-
-    :goto_e
-    if-ge v3, v2, :cond_29
-
-    .line 1029
-    invoke-interface {v1, v3}, Ljava/util/List;->get(I)Ljava/lang/Object;
-
-    move-result-object v4
-
-    check-cast v4, Landroid/app/ActivityManager$RunningAppProcessInfo;
-
-    .line 1030
-    iget v5, v4, Landroid/app/ActivityManager$RunningAppProcessInfo;->pid:I
-
-    if-ne v5, p2, :cond_26
-
-    iget v5, v4, Landroid/app/ActivityManager$RunningAppProcessInfo;->uid:I
-
-    if-ne v5, p1, :cond_26
-
-    iget v4, v4, Landroid/app/ActivityManager$RunningAppProcessInfo;->importance:I
-    :try_end_20
-    .catch Landroid/os/RemoteException; {:try_start_1 .. :try_end_20} :catch_2a
-
-    const/16 v5, 0x7d
-
-    if-gt v4, v5, :cond_26
-
-    .line 1032
-    const/4 p1, 0x1
-
-    return p1
-
-    .line 1028
-    :cond_26
-    add-int/lit8 v3, v3, 0x1
-
-    goto :goto_e
-
-    .line 1037
-    :cond_29
-    goto :goto_34
-
-    .line 1035
-    :catch_2a
-    move-exception p1
-
-    .line 1036
-    invoke-virtual {p0}, Lcom/android/server/biometrics/BiometricServiceBase;->getTag()Ljava/lang/String;
-
-    move-result-object p1
-
-    const-string p2, "am.getRunningAppProcesses() failed"
-
-    invoke-static {p1, p2}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
-
-    .line 1038
-    :goto_34
-    return v0
-.end method
-
-.method private isWorkProfile(I)Z
-    .registers 5
-
-    .line 1310
-    nop
-
-    .line 1311
-    invoke-static {}, Landroid/os/Binder;->clearCallingIdentity()J
-
-    move-result-wide v0
-
-    .line 1313
-    :try_start_5
-    iget-object v2, p0, Lcom/android/server/biometrics/BiometricServiceBase;->mUserManager:Landroid/os/UserManager;
-
-    invoke-virtual {v2, p1}, Landroid/os/UserManager;->getUserInfo(I)Landroid/content/pm/UserInfo;
-
-    move-result-object p1
-    :try_end_b
-    .catchall {:try_start_5 .. :try_end_b} :catchall_1b
-
-    .line 1315
-    invoke-static {v0, v1}, Landroid/os/Binder;->restoreCallingIdentity(J)V
-
-    .line 1316
-    nop
-
-    .line 1317
-    if-eqz p1, :cond_19
-
-    invoke-virtual {p1}, Landroid/content/pm/UserInfo;->isManagedProfile()Z
-
-    move-result p1
-
-    if-eqz p1, :cond_19
-
-    const/4 p1, 0x1
-
-    goto :goto_1a
-
-    :cond_19
-    const/4 p1, 0x0
-
-    :goto_1a
-    return p1
-
-    .line 1315
-    :catchall_1b
-    move-exception p1
-
-    invoke-static {v0, v1}, Landroid/os/Binder;->restoreCallingIdentity(J)V
-
-    throw p1
-.end method
-
-.method private listenForUserSwitches()V
-    .registers 4
-
-    .line 1336
+    .line 1019
     :try_start_0
     invoke-static {}, Landroid/app/ActivityManager;->getService()Landroid/app/IActivityManager;
 
     move-result-object v0
 
-    new-instance v1, Lcom/android/server/biometrics/BiometricServiceBase$2;
+    invoke-interface {v0}, Landroid/app/IActivityManager;->getRunningAppProcesses()Ljava/util/List;
 
-    invoke-direct {v1, p0}, Lcom/android/server/biometrics/BiometricServiceBase$2;-><init>(Lcom/android/server/biometrics/BiometricServiceBase;)V
+    move-result-object v0
 
-    .line 1343
+    .line 1020
+    .local v0, "procs":Ljava/util/List;, "Ljava/util/List<Landroid/app/ActivityManager$RunningAppProcessInfo;>;"
+    invoke-interface {v0}, Ljava/util/List;->size()I
+
+    move-result v1
+
+    .line 1021
+    .local v1, "N":I
+    const/4 v2, 0x0
+
+    .local v2, "i":I
+    :goto_d
+    if-ge v2, v1, :cond_28
+
+    .line 1022
+    invoke-interface {v0, v2}, Ljava/util/List;->get(I)Ljava/lang/Object;
+
+    move-result-object v3
+
+    check-cast v3, Landroid/app/ActivityManager$RunningAppProcessInfo;
+
+    .line 1023
+    .local v3, "proc":Landroid/app/ActivityManager$RunningAppProcessInfo;
+    iget v4, v3, Landroid/app/ActivityManager$RunningAppProcessInfo;->pid:I
+
+    if-ne v4, p2, :cond_25
+
+    iget v4, v3, Landroid/app/ActivityManager$RunningAppProcessInfo;->uid:I
+
+    if-ne v4, p1, :cond_25
+
+    iget v4, v3, Landroid/app/ActivityManager$RunningAppProcessInfo;->importance:I
+    :try_end_1f
+    .catch Landroid/os/RemoteException; {:try_start_0 .. :try_end_1f} :catch_29
+
+    const/16 v5, 0x7d
+
+    if-gt v4, v5, :cond_25
+
+    .line 1025
+    const/4 v4, 0x1
+
+    return v4
+
+    .line 1021
+    .end local v3  # "proc":Landroid/app/ActivityManager$RunningAppProcessInfo;
+    :cond_25
+    add-int/lit8 v2, v2, 0x1
+
+    goto :goto_d
+
+    .line 1030
+    .end local v0  # "procs":Ljava/util/List;, "Ljava/util/List<Landroid/app/ActivityManager$RunningAppProcessInfo;>;"
+    .end local v1  # "N":I
+    .end local v2  # "i":I
+    :cond_28
+    goto :goto_33
+
+    .line 1028
+    :catch_29
+    move-exception v0
+
+    .line 1029
+    .local v0, "e":Landroid/os/RemoteException;
+    invoke-virtual {p0}, Lcom/android/server/biometrics/BiometricServiceBase;->getTag()Ljava/lang/String;
+
+    move-result-object v1
+
+    const-string v2, "am.getRunningAppProcesses() failed"
+
+    invoke-static {v1, v2}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+
+    .line 1031
+    .end local v0  # "e":Landroid/os/RemoteException;
+    :goto_33
+    const/4 v0, 0x0
+
+    return v0
+.end method
+
+.method private isKeyguard(Ljava/lang/String;)Z
+    .registers 3
+    .param p1, "clientPackage"  # Ljava/lang/String;
+
+    .line 1013
+    iget-object v0, p0, Lcom/android/server/biometrics/BiometricServiceBase;->mKeyguardPackage:Ljava/lang/String;
+
+    invoke-virtual {v0, p1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+
+    move-result v0
+
+    return v0
+.end method
+
+.method private isWorkProfile(I)Z
+    .registers 6
+    .param p1, "userId"  # I
+
+    .line 1299
+    const/4 v0, 0x0
+
+    .line 1300
+    .local v0, "userInfo":Landroid/content/pm/UserInfo;
+    invoke-static {}, Landroid/os/Binder;->clearCallingIdentity()J
+
+    move-result-wide v1
+
+    .line 1302
+    .local v1, "token":J
+    :try_start_5
+    iget-object v3, p0, Lcom/android/server/biometrics/BiometricServiceBase;->mUserManager:Landroid/os/UserManager;
+
+    invoke-virtual {v3, p1}, Landroid/os/UserManager;->getUserInfo(I)Landroid/content/pm/UserInfo;
+
+    move-result-object v3
+    :try_end_b
+    .catchall {:try_start_5 .. :try_end_b} :catchall_1c
+
+    move-object v0, v3
+
+    .line 1304
+    invoke-static {v1, v2}, Landroid/os/Binder;->restoreCallingIdentity(J)V
+
+    .line 1305
+    nop
+
+    .line 1306
+    if-eqz v0, :cond_1a
+
+    invoke-virtual {v0}, Landroid/content/pm/UserInfo;->isManagedProfile()Z
+
+    move-result v3
+
+    if-eqz v3, :cond_1a
+
+    const/4 v3, 0x1
+
+    goto :goto_1b
+
+    :cond_1a
+    const/4 v3, 0x0
+
+    :goto_1b
+    return v3
+
+    .line 1304
+    :catchall_1c
+    move-exception v3
+
+    invoke-static {v1, v2}, Landroid/os/Binder;->restoreCallingIdentity(J)V
+
+    throw v3
+.end method
+
+.method private listenForUserSwitches()V
+    .registers 4
+
+    .line 1325
+    :try_start_0
+    invoke-static {}, Landroid/app/ActivityManager;->getService()Landroid/app/IActivityManager;
+
+    move-result-object v0
+
+    new-instance v1, Lcom/android/server/biometrics/BiometricServiceBase$1;
+
+    invoke-direct {v1, p0}, Lcom/android/server/biometrics/BiometricServiceBase$1;-><init>(Lcom/android/server/biometrics/BiometricServiceBase;)V
+
+    .line 1332
     invoke-virtual {p0}, Lcom/android/server/biometrics/BiometricServiceBase;->getTag()Ljava/lang/String;
 
     move-result-object v2
 
-    .line 1336
+    .line 1325
     invoke-interface {v0, v1, v2}, Landroid/app/IActivityManager;->registerUserSwitchObserver(Landroid/app/IUserSwitchObserver;Ljava/lang/String;)V
     :try_end_10
     .catch Landroid/os/RemoteException; {:try_start_0 .. :try_end_10} :catch_11
 
-    .line 1346
+    .line 1335
     goto :goto_1b
 
-    .line 1344
+    .line 1333
     :catch_11
     move-exception v0
 
-    .line 1345
+    .line 1334
+    .local v0, "e":Landroid/os/RemoteException;
     invoke-virtual {p0}, Lcom/android/server/biometrics/BiometricServiceBase;->getTag()Ljava/lang/String;
 
     move-result-object v1
@@ -826,27 +849,31 @@
 
     invoke-static {v1, v2, v0}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
-    .line 1347
+    .line 1336
+    .end local v0  # "e":Landroid/os/RemoteException;
     :goto_1b
     return-void
 .end method
 
 .method private removeLockoutResetCallback(Lcom/android/server/biometrics/BiometricServiceBase$LockoutResetMonitor;)V
     .registers 3
+    .param p1, "monitor"  # Lcom/android/server/biometrics/BiometricServiceBase$LockoutResetMonitor;
 
-    .line 1351
+    .line 1340
     iget-object v0, p0, Lcom/android/server/biometrics/BiometricServiceBase;->mLockoutMonitors:Ljava/util/ArrayList;
 
     invoke-virtual {v0, p1}, Ljava/util/ArrayList;->remove(Ljava/lang/Object;)Z
 
-    .line 1352
+    .line 1341
     return-void
 .end method
 
 .method private startAuthentication(Lcom/android/server/biometrics/BiometricServiceBase$AuthenticationClientImpl;Ljava/lang/String;)V
-    .registers 7
+    .registers 8
+    .param p1, "client"  # Lcom/android/server/biometrics/BiometricServiceBase$AuthenticationClientImpl;
+    .param p2, "opPackageName"  # Ljava/lang/String;
 
-    .line 946
+    .line 934
     invoke-virtual {p0}, Lcom/android/server/biometrics/BiometricServiceBase;->getTag()Ljava/lang/String;
 
     move-result-object v0
@@ -861,102 +888,107 @@
 
     invoke-virtual {v1, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string p2, ")"
+    const-string v2, ")"
 
-    invoke-virtual {v1, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p2
-
-    invoke-static {v0, p2}, Landroid/util/Slog;->v(Ljava/lang/String;Ljava/lang/String;)I
-
-    .line 948
-    invoke-virtual {p0}, Lcom/android/server/biometrics/BiometricServiceBase;->getLockoutMode()I
-
-    move-result p2
-
-    .line 949
-    const/4 v0, 0x1
-
-    if-eqz p2, :cond_5d
-
-    .line 950
-    invoke-virtual {p0}, Lcom/android/server/biometrics/BiometricServiceBase;->getTag()Ljava/lang/String;
-
     move-result-object v1
 
-    new-instance v2, Ljava/lang/StringBuilder;
+    invoke-static {v0, v1}, Landroid/util/Slog;->v(Ljava/lang/String;Ljava/lang/String;)I
 
-    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
+    .line 936
+    invoke-virtual {p0}, Lcom/android/server/biometrics/BiometricServiceBase;->getLockoutMode()I
 
-    const-string v3, "In lockout mode("
+    move-result v0
 
-    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    .line 937
+    .local v0, "lockoutMode":I
+    const/4 v1, 0x1
 
-    invoke-virtual {v2, p2}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    if-eqz v0, :cond_5e
 
-    const-string v3, ") ; disallowing authentication"
-
-    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    .line 938
+    invoke-virtual {p0}, Lcom/android/server/biometrics/BiometricServiceBase;->getTag()Ljava/lang/String;
 
     move-result-object v2
 
-    invoke-static {v1, v2}, Landroid/util/Slog;->v(Ljava/lang/String;Ljava/lang/String;)I
+    new-instance v3, Ljava/lang/StringBuilder;
 
-    .line 951
-    if-ne p2, v0, :cond_46
+    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
 
-    .line 952
-    const/4 p2, 0x7
+    const-string v4, "In lockout mode("
+
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v3, v0}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+
+    const-string v4, ") ; disallowing authentication"
+
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v3
+
+    invoke-static {v2, v3}, Landroid/util/Slog;->v(Ljava/lang/String;Ljava/lang/String;)I
+
+    .line 939
+    if-ne v0, v1, :cond_46
+
+    .line 940
+    const/4 v1, 0x7
 
     goto :goto_48
 
-    .line 953
+    .line 941
     :cond_46
-    const/16 p2, 0x9
+    const/16 v1, 0x9
 
-    .line 954
     :goto_48
+    nop
+
+    .line 942
+    .local v1, "errorCode":I
     invoke-virtual {p0}, Lcom/android/server/biometrics/BiometricServiceBase;->getHalDeviceId()J
 
-    move-result-wide v0
+    move-result-wide v2
 
-    const/4 v2, 0x0
+    const/4 v4, 0x0
 
-    invoke-virtual {p1, v0, v1, p2, v2}, Lcom/android/server/biometrics/BiometricServiceBase$AuthenticationClientImpl;->onError(JII)Z
+    invoke-virtual {p1, v2, v3, v1, v4}, Lcom/android/server/biometrics/BiometricServiceBase$AuthenticationClientImpl;->onError(JII)Z
 
-    move-result p1
+    move-result v2
 
-    if-nez p1, :cond_5c
+    if-nez v2, :cond_5d
 
-    .line 955
+    .line 943
     invoke-virtual {p0}, Lcom/android/server/biometrics/BiometricServiceBase;->getTag()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v2
 
-    const-string p2, "Cannot send permanent lockout message to client"
+    const-string v3, "Cannot send permanent lockout message to client"
 
-    invoke-static {p1, p2}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v2, v3}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 957
-    :cond_5c
+    .line 945
+    :cond_5d
     return-void
 
-    .line 959
-    :cond_5d
-    invoke-direct {p0, p1, v0}, Lcom/android/server/biometrics/BiometricServiceBase;->startClient(Lcom/android/server/biometrics/ClientMonitor;Z)V
+    .line 947
+    .end local v1  # "errorCode":I
+    :cond_5e
+    invoke-direct {p0, p1, v1}, Lcom/android/server/biometrics/BiometricServiceBase;->startClient(Lcom/android/server/biometrics/ClientMonitor;Z)V
 
-    .line 960
+    .line 948
     return-void
 .end method
 
 .method private startCleanupUnknownHALTemplates()V
     .registers 16
 
-    .line 1245
+    .line 1234
     iget-object v0, p0, Lcom/android/server/biometrics/BiometricServiceBase;->mUnknownHALTemplates:Ljava/util/ArrayList;
 
     invoke-virtual {v0}, Ljava/util/ArrayList;->isEmpty()Z
@@ -967,7 +999,7 @@
 
     if-nez v0, :cond_53
 
-    .line 1246
+    .line 1235
     iget-object v0, p0, Lcom/android/server/biometrics/BiometricServiceBase;->mUnknownHALTemplates:Ljava/util/ArrayList;
 
     invoke-virtual {v0, v1}, Ljava/util/ArrayList;->get(I)Ljava/lang/Object;
@@ -976,12 +1008,13 @@
 
     check-cast v0, Lcom/android/server/biometrics/BiometricServiceBase$UserTemplate;
 
-    .line 1247
+    .line 1236
+    .local v0, "template":Lcom/android/server/biometrics/BiometricServiceBase$UserTemplate;
     iget-object v1, p0, Lcom/android/server/biometrics/BiometricServiceBase;->mUnknownHALTemplates:Ljava/util/ArrayList;
 
     invoke-virtual {v1, v0}, Ljava/util/ArrayList;->remove(Ljava/lang/Object;)Z
 
-    .line 1248
+    .line 1237
     invoke-virtual {p0}, Lcom/android/server/biometrics/BiometricServiceBase;->getManageBiometricPermission()Ljava/lang/String;
 
     move-result-object v1
@@ -990,16 +1023,17 @@
 
     move-result v1
 
-    .line 1249
     xor-int/lit8 v13, v1, 0x1
 
+    .line 1238
+    .local v13, "restricted":Z
     new-instance v1, Lcom/android/server/biometrics/BiometricServiceBase$InternalRemovalClient;
 
     invoke-virtual {p0}, Lcom/android/server/biometrics/BiometricServiceBase;->getContext()Landroid/content/Context;
 
     move-result-object v4
 
-    .line 1250
+    .line 1239
     invoke-virtual {p0}, Lcom/android/server/biometrics/BiometricServiceBase;->getDaemonWrapper()Lcom/android/server/biometrics/BiometricServiceBase$DaemonWrapper;
 
     move-result-object v5
@@ -1012,7 +1046,7 @@
 
     iget-object v2, v0, Lcom/android/server/biometrics/BiometricServiceBase$UserTemplate;->mIdentifier:Landroid/hardware/biometrics/BiometricAuthenticator$Identifier;
 
-    .line 1251
+    .line 1240
     invoke-virtual {v2}, Landroid/hardware/biometrics/BiometricAuthenticator$Identifier;->getBiometricId()I
 
     move-result v10
@@ -1021,12 +1055,12 @@
 
     iget v12, v0, Lcom/android/server/biometrics/BiometricServiceBase$UserTemplate;->mUserId:I
 
-    .line 1252
+    .line 1241
     invoke-virtual {p0}, Lcom/android/server/biometrics/BiometricServiceBase;->getContext()Landroid/content/Context;
 
-    move-result-object v0
+    move-result-object v2
 
-    invoke-virtual {v0}, Landroid/content/Context;->getPackageName()Ljava/lang/String;
+    invoke-virtual {v2}, Landroid/content/Context;->getPackageName()Ljava/lang/String;
 
     move-result-object v14
 
@@ -1036,35 +1070,39 @@
 
     invoke-direct/range {v2 .. v14}, Lcom/android/server/biometrics/BiometricServiceBase$InternalRemovalClient;-><init>(Lcom/android/server/biometrics/BiometricServiceBase;Landroid/content/Context;Lcom/android/server/biometrics/BiometricServiceBase$DaemonWrapper;JLandroid/os/IBinder;Lcom/android/server/biometrics/BiometricServiceBase$ServiceListener;IIIZLjava/lang/String;)V
 
-    .line 1253
+    .line 1242
+    .local v1, "client":Lcom/android/server/biometrics/BiometricServiceBase$InternalRemovalClient;
     invoke-virtual {p0, v1}, Lcom/android/server/biometrics/BiometricServiceBase;->removeInternal(Lcom/android/server/biometrics/RemovalClient;)V
 
-    .line 1254
-    const/16 v0, 0x94
+    .line 1243
+    const/16 v2, 0x94
 
-    .line 1255
+    .line 1244
     invoke-virtual {p0}, Lcom/android/server/biometrics/BiometricServiceBase;->statsModality()I
 
-    move-result v1
+    move-result v3
 
-    const/4 v2, 0x3
+    const/4 v4, 0x3
 
-    .line 1254
-    invoke-static {v0, v1, v2}, Landroid/util/StatsLog;->write(III)I
+    .line 1243
+    invoke-static {v2, v3, v4}, Landroid/util/StatsLog;->write(III)I
 
-    .line 1257
+    .line 1246
+    .end local v0  # "template":Lcom/android/server/biometrics/BiometricServiceBase$UserTemplate;
+    .end local v1  # "client":Lcom/android/server/biometrics/BiometricServiceBase$InternalRemovalClient;
+    .end local v13  # "restricted":Z
     goto :goto_6b
 
-    .line 1258
+    .line 1247
     :cond_53
     invoke-direct {p0}, Lcom/android/server/biometrics/BiometricServiceBase;->clearEnumerateState()V
 
-    .line 1259
+    .line 1248
     iget-object v0, p0, Lcom/android/server/biometrics/BiometricServiceBase;->mPendingClient:Lcom/android/server/biometrics/ClientMonitor;
 
     if-eqz v0, :cond_6b
 
-    .line 1260
+    .line 1249
     invoke-virtual {p0}, Lcom/android/server/biometrics/BiometricServiceBase;->getTag()Ljava/lang/String;
 
     move-result-object v0
@@ -1073,32 +1111,35 @@
 
     invoke-static {v0, v2}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 1261
+    .line 1250
     iget-object v0, p0, Lcom/android/server/biometrics/BiometricServiceBase;->mPendingClient:Lcom/android/server/biometrics/ClientMonitor;
 
     invoke-direct {p0, v0, v1}, Lcom/android/server/biometrics/BiometricServiceBase;->startClient(Lcom/android/server/biometrics/ClientMonitor;Z)V
 
-    .line 1262
+    .line 1251
     const/4 v0, 0x0
 
     iput-object v0, p0, Lcom/android/server/biometrics/BiometricServiceBase;->mPendingClient:Lcom/android/server/biometrics/ClientMonitor;
 
-    .line 1265
+    .line 1254
     :cond_6b
     :goto_6b
     return-void
 .end method
 
 .method private startClient(Lcom/android/server/biometrics/ClientMonitor;Z)V
-    .registers 8
+    .registers 9
+    .param p1, "newClient"  # Lcom/android/server/biometrics/ClientMonitor;
+    .param p2, "initiatedByClient"  # Z
 
-    .line 1050
+    .line 1043
     iget-object v0, p0, Lcom/android/server/biometrics/BiometricServiceBase;->mCurrentClient:Lcom/android/server/biometrics/ClientMonitor;
 
-    .line 1051
-    if-eqz v0, :cond_8d
+    .line 1044
+    .local v0, "currentClient":Lcom/android/server/biometrics/ClientMonitor;
+    if-eqz v0, :cond_7b
 
-    .line 1052
+    .line 1045
     invoke-virtual {p0}, Lcom/android/server/biometrics/BiometricServiceBase;->getTag()Ljava/lang/String;
 
     move-result-object v1
@@ -1111,7 +1152,7 @@
 
     invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    .line 1053
+    .line 1046
     invoke-virtual {v0}, Lcom/android/server/biometrics/ClientMonitor;->getOwnerString()Ljava/lang/String;
 
     move-result-object v3
@@ -1122,268 +1163,253 @@
 
     move-result-object v2
 
-    .line 1052
+    .line 1045
     invoke-static {v1, v2}, Landroid/util/Slog;->v(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 1056
+    .line 1049
     instance-of v1, v0, Lcom/android/server/biometrics/BiometricServiceBase$InternalEnumerateClient;
-
-    const-wide/16 v2, 0xbb8
 
     if-nez v1, :cond_3e
 
     instance-of v1, v0, Lcom/android/server/biometrics/BiometricServiceBase$InternalRemovalClient;
 
-    if-eqz v1, :cond_2c
+    if-eqz v1, :cond_2a
 
     goto :goto_3e
 
-    .line 1072
-    :cond_2c
+    .line 1061
+    :cond_2a
     invoke-virtual {v0, p2}, Lcom/android/server/biometrics/ClientMonitor;->stop(Z)I
 
-    .line 1078
-    iget-object p2, p0, Lcom/android/server/biometrics/BiometricServiceBase;->mHandler:Lcom/android/server/biometrics/BiometricServiceBase$H;
+    .line 1067
+    iget-object v1, p0, Lcom/android/server/biometrics/BiometricServiceBase;->mHandler:Lcom/android/server/biometrics/BiometricServiceBase$H;
 
-    iget-object v0, p0, Lcom/android/server/biometrics/BiometricServiceBase;->mResetClientState:Lcom/android/server/biometrics/BiometricServiceBase$ResetClientStateRunnable;
+    iget-object v2, p0, Lcom/android/server/biometrics/BiometricServiceBase;->mResetClientState:Lcom/android/server/biometrics/BiometricServiceBase$ResetClientStateRunnable;
 
-    invoke-virtual {p2, v0}, Lcom/android/server/biometrics/BiometricServiceBase$H;->removeCallbacks(Ljava/lang/Runnable;)V
+    invoke-virtual {v1, v2}, Lcom/android/server/biometrics/BiometricServiceBase$H;->removeCallbacks(Ljava/lang/Runnable;)V
 
-    .line 1079
-    iget-object p2, p0, Lcom/android/server/biometrics/BiometricServiceBase;->mHandler:Lcom/android/server/biometrics/BiometricServiceBase$H;
+    .line 1068
+    iget-object v1, p0, Lcom/android/server/biometrics/BiometricServiceBase;->mHandler:Lcom/android/server/biometrics/BiometricServiceBase$H;
 
-    iget-object v0, p0, Lcom/android/server/biometrics/BiometricServiceBase;->mResetClientState:Lcom/android/server/biometrics/BiometricServiceBase$ResetClientStateRunnable;
+    iget-object v2, p0, Lcom/android/server/biometrics/BiometricServiceBase;->mResetClientState:Lcom/android/server/biometrics/BiometricServiceBase$ResetClientStateRunnable;
 
-    invoke-virtual {p2, v0, v2, v3}, Lcom/android/server/biometrics/BiometricServiceBase$H;->postDelayed(Ljava/lang/Runnable;J)Z
+    const-wide/16 v3, 0xbb8
 
-    goto :goto_8a
+    invoke-virtual {v1, v2, v3, v4}, Lcom/android/server/biometrics/BiometricServiceBase$H;->postDelayed(Ljava/lang/Runnable;J)Z
 
-    .line 1061
+    goto :goto_78
+
+    .line 1054
     :cond_3e
     :goto_3e
     if-eqz p1, :cond_78
 
-    .line 1062
+    .line 1055
     invoke-virtual {p0}, Lcom/android/server/biometrics/BiometricServiceBase;->getTag()Ljava/lang/String;
-
-    move-result-object v0
-
-    new-instance v1, Ljava/lang/StringBuilder;
-
-    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
-
-    const-string v4, "Internal cleanup in progress but trying to start client "
-
-    invoke-virtual {v1, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    .line 1063
-    invoke-virtual {p1}, Ljava/lang/Object;->getClass()Ljava/lang/Class;
-
-    move-result-object v4
-
-    invoke-virtual {v4}, Ljava/lang/Class;->getSuperclass()Ljava/lang/Class;
-
-    move-result-object v4
-
-    invoke-virtual {v4}, Ljava/lang/Class;->getSimpleName()Ljava/lang/String;
-
-    move-result-object v4
-
-    invoke-virtual {v1, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    const-string v4, "("
-
-    invoke-virtual {v1, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    .line 1064
-    invoke-virtual {p1}, Lcom/android/server/biometrics/ClientMonitor;->getOwnerString()Ljava/lang/String;
-
-    move-result-object v4
-
-    invoke-virtual {v1, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    const-string v4, "), initiatedByClient = "
-
-    invoke-virtual {v1, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v1, p2}, Ljava/lang/StringBuilder;->append(Z)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
-
-    move-result-object p2
-
-    .line 1062
-    invoke-static {v0, p2}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
-
-    .line 1067
-    :cond_78
-    iget-boolean p2, p0, Lcom/android/server/biometrics/BiometricServiceBase;->mPostResetRunnableForAllClients:Z
-
-    if-eqz p2, :cond_8a
-
-    .line 1068
-    iget-object p2, p0, Lcom/android/server/biometrics/BiometricServiceBase;->mHandler:Lcom/android/server/biometrics/BiometricServiceBase$H;
-
-    iget-object v0, p0, Lcom/android/server/biometrics/BiometricServiceBase;->mResetClientState:Lcom/android/server/biometrics/BiometricServiceBase$ResetClientStateRunnable;
-
-    invoke-virtual {p2, v0}, Lcom/android/server/biometrics/BiometricServiceBase$H;->removeCallbacks(Ljava/lang/Runnable;)V
-
-    .line 1069
-    iget-object p2, p0, Lcom/android/server/biometrics/BiometricServiceBase;->mHandler:Lcom/android/server/biometrics/BiometricServiceBase$H;
-
-    iget-object v0, p0, Lcom/android/server/biometrics/BiometricServiceBase;->mResetClientState:Lcom/android/server/biometrics/BiometricServiceBase$ResetClientStateRunnable;
-
-    invoke-virtual {p2, v0, v2, v3}, Lcom/android/server/biometrics/BiometricServiceBase$H;->postDelayed(Ljava/lang/Runnable;J)Z
-
-    .line 1081
-    :cond_8a
-    :goto_8a
-    iput-object p1, p0, Lcom/android/server/biometrics/BiometricServiceBase;->mPendingClient:Lcom/android/server/biometrics/ClientMonitor;
-
-    goto :goto_f3
-
-    .line 1082
-    :cond_8d
-    if-eqz p1, :cond_f3
-
-    .line 1086
-    instance-of p2, p1, Lcom/android/server/biometrics/AuthenticationClient;
-
-    if-eqz p2, :cond_e8
-
-    .line 1087
-    move-object p2, p1
-
-    check-cast p2, Lcom/android/server/biometrics/AuthenticationClient;
-
-    .line 1088
-    invoke-virtual {p2}, Lcom/android/server/biometrics/AuthenticationClient;->isBiometricPrompt()Z
-
-    move-result v0
-
-    if-eqz v0, :cond_e8
-
-    .line 1089
-    invoke-virtual {p0}, Lcom/android/server/biometrics/BiometricServiceBase;->getTag()Ljava/lang/String;
-
-    move-result-object v0
-
-    new-instance v1, Ljava/lang/StringBuilder;
-
-    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
-
-    const-string v2, "Returning cookie: "
-
-    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {p2}, Lcom/android/server/biometrics/AuthenticationClient;->getCookie()I
-
-    move-result v2
-
-    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
     move-result-object v1
 
-    invoke-static {v0, v1}, Landroid/util/Slog;->v(Ljava/lang/String;Ljava/lang/String;)I
+    new-instance v2, Ljava/lang/StringBuilder;
 
-    .line 1090
+    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
+
+    const-string v3, "Internal cleanup in progress but trying to start client "
+
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    .line 1056
+    invoke-virtual {p1}, Ljava/lang/Object;->getClass()Ljava/lang/Class;
+
+    move-result-object v3
+
+    invoke-virtual {v3}, Ljava/lang/Class;->getSuperclass()Ljava/lang/Class;
+
+    move-result-object v3
+
+    invoke-virtual {v3}, Ljava/lang/Class;->getSimpleName()Ljava/lang/String;
+
+    move-result-object v3
+
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    const-string v3, "("
+
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    .line 1057
+    invoke-virtual {p1}, Lcom/android/server/biometrics/ClientMonitor;->getOwnerString()Ljava/lang/String;
+
+    move-result-object v3
+
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    const-string v3, "), initiatedByClient = "
+
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v2, p2}, Ljava/lang/StringBuilder;->append(Z)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v2
+
+    .line 1055
+    invoke-static {v1, v2}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+
+    .line 1070
+    :cond_78
+    :goto_78
+    iput-object p1, p0, Lcom/android/server/biometrics/BiometricServiceBase;->mPendingClient:Lcom/android/server/biometrics/ClientMonitor;
+
+    goto :goto_e1
+
+    .line 1071
+    :cond_7b
+    if-eqz p1, :cond_e1
+
+    .line 1075
+    instance-of v1, p1, Lcom/android/server/biometrics/AuthenticationClient;
+
+    if-eqz v1, :cond_d6
+
+    .line 1076
+    move-object v1, p1
+
+    check-cast v1, Lcom/android/server/biometrics/AuthenticationClient;
+
+    .line 1077
+    .local v1, "client":Lcom/android/server/biometrics/AuthenticationClient;
+    invoke-virtual {v1}, Lcom/android/server/biometrics/AuthenticationClient;->isBiometricPrompt()Z
+
+    move-result v2
+
+    if-eqz v2, :cond_d6
+
+    .line 1078
+    invoke-virtual {p0}, Lcom/android/server/biometrics/BiometricServiceBase;->getTag()Ljava/lang/String;
+
+    move-result-object v2
+
+    new-instance v3, Ljava/lang/StringBuilder;
+
+    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
+
+    const-string v4, "Returning cookie: "
+
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v1}, Lcom/android/server/biometrics/AuthenticationClient;->getCookie()I
+
+    move-result v4
+
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v3
+
+    invoke-static {v2, v3}, Landroid/util/Slog;->v(Ljava/lang/String;Ljava/lang/String;)I
+
+    .line 1079
     iput-object p1, p0, Lcom/android/server/biometrics/BiometricServiceBase;->mCurrentClient:Lcom/android/server/biometrics/ClientMonitor;
 
-    .line 1091
-    iget-object p1, p0, Lcom/android/server/biometrics/BiometricServiceBase;->mBiometricService:Landroid/hardware/biometrics/IBiometricService;
+    .line 1080
+    iget-object v2, p0, Lcom/android/server/biometrics/BiometricServiceBase;->mBiometricService:Landroid/hardware/biometrics/IBiometricService;
 
-    if-nez p1, :cond_cb
+    if-nez v2, :cond_b9
 
-    .line 1092
+    .line 1081
     nop
 
-    .line 1093
-    const-string p1, "biometric"
+    .line 1082
+    const-string v2, "biometric"
 
-    invoke-static {p1}, Landroid/os/ServiceManager;->getService(Ljava/lang/String;)Landroid/os/IBinder;
+    invoke-static {v2}, Landroid/os/ServiceManager;->getService(Ljava/lang/String;)Landroid/os/IBinder;
 
-    move-result-object p1
+    move-result-object v2
 
-    .line 1092
-    invoke-static {p1}, Landroid/hardware/biometrics/IBiometricService$Stub;->asInterface(Landroid/os/IBinder;)Landroid/hardware/biometrics/IBiometricService;
+    .line 1081
+    invoke-static {v2}, Landroid/hardware/biometrics/IBiometricService$Stub;->asInterface(Landroid/os/IBinder;)Landroid/hardware/biometrics/IBiometricService;
 
-    move-result-object p1
+    move-result-object v2
 
-    iput-object p1, p0, Lcom/android/server/biometrics/BiometricServiceBase;->mBiometricService:Landroid/hardware/biometrics/IBiometricService;
+    iput-object v2, p0, Lcom/android/server/biometrics/BiometricServiceBase;->mBiometricService:Landroid/hardware/biometrics/IBiometricService;
+
+    .line 1085
+    :cond_b9
+    :try_start_b9
+    iget-object v2, p0, Lcom/android/server/biometrics/BiometricServiceBase;->mBiometricService:Landroid/hardware/biometrics/IBiometricService;
+
+    invoke-virtual {v1}, Lcom/android/server/biometrics/AuthenticationClient;->getCookie()I
+
+    move-result v3
+
+    .line 1086
+    invoke-virtual {v1}, Lcom/android/server/biometrics/AuthenticationClient;->getRequireConfirmation()Z
+
+    move-result v4
+
+    invoke-virtual {v1}, Lcom/android/server/biometrics/AuthenticationClient;->getTargetUserId()I
+
+    move-result v5
+
+    .line 1085
+    invoke-interface {v2, v3, v4, v5}, Landroid/hardware/biometrics/IBiometricService;->onReadyForAuthentication(IZI)V
+    :try_end_ca
+    .catch Landroid/os/RemoteException; {:try_start_b9 .. :try_end_ca} :catch_cb
+
+    .line 1089
+    goto :goto_d5
+
+    .line 1087
+    :catch_cb
+    move-exception v2
+
+    .line 1088
+    .local v2, "e":Landroid/os/RemoteException;
+    invoke-virtual {p0}, Lcom/android/server/biometrics/BiometricServiceBase;->getTag()Ljava/lang/String;
+
+    move-result-object v3
+
+    const-string v4, "Remote exception"
+
+    invoke-static {v3, v4, v2}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+
+    .line 1090
+    .end local v2  # "e":Landroid/os/RemoteException;
+    :goto_d5
+    return-void
+
+    .line 1095
+    .end local v1  # "client":Lcom/android/server/biometrics/AuthenticationClient;
+    :cond_d6
+    iput-object p1, p0, Lcom/android/server/biometrics/BiometricServiceBase;->mCurrentClient:Lcom/android/server/biometrics/ClientMonitor;
 
     .line 1096
-    :cond_cb
-    :try_start_cb
-    iget-object p1, p0, Lcom/android/server/biometrics/BiometricServiceBase;->mBiometricService:Landroid/hardware/biometrics/IBiometricService;
+    iget-object v1, p0, Lcom/android/server/biometrics/BiometricServiceBase;->mCurrentClient:Lcom/android/server/biometrics/ClientMonitor;
 
-    invoke-virtual {p2}, Lcom/android/server/biometrics/AuthenticationClient;->getCookie()I
-
-    move-result v0
-
-    .line 1097
-    invoke-virtual {p2}, Lcom/android/server/biometrics/AuthenticationClient;->getRequireConfirmation()Z
+    invoke-virtual {v1}, Lcom/android/server/biometrics/ClientMonitor;->getCookie()I
 
     move-result v1
 
-    invoke-virtual {p2}, Lcom/android/server/biometrics/AuthenticationClient;->getTargetUserId()I
-
-    move-result p2
-
-    .line 1096
-    invoke-interface {p1, v0, v1, p2}, Landroid/hardware/biometrics/IBiometricService;->onReadyForAuthentication(IZI)V
-    :try_end_dc
-    .catch Landroid/os/RemoteException; {:try_start_cb .. :try_end_dc} :catch_dd
-
-    .line 1100
-    goto :goto_e7
+    invoke-virtual {p0, v1}, Lcom/android/server/biometrics/BiometricServiceBase;->startCurrentClient(I)V
 
     .line 1098
-    :catch_dd
-    move-exception p1
-
-    .line 1099
-    invoke-virtual {p0}, Lcom/android/server/biometrics/BiometricServiceBase;->getTag()Ljava/lang/String;
-
-    move-result-object p2
-
-    const-string v0, "Remote exception"
-
-    invoke-static {p2, v0, p1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
-
-    .line 1101
-    :goto_e7
-    return-void
-
-    .line 1106
-    :cond_e8
-    iput-object p1, p0, Lcom/android/server/biometrics/BiometricServiceBase;->mCurrentClient:Lcom/android/server/biometrics/ClientMonitor;
-
-    .line 1107
-    iget-object p1, p0, Lcom/android/server/biometrics/BiometricServiceBase;->mCurrentClient:Lcom/android/server/biometrics/ClientMonitor;
-
-    invoke-virtual {p1}, Lcom/android/server/biometrics/ClientMonitor;->getCookie()I
-
-    move-result p1
-
-    invoke-virtual {p0, p1}, Lcom/android/server/biometrics/BiometricServiceBase;->startCurrentClient(I)V
-
-    .line 1109
-    :cond_f3
-    :goto_f3
+    :cond_e1
+    :goto_e1
     return-void
 .end method
 
 .method private userActivity()V
     .registers 6
 
-    .line 1301
+    .line 1290
     invoke-static {}, Landroid/os/SystemClock;->uptimeMillis()J
 
     move-result-wide v0
 
-    .line 1302
+    .line 1291
+    .local v0, "now":J
     iget-object v2, p0, Lcom/android/server/biometrics/BiometricServiceBase;->mPowerManager:Landroid/os/PowerManager;
 
     const/4 v3, 0x2
@@ -1392,7 +1418,7 @@
 
     invoke-virtual {v2, v0, v1, v3, v4}, Landroid/os/PowerManager;->userActivity(JII)V
 
-    .line 1303
+    .line 1292
     return-void
 .end method
 
@@ -1400,39 +1426,46 @@
 # virtual methods
 .method protected addLockoutResetCallback(Landroid/hardware/biometrics/IBiometricServiceLockoutResetCallback;)V
     .registers 4
+    .param p1, "callback"  # Landroid/hardware/biometrics/IBiometricServiceLockoutResetCallback;
 
-    .line 963
+    .line 951
     iget-object v0, p0, Lcom/android/server/biometrics/BiometricServiceBase;->mHandler:Lcom/android/server/biometrics/BiometricServiceBase$H;
 
-    new-instance v1, Lcom/android/server/biometrics/-$$Lambda$BiometricServiceBase$5zE_f-JKSpUWsfwvdtw36YktZZ0;
+    new-instance v1, Lcom/android/server/biometrics/-$$Lambda$BiometricServiceBase$XAcKFVHrxFAE_DeiO9UcSMHwbi4;
 
-    invoke-direct {v1, p0, p1}, Lcom/android/server/biometrics/-$$Lambda$BiometricServiceBase$5zE_f-JKSpUWsfwvdtw36YktZZ0;-><init>(Lcom/android/server/biometrics/BiometricServiceBase;Landroid/hardware/biometrics/IBiometricServiceLockoutResetCallback;)V
+    invoke-direct {v1, p0, p1}, Lcom/android/server/biometrics/-$$Lambda$BiometricServiceBase$XAcKFVHrxFAE_DeiO9UcSMHwbi4;-><init>(Lcom/android/server/biometrics/BiometricServiceBase;Landroid/hardware/biometrics/IBiometricServiceLockoutResetCallback;)V
 
     invoke-virtual {v0, v1}, Lcom/android/server/biometrics/BiometricServiceBase$H;->post(Ljava/lang/Runnable;)Z
 
-    .line 969
+    .line 957
     return-void
 .end method
 
 .method protected authenticateInternal(Lcom/android/server/biometrics/BiometricServiceBase$AuthenticationClientImpl;JLjava/lang/String;)V
-    .registers 13
+    .registers 16
+    .param p1, "client"  # Lcom/android/server/biometrics/BiometricServiceBase$AuthenticationClientImpl;
+    .param p2, "opId"  # J
+    .param p4, "opPackageName"  # Ljava/lang/String;
 
-    .line 851
+    .line 843
     invoke-static {}, Landroid/os/Binder;->getCallingUid()I
 
-    move-result v5
+    move-result v8
 
-    .line 852
+    .line 844
+    .local v8, "callingUid":I
     invoke-static {}, Landroid/os/Binder;->getCallingPid()I
 
-    move-result v6
+    move-result v9
 
-    .line 853
+    .line 845
+    .local v9, "callingPid":I
     invoke-static {}, Landroid/os/UserHandle;->getCallingUserId()I
 
-    move-result v7
+    move-result v10
 
-    .line 854
+    .line 846
+    .local v10, "callingUserId":I
     move-object v0, p0
 
     move-object v1, p1
@@ -1441,16 +1474,28 @@
 
     move-object v4, p4
 
+    move v5, v8
+
+    move v6, v9
+
+    move v7, v10
+
     invoke-virtual/range {v0 .. v7}, Lcom/android/server/biometrics/BiometricServiceBase;->authenticateInternal(Lcom/android/server/biometrics/BiometricServiceBase$AuthenticationClientImpl;JLjava/lang/String;III)V
 
-    .line 855
+    .line 847
     return-void
 .end method
 
 .method protected authenticateInternal(Lcom/android/server/biometrics/BiometricServiceBase$AuthenticationClientImpl;JLjava/lang/String;III)V
-    .registers 14
+    .registers 16
+    .param p1, "client"  # Lcom/android/server/biometrics/BiometricServiceBase$AuthenticationClientImpl;
+    .param p2, "opId"  # J
+    .param p4, "opPackageName"  # Ljava/lang/String;
+    .param p5, "callingUid"  # I
+    .param p6, "callingPid"  # I
+    .param p7, "callingUserId"  # I
 
-    .line 859
+    .line 851
     const/4 v2, 0x1
 
     move-object v0, p0
@@ -1465,227 +1510,256 @@
 
     invoke-virtual/range {v0 .. v5}, Lcom/android/server/biometrics/BiometricServiceBase;->canUseBiometric(Ljava/lang/String;ZIII)Z
 
-    move-result p5
+    move-result v0
 
-    if-nez p5, :cond_25
+    if-nez v0, :cond_25
 
-    .line 861
+    .line 853
     invoke-virtual {p0}, Lcom/android/server/biometrics/BiometricServiceBase;->getTag()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    new-instance p2, Ljava/lang/StringBuilder;
+    new-instance v1, Ljava/lang/StringBuilder;
 
-    invoke-direct {p2}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string p3, "authenticate(): reject "
+    const-string v2, "authenticate(): reject "
 
-    invoke-virtual {p2, p3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p2, p4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, p4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p2
+    move-result-object v1
 
-    invoke-static {p1, p2}, Landroid/util/Slog;->v(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v0, v1}, Landroid/util/Slog;->v(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 862
+    .line 854
     return-void
 
-    .line 865
+    .line 857
     :cond_25
-    iget-object p5, p0, Lcom/android/server/biometrics/BiometricServiceBase;->mHandler:Lcom/android/server/biometrics/BiometricServiceBase$H;
+    iget-object v0, p0, Lcom/android/server/biometrics/BiometricServiceBase;->mHandler:Lcom/android/server/biometrics/BiometricServiceBase$H;
 
-    new-instance p6, Lcom/android/server/biometrics/-$$Lambda$BiometricServiceBase$VFT8WmkESkAnonaxJDq_GS_vB4E;
+    new-instance v7, Lcom/android/server/biometrics/-$$Lambda$BiometricServiceBase$HtA60PD2POS70xjo2Wkv9Ds3iIM;
 
-    move-object v0, p6
+    move-object v1, v7
 
-    move-object v1, p0
+    move-object v2, p0
 
-    move-wide v2, p2
+    move-wide v3, p2
 
-    move-object v4, p1
+    move-object v5, p1
 
-    move-object v5, p4
+    move-object v6, p4
 
-    invoke-direct/range {v0 .. v5}, Lcom/android/server/biometrics/-$$Lambda$BiometricServiceBase$VFT8WmkESkAnonaxJDq_GS_vB4E;-><init>(Lcom/android/server/biometrics/BiometricServiceBase;JLcom/android/server/biometrics/BiometricServiceBase$AuthenticationClientImpl;Ljava/lang/String;)V
+    invoke-direct/range {v1 .. v6}, Lcom/android/server/biometrics/-$$Lambda$BiometricServiceBase$HtA60PD2POS70xjo2Wkv9Ds3iIM;-><init>(Lcom/android/server/biometrics/BiometricServiceBase;JLcom/android/server/biometrics/BiometricServiceBase$AuthenticationClientImpl;Ljava/lang/String;)V
 
-    invoke-virtual {p5, p6}, Lcom/android/server/biometrics/BiometricServiceBase$H;->post(Ljava/lang/Runnable;)Z
+    invoke-virtual {v0, v7}, Lcom/android/server/biometrics/BiometricServiceBase$H;->post(Ljava/lang/Runnable;)Z
 
-    .line 881
+    .line 873
     return-void
 .end method
 
 .method protected canUseBiometric(Ljava/lang/String;ZIII)Z
-    .registers 9
+    .registers 10
+    .param p1, "opPackageName"  # Ljava/lang/String;
+    .param p2, "requireForeground"  # Z
+    .param p3, "uid"  # I
+    .param p4, "pid"  # I
+    .param p5, "userId"  # I
 
-    .line 982
+    .line 970
     invoke-virtual {p0}, Lcom/android/server/biometrics/BiometricServiceBase;->checkUseBiometricPermission()V
 
-    .line 985
-    invoke-static {}, Landroid/os/Binder;->getCallingUid()I
+    .line 973
+    invoke-virtual {p0}, Lcom/android/server/biometrics/BiometricServiceBase;->getContext()Landroid/content/Context;
+
+    move-result-object v0
+
+    invoke-static {v0}, Lcom/android/server/biometrics/flymefingerprint/FlymeFingerprintUtils;->getInstance(Landroid/content/Context;)Lcom/android/server/biometrics/flymefingerprint/FlymeFingerprintUtils;
+
+    move-result-object v0
+
+    invoke-virtual {v0, p1}, Lcom/android/server/biometrics/flymefingerprint/FlymeFingerprintUtils;->isPackageAlwaysAllow(Ljava/lang/String;)Z
 
     move-result v0
 
     const/4 v1, 0x1
 
-    const/16 v2, 0x3e8
+    if-eqz v0, :cond_13
 
-    if-ne v0, v2, :cond_d
-
-    .line 986
+    .line 974
     return v1
 
-    .line 988
-    :cond_d
-    invoke-virtual {p0, p1}, Lcom/android/server/biometrics/BiometricServiceBase;->isKeyguard(Ljava/lang/String;)Z
+    .line 978
+    :cond_13
+    invoke-static {}, Landroid/os/Binder;->getCallingUid()I
 
     move-result v0
 
-    if-eqz v0, :cond_14
+    const/16 v2, 0x3e8
 
-    .line 989
+    if-ne v0, v2, :cond_1c
+
+    .line 979
     return v1
 
-    .line 991
-    :cond_14
+    .line 981
+    :cond_1c
+    invoke-direct {p0, p1}, Lcom/android/server/biometrics/BiometricServiceBase;->isKeyguard(Ljava/lang/String;)Z
+
+    move-result v0
+
+    if-eqz v0, :cond_23
+
+    .line 982
+    return v1
+
+    .line 984
+    :cond_23
     invoke-virtual {p0, p5}, Lcom/android/server/biometrics/BiometricServiceBase;->isCurrentUserOrProfile(I)Z
 
-    move-result p5
+    move-result v0
 
-    const/4 v0, 0x0
+    const/4 v2, 0x0
 
-    const-string v2, "Rejecting "
+    const-string v3, "Rejecting "
 
-    if-nez p5, :cond_39
+    if-nez v0, :cond_48
 
-    .line 992
+    .line 985
     invoke-virtual {p0}, Lcom/android/server/biometrics/BiometricServiceBase;->getTag()Ljava/lang/String;
 
-    move-result-object p2
+    move-result-object v0
 
-    new-instance p3, Ljava/lang/StringBuilder;
+    new-instance v1, Ljava/lang/StringBuilder;
 
-    invoke-direct {p3}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
 
-    invoke-virtual {p3, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p3, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string p1, "; not a current user or profile"
+    const-string v3, "; not a current user or profile"
 
-    invoke-virtual {p3, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v1
 
-    invoke-static {p2, p1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v0, v1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 993
-    return v0
+    .line 986
+    return v2
 
-    .line 995
-    :cond_39
+    .line 988
+    :cond_48
     invoke-virtual {p0, p3, p1}, Lcom/android/server/biometrics/BiometricServiceBase;->checkAppOps(ILjava/lang/String;)Z
 
-    move-result p5
+    move-result v0
 
-    if-nez p5, :cond_5b
+    if-nez v0, :cond_6a
 
-    .line 996
+    .line 989
     invoke-virtual {p0}, Lcom/android/server/biometrics/BiometricServiceBase;->getTag()Ljava/lang/String;
 
-    move-result-object p2
+    move-result-object v0
 
-    new-instance p3, Ljava/lang/StringBuilder;
+    new-instance v1, Ljava/lang/StringBuilder;
 
-    invoke-direct {p3}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
 
-    invoke-virtual {p3, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p3, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string p1, "; permission denied"
+    const-string v3, "; permission denied"
 
-    invoke-virtual {p3, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v1
 
-    invoke-static {p2, p1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v0, v1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 997
-    return v0
+    .line 990
+    return v2
 
-    .line 1000
-    :cond_5b
-    if-eqz p2, :cond_85
+    .line 993
+    :cond_6a
+    if-eqz p2, :cond_94
 
     invoke-direct {p0, p3, p4}, Lcom/android/server/biometrics/BiometricServiceBase;->isForegroundActivity(II)Z
 
-    move-result p2
+    move-result v0
 
-    if-nez p2, :cond_85
+    if-nez v0, :cond_94
 
     invoke-direct {p0, p1}, Lcom/android/server/biometrics/BiometricServiceBase;->isCurrentClient(Ljava/lang/String;)Z
 
-    move-result p2
+    move-result v0
 
-    if-nez p2, :cond_85
+    if-nez v0, :cond_94
 
-    .line 1002
+    .line 995
     invoke-virtual {p0}, Lcom/android/server/biometrics/BiometricServiceBase;->getTag()Ljava/lang/String;
 
-    move-result-object p2
+    move-result-object v0
 
-    new-instance p3, Ljava/lang/StringBuilder;
+    new-instance v1, Ljava/lang/StringBuilder;
 
-    invoke-direct {p3}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
 
-    invoke-virtual {p3, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p3, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string p1, "; not in foreground"
+    const-string v3, "; not in foreground"
 
-    invoke-virtual {p3, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v1
 
-    invoke-static {p2, p1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v0, v1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 1003
-    return v0
+    .line 996
+    return v2
 
-    .line 1005
-    :cond_85
+    .line 998
+    :cond_94
     return v1
 .end method
 
 .method protected cancelAuthenticationInternal(Landroid/os/IBinder;Ljava/lang/String;)V
-    .registers 10
+    .registers 13
+    .param p1, "token"  # Landroid/os/IBinder;
+    .param p2, "opPackageName"  # Ljava/lang/String;
 
-    .line 884
+    .line 876
     invoke-static {}, Landroid/os/Binder;->getCallingUid()I
 
-    move-result v3
+    move-result v7
 
-    .line 885
+    .line 877
+    .local v7, "callingUid":I
     invoke-static {}, Landroid/os/Binder;->getCallingPid()I
 
-    move-result v4
+    move-result v8
 
-    .line 886
+    .line 878
+    .local v8, "callingPid":I
     invoke-static {}, Landroid/os/UserHandle;->getCallingUserId()I
 
-    move-result v5
+    move-result v9
 
-    .line 887
+    .line 879
+    .local v9, "callingUserId":I
     const/4 v6, 0x1
 
     move-object v0, p0
@@ -1694,19 +1768,31 @@
 
     move-object v2, p2
 
+    move v3, v7
+
+    move v4, v8
+
+    move v5, v9
+
     invoke-virtual/range {v0 .. v6}, Lcom/android/server/biometrics/BiometricServiceBase;->cancelAuthenticationInternal(Landroid/os/IBinder;Ljava/lang/String;IIIZ)V
 
-    .line 889
+    .line 881
     return-void
 .end method
 
 .method protected cancelAuthenticationInternal(Landroid/os/IBinder;Ljava/lang/String;IIIZ)V
     .registers 13
+    .param p1, "token"  # Landroid/os/IBinder;
+    .param p2, "opPackageName"  # Ljava/lang/String;
+    .param p3, "callingUid"  # I
+    .param p4, "callingPid"  # I
+    .param p5, "callingUserId"  # I
+    .param p6, "fromClient"  # Z
 
-    .line 893
+    .line 885
     if-eqz p6, :cond_27
 
-    .line 896
+    .line 888
     const/4 v2, 0x1
 
     move-object v0, p0
@@ -1721,61 +1807,62 @@
 
     invoke-virtual/range {v0 .. v5}, Lcom/android/server/biometrics/BiometricServiceBase;->canUseBiometric(Ljava/lang/String;ZIII)Z
 
-    move-result p3
+    move-result v0
 
-    if-nez p3, :cond_27
+    if-nez v0, :cond_27
 
-    .line 898
+    .line 890
     invoke-virtual {p0}, Lcom/android/server/biometrics/BiometricServiceBase;->getTag()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    new-instance p3, Ljava/lang/StringBuilder;
+    new-instance v1, Ljava/lang/StringBuilder;
 
-    invoke-direct {p3}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string p4, "cancelAuthentication(): reject "
+    const-string v2, "cancelAuthentication(): reject "
 
-    invoke-virtual {p3, p4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p3, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p2
+    move-result-object v1
 
-    invoke-static {p1, p2}, Landroid/util/Slog;->v(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v0, v1}, Landroid/util/Slog;->v(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 899
+    .line 891
     return-void
 
-    .line 903
+    .line 895
     :cond_27
-    iget-object p2, p0, Lcom/android/server/biometrics/BiometricServiceBase;->mHandler:Lcom/android/server/biometrics/BiometricServiceBase$H;
+    iget-object v0, p0, Lcom/android/server/biometrics/BiometricServiceBase;->mHandler:Lcom/android/server/biometrics/BiometricServiceBase$H;
 
-    new-instance p3, Lcom/android/server/biometrics/-$$Lambda$BiometricServiceBase$B1PDNz5plOtQUbeZgXMkI_dh_yQ;
+    new-instance v1, Lcom/android/server/biometrics/-$$Lambda$BiometricServiceBase$aivpKkOumO0Y5eW-DasbcdjcN4o;
 
-    invoke-direct {p3, p0, p1, p6}, Lcom/android/server/biometrics/-$$Lambda$BiometricServiceBase$B1PDNz5plOtQUbeZgXMkI_dh_yQ;-><init>(Lcom/android/server/biometrics/BiometricServiceBase;Landroid/os/IBinder;Z)V
+    invoke-direct {v1, p0, p1, p6}, Lcom/android/server/biometrics/-$$Lambda$BiometricServiceBase$aivpKkOumO0Y5eW-DasbcdjcN4o;-><init>(Lcom/android/server/biometrics/BiometricServiceBase;Landroid/os/IBinder;Z)V
 
-    invoke-virtual {p2, p3}, Lcom/android/server/biometrics/BiometricServiceBase$H;->post(Ljava/lang/Runnable;)Z
+    invoke-virtual {v0, v1}, Lcom/android/server/biometrics/BiometricServiceBase$H;->post(Ljava/lang/Runnable;)Z
 
-    .line 921
+    .line 913
     return-void
 .end method
 
 .method protected cancelEnrollmentInternal(Landroid/os/IBinder;)V
     .registers 4
+    .param p1, "token"  # Landroid/os/IBinder;
 
-    .line 840
+    .line 832
     iget-object v0, p0, Lcom/android/server/biometrics/BiometricServiceBase;->mHandler:Lcom/android/server/biometrics/BiometricServiceBase$H;
 
-    new-instance v1, Lcom/android/server/biometrics/-$$Lambda$BiometricServiceBase$yj0NG4umGnnyUerNM_EKxeka05A;
+    new-instance v1, Lcom/android/server/biometrics/-$$Lambda$BiometricServiceBase$9h-u9AqPquTEJ3xQKI_ONPZaSfE;
 
-    invoke-direct {v1, p0, p1}, Lcom/android/server/biometrics/-$$Lambda$BiometricServiceBase$yj0NG4umGnnyUerNM_EKxeka05A;-><init>(Lcom/android/server/biometrics/BiometricServiceBase;Landroid/os/IBinder;)V
+    invoke-direct {v1, p0, p1}, Lcom/android/server/biometrics/-$$Lambda$BiometricServiceBase$9h-u9AqPquTEJ3xQKI_ONPZaSfE;-><init>(Lcom/android/server/biometrics/BiometricServiceBase;Landroid/os/IBinder;)V
 
     invoke-virtual {v0, v1}, Lcom/android/server/biometrics/BiometricServiceBase$H;->post(Ljava/lang/Runnable;)Z
 
-    .line 847
+    .line 839
     return-void
 .end method
 
@@ -1784,8 +1871,9 @@
 
 .method protected checkPermission(Ljava/lang/String;)V
     .registers 5
+    .param p1, "permission"  # Ljava/lang/String;
 
-    .line 1191
+    .line 1180
     invoke-virtual {p0}, Lcom/android/server/biometrics/BiometricServiceBase;->getContext()Landroid/content/Context;
 
     move-result-object v0
@@ -1810,7 +1898,7 @@
 
     invoke-virtual {v0, p1, v1}, Landroid/content/Context;->enforceCallingOrSelfPermission(Ljava/lang/String;Ljava/lang/String;)V
 
-    .line 1193
+    .line 1182
     return-void
 .end method
 
@@ -1818,109 +1906,111 @@
 .end method
 
 .method protected doTemplateCleanupForUser(I)V
-    .registers 3
+    .registers 2
+    .param p1, "userId"  # I
 
-    .line 1231
-    iget-boolean v0, p0, Lcom/android/server/biometrics/BiometricServiceBase;->mCleanupUnusedFingerprints:Z
+    .line 1221
+    invoke-direct {p0, p1}, Lcom/android/server/biometrics/BiometricServiceBase;->enumerateUser(I)V
 
-    if-eqz v0, :cond_4
-
-    .line 1232
-    .line 1234
-    :cond_4
+    .line 1223
     return-void
 .end method
 
 .method protected enrollInternal(Lcom/android/server/biometrics/BiometricServiceBase$EnrollClientImpl;I)V
-    .registers 4
+    .registers 5
+    .param p1, "client"  # Lcom/android/server/biometrics/BiometricServiceBase$EnrollClientImpl;
+    .param p2, "userId"  # I
 
-    .line 824
+    .line 816
     invoke-virtual {p0, p2}, Lcom/android/server/biometrics/BiometricServiceBase;->hasReachedEnrollmentLimit(I)Z
 
     move-result v0
 
     if-eqz v0, :cond_7
 
-    .line 825
+    .line 817
     return-void
 
-    .line 830
+    .line 822
     :cond_7
     invoke-virtual {p0, p2}, Lcom/android/server/biometrics/BiometricServiceBase;->isCurrentUserOrProfile(I)Z
 
-    move-result p2
+    move-result v0
 
-    if-nez p2, :cond_e
+    if-nez v0, :cond_e
 
-    .line 831
+    .line 823
     return-void
 
-    .line 834
+    .line 826
     :cond_e
-    iget-object p2, p0, Lcom/android/server/biometrics/BiometricServiceBase;->mHandler:Lcom/android/server/biometrics/BiometricServiceBase$H;
+    iget-object v0, p0, Lcom/android/server/biometrics/BiometricServiceBase;->mHandler:Lcom/android/server/biometrics/BiometricServiceBase$H;
 
-    new-instance v0, Lcom/android/server/biometrics/-$$Lambda$BiometricServiceBase$Zy4OXo3HMpNNxU1x5VMDe_5Q3vI;
+    new-instance v1, Lcom/android/server/biometrics/-$$Lambda$BiometricServiceBase$fmXvpYbcyw65Q8mBLfnQvCCMoK4;
 
-    invoke-direct {v0, p0, p1}, Lcom/android/server/biometrics/-$$Lambda$BiometricServiceBase$Zy4OXo3HMpNNxU1x5VMDe_5Q3vI;-><init>(Lcom/android/server/biometrics/BiometricServiceBase;Lcom/android/server/biometrics/BiometricServiceBase$EnrollClientImpl;)V
+    invoke-direct {v1, p0, p1}, Lcom/android/server/biometrics/-$$Lambda$BiometricServiceBase$fmXvpYbcyw65Q8mBLfnQvCCMoK4;-><init>(Lcom/android/server/biometrics/BiometricServiceBase;Lcom/android/server/biometrics/BiometricServiceBase$EnrollClientImpl;)V
 
-    invoke-virtual {p2, v0}, Lcom/android/server/biometrics/BiometricServiceBase$H;->post(Ljava/lang/Runnable;)Z
+    invoke-virtual {v0, v1}, Lcom/android/server/biometrics/BiometricServiceBase$H;->post(Ljava/lang/Runnable;)Z
 
-    .line 837
+    .line 829
     return-void
 .end method
 
 .method protected enumerateInternal(Lcom/android/server/biometrics/EnumerateClient;)V
     .registers 4
+    .param p1, "client"  # Lcom/android/server/biometrics/EnumerateClient;
 
-    .line 939
+    .line 927
     iget-object v0, p0, Lcom/android/server/biometrics/BiometricServiceBase;->mHandler:Lcom/android/server/biometrics/BiometricServiceBase$H;
 
-    new-instance v1, Lcom/android/server/biometrics/-$$Lambda$BiometricServiceBase$lM-Gght_XjLuQG2iY0xHchO8Xgk;
+    new-instance v1, Lcom/android/server/biometrics/-$$Lambda$BiometricServiceBase$YYfr_b-4RQIPNHGbIvwrGKgGEsY;
 
-    invoke-direct {v1, p0, p1}, Lcom/android/server/biometrics/-$$Lambda$BiometricServiceBase$lM-Gght_XjLuQG2iY0xHchO8Xgk;-><init>(Lcom/android/server/biometrics/BiometricServiceBase;Lcom/android/server/biometrics/EnumerateClient;)V
+    invoke-direct {v1, p0, p1}, Lcom/android/server/biometrics/-$$Lambda$BiometricServiceBase$YYfr_b-4RQIPNHGbIvwrGKgGEsY;-><init>(Lcom/android/server/biometrics/BiometricServiceBase;Lcom/android/server/biometrics/EnumerateClient;)V
 
     invoke-virtual {v0, v1}, Lcom/android/server/biometrics/BiometricServiceBase$H;->post(Ljava/lang/Runnable;)Z
 
-    .line 942
+    .line 930
     return-void
 .end method
 
 .method protected getAuthenticatorId(Ljava/lang/String;)J
-    .registers 5
+    .registers 7
+    .param p1, "opPackageName"  # Ljava/lang/String;
 
-    .line 1222
+    .line 1211
     invoke-static {}, Landroid/os/UserHandle;->getCallingUserId()I
 
     move-result v0
 
     invoke-virtual {p0, p1, v0}, Lcom/android/server/biometrics/BiometricServiceBase;->getUserOrWorkProfileId(Ljava/lang/String;I)I
 
-    move-result p1
+    move-result v0
 
-    .line 1223
-    iget-object v0, p0, Lcom/android/server/biometrics/BiometricServiceBase;->mAuthenticatorIds:Ljava/util/Map;
+    .line 1212
+    .local v0, "userId":I
+    iget-object v1, p0, Lcom/android/server/biometrics/BiometricServiceBase;->mAuthenticatorIds:Ljava/util/Map;
 
-    invoke-static {p1}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
+    invoke-static {v0}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
 
-    move-result-object p1
+    move-result-object v2
 
-    const-wide/16 v1, 0x0
+    const-wide/16 v3, 0x0
 
-    invoke-static {v1, v2}, Ljava/lang/Long;->valueOf(J)Ljava/lang/Long;
+    invoke-static {v3, v4}, Ljava/lang/Long;->valueOf(J)Ljava/lang/Long;
+
+    move-result-object v3
+
+    invoke-interface {v1, v2, v3}, Ljava/util/Map;->getOrDefault(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
 
     move-result-object v1
 
-    invoke-interface {v0, p1, v1}, Ljava/util/Map;->getOrDefault(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+    check-cast v1, Ljava/lang/Long;
 
-    move-result-object p1
+    invoke-virtual {v1}, Ljava/lang/Long;->longValue()J
 
-    check-cast p1, Ljava/lang/Long;
+    move-result-wide v1
 
-    invoke-virtual {p1}, Ljava/lang/Long;->longValue()J
-
-    move-result-wide v0
-
-    return-wide v0
+    return-wide v1
 .end method
 
 .method protected abstract getBiometricUtils()Lcom/android/server/biometrics/BiometricUtils;
@@ -1932,7 +2022,7 @@
 .method protected getCurrentClient()Lcom/android/server/biometrics/ClientMonitor;
     .registers 2
 
-    .line 687
+    .line 673
     iget-object v0, p0, Lcom/android/server/biometrics/BiometricServiceBase;->mCurrentClient:Lcom/android/server/biometrics/ClientMonitor;
 
     return-object v0
@@ -1971,7 +2061,7 @@
 .method protected getPendingClient()Lcom/android/server/biometrics/ClientMonitor;
     .registers 2
 
-    .line 691
+    .line 677
     iget-object v0, p0, Lcom/android/server/biometrics/BiometricServiceBase;->mPendingClient:Lcom/android/server/biometrics/ClientMonitor;
 
     return-object v0
@@ -1981,83 +2071,90 @@
 .end method
 
 .method protected getUserOrWorkProfileId(Ljava/lang/String;I)I
-    .registers 3
+    .registers 4
+    .param p1, "clientPackage"  # Ljava/lang/String;
+    .param p2, "userId"  # I
 
-    .line 1173
-    invoke-virtual {p0, p1}, Lcom/android/server/biometrics/BiometricServiceBase;->isKeyguard(Ljava/lang/String;)Z
+    .line 1162
+    invoke-direct {p0, p1}, Lcom/android/server/biometrics/BiometricServiceBase;->isKeyguard(Ljava/lang/String;)Z
 
-    move-result p1
+    move-result v0
 
-    if-nez p1, :cond_d
+    if-nez v0, :cond_d
 
     invoke-direct {p0, p2}, Lcom/android/server/biometrics/BiometricServiceBase;->isWorkProfile(I)Z
 
-    move-result p1
+    move-result v0
 
-    if-eqz p1, :cond_d
+    if-eqz v0, :cond_d
 
-    .line 1174
+    .line 1163
     return p2
 
-    .line 1176
+    .line 1165
     :cond_d
     invoke-direct {p0, p2}, Lcom/android/server/biometrics/BiometricServiceBase;->getEffectiveUserId(I)I
 
-    move-result p1
+    move-result v0
 
-    return p1
+    return v0
 .end method
 
 .method protected handleAcquired(JII)V
-    .registers 5
+    .registers 8
+    .param p1, "deviceId"  # J
+    .param p3, "acquiredInfo"  # I
+    .param p4, "vendorCode"  # I
 
-    .line 699
-    iget-object p1, p0, Lcom/android/server/biometrics/BiometricServiceBase;->mCurrentClient:Lcom/android/server/biometrics/ClientMonitor;
+    .line 685
+    iget-object v0, p0, Lcom/android/server/biometrics/BiometricServiceBase;->mCurrentClient:Lcom/android/server/biometrics/ClientMonitor;
 
-    .line 700
-    if-eqz p1, :cond_d
+    .line 686
+    .local v0, "client":Lcom/android/server/biometrics/ClientMonitor;
+    if-eqz v0, :cond_d
 
-    invoke-virtual {p1, p3, p4}, Lcom/android/server/biometrics/ClientMonitor;->onAcquired(II)Z
+    invoke-virtual {v0, p3, p4}, Lcom/android/server/biometrics/ClientMonitor;->onAcquired(II)Z
 
-    move-result p2
+    move-result v1
 
-    if-eqz p2, :cond_d
+    if-eqz v1, :cond_d
 
-    .line 701
-    invoke-virtual {p0, p1}, Lcom/android/server/biometrics/BiometricServiceBase;->removeClient(Lcom/android/server/biometrics/ClientMonitor;)V
+    .line 687
+    invoke-virtual {p0, v0}, Lcom/android/server/biometrics/BiometricServiceBase;->removeClient(Lcom/android/server/biometrics/ClientMonitor;)V
 
-    .line 703
+    .line 689
     :cond_d
-    iget-object p2, p0, Lcom/android/server/biometrics/BiometricServiceBase;->mPerformanceStats:Lcom/android/server/biometrics/BiometricServiceBase$PerformanceStats;
+    iget-object v1, p0, Lcom/android/server/biometrics/BiometricServiceBase;->mPerformanceStats:Lcom/android/server/biometrics/BiometricServiceBase$PerformanceStats;
 
-    if-eqz p2, :cond_23
+    if-eqz v1, :cond_23
 
     invoke-virtual {p0}, Lcom/android/server/biometrics/BiometricServiceBase;->getLockoutMode()I
 
-    move-result p2
+    move-result v1
 
-    if-nez p2, :cond_23
+    if-nez v1, :cond_23
 
-    instance-of p1, p1, Lcom/android/server/biometrics/AuthenticationClient;
+    instance-of v1, v0, Lcom/android/server/biometrics/AuthenticationClient;
 
-    if-eqz p1, :cond_23
+    if-eqz v1, :cond_23
 
-    .line 706
-    iget-object p1, p0, Lcom/android/server/biometrics/BiometricServiceBase;->mPerformanceStats:Lcom/android/server/biometrics/BiometricServiceBase$PerformanceStats;
+    .line 692
+    iget-object v1, p0, Lcom/android/server/biometrics/BiometricServiceBase;->mPerformanceStats:Lcom/android/server/biometrics/BiometricServiceBase$PerformanceStats;
 
-    iget p2, p1, Lcom/android/server/biometrics/BiometricServiceBase$PerformanceStats;->acquire:I
+    iget v2, v1, Lcom/android/server/biometrics/BiometricServiceBase$PerformanceStats;->acquire:I
 
-    add-int/lit8 p2, p2, 0x1
+    add-int/lit8 v2, v2, 0x1
 
-    iput p2, p1, Lcom/android/server/biometrics/BiometricServiceBase$PerformanceStats;->acquire:I
+    iput v2, v1, Lcom/android/server/biometrics/BiometricServiceBase$PerformanceStats;->acquire:I
 
-    .line 708
+    .line 694
     :cond_23
     return-void
 .end method
 
 .method protected handleAuthenticated(Landroid/hardware/biometrics/BiometricAuthenticator$Identifier;Ljava/util/ArrayList;)V
-    .registers 6
+    .registers 8
+    .param p1, "identifier"  # Landroid/hardware/biometrics/BiometricAuthenticator$Identifier;
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(",
@@ -2068,10 +2165,12 @@
         }
     .end annotation
 
-    .line 712
+    .line 698
+    .local p2, "token":Ljava/util/ArrayList;, "Ljava/util/ArrayList<Ljava/lang/Byte;>;"
     iget-object v0, p0, Lcom/android/server/biometrics/BiometricServiceBase;->mCurrentClient:Lcom/android/server/biometrics/ClientMonitor;
 
-    .line 713
+    .line 699
+    .local v0, "client":Lcom/android/server/biometrics/ClientMonitor;
     invoke-virtual {p1}, Landroid/hardware/biometrics/BiometricAuthenticator$Identifier;->getBiometricId()I
 
     move-result v1
@@ -2087,219 +2186,250 @@
     :cond_b
     const/4 v1, 0x0
 
-    .line 715
+    .line 701
+    .local v1, "authenticated":Z
     :goto_c
     if-eqz v0, :cond_17
 
     invoke-virtual {v0, p1, v1, p2}, Lcom/android/server/biometrics/ClientMonitor;->onAuthenticated(Landroid/hardware/biometrics/BiometricAuthenticator$Identifier;ZLjava/util/ArrayList;)Z
 
-    move-result p1
+    move-result v3
 
-    if-eqz p1, :cond_17
+    if-eqz v3, :cond_17
 
-    .line 716
+    .line 702
     invoke-virtual {p0, v0}, Lcom/android/server/biometrics/BiometricServiceBase;->removeClient(Lcom/android/server/biometrics/ClientMonitor;)V
 
-    .line 718
+    .line 704
     :cond_17
-    iget-object p1, p0, Lcom/android/server/biometrics/BiometricServiceBase;->mPerformanceStats:Lcom/android/server/biometrics/BiometricServiceBase$PerformanceStats;
+    if-eqz v1, :cond_21
 
-    if-eqz p1, :cond_28
+    .line 705
+    iget-object v3, p0, Lcom/android/server/biometrics/BiometricServiceBase;->mPerformanceStats:Lcom/android/server/biometrics/BiometricServiceBase$PerformanceStats;
 
-    .line 719
-    if-eqz v1, :cond_23
+    iget v4, v3, Lcom/android/server/biometrics/BiometricServiceBase$PerformanceStats;->accept:I
 
-    .line 720
-    iget p2, p1, Lcom/android/server/biometrics/BiometricServiceBase$PerformanceStats;->accept:I
+    add-int/2addr v4, v2
 
-    add-int/2addr p2, v2
-
-    iput p2, p1, Lcom/android/server/biometrics/BiometricServiceBase$PerformanceStats;->accept:I
+    iput v4, v3, Lcom/android/server/biometrics/BiometricServiceBase$PerformanceStats;->accept:I
 
     goto :goto_28
 
-    .line 722
-    :cond_23
-    iget p2, p1, Lcom/android/server/biometrics/BiometricServiceBase$PerformanceStats;->reject:I
+    .line 707
+    :cond_21
+    iget-object v3, p0, Lcom/android/server/biometrics/BiometricServiceBase;->mPerformanceStats:Lcom/android/server/biometrics/BiometricServiceBase$PerformanceStats;
 
-    add-int/2addr p2, v2
+    iget v4, v3, Lcom/android/server/biometrics/BiometricServiceBase$PerformanceStats;->reject:I
 
-    iput p2, p1, Lcom/android/server/biometrics/BiometricServiceBase$PerformanceStats;->reject:I
+    add-int/2addr v4, v2
 
-    .line 725
-    :cond_28
+    iput v4, v3, Lcom/android/server/biometrics/BiometricServiceBase$PerformanceStats;->reject:I
+
+    .line 709
     :goto_28
     return-void
 .end method
 
 .method protected handleEnrollResult(Landroid/hardware/biometrics/BiometricAuthenticator$Identifier;I)V
-    .registers 4
+    .registers 6
+    .param p1, "identifier"  # Landroid/hardware/biometrics/BiometricAuthenticator$Identifier;
+    .param p2, "remaining"  # I
 
-    .line 729
+    .line 713
     iget-object v0, p0, Lcom/android/server/biometrics/BiometricServiceBase;->mCurrentClient:Lcom/android/server/biometrics/ClientMonitor;
 
-    .line 730
-    if-eqz v0, :cond_1b
+    .line 714
+    .local v0, "client":Lcom/android/server/biometrics/ClientMonitor;
+    if-eqz v0, :cond_22
 
     invoke-virtual {v0, p1, p2}, Lcom/android/server/biometrics/ClientMonitor;->onEnrollResult(Landroid/hardware/biometrics/BiometricAuthenticator$Identifier;I)Z
 
-    move-result p2
+    move-result v1
 
-    if-eqz p2, :cond_1b
+    if-eqz v1, :cond_22
 
-    .line 731
+    .line 715
     invoke-virtual {p0, v0}, Lcom/android/server/biometrics/BiometricServiceBase;->removeClient(Lcom/android/server/biometrics/ClientMonitor;)V
 
-    .line 734
-    instance-of p2, p1, Landroid/hardware/fingerprint/Fingerprint;
+    .line 718
+    instance-of v1, p1, Landroid/hardware/fingerprint/Fingerprint;
 
-    if-eqz p2, :cond_1b
+    const/4 v2, 0x0
 
-    .line 735
-    check-cast p1, Landroid/hardware/fingerprint/Fingerprint;
+    if-eqz v1, :cond_1d
 
-    invoke-virtual {p1}, Landroid/hardware/fingerprint/Fingerprint;->getGroupId()I
+    .line 719
+    move-object v1, p1
 
-    move-result p1
+    check-cast v1, Landroid/hardware/fingerprint/Fingerprint;
 
-    const/4 p2, 0x0
+    invoke-virtual {v1}, Landroid/hardware/fingerprint/Fingerprint;->getGroupId()I
 
-    invoke-virtual {p0, p1, p2}, Lcom/android/server/biometrics/BiometricServiceBase;->updateActiveGroup(ILjava/lang/String;)V
+    move-result v1
 
-    .line 738
-    :cond_1b
+    invoke-virtual {p0, v1, v2}, Lcom/android/server/biometrics/BiometricServiceBase;->updateActiveGroup(ILjava/lang/String;)V
+
+    goto :goto_22
+
+    .line 721
+    :cond_1d
+    iget v1, p0, Lcom/android/server/biometrics/BiometricServiceBase;->mCurrentUserId:I
+
+    invoke-virtual {p0, v1, v2}, Lcom/android/server/biometrics/BiometricServiceBase;->updateActiveGroup(ILjava/lang/String;)V
+
+    .line 724
+    :cond_22
+    :goto_22
     return-void
 .end method
 
 .method protected handleEnumerate(Landroid/hardware/biometrics/BiometricAuthenticator$Identifier;I)V
-    .registers 8
+    .registers 10
+    .param p1, "identifier"  # Landroid/hardware/biometrics/BiometricAuthenticator$Identifier;
+    .param p2, "remaining"  # I
 
-    .line 793
+    .line 779
     invoke-virtual {p0}, Lcom/android/server/biometrics/BiometricServiceBase;->getCurrentClient()Lcom/android/server/biometrics/ClientMonitor;
 
     move-result-object v0
 
-    .line 795
+    .line 782
+    .local v0, "client":Lcom/android/server/biometrics/ClientMonitor;
+    if-nez v0, :cond_7
+
+    .line 783
+    return-void
+
+    .line 787
+    :cond_7
     invoke-virtual {v0, p1, p2}, Lcom/android/server/biometrics/ClientMonitor;->onEnumerationResult(Landroid/hardware/biometrics/BiometricAuthenticator$Identifier;I)Z
 
-    .line 798
-    if-nez p2, :cond_63
+    .line 790
+    if-nez p2, :cond_66
 
-    .line 799
-    instance-of p1, v0, Lcom/android/server/biometrics/BiometricServiceBase$InternalEnumerateClient;
+    .line 791
+    instance-of v1, v0, Lcom/android/server/biometrics/BiometricServiceBase$InternalEnumerateClient;
 
-    if-eqz p1, :cond_60
+    if-eqz v1, :cond_63
 
-    .line 800
-    move-object p1, v0
+    .line 792
+    move-object v1, v0
 
-    check-cast p1, Lcom/android/server/biometrics/BiometricServiceBase$InternalEnumerateClient;
+    check-cast v1, Lcom/android/server/biometrics/BiometricServiceBase$InternalEnumerateClient;
 
-    .line 801
-    invoke-virtual {p1}, Lcom/android/server/biometrics/BiometricServiceBase$InternalEnumerateClient;->getUnknownHALTemplates()Ljava/util/List;
-
-    move-result-object p1
-
-    .line 803
-    invoke-interface {p1}, Ljava/util/List;->isEmpty()Z
-
-    move-result p2
-
-    if-nez p2, :cond_3b
-
-    .line 804
-    invoke-virtual {p0}, Lcom/android/server/biometrics/BiometricServiceBase;->getTag()Ljava/lang/String;
-
-    move-result-object p2
-
-    new-instance v1, Ljava/lang/StringBuilder;
-
-    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
-
-    const-string v2, "Adding "
-
-    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-interface {p1}, Ljava/util/List;->size()I
-
-    move-result v2
-
-    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
-
-    const-string v2, " templates for deletion"
-
-    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    .line 793
+    invoke-virtual {v1}, Lcom/android/server/biometrics/BiometricServiceBase$InternalEnumerateClient;->getUnknownHALTemplates()Ljava/util/List;
 
     move-result-object v1
 
-    invoke-static {p2, v1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    .line 795
+    .local v1, "unknownHALTemplates":Ljava/util/List;, "Ljava/util/List<Landroid/hardware/biometrics/BiometricAuthenticator$Identifier;>;"
+    invoke-interface {v1}, Ljava/util/List;->isEmpty()Z
 
-    .line 807
-    :cond_3b
-    const/4 p2, 0x0
+    move-result v2
 
-    :goto_3c
-    invoke-interface {p1}, Ljava/util/List;->size()I
+    if-nez v2, :cond_3e
 
-    move-result v1
+    .line 796
+    invoke-virtual {p0}, Lcom/android/server/biometrics/BiometricServiceBase;->getTag()Ljava/lang/String;
 
-    if-ge p2, v1, :cond_59
+    move-result-object v2
 
-    .line 808
-    iget-object v1, p0, Lcom/android/server/biometrics/BiometricServiceBase;->mUnknownHALTemplates:Ljava/util/ArrayList;
+    new-instance v3, Ljava/lang/StringBuilder;
 
-    new-instance v2, Lcom/android/server/biometrics/BiometricServiceBase$UserTemplate;
+    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
 
-    invoke-interface {p1, p2}, Ljava/util/List;->get(I)Ljava/lang/Object;
+    const-string v4, "Adding "
 
-    move-result-object v3
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    check-cast v3, Landroid/hardware/biometrics/BiometricAuthenticator$Identifier;
-
-    .line 809
-    invoke-virtual {v0}, Lcom/android/server/biometrics/ClientMonitor;->getTargetUserId()I
+    invoke-interface {v1}, Ljava/util/List;->size()I
 
     move-result v4
 
-    invoke-direct {v2, p0, v3, v4}, Lcom/android/server/biometrics/BiometricServiceBase$UserTemplate;-><init>(Lcom/android/server/biometrics/BiometricServiceBase;Landroid/hardware/biometrics/BiometricAuthenticator$Identifier;I)V
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    .line 808
-    invoke-virtual {v1, v2}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
+    const-string v4, " templates for deletion"
 
-    .line 807
-    add-int/lit8 p2, p2, 0x1
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    goto :goto_3c
+    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    .line 811
-    :cond_59
+    move-result-object v3
+
+    invoke-static {v2, v3}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+
+    .line 799
+    :cond_3e
+    const/4 v2, 0x0
+
+    .local v2, "i":I
+    :goto_3f
+    invoke-interface {v1}, Ljava/util/List;->size()I
+
+    move-result v3
+
+    if-ge v2, v3, :cond_5c
+
+    .line 800
+    iget-object v3, p0, Lcom/android/server/biometrics/BiometricServiceBase;->mUnknownHALTemplates:Ljava/util/ArrayList;
+
+    new-instance v4, Lcom/android/server/biometrics/BiometricServiceBase$UserTemplate;
+
+    invoke-interface {v1, v2}, Ljava/util/List;->get(I)Ljava/lang/Object;
+
+    move-result-object v5
+
+    check-cast v5, Landroid/hardware/biometrics/BiometricAuthenticator$Identifier;
+
+    .line 801
+    invoke-virtual {v0}, Lcom/android/server/biometrics/ClientMonitor;->getTargetUserId()I
+
+    move-result v6
+
+    invoke-direct {v4, p0, v5, v6}, Lcom/android/server/biometrics/BiometricServiceBase$UserTemplate;-><init>(Lcom/android/server/biometrics/BiometricServiceBase;Landroid/hardware/biometrics/BiometricAuthenticator$Identifier;I)V
+
+    .line 800
+    invoke-virtual {v3, v4}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
+
+    .line 799
+    add-int/lit8 v2, v2, 0x1
+
+    goto :goto_3f
+
+    .line 803
+    .end local v2  # "i":I
+    :cond_5c
     invoke-virtual {p0, v0}, Lcom/android/server/biometrics/BiometricServiceBase;->removeClient(Lcom/android/server/biometrics/ClientMonitor;)V
 
-    .line 812
+    .line 804
     invoke-direct {p0}, Lcom/android/server/biometrics/BiometricServiceBase;->startCleanupUnknownHALTemplates()V
 
-    .line 813
-    goto :goto_63
+    .line 805
+    .end local v1  # "unknownHALTemplates":Ljava/util/List;, "Ljava/util/List<Landroid/hardware/biometrics/BiometricAuthenticator$Identifier;>;"
+    goto :goto_66
 
-    .line 814
-    :cond_60
+    .line 806
+    :cond_63
     invoke-virtual {p0, v0}, Lcom/android/server/biometrics/BiometricServiceBase;->removeClient(Lcom/android/server/biometrics/ClientMonitor;)V
 
-    .line 817
-    :cond_63
-    :goto_63
+    .line 809
+    :cond_66
+    :goto_66
     return-void
 .end method
 
 .method protected handleError(JII)V
     .registers 9
+    .param p1, "deviceId"  # J
+    .param p3, "error"  # I
+    .param p4, "vendorCode"  # I
 
-    .line 741
+    .line 727
     iget-object v0, p0, Lcom/android/server/biometrics/BiometricServiceBase;->mCurrentClient:Lcom/android/server/biometrics/ClientMonitor;
 
-    .line 743
+    .line 729
+    .local v0, "client":Lcom/android/server/biometrics/ClientMonitor;
     invoke-virtual {p0}, Lcom/android/server/biometrics/BiometricServiceBase;->getTag()Ljava/lang/String;
 
     move-result-object v1
@@ -2312,7 +2442,7 @@
 
     invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    .line 744
+    .line 730
     if-eqz v0, :cond_17
 
     invoke-virtual {v0}, Lcom/android/server/biometrics/ClientMonitor;->getOwnerString()Ljava/lang/String;
@@ -2341,10 +2471,10 @@
 
     move-result-object v2
 
-    .line 743
+    .line 729
     invoke-static {v1, v2}, Landroid/util/Slog;->v(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 746
+    .line 732
     instance-of v1, v0, Lcom/android/server/biometrics/BiometricServiceBase$InternalRemovalClient;
 
     if-nez v1, :cond_39
@@ -2353,91 +2483,93 @@
 
     if-eqz v1, :cond_3c
 
-    .line 748
+    .line 734
     :cond_39
     invoke-direct {p0}, Lcom/android/server/biometrics/BiometricServiceBase;->clearEnumerateState()V
 
-    .line 751
+    .line 737
     :cond_3c
     if-eqz v0, :cond_47
 
     invoke-virtual {v0, p1, p2, p3, p4}, Lcom/android/server/biometrics/ClientMonitor;->onError(JII)Z
 
-    move-result p1
+    move-result v1
 
-    if-eqz p1, :cond_47
+    if-eqz v1, :cond_47
 
-    .line 752
+    .line 738
     invoke-virtual {p0, v0}, Lcom/android/server/biometrics/BiometricServiceBase;->removeClient(Lcom/android/server/biometrics/ClientMonitor;)V
 
-    .line 755
+    .line 741
     :cond_47
-    const/4 p1, 0x5
+    const/4 v1, 0x5
 
-    if-ne p3, p1, :cond_7d
+    if-ne p3, v1, :cond_7d
 
-    .line 756
-    iget-object p1, p0, Lcom/android/server/biometrics/BiometricServiceBase;->mHandler:Lcom/android/server/biometrics/BiometricServiceBase$H;
+    .line 742
+    iget-object v1, p0, Lcom/android/server/biometrics/BiometricServiceBase;->mHandler:Lcom/android/server/biometrics/BiometricServiceBase$H;
 
-    iget-object p2, p0, Lcom/android/server/biometrics/BiometricServiceBase;->mResetClientState:Lcom/android/server/biometrics/BiometricServiceBase$ResetClientStateRunnable;
+    iget-object v2, p0, Lcom/android/server/biometrics/BiometricServiceBase;->mResetClientState:Lcom/android/server/biometrics/BiometricServiceBase$ResetClientStateRunnable;
 
-    invoke-virtual {p1, p2}, Lcom/android/server/biometrics/BiometricServiceBase$H;->removeCallbacks(Ljava/lang/Runnable;)V
+    invoke-virtual {v1, v2}, Lcom/android/server/biometrics/BiometricServiceBase$H;->removeCallbacks(Ljava/lang/Runnable;)V
 
-    .line 757
-    iget-object p1, p0, Lcom/android/server/biometrics/BiometricServiceBase;->mPendingClient:Lcom/android/server/biometrics/ClientMonitor;
+    .line 743
+    iget-object v1, p0, Lcom/android/server/biometrics/BiometricServiceBase;->mPendingClient:Lcom/android/server/biometrics/ClientMonitor;
 
-    if-eqz p1, :cond_7d
+    if-eqz v1, :cond_7d
 
-    .line 758
+    .line 744
     invoke-virtual {p0}, Lcom/android/server/biometrics/BiometricServiceBase;->getTag()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v1
 
-    new-instance p2, Ljava/lang/StringBuilder;
+    new-instance v2, Ljava/lang/StringBuilder;
 
-    invoke-direct {p2}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string/jumbo p3, "start pending client "
+    const-string/jumbo v3, "start pending client "
 
-    invoke-virtual {p2, p3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    iget-object p3, p0, Lcom/android/server/biometrics/BiometricServiceBase;->mPendingClient:Lcom/android/server/biometrics/ClientMonitor;
+    iget-object v3, p0, Lcom/android/server/biometrics/BiometricServiceBase;->mPendingClient:Lcom/android/server/biometrics/ClientMonitor;
 
-    .line 759
-    invoke-virtual {p3}, Lcom/android/server/biometrics/ClientMonitor;->getOwnerString()Ljava/lang/String;
+    .line 745
+    invoke-virtual {v3}, Lcom/android/server/biometrics/ClientMonitor;->getOwnerString()Ljava/lang/String;
 
-    move-result-object p3
+    move-result-object v3
 
-    invoke-virtual {p2, p3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p2
+    move-result-object v2
 
-    .line 758
-    invoke-static {p1, p2}, Landroid/util/Slog;->v(Ljava/lang/String;Ljava/lang/String;)I
+    .line 744
+    invoke-static {v1, v2}, Landroid/util/Slog;->v(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 760
-    iget-object p1, p0, Lcom/android/server/biometrics/BiometricServiceBase;->mPendingClient:Lcom/android/server/biometrics/ClientMonitor;
+    .line 746
+    iget-object v1, p0, Lcom/android/server/biometrics/BiometricServiceBase;->mPendingClient:Lcom/android/server/biometrics/ClientMonitor;
 
-    const/4 p2, 0x0
+    const/4 v2, 0x0
 
-    invoke-direct {p0, p1, p2}, Lcom/android/server/biometrics/BiometricServiceBase;->startClient(Lcom/android/server/biometrics/ClientMonitor;Z)V
+    invoke-direct {p0, v1, v2}, Lcom/android/server/biometrics/BiometricServiceBase;->startClient(Lcom/android/server/biometrics/ClientMonitor;Z)V
 
-    .line 761
-    const/4 p1, 0x0
+    .line 747
+    const/4 v1, 0x0
 
-    iput-object p1, p0, Lcom/android/server/biometrics/BiometricServiceBase;->mPendingClient:Lcom/android/server/biometrics/ClientMonitor;
+    iput-object v1, p0, Lcom/android/server/biometrics/BiometricServiceBase;->mPendingClient:Lcom/android/server/biometrics/ClientMonitor;
 
-    .line 764
+    .line 750
     :cond_7d
     return-void
 .end method
 
 .method protected handleRemoved(Landroid/hardware/biometrics/BiometricAuthenticator$Identifier;I)V
     .registers 7
+    .param p1, "identifier"  # Landroid/hardware/biometrics/BiometricAuthenticator$Identifier;
+    .param p2, "remaining"  # I
 
-    .line 768
+    .line 754
     invoke-virtual {p0}, Lcom/android/server/biometrics/BiometricServiceBase;->getTag()Ljava/lang/String;
 
     move-result-object v0
@@ -2460,7 +2592,7 @@
 
     invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    .line 769
+    .line 755
     invoke-virtual {p1}, Landroid/hardware/biometrics/BiometricAuthenticator$Identifier;->getDeviceId()J
 
     move-result-wide v2
@@ -2477,88 +2609,96 @@
 
     move-result-object v1
 
-    .line 768
+    .line 754
     invoke-static {v0, v1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 772
+    .line 758
     iget-object v0, p0, Lcom/android/server/biometrics/BiometricServiceBase;->mCurrentClient:Lcom/android/server/biometrics/ClientMonitor;
 
-    .line 773
-    if-eqz v0, :cond_53
+    .line 759
+    .local v0, "client":Lcom/android/server/biometrics/ClientMonitor;
+    if-eqz v0, :cond_54
 
     invoke-virtual {v0, p1, p2}, Lcom/android/server/biometrics/ClientMonitor;->onRemoved(Landroid/hardware/biometrics/BiometricAuthenticator$Identifier;I)Z
 
-    move-result p2
+    move-result v1
 
-    if-eqz p2, :cond_53
+    if-eqz v1, :cond_54
 
-    .line 774
+    .line 760
     invoke-virtual {p0, v0}, Lcom/android/server/biometrics/BiometricServiceBase;->removeClient(Lcom/android/server/biometrics/ClientMonitor;)V
 
-    .line 776
-    iget p2, p0, Lcom/android/server/biometrics/BiometricServiceBase;->mCurrentUserId:I
+    .line 762
+    iget v1, p0, Lcom/android/server/biometrics/BiometricServiceBase;->mCurrentUserId:I
 
-    .line 777
-    instance-of v1, p1, Landroid/hardware/fingerprint/Fingerprint;
+    .line 763
+    .local v1, "userId":I
+    instance-of v2, p1, Landroid/hardware/fingerprint/Fingerprint;
 
-    if-eqz v1, :cond_49
+    if-eqz v2, :cond_4a
 
-    .line 778
-    check-cast p1, Landroid/hardware/fingerprint/Fingerprint;
+    .line 764
+    move-object v2, p1
 
-    invoke-virtual {p1}, Landroid/hardware/fingerprint/Fingerprint;->getGroupId()I
+    check-cast v2, Landroid/hardware/fingerprint/Fingerprint;
 
-    move-result p2
+    invoke-virtual {v2}, Landroid/hardware/fingerprint/Fingerprint;->getGroupId()I
 
-    .line 780
-    :cond_49
-    invoke-virtual {p0, p2}, Lcom/android/server/biometrics/BiometricServiceBase;->hasEnrolledBiometrics(I)Z
+    move-result v1
 
-    move-result p1
+    .line 766
+    :cond_4a
+    invoke-virtual {p0, v1}, Lcom/android/server/biometrics/BiometricServiceBase;->hasEnrolledBiometrics(I)Z
 
-    if-nez p1, :cond_53
+    move-result v2
 
-    .line 781
-    const/4 p1, 0x0
+    if-nez v2, :cond_54
 
-    invoke-virtual {p0, p2, p1}, Lcom/android/server/biometrics/BiometricServiceBase;->updateActiveGroup(ILjava/lang/String;)V
+    .line 767
+    const/4 v2, 0x0
 
-    .line 785
-    :cond_53
-    instance-of p1, v0, Lcom/android/server/biometrics/BiometricServiceBase$InternalRemovalClient;
+    invoke-virtual {p0, v1, v2}, Lcom/android/server/biometrics/BiometricServiceBase;->updateActiveGroup(ILjava/lang/String;)V
 
-    if-eqz p1, :cond_63
+    .line 771
+    .end local v1  # "userId":I
+    :cond_54
+    instance-of v1, v0, Lcom/android/server/biometrics/BiometricServiceBase$InternalRemovalClient;
 
-    iget-object p2, p0, Lcom/android/server/biometrics/BiometricServiceBase;->mUnknownHALTemplates:Ljava/util/ArrayList;
+    if-eqz v1, :cond_64
 
-    invoke-virtual {p2}, Ljava/util/ArrayList;->isEmpty()Z
+    iget-object v1, p0, Lcom/android/server/biometrics/BiometricServiceBase;->mUnknownHALTemplates:Ljava/util/ArrayList;
 
-    move-result p2
+    invoke-virtual {v1}, Ljava/util/ArrayList;->isEmpty()Z
 
-    if-nez p2, :cond_63
+    move-result v1
 
-    .line 786
+    if-nez v1, :cond_64
+
+    .line 772
     invoke-direct {p0}, Lcom/android/server/biometrics/BiometricServiceBase;->startCleanupUnknownHALTemplates()V
 
-    goto :goto_68
+    goto :goto_6b
 
-    .line 787
-    :cond_63
-    if-eqz p1, :cond_68
+    .line 773
+    :cond_64
+    instance-of v1, v0, Lcom/android/server/biometrics/BiometricServiceBase$InternalRemovalClient;
 
-    .line 788
+    if-eqz v1, :cond_6b
+
+    .line 774
     invoke-direct {p0}, Lcom/android/server/biometrics/BiometricServiceBase;->clearEnumerateState()V
 
-    .line 790
-    :cond_68
-    :goto_68
+    .line 776
+    :cond_6b
+    :goto_6b
     return-void
 .end method
 
 .method protected handleUserSwitching(I)V
     .registers 4
+    .param p1, "userId"  # I
 
-    .line 1286
+    .line 1275
     invoke-virtual {p0}, Lcom/android/server/biometrics/BiometricServiceBase;->getCurrentClient()Lcom/android/server/biometrics/ClientMonitor;
 
     move-result-object v0
@@ -2567,7 +2707,7 @@
 
     if-nez v0, :cond_10
 
-    .line 1287
+    .line 1276
     invoke-virtual {p0}, Lcom/android/server/biometrics/BiometricServiceBase;->getCurrentClient()Lcom/android/server/biometrics/ClientMonitor;
 
     move-result-object v0
@@ -2576,7 +2716,7 @@
 
     if-eqz v0, :cond_19
 
-    .line 1288
+    .line 1277
     :cond_10
     invoke-virtual {p0}, Lcom/android/server/biometrics/BiometricServiceBase;->getTag()Ljava/lang/String;
 
@@ -2586,16 +2726,16 @@
 
     invoke-static {v0, v1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 1290
+    .line 1279
     :cond_19
     const/4 v0, 0x0
 
     invoke-virtual {p0, p1, v0}, Lcom/android/server/biometrics/BiometricServiceBase;->updateActiveGroup(ILjava/lang/String;)V
 
-    .line 1291
+    .line 1280
     invoke-virtual {p0, p1}, Lcom/android/server/biometrics/BiometricServiceBase;->doTemplateCleanupForUser(I)V
 
-    .line 1292
+    .line 1281
     return-void
 .end method
 
@@ -2604,66 +2744,70 @@
 
 .method protected hasPermission(Ljava/lang/String;)Z
     .registers 3
+    .param p1, "permission"  # Ljava/lang/String;
 
-    .line 1186
+    .line 1175
     invoke-virtual {p0}, Lcom/android/server/biometrics/BiometricServiceBase;->getContext()Landroid/content/Context;
 
     move-result-object v0
 
     invoke-virtual {v0, p1}, Landroid/content/Context;->checkCallingOrSelfPermission(Ljava/lang/String;)I
 
-    move-result p1
+    move-result v0
 
-    if-nez p1, :cond_c
+    if-nez v0, :cond_c
 
-    const/4 p1, 0x1
+    const/4 v0, 0x1
 
     goto :goto_d
 
     :cond_c
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
     :goto_d
-    return p1
+    return v0
 .end method
 
 .method protected abstract hasReachedEnrollmentLimit(I)Z
 .end method
 
 .method protected isCurrentUserOrProfile(I)Z
-    .registers 9
+    .registers 10
+    .param p1, "userId"  # I
 
-    .line 1196
+    .line 1185
     iget-object v0, p0, Lcom/android/server/biometrics/BiometricServiceBase;->mContext:Landroid/content/Context;
 
     invoke-static {v0}, Landroid/os/UserManager;->get(Landroid/content/Context;)Landroid/os/UserManager;
 
     move-result-object v0
 
-    .line 1197
+    .line 1186
+    .local v0, "um":Landroid/os/UserManager;
     const/4 v1, 0x0
 
     if-nez v0, :cond_13
 
-    .line 1198
+    .line 1187
     invoke-virtual {p0}, Lcom/android/server/biometrics/BiometricServiceBase;->getTag()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v2
 
-    const-string v0, "Unable to acquire UserManager"
+    const-string v3, "Unable to acquire UserManager"
 
-    invoke-static {p1, v0}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v2, v3}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 1199
+    .line 1188
     return v1
 
-    .line 1202
+    .line 1191
     :cond_13
     invoke-static {}, Landroid/os/Binder;->clearCallingIdentity()J
 
     move-result-wide v2
 
-    .line 1205
+    .line 1194
+    .local v2, "token":J
     :try_start_17
     invoke-static {}, Landroid/app/ActivityManager;->getCurrentUser()I
 
@@ -2671,75 +2815,64 @@
 
     invoke-virtual {v0, v4}, Landroid/os/UserManager;->getEnabledProfileIds(I)[I
 
-    move-result-object v0
+    move-result-object v4
 
-    array-length v4, v0
+    array-length v5, v4
 
-    move v5, v1
+    move v6, v1
 
     :goto_21
-    if-ge v5, v4, :cond_30
+    if-ge v6, v5, :cond_30
 
-    aget v6, v0, v5
+    aget v7, v4, v6
     :try_end_25
     .catchall {:try_start_17 .. :try_end_25} :catchall_35
 
-    .line 1206
-    if-ne v6, p1, :cond_2d
+    .line 1195
+    .local v7, "profileId":I
+    if-ne v7, p1, :cond_2d
 
-    .line 1207
+    .line 1196
     nop
 
-    .line 1211
+    .line 1200
     invoke-static {v2, v3}, Landroid/os/Binder;->restoreCallingIdentity(J)V
 
-    .line 1207
-    const/4 p1, 0x1
+    .line 1196
+    const/4 v1, 0x1
 
-    return p1
+    return v1
 
-    .line 1205
+    .line 1194
+    .end local v7  # "profileId":I
     :cond_2d
-    add-int/lit8 v5, v5, 0x1
+    add-int/lit8 v6, v6, 0x1
 
     goto :goto_21
 
-    .line 1211
+    .line 1200
     :cond_30
     invoke-static {v2, v3}, Landroid/os/Binder;->restoreCallingIdentity(J)V
 
-    .line 1212
+    .line 1201
     nop
 
-    .line 1214
+    .line 1203
     return v1
 
-    .line 1211
+    .line 1200
     :catchall_35
-    move-exception p1
+    move-exception v1
 
     invoke-static {v2, v3}, Landroid/os/Binder;->restoreCallingIdentity(J)V
 
-    throw p1
-.end method
-
-.method protected isKeyguard(Ljava/lang/String;)Z
-    .registers 3
-
-    .line 1020
-    iget-object v0, p0, Lcom/android/server/biometrics/BiometricServiceBase;->mKeyguardPackage:Ljava/lang/String;
-
-    invoke-virtual {v0, p1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
-
-    move-result p1
-
-    return p1
+    throw v1
 .end method
 
 .method protected isRestricted()Z
     .registers 2
 
-    .line 1181
+    .line 1170
     invoke-virtual {p0}, Lcom/android/server/biometrics/BiometricServiceBase;->getManageBiometricPermission()Ljava/lang/String;
 
     move-result-object v0
@@ -2748,43 +2881,49 @@
 
     move-result v0
 
-    .line 1182
     xor-int/lit8 v0, v0, 0x1
 
+    .line 1171
+    .local v0, "restricted":Z
     return v0
 .end method
 
-.method public synthetic lambda$addLockoutResetCallback$8$BiometricServiceBase(Landroid/hardware/biometrics/IBiometricServiceLockoutResetCallback;)V
-    .registers 3
+.method public synthetic lambda$addLockoutResetCallback$6$BiometricServiceBase(Landroid/hardware/biometrics/IBiometricServiceLockoutResetCallback;)V
+    .registers 4
+    .param p1, "callback"  # Landroid/hardware/biometrics/IBiometricServiceLockoutResetCallback;
 
-    .line 964
+    .line 952
     new-instance v0, Lcom/android/server/biometrics/BiometricServiceBase$LockoutResetMonitor;
 
     invoke-direct {v0, p0, p1}, Lcom/android/server/biometrics/BiometricServiceBase$LockoutResetMonitor;-><init>(Lcom/android/server/biometrics/BiometricServiceBase;Landroid/hardware/biometrics/IBiometricServiceLockoutResetCallback;)V
 
-    .line 965
-    iget-object p1, p0, Lcom/android/server/biometrics/BiometricServiceBase;->mLockoutMonitors:Ljava/util/ArrayList;
+    .line 953
+    .local v0, "monitor":Lcom/android/server/biometrics/BiometricServiceBase$LockoutResetMonitor;
+    iget-object v1, p0, Lcom/android/server/biometrics/BiometricServiceBase;->mLockoutMonitors:Ljava/util/ArrayList;
 
-    invoke-virtual {p1, v0}, Ljava/util/ArrayList;->contains(Ljava/lang/Object;)Z
+    invoke-virtual {v1, v0}, Ljava/util/ArrayList;->contains(Ljava/lang/Object;)Z
 
-    move-result p1
+    move-result v1
 
-    if-nez p1, :cond_12
+    if-nez v1, :cond_12
 
-    .line 966
-    iget-object p1, p0, Lcom/android/server/biometrics/BiometricServiceBase;->mLockoutMonitors:Ljava/util/ArrayList;
+    .line 954
+    iget-object v1, p0, Lcom/android/server/biometrics/BiometricServiceBase;->mLockoutMonitors:Ljava/util/ArrayList;
 
-    invoke-virtual {p1, v0}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
+    invoke-virtual {v1, v0}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
 
-    .line 968
+    .line 956
     :cond_12
     return-void
 .end method
 
-.method public synthetic lambda$authenticateInternal$3$BiometricServiceBase(JLcom/android/server/biometrics/BiometricServiceBase$AuthenticationClientImpl;Ljava/lang/String;)V
-    .registers 9
+.method public synthetic lambda$authenticateInternal$2$BiometricServiceBase(JLcom/android/server/biometrics/BiometricServiceBase$AuthenticationClientImpl;Ljava/lang/String;)V
+    .registers 12
+    .param p1, "opId"  # J
+    .param p3, "client"  # Lcom/android/server/biometrics/BiometricServiceBase$AuthenticationClientImpl;
+    .param p4, "opPackageName"  # Ljava/lang/String;
 
-    .line 866
+    .line 858
     iget-object v0, p0, Lcom/android/server/biometrics/BiometricServiceBase;->mMetricsLogger:Lcom/android/internal/logging/MetricsLogger;
 
     invoke-virtual {p0}, Lcom/android/server/biometrics/BiometricServiceBase;->getConstants()Lcom/android/server/biometrics/Constants;
@@ -2797,36 +2936,39 @@
 
     const-wide/16 v2, 0x0
 
-    cmp-long p1, p1, v2
+    cmp-long v4, p1, v2
 
-    const/4 p2, 0x1
+    const/4 v5, 0x1
 
-    const/4 v2, 0x0
+    const/4 v6, 0x0
 
-    if-eqz p1, :cond_14
+    if-eqz v4, :cond_14
 
-    move v3, p2
+    move v4, v5
 
     goto :goto_15
 
     :cond_14
-    move v3, v2
+    move v4, v6
 
     :goto_15
-    invoke-virtual {v0, v1, v3}, Lcom/android/internal/logging/MetricsLogger;->histogram(Ljava/lang/String;I)V
+    invoke-virtual {v0, v1, v4}, Lcom/android/internal/logging/MetricsLogger;->histogram(Ljava/lang/String;I)V
 
-    .line 870
-    if-nez p1, :cond_1d
+    .line 862
+    cmp-long v0, p1, v2
+
+    if-nez v0, :cond_1f
 
     iget-object v0, p0, Lcom/android/server/biometrics/BiometricServiceBase;->mPerformanceMap:Ljava/util/HashMap;
 
-    goto :goto_1f
+    goto :goto_21
 
-    :cond_1d
+    :cond_1f
     iget-object v0, p0, Lcom/android/server/biometrics/BiometricServiceBase;->mCryptoPerformanceMap:Ljava/util/HashMap;
 
-    .line 871
-    :goto_1f
+    .line 863
+    .local v0, "pmap":Ljava/util/HashMap;, "Ljava/util/HashMap<Ljava/lang/Integer;Lcom/android/server/biometrics/BiometricServiceBase$PerformanceStats;>;"
+    :goto_21
     iget v1, p0, Lcom/android/server/biometrics/BiometricServiceBase;->mCurrentUserId:I
 
     invoke-static {v1}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
@@ -2839,57 +2981,65 @@
 
     check-cast v1, Lcom/android/server/biometrics/BiometricServiceBase$PerformanceStats;
 
-    .line 872
-    if-nez v1, :cond_3b
+    .line 864
+    .local v1, "stats":Lcom/android/server/biometrics/BiometricServiceBase$PerformanceStats;
+    if-nez v1, :cond_3e
 
-    .line 873
-    new-instance v1, Lcom/android/server/biometrics/BiometricServiceBase$PerformanceStats;
+    .line 865
+    new-instance v4, Lcom/android/server/biometrics/BiometricServiceBase$PerformanceStats;
 
-    invoke-direct {v1, p0}, Lcom/android/server/biometrics/BiometricServiceBase$PerformanceStats;-><init>(Lcom/android/server/biometrics/BiometricServiceBase;)V
+    invoke-direct {v4, p0}, Lcom/android/server/biometrics/BiometricServiceBase$PerformanceStats;-><init>(Lcom/android/server/biometrics/BiometricServiceBase;)V
 
-    .line 874
-    iget v3, p0, Lcom/android/server/biometrics/BiometricServiceBase;->mCurrentUserId:I
+    move-object v1, v4
 
-    invoke-static {v3}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
+    .line 866
+    iget v4, p0, Lcom/android/server/biometrics/BiometricServiceBase;->mCurrentUserId:I
 
-    move-result-object v3
+    invoke-static {v4}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
 
-    invoke-virtual {v0, v3, v1}, Ljava/util/HashMap;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+    move-result-object v4
 
-    .line 876
-    :cond_3b
+    invoke-virtual {v0, v4, v1}, Ljava/util/HashMap;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+
+    .line 868
+    :cond_3e
     iput-object v1, p0, Lcom/android/server/biometrics/BiometricServiceBase;->mPerformanceStats:Lcom/android/server/biometrics/BiometricServiceBase$PerformanceStats;
 
-    .line 877
-    if-eqz p1, :cond_40
+    .line 869
+    cmp-long v2, p1, v2
 
-    goto :goto_41
+    if-eqz v2, :cond_45
 
-    :cond_40
-    move p2, v2
+    goto :goto_46
 
-    :goto_41
-    iput-boolean p2, p0, Lcom/android/server/biometrics/BiometricServiceBase;->mIsCrypto:Z
+    :cond_45
+    move v5, v6
 
-    .line 879
+    :goto_46
+    iput-boolean v5, p0, Lcom/android/server/biometrics/BiometricServiceBase;->mIsCrypto:Z
+
+    .line 871
     invoke-direct {p0, p3, p4}, Lcom/android/server/biometrics/BiometricServiceBase;->startAuthentication(Lcom/android/server/biometrics/BiometricServiceBase$AuthenticationClientImpl;Ljava/lang/String;)V
 
-    .line 880
+    .line 872
     return-void
 .end method
 
-.method public synthetic lambda$cancelAuthenticationInternal$4$BiometricServiceBase(Landroid/os/IBinder;Z)V
+.method public synthetic lambda$cancelAuthenticationInternal$3$BiometricServiceBase(Landroid/os/IBinder;Z)V
     .registers 7
+    .param p1, "token"  # Landroid/os/IBinder;
+    .param p2, "fromClient"  # Z
 
-    .line 904
+    .line 896
     iget-object v0, p0, Lcom/android/server/biometrics/BiometricServiceBase;->mCurrentClient:Lcom/android/server/biometrics/ClientMonitor;
 
-    .line 905
+    .line 897
+    .local v0, "client":Lcom/android/server/biometrics/ClientMonitor;
     instance-of v1, v0, Lcom/android/server/biometrics/AuthenticationClient;
 
     if-eqz v1, :cond_65
 
-    .line 906
+    .line 898
     invoke-virtual {v0}, Lcom/android/server/biometrics/ClientMonitor;->getToken()Landroid/os/IBinder;
 
     move-result-object v1
@@ -2900,41 +3050,41 @@
 
     goto :goto_34
 
-    .line 913
+    .line 905
     :cond_f
     invoke-virtual {p0}, Lcom/android/server/biometrics/BiometricServiceBase;->getTag()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v1
 
-    new-instance v1, Ljava/lang/StringBuilder;
+    new-instance v2, Ljava/lang/StringBuilder;
 
-    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v2, "Can\'t stop client "
+    const-string v3, "Can\'t stop client "
 
-    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v0}, Lcom/android/server/biometrics/ClientMonitor;->getOwnerString()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v3
 
-    invoke-virtual {v1, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string v0, " since tokens don\'t match. fromClient: "
+    const-string v3, " since tokens don\'t match. fromClient: "
 
-    invoke-virtual {v1, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v1, p2}, Ljava/lang/StringBuilder;->append(Z)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, p2}, Ljava/lang/StringBuilder;->append(Z)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p2
+    move-result-object v2
 
-    invoke-static {p1, p2}, Landroid/util/Slog;->v(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v2}, Landroid/util/Slog;->v(Ljava/lang/String;Ljava/lang/String;)I
 
     goto :goto_83
 
-    .line 907
+    .line 899
     :cond_34
     :goto_34
     invoke-virtual {p0}, Lcom/android/server/biometrics/BiometricServiceBase;->getTag()Ljava/lang/String;
@@ -2963,73 +3113,75 @@
 
     invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p2
+    move-result-object v2
 
-    invoke-static {v1, p2}, Landroid/util/Slog;->v(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v2}, Landroid/util/Slog;->v(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 911
+    .line 903
     invoke-virtual {v0}, Lcom/android/server/biometrics/ClientMonitor;->getToken()Landroid/os/IBinder;
 
-    move-result-object p2
+    move-result-object v1
 
-    if-ne p2, p1, :cond_60
+    if-ne v1, p1, :cond_60
 
-    const/4 p1, 0x1
+    const/4 v1, 0x1
 
     goto :goto_61
 
     :cond_60
-    const/4 p1, 0x0
+    const/4 v1, 0x0
 
     :goto_61
-    invoke-virtual {v0, p1}, Lcom/android/server/biometrics/ClientMonitor;->stop(Z)I
+    invoke-virtual {v0, v1}, Lcom/android/server/biometrics/ClientMonitor;->stop(Z)I
 
     goto :goto_83
 
-    .line 916
+    .line 908
     :cond_65
     if-eqz v0, :cond_83
 
-    .line 917
+    .line 909
     invoke-virtual {p0}, Lcom/android/server/biometrics/BiometricServiceBase;->getTag()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v1
 
-    new-instance p2, Ljava/lang/StringBuilder;
+    new-instance v2, Ljava/lang/StringBuilder;
 
-    invoke-direct {p2}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v1, "Can\'t cancel non-authenticating client "
+    const-string v3, "Can\'t cancel non-authenticating client "
 
-    invoke-virtual {p2, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    .line 918
+    .line 910
     invoke-virtual {v0}, Lcom/android/server/biometrics/ClientMonitor;->getOwnerString()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v3
 
-    invoke-virtual {p2, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p2
+    move-result-object v2
 
-    .line 917
-    invoke-static {p1, p2}, Landroid/util/Slog;->v(Ljava/lang/String;Ljava/lang/String;)I
+    .line 909
+    invoke-static {v1, v2}, Landroid/util/Slog;->v(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 920
+    .line 912
     :cond_83
     :goto_83
     return-void
 .end method
 
-.method public synthetic lambda$cancelEnrollmentInternal$2$BiometricServiceBase(Landroid/os/IBinder;)V
+.method public synthetic lambda$cancelEnrollmentInternal$1$BiometricServiceBase(Landroid/os/IBinder;)V
     .registers 5
+    .param p1, "token"  # Landroid/os/IBinder;
 
-    .line 841
+    .line 833
     iget-object v0, p0, Lcom/android/server/biometrics/BiometricServiceBase;->mCurrentClient:Lcom/android/server/biometrics/ClientMonitor;
 
-    .line 842
+    .line 834
+    .local v0, "client":Lcom/android/server/biometrics/ClientMonitor;
     instance-of v1, v0, Lcom/android/server/biometrics/EnrollClient;
 
     if-eqz v1, :cond_21
@@ -3040,7 +3192,7 @@
 
     if-ne v1, p1, :cond_21
 
-    .line 843
+    .line 835
     invoke-virtual {p0}, Lcom/android/server/biometrics/BiometricServiceBase;->getTag()Ljava/lang/String;
 
     move-result-object v1
@@ -3049,133 +3201,82 @@
 
     invoke-static {v1, v2}, Landroid/util/Slog;->v(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 844
+    .line 836
     invoke-virtual {v0}, Lcom/android/server/biometrics/ClientMonitor;->getToken()Landroid/os/IBinder;
 
     move-result-object v1
 
     if-ne v1, p1, :cond_1d
 
-    const/4 p1, 0x1
+    const/4 v1, 0x1
 
     goto :goto_1e
 
     :cond_1d
-    const/4 p1, 0x0
+    const/4 v1, 0x0
 
     :goto_1e
-    invoke-virtual {v0, p1}, Lcom/android/server/biometrics/ClientMonitor;->stop(Z)I
+    invoke-virtual {v0, v1}, Lcom/android/server/biometrics/ClientMonitor;->stop(Z)I
 
-    .line 846
+    .line 838
     :cond_21
     return-void
 .end method
 
-.method public synthetic lambda$enrollInternal$1$BiometricServiceBase(Lcom/android/server/biometrics/BiometricServiceBase$EnrollClientImpl;)V
+.method public synthetic lambda$enrollInternal$0$BiometricServiceBase(Lcom/android/server/biometrics/BiometricServiceBase$EnrollClientImpl;)V
     .registers 3
+    .param p1, "client"  # Lcom/android/server/biometrics/BiometricServiceBase$EnrollClientImpl;
 
-    .line 835
+    .line 827
     const/4 v0, 0x1
 
     invoke-direct {p0, p1, v0}, Lcom/android/server/biometrics/BiometricServiceBase;->startClient(Lcom/android/server/biometrics/ClientMonitor;Z)V
 
-    .line 836
+    .line 828
     return-void
 .end method
 
-.method public synthetic lambda$enumerateInternal$7$BiometricServiceBase(Lcom/android/server/biometrics/EnumerateClient;)V
+.method public synthetic lambda$enumerateInternal$5$BiometricServiceBase(Lcom/android/server/biometrics/EnumerateClient;)V
     .registers 3
-
-    .line 940
-    const/4 v0, 0x1
-
-    invoke-direct {p0, p1, v0}, Lcom/android/server/biometrics/BiometricServiceBase;->startClient(Lcom/android/server/biometrics/ClientMonitor;Z)V
-
-    .line 941
-    return-void
-.end method
-
-.method public synthetic lambda$removeInternal$6$BiometricServiceBase(Lcom/android/server/biometrics/RemovalClient;)V
-    .registers 3
-
-    .line 934
-    const/4 v0, 0x1
-
-    invoke-direct {p0, p1, v0}, Lcom/android/server/biometrics/BiometricServiceBase;->startClient(Lcom/android/server/biometrics/ClientMonitor;Z)V
-
-    .line 935
-    return-void
-.end method
-
-.method public synthetic lambda$serviceDied$0$BiometricServiceBase()V
-    .registers 5
-
-    .line 678
-    invoke-virtual {p0}, Lcom/android/server/biometrics/BiometricServiceBase;->getHalDeviceId()J
-
-    move-result-wide v0
-
-    const/4 v2, 0x1
-
-    const/4 v3, 0x0
-
-    invoke-virtual {p0, v0, v1, v2, v3}, Lcom/android/server/biometrics/BiometricServiceBase;->handleError(JII)V
-
-    .line 680
-    return-void
-.end method
-
-.method public synthetic lambda$setActiveUserInternal$5$BiometricServiceBase(I)V
-    .registers 5
-
-    .line 926
-    invoke-virtual {p0}, Lcom/android/server/biometrics/BiometricServiceBase;->getTag()Ljava/lang/String;
-
-    move-result-object v0
-
-    new-instance v1, Ljava/lang/StringBuilder;
-
-    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
-
-    const-string/jumbo v2, "setActiveUser("
-
-    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v1, p1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
-
-    const-string v2, ")"
-
-    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
-
-    move-result-object v1
-
-    invoke-static {v0, v1}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
+    .param p1, "client"  # Lcom/android/server/biometrics/EnumerateClient;
 
     .line 928
-    const/4 v0, 0x0
+    const/4 v0, 0x1
 
-    invoke-virtual {p0, p1, v0}, Lcom/android/server/biometrics/BiometricServiceBase;->updateActiveGroup(ILjava/lang/String;)V
+    invoke-direct {p0, p1, v0}, Lcom/android/server/biometrics/BiometricServiceBase;->startClient(Lcom/android/server/biometrics/ClientMonitor;Z)V
 
     .line 929
     return-void
 .end method
 
-.method protected loadAuthenticatorIds()V
-    .registers 8
+.method public synthetic lambda$removeInternal$4$BiometricServiceBase(Lcom/android/server/biometrics/RemovalClient;)V
+    .registers 3
+    .param p1, "client"  # Lcom/android/server/biometrics/RemovalClient;
 
-    .line 1153
+    .line 922
+    const/4 v0, 0x1
+
+    invoke-direct {p0, p1, v0}, Lcom/android/server/biometrics/BiometricServiceBase;->startClient(Lcom/android/server/biometrics/ClientMonitor;Z)V
+
+    .line 923
+    return-void
+.end method
+
+.method protected loadAuthenticatorIds()V
+    .registers 9
+
+    .line 1142
     invoke-static {}, Ljava/lang/System;->currentTimeMillis()J
 
     move-result-wide v0
 
-    .line 1154
+    .line 1143
+    .local v0, "t":J
     iget-object v2, p0, Lcom/android/server/biometrics/BiometricServiceBase;->mAuthenticatorIds:Ljava/util/Map;
 
     invoke-interface {v2}, Ljava/util/Map;->clear()V
 
-    .line 1155
+    .line 1144
     invoke-virtual {p0}, Lcom/android/server/biometrics/BiometricServiceBase;->getContext()Landroid/content/Context;
 
     move-result-object v2
@@ -3207,36 +3308,40 @@
 
     check-cast v3, Landroid/content/pm/UserInfo;
 
-    .line 1156
-    iget v3, v3, Landroid/content/pm/UserInfo;->id:I
+    .line 1145
+    .local v3, "user":Landroid/content/pm/UserInfo;
+    iget v4, v3, Landroid/content/pm/UserInfo;->id:I
 
-    const/4 v4, 0x0
+    const/4 v5, 0x0
 
-    invoke-virtual {p0, v4, v3}, Lcom/android/server/biometrics/BiometricServiceBase;->getUserOrWorkProfileId(Ljava/lang/String;I)I
+    invoke-virtual {p0, v5, v4}, Lcom/android/server/biometrics/BiometricServiceBase;->getUserOrWorkProfileId(Ljava/lang/String;I)I
 
-    move-result v3
+    move-result v4
 
-    .line 1157
-    iget-object v5, p0, Lcom/android/server/biometrics/BiometricServiceBase;->mAuthenticatorIds:Ljava/util/Map;
+    .line 1146
+    .local v4, "userId":I
+    iget-object v6, p0, Lcom/android/server/biometrics/BiometricServiceBase;->mAuthenticatorIds:Ljava/util/Map;
 
-    invoke-static {v3}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
+    invoke-static {v4}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
 
-    move-result-object v6
+    move-result-object v7
 
-    invoke-interface {v5, v6}, Ljava/util/Map;->containsKey(Ljava/lang/Object;)Z
+    invoke-interface {v6, v7}, Ljava/util/Map;->containsKey(Ljava/lang/Object;)Z
 
-    move-result v5
+    move-result v6
 
-    if-nez v5, :cond_3c
+    if-nez v6, :cond_3c
 
-    .line 1158
-    invoke-virtual {p0, v3, v4}, Lcom/android/server/biometrics/BiometricServiceBase;->updateActiveGroup(ILjava/lang/String;)V
+    .line 1147
+    invoke-virtual {p0, v4, v5}, Lcom/android/server/biometrics/BiometricServiceBase;->updateActiveGroup(ILjava/lang/String;)V
 
-    .line 1160
+    .line 1149
+    .end local v3  # "user":Landroid/content/pm/UserInfo;
+    .end local v4  # "userId":I
     :cond_3c
     goto :goto_1a
 
-    .line 1162
+    .line 1151
     :cond_3d
     invoke-static {}, Ljava/lang/System;->currentTimeMillis()J
 
@@ -3244,14 +3349,16 @@
 
     sub-long/2addr v2, v0
 
-    .line 1163
+    .line 1152
+    .end local v0  # "t":J
+    .local v2, "t":J
     const-wide/16 v0, 0x3e8
 
     cmp-long v0, v2, v0
 
-    if-lez v0, :cond_66
+    if-lez v0, :cond_67
 
-    .line 1164
+    .line 1153
     invoke-virtual {p0}, Lcom/android/server/biometrics/BiometricServiceBase;->getTag()Ljava/lang/String;
 
     move-result-object v0
@@ -3260,15 +3367,15 @@
 
     invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v4, "loadAuthenticatorIds() taking too long: "
+    const-string/jumbo v4, "loadAuthenticatorIds() taking too long: "
 
     invoke-virtual {v1, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v1, v2, v3}, Ljava/lang/StringBuilder;->append(J)Ljava/lang/StringBuilder;
 
-    const-string/jumbo v2, "ms"
+    const-string/jumbo v4, "ms"
 
-    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
@@ -3276,24 +3383,26 @@
 
     invoke-static {v0, v1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 1166
-    :cond_66
+    .line 1155
+    :cond_67
     return-void
 .end method
 
 .method protected notifyClientActiveCallbacks(Z)V
     .registers 2
+    .param p1, "isActive"  # Z
 
-    .line 204
+    .line 207
     return-void
 .end method
 
 .method protected notifyLockoutResetMonitors()V
     .registers 3
 
-    .line 1295
+    .line 1284
     const/4 v0, 0x0
 
+    .local v0, "i":I
     :goto_1
     iget-object v1, p0, Lcom/android/server/biometrics/BiometricServiceBase;->mLockoutMonitors:Ljava/util/ArrayList;
 
@@ -3303,7 +3412,7 @@
 
     if-ge v0, v1, :cond_17
 
-    .line 1296
+    .line 1285
     iget-object v1, p0, Lcom/android/server/biometrics/BiometricServiceBase;->mLockoutMonitors:Ljava/util/ArrayList;
 
     invoke-virtual {v1, v0}, Ljava/util/ArrayList;->get(I)Ljava/lang/Object;
@@ -3314,12 +3423,13 @@
 
     invoke-virtual {v1}, Lcom/android/server/biometrics/BiometricServiceBase$LockoutResetMonitor;->sendLockoutReset()V
 
-    .line 1295
+    .line 1284
     add-int/lit8 v0, v0, 0x1
 
     goto :goto_1
 
-    .line 1298
+    .line 1287
+    .end local v0  # "i":I
     :cond_17
     return-void
 .end method
@@ -3327,30 +3437,31 @@
 .method public onStart()V
     .registers 1
 
-    .line 666
+    .line 656
     invoke-direct {p0}, Lcom/android/server/biometrics/BiometricServiceBase;->listenForUserSwitches()V
 
-    .line 667
+    .line 657
     return-void
 .end method
 
 .method protected removeClient(Lcom/android/server/biometrics/ClientMonitor;)V
     .registers 5
+    .param p1, "client"  # Lcom/android/server/biometrics/ClientMonitor;
 
-    .line 1131
+    .line 1118
     if-eqz p1, :cond_35
 
-    .line 1132
+    .line 1119
     invoke-virtual {p1}, Lcom/android/server/biometrics/ClientMonitor;->destroy()V
 
-    .line 1133
+    .line 1120
     iget-object v0, p0, Lcom/android/server/biometrics/BiometricServiceBase;->mCurrentClient:Lcom/android/server/biometrics/ClientMonitor;
 
     if-eq p1, v0, :cond_35
 
     if-eqz v0, :cond_35
 
-    .line 1134
+    .line 1121
     invoke-virtual {p0}, Lcom/android/server/biometrics/BiometricServiceBase;->getTag()Ljava/lang/String;
 
     move-result-object v0
@@ -3375,7 +3486,7 @@
 
     iget-object v2, p0, Lcom/android/server/biometrics/BiometricServiceBase;->mCurrentClient:Lcom/android/server/biometrics/ClientMonitor;
 
-    .line 1135
+    .line 1122
     invoke-virtual {v2}, Lcom/android/server/biometrics/ClientMonitor;->getOwnerString()Ljava/lang/String;
 
     move-result-object v2
@@ -3386,16 +3497,16 @@
 
     move-result-object v1
 
-    .line 1134
+    .line 1121
     invoke-static {v0, v1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 1138
+    .line 1125
     :cond_35
     iget-object v0, p0, Lcom/android/server/biometrics/BiometricServiceBase;->mCurrentClient:Lcom/android/server/biometrics/ClientMonitor;
 
     if-eqz v0, :cond_58
 
-    .line 1139
+    .line 1126
     invoke-virtual {p0}, Lcom/android/server/biometrics/BiometricServiceBase;->getTag()Ljava/lang/String;
 
     move-result-object v0
@@ -3410,151 +3521,145 @@
 
     invoke-virtual {p1}, Lcom/android/server/biometrics/ClientMonitor;->getOwnerString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v2
 
-    invoke-virtual {v1, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v1
 
-    invoke-static {v0, p1}, Landroid/util/Slog;->v(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v0, v1}, Landroid/util/Slog;->v(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 1140
-    const/4 p1, 0x0
+    .line 1127
+    const/4 v0, 0x0
 
-    iput-object p1, p0, Lcom/android/server/biometrics/BiometricServiceBase;->mCurrentClient:Lcom/android/server/biometrics/ClientMonitor;
+    iput-object v0, p0, Lcom/android/server/biometrics/BiometricServiceBase;->mCurrentClient:Lcom/android/server/biometrics/ClientMonitor;
 
-    .line 1142
+    .line 1131
     :cond_58
-    iget-object p1, p0, Lcom/android/server/biometrics/BiometricServiceBase;->mPendingClient:Lcom/android/server/biometrics/ClientMonitor;
+    const/4 v0, 0x0
 
-    if-nez p1, :cond_60
+    invoke-virtual {p0, v0}, Lcom/android/server/biometrics/BiometricServiceBase;->notifyClientActiveCallbacks(Z)V
 
-    .line 1143
-    const/4 p1, 0x0
-
-    invoke-virtual {p0, p1}, Lcom/android/server/biometrics/BiometricServiceBase;->notifyClientActiveCallbacks(Z)V
-
-    .line 1145
-    :cond_60
+    .line 1134
     return-void
 .end method
 
 .method protected removeInternal(Lcom/android/server/biometrics/RemovalClient;)V
     .registers 4
+    .param p1, "client"  # Lcom/android/server/biometrics/RemovalClient;
 
-    .line 933
+    .line 921
     iget-object v0, p0, Lcom/android/server/biometrics/BiometricServiceBase;->mHandler:Lcom/android/server/biometrics/BiometricServiceBase$H;
 
-    new-instance v1, Lcom/android/server/biometrics/-$$Lambda$BiometricServiceBase$8-hCNL3jMZVMKItY0KyN7TBk6u8;
+    new-instance v1, Lcom/android/server/biometrics/-$$Lambda$BiometricServiceBase$Ryp20xWMQfJ1Uis2FSiepWAsEHg;
 
-    invoke-direct {v1, p0, p1}, Lcom/android/server/biometrics/-$$Lambda$BiometricServiceBase$8-hCNL3jMZVMKItY0KyN7TBk6u8;-><init>(Lcom/android/server/biometrics/BiometricServiceBase;Lcom/android/server/biometrics/RemovalClient;)V
+    invoke-direct {v1, p0, p1}, Lcom/android/server/biometrics/-$$Lambda$BiometricServiceBase$Ryp20xWMQfJ1Uis2FSiepWAsEHg;-><init>(Lcom/android/server/biometrics/BiometricServiceBase;Lcom/android/server/biometrics/RemovalClient;)V
 
     invoke-virtual {v0, v1}, Lcom/android/server/biometrics/BiometricServiceBase$H;->post(Ljava/lang/Runnable;)Z
 
-    .line 936
+    .line 924
     return-void
 .end method
 
 .method public serviceDied(J)V
-    .registers 4
+    .registers 7
+    .param p1, "cookie"  # J
 
-    .line 671
+    .line 661
     invoke-virtual {p0}, Lcom/android/server/biometrics/BiometricServiceBase;->getTag()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    const-string p2, "HAL died"
+    const-string v1, "HAL died"
 
-    invoke-static {p1, p2}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v0, v1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 672
-    iget-object p1, p0, Lcom/android/server/biometrics/BiometricServiceBase;->mMetricsLogger:Lcom/android/internal/logging/MetricsLogger;
+    .line 662
+    iget-object v0, p0, Lcom/android/server/biometrics/BiometricServiceBase;->mMetricsLogger:Lcom/android/internal/logging/MetricsLogger;
 
     invoke-virtual {p0}, Lcom/android/server/biometrics/BiometricServiceBase;->getConstants()Lcom/android/server/biometrics/Constants;
 
-    move-result-object p2
+    move-result-object v1
 
-    invoke-interface {p2}, Lcom/android/server/biometrics/Constants;->tagHalDied()Ljava/lang/String;
+    invoke-interface {v1}, Lcom/android/server/biometrics/Constants;->tagHalDied()Ljava/lang/String;
 
-    move-result-object p2
+    move-result-object v1
 
-    const/4 v0, 0x1
+    const/4 v2, 0x1
 
-    invoke-virtual {p1, p2, v0}, Lcom/android/internal/logging/MetricsLogger;->count(Ljava/lang/String;I)V
+    invoke-virtual {v0, v1, v2}, Lcom/android/internal/logging/MetricsLogger;->count(Ljava/lang/String;I)V
 
-    .line 673
-    iget p1, p0, Lcom/android/server/biometrics/BiometricServiceBase;->mHALDeathCount:I
+    .line 663
+    iget v0, p0, Lcom/android/server/biometrics/BiometricServiceBase;->mHALDeathCount:I
 
-    add-int/2addr p1, v0
+    add-int/2addr v0, v2
 
-    iput p1, p0, Lcom/android/server/biometrics/BiometricServiceBase;->mHALDeathCount:I
+    iput v0, p0, Lcom/android/server/biometrics/BiometricServiceBase;->mHALDeathCount:I
 
-    .line 674
-    const/16 p1, -0x2710
+    .line 664
+    const/16 v0, -0x2710
 
-    iput p1, p0, Lcom/android/server/biometrics/BiometricServiceBase;->mCurrentUserId:I
+    iput v0, p0, Lcom/android/server/biometrics/BiometricServiceBase;->mCurrentUserId:I
 
-    .line 677
-    iget-object p1, p0, Lcom/android/server/biometrics/BiometricServiceBase;->mHandler:Lcom/android/server/biometrics/BiometricServiceBase$H;
+    .line 665
+    invoke-virtual {p0}, Lcom/android/server/biometrics/BiometricServiceBase;->getHalDeviceId()J
 
-    new-instance p2, Lcom/android/server/biometrics/-$$Lambda$BiometricServiceBase$iRNlDOJhMpMFOTQxuHjuZ0z5dlY;
+    move-result-wide v0
 
-    invoke-direct {p2, p0}, Lcom/android/server/biometrics/-$$Lambda$BiometricServiceBase$iRNlDOJhMpMFOTQxuHjuZ0z5dlY;-><init>(Lcom/android/server/biometrics/BiometricServiceBase;)V
+    const/4 v3, 0x0
 
-    invoke-virtual {p1, p2}, Lcom/android/server/biometrics/BiometricServiceBase$H;->post(Ljava/lang/Runnable;)Z
+    invoke-virtual {p0, v0, v1, v2, v3}, Lcom/android/server/biometrics/BiometricServiceBase;->handleError(JII)V
 
-    .line 682
+    .line 668
     invoke-virtual {p0}, Lcom/android/server/biometrics/BiometricServiceBase;->statsModality()I
 
-    move-result p1
+    move-result v0
 
-    const/16 p2, 0x94
+    const/16 v1, 0x94
 
-    invoke-static {p2, p1, v0}, Landroid/util/StatsLog;->write(III)I
+    invoke-static {v1, v0, v2}, Landroid/util/StatsLog;->write(III)I
 
-    .line 684
+    .line 670
     return-void
 .end method
 
 .method protected setActiveUserInternal(I)V
-    .registers 4
+    .registers 3
+    .param p1, "userId"  # I
 
-    .line 924
-    iget-object v0, p0, Lcom/android/server/biometrics/BiometricServiceBase;->mHandler:Lcom/android/server/biometrics/BiometricServiceBase$H;
+    .line 917
+    const/4 v0, 0x0
 
-    new-instance v1, Lcom/android/server/biometrics/-$$Lambda$BiometricServiceBase$rf3hjPI_nf4EvVsQV7gFCF1-HpI;
+    invoke-virtual {p0, p1, v0}, Lcom/android/server/biometrics/BiometricServiceBase;->updateActiveGroup(ILjava/lang/String;)V
 
-    invoke-direct {v1, p0, p1}, Lcom/android/server/biometrics/-$$Lambda$BiometricServiceBase$rf3hjPI_nf4EvVsQV7gFCF1-HpI;-><init>(Lcom/android/server/biometrics/BiometricServiceBase;I)V
-
-    invoke-virtual {v0, v1}, Lcom/android/server/biometrics/BiometricServiceBase$H;->post(Ljava/lang/Runnable;)Z
-
-    .line 930
+    .line 918
     return-void
 .end method
 
 .method protected startCurrentClient(I)V
     .registers 5
+    .param p1, "cookie"  # I
 
-    .line 1112
+    .line 1101
     iget-object v0, p0, Lcom/android/server/biometrics/BiometricServiceBase;->mCurrentClient:Lcom/android/server/biometrics/ClientMonitor;
 
     if-nez v0, :cond_e
 
-    .line 1113
+    .line 1102
     invoke-virtual {p0}, Lcom/android/server/biometrics/BiometricServiceBase;->getTag()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    const-string v0, "Trying to start null client!"
+    const-string v1, "Trying to start null client!"
 
-    invoke-static {p1, v0}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v0, v1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 1114
+    .line 1103
     return-void
 
-    .line 1116
+    .line 1105
     :cond_e
     invoke-virtual {p0}, Lcom/android/server/biometrics/BiometricServiceBase;->getTag()Ljava/lang/String;
 
@@ -3570,7 +3675,7 @@
 
     iget-object v2, p0, Lcom/android/server/biometrics/BiometricServiceBase;->mCurrentClient:Lcom/android/server/biometrics/ClientMonitor;
 
-    .line 1117
+    .line 1106
     invoke-virtual {v2}, Ljava/lang/Object;->getClass()Ljava/lang/Class;
 
     move-result-object v2
@@ -3591,35 +3696,14 @@
 
     iget-object v2, p0, Lcom/android/server/biometrics/BiometricServiceBase;->mCurrentClient:Lcom/android/server/biometrics/ClientMonitor;
 
-    .line 1118
+    .line 1107
     invoke-virtual {v2}, Lcom/android/server/biometrics/ClientMonitor;->getOwnerString()Ljava/lang/String;
 
     move-result-object v2
 
     invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string v2, ") targetUserId: "
-
-    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    iget-object v2, p0, Lcom/android/server/biometrics/BiometricServiceBase;->mCurrentClient:Lcom/android/server/biometrics/ClientMonitor;
-
-    .line 1119
-    invoke-virtual {v2}, Lcom/android/server/biometrics/ClientMonitor;->getTargetUserId()I
-
-    move-result v2
-
-    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
-
-    const-string v2, " currentUserId: "
-
-    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    iget v2, p0, Lcom/android/server/biometrics/BiometricServiceBase;->mCurrentUserId:I
-
-    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
-
-    const-string v2, " cookie: "
+    const-string v2, ") cookie: "
 
     invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
@@ -3631,7 +3715,7 @@
 
     iget-object v2, p0, Lcom/android/server/biometrics/BiometricServiceBase;->mCurrentClient:Lcom/android/server/biometrics/ClientMonitor;
 
-    .line 1121
+    .line 1108
     invoke-virtual {v2}, Lcom/android/server/biometrics/ClientMonitor;->getCookie()I
 
     move-result v2
@@ -3642,42 +3726,42 @@
 
     move-result-object v1
 
-    .line 1116
+    .line 1105
     invoke-static {v0, v1}, Landroid/util/Slog;->v(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 1122
+    .line 1109
     iget-object v0, p0, Lcom/android/server/biometrics/BiometricServiceBase;->mCurrentClient:Lcom/android/server/biometrics/ClientMonitor;
 
     invoke-virtual {v0}, Lcom/android/server/biometrics/ClientMonitor;->getCookie()I
 
     move-result v0
 
-    if-eq p1, v0, :cond_83
+    if-eq p1, v0, :cond_6b
 
-    .line 1123
+    .line 1110
     invoke-virtual {p0}, Lcom/android/server/biometrics/BiometricServiceBase;->getTag()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    const-string v0, "Mismatched cookie"
+    const-string v1, "Mismatched cookie"
 
-    invoke-static {p1, v0}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v0, v1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 1124
+    .line 1111
     return-void
 
-    .line 1126
-    :cond_83
-    const/4 p1, 0x1
+    .line 1113
+    :cond_6b
+    const/4 v0, 0x1
 
-    invoke-virtual {p0, p1}, Lcom/android/server/biometrics/BiometricServiceBase;->notifyClientActiveCallbacks(Z)V
+    invoke-virtual {p0, v0}, Lcom/android/server/biometrics/BiometricServiceBase;->notifyClientActiveCallbacks(Z)V
 
-    .line 1127
-    iget-object p1, p0, Lcom/android/server/biometrics/BiometricServiceBase;->mCurrentClient:Lcom/android/server/biometrics/ClientMonitor;
+    .line 1114
+    iget-object v0, p0, Lcom/android/server/biometrics/BiometricServiceBase;->mCurrentClient:Lcom/android/server/biometrics/ClientMonitor;
 
-    invoke-virtual {p1}, Lcom/android/server/biometrics/ClientMonitor;->start()I
+    invoke-virtual {v0}, Lcom/android/server/biometrics/ClientMonitor;->start()I
 
-    .line 1128
+    .line 1115
     return-void
 .end method
 

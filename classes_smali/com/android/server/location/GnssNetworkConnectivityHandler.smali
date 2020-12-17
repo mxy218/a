@@ -6,6 +6,7 @@
 # annotations
 .annotation system Ldalvik/annotation/MemberClasses;
     value = {
+        Lcom/android/server/location/GnssNetworkConnectivityHandler$SubIdPhoneStateListener;,
         Lcom/android/server/location/GnssNetworkConnectivityHandler$GnssNetworkListener;,
         Lcom/android/server/location/GnssNetworkConnectivityHandler$NetworkAttributes;
     }
@@ -71,6 +72,8 @@
 
 .field private mAGpsType:I
 
+.field private mActiveSubId:I
+
 .field private mAvailableNetworkAttributes:Ljava/util/HashMap;
     .annotation system Ldalvik/annotation/Signature;
         value = {
@@ -92,6 +95,21 @@
 
 .field private mNetworkConnectivityCallback:Landroid/net/ConnectivityManager$NetworkCallback;
 
+.field private final mNiHandler:Lcom/android/internal/location/GpsNetInitiatedHandler;
+
+.field private final mOnSubscriptionsChangeListener:Landroid/telephony/SubscriptionManager$OnSubscriptionsChangedListener;
+
+.field private mPhoneStateListeners:Ljava/util/HashMap;
+    .annotation system Ldalvik/annotation/Signature;
+        value = {
+            "Ljava/util/HashMap<",
+            "Ljava/lang/Integer;",
+            "Lcom/android/server/location/GnssNetworkConnectivityHandler$SubIdPhoneStateListener;",
+            ">;"
+        }
+    .end annotation
+.end field
+
 .field private mSuplConnectivityCallback:Landroid/net/ConnectivityManager$NetworkCallback;
 
 .field private final mWakeLock:Landroid/os/PowerManager$WakeLock;
@@ -101,7 +119,7 @@
 .method static constructor <clinit>()V
     .registers 2
 
-    .line 45
+    .line 55
     const-string v0, "GnssNetworkConnectivityHandler"
 
     const/4 v1, 0x3
@@ -112,7 +130,7 @@
 
     sput-boolean v1, Lcom/android/server/location/GnssNetworkConnectivityHandler;->DEBUG:Z
 
-    .line 46
+    .line 56
     const/4 v1, 0x2
 
     invoke-static {v0, v1}, Landroid/util/Log;->isLoggable(Ljava/lang/String;I)Z
@@ -124,13 +142,17 @@
     return-void
 .end method
 
-.method constructor <init>(Landroid/content/Context;Lcom/android/server/location/GnssNetworkConnectivityHandler$GnssNetworkListener;Landroid/os/Looper;)V
-    .registers 6
+.method constructor <init>(Landroid/content/Context;Lcom/android/server/location/GnssNetworkConnectivityHandler$GnssNetworkListener;Landroid/os/Looper;Lcom/android/internal/location/GpsNetInitiatedHandler;)V
+    .registers 9
+    .param p1, "context"  # Landroid/content/Context;
+    .param p2, "gnssNetworkListener"  # Lcom/android/server/location/GnssNetworkConnectivityHandler$GnssNetworkListener;
+    .param p3, "looper"  # Landroid/os/Looper;
+    .param p4, "niHandler"  # Lcom/android/internal/location/GpsNetInitiatedHandler;
 
-    .line 169
+    .line 185
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
-    .line 86
+    .line 96
     new-instance v0, Ljava/util/HashMap;
 
     const/4 v1, 0x5
@@ -139,112 +161,210 @@
 
     iput-object v0, p0, Lcom/android/server/location/GnssNetworkConnectivityHandler;->mAvailableNetworkAttributes:Ljava/util/HashMap;
 
-    .line 170
+    .line 110
+    const/4 v0, -0x1
+
+    iput v0, p0, Lcom/android/server/location/GnssNetworkConnectivityHandler;->mActiveSubId:I
+
+    .line 226
+    new-instance v0, Lcom/android/server/location/GnssNetworkConnectivityHandler$1;
+
+    invoke-direct {v0, p0}, Lcom/android/server/location/GnssNetworkConnectivityHandler$1;-><init>(Lcom/android/server/location/GnssNetworkConnectivityHandler;)V
+
+    iput-object v0, p0, Lcom/android/server/location/GnssNetworkConnectivityHandler;->mOnSubscriptionsChangeListener:Landroid/telephony/SubscriptionManager$OnSubscriptionsChangedListener;
+
+    .line 186
     iput-object p1, p0, Lcom/android/server/location/GnssNetworkConnectivityHandler;->mContext:Landroid/content/Context;
 
-    .line 171
+    .line 187
     iput-object p2, p0, Lcom/android/server/location/GnssNetworkConnectivityHandler;->mGnssNetworkListener:Lcom/android/server/location/GnssNetworkConnectivityHandler$GnssNetworkListener;
 
-    .line 173
-    const-string/jumbo p2, "power"
+    .line 189
+    iget-object v0, p0, Lcom/android/server/location/GnssNetworkConnectivityHandler;->mContext:Landroid/content/Context;
 
-    invoke-virtual {p1, p2}, Landroid/content/Context;->getSystemService(Ljava/lang/String;)Ljava/lang/Object;
+    const-class v1, Landroid/telephony/SubscriptionManager;
 
-    move-result-object p1
+    invoke-virtual {v0, v1}, Landroid/content/Context;->getSystemService(Ljava/lang/Class;)Ljava/lang/Object;
 
-    check-cast p1, Landroid/os/PowerManager;
+    move-result-object v0
 
-    .line 174
-    const/4 p2, 0x1
+    check-cast v0, Landroid/telephony/SubscriptionManager;
 
-    const-string v0, "GnssNetworkConnectivityHandler"
+    .line 190
+    .local v0, "subManager":Landroid/telephony/SubscriptionManager;
+    if-eqz v0, :cond_2a
 
-    invoke-virtual {p1, p2, v0}, Landroid/os/PowerManager;->newWakeLock(ILjava/lang/String;)Landroid/os/PowerManager$WakeLock;
+    .line 191
+    iget-object v1, p0, Lcom/android/server/location/GnssNetworkConnectivityHandler;->mOnSubscriptionsChangeListener:Landroid/telephony/SubscriptionManager$OnSubscriptionsChangedListener;
 
-    move-result-object p1
+    invoke-virtual {v0, v1}, Landroid/telephony/SubscriptionManager;->addOnSubscriptionsChangedListener(Landroid/telephony/SubscriptionManager$OnSubscriptionsChangedListener;)V
 
-    iput-object p1, p0, Lcom/android/server/location/GnssNetworkConnectivityHandler;->mWakeLock:Landroid/os/PowerManager$WakeLock;
+    .line 194
+    :cond_2a
+    const-string/jumbo v1, "power"
 
-    .line 176
-    new-instance p1, Landroid/os/Handler;
+    invoke-virtual {p1, v1}, Landroid/content/Context;->getSystemService(Ljava/lang/String;)Ljava/lang/Object;
 
-    invoke-direct {p1, p3}, Landroid/os/Handler;-><init>(Landroid/os/Looper;)V
+    move-result-object v1
 
-    iput-object p1, p0, Lcom/android/server/location/GnssNetworkConnectivityHandler;->mHandler:Landroid/os/Handler;
+    check-cast v1, Landroid/os/PowerManager;
 
-    .line 177
-    iget-object p1, p0, Lcom/android/server/location/GnssNetworkConnectivityHandler;->mContext:Landroid/content/Context;
+    .line 195
+    .local v1, "powerManager":Landroid/os/PowerManager;
+    const/4 v2, 0x1
 
-    const-string p2, "connectivity"
+    const-string v3, "GnssNetworkConnectivityHandler"
 
-    invoke-virtual {p1, p2}, Landroid/content/Context;->getSystemService(Ljava/lang/String;)Ljava/lang/Object;
+    invoke-virtual {v1, v2, v3}, Landroid/os/PowerManager;->newWakeLock(ILjava/lang/String;)Landroid/os/PowerManager$WakeLock;
 
-    move-result-object p1
+    move-result-object v2
 
-    check-cast p1, Landroid/net/ConnectivityManager;
+    iput-object v2, p0, Lcom/android/server/location/GnssNetworkConnectivityHandler;->mWakeLock:Landroid/os/PowerManager$WakeLock;
 
-    iput-object p1, p0, Lcom/android/server/location/GnssNetworkConnectivityHandler;->mConnMgr:Landroid/net/ConnectivityManager;
+    .line 197
+    new-instance v2, Landroid/os/Handler;
 
-    .line 178
+    invoke-direct {v2, p3}, Landroid/os/Handler;-><init>(Landroid/os/Looper;)V
+
+    iput-object v2, p0, Lcom/android/server/location/GnssNetworkConnectivityHandler;->mHandler:Landroid/os/Handler;
+
+    .line 198
+    iput-object p4, p0, Lcom/android/server/location/GnssNetworkConnectivityHandler;->mNiHandler:Lcom/android/internal/location/GpsNetInitiatedHandler;
+
+    .line 199
+    iget-object v2, p0, Lcom/android/server/location/GnssNetworkConnectivityHandler;->mContext:Landroid/content/Context;
+
+    const-string v3, "connectivity"
+
+    invoke-virtual {v2, v3}, Landroid/content/Context;->getSystemService(Ljava/lang/String;)Ljava/lang/Object;
+
+    move-result-object v2
+
+    check-cast v2, Landroid/net/ConnectivityManager;
+
+    iput-object v2, p0, Lcom/android/server/location/GnssNetworkConnectivityHandler;->mConnMgr:Landroid/net/ConnectivityManager;
+
+    .line 200
     invoke-direct {p0}, Lcom/android/server/location/GnssNetworkConnectivityHandler;->createSuplConnectivityCallback()Landroid/net/ConnectivityManager$NetworkCallback;
 
-    move-result-object p1
+    move-result-object v2
 
-    iput-object p1, p0, Lcom/android/server/location/GnssNetworkConnectivityHandler;->mSuplConnectivityCallback:Landroid/net/ConnectivityManager$NetworkCallback;
+    iput-object v2, p0, Lcom/android/server/location/GnssNetworkConnectivityHandler;->mSuplConnectivityCallback:Landroid/net/ConnectivityManager$NetworkCallback;
 
-    .line 179
+    .line 201
     return-void
+.end method
+
+.method static synthetic access$000(Lcom/android/server/location/GnssNetworkConnectivityHandler;)I
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/location/GnssNetworkConnectivityHandler;
+
+    .line 52
+    iget v0, p0, Lcom/android/server/location/GnssNetworkConnectivityHandler;->mActiveSubId:I
+
+    return v0
+.end method
+
+.method static synthetic access$002(Lcom/android/server/location/GnssNetworkConnectivityHandler;I)I
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/location/GnssNetworkConnectivityHandler;
+    .param p1, "x1"  # I
+
+    .line 52
+    iput p1, p0, Lcom/android/server/location/GnssNetworkConnectivityHandler;->mActiveSubId:I
+
+    return p1
 .end method
 
 .method static synthetic access$100()Z
     .registers 1
 
-    .line 42
-    sget-boolean v0, Lcom/android/server/location/GnssNetworkConnectivityHandler;->VERBOSE:Z
-
-    return v0
-.end method
-
-.method static synthetic access$200()Z
-    .registers 1
-
-    .line 42
+    .line 52
     sget-boolean v0, Lcom/android/server/location/GnssNetworkConnectivityHandler;->DEBUG:Z
 
     return v0
 .end method
 
-.method static synthetic access$300(Lcom/android/server/location/GnssNetworkConnectivityHandler;)Lcom/android/server/location/GnssNetworkConnectivityHandler$GnssNetworkListener;
-    .registers 1
+.method static synthetic access$200(Lcom/android/server/location/GnssNetworkConnectivityHandler;)Ljava/util/HashMap;
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/location/GnssNetworkConnectivityHandler;
 
-    .line 42
-    iget-object p0, p0, Lcom/android/server/location/GnssNetworkConnectivityHandler;->mGnssNetworkListener:Lcom/android/server/location/GnssNetworkConnectivityHandler$GnssNetworkListener;
+    .line 52
+    iget-object v0, p0, Lcom/android/server/location/GnssNetworkConnectivityHandler;->mPhoneStateListeners:Ljava/util/HashMap;
 
-    return-object p0
+    return-object v0
 .end method
 
-.method static synthetic access$400(Lcom/android/server/location/GnssNetworkConnectivityHandler;Landroid/net/Network;ZLandroid/net/NetworkCapabilities;)V
-    .registers 4
+.method static synthetic access$202(Lcom/android/server/location/GnssNetworkConnectivityHandler;Ljava/util/HashMap;)Ljava/util/HashMap;
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/location/GnssNetworkConnectivityHandler;
+    .param p1, "x1"  # Ljava/util/HashMap;
 
-    .line 42
+    .line 52
+    iput-object p1, p0, Lcom/android/server/location/GnssNetworkConnectivityHandler;->mPhoneStateListeners:Ljava/util/HashMap;
+
+    return-object p1
+.end method
+
+.method static synthetic access$300(Lcom/android/server/location/GnssNetworkConnectivityHandler;)Landroid/content/Context;
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/location/GnssNetworkConnectivityHandler;
+
+    .line 52
+    iget-object v0, p0, Lcom/android/server/location/GnssNetworkConnectivityHandler;->mContext:Landroid/content/Context;
+
+    return-object v0
+.end method
+
+.method static synthetic access$500()Z
+    .registers 1
+
+    .line 52
+    sget-boolean v0, Lcom/android/server/location/GnssNetworkConnectivityHandler;->VERBOSE:Z
+
+    return v0
+.end method
+
+.method static synthetic access$600(Lcom/android/server/location/GnssNetworkConnectivityHandler;)Lcom/android/server/location/GnssNetworkConnectivityHandler$GnssNetworkListener;
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/location/GnssNetworkConnectivityHandler;
+
+    .line 52
+    iget-object v0, p0, Lcom/android/server/location/GnssNetworkConnectivityHandler;->mGnssNetworkListener:Lcom/android/server/location/GnssNetworkConnectivityHandler$GnssNetworkListener;
+
+    return-object v0
+.end method
+
+.method static synthetic access$700(Lcom/android/server/location/GnssNetworkConnectivityHandler;Landroid/net/Network;ZLandroid/net/NetworkCapabilities;)V
+    .registers 4
+    .param p0, "x0"  # Lcom/android/server/location/GnssNetworkConnectivityHandler;
+    .param p1, "x1"  # Landroid/net/Network;
+    .param p2, "x2"  # Z
+    .param p3, "x3"  # Landroid/net/NetworkCapabilities;
+
+    .line 52
     invoke-direct {p0, p1, p2, p3}, Lcom/android/server/location/GnssNetworkConnectivityHandler;->handleUpdateNetworkState(Landroid/net/Network;ZLandroid/net/NetworkCapabilities;)V
 
     return-void
 .end method
 
-.method static synthetic access$500(Lcom/android/server/location/GnssNetworkConnectivityHandler;Landroid/net/Network;)V
+.method static synthetic access$800(Lcom/android/server/location/GnssNetworkConnectivityHandler;Landroid/net/Network;)V
     .registers 2
+    .param p0, "x0"  # Lcom/android/server/location/GnssNetworkConnectivityHandler;
+    .param p1, "x1"  # Landroid/net/Network;
 
-    .line 42
+    .line 52
     invoke-direct {p0, p1}, Lcom/android/server/location/GnssNetworkConnectivityHandler;->handleSuplConnectionAvailable(Landroid/net/Network;)V
 
     return-void
 .end method
 
-.method static synthetic access$600(Lcom/android/server/location/GnssNetworkConnectivityHandler;I)V
+.method static synthetic access$900(Lcom/android/server/location/GnssNetworkConnectivityHandler;I)V
     .registers 2
+    .param p0, "x0"  # Lcom/android/server/location/GnssNetworkConnectivityHandler;
+    .param p1, "x1"  # I
 
-    .line 42
+    .line 52
     invoke-direct {p0, p1}, Lcom/android/server/location/GnssNetworkConnectivityHandler;->handleReleaseSuplConnection(I)V
 
     return-void
@@ -253,7 +373,7 @@
 .method private agpsDataConnStateAsString()Ljava/lang/String;
     .registers 3
 
-    .line 543
+    .line 655
     iget v0, p0, Lcom/android/server/location/GnssNetworkConnectivityHandler;->mAGpsDataConnectionState:I
 
     if-eqz v0, :cond_29
@@ -266,7 +386,7 @@
 
     if-eq v0, v1, :cond_23
 
-    .line 551
+    .line 663
     new-instance v0, Ljava/lang/StringBuilder;
 
     invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
@@ -289,19 +409,19 @@
 
     return-object v0
 
-    .line 547
+    .line 659
     :cond_23
     const-string v0, "OPEN"
 
     return-object v0
 
-    .line 549
+    .line 661
     :cond_26
     const-string v0, "OPENING"
 
     return-object v0
 
-    .line 545
+    .line 657
     :cond_29
     const-string v0, "CLOSED"
 
@@ -310,8 +430,9 @@
 
 .method private agpsDataConnStatusAsString(I)Ljava/lang/String;
     .registers 4
+    .param p1, "agpsDataConnStatus"  # I
 
-    .line 559
+    .line 671
     const/4 v0, 0x1
 
     if-eq p1, v0, :cond_32
@@ -332,7 +453,7 @@
 
     if-eq p1, v0, :cond_26
 
-    .line 571
+    .line 683
     new-instance v0, Ljava/lang/StringBuilder;
 
     invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
@@ -343,51 +464,52 @@
 
     invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    const-string p1, ")"
+    const-string v1, ")"
 
-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    return-object p1
+    return-object v0
 
-    .line 565
+    .line 677
     :cond_26
-    const-string p1, "FAILED"
+    const-string v0, "FAILED"
 
-    return-object p1
+    return-object v0
 
-    .line 563
+    .line 675
     :cond_29
-    const-string p1, "DONE"
+    const-string v0, "DONE"
 
-    return-object p1
+    return-object v0
 
-    .line 561
+    .line 673
     :cond_2c
-    const-string p1, "CONNECTED"
+    const-string v0, "CONNECTED"
 
-    return-object p1
+    return-object v0
 
-    .line 567
+    .line 679
     :cond_2f
-    const-string p1, "RELEASE"
+    const-string v0, "RELEASE"
 
-    return-object p1
+    return-object v0
 
-    .line 569
+    .line 681
     :cond_32
-    const-string p1, "REQUEST"
+    const-string v0, "REQUEST"
 
-    return-object p1
+    return-object v0
 .end method
 
 .method private agpsTypeAsString(I)Ljava/lang/String;
     .registers 4
+    .param p1, "agpsType"  # I
 
-    .line 576
+    .line 688
     const/4 v0, 0x1
 
     if-eq p1, v0, :cond_2c
@@ -404,7 +526,7 @@
 
     if-eq p1, v0, :cond_23
 
-    .line 586
+    .line 698
     new-instance v0, Ljava/lang/StringBuilder;
 
     invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
@@ -415,56 +537,45 @@
 
     invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    const-string p1, ")"
+    const-string v1, ")"
 
-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    return-object p1
+    return-object v0
 
-    .line 584
+    .line 696
     :cond_23
-    const-string p1, "IMS"
+    const-string v0, "IMS"
 
-    return-object p1
+    return-object v0
 
-    .line 582
+    .line 694
     :cond_26
-    const-string p1, "EIMS"
+    const-string v0, "EIMS"
 
-    return-object p1
+    return-object v0
 
-    .line 580
+    .line 692
     :cond_29
-    const-string p1, "C2K"
+    const-string v0, "C2K"
 
-    return-object p1
+    return-object v0
 
-    .line 578
+    .line 690
     :cond_2c
-    const-string p1, "SUPL"
+    const-string v0, "SUPL"
 
-    return-object p1
+    return-object v0
 .end method
 
 .method private createNetworkConnectivityCallback()Landroid/net/ConnectivityManager$NetworkCallback;
     .registers 2
 
-    .line 227
-    new-instance v0, Lcom/android/server/location/GnssNetworkConnectivityHandler$1;
-
-    invoke-direct {v0, p0}, Lcom/android/server/location/GnssNetworkConnectivityHandler$1;-><init>(Lcom/android/server/location/GnssNetworkConnectivityHandler;)V
-
-    return-object v0
-.end method
-
-.method private createSuplConnectivityCallback()Landroid/net/ConnectivityManager$NetworkCallback;
-    .registers 2
-
-    .line 279
+    .line 333
     new-instance v0, Lcom/android/server/location/GnssNetworkConnectivityHandler$2;
 
     invoke-direct {v0, p0}, Lcom/android/server/location/GnssNetworkConnectivityHandler$2;-><init>(Lcom/android/server/location/GnssNetworkConnectivityHandler;)V
@@ -472,10 +583,21 @@
     return-object v0
 .end method
 
+.method private createSuplConnectivityCallback()Landroid/net/ConnectivityManager$NetworkCallback;
+    .registers 2
+
+    .line 385
+    new-instance v0, Lcom/android/server/location/GnssNetworkConnectivityHandler$3;
+
+    invoke-direct {v0, p0}, Lcom/android/server/location/GnssNetworkConnectivityHandler$3;-><init>(Lcom/android/server/location/GnssNetworkConnectivityHandler;)V
+
+    return-object v0
+.end method
+
 .method private ensureInHandlerThread()V
     .registers 3
 
-    .line 533
+    .line 645
     iget-object v0, p0, Lcom/android/server/location/GnssNetworkConnectivityHandler;->mHandler:Landroid/os/Handler;
 
     if-eqz v0, :cond_11
@@ -492,10 +614,10 @@
 
     if-ne v0, v1, :cond_11
 
-    .line 534
+    .line 646
     return-void
 
-    .line 536
+    .line 648
     :cond_11
     new-instance v0, Ljava/lang/IllegalStateException;
 
@@ -507,263 +629,307 @@
 .end method
 
 .method private getApnIpType(Ljava/lang/String;)I
-    .registers 14
+    .registers 19
+    .param p1, "apn"  # Ljava/lang/String;
 
-    .line 591
-    const-string v0, "GnssNetworkConnectivityHandler"
+    .line 703
+    move-object/from16 v1, p0
 
-    invoke-direct {p0}, Lcom/android/server/location/GnssNetworkConnectivityHandler;->ensureInHandlerThread()V
+    move-object/from16 v2, p1
 
-    .line 592
-    const/4 v1, 0x0
+    const-string v3, "GnssNetworkConnectivityHandler"
 
-    if-nez p1, :cond_9
+    invoke-direct/range {p0 .. p0}, Lcom/android/server/location/GnssNetworkConnectivityHandler;->ensureInHandlerThread()V
 
-    .line 593
-    return v1
+    .line 704
+    const/4 v0, 0x0
 
-    .line 595
-    :cond_9
-    iget-object v2, p0, Lcom/android/server/location/GnssNetworkConnectivityHandler;->mContext:Landroid/content/Context;
+    if-nez v2, :cond_d
 
-    .line 596
-    const-string/jumbo v3, "phone"
+    .line 705
+    return v0
 
-    invoke-virtual {v2, v3}, Landroid/content/Context;->getSystemService(Ljava/lang/String;)Ljava/lang/Object;
+    .line 707
+    :cond_d
+    iget-object v4, v1, Lcom/android/server/location/GnssNetworkConnectivityHandler;->mContext:Landroid/content/Context;
 
-    move-result-object v2
+    .line 708
+    const-string/jumbo v5, "phone"
 
-    check-cast v2, Landroid/telephony/TelephonyManager;
+    invoke-virtual {v4, v5}, Landroid/content/Context;->getSystemService(Ljava/lang/String;)Ljava/lang/Object;
 
-    .line 597
-    invoke-virtual {v2}, Landroid/telephony/TelephonyManager;->getServiceState()Landroid/telephony/ServiceState;
+    move-result-object v4
 
-    move-result-object v3
+    check-cast v4, Landroid/telephony/TelephonyManager;
 
-    .line 598
-    nop
+    .line 709
+    .local v4, "phone":Landroid/telephony/TelephonyManager;
+    invoke-virtual {v4}, Landroid/telephony/TelephonyManager;->getServiceState()Landroid/telephony/ServiceState;
 
-    .line 599
-    nop
+    move-result-object v5
 
-    .line 603
-    if-eqz v3, :cond_26
+    .line 710
+    .local v5, "serviceState":Landroid/telephony/ServiceState;
+    const/4 v6, 0x0
 
-    invoke-virtual {v3}, Landroid/telephony/ServiceState;->getDataRoamingFromRegistration()Z
+    .line 711
+    .local v6, "projection":Ljava/lang/String;
+    const/4 v7, 0x0
 
-    move-result v3
+    .line 715
+    .local v7, "selection":Ljava/lang/String;
+    if-eqz v5, :cond_2a
 
-    if-eqz v3, :cond_26
+    invoke-virtual {v5}, Landroid/telephony/ServiceState;->getDataRoamingFromRegistration()Z
 
-    .line 604
-    const-string/jumbo v3, "roaming_protocol"
+    move-result v8
 
-    goto :goto_29
+    if-eqz v8, :cond_2a
 
-    .line 606
-    :cond_26
-    const-string/jumbo v3, "protocol"
+    .line 716
+    const-string/jumbo v6, "roaming_protocol"
 
-    .line 609
-    :goto_29
-    invoke-virtual {v2}, Landroid/telephony/TelephonyManager;->getNetworkType()I
+    goto :goto_2d
 
-    move-result v2
+    .line 718
+    :cond_2a
+    const-string/jumbo v6, "protocol"
 
-    const/4 v4, 0x3
+    .line 721
+    :goto_2d
+    invoke-virtual {v4}, Landroid/telephony/TelephonyManager;->getNetworkType()I
 
-    const/4 v5, 0x1
+    move-result v8
 
-    if-nez v2, :cond_42
+    const/4 v9, 0x3
 
-    iget v2, p0, Lcom/android/server/location/GnssNetworkConnectivityHandler;->mAGpsType:I
+    const/4 v10, 0x1
 
-    if-ne v4, v2, :cond_42
+    if-nez v8, :cond_45
 
-    .line 611
-    new-array v2, v5, [Ljava/lang/Object;
+    iget v8, v1, Lcom/android/server/location/GnssNetworkConnectivityHandler;->mAGpsType:I
 
-    aput-object p1, v2, v1
+    if-ne v9, v8, :cond_45
 
-    const-string/jumbo v6, "type like \'%%emergency%%\' and apn = \'%s\' and carrier_enabled = 1"
+    .line 723
+    new-array v8, v10, [Ljava/lang/Object;
 
-    invoke-static {v6, v2}, Ljava/lang/String;->format(Ljava/lang/String;[Ljava/lang/Object;)Ljava/lang/String;
+    aput-object v2, v8, v0
 
-    move-result-object v2
+    const-string/jumbo v11, "type like \'%%emergency%%\' and apn = \'%s\' and carrier_enabled = 1"
 
-    move-object v9, v2
+    invoke-static {v11, v8}, Ljava/lang/String;->format(Ljava/lang/String;[Ljava/lang/Object;)Ljava/lang/String;
 
-    goto :goto_4d
+    move-result-object v7
 
-    .line 614
-    :cond_42
-    new-array v2, v5, [Ljava/lang/Object;
+    goto :goto_4f
 
-    aput-object p1, v2, v1
+    .line 726
+    :cond_45
+    new-array v8, v10, [Ljava/lang/Object;
 
-    const-string v6, "current = 1 and apn = \'%s\' and carrier_enabled = 1"
+    aput-object v2, v8, v0
 
-    invoke-static {v6, v2}, Ljava/lang/String;->format(Ljava/lang/String;[Ljava/lang/Object;)Ljava/lang/String;
+    const-string v11, "current = 1 and apn = \'%s\' and carrier_enabled = 1"
 
-    move-result-object v2
+    invoke-static {v11, v8}, Ljava/lang/String;->format(Ljava/lang/String;[Ljava/lang/Object;)Ljava/lang/String;
 
-    move-object v9, v2
+    move-result-object v7
 
-    .line 616
-    :goto_4d
-    :try_start_4d
-    iget-object v2, p0, Lcom/android/server/location/GnssNetworkConnectivityHandler;->mContext:Landroid/content/Context;
+    .line 728
+    :goto_4f
+    :try_start_4f
+    iget-object v8, v1, Lcom/android/server/location/GnssNetworkConnectivityHandler;->mContext:Landroid/content/Context;
 
-    invoke-virtual {v2}, Landroid/content/Context;->getContentResolver()Landroid/content/ContentResolver;
+    invoke-virtual {v8}, Landroid/content/Context;->getContentResolver()Landroid/content/ContentResolver;
 
-    move-result-object v6
+    move-result-object v11
 
-    sget-object v7, Landroid/provider/Telephony$Carriers;->CONTENT_URI:Landroid/net/Uri;
+    sget-object v12, Landroid/provider/Telephony$Carriers;->CONTENT_URI:Landroid/net/Uri;
 
-    new-array v8, v5, [Ljava/lang/String;
+    new-array v13, v10, [Ljava/lang/String;
 
-    aput-object v3, v8, v1
+    aput-object v6, v13, v0
 
-    const/4 v10, 0x0
+    const/4 v15, 0x0
 
-    const-string/jumbo v11, "name ASC"
+    const-string/jumbo v16, "name ASC"
 
-    invoke-virtual/range {v6 .. v11}, Landroid/content/ContentResolver;->query(Landroid/net/Uri;[Ljava/lang/String;Ljava/lang/String;[Ljava/lang/String;Ljava/lang/String;)Landroid/database/Cursor;
+    move-object v14, v7
 
-    move-result-object v2
-    :try_end_61
-    .catch Ljava/lang/Exception; {:try_start_4d .. :try_end_61} :catch_9e
+    invoke-virtual/range {v11 .. v16}, Landroid/content/ContentResolver;->query(Landroid/net/Uri;[Ljava/lang/String;Ljava/lang/String;[Ljava/lang/String;Ljava/lang/String;)Landroid/database/Cursor;
 
-    .line 622
-    if-eqz v2, :cond_77
+    move-result-object v8
+    :try_end_64
+    .catch Ljava/lang/Exception; {:try_start_4f .. :try_end_64} :catch_a4
 
-    :try_start_63
-    invoke-interface {v2}, Landroid/database/Cursor;->moveToFirst()Z
+    .line 734
+    .local v8, "cursor":Landroid/database/Cursor;
+    if-eqz v8, :cond_7b
 
-    move-result v3
+    :try_start_66
+    invoke-interface {v8}, Landroid/database/Cursor;->moveToFirst()Z
 
-    if-eqz v3, :cond_77
+    move-result v10
 
-    .line 623
-    invoke-interface {v2, v1}, Landroid/database/Cursor;->getString(I)Ljava/lang/String;
+    if-eqz v10, :cond_7b
 
-    move-result-object v1
+    .line 735
+    invoke-interface {v8, v0}, Landroid/database/Cursor;->getString(I)Ljava/lang/String;
 
-    invoke-direct {p0, v1, p1}, Lcom/android/server/location/GnssNetworkConnectivityHandler;->translateToApnIpType(Ljava/lang/String;Ljava/lang/String;)I
+    move-result-object v0
 
-    move-result v1
-    :try_end_71
-    .catchall {:try_start_63 .. :try_end_71} :catchall_75
+    invoke-direct {v1, v0, v2}, Lcom/android/server/location/GnssNetworkConnectivityHandler;->translateToApnIpType(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 627
-    :try_start_71
-    invoke-interface {v2}, Landroid/database/Cursor;->close()V
+    move-result v0
     :try_end_74
-    .catch Ljava/lang/Exception; {:try_start_71 .. :try_end_74} :catch_9e
+    .catchall {:try_start_66 .. :try_end_74} :catchall_78
 
-    .line 623
-    return v1
+    .line 739
+    :try_start_74
+    invoke-interface {v8}, Landroid/database/Cursor;->close()V
+    :try_end_77
+    .catch Ljava/lang/Exception; {:try_start_74 .. :try_end_77} :catch_a4
 
-    .line 616
-    :catchall_75
-    move-exception v1
+    .line 735
+    return v0
 
-    goto :goto_91
+    .line 728
+    :catchall_78
+    move-exception v0
 
-    .line 625
-    :cond_77
-    :try_start_77
-    new-instance v1, Ljava/lang/StringBuilder;
+    move-object v10, v0
 
-    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
+    goto :goto_95
 
-    const-string v3, "No entry found in query for APN: "
+    .line 737
+    :cond_7b
+    :try_start_7b
+    new-instance v0, Ljava/lang/StringBuilder;
 
-    invoke-virtual {v1, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
 
-    invoke-virtual {v1, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    const-string v10, "No entry found in query for APN: "
 
-    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v0, v10}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    move-result-object v1
+    invoke-virtual {v0, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-static {v0, v1}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;)I
-    :try_end_8b
-    .catchall {:try_start_77 .. :try_end_8b} :catchall_75
+    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    .line 627
-    if-eqz v2, :cond_90
+    move-result-object v0
 
-    :try_start_8d
-    invoke-interface {v2}, Landroid/database/Cursor;->close()V
-    :try_end_90
-    .catch Ljava/lang/Exception; {:try_start_8d .. :try_end_90} :catch_9e
+    invoke-static {v3, v0}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;)I
+    :try_end_8f
+    .catchall {:try_start_7b .. :try_end_8f} :catchall_78
 
-    .line 629
-    :cond_90
-    goto :goto_b3
+    .line 739
+    if-eqz v8, :cond_94
 
-    .line 616
-    :goto_91
     :try_start_91
-    throw v1
-    :try_end_92
-    .catchall {:try_start_91 .. :try_end_92} :catchall_92
+    invoke-interface {v8}, Landroid/database/Cursor;->close()V
+    :try_end_94
+    .catch Ljava/lang/Exception; {:try_start_91 .. :try_end_94} :catch_a4
 
-    .line 627
-    :catchall_92
-    move-exception v3
+    .line 741
+    .end local v8  # "cursor":Landroid/database/Cursor;
+    :cond_94
+    goto :goto_b9
 
-    if-eqz v2, :cond_9d
-
+    .line 728
+    .end local v4  # "phone":Landroid/telephony/TelephonyManager;
+    .end local v5  # "serviceState":Landroid/telephony/ServiceState;
+    .end local v6  # "projection":Ljava/lang/String;
+    .end local v7  # "selection":Ljava/lang/String;
+    .end local p0  # "this":Lcom/android/server/location/GnssNetworkConnectivityHandler;
+    .end local p1  # "apn":Ljava/lang/String;
+    :goto_95
     :try_start_95
-    invoke-interface {v2}, Landroid/database/Cursor;->close()V
-    :try_end_98
-    .catchall {:try_start_95 .. :try_end_98} :catchall_99
+    throw v10
+    :try_end_96
+    .catchall {:try_start_95 .. :try_end_96} :catchall_96
 
-    goto :goto_9d
+    .line 739
+    .restart local v4  # "phone":Landroid/telephony/TelephonyManager;
+    .restart local v5  # "serviceState":Landroid/telephony/ServiceState;
+    .restart local v6  # "projection":Ljava/lang/String;
+    .restart local v7  # "selection":Ljava/lang/String;
+    .restart local v8  # "cursor":Landroid/database/Cursor;
+    .restart local p0  # "this":Lcom/android/server/location/GnssNetworkConnectivityHandler;
+    .restart local p1  # "apn":Ljava/lang/String;
+    :catchall_96
+    move-exception v0
 
-    :catchall_99
-    move-exception v2
+    move-object v11, v0
+
+    if-eqz v8, :cond_a3
 
     :try_start_9a
-    invoke-virtual {v1, v2}, Ljava/lang/Throwable;->addSuppressed(Ljava/lang/Throwable;)V
+    invoke-interface {v8}, Landroid/database/Cursor;->close()V
+    :try_end_9d
+    .catchall {:try_start_9a .. :try_end_9d} :catchall_9e
 
-    :cond_9d
-    :goto_9d
-    throw v3
-    :try_end_9e
-    .catch Ljava/lang/Exception; {:try_start_9a .. :try_end_9e} :catch_9e
+    goto :goto_a3
 
-    :catch_9e
-    move-exception v1
+    :catchall_9e
+    move-exception v0
 
-    .line 628
-    new-instance v2, Ljava/lang/StringBuilder;
+    move-object v12, v0
 
-    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
+    :try_start_a0
+    invoke-virtual {v10, v12}, Ljava/lang/Throwable;->addSuppressed(Ljava/lang/Throwable;)V
 
-    const-string v3, "Error encountered on APN query for: "
+    .end local v4  # "phone":Landroid/telephony/TelephonyManager;
+    .end local v5  # "serviceState":Landroid/telephony/ServiceState;
+    .end local v6  # "projection":Ljava/lang/String;
+    .end local v7  # "selection":Ljava/lang/String;
+    .end local p0  # "this":Lcom/android/server/location/GnssNetworkConnectivityHandler;
+    .end local p1  # "apn":Ljava/lang/String;
+    :cond_a3
+    :goto_a3
+    throw v11
+    :try_end_a4
+    .catch Ljava/lang/Exception; {:try_start_a0 .. :try_end_a4} :catch_a4
 
-    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    .end local v8  # "cursor":Landroid/database/Cursor;
+    .restart local v4  # "phone":Landroid/telephony/TelephonyManager;
+    .restart local v5  # "serviceState":Landroid/telephony/ServiceState;
+    .restart local v6  # "projection":Ljava/lang/String;
+    .restart local v7  # "selection":Ljava/lang/String;
+    .restart local p0  # "this":Lcom/android/server/location/GnssNetworkConnectivityHandler;
+    .restart local p1  # "apn":Ljava/lang/String;
+    :catch_a4
+    move-exception v0
 
-    invoke-virtual {v2, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    .line 740
+    .local v0, "e":Ljava/lang/Exception;
+    new-instance v8, Ljava/lang/StringBuilder;
 
-    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-direct {v8}, Ljava/lang/StringBuilder;-><init>()V
 
-    move-result-object p1
+    const-string v10, "Error encountered on APN query for: "
 
-    invoke-static {v0, p1, v1}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    invoke-virtual {v8, v10}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    .line 631
-    :goto_b3
-    return v4
+    invoke-virtual {v8, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v8}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v8
+
+    invoke-static {v3, v8, v0}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+
+    .line 743
+    .end local v0  # "e":Ljava/lang/Exception;
+    :goto_b9
+    return v9
 .end method
 
 .method private getNetworkCapability(I)I
     .registers 5
+    .param p1, "agpsType"  # I
 
-    .line 475
+    .line 587
     const/4 v0, 0x1
 
     if-eq p1, v0, :cond_27
@@ -780,10 +946,10 @@
 
     if-ne p1, v0, :cond_d
 
-    .line 482
+    .line 594
     return v0
 
-    .line 484
+    .line 596
     :cond_d
     new-instance v0, Ljava/lang/IllegalArgumentException;
 
@@ -799,27 +965,28 @@
 
     invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v1
 
-    invoke-direct {v0, p1}, Ljava/lang/IllegalArgumentException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v0, v1}, Ljava/lang/IllegalArgumentException;-><init>(Ljava/lang/String;)V
 
     throw v0
 
-    .line 480
+    .line 592
     :cond_24
-    const/16 p1, 0xa
+    const/16 v0, 0xa
 
-    return p1
+    return v0
 
-    .line 478
+    .line 590
     :cond_27
     return v0
 .end method
 
 .method private handleReleaseSuplConnection(I)V
     .registers 8
+    .param p1, "agpsDataConnStatus"  # I
 
-    .line 489
+    .line 601
     sget-boolean v0, Lcom/android/server/location/GnssNetworkConnectivityHandler;->DEBUG:Z
 
     const-string v1, "GnssNetworkConnectivityHandler"
@@ -830,10 +997,10 @@
 
     if-eqz v0, :cond_21
 
-    .line 490
+    .line 602
     new-array v0, v3, [Ljava/lang/Object;
 
-    .line 492
+    .line 604
     invoke-direct {p0}, Lcom/android/server/location/GnssNetworkConnectivityHandler;->agpsDataConnStateAsString()Ljava/lang/String;
 
     move-result-object v4
@@ -842,51 +1009,53 @@
 
     const/4 v4, 0x1
 
-    .line 493
+    .line 605
     invoke-direct {p0, p1}, Lcom/android/server/location/GnssNetworkConnectivityHandler;->agpsDataConnStatusAsString(I)Ljava/lang/String;
 
     move-result-object v5
 
     aput-object v5, v0, v4
 
-    .line 490
+    .line 602
     const-string/jumbo v4, "releaseSuplConnection, state=%s, status=%s"
 
     invoke-static {v4, v0}, Ljava/lang/String;->format(Ljava/lang/String;[Ljava/lang/Object;)Ljava/lang/String;
 
     move-result-object v0
 
-    .line 494
+    .line 606
+    .local v0, "message":Ljava/lang/String;
     invoke-static {v1, v0}, Landroid/util/Log;->d(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 497
+    .line 609
+    .end local v0  # "message":Ljava/lang/String;
     :cond_21
     iget v0, p0, Lcom/android/server/location/GnssNetworkConnectivityHandler;->mAGpsDataConnectionState:I
 
     if-nez v0, :cond_26
 
-    .line 498
+    .line 610
     return-void
 
-    .line 501
+    .line 613
     :cond_26
     iput v2, p0, Lcom/android/server/location/GnssNetworkConnectivityHandler;->mAGpsDataConnectionState:I
 
-    .line 502
+    .line 614
     iget-object v0, p0, Lcom/android/server/location/GnssNetworkConnectivityHandler;->mConnMgr:Landroid/net/ConnectivityManager;
 
     iget-object v2, p0, Lcom/android/server/location/GnssNetworkConnectivityHandler;->mSuplConnectivityCallback:Landroid/net/ConnectivityManager$NetworkCallback;
 
     invoke-virtual {v0, v2}, Landroid/net/ConnectivityManager;->unregisterNetworkCallback(Landroid/net/ConnectivityManager$NetworkCallback;)V
 
-    .line 503
+    .line 615
     if-eq p1, v3, :cond_4d
 
     const/4 v0, 0x5
 
     if-eq p1, v0, :cond_49
 
-    .line 511
+    .line 623
     new-instance v0, Ljava/lang/StringBuilder;
 
     invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
@@ -899,48 +1068,50 @@
 
     invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    invoke-static {v1, p1}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v0}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;)I
 
     goto :goto_51
 
-    .line 505
+    .line 617
     :cond_49
     invoke-direct {p0}, Lcom/android/server/location/GnssNetworkConnectivityHandler;->native_agps_data_conn_failed()V
 
-    .line 506
+    .line 618
     goto :goto_51
 
-    .line 508
+    .line 620
     :cond_4d
     invoke-direct {p0}, Lcom/android/server/location/GnssNetworkConnectivityHandler;->native_agps_data_conn_closed()V
 
-    .line 509
+    .line 621
     nop
 
-    .line 513
+    .line 625
     :goto_51
     return-void
 .end method
 
 .method private handleRequestSuplConnection(I[B)V
-    .registers 7
+    .registers 9
+    .param p1, "agpsType"  # I
+    .param p2, "suplIpAddr"  # [B
 
-    .line 434
+    .line 540
     const/4 v0, 0x0
 
     iput-object v0, p0, Lcom/android/server/location/GnssNetworkConnectivityHandler;->mAGpsDataConnectionIpAddr:Ljava/net/InetAddress;
 
-    .line 435
+    .line 541
     iput p1, p0, Lcom/android/server/location/GnssNetworkConnectivityHandler;->mAGpsType:I
 
-    .line 436
+    .line 542
     const-string v0, "GnssNetworkConnectivityHandler"
 
     if-eqz p2, :cond_5b
 
-    .line 437
+    .line 543
     sget-boolean v1, Lcom/android/server/location/GnssNetworkConnectivityHandler;->VERBOSE:Z
 
     if-eqz v1, :cond_25
@@ -965,7 +1136,7 @@
 
     invoke-static {v0, v1}, Landroid/util/Log;->v(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 439
+    .line 545
     :cond_25
     :try_start_25
     invoke-static {p2}, Ljava/net/InetAddress;->getByAddress([B)Ljava/net/InetAddress;
@@ -974,7 +1145,7 @@
 
     iput-object v1, p0, Lcom/android/server/location/GnssNetworkConnectivityHandler;->mAGpsDataConnectionIpAddr:Ljava/net/InetAddress;
 
-    .line 440
+    .line 546
     sget-boolean v1, Lcom/android/server/location/GnssNetworkConnectivityHandler;->DEBUG:Z
 
     if-eqz v1, :cond_45
@@ -999,15 +1170,16 @@
     :try_end_45
     .catch Ljava/net/UnknownHostException; {:try_start_25 .. :try_end_45} :catch_46
 
-    .line 443
+    .line 549
     :cond_45
     goto :goto_5b
 
-    .line 441
+    .line 547
     :catch_46
     move-exception v1
 
-    .line 442
+    .line 548
+    .local v1, "e":Ljava/net/UnknownHostException;
     new-instance v2, Ljava/lang/StringBuilder;
 
     invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
@@ -1020,135 +1192,188 @@
 
     invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p2
+    move-result-object v2
 
-    invoke-static {v0, p2, v1}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    invoke-static {v0, v2, v1}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
-    .line 446
+    .line 552
+    .end local v1  # "e":Ljava/net/UnknownHostException;
     :cond_5b
     :goto_5b
-    sget-boolean p2, Lcom/android/server/location/GnssNetworkConnectivityHandler;->DEBUG:Z
+    sget-boolean v1, Lcom/android/server/location/GnssNetworkConnectivityHandler;->DEBUG:Z
 
-    const/4 v1, 0x1
+    const/4 v2, 0x1
 
-    const/4 v2, 0x0
+    const/4 v3, 0x0
 
-    if-eqz p2, :cond_7f
+    if-eqz v1, :cond_7f
 
-    .line 447
-    const/4 p2, 0x3
+    .line 553
+    const/4 v1, 0x3
 
-    new-array p2, p2, [Ljava/lang/Object;
+    new-array v1, v1, [Ljava/lang/Object;
 
-    .line 449
+    .line 555
     invoke-direct {p0}, Lcom/android/server/location/GnssNetworkConnectivityHandler;->agpsDataConnStateAsString()Ljava/lang/String;
+
+    move-result-object v4
+
+    aput-object v4, v1, v3
+
+    .line 556
+    invoke-direct {p0, p1}, Lcom/android/server/location/GnssNetworkConnectivityHandler;->agpsTypeAsString(I)Ljava/lang/String;
+
+    move-result-object v4
+
+    aput-object v4, v1, v2
+
+    const/4 v4, 0x2
+
+    iget-object v5, p0, Lcom/android/server/location/GnssNetworkConnectivityHandler;->mAGpsDataConnectionIpAddr:Ljava/net/InetAddress;
+
+    aput-object v5, v1, v4
+
+    .line 553
+    const-string/jumbo v4, "requestSuplConnection, state=%s, agpsType=%s, address=%s"
+
+    invoke-static {v4, v1}, Ljava/lang/String;->format(Ljava/lang/String;[Ljava/lang/Object;)Ljava/lang/String;
+
+    move-result-object v1
+
+    .line 558
+    .local v1, "message":Ljava/lang/String;
+    invoke-static {v0, v1}, Landroid/util/Log;->d(Ljava/lang/String;Ljava/lang/String;)I
+
+    .line 561
+    .end local v1  # "message":Ljava/lang/String;
+    :cond_7f
+    iget v1, p0, Lcom/android/server/location/GnssNetworkConnectivityHandler;->mAGpsDataConnectionState:I
+
+    if-eqz v1, :cond_84
+
+    .line 562
+    return-void
+
+    .line 564
+    :cond_84
+    iput v2, p0, Lcom/android/server/location/GnssNetworkConnectivityHandler;->mAGpsDataConnectionState:I
+
+    .line 569
+    new-instance v1, Landroid/net/NetworkRequest$Builder;
+
+    invoke-direct {v1}, Landroid/net/NetworkRequest$Builder;-><init>()V
+
+    .line 570
+    .local v1, "networkRequestBuilder":Landroid/net/NetworkRequest$Builder;
+    iget v2, p0, Lcom/android/server/location/GnssNetworkConnectivityHandler;->mAGpsType:I
+
+    invoke-direct {p0, v2}, Lcom/android/server/location/GnssNetworkConnectivityHandler;->getNetworkCapability(I)I
+
+    move-result v2
+
+    invoke-virtual {v1, v2}, Landroid/net/NetworkRequest$Builder;->addCapability(I)Landroid/net/NetworkRequest$Builder;
+
+    .line 571
+    invoke-virtual {v1, v3}, Landroid/net/NetworkRequest$Builder;->addTransportType(I)Landroid/net/NetworkRequest$Builder;
+
+    .line 574
+    iget-object v2, p0, Lcom/android/server/location/GnssNetworkConnectivityHandler;->mNiHandler:Lcom/android/internal/location/GpsNetInitiatedHandler;
+
+    invoke-virtual {v2}, Lcom/android/internal/location/GpsNetInitiatedHandler;->getInEmergency()Z
+
+    move-result v2
+
+    if-eqz v2, :cond_ca
+
+    iget v2, p0, Lcom/android/server/location/GnssNetworkConnectivityHandler;->mActiveSubId:I
+
+    if-ltz v2, :cond_ca
+
+    .line 575
+    sget-boolean v2, Lcom/android/server/location/GnssNetworkConnectivityHandler;->DEBUG:Z
+
+    if-eqz v2, :cond_c1
+
+    new-instance v2, Ljava/lang/StringBuilder;
+
+    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
+
+    const-string v3, "Adding Network Specifier: "
+
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    iget v3, p0, Lcom/android/server/location/GnssNetworkConnectivityHandler;->mActiveSubId:I
+
+    invoke-static {v3}, Ljava/lang/Integer;->toString(I)Ljava/lang/String;
 
     move-result-object v3
 
-    aput-object v3, p2, v2
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    .line 450
-    invoke-direct {p0, p1}, Lcom/android/server/location/GnssNetworkConnectivityHandler;->agpsTypeAsString(I)Ljava/lang/String;
+    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v2
 
-    aput-object p1, p2, v1
+    invoke-static {v0, v2}, Landroid/util/Log;->d(Ljava/lang/String;Ljava/lang/String;)I
 
-    const/4 p1, 0x2
+    .line 576
+    :cond_c1
+    iget v0, p0, Lcom/android/server/location/GnssNetworkConnectivityHandler;->mActiveSubId:I
 
-    iget-object v3, p0, Lcom/android/server/location/GnssNetworkConnectivityHandler;->mAGpsDataConnectionIpAddr:Ljava/net/InetAddress;
+    invoke-static {v0}, Ljava/lang/Integer;->toString(I)Ljava/lang/String;
 
-    aput-object v3, p2, p1
+    move-result-object v0
 
-    .line 447
-    const-string/jumbo p1, "requestSuplConnection, state=%s, agpsType=%s, address=%s"
+    invoke-virtual {v1, v0}, Landroid/net/NetworkRequest$Builder;->setNetworkSpecifier(Ljava/lang/String;)Landroid/net/NetworkRequest$Builder;
 
-    invoke-static {p1, p2}, Ljava/lang/String;->format(Ljava/lang/String;[Ljava/lang/Object;)Ljava/lang/String;
+    .line 578
+    :cond_ca
+    invoke-virtual {v1}, Landroid/net/NetworkRequest$Builder;->build()Landroid/net/NetworkRequest;
 
-    move-result-object p1
+    move-result-object v0
 
-    .line 452
-    invoke-static {v0, p1}, Landroid/util/Log;->d(Ljava/lang/String;Ljava/lang/String;)I
+    .line 579
+    .local v0, "networkRequest":Landroid/net/NetworkRequest;
+    iget-object v2, p0, Lcom/android/server/location/GnssNetworkConnectivityHandler;->mConnMgr:Landroid/net/ConnectivityManager;
 
-    .line 455
-    :cond_7f
-    iget p1, p0, Lcom/android/server/location/GnssNetworkConnectivityHandler;->mAGpsDataConnectionState:I
+    iget-object v3, p0, Lcom/android/server/location/GnssNetworkConnectivityHandler;->mSuplConnectivityCallback:Landroid/net/ConnectivityManager$NetworkCallback;
 
-    if-eqz p1, :cond_84
+    iget-object v4, p0, Lcom/android/server/location/GnssNetworkConnectivityHandler;->mHandler:Landroid/os/Handler;
 
-    .line 456
-    return-void
+    const/16 v5, 0x2710
 
-    .line 458
-    :cond_84
-    iput v1, p0, Lcom/android/server/location/GnssNetworkConnectivityHandler;->mAGpsDataConnectionState:I
+    invoke-virtual {v2, v0, v3, v4, v5}, Landroid/net/ConnectivityManager;->requestNetwork(Landroid/net/NetworkRequest;Landroid/net/ConnectivityManager$NetworkCallback;Landroid/os/Handler;I)V
 
-    .line 463
-    new-instance p1, Landroid/net/NetworkRequest$Builder;
-
-    invoke-direct {p1}, Landroid/net/NetworkRequest$Builder;-><init>()V
-
-    .line 464
-    iget p2, p0, Lcom/android/server/location/GnssNetworkConnectivityHandler;->mAGpsType:I
-
-    invoke-direct {p0, p2}, Lcom/android/server/location/GnssNetworkConnectivityHandler;->getNetworkCapability(I)I
-
-    move-result p2
-
-    invoke-virtual {p1, p2}, Landroid/net/NetworkRequest$Builder;->addCapability(I)Landroid/net/NetworkRequest$Builder;
-
-    .line 465
-    invoke-virtual {p1, v2}, Landroid/net/NetworkRequest$Builder;->addTransportType(I)Landroid/net/NetworkRequest$Builder;
-
-    .line 466
-    invoke-virtual {p1}, Landroid/net/NetworkRequest$Builder;->build()Landroid/net/NetworkRequest;
-
-    move-result-object p1
-
-    .line 467
-    iget-object p2, p0, Lcom/android/server/location/GnssNetworkConnectivityHandler;->mConnMgr:Landroid/net/ConnectivityManager;
-
-    iget-object v0, p0, Lcom/android/server/location/GnssNetworkConnectivityHandler;->mSuplConnectivityCallback:Landroid/net/ConnectivityManager$NetworkCallback;
-
-    iget-object v1, p0, Lcom/android/server/location/GnssNetworkConnectivityHandler;->mHandler:Landroid/os/Handler;
-
-    const/16 v2, 0x2710
-
-    invoke-virtual {p2, p1, v0, v1, v2}, Landroid/net/ConnectivityManager;->requestNetwork(Landroid/net/NetworkRequest;Landroid/net/ConnectivityManager$NetworkCallback;Landroid/os/Handler;I)V
-
-    .line 472
+    .line 584
     return-void
 .end method
 
 .method private handleSuplConnectionAvailable(Landroid/net/Network;)V
     .registers 10
+    .param p1, "network"  # Landroid/net/Network;
 
-    .line 391
+    .line 497
     iget-object v0, p0, Lcom/android/server/location/GnssNetworkConnectivityHandler;->mConnMgr:Landroid/net/ConnectivityManager;
 
     invoke-virtual {v0, p1}, Landroid/net/ConnectivityManager;->getNetworkInfo(Landroid/net/Network;)Landroid/net/NetworkInfo;
 
     move-result-object v0
 
-    .line 392
-    nop
+    .line 498
+    .local v0, "info":Landroid/net/NetworkInfo;
+    const/4 v1, 0x0
 
-    .line 393
-    if-eqz v0, :cond_e
+    .line 499
+    .local v1, "apn":Ljava/lang/String;
+    if-eqz v0, :cond_d
 
-    .line 394
+    .line 500
     invoke-virtual {v0}, Landroid/net/NetworkInfo;->getExtraInfo()Ljava/lang/String;
 
     move-result-object v1
 
-    goto :goto_f
-
-    .line 393
-    :cond_e
-    const/4 v1, 0x0
-
-    .line 397
-    :goto_f
+    .line 503
+    :cond_d
     sget-boolean v2, Lcom/android/server/location/GnssNetworkConnectivityHandler;->DEBUG:Z
 
     const-string v3, "GnssNetworkConnectivityHandler"
@@ -1159,14 +1384,14 @@
 
     const/4 v6, 0x1
 
-    if-eqz v2, :cond_2e
+    if-eqz v2, :cond_2c
 
-    .line 398
+    .line 504
     const/4 v2, 0x3
 
     new-array v2, v2, [Ljava/lang/Object;
 
-    .line 400
+    .line 506
     invoke-direct {p0}, Lcom/android/server/location/GnssNetworkConnectivityHandler;->agpsDataConnStateAsString()Ljava/lang/String;
 
     move-result-object v7
@@ -1177,95 +1402,110 @@
 
     aput-object v0, v2, v5
 
-    .line 398
-    const-string v0, "handleSuplConnectionAvailable: state=%s, suplNetwork=%s, info=%s"
+    .line 504
+    const-string v7, "handleSuplConnectionAvailable: state=%s, suplNetwork=%s, info=%s"
 
-    invoke-static {v0, v2}, Ljava/lang/String;->format(Ljava/lang/String;[Ljava/lang/Object;)Ljava/lang/String;
-
-    move-result-object v0
-
-    .line 403
-    invoke-static {v3, v0}, Landroid/util/Log;->d(Ljava/lang/String;Ljava/lang/String;)I
-
-    .line 406
-    :cond_2e
-    iget v0, p0, Lcom/android/server/location/GnssNetworkConnectivityHandler;->mAGpsDataConnectionState:I
-
-    if-ne v0, v6, :cond_62
-
-    .line 407
-    if-nez v1, :cond_36
-
-    .line 410
-    const-string v1, "dummy-apn"
-
-    .line 416
-    :cond_36
-    iget-object v0, p0, Lcom/android/server/location/GnssNetworkConnectivityHandler;->mAGpsDataConnectionIpAddr:Ljava/net/InetAddress;
-
-    if-eqz v0, :cond_3d
-
-    .line 417
-    invoke-direct {p0}, Lcom/android/server/location/GnssNetworkConnectivityHandler;->setRouting()V
-
-    .line 420
-    :cond_3d
-    invoke-direct {p0, v1}, Lcom/android/server/location/GnssNetworkConnectivityHandler;->getApnIpType(Ljava/lang/String;)I
-
-    move-result v0
-
-    .line 421
-    sget-boolean v2, Lcom/android/server/location/GnssNetworkConnectivityHandler;->DEBUG:Z
-
-    if-eqz v2, :cond_59
-
-    .line 422
-    new-array v2, v5, [Ljava/lang/Object;
-
-    aput-object v1, v2, v4
-
-    .line 425
-    invoke-static {v0}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
-
-    move-result-object v4
-
-    aput-object v4, v2, v6
-
-    .line 422
-    const-string/jumbo v4, "native_agps_data_conn_open: mAgpsApn=%s, mApnIpType=%s"
-
-    invoke-static {v4, v2}, Ljava/lang/String;->format(Ljava/lang/String;[Ljava/lang/Object;)Ljava/lang/String;
+    invoke-static {v7, v2}, Ljava/lang/String;->format(Ljava/lang/String;[Ljava/lang/Object;)Ljava/lang/String;
 
     move-result-object v2
 
-    .line 426
+    .line 509
+    .local v2, "message":Ljava/lang/String;
     invoke-static {v3, v2}, Landroid/util/Log;->d(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 428
-    :cond_59
+    .line 512
+    .end local v2  # "message":Ljava/lang/String;
+    :cond_2c
+    iget v2, p0, Lcom/android/server/location/GnssNetworkConnectivityHandler;->mAGpsDataConnectionState:I
+
+    if-ne v2, v6, :cond_60
+
+    .line 513
+    if-nez v1, :cond_34
+
+    .line 516
+    const-string v1, "dummy-apn"
+
+    .line 522
+    :cond_34
+    iget-object v2, p0, Lcom/android/server/location/GnssNetworkConnectivityHandler;->mAGpsDataConnectionIpAddr:Ljava/net/InetAddress;
+
+    if-eqz v2, :cond_3b
+
+    .line 523
+    invoke-direct {p0}, Lcom/android/server/location/GnssNetworkConnectivityHandler;->setRouting()V
+
+    .line 526
+    :cond_3b
+    invoke-direct {p0, v1}, Lcom/android/server/location/GnssNetworkConnectivityHandler;->getApnIpType(Ljava/lang/String;)I
+
+    move-result v2
+
+    .line 527
+    .local v2, "apnIpType":I
+    sget-boolean v7, Lcom/android/server/location/GnssNetworkConnectivityHandler;->DEBUG:Z
+
+    if-eqz v7, :cond_57
+
+    .line 528
+    new-array v7, v5, [Ljava/lang/Object;
+
+    aput-object v1, v7, v4
+
+    .line 531
+    invoke-static {v2}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
+
+    move-result-object v4
+
+    aput-object v4, v7, v6
+
+    .line 528
+    const-string/jumbo v4, "native_agps_data_conn_open: mAgpsApn=%s, mApnIpType=%s"
+
+    invoke-static {v4, v7}, Ljava/lang/String;->format(Ljava/lang/String;[Ljava/lang/Object;)Ljava/lang/String;
+
+    move-result-object v4
+
+    .line 532
+    .local v4, "message":Ljava/lang/String;
+    invoke-static {v3, v4}, Landroid/util/Log;->d(Ljava/lang/String;Ljava/lang/String;)I
+
+    .line 534
+    .end local v4  # "message":Ljava/lang/String;
+    :cond_57
     invoke-virtual {p1}, Landroid/net/Network;->getNetworkHandle()J
 
-    move-result-wide v2
+    move-result-wide v3
 
-    invoke-direct {p0, v2, v3, v1, v0}, Lcom/android/server/location/GnssNetworkConnectivityHandler;->native_agps_data_conn_open(JLjava/lang/String;I)V
+    invoke-direct {p0, v3, v4, v1, v2}, Lcom/android/server/location/GnssNetworkConnectivityHandler;->native_agps_data_conn_open(JLjava/lang/String;I)V
 
-    .line 429
+    .line 535
     iput v5, p0, Lcom/android/server/location/GnssNetworkConnectivityHandler;->mAGpsDataConnectionState:I
 
-    .line 431
-    :cond_62
+    .line 537
+    .end local v2  # "apnIpType":I
+    :cond_60
     return-void
 .end method
 
 .method private handleUpdateNetworkState(Landroid/net/Network;ZLandroid/net/NetworkCapabilities;)V
-    .registers 16
+    .registers 20
+    .param p1, "network"  # Landroid/net/Network;
+    .param p2, "isConnected"  # Z
+    .param p3, "capabilities"  # Landroid/net/NetworkCapabilities;
 
-    .line 324
+    .line 430
+    move-object/from16 v9, p0
+
+    move-object/from16 v10, p1
+
+    move/from16 v11, p2
+
     const/4 v0, 0x0
 
     const/4 v1, 0x1
 
-    if-eqz p2, :cond_10
+    if-eqz v11, :cond_16
 
     invoke-static {}, Landroid/telephony/TelephonyManager;->getDefault()Landroid/telephony/TelephonyManager;
 
@@ -1275,156 +1515,166 @@
 
     move-result v2
 
-    if-eqz v2, :cond_10
+    if-eqz v2, :cond_16
 
-    move v7, v1
+    move v4, v1
 
-    goto :goto_11
+    goto :goto_17
 
-    :cond_10
-    move v7, v0
+    :cond_16
+    move v4, v0
 
-    .line 325
-    :goto_11
-    invoke-direct {p0, p2, p1, p3}, Lcom/android/server/location/GnssNetworkConnectivityHandler;->updateTrackedNetworksState(ZLandroid/net/Network;Landroid/net/NetworkCapabilities;)Lcom/android/server/location/GnssNetworkConnectivityHandler$NetworkAttributes;
+    .line 431
+    .local v4, "networkAvailable":Z
+    :goto_17
+    move-object/from16 v2, p3
 
-    move-result-object p3
+    invoke-direct {v9, v11, v10, v2}, Lcom/android/server/location/GnssNetworkConnectivityHandler;->updateTrackedNetworksState(ZLandroid/net/Network;Landroid/net/NetworkCapabilities;)Lcom/android/server/location/GnssNetworkConnectivityHandler$NetworkAttributes;
 
-    .line 327
-    invoke-static {p3}, Lcom/android/server/location/GnssNetworkConnectivityHandler$NetworkAttributes;->access$700(Lcom/android/server/location/GnssNetworkConnectivityHandler$NetworkAttributes;)Ljava/lang/String;
+    move-result-object v12
 
-    move-result-object v2
+    .line 433
+    .local v12, "networkAttributes":Lcom/android/server/location/GnssNetworkConnectivityHandler$NetworkAttributes;
+    invoke-static {v12}, Lcom/android/server/location/GnssNetworkConnectivityHandler$NetworkAttributes;->access$1000(Lcom/android/server/location/GnssNetworkConnectivityHandler$NetworkAttributes;)Ljava/lang/String;
 
-    .line 328
-    invoke-static {p3}, Lcom/android/server/location/GnssNetworkConnectivityHandler$NetworkAttributes;->access$800(Lcom/android/server/location/GnssNetworkConnectivityHandler$NetworkAttributes;)I
+    move-result-object v13
 
-    move-result v5
+    .line 434
+    .local v13, "apn":Ljava/lang/String;
+    invoke-static {v12}, Lcom/android/server/location/GnssNetworkConnectivityHandler$NetworkAttributes;->access$1100(Lcom/android/server/location/GnssNetworkConnectivityHandler$NetworkAttributes;)I
 
-    .line 331
-    invoke-static {p3}, Lcom/android/server/location/GnssNetworkConnectivityHandler$NetworkAttributes;->access$900(Lcom/android/server/location/GnssNetworkConnectivityHandler$NetworkAttributes;)Landroid/net/NetworkCapabilities;
+    move-result v14
 
-    move-result-object p3
+    .line 437
+    .local v14, "type":I
+    invoke-static {v12}, Lcom/android/server/location/GnssNetworkConnectivityHandler$NetworkAttributes;->access$1200(Lcom/android/server/location/GnssNetworkConnectivityHandler$NetworkAttributes;)Landroid/net/NetworkCapabilities;
 
-    .line 332
-    const/4 v3, 0x6
+    move-result-object v15
 
-    new-array v3, v3, [Ljava/lang/Object;
+    .line 438
+    .end local p3  # "capabilities":Landroid/net/NetworkCapabilities;
+    .local v15, "capabilities":Landroid/net/NetworkCapabilities;
+    const/4 v2, 0x6
 
-    .line 335
-    invoke-direct {p0}, Lcom/android/server/location/GnssNetworkConnectivityHandler;->agpsDataConnStateAsString()Ljava/lang/String;
+    new-array v2, v2, [Ljava/lang/Object;
 
-    move-result-object v4
+    .line 441
+    invoke-direct/range {p0 .. p0}, Lcom/android/server/location/GnssNetworkConnectivityHandler;->agpsDataConnStateAsString()Ljava/lang/String;
 
-    aput-object v4, v3, v0
+    move-result-object v3
 
-    .line 336
-    invoke-static {p2}, Ljava/lang/Boolean;->valueOf(Z)Ljava/lang/Boolean;
+    aput-object v3, v2, v0
+
+    .line 442
+    invoke-static/range {p2 .. p2}, Ljava/lang/Boolean;->valueOf(Z)Ljava/lang/Boolean;
 
     move-result-object v0
 
-    aput-object v0, v3, v1
+    aput-object v0, v2, v1
 
     const/4 v0, 0x2
 
-    aput-object p1, v3, v0
+    aput-object v10, v2, v0
 
     const/4 v0, 0x3
 
-    aput-object p3, v3, v0
+    aput-object v15, v2, v0
 
     const/4 v0, 0x4
 
-    aput-object v2, v3, v0
+    aput-object v13, v2, v0
 
     const/4 v0, 0x5
 
-    iget-object v4, p0, Lcom/android/server/location/GnssNetworkConnectivityHandler;->mAvailableNetworkAttributes:Ljava/util/HashMap;
+    iget-object v3, v9, Lcom/android/server/location/GnssNetworkConnectivityHandler;->mAvailableNetworkAttributes:Ljava/util/HashMap;
 
-    .line 340
-    invoke-virtual {v4}, Ljava/util/HashMap;->size()I
+    .line 446
+    invoke-virtual {v3}, Ljava/util/HashMap;->size()I
 
-    move-result v4
+    move-result v3
 
-    invoke-static {v4}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
+    invoke-static {v3}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
 
-    move-result-object v4
+    move-result-object v3
 
-    aput-object v4, v3, v0
+    aput-object v3, v2, v0
 
-    .line 332
+    .line 438
     const-string/jumbo v0, "updateNetworkState, state=%s, connected=%s, network=%s, capabilities=%s, apn: %s, availableNetworkCount: %d"
 
-    invoke-static {v0, v3}, Ljava/lang/String;->format(Ljava/lang/String;[Ljava/lang/Object;)Ljava/lang/String;
+    invoke-static {v0, v2}, Ljava/lang/String;->format(Ljava/lang/String;[Ljava/lang/Object;)Ljava/lang/String;
 
     move-result-object v0
 
-    const-string v3, "GnssNetworkConnectivityHandler"
+    const-string v2, "GnssNetworkConnectivityHandler"
 
-    invoke-static {v3, v0}, Landroid/util/Log;->i(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v2, v0}, Landroid/util/Log;->i(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 342
+    .line 448
     invoke-static {}, Lcom/android/server/location/GnssNetworkConnectivityHandler;->native_is_agps_ril_supported()Z
 
     move-result v0
 
-    if-eqz v0, :cond_75
+    if-eqz v0, :cond_80
 
-    .line 343
+    .line 449
     const/16 v0, 0x12
 
-    .line 346
-    invoke-virtual {p3, v0}, Landroid/net/NetworkCapabilities;->hasTransport(I)Z
+    .line 452
+    invoke-virtual {v15, v0}, Landroid/net/NetworkCapabilities;->hasTransport(I)Z
 
     move-result v0
 
-    .line 349
-    xor-int/lit8 v6, v0, 0x1
+    .line 455
+    xor-int/lit8 v3, v0, 0x1
 
-    if-eqz v2, :cond_64
+    if-eqz v13, :cond_6c
 
-    move-object v8, v2
+    move-object v5, v13
 
-    goto :goto_67
+    goto :goto_6f
 
-    :cond_64
+    :cond_6c
     const-string v0, ""
 
-    move-object v8, v0
+    move-object v5, v0
 
-    .line 350
-    :goto_67
-    invoke-virtual {p1}, Landroid/net/Network;->getNetworkHandle()J
+    .line 456
+    :goto_6f
+    invoke-virtual/range {p1 .. p1}, Landroid/net/Network;->getNetworkHandle()J
 
-    move-result-wide v9
+    move-result-wide v6
 
-    .line 351
-    invoke-static {p3}, Lcom/android/server/location/GnssNetworkConnectivityHandler$NetworkAttributes;->access$1000(Landroid/net/NetworkCapabilities;)S
+    .line 457
+    invoke-static {v15}, Lcom/android/server/location/GnssNetworkConnectivityHandler$NetworkAttributes;->access$1300(Landroid/net/NetworkCapabilities;)S
 
-    move-result v11
+    move-result v8
 
-    .line 343
-    move-object v3, p0
+    .line 449
+    move-object/from16 v0, p0
 
-    move v4, p2
+    move/from16 v1, p2
 
-    invoke-direct/range {v3 .. v11}, Lcom/android/server/location/GnssNetworkConnectivityHandler;->native_update_network_state(ZIZZLjava/lang/String;JS)V
+    move v2, v14
 
-    goto :goto_7e
+    invoke-direct/range {v0 .. v8}, Lcom/android/server/location/GnssNetworkConnectivityHandler;->native_update_network_state(ZIZZLjava/lang/String;JS)V
 
-    .line 352
-    :cond_75
-    sget-boolean p1, Lcom/android/server/location/GnssNetworkConnectivityHandler;->DEBUG:Z
+    goto :goto_89
 
-    if-eqz p1, :cond_7e
+    .line 458
+    :cond_80
+    sget-boolean v0, Lcom/android/server/location/GnssNetworkConnectivityHandler;->DEBUG:Z
 
-    .line 353
-    const-string p1, "Skipped network state update because GPS HAL AGPS-RIL is not  supported"
+    if-eqz v0, :cond_89
 
-    invoke-static {v3, p1}, Landroid/util/Log;->d(Ljava/lang/String;Ljava/lang/String;)I
+    .line 459
+    const-string v0, "Skipped network state update because GPS HAL AGPS-RIL is not  supported"
 
-    .line 355
-    :cond_7e
-    :goto_7e
+    invoke-static {v2, v0}, Landroid/util/Log;->d(Ljava/lang/String;Ljava/lang/String;)I
+
+    .line 461
+    :cond_89
+    :goto_89
     return-void
 .end method
 
@@ -1445,8 +1695,9 @@
 
 .method private runEventAndReleaseWakeLock(Ljava/lang/Runnable;)Ljava/lang/Runnable;
     .registers 3
+    .param p1, "event"  # Ljava/lang/Runnable;
 
-    .line 313
+    .line 419
     new-instance v0, Lcom/android/server/location/-$$Lambda$GnssNetworkConnectivityHandler$aTyNcuGLHmJGtXKl9qoZpMmhfBY;
 
     invoke-direct {v0, p0, p1}, Lcom/android/server/location/-$$Lambda$GnssNetworkConnectivityHandler$aTyNcuGLHmJGtXKl9qoZpMmhfBY;-><init>(Lcom/android/server/location/GnssNetworkConnectivityHandler;Ljava/lang/Runnable;)V
@@ -1456,41 +1707,42 @@
 
 .method private runOnHandler(Ljava/lang/Runnable;)V
     .registers 5
+    .param p1, "event"  # Ljava/lang/Runnable;
 
-    .line 306
+    .line 412
     iget-object v0, p0, Lcom/android/server/location/GnssNetworkConnectivityHandler;->mWakeLock:Landroid/os/PowerManager$WakeLock;
 
     const-wide/32 v1, 0xea60
 
     invoke-virtual {v0, v1, v2}, Landroid/os/PowerManager$WakeLock;->acquire(J)V
 
-    .line 307
+    .line 413
     iget-object v0, p0, Lcom/android/server/location/GnssNetworkConnectivityHandler;->mHandler:Landroid/os/Handler;
 
     invoke-direct {p0, p1}, Lcom/android/server/location/GnssNetworkConnectivityHandler;->runEventAndReleaseWakeLock(Ljava/lang/Runnable;)Ljava/lang/Runnable;
 
-    move-result-object p1
+    move-result-object v1
 
-    invoke-virtual {v0, p1}, Landroid/os/Handler;->post(Ljava/lang/Runnable;)Z
+    invoke-virtual {v0, v1}, Landroid/os/Handler;->post(Ljava/lang/Runnable;)Z
 
-    move-result p1
+    move-result v0
 
-    if-nez p1, :cond_19
+    if-nez v0, :cond_19
 
-    .line 308
-    iget-object p1, p0, Lcom/android/server/location/GnssNetworkConnectivityHandler;->mWakeLock:Landroid/os/PowerManager$WakeLock;
+    .line 414
+    iget-object v0, p0, Lcom/android/server/location/GnssNetworkConnectivityHandler;->mWakeLock:Landroid/os/PowerManager$WakeLock;
 
-    invoke-virtual {p1}, Landroid/os/PowerManager$WakeLock;->release()V
+    invoke-virtual {v0}, Landroid/os/PowerManager$WakeLock;->release()V
 
-    .line 310
+    .line 416
     :cond_19
     return-void
 .end method
 
 .method private setRouting()V
-    .registers 4
+    .registers 5
 
-    .line 518
+    .line 630
     iget-object v0, p0, Lcom/android/server/location/GnssNetworkConnectivityHandler;->mConnMgr:Landroid/net/ConnectivityManager;
 
     iget-object v1, p0, Lcom/android/server/location/GnssNetworkConnectivityHandler;->mAGpsDataConnectionIpAddr:Ljava/net/InetAddress;
@@ -1501,58 +1753,59 @@
 
     move-result v0
 
-    .line 522
+    .line 634
+    .local v0, "result":Z
     const-string v1, "GnssNetworkConnectivityHandler"
 
     if-nez v0, :cond_24
 
-    .line 523
-    new-instance v0, Ljava/lang/StringBuilder;
+    .line 635
+    new-instance v2, Ljava/lang/StringBuilder;
 
-    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v2, "Error requesting route to host: "
+    const-string v3, "Error requesting route to host: "
 
-    invoke-virtual {v0, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    iget-object v2, p0, Lcom/android/server/location/GnssNetworkConnectivityHandler;->mAGpsDataConnectionIpAddr:Ljava/net/InetAddress;
+    iget-object v3, p0, Lcom/android/server/location/GnssNetworkConnectivityHandler;->mAGpsDataConnectionIpAddr:Ljava/net/InetAddress;
 
-    invoke-virtual {v0, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v2
 
-    invoke-static {v1, v0}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v2}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;)I
 
     goto :goto_3e
 
-    .line 524
+    .line 636
     :cond_24
-    sget-boolean v0, Lcom/android/server/location/GnssNetworkConnectivityHandler;->DEBUG:Z
+    sget-boolean v2, Lcom/android/server/location/GnssNetworkConnectivityHandler;->DEBUG:Z
 
-    if-eqz v0, :cond_3e
+    if-eqz v2, :cond_3e
 
-    .line 525
-    new-instance v0, Ljava/lang/StringBuilder;
+    .line 637
+    new-instance v2, Ljava/lang/StringBuilder;
 
-    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v2, "Successfully requested route to host: "
+    const-string v3, "Successfully requested route to host: "
 
-    invoke-virtual {v0, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    iget-object v2, p0, Lcom/android/server/location/GnssNetworkConnectivityHandler;->mAGpsDataConnectionIpAddr:Ljava/net/InetAddress;
+    iget-object v3, p0, Lcom/android/server/location/GnssNetworkConnectivityHandler;->mAGpsDataConnectionIpAddr:Ljava/net/InetAddress;
 
-    invoke-virtual {v0, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v2
 
-    invoke-static {v1, v0}, Landroid/util/Log;->d(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v2}, Landroid/util/Log;->d(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 527
+    .line 639
     :cond_3e
     :goto_3e
     return-void
@@ -1560,8 +1813,10 @@
 
 .method private translateToApnIpType(Ljava/lang/String;Ljava/lang/String;)I
     .registers 7
+    .param p1, "ipProtocol"  # Ljava/lang/String;
+    .param p2, "apn"  # Ljava/lang/String;
 
-    .line 635
+    .line 747
     const-string v0, "IP"
 
     invoke-virtual {v0, p1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
@@ -1572,10 +1827,10 @@
 
     if-eqz v0, :cond_a
 
-    .line 636
+    .line 748
     return v1
 
-    .line 638
+    .line 750
     :cond_a
     const-string v0, "IPV6"
 
@@ -1587,10 +1842,10 @@
 
     if-eqz v0, :cond_14
 
-    .line 639
+    .line 751
     return v2
 
-    .line 641
+    .line 753
     :cond_14
     const-string v0, "IPV4V6"
 
@@ -1602,10 +1857,10 @@
 
     if-eqz v0, :cond_1e
 
-    .line 642
+    .line 754
     return v3
 
-    .line 646
+    .line 758
     :cond_1e
     new-array v0, v2, [Ljava/lang/Object;
 
@@ -1615,138 +1870,149 @@
 
     aput-object p2, v0, v1
 
-    const-string p1, "Unknown IP Protocol: %s, for APN: %s"
+    const-string v1, "Unknown IP Protocol: %s, for APN: %s"
 
-    invoke-static {p1, v0}, Ljava/lang/String;->format(Ljava/lang/String;[Ljava/lang/Object;)Ljava/lang/String;
+    invoke-static {v1, v0}, Ljava/lang/String;->format(Ljava/lang/String;[Ljava/lang/Object;)Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    .line 647
-    const-string p2, "GnssNetworkConnectivityHandler"
+    .line 759
+    .local v0, "message":Ljava/lang/String;
+    const-string v1, "GnssNetworkConnectivityHandler"
 
-    invoke-static {p2, p1}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v0}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 648
+    .line 760
     return v3
 .end method
 
 .method private updateTrackedNetworksState(ZLandroid/net/Network;Landroid/net/NetworkCapabilities;)Lcom/android/server/location/GnssNetworkConnectivityHandler$NetworkAttributes;
-    .registers 5
+    .registers 7
+    .param p1, "isConnected"  # Z
+    .param p2, "network"  # Landroid/net/Network;
+    .param p3, "capabilities"  # Landroid/net/NetworkCapabilities;
 
-    .line 359
+    .line 465
     if-nez p1, :cond_b
 
-    .line 361
-    iget-object p1, p0, Lcom/android/server/location/GnssNetworkConnectivityHandler;->mAvailableNetworkAttributes:Ljava/util/HashMap;
+    .line 467
+    iget-object v0, p0, Lcom/android/server/location/GnssNetworkConnectivityHandler;->mAvailableNetworkAttributes:Ljava/util/HashMap;
 
-    invoke-virtual {p1, p2}, Ljava/util/HashMap;->remove(Ljava/lang/Object;)Ljava/lang/Object;
-
-    move-result-object p1
-
-    check-cast p1, Lcom/android/server/location/GnssNetworkConnectivityHandler$NetworkAttributes;
-
-    return-object p1
-
-    .line 364
-    :cond_b
-    iget-object p1, p0, Lcom/android/server/location/GnssNetworkConnectivityHandler;->mAvailableNetworkAttributes:Ljava/util/HashMap;
-
-    invoke-virtual {p1, p2}, Ljava/util/HashMap;->get(Ljava/lang/Object;)Ljava/lang/Object;
-
-    move-result-object p1
-
-    check-cast p1, Lcom/android/server/location/GnssNetworkConnectivityHandler$NetworkAttributes;
-
-    .line 365
-    if-eqz p1, :cond_19
-
-    .line 367
-    invoke-static {p1, p3}, Lcom/android/server/location/GnssNetworkConnectivityHandler$NetworkAttributes;->access$902(Lcom/android/server/location/GnssNetworkConnectivityHandler$NetworkAttributes;Landroid/net/NetworkCapabilities;)Landroid/net/NetworkCapabilities;
-
-    .line 368
-    return-object p1
-
-    .line 372
-    :cond_19
-    new-instance p1, Lcom/android/server/location/GnssNetworkConnectivityHandler$NetworkAttributes;
-
-    const/4 v0, 0x0
-
-    invoke-direct {p1, v0}, Lcom/android/server/location/GnssNetworkConnectivityHandler$NetworkAttributes;-><init>(Lcom/android/server/location/GnssNetworkConnectivityHandler$1;)V
-
-    .line 373
-    invoke-static {p1, p3}, Lcom/android/server/location/GnssNetworkConnectivityHandler$NetworkAttributes;->access$902(Lcom/android/server/location/GnssNetworkConnectivityHandler$NetworkAttributes;Landroid/net/NetworkCapabilities;)Landroid/net/NetworkCapabilities;
-
-    .line 377
-    iget-object p3, p0, Lcom/android/server/location/GnssNetworkConnectivityHandler;->mConnMgr:Landroid/net/ConnectivityManager;
-
-    invoke-virtual {p3, p2}, Landroid/net/ConnectivityManager;->getNetworkInfo(Landroid/net/Network;)Landroid/net/NetworkInfo;
-
-    move-result-object p3
-
-    .line 378
-    if-eqz p3, :cond_38
-
-    .line 379
-    invoke-virtual {p3}, Landroid/net/NetworkInfo;->getExtraInfo()Ljava/lang/String;
+    invoke-virtual {v0, p2}, Ljava/util/HashMap;->remove(Ljava/lang/Object;)Ljava/lang/Object;
 
     move-result-object v0
 
-    invoke-static {p1, v0}, Lcom/android/server/location/GnssNetworkConnectivityHandler$NetworkAttributes;->access$702(Lcom/android/server/location/GnssNetworkConnectivityHandler$NetworkAttributes;Ljava/lang/String;)Ljava/lang/String;
+    check-cast v0, Lcom/android/server/location/GnssNetworkConnectivityHandler$NetworkAttributes;
 
-    .line 380
-    invoke-virtual {p3}, Landroid/net/NetworkInfo;->getType()I
+    return-object v0
 
-    move-result p3
+    .line 470
+    :cond_b
+    iget-object v0, p0, Lcom/android/server/location/GnssNetworkConnectivityHandler;->mAvailableNetworkAttributes:Ljava/util/HashMap;
 
-    invoke-static {p1, p3}, Lcom/android/server/location/GnssNetworkConnectivityHandler$NetworkAttributes;->access$802(Lcom/android/server/location/GnssNetworkConnectivityHandler$NetworkAttributes;I)I
+    invoke-virtual {v0, p2}, Ljava/util/HashMap;->get(Ljava/lang/Object;)Ljava/lang/Object;
 
-    .line 384
-    :cond_38
-    iget-object p3, p0, Lcom/android/server/location/GnssNetworkConnectivityHandler;->mAvailableNetworkAttributes:Ljava/util/HashMap;
+    move-result-object v0
 
-    invoke-virtual {p3, p2, p1}, Ljava/util/HashMap;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+    check-cast v0, Lcom/android/server/location/GnssNetworkConnectivityHandler$NetworkAttributes;
 
-    .line 385
-    return-object p1
+    .line 471
+    .local v0, "networkAttributes":Lcom/android/server/location/GnssNetworkConnectivityHandler$NetworkAttributes;
+    if-eqz v0, :cond_19
+
+    .line 473
+    invoke-static {v0, p3}, Lcom/android/server/location/GnssNetworkConnectivityHandler$NetworkAttributes;->access$1202(Lcom/android/server/location/GnssNetworkConnectivityHandler$NetworkAttributes;Landroid/net/NetworkCapabilities;)Landroid/net/NetworkCapabilities;
+
+    .line 474
+    return-object v0
+
+    .line 478
+    :cond_19
+    new-instance v1, Lcom/android/server/location/GnssNetworkConnectivityHandler$NetworkAttributes;
+
+    const/4 v2, 0x0
+
+    invoke-direct {v1, v2}, Lcom/android/server/location/GnssNetworkConnectivityHandler$NetworkAttributes;-><init>(Lcom/android/server/location/GnssNetworkConnectivityHandler$1;)V
+
+    move-object v0, v1
+
+    .line 479
+    invoke-static {v0, p3}, Lcom/android/server/location/GnssNetworkConnectivityHandler$NetworkAttributes;->access$1202(Lcom/android/server/location/GnssNetworkConnectivityHandler$NetworkAttributes;Landroid/net/NetworkCapabilities;)Landroid/net/NetworkCapabilities;
+
+    .line 483
+    iget-object v1, p0, Lcom/android/server/location/GnssNetworkConnectivityHandler;->mConnMgr:Landroid/net/ConnectivityManager;
+
+    invoke-virtual {v1, p2}, Landroid/net/ConnectivityManager;->getNetworkInfo(Landroid/net/Network;)Landroid/net/NetworkInfo;
+
+    move-result-object v1
+
+    .line 484
+    .local v1, "info":Landroid/net/NetworkInfo;
+    if-eqz v1, :cond_39
+
+    .line 485
+    invoke-virtual {v1}, Landroid/net/NetworkInfo;->getExtraInfo()Ljava/lang/String;
+
+    move-result-object v2
+
+    invoke-static {v0, v2}, Lcom/android/server/location/GnssNetworkConnectivityHandler$NetworkAttributes;->access$1002(Lcom/android/server/location/GnssNetworkConnectivityHandler$NetworkAttributes;Ljava/lang/String;)Ljava/lang/String;
+
+    .line 486
+    invoke-virtual {v1}, Landroid/net/NetworkInfo;->getType()I
+
+    move-result v2
+
+    invoke-static {v0, v2}, Lcom/android/server/location/GnssNetworkConnectivityHandler$NetworkAttributes;->access$1102(Lcom/android/server/location/GnssNetworkConnectivityHandler$NetworkAttributes;I)I
+
+    .line 490
+    :cond_39
+    iget-object v2, p0, Lcom/android/server/location/GnssNetworkConnectivityHandler;->mAvailableNetworkAttributes:Ljava/util/HashMap;
+
+    invoke-virtual {v2, p2, v0}, Ljava/util/HashMap;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+
+    .line 491
+    return-object v0
 .end method
 
 
 # virtual methods
 .method isDataNetworkConnected()Z
-    .registers 2
+    .registers 3
 
-    .line 197
+    .line 303
     iget-object v0, p0, Lcom/android/server/location/GnssNetworkConnectivityHandler;->mConnMgr:Landroid/net/ConnectivityManager;
 
     invoke-virtual {v0}, Landroid/net/ConnectivityManager;->getActiveNetworkInfo()Landroid/net/NetworkInfo;
 
     move-result-object v0
 
-    .line 198
+    .line 304
+    .local v0, "activeNetworkInfo":Landroid/net/NetworkInfo;
     if-eqz v0, :cond_10
 
     invoke-virtual {v0}, Landroid/net/NetworkInfo;->isConnected()Z
 
-    move-result v0
+    move-result v1
 
-    if-eqz v0, :cond_10
+    if-eqz v1, :cond_10
 
-    const/4 v0, 0x1
+    const/4 v1, 0x1
 
     goto :goto_11
 
     :cond_10
-    const/4 v0, 0x0
+    const/4 v1, 0x0
 
     :goto_11
-    return v0
+    return v1
 .end method
 
 .method public synthetic lambda$onReportAGpsStatus$0$GnssNetworkConnectivityHandler(I[B)V
     .registers 3
+    .param p1, "agpsType"  # I
+    .param p2, "suplIpAddr"  # [B
 
-    .line 212
+    .line 318
     invoke-direct {p0, p1, p2}, Lcom/android/server/location/GnssNetworkConnectivityHandler;->handleRequestSuplConnection(I[B)V
 
     return-void
@@ -1755,7 +2021,7 @@
 .method public synthetic lambda$onReportAGpsStatus$1$GnssNetworkConnectivityHandler()V
     .registers 2
 
-    .line 215
+    .line 321
     const/4 v0, 0x2
 
     invoke-direct {p0, v0}, Lcom/android/server/location/GnssNetworkConnectivityHandler;->handleReleaseSuplConnection(I)V
@@ -1764,40 +2030,44 @@
 .end method
 
 .method public synthetic lambda$runEventAndReleaseWakeLock$2$GnssNetworkConnectivityHandler(Ljava/lang/Runnable;)V
-    .registers 3
+    .registers 4
+    .param p1, "event"  # Ljava/lang/Runnable;
 
-    .line 315
+    .line 421
     :try_start_0
     invoke-interface {p1}, Ljava/lang/Runnable;->run()V
     :try_end_3
     .catchall {:try_start_0 .. :try_end_3} :catchall_a
 
-    .line 317
-    iget-object p1, p0, Lcom/android/server/location/GnssNetworkConnectivityHandler;->mWakeLock:Landroid/os/PowerManager$WakeLock;
-
-    invoke-virtual {p1}, Landroid/os/PowerManager$WakeLock;->release()V
-
-    .line 318
-    nop
-
-    .line 319
-    return-void
-
-    .line 317
-    :catchall_a
-    move-exception p1
-
+    .line 423
     iget-object v0, p0, Lcom/android/server/location/GnssNetworkConnectivityHandler;->mWakeLock:Landroid/os/PowerManager$WakeLock;
 
     invoke-virtual {v0}, Landroid/os/PowerManager$WakeLock;->release()V
 
-    throw p1
+    .line 424
+    nop
+
+    .line 425
+    return-void
+
+    .line 423
+    :catchall_a
+    move-exception v0
+
+    iget-object v1, p0, Lcom/android/server/location/GnssNetworkConnectivityHandler;->mWakeLock:Landroid/os/PowerManager$WakeLock;
+
+    invoke-virtual {v1}, Landroid/os/PowerManager$WakeLock;->release()V
+
+    throw v0
 .end method
 
 .method onReportAGpsStatus(II[B)V
     .registers 7
+    .param p1, "agpsType"  # I
+    .param p2, "agpsStatus"  # I
+    .param p3, "suplIpAddr"  # [B
 
-    .line 209
+    .line 315
     sget-boolean v0, Lcom/android/server/location/GnssNetworkConnectivityHandler;->DEBUG:Z
 
     const-string v1, "GnssNetworkConnectivityHandler"
@@ -1824,122 +2094,124 @@
 
     invoke-static {v1, v0}, Landroid/util/Log;->d(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 210
+    .line 316
     :cond_1e
     const/4 v0, 0x1
 
     if-eq p2, v0, :cond_4c
 
-    const/4 p1, 0x2
+    const/4 v0, 0x2
 
-    if-eq p2, p1, :cond_43
+    if-eq p2, v0, :cond_43
 
-    const/4 p1, 0x3
+    const/4 v0, 0x3
 
-    if-eq p2, p1, :cond_42
+    if-eq p2, v0, :cond_42
 
-    const/4 p1, 0x4
+    const/4 v0, 0x4
 
-    if-eq p2, p1, :cond_42
+    if-eq p2, v0, :cond_42
 
-    const/4 p1, 0x5
+    const/4 v0, 0x5
 
-    if-eq p2, p1, :cond_42
+    if-eq p2, v0, :cond_42
 
-    .line 222
-    new-instance p1, Ljava/lang/StringBuilder;
+    .line 328
+    new-instance v0, Ljava/lang/StringBuilder;
 
-    invoke-direct {p1}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string p3, "Received unknown AGPS status: "
+    const-string v2, "Received unknown AGPS status: "
 
-    invoke-virtual {p1, p3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p1, p2}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, p2}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    invoke-static {v1, p1}, Landroid/util/Log;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v0}, Landroid/util/Log;->w(Ljava/lang/String;Ljava/lang/String;)I
 
     goto :goto_55
 
-    .line 220
+    .line 326
     :cond_42
     goto :goto_55
 
-    .line 215
+    .line 321
     :cond_43
-    new-instance p1, Lcom/android/server/location/-$$Lambda$GnssNetworkConnectivityHandler$YEGTN3glQ7Hr1FK-xXGbC4KcmJY;
+    new-instance v0, Lcom/android/server/location/-$$Lambda$GnssNetworkConnectivityHandler$YEGTN3glQ7Hr1FK-xXGbC4KcmJY;
 
-    invoke-direct {p1, p0}, Lcom/android/server/location/-$$Lambda$GnssNetworkConnectivityHandler$YEGTN3glQ7Hr1FK-xXGbC4KcmJY;-><init>(Lcom/android/server/location/GnssNetworkConnectivityHandler;)V
+    invoke-direct {v0, p0}, Lcom/android/server/location/-$$Lambda$GnssNetworkConnectivityHandler$YEGTN3glQ7Hr1FK-xXGbC4KcmJY;-><init>(Lcom/android/server/location/GnssNetworkConnectivityHandler;)V
 
-    invoke-direct {p0, p1}, Lcom/android/server/location/GnssNetworkConnectivityHandler;->runOnHandler(Ljava/lang/Runnable;)V
+    invoke-direct {p0, v0}, Lcom/android/server/location/GnssNetworkConnectivityHandler;->runOnHandler(Ljava/lang/Runnable;)V
 
-    .line 216
+    .line 322
     goto :goto_55
 
-    .line 212
+    .line 318
     :cond_4c
-    new-instance p2, Lcom/android/server/location/-$$Lambda$GnssNetworkConnectivityHandler$axxNnxmo3KqgsSDot69yokC4KVE;
+    new-instance v0, Lcom/android/server/location/-$$Lambda$GnssNetworkConnectivityHandler$axxNnxmo3KqgsSDot69yokC4KVE;
 
-    invoke-direct {p2, p0, p1, p3}, Lcom/android/server/location/-$$Lambda$GnssNetworkConnectivityHandler$axxNnxmo3KqgsSDot69yokC4KVE;-><init>(Lcom/android/server/location/GnssNetworkConnectivityHandler;I[B)V
+    invoke-direct {v0, p0, p1, p3}, Lcom/android/server/location/-$$Lambda$GnssNetworkConnectivityHandler$axxNnxmo3KqgsSDot69yokC4KVE;-><init>(Lcom/android/server/location/GnssNetworkConnectivityHandler;I[B)V
 
-    invoke-direct {p0, p2}, Lcom/android/server/location/GnssNetworkConnectivityHandler;->runOnHandler(Ljava/lang/Runnable;)V
+    invoke-direct {p0, v0}, Lcom/android/server/location/GnssNetworkConnectivityHandler;->runOnHandler(Ljava/lang/Runnable;)V
 
-    .line 213
+    .line 319
     nop
 
-    .line 224
+    .line 330
     :goto_55
     return-void
 .end method
 
 .method registerNetworkCallbacks()V
-    .registers 5
+    .registers 6
 
-    .line 183
+    .line 289
     new-instance v0, Landroid/net/NetworkRequest$Builder;
 
     invoke-direct {v0}, Landroid/net/NetworkRequest$Builder;-><init>()V
 
-    .line 184
+    .line 290
+    .local v0, "networkRequestBuilder":Landroid/net/NetworkRequest$Builder;
     const/16 v1, 0xc
 
     invoke-virtual {v0, v1}, Landroid/net/NetworkRequest$Builder;->addCapability(I)Landroid/net/NetworkRequest$Builder;
 
-    .line 185
+    .line 291
     const/16 v1, 0x10
 
     invoke-virtual {v0, v1}, Landroid/net/NetworkRequest$Builder;->addCapability(I)Landroid/net/NetworkRequest$Builder;
 
-    .line 186
+    .line 292
     const/16 v1, 0xf
 
     invoke-virtual {v0, v1}, Landroid/net/NetworkRequest$Builder;->removeCapability(I)Landroid/net/NetworkRequest$Builder;
 
-    .line 187
+    .line 293
     invoke-virtual {v0}, Landroid/net/NetworkRequest$Builder;->build()Landroid/net/NetworkRequest;
-
-    move-result-object v0
-
-    .line 188
-    invoke-direct {p0}, Lcom/android/server/location/GnssNetworkConnectivityHandler;->createNetworkConnectivityCallback()Landroid/net/ConnectivityManager$NetworkCallback;
 
     move-result-object v1
 
-    iput-object v1, p0, Lcom/android/server/location/GnssNetworkConnectivityHandler;->mNetworkConnectivityCallback:Landroid/net/ConnectivityManager$NetworkCallback;
+    .line 294
+    .local v1, "networkRequest":Landroid/net/NetworkRequest;
+    invoke-direct {p0}, Lcom/android/server/location/GnssNetworkConnectivityHandler;->createNetworkConnectivityCallback()Landroid/net/ConnectivityManager$NetworkCallback;
 
-    .line 189
-    iget-object v1, p0, Lcom/android/server/location/GnssNetworkConnectivityHandler;->mConnMgr:Landroid/net/ConnectivityManager;
+    move-result-object v2
 
-    iget-object v2, p0, Lcom/android/server/location/GnssNetworkConnectivityHandler;->mNetworkConnectivityCallback:Landroid/net/ConnectivityManager$NetworkCallback;
+    iput-object v2, p0, Lcom/android/server/location/GnssNetworkConnectivityHandler;->mNetworkConnectivityCallback:Landroid/net/ConnectivityManager$NetworkCallback;
 
-    iget-object v3, p0, Lcom/android/server/location/GnssNetworkConnectivityHandler;->mHandler:Landroid/os/Handler;
+    .line 295
+    iget-object v2, p0, Lcom/android/server/location/GnssNetworkConnectivityHandler;->mConnMgr:Landroid/net/ConnectivityManager;
 
-    invoke-virtual {v1, v0, v2, v3}, Landroid/net/ConnectivityManager;->registerNetworkCallback(Landroid/net/NetworkRequest;Landroid/net/ConnectivityManager$NetworkCallback;Landroid/os/Handler;)V
+    iget-object v3, p0, Lcom/android/server/location/GnssNetworkConnectivityHandler;->mNetworkConnectivityCallback:Landroid/net/ConnectivityManager$NetworkCallback;
 
-    .line 190
+    iget-object v4, p0, Lcom/android/server/location/GnssNetworkConnectivityHandler;->mHandler:Landroid/os/Handler;
+
+    invoke-virtual {v2, v1, v3, v4}, Landroid/net/ConnectivityManager;->registerNetworkCallback(Landroid/net/NetworkRequest;Landroid/net/ConnectivityManager$NetworkCallback;Landroid/os/Handler;)V
+
+    .line 296
     return-void
 .end method

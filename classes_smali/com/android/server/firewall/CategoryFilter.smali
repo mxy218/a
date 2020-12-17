@@ -34,6 +34,7 @@
 
 .method private constructor <init>(Ljava/lang/String;)V
     .registers 2
+    .param p1, "categoryName"  # Ljava/lang/String;
 
     .line 32
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -47,6 +48,8 @@
 
 .method synthetic constructor <init>(Ljava/lang/String;Lcom/android/server/firewall/CategoryFilter$1;)V
     .registers 3
+    .param p1, "x0"  # Ljava/lang/String;
+    .param p2, "x1"  # Lcom/android/server/firewall/CategoryFilter$1;
 
     .line 27
     invoke-direct {p0, p1}, Lcom/android/server/firewall/CategoryFilter;-><init>(Ljava/lang/String;)V
@@ -57,28 +60,36 @@
 
 # virtual methods
 .method public matches(Lcom/android/server/firewall/IntentFirewall;Landroid/content/ComponentName;Landroid/content/Intent;IILjava/lang/String;I)Z
-    .registers 8
+    .registers 10
+    .param p1, "ifw"  # Lcom/android/server/firewall/IntentFirewall;
+    .param p2, "resolvedComponent"  # Landroid/content/ComponentName;
+    .param p3, "intent"  # Landroid/content/Intent;
+    .param p4, "callerUid"  # I
+    .param p5, "callerPid"  # I
+    .param p6, "resolvedType"  # Ljava/lang/String;
+    .param p7, "receivingUid"  # I
 
     .line 39
     invoke-virtual {p3}, Landroid/content/Intent;->getCategories()Ljava/util/Set;
 
-    move-result-object p1
+    move-result-object v0
 
     .line 40
-    if-nez p1, :cond_8
+    .local v0, "categories":Ljava/util/Set;, "Ljava/util/Set<Ljava/lang/String;>;"
+    if-nez v0, :cond_8
 
     .line 41
-    const/4 p1, 0x0
+    const/4 v1, 0x0
 
-    return p1
+    return v1
 
     .line 43
     :cond_8
-    iget-object p2, p0, Lcom/android/server/firewall/CategoryFilter;->mCategoryName:Ljava/lang/String;
+    iget-object v1, p0, Lcom/android/server/firewall/CategoryFilter;->mCategoryName:Ljava/lang/String;
 
-    invoke-interface {p1, p2}, Ljava/util/Set;->contains(Ljava/lang/Object;)Z
+    invoke-interface {v0, v1}, Ljava/util/Set;->contains(Ljava/lang/Object;)Z
 
-    move-result p1
+    move-result v1
 
-    return p1
+    return v1
 .end method

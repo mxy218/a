@@ -10,6 +10,7 @@
 # direct methods
 .method public constructor <init>(Lcom/android/server/contentcapture/ContentCaptureManagerService;)V
     .registers 2
+    .param p1, "service"  # Lcom/android/server/contentcapture/ContentCaptureManagerService;
 
     .line 39
     invoke-direct {p0}, Landroid/os/ShellCommand;-><init>()V
@@ -23,6 +24,7 @@
 
 .method private getBindInstantService(Ljava/io/PrintWriter;)I
     .registers 3
+    .param p1, "pw"  # Ljava/io/PrintWriter;
 
     .line 125
     iget-object v0, p0, Lcom/android/server/contentcapture/ContentCaptureManagerServiceShellCommand;->mService:Lcom/android/server/contentcapture/ContentCaptureManagerService;
@@ -48,13 +50,14 @@
 
     .line 130
     :goto_14
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    return p1
+    return v0
 .end method
 
 .method private getDefaultServiceEnabled(Ljava/io/PrintWriter;)I
-    .registers 4
+    .registers 5
+    .param p1, "pw"  # Ljava/io/PrintWriter;
 
     .line 173
     invoke-direct {p0}, Lcom/android/server/contentcapture/ContentCaptureManagerServiceShellCommand;->getNextIntArgRequired()I
@@ -62,19 +65,21 @@
     move-result v0
 
     .line 174
+    .local v0, "userId":I
     iget-object v1, p0, Lcom/android/server/contentcapture/ContentCaptureManagerServiceShellCommand;->mService:Lcom/android/server/contentcapture/ContentCaptureManagerService;
 
     invoke-virtual {v1, v0}, Lcom/android/server/contentcapture/ContentCaptureManagerService;->isDefaultServiceEnabled(I)Z
 
-    move-result v0
+    move-result v1
 
     .line 175
-    invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->println(Z)V
+    .local v1, "enabled":Z
+    invoke-virtual {p1, v1}, Ljava/io/PrintWriter;->println(Z)V
 
     .line 176
-    const/4 p1, 0x0
+    const/4 v2, 0x0
 
-    return p1
+    return v2
 .end method
 
 .method private getNextIntArgRequired()I
@@ -128,6 +133,7 @@
 
 .method private isNextArgSessions(Ljava/io/PrintWriter;)Z
     .registers 4
+    .param p1, "pw"  # Ljava/io/PrintWriter;
 
     .line 217
     invoke-virtual {p0}, Lcom/android/server/contentcapture/ContentCaptureManagerServiceShellCommand;->getNextArgRequired()Ljava/lang/String;
@@ -135,33 +141,35 @@
     move-result-object v0
 
     .line 218
+    .local v0, "type":Ljava/lang/String;
     const-string/jumbo v1, "sessions"
 
     invoke-virtual {v0, v1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result v0
+    move-result v1
 
-    if-nez v0, :cond_14
+    if-nez v1, :cond_14
 
     .line 219
-    const-string v0, "Error: invalid list type"
+    const-string v1, "Error: invalid list type"
 
-    invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {p1, v1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
     .line 220
-    const/4 p1, 0x0
+    const/4 v1, 0x0
 
-    return p1
+    return v1
 
     .line 222
     :cond_14
-    const/4 p1, 0x1
+    const/4 v1, 0x1
 
-    return p1
+    return v1
 .end method
 
 .method private requestDestroy(Ljava/io/PrintWriter;)I
     .registers 6
+    .param p1, "pw"  # Ljava/io/PrintWriter;
 
     .line 180
     invoke-direct {p0, p1}, Lcom/android/server/contentcapture/ContentCaptureManagerServiceShellCommand;->isNextArgSessions(Ljava/io/PrintWriter;)Z
@@ -171,9 +179,9 @@
     if-nez v0, :cond_8
 
     .line 181
-    const/4 p1, -0x1
+    const/4 v0, -0x1
 
-    return p1
+    return v0
 
     .line 184
     :cond_8
@@ -182,6 +190,7 @@
     move-result v0
 
     .line 185
+    .local v0, "userId":I
     new-instance v1, Ljava/util/concurrent/CountDownLatch;
 
     const/4 v2, 0x1
@@ -189,24 +198,27 @@
     invoke-direct {v1, v2}, Ljava/util/concurrent/CountDownLatch;-><init>(I)V
 
     .line 186
+    .local v1, "latch":Ljava/util/concurrent/CountDownLatch;
     new-instance v2, Lcom/android/server/contentcapture/ContentCaptureManagerServiceShellCommand$1;
 
     invoke-direct {v2, p0, v1}, Lcom/android/server/contentcapture/ContentCaptureManagerServiceShellCommand$1;-><init>(Lcom/android/server/contentcapture/ContentCaptureManagerServiceShellCommand;Ljava/util/concurrent/CountDownLatch;)V
 
     .line 192
+    .local v2, "receiver":Lcom/android/internal/os/IResultReceiver;
     new-instance v3, Lcom/android/server/contentcapture/-$$Lambda$ContentCaptureManagerServiceShellCommand$JID7gMfFJshMFIl2pXHCkZLd6tI;
 
     invoke-direct {v3, p0, v0, v2}, Lcom/android/server/contentcapture/-$$Lambda$ContentCaptureManagerServiceShellCommand$JID7gMfFJshMFIl2pXHCkZLd6tI;-><init>(Lcom/android/server/contentcapture/ContentCaptureManagerServiceShellCommand;ILcom/android/internal/os/IResultReceiver;)V
 
     invoke-direct {p0, p1, v1, v3}, Lcom/android/server/contentcapture/ContentCaptureManagerServiceShellCommand;->requestSessionCommon(Ljava/io/PrintWriter;Ljava/util/concurrent/CountDownLatch;Ljava/lang/Runnable;)I
 
-    move-result p1
+    move-result v3
 
-    return p1
+    return v3
 .end method
 
 .method private requestGet(Ljava/io/PrintWriter;)I
     .registers 7
+    .param p1, "pw"  # Ljava/io/PrintWriter;
 
     .line 96
     invoke-virtual {p0}, Lcom/android/server/contentcapture/ContentCaptureManagerServiceShellCommand;->getNextArgRequired()Ljava/lang/String;
@@ -214,6 +226,7 @@
     move-result-object v0
 
     .line 97
+    .local v0, "what":Ljava/lang/String;
     invoke-virtual {v0}, Ljava/lang/String;->hashCode()I
 
     move-result v1
@@ -280,9 +293,9 @@
 
     invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v1
 
-    invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {p1, v1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
     .line 104
     return v4
@@ -291,21 +304,22 @@
     :cond_43
     invoke-direct {p0, p1}, Lcom/android/server/contentcapture/ContentCaptureManagerServiceShellCommand;->getDefaultServiceEnabled(Ljava/io/PrintWriter;)I
 
-    move-result p1
+    move-result v1
 
-    return p1
+    return v1
 
     .line 99
     :cond_48
     invoke-direct {p0, p1}, Lcom/android/server/contentcapture/ContentCaptureManagerServiceShellCommand;->getBindInstantService(Ljava/io/PrintWriter;)I
 
-    move-result p1
+    move-result v1
 
-    return p1
+    return v1
 .end method
 
 .method private requestList(Ljava/io/PrintWriter;)I
     .registers 6
+    .param p1, "pw"  # Ljava/io/PrintWriter;
 
     .line 196
     invoke-direct {p0, p1}, Lcom/android/server/contentcapture/ContentCaptureManagerServiceShellCommand;->isNextArgSessions(Ljava/io/PrintWriter;)Z
@@ -315,9 +329,9 @@
     if-nez v0, :cond_8
 
     .line 197
-    const/4 p1, -0x1
+    const/4 v0, -0x1
 
-    return p1
+    return v0
 
     .line 200
     :cond_8
@@ -326,6 +340,7 @@
     move-result v0
 
     .line 201
+    .local v0, "userId":I
     new-instance v1, Ljava/util/concurrent/CountDownLatch;
 
     const/4 v2, 0x1
@@ -333,24 +348,29 @@
     invoke-direct {v1, v2}, Ljava/util/concurrent/CountDownLatch;-><init>(I)V
 
     .line 202
+    .local v1, "latch":Ljava/util/concurrent/CountDownLatch;
     new-instance v2, Lcom/android/server/contentcapture/ContentCaptureManagerServiceShellCommand$2;
 
     invoke-direct {v2, p0, p1, v1}, Lcom/android/server/contentcapture/ContentCaptureManagerServiceShellCommand$2;-><init>(Lcom/android/server/contentcapture/ContentCaptureManagerServiceShellCommand;Ljava/io/PrintWriter;Ljava/util/concurrent/CountDownLatch;)V
 
     .line 213
+    .local v2, "receiver":Lcom/android/internal/os/IResultReceiver;
     new-instance v3, Lcom/android/server/contentcapture/-$$Lambda$ContentCaptureManagerServiceShellCommand$vv2l3dpITkvTtrSG9p-nNuz8Nsc;
 
     invoke-direct {v3, p0, v0, v2}, Lcom/android/server/contentcapture/-$$Lambda$ContentCaptureManagerServiceShellCommand$vv2l3dpITkvTtrSG9p-nNuz8Nsc;-><init>(Lcom/android/server/contentcapture/ContentCaptureManagerServiceShellCommand;ILcom/android/internal/os/IResultReceiver;)V
 
     invoke-direct {p0, p1, v1, v3}, Lcom/android/server/contentcapture/ContentCaptureManagerServiceShellCommand;->requestSessionCommon(Ljava/io/PrintWriter;Ljava/util/concurrent/CountDownLatch;Ljava/lang/Runnable;)I
 
-    move-result p1
+    move-result v3
 
-    return p1
+    return v3
 .end method
 
 .method private requestSessionCommon(Ljava/io/PrintWriter;Ljava/util/concurrent/CountDownLatch;Ljava/lang/Runnable;)I
-    .registers 4
+    .registers 5
+    .param p1, "pw"  # Ljava/io/PrintWriter;
+    .param p2, "latch"  # Ljava/util/concurrent/CountDownLatch;
+    .param p3, "command"  # Ljava/lang/Runnable;
 
     .line 227
     invoke-interface {p3}, Ljava/lang/Runnable;->run()V
@@ -358,13 +378,14 @@
     .line 228
     invoke-direct {p0, p1, p2}, Lcom/android/server/contentcapture/ContentCaptureManagerServiceShellCommand;->waitForLatch(Ljava/io/PrintWriter;Ljava/util/concurrent/CountDownLatch;)I
 
-    move-result p1
+    move-result v0
 
-    return p1
+    return v0
 .end method
 
 .method private requestSet(Ljava/io/PrintWriter;)I
     .registers 8
+    .param p1, "pw"  # Ljava/io/PrintWriter;
 
     .line 109
     invoke-virtual {p0}, Lcom/android/server/contentcapture/ContentCaptureManagerServiceShellCommand;->getNextArgRequired()Ljava/lang/String;
@@ -372,6 +393,7 @@
     move-result-object v0
 
     .line 111
+    .local v0, "what":Ljava/lang/String;
     invoke-virtual {v0}, Ljava/lang/String;->hashCode()I
 
     move-result v1
@@ -459,9 +481,9 @@
 
     invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v1
 
-    invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {p1, v1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
     .line 120
     return v5
@@ -470,29 +492,30 @@
     :cond_56
     invoke-direct {p0, p1}, Lcom/android/server/contentcapture/ContentCaptureManagerServiceShellCommand;->setDefaultServiceEnabled(Ljava/io/PrintWriter;)I
 
-    move-result p1
+    move-result v1
 
-    return p1
+    return v1
 
     .line 115
     :cond_5b
     invoke-direct {p0, p1}, Lcom/android/server/contentcapture/ContentCaptureManagerServiceShellCommand;->setTemporaryService(Ljava/io/PrintWriter;)I
 
-    move-result p1
+    move-result v1
 
-    return p1
+    return v1
 
     .line 113
     :cond_60
     invoke-direct {p0, p1}, Lcom/android/server/contentcapture/ContentCaptureManagerServiceShellCommand;->setBindInstantService(Ljava/io/PrintWriter;)I
 
-    move-result p1
+    move-result v1
 
-    return p1
+    return v1
 .end method
 
 .method private setBindInstantService(Ljava/io/PrintWriter;)I
     .registers 9
+    .param p1, "pw"  # Ljava/io/PrintWriter;
 
     .line 134
     invoke-virtual {p0}, Lcom/android/server/contentcapture/ContentCaptureManagerServiceShellCommand;->getNextArgRequired()Ljava/lang/String;
@@ -500,6 +523,7 @@
     move-result-object v0
 
     .line 135
+    .local v0, "mode":Ljava/lang/String;
     invoke-virtual {v0}, Ljava/lang/String;->toLowerCase()Ljava/lang/String;
 
     move-result-object v1
@@ -572,34 +596,35 @@
 
     invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v1
 
-    invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {p1, v1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
     .line 144
     return v4
 
     .line 140
     :cond_49
-    iget-object p1, p0, Lcom/android/server/contentcapture/ContentCaptureManagerServiceShellCommand;->mService:Lcom/android/server/contentcapture/ContentCaptureManagerService;
+    iget-object v1, p0, Lcom/android/server/contentcapture/ContentCaptureManagerServiceShellCommand;->mService:Lcom/android/server/contentcapture/ContentCaptureManagerService;
 
-    invoke-virtual {p1, v6}, Lcom/android/server/contentcapture/ContentCaptureManagerService;->setAllowInstantService(Z)V
+    invoke-virtual {v1, v6}, Lcom/android/server/contentcapture/ContentCaptureManagerService;->setAllowInstantService(Z)V
 
     .line 141
     return v6
 
     .line 137
     :cond_4f
-    iget-object p1, p0, Lcom/android/server/contentcapture/ContentCaptureManagerServiceShellCommand;->mService:Lcom/android/server/contentcapture/ContentCaptureManagerService;
+    iget-object v1, p0, Lcom/android/server/contentcapture/ContentCaptureManagerServiceShellCommand;->mService:Lcom/android/server/contentcapture/ContentCaptureManagerService;
 
-    invoke-virtual {p1, v5}, Lcom/android/server/contentcapture/ContentCaptureManagerService;->setAllowInstantService(Z)V
+    invoke-virtual {v1, v5}, Lcom/android/server/contentcapture/ContentCaptureManagerService;->setAllowInstantService(Z)V
 
     .line 138
     return v6
 .end method
 
 .method private setDefaultServiceEnabled(Ljava/io/PrintWriter;)I
-    .registers 5
+    .registers 7
+    .param p1, "pw"  # Ljava/io/PrintWriter;
 
     .line 163
     invoke-direct {p0}, Lcom/android/server/contentcapture/ContentCaptureManagerServiceShellCommand;->getNextIntArgRequired()I
@@ -607,6 +632,7 @@
     move-result v0
 
     .line 164
+    .local v0, "userId":I
     invoke-virtual {p0}, Lcom/android/server/contentcapture/ContentCaptureManagerServiceShellCommand;->getNextArgRequired()Ljava/lang/String;
 
     move-result-object v1
@@ -616,41 +642,44 @@
     move-result v1
 
     .line 165
+    .local v1, "enabled":Z
     iget-object v2, p0, Lcom/android/server/contentcapture/ContentCaptureManagerServiceShellCommand;->mService:Lcom/android/server/contentcapture/ContentCaptureManagerService;
 
     invoke-virtual {v2, v0, v1}, Lcom/android/server/contentcapture/ContentCaptureManagerService;->setDefaultServiceEnabled(IZ)Z
 
-    move-result v0
+    move-result v2
 
     .line 166
-    if-nez v0, :cond_28
+    .local v2, "changed":Z
+    if-nez v2, :cond_28
 
     .line 167
-    new-instance v0, Ljava/lang/StringBuilder;
+    new-instance v3, Ljava/lang/StringBuilder;
 
-    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v2, "already "
+    const-string v4, "already "
 
-    invoke-virtual {v0, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Z)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v1}, Ljava/lang/StringBuilder;->append(Z)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v3
 
-    invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {p1, v3}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
     .line 169
     :cond_28
-    const/4 p1, 0x0
+    const/4 v3, 0x0
 
-    return p1
+    return v3
 .end method
 
 .method private setTemporaryService(Ljava/io/PrintWriter;)I
-    .registers 7
+    .registers 8
+    .param p1, "pw"  # Ljava/io/PrintWriter;
 
     .line 149
     invoke-direct {p0}, Lcom/android/server/contentcapture/ContentCaptureManagerServiceShellCommand;->getNextIntArgRequired()I
@@ -658,19 +687,21 @@
     move-result v0
 
     .line 150
+    .local v0, "userId":I
     invoke-virtual {p0}, Lcom/android/server/contentcapture/ContentCaptureManagerServiceShellCommand;->getNextArg()Ljava/lang/String;
 
     move-result-object v1
 
     .line 151
+    .local v1, "serviceName":Ljava/lang/String;
     const/4 v2, 0x0
 
     if-nez v1, :cond_11
 
     .line 152
-    iget-object p1, p0, Lcom/android/server/contentcapture/ContentCaptureManagerServiceShellCommand;->mService:Lcom/android/server/contentcapture/ContentCaptureManagerService;
+    iget-object v3, p0, Lcom/android/server/contentcapture/ContentCaptureManagerServiceShellCommand;->mService:Lcom/android/server/contentcapture/ContentCaptureManagerService;
 
-    invoke-virtual {p1, v0}, Lcom/android/server/contentcapture/ContentCaptureManagerService;->resetTemporaryService(I)V
+    invoke-virtual {v3, v0}, Lcom/android/server/contentcapture/ContentCaptureManagerService;->resetTemporaryService(I)V
 
     .line 153
     return v2
@@ -682,36 +713,37 @@
     move-result v3
 
     .line 156
+    .local v3, "duration":I
     iget-object v4, p0, Lcom/android/server/contentcapture/ContentCaptureManagerServiceShellCommand;->mService:Lcom/android/server/contentcapture/ContentCaptureManagerService;
 
     invoke-virtual {v4, v0, v1, v3}, Lcom/android/server/contentcapture/ContentCaptureManagerService;->setTemporaryService(ILjava/lang/String;I)V
 
     .line 157
-    new-instance v0, Ljava/lang/StringBuilder;
+    new-instance v4, Ljava/lang/StringBuilder;
 
-    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v4}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v4, "ContentCaptureService temporarily set to "
+    const-string v5, "ContentCaptureService temporarily set to "
 
-    invoke-virtual {v0, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v4, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string v1, " for "
+    const-string v5, " for "
 
-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0, v3}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v4, v3}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    const-string/jumbo v1, "ms"
+    const-string/jumbo v5, "ms"
 
-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v4}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v4
 
-    invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {p1, v4}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
     .line 159
     return v2
@@ -719,6 +751,8 @@
 
 .method private waitForLatch(Ljava/io/PrintWriter;Ljava/util/concurrent/CountDownLatch;)I
     .registers 7
+    .param p1, "pw"  # Ljava/io/PrintWriter;
+    .param p2, "latch"  # Ljava/util/concurrent/CountDownLatch;
 
     .line 233
     const-wide/16 v0, 0x5
@@ -730,15 +764,16 @@
 
     invoke-virtual {p2, v0, v1, v3}, Ljava/util/concurrent/CountDownLatch;->await(JLjava/util/concurrent/TimeUnit;)Z
 
-    move-result p2
+    move-result v0
 
     .line 234
-    if-nez p2, :cond_11
+    .local v0, "received":Z
+    if-nez v0, :cond_11
 
     .line 235
-    const-string p2, "Timed out after 5 seconds"
+    const-string v1, "Timed out after 5 seconds"
 
-    invoke-virtual {p1, p2}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {p1, v1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
     :try_end_10
     .catch Ljava/lang/InterruptedException; {:try_start_3 .. :try_end_10} :catch_14
 
@@ -746,29 +781,31 @@
     return v2
 
     .line 242
+    .end local v0  # "received":Z
     :cond_11
     nop
 
     .line 243
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    return p1
+    return v0
 
     .line 238
     :catch_14
-    move-exception p2
+    move-exception v0
 
     .line 239
-    const-string p2, "System call interrupted"
+    .local v0, "e":Ljava/lang/InterruptedException;
+    const-string v1, "System call interrupted"
 
-    invoke-virtual {p1, p2}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {p1, v1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
     .line 240
     invoke-static {}, Ljava/lang/Thread;->currentThread()Ljava/lang/Thread;
 
-    move-result-object p1
+    move-result-object v1
 
-    invoke-virtual {p1}, Ljava/lang/Thread;->interrupt()V
+    invoke-virtual {v1}, Ljava/lang/Thread;->interrupt()V
 
     .line 241
     return v2
@@ -778,6 +815,8 @@
 # virtual methods
 .method public synthetic lambda$requestDestroy$0$ContentCaptureManagerServiceShellCommand(ILcom/android/internal/os/IResultReceiver;)V
     .registers 4
+    .param p1, "userId"  # I
+    .param p2, "receiver"  # Lcom/android/internal/os/IResultReceiver;
 
     .line 192
     iget-object v0, p0, Lcom/android/server/contentcapture/ContentCaptureManagerServiceShellCommand;->mService:Lcom/android/server/contentcapture/ContentCaptureManagerService;
@@ -789,6 +828,8 @@
 
 .method public synthetic lambda$requestList$1$ContentCaptureManagerServiceShellCommand(ILcom/android/internal/os/IResultReceiver;)V
     .registers 4
+    .param p1, "userId"  # I
+    .param p2, "receiver"  # Lcom/android/internal/os/IResultReceiver;
 
     .line 213
     iget-object v0, p0, Lcom/android/server/contentcapture/ContentCaptureManagerServiceShellCommand;->mService:Lcom/android/server/contentcapture/ContentCaptureManagerService;
@@ -800,6 +841,7 @@
 
 .method public onCommand(Ljava/lang/String;)I
     .registers 8
+    .param p1, "cmd"  # Ljava/lang/String;
 
     .line 45
     if-nez p1, :cond_7
@@ -807,9 +849,9 @@
     .line 46
     invoke-virtual {p0, p1}, Lcom/android/server/contentcapture/ContentCaptureManagerServiceShellCommand;->handleDefaultCommands(Ljava/lang/String;)I
 
-    move-result p1
+    move-result v0
 
-    return p1
+    return v0
 
     .line 48
     :cond_7
@@ -818,6 +860,7 @@
     move-result-object v0
 
     .line 49
+    .local v0, "pw":Ljava/io/PrintWriter;
     const/4 v1, -0x1
 
     invoke-virtual {p1}, Ljava/lang/String;->hashCode()I
@@ -830,10 +873,10 @@
 
     const/4 v5, 0x1
 
-    sparse-switch v2, :sswitch_data_60
+    sparse-switch v2, :sswitch_data_62
 
     :cond_16
-    goto :goto_3f
+    goto :goto_40
 
     :sswitch_17
     const-string v2, "destroy"
@@ -846,10 +889,10 @@
 
     move v1, v5
 
-    goto :goto_3f
+    goto :goto_40
 
     :sswitch_21
-    const-string v2, "list"
+    const-string/jumbo v2, "list"
 
     invoke-virtual {p1, v2}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
@@ -859,9 +902,9 @@
 
     const/4 v1, 0x0
 
-    goto :goto_3f
+    goto :goto_40
 
-    :sswitch_2b
+    :sswitch_2c
     const-string/jumbo v2, "set"
 
     invoke-virtual {p1, v2}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
@@ -872,9 +915,9 @@
 
     move v1, v3
 
-    goto :goto_3f
+    goto :goto_40
 
-    :sswitch_36
+    :sswitch_37
     const-string v2, "get"
 
     invoke-virtual {p1, v2}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
@@ -885,65 +928,67 @@
 
     move v1, v4
 
-    :goto_3f
-    if-eqz v1, :cond_5b
+    :goto_40
+    if-eqz v1, :cond_5c
 
-    if-eq v1, v5, :cond_56
+    if-eq v1, v5, :cond_57
 
-    if-eq v1, v4, :cond_51
+    if-eq v1, v4, :cond_52
 
-    if-eq v1, v3, :cond_4c
+    if-eq v1, v3, :cond_4d
 
     .line 59
     invoke-virtual {p0, p1}, Lcom/android/server/contentcapture/ContentCaptureManagerServiceShellCommand;->handleDefaultCommands(Ljava/lang/String;)I
 
-    move-result p1
+    move-result v1
 
-    return p1
+    return v1
 
     .line 57
-    :cond_4c
+    :cond_4d
     invoke-direct {p0, v0}, Lcom/android/server/contentcapture/ContentCaptureManagerServiceShellCommand;->requestSet(Ljava/io/PrintWriter;)I
 
-    move-result p1
+    move-result v1
 
-    return p1
+    return v1
 
     .line 55
-    :cond_51
+    :cond_52
     invoke-direct {p0, v0}, Lcom/android/server/contentcapture/ContentCaptureManagerServiceShellCommand;->requestGet(Ljava/io/PrintWriter;)I
 
-    move-result p1
+    move-result v1
 
-    return p1
+    return v1
 
     .line 53
-    :cond_56
+    :cond_57
     invoke-direct {p0, v0}, Lcom/android/server/contentcapture/ContentCaptureManagerServiceShellCommand;->requestDestroy(Ljava/io/PrintWriter;)I
 
-    move-result p1
+    move-result v1
 
-    return p1
+    return v1
 
     .line 51
-    :cond_5b
+    :cond_5c
     invoke-direct {p0, v0}, Lcom/android/server/contentcapture/ContentCaptureManagerServiceShellCommand;->requestList(Ljava/io/PrintWriter;)I
 
-    move-result p1
+    move-result v1
 
-    return p1
+    return v1
 
-    :sswitch_data_60
+    nop
+
+    :sswitch_data_62
     .sparse-switch
-        0x18f56 -> :sswitch_36
-        0x1bc62 -> :sswitch_2b
+        0x18f56 -> :sswitch_37
+        0x1bc62 -> :sswitch_2c
         0x32b09e -> :sswitch_21
         0x5cd39ffa -> :sswitch_17
     .end sparse-switch
 .end method
 
 .method public onHelp()V
-    .registers 4
+    .registers 5
 
     .line 65
     const-string v0, ""
@@ -953,6 +998,7 @@
     move-result-object v1
 
     .line 66
+    .local v1, "pw":Ljava/io/PrintWriter;
     :try_start_6
     const-string v2, "ContentCapture Service (content_capture) commands:"
 
@@ -1073,18 +1119,24 @@
     invoke-virtual {v1}, Ljava/io/PrintWriter;->close()V
 
     .line 93
+    .end local v1  # "pw":Ljava/io/PrintWriter;
     return-void
 
     .line 65
+    .restart local v1  # "pw":Ljava/io/PrintWriter;
     :catchall_7c
     move-exception v0
 
+    .end local v1  # "pw":Ljava/io/PrintWriter;
+    .end local p0  # "this":Lcom/android/server/contentcapture/ContentCaptureManagerServiceShellCommand;
     :try_start_7d
     throw v0
     :try_end_7e
     .catchall {:try_start_7d .. :try_end_7e} :catchall_7e
 
     .line 92
+    .restart local v1  # "pw":Ljava/io/PrintWriter;
+    .restart local p0  # "this":Lcom/android/server/contentcapture/ContentCaptureManagerServiceShellCommand;
     :catchall_7e
     move-exception v2
 
@@ -1098,9 +1150,9 @@
     goto :goto_89
 
     :catchall_85
-    move-exception v1
+    move-exception v3
 
-    invoke-virtual {v0, v1}, Ljava/lang/Throwable;->addSuppressed(Ljava/lang/Throwable;)V
+    invoke-virtual {v0, v3}, Ljava/lang/Throwable;->addSuppressed(Ljava/lang/Throwable;)V
 
     :cond_89
     :goto_89

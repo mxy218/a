@@ -85,6 +85,7 @@
 
 .method public static final readVectorFromParcel(Landroid/os/HwParcel;)Ljava/util/ArrayList;
     .registers 13
+    .param p0, "parcel"  # Landroid/os/HwParcel;
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(",
@@ -102,6 +103,7 @@
     invoke-direct {v0}, Ljava/util/ArrayList;-><init>()V
 
     .line 153
+    .local v0, "_hidl_vec":Ljava/util/ArrayList;, "Ljava/util/ArrayList<Landroid/hardware/contexthub/V1_0/ContextHub;>;"
     const-wide/16 v1, 0x10
 
     invoke-virtual {p0, v1, v2}, Landroid/os/HwParcel;->readBuffer(J)Landroid/os/HwBlob;
@@ -109,6 +111,7 @@
     move-result-object v1
 
     .line 156
+    .local v1, "_hidl_blob":Landroid/os/HwBlob;
     const-wide/16 v2, 0x8
 
     invoke-virtual {v1, v2, v3}, Landroid/os/HwBlob;->getInt32(J)I
@@ -116,6 +119,7 @@
     move-result v2
 
     .line 157
+    .local v2, "_hidl_vec_size":I
     mul-int/lit8 v3, v2, 0x78
 
     int-to-long v5, v3
@@ -134,44 +138,52 @@
 
     invoke-virtual/range {v4 .. v11}, Landroid/os/HwParcel;->readEmbeddedBuffer(JJJZ)Landroid/os/HwBlob;
 
-    move-result-object v1
+    move-result-object v3
 
     .line 161
+    .local v3, "childBlob":Landroid/os/HwBlob;
     invoke-virtual {v0}, Ljava/util/ArrayList;->clear()V
 
     .line 162
-    const/4 v3, 0x0
+    const/4 v4, 0x0
 
+    .local v4, "_hidl_index_0":I
     :goto_24
-    if-ge v3, v2, :cond_37
+    if-ge v4, v2, :cond_37
 
     .line 163
-    new-instance v4, Landroid/hardware/contexthub/V1_0/ContextHub;
+    new-instance v5, Landroid/hardware/contexthub/V1_0/ContextHub;
 
-    invoke-direct {v4}, Landroid/hardware/contexthub/V1_0/ContextHub;-><init>()V
+    invoke-direct {v5}, Landroid/hardware/contexthub/V1_0/ContextHub;-><init>()V
 
     .line 164
-    mul-int/lit8 v5, v3, 0x78
+    .local v5, "_hidl_vec_element":Landroid/hardware/contexthub/V1_0/ContextHub;
+    mul-int/lit8 v6, v4, 0x78
 
-    int-to-long v5, v5
+    int-to-long v6, v6
 
-    invoke-virtual {v4, p0, v1, v5, v6}, Landroid/hardware/contexthub/V1_0/ContextHub;->readEmbeddedFromParcel(Landroid/os/HwParcel;Landroid/os/HwBlob;J)V
+    invoke-virtual {v5, p0, v3, v6, v7}, Landroid/hardware/contexthub/V1_0/ContextHub;->readEmbeddedFromParcel(Landroid/os/HwParcel;Landroid/os/HwBlob;J)V
 
     .line 165
-    invoke-virtual {v0, v4}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
+    invoke-virtual {v0, v5}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
 
     .line 162
-    add-int/lit8 v3, v3, 0x1
+    .end local v5  # "_hidl_vec_element":Landroid/hardware/contexthub/V1_0/ContextHub;
+    add-int/lit8 v4, v4, 0x1
 
     goto :goto_24
 
     .line 169
+    .end local v2  # "_hidl_vec_size":I
+    .end local v3  # "childBlob":Landroid/os/HwBlob;
+    .end local v4  # "_hidl_index_0":I
     :cond_37
     return-object v0
 .end method
 
 .method public static final writeVectorToParcel(Landroid/os/HwParcel;Ljava/util/ArrayList;)V
     .registers 9
+    .param p0, "parcel"  # Landroid/os/HwParcel;
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(",
@@ -183,6 +195,7 @@
     .end annotation
 
     .line 230
+    .local p1, "_hidl_vec":Ljava/util/ArrayList;, "Ljava/util/ArrayList<Landroid/hardware/contexthub/V1_0/ContextHub;>;"
     new-instance v0, Landroid/os/HwBlob;
 
     const/16 v1, 0x10
@@ -190,60 +203,67 @@
     invoke-direct {v0, v1}, Landroid/os/HwBlob;-><init>(I)V
 
     .line 232
+    .local v0, "_hidl_blob":Landroid/os/HwBlob;
     invoke-virtual {p1}, Ljava/util/ArrayList;->size()I
 
     move-result v1
 
     .line 233
+    .local v1, "_hidl_vec_size":I
     const-wide/16 v2, 0x8
 
     invoke-virtual {v0, v2, v3, v1}, Landroid/os/HwBlob;->putInt32(JI)V
 
     .line 234
-    const/4 v2, 0x0
+    const-wide/16 v2, 0xc
 
-    const-wide/16 v3, 0xc
+    const/4 v4, 0x0
 
-    invoke-virtual {v0, v3, v4, v2}, Landroid/os/HwBlob;->putBool(JZ)V
+    invoke-virtual {v0, v2, v3, v4}, Landroid/os/HwBlob;->putBool(JZ)V
 
     .line 235
-    new-instance v3, Landroid/os/HwBlob;
+    new-instance v2, Landroid/os/HwBlob;
 
-    mul-int/lit8 v4, v1, 0x78
+    mul-int/lit8 v3, v1, 0x78
 
-    invoke-direct {v3, v4}, Landroid/os/HwBlob;-><init>(I)V
+    invoke-direct {v2, v3}, Landroid/os/HwBlob;-><init>(I)V
 
     .line 236
-    nop
+    .local v2, "childBlob":Landroid/os/HwBlob;
+    const/4 v3, 0x0
 
+    .local v3, "_hidl_index_0":I
     :goto_1e
-    if-ge v2, v1, :cond_2f
+    if-ge v3, v1, :cond_2f
 
     .line 237
-    invoke-virtual {p1, v2}, Ljava/util/ArrayList;->get(I)Ljava/lang/Object;
+    invoke-virtual {p1, v3}, Ljava/util/ArrayList;->get(I)Ljava/lang/Object;
 
     move-result-object v4
 
     check-cast v4, Landroid/hardware/contexthub/V1_0/ContextHub;
 
-    mul-int/lit8 v5, v2, 0x78
+    mul-int/lit8 v5, v3, 0x78
 
     int-to-long v5, v5
 
-    invoke-virtual {v4, v3, v5, v6}, Landroid/hardware/contexthub/V1_0/ContextHub;->writeEmbeddedToBlob(Landroid/os/HwBlob;J)V
+    invoke-virtual {v4, v2, v5, v6}, Landroid/hardware/contexthub/V1_0/ContextHub;->writeEmbeddedToBlob(Landroid/os/HwBlob;J)V
 
     .line 236
-    add-int/lit8 v2, v2, 0x1
+    add-int/lit8 v3, v3, 0x1
 
     goto :goto_1e
 
     .line 239
+    .end local v3  # "_hidl_index_0":I
     :cond_2f
-    const-wide/16 v1, 0x0
+    const-wide/16 v3, 0x0
 
-    invoke-virtual {v0, v1, v2, v3}, Landroid/os/HwBlob;->putBlob(JLandroid/os/HwBlob;)V
+    invoke-virtual {v0, v3, v4, v2}, Landroid/os/HwBlob;->putBlob(JLandroid/os/HwBlob;)V
 
     .line 242
+    .end local v1  # "_hidl_vec_size":I
+    .end local v2  # "childBlob":Landroid/os/HwBlob;
     invoke-virtual {p0, v0}, Landroid/os/HwParcel;->writeBuffer(Landroid/os/HwBlob;)V
 
     .line 243
@@ -253,7 +273,8 @@
 
 # virtual methods
 .method public final equals(Ljava/lang/Object;)Z
-    .registers 8
+    .registers 9
+    .param p1, "otherObject"  # Ljava/lang/Object;
 
     .line 24
     const/4 v0, 0x1
@@ -287,211 +308,214 @@
 
     .line 33
     :cond_11
-    check-cast p1, Landroid/hardware/contexthub/V1_0/ContextHub;
+    move-object v2, p1
+
+    check-cast v2, Landroid/hardware/contexthub/V1_0/ContextHub;
 
     .line 34
-    iget-object v2, p0, Landroid/hardware/contexthub/V1_0/ContextHub;->name:Ljava/lang/String;
+    .local v2, "other":Landroid/hardware/contexthub/V1_0/ContextHub;
+    iget-object v3, p0, Landroid/hardware/contexthub/V1_0/ContextHub;->name:Ljava/lang/String;
 
-    iget-object v3, p1, Landroid/hardware/contexthub/V1_0/ContextHub;->name:Ljava/lang/String;
+    iget-object v4, v2, Landroid/hardware/contexthub/V1_0/ContextHub;->name:Ljava/lang/String;
 
-    invoke-static {v2, v3}, Landroid/os/HidlSupport;->deepEquals(Ljava/lang/Object;Ljava/lang/Object;)Z
+    invoke-static {v3, v4}, Landroid/os/HidlSupport;->deepEquals(Ljava/lang/Object;Ljava/lang/Object;)Z
 
-    move-result v2
+    move-result v3
 
-    if-nez v2, :cond_1e
+    if-nez v3, :cond_1f
 
     .line 35
     return v1
 
     .line 37
-    :cond_1e
-    iget-object v2, p0, Landroid/hardware/contexthub/V1_0/ContextHub;->vendor:Ljava/lang/String;
+    :cond_1f
+    iget-object v3, p0, Landroid/hardware/contexthub/V1_0/ContextHub;->vendor:Ljava/lang/String;
 
-    iget-object v3, p1, Landroid/hardware/contexthub/V1_0/ContextHub;->vendor:Ljava/lang/String;
+    iget-object v4, v2, Landroid/hardware/contexthub/V1_0/ContextHub;->vendor:Ljava/lang/String;
 
-    invoke-static {v2, v3}, Landroid/os/HidlSupport;->deepEquals(Ljava/lang/Object;Ljava/lang/Object;)Z
+    invoke-static {v3, v4}, Landroid/os/HidlSupport;->deepEquals(Ljava/lang/Object;Ljava/lang/Object;)Z
 
-    move-result v2
+    move-result v3
 
-    if-nez v2, :cond_29
+    if-nez v3, :cond_2a
 
     .line 38
     return v1
 
     .line 40
-    :cond_29
-    iget-object v2, p0, Landroid/hardware/contexthub/V1_0/ContextHub;->toolchain:Ljava/lang/String;
+    :cond_2a
+    iget-object v3, p0, Landroid/hardware/contexthub/V1_0/ContextHub;->toolchain:Ljava/lang/String;
 
-    iget-object v3, p1, Landroid/hardware/contexthub/V1_0/ContextHub;->toolchain:Ljava/lang/String;
+    iget-object v4, v2, Landroid/hardware/contexthub/V1_0/ContextHub;->toolchain:Ljava/lang/String;
 
-    invoke-static {v2, v3}, Landroid/os/HidlSupport;->deepEquals(Ljava/lang/Object;Ljava/lang/Object;)Z
+    invoke-static {v3, v4}, Landroid/os/HidlSupport;->deepEquals(Ljava/lang/Object;Ljava/lang/Object;)Z
 
-    move-result v2
+    move-result v3
 
-    if-nez v2, :cond_34
+    if-nez v3, :cond_35
 
     .line 41
     return v1
 
     .line 43
-    :cond_34
-    iget v2, p0, Landroid/hardware/contexthub/V1_0/ContextHub;->platformVersion:I
+    :cond_35
+    iget v3, p0, Landroid/hardware/contexthub/V1_0/ContextHub;->platformVersion:I
 
-    iget v3, p1, Landroid/hardware/contexthub/V1_0/ContextHub;->platformVersion:I
+    iget v4, v2, Landroid/hardware/contexthub/V1_0/ContextHub;->platformVersion:I
 
-    if-eq v2, v3, :cond_3b
+    if-eq v3, v4, :cond_3c
 
     .line 44
     return v1
 
     .line 46
-    :cond_3b
-    iget v2, p0, Landroid/hardware/contexthub/V1_0/ContextHub;->toolchainVersion:I
+    :cond_3c
+    iget v3, p0, Landroid/hardware/contexthub/V1_0/ContextHub;->toolchainVersion:I
 
-    iget v3, p1, Landroid/hardware/contexthub/V1_0/ContextHub;->toolchainVersion:I
+    iget v4, v2, Landroid/hardware/contexthub/V1_0/ContextHub;->toolchainVersion:I
 
-    if-eq v2, v3, :cond_42
+    if-eq v3, v4, :cond_43
 
     .line 47
     return v1
 
     .line 49
-    :cond_42
-    iget v2, p0, Landroid/hardware/contexthub/V1_0/ContextHub;->hubId:I
+    :cond_43
+    iget v3, p0, Landroid/hardware/contexthub/V1_0/ContextHub;->hubId:I
 
-    iget v3, p1, Landroid/hardware/contexthub/V1_0/ContextHub;->hubId:I
+    iget v4, v2, Landroid/hardware/contexthub/V1_0/ContextHub;->hubId:I
 
-    if-eq v2, v3, :cond_49
+    if-eq v3, v4, :cond_4a
 
     .line 50
     return v1
 
     .line 52
-    :cond_49
-    iget v2, p0, Landroid/hardware/contexthub/V1_0/ContextHub;->peakMips:F
+    :cond_4a
+    iget v3, p0, Landroid/hardware/contexthub/V1_0/ContextHub;->peakMips:F
 
-    iget v3, p1, Landroid/hardware/contexthub/V1_0/ContextHub;->peakMips:F
+    iget v4, v2, Landroid/hardware/contexthub/V1_0/ContextHub;->peakMips:F
 
-    cmpl-float v2, v2, v3
+    cmpl-float v3, v3, v4
 
-    if-eqz v2, :cond_52
+    if-eqz v3, :cond_53
 
     .line 53
     return v1
 
     .line 55
-    :cond_52
-    iget v2, p0, Landroid/hardware/contexthub/V1_0/ContextHub;->stoppedPowerDrawMw:F
+    :cond_53
+    iget v3, p0, Landroid/hardware/contexthub/V1_0/ContextHub;->stoppedPowerDrawMw:F
 
-    iget v3, p1, Landroid/hardware/contexthub/V1_0/ContextHub;->stoppedPowerDrawMw:F
+    iget v4, v2, Landroid/hardware/contexthub/V1_0/ContextHub;->stoppedPowerDrawMw:F
 
-    cmpl-float v2, v2, v3
+    cmpl-float v3, v3, v4
 
-    if-eqz v2, :cond_5b
+    if-eqz v3, :cond_5c
 
     .line 56
     return v1
 
     .line 58
-    :cond_5b
-    iget v2, p0, Landroid/hardware/contexthub/V1_0/ContextHub;->sleepPowerDrawMw:F
+    :cond_5c
+    iget v3, p0, Landroid/hardware/contexthub/V1_0/ContextHub;->sleepPowerDrawMw:F
 
-    iget v3, p1, Landroid/hardware/contexthub/V1_0/ContextHub;->sleepPowerDrawMw:F
+    iget v4, v2, Landroid/hardware/contexthub/V1_0/ContextHub;->sleepPowerDrawMw:F
 
-    cmpl-float v2, v2, v3
+    cmpl-float v3, v3, v4
 
-    if-eqz v2, :cond_64
+    if-eqz v3, :cond_65
 
     .line 59
     return v1
 
     .line 61
-    :cond_64
-    iget v2, p0, Landroid/hardware/contexthub/V1_0/ContextHub;->peakPowerDrawMw:F
+    :cond_65
+    iget v3, p0, Landroid/hardware/contexthub/V1_0/ContextHub;->peakPowerDrawMw:F
 
-    iget v3, p1, Landroid/hardware/contexthub/V1_0/ContextHub;->peakPowerDrawMw:F
+    iget v4, v2, Landroid/hardware/contexthub/V1_0/ContextHub;->peakPowerDrawMw:F
 
-    cmpl-float v2, v2, v3
+    cmpl-float v3, v3, v4
 
-    if-eqz v2, :cond_6d
+    if-eqz v3, :cond_6e
 
     .line 62
     return v1
 
     .line 64
-    :cond_6d
-    iget-object v2, p0, Landroid/hardware/contexthub/V1_0/ContextHub;->connectedSensors:Ljava/util/ArrayList;
+    :cond_6e
+    iget-object v3, p0, Landroid/hardware/contexthub/V1_0/ContextHub;->connectedSensors:Ljava/util/ArrayList;
 
-    iget-object v3, p1, Landroid/hardware/contexthub/V1_0/ContextHub;->connectedSensors:Ljava/util/ArrayList;
+    iget-object v4, v2, Landroid/hardware/contexthub/V1_0/ContextHub;->connectedSensors:Ljava/util/ArrayList;
 
-    invoke-static {v2, v3}, Landroid/os/HidlSupport;->deepEquals(Ljava/lang/Object;Ljava/lang/Object;)Z
+    invoke-static {v3, v4}, Landroid/os/HidlSupport;->deepEquals(Ljava/lang/Object;Ljava/lang/Object;)Z
 
-    move-result v2
+    move-result v3
 
-    if-nez v2, :cond_78
+    if-nez v3, :cond_79
 
     .line 65
     return v1
 
     .line 67
-    :cond_78
-    iget v2, p0, Landroid/hardware/contexthub/V1_0/ContextHub;->maxSupportedMsgLen:I
+    :cond_79
+    iget v3, p0, Landroid/hardware/contexthub/V1_0/ContextHub;->maxSupportedMsgLen:I
 
-    iget v3, p1, Landroid/hardware/contexthub/V1_0/ContextHub;->maxSupportedMsgLen:I
+    iget v4, v2, Landroid/hardware/contexthub/V1_0/ContextHub;->maxSupportedMsgLen:I
 
-    if-eq v2, v3, :cond_7f
+    if-eq v3, v4, :cond_80
 
     .line 68
     return v1
 
     .line 70
-    :cond_7f
-    iget-wide v2, p0, Landroid/hardware/contexthub/V1_0/ContextHub;->chrePlatformId:J
+    :cond_80
+    iget-wide v3, p0, Landroid/hardware/contexthub/V1_0/ContextHub;->chrePlatformId:J
 
-    iget-wide v4, p1, Landroid/hardware/contexthub/V1_0/ContextHub;->chrePlatformId:J
+    iget-wide v5, v2, Landroid/hardware/contexthub/V1_0/ContextHub;->chrePlatformId:J
 
-    cmp-long v2, v2, v4
+    cmp-long v3, v3, v5
 
-    if-eqz v2, :cond_88
+    if-eqz v3, :cond_89
 
     .line 71
     return v1
 
     .line 73
-    :cond_88
-    iget-byte v2, p0, Landroid/hardware/contexthub/V1_0/ContextHub;->chreApiMajorVersion:B
+    :cond_89
+    iget-byte v3, p0, Landroid/hardware/contexthub/V1_0/ContextHub;->chreApiMajorVersion:B
 
-    iget-byte v3, p1, Landroid/hardware/contexthub/V1_0/ContextHub;->chreApiMajorVersion:B
+    iget-byte v4, v2, Landroid/hardware/contexthub/V1_0/ContextHub;->chreApiMajorVersion:B
 
-    if-eq v2, v3, :cond_8f
+    if-eq v3, v4, :cond_90
 
     .line 74
     return v1
 
     .line 76
-    :cond_8f
-    iget-byte v2, p0, Landroid/hardware/contexthub/V1_0/ContextHub;->chreApiMinorVersion:B
+    :cond_90
+    iget-byte v3, p0, Landroid/hardware/contexthub/V1_0/ContextHub;->chreApiMinorVersion:B
 
-    iget-byte v3, p1, Landroid/hardware/contexthub/V1_0/ContextHub;->chreApiMinorVersion:B
+    iget-byte v4, v2, Landroid/hardware/contexthub/V1_0/ContextHub;->chreApiMinorVersion:B
 
-    if-eq v2, v3, :cond_96
+    if-eq v3, v4, :cond_97
 
     .line 77
     return v1
 
     .line 79
-    :cond_96
-    iget-short v2, p0, Landroid/hardware/contexthub/V1_0/ContextHub;->chrePatchVersion:S
+    :cond_97
+    iget-short v3, p0, Landroid/hardware/contexthub/V1_0/ContextHub;->chrePatchVersion:S
 
-    iget-short p1, p1, Landroid/hardware/contexthub/V1_0/ContextHub;->chrePatchVersion:S
+    iget-short v4, v2, Landroid/hardware/contexthub/V1_0/ContextHub;->chrePatchVersion:S
 
-    if-eq v2, p1, :cond_9d
+    if-eq v3, v4, :cond_9e
 
     .line 80
     return v1
 
     .line 82
-    :cond_9d
+    :cond_9e
     return v0
 .end method
 
@@ -801,6 +825,9 @@
 
 .method public final readEmbeddedFromParcel(Landroid/os/HwParcel;Landroid/os/HwBlob;J)V
     .registers 21
+    .param p1, "parcel"  # Landroid/os/HwParcel;
+    .param p2, "_hidl_blob"  # Landroid/os/HwBlob;
+    .param p3, "_hidl_offset"  # J
 
     .line 174
     move-object/from16 v0, p0
@@ -813,44 +840,46 @@
 
     invoke-virtual {v1, v4, v5}, Landroid/os/HwBlob;->getString(J)Ljava/lang/String;
 
-    move-result-object v6
+    move-result-object v4
 
-    iput-object v6, v0, Landroid/hardware/contexthub/V1_0/ContextHub;->name:Ljava/lang/String;
+    iput-object v4, v0, Landroid/hardware/contexthub/V1_0/ContextHub;->name:Ljava/lang/String;
 
     .line 176
-    iget-object v6, v0, Landroid/hardware/contexthub/V1_0/ContextHub;->name:Ljava/lang/String;
+    iget-object v4, v0, Landroid/hardware/contexthub/V1_0/ContextHub;->name:Ljava/lang/String;
 
     .line 177
-    invoke-virtual {v6}, Ljava/lang/String;->getBytes()[B
+    invoke-virtual {v4}, Ljava/lang/String;->getBytes()[B
 
-    move-result-object v6
+    move-result-object v4
 
-    array-length v6, v6
+    array-length v4, v4
 
-    add-int/lit8 v6, v6, 0x1
+    add-int/lit8 v4, v4, 0x1
 
-    int-to-long v8, v6
+    int-to-long v6, v4
 
     .line 178
     invoke-virtual/range {p2 .. p2}, Landroid/os/HwBlob;->handle()J
 
-    move-result-wide v10
+    move-result-wide v8
 
-    add-long v12, v4, v2
+    add-long v4, p3, v2
+
+    add-long v10, v4, v2
 
     .line 176
-    const/4 v14, 0x0
+    const/4 v12, 0x0
 
-    move-object/from16 v7, p1
+    move-object/from16 v5, p1
 
-    invoke-virtual/range {v7 .. v14}, Landroid/os/HwParcel;->readEmbeddedBuffer(JJJZ)Landroid/os/HwBlob;
+    invoke-virtual/range {v5 .. v12}, Landroid/os/HwParcel;->readEmbeddedBuffer(JJJZ)Landroid/os/HwBlob;
 
     .line 181
     const-wide/16 v4, 0x10
 
-    add-long v4, p3, v4
+    add-long v6, p3, v4
 
-    invoke-virtual {v1, v4, v5}, Landroid/os/HwBlob;->getString(J)Ljava/lang/String;
+    invoke-virtual {v1, v6, v7}, Landroid/os/HwBlob;->getString(J)Ljava/lang/String;
 
     move-result-object v6
 
@@ -875,17 +904,23 @@
 
     move-result-wide v10
 
+    add-long v4, p3, v4
+
     add-long v12, v4, v2
 
     .line 183
+    const/4 v14, 0x0
+
+    move-object/from16 v7, p1
+
     invoke-virtual/range {v7 .. v14}, Landroid/os/HwParcel;->readEmbeddedBuffer(JJJZ)Landroid/os/HwBlob;
 
     .line 188
     const-wide/16 v4, 0x20
 
-    add-long v4, p3, v4
+    add-long v6, p3, v4
 
-    invoke-virtual {v1, v4, v5}, Landroid/os/HwBlob;->getString(J)Ljava/lang/String;
+    invoke-virtual {v1, v6, v7}, Landroid/os/HwBlob;->getString(J)Ljava/lang/String;
 
     move-result-object v6
 
@@ -910,9 +945,13 @@
 
     move-result-wide v10
 
+    add-long v4, p3, v4
+
     add-long v12, v4, v2
 
     .line 190
+    move-object/from16 v7, p1
+
     invoke-virtual/range {v7 .. v14}, Landroid/os/HwParcel;->readEmbeddedBuffer(JJJZ)Landroid/os/HwBlob;
 
     .line 195
@@ -995,17 +1034,18 @@
     .line 203
     const-wide/16 v4, 0x50
 
-    add-long v4, p3, v4
+    add-long v6, p3, v4
 
-    const-wide/16 v6, 0x8
+    const-wide/16 v8, 0x8
 
-    add-long/2addr v6, v4
+    add-long/2addr v6, v8
 
     invoke-virtual {v1, v6, v7}, Landroid/os/HwBlob;->getInt32(J)I
 
     move-result v6
 
     .line 204
+    .local v6, "_hidl_vec_size":I
     mul-int/lit8 v7, v6, 0x60
 
     int-to-long v9, v7
@@ -1014,6 +1054,8 @@
     invoke-virtual/range {p2 .. p2}, Landroid/os/HwBlob;->handle()J
 
     move-result-wide v11
+
+    add-long v4, p3, v4
 
     add-long v13, v4, v2
 
@@ -1027,6 +1069,7 @@
     move-result-object v2
 
     .line 208
+    .local v2, "childBlob":Landroid/os/HwBlob;
     iget-object v3, v0, Landroid/hardware/contexthub/V1_0/ContextHub;->connectedSensors:Ljava/util/ArrayList;
 
     invoke-virtual {v3}, Ljava/util/ArrayList;->clear()V
@@ -1034,8 +1077,9 @@
     .line 209
     const/4 v3, 0x0
 
-    :goto_c5
-    if-ge v3, v6, :cond_dc
+    .local v3, "_hidl_index_0":I
+    :goto_d2
+    if-ge v3, v6, :cond_e9
 
     .line 210
     new-instance v4, Landroid/hardware/contexthub/V1_0/PhysicalSensor;
@@ -1043,6 +1087,7 @@
     invoke-direct {v4}, Landroid/hardware/contexthub/V1_0/PhysicalSensor;-><init>()V
 
     .line 211
+    .local v4, "_hidl_vec_element":Landroid/hardware/contexthub/V1_0/PhysicalSensor;
     mul-int/lit8 v5, v3, 0x60
 
     int-to-long v7, v5
@@ -1057,12 +1102,18 @@
     invoke-virtual {v7, v4}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
 
     .line 209
+    .end local v4  # "_hidl_vec_element":Landroid/hardware/contexthub/V1_0/PhysicalSensor;
     add-int/lit8 v3, v3, 0x1
 
-    goto :goto_c5
+    goto :goto_d2
+
+    :cond_e9
+    move-object/from16 v5, p1
 
     .line 215
-    :cond_dc
+    .end local v2  # "childBlob":Landroid/os/HwBlob;
+    .end local v3  # "_hidl_index_0":I
+    .end local v6  # "_hidl_vec_size":I
     const-wide/16 v2, 0x60
 
     add-long v2, p3, v2
@@ -1113,9 +1164,9 @@
 
     invoke-virtual {v1, v2, v3}, Landroid/os/HwBlob;->getInt16(J)S
 
-    move-result v1
+    move-result v2
 
-    iput-short v1, v0, Landroid/hardware/contexthub/V1_0/ContextHub;->chrePatchVersion:S
+    iput-short v2, v0, Landroid/hardware/contexthub/V1_0/ContextHub;->chrePatchVersion:S
 
     .line 220
     return-void
@@ -1123,6 +1174,7 @@
 
 .method public final readFromParcel(Landroid/os/HwParcel;)V
     .registers 5
+    .param p1, "parcel"  # Landroid/os/HwParcel;
 
     .line 147
     const-wide/16 v0, 0x78
@@ -1132,6 +1184,7 @@
     move-result-object v0
 
     .line 148
+    .local v0, "blob":Landroid/os/HwBlob;
     const-wide/16 v1, 0x0
 
     invoke-virtual {p0, p1, v0, v1, v2}, Landroid/hardware/contexthub/V1_0/ContextHub;->readEmbeddedFromParcel(Landroid/os/HwParcel;Landroid/os/HwBlob;J)V
@@ -1149,6 +1202,7 @@
     invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
 
     .line 109
+    .local v0, "builder":Ljava/lang/StringBuilder;
     const-string/jumbo v1, "{"
 
     invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
@@ -1321,13 +1375,15 @@
     .line 143
     invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v1
 
-    return-object v0
+    return-object v1
 .end method
 
 .method public final writeEmbeddedToBlob(Landroid/os/HwBlob;J)V
     .registers 14
+    .param p1, "_hidl_blob"  # Landroid/os/HwBlob;
+    .param p2, "_hidl_offset"  # J
 
     .line 247
     const-wide/16 v0, 0x0
@@ -1427,20 +1483,23 @@
     move-result v2
 
     .line 259
+    .local v2, "_hidl_vec_size":I
     const-wide/16 v3, 0x50
 
-    add-long/2addr v3, p2
+    add-long v5, p2, v3
 
-    const-wide/16 v5, 0x8
+    const-wide/16 v7, 0x8
 
-    add-long/2addr v5, v3
+    add-long/2addr v5, v7
 
     invoke-virtual {p1, v5, v6, v2}, Landroid/os/HwBlob;->putInt32(JI)V
 
     .line 260
-    const-wide/16 v5, 0xc
+    add-long v5, p2, v3
 
-    add-long/2addr v5, v3
+    const-wide/16 v7, 0xc
+
+    add-long/2addr v5, v7
 
     const/4 v7, 0x0
 
@@ -1454,38 +1513,45 @@
     invoke-direct {v5, v6}, Landroid/os/HwBlob;-><init>(I)V
 
     .line 262
-    nop
+    .local v5, "childBlob":Landroid/os/HwBlob;
+    const/4 v6, 0x0
 
-    :goto_6f
-    if-ge v7, v2, :cond_82
+    .local v6, "_hidl_index_0":I
+    :goto_72
+    if-ge v6, v2, :cond_85
 
     .line 263
-    iget-object v6, p0, Landroid/hardware/contexthub/V1_0/ContextHub;->connectedSensors:Ljava/util/ArrayList;
+    iget-object v7, p0, Landroid/hardware/contexthub/V1_0/ContextHub;->connectedSensors:Ljava/util/ArrayList;
 
-    invoke-virtual {v6, v7}, Ljava/util/ArrayList;->get(I)Ljava/lang/Object;
+    invoke-virtual {v7, v6}, Ljava/util/ArrayList;->get(I)Ljava/lang/Object;
 
-    move-result-object v6
+    move-result-object v7
 
-    check-cast v6, Landroid/hardware/contexthub/V1_0/PhysicalSensor;
+    check-cast v7, Landroid/hardware/contexthub/V1_0/PhysicalSensor;
 
-    mul-int/lit8 v8, v7, 0x60
+    mul-int/lit8 v8, v6, 0x60
 
     int-to-long v8, v8
 
-    invoke-virtual {v6, v5, v8, v9}, Landroid/hardware/contexthub/V1_0/PhysicalSensor;->writeEmbeddedToBlob(Landroid/os/HwBlob;J)V
+    invoke-virtual {v7, v5, v8, v9}, Landroid/hardware/contexthub/V1_0/PhysicalSensor;->writeEmbeddedToBlob(Landroid/os/HwBlob;J)V
 
     .line 262
-    add-int/lit8 v7, v7, 0x1
+    add-int/lit8 v6, v6, 0x1
 
-    goto :goto_6f
+    goto :goto_72
 
     .line 265
-    :cond_82
+    .end local v6  # "_hidl_index_0":I
+    :cond_85
+    add-long/2addr v3, p2
+
     add-long/2addr v3, v0
 
     invoke-virtual {p1, v3, v4, v5}, Landroid/os/HwBlob;->putBlob(JLandroid/os/HwBlob;)V
 
     .line 267
+    .end local v2  # "_hidl_vec_size":I
+    .end local v5  # "childBlob":Landroid/os/HwBlob;
     const-wide/16 v0, 0x60
 
     add-long/2addr v0, p2
@@ -1524,11 +1590,11 @@
     .line 271
     const-wide/16 v0, 0x72
 
-    add-long/2addr p2, v0
+    add-long/2addr v0, p2
 
-    iget-short v0, p0, Landroid/hardware/contexthub/V1_0/ContextHub;->chrePatchVersion:S
+    iget-short v2, p0, Landroid/hardware/contexthub/V1_0/ContextHub;->chrePatchVersion:S
 
-    invoke-virtual {p1, p2, p3, v0}, Landroid/os/HwBlob;->putInt16(JS)V
+    invoke-virtual {p1, v0, v1, v2}, Landroid/os/HwBlob;->putInt16(JS)V
 
     .line 272
     return-void
@@ -1536,6 +1602,7 @@
 
 .method public final writeToParcel(Landroid/os/HwParcel;)V
     .registers 5
+    .param p1, "parcel"  # Landroid/os/HwParcel;
 
     .line 223
     new-instance v0, Landroid/os/HwBlob;
@@ -1545,6 +1612,7 @@
     invoke-direct {v0, v1}, Landroid/os/HwBlob;-><init>(I)V
 
     .line 224
+    .local v0, "_hidl_blob":Landroid/os/HwBlob;
     const-wide/16 v1, 0x0
 
     invoke-virtual {p0, v0, v1, v2}, Landroid/hardware/contexthub/V1_0/ContextHub;->writeEmbeddedToBlob(Landroid/os/HwBlob;J)V

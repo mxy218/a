@@ -72,6 +72,11 @@
 # direct methods
 .method constructor <init>(ILandroid/content/Context;Ljava/lang/Object;Landroid/os/Handler;Landroid/content/ComponentName;)V
     .registers 8
+    .param p1, "userId"  # I
+    .param p2, "context"  # Landroid/content/Context;
+    .param p3, "lock"  # Ljava/lang/Object;
+    .param p4, "handler"  # Landroid/os/Handler;
+    .param p5, "componentName"  # Landroid/content/ComponentName;
 
     .line 476
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -91,27 +96,27 @@
     .line 478
     invoke-static {p2}, Lcom/android/internal/util/Preconditions;->checkNotNull(Ljava/lang/Object;)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v0
 
-    check-cast p1, Landroid/content/Context;
+    check-cast v0, Landroid/content/Context;
 
-    iput-object p1, p0, Lcom/android/server/attention/AttentionManagerService$UserState;->mContext:Landroid/content/Context;
+    iput-object v0, p0, Lcom/android/server/attention/AttentionManagerService$UserState;->mContext:Landroid/content/Context;
 
     .line 479
     invoke-static {p3}, Lcom/android/internal/util/Preconditions;->checkNotNull(Ljava/lang/Object;)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v0
 
-    iput-object p1, p0, Lcom/android/server/attention/AttentionManagerService$UserState;->mLock:Ljava/lang/Object;
+    iput-object v0, p0, Lcom/android/server/attention/AttentionManagerService$UserState;->mLock:Ljava/lang/Object;
 
     .line 480
     invoke-static {p5}, Lcom/android/internal/util/Preconditions;->checkNotNull(Ljava/lang/Object;)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v0
 
-    check-cast p1, Landroid/content/ComponentName;
+    check-cast v0, Landroid/content/ComponentName;
 
-    iput-object p1, p0, Lcom/android/server/attention/AttentionManagerService$UserState;->mComponentName:Landroid/content/ComponentName;
+    iput-object v0, p0, Lcom/android/server/attention/AttentionManagerService$UserState;->mComponentName:Landroid/content/ComponentName;
 
     .line 481
     iput-object p4, p0, Lcom/android/server/attention/AttentionManagerService$UserState;->mAttentionHandler:Landroid/os/Handler;
@@ -122,6 +127,8 @@
 
 .method static synthetic access$1200(Lcom/android/server/attention/AttentionManagerService$UserState;Lcom/android/internal/util/IndentingPrintWriter;)V
     .registers 2
+    .param p0, "x0"  # Lcom/android/server/attention/AttentionManagerService$UserState;
+    .param p1, "x1"  # Lcom/android/internal/util/IndentingPrintWriter;
 
     .line 456
     invoke-direct {p0, p1}, Lcom/android/server/attention/AttentionManagerService$UserState;->dump(Lcom/android/internal/util/IndentingPrintWriter;)V
@@ -130,16 +137,19 @@
 .end method
 
 .method static synthetic access$1500(Lcom/android/server/attention/AttentionManagerService$UserState;)Ljava/lang/Object;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/attention/AttentionManagerService$UserState;
 
     .line 456
-    iget-object p0, p0, Lcom/android/server/attention/AttentionManagerService$UserState;->mLock:Ljava/lang/Object;
+    iget-object v0, p0, Lcom/android/server/attention/AttentionManagerService$UserState;->mLock:Ljava/lang/Object;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$1602(Lcom/android/server/attention/AttentionManagerService$UserState;Z)Z
     .registers 2
+    .param p0, "x0"  # Lcom/android/server/attention/AttentionManagerService$UserState;
+    .param p1, "x1"  # Z
 
     .line 456
     iput-boolean p1, p0, Lcom/android/server/attention/AttentionManagerService$UserState;->mBinding:Z
@@ -149,6 +159,7 @@
 
 .method static synthetic access$1700(Lcom/android/server/attention/AttentionManagerService$UserState;)V
     .registers 1
+    .param p0, "x0"  # Lcom/android/server/attention/AttentionManagerService$UserState;
 
     .line 456
     invoke-direct {p0}, Lcom/android/server/attention/AttentionManagerService$UserState;->handlePendingCallbackLocked()V
@@ -157,25 +168,28 @@
 .end method
 
 .method static synthetic access$2000(Lcom/android/server/attention/AttentionManagerService$UserState;)Lcom/android/server/attention/AttentionManagerService$UserState$AttentionServiceConnection;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/attention/AttentionManagerService$UserState;
 
     .line 456
-    iget-object p0, p0, Lcom/android/server/attention/AttentionManagerService$UserState;->mConnection:Lcom/android/server/attention/AttentionManagerService$UserState$AttentionServiceConnection;
+    iget-object v0, p0, Lcom/android/server/attention/AttentionManagerService$UserState;->mConnection:Lcom/android/server/attention/AttentionManagerService$UserState$AttentionServiceConnection;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$2100(Lcom/android/server/attention/AttentionManagerService$UserState;)I
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/attention/AttentionManagerService$UserState;
 
     .line 456
-    iget p0, p0, Lcom/android/server/attention/AttentionManagerService$UserState;->mUserId:I
+    iget v0, p0, Lcom/android/server/attention/AttentionManagerService$UserState;->mUserId:I
 
-    return p0
+    return v0
 .end method
 
 .method static synthetic access$300(Lcom/android/server/attention/AttentionManagerService$UserState;)V
     .registers 1
+    .param p0, "x0"  # Lcom/android/server/attention/AttentionManagerService$UserState;
 
     .line 456
     invoke-direct {p0}, Lcom/android/server/attention/AttentionManagerService$UserState;->bindLocked()V
@@ -228,6 +242,7 @@
 
 .method private dump(Lcom/android/internal/util/IndentingPrintWriter;)V
     .registers 6
+    .param p1, "pw"  # Lcom/android/internal/util/IndentingPrintWriter;
 
     .line 524
     new-instance v0, Ljava/lang/StringBuilder;
@@ -281,7 +296,7 @@
     .line 528
     iget-object v1, p0, Lcom/android/server/attention/AttentionManagerService$UserState;->mCurrentAttentionCheck:Lcom/android/server/attention/AttentionManagerService$AttentionCheck;
 
-    if-eqz v1, :cond_73
+    if-eqz v1, :cond_75
 
     .line 529
     invoke-virtual {p1}, Lcom/android/internal/util/IndentingPrintWriter;->increaseIndent()Lcom/android/internal/util/IndentingPrintWriter;
@@ -291,7 +306,7 @@
 
     invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v2, "is dispatched="
+    const-string/jumbo v2, "is dispatched="
 
     invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
@@ -314,7 +329,7 @@
 
     invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v2, "is fulfilled:="
+    const-string/jumbo v2, "is fulfilled:="
 
     invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
@@ -336,7 +351,7 @@
     invoke-virtual {p1}, Lcom/android/internal/util/IndentingPrintWriter;->decreaseIndent()Lcom/android/internal/util/IndentingPrintWriter;
 
     .line 534
-    :cond_73
+    :cond_75
     const-string v1, "attention check cache:"
 
     invoke-virtual {p1, v1}, Lcom/android/internal/util/IndentingPrintWriter;->println(Ljava/lang/String;)V
@@ -344,7 +359,7 @@
     .line 535
     iget-object v1, p0, Lcom/android/server/attention/AttentionManagerService$UserState;->mAttentionCheckCache:Lcom/android/server/attention/AttentionManagerService$AttentionCheckCache;
 
-    if-eqz v1, :cond_d2
+    if-eqz v1, :cond_d5
 
     .line 536
     invoke-virtual {p1}, Lcom/android/internal/util/IndentingPrintWriter;->increaseIndent()Lcom/android/internal/util/IndentingPrintWriter;
@@ -354,7 +369,7 @@
 
     invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v2, "last computed="
+    const-string/jumbo v2, "last computed="
 
     invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
@@ -422,25 +437,25 @@
     invoke-virtual {p1}, Lcom/android/internal/util/IndentingPrintWriter;->decreaseIndent()Lcom/android/internal/util/IndentingPrintWriter;
 
     .line 542
-    :cond_d2
+    :cond_d5
     monitor-exit v0
 
     .line 543
     return-void
 
     .line 542
-    :catchall_d4
-    move-exception p1
+    :catchall_d7
+    move-exception v1
 
     monitor-exit v0
-    :try_end_d6
-    .catchall {:try_start_1a .. :try_end_d6} :catchall_d4
+    :try_end_d9
+    .catchall {:try_start_1a .. :try_end_d9} :catchall_d7
 
-    throw p1
+    throw v1
 .end method
 
 .method private handlePendingCallbackLocked()V
-    .registers 3
+    .registers 4
     .annotation build Lcom/android/internal/annotations/GuardedBy;
         value = {
             "mLock"
@@ -487,13 +502,15 @@
     move-exception v0
 
     .line 492
-    const-string v0, "AttentionManagerService"
+    .local v0, "e":Landroid/os/RemoteException;
+    const-string v1, "AttentionManagerService"
 
-    const-string v1, "Cannot call into the AttentionService"
+    const-string v2, "Cannot call into the AttentionService"
 
-    invoke-static {v0, v1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v2}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 493
+    .end local v0  # "e":Landroid/os/RemoteException;
     :goto_24
     goto :goto_2f
 
@@ -535,6 +552,7 @@
     move-result-object v0
 
     .line 517
+    .local v0, "serviceIntent":Landroid/content/Intent;
     iget-object v1, p0, Lcom/android/server/attention/AttentionManagerService$UserState;->mContext:Landroid/content/Context;
 
     iget-object v2, p0, Lcom/android/server/attention/AttentionManagerService$UserState;->mConnection:Lcom/android/server/attention/AttentionManagerService$UserState$AttentionServiceConnection;

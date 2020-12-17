@@ -38,8 +38,9 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/media/MediaSessionService$SessionManagerImpl;ZLjava/lang/String;IIIILjava/lang/String;)V
     .registers 9
+    .param p1, "this$1"  # Lcom/android/server/media/MediaSessionService$SessionManagerImpl;
 
-    .line 1883
+    .line 1896
     iput-object p1, p0, Lcom/android/server/media/MediaSessionService$SessionManagerImpl$4;->this$1:Lcom/android/server/media/MediaSessionService$SessionManagerImpl;
 
     iput-boolean p2, p0, Lcom/android/server/media/MediaSessionService$SessionManagerImpl$4;->val$asSystemService:Z
@@ -66,12 +67,12 @@
 .method public run()V
     .registers 9
 
-    .line 1888
+    .line 1901
     iget-boolean v0, p0, Lcom/android/server/media/MediaSessionService$SessionManagerImpl$4;->val$asSystemService:Z
 
-    if-eqz v0, :cond_17
+    if-eqz v0, :cond_15
 
-    .line 1889
+    .line 1902
     iget-object v0, p0, Lcom/android/server/media/MediaSessionService$SessionManagerImpl$4;->this$1:Lcom/android/server/media/MediaSessionService$SessionManagerImpl;
 
     iget-object v0, v0, Lcom/android/server/media/MediaSessionService$SessionManagerImpl;->this$0:Lcom/android/server/media/MediaSessionService;
@@ -84,36 +85,34 @@
 
     move-result-object v0
 
-    .line 1890
+    .line 1903
+    .local v0, "callingOpPackageName":Ljava/lang/String;
     invoke-static {}, Landroid/os/Process;->myUid()I
 
     move-result v1
 
-    move-object v6, v0
+    .local v1, "callingUid":I
+    goto :goto_19
 
-    move v7, v1
-
-    goto :goto_1d
-
-    .line 1892
-    :cond_17
+    .line 1905
+    .end local v0  # "callingOpPackageName":Ljava/lang/String;
+    .end local v1  # "callingUid":I
+    :cond_15
     iget-object v0, p0, Lcom/android/server/media/MediaSessionService$SessionManagerImpl$4;->val$opPackageName:Ljava/lang/String;
 
-    .line 1893
+    .line 1906
+    .restart local v0  # "callingOpPackageName":Ljava/lang/String;
     iget v1, p0, Lcom/android/server/media/MediaSessionService$SessionManagerImpl$4;->val$uid:I
 
-    move-object v6, v0
+    .line 1909
+    .restart local v1  # "callingUid":I
+    :goto_19
+    :try_start_19
+    iget-object v2, p0, Lcom/android/server/media/MediaSessionService$SessionManagerImpl$4;->this$1:Lcom/android/server/media/MediaSessionService$SessionManagerImpl;
 
-    move v7, v1
+    iget-object v2, v2, Lcom/android/server/media/MediaSessionService$SessionManagerImpl;->this$0:Lcom/android/server/media/MediaSessionService;
 
-    .line 1896
-    :goto_1d
-    :try_start_1d
-    iget-object v0, p0, Lcom/android/server/media/MediaSessionService$SessionManagerImpl$4;->this$1:Lcom/android/server/media/MediaSessionService$SessionManagerImpl;
-
-    iget-object v0, v0, Lcom/android/server/media/MediaSessionService$SessionManagerImpl;->this$0:Lcom/android/server/media/MediaSessionService;
-
-    invoke-static {v0}, Lcom/android/server/media/MediaSessionService;->access$4300(Lcom/android/server/media/MediaSessionService;)Landroid/media/AudioManagerInternal;
+    invoke-static {v2}, Lcom/android/server/media/MediaSessionService;->access$4300(Lcom/android/server/media/MediaSessionService;)Landroid/media/AudioManagerInternal;
 
     move-result-object v2
 
@@ -123,80 +122,86 @@
 
     iget v5, p0, Lcom/android/server/media/MediaSessionService$SessionManagerImpl$4;->val$flags:I
 
+    move-object v6, v0
+
+    move v7, v1
+
     invoke-virtual/range {v2 .. v7}, Landroid/media/AudioManagerInternal;->adjustSuggestedStreamVolumeForUid(IIILjava/lang/String;I)V
-    :try_end_2e
-    .catch Ljava/lang/SecurityException; {:try_start_1d .. :try_end_2e} :catch_2f
-    .catch Ljava/lang/IllegalArgumentException; {:try_start_1d .. :try_end_2e} :catch_2f
+    :try_end_2c
+    .catch Ljava/lang/SecurityException; {:try_start_19 .. :try_end_2c} :catch_2d
+    .catch Ljava/lang/IllegalArgumentException; {:try_start_19 .. :try_end_2c} :catch_2d
 
-    .line 1903
-    goto :goto_7a
+    .line 1916
+    goto :goto_78
 
-    .line 1898
-    :catch_2f
-    move-exception v0
+    .line 1911
+    :catch_2d
+    move-exception v2
 
-    .line 1899
-    new-instance v1, Ljava/lang/StringBuilder;
+    .line 1912
+    .local v2, "e":Ljava/lang/RuntimeException;
+    new-instance v3, Ljava/lang/StringBuilder;
 
-    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v2, "Cannot adjust volume: direction="
+    const-string v4, "Cannot adjust volume: direction="
 
-    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    iget v2, p0, Lcom/android/server/media/MediaSessionService$SessionManagerImpl$4;->val$direction:I
+    iget v4, p0, Lcom/android/server/media/MediaSessionService$SessionManagerImpl$4;->val$direction:I
 
-    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    const-string v2, ", suggestedStream="
+    const-string v4, ", suggestedStream="
 
-    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    iget v2, p0, Lcom/android/server/media/MediaSessionService$SessionManagerImpl$4;->val$suggestedStream:I
+    iget v4, p0, Lcom/android/server/media/MediaSessionService$SessionManagerImpl$4;->val$suggestedStream:I
 
-    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    const-string v2, ", flags="
+    const-string v4, ", flags="
 
-    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    iget v2, p0, Lcom/android/server/media/MediaSessionService$SessionManagerImpl$4;->val$flags:I
+    iget v4, p0, Lcom/android/server/media/MediaSessionService$SessionManagerImpl$4;->val$flags:I
 
-    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    const-string v2, ", packageName="
+    const-string v4, ", packageName="
 
-    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    iget-object v2, p0, Lcom/android/server/media/MediaSessionService$SessionManagerImpl$4;->val$packageName:Ljava/lang/String;
+    iget-object v4, p0, Lcom/android/server/media/MediaSessionService$SessionManagerImpl$4;->val$packageName:Ljava/lang/String;
 
-    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string v2, ", uid="
+    const-string v4, ", uid="
 
-    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    iget v2, p0, Lcom/android/server/media/MediaSessionService$SessionManagerImpl$4;->val$uid:I
+    iget v4, p0, Lcom/android/server/media/MediaSessionService$SessionManagerImpl$4;->val$uid:I
 
-    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    const-string v2, ", asSystemService="
+    const-string v4, ", asSystemService="
 
-    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    iget-boolean v2, p0, Lcom/android/server/media/MediaSessionService$SessionManagerImpl$4;->val$asSystemService:Z
+    iget-boolean v4, p0, Lcom/android/server/media/MediaSessionService$SessionManagerImpl$4;->val$asSystemService:Z
 
-    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Z)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Z)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v1
+    move-result-object v3
 
-    const-string v2, "MediaSessionService"
+    const-string v4, "MediaSessionService"
 
-    invoke-static {v2, v1, v0}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    invoke-static {v4, v3, v2}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
-    .line 1904
-    :goto_7a
+    .line 1917
+    .end local v2  # "e":Ljava/lang/RuntimeException;
+    :goto_78
     return-void
 .end method

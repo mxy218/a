@@ -108,134 +108,146 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/wm/WindowManagerService;)V
     .registers 3
+    .param p1, "service"  # Lcom/android/server/wm/WindowManagerService;
 
-    .line 235
+    .line 234
     iget-object v0, p1, Lcom/android/server/wm/WindowManagerService;->mActivityTaskManager:Landroid/app/IActivityTaskManager;
 
     invoke-direct {p0, p1, v0}, Lcom/android/server/wm/TaskPositioner;-><init>(Lcom/android/server/wm/WindowManagerService;Landroid/app/IActivityTaskManager;)V
 
-    .line 236
+    .line 235
     return-void
 .end method
 
 .method constructor <init>(Lcom/android/server/wm/WindowManagerService;Landroid/app/IActivityTaskManager;)V
     .registers 4
+    .param p1, "service"  # Lcom/android/server/wm/WindowManagerService;
+    .param p2, "activityManager"  # Landroid/app/IActivityTaskManager;
     .annotation build Lcom/android/internal/annotations/VisibleForTesting;
     .end annotation
 
-    .line 228
+    .line 227
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
-    .line 103
+    .line 102
     new-instance v0, Landroid/util/DisplayMetrics;
 
     invoke-direct {v0}, Landroid/util/DisplayMetrics;-><init>()V
 
     iput-object v0, p0, Lcom/android/server/wm/TaskPositioner;->mDisplayMetrics:Landroid/util/DisplayMetrics;
 
-    .line 104
+    .line 103
     new-instance v0, Landroid/graphics/Rect;
 
     invoke-direct {v0}, Landroid/graphics/Rect;-><init>()V
 
     iput-object v0, p0, Lcom/android/server/wm/TaskPositioner;->mTmpRect:Landroid/graphics/Rect;
 
-    .line 114
+    .line 113
     new-instance v0, Landroid/graphics/Rect;
 
     invoke-direct {v0}, Landroid/graphics/Rect;-><init>()V
 
     iput-object v0, p0, Lcom/android/server/wm/TaskPositioner;->mWindowOriginalBounds:Landroid/graphics/Rect;
 
-    .line 115
+    .line 114
     new-instance v0, Landroid/graphics/Rect;
 
     invoke-direct {v0}, Landroid/graphics/Rect;-><init>()V
 
     iput-object v0, p0, Lcom/android/server/wm/TaskPositioner;->mWindowDragBounds:Landroid/graphics/Rect;
 
-    .line 116
+    .line 115
     new-instance v0, Landroid/graphics/Point;
 
     invoke-direct {v0}, Landroid/graphics/Point;-><init>()V
 
     iput-object v0, p0, Lcom/android/server/wm/TaskPositioner;->mMaxVisibleSize:Landroid/graphics/Point;
 
-    .line 119
+    .line 118
     const/4 v0, 0x0
 
     iput v0, p0, Lcom/android/server/wm/TaskPositioner;->mCtrlType:I
 
-    .line 229
+    .line 228
     iput-object p1, p0, Lcom/android/server/wm/TaskPositioner;->mService:Lcom/android/server/wm/WindowManagerService;
 
-    .line 230
+    .line 229
     iput-object p2, p0, Lcom/android/server/wm/TaskPositioner;->mActivityManager:Landroid/app/IActivityTaskManager;
 
-    .line 231
+    .line 230
     return-void
 .end method
 
 .method static synthetic access$000(Lcom/android/server/wm/TaskPositioner;)Lcom/android/server/wm/WindowManagerService;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/wm/TaskPositioner;
 
-    .line 61
-    iget-object p0, p0, Lcom/android/server/wm/TaskPositioner;->mService:Lcom/android/server/wm/WindowManagerService;
+    .line 60
+    iget-object v0, p0, Lcom/android/server/wm/TaskPositioner;->mService:Lcom/android/server/wm/WindowManagerService;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$100(Lcom/android/server/wm/TaskPositioner;FF)Z
-    .registers 3
+    .registers 4
+    .param p0, "x0"  # Lcom/android/server/wm/TaskPositioner;
+    .param p1, "x1"  # F
+    .param p2, "x2"  # F
 
-    .line 61
+    .line 60
     invoke-direct {p0, p1, p2}, Lcom/android/server/wm/TaskPositioner;->notifyMoveLocked(FF)Z
 
-    move-result p0
+    move-result v0
 
-    return p0
+    return v0
 .end method
 
 .method static synthetic access$200(Lcom/android/server/wm/TaskPositioner;)Landroid/graphics/Rect;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/wm/TaskPositioner;
 
-    .line 61
-    iget-object p0, p0, Lcom/android/server/wm/TaskPositioner;->mTmpRect:Landroid/graphics/Rect;
+    .line 60
+    iget-object v0, p0, Lcom/android/server/wm/TaskPositioner;->mTmpRect:Landroid/graphics/Rect;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$300(Lcom/android/server/wm/TaskPositioner;)Landroid/graphics/Rect;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/wm/TaskPositioner;
 
-    .line 61
-    iget-object p0, p0, Lcom/android/server/wm/TaskPositioner;->mWindowDragBounds:Landroid/graphics/Rect;
+    .line 60
+    iget-object v0, p0, Lcom/android/server/wm/TaskPositioner;->mWindowDragBounds:Landroid/graphics/Rect;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$400(Lcom/android/server/wm/TaskPositioner;)Landroid/app/IActivityTaskManager;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/wm/TaskPositioner;
 
-    .line 61
-    iget-object p0, p0, Lcom/android/server/wm/TaskPositioner;->mActivityManager:Landroid/app/IActivityTaskManager;
+    .line 60
+    iget-object v0, p0, Lcom/android/server/wm/TaskPositioner;->mActivityManager:Landroid/app/IActivityTaskManager;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$500(Lcom/android/server/wm/TaskPositioner;)Z
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/wm/TaskPositioner;
 
-    .line 61
-    iget-boolean p0, p0, Lcom/android/server/wm/TaskPositioner;->mResizing:Z
+    .line 60
+    iget-boolean v0, p0, Lcom/android/server/wm/TaskPositioner;->mResizing:Z
 
-    return p0
+    return v0
 .end method
 
 .method static synthetic access$600(Lcom/android/server/wm/TaskPositioner;)V
     .registers 1
+    .param p0, "x0"  # Lcom/android/server/wm/TaskPositioner;
 
-    .line 61
+    .line 60
     invoke-direct {p0}, Lcom/android/server/wm/TaskPositioner;->endDragLocked()V
 
     return-void
@@ -243,79 +255,118 @@
 
 .method private checkBoundsForOrientationViolations(Landroid/graphics/Rect;)V
     .registers 2
+    .param p1, "bounds"  # Landroid/graphics/Rect;
 
-    .line 634
+    .line 632
     return-void
 .end method
 
 .method static create(Lcom/android/server/wm/WindowManagerService;)Lcom/android/server/wm/TaskPositioner;
     .registers 2
+    .param p0, "service"  # Lcom/android/server/wm/WindowManagerService;
 
-    .line 666
+    .line 664
     sget-object v0, Lcom/android/server/wm/TaskPositioner;->sFactory:Lcom/android/server/wm/TaskPositioner$Factory;
 
     if-nez v0, :cond_b
 
-    .line 667
+    .line 665
     new-instance v0, Lcom/android/server/wm/TaskPositioner$1;
 
     invoke-direct {v0}, Lcom/android/server/wm/TaskPositioner$1;-><init>()V
 
     sput-object v0, Lcom/android/server/wm/TaskPositioner;->sFactory:Lcom/android/server/wm/TaskPositioner$Factory;
 
-    .line 670
+    .line 668
     :cond_b
     sget-object v0, Lcom/android/server/wm/TaskPositioner;->sFactory:Lcom/android/server/wm/TaskPositioner$Factory;
 
     invoke-interface {v0, p0}, Lcom/android/server/wm/TaskPositioner$Factory;->create(Lcom/android/server/wm/WindowManagerService;)Lcom/android/server/wm/TaskPositioner;
 
-    move-result-object p0
+    move-result-object v0
 
-    return-object p0
+    return-object v0
 .end method
 
 .method private endDragLocked()V
     .registers 3
 
-    .line 437
+    .line 435
     const/4 v0, 0x0
 
     iput-boolean v0, p0, Lcom/android/server/wm/TaskPositioner;->mResizing:Z
 
-    .line 438
+    .line 436
     iget-object v1, p0, Lcom/android/server/wm/TaskPositioner;->mTask:Lcom/android/server/wm/Task;
 
     invoke-virtual {v1, v0, v0}, Lcom/android/server/wm/Task;->setDragResizing(ZI)V
 
-    .line 439
+    .line 437
     return-void
 .end method
 
 .method private notifyMoveLocked(FF)Z
-    .registers 6
+    .registers 9
+    .param p1, "x"  # F
+    .param p2, "y"  # F
 
-    .line 447
+    .line 441
+    sget-boolean v0, Lcom/android/server/wm/WindowManagerDebugConfig;->DEBUG_TASK_POSITIONING:Z
+
+    if-eqz v0, :cond_27
+
+    .line 442
+    new-instance v0, Ljava/lang/StringBuilder;
+
+    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
+
+    const-string v1, "notifyMoveLocked: {"
+
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(F)Ljava/lang/StringBuilder;
+
+    const-string v1, ","
+
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v0, p2}, Ljava/lang/StringBuilder;->append(F)Ljava/lang/StringBuilder;
+
+    const-string v1, "}"
+
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v0
+
+    const-string v1, "WindowManager"
+
+    invoke-static {v1, v0}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
+
+    .line 445
+    :cond_27
     iget v0, p0, Lcom/android/server/wm/TaskPositioner;->mCtrlType:I
 
     const/4 v1, 0x0
 
-    if-eqz v0, :cond_f
+    if-eqz v0, :cond_36
 
-    .line 448
+    .line 446
     invoke-virtual {p0, p1, p2}, Lcom/android/server/wm/TaskPositioner;->resizeDrag(FF)V
 
-    .line 449
-    iget-object p1, p0, Lcom/android/server/wm/TaskPositioner;->mTask:Lcom/android/server/wm/Task;
+    .line 447
+    iget-object v0, p0, Lcom/android/server/wm/TaskPositioner;->mTask:Lcom/android/server/wm/Task;
 
-    const/4 p2, 0x1
+    const/4 v2, 0x1
 
-    invoke-virtual {p1, p2, v1}, Lcom/android/server/wm/Task;->setDragResizing(ZI)V
+    invoke-virtual {v0, v2, v1}, Lcom/android/server/wm/Task;->setDragResizing(ZI)V
 
-    .line 450
+    .line 448
     return v1
 
-    .line 454
-    :cond_f
+    .line 452
+    :cond_36
     iget-object v0, p0, Lcom/android/server/wm/TaskPositioner;->mTask:Lcom/android/server/wm/Task;
 
     iget-object v0, v0, Lcom/android/server/wm/Task;->mStack:Lcom/android/server/wm/TaskStack;
@@ -324,191 +375,230 @@
 
     invoke-virtual {v0, v2}, Lcom/android/server/wm/TaskStack;->getDimBounds(Landroid/graphics/Rect;)V
 
-    .line 457
+    .line 455
     new-instance v0, Landroid/graphics/Rect;
 
     invoke-direct {v0}, Landroid/graphics/Rect;-><init>()V
 
-    .line 458
+    .line 456
+    .local v0, "stableBounds":Landroid/graphics/Rect;
     iget-object v2, p0, Lcom/android/server/wm/TaskPositioner;->mDisplayContent:Lcom/android/server/wm/DisplayContent;
 
     invoke-virtual {v2, v0}, Lcom/android/server/wm/DisplayContent;->getStableRect(Landroid/graphics/Rect;)V
 
-    .line 459
+    .line 457
     iget-object v2, p0, Lcom/android/server/wm/TaskPositioner;->mTmpRect:Landroid/graphics/Rect;
 
     invoke-virtual {v2, v0}, Landroid/graphics/Rect;->intersect(Landroid/graphics/Rect;)Z
 
+    .line 459
+    float-to-int v2, p1
+
+    .line 460
+    .local v2, "nX":I
+    float-to-int v3, p2
+
     .line 461
-    float-to-int p1, p1
+    .local v3, "nY":I
+    iget-object v4, p0, Lcom/android/server/wm/TaskPositioner;->mTmpRect:Landroid/graphics/Rect;
 
-    .line 462
-    float-to-int p2, p2
+    invoke-virtual {v4, v2, v3}, Landroid/graphics/Rect;->contains(II)Z
 
-    .line 463
-    iget-object v0, p0, Lcom/android/server/wm/TaskPositioner;->mTmpRect:Landroid/graphics/Rect;
+    move-result v4
 
-    invoke-virtual {v0, p1, p2}, Landroid/graphics/Rect;->contains(II)Z
+    if-nez v4, :cond_78
 
-    move-result v0
+    .line 464
+    iget-object v4, p0, Lcom/android/server/wm/TaskPositioner;->mTmpRect:Landroid/graphics/Rect;
 
-    if-nez v0, :cond_51
+    iget v4, v4, Landroid/graphics/Rect;->left:I
 
-    .line 466
-    iget-object v0, p0, Lcom/android/server/wm/TaskPositioner;->mTmpRect:Landroid/graphics/Rect;
+    invoke-static {v2, v4}, Ljava/lang/Math;->max(II)I
 
-    iget v0, v0, Landroid/graphics/Rect;->left:I
+    move-result v4
 
-    invoke-static {p1, v0}, Ljava/lang/Math;->max(II)I
+    iget-object v5, p0, Lcom/android/server/wm/TaskPositioner;->mTmpRect:Landroid/graphics/Rect;
 
-    move-result p1
+    iget v5, v5, Landroid/graphics/Rect;->right:I
 
-    iget-object v0, p0, Lcom/android/server/wm/TaskPositioner;->mTmpRect:Landroid/graphics/Rect;
+    invoke-static {v4, v5}, Ljava/lang/Math;->min(II)I
 
-    iget v0, v0, Landroid/graphics/Rect;->right:I
+    move-result v2
 
-    invoke-static {p1, v0}, Ljava/lang/Math;->min(II)I
+    .line 465
+    iget-object v4, p0, Lcom/android/server/wm/TaskPositioner;->mTmpRect:Landroid/graphics/Rect;
 
-    move-result p1
+    iget v4, v4, Landroid/graphics/Rect;->top:I
 
-    .line 467
-    iget-object v0, p0, Lcom/android/server/wm/TaskPositioner;->mTmpRect:Landroid/graphics/Rect;
+    invoke-static {v3, v4}, Ljava/lang/Math;->max(II)I
 
-    iget v0, v0, Landroid/graphics/Rect;->top:I
+    move-result v4
 
-    invoke-static {p2, v0}, Ljava/lang/Math;->max(II)I
+    iget-object v5, p0, Lcom/android/server/wm/TaskPositioner;->mTmpRect:Landroid/graphics/Rect;
 
-    move-result p2
+    iget v5, v5, Landroid/graphics/Rect;->bottom:I
 
-    iget-object v0, p0, Lcom/android/server/wm/TaskPositioner;->mTmpRect:Landroid/graphics/Rect;
+    invoke-static {v4, v5}, Ljava/lang/Math;->min(II)I
 
-    iget v0, v0, Landroid/graphics/Rect;->bottom:I
+    move-result v3
 
-    invoke-static {p2, v0}, Ljava/lang/Math;->min(II)I
+    .line 468
+    :cond_78
+    iget-object v4, p0, Lcom/android/server/wm/TaskPositioner;->mTmpRect:Landroid/graphics/Rect;
 
-    move-result p2
+    invoke-direct {p0, v2, v3, v4}, Lcom/android/server/wm/TaskPositioner;->updateWindowDragBounds(IILandroid/graphics/Rect;)V
 
-    .line 470
-    :cond_51
-    iget-object v0, p0, Lcom/android/server/wm/TaskPositioner;->mTmpRect:Landroid/graphics/Rect;
-
-    invoke-direct {p0, p1, p2, v0}, Lcom/android/server/wm/TaskPositioner;->updateWindowDragBounds(IILandroid/graphics/Rect;)V
-
-    .line 471
+    .line 469
     return v1
 .end method
 
 .method static setFactory(Lcom/android/server/wm/TaskPositioner$Factory;)V
     .registers 1
+    .param p0, "factory"  # Lcom/android/server/wm/TaskPositioner$Factory;
 
-    .line 662
+    .line 660
     sput-object p0, Lcom/android/server/wm/TaskPositioner;->sFactory:Lcom/android/server/wm/TaskPositioner$Factory;
 
-    .line 663
+    .line 661
     return-void
 .end method
 
 .method private updateWindowDragBounds(IILandroid/graphics/Rect;)V
-    .registers 9
+    .registers 13
+    .param p1, "x"  # I
+    .param p2, "y"  # I
+    .param p3, "stackBounds"  # Landroid/graphics/Rect;
+
+    .line 635
+    int-to-float v0, p1
+
+    iget v1, p0, Lcom/android/server/wm/TaskPositioner;->mStartDragX:F
+
+    sub-float/2addr v0, v1
+
+    invoke-static {v0}, Ljava/lang/Math;->round(F)I
+
+    move-result v0
+
+    .line 636
+    .local v0, "offsetX":I
+    int-to-float v1, p2
+
+    iget v2, p0, Lcom/android/server/wm/TaskPositioner;->mStartDragY:F
+
+    sub-float/2addr v1, v2
+
+    invoke-static {v1}, Ljava/lang/Math;->round(F)I
+
+    move-result v1
 
     .line 637
-    int-to-float p1, p1
+    .local v1, "offsetY":I
+    iget-object v2, p0, Lcom/android/server/wm/TaskPositioner;->mWindowDragBounds:Landroid/graphics/Rect;
 
-    iget v0, p0, Lcom/android/server/wm/TaskPositioner;->mStartDragX:F
+    iget-object v3, p0, Lcom/android/server/wm/TaskPositioner;->mWindowOriginalBounds:Landroid/graphics/Rect;
 
-    sub-float/2addr p1, v0
-
-    invoke-static {p1}, Ljava/lang/Math;->round(F)I
-
-    move-result p1
-
-    .line 638
-    int-to-float p2, p2
-
-    iget v0, p0, Lcom/android/server/wm/TaskPositioner;->mStartDragY:F
-
-    sub-float/2addr p2, v0
-
-    invoke-static {p2}, Ljava/lang/Math;->round(F)I
-
-    move-result p2
+    invoke-virtual {v2, v3}, Landroid/graphics/Rect;->set(Landroid/graphics/Rect;)V
 
     .line 639
-    iget-object v0, p0, Lcom/android/server/wm/TaskPositioner;->mWindowDragBounds:Landroid/graphics/Rect;
+    iget v2, p3, Landroid/graphics/Rect;->right:I
 
-    iget-object v1, p0, Lcom/android/server/wm/TaskPositioner;->mWindowOriginalBounds:Landroid/graphics/Rect;
+    iget v3, p0, Lcom/android/server/wm/TaskPositioner;->mMinVisibleWidth:I
 
-    invoke-virtual {v0, v1}, Landroid/graphics/Rect;->set(Landroid/graphics/Rect;)V
+    sub-int/2addr v2, v3
 
-    .line 641
-    iget v0, p3, Landroid/graphics/Rect;->right:I
+    .line 640
+    .local v2, "maxLeft":I
+    iget v3, p3, Landroid/graphics/Rect;->left:I
 
-    iget v1, p0, Lcom/android/server/wm/TaskPositioner;->mMinVisibleWidth:I
+    iget v4, p0, Lcom/android/server/wm/TaskPositioner;->mMinVisibleWidth:I
 
-    sub-int/2addr v0, v1
-
-    .line 642
-    iget v1, p3, Landroid/graphics/Rect;->left:I
-
-    iget v2, p0, Lcom/android/server/wm/TaskPositioner;->mMinVisibleWidth:I
-
-    add-int/2addr v1, v2
-
-    iget-object v2, p0, Lcom/android/server/wm/TaskPositioner;->mWindowOriginalBounds:Landroid/graphics/Rect;
-
-    invoke-virtual {v2}, Landroid/graphics/Rect;->width()I
-
-    move-result v2
-
-    sub-int/2addr v1, v2
-
-    .line 646
-    iget v2, p3, Landroid/graphics/Rect;->top:I
-
-    .line 647
-    iget p3, p3, Landroid/graphics/Rect;->bottom:I
-
-    iget v3, p0, Lcom/android/server/wm/TaskPositioner;->mMinVisibleHeight:I
-
-    sub-int/2addr p3, v3
-
-    .line 649
-    iget-object v3, p0, Lcom/android/server/wm/TaskPositioner;->mWindowDragBounds:Landroid/graphics/Rect;
+    add-int/2addr v3, v4
 
     iget-object v4, p0, Lcom/android/server/wm/TaskPositioner;->mWindowOriginalBounds:Landroid/graphics/Rect;
 
-    iget v4, v4, Landroid/graphics/Rect;->left:I
+    invoke-virtual {v4}, Landroid/graphics/Rect;->width()I
 
-    add-int/2addr v4, p1
+    move-result v4
 
-    .line 650
-    invoke-static {v4, v1}, Ljava/lang/Math;->max(II)I
+    sub-int/2addr v3, v4
 
-    move-result p1
+    .line 644
+    .local v3, "minLeft":I
+    iget v4, p3, Landroid/graphics/Rect;->top:I
 
-    invoke-static {p1, v0}, Ljava/lang/Math;->min(II)I
+    .line 645
+    .local v4, "minTop":I
+    iget v5, p3, Landroid/graphics/Rect;->bottom:I
 
-    move-result p1
+    iget v6, p0, Lcom/android/server/wm/TaskPositioner;->mMinVisibleHeight:I
 
-    iget-object v0, p0, Lcom/android/server/wm/TaskPositioner;->mWindowOriginalBounds:Landroid/graphics/Rect;
+    sub-int/2addr v5, v6
 
-    iget v0, v0, Landroid/graphics/Rect;->top:I
+    .line 647
+    .local v5, "maxTop":I
+    iget-object v6, p0, Lcom/android/server/wm/TaskPositioner;->mWindowDragBounds:Landroid/graphics/Rect;
 
-    add-int/2addr v0, p2
+    iget-object v7, p0, Lcom/android/server/wm/TaskPositioner;->mWindowOriginalBounds:Landroid/graphics/Rect;
 
-    .line 651
-    invoke-static {v0, v2}, Ljava/lang/Math;->max(II)I
+    iget v7, v7, Landroid/graphics/Rect;->left:I
 
-    move-result p2
+    add-int/2addr v7, v0
 
-    invoke-static {p2, p3}, Ljava/lang/Math;->min(II)I
+    .line 648
+    invoke-static {v7, v3}, Ljava/lang/Math;->max(II)I
 
-    move-result p2
+    move-result v7
+
+    invoke-static {v7, v2}, Ljava/lang/Math;->min(II)I
+
+    move-result v7
+
+    iget-object v8, p0, Lcom/android/server/wm/TaskPositioner;->mWindowOriginalBounds:Landroid/graphics/Rect;
+
+    iget v8, v8, Landroid/graphics/Rect;->top:I
+
+    add-int/2addr v8, v1
 
     .line 649
-    invoke-virtual {v3, p1, p2}, Landroid/graphics/Rect;->offsetTo(II)V
+    invoke-static {v8, v4}, Ljava/lang/Math;->max(II)I
 
-    .line 655
+    move-result v8
+
+    invoke-static {v8, v5}, Ljava/lang/Math;->min(II)I
+
+    move-result v8
+
+    .line 647
+    invoke-virtual {v6, v7, v8}, Landroid/graphics/Rect;->offsetTo(II)V
+
+    .line 651
+    sget-boolean v6, Lcom/android/server/wm/WindowManagerDebugConfig;->DEBUG_TASK_POSITIONING:Z
+
+    if-eqz v6, :cond_6a
+
+    new-instance v6, Ljava/lang/StringBuilder;
+
+    invoke-direct {v6}, Ljava/lang/StringBuilder;-><init>()V
+
+    const-string v7, "updateWindowDragBounds: "
+
+    invoke-virtual {v6, v7}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    iget-object v7, p0, Lcom/android/server/wm/TaskPositioner;->mWindowDragBounds:Landroid/graphics/Rect;
+
+    invoke-virtual {v6, v7}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v6}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v6
+
+    const-string v7, "WindowManager"
+
+    invoke-static {v7, v6}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
+
+    .line 653
+    :cond_6a
     return-void
 .end method
 
@@ -517,14 +607,14 @@
 .method public binderDied()V
     .registers 2
 
-    .line 675
+    .line 673
     iget-object v0, p0, Lcom/android/server/wm/TaskPositioner;->mService:Lcom/android/server/wm/WindowManagerService;
 
     iget-object v0, v0, Lcom/android/server/wm/WindowManagerService;->mTaskPositioningController:Lcom/android/server/wm/TaskPositioningController;
 
     invoke-virtual {v0}, Lcom/android/server/wm/TaskPositioningController;->finishTaskPositioning()V
 
-    .line 676
+    .line 674
     return-void
 .end method
 
@@ -533,7 +623,7 @@
     .annotation build Lcom/android/internal/annotations/VisibleForTesting;
     .end annotation
 
-    .line 240
+    .line 239
     iget-object v0, p0, Lcom/android/server/wm/TaskPositioner;->mWindowDragBounds:Landroid/graphics/Rect;
 
     return-object v0
@@ -541,8 +631,9 @@
 
 .method public synthetic lambda$startDrag$0$TaskPositioner(Landroid/graphics/Rect;)V
     .registers 5
+    .param p1, "startBounds"  # Landroid/graphics/Rect;
 
-    .line 424
+    .line 422
     :try_start_0
     iget-object v0, p0, Lcom/android/server/wm/TaskPositioner;->mActivityManager:Landroid/app/IActivityTaskManager;
 
@@ -556,836 +647,1036 @@
     :try_end_a
     .catch Landroid/os/RemoteException; {:try_start_0 .. :try_end_a} :catch_b
 
-    .line 427
+    .line 425
     goto :goto_c
 
-    .line 426
+    .line 424
     :catch_b
-    move-exception p1
+    move-exception v0
 
-    .line 428
+    .line 426
     :goto_c
     return-void
 .end method
 
 .method register(Lcom/android/server/wm/DisplayContent;)V
-    .registers 11
+    .registers 13
+    .param p1, "displayContent"  # Lcom/android/server/wm/DisplayContent;
 
-    .line 247
+    .line 246
     invoke-virtual {p1}, Lcom/android/server/wm/DisplayContent;->getDisplay()Landroid/view/Display;
 
     move-result-object v0
 
-    .line 253
-    iget-object v1, p0, Lcom/android/server/wm/TaskPositioner;->mClientChannel:Landroid/view/InputChannel;
+    .line 248
+    .local v0, "display":Landroid/view/Display;
+    sget-boolean v1, Lcom/android/server/wm/WindowManagerDebugConfig;->DEBUG_TASK_POSITIONING:Z
 
     const-string v2, "WindowManager"
 
-    if-eqz v1, :cond_10
+    if-eqz v1, :cond_f
+
+    .line 249
+    const-string v1, "Registering task positioner"
+
+    invoke-static {v2, v1}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
+
+    .line 252
+    :cond_f
+    iget-object v1, p0, Lcom/android/server/wm/TaskPositioner;->mClientChannel:Landroid/view/InputChannel;
+
+    if-eqz v1, :cond_19
+
+    .line 253
+    const-string v1, "Task positioner already registered"
+
+    invoke-static {v2, v1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 254
-    const-string p1, "Task positioner already registered"
-
-    invoke-static {v2, p1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
-
-    .line 255
     return-void
 
-    .line 258
-    :cond_10
+    .line 257
+    :cond_19
     iput-object p1, p0, Lcom/android/server/wm/TaskPositioner;->mDisplayContent:Lcom/android/server/wm/DisplayContent;
 
+    .line 258
+    iget-object v1, p0, Lcom/android/server/wm/TaskPositioner;->mDisplayMetrics:Landroid/util/DisplayMetrics;
+
+    invoke-virtual {v0, v1}, Landroid/view/Display;->getMetrics(Landroid/util/DisplayMetrics;)V
+
     .line 259
-    iget-object p1, p0, Lcom/android/server/wm/TaskPositioner;->mDisplayMetrics:Landroid/util/DisplayMetrics;
-
-    invoke-virtual {v0, p1}, Landroid/view/Display;->getMetrics(Landroid/util/DisplayMetrics;)V
-
-    .line 260
     invoke-static {v2}, Landroid/view/InputChannel;->openInputChannelPair(Ljava/lang/String;)[Landroid/view/InputChannel;
 
-    move-result-object p1
+    move-result-object v1
+
+    .line 260
+    .local v1, "channels":[Landroid/view/InputChannel;
+    const/4 v3, 0x0
+
+    aget-object v4, v1, v3
+
+    iput-object v4, p0, Lcom/android/server/wm/TaskPositioner;->mServerChannel:Landroid/view/InputChannel;
 
     .line 261
-    const/4 v1, 0x0
+    const/4 v4, 0x1
 
-    aget-object v3, p1, v1
+    aget-object v5, v1, v4
 
-    iput-object v3, p0, Lcom/android/server/wm/TaskPositioner;->mServerChannel:Landroid/view/InputChannel;
+    iput-object v5, p0, Lcom/android/server/wm/TaskPositioner;->mClientChannel:Landroid/view/InputChannel;
 
     .line 262
-    const/4 v3, 0x1
+    iget-object v5, p0, Lcom/android/server/wm/TaskPositioner;->mService:Lcom/android/server/wm/WindowManagerService;
 
-    aget-object p1, p1, v3
+    iget-object v5, v5, Lcom/android/server/wm/WindowManagerService;->mInputManager:Lcom/android/server/input/InputManagerService;
 
-    iput-object p1, p0, Lcom/android/server/wm/TaskPositioner;->mClientChannel:Landroid/view/InputChannel;
+    iget-object v6, p0, Lcom/android/server/wm/TaskPositioner;->mServerChannel:Landroid/view/InputChannel;
 
-    .line 263
-    iget-object p1, p0, Lcom/android/server/wm/TaskPositioner;->mService:Lcom/android/server/wm/WindowManagerService;
+    const/4 v7, 0x0
 
-    iget-object p1, p1, Lcom/android/server/wm/WindowManagerService;->mInputManager:Lcom/android/server/input/InputManagerService;
+    invoke-virtual {v5, v6, v7}, Lcom/android/server/input/InputManagerService;->registerInputChannel(Landroid/view/InputChannel;Landroid/os/IBinder;)V
 
-    iget-object v4, p0, Lcom/android/server/wm/TaskPositioner;->mServerChannel:Landroid/view/InputChannel;
+    .line 264
+    new-instance v5, Lcom/android/server/wm/TaskPositioner$WindowPositionerEventReceiver;
 
-    const/4 v5, 0x0
+    iget-object v6, p0, Lcom/android/server/wm/TaskPositioner;->mClientChannel:Landroid/view/InputChannel;
 
-    invoke-virtual {p1, v4, v5}, Lcom/android/server/input/InputManagerService;->registerInputChannel(Landroid/view/InputChannel;Landroid/os/IBinder;)V
+    iget-object v8, p0, Lcom/android/server/wm/TaskPositioner;->mService:Lcom/android/server/wm/WindowManagerService;
+
+    iget-object v8, v8, Lcom/android/server/wm/WindowManagerService;->mAnimationHandler:Landroid/os/Handler;
 
     .line 265
-    new-instance p1, Lcom/android/server/wm/TaskPositioner$WindowPositionerEventReceiver;
+    invoke-virtual {v8}, Landroid/os/Handler;->getLooper()Landroid/os/Looper;
 
-    iget-object v4, p0, Lcom/android/server/wm/TaskPositioner;->mClientChannel:Landroid/view/InputChannel;
+    move-result-object v8
 
-    iget-object v6, p0, Lcom/android/server/wm/TaskPositioner;->mService:Lcom/android/server/wm/WindowManagerService;
+    iget-object v9, p0, Lcom/android/server/wm/TaskPositioner;->mService:Lcom/android/server/wm/WindowManagerService;
 
-    iget-object v6, v6, Lcom/android/server/wm/WindowManagerService;->mAnimationHandler:Landroid/os/Handler;
+    iget-object v9, v9, Lcom/android/server/wm/WindowManagerService;->mAnimator:Lcom/android/server/wm/WindowAnimator;
 
     .line 266
-    invoke-virtual {v6}, Landroid/os/Handler;->getLooper()Landroid/os/Looper;
+    invoke-virtual {v9}, Lcom/android/server/wm/WindowAnimator;->getChoreographer()Landroid/view/Choreographer;
+
+    move-result-object v9
+
+    invoke-direct {v5, p0, v6, v8, v9}, Lcom/android/server/wm/TaskPositioner$WindowPositionerEventReceiver;-><init>(Lcom/android/server/wm/TaskPositioner;Landroid/view/InputChannel;Landroid/os/Looper;Landroid/view/Choreographer;)V
+
+    iput-object v5, p0, Lcom/android/server/wm/TaskPositioner;->mInputEventReceiver:Lcom/android/server/wm/TaskPositioner$WindowPositionerEventReceiver;
+
+    .line 268
+    new-instance v5, Landroid/view/InputApplicationHandle;
+
+    new-instance v6, Landroid/os/Binder;
+
+    invoke-direct {v6}, Landroid/os/Binder;-><init>()V
+
+    invoke-direct {v5, v6}, Landroid/view/InputApplicationHandle;-><init>(Landroid/os/IBinder;)V
+
+    iput-object v5, p0, Lcom/android/server/wm/TaskPositioner;->mDragApplicationHandle:Landroid/view/InputApplicationHandle;
+
+    .line 269
+    iget-object v5, p0, Lcom/android/server/wm/TaskPositioner;->mDragApplicationHandle:Landroid/view/InputApplicationHandle;
+
+    iput-object v2, v5, Landroid/view/InputApplicationHandle;->name:Ljava/lang/String;
+
+    .line 270
+    const-wide v8, 0x12a05f200L
+
+    iput-wide v8, v5, Landroid/view/InputApplicationHandle;->dispatchingTimeoutNanos:J
+
+    .line 273
+    new-instance v6, Landroid/view/InputWindowHandle;
+
+    .line 274
+    invoke-virtual {v0}, Landroid/view/Display;->getDisplayId()I
+
+    move-result v10
+
+    invoke-direct {v6, v5, v7, v10}, Landroid/view/InputWindowHandle;-><init>(Landroid/view/InputApplicationHandle;Landroid/view/IWindow;I)V
+
+    iput-object v6, p0, Lcom/android/server/wm/TaskPositioner;->mDragWindowHandle:Landroid/view/InputWindowHandle;
+
+    .line 275
+    iget-object v5, p0, Lcom/android/server/wm/TaskPositioner;->mDragWindowHandle:Landroid/view/InputWindowHandle;
+
+    iput-object v2, v5, Landroid/view/InputWindowHandle;->name:Ljava/lang/String;
+
+    .line 276
+    iget-object v6, p0, Lcom/android/server/wm/TaskPositioner;->mServerChannel:Landroid/view/InputChannel;
+
+    invoke-virtual {v6}, Landroid/view/InputChannel;->getToken()Landroid/os/IBinder;
 
     move-result-object v6
 
-    iget-object v7, p0, Lcom/android/server/wm/TaskPositioner;->mService:Lcom/android/server/wm/WindowManagerService;
-
-    iget-object v7, v7, Lcom/android/server/wm/WindowManagerService;->mAnimator:Lcom/android/server/wm/WindowAnimator;
-
-    .line 267
-    invoke-virtual {v7}, Lcom/android/server/wm/WindowAnimator;->getChoreographer()Landroid/view/Choreographer;
-
-    move-result-object v7
-
-    invoke-direct {p1, p0, v4, v6, v7}, Lcom/android/server/wm/TaskPositioner$WindowPositionerEventReceiver;-><init>(Lcom/android/server/wm/TaskPositioner;Landroid/view/InputChannel;Landroid/os/Looper;Landroid/view/Choreographer;)V
-
-    iput-object p1, p0, Lcom/android/server/wm/TaskPositioner;->mInputEventReceiver:Lcom/android/server/wm/TaskPositioner$WindowPositionerEventReceiver;
-
-    .line 269
-    new-instance p1, Landroid/view/InputApplicationHandle;
-
-    new-instance v4, Landroid/os/Binder;
-
-    invoke-direct {v4}, Landroid/os/Binder;-><init>()V
-
-    invoke-direct {p1, v4}, Landroid/view/InputApplicationHandle;-><init>(Landroid/os/IBinder;)V
-
-    iput-object p1, p0, Lcom/android/server/wm/TaskPositioner;->mDragApplicationHandle:Landroid/view/InputApplicationHandle;
-
-    .line 270
-    iget-object p1, p0, Lcom/android/server/wm/TaskPositioner;->mDragApplicationHandle:Landroid/view/InputApplicationHandle;
-
-    iput-object v2, p1, Landroid/view/InputApplicationHandle;->name:Ljava/lang/String;
-
-    .line 271
-    const-wide v6, 0x12a05f200L
-
-    iput-wide v6, p1, Landroid/view/InputApplicationHandle;->dispatchingTimeoutNanos:J
-
-    .line 274
-    new-instance v4, Landroid/view/InputWindowHandle;
-
-    .line 275
-    invoke-virtual {v0}, Landroid/view/Display;->getDisplayId()I
-
-    move-result v8
-
-    invoke-direct {v4, p1, v5, v8}, Landroid/view/InputWindowHandle;-><init>(Landroid/view/InputApplicationHandle;Landroid/view/IWindow;I)V
-
-    iput-object v4, p0, Lcom/android/server/wm/TaskPositioner;->mDragWindowHandle:Landroid/view/InputWindowHandle;
-
-    .line 276
-    iget-object p1, p0, Lcom/android/server/wm/TaskPositioner;->mDragWindowHandle:Landroid/view/InputWindowHandle;
-
-    iput-object v2, p1, Landroid/view/InputWindowHandle;->name:Ljava/lang/String;
+    iput-object v6, v5, Landroid/view/InputWindowHandle;->token:Landroid/os/IBinder;
 
     .line 277
-    iget-object v2, p0, Lcom/android/server/wm/TaskPositioner;->mServerChannel:Landroid/view/InputChannel;
+    iget-object v5, p0, Lcom/android/server/wm/TaskPositioner;->mDragWindowHandle:Landroid/view/InputWindowHandle;
 
-    invoke-virtual {v2}, Landroid/view/InputChannel;->getToken()Landroid/os/IBinder;
+    iget-object v6, p0, Lcom/android/server/wm/TaskPositioner;->mService:Lcom/android/server/wm/WindowManagerService;
 
-    move-result-object v2
+    invoke-virtual {v6}, Lcom/android/server/wm/WindowManagerService;->getDragLayerLocked()I
 
-    iput-object v2, p1, Landroid/view/InputWindowHandle;->token:Landroid/os/IBinder;
+    move-result v6
+
+    iput v6, v5, Landroid/view/InputWindowHandle;->layer:I
 
     .line 278
-    iget-object p1, p0, Lcom/android/server/wm/TaskPositioner;->mDragWindowHandle:Landroid/view/InputWindowHandle;
+    iget-object v5, p0, Lcom/android/server/wm/TaskPositioner;->mDragWindowHandle:Landroid/view/InputWindowHandle;
 
-    iget-object v2, p0, Lcom/android/server/wm/TaskPositioner;->mService:Lcom/android/server/wm/WindowManagerService;
-
-    invoke-virtual {v2}, Lcom/android/server/wm/WindowManagerService;->getDragLayerLocked()I
-
-    move-result v2
-
-    iput v2, p1, Landroid/view/InputWindowHandle;->layer:I
+    iput v3, v5, Landroid/view/InputWindowHandle;->layoutParamsFlags:I
 
     .line 279
-    iget-object p1, p0, Lcom/android/server/wm/TaskPositioner;->mDragWindowHandle:Landroid/view/InputWindowHandle;
+    const/16 v6, 0x7e0
 
-    iput v1, p1, Landroid/view/InputWindowHandle;->layoutParamsFlags:I
+    iput v6, v5, Landroid/view/InputWindowHandle;->layoutParamsType:I
 
     .line 280
-    const/16 v2, 0x7e0
+    iput-wide v8, v5, Landroid/view/InputWindowHandle;->dispatchingTimeoutNanos:J
 
-    iput v2, p1, Landroid/view/InputWindowHandle;->layoutParamsType:I
-
-    .line 281
-    iput-wide v6, p1, Landroid/view/InputWindowHandle;->dispatchingTimeoutNanos:J
+    .line 282
+    iput-boolean v4, v5, Landroid/view/InputWindowHandle;->visible:Z
 
     .line 283
-    iput-boolean v3, p1, Landroid/view/InputWindowHandle;->visible:Z
+    iput-boolean v3, v5, Landroid/view/InputWindowHandle;->canReceiveKeys:Z
 
     .line 284
-    iput-boolean v1, p1, Landroid/view/InputWindowHandle;->canReceiveKeys:Z
+    iput-boolean v4, v5, Landroid/view/InputWindowHandle;->hasFocus:Z
 
     .line 285
-    iput-boolean v3, p1, Landroid/view/InputWindowHandle;->hasFocus:Z
+    iput-boolean v3, v5, Landroid/view/InputWindowHandle;->hasWallpaper:Z
 
     .line 286
-    iput-boolean v1, p1, Landroid/view/InputWindowHandle;->hasWallpaper:Z
+    iput-boolean v3, v5, Landroid/view/InputWindowHandle;->paused:Z
 
     .line 287
-    iput-boolean v1, p1, Landroid/view/InputWindowHandle;->paused:Z
-
-    .line 288
     invoke-static {}, Landroid/os/Process;->myPid()I
 
-    move-result v2
+    move-result v6
 
-    iput v2, p1, Landroid/view/InputWindowHandle;->ownerPid:I
+    iput v6, v5, Landroid/view/InputWindowHandle;->ownerPid:I
 
-    .line 289
-    iget-object p1, p0, Lcom/android/server/wm/TaskPositioner;->mDragWindowHandle:Landroid/view/InputWindowHandle;
+    .line 288
+    iget-object v5, p0, Lcom/android/server/wm/TaskPositioner;->mDragWindowHandle:Landroid/view/InputWindowHandle;
 
     invoke-static {}, Landroid/os/Process;->myUid()I
 
-    move-result v2
+    move-result v6
 
-    iput v2, p1, Landroid/view/InputWindowHandle;->ownerUid:I
+    iput v6, v5, Landroid/view/InputWindowHandle;->ownerUid:I
+
+    .line 289
+    iget-object v5, p0, Lcom/android/server/wm/TaskPositioner;->mDragWindowHandle:Landroid/view/InputWindowHandle;
+
+    iput v3, v5, Landroid/view/InputWindowHandle;->inputFeatures:I
 
     .line 290
-    iget-object p1, p0, Lcom/android/server/wm/TaskPositioner;->mDragWindowHandle:Landroid/view/InputWindowHandle;
+    const/high16 v6, 0x3f800000  # 1.0f
 
-    iput v1, p1, Landroid/view/InputWindowHandle;->inputFeatures:I
+    iput v6, v5, Landroid/view/InputWindowHandle;->scaleFactor:F
 
-    .line 291
-    const/high16 v2, 0x3f800000  # 1.0f
+    .line 293
+    iget-object v5, v5, Landroid/view/InputWindowHandle;->touchableRegion:Landroid/graphics/Region;
 
-    iput v2, p1, Landroid/view/InputWindowHandle;->scaleFactor:F
+    invoke-virtual {v5}, Landroid/graphics/Region;->setEmpty()V
 
-    .line 294
-    iget-object p1, p1, Landroid/view/InputWindowHandle;->touchableRegion:Landroid/graphics/Region;
+    .line 296
+    iget-object v5, p0, Lcom/android/server/wm/TaskPositioner;->mDragWindowHandle:Landroid/view/InputWindowHandle;
 
-    invoke-virtual {p1}, Landroid/graphics/Region;->setEmpty()V
+    iput v3, v5, Landroid/view/InputWindowHandle;->frameLeft:I
 
     .line 297
-    iget-object p1, p0, Lcom/android/server/wm/TaskPositioner;->mDragWindowHandle:Landroid/view/InputWindowHandle;
-
-    iput v1, p1, Landroid/view/InputWindowHandle;->frameLeft:I
+    iput v3, v5, Landroid/view/InputWindowHandle;->frameTop:I
 
     .line 298
-    iput v1, p1, Landroid/view/InputWindowHandle;->frameTop:I
+    new-instance v5, Landroid/graphics/Point;
+
+    invoke-direct {v5}, Landroid/graphics/Point;-><init>()V
 
     .line 299
-    new-instance p1, Landroid/graphics/Point;
-
-    invoke-direct {p1}, Landroid/graphics/Point;-><init>()V
+    .local v5, "p":Landroid/graphics/Point;
+    invoke-virtual {v0, v5}, Landroid/view/Display;->getRealSize(Landroid/graphics/Point;)V
 
     .line 300
-    invoke-virtual {v0, p1}, Landroid/view/Display;->getRealSize(Landroid/graphics/Point;)V
+    iget-object v6, p0, Lcom/android/server/wm/TaskPositioner;->mDragWindowHandle:Landroid/view/InputWindowHandle;
+
+    iget v7, v5, Landroid/graphics/Point;->x:I
+
+    iput v7, v6, Landroid/view/InputWindowHandle;->frameRight:I
 
     .line 301
-    iget-object v2, p0, Lcom/android/server/wm/TaskPositioner;->mDragWindowHandle:Landroid/view/InputWindowHandle;
+    iget-object v6, p0, Lcom/android/server/wm/TaskPositioner;->mDragWindowHandle:Landroid/view/InputWindowHandle;
 
-    iget v3, p1, Landroid/graphics/Point;->x:I
+    iget v7, v5, Landroid/graphics/Point;->y:I
 
-    iput v3, v2, Landroid/view/InputWindowHandle;->frameRight:I
+    iput v7, v6, Landroid/view/InputWindowHandle;->frameBottom:I
 
-    .line 302
-    iget-object v2, p0, Lcom/android/server/wm/TaskPositioner;->mDragWindowHandle:Landroid/view/InputWindowHandle;
+    .line 304
+    sget-boolean v6, Lcom/android/server/wm/WindowManagerDebugConfig;->DEBUG_ORIENTATION:Z
 
-    iget p1, p1, Landroid/graphics/Point;->y:I
+    if-eqz v6, :cond_db
 
-    iput p1, v2, Landroid/view/InputWindowHandle;->frameBottom:I
+    .line 305
+    const-string v6, "Pausing rotation during re-position"
 
-    .line 308
-    iget-object p1, p0, Lcom/android/server/wm/TaskPositioner;->mDisplayContent:Lcom/android/server/wm/DisplayContent;
+    invoke-static {v2, v6}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
 
-    invoke-virtual {p1}, Lcom/android/server/wm/DisplayContent;->pauseRotationLocked()V
+    .line 307
+    :cond_db
+    iget-object v2, p0, Lcom/android/server/wm/TaskPositioner;->mDisplayContent:Lcom/android/server/wm/DisplayContent;
 
-    .line 311
-    iget-object p1, p0, Lcom/android/server/wm/TaskPositioner;->mDisplayContent:Lcom/android/server/wm/DisplayContent;
+    invoke-virtual {v2}, Lcom/android/server/wm/DisplayContent;->pauseRotationLocked()V
 
-    invoke-virtual {p1}, Lcom/android/server/wm/DisplayContent;->getInputMonitor()Lcom/android/server/wm/InputMonitor;
+    .line 310
+    iget-object v2, p0, Lcom/android/server/wm/TaskPositioner;->mDisplayContent:Lcom/android/server/wm/DisplayContent;
 
-    move-result-object p1
+    invoke-virtual {v2}, Lcom/android/server/wm/DisplayContent;->getInputMonitor()Lcom/android/server/wm/InputMonitor;
 
-    invoke-virtual {p1}, Lcom/android/server/wm/InputMonitor;->updateInputWindowsImmediately()V
+    move-result-object v2
+
+    invoke-virtual {v2, v4}, Lcom/android/server/wm/InputMonitor;->updateInputWindowsLw(Z)V
 
     .line 312
-    new-instance p1, Landroid/view/SurfaceControl$Transaction;
+    const/16 v2, 0x64
 
-    invoke-direct {p1}, Landroid/view/SurfaceControl$Transaction;-><init>()V
+    iget-object v4, p0, Lcom/android/server/wm/TaskPositioner;->mDisplayMetrics:Landroid/util/DisplayMetrics;
 
-    invoke-virtual {p1}, Landroid/view/SurfaceControl$Transaction;->syncInputWindows()Landroid/view/SurfaceControl$Transaction;
+    invoke-static {v2, v4}, Lcom/android/server/wm/WindowManagerService;->dipToPixel(ILandroid/util/DisplayMetrics;)I
 
-    move-result-object p1
+    move-result v2
 
-    invoke-virtual {p1}, Landroid/view/SurfaceControl$Transaction;->apply()V
+    iput v2, p0, Lcom/android/server/wm/TaskPositioner;->mSideMargin:I
+
+    .line 313
+    const/16 v2, 0x30
+
+    iget-object v4, p0, Lcom/android/server/wm/TaskPositioner;->mDisplayMetrics:Landroid/util/DisplayMetrics;
+
+    invoke-static {v2, v4}, Lcom/android/server/wm/WindowManagerService;->dipToPixel(ILandroid/util/DisplayMetrics;)I
+
+    move-result v2
+
+    iput v2, p0, Lcom/android/server/wm/TaskPositioner;->mMinVisibleWidth:I
 
     .line 314
-    const/16 p1, 0x64
+    const/16 v2, 0x20
 
-    iget-object v2, p0, Lcom/android/server/wm/TaskPositioner;->mDisplayMetrics:Landroid/util/DisplayMetrics;
+    iget-object v4, p0, Lcom/android/server/wm/TaskPositioner;->mDisplayMetrics:Landroid/util/DisplayMetrics;
 
-    invoke-static {p1, v2}, Lcom/android/server/wm/WindowManagerService;->dipToPixel(ILandroid/util/DisplayMetrics;)I
+    invoke-static {v2, v4}, Lcom/android/server/wm/WindowManagerService;->dipToPixel(ILandroid/util/DisplayMetrics;)I
 
-    move-result p1
+    move-result v2
 
-    iput p1, p0, Lcom/android/server/wm/TaskPositioner;->mSideMargin:I
+    iput v2, p0, Lcom/android/server/wm/TaskPositioner;->mMinVisibleHeight:I
 
     .line 315
-    const/16 p1, 0x30
+    iget-object v2, p0, Lcom/android/server/wm/TaskPositioner;->mMaxVisibleSize:Landroid/graphics/Point;
 
-    iget-object v2, p0, Lcom/android/server/wm/TaskPositioner;->mDisplayMetrics:Landroid/util/DisplayMetrics;
-
-    invoke-static {p1, v2}, Lcom/android/server/wm/WindowManagerService;->dipToPixel(ILandroid/util/DisplayMetrics;)I
-
-    move-result p1
-
-    iput p1, p0, Lcom/android/server/wm/TaskPositioner;->mMinVisibleWidth:I
-
-    .line 316
-    const/16 p1, 0x20
-
-    iget-object v2, p0, Lcom/android/server/wm/TaskPositioner;->mDisplayMetrics:Landroid/util/DisplayMetrics;
-
-    invoke-static {p1, v2}, Lcom/android/server/wm/WindowManagerService;->dipToPixel(ILandroid/util/DisplayMetrics;)I
-
-    move-result p1
-
-    iput p1, p0, Lcom/android/server/wm/TaskPositioner;->mMinVisibleHeight:I
+    invoke-virtual {v0, v2}, Landroid/view/Display;->getRealSize(Landroid/graphics/Point;)V
 
     .line 317
-    iget-object p1, p0, Lcom/android/server/wm/TaskPositioner;->mMaxVisibleSize:Landroid/graphics/Point;
+    iput-boolean v3, p0, Lcom/android/server/wm/TaskPositioner;->mDragEnded:Z
 
-    invoke-virtual {v0, p1}, Landroid/view/Display;->getRealSize(Landroid/graphics/Point;)V
-
-    .line 319
-    iput-boolean v1, p0, Lcom/android/server/wm/TaskPositioner;->mDragEnded:Z
-
-    .line 320
+    .line 318
     return-void
 .end method
 
 .method resizeDrag(FF)V
-    .registers 16
+    .registers 22
+    .param p1, "x"  # F
+    .param p2, "y"  # F
     .annotation build Lcom/android/internal/annotations/VisibleForTesting;
     .end annotation
 
+    .line 484
+    move-object/from16 v7, p0
+
+    iget v0, v7, Lcom/android/server/wm/TaskPositioner;->mStartDragX:F
+
+    sub-float v0, p1, v0
+
+    invoke-static {v0}, Ljava/lang/Math;->round(F)I
+
+    move-result v8
+
+    .line 485
+    .local v8, "deltaX":I
+    iget v0, v7, Lcom/android/server/wm/TaskPositioner;->mStartDragY:F
+
+    sub-float v0, p2, v0
+
+    invoke-static {v0}, Ljava/lang/Math;->round(F)I
+
+    move-result v9
+
     .line 486
-    iget v0, p0, Lcom/android/server/wm/TaskPositioner;->mStartDragX:F
+    .local v9, "deltaY":I
+    iget-object v0, v7, Lcom/android/server/wm/TaskPositioner;->mWindowOriginalBounds:Landroid/graphics/Rect;
 
-    sub-float/2addr p1, v0
-
-    invoke-static {p1}, Ljava/lang/Math;->round(F)I
-
-    move-result p1
+    iget v10, v0, Landroid/graphics/Rect;->left:I
 
     .line 487
-    iget v0, p0, Lcom/android/server/wm/TaskPositioner;->mStartDragY:F
+    .local v10, "left":I
+    iget-object v0, v7, Lcom/android/server/wm/TaskPositioner;->mWindowOriginalBounds:Landroid/graphics/Rect;
 
-    sub-float/2addr p2, v0
-
-    invoke-static {p2}, Ljava/lang/Math;->round(F)I
-
-    move-result p2
+    iget v11, v0, Landroid/graphics/Rect;->top:I
 
     .line 488
-    iget-object v0, p0, Lcom/android/server/wm/TaskPositioner;->mWindowOriginalBounds:Landroid/graphics/Rect;
+    .local v11, "top":I
+    iget-object v0, v7, Lcom/android/server/wm/TaskPositioner;->mWindowOriginalBounds:Landroid/graphics/Rect;
 
-    iget v2, v0, Landroid/graphics/Rect;->left:I
+    iget v12, v0, Landroid/graphics/Rect;->right:I
 
     .line 489
-    iget-object v0, p0, Lcom/android/server/wm/TaskPositioner;->mWindowOriginalBounds:Landroid/graphics/Rect;
+    .local v12, "right":I
+    iget-object v0, v7, Lcom/android/server/wm/TaskPositioner;->mWindowOriginalBounds:Landroid/graphics/Rect;
 
-    iget v3, v0, Landroid/graphics/Rect;->top:I
+    iget v13, v0, Landroid/graphics/Rect;->bottom:I
 
-    .line 490
-    iget-object v0, p0, Lcom/android/server/wm/TaskPositioner;->mWindowOriginalBounds:Landroid/graphics/Rect;
+    .line 494
+    .local v13, "bottom":I
+    iget-boolean v0, v7, Lcom/android/server/wm/TaskPositioner;->mPreserveOrientation:Z
 
-    iget v4, v0, Landroid/graphics/Rect;->right:I
+    const v1, 0x3f99999a  # 1.2f
 
-    .line 491
-    iget-object v0, p0, Lcom/android/server/wm/TaskPositioner;->mWindowOriginalBounds:Landroid/graphics/Rect;
+    if-nez v0, :cond_2c
 
-    iget v5, v0, Landroid/graphics/Rect;->bottom:I
+    .line 495
+    const/high16 v0, 0x3f800000  # 1.0f
+
+    goto :goto_35
 
     .line 496
-    iget-boolean v0, p0, Lcom/android/server/wm/TaskPositioner;->mPreserveOrientation:Z
+    :cond_2c
+    iget-boolean v0, v7, Lcom/android/server/wm/TaskPositioner;->mStartOrientationWasLandscape:Z
 
-    if-nez v0, :cond_23
+    if-eqz v0, :cond_32
 
-    .line 497
-    goto :goto_25
+    move v0, v1
+
+    goto :goto_35
+
+    :cond_32
+    const v0, 0x3f555555
+
+    :goto_35
+    move v14, v0
 
     .line 498
-    :cond_23
-    iget-boolean v0, p0, Lcom/android/server/wm/TaskPositioner;->mStartOrientationWasLandscape:Z
+    .local v14, "minAspect":F
+    sub-int v0, v12, v10
+
+    .line 499
+    .local v0, "width":I
+    sub-int v2, v13, v11
 
     .line 500
-    :goto_25
-    sub-int v0, v4, v2
+    .local v2, "height":I
+    iget v3, v7, Lcom/android/server/wm/TaskPositioner;->mCtrlType:I
+
+    and-int/lit8 v4, v3, 0x1
+
+    if-eqz v4, :cond_49
 
     .line 501
-    sub-int v1, v5, v3
+    iget v3, v7, Lcom/android/server/wm/TaskPositioner;->mMinVisibleWidth:I
+
+    sub-int v4, v0, v8
+
+    invoke-static {v3, v4}, Ljava/lang/Math;->max(II)I
+
+    move-result v0
+
+    goto :goto_55
 
     .line 502
-    iget v6, p0, Lcom/android/server/wm/TaskPositioner;->mCtrlType:I
+    :cond_49
+    and-int/lit8 v3, v3, 0x2
 
-    and-int/lit8 v7, v6, 0x1
-
-    if-eqz v7, :cond_38
+    if-eqz v3, :cond_55
 
     .line 503
-    iget v6, p0, Lcom/android/server/wm/TaskPositioner;->mMinVisibleWidth:I
+    iget v3, v7, Lcom/android/server/wm/TaskPositioner;->mMinVisibleWidth:I
 
-    sub-int p1, v0, p1
+    add-int v4, v0, v8
 
-    invoke-static {v6, p1}, Ljava/lang/Math;->max(II)I
+    invoke-static {v3, v4}, Ljava/lang/Math;->max(II)I
 
-    move-result p1
-
-    goto :goto_45
-
-    .line 504
-    :cond_38
-    and-int/lit8 v6, v6, 0x2
-
-    if-eqz v6, :cond_44
+    move-result v0
 
     .line 505
-    iget v6, p0, Lcom/android/server/wm/TaskPositioner;->mMinVisibleWidth:I
+    :cond_55
+    :goto_55
+    iget v3, v7, Lcom/android/server/wm/TaskPositioner;->mCtrlType:I
 
-    add-int/2addr p1, v0
+    and-int/lit8 v4, v3, 0x4
 
-    invoke-static {v6, p1}, Ljava/lang/Math;->max(II)I
+    if-eqz v4, :cond_64
 
-    move-result p1
+    .line 506
+    iget v3, v7, Lcom/android/server/wm/TaskPositioner;->mMinVisibleHeight:I
 
-    goto :goto_45
+    sub-int v4, v2, v9
 
-    .line 504
-    :cond_44
-    move p1, v0
+    invoke-static {v3, v4}, Ljava/lang/Math;->max(II)I
+
+    move-result v2
+
+    goto :goto_70
 
     .line 507
-    :goto_45
-    iget v6, p0, Lcom/android/server/wm/TaskPositioner;->mCtrlType:I
+    :cond_64
+    and-int/lit8 v3, v3, 0x8
 
-    and-int/lit8 v7, v6, 0x4
-
-    if-eqz v7, :cond_54
+    if-eqz v3, :cond_70
 
     .line 508
-    iget v6, p0, Lcom/android/server/wm/TaskPositioner;->mMinVisibleHeight:I
+    iget v3, v7, Lcom/android/server/wm/TaskPositioner;->mMinVisibleHeight:I
 
-    sub-int p2, v1, p2
+    add-int v4, v2, v9
 
-    invoke-static {v6, p2}, Ljava/lang/Math;->max(II)I
+    invoke-static {v3, v4}, Ljava/lang/Math;->max(II)I
 
-    move-result p2
+    move-result v2
 
-    goto :goto_61
+    .line 512
+    :cond_70
+    :goto_70
+    int-to-float v3, v0
 
-    .line 509
-    :cond_54
-    and-int/lit8 v6, v6, 0x8
+    int-to-float v4, v2
 
-    if-eqz v6, :cond_60
+    div-float v15, v3, v4
 
-    .line 510
-    iget v6, p0, Lcom/android/server/wm/TaskPositioner;->mMinVisibleHeight:I
+    .line 513
+    .local v15, "aspect":F
+    iget-boolean v3, v7, Lcom/android/server/wm/TaskPositioner;->mPreserveOrientation:Z
 
-    add-int/2addr p2, v1
+    if-eqz v3, :cond_1b0
 
-    invoke-static {v6, p2}, Ljava/lang/Math;->max(II)I
+    iget-boolean v3, v7, Lcom/android/server/wm/TaskPositioner;->mStartOrientationWasLandscape:Z
 
-    move-result p2
+    if-eqz v3, :cond_80
 
-    goto :goto_61
+    cmpg-float v3, v15, v1
 
-    .line 509
-    :cond_60
-    move p2, v1
+    if-ltz v3, :cond_8e
 
-    .line 514
-    :goto_61
-    int-to-float v6, p1
+    :cond_80
+    iget-boolean v3, v7, Lcom/android/server/wm/TaskPositioner;->mStartOrientationWasLandscape:Z
 
-    int-to-float v7, p2
+    if-nez v3, :cond_1b0
 
-    div-float/2addr v6, v7
+    float-to-double v3, v15
 
-    .line 515
-    iget-boolean v7, p0, Lcom/android/server/wm/TaskPositioner;->mPreserveOrientation:Z
+    const-wide v5, 0x3feaaaaa98e38e45L  # 0.8333333002196431
 
-    if-eqz v7, :cond_167
+    cmpl-double v3, v3, v5
 
-    iget-boolean v7, p0, Lcom/android/server/wm/TaskPositioner;->mStartOrientationWasLandscape:Z
+    if-lez v3, :cond_1b0
 
-    const v8, 0x3f99999a  # 1.2f
+    .line 521
+    :cond_8e
+    iget-boolean v3, v7, Lcom/android/server/wm/TaskPositioner;->mStartOrientationWasLandscape:Z
 
-    if-eqz v7, :cond_73
-
-    cmpg-float v7, v6, v8
-
-    if-ltz v7, :cond_81
-
-    :cond_73
-    iget-boolean v7, p0, Lcom/android/server/wm/TaskPositioner;->mStartOrientationWasLandscape:Z
-
-    if-nez v7, :cond_167
-
-    float-to-double v6, v6
-
-    const-wide v9, 0x3feaaaaa98e38e45L  # 0.8333333002196431
-
-    cmpl-double v6, v6, v9
-
-    if-lez v6, :cond_167
+    if-eqz v3, :cond_10b
 
     .line 523
-    :cond_81
-    iget-boolean v6, p0, Lcom/android/server/wm/TaskPositioner;->mStartOrientationWasLandscape:Z
+    iget v3, v7, Lcom/android/server/wm/TaskPositioner;->mMinVisibleWidth:I
 
-    if-eqz v6, :cond_ea
+    iget-object v4, v7, Lcom/android/server/wm/TaskPositioner;->mMaxVisibleSize:Landroid/graphics/Point;
+
+    iget v4, v4, Landroid/graphics/Point;->x:I
+
+    invoke-static {v4, v0}, Ljava/lang/Math;->min(II)I
+
+    move-result v4
+
+    invoke-static {v3, v4}, Ljava/lang/Math;->max(II)I
+
+    move-result v3
+
+    .line 524
+    .local v3, "width1":I
+    int-to-float v4, v3
+
+    div-float/2addr v4, v1
+
+    invoke-static {v4}, Ljava/lang/Math;->round(F)I
+
+    move-result v4
+
+    invoke-static {v2, v4}, Ljava/lang/Math;->min(II)I
+
+    move-result v4
 
     .line 525
-    iget v6, p0, Lcom/android/server/wm/TaskPositioner;->mMinVisibleWidth:I
+    .local v4, "height1":I
+    iget v5, v7, Lcom/android/server/wm/TaskPositioner;->mMinVisibleHeight:I
 
-    iget-object v7, p0, Lcom/android/server/wm/TaskPositioner;->mMaxVisibleSize:Landroid/graphics/Point;
-
-    iget v7, v7, Landroid/graphics/Point;->x:I
-
-    invoke-static {v7, p1}, Ljava/lang/Math;->min(II)I
-
-    move-result v7
-
-    invoke-static {v6, v7}, Ljava/lang/Math;->max(II)I
-
-    move-result v6
-
-    .line 526
-    int-to-float v7, v6
-
-    div-float/2addr v7, v8
-
-    invoke-static {v7}, Ljava/lang/Math;->round(F)I
-
-    move-result v7
-
-    invoke-static {p2, v7}, Ljava/lang/Math;->min(II)I
-
-    move-result v7
+    if-ge v4, v5, :cond_c9
 
     .line 527
-    iget v9, p0, Lcom/android/server/wm/TaskPositioner;->mMinVisibleHeight:I
+    iget v4, v7, Lcom/android/server/wm/TaskPositioner;->mMinVisibleHeight:I
 
-    if-ge v7, v9, :cond_b7
+    .line 528
+    iget v5, v7, Lcom/android/server/wm/TaskPositioner;->mMinVisibleWidth:I
+
+    iget-object v6, v7, Lcom/android/server/wm/TaskPositioner;->mMaxVisibleSize:Landroid/graphics/Point;
+
+    iget v6, v6, Landroid/graphics/Point;->x:I
+
+    move/from16 v16, v3
+
+    .end local v3  # "width1":I
+    .local v16, "width1":I
+    int-to-float v3, v4
+
+    mul-float/2addr v3, v1
 
     .line 529
-    nop
+    invoke-static {v3}, Ljava/lang/Math;->round(F)I
 
-    .line 530
-    iget v6, p0, Lcom/android/server/wm/TaskPositioner;->mMinVisibleWidth:I
+    move-result v3
 
-    iget-object v7, p0, Lcom/android/server/wm/TaskPositioner;->mMaxVisibleSize:Landroid/graphics/Point;
+    invoke-static {v6, v3}, Ljava/lang/Math;->min(II)I
 
-    iget v7, v7, Landroid/graphics/Point;->x:I
+    move-result v3
 
-    int-to-float v10, v9
+    .line 528
+    invoke-static {v5, v3}, Ljava/lang/Math;->max(II)I
 
-    mul-float/2addr v10, v8
+    move-result v3
 
-    .line 531
-    invoke-static {v10}, Ljava/lang/Math;->round(F)I
+    move/from16 v16, v3
 
-    move-result v10
+    .end local v16  # "width1":I
+    .restart local v3  # "width1":I
+    goto :goto_cb
 
-    invoke-static {v7, v10}, Ljava/lang/Math;->min(II)I
+    .line 525
+    :cond_c9
+    move/from16 v16, v3
 
-    move-result v7
+    .line 532
+    .end local v3  # "width1":I
+    .restart local v16  # "width1":I
+    :goto_cb
+    iget v3, v7, Lcom/android/server/wm/TaskPositioner;->mMinVisibleHeight:I
 
-    .line 530
-    invoke-static {v6, v7}, Ljava/lang/Math;->max(II)I
+    iget-object v5, v7, Lcom/android/server/wm/TaskPositioner;->mMaxVisibleSize:Landroid/graphics/Point;
 
-    move-result v6
+    iget v5, v5, Landroid/graphics/Point;->y:I
 
-    move v7, v9
+    invoke-static {v5, v2}, Ljava/lang/Math;->min(II)I
+
+    move-result v5
+
+    invoke-static {v3, v5}, Ljava/lang/Math;->max(II)I
+
+    move-result v3
+
+    .line 533
+    .local v3, "height2":I
+    int-to-float v5, v3
+
+    mul-float/2addr v5, v1
+
+    invoke-static {v5}, Ljava/lang/Math;->round(F)I
+
+    move-result v5
+
+    invoke-static {v0, v5}, Ljava/lang/Math;->max(II)I
+
+    move-result v5
 
     .line 534
-    :cond_b7
-    iget v9, p0, Lcom/android/server/wm/TaskPositioner;->mMinVisibleHeight:I
+    .local v5, "width2":I
+    iget v6, v7, Lcom/android/server/wm/TaskPositioner;->mMinVisibleWidth:I
 
-    iget-object v10, p0, Lcom/android/server/wm/TaskPositioner;->mMaxVisibleSize:Landroid/graphics/Point;
-
-    iget v10, v10, Landroid/graphics/Point;->y:I
-
-    invoke-static {v10, p2}, Ljava/lang/Math;->min(II)I
-
-    move-result v10
-
-    invoke-static {v9, v10}, Ljava/lang/Math;->max(II)I
-
-    move-result v9
-
-    .line 535
-    int-to-float v10, v9
-
-    mul-float/2addr v10, v8
-
-    invoke-static {v10}, Ljava/lang/Math;->round(F)I
-
-    move-result v10
-
-    invoke-static {p1, v10}, Ljava/lang/Math;->max(II)I
-
-    move-result v10
+    if-ge v5, v6, :cond_107
 
     .line 536
-    iget v11, p0, Lcom/android/server/wm/TaskPositioner;->mMinVisibleWidth:I
+    iget v5, v7, Lcom/android/server/wm/TaskPositioner;->mMinVisibleWidth:I
 
-    if-ge v10, v11, :cond_14e
+    .line 537
+    iget v6, v7, Lcom/android/server/wm/TaskPositioner;->mMinVisibleHeight:I
+
+    iget-object v1, v7, Lcom/android/server/wm/TaskPositioner;->mMaxVisibleSize:Landroid/graphics/Point;
+
+    iget v1, v1, Landroid/graphics/Point;->y:I
+
+    move/from16 v18, v3
+
+    .end local v3  # "height2":I
+    .local v18, "height2":I
+    int-to-float v3, v5
+
+    const v17, 0x3f99999a  # 1.2f
+
+    div-float v3, v3, v17
 
     .line 538
-    nop
+    invoke-static {v3}, Ljava/lang/Math;->round(F)I
 
-    .line 539
-    iget v9, p0, Lcom/android/server/wm/TaskPositioner;->mMinVisibleHeight:I
+    move-result v3
 
-    iget-object v10, p0, Lcom/android/server/wm/TaskPositioner;->mMaxVisibleSize:Landroid/graphics/Point;
+    invoke-static {v1, v3}, Ljava/lang/Math;->min(II)I
 
-    iget v10, v10, Landroid/graphics/Point;->y:I
+    move-result v1
 
-    int-to-float v12, v11
+    .line 537
+    invoke-static {v6, v1}, Ljava/lang/Math;->max(II)I
 
-    div-float/2addr v12, v8
+    move-result v3
 
-    .line 540
-    invoke-static {v12}, Ljava/lang/Math;->round(F)I
+    move/from16 v18, v3
 
-    move-result v8
+    .end local v18  # "height2":I
+    .restart local v3  # "height2":I
+    goto/16 :goto_18b
 
-    invoke-static {v10, v8}, Ljava/lang/Math;->min(II)I
+    .line 534
+    :cond_107
+    move/from16 v18, v3
 
-    move-result v8
+    .end local v3  # "height2":I
+    .restart local v18  # "height2":I
+    goto/16 :goto_18b
 
-    .line 539
-    invoke-static {v9, v8}, Ljava/lang/Math;->max(II)I
+    .line 542
+    .end local v4  # "height1":I
+    .end local v5  # "width2":I
+    .end local v16  # "width1":I
+    .end local v18  # "height2":I
+    :cond_10b
+    iget v1, v7, Lcom/android/server/wm/TaskPositioner;->mMinVisibleWidth:I
 
-    move-result v9
+    iget-object v3, v7, Lcom/android/server/wm/TaskPositioner;->mMaxVisibleSize:Landroid/graphics/Point;
 
-    move v10, v11
+    iget v3, v3, Landroid/graphics/Point;->x:I
 
-    goto :goto_14e
+    invoke-static {v3, v0}, Ljava/lang/Math;->min(II)I
+
+    move-result v3
+
+    invoke-static {v1, v3}, Ljava/lang/Math;->max(II)I
+
+    move-result v1
+
+    .line 543
+    .local v1, "width1":I
+    int-to-float v3, v1
+
+    const v4, 0x3f99999a  # 1.2f
+
+    mul-float/2addr v3, v4
+
+    invoke-static {v3}, Ljava/lang/Math;->round(F)I
+
+    move-result v3
+
+    invoke-static {v2, v3}, Ljava/lang/Math;->max(II)I
+
+    move-result v3
 
     .line 544
-    :cond_ea
-    iget v6, p0, Lcom/android/server/wm/TaskPositioner;->mMinVisibleWidth:I
+    .local v3, "height1":I
+    iget v4, v7, Lcom/android/server/wm/TaskPositioner;->mMinVisibleHeight:I
 
-    iget-object v7, p0, Lcom/android/server/wm/TaskPositioner;->mMaxVisibleSize:Landroid/graphics/Point;
-
-    iget v7, v7, Landroid/graphics/Point;->x:I
-
-    invoke-static {v7, p1}, Ljava/lang/Math;->min(II)I
-
-    move-result v7
-
-    invoke-static {v6, v7}, Ljava/lang/Math;->max(II)I
-
-    move-result v6
-
-    .line 545
-    int-to-float v7, v6
-
-    mul-float/2addr v7, v8
-
-    invoke-static {v7}, Ljava/lang/Math;->round(F)I
-
-    move-result v7
-
-    invoke-static {p2, v7}, Ljava/lang/Math;->max(II)I
-
-    move-result v7
+    if-ge v3, v4, :cond_148
 
     .line 546
-    iget v9, p0, Lcom/android/server/wm/TaskPositioner;->mMinVisibleHeight:I
+    iget v3, v7, Lcom/android/server/wm/TaskPositioner;->mMinVisibleHeight:I
 
-    if-ge v7, v9, :cond_11c
+    .line 547
+    iget v4, v7, Lcom/android/server/wm/TaskPositioner;->mMinVisibleWidth:I
+
+    iget-object v5, v7, Lcom/android/server/wm/TaskPositioner;->mMaxVisibleSize:Landroid/graphics/Point;
+
+    iget v5, v5, Landroid/graphics/Point;->x:I
+
+    int-to-float v6, v3
+
+    const v16, 0x3f99999a  # 1.2f
+
+    div-float v6, v6, v16
 
     .line 548
-    nop
-
-    .line 549
-    iget v6, p0, Lcom/android/server/wm/TaskPositioner;->mMinVisibleWidth:I
-
-    iget-object v7, p0, Lcom/android/server/wm/TaskPositioner;->mMaxVisibleSize:Landroid/graphics/Point;
-
-    iget v7, v7, Landroid/graphics/Point;->x:I
-
-    int-to-float v10, v9
-
-    div-float/2addr v10, v8
-
-    .line 550
-    invoke-static {v10}, Ljava/lang/Math;->round(F)I
-
-    move-result v10
-
-    invoke-static {v7, v10}, Ljava/lang/Math;->min(II)I
-
-    move-result v7
-
-    .line 549
-    invoke-static {v6, v7}, Ljava/lang/Math;->max(II)I
+    invoke-static {v6}, Ljava/lang/Math;->round(F)I
 
     move-result v6
 
-    move v7, v9
+    invoke-static {v5, v6}, Ljava/lang/Math;->min(II)I
+
+    move-result v5
+
+    .line 547
+    invoke-static {v4, v5}, Ljava/lang/Math;->max(II)I
+
+    move-result v1
+
+    move/from16 v16, v1
+
+    move v4, v3
+
+    goto :goto_14b
+
+    .line 544
+    :cond_148
+    move/from16 v16, v1
+
+    move v4, v3
+
+    .line 551
+    .end local v1  # "width1":I
+    .end local v3  # "height1":I
+    .restart local v4  # "height1":I
+    .restart local v16  # "width1":I
+    :goto_14b
+    iget v1, v7, Lcom/android/server/wm/TaskPositioner;->mMinVisibleHeight:I
+
+    iget-object v3, v7, Lcom/android/server/wm/TaskPositioner;->mMaxVisibleSize:Landroid/graphics/Point;
+
+    iget v3, v3, Landroid/graphics/Point;->y:I
+
+    invoke-static {v3, v2}, Ljava/lang/Math;->min(II)I
+
+    move-result v3
+
+    invoke-static {v1, v3}, Ljava/lang/Math;->max(II)I
+
+    move-result v3
+
+    .line 552
+    .local v3, "height2":I
+    int-to-float v1, v3
+
+    const v5, 0x3f99999a  # 1.2f
+
+    div-float/2addr v1, v5
+
+    invoke-static {v1}, Ljava/lang/Math;->round(F)I
+
+    move-result v1
+
+    invoke-static {v0, v1}, Ljava/lang/Math;->min(II)I
+
+    move-result v5
 
     .line 553
-    :cond_11c
-    iget v9, p0, Lcom/android/server/wm/TaskPositioner;->mMinVisibleHeight:I
+    .restart local v5  # "width2":I
+    iget v1, v7, Lcom/android/server/wm/TaskPositioner;->mMinVisibleWidth:I
 
-    iget-object v10, p0, Lcom/android/server/wm/TaskPositioner;->mMaxVisibleSize:Landroid/graphics/Point;
-
-    iget v10, v10, Landroid/graphics/Point;->y:I
-
-    invoke-static {v10, p2}, Ljava/lang/Math;->min(II)I
-
-    move-result v10
-
-    invoke-static {v9, v10}, Ljava/lang/Math;->max(II)I
-
-    move-result v9
-
-    .line 554
-    int-to-float v10, v9
-
-    div-float/2addr v10, v8
-
-    invoke-static {v10}, Ljava/lang/Math;->round(F)I
-
-    move-result v10
-
-    invoke-static {p1, v10}, Ljava/lang/Math;->min(II)I
-
-    move-result v10
+    if-ge v5, v1, :cond_189
 
     .line 555
-    iget v11, p0, Lcom/android/server/wm/TaskPositioner;->mMinVisibleWidth:I
+    iget v5, v7, Lcom/android/server/wm/TaskPositioner;->mMinVisibleWidth:I
 
-    if-ge v10, v11, :cond_14e
+    .line 556
+    iget v1, v7, Lcom/android/server/wm/TaskPositioner;->mMinVisibleHeight:I
+
+    iget-object v6, v7, Lcom/android/server/wm/TaskPositioner;->mMaxVisibleSize:Landroid/graphics/Point;
+
+    iget v6, v6, Landroid/graphics/Point;->y:I
+
+    move/from16 v18, v3
+
+    .end local v3  # "height2":I
+    .restart local v18  # "height2":I
+    int-to-float v3, v5
+
+    const v17, 0x3f99999a  # 1.2f
+
+    mul-float v3, v3, v17
 
     .line 557
-    nop
+    invoke-static {v3}, Ljava/lang/Math;->round(F)I
 
-    .line 558
-    iget v9, p0, Lcom/android/server/wm/TaskPositioner;->mMinVisibleHeight:I
+    move-result v3
 
-    iget-object v10, p0, Lcom/android/server/wm/TaskPositioner;->mMaxVisibleSize:Landroid/graphics/Point;
+    invoke-static {v6, v3}, Ljava/lang/Math;->min(II)I
 
-    iget v10, v10, Landroid/graphics/Point;->y:I
+    move-result v3
 
-    int-to-float v12, v11
+    .line 556
+    invoke-static {v1, v3}, Ljava/lang/Math;->max(II)I
 
-    mul-float/2addr v12, v8
+    move-result v3
 
-    .line 559
-    invoke-static {v12}, Ljava/lang/Math;->round(F)I
+    move/from16 v18, v3
 
-    move-result v8
+    .end local v18  # "height2":I
+    .restart local v3  # "height2":I
+    goto :goto_18b
 
-    invoke-static {v10, v8}, Ljava/lang/Math;->min(II)I
+    .line 553
+    :cond_189
+    move/from16 v18, v3
 
-    move-result v8
+    .line 563
+    .end local v3  # "height2":I
+    .restart local v18  # "height2":I
+    :goto_18b
+    sub-int v1, v12, v10
 
-    .line 558
-    invoke-static {v9, v8}, Ljava/lang/Math;->max(II)I
+    if-gt v0, v1, :cond_196
 
-    move-result v9
+    sub-int v1, v13, v11
 
-    move v10, v11
+    if-le v2, v1, :cond_194
+
+    goto :goto_196
+
+    :cond_194
+    const/4 v1, 0x0
+
+    goto :goto_197
+
+    :cond_196
+    :goto_196
+    const/4 v1, 0x1
+
+    .line 564
+    .local v1, "grows":Z
+    :goto_197
+    mul-int v3, v16, v4
+
+    mul-int v6, v5, v18
+
+    if-le v3, v6, :cond_19f
+
+    const/4 v3, 0x1
+
+    goto :goto_1a0
+
+    :cond_19f
+    const/4 v3, 0x0
+
+    :goto_1a0
+    if-ne v1, v3, :cond_1a8
 
     .line 565
-    :cond_14e
-    :goto_14e
-    const/4 v8, 0x0
-
-    const/4 v11, 0x1
-
-    if-gt p1, v0, :cond_157
-
-    if-le p2, v1, :cond_155
-
-    goto :goto_157
-
-    :cond_155
-    move p1, v8
-
-    goto :goto_158
-
-    :cond_157
-    :goto_157
-    move p1, v11
+    move/from16 v0, v16
 
     .line 566
-    :goto_158
-    mul-int p2, v6, v7
+    move v2, v4
 
-    mul-int v0, v10, v9
+    move/from16 v17, v2
 
-    if-le p2, v0, :cond_15f
-
-    move v8, v11
-
-    :cond_15f
-    if-ne p1, v8, :cond_163
-
-    .line 567
-    nop
+    goto :goto_1b4
 
     .line 568
-    goto :goto_169
+    :cond_1a8
+    move v0, v5
 
-    .line 570
-    :cond_163
-    nop
+    .line 569
+    move/from16 v2, v18
 
-    .line 571
-    move v7, v9
+    move/from16 v16, v0
 
-    move v6, v10
+    move/from16 v17, v2
 
-    goto :goto_169
+    goto :goto_1b4
 
-    .line 576
-    :cond_167
-    move v6, p1
+    .line 574
+    .end local v1  # "grows":Z
+    .end local v4  # "height1":I
+    .end local v5  # "width2":I
+    .end local v16  # "width1":I
+    .end local v18  # "height2":I
+    :cond_1b0
+    move/from16 v16, v0
 
-    move v7, p2
+    move/from16 v17, v2
 
-    :goto_169
-    move-object v1, p0
+    .end local v0  # "width":I
+    .end local v2  # "height":I
+    .local v16, "width":I
+    .local v17, "height":I
+    :goto_1b4
+    move-object/from16 v0, p0
 
-    invoke-virtual/range {v1 .. v7}, Lcom/android/server/wm/TaskPositioner;->updateDraggedBounds(IIIIII)V
+    move v1, v10
 
-    .line 577
+    move v2, v11
+
+    move v3, v12
+
+    move v4, v13
+
+    move/from16 v5, v16
+
+    move/from16 v6, v17
+
+    invoke-virtual/range {v0 .. v6}, Lcom/android/server/wm/TaskPositioner;->updateDraggedBounds(IIIIII)V
+
+    .line 575
     return-void
 .end method
 
 .method startDrag(Lcom/android/server/wm/WindowState;ZZFF)V
-    .registers 13
+    .registers 14
+    .param p1, "win"  # Lcom/android/server/wm/WindowState;
+    .param p2, "resize"  # Z
+    .param p3, "preserveOrientation"  # Z
+    .param p4, "startX"  # F
+    .param p5, "startY"  # F
 
-    .line 365
-    :try_start_0
+    .line 357
+    sget-boolean v0, Lcom/android/server/wm/WindowManagerDebugConfig;->DEBUG_TASK_POSITIONING:Z
+
+    if-eqz v0, :cond_3f
+
+    .line 358
+    new-instance v0, Ljava/lang/StringBuilder;
+
+    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
+
+    const-string v1, "startDrag: win="
+
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+
+    const-string v1, ", resize="
+
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v0, p2}, Ljava/lang/StringBuilder;->append(Z)Ljava/lang/StringBuilder;
+
+    const-string v1, ", preserveOrientation="
+
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v0, p3}, Ljava/lang/StringBuilder;->append(Z)Ljava/lang/StringBuilder;
+
+    const-string v1, ", {"
+
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v0, p4}, Ljava/lang/StringBuilder;->append(F)Ljava/lang/StringBuilder;
+
+    const-string v1, ", "
+
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v0, p5}, Ljava/lang/StringBuilder;->append(F)Ljava/lang/StringBuilder;
+
+    const-string v1, "}"
+
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v0
+
+    const-string v1, "WindowManager"
+
+    invoke-static {v1, v0}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
+
+    .line 363
+    :cond_3f
+    :try_start_3f
     iget-object v0, p1, Lcom/android/server/wm/WindowState;->mClient:Landroid/view/IWindow;
 
     invoke-interface {v0}, Landroid/view/IWindow;->asBinder()Landroid/os/IBinder;
@@ -1394,406 +1685,437 @@
 
     iput-object v0, p0, Lcom/android/server/wm/TaskPositioner;->mClientCallback:Landroid/os/IBinder;
 
-    .line 366
+    .line 364
     iget-object v0, p0, Lcom/android/server/wm/TaskPositioner;->mClientCallback:Landroid/os/IBinder;
 
     const/4 v1, 0x0
 
     invoke-interface {v0, p0, v1}, Landroid/os/IBinder;->linkToDeath(Landroid/os/IBinder$DeathRecipient;I)V
-    :try_end_e
-    .catch Landroid/os/RemoteException; {:try_start_0 .. :try_end_e} :catch_27
-
-    .line 371
-    nop
-
-    .line 372
-    invoke-virtual {p1}, Lcom/android/server/wm/WindowState;->getTask()Lcom/android/server/wm/Task;
-
-    move-result-object p1
-
-    iput-object p1, p0, Lcom/android/server/wm/TaskPositioner;->mTask:Lcom/android/server/wm/Task;
-
-    .line 376
-    iget-object p1, p0, Lcom/android/server/wm/TaskPositioner;->mTask:Lcom/android/server/wm/Task;
-
-    iget-object v0, p0, Lcom/android/server/wm/TaskPositioner;->mTmpRect:Landroid/graphics/Rect;
-
-    invoke-virtual {p1, v0}, Lcom/android/server/wm/Task;->getBounds(Landroid/graphics/Rect;)V
-
-    .line 377
-    iget-object v6, p0, Lcom/android/server/wm/TaskPositioner;->mTmpRect:Landroid/graphics/Rect;
-
-    move-object v1, p0
-
-    move v2, p2
-
-    move v3, p3
-
-    move v4, p4
-
-    move v5, p5
-
-    invoke-virtual/range {v1 .. v6}, Lcom/android/server/wm/TaskPositioner;->startDrag(ZZFFLandroid/graphics/Rect;)V
-
-    .line 378
-    return-void
-
-    .line 367
-    :catch_27
-    move-exception p1
+    :try_end_4d
+    .catch Landroid/os/RemoteException; {:try_start_3f .. :try_end_4d} :catch_66
 
     .line 369
-    iget-object p1, p0, Lcom/android/server/wm/TaskPositioner;->mService:Lcom/android/server/wm/WindowManagerService;
-
-    iget-object p1, p1, Lcom/android/server/wm/WindowManagerService;->mTaskPositioningController:Lcom/android/server/wm/TaskPositioningController;
-
-    invoke-virtual {p1}, Lcom/android/server/wm/TaskPositioningController;->finishTaskPositioning()V
+    nop
 
     .line 370
+    invoke-virtual {p1}, Lcom/android/server/wm/WindowState;->getTask()Lcom/android/server/wm/Task;
+
+    move-result-object v0
+
+    iput-object v0, p0, Lcom/android/server/wm/TaskPositioner;->mTask:Lcom/android/server/wm/Task;
+
+    .line 374
+    iget-object v0, p0, Lcom/android/server/wm/TaskPositioner;->mTask:Lcom/android/server/wm/Task;
+
+    iget-object v1, p0, Lcom/android/server/wm/TaskPositioner;->mTmpRect:Landroid/graphics/Rect;
+
+    invoke-virtual {v0, v1}, Lcom/android/server/wm/Task;->getBounds(Landroid/graphics/Rect;)V
+
+    .line 375
+    iget-object v7, p0, Lcom/android/server/wm/TaskPositioner;->mTmpRect:Landroid/graphics/Rect;
+
+    move-object v2, p0
+
+    move v3, p2
+
+    move v4, p3
+
+    move v5, p4
+
+    move v6, p5
+
+    invoke-virtual/range {v2 .. v7}, Lcom/android/server/wm/TaskPositioner;->startDrag(ZZFFLandroid/graphics/Rect;)V
+
+    .line 376
+    return-void
+
+    .line 365
+    :catch_66
+    move-exception v0
+
+    .line 367
+    .local v0, "e":Landroid/os/RemoteException;
+    iget-object v1, p0, Lcom/android/server/wm/TaskPositioner;->mService:Lcom/android/server/wm/WindowManagerService;
+
+    iget-object v1, v1, Lcom/android/server/wm/WindowManagerService;->mTaskPositioningController:Lcom/android/server/wm/TaskPositioningController;
+
+    invoke-virtual {v1}, Lcom/android/server/wm/TaskPositioningController;->finishTaskPositioning()V
+
+    .line 368
     return-void
 .end method
 
 .method protected startDrag(ZZFFLandroid/graphics/Rect;)V
-    .registers 8
+    .registers 10
+    .param p1, "resize"  # Z
+    .param p2, "preserveOrientation"  # Z
+    .param p3, "startX"  # F
+    .param p4, "startY"  # F
+    .param p5, "startBounds"  # Landroid/graphics/Rect;
 
-    .line 382
+    .line 380
     const/4 v0, 0x0
 
     iput v0, p0, Lcom/android/server/wm/TaskPositioner;->mCtrlType:I
 
-    .line 383
+    .line 381
     iput p3, p0, Lcom/android/server/wm/TaskPositioner;->mStartDragX:F
 
-    .line 384
+    .line 382
     iput p4, p0, Lcom/android/server/wm/TaskPositioner;->mStartDragY:F
 
-    .line 385
+    .line 383
     iput-boolean p2, p0, Lcom/android/server/wm/TaskPositioner;->mPreserveOrientation:Z
 
-    .line 387
-    const/4 p2, 0x1
+    .line 385
+    const/4 v1, 0x1
 
     if-eqz p1, :cond_48
 
-    .line 388
-    iget p1, p5, Landroid/graphics/Rect;->left:I
+    .line 386
+    iget v2, p5, Landroid/graphics/Rect;->left:I
 
-    int-to-float p1, p1
+    int-to-float v2, v2
 
-    cmpg-float p1, p3, p1
+    cmpg-float v2, p3, v2
 
-    if-gez p1, :cond_18
+    if-gez v2, :cond_18
+
+    .line 387
+    iget v2, p0, Lcom/android/server/wm/TaskPositioner;->mCtrlType:I
+
+    or-int/2addr v2, v1
+
+    iput v2, p0, Lcom/android/server/wm/TaskPositioner;->mCtrlType:I
 
     .line 389
-    iget p1, p0, Lcom/android/server/wm/TaskPositioner;->mCtrlType:I
-
-    or-int/2addr p1, p2
-
-    iput p1, p0, Lcom/android/server/wm/TaskPositioner;->mCtrlType:I
-
-    .line 391
     :cond_18
-    iget p1, p5, Landroid/graphics/Rect;->right:I
+    iget v2, p5, Landroid/graphics/Rect;->right:I
 
-    int-to-float p1, p1
+    int-to-float v2, v2
 
-    cmpl-float p1, p3, p1
+    cmpl-float v2, p3, v2
 
-    if-lez p1, :cond_25
+    if-lez v2, :cond_25
+
+    .line 390
+    iget v2, p0, Lcom/android/server/wm/TaskPositioner;->mCtrlType:I
+
+    or-int/lit8 v2, v2, 0x2
+
+    iput v2, p0, Lcom/android/server/wm/TaskPositioner;->mCtrlType:I
 
     .line 392
-    iget p1, p0, Lcom/android/server/wm/TaskPositioner;->mCtrlType:I
-
-    or-int/lit8 p1, p1, 0x2
-
-    iput p1, p0, Lcom/android/server/wm/TaskPositioner;->mCtrlType:I
-
-    .line 394
     :cond_25
-    iget p1, p5, Landroid/graphics/Rect;->top:I
+    iget v2, p5, Landroid/graphics/Rect;->top:I
 
-    int-to-float p1, p1
+    int-to-float v2, v2
 
-    cmpg-float p1, p4, p1
+    cmpg-float v2, p4, v2
 
-    if-gez p1, :cond_32
+    if-gez v2, :cond_32
+
+    .line 393
+    iget v2, p0, Lcom/android/server/wm/TaskPositioner;->mCtrlType:I
+
+    or-int/lit8 v2, v2, 0x4
+
+    iput v2, p0, Lcom/android/server/wm/TaskPositioner;->mCtrlType:I
 
     .line 395
-    iget p1, p0, Lcom/android/server/wm/TaskPositioner;->mCtrlType:I
-
-    or-int/lit8 p1, p1, 0x4
-
-    iput p1, p0, Lcom/android/server/wm/TaskPositioner;->mCtrlType:I
-
-    .line 397
     :cond_32
-    iget p1, p5, Landroid/graphics/Rect;->bottom:I
+    iget v2, p5, Landroid/graphics/Rect;->bottom:I
 
-    int-to-float p1, p1
+    int-to-float v2, v2
 
-    cmpl-float p1, p4, p1
+    cmpl-float v2, p4, v2
 
-    if-lez p1, :cond_3f
+    if-lez v2, :cond_3f
+
+    .line 396
+    iget v2, p0, Lcom/android/server/wm/TaskPositioner;->mCtrlType:I
+
+    or-int/lit8 v2, v2, 0x8
+
+    iput v2, p0, Lcom/android/server/wm/TaskPositioner;->mCtrlType:I
 
     .line 398
-    iget p1, p0, Lcom/android/server/wm/TaskPositioner;->mCtrlType:I
-
-    or-int/lit8 p1, p1, 0x8
-
-    iput p1, p0, Lcom/android/server/wm/TaskPositioner;->mCtrlType:I
-
-    .line 400
     :cond_3f
-    iget p1, p0, Lcom/android/server/wm/TaskPositioner;->mCtrlType:I
+    iget v2, p0, Lcom/android/server/wm/TaskPositioner;->mCtrlType:I
 
-    if-eqz p1, :cond_45
+    if-eqz v2, :cond_45
 
-    move p1, p2
+    move v2, v1
 
     goto :goto_46
 
     :cond_45
-    move p1, v0
+    move v2, v0
 
     :goto_46
-    iput-boolean p1, p0, Lcom/android/server/wm/TaskPositioner;->mResizing:Z
+    iput-boolean v2, p0, Lcom/android/server/wm/TaskPositioner;->mResizing:Z
 
-    .line 407
+    .line 405
     :cond_48
     invoke-virtual {p5}, Landroid/graphics/Rect;->width()I
 
-    move-result p1
+    move-result v2
 
     invoke-virtual {p5}, Landroid/graphics/Rect;->height()I
 
-    move-result v1
+    move-result v3
 
-    if-lt p1, v1, :cond_53
+    if-lt v2, v3, :cond_53
 
-    goto :goto_54
+    move v0, v1
 
     :cond_53
-    move p2, v0
+    iput-boolean v0, p0, Lcom/android/server/wm/TaskPositioner;->mStartOrientationWasLandscape:Z
 
-    :goto_54
-    iput-boolean p2, p0, Lcom/android/server/wm/TaskPositioner;->mStartOrientationWasLandscape:Z
+    .line 406
+    iget-object v0, p0, Lcom/android/server/wm/TaskPositioner;->mWindowOriginalBounds:Landroid/graphics/Rect;
 
-    .line 408
-    iget-object p1, p0, Lcom/android/server/wm/TaskPositioner;->mWindowOriginalBounds:Landroid/graphics/Rect;
+    invoke-virtual {v0, p5}, Landroid/graphics/Rect;->set(Landroid/graphics/Rect;)V
 
-    invoke-virtual {p1, p5}, Landroid/graphics/Rect;->set(Landroid/graphics/Rect;)V
+    .line 411
+    iget-boolean v0, p0, Lcom/android/server/wm/TaskPositioner;->mResizing:Z
 
-    .line 413
-    iget-boolean p1, p0, Lcom/android/server/wm/TaskPositioner;->mResizing:Z
+    if-eqz v0, :cond_80
 
-    if-eqz p1, :cond_81
+    .line 412
+    iget-object v0, p0, Lcom/android/server/wm/TaskPositioner;->mService:Lcom/android/server/wm/WindowManagerService;
 
-    .line 414
-    iget-object p1, p0, Lcom/android/server/wm/TaskPositioner;->mService:Lcom/android/server/wm/WindowManagerService;
+    iget-object v0, v0, Lcom/android/server/wm/WindowManagerService;->mGlobalLock:Lcom/android/server/wm/WindowManagerGlobalLock;
 
-    iget-object p1, p1, Lcom/android/server/wm/WindowManagerService;->mGlobalLock:Lcom/android/server/wm/WindowManagerGlobalLock;
+    monitor-enter v0
 
-    monitor-enter p1
-
-    :try_start_64
+    :try_start_63
     invoke-static {}, Lcom/android/server/wm/WindowManagerService;->boostPriorityForLockedSection()V
 
-    .line 415
+    .line 413
     invoke-direct {p0, p3, p4}, Lcom/android/server/wm/TaskPositioner;->notifyMoveLocked(FF)Z
 
-    .line 416
-    monitor-exit p1
-    :try_end_6b
-    .catchall {:try_start_64 .. :try_end_6b} :catchall_7b
+    .line 414
+    monitor-exit v0
+    :try_end_6a
+    .catchall {:try_start_63 .. :try_end_6a} :catchall_7a
 
     invoke-static {}, Lcom/android/server/wm/WindowManagerService;->resetPriorityAfterLockedSection()V
 
-    .line 422
-    iget-object p1, p0, Lcom/android/server/wm/TaskPositioner;->mService:Lcom/android/server/wm/WindowManagerService;
+    .line 420
+    iget-object v0, p0, Lcom/android/server/wm/TaskPositioner;->mService:Lcom/android/server/wm/WindowManagerService;
 
-    iget-object p1, p1, Lcom/android/server/wm/WindowManagerService;->mH:Lcom/android/server/wm/WindowManagerService$H;
+    iget-object v0, v0, Lcom/android/server/wm/WindowManagerService;->mH:Lcom/android/server/wm/WindowManagerService$H;
 
-    new-instance p2, Lcom/android/server/wm/-$$Lambda$TaskPositioner$TE0EjYzJeOSFARmUlY6wF3y3c2U;
+    new-instance v1, Lcom/android/server/wm/-$$Lambda$TaskPositioner$TE0EjYzJeOSFARmUlY6wF3y3c2U;
 
-    invoke-direct {p2, p0, p5}, Lcom/android/server/wm/-$$Lambda$TaskPositioner$TE0EjYzJeOSFARmUlY6wF3y3c2U;-><init>(Lcom/android/server/wm/TaskPositioner;Landroid/graphics/Rect;)V
+    invoke-direct {v1, p0, p5}, Lcom/android/server/wm/-$$Lambda$TaskPositioner$TE0EjYzJeOSFARmUlY6wF3y3c2U;-><init>(Lcom/android/server/wm/TaskPositioner;Landroid/graphics/Rect;)V
 
-    invoke-virtual {p1, p2}, Lcom/android/server/wm/WindowManagerService$H;->post(Ljava/lang/Runnable;)Z
+    invoke-virtual {v0, v1}, Lcom/android/server/wm/WindowManagerService$H;->post(Ljava/lang/Runnable;)Z
 
-    goto :goto_81
+    goto :goto_80
 
-    .line 416
-    :catchall_7b
-    move-exception p2
+    .line 414
+    :catchall_7a
+    move-exception v1
 
-    :try_start_7c
-    monitor-exit p1
-    :try_end_7d
-    .catchall {:try_start_7c .. :try_end_7d} :catchall_7b
+    :try_start_7b
+    monitor-exit v0
+    :try_end_7c
+    .catchall {:try_start_7b .. :try_end_7c} :catchall_7a
 
     invoke-static {}, Lcom/android/server/wm/WindowManagerService;->resetPriorityAfterLockedSection()V
 
-    throw p2
+    throw v1
 
-    .line 433
-    :cond_81
-    :goto_81
-    iget-object p1, p0, Lcom/android/server/wm/TaskPositioner;->mWindowDragBounds:Landroid/graphics/Rect;
+    .line 431
+    :cond_80
+    :goto_80
+    iget-object v0, p0, Lcom/android/server/wm/TaskPositioner;->mWindowDragBounds:Landroid/graphics/Rect;
 
-    invoke-virtual {p1, p5}, Landroid/graphics/Rect;->set(Landroid/graphics/Rect;)V
+    invoke-virtual {v0, p5}, Landroid/graphics/Rect;->set(Landroid/graphics/Rect;)V
 
-    .line 434
+    .line 432
     return-void
 .end method
 
 .method public toShortString()Ljava/lang/String;
     .registers 2
 
-    .line 658
+    .line 656
     const-string v0, "WindowManager"
 
     return-object v0
 .end method
 
 .method unregister()V
-    .registers 4
+    .registers 5
 
-    .line 327
+    .line 321
+    sget-boolean v0, Lcom/android/server/wm/WindowManagerDebugConfig;->DEBUG_TASK_POSITIONING:Z
+
+    const-string v1, "WindowManager"
+
+    if-eqz v0, :cond_b
+
+    .line 322
+    const-string v0, "Unregistering task positioner"
+
+    invoke-static {v1, v0}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
+
+    .line 325
+    :cond_b
     iget-object v0, p0, Lcom/android/server/wm/TaskPositioner;->mClientChannel:Landroid/view/InputChannel;
 
-    if-nez v0, :cond_c
+    if-nez v0, :cond_15
 
-    .line 328
-    const-string v0, "WindowManager"
+    .line 326
+    const-string v0, "Task positioner not registered"
 
-    const-string v1, "Task positioner not registered"
+    invoke-static {v1, v0}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
 
-    invoke-static {v0, v1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
-
-    .line 329
+    .line 327
     return-void
 
-    .line 332
-    :cond_c
+    .line 330
+    :cond_15
     iget-object v0, p0, Lcom/android/server/wm/TaskPositioner;->mService:Lcom/android/server/wm/WindowManagerService;
 
     iget-object v0, v0, Lcom/android/server/wm/WindowManagerService;->mInputManager:Lcom/android/server/input/InputManagerService;
 
-    iget-object v1, p0, Lcom/android/server/wm/TaskPositioner;->mServerChannel:Landroid/view/InputChannel;
+    iget-object v2, p0, Lcom/android/server/wm/TaskPositioner;->mServerChannel:Landroid/view/InputChannel;
 
-    invoke-virtual {v0, v1}, Lcom/android/server/input/InputManagerService;->unregisterInputChannel(Landroid/view/InputChannel;)V
+    invoke-virtual {v0, v2}, Lcom/android/server/input/InputManagerService;->unregisterInputChannel(Landroid/view/InputChannel;)V
 
-    .line 334
+    .line 332
     iget-object v0, p0, Lcom/android/server/wm/TaskPositioner;->mInputEventReceiver:Lcom/android/server/wm/TaskPositioner$WindowPositionerEventReceiver;
 
     invoke-virtual {v0}, Lcom/android/server/wm/TaskPositioner$WindowPositionerEventReceiver;->dispose()V
 
-    .line 335
+    .line 333
     const/4 v0, 0x0
 
     iput-object v0, p0, Lcom/android/server/wm/TaskPositioner;->mInputEventReceiver:Lcom/android/server/wm/TaskPositioner$WindowPositionerEventReceiver;
 
+    .line 334
+    iget-object v2, p0, Lcom/android/server/wm/TaskPositioner;->mClientChannel:Landroid/view/InputChannel;
+
+    invoke-virtual {v2}, Landroid/view/InputChannel;->dispose()V
+
+    .line 335
+    iget-object v2, p0, Lcom/android/server/wm/TaskPositioner;->mServerChannel:Landroid/view/InputChannel;
+
+    invoke-virtual {v2}, Landroid/view/InputChannel;->dispose()V
+
     .line 336
-    iget-object v1, p0, Lcom/android/server/wm/TaskPositioner;->mClientChannel:Landroid/view/InputChannel;
-
-    invoke-virtual {v1}, Landroid/view/InputChannel;->dispose()V
-
-    .line 337
-    iget-object v1, p0, Lcom/android/server/wm/TaskPositioner;->mServerChannel:Landroid/view/InputChannel;
-
-    invoke-virtual {v1}, Landroid/view/InputChannel;->dispose()V
-
-    .line 338
     iput-object v0, p0, Lcom/android/server/wm/TaskPositioner;->mClientChannel:Landroid/view/InputChannel;
 
-    .line 339
+    .line 337
     iput-object v0, p0, Lcom/android/server/wm/TaskPositioner;->mServerChannel:Landroid/view/InputChannel;
 
-    .line 341
+    .line 339
     iput-object v0, p0, Lcom/android/server/wm/TaskPositioner;->mDragWindowHandle:Landroid/view/InputWindowHandle;
 
-    .line 342
+    .line 340
     iput-object v0, p0, Lcom/android/server/wm/TaskPositioner;->mDragApplicationHandle:Landroid/view/InputApplicationHandle;
 
-    .line 343
-    const/4 v1, 0x1
+    .line 341
+    const/4 v2, 0x1
 
-    iput-boolean v1, p0, Lcom/android/server/wm/TaskPositioner;->mDragEnded:Z
+    iput-boolean v2, p0, Lcom/android/server/wm/TaskPositioner;->mDragEnded:Z
 
-    .line 346
-    iget-object v2, p0, Lcom/android/server/wm/TaskPositioner;->mDisplayContent:Lcom/android/server/wm/DisplayContent;
+    .line 344
+    iget-object v3, p0, Lcom/android/server/wm/TaskPositioner;->mDisplayContent:Lcom/android/server/wm/DisplayContent;
 
-    invoke-virtual {v2}, Lcom/android/server/wm/DisplayContent;->getInputMonitor()Lcom/android/server/wm/InputMonitor;
+    invoke-virtual {v3}, Lcom/android/server/wm/DisplayContent;->getInputMonitor()Lcom/android/server/wm/InputMonitor;
 
-    move-result-object v2
+    move-result-object v3
 
-    invoke-virtual {v2, v1}, Lcom/android/server/wm/InputMonitor;->updateInputWindowsLw(Z)V
+    invoke-virtual {v3, v2}, Lcom/android/server/wm/InputMonitor;->updateInputWindowsLw(Z)V
 
-    .line 352
+    .line 347
+    sget-boolean v2, Lcom/android/server/wm/WindowManagerDebugConfig;->DEBUG_ORIENTATION:Z
+
+    if-eqz v2, :cond_4d
+
+    .line 348
+    const-string v2, "Resuming rotation after re-position"
+
+    invoke-static {v1, v2}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
+
+    .line 350
+    :cond_4d
     iget-object v1, p0, Lcom/android/server/wm/TaskPositioner;->mDisplayContent:Lcom/android/server/wm/DisplayContent;
 
     invoke-virtual {v1}, Lcom/android/server/wm/DisplayContent;->resumeRotationLocked()V
 
-    .line 353
+    .line 351
     iput-object v0, p0, Lcom/android/server/wm/TaskPositioner;->mDisplayContent:Lcom/android/server/wm/DisplayContent;
 
-    .line 354
+    .line 352
     iget-object v0, p0, Lcom/android/server/wm/TaskPositioner;->mClientCallback:Landroid/os/IBinder;
 
     const/4 v1, 0x0
 
     invoke-interface {v0, p0, v1}, Landroid/os/IBinder;->unlinkToDeath(Landroid/os/IBinder$DeathRecipient;I)Z
 
-    .line 355
+    .line 353
     return-void
 .end method
 
 .method updateDraggedBounds(IIIIII)V
     .registers 8
+    .param p1, "left"  # I
+    .param p2, "top"  # I
+    .param p3, "right"  # I
+    .param p4, "bottom"  # I
+    .param p5, "newWidth"  # I
+    .param p6, "newHeight"  # I
 
-    .line 592
+    .line 590
     iget v0, p0, Lcom/android/server/wm/TaskPositioner;->mCtrlType:I
 
     and-int/lit8 v0, v0, 0x1
 
     if-eqz v0, :cond_9
 
-    .line 593
+    .line 591
     sub-int p1, p3, p5
 
     goto :goto_b
 
-    .line 595
+    .line 593
     :cond_9
     add-int p3, p1, p5
 
-    .line 597
+    .line 595
     :goto_b
-    iget p5, p0, Lcom/android/server/wm/TaskPositioner;->mCtrlType:I
+    iget v0, p0, Lcom/android/server/wm/TaskPositioner;->mCtrlType:I
 
-    and-int/lit8 p5, p5, 0x4
+    and-int/lit8 v0, v0, 0x4
 
-    if-eqz p5, :cond_14
+    if-eqz v0, :cond_14
 
-    .line 598
+    .line 596
     sub-int p2, p4, p6
 
     goto :goto_16
 
-    .line 600
+    .line 598
     :cond_14
     add-int p4, p2, p6
 
-    .line 603
+    .line 601
     :goto_16
-    iget-object p5, p0, Lcom/android/server/wm/TaskPositioner;->mWindowDragBounds:Landroid/graphics/Rect;
+    iget-object v0, p0, Lcom/android/server/wm/TaskPositioner;->mWindowDragBounds:Landroid/graphics/Rect;
 
-    invoke-virtual {p5, p1, p2, p3, p4}, Landroid/graphics/Rect;->set(IIII)V
+    invoke-virtual {v0, p1, p2, p3, p4}, Landroid/graphics/Rect;->set(IIII)V
 
-    .line 605
-    iget-object p1, p0, Lcom/android/server/wm/TaskPositioner;->mWindowDragBounds:Landroid/graphics/Rect;
+    .line 603
+    iget-object v0, p0, Lcom/android/server/wm/TaskPositioner;->mWindowDragBounds:Landroid/graphics/Rect;
 
-    invoke-direct {p0, p1}, Lcom/android/server/wm/TaskPositioner;->checkBoundsForOrientationViolations(Landroid/graphics/Rect;)V
+    invoke-direct {p0, v0}, Lcom/android/server/wm/TaskPositioner;->checkBoundsForOrientationViolations(Landroid/graphics/Rect;)V
 
-    .line 606
+    .line 604
     return-void
 .end method

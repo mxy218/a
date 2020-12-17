@@ -1,11 +1,11 @@
 .class Lcom/android/server/notification/NotificationManagerService$17;
-.super Landroid/telephony/PhoneStateListener;
+.super Landroid/content/BroadcastReceiver;
 .source "NotificationManagerService.java"
 
 
 # annotations
-.annotation system Ldalvik/annotation/EnclosingMethod;
-    value = Lcom/android/server/notification/NotificationManagerService;->listenForCallState()V
+.annotation system Ldalvik/annotation/EnclosingClass;
+    value = Lcom/android/server/notification/NotificationManagerService;
 .end annotation
 
 .annotation system Ldalvik/annotation/InnerClass;
@@ -21,65 +21,46 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/notification/NotificationManagerService;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/notification/NotificationManagerService;
 
-    .line 7571
+    .line 9410
     iput-object p1, p0, Lcom/android/server/notification/NotificationManagerService$17;->this$0:Lcom/android/server/notification/NotificationManagerService;
 
-    invoke-direct {p0}, Landroid/telephony/PhoneStateListener;-><init>()V
+    invoke-direct {p0}, Landroid/content/BroadcastReceiver;-><init>()V
 
     return-void
 .end method
 
 
 # virtual methods
-.method public onCallStateChanged(ILjava/lang/String;)V
-    .registers 4
+.method public onReceive(Landroid/content/Context;Landroid/content/Intent;)V
+    .registers 5
+    .param p1, "context"  # Landroid/content/Context;
+    .param p2, "intent"  # Landroid/content/Intent;
 
-    .line 7574
-    iget-object p2, p0, Lcom/android/server/notification/NotificationManagerService$17;->this$0:Lcom/android/server/notification/NotificationManagerService;
-
-    invoke-static {p2}, Lcom/android/server/notification/NotificationManagerService;->access$9200(Lcom/android/server/notification/NotificationManagerService;)I
-
-    move-result p2
-
-    if-ne p2, p1, :cond_9
-
-    return-void
-
-    .line 7575
-    :cond_9
-    sget-boolean p2, Lcom/android/server/notification/NotificationManagerService;->DBG:Z
-
-    if-eqz p2, :cond_27
-
-    new-instance p2, Ljava/lang/StringBuilder;
-
-    invoke-direct {p2}, Ljava/lang/StringBuilder;-><init>()V
-
-    const-string v0, "Call state changed: "
-
-    invoke-virtual {p2, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-static {p1}, Lcom/android/server/notification/NotificationManagerService;->access$9300(I)Ljava/lang/String;
+    .line 9413
+    invoke-virtual {p2}, Landroid/content/Intent;->getAction()Ljava/lang/String;
 
     move-result-object v0
 
-    invoke-virtual {p2, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    const-string v1, "android.intent.action.ACTION_SHUTDOWN"
 
-    invoke-virtual {p2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v1, v0}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result-object p2
+    move-result v0
 
-    const-string v0, "NotificationService"
+    if-eqz v0, :cond_15
 
-    invoke-static {v0, p2}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
+    .line 9415
+    iget-object v0, p0, Lcom/android/server/notification/NotificationManagerService$17;->this$0:Lcom/android/server/notification/NotificationManagerService;
 
-    .line 7576
-    :cond_27
-    iget-object p2, p0, Lcom/android/server/notification/NotificationManagerService$17;->this$0:Lcom/android/server/notification/NotificationManagerService;
+    invoke-static {v0}, Lcom/android/server/notification/NotificationManagerService;->access$300(Lcom/android/server/notification/NotificationManagerService;)Lcom/android/server/notification/PreferencesHelper;
 
-    invoke-static {p2, p1}, Lcom/android/server/notification/NotificationManagerService;->access$9202(Lcom/android/server/notification/NotificationManagerService;I)I
+    move-result-object v0
 
-    .line 7577
+    invoke-virtual {v0}, Lcom/android/server/notification/PreferencesHelper;->saveRankingDaily()V
+
+    .line 9417
+    :cond_15
     return-void
 .end method

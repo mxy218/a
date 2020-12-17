@@ -25,8 +25,16 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/accounts/AccountManagerService;Lcom/android/server/accounts/AccountManagerService$UserAccounts;Landroid/accounts/IAccountManagerResponse;Ljava/lang/String;ZZLjava/lang/String;ZLandroid/accounts/Account;Ljava/lang/String;)V
     .registers 11
+    .param p1, "this$0"  # Lcom/android/server/accounts/AccountManagerService;
+    .param p2, "accounts"  # Lcom/android/server/accounts/AccountManagerService$UserAccounts;
+    .param p3, "response"  # Landroid/accounts/IAccountManagerResponse;
+    .param p4, "accountType"  # Ljava/lang/String;
+    .param p5, "expectActivityLaunch"  # Z
+    .param p6, "stripAuthTokenFromResult"  # Z
+    .param p7, "accountName"  # Ljava/lang/String;
+    .param p8, "authDetailsRequired"  # Z
 
-    .line 3837
+    .line 3817
     iput-object p1, p0, Lcom/android/server/accounts/AccountManagerService$16;->this$0:Lcom/android/server/accounts/AccountManagerService;
 
     iput-object p9, p0, Lcom/android/server/accounts/AccountManagerService$16;->val$account:Landroid/accounts/Account;
@@ -42,40 +50,42 @@
 # virtual methods
 .method public onResult(Landroid/os/Bundle;)V
     .registers 7
+    .param p1, "result"  # Landroid/os/Bundle;
 
-    .line 3851
+    .line 3831
     const/4 v0, 0x1
 
     invoke-static {p1, v0}, Landroid/os/Bundle;->setDefusable(Landroid/os/Bundle;Z)Landroid/os/Bundle;
 
-    .line 3852
+    .line 3832
     invoke-virtual {p0}, Lcom/android/server/accounts/AccountManagerService$16;->getResponseAndClose()Landroid/accounts/IAccountManagerResponse;
 
     move-result-object v0
 
-    .line 3853
+    .line 3833
+    .local v0, "response":Landroid/accounts/IAccountManagerResponse;
     if-nez v0, :cond_b
 
-    .line 3854
+    .line 3834
     return-void
 
-    .line 3857
+    .line 3837
     :cond_b
     const/4 v1, 0x5
 
     if-nez p1, :cond_17
 
-    .line 3858
-    iget-object p1, p0, Lcom/android/server/accounts/AccountManagerService$16;->this$0:Lcom/android/server/accounts/AccountManagerService;
+    .line 3838
+    iget-object v2, p0, Lcom/android/server/accounts/AccountManagerService$16;->this$0:Lcom/android/server/accounts/AccountManagerService;
 
-    const-string/jumbo v2, "null bundle"
+    const-string/jumbo v3, "null bundle"
 
-    invoke-static {p1, v0, v1, v2}, Lcom/android/server/accounts/AccountManagerService;->access$2300(Lcom/android/server/accounts/AccountManagerService;Landroid/accounts/IAccountManagerResponse;ILjava/lang/String;)V
+    invoke-static {v2, v0, v1, v3}, Lcom/android/server/accounts/AccountManagerService;->access$2300(Lcom/android/server/accounts/AccountManagerService;Landroid/accounts/IAccountManagerResponse;ILjava/lang/String;)V
 
-    .line 3862
+    .line 3842
     return-void
 
-    .line 3865
+    .line 3845
     :cond_17
     const/4 v2, 0x2
 
@@ -87,7 +97,7 @@
 
     if-eqz v2, :cond_3f
 
-    .line 3866
+    .line 3846
     new-instance v2, Ljava/lang/StringBuilder;
 
     invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
@@ -114,7 +124,7 @@
 
     invoke-static {v3, v2}, Landroid/util/Log;->v(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 3871
+    .line 3851
     :cond_3f
     const/4 v2, -0x1
 
@@ -126,28 +136,28 @@
 
     if-lez v2, :cond_58
 
-    .line 3872
+    .line 3852
     iget-object v1, p0, Lcom/android/server/accounts/AccountManagerService$16;->this$0:Lcom/android/server/accounts/AccountManagerService;
 
-    .line 3873
+    .line 3853
     invoke-virtual {p1, v3}, Landroid/os/Bundle;->getInt(Ljava/lang/String;)I
 
     move-result v2
 
-    .line 3874
+    .line 3854
     const-string v3, "errorMessage"
 
     invoke-virtual {p1, v3}, Landroid/os/Bundle;->getString(Ljava/lang/String;)Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v3
 
-    .line 3872
-    invoke-static {v1, v0, v2, p1}, Lcom/android/server/accounts/AccountManagerService;->access$2300(Lcom/android/server/accounts/AccountManagerService;Landroid/accounts/IAccountManagerResponse;ILjava/lang/String;)V
+    .line 3852
+    invoke-static {v1, v0, v2, v3}, Lcom/android/server/accounts/AccountManagerService;->access$2300(Lcom/android/server/accounts/AccountManagerService;Landroid/accounts/IAccountManagerResponse;ILjava/lang/String;)V
 
-    .line 3875
+    .line 3855
     return-void
 
-    .line 3877
+    .line 3857
     :cond_58
     const-string v2, "booleanResult"
 
@@ -157,39 +167,40 @@
 
     if-nez v3, :cond_69
 
-    .line 3878
-    iget-object p1, p0, Lcom/android/server/accounts/AccountManagerService$16;->this$0:Lcom/android/server/accounts/AccountManagerService;
+    .line 3858
+    iget-object v2, p0, Lcom/android/server/accounts/AccountManagerService$16;->this$0:Lcom/android/server/accounts/AccountManagerService;
 
-    const-string/jumbo v2, "no result in response"
+    const-string/jumbo v3, "no result in response"
 
-    invoke-static {p1, v0, v1, v2}, Lcom/android/server/accounts/AccountManagerService;->access$2300(Lcom/android/server/accounts/AccountManagerService;Landroid/accounts/IAccountManagerResponse;ILjava/lang/String;)V
+    invoke-static {v2, v0, v1, v3}, Lcom/android/server/accounts/AccountManagerService;->access$2300(Lcom/android/server/accounts/AccountManagerService;Landroid/accounts/IAccountManagerResponse;ILjava/lang/String;)V
 
-    .line 3882
+    .line 3862
     return-void
 
-    .line 3884
+    .line 3864
     :cond_69
     new-instance v1, Landroid/os/Bundle;
 
     invoke-direct {v1}, Landroid/os/Bundle;-><init>()V
 
-    .line 3885
+    .line 3865
+    .local v1, "newResult":Landroid/os/Bundle;
     const/4 v3, 0x0
 
-    .line 3886
+    .line 3866
     invoke-virtual {p1, v2, v3}, Landroid/os/Bundle;->getBoolean(Ljava/lang/String;Z)Z
 
-    move-result p1
+    move-result v3
 
-    .line 3885
-    invoke-virtual {v1, v2, p1}, Landroid/os/Bundle;->putBoolean(Ljava/lang/String;Z)V
+    .line 3865
+    invoke-virtual {v1, v2, v3}, Landroid/os/Bundle;->putBoolean(Ljava/lang/String;Z)V
 
-    .line 3887
-    iget-object p1, p0, Lcom/android/server/accounts/AccountManagerService$16;->this$0:Lcom/android/server/accounts/AccountManagerService;
+    .line 3867
+    iget-object v2, p0, Lcom/android/server/accounts/AccountManagerService$16;->this$0:Lcom/android/server/accounts/AccountManagerService;
 
-    invoke-static {p1, v0, v1}, Lcom/android/server/accounts/AccountManagerService;->access$2400(Lcom/android/server/accounts/AccountManagerService;Landroid/accounts/IAccountManagerResponse;Landroid/os/Bundle;)V
+    invoke-static {v2, v0, v1}, Lcom/android/server/accounts/AccountManagerService;->access$2400(Lcom/android/server/accounts/AccountManagerService;Landroid/accounts/IAccountManagerResponse;Landroid/os/Bundle;)V
 
-    .line 3888
+    .line 3868
     return-void
 .end method
 
@@ -201,7 +212,7 @@
         }
     .end annotation
 
-    .line 3846
+    .line 3826
     iget-object v0, p0, Lcom/android/server/accounts/AccountManagerService$16;->mAuthenticator:Landroid/accounts/IAccountAuthenticator;
 
     iget-object v1, p0, Lcom/android/server/accounts/AccountManagerService$16;->val$account:Landroid/accounts/Account;
@@ -210,41 +221,42 @@
 
     invoke-interface {v0, p0, v1, v2}, Landroid/accounts/IAccountAuthenticator;->isCredentialsUpdateSuggested(Landroid/accounts/IAccountAuthenticatorResponse;Landroid/accounts/Account;Ljava/lang/String;)V
 
-    .line 3847
+    .line 3827
     return-void
 .end method
 
 .method protected toDebugString(J)Ljava/lang/String;
-    .registers 4
+    .registers 5
+    .param p1, "now"  # J
 
-    .line 3840
+    .line 3820
     new-instance v0, Ljava/lang/StringBuilder;
 
     invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
 
     invoke-super {p0, p1, p2}, Lcom/android/server/accounts/AccountManagerService$Session;->toDebugString(J)Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v1
 
-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string p1, ", isCredentialsUpdateSuggested, "
+    const-string v1, ", isCredentialsUpdateSuggested, "
 
-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    iget-object p1, p0, Lcom/android/server/accounts/AccountManagerService$16;->val$account:Landroid/accounts/Account;
+    iget-object v1, p0, Lcom/android/server/accounts/AccountManagerService$16;->val$account:Landroid/accounts/Account;
 
-    .line 3841
-    invoke-virtual {p1}, Landroid/accounts/Account;->toSafeString()Ljava/lang/String;
+    .line 3821
+    invoke-virtual {v1}, Landroid/accounts/Account;->toSafeString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v1
 
-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    .line 3840
-    return-object p1
+    .line 3820
+    return-object v0
 .end method

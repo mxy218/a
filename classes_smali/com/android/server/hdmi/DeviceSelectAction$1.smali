@@ -24,6 +24,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/hdmi/DeviceSelectAction;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/hdmi/DeviceSelectAction;
 
     .line 95
     iput-object p1, p0, Lcom/android/server/hdmi/DeviceSelectAction$1;->this$0:Lcom/android/server/hdmi/DeviceSelectAction;
@@ -36,22 +37,23 @@
 
 # virtual methods
 .method public onSendCompleted(I)V
-    .registers 3
+    .registers 4
+    .param p1, "error"  # I
 
     .line 98
     if-eqz p1, :cond_e
 
     .line 99
-    iget-object p1, p0, Lcom/android/server/hdmi/DeviceSelectAction$1;->this$0:Lcom/android/server/hdmi/DeviceSelectAction;
+    iget-object v0, p0, Lcom/android/server/hdmi/DeviceSelectAction$1;->this$0:Lcom/android/server/hdmi/DeviceSelectAction;
 
-    const/4 v0, 0x7
+    const/4 v1, 0x7
 
-    invoke-static {p1, v0}, Lcom/android/server/hdmi/DeviceSelectAction;->access$000(Lcom/android/server/hdmi/DeviceSelectAction;I)V
+    invoke-static {v0, v1}, Lcom/android/server/hdmi/DeviceSelectAction;->access$000(Lcom/android/server/hdmi/DeviceSelectAction;I)V
 
     .line 100
-    iget-object p1, p0, Lcom/android/server/hdmi/DeviceSelectAction$1;->this$0:Lcom/android/server/hdmi/DeviceSelectAction;
+    iget-object v0, p0, Lcom/android/server/hdmi/DeviceSelectAction$1;->this$0:Lcom/android/server/hdmi/DeviceSelectAction;
 
-    invoke-virtual {p1}, Lcom/android/server/hdmi/DeviceSelectAction;->finish()V
+    invoke-virtual {v0}, Lcom/android/server/hdmi/DeviceSelectAction;->finish()V
 
     .line 101
     return-void

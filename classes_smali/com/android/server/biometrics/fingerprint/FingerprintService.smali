@@ -21,7 +21,7 @@
 
 .field private static final DEBUG:Z = true
 
-.field private static final FAIL_LOCKOUT_TIMEOUT_MS:J = 0x7530L
+.field private static final FAIL_LOCKOUT_TIMEOUT_MS:J = 0xea60L
 
 .field private static final FP_DATA_DIR:Ljava/lang/String; = "fpdata"
 
@@ -63,41 +63,49 @@
 
 .field private final mFingerprintConstants:Lcom/android/server/biometrics/fingerprint/FingerprintConstants;
 
-.field private mFingerprintInscreenDaemon:Lvendor/lineage/biometrics/fingerprint/inscreen/V1_0/IFingerprintInscreen;
+.field private mFlymeFingerprintUtils:Lcom/android/server/biometrics/flymefingerprint/FlymeFingerprintUtils;
 
-.field private final mHasFod:Z
-
-.field private mIsKeyguard:Z
+.field private final mIsUnderGlassFP:Z
 
 .field private final mLockoutReceiver:Lcom/android/server/biometrics/fingerprint/FingerprintService$LockoutReceiver;
+
+.field private mLockoutStartTime:J
 
 .field protected final mResetFailedAttemptsForCurrentUserRunnable:Lcom/android/server/biometrics/fingerprint/FingerprintService$ResetFailedAttemptsForUserRunnable;
 
 .field private final mTimedLockoutCleared:Landroid/util/SparseBooleanArray;
 
+.field private mUnderglassFingerprintController:Lcom/android/server/biometrics/flymefingerprint/UnderglassFingerprintController;
+
 
 # direct methods
 .method public constructor <init>(Landroid/content/Context;)V
     .registers 6
+    .param p1, "context"  # Landroid/content/Context;
 
-    .line 804
+    .line 883
     invoke-direct {p0, p1}, Lcom/android/server/biometrics/BiometricServiceBase;-><init>(Landroid/content/Context;)V
 
-    .line 576
+    .line 116
+    const-wide/16 v0, 0x0
+
+    iput-wide v0, p0, Lcom/android/server/biometrics/fingerprint/FingerprintService;->mLockoutStartTime:J
+
+    .line 727
     new-instance v0, Lcom/android/server/biometrics/fingerprint/FingerprintConstants;
 
     invoke-direct {v0}, Lcom/android/server/biometrics/fingerprint/FingerprintConstants;-><init>()V
 
     iput-object v0, p0, Lcom/android/server/biometrics/fingerprint/FingerprintService;->mFingerprintConstants:Lcom/android/server/biometrics/fingerprint/FingerprintConstants;
 
-    .line 577
+    .line 728
     new-instance v0, Ljava/util/concurrent/CopyOnWriteArrayList;
 
     invoke-direct {v0}, Ljava/util/concurrent/CopyOnWriteArrayList;-><init>()V
 
     iput-object v0, p0, Lcom/android/server/biometrics/fingerprint/FingerprintService;->mClientActiveCallbacks:Ljava/util/concurrent/CopyOnWriteArrayList;
 
-    .line 586
+    .line 736
     new-instance v0, Lcom/android/server/biometrics/fingerprint/FingerprintService$LockoutReceiver;
 
     const/4 v1, 0x0
@@ -106,42 +114,42 @@
 
     iput-object v0, p0, Lcom/android/server/biometrics/fingerprint/FingerprintService;->mLockoutReceiver:Lcom/android/server/biometrics/fingerprint/FingerprintService$LockoutReceiver;
 
-    .line 587
+    .line 737
     new-instance v0, Lcom/android/server/biometrics/fingerprint/FingerprintService$ResetFailedAttemptsForUserRunnable;
 
     invoke-direct {v0, p0, v1}, Lcom/android/server/biometrics/fingerprint/FingerprintService$ResetFailedAttemptsForUserRunnable;-><init>(Lcom/android/server/biometrics/fingerprint/FingerprintService;Lcom/android/server/biometrics/fingerprint/FingerprintService$1;)V
 
     iput-object v0, p0, Lcom/android/server/biometrics/fingerprint/FingerprintService;->mResetFailedAttemptsForCurrentUserRunnable:Lcom/android/server/biometrics/fingerprint/FingerprintService$ResetFailedAttemptsForUserRunnable;
 
-    .line 593
+    .line 743
     new-instance v0, Lcom/android/server/biometrics/fingerprint/FingerprintService$1;
 
     invoke-direct {v0, p0}, Lcom/android/server/biometrics/fingerprint/FingerprintService$1;-><init>(Lcom/android/server/biometrics/fingerprint/FingerprintService;)V
 
     iput-object v0, p0, Lcom/android/server/biometrics/fingerprint/FingerprintService;->mDaemonCallback:Landroid/hardware/biometrics/fingerprint/V2_1/IBiometricsFingerprintClientCallback;
 
-    .line 706
+    .line 822
     new-instance v0, Lcom/android/server/biometrics/fingerprint/FingerprintService$2;
 
     invoke-direct {v0, p0}, Lcom/android/server/biometrics/fingerprint/FingerprintService$2;-><init>(Lcom/android/server/biometrics/fingerprint/FingerprintService;)V
 
     iput-object v0, p0, Lcom/android/server/biometrics/fingerprint/FingerprintService;->mDaemonWrapper:Lcom/android/server/biometrics/BiometricServiceBase$DaemonWrapper;
 
-    .line 805
+    .line 884
     new-instance v0, Landroid/util/SparseBooleanArray;
 
     invoke-direct {v0}, Landroid/util/SparseBooleanArray;-><init>()V
 
     iput-object v0, p0, Lcom/android/server/biometrics/fingerprint/FingerprintService;->mTimedLockoutCleared:Landroid/util/SparseBooleanArray;
 
-    .line 806
+    .line 885
     new-instance v0, Landroid/util/SparseIntArray;
 
     invoke-direct {v0}, Landroid/util/SparseIntArray;-><init>()V
 
     iput-object v0, p0, Lcom/android/server/biometrics/fingerprint/FingerprintService;->mFailedAttempts:Landroid/util/SparseIntArray;
 
-    .line 807
+    .line 886
     const-class v0, Landroid/app/AlarmManager;
 
     invoke-virtual {p1, v0}, Landroid/content/Context;->getSystemService(Ljava/lang/Class;)Ljava/lang/Object;
@@ -152,7 +160,7 @@
 
     iput-object v0, p0, Lcom/android/server/biometrics/fingerprint/FingerprintService;->mAlarmManager:Landroid/app/AlarmManager;
 
-    .line 808
+    .line 887
     iget-object v0, p0, Lcom/android/server/biometrics/fingerprint/FingerprintService;->mLockoutReceiver:Lcom/android/server/biometrics/fingerprint/FingerprintService$LockoutReceiver;
 
     new-instance v2, Landroid/content/IntentFilter;
@@ -163,81 +171,102 @@
 
     invoke-direct {v2, v3}, Landroid/content/IntentFilter;-><init>(Ljava/lang/String;)V
 
-    .line 809
+    .line 888
     invoke-virtual {p0}, Lcom/android/server/biometrics/fingerprint/FingerprintService;->getLockoutBroadcastPermission()Ljava/lang/String;
 
     move-result-object v3
 
-    .line 808
+    .line 887
     invoke-virtual {p1, v0, v2, v3, v1}, Landroid/content/Context;->registerReceiver(Landroid/content/BroadcastReceiver;Landroid/content/IntentFilter;Ljava/lang/String;Landroid/os/Handler;)Landroid/content/Intent;
 
-    .line 811
-    invoke-virtual {p1}, Landroid/content/Context;->getPackageManager()Landroid/content/pm/PackageManager;
+    .line 891
+    const/4 v0, 0x1
 
-    move-result-object p1
+    iput-boolean v0, p0, Lcom/android/server/biometrics/fingerprint/FingerprintService;->mIsUnderGlassFP:Z
 
-    .line 812
-    const-string/jumbo v0, "vendor.lineage.biometrics.fingerprint.inscreen"
+    .line 892
+    invoke-static {p1}, Lcom/android/server/biometrics/flymefingerprint/FlymeFingerprintUtils;->getInstance(Landroid/content/Context;)Lcom/android/server/biometrics/flymefingerprint/FlymeFingerprintUtils;
 
-    invoke-virtual {p1, v0}, Landroid/content/pm/PackageManager;->hasSystemFeature(Ljava/lang/String;)Z
+    move-result-object v0
 
-    move-result p1
+    iput-object v0, p0, Lcom/android/server/biometrics/fingerprint/FingerprintService;->mFlymeFingerprintUtils:Lcom/android/server/biometrics/flymefingerprint/FlymeFingerprintUtils;
 
-    iput-boolean p1, p0, Lcom/android/server/biometrics/fingerprint/FingerprintService;->mHasFod:Z
+    .line 893
+    iget-boolean v0, p0, Lcom/android/server/biometrics/fingerprint/FingerprintService;->mIsUnderGlassFP:Z
 
-    .line 813
+    if-eqz v0, :cond_70
+
+    .line 894
+    new-instance v0, Lcom/android/server/biometrics/flymefingerprint/UnderglassFingerprintController;
+
+    invoke-direct {v0, p1}, Lcom/android/server/biometrics/flymefingerprint/UnderglassFingerprintController;-><init>(Landroid/content/Context;)V
+
+    iput-object v0, p0, Lcom/android/server/biometrics/fingerprint/FingerprintService;->mUnderglassFingerprintController:Lcom/android/server/biometrics/flymefingerprint/UnderglassFingerprintController;
+
+    .line 897
+    :cond_70
     return-void
 .end method
 
 .method static synthetic access$000(Lcom/android/server/biometrics/fingerprint/FingerprintService;ZI)V
     .registers 3
+    .param p0, "x0"  # Lcom/android/server/biometrics/fingerprint/FingerprintService;
+    .param p1, "x1"  # Z
+    .param p2, "x2"  # I
 
-    .line 98
+    .line 101
     invoke-direct {p0, p1, p2}, Lcom/android/server/biometrics/fingerprint/FingerprintService;->resetFailedAttemptsForUser(ZI)V
 
     return-void
 .end method
 
 .method static synthetic access$100(Lcom/android/server/biometrics/fingerprint/FingerprintService;)Landroid/util/SparseIntArray;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/biometrics/fingerprint/FingerprintService;
 
-    .line 98
-    iget-object p0, p0, Lcom/android/server/biometrics/fingerprint/FingerprintService;->mFailedAttempts:Landroid/util/SparseIntArray;
+    .line 101
+    iget-object v0, p0, Lcom/android/server/biometrics/fingerprint/FingerprintService;->mFailedAttempts:Landroid/util/SparseIntArray;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$1000(Lcom/android/server/biometrics/fingerprint/FingerprintService;)Lcom/android/server/biometrics/BiometricServiceBase$DaemonWrapper;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/biometrics/fingerprint/FingerprintService;
 
-    .line 98
-    iget-object p0, p0, Lcom/android/server/biometrics/fingerprint/FingerprintService;->mDaemonWrapper:Lcom/android/server/biometrics/BiometricServiceBase$DaemonWrapper;
+    .line 101
+    iget-object v0, p0, Lcom/android/server/biometrics/fingerprint/FingerprintService;->mDaemonWrapper:Lcom/android/server/biometrics/BiometricServiceBase$DaemonWrapper;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$1100(Lcom/android/server/biometrics/fingerprint/FingerprintService;)J
     .registers 3
+    .param p0, "x0"  # Lcom/android/server/biometrics/fingerprint/FingerprintService;
 
-    .line 98
+    .line 101
     iget-wide v0, p0, Lcom/android/server/biometrics/fingerprint/FingerprintService;->mHalDeviceId:J
 
     return-wide v0
 .end method
 
 .method static synthetic access$1200(Lcom/android/server/biometrics/fingerprint/FingerprintService;)I
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/biometrics/fingerprint/FingerprintService;
 
-    .line 98
-    iget p0, p0, Lcom/android/server/biometrics/fingerprint/FingerprintService;->mCurrentUserId:I
+    .line 101
+    iget v0, p0, Lcom/android/server/biometrics/fingerprint/FingerprintService;->mCurrentUserId:I
 
-    return p0
+    return v0
 .end method
 
 .method static synthetic access$1300(Lcom/android/server/biometrics/fingerprint/FingerprintService;Lcom/android/server/biometrics/BiometricServiceBase$EnrollClientImpl;I)V
     .registers 3
+    .param p0, "x0"  # Lcom/android/server/biometrics/fingerprint/FingerprintService;
+    .param p1, "x1"  # Lcom/android/server/biometrics/BiometricServiceBase$EnrollClientImpl;
+    .param p2, "x2"  # I
 
-    .line 98
+    .line 101
     invoke-virtual {p0, p1, p2}, Lcom/android/server/biometrics/fingerprint/FingerprintService;->enrollInternal(Lcom/android/server/biometrics/BiometricServiceBase$EnrollClientImpl;I)V
 
     return-void
@@ -245,8 +274,10 @@
 
 .method static synthetic access$1400(Lcom/android/server/biometrics/fingerprint/FingerprintService;Ljava/lang/String;)V
     .registers 2
+    .param p0, "x0"  # Lcom/android/server/biometrics/fingerprint/FingerprintService;
+    .param p1, "x1"  # Ljava/lang/String;
 
-    .line 98
+    .line 101
     invoke-virtual {p0, p1}, Lcom/android/server/biometrics/fingerprint/FingerprintService;->checkPermission(Ljava/lang/String;)V
 
     return-void
@@ -254,1071 +285,1354 @@
 
 .method static synthetic access$1500(Lcom/android/server/biometrics/fingerprint/FingerprintService;Landroid/os/IBinder;)V
     .registers 2
+    .param p0, "x0"  # Lcom/android/server/biometrics/fingerprint/FingerprintService;
+    .param p1, "x1"  # Landroid/os/IBinder;
 
-    .line 98
+    .line 101
     invoke-virtual {p0, p1}, Lcom/android/server/biometrics/fingerprint/FingerprintService;->cancelEnrollmentInternal(Landroid/os/IBinder;)V
 
     return-void
 .end method
 
-.method static synthetic access$1600(Lcom/android/server/biometrics/fingerprint/FingerprintService;)Z
-    .registers 1
+.method static synthetic access$1600(Lcom/android/server/biometrics/fingerprint/FingerprintService;)Lcom/android/server/biometrics/flymefingerprint/FlymeFingerprintUtils;
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/biometrics/fingerprint/FingerprintService;
 
-    .line 98
-    invoke-virtual {p0}, Lcom/android/server/biometrics/fingerprint/FingerprintService;->isRestricted()Z
+    .line 101
+    iget-object v0, p0, Lcom/android/server/biometrics/fingerprint/FingerprintService;->mFlymeFingerprintUtils:Lcom/android/server/biometrics/flymefingerprint/FlymeFingerprintUtils;
 
-    move-result p0
-
-    return p0
+    return-object v0
 .end method
 
-.method static synthetic access$1700(Lcom/android/server/biometrics/fingerprint/FingerprintService;)J
-    .registers 3
+.method static synthetic access$1700(Lcom/android/server/biometrics/fingerprint/FingerprintService;)Z
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/biometrics/fingerprint/FingerprintService;
 
-    .line 98
+    .line 101
+    invoke-virtual {p0}, Lcom/android/server/biometrics/fingerprint/FingerprintService;->isRestricted()Z
+
+    move-result v0
+
+    return v0
+.end method
+
+.method static synthetic access$1800(Lcom/android/server/biometrics/fingerprint/FingerprintService;)J
+    .registers 3
+    .param p0, "x0"  # Lcom/android/server/biometrics/fingerprint/FingerprintService;
+
+    .line 101
     iget-wide v0, p0, Lcom/android/server/biometrics/fingerprint/FingerprintService;->mHalDeviceId:J
 
     return-wide v0
 .end method
 
-.method static synthetic access$1800(Lcom/android/server/biometrics/fingerprint/FingerprintService;)I
-    .registers 1
+.method static synthetic access$1900(Lcom/android/server/biometrics/fingerprint/FingerprintService;)I
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/biometrics/fingerprint/FingerprintService;
 
-    .line 98
-    iget p0, p0, Lcom/android/server/biometrics/fingerprint/FingerprintService;->mCurrentUserId:I
+    .line 101
+    iget v0, p0, Lcom/android/server/biometrics/fingerprint/FingerprintService;->mCurrentUserId:I
 
-    return p0
+    return v0
 .end method
 
-.method static synthetic access$1900(Lcom/android/server/biometrics/fingerprint/FingerprintService;Lcom/android/server/biometrics/BiometricServiceBase$AuthenticationClientImpl;JLjava/lang/String;)V
-    .registers 5
+.method static synthetic access$200(Lcom/android/server/biometrics/fingerprint/FingerprintService;)Landroid/util/SparseBooleanArray;
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/biometrics/fingerprint/FingerprintService;
 
-    .line 98
+    .line 101
+    iget-object v0, p0, Lcom/android/server/biometrics/fingerprint/FingerprintService;->mTimedLockoutCleared:Landroid/util/SparseBooleanArray;
+
+    return-object v0
+.end method
+
+.method static synthetic access$2000(Lcom/android/server/biometrics/fingerprint/FingerprintService;Lcom/android/server/biometrics/BiometricServiceBase$AuthenticationClientImpl;JLjava/lang/String;)V
+    .registers 5
+    .param p0, "x0"  # Lcom/android/server/biometrics/fingerprint/FingerprintService;
+    .param p1, "x1"  # Lcom/android/server/biometrics/BiometricServiceBase$AuthenticationClientImpl;
+    .param p2, "x2"  # J
+    .param p4, "x3"  # Ljava/lang/String;
+
+    .line 101
     invoke-virtual {p0, p1, p2, p3, p4}, Lcom/android/server/biometrics/fingerprint/FingerprintService;->authenticateInternal(Lcom/android/server/biometrics/BiometricServiceBase$AuthenticationClientImpl;JLjava/lang/String;)V
 
     return-void
 .end method
 
-.method static synthetic access$200(Lcom/android/server/biometrics/fingerprint/FingerprintService;)Landroid/util/SparseBooleanArray;
-    .registers 1
-
-    .line 98
-    iget-object p0, p0, Lcom/android/server/biometrics/fingerprint/FingerprintService;->mTimedLockoutCleared:Landroid/util/SparseBooleanArray;
-
-    return-object p0
-.end method
-
-.method static synthetic access$2000(Lcom/android/server/biometrics/fingerprint/FingerprintService;Ljava/lang/String;)V
+.method static synthetic access$2100(Lcom/android/server/biometrics/fingerprint/FingerprintService;Ljava/lang/String;)V
     .registers 2
+    .param p0, "x0"  # Lcom/android/server/biometrics/fingerprint/FingerprintService;
+    .param p1, "x1"  # Ljava/lang/String;
 
-    .line 98
+    .line 101
     invoke-virtual {p0, p1}, Lcom/android/server/biometrics/fingerprint/FingerprintService;->checkPermission(Ljava/lang/String;)V
 
     return-void
 .end method
 
-.method static synthetic access$2100(Lcom/android/server/biometrics/fingerprint/FingerprintService;)J
+.method static synthetic access$2200(Lcom/android/server/biometrics/fingerprint/FingerprintService;)J
     .registers 3
+    .param p0, "x0"  # Lcom/android/server/biometrics/fingerprint/FingerprintService;
 
-    .line 98
+    .line 101
     iget-wide v0, p0, Lcom/android/server/biometrics/fingerprint/FingerprintService;->mHalDeviceId:J
 
     return-wide v0
 .end method
 
-.method static synthetic access$2200(Lcom/android/server/biometrics/fingerprint/FingerprintService;)I
-    .registers 1
+.method static synthetic access$2300(Lcom/android/server/biometrics/fingerprint/FingerprintService;)I
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/biometrics/fingerprint/FingerprintService;
 
-    .line 98
-    iget p0, p0, Lcom/android/server/biometrics/fingerprint/FingerprintService;->mCurrentUserId:I
+    .line 101
+    iget v0, p0, Lcom/android/server/biometrics/fingerprint/FingerprintService;->mCurrentUserId:I
 
-    return p0
+    return v0
 .end method
 
-.method static synthetic access$2300(Lcom/android/server/biometrics/fingerprint/FingerprintService;Lcom/android/server/biometrics/BiometricServiceBase$AuthenticationClientImpl;JLjava/lang/String;III)V
+.method static synthetic access$2400(Lcom/android/server/biometrics/fingerprint/FingerprintService;Lcom/android/server/biometrics/BiometricServiceBase$AuthenticationClientImpl;JLjava/lang/String;III)V
     .registers 8
+    .param p0, "x0"  # Lcom/android/server/biometrics/fingerprint/FingerprintService;
+    .param p1, "x1"  # Lcom/android/server/biometrics/BiometricServiceBase$AuthenticationClientImpl;
+    .param p2, "x2"  # J
+    .param p4, "x3"  # Ljava/lang/String;
+    .param p5, "x4"  # I
+    .param p6, "x5"  # I
+    .param p7, "x6"  # I
 
-    .line 98
+    .line 101
     invoke-virtual/range {p0 .. p7}, Lcom/android/server/biometrics/fingerprint/FingerprintService;->authenticateInternal(Lcom/android/server/biometrics/BiometricServiceBase$AuthenticationClientImpl;JLjava/lang/String;III)V
 
     return-void
 .end method
 
-.method static synthetic access$2400(Lcom/android/server/biometrics/fingerprint/FingerprintService;Ljava/lang/String;)V
+.method static synthetic access$2500(Lcom/android/server/biometrics/fingerprint/FingerprintService;Ljava/lang/String;)V
     .registers 2
+    .param p0, "x0"  # Lcom/android/server/biometrics/fingerprint/FingerprintService;
+    .param p1, "x1"  # Ljava/lang/String;
 
-    .line 98
+    .line 101
     invoke-virtual {p0, p1}, Lcom/android/server/biometrics/fingerprint/FingerprintService;->checkPermission(Ljava/lang/String;)V
 
     return-void
 .end method
 
-.method static synthetic access$2500(Lcom/android/server/biometrics/fingerprint/FingerprintService;I)V
+.method static synthetic access$2600(Lcom/android/server/biometrics/fingerprint/FingerprintService;I)V
     .registers 2
+    .param p0, "x0"  # Lcom/android/server/biometrics/fingerprint/FingerprintService;
+    .param p1, "x1"  # I
 
-    .line 98
+    .line 101
     invoke-virtual {p0, p1}, Lcom/android/server/biometrics/fingerprint/FingerprintService;->startCurrentClient(I)V
 
     return-void
 .end method
 
-.method static synthetic access$2600(Lcom/android/server/biometrics/fingerprint/FingerprintService;Landroid/os/IBinder;Ljava/lang/String;)V
+.method static synthetic access$2700(Lcom/android/server/biometrics/fingerprint/FingerprintService;Landroid/os/IBinder;Ljava/lang/String;)V
     .registers 3
+    .param p0, "x0"  # Lcom/android/server/biometrics/fingerprint/FingerprintService;
+    .param p1, "x1"  # Landroid/os/IBinder;
+    .param p2, "x2"  # Ljava/lang/String;
 
-    .line 98
+    .line 101
     invoke-virtual {p0, p1, p2}, Lcom/android/server/biometrics/fingerprint/FingerprintService;->cancelAuthenticationInternal(Landroid/os/IBinder;Ljava/lang/String;)V
 
     return-void
 .end method
 
-.method static synthetic access$2700(Lcom/android/server/biometrics/fingerprint/FingerprintService;Ljava/lang/String;)V
+.method static synthetic access$2800(Lcom/android/server/biometrics/fingerprint/FingerprintService;Ljava/lang/String;)V
     .registers 2
+    .param p0, "x0"  # Lcom/android/server/biometrics/fingerprint/FingerprintService;
+    .param p1, "x1"  # Ljava/lang/String;
 
-    .line 98
+    .line 101
     invoke-virtual {p0, p1}, Lcom/android/server/biometrics/fingerprint/FingerprintService;->checkPermission(Ljava/lang/String;)V
 
     return-void
 .end method
 
-.method static synthetic access$2800(Lcom/android/server/biometrics/fingerprint/FingerprintService;Landroid/os/IBinder;Ljava/lang/String;IIIZ)V
+.method static synthetic access$2900(Lcom/android/server/biometrics/fingerprint/FingerprintService;Landroid/os/IBinder;Ljava/lang/String;IIIZ)V
     .registers 7
+    .param p0, "x0"  # Lcom/android/server/biometrics/fingerprint/FingerprintService;
+    .param p1, "x1"  # Landroid/os/IBinder;
+    .param p2, "x2"  # Ljava/lang/String;
+    .param p3, "x3"  # I
+    .param p4, "x4"  # I
+    .param p5, "x5"  # I
+    .param p6, "x6"  # Z
 
-    .line 98
+    .line 101
     invoke-virtual/range {p0 .. p6}, Lcom/android/server/biometrics/fingerprint/FingerprintService;->cancelAuthenticationInternal(Landroid/os/IBinder;Ljava/lang/String;IIIZ)V
-
-    return-void
-.end method
-
-.method static synthetic access$2900(Lcom/android/server/biometrics/fingerprint/FingerprintService;Ljava/lang/String;)V
-    .registers 2
-
-    .line 98
-    invoke-virtual {p0, p1}, Lcom/android/server/biometrics/fingerprint/FingerprintService;->checkPermission(Ljava/lang/String;)V
 
     return-void
 .end method
 
 .method static synthetic access$300(Lcom/android/server/biometrics/fingerprint/FingerprintService;I)V
     .registers 2
+    .param p0, "x0"  # Lcom/android/server/biometrics/fingerprint/FingerprintService;
+    .param p1, "x1"  # I
 
-    .line 98
+    .line 101
     invoke-direct {p0, p1}, Lcom/android/server/biometrics/fingerprint/FingerprintService;->scheduleLockoutResetForUser(I)V
 
     return-void
 .end method
 
-.method static synthetic access$3000(Lcom/android/server/biometrics/fingerprint/FingerprintService;I)V
+.method static synthetic access$3000(Lcom/android/server/biometrics/fingerprint/FingerprintService;Ljava/lang/String;)V
     .registers 2
+    .param p0, "x0"  # Lcom/android/server/biometrics/fingerprint/FingerprintService;
+    .param p1, "x1"  # Ljava/lang/String;
 
-    .line 98
+    .line 101
+    invoke-virtual {p0, p1}, Lcom/android/server/biometrics/fingerprint/FingerprintService;->checkPermission(Ljava/lang/String;)V
+
+    return-void
+.end method
+
+.method static synthetic access$3100(Lcom/android/server/biometrics/fingerprint/FingerprintService;I)V
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/biometrics/fingerprint/FingerprintService;
+    .param p1, "x1"  # I
+
+    .line 101
     invoke-virtual {p0, p1}, Lcom/android/server/biometrics/fingerprint/FingerprintService;->setActiveUserInternal(I)V
 
     return-void
 .end method
 
-.method static synthetic access$3100(Lcom/android/server/biometrics/fingerprint/FingerprintService;Ljava/lang/String;)V
+.method static synthetic access$3200(Lcom/android/server/biometrics/fingerprint/FingerprintService;Ljava/lang/String;)V
     .registers 2
+    .param p0, "x0"  # Lcom/android/server/biometrics/fingerprint/FingerprintService;
+    .param p1, "x1"  # Ljava/lang/String;
 
-    .line 98
+    .line 101
     invoke-virtual {p0, p1}, Lcom/android/server/biometrics/fingerprint/FingerprintService;->checkPermission(Ljava/lang/String;)V
 
     return-void
 .end method
 
-.method static synthetic access$3200(Lcom/android/server/biometrics/fingerprint/FingerprintService;)Z
-    .registers 1
+.method static synthetic access$3300(Lcom/android/server/biometrics/fingerprint/FingerprintService;)Z
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/biometrics/fingerprint/FingerprintService;
 
-    .line 98
+    .line 101
     invoke-virtual {p0}, Lcom/android/server/biometrics/fingerprint/FingerprintService;->isRestricted()Z
 
-    move-result p0
+    move-result v0
 
-    return p0
+    return v0
 .end method
 
-.method static synthetic access$3300(Lcom/android/server/biometrics/fingerprint/FingerprintService;)J
+.method static synthetic access$3400(Lcom/android/server/biometrics/fingerprint/FingerprintService;)J
     .registers 3
+    .param p0, "x0"  # Lcom/android/server/biometrics/fingerprint/FingerprintService;
 
-    .line 98
+    .line 101
     iget-wide v0, p0, Lcom/android/server/biometrics/fingerprint/FingerprintService;->mHalDeviceId:J
 
     return-wide v0
 .end method
 
-.method static synthetic access$3400(Lcom/android/server/biometrics/fingerprint/FingerprintService;Lcom/android/server/biometrics/RemovalClient;)V
+.method static synthetic access$3500(Lcom/android/server/biometrics/fingerprint/FingerprintService;Lcom/android/server/biometrics/RemovalClient;)V
     .registers 2
+    .param p0, "x0"  # Lcom/android/server/biometrics/fingerprint/FingerprintService;
+    .param p1, "x1"  # Lcom/android/server/biometrics/RemovalClient;
 
-    .line 98
+    .line 101
     invoke-virtual {p0, p1}, Lcom/android/server/biometrics/fingerprint/FingerprintService;->removeInternal(Lcom/android/server/biometrics/RemovalClient;)V
 
     return-void
 .end method
 
-.method static synthetic access$3500(Lcom/android/server/biometrics/fingerprint/FingerprintService;Ljava/lang/String;)V
+.method static synthetic access$3600(Lcom/android/server/biometrics/fingerprint/FingerprintService;Ljava/lang/String;)V
     .registers 2
+    .param p0, "x0"  # Lcom/android/server/biometrics/fingerprint/FingerprintService;
+    .param p1, "x1"  # Ljava/lang/String;
 
-    .line 98
+    .line 101
     invoke-virtual {p0, p1}, Lcom/android/server/biometrics/fingerprint/FingerprintService;->checkPermission(Ljava/lang/String;)V
 
     return-void
 .end method
 
-.method static synthetic access$3600(Lcom/android/server/biometrics/fingerprint/FingerprintService;)Z
-    .registers 1
+.method static synthetic access$3700(Lcom/android/server/biometrics/fingerprint/FingerprintService;)Z
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/biometrics/fingerprint/FingerprintService;
 
-    .line 98
+    .line 101
     invoke-virtual {p0}, Lcom/android/server/biometrics/fingerprint/FingerprintService;->isRestricted()Z
 
-    move-result p0
+    move-result v0
 
-    return p0
+    return v0
 .end method
 
-.method static synthetic access$3700(Lcom/android/server/biometrics/fingerprint/FingerprintService;)J
+.method static synthetic access$3800(Lcom/android/server/biometrics/fingerprint/FingerprintService;)J
     .registers 3
+    .param p0, "x0"  # Lcom/android/server/biometrics/fingerprint/FingerprintService;
 
-    .line 98
+    .line 101
     iget-wide v0, p0, Lcom/android/server/biometrics/fingerprint/FingerprintService;->mHalDeviceId:J
 
     return-wide v0
 .end method
 
-.method static synthetic access$3800(Lcom/android/server/biometrics/fingerprint/FingerprintService;Lcom/android/server/biometrics/EnumerateClient;)V
+.method static synthetic access$3900(Lcom/android/server/biometrics/fingerprint/FingerprintService;Lcom/android/server/biometrics/EnumerateClient;)V
     .registers 2
+    .param p0, "x0"  # Lcom/android/server/biometrics/fingerprint/FingerprintService;
+    .param p1, "x1"  # Lcom/android/server/biometrics/EnumerateClient;
 
-    .line 98
+    .line 101
     invoke-virtual {p0, p1}, Lcom/android/server/biometrics/fingerprint/FingerprintService;->enumerateInternal(Lcom/android/server/biometrics/EnumerateClient;)V
-
-    return-void
-.end method
-
-.method static synthetic access$3901(Lcom/android/server/biometrics/fingerprint/FingerprintService;Landroid/hardware/biometrics/IBiometricServiceLockoutResetCallback;)V
-    .registers 2
-
-    .line 98
-    invoke-super {p0, p1}, Lcom/android/server/biometrics/BiometricServiceBase;->addLockoutResetCallback(Landroid/hardware/biometrics/IBiometricServiceLockoutResetCallback;)V
 
     return-void
 .end method
 
 .method static synthetic access$400(Lcom/android/server/biometrics/fingerprint/FingerprintService;Ljava/lang/String;)V
     .registers 2
+    .param p0, "x0"  # Lcom/android/server/biometrics/fingerprint/FingerprintService;
+    .param p1, "x1"  # Ljava/lang/String;
 
-    .line 98
+    .line 101
     invoke-virtual {p0, p1}, Lcom/android/server/biometrics/fingerprint/FingerprintService;->checkPermission(Ljava/lang/String;)V
 
     return-void
 .end method
 
-.method static synthetic access$4000(Lcom/android/server/biometrics/fingerprint/FingerprintService;Ljava/io/FileDescriptor;)V
+.method static synthetic access$4001(Lcom/android/server/biometrics/fingerprint/FingerprintService;Landroid/hardware/biometrics/IBiometricServiceLockoutResetCallback;)V
     .registers 2
+    .param p0, "x0"  # Lcom/android/server/biometrics/fingerprint/FingerprintService;
+    .param p1, "x1"  # Landroid/hardware/biometrics/IBiometricServiceLockoutResetCallback;
 
-    .line 98
+    .line 101
+    invoke-super {p0, p1}, Lcom/android/server/biometrics/BiometricServiceBase;->addLockoutResetCallback(Landroid/hardware/biometrics/IBiometricServiceLockoutResetCallback;)V
+
+    return-void
+.end method
+
+.method static synthetic access$4100(Lcom/android/server/biometrics/fingerprint/FingerprintService;Ljava/io/FileDescriptor;)V
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/biometrics/fingerprint/FingerprintService;
+    .param p1, "x1"  # Ljava/io/FileDescriptor;
+
+    .line 101
     invoke-direct {p0, p1}, Lcom/android/server/biometrics/fingerprint/FingerprintService;->dumpProto(Ljava/io/FileDescriptor;)V
 
     return-void
 .end method
 
-.method static synthetic access$4100(Lcom/android/server/biometrics/fingerprint/FingerprintService;Ljava/io/PrintWriter;)V
+.method static synthetic access$4200(Lcom/android/server/biometrics/fingerprint/FingerprintService;Ljava/io/PrintWriter;)V
     .registers 2
+    .param p0, "x0"  # Lcom/android/server/biometrics/fingerprint/FingerprintService;
+    .param p1, "x1"  # Ljava/io/PrintWriter;
 
-    .line 98
+    .line 101
     invoke-direct {p0, p1}, Lcom/android/server/biometrics/fingerprint/FingerprintService;->dumpInternal(Ljava/io/PrintWriter;)V
 
     return-void
 .end method
 
-.method static synthetic access$4200(Lcom/android/server/biometrics/fingerprint/FingerprintService;Ljava/lang/String;ZIII)Z
-    .registers 6
+.method static synthetic access$4300(Lcom/android/server/biometrics/fingerprint/FingerprintService;Ljava/lang/String;ZIII)Z
+    .registers 7
+    .param p0, "x0"  # Lcom/android/server/biometrics/fingerprint/FingerprintService;
+    .param p1, "x1"  # Ljava/lang/String;
+    .param p2, "x2"  # Z
+    .param p3, "x3"  # I
+    .param p4, "x4"  # I
+    .param p5, "x5"  # I
 
-    .line 98
+    .line 101
     invoke-virtual/range {p0 .. p5}, Lcom/android/server/biometrics/fingerprint/FingerprintService;->canUseBiometric(Ljava/lang/String;ZIII)Z
 
-    move-result p0
+    move-result v0
 
-    return p0
+    return v0
 .end method
 
-.method static synthetic access$4300(Lcom/android/server/biometrics/fingerprint/FingerprintService;)Landroid/hardware/biometrics/fingerprint/V2_1/IBiometricsFingerprint;
-    .registers 1
+.method static synthetic access$4400(Lcom/android/server/biometrics/fingerprint/FingerprintService;)Landroid/hardware/biometrics/fingerprint/V2_1/IBiometricsFingerprint;
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/biometrics/fingerprint/FingerprintService;
 
-    .line 98
+    .line 101
     invoke-direct {p0}, Lcom/android/server/biometrics/fingerprint/FingerprintService;->getFingerprintDaemon()Landroid/hardware/biometrics/fingerprint/V2_1/IBiometricsFingerprint;
 
-    move-result-object p0
+    move-result-object v0
 
-    return-object p0
+    return-object v0
 .end method
 
-.method static synthetic access$4400(Lcom/android/server/biometrics/fingerprint/FingerprintService;)J
+.method static synthetic access$4500(Lcom/android/server/biometrics/fingerprint/FingerprintService;)J
     .registers 3
+    .param p0, "x0"  # Lcom/android/server/biometrics/fingerprint/FingerprintService;
 
-    .line 98
+    .line 101
     iget-wide v0, p0, Lcom/android/server/biometrics/fingerprint/FingerprintService;->mHalDeviceId:J
 
     return-wide v0
 .end method
 
-.method static synthetic access$4500(Lcom/android/server/biometrics/fingerprint/FingerprintService;Ljava/lang/String;)V
+.method static synthetic access$4600(Lcom/android/server/biometrics/fingerprint/FingerprintService;Ljava/lang/String;)V
     .registers 2
+    .param p0, "x0"  # Lcom/android/server/biometrics/fingerprint/FingerprintService;
+    .param p1, "x1"  # Ljava/lang/String;
 
-    .line 98
+    .line 101
     invoke-virtual {p0, p1}, Lcom/android/server/biometrics/fingerprint/FingerprintService;->checkPermission(Ljava/lang/String;)V
 
     return-void
 .end method
 
-.method static synthetic access$4600(Lcom/android/server/biometrics/fingerprint/FingerprintService;I)Z
-    .registers 2
+.method static synthetic access$4700(Lcom/android/server/biometrics/fingerprint/FingerprintService;I)Z
+    .registers 3
+    .param p0, "x0"  # Lcom/android/server/biometrics/fingerprint/FingerprintService;
+    .param p1, "x1"  # I
 
-    .line 98
+    .line 101
     invoke-virtual {p0, p1}, Lcom/android/server/biometrics/fingerprint/FingerprintService;->isCurrentUserOrProfile(I)Z
 
-    move-result p0
+    move-result v0
 
-    return p0
+    return v0
 .end method
 
-.method static synthetic access$4700(Lcom/android/server/biometrics/fingerprint/FingerprintService;)Lcom/android/server/biometrics/BiometricServiceBase$H;
-    .registers 1
+.method static synthetic access$4800(Lcom/android/server/biometrics/fingerprint/FingerprintService;)Lcom/android/server/biometrics/BiometricServiceBase$H;
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/biometrics/fingerprint/FingerprintService;
 
-    .line 98
-    iget-object p0, p0, Lcom/android/server/biometrics/fingerprint/FingerprintService;->mHandler:Lcom/android/server/biometrics/BiometricServiceBase$H;
+    .line 101
+    iget-object v0, p0, Lcom/android/server/biometrics/fingerprint/FingerprintService;->mHandler:Lcom/android/server/biometrics/BiometricServiceBase$H;
 
-    return-object p0
-.end method
-
-.method static synthetic access$4800(Lcom/android/server/biometrics/fingerprint/FingerprintService;Ljava/lang/String;ZIII)Z
-    .registers 6
-
-    .line 98
-    invoke-virtual/range {p0 .. p5}, Lcom/android/server/biometrics/fingerprint/FingerprintService;->canUseBiometric(Ljava/lang/String;ZIII)Z
-
-    move-result p0
-
-    return p0
+    return-object v0
 .end method
 
 .method static synthetic access$4900(Lcom/android/server/biometrics/fingerprint/FingerprintService;Ljava/lang/String;ZIII)Z
-    .registers 6
+    .registers 7
+    .param p0, "x0"  # Lcom/android/server/biometrics/fingerprint/FingerprintService;
+    .param p1, "x1"  # Ljava/lang/String;
+    .param p2, "x2"  # Z
+    .param p3, "x3"  # I
+    .param p4, "x4"  # I
+    .param p5, "x5"  # I
 
-    .line 98
+    .line 101
     invoke-virtual/range {p0 .. p5}, Lcom/android/server/biometrics/fingerprint/FingerprintService;->canUseBiometric(Ljava/lang/String;ZIII)Z
 
-    move-result p0
+    move-result v0
 
-    return p0
+    return v0
 .end method
 
 .method static synthetic access$500(Lcom/android/server/biometrics/fingerprint/FingerprintService;Landroid/os/IBinder;)J
-    .registers 2
+    .registers 4
+    .param p0, "x0"  # Lcom/android/server/biometrics/fingerprint/FingerprintService;
+    .param p1, "x1"  # Landroid/os/IBinder;
 
-    .line 98
+    .line 101
     invoke-direct {p0, p1}, Lcom/android/server/biometrics/fingerprint/FingerprintService;->startPreEnroll(Landroid/os/IBinder;)J
 
-    move-result-wide p0
+    move-result-wide v0
 
-    return-wide p0
+    return-wide v0
 .end method
 
-.method static synthetic access$5001(Lcom/android/server/biometrics/fingerprint/FingerprintService;Ljava/lang/String;)J
-    .registers 2
+.method static synthetic access$5000(Lcom/android/server/biometrics/fingerprint/FingerprintService;Ljava/lang/String;ZIII)Z
+    .registers 7
+    .param p0, "x0"  # Lcom/android/server/biometrics/fingerprint/FingerprintService;
+    .param p1, "x1"  # Ljava/lang/String;
+    .param p2, "x2"  # Z
+    .param p3, "x3"  # I
+    .param p4, "x4"  # I
+    .param p5, "x5"  # I
 
-    .line 98
+    .line 101
+    invoke-virtual/range {p0 .. p5}, Lcom/android/server/biometrics/fingerprint/FingerprintService;->canUseBiometric(Ljava/lang/String;ZIII)Z
+
+    move-result v0
+
+    return v0
+.end method
+
+.method static synthetic access$5101(Lcom/android/server/biometrics/fingerprint/FingerprintService;Ljava/lang/String;)J
+    .registers 4
+    .param p0, "x0"  # Lcom/android/server/biometrics/fingerprint/FingerprintService;
+    .param p1, "x1"  # Ljava/lang/String;
+
+    .line 101
     invoke-super {p0, p1}, Lcom/android/server/biometrics/BiometricServiceBase;->getAuthenticatorId(Ljava/lang/String;)J
 
-    move-result-wide p0
+    move-result-wide v0
 
-    return-wide p0
+    return-wide v0
 .end method
 
-.method static synthetic access$5100(Lcom/android/server/biometrics/fingerprint/FingerprintService;Ljava/lang/String;)V
+.method static synthetic access$5200(Lcom/android/server/biometrics/fingerprint/FingerprintService;Ljava/lang/String;)V
     .registers 2
+    .param p0, "x0"  # Lcom/android/server/biometrics/fingerprint/FingerprintService;
+    .param p1, "x1"  # Ljava/lang/String;
 
-    .line 98
+    .line 101
     invoke-virtual {p0, p1}, Lcom/android/server/biometrics/fingerprint/FingerprintService;->checkPermission(Ljava/lang/String;)V
 
     return-void
 .end method
 
-.method static synthetic access$5200(Lcom/android/server/biometrics/fingerprint/FingerprintService;)I
-    .registers 1
-
-    .line 98
-    iget p0, p0, Lcom/android/server/biometrics/fingerprint/FingerprintService;->mCurrentUserId:I
-
-    return p0
-.end method
-
-.method static synthetic access$5300(Lcom/android/server/biometrics/fingerprint/FingerprintService;)Lcom/android/server/biometrics/BiometricServiceBase$H;
-    .registers 1
-
-    .line 98
-    iget-object p0, p0, Lcom/android/server/biometrics/fingerprint/FingerprintService;->mHandler:Lcom/android/server/biometrics/BiometricServiceBase$H;
-
-    return-object p0
-.end method
-
-.method static synthetic access$5400(Lcom/android/server/biometrics/fingerprint/FingerprintService;Ljava/lang/String;)V
+.method static synthetic access$5300(Lcom/android/server/biometrics/fingerprint/FingerprintService;)I
     .registers 2
+    .param p0, "x0"  # Lcom/android/server/biometrics/fingerprint/FingerprintService;
 
-    .line 98
+    .line 101
+    iget v0, p0, Lcom/android/server/biometrics/fingerprint/FingerprintService;->mCurrentUserId:I
+
+    return v0
+.end method
+
+.method static synthetic access$5400(Lcom/android/server/biometrics/fingerprint/FingerprintService;)Lcom/android/server/biometrics/BiometricServiceBase$H;
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/biometrics/fingerprint/FingerprintService;
+
+    .line 101
+    iget-object v0, p0, Lcom/android/server/biometrics/fingerprint/FingerprintService;->mHandler:Lcom/android/server/biometrics/BiometricServiceBase$H;
+
+    return-object v0
+.end method
+
+.method static synthetic access$5500(Lcom/android/server/biometrics/fingerprint/FingerprintService;Ljava/lang/String;)V
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/biometrics/fingerprint/FingerprintService;
+    .param p1, "x1"  # Ljava/lang/String;
+
+    .line 101
     invoke-virtual {p0, p1}, Lcom/android/server/biometrics/fingerprint/FingerprintService;->checkPermission(Ljava/lang/String;)V
 
     return-void
-.end method
-
-.method static synthetic access$5500(Lcom/android/server/biometrics/fingerprint/FingerprintService;)Lcom/android/server/biometrics/ClientMonitor;
-    .registers 1
-
-    .line 98
-    invoke-virtual {p0}, Lcom/android/server/biometrics/fingerprint/FingerprintService;->getCurrentClient()Lcom/android/server/biometrics/ClientMonitor;
-
-    move-result-object p0
-
-    return-object p0
 .end method
 
 .method static synthetic access$5600(Lcom/android/server/biometrics/fingerprint/FingerprintService;)Lcom/android/server/biometrics/ClientMonitor;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/biometrics/fingerprint/FingerprintService;
 
-    .line 98
+    .line 101
+    invoke-virtual {p0}, Lcom/android/server/biometrics/fingerprint/FingerprintService;->getCurrentClient()Lcom/android/server/biometrics/ClientMonitor;
+
+    move-result-object v0
+
+    return-object v0
+.end method
+
+.method static synthetic access$5700(Lcom/android/server/biometrics/fingerprint/FingerprintService;)Lcom/android/server/biometrics/ClientMonitor;
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/biometrics/fingerprint/FingerprintService;
+
+    .line 101
     invoke-virtual {p0}, Lcom/android/server/biometrics/fingerprint/FingerprintService;->getPendingClient()Lcom/android/server/biometrics/ClientMonitor;
 
-    move-result-object p0
+    move-result-object v0
 
-    return-object p0
+    return-object v0
 .end method
 
-.method static synthetic access$5700(Lcom/android/server/biometrics/fingerprint/FingerprintService;Ljava/lang/String;)V
+.method static synthetic access$5800(Lcom/android/server/biometrics/fingerprint/FingerprintService;Ljava/lang/String;)V
     .registers 2
+    .param p0, "x0"  # Lcom/android/server/biometrics/fingerprint/FingerprintService;
+    .param p1, "x1"  # Ljava/lang/String;
 
-    .line 98
+    .line 101
     invoke-virtual {p0, p1}, Lcom/android/server/biometrics/fingerprint/FingerprintService;->checkPermission(Ljava/lang/String;)V
 
     return-void
 .end method
 
-.method static synthetic access$5800(Lcom/android/server/biometrics/fingerprint/FingerprintService;)Ljava/util/concurrent/CopyOnWriteArrayList;
-    .registers 1
-
-    .line 98
-    iget-object p0, p0, Lcom/android/server/biometrics/fingerprint/FingerprintService;->mClientActiveCallbacks:Ljava/util/concurrent/CopyOnWriteArrayList;
-
-    return-object p0
-.end method
-
-.method static synthetic access$5900(Lcom/android/server/biometrics/fingerprint/FingerprintService;Ljava/lang/String;)V
+.method static synthetic access$5900(Lcom/android/server/biometrics/fingerprint/FingerprintService;)Ljava/util/concurrent/CopyOnWriteArrayList;
     .registers 2
+    .param p0, "x0"  # Lcom/android/server/biometrics/fingerprint/FingerprintService;
 
-    .line 98
-    invoke-virtual {p0, p1}, Lcom/android/server/biometrics/fingerprint/FingerprintService;->checkPermission(Ljava/lang/String;)V
+    .line 101
+    iget-object v0, p0, Lcom/android/server/biometrics/fingerprint/FingerprintService;->mClientActiveCallbacks:Ljava/util/concurrent/CopyOnWriteArrayList;
 
-    return-void
+    return-object v0
 .end method
 
 .method static synthetic access$600(Lcom/android/server/biometrics/fingerprint/FingerprintService;Ljava/lang/String;)V
     .registers 2
+    .param p0, "x0"  # Lcom/android/server/biometrics/fingerprint/FingerprintService;
+    .param p1, "x1"  # Ljava/lang/String;
 
-    .line 98
+    .line 101
     invoke-virtual {p0, p1}, Lcom/android/server/biometrics/fingerprint/FingerprintService;->checkPermission(Ljava/lang/String;)V
 
     return-void
 .end method
 
-.method static synthetic access$6200(Lcom/android/server/biometrics/fingerprint/FingerprintService;)Lcom/android/server/biometrics/BiometricServiceBase$H;
-    .registers 1
+.method static synthetic access$6000(Lcom/android/server/biometrics/fingerprint/FingerprintService;Ljava/lang/String;)V
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/biometrics/fingerprint/FingerprintService;
+    .param p1, "x1"  # Ljava/lang/String;
 
-    .line 98
-    iget-object p0, p0, Lcom/android/server/biometrics/fingerprint/FingerprintService;->mHandler:Lcom/android/server/biometrics/BiometricServiceBase$H;
+    .line 101
+    invoke-virtual {p0, p1}, Lcom/android/server/biometrics/fingerprint/FingerprintService;->checkPermission(Ljava/lang/String;)V
 
-    return-object p0
+    return-void
+.end method
+
+.method static synthetic access$6100(Lcom/android/server/biometrics/fingerprint/FingerprintService;)J
+    .registers 3
+    .param p0, "x0"  # Lcom/android/server/biometrics/fingerprint/FingerprintService;
+
+    .line 101
+    iget-wide v0, p0, Lcom/android/server/biometrics/fingerprint/FingerprintService;->mLockoutStartTime:J
+
+    return-wide v0
+.end method
+
+.method static synthetic access$6200(Lcom/android/server/biometrics/fingerprint/FingerprintService;)I
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/biometrics/fingerprint/FingerprintService;
+
+    .line 101
+    iget v0, p0, Lcom/android/server/biometrics/fingerprint/FingerprintService;->mCurrentUserId:I
+
+    return v0
 .end method
 
 .method static synthetic access$6300(Lcom/android/server/biometrics/fingerprint/FingerprintService;)Lcom/android/server/biometrics/BiometricServiceBase$H;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/biometrics/fingerprint/FingerprintService;
 
-    .line 98
-    iget-object p0, p0, Lcom/android/server/biometrics/fingerprint/FingerprintService;->mHandler:Lcom/android/server/biometrics/BiometricServiceBase$H;
+    .line 101
+    iget-object v0, p0, Lcom/android/server/biometrics/fingerprint/FingerprintService;->mHandler:Lcom/android/server/biometrics/BiometricServiceBase$H;
 
-    return-object p0
+    return-object v0
 .end method
 
-.method static synthetic access$6400(Lcom/android/server/biometrics/fingerprint/FingerprintService;)Lcom/android/server/biometrics/BiometricServiceBase$H;
-    .registers 1
+.method static synthetic access$6400(Lcom/android/server/biometrics/fingerprint/FingerprintService;Ljava/lang/String;)V
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/biometrics/fingerprint/FingerprintService;
+    .param p1, "x1"  # Ljava/lang/String;
 
-    .line 98
-    iget-object p0, p0, Lcom/android/server/biometrics/fingerprint/FingerprintService;->mHandler:Lcom/android/server/biometrics/BiometricServiceBase$H;
+    .line 101
+    invoke-virtual {p0, p1}, Lcom/android/server/biometrics/fingerprint/FingerprintService;->checkPermission(Ljava/lang/String;)V
 
-    return-object p0
+    return-void
 .end method
 
-.method static synthetic access$6500(Lcom/android/server/biometrics/fingerprint/FingerprintService;)Lcom/android/server/biometrics/BiometricServiceBase$H;
-    .registers 1
+.method static synthetic access$6500(Lcom/android/server/biometrics/fingerprint/FingerprintService;Ljava/lang/String;)V
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/biometrics/fingerprint/FingerprintService;
+    .param p1, "x1"  # Ljava/lang/String;
 
-    .line 98
-    iget-object p0, p0, Lcom/android/server/biometrics/fingerprint/FingerprintService;->mHandler:Lcom/android/server/biometrics/BiometricServiceBase$H;
+    .line 101
+    invoke-virtual {p0, p1}, Lcom/android/server/biometrics/fingerprint/FingerprintService;->checkPermission(Ljava/lang/String;)V
 
-    return-object p0
+    return-void
 .end method
 
-.method static synthetic access$6600(Lcom/android/server/biometrics/fingerprint/FingerprintService;)Lcom/android/server/biometrics/BiometricServiceBase$H;
-    .registers 1
+.method static synthetic access$6600(Lcom/android/server/biometrics/fingerprint/FingerprintService;)Z
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/biometrics/fingerprint/FingerprintService;
 
-    .line 98
-    iget-object p0, p0, Lcom/android/server/biometrics/fingerprint/FingerprintService;->mHandler:Lcom/android/server/biometrics/BiometricServiceBase$H;
+    .line 101
+    iget-boolean v0, p0, Lcom/android/server/biometrics/fingerprint/FingerprintService;->mIsUnderGlassFP:Z
 
-    return-object p0
+    return v0
 .end method
 
-.method static synthetic access$6700(Lcom/android/server/biometrics/fingerprint/FingerprintService;)Lcom/android/server/biometrics/BiometricServiceBase$H;
-    .registers 1
+.method static synthetic access$6700(Lcom/android/server/biometrics/fingerprint/FingerprintService;)Lcom/android/server/biometrics/flymefingerprint/UnderglassFingerprintController;
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/biometrics/fingerprint/FingerprintService;
 
-    .line 98
-    iget-object p0, p0, Lcom/android/server/biometrics/fingerprint/FingerprintService;->mHandler:Lcom/android/server/biometrics/BiometricServiceBase$H;
+    .line 101
+    iget-object v0, p0, Lcom/android/server/biometrics/fingerprint/FingerprintService;->mUnderglassFingerprintController:Lcom/android/server/biometrics/flymefingerprint/UnderglassFingerprintController;
 
-    return-object p0
+    return-object v0
 .end method
 
-.method static synthetic access$6801(Lcom/android/server/biometrics/fingerprint/FingerprintService;Landroid/hardware/biometrics/BiometricAuthenticator$Identifier;I)V
+.method static synthetic access$6800(Lcom/android/server/biometrics/fingerprint/FingerprintService;Ljava/lang/String;)V
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/biometrics/fingerprint/FingerprintService;
+    .param p1, "x1"  # Ljava/lang/String;
+
+    .line 101
+    invoke-virtual {p0, p1}, Lcom/android/server/biometrics/fingerprint/FingerprintService;->checkPermission(Ljava/lang/String;)V
+
+    return-void
+.end method
+
+.method static synthetic access$6900(Lcom/android/server/biometrics/fingerprint/FingerprintService;Ljava/lang/String;)V
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/biometrics/fingerprint/FingerprintService;
+    .param p1, "x1"  # Ljava/lang/String;
+
+    .line 101
+    invoke-virtual {p0, p1}, Lcom/android/server/biometrics/fingerprint/FingerprintService;->checkPermission(Ljava/lang/String;)V
+
+    return-void
+.end method
+
+.method static synthetic access$700(Lcom/android/server/biometrics/fingerprint/FingerprintService;Landroid/os/IBinder;)I
     .registers 3
+    .param p0, "x0"  # Lcom/android/server/biometrics/fingerprint/FingerprintService;
+    .param p1, "x1"  # Landroid/os/IBinder;
 
-    .line 98
+    .line 101
+    invoke-direct {p0, p1}, Lcom/android/server/biometrics/fingerprint/FingerprintService;->startPostEnroll(Landroid/os/IBinder;)I
+
+    move-result v0
+
+    return v0
+.end method
+
+.method static synthetic access$7000(Lcom/android/server/biometrics/fingerprint/FingerprintService;Ljava/lang/String;)V
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/biometrics/fingerprint/FingerprintService;
+    .param p1, "x1"  # Ljava/lang/String;
+
+    .line 101
+    invoke-virtual {p0, p1}, Lcom/android/server/biometrics/fingerprint/FingerprintService;->checkPermission(Ljava/lang/String;)V
+
+    return-void
+.end method
+
+.method static synthetic access$7100(Lcom/android/server/biometrics/fingerprint/FingerprintService;Ljava/lang/String;)V
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/biometrics/fingerprint/FingerprintService;
+    .param p1, "x1"  # Ljava/lang/String;
+
+    .line 101
+    invoke-virtual {p0, p1}, Lcom/android/server/biometrics/fingerprint/FingerprintService;->checkPermission(Ljava/lang/String;)V
+
+    return-void
+.end method
+
+.method static synthetic access$7200(Lcom/android/server/biometrics/fingerprint/FingerprintService;)Lcom/android/server/biometrics/ClientMonitor;
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/biometrics/fingerprint/FingerprintService;
+
+    .line 101
+    invoke-virtual {p0}, Lcom/android/server/biometrics/fingerprint/FingerprintService;->getCurrentClient()Lcom/android/server/biometrics/ClientMonitor;
+
+    move-result-object v0
+
+    return-object v0
+.end method
+
+.method static synthetic access$7300(Lcom/android/server/biometrics/fingerprint/FingerprintService;Ljava/lang/String;)V
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/biometrics/fingerprint/FingerprintService;
+    .param p1, "x1"  # Ljava/lang/String;
+
+    .line 101
+    invoke-virtual {p0, p1}, Lcom/android/server/biometrics/fingerprint/FingerprintService;->checkPermission(Ljava/lang/String;)V
+
+    return-void
+.end method
+
+.method static synthetic access$7400(Lcom/android/server/biometrics/fingerprint/FingerprintService;Ljava/lang/String;)V
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/biometrics/fingerprint/FingerprintService;
+    .param p1, "x1"  # Ljava/lang/String;
+
+    .line 101
+    invoke-virtual {p0, p1}, Lcom/android/server/biometrics/fingerprint/FingerprintService;->checkPermission(Ljava/lang/String;)V
+
+    return-void
+.end method
+
+.method static synthetic access$7700(Lcom/android/server/biometrics/fingerprint/FingerprintService;)Lcom/android/server/biometrics/BiometricServiceBase$H;
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/biometrics/fingerprint/FingerprintService;
+
+    .line 101
+    iget-object v0, p0, Lcom/android/server/biometrics/fingerprint/FingerprintService;->mHandler:Lcom/android/server/biometrics/BiometricServiceBase$H;
+
+    return-object v0
+.end method
+
+.method static synthetic access$7800(Lcom/android/server/biometrics/fingerprint/FingerprintService;)Lcom/android/server/biometrics/BiometricServiceBase$H;
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/biometrics/fingerprint/FingerprintService;
+
+    .line 101
+    iget-object v0, p0, Lcom/android/server/biometrics/fingerprint/FingerprintService;->mHandler:Lcom/android/server/biometrics/BiometricServiceBase$H;
+
+    return-object v0
+.end method
+
+.method static synthetic access$7900(Lcom/android/server/biometrics/fingerprint/FingerprintService;)Lcom/android/server/biometrics/BiometricServiceBase$H;
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/biometrics/fingerprint/FingerprintService;
+
+    .line 101
+    iget-object v0, p0, Lcom/android/server/biometrics/fingerprint/FingerprintService;->mHandler:Lcom/android/server/biometrics/BiometricServiceBase$H;
+
+    return-object v0
+.end method
+
+.method static synthetic access$800(Lcom/android/server/biometrics/fingerprint/FingerprintService;Ljava/lang/String;)V
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/biometrics/fingerprint/FingerprintService;
+    .param p1, "x1"  # Ljava/lang/String;
+
+    .line 101
+    invoke-virtual {p0, p1}, Lcom/android/server/biometrics/fingerprint/FingerprintService;->checkPermission(Ljava/lang/String;)V
+
+    return-void
+.end method
+
+.method static synthetic access$8000(Lcom/android/server/biometrics/fingerprint/FingerprintService;)Lcom/android/server/biometrics/BiometricServiceBase$H;
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/biometrics/fingerprint/FingerprintService;
+
+    .line 101
+    iget-object v0, p0, Lcom/android/server/biometrics/fingerprint/FingerprintService;->mHandler:Lcom/android/server/biometrics/BiometricServiceBase$H;
+
+    return-object v0
+.end method
+
+.method static synthetic access$8100(Lcom/android/server/biometrics/fingerprint/FingerprintService;)Lcom/android/server/biometrics/BiometricServiceBase$H;
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/biometrics/fingerprint/FingerprintService;
+
+    .line 101
+    iget-object v0, p0, Lcom/android/server/biometrics/fingerprint/FingerprintService;->mHandler:Lcom/android/server/biometrics/BiometricServiceBase$H;
+
+    return-object v0
+.end method
+
+.method static synthetic access$8200(Lcom/android/server/biometrics/fingerprint/FingerprintService;)Lcom/android/server/biometrics/BiometricServiceBase$H;
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/biometrics/fingerprint/FingerprintService;
+
+    .line 101
+    iget-object v0, p0, Lcom/android/server/biometrics/fingerprint/FingerprintService;->mHandler:Lcom/android/server/biometrics/BiometricServiceBase$H;
+
+    return-object v0
+.end method
+
+.method static synthetic access$8301(Lcom/android/server/biometrics/fingerprint/FingerprintService;Landroid/hardware/biometrics/BiometricAuthenticator$Identifier;I)V
+    .registers 3
+    .param p0, "x0"  # Lcom/android/server/biometrics/fingerprint/FingerprintService;
+    .param p1, "x1"  # Landroid/hardware/biometrics/BiometricAuthenticator$Identifier;
+    .param p2, "x2"  # I
+
+    .line 101
     invoke-super {p0, p1, p2}, Lcom/android/server/biometrics/BiometricServiceBase;->handleEnumerate(Landroid/hardware/biometrics/BiometricAuthenticator$Identifier;I)V
 
     return-void
 .end method
 
-.method static synthetic access$6900(Lcom/android/server/biometrics/fingerprint/FingerprintService;)Lcom/android/server/biometrics/ClientMonitor;
-    .registers 1
+.method static synthetic access$8400(Lcom/android/server/biometrics/fingerprint/FingerprintService;)Lcom/android/server/biometrics/ClientMonitor;
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/biometrics/fingerprint/FingerprintService;
 
-    .line 98
+    .line 101
     invoke-virtual {p0}, Lcom/android/server/biometrics/fingerprint/FingerprintService;->getCurrentClient()Lcom/android/server/biometrics/ClientMonitor;
 
-    move-result-object p0
+    move-result-object v0
 
-    return-object p0
+    return-object v0
 .end method
 
-.method static synthetic access$700(Lcom/android/server/biometrics/fingerprint/FingerprintService;Landroid/os/IBinder;)I
-    .registers 2
-
-    .line 98
-    invoke-direct {p0, p1}, Lcom/android/server/biometrics/fingerprint/FingerprintService;->startPostEnroll(Landroid/os/IBinder;)I
-
-    move-result p0
-
-    return p0
-.end method
-
-.method static synthetic access$7001(Lcom/android/server/biometrics/fingerprint/FingerprintService;Landroid/hardware/biometrics/BiometricAuthenticator$Identifier;I)V
+.method static synthetic access$8501(Lcom/android/server/biometrics/fingerprint/FingerprintService;Landroid/hardware/biometrics/BiometricAuthenticator$Identifier;I)V
     .registers 3
+    .param p0, "x0"  # Lcom/android/server/biometrics/fingerprint/FingerprintService;
+    .param p1, "x1"  # Landroid/hardware/biometrics/BiometricAuthenticator$Identifier;
+    .param p2, "x2"  # I
 
-    .line 98
+    .line 101
     invoke-super {p0, p1, p2}, Lcom/android/server/biometrics/BiometricServiceBase;->handleRemoved(Landroid/hardware/biometrics/BiometricAuthenticator$Identifier;I)V
 
     return-void
 .end method
 
-.method static synthetic access$7100(Lcom/android/server/biometrics/fingerprint/FingerprintService;)Lvendor/lineage/biometrics/fingerprint/inscreen/V1_0/IFingerprintInscreen;
-    .registers 1
-
-    .line 98
-    invoke-direct {p0}, Lcom/android/server/biometrics/fingerprint/FingerprintService;->getFingerprintInScreenDaemon()Lvendor/lineage/biometrics/fingerprint/inscreen/V1_0/IFingerprintInscreen;
-
-    move-result-object p0
-
-    return-object p0
-.end method
-
-.method static synthetic access$7201(Lcom/android/server/biometrics/fingerprint/FingerprintService;JII)V
+.method static synthetic access$8601(Lcom/android/server/biometrics/fingerprint/FingerprintService;JII)V
     .registers 5
+    .param p0, "x0"  # Lcom/android/server/biometrics/fingerprint/FingerprintService;
+    .param p1, "x1"  # J
+    .param p3, "x2"  # I
+    .param p4, "x3"  # I
 
-    .line 98
+    .line 101
     invoke-super {p0, p1, p2, p3, p4}, Lcom/android/server/biometrics/BiometricServiceBase;->handleError(JII)V
 
     return-void
 .end method
 
-.method static synthetic access$7302(Lcom/android/server/biometrics/fingerprint/FingerprintService;Landroid/hardware/biometrics/fingerprint/V2_1/IBiometricsFingerprint;)Landroid/hardware/biometrics/fingerprint/V2_1/IBiometricsFingerprint;
+.method static synthetic access$8702(Lcom/android/server/biometrics/fingerprint/FingerprintService;Landroid/hardware/biometrics/fingerprint/V2_1/IBiometricsFingerprint;)Landroid/hardware/biometrics/fingerprint/V2_1/IBiometricsFingerprint;
     .registers 2
+    .param p0, "x0"  # Lcom/android/server/biometrics/fingerprint/FingerprintService;
+    .param p1, "x1"  # Landroid/hardware/biometrics/fingerprint/V2_1/IBiometricsFingerprint;
 
-    .line 98
+    .line 101
     iput-object p1, p0, Lcom/android/server/biometrics/fingerprint/FingerprintService;->mDaemon:Landroid/hardware/biometrics/fingerprint/V2_1/IBiometricsFingerprint;
 
     return-object p1
 .end method
 
-.method static synthetic access$7402(Lcom/android/server/biometrics/fingerprint/FingerprintService;J)J
+.method static synthetic access$8802(Lcom/android/server/biometrics/fingerprint/FingerprintService;J)J
     .registers 3
+    .param p0, "x0"  # Lcom/android/server/biometrics/fingerprint/FingerprintService;
+    .param p1, "x1"  # J
 
-    .line 98
+    .line 101
     iput-wide p1, p0, Lcom/android/server/biometrics/fingerprint/FingerprintService;->mHalDeviceId:J
 
     return-wide p1
 .end method
 
-.method static synthetic access$7502(Lcom/android/server/biometrics/fingerprint/FingerprintService;I)I
+.method static synthetic access$8902(Lcom/android/server/biometrics/fingerprint/FingerprintService;I)I
     .registers 2
+    .param p0, "x0"  # Lcom/android/server/biometrics/fingerprint/FingerprintService;
+    .param p1, "x1"  # I
 
-    .line 98
+    .line 101
     iput p1, p0, Lcom/android/server/biometrics/fingerprint/FingerprintService;->mCurrentUserId:I
 
     return p1
 .end method
 
-.method static synthetic access$7601(Lcom/android/server/biometrics/fingerprint/FingerprintService;Landroid/hardware/biometrics/BiometricAuthenticator$Identifier;Ljava/util/ArrayList;)V
-    .registers 3
+.method static synthetic access$900(Lcom/android/server/biometrics/fingerprint/FingerprintService;)Z
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/biometrics/fingerprint/FingerprintService;
 
-    .line 98
+    .line 101
+    invoke-virtual {p0}, Lcom/android/server/biometrics/fingerprint/FingerprintService;->isRestricted()Z
+
+    move-result v0
+
+    return v0
+.end method
+
+.method static synthetic access$9001(Lcom/android/server/biometrics/fingerprint/FingerprintService;Landroid/hardware/biometrics/BiometricAuthenticator$Identifier;Ljava/util/ArrayList;)V
+    .registers 3
+    .param p0, "x0"  # Lcom/android/server/biometrics/fingerprint/FingerprintService;
+    .param p1, "x1"  # Landroid/hardware/biometrics/BiometricAuthenticator$Identifier;
+    .param p2, "x2"  # Ljava/util/ArrayList;
+
+    .line 101
     invoke-super {p0, p1, p2}, Lcom/android/server/biometrics/BiometricServiceBase;->handleAuthenticated(Landroid/hardware/biometrics/BiometricAuthenticator$Identifier;Ljava/util/ArrayList;)V
 
     return-void
 .end method
 
-.method static synthetic access$7700(Lcom/android/server/biometrics/fingerprint/FingerprintService;)Z
-    .registers 1
-
-    .line 98
-    iget-boolean p0, p0, Lcom/android/server/biometrics/fingerprint/FingerprintService;->mHasFod:Z
-
-    return p0
-.end method
-
-.method static synthetic access$7800(Lcom/android/server/biometrics/fingerprint/FingerprintService;)Lcom/android/internal/statusbar/IStatusBarService;
-    .registers 1
-
-    .line 98
-    iget-object p0, p0, Lcom/android/server/biometrics/fingerprint/FingerprintService;->mStatusBarService:Lcom/android/internal/statusbar/IStatusBarService;
-
-    return-object p0
-.end method
-
-.method static synthetic access$7901(Lcom/android/server/biometrics/fingerprint/FingerprintService;JII)V
+.method static synthetic access$9101(Lcom/android/server/biometrics/fingerprint/FingerprintService;JII)V
     .registers 5
+    .param p0, "x0"  # Lcom/android/server/biometrics/fingerprint/FingerprintService;
+    .param p1, "x1"  # J
+    .param p3, "x2"  # I
+    .param p4, "x3"  # I
 
-    .line 98
+    .line 101
     invoke-super {p0, p1, p2, p3, p4}, Lcom/android/server/biometrics/BiometricServiceBase;->handleAcquired(JII)V
 
     return-void
 .end method
 
-.method static synthetic access$800(Lcom/android/server/biometrics/fingerprint/FingerprintService;Ljava/lang/String;)V
-    .registers 2
-
-    .line 98
-    invoke-virtual {p0, p1}, Lcom/android/server/biometrics/fingerprint/FingerprintService;->checkPermission(Ljava/lang/String;)V
-
-    return-void
-.end method
-
-.method static synthetic access$8001(Lcom/android/server/biometrics/fingerprint/FingerprintService;Landroid/hardware/biometrics/BiometricAuthenticator$Identifier;I)V
+.method static synthetic access$9201(Lcom/android/server/biometrics/fingerprint/FingerprintService;Landroid/hardware/biometrics/BiometricAuthenticator$Identifier;I)V
     .registers 3
+    .param p0, "x0"  # Lcom/android/server/biometrics/fingerprint/FingerprintService;
+    .param p1, "x1"  # Landroid/hardware/biometrics/BiometricAuthenticator$Identifier;
+    .param p2, "x2"  # I
 
-    .line 98
+    .line 101
     invoke-super {p0, p1, p2}, Lcom/android/server/biometrics/BiometricServiceBase;->handleEnrollResult(Landroid/hardware/biometrics/BiometricAuthenticator$Identifier;I)V
 
     return-void
 .end method
 
-.method static synthetic access$8100(Lcom/android/server/biometrics/fingerprint/FingerprintService;)Lcom/android/internal/statusbar/IStatusBarService;
-    .registers 1
-
-    .line 98
-    iget-object p0, p0, Lcom/android/server/biometrics/fingerprint/FingerprintService;->mStatusBarService:Lcom/android/internal/statusbar/IStatusBarService;
-
-    return-object p0
-.end method
-
-.method static synthetic access$8200(Lcom/android/server/biometrics/fingerprint/FingerprintService;)Z
-    .registers 1
-
-    .line 98
-    iget-boolean p0, p0, Lcom/android/server/biometrics/fingerprint/FingerprintService;->mIsKeyguard:Z
-
-    return p0
-.end method
-
-.method static synthetic access$8300(Lcom/android/server/biometrics/fingerprint/FingerprintService;)Lcom/android/internal/statusbar/IStatusBarService;
-    .registers 1
-
-    .line 98
-    iget-object p0, p0, Lcom/android/server/biometrics/fingerprint/FingerprintService;->mStatusBarService:Lcom/android/internal/statusbar/IStatusBarService;
-
-    return-object p0
-.end method
-
-.method static synthetic access$8400(Lcom/android/server/biometrics/fingerprint/FingerprintService;)Lcom/android/internal/statusbar/IStatusBarService;
-    .registers 1
-
-    .line 98
-    iget-object p0, p0, Lcom/android/server/biometrics/fingerprint/FingerprintService;->mStatusBarService:Lcom/android/internal/statusbar/IStatusBarService;
-
-    return-object p0
-.end method
-
-.method static synthetic access$8500(Lcom/android/server/biometrics/fingerprint/FingerprintService;)Lcom/android/internal/statusbar/IStatusBarService;
-    .registers 1
-
-    .line 98
-    iget-object p0, p0, Lcom/android/server/biometrics/fingerprint/FingerprintService;->mStatusBarService:Lcom/android/internal/statusbar/IStatusBarService;
-
-    return-object p0
-.end method
-
-.method static synthetic access$900(Lcom/android/server/biometrics/fingerprint/FingerprintService;)Z
-    .registers 1
-
-    .line 98
-    invoke-virtual {p0}, Lcom/android/server/biometrics/fingerprint/FingerprintService;->isRestricted()Z
-
-    move-result p0
-
-    return p0
-.end method
-
 .method private cancelLockoutResetForUser(I)V
-    .registers 3
+    .registers 4
+    .param p1, "userId"  # I
 
-    .line 1102
+    .line 1189
     iget-object v0, p0, Lcom/android/server/biometrics/fingerprint/FingerprintService;->mAlarmManager:Landroid/app/AlarmManager;
 
     invoke-direct {p0, p1}, Lcom/android/server/biometrics/fingerprint/FingerprintService;->getLockoutResetIntentForUser(I)Landroid/app/PendingIntent;
 
-    move-result-object p1
+    move-result-object v1
 
-    invoke-virtual {v0, p1}, Landroid/app/AlarmManager;->cancel(Landroid/app/PendingIntent;)V
+    invoke-virtual {v0, v1}, Landroid/app/AlarmManager;->cancel(Landroid/app/PendingIntent;)V
 
-    .line 1103
+    .line 1190
+    return-void
+.end method
+
+.method private dumpFOD(Ljava/io/PrintWriter;)V
+    .registers 3
+    .param p1, "pw"  # Ljava/io/PrintWriter;
+
+    .line 1295
+    iget-boolean v0, p0, Lcom/android/server/biometrics/fingerprint/FingerprintService;->mIsUnderGlassFP:Z
+
+    if-eqz v0, :cond_7
+
+    .line 1296
+    invoke-static {p1}, Lcom/android/server/biometrics/flymefingerprint/UnderglassFingerprintController;->dump(Ljava/io/PrintWriter;)V
+
+    .line 1298
+    :cond_7
     return-void
 .end method
 
 .method private dumpInternal(Ljava/io/PrintWriter;)V
-    .registers 11
+    .registers 14
+    .param p1, "pw"  # Ljava/io/PrintWriter;
 
-    .line 1118
+    .line 1208
     new-instance v0, Lorg/json/JSONObject;
 
     invoke-direct {v0}, Lorg/json/JSONObject;-><init>()V
 
-    .line 1120
-    :try_start_5
-    const-string/jumbo v1, "service"
+    .line 1210
+    .local v0, "dump":Lorg/json/JSONObject;
+    const/4 v1, 0x0
 
-    const-string v2, "Fingerprint Manager"
+    :try_start_6
+    const-string/jumbo v2, "service"
 
-    invoke-virtual {v0, v1, v2}, Lorg/json/JSONObject;->put(Ljava/lang/String;Ljava/lang/Object;)Lorg/json/JSONObject;
+    const-string v3, "Fingerprint Manager"
 
-    .line 1122
-    new-instance v1, Lorg/json/JSONArray;
+    invoke-virtual {v0, v2, v3}, Lorg/json/JSONObject;->put(Ljava/lang/String;Ljava/lang/Object;)Lorg/json/JSONObject;
 
-    invoke-direct {v1}, Lorg/json/JSONArray;-><init>()V
+    .line 1212
+    new-instance v2, Lorg/json/JSONArray;
 
-    .line 1123
+    invoke-direct {v2}, Lorg/json/JSONArray;-><init>()V
+
+    .line 1213
+    .local v2, "sets":Lorg/json/JSONArray;
     invoke-virtual {p0}, Lcom/android/server/biometrics/fingerprint/FingerprintService;->getContext()Landroid/content/Context;
-
-    move-result-object v2
-
-    invoke-static {v2}, Landroid/os/UserManager;->get(Landroid/content/Context;)Landroid/os/UserManager;
-
-    move-result-object v2
-
-    invoke-virtual {v2}, Landroid/os/UserManager;->getUsers()Ljava/util/List;
-
-    move-result-object v2
-
-    invoke-interface {v2}, Ljava/util/List;->iterator()Ljava/util/Iterator;
-
-    move-result-object v2
-
-    :goto_22
-    invoke-interface {v2}, Ljava/util/Iterator;->hasNext()Z
-
-    move-result v3
-
-    if-eqz v3, :cond_e3
-
-    invoke-interface {v2}, Ljava/util/Iterator;->next()Ljava/lang/Object;
 
     move-result-object v3
 
-    check-cast v3, Landroid/content/pm/UserInfo;
-
-    .line 1124
-    invoke-virtual {v3}, Landroid/content/pm/UserInfo;->getUserHandle()Landroid/os/UserHandle;
+    invoke-static {v3}, Landroid/os/UserManager;->get(Landroid/content/Context;)Landroid/os/UserManager;
 
     move-result-object v3
 
-    invoke-virtual {v3}, Landroid/os/UserHandle;->getIdentifier()I
+    invoke-virtual {v3}, Landroid/os/UserManager;->getUsers()Ljava/util/List;
 
-    move-result v3
+    move-result-object v3
 
-    .line 1125
-    invoke-virtual {p0}, Lcom/android/server/biometrics/fingerprint/FingerprintService;->getBiometricUtils()Lcom/android/server/biometrics/BiometricUtils;
+    invoke-interface {v3}, Ljava/util/List;->iterator()Ljava/util/Iterator;
 
-    move-result-object v4
+    move-result-object v3
 
-    invoke-virtual {p0}, Lcom/android/server/biometrics/fingerprint/FingerprintService;->getContext()Landroid/content/Context;
-
-    move-result-object v5
-
-    invoke-interface {v4, v5, v3}, Lcom/android/server/biometrics/BiometricUtils;->getBiometricsForUser(Landroid/content/Context;I)Ljava/util/List;
-
-    move-result-object v4
-
-    invoke-interface {v4}, Ljava/util/List;->size()I
+    :goto_23
+    invoke-interface {v3}, Ljava/util/Iterator;->hasNext()Z
 
     move-result v4
 
-    .line 1126
-    iget-object v5, p0, Lcom/android/server/biometrics/fingerprint/FingerprintService;->mPerformanceMap:Ljava/util/HashMap;
+    if-eqz v4, :cond_e9
 
-    invoke-static {v3}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
+    invoke-interface {v3}, Ljava/util/Iterator;->next()Ljava/lang/Object;
 
-    move-result-object v6
+    move-result-object v4
 
-    invoke-virtual {v5, v6}, Ljava/util/HashMap;->get(Ljava/lang/Object;)Ljava/lang/Object;
+    check-cast v4, Landroid/content/pm/UserInfo;
+
+    .line 1214
+    .local v4, "user":Landroid/content/pm/UserInfo;
+    invoke-virtual {v4}, Landroid/content/pm/UserInfo;->getUserHandle()Landroid/os/UserHandle;
 
     move-result-object v5
 
-    check-cast v5, Lcom/android/server/biometrics/BiometricServiceBase$PerformanceStats;
+    invoke-virtual {v5}, Landroid/os/UserHandle;->getIdentifier()I
 
-    .line 1127
-    iget-object v6, p0, Lcom/android/server/biometrics/fingerprint/FingerprintService;->mCryptoPerformanceMap:Ljava/util/HashMap;
+    move-result v5
 
-    invoke-static {v3}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
-
-    move-result-object v7
-
-    invoke-virtual {v6, v7}, Ljava/util/HashMap;->get(Ljava/lang/Object;)Ljava/lang/Object;
+    .line 1215
+    .local v5, "userId":I
+    invoke-virtual {p0}, Lcom/android/server/biometrics/fingerprint/FingerprintService;->getBiometricUtils()Lcom/android/server/biometrics/BiometricUtils;
 
     move-result-object v6
 
-    check-cast v6, Lcom/android/server/biometrics/BiometricServiceBase$PerformanceStats;
+    invoke-virtual {p0}, Lcom/android/server/biometrics/fingerprint/FingerprintService;->getContext()Landroid/content/Context;
 
-    .line 1128
-    new-instance v7, Lorg/json/JSONObject;
+    move-result-object v7
 
-    invoke-direct {v7}, Lorg/json/JSONObject;-><init>()V
+    invoke-interface {v6, v7, v5}, Lcom/android/server/biometrics/BiometricUtils;->getBiometricsForUser(Landroid/content/Context;I)Ljava/util/List;
 
-    .line 1129
-    const-string v8, "id"
+    move-result-object v6
 
-    invoke-virtual {v7, v8, v3}, Lorg/json/JSONObject;->put(Ljava/lang/String;I)Lorg/json/JSONObject;
+    invoke-interface {v6}, Ljava/util/List;->size()I
 
-    .line 1130
-    const-string v3, "count"
+    move-result v6
 
-    invoke-virtual {v7, v3, v4}, Lorg/json/JSONObject;->put(Ljava/lang/String;I)Lorg/json/JSONObject;
+    .line 1216
+    .local v6, "N":I
+    iget-object v7, p0, Lcom/android/server/biometrics/fingerprint/FingerprintService;->mPerformanceMap:Ljava/util/HashMap;
 
-    .line 1131
-    const-string v3, "accept"
+    invoke-static {v5}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
 
-    const/4 v4, 0x0
+    move-result-object v8
 
-    if-eqz v5, :cond_75
+    invoke-virtual {v7, v8}, Ljava/util/HashMap;->get(Ljava/lang/Object;)Ljava/lang/Object;
 
-    iget v8, v5, Lcom/android/server/biometrics/BiometricServiceBase$PerformanceStats;->accept:I
+    move-result-object v7
 
-    goto :goto_76
+    check-cast v7, Lcom/android/server/biometrics/BiometricServiceBase$PerformanceStats;
 
-    :cond_75
-    move v8, v4
+    .line 1217
+    .local v7, "stats":Lcom/android/server/biometrics/BiometricServiceBase$PerformanceStats;
+    iget-object v8, p0, Lcom/android/server/biometrics/fingerprint/FingerprintService;->mCryptoPerformanceMap:Ljava/util/HashMap;
 
-    :goto_76
-    invoke-virtual {v7, v3, v8}, Lorg/json/JSONObject;->put(Ljava/lang/String;I)Lorg/json/JSONObject;
+    invoke-static {v5}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
 
-    .line 1132
-    const-string/jumbo v3, "reject"
+    move-result-object v9
 
-    if-eqz v5, :cond_81
+    invoke-virtual {v8, v9}, Ljava/util/HashMap;->get(Ljava/lang/Object;)Ljava/lang/Object;
 
-    iget v8, v5, Lcom/android/server/biometrics/BiometricServiceBase$PerformanceStats;->reject:I
+    move-result-object v8
 
-    goto :goto_82
+    check-cast v8, Lcom/android/server/biometrics/BiometricServiceBase$PerformanceStats;
 
-    :cond_81
-    move v8, v4
+    .line 1218
+    .local v8, "cryptoStats":Lcom/android/server/biometrics/BiometricServiceBase$PerformanceStats;
+    new-instance v9, Lorg/json/JSONObject;
 
-    :goto_82
-    invoke-virtual {v7, v3, v8}, Lorg/json/JSONObject;->put(Ljava/lang/String;I)Lorg/json/JSONObject;
+    invoke-direct {v9}, Lorg/json/JSONObject;-><init>()V
 
-    .line 1133
-    const-string v3, "acquire"
+    .line 1219
+    .local v9, "set":Lorg/json/JSONObject;
+    const-string/jumbo v10, "id"
 
-    if-eqz v5, :cond_8c
+    invoke-virtual {v9, v10, v5}, Lorg/json/JSONObject;->put(Ljava/lang/String;I)Lorg/json/JSONObject;
 
-    iget v8, v5, Lcom/android/server/biometrics/BiometricServiceBase$PerformanceStats;->acquire:I
+    .line 1220
+    const-string v10, "count"
 
-    goto :goto_8d
+    invoke-virtual {v9, v10, v6}, Lorg/json/JSONObject;->put(Ljava/lang/String;I)Lorg/json/JSONObject;
 
-    :cond_8c
-    move v8, v4
+    .line 1221
+    const-string v10, "accept"
 
-    :goto_8d
-    invoke-virtual {v7, v3, v8}, Lorg/json/JSONObject;->put(Ljava/lang/String;I)Lorg/json/JSONObject;
+    if-eqz v7, :cond_76
 
-    .line 1134
-    const-string v3, "lockout"
+    iget v11, v7, Lcom/android/server/biometrics/BiometricServiceBase$PerformanceStats;->accept:I
 
-    if-eqz v5, :cond_97
+    goto :goto_77
 
-    iget v8, v5, Lcom/android/server/biometrics/BiometricServiceBase$PerformanceStats;->lockout:I
+    :cond_76
+    move v11, v1
 
-    goto :goto_98
+    :goto_77
+    invoke-virtual {v9, v10, v11}, Lorg/json/JSONObject;->put(Ljava/lang/String;I)Lorg/json/JSONObject;
 
-    :cond_97
-    move v8, v4
+    .line 1222
+    const-string/jumbo v10, "reject"
 
-    :goto_98
-    invoke-virtual {v7, v3, v8}, Lorg/json/JSONObject;->put(Ljava/lang/String;I)Lorg/json/JSONObject;
+    if-eqz v7, :cond_82
 
-    .line 1135
-    const-string/jumbo v3, "permanentLockout"
+    iget v11, v7, Lcom/android/server/biometrics/BiometricServiceBase$PerformanceStats;->reject:I
 
-    if-eqz v5, :cond_a3
+    goto :goto_83
 
-    iget v5, v5, Lcom/android/server/biometrics/BiometricServiceBase$PerformanceStats;->permanentLockout:I
+    :cond_82
+    move v11, v1
 
-    goto :goto_a4
+    :goto_83
+    invoke-virtual {v9, v10, v11}, Lorg/json/JSONObject;->put(Ljava/lang/String;I)Lorg/json/JSONObject;
 
-    :cond_a3
-    move v5, v4
+    .line 1223
+    const-string v10, "acquire"
 
-    :goto_a4
-    invoke-virtual {v7, v3, v5}, Lorg/json/JSONObject;->put(Ljava/lang/String;I)Lorg/json/JSONObject;
+    if-eqz v7, :cond_8d
 
-    .line 1138
-    const-string v3, "acceptCrypto"
+    iget v11, v7, Lcom/android/server/biometrics/BiometricServiceBase$PerformanceStats;->acquire:I
 
-    if-eqz v6, :cond_ae
+    goto :goto_8e
 
-    iget v5, v6, Lcom/android/server/biometrics/BiometricServiceBase$PerformanceStats;->accept:I
+    :cond_8d
+    move v11, v1
 
-    goto :goto_af
+    :goto_8e
+    invoke-virtual {v9, v10, v11}, Lorg/json/JSONObject;->put(Ljava/lang/String;I)Lorg/json/JSONObject;
 
-    :cond_ae
-    move v5, v4
+    .line 1224
+    const-string/jumbo v10, "lockout"
 
-    :goto_af
-    invoke-virtual {v7, v3, v5}, Lorg/json/JSONObject;->put(Ljava/lang/String;I)Lorg/json/JSONObject;
+    if-eqz v7, :cond_99
 
-    .line 1139
-    const-string/jumbo v3, "rejectCrypto"
+    iget v11, v7, Lcom/android/server/biometrics/BiometricServiceBase$PerformanceStats;->lockout:I
 
-    if-eqz v6, :cond_ba
+    goto :goto_9a
 
-    iget v5, v6, Lcom/android/server/biometrics/BiometricServiceBase$PerformanceStats;->reject:I
+    :cond_99
+    move v11, v1
 
-    goto :goto_bb
+    :goto_9a
+    invoke-virtual {v9, v10, v11}, Lorg/json/JSONObject;->put(Ljava/lang/String;I)Lorg/json/JSONObject;
 
-    :cond_ba
-    move v5, v4
+    .line 1225
+    const-string/jumbo v10, "permanentLockout"
 
-    :goto_bb
-    invoke-virtual {v7, v3, v5}, Lorg/json/JSONObject;->put(Ljava/lang/String;I)Lorg/json/JSONObject;
+    if-eqz v7, :cond_a5
 
-    .line 1140
-    const-string v3, "acquireCrypto"
+    iget v11, v7, Lcom/android/server/biometrics/BiometricServiceBase$PerformanceStats;->permanentLockout:I
 
-    if-eqz v6, :cond_c5
+    goto :goto_a6
 
-    iget v5, v6, Lcom/android/server/biometrics/BiometricServiceBase$PerformanceStats;->acquire:I
+    :cond_a5
+    move v11, v1
 
-    goto :goto_c6
+    :goto_a6
+    invoke-virtual {v9, v10, v11}, Lorg/json/JSONObject;->put(Ljava/lang/String;I)Lorg/json/JSONObject;
 
-    :cond_c5
-    move v5, v4
+    .line 1228
+    const-string v10, "acceptCrypto"
 
-    :goto_c6
-    invoke-virtual {v7, v3, v5}, Lorg/json/JSONObject;->put(Ljava/lang/String;I)Lorg/json/JSONObject;
+    if-eqz v8, :cond_b0
 
-    .line 1141
-    const-string v3, "lockoutCrypto"
+    iget v11, v8, Lcom/android/server/biometrics/BiometricServiceBase$PerformanceStats;->accept:I
 
-    if-eqz v6, :cond_d0
+    goto :goto_b1
 
-    iget v5, v6, Lcom/android/server/biometrics/BiometricServiceBase$PerformanceStats;->lockout:I
+    :cond_b0
+    move v11, v1
 
-    goto :goto_d1
+    :goto_b1
+    invoke-virtual {v9, v10, v11}, Lorg/json/JSONObject;->put(Ljava/lang/String;I)Lorg/json/JSONObject;
 
-    :cond_d0
-    move v5, v4
+    .line 1229
+    const-string/jumbo v10, "rejectCrypto"
 
-    :goto_d1
-    invoke-virtual {v7, v3, v5}, Lorg/json/JSONObject;->put(Ljava/lang/String;I)Lorg/json/JSONObject;
+    if-eqz v8, :cond_bc
 
-    .line 1142
-    const-string/jumbo v3, "permanentLockoutCrypto"
+    iget v11, v8, Lcom/android/server/biometrics/BiometricServiceBase$PerformanceStats;->reject:I
 
-    .line 1143
-    if-eqz v6, :cond_db
+    goto :goto_bd
 
-    iget v4, v6, Lcom/android/server/biometrics/BiometricServiceBase$PerformanceStats;->permanentLockout:I
+    :cond_bc
+    move v11, v1
 
-    .line 1142
-    :cond_db
-    invoke-virtual {v7, v3, v4}, Lorg/json/JSONObject;->put(Ljava/lang/String;I)Lorg/json/JSONObject;
+    :goto_bd
+    invoke-virtual {v9, v10, v11}, Lorg/json/JSONObject;->put(Ljava/lang/String;I)Lorg/json/JSONObject;
 
-    .line 1144
-    invoke-virtual {v1, v7}, Lorg/json/JSONArray;->put(Ljava/lang/Object;)Lorg/json/JSONArray;
+    .line 1230
+    const-string v10, "acquireCrypto"
 
-    .line 1145
-    goto/16 :goto_22
+    if-eqz v8, :cond_c7
 
-    .line 1147
-    :cond_e3
-    const-string/jumbo v2, "prints"
+    iget v11, v8, Lcom/android/server/biometrics/BiometricServiceBase$PerformanceStats;->acquire:I
 
-    invoke-virtual {v0, v2, v1}, Lorg/json/JSONObject;->put(Ljava/lang/String;Ljava/lang/Object;)Lorg/json/JSONObject;
-    :try_end_e9
-    .catch Lorg/json/JSONException; {:try_start_5 .. :try_end_e9} :catch_ea
+    goto :goto_c8
 
-    .line 1150
-    goto :goto_f2
+    :cond_c7
+    move v11, v1
 
-    .line 1148
-    :catch_ea
-    move-exception v1
+    :goto_c8
+    invoke-virtual {v9, v10, v11}, Lorg/json/JSONObject;->put(Ljava/lang/String;I)Lorg/json/JSONObject;
 
-    .line 1149
-    const-string v2, "FingerprintService"
+    .line 1231
+    const-string/jumbo v10, "lockoutCrypto"
 
-    const-string v3, "dump formatting failure"
+    if-eqz v8, :cond_d3
 
-    invoke-static {v2, v3, v1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    iget v11, v8, Lcom/android/server/biometrics/BiometricServiceBase$PerformanceStats;->lockout:I
 
-    .line 1151
-    :goto_f2
+    goto :goto_d4
+
+    :cond_d3
+    move v11, v1
+
+    :goto_d4
+    invoke-virtual {v9, v10, v11}, Lorg/json/JSONObject;->put(Ljava/lang/String;I)Lorg/json/JSONObject;
+
+    .line 1232
+    const-string/jumbo v10, "permanentLockoutCrypto"
+
+    .line 1233
+    if-eqz v8, :cond_df
+
+    iget v11, v8, Lcom/android/server/biometrics/BiometricServiceBase$PerformanceStats;->permanentLockout:I
+
+    goto :goto_e0
+
+    :cond_df
+    move v11, v1
+
+    .line 1232
+    :goto_e0
+    invoke-virtual {v9, v10, v11}, Lorg/json/JSONObject;->put(Ljava/lang/String;I)Lorg/json/JSONObject;
+
+    .line 1234
+    invoke-virtual {v2, v9}, Lorg/json/JSONArray;->put(Ljava/lang/Object;)Lorg/json/JSONArray;
+
+    .line 1235
+    nop
+
+    .end local v4  # "user":Landroid/content/pm/UserInfo;
+    .end local v5  # "userId":I
+    .end local v6  # "N":I
+    .end local v7  # "stats":Lcom/android/server/biometrics/BiometricServiceBase$PerformanceStats;
+    .end local v8  # "cryptoStats":Lcom/android/server/biometrics/BiometricServiceBase$PerformanceStats;
+    .end local v9  # "set":Lorg/json/JSONObject;
+    goto/16 :goto_23
+
+    .line 1237
+    :cond_e9
+    const-string/jumbo v3, "prints"
+
+    invoke-virtual {v0, v3, v2}, Lorg/json/JSONObject;->put(Ljava/lang/String;Ljava/lang/Object;)Lorg/json/JSONObject;
+    :try_end_ef
+    .catch Lorg/json/JSONException; {:try_start_6 .. :try_end_ef} :catch_f1
+
+    .line 1240
+    nop
+
+    .end local v2  # "sets":Lorg/json/JSONArray;
+    goto :goto_f9
+
+    .line 1238
+    :catch_f1
+    move-exception v2
+
+    .line 1239
+    .local v2, "e":Lorg/json/JSONException;
+    const-string v3, "FingerprintService"
+
+    const-string v4, "dump formatting failure"
+
+    invoke-static {v3, v4, v2}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+
+    .line 1241
+    .end local v2  # "e":Lorg/json/JSONException;
+    :goto_f9
     invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->println(Ljava/lang/Object;)V
 
-    .line 1152
-    new-instance v0, Ljava/lang/StringBuilder;
+    .line 1242
+    new-instance v2, Ljava/lang/StringBuilder;
 
-    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v1, "HAL deaths since last reboot: "
+    const-string v3, "HAL Deaths: "
 
-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    iget v1, p0, Lcom/android/server/biometrics/fingerprint/FingerprintService;->mHALDeathCount:I
+    iget v3, p0, Lcom/android/server/biometrics/fingerprint/FingerprintService;->mHALDeathCount:I
 
-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v2
 
-    invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {p1, v2}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
-    .line 1153
+    .line 1243
+    iput v1, p0, Lcom/android/server/biometrics/fingerprint/FingerprintService;->mHALDeathCount:I
+
+    .line 1245
+    invoke-direct {p0, p1}, Lcom/android/server/biometrics/fingerprint/FingerprintService;->dumpFOD(Ljava/io/PrintWriter;)V
+
+    .line 1247
     return-void
 .end method
 
 .method private dumpProto(Ljava/io/FileDescriptor;)V
     .registers 18
+    .param p1, "fd"  # Ljava/io/FileDescriptor;
 
-    .line 1156
+    .line 1250
     move-object/from16 v0, p0
 
     new-instance v1, Landroid/util/proto/ProtoOutputStream;
@@ -1327,219 +1641,238 @@
 
     invoke-direct {v1, v2}, Landroid/util/proto/ProtoOutputStream;-><init>(Ljava/io/FileDescriptor;)V
 
-    .line 1157
+    .line 1251
+    .local v1, "proto":Landroid/util/proto/ProtoOutputStream;
     invoke-virtual/range {p0 .. p0}, Lcom/android/server/biometrics/fingerprint/FingerprintService;->getContext()Landroid/content/Context;
 
-    move-result-object v2
+    move-result-object v3
 
-    invoke-static {v2}, Landroid/os/UserManager;->get(Landroid/content/Context;)Landroid/os/UserManager;
+    invoke-static {v3}, Landroid/os/UserManager;->get(Landroid/content/Context;)Landroid/os/UserManager;
 
-    move-result-object v2
+    move-result-object v3
 
-    invoke-virtual {v2}, Landroid/os/UserManager;->getUsers()Ljava/util/List;
+    invoke-virtual {v3}, Landroid/os/UserManager;->getUsers()Ljava/util/List;
 
-    move-result-object v2
+    move-result-object v3
 
-    invoke-interface {v2}, Ljava/util/List;->iterator()Ljava/util/Iterator;
+    invoke-interface {v3}, Ljava/util/List;->iterator()Ljava/util/Iterator;
 
-    move-result-object v2
+    move-result-object v3
 
     :goto_19
-    invoke-interface {v2}, Ljava/util/Iterator;->hasNext()Z
+    invoke-interface {v3}, Ljava/util/Iterator;->hasNext()Z
 
-    move-result v3
+    move-result v4
 
-    if-eqz v3, :cond_e0
+    if-eqz v4, :cond_ea
 
-    invoke-interface {v2}, Ljava/util/Iterator;->next()Ljava/lang/Object;
+    invoke-interface {v3}, Ljava/util/Iterator;->next()Ljava/lang/Object;
 
-    move-result-object v3
+    move-result-object v4
 
-    check-cast v3, Landroid/content/pm/UserInfo;
+    check-cast v4, Landroid/content/pm/UserInfo;
 
-    .line 1158
-    invoke-virtual {v3}, Landroid/content/pm/UserInfo;->getUserHandle()Landroid/os/UserHandle;
+    .line 1252
+    .local v4, "user":Landroid/content/pm/UserInfo;
+    invoke-virtual {v4}, Landroid/content/pm/UserInfo;->getUserHandle()Landroid/os/UserHandle;
 
-    move-result-object v3
+    move-result-object v5
 
-    invoke-virtual {v3}, Landroid/os/UserHandle;->getIdentifier()I
+    invoke-virtual {v5}, Landroid/os/UserHandle;->getIdentifier()I
 
-    move-result v3
+    move-result v5
 
-    .line 1160
-    const-wide v4, 0x20b00000001L
+    .line 1254
+    .local v5, "userId":I
+    const-wide v6, 0x20b00000001L
 
-    invoke-virtual {v1, v4, v5}, Landroid/util/proto/ProtoOutputStream;->start(J)J
+    invoke-virtual {v1, v6, v7}, Landroid/util/proto/ProtoOutputStream;->start(J)J
 
-    move-result-wide v4
+    move-result-wide v6
 
-    .line 1162
-    const-wide v6, 0x10500000001L
+    .line 1256
+    .local v6, "userToken":J
+    const-wide v8, 0x10500000001L
 
-    invoke-virtual {v1, v6, v7, v3}, Landroid/util/proto/ProtoOutputStream;->write(JI)V
+    invoke-virtual {v1, v8, v9, v5}, Landroid/util/proto/ProtoOutputStream;->write(JI)V
 
-    .line 1163
+    .line 1257
     nop
 
-    .line 1164
+    .line 1258
     invoke-virtual/range {p0 .. p0}, Lcom/android/server/biometrics/fingerprint/FingerprintService;->getBiometricUtils()Lcom/android/server/biometrics/BiometricUtils;
 
-    move-result-object v8
+    move-result-object v10
 
     invoke-virtual/range {p0 .. p0}, Lcom/android/server/biometrics/fingerprint/FingerprintService;->getContext()Landroid/content/Context;
-
-    move-result-object v9
-
-    invoke-interface {v8, v9, v3}, Lcom/android/server/biometrics/BiometricUtils;->getBiometricsForUser(Landroid/content/Context;I)Ljava/util/List;
-
-    move-result-object v8
-
-    invoke-interface {v8}, Ljava/util/List;->size()I
-
-    move-result v8
-
-    .line 1163
-    const-wide v9, 0x10500000002L
-
-    invoke-virtual {v1, v9, v10, v8}, Landroid/util/proto/ProtoOutputStream;->write(JI)V
-
-    .line 1167
-    iget-object v8, v0, Lcom/android/server/biometrics/fingerprint/FingerprintService;->mPerformanceMap:Ljava/util/HashMap;
-
-    invoke-static {v3}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
 
     move-result-object v11
 
-    invoke-virtual {v8, v11}, Ljava/util/HashMap;->get(Ljava/lang/Object;)Ljava/lang/Object;
+    invoke-interface {v10, v11, v5}, Lcom/android/server/biometrics/BiometricUtils;->getBiometricsForUser(Landroid/content/Context;I)Ljava/util/List;
 
-    move-result-object v8
+    move-result-object v10
 
-    check-cast v8, Lcom/android/server/biometrics/BiometricServiceBase$PerformanceStats;
+    invoke-interface {v10}, Ljava/util/List;->size()I
 
-    .line 1168
-    const-wide v11, 0x10500000003L
+    move-result v10
 
-    if-eqz v8, :cond_99
+    .line 1257
+    const-wide v11, 0x10500000002L
 
-    .line 1169
+    invoke-virtual {v1, v11, v12, v10}, Landroid/util/proto/ProtoOutputStream;->write(JI)V
+
+    .line 1261
+    iget-object v10, v0, Lcom/android/server/biometrics/fingerprint/FingerprintService;->mPerformanceMap:Ljava/util/HashMap;
+
+    invoke-static {v5}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
+
+    move-result-object v13
+
+    invoke-virtual {v10, v13}, Ljava/util/HashMap;->get(Ljava/lang/Object;)Ljava/lang/Object;
+
+    move-result-object v10
+
+    check-cast v10, Lcom/android/server/biometrics/BiometricServiceBase$PerformanceStats;
+
+    .line 1262
+    .local v10, "normal":Lcom/android/server/biometrics/BiometricServiceBase$PerformanceStats;
+    if-eqz v10, :cond_99
+
+    .line 1263
     const-wide v13, 0x10b00000003L
 
     invoke-virtual {v1, v13, v14}, Landroid/util/proto/ProtoOutputStream;->start(J)J
 
     move-result-wide v13
 
-    .line 1170
-    iget v15, v8, Lcom/android/server/biometrics/BiometricServiceBase$PerformanceStats;->accept:I
+    .line 1264
+    .local v13, "countsToken":J
+    iget v15, v10, Lcom/android/server/biometrics/BiometricServiceBase$PerformanceStats;->accept:I
 
-    invoke-virtual {v1, v6, v7, v15}, Landroid/util/proto/ProtoOutputStream;->write(JI)V
+    invoke-virtual {v1, v8, v9, v15}, Landroid/util/proto/ProtoOutputStream;->write(JI)V
 
-    .line 1171
-    iget v15, v8, Lcom/android/server/biometrics/BiometricServiceBase$PerformanceStats;->reject:I
-
-    invoke-virtual {v1, v9, v10, v15}, Landroid/util/proto/ProtoOutputStream;->write(JI)V
-
-    .line 1172
-    iget v15, v8, Lcom/android/server/biometrics/BiometricServiceBase$PerformanceStats;->acquire:I
+    .line 1265
+    iget v15, v10, Lcom/android/server/biometrics/BiometricServiceBase$PerformanceStats;->reject:I
 
     invoke-virtual {v1, v11, v12, v15}, Landroid/util/proto/ProtoOutputStream;->write(JI)V
 
-    .line 1173
-    iget v15, v8, Lcom/android/server/biometrics/BiometricServiceBase$PerformanceStats;->lockout:I
+    .line 1266
+    iget v15, v10, Lcom/android/server/biometrics/BiometricServiceBase$PerformanceStats;->acquire:I
 
-    const-wide v11, 0x10500000004L
+    const-wide v11, 0x10500000003L
 
     invoke-virtual {v1, v11, v12, v15}, Landroid/util/proto/ProtoOutputStream;->write(JI)V
 
-    .line 1174
-    iget v8, v8, Lcom/android/server/biometrics/BiometricServiceBase$PerformanceStats;->permanentLockout:I
+    .line 1267
+    iget v11, v10, Lcom/android/server/biometrics/BiometricServiceBase$PerformanceStats;->lockout:I
+
+    const-wide v8, 0x10500000004L
+
+    invoke-virtual {v1, v8, v9, v11}, Landroid/util/proto/ProtoOutputStream;->write(JI)V
+
+    .line 1268
+    iget v8, v10, Lcom/android/server/biometrics/BiometricServiceBase$PerformanceStats;->permanentLockout:I
 
     const-wide v11, 0x10500000005L
 
     invoke-virtual {v1, v11, v12, v8}, Landroid/util/proto/ProtoOutputStream;->write(JI)V
 
-    .line 1175
+    .line 1269
     invoke-virtual {v1, v13, v14}, Landroid/util/proto/ProtoOutputStream;->end(J)V
 
-    .line 1180
+    .line 1274
+    .end local v13  # "countsToken":J
     :cond_99
     iget-object v8, v0, Lcom/android/server/biometrics/fingerprint/FingerprintService;->mCryptoPerformanceMap:Ljava/util/HashMap;
 
-    invoke-static {v3}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
+    invoke-static {v5}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
 
-    move-result-object v3
+    move-result-object v9
 
-    invoke-virtual {v8, v3}, Ljava/util/HashMap;->get(Ljava/lang/Object;)Ljava/lang/Object;
+    invoke-virtual {v8, v9}, Ljava/util/HashMap;->get(Ljava/lang/Object;)Ljava/lang/Object;
 
-    move-result-object v3
+    move-result-object v8
 
-    check-cast v3, Lcom/android/server/biometrics/BiometricServiceBase$PerformanceStats;
+    check-cast v8, Lcom/android/server/biometrics/BiometricServiceBase$PerformanceStats;
 
-    .line 1181
-    if-eqz v3, :cond_db
+    .line 1275
+    .local v8, "crypto":Lcom/android/server/biometrics/BiometricServiceBase$PerformanceStats;
+    if-eqz v8, :cond_e5
 
-    .line 1182
+    .line 1276
     const-wide v11, 0x10b00000004L
 
     invoke-virtual {v1, v11, v12}, Landroid/util/proto/ProtoOutputStream;->start(J)J
 
     move-result-wide v11
 
-    .line 1183
-    iget v8, v3, Lcom/android/server/biometrics/BiometricServiceBase$PerformanceStats;->accept:I
+    .line 1277
+    .local v11, "countsToken":J
+    iget v9, v8, Lcom/android/server/biometrics/BiometricServiceBase$PerformanceStats;->accept:I
 
-    invoke-virtual {v1, v6, v7, v8}, Landroid/util/proto/ProtoOutputStream;->write(JI)V
+    const-wide v13, 0x10500000001L
 
-    .line 1184
-    iget v6, v3, Lcom/android/server/biometrics/BiometricServiceBase$PerformanceStats;->reject:I
+    invoke-virtual {v1, v13, v14, v9}, Landroid/util/proto/ProtoOutputStream;->write(JI)V
 
-    invoke-virtual {v1, v9, v10, v6}, Landroid/util/proto/ProtoOutputStream;->write(JI)V
+    .line 1278
+    iget v9, v8, Lcom/android/server/biometrics/BiometricServiceBase$PerformanceStats;->reject:I
 
-    .line 1185
-    iget v6, v3, Lcom/android/server/biometrics/BiometricServiceBase$PerformanceStats;->acquire:I
+    const-wide v13, 0x10500000002L
 
-    const-wide v7, 0x10500000003L
+    invoke-virtual {v1, v13, v14, v9}, Landroid/util/proto/ProtoOutputStream;->write(JI)V
 
-    invoke-virtual {v1, v7, v8, v6}, Landroid/util/proto/ProtoOutputStream;->write(JI)V
+    .line 1279
+    iget v9, v8, Lcom/android/server/biometrics/BiometricServiceBase$PerformanceStats;->acquire:I
 
-    .line 1186
-    iget v6, v3, Lcom/android/server/biometrics/BiometricServiceBase$PerformanceStats;->lockout:I
+    const-wide v13, 0x10500000003L
 
-    const-wide v7, 0x10500000004L
+    invoke-virtual {v1, v13, v14, v9}, Landroid/util/proto/ProtoOutputStream;->write(JI)V
 
-    invoke-virtual {v1, v7, v8, v6}, Landroid/util/proto/ProtoOutputStream;->write(JI)V
+    .line 1280
+    iget v9, v8, Lcom/android/server/biometrics/BiometricServiceBase$PerformanceStats;->lockout:I
 
-    .line 1187
-    iget v3, v3, Lcom/android/server/biometrics/BiometricServiceBase$PerformanceStats;->permanentLockout:I
+    const-wide v13, 0x10500000004L
 
-    const-wide v6, 0x10500000005L
+    invoke-virtual {v1, v13, v14, v9}, Landroid/util/proto/ProtoOutputStream;->write(JI)V
 
-    invoke-virtual {v1, v6, v7, v3}, Landroid/util/proto/ProtoOutputStream;->write(JI)V
+    .line 1281
+    iget v9, v8, Lcom/android/server/biometrics/BiometricServiceBase$PerformanceStats;->permanentLockout:I
 
-    .line 1188
+    const-wide v13, 0x10500000005L
+
+    invoke-virtual {v1, v13, v14, v9}, Landroid/util/proto/ProtoOutputStream;->write(JI)V
+
+    .line 1282
     invoke-virtual {v1, v11, v12}, Landroid/util/proto/ProtoOutputStream;->end(J)V
 
-    .line 1191
-    :cond_db
-    invoke-virtual {v1, v4, v5}, Landroid/util/proto/ProtoOutputStream;->end(J)V
+    .line 1285
+    .end local v11  # "countsToken":J
+    :cond_e5
+    invoke-virtual {v1, v6, v7}, Landroid/util/proto/ProtoOutputStream;->end(J)V
 
-    .line 1192
+    .line 1286
+    .end local v4  # "user":Landroid/content/pm/UserInfo;
+    .end local v5  # "userId":I
+    .end local v6  # "userToken":J
+    .end local v8  # "crypto":Lcom/android/server/biometrics/BiometricServiceBase$PerformanceStats;
+    .end local v10  # "normal":Lcom/android/server/biometrics/BiometricServiceBase$PerformanceStats;
     goto/16 :goto_19
 
-    .line 1193
-    :cond_e0
+    .line 1287
+    :cond_ea
     invoke-virtual {v1}, Landroid/util/proto/ProtoOutputStream;->flush()V
 
-    .line 1194
-    iget-object v1, v0, Lcom/android/server/biometrics/fingerprint/FingerprintService;->mPerformanceMap:Ljava/util/HashMap;
+    .line 1288
+    iget-object v3, v0, Lcom/android/server/biometrics/fingerprint/FingerprintService;->mPerformanceMap:Ljava/util/HashMap;
 
-    invoke-virtual {v1}, Ljava/util/HashMap;->clear()V
+    invoke-virtual {v3}, Ljava/util/HashMap;->clear()V
 
-    .line 1195
-    iget-object v0, v0, Lcom/android/server/biometrics/fingerprint/FingerprintService;->mCryptoPerformanceMap:Ljava/util/HashMap;
+    .line 1289
+    iget-object v3, v0, Lcom/android/server/biometrics/fingerprint/FingerprintService;->mCryptoPerformanceMap:Ljava/util/HashMap;
 
-    invoke-virtual {v0}, Ljava/util/HashMap;->clear()V
+    invoke-virtual {v3}, Ljava/util/HashMap;->clear()V
 
-    .line 1196
+    .line 1290
     return-void
 .end method
 
@@ -1548,82 +1881,85 @@
 
     monitor-enter p0
 
-    .line 998
+    .line 1105
     :try_start_1
     iget-object v0, p0, Lcom/android/server/biometrics/fingerprint/FingerprintService;->mDaemon:Landroid/hardware/biometrics/fingerprint/V2_1/IBiometricsFingerprint;
 
-    if-nez v0, :cond_8f
+    if-nez v0, :cond_90
 
-    .line 999
+    .line 1106
     const-string v0, "FingerprintService"
 
-    const-string v1, "mDaemon was null, reconnect to fingerprint"
+    const-string/jumbo v1, "mDaemon was null, reconnect to fingerprint"
 
     invoke-static {v0, v1}, Landroid/util/Slog;->v(Ljava/lang/String;Ljava/lang/String;)I
-    :try_end_c
-    .catchall {:try_start_1 .. :try_end_c} :catchall_93
+    :try_end_d
+    .catchall {:try_start_1 .. :try_end_d} :catchall_94
 
-    .line 1001
-    :try_start_c
+    .line 1108
+    :try_start_d
     invoke-static {}, Landroid/hardware/biometrics/fingerprint/V2_1/IBiometricsFingerprint;->getService()Landroid/hardware/biometrics/fingerprint/V2_1/IBiometricsFingerprint;
 
     move-result-object v0
 
     iput-object v0, p0, Lcom/android/server/biometrics/fingerprint/FingerprintService;->mDaemon:Landroid/hardware/biometrics/fingerprint/V2_1/IBiometricsFingerprint;
-    :try_end_12
-    .catch Ljava/util/NoSuchElementException; {:try_start_c .. :try_end_12} :catch_1c
-    .catch Landroid/os/RemoteException; {:try_start_c .. :try_end_12} :catch_13
-    .catchall {:try_start_c .. :try_end_12} :catchall_93
+    :try_end_13
+    .catch Ljava/util/NoSuchElementException; {:try_start_d .. :try_end_13} :catch_1d
+    .catch Landroid/os/RemoteException; {:try_start_d .. :try_end_13} :catch_14
+    .catchall {:try_start_d .. :try_end_13} :catchall_94
 
-    goto :goto_1d
+    .line 1113
+    goto :goto_1f
 
-    .line 1004
-    :catch_13
+    .line 1111
+    .end local p0  # "this":Lcom/android/server/biometrics/fingerprint/FingerprintService;
+    :catch_14
     move-exception v0
 
-    .line 1005
-    :try_start_14
+    .line 1112
+    .local v0, "e":Landroid/os/RemoteException;
+    :try_start_15
     const-string v1, "FingerprintService"
 
     const-string v2, "Failed to get biometric interface"
 
     invoke-static {v1, v2, v0}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
-    goto :goto_1e
+    goto :goto_1f
 
-    .line 1002
-    :catch_1c
+    .line 1109
+    .end local v0  # "e":Landroid/os/RemoteException;
+    :catch_1d
     move-exception v0
 
-    .line 1006
-    :goto_1d
+    .line 1113
     nop
 
-    .line 1007
-    :goto_1e
+    .line 1114
+    :goto_1f
     iget-object v0, p0, Lcom/android/server/biometrics/fingerprint/FingerprintService;->mDaemon:Landroid/hardware/biometrics/fingerprint/V2_1/IBiometricsFingerprint;
 
     const/4 v1, 0x0
 
-    if-nez v0, :cond_2c
+    if-nez v0, :cond_2d
 
-    .line 1008
+    .line 1115
     const-string v0, "FingerprintService"
 
     const-string v2, "fingerprint HIDL not available"
 
     invoke-static {v0, v2}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
-    :try_end_2a
-    .catchall {:try_start_14 .. :try_end_2a} :catchall_93
+    :try_end_2b
+    .catchall {:try_start_15 .. :try_end_2b} :catchall_94
 
-    .line 1009
+    .line 1116
     monitor-exit p0
 
     return-object v1
 
-    .line 1012
-    :cond_2c
-    :try_start_2c
+    .line 1119
+    :cond_2d
+    :try_start_2d
     iget-object v0, p0, Lcom/android/server/biometrics/fingerprint/FingerprintService;->mDaemon:Landroid/hardware/biometrics/fingerprint/V2_1/IBiometricsFingerprint;
 
     invoke-interface {v0}, Landroid/hardware/biometrics/fingerprint/V2_1/IBiometricsFingerprint;->asBinder()Landroid/os/IHwBinder;
@@ -1633,11 +1969,11 @@
     const-wide/16 v2, 0x0
 
     invoke-interface {v0, p0, v2, v3}, Landroid/os/IHwBinder;->linkToDeath(Landroid/os/IHwBinder$DeathRecipient;J)Z
-    :try_end_37
-    .catchall {:try_start_2c .. :try_end_37} :catchall_93
+    :try_end_38
+    .catchall {:try_start_2d .. :try_end_38} :catchall_94
 
-    .line 1015
-    :try_start_37
+    .line 1122
+    :try_start_38
     iget-object v0, p0, Lcom/android/server/biometrics/fingerprint/FingerprintService;->mDaemon:Landroid/hardware/biometrics/fingerprint/V2_1/IBiometricsFingerprint;
 
     iget-object v4, p0, Lcom/android/server/biometrics/fingerprint/FingerprintService;->mDaemonCallback:Landroid/hardware/biometrics/fingerprint/V2_1/IBiometricsFingerprintClientCallback;
@@ -1647,30 +1983,32 @@
     move-result-wide v4
 
     iput-wide v4, p0, Lcom/android/server/biometrics/fingerprint/FingerprintService;->mHalDeviceId:J
-    :try_end_41
-    .catch Landroid/os/RemoteException; {:try_start_37 .. :try_end_41} :catch_42
-    .catchall {:try_start_37 .. :try_end_41} :catchall_93
+    :try_end_42
+    .catch Landroid/os/RemoteException; {:try_start_38 .. :try_end_42} :catch_43
+    .catchall {:try_start_38 .. :try_end_42} :catchall_94
 
-    .line 1019
-    goto :goto_4c
+    .line 1126
+    goto :goto_4d
 
-    .line 1016
-    :catch_42
+    .line 1123
+    :catch_43
     move-exception v0
 
-    .line 1017
-    :try_start_43
+    .line 1124
+    .restart local v0  # "e":Landroid/os/RemoteException;
+    :try_start_44
     const-string v4, "FingerprintService"
 
     const-string v5, "Failed to open fingerprint HAL"
 
     invoke-static {v4, v5, v0}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
-    .line 1018
+    .line 1125
     iput-object v1, p0, Lcom/android/server/biometrics/fingerprint/FingerprintService;->mDaemon:Landroid/hardware/biometrics/fingerprint/V2_1/IBiometricsFingerprint;
 
-    .line 1021
-    :goto_4c
+    .line 1128
+    .end local v0  # "e":Landroid/os/RemoteException;
+    :goto_4d
     const-string v0, "FingerprintService"
 
     new-instance v4, Ljava/lang/StringBuilder;
@@ -1691,41 +2029,41 @@
 
     invoke-static {v0, v4}, Landroid/util/Slog;->v(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 1022
+    .line 1129
     iget-wide v4, p0, Lcom/android/server/biometrics/fingerprint/FingerprintService;->mHalDeviceId:J
 
     cmp-long v0, v4, v2
 
-    if-eqz v0, :cond_7c
+    if-eqz v0, :cond_7d
 
-    .line 1023
+    .line 1130
     invoke-virtual {p0}, Lcom/android/server/biometrics/fingerprint/FingerprintService;->loadAuthenticatorIds()V
 
-    .line 1024
+    .line 1131
     invoke-static {}, Landroid/app/ActivityManager;->getCurrentUser()I
 
     move-result v0
 
     invoke-virtual {p0, v0, v1}, Lcom/android/server/biometrics/fingerprint/FingerprintService;->updateActiveGroup(ILjava/lang/String;)V
 
-    .line 1025
+    .line 1132
     invoke-static {}, Landroid/app/ActivityManager;->getCurrentUser()I
 
     move-result v0
 
     invoke-virtual {p0, v0}, Lcom/android/server/biometrics/fingerprint/FingerprintService;->doTemplateCleanupForUser(I)V
 
-    goto :goto_8f
+    goto :goto_90
 
-    .line 1027
-    :cond_7c
+    .line 1134
+    :cond_7d
     const-string v0, "FingerprintService"
 
     const-string v2, "Failed to open Fingerprint HAL!"
 
     invoke-static {v0, v2}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 1028
+    .line 1135
     invoke-virtual {p0}, Lcom/android/server/biometrics/fingerprint/FingerprintService;->getContext()Landroid/content/Context;
 
     move-result-object v0
@@ -1736,119 +2074,22 @@
 
     invoke-static {v0, v2, v3}, Lcom/android/internal/logging/MetricsLogger;->count(Landroid/content/Context;Ljava/lang/String;I)V
 
-    .line 1029
+    .line 1136
     iput-object v1, p0, Lcom/android/server/biometrics/fingerprint/FingerprintService;->mDaemon:Landroid/hardware/biometrics/fingerprint/V2_1/IBiometricsFingerprint;
 
-    .line 1032
-    :cond_8f
-    :goto_8f
+    .line 1139
+    :cond_90
+    :goto_90
     iget-object v0, p0, Lcom/android/server/biometrics/fingerprint/FingerprintService;->mDaemon:Landroid/hardware/biometrics/fingerprint/V2_1/IBiometricsFingerprint;
-    :try_end_91
-    .catchall {:try_start_43 .. :try_end_91} :catchall_93
+    :try_end_92
+    .catchall {:try_start_44 .. :try_end_92} :catchall_94
 
     monitor-exit p0
 
     return-object v0
 
-    .line 997
-    :catchall_93
-    move-exception v0
-
-    monitor-exit p0
-
-    throw v0
-.end method
-
-.method private declared-synchronized getFingerprintInScreenDaemon()Lvendor/lineage/biometrics/fingerprint/inscreen/V1_0/IFingerprintInscreen;
-    .registers 5
-
-    monitor-enter p0
-
-    .line 1036
-    :try_start_1
-    iget-boolean v0, p0, Lcom/android/server/biometrics/fingerprint/FingerprintService;->mHasFod:Z
-    :try_end_3
-    .catchall {:try_start_1 .. :try_end_3} :catchall_33
-
-    if-nez v0, :cond_8
-
-    .line 1037
-    const/4 v0, 0x0
-
-    monitor-exit p0
-
-    return-object v0
-
-    .line 1040
-    :cond_8
-    :try_start_8
-    iget-object v0, p0, Lcom/android/server/biometrics/fingerprint/FingerprintService;->mFingerprintInscreenDaemon:Lvendor/lineage/biometrics/fingerprint/inscreen/V1_0/IFingerprintInscreen;
-    :try_end_a
-    .catchall {:try_start_8 .. :try_end_a} :catchall_33
-
-    if-nez v0, :cond_2f
-
-    .line 1042
-    :try_start_c
-    invoke-static {}, Lvendor/lineage/biometrics/fingerprint/inscreen/V1_0/IFingerprintInscreen;->getService()Lvendor/lineage/biometrics/fingerprint/inscreen/V1_0/IFingerprintInscreen;
-
-    move-result-object v0
-
-    iput-object v0, p0, Lcom/android/server/biometrics/fingerprint/FingerprintService;->mFingerprintInscreenDaemon:Lvendor/lineage/biometrics/fingerprint/inscreen/V1_0/IFingerprintInscreen;
-
-    .line 1043
-    iget-object v0, p0, Lcom/android/server/biometrics/fingerprint/FingerprintService;->mFingerprintInscreenDaemon:Lvendor/lineage/biometrics/fingerprint/inscreen/V1_0/IFingerprintInscreen;
-
-    if-eqz v0, :cond_26
-
-    .line 1044
-    iget-object v0, p0, Lcom/android/server/biometrics/fingerprint/FingerprintService;->mFingerprintInscreenDaemon:Lvendor/lineage/biometrics/fingerprint/inscreen/V1_0/IFingerprintInscreen;
-
-    invoke-interface {v0}, Lvendor/lineage/biometrics/fingerprint/inscreen/V1_0/IFingerprintInscreen;->asBinder()Landroid/os/IHwBinder;
-
-    move-result-object v0
-
-    new-instance v1, Lcom/android/server/biometrics/fingerprint/-$$Lambda$FingerprintService$8MytJsBBEpRfuLa8XnmJDOsZIC0;
-
-    invoke-direct {v1, p0}, Lcom/android/server/biometrics/fingerprint/-$$Lambda$FingerprintService$8MytJsBBEpRfuLa8XnmJDOsZIC0;-><init>(Lcom/android/server/biometrics/fingerprint/FingerprintService;)V
-
-    const-wide/16 v2, 0x0
-
-    invoke-interface {v0, v1, v2, v3}, Landroid/os/IHwBinder;->linkToDeath(Landroid/os/IHwBinder$DeathRecipient;J)Z
-    :try_end_26
-    .catch Ljava/util/NoSuchElementException; {:try_start_c .. :try_end_26} :catch_27
-    .catch Landroid/os/RemoteException; {:try_start_c .. :try_end_26} :catch_27
-    .catchall {:try_start_c .. :try_end_26} :catchall_33
-
-    .line 1050
-    :cond_26
-    goto :goto_2f
-
-    .line 1048
-    :catch_27
-    move-exception v0
-
-    .line 1049
-    :try_start_28
-    const-string v1, "FingerprintService"
-
-    const-string v2, "Failed to get IFingerprintInscreen interface"
-
-    invoke-static {v1, v2, v0}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
-
-    .line 1052
-    :cond_2f
-    :goto_2f
-    iget-object v0, p0, Lcom/android/server/biometrics/fingerprint/FingerprintService;->mFingerprintInscreenDaemon:Lvendor/lineage/biometrics/fingerprint/inscreen/V1_0/IFingerprintInscreen;
-    :try_end_31
-    .catchall {:try_start_28 .. :try_end_31} :catchall_33
-
-    monitor-exit p0
-
-    return-object v0
-
-    .line 1035
-    :catchall_33
+    .line 1104
+    :catchall_94
     move-exception v0
 
     monitor-exit p0
@@ -1858,35 +2099,36 @@
 
 .method private getLockoutResetIntentForUser(I)Landroid/app/PendingIntent;
     .registers 5
+    .param p1, "userId"  # I
 
-    .line 1112
+    .line 1202
     invoke-virtual {p0}, Lcom/android/server/biometrics/fingerprint/FingerprintService;->getContext()Landroid/content/Context;
 
     move-result-object v0
 
     new-instance v1, Landroid/content/Intent;
 
-    .line 1113
+    .line 1203
     invoke-virtual {p0}, Lcom/android/server/biometrics/fingerprint/FingerprintService;->getLockoutResetIntent()Ljava/lang/String;
 
     move-result-object v2
 
     invoke-direct {v1, v2}, Landroid/content/Intent;-><init>(Ljava/lang/String;)V
 
-    const-string v2, "lockout_reset_user"
+    const-string/jumbo v2, "lockout_reset_user"
 
     invoke-virtual {v1, v2, p1}, Landroid/content/Intent;->putExtra(Ljava/lang/String;I)Landroid/content/Intent;
 
     move-result-object v1
 
-    .line 1112
+    .line 1202
     const/high16 v2, 0x8000000
 
     invoke-static {v0, p1, v1, v2}, Landroid/app/PendingIntent;->getBroadcast(Landroid/content/Context;ILandroid/content/Intent;I)Landroid/app/PendingIntent;
 
-    move-result-object p1
+    move-result-object v0
 
-    return-object p1
+    return-object v0
 .end method
 
 .method public static synthetic lambda$YOMIOLvco2SvXVeJIulOSVKdX7A(Lcom/android/server/biometrics/fingerprint/FingerprintService;)Landroid/hardware/biometrics/fingerprint/V2_1/IBiometricsFingerprint;
@@ -1901,15 +2143,17 @@
 
 .method private resetFailedAttemptsForUser(ZI)V
     .registers 6
+    .param p1, "clearAttemptCounter"  # Z
+    .param p2, "userId"  # I
 
-    .line 1087
+    .line 1174
     invoke-virtual {p0}, Lcom/android/server/biometrics/fingerprint/FingerprintService;->getLockoutMode()I
 
     move-result v0
 
     if-eqz v0, :cond_1e
 
-    .line 1088
+    .line 1175
     invoke-virtual {p0}, Lcom/android/server/biometrics/fingerprint/FingerprintService;->getTag()Ljava/lang/String;
 
     move-result-object v0
@@ -1930,210 +2174,226 @@
 
     invoke-static {v0, v1}, Landroid/util/Slog;->v(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 1090
+    .line 1177
     :cond_1e
     if-eqz p1, :cond_26
 
-    .line 1091
-    iget-object p1, p0, Lcom/android/server/biometrics/fingerprint/FingerprintService;->mFailedAttempts:Landroid/util/SparseIntArray;
+    .line 1178
+    iget-object v0, p0, Lcom/android/server/biometrics/fingerprint/FingerprintService;->mFailedAttempts:Landroid/util/SparseIntArray;
 
-    const/4 v0, 0x0
+    const/4 v1, 0x0
 
-    invoke-virtual {p1, p2, v0}, Landroid/util/SparseIntArray;->put(II)V
+    invoke-virtual {v0, p2, v1}, Landroid/util/SparseIntArray;->put(II)V
 
-    .line 1093
+    .line 1180
     :cond_26
-    iget-object p1, p0, Lcom/android/server/biometrics/fingerprint/FingerprintService;->mTimedLockoutCleared:Landroid/util/SparseBooleanArray;
+    iget-object v0, p0, Lcom/android/server/biometrics/fingerprint/FingerprintService;->mTimedLockoutCleared:Landroid/util/SparseBooleanArray;
 
-    const/4 v0, 0x1
+    const/4 v1, 0x1
 
-    invoke-virtual {p1, p2, v0}, Landroid/util/SparseBooleanArray;->put(IZ)V
+    invoke-virtual {v0, p2, v1}, Landroid/util/SparseBooleanArray;->put(IZ)V
 
-    .line 1096
+    .line 1183
     invoke-direct {p0, p2}, Lcom/android/server/biometrics/fingerprint/FingerprintService;->cancelLockoutResetForUser(I)V
 
-    .line 1097
+    .line 1184
     invoke-virtual {p0}, Lcom/android/server/biometrics/fingerprint/FingerprintService;->notifyLockoutResetMonitors()V
 
-    .line 1098
+    .line 1185
     return-void
 .end method
 
 .method private scheduleLockoutResetForUser(I)V
     .registers 7
+    .param p1, "userId"  # I
 
-    .line 1106
+    .line 1194
+    invoke-static {}, Landroid/os/SystemClock;->elapsedRealtime()J
+
+    move-result-wide v0
+
+    iput-wide v0, p0, Lcom/android/server/biometrics/fingerprint/FingerprintService;->mLockoutStartTime:J
+
+    .line 1196
     iget-object v0, p0, Lcom/android/server/biometrics/fingerprint/FingerprintService;->mAlarmManager:Landroid/app/AlarmManager;
 
-    .line 1107
+    .line 1197
     invoke-static {}, Landroid/os/SystemClock;->elapsedRealtime()J
 
     move-result-wide v1
 
-    const-wide/16 v3, 0x7530
+    const-wide/32 v3, 0xea60
 
     add-long/2addr v1, v3
 
-    .line 1108
+    .line 1198
     invoke-direct {p0, p1}, Lcom/android/server/biometrics/fingerprint/FingerprintService;->getLockoutResetIntentForUser(I)Landroid/app/PendingIntent;
 
-    move-result-object p1
+    move-result-object v3
 
-    .line 1106
-    const/4 v3, 0x2
+    .line 1196
+    const/4 v4, 0x2
 
-    invoke-virtual {v0, v3, v1, v2, p1}, Landroid/app/AlarmManager;->setExact(IJLandroid/app/PendingIntent;)V
+    invoke-virtual {v0, v4, v1, v2, v3}, Landroid/app/AlarmManager;->setExact(IJLandroid/app/PendingIntent;)V
 
-    .line 1109
+    .line 1199
     return-void
 .end method
 
 .method private startPostEnroll(Landroid/os/IBinder;)I
-    .registers 5
+    .registers 7
+    .param p1, "token"  # Landroid/os/IBinder;
 
-    .line 1070
+    .line 1157
     invoke-direct {p0}, Lcom/android/server/biometrics/fingerprint/FingerprintService;->getFingerprintDaemon()Landroid/hardware/biometrics/fingerprint/V2_1/IBiometricsFingerprint;
 
-    move-result-object p1
+    move-result-object v0
 
-    .line 1071
-    const/4 v0, 0x0
-
-    const-string v1, "FingerprintService"
-
-    if-nez p1, :cond_10
-
-    .line 1072
-    const-string/jumbo p1, "startPostEnroll: no fingerprint HAL!"
-
-    invoke-static {v1, p1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
-
-    .line 1073
-    return v0
-
-    .line 1076
-    :cond_10
-    :try_start_10
-    invoke-interface {p1}, Landroid/hardware/biometrics/fingerprint/V2_1/IBiometricsFingerprint;->postEnroll()I
-
-    move-result p1
-    :try_end_14
-    .catch Landroid/os/RemoteException; {:try_start_10 .. :try_end_14} :catch_15
-
-    return p1
-
-    .line 1077
-    :catch_15
-    move-exception p1
-
-    .line 1078
-    const-string/jumbo v2, "startPostEnroll failed"
-
-    invoke-static {v1, v2, p1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
-
-    .line 1080
-    return v0
-.end method
-
-.method private startPreEnroll(Landroid/os/IBinder;)J
-    .registers 6
-
-    .line 1056
-    invoke-direct {p0}, Lcom/android/server/biometrics/fingerprint/FingerprintService;->getFingerprintDaemon()Landroid/hardware/biometrics/fingerprint/V2_1/IBiometricsFingerprint;
-
-    move-result-object p1
-
-    .line 1057
-    const-wide/16 v0, 0x0
+    .line 1158
+    .local v0, "daemon":Landroid/hardware/biometrics/fingerprint/V2_1/IBiometricsFingerprint;
+    const/4 v1, 0x0
 
     const-string v2, "FingerprintService"
 
-    if-nez p1, :cond_11
+    if-nez v0, :cond_10
 
-    .line 1058
-    const-string/jumbo p1, "startPreEnroll: no fingerprint HAL!"
+    .line 1159
+    const-string/jumbo v3, "startPostEnroll: no fingerprint HAL!"
 
-    invoke-static {v2, p1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v2, v3}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 1059
-    return-wide v0
+    .line 1160
+    return v1
 
-    .line 1062
+    .line 1163
+    :cond_10
+    :try_start_10
+    invoke-interface {v0}, Landroid/hardware/biometrics/fingerprint/V2_1/IBiometricsFingerprint;->postEnroll()I
+
+    move-result v1
+    :try_end_14
+    .catch Landroid/os/RemoteException; {:try_start_10 .. :try_end_14} :catch_15
+
+    return v1
+
+    .line 1164
+    :catch_15
+    move-exception v3
+
+    .line 1165
+    .local v3, "e":Landroid/os/RemoteException;
+    const-string/jumbo v4, "startPostEnroll failed"
+
+    invoke-static {v2, v4, v3}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+
+    .line 1167
+    .end local v3  # "e":Landroid/os/RemoteException;
+    return v1
+.end method
+
+.method private startPreEnroll(Landroid/os/IBinder;)J
+    .registers 8
+    .param p1, "token"  # Landroid/os/IBinder;
+
+    .line 1143
+    invoke-direct {p0}, Lcom/android/server/biometrics/fingerprint/FingerprintService;->getFingerprintDaemon()Landroid/hardware/biometrics/fingerprint/V2_1/IBiometricsFingerprint;
+
+    move-result-object v0
+
+    .line 1144
+    .local v0, "daemon":Landroid/hardware/biometrics/fingerprint/V2_1/IBiometricsFingerprint;
+    const-wide/16 v1, 0x0
+
+    const-string v3, "FingerprintService"
+
+    if-nez v0, :cond_11
+
+    .line 1145
+    const-string/jumbo v4, "startPreEnroll: no fingerprint HAL!"
+
+    invoke-static {v3, v4}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+
+    .line 1146
+    return-wide v1
+
+    .line 1149
     :cond_11
     :try_start_11
-    invoke-interface {p1}, Landroid/hardware/biometrics/fingerprint/V2_1/IBiometricsFingerprint;->preEnroll()J
+    invoke-interface {v0}, Landroid/hardware/biometrics/fingerprint/V2_1/IBiometricsFingerprint;->preEnroll()J
 
-    move-result-wide v0
+    move-result-wide v1
     :try_end_15
     .catch Landroid/os/RemoteException; {:try_start_11 .. :try_end_15} :catch_16
 
-    return-wide v0
+    return-wide v1
 
-    .line 1063
+    .line 1150
     :catch_16
-    move-exception p1
+    move-exception v4
 
-    .line 1064
-    const-string/jumbo v3, "startPreEnroll failed"
+    .line 1151
+    .local v4, "e":Landroid/os/RemoteException;
+    const-string/jumbo v5, "startPreEnroll failed"
 
-    invoke-static {v2, v3, p1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    invoke-static {v3, v5, v4}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
-    .line 1066
-    return-wide v0
+    .line 1153
+    .end local v4  # "e":Landroid/os/RemoteException;
+    return-wide v1
 .end method
 
 
 # virtual methods
 .method protected checkAppOps(ILjava/lang/String;)Z
     .registers 6
+    .param p1, "uid"  # I
+    .param p2, "opPackageName"  # Ljava/lang/String;
 
-    .line 945
-    nop
+    .line 1038
+    const/4 v0, 0x0
 
-    .line 946
-    iget-object v0, p0, Lcom/android/server/biometrics/fingerprint/FingerprintService;->mAppOps:Landroid/app/AppOpsManager;
+    .line 1039
+    .local v0, "appOpsOk":Z
+    iget-object v1, p0, Lcom/android/server/biometrics/fingerprint/FingerprintService;->mAppOps:Landroid/app/AppOpsManager;
 
-    const/16 v1, 0x4e
+    const/16 v2, 0x4e
 
-    invoke-virtual {v0, v1, p1, p2}, Landroid/app/AppOpsManager;->noteOp(IILjava/lang/String;)I
+    invoke-virtual {v1, v2, p1, p2}, Landroid/app/AppOpsManager;->noteOp(IILjava/lang/String;)I
 
-    move-result v0
+    move-result v1
 
-    const/4 v1, 0x1
+    if-nez v1, :cond_d
 
-    if-nez v0, :cond_d
+    .line 1041
+    const/4 v0, 0x1
 
-    .line 948
-    goto :goto_19
+    goto :goto_18
 
-    .line 949
+    .line 1042
     :cond_d
-    iget-object v0, p0, Lcom/android/server/biometrics/fingerprint/FingerprintService;->mAppOps:Landroid/app/AppOpsManager;
+    iget-object v1, p0, Lcom/android/server/biometrics/fingerprint/FingerprintService;->mAppOps:Landroid/app/AppOpsManager;
 
     const/16 v2, 0x37
 
-    invoke-virtual {v0, v2, p1, p2}, Landroid/app/AppOpsManager;->noteOp(IILjava/lang/String;)I
+    invoke-virtual {v1, v2, p1, p2}, Landroid/app/AppOpsManager;->noteOp(IILjava/lang/String;)I
 
-    move-result p1
+    move-result v1
 
-    if-nez p1, :cond_18
+    if-nez v1, :cond_18
 
-    .line 951
-    goto :goto_19
+    .line 1044
+    const/4 v0, 0x1
 
-    .line 949
+    .line 1046
     :cond_18
-    const/4 v1, 0x0
-
-    .line 953
-    :goto_19
-    return v1
+    :goto_18
+    return v0
 .end method
 
 .method protected checkUseBiometricPermission()V
     .registers 3
 
-    .line 937
+    .line 1030
     invoke-virtual {p0}, Lcom/android/server/biometrics/fingerprint/FingerprintService;->getContext()Landroid/content/Context;
 
     move-result-object v0
@@ -2146,12 +2406,12 @@
 
     if-eqz v0, :cond_11
 
-    .line 939
+    .line 1032
     const-string v0, "android.permission.USE_BIOMETRIC"
 
     invoke-virtual {p0, v0}, Lcom/android/server/biometrics/fingerprint/FingerprintService;->checkPermission(Ljava/lang/String;)V
 
-    .line 941
+    .line 1034
     :cond_11
     return-void
 .end method
@@ -2159,7 +2419,7 @@
 .method protected getBiometricUtils()Lcom/android/server/biometrics/BiometricUtils;
     .registers 2
 
-    .line 834
+    .line 918
     invoke-static {}, Lcom/android/server/biometrics/fingerprint/FingerprintUtils;->getInstance()Lcom/android/server/biometrics/fingerprint/FingerprintUtils;
 
     move-result-object v0
@@ -2170,7 +2430,7 @@
 .method protected getConstants()Lcom/android/server/biometrics/Constants;
     .registers 2
 
-    .line 839
+    .line 923
     iget-object v0, p0, Lcom/android/server/biometrics/fingerprint/FingerprintService;->mFingerprintConstants:Lcom/android/server/biometrics/fingerprint/FingerprintConstants;
 
     return-object v0
@@ -2179,7 +2439,7 @@
 .method protected getDaemonWrapper()Lcom/android/server/biometrics/BiometricServiceBase$DaemonWrapper;
     .registers 2
 
-    .line 829
+    .line 913
     iget-object v0, p0, Lcom/android/server/biometrics/fingerprint/FingerprintService;->mDaemonWrapper:Lcom/android/server/biometrics/BiometricServiceBase$DaemonWrapper;
 
     return-object v0
@@ -2187,6 +2447,7 @@
 
 .method protected getEnrolledTemplates(I)Ljava/util/List;
     .registers 4
+    .param p1, "userId"  # I
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(I)",
@@ -2196,19 +2457,19 @@
         }
     .end annotation
 
-    .line 958
+    .line 1051
     invoke-static {}, Landroid/os/UserHandle;->getCallingUserId()I
 
     move-result v0
 
     if-eq p1, v0, :cond_b
 
-    .line 959
+    .line 1052
     const-string v0, "android.permission.INTERACT_ACROSS_USERS"
 
     invoke-virtual {p0, v0}, Lcom/android/server/biometrics/fingerprint/FingerprintService;->checkPermission(Ljava/lang/String;)V
 
-    .line 961
+    .line 1054
     :cond_b
     invoke-virtual {p0}, Lcom/android/server/biometrics/fingerprint/FingerprintService;->getBiometricUtils()Lcom/android/server/biometrics/BiometricUtils;
 
@@ -2220,15 +2481,15 @@
 
     invoke-interface {v0, v1, p1}, Lcom/android/server/biometrics/BiometricUtils;->getBiometricsForUser(Landroid/content/Context;I)Ljava/util/List;
 
-    move-result-object p1
+    move-result-object v0
 
-    return-object p1
+    return-object v0
 .end method
 
 .method protected getHalDeviceId()J
     .registers 3
 
-    .line 919
+    .line 1008
     iget-wide v0, p0, Lcom/android/server/biometrics/fingerprint/FingerprintService;->mHalDeviceId:J
 
     return-wide v0
@@ -2237,7 +2498,7 @@
 .method protected getLockoutBroadcastPermission()Ljava/lang/String;
     .registers 2
 
-    .line 914
+    .line 1003
     const-string v0, "android.permission.RESET_FINGERPRINT_LOCKOUT"
 
     return-object v0
@@ -2246,12 +2507,11 @@
 .method protected getLockoutMode()I
     .registers 5
 
-    .line 984
-    invoke-static {}, Landroid/app/ActivityManager;->getCurrentUser()I
+    .line 1090
+    iget v0, p0, Lcom/android/server/biometrics/fingerprint/FingerprintService;->mCurrentUserId:I
 
-    move-result v0
-
-    .line 985
+    .line 1092
+    .local v0, "currentUser":I
     iget-object v1, p0, Lcom/android/server/biometrics/fingerprint/FingerprintService;->mFailedAttempts:Landroid/util/SparseIntArray;
 
     const/4 v2, 0x0
@@ -2260,47 +2520,48 @@
 
     move-result v1
 
-    .line 986
+    .line 1093
+    .local v1, "failedAttempts":I
     const/16 v3, 0x14
 
-    if-lt v1, v3, :cond_11
+    if-lt v1, v3, :cond_f
 
-    .line 987
-    const/4 v0, 0x2
+    .line 1094
+    const/4 v2, 0x2
 
-    return v0
+    return v2
 
-    .line 988
-    :cond_11
-    if-lez v1, :cond_21
+    .line 1095
+    :cond_f
+    if-lez v1, :cond_1f
 
     iget-object v3, p0, Lcom/android/server/biometrics/fingerprint/FingerprintService;->mTimedLockoutCleared:Landroid/util/SparseBooleanArray;
 
-    .line 989
+    .line 1096
     invoke-virtual {v3, v0, v2}, Landroid/util/SparseBooleanArray;->get(IZ)Z
 
-    move-result v0
+    move-result v3
 
-    if-nez v0, :cond_21
+    if-nez v3, :cond_1f
 
-    rem-int/lit8 v1, v1, 0x5
+    rem-int/lit8 v3, v1, 0x5
 
-    if-nez v1, :cond_21
+    if-nez v3, :cond_1f
 
-    .line 991
-    const/4 v0, 0x1
+    .line 1098
+    const/4 v2, 0x1
 
-    return v0
+    return v2
 
-    .line 993
-    :cond_21
+    .line 1100
+    :cond_1f
     return v2
 .end method
 
 .method protected getLockoutResetIntent()Ljava/lang/String;
     .registers 2
 
-    .line 909
+    .line 998
     const-string v0, "com.android.server.biometrics.fingerprint.ACTION_LOCKOUT_RESET"
 
     return-object v0
@@ -2309,7 +2570,7 @@
 .method protected getManageBiometricPermission()Ljava/lang/String;
     .registers 2
 
-    .line 932
+    .line 1025
     const-string v0, "android.permission.MANAGE_FINGERPRINT"
 
     return-object v0
@@ -2318,7 +2579,7 @@
 .method protected getTag()Ljava/lang/String;
     .registers 2
 
-    .line 824
+    .line 908
     const-string v0, "FingerprintService"
 
     return-object v0
@@ -2326,21 +2587,33 @@
 
 .method protected hasEnrolledBiometrics(I)Z
     .registers 4
+    .param p1, "userId"  # I
 
-    .line 924
+    .line 1013
     invoke-static {}, Landroid/os/UserHandle;->getCallingUserId()I
 
     move-result v0
 
-    if-eq p1, v0, :cond_b
+    if-eq p1, v0, :cond_15
 
-    .line 925
+    .line 1015
+    invoke-static {}, Landroid/os/UserHandle;->getCallingUserId()I
+
+    move-result v0
+
+    invoke-static {v0}, Landroid/os/UserHandle;->isMultiOpenUserId(I)Z
+
+    move-result v0
+
+    if-nez v0, :cond_15
+
+    .line 1016
     const-string v0, "android.permission.INTERACT_ACROSS_USERS"
 
     invoke-virtual {p0, v0}, Lcom/android/server/biometrics/fingerprint/FingerprintService;->checkPermission(Ljava/lang/String;)V
 
-    .line 927
-    :cond_b
+    .line 1020
+    :cond_15
     invoke-virtual {p0}, Lcom/android/server/biometrics/fingerprint/FingerprintService;->getBiometricUtils()Lcom/android/server/biometrics/BiometricUtils;
 
     move-result-object v0
@@ -2351,29 +2624,30 @@
 
     invoke-interface {v0, v1, p1}, Lcom/android/server/biometrics/BiometricUtils;->getBiometricsForUser(Landroid/content/Context;I)Ljava/util/List;
 
-    move-result-object p1
+    move-result-object v0
 
-    invoke-interface {p1}, Ljava/util/List;->size()I
+    invoke-interface {v0}, Ljava/util/List;->size()I
 
-    move-result p1
+    move-result v0
 
-    if-lez p1, :cond_1f
+    if-lez v0, :cond_29
 
-    const/4 p1, 0x1
+    const/4 v0, 0x1
 
-    goto :goto_20
+    goto :goto_2a
 
-    :cond_1f
-    const/4 p1, 0x0
+    :cond_29
+    const/4 v0, 0x0
 
-    :goto_20
-    return p1
+    :goto_2a
+    return v0
 .end method
 
 .method protected hasReachedEnrollmentLimit(I)Z
-    .registers 4
+    .registers 6
+    .param p1, "userId"  # I
 
-    .line 844
+    .line 928
     invoke-virtual {p0}, Lcom/android/server/biometrics/fingerprint/FingerprintService;->getContext()Landroid/content/Context;
 
     move-result-object v0
@@ -2382,73 +2656,98 @@
 
     move-result-object v0
 
-    const v1, 0x10e005d
+    const v1, 0x10e005c
 
     invoke-virtual {v0, v1}, Landroid/content/res/Resources;->getInteger(I)I
 
     move-result v0
 
-    .line 846
+    .line 930
+    .local v0, "limit":I
     invoke-virtual {p0, p1}, Lcom/android/server/biometrics/fingerprint/FingerprintService;->getEnrolledTemplates(I)Ljava/util/List;
 
-    move-result-object p1
+    move-result-object v1
 
-    invoke-interface {p1}, Ljava/util/List;->size()I
+    invoke-interface {v1}, Ljava/util/List;->size()I
 
-    move-result p1
+    move-result v1
 
-    .line 847
-    if-lt p1, v0, :cond_22
+    .line 931
+    .local v1, "enrolled":I
+    if-lt v1, v0, :cond_22
 
-    .line 848
-    const-string p1, "FingerprintService"
+    .line 932
+    const-string v2, "FingerprintService"
 
-    const-string v0, "Too many fingerprints registered"
+    const-string v3, "Too many fingerprints registered"
 
-    invoke-static {p1, v0}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v2, v3}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 849
-    const/4 p1, 0x1
+    .line 933
+    const/4 v2, 0x1
 
-    return p1
+    return v2
 
-    .line 851
+    .line 935
     :cond_22
-    const/4 p1, 0x0
+    const/4 v2, 0x0
 
-    return p1
-.end method
-
-.method public synthetic lambda$getFingerprintInScreenDaemon$0$FingerprintService(J)V
-    .registers 3
-
-    .line 1045
-    const/4 p1, 0x0
-
-    iput-object p1, p0, Lcom/android/server/biometrics/fingerprint/FingerprintService;->mFingerprintInscreenDaemon:Lvendor/lineage/biometrics/fingerprint/inscreen/V1_0/IFingerprintInscreen;
-
-    .line 1046
-    return-void
+    return v2
 .end method
 
 .method protected notifyClientActiveCallbacks(Z)V
-    .registers 6
+    .registers 7
+    .param p1, "isActive"  # Z
 
-    .line 966
+    .line 1060
+    if-eqz p1, :cond_10
+
+    .line 1061
+    iget-boolean v0, p0, Lcom/android/server/biometrics/fingerprint/FingerprintService;->mIsUnderGlassFP:Z
+
+    if-eqz v0, :cond_19
+
+    .line 1062
+    iget-object v0, p0, Lcom/android/server/biometrics/fingerprint/FingerprintService;->mUnderglassFingerprintController:Lcom/android/server/biometrics/flymefingerprint/UnderglassFingerprintController;
+
+    invoke-virtual {p0}, Lcom/android/server/biometrics/fingerprint/FingerprintService;->getCurrentClient()Lcom/android/server/biometrics/ClientMonitor;
+
+    move-result-object v1
+
+    invoke-virtual {v0, v1}, Lcom/android/server/biometrics/flymefingerprint/UnderglassFingerprintController;->show(Lcom/android/server/biometrics/ClientMonitor;)V
+
+    goto :goto_19
+
+    .line 1065
+    :cond_10
+    iget-boolean v0, p0, Lcom/android/server/biometrics/fingerprint/FingerprintService;->mIsUnderGlassFP:Z
+
+    if-eqz v0, :cond_19
+
+    .line 1066
+    iget-object v0, p0, Lcom/android/server/biometrics/fingerprint/FingerprintService;->mUnderglassFingerprintController:Lcom/android/server/biometrics/flymefingerprint/UnderglassFingerprintController;
+
+    invoke-virtual {v0}, Lcom/android/server/biometrics/flymefingerprint/UnderglassFingerprintController;->dismiss()V
+
+    .line 1071
+    :cond_19
+    :goto_19
     iget-object v0, p0, Lcom/android/server/biometrics/fingerprint/FingerprintService;->mClientActiveCallbacks:Ljava/util/concurrent/CopyOnWriteArrayList;
 
-    .line 967
+    .line 1072
+    .local v0, "callbacks":Ljava/util/List;, "Ljava/util/List<Landroid/hardware/fingerprint/IFingerprintClientActiveCallback;>;"
     const/4 v1, 0x0
 
-    :goto_3
+    .local v1, "i":I
+    :goto_1c
     invoke-interface {v0}, Ljava/util/List;->size()I
 
     move-result v2
 
-    if-ge v1, v2, :cond_20
+    if-ge v1, v2, :cond_39
 
-    .line 969
-    :try_start_9
+    .line 1074
+    :try_start_22
     invoke-interface {v0, v1}, Ljava/util/List;->get(I)Ljava/lang/Object;
 
     move-result-object v2
@@ -2456,43 +2755,46 @@
     check-cast v2, Landroid/hardware/fingerprint/IFingerprintClientActiveCallback;
 
     invoke-interface {v2, p1}, Landroid/hardware/fingerprint/IFingerprintClientActiveCallback;->onClientActiveChanged(Z)V
-    :try_end_12
-    .catch Landroid/os/RemoteException; {:try_start_9 .. :try_end_12} :catch_13
+    :try_end_2b
+    .catch Landroid/os/RemoteException; {:try_start_22 .. :try_end_2b} :catch_2c
 
-    .line 973
-    goto :goto_1d
+    .line 1078
+    goto :goto_36
 
-    .line 970
-    :catch_13
+    .line 1075
+    :catch_2c
     move-exception v2
 
-    .line 972
-    iget-object v2, p0, Lcom/android/server/biometrics/fingerprint/FingerprintService;->mClientActiveCallbacks:Ljava/util/concurrent/CopyOnWriteArrayList;
+    .line 1077
+    .local v2, "re":Landroid/os/RemoteException;
+    iget-object v3, p0, Lcom/android/server/biometrics/fingerprint/FingerprintService;->mClientActiveCallbacks:Ljava/util/concurrent/CopyOnWriteArrayList;
 
     invoke-interface {v0, v1}, Ljava/util/List;->get(I)Ljava/lang/Object;
 
-    move-result-object v3
+    move-result-object v4
 
-    invoke-virtual {v2, v3}, Ljava/util/concurrent/CopyOnWriteArrayList;->remove(Ljava/lang/Object;)Z
+    invoke-virtual {v3, v4}, Ljava/util/concurrent/CopyOnWriteArrayList;->remove(Ljava/lang/Object;)Z
 
-    .line 967
-    :goto_1d
+    .line 1072
+    .end local v2  # "re":Landroid/os/RemoteException;
+    :goto_36
     add-int/lit8 v1, v1, 0x1
 
-    goto :goto_3
+    goto :goto_1c
 
-    .line 975
-    :cond_20
+    .line 1080
+    .end local v1  # "i":I
+    :cond_39
     return-void
 .end method
 
 .method public onStart()V
     .registers 4
 
-    .line 817
+    .line 901
     invoke-super {p0}, Lcom/android/server/biometrics/BiometricServiceBase;->onStart()V
 
-    .line 818
+    .line 902
     new-instance v0, Lcom/android/server/biometrics/fingerprint/FingerprintService$FingerprintServiceWrapper;
 
     const/4 v1, 0x0
@@ -2503,7 +2805,7 @@
 
     invoke-virtual {p0, v1, v0}, Lcom/android/server/biometrics/fingerprint/FingerprintService;->publishBinderService(Ljava/lang/String;Landroid/os/IBinder;)V
 
-    .line 819
+    .line 903
     invoke-static {}, Lcom/android/server/SystemServerInitThreadPool;->get()Lcom/android/server/SystemServerInitThreadPool;
 
     move-result-object v0
@@ -2516,67 +2818,83 @@
 
     invoke-virtual {v0, v1, v2}, Lcom/android/server/SystemServerInitThreadPool;->submit(Ljava/lang/Runnable;Ljava/lang/String;)Ljava/util/concurrent/Future;
 
-    .line 820
+    .line 904
     return-void
 .end method
 
 .method public serviceDied(J)V
-    .registers 3
+    .registers 4
+    .param p1, "cookie"  # J
 
-    .line 856
+    .line 940
     invoke-super {p0, p1, p2}, Lcom/android/server/biometrics/BiometricServiceBase;->serviceDied(J)V
 
-    .line 857
-    const/4 p1, 0x0
+    .line 941
+    const/4 v0, 0x0
 
-    iput-object p1, p0, Lcom/android/server/biometrics/fingerprint/FingerprintService;->mDaemon:Landroid/hardware/biometrics/fingerprint/V2_1/IBiometricsFingerprint;
+    iput-object v0, p0, Lcom/android/server/biometrics/fingerprint/FingerprintService;->mDaemon:Landroid/hardware/biometrics/fingerprint/V2_1/IBiometricsFingerprint;
 
-    .line 858
+    .line 942
     return-void
 .end method
 
 .method protected statsModality()I
     .registers 2
 
-    .line 979
+    .line 1084
     const/4 v0, 0x1
 
     return v0
 .end method
 
 .method protected updateActiveGroup(ILjava/lang/String;)V
-    .registers 8
+    .registers 10
+    .param p1, "userId"  # I
+    .param p2, "clientPackage"  # Ljava/lang/String;
 
-    .line 862
+    .line 946
     const-string v0, "FingerprintService"
 
     invoke-direct {p0}, Lcom/android/server/biometrics/fingerprint/FingerprintService;->getFingerprintDaemon()Landroid/hardware/biometrics/fingerprint/V2_1/IBiometricsFingerprint;
 
     move-result-object v1
 
-    .line 864
-    if-eqz v1, :cond_a3
+    .line 948
+    .local v1, "daemon":Landroid/hardware/biometrics/fingerprint/V2_1/IBiometricsFingerprint;
+    if-eqz v1, :cond_ac
 
-    .line 866
+    .line 950
     :try_start_8
     invoke-virtual {p0, p2, p1}, Lcom/android/server/biometrics/fingerprint/FingerprintService;->getUserOrWorkProfileId(Ljava/lang/String;I)I
 
-    move-result p1
+    move-result v2
 
-    .line 867
+    move p1, v2
+
+    .line 951
     iget v2, p0, Lcom/android/server/biometrics/fingerprint/FingerprintService;->mCurrentUserId:I
 
-    if-eq p1, v2, :cond_82
+    if-eq p1, v2, :cond_84
 
-    .line 868
+    .line 953
+    iget-object v2, p0, Lcom/android/server/biometrics/fingerprint/FingerprintService;->mFlymeFingerprintUtils:Lcom/android/server/biometrics/flymefingerprint/FlymeFingerprintUtils;
+
+    invoke-virtual {v2, p1}, Lcom/android/server/biometrics/flymefingerprint/FlymeFingerprintUtils;->checkIsFlymeParallelSpaceUserId(I)I
+
+    move-result v2
+
+    move p1, v2
+
+    .line 955
     sget v2, Landroid/os/Build$VERSION;->FIRST_SDK_INT:I
 
-    .line 869
+    .line 956
+    .local v2, "firstSdkInt":I
     const/4 v3, 0x1
 
-    if-ge v2, v3, :cond_2e
+    if-ge v2, v3, :cond_36
 
-    .line 870
+    .line 957
     new-instance v3, Ljava/lang/StringBuilder;
 
     invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
@@ -2597,153 +2915,164 @@
 
     invoke-static {v0, v3}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 874
-    :cond_2e
+    .line 961
+    :cond_36
     const/16 v3, 0x1b
 
-    if-gt v2, v3, :cond_37
+    if-gt v2, v3, :cond_3f
 
-    .line 875
+    .line 962
     invoke-static {p1}, Landroid/os/Environment;->getUserSystemDirectory(I)Ljava/io/File;
 
-    move-result-object v2
+    move-result-object v3
 
-    goto :goto_3b
+    .local v3, "baseDir":Ljava/io/File;
+    goto :goto_43
 
-    .line 877
-    :cond_37
+    .line 964
+    .end local v3  # "baseDir":Ljava/io/File;
+    :cond_3f
     invoke-static {p1}, Landroid/os/Environment;->getDataVendorDeDirectory(I)Ljava/io/File;
 
-    move-result-object v2
+    move-result-object v3
 
-    .line 880
-    :goto_3b
-    new-instance v3, Ljava/io/File;
+    .line 967
+    .restart local v3  # "baseDir":Ljava/io/File;
+    :goto_43
+    new-instance v4, Ljava/io/File;
 
-    const-string v4, "fpdata"
+    const-string v5, "fpdata"
 
-    invoke-direct {v3, v2, v4}, Ljava/io/File;-><init>(Ljava/io/File;Ljava/lang/String;)V
+    invoke-direct {v4, v3, v5}, Ljava/io/File;-><init>(Ljava/io/File;Ljava/lang/String;)V
 
-    .line 881
-    invoke-virtual {v3}, Ljava/io/File;->exists()Z
+    .line 968
+    .local v4, "fpDir":Ljava/io/File;
+    invoke-virtual {v4}, Ljava/io/File;->exists()Z
 
-    move-result v2
+    move-result v5
 
-    if-nez v2, :cond_73
+    if-nez v5, :cond_7b
 
-    .line 882
-    invoke-virtual {v3}, Ljava/io/File;->mkdir()Z
+    .line 969
+    invoke-virtual {v4}, Ljava/io/File;->mkdir()Z
 
-    move-result v2
+    move-result v5
 
-    if-nez v2, :cond_67
+    if-nez v5, :cond_6f
 
-    .line 883
-    new-instance p1, Ljava/lang/StringBuilder;
+    .line 970
+    new-instance v5, Ljava/lang/StringBuilder;
 
-    invoke-direct {p1}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v5}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string p2, "Cannot make directory: "
+    const-string v6, "Cannot make directory: "
 
-    invoke-virtual {p1, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v3}, Ljava/io/File;->getAbsolutePath()Ljava/lang/String;
+    invoke-virtual {v4}, Ljava/io/File;->getAbsolutePath()Ljava/lang/String;
 
-    move-result-object p2
+    move-result-object v6
 
-    invoke-virtual {p1, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v5}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v5
 
-    invoke-static {v0, p1}, Landroid/util/Slog;->v(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v0, v5}, Landroid/util/Slog;->v(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 884
+    .line 971
     return-void
 
-    .line 889
-    :cond_67
-    invoke-static {v3}, Landroid/os/SELinux;->restorecon(Ljava/io/File;)Z
+    .line 976
+    :cond_6f
+    invoke-static {v4}, Landroid/os/SELinux;->restorecon(Ljava/io/File;)Z
 
-    move-result v2
+    move-result v5
 
-    if-nez v2, :cond_73
+    if-nez v5, :cond_7b
 
-    .line 890
-    const-string p1, "Restorecons failed. Directory will have wrong label."
+    .line 977
+    const-string v5, "Restorecons failed. Directory will have wrong label."
 
-    invoke-static {v0, p1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v0, v5}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 891
+    .line 978
     return-void
 
-    .line 895
-    :cond_73
-    invoke-virtual {v3}, Ljava/io/File;->getAbsolutePath()Ljava/lang/String;
+    .line 982
+    :cond_7b
+    invoke-virtual {v4}, Ljava/io/File;->getAbsolutePath()Ljava/lang/String;
 
-    move-result-object v2
+    move-result-object v5
 
-    invoke-interface {v1, p1, v2}, Landroid/hardware/biometrics/fingerprint/V2_1/IBiometricsFingerprint;->setActiveGroup(ILjava/lang/String;)I
+    invoke-interface {v1, p1, v5}, Landroid/hardware/biometrics/fingerprint/V2_1/IBiometricsFingerprint;->setActiveGroup(ILjava/lang/String;)I
 
-    .line 896
+    .line 983
     iput p1, p0, Lcom/android/server/biometrics/fingerprint/FingerprintService;->mCurrentUserId:I
 
-    .line 897
-    invoke-virtual {p0, p2}, Lcom/android/server/biometrics/fingerprint/FingerprintService;->isKeyguard(Ljava/lang/String;)Z
+    .line 986
+    .end local v2  # "firstSdkInt":I
+    .end local v3  # "baseDir":Ljava/io/File;
+    .end local v4  # "fpDir":Ljava/io/File;
+    :cond_84
+    iget-object v2, p0, Lcom/android/server/biometrics/fingerprint/FingerprintService;->mFlymeFingerprintUtils:Lcom/android/server/biometrics/flymefingerprint/FlymeFingerprintUtils;
 
-    move-result p2
+    invoke-virtual {v2, p1}, Lcom/android/server/biometrics/flymefingerprint/FlymeFingerprintUtils;->checkIsFlymeParallelSpaceUserId(I)I
 
-    iput-boolean p2, p0, Lcom/android/server/biometrics/fingerprint/FingerprintService;->mIsKeyguard:Z
+    move-result v2
 
-    .line 899
-    :cond_82
-    iget-object p2, p0, Lcom/android/server/biometrics/fingerprint/FingerprintService;->mAuthenticatorIds:Ljava/util/Map;
+    move p1, v2
+
+    .line 988
+    iget-object v2, p0, Lcom/android/server/biometrics/fingerprint/FingerprintService;->mAuthenticatorIds:Ljava/util/Map;
 
     invoke-static {p1}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
 
-    move-result-object v2
+    move-result-object v3
 
-    .line 900
+    .line 989
     invoke-virtual {p0, p1}, Lcom/android/server/biometrics/fingerprint/FingerprintService;->hasEnrolledBiometrics(I)Z
 
-    move-result p1
+    move-result v4
 
-    if-eqz p1, :cond_93
+    if-eqz v4, :cond_9c
 
     invoke-interface {v1}, Landroid/hardware/biometrics/fingerprint/V2_1/IBiometricsFingerprint;->getAuthenticatorId()J
 
-    move-result-wide v3
+    move-result-wide v4
 
-    goto :goto_95
+    goto :goto_9e
 
-    :cond_93
-    const-wide/16 v3, 0x0
+    :cond_9c
+    const-wide/16 v4, 0x0
 
-    :goto_95
-    invoke-static {v3, v4}, Ljava/lang/Long;->valueOf(J)Ljava/lang/Long;
+    :goto_9e
+    invoke-static {v4, v5}, Ljava/lang/Long;->valueOf(J)Ljava/lang/Long;
 
-    move-result-object p1
+    move-result-object v4
 
-    .line 899
-    invoke-interface {p2, v2, p1}, Ljava/util/Map;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
-    :try_end_9c
-    .catch Landroid/os/RemoteException; {:try_start_8 .. :try_end_9c} :catch_9d
+    .line 988
+    invoke-interface {v2, v3, v4}, Ljava/util/Map;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+    :try_end_a5
+    .catch Landroid/os/RemoteException; {:try_start_8 .. :try_end_a5} :catch_a6
 
-    .line 903
-    goto :goto_a3
+    .line 992
+    goto :goto_ac
 
-    .line 901
-    :catch_9d
-    move-exception p1
+    .line 990
+    :catch_a6
+    move-exception v2
 
-    .line 902
-    const-string p2, "Failed to setActiveGroup():"
+    .line 991
+    .local v2, "e":Landroid/os/RemoteException;
+    const-string v3, "Failed to setActiveGroup():"
 
-    invoke-static {v0, p2, p1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    invoke-static {v0, v3, v2}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
-    .line 905
-    :cond_a3
-    :goto_a3
+    .line 994
+    .end local v2  # "e":Landroid/os/RemoteException;
+    :cond_ac
+    :goto_ac
     return-void
 .end method

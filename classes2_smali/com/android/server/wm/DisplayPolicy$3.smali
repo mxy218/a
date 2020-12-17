@@ -24,8 +24,9 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/wm/DisplayPolicy;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/wm/DisplayPolicy;
 
-    .line 1401
+    .line 1565
     iput-object p1, p0, Lcom/android/server/wm/DisplayPolicy$3;->this$0:Lcom/android/server/wm/DisplayPolicy;
 
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -38,39 +39,39 @@
 .method public run()V
     .registers 4
 
-    .line 1404
+    .line 1568
     iget-object v0, p0, Lcom/android/server/wm/DisplayPolicy$3;->this$0:Lcom/android/server/wm/DisplayPolicy;
 
-    invoke-static {v0}, Lcom/android/server/wm/DisplayPolicy;->access$1000(Lcom/android/server/wm/DisplayPolicy;)Ljava/lang/Object;
+    invoke-static {v0}, Lcom/android/server/wm/DisplayPolicy;->access$1100(Lcom/android/server/wm/DisplayPolicy;)Ljava/lang/Object;
 
     move-result-object v0
 
     monitor-enter v0
 
-    .line 1405
+    .line 1569
     :try_start_7
     iget-object v1, p0, Lcom/android/server/wm/DisplayPolicy$3;->this$0:Lcom/android/server/wm/DisplayPolicy;
 
     const/4 v2, -0x3
 
-    invoke-static {v1, v2}, Lcom/android/server/wm/DisplayPolicy;->access$1672(Lcom/android/server/wm/DisplayPolicy;I)I
+    invoke-static {v1, v2}, Lcom/android/server/wm/DisplayPolicy;->access$2072(Lcom/android/server/wm/DisplayPolicy;I)I
 
-    .line 1406
+    .line 1570
     iget-object v1, p0, Lcom/android/server/wm/DisplayPolicy$3;->this$0:Lcom/android/server/wm/DisplayPolicy;
 
-    invoke-static {v1}, Lcom/android/server/wm/DisplayPolicy;->access$1100(Lcom/android/server/wm/DisplayPolicy;)Lcom/android/server/wm/DisplayContent;
+    invoke-static {v1}, Lcom/android/server/wm/DisplayPolicy;->access$900(Lcom/android/server/wm/DisplayPolicy;)Lcom/android/server/wm/DisplayContent;
 
     move-result-object v1
 
     invoke-virtual {v1}, Lcom/android/server/wm/DisplayContent;->reevaluateStatusBarVisibility()V
 
-    .line 1407
+    .line 1571
     monitor-exit v0
 
-    .line 1408
+    .line 1572
     return-void
 
-    .line 1407
+    .line 1571
     :catchall_18
     move-exception v1
 

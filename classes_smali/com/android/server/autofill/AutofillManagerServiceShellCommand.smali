@@ -10,6 +10,7 @@
 # direct methods
 .method public constructor <init>(Lcom/android/server/autofill/AutofillManagerService;)V
     .registers 2
+    .param p1, "service"  # Lcom/android/server/autofill/AutofillManagerService;
 
     .line 41
     invoke-direct {p0}, Landroid/os/ShellCommand;-><init>()V
@@ -23,6 +24,7 @@
 
 .method private getBindInstantService(Ljava/io/PrintWriter;)I
     .registers 3
+    .param p1, "pw"  # Ljava/io/PrintWriter;
 
     .line 291
     iget-object v0, p0, Lcom/android/server/autofill/AutofillManagerServiceShellCommand;->mService:Lcom/android/server/autofill/AutofillManagerService;
@@ -48,13 +50,14 @@
 
     .line 296
     :goto_14
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    return p1
+    return v0
 .end method
 
 .method private getDefaultAugmentedServiceEnabled(Ljava/io/PrintWriter;)I
-    .registers 4
+    .registers 5
+    .param p1, "pw"  # Ljava/io/PrintWriter;
 
     .line 329
     invoke-direct {p0}, Lcom/android/server/autofill/AutofillManagerServiceShellCommand;->getNextIntArgRequired()I
@@ -62,23 +65,26 @@
     move-result v0
 
     .line 330
+    .local v0, "userId":I
     iget-object v1, p0, Lcom/android/server/autofill/AutofillManagerServiceShellCommand;->mService:Lcom/android/server/autofill/AutofillManagerService;
 
     invoke-virtual {v1, v0}, Lcom/android/server/autofill/AutofillManagerService;->isDefaultAugmentedServiceEnabled(I)Z
 
-    move-result v0
+    move-result v1
 
     .line 331
-    invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->println(Z)V
+    .local v1, "enabled":Z
+    invoke-virtual {p1, v1}, Ljava/io/PrintWriter;->println(Z)V
 
     .line 332
-    const/4 p1, 0x0
+    const/4 v2, 0x0
 
-    return p1
+    return v2
 .end method
 
 .method private getFieldClassificationScore(Ljava/io/PrintWriter;)I
     .registers 10
+    .param p1, "pw"  # Ljava/io/PrintWriter;
 
     .line 235
     invoke-virtual {p0}, Lcom/android/server/autofill/AutofillManagerServiceShellCommand;->getNextArgRequired()Ljava/lang/String;
@@ -86,6 +92,7 @@
     move-result-object v0
 
     .line 237
+    .local v0, "nextArg":Ljava/lang/String;
     const-string v1, "--algorithm"
 
     invoke-virtual {v1, v0}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
@@ -97,62 +104,67 @@
     .line 238
     invoke-virtual {p0}, Lcom/android/server/autofill/AutofillManagerServiceShellCommand;->getNextArgRequired()Ljava/lang/String;
 
-    move-result-object v0
-
-    .line 239
-    invoke-virtual {p0}, Lcom/android/server/autofill/AutofillManagerServiceShellCommand;->getNextArgRequired()Ljava/lang/String;
-
     move-result-object v1
 
-    goto :goto_19
-
-    .line 241
-    :cond_15
-    const/4 v1, 0x0
-
-    .line 242
-    move-object v7, v1
-
-    move-object v1, v0
-
-    move-object v0, v7
-
-    .line 244
-    :goto_19
+    .line 239
+    .local v1, "algorithm":Ljava/lang/String;
     invoke-virtual {p0}, Lcom/android/server/autofill/AutofillManagerServiceShellCommand;->getNextArgRequired()Ljava/lang/String;
 
     move-result-object v2
 
+    .local v2, "value1":Ljava/lang/String;
+    goto :goto_17
+
+    .line 241
+    .end local v1  # "algorithm":Ljava/lang/String;
+    .end local v2  # "value1":Ljava/lang/String;
+    :cond_15
+    const/4 v1, 0x0
+
+    .line 242
+    .restart local v1  # "algorithm":Ljava/lang/String;
+    move-object v2, v0
+
+    .line 244
+    .restart local v2  # "value1":Ljava/lang/String;
+    :goto_17
+    invoke-virtual {p0}, Lcom/android/server/autofill/AutofillManagerServiceShellCommand;->getNextArgRequired()Ljava/lang/String;
+
+    move-result-object v3
+
     .line 246
-    new-instance v3, Ljava/util/concurrent/CountDownLatch;
+    .local v3, "value2":Ljava/lang/String;
+    new-instance v4, Ljava/util/concurrent/CountDownLatch;
 
-    const/4 v4, 0x1
+    const/4 v5, 0x1
 
-    invoke-direct {v3, v4}, Ljava/util/concurrent/CountDownLatch;-><init>(I)V
+    invoke-direct {v4, v5}, Ljava/util/concurrent/CountDownLatch;-><init>(I)V
 
     .line 247
-    iget-object v4, p0, Lcom/android/server/autofill/AutofillManagerServiceShellCommand;->mService:Lcom/android/server/autofill/AutofillManagerService;
+    .local v4, "latch":Ljava/util/concurrent/CountDownLatch;
+    iget-object v5, p0, Lcom/android/server/autofill/AutofillManagerServiceShellCommand;->mService:Lcom/android/server/autofill/AutofillManagerService;
 
-    new-instance v5, Landroid/os/RemoteCallback;
+    new-instance v6, Landroid/os/RemoteCallback;
 
-    new-instance v6, Lcom/android/server/autofill/-$$Lambda$AutofillManagerServiceShellCommand$3WCRplTGFh_xsmb8tmAG8x-Pn5A;
+    new-instance v7, Lcom/android/server/autofill/-$$Lambda$AutofillManagerServiceShellCommand$3WCRplTGFh_xsmb8tmAG8x-Pn5A;
 
-    invoke-direct {v6, p1, v3}, Lcom/android/server/autofill/-$$Lambda$AutofillManagerServiceShellCommand$3WCRplTGFh_xsmb8tmAG8x-Pn5A;-><init>(Ljava/io/PrintWriter;Ljava/util/concurrent/CountDownLatch;)V
+    invoke-direct {v7, p1, v4}, Lcom/android/server/autofill/-$$Lambda$AutofillManagerServiceShellCommand$3WCRplTGFh_xsmb8tmAG8x-Pn5A;-><init>(Ljava/io/PrintWriter;Ljava/util/concurrent/CountDownLatch;)V
 
-    invoke-direct {v5, v6}, Landroid/os/RemoteCallback;-><init>(Landroid/os/RemoteCallback$OnResultListener;)V
+    invoke-direct {v6, v7}, Landroid/os/RemoteCallback;-><init>(Landroid/os/RemoteCallback$OnResultListener;)V
 
-    invoke-virtual {v4, v0, v1, v2, v5}, Lcom/android/server/autofill/AutofillManagerService;->calculateScore(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Landroid/os/RemoteCallback;)V
+    invoke-virtual {v5, v1, v2, v3, v6}, Lcom/android/server/autofill/AutofillManagerService;->calculateScore(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Landroid/os/RemoteCallback;)V
 
     .line 257
-    invoke-direct {p0, p1, v3}, Lcom/android/server/autofill/AutofillManagerServiceShellCommand;->waitForLatch(Ljava/io/PrintWriter;Ljava/util/concurrent/CountDownLatch;)I
+    invoke-direct {p0, p1, v4}, Lcom/android/server/autofill/AutofillManagerServiceShellCommand;->waitForLatch(Ljava/io/PrintWriter;Ljava/util/concurrent/CountDownLatch;)I
 
-    move-result p1
+    move-result v5
 
-    return p1
+    return v5
 .end method
 
 .method private getFullScreenMode(Ljava/io/PrintWriter;)I
-    .registers 3
+    .registers 4
+    .param p1, "pw"  # Ljava/io/PrintWriter;
 
     .line 261
     iget-object v0, p0, Lcom/android/server/autofill/AutofillManagerServiceShellCommand;->mService:Lcom/android/server/autofill/AutofillManagerService;
@@ -162,12 +174,13 @@
     move-result-object v0
 
     .line 262
+    .local v0, "mode":Ljava/lang/Boolean;
     if-nez v0, :cond_e
 
     .line 263
-    const-string v0, "default"
+    const-string v1, "default"
 
-    invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {p1, v1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
     goto :goto_20
 
@@ -175,32 +188,33 @@
     :cond_e
     invoke-virtual {v0}, Ljava/lang/Boolean;->booleanValue()Z
 
-    move-result v0
+    move-result v1
 
-    if-eqz v0, :cond_1b
+    if-eqz v1, :cond_1b
 
     .line 265
-    const-string/jumbo v0, "true"
+    const-string/jumbo v1, "true"
 
-    invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {p1, v1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
     goto :goto_20
 
     .line 267
     :cond_1b
-    const-string v0, "false"
+    const-string v1, "false"
 
-    invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {p1, v1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
     .line 269
     :goto_20
-    const/4 p1, 0x0
+    const/4 v1, 0x0
 
-    return p1
+    return v1
 .end method
 
 .method private getLogLevel(Ljava/io/PrintWriter;)I
     .registers 6
+    .param p1, "pw"  # Ljava/io/PrintWriter;
 
     .line 179
     iget-object v0, p0, Lcom/android/server/autofill/AutofillManagerServiceShellCommand;->mService:Lcom/android/server/autofill/AutofillManagerService;
@@ -210,6 +224,7 @@
     move-result v0
 
     .line 180
+    .local v0, "logLevel":I
     const/4 v1, 0x0
 
     if-eqz v0, :cond_37
@@ -233,42 +248,42 @@
 
     invoke-virtual {v2, v0}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    const-string v0, ")"
+    const-string v3, ")"
 
-    invoke-virtual {v2, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v2
 
-    invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {p1, v2}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
     .line 192
     return v1
 
     .line 182
     :cond_2a
-    const-string/jumbo v0, "verbose"
+    const-string/jumbo v2, "verbose"
 
-    invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {p1, v2}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
     .line 183
     return v1
 
     .line 185
     :cond_31
-    const-string v0, "debug"
+    const-string v2, "debug"
 
-    invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {p1, v2}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
     .line 186
     return v1
 
     .line 188
     :cond_37
-    const-string/jumbo v0, "off"
+    const-string/jumbo v2, "off"
 
-    invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {p1, v2}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
     .line 189
     return v1
@@ -276,6 +291,7 @@
 
 .method private getMaxPartitions(Ljava/io/PrintWriter;)I
     .registers 3
+    .param p1, "pw"  # Ljava/io/PrintWriter;
 
     .line 215
     iget-object v0, p0, Lcom/android/server/autofill/AutofillManagerServiceShellCommand;->mService:Lcom/android/server/autofill/AutofillManagerService;
@@ -287,13 +303,14 @@
     invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->println(I)V
 
     .line 216
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    return p1
+    return v0
 .end method
 
 .method private getMaxVisibileDatasets(Ljava/io/PrintWriter;)I
     .registers 3
+    .param p1, "pw"  # Ljava/io/PrintWriter;
 
     .line 225
     iget-object v0, p0, Lcom/android/server/autofill/AutofillManagerServiceShellCommand;->mService:Lcom/android/server/autofill/AutofillManagerService;
@@ -305,9 +322,9 @@
     invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->println(I)V
 
     .line 226
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    return p1
+    return v0
 .end method
 
 .method private getNextIntArgRequired()I
@@ -361,6 +378,7 @@
 
 .method private isNextArgSessions(Ljava/io/PrintWriter;)Z
     .registers 4
+    .param p1, "pw"  # Ljava/io/PrintWriter;
 
     .line 383
     invoke-virtual {p0}, Lcom/android/server/autofill/AutofillManagerServiceShellCommand;->getNextArgRequired()Ljava/lang/String;
@@ -368,64 +386,69 @@
     move-result-object v0
 
     .line 384
+    .local v0, "type":Ljava/lang/String;
     const-string/jumbo v1, "sessions"
 
     invoke-virtual {v0, v1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result v0
+    move-result v1
 
-    if-nez v0, :cond_14
+    if-nez v1, :cond_14
 
     .line 385
-    const-string v0, "Error: invalid list type"
+    const-string v1, "Error: invalid list type"
 
-    invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {p1, v1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
     .line 386
-    const/4 p1, 0x0
+    const/4 v1, 0x0
 
-    return p1
+    return v1
 
     .line 388
     :cond_14
-    const/4 p1, 0x1
+    const/4 v1, 0x1
 
-    return p1
+    return v1
 .end method
 
 .method static synthetic lambda$getFieldClassificationScore$0(Ljava/io/PrintWriter;Ljava/util/concurrent/CountDownLatch;Landroid/os/Bundle;)V
-    .registers 4
+    .registers 6
+    .param p0, "pw"  # Ljava/io/PrintWriter;
+    .param p1, "latch"  # Ljava/util/concurrent/CountDownLatch;
+    .param p2, "result"  # Landroid/os/Bundle;
 
     .line 248
     const-string/jumbo v0, "scores"
 
     invoke-virtual {p2, v0}, Landroid/os/Bundle;->getParcelable(Ljava/lang/String;)Landroid/os/Parcelable;
 
-    move-result-object p2
+    move-result-object v0
 
-    check-cast p2, Landroid/service/autofill/AutofillFieldClassificationService$Scores;
+    check-cast v0, Landroid/service/autofill/AutofillFieldClassificationService$Scores;
 
     .line 249
-    if-nez p2, :cond_12
+    .local v0, "scores":Landroid/service/autofill/AutofillFieldClassificationService$Scores;
+    if-nez v0, :cond_12
 
     .line 250
-    const-string/jumbo p2, "no score"
+    const-string/jumbo v1, "no score"
 
-    invoke-virtual {p0, p2}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {p0, v1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
     goto :goto_1c
 
     .line 252
     :cond_12
-    iget-object p2, p2, Landroid/service/autofill/AutofillFieldClassificationService$Scores;->scores:[[F
+    iget-object v1, v0, Landroid/service/autofill/AutofillFieldClassificationService$Scores;->scores:[[F
 
-    const/4 v0, 0x0
+    const/4 v2, 0x0
 
-    aget-object p2, p2, v0
+    aget-object v1, v1, v2
 
-    aget p2, p2, v0
+    aget v1, v1, v2
 
-    invoke-virtual {p0, p2}, Ljava/io/PrintWriter;->println(F)V
+    invoke-virtual {p0, v1}, Ljava/io/PrintWriter;->println(F)V
 
     .line 254
     :goto_1c
@@ -437,6 +460,7 @@
 
 .method private requestDestroy(Ljava/io/PrintWriter;)I
     .registers 6
+    .param p1, "pw"  # Ljava/io/PrintWriter;
 
     .line 346
     invoke-direct {p0, p1}, Lcom/android/server/autofill/AutofillManagerServiceShellCommand;->isNextArgSessions(Ljava/io/PrintWriter;)Z
@@ -446,9 +470,9 @@
     if-nez v0, :cond_8
 
     .line 347
-    const/4 p1, -0x1
+    const/4 v0, -0x1
 
-    return p1
+    return v0
 
     .line 350
     :cond_8
@@ -457,6 +481,7 @@
     move-result v0
 
     .line 351
+    .local v0, "userId":I
     new-instance v1, Ljava/util/concurrent/CountDownLatch;
 
     const/4 v2, 0x1
@@ -464,24 +489,27 @@
     invoke-direct {v1, v2}, Ljava/util/concurrent/CountDownLatch;-><init>(I)V
 
     .line 352
+    .local v1, "latch":Ljava/util/concurrent/CountDownLatch;
     new-instance v2, Lcom/android/server/autofill/AutofillManagerServiceShellCommand$1;
 
     invoke-direct {v2, p0, v1}, Lcom/android/server/autofill/AutofillManagerServiceShellCommand$1;-><init>(Lcom/android/server/autofill/AutofillManagerServiceShellCommand;Ljava/util/concurrent/CountDownLatch;)V
 
     .line 358
+    .local v2, "receiver":Lcom/android/internal/os/IResultReceiver;
     new-instance v3, Lcom/android/server/autofill/-$$Lambda$AutofillManagerServiceShellCommand$ww56nbkJspkRdVJ0yMdT4sroSiY;
 
     invoke-direct {v3, p0, v0, v2}, Lcom/android/server/autofill/-$$Lambda$AutofillManagerServiceShellCommand$ww56nbkJspkRdVJ0yMdT4sroSiY;-><init>(Lcom/android/server/autofill/AutofillManagerServiceShellCommand;ILcom/android/internal/os/IResultReceiver;)V
 
     invoke-direct {p0, p1, v1, v3}, Lcom/android/server/autofill/AutofillManagerServiceShellCommand;->requestSessionCommon(Ljava/io/PrintWriter;Ljava/util/concurrent/CountDownLatch;Ljava/lang/Runnable;)I
 
-    move-result p1
+    move-result v3
 
-    return p1
+    return v3
 .end method
 
 .method private requestGet(Ljava/io/PrintWriter;)I
     .registers 6
+    .param p1, "pw"  # Ljava/io/PrintWriter;
 
     .line 132
     invoke-virtual {p0}, Lcom/android/server/autofill/AutofillManagerServiceShellCommand;->getNextArgRequired()Ljava/lang/String;
@@ -489,19 +517,20 @@
     move-result-object v0
 
     .line 133
+    .local v0, "what":Ljava/lang/String;
     invoke-virtual {v0}, Ljava/lang/String;->hashCode()I
 
     move-result v1
 
     const/4 v2, -0x1
 
-    sparse-switch v1, :sswitch_data_90
+    sparse-switch v1, :sswitch_data_92
 
     :cond_c
-    goto :goto_53
+    goto :goto_56
 
     :sswitch_d
-    const-string v1, "max_partitions"
+    const-string/jumbo v1, "max_partitions"
 
     invoke-virtual {v0, v1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
@@ -511,10 +540,10 @@
 
     const/4 v1, 0x1
 
-    goto :goto_54
+    goto :goto_57
 
-    :sswitch_17
-    const-string v1, "max_visible_datasets"
+    :sswitch_18
+    const-string/jumbo v1, "max_visible_datasets"
 
     invoke-virtual {v0, v1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
@@ -524,9 +553,9 @@
 
     const/4 v1, 0x2
 
-    goto :goto_54
+    goto :goto_57
 
-    :sswitch_21
+    :sswitch_23
     const-string v1, "default-augmented-service-enabled"
 
     invoke-virtual {v0, v1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
@@ -537,9 +566,9 @@
 
     const/4 v1, 0x6
 
-    goto :goto_54
+    goto :goto_57
 
-    :sswitch_2b
+    :sswitch_2d
     const-string v1, "bind-instant-service-allowed"
 
     invoke-virtual {v0, v1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
@@ -550,9 +579,9 @@
 
     const/4 v1, 0x5
 
-    goto :goto_54
+    goto :goto_57
 
-    :sswitch_35
+    :sswitch_37
     const-string v1, "full_screen_mode"
 
     invoke-virtual {v0, v1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
@@ -563,10 +592,10 @@
 
     const/4 v1, 0x4
 
-    goto :goto_54
+    goto :goto_57
 
-    :sswitch_3f
-    const-string v1, "log_level"
+    :sswitch_41
+    const-string/jumbo v1, "log_level"
 
     invoke-virtual {v0, v1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
@@ -576,9 +605,9 @@
 
     const/4 v1, 0x0
 
-    goto :goto_54
+    goto :goto_57
 
-    :sswitch_49
+    :sswitch_4c
     const-string v1, "fc_score"
 
     invoke-virtual {v0, v1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
@@ -589,13 +618,13 @@
 
     const/4 v1, 0x3
 
-    goto :goto_54
+    goto :goto_57
 
-    :goto_53
+    :goto_56
     move v1, v2
 
-    :goto_54
-    packed-switch v1, :pswitch_data_ae
+    :goto_57
+    packed-switch v1, :pswitch_data_b0
 
     .line 149
     new-instance v1, Ljava/lang/StringBuilder;
@@ -610,96 +639,95 @@
 
     invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v1
 
-    invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {p1, v1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
     .line 150
     return v2
 
     .line 147
-    :pswitch_6c  #0x6
+    :pswitch_6f  #0x6
     invoke-direct {p0, p1}, Lcom/android/server/autofill/AutofillManagerServiceShellCommand;->getDefaultAugmentedServiceEnabled(Ljava/io/PrintWriter;)I
 
-    move-result p1
+    move-result v1
 
-    return p1
+    return v1
 
     .line 145
-    :pswitch_71  #0x5
+    :pswitch_74  #0x5
     invoke-direct {p0, p1}, Lcom/android/server/autofill/AutofillManagerServiceShellCommand;->getBindInstantService(Ljava/io/PrintWriter;)I
 
-    move-result p1
+    move-result v1
 
-    return p1
+    return v1
 
     .line 143
-    :pswitch_76  #0x4
+    :pswitch_79  #0x4
     invoke-direct {p0, p1}, Lcom/android/server/autofill/AutofillManagerServiceShellCommand;->getFullScreenMode(Ljava/io/PrintWriter;)I
 
-    move-result p1
+    move-result v1
 
-    return p1
+    return v1
 
     .line 141
-    :pswitch_7b  #0x3
+    :pswitch_7e  #0x3
     invoke-direct {p0, p1}, Lcom/android/server/autofill/AutofillManagerServiceShellCommand;->getFieldClassificationScore(Ljava/io/PrintWriter;)I
 
-    move-result p1
+    move-result v1
 
-    return p1
+    return v1
 
     .line 139
-    :pswitch_80  #0x2
+    :pswitch_83  #0x2
     invoke-direct {p0, p1}, Lcom/android/server/autofill/AutofillManagerServiceShellCommand;->getMaxVisibileDatasets(Ljava/io/PrintWriter;)I
 
-    move-result p1
+    move-result v1
 
-    return p1
+    return v1
 
     .line 137
-    :pswitch_85  #0x1
+    :pswitch_88  #0x1
     invoke-direct {p0, p1}, Lcom/android/server/autofill/AutofillManagerServiceShellCommand;->getMaxPartitions(Ljava/io/PrintWriter;)I
 
-    move-result p1
+    move-result v1
 
-    return p1
+    return v1
 
     .line 135
-    :pswitch_8a  #0x0
+    :pswitch_8d  #0x0
     invoke-direct {p0, p1}, Lcom/android/server/autofill/AutofillManagerServiceShellCommand;->getLogLevel(Ljava/io/PrintWriter;)I
 
-    move-result p1
+    move-result v1
 
-    return p1
+    return v1
 
-    nop
-
-    :sswitch_data_90
+    :sswitch_data_92
     .sparse-switch
-        -0x7e9f9370 -> :sswitch_49
-        -0x779ee137 -> :sswitch_3f
-        -0x4d6a481a -> :sswitch_35
-        0x30420514 -> :sswitch_2b
-        0x32ceaec0 -> :sswitch_21
-        0x53092da3 -> :sswitch_17
+        -0x7e9f9370 -> :sswitch_4c
+        -0x779ee137 -> :sswitch_41
+        -0x4d6a481a -> :sswitch_37
+        0x30420514 -> :sswitch_2d
+        0x32ceaec0 -> :sswitch_23
+        0x53092da3 -> :sswitch_18
         0x69a17484 -> :sswitch_d
     .end sparse-switch
 
-    :pswitch_data_ae
+    :pswitch_data_b0
     .packed-switch 0x0
-        :pswitch_8a  #00000000
-        :pswitch_85  #00000001
-        :pswitch_80  #00000002
-        :pswitch_7b  #00000003
-        :pswitch_76  #00000004
-        :pswitch_71  #00000005
-        :pswitch_6c  #00000006
+        :pswitch_8d  #00000000
+        :pswitch_88  #00000001
+        :pswitch_83  #00000002
+        :pswitch_7e  #00000003
+        :pswitch_79  #00000004
+        :pswitch_74  #00000005
+        :pswitch_6f  #00000006
     .end packed-switch
 .end method
 
 .method private requestList(Ljava/io/PrintWriter;)I
     .registers 6
+    .param p1, "pw"  # Ljava/io/PrintWriter;
 
     .line 362
     invoke-direct {p0, p1}, Lcom/android/server/autofill/AutofillManagerServiceShellCommand;->isNextArgSessions(Ljava/io/PrintWriter;)Z
@@ -709,9 +737,9 @@
     if-nez v0, :cond_8
 
     .line 363
-    const/4 p1, -0x1
+    const/4 v0, -0x1
 
-    return p1
+    return v0
 
     .line 366
     :cond_8
@@ -720,6 +748,7 @@
     move-result v0
 
     .line 367
+    .local v0, "userId":I
     new-instance v1, Ljava/util/concurrent/CountDownLatch;
 
     const/4 v2, 0x1
@@ -727,20 +756,22 @@
     invoke-direct {v1, v2}, Ljava/util/concurrent/CountDownLatch;-><init>(I)V
 
     .line 368
+    .local v1, "latch":Ljava/util/concurrent/CountDownLatch;
     new-instance v2, Lcom/android/server/autofill/AutofillManagerServiceShellCommand$2;
 
     invoke-direct {v2, p0, p1, v1}, Lcom/android/server/autofill/AutofillManagerServiceShellCommand$2;-><init>(Lcom/android/server/autofill/AutofillManagerServiceShellCommand;Ljava/io/PrintWriter;Ljava/util/concurrent/CountDownLatch;)V
 
     .line 379
+    .local v2, "receiver":Lcom/android/internal/os/IResultReceiver;
     new-instance v3, Lcom/android/server/autofill/-$$Lambda$AutofillManagerServiceShellCommand$WrWpLlZPawytZji8-6Dx9_p70Dw;
 
     invoke-direct {v3, p0, v0, v2}, Lcom/android/server/autofill/-$$Lambda$AutofillManagerServiceShellCommand$WrWpLlZPawytZji8-6Dx9_p70Dw;-><init>(Lcom/android/server/autofill/AutofillManagerServiceShellCommand;ILcom/android/internal/os/IResultReceiver;)V
 
     invoke-direct {p0, p1, v1, v3}, Lcom/android/server/autofill/AutofillManagerServiceShellCommand;->requestSessionCommon(Ljava/io/PrintWriter;Ljava/util/concurrent/CountDownLatch;Ljava/lang/Runnable;)I
 
-    move-result p1
+    move-result v3
 
-    return p1
+    return v3
 .end method
 
 .method private requestReset()I
@@ -758,7 +789,10 @@
 .end method
 
 .method private requestSessionCommon(Ljava/io/PrintWriter;Ljava/util/concurrent/CountDownLatch;Ljava/lang/Runnable;)I
-    .registers 4
+    .registers 5
+    .param p1, "pw"  # Ljava/io/PrintWriter;
+    .param p2, "latch"  # Ljava/util/concurrent/CountDownLatch;
+    .param p3, "command"  # Ljava/lang/Runnable;
 
     .line 393
     invoke-interface {p3}, Ljava/lang/Runnable;->run()V
@@ -766,13 +800,14 @@
     .line 394
     invoke-direct {p0, p1, p2}, Lcom/android/server/autofill/AutofillManagerServiceShellCommand;->waitForLatch(Ljava/io/PrintWriter;Ljava/util/concurrent/CountDownLatch;)I
 
-    move-result p1
+    move-result v0
 
-    return p1
+    return v0
 .end method
 
 .method private requestSet(Ljava/io/PrintWriter;)I
     .registers 6
+    .param p1, "pw"  # Ljava/io/PrintWriter;
 
     .line 155
     invoke-virtual {p0}, Lcom/android/server/autofill/AutofillManagerServiceShellCommand;->getNextArgRequired()Ljava/lang/String;
@@ -780,19 +815,20 @@
     move-result-object v0
 
     .line 157
+    .local v0, "what":Ljava/lang/String;
     invoke-virtual {v0}, Ljava/lang/String;->hashCode()I
 
     move-result v1
 
     const/4 v2, -0x1
 
-    sparse-switch v1, :sswitch_data_90
+    sparse-switch v1, :sswitch_data_94
 
     :cond_c
-    goto :goto_54
+    goto :goto_57
 
     :sswitch_d
-    const-string v1, "max_partitions"
+    const-string/jumbo v1, "max_partitions"
 
     invoke-virtual {v0, v1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
@@ -802,10 +838,10 @@
 
     const/4 v1, 0x1
 
-    goto :goto_55
+    goto :goto_58
 
-    :sswitch_17
-    const-string v1, "max_visible_datasets"
+    :sswitch_18
+    const-string/jumbo v1, "max_visible_datasets"
 
     invoke-virtual {v0, v1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
@@ -815,9 +851,9 @@
 
     const/4 v1, 0x2
 
-    goto :goto_55
+    goto :goto_58
 
-    :sswitch_21
+    :sswitch_23
     const-string v1, "default-augmented-service-enabled"
 
     invoke-virtual {v0, v1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
@@ -828,9 +864,9 @@
 
     const/4 v1, 0x6
 
-    goto :goto_55
+    goto :goto_58
 
-    :sswitch_2b
+    :sswitch_2d
     const-string v1, "bind-instant-service-allowed"
 
     invoke-virtual {v0, v1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
@@ -841,9 +877,9 @@
 
     const/4 v1, 0x4
 
-    goto :goto_55
+    goto :goto_58
 
-    :sswitch_35
+    :sswitch_37
     const-string/jumbo v1, "temporary-augmented-service"
 
     invoke-virtual {v0, v1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
@@ -854,9 +890,9 @@
 
     const/4 v1, 0x5
 
-    goto :goto_55
+    goto :goto_58
 
-    :sswitch_40
+    :sswitch_42
     const-string v1, "full_screen_mode"
 
     invoke-virtual {v0, v1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
@@ -867,10 +903,10 @@
 
     const/4 v1, 0x3
 
-    goto :goto_55
+    goto :goto_58
 
-    :sswitch_4a
-    const-string v1, "log_level"
+    :sswitch_4c
+    const-string/jumbo v1, "log_level"
 
     invoke-virtual {v0, v1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
@@ -880,13 +916,13 @@
 
     const/4 v1, 0x0
 
-    goto :goto_55
+    goto :goto_58
 
-    :goto_54
+    :goto_57
     move v1, v2
 
-    :goto_55
-    packed-switch v1, :pswitch_data_ae
+    :goto_58
+    packed-switch v1, :pswitch_data_b2
 
     .line 173
     new-instance v1, Ljava/lang/StringBuilder;
@@ -901,94 +937,97 @@
 
     invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v1
 
-    invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {p1, v1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
     .line 174
     return v2
 
     .line 171
-    :pswitch_6d  #0x6
+    :pswitch_70  #0x6
     invoke-direct {p0, p1}, Lcom/android/server/autofill/AutofillManagerServiceShellCommand;->setDefaultAugmentedServiceEnabled(Ljava/io/PrintWriter;)I
 
-    move-result p1
+    move-result v1
 
-    return p1
+    return v1
 
     .line 169
-    :pswitch_72  #0x5
+    :pswitch_75  #0x5
     invoke-direct {p0, p1}, Lcom/android/server/autofill/AutofillManagerServiceShellCommand;->setTemporaryAugmentedService(Ljava/io/PrintWriter;)I
 
-    move-result p1
+    move-result v1
 
-    return p1
+    return v1
 
     .line 167
-    :pswitch_77  #0x4
+    :pswitch_7a  #0x4
     invoke-direct {p0, p1}, Lcom/android/server/autofill/AutofillManagerServiceShellCommand;->setBindInstantService(Ljava/io/PrintWriter;)I
 
-    move-result p1
+    move-result v1
 
-    return p1
+    return v1
 
     .line 165
-    :pswitch_7c  #0x3
+    :pswitch_7f  #0x3
     invoke-direct {p0, p1}, Lcom/android/server/autofill/AutofillManagerServiceShellCommand;->setFullScreenMode(Ljava/io/PrintWriter;)I
 
-    move-result p1
+    move-result v1
 
-    return p1
+    return v1
 
     .line 163
-    :pswitch_81  #0x2
+    :pswitch_84  #0x2
     invoke-direct {p0}, Lcom/android/server/autofill/AutofillManagerServiceShellCommand;->setMaxVisibileDatasets()I
 
-    move-result p1
+    move-result v1
 
-    return p1
+    return v1
 
     .line 161
-    :pswitch_86  #0x1
+    :pswitch_89  #0x1
     invoke-direct {p0}, Lcom/android/server/autofill/AutofillManagerServiceShellCommand;->setMaxPartitions()I
 
-    move-result p1
+    move-result v1
 
-    return p1
+    return v1
 
     .line 159
-    :pswitch_8b  #0x0
+    :pswitch_8e  #0x0
     invoke-direct {p0, p1}, Lcom/android/server/autofill/AutofillManagerServiceShellCommand;->setLogLevel(Ljava/io/PrintWriter;)I
 
-    move-result p1
+    move-result v1
 
-    return p1
+    return v1
 
-    :sswitch_data_90
+    nop
+
+    :sswitch_data_94
     .sparse-switch
-        -0x779ee137 -> :sswitch_4a
-        -0x4d6a481a -> :sswitch_40
-        -0x2211efa4 -> :sswitch_35
-        0x30420514 -> :sswitch_2b
-        0x32ceaec0 -> :sswitch_21
-        0x53092da3 -> :sswitch_17
+        -0x779ee137 -> :sswitch_4c
+        -0x4d6a481a -> :sswitch_42
+        -0x2211efa4 -> :sswitch_37
+        0x30420514 -> :sswitch_2d
+        0x32ceaec0 -> :sswitch_23
+        0x53092da3 -> :sswitch_18
         0x69a17484 -> :sswitch_d
     .end sparse-switch
 
-    :pswitch_data_ae
+    :pswitch_data_b2
     .packed-switch 0x0
-        :pswitch_8b  #00000000
-        :pswitch_86  #00000001
-        :pswitch_81  #00000002
-        :pswitch_7c  #00000003
-        :pswitch_77  #00000004
-        :pswitch_72  #00000005
-        :pswitch_6d  #00000006
+        :pswitch_8e  #00000000
+        :pswitch_89  #00000001
+        :pswitch_84  #00000002
+        :pswitch_7f  #00000003
+        :pswitch_7a  #00000004
+        :pswitch_75  #00000005
+        :pswitch_70  #00000006
     .end packed-switch
 .end method
 
 .method private setBindInstantService(Ljava/io/PrintWriter;)I
     .registers 9
+    .param p1, "pw"  # Ljava/io/PrintWriter;
 
     .line 300
     invoke-virtual {p0}, Lcom/android/server/autofill/AutofillManagerServiceShellCommand;->getNextArgRequired()Ljava/lang/String;
@@ -996,6 +1035,7 @@
     move-result-object v0
 
     .line 301
+    .local v0, "mode":Ljava/lang/String;
     invoke-virtual {v0}, Ljava/lang/String;->toLowerCase()Ljava/lang/String;
 
     move-result-object v1
@@ -1068,34 +1108,35 @@
 
     invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v1
 
-    invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {p1, v1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
     .line 310
     return v4
 
     .line 306
     :cond_49
-    iget-object p1, p0, Lcom/android/server/autofill/AutofillManagerServiceShellCommand;->mService:Lcom/android/server/autofill/AutofillManagerService;
+    iget-object v1, p0, Lcom/android/server/autofill/AutofillManagerServiceShellCommand;->mService:Lcom/android/server/autofill/AutofillManagerService;
 
-    invoke-virtual {p1, v6}, Lcom/android/server/autofill/AutofillManagerService;->setAllowInstantService(Z)V
+    invoke-virtual {v1, v6}, Lcom/android/server/autofill/AutofillManagerService;->setAllowInstantService(Z)V
 
     .line 307
     return v6
 
     .line 303
     :cond_4f
-    iget-object p1, p0, Lcom/android/server/autofill/AutofillManagerServiceShellCommand;->mService:Lcom/android/server/autofill/AutofillManagerService;
+    iget-object v1, p0, Lcom/android/server/autofill/AutofillManagerServiceShellCommand;->mService:Lcom/android/server/autofill/AutofillManagerService;
 
-    invoke-virtual {p1, v5}, Lcom/android/server/autofill/AutofillManagerService;->setAllowInstantService(Z)V
+    invoke-virtual {v1, v5}, Lcom/android/server/autofill/AutofillManagerService;->setAllowInstantService(Z)V
 
     .line 304
     return v6
 .end method
 
 .method private setDefaultAugmentedServiceEnabled(Ljava/io/PrintWriter;)I
-    .registers 5
+    .registers 7
+    .param p1, "pw"  # Ljava/io/PrintWriter;
 
     .line 336
     invoke-direct {p0}, Lcom/android/server/autofill/AutofillManagerServiceShellCommand;->getNextIntArgRequired()I
@@ -1103,6 +1144,7 @@
     move-result v0
 
     .line 337
+    .local v0, "userId":I
     invoke-virtual {p0}, Lcom/android/server/autofill/AutofillManagerServiceShellCommand;->getNextArgRequired()Ljava/lang/String;
 
     move-result-object v1
@@ -1112,41 +1154,44 @@
     move-result v1
 
     .line 338
+    .local v1, "enabled":Z
     iget-object v2, p0, Lcom/android/server/autofill/AutofillManagerServiceShellCommand;->mService:Lcom/android/server/autofill/AutofillManagerService;
 
     invoke-virtual {v2, v0, v1}, Lcom/android/server/autofill/AutofillManagerService;->setDefaultAugmentedServiceEnabled(IZ)Z
 
-    move-result v0
+    move-result v2
 
     .line 339
-    if-nez v0, :cond_28
+    .local v2, "changed":Z
+    if-nez v2, :cond_28
 
     .line 340
-    new-instance v0, Ljava/lang/StringBuilder;
+    new-instance v3, Ljava/lang/StringBuilder;
 
-    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v2, "already "
+    const-string v4, "already "
 
-    invoke-virtual {v0, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Z)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v1}, Ljava/lang/StringBuilder;->append(Z)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v3
 
-    invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {p1, v3}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
     .line 342
     :cond_28
-    const/4 p1, 0x0
+    const/4 v3, 0x0
 
-    return p1
+    return v3
 .end method
 
 .method private setFullScreenMode(Ljava/io/PrintWriter;)I
     .registers 10
+    .param p1, "pw"  # Ljava/io/PrintWriter;
 
     .line 273
     invoke-virtual {p0}, Lcom/android/server/autofill/AutofillManagerServiceShellCommand;->getNextArgRequired()Ljava/lang/String;
@@ -1154,6 +1199,7 @@
     move-result-object v0
 
     .line 274
+    .local v0, "mode":Ljava/lang/String;
     invoke-virtual {v0}, Ljava/lang/String;->toLowerCase()Ljava/lang/String;
 
     move-result-object v1
@@ -1247,42 +1293,42 @@
 
     invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v1
 
-    invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {p1, v1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
     .line 286
     return v6
 
     .line 282
     :cond_5b
-    iget-object p1, p0, Lcom/android/server/autofill/AutofillManagerServiceShellCommand;->mService:Lcom/android/server/autofill/AutofillManagerService;
+    iget-object v1, p0, Lcom/android/server/autofill/AutofillManagerServiceShellCommand;->mService:Lcom/android/server/autofill/AutofillManagerService;
 
-    const/4 v0, 0x0
+    const/4 v2, 0x0
 
-    invoke-virtual {p1, v0}, Lcom/android/server/autofill/AutofillManagerService;->setFullScreenMode(Ljava/lang/Boolean;)V
+    invoke-virtual {v1, v2}, Lcom/android/server/autofill/AutofillManagerService;->setFullScreenMode(Ljava/lang/Boolean;)V
 
     .line 283
     return v7
 
     .line 279
     :cond_62
-    iget-object p1, p0, Lcom/android/server/autofill/AutofillManagerServiceShellCommand;->mService:Lcom/android/server/autofill/AutofillManagerService;
+    iget-object v1, p0, Lcom/android/server/autofill/AutofillManagerServiceShellCommand;->mService:Lcom/android/server/autofill/AutofillManagerService;
 
-    sget-object v0, Ljava/lang/Boolean;->FALSE:Ljava/lang/Boolean;
+    sget-object v2, Ljava/lang/Boolean;->FALSE:Ljava/lang/Boolean;
 
-    invoke-virtual {p1, v0}, Lcom/android/server/autofill/AutofillManagerService;->setFullScreenMode(Ljava/lang/Boolean;)V
+    invoke-virtual {v1, v2}, Lcom/android/server/autofill/AutofillManagerService;->setFullScreenMode(Ljava/lang/Boolean;)V
 
     .line 280
     return v7
 
     .line 276
     :cond_6a
-    iget-object p1, p0, Lcom/android/server/autofill/AutofillManagerServiceShellCommand;->mService:Lcom/android/server/autofill/AutofillManagerService;
+    iget-object v1, p0, Lcom/android/server/autofill/AutofillManagerServiceShellCommand;->mService:Lcom/android/server/autofill/AutofillManagerService;
 
-    sget-object v0, Ljava/lang/Boolean;->TRUE:Ljava/lang/Boolean;
+    sget-object v2, Ljava/lang/Boolean;->TRUE:Ljava/lang/Boolean;
 
-    invoke-virtual {p1, v0}, Lcom/android/server/autofill/AutofillManagerService;->setFullScreenMode(Ljava/lang/Boolean;)V
+    invoke-virtual {v1, v2}, Lcom/android/server/autofill/AutofillManagerService;->setFullScreenMode(Ljava/lang/Boolean;)V
 
     .line 277
     return v7
@@ -1290,6 +1336,7 @@
 
 .method private setLogLevel(Ljava/io/PrintWriter;)I
     .registers 10
+    .param p1, "pw"  # Ljava/io/PrintWriter;
 
     .line 197
     invoke-virtual {p0}, Lcom/android/server/autofill/AutofillManagerServiceShellCommand;->getNextArgRequired()Ljava/lang/String;
@@ -1297,6 +1344,7 @@
     move-result-object v0
 
     .line 198
+    .local v0, "logLevel":Ljava/lang/String;
     invoke-virtual {v0}, Ljava/lang/String;->toLowerCase()Ljava/lang/String;
 
     move-result-object v1
@@ -1390,38 +1438,38 @@
 
     invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v1
 
-    invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {p1, v1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
     .line 210
     return v5
 
     .line 206
     :cond_5c
-    iget-object p1, p0, Lcom/android/server/autofill/AutofillManagerServiceShellCommand;->mService:Lcom/android/server/autofill/AutofillManagerService;
+    iget-object v1, p0, Lcom/android/server/autofill/AutofillManagerServiceShellCommand;->mService:Lcom/android/server/autofill/AutofillManagerService;
 
-    invoke-virtual {p1, v7}, Lcom/android/server/autofill/AutofillManagerService;->setLogLevel(I)V
+    invoke-virtual {v1, v7}, Lcom/android/server/autofill/AutofillManagerService;->setLogLevel(I)V
 
     .line 207
     return v7
 
     .line 203
     :cond_62
-    iget-object p1, p0, Lcom/android/server/autofill/AutofillManagerServiceShellCommand;->mService:Lcom/android/server/autofill/AutofillManagerService;
+    iget-object v1, p0, Lcom/android/server/autofill/AutofillManagerServiceShellCommand;->mService:Lcom/android/server/autofill/AutofillManagerService;
 
-    invoke-virtual {p1, v6}, Lcom/android/server/autofill/AutofillManagerService;->setLogLevel(I)V
+    invoke-virtual {v1, v6}, Lcom/android/server/autofill/AutofillManagerService;->setLogLevel(I)V
 
     .line 204
     return v7
 
     .line 200
     :cond_68
-    iget-object p1, p0, Lcom/android/server/autofill/AutofillManagerServiceShellCommand;->mService:Lcom/android/server/autofill/AutofillManagerService;
+    iget-object v1, p0, Lcom/android/server/autofill/AutofillManagerServiceShellCommand;->mService:Lcom/android/server/autofill/AutofillManagerService;
 
-    const/4 v0, 0x4
+    const/4 v2, 0x4
 
-    invoke-virtual {p1, v0}, Lcom/android/server/autofill/AutofillManagerService;->setLogLevel(I)V
+    invoke-virtual {v1, v2}, Lcom/android/server/autofill/AutofillManagerService;->setLogLevel(I)V
 
     .line 201
     return v7
@@ -1472,7 +1520,8 @@
 .end method
 
 .method private setTemporaryAugmentedService(Ljava/io/PrintWriter;)I
-    .registers 7
+    .registers 8
+    .param p1, "pw"  # Ljava/io/PrintWriter;
 
     .line 315
     invoke-direct {p0}, Lcom/android/server/autofill/AutofillManagerServiceShellCommand;->getNextIntArgRequired()I
@@ -1480,19 +1529,21 @@
     move-result v0
 
     .line 316
+    .local v0, "userId":I
     invoke-virtual {p0}, Lcom/android/server/autofill/AutofillManagerServiceShellCommand;->getNextArg()Ljava/lang/String;
 
     move-result-object v1
 
     .line 317
+    .local v1, "serviceName":Ljava/lang/String;
     const/4 v2, 0x0
 
     if-nez v1, :cond_11
 
     .line 318
-    iget-object p1, p0, Lcom/android/server/autofill/AutofillManagerServiceShellCommand;->mService:Lcom/android/server/autofill/AutofillManagerService;
+    iget-object v3, p0, Lcom/android/server/autofill/AutofillManagerServiceShellCommand;->mService:Lcom/android/server/autofill/AutofillManagerService;
 
-    invoke-virtual {p1, v0}, Lcom/android/server/autofill/AutofillManagerService;->resetTemporaryAugmentedAutofillService(I)V
+    invoke-virtual {v3, v0}, Lcom/android/server/autofill/AutofillManagerService;->resetTemporaryAugmentedAutofillService(I)V
 
     .line 319
     return v2
@@ -1504,36 +1555,37 @@
     move-result v3
 
     .line 322
+    .local v3, "duration":I
     iget-object v4, p0, Lcom/android/server/autofill/AutofillManagerServiceShellCommand;->mService:Lcom/android/server/autofill/AutofillManagerService;
 
     invoke-virtual {v4, v0, v1, v3}, Lcom/android/server/autofill/AutofillManagerService;->setTemporaryAugmentedAutofillService(ILjava/lang/String;I)V
 
     .line 323
-    new-instance v0, Ljava/lang/StringBuilder;
+    new-instance v4, Ljava/lang/StringBuilder;
 
-    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v4}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v4, "AugmentedAutofillService temporarily set to "
+    const-string v5, "AugmentedAutofillService temporarily set to "
 
-    invoke-virtual {v0, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v4, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string v1, " for "
+    const-string v5, " for "
 
-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0, v3}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v4, v3}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    const-string/jumbo v1, "ms"
+    const-string/jumbo v5, "ms"
 
-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v4}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v4
 
-    invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {p1, v4}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
     .line 325
     return v2
@@ -1541,6 +1593,8 @@
 
 .method private waitForLatch(Ljava/io/PrintWriter;Ljava/util/concurrent/CountDownLatch;)I
     .registers 7
+    .param p1, "pw"  # Ljava/io/PrintWriter;
+    .param p2, "latch"  # Ljava/util/concurrent/CountDownLatch;
 
     .line 399
     const-wide/16 v0, 0x5
@@ -1552,15 +1606,16 @@
 
     invoke-virtual {p2, v0, v1, v3}, Ljava/util/concurrent/CountDownLatch;->await(JLjava/util/concurrent/TimeUnit;)Z
 
-    move-result p2
+    move-result v0
 
     .line 400
-    if-nez p2, :cond_11
+    .local v0, "received":Z
+    if-nez v0, :cond_11
 
     .line 401
-    const-string p2, "Timed out after 5 seconds"
+    const-string v1, "Timed out after 5 seconds"
 
-    invoke-virtual {p1, p2}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {p1, v1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
     :try_end_10
     .catch Ljava/lang/InterruptedException; {:try_start_3 .. :try_end_10} :catch_14
 
@@ -1568,29 +1623,31 @@
     return v2
 
     .line 408
+    .end local v0  # "received":Z
     :cond_11
     nop
 
     .line 409
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    return p1
+    return v0
 
     .line 404
     :catch_14
-    move-exception p2
+    move-exception v0
 
     .line 405
-    const-string p2, "System call interrupted"
+    .local v0, "e":Ljava/lang/InterruptedException;
+    const-string v1, "System call interrupted"
 
-    invoke-virtual {p1, p2}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {p1, v1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
     .line 406
     invoke-static {}, Ljava/lang/Thread;->currentThread()Ljava/lang/Thread;
 
-    move-result-object p1
+    move-result-object v1
 
-    invoke-virtual {p1}, Ljava/lang/Thread;->interrupt()V
+    invoke-virtual {v1}, Ljava/lang/Thread;->interrupt()V
 
     .line 407
     return v2
@@ -1600,6 +1657,8 @@
 # virtual methods
 .method public synthetic lambda$requestDestroy$1$AutofillManagerServiceShellCommand(ILcom/android/internal/os/IResultReceiver;)V
     .registers 4
+    .param p1, "userId"  # I
+    .param p2, "receiver"  # Lcom/android/internal/os/IResultReceiver;
 
     .line 358
     iget-object v0, p0, Lcom/android/server/autofill/AutofillManagerServiceShellCommand;->mService:Lcom/android/server/autofill/AutofillManagerService;
@@ -1611,6 +1670,8 @@
 
 .method public synthetic lambda$requestList$2$AutofillManagerServiceShellCommand(ILcom/android/internal/os/IResultReceiver;)V
     .registers 4
+    .param p1, "userId"  # I
+    .param p2, "receiver"  # Lcom/android/internal/os/IResultReceiver;
 
     .line 379
     iget-object v0, p0, Lcom/android/server/autofill/AutofillManagerServiceShellCommand;->mService:Lcom/android/server/autofill/AutofillManagerService;
@@ -1622,6 +1683,7 @@
 
 .method public onCommand(Ljava/lang/String;)I
     .registers 9
+    .param p1, "cmd"  # Ljava/lang/String;
 
     .line 47
     if-nez p1, :cond_7
@@ -1629,9 +1691,9 @@
     .line 48
     invoke-virtual {p0, p1}, Lcom/android/server/autofill/AutofillManagerServiceShellCommand;->handleDefaultCommands(Ljava/lang/String;)I
 
-    move-result p1
+    move-result v0
 
-    return p1
+    return v0
 
     .line 50
     :cond_7
@@ -1640,6 +1702,7 @@
     move-result-object v0
 
     .line 51
+    .local v0, "pw":Ljava/io/PrintWriter;
     const/4 v1, -0x1
 
     invoke-virtual {p1}, Ljava/lang/String;->hashCode()I
@@ -1657,7 +1720,7 @@
     sparse-switch v2, :sswitch_data_74
 
     :cond_17
-    goto :goto_4b
+    goto :goto_4c
 
     :sswitch_18
     const-string v2, "destroy"
@@ -1670,7 +1733,7 @@
 
     move v1, v6
 
-    goto :goto_4b
+    goto :goto_4c
 
     :sswitch_22
     const-string/jumbo v2, "reset"
@@ -1683,10 +1746,10 @@
 
     move v1, v5
 
-    goto :goto_4b
+    goto :goto_4c
 
     :sswitch_2d
-    const-string v2, "list"
+    const-string/jumbo v2, "list"
 
     invoke-virtual {p1, v2}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
@@ -1696,9 +1759,9 @@
 
     const/4 v1, 0x0
 
-    goto :goto_4b
+    goto :goto_4c
 
-    :sswitch_37
+    :sswitch_38
     const-string/jumbo v2, "set"
 
     invoke-virtual {p1, v2}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
@@ -1709,9 +1772,9 @@
 
     move v1, v3
 
-    goto :goto_4b
+    goto :goto_4c
 
-    :sswitch_42
+    :sswitch_43
     const-string v2, "get"
 
     invoke-virtual {p1, v2}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
@@ -1722,70 +1785,68 @@
 
     move v1, v4
 
-    :goto_4b
-    if-eqz v1, :cond_6e
+    :goto_4c
+    if-eqz v1, :cond_6f
 
-    if-eq v1, v6, :cond_69
+    if-eq v1, v6, :cond_6a
 
-    if-eq v1, v5, :cond_64
+    if-eq v1, v5, :cond_65
 
-    if-eq v1, v4, :cond_5f
+    if-eq v1, v4, :cond_60
 
-    if-eq v1, v3, :cond_5a
+    if-eq v1, v3, :cond_5b
 
     .line 63
     invoke-virtual {p0, p1}, Lcom/android/server/autofill/AutofillManagerServiceShellCommand;->handleDefaultCommands(Ljava/lang/String;)I
 
-    move-result p1
+    move-result v1
 
-    return p1
+    return v1
 
     .line 61
-    :cond_5a
+    :cond_5b
     invoke-direct {p0, v0}, Lcom/android/server/autofill/AutofillManagerServiceShellCommand;->requestSet(Ljava/io/PrintWriter;)I
 
-    move-result p1
+    move-result v1
 
-    return p1
+    return v1
 
     .line 59
-    :cond_5f
+    :cond_60
     invoke-direct {p0, v0}, Lcom/android/server/autofill/AutofillManagerServiceShellCommand;->requestGet(Ljava/io/PrintWriter;)I
 
-    move-result p1
+    move-result v1
 
-    return p1
+    return v1
 
     .line 57
-    :cond_64
+    :cond_65
     invoke-direct {p0}, Lcom/android/server/autofill/AutofillManagerServiceShellCommand;->requestReset()I
 
-    move-result p1
+    move-result v1
 
-    return p1
+    return v1
 
     .line 55
-    :cond_69
+    :cond_6a
     invoke-direct {p0, v0}, Lcom/android/server/autofill/AutofillManagerServiceShellCommand;->requestDestroy(Ljava/io/PrintWriter;)I
 
-    move-result p1
+    move-result v1
 
-    return p1
+    return v1
 
     .line 53
-    :cond_6e
+    :cond_6f
     invoke-direct {p0, v0}, Lcom/android/server/autofill/AutofillManagerServiceShellCommand;->requestList(Ljava/io/PrintWriter;)I
 
-    move-result p1
+    move-result v1
 
-    return p1
-
-    nop
+    return v1
 
     :sswitch_data_74
     .sparse-switch
-        0x18f56 -> :sswitch_42
-        0x1bc62 -> :sswitch_37
+        0x18f56 -> :sswitch_43
+        0x1bc62 -> :sswitch_38
         0x32b09e -> :sswitch_2d
         0x6761d4f -> :sswitch_22
         0x5cd39ffa -> :sswitch_18
@@ -1793,7 +1854,7 @@
 .end method
 
 .method public onHelp()V
-    .registers 4
+    .registers 5
 
     .line 69
     const-string v0, ""
@@ -1803,6 +1864,7 @@
     move-result-object v1
 
     .line 70
+    .local v1, "pw":Ljava/io/PrintWriter;
     :try_start_6
     const-string v2, "AutoFill Service (autofill) commands:"
 
@@ -2053,18 +2115,24 @@
     invoke-virtual {v1}, Ljava/io/PrintWriter;->close()V
 
     .line 129
+    .end local v1  # "pw":Ljava/io/PrintWriter;
     return-void
 
     .line 69
+    .restart local v1  # "pw":Ljava/io/PrintWriter;
     :catchall_fe
     move-exception v0
 
+    .end local v1  # "pw":Ljava/io/PrintWriter;
+    .end local p0  # "this":Lcom/android/server/autofill/AutofillManagerServiceShellCommand;
     :try_start_ff
     throw v0
     :try_end_100
     .catchall {:try_start_ff .. :try_end_100} :catchall_100
 
     .line 128
+    .restart local v1  # "pw":Ljava/io/PrintWriter;
+    .restart local p0  # "this":Lcom/android/server/autofill/AutofillManagerServiceShellCommand;
     :catchall_100
     move-exception v2
 
@@ -2078,9 +2146,9 @@
     goto :goto_10b
 
     :catchall_107
-    move-exception v1
+    move-exception v3
 
-    invoke-virtual {v0, v1}, Ljava/lang/Throwable;->addSuppressed(Ljava/lang/Throwable;)V
+    invoke-virtual {v0, v3}, Ljava/lang/Throwable;->addSuppressed(Ljava/lang/Throwable;)V
 
     :cond_10b
     :goto_10b

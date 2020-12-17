@@ -39,7 +39,7 @@
 .end method
 
 .method public static getAllDexCodeInstructionSets()[Ljava/lang/String;
-    .registers 3
+    .registers 4
 
     .line 94
     sget-object v0, Landroid/os/Build;->SUPPORTED_ABIS:[Ljava/lang/String;
@@ -49,8 +49,10 @@
     new-array v0, v0, [Ljava/lang/String;
 
     .line 95
+    .local v0, "supportedInstructionSets":[Ljava/lang/String;
     const/4 v1, 0x0
 
+    .local v1, "i":I
     :goto_6
     array-length v2, v0
 
@@ -62,28 +64,31 @@
     aget-object v2, v2, v1
 
     .line 97
+    .local v2, "abi":Ljava/lang/String;
     invoke-static {v2}, Ldalvik/system/VMRuntime;->getInstructionSet(Ljava/lang/String;)Ljava/lang/String;
 
-    move-result-object v2
+    move-result-object v3
 
-    aput-object v2, v0, v1
+    aput-object v3, v0, v1
 
     .line 95
+    .end local v2  # "abi":Ljava/lang/String;
     add-int/lit8 v1, v1, 0x1
 
     goto :goto_6
 
     .line 99
+    .end local v1  # "i":I
     :cond_16
     invoke-static {v0}, Lcom/android/server/pm/InstructionSets;->getDexCodeInstructionSets([Ljava/lang/String;)[Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v1
 
-    return-object v0
+    return-object v1
 .end method
 
 .method public static getAllInstructionSets()Ljava/util/List;
-    .registers 6
+    .registers 7
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "()",
@@ -97,6 +102,7 @@
     sget-object v0, Landroid/os/Build;->SUPPORTED_ABIS:[Ljava/lang/String;
 
     .line 104
+    .local v0, "allAbis":[Ljava/lang/String;
     new-instance v1, Ljava/util/ArrayList;
 
     array-length v2, v0
@@ -104,6 +110,7 @@
     invoke-direct {v1, v2}, Ljava/util/ArrayList;-><init>(I)V
 
     .line 106
+    .local v1, "allInstructionSets":Ljava/util/List;, "Ljava/util/List<Ljava/lang/String;>;"
     array-length v2, v0
 
     const/4 v3, 0x0
@@ -114,21 +121,25 @@
     aget-object v4, v0, v3
 
     .line 107
+    .local v4, "abi":Ljava/lang/String;
     invoke-static {v4}, Ldalvik/system/VMRuntime;->getInstructionSet(Ljava/lang/String;)Ljava/lang/String;
 
-    move-result-object v4
+    move-result-object v5
 
     .line 108
-    invoke-interface {v1, v4}, Ljava/util/List;->contains(Ljava/lang/Object;)Z
+    .local v5, "instructionSet":Ljava/lang/String;
+    invoke-interface {v1, v5}, Ljava/util/List;->contains(Ljava/lang/Object;)Z
 
-    move-result v5
+    move-result v6
 
-    if-nez v5, :cond_1b
+    if-nez v6, :cond_1b
 
     .line 109
-    invoke-interface {v1, v4}, Ljava/util/List;->add(Ljava/lang/Object;)Z
+    invoke-interface {v1, v5}, Ljava/util/List;->add(Ljava/lang/Object;)Z
 
     .line 106
+    .end local v4  # "abi":Ljava/lang/String;
+    .end local v5  # "instructionSet":Ljava/lang/String;
     :cond_1b
     add-int/lit8 v3, v3, 0x1
 
@@ -141,6 +152,7 @@
 
 .method public static getAppDexInstructionSets(Landroid/content/pm/ApplicationInfo;)[Ljava/lang/String;
     .registers 5
+    .param p0, "info"  # Landroid/content/pm/ApplicationInfo;
 
     .line 39
     iget-object v0, p0, Landroid/content/pm/ApplicationInfo;->primaryCpuAbi:Ljava/lang/String;
@@ -170,14 +182,14 @@
 
     aput-object v3, v0, v1
 
-    iget-object p0, p0, Landroid/content/pm/ApplicationInfo;->secondaryCpuAbi:Ljava/lang/String;
+    iget-object v1, p0, Landroid/content/pm/ApplicationInfo;->secondaryCpuAbi:Ljava/lang/String;
 
     .line 43
-    invoke-static {p0}, Ldalvik/system/VMRuntime;->getInstructionSet(Ljava/lang/String;)Ljava/lang/String;
+    invoke-static {v1}, Ldalvik/system/VMRuntime;->getInstructionSet(Ljava/lang/String;)Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v1
 
-    aput-object p0, v0, v2
+    aput-object v1, v0, v2
 
     .line 41
     return-object v0
@@ -186,33 +198,34 @@
     :cond_1e
     new-array v0, v2, [Ljava/lang/String;
 
-    iget-object p0, p0, Landroid/content/pm/ApplicationInfo;->primaryCpuAbi:Ljava/lang/String;
+    iget-object v2, p0, Landroid/content/pm/ApplicationInfo;->primaryCpuAbi:Ljava/lang/String;
 
     .line 46
-    invoke-static {p0}, Ldalvik/system/VMRuntime;->getInstructionSet(Ljava/lang/String;)Ljava/lang/String;
+    invoke-static {v2}, Ldalvik/system/VMRuntime;->getInstructionSet(Ljava/lang/String;)Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v2
 
-    aput-object p0, v0, v1
+    aput-object v2, v0, v1
 
     .line 45
     return-object v0
 
     .line 50
     :cond_29
-    new-array p0, v2, [Ljava/lang/String;
+    new-array v0, v2, [Ljava/lang/String;
 
     invoke-static {}, Lcom/android/server/pm/InstructionSets;->getPreferredInstructionSet()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v2
 
-    aput-object v0, p0, v1
+    aput-object v2, v0, v1
 
-    return-object p0
+    return-object v0
 .end method
 
 .method public static getAppDexInstructionSets(Lcom/android/server/pm/PackageSetting;)[Ljava/lang/String;
     .registers 5
+    .param p0, "ps"  # Lcom/android/server/pm/PackageSetting;
 
     .line 54
     iget-object v0, p0, Lcom/android/server/pm/PackageSetting;->primaryCpuAbiString:Ljava/lang/String;
@@ -242,14 +255,14 @@
 
     aput-object v3, v0, v1
 
-    iget-object p0, p0, Lcom/android/server/pm/PackageSetting;->secondaryCpuAbiString:Ljava/lang/String;
+    iget-object v1, p0, Lcom/android/server/pm/PackageSetting;->secondaryCpuAbiString:Ljava/lang/String;
 
     .line 58
-    invoke-static {p0}, Ldalvik/system/VMRuntime;->getInstructionSet(Ljava/lang/String;)Ljava/lang/String;
+    invoke-static {v1}, Ldalvik/system/VMRuntime;->getInstructionSet(Ljava/lang/String;)Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v1
 
-    aput-object p0, v0, v2
+    aput-object v1, v0, v2
 
     .line 56
     return-object v0
@@ -258,33 +271,34 @@
     :cond_1e
     new-array v0, v2, [Ljava/lang/String;
 
-    iget-object p0, p0, Lcom/android/server/pm/PackageSetting;->primaryCpuAbiString:Ljava/lang/String;
+    iget-object v2, p0, Lcom/android/server/pm/PackageSetting;->primaryCpuAbiString:Ljava/lang/String;
 
     .line 61
-    invoke-static {p0}, Ldalvik/system/VMRuntime;->getInstructionSet(Ljava/lang/String;)Ljava/lang/String;
+    invoke-static {v2}, Ldalvik/system/VMRuntime;->getInstructionSet(Ljava/lang/String;)Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v2
 
-    aput-object p0, v0, v1
+    aput-object v2, v0, v1
 
     .line 60
     return-object v0
 
     .line 65
     :cond_29
-    new-array p0, v2, [Ljava/lang/String;
+    new-array v0, v2, [Ljava/lang/String;
 
     invoke-static {}, Lcom/android/server/pm/InstructionSets;->getPreferredInstructionSet()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v2
 
-    aput-object v0, p0, v1
+    aput-object v2, v0, v1
 
-    return-object p0
+    return-object v0
 .end method
 
 .method public static getDexCodeInstructionSet(Ljava/lang/String;)Ljava/lang/String;
     .registers 3
+    .param p0, "sharedLibraryIsa"  # Ljava/lang/String;
 
     .line 78
     new-instance v0, Ljava/lang/StringBuilder;
@@ -306,23 +320,27 @@
     move-result-object v0
 
     .line 79
+    .local v0, "dexCodeIsa":Ljava/lang/String;
     invoke-static {v0}, Landroid/text/TextUtils;->isEmpty(Ljava/lang/CharSequence;)Z
 
     move-result v1
 
-    if-eqz v1, :cond_1d
+    if-eqz v1, :cond_1e
 
-    goto :goto_1e
+    move-object v1, p0
 
-    :cond_1d
-    move-object p0, v0
+    goto :goto_1f
 
-    :goto_1e
-    return-object p0
+    :cond_1e
+    move-object v1, v0
+
+    :goto_1f
+    return-object v1
 .end method
 
 .method public static getDexCodeInstructionSets([Ljava/lang/String;)[Ljava/lang/String;
-    .registers 5
+    .registers 6
+    .param p0, "instructionSets"  # [Ljava/lang/String;
 
     .line 83
     new-instance v0, Landroid/util/ArraySet;
@@ -332,6 +350,7 @@
     invoke-direct {v0, v1}, Landroid/util/ArraySet;-><init>(I)V
 
     .line 84
+    .local v0, "dexCodeInstructionSets":Landroid/util/ArraySet;, "Landroid/util/ArraySet<Ljava/lang/String;>;"
     array-length v1, p0
 
     const/4 v2, 0x0
@@ -342,13 +361,15 @@
     aget-object v3, p0, v2
 
     .line 85
+    .local v3, "instructionSet":Ljava/lang/String;
     invoke-static {v3}, Lcom/android/server/pm/InstructionSets;->getDexCodeInstructionSet(Ljava/lang/String;)Ljava/lang/String;
 
-    move-result-object v3
+    move-result-object v4
 
-    invoke-virtual {v0, v3}, Landroid/util/ArraySet;->add(Ljava/lang/Object;)Z
+    invoke-virtual {v0, v4}, Landroid/util/ArraySet;->add(Ljava/lang/Object;)Z
 
     .line 84
+    .end local v3  # "instructionSet":Ljava/lang/String;
     add-int/lit8 v2, v2, 0x1
 
     goto :goto_8
@@ -357,17 +378,17 @@
     :cond_16
     invoke-virtual {v0}, Landroid/util/ArraySet;->size()I
 
-    move-result p0
+    move-result v1
 
-    new-array p0, p0, [Ljava/lang/String;
+    new-array v1, v1, [Ljava/lang/String;
 
-    invoke-virtual {v0, p0}, Landroid/util/ArraySet;->toArray([Ljava/lang/Object;)[Ljava/lang/Object;
+    invoke-virtual {v0, v1}, Landroid/util/ArraySet;->toArray([Ljava/lang/Object;)[Ljava/lang/Object;
 
-    move-result-object p0
+    move-result-object v1
 
-    check-cast p0, [Ljava/lang/String;
+    check-cast v1, [Ljava/lang/String;
 
-    return-object p0
+    return-object v1
 .end method
 
 .method public static getPreferredInstructionSet()Ljava/lang/String;
@@ -381,6 +402,7 @@
 
 .method public static getPrimaryInstructionSet(Landroid/content/pm/ApplicationInfo;)Ljava/lang/String;
     .registers 2
+    .param p0, "info"  # Landroid/content/pm/ApplicationInfo;
 
     .line 117
     iget-object v0, p0, Landroid/content/pm/ApplicationInfo;->primaryCpuAbi:Ljava/lang/String;
@@ -390,17 +412,17 @@
     .line 118
     invoke-static {}, Lcom/android/server/pm/InstructionSets;->getPreferredInstructionSet()Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v0
 
-    return-object p0
+    return-object v0
 
     .line 121
     :cond_9
-    iget-object p0, p0, Landroid/content/pm/ApplicationInfo;->primaryCpuAbi:Ljava/lang/String;
+    iget-object v0, p0, Landroid/content/pm/ApplicationInfo;->primaryCpuAbi:Ljava/lang/String;
 
-    invoke-static {p0}, Ldalvik/system/VMRuntime;->getInstructionSet(Ljava/lang/String;)Ljava/lang/String;
+    invoke-static {v0}, Ldalvik/system/VMRuntime;->getInstructionSet(Ljava/lang/String;)Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v0
 
-    return-object p0
+    return-object v0
 .end method

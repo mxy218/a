@@ -40,6 +40,7 @@
 
 .method public onError(I)V
     .registers 2
+    .param p1, "errorCode"  # I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -64,6 +65,7 @@
 
 .method public onMaxProgressUpdated(I)V
     .registers 2
+    .param p1, "maxProgress"  # I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -76,6 +78,7 @@
 
 .method public onProgress(I)V
     .registers 2
+    .param p1, "progress"  # I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -88,6 +91,7 @@
 
 .method public onProgressUpdated(I)V
     .registers 2
+    .param p1, "progress"  # I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -100,6 +104,10 @@
 
 .method public onSectionComplete(Ljava/lang/String;III)V
     .registers 5
+    .param p1, "name"  # Ljava/lang/String;
+    .param p2, "status"  # I
+    .param p3, "size"  # I
+    .param p4, "durationMs"  # I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;

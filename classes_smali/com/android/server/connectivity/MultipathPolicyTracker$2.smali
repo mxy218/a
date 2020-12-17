@@ -21,6 +21,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/connectivity/MultipathPolicyTracker;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/connectivity/MultipathPolicyTracker;
 
     .line 501
     iput-object p1, p0, Lcom/android/server/connectivity/MultipathPolicyTracker$2;->this$0:Lcom/android/server/connectivity/MultipathPolicyTracker;
@@ -44,20 +45,21 @@
 .end method
 
 .method public onMeteredIfacesChanged([Ljava/lang/String;)V
-    .registers 3
+    .registers 4
+    .param p1, "meteredIfaces"  # [Ljava/lang/String;
 
     .line 505
-    iget-object p1, p0, Lcom/android/server/connectivity/MultipathPolicyTracker$2;->this$0:Lcom/android/server/connectivity/MultipathPolicyTracker;
+    iget-object v0, p0, Lcom/android/server/connectivity/MultipathPolicyTracker$2;->this$0:Lcom/android/server/connectivity/MultipathPolicyTracker;
 
-    invoke-static {p1}, Lcom/android/server/connectivity/MultipathPolicyTracker;->access$900(Lcom/android/server/connectivity/MultipathPolicyTracker;)Landroid/os/Handler;
+    invoke-static {v0}, Lcom/android/server/connectivity/MultipathPolicyTracker;->access$900(Lcom/android/server/connectivity/MultipathPolicyTracker;)Landroid/os/Handler;
 
-    move-result-object p1
+    move-result-object v0
 
-    new-instance v0, Lcom/android/server/connectivity/-$$Lambda$MultipathPolicyTracker$2$dvyDLfu9d6g2XoEdL3QMHx7ut6k;
+    new-instance v1, Lcom/android/server/connectivity/-$$Lambda$MultipathPolicyTracker$2$dvyDLfu9d6g2XoEdL3QMHx7ut6k;
 
-    invoke-direct {v0, p0}, Lcom/android/server/connectivity/-$$Lambda$MultipathPolicyTracker$2$dvyDLfu9d6g2XoEdL3QMHx7ut6k;-><init>(Lcom/android/server/connectivity/MultipathPolicyTracker$2;)V
+    invoke-direct {v1, p0}, Lcom/android/server/connectivity/-$$Lambda$MultipathPolicyTracker$2$dvyDLfu9d6g2XoEdL3QMHx7ut6k;-><init>(Lcom/android/server/connectivity/MultipathPolicyTracker$2;)V
 
-    invoke-virtual {p1, v0}, Landroid/os/Handler;->post(Ljava/lang/Runnable;)Z
+    invoke-virtual {v0, v1}, Landroid/os/Handler;->post(Ljava/lang/Runnable;)Z
 
     .line 506
     return-void

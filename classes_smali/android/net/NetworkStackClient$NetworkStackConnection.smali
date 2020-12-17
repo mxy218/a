@@ -28,6 +28,8 @@
 # direct methods
 .method private constructor <init>(Landroid/net/NetworkStackClient;Landroid/content/Context;Ljava/lang/String;)V
     .registers 4
+    .param p2, "context"  # Landroid/content/Context;
+    .param p3, "packageName"  # Ljava/lang/String;
 
     .line 204
     iput-object p1, p0, Landroid/net/NetworkStackClient$NetworkStackConnection;->this$0:Landroid/net/NetworkStackClient;
@@ -46,6 +48,10 @@
 
 .method synthetic constructor <init>(Landroid/net/NetworkStackClient;Landroid/content/Context;Ljava/lang/String;Landroid/net/NetworkStackClient$1;)V
     .registers 5
+    .param p1, "x0"  # Landroid/net/NetworkStackClient;
+    .param p2, "x1"  # Landroid/content/Context;
+    .param p3, "x2"  # Ljava/lang/String;
+    .param p4, "x3"  # Landroid/net/NetworkStackClient$1;
 
     .line 198
     invoke-direct {p0, p1, p2, p3}, Landroid/net/NetworkStackClient$NetworkStackConnection;-><init>(Landroid/net/NetworkStackClient;Landroid/content/Context;Ljava/lang/String;)V
@@ -56,37 +62,40 @@
 
 # virtual methods
 .method public onServiceConnected(Landroid/content/ComponentName;Landroid/os/IBinder;)V
-    .registers 4
+    .registers 5
+    .param p1, "name"  # Landroid/content/ComponentName;
+    .param p2, "service"  # Landroid/os/IBinder;
 
     .line 211
-    iget-object p1, p0, Landroid/net/NetworkStackClient$NetworkStackConnection;->this$0:Landroid/net/NetworkStackClient;
+    iget-object v0, p0, Landroid/net/NetworkStackClient$NetworkStackConnection;->this$0:Landroid/net/NetworkStackClient;
 
-    const-string v0, "Network stack service connected"
+    const-string v1, "Network stack service connected"
 
-    invoke-static {p1, v0}, Landroid/net/NetworkStackClient;->access$000(Landroid/net/NetworkStackClient;Ljava/lang/String;)V
+    invoke-static {v0, v1}, Landroid/net/NetworkStackClient;->access$000(Landroid/net/NetworkStackClient;Ljava/lang/String;)V
 
     .line 212
-    iget-object p1, p0, Landroid/net/NetworkStackClient$NetworkStackConnection;->this$0:Landroid/net/NetworkStackClient;
+    iget-object v0, p0, Landroid/net/NetworkStackClient$NetworkStackConnection;->this$0:Landroid/net/NetworkStackClient;
 
-    invoke-static {p1, p2}, Landroid/net/NetworkStackClient;->access$100(Landroid/net/NetworkStackClient;Landroid/os/IBinder;)V
+    invoke-static {v0, p2}, Landroid/net/NetworkStackClient;->access$100(Landroid/net/NetworkStackClient;Landroid/os/IBinder;)V
 
     .line 213
     return-void
 .end method
 
 .method public onServiceDisconnected(Landroid/content/ComponentName;)V
-    .registers 5
+    .registers 6
+    .param p1, "name"  # Landroid/content/ComponentName;
 
     .line 222
-    iget-object p1, p0, Landroid/net/NetworkStackClient$NetworkStackConnection;->this$0:Landroid/net/NetworkStackClient;
+    iget-object v0, p0, Landroid/net/NetworkStackClient$NetworkStackConnection;->this$0:Landroid/net/NetworkStackClient;
 
-    iget-object v0, p0, Landroid/net/NetworkStackClient$NetworkStackConnection;->mContext:Landroid/content/Context;
+    iget-object v1, p0, Landroid/net/NetworkStackClient$NetworkStackConnection;->mContext:Landroid/content/Context;
 
-    iget-object v1, p0, Landroid/net/NetworkStackClient$NetworkStackConnection;->mPackageName:Ljava/lang/String;
+    iget-object v2, p0, Landroid/net/NetworkStackClient$NetworkStackConnection;->mPackageName:Ljava/lang/String;
 
-    const-string v2, "Lost network stack"
+    const-string v3, "Lost network stack"
 
-    invoke-static {p1, v2, v0, v1}, Landroid/net/NetworkStackClient;->access$200(Landroid/net/NetworkStackClient;Ljava/lang/String;Landroid/content/Context;Ljava/lang/String;)V
+    invoke-static {v0, v3, v1, v2}, Landroid/net/NetworkStackClient;->access$200(Landroid/net/NetworkStackClient;Ljava/lang/String;Landroid/content/Context;Ljava/lang/String;)V
 
     .line 223
     return-void

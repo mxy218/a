@@ -30,8 +30,9 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/am/AppCompactor;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/am/AppCompactor;
 
-    .line 205
+    .line 208
     iput-object p1, p0, Lcom/android/server/am/AppCompactor$2;->this$0:Lcom/android/server/am/AppCompactor;
 
     invoke-direct {p0}, Ljava/util/LinkedHashMap;-><init>()V
@@ -42,24 +43,25 @@
 
 # virtual methods
 .method protected removeEldestEntry(Ljava/util/Map$Entry;)Z
-    .registers 3
+    .registers 4
+    .param p1, "eldest"  # Ljava/util/Map$Entry;
 
-    .line 208
+    .line 211
     invoke-virtual {p0}, Lcom/android/server/am/AppCompactor$2;->size()I
 
-    move-result p1
+    move-result v0
 
-    const/16 v0, 0x64
+    const/16 v1, 0x64
 
-    if-le p1, v0, :cond_a
+    if-le v0, v1, :cond_a
 
-    const/4 p1, 0x1
+    const/4 v0, 0x1
 
     goto :goto_b
 
     :cond_a
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
     :goto_b
-    return p1
+    return v0
 .end method

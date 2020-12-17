@@ -25,6 +25,12 @@
 # direct methods
 .method constructor <init>(ILjava/lang/String;ILjava/lang/String;ILjava/lang/String;)V
     .registers 8
+    .param p1, "totalDefault"  # I
+    .param p2, "totalKey"  # Ljava/lang/String;
+    .param p3, "maxBgDefault"  # I
+    .param p4, "maxBgKey"  # Ljava/lang/String;
+    .param p5, "minBgDefault"  # I
+    .param p6, "minBgKey"  # Ljava/lang/String;
 
     .line 338
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -37,18 +43,18 @@
     iput-object v0, p0, Lcom/android/server/job/JobSchedulerService$MaxJobCounts;->mTotal:Landroid/util/KeyValueListParser$IntValue;
 
     .line 340
-    new-instance p1, Landroid/util/KeyValueListParser$IntValue;
+    new-instance v0, Landroid/util/KeyValueListParser$IntValue;
 
-    invoke-direct {p1, p4, p3}, Landroid/util/KeyValueListParser$IntValue;-><init>(Ljava/lang/String;I)V
+    invoke-direct {v0, p4, p3}, Landroid/util/KeyValueListParser$IntValue;-><init>(Ljava/lang/String;I)V
 
-    iput-object p1, p0, Lcom/android/server/job/JobSchedulerService$MaxJobCounts;->mMaxBg:Landroid/util/KeyValueListParser$IntValue;
+    iput-object v0, p0, Lcom/android/server/job/JobSchedulerService$MaxJobCounts;->mMaxBg:Landroid/util/KeyValueListParser$IntValue;
 
     .line 341
-    new-instance p1, Landroid/util/KeyValueListParser$IntValue;
+    new-instance v0, Landroid/util/KeyValueListParser$IntValue;
 
-    invoke-direct {p1, p6, p5}, Landroid/util/KeyValueListParser$IntValue;-><init>(Ljava/lang/String;I)V
+    invoke-direct {v0, p6, p5}, Landroid/util/KeyValueListParser$IntValue;-><init>(Ljava/lang/String;I)V
 
-    iput-object p1, p0, Lcom/android/server/job/JobSchedulerService$MaxJobCounts;->mMinBg:Landroid/util/KeyValueListParser$IntValue;
+    iput-object v0, p0, Lcom/android/server/job/JobSchedulerService$MaxJobCounts;->mMinBg:Landroid/util/KeyValueListParser$IntValue;
 
     .line 342
     return-void
@@ -58,6 +64,8 @@
 # virtual methods
 .method public dump(Ljava/io/PrintWriter;Ljava/lang/String;)V
     .registers 4
+    .param p1, "pw"  # Ljava/io/PrintWriter;
+    .param p2, "prefix"  # Ljava/lang/String;
 
     .line 391
     iget-object v0, p0, Lcom/android/server/job/JobSchedulerService$MaxJobCounts;->mTotal:Landroid/util/KeyValueListParser$IntValue;
@@ -79,36 +87,39 @@
 .end method
 
 .method public dumpProto(Landroid/util/proto/ProtoOutputStream;J)V
-    .registers 7
+    .registers 9
+    .param p1, "proto"  # Landroid/util/proto/ProtoOutputStream;
+    .param p2, "fieldId"  # J
 
     .line 397
     invoke-virtual {p1, p2, p3}, Landroid/util/proto/ProtoOutputStream;->start(J)J
 
-    move-result-wide p2
+    move-result-wide v0
 
     .line 398
-    iget-object v0, p0, Lcom/android/server/job/JobSchedulerService$MaxJobCounts;->mTotal:Landroid/util/KeyValueListParser$IntValue;
+    .local v0, "token":J
+    iget-object v2, p0, Lcom/android/server/job/JobSchedulerService$MaxJobCounts;->mTotal:Landroid/util/KeyValueListParser$IntValue;
 
-    const-wide v1, 0x10500000001L
+    const-wide v3, 0x10500000001L
 
-    invoke-virtual {v0, p1, v1, v2}, Landroid/util/KeyValueListParser$IntValue;->dumpProto(Landroid/util/proto/ProtoOutputStream;J)V
+    invoke-virtual {v2, p1, v3, v4}, Landroid/util/KeyValueListParser$IntValue;->dumpProto(Landroid/util/proto/ProtoOutputStream;J)V
 
     .line 399
-    iget-object v0, p0, Lcom/android/server/job/JobSchedulerService$MaxJobCounts;->mMaxBg:Landroid/util/KeyValueListParser$IntValue;
+    iget-object v2, p0, Lcom/android/server/job/JobSchedulerService$MaxJobCounts;->mMaxBg:Landroid/util/KeyValueListParser$IntValue;
 
-    const-wide v1, 0x10500000002L
+    const-wide v3, 0x10500000002L
 
-    invoke-virtual {v0, p1, v1, v2}, Landroid/util/KeyValueListParser$IntValue;->dumpProto(Landroid/util/proto/ProtoOutputStream;J)V
+    invoke-virtual {v2, p1, v3, v4}, Landroid/util/KeyValueListParser$IntValue;->dumpProto(Landroid/util/proto/ProtoOutputStream;J)V
 
     .line 400
-    iget-object v0, p0, Lcom/android/server/job/JobSchedulerService$MaxJobCounts;->mMinBg:Landroid/util/KeyValueListParser$IntValue;
+    iget-object v2, p0, Lcom/android/server/job/JobSchedulerService$MaxJobCounts;->mMinBg:Landroid/util/KeyValueListParser$IntValue;
 
-    const-wide v1, 0x10500000003L
+    const-wide v3, 0x10500000003L
 
-    invoke-virtual {v0, p1, v1, v2}, Landroid/util/KeyValueListParser$IntValue;->dumpProto(Landroid/util/proto/ProtoOutputStream;J)V
+    invoke-virtual {v2, p1, v3, v4}, Landroid/util/KeyValueListParser$IntValue;->dumpProto(Landroid/util/proto/ProtoOutputStream;J)V
 
     .line 401
-    invoke-virtual {p1, p2, p3}, Landroid/util/proto/ProtoOutputStream;->end(J)V
+    invoke-virtual {p1, v0, v1}, Landroid/util/proto/ProtoOutputStream;->end(J)V
 
     .line 402
     return-void
@@ -154,7 +165,8 @@
 .end method
 
 .method public parse(Landroid/util/KeyValueListParser;)V
-    .registers 4
+    .registers 5
+    .param p1, "parser"  # Landroid/util/KeyValueListParser;
 
     .line 345
     iget-object v0, p0, Lcom/android/server/job/JobSchedulerService$MaxJobCounts;->mTotal:Landroid/util/KeyValueListParser$IntValue;
@@ -172,160 +184,160 @@
     invoke-virtual {v0, p1}, Landroid/util/KeyValueListParser$IntValue;->parse(Landroid/util/KeyValueListParser;)V
 
     .line 349
-    iget-object p1, p0, Lcom/android/server/job/JobSchedulerService$MaxJobCounts;->mTotal:Landroid/util/KeyValueListParser$IntValue;
+    iget-object v0, p0, Lcom/android/server/job/JobSchedulerService$MaxJobCounts;->mTotal:Landroid/util/KeyValueListParser$IntValue;
 
-    invoke-virtual {p1}, Landroid/util/KeyValueListParser$IntValue;->getValue()I
+    invoke-virtual {v0}, Landroid/util/KeyValueListParser$IntValue;->getValue()I
 
-    move-result p1
+    move-result v0
 
-    const/4 v0, 0x1
+    const/4 v1, 0x1
 
-    if-ge p1, v0, :cond_1e
+    if-ge v0, v1, :cond_1e
 
     .line 350
-    iget-object p1, p0, Lcom/android/server/job/JobSchedulerService$MaxJobCounts;->mTotal:Landroid/util/KeyValueListParser$IntValue;
+    iget-object v0, p0, Lcom/android/server/job/JobSchedulerService$MaxJobCounts;->mTotal:Landroid/util/KeyValueListParser$IntValue;
 
-    invoke-virtual {p1, v0}, Landroid/util/KeyValueListParser$IntValue;->setValue(I)V
+    invoke-virtual {v0, v1}, Landroid/util/KeyValueListParser$IntValue;->setValue(I)V
 
     goto :goto_2d
 
     .line 351
     :cond_1e
-    iget-object p1, p0, Lcom/android/server/job/JobSchedulerService$MaxJobCounts;->mTotal:Landroid/util/KeyValueListParser$IntValue;
+    iget-object v0, p0, Lcom/android/server/job/JobSchedulerService$MaxJobCounts;->mTotal:Landroid/util/KeyValueListParser$IntValue;
 
-    invoke-virtual {p1}, Landroid/util/KeyValueListParser$IntValue;->getValue()I
+    invoke-virtual {v0}, Landroid/util/KeyValueListParser$IntValue;->getValue()I
 
-    move-result p1
+    move-result v0
 
-    const/16 v1, 0x10
+    const/16 v2, 0x10
 
-    if-le p1, v1, :cond_2d
+    if-le v0, v2, :cond_2d
 
     .line 352
-    iget-object p1, p0, Lcom/android/server/job/JobSchedulerService$MaxJobCounts;->mTotal:Landroid/util/KeyValueListParser$IntValue;
+    iget-object v0, p0, Lcom/android/server/job/JobSchedulerService$MaxJobCounts;->mTotal:Landroid/util/KeyValueListParser$IntValue;
 
-    invoke-virtual {p1, v1}, Landroid/util/KeyValueListParser$IntValue;->setValue(I)V
+    invoke-virtual {v0, v2}, Landroid/util/KeyValueListParser$IntValue;->setValue(I)V
 
     .line 355
     :cond_2d
     :goto_2d
-    iget-object p1, p0, Lcom/android/server/job/JobSchedulerService$MaxJobCounts;->mMaxBg:Landroid/util/KeyValueListParser$IntValue;
+    iget-object v0, p0, Lcom/android/server/job/JobSchedulerService$MaxJobCounts;->mMaxBg:Landroid/util/KeyValueListParser$IntValue;
 
-    invoke-virtual {p1}, Landroid/util/KeyValueListParser$IntValue;->getValue()I
+    invoke-virtual {v0}, Landroid/util/KeyValueListParser$IntValue;->getValue()I
 
-    move-result p1
+    move-result v0
 
-    if-ge p1, v0, :cond_3b
+    if-ge v0, v1, :cond_3b
 
     .line 356
-    iget-object p1, p0, Lcom/android/server/job/JobSchedulerService$MaxJobCounts;->mMaxBg:Landroid/util/KeyValueListParser$IntValue;
+    iget-object v0, p0, Lcom/android/server/job/JobSchedulerService$MaxJobCounts;->mMaxBg:Landroid/util/KeyValueListParser$IntValue;
 
-    invoke-virtual {p1, v0}, Landroid/util/KeyValueListParser$IntValue;->setValue(I)V
+    invoke-virtual {v0, v1}, Landroid/util/KeyValueListParser$IntValue;->setValue(I)V
 
     goto :goto_54
 
     .line 357
     :cond_3b
-    iget-object p1, p0, Lcom/android/server/job/JobSchedulerService$MaxJobCounts;->mMaxBg:Landroid/util/KeyValueListParser$IntValue;
+    iget-object v0, p0, Lcom/android/server/job/JobSchedulerService$MaxJobCounts;->mMaxBg:Landroid/util/KeyValueListParser$IntValue;
 
-    invoke-virtual {p1}, Landroid/util/KeyValueListParser$IntValue;->getValue()I
+    invoke-virtual {v0}, Landroid/util/KeyValueListParser$IntValue;->getValue()I
 
-    move-result p1
+    move-result v0
 
-    iget-object v1, p0, Lcom/android/server/job/JobSchedulerService$MaxJobCounts;->mTotal:Landroid/util/KeyValueListParser$IntValue;
+    iget-object v2, p0, Lcom/android/server/job/JobSchedulerService$MaxJobCounts;->mTotal:Landroid/util/KeyValueListParser$IntValue;
 
-    invoke-virtual {v1}, Landroid/util/KeyValueListParser$IntValue;->getValue()I
+    invoke-virtual {v2}, Landroid/util/KeyValueListParser$IntValue;->getValue()I
 
-    move-result v1
+    move-result v2
 
-    if-le p1, v1, :cond_54
+    if-le v0, v2, :cond_54
 
     .line 358
-    iget-object p1, p0, Lcom/android/server/job/JobSchedulerService$MaxJobCounts;->mMaxBg:Landroid/util/KeyValueListParser$IntValue;
+    iget-object v0, p0, Lcom/android/server/job/JobSchedulerService$MaxJobCounts;->mMaxBg:Landroid/util/KeyValueListParser$IntValue;
 
-    iget-object v1, p0, Lcom/android/server/job/JobSchedulerService$MaxJobCounts;->mTotal:Landroid/util/KeyValueListParser$IntValue;
+    iget-object v2, p0, Lcom/android/server/job/JobSchedulerService$MaxJobCounts;->mTotal:Landroid/util/KeyValueListParser$IntValue;
 
-    invoke-virtual {v1}, Landroid/util/KeyValueListParser$IntValue;->getValue()I
+    invoke-virtual {v2}, Landroid/util/KeyValueListParser$IntValue;->getValue()I
 
-    move-result v1
+    move-result v2
 
-    invoke-virtual {p1, v1}, Landroid/util/KeyValueListParser$IntValue;->setValue(I)V
+    invoke-virtual {v0, v2}, Landroid/util/KeyValueListParser$IntValue;->setValue(I)V
 
     .line 360
     :cond_54
     :goto_54
-    iget-object p1, p0, Lcom/android/server/job/JobSchedulerService$MaxJobCounts;->mMinBg:Landroid/util/KeyValueListParser$IntValue;
+    iget-object v0, p0, Lcom/android/server/job/JobSchedulerService$MaxJobCounts;->mMinBg:Landroid/util/KeyValueListParser$IntValue;
 
-    invoke-virtual {p1}, Landroid/util/KeyValueListParser$IntValue;->getValue()I
+    invoke-virtual {v0}, Landroid/util/KeyValueListParser$IntValue;->getValue()I
 
-    move-result p1
+    move-result v0
 
-    if-gez p1, :cond_63
+    if-gez v0, :cond_63
 
     .line 361
-    iget-object p1, p0, Lcom/android/server/job/JobSchedulerService$MaxJobCounts;->mMinBg:Landroid/util/KeyValueListParser$IntValue;
+    iget-object v0, p0, Lcom/android/server/job/JobSchedulerService$MaxJobCounts;->mMinBg:Landroid/util/KeyValueListParser$IntValue;
 
-    const/4 v0, 0x0
+    const/4 v1, 0x0
 
-    invoke-virtual {p1, v0}, Landroid/util/KeyValueListParser$IntValue;->setValue(I)V
+    invoke-virtual {v0, v1}, Landroid/util/KeyValueListParser$IntValue;->setValue(I)V
 
     goto :goto_96
 
     .line 363
     :cond_63
-    iget-object p1, p0, Lcom/android/server/job/JobSchedulerService$MaxJobCounts;->mMinBg:Landroid/util/KeyValueListParser$IntValue;
+    iget-object v0, p0, Lcom/android/server/job/JobSchedulerService$MaxJobCounts;->mMinBg:Landroid/util/KeyValueListParser$IntValue;
 
-    invoke-virtual {p1}, Landroid/util/KeyValueListParser$IntValue;->getValue()I
+    invoke-virtual {v0}, Landroid/util/KeyValueListParser$IntValue;->getValue()I
 
-    move-result p1
+    move-result v0
 
-    iget-object v1, p0, Lcom/android/server/job/JobSchedulerService$MaxJobCounts;->mMaxBg:Landroid/util/KeyValueListParser$IntValue;
+    iget-object v2, p0, Lcom/android/server/job/JobSchedulerService$MaxJobCounts;->mMaxBg:Landroid/util/KeyValueListParser$IntValue;
 
-    invoke-virtual {v1}, Landroid/util/KeyValueListParser$IntValue;->getValue()I
+    invoke-virtual {v2}, Landroid/util/KeyValueListParser$IntValue;->getValue()I
 
-    move-result v1
+    move-result v2
 
-    if-le p1, v1, :cond_7c
+    if-le v0, v2, :cond_7c
 
     .line 364
-    iget-object p1, p0, Lcom/android/server/job/JobSchedulerService$MaxJobCounts;->mMinBg:Landroid/util/KeyValueListParser$IntValue;
+    iget-object v0, p0, Lcom/android/server/job/JobSchedulerService$MaxJobCounts;->mMinBg:Landroid/util/KeyValueListParser$IntValue;
 
-    iget-object v1, p0, Lcom/android/server/job/JobSchedulerService$MaxJobCounts;->mMaxBg:Landroid/util/KeyValueListParser$IntValue;
+    iget-object v2, p0, Lcom/android/server/job/JobSchedulerService$MaxJobCounts;->mMaxBg:Landroid/util/KeyValueListParser$IntValue;
 
-    invoke-virtual {v1}, Landroid/util/KeyValueListParser$IntValue;->getValue()I
+    invoke-virtual {v2}, Landroid/util/KeyValueListParser$IntValue;->getValue()I
 
-    move-result v1
+    move-result v2
 
-    invoke-virtual {p1, v1}, Landroid/util/KeyValueListParser$IntValue;->setValue(I)V
+    invoke-virtual {v0, v2}, Landroid/util/KeyValueListParser$IntValue;->setValue(I)V
 
     .line 366
     :cond_7c
-    iget-object p1, p0, Lcom/android/server/job/JobSchedulerService$MaxJobCounts;->mMinBg:Landroid/util/KeyValueListParser$IntValue;
+    iget-object v0, p0, Lcom/android/server/job/JobSchedulerService$MaxJobCounts;->mMinBg:Landroid/util/KeyValueListParser$IntValue;
 
-    invoke-virtual {p1}, Landroid/util/KeyValueListParser$IntValue;->getValue()I
+    invoke-virtual {v0}, Landroid/util/KeyValueListParser$IntValue;->getValue()I
 
-    move-result p1
+    move-result v0
 
-    iget-object v1, p0, Lcom/android/server/job/JobSchedulerService$MaxJobCounts;->mTotal:Landroid/util/KeyValueListParser$IntValue;
+    iget-object v2, p0, Lcom/android/server/job/JobSchedulerService$MaxJobCounts;->mTotal:Landroid/util/KeyValueListParser$IntValue;
 
-    invoke-virtual {v1}, Landroid/util/KeyValueListParser$IntValue;->getValue()I
+    invoke-virtual {v2}, Landroid/util/KeyValueListParser$IntValue;->getValue()I
 
-    move-result v1
+    move-result v2
 
-    if-lt p1, v1, :cond_96
+    if-lt v0, v2, :cond_96
 
     .line 367
-    iget-object p1, p0, Lcom/android/server/job/JobSchedulerService$MaxJobCounts;->mMinBg:Landroid/util/KeyValueListParser$IntValue;
+    iget-object v0, p0, Lcom/android/server/job/JobSchedulerService$MaxJobCounts;->mMinBg:Landroid/util/KeyValueListParser$IntValue;
 
-    iget-object v1, p0, Lcom/android/server/job/JobSchedulerService$MaxJobCounts;->mTotal:Landroid/util/KeyValueListParser$IntValue;
+    iget-object v2, p0, Lcom/android/server/job/JobSchedulerService$MaxJobCounts;->mTotal:Landroid/util/KeyValueListParser$IntValue;
 
-    invoke-virtual {v1}, Landroid/util/KeyValueListParser$IntValue;->getValue()I
+    invoke-virtual {v2}, Landroid/util/KeyValueListParser$IntValue;->getValue()I
 
-    move-result v1
+    move-result v2
 
-    sub-int/2addr v1, v0
+    sub-int/2addr v2, v1
 
-    invoke-virtual {p1, v1}, Landroid/util/KeyValueListParser$IntValue;->setValue(I)V
+    invoke-virtual {v0, v2}, Landroid/util/KeyValueListParser$IntValue;->setValue(I)V
 
     .line 370
     :cond_96

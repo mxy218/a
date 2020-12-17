@@ -21,8 +21,10 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/storage/DeviceStorageMonitorService;Landroid/os/Looper;)V
     .registers 3
+    .param p1, "this$0"  # Lcom/android/server/storage/DeviceStorageMonitorService;
+    .param p2, "x0"  # Landroid/os/Looper;
 
-    .line 252
+    .line 292
     iput-object p1, p0, Lcom/android/server/storage/DeviceStorageMonitorService$1;->this$0:Lcom/android/server/storage/DeviceStorageMonitorService;
 
     invoke-direct {p0, p2}, Landroid/os/Handler;-><init>(Landroid/os/Looper;)V
@@ -33,24 +35,25 @@
 
 # virtual methods
 .method public handleMessage(Landroid/os/Message;)V
-    .registers 3
+    .registers 4
+    .param p1, "msg"  # Landroid/os/Message;
 
-    .line 255
-    iget p1, p1, Landroid/os/Message;->what:I
+    .line 295
+    iget v0, p1, Landroid/os/Message;->what:I
 
-    const/4 v0, 0x1
+    const/4 v1, 0x1
 
-    if-eq p1, v0, :cond_6
+    if-eq v0, v1, :cond_6
 
-    .line 260
+    .line 300
     return-void
 
-    .line 257
+    .line 297
     :cond_6
-    iget-object p1, p0, Lcom/android/server/storage/DeviceStorageMonitorService$1;->this$0:Lcom/android/server/storage/DeviceStorageMonitorService;
+    iget-object v0, p0, Lcom/android/server/storage/DeviceStorageMonitorService$1;->this$0:Lcom/android/server/storage/DeviceStorageMonitorService;
 
-    invoke-static {p1}, Lcom/android/server/storage/DeviceStorageMonitorService;->access$100(Lcom/android/server/storage/DeviceStorageMonitorService;)V
+    invoke-static {v0}, Lcom/android/server/storage/DeviceStorageMonitorService;->access$100(Lcom/android/server/storage/DeviceStorageMonitorService;)V
 
-    .line 258
+    .line 298
     return-void
 .end method

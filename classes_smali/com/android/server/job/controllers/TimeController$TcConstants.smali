@@ -20,17 +20,11 @@
 # static fields
 .field private static final DEFAULT_SKIP_NOT_READY_JOBS:Z = true
 
-.field private static final DEFAULT_USE_NON_WAKEUP_ALARM_FOR_DELAY:Z = true
-
 .field private static final KEY_SKIP_NOT_READY_JOBS:Ljava/lang/String; = "skip_not_ready_jobs"
-
-.field private static final KEY_USE_NON_WAKEUP_ALARM_FOR_DELAY:Ljava/lang/String; = "use_non_wakeup_delay_alarm"
 
 
 # instance fields
 .field public SKIP_NOT_READY_JOBS:Z
-
-.field public USE_NON_WAKEUP_ALARM_FOR_DELAY:Z
 
 .field private final mParser:Landroid/util/KeyValueListParser;
 
@@ -41,39 +35,40 @@
 
 # direct methods
 .method constructor <init>(Lcom/android/server/job/controllers/TimeController;Landroid/os/Handler;)V
-    .registers 3
+    .registers 5
+    .param p1, "this$0"  # Lcom/android/server/job/controllers/TimeController;
+    .param p2, "handler"  # Landroid/os/Handler;
 
-    .line 493
+    .line 483
     iput-object p1, p0, Lcom/android/server/job/controllers/TimeController$TcConstants;->this$0:Lcom/android/server/job/controllers/TimeController;
 
-    .line 494
+    .line 484
     invoke-direct {p0, p2}, Landroid/database/ContentObserver;-><init>(Landroid/os/Handler;)V
 
-    .line 467
-    new-instance p1, Landroid/util/KeyValueListParser;
+    .line 466
+    new-instance v0, Landroid/util/KeyValueListParser;
 
-    const/16 p2, 0x2c
+    const/16 v1, 0x2c
 
-    invoke-direct {p1, p2}, Landroid/util/KeyValueListParser;-><init>(C)V
+    invoke-direct {v0, v1}, Landroid/util/KeyValueListParser;-><init>(C)V
 
-    iput-object p1, p0, Lcom/android/server/job/controllers/TimeController$TcConstants;->mParser:Landroid/util/KeyValueListParser;
+    iput-object v0, p0, Lcom/android/server/job/controllers/TimeController$TcConstants;->mParser:Landroid/util/KeyValueListParser;
 
-    .line 480
-    const/4 p1, 0x1
+    .line 476
+    const/4 v0, 0x1
 
-    iput-boolean p1, p0, Lcom/android/server/job/controllers/TimeController$TcConstants;->SKIP_NOT_READY_JOBS:Z
+    iput-boolean v0, p0, Lcom/android/server/job/controllers/TimeController$TcConstants;->SKIP_NOT_READY_JOBS:Z
 
-    .line 486
-    iput-boolean p1, p0, Lcom/android/server/job/controllers/TimeController$TcConstants;->USE_NON_WAKEUP_ALARM_FOR_DELAY:Z
-
-    .line 495
+    .line 485
     return-void
 .end method
 
 .method static synthetic access$000(Lcom/android/server/job/controllers/TimeController$TcConstants;Landroid/content/ContentResolver;)V
     .registers 2
+    .param p0, "x0"  # Lcom/android/server/job/controllers/TimeController$TcConstants;
+    .param p1, "x1"  # Landroid/content/ContentResolver;
 
-    .line 465
+    .line 464
     invoke-direct {p0, p1}, Lcom/android/server/job/controllers/TimeController$TcConstants;->start(Landroid/content/ContentResolver;)V
 
     return-void
@@ -81,8 +76,10 @@
 
 .method static synthetic access$200(Lcom/android/server/job/controllers/TimeController$TcConstants;Lcom/android/internal/util/IndentingPrintWriter;)V
     .registers 2
+    .param p0, "x0"  # Lcom/android/server/job/controllers/TimeController$TcConstants;
+    .param p1, "x1"  # Lcom/android/internal/util/IndentingPrintWriter;
 
-    .line 465
+    .line 464
     invoke-direct {p0, p1}, Lcom/android/server/job/controllers/TimeController$TcConstants;->dump(Lcom/android/internal/util/IndentingPrintWriter;)V
 
     return-void
@@ -90,8 +87,10 @@
 
 .method static synthetic access$300(Lcom/android/server/job/controllers/TimeController$TcConstants;Landroid/util/proto/ProtoOutputStream;)V
     .registers 2
+    .param p0, "x0"  # Lcom/android/server/job/controllers/TimeController$TcConstants;
+    .param p1, "x1"  # Landroid/util/proto/ProtoOutputStream;
 
-    .line 465
+    .line 464
     invoke-direct {p0, p1}, Lcom/android/server/job/controllers/TimeController$TcConstants;->dump(Landroid/util/proto/ProtoOutputStream;)V
 
     return-void
@@ -99,50 +98,46 @@
 
 .method private dump(Landroid/util/proto/ProtoOutputStream;)V
     .registers 7
+    .param p1, "proto"  # Landroid/util/proto/ProtoOutputStream;
 
-    .line 544
+    .line 526
     const-wide v0, 0x10b00000019L  # 5.665728762E-312
 
     invoke-virtual {p1, v0, v1}, Landroid/util/proto/ProtoOutputStream;->start(J)J
 
     move-result-wide v0
 
-    .line 545
+    .line 527
+    .local v0, "tcToken":J
     iget-boolean v2, p0, Lcom/android/server/job/controllers/TimeController$TcConstants;->SKIP_NOT_READY_JOBS:Z
 
     const-wide v3, 0x10800000001L
 
     invoke-virtual {p1, v3, v4, v2}, Landroid/util/proto/ProtoOutputStream;->write(JZ)V
 
-    .line 546
-    iget-boolean v2, p0, Lcom/android/server/job/controllers/TimeController$TcConstants;->USE_NON_WAKEUP_ALARM_FOR_DELAY:Z
-
-    const-wide v3, 0x10800000002L
-
-    invoke-virtual {p1, v3, v4, v2}, Landroid/util/proto/ProtoOutputStream;->write(JZ)V
-
-    .line 548
+    .line 528
     invoke-virtual {p1, v0, v1}, Landroid/util/proto/ProtoOutputStream;->end(J)V
 
-    .line 549
+    .line 529
     return-void
 .end method
 
 .method private dump(Lcom/android/internal/util/IndentingPrintWriter;)V
     .registers 4
+    .param p1, "pw"  # Lcom/android/internal/util/IndentingPrintWriter;
 
-    .line 534
+    .line 518
     invoke-virtual {p1}, Lcom/android/internal/util/IndentingPrintWriter;->println()V
 
-    .line 535
+    .line 519
     const-string v0, "TimeController:"
 
     invoke-virtual {p1, v0}, Lcom/android/internal/util/IndentingPrintWriter;->println(Ljava/lang/String;)V
 
-    .line 536
+    .line 520
     invoke-virtual {p1}, Lcom/android/internal/util/IndentingPrintWriter;->increaseIndent()Lcom/android/internal/util/IndentingPrintWriter;
 
-    .line 537
+    .line 521
     iget-boolean v0, p0, Lcom/android/server/job/controllers/TimeController$TcConstants;->SKIP_NOT_READY_JOBS:Z
 
     invoke-static {v0}, Ljava/lang/Boolean;->valueOf(Z)Ljava/lang/Boolean;
@@ -157,159 +152,137 @@
 
     invoke-virtual {v0}, Lcom/android/internal/util/IndentingPrintWriter;->println()V
 
-    .line 538
-    iget-boolean v0, p0, Lcom/android/server/job/controllers/TimeController$TcConstants;->USE_NON_WAKEUP_ALARM_FOR_DELAY:Z
-
-    .line 539
-    invoke-static {v0}, Ljava/lang/Boolean;->valueOf(Z)Ljava/lang/Boolean;
-
-    move-result-object v0
-
-    .line 538
-    const-string/jumbo v1, "use_non_wakeup_delay_alarm"
-
-    invoke-virtual {p1, v1, v0}, Lcom/android/internal/util/IndentingPrintWriter;->printPair(Ljava/lang/String;Ljava/lang/Object;)Lcom/android/internal/util/IndentingPrintWriter;
-
-    move-result-object v0
-
-    .line 539
-    invoke-virtual {v0}, Lcom/android/internal/util/IndentingPrintWriter;->println()V
-
-    .line 540
+    .line 522
     invoke-virtual {p1}, Lcom/android/internal/util/IndentingPrintWriter;->decreaseIndent()Lcom/android/internal/util/IndentingPrintWriter;
 
-    .line 541
+    .line 523
     return-void
 .end method
 
 .method private start(Landroid/content/ContentResolver;)V
-    .registers 4
+    .registers 5
+    .param p1, "resolver"  # Landroid/content/ContentResolver;
 
-    .line 498
+    .line 488
     iput-object p1, p0, Lcom/android/server/job/controllers/TimeController$TcConstants;->mResolver:Landroid/content/ContentResolver;
 
-    .line 499
-    iget-object p1, p0, Lcom/android/server/job/controllers/TimeController$TcConstants;->mResolver:Landroid/content/ContentResolver;
+    .line 489
+    iget-object v0, p0, Lcom/android/server/job/controllers/TimeController$TcConstants;->mResolver:Landroid/content/ContentResolver;
 
-    const-string v0, "job_scheduler_time_controller_constants"
+    const-string/jumbo v1, "job_scheduler_time_controller_constants"
 
-    invoke-static {v0}, Landroid/provider/Settings$Global;->getUriFor(Ljava/lang/String;)Landroid/net/Uri;
+    invoke-static {v1}, Landroid/provider/Settings$Global;->getUriFor(Ljava/lang/String;)Landroid/net/Uri;
 
-    move-result-object v0
+    move-result-object v1
+
+    const/4 v2, 0x0
+
+    invoke-virtual {v0, v1, v2, p0}, Landroid/content/ContentResolver;->registerContentObserver(Landroid/net/Uri;ZLandroid/database/ContentObserver;)V
+
+    .line 491
+    const/4 v0, 0x1
 
     const/4 v1, 0x0
 
-    invoke-virtual {p1, v0, v1, p0}, Landroid/content/ContentResolver;->registerContentObserver(Landroid/net/Uri;ZLandroid/database/ContentObserver;)V
+    invoke-virtual {p0, v0, v1}, Lcom/android/server/job/controllers/TimeController$TcConstants;->onChange(ZLandroid/net/Uri;)V
 
-    .line 501
-    const/4 p1, 0x1
-
-    const/4 v0, 0x0
-
-    invoke-virtual {p0, p1, v0}, Lcom/android/server/job/controllers/TimeController$TcConstants;->onChange(ZLandroid/net/Uri;)V
-
-    .line 502
+    .line 492
     return-void
 .end method
 
 
 # virtual methods
 .method public onChange(ZLandroid/net/Uri;)V
-    .registers 5
+    .registers 8
+    .param p1, "selfChange"  # Z
+    .param p2, "uri"  # Landroid/net/Uri;
+
+    .line 496
+    iget-object v0, p0, Lcom/android/server/job/controllers/TimeController$TcConstants;->mResolver:Landroid/content/ContentResolver;
+
+    const-string/jumbo v1, "job_scheduler_time_controller_constants"
+
+    invoke-static {v0, v1}, Landroid/provider/Settings$Global;->getString(Landroid/content/ContentResolver;Ljava/lang/String;)Ljava/lang/String;
+
+    move-result-object v0
+
+    .line 500
+    .local v0, "constants":Ljava/lang/String;
+    :try_start_9
+    iget-object v1, p0, Lcom/android/server/job/controllers/TimeController$TcConstants;->mParser:Landroid/util/KeyValueListParser;
+
+    invoke-virtual {v1, v0}, Landroid/util/KeyValueListParser;->setString(Ljava/lang/String;)V
+    :try_end_e
+    .catch Ljava/lang/Exception; {:try_start_9 .. :try_end_e} :catch_f
+
+    .line 504
+    goto :goto_17
+
+    .line 501
+    :catch_f
+    move-exception v1
+
+    .line 503
+    .local v1, "e":Ljava/lang/Exception;
+    const-string v2, "JobScheduler.Time"
+
+    const-string v3, "Bad jobscheduler time controller settings"
+
+    invoke-static {v2, v3, v1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
     .line 506
-    iget-object p1, p0, Lcom/android/server/job/controllers/TimeController$TcConstants;->mResolver:Landroid/content/ContentResolver;
+    .end local v1  # "e":Ljava/lang/Exception;
+    :goto_17
+    iget-boolean v1, p0, Lcom/android/server/job/controllers/TimeController$TcConstants;->SKIP_NOT_READY_JOBS:Z
 
-    const-string p2, "job_scheduler_time_controller_constants"
+    .line 507
+    .local v1, "oldVal":Z
+    iget-object v2, p0, Lcom/android/server/job/controllers/TimeController$TcConstants;->mParser:Landroid/util/KeyValueListParser;
 
-    invoke-static {p1, p2}, Landroid/provider/Settings$Global;->getString(Landroid/content/ContentResolver;Ljava/lang/String;)Ljava/lang/String;
+    const/4 v3, 0x1
 
-    move-result-object p1
+    const-string/jumbo v4, "skip_not_ready_jobs"
+
+    invoke-virtual {v2, v4, v3}, Landroid/util/KeyValueListParser;->getBoolean(Ljava/lang/String;Z)Z
+
+    move-result v2
+
+    iput-boolean v2, p0, Lcom/android/server/job/controllers/TimeController$TcConstants;->SKIP_NOT_READY_JOBS:Z
 
     .line 510
-    :try_start_8
-    iget-object p2, p0, Lcom/android/server/job/controllers/TimeController$TcConstants;->mParser:Landroid/util/KeyValueListParser;
+    iget-boolean v2, p0, Lcom/android/server/job/controllers/TimeController$TcConstants;->SKIP_NOT_READY_JOBS:Z
 
-    invoke-virtual {p2, p1}, Landroid/util/KeyValueListParser;->setString(Ljava/lang/String;)V
-    :try_end_d
-    .catch Ljava/lang/Exception; {:try_start_8 .. :try_end_d} :catch_e
-
-    .line 514
-    goto :goto_16
+    if-eq v1, v2, :cond_38
 
     .line 511
-    :catch_e
-    move-exception p1
+    iget-object v2, p0, Lcom/android/server/job/controllers/TimeController$TcConstants;->this$0:Lcom/android/server/job/controllers/TimeController;
+
+    iget-object v2, v2, Lcom/android/server/job/controllers/TimeController;->mLock:Ljava/lang/Object;
+
+    monitor-enter v2
+
+    .line 512
+    :try_start_2e
+    iget-object v3, p0, Lcom/android/server/job/controllers/TimeController$TcConstants;->this$0:Lcom/android/server/job/controllers/TimeController;
+
+    invoke-virtual {v3}, Lcom/android/server/job/controllers/TimeController;->recheckAlarmsLocked()V
 
     .line 513
-    const-string p2, "JobScheduler.Time"
+    monitor-exit v2
 
-    const-string v0, "Bad jobscheduler time controller settings"
+    goto :goto_38
 
-    invoke-static {p2, v0, p1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    :catchall_35
+    move-exception v3
 
-    .line 516
-    :goto_16
-    iget-boolean p1, p0, Lcom/android/server/job/controllers/TimeController$TcConstants;->SKIP_NOT_READY_JOBS:Z
+    monitor-exit v2
+    :try_end_37
+    .catchall {:try_start_2e .. :try_end_37} :catchall_35
 
-    .line 517
-    iget-object p2, p0, Lcom/android/server/job/controllers/TimeController$TcConstants;->mParser:Landroid/util/KeyValueListParser;
+    throw v3
 
-    const/4 v0, 0x1
-
-    const-string/jumbo v1, "skip_not_ready_jobs"
-
-    invoke-virtual {p2, v1, v0}, Landroid/util/KeyValueListParser;->getBoolean(Ljava/lang/String;Z)Z
-
-    move-result p2
-
-    iput-boolean p2, p0, Lcom/android/server/job/controllers/TimeController$TcConstants;->SKIP_NOT_READY_JOBS:Z
-
-    .line 520
-    iget-boolean p2, p0, Lcom/android/server/job/controllers/TimeController$TcConstants;->SKIP_NOT_READY_JOBS:Z
-
-    if-eq p1, p2, :cond_37
-
-    .line 521
-    iget-object p1, p0, Lcom/android/server/job/controllers/TimeController$TcConstants;->this$0:Lcom/android/server/job/controllers/TimeController;
-
-    iget-object p1, p1, Lcom/android/server/job/controllers/TimeController;->mLock:Ljava/lang/Object;
-
-    monitor-enter p1
-
-    .line 522
-    :try_start_2d
-    iget-object p2, p0, Lcom/android/server/job/controllers/TimeController$TcConstants;->this$0:Lcom/android/server/job/controllers/TimeController;
-
-    invoke-virtual {p2}, Lcom/android/server/job/controllers/TimeController;->recheckAlarmsLocked()V
-
-    .line 523
-    monitor-exit p1
-
-    goto :goto_37
-
-    :catchall_34
-    move-exception p2
-
-    monitor-exit p1
-    :try_end_36
-    .catchall {:try_start_2d .. :try_end_36} :catchall_34
-
-    throw p2
-
-    .line 526
-    :cond_37
-    :goto_37
-    iget-object p1, p0, Lcom/android/server/job/controllers/TimeController$TcConstants;->mParser:Landroid/util/KeyValueListParser;
-
-    const-string/jumbo p2, "use_non_wakeup_delay_alarm"
-
-    invoke-virtual {p1, p2, v0}, Landroid/util/KeyValueListParser;->getBoolean(Ljava/lang/String;Z)Z
-
-    move-result p1
-
-    iput-boolean p1, p0, Lcom/android/server/job/controllers/TimeController$TcConstants;->USE_NON_WAKEUP_ALARM_FOR_DELAY:Z
-
-    .line 531
+    .line 515
+    :cond_38
+    :goto_38
     return-void
 .end method

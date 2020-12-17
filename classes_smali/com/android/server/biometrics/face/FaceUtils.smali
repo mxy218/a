@@ -106,7 +106,9 @@
 .end method
 
 .method private getStateForUser(Landroid/content/Context;I)Lcom/android/server/biometrics/face/FaceUserState;
-    .registers 4
+    .registers 5
+    .param p1, "ctx"  # Landroid/content/Context;
+    .param p2, "userId"  # I
 
     .line 84
     monitor-enter p0
@@ -122,53 +124,62 @@
     check-cast v0, Lcom/android/server/biometrics/face/FaceUserState;
 
     .line 86
-    if-nez v0, :cond_15
+    .local v0, "state":Lcom/android/server/biometrics/face/FaceUserState;
+    if-nez v0, :cond_16
 
     .line 87
-    new-instance v0, Lcom/android/server/biometrics/face/FaceUserState;
+    new-instance v1, Lcom/android/server/biometrics/face/FaceUserState;
 
-    invoke-direct {v0, p1, p2}, Lcom/android/server/biometrics/face/FaceUserState;-><init>(Landroid/content/Context;I)V
+    invoke-direct {v1, p1, p2}, Lcom/android/server/biometrics/face/FaceUserState;-><init>(Landroid/content/Context;I)V
+
+    move-object v0, v1
 
     .line 88
-    iget-object p1, p0, Lcom/android/server/biometrics/face/FaceUtils;->mUsers:Landroid/util/SparseArray;
+    iget-object v1, p0, Lcom/android/server/biometrics/face/FaceUtils;->mUsers:Landroid/util/SparseArray;
 
-    invoke-virtual {p1, p2, v0}, Landroid/util/SparseArray;->put(ILjava/lang/Object;)V
+    invoke-virtual {v1, p2, v0}, Landroid/util/SparseArray;->put(ILjava/lang/Object;)V
 
     .line 90
-    :cond_15
+    :cond_16
     monitor-exit p0
 
     return-object v0
 
     .line 91
-    :catchall_17
-    move-exception p1
+    .end local v0  # "state":Lcom/android/server/biometrics/face/FaceUserState;
+    :catchall_18
+    move-exception v0
 
     monitor-exit p0
-    :try_end_19
-    .catchall {:try_start_1 .. :try_end_19} :catchall_17
+    :try_end_1a
+    .catchall {:try_start_1 .. :try_end_1a} :catchall_18
 
-    throw p1
+    throw v0
 .end method
 
 
 # virtual methods
 .method public addBiometricForUser(Landroid/content/Context;ILandroid/hardware/biometrics/BiometricAuthenticator$Identifier;)V
-    .registers 4
+    .registers 5
+    .param p1, "ctx"  # Landroid/content/Context;
+    .param p2, "userId"  # I
+    .param p3, "identifier"  # Landroid/hardware/biometrics/BiometricAuthenticator$Identifier;
 
     .line 61
     invoke-direct {p0, p1, p2}, Lcom/android/server/biometrics/face/FaceUtils;->getStateForUser(Landroid/content/Context;I)Lcom/android/server/biometrics/face/FaceUserState;
 
-    move-result-object p1
+    move-result-object v0
 
-    invoke-virtual {p1, p3}, Lcom/android/server/biometrics/face/FaceUserState;->addBiometric(Landroid/hardware/biometrics/BiometricAuthenticator$Identifier;)V
+    invoke-virtual {v0, p3}, Lcom/android/server/biometrics/face/FaceUserState;->addBiometric(Landroid/hardware/biometrics/BiometricAuthenticator$Identifier;)V
 
     .line 62
     return-void
 .end method
 
 .method public getBiometricsForUser(Landroid/content/Context;I)Ljava/util/List;
-    .registers 3
+    .registers 4
+    .param p1, "ctx"  # Landroid/content/Context;
+    .param p2, "userId"  # I
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(",
@@ -183,39 +194,44 @@
     .line 55
     invoke-direct {p0, p1, p2}, Lcom/android/server/biometrics/face/FaceUtils;->getStateForUser(Landroid/content/Context;I)Lcom/android/server/biometrics/face/FaceUserState;
 
-    move-result-object p1
+    move-result-object v0
 
-    invoke-virtual {p1}, Lcom/android/server/biometrics/face/FaceUserState;->getBiometrics()Ljava/util/List;
+    invoke-virtual {v0}, Lcom/android/server/biometrics/face/FaceUserState;->getBiometrics()Ljava/util/List;
 
-    move-result-object p1
+    move-result-object v0
 
-    return-object p1
+    return-object v0
 .end method
 
 .method public getUniqueName(Landroid/content/Context;I)Ljava/lang/CharSequence;
-    .registers 3
+    .registers 4
+    .param p1, "context"  # Landroid/content/Context;
+    .param p2, "userId"  # I
 
     .line 80
     invoke-direct {p0, p1, p2}, Lcom/android/server/biometrics/face/FaceUtils;->getStateForUser(Landroid/content/Context;I)Lcom/android/server/biometrics/face/FaceUserState;
 
-    move-result-object p1
+    move-result-object v0
 
-    invoke-virtual {p1}, Lcom/android/server/biometrics/face/FaceUserState;->getUniqueName()Ljava/lang/String;
+    invoke-virtual {v0}, Lcom/android/server/biometrics/face/FaceUserState;->getUniqueName()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    return-object p1
+    return-object v0
 .end method
 
 .method public removeBiometricForUser(Landroid/content/Context;II)V
-    .registers 4
+    .registers 5
+    .param p1, "ctx"  # Landroid/content/Context;
+    .param p2, "userId"  # I
+    .param p3, "faceId"  # I
 
     .line 66
     invoke-direct {p0, p1, p2}, Lcom/android/server/biometrics/face/FaceUtils;->getStateForUser(Landroid/content/Context;I)Lcom/android/server/biometrics/face/FaceUserState;
 
-    move-result-object p1
+    move-result-object v0
 
-    invoke-virtual {p1, p3}, Lcom/android/server/biometrics/face/FaceUserState;->removeBiometric(I)V
+    invoke-virtual {v0, p3}, Lcom/android/server/biometrics/face/FaceUserState;->removeBiometric(I)V
 
     .line 67
     return-void
@@ -223,6 +239,10 @@
 
 .method public renameBiometricForUser(Landroid/content/Context;IILjava/lang/CharSequence;)V
     .registers 6
+    .param p1, "ctx"  # Landroid/content/Context;
+    .param p2, "userId"  # I
+    .param p3, "faceId"  # I
+    .param p4, "name"  # Ljava/lang/CharSequence;
 
     .line 71
     invoke-static {p4}, Landroid/text/TextUtils;->isEmpty(Ljava/lang/CharSequence;)Z
@@ -238,9 +258,9 @@
     :cond_7
     invoke-direct {p0, p1, p2}, Lcom/android/server/biometrics/face/FaceUtils;->getStateForUser(Landroid/content/Context;I)Lcom/android/server/biometrics/face/FaceUserState;
 
-    move-result-object p1
+    move-result-object v0
 
-    invoke-virtual {p1, p3, p4}, Lcom/android/server/biometrics/face/FaceUserState;->renameBiometric(ILjava/lang/CharSequence;)V
+    invoke-virtual {v0, p3, p4}, Lcom/android/server/biometrics/face/FaceUserState;->renameBiometric(ILjava/lang/CharSequence;)V
 
     .line 76
     return-void

@@ -16,6 +16,9 @@
 # direct methods
 .method public constructor <init>(IBI)V
     .registers 4
+    .param p1, "length"  # I
+    .param p2, "type"  # B
+    .param p3, "subclass"  # I
 
     .line 32
     invoke-direct {p0, p1, p2, p3}, Lcom/android/server/usb/descriptors/UsbACEndpoint;-><init>(IBI)V
@@ -68,6 +71,7 @@
 
 .method public parseRawDescriptors(Lcom/android/server/usb/descriptors/ByteStream;)I
     .registers 5
+    .param p1, "stream"  # Lcom/android/server/usb/descriptors/ByteStream;
 
     .line 45
     invoke-super {p0, p1}, Lcom/android/server/usb/descriptors/UsbACEndpoint;->parseRawDescriptors(Lcom/android/server/usb/descriptors/ByteStream;)I
@@ -89,6 +93,7 @@
     .line 49
     const/4 v0, 0x0
 
+    .local v0, "jack":I
     :goto_10
     iget-byte v1, p0, Lcom/android/server/usb/descriptors/UsbACMidiEndpoint;->mNumJacks:B
 
@@ -109,14 +114,16 @@
     goto :goto_10
 
     .line 52
+    .end local v0  # "jack":I
     :cond_1f
-    iget p1, p0, Lcom/android/server/usb/descriptors/UsbACMidiEndpoint;->mLength:I
+    iget v0, p0, Lcom/android/server/usb/descriptors/UsbACMidiEndpoint;->mLength:I
 
-    return p1
+    return v0
 .end method
 
 .method public report(Lcom/android/server/usb/descriptors/report/ReportCanvas;)V
     .registers 4
+    .param p1, "canvas"  # Lcom/android/server/usb/descriptors/report/ReportCanvas;
 
     .line 57
     invoke-super {p0, p1}, Lcom/android/server/usb/descriptors/UsbACEndpoint;->report(Lcom/android/server/usb/descriptors/report/ReportCanvas;)V

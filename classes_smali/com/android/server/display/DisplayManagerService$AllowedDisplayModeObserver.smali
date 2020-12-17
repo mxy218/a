@@ -24,8 +24,9 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/display/DisplayManagerService;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/display/DisplayManagerService;
 
-    .line 2487
+    .line 2528
     iput-object p1, p0, Lcom/android/server/display/DisplayManagerService$AllowedDisplayModeObserver;->this$0:Lcom/android/server/display/DisplayManagerService;
 
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -38,11 +39,11 @@
 .method public onAllowedDisplayModesChanged()V
     .registers 2
 
-    .line 2489
+    .line 2530
     iget-object v0, p0, Lcom/android/server/display/DisplayManagerService$AllowedDisplayModeObserver;->this$0:Lcom/android/server/display/DisplayManagerService;
 
-    invoke-static {v0}, Lcom/android/server/display/DisplayManagerService;->access$5600(Lcom/android/server/display/DisplayManagerService;)V
+    invoke-static {v0}, Lcom/android/server/display/DisplayManagerService;->access$5500(Lcom/android/server/display/DisplayManagerService;)V
 
-    .line 2490
+    .line 2531
     return-void
 .end method

@@ -30,6 +30,7 @@
     .end annotation
 
     .line 32
+    .local p1, "consumer":Ljava/util/function/Consumer;, "Ljava/util/function/Consumer<Landroid/content/Intent;>;"
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
     .line 36

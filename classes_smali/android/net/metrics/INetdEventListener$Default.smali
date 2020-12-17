@@ -49,6 +49,12 @@
 
 .method public onConnectEvent(IIILjava/lang/String;II)V
     .registers 7
+    .param p1, "netId"  # I
+    .param p2, "error"  # I
+    .param p3, "latencyMs"  # I
+    .param p4, "ipAddr"  # Ljava/lang/String;
+    .param p5, "port"  # I
+    .param p6, "uid"  # I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -61,6 +67,14 @@
 
 .method public onDnsEvent(IIIILjava/lang/String;[Ljava/lang/String;II)V
     .registers 9
+    .param p1, "netId"  # I
+    .param p2, "eventType"  # I
+    .param p3, "returnCode"  # I
+    .param p4, "latencyMs"  # I
+    .param p5, "hostname"  # Ljava/lang/String;
+    .param p6, "ipAddresses"  # [Ljava/lang/String;
+    .param p7, "ipAddressesCount"  # I
+    .param p8, "uid"  # I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -73,6 +87,10 @@
 
 .method public onNat64PrefixEvent(IZLjava/lang/String;I)V
     .registers 5
+    .param p1, "netId"  # I
+    .param p2, "added"  # Z
+    .param p3, "prefixString"  # Ljava/lang/String;
+    .param p4, "prefixLength"  # I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -85,6 +103,10 @@
 
 .method public onPrivateDnsValidationEvent(ILjava/lang/String;Ljava/lang/String;Z)V
     .registers 5
+    .param p1, "netId"  # I
+    .param p2, "ipAddress"  # Ljava/lang/String;
+    .param p3, "hostname"  # Ljava/lang/String;
+    .param p4, "validated"  # Z
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -97,6 +119,11 @@
 
 .method public onTcpSocketStatsEvent([I[I[I[I[I)V
     .registers 6
+    .param p1, "networkIds"  # [I
+    .param p2, "sentPackets"  # [I
+    .param p3, "lostPackets"  # [I
+    .param p4, "rttUs"  # [I
+    .param p5, "sentAckDiffMs"  # [I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -109,6 +136,16 @@
 
 .method public onWakeupEvent(Ljava/lang/String;III[BLjava/lang/String;Ljava/lang/String;IIJ)V
     .registers 12
+    .param p1, "prefix"  # Ljava/lang/String;
+    .param p2, "uid"  # I
+    .param p3, "ethertype"  # I
+    .param p4, "ipNextHeader"  # I
+    .param p5, "dstHw"  # [B
+    .param p6, "srcIp"  # Ljava/lang/String;
+    .param p7, "dstIp"  # Ljava/lang/String;
+    .param p8, "srcPort"  # I
+    .param p9, "dstPort"  # I
+    .param p10, "timestampNs"  # J
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;

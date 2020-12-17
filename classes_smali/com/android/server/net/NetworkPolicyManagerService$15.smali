@@ -1,11 +1,14 @@
 .class Lcom/android/server/net/NetworkPolicyManagerService$15;
-.super Landroid/content/BroadcastReceiver;
+.super Ljava/lang/Object;
 .source "NetworkPolicyManagerService.java"
+
+# interfaces
+.implements Ljava/lang/Runnable;
 
 
 # annotations
-.annotation system Ldalvik/annotation/EnclosingClass;
-    value = Lcom/android/server/net/NetworkPolicyManagerService;
+.annotation system Ldalvik/annotation/EnclosingMethod;
+    value = Lcom/android/server/net/NetworkPolicyManagerService;->updateNotificationsNL()V
 .end annotation
 
 .annotation system Ldalvik/annotation/InnerClass;
@@ -21,25 +24,26 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/net/NetworkPolicyManagerService;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/net/NetworkPolicyManagerService;
 
-    .line 1489
+    .line 1324
     iput-object p1, p0, Lcom/android/server/net/NetworkPolicyManagerService$15;->this$0:Lcom/android/server/net/NetworkPolicyManagerService;
 
-    invoke-direct {p0}, Landroid/content/BroadcastReceiver;-><init>()V
+    invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
     return-void
 .end method
 
 
 # virtual methods
-.method public onReceive(Landroid/content/Context;Landroid/content/Intent;)V
-    .registers 3
+.method public run()V
+    .registers 2
 
-    .line 1494
-    iget-object p1, p0, Lcom/android/server/net/NetworkPolicyManagerService$15;->this$0:Lcom/android/server/net/NetworkPolicyManagerService;
+    .line 1327
+    iget-object v0, p0, Lcom/android/server/net/NetworkPolicyManagerService$15;->this$0:Lcom/android/server/net/NetworkPolicyManagerService;
 
-    invoke-static {p1}, Lcom/android/server/net/NetworkPolicyManagerService;->access$400(Lcom/android/server/net/NetworkPolicyManagerService;)V
+    invoke-virtual {v0}, Lcom/android/server/net/NetworkPolicyManagerService;->updateNotificationsNLImpl()V
 
-    .line 1495
+    .line 1328
     return-void
 .end method

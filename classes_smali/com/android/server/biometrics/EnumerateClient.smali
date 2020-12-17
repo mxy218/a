@@ -6,6 +6,16 @@
 # direct methods
 .method public constructor <init>(Landroid/content/Context;Lcom/android/server/biometrics/Constants;Lcom/android/server/biometrics/BiometricServiceBase$DaemonWrapper;JLandroid/os/IBinder;Lcom/android/server/biometrics/BiometricServiceBase$ServiceListener;IIZLjava/lang/String;)V
     .registers 25
+    .param p1, "context"  # Landroid/content/Context;
+    .param p2, "constants"  # Lcom/android/server/biometrics/Constants;
+    .param p3, "daemon"  # Lcom/android/server/biometrics/BiometricServiceBase$DaemonWrapper;
+    .param p4, "halDeviceId"  # J
+    .param p6, "token"  # Landroid/os/IBinder;
+    .param p7, "listener"  # Lcom/android/server/biometrics/BiometricServiceBase$ServiceListener;
+    .param p8, "groupId"  # I
+    .param p9, "userId"  # I
+    .param p10, "restricted"  # Z
+    .param p11, "owner"  # Ljava/lang/String;
 
     .line 37
     const/4 v12, 0x0
@@ -48,7 +58,9 @@
 .end method
 
 .method public onAuthenticated(Landroid/hardware/biometrics/BiometricAuthenticator$Identifier;ZLjava/util/ArrayList;)Z
-    .registers 4
+    .registers 6
+    .param p1, "identifier"  # Landroid/hardware/biometrics/BiometricAuthenticator$Identifier;
+    .param p2, "authenticated"  # Z
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(",
@@ -61,40 +73,45 @@
     .end annotation
 
     .line 113
+    .local p3, "token":Ljava/util/ArrayList;, "Ljava/util/ArrayList<Ljava/lang/Byte;>;"
     invoke-virtual {p0}, Lcom/android/server/biometrics/EnumerateClient;->getLogTag()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    const-string/jumbo p2, "onAuthenticated() called for enumerate!"
+    const-string/jumbo v1, "onAuthenticated() called for enumerate!"
 
-    invoke-static {p1, p2}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v0, v1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 114
-    const/4 p1, 0x1
+    const/4 v0, 0x1
 
-    return p1
+    return v0
 .end method
 
 .method public onEnrollResult(Landroid/hardware/biometrics/BiometricAuthenticator$Identifier;I)Z
-    .registers 3
+    .registers 5
+    .param p1, "identifier"  # Landroid/hardware/biometrics/BiometricAuthenticator$Identifier;
+    .param p2, "rem"  # I
 
     .line 119
     invoke-virtual {p0}, Lcom/android/server/biometrics/EnumerateClient;->getLogTag()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    const-string/jumbo p2, "onEnrollResult() called for enumerate!"
+    const-string/jumbo v1, "onEnrollResult() called for enumerate!"
 
-    invoke-static {p1, p2}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v0, v1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 120
-    const/4 p1, 0x1
+    const/4 v0, 0x1
 
-    return p1
+    return v0
 .end method
 
 .method public onEnumerationResult(Landroid/hardware/biometrics/BiometricAuthenticator$Identifier;I)Z
-    .registers 5
+    .registers 6
+    .param p1, "identifier"  # Landroid/hardware/biometrics/BiometricAuthenticator$Identifier;
+    .param p2, "remaining"  # I
 
     .line 101
     :try_start_0
@@ -119,48 +136,52 @@
 
     .line 104
     :catch_e
-    move-exception p1
+    move-exception v0
 
     .line 105
+    .local v0, "e":Landroid/os/RemoteException;
     invoke-virtual {p0}, Lcom/android/server/biometrics/EnumerateClient;->getLogTag()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v1
 
-    const-string v1, "Failed to notify enumerated:"
+    const-string v2, "Failed to notify enumerated:"
 
-    invoke-static {v0, v1, p1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    invoke-static {v1, v2, v0}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
     .line 107
+    .end local v0  # "e":Landroid/os/RemoteException;
     :goto_18
     if-nez p2, :cond_1c
 
-    const/4 p1, 0x1
+    const/4 v0, 0x1
 
     goto :goto_1d
 
     :cond_1c
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
     :goto_1d
-    return p1
+    return v0
 .end method
 
 .method public onRemoved(Landroid/hardware/biometrics/BiometricAuthenticator$Identifier;I)Z
-    .registers 3
+    .registers 5
+    .param p1, "identifier"  # Landroid/hardware/biometrics/BiometricAuthenticator$Identifier;
+    .param p2, "remaining"  # I
 
     .line 125
     invoke-virtual {p0}, Lcom/android/server/biometrics/EnumerateClient;->getLogTag()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    const-string/jumbo p2, "onRemoved() called for enumerate!"
+    const-string/jumbo v1, "onRemoved() called for enumerate!"
 
-    invoke-static {p1, p2}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v0, v1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 126
-    const/4 p1, 0x1
+    const/4 v0, 0x1
 
-    return p1
+    return v0
 .end method
 
 .method public start()I
@@ -179,6 +200,7 @@
     move-result v1
 
     .line 55
+    .local v1, "result":I
     if-eqz v1, :cond_44
 
     .line 56
@@ -238,6 +260,7 @@
     return v1
 
     .line 65
+    .end local v1  # "result":I
     :cond_44
     goto :goto_50
 
@@ -246,6 +269,7 @@
     move-exception v1
 
     .line 64
+    .local v1, "e":Landroid/os/RemoteException;
     invoke-virtual {p0}, Lcom/android/server/biometrics/EnumerateClient;->getLogTag()Ljava/lang/String;
 
     move-result-object v2
@@ -255,6 +279,7 @@
     invoke-static {v2, v3, v1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
     .line 66
+    .end local v1  # "e":Landroid/os/RemoteException;
     :goto_50
     return v0
 .end method
@@ -270,6 +295,7 @@
 
 .method public stop(Z)I
     .registers 6
+    .param p1, "initiatedByClient"  # Z
 
     .line 71
     iget-boolean v0, p0, Lcom/android/server/biometrics/EnumerateClient;->mAlreadyCancelled:Z
@@ -281,11 +307,11 @@
     .line 72
     invoke-virtual {p0}, Lcom/android/server/biometrics/EnumerateClient;->getLogTag()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    const-string/jumbo v0, "stopEnumerate: already cancelled!"
+    const-string/jumbo v2, "stopEnumerate: already cancelled!"
 
-    invoke-static {p1, v0}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v0, v2}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 73
     return v1
@@ -302,28 +328,29 @@
     move-result v0
 
     .line 78
+    .local v0, "result":I
     if-eqz v0, :cond_34
 
     .line 79
     invoke-virtual {p0}, Lcom/android/server/biometrics/EnumerateClient;->getLogTag()Ljava/lang/String;
 
-    move-result-object p1
-
-    new-instance v1, Ljava/lang/StringBuilder;
-
-    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
-
-    const-string/jumbo v2, "stop enumeration failed, result="
-
-    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v1, v0}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
-
     move-result-object v1
 
-    invoke-static {p1, v1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    new-instance v2, Ljava/lang/StringBuilder;
+
+    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
+
+    const-string/jumbo v3, "stop enumeration failed, result="
+
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v2, v0}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v2
+
+    invoke-static {v1, v2}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
     :try_end_33
     .catch Landroid/os/RemoteException; {:try_start_10 .. :try_end_33} :catch_43
 
@@ -331,6 +358,7 @@
     return v0
 
     .line 85
+    .end local v0  # "result":I
     :cond_34
     nop
 
@@ -342,34 +370,35 @@
 
     move-result-wide v2
 
-    const/4 p1, 0x5
+    const/4 v0, 0x5
 
-    invoke-virtual {p0, v2, v3, p1, v1}, Lcom/android/server/biometrics/EnumerateClient;->onError(JII)Z
+    invoke-virtual {p0, v2, v3, v0, v1}, Lcom/android/server/biometrics/EnumerateClient;->onError(JII)Z
 
     .line 93
     :cond_3f
-    const/4 p1, 0x1
+    const/4 v0, 0x1
 
-    iput-boolean p1, p0, Lcom/android/server/biometrics/EnumerateClient;->mAlreadyCancelled:Z
+    iput-boolean v0, p0, Lcom/android/server/biometrics/EnumerateClient;->mAlreadyCancelled:Z
 
     .line 94
     return v1
 
     .line 82
     :catch_43
-    move-exception p1
+    move-exception v0
 
     .line 83
+    .local v0, "e":Landroid/os/RemoteException;
     invoke-virtual {p0}, Lcom/android/server/biometrics/EnumerateClient;->getLogTag()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v1
 
-    const-string/jumbo v1, "stopEnumeration failed"
+    const-string/jumbo v2, "stopEnumeration failed"
 
-    invoke-static {v0, v1, p1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    invoke-static {v1, v2, v0}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
     .line 84
-    const/4 p1, 0x3
+    const/4 v1, 0x3
 
-    return p1
+    return v1
 .end method

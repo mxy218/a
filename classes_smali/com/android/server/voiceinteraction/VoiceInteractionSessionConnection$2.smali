@@ -24,6 +24,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/voiceinteraction/VoiceInteractionSessionConnection;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/voiceinteraction/VoiceInteractionSessionConnection;
 
     .line 131
     iput-object p1, p0, Lcom/android/server/voiceinteraction/VoiceInteractionSessionConnection$2;->this$0:Lcom/android/server/voiceinteraction/VoiceInteractionSessionConnection;
@@ -37,6 +38,8 @@
 # virtual methods
 .method public onServiceConnected(Landroid/content/ComponentName;Landroid/os/IBinder;)V
     .registers 3
+    .param p1, "name"  # Landroid/content/ComponentName;
+    .param p2, "service"  # Landroid/os/IBinder;
 
     .line 134
     return-void
@@ -44,6 +47,7 @@
 
 .method public onServiceDisconnected(Landroid/content/ComponentName;)V
     .registers 2
+    .param p1, "name"  # Landroid/content/ComponentName;
 
     .line 137
     return-void

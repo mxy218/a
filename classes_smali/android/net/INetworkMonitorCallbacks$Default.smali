@@ -32,7 +32,7 @@
 .method public asBinder()Landroid/os/IBinder;
     .registers 2
 
-    .line 38
+    .line 41
     const/4 v0, 0x0
 
     return-object v0
@@ -41,7 +41,7 @@
 .method public getInterfaceVersion()I
     .registers 2
 
-    .line 34
+    .line 37
     const/4 v0, -0x1
 
     return v0
@@ -61,6 +61,8 @@
 
 .method public notifyNetworkTested(ILjava/lang/String;)V
     .registers 3
+    .param p1, "testResult"  # I
+    .param p2, "redirectUrl"  # Ljava/lang/String;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -71,8 +73,21 @@
     return-void
 .end method
 
+.method public notifyPortalLoginTimeout()V
+    .registers 1
+    .annotation system Ldalvik/annotation/Throws;
+        value = {
+            Landroid/os/RemoteException;
+        }
+    .end annotation
+
+    .line 34
+    return-void
+.end method
+
 .method public notifyPrivateDnsConfigResolved(Landroid/net/PrivateDnsConfigParcel;)V
     .registers 2
+    .param p1, "config"  # Landroid/net/PrivateDnsConfigParcel;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -85,6 +100,7 @@
 
 .method public onNetworkMonitorCreated(Landroid/net/INetworkMonitor;)V
     .registers 2
+    .param p1, "networkMonitor"  # Landroid/net/INetworkMonitor;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -97,6 +113,8 @@
 
 .method public showProvisioningNotification(Ljava/lang/String;Ljava/lang/String;)V
     .registers 3
+    .param p1, "action"  # Ljava/lang/String;
+    .param p2, "packageName"  # Ljava/lang/String;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;

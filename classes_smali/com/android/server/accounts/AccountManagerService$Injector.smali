@@ -24,14 +24,15 @@
 # direct methods
 .method public constructor <init>(Landroid/content/Context;)V
     .registers 2
+    .param p1, "context"  # Landroid/content/Context;
 
-    .line 6236
+    .line 6220
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
-    .line 6237
+    .line 6221
     iput-object p1, p0, Lcom/android/server/accounts/AccountManagerService$Injector;->mContext:Landroid/content/Context;
 
-    .line 6238
+    .line 6222
     return-void
 .end method
 
@@ -39,20 +40,21 @@
 # virtual methods
 .method addLocalService(Landroid/accounts/AccountManagerInternal;)V
     .registers 3
+    .param p1, "service"  # Landroid/accounts/AccountManagerInternal;
 
-    .line 6252
+    .line 6236
     const-class v0, Landroid/accounts/AccountManagerInternal;
 
     invoke-static {v0, p1}, Lcom/android/server/LocalServices;->addService(Ljava/lang/Class;Ljava/lang/Object;)V
 
-    .line 6253
+    .line 6237
     return-void
 .end method
 
 .method getAccountAuthenticatorCache()Lcom/android/server/accounts/IAccountAuthenticatorCache;
     .registers 3
 
-    .line 6296
+    .line 6280
     new-instance v0, Lcom/android/server/accounts/AccountAuthenticatorCache;
 
     iget-object v1, p0, Lcom/android/server/accounts/AccountManagerService$Injector;->mContext:Landroid/content/Context;
@@ -63,62 +65,66 @@
 .end method
 
 .method getCeDatabaseName(I)Ljava/lang/String;
-    .registers 4
+    .registers 5
+    .param p1, "userId"  # I
 
-    .line 6262
+    .line 6246
     new-instance v0, Ljava/io/File;
 
     invoke-static {p1}, Landroid/os/Environment;->getDataSystemCeDirectory(I)Ljava/io/File;
 
-    move-result-object p1
+    move-result-object v1
 
-    const-string v1, "accounts_ce.db"
+    const-string v2, "accounts_ce.db"
 
-    invoke-direct {v0, p1, v1}, Ljava/io/File;-><init>(Ljava/io/File;Ljava/lang/String;)V
+    invoke-direct {v0, v1, v2}, Ljava/io/File;-><init>(Ljava/io/File;Ljava/lang/String;)V
 
-    .line 6264
+    .line 6248
+    .local v0, "databaseFile":Ljava/io/File;
     invoke-virtual {v0}, Ljava/io/File;->getPath()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v1
 
-    return-object p1
+    return-object v1
 .end method
 
 .method getContext()Landroid/content/Context;
     .registers 2
 
-    .line 6248
+    .line 6232
     iget-object v0, p0, Lcom/android/server/accounts/AccountManagerService$Injector;->mContext:Landroid/content/Context;
 
     return-object v0
 .end method
 
 .method getDeDatabaseName(I)Ljava/lang/String;
-    .registers 4
+    .registers 5
+    .param p1, "userId"  # I
 
-    .line 6256
+    .line 6240
     new-instance v0, Ljava/io/File;
 
     invoke-static {p1}, Landroid/os/Environment;->getDataSystemDeDirectory(I)Ljava/io/File;
 
-    move-result-object p1
+    move-result-object v1
 
-    const-string v1, "accounts_de.db"
+    const-string v2, "accounts_de.db"
 
-    invoke-direct {v0, p1, v1}, Ljava/io/File;-><init>(Ljava/io/File;Ljava/lang/String;)V
+    invoke-direct {v0, v1, v2}, Ljava/io/File;-><init>(Ljava/io/File;Ljava/lang/String;)V
 
-    .line 6258
+    .line 6242
+    .local v0, "databaseFile":Ljava/io/File;
     invoke-virtual {v0}, Ljava/io/File;->getPath()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v1
 
-    return-object p1
+    return-object v1
 .end method
 
 .method getMessageHandlerLooper()Landroid/os/Looper;
     .registers 5
 
-    .line 6241
+    .line 6225
     new-instance v0, Lcom/android/server/ServiceThread;
 
     const-string v1, "AccountManagerService"
@@ -129,21 +135,22 @@
 
     invoke-direct {v0, v1, v2, v3}, Lcom/android/server/ServiceThread;-><init>(Ljava/lang/String;IZ)V
 
-    .line 6243
+    .line 6227
+    .local v0, "serviceThread":Lcom/android/server/ServiceThread;
     invoke-virtual {v0}, Lcom/android/server/ServiceThread;->start()V
 
-    .line 6244
+    .line 6228
     invoke-virtual {v0}, Lcom/android/server/ServiceThread;->getLooper()Landroid/os/Looper;
 
-    move-result-object v0
+    move-result-object v1
 
-    return-object v0
+    return-object v1
 .end method
 
 .method getNotificationManager()Landroid/app/INotificationManager;
     .registers 2
 
-    .line 6300
+    .line 6284
     invoke-static {}, Landroid/app/NotificationManager;->getService()Landroid/app/INotificationManager;
 
     move-result-object v0
@@ -152,14 +159,16 @@
 .end method
 
 .method getPreNDatabaseName(I)Ljava/lang/String;
-    .registers 6
+    .registers 9
+    .param p1, "userId"  # I
 
-    .line 6268
+    .line 6252
     invoke-static {}, Landroid/os/Environment;->getDataSystemDirectory()Ljava/io/File;
 
     move-result-object v0
 
-    .line 6269
+    .line 6253
+    .local v0, "systemDir":Ljava/io/File;
     new-instance v1, Ljava/io/File;
 
     invoke-static {p1}, Landroid/os/Environment;->getUserSystemDirectory(I)Ljava/io/File;
@@ -170,109 +179,114 @@
 
     invoke-direct {v1, v2, v3}, Ljava/io/File;-><init>(Ljava/io/File;Ljava/lang/String;)V
 
-    .line 6271
+    .line 6255
+    .local v1, "databaseFile":Ljava/io/File;
     if-nez p1, :cond_68
 
-    .line 6276
+    .line 6260
     new-instance v2, Ljava/io/File;
 
     invoke-direct {v2, v0, v3}, Ljava/io/File;-><init>(Ljava/io/File;Ljava/lang/String;)V
 
-    .line 6277
+    .line 6261
+    .local v2, "oldFile":Ljava/io/File;
     invoke-virtual {v2}, Ljava/io/File;->exists()Z
 
-    move-result v0
+    move-result v3
 
-    if-eqz v0, :cond_68
+    if-eqz v3, :cond_68
 
     invoke-virtual {v1}, Ljava/io/File;->exists()Z
 
-    move-result v0
+    move-result v3
 
-    if-nez v0, :cond_68
+    if-nez v3, :cond_68
 
-    .line 6279
+    .line 6263
     invoke-static {p1}, Landroid/os/Environment;->getUserSystemDirectory(I)Ljava/io/File;
 
-    move-result-object p1
+    move-result-object v3
 
-    .line 6280
-    invoke-virtual {p1}, Ljava/io/File;->exists()Z
+    .line 6264
+    .local v3, "userDir":Ljava/io/File;
+    invoke-virtual {v3}, Ljava/io/File;->exists()Z
 
-    move-result v0
+    move-result v4
 
-    if-nez v0, :cond_4a
+    if-nez v4, :cond_4a
 
-    .line 6281
-    invoke-virtual {p1}, Ljava/io/File;->mkdirs()Z
+    .line 6265
+    invoke-virtual {v3}, Ljava/io/File;->mkdirs()Z
 
-    move-result v0
+    move-result v4
 
-    if-eqz v0, :cond_33
+    if-eqz v4, :cond_33
 
     goto :goto_4a
 
-    .line 6282
+    .line 6266
     :cond_33
-    new-instance v0, Ljava/lang/IllegalStateException;
+    new-instance v4, Ljava/lang/IllegalStateException;
 
-    new-instance v1, Ljava/lang/StringBuilder;
+    new-instance v5, Ljava/lang/StringBuilder;
 
-    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v5}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v2, "User dir cannot be created: "
+    const-string v6, "User dir cannot be created: "
 
-    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v1, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    invoke-virtual {v5, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v5}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v5
 
-    invoke-direct {v0, p1}, Ljava/lang/IllegalStateException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v4, v5}, Ljava/lang/IllegalStateException;-><init>(Ljava/lang/String;)V
 
-    throw v0
+    throw v4
 
-    .line 6286
+    .line 6270
     :cond_4a
     :goto_4a
     invoke-virtual {v2, v1}, Ljava/io/File;->renameTo(Ljava/io/File;)Z
 
-    move-result p1
+    move-result v4
 
-    if-eqz p1, :cond_51
+    if-eqz v4, :cond_51
 
     goto :goto_68
 
-    .line 6287
+    .line 6271
     :cond_51
-    new-instance p1, Ljava/lang/IllegalStateException;
+    new-instance v4, Ljava/lang/IllegalStateException;
 
-    new-instance v0, Ljava/lang/StringBuilder;
+    new-instance v5, Ljava/lang/StringBuilder;
 
-    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v5}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v2, "User dir cannot be migrated: "
+    const-string v6, "User dir cannot be migrated: "
 
-    invoke-virtual {v0, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    invoke-virtual {v5, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v5}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v5
 
-    invoke-direct {p1, v0}, Ljava/lang/IllegalStateException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v4, v5}, Ljava/lang/IllegalStateException;-><init>(Ljava/lang/String;)V
 
-    throw p1
+    throw v4
 
-    .line 6292
+    .line 6276
+    .end local v2  # "oldFile":Ljava/io/File;
+    .end local v3  # "userDir":Ljava/io/File;
     :cond_68
     :goto_68
     invoke-virtual {v1}, Ljava/io/File;->getPath()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v2
 
-    return-object p1
+    return-object v2
 .end method

@@ -56,12 +56,12 @@
 .method private constructor <init>(Lcom/android/server/wm/InputMonitor;)V
     .registers 4
 
-    .line 401
+    .line 402
     iput-object p1, p0, Lcom/android/server/wm/InputMonitor$UpdateInputForAllWindowsConsumer;->this$0:Lcom/android/server/wm/InputMonitor;
 
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
-    .line 416
+    .line 417
     new-instance p1, Landroid/view/InputWindowHandle;
 
     iget-object v0, p0, Lcom/android/server/wm/InputMonitor$UpdateInputForAllWindowsConsumer;->this$0:Lcom/android/server/wm/InputMonitor;
@@ -81,8 +81,10 @@
 
 .method synthetic constructor <init>(Lcom/android/server/wm/InputMonitor;Lcom/android/server/wm/InputMonitor$1;)V
     .registers 3
+    .param p1, "x0"  # Lcom/android/server/wm/InputMonitor;
+    .param p2, "x1"  # Lcom/android/server/wm/InputMonitor$1;
 
-    .line 401
+    .line 402
     invoke-direct {p0, p1}, Lcom/android/server/wm/InputMonitor$UpdateInputForAllWindowsConsumer;-><init>(Lcom/android/server/wm/InputMonitor;)V
 
     return-void
@@ -90,24 +92,27 @@
 
 .method static synthetic access$700(Lcom/android/server/wm/InputMonitor$UpdateInputForAllWindowsConsumer;Z)V
     .registers 2
+    .param p0, "x0"  # Lcom/android/server/wm/InputMonitor$UpdateInputForAllWindowsConsumer;
+    .param p1, "x1"  # Z
 
-    .line 401
+    .line 402
     invoke-direct {p0, p1}, Lcom/android/server/wm/InputMonitor$UpdateInputForAllWindowsConsumer;->updateInputWindows(Z)V
 
     return-void
 .end method
 
 .method private updateInputWindows(Z)V
-    .registers 7
+    .registers 8
+    .param p1, "inDrag"  # Z
 
-    .line 419
+    .line 420
     const-wide/16 v0, 0x20
 
     const-string v2, "updateInputWindows"
 
     invoke-static {v0, v1, v2}, Landroid/os/Trace;->traceBegin(JLjava/lang/String;)V
 
-    .line 421
+    .line 422
     iget-object v2, p0, Lcom/android/server/wm/InputMonitor$UpdateInputForAllWindowsConsumer;->this$0:Lcom/android/server/wm/InputMonitor;
 
     const-string v3, "nav_input_consumer"
@@ -118,7 +123,7 @@
 
     iput-object v2, p0, Lcom/android/server/wm/InputMonitor$UpdateInputForAllWindowsConsumer;->navInputConsumer:Lcom/android/server/wm/InputConsumerImpl;
 
-    .line 422
+    .line 423
     iget-object v2, p0, Lcom/android/server/wm/InputMonitor$UpdateInputForAllWindowsConsumer;->this$0:Lcom/android/server/wm/InputMonitor;
 
     const-string v3, "pip_input_consumer"
@@ -129,7 +134,7 @@
 
     iput-object v2, p0, Lcom/android/server/wm/InputMonitor$UpdateInputForAllWindowsConsumer;->pipInputConsumer:Lcom/android/server/wm/InputConsumerImpl;
 
-    .line 423
+    .line 424
     iget-object v2, p0, Lcom/android/server/wm/InputMonitor$UpdateInputForAllWindowsConsumer;->this$0:Lcom/android/server/wm/InputMonitor;
 
     const-string v3, "wallpaper_input_consumer"
@@ -140,7 +145,7 @@
 
     iput-object v2, p0, Lcom/android/server/wm/InputMonitor$UpdateInputForAllWindowsConsumer;->wallpaperInputConsumer:Lcom/android/server/wm/InputConsumerImpl;
 
-    .line 424
+    .line 425
     iget-object v2, p0, Lcom/android/server/wm/InputMonitor$UpdateInputForAllWindowsConsumer;->this$0:Lcom/android/server/wm/InputMonitor;
 
     const-string v3, "recents_animation_input_consumer"
@@ -151,7 +156,7 @@
 
     iput-object v2, p0, Lcom/android/server/wm/InputMonitor$UpdateInputForAllWindowsConsumer;->recentsAnimationInputConsumer:Lcom/android/server/wm/InputConsumerImpl;
 
-    .line 426
+    .line 427
     iget-object v2, p0, Lcom/android/server/wm/InputMonitor$UpdateInputForAllWindowsConsumer;->navInputConsumer:Lcom/android/server/wm/InputConsumerImpl;
 
     const/4 v3, 0x1
@@ -170,7 +175,7 @@
     :goto_38
     iput-boolean v2, p0, Lcom/android/server/wm/InputMonitor$UpdateInputForAllWindowsConsumer;->mAddInputConsumerHandle:Z
 
-    .line 427
+    .line 428
     iget-object v2, p0, Lcom/android/server/wm/InputMonitor$UpdateInputForAllWindowsConsumer;->pipInputConsumer:Lcom/android/server/wm/InputConsumerImpl;
 
     if-eqz v2, :cond_40
@@ -185,7 +190,7 @@
     :goto_41
     iput-boolean v2, p0, Lcom/android/server/wm/InputMonitor$UpdateInputForAllWindowsConsumer;->mAddPipInputConsumerHandle:Z
 
-    .line 428
+    .line 429
     iget-object v2, p0, Lcom/android/server/wm/InputMonitor$UpdateInputForAllWindowsConsumer;->wallpaperInputConsumer:Lcom/android/server/wm/InputConsumerImpl;
 
     if-eqz v2, :cond_49
@@ -200,7 +205,7 @@
     :goto_4a
     iput-boolean v2, p0, Lcom/android/server/wm/InputMonitor$UpdateInputForAllWindowsConsumer;->mAddWallpaperInputConsumerHandle:Z
 
-    .line 429
+    .line 430
     iget-object v2, p0, Lcom/android/server/wm/InputMonitor$UpdateInputForAllWindowsConsumer;->recentsAnimationInputConsumer:Lcom/android/server/wm/InputConsumerImpl;
 
     if-eqz v2, :cond_52
@@ -215,7 +220,7 @@
     :goto_53
     iput-boolean v2, p0, Lcom/android/server/wm/InputMonitor$UpdateInputForAllWindowsConsumer;->mAddRecentsAnimationInputConsumerHandle:Z
 
-    .line 431
+    .line 432
     iget-object v2, p0, Lcom/android/server/wm/InputMonitor$UpdateInputForAllWindowsConsumer;->this$0:Lcom/android/server/wm/InputMonitor;
 
     invoke-static {v2}, Lcom/android/server/wm/InputMonitor;->access$900(Lcom/android/server/wm/InputMonitor;)Landroid/graphics/Rect;
@@ -224,183 +229,195 @@
 
     invoke-virtual {v2}, Landroid/graphics/Rect;->setEmpty()V
 
-    .line 432
+    .line 433
     iget-object v2, p0, Lcom/android/server/wm/InputMonitor$UpdateInputForAllWindowsConsumer;->this$0:Lcom/android/server/wm/InputMonitor;
 
     invoke-static {v2, v4}, Lcom/android/server/wm/InputMonitor;->access$1002(Lcom/android/server/wm/InputMonitor;Z)Z
 
-    .line 433
+    .line 434
     iput-boolean p1, p0, Lcom/android/server/wm/InputMonitor$UpdateInputForAllWindowsConsumer;->inDrag:Z
 
-    .line 434
-    iget-object p1, p0, Lcom/android/server/wm/InputMonitor$UpdateInputForAllWindowsConsumer;->this$0:Lcom/android/server/wm/InputMonitor;
+    .line 435
+    iget-object v2, p0, Lcom/android/server/wm/InputMonitor$UpdateInputForAllWindowsConsumer;->this$0:Lcom/android/server/wm/InputMonitor;
 
-    invoke-static {p1}, Lcom/android/server/wm/InputMonitor;->access$1100(Lcom/android/server/wm/InputMonitor;)Lcom/android/server/wm/DisplayContent;
-
-    move-result-object p1
-
-    iget-object p1, p1, Lcom/android/server/wm/DisplayContent;->mWallpaperController:Lcom/android/server/wm/WallpaperController;
-
-    iput-object p1, p0, Lcom/android/server/wm/InputMonitor$UpdateInputForAllWindowsConsumer;->wallpaperController:Lcom/android/server/wm/WallpaperController;
-
-    .line 436
-    iget-object p1, p0, Lcom/android/server/wm/InputMonitor$UpdateInputForAllWindowsConsumer;->this$0:Lcom/android/server/wm/InputMonitor;
-
-    invoke-static {p1}, Lcom/android/server/wm/InputMonitor;->access$400(Lcom/android/server/wm/InputMonitor;)Landroid/view/SurfaceControl$Transaction;
+    invoke-static {v2}, Lcom/android/server/wm/InputMonitor;->access$1100(Lcom/android/server/wm/InputMonitor;)Lcom/android/server/wm/DisplayContent;
 
     move-result-object v2
 
-    invoke-virtual {p1, v2}, Lcom/android/server/wm/InputMonitor;->resetInputConsumers(Landroid/view/SurfaceControl$Transaction;)V
+    iget-object v2, v2, Lcom/android/server/wm/DisplayContent;->mWallpaperController:Lcom/android/server/wm/WallpaperController;
 
-    .line 438
-    iget-object p1, p0, Lcom/android/server/wm/InputMonitor$UpdateInputForAllWindowsConsumer;->this$0:Lcom/android/server/wm/InputMonitor;
+    iput-object v2, p0, Lcom/android/server/wm/InputMonitor$UpdateInputForAllWindowsConsumer;->wallpaperController:Lcom/android/server/wm/WallpaperController;
 
-    invoke-static {p1}, Lcom/android/server/wm/InputMonitor;->access$1100(Lcom/android/server/wm/InputMonitor;)Lcom/android/server/wm/DisplayContent;
+    .line 437
+    iget-object v2, p0, Lcom/android/server/wm/InputMonitor$UpdateInputForAllWindowsConsumer;->this$0:Lcom/android/server/wm/InputMonitor;
 
-    move-result-object p1
+    invoke-static {v2}, Lcom/android/server/wm/InputMonitor;->access$400(Lcom/android/server/wm/InputMonitor;)Landroid/view/SurfaceControl$Transaction;
 
-    invoke-virtual {p1, p0, v3}, Lcom/android/server/wm/DisplayContent;->forAllWindows(Ljava/util/function/Consumer;Z)V
+    move-result-object v5
 
-    .line 441
-    iget-boolean p1, p0, Lcom/android/server/wm/InputMonitor$UpdateInputForAllWindowsConsumer;->mAddWallpaperInputConsumerHandle:Z
+    invoke-virtual {v2, v5}, Lcom/android/server/wm/InputMonitor;->resetInputConsumers(Landroid/view/SurfaceControl$Transaction;)V
 
-    if-eqz p1, :cond_90
+    .line 439
+    iget-object v2, p0, Lcom/android/server/wm/InputMonitor$UpdateInputForAllWindowsConsumer;->this$0:Lcom/android/server/wm/InputMonitor;
+
+    invoke-static {v2}, Lcom/android/server/wm/InputMonitor;->access$1100(Lcom/android/server/wm/InputMonitor;)Lcom/android/server/wm/DisplayContent;
+
+    move-result-object v2
+
+    invoke-virtual {v2, p0, v3}, Lcom/android/server/wm/DisplayContent;->forAllWindows(Ljava/util/function/Consumer;Z)V
 
     .line 442
-    iget-object p1, p0, Lcom/android/server/wm/InputMonitor$UpdateInputForAllWindowsConsumer;->wallpaperInputConsumer:Lcom/android/server/wm/InputConsumerImpl;
+    iget-boolean v2, p0, Lcom/android/server/wm/InputMonitor$UpdateInputForAllWindowsConsumer;->mAddWallpaperInputConsumerHandle:Z
 
+    if-eqz v2, :cond_90
+
+    .line 443
+    iget-object v2, p0, Lcom/android/server/wm/InputMonitor$UpdateInputForAllWindowsConsumer;->wallpaperInputConsumer:Lcom/android/server/wm/InputConsumerImpl;
+
+    iget-object v3, p0, Lcom/android/server/wm/InputMonitor$UpdateInputForAllWindowsConsumer;->this$0:Lcom/android/server/wm/InputMonitor;
+
+    invoke-static {v3}, Lcom/android/server/wm/InputMonitor;->access$400(Lcom/android/server/wm/InputMonitor;)Landroid/view/SurfaceControl$Transaction;
+
+    move-result-object v3
+
+    invoke-virtual {v2, v3, v4}, Lcom/android/server/wm/InputConsumerImpl;->show(Landroid/view/SurfaceControl$Transaction;I)V
+
+    .line 446
+    :cond_90
+    iget-object v2, p0, Lcom/android/server/wm/InputMonitor$UpdateInputForAllWindowsConsumer;->this$0:Lcom/android/server/wm/InputMonitor;
+
+    invoke-static {v2}, Lcom/android/server/wm/InputMonitor;->access$1200(Lcom/android/server/wm/InputMonitor;)Z
+
+    move-result v2
+
+    if-eqz v2, :cond_a2
+
+    .line 447
     iget-object v2, p0, Lcom/android/server/wm/InputMonitor$UpdateInputForAllWindowsConsumer;->this$0:Lcom/android/server/wm/InputMonitor;
 
     invoke-static {v2}, Lcom/android/server/wm/InputMonitor;->access$400(Lcom/android/server/wm/InputMonitor;)Landroid/view/SurfaceControl$Transaction;
 
     move-result-object v2
 
-    invoke-virtual {p1, v2, v4}, Lcom/android/server/wm/InputConsumerImpl;->show(Landroid/view/SurfaceControl$Transaction;I)V
-
-    .line 445
-    :cond_90
-    iget-object p1, p0, Lcom/android/server/wm/InputMonitor$UpdateInputForAllWindowsConsumer;->this$0:Lcom/android/server/wm/InputMonitor;
-
-    invoke-static {p1}, Lcom/android/server/wm/InputMonitor;->access$1200(Lcom/android/server/wm/InputMonitor;)Z
-
-    move-result p1
-
-    if-eqz p1, :cond_a2
-
-    .line 446
-    iget-object p1, p0, Lcom/android/server/wm/InputMonitor$UpdateInputForAllWindowsConsumer;->this$0:Lcom/android/server/wm/InputMonitor;
-
-    invoke-static {p1}, Lcom/android/server/wm/InputMonitor;->access$400(Lcom/android/server/wm/InputMonitor;)Landroid/view/SurfaceControl$Transaction;
-
-    move-result-object p1
-
-    invoke-virtual {p1}, Landroid/view/SurfaceControl$Transaction;->apply()V
+    invoke-virtual {v2}, Landroid/view/SurfaceControl$Transaction;->apply()V
 
     goto :goto_be
 
-    .line 448
+    .line 449
     :cond_a2
-    iget-object p1, p0, Lcom/android/server/wm/InputMonitor$UpdateInputForAllWindowsConsumer;->this$0:Lcom/android/server/wm/InputMonitor;
-
-    invoke-static {p1}, Lcom/android/server/wm/InputMonitor;->access$1100(Lcom/android/server/wm/InputMonitor;)Lcom/android/server/wm/DisplayContent;
-
-    move-result-object p1
-
-    invoke-virtual {p1}, Lcom/android/server/wm/DisplayContent;->getPendingTransaction()Landroid/view/SurfaceControl$Transaction;
-
-    move-result-object p1
-
     iget-object v2, p0, Lcom/android/server/wm/InputMonitor$UpdateInputForAllWindowsConsumer;->this$0:Lcom/android/server/wm/InputMonitor;
 
-    invoke-static {v2}, Lcom/android/server/wm/InputMonitor;->access$400(Lcom/android/server/wm/InputMonitor;)Landroid/view/SurfaceControl$Transaction;
+    invoke-static {v2}, Lcom/android/server/wm/InputMonitor;->access$1100(Lcom/android/server/wm/InputMonitor;)Lcom/android/server/wm/DisplayContent;
 
     move-result-object v2
 
-    invoke-virtual {p1, v2}, Landroid/view/SurfaceControl$Transaction;->merge(Landroid/view/SurfaceControl$Transaction;)Landroid/view/SurfaceControl$Transaction;
+    invoke-virtual {v2}, Lcom/android/server/wm/DisplayContent;->getPendingTransaction()Landroid/view/SurfaceControl$Transaction;
 
-    .line 449
-    iget-object p1, p0, Lcom/android/server/wm/InputMonitor$UpdateInputForAllWindowsConsumer;->this$0:Lcom/android/server/wm/InputMonitor;
+    move-result-object v2
 
-    invoke-static {p1}, Lcom/android/server/wm/InputMonitor;->access$1100(Lcom/android/server/wm/InputMonitor;)Lcom/android/server/wm/DisplayContent;
+    iget-object v3, p0, Lcom/android/server/wm/InputMonitor$UpdateInputForAllWindowsConsumer;->this$0:Lcom/android/server/wm/InputMonitor;
 
-    move-result-object p1
+    invoke-static {v3}, Lcom/android/server/wm/InputMonitor;->access$400(Lcom/android/server/wm/InputMonitor;)Landroid/view/SurfaceControl$Transaction;
 
-    invoke-virtual {p1}, Lcom/android/server/wm/DisplayContent;->scheduleAnimation()V
+    move-result-object v3
 
-    .line 452
+    invoke-virtual {v2, v3}, Landroid/view/SurfaceControl$Transaction;->merge(Landroid/view/SurfaceControl$Transaction;)Landroid/view/SurfaceControl$Transaction;
+
+    .line 450
+    iget-object v2, p0, Lcom/android/server/wm/InputMonitor$UpdateInputForAllWindowsConsumer;->this$0:Lcom/android/server/wm/InputMonitor;
+
+    invoke-static {v2}, Lcom/android/server/wm/InputMonitor;->access$1100(Lcom/android/server/wm/InputMonitor;)Lcom/android/server/wm/DisplayContent;
+
+    move-result-object v2
+
+    invoke-virtual {v2}, Lcom/android/server/wm/DisplayContent;->scheduleAnimation()V
+
+    .line 453
     :goto_be
     invoke-static {v0, v1}, Landroid/os/Trace;->traceEnd(J)V
 
-    .line 453
+    .line 454
     return-void
 .end method
 
 
 # virtual methods
 .method public accept(Lcom/android/server/wm/WindowState;)V
-    .registers 12
-
-    .line 457
-    iget-object v0, p1, Lcom/android/server/wm/WindowState;->mInputChannel:Landroid/view/InputChannel;
+    .registers 19
+    .param p1, "w"  # Lcom/android/server/wm/WindowState;
 
     .line 458
-    iget-object v9, p1, Lcom/android/server/wm/WindowState;->mInputWindowHandle:Landroid/view/InputWindowHandle;
+    move-object/from16 v0, p0
+
+    move-object/from16 v9, p1
+
+    iget-object v10, v9, Lcom/android/server/wm/WindowState;->mInputChannel:Landroid/view/InputChannel;
 
     .line 459
-    if-eqz v0, :cond_134
-
-    if-eqz v9, :cond_134
-
-    iget-boolean v0, p1, Lcom/android/server/wm/WindowState;->mRemoved:Z
-
-    if-nez v0, :cond_134
+    .local v10, "inputChannel":Landroid/view/InputChannel;
+    iget-object v11, v9, Lcom/android/server/wm/WindowState;->mInputWindowHandle:Landroid/view/InputWindowHandle;
 
     .line 460
-    invoke-virtual {p1}, Lcom/android/server/wm/WindowState;->cantReceiveTouchInput()Z
+    .local v11, "inputWindowHandle":Landroid/view/InputWindowHandle;
+    if-eqz v10, :cond_13e
 
-    move-result v0
+    if-eqz v11, :cond_13e
 
-    if-eqz v0, :cond_14
+    iget-boolean v1, v9, Lcom/android/server/wm/WindowState;->mRemoved:Z
 
-    goto/16 :goto_134
+    if-nez v1, :cond_13e
 
-    .line 469
-    :cond_14
-    iget-object v0, p1, Lcom/android/server/wm/WindowState;->mAttrs:Landroid/view/WindowManager$LayoutParams;
+    .line 461
+    invoke-virtual/range {p1 .. p1}, Lcom/android/server/wm/WindowState;->cantReceiveTouchInput()Z
 
-    iget v4, v0, Landroid/view/WindowManager$LayoutParams;->flags:I
+    move-result v1
+
+    if-eqz v1, :cond_18
+
+    goto/16 :goto_13e
 
     .line 470
-    iget-object v0, p1, Lcom/android/server/wm/WindowState;->mAttrs:Landroid/view/WindowManager$LayoutParams;
+    :cond_18
+    iget-object v1, v9, Lcom/android/server/wm/WindowState;->mAttrs:Landroid/view/WindowManager$LayoutParams;
 
-    iget v0, v0, Landroid/view/WindowManager$LayoutParams;->privateFlags:I
+    iget v12, v1, Landroid/view/WindowManager$LayoutParams;->flags:I
 
     .line 471
-    iget-object v1, p1, Lcom/android/server/wm/WindowState;->mAttrs:Landroid/view/WindowManager$LayoutParams;
+    .local v12, "flags":I
+    iget-object v1, v9, Lcom/android/server/wm/WindowState;->mAttrs:Landroid/view/WindowManager$LayoutParams;
 
-    iget v5, v1, Landroid/view/WindowManager$LayoutParams;->type:I
+    iget v13, v1, Landroid/view/WindowManager$LayoutParams;->privateFlags:I
 
     .line 472
-    invoke-virtual {p1}, Lcom/android/server/wm/WindowState;->isFocused()Z
+    .local v13, "privateFlags":I
+    iget-object v1, v9, Lcom/android/server/wm/WindowState;->mAttrs:Landroid/view/WindowManager$LayoutParams;
 
-    move-result v7
+    iget v14, v1, Landroid/view/WindowManager$LayoutParams;->type:I
 
     .line 473
-    invoke-virtual {p1}, Lcom/android/server/wm/WindowState;->isVisibleLw()Z
+    .local v14, "type":I
+    invoke-virtual/range {p1 .. p1}, Lcom/android/server/wm/WindowState;->isFocused()Z
 
-    move-result v6
+    move-result v15
 
-    .line 475
-    iget-boolean v1, p0, Lcom/android/server/wm/InputMonitor$UpdateInputForAllWindowsConsumer;->mAddRecentsAnimationInputConsumerHandle:Z
+    .line 474
+    .local v15, "hasFocus":Z
+    invoke-virtual/range {p1 .. p1}, Lcom/android/server/wm/WindowState;->isVisibleLw()Z
+
+    move-result v16
+
+    .line 476
+    .local v16, "isVisible":Z
+    iget-boolean v1, v0, Lcom/android/server/wm/InputMonitor$UpdateInputForAllWindowsConsumer;->mAddRecentsAnimationInputConsumerHandle:Z
 
     const/4 v2, 0x0
 
-    if-eqz v1, :cond_58
-
-    .line 476
-    iget-object v1, p0, Lcom/android/server/wm/InputMonitor$UpdateInputForAllWindowsConsumer;->this$0:Lcom/android/server/wm/InputMonitor;
+    if-eqz v1, :cond_5c
 
     .line 477
+    iget-object v1, v0, Lcom/android/server/wm/InputMonitor$UpdateInputForAllWindowsConsumer;->this$0:Lcom/android/server/wm/InputMonitor;
+
+    .line 478
     invoke-static {v1}, Lcom/android/server/wm/InputMonitor;->access$000(Lcom/android/server/wm/InputMonitor;)Lcom/android/server/wm/WindowManagerService;
 
     move-result-object v1
@@ -409,84 +426,86 @@
 
     move-result-object v1
 
-    .line 478
-    if-eqz v1, :cond_58
-
-    iget-object v3, p1, Lcom/android/server/wm/WindowState;->mAppToken:Lcom/android/server/wm/AppWindowToken;
-
     .line 479
+    .local v1, "recentsAnimationController":Lcom/android/server/wm/RecentsAnimationController;
+    if-eqz v1, :cond_5c
+
+    iget-object v3, v9, Lcom/android/server/wm/WindowState;->mAppToken:Lcom/android/server/wm/AppWindowToken;
+
+    .line 480
     invoke-virtual {v1, v3}, Lcom/android/server/wm/RecentsAnimationController;->shouldApplyInputConsumer(Lcom/android/server/wm/AppWindowToken;)Z
 
     move-result v3
 
-    if-eqz v3, :cond_58
+    if-eqz v3, :cond_5c
 
-    .line 480
-    iget-object v3, p0, Lcom/android/server/wm/InputMonitor$UpdateInputForAllWindowsConsumer;->recentsAnimationInputConsumer:Lcom/android/server/wm/InputConsumerImpl;
+    .line 481
+    iget-object v3, v0, Lcom/android/server/wm/InputMonitor$UpdateInputForAllWindowsConsumer;->recentsAnimationInputConsumer:Lcom/android/server/wm/InputConsumerImpl;
 
     iget-object v3, v3, Lcom/android/server/wm/InputConsumerImpl;->mWindowHandle:Landroid/view/InputWindowHandle;
 
-    invoke-virtual {v1, v3, v7}, Lcom/android/server/wm/RecentsAnimationController;->updateInputConsumerForApp(Landroid/view/InputWindowHandle;Z)Z
+    invoke-virtual {v1, v3, v15}, Lcom/android/server/wm/RecentsAnimationController;->updateInputConsumerForApp(Landroid/view/InputWindowHandle;Z)Z
 
-    move-result v1
+    move-result v3
 
-    if-eqz v1, :cond_58
-
-    .line 482
-    iget-object v1, p0, Lcom/android/server/wm/InputMonitor$UpdateInputForAllWindowsConsumer;->recentsAnimationInputConsumer:Lcom/android/server/wm/InputConsumerImpl;
-
-    iget-object v3, p0, Lcom/android/server/wm/InputMonitor$UpdateInputForAllWindowsConsumer;->this$0:Lcom/android/server/wm/InputMonitor;
-
-    invoke-static {v3}, Lcom/android/server/wm/InputMonitor;->access$400(Lcom/android/server/wm/InputMonitor;)Landroid/view/SurfaceControl$Transaction;
-
-    move-result-object v3
-
-    invoke-virtual {v1, v3, p1}, Lcom/android/server/wm/InputConsumerImpl;->show(Landroid/view/SurfaceControl$Transaction;Lcom/android/server/wm/WindowState;)V
+    if-eqz v3, :cond_5c
 
     .line 483
-    iput-boolean v2, p0, Lcom/android/server/wm/InputMonitor$UpdateInputForAllWindowsConsumer;->mAddRecentsAnimationInputConsumerHandle:Z
+    iget-object v3, v0, Lcom/android/server/wm/InputMonitor$UpdateInputForAllWindowsConsumer;->recentsAnimationInputConsumer:Lcom/android/server/wm/InputConsumerImpl;
 
-    .line 488
-    :cond_58
-    invoke-virtual {p1}, Lcom/android/server/wm/WindowState;->inPinnedWindowingMode()Z
+    iget-object v4, v0, Lcom/android/server/wm/InputMonitor$UpdateInputForAllWindowsConsumer;->this$0:Lcom/android/server/wm/InputMonitor;
+
+    invoke-static {v4}, Lcom/android/server/wm/InputMonitor;->access$400(Lcom/android/server/wm/InputMonitor;)Landroid/view/SurfaceControl$Transaction;
+
+    move-result-object v4
+
+    invoke-virtual {v3, v4, v9}, Lcom/android/server/wm/InputConsumerImpl;->show(Landroid/view/SurfaceControl$Transaction;Lcom/android/server/wm/WindowState;)V
+
+    .line 484
+    iput-boolean v2, v0, Lcom/android/server/wm/InputMonitor$UpdateInputForAllWindowsConsumer;->mAddRecentsAnimationInputConsumerHandle:Z
+
+    .line 489
+    .end local v1  # "recentsAnimationController":Lcom/android/server/wm/RecentsAnimationController;
+    :cond_5c
+    invoke-virtual/range {p1 .. p1}, Lcom/android/server/wm/WindowState;->inPinnedWindowingMode()Z
 
     move-result v1
 
-    if-eqz v1, :cond_a1
+    if-eqz v1, :cond_a5
 
-    .line 489
-    iget-boolean v1, p0, Lcom/android/server/wm/InputMonitor$UpdateInputForAllWindowsConsumer;->mAddPipInputConsumerHandle:Z
+    .line 490
+    iget-boolean v1, v0, Lcom/android/server/wm/InputMonitor$UpdateInputForAllWindowsConsumer;->mAddPipInputConsumerHandle:Z
 
-    if-eqz v1, :cond_a1
+    if-eqz v1, :cond_a5
 
-    .line 491
-    iget-object v1, p0, Lcom/android/server/wm/InputMonitor$UpdateInputForAllWindowsConsumer;->this$0:Lcom/android/server/wm/InputMonitor;
+    .line 492
+    iget-object v1, v0, Lcom/android/server/wm/InputMonitor$UpdateInputForAllWindowsConsumer;->this$0:Lcom/android/server/wm/InputMonitor;
 
     invoke-static {v1}, Lcom/android/server/wm/InputMonitor;->access$900(Lcom/android/server/wm/InputMonitor;)Landroid/graphics/Rect;
 
     move-result-object v1
 
-    invoke-virtual {p1, v1}, Lcom/android/server/wm/WindowState;->getBounds(Landroid/graphics/Rect;)V
+    invoke-virtual {v9, v1}, Lcom/android/server/wm/WindowState;->getBounds(Landroid/graphics/Rect;)V
 
-    .line 492
-    iget-object v1, p0, Lcom/android/server/wm/InputMonitor$UpdateInputForAllWindowsConsumer;->pipInputConsumer:Lcom/android/server/wm/InputConsumerImpl;
+    .line 493
+    iget-object v1, v0, Lcom/android/server/wm/InputMonitor$UpdateInputForAllWindowsConsumer;->pipInputConsumer:Lcom/android/server/wm/InputConsumerImpl;
 
-    iget-object v3, p0, Lcom/android/server/wm/InputMonitor$UpdateInputForAllWindowsConsumer;->this$0:Lcom/android/server/wm/InputMonitor;
+    iget-object v3, v0, Lcom/android/server/wm/InputMonitor$UpdateInputForAllWindowsConsumer;->this$0:Lcom/android/server/wm/InputMonitor;
 
     invoke-static {v3}, Lcom/android/server/wm/InputMonitor;->access$400(Lcom/android/server/wm/InputMonitor;)Landroid/view/SurfaceControl$Transaction;
 
     move-result-object v3
 
-    iget-object v8, p0, Lcom/android/server/wm/InputMonitor$UpdateInputForAllWindowsConsumer;->this$0:Lcom/android/server/wm/InputMonitor;
+    iget-object v4, v0, Lcom/android/server/wm/InputMonitor$UpdateInputForAllWindowsConsumer;->this$0:Lcom/android/server/wm/InputMonitor;
 
-    invoke-static {v8}, Lcom/android/server/wm/InputMonitor;->access$900(Lcom/android/server/wm/InputMonitor;)Landroid/graphics/Rect;
+    invoke-static {v4}, Lcom/android/server/wm/InputMonitor;->access$900(Lcom/android/server/wm/InputMonitor;)Landroid/graphics/Rect;
 
-    move-result-object v8
+    move-result-object v4
 
-    invoke-virtual {v1, v3, v8}, Lcom/android/server/wm/InputConsumerImpl;->layout(Landroid/view/SurfaceControl$Transaction;Landroid/graphics/Rect;)V
+    invoke-virtual {v1, v3, v4}, Lcom/android/server/wm/InputConsumerImpl;->layout(Landroid/view/SurfaceControl$Transaction;Landroid/graphics/Rect;)V
 
-    .line 495
-    iget-object v1, p0, Lcom/android/server/wm/InputMonitor$UpdateInputForAllWindowsConsumer;->this$0:Lcom/android/server/wm/InputMonitor;
+    .line 496
+    iget-object v1, v0, Lcom/android/server/wm/InputMonitor$UpdateInputForAllWindowsConsumer;->this$0:Lcom/android/server/wm/InputMonitor;
 
     invoke-static {v1}, Lcom/android/server/wm/InputMonitor;->access$900(Lcom/android/server/wm/InputMonitor;)Landroid/graphics/Rect;
 
@@ -494,14 +513,14 @@
 
     invoke-virtual {v1, v2, v2}, Landroid/graphics/Rect;->offsetTo(II)V
 
-    .line 496
-    iget-object v1, p0, Lcom/android/server/wm/InputMonitor$UpdateInputForAllWindowsConsumer;->pipInputConsumer:Lcom/android/server/wm/InputConsumerImpl;
+    .line 497
+    iget-object v1, v0, Lcom/android/server/wm/InputMonitor$UpdateInputForAllWindowsConsumer;->pipInputConsumer:Lcom/android/server/wm/InputConsumerImpl;
 
     iget-object v1, v1, Lcom/android/server/wm/InputConsumerImpl;->mWindowHandle:Landroid/view/InputWindowHandle;
 
     iget-object v1, v1, Landroid/view/InputWindowHandle;->touchableRegion:Landroid/graphics/Region;
 
-    iget-object v3, p0, Lcom/android/server/wm/InputMonitor$UpdateInputForAllWindowsConsumer;->this$0:Lcom/android/server/wm/InputMonitor;
+    iget-object v3, v0, Lcom/android/server/wm/InputMonitor$UpdateInputForAllWindowsConsumer;->this$0:Lcom/android/server/wm/InputMonitor;
 
     invoke-static {v3}, Lcom/android/server/wm/InputMonitor;->access$900(Lcom/android/server/wm/InputMonitor;)Landroid/graphics/Rect;
 
@@ -509,230 +528,245 @@
 
     invoke-virtual {v1, v3}, Landroid/graphics/Region;->set(Landroid/graphics/Rect;)Z
 
-    .line 497
-    iget-object v1, p0, Lcom/android/server/wm/InputMonitor$UpdateInputForAllWindowsConsumer;->pipInputConsumer:Lcom/android/server/wm/InputConsumerImpl;
+    .line 498
+    iget-object v1, v0, Lcom/android/server/wm/InputMonitor$UpdateInputForAllWindowsConsumer;->pipInputConsumer:Lcom/android/server/wm/InputConsumerImpl;
 
-    iget-object v3, p0, Lcom/android/server/wm/InputMonitor$UpdateInputForAllWindowsConsumer;->this$0:Lcom/android/server/wm/InputMonitor;
+    iget-object v3, v0, Lcom/android/server/wm/InputMonitor$UpdateInputForAllWindowsConsumer;->this$0:Lcom/android/server/wm/InputMonitor;
 
     invoke-static {v3}, Lcom/android/server/wm/InputMonitor;->access$400(Lcom/android/server/wm/InputMonitor;)Landroid/view/SurfaceControl$Transaction;
 
     move-result-object v3
 
-    invoke-virtual {v1, v3, p1}, Lcom/android/server/wm/InputConsumerImpl;->show(Landroid/view/SurfaceControl$Transaction;Lcom/android/server/wm/WindowState;)V
+    invoke-virtual {v1, v3, v9}, Lcom/android/server/wm/InputConsumerImpl;->show(Landroid/view/SurfaceControl$Transaction;Lcom/android/server/wm/WindowState;)V
 
-    .line 498
-    iput-boolean v2, p0, Lcom/android/server/wm/InputMonitor$UpdateInputForAllWindowsConsumer;->mAddPipInputConsumerHandle:Z
+    .line 499
+    iput-boolean v2, v0, Lcom/android/server/wm/InputMonitor$UpdateInputForAllWindowsConsumer;->mAddPipInputConsumerHandle:Z
 
-    .line 502
-    :cond_a1
-    iget-boolean v1, p0, Lcom/android/server/wm/InputMonitor$UpdateInputForAllWindowsConsumer;->mAddInputConsumerHandle:Z
+    .line 503
+    :cond_a5
+    iget-boolean v1, v0, Lcom/android/server/wm/InputMonitor$UpdateInputForAllWindowsConsumer;->mAddInputConsumerHandle:Z
 
-    if-eqz v1, :cond_bc
+    if-eqz v1, :cond_c0
 
-    iget v1, v9, Landroid/view/InputWindowHandle;->layer:I
+    iget v1, v11, Landroid/view/InputWindowHandle;->layer:I
 
-    iget-object v3, p0, Lcom/android/server/wm/InputMonitor$UpdateInputForAllWindowsConsumer;->navInputConsumer:Lcom/android/server/wm/InputConsumerImpl;
+    iget-object v3, v0, Lcom/android/server/wm/InputMonitor$UpdateInputForAllWindowsConsumer;->navInputConsumer:Lcom/android/server/wm/InputConsumerImpl;
 
     iget-object v3, v3, Lcom/android/server/wm/InputConsumerImpl;->mWindowHandle:Landroid/view/InputWindowHandle;
 
     iget v3, v3, Landroid/view/InputWindowHandle;->layer:I
 
-    if-gt v1, v3, :cond_bc
+    if-gt v1, v3, :cond_c0
 
-    .line 504
-    iget-object v1, p0, Lcom/android/server/wm/InputMonitor$UpdateInputForAllWindowsConsumer;->navInputConsumer:Lcom/android/server/wm/InputConsumerImpl;
+    .line 505
+    iget-object v1, v0, Lcom/android/server/wm/InputMonitor$UpdateInputForAllWindowsConsumer;->navInputConsumer:Lcom/android/server/wm/InputConsumerImpl;
 
-    iget-object v3, p0, Lcom/android/server/wm/InputMonitor$UpdateInputForAllWindowsConsumer;->this$0:Lcom/android/server/wm/InputMonitor;
+    iget-object v3, v0, Lcom/android/server/wm/InputMonitor$UpdateInputForAllWindowsConsumer;->this$0:Lcom/android/server/wm/InputMonitor;
 
     invoke-static {v3}, Lcom/android/server/wm/InputMonitor;->access$400(Lcom/android/server/wm/InputMonitor;)Landroid/view/SurfaceControl$Transaction;
 
     move-result-object v3
 
-    invoke-virtual {v1, v3, p1}, Lcom/android/server/wm/InputConsumerImpl;->show(Landroid/view/SurfaceControl$Transaction;Lcom/android/server/wm/WindowState;)V
+    invoke-virtual {v1, v3, v9}, Lcom/android/server/wm/InputConsumerImpl;->show(Landroid/view/SurfaceControl$Transaction;Lcom/android/server/wm/WindowState;)V
 
-    .line 505
-    iput-boolean v2, p0, Lcom/android/server/wm/InputMonitor$UpdateInputForAllWindowsConsumer;->mAddInputConsumerHandle:Z
-
-    .line 508
-    :cond_bc
-    iget-boolean v1, p0, Lcom/android/server/wm/InputMonitor$UpdateInputForAllWindowsConsumer;->mAddWallpaperInputConsumerHandle:Z
-
-    if-eqz v1, :cond_db
+    .line 506
+    iput-boolean v2, v0, Lcom/android/server/wm/InputMonitor$UpdateInputForAllWindowsConsumer;->mAddInputConsumerHandle:Z
 
     .line 509
-    iget-object v1, p1, Lcom/android/server/wm/WindowState;->mAttrs:Landroid/view/WindowManager$LayoutParams;
+    :cond_c0
+    iget-boolean v1, v0, Lcom/android/server/wm/InputMonitor$UpdateInputForAllWindowsConsumer;->mAddWallpaperInputConsumerHandle:Z
+
+    if-eqz v1, :cond_df
+
+    .line 510
+    iget-object v1, v9, Lcom/android/server/wm/WindowState;->mAttrs:Landroid/view/WindowManager$LayoutParams;
 
     iget v1, v1, Landroid/view/WindowManager$LayoutParams;->type:I
 
     const/16 v3, 0x7dd
 
-    if-ne v1, v3, :cond_db
+    if-ne v1, v3, :cond_df
 
-    invoke-virtual {p1}, Lcom/android/server/wm/WindowState;->isVisibleLw()Z
+    invoke-virtual/range {p1 .. p1}, Lcom/android/server/wm/WindowState;->isVisibleLw()Z
 
     move-result v1
 
-    if-eqz v1, :cond_db
+    if-eqz v1, :cond_df
 
-    .line 511
-    iget-object v1, p0, Lcom/android/server/wm/InputMonitor$UpdateInputForAllWindowsConsumer;->wallpaperInputConsumer:Lcom/android/server/wm/InputConsumerImpl;
+    .line 512
+    iget-object v1, v0, Lcom/android/server/wm/InputMonitor$UpdateInputForAllWindowsConsumer;->wallpaperInputConsumer:Lcom/android/server/wm/InputConsumerImpl;
 
-    iget-object v3, p0, Lcom/android/server/wm/InputMonitor$UpdateInputForAllWindowsConsumer;->this$0:Lcom/android/server/wm/InputMonitor;
+    iget-object v3, v0, Lcom/android/server/wm/InputMonitor$UpdateInputForAllWindowsConsumer;->this$0:Lcom/android/server/wm/InputMonitor;
 
     invoke-static {v3}, Lcom/android/server/wm/InputMonitor;->access$400(Lcom/android/server/wm/InputMonitor;)Landroid/view/SurfaceControl$Transaction;
 
     move-result-object v3
 
-    invoke-virtual {v1, v3, p1}, Lcom/android/server/wm/InputConsumerImpl;->show(Landroid/view/SurfaceControl$Transaction;Lcom/android/server/wm/WindowState;)V
+    invoke-virtual {v1, v3, v9}, Lcom/android/server/wm/InputConsumerImpl;->show(Landroid/view/SurfaceControl$Transaction;Lcom/android/server/wm/WindowState;)V
 
-    .line 512
-    iput-boolean v2, p0, Lcom/android/server/wm/InputMonitor$UpdateInputForAllWindowsConsumer;->mAddWallpaperInputConsumerHandle:Z
+    .line 513
+    iput-boolean v2, v0, Lcom/android/server/wm/InputMonitor$UpdateInputForAllWindowsConsumer;->mAddWallpaperInputConsumerHandle:Z
 
-    .line 516
-    :cond_db
-    and-int/lit16 v1, v0, 0x800
+    .line 517
+    :cond_df
+    and-int/lit16 v1, v13, 0x800
 
     const/4 v3, 0x1
 
-    if-eqz v1, :cond_e5
+    if-eqz v1, :cond_e9
 
-    .line 517
-    iget-object v1, p0, Lcom/android/server/wm/InputMonitor$UpdateInputForAllWindowsConsumer;->this$0:Lcom/android/server/wm/InputMonitor;
+    .line 518
+    iget-object v1, v0, Lcom/android/server/wm/InputMonitor$UpdateInputForAllWindowsConsumer;->this$0:Lcom/android/server/wm/InputMonitor;
 
     invoke-static {v1, v3}, Lcom/android/server/wm/InputMonitor;->access$1002(Lcom/android/server/wm/InputMonitor;Z)Z
 
-    .line 519
-    :cond_e5
-    iget-object v1, p0, Lcom/android/server/wm/InputMonitor$UpdateInputForAllWindowsConsumer;->wallpaperController:Lcom/android/server/wm/WallpaperController;
+    .line 520
+    :cond_e9
+    iget-object v1, v0, Lcom/android/server/wm/InputMonitor$UpdateInputForAllWindowsConsumer;->wallpaperController:Lcom/android/server/wm/WallpaperController;
 
-    invoke-virtual {v1, p1}, Lcom/android/server/wm/WallpaperController;->isWallpaperTarget(Lcom/android/server/wm/WindowState;)Z
+    invoke-virtual {v1, v9}, Lcom/android/server/wm/WallpaperController;->isWallpaperTarget(Lcom/android/server/wm/WindowState;)Z
 
     move-result v1
 
-    if-eqz v1, :cond_fb
+    if-eqz v1, :cond_ff
 
-    and-int/lit16 v0, v0, 0x400
+    and-int/lit16 v1, v13, 0x400
 
-    if-nez v0, :cond_fb
+    if-nez v1, :cond_ff
 
-    iget-object v0, p0, Lcom/android/server/wm/InputMonitor$UpdateInputForAllWindowsConsumer;->this$0:Lcom/android/server/wm/InputMonitor;
+    iget-object v1, v0, Lcom/android/server/wm/InputMonitor$UpdateInputForAllWindowsConsumer;->this$0:Lcom/android/server/wm/InputMonitor;
 
-    .line 521
-    invoke-static {v0}, Lcom/android/server/wm/InputMonitor;->access$1000(Lcom/android/server/wm/InputMonitor;)Z
+    .line 522
+    invoke-static {v1}, Lcom/android/server/wm/InputMonitor;->access$1000(Lcom/android/server/wm/InputMonitor;)Z
 
-    move-result v0
+    move-result v1
 
-    if-nez v0, :cond_fb
+    if-nez v1, :cond_ff
 
     move v8, v3
 
-    goto :goto_fc
+    goto :goto_100
 
-    :cond_fb
+    :cond_ff
     move v8, v2
 
-    .line 525
-    :goto_fc
-    iget-boolean v0, p0, Lcom/android/server/wm/InputMonitor$UpdateInputForAllWindowsConsumer;->inDrag:Z
-
-    if-eqz v0, :cond_115
-
-    if-eqz v6, :cond_115
-
-    invoke-virtual {p1}, Lcom/android/server/wm/WindowState;->getDisplayContent()Lcom/android/server/wm/DisplayContent;
-
-    move-result-object v0
-
-    iget-boolean v0, v0, Lcom/android/server/wm/DisplayContent;->isDefaultDisplay:Z
-
-    if-eqz v0, :cond_115
-
     .line 526
-    iget-object v0, p0, Lcom/android/server/wm/InputMonitor$UpdateInputForAllWindowsConsumer;->this$0:Lcom/android/server/wm/InputMonitor;
+    .local v8, "hasWallpaper":Z
+    :goto_100
+    iget-boolean v1, v0, Lcom/android/server/wm/InputMonitor$UpdateInputForAllWindowsConsumer;->inDrag:Z
 
-    invoke-static {v0}, Lcom/android/server/wm/InputMonitor;->access$000(Lcom/android/server/wm/InputMonitor;)Lcom/android/server/wm/WindowManagerService;
+    if-eqz v1, :cond_119
 
-    move-result-object v0
+    if-eqz v16, :cond_119
 
-    iget-object v0, v0, Lcom/android/server/wm/WindowManagerService;->mDragDropController:Lcom/android/server/wm/DragDropController;
+    invoke-virtual/range {p1 .. p1}, Lcom/android/server/wm/WindowState;->getDisplayContent()Lcom/android/server/wm/DisplayContent;
 
-    invoke-virtual {v0, p1}, Lcom/android/server/wm/DragDropController;->sendDragStartedIfNeededLocked(Lcom/android/server/wm/WindowState;)V
+    move-result-object v1
 
-    .line 529
-    :cond_115
-    iget-object v1, p0, Lcom/android/server/wm/InputMonitor$UpdateInputForAllWindowsConsumer;->this$0:Lcom/android/server/wm/InputMonitor;
+    iget-boolean v1, v1, Lcom/android/server/wm/DisplayContent;->isDefaultDisplay:Z
 
-    move-object v2, v9
+    if-eqz v1, :cond_119
 
-    move-object v3, p1
+    .line 527
+    iget-object v1, v0, Lcom/android/server/wm/InputMonitor$UpdateInputForAllWindowsConsumer;->this$0:Lcom/android/server/wm/InputMonitor;
+
+    invoke-static {v1}, Lcom/android/server/wm/InputMonitor;->access$000(Lcom/android/server/wm/InputMonitor;)Lcom/android/server/wm/WindowManagerService;
+
+    move-result-object v1
+
+    iget-object v1, v1, Lcom/android/server/wm/WindowManagerService;->mDragDropController:Lcom/android/server/wm/DragDropController;
+
+    invoke-virtual {v1, v9}, Lcom/android/server/wm/DragDropController;->sendDragStartedIfNeededLocked(Lcom/android/server/wm/WindowState;)V
+
+    .line 530
+    :cond_119
+    iget-object v1, v0, Lcom/android/server/wm/InputMonitor$UpdateInputForAllWindowsConsumer;->this$0:Lcom/android/server/wm/InputMonitor;
+
+    move-object v2, v11
+
+    move-object/from16 v3, p1
+
+    move v4, v12
+
+    move v5, v14
+
+    move/from16 v6, v16
+
+    move v7, v15
 
     invoke-virtual/range {v1 .. v8}, Lcom/android/server/wm/InputMonitor;->populateInputWindowHandle(Landroid/view/InputWindowHandle;Lcom/android/server/wm/WindowState;IIZZZ)V
 
-    .line 532
-    iget-object v0, p1, Lcom/android/server/wm/WindowState;->mWinAnimator:Lcom/android/server/wm/WindowStateAnimator;
-
-    invoke-virtual {v0}, Lcom/android/server/wm/WindowStateAnimator;->hasSurface()Z
-
-    move-result v0
-
-    if-eqz v0, :cond_133
-
     .line 533
-    iget-object v0, p0, Lcom/android/server/wm/InputMonitor$UpdateInputForAllWindowsConsumer;->this$0:Lcom/android/server/wm/InputMonitor;
+    iget-object v1, v9, Lcom/android/server/wm/WindowState;->mWinAnimator:Lcom/android/server/wm/WindowStateAnimator;
 
-    invoke-static {v0}, Lcom/android/server/wm/InputMonitor;->access$400(Lcom/android/server/wm/InputMonitor;)Landroid/view/SurfaceControl$Transaction;
+    invoke-virtual {v1}, Lcom/android/server/wm/WindowStateAnimator;->hasSurface()Z
 
-    move-result-object v0
+    move-result v1
 
-    iget-object p1, p1, Lcom/android/server/wm/WindowState;->mWinAnimator:Lcom/android/server/wm/WindowStateAnimator;
+    if-eqz v1, :cond_13d
 
-    iget-object p1, p1, Lcom/android/server/wm/WindowStateAnimator;->mSurfaceController:Lcom/android/server/wm/WindowSurfaceController;
+    .line 534
+    iget-object v1, v0, Lcom/android/server/wm/InputMonitor$UpdateInputForAllWindowsConsumer;->this$0:Lcom/android/server/wm/InputMonitor;
 
-    iget-object p1, p1, Lcom/android/server/wm/WindowSurfaceController;->mSurfaceControl:Landroid/view/SurfaceControl;
+    invoke-static {v1}, Lcom/android/server/wm/InputMonitor;->access$400(Lcom/android/server/wm/InputMonitor;)Landroid/view/SurfaceControl$Transaction;
 
-    invoke-virtual {v0, p1, v9}, Landroid/view/SurfaceControl$Transaction;->setInputWindowInfo(Landroid/view/SurfaceControl;Landroid/view/InputWindowHandle;)Landroid/view/SurfaceControl$Transaction;
+    move-result-object v1
 
-    .line 536
-    :cond_133
+    iget-object v2, v9, Lcom/android/server/wm/WindowState;->mWinAnimator:Lcom/android/server/wm/WindowStateAnimator;
+
+    iget-object v2, v2, Lcom/android/server/wm/WindowStateAnimator;->mSurfaceController:Lcom/android/server/wm/WindowSurfaceController;
+
+    iget-object v2, v2, Lcom/android/server/wm/WindowSurfaceController;->mSurfaceControl:Landroid/view/SurfaceControl;
+
+    invoke-virtual {v1, v2, v11}, Landroid/view/SurfaceControl$Transaction;->setInputWindowInfo(Landroid/view/SurfaceControl;Landroid/view/InputWindowHandle;)Landroid/view/SurfaceControl$Transaction;
+
+    .line 537
+    :cond_13d
     return-void
 
-    .line 461
-    :cond_134
-    :goto_134
-    iget-object v0, p1, Lcom/android/server/wm/WindowState;->mWinAnimator:Lcom/android/server/wm/WindowStateAnimator;
-
-    invoke-virtual {v0}, Lcom/android/server/wm/WindowStateAnimator;->hasSurface()Z
-
-    move-result v0
-
-    if-eqz v0, :cond_14d
-
     .line 462
-    iget-object v0, p0, Lcom/android/server/wm/InputMonitor$UpdateInputForAllWindowsConsumer;->this$0:Lcom/android/server/wm/InputMonitor;
+    .end local v8  # "hasWallpaper":Z
+    .end local v12  # "flags":I
+    .end local v13  # "privateFlags":I
+    .end local v14  # "type":I
+    .end local v15  # "hasFocus":Z
+    .end local v16  # "isVisible":Z
+    :cond_13e
+    :goto_13e
+    iget-object v1, v9, Lcom/android/server/wm/WindowState;->mWinAnimator:Lcom/android/server/wm/WindowStateAnimator;
 
-    invoke-static {v0}, Lcom/android/server/wm/InputMonitor;->access$400(Lcom/android/server/wm/InputMonitor;)Landroid/view/SurfaceControl$Transaction;
+    invoke-virtual {v1}, Lcom/android/server/wm/WindowStateAnimator;->hasSurface()Z
 
-    move-result-object v0
+    move-result v1
 
-    iget-object p1, p1, Lcom/android/server/wm/WindowState;->mWinAnimator:Lcom/android/server/wm/WindowStateAnimator;
+    if-eqz v1, :cond_157
 
-    iget-object p1, p1, Lcom/android/server/wm/WindowStateAnimator;->mSurfaceController:Lcom/android/server/wm/WindowSurfaceController;
+    .line 463
+    iget-object v1, v0, Lcom/android/server/wm/InputMonitor$UpdateInputForAllWindowsConsumer;->this$0:Lcom/android/server/wm/InputMonitor;
 
-    iget-object p1, p1, Lcom/android/server/wm/WindowSurfaceController;->mSurfaceControl:Landroid/view/SurfaceControl;
+    invoke-static {v1}, Lcom/android/server/wm/InputMonitor;->access$400(Lcom/android/server/wm/InputMonitor;)Landroid/view/SurfaceControl$Transaction;
 
-    iget-object v1, p0, Lcom/android/server/wm/InputMonitor$UpdateInputForAllWindowsConsumer;->mInvalidInputWindow:Landroid/view/InputWindowHandle;
+    move-result-object v1
 
-    invoke-virtual {v0, p1, v1}, Landroid/view/SurfaceControl$Transaction;->setInputWindowInfo(Landroid/view/SurfaceControl;Landroid/view/InputWindowHandle;)Landroid/view/SurfaceControl$Transaction;
+    iget-object v2, v9, Lcom/android/server/wm/WindowState;->mWinAnimator:Lcom/android/server/wm/WindowStateAnimator;
 
-    .line 466
-    :cond_14d
+    iget-object v2, v2, Lcom/android/server/wm/WindowStateAnimator;->mSurfaceController:Lcom/android/server/wm/WindowSurfaceController;
+
+    iget-object v2, v2, Lcom/android/server/wm/WindowSurfaceController;->mSurfaceControl:Landroid/view/SurfaceControl;
+
+    iget-object v3, v0, Lcom/android/server/wm/InputMonitor$UpdateInputForAllWindowsConsumer;->mInvalidInputWindow:Landroid/view/InputWindowHandle;
+
+    invoke-virtual {v1, v2, v3}, Landroid/view/SurfaceControl$Transaction;->setInputWindowInfo(Landroid/view/SurfaceControl;Landroid/view/InputWindowHandle;)Landroid/view/SurfaceControl$Transaction;
+
+    .line 467
+    :cond_157
     return-void
 .end method
 
 .method public bridge synthetic accept(Ljava/lang/Object;)V
     .registers 2
 
-    .line 401
+    .line 402
     check-cast p1, Lcom/android/server/wm/WindowState;
 
     invoke-virtual {p0, p1}, Lcom/android/server/wm/InputMonitor$UpdateInputForAllWindowsConsumer;->accept(Lcom/android/server/wm/WindowState;)V

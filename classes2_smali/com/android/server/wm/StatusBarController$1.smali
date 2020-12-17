@@ -26,7 +26,8 @@
 
 # direct methods
 .method constructor <init>(Lcom/android/server/wm/StatusBarController;)V
-    .registers 2
+    .registers 3
+    .param p1, "this$0"  # Lcom/android/server/wm/StatusBarController;
 
     .line 35
     iput-object p1, p0, Lcom/android/server/wm/StatusBarController$1;->this$0:Lcom/android/server/wm/StatusBarController;
@@ -34,25 +35,25 @@
     invoke-direct {p0}, Lcom/android/server/wm/WindowManagerInternal$AppTransitionListener;-><init>()V
 
     .line 37
-    new-instance p1, Lcom/android/server/wm/-$$Lambda$StatusBarController$1$x4q7e0Eysf0ynMSdT1A-JN_ucuI;
+    new-instance v0, Lcom/android/server/wm/-$$Lambda$StatusBarController$1$x4q7e0Eysf0ynMSdT1A-JN_ucuI;
 
-    invoke-direct {p1, p0}, Lcom/android/server/wm/-$$Lambda$StatusBarController$1$x4q7e0Eysf0ynMSdT1A-JN_ucuI;-><init>(Lcom/android/server/wm/StatusBarController$1;)V
+    invoke-direct {v0, p0}, Lcom/android/server/wm/-$$Lambda$StatusBarController$1$x4q7e0Eysf0ynMSdT1A-JN_ucuI;-><init>(Lcom/android/server/wm/StatusBarController$1;)V
 
-    iput-object p1, p0, Lcom/android/server/wm/StatusBarController$1;->mAppTransitionPending:Ljava/lang/Runnable;
+    iput-object v0, p0, Lcom/android/server/wm/StatusBarController$1;->mAppTransitionPending:Ljava/lang/Runnable;
 
     .line 44
-    new-instance p1, Lcom/android/server/wm/-$$Lambda$StatusBarController$1$CizMeoiz6ZVrkt6kAKpSV5htmyc;
+    new-instance v0, Lcom/android/server/wm/-$$Lambda$StatusBarController$1$CizMeoiz6ZVrkt6kAKpSV5htmyc;
 
-    invoke-direct {p1, p0}, Lcom/android/server/wm/-$$Lambda$StatusBarController$1$CizMeoiz6ZVrkt6kAKpSV5htmyc;-><init>(Lcom/android/server/wm/StatusBarController$1;)V
+    invoke-direct {v0, p0}, Lcom/android/server/wm/-$$Lambda$StatusBarController$1$CizMeoiz6ZVrkt6kAKpSV5htmyc;-><init>(Lcom/android/server/wm/StatusBarController$1;)V
 
-    iput-object p1, p0, Lcom/android/server/wm/StatusBarController$1;->mAppTransitionCancelled:Ljava/lang/Runnable;
+    iput-object v0, p0, Lcom/android/server/wm/StatusBarController$1;->mAppTransitionCancelled:Ljava/lang/Runnable;
 
     .line 51
-    new-instance p1, Lcom/android/server/wm/-$$Lambda$StatusBarController$1$3FiQ0kybPCSlgcNJkCsNm5M12iA;
+    new-instance v0, Lcom/android/server/wm/-$$Lambda$StatusBarController$1$3FiQ0kybPCSlgcNJkCsNm5M12iA;
 
-    invoke-direct {p1, p0}, Lcom/android/server/wm/-$$Lambda$StatusBarController$1$3FiQ0kybPCSlgcNJkCsNm5M12iA;-><init>(Lcom/android/server/wm/StatusBarController$1;)V
+    invoke-direct {v0, p0}, Lcom/android/server/wm/-$$Lambda$StatusBarController$1$3FiQ0kybPCSlgcNJkCsNm5M12iA;-><init>(Lcom/android/server/wm/StatusBarController$1;)V
 
-    iput-object p1, p0, Lcom/android/server/wm/StatusBarController$1;->mAppTransitionFinished:Ljava/lang/Runnable;
+    iput-object v0, p0, Lcom/android/server/wm/StatusBarController$1;->mAppTransitionFinished:Ljava/lang/Runnable;
 
     return-void
 .end method
@@ -70,6 +71,7 @@
     move-result-object v0
 
     .line 39
+    .local v0, "statusBar":Lcom/android/server/statusbar/StatusBarManagerInternal;
     if-eqz v0, :cond_f
 
     .line 40
@@ -95,6 +97,7 @@
     move-result-object v0
 
     .line 46
+    .local v0, "statusBar":Lcom/android/server/statusbar/StatusBarManagerInternal;
     if-eqz v0, :cond_f
 
     .line 47
@@ -120,6 +123,7 @@
     move-result-object v0
 
     .line 53
+    .local v0, "statusBar":Lcom/android/server/statusbar/StatusBarManagerInternal;
     if-eqz v0, :cond_f
 
     .line 54
@@ -136,21 +140,26 @@
 
 .method public synthetic lambda$onAppTransitionStartingLocked$3$StatusBarController$1(JJ)V
     .registers 12
+    .param p1, "statusBarAnimationStartTime"  # J
+    .param p3, "statusBarAnimationDuration"  # J
 
     .line 67
     iget-object v0, p0, Lcom/android/server/wm/StatusBarController$1;->this$0:Lcom/android/server/wm/StatusBarController;
 
     invoke-virtual {v0}, Lcom/android/server/wm/StatusBarController;->getStatusBarInternal()Lcom/android/server/statusbar/StatusBarManagerInternal;
 
-    move-result-object v1
+    move-result-object v0
 
     .line 68
-    if-eqz v1, :cond_11
+    .local v0, "statusBar":Lcom/android/server/statusbar/StatusBarManagerInternal;
+    if-eqz v0, :cond_12
 
     .line 69
-    iget-object v0, p0, Lcom/android/server/wm/StatusBarController$1;->this$0:Lcom/android/server/wm/StatusBarController;
+    iget-object v1, p0, Lcom/android/server/wm/StatusBarController$1;->this$0:Lcom/android/server/wm/StatusBarController;
 
-    iget v2, v0, Lcom/android/server/wm/StatusBarController;->mDisplayId:I
+    iget v2, v1, Lcom/android/server/wm/StatusBarController;->mDisplayId:I
+
+    move-object v1, v0
 
     move-wide v3, p1
 
@@ -159,37 +168,39 @@
     invoke-interface/range {v1 .. v6}, Lcom/android/server/statusbar/StatusBarManagerInternal;->appTransitionStarting(IJJ)V
 
     .line 72
-    :cond_11
+    :cond_12
     return-void
 .end method
 
 .method public onAppTransitionCancelledLocked(I)V
-    .registers 3
+    .registers 4
+    .param p1, "transit"  # I
 
     .line 78
-    iget-object p1, p0, Lcom/android/server/wm/StatusBarController$1;->this$0:Lcom/android/server/wm/StatusBarController;
+    iget-object v0, p0, Lcom/android/server/wm/StatusBarController$1;->this$0:Lcom/android/server/wm/StatusBarController;
 
-    iget-object p1, p1, Lcom/android/server/wm/StatusBarController;->mHandler:Landroid/os/Handler;
+    iget-object v0, v0, Lcom/android/server/wm/StatusBarController;->mHandler:Landroid/os/Handler;
 
-    iget-object v0, p0, Lcom/android/server/wm/StatusBarController$1;->mAppTransitionCancelled:Ljava/lang/Runnable;
+    iget-object v1, p0, Lcom/android/server/wm/StatusBarController$1;->mAppTransitionCancelled:Ljava/lang/Runnable;
 
-    invoke-virtual {p1, v0}, Landroid/os/Handler;->post(Ljava/lang/Runnable;)Z
+    invoke-virtual {v0, v1}, Landroid/os/Handler;->post(Ljava/lang/Runnable;)Z
 
     .line 79
     return-void
 .end method
 
 .method public onAppTransitionFinishedLocked(Landroid/os/IBinder;)V
-    .registers 3
+    .registers 4
+    .param p1, "token"  # Landroid/os/IBinder;
 
     .line 83
-    iget-object p1, p0, Lcom/android/server/wm/StatusBarController$1;->this$0:Lcom/android/server/wm/StatusBarController;
+    iget-object v0, p0, Lcom/android/server/wm/StatusBarController$1;->this$0:Lcom/android/server/wm/StatusBarController;
 
-    iget-object p1, p1, Lcom/android/server/wm/StatusBarController;->mHandler:Landroid/os/Handler;
+    iget-object v0, v0, Lcom/android/server/wm/StatusBarController;->mHandler:Landroid/os/Handler;
 
-    iget-object v0, p0, Lcom/android/server/wm/StatusBarController$1;->mAppTransitionFinished:Ljava/lang/Runnable;
+    iget-object v1, p0, Lcom/android/server/wm/StatusBarController$1;->mAppTransitionFinished:Ljava/lang/Runnable;
 
-    invoke-virtual {p1, v0}, Landroid/os/Handler;->post(Ljava/lang/Runnable;)Z
+    invoke-virtual {v0, v1}, Landroid/os/Handler;->post(Ljava/lang/Runnable;)Z
 
     .line 84
     return-void
@@ -212,29 +223,33 @@
 .end method
 
 .method public onAppTransitionStartingLocked(IJJJ)I
-    .registers 14
+    .registers 16
+    .param p1, "transit"  # I
+    .param p2, "duration"  # J
+    .param p4, "statusBarAnimationStartTime"  # J
+    .param p6, "statusBarAnimationDuration"  # J
 
     .line 66
-    iget-object p1, p0, Lcom/android/server/wm/StatusBarController$1;->this$0:Lcom/android/server/wm/StatusBarController;
+    iget-object v0, p0, Lcom/android/server/wm/StatusBarController$1;->this$0:Lcom/android/server/wm/StatusBarController;
 
-    iget-object p1, p1, Lcom/android/server/wm/StatusBarController;->mHandler:Landroid/os/Handler;
+    iget-object v0, v0, Lcom/android/server/wm/StatusBarController;->mHandler:Landroid/os/Handler;
 
-    new-instance p2, Lcom/android/server/wm/-$$Lambda$StatusBarController$1$t71qcQIBSxRShk0Xohf1lk53bOw;
+    new-instance v7, Lcom/android/server/wm/-$$Lambda$StatusBarController$1$t71qcQIBSxRShk0Xohf1lk53bOw;
 
-    move-object v0, p2
+    move-object v1, v7
 
-    move-object v1, p0
+    move-object v2, p0
 
-    move-wide v2, p4
+    move-wide v3, p4
 
-    move-wide v4, p6
+    move-wide v5, p6
 
-    invoke-direct/range {v0 .. v5}, Lcom/android/server/wm/-$$Lambda$StatusBarController$1$t71qcQIBSxRShk0Xohf1lk53bOw;-><init>(Lcom/android/server/wm/StatusBarController$1;JJ)V
+    invoke-direct/range {v1 .. v6}, Lcom/android/server/wm/-$$Lambda$StatusBarController$1$t71qcQIBSxRShk0Xohf1lk53bOw;-><init>(Lcom/android/server/wm/StatusBarController$1;JJ)V
 
-    invoke-virtual {p1, p2}, Landroid/os/Handler;->post(Ljava/lang/Runnable;)Z
+    invoke-virtual {v0, v7}, Landroid/os/Handler;->post(Ljava/lang/Runnable;)Z
 
     .line 73
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    return p1
+    return v0
 .end method

@@ -21,8 +21,9 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/pm/UserManagerService;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/pm/UserManagerService;
 
-    .line 405
+    .line 397
     iput-object p1, p0, Lcom/android/server/pm/UserManagerService$1;->this$0:Lcom/android/server/pm/UserManagerService;
 
     invoke-direct {p0}, Landroid/content/BroadcastReceiver;-><init>()V
@@ -34,8 +35,10 @@
 # virtual methods
 .method public synthetic lambda$onReceive$0$UserManagerService$1(ILandroid/content/IntentSender;)V
     .registers 6
+    .param p1, "userHandle"  # I
+    .param p2, "target"  # Landroid/content/IntentSender;
 
-    .line 415
+    .line 407
     iget-object v0, p0, Lcom/android/server/pm/UserManagerService$1;->this$0:Lcom/android/server/pm/UserManagerService;
 
     const/4 v1, 0x0
@@ -48,54 +51,58 @@
 .end method
 
 .method public onReceive(Landroid/content/Context;Landroid/content/Intent;)V
-    .registers 5
+    .registers 7
+    .param p1, "context"  # Landroid/content/Context;
+    .param p2, "intent"  # Landroid/content/Intent;
 
-    .line 408
+    .line 400
     invoke-virtual {p2}, Landroid/content/Intent;->getAction()Ljava/lang/String;
-
-    move-result-object p1
-
-    const-string v0, "com.android.server.pm.DISABLE_QUIET_MODE_AFTER_UNLOCK"
-
-    invoke-virtual {v0, p1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
-
-    move-result p1
-
-    if-nez p1, :cond_d
-
-    .line 409
-    return-void
-
-    .line 411
-    :cond_d
-    const-string p1, "android.intent.extra.INTENT"
-
-    invoke-virtual {p2, p1}, Landroid/content/Intent;->getParcelableExtra(Ljava/lang/String;)Landroid/os/Parcelable;
-
-    move-result-object p1
-
-    check-cast p1, Landroid/content/IntentSender;
-
-    .line 412
-    const/16 v0, -0x2710
-
-    const-string v1, "android.intent.extra.USER_ID"
-
-    invoke-virtual {p2, v1, v0}, Landroid/content/Intent;->getIntExtra(Ljava/lang/String;I)I
-
-    move-result p2
-
-    .line 414
-    invoke-static {}, Lcom/android/internal/os/BackgroundThread;->getHandler()Landroid/os/Handler;
 
     move-result-object v0
 
-    new-instance v1, Lcom/android/server/pm/-$$Lambda$UserManagerService$1$DQ_02g7kZ7QrJXO6aCATwE6DYCE;
+    const-string v1, "com.android.server.pm.DISABLE_QUIET_MODE_AFTER_UNLOCK"
 
-    invoke-direct {v1, p0, p2, p1}, Lcom/android/server/pm/-$$Lambda$UserManagerService$1$DQ_02g7kZ7QrJXO6aCATwE6DYCE;-><init>(Lcom/android/server/pm/UserManagerService$1;ILandroid/content/IntentSender;)V
+    invoke-virtual {v1, v0}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    invoke-virtual {v0, v1}, Landroid/os/Handler;->post(Ljava/lang/Runnable;)Z
+    move-result v0
 
-    .line 416
+    if-nez v0, :cond_d
+
+    .line 401
+    return-void
+
+    .line 403
+    :cond_d
+    const-string v0, "android.intent.extra.INTENT"
+
+    invoke-virtual {p2, v0}, Landroid/content/Intent;->getParcelableExtra(Ljava/lang/String;)Landroid/os/Parcelable;
+
+    move-result-object v0
+
+    check-cast v0, Landroid/content/IntentSender;
+
+    .line 404
+    .local v0, "target":Landroid/content/IntentSender;
+    const/16 v1, -0x2710
+
+    const-string v2, "android.intent.extra.USER_ID"
+
+    invoke-virtual {p2, v2, v1}, Landroid/content/Intent;->getIntExtra(Ljava/lang/String;I)I
+
+    move-result v1
+
+    .line 406
+    .local v1, "userHandle":I
+    invoke-static {}, Lcom/android/internal/os/BackgroundThread;->getHandler()Landroid/os/Handler;
+
+    move-result-object v2
+
+    new-instance v3, Lcom/android/server/pm/-$$Lambda$UserManagerService$1$DQ_02g7kZ7QrJXO6aCATwE6DYCE;
+
+    invoke-direct {v3, p0, v1, v0}, Lcom/android/server/pm/-$$Lambda$UserManagerService$1$DQ_02g7kZ7QrJXO6aCATwE6DYCE;-><init>(Lcom/android/server/pm/UserManagerService$1;ILandroid/content/IntentSender;)V
+
+    invoke-virtual {v2, v3}, Landroid/os/Handler;->post(Ljava/lang/Runnable;)Z
+
+    .line 408
     return-void
 .end method

@@ -19,6 +19,7 @@
 # direct methods
 .method public constructor <init>(Landroid/content/Context;)V
     .registers 2
+    .param p1, "context"  # Landroid/content/Context;
 
     .line 33
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -31,7 +32,8 @@
 .end method
 
 .method private updateLocationState(Lcom/android/server/power/batterysaver/BatterySaverController;)V
-    .registers 4
+    .registers 6
+    .param p1, "caller"  # Lcom/android/server/power/batterysaver/BatterySaverController;
 
     .line 54
     nop
@@ -45,39 +47,50 @@
 
     move-result v0
 
-    const/4 v1, 0x2
+    const/4 v1, 0x1
 
-    if-ne v0, v1, :cond_14
+    const/4 v2, 0x0
+
+    const/4 v3, 0x2
+
+    if-ne v0, v3, :cond_16
 
     .line 57
     invoke-virtual {p1}, Lcom/android/server/power/batterysaver/BatterySaverController;->isInteractive()Z
 
-    move-result p1
+    move-result v0
 
-    if-nez p1, :cond_14
+    if-nez v0, :cond_16
 
-    const/4 p1, 0x1
+    move v0, v1
 
-    goto :goto_15
+    goto :goto_17
 
-    :cond_14
-    const/4 p1, 0x0
+    :cond_16
+    move v0, v2
 
     .line 62
-    :goto_15
-    iget-object v0, p0, Lcom/android/server/power/batterysaver/BatterySaverLocationPlugin;->mContext:Landroid/content/Context;
+    .local v0, "kill":Z
+    :goto_17
+    iget-object v3, p0, Lcom/android/server/power/batterysaver/BatterySaverLocationPlugin;->mContext:Landroid/content/Context;
 
-    invoke-virtual {v0}, Landroid/content/Context;->getContentResolver()Landroid/content/ContentResolver;
+    invoke-virtual {v3}, Landroid/content/Context;->getContentResolver()Landroid/content/ContentResolver;
 
-    move-result-object v0
+    move-result-object v3
 
     .line 63
-    nop
+    if-eqz v0, :cond_20
+
+    goto :goto_21
+
+    :cond_20
+    move v1, v2
 
     .line 62
-    const-string v1, "location_global_kill_switch"
+    :goto_21
+    const-string/jumbo v2, "location_global_kill_switch"
 
-    invoke-static {v0, v1, p1}, Landroid/provider/Settings$Global;->putInt(Landroid/content/ContentResolver;Ljava/lang/String;I)Z
+    invoke-static {v3, v2, v1}, Landroid/provider/Settings$Global;->putInt(Landroid/content/ContentResolver;Ljava/lang/String;I)Z
 
     .line 64
     return-void
@@ -87,6 +100,7 @@
 # virtual methods
 .method public onBatterySaverChanged(Lcom/android/server/power/batterysaver/BatterySaverController;)V
     .registers 2
+    .param p1, "caller"  # Lcom/android/server/power/batterysaver/BatterySaverController;
 
     .line 42
     invoke-direct {p0, p1}, Lcom/android/server/power/batterysaver/BatterySaverLocationPlugin;->updateLocationState(Lcom/android/server/power/batterysaver/BatterySaverController;)V
@@ -97,6 +111,7 @@
 
 .method public onSystemReady(Lcom/android/server/power/batterysaver/BatterySaverController;)V
     .registers 2
+    .param p1, "caller"  # Lcom/android/server/power/batterysaver/BatterySaverController;
 
     .line 50
     invoke-direct {p0, p1}, Lcom/android/server/power/batterysaver/BatterySaverLocationPlugin;->updateLocationState(Lcom/android/server/power/batterysaver/BatterySaverController;)V

@@ -19,36 +19,38 @@
 
 # direct methods
 .method static constructor <clinit>()V
-    .registers 1
+    .registers 2
 
     .line 45
-    nop
-
-    .line 47
-    :try_start_1
-    const-string/jumbo v0, "org.jacoco.agent.rt.RT"
-
-    invoke-static {v0}, Ljava/lang/Class;->forName(Ljava/lang/String;)Ljava/lang/Class;
-    :try_end_7
-    .catch Ljava/lang/ClassNotFoundException; {:try_start_1 .. :try_end_7} :catch_9
-
-    .line 50
     const/4 v0, 0x1
 
-    goto :goto_b
+    .line 47
+    .local v0, "shouldEnable":Z
+    :try_start_1
+    const-string/jumbo v1, "org.jacoco.agent.rt.RT"
+
+    invoke-static {v1}, Ljava/lang/Class;->forName(Ljava/lang/String;)Ljava/lang/Class;
+    :try_end_7
+    .catch Ljava/lang/ClassNotFoundException; {:try_start_1 .. :try_end_7} :catch_8
+
+    .line 50
+    goto :goto_a
 
     .line 48
-    :catch_9
-    move-exception v0
+    :catch_8
+    move-exception v1
 
     .line 49
+    .local v1, "e":Ljava/lang/ClassNotFoundException;
     const/4 v0, 0x0
 
     .line 51
-    :goto_b
+    .end local v1  # "e":Ljava/lang/ClassNotFoundException;
+    :goto_a
     sput-boolean v0, Lcom/android/server/coverage/CoverageService;->ENABLED:Z
 
     .line 52
+    .end local v0  # "shouldEnable":Z
     return-void
 .end method
 
@@ -65,6 +67,12 @@
 # virtual methods
 .method public onShellCommand(Ljava/io/FileDescriptor;Ljava/io/FileDescriptor;Ljava/io/FileDescriptor;[Ljava/lang/String;Landroid/os/ShellCallback;Landroid/os/ResultReceiver;)V
     .registers 15
+    .param p1, "in"  # Ljava/io/FileDescriptor;
+    .param p2, "out"  # Ljava/io/FileDescriptor;
+    .param p3, "err"  # Ljava/io/FileDescriptor;
+    .param p4, "args"  # [Ljava/lang/String;
+    .param p5, "callback"  # Landroid/os/ShellCallback;
+    .param p6, "resultReceiver"  # Landroid/os/ResultReceiver;
 
     .line 60
     new-instance v0, Lcom/android/server/coverage/CoverageService$CoverageCommand;

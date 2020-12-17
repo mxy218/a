@@ -24,6 +24,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/hdmi/HdmiControlService;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/hdmi/HdmiControlService;
 
     .line 2753
     iput-object p1, p0, Lcom/android/server/hdmi/HdmiControlService$6;->this$0:Lcom/android/server/hdmi/HdmiControlService;
@@ -36,25 +37,26 @@
 
 # virtual methods
 .method public onCleared(Lcom/android/server/hdmi/HdmiCecLocalDevice;)V
-    .registers 3
+    .registers 4
+    .param p1, "device"  # Lcom/android/server/hdmi/HdmiCecLocalDevice;
 
     .line 2756
-    iget-object p1, p0, Lcom/android/server/hdmi/HdmiControlService$6;->this$0:Lcom/android/server/hdmi/HdmiControlService;
+    iget-object v0, p0, Lcom/android/server/hdmi/HdmiControlService$6;->this$0:Lcom/android/server/hdmi/HdmiControlService;
 
-    invoke-static {p1}, Lcom/android/server/hdmi/HdmiControlService;->access$000(Lcom/android/server/hdmi/HdmiControlService;)V
+    invoke-static {v0}, Lcom/android/server/hdmi/HdmiControlService;->access$000(Lcom/android/server/hdmi/HdmiControlService;)V
 
     .line 2757
-    iget-object p1, p0, Lcom/android/server/hdmi/HdmiControlService$6;->this$0:Lcom/android/server/hdmi/HdmiControlService;
+    iget-object v0, p0, Lcom/android/server/hdmi/HdmiControlService$6;->this$0:Lcom/android/server/hdmi/HdmiControlService;
 
-    invoke-static {p1}, Lcom/android/server/hdmi/HdmiControlService;->access$1100(Lcom/android/server/hdmi/HdmiControlService;)Lcom/android/server/hdmi/HdmiCecController;
+    invoke-static {v0}, Lcom/android/server/hdmi/HdmiControlService;->access$1100(Lcom/android/server/hdmi/HdmiControlService;)Lcom/android/server/hdmi/HdmiCecController;
 
-    move-result-object p1
+    move-result-object v0
 
-    new-instance v0, Lcom/android/server/hdmi/HdmiControlService$6$1;
+    new-instance v1, Lcom/android/server/hdmi/HdmiControlService$6$1;
 
-    invoke-direct {v0, p0}, Lcom/android/server/hdmi/HdmiControlService$6$1;-><init>(Lcom/android/server/hdmi/HdmiControlService$6;)V
+    invoke-direct {v1, p0}, Lcom/android/server/hdmi/HdmiControlService$6$1;-><init>(Lcom/android/server/hdmi/HdmiControlService$6;)V
 
-    invoke-virtual {p1, v0}, Lcom/android/server/hdmi/HdmiCecController;->flush(Ljava/lang/Runnable;)V
+    invoke-virtual {v0, v1}, Lcom/android/server/hdmi/HdmiCecController;->flush(Ljava/lang/Runnable;)V
 
     .line 2766
     return-void

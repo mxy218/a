@@ -9,8 +9,7 @@
         Lcom/android/server/PackageWatchdog$MonitoredPackage;,
         Lcom/android/server/PackageWatchdog$ObserverInternal;,
         Lcom/android/server/PackageWatchdog$PackageHealthObserver;,
-        Lcom/android/server/PackageWatchdog$PackageHealthObserverImpact;,
-        Lcom/android/server/PackageWatchdog$FailureReasons;
+        Lcom/android/server/PackageWatchdog$PackageHealthObserverImpact;
     }
 .end annotation
 
@@ -33,16 +32,6 @@
 .field private static final DEFAULT_TRIGGER_FAILURE_COUNT:I = 0x5
 
 .field private static final DEFAULT_TRIGGER_FAILURE_DURATION_MS:I
-
-.field public static final FAILURE_REASON_APP_CRASH:I = 0x3
-
-.field public static final FAILURE_REASON_APP_NOT_RESPONDING:I = 0x4
-
-.field public static final FAILURE_REASON_EXPLICIT_HEALTH_CHECK:I = 0x2
-
-.field public static final FAILURE_REASON_NATIVE_CRASH:I = 0x1
-
-.field public static final FAILURE_REASON_UNKNOWN:I = 0x0
 
 .field static final PROPERTY_WATCHDOG_EXPLICIT_HEALTH_CHECK_ENABLED:Ljava/lang/String; = "watchdog_explicit_health_check_enabled"
 
@@ -144,10 +133,10 @@
 .method static constructor <clinit>()V
     .registers 3
 
-    .line 101
+    .line 84
     sget-object v0, Ljava/util/concurrent/TimeUnit;->MINUTES:Ljava/util/concurrent/TimeUnit;
 
-    .line 102
+    .line 85
     const-wide/16 v1, 0x1
 
     invoke-virtual {v0, v1, v2}, Ljava/util/concurrent/TimeUnit;->toMillis(J)J
@@ -158,21 +147,22 @@
 
     sput v0, Lcom/android/server/PackageWatchdog;->DEFAULT_TRIGGER_FAILURE_DURATION_MS:I
 
-    .line 101
+    .line 84
     return-void
 .end method
 
 .method private constructor <init>(Landroid/content/Context;)V
     .registers 9
+    .param p1, "context"  # Landroid/content/Context;
 
-    .line 153
+    .line 136
     new-instance v2, Landroid/util/AtomicFile;
 
     new-instance v0, Ljava/io/File;
 
     new-instance v1, Ljava/io/File;
 
-    .line 154
+    .line 137
     invoke-static {}, Landroid/os/Environment;->getDataDirectory()Ljava/io/File;
 
     move-result-object v3
@@ -189,7 +179,7 @@
 
     new-instance v3, Landroid/os/Handler;
 
-    .line 156
+    .line 139
     invoke-static {}, Landroid/os/Looper;->myLooper()Landroid/os/Looper;
 
     move-result-object v0
@@ -204,140 +194,149 @@
 
     invoke-direct {v5, p1}, Lcom/android/server/ExplicitHealthCheckController;-><init>(Landroid/content/Context;)V
 
-    .line 158
+    .line 141
     invoke-static {}, Landroid/net/NetworkStackClient;->getInstance()Landroid/net/NetworkStackClient;
 
     move-result-object v6
 
-    .line 153
+    .line 136
     move-object v0, p0
 
     move-object v1, p1
 
     invoke-direct/range {v0 .. v6}, Lcom/android/server/PackageWatchdog;-><init>(Landroid/content/Context;Landroid/util/AtomicFile;Landroid/os/Handler;Landroid/os/Handler;Lcom/android/server/ExplicitHealthCheckController;Landroid/net/NetworkStackClient;)V
 
-    .line 159
+    .line 142
     return-void
 .end method
 
 .method constructor <init>(Landroid/content/Context;Landroid/util/AtomicFile;Landroid/os/Handler;Landroid/os/Handler;Lcom/android/server/ExplicitHealthCheckController;Landroid/net/NetworkStackClient;)V
     .registers 8
+    .param p1, "context"  # Landroid/content/Context;
+    .param p2, "policyFile"  # Landroid/util/AtomicFile;
+    .param p3, "shortTaskHandler"  # Landroid/os/Handler;
+    .param p4, "longTaskHandler"  # Landroid/os/Handler;
+    .param p5, "controller"  # Lcom/android/server/ExplicitHealthCheckController;
+    .param p6, "networkStackClient"  # Landroid/net/NetworkStackClient;
     .annotation build Lcom/android/internal/annotations/VisibleForTesting;
     .end annotation
 
-    .line 167
+    .line 150
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
-    .line 121
+    .line 104
     new-instance v0, Ljava/lang/Object;
 
     invoke-direct {v0}, Ljava/lang/Object;-><init>()V
 
     iput-object v0, p0, Lcom/android/server/PackageWatchdog;->mLock:Ljava/lang/Object;
 
-    .line 131
+    .line 114
     new-instance v0, Landroid/util/ArrayMap;
 
     invoke-direct {v0}, Landroid/util/ArrayMap;-><init>()V
 
     iput-object v0, p0, Lcom/android/server/PackageWatchdog;->mAllObservers:Landroid/util/ArrayMap;
 
-    .line 140
+    .line 123
     const/4 v0, 0x1
 
     iput-boolean v0, p0, Lcom/android/server/PackageWatchdog;->mIsHealthCheckEnabled:Z
 
-    .line 142
+    .line 125
     sget v0, Lcom/android/server/PackageWatchdog;->DEFAULT_TRIGGER_FAILURE_DURATION_MS:I
 
     iput v0, p0, Lcom/android/server/PackageWatchdog;->mTriggerFailureDurationMs:I
 
-    .line 144
+    .line 127
     const/4 v0, 0x5
 
     iput v0, p0, Lcom/android/server/PackageWatchdog;->mTriggerFailureCount:I
 
-    .line 168
+    .line 151
     iput-object p1, p0, Lcom/android/server/PackageWatchdog;->mContext:Landroid/content/Context;
 
-    .line 169
+    .line 152
     iput-object p2, p0, Lcom/android/server/PackageWatchdog;->mPolicyFile:Landroid/util/AtomicFile;
 
-    .line 170
+    .line 153
     iput-object p3, p0, Lcom/android/server/PackageWatchdog;->mShortTaskHandler:Landroid/os/Handler;
 
-    .line 171
+    .line 154
     iput-object p4, p0, Lcom/android/server/PackageWatchdog;->mLongTaskHandler:Landroid/os/Handler;
 
-    .line 172
+    .line 155
     iput-object p5, p0, Lcom/android/server/PackageWatchdog;->mHealthCheckController:Lcom/android/server/ExplicitHealthCheckController;
 
-    .line 173
+    .line 156
     iput-object p6, p0, Lcom/android/server/PackageWatchdog;->mNetworkStackClient:Landroid/net/NetworkStackClient;
 
-    .line 174
+    .line 157
     invoke-direct {p0}, Lcom/android/server/PackageWatchdog;->loadFromFile()V
 
-    .line 175
+    .line 158
     return-void
 .end method
 
 .method static synthetic access$300(Lcom/android/server/PackageWatchdog;)I
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/PackageWatchdog;
 
-    .line 74
-    iget p0, p0, Lcom/android/server/PackageWatchdog;->mTriggerFailureDurationMs:I
+    .line 73
+    iget v0, p0, Lcom/android/server/PackageWatchdog;->mTriggerFailureDurationMs:I
 
-    return p0
+    return v0
 .end method
 
 .method static synthetic access$400(Lcom/android/server/PackageWatchdog;)I
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/PackageWatchdog;
 
-    .line 74
-    iget p0, p0, Lcom/android/server/PackageWatchdog;->mTriggerFailureCount:I
+    .line 73
+    iget v0, p0, Lcom/android/server/PackageWatchdog;->mTriggerFailureCount:I
 
-    return p0
+    return v0
 .end method
 
 .method public static getInstance(Landroid/content/Context;)Lcom/android/server/PackageWatchdog;
     .registers 3
+    .param p0, "context"  # Landroid/content/Context;
 
-    .line 179
+    .line 162
     const-class v0, Lcom/android/server/PackageWatchdog;
 
     monitor-enter v0
 
-    .line 180
+    .line 163
     :try_start_3
     sget-object v1, Lcom/android/server/PackageWatchdog;->sPackageWatchdog:Lcom/android/server/PackageWatchdog;
 
     if-nez v1, :cond_e
 
-    .line 181
+    .line 164
     new-instance v1, Lcom/android/server/PackageWatchdog;
 
     invoke-direct {v1, p0}, Lcom/android/server/PackageWatchdog;-><init>(Landroid/content/Context;)V
 
     sput-object v1, Lcom/android/server/PackageWatchdog;->sPackageWatchdog:Lcom/android/server/PackageWatchdog;
 
-    .line 183
+    .line 166
     :cond_e
-    sget-object p0, Lcom/android/server/PackageWatchdog;->sPackageWatchdog:Lcom/android/server/PackageWatchdog;
+    sget-object v1, Lcom/android/server/PackageWatchdog;->sPackageWatchdog:Lcom/android/server/PackageWatchdog;
 
     monitor-exit v0
 
-    return-object p0
+    return-object v1
 
-    .line 184
+    .line 167
     :catchall_12
-    move-exception p0
+    move-exception v1
 
     monitor-exit v0
     :try_end_14
     .catchall {:try_start_3 .. :try_end_14} :catchall_12
 
-    throw p0
+    throw v1
 .end method
 
 .method private getNextStateSyncMillisLocked()J
@@ -348,91 +347,92 @@
         }
     .end annotation
 
-    .line 608
-    nop
+    .line 590
+    const-wide v0, 0x7fffffffffffffffL
 
-    .line 609
-    const/4 v0, 0x0
+    .line 591
+    .local v0, "shortestDurationMs":J
+    const/4 v2, 0x0
 
-    const-wide v1, 0x7fffffffffffffffL
+    .local v2, "oIndex":I
+    :goto_6
+    iget-object v3, p0, Lcom/android/server/PackageWatchdog;->mAllObservers:Landroid/util/ArrayMap;
 
-    move-wide v2, v1
-
-    move v1, v0
-
-    :goto_9
-    iget-object v4, p0, Lcom/android/server/PackageWatchdog;->mAllObservers:Landroid/util/ArrayMap;
-
-    invoke-virtual {v4}, Landroid/util/ArrayMap;->size()I
-
-    move-result v4
-
-    if-ge v1, v4, :cond_39
-
-    .line 610
-    iget-object v4, p0, Lcom/android/server/PackageWatchdog;->mAllObservers:Landroid/util/ArrayMap;
-
-    invoke-virtual {v4, v1}, Landroid/util/ArrayMap;->valueAt(I)Ljava/lang/Object;
-
-    move-result-object v4
-
-    check-cast v4, Lcom/android/server/PackageWatchdog$ObserverInternal;
-
-    iget-object v4, v4, Lcom/android/server/PackageWatchdog$ObserverInternal;->mPackages:Landroid/util/ArrayMap;
-
-    .line 611
-    move-wide v5, v2
-
-    move v2, v0
-
-    :goto_1d
-    invoke-virtual {v4}, Landroid/util/ArrayMap;->size()I
+    invoke-virtual {v3}, Landroid/util/ArrayMap;->size()I
 
     move-result v3
 
-    if-ge v2, v3, :cond_35
+    if-ge v2, v3, :cond_34
 
-    .line 612
-    invoke-virtual {v4, v2}, Landroid/util/ArrayMap;->valueAt(I)Ljava/lang/Object;
+    .line 592
+    iget-object v3, p0, Lcom/android/server/PackageWatchdog;->mAllObservers:Landroid/util/ArrayMap;
+
+    invoke-virtual {v3, v2}, Landroid/util/ArrayMap;->valueAt(I)Ljava/lang/Object;
 
     move-result-object v3
 
-    check-cast v3, Lcom/android/server/PackageWatchdog$MonitoredPackage;
+    check-cast v3, Lcom/android/server/PackageWatchdog$ObserverInternal;
 
-    .line 613
-    invoke-virtual {v3}, Lcom/android/server/PackageWatchdog$MonitoredPackage;->getShortestScheduleDurationMsLocked()J
+    iget-object v3, v3, Lcom/android/server/PackageWatchdog$ObserverInternal;->mPackages:Landroid/util/ArrayMap;
 
-    move-result-wide v7
+    .line 593
+    .local v3, "packages":Landroid/util/ArrayMap;, "Landroid/util/ArrayMap<Ljava/lang/String;Lcom/android/server/PackageWatchdog$MonitoredPackage;>;"
+    const/4 v4, 0x0
 
-    .line 614
-    cmp-long v3, v7, v5
+    .local v4, "pIndex":I
+    :goto_19
+    invoke-virtual {v3}, Landroid/util/ArrayMap;->size()I
 
-    if-gez v3, :cond_32
+    move-result v5
 
-    .line 615
-    move-wide v5, v7
+    if-ge v4, v5, :cond_31
 
-    .line 611
-    :cond_32
+    .line 594
+    invoke-virtual {v3, v4}, Landroid/util/ArrayMap;->valueAt(I)Ljava/lang/Object;
+
+    move-result-object v5
+
+    check-cast v5, Lcom/android/server/PackageWatchdog$MonitoredPackage;
+
+    .line 595
+    .local v5, "mp":Lcom/android/server/PackageWatchdog$MonitoredPackage;
+    invoke-virtual {v5}, Lcom/android/server/PackageWatchdog$MonitoredPackage;->getShortestScheduleDurationMsLocked()J
+
+    move-result-wide v6
+
+    .line 596
+    .local v6, "duration":J
+    cmp-long v8, v6, v0
+
+    if-gez v8, :cond_2e
+
+    .line 597
+    move-wide v0, v6
+
+    .line 593
+    .end local v5  # "mp":Lcom/android/server/PackageWatchdog$MonitoredPackage;
+    .end local v6  # "duration":J
+    :cond_2e
+    add-int/lit8 v4, v4, 0x1
+
+    goto :goto_19
+
+    .line 591
+    .end local v3  # "packages":Landroid/util/ArrayMap;, "Landroid/util/ArrayMap<Ljava/lang/String;Lcom/android/server/PackageWatchdog$MonitoredPackage;>;"
+    .end local v4  # "pIndex":I
+    :cond_31
     add-int/lit8 v2, v2, 0x1
 
-    goto :goto_1d
+    goto :goto_6
 
-    .line 609
-    :cond_35
-    add-int/lit8 v1, v1, 0x1
-
-    move-wide v2, v5
-
-    goto :goto_9
-
-    .line 619
-    :cond_39
-    return-wide v2
+    .line 601
+    .end local v2  # "oIndex":I
+    :cond_34
+    return-wide v0
 .end method
 
 .method private getPackagesPendingHealthChecksLocked()Ljava/util/Set;
-    .registers 6
+    .registers 8
     .annotation build Lcom/android/internal/annotations/GuardedBy;
         value = {
             "mLock"
@@ -448,19 +448,20 @@
         }
     .end annotation
 
-    .line 546
+    .line 528
     const-string v0, "PackageWatchdog"
 
     const-string v1, "Getting all observed packages pending health checks"
 
     invoke-static {v0, v1}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 547
+    .line 529
     new-instance v0, Landroid/util/ArraySet;
 
     invoke-direct {v0}, Landroid/util/ArraySet;-><init>()V
 
-    .line 548
+    .line 530
+    .local v0, "packages":Ljava/util/Set;, "Ljava/util/Set<Ljava/lang/String;>;"
     iget-object v1, p0, Lcom/android/server/PackageWatchdog;->mAllObservers:Landroid/util/ArrayMap;
 
     invoke-virtual {v1}, Landroid/util/ArrayMap;->values()Ljava/util/Collection;
@@ -471,7 +472,8 @@
 
     move-result-object v1
 
-    .line 549
+    .line 531
+    .local v1, "oit":Ljava/util/Iterator;, "Ljava/util/Iterator<Lcom/android/server/PackageWatchdog$ObserverInternal;>;"
     :goto_16
     invoke-interface {v1}, Ljava/util/Iterator;->hasNext()Z
 
@@ -479,114 +481,127 @@
 
     if-eqz v2, :cond_47
 
-    .line 550
+    .line 532
     invoke-interface {v1}, Ljava/util/Iterator;->next()Ljava/lang/Object;
 
     move-result-object v2
 
     check-cast v2, Lcom/android/server/PackageWatchdog$ObserverInternal;
 
-    .line 551
-    iget-object v2, v2, Lcom/android/server/PackageWatchdog$ObserverInternal;->mPackages:Landroid/util/ArrayMap;
+    .line 533
+    .local v2, "observer":Lcom/android/server/PackageWatchdog$ObserverInternal;
+    iget-object v3, v2, Lcom/android/server/PackageWatchdog$ObserverInternal;->mPackages:Landroid/util/ArrayMap;
 
-    .line 552
-    invoke-virtual {v2}, Landroid/util/ArrayMap;->values()Ljava/util/Collection;
-
-    move-result-object v2
-
-    invoke-interface {v2}, Ljava/util/Collection;->iterator()Ljava/util/Iterator;
-
-    move-result-object v2
-
-    .line 553
-    :goto_2c
-    invoke-interface {v2}, Ljava/util/Iterator;->hasNext()Z
-
-    move-result v3
-
-    if-eqz v3, :cond_46
-
-    .line 554
-    invoke-interface {v2}, Ljava/util/Iterator;->next()Ljava/lang/Object;
+    .line 534
+    invoke-virtual {v3}, Landroid/util/ArrayMap;->values()Ljava/util/Collection;
 
     move-result-object v3
 
-    check-cast v3, Lcom/android/server/PackageWatchdog$MonitoredPackage;
+    invoke-interface {v3}, Ljava/util/Collection;->iterator()Ljava/util/Iterator;
 
-    .line 555
-    invoke-static {v3}, Lcom/android/server/PackageWatchdog$MonitoredPackage;->access$000(Lcom/android/server/PackageWatchdog$MonitoredPackage;)Ljava/lang/String;
+    move-result-object v3
+
+    .line 535
+    .local v3, "pit":Ljava/util/Iterator;, "Ljava/util/Iterator<Lcom/android/server/PackageWatchdog$MonitoredPackage;>;"
+    :goto_2c
+    invoke-interface {v3}, Ljava/util/Iterator;->hasNext()Z
+
+    move-result v4
+
+    if-eqz v4, :cond_46
+
+    .line 536
+    invoke-interface {v3}, Ljava/util/Iterator;->next()Ljava/lang/Object;
 
     move-result-object v4
 
-    .line 556
-    invoke-virtual {v3}, Lcom/android/server/PackageWatchdog$MonitoredPackage;->isPendingHealthChecksLocked()Z
+    check-cast v4, Lcom/android/server/PackageWatchdog$MonitoredPackage;
 
-    move-result v3
+    .line 537
+    .local v4, "monitoredPackage":Lcom/android/server/PackageWatchdog$MonitoredPackage;
+    invoke-static {v4}, Lcom/android/server/PackageWatchdog$MonitoredPackage;->access$000(Lcom/android/server/PackageWatchdog$MonitoredPackage;)Ljava/lang/String;
 
-    if-eqz v3, :cond_45
+    move-result-object v5
 
-    .line 557
-    invoke-interface {v0, v4}, Ljava/util/Set;->add(Ljava/lang/Object;)Z
+    .line 538
+    .local v5, "packageName":Ljava/lang/String;
+    invoke-virtual {v4}, Lcom/android/server/PackageWatchdog$MonitoredPackage;->isPendingHealthChecksLocked()Z
 
-    .line 559
+    move-result v6
+
+    if-eqz v6, :cond_45
+
+    .line 539
+    invoke-interface {v0, v5}, Ljava/util/Set;->add(Ljava/lang/Object;)Z
+
+    .line 541
+    .end local v4  # "monitoredPackage":Lcom/android/server/PackageWatchdog$MonitoredPackage;
+    .end local v5  # "packageName":Ljava/lang/String;
     :cond_45
     goto :goto_2c
 
-    .line 560
+    .line 542
+    .end local v2  # "observer":Lcom/android/server/PackageWatchdog$ObserverInternal;
+    .end local v3  # "pit":Ljava/util/Iterator;, "Ljava/util/Iterator<Lcom/android/server/PackageWatchdog$MonitoredPackage;>;"
     :cond_46
     goto :goto_16
 
-    .line 561
+    .line 543
     :cond_47
     return-object v0
 .end method
 
 .method private getVersionedPackage(Ljava/lang/String;)Landroid/content/pm/VersionedPackage;
-    .registers 6
+    .registers 7
+    .param p1, "packageName"  # Ljava/lang/String;
 
-    .line 679
+    .line 660
     iget-object v0, p0, Lcom/android/server/PackageWatchdog;->mContext:Landroid/content/Context;
 
     invoke-virtual {v0}, Landroid/content/Context;->getPackageManager()Landroid/content/pm/PackageManager;
 
     move-result-object v0
 
-    .line 680
+    .line 661
+    .local v0, "pm":Landroid/content/pm/PackageManager;
     const/4 v1, 0x0
 
     if-nez v0, :cond_a
 
-    .line 681
+    .line 662
     return-object v1
 
-    .line 684
+    .line 665
     :cond_a
     const/4 v2, 0x0
 
     :try_start_b
     invoke-virtual {v0, p1, v2}, Landroid/content/pm/PackageManager;->getPackageInfo(Ljava/lang/String;I)Landroid/content/pm/PackageInfo;
 
-    move-result-object v0
+    move-result-object v2
 
-    .line 685
-    invoke-virtual {v0}, Landroid/content/pm/PackageInfo;->getLongVersionCode()J
+    .line 666
+    invoke-virtual {v2}, Landroid/content/pm/PackageInfo;->getLongVersionCode()J
 
     move-result-wide v2
 
-    .line 686
-    new-instance v0, Landroid/content/pm/VersionedPackage;
+    .line 667
+    .local v2, "versionCode":J
+    new-instance v4, Landroid/content/pm/VersionedPackage;
 
-    invoke-direct {v0, p1, v2, v3}, Landroid/content/pm/VersionedPackage;-><init>(Ljava/lang/String;J)V
+    invoke-direct {v4, p1, v2, v3}, Landroid/content/pm/VersionedPackage;-><init>(Ljava/lang/String;J)V
     :try_end_18
     .catch Landroid/content/pm/PackageManager$NameNotFoundException; {:try_start_b .. :try_end_18} :catch_19
 
-    return-object v0
+    return-object v4
 
-    .line 687
+    .line 668
+    .end local v2  # "versionCode":J
     :catch_19
-    move-exception p1
+    move-exception v2
 
-    .line 688
+    .line 669
+    .local v2, "e":Landroid/content/pm/PackageManager$NameNotFoundException;
     return-object v1
 .end method
 
@@ -627,30 +642,32 @@
 .method private loadFromFile()V
     .registers 7
 
-    .line 699
-    nop
-
-    .line 700
-    iget-object v0, p0, Lcom/android/server/PackageWatchdog;->mAllObservers:Landroid/util/ArrayMap;
-
-    invoke-virtual {v0}, Landroid/util/ArrayMap;->clear()V
-
-    .line 702
+    .line 680
     const/4 v0, 0x0
 
-    :try_start_7
+    .line 681
+    .local v0, "infile":Ljava/io/InputStream;
+    iget-object v1, p0, Lcom/android/server/PackageWatchdog;->mAllObservers:Landroid/util/ArrayMap;
+
+    invoke-virtual {v1}, Landroid/util/ArrayMap;->clear()V
+
+    .line 683
+    :try_start_6
     iget-object v1, p0, Lcom/android/server/PackageWatchdog;->mPolicyFile:Landroid/util/AtomicFile;
 
     invoke-virtual {v1}, Landroid/util/AtomicFile;->openRead()Ljava/io/FileInputStream;
 
-    move-result-object v0
+    move-result-object v1
 
-    .line 703
+    move-object v0, v1
+
+    .line 684
     invoke-static {}, Landroid/util/Xml;->newPullParser()Lorg/xmlpull/v1/XmlPullParser;
 
     move-result-object v1
 
-    .line 704
+    .line 685
+    .local v1, "parser":Lorg/xmlpull/v1/XmlPullParser;
     sget-object v2, Ljava/nio/charset/StandardCharsets;->UTF_8:Ljava/nio/charset/Charset;
 
     invoke-virtual {v2}, Ljava/nio/charset/Charset;->name()Ljava/lang/String;
@@ -659,100 +676,111 @@
 
     invoke-interface {v1, v0, v2}, Lorg/xmlpull/v1/XmlPullParser;->setInput(Ljava/io/InputStream;Ljava/lang/String;)V
 
-    .line 705
+    .line 686
     const-string/jumbo v2, "package-watchdog"
 
     invoke-static {v1, v2}, Lcom/android/internal/util/XmlUtils;->beginDocument(Lorg/xmlpull/v1/XmlPullParser;Ljava/lang/String;)V
 
-    .line 706
+    .line 687
     invoke-interface {v1}, Lorg/xmlpull/v1/XmlPullParser;->getDepth()I
 
     move-result v2
 
-    .line 707
+    .line 688
+    .local v2, "outerDepth":I
     :goto_24
     invoke-static {v1, v2}, Lcom/android/internal/util/XmlUtils;->nextElementWithin(Lorg/xmlpull/v1/XmlPullParser;I)Z
 
     move-result v3
 
-    if-eqz v3, :cond_4d
+    if-eqz v3, :cond_38
 
-    .line 708
+    .line 689
     invoke-static {v1, p0}, Lcom/android/server/PackageWatchdog$ObserverInternal;->read(Lorg/xmlpull/v1/XmlPullParser;Lcom/android/server/PackageWatchdog;)Lcom/android/server/PackageWatchdog$ObserverInternal;
 
     move-result-object v3
 
-    .line 709
+    .line 690
+    .local v3, "observer":Lcom/android/server/PackageWatchdog$ObserverInternal;
     if-eqz v3, :cond_37
 
-    .line 710
+    .line 691
     iget-object v4, p0, Lcom/android/server/PackageWatchdog;->mAllObservers:Landroid/util/ArrayMap;
 
     iget-object v5, v3, Lcom/android/server/PackageWatchdog$ObserverInternal;->mName:Ljava/lang/String;
 
     invoke-virtual {v4, v5, v3}, Landroid/util/ArrayMap;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
     :try_end_37
-    .catch Ljava/io/FileNotFoundException; {:try_start_7 .. :try_end_37} :catch_4c
-    .catch Ljava/io/IOException; {:try_start_7 .. :try_end_37} :catch_3a
-    .catch Ljava/lang/NumberFormatException; {:try_start_7 .. :try_end_37} :catch_3a
-    .catch Lorg/xmlpull/v1/XmlPullParserException; {:try_start_7 .. :try_end_37} :catch_3a
-    .catchall {:try_start_7 .. :try_end_37} :catchall_38
+    .catch Ljava/io/FileNotFoundException; {:try_start_6 .. :try_end_37} :catch_4d
+    .catch Ljava/io/IOException; {:try_start_6 .. :try_end_37} :catch_3b
+    .catch Ljava/lang/NumberFormatException; {:try_start_6 .. :try_end_37} :catch_3b
+    .catch Lorg/xmlpull/v1/XmlPullParserException; {:try_start_6 .. :try_end_37} :catch_3b
+    .catchall {:try_start_6 .. :try_end_37} :catchall_39
 
-    .line 712
+    .line 693
+    .end local v3  # "observer":Lcom/android/server/PackageWatchdog$ObserverInternal;
     :cond_37
     goto :goto_24
 
-    .line 719
-    :catchall_38
+    .line 688
+    .end local v1  # "parser":Lorg/xmlpull/v1/XmlPullParser;
+    .end local v2  # "outerDepth":I
+    :cond_38
+    goto :goto_4e
+
+    .line 700
+    :catchall_39
     move-exception v1
 
-    goto :goto_48
+    goto :goto_49
 
-    .line 715
-    :catch_3a
+    .line 696
+    :catch_3b
     move-exception v1
 
-    .line 716
-    :try_start_3b
+    .line 697
+    .local v1, "e":Ljava/lang/Exception;
+    :try_start_3c
     const-string v2, "PackageWatchdog"
 
     const-string v3, "Unable to read monitored packages, deleting file"
 
     invoke-static {v2, v3, v1}, Landroid/util/Slog;->wtf(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
-    .line 717
-    iget-object v1, p0, Lcom/android/server/PackageWatchdog;->mPolicyFile:Landroid/util/AtomicFile;
+    .line 698
+    iget-object v2, p0, Lcom/android/server/PackageWatchdog;->mPolicyFile:Landroid/util/AtomicFile;
 
-    invoke-virtual {v1}, Landroid/util/AtomicFile;->delete()V
-    :try_end_47
-    .catchall {:try_start_3b .. :try_end_47} :catchall_38
+    invoke-virtual {v2}, Landroid/util/AtomicFile;->delete()V
+    :try_end_48
+    .catchall {:try_start_3c .. :try_end_48} :catchall_39
 
-    goto :goto_4d
+    .end local v1  # "e":Ljava/lang/Exception;
+    goto :goto_4e
 
-    .line 719
-    :goto_48
+    .line 700
+    :goto_49
     invoke-static {v0}, Llibcore/io/IoUtils;->closeQuietly(Ljava/lang/AutoCloseable;)V
 
     throw v1
 
-    .line 713
-    :catch_4c
+    .line 694
+    :catch_4d
     move-exception v1
 
-    .line 719
-    :cond_4d
-    :goto_4d
+    .line 700
+    :goto_4e
     invoke-static {v0}, Llibcore/io/IoUtils;->closeQuietly(Ljava/lang/AutoCloseable;)V
 
-    .line 720
+    .line 701
     nop
 
-    .line 721
+    .line 702
     return-void
 .end method
 
 .method private onHealthCheckFailed(Lcom/android/server/PackageWatchdog$ObserverInternal;Ljava/util/Set;)V
     .registers 5
+    .param p1, "observer"  # Lcom/android/server/PackageWatchdog$ObserverInternal;
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(",
@@ -763,7 +791,8 @@
         }
     .end annotation
 
-    .line 653
+    .line 635
+    .local p2, "failedPackages":Ljava/util/Set;, "Ljava/util/Set<Lcom/android/server/PackageWatchdog$MonitoredPackage;>;"
     iget-object v0, p0, Lcom/android/server/PackageWatchdog;->mLongTaskHandler:Landroid/os/Handler;
 
     new-instance v1, Lcom/android/server/-$$Lambda$PackageWatchdog$w1N3OdeSgqjfs1N8CxlxIZyRKkE;
@@ -772,14 +801,15 @@
 
     invoke-virtual {v0, v1}, Landroid/os/Handler;->post(Ljava/lang/Runnable;)Z
 
-    .line 675
+    .line 656
     return-void
 .end method
 
 .method private onHealthCheckPassed(Ljava/lang/String;)V
-    .registers 8
+    .registers 11
+    .param p1, "packageName"  # Ljava/lang/String;
 
-    .line 484
+    .line 466
     new-instance v0, Ljava/lang/StringBuilder;
 
     invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
@@ -798,121 +828,130 @@
 
     invoke-static {v1, v0}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 485
-    nop
+    .line 467
+    const/4 v0, 0x0
 
-    .line 487
-    iget-object v0, p0, Lcom/android/server/PackageWatchdog;->mLock:Ljava/lang/Object;
+    .line 469
+    .local v0, "isStateChanged":Z
+    iget-object v1, p0, Lcom/android/server/PackageWatchdog;->mLock:Ljava/lang/Object;
 
-    monitor-enter v0
+    monitor-enter v1
 
-    .line 488
-    const/4 v1, 0x0
-
-    move v2, v1
+    .line 470
+    const/4 v2, 0x0
 
     move v3, v2
 
-    :goto_1d
-    :try_start_1d
+    .local v3, "observerIdx":I
+    :goto_1c
+    :try_start_1c
     iget-object v4, p0, Lcom/android/server/PackageWatchdog;->mAllObservers:Landroid/util/ArrayMap;
 
     invoke-virtual {v4}, Landroid/util/ArrayMap;->size()I
 
     move-result v4
 
-    if-ge v2, v4, :cond_48
+    if-ge v3, v4, :cond_47
 
-    .line 489
+    .line 471
     iget-object v4, p0, Lcom/android/server/PackageWatchdog;->mAllObservers:Landroid/util/ArrayMap;
 
-    invoke-virtual {v4, v2}, Landroid/util/ArrayMap;->valueAt(I)Ljava/lang/Object;
+    invoke-virtual {v4, v3}, Landroid/util/ArrayMap;->valueAt(I)Ljava/lang/Object;
 
     move-result-object v4
 
     check-cast v4, Lcom/android/server/PackageWatchdog$ObserverInternal;
 
-    .line 490
-    iget-object v4, v4, Lcom/android/server/PackageWatchdog$ObserverInternal;->mPackages:Landroid/util/ArrayMap;
+    .line 472
+    .local v4, "observer":Lcom/android/server/PackageWatchdog$ObserverInternal;
+    iget-object v5, v4, Lcom/android/server/PackageWatchdog$ObserverInternal;->mPackages:Landroid/util/ArrayMap;
 
-    invoke-virtual {v4, p1}, Landroid/util/ArrayMap;->get(Ljava/lang/Object;)Ljava/lang/Object;
+    invoke-virtual {v5, p1}, Landroid/util/ArrayMap;->get(Ljava/lang/Object;)Ljava/lang/Object;
 
-    move-result-object v4
+    move-result-object v5
 
-    check-cast v4, Lcom/android/server/PackageWatchdog$MonitoredPackage;
+    check-cast v5, Lcom/android/server/PackageWatchdog$MonitoredPackage;
 
-    .line 492
-    if-eqz v4, :cond_45
+    .line 474
+    .local v5, "monitoredPackage":Lcom/android/server/PackageWatchdog$MonitoredPackage;
+    if-eqz v5, :cond_44
 
-    .line 493
-    invoke-virtual {v4}, Lcom/android/server/PackageWatchdog$MonitoredPackage;->getHealthCheckStateLocked()I
+    .line 475
+    invoke-virtual {v5}, Lcom/android/server/PackageWatchdog$MonitoredPackage;->getHealthCheckStateLocked()I
 
-    move-result v5
+    move-result v6
 
-    .line 494
-    invoke-virtual {v4}, Lcom/android/server/PackageWatchdog$MonitoredPackage;->tryPassHealthCheckLocked()I
+    .line 476
+    .local v6, "oldState":I
+    invoke-virtual {v5}, Lcom/android/server/PackageWatchdog$MonitoredPackage;->tryPassHealthCheckLocked()I
 
-    move-result v4
+    move-result v7
 
-    .line 495
-    if-eq v5, v4, :cond_43
+    .line 477
+    .local v7, "newState":I
+    if-eq v6, v7, :cond_42
 
-    const/4 v4, 0x1
+    const/4 v8, 0x1
 
-    goto :goto_44
+    goto :goto_43
 
-    :cond_43
-    move v4, v1
+    :cond_42
+    move v8, v2
 
-    :goto_44
-    or-int/2addr v3, v4
+    :goto_43
+    or-int/2addr v0, v8
 
-    .line 488
-    :cond_45
-    add-int/lit8 v2, v2, 0x1
+    .line 470
+    .end local v4  # "observer":Lcom/android/server/PackageWatchdog$ObserverInternal;
+    .end local v5  # "monitoredPackage":Lcom/android/server/PackageWatchdog$MonitoredPackage;
+    .end local v6  # "oldState":I
+    .end local v7  # "newState":I
+    :cond_44
+    add-int/lit8 v3, v3, 0x1
 
-    goto :goto_1d
+    goto :goto_1c
 
-    .line 498
-    :cond_48
-    monitor-exit v0
-    :try_end_49
-    .catchall {:try_start_1d .. :try_end_49} :catchall_60
+    .line 480
+    .end local v3  # "observerIdx":I
+    :cond_47
+    monitor-exit v1
+    :try_end_48
+    .catchall {:try_start_1c .. :try_end_48} :catchall_5f
 
-    .line 500
-    if-eqz v3, :cond_5f
+    .line 482
+    if-eqz v0, :cond_5e
 
-    .line 501
-    new-instance v0, Ljava/lang/StringBuilder;
+    .line 483
+    new-instance v1, Ljava/lang/StringBuilder;
 
-    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v1, "health check passed for "
+    const-string v2, "health check passed for "
 
-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v1
 
-    invoke-direct {p0, p1}, Lcom/android/server/PackageWatchdog;->syncState(Ljava/lang/String;)V
+    invoke-direct {p0, v1}, Lcom/android/server/PackageWatchdog;->syncState(Ljava/lang/String;)V
 
-    .line 503
-    :cond_5f
+    .line 485
+    :cond_5e
     return-void
 
-    .line 498
-    :catchall_60
-    move-exception p1
+    .line 480
+    :catchall_5f
+    move-exception v2
 
-    :try_start_61
-    monitor-exit v0
-    :try_end_62
-    .catchall {:try_start_61 .. :try_end_62} :catchall_60
+    :try_start_60
+    monitor-exit v1
+    :try_end_61
+    .catchall {:try_start_60 .. :try_end_61} :catchall_5f
 
-    throw p1
+    throw v2
 .end method
 
 .method private onSupportedPackages(Ljava/util/List;)V
@@ -926,103 +965,106 @@
         }
     .end annotation
 
-    .line 506
-    nop
+    .line 488
+    .local p1, "supportedPackages":Ljava/util/List;, "Ljava/util/List<Landroid/service/watchdog/ExplicitHealthCheckService$PackageConfig;>;"
+    const/4 v0, 0x0
 
-    .line 508
-    new-instance v0, Landroid/util/ArrayMap;
+    .line 490
+    .local v0, "isStateChanged":Z
+    new-instance v1, Landroid/util/ArrayMap;
 
-    invoke-direct {v0}, Landroid/util/ArrayMap;-><init>()V
+    invoke-direct {v1}, Landroid/util/ArrayMap;-><init>()V
 
-    .line 509
+    .line 491
+    .local v1, "supportedPackageTimeouts":Ljava/util/Map;, "Ljava/util/Map<Ljava/lang/String;Ljava/lang/Long;>;"
     invoke-interface {p1}, Ljava/util/List;->iterator()Ljava/util/Iterator;
 
-    move-result-object v1
-
-    .line 510
-    :goto_a
-    invoke-interface {v1}, Ljava/util/Iterator;->hasNext()Z
-
-    move-result v2
-
-    if-eqz v2, :cond_26
-
-    .line 511
-    invoke-interface {v1}, Ljava/util/Iterator;->next()Ljava/lang/Object;
-
     move-result-object v2
 
-    check-cast v2, Landroid/service/watchdog/ExplicitHealthCheckService$PackageConfig;
+    .line 492
+    .local v2, "it":Ljava/util/Iterator;, "Ljava/util/Iterator<Landroid/service/watchdog/ExplicitHealthCheckService$PackageConfig;>;"
+    :goto_a
+    invoke-interface {v2}, Ljava/util/Iterator;->hasNext()Z
 
-    .line 512
-    invoke-virtual {v2}, Landroid/service/watchdog/ExplicitHealthCheckService$PackageConfig;->getPackageName()Ljava/lang/String;
+    move-result v3
+
+    if-eqz v3, :cond_26
+
+    .line 493
+    invoke-interface {v2}, Ljava/util/Iterator;->next()Ljava/lang/Object;
 
     move-result-object v3
 
-    invoke-virtual {v2}, Landroid/service/watchdog/ExplicitHealthCheckService$PackageConfig;->getHealthCheckTimeoutMillis()J
+    check-cast v3, Landroid/service/watchdog/ExplicitHealthCheckService$PackageConfig;
 
-    move-result-wide v4
+    .line 494
+    .local v3, "info":Landroid/service/watchdog/ExplicitHealthCheckService$PackageConfig;
+    invoke-virtual {v3}, Landroid/service/watchdog/ExplicitHealthCheckService$PackageConfig;->getPackageName()Ljava/lang/String;
 
-    invoke-static {v4, v5}, Ljava/lang/Long;->valueOf(J)Ljava/lang/Long;
+    move-result-object v4
 
-    move-result-object v2
+    invoke-virtual {v3}, Landroid/service/watchdog/ExplicitHealthCheckService$PackageConfig;->getHealthCheckTimeoutMillis()J
 
-    invoke-interface {v0, v3, v2}, Ljava/util/Map;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+    move-result-wide v5
 
-    .line 513
+    invoke-static {v5, v6}, Ljava/lang/Long;->valueOf(J)Ljava/lang/Long;
+
+    move-result-object v5
+
+    invoke-interface {v1, v4, v5}, Ljava/util/Map;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+
+    .line 495
+    .end local v3  # "info":Landroid/service/watchdog/ExplicitHealthCheckService$PackageConfig;
     goto :goto_a
 
-    .line 515
+    .line 497
     :cond_26
-    iget-object v1, p0, Lcom/android/server/PackageWatchdog;->mLock:Ljava/lang/Object;
+    iget-object v3, p0, Lcom/android/server/PackageWatchdog;->mLock:Ljava/lang/Object;
 
-    monitor-enter v1
+    monitor-enter v3
 
-    .line 516
+    .line 498
     :try_start_29
-    const-string v2, "PackageWatchdog"
+    const-string v4, "PackageWatchdog"
 
-    new-instance v3, Ljava/lang/StringBuilder;
+    new-instance v5, Ljava/lang/StringBuilder;
 
-    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v5}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v4, "Received supported packages "
+    const-string v6, "Received supported packages "
 
-    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v3, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    invoke-virtual {v5, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v5}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v3
+    move-result-object v5
 
-    invoke-static {v2, v3}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v4, v5}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 517
-    iget-object v2, p0, Lcom/android/server/PackageWatchdog;->mAllObservers:Landroid/util/ArrayMap;
+    .line 499
+    iget-object v4, p0, Lcom/android/server/PackageWatchdog;->mAllObservers:Landroid/util/ArrayMap;
 
-    invoke-virtual {v2}, Landroid/util/ArrayMap;->values()Ljava/util/Collection;
+    invoke-virtual {v4}, Landroid/util/ArrayMap;->values()Ljava/util/Collection;
 
-    move-result-object v2
+    move-result-object v4
 
-    invoke-interface {v2}, Ljava/util/Collection;->iterator()Ljava/util/Iterator;
+    invoke-interface {v4}, Ljava/util/Collection;->iterator()Ljava/util/Iterator;
 
-    move-result-object v2
+    move-result-object v4
 
-    const/4 v3, 0x0
-
-    move v4, v3
-
-    .line 518
-    :goto_4b
-    invoke-interface {v2}, Ljava/util/Iterator;->hasNext()Z
+    .line 500
+    .local v4, "oit":Ljava/util/Iterator;, "Ljava/util/Iterator<Lcom/android/server/PackageWatchdog$ObserverInternal;>;"
+    :goto_49
+    invoke-interface {v4}, Ljava/util/Iterator;->hasNext()Z
 
     move-result v5
 
-    if-eqz v5, :cond_97
+    if-eqz v5, :cond_95
 
-    .line 519
-    invoke-interface {v2}, Ljava/util/Iterator;->next()Ljava/lang/Object;
+    .line 501
+    invoke-interface {v4}, Ljava/util/Iterator;->next()Ljava/lang/Object;
 
     move-result-object v5
 
@@ -1038,137 +1080,150 @@
 
     move-result-object v5
 
-    .line 520
-    :goto_61
+    .line 502
+    .local v5, "pit":Ljava/util/Iterator;, "Ljava/util/Iterator<Lcom/android/server/PackageWatchdog$MonitoredPackage;>;"
+    :goto_5f
     invoke-interface {v5}, Ljava/util/Iterator;->hasNext()Z
 
     move-result v6
 
-    if-eqz v6, :cond_96
+    if-eqz v6, :cond_94
 
-    .line 521
+    .line 503
     invoke-interface {v5}, Ljava/util/Iterator;->next()Ljava/lang/Object;
 
     move-result-object v6
 
     check-cast v6, Lcom/android/server/PackageWatchdog$MonitoredPackage;
 
-    .line 522
+    .line 504
+    .local v6, "monitoredPackage":Lcom/android/server/PackageWatchdog$MonitoredPackage;
     invoke-static {v6}, Lcom/android/server/PackageWatchdog$MonitoredPackage;->access$000(Lcom/android/server/PackageWatchdog$MonitoredPackage;)Ljava/lang/String;
 
     move-result-object v7
 
-    .line 523
+    .line 505
+    .local v7, "packageName":Ljava/lang/String;
     invoke-virtual {v6}, Lcom/android/server/PackageWatchdog$MonitoredPackage;->getHealthCheckStateLocked()I
 
     move-result v8
 
-    .line 526
-    invoke-interface {v0, v7}, Ljava/util/Map;->containsKey(Ljava/lang/Object;)Z
+    .line 508
+    .local v8, "oldState":I
+    invoke-interface {v1, v7}, Ljava/util/Map;->containsKey(Ljava/lang/Object;)Z
 
     move-result v9
 
-    if-eqz v9, :cond_8b
+    if-eqz v9, :cond_89
 
-    .line 528
+    .line 510
     nop
 
-    .line 529
-    invoke-interface {v0, v7}, Ljava/util/Map;->get(Ljava/lang/Object;)Ljava/lang/Object;
+    .line 511
+    invoke-interface {v1, v7}, Ljava/util/Map;->get(Ljava/lang/Object;)Ljava/lang/Object;
 
-    move-result-object v7
+    move-result-object v9
 
-    check-cast v7, Ljava/lang/Long;
+    check-cast v9, Ljava/lang/Long;
 
-    invoke-virtual {v7}, Ljava/lang/Long;->longValue()J
+    invoke-virtual {v9}, Ljava/lang/Long;->longValue()J
 
     move-result-wide v9
 
-    .line 528
+    .line 510
     invoke-virtual {v6, v9, v10}, Lcom/android/server/PackageWatchdog$MonitoredPackage;->setHealthCheckActiveLocked(J)I
 
-    move-result v6
+    move-result v9
 
-    goto :goto_8f
+    .local v9, "newState":I
+    goto :goto_8d
 
-    .line 532
-    :cond_8b
+    .line 514
+    .end local v9  # "newState":I
+    :cond_89
     invoke-virtual {v6}, Lcom/android/server/PackageWatchdog$MonitoredPackage;->tryPassHealthCheckLocked()I
 
-    move-result v6
+    move-result v9
 
-    .line 534
-    :goto_8f
-    if-eq v8, v6, :cond_93
+    .line 516
+    .restart local v9  # "newState":I
+    :goto_8d
+    if-eq v8, v9, :cond_91
 
-    const/4 v6, 0x1
+    const/4 v10, 0x1
 
-    goto :goto_94
+    goto :goto_92
 
-    :cond_93
-    move v6, v3
+    :cond_91
+    const/4 v10, 0x0
 
-    :goto_94
-    or-int/2addr v4, v6
+    :goto_92
+    or-int/2addr v0, v10
 
-    .line 535
-    goto :goto_61
+    .line 517
+    .end local v6  # "monitoredPackage":Lcom/android/server/PackageWatchdog$MonitoredPackage;
+    .end local v7  # "packageName":Ljava/lang/String;
+    .end local v8  # "oldState":I
+    .end local v9  # "newState":I
+    goto :goto_5f
 
-    .line 536
-    :cond_96
-    goto :goto_4b
+    .line 518
+    .end local v5  # "pit":Ljava/util/Iterator;, "Ljava/util/Iterator<Lcom/android/server/PackageWatchdog$MonitoredPackage;>;"
+    :cond_94
+    goto :goto_49
 
-    .line 537
-    :cond_97
-    monitor-exit v1
-    :try_end_98
-    .catchall {:try_start_29 .. :try_end_98} :catchall_b0
+    .line 519
+    .end local v4  # "oit":Ljava/util/Iterator;, "Ljava/util/Iterator<Lcom/android/server/PackageWatchdog$ObserverInternal;>;"
+    :cond_95
+    monitor-exit v3
+    :try_end_96
+    .catchall {:try_start_29 .. :try_end_96} :catchall_ae
 
-    .line 539
-    if-eqz v4, :cond_af
+    .line 521
+    if-eqz v0, :cond_ad
 
-    .line 540
-    new-instance v0, Ljava/lang/StringBuilder;
+    .line 522
+    new-instance v3, Ljava/lang/StringBuilder;
 
-    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string/jumbo v1, "updated health check supported packages "
+    const-string/jumbo v4, "updated health check supported packages "
 
-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v3
 
-    invoke-direct {p0, p1}, Lcom/android/server/PackageWatchdog;->syncState(Ljava/lang/String;)V
+    invoke-direct {p0, v3}, Lcom/android/server/PackageWatchdog;->syncState(Ljava/lang/String;)V
 
-    .line 542
-    :cond_af
+    .line 524
+    :cond_ad
     return-void
 
-    .line 537
-    :catchall_b0
-    move-exception p1
+    .line 519
+    :catchall_ae
+    move-exception v4
 
-    :try_start_b1
-    monitor-exit v1
-    :try_end_b2
-    .catchall {:try_start_b1 .. :try_end_b2} :catchall_b0
+    :try_start_af
+    monitor-exit v3
+    :try_end_b0
+    .catchall {:try_start_af .. :try_end_b0} :catchall_ae
 
-    throw p1
+    throw v4
 .end method
 
 .method private pruneObserversLocked()V
-    .registers 8
+    .registers 9
     .annotation build Lcom/android/internal/annotations/GuardedBy;
         value = {
             "mLock"
         }
     .end annotation
 
-    .line 628
+    .line 610
     iget-wide v0, p0, Lcom/android/server/PackageWatchdog;->mUptimeAtLastStateSync:J
 
     const-wide/16 v2, 0x0
@@ -1177,7 +1232,7 @@
 
     if-nez v0, :cond_a
 
-    .line 629
+    .line 611
     move-wide v0, v2
 
     goto :goto_11
@@ -1191,7 +1246,8 @@
 
     sub-long/2addr v0, v4
 
-    .line 630
+    .line 612
+    .local v0, "elapsedMs":J
     :goto_11
     cmp-long v2, v0, v2
 
@@ -1199,7 +1255,7 @@
 
     if-gtz v2, :cond_32
 
-    .line 631
+    .line 613
     new-instance v2, Ljava/lang/StringBuilder;
 
     invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
@@ -1210,20 +1266,20 @@
 
     invoke-virtual {v2, v0, v1}, Ljava/lang/StringBuilder;->append(J)Ljava/lang/StringBuilder;
 
-    const-string/jumbo v0, "ms"
+    const-string/jumbo v4, "ms"
 
-    invoke-virtual {v2, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v2
 
-    invoke-static {v3, v0}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v3, v2}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 632
+    .line 614
     return-void
 
-    .line 635
+    .line 617
     :cond_32
     new-instance v2, Ljava/lang/StringBuilder;
 
@@ -1245,7 +1301,7 @@
 
     invoke-static {v3, v2}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 636
+    .line 618
     iget-object v2, p0, Lcom/android/server/PackageWatchdog;->mAllObservers:Landroid/util/ArrayMap;
 
     invoke-virtual {v2}, Landroid/util/ArrayMap;->values()Ljava/util/Collection;
@@ -1256,7 +1312,8 @@
 
     move-result-object v2
 
-    .line 637
+    .line 619
+    .local v2, "it":Ljava/util/Iterator;, "Ljava/util/Iterator<Lcom/android/server/PackageWatchdog$ObserverInternal;>;"
     :goto_56
     invoke-interface {v2}, Ljava/util/Iterator;->hasNext()Z
 
@@ -1264,72 +1321,76 @@
 
     if-eqz v4, :cond_97
 
-    .line 638
+    .line 620
     invoke-interface {v2}, Ljava/util/Iterator;->next()Ljava/lang/Object;
 
     move-result-object v4
 
     check-cast v4, Lcom/android/server/PackageWatchdog$ObserverInternal;
 
-    .line 639
+    .line 621
+    .local v4, "observer":Lcom/android/server/PackageWatchdog$ObserverInternal;
     nop
 
-    .line 640
+    .line 622
     invoke-static {v4, v0, v1}, Lcom/android/server/PackageWatchdog$ObserverInternal;->access$100(Lcom/android/server/PackageWatchdog$ObserverInternal;J)Ljava/util/Set;
 
     move-result-object v5
 
-    .line 641
+    .line 623
+    .local v5, "failedPackages":Ljava/util/Set;, "Ljava/util/Set<Lcom/android/server/PackageWatchdog$MonitoredPackage;>;"
     invoke-interface {v5}, Ljava/util/Set;->isEmpty()Z
 
     move-result v6
 
     if-nez v6, :cond_70
 
-    .line 642
+    .line 624
     invoke-direct {p0, v4, v5}, Lcom/android/server/PackageWatchdog;->onHealthCheckFailed(Lcom/android/server/PackageWatchdog$ObserverInternal;Ljava/util/Set;)V
 
-    .line 644
+    .line 626
     :cond_70
-    iget-object v5, v4, Lcom/android/server/PackageWatchdog$ObserverInternal;->mPackages:Landroid/util/ArrayMap;
+    iget-object v6, v4, Lcom/android/server/PackageWatchdog$ObserverInternal;->mPackages:Landroid/util/ArrayMap;
 
-    invoke-virtual {v5}, Landroid/util/ArrayMap;->isEmpty()Z
+    invoke-virtual {v6}, Landroid/util/ArrayMap;->isEmpty()Z
 
-    move-result v5
+    move-result v6
 
-    if-eqz v5, :cond_96
+    if-eqz v6, :cond_96
 
-    .line 645
-    new-instance v5, Ljava/lang/StringBuilder;
+    .line 627
+    new-instance v6, Ljava/lang/StringBuilder;
 
-    invoke-direct {v5}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v6}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v6, "Discarding observer "
+    const-string v7, "Discarding observer "
 
-    invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v6, v7}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    iget-object v4, v4, Lcom/android/server/PackageWatchdog$ObserverInternal;->mName:Ljava/lang/String;
+    iget-object v7, v4, Lcom/android/server/PackageWatchdog$ObserverInternal;->mName:Ljava/lang/String;
 
-    invoke-virtual {v5, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v6, v7}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string v4, ". All packages expired"
+    const-string v7, ". All packages expired"
 
-    invoke-virtual {v5, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v6, v7}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v5}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v6}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v4
+    move-result-object v6
 
-    invoke-static {v3, v4}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v3, v6}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 646
+    .line 628
     invoke-interface {v2}, Ljava/util/Iterator;->remove()V
 
-    .line 648
+    .line 630
+    .end local v4  # "observer":Lcom/android/server/PackageWatchdog$ObserverInternal;
+    .end local v5  # "failedPackages":Ljava/util/Set;, "Ljava/util/Set<Lcom/android/server/PackageWatchdog$MonitoredPackage;>;"
     :cond_96
     goto :goto_56
 
-    .line 649
+    .line 631
     :cond_97
     return-void
 .end method
@@ -1337,7 +1398,7 @@
 .method private registerNetworkStackHealthListener()V
     .registers 3
 
-    .line 769
+    .line 750
     iget-object v0, p0, Lcom/android/server/PackageWatchdog;->mNetworkStackClient:Landroid/net/NetworkStackClient;
 
     new-instance v1, Lcom/android/server/-$$Lambda$PackageWatchdog$1l0m3y2c5ApJy3DK1aj1zLt-Y2A;
@@ -1346,26 +1407,26 @@
 
     invoke-virtual {v0, v1}, Landroid/net/NetworkStackClient;->registerHealthListener(Landroid/net/NetworkStackClient$NetworkStackHealthListener;)V
 
-    .line 784
+    .line 765
     return-void
 .end method
 
 .method private saveToFile()Z
     .registers 9
 
-    .line 790
+    .line 771
     const-string v0, "PackageWatchdog"
 
     const-string v1, "Saving observer state to file"
 
     invoke-static {v0, v1}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 791
+    .line 772
     iget-object v0, p0, Lcom/android/server/PackageWatchdog;->mLock:Ljava/lang/Object;
 
     monitor-enter v0
 
-    .line 794
+    .line 775
     const/4 v1, 0x0
 
     :try_start_b
@@ -1378,16 +1439,18 @@
     .catch Ljava/io/IOException; {:try_start_b .. :try_end_11} :catch_7f
     .catchall {:try_start_b .. :try_end_11} :catchall_7d
 
-    .line 798
+    .line 779
+    .local v2, "stream":Ljava/io/FileOutputStream;
     nop
 
-    .line 801
+    .line 782
     :try_start_12
     new-instance v3, Lcom/android/internal/util/FastXmlSerializer;
 
     invoke-direct {v3}, Lcom/android/internal/util/FastXmlSerializer;-><init>()V
 
-    .line 802
+    .line 783
+    .local v3, "out":Lorg/xmlpull/v1/XmlSerializer;
     sget-object v4, Ljava/nio/charset/StandardCharsets;->UTF_8:Ljava/nio/charset/Charset;
 
     invoke-virtual {v4}, Ljava/nio/charset/Charset;->name()Ljava/lang/String;
@@ -1396,7 +1459,7 @@
 
     invoke-interface {v3, v2, v4}, Lorg/xmlpull/v1/XmlSerializer;->setOutput(Ljava/io/OutputStream;Ljava/lang/String;)V
 
-    .line 803
+    .line 784
     const/4 v4, 0x1
 
     invoke-static {v4}, Ljava/lang/Boolean;->valueOf(Z)Ljava/lang/Boolean;
@@ -1407,12 +1470,12 @@
 
     invoke-interface {v3, v6, v5}, Lorg/xmlpull/v1/XmlSerializer;->startDocument(Ljava/lang/String;Ljava/lang/Boolean;)V
 
-    .line 804
+    .line 785
     const-string/jumbo v5, "package-watchdog"
 
     invoke-interface {v3, v6, v5}, Lorg/xmlpull/v1/XmlSerializer;->startTag(Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
 
-    .line 805
+    .line 786
     const-string/jumbo v5, "version"
 
     invoke-static {v4}, Ljava/lang/Integer;->toString(I)Ljava/lang/String;
@@ -1421,9 +1484,10 @@
 
     invoke-interface {v3, v6, v5, v7}, Lorg/xmlpull/v1/XmlSerializer;->attribute(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
 
-    .line 806
+    .line 787
     move v5, v1
 
+    .local v5, "oIndex":I
     :goto_3a
     iget-object v7, p0, Lcom/android/server/PackageWatchdog;->mAllObservers:Landroid/util/ArrayMap;
 
@@ -1433,7 +1497,7 @@
 
     if-ge v5, v7, :cond_50
 
-    .line 807
+    .line 788
     iget-object v7, p0, Lcom/android/server/PackageWatchdog;->mAllObservers:Landroid/util/ArrayMap;
 
     invoke-virtual {v7, v5}, Landroid/util/ArrayMap;->valueAt(I)Ljava/lang/Object;
@@ -1444,32 +1508,33 @@
 
     invoke-virtual {v7, v3}, Lcom/android/server/PackageWatchdog$ObserverInternal;->writeLocked(Lorg/xmlpull/v1/XmlSerializer;)Z
 
-    .line 806
+    .line 787
     add-int/lit8 v5, v5, 0x1
 
     goto :goto_3a
 
-    .line 809
+    .line 790
+    .end local v5  # "oIndex":I
     :cond_50
     const-string/jumbo v5, "package-watchdog"
 
     invoke-interface {v3, v6, v5}, Lorg/xmlpull/v1/XmlSerializer;->endTag(Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
 
-    .line 810
+    .line 791
     invoke-interface {v3}, Lorg/xmlpull/v1/XmlSerializer;->endDocument()V
 
-    .line 811
-    iget-object v3, p0, Lcom/android/server/PackageWatchdog;->mPolicyFile:Landroid/util/AtomicFile;
+    .line 792
+    iget-object v5, p0, Lcom/android/server/PackageWatchdog;->mPolicyFile:Landroid/util/AtomicFile;
 
-    invoke-virtual {v3, v2}, Landroid/util/AtomicFile;->finishWrite(Ljava/io/FileOutputStream;)V
+    invoke-virtual {v5, v2}, Landroid/util/AtomicFile;->finishWrite(Ljava/io/FileOutputStream;)V
     :try_end_5e
     .catch Ljava/io/IOException; {:try_start_12 .. :try_end_5e} :catch_66
     .catchall {:try_start_12 .. :try_end_5e} :catchall_64
 
-    .line 812
+    .line 793
     nop
 
-    .line 818
+    .line 799
     :try_start_5f
     invoke-static {v2}, Llibcore/io/IoUtils;->closeQuietly(Ljava/lang/AutoCloseable;)V
 
@@ -1477,20 +1542,22 @@
     :try_end_63
     .catchall {:try_start_5f .. :try_end_63} :catchall_7d
 
-    .line 812
+    .line 793
     return v4
 
-    .line 818
+    .line 799
+    .end local v3  # "out":Lorg/xmlpull/v1/XmlSerializer;
     :catchall_64
     move-exception v1
 
     goto :goto_79
 
-    .line 813
+    .line 794
     :catch_66
     move-exception v3
 
-    .line 814
+    .line 795
+    .local v3, "e":Ljava/io/IOException;
     :try_start_67
     const-string v4, "PackageWatchdog"
 
@@ -1498,54 +1565,60 @@
 
     invoke-static {v4, v5, v3}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
-    .line 815
-    iget-object v3, p0, Lcom/android/server/PackageWatchdog;->mPolicyFile:Landroid/util/AtomicFile;
+    .line 796
+    iget-object v4, p0, Lcom/android/server/PackageWatchdog;->mPolicyFile:Landroid/util/AtomicFile;
 
-    invoke-virtual {v3, v2}, Landroid/util/AtomicFile;->failWrite(Ljava/io/FileOutputStream;)V
+    invoke-virtual {v4, v2}, Landroid/util/AtomicFile;->failWrite(Ljava/io/FileOutputStream;)V
     :try_end_73
     .catchall {:try_start_67 .. :try_end_73} :catchall_64
 
-    .line 816
+    .line 797
     nop
 
-    .line 818
+    .line 799
     :try_start_74
     invoke-static {v2}, Llibcore/io/IoUtils;->closeQuietly(Ljava/lang/AutoCloseable;)V
 
     monitor-exit v0
 
-    .line 816
+    .line 797
     return v1
 
-    .line 818
+    .line 799
+    .end local v3  # "e":Ljava/io/IOException;
     :goto_79
     invoke-static {v2}, Llibcore/io/IoUtils;->closeQuietly(Ljava/lang/AutoCloseable;)V
 
+    .end local p0  # "this":Lcom/android/server/PackageWatchdog;
     throw v1
 
-    .line 820
+    .line 801
+    .end local v2  # "stream":Ljava/io/FileOutputStream;
+    .restart local p0  # "this":Lcom/android/server/PackageWatchdog;
     :catchall_7d
     move-exception v1
 
     goto :goto_89
 
-    .line 795
+    .line 776
     :catch_7f
     move-exception v2
 
-    .line 796
+    .line 777
+    .local v2, "e":Ljava/io/IOException;
     const-string v3, "PackageWatchdog"
 
     const-string v4, "Cannot update monitored packages"
 
     invoke-static {v3, v4, v2}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
-    .line 797
+    .line 778
     monitor-exit v0
 
     return v1
 
-    .line 820
+    .line 801
+    .end local v2  # "e":Ljava/io/IOException;
     :goto_89
     monitor-exit v0
     :try_end_8a
@@ -1557,7 +1630,7 @@
 .method private saveToFileAsync()V
     .registers 3
 
-    .line 824
+    .line 805
     iget-object v0, p0, Lcom/android/server/PackageWatchdog;->mLongTaskHandler:Landroid/os/Handler;
 
     new-instance v1, Lcom/android/server/-$$Lambda$PackageWatchdog$Q0WI2EJpRFO1jF_7_YDaj1eGHas;
@@ -1570,7 +1643,7 @@
 
     if-nez v0, :cond_17
 
-    .line 825
+    .line 806
     iget-object v0, p0, Lcom/android/server/PackageWatchdog;->mLongTaskHandler:Landroid/os/Handler;
 
     new-instance v1, Lcom/android/server/-$$Lambda$PackageWatchdog$Q0WI2EJpRFO1jF_7_YDaj1eGHas;
@@ -1579,7 +1652,7 @@
 
     invoke-virtual {v0, v1}, Landroid/os/Handler;->post(Ljava/lang/Runnable;)Z
 
-    .line 827
+    .line 808
     :cond_17
     return-void
 .end method
@@ -1592,12 +1665,13 @@
         }
     .end annotation
 
-    .line 589
+    .line 571
     invoke-direct {p0}, Lcom/android/server/PackageWatchdog;->getNextStateSyncMillisLocked()J
 
     move-result-wide v0
 
-    .line 590
+    .line 572
+    .local v0, "durationMs":J
     iget-object v2, p0, Lcom/android/server/PackageWatchdog;->mShortTaskHandler:Landroid/os/Handler;
 
     new-instance v3, Lcom/android/server/-$$Lambda$PackageWatchdog$vRKcIrucEj03dz6ypRVINZtns1s;
@@ -1606,7 +1680,7 @@
 
     invoke-virtual {v2, v3}, Landroid/os/Handler;->removeCallbacks(Ljava/lang/Runnable;)V
 
-    .line 591
+    .line 573
     const-wide v2, 0x7fffffffffffffffL
 
     cmp-long v2, v0, v2
@@ -1615,19 +1689,19 @@
 
     if-nez v2, :cond_23
 
-    .line 592
-    const-string v0, "Cancelling state sync, nothing to sync"
+    .line 574
+    const-string v2, "Cancelling state sync, nothing to sync"
 
-    invoke-static {v3, v0}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v3, v2}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 593
-    const-wide/16 v0, 0x0
+    .line 575
+    const-wide/16 v2, 0x0
 
-    iput-wide v0, p0, Lcom/android/server/PackageWatchdog;->mUptimeAtLastStateSync:J
+    iput-wide v2, p0, Lcom/android/server/PackageWatchdog;->mUptimeAtLastStateSync:J
 
     goto :goto_4d
 
-    .line 595
+    .line 577
     :cond_23
     new-instance v2, Ljava/lang/StringBuilder;
 
@@ -1649,14 +1723,14 @@
 
     invoke-static {v3, v2}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 596
+    .line 578
     invoke-static {}, Landroid/os/SystemClock;->uptimeMillis()J
 
     move-result-wide v2
 
     iput-wide v2, p0, Lcom/android/server/PackageWatchdog;->mUptimeAtLastStateSync:J
 
-    .line 597
+    .line 579
     iget-object v2, p0, Lcom/android/server/PackageWatchdog;->mShortTaskHandler:Landroid/os/Handler;
 
     new-instance v3, Lcom/android/server/-$$Lambda$PackageWatchdog$vRKcIrucEj03dz6ypRVINZtns1s;
@@ -1665,29 +1739,30 @@
 
     invoke-virtual {v2, v3, v0, v1}, Landroid/os/Handler;->postDelayed(Ljava/lang/Runnable;J)Z
 
-    .line 599
+    .line 581
     :goto_4d
     return-void
 .end method
 
 .method private setExplicitHealthCheckEnabled(Z)V
     .registers 5
+    .param p1, "enabled"  # Z
 
-    .line 385
+    .line 367
     iget-object v0, p0, Lcom/android/server/PackageWatchdog;->mLock:Ljava/lang/Object;
 
     monitor-enter v0
 
-    .line 386
+    .line 368
     :try_start_3
     iput-boolean p1, p0, Lcom/android/server/PackageWatchdog;->mIsHealthCheckEnabled:Z
 
-    .line 387
+    .line 369
     iget-object v1, p0, Lcom/android/server/PackageWatchdog;->mHealthCheckController:Lcom/android/server/ExplicitHealthCheckController;
 
     invoke-virtual {v1, p1}, Lcom/android/server/ExplicitHealthCheckController;->setEnabled(Z)V
 
-    .line 389
+    .line 371
     new-instance v1, Ljava/lang/StringBuilder;
 
     invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
@@ -1698,46 +1773,46 @@
 
     if-eqz p1, :cond_19
 
-    const-string p1, "enabled"
+    const-string v2, "enabled"
 
     goto :goto_1b
 
     :cond_19
-    const-string p1, "disabled"
+    const-string v2, "disabled"
 
     :goto_1b
-    invoke-virtual {v1, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v1
 
-    invoke-direct {p0, p1}, Lcom/android/server/PackageWatchdog;->syncState(Ljava/lang/String;)V
+    invoke-direct {p0, v1}, Lcom/android/server/PackageWatchdog;->syncState(Ljava/lang/String;)V
 
-    .line 390
+    .line 372
     monitor-exit v0
 
-    .line 391
+    .line 373
     return-void
 
-    .line 390
+    .line 372
     :catchall_27
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_29
     .catchall {:try_start_3 .. :try_end_29} :catchall_27
 
-    throw p1
+    throw v1
 .end method
 
 .method private setPropertyChangedListenerLocked()V
     .registers 4
 
-    .line 725
+    .line 706
     iget-object v0, p0, Lcom/android/server/PackageWatchdog;->mContext:Landroid/content/Context;
 
-    .line 727
+    .line 708
     invoke-virtual {v0}, Landroid/content/Context;->getMainExecutor()Ljava/util/concurrent/Executor;
 
     move-result-object v0
@@ -1746,96 +1821,93 @@
 
     invoke-direct {v1, p0}, Lcom/android/server/-$$Lambda$PackageWatchdog$Jw3j5MJV779MFM4_82knw6ZMoQk;-><init>(Lcom/android/server/PackageWatchdog;)V
 
-    .line 725
+    .line 706
     const-string/jumbo v2, "rollback"
 
     invoke-static {v2, v0, v1}, Landroid/provider/DeviceConfig;->addOnPropertiesChangedListener(Ljava/lang/String;Ljava/util/concurrent/Executor;Landroid/provider/DeviceConfig$OnPropertiesChangedListener;)V
 
-    .line 734
+    .line 715
     return-void
 .end method
 
 .method private syncRequests()V
     .registers 4
 
-    .line 456
-    nop
+    .line 438
+    const/4 v0, 0x0
 
-    .line 457
-    iget-object v0, p0, Lcom/android/server/PackageWatchdog;->mLock:Ljava/lang/Object;
+    .line 439
+    .local v0, "packages":Ljava/util/Set;, "Ljava/util/Set<Ljava/lang/String;>;"
+    iget-object v1, p0, Lcom/android/server/PackageWatchdog;->mLock:Ljava/lang/Object;
 
-    monitor-enter v0
+    monitor-enter v1
 
-    .line 458
+    .line 440
     :try_start_4
-    iget-boolean v1, p0, Lcom/android/server/PackageWatchdog;->mIsPackagesReady:Z
+    iget-boolean v2, p0, Lcom/android/server/PackageWatchdog;->mIsPackagesReady:Z
 
-    if-eqz v1, :cond_d
+    if-eqz v2, :cond_d
 
-    .line 459
+    .line 441
     invoke-direct {p0}, Lcom/android/server/PackageWatchdog;->getPackagesPendingHealthChecksLocked()Ljava/util/Set;
 
-    move-result-object v1
+    move-result-object v2
 
-    goto :goto_e
+    move-object v0, v2
 
-    .line 458
+    .line 443
     :cond_d
-    const/4 v1, 0x0
+    monitor-exit v1
+    :try_end_e
+    .catchall {:try_start_4 .. :try_end_e} :catchall_2c
 
-    .line 461
-    :goto_e
-    monitor-exit v0
-    :try_end_f
-    .catchall {:try_start_4 .. :try_end_f} :catchall_2d
+    .line 446
+    if-eqz v0, :cond_2b
 
-    .line 464
-    if-eqz v1, :cond_2c
+    .line 447
+    new-instance v1, Ljava/lang/StringBuilder;
 
-    .line 465
-    new-instance v0, Ljava/lang/StringBuilder;
-
-    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
 
     const-string v2, "Syncing health check requests for packages: "
 
-    invoke-virtual {v0, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v1
 
     const-string v2, "PackageWatchdog"
 
-    invoke-static {v2, v0}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v2, v1}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 466
-    iget-object v0, p0, Lcom/android/server/PackageWatchdog;->mHealthCheckController:Lcom/android/server/ExplicitHealthCheckController;
+    .line 448
+    iget-object v1, p0, Lcom/android/server/PackageWatchdog;->mHealthCheckController:Lcom/android/server/ExplicitHealthCheckController;
 
-    invoke-virtual {v0, v1}, Lcom/android/server/ExplicitHealthCheckController;->syncRequests(Ljava/util/Set;)V
+    invoke-virtual {v1, v0}, Lcom/android/server/ExplicitHealthCheckController;->syncRequests(Ljava/util/Set;)V
 
-    .line 468
-    :cond_2c
+    .line 450
+    :cond_2b
     return-void
 
-    .line 461
-    :catchall_2d
-    move-exception v1
+    .line 443
+    :catchall_2c
+    move-exception v2
 
-    :try_start_2e
-    monitor-exit v0
-    :try_end_2f
-    .catchall {:try_start_2e .. :try_end_2f} :catchall_2d
+    :try_start_2d
+    monitor-exit v1
+    :try_end_2e
+    .catchall {:try_start_2d .. :try_end_2e} :catchall_2c
 
-    throw v1
+    throw v2
 .end method
 
 .method private syncRequestsAsync()V
     .registers 3
 
-    .line 445
+    .line 427
     iget-object v0, p0, Lcom/android/server/PackageWatchdog;->mShortTaskHandler:Landroid/os/Handler;
 
     new-instance v1, Lcom/android/server/-$$Lambda$PackageWatchdog$CQuOnXthwwBaxcS5WoAlJJAz8Tk;
@@ -1844,7 +1916,7 @@
 
     invoke-virtual {v0, v1}, Landroid/os/Handler;->removeCallbacks(Ljava/lang/Runnable;)V
 
-    .line 446
+    .line 428
     iget-object v0, p0, Lcom/android/server/PackageWatchdog;->mShortTaskHandler:Landroid/os/Handler;
 
     new-instance v1, Lcom/android/server/-$$Lambda$PackageWatchdog$CQuOnXthwwBaxcS5WoAlJJAz8Tk;
@@ -1853,19 +1925,20 @@
 
     invoke-virtual {v0, v1}, Landroid/os/Handler;->post(Ljava/lang/Runnable;)Z
 
-    .line 447
+    .line 429
     return-void
 .end method
 
 .method private syncState(Ljava/lang/String;)V
     .registers 6
+    .param p1, "reason"  # Ljava/lang/String;
 
-    .line 571
+    .line 553
     iget-object v0, p0, Lcom/android/server/PackageWatchdog;->mLock:Ljava/lang/Object;
 
     monitor-enter v0
 
-    .line 572
+    .line 554
     :try_start_3
     const-string v1, "PackageWatchdog"
 
@@ -1881,60 +1954,60 @@
 
     invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v2
 
-    invoke-static {v1, p1}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v2}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 573
+    .line 555
     invoke-direct {p0}, Lcom/android/server/PackageWatchdog;->pruneObserversLocked()V
 
-    .line 575
+    .line 557
     invoke-direct {p0}, Lcom/android/server/PackageWatchdog;->saveToFileAsync()V
 
-    .line 576
+    .line 558
     invoke-direct {p0}, Lcom/android/server/PackageWatchdog;->syncRequestsAsync()V
 
-    .line 579
+    .line 561
     invoke-direct {p0}, Lcom/android/server/PackageWatchdog;->scheduleNextSyncStateLocked()V
 
-    .line 580
+    .line 562
     monitor-exit v0
 
-    .line 581
+    .line 563
     return-void
 
-    .line 580
+    .line 562
     :catchall_27
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_29
     .catchall {:try_start_3 .. :try_end_29} :catchall_27
 
-    throw p1
+    throw v1
 .end method
 
 .method private syncStateWithScheduledReason()V
     .registers 2
 
-    .line 584
+    .line 566
     const-string/jumbo v0, "scheduled"
 
     invoke-direct {p0, v0}, Lcom/android/server/PackageWatchdog;->syncState(Ljava/lang/String;)V
 
-    .line 585
+    .line 567
     return-void
 .end method
 
 .method private updateConfigs()V
     .registers 6
 
-    .line 741
+    .line 722
     iget-object v0, p0, Lcom/android/server/PackageWatchdog;->mLock:Ljava/lang/Object;
 
     monitor-enter v0
 
-    .line 742
+    .line 723
     :try_start_3
     const-string/jumbo v1, "rollback"
 
@@ -1948,15 +2021,15 @@
 
     iput v1, p0, Lcom/android/server/PackageWatchdog;->mTriggerFailureCount:I
 
-    .line 746
+    .line 727
     iget v1, p0, Lcom/android/server/PackageWatchdog;->mTriggerFailureCount:I
 
     if-gtz v1, :cond_16
 
-    .line 747
+    .line 728
     iput v3, p0, Lcom/android/server/PackageWatchdog;->mTriggerFailureCount:I
 
-    .line 750
+    .line 731
     :cond_16
     const-string/jumbo v1, "rollback"
 
@@ -1970,15 +2043,15 @@
 
     iput v1, p0, Lcom/android/server/PackageWatchdog;->mTriggerFailureDurationMs:I
 
-    .line 754
+    .line 735
     iget v1, p0, Lcom/android/server/PackageWatchdog;->mTriggerFailureDurationMs:I
 
     if-gtz v1, :cond_2a
 
-    .line 755
+    .line 736
     iput v3, p0, Lcom/android/server/PackageWatchdog;->mTriggerFailureDurationMs:I
 
-    .line 758
+    .line 739
     :cond_2a
     const-string/jumbo v1, "rollback"
 
@@ -1992,13 +2065,13 @@
 
     invoke-direct {p0, v1}, Lcom/android/server/PackageWatchdog;->setExplicitHealthCheckEnabled(Z)V
 
-    .line 762
+    .line 743
     monitor-exit v0
 
-    .line 763
+    .line 744
     return-void
 
-    .line 762
+    .line 743
     :catchall_3a
     move-exception v1
 
@@ -2013,6 +2086,7 @@
 # virtual methods
 .method public getPackages(Lcom/android/server/PackageWatchdog$PackageHealthObserver;)Ljava/util/Set;
     .registers 6
+    .param p1, "observer"  # Lcom/android/server/PackageWatchdog$PackageHealthObserver;
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(",
@@ -2024,14 +2098,15 @@
         }
     .end annotation
 
-    .line 301
+    .line 284
     iget-object v0, p0, Lcom/android/server/PackageWatchdog;->mLock:Ljava/lang/Object;
 
     monitor-enter v0
 
-    .line 302
+    .line 285
     const/4 v1, 0x0
 
+    .local v1, "i":I
     :goto_4
     :try_start_4
     iget-object v2, p0, Lcom/android/server/PackageWatchdog;->mAllObservers:Landroid/util/ArrayMap;
@@ -2042,7 +2117,7 @@
 
     if-ge v1, v2, :cond_45
 
-    .line 303
+    .line 286
     invoke-interface {p1}, Lcom/android/server/PackageWatchdog$PackageHealthObserver;->getName()Ljava/lang/String;
 
     move-result-object v2
@@ -2059,7 +2134,7 @@
 
     if-eqz v2, :cond_42
 
-    .line 304
+    .line 287
     iget-object v2, p0, Lcom/android/server/PackageWatchdog;->mAllObservers:Landroid/util/ArrayMap;
 
     invoke-virtual {v2, v1}, Landroid/util/ArrayMap;->valueAt(I)Ljava/lang/Object;
@@ -2072,74 +2147,75 @@
 
     invoke-virtual {p1, v2}, Ljava/lang/Object;->equals(Ljava/lang/Object;)Z
 
-    move-result p1
+    move-result v2
 
-    if-eqz p1, :cond_3c
+    if-eqz v2, :cond_3c
 
-    .line 305
-    iget-object p1, p0, Lcom/android/server/PackageWatchdog;->mAllObservers:Landroid/util/ArrayMap;
+    .line 288
+    iget-object v2, p0, Lcom/android/server/PackageWatchdog;->mAllObservers:Landroid/util/ArrayMap;
 
-    invoke-virtual {p1, v1}, Landroid/util/ArrayMap;->valueAt(I)Ljava/lang/Object;
+    invoke-virtual {v2, v1}, Landroid/util/ArrayMap;->valueAt(I)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v2
 
-    check-cast p1, Lcom/android/server/PackageWatchdog$ObserverInternal;
+    check-cast v2, Lcom/android/server/PackageWatchdog$ObserverInternal;
 
-    iget-object p1, p1, Lcom/android/server/PackageWatchdog$ObserverInternal;->mPackages:Landroid/util/ArrayMap;
+    iget-object v2, v2, Lcom/android/server/PackageWatchdog$ObserverInternal;->mPackages:Landroid/util/ArrayMap;
 
-    invoke-virtual {p1}, Landroid/util/ArrayMap;->keySet()Ljava/util/Set;
+    invoke-virtual {v2}, Landroid/util/ArrayMap;->keySet()Ljava/util/Set;
 
-    move-result-object p1
+    move-result-object v2
 
     monitor-exit v0
 
-    return-object p1
+    return-object v2
 
-    .line 307
+    .line 290
     :cond_3c
     invoke-static {}, Ljava/util/Collections;->emptySet()Ljava/util/Set;
 
-    move-result-object p1
+    move-result-object v2
 
     monitor-exit v0
 
-    return-object p1
+    return-object v2
 
-    .line 302
+    .line 285
     :cond_42
     add-int/lit8 v1, v1, 0x1
 
     goto :goto_4
 
-    .line 310
+    .line 293
+    .end local v1  # "i":I
     :cond_45
     monitor-exit v0
 
-    .line 311
-    const/4 p1, 0x0
+    .line 294
+    const/4 v0, 0x0
 
-    return-object p1
+    return-object v0
 
-    .line 310
+    .line 293
     :catchall_48
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_4a
     .catchall {:try_start_4 .. :try_end_4a} :catchall_48
 
-    throw p1
+    throw v1
 .end method
 
 .method getTriggerFailureCount()J
     .registers 4
 
-    .line 436
+    .line 418
     iget-object v0, p0, Lcom/android/server/PackageWatchdog;->mLock:Ljava/lang/Object;
 
     monitor-enter v0
 
-    .line 437
+    .line 419
     :try_start_3
     iget v1, p0, Lcom/android/server/PackageWatchdog;->mTriggerFailureCount:I
 
@@ -2149,7 +2225,7 @@
 
     return-wide v1
 
-    .line 438
+    .line 420
     :catchall_8
     move-exception v1
 
@@ -2161,133 +2237,146 @@
 .end method
 
 .method public synthetic lambda$onHealthCheckFailed$4$PackageWatchdog(Lcom/android/server/PackageWatchdog$ObserverInternal;Ljava/util/Set;)V
-    .registers 8
+    .registers 11
+    .param p1, "observer"  # Lcom/android/server/PackageWatchdog$ObserverInternal;
+    .param p2, "failedPackages"  # Ljava/util/Set;
 
-    .line 654
+    .line 636
     iget-object v0, p0, Lcom/android/server/PackageWatchdog;->mLock:Ljava/lang/Object;
 
     monitor-enter v0
 
-    .line 655
+    .line 637
     :try_start_3
-    iget-object p1, p1, Lcom/android/server/PackageWatchdog$ObserverInternal;->mRegisteredObserver:Lcom/android/server/PackageWatchdog$PackageHealthObserver;
+    iget-object v1, p1, Lcom/android/server/PackageWatchdog$ObserverInternal;->mRegisteredObserver:Lcom/android/server/PackageWatchdog$PackageHealthObserver;
 
-    .line 656
-    if-eqz p1, :cond_59
+    .line 638
+    .local v1, "registeredObserver":Lcom/android/server/PackageWatchdog$PackageHealthObserver;
+    if-eqz v1, :cond_5a
 
-    .line 657
+    .line 639
     invoke-interface {p2}, Ljava/util/Set;->iterator()Ljava/util/Iterator;
-
-    move-result-object p2
-
-    .line 658
-    :goto_b
-    invoke-interface {p2}, Ljava/util/Iterator;->hasNext()Z
-
-    move-result v1
-
-    if-eqz v1, :cond_59
-
-    .line 659
-    invoke-interface {p2}, Ljava/util/Iterator;->next()Ljava/lang/Object;
-
-    move-result-object v1
-
-    check-cast v1, Lcom/android/server/PackageWatchdog$MonitoredPackage;
-
-    invoke-static {v1}, Lcom/android/server/PackageWatchdog$MonitoredPackage;->access$000(Lcom/android/server/PackageWatchdog$MonitoredPackage;)Ljava/lang/String;
-
-    move-result-object v1
-
-    .line 660
-    const-string v2, "PackageWatchdog"
-
-    new-instance v3, Ljava/lang/StringBuilder;
-
-    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
-
-    const-string v4, "Explicit health check failed for package "
-
-    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v3, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
-
-    move-result-object v3
-
-    invoke-static {v2, v3}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
-
-    .line 661
-    invoke-direct {p0, v1}, Lcom/android/server/PackageWatchdog;->getVersionedPackage(Ljava/lang/String;)Landroid/content/pm/VersionedPackage;
 
     move-result-object v2
 
-    .line 662
-    if-nez v2, :cond_54
+    .line 640
+    .local v2, "it":Ljava/util/Iterator;, "Ljava/util/Iterator<Lcom/android/server/PackageWatchdog$MonitoredPackage;>;"
+    :goto_b
+    invoke-interface {v2}, Ljava/util/Iterator;->hasNext()Z
 
-    .line 663
-    const-string v2, "PackageWatchdog"
+    move-result v3
 
-    new-instance v3, Ljava/lang/StringBuilder;
+    if-eqz v3, :cond_5a
 
-    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
-
-    const-string v4, "Explicit health check failed but could not find package "
-
-    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v3, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    .line 641
+    invoke-interface {v2}, Ljava/util/Iterator;->next()Ljava/lang/Object;
 
     move-result-object v3
 
-    invoke-static {v2, v3}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    check-cast v3, Lcom/android/server/PackageWatchdog$MonitoredPackage;
 
-    .line 667
-    new-instance v2, Landroid/content/pm/VersionedPackage;
+    invoke-static {v3}, Lcom/android/server/PackageWatchdog$MonitoredPackage;->access$000(Lcom/android/server/PackageWatchdog$MonitoredPackage;)Ljava/lang/String;
 
-    const-wide/16 v3, 0x0
+    move-result-object v3
 
-    invoke-direct {v2, v1, v3, v4}, Landroid/content/pm/VersionedPackage;-><init>(Ljava/lang/String;J)V
+    .line 642
+    .local v3, "failedPackage":Ljava/lang/String;
+    const-string v4, "PackageWatchdog"
 
-    .line 669
-    :cond_54
-    const/4 v1, 0x2
+    new-instance v5, Ljava/lang/StringBuilder;
 
-    invoke-interface {p1, v2, v1}, Lcom/android/server/PackageWatchdog$PackageHealthObserver;->execute(Landroid/content/pm/VersionedPackage;I)Z
+    invoke-direct {v5}, Ljava/lang/StringBuilder;-><init>()V
 
-    .line 671
+    const-string v6, "Explicit health check failed for package "
+
+    invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v5, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v5}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v5
+
+    invoke-static {v4, v5}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
+
+    .line 643
+    invoke-direct {p0, v3}, Lcom/android/server/PackageWatchdog;->getVersionedPackage(Ljava/lang/String;)Landroid/content/pm/VersionedPackage;
+
+    move-result-object v4
+
+    .line 644
+    .local v4, "versionedPkg":Landroid/content/pm/VersionedPackage;
+    if-nez v4, :cond_55
+
+    .line 645
+    const-string v5, "PackageWatchdog"
+
+    new-instance v6, Ljava/lang/StringBuilder;
+
+    invoke-direct {v6}, Ljava/lang/StringBuilder;-><init>()V
+
+    const-string v7, "Explicit health check failed but could not find package "
+
+    invoke-virtual {v6, v7}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v6, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v6}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v6
+
+    invoke-static {v5, v6}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+
+    .line 649
+    new-instance v5, Landroid/content/pm/VersionedPackage;
+
+    const-wide/16 v6, 0x0
+
+    invoke-direct {v5, v3, v6, v7}, Landroid/content/pm/VersionedPackage;-><init>(Ljava/lang/String;J)V
+
+    move-object v4, v5
+
+    .line 651
+    :cond_55
+    invoke-interface {v1, v4}, Lcom/android/server/PackageWatchdog$PackageHealthObserver;->execute(Landroid/content/pm/VersionedPackage;)Z
+
+    .line 652
+    nop
+
+    .end local v3  # "failedPackage":Ljava/lang/String;
+    .end local v4  # "versionedPkg":Landroid/content/pm/VersionedPackage;
     goto :goto_b
 
-    .line 673
-    :cond_59
+    .line 654
+    .end local v1  # "registeredObserver":Lcom/android/server/PackageWatchdog$PackageHealthObserver;
+    .end local v2  # "it":Ljava/util/Iterator;, "Ljava/util/Iterator<Lcom/android/server/PackageWatchdog$MonitoredPackage;>;"
+    :cond_5a
     monitor-exit v0
 
-    .line 674
+    .line 655
     return-void
 
-    .line 673
-    :catchall_5b
-    move-exception p1
+    .line 654
+    :catchall_5c
+    move-exception v1
 
     monitor-exit v0
-    :try_end_5d
-    .catchall {:try_start_3 .. :try_end_5d} :catchall_5b
+    :try_end_5e
+    .catchall {:try_start_3 .. :try_end_5e} :catchall_5c
 
-    throw p1
+    throw v1
 .end method
 
-.method public synthetic lambda$onPackageFailure$3$PackageWatchdog(Ljava/util/List;I)V
-    .registers 13
+.method public synthetic lambda$onPackageFailure$3$PackageWatchdog(Ljava/util/List;)V
+    .registers 12
+    .param p1, "packages"  # Ljava/util/List;
 
-    .line 325
+    .line 307
     iget-object v0, p0, Lcom/android/server/PackageWatchdog;->mLock:Ljava/lang/Object;
 
     monitor-enter v0
 
-    .line 326
+    .line 308
     :try_start_3
     iget-object v1, p0, Lcom/android/server/PackageWatchdog;->mAllObservers:Landroid/util/ArrayMap;
 
@@ -2297,139 +2386,150 @@
 
     if-eqz v1, :cond_d
 
-    .line 327
+    .line 309
     monitor-exit v0
 
     return-void
 
-    .line 330
+    .line 312
     :cond_d
     const/4 v1, 0x0
 
     move v2, v1
 
+    .local v2, "pIndex":I
     :goto_f
     invoke-interface {p1}, Ljava/util/List;->size()I
 
     move-result v3
 
-    if-ge v2, v3, :cond_56
+    if-ge v2, v3, :cond_53
 
-    .line 331
+    .line 313
     invoke-interface {p1, v2}, Ljava/util/List;->get(I)Ljava/lang/Object;
 
     move-result-object v3
 
     check-cast v3, Landroid/content/pm/VersionedPackage;
 
-    .line 333
+    .line 315
+    .local v3, "versionedPackage":Landroid/content/pm/VersionedPackage;
     const/4 v4, 0x0
 
-    .line 334
+    .line 316
+    .local v4, "currentObserverToNotify":Lcom/android/server/PackageWatchdog$PackageHealthObserver;
     const v5, 0x7fffffff
 
-    .line 337
-    move v6, v5
+    .line 319
+    .local v5, "currentObserverImpact":I
+    move v6, v1
 
-    move-object v5, v4
-
-    move v4, v1
-
-    :goto_22
+    .local v6, "oIndex":I
+    :goto_20
     iget-object v7, p0, Lcom/android/server/PackageWatchdog;->mAllObservers:Landroid/util/ArrayMap;
 
     invoke-virtual {v7}, Landroid/util/ArrayMap;->size()I
 
     move-result v7
 
-    if-ge v4, v7, :cond_4e
+    if-ge v6, v7, :cond_4b
 
-    .line 338
+    .line 320
     iget-object v7, p0, Lcom/android/server/PackageWatchdog;->mAllObservers:Landroid/util/ArrayMap;
 
-    invoke-virtual {v7, v4}, Landroid/util/ArrayMap;->valueAt(I)Ljava/lang/Object;
+    invoke-virtual {v7, v6}, Landroid/util/ArrayMap;->valueAt(I)Ljava/lang/Object;
 
     move-result-object v7
 
     check-cast v7, Lcom/android/server/PackageWatchdog$ObserverInternal;
 
-    .line 339
+    .line 321
+    .local v7, "observer":Lcom/android/server/PackageWatchdog$ObserverInternal;
     iget-object v8, v7, Lcom/android/server/PackageWatchdog$ObserverInternal;->mRegisteredObserver:Lcom/android/server/PackageWatchdog$PackageHealthObserver;
 
-    .line 340
-    if-eqz v8, :cond_4b
+    .line 322
+    .local v8, "registeredObserver":Lcom/android/server/PackageWatchdog$PackageHealthObserver;
+    if-eqz v8, :cond_48
 
-    .line 342
+    .line 324
     invoke-virtual {v3}, Landroid/content/pm/VersionedPackage;->getPackageName()Ljava/lang/String;
 
     move-result-object v9
 
-    .line 341
+    .line 323
     invoke-virtual {v7, v9}, Lcom/android/server/PackageWatchdog$ObserverInternal;->onPackageFailureLocked(Ljava/lang/String;)Z
 
-    move-result v7
+    move-result v9
 
-    if-eqz v7, :cond_4b
+    if-eqz v9, :cond_48
 
-    .line 343
+    .line 325
     invoke-interface {v8, v3}, Lcom/android/server/PackageWatchdog$PackageHealthObserver;->onHealthCheckFailed(Landroid/content/pm/VersionedPackage;)I
 
-    move-result v7
+    move-result v9
 
-    .line 344
-    if-eqz v7, :cond_4b
+    .line 326
+    .local v9, "impact":I
+    if-eqz v9, :cond_48
 
-    if-ge v7, v6, :cond_4b
+    if-ge v9, v5, :cond_48
 
-    .line 346
-    nop
+    .line 328
+    move-object v4, v8
 
-    .line 347
-    move v6, v7
+    .line 329
+    move v5, v9
 
-    move-object v5, v8
+    .line 319
+    .end local v7  # "observer":Lcom/android/server/PackageWatchdog$ObserverInternal;
+    .end local v8  # "registeredObserver":Lcom/android/server/PackageWatchdog$PackageHealthObserver;
+    .end local v9  # "impact":I
+    :cond_48
+    add-int/lit8 v6, v6, 0x1
 
-    .line 337
+    goto :goto_20
+
+    .line 335
+    .end local v6  # "oIndex":I
     :cond_4b
-    add-int/lit8 v4, v4, 0x1
+    if-eqz v4, :cond_50
 
-    goto :goto_22
+    .line 336
+    invoke-interface {v4, v3}, Lcom/android/server/PackageWatchdog$PackageHealthObserver;->execute(Landroid/content/pm/VersionedPackage;)Z
 
-    .line 353
-    :cond_4e
-    if-eqz v5, :cond_53
-
-    .line 354
-    invoke-interface {v5, v3, p2}, Lcom/android/server/PackageWatchdog$PackageHealthObserver;->execute(Landroid/content/pm/VersionedPackage;I)Z
-
-    .line 330
-    :cond_53
+    .line 312
+    .end local v3  # "versionedPackage":Landroid/content/pm/VersionedPackage;
+    .end local v4  # "currentObserverToNotify":Lcom/android/server/PackageWatchdog$PackageHealthObserver;
+    .end local v5  # "currentObserverImpact":I
+    :cond_50
     add-int/lit8 v2, v2, 0x1
 
     goto :goto_f
 
-    .line 357
-    :cond_56
+    .line 339
+    .end local v2  # "pIndex":I
+    :cond_53
     monitor-exit v0
 
-    .line 358
+    .line 340
     return-void
 
-    .line 357
-    :catchall_58
-    move-exception p1
+    .line 339
+    :catchall_55
+    move-exception v1
 
     monitor-exit v0
-    :try_end_5a
-    .catchall {:try_start_3 .. :try_end_5a} :catchall_58
+    :try_end_57
+    .catchall {:try_start_3 .. :try_end_57} :catchall_55
 
-    throw p1
+    throw v1
 .end method
 
 .method public synthetic lambda$onPackagesReady$0$PackageWatchdog(Ljava/lang/String;)V
     .registers 2
+    .param p1, "packageName"  # Ljava/lang/String;
 
-    .line 194
+    .line 177
     invoke-direct {p0, p1}, Lcom/android/server/PackageWatchdog;->onHealthCheckPassed(Ljava/lang/String;)V
 
     return-void
@@ -2437,8 +2537,9 @@
 
 .method public synthetic lambda$onPackagesReady$1$PackageWatchdog(Ljava/util/List;)V
     .registers 2
+    .param p1, "packages"  # Ljava/util/List;
 
-    .line 195
+    .line 178
     invoke-direct {p0, p1}, Lcom/android/server/PackageWatchdog;->onSupportedPackages(Ljava/util/List;)V
 
     return-void
@@ -2447,135 +2548,141 @@
 .method public synthetic lambda$onPackagesReady$2$PackageWatchdog()V
     .registers 1
 
-    .line 196
+    .line 179
     invoke-direct {p0}, Lcom/android/server/PackageWatchdog;->syncRequestsAsync()V
 
     return-void
 .end method
 
 .method public synthetic lambda$registerNetworkStackHealthListener$6$PackageWatchdog(Ljava/lang/String;)V
-    .registers 7
+    .registers 9
+    .param p1, "packageName"  # Ljava/lang/String;
 
-    .line 771
+    .line 752
     invoke-direct {p0, p1}, Lcom/android/server/PackageWatchdog;->getVersionedPackage(Ljava/lang/String;)Landroid/content/pm/VersionedPackage;
 
-    move-result-object p1
+    move-result-object v0
 
-    .line 772
-    if-nez p1, :cond_e
+    .line 753
+    .local v0, "pkg":Landroid/content/pm/VersionedPackage;
+    if-nez v0, :cond_e
 
-    .line 773
-    const-string p1, "PackageWatchdog"
+    .line 754
+    const-string v1, "PackageWatchdog"
 
-    const-string v0, "NetworkStack failed but could not find its package"
+    const-string v2, "NetworkStack failed but could not find its package"
 
-    invoke-static {p1, v0}, Landroid/util/Slog;->wtf(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v2}, Landroid/util/Slog;->wtf(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 774
+    .line 755
     return-void
 
-    .line 778
+    .line 759
     :cond_e
-    invoke-static {p1}, Ljava/util/Collections;->singletonList(Ljava/lang/Object;)Ljava/util/List;
+    invoke-static {v0}, Ljava/util/Collections;->singletonList(Ljava/lang/Object;)Ljava/util/List;
 
-    move-result-object p1
+    move-result-object v1
 
-    .line 779
+    .line 760
+    .local v1, "pkgList":Ljava/util/List;, "Ljava/util/List<Landroid/content/pm/VersionedPackage;>;"
     invoke-virtual {p0}, Lcom/android/server/PackageWatchdog;->getTriggerFailureCount()J
 
-    move-result-wide v0
+    move-result-wide v2
 
-    .line 780
-    const/4 v2, 0x0
+    .line 761
+    .local v2, "failureCount":J
+    const/4 v4, 0x0
 
+    .local v4, "i":I
     :goto_17
-    int-to-long v3, v2
+    int-to-long v5, v4
 
-    cmp-long v3, v3, v0
+    cmp-long v5, v5, v2
 
-    if-gez v3, :cond_23
+    if-gez v5, :cond_22
 
-    .line 781
-    const/4 v3, 0x2
+    .line 762
+    invoke-virtual {p0, v1}, Lcom/android/server/PackageWatchdog;->onPackageFailure(Ljava/util/List;)V
 
-    invoke-virtual {p0, p1, v3}, Lcom/android/server/PackageWatchdog;->onPackageFailure(Ljava/util/List;I)V
-
-    .line 780
-    add-int/lit8 v2, v2, 0x1
+    .line 761
+    add-int/lit8 v4, v4, 0x1
 
     goto :goto_17
 
-    .line 783
-    :cond_23
+    .line 764
+    .end local v4  # "i":I
+    :cond_22
     return-void
 .end method
 
 .method public synthetic lambda$setPropertyChangedListenerLocked$5$PackageWatchdog(Landroid/provider/DeviceConfig$Properties;)V
-    .registers 3
+    .registers 4
+    .param p1, "properties"  # Landroid/provider/DeviceConfig$Properties;
 
-    .line 729
+    .line 710
     invoke-virtual {p1}, Landroid/provider/DeviceConfig$Properties;->getNamespace()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    const-string/jumbo v0, "rollback"
+    const-string/jumbo v1, "rollback"
 
-    invoke-virtual {v0, p1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v1, v0}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result p1
+    move-result v0
 
-    if-nez p1, :cond_e
+    if-nez v0, :cond_e
 
-    .line 730
+    .line 711
     return-void
 
-    .line 732
+    .line 713
     :cond_e
     invoke-direct {p0}, Lcom/android/server/PackageWatchdog;->updateConfigs()V
 
-    .line 733
+    .line 714
     return-void
 .end method
 
-.method public onPackageFailure(Ljava/util/List;I)V
-    .registers 5
+.method public onPackageFailure(Ljava/util/List;)V
+    .registers 4
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(",
             "Ljava/util/List<",
             "Landroid/content/pm/VersionedPackage;",
-            ">;I)V"
+            ">;)V"
         }
     .end annotation
 
-    .line 324
+    .line 306
+    .local p1, "packages":Ljava/util/List;, "Ljava/util/List<Landroid/content/pm/VersionedPackage;>;"
     iget-object v0, p0, Lcom/android/server/PackageWatchdog;->mLongTaskHandler:Landroid/os/Handler;
 
-    new-instance v1, Lcom/android/server/-$$Lambda$PackageWatchdog$v_AYugez2Xug3cY8cBV5oVrBVRQ;
+    new-instance v1, Lcom/android/server/-$$Lambda$PackageWatchdog$dGAIdmdAmYvybYvlZcbaTbRfu2A;
 
-    invoke-direct {v1, p0, p1, p2}, Lcom/android/server/-$$Lambda$PackageWatchdog$v_AYugez2Xug3cY8cBV5oVrBVRQ;-><init>(Lcom/android/server/PackageWatchdog;Ljava/util/List;I)V
+    invoke-direct {v1, p0, p1}, Lcom/android/server/-$$Lambda$PackageWatchdog$dGAIdmdAmYvybYvlZcbaTbRfu2A;-><init>(Lcom/android/server/PackageWatchdog;Ljava/util/List;)V
 
     invoke-virtual {v0, v1}, Landroid/os/Handler;->post(Ljava/lang/Runnable;)Z
 
-    .line 359
+    .line 341
     return-void
 .end method
 
 .method public onPackagesReady()V
     .registers 6
 
-    .line 192
+    .line 175
     iget-object v0, p0, Lcom/android/server/PackageWatchdog;->mLock:Ljava/lang/Object;
 
     monitor-enter v0
 
-    .line 193
+    .line 176
     const/4 v1, 0x1
 
     :try_start_4
     iput-boolean v1, p0, Lcom/android/server/PackageWatchdog;->mIsPackagesReady:Z
 
-    .line 194
+    .line 177
     iget-object v1, p0, Lcom/android/server/PackageWatchdog;->mHealthCheckController:Lcom/android/server/ExplicitHealthCheckController;
 
     new-instance v2, Lcom/android/server/-$$Lambda$PackageWatchdog$nOS9OaZO4hPsSe0I8skPT1UgQoo;
@@ -2592,22 +2699,22 @@
 
     invoke-virtual {v1, v2, v3, v4}, Lcom/android/server/ExplicitHealthCheckController;->setCallbacks(Ljava/util/function/Consumer;Ljava/util/function/Consumer;Ljava/lang/Runnable;)V
 
-    .line 197
+    .line 180
     invoke-direct {p0}, Lcom/android/server/PackageWatchdog;->setPropertyChangedListenerLocked()V
 
-    .line 198
+    .line 181
     invoke-direct {p0}, Lcom/android/server/PackageWatchdog;->updateConfigs()V
 
-    .line 199
+    .line 182
     invoke-direct {p0}, Lcom/android/server/PackageWatchdog;->registerNetworkStackHealthListener()V
 
-    .line 200
+    .line 183
     monitor-exit v0
 
-    .line 201
+    .line 184
     return-void
 
-    .line 200
+    .line 183
     :catchall_25
     move-exception v1
 
@@ -2620,13 +2727,14 @@
 
 .method public registerHealthObserver(Lcom/android/server/PackageWatchdog$PackageHealthObserver;)V
     .registers 5
+    .param p1, "observer"  # Lcom/android/server/PackageWatchdog$PackageHealthObserver;
 
-    .line 210
+    .line 193
     iget-object v0, p0, Lcom/android/server/PackageWatchdog;->mLock:Ljava/lang/Object;
 
     monitor-enter v0
 
-    .line 211
+    .line 194
     :try_start_3
     iget-object v1, p0, Lcom/android/server/PackageWatchdog;->mAllObservers:Landroid/util/ArrayMap;
 
@@ -2640,32 +2748,36 @@
 
     check-cast v1, Lcom/android/server/PackageWatchdog$ObserverInternal;
 
-    .line 212
+    .line 195
+    .local v1, "internalObserver":Lcom/android/server/PackageWatchdog$ObserverInternal;
     if-eqz v1, :cond_13
 
-    .line 213
+    .line 196
     iput-object p1, v1, Lcom/android/server/PackageWatchdog$ObserverInternal;->mRegisteredObserver:Lcom/android/server/PackageWatchdog$PackageHealthObserver;
 
-    .line 215
+    .line 198
+    .end local v1  # "internalObserver":Lcom/android/server/PackageWatchdog$ObserverInternal;
     :cond_13
     monitor-exit v0
 
-    .line 216
+    .line 199
     return-void
 
-    .line 215
+    .line 198
     :catchall_15
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_17
     .catchall {:try_start_3 .. :try_end_17} :catchall_15
 
-    throw p1
+    throw v1
 .end method
 
 .method public startObservingHealth(Lcom/android/server/PackageWatchdog$PackageHealthObserver;Ljava/util/List;J)V
     .registers 14
+    .param p1, "observer"  # Lcom/android/server/PackageWatchdog$PackageHealthObserver;
+    .param p3, "durationMs"  # J
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(",
@@ -2676,40 +2788,41 @@
         }
     .end annotation
 
-    .line 236
+    .line 219
+    .local p2, "packageNames":Ljava/util/List;, "Ljava/util/List<Ljava/lang/String;>;"
     invoke-interface {p2}, Ljava/util/List;->isEmpty()Z
 
     move-result v0
 
     if-eqz v0, :cond_21
 
-    .line 237
-    new-instance p2, Ljava/lang/StringBuilder;
+    .line 220
+    new-instance v0, Ljava/lang/StringBuilder;
 
-    invoke-direct {p2}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string p3, "No packages to observe, "
+    const-string v1, "No packages to observe, "
 
-    invoke-virtual {p2, p3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-interface {p1}, Lcom/android/server/PackageWatchdog$PackageHealthObserver;->getName()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v1
 
-    invoke-virtual {p2, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    const-string p2, "PackageWatchdog"
+    const-string v1, "PackageWatchdog"
 
-    invoke-static {p2, p1}, Landroid/util/Slog;->wtf(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v0}, Landroid/util/Slog;->wtf(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 238
+    .line 221
     return-void
 
-    .line 240
+    .line 223
     :cond_21
     const-wide/16 v0, 0x1
 
@@ -2717,14 +2830,16 @@
 
     if-ltz v0, :cond_be
 
-    .line 246
+    .line 229
     new-instance v0, Ljava/util/ArrayList;
 
     invoke-direct {v0}, Ljava/util/ArrayList;-><init>()V
 
-    .line 247
+    .line 230
+    .local v0, "packages":Ljava/util/List;, "Ljava/util/List<Lcom/android/server/PackageWatchdog$MonitoredPackage;>;"
     const/4 v1, 0x0
 
+    .local v1, "i":I
     :goto_2d
     invoke-interface {p2}, Ljava/util/List;->size()I
 
@@ -2732,7 +2847,7 @@
 
     if-ge v1, v2, :cond_49
 
-    .line 249
+    .line 232
     new-instance v2, Lcom/android/server/PackageWatchdog$MonitoredPackage;
 
     invoke-interface {p2, v1}, Ljava/util/List;->get(I)Ljava/lang/Object;
@@ -2755,143 +2870,147 @@
 
     invoke-interface {v0, v2}, Ljava/util/List;->add(Ljava/lang/Object;)Z
 
-    .line 247
+    .line 230
     add-int/lit8 v1, v1, 0x1
 
     goto :goto_2d
 
-    .line 256
+    .line 239
+    .end local v1  # "i":I
     :cond_49
-    const-string/jumbo p3, "observing new packages"
+    const-string/jumbo v1, "observing new packages"
 
-    invoke-direct {p0, p3}, Lcom/android/server/PackageWatchdog;->syncState(Ljava/lang/String;)V
+    invoke-direct {p0, v1}, Lcom/android/server/PackageWatchdog;->syncState(Ljava/lang/String;)V
 
-    .line 258
+    .line 241
     iget-object v1, p0, Lcom/android/server/PackageWatchdog;->mLock:Ljava/lang/Object;
 
     monitor-enter v1
 
-    .line 259
+    .line 242
     :try_start_52
-    iget-object p3, p0, Lcom/android/server/PackageWatchdog;->mAllObservers:Landroid/util/ArrayMap;
-
-    invoke-interface {p1}, Lcom/android/server/PackageWatchdog$PackageHealthObserver;->getName()Ljava/lang/String;
-
-    move-result-object p4
-
-    invoke-virtual {p3, p4}, Landroid/util/ArrayMap;->get(Ljava/lang/Object;)Ljava/lang/Object;
-
-    move-result-object p3
-
-    check-cast p3, Lcom/android/server/PackageWatchdog$ObserverInternal;
-
-    .line 260
-    if-nez p3, :cond_90
-
-    .line 261
-    const-string p3, "PackageWatchdog"
-
-    new-instance p4, Ljava/lang/StringBuilder;
-
-    invoke-direct {p4}, Ljava/lang/StringBuilder;-><init>()V
-
-    invoke-interface {p1}, Lcom/android/server/PackageWatchdog$PackageHealthObserver;->getName()Ljava/lang/String;
-
-    move-result-object v2
-
-    invoke-virtual {p4, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    const-string v2, " started monitoring health of packages "
-
-    invoke-virtual {p4, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {p4, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {p4}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
-
-    move-result-object p2
-
-    invoke-static {p3, p2}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
-
-    .line 263
-    iget-object p2, p0, Lcom/android/server/PackageWatchdog;->mAllObservers:Landroid/util/ArrayMap;
-
-    invoke-interface {p1}, Lcom/android/server/PackageWatchdog$PackageHealthObserver;->getName()Ljava/lang/String;
-
-    move-result-object p3
-
-    new-instance p4, Lcom/android/server/PackageWatchdog$ObserverInternal;
-
-    .line 264
-    invoke-interface {p1}, Lcom/android/server/PackageWatchdog$PackageHealthObserver;->getName()Ljava/lang/String;
-
-    move-result-object v2
-
-    invoke-direct {p4, v2, v0}, Lcom/android/server/PackageWatchdog$ObserverInternal;-><init>(Ljava/lang/String;Ljava/util/List;)V
-
-    .line 263
-    invoke-virtual {p2, p3, p4}, Landroid/util/ArrayMap;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
-
-    goto :goto_b0
-
-    .line 266
-    :cond_90
-    const-string p4, "PackageWatchdog"
-
-    new-instance v2, Ljava/lang/StringBuilder;
-
-    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
+    iget-object v2, p0, Lcom/android/server/PackageWatchdog;->mAllObservers:Landroid/util/ArrayMap;
 
     invoke-interface {p1}, Lcom/android/server/PackageWatchdog$PackageHealthObserver;->getName()Ljava/lang/String;
 
     move-result-object v3
 
-    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Landroid/util/ArrayMap;->get(Ljava/lang/Object;)Ljava/lang/Object;
 
-    const-string v3, " added the following packages to monitor "
+    move-result-object v2
 
-    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    check-cast v2, Lcom/android/server/PackageWatchdog$ObserverInternal;
 
-    invoke-virtual {v2, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    .line 243
+    .local v2, "oldObserver":Lcom/android/server/PackageWatchdog$ObserverInternal;
+    if-nez v2, :cond_90
 
-    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    .line 244
+    const-string v3, "PackageWatchdog"
 
-    move-result-object p2
+    new-instance v4, Ljava/lang/StringBuilder;
 
-    invoke-static {p4, p2}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-direct {v4}, Ljava/lang/StringBuilder;-><init>()V
 
-    .line 268
-    invoke-virtual {p3, v0}, Lcom/android/server/PackageWatchdog$ObserverInternal;->updatePackagesLocked(Ljava/util/List;)V
+    invoke-interface {p1}, Lcom/android/server/PackageWatchdog$PackageHealthObserver;->getName()Ljava/lang/String;
 
-    .line 270
+    move-result-object v5
+
+    invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    const-string v5, " started monitoring health of packages "
+
+    invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v4, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v4}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v4
+
+    invoke-static {v3, v4}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
+
+    .line 246
+    iget-object v3, p0, Lcom/android/server/PackageWatchdog;->mAllObservers:Landroid/util/ArrayMap;
+
+    invoke-interface {p1}, Lcom/android/server/PackageWatchdog$PackageHealthObserver;->getName()Ljava/lang/String;
+
+    move-result-object v4
+
+    new-instance v5, Lcom/android/server/PackageWatchdog$ObserverInternal;
+
+    .line 247
+    invoke-interface {p1}, Lcom/android/server/PackageWatchdog$PackageHealthObserver;->getName()Ljava/lang/String;
+
+    move-result-object v6
+
+    invoke-direct {v5, v6, v0}, Lcom/android/server/PackageWatchdog$ObserverInternal;-><init>(Ljava/lang/String;Ljava/util/List;)V
+
+    .line 246
+    invoke-virtual {v3, v4, v5}, Landroid/util/ArrayMap;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+
+    goto :goto_b0
+
+    .line 249
+    :cond_90
+    const-string v3, "PackageWatchdog"
+
+    new-instance v4, Ljava/lang/StringBuilder;
+
+    invoke-direct {v4}, Ljava/lang/StringBuilder;-><init>()V
+
+    invoke-interface {p1}, Lcom/android/server/PackageWatchdog$PackageHealthObserver;->getName()Ljava/lang/String;
+
+    move-result-object v5
+
+    invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    const-string v5, " added the following packages to monitor "
+
+    invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v4, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v4}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v4
+
+    invoke-static {v3, v4}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
+
+    .line 251
+    invoke-virtual {v2, v0}, Lcom/android/server/PackageWatchdog$ObserverInternal;->updatePackagesLocked(Ljava/util/List;)V
+
+    .line 253
+    .end local v2  # "oldObserver":Lcom/android/server/PackageWatchdog$ObserverInternal;
     :goto_b0
     monitor-exit v1
     :try_end_b1
     .catchall {:try_start_52 .. :try_end_b1} :catchall_bb
 
-    .line 273
+    .line 256
     invoke-virtual {p0, p1}, Lcom/android/server/PackageWatchdog;->registerHealthObserver(Lcom/android/server/PackageWatchdog$PackageHealthObserver;)V
 
-    .line 277
-    const-string/jumbo p1, "updated observers"
+    .line 260
+    const-string/jumbo v1, "updated observers"
 
-    invoke-direct {p0, p1}, Lcom/android/server/PackageWatchdog;->syncState(Ljava/lang/String;)V
+    invoke-direct {p0, v1}, Lcom/android/server/PackageWatchdog;->syncState(Ljava/lang/String;)V
 
-    .line 278
+    .line 261
     return-void
 
-    .line 270
+    .line 253
     :catchall_bb
-    move-exception p1
+    move-exception v2
 
     :try_start_bc
     monitor-exit v1
     :try_end_bd
     .catchall {:try_start_bc .. :try_end_bd} :catchall_bb
 
-    throw p1
+    throw v2
 
-    .line 242
+    .line 225
+    .end local v0  # "packages":Ljava/util/List;, "Ljava/util/List<Lcom/android/server/PackageWatchdog$MonitoredPackage;>;"
     :cond_be
     new-instance v0, Ljava/lang/IllegalArgumentException;
 
@@ -2905,41 +3024,42 @@
 
     invoke-virtual {v1, p3, p4}, Ljava/lang/StringBuilder;->append(J)Ljava/lang/StringBuilder;
 
-    const-string/jumbo p3, "ms for observer "
+    const-string/jumbo v2, "ms for observer "
 
-    invoke-virtual {v1, p3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    .line 243
+    .line 226
     invoke-interface {p1}, Lcom/android/server/PackageWatchdog$PackageHealthObserver;->getName()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v2
 
-    invoke-virtual {v1, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string p1, ". Not observing packages "
+    const-string v2, ". Not observing packages "
 
-    invoke-virtual {v1, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v1, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v1
 
-    invoke-direct {v0, p1}, Ljava/lang/IllegalArgumentException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v0, v1}, Ljava/lang/IllegalArgumentException;-><init>(Ljava/lang/String;)V
 
     throw v0
 .end method
 
 .method public unregisterHealthObserver(Lcom/android/server/PackageWatchdog$PackageHealthObserver;)V
     .registers 5
+    .param p1, "observer"  # Lcom/android/server/PackageWatchdog$PackageHealthObserver;
 
-    .line 286
+    .line 269
     iget-object v0, p0, Lcom/android/server/PackageWatchdog;->mLock:Ljava/lang/Object;
 
     monitor-enter v0
 
-    .line 287
+    .line 270
     :try_start_3
     iget-object v1, p0, Lcom/android/server/PackageWatchdog;->mAllObservers:Landroid/util/ArrayMap;
 
@@ -2949,12 +3069,12 @@
 
     invoke-virtual {v1, v2}, Landroid/util/ArrayMap;->remove(Ljava/lang/Object;)Ljava/lang/Object;
 
-    .line 288
+    .line 271
     monitor-exit v0
     :try_end_d
     .catchall {:try_start_3 .. :try_end_d} :catchall_27
 
-    .line 289
+    .line 272
     new-instance v0, Ljava/lang/StringBuilder;
 
     invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
@@ -2965,40 +3085,40 @@
 
     invoke-interface {p1}, Lcom/android/server/PackageWatchdog$PackageHealthObserver;->getName()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v1
 
-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    invoke-direct {p0, p1}, Lcom/android/server/PackageWatchdog;->syncState(Ljava/lang/String;)V
+    invoke-direct {p0, v0}, Lcom/android/server/PackageWatchdog;->syncState(Ljava/lang/String;)V
 
-    .line 290
+    .line 273
     return-void
 
-    .line 288
+    .line 271
     :catchall_27
-    move-exception p1
+    move-exception v1
 
     :try_start_28
     monitor-exit v0
     :try_end_29
     .catchall {:try_start_28 .. :try_end_29} :catchall_27
 
-    throw p1
+    throw v1
 .end method
 
 .method public writeNow()V
     .registers 4
 
-    .line 366
+    .line 348
     iget-object v0, p0, Lcom/android/server/PackageWatchdog;->mLock:Ljava/lang/Object;
 
     monitor-enter v0
 
-    .line 369
+    .line 351
     :try_start_3
     iget-object v1, p0, Lcom/android/server/PackageWatchdog;->mAllObservers:Landroid/util/ArrayMap;
 
@@ -3008,7 +3128,7 @@
 
     if-nez v1, :cond_22
 
-    .line 370
+    .line 352
     iget-object v1, p0, Lcom/android/server/PackageWatchdog;->mLongTaskHandler:Landroid/os/Handler;
 
     new-instance v2, Lcom/android/server/-$$Lambda$PackageWatchdog$ZYXCPv-g8AolCxNNTIoK4ITZJpQ;
@@ -3017,27 +3137,27 @@
 
     invoke-virtual {v1, v2}, Landroid/os/Handler;->removeCallbacks(Ljava/lang/Runnable;)V
 
-    .line 371
+    .line 353
     invoke-direct {p0}, Lcom/android/server/PackageWatchdog;->pruneObserversLocked()V
 
-    .line 372
+    .line 354
     invoke-direct {p0}, Lcom/android/server/PackageWatchdog;->saveToFile()Z
 
-    .line 373
+    .line 355
     const-string v1, "PackageWatchdog"
 
     const-string v2, "Last write to update package durations"
 
     invoke-static {v1, v2}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 375
+    .line 357
     :cond_22
     monitor-exit v0
 
-    .line 376
+    .line 358
     return-void
 
-    .line 375
+    .line 357
     :catchall_24
     move-exception v1
 

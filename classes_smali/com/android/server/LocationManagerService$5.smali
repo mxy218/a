@@ -21,8 +21,10 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/LocationManagerService;Landroid/os/Handler;)V
     .registers 3
+    .param p1, "this$0"  # Lcom/android/server/LocationManagerService;
+    .param p2, "x0"  # Landroid/os/Handler;
 
-    .line 391
+    .line 482
     iput-object p1, p0, Lcom/android/server/LocationManagerService$5;->this$0:Lcom/android/server/LocationManagerService;
 
     invoke-direct {p0, p2}, Landroid/database/ContentObserver;-><init>(Landroid/os/Handler;)V
@@ -33,36 +35,37 @@
 
 # virtual methods
 .method public onChange(Z)V
-    .registers 3
+    .registers 4
+    .param p1, "selfChange"  # Z
 
-    .line 394
-    iget-object p1, p0, Lcom/android/server/LocationManagerService$5;->this$0:Lcom/android/server/LocationManagerService;
-
-    invoke-static {p1}, Lcom/android/server/LocationManagerService;->access$100(Lcom/android/server/LocationManagerService;)Ljava/lang/Object;
-
-    move-result-object p1
-
-    monitor-enter p1
-
-    .line 395
-    :try_start_7
+    .line 485
     iget-object v0, p0, Lcom/android/server/LocationManagerService$5;->this$0:Lcom/android/server/LocationManagerService;
 
-    invoke-static {v0}, Lcom/android/server/LocationManagerService;->access$600(Lcom/android/server/LocationManagerService;)V
+    invoke-static {v0}, Lcom/android/server/LocationManagerService;->access$100(Lcom/android/server/LocationManagerService;)Ljava/lang/Object;
 
-    .line 396
-    monitor-exit p1
+    move-result-object v0
 
-    .line 397
+    monitor-enter v0
+
+    .line 486
+    :try_start_7
+    iget-object v1, p0, Lcom/android/server/LocationManagerService$5;->this$0:Lcom/android/server/LocationManagerService;
+
+    invoke-static {v1}, Lcom/android/server/LocationManagerService;->access$700(Lcom/android/server/LocationManagerService;)V
+
+    .line 487
+    monitor-exit v0
+
+    .line 488
     return-void
 
-    .line 396
+    .line 487
     :catchall_e
-    move-exception v0
+    move-exception v1
 
-    monitor-exit p1
+    monitor-exit v0
     :try_end_10
     .catchall {:try_start_7 .. :try_end_10} :catchall_e
 
-    throw v0
+    throw v1
 .end method

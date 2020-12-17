@@ -100,8 +100,6 @@
     .end annotation
 .end field
 
-.field private final mUserManagerInternal:Landroid/os/UserManagerInternal;
-
 .field private final mWriteQueue:Ljava/util/ArrayDeque;
     .annotation build Lcom/android/internal/annotations/GuardedBy;
         value = {
@@ -123,7 +121,7 @@
 .method static constructor <clinit>()V
     .registers 1
 
-    .line 60
+    .line 58
     invoke-static {}, Landroid/app/ActivityManager;->isLowRamDeviceStatic()Z
 
     move-result v0
@@ -135,39 +133,41 @@
 
 .method constructor <init>(Lcom/android/server/wm/WindowManagerService;Lcom/android/server/wm/TaskSnapshotPersister$DirectoryResolver;)V
     .registers 5
+    .param p1, "service"  # Lcom/android/server/wm/WindowManagerService;
+    .param p2, "resolver"  # Lcom/android/server/wm/TaskSnapshotPersister$DirectoryResolver;
 
-    .line 88
+    .line 85
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
-    .line 67
+    .line 65
     new-instance v0, Ljava/util/ArrayDeque;
 
     invoke-direct {v0}, Ljava/util/ArrayDeque;-><init>()V
 
     iput-object v0, p0, Lcom/android/server/wm/TaskSnapshotPersister;->mWriteQueue:Ljava/util/ArrayDeque;
 
-    .line 69
+    .line 67
     new-instance v0, Ljava/util/ArrayDeque;
 
     invoke-direct {v0}, Ljava/util/ArrayDeque;-><init>()V
 
     iput-object v0, p0, Lcom/android/server/wm/TaskSnapshotPersister;->mStoreQueueItems:Ljava/util/ArrayDeque;
 
-    .line 76
+    .line 74
     new-instance v0, Ljava/lang/Object;
 
     invoke-direct {v0}, Ljava/lang/Object;-><init>()V
 
     iput-object v0, p0, Lcom/android/server/wm/TaskSnapshotPersister;->mLock:Ljava/lang/Object;
 
-    .line 85
+    .line 82
     new-instance v0, Landroid/util/ArraySet;
 
     invoke-direct {v0}, Landroid/util/ArraySet;-><init>()V
 
     iput-object v0, p0, Lcom/android/server/wm/TaskSnapshotPersister;->mPersistedTaskIdsSinceLastRemoveObsolete:Landroid/util/ArraySet;
 
-    .line 245
+    .line 241
     new-instance v0, Lcom/android/server/wm/TaskSnapshotPersister$1;
 
     const-string v1, "TaskSnapshotPersister"
@@ -176,228 +176,231 @@
 
     iput-object v0, p0, Lcom/android/server/wm/TaskSnapshotPersister;->mPersister:Ljava/lang/Thread;
 
-    .line 89
+    .line 86
     iput-object p2, p0, Lcom/android/server/wm/TaskSnapshotPersister;->mDirectoryResolver:Lcom/android/server/wm/TaskSnapshotPersister$DirectoryResolver;
 
-    .line 90
-    const-class p2, Landroid/os/UserManagerInternal;
+    .line 87
+    iget-boolean v0, p1, Lcom/android/server/wm/WindowManagerService;->mLowRamTaskSnapshotsAndRecents:Z
 
-    invoke-static {p2}, Lcom/android/server/LocalServices;->getService(Ljava/lang/Class;)Ljava/lang/Object;
+    if-eqz v0, :cond_34
 
-    move-result-object p2
+    .line 89
+    const v0, 0x3dcccccd  # 0.1f
 
-    check-cast p2, Landroid/os/UserManagerInternal;
+    iput v0, p0, Lcom/android/server/wm/TaskSnapshotPersister;->mReducedScale:F
 
-    iput-object p2, p0, Lcom/android/server/wm/TaskSnapshotPersister;->mUserManagerInternal:Landroid/os/UserManagerInternal;
+    goto :goto_42
 
-    .line 91
-    iget-boolean p1, p1, Lcom/android/server/wm/WindowManagerService;->mLowRamTaskSnapshotsAndRecents:Z
-
-    if-eqz p1, :cond_3e
-
-    .line 93
-    const p1, 0x3dcccccd  # 0.1f
-
-    iput p1, p0, Lcom/android/server/wm/TaskSnapshotPersister;->mReducedScale:F
-
-    goto :goto_4c
-
-    .line 96
-    :cond_3e
+    .line 92
+    :cond_34
     invoke-static {}, Landroid/app/ActivityManager;->isLowRamDeviceStatic()Z
 
-    move-result p1
+    move-result v0
 
-    if-eqz p1, :cond_48
+    if-eqz v0, :cond_3e
 
-    .line 97
-    const p1, 0x3f19999a  # 0.6f
+    .line 93
+    const v0, 0x3f19999a  # 0.6f
 
-    goto :goto_4a
+    goto :goto_40
 
-    :cond_48
-    const/high16 p1, 0x3f000000  # 0.5f
+    :cond_3e
+    const/high16 v0, 0x3f000000  # 0.5f
 
-    :goto_4a
-    iput p1, p0, Lcom/android/server/wm/TaskSnapshotPersister;->mReducedScale:F
+    :goto_40
+    iput v0, p0, Lcom/android/server/wm/TaskSnapshotPersister;->mReducedScale:F
 
-    .line 99
-    :goto_4c
+    .line 95
+    :goto_42
     return-void
 .end method
 
 .method static synthetic access$100(Lcom/android/server/wm/TaskSnapshotPersister;)Ljava/lang/Object;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/wm/TaskSnapshotPersister;
 
-    .line 52
-    iget-object p0, p0, Lcom/android/server/wm/TaskSnapshotPersister;->mLock:Ljava/lang/Object;
+    .line 50
+    iget-object v0, p0, Lcom/android/server/wm/TaskSnapshotPersister;->mLock:Ljava/lang/Object;
 
-    return-object p0
+    return-object v0
 .end method
 
-.method static synthetic access$1000(Lcom/android/server/wm/TaskSnapshotPersister;II)V
-    .registers 3
+.method static synthetic access$1000(Lcom/android/server/wm/TaskSnapshotPersister;)F
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/wm/TaskSnapshotPersister;
 
-    .line 52
-    invoke-direct {p0, p1, p2}, Lcom/android/server/wm/TaskSnapshotPersister;->deleteSnapshot(II)V
+    .line 50
+    iget v0, p0, Lcom/android/server/wm/TaskSnapshotPersister;->mReducedScale:F
 
-    return-void
+    return v0
 .end method
 
-.method static synthetic access$1100(Lcom/android/server/wm/TaskSnapshotPersister;)F
-    .registers 1
+.method static synthetic access$1100(Lcom/android/server/wm/TaskSnapshotPersister;)Landroid/util/ArraySet;
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/wm/TaskSnapshotPersister;
 
-    .line 52
-    iget p0, p0, Lcom/android/server/wm/TaskSnapshotPersister;->mReducedScale:F
+    .line 50
+    iget-object v0, p0, Lcom/android/server/wm/TaskSnapshotPersister;->mPersistedTaskIdsSinceLastRemoveObsolete:Landroid/util/ArraySet;
 
-    return p0
-.end method
-
-.method static synthetic access$1200(Lcom/android/server/wm/TaskSnapshotPersister;)Landroid/util/ArraySet;
-    .registers 1
-
-    .line 52
-    iget-object p0, p0, Lcom/android/server/wm/TaskSnapshotPersister;->mPersistedTaskIdsSinceLastRemoveObsolete:Landroid/util/ArraySet;
-
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$200(Lcom/android/server/wm/TaskSnapshotPersister;)Z
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/wm/TaskSnapshotPersister;
 
-    .line 52
-    iget-boolean p0, p0, Lcom/android/server/wm/TaskSnapshotPersister;->mPaused:Z
+    .line 50
+    iget-boolean v0, p0, Lcom/android/server/wm/TaskSnapshotPersister;->mPaused:Z
 
-    return p0
+    return v0
 .end method
 
 .method static synthetic access$300(Lcom/android/server/wm/TaskSnapshotPersister;)Ljava/util/ArrayDeque;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/wm/TaskSnapshotPersister;
 
-    .line 52
-    iget-object p0, p0, Lcom/android/server/wm/TaskSnapshotPersister;->mWriteQueue:Ljava/util/ArrayDeque;
+    .line 50
+    iget-object v0, p0, Lcom/android/server/wm/TaskSnapshotPersister;->mWriteQueue:Ljava/util/ArrayDeque;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$402(Lcom/android/server/wm/TaskSnapshotPersister;Z)Z
     .registers 2
+    .param p0, "x0"  # Lcom/android/server/wm/TaskSnapshotPersister;
+    .param p1, "x1"  # Z
 
-    .line 52
+    .line 50
     iput-boolean p1, p0, Lcom/android/server/wm/TaskSnapshotPersister;->mQueueIdling:Z
 
     return p1
 .end method
 
 .method static synthetic access$600(Lcom/android/server/wm/TaskSnapshotPersister;)Ljava/util/ArrayDeque;
-    .registers 1
-
-    .line 52
-    iget-object p0, p0, Lcom/android/server/wm/TaskSnapshotPersister;->mStoreQueueItems:Ljava/util/ArrayDeque;
-
-    return-object p0
-.end method
-
-.method static synthetic access$700(Lcom/android/server/wm/TaskSnapshotPersister;)Landroid/os/UserManagerInternal;
-    .registers 1
-
-    .line 52
-    iget-object p0, p0, Lcom/android/server/wm/TaskSnapshotPersister;->mUserManagerInternal:Landroid/os/UserManagerInternal;
-
-    return-object p0
-.end method
-
-.method static synthetic access$800(Lcom/android/server/wm/TaskSnapshotPersister;I)Z
     .registers 2
+    .param p0, "x0"  # Lcom/android/server/wm/TaskSnapshotPersister;
 
-    .line 52
-    invoke-direct {p0, p1}, Lcom/android/server/wm/TaskSnapshotPersister;->createDirectory(I)Z
+    .line 50
+    iget-object v0, p0, Lcom/android/server/wm/TaskSnapshotPersister;->mStoreQueueItems:Ljava/util/ArrayDeque;
 
-    move-result p0
-
-    return p0
+    return-object v0
 .end method
 
-.method static synthetic access$900(Lcom/android/server/wm/TaskSnapshotPersister;I)Ljava/io/File;
-    .registers 2
-
-    .line 52
-    invoke-direct {p0, p1}, Lcom/android/server/wm/TaskSnapshotPersister;->getDirectory(I)Ljava/io/File;
-
-    move-result-object p0
-
-    return-object p0
-.end method
-
-.method private createDirectory(I)Z
+.method static synthetic access$700(Lcom/android/server/wm/TaskSnapshotPersister;I)Z
     .registers 3
+    .param p0, "x0"  # Lcom/android/server/wm/TaskSnapshotPersister;
+    .param p1, "x1"  # I
 
-    .line 224
-    invoke-direct {p0, p1}, Lcom/android/server/wm/TaskSnapshotPersister;->getDirectory(I)Ljava/io/File;
-
-    move-result-object p1
-
-    .line 225
-    invoke-virtual {p1}, Ljava/io/File;->exists()Z
+    .line 50
+    invoke-direct {p0, p1}, Lcom/android/server/wm/TaskSnapshotPersister;->createDirectory(I)Z
 
     move-result v0
 
-    if-nez v0, :cond_13
+    return v0
+.end method
 
-    invoke-virtual {p1}, Ljava/io/File;->mkdir()Z
+.method static synthetic access$800(Lcom/android/server/wm/TaskSnapshotPersister;I)Ljava/io/File;
+    .registers 3
+    .param p0, "x0"  # Lcom/android/server/wm/TaskSnapshotPersister;
+    .param p1, "x1"  # I
 
-    move-result p1
+    .line 50
+    invoke-direct {p0, p1}, Lcom/android/server/wm/TaskSnapshotPersister;->getDirectory(I)Ljava/io/File;
 
-    if-eqz p1, :cond_11
+    move-result-object v0
+
+    return-object v0
+.end method
+
+.method static synthetic access$900(Lcom/android/server/wm/TaskSnapshotPersister;II)V
+    .registers 3
+    .param p0, "x0"  # Lcom/android/server/wm/TaskSnapshotPersister;
+    .param p1, "x1"  # I
+    .param p2, "x2"  # I
+
+    .line 50
+    invoke-direct {p0, p1, p2}, Lcom/android/server/wm/TaskSnapshotPersister;->deleteSnapshot(II)V
+
+    return-void
+.end method
+
+.method private createDirectory(I)Z
+    .registers 4
+    .param p1, "userId"  # I
+
+    .line 220
+    invoke-direct {p0, p1}, Lcom/android/server/wm/TaskSnapshotPersister;->getDirectory(I)Ljava/io/File;
+
+    move-result-object v0
+
+    .line 221
+    .local v0, "dir":Ljava/io/File;
+    invoke-virtual {v0}, Ljava/io/File;->exists()Z
+
+    move-result v1
+
+    if-nez v1, :cond_13
+
+    invoke-virtual {v0}, Ljava/io/File;->mkdirs()Z
+
+    move-result v1
+
+    if-eqz v1, :cond_11
 
     goto :goto_13
 
     :cond_11
-    const/4 p1, 0x0
+    const/4 v1, 0x0
 
     goto :goto_14
 
     :cond_13
     :goto_13
-    const/4 p1, 0x1
+    const/4 v1, 0x1
 
     :goto_14
-    return p1
+    return v1
 .end method
 
 .method private deleteSnapshot(II)V
-    .registers 5
+    .registers 6
+    .param p1, "taskId"  # I
+    .param p2, "userId"  # I
 
-    .line 229
+    .line 225
     invoke-virtual {p0, p1, p2}, Lcom/android/server/wm/TaskSnapshotPersister;->getProtoFile(II)Ljava/io/File;
 
     move-result-object v0
 
-    .line 230
+    .line 226
+    .local v0, "protoFile":Ljava/io/File;
     invoke-virtual {p0, p1, p2}, Lcom/android/server/wm/TaskSnapshotPersister;->getReducedResolutionBitmapFile(II)Ljava/io/File;
 
     move-result-object v1
 
-    .line 231
+    .line 227
+    .local v1, "bitmapReducedFile":Ljava/io/File;
     invoke-virtual {v0}, Ljava/io/File;->delete()Z
 
-    .line 232
+    .line 228
     invoke-virtual {v1}, Ljava/io/File;->delete()Z
 
-    .line 235
-    sget-boolean v0, Lcom/android/server/wm/TaskSnapshotPersister;->DISABLE_FULL_SIZED_BITMAPS:Z
+    .line 231
+    sget-boolean v2, Lcom/android/server/wm/TaskSnapshotPersister;->DISABLE_FULL_SIZED_BITMAPS:Z
 
-    if-nez v0, :cond_19
+    if-nez v2, :cond_19
 
-    .line 236
+    .line 232
     invoke-virtual {p0, p1, p2}, Lcom/android/server/wm/TaskSnapshotPersister;->getBitmapFile(II)Ljava/io/File;
 
-    move-result-object p1
+    move-result-object v2
 
-    .line 237
-    invoke-virtual {p1}, Ljava/io/File;->delete()Z
+    .line 233
+    .local v2, "bitmapFile":Ljava/io/File;
+    invoke-virtual {v2}, Ljava/io/File;->delete()Z
 
-    .line 239
+    .line 235
+    .end local v2  # "bitmapFile":Ljava/io/File;
     :cond_19
     return-void
 .end method
@@ -410,7 +413,7 @@
         }
     .end annotation
 
-    .line 195
+    .line 191
     :goto_0
     iget-object v0, p0, Lcom/android/server/wm/TaskSnapshotPersister;->mStoreQueueItems:Ljava/util/ArrayDeque;
 
@@ -422,7 +425,7 @@
 
     if-le v0, v1, :cond_31
 
-    .line 196
+    .line 192
     iget-object v0, p0, Lcom/android/server/wm/TaskSnapshotPersister;->mStoreQueueItems:Ljava/util/ArrayDeque;
 
     invoke-virtual {v0}, Ljava/util/ArrayDeque;->poll()Ljava/lang/Object;
@@ -431,12 +434,13 @@
 
     check-cast v0, Lcom/android/server/wm/TaskSnapshotPersister$StoreWriteQueueItem;
 
-    .line 197
+    .line 193
+    .local v0, "item":Lcom/android/server/wm/TaskSnapshotPersister$StoreWriteQueueItem;
     iget-object v1, p0, Lcom/android/server/wm/TaskSnapshotPersister;->mWriteQueue:Ljava/util/ArrayDeque;
 
     invoke-virtual {v1, v0}, Ljava/util/ArrayDeque;->remove(Ljava/lang/Object;)Z
 
-    .line 198
+    .line 194
     new-instance v1, Ljava/lang/StringBuilder;
 
     invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
@@ -447,75 +451,78 @@
 
     invoke-static {v0}, Lcom/android/server/wm/TaskSnapshotPersister$StoreWriteQueueItem;->access$000(Lcom/android/server/wm/TaskSnapshotPersister$StoreWriteQueueItem;)I
 
-    move-result v0
+    move-result v2
 
-    invoke-virtual {v1, v0}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
     invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v1
 
-    const-string v1, "WindowManager"
+    const-string v2, "WindowManager"
 
-    invoke-static {v1, v0}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v2, v1}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 199
+    .line 195
+    .end local v0  # "item":Lcom/android/server/wm/TaskSnapshotPersister$StoreWriteQueueItem;
     goto :goto_0
 
-    .line 200
+    .line 196
     :cond_31
     return-void
 .end method
 
 .method private getDirectory(I)Ljava/io/File;
-    .registers 4
+    .registers 5
+    .param p1, "userId"  # I
 
-    .line 203
+    .line 199
     new-instance v0, Ljava/io/File;
 
     iget-object v1, p0, Lcom/android/server/wm/TaskSnapshotPersister;->mDirectoryResolver:Lcom/android/server/wm/TaskSnapshotPersister$DirectoryResolver;
 
     invoke-interface {v1, p1}, Lcom/android/server/wm/TaskSnapshotPersister$DirectoryResolver;->getSystemDirectoryForUser(I)Ljava/io/File;
 
-    move-result-object p1
+    move-result-object v1
 
-    const-string v1, "snapshots"
+    const-string v2, "snapshots"
 
-    invoke-direct {v0, p1, v1}, Ljava/io/File;-><init>(Ljava/io/File;Ljava/lang/String;)V
+    invoke-direct {v0, v1, v2}, Ljava/io/File;-><init>(Ljava/io/File;Ljava/lang/String;)V
 
     return-object v0
 .end method
 
 .method private sendToQueueLocked(Lcom/android/server/wm/TaskSnapshotPersister$WriteQueueItem;)V
     .registers 3
+    .param p1, "item"  # Lcom/android/server/wm/TaskSnapshotPersister$WriteQueueItem;
     .annotation build Lcom/android/internal/annotations/GuardedBy;
         value = {
             "mLock"
         }
     .end annotation
 
-    .line 185
+    .line 181
     iget-object v0, p0, Lcom/android/server/wm/TaskSnapshotPersister;->mWriteQueue:Ljava/util/ArrayDeque;
 
     invoke-virtual {v0, p1}, Ljava/util/ArrayDeque;->offer(Ljava/lang/Object;)Z
 
-    .line 186
+    .line 182
     invoke-virtual {p1}, Lcom/android/server/wm/TaskSnapshotPersister$WriteQueueItem;->onQueuedLocked()V
 
-    .line 187
+    .line 183
     invoke-direct {p0}, Lcom/android/server/wm/TaskSnapshotPersister;->ensureStoreQueueDepthLocked()V
 
-    .line 188
-    iget-boolean p1, p0, Lcom/android/server/wm/TaskSnapshotPersister;->mPaused:Z
+    .line 184
+    iget-boolean v0, p0, Lcom/android/server/wm/TaskSnapshotPersister;->mPaused:Z
 
-    if-nez p1, :cond_14
+    if-nez v0, :cond_14
 
-    .line 189
-    iget-object p1, p0, Lcom/android/server/wm/TaskSnapshotPersister;->mLock:Ljava/lang/Object;
+    .line 185
+    iget-object v0, p0, Lcom/android/server/wm/TaskSnapshotPersister;->mLock:Ljava/lang/Object;
 
-    invoke-virtual {p1}, Ljava/lang/Object;->notifyAll()V
+    invoke-virtual {v0}, Ljava/lang/Object;->notifyAll()V
 
-    .line 191
+    .line 187
     :cond_14
     return-void
 .end method
@@ -523,110 +530,116 @@
 
 # virtual methods
 .method getBitmapFile(II)Ljava/io/File;
-    .registers 5
+    .registers 7
+    .param p1, "taskId"  # I
+    .param p2, "userId"  # I
 
-    .line 212
+    .line 208
     sget-boolean v0, Lcom/android/server/wm/TaskSnapshotPersister;->DISABLE_FULL_SIZED_BITMAPS:Z
 
     if-eqz v0, :cond_d
 
-    .line 213
-    const-string p1, "WindowManager"
+    .line 209
+    const-string v0, "WindowManager"
 
-    const-string p2, "This device does not support full sized resolution bitmaps."
+    const-string v1, "This device does not support full sized resolution bitmaps."
 
-    invoke-static {p1, p2}, Landroid/util/Slog;->wtf(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v0, v1}, Landroid/util/Slog;->wtf(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 214
-    const/4 p1, 0x0
+    .line 210
+    const/4 v0, 0x0
 
-    return-object p1
+    return-object v0
 
-    .line 216
+    .line 212
     :cond_d
     new-instance v0, Ljava/io/File;
 
     invoke-direct {p0, p2}, Lcom/android/server/wm/TaskSnapshotPersister;->getDirectory(I)Ljava/io/File;
 
-    move-result-object p2
+    move-result-object v1
 
-    new-instance v1, Ljava/lang/StringBuilder;
+    new-instance v2, Ljava/lang/StringBuilder;
 
-    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
 
-    invoke-virtual {v1, p1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, p1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    const-string p1, ".jpg"
+    const-string v3, ".jpg"
 
-    invoke-virtual {v1, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v2
 
-    invoke-direct {v0, p2, p1}, Ljava/io/File;-><init>(Ljava/io/File;Ljava/lang/String;)V
+    invoke-direct {v0, v1, v2}, Ljava/io/File;-><init>(Ljava/io/File;Ljava/lang/String;)V
 
     return-object v0
 .end method
 
 .method getProtoFile(II)Ljava/io/File;
-    .registers 5
+    .registers 7
+    .param p1, "taskId"  # I
+    .param p2, "userId"  # I
 
-    .line 207
+    .line 203
     new-instance v0, Ljava/io/File;
 
     invoke-direct {p0, p2}, Lcom/android/server/wm/TaskSnapshotPersister;->getDirectory(I)Ljava/io/File;
 
-    move-result-object p2
+    move-result-object v1
 
-    new-instance v1, Ljava/lang/StringBuilder;
+    new-instance v2, Ljava/lang/StringBuilder;
 
-    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
 
-    invoke-virtual {v1, p1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, p1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    const-string p1, ".proto"
+    const-string v3, ".proto"
 
-    invoke-virtual {v1, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v2
 
-    invoke-direct {v0, p2, p1}, Ljava/io/File;-><init>(Ljava/io/File;Ljava/lang/String;)V
+    invoke-direct {v0, v1, v2}, Ljava/io/File;-><init>(Ljava/io/File;Ljava/lang/String;)V
 
     return-object v0
 .end method
 
 .method getReducedResolutionBitmapFile(II)Ljava/io/File;
-    .registers 5
+    .registers 7
+    .param p1, "taskId"  # I
+    .param p2, "userId"  # I
 
-    .line 220
+    .line 216
     new-instance v0, Ljava/io/File;
 
     invoke-direct {p0, p2}, Lcom/android/server/wm/TaskSnapshotPersister;->getDirectory(I)Ljava/io/File;
 
-    move-result-object p2
+    move-result-object v1
 
-    new-instance v1, Ljava/lang/StringBuilder;
+    new-instance v2, Ljava/lang/StringBuilder;
 
-    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
 
-    invoke-virtual {v1, p1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, p1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    const-string p1, "_reduced"
+    const-string v3, "_reduced"
 
-    invoke-virtual {v1, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string p1, ".jpg"
+    const-string v3, ".jpg"
 
-    invoke-virtual {v1, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v2
 
-    invoke-direct {v0, p2, p1}, Ljava/io/File;-><init>(Ljava/io/File;Ljava/lang/String;)V
+    invoke-direct {v0, v1, v2}, Ljava/io/File;-><init>(Ljava/io/File;Ljava/lang/String;)V
 
     return-object v0
 .end method
@@ -634,7 +647,7 @@
 .method getReducedScale()F
     .registers 2
 
-    .line 168
+    .line 164
     iget v0, p0, Lcom/android/server/wm/TaskSnapshotPersister;->mReducedScale:F
 
     return v0
@@ -642,13 +655,15 @@
 
 .method onTaskRemovedFromRecents(II)V
     .registers 6
+    .param p1, "taskId"  # I
+    .param p2, "userId"  # I
 
-    .line 132
+    .line 128
     iget-object v0, p0, Lcom/android/server/wm/TaskSnapshotPersister;->mLock:Ljava/lang/Object;
 
     monitor-enter v0
 
-    .line 133
+    .line 129
     :try_start_3
     iget-object v1, p0, Lcom/android/server/wm/TaskSnapshotPersister;->mPersistedTaskIdsSinceLastRemoveObsolete:Landroid/util/ArraySet;
 
@@ -658,39 +673,42 @@
 
     invoke-virtual {v1, v2}, Landroid/util/ArraySet;->remove(Ljava/lang/Object;)Z
 
-    .line 134
+    .line 130
     new-instance v1, Lcom/android/server/wm/TaskSnapshotPersister$DeleteWriteQueueItem;
 
     invoke-direct {v1, p0, p1, p2}, Lcom/android/server/wm/TaskSnapshotPersister$DeleteWriteQueueItem;-><init>(Lcom/android/server/wm/TaskSnapshotPersister;II)V
 
     invoke-direct {p0, v1}, Lcom/android/server/wm/TaskSnapshotPersister;->sendToQueueLocked(Lcom/android/server/wm/TaskSnapshotPersister$WriteQueueItem;)V
 
-    .line 135
+    .line 131
     monitor-exit v0
 
-    .line 136
+    .line 132
     return-void
 
-    .line 135
+    .line 131
     :catchall_16
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_18
     .catchall {:try_start_3 .. :try_end_18} :catchall_16
 
-    throw p1
+    throw v1
 .end method
 
 .method persistSnapshot(IILandroid/app/ActivityManager$TaskSnapshot;)V
     .registers 7
+    .param p1, "taskId"  # I
+    .param p2, "userId"  # I
+    .param p3, "snapshot"  # Landroid/app/ActivityManager$TaskSnapshot;
 
-    .line 119
+    .line 115
     iget-object v0, p0, Lcom/android/server/wm/TaskSnapshotPersister;->mLock:Ljava/lang/Object;
 
     monitor-enter v0
 
-    .line 120
+    .line 116
     :try_start_3
     iget-object v1, p0, Lcom/android/server/wm/TaskSnapshotPersister;->mPersistedTaskIdsSinceLastRemoveObsolete:Landroid/util/ArraySet;
 
@@ -700,32 +718,33 @@
 
     invoke-virtual {v1, v2}, Landroid/util/ArraySet;->add(Ljava/lang/Object;)Z
 
-    .line 121
+    .line 117
     new-instance v1, Lcom/android/server/wm/TaskSnapshotPersister$StoreWriteQueueItem;
 
     invoke-direct {v1, p0, p1, p2, p3}, Lcom/android/server/wm/TaskSnapshotPersister$StoreWriteQueueItem;-><init>(Lcom/android/server/wm/TaskSnapshotPersister;IILandroid/app/ActivityManager$TaskSnapshot;)V
 
     invoke-direct {p0, v1}, Lcom/android/server/wm/TaskSnapshotPersister;->sendToQueueLocked(Lcom/android/server/wm/TaskSnapshotPersister$WriteQueueItem;)V
 
-    .line 122
+    .line 118
     monitor-exit v0
 
-    .line 123
+    .line 119
     return-void
 
-    .line 122
+    .line 118
     :catchall_16
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_18
     .catchall {:try_start_3 .. :try_end_18} :catchall_16
 
-    throw p1
+    throw v1
 .end method
 
 .method removeObsoleteFiles(Landroid/util/ArraySet;[I)V
     .registers 5
+    .param p2, "runningUserIds"  # [I
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(",
@@ -735,98 +754,100 @@
         }
     .end annotation
 
-    .line 147
+    .line 143
+    .local p1, "persistentTaskIds":Landroid/util/ArraySet;, "Landroid/util/ArraySet<Ljava/lang/Integer;>;"
     iget-object v0, p0, Lcom/android/server/wm/TaskSnapshotPersister;->mLock:Ljava/lang/Object;
 
     monitor-enter v0
 
-    .line 148
+    .line 144
     :try_start_3
     iget-object v1, p0, Lcom/android/server/wm/TaskSnapshotPersister;->mPersistedTaskIdsSinceLastRemoveObsolete:Landroid/util/ArraySet;
 
     invoke-virtual {v1}, Landroid/util/ArraySet;->clear()V
 
-    .line 149
+    .line 145
     new-instance v1, Lcom/android/server/wm/TaskSnapshotPersister$RemoveObsoleteFilesQueueItem;
 
     invoke-direct {v1, p0, p1, p2}, Lcom/android/server/wm/TaskSnapshotPersister$RemoveObsoleteFilesQueueItem;-><init>(Lcom/android/server/wm/TaskSnapshotPersister;Landroid/util/ArraySet;[I)V
 
     invoke-direct {p0, v1}, Lcom/android/server/wm/TaskSnapshotPersister;->sendToQueueLocked(Lcom/android/server/wm/TaskSnapshotPersister$WriteQueueItem;)V
 
-    .line 150
+    .line 146
     monitor-exit v0
 
-    .line 151
+    .line 147
     return-void
 
-    .line 150
+    .line 146
     :catchall_12
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_14
     .catchall {:try_start_3 .. :try_end_14} :catchall_12
 
-    throw p1
+    throw v1
 .end method
 
 .method setPaused(Z)V
-    .registers 3
+    .registers 4
+    .param p1, "paused"  # Z
 
-    .line 154
+    .line 150
     iget-object v0, p0, Lcom/android/server/wm/TaskSnapshotPersister;->mLock:Ljava/lang/Object;
 
     monitor-enter v0
 
-    .line 155
+    .line 151
     :try_start_3
     iput-boolean p1, p0, Lcom/android/server/wm/TaskSnapshotPersister;->mPaused:Z
 
-    .line 156
+    .line 152
     if-nez p1, :cond_c
 
-    .line 157
-    iget-object p1, p0, Lcom/android/server/wm/TaskSnapshotPersister;->mLock:Ljava/lang/Object;
+    .line 153
+    iget-object v1, p0, Lcom/android/server/wm/TaskSnapshotPersister;->mLock:Ljava/lang/Object;
 
-    invoke-virtual {p1}, Ljava/lang/Object;->notifyAll()V
+    invoke-virtual {v1}, Ljava/lang/Object;->notifyAll()V
 
-    .line 159
+    .line 155
     :cond_c
     monitor-exit v0
 
-    .line 160
+    .line 156
     return-void
 
-    .line 159
+    .line 155
     :catchall_e
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_10
     .catchall {:try_start_3 .. :try_end_10} :catchall_e
 
-    throw p1
+    throw v1
 .end method
 
 .method start()V
     .registers 2
 
-    .line 105
+    .line 101
     iget-boolean v0, p0, Lcom/android/server/wm/TaskSnapshotPersister;->mStarted:Z
 
     if-nez v0, :cond_c
 
-    .line 106
+    .line 102
     const/4 v0, 0x1
 
     iput-boolean v0, p0, Lcom/android/server/wm/TaskSnapshotPersister;->mStarted:Z
 
-    .line 107
+    .line 103
     iget-object v0, p0, Lcom/android/server/wm/TaskSnapshotPersister;->mPersister:Ljava/lang/Thread;
 
     invoke-virtual {v0}, Ljava/lang/Thread;->start()V
 
-    .line 109
+    .line 105
     :cond_c
     return-void
 .end method
@@ -834,13 +855,13 @@
 .method waitForQueueEmpty()V
     .registers 3
 
-    .line 174
+    .line 170
     :goto_0
     iget-object v0, p0, Lcom/android/server/wm/TaskSnapshotPersister;->mLock:Ljava/lang/Object;
 
     monitor-enter v0
 
-    .line 175
+    .line 171
     :try_start_3
     iget-object v1, p0, Lcom/android/server/wm/TaskSnapshotPersister;->mWriteQueue:Ljava/util/ArrayDeque;
 
@@ -854,25 +875,25 @@
 
     if-eqz v1, :cond_11
 
-    .line 176
+    .line 172
     monitor-exit v0
 
     return-void
 
-    .line 178
+    .line 174
     :cond_11
     monitor-exit v0
     :try_end_12
     .catchall {:try_start_3 .. :try_end_12} :catchall_18
 
-    .line 179
+    .line 175
     const-wide/16 v0, 0x64
 
     invoke-static {v0, v1}, Landroid/os/SystemClock;->sleep(J)V
 
     goto :goto_0
 
-    .line 178
+    .line 174
     :catchall_18
     move-exception v1
 

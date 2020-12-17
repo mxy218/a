@@ -21,6 +21,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/job/JobSchedulerService;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/job/JobSchedulerService;
 
     .line 923
     iput-object p1, p0, Lcom/android/server/job/JobSchedulerService$2;->this$0:Lcom/android/server/job/JobSchedulerService;
@@ -34,6 +35,7 @@
 # virtual methods
 .method public onUidActive(I)V
     .registers 5
+    .param p1, "uid"  # I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -51,9 +53,9 @@
 
     invoke-virtual {v0, v1, p1, v2}, Lcom/android/server/job/JobSchedulerService$JobHandler;->obtainMessage(III)Landroid/os/Message;
 
-    move-result-object p1
+    move-result-object v0
 
-    invoke-virtual {p1}, Landroid/os/Message;->sendToTarget()V
+    invoke-virtual {v0}, Landroid/os/Message;->sendToTarget()V
 
     .line 934
     return-void
@@ -61,6 +63,8 @@
 
 .method public onUidCachedChanged(IZ)V
     .registers 3
+    .param p1, "uid"  # I
+    .param p2, "cached"  # Z
 
     .line 941
     return-void
@@ -68,6 +72,8 @@
 
 .method public onUidGone(IZ)V
     .registers 5
+    .param p1, "uid"  # I
+    .param p2, "disabled"  # Z
 
     .line 929
     iget-object v0, p0, Lcom/android/server/job/JobSchedulerService$2;->this$0:Lcom/android/server/job/JobSchedulerService;
@@ -78,9 +84,9 @@
 
     invoke-virtual {v0, v1, p1, p2}, Lcom/android/server/job/JobSchedulerService$JobHandler;->obtainMessage(III)Landroid/os/Message;
 
-    move-result-object p1
+    move-result-object v0
 
-    invoke-virtual {p1}, Landroid/os/Message;->sendToTarget()V
+    invoke-virtual {v0}, Landroid/os/Message;->sendToTarget()V
 
     .line 930
     return-void
@@ -88,6 +94,8 @@
 
 .method public onUidIdle(IZ)V
     .registers 5
+    .param p1, "uid"  # I
+    .param p2, "disabled"  # Z
 
     .line 937
     iget-object v0, p0, Lcom/android/server/job/JobSchedulerService$2;->this$0:Lcom/android/server/job/JobSchedulerService;
@@ -98,29 +106,32 @@
 
     invoke-virtual {v0, v1, p1, p2}, Lcom/android/server/job/JobSchedulerService$JobHandler;->obtainMessage(III)Landroid/os/Message;
 
-    move-result-object p1
+    move-result-object v0
 
-    invoke-virtual {p1}, Landroid/os/Message;->sendToTarget()V
+    invoke-virtual {v0}, Landroid/os/Message;->sendToTarget()V
 
     .line 938
     return-void
 .end method
 
 .method public onUidStateChanged(IIJ)V
-    .registers 5
+    .registers 7
+    .param p1, "uid"  # I
+    .param p2, "procState"  # I
+    .param p3, "procStateSeq"  # J
 
     .line 925
-    iget-object p3, p0, Lcom/android/server/job/JobSchedulerService$2;->this$0:Lcom/android/server/job/JobSchedulerService;
+    iget-object v0, p0, Lcom/android/server/job/JobSchedulerService$2;->this$0:Lcom/android/server/job/JobSchedulerService;
 
-    iget-object p3, p3, Lcom/android/server/job/JobSchedulerService;->mHandler:Lcom/android/server/job/JobSchedulerService$JobHandler;
+    iget-object v0, v0, Lcom/android/server/job/JobSchedulerService;->mHandler:Lcom/android/server/job/JobSchedulerService$JobHandler;
 
-    const/4 p4, 0x4
+    const/4 v1, 0x4
 
-    invoke-virtual {p3, p4, p1, p2}, Lcom/android/server/job/JobSchedulerService$JobHandler;->obtainMessage(III)Landroid/os/Message;
+    invoke-virtual {v0, v1, p1, p2}, Lcom/android/server/job/JobSchedulerService$JobHandler;->obtainMessage(III)Landroid/os/Message;
 
-    move-result-object p1
+    move-result-object v0
 
-    invoke-virtual {p1}, Landroid/os/Message;->sendToTarget()V
+    invoke-virtual {v0}, Landroid/os/Message;->sendToTarget()V
 
     .line 926
     return-void

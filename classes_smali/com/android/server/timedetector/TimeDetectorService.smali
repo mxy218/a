@@ -34,6 +34,9 @@
 # direct methods
 .method public constructor <init>(Landroid/content/Context;Lcom/android/server/timedetector/TimeDetectorStrategy$Callback;Lcom/android/server/timedetector/TimeDetectorStrategy;)V
     .registers 5
+    .param p1, "context"  # Landroid/content/Context;
+    .param p2, "callback"  # Lcom/android/server/timedetector/TimeDetectorStrategy$Callback;
+    .param p3, "timeDetectorStrategy"  # Lcom/android/server/timedetector/TimeDetectorStrategy;
     .annotation build Lcom/android/internal/annotations/VisibleForTesting;
     .end annotation
 
@@ -50,47 +53,49 @@
     .line 93
     invoke-static {p1}, Ljava/util/Objects;->requireNonNull(Ljava/lang/Object;)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v0
 
-    check-cast p1, Landroid/content/Context;
+    check-cast v0, Landroid/content/Context;
 
-    iput-object p1, p0, Lcom/android/server/timedetector/TimeDetectorService;->mContext:Landroid/content/Context;
+    iput-object v0, p0, Lcom/android/server/timedetector/TimeDetectorService;->mContext:Landroid/content/Context;
 
     .line 94
     invoke-static {p2}, Ljava/util/Objects;->requireNonNull(Ljava/lang/Object;)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v0
 
-    check-cast p1, Lcom/android/server/timedetector/TimeDetectorStrategy$Callback;
+    check-cast v0, Lcom/android/server/timedetector/TimeDetectorStrategy$Callback;
 
-    iput-object p1, p0, Lcom/android/server/timedetector/TimeDetectorService;->mCallback:Lcom/android/server/timedetector/TimeDetectorStrategy$Callback;
+    iput-object v0, p0, Lcom/android/server/timedetector/TimeDetectorService;->mCallback:Lcom/android/server/timedetector/TimeDetectorStrategy$Callback;
 
     .line 95
     invoke-static {p3}, Ljava/util/Objects;->requireNonNull(Ljava/lang/Object;)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v0
 
-    check-cast p1, Lcom/android/server/timedetector/TimeDetectorStrategy;
+    check-cast v0, Lcom/android/server/timedetector/TimeDetectorStrategy;
 
-    iput-object p1, p0, Lcom/android/server/timedetector/TimeDetectorService;->mTimeDetectorStrategy:Lcom/android/server/timedetector/TimeDetectorStrategy;
+    iput-object v0, p0, Lcom/android/server/timedetector/TimeDetectorService;->mTimeDetectorStrategy:Lcom/android/server/timedetector/TimeDetectorStrategy;
 
     .line 96
     return-void
 .end method
 
 .method static synthetic access$000(Landroid/content/Context;)Lcom/android/server/timedetector/TimeDetectorService;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Landroid/content/Context;
 
     .line 40
     invoke-static {p0}, Lcom/android/server/timedetector/TimeDetectorService;->create(Landroid/content/Context;)Lcom/android/server/timedetector/TimeDetectorService;
 
-    move-result-object p0
+    move-result-object v0
 
-    return-object p0
+    return-object v0
 .end method
 
 .method private static create(Landroid/content/Context;)Lcom/android/server/timedetector/TimeDetectorService;
-    .registers 5
+    .registers 8
+    .param p0, "context"  # Landroid/content/Context;
 
     .line 69
     new-instance v0, Lcom/android/server/timedetector/SimpleTimeDetectorStrategy;
@@ -98,11 +103,13 @@
     invoke-direct {v0}, Lcom/android/server/timedetector/SimpleTimeDetectorStrategy;-><init>()V
 
     .line 70
+    .local v0, "timeDetector":Lcom/android/server/timedetector/TimeDetectorStrategy;
     new-instance v1, Lcom/android/server/timedetector/TimeDetectorStrategyCallbackImpl;
 
     invoke-direct {v1, p0}, Lcom/android/server/timedetector/TimeDetectorStrategyCallbackImpl;-><init>(Landroid/content/Context;)V
 
     .line 72
+    .local v1, "callback":Lcom/android/server/timedetector/TimeDetectorStrategyCallbackImpl;
     invoke-interface {v0, v1}, Lcom/android/server/timedetector/TimeDetectorStrategy;->initialize(Lcom/android/server/timedetector/TimeDetectorStrategy$Callback;)V
 
     .line 74
@@ -111,33 +118,35 @@
     invoke-direct {v2, p0, v1, v0}, Lcom/android/server/timedetector/TimeDetectorService;-><init>(Landroid/content/Context;Lcom/android/server/timedetector/TimeDetectorStrategy$Callback;Lcom/android/server/timedetector/TimeDetectorStrategy;)V
 
     .line 78
+    .local v2, "timeDetectorService":Lcom/android/server/timedetector/TimeDetectorService;
     invoke-virtual {p0}, Landroid/content/Context;->getContentResolver()Landroid/content/ContentResolver;
 
-    move-result-object p0
+    move-result-object v3
 
     .line 79
+    .local v3, "contentResolver":Landroid/content/ContentResolver;
     nop
 
     .line 80
-    const-string v0, "auto_time"
+    const-string v4, "auto_time"
 
-    invoke-static {v0}, Landroid/provider/Settings$Global;->getUriFor(Ljava/lang/String;)Landroid/net/Uri;
+    invoke-static {v4}, Landroid/provider/Settings$Global;->getUriFor(Ljava/lang/String;)Landroid/net/Uri;
 
-    move-result-object v0
+    move-result-object v4
 
-    new-instance v1, Lcom/android/server/timedetector/TimeDetectorService$1;
+    new-instance v5, Lcom/android/server/timedetector/TimeDetectorService$1;
 
     .line 81
     invoke-static {}, Lcom/android/server/FgThread;->getHandler()Landroid/os/Handler;
 
-    move-result-object v3
+    move-result-object v6
 
-    invoke-direct {v1, v3, v2}, Lcom/android/server/timedetector/TimeDetectorService$1;-><init>(Landroid/os/Handler;Lcom/android/server/timedetector/TimeDetectorService;)V
+    invoke-direct {v5, v6, v2}, Lcom/android/server/timedetector/TimeDetectorService$1;-><init>(Landroid/os/Handler;Lcom/android/server/timedetector/TimeDetectorService;)V
 
     .line 79
-    const/4 v3, 0x1
+    const/4 v6, 0x1
 
-    invoke-virtual {p0, v0, v3, v1}, Landroid/content/ContentResolver;->registerContentObserver(Landroid/net/Uri;ZLandroid/database/ContentObserver;)V
+    invoke-virtual {v3, v4, v6, v5}, Landroid/content/ContentResolver;->registerContentObserver(Landroid/net/Uri;ZLandroid/database/ContentObserver;)V
 
     .line 87
     return-object v2
@@ -162,48 +171,51 @@
 
 # virtual methods
 .method protected dump(Ljava/io/FileDescriptor;Ljava/io/PrintWriter;[Ljava/lang/String;)V
-    .registers 5
+    .registers 6
+    .param p1, "fd"  # Ljava/io/FileDescriptor;
+    .param p2, "pw"  # Ljava/io/PrintWriter;
+    .param p3, "args"  # [Ljava/lang/String;
 
     .line 124
-    iget-object p1, p0, Lcom/android/server/timedetector/TimeDetectorService;->mContext:Landroid/content/Context;
+    iget-object v0, p0, Lcom/android/server/timedetector/TimeDetectorService;->mContext:Landroid/content/Context;
 
-    const-string/jumbo v0, "timedetector.TimeDetectorService"
+    const-string/jumbo v1, "timedetector.TimeDetectorService"
 
-    invoke-static {p1, v0, p2}, Lcom/android/internal/util/DumpUtils;->checkDumpPermission(Landroid/content/Context;Ljava/lang/String;Ljava/io/PrintWriter;)Z
+    invoke-static {v0, v1, p2}, Lcom/android/internal/util/DumpUtils;->checkDumpPermission(Landroid/content/Context;Ljava/lang/String;Ljava/io/PrintWriter;)Z
 
-    move-result p1
+    move-result v0
 
-    if-nez p1, :cond_c
+    if-nez v0, :cond_c
 
     return-void
 
     .line 126
     :cond_c
-    iget-object p1, p0, Lcom/android/server/timedetector/TimeDetectorService;->mStrategyLock:Ljava/lang/Object;
+    iget-object v0, p0, Lcom/android/server/timedetector/TimeDetectorService;->mStrategyLock:Ljava/lang/Object;
 
-    monitor-enter p1
+    monitor-enter v0
 
     .line 127
     :try_start_f
-    iget-object v0, p0, Lcom/android/server/timedetector/TimeDetectorService;->mTimeDetectorStrategy:Lcom/android/server/timedetector/TimeDetectorStrategy;
+    iget-object v1, p0, Lcom/android/server/timedetector/TimeDetectorService;->mTimeDetectorStrategy:Lcom/android/server/timedetector/TimeDetectorStrategy;
 
-    invoke-interface {v0, p2, p3}, Lcom/android/server/timedetector/TimeDetectorStrategy;->dump(Ljava/io/PrintWriter;[Ljava/lang/String;)V
+    invoke-interface {v1, p2, p3}, Lcom/android/server/timedetector/TimeDetectorStrategy;->dump(Ljava/io/PrintWriter;[Ljava/lang/String;)V
 
     .line 128
-    monitor-exit p1
+    monitor-exit v0
 
     .line 129
     return-void
 
     .line 128
     :catchall_16
-    move-exception p2
+    move-exception v1
 
-    monitor-exit p1
+    monitor-exit v0
     :try_end_18
     .catchall {:try_start_f .. :try_end_18} :catchall_16
 
-    throw p2
+    throw v1
 .end method
 
 .method public handleAutoTimeDetectionToggle()V
@@ -225,11 +237,13 @@
     move-result v1
 
     .line 117
+    .local v1, "timeDetectionEnabled":Z
     iget-object v2, p0, Lcom/android/server/timedetector/TimeDetectorService;->mTimeDetectorStrategy:Lcom/android/server/timedetector/TimeDetectorStrategy;
 
     invoke-interface {v2, v1}, Lcom/android/server/timedetector/TimeDetectorStrategy;->handleAutoTimeDetectionToggle(Z)V
 
     .line 118
+    .end local v1  # "timeDetectionEnabled":Z
     monitor-exit v0
 
     .line 119
@@ -248,6 +262,7 @@
 
 .method public suggestTime(Landroid/app/timedetector/TimeSignal;)V
     .registers 6
+    .param p1, "timeSignal"  # Landroid/app/timedetector/TimeSignal;
 
     .line 100
     invoke-direct {p0}, Lcom/android/server/timedetector/TimeDetectorService;->enforceSetTimePermission()V
@@ -261,6 +276,7 @@
     move-result-wide v0
 
     .line 105
+    .local v0, "idToken":J
     :try_start_a
     iget-object v2, p0, Lcom/android/server/timedetector/TimeDetectorService;->mStrategyLock:Ljava/lang/Object;
 
@@ -290,23 +306,29 @@
 
     .line 107
     :catchall_18
-    move-exception p1
+    move-exception v3
 
     :try_start_19
     monitor-exit v2
     :try_end_1a
     .catchall {:try_start_19 .. :try_end_1a} :catchall_18
 
+    .end local v0  # "idToken":J
+    .end local p0  # "this":Lcom/android/server/timedetector/TimeDetectorService;
+    .end local p1  # "timeSignal":Landroid/app/timedetector/TimeSignal;
     :try_start_1a
-    throw p1
+    throw v3
     :try_end_1b
     .catchall {:try_start_1a .. :try_end_1b} :catchall_1b
 
     .line 109
+    .restart local v0  # "idToken":J
+    .restart local p0  # "this":Lcom/android/server/timedetector/TimeDetectorService;
+    .restart local p1  # "timeSignal":Landroid/app/timedetector/TimeSignal;
     :catchall_1b
-    move-exception p1
+    move-exception v2
 
     invoke-static {v0, v1}, Landroid/os/Binder;->restoreCallingIdentity(J)V
 
-    throw p1
+    throw v2
 .end method

@@ -66,6 +66,7 @@
 # virtual methods
 .method public createPackageStats(Ljava/lang/String;)Lcom/android/server/pm/CompilerStats$PackageStats;
     .registers 5
+    .param p1, "packageName"  # Ljava/lang/String;
 
     .line 141
     iget-object v0, p0, Lcom/android/server/pm/CompilerStats;->packageStats:Ljava/util/Map;
@@ -79,6 +80,7 @@
     invoke-direct {v1, p1}, Lcom/android/server/pm/CompilerStats$PackageStats;-><init>(Ljava/lang/String;)V
 
     .line 143
+    .local v1, "newStats":Lcom/android/server/pm/CompilerStats$PackageStats;
     iget-object v2, p0, Lcom/android/server/pm/CompilerStats;->packageStats:Ljava/util/Map;
 
     invoke-interface {v2, p1, v1}, Ljava/util/Map;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
@@ -89,18 +91,20 @@
     return-object v1
 
     .line 145
+    .end local v1  # "newStats":Lcom/android/server/pm/CompilerStats$PackageStats;
     :catchall_f
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_11
     .catchall {:try_start_3 .. :try_end_11} :catchall_f
 
-    throw p1
+    throw v1
 .end method
 
 .method public deletePackageStats(Ljava/lang/String;)V
     .registers 4
+    .param p1, "packageName"  # Ljava/lang/String;
 
     .line 160
     iget-object v0, p0, Lcom/android/server/pm/CompilerStats;->packageStats:Ljava/util/Map;
@@ -121,17 +125,18 @@
 
     .line 162
     :catchall_a
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_c
     .catchall {:try_start_3 .. :try_end_c} :catchall_a
 
-    throw p1
+    throw v1
 .end method
 
 .method public getOrCreatePackageStats(Ljava/lang/String;)Lcom/android/server/pm/CompilerStats$PackageStats;
-    .registers 4
+    .registers 5
+    .param p1, "packageName"  # Ljava/lang/String;
 
     .line 149
     iget-object v0, p0, Lcom/android/server/pm/CompilerStats;->packageStats:Ljava/util/Map;
@@ -149,6 +154,7 @@
     check-cast v1, Lcom/android/server/pm/CompilerStats$PackageStats;
 
     .line 151
+    .local v1, "existingStats":Lcom/android/server/pm/CompilerStats$PackageStats;
     if-eqz v1, :cond_f
 
     .line 152
@@ -160,25 +166,27 @@
     :cond_f
     invoke-virtual {p0, p1}, Lcom/android/server/pm/CompilerStats;->createPackageStats(Ljava/lang/String;)Lcom/android/server/pm/CompilerStats$PackageStats;
 
-    move-result-object p1
+    move-result-object v2
 
     monitor-exit v0
 
-    return-object p1
+    return-object v2
 
     .line 156
+    .end local v1  # "existingStats":Lcom/android/server/pm/CompilerStats$PackageStats;
     :catchall_15
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_17
     .catchall {:try_start_3 .. :try_end_17} :catchall_15
 
-    throw p1
+    throw v1
 .end method
 
 .method public getPackageStats(Ljava/lang/String;)Lcom/android/server/pm/CompilerStats$PackageStats;
     .registers 4
+    .param p1, "packageName"  # Ljava/lang/String;
 
     .line 129
     iget-object v0, p0, Lcom/android/server/pm/CompilerStats;->packageStats:Ljava/util/Map;
@@ -191,23 +199,23 @@
 
     invoke-interface {v1, p1}, Ljava/util/Map;->get(Ljava/lang/Object;)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v1
 
-    check-cast p1, Lcom/android/server/pm/CompilerStats$PackageStats;
+    check-cast v1, Lcom/android/server/pm/CompilerStats$PackageStats;
 
     monitor-exit v0
 
-    return-object p1
+    return-object v1
 
     .line 131
     :catchall_d
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_f
     .catchall {:try_start_3 .. :try_end_f} :catchall_d
 
-    throw p1
+    throw v1
 .end method
 
 .method maybeWriteAsync()Z
@@ -238,7 +246,8 @@
 .end method
 
 .method public read(Ljava/io/Reader;)Z
-    .registers 8
+    .registers 12
+    .param p1, "r"  # Ljava/io/Reader;
 
     .line 201
     iget-object v0, p0, Lcom/android/server/pm/CompilerStats;->packageStats:Ljava/util/Map;
@@ -251,7 +260,7 @@
 
     invoke-interface {v1}, Ljava/util/Map;->clear()V
     :try_end_8
-    .catchall {:try_start_3 .. :try_end_8} :catchall_bf
+    .catchall {:try_start_3 .. :try_end_8} :catchall_c1
 
     .line 207
     :try_start_8
@@ -260,238 +269,284 @@
     invoke-direct {v1, p1}, Ljava/io/BufferedReader;-><init>(Ljava/io/Reader;)V
 
     .line 210
+    .local v1, "in":Ljava/io/BufferedReader;
     invoke-virtual {v1}, Ljava/io/BufferedReader;->readLine()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v2
 
     .line 211
-    if-eqz p1, :cond_ac
+    .local v2, "versionLine":Ljava/lang/String;
+    if-eqz v2, :cond_ae
 
     .line 214
-    const-string v2, "PACKAGE_MANAGER__COMPILER_STATS__"
+    const-string v3, "PACKAGE_MANAGER__COMPILER_STATS__"
 
-    invoke-virtual {p1, v2}, Ljava/lang/String;->startsWith(Ljava/lang/String;)Z
+    invoke-virtual {v2, v3}, Ljava/lang/String;->startsWith(Ljava/lang/String;)Z
 
-    move-result v2
+    move-result v3
 
-    if-eqz v2, :cond_95
+    if-eqz v3, :cond_97
 
     .line 217
-    const-string v2, "PACKAGE_MANAGER__COMPILER_STATS__"
+    const-string v3, "PACKAGE_MANAGER__COMPILER_STATS__"
 
     .line 218
-    invoke-virtual {v2}, Ljava/lang/String;->length()I
+    invoke-virtual {v3}, Ljava/lang/String;->length()I
 
-    move-result v2
+    move-result v3
 
-    invoke-virtual {p1, v2}, Ljava/lang/String;->substring(I)Ljava/lang/String;
+    invoke-virtual {v2, v3}, Ljava/lang/String;->substring(I)Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v3
 
     .line 217
-    invoke-static {p1}, Ljava/lang/Integer;->parseInt(Ljava/lang/String;)I
+    invoke-static {v3}, Ljava/lang/Integer;->parseInt(Ljava/lang/String;)I
 
-    move-result p1
+    move-result v3
 
     .line 219
-    const/4 v2, 0x1
+    .local v3, "version":I
+    const/4 v4, 0x1
 
-    if-ne p1, v2, :cond_7e
+    if-ne v3, v4, :cond_80
 
     .line 227
-    new-instance p1, Lcom/android/server/pm/CompilerStats$PackageStats;
+    .end local v3  # "version":I
+    new-instance v3, Lcom/android/server/pm/CompilerStats$PackageStats;
 
-    const-string v3, "fake package"
+    const-string v5, "fake package"
 
-    invoke-direct {p1, v3}, Lcom/android/server/pm/CompilerStats$PackageStats;-><init>(Ljava/lang/String;)V
+    invoke-direct {v3, v5}, Lcom/android/server/pm/CompilerStats$PackageStats;-><init>(Ljava/lang/String;)V
 
     .line 229
-    nop
+    .local v3, "currentPackage":Lcom/android/server/pm/CompilerStats$PackageStats;
+    const/4 v5, 0x0
 
     .line 230
+    .local v5, "s":Ljava/lang/String;
     :goto_34
     invoke-virtual {v1}, Ljava/io/BufferedReader;->readLine()Ljava/lang/String;
 
-    move-result-object v3
+    move-result-object v6
 
-    if-eqz v3, :cond_7b
+    move-object v5, v6
+
+    if-eqz v6, :cond_7d
 
     .line 231
-    const-string v4, "-"
+    const-string v6, "-"
 
-    invoke-virtual {v3, v4}, Ljava/lang/String;->startsWith(Ljava/lang/String;)Z
+    invoke-virtual {v5, v6}, Ljava/lang/String;->startsWith(Ljava/lang/String;)Z
 
-    move-result v4
+    move-result v6
 
-    if-eqz v4, :cond_76
+    if-eqz v6, :cond_77
 
     .line 232
-    const/16 v4, 0x3a
+    const/16 v6, 0x3a
 
-    invoke-virtual {v3, v4}, Ljava/lang/String;->indexOf(I)I
+    invoke-virtual {v5, v6}, Ljava/lang/String;->indexOf(I)I
 
-    move-result v4
+    move-result v6
 
     .line 233
-    const/4 v5, -0x1
+    .local v6, "colonIndex":I
+    const/4 v7, -0x1
 
-    if-eq v4, v5, :cond_5f
+    if-eq v6, v7, :cond_60
 
-    if-eq v4, v2, :cond_5f
+    if-eq v6, v4, :cond_60
 
     .line 236
-    invoke-virtual {v3, v2, v4}, Ljava/lang/String;->substring(II)Ljava/lang/String;
+    invoke-virtual {v5, v4, v6}, Ljava/lang/String;->substring(II)Ljava/lang/String;
 
-    move-result-object v5
+    move-result-object v7
 
     .line 237
-    add-int/lit8 v4, v4, 0x1
+    .local v7, "codePath":Ljava/lang/String;
+    add-int/lit8 v8, v6, 0x1
 
-    invoke-virtual {v3, v4}, Ljava/lang/String;->substring(I)Ljava/lang/String;
+    invoke-virtual {v5, v8}, Ljava/lang/String;->substring(I)Ljava/lang/String;
 
-    move-result-object v3
+    move-result-object v8
 
-    invoke-static {v3}, Ljava/lang/Long;->parseLong(Ljava/lang/String;)J
+    invoke-static {v8}, Ljava/lang/Long;->parseLong(Ljava/lang/String;)J
 
-    move-result-wide v3
+    move-result-wide v8
 
     .line 238
-    invoke-virtual {p1, v5, v3, v4}, Lcom/android/server/pm/CompilerStats$PackageStats;->setCompileTime(Ljava/lang/String;J)V
+    .local v8, "time":J
+    invoke-virtual {v3, v7, v8, v9}, Lcom/android/server/pm/CompilerStats$PackageStats;->setCompileTime(Ljava/lang/String;J)V
 
     .line 239
+    .end local v6  # "colonIndex":I
+    .end local v7  # "codePath":Ljava/lang/String;
+    .end local v8  # "time":J
     goto :goto_34
 
     .line 234
-    :cond_5f
-    new-instance p1, Ljava/lang/IllegalArgumentException;
+    .restart local v6  # "colonIndex":I
+    :cond_60
+    new-instance v4, Ljava/lang/IllegalArgumentException;
 
-    new-instance v1, Ljava/lang/StringBuilder;
+    new-instance v7, Ljava/lang/StringBuilder;
 
-    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v7}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v2, "Could not parse data "
+    const-string v8, "Could not parse data "
 
-    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v7, v8}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v1, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v7, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v7}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v1
+    move-result-object v7
 
-    invoke-direct {p1, v1}, Ljava/lang/IllegalArgumentException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v4, v7}, Ljava/lang/IllegalArgumentException;-><init>(Ljava/lang/String;)V
 
-    throw p1
+    .end local p0  # "this":Lcom/android/server/pm/CompilerStats;
+    .end local p1  # "r":Ljava/io/Reader;
+    throw v4
 
     .line 240
-    :cond_76
-    invoke-virtual {p0, v3}, Lcom/android/server/pm/CompilerStats;->getOrCreatePackageStats(Ljava/lang/String;)Lcom/android/server/pm/CompilerStats$PackageStats;
+    .end local v6  # "colonIndex":I
+    .restart local p0  # "this":Lcom/android/server/pm/CompilerStats;
+    .restart local p1  # "r":Ljava/io/Reader;
+    :cond_77
+    invoke-virtual {p0, v5}, Lcom/android/server/pm/CompilerStats;->getOrCreatePackageStats(Ljava/lang/String;)Lcom/android/server/pm/CompilerStats$PackageStats;
 
-    move-result-object p1
-    :try_end_7a
-    .catch Ljava/lang/Exception; {:try_start_8 .. :try_end_7a} :catch_b4
-    .catchall {:try_start_8 .. :try_end_7a} :catchall_bf
+    move-result-object v6
+    :try_end_7b
+    .catch Ljava/lang/Exception; {:try_start_8 .. :try_end_7b} :catch_b6
+    .catchall {:try_start_8 .. :try_end_7b} :catchall_c1
+
+    move-object v3, v6
 
     goto :goto_34
 
     .line 246
-    :cond_7b
+    .end local v1  # "in":Ljava/io/BufferedReader;
+    .end local v2  # "versionLine":Ljava/lang/String;
+    .end local v3  # "currentPackage":Lcom/android/server/pm/CompilerStats$PackageStats;
+    .end local v5  # "s":Ljava/lang/String;
+    :cond_7d
     nop
 
     .line 248
-    :try_start_7c
+    :try_start_7e
     monitor-exit v0
-    :try_end_7d
-    .catchall {:try_start_7c .. :try_end_7d} :catchall_bf
+    :try_end_7f
+    .catchall {:try_start_7e .. :try_end_7f} :catchall_c1
+
+    return v4
+
+    .line 221
+    .restart local v1  # "in":Ljava/io/BufferedReader;
+    .restart local v2  # "versionLine":Ljava/lang/String;
+    .local v3, "version":I
+    :cond_80
+    :try_start_80
+    new-instance v4, Ljava/lang/IllegalArgumentException;
+
+    new-instance v5, Ljava/lang/StringBuilder;
+
+    invoke-direct {v5}, Ljava/lang/StringBuilder;-><init>()V
+
+    const-string v6, "Unexpected version: "
+
+    invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v5, v3}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v5}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v5
+
+    invoke-direct {v4, v5}, Ljava/lang/IllegalArgumentException;-><init>(Ljava/lang/String;)V
+
+    .end local p0  # "this":Lcom/android/server/pm/CompilerStats;
+    .end local p1  # "r":Ljava/io/Reader;
+    throw v4
+
+    .line 215
+    .end local v3  # "version":I
+    .restart local p0  # "this":Lcom/android/server/pm/CompilerStats;
+    .restart local p1  # "r":Ljava/io/Reader;
+    :cond_97
+    new-instance v3, Ljava/lang/IllegalArgumentException;
+
+    new-instance v4, Ljava/lang/StringBuilder;
+
+    invoke-direct {v4}, Ljava/lang/StringBuilder;-><init>()V
+
+    const-string v5, "Invalid version line: "
+
+    invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v4, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v4}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v4
+
+    invoke-direct {v3, v4}, Ljava/lang/IllegalArgumentException;-><init>(Ljava/lang/String;)V
+
+    .end local p0  # "this":Lcom/android/server/pm/CompilerStats;
+    .end local p1  # "r":Ljava/io/Reader;
+    throw v3
+
+    .line 212
+    .restart local p0  # "this":Lcom/android/server/pm/CompilerStats;
+    .restart local p1  # "r":Ljava/io/Reader;
+    :cond_ae
+    new-instance v3, Ljava/lang/IllegalArgumentException;
+
+    const-string v4, "No version line found."
+
+    invoke-direct {v3, v4}, Ljava/lang/IllegalArgumentException;-><init>(Ljava/lang/String;)V
+
+    .end local p0  # "this":Lcom/android/server/pm/CompilerStats;
+    .end local p1  # "r":Ljava/io/Reader;
+    throw v3
+    :try_end_b6
+    .catch Ljava/lang/Exception; {:try_start_80 .. :try_end_b6} :catch_b6
+    .catchall {:try_start_80 .. :try_end_b6} :catchall_c1
+
+    .line 243
+    .end local v1  # "in":Ljava/io/BufferedReader;
+    .end local v2  # "versionLine":Ljava/lang/String;
+    .restart local p0  # "this":Lcom/android/server/pm/CompilerStats;
+    .restart local p1  # "r":Ljava/io/Reader;
+    :catch_b6
+    move-exception v1
+
+    .line 244
+    .local v1, "e":Ljava/lang/Exception;
+    :try_start_b7
+    const-string v2, "PackageManager"
+
+    const-string v3, "Error parsing compiler stats"
+
+    invoke-static {v2, v3, v1}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+
+    .line 245
+    const/4 v2, 0x0
+
+    monitor-exit v0
 
     return v2
 
-    .line 221
-    :cond_7e
-    :try_start_7e
-    new-instance v1, Ljava/lang/IllegalArgumentException;
-
-    new-instance v2, Ljava/lang/StringBuilder;
-
-    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
-
-    const-string v3, "Unexpected version: "
-
-    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v2, p1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
-
-    move-result-object p1
-
-    invoke-direct {v1, p1}, Ljava/lang/IllegalArgumentException;-><init>(Ljava/lang/String;)V
-
-    throw v1
-
-    .line 215
-    :cond_95
-    new-instance v1, Ljava/lang/IllegalArgumentException;
-
-    new-instance v2, Ljava/lang/StringBuilder;
-
-    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
-
-    const-string v3, "Invalid version line: "
-
-    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v2, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
-
-    move-result-object p1
-
-    invoke-direct {v1, p1}, Ljava/lang/IllegalArgumentException;-><init>(Ljava/lang/String;)V
-
-    throw v1
-
-    .line 212
-    :cond_ac
-    new-instance p1, Ljava/lang/IllegalArgumentException;
-
-    const-string v1, "No version line found."
-
-    invoke-direct {p1, v1}, Ljava/lang/IllegalArgumentException;-><init>(Ljava/lang/String;)V
-
-    throw p1
-    :try_end_b4
-    .catch Ljava/lang/Exception; {:try_start_7e .. :try_end_b4} :catch_b4
-    .catchall {:try_start_7e .. :try_end_b4} :catchall_bf
-
-    .line 243
-    :catch_b4
-    move-exception p1
-
-    .line 244
-    :try_start_b5
-    const-string v1, "PackageManager"
-
-    const-string v2, "Error parsing compiler stats"
-
-    invoke-static {v1, v2, p1}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
-
-    .line 245
-    const/4 p1, 0x0
-
-    monitor-exit v0
-
-    return p1
-
     .line 249
-    :catchall_bf
-    move-exception p1
+    .end local v1  # "e":Ljava/lang/Exception;
+    :catchall_c1
+    move-exception v1
 
     monitor-exit v0
-    :try_end_c1
-    .catchall {:try_start_b5 .. :try_end_c1} :catchall_bf
+    :try_end_c3
+    .catchall {:try_start_b7 .. :try_end_c3} :catchall_c1
 
-    throw p1
+    throw v1
 .end method
 
 .method protected bridge synthetic readInternal(Ljava/lang/Object;)V
@@ -506,81 +561,60 @@
 .end method
 
 .method protected readInternal(Ljava/lang/Void;)V
-    .registers 5
+    .registers 7
+    .param p1, "data"  # Ljava/lang/Void;
 
     .line 285
     invoke-virtual {p0}, Lcom/android/server/pm/CompilerStats;->getFile()Landroid/util/AtomicFile;
 
-    move-result-object p1
+    move-result-object v0
 
     .line 286
-    nop
+    .local v0, "file":Landroid/util/AtomicFile;
+    const/4 v1, 0x0
 
     .line 288
-    const/4 v0, 0x0
+    .local v1, "in":Ljava/io/BufferedReader;
+    :try_start_5
+    new-instance v2, Ljava/io/BufferedReader;
 
-    :try_start_6
-    new-instance v1, Ljava/io/BufferedReader;
+    new-instance v3, Ljava/io/InputStreamReader;
 
-    new-instance v2, Ljava/io/InputStreamReader;
+    invoke-virtual {v0}, Landroid/util/AtomicFile;->openRead()Ljava/io/FileInputStream;
 
-    invoke-virtual {p1}, Landroid/util/AtomicFile;->openRead()Ljava/io/FileInputStream;
+    move-result-object v4
 
-    move-result-object p1
+    invoke-direct {v3, v4}, Ljava/io/InputStreamReader;-><init>(Ljava/io/InputStream;)V
 
-    invoke-direct {v2, p1}, Ljava/io/InputStreamReader;-><init>(Ljava/io/InputStream;)V
+    invoke-direct {v2, v3}, Ljava/io/BufferedReader;-><init>(Ljava/io/Reader;)V
 
-    invoke-direct {v1, v2}, Ljava/io/BufferedReader;-><init>(Ljava/io/Reader;)V
-    :try_end_14
-    .catch Ljava/io/FileNotFoundException; {:try_start_6 .. :try_end_14} :catch_26
-    .catchall {:try_start_6 .. :try_end_14} :catchall_21
+    move-object v1, v2
 
     .line 289
-    :try_start_14
     invoke-virtual {p0, v1}, Lcom/android/server/pm/CompilerStats;->read(Ljava/io/Reader;)Z
     :try_end_17
-    .catch Ljava/io/FileNotFoundException; {:try_start_14 .. :try_end_17} :catch_1e
-    .catchall {:try_start_14 .. :try_end_17} :catchall_1b
+    .catch Ljava/io/FileNotFoundException; {:try_start_5 .. :try_end_17} :catch_1d
+    .catchall {:try_start_5 .. :try_end_17} :catchall_18
+
+    goto :goto_1e
 
     .line 292
+    :catchall_18
+    move-exception v2
+
     invoke-static {v1}, Llibcore/io/IoUtils;->closeQuietly(Ljava/lang/AutoCloseable;)V
 
-    goto :goto_2a
-
-    :catchall_1b
-    move-exception p1
-
-    move-object v0, v1
-
-    goto :goto_22
+    throw v2
 
     .line 290
-    :catch_1e
-    move-exception p1
-
-    move-object v0, v1
-
-    goto :goto_27
+    :catch_1d
+    move-exception v2
 
     .line 292
-    :catchall_21
-    move-exception p1
-
-    :goto_22
-    invoke-static {v0}, Llibcore/io/IoUtils;->closeQuietly(Ljava/lang/AutoCloseable;)V
-
-    throw p1
-
-    .line 290
-    :catch_26
-    move-exception p1
-
-    .line 292
-    :goto_27
-    invoke-static {v0}, Llibcore/io/IoUtils;->closeQuietly(Ljava/lang/AutoCloseable;)V
+    :goto_1e
+    invoke-static {v1}, Llibcore/io/IoUtils;->closeQuietly(Ljava/lang/AutoCloseable;)V
 
     .line 293
-    :goto_2a
     nop
 
     .line 294
@@ -589,6 +623,8 @@
 
 .method public setPackageStats(Ljava/lang/String;Lcom/android/server/pm/CompilerStats$PackageStats;)V
     .registers 5
+    .param p1, "packageName"  # Ljava/lang/String;
+    .param p2, "stats"  # Lcom/android/server/pm/CompilerStats$PackageStats;
 
     .line 135
     iget-object v0, p0, Lcom/android/server/pm/CompilerStats;->packageStats:Ljava/util/Map;
@@ -609,17 +645,18 @@
 
     .line 137
     :catchall_a
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_c
     .catchall {:try_start_3 .. :try_end_c} :catchall_a
 
-    throw p1
+    throw v1
 .end method
 
 .method public write(Ljava/io/Writer;)V
-    .registers 9
+    .registers 11
+    .param p1, "out"  # Ljava/io/Writer;
 
     .line 178
     new-instance v0, Lcom/android/internal/util/FastPrintWriter;
@@ -627,156 +664,169 @@
     invoke-direct {v0, p1}, Lcom/android/internal/util/FastPrintWriter;-><init>(Ljava/io/Writer;)V
 
     .line 180
-    const-string p1, "PACKAGE_MANAGER__COMPILER_STATS__"
+    .local v0, "fpw":Lcom/android/internal/util/FastPrintWriter;
+    const-string v1, "PACKAGE_MANAGER__COMPILER_STATS__"
 
-    invoke-virtual {v0, p1}, Lcom/android/internal/util/FastPrintWriter;->print(Ljava/lang/String;)V
+    invoke-virtual {v0, v1}, Lcom/android/internal/util/FastPrintWriter;->print(Ljava/lang/String;)V
 
     .line 181
-    const/4 p1, 0x1
+    const/4 v1, 0x1
 
-    invoke-virtual {v0, p1}, Lcom/android/internal/util/FastPrintWriter;->println(I)V
+    invoke-virtual {v0, v1}, Lcom/android/internal/util/FastPrintWriter;->println(I)V
 
     .line 183
-    iget-object p1, p0, Lcom/android/server/pm/CompilerStats;->packageStats:Ljava/util/Map;
+    iget-object v1, p0, Lcom/android/server/pm/CompilerStats;->packageStats:Ljava/util/Map;
 
-    monitor-enter p1
+    monitor-enter v1
 
     .line 184
     :try_start_11
-    iget-object v1, p0, Lcom/android/server/pm/CompilerStats;->packageStats:Ljava/util/Map;
+    iget-object v2, p0, Lcom/android/server/pm/CompilerStats;->packageStats:Ljava/util/Map;
 
-    invoke-interface {v1}, Ljava/util/Map;->values()Ljava/util/Collection;
-
-    move-result-object v1
-
-    invoke-interface {v1}, Ljava/util/Collection;->iterator()Ljava/util/Iterator;
-
-    move-result-object v1
-
-    :goto_1b
-    invoke-interface {v1}, Ljava/util/Iterator;->hasNext()Z
-
-    move-result v2
-
-    if-eqz v2, :cond_81
-
-    invoke-interface {v1}, Ljava/util/Iterator;->next()Ljava/lang/Object;
+    invoke-interface {v2}, Ljava/util/Map;->values()Ljava/util/Collection;
 
     move-result-object v2
 
-    check-cast v2, Lcom/android/server/pm/CompilerStats$PackageStats;
+    invoke-interface {v2}, Ljava/util/Collection;->iterator()Ljava/util/Iterator;
 
-    .line 185
-    invoke-static {v2}, Lcom/android/server/pm/CompilerStats$PackageStats;->access$000(Lcom/android/server/pm/CompilerStats$PackageStats;)Ljava/util/Map;
+    move-result-object v2
+
+    :goto_1b
+    invoke-interface {v2}, Ljava/util/Iterator;->hasNext()Z
+
+    move-result v3
+
+    if-eqz v3, :cond_81
+
+    invoke-interface {v2}, Ljava/util/Iterator;->next()Ljava/lang/Object;
 
     move-result-object v3
 
-    monitor-enter v3
+    check-cast v3, Lcom/android/server/pm/CompilerStats$PackageStats;
+
+    .line 185
+    .local v3, "pkg":Lcom/android/server/pm/CompilerStats$PackageStats;
+    invoke-static {v3}, Lcom/android/server/pm/CompilerStats$PackageStats;->access$000(Lcom/android/server/pm/CompilerStats$PackageStats;)Ljava/util/Map;
+
+    move-result-object v4
+
+    monitor-enter v4
     :try_end_2c
     .catchall {:try_start_11 .. :try_end_2c} :catchall_86
 
     .line 186
     :try_start_2c
-    invoke-static {v2}, Lcom/android/server/pm/CompilerStats$PackageStats;->access$000(Lcom/android/server/pm/CompilerStats$PackageStats;)Ljava/util/Map;
+    invoke-static {v3}, Lcom/android/server/pm/CompilerStats$PackageStats;->access$000(Lcom/android/server/pm/CompilerStats$PackageStats;)Ljava/util/Map;
 
-    move-result-object v4
+    move-result-object v5
 
-    invoke-interface {v4}, Ljava/util/Map;->isEmpty()Z
+    invoke-interface {v5}, Ljava/util/Map;->isEmpty()Z
 
-    move-result v4
+    move-result v5
 
-    if-nez v4, :cond_7c
+    if-nez v5, :cond_7c
 
     .line 187
-    invoke-virtual {v2}, Lcom/android/server/pm/CompilerStats$PackageStats;->getPackageName()Ljava/lang/String;
+    invoke-virtual {v3}, Lcom/android/server/pm/CompilerStats$PackageStats;->getPackageName()Ljava/lang/String;
 
-    move-result-object v4
+    move-result-object v5
 
-    invoke-virtual {v0, v4}, Lcom/android/internal/util/FastPrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {v0, v5}, Lcom/android/internal/util/FastPrintWriter;->println(Ljava/lang/String;)V
 
     .line 189
-    invoke-static {v2}, Lcom/android/server/pm/CompilerStats$PackageStats;->access$000(Lcom/android/server/pm/CompilerStats$PackageStats;)Ljava/util/Map;
+    invoke-static {v3}, Lcom/android/server/pm/CompilerStats$PackageStats;->access$000(Lcom/android/server/pm/CompilerStats$PackageStats;)Ljava/util/Map;
 
-    move-result-object v2
+    move-result-object v5
 
-    invoke-interface {v2}, Ljava/util/Map;->entrySet()Ljava/util/Set;
+    invoke-interface {v5}, Ljava/util/Map;->entrySet()Ljava/util/Set;
 
-    move-result-object v2
+    move-result-object v5
 
-    invoke-interface {v2}, Ljava/util/Set;->iterator()Ljava/util/Iterator;
+    invoke-interface {v5}, Ljava/util/Set;->iterator()Ljava/util/Iterator;
 
-    move-result-object v2
+    move-result-object v5
 
     :goto_49
-    invoke-interface {v2}, Ljava/util/Iterator;->hasNext()Z
+    invoke-interface {v5}, Ljava/util/Iterator;->hasNext()Z
 
-    move-result v4
+    move-result v6
 
-    if-eqz v4, :cond_7c
+    if-eqz v6, :cond_7c
 
-    invoke-interface {v2}, Ljava/util/Iterator;->next()Ljava/lang/Object;
-
-    move-result-object v4
-
-    check-cast v4, Ljava/util/Map$Entry;
-
-    .line 190
-    new-instance v5, Ljava/lang/StringBuilder;
-
-    invoke-direct {v5}, Ljava/lang/StringBuilder;-><init>()V
-
-    const-string v6, "-"
-
-    invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-interface {v4}, Ljava/util/Map$Entry;->getKey()Ljava/lang/Object;
+    invoke-interface {v5}, Ljava/util/Iterator;->next()Ljava/lang/Object;
 
     move-result-object v6
 
-    check-cast v6, Ljava/lang/String;
+    check-cast v6, Ljava/util/Map$Entry;
 
-    invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    .line 190
+    .local v6, "e":Ljava/util/Map$Entry;, "Ljava/util/Map$Entry<Ljava/lang/String;Ljava/lang/Long;>;"
+    new-instance v7, Ljava/lang/StringBuilder;
 
-    const-string v6, ":"
+    invoke-direct {v7}, Ljava/lang/StringBuilder;-><init>()V
 
-    invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    const-string v8, "-"
 
-    invoke-interface {v4}, Ljava/util/Map$Entry;->getValue()Ljava/lang/Object;
+    invoke-virtual {v7, v8}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    move-result-object v4
+    invoke-interface {v6}, Ljava/util/Map$Entry;->getKey()Ljava/lang/Object;
 
-    invoke-virtual {v5, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    move-result-object v8
 
-    invoke-virtual {v5}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    check-cast v8, Ljava/lang/String;
 
-    move-result-object v4
+    invoke-virtual {v7, v8}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0, v4}, Lcom/android/internal/util/FastPrintWriter;->println(Ljava/lang/String;)V
+    const-string v8, ":"
+
+    invoke-virtual {v7, v8}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-interface {v6}, Ljava/util/Map$Entry;->getValue()Ljava/lang/Object;
+
+    move-result-object v8
+
+    invoke-virtual {v7, v8}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v7}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v7
+
+    invoke-virtual {v0, v7}, Lcom/android/internal/util/FastPrintWriter;->println(Ljava/lang/String;)V
 
     .line 191
+    .end local v6  # "e":Ljava/util/Map$Entry;, "Ljava/util/Map$Entry<Ljava/lang/String;Ljava/lang/Long;>;"
     goto :goto_49
 
     .line 193
     :cond_7c
-    monitor-exit v3
+    monitor-exit v4
 
     .line 194
+    .end local v3  # "pkg":Lcom/android/server/pm/CompilerStats$PackageStats;
     goto :goto_1b
 
     .line 193
+    .restart local v3  # "pkg":Lcom/android/server/pm/CompilerStats$PackageStats;
     :catchall_7e
-    move-exception v0
+    move-exception v2
 
-    monitor-exit v3
+    monitor-exit v4
     :try_end_80
     .catchall {:try_start_2c .. :try_end_80} :catchall_7e
 
+    .end local v0  # "fpw":Lcom/android/internal/util/FastPrintWriter;
+    .end local p0  # "this":Lcom/android/server/pm/CompilerStats;
+    .end local p1  # "out":Ljava/io/Writer;
     :try_start_80
-    throw v0
+    throw v2
 
     .line 195
+    .end local v3  # "pkg":Lcom/android/server/pm/CompilerStats$PackageStats;
+    .restart local v0  # "fpw":Lcom/android/internal/util/FastPrintWriter;
+    .restart local p0  # "this":Lcom/android/server/pm/CompilerStats;
+    .restart local p1  # "out":Ljava/io/Writer;
     :cond_81
-    monitor-exit p1
+    monitor-exit v1
     :try_end_82
     .catchall {:try_start_80 .. :try_end_82} :catchall_86
 
@@ -788,14 +838,14 @@
 
     .line 195
     :catchall_86
-    move-exception v0
+    move-exception v2
 
     :try_start_87
-    monitor-exit p1
+    monitor-exit v1
     :try_end_88
     .catchall {:try_start_87 .. :try_end_88} :catchall_86
 
-    throw v0
+    throw v2
 .end method
 
 .method protected bridge synthetic writeInternal(Ljava/lang/Object;)V
@@ -810,72 +860,70 @@
 .end method
 
 .method protected writeInternal(Ljava/lang/Void;)V
-    .registers 4
+    .registers 7
+    .param p1, "data"  # Ljava/lang/Void;
 
     .line 262
     invoke-virtual {p0}, Lcom/android/server/pm/CompilerStats;->getFile()Landroid/util/AtomicFile;
 
-    move-result-object p1
+    move-result-object v0
 
     .line 263
-    nop
+    .local v0, "file":Landroid/util/AtomicFile;
+    const/4 v1, 0x0
 
     .line 266
+    .local v1, "f":Ljava/io/FileOutputStream;
     :try_start_5
-    invoke-virtual {p1}, Landroid/util/AtomicFile;->startWrite()Ljava/io/FileOutputStream;
+    invoke-virtual {v0}, Landroid/util/AtomicFile;->startWrite()Ljava/io/FileOutputStream;
 
-    move-result-object v0
-    :try_end_9
-    .catch Ljava/io/IOException; {:try_start_5 .. :try_end_9} :catch_1a
+    move-result-object v2
+
+    move-object v1, v2
 
     .line 267
-    :try_start_9
-    new-instance v1, Ljava/io/OutputStreamWriter;
+    new-instance v2, Ljava/io/OutputStreamWriter;
 
-    invoke-direct {v1, v0}, Ljava/io/OutputStreamWriter;-><init>(Ljava/io/OutputStream;)V
+    invoke-direct {v2, v1}, Ljava/io/OutputStreamWriter;-><init>(Ljava/io/OutputStream;)V
 
     .line 268
-    invoke-virtual {p0, v1}, Lcom/android/server/pm/CompilerStats;->write(Ljava/io/Writer;)V
+    .local v2, "osw":Ljava/io/OutputStreamWriter;
+    invoke-virtual {p0, v2}, Lcom/android/server/pm/CompilerStats;->write(Ljava/io/Writer;)V
 
     .line 269
-    invoke-virtual {v1}, Ljava/io/OutputStreamWriter;->flush()V
+    invoke-virtual {v2}, Ljava/io/OutputStreamWriter;->flush()V
 
     .line 270
-    invoke-virtual {p1, v0}, Landroid/util/AtomicFile;->finishWrite(Ljava/io/FileOutputStream;)V
-    :try_end_17
-    .catch Ljava/io/IOException; {:try_start_9 .. :try_end_17} :catch_18
+    invoke-virtual {v0, v1}, Landroid/util/AtomicFile;->finishWrite(Ljava/io/FileOutputStream;)V
+    :try_end_18
+    .catch Ljava/io/IOException; {:try_start_5 .. :try_end_18} :catch_19
 
     .line 276
-    goto :goto_28
+    .end local v2  # "osw":Ljava/io/OutputStreamWriter;
+    goto :goto_26
 
     .line 271
-    :catch_18
-    move-exception v1
-
-    goto :goto_1c
-
-    :catch_1a
-    move-exception v1
-
-    const/4 v0, 0x0
+    :catch_19
+    move-exception v2
 
     .line 272
-    :goto_1c
-    if-eqz v0, :cond_21
+    .local v2, "e":Ljava/io/IOException;
+    if-eqz v1, :cond_1f
 
     .line 273
-    invoke-virtual {p1, v0}, Landroid/util/AtomicFile;->failWrite(Ljava/io/FileOutputStream;)V
+    invoke-virtual {v0, v1}, Landroid/util/AtomicFile;->failWrite(Ljava/io/FileOutputStream;)V
 
     .line 275
-    :cond_21
-    const-string p1, "PackageManager"
+    :cond_1f
+    const-string v3, "PackageManager"
 
-    const-string v0, "Failed to write compiler stats"
+    const-string v4, "Failed to write compiler stats"
 
-    invoke-static {p1, v0, v1}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    invoke-static {v3, v4, v2}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
     .line 277
-    :goto_28
+    .end local v2  # "e":Ljava/io/IOException;
+    :goto_26
     return-void
 .end method
 

@@ -21,6 +21,7 @@
 # direct methods
 .method public constructor <init>(Lcom/android/server/firewall/IntentFirewall$Rule;)V
     .registers 2
+    .param p1, "rule"  # Lcom/android/server/firewall/IntentFirewall$Rule;
 
     .line 489
     invoke-direct {p0}, Landroid/content/IntentFilter;-><init>()V
@@ -33,10 +34,11 @@
 .end method
 
 .method static synthetic access$200(Lcom/android/server/firewall/IntentFirewall$FirewallIntentFilter;)Lcom/android/server/firewall/IntentFirewall$Rule;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/firewall/IntentFirewall$FirewallIntentFilter;
 
     .line 486
-    iget-object p0, p0, Lcom/android/server/firewall/IntentFirewall$FirewallIntentFilter;->rule:Lcom/android/server/firewall/IntentFirewall$Rule;
+    iget-object v0, p0, Lcom/android/server/firewall/IntentFirewall$FirewallIntentFilter;->rule:Lcom/android/server/firewall/IntentFirewall$Rule;
 
-    return-object p0
+    return-object v0
 .end method

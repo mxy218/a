@@ -25,11 +25,17 @@
 # direct methods
 .method public constructor <init>(Landroid/content/Context;)V
     .registers 4
+    .param p1, "context"  # Landroid/content/Context;
 
-    .line 2215
+    .line 2324
     invoke-direct {p0, p1}, Lcom/android/server/SystemService;-><init>(Landroid/content/Context;)V
 
-    .line 2216
+    .line 2327
+    const/4 v0, 0x1
+
+    invoke-static {v0}, Lcom/flyme/server/am/BootEvent;->setEnabled(Z)V
+
+    .line 2329
     new-instance v0, Lcom/android/server/am/ActivityManagerService;
 
     sget-object v1, Lcom/android/server/am/ActivityManagerService$Lifecycle;->sAtm:Lcom/android/server/wm/ActivityTaskManagerService;
@@ -38,30 +44,37 @@
 
     iput-object v0, p0, Lcom/android/server/am/ActivityManagerService$Lifecycle;->mService:Lcom/android/server/am/ActivityManagerService;
 
-    .line 2217
+    .line 2331
+    iget-object v0, p0, Lcom/android/server/am/ActivityManagerService$Lifecycle;->mService:Lcom/android/server/am/ActivityManagerService;
+
+    invoke-static {v0}, Lcom/android/server/am/FlymeActivityManagerService;->main(Lcom/android/server/am/ActivityManagerService;)V
+
+    .line 2333
     return-void
 .end method
 
 .method public static startService(Lcom/android/server/SystemServiceManager;Lcom/android/server/wm/ActivityTaskManagerService;)Lcom/android/server/am/ActivityManagerService;
-    .registers 2
+    .registers 3
+    .param p0, "ssm"  # Lcom/android/server/SystemServiceManager;
+    .param p1, "atm"  # Lcom/android/server/wm/ActivityTaskManagerService;
 
-    .line 2221
+    .line 2337
     sput-object p1, Lcom/android/server/am/ActivityManagerService$Lifecycle;->sAtm:Lcom/android/server/wm/ActivityTaskManagerService;
 
-    .line 2222
-    const-class p1, Lcom/android/server/am/ActivityManagerService$Lifecycle;
+    .line 2338
+    const-class v0, Lcom/android/server/am/ActivityManagerService$Lifecycle;
 
-    invoke-virtual {p0, p1}, Lcom/android/server/SystemServiceManager;->startService(Ljava/lang/Class;)Lcom/android/server/SystemService;
+    invoke-virtual {p0, v0}, Lcom/android/server/SystemServiceManager;->startService(Ljava/lang/Class;)Lcom/android/server/SystemService;
 
-    move-result-object p0
+    move-result-object v0
 
-    check-cast p0, Lcom/android/server/am/ActivityManagerService$Lifecycle;
+    check-cast v0, Lcom/android/server/am/ActivityManagerService$Lifecycle;
 
-    invoke-virtual {p0}, Lcom/android/server/am/ActivityManagerService$Lifecycle;->getService()Lcom/android/server/am/ActivityManagerService;
+    invoke-virtual {v0}, Lcom/android/server/am/ActivityManagerService$Lifecycle;->getService()Lcom/android/server/am/ActivityManagerService;
 
-    move-result-object p0
+    move-result-object v0
 
-    return-object p0
+    return-object v0
 .end method
 
 
@@ -69,7 +82,7 @@
 .method public getService()Lcom/android/server/am/ActivityManagerService;
     .registers 2
 
-    .line 2249
+    .line 2365
     iget-object v0, p0, Lcom/android/server/am/ActivityManagerService$Lifecycle;->mService:Lcom/android/server/am/ActivityManagerService;
 
     return-object v0
@@ -77,54 +90,55 @@
 
 .method public onBootPhase(I)V
     .registers 4
+    .param p1, "phase"  # I
 
-    .line 2232
+    .line 2348
     iget-object v0, p0, Lcom/android/server/am/ActivityManagerService$Lifecycle;->mService:Lcom/android/server/am/ActivityManagerService;
 
     iput p1, v0, Lcom/android/server/am/ActivityManagerService;->mBootPhase:I
 
-    .line 2233
+    .line 2349
     const/16 v1, 0x1f4
 
     if-ne p1, v1, :cond_15
 
-    .line 2234
-    iget-object p1, v0, Lcom/android/server/am/ActivityManagerService;->mBatteryStatsService:Lcom/android/server/am/BatteryStatsService;
+    .line 2350
+    iget-object v0, v0, Lcom/android/server/am/ActivityManagerService;->mBatteryStatsService:Lcom/android/server/am/BatteryStatsService;
 
-    invoke-virtual {p1}, Lcom/android/server/am/BatteryStatsService;->systemServicesReady()V
+    invoke-virtual {v0}, Lcom/android/server/am/BatteryStatsService;->systemServicesReady()V
 
-    .line 2235
-    iget-object p1, p0, Lcom/android/server/am/ActivityManagerService$Lifecycle;->mService:Lcom/android/server/am/ActivityManagerService;
+    .line 2351
+    iget-object v0, p0, Lcom/android/server/am/ActivityManagerService$Lifecycle;->mService:Lcom/android/server/am/ActivityManagerService;
 
-    iget-object p1, p1, Lcom/android/server/am/ActivityManagerService;->mServices:Lcom/android/server/am/ActiveServices;
+    iget-object v0, v0, Lcom/android/server/am/ActivityManagerService;->mServices:Lcom/android/server/am/ActiveServices;
 
-    invoke-virtual {p1}, Lcom/android/server/am/ActiveServices;->systemServicesReady()V
+    invoke-virtual {v0}, Lcom/android/server/am/ActiveServices;->systemServicesReady()V
 
     goto :goto_26
 
-    .line 2236
+    .line 2352
     :cond_15
     const/16 v1, 0x226
 
     if-ne p1, v1, :cond_1d
 
-    .line 2237
-    invoke-static {v0}, Lcom/android/server/am/ActivityManagerService;->access$1100(Lcom/android/server/am/ActivityManagerService;)V
+    .line 2353
+    invoke-static {v0}, Lcom/android/server/am/ActivityManagerService;->access$1300(Lcom/android/server/am/ActivityManagerService;)V
 
     goto :goto_26
 
-    .line 2238
+    .line 2354
     :cond_1d
     const/16 v1, 0x258
 
     if-ne p1, v1, :cond_26
 
-    .line 2239
-    iget-object p1, v0, Lcom/android/server/am/ActivityManagerService;->mPackageWatchdog:Lcom/android/server/PackageWatchdog;
+    .line 2355
+    iget-object v0, v0, Lcom/android/server/am/ActivityManagerService;->mPackageWatchdog:Lcom/android/server/PackageWatchdog;
 
-    invoke-virtual {p1}, Lcom/android/server/PackageWatchdog;->onPackagesReady()V
+    invoke-virtual {v0}, Lcom/android/server/PackageWatchdog;->onPackagesReady()V
 
-    .line 2241
+    .line 2357
     :cond_26
     :goto_26
     return-void
@@ -132,26 +146,27 @@
 
 .method public onCleanupUser(I)V
     .registers 3
+    .param p1, "userId"  # I
 
-    .line 2245
+    .line 2361
     iget-object v0, p0, Lcom/android/server/am/ActivityManagerService$Lifecycle;->mService:Lcom/android/server/am/ActivityManagerService;
 
     iget-object v0, v0, Lcom/android/server/am/ActivityManagerService;->mBatteryStatsService:Lcom/android/server/am/BatteryStatsService;
 
     invoke-virtual {v0, p1}, Lcom/android/server/am/BatteryStatsService;->onCleanupUser(I)V
 
-    .line 2246
+    .line 2362
     return-void
 .end method
 
 .method public onStart()V
     .registers 2
 
-    .line 2227
+    .line 2343
     iget-object v0, p0, Lcom/android/server/am/ActivityManagerService$Lifecycle;->mService:Lcom/android/server/am/ActivityManagerService;
 
-    invoke-static {v0}, Lcom/android/server/am/ActivityManagerService;->access$1000(Lcom/android/server/am/ActivityManagerService;)V
+    invoke-static {v0}, Lcom/android/server/am/ActivityManagerService;->access$1200(Lcom/android/server/am/ActivityManagerService;)V
 
-    .line 2228
+    .line 2344
     return-void
 .end method

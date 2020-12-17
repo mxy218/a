@@ -49,6 +49,11 @@
 # direct methods
 .method constructor <init>([Ljava/lang/String;ZLandroid/util/DisplayMetrics;Ljava/io/File;Landroid/content/pm/PackageParser$Callback;)V
     .registers 9
+    .param p1, "separateProcesses"  # [Ljava/lang/String;
+    .param p2, "onlyCoreApps"  # Z
+    .param p3, "metrics"  # Landroid/util/DisplayMetrics;
+    .param p4, "cacheDir"  # Ljava/io/File;
+    .param p5, "callback"  # Landroid/content/pm/PackageParser$Callback;
 
     .line 58
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -107,6 +112,7 @@
     move-result-object v0
 
     .line 144
+    .local v0, "unfinishedTasks":Ljava/util/List;, "Ljava/util/List<Ljava/lang/Runnable;>;"
     invoke-interface {v0}, Ljava/util/List;->isEmpty()Z
 
     move-result v1
@@ -132,15 +138,17 @@
 
     invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v2
 
-    invoke-direct {v1, v0}, Ljava/lang/IllegalStateException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v1, v2}, Ljava/lang/IllegalStateException;-><init>(Ljava/lang/String;)V
 
     throw v1
 .end method
 
 .method public synthetic lambda$submit$0$ParallelPackageParser(Ljava/io/File;I)V
     .registers 8
+    .param p1, "scanFile"  # Ljava/io/File;
+    .param p2, "parseFlags"  # I
 
     .line 107
     new-instance v0, Lcom/android/server/pm/ParallelPackageParser$ParseResult;
@@ -148,6 +156,7 @@
     invoke-direct {v0}, Lcom/android/server/pm/ParallelPackageParser$ParseResult;-><init>()V
 
     .line 108
+    .local v0, "pr":Lcom/android/server/pm/ParallelPackageParser$ParseResult;
     new-instance v1, Ljava/lang/StringBuilder;
 
     invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
@@ -177,6 +186,7 @@
     invoke-direct {v1}, Landroid/content/pm/PackageParser;-><init>()V
 
     .line 111
+    .local v1, "pp":Landroid/content/pm/PackageParser;
     iget-object v4, p0, Lcom/android/server/pm/ParallelPackageParser;->mSeparateProcesses:[Ljava/lang/String;
 
     invoke-virtual {v1, v4}, Landroid/content/pm/PackageParser;->setSeparateProcesses([Ljava/lang/String;)V
@@ -207,25 +217,28 @@
     .line 117
     invoke-virtual {p0, v1, p1, p2}, Lcom/android/server/pm/ParallelPackageParser;->parsePackage(Landroid/content/pm/PackageParser;Ljava/io/File;I)Landroid/content/pm/PackageParser$Package;
 
-    move-result-object p1
+    move-result-object v4
 
-    iput-object p1, v0, Lcom/android/server/pm/ParallelPackageParser$ParseResult;->pkg:Landroid/content/pm/PackageParser$Package;
+    iput-object v4, v0, Lcom/android/server/pm/ParallelPackageParser$ParseResult;->pkg:Landroid/content/pm/PackageParser$Package;
     :try_end_48
     .catchall {:try_start_22 .. :try_end_48} :catchall_49
 
+    .end local v1  # "pp":Landroid/content/pm/PackageParser;
     goto :goto_4c
 
     .line 118
     :catchall_49
-    move-exception p1
+    move-exception v1
 
     .line 119
+    .local v1, "e":Ljava/lang/Throwable;
     :try_start_4a
-    iput-object p1, v0, Lcom/android/server/pm/ParallelPackageParser$ParseResult;->throwable:Ljava/lang/Throwable;
+    iput-object v1, v0, Lcom/android/server/pm/ParallelPackageParser$ParseResult;->throwable:Ljava/lang/Throwable;
     :try_end_4c
     .catchall {:try_start_4a .. :try_end_4c} :catchall_69
 
     .line 121
+    .end local v1  # "e":Ljava/lang/Throwable;
     :goto_4c
     invoke-static {v2, v3}, Landroid/os/Trace;->traceEnd(J)V
 
@@ -234,9 +247,9 @@
 
     .line 124
     :try_start_50
-    iget-object p1, p0, Lcom/android/server/pm/ParallelPackageParser;->mQueue:Ljava/util/concurrent/BlockingQueue;
+    iget-object v1, p0, Lcom/android/server/pm/ParallelPackageParser;->mQueue:Ljava/util/concurrent/BlockingQueue;
 
-    invoke-interface {p1, v0}, Ljava/util/concurrent/BlockingQueue;->put(Ljava/lang/Object;)V
+    invoke-interface {v1, v0}, Ljava/util/concurrent/BlockingQueue;->put(Ljava/lang/Object;)V
     :try_end_55
     .catch Ljava/lang/InterruptedException; {:try_start_50 .. :try_end_55} :catch_56
 
@@ -245,41 +258,46 @@
 
     .line 125
     :catch_56
-    move-exception p1
+    move-exception v1
 
     .line 126
+    .local v1, "e":Ljava/lang/InterruptedException;
     invoke-static {}, Ljava/lang/Thread;->currentThread()Ljava/lang/Thread;
 
-    move-result-object p1
+    move-result-object v2
 
-    invoke-virtual {p1}, Ljava/lang/Thread;->interrupt()V
+    invoke-virtual {v2}, Ljava/lang/Thread;->interrupt()V
 
     .line 130
     invoke-static {}, Ljava/lang/Thread;->currentThread()Ljava/lang/Thread;
 
-    move-result-object p1
+    move-result-object v2
 
-    invoke-virtual {p1}, Ljava/lang/Thread;->getName()Ljava/lang/String;
+    invoke-virtual {v2}, Ljava/lang/Thread;->getName()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v2
 
-    iput-object p1, p0, Lcom/android/server/pm/ParallelPackageParser;->mInterruptedInThread:Ljava/lang/String;
+    iput-object v2, p0, Lcom/android/server/pm/ParallelPackageParser;->mInterruptedInThread:Ljava/lang/String;
 
     .line 132
+    .end local v1  # "e":Ljava/lang/InterruptedException;
     :goto_68
     return-void
 
     .line 121
     :catchall_69
-    move-exception p1
+    move-exception v1
 
     invoke-static {v2, v3}, Landroid/os/Trace;->traceEnd(J)V
 
-    throw p1
+    throw v1
 .end method
 
 .method protected parsePackage(Landroid/content/pm/PackageParser;Ljava/io/File;I)Landroid/content/pm/PackageParser$Package;
     .registers 5
+    .param p1, "packageParser"  # Landroid/content/pm/PackageParser;
+    .param p2, "scanFile"  # Ljava/io/File;
+    .param p3, "parseFlags"  # I
     .annotation build Lcom/android/internal/annotations/VisibleForTesting;
     .end annotation
 
@@ -294,13 +312,15 @@
 
     invoke-virtual {p1, p2, p3, v0}, Landroid/content/pm/PackageParser;->parsePackage(Ljava/io/File;IZ)Landroid/content/pm/PackageParser$Package;
 
-    move-result-object p1
+    move-result-object v0
 
-    return-object p1
+    return-object v0
 .end method
 
 .method public submit(Ljava/io/File;I)V
     .registers 5
+    .param p1, "scanFile"  # Ljava/io/File;
+    .param p2, "parseFlags"  # I
 
     .line 106
     iget-object v0, p0, Lcom/android/server/pm/ParallelPackageParser;->mService:Ljava/util/concurrent/ExecutorService;
@@ -357,15 +377,18 @@
 
     invoke-direct {v0, v1}, Ljava/lang/InterruptedException;-><init>(Ljava/lang/String;)V
 
+    .end local p0  # "this":Lcom/android/server/pm/ParallelPackageParser;
     throw v0
     :try_end_26
     .catch Ljava/lang/InterruptedException; {:try_start_0 .. :try_end_26} :catch_26
 
     .line 93
+    .restart local p0  # "this":Lcom/android/server/pm/ParallelPackageParser;
     :catch_26
     move-exception v0
 
     .line 95
+    .local v0, "e":Ljava/lang/InterruptedException;
     invoke-static {}, Ljava/lang/Thread;->currentThread()Ljava/lang/Thread;
 
     move-result-object v1

@@ -27,6 +27,10 @@
 # direct methods
 .method constructor <init>(Landroid/os/UserHandle;Ljava/lang/String;II)V
     .registers 5
+    .param p1, "userHandle"  # Landroid/os/UserHandle;
+    .param p2, "packageName"  # Ljava/lang/String;
+    .param p3, "callingPid"  # I
+    .param p4, "callingUid"  # I
 
     .line 105
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V

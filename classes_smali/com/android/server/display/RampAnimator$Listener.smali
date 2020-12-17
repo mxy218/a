@@ -17,3 +17,6 @@
 # virtual methods
 .method public abstract onAnimationEnd()V
 .end method
+
+.method public abstract onAnimationUpdate(I)V
+.end method

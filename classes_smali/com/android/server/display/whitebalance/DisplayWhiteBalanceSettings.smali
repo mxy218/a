@@ -38,7 +38,9 @@
 
 # direct methods
 .method public constructor <init>(Landroid/content/Context;Landroid/os/Handler;)V
-    .registers 4
+    .registers 5
+    .param p1, "context"  # Landroid/content/Context;
+    .param p2, "handler"  # Landroid/os/Handler;
 
     .line 70
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -55,50 +57,51 @@
     iput-object p1, p0, Lcom/android/server/display/whitebalance/DisplayWhiteBalanceSettings;->mContext:Landroid/content/Context;
 
     .line 74
-    new-instance p1, Lcom/android/server/display/whitebalance/DisplayWhiteBalanceSettings$DisplayWhiteBalanceSettingsHandler;
+    new-instance v0, Lcom/android/server/display/whitebalance/DisplayWhiteBalanceSettings$DisplayWhiteBalanceSettingsHandler;
 
     invoke-virtual {p2}, Landroid/os/Handler;->getLooper()Landroid/os/Looper;
 
-    move-result-object p2
+    move-result-object v1
 
-    invoke-direct {p1, p0, p2}, Lcom/android/server/display/whitebalance/DisplayWhiteBalanceSettings$DisplayWhiteBalanceSettingsHandler;-><init>(Lcom/android/server/display/whitebalance/DisplayWhiteBalanceSettings;Landroid/os/Looper;)V
+    invoke-direct {v0, p0, v1}, Lcom/android/server/display/whitebalance/DisplayWhiteBalanceSettings$DisplayWhiteBalanceSettingsHandler;-><init>(Lcom/android/server/display/whitebalance/DisplayWhiteBalanceSettings;Landroid/os/Looper;)V
 
-    iput-object p1, p0, Lcom/android/server/display/whitebalance/DisplayWhiteBalanceSettings;->mHandler:Landroid/os/Handler;
+    iput-object v0, p0, Lcom/android/server/display/whitebalance/DisplayWhiteBalanceSettings;->mHandler:Landroid/os/Handler;
 
     .line 75
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    iput-object p1, p0, Lcom/android/server/display/whitebalance/DisplayWhiteBalanceSettings;->mCallbacks:Lcom/android/server/display/whitebalance/DisplayWhiteBalanceController$Callbacks;
+    iput-object v0, p0, Lcom/android/server/display/whitebalance/DisplayWhiteBalanceSettings;->mCallbacks:Lcom/android/server/display/whitebalance/DisplayWhiteBalanceController$Callbacks;
 
     .line 77
-    const-class p1, Lcom/android/server/display/color/ColorDisplayService$ColorDisplayServiceInternal;
+    const-class v0, Lcom/android/server/display/color/ColorDisplayService$ColorDisplayServiceInternal;
 
-    invoke-static {p1}, Lcom/android/server/LocalServices;->getService(Ljava/lang/Class;)Ljava/lang/Object;
+    invoke-static {v0}, Lcom/android/server/LocalServices;->getService(Ljava/lang/Class;)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v0
 
-    check-cast p1, Lcom/android/server/display/color/ColorDisplayService$ColorDisplayServiceInternal;
+    check-cast v0, Lcom/android/server/display/color/ColorDisplayService$ColorDisplayServiceInternal;
 
-    iput-object p1, p0, Lcom/android/server/display/whitebalance/DisplayWhiteBalanceSettings;->mCdsi:Lcom/android/server/display/color/ColorDisplayService$ColorDisplayServiceInternal;
+    iput-object v0, p0, Lcom/android/server/display/whitebalance/DisplayWhiteBalanceSettings;->mCdsi:Lcom/android/server/display/color/ColorDisplayService$ColorDisplayServiceInternal;
 
     .line 78
-    iget-object p1, p0, Lcom/android/server/display/whitebalance/DisplayWhiteBalanceSettings;->mCdsi:Lcom/android/server/display/color/ColorDisplayService$ColorDisplayServiceInternal;
+    iget-object v0, p0, Lcom/android/server/display/whitebalance/DisplayWhiteBalanceSettings;->mCdsi:Lcom/android/server/display/color/ColorDisplayService$ColorDisplayServiceInternal;
 
-    invoke-virtual {p1}, Lcom/android/server/display/color/ColorDisplayService$ColorDisplayServiceInternal;->isDisplayWhiteBalanceEnabled()Z
+    invoke-virtual {v0}, Lcom/android/server/display/color/ColorDisplayService$ColorDisplayServiceInternal;->isDisplayWhiteBalanceEnabled()Z
 
-    move-result p1
+    move-result v0
 
-    invoke-direct {p0, p1}, Lcom/android/server/display/whitebalance/DisplayWhiteBalanceSettings;->setEnabled(Z)V
+    invoke-direct {p0, v0}, Lcom/android/server/display/whitebalance/DisplayWhiteBalanceSettings;->setEnabled(Z)V
 
     .line 79
-    iget-object p1, p0, Lcom/android/server/display/whitebalance/DisplayWhiteBalanceSettings;->mCdsi:Lcom/android/server/display/color/ColorDisplayService$ColorDisplayServiceInternal;
+    iget-object v0, p0, Lcom/android/server/display/whitebalance/DisplayWhiteBalanceSettings;->mCdsi:Lcom/android/server/display/color/ColorDisplayService$ColorDisplayServiceInternal;
 
-    invoke-virtual {p1, p0}, Lcom/android/server/display/color/ColorDisplayService$ColorDisplayServiceInternal;->setDisplayWhiteBalanceListener(Lcom/android/server/display/color/ColorDisplayService$DisplayWhiteBalanceListener;)Z
+    invoke-virtual {v0, p0}, Lcom/android/server/display/color/ColorDisplayService$ColorDisplayServiceInternal;->setDisplayWhiteBalanceListener(Lcom/android/server/display/color/ColorDisplayService$DisplayWhiteBalanceListener;)Z
 
-    move-result p1
+    move-result v0
 
     .line 80
-    invoke-direct {p0, p1}, Lcom/android/server/display/whitebalance/DisplayWhiteBalanceSettings;->setActive(Z)V
+    .local v0, "isActive":Z
+    invoke-direct {p0, v0}, Lcom/android/server/display/whitebalance/DisplayWhiteBalanceSettings;->setActive(Z)V
 
     .line 81
     return-void
@@ -106,6 +109,8 @@
 
 .method static synthetic access$000(Lcom/android/server/display/whitebalance/DisplayWhiteBalanceSettings;Z)V
     .registers 2
+    .param p0, "x0"  # Lcom/android/server/display/whitebalance/DisplayWhiteBalanceSettings;
+    .param p1, "x1"  # Z
 
     .line 39
     invoke-direct {p0, p1}, Lcom/android/server/display/whitebalance/DisplayWhiteBalanceSettings;->setActive(Z)V
@@ -114,16 +119,19 @@
 .end method
 
 .method static synthetic access$100(Lcom/android/server/display/whitebalance/DisplayWhiteBalanceSettings;)Lcom/android/server/display/color/ColorDisplayService$ColorDisplayServiceInternal;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/display/whitebalance/DisplayWhiteBalanceSettings;
 
     .line 39
-    iget-object p0, p0, Lcom/android/server/display/whitebalance/DisplayWhiteBalanceSettings;->mCdsi:Lcom/android/server/display/color/ColorDisplayService$ColorDisplayServiceInternal;
+    iget-object v0, p0, Lcom/android/server/display/whitebalance/DisplayWhiteBalanceSettings;->mCdsi:Lcom/android/server/display/color/ColorDisplayService$ColorDisplayServiceInternal;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$200(Lcom/android/server/display/whitebalance/DisplayWhiteBalanceSettings;Z)V
     .registers 2
+    .param p0, "x0"  # Lcom/android/server/display/whitebalance/DisplayWhiteBalanceSettings;
+    .param p1, "x1"  # Z
 
     .line 39
     invoke-direct {p0, p1}, Lcom/android/server/display/whitebalance/DisplayWhiteBalanceSettings;->setEnabled(Z)V
@@ -133,6 +141,7 @@
 
 .method private setActive(Z)V
     .registers 4
+    .param p1, "active"  # Z
 
     .line 165
     iget-boolean v0, p0, Lcom/android/server/display/whitebalance/DisplayWhiteBalanceSettings;->mActive:Z
@@ -172,12 +181,12 @@
     iput-boolean p1, p0, Lcom/android/server/display/whitebalance/DisplayWhiteBalanceSettings;->mActive:Z
 
     .line 172
-    iget-object p1, p0, Lcom/android/server/display/whitebalance/DisplayWhiteBalanceSettings;->mCallbacks:Lcom/android/server/display/whitebalance/DisplayWhiteBalanceController$Callbacks;
+    iget-object v0, p0, Lcom/android/server/display/whitebalance/DisplayWhiteBalanceSettings;->mCallbacks:Lcom/android/server/display/whitebalance/DisplayWhiteBalanceController$Callbacks;
 
-    if-eqz p1, :cond_28
+    if-eqz v0, :cond_28
 
     .line 173
-    invoke-interface {p1}, Lcom/android/server/display/whitebalance/DisplayWhiteBalanceController$Callbacks;->updateWhiteBalance()V
+    invoke-interface {v0}, Lcom/android/server/display/whitebalance/DisplayWhiteBalanceController$Callbacks;->updateWhiteBalance()V
 
     .line 175
     :cond_28
@@ -186,6 +195,7 @@
 
 .method private setEnabled(Z)V
     .registers 4
+    .param p1, "enabled"  # Z
 
     .line 152
     iget-boolean v0, p0, Lcom/android/server/display/whitebalance/DisplayWhiteBalanceSettings;->mEnabled:Z
@@ -225,12 +235,12 @@
     iput-boolean p1, p0, Lcom/android/server/display/whitebalance/DisplayWhiteBalanceSettings;->mEnabled:Z
 
     .line 159
-    iget-object p1, p0, Lcom/android/server/display/whitebalance/DisplayWhiteBalanceSettings;->mCallbacks:Lcom/android/server/display/whitebalance/DisplayWhiteBalanceController$Callbacks;
+    iget-object v0, p0, Lcom/android/server/display/whitebalance/DisplayWhiteBalanceSettings;->mCallbacks:Lcom/android/server/display/whitebalance/DisplayWhiteBalanceController$Callbacks;
 
-    if-eqz p1, :cond_28
+    if-eqz v0, :cond_28
 
     .line 160
-    invoke-interface {p1}, Lcom/android/server/display/whitebalance/DisplayWhiteBalanceController$Callbacks;->updateWhiteBalance()V
+    invoke-interface {v0}, Lcom/android/server/display/whitebalance/DisplayWhiteBalanceController$Callbacks;->updateWhiteBalance()V
 
     .line 162
     :cond_28
@@ -239,6 +249,8 @@
 
 .method private validateArguments(Landroid/content/Context;Landroid/os/Handler;)V
     .registers 4
+    .param p1, "context"  # Landroid/content/Context;
+    .param p2, "handler"  # Landroid/os/Handler;
 
     .line 147
     const-string v0, "context must not be null"
@@ -246,9 +258,9 @@
     invoke-static {p1, v0}, Lcom/android/internal/util/Preconditions;->checkNotNull(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
 
     .line 148
-    const-string p1, "handler must not be null"
+    const-string v0, "handler must not be null"
 
-    invoke-static {p2, p1}, Lcom/android/internal/util/Preconditions;->checkNotNull(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+    invoke-static {p2, v0}, Lcom/android/internal/util/Preconditions;->checkNotNull(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
 
     .line 149
     return-void
@@ -258,6 +270,7 @@
 # virtual methods
 .method public dump(Ljava/io/PrintWriter;)V
     .registers 4
+    .param p1, "writer"  # Ljava/io/PrintWriter;
 
     .line 131
     const-string v0, "DisplayWhiteBalanceSettings"
@@ -407,6 +420,7 @@
 
 .method public onDisplayWhiteBalanceStatusChanged(Z)V
     .registers 5
+    .param p1, "activated"  # Z
 
     .line 142
     iget-object v0, p0, Lcom/android/server/display/whitebalance/DisplayWhiteBalanceSettings;->mHandler:Landroid/os/Handler;
@@ -417,10 +431,11 @@
 
     invoke-virtual {v0, v2, p1, v1}, Landroid/os/Handler;->obtainMessage(III)Landroid/os/Message;
 
-    move-result-object p1
+    move-result-object v0
 
     .line 143
-    invoke-virtual {p1}, Landroid/os/Message;->sendToTarget()V
+    .local v0, "msg":Landroid/os/Message;
+    invoke-virtual {v0}, Landroid/os/Message;->sendToTarget()V
 
     .line 144
     return-void
@@ -428,6 +443,7 @@
 
 .method public setCallbacks(Lcom/android/server/display/whitebalance/DisplayWhiteBalanceController$Callbacks;)Z
     .registers 3
+    .param p1, "callbacks"  # Lcom/android/server/display/whitebalance/DisplayWhiteBalanceController$Callbacks;
 
     .line 92
     iget-object v0, p0, Lcom/android/server/display/whitebalance/DisplayWhiteBalanceSettings;->mCallbacks:Lcom/android/server/display/whitebalance/DisplayWhiteBalanceController$Callbacks;
@@ -435,22 +451,23 @@
     if-ne v0, p1, :cond_6
 
     .line 93
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    return p1
+    return v0
 
     .line 95
     :cond_6
     iput-object p1, p0, Lcom/android/server/display/whitebalance/DisplayWhiteBalanceSettings;->mCallbacks:Lcom/android/server/display/whitebalance/DisplayWhiteBalanceController$Callbacks;
 
     .line 96
-    const/4 p1, 0x1
+    const/4 v0, 0x1
 
-    return p1
+    return v0
 .end method
 
 .method public setLoggingEnabled(Z)Z
     .registers 3
+    .param p1, "loggingEnabled"  # Z
 
     .line 108
     iget-boolean v0, p0, Lcom/android/server/display/whitebalance/DisplayWhiteBalanceSettings;->mLoggingEnabled:Z
@@ -458,16 +475,16 @@
     if-ne v0, p1, :cond_6
 
     .line 109
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    return p1
+    return v0
 
     .line 111
     :cond_6
     iput-boolean p1, p0, Lcom/android/server/display/whitebalance/DisplayWhiteBalanceSettings;->mLoggingEnabled:Z
 
     .line 112
-    const/4 p1, 0x1
+    const/4 v0, 0x1
 
-    return p1
+    return v0
 .end method

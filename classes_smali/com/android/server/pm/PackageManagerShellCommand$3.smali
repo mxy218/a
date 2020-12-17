@@ -33,6 +33,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/pm/PackageManagerShellCommand;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/pm/PackageManagerShellCommand;
 
     .line 644
     iput-object p1, p0, Lcom/android/server/pm/PackageManagerShellCommand$3;->this$0:Lcom/android/server/pm/PackageManagerShellCommand;
@@ -60,36 +61,38 @@
 .end method
 
 .method public compare(Ljava/lang/String;Ljava/lang/String;)I
-    .registers 3
+    .registers 4
+    .param p1, "o1"  # Ljava/lang/String;
+    .param p2, "o2"  # Ljava/lang/String;
 
     .line 646
     if-ne p1, p2, :cond_4
 
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    return p1
+    return v0
 
     .line 647
     :cond_4
     if-nez p1, :cond_8
 
-    const/4 p1, -0x1
+    const/4 v0, -0x1
 
-    return p1
+    return v0
 
     .line 648
     :cond_8
     if-nez p2, :cond_c
 
-    const/4 p1, 0x1
+    const/4 v0, 0x1
 
-    return p1
+    return v0
 
     .line 649
     :cond_c
     invoke-virtual {p1, p2}, Ljava/lang/String;->compareTo(Ljava/lang/String;)I
 
-    move-result p1
+    move-result v0
 
-    return p1
+    return v0
 .end method

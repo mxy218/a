@@ -21,6 +21,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/wm/VrController;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/wm/VrController;
 
     .line 112
     iput-object p1, p0, Lcom/android/server/wm/VrController$1;->this$0:Lcom/android/server/wm/VrController;
@@ -33,7 +34,8 @@
 
 # virtual methods
 .method public onPersistentVrStateChanged(Z)V
-    .registers 6
+    .registers 7
+    .param p1, "enabled"  # Z
 
     .line 115
     iget-object v0, p0, Lcom/android/server/wm/VrController$1;->this$0:Lcom/android/server/wm/VrController;
@@ -53,33 +55,33 @@
 
     .line 119
     :try_start_b
-    iget-object p1, p0, Lcom/android/server/wm/VrController$1;->this$0:Lcom/android/server/wm/VrController;
+    iget-object v3, p0, Lcom/android/server/wm/VrController$1;->this$0:Lcom/android/server/wm/VrController;
 
-    const/4 v3, 0x3
+    const/4 v4, 0x3
 
-    invoke-static {p1, v2, v3, v1}, Lcom/android/server/wm/VrController;->access$100(Lcom/android/server/wm/VrController;IIZ)I
+    invoke-static {v3, v2, v4, v1}, Lcom/android/server/wm/VrController;->access$100(Lcom/android/server/wm/VrController;IIZ)I
 
     .line 120
-    iget-object p1, p0, Lcom/android/server/wm/VrController$1;->this$0:Lcom/android/server/wm/VrController;
+    iget-object v1, p0, Lcom/android/server/wm/VrController$1;->this$0:Lcom/android/server/wm/VrController;
 
-    const/4 v1, 0x2
+    const/4 v2, 0x2
 
-    invoke-static {p1, v1}, Lcom/android/server/wm/VrController;->access$276(Lcom/android/server/wm/VrController;I)I
+    invoke-static {v1, v2}, Lcom/android/server/wm/VrController;->access$276(Lcom/android/server/wm/VrController;I)I
 
     goto :goto_23
 
     .line 122
     :cond_18
-    iget-object p1, p0, Lcom/android/server/wm/VrController$1;->this$0:Lcom/android/server/wm/VrController;
+    iget-object v3, p0, Lcom/android/server/wm/VrController$1;->this$0:Lcom/android/server/wm/VrController;
 
-    invoke-static {p1, v2, v1}, Lcom/android/server/wm/VrController;->access$300(Lcom/android/server/wm/VrController;IZ)I
+    invoke-static {v3, v2, v1}, Lcom/android/server/wm/VrController;->access$300(Lcom/android/server/wm/VrController;IZ)I
 
     .line 123
-    iget-object p1, p0, Lcom/android/server/wm/VrController$1;->this$0:Lcom/android/server/wm/VrController;
+    iget-object v1, p0, Lcom/android/server/wm/VrController$1;->this$0:Lcom/android/server/wm/VrController;
 
-    const/4 v1, -0x3
+    const/4 v2, -0x3
 
-    invoke-static {p1, v1}, Lcom/android/server/wm/VrController;->access$272(Lcom/android/server/wm/VrController;I)I
+    invoke-static {v1, v2}, Lcom/android/server/wm/VrController;->access$272(Lcom/android/server/wm/VrController;I)I
 
     .line 125
     :goto_23
@@ -90,11 +92,11 @@
 
     .line 125
     :catchall_25
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_27
     .catchall {:try_start_b .. :try_end_27} :catchall_25
 
-    throw p1
+    throw v1
 .end method

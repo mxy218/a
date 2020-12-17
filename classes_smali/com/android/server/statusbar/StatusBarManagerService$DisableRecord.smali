@@ -34,19 +34,21 @@
 # direct methods
 .method public constructor <init>(Lcom/android/server/statusbar/StatusBarManagerService;ILandroid/os/IBinder;)V
     .registers 4
+    .param p2, "userId"  # I
+    .param p3, "token"  # Landroid/os/IBinder;
 
-    .line 119
+    .line 121
     iput-object p1, p0, Lcom/android/server/statusbar/StatusBarManagerService$DisableRecord;->this$0:Lcom/android/server/statusbar/StatusBarManagerService;
 
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
-    .line 120
+    .line 122
     iput p2, p0, Lcom/android/server/statusbar/StatusBarManagerService$DisableRecord;->userId:I
 
-    .line 121
+    .line 123
     iput-object p3, p0, Lcom/android/server/statusbar/StatusBarManagerService$DisableRecord;->token:Landroid/os/IBinder;
 
-    .line 123
+    .line 125
     const/4 p1, 0x0
 
     :try_start_a
@@ -54,14 +56,14 @@
     :try_end_d
     .catch Landroid/os/RemoteException; {:try_start_a .. :try_end_d} :catch_e
 
-    .line 126
+    .line 128
     goto :goto_f
 
-    .line 124
+    .line 126
     :catch_e
     move-exception p1
 
-    .line 127
+    .line 129
     :goto_f
     return-void
 .end method
@@ -71,7 +73,7 @@
 .method public binderDied()V
     .registers 6
 
-    .line 131
+    .line 133
     new-instance v0, Ljava/lang/StringBuilder;
 
     invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
@@ -92,7 +94,7 @@
 
     invoke-static {v1, v0}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 132
+    .line 134
     iget-object v0, p0, Lcom/android/server/statusbar/StatusBarManagerService$DisableRecord;->this$0:Lcom/android/server/statusbar/StatusBarManagerService;
 
     iget-object v1, p0, Lcom/android/server/statusbar/StatusBarManagerService$DisableRecord;->token:Landroid/os/IBinder;
@@ -105,7 +107,7 @@
 
     invoke-virtual {v0, v4, v1, v2, v3}, Lcom/android/server/statusbar/StatusBarManagerService;->disableForUser(ILandroid/os/IBinder;Ljava/lang/String;I)V
 
-    .line 133
+    .line 135
     iget-object v0, p0, Lcom/android/server/statusbar/StatusBarManagerService$DisableRecord;->this$0:Lcom/android/server/statusbar/StatusBarManagerService;
 
     iget-object v1, p0, Lcom/android/server/statusbar/StatusBarManagerService$DisableRecord;->token:Landroid/os/IBinder;
@@ -116,19 +118,20 @@
 
     invoke-virtual {v0, v4, v1, v2, v3}, Lcom/android/server/statusbar/StatusBarManagerService;->disable2ForUser(ILandroid/os/IBinder;Ljava/lang/String;I)V
 
-    .line 134
+    .line 136
     iget-object v0, p0, Lcom/android/server/statusbar/StatusBarManagerService$DisableRecord;->token:Landroid/os/IBinder;
 
     invoke-interface {v0, p0, v4}, Landroid/os/IBinder;->unlinkToDeath(Landroid/os/IBinder$DeathRecipient;I)Z
 
-    .line 135
+    .line 137
     return-void
 .end method
 
 .method public getFlags(I)I
     .registers 4
+    .param p1, "which"  # I
 
-    .line 154
+    .line 156
     const/4 v0, 0x1
 
     if-eq p1, v0, :cond_21
@@ -137,7 +140,7 @@
 
     if-eq p1, v0, :cond_1e
 
-    .line 158
+    .line 160
     new-instance v0, Ljava/lang/StringBuilder;
 
     invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
@@ -150,34 +153,34 @@
 
     invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    const-string v0, "StatusBarManagerService"
+    const-string v1, "StatusBarManagerService"
 
-    invoke-static {v0, p1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v0}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 159
-    const/4 p1, 0x0
+    .line 161
+    const/4 v0, 0x0
 
-    return p1
+    return v0
 
-    .line 156
+    .line 158
     :cond_1e
-    iget p1, p0, Lcom/android/server/statusbar/StatusBarManagerService$DisableRecord;->what2:I
+    iget v0, p0, Lcom/android/server/statusbar/StatusBarManagerService$DisableRecord;->what2:I
 
-    return p1
+    return v0
 
-    .line 155
+    .line 157
     :cond_21
-    iget p1, p0, Lcom/android/server/statusbar/StatusBarManagerService$DisableRecord;->what1:I
+    iget v0, p0, Lcom/android/server/statusbar/StatusBarManagerService$DisableRecord;->what1:I
 
-    return p1
+    return v0
 .end method
 
 .method public isEmpty()Z
     .registers 2
 
-    .line 164
+    .line 166
     iget v0, p0, Lcom/android/server/statusbar/StatusBarManagerService$DisableRecord;->what1:I
 
     if-nez v0, :cond_a
@@ -199,8 +202,11 @@
 
 .method public setFlags(IILjava/lang/String;)V
     .registers 6
+    .param p1, "what"  # I
+    .param p2, "which"  # I
+    .param p3, "pkg"  # Ljava/lang/String;
 
-    .line 138
+    .line 140
     const/4 v0, 0x1
 
     if-eq p2, v0, :cond_2c
@@ -209,7 +215,7 @@
 
     if-eq p2, v0, :cond_29
 
-    .line 146
+    .line 148
     new-instance v0, Ljava/lang/StringBuilder;
 
     invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
@@ -220,61 +226,61 @@
 
     invoke-virtual {v0, p2}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    const-string p2, ": 0x"
+    const-string v1, ": 0x"
 
-    invoke-virtual {v0, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    .line 147
+    .line 149
     invoke-static {p1}, Ljava/lang/Integer;->toHexString(I)Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v1
 
-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    .line 146
-    const-string p2, "StatusBarManagerService"
+    .line 148
+    const-string v1, "StatusBarManagerService"
 
-    invoke-static {p2, p1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v0}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
     goto :goto_2f
 
-    .line 143
+    .line 145
     :cond_29
     iput p1, p0, Lcom/android/server/statusbar/StatusBarManagerService$DisableRecord;->what2:I
 
-    .line 144
+    .line 146
     goto :goto_2f
 
-    .line 140
+    .line 142
     :cond_2c
     iput p1, p0, Lcom/android/server/statusbar/StatusBarManagerService$DisableRecord;->what1:I
 
-    .line 141
+    .line 143
     nop
 
-    .line 150
+    .line 152
     :goto_2f
     iput-object p3, p0, Lcom/android/server/statusbar/StatusBarManagerService$DisableRecord;->pkg:Ljava/lang/String;
 
-    .line 151
+    .line 153
     return-void
 .end method
 
 .method public toString()Ljava/lang/String;
     .registers 4
 
-    .line 169
+    .line 171
     const/4 v0, 0x5
 
     new-array v0, v0, [Ljava/lang/Object;
 
     iget v1, p0, Lcom/android/server/statusbar/StatusBarManagerService$DisableRecord;->userId:I
 
-    .line 170
+    .line 172
     invoke-static {v1}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
 
     move-result-object v1
@@ -315,7 +321,7 @@
 
     aput-object v1, v0, v2
 
-    .line 169
+    .line 171
     const-string/jumbo v1, "userId=%d what1=0x%08X what2=0x%08X pkg=%s token=%s"
 
     invoke-static {v1, v0}, Ljava/lang/String;->format(Ljava/lang/String;[Ljava/lang/Object;)Ljava/lang/String;

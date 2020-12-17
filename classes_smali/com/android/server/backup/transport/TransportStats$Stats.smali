@@ -57,6 +57,10 @@
 
 .method private constructor <init>(IDJJ)V
     .registers 8
+    .param p1, "n"  # I
+    .param p2, "average"  # D
+    .param p4, "max"  # J
+    .param p6, "min"  # J
 
     .line 104
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -79,6 +83,7 @@
 
 .method private constructor <init>(Lcom/android/server/backup/transport/TransportStats$Stats;)V
     .registers 10
+    .param p1, "original"  # Lcom/android/server/backup/transport/TransportStats$Stats;
 
     .line 112
     iget v1, p1, Lcom/android/server/backup/transport/TransportStats$Stats;->n:I
@@ -99,6 +104,8 @@
 
 .method synthetic constructor <init>(Lcom/android/server/backup/transport/TransportStats$Stats;Lcom/android/server/backup/transport/TransportStats$1;)V
     .registers 3
+    .param p1, "x0"  # Lcom/android/server/backup/transport/TransportStats$Stats;
+    .param p2, "x1"  # Lcom/android/server/backup/transport/TransportStats$1;
 
     .line 83
     invoke-direct {p0, p1}, Lcom/android/server/backup/transport/TransportStats$Stats;-><init>(Lcom/android/server/backup/transport/TransportStats$Stats;)V
@@ -108,6 +115,8 @@
 
 .method static synthetic access$000(Lcom/android/server/backup/transport/TransportStats$Stats;J)V
     .registers 3
+    .param p0, "x0"  # Lcom/android/server/backup/transport/TransportStats$Stats;
+    .param p1, "x1"  # J
 
     .line 83
     invoke-direct {p0, p1, p2}, Lcom/android/server/backup/transport/TransportStats$Stats;->register(J)V
@@ -117,6 +126,8 @@
 
 .method public static merge(Lcom/android/server/backup/transport/TransportStats$Stats;Lcom/android/server/backup/transport/TransportStats$Stats;)Lcom/android/server/backup/transport/TransportStats$Stats;
     .registers 13
+    .param p0, "a"  # Lcom/android/server/backup/transport/TransportStats$Stats;
+    .param p1, "b"  # Lcom/android/server/backup/transport/TransportStats$Stats;
 
     .line 85
     new-instance v8, Lcom/android/server/backup/transport/TransportStats$Stats;
@@ -158,12 +169,12 @@
 
     iget-wide v0, p0, Lcom/android/server/backup/transport/TransportStats$Stats;->min:J
 
-    iget-wide p0, p1, Lcom/android/server/backup/transport/TransportStats$Stats;->min:J
+    iget-wide v9, p1, Lcom/android/server/backup/transport/TransportStats$Stats;->min:J
 
     .line 89
-    invoke-static {v0, v1, p0, p1}, Ljava/lang/Math;->min(JJ)J
+    invoke-static {v0, v1, v9, v10}, Ljava/lang/Math;->min(JJ)J
 
-    move-result-wide p0
+    move-result-wide v9
 
     move-object v0, v8
 
@@ -173,7 +184,7 @@
 
     move-wide v4, v5
 
-    move-wide v6, p0
+    move-wide v6, v9
 
     invoke-direct/range {v0 .. v7}, Lcom/android/server/backup/transport/TransportStats$Stats;-><init>(IDJJ)V
 
@@ -183,6 +194,7 @@
 
 .method private register(J)V
     .registers 8
+    .param p1, "sample"  # J
 
     .line 116
     iget-wide v0, p0, Lcom/android/server/backup/transport/TransportStats$Stats;->average:D
@@ -224,9 +236,9 @@
 
     invoke-static {v0, v1, p1, p2}, Ljava/lang/Math;->min(JJ)J
 
-    move-result-wide p1
+    move-result-wide v0
 
-    iput-wide p1, p0, Lcom/android/server/backup/transport/TransportStats$Stats;->min:J
+    iput-wide v0, p0, Lcom/android/server/backup/transport/TransportStats$Stats;->min:J
 
     .line 120
     return-void

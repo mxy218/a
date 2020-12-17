@@ -40,6 +40,7 @@
 
 .method public createNetworkCache(I)V
     .registers 2
+    .param p1, "netId"  # I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -52,6 +53,7 @@
 
 .method public destroyNetworkCache(I)V
     .registers 2
+    .param p1, "netId"  # I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -72,7 +74,8 @@
 .end method
 
 .method public getPrefix64(I)Ljava/lang/String;
-    .registers 2
+    .registers 3
+    .param p1, "netId"  # I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -80,13 +83,20 @@
     .end annotation
 
     .line 38
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    return-object p1
+    return-object v0
 .end method
 
 .method public getResolverInfo(I[Ljava/lang/String;[Ljava/lang/String;[Ljava/lang/String;[I[I[I)V
     .registers 8
+    .param p1, "netId"  # I
+    .param p2, "servers"  # [Ljava/lang/String;
+    .param p3, "domains"  # [Ljava/lang/String;
+    .param p4, "tlsServers"  # [Ljava/lang/String;
+    .param p5, "params"  # [I
+    .param p6, "stats"  # [I
+    .param p7, "wait_for_pending_req_timeout_count"  # [I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -113,6 +123,7 @@
 
 .method public registerEventListener(Landroid/net/metrics/INetdEventListener;)V
     .registers 2
+    .param p1, "listener"  # Landroid/net/metrics/INetdEventListener;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -125,6 +136,7 @@
 
 .method public setLogSeverity(I)V
     .registers 2
+    .param p1, "logSeverity"  # I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -137,6 +149,7 @@
 
 .method public setResolverConfiguration(Landroid/net/ResolverParamsParcel;)V
     .registers 2
+    .param p1, "resolverParams"  # Landroid/net/ResolverParamsParcel;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -149,6 +162,7 @@
 
 .method public startPrefix64Discovery(I)V
     .registers 2
+    .param p1, "netId"  # I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -161,6 +175,7 @@
 
 .method public stopPrefix64Discovery(I)V
     .registers 2
+    .param p1, "netId"  # I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;

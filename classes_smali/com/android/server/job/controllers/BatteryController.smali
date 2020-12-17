@@ -70,29 +70,30 @@
 .end method
 
 .method public constructor <init>(Lcom/android/server/job/JobSchedulerService;)V
-    .registers 2
+    .registers 3
+    .param p1, "service"  # Lcom/android/server/job/JobSchedulerService;
 
     .line 60
     invoke-direct {p0, p1}, Lcom/android/server/job/controllers/StateController;-><init>(Lcom/android/server/job/JobSchedulerService;)V
 
     .line 51
-    new-instance p1, Landroid/util/ArraySet;
+    new-instance v0, Landroid/util/ArraySet;
 
-    invoke-direct {p1}, Landroid/util/ArraySet;-><init>()V
+    invoke-direct {v0}, Landroid/util/ArraySet;-><init>()V
 
-    iput-object p1, p0, Lcom/android/server/job/controllers/BatteryController;->mTrackedTasks:Landroid/util/ArraySet;
+    iput-object v0, p0, Lcom/android/server/job/controllers/BatteryController;->mTrackedTasks:Landroid/util/ArraySet;
 
     .line 61
-    new-instance p1, Lcom/android/server/job/controllers/BatteryController$ChargingTracker;
+    new-instance v0, Lcom/android/server/job/controllers/BatteryController$ChargingTracker;
 
-    invoke-direct {p1, p0}, Lcom/android/server/job/controllers/BatteryController$ChargingTracker;-><init>(Lcom/android/server/job/controllers/BatteryController;)V
+    invoke-direct {v0, p0}, Lcom/android/server/job/controllers/BatteryController$ChargingTracker;-><init>(Lcom/android/server/job/controllers/BatteryController;)V
 
-    iput-object p1, p0, Lcom/android/server/job/controllers/BatteryController;->mChargeTracker:Lcom/android/server/job/controllers/BatteryController$ChargingTracker;
+    iput-object v0, p0, Lcom/android/server/job/controllers/BatteryController;->mChargeTracker:Lcom/android/server/job/controllers/BatteryController$ChargingTracker;
 
     .line 62
-    iget-object p1, p0, Lcom/android/server/job/controllers/BatteryController;->mChargeTracker:Lcom/android/server/job/controllers/BatteryController$ChargingTracker;
+    iget-object v0, p0, Lcom/android/server/job/controllers/BatteryController;->mChargeTracker:Lcom/android/server/job/controllers/BatteryController$ChargingTracker;
 
-    invoke-virtual {p1}, Lcom/android/server/job/controllers/BatteryController$ChargingTracker;->startTracking()V
+    invoke-virtual {v0}, Lcom/android/server/job/controllers/BatteryController$ChargingTracker;->startTracking()V
 
     .line 63
     return-void
@@ -109,6 +110,7 @@
 
 .method static synthetic access$100(Lcom/android/server/job/controllers/BatteryController;)V
     .registers 1
+    .param p0, "x0"  # Lcom/android/server/job/controllers/BatteryController;
 
     .line 46
     invoke-direct {p0}, Lcom/android/server/job/controllers/BatteryController;->maybeReportNewChargingStateLocked()V
@@ -117,7 +119,7 @@
 .end method
 
 .method private maybeReportNewChargingStateLocked()V
-    .registers 8
+    .registers 7
 
     .line 83
     iget-object v0, p0, Lcom/android/server/job/controllers/BatteryController;->mChargeTracker:Lcom/android/server/job/controllers/BatteryController$ChargingTracker;
@@ -127,6 +129,7 @@
     move-result v0
 
     .line 84
+    .local v0, "stablePower":Z
     iget-object v1, p0, Lcom/android/server/job/controllers/BatteryController;->mChargeTracker:Lcom/android/server/job/controllers/BatteryController$ChargingTracker;
 
     invoke-virtual {v1}, Lcom/android/server/job/controllers/BatteryController$ChargingTracker;->isBatteryNotLow()Z
@@ -134,16 +137,17 @@
     move-result v1
 
     .line 85
+    .local v1, "batteryNotLow":Z
     sget-boolean v2, Lcom/android/server/job/controllers/BatteryController;->DEBUG:Z
 
-    if-eqz v2, :cond_26
+    if-eqz v2, :cond_27
 
     .line 86
     new-instance v2, Ljava/lang/StringBuilder;
 
     invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v3, "maybeReportNewChargingStateLocked: "
+    const-string/jumbo v3, "maybeReportNewChargingStateLocked: "
 
     invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
@@ -158,99 +162,106 @@
     invoke-static {v3, v2}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 88
-    :cond_26
+    :cond_27
     const/4 v2, 0x0
 
     .line 89
+    .local v2, "reportChange":Z
     iget-object v3, p0, Lcom/android/server/job/controllers/BatteryController;->mTrackedTasks:Landroid/util/ArraySet;
 
     invoke-virtual {v3}, Landroid/util/ArraySet;->size()I
 
     move-result v3
 
-    const/4 v4, 0x1
+    add-int/lit8 v3, v3, -0x1
 
-    sub-int/2addr v3, v4
-
-    :goto_2f
-    if-ltz v3, :cond_4a
+    .local v3, "i":I
+    :goto_30
+    if-ltz v3, :cond_4b
 
     .line 90
-    iget-object v5, p0, Lcom/android/server/job/controllers/BatteryController;->mTrackedTasks:Landroid/util/ArraySet;
+    iget-object v4, p0, Lcom/android/server/job/controllers/BatteryController;->mTrackedTasks:Landroid/util/ArraySet;
 
-    invoke-virtual {v5, v3}, Landroid/util/ArraySet;->valueAt(I)Ljava/lang/Object;
+    invoke-virtual {v4, v3}, Landroid/util/ArraySet;->valueAt(I)Ljava/lang/Object;
 
-    move-result-object v5
+    move-result-object v4
 
-    check-cast v5, Lcom/android/server/job/controllers/JobStatus;
+    check-cast v4, Lcom/android/server/job/controllers/JobStatus;
 
     .line 91
-    invoke-virtual {v5, v0}, Lcom/android/server/job/controllers/JobStatus;->setChargingConstraintSatisfied(Z)Z
+    .local v4, "ts":Lcom/android/server/job/controllers/JobStatus;
+    invoke-virtual {v4, v0}, Lcom/android/server/job/controllers/JobStatus;->setChargingConstraintSatisfied(Z)Z
 
-    move-result v6
+    move-result v5
 
     .line 92
-    if-eq v6, v0, :cond_40
+    .local v5, "previous":Z
+    if-eq v5, v0, :cond_41
 
     .line 93
-    move v2, v4
+    const/4 v2, 0x1
 
     .line 95
-    :cond_40
-    invoke-virtual {v5, v1}, Lcom/android/server/job/controllers/JobStatus;->setBatteryNotLowConstraintSatisfied(Z)Z
+    :cond_41
+    invoke-virtual {v4, v1}, Lcom/android/server/job/controllers/JobStatus;->setBatteryNotLowConstraintSatisfied(Z)Z
 
     move-result v5
 
     .line 96
-    if-eq v5, v1, :cond_47
+    if-eq v5, v1, :cond_48
 
     .line 97
-    move v2, v4
+    const/4 v2, 0x1
 
     .line 89
-    :cond_47
+    .end local v4  # "ts":Lcom/android/server/job/controllers/JobStatus;
+    .end local v5  # "previous":Z
+    :cond_48
     add-int/lit8 v3, v3, -0x1
 
-    goto :goto_2f
+    goto :goto_30
 
     .line 100
-    :cond_4a
-    if-nez v0, :cond_57
+    .end local v3  # "i":I
+    :cond_4b
+    if-nez v0, :cond_58
 
-    if-eqz v1, :cond_4f
+    if-eqz v1, :cond_50
 
-    goto :goto_57
+    goto :goto_58
 
     .line 103
-    :cond_4f
-    if-eqz v2, :cond_5d
+    :cond_50
+    if-eqz v2, :cond_5e
 
     .line 106
-    iget-object v0, p0, Lcom/android/server/job/controllers/BatteryController;->mStateChangedListener:Lcom/android/server/job/StateChangedListener;
+    iget-object v3, p0, Lcom/android/server/job/controllers/BatteryController;->mStateChangedListener:Lcom/android/server/job/StateChangedListener;
 
-    invoke-interface {v0}, Lcom/android/server/job/StateChangedListener;->onControllerStateChanged()V
+    invoke-interface {v3}, Lcom/android/server/job/StateChangedListener;->onControllerStateChanged()V
 
-    goto :goto_5d
+    goto :goto_5e
 
     .line 102
-    :cond_57
-    :goto_57
-    iget-object v0, p0, Lcom/android/server/job/controllers/BatteryController;->mStateChangedListener:Lcom/android/server/job/StateChangedListener;
+    :cond_58
+    :goto_58
+    iget-object v3, p0, Lcom/android/server/job/controllers/BatteryController;->mStateChangedListener:Lcom/android/server/job/StateChangedListener;
 
-    const/4 v1, 0x0
+    const/4 v4, 0x0
 
-    invoke-interface {v0, v1}, Lcom/android/server/job/StateChangedListener;->onRunJobNow(Lcom/android/server/job/controllers/JobStatus;)V
+    invoke-interface {v3, v4}, Lcom/android/server/job/StateChangedListener;->onRunJobNow(Lcom/android/server/job/controllers/JobStatus;)V
 
     .line 108
-    :cond_5d
-    :goto_5d
+    :cond_5e
+    :goto_5e
     return-void
 .end method
 
 
 # virtual methods
 .method public dumpControllerStateLocked(Landroid/util/proto/ProtoOutputStream;JLjava/util/function/Predicate;)V
-    .registers 13
+    .registers 16
+    .param p1, "proto"  # Landroid/util/proto/ProtoOutputStream;
+    .param p2, "fieldId"  # J
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(",
@@ -263,139 +274,148 @@
     .end annotation
 
     .line 254
+    .local p4, "predicate":Ljava/util/function/Predicate;, "Ljava/util/function/Predicate<Lcom/android/server/job/controllers/JobStatus;>;"
     invoke-virtual {p1, p2, p3}, Landroid/util/proto/ProtoOutputStream;->start(J)J
-
-    move-result-wide p2
-
-    .line 255
-    const-wide v0, 0x10b00000002L
-
-    invoke-virtual {p1, v0, v1}, Landroid/util/proto/ProtoOutputStream;->start(J)J
 
     move-result-wide v0
 
+    .line 255
+    .local v0, "token":J
+    const-wide v2, 0x10b00000002L
+
+    invoke-virtual {p1, v2, v3}, Landroid/util/proto/ProtoOutputStream;->start(J)J
+
+    move-result-wide v2
+
     .line 257
-    iget-object v2, p0, Lcom/android/server/job/controllers/BatteryController;->mChargeTracker:Lcom/android/server/job/controllers/BatteryController$ChargingTracker;
+    .local v2, "mToken":J
+    iget-object v4, p0, Lcom/android/server/job/controllers/BatteryController;->mChargeTracker:Lcom/android/server/job/controllers/BatteryController$ChargingTracker;
 
     .line 258
-    invoke-virtual {v2}, Lcom/android/server/job/controllers/BatteryController$ChargingTracker;->isOnStablePower()Z
-
-    move-result v2
-
-    .line 257
-    const-wide v3, 0x10800000001L
-
-    invoke-virtual {p1, v3, v4, v2}, Landroid/util/proto/ProtoOutputStream;->write(JZ)V
-
-    .line 259
-    iget-object v2, p0, Lcom/android/server/job/controllers/BatteryController;->mChargeTracker:Lcom/android/server/job/controllers/BatteryController$ChargingTracker;
-
-    .line 260
-    invoke-virtual {v2}, Lcom/android/server/job/controllers/BatteryController$ChargingTracker;->isBatteryNotLow()Z
-
-    move-result v2
-
-    .line 259
-    const-wide v3, 0x10800000002L
-
-    invoke-virtual {p1, v3, v4, v2}, Landroid/util/proto/ProtoOutputStream;->write(JZ)V
-
-    .line 262
-    iget-object v2, p0, Lcom/android/server/job/controllers/BatteryController;->mChargeTracker:Lcom/android/server/job/controllers/BatteryController$ChargingTracker;
-
-    .line 263
-    invoke-virtual {v2}, Lcom/android/server/job/controllers/BatteryController$ChargingTracker;->isMonitoring()Z
-
-    move-result v2
-
-    .line 262
-    const-wide v3, 0x10800000003L
-
-    invoke-virtual {p1, v3, v4, v2}, Landroid/util/proto/ProtoOutputStream;->write(JZ)V
-
-    .line 264
-    iget-object v2, p0, Lcom/android/server/job/controllers/BatteryController;->mChargeTracker:Lcom/android/server/job/controllers/BatteryController$ChargingTracker;
-
-    .line 265
-    invoke-virtual {v2}, Lcom/android/server/job/controllers/BatteryController$ChargingTracker;->getSeq()I
-
-    move-result v2
-
-    .line 264
-    const-wide v3, 0x10500000004L
-
-    invoke-virtual {p1, v3, v4, v2}, Landroid/util/proto/ProtoOutputStream;->write(JI)V
-
-    .line 267
-    const/4 v2, 0x0
-
-    :goto_46
-    iget-object v3, p0, Lcom/android/server/job/controllers/BatteryController;->mTrackedTasks:Landroid/util/ArraySet;
-
-    invoke-virtual {v3}, Landroid/util/ArraySet;->size()I
-
-    move-result v3
-
-    if-ge v2, v3, :cond_80
-
-    .line 268
-    iget-object v3, p0, Lcom/android/server/job/controllers/BatteryController;->mTrackedTasks:Landroid/util/ArraySet;
-
-    invoke-virtual {v3, v2}, Landroid/util/ArraySet;->valueAt(I)Ljava/lang/Object;
-
-    move-result-object v3
-
-    check-cast v3, Lcom/android/server/job/controllers/JobStatus;
-
-    .line 269
-    invoke-interface {p4, v3}, Ljava/util/function/Predicate;->test(Ljava/lang/Object;)Z
+    invoke-virtual {v4}, Lcom/android/server/job/controllers/BatteryController$ChargingTracker;->isOnStablePower()Z
 
     move-result v4
 
-    if-nez v4, :cond_5d
+    .line 257
+    const-wide v5, 0x10800000001L
+
+    invoke-virtual {p1, v5, v6, v4}, Landroid/util/proto/ProtoOutputStream;->write(JZ)V
+
+    .line 259
+    iget-object v4, p0, Lcom/android/server/job/controllers/BatteryController;->mChargeTracker:Lcom/android/server/job/controllers/BatteryController$ChargingTracker;
+
+    .line 260
+    invoke-virtual {v4}, Lcom/android/server/job/controllers/BatteryController$ChargingTracker;->isBatteryNotLow()Z
+
+    move-result v4
+
+    .line 259
+    const-wide v5, 0x10800000002L
+
+    invoke-virtual {p1, v5, v6, v4}, Landroid/util/proto/ProtoOutputStream;->write(JZ)V
+
+    .line 262
+    iget-object v4, p0, Lcom/android/server/job/controllers/BatteryController;->mChargeTracker:Lcom/android/server/job/controllers/BatteryController$ChargingTracker;
+
+    .line 263
+    invoke-virtual {v4}, Lcom/android/server/job/controllers/BatteryController$ChargingTracker;->isMonitoring()Z
+
+    move-result v4
+
+    .line 262
+    const-wide v5, 0x10800000003L
+
+    invoke-virtual {p1, v5, v6, v4}, Landroid/util/proto/ProtoOutputStream;->write(JZ)V
+
+    .line 264
+    iget-object v4, p0, Lcom/android/server/job/controllers/BatteryController;->mChargeTracker:Lcom/android/server/job/controllers/BatteryController$ChargingTracker;
+
+    .line 265
+    invoke-virtual {v4}, Lcom/android/server/job/controllers/BatteryController$ChargingTracker;->getSeq()I
+
+    move-result v4
+
+    .line 264
+    const-wide v5, 0x10500000004L
+
+    invoke-virtual {p1, v5, v6, v4}, Landroid/util/proto/ProtoOutputStream;->write(JI)V
+
+    .line 267
+    const/4 v4, 0x0
+
+    .local v4, "i":I
+    :goto_46
+    iget-object v5, p0, Lcom/android/server/job/controllers/BatteryController;->mTrackedTasks:Landroid/util/ArraySet;
+
+    invoke-virtual {v5}, Landroid/util/ArraySet;->size()I
+
+    move-result v5
+
+    if-ge v4, v5, :cond_80
+
+    .line 268
+    iget-object v5, p0, Lcom/android/server/job/controllers/BatteryController;->mTrackedTasks:Landroid/util/ArraySet;
+
+    invoke-virtual {v5, v4}, Landroid/util/ArraySet;->valueAt(I)Ljava/lang/Object;
+
+    move-result-object v5
+
+    check-cast v5, Lcom/android/server/job/controllers/JobStatus;
+
+    .line 269
+    .local v5, "js":Lcom/android/server/job/controllers/JobStatus;
+    invoke-interface {p4, v5}, Ljava/util/function/Predicate;->test(Ljava/lang/Object;)Z
+
+    move-result v6
+
+    if-nez v6, :cond_5d
 
     .line 270
     goto :goto_7d
 
     .line 272
     :cond_5d
-    const-wide v4, 0x20b00000005L
+    const-wide v6, 0x20b00000005L
 
-    invoke-virtual {p1, v4, v5}, Landroid/util/proto/ProtoOutputStream;->start(J)J
+    invoke-virtual {p1, v6, v7}, Landroid/util/proto/ProtoOutputStream;->start(J)J
 
-    move-result-wide v4
+    move-result-wide v6
 
     .line 273
-    const-wide v6, 0x10b00000001L
+    .local v6, "jsToken":J
+    const-wide v8, 0x10b00000001L
 
-    invoke-virtual {v3, p1, v6, v7}, Lcom/android/server/job/controllers/JobStatus;->writeToShortProto(Landroid/util/proto/ProtoOutputStream;J)V
+    invoke-virtual {v5, p1, v8, v9}, Lcom/android/server/job/controllers/JobStatus;->writeToShortProto(Landroid/util/proto/ProtoOutputStream;J)V
 
     .line 274
-    const-wide v6, 0x10500000002L
+    const-wide v8, 0x10500000002L
 
     .line 275
-    invoke-virtual {v3}, Lcom/android/server/job/controllers/JobStatus;->getSourceUid()I
+    invoke-virtual {v5}, Lcom/android/server/job/controllers/JobStatus;->getSourceUid()I
 
-    move-result v3
+    move-result v10
 
     .line 274
-    invoke-virtual {p1, v6, v7, v3}, Landroid/util/proto/ProtoOutputStream;->write(JI)V
+    invoke-virtual {p1, v8, v9, v10}, Landroid/util/proto/ProtoOutputStream;->write(JI)V
 
     .line 276
-    invoke-virtual {p1, v4, v5}, Landroid/util/proto/ProtoOutputStream;->end(J)V
+    invoke-virtual {p1, v6, v7}, Landroid/util/proto/ProtoOutputStream;->end(J)V
 
     .line 267
+    .end local v5  # "js":Lcom/android/server/job/controllers/JobStatus;
+    .end local v6  # "jsToken":J
     :goto_7d
-    add-int/lit8 v2, v2, 0x1
+    add-int/lit8 v4, v4, 0x1
 
     goto :goto_46
 
     .line 279
+    .end local v4  # "i":I
     :cond_80
-    invoke-virtual {p1, v0, v1}, Landroid/util/proto/ProtoOutputStream;->end(J)V
+    invoke-virtual {p1, v2, v3}, Landroid/util/proto/ProtoOutputStream;->end(J)V
 
     .line 280
-    invoke-virtual {p1, p2, p3}, Landroid/util/proto/ProtoOutputStream;->end(J)V
+    invoke-virtual {p1, v0, v1}, Landroid/util/proto/ProtoOutputStream;->end(J)V
 
     .line 281
     return-void
@@ -403,6 +423,7 @@
 
 .method public dumpControllerStateLocked(Lcom/android/internal/util/IndentingPrintWriter;Ljava/util/function/Predicate;)V
     .registers 6
+    .param p1, "pw"  # Lcom/android/internal/util/IndentingPrintWriter;
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(",
@@ -414,6 +435,7 @@
     .end annotation
 
     .line 229
+    .local p2, "predicate":Ljava/util/function/Predicate;, "Ljava/util/function/Predicate<Lcom/android/server/job/controllers/JobStatus;>;"
     new-instance v0, Ljava/lang/StringBuilder;
 
     invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
@@ -489,6 +511,7 @@
     .line 238
     const/4 v0, 0x0
 
+    .local v0, "i":I
     :goto_4e
     iget-object v1, p0, Lcom/android/server/job/controllers/BatteryController;->mTrackedTasks:Landroid/util/ArraySet;
 
@@ -508,6 +531,7 @@
     check-cast v1, Lcom/android/server/job/controllers/JobStatus;
 
     .line 240
+    .local v1, "js":Lcom/android/server/job/controllers/JobStatus;
     invoke-interface {p2, v1}, Ljava/util/function/Predicate;->test(Ljava/lang/Object;)Z
 
     move-result v2
@@ -534,20 +558,22 @@
     .line 246
     invoke-virtual {v1}, Lcom/android/server/job/controllers/JobStatus;->getSourceUid()I
 
-    move-result v1
+    move-result v2
 
-    invoke-static {p1, v1}, Landroid/os/UserHandle;->formatUid(Ljava/io/PrintWriter;I)V
+    invoke-static {p1, v2}, Landroid/os/UserHandle;->formatUid(Ljava/io/PrintWriter;I)V
 
     .line 247
     invoke-virtual {p1}, Lcom/android/internal/util/IndentingPrintWriter;->println()V
 
     .line 238
+    .end local v1  # "js":Lcom/android/server/job/controllers/JobStatus;
     :goto_7c
     add-int/lit8 v0, v0, 0x1
 
     goto :goto_4e
 
     .line 249
+    .end local v0  # "i":I
     :cond_7f
     return-void
 .end method
@@ -564,42 +590,44 @@
 .end method
 
 .method public maybeStartTrackingJobLocked(Lcom/android/server/job/controllers/JobStatus;Lcom/android/server/job/controllers/JobStatus;)V
-    .registers 3
+    .registers 4
+    .param p1, "taskStatus"  # Lcom/android/server/job/controllers/JobStatus;
+    .param p2, "lastJob"  # Lcom/android/server/job/controllers/JobStatus;
 
     .line 67
     invoke-virtual {p1}, Lcom/android/server/job/controllers/JobStatus;->hasPowerConstraint()Z
 
-    move-result p2
+    move-result v0
 
-    if-eqz p2, :cond_21
+    if-eqz v0, :cond_21
 
     .line 68
-    iget-object p2, p0, Lcom/android/server/job/controllers/BatteryController;->mTrackedTasks:Landroid/util/ArraySet;
+    iget-object v0, p0, Lcom/android/server/job/controllers/BatteryController;->mTrackedTasks:Landroid/util/ArraySet;
 
-    invoke-virtual {p2, p1}, Landroid/util/ArraySet;->add(Ljava/lang/Object;)Z
+    invoke-virtual {v0, p1}, Landroid/util/ArraySet;->add(Ljava/lang/Object;)Z
 
     .line 69
-    const/4 p2, 0x1
+    const/4 v0, 0x1
 
-    invoke-virtual {p1, p2}, Lcom/android/server/job/controllers/JobStatus;->setTrackingController(I)V
+    invoke-virtual {p1, v0}, Lcom/android/server/job/controllers/JobStatus;->setTrackingController(I)V
 
     .line 70
-    iget-object p2, p0, Lcom/android/server/job/controllers/BatteryController;->mChargeTracker:Lcom/android/server/job/controllers/BatteryController$ChargingTracker;
+    iget-object v0, p0, Lcom/android/server/job/controllers/BatteryController;->mChargeTracker:Lcom/android/server/job/controllers/BatteryController$ChargingTracker;
 
-    invoke-virtual {p2}, Lcom/android/server/job/controllers/BatteryController$ChargingTracker;->isOnStablePower()Z
+    invoke-virtual {v0}, Lcom/android/server/job/controllers/BatteryController$ChargingTracker;->isOnStablePower()Z
 
-    move-result p2
+    move-result v0
 
-    invoke-virtual {p1, p2}, Lcom/android/server/job/controllers/JobStatus;->setChargingConstraintSatisfied(Z)Z
+    invoke-virtual {p1, v0}, Lcom/android/server/job/controllers/JobStatus;->setChargingConstraintSatisfied(Z)Z
 
     .line 71
-    iget-object p2, p0, Lcom/android/server/job/controllers/BatteryController;->mChargeTracker:Lcom/android/server/job/controllers/BatteryController$ChargingTracker;
+    iget-object v0, p0, Lcom/android/server/job/controllers/BatteryController;->mChargeTracker:Lcom/android/server/job/controllers/BatteryController$ChargingTracker;
 
-    invoke-virtual {p2}, Lcom/android/server/job/controllers/BatteryController$ChargingTracker;->isBatteryNotLow()Z
+    invoke-virtual {v0}, Lcom/android/server/job/controllers/BatteryController$ChargingTracker;->isBatteryNotLow()Z
 
-    move-result p2
+    move-result v0
 
-    invoke-virtual {p1, p2}, Lcom/android/server/job/controllers/JobStatus;->setBatteryNotLowConstraintSatisfied(Z)Z
+    invoke-virtual {p1, v0}, Lcom/android/server/job/controllers/JobStatus;->setBatteryNotLowConstraintSatisfied(Z)Z
 
     .line 73
     :cond_21
@@ -607,21 +635,24 @@
 .end method
 
 .method public maybeStopTrackingJobLocked(Lcom/android/server/job/controllers/JobStatus;Lcom/android/server/job/controllers/JobStatus;Z)V
-    .registers 4
+    .registers 5
+    .param p1, "taskStatus"  # Lcom/android/server/job/controllers/JobStatus;
+    .param p2, "incomingJob"  # Lcom/android/server/job/controllers/JobStatus;
+    .param p3, "forUpdate"  # Z
 
     .line 77
-    const/4 p2, 0x1
+    const/4 v0, 0x1
 
-    invoke-virtual {p1, p2}, Lcom/android/server/job/controllers/JobStatus;->clearTrackingController(I)Z
+    invoke-virtual {p1, v0}, Lcom/android/server/job/controllers/JobStatus;->clearTrackingController(I)Z
 
-    move-result p2
+    move-result v0
 
-    if-eqz p2, :cond_c
+    if-eqz v0, :cond_c
 
     .line 78
-    iget-object p2, p0, Lcom/android/server/job/controllers/BatteryController;->mTrackedTasks:Landroid/util/ArraySet;
+    iget-object v0, p0, Lcom/android/server/job/controllers/BatteryController;->mTrackedTasks:Landroid/util/ArraySet;
 
-    invoke-virtual {p2, p1}, Landroid/util/ArraySet;->remove(Ljava/lang/Object;)Z
+    invoke-virtual {v0, p1}, Landroid/util/ArraySet;->remove(Ljava/lang/Object;)Z
 
     .line 80
     :cond_c

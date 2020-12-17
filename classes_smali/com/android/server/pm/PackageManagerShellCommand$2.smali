@@ -33,6 +33,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/pm/PackageManagerShellCommand;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/pm/PackageManagerShellCommand;
 
     .line 612
     iput-object p1, p0, Lcom/android/server/pm/PackageManagerShellCommand$2;->this$0:Lcom/android/server/pm/PackageManagerShellCommand;
@@ -45,18 +46,20 @@
 
 # virtual methods
 .method public compare(Landroid/content/pm/InstrumentationInfo;Landroid/content/pm/InstrumentationInfo;)I
-    .registers 3
+    .registers 5
+    .param p1, "o1"  # Landroid/content/pm/InstrumentationInfo;
+    .param p2, "o2"  # Landroid/content/pm/InstrumentationInfo;
 
     .line 614
-    iget-object p1, p1, Landroid/content/pm/InstrumentationInfo;->targetPackage:Ljava/lang/String;
+    iget-object v0, p1, Landroid/content/pm/InstrumentationInfo;->targetPackage:Ljava/lang/String;
 
-    iget-object p2, p2, Landroid/content/pm/InstrumentationInfo;->targetPackage:Ljava/lang/String;
+    iget-object v1, p2, Landroid/content/pm/InstrumentationInfo;->targetPackage:Ljava/lang/String;
 
-    invoke-virtual {p1, p2}, Ljava/lang/String;->compareTo(Ljava/lang/String;)I
+    invoke-virtual {v0, v1}, Ljava/lang/String;->compareTo(Ljava/lang/String;)I
 
-    move-result p1
+    move-result v0
 
-    return p1
+    return v0
 .end method
 
 .method public bridge synthetic compare(Ljava/lang/Object;Ljava/lang/Object;)I

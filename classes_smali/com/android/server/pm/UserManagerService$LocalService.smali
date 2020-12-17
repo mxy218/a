@@ -22,7 +22,7 @@
 .method private constructor <init>(Lcom/android/server/pm/UserManagerService;)V
     .registers 2
 
-    .line 4119
+    .line 3877
     iput-object p1, p0, Lcom/android/server/pm/UserManagerService$LocalService;->this$0:Lcom/android/server/pm/UserManagerService;
 
     invoke-direct {p0}, Landroid/os/UserManagerInternal;-><init>()V
@@ -32,8 +32,10 @@
 
 .method synthetic constructor <init>(Lcom/android/server/pm/UserManagerService;Lcom/android/server/pm/UserManagerService$1;)V
     .registers 3
+    .param p1, "x0"  # Lcom/android/server/pm/UserManagerService;
+    .param p2, "x1"  # Lcom/android/server/pm/UserManagerService$1;
 
-    .line 4119
+    .line 3877
     invoke-direct {p0, p1}, Lcom/android/server/pm/UserManagerService$LocalService;-><init>(Lcom/android/server/pm/UserManagerService;)V
 
     return-void
@@ -43,218 +45,220 @@
 # virtual methods
 .method public addUserRestrictionsListener(Landroid/os/UserManagerInternal$UserRestrictionsListener;)V
     .registers 4
+    .param p1, "listener"  # Landroid/os/UserManagerInternal$UserRestrictionsListener;
 
-    .line 4161
+    .line 3919
     iget-object v0, p0, Lcom/android/server/pm/UserManagerService$LocalService;->this$0:Lcom/android/server/pm/UserManagerService;
 
-    invoke-static {v0}, Lcom/android/server/pm/UserManagerService;->access$800(Lcom/android/server/pm/UserManagerService;)Ljava/util/ArrayList;
+    invoke-static {v0}, Lcom/android/server/pm/UserManagerService;->access$700(Lcom/android/server/pm/UserManagerService;)Ljava/util/ArrayList;
 
     move-result-object v0
 
     monitor-enter v0
 
-    .line 4162
+    .line 3920
     :try_start_7
     iget-object v1, p0, Lcom/android/server/pm/UserManagerService$LocalService;->this$0:Lcom/android/server/pm/UserManagerService;
 
-    invoke-static {v1}, Lcom/android/server/pm/UserManagerService;->access$800(Lcom/android/server/pm/UserManagerService;)Ljava/util/ArrayList;
+    invoke-static {v1}, Lcom/android/server/pm/UserManagerService;->access$700(Lcom/android/server/pm/UserManagerService;)Ljava/util/ArrayList;
 
     move-result-object v1
 
     invoke-virtual {v1, p1}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
 
-    .line 4163
+    .line 3921
     monitor-exit v0
 
-    .line 4164
+    .line 3922
     return-void
 
-    .line 4163
+    .line 3921
     :catchall_12
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_14
     .catchall {:try_start_7 .. :try_end_14} :catchall_12
 
-    throw p1
+    throw v1
 .end method
 
 .method public createUserEvenWhenDisallowed(Ljava/lang/String;I[Ljava/lang/String;)Landroid/content/pm/UserInfo;
-    .registers 10
+    .registers 9
+    .param p1, "name"  # Ljava/lang/String;
+    .param p2, "flags"  # I
+    .param p3, "disallowedPackages"  # [Ljava/lang/String;
 
-    .line 4263
+    .line 4021
     iget-object v0, p0, Lcom/android/server/pm/UserManagerService$LocalService;->this$0:Lcom/android/server/pm/UserManagerService;
 
-    const/16 v3, -0x2710
+    const/16 v1, -0x2710
 
-    const/4 v4, 0x0
+    invoke-static {v0, p1, p2, v1, p3}, Lcom/android/server/pm/UserManagerService;->access$2600(Lcom/android/server/pm/UserManagerService;Ljava/lang/String;II[Ljava/lang/String;)Landroid/content/pm/UserInfo;
 
-    move-object v1, p1
+    move-result-object v0
 
-    move v2, p2
+    .line 4024
+    .local v0, "user":Landroid/content/pm/UserInfo;
+    if-eqz v0, :cond_2b
 
-    move-object v5, p3
+    invoke-virtual {v0}, Landroid/content/pm/UserInfo;->isAdmin()Z
 
-    invoke-static/range {v0 .. v5}, Lcom/android/server/pm/UserManagerService;->access$2700(Lcom/android/server/pm/UserManagerService;Ljava/lang/String;IIZ[Ljava/lang/String;)Landroid/content/pm/UserInfo;
+    move-result v1
 
-    move-result-object p1
+    if-nez v1, :cond_2b
 
-    .line 4266
-    if-eqz p1, :cond_2f
+    invoke-virtual {v0}, Landroid/content/pm/UserInfo;->isDemo()Z
 
-    invoke-virtual {p1}, Landroid/content/pm/UserInfo;->isAdmin()Z
+    move-result v1
 
-    move-result p2
+    if-nez v1, :cond_2b
 
-    if-nez p2, :cond_2f
+    .line 4025
+    iget-object v1, p0, Lcom/android/server/pm/UserManagerService$LocalService;->this$0:Lcom/android/server/pm/UserManagerService;
 
-    invoke-virtual {p1}, Landroid/content/pm/UserInfo;->isDemo()Z
+    iget v2, v0, Landroid/content/pm/UserInfo;->id:I
 
-    move-result p2
+    const/4 v3, 0x1
 
-    if-nez p2, :cond_2f
+    const-string/jumbo v4, "no_sms"
 
-    .line 4267
-    iget-object p2, p0, Lcom/android/server/pm/UserManagerService$LocalService;->this$0:Lcom/android/server/pm/UserManagerService;
+    invoke-virtual {v1, v4, v3, v2}, Lcom/android/server/pm/UserManagerService;->setUserRestriction(Ljava/lang/String;ZI)V
 
-    iget p3, p1, Landroid/content/pm/UserInfo;->id:I
+    .line 4026
+    iget-object v1, p0, Lcom/android/server/pm/UserManagerService$LocalService;->this$0:Lcom/android/server/pm/UserManagerService;
 
-    const/4 v0, 0x1
+    iget v2, v0, Landroid/content/pm/UserInfo;->id:I
 
-    const-string/jumbo v1, "no_sms"
+    const-string/jumbo v4, "no_outgoing_calls"
 
-    invoke-virtual {p2, v1, v0, p3}, Lcom/android/server/pm/UserManagerService;->setUserRestriction(Ljava/lang/String;ZI)V
+    invoke-virtual {v1, v4, v3, v2}, Lcom/android/server/pm/UserManagerService;->setUserRestriction(Ljava/lang/String;ZI)V
 
-    .line 4268
-    iget-object p2, p0, Lcom/android/server/pm/UserManagerService$LocalService;->this$0:Lcom/android/server/pm/UserManagerService;
-
-    iget p3, p1, Landroid/content/pm/UserInfo;->id:I
-
-    const-string/jumbo v1, "no_outgoing_calls"
-
-    invoke-virtual {p2, v1, v0, p3}, Lcom/android/server/pm/UserManagerService;->setUserRestriction(Ljava/lang/String;ZI)V
-
-    .line 4270
-    :cond_2f
-    return-object p1
+    .line 4028
+    :cond_2b
+    return-object v0
 .end method
 
 .method public exists(I)Z
     .registers 3
+    .param p1, "userId"  # I
 
-    .line 4338
+    .line 4096
     iget-object v0, p0, Lcom/android/server/pm/UserManagerService$LocalService;->this$0:Lcom/android/server/pm/UserManagerService;
 
-    invoke-static {v0, p1}, Lcom/android/server/pm/UserManagerService;->access$3000(Lcom/android/server/pm/UserManagerService;I)Landroid/content/pm/UserInfo;
+    invoke-static {v0, p1}, Lcom/android/server/pm/UserManagerService;->access$2900(Lcom/android/server/pm/UserManagerService;I)Landroid/content/pm/UserInfo;
 
-    move-result-object p1
+    move-result-object v0
 
-    if-eqz p1, :cond_a
+    if-eqz v0, :cond_a
 
-    const/4 p1, 0x1
+    const/4 v0, 0x1
 
     goto :goto_b
 
     :cond_a
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
     :goto_b
-    return p1
+    return v0
 .end method
 
 .method public getBaseUserRestrictions(I)Landroid/os/Bundle;
     .registers 4
+    .param p1, "userId"  # I
 
-    .line 4129
+    .line 3887
     iget-object v0, p0, Lcom/android/server/pm/UserManagerService$LocalService;->this$0:Lcom/android/server/pm/UserManagerService;
 
-    invoke-static {v0}, Lcom/android/server/pm/UserManagerService;->access$900(Lcom/android/server/pm/UserManagerService;)Ljava/lang/Object;
+    invoke-static {v0}, Lcom/android/server/pm/UserManagerService;->access$800(Lcom/android/server/pm/UserManagerService;)Ljava/lang/Object;
 
     move-result-object v0
 
     monitor-enter v0
 
-    .line 4130
+    .line 3888
     :try_start_7
     iget-object v1, p0, Lcom/android/server/pm/UserManagerService$LocalService;->this$0:Lcom/android/server/pm/UserManagerService;
 
-    invoke-static {v1}, Lcom/android/server/pm/UserManagerService;->access$1600(Lcom/android/server/pm/UserManagerService;)Landroid/util/SparseArray;
+    invoke-static {v1}, Lcom/android/server/pm/UserManagerService;->access$1500(Lcom/android/server/pm/UserManagerService;)Landroid/util/SparseArray;
 
     move-result-object v1
 
     invoke-virtual {v1, p1}, Landroid/util/SparseArray;->get(I)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v1
 
-    check-cast p1, Landroid/os/Bundle;
+    check-cast v1, Landroid/os/Bundle;
 
     monitor-exit v0
 
-    return-object p1
+    return-object v1
 
-    .line 4131
+    .line 3889
     :catchall_15
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_17
     .catchall {:try_start_7 .. :try_end_17} :catchall_15
 
-    throw p1
+    throw v1
 .end method
 
 .method public getProfileParentId(I)I
-    .registers 4
+    .registers 5
+    .param p1, "userId"  # I
 
-    .line 4382
+    .line 4140
     iget-object v0, p0, Lcom/android/server/pm/UserManagerService$LocalService;->this$0:Lcom/android/server/pm/UserManagerService;
 
-    invoke-static {v0}, Lcom/android/server/pm/UserManagerService;->access$300(Lcom/android/server/pm/UserManagerService;)Ljava/lang/Object;
+    invoke-static {v0}, Lcom/android/server/pm/UserManagerService;->access$200(Lcom/android/server/pm/UserManagerService;)Ljava/lang/Object;
 
     move-result-object v0
 
     monitor-enter v0
 
-    .line 4383
+    .line 4141
     :try_start_7
     iget-object v1, p0, Lcom/android/server/pm/UserManagerService$LocalService;->this$0:Lcom/android/server/pm/UserManagerService;
 
-    invoke-static {v1, p1}, Lcom/android/server/pm/UserManagerService;->access$3100(Lcom/android/server/pm/UserManagerService;I)Landroid/content/pm/UserInfo;
+    invoke-static {v1, p1}, Lcom/android/server/pm/UserManagerService;->access$3000(Lcom/android/server/pm/UserManagerService;I)Landroid/content/pm/UserInfo;
 
     move-result-object v1
 
-    .line 4384
+    .line 4142
+    .local v1, "profileParent":Landroid/content/pm/UserInfo;
     if-nez v1, :cond_11
 
-    .line 4385
+    .line 4143
     monitor-exit v0
 
     return p1
 
-    .line 4387
+    .line 4145
     :cond_11
-    iget p1, v1, Landroid/content/pm/UserInfo;->id:I
+    iget v2, v1, Landroid/content/pm/UserInfo;->id:I
 
     monitor-exit v0
 
-    return p1
+    return v2
 
-    .line 4388
+    .line 4146
+    .end local v1  # "profileParent":Landroid/content/pm/UserInfo;
     :catchall_15
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_17
     .catchall {:try_start_7 .. :try_end_17} :catchall_15
 
-    throw p1
+    throw v1
 .end method
 
 .method public getUserIds()[I
     .registers 2
 
-    .line 4301
+    .line 4059
     iget-object v0, p0, Lcom/android/server/pm/UserManagerService$LocalService;->this$0:Lcom/android/server/pm/UserManagerService;
 
     invoke-virtual {v0}, Lcom/android/server/pm/UserManagerService;->getUserIds()[I
@@ -266,51 +270,58 @@
 
 .method public getUserRestriction(ILjava/lang/String;)Z
     .registers 4
+    .param p1, "userId"  # I
+    .param p2, "key"  # Ljava/lang/String;
 
-    .line 4156
+    .line 3914
     iget-object v0, p0, Lcom/android/server/pm/UserManagerService$LocalService;->this$0:Lcom/android/server/pm/UserManagerService;
 
     invoke-virtual {v0, p1}, Lcom/android/server/pm/UserManagerService;->getUserRestrictions(I)Landroid/os/Bundle;
 
-    move-result-object p1
+    move-result-object v0
 
-    invoke-virtual {p1, p2}, Landroid/os/Bundle;->getBoolean(Ljava/lang/String;)Z
+    invoke-virtual {v0, p2}, Landroid/os/Bundle;->getBoolean(Ljava/lang/String;)Z
 
-    move-result p1
+    move-result v0
 
-    return p1
+    return v0
 .end method
 
 .method public isProfileAccessible(IILjava/lang/String;Z)Z
-    .registers 11
+    .registers 12
+    .param p1, "callingUserId"  # I
+    .param p2, "targetUserId"  # I
+    .param p3, "debugMsg"  # Ljava/lang/String;
+    .param p4, "throwSecurityException"  # Z
 
-    .line 4344
+    .line 4102
     const/4 v0, 0x1
 
     if-ne p2, p1, :cond_4
 
-    .line 4345
+    .line 4103
     return v0
 
-    .line 4347
+    .line 4105
     :cond_4
     iget-object v1, p0, Lcom/android/server/pm/UserManagerService$LocalService;->this$0:Lcom/android/server/pm/UserManagerService;
 
-    invoke-static {v1}, Lcom/android/server/pm/UserManagerService;->access$300(Lcom/android/server/pm/UserManagerService;)Ljava/lang/Object;
+    invoke-static {v1}, Lcom/android/server/pm/UserManagerService;->access$200(Lcom/android/server/pm/UserManagerService;)Ljava/lang/Object;
 
     move-result-object v1
 
     monitor-enter v1
 
-    .line 4348
+    .line 4106
     :try_start_b
     iget-object v2, p0, Lcom/android/server/pm/UserManagerService$LocalService;->this$0:Lcom/android/server/pm/UserManagerService;
 
-    invoke-static {v2, p1}, Lcom/android/server/pm/UserManagerService;->access$2600(Lcom/android/server/pm/UserManagerService;I)Landroid/content/pm/UserInfo;
+    invoke-static {v2, p1}, Lcom/android/server/pm/UserManagerService;->access$2500(Lcom/android/server/pm/UserManagerService;I)Landroid/content/pm/UserInfo;
 
     move-result-object v2
 
-    .line 4349
+    .line 4107
+    .local v2, "callingUserInfo":Landroid/content/pm/UserInfo;
     if-eqz v2, :cond_19
 
     invoke-virtual {v2}, Landroid/content/pm/UserInfo;->isManagedProfile()Z
@@ -319,19 +330,20 @@
 
     if-eqz v3, :cond_1b
 
-    .line 4350
+    .line 4108
     :cond_19
     if-nez p4, :cond_7d
 
-    .line 4357
+    .line 4115
     :cond_1b
     iget-object v3, p0, Lcom/android/server/pm/UserManagerService$LocalService;->this$0:Lcom/android/server/pm/UserManagerService;
 
-    invoke-static {v3, p2}, Lcom/android/server/pm/UserManagerService;->access$2600(Lcom/android/server/pm/UserManagerService;I)Landroid/content/pm/UserInfo;
+    invoke-static {v3, p2}, Lcom/android/server/pm/UserManagerService;->access$2500(Lcom/android/server/pm/UserManagerService;I)Landroid/content/pm/UserInfo;
 
     move-result-object v3
 
-    .line 4358
+    .line 4116
+    .local v3, "targetUserInfo":Landroid/content/pm/UserInfo;
     const/4 v4, 0x0
 
     if-eqz v3, :cond_58
@@ -344,146 +356,176 @@
 
     goto :goto_58
 
-    .line 4368
+    .line 4126
     :cond_2b
-    iget p1, v3, Landroid/content/pm/UserInfo;->profileGroupId:I
+    iget v5, v3, Landroid/content/pm/UserInfo;->profileGroupId:I
 
-    const/16 v5, -0x2710
+    const/16 v6, -0x2710
 
-    if-eq p1, v5, :cond_3a
+    if-eq v5, v6, :cond_3a
 
-    iget p1, v3, Landroid/content/pm/UserInfo;->profileGroupId:I
+    iget v5, v3, Landroid/content/pm/UserInfo;->profileGroupId:I
 
-    iget v2, v2, Landroid/content/pm/UserInfo;->profileGroupId:I
+    iget v6, v2, Landroid/content/pm/UserInfo;->profileGroupId:I
 
-    if-eq p1, v2, :cond_38
+    if-eq v5, v6, :cond_38
 
     goto :goto_3a
 
-    .line 4376
+    .line 4134
+    .end local v2  # "callingUserInfo":Landroid/content/pm/UserInfo;
+    .end local v3  # "targetUserInfo":Landroid/content/pm/UserInfo;
     :cond_38
     monitor-exit v1
 
-    .line 4377
+    .line 4135
     return v0
 
-    .line 4370
+    .line 4128
+    .restart local v2  # "callingUserInfo":Landroid/content/pm/UserInfo;
+    .restart local v3  # "targetUserInfo":Landroid/content/pm/UserInfo;
     :cond_3a
     :goto_3a
     if-nez p4, :cond_3e
 
-    .line 4374
+    .line 4132
     monitor-exit v1
 
     return v4
 
-    .line 4371
+    .line 4129
     :cond_3e
-    new-instance p1, Ljava/lang/SecurityException;
+    new-instance v0, Ljava/lang/SecurityException;
 
-    new-instance p4, Ljava/lang/StringBuilder;
+    new-instance v4, Ljava/lang/StringBuilder;
 
-    invoke-direct {p4}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v4}, Ljava/lang/StringBuilder;-><init>()V
 
-    invoke-virtual {p4, p3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v4, p3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string p3, " for unrelated profile "
+    const-string v5, " for unrelated profile "
 
-    invoke-virtual {p4, p3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p4, p2}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v4, p2}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p4}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v4}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p2
+    move-result-object v4
 
-    invoke-direct {p1, p2}, Ljava/lang/SecurityException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v0, v4}, Ljava/lang/SecurityException;-><init>(Ljava/lang/String;)V
 
-    throw p1
+    .end local p0  # "this":Lcom/android/server/pm/UserManagerService$LocalService;
+    .end local p1  # "callingUserId":I
+    .end local p2  # "targetUserId":I
+    .end local p3  # "debugMsg":Ljava/lang/String;
+    .end local p4  # "throwSecurityException":Z
+    throw v0
 
-    .line 4361
+    .line 4119
+    .restart local p0  # "this":Lcom/android/server/pm/UserManagerService$LocalService;
+    .restart local p1  # "callingUserId":I
+    .restart local p2  # "targetUserId":I
+    .restart local p3  # "debugMsg":Ljava/lang/String;
+    .restart local p4  # "throwSecurityException":Z
     :cond_58
     :goto_58
     if-eqz p4, :cond_7b
 
-    .line 4362
-    const-string p4, "UserManagerService"
+    .line 4120
+    const-string v0, "UserManagerService"
 
-    new-instance v0, Ljava/lang/StringBuilder;
+    new-instance v5, Ljava/lang/StringBuilder;
 
-    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v5}, Ljava/lang/StringBuilder;-><init>()V
 
-    invoke-virtual {v0, p3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v5, p3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string p3, " for disabled profile "
+    const-string v6, " for disabled profile "
 
-    invoke-virtual {v0, p3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0, p2}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v5, p2}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    const-string p2, " from "
+    const-string v6, " from "
 
-    invoke-virtual {v0, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v5, p1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v5}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v5
 
-    invoke-static {p4, p1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v0, v5}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 4365
+    .line 4123
     :cond_7b
     monitor-exit v1
 
     return v4
 
-    .line 4351
+    .line 4109
+    .end local v3  # "targetUserInfo":Landroid/content/pm/UserInfo;
     :cond_7d
-    new-instance p4, Ljava/lang/SecurityException;
+    new-instance v0, Ljava/lang/SecurityException;
 
-    new-instance v0, Ljava/lang/StringBuilder;
+    new-instance v3, Ljava/lang/StringBuilder;
 
-    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
 
-    invoke-virtual {v0, p3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, p3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string p3, " for another profile "
+    const-string v4, " for another profile "
 
-    invoke-virtual {v0, p3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0, p2}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, p2}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    const-string p2, " from "
+    const-string v4, " from "
 
-    invoke-virtual {v0, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, p1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v3
 
-    invoke-direct {p4, p1}, Ljava/lang/SecurityException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v0, v3}, Ljava/lang/SecurityException;-><init>(Ljava/lang/String;)V
 
-    throw p4
+    .end local p0  # "this":Lcom/android/server/pm/UserManagerService$LocalService;
+    .end local p1  # "callingUserId":I
+    .end local p2  # "targetUserId":I
+    .end local p3  # "debugMsg":Ljava/lang/String;
+    .end local p4  # "throwSecurityException":Z
+    throw v0
 
-    .line 4376
+    .line 4134
+    .end local v2  # "callingUserInfo":Landroid/content/pm/UserInfo;
+    .restart local p0  # "this":Lcom/android/server/pm/UserManagerService$LocalService;
+    .restart local p1  # "callingUserId":I
+    .restart local p2  # "targetUserId":I
+    .restart local p3  # "debugMsg":Ljava/lang/String;
+    .restart local p4  # "throwSecurityException":Z
     :catchall_9f
-    move-exception p1
+    move-exception v0
 
     monitor-exit v1
     :try_end_a1
     .catchall {:try_start_b .. :try_end_a1} :catchall_9f
 
-    throw p1
+    throw v0
 .end method
 
 .method public isSettingRestrictedForUser(Ljava/lang/String;ILjava/lang/String;I)Z
     .registers 6
+    .param p1, "setting"  # Ljava/lang/String;
+    .param p2, "userId"  # I
+    .param p3, "value"  # Ljava/lang/String;
+    .param p4, "callingUid"  # I
 
-    .line 4394
+    .line 4152
     iget-object v0, p0, Lcom/android/server/pm/UserManagerService$LocalService;->this$0:Lcom/android/server/pm/UserManagerService;
 
     invoke-static {v0}, Lcom/android/server/pm/UserManagerService;->access$100(Lcom/android/server/pm/UserManagerService;)Landroid/content/Context;
@@ -492,106 +534,57 @@
 
     invoke-static {v0, p1, p2, p3, p4}, Lcom/android/server/pm/UserRestrictionsUtils;->isSettingRestrictedForUser(Landroid/content/Context;Ljava/lang/String;ILjava/lang/String;I)Z
 
-    move-result p1
+    move-result v0
 
-    return p1
+    return v0
 .end method
 
 .method public isUserInitialized(I)Z
     .registers 3
+    .param p1, "userId"  # I
 
-    .line 4333
+    .line 4091
     iget-object v0, p0, Lcom/android/server/pm/UserManagerService$LocalService;->this$0:Lcom/android/server/pm/UserManagerService;
 
     invoke-virtual {v0, p1}, Lcom/android/server/pm/UserManagerService;->getUserInfo(I)Landroid/content/pm/UserInfo;
 
-    move-result-object p1
+    move-result-object v0
 
-    iget p1, p1, Landroid/content/pm/UserInfo;->flags:I
+    iget v0, v0, Landroid/content/pm/UserInfo;->flags:I
 
-    and-int/lit8 p1, p1, 0x10
+    and-int/lit8 v0, v0, 0x10
 
-    if-eqz p1, :cond_e
+    if-eqz v0, :cond_e
 
-    const/4 p1, 0x1
+    const/4 v0, 0x1
 
     goto :goto_f
 
     :cond_e
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
     :goto_f
-    return p1
+    return v0
 .end method
 
 .method public isUserRunning(I)Z
     .registers 5
+    .param p1, "userId"  # I
 
-    .line 4280
+    .line 4038
     iget-object v0, p0, Lcom/android/server/pm/UserManagerService$LocalService;->this$0:Lcom/android/server/pm/UserManagerService;
 
-    invoke-static {v0}, Lcom/android/server/pm/UserManagerService;->access$2900(Lcom/android/server/pm/UserManagerService;)Landroid/util/SparseIntArray;
+    invoke-static {v0}, Lcom/android/server/pm/UserManagerService;->access$2800(Lcom/android/server/pm/UserManagerService;)Landroid/util/SparseIntArray;
 
     move-result-object v0
 
     monitor-enter v0
 
-    .line 4281
+    .line 4039
     :try_start_7
     iget-object v1, p0, Lcom/android/server/pm/UserManagerService$LocalService;->this$0:Lcom/android/server/pm/UserManagerService;
 
-    invoke-static {v1}, Lcom/android/server/pm/UserManagerService;->access$2900(Lcom/android/server/pm/UserManagerService;)Landroid/util/SparseIntArray;
-
-    move-result-object v1
-
-    const/4 v2, -0x1
-
-    invoke-virtual {v1, p1, v2}, Landroid/util/SparseIntArray;->get(II)I
-
-    move-result p1
-
-    if-ltz p1, :cond_16
-
-    const/4 p1, 0x1
-
-    goto :goto_17
-
-    :cond_16
-    const/4 p1, 0x0
-
-    :goto_17
-    monitor-exit v0
-
-    return p1
-
-    .line 4282
-    :catchall_19
-    move-exception p1
-
-    monitor-exit v0
-    :try_end_1b
-    .catchall {:try_start_7 .. :try_end_1b} :catchall_19
-
-    throw p1
-.end method
-
-.method public isUserUnlocked(I)Z
-    .registers 5
-
-    .line 4321
-    iget-object v0, p0, Lcom/android/server/pm/UserManagerService$LocalService;->this$0:Lcom/android/server/pm/UserManagerService;
-
-    invoke-static {v0}, Lcom/android/server/pm/UserManagerService;->access$2900(Lcom/android/server/pm/UserManagerService;)Landroid/util/SparseIntArray;
-
-    move-result-object v0
-
-    monitor-enter v0
-
-    .line 4322
-    :try_start_7
-    iget-object v1, p0, Lcom/android/server/pm/UserManagerService$LocalService;->this$0:Lcom/android/server/pm/UserManagerService;
-
-    invoke-static {v1}, Lcom/android/server/pm/UserManagerService;->access$2900(Lcom/android/server/pm/UserManagerService;)Landroid/util/SparseIntArray;
+    invoke-static {v1}, Lcom/android/server/pm/UserManagerService;->access$2800(Lcom/android/server/pm/UserManagerService;)Landroid/util/SparseIntArray;
 
     move-result-object v1
 
@@ -601,12 +594,65 @@
 
     move-result v1
 
-    .line 4323
+    if-ltz v1, :cond_16
+
+    const/4 v1, 0x1
+
+    goto :goto_17
+
+    :cond_16
+    const/4 v1, 0x0
+
+    :goto_17
+    monitor-exit v0
+
+    return v1
+
+    .line 4040
+    :catchall_19
+    move-exception v1
+
+    monitor-exit v0
+    :try_end_1b
+    .catchall {:try_start_7 .. :try_end_1b} :catchall_19
+
+    throw v1
+.end method
+
+.method public isUserUnlocked(I)Z
+    .registers 5
+    .param p1, "userId"  # I
+
+    .line 4079
+    iget-object v0, p0, Lcom/android/server/pm/UserManagerService$LocalService;->this$0:Lcom/android/server/pm/UserManagerService;
+
+    invoke-static {v0}, Lcom/android/server/pm/UserManagerService;->access$2800(Lcom/android/server/pm/UserManagerService;)Landroid/util/SparseIntArray;
+
+    move-result-object v0
+
+    monitor-enter v0
+
+    .line 4080
+    :try_start_7
+    iget-object v1, p0, Lcom/android/server/pm/UserManagerService$LocalService;->this$0:Lcom/android/server/pm/UserManagerService;
+
+    invoke-static {v1}, Lcom/android/server/pm/UserManagerService;->access$2800(Lcom/android/server/pm/UserManagerService;)Landroid/util/SparseIntArray;
+
+    move-result-object v1
+
+    const/4 v2, -0x1
+
+    invoke-virtual {v1, p1, v2}, Landroid/util/SparseIntArray;->get(II)I
+
+    move-result v1
+
+    .line 4081
+    .local v1, "state":I
     monitor-exit v0
     :try_end_13
     .catchall {:try_start_7 .. :try_end_13} :catchall_26
 
-    .line 4325
+    .line 4083
     const/4 v0, 0x4
 
     if-eq v1, v0, :cond_21
@@ -617,60 +663,62 @@
 
     goto :goto_21
 
-    .line 4328
+    .line 4086
     :cond_1a
-    const/4 p1, 0x3
+    const/4 v0, 0x3
 
-    if-ne v1, p1, :cond_1f
+    if-ne v1, v0, :cond_1f
 
-    const/4 p1, 0x1
+    const/4 v0, 0x1
 
     goto :goto_20
 
     :cond_1f
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
     :goto_20
-    return p1
+    return v0
 
-    .line 4326
+    .line 4084
     :cond_21
     :goto_21
     invoke-static {p1}, Landroid/os/storage/StorageManager;->isUserKeyUnlocked(I)Z
 
-    move-result p1
+    move-result v0
 
-    return p1
+    return v0
 
-    .line 4323
+    .line 4081
+    .end local v1  # "state":I
     :catchall_26
-    move-exception p1
+    move-exception v1
 
     :try_start_27
     monitor-exit v0
     :try_end_28
     .catchall {:try_start_27 .. :try_end_28} :catchall_26
 
-    throw p1
+    throw v1
 .end method
 
 .method public isUserUnlockingOrUnlocked(I)Z
     .registers 5
+    .param p1, "userId"  # I
 
-    .line 4307
+    .line 4065
     iget-object v0, p0, Lcom/android/server/pm/UserManagerService$LocalService;->this$0:Lcom/android/server/pm/UserManagerService;
 
-    invoke-static {v0}, Lcom/android/server/pm/UserManagerService;->access$2900(Lcom/android/server/pm/UserManagerService;)Landroid/util/SparseIntArray;
+    invoke-static {v0}, Lcom/android/server/pm/UserManagerService;->access$2800(Lcom/android/server/pm/UserManagerService;)Landroid/util/SparseIntArray;
 
     move-result-object v0
 
     monitor-enter v0
 
-    .line 4308
+    .line 4066
     :try_start_7
     iget-object v1, p0, Lcom/android/server/pm/UserManagerService$LocalService;->this$0:Lcom/android/server/pm/UserManagerService;
 
-    invoke-static {v1}, Lcom/android/server/pm/UserManagerService;->access$2900(Lcom/android/server/pm/UserManagerService;)Landroid/util/SparseIntArray;
+    invoke-static {v1}, Lcom/android/server/pm/UserManagerService;->access$2800(Lcom/android/server/pm/UserManagerService;)Landroid/util/SparseIntArray;
 
     move-result-object v1
 
@@ -680,12 +728,13 @@
 
     move-result v1
 
-    .line 4309
+    .line 4067
+    .local v1, "state":I
     monitor-exit v0
     :try_end_13
     .catchall {:try_start_7 .. :try_end_13} :catchall_2a
 
-    .line 4311
+    .line 4069
     const/4 v0, 0x4
 
     if-eq v1, v0, :cond_25
@@ -696,151 +745,157 @@
 
     goto :goto_25
 
-    .line 4314
+    .line 4072
     :cond_1a
-    const/4 p1, 0x2
+    const/4 v0, 0x2
 
-    if-eq v1, p1, :cond_23
+    if-eq v1, v0, :cond_23
 
-    const/4 p1, 0x3
+    const/4 v0, 0x3
 
-    if-ne v1, p1, :cond_21
+    if-ne v1, v0, :cond_21
 
     goto :goto_23
 
     :cond_21
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
     goto :goto_24
 
     :cond_23
     :goto_23
-    const/4 p1, 0x1
+    const/4 v0, 0x1
 
     :goto_24
-    return p1
+    return v0
 
-    .line 4312
+    .line 4070
     :cond_25
     :goto_25
     invoke-static {p1}, Landroid/os/storage/StorageManager;->isUserKeyUnlocked(I)Z
 
-    move-result p1
+    move-result v0
 
-    return p1
+    return v0
 
-    .line 4309
+    .line 4067
+    .end local v1  # "state":I
     :catchall_2a
-    move-exception p1
+    move-exception v1
 
     :try_start_2b
     monitor-exit v0
     :try_end_2c
     .catchall {:try_start_2b .. :try_end_2c} :catchall_2a
 
-    throw p1
+    throw v1
 .end method
 
 .method public onEphemeralUserStop(I)V
-    .registers 4
+    .registers 5
+    .param p1, "userId"  # I
 
-    .line 4246
+    .line 4004
     iget-object v0, p0, Lcom/android/server/pm/UserManagerService$LocalService;->this$0:Lcom/android/server/pm/UserManagerService;
 
-    invoke-static {v0}, Lcom/android/server/pm/UserManagerService;->access$300(Lcom/android/server/pm/UserManagerService;)Ljava/lang/Object;
+    invoke-static {v0}, Lcom/android/server/pm/UserManagerService;->access$200(Lcom/android/server/pm/UserManagerService;)Ljava/lang/Object;
 
     move-result-object v0
 
     monitor-enter v0
 
-    .line 4247
+    .line 4005
     :try_start_7
     iget-object v1, p0, Lcom/android/server/pm/UserManagerService$LocalService;->this$0:Lcom/android/server/pm/UserManagerService;
 
-    invoke-static {v1, p1}, Lcom/android/server/pm/UserManagerService;->access$2600(Lcom/android/server/pm/UserManagerService;I)Landroid/content/pm/UserInfo;
+    invoke-static {v1, p1}, Lcom/android/server/pm/UserManagerService;->access$2500(Lcom/android/server/pm/UserManagerService;I)Landroid/content/pm/UserInfo;
 
-    move-result-object p1
+    move-result-object v1
 
-    .line 4248
-    if-eqz p1, :cond_24
-
-    invoke-virtual {p1}, Landroid/content/pm/UserInfo;->isEphemeral()Z
-
-    move-result v1
-
+    .line 4006
+    .local v1, "userInfo":Landroid/content/pm/UserInfo;
     if-eqz v1, :cond_24
 
-    .line 4251
-    iget v1, p1, Landroid/content/pm/UserInfo;->flags:I
+    invoke-virtual {v1}, Landroid/content/pm/UserInfo;->isEphemeral()Z
 
-    or-int/lit8 v1, v1, 0x40
+    move-result v2
 
-    iput v1, p1, Landroid/content/pm/UserInfo;->flags:I
+    if-eqz v2, :cond_24
 
-    .line 4252
-    invoke-virtual {p1}, Landroid/content/pm/UserInfo;->isGuest()Z
+    .line 4009
+    iget v2, v1, Landroid/content/pm/UserInfo;->flags:I
 
-    move-result v1
+    or-int/lit8 v2, v2, 0x40
 
-    if-eqz v1, :cond_24
+    iput v2, v1, Landroid/content/pm/UserInfo;->flags:I
 
-    .line 4254
-    const/4 v1, 0x1
+    .line 4010
+    invoke-virtual {v1}, Landroid/content/pm/UserInfo;->isGuest()Z
 
-    iput-boolean v1, p1, Landroid/content/pm/UserInfo;->guestToRemove:Z
+    move-result v2
 
-    .line 4257
+    if-eqz v2, :cond_24
+
+    .line 4012
+    const/4 v2, 0x1
+
+    iput-boolean v2, v1, Landroid/content/pm/UserInfo;->guestToRemove:Z
+
+    .line 4015
+    .end local v1  # "userInfo":Landroid/content/pm/UserInfo;
     :cond_24
     monitor-exit v0
 
-    .line 4258
+    .line 4016
     return-void
 
-    .line 4257
+    .line 4015
     :catchall_26
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_28
     .catchall {:try_start_7 .. :try_end_28} :catchall_26
 
-    throw p1
+    throw v1
 .end method
 
 .method public removeAllUsers()V
     .registers 6
 
-    .line 4215
+    .line 3973
     invoke-static {}, Landroid/app/ActivityManager;->getCurrentUser()I
 
     move-result v0
 
     if-nez v0, :cond_c
 
-    .line 4217
+    .line 3975
     iget-object v0, p0, Lcom/android/server/pm/UserManagerService$LocalService;->this$0:Lcom/android/server/pm/UserManagerService;
 
-    invoke-static {v0}, Lcom/android/server/pm/UserManagerService;->access$2400(Lcom/android/server/pm/UserManagerService;)V
+    invoke-static {v0}, Lcom/android/server/pm/UserManagerService;->access$2300(Lcom/android/server/pm/UserManagerService;)V
 
     goto :goto_3d
 
-    .line 4220
+    .line 3978
     :cond_c
     new-instance v0, Lcom/android/server/pm/UserManagerService$LocalService$1;
 
     invoke-direct {v0, p0}, Lcom/android/server/pm/UserManagerService$LocalService$1;-><init>(Lcom/android/server/pm/UserManagerService$LocalService;)V
 
-    .line 4232
+    .line 3990
+    .local v0, "userSwitchedReceiver":Landroid/content/BroadcastReceiver;
     new-instance v1, Landroid/content/IntentFilter;
 
     invoke-direct {v1}, Landroid/content/IntentFilter;-><init>()V
 
-    .line 4233
+    .line 3991
+    .local v1, "userSwitchedFilter":Landroid/content/IntentFilter;
     const-string v2, "android.intent.action.USER_SWITCHED"
 
     invoke-virtual {v1, v2}, Landroid/content/IntentFilter;->addAction(Ljava/lang/String;)V
 
-    .line 4234
+    .line 3992
     iget-object v2, p0, Lcom/android/server/pm/UserManagerService$LocalService;->this$0:Lcom/android/server/pm/UserManagerService;
 
     invoke-static {v2}, Lcom/android/server/pm/UserManagerService;->access$100(Lcom/android/server/pm/UserManagerService;)Landroid/content/Context;
@@ -851,144 +906,153 @@
 
     iget-object v4, p0, Lcom/android/server/pm/UserManagerService$LocalService;->this$0:Lcom/android/server/pm/UserManagerService;
 
-    .line 4235
-    invoke-static {v4}, Lcom/android/server/pm/UserManagerService;->access$2500(Lcom/android/server/pm/UserManagerService;)Landroid/os/Handler;
+    .line 3993
+    invoke-static {v4}, Lcom/android/server/pm/UserManagerService;->access$2400(Lcom/android/server/pm/UserManagerService;)Landroid/os/Handler;
 
     move-result-object v4
 
-    .line 4234
+    .line 3992
     invoke-virtual {v2, v0, v1, v3, v4}, Landroid/content/Context;->registerReceiver(Landroid/content/BroadcastReceiver;Landroid/content/IntentFilter;Ljava/lang/String;Landroid/os/Handler;)Landroid/content/Intent;
 
-    .line 4238
-    iget-object v0, p0, Lcom/android/server/pm/UserManagerService$LocalService;->this$0:Lcom/android/server/pm/UserManagerService;
+    .line 3996
+    iget-object v2, p0, Lcom/android/server/pm/UserManagerService$LocalService;->this$0:Lcom/android/server/pm/UserManagerService;
 
-    .line 4239
-    invoke-static {v0}, Lcom/android/server/pm/UserManagerService;->access$100(Lcom/android/server/pm/UserManagerService;)Landroid/content/Context;
+    .line 3997
+    invoke-static {v2}, Lcom/android/server/pm/UserManagerService;->access$100(Lcom/android/server/pm/UserManagerService;)Landroid/content/Context;
 
-    move-result-object v0
+    move-result-object v2
 
-    const-string v1, "activity"
+    const-string v3, "activity"
 
-    invoke-virtual {v0, v1}, Landroid/content/Context;->getSystemService(Ljava/lang/String;)Ljava/lang/Object;
+    invoke-virtual {v2, v3}, Landroid/content/Context;->getSystemService(Ljava/lang/String;)Ljava/lang/Object;
 
-    move-result-object v0
+    move-result-object v2
 
-    check-cast v0, Landroid/app/ActivityManager;
+    check-cast v2, Landroid/app/ActivityManager;
 
-    .line 4240
-    const/4 v1, 0x0
+    .line 3998
+    .local v2, "am":Landroid/app/ActivityManager;
+    const/4 v3, 0x0
 
-    invoke-virtual {v0, v1}, Landroid/app/ActivityManager;->switchUser(I)Z
+    invoke-virtual {v2, v3}, Landroid/app/ActivityManager;->switchUser(I)Z
 
-    .line 4242
+    .line 4000
+    .end local v0  # "userSwitchedReceiver":Landroid/content/BroadcastReceiver;
+    .end local v1  # "userSwitchedFilter":Landroid/content/IntentFilter;
+    .end local v2  # "am":Landroid/app/ActivityManager;
     :goto_3d
     return-void
 .end method
 
 .method public removeUserEvenWhenDisallowed(I)Z
     .registers 3
+    .param p1, "userId"  # I
 
-    .line 4275
+    .line 4033
     iget-object v0, p0, Lcom/android/server/pm/UserManagerService$LocalService;->this$0:Lcom/android/server/pm/UserManagerService;
 
-    invoke-static {v0, p1}, Lcom/android/server/pm/UserManagerService;->access$2800(Lcom/android/server/pm/UserManagerService;I)Z
+    invoke-static {v0, p1}, Lcom/android/server/pm/UserManagerService;->access$2700(Lcom/android/server/pm/UserManagerService;I)Z
 
-    move-result p1
+    move-result v0
 
-    return p1
+    return v0
 .end method
 
 .method public removeUserRestrictionsListener(Landroid/os/UserManagerInternal$UserRestrictionsListener;)V
     .registers 4
+    .param p1, "listener"  # Landroid/os/UserManagerInternal$UserRestrictionsListener;
 
-    .line 4168
+    .line 3926
     iget-object v0, p0, Lcom/android/server/pm/UserManagerService$LocalService;->this$0:Lcom/android/server/pm/UserManagerService;
 
-    invoke-static {v0}, Lcom/android/server/pm/UserManagerService;->access$800(Lcom/android/server/pm/UserManagerService;)Ljava/util/ArrayList;
+    invoke-static {v0}, Lcom/android/server/pm/UserManagerService;->access$700(Lcom/android/server/pm/UserManagerService;)Ljava/util/ArrayList;
 
     move-result-object v0
 
     monitor-enter v0
 
-    .line 4169
+    .line 3927
     :try_start_7
     iget-object v1, p0, Lcom/android/server/pm/UserManagerService$LocalService;->this$0:Lcom/android/server/pm/UserManagerService;
 
-    invoke-static {v1}, Lcom/android/server/pm/UserManagerService;->access$800(Lcom/android/server/pm/UserManagerService;)Ljava/util/ArrayList;
+    invoke-static {v1}, Lcom/android/server/pm/UserManagerService;->access$700(Lcom/android/server/pm/UserManagerService;)Ljava/util/ArrayList;
 
     move-result-object v1
 
     invoke-virtual {v1, p1}, Ljava/util/ArrayList;->remove(Ljava/lang/Object;)Z
 
-    .line 4170
+    .line 3928
     monitor-exit v0
 
-    .line 4171
+    .line 3929
     return-void
 
-    .line 4170
+    .line 3928
     :catchall_12
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_14
     .catchall {:try_start_7 .. :try_end_14} :catchall_12
 
-    throw p1
+    throw v1
 .end method
 
 .method public removeUserState(I)V
     .registers 4
+    .param p1, "userId"  # I
 
-    .line 4294
+    .line 4052
     iget-object v0, p0, Lcom/android/server/pm/UserManagerService$LocalService;->this$0:Lcom/android/server/pm/UserManagerService;
 
-    invoke-static {v0}, Lcom/android/server/pm/UserManagerService;->access$2900(Lcom/android/server/pm/UserManagerService;)Landroid/util/SparseIntArray;
+    invoke-static {v0}, Lcom/android/server/pm/UserManagerService;->access$2800(Lcom/android/server/pm/UserManagerService;)Landroid/util/SparseIntArray;
 
     move-result-object v0
 
     monitor-enter v0
 
-    .line 4295
+    .line 4053
     :try_start_7
     iget-object v1, p0, Lcom/android/server/pm/UserManagerService$LocalService;->this$0:Lcom/android/server/pm/UserManagerService;
 
-    invoke-static {v1}, Lcom/android/server/pm/UserManagerService;->access$2900(Lcom/android/server/pm/UserManagerService;)Landroid/util/SparseIntArray;
+    invoke-static {v1}, Lcom/android/server/pm/UserManagerService;->access$2800(Lcom/android/server/pm/UserManagerService;)Landroid/util/SparseIntArray;
 
     move-result-object v1
 
     invoke-virtual {v1, p1}, Landroid/util/SparseIntArray;->delete(I)V
 
-    .line 4296
+    .line 4054
     monitor-exit v0
 
-    .line 4297
+    .line 4055
     return-void
 
-    .line 4296
+    .line 4054
     :catchall_12
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_14
     .catchall {:try_start_7 .. :try_end_14} :catchall_12
 
-    throw p1
+    throw v1
 .end method
 
 .method public setBaseUserRestrictionsByDpmsForMigration(ILandroid/os/Bundle;)V
-    .registers 6
+    .registers 8
+    .param p1, "userId"  # I
+    .param p2, "baseRestrictions"  # Landroid/os/Bundle;
 
-    .line 4137
+    .line 3895
     iget-object v0, p0, Lcom/android/server/pm/UserManagerService$LocalService;->this$0:Lcom/android/server/pm/UserManagerService;
 
-    invoke-static {v0}, Lcom/android/server/pm/UserManagerService;->access$900(Lcom/android/server/pm/UserManagerService;)Ljava/lang/Object;
+    invoke-static {v0}, Lcom/android/server/pm/UserManagerService;->access$800(Lcom/android/server/pm/UserManagerService;)Ljava/lang/Object;
 
     move-result-object v0
 
     monitor-enter v0
 
-    .line 4138
+    .line 3896
     :try_start_7
     iget-object v1, p0, Lcom/android/server/pm/UserManagerService$LocalService;->this$0:Lcom/android/server/pm/UserManagerService;
 
@@ -996,202 +1060,213 @@
 
     invoke-direct {v2, p2}, Landroid/os/Bundle;-><init>(Landroid/os/Bundle;)V
 
-    iget-object p2, p0, Lcom/android/server/pm/UserManagerService$LocalService;->this$0:Lcom/android/server/pm/UserManagerService;
+    iget-object v3, p0, Lcom/android/server/pm/UserManagerService$LocalService;->this$0:Lcom/android/server/pm/UserManagerService;
 
-    .line 4139
-    invoke-static {p2}, Lcom/android/server/pm/UserManagerService;->access$1600(Lcom/android/server/pm/UserManagerService;)Landroid/util/SparseArray;
+    .line 3897
+    invoke-static {v3}, Lcom/android/server/pm/UserManagerService;->access$1500(Lcom/android/server/pm/UserManagerService;)Landroid/util/SparseArray;
 
-    move-result-object p2
+    move-result-object v3
 
-    .line 4138
-    invoke-static {v1, p1, v2, p2}, Lcom/android/server/pm/UserManagerService;->access$1700(Lcom/android/server/pm/UserManagerService;ILandroid/os/Bundle;Landroid/util/SparseArray;)Z
+    .line 3896
+    invoke-static {v1, p1, v2, v3}, Lcom/android/server/pm/UserManagerService;->access$1600(Lcom/android/server/pm/UserManagerService;ILandroid/os/Bundle;Landroid/util/SparseArray;)Z
 
-    move-result p2
+    move-result v1
 
-    if-eqz p2, :cond_1f
+    if-eqz v1, :cond_1f
 
-    .line 4140
-    iget-object p2, p0, Lcom/android/server/pm/UserManagerService$LocalService;->this$0:Lcom/android/server/pm/UserManagerService;
+    .line 3898
+    iget-object v1, p0, Lcom/android/server/pm/UserManagerService$LocalService;->this$0:Lcom/android/server/pm/UserManagerService;
 
-    invoke-static {p2, p1}, Lcom/android/server/pm/UserManagerService;->access$1800(Lcom/android/server/pm/UserManagerService;I)V
+    invoke-static {v1, p1}, Lcom/android/server/pm/UserManagerService;->access$1700(Lcom/android/server/pm/UserManagerService;I)V
 
-    .line 4142
+    .line 3900
     :cond_1f
     monitor-exit v0
     :try_end_20
     .catchall {:try_start_7 .. :try_end_20} :catchall_50
 
-    .line 4144
-    iget-object p2, p0, Lcom/android/server/pm/UserManagerService$LocalService;->this$0:Lcom/android/server/pm/UserManagerService;
-
-    invoke-static {p2, p1}, Lcom/android/server/pm/UserManagerService;->access$1300(Lcom/android/server/pm/UserManagerService;I)Lcom/android/server/pm/UserManagerService$UserData;
-
-    move-result-object p2
-
-    .line 4145
+    .line 3902
     iget-object v0, p0, Lcom/android/server/pm/UserManagerService$LocalService;->this$0:Lcom/android/server/pm/UserManagerService;
 
-    invoke-static {v0}, Lcom/android/server/pm/UserManagerService;->access$1200(Lcom/android/server/pm/UserManagerService;)Ljava/lang/Object;
+    invoke-static {v0, p1}, Lcom/android/server/pm/UserManagerService;->access$1200(Lcom/android/server/pm/UserManagerService;I)Lcom/android/server/pm/UserManagerService$UserData;
 
     move-result-object v1
 
-    monitor-enter v1
+    .line 3903
+    .local v1, "userData":Lcom/android/server/pm/UserManagerService$UserData;
+    iget-object v0, p0, Lcom/android/server/pm/UserManagerService$LocalService;->this$0:Lcom/android/server/pm/UserManagerService;
 
-    .line 4146
-    if-eqz p2, :cond_35
+    invoke-static {v0}, Lcom/android/server/pm/UserManagerService;->access$1100(Lcom/android/server/pm/UserManagerService;)Ljava/lang/Object;
 
-    .line 4147
+    move-result-object v2
+
+    monitor-enter v2
+
+    .line 3904
+    if-eqz v1, :cond_35
+
+    .line 3905
     :try_start_2f
-    iget-object p1, p0, Lcom/android/server/pm/UserManagerService$LocalService;->this$0:Lcom/android/server/pm/UserManagerService;
+    iget-object v0, p0, Lcom/android/server/pm/UserManagerService$LocalService;->this$0:Lcom/android/server/pm/UserManagerService;
 
-    invoke-static {p1, p2}, Lcom/android/server/pm/UserManagerService;->access$1400(Lcom/android/server/pm/UserManagerService;Lcom/android/server/pm/UserManagerService$UserData;)V
+    invoke-static {v0, v1}, Lcom/android/server/pm/UserManagerService;->access$1300(Lcom/android/server/pm/UserManagerService;Lcom/android/server/pm/UserManagerService$UserData;)V
 
     goto :goto_4b
 
-    .line 4149
+    .line 3907
     :cond_35
-    const-string p2, "UserManagerService"
+    const-string v0, "UserManagerService"
 
-    new-instance v0, Ljava/lang/StringBuilder;
+    new-instance v3, Ljava/lang/StringBuilder;
 
-    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v2, "UserInfo not found for "
+    const-string v4, "UserInfo not found for "
 
-    invoke-virtual {v0, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, p1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v3
 
-    invoke-static {p2, p1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v0, v3}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 4151
+    .line 3909
     :goto_4b
-    monitor-exit v1
+    monitor-exit v2
 
-    .line 4152
+    .line 3910
     return-void
 
-    .line 4151
+    .line 3909
     :catchall_4d
-    move-exception p1
+    move-exception v0
 
-    monitor-exit v1
+    monitor-exit v2
     :try_end_4f
     .catchall {:try_start_2f .. :try_end_4f} :catchall_4d
 
-    throw p1
+    throw v0
 
-    .line 4142
+    .line 3900
+    .end local v1  # "userData":Lcom/android/server/pm/UserManagerService$UserData;
     :catchall_50
-    move-exception p1
+    move-exception v1
 
     :try_start_51
     monitor-exit v0
     :try_end_52
     .catchall {:try_start_51 .. :try_end_52} :catchall_50
 
-    throw p1
+    throw v1
 .end method
 
 .method public setDeviceManaged(Z)V
     .registers 4
+    .param p1, "isManaged"  # Z
 
-    .line 4175
+    .line 3933
     iget-object v0, p0, Lcom/android/server/pm/UserManagerService$LocalService;->this$0:Lcom/android/server/pm/UserManagerService;
 
-    invoke-static {v0}, Lcom/android/server/pm/UserManagerService;->access$300(Lcom/android/server/pm/UserManagerService;)Ljava/lang/Object;
+    invoke-static {v0}, Lcom/android/server/pm/UserManagerService;->access$200(Lcom/android/server/pm/UserManagerService;)Ljava/lang/Object;
 
     move-result-object v0
 
     monitor-enter v0
 
-    .line 4176
+    .line 3934
     :try_start_7
     iget-object v1, p0, Lcom/android/server/pm/UserManagerService$LocalService;->this$0:Lcom/android/server/pm/UserManagerService;
 
-    invoke-static {v1, p1}, Lcom/android/server/pm/UserManagerService;->access$1902(Lcom/android/server/pm/UserManagerService;Z)Z
+    invoke-static {v1, p1}, Lcom/android/server/pm/UserManagerService;->access$1802(Lcom/android/server/pm/UserManagerService;Z)Z
 
-    .line 4177
+    .line 3935
     monitor-exit v0
 
-    .line 4178
+    .line 3936
     return-void
 
-    .line 4177
+    .line 3935
     :catchall_e
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_10
     .catchall {:try_start_7 .. :try_end_10} :catchall_e
 
-    throw p1
+    throw v1
 .end method
 
 .method public setDevicePolicyUserRestrictions(ILandroid/os/Bundle;ZI)V
     .registers 6
+    .param p1, "userId"  # I
+    .param p2, "restrictions"  # Landroid/os/Bundle;
+    .param p3, "isDeviceOwner"  # Z
+    .param p4, "cameraRestrictionScope"  # I
 
-    .line 4123
+    .line 3881
     iget-object v0, p0, Lcom/android/server/pm/UserManagerService$LocalService;->this$0:Lcom/android/server/pm/UserManagerService;
 
-    invoke-static {v0, p1, p2, p3, p4}, Lcom/android/server/pm/UserManagerService;->access$1500(Lcom/android/server/pm/UserManagerService;ILandroid/os/Bundle;ZI)V
+    invoke-static {v0, p1, p2, p3, p4}, Lcom/android/server/pm/UserManagerService;->access$1400(Lcom/android/server/pm/UserManagerService;ILandroid/os/Bundle;ZI)V
 
-    .line 4125
+    .line 3883
     return-void
 .end method
 
 .method public setForceEphemeralUsers(Z)V
     .registers 4
+    .param p1, "forceEphemeralUsers"  # Z
 
-    .line 4208
+    .line 3966
     iget-object v0, p0, Lcom/android/server/pm/UserManagerService$LocalService;->this$0:Lcom/android/server/pm/UserManagerService;
 
-    invoke-static {v0}, Lcom/android/server/pm/UserManagerService;->access$300(Lcom/android/server/pm/UserManagerService;)Ljava/lang/Object;
+    invoke-static {v0}, Lcom/android/server/pm/UserManagerService;->access$200(Lcom/android/server/pm/UserManagerService;)Ljava/lang/Object;
 
     move-result-object v0
 
     monitor-enter v0
 
-    .line 4209
+    .line 3967
     :try_start_7
     iget-object v1, p0, Lcom/android/server/pm/UserManagerService$LocalService;->this$0:Lcom/android/server/pm/UserManagerService;
 
-    invoke-static {v1, p1}, Lcom/android/server/pm/UserManagerService;->access$2302(Lcom/android/server/pm/UserManagerService;Z)Z
+    invoke-static {v1, p1}, Lcom/android/server/pm/UserManagerService;->access$2202(Lcom/android/server/pm/UserManagerService;Z)Z
 
-    .line 4210
+    .line 3968
     monitor-exit v0
 
-    .line 4211
+    .line 3969
     return-void
 
-    .line 4210
+    .line 3968
     :catchall_e
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_10
     .catchall {:try_start_7 .. :try_end_10} :catchall_e
 
-    throw p1
+    throw v1
 .end method
 
 .method public setUserIcon(ILandroid/graphics/Bitmap;)V
-    .registers 9
+    .registers 10
+    .param p1, "userId"  # I
+    .param p2, "bitmap"  # Landroid/graphics/Bitmap;
 
-    .line 4189
+    .line 3947
     invoke-static {}, Landroid/os/Binder;->clearCallingIdentity()J
 
     move-result-wide v0
 
-    .line 4191
+    .line 3949
+    .local v0, "ident":J
     :try_start_4
     iget-object v2, p0, Lcom/android/server/pm/UserManagerService$LocalService;->this$0:Lcom/android/server/pm/UserManagerService;
 
-    invoke-static {v2}, Lcom/android/server/pm/UserManagerService;->access$1200(Lcom/android/server/pm/UserManagerService;)Ljava/lang/Object;
+    invoke-static {v2}, Lcom/android/server/pm/UserManagerService;->access$1100(Lcom/android/server/pm/UserManagerService;)Ljava/lang/Object;
 
     move-result-object v2
 
@@ -1199,15 +1274,16 @@
     :try_end_b
     .catchall {:try_start_4 .. :try_end_b} :catchall_50
 
-    .line 4192
+    .line 3950
     :try_start_b
     iget-object v3, p0, Lcom/android/server/pm/UserManagerService$LocalService;->this$0:Lcom/android/server/pm/UserManagerService;
 
-    invoke-static {v3, p1}, Lcom/android/server/pm/UserManagerService;->access$1300(Lcom/android/server/pm/UserManagerService;I)Lcom/android/server/pm/UserManagerService$UserData;
+    invoke-static {v3, p1}, Lcom/android/server/pm/UserManagerService;->access$1200(Lcom/android/server/pm/UserManagerService;I)Lcom/android/server/pm/UserManagerService$UserData;
 
     move-result-object v3
 
-    .line 4193
+    .line 3951
+    .local v3, "userData":Lcom/android/server/pm/UserManagerService$UserData;
     if-eqz v3, :cond_31
 
     iget-object v4, v3, Lcom/android/server/pm/UserManagerService$UserData;->info:Landroid/content/pm/UserInfo;
@@ -1218,171 +1294,186 @@
 
     goto :goto_31
 
-    .line 4197
+    .line 3955
     :cond_1a
     iget-object v4, p0, Lcom/android/server/pm/UserManagerService$LocalService;->this$0:Lcom/android/server/pm/UserManagerService;
 
     iget-object v5, v3, Lcom/android/server/pm/UserManagerService$UserData;->info:Landroid/content/pm/UserInfo;
 
-    invoke-static {v4, v5, p2}, Lcom/android/server/pm/UserManagerService;->access$2100(Lcom/android/server/pm/UserManagerService;Landroid/content/pm/UserInfo;Landroid/graphics/Bitmap;)V
+    invoke-static {v4, v5, p2}, Lcom/android/server/pm/UserManagerService;->access$2000(Lcom/android/server/pm/UserManagerService;Landroid/content/pm/UserInfo;Landroid/graphics/Bitmap;)V
 
-    .line 4198
-    iget-object p2, p0, Lcom/android/server/pm/UserManagerService$LocalService;->this$0:Lcom/android/server/pm/UserManagerService;
+    .line 3956
+    iget-object v4, p0, Lcom/android/server/pm/UserManagerService$LocalService;->this$0:Lcom/android/server/pm/UserManagerService;
 
-    invoke-static {p2, v3}, Lcom/android/server/pm/UserManagerService;->access$1400(Lcom/android/server/pm/UserManagerService;Lcom/android/server/pm/UserManagerService$UserData;)V
+    invoke-static {v4, v3}, Lcom/android/server/pm/UserManagerService;->access$1300(Lcom/android/server/pm/UserManagerService;Lcom/android/server/pm/UserManagerService$UserData;)V
 
-    .line 4199
+    .line 3957
+    .end local v3  # "userData":Lcom/android/server/pm/UserManagerService$UserData;
     monitor-exit v2
     :try_end_27
     .catchall {:try_start_b .. :try_end_27} :catchall_4d
 
-    .line 4200
+    .line 3958
     :try_start_27
-    iget-object p2, p0, Lcom/android/server/pm/UserManagerService$LocalService;->this$0:Lcom/android/server/pm/UserManagerService;
+    iget-object v2, p0, Lcom/android/server/pm/UserManagerService$LocalService;->this$0:Lcom/android/server/pm/UserManagerService;
 
-    invoke-static {p2, p1}, Lcom/android/server/pm/UserManagerService;->access$2200(Lcom/android/server/pm/UserManagerService;I)V
+    invoke-static {v2, p1}, Lcom/android/server/pm/UserManagerService;->access$2100(Lcom/android/server/pm/UserManagerService;I)V
     :try_end_2c
     .catchall {:try_start_27 .. :try_end_2c} :catchall_50
 
-    .line 4202
+    .line 3960
     invoke-static {v0, v1}, Landroid/os/Binder;->restoreCallingIdentity(J)V
 
-    .line 4203
+    .line 3961
     nop
 
-    .line 4204
+    .line 3962
     return-void
 
-    .line 4194
+    .line 3952
+    .restart local v3  # "userData":Lcom/android/server/pm/UserManagerService$UserData;
     :cond_31
     :goto_31
     :try_start_31
-    const-string p2, "UserManagerService"
+    const-string v4, "UserManagerService"
 
-    new-instance v3, Ljava/lang/StringBuilder;
+    new-instance v5, Ljava/lang/StringBuilder;
 
-    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v5}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string/jumbo v4, "setUserIcon: unknown user #"
+    const-string/jumbo v6, "setUserIcon: unknown user #"
 
-    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v3, p1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v5, p1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v5}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v5
 
-    invoke-static {p2, p1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v4, v5}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 4195
+    .line 3953
     monitor-exit v2
     :try_end_49
     .catchall {:try_start_31 .. :try_end_49} :catchall_4d
 
-    .line 4202
+    .line 3960
     invoke-static {v0, v1}, Landroid/os/Binder;->restoreCallingIdentity(J)V
 
-    .line 4195
+    .line 3953
     return-void
 
-    .line 4199
+    .line 3957
+    .end local v3  # "userData":Lcom/android/server/pm/UserManagerService$UserData;
     :catchall_4d
-    move-exception p1
+    move-exception v3
 
     :try_start_4e
     monitor-exit v2
     :try_end_4f
     .catchall {:try_start_4e .. :try_end_4f} :catchall_4d
 
+    .end local v0  # "ident":J
+    .end local p0  # "this":Lcom/android/server/pm/UserManagerService$LocalService;
+    .end local p1  # "userId":I
+    .end local p2  # "bitmap":Landroid/graphics/Bitmap;
     :try_start_4f
-    throw p1
+    throw v3
     :try_end_50
     .catchall {:try_start_4f .. :try_end_50} :catchall_50
 
-    .line 4202
+    .line 3960
+    .restart local v0  # "ident":J
+    .restart local p0  # "this":Lcom/android/server/pm/UserManagerService$LocalService;
+    .restart local p1  # "userId":I
+    .restart local p2  # "bitmap":Landroid/graphics/Bitmap;
     :catchall_50
-    move-exception p1
+    move-exception v2
 
     invoke-static {v0, v1}, Landroid/os/Binder;->restoreCallingIdentity(J)V
 
-    throw p1
+    throw v2
 .end method
 
 .method public setUserManaged(IZ)V
     .registers 5
+    .param p1, "userId"  # I
+    .param p2, "isManaged"  # Z
 
-    .line 4182
+    .line 3940
     iget-object v0, p0, Lcom/android/server/pm/UserManagerService$LocalService;->this$0:Lcom/android/server/pm/UserManagerService;
 
-    invoke-static {v0}, Lcom/android/server/pm/UserManagerService;->access$300(Lcom/android/server/pm/UserManagerService;)Ljava/lang/Object;
+    invoke-static {v0}, Lcom/android/server/pm/UserManagerService;->access$200(Lcom/android/server/pm/UserManagerService;)Ljava/lang/Object;
 
     move-result-object v0
 
     monitor-enter v0
 
-    .line 4183
+    .line 3941
     :try_start_7
     iget-object v1, p0, Lcom/android/server/pm/UserManagerService$LocalService;->this$0:Lcom/android/server/pm/UserManagerService;
 
-    invoke-static {v1}, Lcom/android/server/pm/UserManagerService;->access$2000(Lcom/android/server/pm/UserManagerService;)Landroid/util/SparseBooleanArray;
+    invoke-static {v1}, Lcom/android/server/pm/UserManagerService;->access$1900(Lcom/android/server/pm/UserManagerService;)Landroid/util/SparseBooleanArray;
 
     move-result-object v1
 
     invoke-virtual {v1, p1, p2}, Landroid/util/SparseBooleanArray;->put(IZ)V
 
-    .line 4184
+    .line 3942
     monitor-exit v0
 
-    .line 4185
+    .line 3943
     return-void
 
-    .line 4184
+    .line 3942
     :catchall_12
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_14
     .catchall {:try_start_7 .. :try_end_14} :catchall_12
 
-    throw p1
+    throw v1
 .end method
 
 .method public setUserState(II)V
     .registers 5
+    .param p1, "userId"  # I
+    .param p2, "userState"  # I
 
-    .line 4287
+    .line 4045
     iget-object v0, p0, Lcom/android/server/pm/UserManagerService$LocalService;->this$0:Lcom/android/server/pm/UserManagerService;
 
-    invoke-static {v0}, Lcom/android/server/pm/UserManagerService;->access$2900(Lcom/android/server/pm/UserManagerService;)Landroid/util/SparseIntArray;
+    invoke-static {v0}, Lcom/android/server/pm/UserManagerService;->access$2800(Lcom/android/server/pm/UserManagerService;)Landroid/util/SparseIntArray;
 
     move-result-object v0
 
     monitor-enter v0
 
-    .line 4288
+    .line 4046
     :try_start_7
     iget-object v1, p0, Lcom/android/server/pm/UserManagerService$LocalService;->this$0:Lcom/android/server/pm/UserManagerService;
 
-    invoke-static {v1}, Lcom/android/server/pm/UserManagerService;->access$2900(Lcom/android/server/pm/UserManagerService;)Landroid/util/SparseIntArray;
+    invoke-static {v1}, Lcom/android/server/pm/UserManagerService;->access$2800(Lcom/android/server/pm/UserManagerService;)Landroid/util/SparseIntArray;
 
     move-result-object v1
 
     invoke-virtual {v1, p1, p2}, Landroid/util/SparseIntArray;->put(II)V
 
-    .line 4289
+    .line 4047
     monitor-exit v0
 
-    .line 4290
+    .line 4048
     return-void
 
-    .line 4289
+    .line 4047
     :catchall_12
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_14
     .catchall {:try_start_7 .. :try_end_14} :catchall_12
 
-    throw p1
+    throw v1
 .end method

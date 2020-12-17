@@ -35,8 +35,9 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/am/ActivityManagerShellCommand;Landroid/util/ArrayMap;)V
     .registers 3
+    .param p1, "this$0"  # Lcom/android/server/am/ActivityManagerShellCommand;
 
-    .line 1925
+    .line 1971
     iput-object p1, p0, Lcom/android/server/am/ActivityManagerShellCommand$3;->this$0:Lcom/android/server/am/ActivityManagerShellCommand;
 
     iput-object p2, p0, Lcom/android/server/am/ActivityManagerShellCommand$3;->val$recentConfigs:Landroid/util/ArrayMap;
@@ -49,36 +50,38 @@
 
 # virtual methods
 .method public compare(Landroid/content/res/Configuration;Landroid/content/res/Configuration;)I
-    .registers 4
+    .registers 5
+    .param p1, "a"  # Landroid/content/res/Configuration;
+    .param p2, "b"  # Landroid/content/res/Configuration;
 
-    .line 1928
+    .line 1974
     iget-object v0, p0, Lcom/android/server/am/ActivityManagerShellCommand$3;->val$recentConfigs:Landroid/util/ArrayMap;
 
     invoke-virtual {v0, p2}, Landroid/util/ArrayMap;->get(Ljava/lang/Object;)Ljava/lang/Object;
 
-    move-result-object p2
+    move-result-object v0
 
-    check-cast p2, Ljava/lang/Integer;
+    check-cast v0, Ljava/lang/Integer;
 
-    iget-object v0, p0, Lcom/android/server/am/ActivityManagerShellCommand$3;->val$recentConfigs:Landroid/util/ArrayMap;
+    iget-object v1, p0, Lcom/android/server/am/ActivityManagerShellCommand$3;->val$recentConfigs:Landroid/util/ArrayMap;
 
-    invoke-virtual {v0, p1}, Landroid/util/ArrayMap;->get(Ljava/lang/Object;)Ljava/lang/Object;
+    invoke-virtual {v1, p1}, Landroid/util/ArrayMap;->get(Ljava/lang/Object;)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v1
 
-    check-cast p1, Ljava/lang/Integer;
+    check-cast v1, Ljava/lang/Integer;
 
-    invoke-virtual {p2, p1}, Ljava/lang/Integer;->compareTo(Ljava/lang/Integer;)I
+    invoke-virtual {v0, v1}, Ljava/lang/Integer;->compareTo(Ljava/lang/Integer;)I
 
-    move-result p1
+    move-result v0
 
-    return p1
+    return v0
 .end method
 
 .method public bridge synthetic compare(Ljava/lang/Object;Ljava/lang/Object;)I
     .registers 3
 
-    .line 1925
+    .line 1971
     check-cast p1, Landroid/content/res/Configuration;
 
     check-cast p2, Landroid/content/res/Configuration;

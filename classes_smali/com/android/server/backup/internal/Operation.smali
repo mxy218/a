@@ -14,6 +14,9 @@
 # direct methods
 .method public constructor <init>(ILcom/android/server/backup/BackupRestoreTask;I)V
     .registers 4
+    .param p1, "initialState"  # I
+    .param p2, "callbackObj"  # Lcom/android/server/backup/BackupRestoreTask;
+    .param p3, "type"  # I
 
     .line 27
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V

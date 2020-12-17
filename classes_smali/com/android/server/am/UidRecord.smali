@@ -130,6 +130,7 @@
 
 .method public constructor <init>(I)V
     .registers 3
+    .param p1, "_uid"  # I
 
     .line 118
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -150,9 +151,9 @@
     iput p1, p0, Lcom/android/server/am/UidRecord;->uid:I
 
     .line 120
-    const/4 p1, 0x1
+    const/4 v0, 0x1
 
-    iput-boolean p1, p0, Lcom/android/server/am/UidRecord;->idle:Z
+    iput-boolean v0, p0, Lcom/android/server/am/UidRecord;->idle:Z
 
     .line 121
     invoke-virtual {p0}, Lcom/android/server/am/UidRecord;->reset()V
@@ -191,6 +192,7 @@
 
 .method public setCurProcState(I)V
     .registers 2
+    .param p1, "curProcState"  # I
 
     .line 129
     iput p1, p0, Lcom/android/server/am/UidRecord;->mCurProcState:I
@@ -210,6 +212,7 @@
     invoke-direct {v0, v1}, Ljava/lang/StringBuilder;-><init>(I)V
 
     .line 182
+    .local v0, "sb":Ljava/lang/StringBuilder;
     const-string v1, "UidRecord{"
 
     invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
@@ -320,7 +323,7 @@
     :cond_68
     iget v1, p0, Lcom/android/server/am/UidRecord;->lastReportedChange:I
 
-    if-eqz v1, :cond_c9
+    if-eqz v1, :cond_c6
 
     .line 205
     const-string v1, " change:"
@@ -331,123 +334,115 @@
     const/4 v1, 0x0
 
     .line 207
+    .local v1, "printed":Z
     iget v2, p0, Lcom/android/server/am/UidRecord;->lastReportedChange:I
 
-    const/4 v3, 0x1
+    and-int/lit8 v2, v2, 0x1
 
-    and-int/2addr v2, v3
-
-    if-eqz v2, :cond_7f
+    if-eqz v2, :cond_7e
 
     .line 208
-    nop
+    const/4 v1, 0x1
 
     .line 209
-    const-string v1, "gone"
+    const-string v2, "gone"
 
-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    move v1, v3
+    invoke-virtual {v0, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     .line 211
-    :cond_7f
+    :cond_7e
     iget v2, p0, Lcom/android/server/am/UidRecord;->lastReportedChange:I
 
     and-int/lit8 v2, v2, 0x2
 
-    const-string/jumbo v4, "|"
+    const-string/jumbo v3, "|"
 
-    if-eqz v2, :cond_94
+    if-eqz v2, :cond_93
 
     .line 212
-    if-eqz v1, :cond_8d
+    if-eqz v1, :cond_8c
 
     .line 213
-    invoke-virtual {v0, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     .line 215
-    :cond_8d
-    nop
+    :cond_8c
+    const/4 v1, 0x1
 
     .line 216
-    const-string v1, "idle"
+    const-string/jumbo v2, "idle"
 
-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    move v1, v3
+    invoke-virtual {v0, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     .line 218
-    :cond_94
+    :cond_93
     iget v2, p0, Lcom/android/server/am/UidRecord;->lastReportedChange:I
 
     and-int/lit8 v2, v2, 0x4
 
-    if-eqz v2, :cond_a6
+    if-eqz v2, :cond_a4
 
     .line 219
-    if-eqz v1, :cond_9f
+    if-eqz v1, :cond_9e
 
     .line 220
-    invoke-virtual {v0, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     .line 222
-    :cond_9f
-    nop
+    :cond_9e
+    const/4 v1, 0x1
 
     .line 223
-    const-string v1, "active"
+    const-string v2, "active"
 
-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    move v1, v3
+    invoke-virtual {v0, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     .line 225
-    :cond_a6
+    :cond_a4
     iget v2, p0, Lcom/android/server/am/UidRecord;->lastReportedChange:I
 
     and-int/lit8 v2, v2, 0x8
 
-    if-eqz v2, :cond_b8
+    if-eqz v2, :cond_b5
 
     .line 226
-    if-eqz v1, :cond_b1
+    if-eqz v1, :cond_af
 
     .line 227
-    invoke-virtual {v0, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     .line 229
-    :cond_b1
-    nop
+    :cond_af
+    const/4 v1, 0x1
 
     .line 230
-    const-string v1, "cached"
+    const-string v2, "cached"
 
-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    move v1, v3
+    invoke-virtual {v0, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     .line 232
-    :cond_b8
+    :cond_b5
     iget v2, p0, Lcom/android/server/am/UidRecord;->lastReportedChange:I
 
     and-int/lit8 v2, v2, 0x10
 
-    if-eqz v2, :cond_c9
+    if-eqz v2, :cond_c6
 
     .line 233
-    if-eqz v1, :cond_c3
+    if-eqz v1, :cond_c0
 
     .line 234
-    invoke-virtual {v0, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     .line 236
-    :cond_c3
-    const-string/jumbo v1, "uncached"
+    :cond_c0
+    const-string/jumbo v2, "uncached"
 
-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     .line 239
-    :cond_c9
+    .end local v1  # "printed":Z
+    :cond_c6
     const-string v1, " procs:"
 
     invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
@@ -493,9 +488,9 @@
     .line 248
     invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v1
 
-    return-object v0
+    return-object v1
 .end method
 
 .method public updateHasInternetPermission()V
@@ -528,11 +523,12 @@
 
 .method public updateLastDispatchedProcStateSeq(I)V
     .registers 4
+    .param p1, "changeToDispatch"  # I
 
     .line 148
-    and-int/lit8 p1, p1, 0x1
+    and-int/lit8 v0, p1, 0x1
 
-    if-nez p1, :cond_8
+    if-nez v0, :cond_8
 
     .line 149
     iget-wide v0, p0, Lcom/android/server/am/UidRecord;->curProcStateSeq:J
@@ -545,131 +541,135 @@
 .end method
 
 .method writeToProto(Landroid/util/proto/ProtoOutputStream;J)V
-    .registers 14
+    .registers 16
+    .param p1, "proto"  # Landroid/util/proto/ProtoOutputStream;
+    .param p2, "fieldId"  # J
 
     .line 155
     invoke-virtual {p1, p2, p3}, Landroid/util/proto/ProtoOutputStream;->start(J)J
 
-    move-result-wide p2
+    move-result-wide v0
 
     .line 156
-    iget v0, p0, Lcom/android/server/am/UidRecord;->uid:I
+    .local v0, "token":J
+    iget v2, p0, Lcom/android/server/am/UidRecord;->uid:I
 
-    const-wide v1, 0x10500000001L
+    const-wide v3, 0x10500000001L
 
-    invoke-virtual {p1, v1, v2, v0}, Landroid/util/proto/ProtoOutputStream;->write(JI)V
+    invoke-virtual {p1, v3, v4, v2}, Landroid/util/proto/ProtoOutputStream;->write(JI)V
 
     .line 157
-    iget v0, p0, Lcom/android/server/am/UidRecord;->mCurProcState:I
+    iget v2, p0, Lcom/android/server/am/UidRecord;->mCurProcState:I
 
-    invoke-static {v0}, Lcom/android/server/am/ProcessList;->makeProcStateProtoEnum(I)I
+    invoke-static {v2}, Lcom/android/server/am/ProcessList;->makeProcStateProtoEnum(I)I
 
-    move-result v0
+    move-result v2
 
-    const-wide v1, 0x10e00000002L
+    const-wide v3, 0x10e00000002L
 
-    invoke-virtual {p1, v1, v2, v0}, Landroid/util/proto/ProtoOutputStream;->write(JI)V
+    invoke-virtual {p1, v3, v4, v2}, Landroid/util/proto/ProtoOutputStream;->write(JI)V
 
     .line 158
-    iget-boolean v0, p0, Lcom/android/server/am/UidRecord;->ephemeral:Z
+    iget-boolean v2, p0, Lcom/android/server/am/UidRecord;->ephemeral:Z
 
-    const-wide v1, 0x10800000003L
+    const-wide v3, 0x10800000003L
 
-    invoke-virtual {p1, v1, v2, v0}, Landroid/util/proto/ProtoOutputStream;->write(JZ)V
+    invoke-virtual {p1, v3, v4, v2}, Landroid/util/proto/ProtoOutputStream;->write(JZ)V
 
     .line 159
-    iget-boolean v0, p0, Lcom/android/server/am/UidRecord;->foregroundServices:Z
+    iget-boolean v2, p0, Lcom/android/server/am/UidRecord;->foregroundServices:Z
 
-    const-wide v1, 0x10800000004L
+    const-wide v3, 0x10800000004L
 
-    invoke-virtual {p1, v1, v2, v0}, Landroid/util/proto/ProtoOutputStream;->write(JZ)V
+    invoke-virtual {p1, v3, v4, v2}, Landroid/util/proto/ProtoOutputStream;->write(JZ)V
 
     .line 160
-    iget-boolean v0, p0, Lcom/android/server/am/UidRecord;->curWhitelist:Z
+    iget-boolean v2, p0, Lcom/android/server/am/UidRecord;->curWhitelist:Z
 
-    const-wide v1, 0x10800000005L
+    const-wide v3, 0x10800000005L
 
-    invoke-virtual {p1, v1, v2, v0}, Landroid/util/proto/ProtoOutputStream;->write(JZ)V
+    invoke-virtual {p1, v3, v4, v2}, Landroid/util/proto/ProtoOutputStream;->write(JZ)V
 
     .line 161
-    iget-wide v6, p0, Lcom/android/server/am/UidRecord;->lastBackgroundTime:J
+    iget-wide v8, p0, Lcom/android/server/am/UidRecord;->lastBackgroundTime:J
 
     .line 162
     invoke-static {}, Landroid/os/SystemClock;->elapsedRealtime()J
 
-    move-result-wide v8
+    move-result-wide v10
 
     .line 161
-    const-wide v4, 0x10b00000006L
+    const-wide v6, 0x10b00000006L
 
-    move-object v3, p1
+    move-object v5, p1
 
-    invoke-static/range {v3 .. v9}, Landroid/util/proto/ProtoUtils;->toDuration(Landroid/util/proto/ProtoOutputStream;JJJ)V
+    invoke-static/range {v5 .. v11}, Landroid/util/proto/ProtoUtils;->toDuration(Landroid/util/proto/ProtoOutputStream;JJJ)V
 
     .line 163
-    iget-boolean v0, p0, Lcom/android/server/am/UidRecord;->idle:Z
+    iget-boolean v2, p0, Lcom/android/server/am/UidRecord;->idle:Z
 
-    const-wide v1, 0x10800000007L
+    const-wide v3, 0x10800000007L
 
-    invoke-virtual {p1, v1, v2, v0}, Landroid/util/proto/ProtoOutputStream;->write(JZ)V
+    invoke-virtual {p1, v3, v4, v2}, Landroid/util/proto/ProtoOutputStream;->write(JZ)V
 
     .line 164
-    iget v6, p0, Lcom/android/server/am/UidRecord;->lastReportedChange:I
+    iget v8, p0, Lcom/android/server/am/UidRecord;->lastReportedChange:I
 
-    if-eqz v6, :cond_64
+    if-eqz v8, :cond_64
 
     .line 165
-    const-wide v4, 0x20e00000008L
+    const-wide v6, 0x20e00000008L
 
-    sget-object v7, Lcom/android/server/am/UidRecord;->ORIG_ENUMS:[I
+    sget-object v9, Lcom/android/server/am/UidRecord;->ORIG_ENUMS:[I
 
-    sget-object v8, Lcom/android/server/am/UidRecord;->PROTO_ENUMS:[I
+    sget-object v10, Lcom/android/server/am/UidRecord;->PROTO_ENUMS:[I
 
-    move-object v3, p1
+    move-object v5, p1
 
-    invoke-static/range {v3 .. v8}, Landroid/util/proto/ProtoUtils;->writeBitWiseFlagsToProtoEnum(Landroid/util/proto/ProtoOutputStream;JI[I[I)V
+    invoke-static/range {v5 .. v10}, Landroid/util/proto/ProtoUtils;->writeBitWiseFlagsToProtoEnum(Landroid/util/proto/ProtoOutputStream;JI[I[I)V
 
     .line 168
     :cond_64
-    const-wide v0, 0x10500000009L
+    const-wide v2, 0x10500000009L
 
-    iget v2, p0, Lcom/android/server/am/UidRecord;->numProcs:I
+    iget v4, p0, Lcom/android/server/am/UidRecord;->numProcs:I
 
-    invoke-virtual {p1, v0, v1, v2}, Landroid/util/proto/ProtoOutputStream;->write(JI)V
+    invoke-virtual {p1, v2, v3, v4}, Landroid/util/proto/ProtoOutputStream;->write(JI)V
 
     .line 170
-    const-wide v0, 0x10b0000000aL
+    const-wide v2, 0x10b0000000aL
 
-    invoke-virtual {p1, v0, v1}, Landroid/util/proto/ProtoOutputStream;->start(J)J
+    invoke-virtual {p1, v2, v3}, Landroid/util/proto/ProtoOutputStream;->start(J)J
 
-    move-result-wide v0
+    move-result-wide v2
 
     .line 171
-    const-wide v2, 0x10300000001L
+    .local v2, "seqToken":J
+    const-wide v4, 0x10300000001L
 
-    iget-wide v4, p0, Lcom/android/server/am/UidRecord;->curProcStateSeq:J
+    iget-wide v6, p0, Lcom/android/server/am/UidRecord;->curProcStateSeq:J
 
-    invoke-virtual {p1, v2, v3, v4, v5}, Landroid/util/proto/ProtoOutputStream;->write(JJ)V
+    invoke-virtual {p1, v4, v5, v6, v7}, Landroid/util/proto/ProtoOutputStream;->write(JJ)V
 
     .line 172
-    const-wide v2, 0x10300000002L
+    const-wide v4, 0x10300000002L
 
-    iget-wide v4, p0, Lcom/android/server/am/UidRecord;->lastNetworkUpdatedProcStateSeq:J
+    iget-wide v6, p0, Lcom/android/server/am/UidRecord;->lastNetworkUpdatedProcStateSeq:J
 
-    invoke-virtual {p1, v2, v3, v4, v5}, Landroid/util/proto/ProtoOutputStream;->write(JJ)V
+    invoke-virtual {p1, v4, v5, v6, v7}, Landroid/util/proto/ProtoOutputStream;->write(JJ)V
 
     .line 174
-    const-wide v2, 0x10300000003L
+    const-wide v4, 0x10300000003L
 
-    iget-wide v4, p0, Lcom/android/server/am/UidRecord;->lastDispatchedProcStateSeq:J
+    iget-wide v6, p0, Lcom/android/server/am/UidRecord;->lastDispatchedProcStateSeq:J
 
-    invoke-virtual {p1, v2, v3, v4, v5}, Landroid/util/proto/ProtoOutputStream;->write(JJ)V
+    invoke-virtual {p1, v4, v5, v6, v7}, Landroid/util/proto/ProtoOutputStream;->write(JJ)V
 
     .line 175
-    invoke-virtual {p1, v0, v1}, Landroid/util/proto/ProtoOutputStream;->end(J)V
+    invoke-virtual {p1, v2, v3}, Landroid/util/proto/ProtoOutputStream;->end(J)V
 
     .line 177
-    invoke-virtual {p1, p2, p3}, Landroid/util/proto/ProtoOutputStream;->end(J)V
+    invoke-virtual {p1, v0, v1}, Landroid/util/proto/ProtoOutputStream;->end(J)V
 
     .line 178
     return-void

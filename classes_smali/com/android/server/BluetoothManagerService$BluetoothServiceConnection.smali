@@ -25,7 +25,7 @@
 .method private constructor <init>(Lcom/android/server/BluetoothManagerService;)V
     .registers 2
 
-    .line 1570
+    .line 1867
     iput-object p1, p0, Lcom/android/server/BluetoothManagerService$BluetoothServiceConnection;->this$0:Lcom/android/server/BluetoothManagerService;
 
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -35,8 +35,10 @@
 
 .method synthetic constructor <init>(Lcom/android/server/BluetoothManagerService;Lcom/android/server/BluetoothManagerService$1;)V
     .registers 3
+    .param p1, "x0"  # Lcom/android/server/BluetoothManagerService;
+    .param p2, "x1"  # Lcom/android/server/BluetoothManagerService$1;
 
-    .line 1570
+    .line 1867
     invoke-direct {p0, p1}, Lcom/android/server/BluetoothManagerService$BluetoothServiceConnection;-><init>(Lcom/android/server/BluetoothManagerService;)V
 
     return-void
@@ -45,216 +47,234 @@
 
 # virtual methods
 .method public onServiceConnected(Landroid/content/ComponentName;Landroid/os/IBinder;)V
-    .registers 6
+    .registers 8
+    .param p1, "componentName"  # Landroid/content/ComponentName;
+    .param p2, "service"  # Landroid/os/IBinder;
 
-    .line 1572
+    .line 1869
     invoke-virtual {p1}, Landroid/content/ComponentName;->getClassName()Ljava/lang/String;
 
-    move-result-object p1
-
-    .line 1574
-    new-instance v0, Ljava/lang/StringBuilder;
-
-    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
-
-    const-string v1, "BluetoothServiceConnection: "
-
-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
-
     move-result-object v0
 
-    const-string v1, "BluetoothManagerService"
+    .line 1871
+    .local v0, "name":Ljava/lang/String;
+    new-instance v1, Ljava/lang/StringBuilder;
 
-    invoke-static {v1, v0}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
 
-    .line 1576
-    iget-object v0, p0, Lcom/android/server/BluetoothManagerService$BluetoothServiceConnection;->this$0:Lcom/android/server/BluetoothManagerService;
+    const-string v2, "BluetoothServiceConnection: "
 
-    invoke-static {v0}, Lcom/android/server/BluetoothManagerService;->access$200(Lcom/android/server/BluetoothManagerService;)Lcom/android/server/BluetoothManagerService$BluetoothHandler;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    move-result-object v0
+    invoke-virtual {v1, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const/16 v2, 0x28
+    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    invoke-virtual {v0, v2}, Lcom/android/server/BluetoothManagerService$BluetoothHandler;->obtainMessage(I)Landroid/os/Message;
+    move-result-object v1
 
-    move-result-object v0
+    const-string v2, "BluetoothManagerService"
 
-    .line 1577
-    const-string v2, "com.android.bluetooth.btservice.AdapterService"
+    invoke-static {v2, v1}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
 
-    invoke-virtual {p1, v2}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    .line 1873
+    iget-object v1, p0, Lcom/android/server/BluetoothManagerService$BluetoothServiceConnection;->this$0:Lcom/android/server/BluetoothManagerService;
 
-    move-result v2
+    invoke-static {v1}, Lcom/android/server/BluetoothManagerService;->access$200(Lcom/android/server/BluetoothManagerService;)Lcom/android/server/BluetoothManagerService$BluetoothHandler;
 
-    if-eqz v2, :cond_32
+    move-result-object v1
 
-    .line 1578
-    const/4 p1, 0x1
+    const/16 v3, 0x28
 
-    iput p1, v0, Landroid/os/Message;->arg1:I
+    invoke-virtual {v1, v3}, Lcom/android/server/BluetoothManagerService$BluetoothHandler;->obtainMessage(I)Landroid/os/Message;
 
-    goto :goto_3d
+    move-result-object v1
 
-    .line 1579
-    :cond_32
-    const-string v2, "com.android.bluetooth.gatt.GattService"
+    .line 1874
+    .local v1, "msg":Landroid/os/Message;
+    const-string v3, "com.android.bluetooth.btservice.AdapterService"
 
-    invoke-virtual {p1, v2}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v0, v3}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result v2
+    move-result v3
 
-    if-eqz v2, :cond_49
+    if-eqz v3, :cond_3d
 
-    .line 1580
-    const/4 p1, 0x2
+    .line 1875
+    const/4 v2, 0x1
 
-    iput p1, v0, Landroid/os/Message;->arg1:I
+    iput v2, v1, Landroid/os/Message;->arg1:I
 
-    .line 1585
-    :goto_3d
-    iput-object p2, v0, Landroid/os/Message;->obj:Ljava/lang/Object;
+    .line 1876
+    iget-object v2, p0, Lcom/android/server/BluetoothManagerService$BluetoothServiceConnection;->this$0:Lcom/android/server/BluetoothManagerService;
 
-    .line 1586
-    iget-object p1, p0, Lcom/android/server/BluetoothManagerService$BluetoothServiceConnection;->this$0:Lcom/android/server/BluetoothManagerService;
+    invoke-static {v2}, Lcom/android/server/BluetoothManagerService;->access$200(Lcom/android/server/BluetoothManagerService;)Lcom/android/server/BluetoothManagerService$BluetoothHandler;
 
-    invoke-static {p1}, Lcom/android/server/BluetoothManagerService;->access$200(Lcom/android/server/BluetoothManagerService;)Lcom/android/server/BluetoothManagerService$BluetoothHandler;
+    move-result-object v2
 
-    move-result-object p1
+    const/16 v3, 0x64
 
-    invoke-virtual {p1, v0}, Lcom/android/server/BluetoothManagerService$BluetoothHandler;->sendMessage(Landroid/os/Message;)Z
+    invoke-virtual {v2, v3}, Lcom/android/server/BluetoothManagerService$BluetoothHandler;->removeMessages(I)V
 
-    .line 1587
+    goto :goto_48
+
+    .line 1877
+    :cond_3d
+    const-string v3, "com.android.bluetooth.gatt.GattService"
+
+    invoke-virtual {v0, v3}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+
+    move-result v3
+
+    if-eqz v3, :cond_54
+
+    .line 1878
+    const/4 v2, 0x2
+
+    iput v2, v1, Landroid/os/Message;->arg1:I
+
+    .line 1883
+    :goto_48
+    iput-object p2, v1, Landroid/os/Message;->obj:Ljava/lang/Object;
+
+    .line 1884
+    iget-object v2, p0, Lcom/android/server/BluetoothManagerService$BluetoothServiceConnection;->this$0:Lcom/android/server/BluetoothManagerService;
+
+    invoke-static {v2}, Lcom/android/server/BluetoothManagerService;->access$200(Lcom/android/server/BluetoothManagerService;)Lcom/android/server/BluetoothManagerService$BluetoothHandler;
+
+    move-result-object v2
+
+    invoke-virtual {v2, v1}, Lcom/android/server/BluetoothManagerService$BluetoothHandler;->sendMessage(Landroid/os/Message;)Z
+
+    .line 1885
     return-void
 
-    .line 1582
-    :cond_49
-    new-instance p2, Ljava/lang/StringBuilder;
+    .line 1880
+    :cond_54
+    new-instance v3, Ljava/lang/StringBuilder;
 
-    invoke-direct {p2}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v0, "Unknown service connected: "
+    const-string v4, "Unknown service connected: "
 
-    invoke-virtual {p2, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p2, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v3
 
-    invoke-static {v1, p1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v2, v3}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 1583
+    .line 1881
     return-void
 .end method
 
 .method public onServiceDisconnected(Landroid/content/ComponentName;)V
-    .registers 5
+    .registers 7
+    .param p1, "componentName"  # Landroid/content/ComponentName;
 
-    .line 1591
+    .line 1889
     invoke-virtual {p1}, Landroid/content/ComponentName;->getClassName()Ljava/lang/String;
 
-    move-result-object p1
-
-    .line 1593
-    new-instance v0, Ljava/lang/StringBuilder;
-
-    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
-
-    const-string v1, "BluetoothServiceConnection, disconnected: "
-
-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
-
     move-result-object v0
 
-    const-string v1, "BluetoothManagerService"
+    .line 1891
+    .local v0, "name":Ljava/lang/String;
+    new-instance v1, Ljava/lang/StringBuilder;
 
-    invoke-static {v1, v0}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
 
-    .line 1595
-    iget-object v0, p0, Lcom/android/server/BluetoothManagerService$BluetoothServiceConnection;->this$0:Lcom/android/server/BluetoothManagerService;
+    const-string v2, "BluetoothServiceConnection, disconnected: "
 
-    invoke-static {v0}, Lcom/android/server/BluetoothManagerService;->access$200(Lcom/android/server/BluetoothManagerService;)Lcom/android/server/BluetoothManagerService$BluetoothHandler;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    move-result-object v0
+    invoke-virtual {v1, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const/16 v2, 0x29
+    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    invoke-virtual {v0, v2}, Lcom/android/server/BluetoothManagerService$BluetoothHandler;->obtainMessage(I)Landroid/os/Message;
+    move-result-object v1
 
-    move-result-object v0
+    const-string v2, "BluetoothManagerService"
 
-    .line 1596
-    const-string v2, "com.android.bluetooth.btservice.AdapterService"
+    invoke-static {v2, v1}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
 
-    invoke-virtual {p1, v2}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    .line 1893
+    iget-object v1, p0, Lcom/android/server/BluetoothManagerService$BluetoothServiceConnection;->this$0:Lcom/android/server/BluetoothManagerService;
 
-    move-result v2
+    invoke-static {v1}, Lcom/android/server/BluetoothManagerService;->access$200(Lcom/android/server/BluetoothManagerService;)Lcom/android/server/BluetoothManagerService$BluetoothHandler;
 
-    if-eqz v2, :cond_32
+    move-result-object v1
 
-    .line 1597
-    const/4 p1, 0x1
+    const/16 v3, 0x29
 
-    iput p1, v0, Landroid/os/Message;->arg1:I
+    invoke-virtual {v1, v3}, Lcom/android/server/BluetoothManagerService$BluetoothHandler;->obtainMessage(I)Landroid/os/Message;
+
+    move-result-object v1
+
+    .line 1894
+    .local v1, "msg":Landroid/os/Message;
+    const-string v3, "com.android.bluetooth.btservice.AdapterService"
+
+    invoke-virtual {v0, v3}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+
+    move-result v3
+
+    if-eqz v3, :cond_32
+
+    .line 1895
+    const/4 v2, 0x1
+
+    iput v2, v1, Landroid/os/Message;->arg1:I
 
     goto :goto_3d
 
-    .line 1598
+    .line 1896
     :cond_32
-    const-string v2, "com.android.bluetooth.gatt.GattService"
+    const-string v3, "com.android.bluetooth.gatt.GattService"
 
-    invoke-virtual {p1, v2}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v0, v3}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result v2
+    move-result v3
 
-    if-eqz v2, :cond_47
+    if-eqz v3, :cond_47
 
-    .line 1599
-    const/4 p1, 0x2
+    .line 1897
+    const/4 v2, 0x2
 
-    iput p1, v0, Landroid/os/Message;->arg1:I
+    iput v2, v1, Landroid/os/Message;->arg1:I
 
-    .line 1604
+    .line 1902
     :goto_3d
-    iget-object p1, p0, Lcom/android/server/BluetoothManagerService$BluetoothServiceConnection;->this$0:Lcom/android/server/BluetoothManagerService;
+    iget-object v2, p0, Lcom/android/server/BluetoothManagerService$BluetoothServiceConnection;->this$0:Lcom/android/server/BluetoothManagerService;
 
-    invoke-static {p1}, Lcom/android/server/BluetoothManagerService;->access$200(Lcom/android/server/BluetoothManagerService;)Lcom/android/server/BluetoothManagerService$BluetoothHandler;
+    invoke-static {v2}, Lcom/android/server/BluetoothManagerService;->access$200(Lcom/android/server/BluetoothManagerService;)Lcom/android/server/BluetoothManagerService$BluetoothHandler;
 
-    move-result-object p1
+    move-result-object v2
 
-    invoke-virtual {p1, v0}, Lcom/android/server/BluetoothManagerService$BluetoothHandler;->sendMessage(Landroid/os/Message;)Z
+    invoke-virtual {v2, v1}, Lcom/android/server/BluetoothManagerService$BluetoothHandler;->sendMessage(Landroid/os/Message;)Z
 
-    .line 1605
+    .line 1903
     return-void
 
-    .line 1601
+    .line 1899
     :cond_47
-    new-instance v0, Ljava/lang/StringBuilder;
+    new-instance v3, Ljava/lang/StringBuilder;
 
-    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v2, "Unknown service disconnected: "
+    const-string v4, "Unknown service disconnected: "
 
-    invoke-virtual {v0, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v3
 
-    invoke-static {v1, p1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v2, v3}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 1602
+    .line 1900
     return-void
 .end method

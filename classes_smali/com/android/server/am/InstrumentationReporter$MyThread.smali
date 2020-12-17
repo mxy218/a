@@ -20,15 +20,16 @@
 
 # direct methods
 .method public constructor <init>(Lcom/android/server/am/InstrumentationReporter;)V
-    .registers 2
+    .registers 3
+    .param p1, "this$0"  # Lcom/android/server/am/InstrumentationReporter;
 
     .line 40
     iput-object p1, p0, Lcom/android/server/am/InstrumentationReporter$MyThread;->this$0:Lcom/android/server/am/InstrumentationReporter;
 
     .line 41
-    const-string p1, "InstrumentationReporter"
+    const-string v0, "InstrumentationReporter"
 
-    invoke-direct {p0, p1}, Ljava/lang/Thread;-><init>(Ljava/lang/String;)V
+    invoke-direct {p0, v0}, Ljava/lang/Thread;-><init>(Ljava/lang/String;)V
 
     .line 43
     return-void
@@ -45,80 +46,84 @@
     invoke-static {v0}, Landroid/os/Process;->setThreadPriority(I)V
 
     .line 48
-    move v1, v0
+    const/4 v0, 0x0
 
     .line 51
+    .local v0, "waited":Z
     :goto_5
-    iget-object v2, p0, Lcom/android/server/am/InstrumentationReporter$MyThread;->this$0:Lcom/android/server/am/InstrumentationReporter;
+    iget-object v1, p0, Lcom/android/server/am/InstrumentationReporter$MyThread;->this$0:Lcom/android/server/am/InstrumentationReporter;
 
-    iget-object v2, v2, Lcom/android/server/am/InstrumentationReporter;->mLock:Ljava/lang/Object;
+    iget-object v1, v1, Lcom/android/server/am/InstrumentationReporter;->mLock:Ljava/lang/Object;
 
-    monitor-enter v2
+    monitor-enter v1
 
     .line 52
     :try_start_a
-    iget-object v3, p0, Lcom/android/server/am/InstrumentationReporter$MyThread;->this$0:Lcom/android/server/am/InstrumentationReporter;
+    iget-object v2, p0, Lcom/android/server/am/InstrumentationReporter$MyThread;->this$0:Lcom/android/server/am/InstrumentationReporter;
 
-    iget-object v3, v3, Lcom/android/server/am/InstrumentationReporter;->mPendingReports:Ljava/util/ArrayList;
+    iget-object v2, v2, Lcom/android/server/am/InstrumentationReporter;->mPendingReports:Ljava/util/ArrayList;
 
     .line 53
-    iget-object v4, p0, Lcom/android/server/am/InstrumentationReporter$MyThread;->this$0:Lcom/android/server/am/InstrumentationReporter;
+    .local v2, "reports":Ljava/util/ArrayList;, "Ljava/util/ArrayList<Lcom/android/server/am/InstrumentationReporter$Report;>;"
+    iget-object v3, p0, Lcom/android/server/am/InstrumentationReporter$MyThread;->this$0:Lcom/android/server/am/InstrumentationReporter;
 
-    const/4 v5, 0x0
+    const/4 v4, 0x0
 
-    iput-object v5, v4, Lcom/android/server/am/InstrumentationReporter;->mPendingReports:Ljava/util/ArrayList;
+    iput-object v4, v3, Lcom/android/server/am/InstrumentationReporter;->mPendingReports:Ljava/util/ArrayList;
 
     .line 54
-    if-eqz v3, :cond_6f
+    if-eqz v2, :cond_6e
 
-    invoke-virtual {v3}, Ljava/util/ArrayList;->isEmpty()Z
+    invoke-virtual {v2}, Ljava/util/ArrayList;->isEmpty()Z
 
-    move-result v4
+    move-result v3
 
-    if-eqz v4, :cond_1c
+    if-eqz v3, :cond_1c
 
-    goto :goto_6f
+    goto :goto_6e
 
     .line 69
     :cond_1c
-    monitor-exit v2
+    monitor-exit v1
     :try_end_1d
-    .catchall {:try_start_a .. :try_end_1d} :catchall_86
+    .catchall {:try_start_a .. :try_end_1d} :catchall_84
 
     .line 71
-    nop
+    const/4 v0, 0x0
 
     .line 73
-    move v1, v0
+    const/4 v1, 0x0
 
+    .local v1, "i":I
     :goto_1f
-    invoke-virtual {v3}, Ljava/util/ArrayList;->size()I
+    invoke-virtual {v2}, Ljava/util/ArrayList;->size()I
 
-    move-result v2
+    move-result v3
 
-    if-ge v1, v2, :cond_6d
+    if-ge v1, v3, :cond_6d
 
     .line 74
-    invoke-virtual {v3, v1}, Ljava/util/ArrayList;->get(I)Ljava/lang/Object;
+    invoke-virtual {v2, v1}, Ljava/util/ArrayList;->get(I)Ljava/lang/Object;
 
-    move-result-object v2
+    move-result-object v3
 
-    check-cast v2, Lcom/android/server/am/InstrumentationReporter$Report;
+    check-cast v3, Lcom/android/server/am/InstrumentationReporter$Report;
 
     .line 76
+    .local v3, "rep":Lcom/android/server/am/InstrumentationReporter$Report;
     :try_start_2b
-    iget v4, v2, Lcom/android/server/am/InstrumentationReporter$Report;->mType:I
+    iget v4, v3, Lcom/android/server/am/InstrumentationReporter$Report;->mType:I
 
     if-nez v4, :cond_3b
 
     .line 80
-    iget-object v4, v2, Lcom/android/server/am/InstrumentationReporter$Report;->mWatcher:Landroid/app/IInstrumentationWatcher;
+    iget-object v4, v3, Lcom/android/server/am/InstrumentationReporter$Report;->mWatcher:Landroid/app/IInstrumentationWatcher;
 
-    iget-object v5, v2, Lcom/android/server/am/InstrumentationReporter$Report;->mName:Landroid/content/ComponentName;
+    iget-object v5, v3, Lcom/android/server/am/InstrumentationReporter$Report;->mName:Landroid/content/ComponentName;
 
-    iget v6, v2, Lcom/android/server/am/InstrumentationReporter$Report;->mResultCode:I
+    iget v6, v3, Lcom/android/server/am/InstrumentationReporter$Report;->mResultCode:I
 
-    iget-object v7, v2, Lcom/android/server/am/InstrumentationReporter$Report;->mResults:Landroid/os/Bundle;
+    iget-object v7, v3, Lcom/android/server/am/InstrumentationReporter$Report;->mResults:Landroid/os/Bundle;
 
     invoke-interface {v4, v5, v6, v7}, Landroid/app/IInstrumentationWatcher;->instrumentationStatus(Landroid/content/ComponentName;ILandroid/os/Bundle;)V
 
@@ -126,13 +131,13 @@
 
     .line 86
     :cond_3b
-    iget-object v4, v2, Lcom/android/server/am/InstrumentationReporter$Report;->mWatcher:Landroid/app/IInstrumentationWatcher;
+    iget-object v4, v3, Lcom/android/server/am/InstrumentationReporter$Report;->mWatcher:Landroid/app/IInstrumentationWatcher;
 
-    iget-object v5, v2, Lcom/android/server/am/InstrumentationReporter$Report;->mName:Landroid/content/ComponentName;
+    iget-object v5, v3, Lcom/android/server/am/InstrumentationReporter$Report;->mName:Landroid/content/ComponentName;
 
-    iget v6, v2, Lcom/android/server/am/InstrumentationReporter$Report;->mResultCode:I
+    iget v6, v3, Lcom/android/server/am/InstrumentationReporter$Report;->mResultCode:I
 
-    iget-object v7, v2, Lcom/android/server/am/InstrumentationReporter$Report;->mResults:Landroid/os/Bundle;
+    iget-object v7, v3, Lcom/android/server/am/InstrumentationReporter$Report;->mResults:Landroid/os/Bundle;
 
     invoke-interface {v4, v5, v6, v7}, Landroid/app/IInstrumentationWatcher;->instrumentationFinished(Landroid/content/ComponentName;ILandroid/os/Bundle;)V
     :try_end_46
@@ -147,101 +152,104 @@
     move-exception v4
 
     .line 90
-    new-instance v4, Ljava/lang/StringBuilder;
+    .local v4, "e":Landroid/os/RemoteException;
+    new-instance v5, Ljava/lang/StringBuilder;
 
-    invoke-direct {v4}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v5}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v5, "Failure reporting to instrumentation watcher: comp="
+    const-string v6, "Failure reporting to instrumentation watcher: comp="
 
-    invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    iget-object v5, v2, Lcom/android/server/am/InstrumentationReporter$Report;->mName:Landroid/content/ComponentName;
+    iget-object v6, v3, Lcom/android/server/am/InstrumentationReporter$Report;->mName:Landroid/content/ComponentName;
 
-    invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
-    const-string v5, " results="
+    const-string v6, " results="
 
-    invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    iget-object v2, v2, Lcom/android/server/am/InstrumentationReporter$Report;->mResults:Landroid/os/Bundle;
+    iget-object v6, v3, Lcom/android/server/am/InstrumentationReporter$Report;->mResults:Landroid/os/Bundle;
 
-    invoke-virtual {v4, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v4}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v5}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v2
+    move-result-object v5
 
-    const-string v4, "ActivityManager"
+    const-string v6, "ActivityManager"
 
-    invoke-static {v4, v2}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v6, v5}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 73
+    .end local v3  # "rep":Lcom/android/server/am/InstrumentationReporter$Report;
+    .end local v4  # "e":Landroid/os/RemoteException;
     :goto_6a
     add-int/lit8 v1, v1, 0x1
 
     goto :goto_1f
 
     .line 94
+    .end local v1  # "i":I
+    .end local v2  # "reports":Ljava/util/ArrayList;, "Ljava/util/ArrayList<Lcom/android/server/am/InstrumentationReporter$Report;>;"
     :cond_6d
-    move v1, v0
-
     goto :goto_5
 
     .line 55
-    :cond_6f
-    :goto_6f
-    if-nez v1, :cond_80
+    .restart local v2  # "reports":Ljava/util/ArrayList;, "Ljava/util/ArrayList<Lcom/android/server/am/InstrumentationReporter$Report;>;"
+    :cond_6e
+    :goto_6e
+    if-nez v0, :cond_7e
 
     .line 58
-    :try_start_71
-    iget-object v1, p0, Lcom/android/server/am/InstrumentationReporter$MyThread;->this$0:Lcom/android/server/am/InstrumentationReporter;
+    :try_start_70
+    iget-object v3, p0, Lcom/android/server/am/InstrumentationReporter$MyThread;->this$0:Lcom/android/server/am/InstrumentationReporter;
 
-    iget-object v1, v1, Lcom/android/server/am/InstrumentationReporter;->mLock:Ljava/lang/Object;
+    iget-object v3, v3, Lcom/android/server/am/InstrumentationReporter;->mLock:Ljava/lang/Object;
 
-    const-wide/16 v3, 0x2710
+    const-wide/16 v4, 0x2710
 
-    invoke-virtual {v1, v3, v4}, Ljava/lang/Object;->wait(J)V
-    :try_end_7a
-    .catch Ljava/lang/InterruptedException; {:try_start_71 .. :try_end_7a} :catch_7b
-    .catchall {:try_start_71 .. :try_end_7a} :catchall_86
+    invoke-virtual {v3, v4, v5}, Ljava/lang/Object;->wait(J)V
+    :try_end_79
+    .catch Ljava/lang/InterruptedException; {:try_start_70 .. :try_end_79} :catch_7a
+    .catchall {:try_start_70 .. :try_end_79} :catchall_84
 
     .line 60
-    goto :goto_7c
+    goto :goto_7b
 
     .line 59
-    :catch_7b
-    move-exception v1
+    :catch_7a
+    move-exception v3
 
     .line 61
-    :goto_7c
-    nop
+    :goto_7b
+    const/4 v0, 0x1
 
     .line 62
-    :try_start_7d
-    monitor-exit v2
-
-    const/4 v1, 0x1
+    :try_start_7c
+    monitor-exit v1
 
     goto :goto_5
 
     .line 64
-    :cond_80
-    iget-object v0, p0, Lcom/android/server/am/InstrumentationReporter$MyThread;->this$0:Lcom/android/server/am/InstrumentationReporter;
+    :cond_7e
+    iget-object v3, p0, Lcom/android/server/am/InstrumentationReporter$MyThread;->this$0:Lcom/android/server/am/InstrumentationReporter;
 
-    iput-object v5, v0, Lcom/android/server/am/InstrumentationReporter;->mThread:Ljava/lang/Thread;
+    iput-object v4, v3, Lcom/android/server/am/InstrumentationReporter;->mThread:Ljava/lang/Thread;
 
     .line 66
-    monitor-exit v2
+    monitor-exit v1
 
     return-void
 
     .line 69
-    :catchall_86
-    move-exception v0
+    .end local v2  # "reports":Ljava/util/ArrayList;, "Ljava/util/ArrayList<Lcom/android/server/am/InstrumentationReporter$Report;>;"
+    :catchall_84
+    move-exception v2
 
-    monitor-exit v2
-    :try_end_88
-    .catchall {:try_start_7d .. :try_end_88} :catchall_86
+    monitor-exit v1
+    :try_end_86
+    .catchall {:try_start_7c .. :try_end_86} :catchall_84
 
-    throw v0
+    throw v2
 .end method

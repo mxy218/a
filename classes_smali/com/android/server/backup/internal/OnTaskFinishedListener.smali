@@ -21,6 +21,7 @@
 
 .method public static synthetic lambda$static$0(Ljava/lang/String;)V
     .registers 1
+    .param p0, "caller"  # Ljava/lang/String;
 
     .line 24
     return-void

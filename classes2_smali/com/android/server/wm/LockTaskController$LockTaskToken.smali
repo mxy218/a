@@ -18,17 +18,18 @@
 .method private constructor <init>()V
     .registers 1
 
-    .line 930
+    .line 933
     invoke-direct {p0}, Landroid/os/Binder;-><init>()V
 
-    .line 931
+    .line 934
     return-void
 .end method
 
 .method synthetic constructor <init>(Lcom/android/server/wm/LockTaskController$1;)V
     .registers 2
+    .param p1, "x0"  # Lcom/android/server/wm/LockTaskController$1;
 
-    .line 929
+    .line 932
     invoke-direct {p0}, Lcom/android/server/wm/LockTaskController$LockTaskToken;-><init>()V
 
     return-void

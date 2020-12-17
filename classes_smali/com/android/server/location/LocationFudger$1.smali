@@ -21,6 +21,8 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/location/LocationFudger;Landroid/os/Handler;)V
     .registers 3
+    .param p1, "this$0"  # Lcom/android/server/location/LocationFudger;
+    .param p2, "x0"  # Landroid/os/Handler;
 
     .line 144
     iput-object p1, p0, Lcom/android/server/location/LocationFudger$1;->this$0:Lcom/android/server/location/LocationFudger;
@@ -33,16 +35,17 @@
 
 # virtual methods
 .method public onChange(Z)V
-    .registers 3
+    .registers 4
+    .param p1, "selfChange"  # Z
 
     .line 147
-    iget-object p1, p0, Lcom/android/server/location/LocationFudger$1;->this$0:Lcom/android/server/location/LocationFudger;
+    iget-object v0, p0, Lcom/android/server/location/LocationFudger$1;->this$0:Lcom/android/server/location/LocationFudger;
 
-    invoke-static {p1}, Lcom/android/server/location/LocationFudger;->access$000(Lcom/android/server/location/LocationFudger;)F
+    invoke-static {v0}, Lcom/android/server/location/LocationFudger;->access$000(Lcom/android/server/location/LocationFudger;)F
 
-    move-result v0
+    move-result v1
 
-    invoke-static {p1, v0}, Lcom/android/server/location/LocationFudger;->access$100(Lcom/android/server/location/LocationFudger;F)V
+    invoke-static {v0, v1}, Lcom/android/server/location/LocationFudger;->access$100(Lcom/android/server/location/LocationFudger;F)V
 
     .line 148
     return-void

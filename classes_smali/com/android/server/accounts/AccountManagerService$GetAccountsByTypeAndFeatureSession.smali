@@ -43,15 +43,22 @@
 # direct methods
 .method public constructor <init>(Lcom/android/server/accounts/AccountManagerService;Lcom/android/server/accounts/AccountManagerService$UserAccounts;Landroid/accounts/IAccountManagerResponse;Ljava/lang/String;[Ljava/lang/String;ILjava/lang/String;Z)V
     .registers 19
+    .param p2, "accounts"  # Lcom/android/server/accounts/AccountManagerService$UserAccounts;
+    .param p3, "response"  # Landroid/accounts/IAccountManagerResponse;
+    .param p4, "type"  # Ljava/lang/String;
+    .param p5, "features"  # [Ljava/lang/String;
+    .param p6, "callingUid"  # I
+    .param p7, "packageName"  # Ljava/lang/String;
+    .param p8, "includeManagedNotVisible"  # Z
 
-    .line 4116
+    .line 4097
     move-object v9, p0
 
     move-object v1, p1
 
     iput-object v1, v9, Lcom/android/server/accounts/AccountManagerService$GetAccountsByTypeAndFeatureSession;->this$0:Lcom/android/server/accounts/AccountManagerService;
 
-    .line 4117
+    .line 4098
     const/4 v5, 0x0
 
     const/4 v6, 0x1
@@ -70,49 +77,49 @@
 
     invoke-direct/range {v0 .. v8}, Lcom/android/server/accounts/AccountManagerService$Session;-><init>(Lcom/android/server/accounts/AccountManagerService;Lcom/android/server/accounts/AccountManagerService$UserAccounts;Landroid/accounts/IAccountManagerResponse;Ljava/lang/String;ZZLjava/lang/String;Z)V
 
-    .line 4102
+    .line 4083
     const/4 v0, 0x0
 
     iput-object v0, v9, Lcom/android/server/accounts/AccountManagerService$GetAccountsByTypeAndFeatureSession;->mAccountsOfType:[Landroid/accounts/Account;
 
-    .line 4103
+    .line 4084
     iput-object v0, v9, Lcom/android/server/accounts/AccountManagerService$GetAccountsByTypeAndFeatureSession;->mAccountsWithFeatures:Ljava/util/ArrayList;
 
-    .line 4104
+    .line 4085
     const/4 v0, 0x0
 
     iput v0, v9, Lcom/android/server/accounts/AccountManagerService$GetAccountsByTypeAndFeatureSession;->mCurrentAccount:I
 
-    .line 4120
+    .line 4101
     move/from16 v0, p6
 
     iput v0, v9, Lcom/android/server/accounts/AccountManagerService$GetAccountsByTypeAndFeatureSession;->mCallingUid:I
 
-    .line 4121
-    move-object v0, p5
+    .line 4102
+    move-object v1, p5
 
-    iput-object v0, v9, Lcom/android/server/accounts/AccountManagerService$GetAccountsByTypeAndFeatureSession;->mFeatures:[Ljava/lang/String;
+    iput-object v1, v9, Lcom/android/server/accounts/AccountManagerService$GetAccountsByTypeAndFeatureSession;->mFeatures:[Ljava/lang/String;
 
-    .line 4122
-    move-object/from16 v0, p7
+    .line 4103
+    move-object/from16 v2, p7
 
-    iput-object v0, v9, Lcom/android/server/accounts/AccountManagerService$GetAccountsByTypeAndFeatureSession;->mPackageName:Ljava/lang/String;
+    iput-object v2, v9, Lcom/android/server/accounts/AccountManagerService$GetAccountsByTypeAndFeatureSession;->mPackageName:Ljava/lang/String;
 
-    .line 4123
-    move/from16 v0, p8
+    .line 4104
+    move/from16 v3, p8
 
-    iput-boolean v0, v9, Lcom/android/server/accounts/AccountManagerService$GetAccountsByTypeAndFeatureSession;->mIncludeManagedNotVisible:Z
+    iput-boolean v3, v9, Lcom/android/server/accounts/AccountManagerService$GetAccountsByTypeAndFeatureSession;->mIncludeManagedNotVisible:Z
 
-    .line 4124
+    .line 4105
     return-void
 .end method
 
 
 # virtual methods
 .method public checkAccount()V
-    .registers 4
+    .registers 5
 
-    .line 4138
+    .line 4119
     iget v0, p0, Lcom/android/server/accounts/AccountManagerService$GetAccountsByTypeAndFeatureSession;->mCurrentAccount:I
 
     iget-object v1, p0, Lcom/android/server/accounts/AccountManagerService$GetAccountsByTypeAndFeatureSession;->mAccountsOfType:[Landroid/accounts/Account;
@@ -121,58 +128,59 @@
 
     if-lt v0, v1, :cond_b
 
-    .line 4139
+    .line 4120
     invoke-virtual {p0}, Lcom/android/server/accounts/AccountManagerService$GetAccountsByTypeAndFeatureSession;->sendResult()V
 
-    .line 4140
+    .line 4121
     return-void
 
-    .line 4143
+    .line 4124
     :cond_b
     iget-object v0, p0, Lcom/android/server/accounts/AccountManagerService$GetAccountsByTypeAndFeatureSession;->mAuthenticator:Landroid/accounts/IAccountAuthenticator;
 
-    .line 4144
+    .line 4125
+    .local v0, "accountAuthenticator":Landroid/accounts/IAccountAuthenticator;
     if-nez v0, :cond_31
 
-    .line 4149
-    const/4 v0, 0x2
+    .line 4130
+    const/4 v1, 0x2
 
-    const-string v1, "AccountManagerService"
+    const-string v2, "AccountManagerService"
 
-    invoke-static {v1, v0}, Landroid/util/Log;->isLoggable(Ljava/lang/String;I)Z
+    invoke-static {v2, v1}, Landroid/util/Log;->isLoggable(Ljava/lang/String;I)Z
 
-    move-result v0
+    move-result v1
 
-    if-eqz v0, :cond_30
+    if-eqz v1, :cond_30
 
-    .line 4150
-    new-instance v0, Ljava/lang/StringBuilder;
+    .line 4131
+    new-instance v1, Ljava/lang/StringBuilder;
 
-    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v2, "checkAccount: aborting session since we are no longer connected to the authenticator, "
+    const-string v3, "checkAccount: aborting session since we are no longer connected to the authenticator, "
 
-    invoke-virtual {v0, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    .line 4151
+    .line 4132
     invoke-virtual {p0}, Lcom/android/server/accounts/AccountManagerService$GetAccountsByTypeAndFeatureSession;->toDebugString()Ljava/lang/String;
 
-    move-result-object v2
+    move-result-object v3
 
-    invoke-virtual {v0, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v1
 
-    .line 4150
-    invoke-static {v1, v0}, Landroid/util/Log;->v(Ljava/lang/String;Ljava/lang/String;)I
+    .line 4131
+    invoke-static {v2, v1}, Landroid/util/Log;->v(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 4153
+    .line 4134
     :cond_30
     return-void
 
-    .line 4156
+    .line 4137
     :cond_31
     :try_start_31
     iget-object v1, p0, Lcom/android/server/accounts/AccountManagerService$GetAccountsByTypeAndFeatureSession;->mAccountsOfType:[Landroid/accounts/Account;
@@ -187,54 +195,57 @@
     :try_end_3c
     .catch Landroid/os/RemoteException; {:try_start_31 .. :try_end_3c} :catch_3d
 
-    .line 4159
+    .line 4140
     goto :goto_45
 
-    .line 4157
+    .line 4138
     :catch_3d
-    move-exception v0
+    move-exception v1
 
-    .line 4158
-    const/4 v0, 0x1
+    .line 4139
+    .local v1, "e":Landroid/os/RemoteException;
+    const/4 v2, 0x1
 
-    const-string/jumbo v1, "remote exception"
+    const-string/jumbo v3, "remote exception"
 
-    invoke-virtual {p0, v0, v1}, Lcom/android/server/accounts/AccountManagerService$GetAccountsByTypeAndFeatureSession;->onError(ILjava/lang/String;)V
+    invoke-virtual {p0, v2, v3}, Lcom/android/server/accounts/AccountManagerService$GetAccountsByTypeAndFeatureSession;->onError(ILjava/lang/String;)V
 
-    .line 4160
+    .line 4141
+    .end local v1  # "e":Landroid/os/RemoteException;
     :goto_45
     return-void
 .end method
 
 .method public onResult(Landroid/os/Bundle;)V
-    .registers 5
+    .registers 6
+    .param p1, "result"  # Landroid/os/Bundle;
 
-    .line 4164
+    .line 4145
     const/4 v0, 0x1
 
     invoke-static {p1, v0}, Landroid/os/Bundle;->setDefusable(Landroid/os/Bundle;Z)Landroid/os/Bundle;
 
-    .line 4165
+    .line 4146
     iget v1, p0, Lcom/android/server/accounts/AccountManagerService$GetAccountsByTypeAndFeatureSession;->mNumResults:I
 
     add-int/2addr v1, v0
 
     iput v1, p0, Lcom/android/server/accounts/AccountManagerService$GetAccountsByTypeAndFeatureSession;->mNumResults:I
 
-    .line 4166
+    .line 4147
     if-nez p1, :cond_13
 
-    .line 4167
-    const/4 p1, 0x5
+    .line 4148
+    const/4 v0, 0x5
 
-    const-string/jumbo v0, "null bundle"
+    const-string/jumbo v1, "null bundle"
 
-    invoke-virtual {p0, p1, v0}, Lcom/android/server/accounts/AccountManagerService$GetAccountsByTypeAndFeatureSession;->onError(ILjava/lang/String;)V
+    invoke-virtual {p0, v0, v1}, Lcom/android/server/accounts/AccountManagerService$GetAccountsByTypeAndFeatureSession;->onError(ILjava/lang/String;)V
 
-    .line 4168
+    .line 4149
     return-void
 
-    .line 4170
+    .line 4151
     :cond_13
     const/4 v1, 0x0
 
@@ -242,33 +253,33 @@
 
     invoke-virtual {p1, v2, v1}, Landroid/os/Bundle;->getBoolean(Ljava/lang/String;Z)Z
 
-    move-result p1
+    move-result v1
 
-    if-eqz p1, :cond_27
+    if-eqz v1, :cond_27
 
-    .line 4171
-    iget-object p1, p0, Lcom/android/server/accounts/AccountManagerService$GetAccountsByTypeAndFeatureSession;->mAccountsWithFeatures:Ljava/util/ArrayList;
+    .line 4152
+    iget-object v1, p0, Lcom/android/server/accounts/AccountManagerService$GetAccountsByTypeAndFeatureSession;->mAccountsWithFeatures:Ljava/util/ArrayList;
 
-    iget-object v1, p0, Lcom/android/server/accounts/AccountManagerService$GetAccountsByTypeAndFeatureSession;->mAccountsOfType:[Landroid/accounts/Account;
+    iget-object v2, p0, Lcom/android/server/accounts/AccountManagerService$GetAccountsByTypeAndFeatureSession;->mAccountsOfType:[Landroid/accounts/Account;
 
-    iget v2, p0, Lcom/android/server/accounts/AccountManagerService$GetAccountsByTypeAndFeatureSession;->mCurrentAccount:I
+    iget v3, p0, Lcom/android/server/accounts/AccountManagerService$GetAccountsByTypeAndFeatureSession;->mCurrentAccount:I
 
-    aget-object v1, v1, v2
+    aget-object v2, v2, v3
 
-    invoke-virtual {p1, v1}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
+    invoke-virtual {v1, v2}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
 
-    .line 4173
+    .line 4154
     :cond_27
-    iget p1, p0, Lcom/android/server/accounts/AccountManagerService$GetAccountsByTypeAndFeatureSession;->mCurrentAccount:I
+    iget v1, p0, Lcom/android/server/accounts/AccountManagerService$GetAccountsByTypeAndFeatureSession;->mCurrentAccount:I
 
-    add-int/2addr p1, v0
+    add-int/2addr v1, v0
 
-    iput p1, p0, Lcom/android/server/accounts/AccountManagerService$GetAccountsByTypeAndFeatureSession;->mCurrentAccount:I
+    iput v1, p0, Lcom/android/server/accounts/AccountManagerService$GetAccountsByTypeAndFeatureSession;->mCurrentAccount:I
 
-    .line 4174
+    .line 4155
     invoke-virtual {p0}, Lcom/android/server/accounts/AccountManagerService$GetAccountsByTypeAndFeatureSession;->checkAccount()V
 
-    .line 4175
+    .line 4156
     return-void
 .end method
 
@@ -280,7 +291,7 @@
         }
     .end annotation
 
-    .line 4128
+    .line 4109
     iget-object v0, p0, Lcom/android/server/accounts/AccountManagerService$GetAccountsByTypeAndFeatureSession;->this$0:Lcom/android/server/accounts/AccountManagerService;
 
     iget-object v1, p0, Lcom/android/server/accounts/AccountManagerService$GetAccountsByTypeAndFeatureSession;->mAccounts:Lcom/android/server/accounts/AccountManagerService$UserAccounts;
@@ -299,7 +310,7 @@
 
     iput-object v0, p0, Lcom/android/server/accounts/AccountManagerService$GetAccountsByTypeAndFeatureSession;->mAccountsOfType:[Landroid/accounts/Account;
 
-    .line 4131
+    .line 4112
     new-instance v0, Ljava/util/ArrayList;
 
     iget-object v1, p0, Lcom/android/server/accounts/AccountManagerService$GetAccountsByTypeAndFeatureSession;->mAccountsOfType:[Landroid/accounts/Account;
@@ -310,32 +321,33 @@
 
     iput-object v0, p0, Lcom/android/server/accounts/AccountManagerService$GetAccountsByTypeAndFeatureSession;->mAccountsWithFeatures:Ljava/util/ArrayList;
 
-    .line 4132
+    .line 4113
     const/4 v0, 0x0
 
     iput v0, p0, Lcom/android/server/accounts/AccountManagerService$GetAccountsByTypeAndFeatureSession;->mCurrentAccount:I
 
-    .line 4134
+    .line 4115
     invoke-virtual {p0}, Lcom/android/server/accounts/AccountManagerService$GetAccountsByTypeAndFeatureSession;->checkAccount()V
 
-    .line 4135
+    .line 4116
     return-void
 .end method
 
 .method public sendResult()V
     .registers 7
 
-    .line 4178
+    .line 4159
     const-string v0, "AccountManagerService"
 
     invoke-virtual {p0}, Lcom/android/server/accounts/AccountManagerService$GetAccountsByTypeAndFeatureSession;->getResponseAndClose()Landroid/accounts/IAccountManagerResponse;
 
     move-result-object v1
 
-    .line 4179
+    .line 4160
+    .local v1, "response":Landroid/accounts/IAccountManagerResponse;
     if-eqz v1, :cond_61
 
-    .line 4181
+    .line 4162
     const/4 v2, 0x2
 
     :try_start_9
@@ -347,15 +359,17 @@
 
     new-array v3, v3, [Landroid/accounts/Account;
 
-    .line 4182
+    .line 4163
+    .local v3, "accounts":[Landroid/accounts/Account;
     const/4 v4, 0x0
 
+    .local v4, "i":I
     :goto_12
     array-length v5, v3
 
     if-ge v4, v5, :cond_22
 
-    .line 4183
+    .line 4164
     iget-object v5, p0, Lcom/android/server/accounts/AccountManagerService$GetAccountsByTypeAndFeatureSession;->mAccountsWithFeatures:Ljava/util/ArrayList;
 
     invoke-virtual {v5, v4}, Ljava/util/ArrayList;->get(I)Ljava/lang/Object;
@@ -366,12 +380,13 @@
 
     aput-object v5, v3, v4
 
-    .line 4182
+    .line 4163
     add-int/lit8 v4, v4, 0x1
 
     goto :goto_12
 
-    .line 4185
+    .line 4166
+    .end local v4  # "i":I
     :cond_22
     invoke-static {v0, v2}, Landroid/util/Log;->isLoggable(Ljava/lang/String;I)Z
 
@@ -379,7 +394,7 @@
 
     if-eqz v4, :cond_47
 
-    .line 4186
+    .line 4167
     new-instance v4, Ljava/lang/StringBuilder;
 
     invoke-direct {v4}, Ljava/lang/StringBuilder;-><init>()V
@@ -406,88 +421,94 @@
 
     invoke-static {v0, v4}, Landroid/util/Log;->v(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 4189
+    .line 4170
     :cond_47
     new-instance v4, Landroid/os/Bundle;
 
     invoke-direct {v4}, Landroid/os/Bundle;-><init>()V
 
-    .line 4190
+    .line 4171
+    .local v4, "result":Landroid/os/Bundle;
     const-string v5, "accounts"
 
     invoke-virtual {v4, v5, v3}, Landroid/os/Bundle;->putParcelableArray(Ljava/lang/String;[Landroid/os/Parcelable;)V
 
-    .line 4191
+    .line 4172
     invoke-interface {v1, v4}, Landroid/accounts/IAccountManagerResponse;->onResult(Landroid/os/Bundle;)V
     :try_end_54
     .catch Landroid/os/RemoteException; {:try_start_9 .. :try_end_54} :catch_55
 
-    .line 4197
+    .line 4178
+    .end local v3  # "accounts":[Landroid/accounts/Account;
+    .end local v4  # "result":Landroid/os/Bundle;
     goto :goto_61
 
-    .line 4192
+    .line 4173
     :catch_55
-    move-exception v1
+    move-exception v3
 
-    .line 4194
+    .line 4175
+    .local v3, "e":Landroid/os/RemoteException;
     invoke-static {v0, v2}, Landroid/util/Log;->isLoggable(Ljava/lang/String;I)Z
 
     move-result v2
 
     if-eqz v2, :cond_61
 
-    .line 4195
+    .line 4176
     const-string v2, "failure while notifying response"
 
-    invoke-static {v0, v2, v1}, Landroid/util/Log;->v(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    invoke-static {v0, v2, v3}, Landroid/util/Log;->v(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
-    .line 4199
+    .line 4180
+    .end local v3  # "e":Landroid/os/RemoteException;
     :cond_61
     :goto_61
     return-void
 .end method
 
 .method protected toDebugString(J)Ljava/lang/String;
-    .registers 4
+    .registers 6
+    .param p1, "now"  # J
 
-    .line 4203
+    .line 4184
     new-instance v0, Ljava/lang/StringBuilder;
 
     invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
 
     invoke-super {p0, p1, p2}, Lcom/android/server/accounts/AccountManagerService$Session;->toDebugString(J)Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v1
 
-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string p1, ", getAccountsByTypeAndFeatures, "
+    const-string v1, ", getAccountsByTypeAndFeatures, "
 
-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    .line 4204
-    iget-object p1, p0, Lcom/android/server/accounts/AccountManagerService$GetAccountsByTypeAndFeatureSession;->mFeatures:[Ljava/lang/String;
+    .line 4185
+    iget-object v1, p0, Lcom/android/server/accounts/AccountManagerService$GetAccountsByTypeAndFeatureSession;->mFeatures:[Ljava/lang/String;
 
-    if-eqz p1, :cond_1c
+    if-eqz v1, :cond_1c
 
-    const-string p2, ","
+    const-string v2, ","
 
-    invoke-static {p2, p1}, Landroid/text/TextUtils;->join(Ljava/lang/CharSequence;[Ljava/lang/Object;)Ljava/lang/String;
+    invoke-static {v2, v1}, Landroid/text/TextUtils;->join(Ljava/lang/CharSequence;[Ljava/lang/Object;)Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v1
 
     goto :goto_1d
 
     :cond_1c
-    const/4 p1, 0x0
+    const/4 v1, 0x0
 
     :goto_1d
-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    .line 4203
-    return-object p1
+    .line 4184
+    return-object v0
 .end method

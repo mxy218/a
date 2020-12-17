@@ -172,7 +172,8 @@
 .end method
 
 .method static nameOf(I)Ljava/lang/String;
-    .registers 2
+    .registers 3
+    .param p0, "code"  # I
 
     .line 633
     sget-object v0, Lcom/android/server/NsdService$NativeResponseCode;->CODE_NAMES:Landroid/util/SparseArray;
@@ -184,14 +185,15 @@
     check-cast v0, Ljava/lang/String;
 
     .line 634
+    .local v0, "name":Ljava/lang/String;
     if-nez v0, :cond_f
 
     .line 635
     invoke-static {p0}, Ljava/lang/Integer;->toString(I)Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v1
 
-    return-object p0
+    return-object v1
 
     .line 637
     :cond_f

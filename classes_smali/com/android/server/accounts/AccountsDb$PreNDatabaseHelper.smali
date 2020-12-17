@@ -23,6 +23,9 @@
 # direct methods
 .method constructor <init>(Landroid/content/Context;ILjava/lang/String;)V
     .registers 6
+    .param p1, "context"  # Landroid/content/Context;
+    .param p2, "userId"  # I
+    .param p3, "preNDatabaseName"  # Ljava/lang/String;
 
     .line 1111
     const/4 v0, 0x0
@@ -43,6 +46,7 @@
 
 .method private addDebugTable(Landroid/database/sqlite/SQLiteDatabase;)V
     .registers 2
+    .param p1, "db"  # Landroid/database/sqlite/SQLiteDatabase;
 
     .line 1140
     invoke-static {p1}, Lcom/android/server/accounts/AccountsDb$DeDatabaseHelper;->createDebugTable(Landroid/database/sqlite/SQLiteDatabase;)V
@@ -53,6 +57,7 @@
 
 .method private addLastSuccessfullAuthenticatedTimeColumn(Landroid/database/sqlite/SQLiteDatabase;)V
     .registers 3
+    .param p1, "db"  # Landroid/database/sqlite/SQLiteDatabase;
 
     .line 1131
     const-string v0, "ALTER TABLE accounts ADD COLUMN last_password_entry_time_millis_epoch DEFAULT 0"
@@ -65,6 +70,7 @@
 
 .method private addOldAccountNameColumn(Landroid/database/sqlite/SQLiteDatabase;)V
     .registers 3
+    .param p1, "db"  # Landroid/database/sqlite/SQLiteDatabase;
 
     .line 1136
     const-string v0, "ALTER TABLE accounts ADD COLUMN previous_name"
@@ -77,6 +83,7 @@
 
 .method private createAccountsDeletionTrigger(Landroid/database/sqlite/SQLiteDatabase;)V
     .registers 3
+    .param p1, "db"  # Landroid/database/sqlite/SQLiteDatabase;
 
     .line 1144
     const-string v0, " CREATE TRIGGER accountsDelete DELETE ON accounts BEGIN   DELETE FROM authtokens     WHERE accounts_id=OLD._id ;   DELETE FROM extras     WHERE accounts_id=OLD._id ;   DELETE FROM grants     WHERE accounts_id=OLD._id ; END"
@@ -89,6 +96,7 @@
 
 .method private createGrantsTable(Landroid/database/sqlite/SQLiteDatabase;)V
     .registers 3
+    .param p1, "db"  # Landroid/database/sqlite/SQLiteDatabase;
 
     .line 1157
     const-string v0, "CREATE TABLE grants (  accounts_id INTEGER NOT NULL, auth_token_type STRING NOT NULL,  uid INTEGER NOT NULL,  UNIQUE (accounts_id,auth_token_type,uid))"
@@ -101,6 +109,7 @@
 
 .method private createSharedAccountsTable(Landroid/database/sqlite/SQLiteDatabase;)V
     .registers 3
+    .param p1, "db"  # Landroid/database/sqlite/SQLiteDatabase;
 
     .line 1123
     const-string v0, "CREATE TABLE shared_accounts ( _id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT NOT NULL, type TEXT NOT NULL, UNIQUE(name,type))"
@@ -113,6 +122,9 @@
 
 .method static insertMetaAuthTypeAndUid(Landroid/database/sqlite/SQLiteDatabase;Ljava/lang/String;I)J
     .registers 6
+    .param p0, "db"  # Landroid/database/sqlite/SQLiteDatabase;
+    .param p1, "authenticatorType"  # Ljava/lang/String;
+    .param p2, "uid"  # I
 
     .line 1166
     new-instance v0, Landroid/content/ContentValues;
@@ -120,6 +132,7 @@
     invoke-direct {v0}, Landroid/content/ContentValues;-><init>()V
 
     .line 1167
+    .local v0, "values":Landroid/content/ContentValues;
     new-instance v1, Ljava/lang/StringBuilder;
 
     invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
@@ -132,35 +145,36 @@
 
     invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v1
 
-    const-string v1, "key"
+    const-string/jumbo v2, "key"
 
-    invoke-virtual {v0, v1, p1}, Landroid/content/ContentValues;->put(Ljava/lang/String;Ljava/lang/String;)V
+    invoke-virtual {v0, v2, v1}, Landroid/content/ContentValues;->put(Ljava/lang/String;Ljava/lang/String;)V
 
     .line 1169
     invoke-static {p2}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
 
-    move-result-object p1
+    move-result-object v1
 
-    const-string/jumbo p2, "value"
+    const-string/jumbo v2, "value"
 
-    invoke-virtual {v0, p2, p1}, Landroid/content/ContentValues;->put(Ljava/lang/String;Ljava/lang/Integer;)V
+    invoke-virtual {v0, v2, v1}, Landroid/content/ContentValues;->put(Ljava/lang/String;Ljava/lang/Integer;)V
 
     .line 1170
-    const-string p1, "meta"
+    const-string/jumbo v1, "meta"
 
-    const/4 p2, 0x0
+    const/4 v2, 0x0
 
-    invoke-virtual {p0, p1, p2, v0}, Landroid/database/sqlite/SQLiteDatabase;->insert(Ljava/lang/String;Ljava/lang/String;Landroid/content/ContentValues;)J
+    invoke-virtual {p0, v1, v2, v0}, Landroid/database/sqlite/SQLiteDatabase;->insert(Ljava/lang/String;Ljava/lang/String;Landroid/content/ContentValues;)J
 
-    move-result-wide p0
+    move-result-wide v1
 
-    return-wide p0
+    return-wide v1
 .end method
 
 .method private populateMetaTableWithAuthTypeAndUID(Landroid/database/sqlite/SQLiteDatabase;Ljava/util/Map;)V
-    .registers 5
+    .registers 7
+    .param p1, "db"  # Landroid/database/sqlite/SQLiteDatabase;
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(",
@@ -173,47 +187,50 @@
     .end annotation
 
     .line 1175
+    .local p2, "authTypeAndUIDMap":Ljava/util/Map;, "Ljava/util/Map<Ljava/lang/String;Ljava/lang/Integer;>;"
     invoke-interface {p2}, Ljava/util/Map;->entrySet()Ljava/util/Set;
-
-    move-result-object p2
-
-    invoke-interface {p2}, Ljava/util/Set;->iterator()Ljava/util/Iterator;
-
-    move-result-object p2
-
-    :goto_8
-    invoke-interface {p2}, Ljava/util/Iterator;->hasNext()Z
-
-    move-result v0
-
-    if-eqz v0, :cond_28
-
-    invoke-interface {p2}, Ljava/util/Iterator;->next()Ljava/lang/Object;
 
     move-result-object v0
 
-    check-cast v0, Ljava/util/Map$Entry;
+    invoke-interface {v0}, Ljava/util/Set;->iterator()Ljava/util/Iterator;
 
-    .line 1176
-    invoke-interface {v0}, Ljava/util/Map$Entry;->getKey()Ljava/lang/Object;
+    move-result-object v0
+
+    :goto_8
+    invoke-interface {v0}, Ljava/util/Iterator;->hasNext()Z
+
+    move-result v1
+
+    if-eqz v1, :cond_28
+
+    invoke-interface {v0}, Ljava/util/Iterator;->next()Ljava/lang/Object;
 
     move-result-object v1
 
-    check-cast v1, Ljava/lang/String;
+    check-cast v1, Ljava/util/Map$Entry;
 
-    invoke-interface {v0}, Ljava/util/Map$Entry;->getValue()Ljava/lang/Object;
+    .line 1176
+    .local v1, "entry":Ljava/util/Map$Entry;, "Ljava/util/Map$Entry<Ljava/lang/String;Ljava/lang/Integer;>;"
+    invoke-interface {v1}, Ljava/util/Map$Entry;->getKey()Ljava/lang/Object;
 
-    move-result-object v0
+    move-result-object v2
 
-    check-cast v0, Ljava/lang/Integer;
+    check-cast v2, Ljava/lang/String;
 
-    invoke-virtual {v0}, Ljava/lang/Integer;->intValue()I
+    invoke-interface {v1}, Ljava/util/Map$Entry;->getValue()Ljava/lang/Object;
 
-    move-result v0
+    move-result-object v3
 
-    invoke-static {p1, v1, v0}, Lcom/android/server/accounts/AccountsDb$PreNDatabaseHelper;->insertMetaAuthTypeAndUid(Landroid/database/sqlite/SQLiteDatabase;Ljava/lang/String;I)J
+    check-cast v3, Ljava/lang/Integer;
+
+    invoke-virtual {v3}, Ljava/lang/Integer;->intValue()I
+
+    move-result v3
+
+    invoke-static {p1, v2, v3}, Lcom/android/server/accounts/AccountsDb$PreNDatabaseHelper;->insertMetaAuthTypeAndUid(Landroid/database/sqlite/SQLiteDatabase;Ljava/lang/String;I)J
 
     .line 1177
+    .end local v1  # "entry":Ljava/util/Map$Entry;, "Ljava/util/Map$Entry<Ljava/lang/String;Ljava/lang/Integer;>;"
     goto :goto_8
 
     .line 1178
@@ -224,35 +241,37 @@
 
 # virtual methods
 .method public onCreate(Landroid/database/sqlite/SQLiteDatabase;)V
-    .registers 3
+    .registers 4
+    .param p1, "db"  # Landroid/database/sqlite/SQLiteDatabase;
 
     .line 1119
-    new-instance p1, Ljava/lang/IllegalStateException;
+    new-instance v0, Ljava/lang/IllegalStateException;
 
-    const-string v0, "Legacy database cannot be created - only upgraded!"
+    const-string v1, "Legacy database cannot be created - only upgraded!"
 
-    invoke-direct {p1, v0}, Ljava/lang/IllegalStateException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v0, v1}, Ljava/lang/IllegalStateException;-><init>(Ljava/lang/String;)V
 
-    throw p1
+    throw v0
 .end method
 
 .method public onOpen(Landroid/database/sqlite/SQLiteDatabase;)V
-    .registers 3
+    .registers 4
+    .param p1, "db"  # Landroid/database/sqlite/SQLiteDatabase;
 
     .line 1240
-    const-string p1, "AccountsDb"
+    const-string v0, "AccountsDb"
 
-    const/4 v0, 0x2
+    const/4 v1, 0x2
 
-    invoke-static {p1, v0}, Landroid/util/Log;->isLoggable(Ljava/lang/String;I)Z
+    invoke-static {v0, v1}, Landroid/util/Log;->isLoggable(Ljava/lang/String;I)Z
 
-    move-result v0
+    move-result v1
 
-    if-eqz v0, :cond_f
+    if-eqz v1, :cond_f
 
-    const-string/jumbo v0, "opened database accounts.db"
+    const-string/jumbo v1, "opened database accounts.db"
 
-    invoke-static {p1, v0}, Landroid/util/Log;->v(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v0, v1}, Landroid/util/Log;->v(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 1241
     :cond_f
@@ -261,6 +280,9 @@
 
 .method public onUpgrade(Landroid/database/sqlite/SQLiteDatabase;II)V
     .registers 8
+    .param p1, "db"  # Landroid/database/sqlite/SQLiteDatabase;
+    .param p2, "oldVersion"  # I
+    .param p3, "newVersion"  # I
 
     .line 1185
     new-instance v0, Ljava/lang/StringBuilder;
@@ -404,25 +426,25 @@
     if-eq p2, p3, :cond_8b
 
     .line 1234
-    new-instance p1, Ljava/lang/StringBuilder;
+    new-instance v0, Ljava/lang/StringBuilder;
 
-    invoke-direct {p1}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v0, "failed to upgrade version "
+    const-string v3, "failed to upgrade version "
 
-    invoke-virtual {p1, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p1, p2}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, p2}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p1, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p1, p3}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, p3}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    invoke-static {v2, p1}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v2, v0}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 1236
     :cond_8b

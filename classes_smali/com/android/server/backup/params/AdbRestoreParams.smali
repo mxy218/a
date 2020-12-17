@@ -6,6 +6,7 @@
 # direct methods
 .method public constructor <init>(Landroid/os/ParcelFileDescriptor;)V
     .registers 2
+    .param p1, "input"  # Landroid/os/ParcelFileDescriptor;
 
     .line 23
     invoke-direct {p0}, Lcom/android/server/backup/params/AdbParams;-><init>()V

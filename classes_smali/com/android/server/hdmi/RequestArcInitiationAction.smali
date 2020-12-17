@@ -10,6 +10,8 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/hdmi/HdmiCecLocalDevice;I)V
     .registers 3
+    .param p1, "source"  # Lcom/android/server/hdmi/HdmiCecLocalDevice;
+    .param p2, "avrAddress"  # I
 
     .line 35
     invoke-direct {p0, p1, p2}, Lcom/android/server/hdmi/RequestArcAction;-><init>(Lcom/android/server/hdmi/HdmiCecLocalDevice;I)V
@@ -51,6 +53,7 @@
     move-result-object v1
 
     .line 46
+    .local v1, "command":Lcom/android/server/hdmi/HdmiCecMessage;
     new-instance v2, Lcom/android/server/hdmi/RequestArcInitiationAction$1;
 
     invoke-direct {v2, p0}, Lcom/android/server/hdmi/RequestArcInitiationAction$1;-><init>(Lcom/android/server/hdmi/RequestArcInitiationAction;)V

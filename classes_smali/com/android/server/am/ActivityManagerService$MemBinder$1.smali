@@ -24,8 +24,9 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/am/ActivityManagerService$MemBinder;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/am/ActivityManagerService$MemBinder;
 
-    .line 2128
+    .line 2225
     iput-object p1, p0, Lcom/android/server/am/ActivityManagerService$MemBinder$1;->this$0:Lcom/android/server/am/ActivityManagerService$MemBinder;
 
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -37,8 +38,12 @@
 # virtual methods
 .method public dump(Ljava/io/FileDescriptor;Ljava/io/PrintWriter;[Ljava/lang/String;Z)V
     .registers 14
+    .param p1, "fd"  # Ljava/io/FileDescriptor;
+    .param p2, "pw"  # Ljava/io/PrintWriter;
+    .param p3, "args"  # [Ljava/lang/String;
+    .param p4, "asProto"  # Z
 
-    .line 2137
+    .line 2234
     iget-object v0, p0, Lcom/android/server/am/ActivityManagerService$MemBinder$1;->this$0:Lcom/android/server/am/ActivityManagerService$MemBinder;
 
     iget-object v1, v0, Lcom/android/server/am/ActivityManagerService$MemBinder;->mActivityManagerService:Lcom/android/server/am/ActivityManagerService;
@@ -59,22 +64,26 @@
 
     invoke-virtual/range {v1 .. v8}, Lcom/android/server/am/ActivityManagerService;->dumpApplicationMemoryUsage(Ljava/io/FileDescriptor;Ljava/io/PrintWriter;Ljava/lang/String;[Ljava/lang/String;ZLjava/io/PrintWriter;Z)V
 
-    .line 2139
+    .line 2236
     return-void
 .end method
 
 .method public dumpHigh(Ljava/io/FileDescriptor;Ljava/io/PrintWriter;[Ljava/lang/String;Z)V
-    .registers 5
+    .registers 6
+    .param p1, "fd"  # Ljava/io/FileDescriptor;
+    .param p2, "pw"  # Ljava/io/PrintWriter;
+    .param p3, "args"  # [Ljava/lang/String;
+    .param p4, "asProto"  # Z
 
-    .line 2132
-    const-string p3, "-a"
+    .line 2229
+    const-string v0, "-a"
 
-    filled-new-array {p3}, [Ljava/lang/String;
+    filled-new-array {v0}, [Ljava/lang/String;
 
-    move-result-object p3
+    move-result-object v0
 
-    invoke-virtual {p0, p1, p2, p3, p4}, Lcom/android/server/am/ActivityManagerService$MemBinder$1;->dump(Ljava/io/FileDescriptor;Ljava/io/PrintWriter;[Ljava/lang/String;Z)V
+    invoke-virtual {p0, p1, p2, v0, p4}, Lcom/android/server/am/ActivityManagerService$MemBinder$1;->dump(Ljava/io/FileDescriptor;Ljava/io/PrintWriter;[Ljava/lang/String;Z)V
 
-    .line 2133
+    .line 2230
     return-void
 .end method

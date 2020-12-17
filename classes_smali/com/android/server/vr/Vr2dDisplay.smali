@@ -76,6 +76,10 @@
 # direct methods
 .method public constructor <init>(Landroid/hardware/display/DisplayManager;Landroid/app/ActivityManagerInternal;Lcom/android/server/wm/WindowManagerInternal;Landroid/service/vr/IVrManager;)V
     .registers 6
+    .param p1, "displayManager"  # Landroid/hardware/display/DisplayManager;
+    .param p2, "activityManagerInternal"  # Landroid/app/ActivityManagerInternal;
+    .param p3, "windowManagerInternal"  # Lcom/android/server/wm/WindowManagerInternal;
+    .param p4, "vrManager"  # Landroid/service/vr/IVrManager;
 
     .line 104
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -124,35 +128,38 @@
     iput-object p4, p0, Lcom/android/server/vr/Vr2dDisplay;->mVrManager:Landroid/service/vr/IVrManager;
 
     .line 109
-    const/16 p1, 0x578
+    const/16 v0, 0x578
 
-    iput p1, p0, Lcom/android/server/vr/Vr2dDisplay;->mVirtualDisplayWidth:I
+    iput v0, p0, Lcom/android/server/vr/Vr2dDisplay;->mVirtualDisplayWidth:I
 
     .line 110
-    const/16 p1, 0x708
+    const/16 v0, 0x708
 
-    iput p1, p0, Lcom/android/server/vr/Vr2dDisplay;->mVirtualDisplayHeight:I
+    iput v0, p0, Lcom/android/server/vr/Vr2dDisplay;->mVirtualDisplayHeight:I
 
     .line 111
-    const/16 p1, 0x140
+    const/16 v0, 0x140
 
-    iput p1, p0, Lcom/android/server/vr/Vr2dDisplay;->mVirtualDisplayDpi:I
+    iput v0, p0, Lcom/android/server/vr/Vr2dDisplay;->mVirtualDisplayDpi:I
 
     .line 112
     return-void
 .end method
 
 .method static synthetic access$000(Lcom/android/server/vr/Vr2dDisplay;)Z
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/vr/Vr2dDisplay;
 
     .line 30
-    iget-boolean p0, p0, Lcom/android/server/vr/Vr2dDisplay;->mIsPersistentVrModeEnabled:Z
+    iget-boolean v0, p0, Lcom/android/server/vr/Vr2dDisplay;->mIsPersistentVrModeEnabled:Z
 
-    return p0
+    return v0
 .end method
 
 .method static synthetic access$002(Lcom/android/server/vr/Vr2dDisplay;Z)Z
     .registers 2
+    .param p0, "x0"  # Lcom/android/server/vr/Vr2dDisplay;
+    .param p1, "x1"  # Z
 
     .line 30
     iput-boolean p1, p0, Lcom/android/server/vr/Vr2dDisplay;->mIsPersistentVrModeEnabled:Z
@@ -162,6 +169,7 @@
 
 .method static synthetic access$100(Lcom/android/server/vr/Vr2dDisplay;)V
     .registers 1
+    .param p0, "x0"  # Lcom/android/server/vr/Vr2dDisplay;
 
     .line 30
     invoke-direct {p0}, Lcom/android/server/vr/Vr2dDisplay;->updateVirtualDisplay()V
@@ -170,27 +178,31 @@
 .end method
 
 .method static synthetic access$200(Lcom/android/server/vr/Vr2dDisplay;)Z
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/vr/Vr2dDisplay;
 
     .line 30
     invoke-direct {p0}, Lcom/android/server/vr/Vr2dDisplay;->shouldRunVirtualDisplay()Z
 
-    move-result p0
+    move-result v0
 
-    return p0
+    return v0
 .end method
 
 .method static synthetic access$300(Lcom/android/server/vr/Vr2dDisplay;)Ljava/lang/Object;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/vr/Vr2dDisplay;
 
     .line 30
-    iget-object p0, p0, Lcom/android/server/vr/Vr2dDisplay;->mVdLock:Ljava/lang/Object;
+    iget-object v0, p0, Lcom/android/server/vr/Vr2dDisplay;->mVdLock:Ljava/lang/Object;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$400(Lcom/android/server/vr/Vr2dDisplay;I)V
     .registers 2
+    .param p0, "x0"  # Lcom/android/server/vr/Vr2dDisplay;
+    .param p1, "x1"  # I
 
     .line 30
     invoke-direct {p0, p1}, Lcom/android/server/vr/Vr2dDisplay;->updateDisplayId(I)V
@@ -200,6 +212,8 @@
 
 .method static synthetic access$500(Lcom/android/server/vr/Vr2dDisplay;Landroid/view/Surface;)V
     .registers 2
+    .param p0, "x0"  # Lcom/android/server/vr/Vr2dDisplay;
+    .param p1, "x1"  # Landroid/view/Surface;
 
     .line 30
     invoke-direct {p0, p1}, Lcom/android/server/vr/Vr2dDisplay;->setSurfaceLocked(Landroid/view/Surface;)V
@@ -208,16 +222,19 @@
 .end method
 
 .method static synthetic access$600(Lcom/android/server/vr/Vr2dDisplay;)Landroid/hardware/display/VirtualDisplay;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/vr/Vr2dDisplay;
 
     .line 30
-    iget-object p0, p0, Lcom/android/server/vr/Vr2dDisplay;->mVirtualDisplay:Landroid/hardware/display/VirtualDisplay;
+    iget-object v0, p0, Lcom/android/server/vr/Vr2dDisplay;->mVirtualDisplay:Landroid/hardware/display/VirtualDisplay;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$602(Lcom/android/server/vr/Vr2dDisplay;Landroid/hardware/display/VirtualDisplay;)Landroid/hardware/display/VirtualDisplay;
     .registers 2
+    .param p0, "x0"  # Lcom/android/server/vr/Vr2dDisplay;
+    .param p1, "x1"  # Landroid/hardware/display/VirtualDisplay;
 
     .line 30
     iput-object p1, p0, Lcom/android/server/vr/Vr2dDisplay;->mVirtualDisplay:Landroid/hardware/display/VirtualDisplay;
@@ -227,6 +244,7 @@
 
 .method static synthetic access$700(Lcom/android/server/vr/Vr2dDisplay;)V
     .registers 1
+    .param p0, "x0"  # Lcom/android/server/vr/Vr2dDisplay;
 
     .line 30
     invoke-direct {p0}, Lcom/android/server/vr/Vr2dDisplay;->stopImageReader()V
@@ -236,6 +254,7 @@
 
 .method private setSurfaceLocked(Landroid/view/Surface;)V
     .registers 4
+    .param p1, "surface"  # Landroid/view/Surface;
 
     .line 363
     iget-object v0, p0, Lcom/android/server/vr/Vr2dDisplay;->mSurface:Landroid/view/Surface;
@@ -338,6 +357,7 @@
 
 .method private startDebugOnlyBroadcastReceiver(Landroid/content/Context;)V
     .registers 2
+    .param p1, "context"  # Landroid/content/Context;
 
     .line 181
     return-void
@@ -480,22 +500,23 @@
 
     .line 291
     :cond_1c
-    nop
+    const/16 v1, 0x40
 
     .line 292
-    nop
+    .local v1, "flags":I
+    or-int/lit16 v1, v1, 0x80
 
     .line 293
-    nop
+    or-int/lit8 v1, v1, 0x1
 
     .line 294
-    nop
+    or-int/lit8 v1, v1, 0x8
 
     .line 295
-    nop
+    or-int/lit16 v1, v1, 0x100
 
     .line 296
-    const/16 v9, 0x1cd
+    or-int/lit8 v1, v1, 0x4
 
     .line 298
     iget-object v2, p0, Lcom/android/server/vr/Vr2dDisplay;->mDisplayManager:Landroid/hardware/display/DisplayManager;
@@ -518,37 +539,40 @@
 
     const-string v12, "277f1a09-b88d-4d1e-8716-796f114d080b"
 
+    move v9, v1
+
     invoke-virtual/range {v2 .. v12}, Landroid/hardware/display/DisplayManager;->createVirtualDisplay(Landroid/media/projection/MediaProjection;Ljava/lang/String;IIILandroid/view/Surface;ILandroid/hardware/display/VirtualDisplay$Callback;Landroid/os/Handler;Ljava/lang/String;)Landroid/hardware/display/VirtualDisplay;
 
-    move-result-object v1
+    move-result-object v2
 
-    iput-object v1, p0, Lcom/android/server/vr/Vr2dDisplay;->mVirtualDisplay:Landroid/hardware/display/VirtualDisplay;
+    iput-object v2, p0, Lcom/android/server/vr/Vr2dDisplay;->mVirtualDisplay:Landroid/hardware/display/VirtualDisplay;
 
     .line 303
-    iget-object v1, p0, Lcom/android/server/vr/Vr2dDisplay;->mVirtualDisplay:Landroid/hardware/display/VirtualDisplay;
+    iget-object v2, p0, Lcom/android/server/vr/Vr2dDisplay;->mVirtualDisplay:Landroid/hardware/display/VirtualDisplay;
 
-    if-eqz v1, :cond_67
+    if-eqz v2, :cond_6d
 
     .line 304
-    iget-object v1, p0, Lcom/android/server/vr/Vr2dDisplay;->mVirtualDisplay:Landroid/hardware/display/VirtualDisplay;
+    iget-object v2, p0, Lcom/android/server/vr/Vr2dDisplay;->mVirtualDisplay:Landroid/hardware/display/VirtualDisplay;
 
-    invoke-virtual {v1}, Landroid/hardware/display/VirtualDisplay;->getDisplay()Landroid/view/Display;
+    invoke-virtual {v2}, Landroid/hardware/display/VirtualDisplay;->getDisplay()Landroid/view/Display;
 
-    move-result-object v1
+    move-result-object v2
 
-    invoke-virtual {v1}, Landroid/view/Display;->getDisplayId()I
+    invoke-virtual {v2}, Landroid/view/Display;->getDisplayId()I
 
-    move-result v1
+    move-result v2
 
-    invoke-direct {p0, v1}, Lcom/android/server/vr/Vr2dDisplay;->updateDisplayId(I)V
+    invoke-direct {p0, v2}, Lcom/android/server/vr/Vr2dDisplay;->updateDisplayId(I)V
 
     .line 306
     invoke-direct {p0}, Lcom/android/server/vr/Vr2dDisplay;->startImageReader()V
 
     .line 312
+    .end local v1  # "flags":I
     monitor-exit v0
-    :try_end_4e
-    .catchall {:try_start_f .. :try_end_4e} :catchall_74
+    :try_end_54
+    .catchall {:try_start_f .. :try_end_54} :catchall_7a
 
     .line 314
     new-instance v0, Ljava/lang/StringBuilder;
@@ -575,18 +599,19 @@
     return-void
 
     .line 308
-    :cond_67
-    :try_start_67
-    const-string v1, "Vr2dDisplay"
+    .restart local v1  # "flags":I
+    :cond_6d
+    :try_start_6d
+    const-string v2, "Vr2dDisplay"
 
-    const-string v2, "Virtual display id is null after createVirtualDisplay"
+    const-string v3, "Virtual display id is null after createVirtualDisplay"
 
-    invoke-static {v1, v2}, Landroid/util/Log;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v2, v3}, Landroid/util/Log;->w(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 309
-    const/4 v1, -0x1
+    const/4 v2, -0x1
 
-    invoke-direct {p0, v1}, Lcom/android/server/vr/Vr2dDisplay;->updateDisplayId(I)V
+    invoke-direct {p0, v2}, Lcom/android/server/vr/Vr2dDisplay;->updateDisplayId(I)V
 
     .line 310
     monitor-exit v0
@@ -594,12 +619,13 @@
     return-void
 
     .line 312
-    :catchall_74
+    .end local v1  # "flags":I
+    :catchall_7a
     move-exception v1
 
     monitor-exit v0
-    :try_end_76
-    .catchall {:try_start_67 .. :try_end_76} :catchall_74
+    :try_end_7c
+    .catchall {:try_start_6d .. :try_end_7c} :catchall_7a
 
     throw v1
 .end method
@@ -628,6 +654,7 @@
     move-exception v0
 
     .line 191
+    .local v0, "e":Landroid/os/RemoteException;
     const-string v1, "Vr2dDisplay"
 
     const-string v2, "Could not register VR State listener."
@@ -635,6 +662,7 @@
     invoke-static {v1, v2, v0}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
     .line 194
+    .end local v0  # "e":Landroid/os/RemoteException;
     :cond_12
     :goto_12
     return-void
@@ -699,6 +727,7 @@
 
 .method private updateDisplayId(I)V
     .registers 3
+    .param p1, "displayId"  # I
 
     .line 318
     const-class v0, Lcom/android/server/wm/ActivityTaskManagerInternal;
@@ -779,11 +808,13 @@
     move-result v1
 
     .line 266
+    .local v1, "virtualDisplayId":I
     monitor-exit v0
 
     return v1
 
     .line 268
+    .end local v1  # "virtualDisplayId":I
     :cond_13
     monitor-exit v0
 
@@ -804,7 +835,9 @@
 .end method
 
 .method public init(Landroid/content/Context;Z)V
-    .registers 3
+    .registers 4
+    .param p1, "context"  # Landroid/content/Context;
+    .param p2, "bootsToVr"  # Z
 
     .line 118
     invoke-direct {p0}, Lcom/android/server/vr/Vr2dDisplay;->startVrModeListener()V
@@ -816,9 +849,9 @@
     iput-boolean p2, p0, Lcom/android/server/vr/Vr2dDisplay;->mBootsToVr:Z
 
     .line 121
-    iget-boolean p1, p0, Lcom/android/server/vr/Vr2dDisplay;->mBootsToVr:Z
+    iget-boolean v0, p0, Lcom/android/server/vr/Vr2dDisplay;->mBootsToVr:Z
 
-    if-eqz p1, :cond_f
+    if-eqz v0, :cond_f
 
     .line 124
     invoke-direct {p0}, Lcom/android/server/vr/Vr2dDisplay;->updateVirtualDisplay()V
@@ -830,6 +863,7 @@
 
 .method public setVirtualDisplayProperties(Landroid/app/Vr2dDisplayProperties;)V
     .registers 11
+    .param p1, "displayProperties"  # Landroid/app/Vr2dDisplayProperties;
 
     .line 206
     iget-object v0, p0, Lcom/android/server/vr/Vr2dDisplay;->mVdLock:Ljava/lang/Object;
@@ -843,33 +877,35 @@
     move-result v1
 
     .line 213
+    .local v1, "width":I
     invoke-virtual {p1}, Landroid/app/Vr2dDisplayProperties;->getHeight()I
 
     move-result v2
 
     .line 214
+    .local v2, "height":I
     invoke-virtual {p1}, Landroid/app/Vr2dDisplayProperties;->getDpi()I
 
     move-result v3
 
     .line 215
-    nop
-
-    .line 217
+    .local v3, "dpi":I
     const/4 v4, 0x0
 
+    .line 217
+    .local v4, "resized":Z
     const/4 v5, 0x1
 
-    if-lt v1, v5, :cond_47
+    if-lt v1, v5, :cond_46
 
-    if-lt v2, v5, :cond_47
+    if-lt v2, v5, :cond_46
 
-    if-ge v3, v5, :cond_19
+    if-ge v3, v5, :cond_18
 
-    goto :goto_47
+    goto :goto_46
 
     .line 222
-    :cond_19
+    :cond_18
     const-string v6, "Vr2dDisplay"
 
     new-instance v7, Ljava/lang/StringBuilder;
@@ -910,13 +946,13 @@
     iput v3, p0, Lcom/android/server/vr/Vr2dDisplay;->mVirtualDisplayDpi:I
 
     .line 226
-    move v1, v5
+    const/4 v4, 0x1
 
-    goto :goto_6e
+    goto :goto_6c
 
     .line 219
-    :cond_47
-    :goto_47
+    :cond_46
+    :goto_46
     const-string v6, "Vr2dDisplay"
 
     new-instance v7, Ljava/lang/StringBuilder;
@@ -929,109 +965,115 @@
 
     invoke-virtual {v7, v1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    const-string v1, ","
+    const-string v8, ","
 
-    invoke-virtual {v7, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v7, v8}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v7, v2}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    const-string v1, ","
+    const-string v8, ","
 
-    invoke-virtual {v7, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v7, v8}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v7, v3}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
     invoke-virtual {v7}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v1
+    move-result-object v7
 
-    invoke-static {v6, v1}, Landroid/util/Log;->i(Ljava/lang/String;Ljava/lang/String;)I
-
-    move v1, v4
+    invoke-static {v6, v7}, Landroid/util/Log;->i(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 229
-    :goto_6e
+    :goto_6c
     invoke-virtual {p1}, Landroid/app/Vr2dDisplayProperties;->getAddedFlags()I
 
-    move-result v2
+    move-result v6
 
-    and-int/2addr v2, v5
+    and-int/2addr v6, v5
 
-    if-ne v2, v5, :cond_78
+    if-ne v6, v5, :cond_76
 
     .line 232
     iput-boolean v5, p0, Lcom/android/server/vr/Vr2dDisplay;->mIsVirtualDisplayAllowed:Z
 
-    goto :goto_81
+    goto :goto_80
 
     .line 233
-    :cond_78
+    :cond_76
     invoke-virtual {p1}, Landroid/app/Vr2dDisplayProperties;->getRemovedFlags()I
 
-    move-result p1
+    move-result v6
 
-    and-int/2addr p1, v5
+    and-int/2addr v6, v5
 
-    if-ne p1, v5, :cond_81
+    if-ne v6, v5, :cond_80
 
     .line 236
-    iput-boolean v4, p0, Lcom/android/server/vr/Vr2dDisplay;->mIsVirtualDisplayAllowed:Z
+    const/4 v5, 0x0
+
+    iput-boolean v5, p0, Lcom/android/server/vr/Vr2dDisplay;->mIsVirtualDisplayAllowed:Z
 
     .line 239
-    :cond_81
-    :goto_81
-    iget-object p1, p0, Lcom/android/server/vr/Vr2dDisplay;->mVirtualDisplay:Landroid/hardware/display/VirtualDisplay;
+    :cond_80
+    :goto_80
+    iget-object v5, p0, Lcom/android/server/vr/Vr2dDisplay;->mVirtualDisplay:Landroid/hardware/display/VirtualDisplay;
 
-    if-eqz p1, :cond_a1
+    if-eqz v5, :cond_a0
 
-    if-eqz v1, :cond_a1
+    if-eqz v4, :cond_a0
 
-    iget-boolean p1, p0, Lcom/android/server/vr/Vr2dDisplay;->mIsVirtualDisplayAllowed:Z
+    iget-boolean v5, p0, Lcom/android/server/vr/Vr2dDisplay;->mIsVirtualDisplayAllowed:Z
 
-    if-eqz p1, :cond_a1
+    if-eqz v5, :cond_a0
 
     .line 240
-    iget-object p1, p0, Lcom/android/server/vr/Vr2dDisplay;->mVirtualDisplay:Landroid/hardware/display/VirtualDisplay;
+    iget-object v5, p0, Lcom/android/server/vr/Vr2dDisplay;->mVirtualDisplay:Landroid/hardware/display/VirtualDisplay;
 
-    iget v1, p0, Lcom/android/server/vr/Vr2dDisplay;->mVirtualDisplayWidth:I
+    iget v6, p0, Lcom/android/server/vr/Vr2dDisplay;->mVirtualDisplayWidth:I
 
-    iget v2, p0, Lcom/android/server/vr/Vr2dDisplay;->mVirtualDisplayHeight:I
+    iget v7, p0, Lcom/android/server/vr/Vr2dDisplay;->mVirtualDisplayHeight:I
 
-    iget v3, p0, Lcom/android/server/vr/Vr2dDisplay;->mVirtualDisplayDpi:I
+    iget v8, p0, Lcom/android/server/vr/Vr2dDisplay;->mVirtualDisplayDpi:I
 
-    invoke-virtual {p1, v1, v2, v3}, Landroid/hardware/display/VirtualDisplay;->resize(III)V
+    invoke-virtual {v5, v6, v7, v8}, Landroid/hardware/display/VirtualDisplay;->resize(III)V
 
     .line 242
-    iget-object p1, p0, Lcom/android/server/vr/Vr2dDisplay;->mImageReader:Landroid/media/ImageReader;
+    iget-object v5, p0, Lcom/android/server/vr/Vr2dDisplay;->mImageReader:Landroid/media/ImageReader;
 
     .line 243
-    const/4 v1, 0x0
+    .local v5, "oldImageReader":Landroid/media/ImageReader;
+    const/4 v6, 0x0
 
-    iput-object v1, p0, Lcom/android/server/vr/Vr2dDisplay;->mImageReader:Landroid/media/ImageReader;
+    iput-object v6, p0, Lcom/android/server/vr/Vr2dDisplay;->mImageReader:Landroid/media/ImageReader;
 
     .line 244
     invoke-direct {p0}, Lcom/android/server/vr/Vr2dDisplay;->startImageReader()V
 
     .line 245
-    invoke-virtual {p1}, Landroid/media/ImageReader;->close()V
+    invoke-virtual {v5}, Landroid/media/ImageReader;->close()V
 
     .line 249
-    :cond_a1
+    .end local v5  # "oldImageReader":Landroid/media/ImageReader;
+    :cond_a0
     invoke-direct {p0}, Lcom/android/server/vr/Vr2dDisplay;->updateVirtualDisplay()V
 
     .line 250
+    .end local v1  # "width":I
+    .end local v2  # "height":I
+    .end local v3  # "dpi":I
+    .end local v4  # "resized":Z
     monitor-exit v0
 
     .line 251
     return-void
 
     .line 250
-    :catchall_a6
-    move-exception p1
+    :catchall_a5
+    move-exception v1
 
     monitor-exit v0
-    :try_end_a8
-    .catchall {:try_start_3 .. :try_end_a8} :catchall_a6
+    :try_end_a7
+    .catchall {:try_start_3 .. :try_end_a7} :catchall_a5
 
-    throw p1
+    throw v1
 .end method

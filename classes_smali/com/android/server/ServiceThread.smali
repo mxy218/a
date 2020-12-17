@@ -14,6 +14,9 @@
 # direct methods
 .method public constructor <init>(Ljava/lang/String;IZ)V
     .registers 4
+    .param p1, "name"  # Ljava/lang/String;
+    .param p2, "priority"  # I
+    .param p3, "allowIo"  # Z
 
     .line 32
     invoke-direct {p0, p1, p2}, Landroid/os/HandlerThread;-><init>(Ljava/lang/String;I)V

@@ -14,6 +14,7 @@
 # direct methods
 .method public constructor <init>(Landroid/content/Context;)V
     .registers 2
+    .param p1, "context"  # Landroid/content/Context;
 
     .line 51
     invoke-direct {p0}, Landroid/os/Binder;-><init>()V
@@ -26,7 +27,10 @@
 .end method
 
 .method private static addDistroVersionDebugInfo(Ljava/lang/String;Ljava/lang/String;Llibcore/util/DebugInfo;)V
-    .registers 9
+    .registers 11
+    .param p0, "distroVersionFileName"  # Ljava/lang/String;
+    .param p1, "debugKeyPrefix"  # Ljava/lang/String;
+    .param p2, "debugInfo"  # Llibcore/util/DebugInfo;
 
     .line 143
     new-instance v0, Ljava/io/File;
@@ -34,116 +38,162 @@
     invoke-direct {v0, p0}, Ljava/io/File;-><init>(Ljava/lang/String;)V
 
     .line 144
-    new-instance p0, Ljava/lang/StringBuilder;
+    .local v0, "file":Ljava/io/File;
+    new-instance v1, Ljava/lang/StringBuilder;
 
-    invoke-direct {p0}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
 
-    invoke-virtual {p0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string/jumbo v1, "status"
+    const-string/jumbo v2, "status"
 
-    invoke-virtual {p0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v1
 
     .line 145
+    .local v1, "statusKey":Ljava/lang/String;
     invoke-virtual {v0}, Ljava/io/File;->exists()Z
 
-    move-result v1
+    move-result v2
 
-    if-eqz v1, :cond_d9
+    if-eqz v2, :cond_da
 
     .line 147
     :try_start_1d
-    sget v1, Lcom/android/timezone/distro/DistroVersion;->DISTRO_VERSION_FILE_LENGTH:I
+    sget v2, Lcom/android/timezone/distro/DistroVersion;->DISTRO_VERSION_FILE_LENGTH:I
 
     .line 148
-    invoke-static {v0, v1}, Lcom/android/timezone/distro/FileUtils;->readBytes(Ljava/io/File;I)[B
-
-    move-result-object v1
-
-    .line 149
-    invoke-static {v1}, Lcom/android/timezone/distro/DistroVersion;->fromBytes([B)Lcom/android/timezone/distro/DistroVersion;
-
-    move-result-object v1
-
-    .line 150
-    new-instance v2, Ljava/lang/StringBuilder;
-
-    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
-
-    iget v3, v1, Lcom/android/timezone/distro/DistroVersion;->formatMajorVersion:I
-
-    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
-
-    const-string v3, "."
-
-    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    iget v3, v1, Lcom/android/timezone/distro/DistroVersion;->formatMinorVersion:I
-
-    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-static {v0, v2}, Lcom/android/timezone/distro/FileUtils;->readBytes(Ljava/io/File;I)[B
 
     move-result-object v2
 
-    .line 152
-    const-string v3, "OK"
-
-    invoke-virtual {p2, p0, v3}, Llibcore/util/DebugInfo;->addStringEntry(Ljava/lang/String;Ljava/lang/String;)Llibcore/util/DebugInfo;
+    .line 149
+    .local v2, "versionBytes":[B
+    invoke-static {v2}, Lcom/android/timezone/distro/DistroVersion;->fromBytes([B)Lcom/android/timezone/distro/DistroVersion;
 
     move-result-object v3
 
+    .line 150
+    .local v3, "distroVersion":Lcom/android/timezone/distro/DistroVersion;
     new-instance v4, Ljava/lang/StringBuilder;
 
     invoke-direct {v4}, Ljava/lang/StringBuilder;-><init>()V
 
-    invoke-virtual {v4, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    iget v5, v3, Lcom/android/timezone/distro/DistroVersion;->formatMajorVersion:I
 
-    const-string v5, "formatVersion"
+    invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+
+    const-string v5, "."
 
     invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    iget v5, v3, Lcom/android/timezone/distro/DistroVersion;->formatMinorVersion:I
+
+    invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
     invoke-virtual {v4}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
     move-result-object v4
 
+    .line 152
+    .local v4, "formatVersionString":Ljava/lang/String;
+    const-string v5, "OK"
+
+    invoke-virtual {p2, v1, v5}, Llibcore/util/DebugInfo;->addStringEntry(Ljava/lang/String;Ljava/lang/String;)Llibcore/util/DebugInfo;
+
+    move-result-object v5
+
+    new-instance v6, Ljava/lang/StringBuilder;
+
+    invoke-direct {v6}, Ljava/lang/StringBuilder;-><init>()V
+
+    invoke-virtual {v6, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    const-string v7, "formatVersion"
+
+    invoke-virtual {v6, v7}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v6}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v6
+
     .line 153
-    invoke-virtual {v3, v4, v2}, Llibcore/util/DebugInfo;->addStringEntry(Ljava/lang/String;Ljava/lang/String;)Llibcore/util/DebugInfo;
+    invoke-virtual {v5, v6, v4}, Llibcore/util/DebugInfo;->addStringEntry(Ljava/lang/String;Ljava/lang/String;)Llibcore/util/DebugInfo;
 
-    move-result-object v2
+    move-result-object v5
 
-    new-instance v3, Ljava/lang/StringBuilder;
+    new-instance v6, Ljava/lang/StringBuilder;
 
-    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v6}, Ljava/lang/StringBuilder;-><init>()V
 
-    invoke-virtual {v3, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v6, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string/jumbo v4, "rulesVersion"
+    const-string/jumbo v7, "rulesVersion"
 
-    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v6, v7}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v6}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v3
+    move-result-object v6
 
-    iget-object v4, v1, Lcom/android/timezone/distro/DistroVersion;->rulesVersion:Ljava/lang/String;
+    iget-object v7, v3, Lcom/android/timezone/distro/DistroVersion;->rulesVersion:Ljava/lang/String;
 
     .line 154
-    invoke-virtual {v2, v3, v4}, Llibcore/util/DebugInfo;->addStringEntry(Ljava/lang/String;Ljava/lang/String;)Llibcore/util/DebugInfo;
+    invoke-virtual {v5, v6, v7}, Llibcore/util/DebugInfo;->addStringEntry(Ljava/lang/String;Ljava/lang/String;)Llibcore/util/DebugInfo;
 
-    move-result-object v2
+    move-result-object v5
 
+    new-instance v6, Ljava/lang/StringBuilder;
+
+    invoke-direct {v6}, Ljava/lang/StringBuilder;-><init>()V
+
+    invoke-virtual {v6, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    const-string/jumbo v7, "revision"
+
+    invoke-virtual {v6, v7}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v6}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v6
+
+    iget v7, v3, Lcom/android/timezone/distro/DistroVersion;->revision:I
+
+    .line 156
+    invoke-virtual {v5, v6, v7}, Llibcore/util/DebugInfo;->addStringEntry(Ljava/lang/String;I)Llibcore/util/DebugInfo;
+    :try_end_89
+    .catch Ljava/io/IOException; {:try_start_1d .. :try_end_89} :catch_8b
+    .catch Lcom/android/timezone/distro/DistroException; {:try_start_1d .. :try_end_89} :catch_8b
+
+    .line 164
+    nop
+
+    .end local v2  # "versionBytes":[B
+    .end local v3  # "distroVersion":Lcom/android/timezone/distro/DistroVersion;
+    .end local v4  # "formatVersionString":Ljava/lang/String;
+    goto :goto_df
+
+    .line 158
+    :catch_8b
+    move-exception v2
+
+    .line 159
+    .local v2, "e":Ljava/lang/Exception;
+    const-string v3, "ERROR"
+
+    invoke-virtual {p2, v1, v3}, Llibcore/util/DebugInfo;->addStringEntry(Ljava/lang/String;Ljava/lang/String;)Llibcore/util/DebugInfo;
+
+    .line 160
     new-instance v3, Ljava/lang/StringBuilder;
 
     invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
 
     invoke-virtual {v3, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string/jumbo v4, "revision"
+    const-string v4, "exception_class"
 
     invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
@@ -151,129 +201,98 @@
 
     move-result-object v3
 
-    iget v1, v1, Lcom/android/timezone/distro/DistroVersion;->revision:I
-
-    .line 156
-    invoke-virtual {v2, v3, v1}, Llibcore/util/DebugInfo;->addStringEntry(Ljava/lang/String;I)Llibcore/util/DebugInfo;
-    :try_end_89
-    .catch Ljava/io/IOException; {:try_start_1d .. :try_end_89} :catch_8a
-    .catch Lcom/android/timezone/distro/DistroException; {:try_start_1d .. :try_end_89} :catch_8a
-
-    goto :goto_d8
-
-    .line 158
-    :catch_8a
-    move-exception v1
-
-    .line 159
-    const-string v2, "ERROR"
-
-    invoke-virtual {p2, p0, v2}, Llibcore/util/DebugInfo;->addStringEntry(Ljava/lang/String;Ljava/lang/String;)Llibcore/util/DebugInfo;
-
-    .line 160
-    new-instance p0, Ljava/lang/StringBuilder;
-
-    invoke-direct {p0}, Ljava/lang/StringBuilder;-><init>()V
-
-    invoke-virtual {p0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    const-string v2, "exception_class"
-
-    invoke-virtual {p0, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {p0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
-
-    move-result-object p0
-
     .line 161
-    invoke-virtual {v1}, Ljava/lang/Object;->getClass()Ljava/lang/Class;
+    invoke-virtual {v2}, Ljava/lang/Object;->getClass()Ljava/lang/Class;
 
-    move-result-object v2
+    move-result-object v4
 
-    invoke-virtual {v2}, Ljava/lang/Class;->getName()Ljava/lang/String;
+    invoke-virtual {v4}, Ljava/lang/Class;->getName()Ljava/lang/String;
 
-    move-result-object v2
+    move-result-object v4
 
     .line 160
-    invoke-virtual {p2, p0, v2}, Llibcore/util/DebugInfo;->addStringEntry(Ljava/lang/String;Ljava/lang/String;)Llibcore/util/DebugInfo;
+    invoke-virtual {p2, v3, v4}, Llibcore/util/DebugInfo;->addStringEntry(Ljava/lang/String;Ljava/lang/String;)Llibcore/util/DebugInfo;
 
     .line 162
-    new-instance p0, Ljava/lang/StringBuilder;
+    new-instance v3, Ljava/lang/StringBuilder;
 
-    invoke-direct {p0}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
 
-    invoke-virtual {p0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string p1, "exception_msg"
+    const-string v4, "exception_msg"
 
-    invoke-virtual {p0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v3
 
-    invoke-virtual {v1}, Ljava/lang/Exception;->getMessage()Ljava/lang/String;
+    invoke-virtual {v2}, Ljava/lang/Exception;->getMessage()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v4
 
-    invoke-virtual {p2, p0, p1}, Llibcore/util/DebugInfo;->addStringEntry(Ljava/lang/String;Ljava/lang/String;)Llibcore/util/DebugInfo;
+    invoke-virtual {p2, v3, v4}, Llibcore/util/DebugInfo;->addStringEntry(Ljava/lang/String;Ljava/lang/String;)Llibcore/util/DebugInfo;
 
     .line 163
-    new-instance p0, Ljava/lang/StringBuilder;
+    new-instance v3, Ljava/lang/StringBuilder;
 
-    invoke-direct {p0}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string p1, "Error reading "
+    const-string v4, "Error reading "
 
-    invoke-virtual {p0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p0, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v3
 
-    invoke-static {p0, v1}, Lcom/android/server/RuntimeService;->logMessage(Ljava/lang/String;Ljava/lang/Throwable;)V
+    invoke-static {v3, v2}, Lcom/android/server/RuntimeService;->logMessage(Ljava/lang/String;Ljava/lang/Throwable;)V
 
     .line 164
-    :goto_d8
-    goto :goto_de
+    .end local v2  # "e":Ljava/lang/Exception;
+    goto :goto_df
 
     .line 166
-    :cond_d9
-    const-string p1, "NOT_FOUND"
+    :cond_da
+    const-string v2, "NOT_FOUND"
 
-    invoke-virtual {p2, p0, p1}, Llibcore/util/DebugInfo;->addStringEntry(Ljava/lang/String;Ljava/lang/String;)Llibcore/util/DebugInfo;
+    invoke-virtual {p2, v1, v2}, Llibcore/util/DebugInfo;->addStringEntry(Ljava/lang/String;Ljava/lang/String;)Llibcore/util/DebugInfo;
 
     .line 168
-    :goto_de
+    :goto_df
     return-void
 .end method
 
 .method private static addTimeZoneApkDebugInfo(Llibcore/util/DebugInfo;)V
     .registers 3
+    .param p0, "coreLibraryDebugInfo"  # Llibcore/util/DebugInfo;
 
     .line 97
-    nop
+    const-string v0, "core_library.timezone.source.data_"
 
     .line 98
-    const-string v0, "distro_version"
+    .local v0, "debugKeyPrefix":Ljava/lang/String;
+    const-string v1, "distro_version"
 
-    invoke-static {v0}, Llibcore/timezone/TimeZoneDataFiles;->getDataTimeZoneFile(Ljava/lang/String;)Ljava/lang/String;
+    invoke-static {v1}, Llibcore/timezone/TimeZoneDataFiles;->getDataTimeZoneFile(Ljava/lang/String;)Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v1
 
     .line 100
-    const-string v1, "core_library.timezone.source.data_"
-
-    invoke-static {v0, v1, p0}, Lcom/android/server/RuntimeService;->addDistroVersionDebugInfo(Ljava/lang/String;Ljava/lang/String;Llibcore/util/DebugInfo;)V
+    .local v1, "versionFileName":Ljava/lang/String;
+    invoke-static {v1, v0, p0}, Lcom/android/server/RuntimeService;->addDistroVersionDebugInfo(Ljava/lang/String;Ljava/lang/String;Llibcore/util/DebugInfo;)V
 
     .line 101
     return-void
 .end method
 
 .method private static hasOption([Ljava/lang/String;Ljava/lang/String;)Z
-    .registers 6
+    .registers 7
+    .param p0, "args"  # [Ljava/lang/String;
+    .param p1, "arg"  # Ljava/lang/String;
 
     .line 81
     array-length v0, p0
@@ -288,18 +307,20 @@
     aget-object v3, p0, v2
 
     .line 82
+    .local v3, "opt":Ljava/lang/String;
     invoke-virtual {p1, v3}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result v3
+    move-result v4
 
-    if-eqz v3, :cond_f
+    if-eqz v4, :cond_f
 
     .line 83
-    const/4 p0, 0x1
+    const/4 v0, 0x1
 
-    return p0
+    return v0
 
     .line 81
+    .end local v3  # "opt":Ljava/lang/String;
     :cond_f
     add-int/lit8 v2, v2, 0x1
 
@@ -312,6 +333,8 @@
 
 .method private static logMessage(Ljava/lang/String;Ljava/lang/Throwable;)V
     .registers 3
+    .param p0, "msg"  # Ljava/lang/String;
+    .param p1, "t"  # Ljava/lang/Throwable;
 
     .line 171
     const-string v0, "RuntimeService"
@@ -323,7 +346,9 @@
 .end method
 
 .method private static reportTimeZoneInfo(Llibcore/util/DebugInfo;Ljava/io/PrintWriter;)V
-    .registers 4
+    .registers 5
+    .param p0, "coreLibraryDebugInfo"  # Llibcore/util/DebugInfo;
+    .param p1, "pw"  # Ljava/io/PrintWriter;
 
     .line 111
     const-string v0, "Core Library Debug Info: "
@@ -333,50 +358,52 @@
     .line 112
     invoke-virtual {p0}, Llibcore/util/DebugInfo;->getDebugEntries()Ljava/util/List;
 
-    move-result-object p0
+    move-result-object v0
 
-    invoke-interface {p0}, Ljava/util/List;->iterator()Ljava/util/Iterator;
-
-    move-result-object p0
-
-    :goto_d
-    invoke-interface {p0}, Ljava/util/Iterator;->hasNext()Z
-
-    move-result v0
-
-    if-eqz v0, :cond_32
-
-    invoke-interface {p0}, Ljava/util/Iterator;->next()Ljava/lang/Object;
+    invoke-interface {v0}, Ljava/util/List;->iterator()Ljava/util/Iterator;
 
     move-result-object v0
 
-    check-cast v0, Llibcore/util/DebugInfo$DebugEntry;
+    :goto_d
+    invoke-interface {v0}, Ljava/util/Iterator;->hasNext()Z
 
-    .line 113
-    invoke-virtual {v0}, Llibcore/util/DebugInfo$DebugEntry;->getKey()Ljava/lang/String;
+    move-result v1
+
+    if-eqz v1, :cond_32
+
+    invoke-interface {v0}, Ljava/util/Iterator;->next()Ljava/lang/Object;
 
     move-result-object v1
 
-    invoke-virtual {p1, v1}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
+    check-cast v1, Llibcore/util/DebugInfo$DebugEntry;
+
+    .line 113
+    .local v1, "debugEntry":Llibcore/util/DebugInfo$DebugEntry;
+    invoke-virtual {v1}, Llibcore/util/DebugInfo$DebugEntry;->getKey()Ljava/lang/String;
+
+    move-result-object v2
+
+    invoke-virtual {p1, v2}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
     .line 114
-    const-string v1, ": \""
+    const-string v2, ": \""
 
-    invoke-virtual {p1, v1}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
+    invoke-virtual {p1, v2}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
     .line 115
-    invoke-virtual {v0}, Llibcore/util/DebugInfo$DebugEntry;->getStringValue()Ljava/lang/String;
+    invoke-virtual {v1}, Llibcore/util/DebugInfo$DebugEntry;->getStringValue()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v2
 
-    invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
+    invoke-virtual {p1, v2}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
     .line 116
-    const-string v0, "\""
+    const-string v2, "\""
 
-    invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {p1, v2}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
     .line 117
+    .end local v1  # "debugEntry":Llibcore/util/DebugInfo$DebugEntry;
     goto :goto_d
 
     .line 118
@@ -385,59 +412,65 @@
 .end method
 
 .method private static reportTimeZoneInfoProto(Llibcore/util/DebugInfo;Landroid/util/proto/ProtoOutputStream;)V
-    .registers 8
+    .registers 9
+    .param p0, "coreLibraryDebugInfo"  # Llibcore/util/DebugInfo;
+    .param p1, "protoStream"  # Landroid/util/proto/ProtoOutputStream;
 
     .line 128
     invoke-virtual {p0}, Llibcore/util/DebugInfo;->getDebugEntries()Ljava/util/List;
 
-    move-result-object p0
+    move-result-object v0
 
-    invoke-interface {p0}, Ljava/util/List;->iterator()Ljava/util/Iterator;
+    invoke-interface {v0}, Ljava/util/List;->iterator()Ljava/util/Iterator;
 
-    move-result-object p0
+    move-result-object v0
 
     :goto_8
-    invoke-interface {p0}, Ljava/util/Iterator;->hasNext()Z
+    invoke-interface {v0}, Ljava/util/Iterator;->hasNext()Z
 
-    move-result v0
+    move-result v1
 
-    if-eqz v0, :cond_39
+    if-eqz v1, :cond_39
 
-    invoke-interface {p0}, Ljava/util/Iterator;->next()Ljava/lang/Object;
+    invoke-interface {v0}, Ljava/util/Iterator;->next()Ljava/lang/Object;
 
-    move-result-object v0
+    move-result-object v1
 
-    check-cast v0, Llibcore/util/DebugInfo$DebugEntry;
+    check-cast v1, Llibcore/util/DebugInfo$DebugEntry;
 
     .line 129
-    const-wide v1, 0x20b00000001L
+    .local v1, "debugEntry":Llibcore/util/DebugInfo$DebugEntry;
+    const-wide v2, 0x20b00000001L
 
-    invoke-virtual {p1, v1, v2}, Landroid/util/proto/ProtoOutputStream;->start(J)J
+    invoke-virtual {p1, v2, v3}, Landroid/util/proto/ProtoOutputStream;->start(J)J
 
-    move-result-wide v1
+    move-result-wide v2
 
     .line 130
-    const-wide v3, 0x10900000001L
+    .local v2, "entryToken":J
+    const-wide v4, 0x10900000001L
 
-    invoke-virtual {v0}, Llibcore/util/DebugInfo$DebugEntry;->getKey()Ljava/lang/String;
+    invoke-virtual {v1}, Llibcore/util/DebugInfo$DebugEntry;->getKey()Ljava/lang/String;
 
-    move-result-object v5
+    move-result-object v6
 
-    invoke-virtual {p1, v3, v4, v5}, Landroid/util/proto/ProtoOutputStream;->write(JLjava/lang/String;)V
+    invoke-virtual {p1, v4, v5, v6}, Landroid/util/proto/ProtoOutputStream;->write(JLjava/lang/String;)V
 
     .line 131
-    const-wide v3, 0x10900000002L
+    const-wide v4, 0x10900000002L
 
-    invoke-virtual {v0}, Llibcore/util/DebugInfo$DebugEntry;->getStringValue()Ljava/lang/String;
+    invoke-virtual {v1}, Llibcore/util/DebugInfo$DebugEntry;->getStringValue()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v6
 
-    invoke-virtual {p1, v3, v4, v0}, Landroid/util/proto/ProtoOutputStream;->write(JLjava/lang/String;)V
+    invoke-virtual {p1, v4, v5, v6}, Landroid/util/proto/ProtoOutputStream;->write(JLjava/lang/String;)V
 
     .line 132
-    invoke-virtual {p1, v1, v2}, Landroid/util/proto/ProtoOutputStream;->end(J)V
+    invoke-virtual {p1, v2, v3}, Landroid/util/proto/ProtoOutputStream;->end(J)V
 
     .line 133
+    .end local v1  # "debugEntry":Llibcore/util/DebugInfo$DebugEntry;
+    .end local v2  # "entryToken":J
     goto :goto_8
 
     .line 134
@@ -448,7 +481,10 @@
 
 # virtual methods
 .method protected dump(Ljava/io/FileDescriptor;Ljava/io/PrintWriter;[Ljava/lang/String;)V
-    .registers 6
+    .registers 8
+    .param p1, "fd"  # Ljava/io/FileDescriptor;
+    .param p2, "pw"  # Ljava/io/PrintWriter;
+    .param p3, "args"  # [Ljava/lang/String;
 
     .line 57
     iget-object v0, p0, Lcom/android/server/RuntimeService;->mContext:Landroid/content/Context;
@@ -470,44 +506,49 @@
 
     invoke-static {p3, v0}, Lcom/android/server/RuntimeService;->hasOption([Ljava/lang/String;Ljava/lang/String;)Z
 
-    move-result p3
+    move-result v0
 
     .line 62
-    const/4 v0, 0x0
+    .local v0, "protoFormat":Z
+    const/4 v1, 0x0
 
     .line 64
+    .local v1, "proto":Landroid/util/proto/ProtoOutputStream;
     invoke-static {}, Llibcore/util/CoreLibraryDebug;->getDebugInfo()Llibcore/util/DebugInfo;
 
-    move-result-object v1
+    move-result-object v2
 
     .line 65
-    invoke-static {v1}, Lcom/android/server/RuntimeService;->addTimeZoneApkDebugInfo(Llibcore/util/DebugInfo;)V
+    .local v2, "coreLibraryDebugInfo":Llibcore/util/DebugInfo;
+    invoke-static {v2}, Lcom/android/server/RuntimeService;->addTimeZoneApkDebugInfo(Llibcore/util/DebugInfo;)V
 
     .line 67
-    if-eqz p3, :cond_24
+    if-eqz v0, :cond_25
 
     .line 68
-    new-instance v0, Landroid/util/proto/ProtoOutputStream;
+    new-instance v3, Landroid/util/proto/ProtoOutputStream;
 
-    invoke-direct {v0, p1}, Landroid/util/proto/ProtoOutputStream;-><init>(Ljava/io/FileDescriptor;)V
+    invoke-direct {v3, p1}, Landroid/util/proto/ProtoOutputStream;-><init>(Ljava/io/FileDescriptor;)V
+
+    move-object v1, v3
 
     .line 69
-    invoke-static {v1, v0}, Lcom/android/server/RuntimeService;->reportTimeZoneInfoProto(Llibcore/util/DebugInfo;Landroid/util/proto/ProtoOutputStream;)V
+    invoke-static {v2, v1}, Lcom/android/server/RuntimeService;->reportTimeZoneInfoProto(Llibcore/util/DebugInfo;Landroid/util/proto/ProtoOutputStream;)V
 
-    goto :goto_27
+    goto :goto_28
 
     .line 71
-    :cond_24
-    invoke-static {v1, p2}, Lcom/android/server/RuntimeService;->reportTimeZoneInfo(Llibcore/util/DebugInfo;Ljava/io/PrintWriter;)V
+    :cond_25
+    invoke-static {v2, p2}, Lcom/android/server/RuntimeService;->reportTimeZoneInfo(Llibcore/util/DebugInfo;Ljava/io/PrintWriter;)V
 
     .line 74
-    :goto_27
-    if-eqz p3, :cond_2c
+    :goto_28
+    if-eqz v0, :cond_2d
 
     .line 75
-    invoke-virtual {v0}, Landroid/util/proto/ProtoOutputStream;->flush()V
+    invoke-virtual {v1}, Landroid/util/proto/ProtoOutputStream;->flush()V
 
     .line 77
-    :cond_2c
+    :cond_2d
     return-void
 .end method

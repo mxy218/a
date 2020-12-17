@@ -27,6 +27,9 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/media/MediaSessionRecord;Landroid/media/session/ISessionControllerCallback;Ljava/lang/String;I)V
     .registers 5
+    .param p2, "callback"  # Landroid/media/session/ISessionControllerCallback;
+    .param p3, "packageName"  # Ljava/lang/String;
+    .param p4, "uid"  # I
 
     .line 1502
     iput-object p1, p0, Lcom/android/server/media/MediaSessionRecord$ISessionControllerCallbackHolder;->this$0:Lcom/android/server/media/MediaSessionRecord;
@@ -47,19 +50,21 @@
 .end method
 
 .method static synthetic access$300(Lcom/android/server/media/MediaSessionRecord$ISessionControllerCallbackHolder;)Ljava/lang/String;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/media/MediaSessionRecord$ISessionControllerCallbackHolder;
 
     .line 1496
-    iget-object p0, p0, Lcom/android/server/media/MediaSessionRecord$ISessionControllerCallbackHolder;->mPackageName:Ljava/lang/String;
+    iget-object v0, p0, Lcom/android/server/media/MediaSessionRecord$ISessionControllerCallbackHolder;->mPackageName:Ljava/lang/String;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$400(Lcom/android/server/media/MediaSessionRecord$ISessionControllerCallbackHolder;)Landroid/media/session/ISessionControllerCallback;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/media/MediaSessionRecord$ISessionControllerCallbackHolder;
 
     .line 1496
-    iget-object p0, p0, Lcom/android/server/media/MediaSessionRecord$ISessionControllerCallbackHolder;->mCallback:Landroid/media/session/ISessionControllerCallback;
+    iget-object v0, p0, Lcom/android/server/media/MediaSessionRecord$ISessionControllerCallbackHolder;->mCallback:Landroid/media/session/ISessionControllerCallback;
 
-    return-object p0
+    return-object v0
 .end method

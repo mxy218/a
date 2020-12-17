@@ -25,7 +25,7 @@
 .method private constructor <init>(Lcom/android/server/display/DisplayPowerController;)V
     .registers 2
 
-    .line 1966
+    .line 2164
     iput-object p1, p0, Lcom/android/server/display/DisplayPowerController$ScreenOnUnblocker;->this$0:Lcom/android/server/display/DisplayPowerController;
 
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -35,8 +35,10 @@
 
 .method synthetic constructor <init>(Lcom/android/server/display/DisplayPowerController;Lcom/android/server/display/DisplayPowerController$1;)V
     .registers 3
+    .param p1, "x0"  # Lcom/android/server/display/DisplayPowerController;
+    .param p2, "x1"  # Lcom/android/server/display/DisplayPowerController$1;
 
-    .line 1966
+    .line 2164
     invoke-direct {p0, p1}, Lcom/android/server/display/DisplayPowerController$ScreenOnUnblocker;-><init>(Lcom/android/server/display/DisplayPowerController;)V
 
     return-void
@@ -47,10 +49,32 @@
 .method public onScreenOn()V
     .registers 3
 
-    .line 1969
+    .line 2168
     iget-object v0, p0, Lcom/android/server/display/DisplayPowerController$ScreenOnUnblocker;->this$0:Lcom/android/server/display/DisplayPowerController;
 
-    invoke-static {v0}, Lcom/android/server/display/DisplayPowerController;->access$1900(Lcom/android/server/display/DisplayPowerController;)Lcom/android/server/display/DisplayPowerController$DisplayControllerHandler;
+    invoke-static {v0}, Lcom/android/server/display/DisplayPowerController;->access$2400(Lcom/android/server/display/DisplayPowerController;)Lcom/android/server/display/AutomaticBrightnessController;
+
+    move-result-object v0
+
+    if-eqz v0, :cond_14
+
+    iget-object v0, p0, Lcom/android/server/display/DisplayPowerController$ScreenOnUnblocker;->this$0:Lcom/android/server/display/DisplayPowerController;
+
+    invoke-static {v0}, Lcom/android/server/display/DisplayPowerController;->access$2400(Lcom/android/server/display/DisplayPowerController;)Lcom/android/server/display/AutomaticBrightnessController;
+
+    move-result-object v0
+
+    invoke-virtual {v0}, Lcom/android/server/display/AutomaticBrightnessController;->isAutomaticBrightnessBlockScreenOn()Z
+
+    move-result v0
+
+    if-nez v0, :cond_28
+
+    .line 2169
+    :cond_14
+    iget-object v0, p0, Lcom/android/server/display/DisplayPowerController$ScreenOnUnblocker;->this$0:Lcom/android/server/display/DisplayPowerController;
+
+    invoke-static {v0}, Lcom/android/server/display/DisplayPowerController;->access$2500(Lcom/android/server/display/DisplayPowerController;)Lcom/android/server/display/DisplayPowerController$DisplayControllerHandler;
 
     move-result-object v0
 
@@ -60,15 +84,18 @@
 
     move-result-object v0
 
-    .line 1970
+    .line 2170
+    .local v0, "msg":Landroid/os/Message;
     iget-object v1, p0, Lcom/android/server/display/DisplayPowerController$ScreenOnUnblocker;->this$0:Lcom/android/server/display/DisplayPowerController;
 
-    invoke-static {v1}, Lcom/android/server/display/DisplayPowerController;->access$1900(Lcom/android/server/display/DisplayPowerController;)Lcom/android/server/display/DisplayPowerController$DisplayControllerHandler;
+    invoke-static {v1}, Lcom/android/server/display/DisplayPowerController;->access$2500(Lcom/android/server/display/DisplayPowerController;)Lcom/android/server/display/DisplayPowerController$DisplayControllerHandler;
 
     move-result-object v1
 
     invoke-virtual {v1, v0}, Lcom/android/server/display/DisplayPowerController$DisplayControllerHandler;->sendMessage(Landroid/os/Message;)Z
 
-    .line 1971
+    .line 2173
+    .end local v0  # "msg":Landroid/os/Message;
+    :cond_28
     return-void
 .end method

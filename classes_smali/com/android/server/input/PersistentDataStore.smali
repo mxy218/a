@@ -57,7 +57,7 @@
 
     invoke-direct {v1, v2}, Ljava/io/File;-><init>(Ljava/lang/String;)V
 
-    const-string v2, "input-state"
+    const-string/jumbo v2, "input-state"
 
     invoke-direct {v0, v1, v2}, Landroid/util/AtomicFile;-><init>(Ljava/io/File;Ljava/lang/String;)V
 
@@ -80,7 +80,9 @@
 .end method
 
 .method private getInputDeviceState(Ljava/lang/String;Z)Lcom/android/server/input/PersistentDataStore$InputDeviceState;
-    .registers 4
+    .registers 6
+    .param p1, "inputDeviceDescriptor"  # Ljava/lang/String;
+    .param p2, "createIfAbsent"  # Z
 
     .line 182
     invoke-direct {p0}, Lcom/android/server/input/PersistentDataStore;->loadIfNeeded()V
@@ -95,27 +97,30 @@
     check-cast v0, Lcom/android/server/input/PersistentDataStore$InputDeviceState;
 
     .line 184
-    if-nez v0, :cond_1d
+    .local v0, "state":Lcom/android/server/input/PersistentDataStore$InputDeviceState;
+    if-nez v0, :cond_1e
 
-    if-eqz p2, :cond_1d
+    if-eqz p2, :cond_1e
 
     .line 185
-    new-instance v0, Lcom/android/server/input/PersistentDataStore$InputDeviceState;
+    new-instance v1, Lcom/android/server/input/PersistentDataStore$InputDeviceState;
 
-    const/4 p2, 0x0
+    const/4 v2, 0x0
 
-    invoke-direct {v0, p2}, Lcom/android/server/input/PersistentDataStore$InputDeviceState;-><init>(Lcom/android/server/input/PersistentDataStore$1;)V
+    invoke-direct {v1, v2}, Lcom/android/server/input/PersistentDataStore$InputDeviceState;-><init>(Lcom/android/server/input/PersistentDataStore$1;)V
+
+    move-object v0, v1
 
     .line 186
-    iget-object p2, p0, Lcom/android/server/input/PersistentDataStore;->mInputDevices:Ljava/util/HashMap;
+    iget-object v1, p0, Lcom/android/server/input/PersistentDataStore;->mInputDevices:Ljava/util/HashMap;
 
-    invoke-virtual {p2, p1, v0}, Ljava/util/HashMap;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+    invoke-virtual {v1, p1, v0}, Ljava/util/HashMap;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
 
     .line 187
     invoke-direct {p0}, Lcom/android/server/input/PersistentDataStore;->setDirty()V
 
     .line 189
-    :cond_1d
+    :cond_1e
     return-object v0
 .end method
 
@@ -137,9 +142,10 @@
 
     move-result-object v2
     :try_end_d
-    .catch Ljava/io/FileNotFoundException; {:try_start_7 .. :try_end_d} :catch_3e
+    .catch Ljava/io/FileNotFoundException; {:try_start_7 .. :try_end_d} :catch_44
 
     .line 215
+    .local v2, "is":Ljava/io/InputStream;
     nop
 
     .line 219
@@ -149,6 +155,7 @@
     move-result-object v3
 
     .line 220
+    .local v3, "parser":Lorg/xmlpull/v1/XmlPullParser;
     new-instance v4, Ljava/io/BufferedInputStream;
 
     invoke-direct {v4, v2}, Ljava/io/BufferedInputStream;-><init>(Ljava/io/InputStream;)V
@@ -164,69 +171,88 @@
     .line 221
     invoke-direct {p0, v3}, Lcom/android/server/input/PersistentDataStore;->loadFromXml(Lorg/xmlpull/v1/XmlPullParser;)V
     :try_end_23
-    .catch Ljava/io/IOException; {:try_start_e .. :try_end_23} :catch_2e
-    .catch Lorg/xmlpull/v1/XmlPullParserException; {:try_start_e .. :try_end_23} :catch_26
-    .catchall {:try_start_e .. :try_end_23} :catchall_24
-
-    goto :goto_35
+    .catch Ljava/io/IOException; {:try_start_e .. :try_end_23} :catch_34
+    .catch Lorg/xmlpull/v1/XmlPullParserException; {:try_start_e .. :try_end_23} :catch_29
+    .catchall {:try_start_e .. :try_end_23} :catchall_27
 
     .line 229
-    :catchall_24
+    invoke-static {v2}, Llibcore/io/IoUtils;->closeQuietly(Ljava/lang/AutoCloseable;)V
+
+    .line 230
+    goto :goto_3f
+
+    .line 229
+    .end local v3  # "parser":Lorg/xmlpull/v1/XmlPullParser;
+    :catchall_27
     move-exception v0
 
-    goto :goto_3a
+    goto :goto_40
 
     .line 225
-    :catch_26
+    :catch_29
     move-exception v3
 
     .line 226
-    :try_start_27
+    .local v3, "ex":Lorg/xmlpull/v1/XmlPullParserException;
+    :try_start_2a
     invoke-static {v1, v0, v3}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
     .line 227
     invoke-direct {p0}, Lcom/android/server/input/PersistentDataStore;->clearState()V
+    :try_end_30
+    .catchall {:try_start_2a .. :try_end_30} :catchall_27
 
-    goto :goto_35
+    .line 229
+    .end local v3  # "ex":Lorg/xmlpull/v1/XmlPullParserException;
+    invoke-static {v2}, Llibcore/io/IoUtils;->closeQuietly(Ljava/lang/AutoCloseable;)V
+
+    .line 230
+    goto :goto_3f
 
     .line 222
-    :catch_2e
+    :catch_34
     move-exception v3
 
     .line 223
+    .local v3, "ex":Ljava/io/IOException;
+    :try_start_35
     invoke-static {v1, v0, v3}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
     .line 224
     invoke-direct {p0}, Lcom/android/server/input/PersistentDataStore;->clearState()V
-    :try_end_35
-    .catchall {:try_start_27 .. :try_end_35} :catchall_24
+    :try_end_3b
+    .catchall {:try_start_35 .. :try_end_3b} :catchall_27
 
     .line 229
-    :goto_35
+    .end local v3  # "ex":Ljava/io/IOException;
     invoke-static {v2}, Llibcore/io/IoUtils;->closeQuietly(Ljava/lang/AutoCloseable;)V
 
     .line 230
     nop
 
     .line 231
+    :goto_3f
     return-void
 
     .line 229
-    :goto_3a
+    :goto_40
     invoke-static {v2}, Llibcore/io/IoUtils;->closeQuietly(Ljava/lang/AutoCloseable;)V
 
     throw v0
 
     .line 213
-    :catch_3e
+    .end local v2  # "is":Ljava/io/InputStream;
+    :catch_44
     move-exception v0
 
     .line 214
+    .local v0, "ex":Ljava/io/FileNotFoundException;
     return-void
 .end method
 
 .method private loadFromXml(Lorg/xmlpull/v1/XmlPullParser;)V
     .registers 5
+    .param p1, "parser"  # Lorg/xmlpull/v1/XmlPullParser;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Ljava/io/IOException;,
@@ -235,7 +261,7 @@
     .end annotation
 
     .line 258
-    const-string v0, "input-manager-state"
+    const-string/jumbo v0, "input-manager-state"
 
     invoke-static {p1, v0}, Lcom/android/internal/util/XmlUtils;->beginDocument(Lorg/xmlpull/v1/XmlPullParser;Ljava/lang/String;)V
 
@@ -245,34 +271,35 @@
     move-result v0
 
     .line 260
-    :cond_9
-    :goto_9
+    .local v0, "outerDepth":I
+    :cond_a
+    :goto_a
     invoke-static {p1, v0}, Lcom/android/internal/util/XmlUtils;->nextElementWithin(Lorg/xmlpull/v1/XmlPullParser;I)Z
 
     move-result v1
 
-    if-eqz v1, :cond_1f
+    if-eqz v1, :cond_21
 
     .line 261
     invoke-interface {p1}, Lorg/xmlpull/v1/XmlPullParser;->getName()Ljava/lang/String;
 
     move-result-object v1
 
-    const-string v2, "input-devices"
+    const-string/jumbo v2, "input-devices"
 
     invoke-virtual {v1, v2}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
     move-result v1
 
-    if-eqz v1, :cond_9
+    if-eqz v1, :cond_a
 
     .line 262
     invoke-direct {p0, p1}, Lcom/android/server/input/PersistentDataStore;->loadInputDevicesFromXml(Lorg/xmlpull/v1/XmlPullParser;)V
 
-    goto :goto_9
+    goto :goto_a
 
     .line 265
-    :cond_1f
+    :cond_21
     return-void
 .end method
 
@@ -299,6 +326,7 @@
 
 .method private loadInputDevicesFromXml(Lorg/xmlpull/v1/XmlPullParser;)V
     .registers 6
+    .param p1, "parser"  # Lorg/xmlpull/v1/XmlPullParser;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Ljava/io/IOException;,
@@ -312,20 +340,21 @@
     move-result v0
 
     .line 270
+    .local v0, "outerDepth":I
     :cond_4
     :goto_4
     invoke-static {p1, v0}, Lcom/android/internal/util/XmlUtils;->nextElementWithin(Lorg/xmlpull/v1/XmlPullParser;I)Z
 
     move-result v1
 
-    if-eqz v1, :cond_45
+    if-eqz v1, :cond_47
 
     .line 271
     invoke-interface {p1}, Lorg/xmlpull/v1/XmlPullParser;->getName()Ljava/lang/String;
 
     move-result-object v1
 
-    const-string v2, "input-device"
+    const-string/jumbo v2, "input-device"
 
     invoke-virtual {v1, v2}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
@@ -343,7 +372,8 @@
     move-result-object v2
 
     .line 273
-    if-eqz v2, :cond_3d
+    .local v2, "descriptor":Ljava/lang/String;
+    if-eqz v2, :cond_3f
 
     .line 277
     iget-object v3, p0, Lcom/android/server/input/PersistentDataStore;->mInputDevices:Ljava/util/HashMap;
@@ -352,51 +382,58 @@
 
     move-result v3
 
-    if-nez v3, :cond_35
+    if-nez v3, :cond_37
 
     .line 281
     new-instance v3, Lcom/android/server/input/PersistentDataStore$InputDeviceState;
 
     invoke-direct {v3, v1}, Lcom/android/server/input/PersistentDataStore$InputDeviceState;-><init>(Lcom/android/server/input/PersistentDataStore$1;)V
 
+    move-object v1, v3
+
     .line 282
-    invoke-virtual {v3, p1}, Lcom/android/server/input/PersistentDataStore$InputDeviceState;->loadFromXml(Lorg/xmlpull/v1/XmlPullParser;)V
+    .local v1, "state":Lcom/android/server/input/PersistentDataStore$InputDeviceState;
+    invoke-virtual {v1, p1}, Lcom/android/server/input/PersistentDataStore$InputDeviceState;->loadFromXml(Lorg/xmlpull/v1/XmlPullParser;)V
 
     .line 283
-    iget-object v1, p0, Lcom/android/server/input/PersistentDataStore;->mInputDevices:Ljava/util/HashMap;
+    iget-object v3, p0, Lcom/android/server/input/PersistentDataStore;->mInputDevices:Ljava/util/HashMap;
 
-    invoke-virtual {v1, v2, v3}, Ljava/util/HashMap;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+    invoke-virtual {v3, v2, v1}, Ljava/util/HashMap;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
 
     .line 284
+    .end local v1  # "state":Lcom/android/server/input/PersistentDataStore$InputDeviceState;
+    .end local v2  # "descriptor":Ljava/lang/String;
     goto :goto_4
 
     .line 278
-    :cond_35
-    new-instance p1, Lorg/xmlpull/v1/XmlPullParserException;
+    .restart local v2  # "descriptor":Ljava/lang/String;
+    :cond_37
+    new-instance v1, Lorg/xmlpull/v1/XmlPullParserException;
 
-    const-string v0, "Found duplicate input device."
+    const-string v3, "Found duplicate input device."
 
-    invoke-direct {p1, v0}, Lorg/xmlpull/v1/XmlPullParserException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v1, v3}, Lorg/xmlpull/v1/XmlPullParserException;-><init>(Ljava/lang/String;)V
 
-    throw p1
+    throw v1
 
     .line 274
-    :cond_3d
-    new-instance p1, Lorg/xmlpull/v1/XmlPullParserException;
+    :cond_3f
+    new-instance v1, Lorg/xmlpull/v1/XmlPullParserException;
 
-    const-string v0, "Missing descriptor attribute on input-device."
+    const-string v3, "Missing descriptor attribute on input-device."
 
-    invoke-direct {p1, v0}, Lorg/xmlpull/v1/XmlPullParserException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v1, v3}, Lorg/xmlpull/v1/XmlPullParserException;-><init>(Ljava/lang/String;)V
 
-    throw p1
+    throw v1
 
     .line 286
-    :cond_45
+    .end local v2  # "descriptor":Ljava/lang/String;
+    :cond_47
     return-void
 .end method
 
 .method private save()V
-    .registers 5
+    .registers 6
 
     .line 236
     :try_start_0
@@ -406,71 +443,107 @@
 
     move-result-object v0
     :try_end_6
-    .catch Ljava/io/IOException; {:try_start_0 .. :try_end_6} :catch_2f
+    .catch Ljava/io/IOException; {:try_start_0 .. :try_end_6} :catch_40
 
     .line 237
-    nop
+    .local v0, "os":Ljava/io/FileOutputStream;
+    const/4 v1, 0x0
 
     .line 239
+    .local v1, "success":Z
     :try_start_7
-    new-instance v1, Lcom/android/internal/util/FastXmlSerializer;
+    new-instance v2, Lcom/android/internal/util/FastXmlSerializer;
 
-    invoke-direct {v1}, Lcom/android/internal/util/FastXmlSerializer;-><init>()V
+    invoke-direct {v2}, Lcom/android/internal/util/FastXmlSerializer;-><init>()V
 
     .line 240
-    new-instance v2, Ljava/io/BufferedOutputStream;
+    .local v2, "serializer":Lorg/xmlpull/v1/XmlSerializer;
+    new-instance v3, Ljava/io/BufferedOutputStream;
 
-    invoke-direct {v2, v0}, Ljava/io/BufferedOutputStream;-><init>(Ljava/io/OutputStream;)V
+    invoke-direct {v3, v0}, Ljava/io/BufferedOutputStream;-><init>(Ljava/io/OutputStream;)V
 
-    sget-object v3, Ljava/nio/charset/StandardCharsets;->UTF_8:Ljava/nio/charset/Charset;
+    sget-object v4, Ljava/nio/charset/StandardCharsets;->UTF_8:Ljava/nio/charset/Charset;
 
-    invoke-virtual {v3}, Ljava/nio/charset/Charset;->name()Ljava/lang/String;
+    invoke-virtual {v4}, Ljava/nio/charset/Charset;->name()Ljava/lang/String;
 
-    move-result-object v3
+    move-result-object v4
 
-    invoke-interface {v1, v2, v3}, Lorg/xmlpull/v1/XmlSerializer;->setOutput(Ljava/io/OutputStream;Ljava/lang/String;)V
+    invoke-interface {v2, v3, v4}, Lorg/xmlpull/v1/XmlSerializer;->setOutput(Ljava/io/OutputStream;Ljava/lang/String;)V
 
     .line 241
-    invoke-direct {p0, v1}, Lcom/android/server/input/PersistentDataStore;->saveToXml(Lorg/xmlpull/v1/XmlSerializer;)V
+    invoke-direct {p0, v2}, Lcom/android/server/input/PersistentDataStore;->saveToXml(Lorg/xmlpull/v1/XmlSerializer;)V
 
     .line 242
-    invoke-interface {v1}, Lorg/xmlpull/v1/XmlSerializer;->flush()V
+    invoke-interface {v2}, Lorg/xmlpull/v1/XmlSerializer;->flush()V
     :try_end_20
-    .catchall {:try_start_7 .. :try_end_20} :catchall_28
+    .catchall {:try_start_7 .. :try_end_20} :catchall_30
 
     .line 243
-    nop
+    const/4 v1, 0x1
 
     .line 245
-    nop
+    .end local v2  # "serializer":Lorg/xmlpull/v1/XmlSerializer;
+    if-eqz v1, :cond_29
 
     .line 246
-    :try_start_22
-    iget-object v1, p0, Lcom/android/server/input/PersistentDataStore;->mAtomicFile:Landroid/util/AtomicFile;
+    :try_start_23
+    iget-object v2, p0, Lcom/android/server/input/PersistentDataStore;->mAtomicFile:Landroid/util/AtomicFile;
 
-    invoke-virtual {v1, v0}, Landroid/util/AtomicFile;->finishWrite(Ljava/io/FileOutputStream;)V
+    invoke-virtual {v2, v0}, Landroid/util/AtomicFile;->finishWrite(Ljava/io/FileOutputStream;)V
 
-    .line 253
-    goto :goto_37
-
-    .line 245
-    :catchall_28
-    move-exception v1
+    goto :goto_2f
 
     .line 248
+    :cond_29
     iget-object v2, p0, Lcom/android/server/input/PersistentDataStore;->mAtomicFile:Landroid/util/AtomicFile;
 
     invoke-virtual {v2, v0}, Landroid/util/AtomicFile;->failWrite(Ljava/io/FileOutputStream;)V
 
-    throw v1
-    :try_end_2f
-    .catch Ljava/io/IOException; {:try_start_22 .. :try_end_2f} :catch_2f
+    .line 250
+    nop
+
+    .line 253
+    .end local v1  # "success":Z
+    :goto_2f
+    goto :goto_48
+
+    .line 245
+    .restart local v1  # "success":Z
+    :catchall_30
+    move-exception v2
+
+    if-eqz v1, :cond_39
+
+    .line 246
+    iget-object v3, p0, Lcom/android/server/input/PersistentDataStore;->mAtomicFile:Landroid/util/AtomicFile;
+
+    invoke-virtual {v3, v0}, Landroid/util/AtomicFile;->finishWrite(Ljava/io/FileOutputStream;)V
+
+    goto :goto_3e
+
+    .line 248
+    :cond_39
+    iget-object v3, p0, Lcom/android/server/input/PersistentDataStore;->mAtomicFile:Landroid/util/AtomicFile;
+
+    invoke-virtual {v3, v0}, Landroid/util/AtomicFile;->failWrite(Ljava/io/FileOutputStream;)V
+
+    :goto_3e
+    nop
+
+    .end local p0  # "this":Lcom/android/server/input/PersistentDataStore;
+    throw v2
+    :try_end_40
+    .catch Ljava/io/IOException; {:try_start_23 .. :try_end_40} :catch_40
 
     .line 251
-    :catch_2f
+    .end local v0  # "os":Ljava/io/FileOutputStream;
+    .end local v1  # "success":Z
+    .restart local p0  # "this":Lcom/android/server/input/PersistentDataStore;
+    :catch_40
     move-exception v0
 
     .line 252
+    .local v0, "ex":Ljava/io/IOException;
     const-string v1, "InputManager"
 
     const-string v2, "Failed to save input manager persistent store data."
@@ -478,12 +551,14 @@
     invoke-static {v1, v2, v0}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
     .line 254
-    :goto_37
+    .end local v0  # "ex":Ljava/io/IOException;
+    :goto_48
     return-void
 .end method
 
 .method private saveToXml(Lorg/xmlpull/v1/XmlSerializer;)V
-    .registers 10
+    .registers 11
+    .param p1, "serializer"  # Lorg/xmlpull/v1/XmlSerializer;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Ljava/io/IOException;
@@ -507,12 +582,12 @@
     invoke-interface {p1, v1, v0}, Lorg/xmlpull/v1/XmlSerializer;->setFeature(Ljava/lang/String;Z)V
 
     .line 291
-    const-string v0, "input-manager-state"
+    const-string/jumbo v0, "input-manager-state"
 
     invoke-interface {p1, v2, v0}, Lorg/xmlpull/v1/XmlSerializer;->startTag(Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
 
     .line 292
-    const-string v1, "input-devices"
+    const-string/jumbo v1, "input-devices"
 
     invoke-interface {p1, v2, v1}, Lorg/xmlpull/v1/XmlSerializer;->startTag(Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
 
@@ -527,12 +602,12 @@
 
     move-result-object v3
 
-    :goto_22
+    :goto_24
     invoke-interface {v3}, Ljava/util/Iterator;->hasNext()Z
 
     move-result v4
 
-    if-eqz v4, :cond_4b
+    if-eqz v4, :cond_4e
 
     invoke-interface {v3}, Ljava/util/Iterator;->next()Ljava/lang/Object;
 
@@ -541,6 +616,7 @@
     check-cast v4, Ljava/util/Map$Entry;
 
     .line 294
+    .local v4, "entry":Ljava/util/Map$Entry;, "Ljava/util/Map$Entry<Ljava/lang/String;Lcom/android/server/input/PersistentDataStore$InputDeviceState;>;"
     invoke-interface {v4}, Ljava/util/Map$Entry;->getKey()Ljava/lang/Object;
 
     move-result-object v5
@@ -548,33 +624,38 @@
     check-cast v5, Ljava/lang/String;
 
     .line 295
+    .local v5, "descriptor":Ljava/lang/String;
     invoke-interface {v4}, Ljava/util/Map$Entry;->getValue()Ljava/lang/Object;
 
-    move-result-object v4
+    move-result-object v6
 
-    check-cast v4, Lcom/android/server/input/PersistentDataStore$InputDeviceState;
+    check-cast v6, Lcom/android/server/input/PersistentDataStore$InputDeviceState;
 
     .line 296
-    const-string v6, "input-device"
+    .local v6, "state":Lcom/android/server/input/PersistentDataStore$InputDeviceState;
+    const-string/jumbo v7, "input-device"
 
-    invoke-interface {p1, v2, v6}, Lorg/xmlpull/v1/XmlSerializer;->startTag(Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
+    invoke-interface {p1, v2, v7}, Lorg/xmlpull/v1/XmlSerializer;->startTag(Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
 
     .line 297
-    const-string v7, "descriptor"
+    const-string v8, "descriptor"
 
-    invoke-interface {p1, v2, v7, v5}, Lorg/xmlpull/v1/XmlSerializer;->attribute(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
+    invoke-interface {p1, v2, v8, v5}, Lorg/xmlpull/v1/XmlSerializer;->attribute(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
 
     .line 298
-    invoke-virtual {v4, p1}, Lcom/android/server/input/PersistentDataStore$InputDeviceState;->saveToXml(Lorg/xmlpull/v1/XmlSerializer;)V
+    invoke-virtual {v6, p1}, Lcom/android/server/input/PersistentDataStore$InputDeviceState;->saveToXml(Lorg/xmlpull/v1/XmlSerializer;)V
 
     .line 299
-    invoke-interface {p1, v2, v6}, Lorg/xmlpull/v1/XmlSerializer;->endTag(Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
+    invoke-interface {p1, v2, v7}, Lorg/xmlpull/v1/XmlSerializer;->endTag(Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
 
     .line 300
-    goto :goto_22
+    .end local v4  # "entry":Ljava/util/Map$Entry;, "Ljava/util/Map$Entry<Ljava/lang/String;Lcom/android/server/input/PersistentDataStore$InputDeviceState;>;"
+    .end local v5  # "descriptor":Ljava/lang/String;
+    .end local v6  # "state":Lcom/android/server/input/PersistentDataStore$InputDeviceState;
+    goto :goto_24
 
     .line 301
-    :cond_4b
+    :cond_4e
     invoke-interface {p1, v2, v1}, Lorg/xmlpull/v1/XmlSerializer;->endTag(Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
 
     .line 302
@@ -602,21 +683,24 @@
 
 # virtual methods
 .method public addKeyboardLayout(Ljava/lang/String;Ljava/lang/String;)Z
-    .registers 4
+    .registers 6
+    .param p1, "inputDeviceDescriptor"  # Ljava/lang/String;
+    .param p2, "keyboardLayoutDescriptor"  # Ljava/lang/String;
 
     .line 139
     const/4 v0, 0x1
 
     invoke-direct {p0, p1, v0}, Lcom/android/server/input/PersistentDataStore;->getInputDeviceState(Ljava/lang/String;Z)Lcom/android/server/input/PersistentDataStore$InputDeviceState;
 
-    move-result-object p1
+    move-result-object v1
 
     .line 140
-    invoke-virtual {p1, p2}, Lcom/android/server/input/PersistentDataStore$InputDeviceState;->addKeyboardLayout(Ljava/lang/String;)Z
+    .local v1, "state":Lcom/android/server/input/PersistentDataStore$InputDeviceState;
+    invoke-virtual {v1, p2}, Lcom/android/server/input/PersistentDataStore$InputDeviceState;->addKeyboardLayout(Ljava/lang/String;)Z
 
-    move-result p1
+    move-result v2
 
-    if-eqz p1, :cond_f
+    if-eqz v2, :cond_f
 
     .line 141
     invoke-direct {p0}, Lcom/android/server/input/PersistentDataStore;->setDirty()V
@@ -626,123 +710,134 @@
 
     .line 144
     :cond_f
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    return p1
+    return v0
 .end method
 
 .method public getCurrentKeyboardLayout(Ljava/lang/String;)Ljava/lang/String;
-    .registers 3
+    .registers 4
+    .param p1, "inputDeviceDescriptor"  # Ljava/lang/String;
 
     .line 115
     const/4 v0, 0x0
 
     invoke-direct {p0, p1, v0}, Lcom/android/server/input/PersistentDataStore;->getInputDeviceState(Ljava/lang/String;Z)Lcom/android/server/input/PersistentDataStore$InputDeviceState;
 
-    move-result-object p1
+    move-result-object v0
 
     .line 116
-    if-eqz p1, :cond_c
+    .local v0, "state":Lcom/android/server/input/PersistentDataStore$InputDeviceState;
+    if-eqz v0, :cond_c
 
-    invoke-virtual {p1}, Lcom/android/server/input/PersistentDataStore$InputDeviceState;->getCurrentKeyboardLayout()Ljava/lang/String;
+    invoke-virtual {v0}, Lcom/android/server/input/PersistentDataStore$InputDeviceState;->getCurrentKeyboardLayout()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v1
 
     goto :goto_d
 
     :cond_c
-    const/4 p1, 0x0
+    const/4 v1, 0x0
 
     :goto_d
-    return-object p1
+    return-object v1
 .end method
 
 .method public getKeyboardLayouts(Ljava/lang/String;)[Ljava/lang/String;
-    .registers 3
+    .registers 4
+    .param p1, "inputDeviceDescriptor"  # Ljava/lang/String;
 
     .line 130
     const/4 v0, 0x0
 
     invoke-direct {p0, p1, v0}, Lcom/android/server/input/PersistentDataStore;->getInputDeviceState(Ljava/lang/String;Z)Lcom/android/server/input/PersistentDataStore$InputDeviceState;
 
-    move-result-object p1
+    move-result-object v0
 
     .line 131
-    if-nez p1, :cond_10
+    .local v0, "state":Lcom/android/server/input/PersistentDataStore$InputDeviceState;
+    if-nez v0, :cond_10
 
     .line 132
-    const-class p1, Ljava/lang/String;
+    const-class v1, Ljava/lang/String;
 
-    invoke-static {p1}, Lcom/android/internal/util/ArrayUtils;->emptyArray(Ljava/lang/Class;)[Ljava/lang/Object;
+    invoke-static {v1}, Lcom/android/internal/util/ArrayUtils;->emptyArray(Ljava/lang/Class;)[Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v1
 
-    check-cast p1, [Ljava/lang/String;
+    check-cast v1, [Ljava/lang/String;
 
-    return-object p1
+    return-object v1
 
     .line 134
     :cond_10
-    invoke-virtual {p1}, Lcom/android/server/input/PersistentDataStore$InputDeviceState;->getKeyboardLayouts()[Ljava/lang/String;
+    invoke-virtual {v0}, Lcom/android/server/input/PersistentDataStore$InputDeviceState;->getKeyboardLayouts()[Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v1
 
-    return-object p1
+    return-object v1
 .end method
 
 .method public getTouchCalibration(Ljava/lang/String;I)Landroid/hardware/input/TouchCalibration;
-    .registers 4
+    .registers 6
+    .param p1, "inputDeviceDescriptor"  # Ljava/lang/String;
+    .param p2, "surfaceRotation"  # I
 
     .line 91
     const/4 v0, 0x0
 
     invoke-direct {p0, p1, v0}, Lcom/android/server/input/PersistentDataStore;->getInputDeviceState(Ljava/lang/String;Z)Lcom/android/server/input/PersistentDataStore$InputDeviceState;
 
-    move-result-object p1
+    move-result-object v0
 
     .line 92
-    if-nez p1, :cond_a
+    .local v0, "state":Lcom/android/server/input/PersistentDataStore$InputDeviceState;
+    if-nez v0, :cond_a
 
     .line 93
-    sget-object p1, Landroid/hardware/input/TouchCalibration;->IDENTITY:Landroid/hardware/input/TouchCalibration;
+    sget-object v1, Landroid/hardware/input/TouchCalibration;->IDENTITY:Landroid/hardware/input/TouchCalibration;
 
-    return-object p1
+    return-object v1
 
     .line 96
     :cond_a
-    invoke-virtual {p1, p2}, Lcom/android/server/input/PersistentDataStore$InputDeviceState;->getTouchCalibration(I)Landroid/hardware/input/TouchCalibration;
+    invoke-virtual {v0, p2}, Lcom/android/server/input/PersistentDataStore$InputDeviceState;->getTouchCalibration(I)Landroid/hardware/input/TouchCalibration;
 
-    move-result-object p1
+    move-result-object v1
 
     .line 97
-    if-nez p1, :cond_13
+    .local v1, "cal":Landroid/hardware/input/TouchCalibration;
+    if-nez v1, :cond_13
 
     .line 98
-    sget-object p1, Landroid/hardware/input/TouchCalibration;->IDENTITY:Landroid/hardware/input/TouchCalibration;
+    sget-object v2, Landroid/hardware/input/TouchCalibration;->IDENTITY:Landroid/hardware/input/TouchCalibration;
 
-    return-object p1
+    return-object v2
 
     .line 100
     :cond_13
-    return-object p1
+    return-object v1
 .end method
 
 .method public removeKeyboardLayout(Ljava/lang/String;Ljava/lang/String;)Z
-    .registers 4
+    .registers 6
+    .param p1, "inputDeviceDescriptor"  # Ljava/lang/String;
+    .param p2, "keyboardLayoutDescriptor"  # Ljava/lang/String;
 
     .line 149
     const/4 v0, 0x1
 
     invoke-direct {p0, p1, v0}, Lcom/android/server/input/PersistentDataStore;->getInputDeviceState(Ljava/lang/String;Z)Lcom/android/server/input/PersistentDataStore$InputDeviceState;
 
-    move-result-object p1
+    move-result-object v1
 
     .line 150
-    invoke-virtual {p1, p2}, Lcom/android/server/input/PersistentDataStore$InputDeviceState;->removeKeyboardLayout(Ljava/lang/String;)Z
+    .local v1, "state":Lcom/android/server/input/PersistentDataStore$InputDeviceState;
+    invoke-virtual {v1, p2}, Lcom/android/server/input/PersistentDataStore$InputDeviceState;->removeKeyboardLayout(Ljava/lang/String;)Z
 
-    move-result p1
+    move-result v2
 
-    if-eqz p1, :cond_f
+    if-eqz v2, :cond_f
 
     .line 151
     invoke-direct {p0}, Lcom/android/server/input/PersistentDataStore;->setDirty()V
@@ -752,13 +847,13 @@
 
     .line 154
     :cond_f
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    return p1
+    return v0
 .end method
 
 .method public removeUninstalledKeyboardLayouts(Ljava/util/Set;)Z
-    .registers 7
+    .registers 6
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(",
@@ -769,64 +864,66 @@
     .end annotation
 
     .line 167
-    nop
+    .local p1, "availableKeyboardLayouts":Ljava/util/Set;, "Ljava/util/Set<Ljava/lang/String;>;"
+    const/4 v0, 0x0
 
     .line 168
-    iget-object v0, p0, Lcom/android/server/input/PersistentDataStore;->mInputDevices:Ljava/util/HashMap;
+    .local v0, "changed":Z
+    iget-object v1, p0, Lcom/android/server/input/PersistentDataStore;->mInputDevices:Ljava/util/HashMap;
 
-    invoke-virtual {v0}, Ljava/util/HashMap;->values()Ljava/util/Collection;
+    invoke-virtual {v1}, Ljava/util/HashMap;->values()Ljava/util/Collection;
 
-    move-result-object v0
+    move-result-object v1
 
-    invoke-interface {v0}, Ljava/util/Collection;->iterator()Ljava/util/Iterator;
+    invoke-interface {v1}, Ljava/util/Collection;->iterator()Ljava/util/Iterator;
 
-    move-result-object v0
+    move-result-object v1
 
-    const/4 v1, 0x0
+    :goto_b
+    invoke-interface {v1}, Ljava/util/Iterator;->hasNext()Z
 
-    move v2, v1
+    move-result v2
 
-    :goto_d
-    invoke-interface {v0}, Ljava/util/Iterator;->hasNext()Z
+    if-eqz v2, :cond_1f
 
-    move-result v3
+    invoke-interface {v1}, Ljava/util/Iterator;->next()Ljava/lang/Object;
 
-    const/4 v4, 0x1
+    move-result-object v2
 
-    if-eqz v3, :cond_22
-
-    invoke-interface {v0}, Ljava/util/Iterator;->next()Ljava/lang/Object;
-
-    move-result-object v3
-
-    check-cast v3, Lcom/android/server/input/PersistentDataStore$InputDeviceState;
+    check-cast v2, Lcom/android/server/input/PersistentDataStore$InputDeviceState;
 
     .line 169
-    invoke-virtual {v3, p1}, Lcom/android/server/input/PersistentDataStore$InputDeviceState;->removeUninstalledKeyboardLayouts(Ljava/util/Set;)Z
+    .local v2, "state":Lcom/android/server/input/PersistentDataStore$InputDeviceState;
+    invoke-virtual {v2, p1}, Lcom/android/server/input/PersistentDataStore$InputDeviceState;->removeUninstalledKeyboardLayouts(Ljava/util/Set;)Z
 
     move-result v3
 
-    if-eqz v3, :cond_21
+    if-eqz v3, :cond_1e
 
     .line 170
-    move v2, v4
+    const/4 v0, 0x1
 
     .line 172
-    :cond_21
-    goto :goto_d
+    .end local v2  # "state":Lcom/android/server/input/PersistentDataStore$InputDeviceState;
+    :cond_1e
+    goto :goto_b
 
     .line 173
-    :cond_22
-    if-eqz v2, :cond_28
+    :cond_1f
+    if-eqz v0, :cond_26
 
     .line 174
     invoke-direct {p0}, Lcom/android/server/input/PersistentDataStore;->setDirty()V
 
     .line 175
-    return v4
+    const/4 v1, 0x1
+
+    return v1
 
     .line 177
-    :cond_28
+    :cond_26
+    const/4 v1, 0x0
+
     return v1
 .end method
 
@@ -852,21 +949,24 @@
 .end method
 
 .method public setCurrentKeyboardLayout(Ljava/lang/String;Ljava/lang/String;)Z
-    .registers 4
+    .registers 6
+    .param p1, "inputDeviceDescriptor"  # Ljava/lang/String;
+    .param p2, "keyboardLayoutDescriptor"  # Ljava/lang/String;
 
     .line 121
     const/4 v0, 0x1
 
     invoke-direct {p0, p1, v0}, Lcom/android/server/input/PersistentDataStore;->getInputDeviceState(Ljava/lang/String;Z)Lcom/android/server/input/PersistentDataStore$InputDeviceState;
 
-    move-result-object p1
+    move-result-object v1
 
     .line 122
-    invoke-virtual {p1, p2}, Lcom/android/server/input/PersistentDataStore$InputDeviceState;->setCurrentKeyboardLayout(Ljava/lang/String;)Z
+    .local v1, "state":Lcom/android/server/input/PersistentDataStore$InputDeviceState;
+    invoke-virtual {v1, p2}, Lcom/android/server/input/PersistentDataStore$InputDeviceState;->setCurrentKeyboardLayout(Ljava/lang/String;)Z
 
-    move-result p1
+    move-result v2
 
-    if-eqz p1, :cond_f
+    if-eqz v2, :cond_f
 
     .line 123
     invoke-direct {p0}, Lcom/android/server/input/PersistentDataStore;->setDirty()V
@@ -876,27 +976,31 @@
 
     .line 126
     :cond_f
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    return p1
+    return v0
 .end method
 
 .method public setTouchCalibration(Ljava/lang/String;ILandroid/hardware/input/TouchCalibration;)Z
-    .registers 5
+    .registers 7
+    .param p1, "inputDeviceDescriptor"  # Ljava/lang/String;
+    .param p2, "surfaceRotation"  # I
+    .param p3, "calibration"  # Landroid/hardware/input/TouchCalibration;
 
     .line 104
     const/4 v0, 0x1
 
     invoke-direct {p0, p1, v0}, Lcom/android/server/input/PersistentDataStore;->getInputDeviceState(Ljava/lang/String;Z)Lcom/android/server/input/PersistentDataStore$InputDeviceState;
 
-    move-result-object p1
+    move-result-object v1
 
     .line 106
-    invoke-virtual {p1, p2, p3}, Lcom/android/server/input/PersistentDataStore$InputDeviceState;->setTouchCalibration(ILandroid/hardware/input/TouchCalibration;)Z
+    .local v1, "state":Lcom/android/server/input/PersistentDataStore$InputDeviceState;
+    invoke-virtual {v1, p2, p3}, Lcom/android/server/input/PersistentDataStore$InputDeviceState;->setTouchCalibration(ILandroid/hardware/input/TouchCalibration;)Z
 
-    move-result p1
+    move-result v2
 
-    if-eqz p1, :cond_f
+    if-eqz v2, :cond_f
 
     .line 107
     invoke-direct {p0}, Lcom/android/server/input/PersistentDataStore;->setDirty()V
@@ -906,37 +1010,40 @@
 
     .line 111
     :cond_f
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    return p1
+    return v0
 .end method
 
 .method public switchKeyboardLayout(Ljava/lang/String;I)Z
-    .registers 4
+    .registers 6
+    .param p1, "inputDeviceDescriptor"  # Ljava/lang/String;
+    .param p2, "direction"  # I
 
     .line 158
     const/4 v0, 0x0
 
     invoke-direct {p0, p1, v0}, Lcom/android/server/input/PersistentDataStore;->getInputDeviceState(Ljava/lang/String;Z)Lcom/android/server/input/PersistentDataStore$InputDeviceState;
 
-    move-result-object p1
+    move-result-object v1
 
     .line 159
-    if-eqz p1, :cond_12
+    .local v1, "state":Lcom/android/server/input/PersistentDataStore$InputDeviceState;
+    if-eqz v1, :cond_12
 
-    invoke-virtual {p1, p2}, Lcom/android/server/input/PersistentDataStore$InputDeviceState;->switchKeyboardLayout(I)Z
+    invoke-virtual {v1, p2}, Lcom/android/server/input/PersistentDataStore$InputDeviceState;->switchKeyboardLayout(I)Z
 
-    move-result p1
+    move-result v2
 
-    if-eqz p1, :cond_12
+    if-eqz v2, :cond_12
 
     .line 160
     invoke-direct {p0}, Lcom/android/server/input/PersistentDataStore;->setDirty()V
 
     .line 161
-    const/4 p1, 0x1
+    const/4 v0, 0x1
 
-    return p1
+    return v0
 
     .line 163
     :cond_12

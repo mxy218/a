@@ -21,6 +21,8 @@
 # direct methods
 .method public constructor <init>(J[B)V
     .registers 4
+    .param p1, "sequenceId"  # J
+    .param p3, "snapshot"  # [B
 
     .line 238
     invoke-direct {p0, p1, p2}, Lcom/google/android/startop/iorap/AppLaunchEvent;-><init>(J)V
@@ -34,6 +36,7 @@
 
 .method constructor <init>(Landroid/os/Parcel;)V
     .registers 3
+    .param p1, "p"  # Landroid/os/Parcel;
 
     .line 269
     invoke-direct {p0, p1}, Lcom/google/android/startop/iorap/AppLaunchEvent;-><init>(Landroid/os/Parcel;)V
@@ -48,17 +51,17 @@
     .line 271
     invoke-static {p1}, Lcom/google/android/startop/iorap/AppLaunchEvent$ActivityRecordProtoParcelable;->create(Landroid/os/Parcel;)[B
 
-    move-result-object p1
+    move-result-object v0
 
-    iput-object p1, p0, Lcom/google/android/startop/iorap/AppLaunchEvent$ActivityLaunchCancelled;->activityRecordSnapshot:[B
+    iput-object v0, p0, Lcom/google/android/startop/iorap/AppLaunchEvent$ActivityLaunchCancelled;->activityRecordSnapshot:[B
 
     goto :goto_13
 
     .line 273
     :cond_10
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    iput-object p1, p0, Lcom/google/android/startop/iorap/AppLaunchEvent$ActivityLaunchCancelled;->activityRecordSnapshot:[B
+    iput-object v0, p0, Lcom/google/android/startop/iorap/AppLaunchEvent$ActivityLaunchCancelled;->activityRecordSnapshot:[B
 
     .line 275
     :goto_13
@@ -69,6 +72,7 @@
 # virtual methods
 .method public equals(Ljava/lang/Object;)Z
     .registers 5
+    .param p1, "other"  # Ljava/lang/Object;
 
     .line 244
     instance-of v0, p1, Lcom/google/android/startop/iorap/AppLaunchEvent$ActivityLaunchCancelled;
@@ -95,9 +99,9 @@
     .line 247
     invoke-super {p0, p1}, Lcom/google/android/startop/iorap/AppLaunchEvent;->equals(Ljava/lang/Object;)Z
 
-    move-result p1
+    move-result v0
 
-    if-eqz p1, :cond_1a
+    if-eqz v0, :cond_1a
 
     const/4 v1, 0x1
 
@@ -144,6 +148,8 @@
 
 .method protected writeToParcelImpl(Landroid/os/Parcel;I)V
     .registers 4
+    .param p1, "p"  # Landroid/os/Parcel;
+    .param p2, "flags"  # I
 
     .line 259
     invoke-super {p0, p1, p2}, Lcom/google/android/startop/iorap/AppLaunchEvent;->writeToParcelImpl(Landroid/os/Parcel;I)V
@@ -167,9 +173,9 @@
 
     .line 264
     :cond_11
-    const/4 p2, 0x0
+    const/4 v0, 0x0
 
-    invoke-virtual {p1, p2}, Landroid/os/Parcel;->writeBoolean(Z)V
+    invoke-virtual {p1, v0}, Landroid/os/Parcel;->writeBoolean(Z)V
 
     .line 266
     :goto_15

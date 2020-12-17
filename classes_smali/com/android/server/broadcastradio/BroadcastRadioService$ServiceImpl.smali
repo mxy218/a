@@ -32,6 +32,8 @@
 
 .method synthetic constructor <init>(Lcom/android/server/broadcastradio/BroadcastRadioService;Lcom/android/server/broadcastradio/BroadcastRadioService$1;)V
     .registers 3
+    .param p1, "x0"  # Lcom/android/server/broadcastradio/BroadcastRadioService;
+    .param p2, "x1"  # Lcom/android/server/broadcastradio/BroadcastRadioService$1;
 
     .line 67
     invoke-direct {p0, p1}, Lcom/android/server/broadcastradio/BroadcastRadioService$ServiceImpl;-><init>(Lcom/android/server/broadcastradio/BroadcastRadioService;)V
@@ -74,7 +76,9 @@
 
 # virtual methods
 .method public addAnnouncementListener([ILandroid/hardware/radio/IAnnouncementListener;)Landroid/hardware/radio/ICloseHandle;
-    .registers 5
+    .registers 6
+    .param p1, "enabledTypes"  # [I
+    .param p2, "listener"  # Landroid/hardware/radio/IAnnouncementListener;
 
     .line 107
     invoke-static {p1}, Ljava/util/Objects;->requireNonNull(Ljava/lang/Object;)Ljava/lang/Object;
@@ -109,20 +113,20 @@
     if-nez v1, :cond_2a
 
     .line 113
-    const-string p1, "BcRadioSrv"
+    const-string v1, "BcRadioSrv"
 
-    const-string v1, "There are no HAL 2.x modules registered"
+    const-string v2, "There are no HAL 2.x modules registered"
 
-    invoke-static {p1, v1}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v2}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 114
-    new-instance p1, Lcom/android/server/broadcastradio/hal2/AnnouncementAggregator;
+    new-instance v1, Lcom/android/server/broadcastradio/hal2/AnnouncementAggregator;
 
-    invoke-direct {p1, p2}, Lcom/android/server/broadcastradio/hal2/AnnouncementAggregator;-><init>(Landroid/hardware/radio/IAnnouncementListener;)V
+    invoke-direct {v1, p2}, Lcom/android/server/broadcastradio/hal2/AnnouncementAggregator;-><init>(Landroid/hardware/radio/IAnnouncementListener;)V
 
     monitor-exit v0
 
-    return-object p1
+    return-object v1
 
     .line 117
     :cond_2a
@@ -134,21 +138,21 @@
 
     invoke-virtual {v1, p1, p2}, Lcom/android/server/broadcastradio/hal2/BroadcastRadioService;->addAnnouncementListener([ILandroid/hardware/radio/IAnnouncementListener;)Landroid/hardware/radio/ICloseHandle;
 
-    move-result-object p1
+    move-result-object v1
 
     monitor-exit v0
 
-    return-object p1
+    return-object v1
 
     .line 118
     :catchall_36
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_38
     .catchall {:try_start_10 .. :try_end_38} :catchall_36
 
-    throw p1
+    throw v1
 .end method
 
 .method public listModules()Ljava/util/List;
@@ -171,6 +175,7 @@
     invoke-direct {v0}, Ljava/util/ArrayList;-><init>()V
 
     .line 79
+    .local v0, "modules":Ljava/util/List;, "Ljava/util/List<Landroid/hardware/radio/RadioManager$ModuleProperties;>;"
     iget-object v1, p0, Lcom/android/server/broadcastradio/BroadcastRadioService$ServiceImpl;->this$0:Lcom/android/server/broadcastradio/BroadcastRadioService;
 
     invoke-static {v1}, Lcom/android/server/broadcastradio/BroadcastRadioService;->access$100(Lcom/android/server/broadcastradio/BroadcastRadioService;)Ljava/util/List;
@@ -198,6 +203,10 @@
 
 .method public openTuner(ILandroid/hardware/radio/RadioManager$BandConfig;ZLandroid/hardware/radio/ITunerCallback;)Landroid/hardware/radio/ITuner;
     .registers 7
+    .param p1, "moduleId"  # I
+    .param p2, "bandConfig"  # Landroid/hardware/radio/RadioManager$BandConfig;
+    .param p3, "withAudio"  # Z
+    .param p4, "callback"  # Landroid/hardware/radio/ITunerCallback;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -242,11 +251,11 @@
 
     invoke-virtual {v1, p1, p2, p3, p4}, Lcom/android/server/broadcastradio/hal2/BroadcastRadioService;->openSession(ILandroid/hardware/radio/RadioManager$BandConfig;ZLandroid/hardware/radio/ITunerCallback;)Landroid/hardware/radio/ITuner;
 
-    move-result-object p1
+    move-result-object v1
 
     monitor-exit v0
 
-    return-object p1
+    return-object v1
 
     .line 96
     :cond_24
@@ -258,29 +267,29 @@
 
     invoke-virtual {v1, p1, p2, p3, p4}, Lcom/android/server/broadcastradio/hal1/BroadcastRadioService;->openTuner(ILandroid/hardware/radio/RadioManager$BandConfig;ZLandroid/hardware/radio/ITunerCallback;)Landroid/hardware/radio/ITuner;
 
-    move-result-object p1
+    move-result-object v1
 
     monitor-exit v0
 
-    return-object p1
+    return-object v1
 
     .line 98
     :catchall_30
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_32
     .catchall {:try_start_c .. :try_end_32} :catchall_30
 
-    throw p1
+    throw v1
 
     .line 90
     :cond_33
-    new-instance p1, Ljava/lang/IllegalArgumentException;
+    new-instance v0, Ljava/lang/IllegalArgumentException;
 
-    const-string p2, "Callback must not be empty"
+    const-string v1, "Callback must not be empty"
 
-    invoke-direct {p1, p2}, Ljava/lang/IllegalArgumentException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v0, v1}, Ljava/lang/IllegalArgumentException;-><init>(Ljava/lang/String;)V
 
-    throw p1
+    throw v0
 .end method

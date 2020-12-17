@@ -24,8 +24,9 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/wm/WindowManagerService;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/wm/WindowManagerService;
 
-    .line 425
+    .line 437
     iput-object p1, p0, Lcom/android/server/wm/WindowManagerService$3;->this$0:Lcom/android/server/wm/WindowManagerService;
 
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -37,81 +38,89 @@
 # virtual methods
 .method public dump(Ljava/io/FileDescriptor;Ljava/io/PrintWriter;[Ljava/lang/String;Z)V
     .registers 6
+    .param p1, "fd"  # Ljava/io/FileDescriptor;
+    .param p2, "pw"  # Ljava/io/PrintWriter;
+    .param p3, "args"  # [Ljava/lang/String;
+    .param p4, "asProto"  # Z
 
-    .line 442
+    .line 454
     iget-object v0, p0, Lcom/android/server/wm/WindowManagerService$3;->this$0:Lcom/android/server/wm/WindowManagerService;
 
     invoke-static {v0, p1, p2, p3, p4}, Lcom/android/server/wm/WindowManagerService;->access$100(Lcom/android/server/wm/WindowManagerService;Ljava/io/FileDescriptor;Ljava/io/PrintWriter;[Ljava/lang/String;Z)V
 
-    .line 443
+    .line 455
     return-void
 .end method
 
 .method public dumpCritical(Ljava/io/FileDescriptor;Ljava/io/PrintWriter;[Ljava/lang/String;Z)V
-    .registers 7
+    .registers 8
+    .param p1, "fd"  # Ljava/io/FileDescriptor;
+    .param p2, "pw"  # Ljava/io/PrintWriter;
+    .param p3, "args"  # [Ljava/lang/String;
+    .param p4, "asProto"  # Z
 
-    .line 430
+    .line 442
     if-eqz p4, :cond_21
 
-    iget-object p3, p0, Lcom/android/server/wm/WindowManagerService$3;->this$0:Lcom/android/server/wm/WindowManagerService;
+    iget-object v0, p0, Lcom/android/server/wm/WindowManagerService$3;->this$0:Lcom/android/server/wm/WindowManagerService;
 
-    iget-object p3, p3, Lcom/android/server/wm/WindowManagerService;->mWindowTracing:Lcom/android/server/wm/WindowTracing;
+    iget-object v0, v0, Lcom/android/server/wm/WindowManagerService;->mWindowTracing:Lcom/android/server/wm/WindowTracing;
 
-    invoke-virtual {p3}, Lcom/android/server/wm/WindowTracing;->isEnabled()Z
+    invoke-virtual {v0}, Lcom/android/server/wm/WindowTracing;->isEnabled()Z
 
-    move-result p3
+    move-result v0
 
-    if-eqz p3, :cond_21
+    if-eqz v0, :cond_21
 
-    .line 431
-    iget-object p3, p0, Lcom/android/server/wm/WindowManagerService$3;->this$0:Lcom/android/server/wm/WindowManagerService;
+    .line 443
+    iget-object v0, p0, Lcom/android/server/wm/WindowManagerService$3;->this$0:Lcom/android/server/wm/WindowManagerService;
 
-    iget-object p3, p3, Lcom/android/server/wm/WindowManagerService;->mWindowTracing:Lcom/android/server/wm/WindowTracing;
-
-    const/4 v0, 0x0
+    iget-object v0, v0, Lcom/android/server/wm/WindowManagerService;->mWindowTracing:Lcom/android/server/wm/WindowTracing;
 
     const/4 v1, 0x0
 
-    invoke-virtual {p3, v0, v1}, Lcom/android/server/wm/WindowTracing;->stopTrace(Ljava/io/PrintWriter;Z)V
+    const/4 v2, 0x0
 
-    .line 432
+    invoke-virtual {v0, v1, v2}, Lcom/android/server/wm/WindowTracing;->stopTrace(Ljava/io/PrintWriter;Z)V
+
+    .line 444
     invoke-static {}, Lcom/android/internal/os/BackgroundThread;->getHandler()Landroid/os/Handler;
-
-    move-result-object p3
-
-    new-instance v0, Lcom/android/server/wm/-$$Lambda$WindowManagerService$3$FRNc42I1SE4lD0XFYgIp8RCUXng;
-
-    invoke-direct {v0, p0}, Lcom/android/server/wm/-$$Lambda$WindowManagerService$3$FRNc42I1SE4lD0XFYgIp8RCUXng;-><init>(Lcom/android/server/wm/WindowManagerService$3;)V
-
-    invoke-virtual {p3, v0}, Landroid/os/Handler;->post(Ljava/lang/Runnable;)Z
-
-    .line 437
-    :cond_21
-    iget-object p3, p0, Lcom/android/server/wm/WindowManagerService$3;->this$0:Lcom/android/server/wm/WindowManagerService;
-
-    const-string v0, "-a"
-
-    filled-new-array {v0}, [Ljava/lang/String;
 
     move-result-object v0
 
-    invoke-static {p3, p1, p2, v0, p4}, Lcom/android/server/wm/WindowManagerService;->access$100(Lcom/android/server/wm/WindowManagerService;Ljava/io/FileDescriptor;Ljava/io/PrintWriter;[Ljava/lang/String;Z)V
+    new-instance v1, Lcom/android/server/wm/-$$Lambda$WindowManagerService$3$FRNc42I1SE4lD0XFYgIp8RCUXng;
 
-    .line 438
+    invoke-direct {v1, p0}, Lcom/android/server/wm/-$$Lambda$WindowManagerService$3$FRNc42I1SE4lD0XFYgIp8RCUXng;-><init>(Lcom/android/server/wm/WindowManagerService$3;)V
+
+    invoke-virtual {v0, v1}, Landroid/os/Handler;->post(Ljava/lang/Runnable;)Z
+
+    .line 449
+    :cond_21
+    iget-object v0, p0, Lcom/android/server/wm/WindowManagerService$3;->this$0:Lcom/android/server/wm/WindowManagerService;
+
+    const-string v1, "-a"
+
+    filled-new-array {v1}, [Ljava/lang/String;
+
+    move-result-object v1
+
+    invoke-static {v0, p1, p2, v1, p4}, Lcom/android/server/wm/WindowManagerService;->access$100(Lcom/android/server/wm/WindowManagerService;Ljava/io/FileDescriptor;Ljava/io/PrintWriter;[Ljava/lang/String;Z)V
+
+    .line 450
     return-void
 .end method
 
 .method public synthetic lambda$dumpCritical$0$WindowManagerService$3()V
     .registers 3
 
-    .line 433
+    .line 445
     iget-object v0, p0, Lcom/android/server/wm/WindowManagerService$3;->this$0:Lcom/android/server/wm/WindowManagerService;
 
     iget-object v0, v0, Lcom/android/server/wm/WindowManagerService;->mWindowTracing:Lcom/android/server/wm/WindowTracing;
 
     invoke-virtual {v0}, Lcom/android/server/wm/WindowTracing;->writeTraceToFile()V
 
-    .line 434
+    .line 446
     iget-object v0, p0, Lcom/android/server/wm/WindowManagerService$3;->this$0:Lcom/android/server/wm/WindowManagerService;
 
     iget-object v0, v0, Lcom/android/server/wm/WindowManagerService;->mWindowTracing:Lcom/android/server/wm/WindowTracing;
@@ -120,6 +129,6 @@
 
     invoke-virtual {v0, v1}, Lcom/android/server/wm/WindowTracing;->startTrace(Ljava/io/PrintWriter;)V
 
-    .line 435
+    .line 447
     return-void
 .end method

@@ -27,6 +27,10 @@
 # direct methods
 .method private constructor <init>(Lcom/android/server/pm/KeySetManagerService;JILjava/security/PublicKey;)V
     .registers 6
+    .param p1, "this$0"  # Lcom/android/server/pm/KeySetManagerService;
+    .param p2, "id"  # J
+    .param p4, "refCount"  # I
+    .param p5, "key"  # Ljava/security/PublicKey;
 
     .line 84
     iput-object p1, p0, Lcom/android/server/pm/KeySetManagerService$PublicKeyHandle;->this$0:Lcom/android/server/pm/KeySetManagerService;
@@ -48,6 +52,11 @@
 
 .method synthetic constructor <init>(Lcom/android/server/pm/KeySetManagerService;JILjava/security/PublicKey;Lcom/android/server/pm/KeySetManagerService$1;)V
     .registers 7
+    .param p1, "x0"  # Lcom/android/server/pm/KeySetManagerService;
+    .param p2, "x1"  # J
+    .param p4, "x2"  # I
+    .param p5, "x3"  # Ljava/security/PublicKey;
+    .param p6, "x4"  # Lcom/android/server/pm/KeySetManagerService$1;
 
     .line 70
     invoke-direct/range {p0 .. p5}, Lcom/android/server/pm/KeySetManagerService$PublicKeyHandle;-><init>(Lcom/android/server/pm/KeySetManagerService;JILjava/security/PublicKey;)V
@@ -56,7 +65,10 @@
 .end method
 
 .method public constructor <init>(Lcom/android/server/pm/KeySetManagerService;JLjava/security/PublicKey;)V
-    .registers 5
+    .registers 6
+    .param p1, "this$0"  # Lcom/android/server/pm/KeySetManagerService;
+    .param p2, "id"  # J
+    .param p4, "key"  # Ljava/security/PublicKey;
 
     .line 75
     iput-object p1, p0, Lcom/android/server/pm/KeySetManagerService$PublicKeyHandle;->this$0:Lcom/android/server/pm/KeySetManagerService;
@@ -67,9 +79,9 @@
     iput-wide p2, p0, Lcom/android/server/pm/KeySetManagerService$PublicKeyHandle;->mId:J
 
     .line 77
-    const/4 p1, 0x1
+    const/4 v0, 0x1
 
-    iput p1, p0, Lcom/android/server/pm/KeySetManagerService$PublicKeyHandle;->mRefCount:I
+    iput v0, p0, Lcom/android/server/pm/KeySetManagerService$PublicKeyHandle;->mRefCount:I
 
     .line 78
     iput-object p4, p0, Lcom/android/server/pm/KeySetManagerService$PublicKeyHandle;->mKey:Ljava/security/PublicKey;

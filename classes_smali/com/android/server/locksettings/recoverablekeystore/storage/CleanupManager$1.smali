@@ -29,6 +29,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/locksettings/recoverablekeystore/storage/CleanupManager;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/locksettings/recoverablekeystore/storage/CleanupManager;
 
     .line 107
     iput-object p1, p0, Lcom/android/server/locksettings/recoverablekeystore/storage/CleanupManager$1;->this$0:Lcom/android/server/locksettings/recoverablekeystore/storage/CleanupManager;

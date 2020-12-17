@@ -21,6 +21,7 @@
 # direct methods
 .method public constructor <init>(Lcom/android/server/emergency/EmergencyAffordanceService;Landroid/os/Looper;)V
     .registers 3
+    .param p2, "l"  # Landroid/os/Looper;
 
     .line 186
     iput-object p1, p0, Lcom/android/server/emergency/EmergencyAffordanceService$MyHandler;->this$0:Lcom/android/server/emergency/EmergencyAffordanceService;
@@ -35,47 +36,48 @@
 
 # virtual methods
 .method public handleMessage(Landroid/os/Message;)V
-    .registers 3
+    .registers 4
+    .param p1, "msg"  # Landroid/os/Message;
 
     .line 192
-    iget p1, p1, Landroid/os/Message;->what:I
+    iget v0, p1, Landroid/os/Message;->what:I
 
-    const/4 v0, 0x1
+    const/4 v1, 0x1
 
-    if-eq p1, v0, :cond_18
+    if-eq v0, v1, :cond_18
 
-    const/4 v0, 0x2
+    const/4 v1, 0x2
 
-    if-eq p1, v0, :cond_12
+    if-eq v0, v1, :cond_12
 
-    const/4 v0, 0x3
+    const/4 v1, 0x3
 
-    if-eq p1, v0, :cond_c
+    if-eq v0, v1, :cond_c
 
     goto :goto_1e
 
     .line 200
     :cond_c
-    iget-object p1, p0, Lcom/android/server/emergency/EmergencyAffordanceService$MyHandler;->this$0:Lcom/android/server/emergency/EmergencyAffordanceService;
+    iget-object v0, p0, Lcom/android/server/emergency/EmergencyAffordanceService$MyHandler;->this$0:Lcom/android/server/emergency/EmergencyAffordanceService;
 
-    invoke-static {p1}, Lcom/android/server/emergency/EmergencyAffordanceService;->access$600(Lcom/android/server/emergency/EmergencyAffordanceService;)Z
+    invoke-static {v0}, Lcom/android/server/emergency/EmergencyAffordanceService;->access$600(Lcom/android/server/emergency/EmergencyAffordanceService;)Z
 
     goto :goto_1e
 
     .line 197
     :cond_12
-    iget-object p1, p0, Lcom/android/server/emergency/EmergencyAffordanceService$MyHandler;->this$0:Lcom/android/server/emergency/EmergencyAffordanceService;
+    iget-object v0, p0, Lcom/android/server/emergency/EmergencyAffordanceService$MyHandler;->this$0:Lcom/android/server/emergency/EmergencyAffordanceService;
 
-    invoke-static {p1}, Lcom/android/server/emergency/EmergencyAffordanceService;->access$500(Lcom/android/server/emergency/EmergencyAffordanceService;)Z
+    invoke-static {v0}, Lcom/android/server/emergency/EmergencyAffordanceService;->access$500(Lcom/android/server/emergency/EmergencyAffordanceService;)Z
 
     .line 198
     goto :goto_1e
 
     .line 194
     :cond_18
-    iget-object p1, p0, Lcom/android/server/emergency/EmergencyAffordanceService$MyHandler;->this$0:Lcom/android/server/emergency/EmergencyAffordanceService;
+    iget-object v0, p0, Lcom/android/server/emergency/EmergencyAffordanceService$MyHandler;->this$0:Lcom/android/server/emergency/EmergencyAffordanceService;
 
-    invoke-static {p1}, Lcom/android/server/emergency/EmergencyAffordanceService;->access$400(Lcom/android/server/emergency/EmergencyAffordanceService;)V
+    invoke-static {v0}, Lcom/android/server/emergency/EmergencyAffordanceService;->access$400(Lcom/android/server/emergency/EmergencyAffordanceService;)V
 
     .line 195
     nop

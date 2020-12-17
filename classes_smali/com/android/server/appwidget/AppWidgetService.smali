@@ -10,6 +10,7 @@
 # direct methods
 .method public constructor <init>(Landroid/content/Context;)V
     .registers 3
+    .param p1, "context"  # Landroid/content/Context;
 
     .line 32
     invoke-direct {p0, p1}, Lcom/android/server/SystemService;-><init>(Landroid/content/Context;)V
@@ -28,7 +29,8 @@
 
 # virtual methods
 .method public onBootPhase(I)V
-    .registers 3
+    .registers 4
+    .param p1, "phase"  # I
 
     .line 45
     const/16 v0, 0x226
@@ -36,13 +38,13 @@
     if-ne p1, v0, :cond_d
 
     .line 46
-    iget-object p1, p0, Lcom/android/server/appwidget/AppWidgetService;->mImpl:Lcom/android/server/appwidget/AppWidgetServiceImpl;
+    iget-object v0, p0, Lcom/android/server/appwidget/AppWidgetService;->mImpl:Lcom/android/server/appwidget/AppWidgetServiceImpl;
 
     invoke-virtual {p0}, Lcom/android/server/appwidget/AppWidgetService;->isSafeMode()Z
 
-    move-result v0
+    move-result v1
 
-    invoke-virtual {p1, v0}, Lcom/android/server/appwidget/AppWidgetServiceImpl;->setSafeMode(Z)V
+    invoke-virtual {v0, v1}, Lcom/android/server/appwidget/AppWidgetServiceImpl;->setSafeMode(Z)V
 
     .line 48
     :cond_d
@@ -75,6 +77,7 @@
 
 .method public onStopUser(I)V
     .registers 3
+    .param p1, "userHandle"  # I
 
     .line 52
     iget-object v0, p0, Lcom/android/server/appwidget/AppWidgetService;->mImpl:Lcom/android/server/appwidget/AppWidgetServiceImpl;
@@ -87,6 +90,7 @@
 
 .method public onSwitchUser(I)V
     .registers 3
+    .param p1, "userHandle"  # I
 
     .line 57
     iget-object v0, p0, Lcom/android/server/appwidget/AppWidgetService;->mImpl:Lcom/android/server/appwidget/AppWidgetServiceImpl;

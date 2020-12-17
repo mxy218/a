@@ -21,6 +21,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/policy/BurnInProtectionHelper;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/policy/BurnInProtectionHelper;
 
     .line 86
     iput-object p1, p0, Lcom/android/server/policy/BurnInProtectionHelper$1;->this$0:Lcom/android/server/policy/BurnInProtectionHelper;
@@ -33,12 +34,14 @@
 
 # virtual methods
 .method public onReceive(Landroid/content/Context;Landroid/content/Intent;)V
-    .registers 3
+    .registers 4
+    .param p1, "context"  # Landroid/content/Context;
+    .param p2, "intent"  # Landroid/content/Intent;
 
     .line 92
-    iget-object p1, p0, Lcom/android/server/policy/BurnInProtectionHelper$1;->this$0:Lcom/android/server/policy/BurnInProtectionHelper;
+    iget-object v0, p0, Lcom/android/server/policy/BurnInProtectionHelper$1;->this$0:Lcom/android/server/policy/BurnInProtectionHelper;
 
-    invoke-static {p1}, Lcom/android/server/policy/BurnInProtectionHelper;->access$000(Lcom/android/server/policy/BurnInProtectionHelper;)V
+    invoke-static {v0}, Lcom/android/server/policy/BurnInProtectionHelper;->access$000(Lcom/android/server/policy/BurnInProtectionHelper;)V
 
     .line 93
     return-void

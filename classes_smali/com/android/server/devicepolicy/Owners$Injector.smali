@@ -41,12 +41,13 @@
 .end method
 
 .method environmentGetUserSystemDirectory(I)Ljava/io/File;
-    .registers 2
+    .registers 3
+    .param p1, "userId"  # I
 
     .line 1107
     invoke-static {p1}, Landroid/os/Environment;->getUserSystemDirectory(I)Ljava/io/File;
 
-    move-result-object p1
+    move-result-object v0
 
-    return-object p1
+    return-object v0
 .end method

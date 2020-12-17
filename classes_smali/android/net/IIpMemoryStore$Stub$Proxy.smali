@@ -30,6 +30,7 @@
 # direct methods
 .method constructor <init>(Landroid/os/IBinder;)V
     .registers 3
+    .param p1, "remote"  # Landroid/os/IBinder;
 
     .line 197
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -71,6 +72,7 @@
     move-result-object v0
 
     .line 340
+    .local v0, "_data":Landroid/os/Parcel;
     :try_start_4
     const-string v1, "android.net.IIpMemoryStore"
 
@@ -90,20 +92,21 @@
     move-result v1
 
     .line 342
+    .local v1, "_status":Z
     if-nez v1, :cond_25
 
     invoke-static {}, Landroid/net/IIpMemoryStore$Stub;->getDefaultImpl()Landroid/net/IIpMemoryStore;
 
-    move-result-object v1
+    move-result-object v2
 
-    if-eqz v1, :cond_25
+    if-eqz v2, :cond_25
 
     .line 343
     invoke-static {}, Landroid/net/IIpMemoryStore$Stub;->getDefaultImpl()Landroid/net/IIpMemoryStore;
 
-    move-result-object v1
+    move-result-object v2
 
-    invoke-interface {v1}, Landroid/net/IIpMemoryStore;->factoryReset()V
+    invoke-interface {v2}, Landroid/net/IIpMemoryStore;->factoryReset()V
     :try_end_21
     .catchall {:try_start_4 .. :try_end_21} :catchall_2a
 
@@ -114,6 +117,7 @@
     return-void
 
     .line 348
+    .end local v1  # "_status":Z
     :cond_25
     invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
 
@@ -134,6 +138,8 @@
 
 .method public findL2Key(Landroid/net/ipmemorystore/NetworkAttributesParcelable;Landroid/net/ipmemorystore/IOnL2KeyResponseListener;)V
     .registers 8
+    .param p1, "attributes"  # Landroid/net/ipmemorystore/NetworkAttributesParcelable;
+    .param p2, "listener"  # Landroid/net/ipmemorystore/IOnL2KeyResponseListener;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -146,6 +152,7 @@
     move-result-object v0
 
     .line 263
+    .local v0, "_data":Landroid/os/Parcel;
     :try_start_4
     const-string v1, "android.net.IIpMemoryStore"
 
@@ -198,20 +205,21 @@
     move-result v1
 
     .line 273
+    .local v1, "_status":Z
     if-nez v1, :cond_3d
 
     invoke-static {}, Landroid/net/IIpMemoryStore$Stub;->getDefaultImpl()Landroid/net/IIpMemoryStore;
 
-    move-result-object v1
+    move-result-object v2
 
-    if-eqz v1, :cond_3d
+    if-eqz v2, :cond_3d
 
     .line 274
     invoke-static {}, Landroid/net/IIpMemoryStore$Stub;->getDefaultImpl()Landroid/net/IIpMemoryStore;
 
-    move-result-object v1
+    move-result-object v2
 
-    invoke-interface {v1, p1, p2}, Landroid/net/IIpMemoryStore;->findL2Key(Landroid/net/ipmemorystore/NetworkAttributesParcelable;Landroid/net/ipmemorystore/IOnL2KeyResponseListener;)V
+    invoke-interface {v2, p1, p2}, Landroid/net/IIpMemoryStore;->findL2Key(Landroid/net/ipmemorystore/NetworkAttributesParcelable;Landroid/net/ipmemorystore/IOnL2KeyResponseListener;)V
     :try_end_39
     .catchall {:try_start_4 .. :try_end_39} :catchall_42
 
@@ -222,6 +230,7 @@
     return-void
 
     .line 279
+    .end local v1  # "_status":Z
     :cond_3d
     invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
 
@@ -233,11 +242,11 @@
 
     .line 279
     :catchall_42
-    move-exception p1
+    move-exception v1
 
     invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
 
-    throw p1
+    throw v1
 .end method
 
 .method public getInterfaceDescriptor()Ljava/lang/String;
@@ -270,11 +279,13 @@
     move-result-object v0
 
     .line 355
+    .local v0, "data":Landroid/os/Parcel;
     invoke-static {}, Landroid/os/Parcel;->obtain()Landroid/os/Parcel;
 
     move-result-object v1
 
     .line 357
+    .local v1, "reply":Landroid/os/Parcel;
     :try_start_d
     const-string v2, "android.net.IIpMemoryStore"
 
@@ -322,6 +333,8 @@
     throw v2
 
     .line 366
+    .end local v0  # "data":Landroid/os/Parcel;
+    .end local v1  # "reply":Landroid/os/Parcel;
     :cond_33
     :goto_33
     iget v0, p0, Landroid/net/IIpMemoryStore$Stub$Proxy;->mCachedVersion:I
@@ -331,6 +344,9 @@
 
 .method public isSameNetwork(Ljava/lang/String;Ljava/lang/String;Landroid/net/ipmemorystore/IOnSameL3NetworkResponseListener;)V
     .registers 9
+    .param p1, "l2Key1"  # Ljava/lang/String;
+    .param p2, "l2Key2"  # Ljava/lang/String;
+    .param p3, "listener"  # Landroid/net/ipmemorystore/IOnSameL3NetworkResponseListener;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -343,6 +359,7 @@
     move-result-object v0
 
     .line 286
+    .local v0, "_data":Landroid/os/Parcel;
     :try_start_4
     const-string v1, "android.net.IIpMemoryStore"
 
@@ -383,20 +400,21 @@
     move-result v1
 
     .line 291
+    .local v1, "_status":Z
     if-nez v1, :cond_36
 
     invoke-static {}, Landroid/net/IIpMemoryStore$Stub;->getDefaultImpl()Landroid/net/IIpMemoryStore;
 
-    move-result-object v1
+    move-result-object v2
 
-    if-eqz v1, :cond_36
+    if-eqz v2, :cond_36
 
     .line 292
     invoke-static {}, Landroid/net/IIpMemoryStore$Stub;->getDefaultImpl()Landroid/net/IIpMemoryStore;
 
-    move-result-object v1
+    move-result-object v2
 
-    invoke-interface {v1, p1, p2, p3}, Landroid/net/IIpMemoryStore;->isSameNetwork(Ljava/lang/String;Ljava/lang/String;Landroid/net/ipmemorystore/IOnSameL3NetworkResponseListener;)V
+    invoke-interface {v2, p1, p2, p3}, Landroid/net/IIpMemoryStore;->isSameNetwork(Ljava/lang/String;Ljava/lang/String;Landroid/net/ipmemorystore/IOnSameL3NetworkResponseListener;)V
     :try_end_32
     .catchall {:try_start_4 .. :try_end_32} :catchall_3b
 
@@ -407,6 +425,7 @@
     return-void
 
     .line 297
+    .end local v1  # "_status":Z
     :cond_36
     invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
 
@@ -418,15 +437,19 @@
 
     .line 297
     :catchall_3b
-    move-exception p1
+    move-exception v1
 
     invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
 
-    throw p1
+    throw v1
 .end method
 
 .method public retrieveBlob(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Landroid/net/ipmemorystore/IOnBlobRetrievedListener;)V
     .registers 10
+    .param p1, "l2Key"  # Ljava/lang/String;
+    .param p2, "clientId"  # Ljava/lang/String;
+    .param p3, "name"  # Ljava/lang/String;
+    .param p4, "listener"  # Landroid/net/ipmemorystore/IOnBlobRetrievedListener;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -439,6 +462,7 @@
     move-result-object v0
 
     .line 321
+    .local v0, "_data":Landroid/os/Parcel;
     :try_start_4
     const-string v1, "android.net.IIpMemoryStore"
 
@@ -482,20 +506,21 @@
     move-result v1
 
     .line 327
+    .local v1, "_status":Z
     if-nez v1, :cond_39
 
     invoke-static {}, Landroid/net/IIpMemoryStore$Stub;->getDefaultImpl()Landroid/net/IIpMemoryStore;
 
-    move-result-object v1
+    move-result-object v2
 
-    if-eqz v1, :cond_39
+    if-eqz v2, :cond_39
 
     .line 328
     invoke-static {}, Landroid/net/IIpMemoryStore$Stub;->getDefaultImpl()Landroid/net/IIpMemoryStore;
 
-    move-result-object v1
+    move-result-object v2
 
-    invoke-interface {v1, p1, p2, p3, p4}, Landroid/net/IIpMemoryStore;->retrieveBlob(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Landroid/net/ipmemorystore/IOnBlobRetrievedListener;)V
+    invoke-interface {v2, p1, p2, p3, p4}, Landroid/net/IIpMemoryStore;->retrieveBlob(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Landroid/net/ipmemorystore/IOnBlobRetrievedListener;)V
     :try_end_35
     .catchall {:try_start_4 .. :try_end_35} :catchall_3e
 
@@ -506,6 +531,7 @@
     return-void
 
     .line 333
+    .end local v1  # "_status":Z
     :cond_39
     invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
 
@@ -517,15 +543,17 @@
 
     .line 333
     :catchall_3e
-    move-exception p1
+    move-exception v1
 
     invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
 
-    throw p1
+    throw v1
 .end method
 
 .method public retrieveNetworkAttributes(Ljava/lang/String;Landroid/net/ipmemorystore/IOnNetworkAttributesRetrievedListener;)V
     .registers 8
+    .param p1, "l2Key"  # Ljava/lang/String;
+    .param p2, "listener"  # Landroid/net/ipmemorystore/IOnNetworkAttributesRetrievedListener;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -538,6 +566,7 @@
     move-result-object v0
 
     .line 304
+    .local v0, "_data":Landroid/os/Parcel;
     :try_start_4
     const-string v1, "android.net.IIpMemoryStore"
 
@@ -575,20 +604,21 @@
     move-result v1
 
     .line 308
+    .local v1, "_status":Z
     if-nez v1, :cond_33
 
     invoke-static {}, Landroid/net/IIpMemoryStore$Stub;->getDefaultImpl()Landroid/net/IIpMemoryStore;
 
-    move-result-object v1
+    move-result-object v2
 
-    if-eqz v1, :cond_33
+    if-eqz v2, :cond_33
 
     .line 309
     invoke-static {}, Landroid/net/IIpMemoryStore$Stub;->getDefaultImpl()Landroid/net/IIpMemoryStore;
 
-    move-result-object v1
+    move-result-object v2
 
-    invoke-interface {v1, p1, p2}, Landroid/net/IIpMemoryStore;->retrieveNetworkAttributes(Ljava/lang/String;Landroid/net/ipmemorystore/IOnNetworkAttributesRetrievedListener;)V
+    invoke-interface {v2, p1, p2}, Landroid/net/IIpMemoryStore;->retrieveNetworkAttributes(Ljava/lang/String;Landroid/net/ipmemorystore/IOnNetworkAttributesRetrievedListener;)V
     :try_end_2f
     .catchall {:try_start_4 .. :try_end_2f} :catchall_38
 
@@ -599,6 +629,7 @@
     return-void
 
     .line 314
+    .end local v1  # "_status":Z
     :cond_33
     invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
 
@@ -610,15 +641,20 @@
 
     .line 314
     :catchall_38
-    move-exception p1
+    move-exception v1
 
     invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
 
-    throw p1
+    throw v1
 .end method
 
 .method public storeBlob(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Landroid/net/ipmemorystore/Blob;Landroid/net/ipmemorystore/IOnStatusListener;)V
-    .registers 14
+    .registers 15
+    .param p1, "l2Key"  # Ljava/lang/String;
+    .param p2, "clientId"  # Ljava/lang/String;
+    .param p3, "name"  # Ljava/lang/String;
+    .param p4, "data"  # Landroid/net/ipmemorystore/Blob;
+    .param p5, "listener"  # Landroid/net/ipmemorystore/IOnStatusListener;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -631,6 +667,7 @@
     move-result-object v0
 
     .line 237
+    .local v0, "_data":Landroid/os/Parcel;
     :try_start_4
     const-string v1, "android.net.IIpMemoryStore"
 
@@ -692,30 +729,31 @@
     move-result v1
 
     .line 250
+    .local v1, "_status":Z
     if-nez v1, :cond_4b
 
     invoke-static {}, Landroid/net/IIpMemoryStore$Stub;->getDefaultImpl()Landroid/net/IIpMemoryStore;
 
-    move-result-object v1
+    move-result-object v2
 
-    if-eqz v1, :cond_4b
+    if-eqz v2, :cond_4b
 
     .line 251
     invoke-static {}, Landroid/net/IIpMemoryStore$Stub;->getDefaultImpl()Landroid/net/IIpMemoryStore;
 
-    move-result-object v2
+    move-result-object v3
 
-    move-object v3, p1
+    move-object v4, p1
 
-    move-object v4, p2
+    move-object v5, p2
 
-    move-object v5, p3
+    move-object v6, p3
 
-    move-object v6, p4
+    move-object v7, p4
 
-    move-object v7, p5
+    move-object v8, p5
 
-    invoke-interface/range {v2 .. v7}, Landroid/net/IIpMemoryStore;->storeBlob(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Landroid/net/ipmemorystore/Blob;Landroid/net/ipmemorystore/IOnStatusListener;)V
+    invoke-interface/range {v3 .. v8}, Landroid/net/IIpMemoryStore;->storeBlob(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Landroid/net/ipmemorystore/Blob;Landroid/net/ipmemorystore/IOnStatusListener;)V
     :try_end_47
     .catchall {:try_start_4 .. :try_end_47} :catchall_50
 
@@ -726,6 +764,7 @@
     return-void
 
     .line 256
+    .end local v1  # "_status":Z
     :cond_4b
     invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
 
@@ -737,15 +776,18 @@
 
     .line 256
     :catchall_50
-    move-exception p1
+    move-exception v1
 
     invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
 
-    throw p1
+    throw v1
 .end method
 
 .method public storeNetworkAttributes(Ljava/lang/String;Landroid/net/ipmemorystore/NetworkAttributesParcelable;Landroid/net/ipmemorystore/IOnStatusListener;)V
     .registers 8
+    .param p1, "l2Key"  # Ljava/lang/String;
+    .param p2, "attributes"  # Landroid/net/ipmemorystore/NetworkAttributesParcelable;
+    .param p3, "listener"  # Landroid/net/ipmemorystore/IOnStatusListener;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -758,6 +800,7 @@
     move-result-object v0
 
     .line 213
+    .local v0, "_data":Landroid/os/Parcel;
     :try_start_4
     const-string v1, "android.net.IIpMemoryStore"
 
@@ -811,20 +854,21 @@
     move-result v1
 
     .line 224
+    .local v1, "_status":Z
     if-nez v1, :cond_3f
 
     invoke-static {}, Landroid/net/IIpMemoryStore$Stub;->getDefaultImpl()Landroid/net/IIpMemoryStore;
 
-    move-result-object v1
+    move-result-object v2
 
-    if-eqz v1, :cond_3f
+    if-eqz v2, :cond_3f
 
     .line 225
     invoke-static {}, Landroid/net/IIpMemoryStore$Stub;->getDefaultImpl()Landroid/net/IIpMemoryStore;
 
-    move-result-object v1
+    move-result-object v2
 
-    invoke-interface {v1, p1, p2, p3}, Landroid/net/IIpMemoryStore;->storeNetworkAttributes(Ljava/lang/String;Landroid/net/ipmemorystore/NetworkAttributesParcelable;Landroid/net/ipmemorystore/IOnStatusListener;)V
+    invoke-interface {v2, p1, p2, p3}, Landroid/net/IIpMemoryStore;->storeNetworkAttributes(Ljava/lang/String;Landroid/net/ipmemorystore/NetworkAttributesParcelable;Landroid/net/ipmemorystore/IOnStatusListener;)V
     :try_end_3b
     .catchall {:try_start_4 .. :try_end_3b} :catchall_44
 
@@ -835,6 +879,7 @@
     return-void
 
     .line 230
+    .end local v1  # "_status":Z
     :cond_3f
     invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
 
@@ -846,9 +891,9 @@
 
     .line 230
     :catchall_44
-    move-exception p1
+    move-exception v1
 
     invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
 
-    throw p1
+    throw v1
 .end method

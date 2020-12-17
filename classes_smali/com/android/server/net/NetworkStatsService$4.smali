@@ -21,8 +21,9 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/net/NetworkStatsService;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/net/NetworkStatsService;
 
-    .line 1063
+    .line 1069
     iput-object p1, p0, Lcom/android/server/net/NetworkStatsService$4;->this$0:Lcom/android/server/net/NetworkStatsService;
 
     invoke-direct {p0}, Landroid/content/BroadcastReceiver;-><init>()V
@@ -33,100 +34,111 @@
 
 # virtual methods
 .method public onReceive(Landroid/content/Context;Landroid/content/Intent;)V
-    .registers 6
+    .registers 8
+    .param p1, "context"  # Landroid/content/Context;
+    .param p2, "intent"  # Landroid/content/Intent;
 
-    .line 1069
-    const/4 p1, -0x1
+    .line 1075
+    const/4 v0, -0x1
 
-    const-string v0, "android.intent.extra.UID"
+    const-string v1, "android.intent.extra.UID"
 
-    invoke-virtual {p2, v0, p1}, Landroid/content/Intent;->getIntExtra(Ljava/lang/String;I)I
+    invoke-virtual {p2, v1, v0}, Landroid/content/Intent;->getIntExtra(Ljava/lang/String;I)I
 
-    move-result p2
+    move-result v1
 
-    .line 1070
-    if-ne p2, p1, :cond_a
+    .line 1076
+    .local v1, "uid":I
+    if-ne v1, v0, :cond_a
 
     return-void
 
-    .line 1072
+    .line 1078
     :cond_a
-    iget-object p1, p0, Lcom/android/server/net/NetworkStatsService$4;->this$0:Lcom/android/server/net/NetworkStatsService;
-
-    invoke-static {p1}, Lcom/android/server/net/NetworkStatsService;->access$300(Lcom/android/server/net/NetworkStatsService;)Ljava/lang/Object;
-
-    move-result-object p1
-
-    monitor-enter p1
-
-    .line 1073
-    :try_start_11
     iget-object v0, p0, Lcom/android/server/net/NetworkStatsService$4;->this$0:Lcom/android/server/net/NetworkStatsService;
 
-    invoke-static {v0}, Lcom/android/server/net/NetworkStatsService;->access$1000(Lcom/android/server/net/NetworkStatsService;)Landroid/os/PowerManager$WakeLock;
+    invoke-static {v0}, Lcom/android/server/net/NetworkStatsService;->access$300(Lcom/android/server/net/NetworkStatsService;)Ljava/lang/Object;
 
     move-result-object v0
 
-    invoke-virtual {v0}, Landroid/os/PowerManager$WakeLock;->acquire()V
+    monitor-enter v0
+
+    .line 1079
+    :try_start_11
+    iget-object v2, p0, Lcom/android/server/net/NetworkStatsService$4;->this$0:Lcom/android/server/net/NetworkStatsService;
+
+    invoke-static {v2}, Lcom/android/server/net/NetworkStatsService;->access$1000(Lcom/android/server/net/NetworkStatsService;)Landroid/os/PowerManager$WakeLock;
+
+    move-result-object v2
+
+    invoke-virtual {v2}, Landroid/os/PowerManager$WakeLock;->acquire()V
     :try_end_1a
     .catchall {:try_start_11 .. :try_end_1a} :catchall_3c
 
-    .line 1075
+    .line 1081
     :try_start_1a
-    iget-object v0, p0, Lcom/android/server/net/NetworkStatsService$4;->this$0:Lcom/android/server/net/NetworkStatsService;
+    iget-object v2, p0, Lcom/android/server/net/NetworkStatsService$4;->this$0:Lcom/android/server/net/NetworkStatsService;
 
-    const/4 v1, 0x1
+    const/4 v3, 0x1
 
-    new-array v1, v1, [I
+    new-array v3, v3, [I
 
-    const/4 v2, 0x0
+    const/4 v4, 0x0
 
-    aput p2, v1, v2
+    aput v1, v3, v4
 
-    invoke-static {v0, v1}, Lcom/android/server/net/NetworkStatsService;->access$1100(Lcom/android/server/net/NetworkStatsService;[I)V
+    invoke-static {v2, v3}, Lcom/android/server/net/NetworkStatsService;->access$1100(Lcom/android/server/net/NetworkStatsService;[I)V
     :try_end_25
     .catchall {:try_start_1a .. :try_end_25} :catchall_31
 
-    .line 1077
+    .line 1083
     :try_start_25
-    iget-object p2, p0, Lcom/android/server/net/NetworkStatsService$4;->this$0:Lcom/android/server/net/NetworkStatsService;
+    iget-object v2, p0, Lcom/android/server/net/NetworkStatsService$4;->this$0:Lcom/android/server/net/NetworkStatsService;
 
-    invoke-static {p2}, Lcom/android/server/net/NetworkStatsService;->access$1000(Lcom/android/server/net/NetworkStatsService;)Landroid/os/PowerManager$WakeLock;
+    invoke-static {v2}, Lcom/android/server/net/NetworkStatsService;->access$1000(Lcom/android/server/net/NetworkStatsService;)Landroid/os/PowerManager$WakeLock;
 
-    move-result-object p2
+    move-result-object v2
 
-    invoke-virtual {p2}, Landroid/os/PowerManager$WakeLock;->release()V
+    invoke-virtual {v2}, Landroid/os/PowerManager$WakeLock;->release()V
 
-    .line 1078
+    .line 1084
     nop
 
-    .line 1079
-    monitor-exit p1
+    .line 1085
+    monitor-exit v0
 
-    .line 1080
+    .line 1086
     return-void
 
-    .line 1077
+    .line 1083
     :catchall_31
-    move-exception p2
+    move-exception v2
 
-    iget-object v0, p0, Lcom/android/server/net/NetworkStatsService$4;->this$0:Lcom/android/server/net/NetworkStatsService;
+    iget-object v3, p0, Lcom/android/server/net/NetworkStatsService$4;->this$0:Lcom/android/server/net/NetworkStatsService;
 
-    invoke-static {v0}, Lcom/android/server/net/NetworkStatsService;->access$1000(Lcom/android/server/net/NetworkStatsService;)Landroid/os/PowerManager$WakeLock;
+    invoke-static {v3}, Lcom/android/server/net/NetworkStatsService;->access$1000(Lcom/android/server/net/NetworkStatsService;)Landroid/os/PowerManager$WakeLock;
 
-    move-result-object v0
+    move-result-object v3
 
-    invoke-virtual {v0}, Landroid/os/PowerManager$WakeLock;->release()V
+    invoke-virtual {v3}, Landroid/os/PowerManager$WakeLock;->release()V
 
-    throw p2
+    .end local v1  # "uid":I
+    .end local p0  # "this":Lcom/android/server/net/NetworkStatsService$4;
+    .end local p1  # "context":Landroid/content/Context;
+    .end local p2  # "intent":Landroid/content/Intent;
+    throw v2
 
-    .line 1079
+    .line 1085
+    .restart local v1  # "uid":I
+    .restart local p0  # "this":Lcom/android/server/net/NetworkStatsService$4;
+    .restart local p1  # "context":Landroid/content/Context;
+    .restart local p2  # "intent":Landroid/content/Intent;
     :catchall_3c
-    move-exception p2
+    move-exception v2
 
-    monitor-exit p1
+    monitor-exit v0
     :try_end_3e
     .catchall {:try_start_25 .. :try_end_3e} :catchall_3c
 
-    throw p2
+    throw v2
 .end method

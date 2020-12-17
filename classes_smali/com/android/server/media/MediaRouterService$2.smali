@@ -21,6 +21,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/media/MediaRouterService;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/media/MediaRouterService;
 
     .line 171
     iput-object p1, p0, Lcom/android/server/media/MediaRouterService$2;->this$0:Lcom/android/server/media/MediaRouterService;
@@ -34,6 +35,7 @@
 # virtual methods
 .method public dispatchAudioRoutesChanged(Landroid/media/AudioRoutesInfo;)V
     .registers 6
+    .param p1, "newRoutes"  # Landroid/media/AudioRoutesInfo;
 
     .line 174
     iget-object v0, p0, Lcom/android/server/media/MediaRouterService$2;->this$0:Lcom/android/server/media/MediaRouterService;
@@ -94,9 +96,9 @@
     :goto_2a
     iget-object v1, p0, Lcom/android/server/media/MediaRouterService$2;->this$0:Lcom/android/server/media/MediaRouterService;
 
-    iget p1, p1, Landroid/media/AudioRoutesInfo;->mainType:I
+    iget v2, p1, Landroid/media/AudioRoutesInfo;->mainType:I
 
-    iput p1, v1, Lcom/android/server/media/MediaRouterService;->mAudioRouteMainType:I
+    iput v2, v1, Lcom/android/server/media/MediaRouterService;->mAudioRouteMainType:I
 
     .line 191
     :cond_30
@@ -107,11 +109,11 @@
 
     .line 191
     :catchall_32
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_34
     .catchall {:try_start_7 .. :try_end_34} :catchall_32
 
-    throw p1
+    throw v1
 .end method

@@ -10,6 +10,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/pm/OtaDexoptService;)V
     .registers 2
+    .param p1, "service"  # Lcom/android/server/pm/OtaDexoptService;
 
     .line 29
     invoke-direct {p0}, Landroid/os/ShellCommand;-><init>()V
@@ -54,6 +55,7 @@
     move-result-object v0
 
     .line 76
+    .local v0, "pw":Ljava/io/PrintWriter;
     iget-object v1, p0, Lcom/android/server/pm/OtaDexoptShellCommand;->mInterface:Landroid/content/pm/IOtaDexopt;
 
     invoke-interface {v1}, Landroid/content/pm/IOtaDexopt;->isDone()Z
@@ -77,9 +79,9 @@
 
     .line 81
     :goto_17
-    const/4 v0, 0x0
+    const/4 v1, 0x0
 
-    return v0
+    return v1
 .end method
 
 .method private runOtaNext()I
@@ -138,7 +140,7 @@
 .end method
 
 .method private runOtaProgress()I
-    .registers 6
+    .registers 7
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -153,11 +155,13 @@
     move-result v0
 
     .line 96
+    .local v0, "progress":F
     invoke-virtual {p0}, Lcom/android/server/pm/OtaDexoptShellCommand;->getOutPrintWriter()Ljava/io/PrintWriter;
 
     move-result-object v1
 
     .line 100
+    .local v1, "pw":Ljava/io/PrintWriter;
     sget-object v2, Ljava/util/Locale;->ROOT:Ljava/util/Locale;
 
     const/4 v3, 0x1
@@ -166,18 +170,18 @@
 
     invoke-static {v0}, Ljava/lang/Float;->valueOf(F)Ljava/lang/Float;
 
-    move-result-object v0
+    move-result-object v4
 
-    const/4 v4, 0x0
+    const/4 v5, 0x0
 
-    aput-object v0, v3, v4
+    aput-object v4, v3, v5
 
-    const-string v0, "%.2f"
+    const-string v4, "%.2f"
 
-    invoke-virtual {v1, v2, v0, v3}, Ljava/io/PrintWriter;->format(Ljava/util/Locale;Ljava/lang/String;[Ljava/lang/Object;)Ljava/io/PrintWriter;
+    invoke-virtual {v1, v2, v4, v3}, Ljava/io/PrintWriter;->format(Ljava/util/Locale;Ljava/lang/String;[Ljava/lang/Object;)Ljava/io/PrintWriter;
 
     .line 101
-    return v4
+    return v5
 .end method
 
 .method private runOtaStep()I
@@ -203,18 +207,19 @@
 # virtual methods
 .method public onCommand(Ljava/lang/String;)I
     .registers 10
+    .param p1, "cmd"  # Ljava/lang/String;
 
     .line 35
     if-nez p1, :cond_8
 
     .line 36
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    invoke-virtual {p0, p1}, Lcom/android/server/pm/OtaDexoptShellCommand;->handleDefaultCommands(Ljava/lang/String;)I
+    invoke-virtual {p0, v0}, Lcom/android/server/pm/OtaDexoptShellCommand;->handleDefaultCommands(Ljava/lang/String;)I
 
-    move-result p1
+    move-result v0
 
-    return p1
+    return v0
 
     .line 39
     :cond_8
@@ -223,6 +228,7 @@
     move-result-object v0
 
     .line 41
+    .local v0, "pw":Ljava/io/PrintWriter;
     const/4 v1, -0x1
 
     :try_start_d
@@ -342,82 +348,84 @@
     .line 55
     invoke-virtual {p0, p1}, Lcom/android/server/pm/OtaDexoptShellCommand;->handleDefaultCommands(Ljava/lang/String;)I
 
-    move-result p1
+    move-result v1
 
-    return p1
+    return v1
 
     .line 53
     :cond_6c
     invoke-direct {p0}, Lcom/android/server/pm/OtaDexoptShellCommand;->runOtaProgress()I
 
-    move-result p1
+    move-result v1
 
-    return p1
+    return v1
 
     .line 51
     :cond_71
     invoke-direct {p0}, Lcom/android/server/pm/OtaDexoptShellCommand;->runOtaNext()I
 
-    move-result p1
+    move-result v1
 
-    return p1
+    return v1
 
     .line 49
     :cond_76
     invoke-direct {p0}, Lcom/android/server/pm/OtaDexoptShellCommand;->runOtaStep()I
 
-    move-result p1
+    move-result v1
 
-    return p1
+    return v1
 
     .line 47
     :cond_7b
     invoke-direct {p0}, Lcom/android/server/pm/OtaDexoptShellCommand;->runOtaDone()I
 
-    move-result p1
+    move-result v1
 
-    return p1
+    return v1
 
     .line 45
     :cond_80
     invoke-direct {p0}, Lcom/android/server/pm/OtaDexoptShellCommand;->runOtaCleanup()I
 
-    move-result p1
+    move-result v1
 
-    return p1
+    return v1
 
     .line 43
     :cond_85
     invoke-direct {p0}, Lcom/android/server/pm/OtaDexoptShellCommand;->runOtaPrepare()I
 
-    move-result p1
+    move-result v1
     :try_end_89
     .catch Landroid/os/RemoteException; {:try_start_d .. :try_end_89} :catch_8a
 
-    return p1
+    return v1
 
     .line 57
     :catch_8a
-    move-exception p1
+    move-exception v2
 
     .line 58
-    new-instance v2, Ljava/lang/StringBuilder;
+    .local v2, "e":Landroid/os/RemoteException;
+    new-instance v3, Ljava/lang/StringBuilder;
 
-    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v3, "Remote exception: "
+    const-string v4, "Remote exception: "
 
-    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v2, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v3
 
-    invoke-virtual {v0, p1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {v0, v3}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
     .line 60
+    .end local v2  # "e":Landroid/os/RemoteException;
     return v1
 
     :sswitch_data_a0
@@ -440,6 +448,7 @@
     move-result-object v0
 
     .line 107
+    .local v0, "pw":Ljava/io/PrintWriter;
     const-string v1, "OTA Dexopt (ota) commands:"
 
     invoke-virtual {v0, v1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V

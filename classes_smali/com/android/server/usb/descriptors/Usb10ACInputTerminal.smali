@@ -20,6 +20,10 @@
 # direct methods
 .method public constructor <init>(IBBI)V
     .registers 5
+    .param p1, "length"  # I
+    .param p2, "type"  # B
+    .param p3, "subtype"  # B
+    .param p4, "subclass"  # I
 
     .line 36
     invoke-direct {p0, p1, p2, p3, p4}, Lcom/android/server/usb/descriptors/UsbACTerminal;-><init>(IBBI)V
@@ -68,6 +72,7 @@
 
 .method public parseRawDescriptors(Lcom/android/server/usb/descriptors/ByteStream;)I
     .registers 3
+    .param p1, "stream"  # Lcom/android/server/usb/descriptors/ByteStream;
 
     .line 57
     invoke-super {p0, p1}, Lcom/android/server/usb/descriptors/UsbACTerminal;->parseRawDescriptors(Lcom/android/server/usb/descriptors/ByteStream;)I
@@ -96,18 +101,19 @@
     .line 62
     invoke-virtual {p1}, Lcom/android/server/usb/descriptors/ByteStream;->getByte()B
 
-    move-result p1
+    move-result v0
 
-    iput-byte p1, p0, Lcom/android/server/usb/descriptors/Usb10ACInputTerminal;->mTerminal:B
+    iput-byte v0, p0, Lcom/android/server/usb/descriptors/Usb10ACInputTerminal;->mTerminal:B
 
     .line 64
-    iget p1, p0, Lcom/android/server/usb/descriptors/Usb10ACInputTerminal;->mLength:I
+    iget v0, p0, Lcom/android/server/usb/descriptors/Usb10ACInputTerminal;->mLength:I
 
-    return p1
+    return v0
 .end method
 
 .method public report(Lcom/android/server/usb/descriptors/report/ReportCanvas;)V
     .registers 4
+    .param p1, "canvas"  # Lcom/android/server/usb/descriptors/report/ReportCanvas;
 
     .line 69
     invoke-super {p0, p1}, Lcom/android/server/usb/descriptors/UsbACTerminal;->report(Lcom/android/server/usb/descriptors/report/ReportCanvas;)V

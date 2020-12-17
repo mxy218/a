@@ -70,32 +70,34 @@
 .end method
 
 .method public static hasAvailableSpace(Ljava/nio/ByteBuffer;)Z
-    .registers 2
+    .registers 3
+    .param p0, "byteBuffer"  # Ljava/nio/ByteBuffer;
 
     .line 78
     if-eqz p0, :cond_c
 
     invoke-virtual {p0}, Ljava/nio/ByteBuffer;->remaining()I
 
-    move-result p0
+    move-result v0
 
-    const/16 v0, 0x10
+    const/16 v1, 0x10
 
-    if-lt p0, v0, :cond_c
+    if-lt v0, v1, :cond_c
 
-    const/4 p0, 0x1
+    const/4 v0, 0x1
 
     goto :goto_d
 
     :cond_c
-    const/4 p0, 0x0
+    const/4 v0, 0x0
 
     :goto_d
-    return p0
+    return v0
 .end method
 
 .method public static parse(Ljava/nio/ByteBuffer;)Landroid/net/netlink/StructNlMsgHdr;
-    .registers 4
+    .registers 5
+    .param p0, "byteBuffer"  # Ljava/nio/ByteBuffer;
 
     .line 82
     invoke-static {p0}, Landroid/net/netlink/StructNlMsgHdr;->hasAvailableSpace(Ljava/nio/ByteBuffer;)Z
@@ -115,6 +117,7 @@
     invoke-direct {v0}, Landroid/net/netlink/StructNlMsgHdr;-><init>()V
 
     .line 88
+    .local v0, "struct":Landroid/net/netlink/StructNlMsgHdr;
     invoke-virtual {p0}, Ljava/nio/ByteBuffer;->getInt()I
 
     move-result v2
@@ -145,16 +148,16 @@
     .line 92
     invoke-virtual {p0}, Ljava/nio/ByteBuffer;->getInt()I
 
-    move-result p0
+    move-result v2
 
-    iput p0, v0, Landroid/net/netlink/StructNlMsgHdr;->nlmsg_pid:I
+    iput v2, v0, Landroid/net/netlink/StructNlMsgHdr;->nlmsg_pid:I
 
     .line 94
-    iget p0, v0, Landroid/net/netlink/StructNlMsgHdr;->nlmsg_len:I
+    iget v2, v0, Landroid/net/netlink/StructNlMsgHdr;->nlmsg_len:I
 
-    const/16 v2, 0x10
+    const/16 v3, 0x10
 
-    if-ge p0, v2, :cond_32
+    if-ge v2, v3, :cond_32
 
     .line 96
     return-object v1
@@ -166,6 +169,7 @@
 
 .method public static stringForNlMsgFlags(S)Ljava/lang/String;
     .registers 4
+    .param p0, "flags"  # S
 
     .line 50
     new-instance v0, Ljava/lang/StringBuilder;
@@ -173,6 +177,7 @@
     invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
 
     .line 51
+    .local v0, "sb":Ljava/lang/StringBuilder;
     and-int/lit8 v1, p0, 0x1
 
     if-eqz v1, :cond_e
@@ -270,38 +275,39 @@
 
     .line 70
     :cond_59
-    and-int/lit16 p0, p0, 0x200
+    and-int/lit16 v1, p0, 0x200
 
-    if-eqz p0, :cond_6b
+    if-eqz v1, :cond_6b
 
     .line 71
     invoke-virtual {v0}, Ljava/lang/StringBuilder;->length()I
 
-    move-result p0
+    move-result v1
 
-    if-lez p0, :cond_66
+    if-lez v1, :cond_66
 
     invoke-virtual {v0, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     .line 72
     :cond_66
-    const-string p0, "NLM_F_MATCH"
+    const-string v1, "NLM_F_MATCH"
 
-    invoke-virtual {v0, p0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     .line 74
     :cond_6b
     invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v1
 
-    return-object p0
+    return-object v1
 .end method
 
 
 # virtual methods
 .method public pack(Ljava/nio/ByteBuffer;)V
     .registers 3
+    .param p1, "byteBuffer"  # Ljava/nio/ByteBuffer;
 
     .line 119
     iget v0, p0, Landroid/net/netlink/StructNlMsgHdr;->nlmsg_len:I
@@ -370,6 +376,7 @@
     move-result-object v0
 
     .line 130
+    .local v0, "typeStr":Ljava/lang/String;
     new-instance v4, Ljava/lang/StringBuilder;
 
     invoke-direct {v4}, Ljava/lang/StringBuilder;-><init>()V
@@ -398,6 +405,7 @@
     move-result-object v1
 
     .line 132
+    .local v1, "flagsStr":Ljava/lang/String;
     new-instance v2, Ljava/lang/StringBuilder;
 
     invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
@@ -416,35 +424,35 @@
 
     invoke-virtual {v2, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string/jumbo v0, "}, nlmsg_flags{"
+    const-string/jumbo v3, "}, nlmsg_flags{"
 
-    invoke-virtual {v2, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v2, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string v0, ")}, nlmsg_seq{"
+    const-string v3, ")}, nlmsg_seq{"
 
-    invoke-virtual {v2, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    iget v0, p0, Landroid/net/netlink/StructNlMsgHdr;->nlmsg_seq:I
+    iget v3, p0, Landroid/net/netlink/StructNlMsgHdr;->nlmsg_seq:I
 
-    invoke-virtual {v2, v0}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    const-string/jumbo v0, "}, nlmsg_pid{"
+    const-string/jumbo v3, "}, nlmsg_pid{"
 
-    invoke-virtual {v2, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    iget v0, p0, Landroid/net/netlink/StructNlMsgHdr;->nlmsg_pid:I
+    iget v3, p0, Landroid/net/netlink/StructNlMsgHdr;->nlmsg_pid:I
 
-    invoke-virtual {v2, v0}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    const-string/jumbo v0, "} }"
+    const-string/jumbo v3, "} }"
 
-    invoke-virtual {v2, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v2
 
-    return-object v0
+    return-object v2
 .end method

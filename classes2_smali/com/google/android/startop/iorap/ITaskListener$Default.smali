@@ -40,6 +40,8 @@
 
 .method public onComplete(Lcom/google/android/startop/iorap/RequestId;Lcom/google/android/startop/iorap/TaskResult;)V
     .registers 3
+    .param p1, "requestId"  # Lcom/google/android/startop/iorap/RequestId;
+    .param p2, "result"  # Lcom/google/android/startop/iorap/TaskResult;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -52,6 +54,8 @@
 
 .method public onProgress(Lcom/google/android/startop/iorap/RequestId;Lcom/google/android/startop/iorap/TaskResult;)V
     .registers 3
+    .param p1, "requestId"  # Lcom/google/android/startop/iorap/RequestId;
+    .param p2, "result"  # Lcom/google/android/startop/iorap/TaskResult;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;

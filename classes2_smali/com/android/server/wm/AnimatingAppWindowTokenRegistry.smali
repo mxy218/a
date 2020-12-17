@@ -98,6 +98,7 @@
 
     sub-int/2addr v2, v1
 
+    .local v2, "i":I
     :goto_10
     if-ltz v2, :cond_22
 
@@ -120,6 +121,7 @@
     goto :goto_10
 
     .line 102
+    .end local v2  # "i":I
     :cond_22
     iget-object v2, p0, Lcom/android/server/wm/AnimatingAppWindowTokenRegistry;->mFinishedTokens:Landroid/util/ArrayMap;
 
@@ -134,6 +136,7 @@
 
     sub-int/2addr v2, v1
 
+    .restart local v2  # "i":I
     :goto_2e
     if-ltz v2, :cond_3e
 
@@ -154,6 +157,7 @@
     goto :goto_2e
 
     .line 106
+    .end local v2  # "i":I
     :cond_3e
     iget-object v1, p0, Lcom/android/server/wm/AnimatingAppWindowTokenRegistry;->mTmpRunnableList:Ljava/util/ArrayList;
 
@@ -182,7 +186,10 @@
 
 # virtual methods
 .method dump(Ljava/io/PrintWriter;Ljava/lang/String;Ljava/lang/String;)V
-    .registers 5
+    .registers 6
+    .param p1, "pw"  # Ljava/io/PrintWriter;
+    .param p2, "header"  # Ljava/lang/String;
+    .param p3, "prefix"  # Ljava/lang/String;
 
     .line 113
     iget-object v0, p0, Lcom/android/server/wm/AnimatingAppWindowTokenRegistry;->mAnimatingTokens:Landroid/util/ArraySet;
@@ -208,41 +215,41 @@
     invoke-virtual {p1, p2}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
     .line 115
-    new-instance p2, Ljava/lang/StringBuilder;
+    new-instance v0, Ljava/lang/StringBuilder;
 
-    invoke-direct {p2}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
 
-    invoke-virtual {p2, p3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, p3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string p3, "  "
+    const-string v1, "  "
 
-    invoke-virtual {p2, p3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p2
+    move-result-object p3
 
     .line 116
-    invoke-virtual {p1, p2}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
-
-    const-string p3, "mAnimatingTokens="
-
     invoke-virtual {p1, p3}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
-    iget-object p3, p0, Lcom/android/server/wm/AnimatingAppWindowTokenRegistry;->mAnimatingTokens:Landroid/util/ArraySet;
+    const-string v0, "mAnimatingTokens="
 
-    invoke-virtual {p1, p3}, Ljava/io/PrintWriter;->println(Ljava/lang/Object;)V
+    invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
+
+    iget-object v0, p0, Lcom/android/server/wm/AnimatingAppWindowTokenRegistry;->mAnimatingTokens:Landroid/util/ArraySet;
+
+    invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->println(Ljava/lang/Object;)V
 
     .line 117
-    invoke-virtual {p1, p2}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
+    invoke-virtual {p1, p3}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
-    const-string p2, "mFinishedTokens="
+    const-string v0, "mFinishedTokens="
 
-    invoke-virtual {p1, p2}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
+    invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
-    iget-object p2, p0, Lcom/android/server/wm/AnimatingAppWindowTokenRegistry;->mFinishedTokens:Landroid/util/ArrayMap;
+    iget-object v0, p0, Lcom/android/server/wm/AnimatingAppWindowTokenRegistry;->mFinishedTokens:Landroid/util/ArrayMap;
 
-    invoke-virtual {p1, p2}, Ljava/io/PrintWriter;->println(Ljava/lang/Object;)V
+    invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->println(Ljava/lang/Object;)V
 
     .line 119
     :cond_41
@@ -250,7 +257,9 @@
 .end method
 
 .method notifyAboutToFinish(Lcom/android/server/wm/AppWindowToken;Ljava/lang/Runnable;)Z
-    .registers 5
+    .registers 6
+    .param p1, "token"  # Lcom/android/server/wm/AppWindowToken;
+    .param p2, "endDeferFinishCallback"  # Ljava/lang/Runnable;
 
     .line 69
     iget-object v0, p0, Lcom/android/server/wm/AnimatingAppWindowTokenRegistry;->mAnimatingTokens:Landroid/util/ArraySet;
@@ -260,6 +269,7 @@
     move-result v0
 
     .line 70
+    .local v0, "removed":Z
     const/4 v1, 0x0
 
     if-nez v0, :cond_a
@@ -269,13 +279,13 @@
 
     .line 74
     :cond_a
-    iget-object v0, p0, Lcom/android/server/wm/AnimatingAppWindowTokenRegistry;->mAnimatingTokens:Landroid/util/ArraySet;
+    iget-object v2, p0, Lcom/android/server/wm/AnimatingAppWindowTokenRegistry;->mAnimatingTokens:Landroid/util/ArraySet;
 
-    invoke-virtual {v0}, Landroid/util/ArraySet;->isEmpty()Z
+    invoke-virtual {v2}, Landroid/util/ArraySet;->isEmpty()Z
 
-    move-result v0
+    move-result v2
 
-    if-eqz v0, :cond_16
+    if-eqz v2, :cond_16
 
     .line 77
     invoke-direct {p0}, Lcom/android/server/wm/AnimatingAppWindowTokenRegistry;->endDeferringFinished()V
@@ -285,18 +295,19 @@
 
     .line 82
     :cond_16
-    iget-object v0, p0, Lcom/android/server/wm/AnimatingAppWindowTokenRegistry;->mFinishedTokens:Landroid/util/ArrayMap;
+    iget-object v1, p0, Lcom/android/server/wm/AnimatingAppWindowTokenRegistry;->mFinishedTokens:Landroid/util/ArrayMap;
 
-    invoke-virtual {v0, p1, p2}, Landroid/util/ArrayMap;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+    invoke-virtual {v1, p1, p2}, Landroid/util/ArrayMap;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
 
     .line 83
-    const/4 p1, 0x1
+    const/4 v1, 0x1
 
-    return p1
+    return v1
 .end method
 
 .method notifyFinished(Lcom/android/server/wm/AppWindowToken;)V
     .registers 3
+    .param p1, "token"  # Lcom/android/server/wm/AppWindowToken;
 
     .line 53
     iget-object v0, p0, Lcom/android/server/wm/AnimatingAppWindowTokenRegistry;->mAnimatingTokens:Landroid/util/ArraySet;
@@ -309,13 +320,13 @@
     invoke-virtual {v0, p1}, Landroid/util/ArrayMap;->remove(Ljava/lang/Object;)Ljava/lang/Object;
 
     .line 57
-    iget-object p1, p0, Lcom/android/server/wm/AnimatingAppWindowTokenRegistry;->mAnimatingTokens:Landroid/util/ArraySet;
+    iget-object v0, p0, Lcom/android/server/wm/AnimatingAppWindowTokenRegistry;->mAnimatingTokens:Landroid/util/ArraySet;
 
-    invoke-virtual {p1}, Landroid/util/ArraySet;->isEmpty()Z
+    invoke-virtual {v0}, Landroid/util/ArraySet;->isEmpty()Z
 
-    move-result p1
+    move-result v0
 
-    if-eqz p1, :cond_15
+    if-eqz v0, :cond_15
 
     .line 58
     invoke-direct {p0}, Lcom/android/server/wm/AnimatingAppWindowTokenRegistry;->endDeferringFinished()V
@@ -327,6 +338,7 @@
 
 .method notifyStarting(Lcom/android/server/wm/AppWindowToken;)V
     .registers 3
+    .param p1, "token"  # Lcom/android/server/wm/AppWindowToken;
 
     .line 46
     iget-object v0, p0, Lcom/android/server/wm/AnimatingAppWindowTokenRegistry;->mAnimatingTokens:Landroid/util/ArraySet;

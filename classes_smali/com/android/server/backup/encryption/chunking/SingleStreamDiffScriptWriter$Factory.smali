@@ -26,6 +26,8 @@
 # direct methods
 .method public constructor <init>(ILcom/android/server/backup/encryption/chunking/OutputStreamWrapper;)V
     .registers 3
+    .param p1, "maxNewByteChunkSize"  # I
+    .param p2, "outputStreamWrapper"  # Lcom/android/server/backup/encryption/chunking/OutputStreamWrapper;
 
     .line 117
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -55,6 +57,7 @@
 
 .method public create(Ljava/io/OutputStream;)Lcom/android/server/backup/encryption/chunking/SingleStreamDiffScriptWriter;
     .registers 4
+    .param p1, "outputStream"  # Ljava/io/OutputStream;
 
     .line 124
     iget-object v0, p0, Lcom/android/server/backup/encryption/chunking/SingleStreamDiffScriptWriter$Factory;->mOutputStreamWrapper:Lcom/android/server/backup/encryption/chunking/OutputStreamWrapper;

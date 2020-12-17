@@ -27,14 +27,16 @@
 
 # virtual methods
 .method public getGlobalSettingString(Landroid/content/ContentResolver;Ljava/lang/String;)Ljava/lang/String;
-    .registers 3
+    .registers 4
+    .param p1, "resolver"  # Landroid/content/ContentResolver;
+    .param p2, "key"  # Ljava/lang/String;
 
     .line 98
     invoke-static {p1, p2}, Landroid/provider/Settings$Global;->getString(Landroid/content/ContentResolver;Ljava/lang/String;)Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    return-object p1
+    return-object v0
 .end method
 
 .method public getIPackageManager()Landroid/content/pm/IPackageManager;

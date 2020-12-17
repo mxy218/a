@@ -23,6 +23,8 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/appop/HistoricalRegistry;Landroid/os/Handler;Landroid/content/ContentResolver;)V
     .registers 4
+    .param p1, "this$0"  # Lcom/android/server/appop/HistoricalRegistry;
+    .param p2, "x0"  # Landroid/os/Handler;
 
     .line 197
     iput-object p1, p0, Lcom/android/server/appop/HistoricalRegistry$1;->this$0:Lcom/android/server/appop/HistoricalRegistry;
@@ -37,14 +39,15 @@
 
 # virtual methods
 .method public onChange(Z)V
-    .registers 3
+    .registers 4
+    .param p1, "selfChange"  # Z
 
     .line 200
-    iget-object p1, p0, Lcom/android/server/appop/HistoricalRegistry$1;->this$0:Lcom/android/server/appop/HistoricalRegistry;
+    iget-object v0, p0, Lcom/android/server/appop/HistoricalRegistry$1;->this$0:Lcom/android/server/appop/HistoricalRegistry;
 
-    iget-object v0, p0, Lcom/android/server/appop/HistoricalRegistry$1;->val$resolver:Landroid/content/ContentResolver;
+    iget-object v1, p0, Lcom/android/server/appop/HistoricalRegistry$1;->val$resolver:Landroid/content/ContentResolver;
 
-    invoke-static {p1, v0}, Lcom/android/server/appop/HistoricalRegistry;->access$000(Lcom/android/server/appop/HistoricalRegistry;Landroid/content/ContentResolver;)V
+    invoke-static {v0, v1}, Lcom/android/server/appop/HistoricalRegistry;->access$000(Lcom/android/server/appop/HistoricalRegistry;Landroid/content/ContentResolver;)V
 
     .line 201
     return-void

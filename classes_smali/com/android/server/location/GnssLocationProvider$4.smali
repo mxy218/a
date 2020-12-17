@@ -21,8 +21,11 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/location/GnssLocationProvider;Landroid/content/Context;Landroid/os/Handler;)V
     .registers 4
+    .param p1, "this$0"  # Lcom/android/server/location/GnssLocationProvider;
+    .param p2, "context"  # Landroid/content/Context;
+    .param p3, "handler"  # Landroid/os/Handler;
 
-    .line 675
+    .line 660
     iput-object p1, p0, Lcom/android/server/location/GnssLocationProvider$4;->this$0:Lcom/android/server/location/GnssLocationProvider;
 
     invoke-direct {p0, p2, p3}, Lcom/android/server/location/GnssNavigationMessageProvider;-><init>(Landroid/content/Context;Landroid/os/Handler;)V
@@ -35,10 +38,10 @@
 .method protected isGpsEnabled()Z
     .registers 2
 
-    .line 678
+    .line 663
     iget-object v0, p0, Lcom/android/server/location/GnssLocationProvider$4;->this$0:Lcom/android/server/location/GnssLocationProvider;
 
-    invoke-static {v0}, Lcom/android/server/location/GnssLocationProvider;->access$900(Lcom/android/server/location/GnssLocationProvider;)Z
+    invoke-static {v0}, Lcom/android/server/location/GnssLocationProvider;->access$600(Lcom/android/server/location/GnssLocationProvider;)Z
 
     move-result v0
 

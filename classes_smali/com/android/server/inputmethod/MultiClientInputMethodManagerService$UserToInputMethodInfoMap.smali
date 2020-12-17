@@ -51,6 +51,7 @@
 
 .method synthetic constructor <init>(Lcom/android/server/inputmethod/MultiClientInputMethodManagerService$1;)V
     .registers 2
+    .param p1, "x0"  # Lcom/android/server/inputmethod/MultiClientInputMethodManagerService$1;
 
     .line 1169
     invoke-direct {p0}, Lcom/android/server/inputmethod/MultiClientInputMethodManagerService$UserToInputMethodInfoMap;-><init>()V
@@ -61,97 +62,103 @@
 
 # virtual methods
 .method dump(Ljava/io/FileDescriptor;Lcom/android/internal/util/IndentingPrintWriter;[Ljava/lang/String;)V
-    .registers 6
+    .registers 8
+    .param p1, "fd"  # Ljava/io/FileDescriptor;
+    .param p2, "ipw"  # Lcom/android/internal/util/IndentingPrintWriter;
+    .param p3, "args"  # [Ljava/lang/String;
 
     .line 1206
-    iget-object p1, p0, Lcom/android/server/inputmethod/MultiClientInputMethodManagerService$UserToInputMethodInfoMap;->mArray:Landroid/util/SparseArray;
-
-    monitor-enter p1
-
-    .line 1207
-    const/4 p3, 0x0
-
-    :goto_4
-    :try_start_4
     iget-object v0, p0, Lcom/android/server/inputmethod/MultiClientInputMethodManagerService$UserToInputMethodInfoMap;->mArray:Landroid/util/SparseArray;
 
-    invoke-virtual {v0}, Landroid/util/SparseArray;->size()I
-
-    move-result v0
-
-    if-ge p3, v0, :cond_44
-
-    .line 1208
-    new-instance v0, Ljava/lang/StringBuilder;
-
-    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
-
-    const-string/jumbo v1, "userId="
-
-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    iget-object v1, p0, Lcom/android/server/inputmethod/MultiClientInputMethodManagerService$UserToInputMethodInfoMap;->mArray:Landroid/util/SparseArray;
-
-    invoke-virtual {v1, p3}, Landroid/util/SparseArray;->keyAt(I)I
-
-    move-result v1
-
-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
-
-    move-result-object v0
-
-    invoke-virtual {p2, v0}, Lcom/android/internal/util/IndentingPrintWriter;->println(Ljava/lang/String;)V
-
-    .line 1209
-    new-instance v0, Ljava/lang/StringBuilder;
-
-    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
-
-    const-string v1, " InputMethodInfo="
-
-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    iget-object v1, p0, Lcom/android/server/inputmethod/MultiClientInputMethodManagerService$UserToInputMethodInfoMap;->mArray:Landroid/util/SparseArray;
-
-    invoke-virtual {v1, p3}, Landroid/util/SparseArray;->valueAt(I)Ljava/lang/Object;
-
-    move-result-object v1
-
-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
-
-    move-result-object v0
-
-    invoke-virtual {p2, v0}, Lcom/android/internal/util/IndentingPrintWriter;->println(Ljava/lang/String;)V
+    monitor-enter v0
 
     .line 1207
-    add-int/lit8 p3, p3, 0x1
+    const/4 v1, 0x0
+
+    .local v1, "i":I
+    :goto_4
+    :try_start_4
+    iget-object v2, p0, Lcom/android/server/inputmethod/MultiClientInputMethodManagerService$UserToInputMethodInfoMap;->mArray:Landroid/util/SparseArray;
+
+    invoke-virtual {v2}, Landroid/util/SparseArray;->size()I
+
+    move-result v2
+
+    if-ge v1, v2, :cond_44
+
+    .line 1208
+    new-instance v2, Ljava/lang/StringBuilder;
+
+    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
+
+    const-string/jumbo v3, "userId="
+
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    iget-object v3, p0, Lcom/android/server/inputmethod/MultiClientInputMethodManagerService$UserToInputMethodInfoMap;->mArray:Landroid/util/SparseArray;
+
+    invoke-virtual {v3, v1}, Landroid/util/SparseArray;->keyAt(I)I
+
+    move-result v3
+
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v2
+
+    invoke-virtual {p2, v2}, Lcom/android/internal/util/IndentingPrintWriter;->println(Ljava/lang/String;)V
+
+    .line 1209
+    new-instance v2, Ljava/lang/StringBuilder;
+
+    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
+
+    const-string v3, " InputMethodInfo="
+
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    iget-object v3, p0, Lcom/android/server/inputmethod/MultiClientInputMethodManagerService$UserToInputMethodInfoMap;->mArray:Landroid/util/SparseArray;
+
+    invoke-virtual {v3, v1}, Landroid/util/SparseArray;->valueAt(I)Ljava/lang/Object;
+
+    move-result-object v3
+
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v2
+
+    invoke-virtual {p2, v2}, Lcom/android/internal/util/IndentingPrintWriter;->println(Ljava/lang/String;)V
+
+    .line 1207
+    add-int/lit8 v1, v1, 0x1
 
     goto :goto_4
 
     .line 1211
+    .end local v1  # "i":I
     :cond_44
-    monitor-exit p1
+    monitor-exit v0
 
     .line 1212
     return-void
 
     .line 1211
     :catchall_46
-    move-exception p2
+    move-exception v1
 
-    monitor-exit p1
+    monitor-exit v0
     :try_end_48
     .catchall {:try_start_4 .. :try_end_48} :catchall_46
 
-    throw p2
+    throw v1
 .end method
 
 .method get(I)Landroid/view/inputmethod/InputMethodInfo;
     .registers 4
+    .param p1, "userId"  # I
 
     .line 1190
     iget-object v0, p0, Lcom/android/server/inputmethod/MultiClientInputMethodManagerService$UserToInputMethodInfoMap;->mArray:Landroid/util/SparseArray;
@@ -164,27 +171,28 @@
 
     invoke-virtual {v1, p1}, Landroid/util/SparseArray;->get(I)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v1
 
-    check-cast p1, Landroid/view/inputmethod/InputMethodInfo;
+    check-cast v1, Landroid/view/inputmethod/InputMethodInfo;
 
     monitor-exit v0
 
-    return-object p1
+    return-object v1
 
     .line 1192
     :catchall_d
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_f
     .catchall {:try_start_3 .. :try_end_f} :catchall_d
 
-    throw p1
+    throw v1
 .end method
 
 .method getAsList(I)Ljava/util/List;
-    .registers 2
+    .registers 4
+    .param p1, "userId"  # I
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(I)",
@@ -197,29 +205,32 @@
     .line 1197
     invoke-virtual {p0, p1}, Lcom/android/server/inputmethod/MultiClientInputMethodManagerService$UserToInputMethodInfoMap;->get(I)Landroid/view/inputmethod/InputMethodInfo;
 
-    move-result-object p1
+    move-result-object v0
 
     .line 1198
-    if-nez p1, :cond_b
+    .local v0, "info":Landroid/view/inputmethod/InputMethodInfo;
+    if-nez v0, :cond_b
 
     .line 1199
     invoke-static {}, Ljava/util/Collections;->emptyList()Ljava/util/List;
 
-    move-result-object p1
+    move-result-object v1
 
-    return-object p1
+    return-object v1
 
     .line 1201
     :cond_b
-    invoke-static {p1}, Ljava/util/Collections;->singletonList(Ljava/lang/Object;)Ljava/util/List;
+    invoke-static {v0}, Ljava/util/Collections;->singletonList(Ljava/lang/Object;)Ljava/util/List;
 
-    move-result-object p1
+    move-result-object v1
 
-    return-object p1
+    return-object v1
 .end method
 
 .method put(ILandroid/view/inputmethod/InputMethodInfo;)V
     .registers 5
+    .param p1, "userId"  # I
+    .param p2, "imi"  # Landroid/view/inputmethod/InputMethodInfo;
 
     .line 1175
     iget-object v0, p0, Lcom/android/server/inputmethod/MultiClientInputMethodManagerService$UserToInputMethodInfoMap;->mArray:Landroid/util/SparseArray;
@@ -240,17 +251,18 @@
 
     .line 1177
     :catchall_a
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_c
     .catchall {:try_start_3 .. :try_end_c} :catchall_a
 
-    throw p1
+    throw v1
 .end method
 
 .method remove(I)V
     .registers 4
+    .param p1, "userId"  # I
 
     .line 1182
     iget-object v0, p0, Lcom/android/server/inputmethod/MultiClientInputMethodManagerService$UserToInputMethodInfoMap;->mArray:Landroid/util/SparseArray;
@@ -271,11 +283,11 @@
 
     .line 1184
     :catchall_a
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_c
     .catchall {:try_start_3 .. :try_end_c} :catchall_a
 
-    throw p1
+    throw v1
 .end method

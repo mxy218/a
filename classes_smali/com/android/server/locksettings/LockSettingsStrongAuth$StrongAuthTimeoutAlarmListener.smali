@@ -26,6 +26,7 @@
 # direct methods
 .method public constructor <init>(Lcom/android/server/locksettings/LockSettingsStrongAuth;I)V
     .registers 3
+    .param p2, "userId"  # I
 
     .line 190
     iput-object p1, p0, Lcom/android/server/locksettings/LockSettingsStrongAuth$StrongAuthTimeoutAlarmListener;->this$0:Lcom/android/server/locksettings/LockSettingsStrongAuth;

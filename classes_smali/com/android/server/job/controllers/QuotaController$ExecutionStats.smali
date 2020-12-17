@@ -61,123 +61,128 @@
 # virtual methods
 .method public equals(Ljava/lang/Object;)Z
     .registers 8
+    .param p1, "obj"  # Ljava/lang/Object;
 
     .line 334
     instance-of v0, p1, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;
 
     const/4 v1, 0x0
 
-    if-eqz v0, :cond_6b
+    if-eqz v0, :cond_6c
 
     .line 335
-    check-cast p1, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;
+    move-object v0, p1
+
+    check-cast v0, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;
 
     .line 336
+    .local v0, "other":Lcom/android/server/job/controllers/QuotaController$ExecutionStats;
     iget-wide v2, p0, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->expirationTimeElapsed:J
 
-    iget-wide v4, p1, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->expirationTimeElapsed:J
+    iget-wide v4, v0, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->expirationTimeElapsed:J
 
-    cmp-long v0, v2, v4
+    cmp-long v2, v2, v4
 
-    if-nez v0, :cond_6a
+    if-nez v2, :cond_6b
 
     iget-wide v2, p0, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->windowSizeMs:J
 
-    iget-wide v4, p1, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->windowSizeMs:J
+    iget-wide v4, v0, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->windowSizeMs:J
 
-    cmp-long v0, v2, v4
+    cmp-long v2, v2, v4
 
-    if-nez v0, :cond_6a
+    if-nez v2, :cond_6b
 
-    iget v0, p0, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->jobCountLimit:I
+    iget v2, p0, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->jobCountLimit:I
 
-    iget v2, p1, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->jobCountLimit:I
+    iget v3, v0, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->jobCountLimit:I
 
-    if-ne v0, v2, :cond_6a
+    if-ne v2, v3, :cond_6b
 
-    iget v0, p0, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->sessionCountLimit:I
+    iget v2, p0, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->sessionCountLimit:I
 
-    iget v2, p1, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->sessionCountLimit:I
+    iget v3, v0, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->sessionCountLimit:I
 
-    if-ne v0, v2, :cond_6a
+    if-ne v2, v3, :cond_6b
 
     iget-wide v2, p0, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->executionTimeInWindowMs:J
 
-    iget-wide v4, p1, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->executionTimeInWindowMs:J
+    iget-wide v4, v0, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->executionTimeInWindowMs:J
 
-    cmp-long v0, v2, v4
+    cmp-long v2, v2, v4
 
-    if-nez v0, :cond_6a
+    if-nez v2, :cond_6b
 
-    iget v0, p0, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->bgJobCountInWindow:I
+    iget v2, p0, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->bgJobCountInWindow:I
 
-    iget v2, p1, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->bgJobCountInWindow:I
+    iget v3, v0, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->bgJobCountInWindow:I
 
-    if-ne v0, v2, :cond_6a
+    if-ne v2, v3, :cond_6b
 
     iget-wide v2, p0, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->executionTimeInMaxPeriodMs:J
 
-    iget-wide v4, p1, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->executionTimeInMaxPeriodMs:J
+    iget-wide v4, v0, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->executionTimeInMaxPeriodMs:J
 
-    cmp-long v0, v2, v4
+    cmp-long v2, v2, v4
 
-    if-nez v0, :cond_6a
+    if-nez v2, :cond_6b
 
-    iget v0, p0, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->sessionCountInWindow:I
+    iget v2, p0, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->sessionCountInWindow:I
 
-    iget v2, p1, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->sessionCountInWindow:I
+    iget v3, v0, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->sessionCountInWindow:I
 
-    if-ne v0, v2, :cond_6a
+    if-ne v2, v3, :cond_6b
 
-    iget v0, p0, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->bgJobCountInMaxPeriod:I
+    iget v2, p0, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->bgJobCountInMaxPeriod:I
 
-    iget v2, p1, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->bgJobCountInMaxPeriod:I
+    iget v3, v0, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->bgJobCountInMaxPeriod:I
 
-    if-ne v0, v2, :cond_6a
+    if-ne v2, v3, :cond_6b
 
     iget-wide v2, p0, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->inQuotaTimeElapsed:J
 
-    iget-wide v4, p1, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->inQuotaTimeElapsed:J
+    iget-wide v4, v0, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->inQuotaTimeElapsed:J
 
-    cmp-long v0, v2, v4
+    cmp-long v2, v2, v4
 
-    if-nez v0, :cond_6a
+    if-nez v2, :cond_6b
 
     iget-wide v2, p0, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->jobRateLimitExpirationTimeElapsed:J
 
-    iget-wide v4, p1, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->jobRateLimitExpirationTimeElapsed:J
+    iget-wide v4, v0, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->jobRateLimitExpirationTimeElapsed:J
 
-    cmp-long v0, v2, v4
+    cmp-long v2, v2, v4
 
-    if-nez v0, :cond_6a
+    if-nez v2, :cond_6b
 
-    iget v0, p0, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->jobCountInRateLimitingWindow:I
+    iget v2, p0, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->jobCountInRateLimitingWindow:I
 
-    iget v2, p1, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->jobCountInRateLimitingWindow:I
+    iget v3, v0, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->jobCountInRateLimitingWindow:I
 
-    if-ne v0, v2, :cond_6a
+    if-ne v2, v3, :cond_6b
 
     iget-wide v2, p0, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->sessionRateLimitExpirationTimeElapsed:J
 
-    iget-wide v4, p1, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->sessionRateLimitExpirationTimeElapsed:J
+    iget-wide v4, v0, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->sessionRateLimitExpirationTimeElapsed:J
 
-    cmp-long v0, v2, v4
+    cmp-long v2, v2, v4
 
-    if-nez v0, :cond_6a
+    if-nez v2, :cond_6b
 
-    iget v0, p0, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->sessionCountInRateLimitingWindow:I
+    iget v2, p0, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->sessionCountInRateLimitingWindow:I
 
-    iget p1, p1, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->sessionCountInRateLimitingWindow:I
+    iget v3, v0, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->sessionCountInRateLimitingWindow:I
 
-    if-ne v0, p1, :cond_6a
+    if-ne v2, v3, :cond_6b
 
     const/4 v1, 0x1
 
-    :cond_6a
+    :cond_6b
     return v1
 
     .line 354
-    :cond_6b
+    .end local v0  # "other":Lcom/android/server/job/controllers/QuotaController$ExecutionStats;
+    :cond_6c
     return v1
 .end method
 
@@ -185,148 +190,177 @@
     .registers 5
 
     .line 360
-    nop
+    const/4 v0, 0x0
 
     .line 361
-    iget-wide v0, p0, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->expirationTimeElapsed:J
+    .local v0, "result":I
+    mul-int/lit8 v1, v0, 0x1f
 
-    invoke-static {v0, v1}, Lcom/android/server/job/controllers/QuotaController;->access$100(J)I
+    iget-wide v2, p0, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->expirationTimeElapsed:J
 
-    move-result v0
+    invoke-static {v2, v3}, Lcom/android/server/job/controllers/QuotaController;->access$100(J)I
 
-    const/4 v1, 0x0
+    move-result v2
 
-    add-int/2addr v1, v0
+    add-int/2addr v1, v2
 
     .line 362
-    mul-int/lit8 v1, v1, 0x1f
+    .end local v0  # "result":I
+    .local v1, "result":I
+    mul-int/lit8 v0, v1, 0x1f
 
     iget-wide v2, p0, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->windowSizeMs:J
 
     invoke-static {v2, v3}, Lcom/android/server/job/controllers/QuotaController;->access$100(J)I
 
-    move-result v0
+    move-result v2
 
-    add-int/2addr v1, v0
+    add-int/2addr v0, v2
 
     .line 363
-    mul-int/lit8 v1, v1, 0x1f
+    .end local v1  # "result":I
+    .restart local v0  # "result":I
+    mul-int/lit8 v1, v0, 0x1f
 
-    iget v0, p0, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->jobCountLimit:I
+    iget v2, p0, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->jobCountLimit:I
 
-    int-to-long v2, v0
+    int-to-long v2, v2
 
     invoke-static {v2, v3}, Lcom/android/server/job/controllers/QuotaController;->access$100(J)I
 
-    move-result v0
+    move-result v2
 
-    add-int/2addr v1, v0
+    add-int/2addr v1, v2
 
     .line 364
-    mul-int/lit8 v1, v1, 0x1f
+    .end local v0  # "result":I
+    .restart local v1  # "result":I
+    mul-int/lit8 v0, v1, 0x1f
 
-    iget v0, p0, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->sessionCountLimit:I
+    iget v2, p0, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->sessionCountLimit:I
 
-    int-to-long v2, v0
+    int-to-long v2, v2
 
     invoke-static {v2, v3}, Lcom/android/server/job/controllers/QuotaController;->access$100(J)I
 
-    move-result v0
+    move-result v2
 
-    add-int/2addr v1, v0
+    add-int/2addr v0, v2
 
     .line 365
-    mul-int/lit8 v1, v1, 0x1f
+    .end local v1  # "result":I
+    .restart local v0  # "result":I
+    mul-int/lit8 v1, v0, 0x1f
 
     iget-wide v2, p0, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->executionTimeInWindowMs:J
 
     invoke-static {v2, v3}, Lcom/android/server/job/controllers/QuotaController;->access$100(J)I
 
-    move-result v0
+    move-result v2
 
-    add-int/2addr v1, v0
+    add-int/2addr v1, v2
 
     .line 366
-    mul-int/lit8 v1, v1, 0x1f
+    .end local v0  # "result":I
+    .restart local v1  # "result":I
+    mul-int/lit8 v0, v1, 0x1f
 
-    iget v0, p0, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->bgJobCountInWindow:I
+    iget v2, p0, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->bgJobCountInWindow:I
 
-    add-int/2addr v1, v0
+    add-int/2addr v0, v2
 
     .line 367
-    mul-int/lit8 v1, v1, 0x1f
+    .end local v1  # "result":I
+    .restart local v0  # "result":I
+    mul-int/lit8 v1, v0, 0x1f
 
     iget-wide v2, p0, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->executionTimeInMaxPeriodMs:J
 
     invoke-static {v2, v3}, Lcom/android/server/job/controllers/QuotaController;->access$100(J)I
 
-    move-result v0
+    move-result v2
 
-    add-int/2addr v1, v0
+    add-int/2addr v1, v2
 
     .line 368
-    mul-int/lit8 v1, v1, 0x1f
+    .end local v0  # "result":I
+    .restart local v1  # "result":I
+    mul-int/lit8 v0, v1, 0x1f
 
-    iget v0, p0, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->bgJobCountInMaxPeriod:I
+    iget v2, p0, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->bgJobCountInMaxPeriod:I
 
-    add-int/2addr v1, v0
+    add-int/2addr v0, v2
 
     .line 369
-    mul-int/lit8 v1, v1, 0x1f
+    .end local v1  # "result":I
+    .restart local v0  # "result":I
+    mul-int/lit8 v1, v0, 0x1f
 
-    iget v0, p0, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->sessionCountInWindow:I
+    iget v2, p0, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->sessionCountInWindow:I
 
-    add-int/2addr v1, v0
+    add-int/2addr v1, v2
 
     .line 370
-    mul-int/lit8 v1, v1, 0x1f
+    .end local v0  # "result":I
+    .restart local v1  # "result":I
+    mul-int/lit8 v0, v1, 0x1f
 
     iget-wide v2, p0, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->inQuotaTimeElapsed:J
 
     invoke-static {v2, v3}, Lcom/android/server/job/controllers/QuotaController;->access$100(J)I
 
-    move-result v0
+    move-result v2
 
-    add-int/2addr v1, v0
+    add-int/2addr v0, v2
 
     .line 371
-    mul-int/lit8 v1, v1, 0x1f
+    .end local v1  # "result":I
+    .restart local v0  # "result":I
+    mul-int/lit8 v1, v0, 0x1f
 
     iget-wide v2, p0, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->jobRateLimitExpirationTimeElapsed:J
 
     invoke-static {v2, v3}, Lcom/android/server/job/controllers/QuotaController;->access$100(J)I
 
-    move-result v0
+    move-result v2
 
-    add-int/2addr v1, v0
+    add-int/2addr v1, v2
 
     .line 372
-    mul-int/lit8 v1, v1, 0x1f
+    .end local v0  # "result":I
+    .restart local v1  # "result":I
+    mul-int/lit8 v0, v1, 0x1f
 
-    iget v0, p0, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->jobCountInRateLimitingWindow:I
+    iget v2, p0, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->jobCountInRateLimitingWindow:I
 
-    add-int/2addr v1, v0
+    add-int/2addr v0, v2
 
     .line 373
-    mul-int/lit8 v1, v1, 0x1f
+    .end local v1  # "result":I
+    .restart local v0  # "result":I
+    mul-int/lit8 v1, v0, 0x1f
 
     iget-wide v2, p0, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->sessionRateLimitExpirationTimeElapsed:J
 
     invoke-static {v2, v3}, Lcom/android/server/job/controllers/QuotaController;->access$100(J)I
 
-    move-result v0
+    move-result v2
 
-    add-int/2addr v1, v0
+    add-int/2addr v1, v2
 
     .line 374
-    mul-int/lit8 v1, v1, 0x1f
+    .end local v0  # "result":I
+    .restart local v1  # "result":I
+    mul-int/lit8 v0, v1, 0x1f
 
-    iget v0, p0, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->sessionCountInRateLimitingWindow:I
+    iget v2, p0, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->sessionCountInRateLimitingWindow:I
 
-    add-int/2addr v1, v0
+    add-int/2addr v0, v2
 
     .line 375
-    return v1
+    .end local v1  # "result":I
+    .restart local v0  # "result":I
+    return v0
 .end method
 
 .method public toString()Ljava/lang/String;

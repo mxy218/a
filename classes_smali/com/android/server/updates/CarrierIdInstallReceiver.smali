@@ -12,7 +12,7 @@
 
     const-string v1, "carrier_list.pb"
 
-    const-string v2, "metadata/"
+    const-string/jumbo v2, "metadata/"
 
     const-string/jumbo v3, "version"
 
@@ -25,29 +25,32 @@
 
 # virtual methods
 .method protected postInstall(Landroid/content/Context;Landroid/content/Intent;)V
-    .registers 5
+    .registers 7
+    .param p1, "context"  # Landroid/content/Context;
+    .param p2, "intent"  # Landroid/content/Intent;
 
     .line 34
     invoke-virtual {p1}, Landroid/content/Context;->getContentResolver()Landroid/content/ContentResolver;
 
-    move-result-object p1
+    move-result-object v0
 
     .line 35
-    sget-object p2, Landroid/provider/Telephony$CarrierId$All;->CONTENT_URI:Landroid/net/Uri;
+    .local v0, "resolver":Landroid/content/ContentResolver;
+    sget-object v1, Landroid/provider/Telephony$CarrierId$All;->CONTENT_URI:Landroid/net/Uri;
 
-    const-string/jumbo v0, "update_db"
+    const-string/jumbo v2, "update_db"
 
-    invoke-static {p2, v0}, Landroid/net/Uri;->withAppendedPath(Landroid/net/Uri;Ljava/lang/String;)Landroid/net/Uri;
+    invoke-static {v1, v2}, Landroid/net/Uri;->withAppendedPath(Landroid/net/Uri;Ljava/lang/String;)Landroid/net/Uri;
 
-    move-result-object p2
+    move-result-object v1
 
-    new-instance v0, Landroid/content/ContentValues;
+    new-instance v2, Landroid/content/ContentValues;
 
-    invoke-direct {v0}, Landroid/content/ContentValues;-><init>()V
+    invoke-direct {v2}, Landroid/content/ContentValues;-><init>()V
 
-    const/4 v1, 0x0
+    const/4 v3, 0x0
 
-    invoke-virtual {p1, p2, v0, v1, v1}, Landroid/content/ContentResolver;->update(Landroid/net/Uri;Landroid/content/ContentValues;Ljava/lang/String;[Ljava/lang/String;)I
+    invoke-virtual {v0, v1, v2, v3, v3}, Landroid/content/ContentResolver;->update(Landroid/net/Uri;Landroid/content/ContentValues;Ljava/lang/String;[Ljava/lang/String;)I
 
     .line 37
     return-void

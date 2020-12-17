@@ -26,8 +26,9 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/am/ActivityManagerService;Lcom/android/server/am/ProcessRecord;)V
     .registers 3
+    .param p1, "this$0"  # Lcom/android/server/am/ActivityManagerService;
 
-    .line 4745
+    .line 5052
     iput-object p1, p0, Lcom/android/server/am/ActivityManagerService$9;->this$0:Lcom/android/server/am/ActivityManagerService;
 
     iput-object p2, p0, Lcom/android/server/am/ActivityManagerService$9;->val$app:Lcom/android/server/am/ProcessRecord;
@@ -42,21 +43,22 @@
 .method public run()V
     .registers 4
 
-    .line 4749
+    .line 5056
     :try_start_0
     const-string v0, "backup"
 
-    .line 4750
+    .line 5057
     invoke-static {v0}, Landroid/os/ServiceManager;->getService(Ljava/lang/String;)Landroid/os/IBinder;
 
     move-result-object v0
 
-    .line 4749
+    .line 5056
     invoke-static {v0}, Landroid/app/backup/IBackupManager$Stub;->asInterface(Landroid/os/IBinder;)Landroid/app/backup/IBackupManager;
 
     move-result-object v0
 
-    .line 4751
+    .line 5058
+    .local v0, "bm":Landroid/app/backup/IBackupManager;
     iget-object v1, p0, Lcom/android/server/am/ActivityManagerService$9;->val$app:Lcom/android/server/am/ProcessRecord;
 
     iget v1, v1, Lcom/android/server/am/ProcessRecord;->userId:I
@@ -71,14 +73,15 @@
     :try_end_17
     .catch Landroid/os/RemoteException; {:try_start_0 .. :try_end_17} :catch_18
 
-    .line 4754
+    .line 5061
+    .end local v0  # "bm":Landroid/app/backup/IBackupManager;
     goto :goto_19
 
-    .line 4752
+    .line 5059
     :catch_18
     move-exception v0
 
-    .line 4755
+    .line 5062
     :goto_19
     return-void
 .end method

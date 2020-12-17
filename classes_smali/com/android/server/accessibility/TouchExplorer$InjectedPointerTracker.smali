@@ -33,6 +33,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/accessibility/TouchExplorer;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/accessibility/TouchExplorer;
 
     .line 1352
     iput-object p1, p0, Lcom/android/server/accessibility/TouchExplorer$InjectedPointerTracker;->this$0:Lcom/android/server/accessibility/TouchExplorer;
@@ -43,16 +44,19 @@
 .end method
 
 .method static synthetic access$100(Lcom/android/server/accessibility/TouchExplorer$InjectedPointerTracker;)Landroid/view/MotionEvent;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/accessibility/TouchExplorer$InjectedPointerTracker;
 
     .line 1352
-    iget-object p0, p0, Lcom/android/server/accessibility/TouchExplorer$InjectedPointerTracker;->mLastInjectedHoverEventForClick:Landroid/view/MotionEvent;
+    iget-object v0, p0, Lcom/android/server/accessibility/TouchExplorer$InjectedPointerTracker;->mLastInjectedHoverEventForClick:Landroid/view/MotionEvent;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$102(Lcom/android/server/accessibility/TouchExplorer$InjectedPointerTracker;Landroid/view/MotionEvent;)Landroid/view/MotionEvent;
     .registers 2
+    .param p0, "x0"  # Lcom/android/server/accessibility/TouchExplorer$InjectedPointerTracker;
+    .param p1, "x1"  # Landroid/view/MotionEvent;
 
     .line 1352
     iput-object p1, p0, Lcom/android/server/accessibility/TouchExplorer$InjectedPointerTracker;->mLastInjectedHoverEventForClick:Landroid/view/MotionEvent;
@@ -124,19 +128,21 @@
 .end method
 
 .method public isInjectedPointerDown(I)Z
-    .registers 4
+    .registers 5
+    .param p1, "pointerId"  # I
 
     .line 1444
     const/4 v0, 0x1
 
-    shl-int p1, v0, p1
+    shl-int v1, v0, p1
 
     .line 1445
-    iget v1, p0, Lcom/android/server/accessibility/TouchExplorer$InjectedPointerTracker;->mInjectedPointersDown:I
+    .local v1, "pointerFlag":I
+    iget v2, p0, Lcom/android/server/accessibility/TouchExplorer$InjectedPointerTracker;->mInjectedPointersDown:I
 
-    and-int/2addr p1, v1
+    and-int/2addr v2, v1
 
-    if-eqz p1, :cond_9
+    if-eqz v2, :cond_9
 
     goto :goto_a
 
@@ -148,7 +154,8 @@
 .end method
 
 .method public onMotionEvent(Landroid/view/MotionEvent;)V
-    .registers 5
+    .registers 7
+    .param p1, "event"  # Landroid/view/MotionEvent;
 
     .line 1373
     invoke-virtual {p1}, Landroid/view/MotionEvent;->getActionMasked()I
@@ -156,15 +163,16 @@
     move-result v0
 
     .line 1374
+    .local v0, "action":I
     const/4 v1, 0x1
 
-    if-eqz v0, :cond_4f
+    if-eqz v0, :cond_4e
 
     if-eq v0, v1, :cond_36
 
     const/4 v2, 0x5
 
-    if-eq v0, v2, :cond_4f
+    if-eq v0, v2, :cond_4e
 
     const/4 v2, 0x6
 
@@ -182,111 +190,119 @@
 
     if-eq v0, v1, :cond_1b
 
-    goto :goto_65
+    goto :goto_63
 
     .line 1394
     :cond_1b
-    iget-object v0, p0, Lcom/android/server/accessibility/TouchExplorer$InjectedPointerTracker;->mLastInjectedHoverEvent:Landroid/view/MotionEvent;
+    iget-object v1, p0, Lcom/android/server/accessibility/TouchExplorer$InjectedPointerTracker;->mLastInjectedHoverEvent:Landroid/view/MotionEvent;
 
-    if-eqz v0, :cond_22
+    if-eqz v1, :cond_22
 
     .line 1395
-    invoke-virtual {v0}, Landroid/view/MotionEvent;->recycle()V
+    invoke-virtual {v1}, Landroid/view/MotionEvent;->recycle()V
 
     .line 1397
     :cond_22
     invoke-static {p1}, Landroid/view/MotionEvent;->obtain(Landroid/view/MotionEvent;)Landroid/view/MotionEvent;
 
-    move-result-object v0
+    move-result-object v1
 
-    iput-object v0, p0, Lcom/android/server/accessibility/TouchExplorer$InjectedPointerTracker;->mLastInjectedHoverEvent:Landroid/view/MotionEvent;
+    iput-object v1, p0, Lcom/android/server/accessibility/TouchExplorer$InjectedPointerTracker;->mLastInjectedHoverEvent:Landroid/view/MotionEvent;
 
     .line 1398
-    iget-object v0, p0, Lcom/android/server/accessibility/TouchExplorer$InjectedPointerTracker;->mLastInjectedHoverEventForClick:Landroid/view/MotionEvent;
+    iget-object v1, p0, Lcom/android/server/accessibility/TouchExplorer$InjectedPointerTracker;->mLastInjectedHoverEventForClick:Landroid/view/MotionEvent;
 
-    if-eqz v0, :cond_2f
+    if-eqz v1, :cond_2f
 
     .line 1399
-    invoke-virtual {v0}, Landroid/view/MotionEvent;->recycle()V
+    invoke-virtual {v1}, Landroid/view/MotionEvent;->recycle()V
 
     .line 1401
     :cond_2f
     invoke-static {p1}, Landroid/view/MotionEvent;->obtain(Landroid/view/MotionEvent;)Landroid/view/MotionEvent;
 
-    move-result-object p1
+    move-result-object v1
 
-    iput-object p1, p0, Lcom/android/server/accessibility/TouchExplorer$InjectedPointerTracker;->mLastInjectedHoverEventForClick:Landroid/view/MotionEvent;
+    iput-object v1, p0, Lcom/android/server/accessibility/TouchExplorer$InjectedPointerTracker;->mLastInjectedHoverEventForClick:Landroid/view/MotionEvent;
 
-    goto :goto_65
+    goto :goto_63
 
     .line 1384
     :cond_36
     invoke-virtual {p1}, Landroid/view/MotionEvent;->getActionIndex()I
 
-    move-result v0
+    move-result v2
 
-    invoke-virtual {p1, v0}, Landroid/view/MotionEvent;->getPointerId(I)I
+    invoke-virtual {p1, v2}, Landroid/view/MotionEvent;->getPointerId(I)I
 
-    move-result p1
+    move-result v2
 
     .line 1385
-    shl-int p1, v1, p1
+    .local v2, "pointerId":I
+    shl-int/2addr v1, v2
 
     .line 1386
-    iget v0, p0, Lcom/android/server/accessibility/TouchExplorer$InjectedPointerTracker;->mInjectedPointersDown:I
+    .local v1, "pointerFlag":I
+    iget v3, p0, Lcom/android/server/accessibility/TouchExplorer$InjectedPointerTracker;->mInjectedPointersDown:I
 
-    not-int p1, p1
+    not-int v4, v1
 
-    and-int/2addr p1, v0
+    and-int/2addr v3, v4
 
-    iput p1, p0, Lcom/android/server/accessibility/TouchExplorer$InjectedPointerTracker;->mInjectedPointersDown:I
+    iput v3, p0, Lcom/android/server/accessibility/TouchExplorer$InjectedPointerTracker;->mInjectedPointersDown:I
 
     .line 1387
-    iget p1, p0, Lcom/android/server/accessibility/TouchExplorer$InjectedPointerTracker;->mInjectedPointersDown:I
+    iget v3, p0, Lcom/android/server/accessibility/TouchExplorer$InjectedPointerTracker;->mInjectedPointersDown:I
 
-    if-nez p1, :cond_4e
+    if-nez v3, :cond_4d
 
     .line 1388
-    const-wide/16 v0, 0x0
+    const-wide/16 v3, 0x0
 
-    iput-wide v0, p0, Lcom/android/server/accessibility/TouchExplorer$InjectedPointerTracker;->mLastInjectedDownEventTime:J
+    iput-wide v3, p0, Lcom/android/server/accessibility/TouchExplorer$InjectedPointerTracker;->mLastInjectedDownEventTime:J
 
     .line 1390
-    :cond_4e
-    goto :goto_65
+    .end local v1  # "pointerFlag":I
+    .end local v2  # "pointerId":I
+    :cond_4d
+    goto :goto_63
 
     .line 1377
-    :cond_4f
+    :cond_4e
     invoke-virtual {p1}, Landroid/view/MotionEvent;->getActionIndex()I
 
-    move-result v0
+    move-result v2
 
-    invoke-virtual {p1, v0}, Landroid/view/MotionEvent;->getPointerId(I)I
+    invoke-virtual {p1, v2}, Landroid/view/MotionEvent;->getPointerId(I)I
 
-    move-result v0
+    move-result v2
 
     .line 1378
-    shl-int v0, v1, v0
+    .restart local v2  # "pointerId":I
+    shl-int/2addr v1, v2
 
     .line 1379
-    iget v1, p0, Lcom/android/server/accessibility/TouchExplorer$InjectedPointerTracker;->mInjectedPointersDown:I
+    .restart local v1  # "pointerFlag":I
+    iget v3, p0, Lcom/android/server/accessibility/TouchExplorer$InjectedPointerTracker;->mInjectedPointersDown:I
 
-    or-int/2addr v0, v1
+    or-int/2addr v3, v1
 
-    iput v0, p0, Lcom/android/server/accessibility/TouchExplorer$InjectedPointerTracker;->mInjectedPointersDown:I
+    iput v3, p0, Lcom/android/server/accessibility/TouchExplorer$InjectedPointerTracker;->mInjectedPointersDown:I
 
     .line 1380
     invoke-virtual {p1}, Landroid/view/MotionEvent;->getDownTime()J
 
-    move-result-wide v0
+    move-result-wide v3
 
-    iput-wide v0, p0, Lcom/android/server/accessibility/TouchExplorer$InjectedPointerTracker;->mLastInjectedDownEventTime:J
+    iput-wide v3, p0, Lcom/android/server/accessibility/TouchExplorer$InjectedPointerTracker;->mLastInjectedDownEventTime:J
 
     .line 1381
+    .end local v1  # "pointerFlag":I
+    .end local v2  # "pointerId":I
     nop
 
     .line 1407
-    :goto_65
+    :goto_63
     return-void
 .end method
 
@@ -299,6 +315,7 @@
     invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
 
     .line 1465
+    .local v0, "builder":Ljava/lang/StringBuilder;
     const-string v1, "========================="
 
     invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
@@ -325,6 +342,7 @@
     .line 1469
     const/4 v1, 0x0
 
+    .local v1, "i":I
     :goto_1e
     const/16 v2, 0x20
 
@@ -352,6 +370,7 @@
     goto :goto_1e
 
     .line 1475
+    .end local v1  # "i":I
     :cond_32
     const-string v1, "]"
 
@@ -365,7 +384,7 @@
     .line 1477
     invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v1
 
-    return-object v0
+    return-object v1
 .end method

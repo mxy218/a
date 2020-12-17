@@ -66,6 +66,8 @@
 
 .method public constructor <init>(Lcom/android/server/slice/SlicePermissionManager$PkgUser;Lcom/android/server/slice/DirtyTracker;)V
     .registers 4
+    .param p1, "pkg"  # Lcom/android/server/slice/SlicePermissionManager$PkgUser;
+    .param p2, "tracker"  # Lcom/android/server/slice/DirtyTracker;
 
     .line 59
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -97,7 +99,9 @@
 .end method
 
 .method public static createFrom(Lorg/xmlpull/v1/XmlPullParser;Lcom/android/server/slice/DirtyTracker;)Lcom/android/server/slice/SliceClientPermissions;
-    .registers 10
+    .registers 15
+    .param p0, "parser"  # Lorg/xmlpull/v1/XmlPullParser;
+    .param p1, "tracker"  # Lcom/android/server/slice/DirtyTracker;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Lorg/xmlpull/v1/XmlPullParserException;,
@@ -113,213 +117,262 @@
 
     const/4 v1, 0x2
 
-    if-ne v0, v1, :cond_97
+    const/4 v2, 0x1
+
+    if-ne v0, v1, :cond_a1
 
     .line 162
     invoke-interface {p0}, Lorg/xmlpull/v1/XmlPullParser;->getName()Ljava/lang/String;
 
     move-result-object v0
 
-    const-string v2, "client"
+    const-string v3, "client"
 
-    invoke-virtual {v2, v0}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
-
-    move-result v0
-
-    if-nez v0, :cond_15
-
-    goto/16 :goto_97
-
-    .line 165
-    :cond_15
-    invoke-interface {p0}, Lorg/xmlpull/v1/XmlPullParser;->getDepth()I
+    invoke-virtual {v3, v0}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
     move-result v0
 
-    .line 166
-    new-instance v2, Lcom/android/server/slice/SlicePermissionManager$PkgUser;
+    if-nez v0, :cond_16
 
-    sget-object v3, Lcom/android/server/slice/SliceClientPermissions;->NAMESPACE:Ljava/lang/String;
-
-    const-string/jumbo v4, "pkg"
-
-    invoke-interface {p0, v3, v4}, Lorg/xmlpull/v1/XmlPullParser;->getAttributeValue(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
-
-    move-result-object v3
-
-    invoke-direct {v2, v3}, Lcom/android/server/slice/SlicePermissionManager$PkgUser;-><init>(Ljava/lang/String;)V
-
-    .line 167
-    new-instance v3, Lcom/android/server/slice/SliceClientPermissions;
-
-    invoke-direct {v3, v2, p1}, Lcom/android/server/slice/SliceClientPermissions;-><init>(Lcom/android/server/slice/SlicePermissionManager$PkgUser;Lcom/android/server/slice/DirtyTracker;)V
+    goto/16 :goto_a1
 
     .line 168
-    sget-object p1, Lcom/android/server/slice/SliceClientPermissions;->NAMESPACE:Ljava/lang/String;
-
-    const-string v2, "fullAccess"
-
-    invoke-interface {p0, p1, v2}, Lorg/xmlpull/v1/XmlPullParser;->getAttributeValue(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
-
-    move-result-object p1
-
-    .line 169
-    if-nez p1, :cond_38
-
-    .line 170
-    const-string p1, "0"
-
-    .line 172
-    :cond_38
-    invoke-static {p1}, Ljava/lang/Integer;->parseInt(Ljava/lang/String;)I
-
-    move-result p1
-
-    if-eqz p1, :cond_40
-
-    const/4 p1, 0x1
-
-    goto :goto_41
-
-    :cond_40
-    const/4 p1, 0x0
-
-    :goto_41
-    iput-boolean p1, v3, Lcom/android/server/slice/SliceClientPermissions;->mHasFullAccess:Z
-
-    .line 173
-    invoke-interface {p0}, Lorg/xmlpull/v1/XmlPullParser;->next()I
-
-    .line 175
-    :goto_46
+    :cond_16
     invoke-interface {p0}, Lorg/xmlpull/v1/XmlPullParser;->getDepth()I
 
-    move-result p1
+    move-result v0
 
-    if-le p1, v0, :cond_96
+    .line 169
+    .local v0, "depth":I
+    new-instance v3, Lcom/android/server/slice/SlicePermissionManager$PkgUser;
 
-    .line 176
-    invoke-interface {p0}, Lorg/xmlpull/v1/XmlPullParser;->getEventType()I
+    sget-object v4, Lcom/android/server/slice/SliceClientPermissions;->NAMESPACE:Ljava/lang/String;
 
-    move-result p1
+    const-string/jumbo v5, "pkg"
 
-    if-ne p1, v1, :cond_92
+    invoke-interface {p0, v4, v5}, Lorg/xmlpull/v1/XmlPullParser;->getAttributeValue(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
 
-    .line 177
-    invoke-interface {p0}, Lorg/xmlpull/v1/XmlPullParser;->getName()Ljava/lang/String;
+    move-result-object v4
 
-    move-result-object p1
+    invoke-direct {v3, v4}, Lcom/android/server/slice/SlicePermissionManager$PkgUser;-><init>(Ljava/lang/String;)V
 
-    const-string v2, "authority"
+    .line 170
+    .local v3, "pkgUser":Lcom/android/server/slice/SlicePermissionManager$PkgUser;
+    new-instance v4, Lcom/android/server/slice/SliceClientPermissions;
 
-    invoke-virtual {v2, p1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-direct {v4, v3, p1}, Lcom/android/server/slice/SliceClientPermissions;-><init>(Lcom/android/server/slice/SlicePermissionManager$PkgUser;Lcom/android/server/slice/DirtyTracker;)V
 
-    move-result p1
-
-    if-eqz p1, :cond_92
-
-    .line 179
-    :try_start_5e
-    new-instance p1, Lcom/android/server/slice/SlicePermissionManager$PkgUser;
-
-    sget-object v5, Lcom/android/server/slice/SliceClientPermissions;->NAMESPACE:Ljava/lang/String;
-
-    invoke-interface {p0, v5, v4}, Lorg/xmlpull/v1/XmlPullParser;->getAttributeValue(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
-
-    move-result-object v5
-
-    invoke-direct {p1, v5}, Lcom/android/server/slice/SlicePermissionManager$PkgUser;-><init>(Ljava/lang/String;)V
-
-    .line 180
-    new-instance v5, Lcom/android/server/slice/SliceClientPermissions$SliceAuthority;
-
+    .line 171
+    .local v4, "provider":Lcom/android/server/slice/SliceClientPermissions;
     sget-object v6, Lcom/android/server/slice/SliceClientPermissions;->NAMESPACE:Ljava/lang/String;
 
-    .line 181
-    invoke-interface {p0, v6, v2}, Lorg/xmlpull/v1/XmlPullParser;->getAttributeValue(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+    const-string v7, "fullAccess"
 
-    move-result-object v2
+    invoke-interface {p0, v6, v7}, Lorg/xmlpull/v1/XmlPullParser;->getAttributeValue(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
 
-    invoke-direct {v5, v2, p1, v3}, Lcom/android/server/slice/SliceClientPermissions$SliceAuthority;-><init>(Ljava/lang/String;Lcom/android/server/slice/SlicePermissionManager$PkgUser;Lcom/android/server/slice/DirtyTracker;)V
+    move-result-object v6
+
+    .line 172
+    .local v6, "fullAccess":Ljava/lang/String;
+    if-nez v6, :cond_39
+
+    .line 173
+    const-string v6, "0"
+
+    .line 175
+    :cond_39
+    invoke-static {v6}, Ljava/lang/Integer;->parseInt(Ljava/lang/String;)I
+
+    move-result v7
+
+    if-eqz v7, :cond_41
+
+    move v7, v2
+
+    goto :goto_42
+
+    :cond_41
+    const/4 v7, 0x0
+
+    :goto_42
+    iput-boolean v7, v4, Lcom/android/server/slice/SliceClientPermissions;->mHasFullAccess:Z
+
+    .line 176
+    invoke-interface {p0}, Lorg/xmlpull/v1/XmlPullParser;->next()I
+
+    .line 178
+    :goto_47
+    invoke-interface {p0}, Lorg/xmlpull/v1/XmlPullParser;->getDepth()I
+
+    move-result v7
+
+    if-le v7, v0, :cond_a0
+
+    .line 179
+    invoke-interface {p0}, Lorg/xmlpull/v1/XmlPullParser;->getEventType()I
+
+    move-result v7
+
+    if-ne v7, v2, :cond_54
+
+    .line 180
+    return-object v4
 
     .line 182
-    invoke-virtual {v5, p0}, Lcom/android/server/slice/SliceClientPermissions$SliceAuthority;->readFrom(Lorg/xmlpull/v1/XmlPullParser;)V
+    :cond_54
+    invoke-interface {p0}, Lorg/xmlpull/v1/XmlPullParser;->getEventType()I
+
+    move-result v7
+
+    if-ne v7, v1, :cond_9c
 
     .line 183
-    iget-object v2, v3, Lcom/android/server/slice/SliceClientPermissions;->mAuths:Landroid/util/ArrayMap;
-
-    new-instance v6, Lcom/android/server/slice/SlicePermissionManager$PkgUser;
-
-    invoke-virtual {v5}, Lcom/android/server/slice/SliceClientPermissions$SliceAuthority;->getAuthority()Ljava/lang/String;
+    invoke-interface {p0}, Lorg/xmlpull/v1/XmlPullParser;->getName()Ljava/lang/String;
 
     move-result-object v7
 
-    invoke-virtual {p1}, Lcom/android/server/slice/SlicePermissionManager$PkgUser;->getUserId()I
+    const-string v8, "authority"
 
-    move-result p1
+    invoke-virtual {v8, v7}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    invoke-direct {v6, v7, p1}, Lcom/android/server/slice/SlicePermissionManager$PkgUser;-><init>(Ljava/lang/String;I)V
+    move-result v7
 
-    invoke-virtual {v2, v6, v5}, Landroid/util/ArrayMap;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
-    :try_end_89
-    .catch Ljava/lang/IllegalArgumentException; {:try_start_5e .. :try_end_89} :catch_8a
-
-    .line 187
-    goto :goto_92
+    if-eqz v7, :cond_9c
 
     .line 185
-    :catch_8a
-    move-exception p1
+    :try_start_66
+    new-instance v7, Lcom/android/server/slice/SlicePermissionManager$PkgUser;
+
+    sget-object v9, Lcom/android/server/slice/SliceClientPermissions;->NAMESPACE:Ljava/lang/String;
+
+    invoke-interface {p0, v9, v5}, Lorg/xmlpull/v1/XmlPullParser;->getAttributeValue(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+
+    move-result-object v9
+
+    invoke-direct {v7, v9}, Lcom/android/server/slice/SlicePermissionManager$PkgUser;-><init>(Ljava/lang/String;)V
 
     .line 186
-    const-string v2, "SliceClientPermissions"
+    .local v7, "pkg":Lcom/android/server/slice/SlicePermissionManager$PkgUser;
+    new-instance v9, Lcom/android/server/slice/SliceClientPermissions$SliceAuthority;
 
-    const-string v5, "Couldn\'t read PkgUser"
+    sget-object v10, Lcom/android/server/slice/SliceClientPermissions;->NAMESPACE:Ljava/lang/String;
 
-    invoke-static {v2, v5, p1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    .line 187
+    invoke-interface {p0, v10, v8}, Lorg/xmlpull/v1/XmlPullParser;->getAttributeValue(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
 
-    .line 190
-    :cond_92
-    :goto_92
-    invoke-interface {p0}, Lorg/xmlpull/v1/XmlPullParser;->next()I
+    move-result-object v8
 
-    goto :goto_46
+    invoke-direct {v9, v8, v7, v4}, Lcom/android/server/slice/SliceClientPermissions$SliceAuthority;-><init>(Ljava/lang/String;Lcom/android/server/slice/SlicePermissionManager$PkgUser;Lcom/android/server/slice/DirtyTracker;)V
+
+    move-object v8, v9
+
+    .line 188
+    .local v8, "authority":Lcom/android/server/slice/SliceClientPermissions$SliceAuthority;
+    invoke-virtual {v8, p0}, Lcom/android/server/slice/SliceClientPermissions$SliceAuthority;->readFrom(Lorg/xmlpull/v1/XmlPullParser;)V
+
+    .line 189
+    iget-object v9, v4, Lcom/android/server/slice/SliceClientPermissions;->mAuths:Landroid/util/ArrayMap;
+
+    new-instance v10, Lcom/android/server/slice/SlicePermissionManager$PkgUser;
+
+    invoke-virtual {v8}, Lcom/android/server/slice/SliceClientPermissions$SliceAuthority;->getAuthority()Ljava/lang/String;
+
+    move-result-object v11
+
+    invoke-virtual {v7}, Lcom/android/server/slice/SlicePermissionManager$PkgUser;->getUserId()I
+
+    move-result v12
+
+    invoke-direct {v10, v11, v12}, Lcom/android/server/slice/SlicePermissionManager$PkgUser;-><init>(Ljava/lang/String;I)V
+
+    invoke-virtual {v9, v10, v8}, Landroid/util/ArrayMap;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+    :try_end_92
+    .catch Ljava/lang/IllegalArgumentException; {:try_start_66 .. :try_end_92} :catch_94
+
+    .line 193
+    nop
+
+    .end local v7  # "pkg":Lcom/android/server/slice/SlicePermissionManager$PkgUser;
+    .end local v8  # "authority":Lcom/android/server/slice/SliceClientPermissions$SliceAuthority;
+    goto :goto_9c
+
+    .line 191
+    :catch_94
+    move-exception v7
 
     .line 192
-    :cond_96
-    return-object v3
+    .local v7, "e":Ljava/lang/IllegalArgumentException;
+    const-string v8, "SliceClientPermissions"
+
+    const-string v9, "Couldn\'t read PkgUser"
+
+    invoke-static {v8, v9, v7}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+
+    .line 196
+    .end local v7  # "e":Ljava/lang/IllegalArgumentException;
+    :cond_9c
+    :goto_9c
+    invoke-interface {p0}, Lorg/xmlpull/v1/XmlPullParser;->next()I
+
+    goto :goto_47
+
+    .line 198
+    :cond_a0
+    return-object v4
 
     .line 163
-    :cond_97
-    :goto_97
+    .end local v0  # "depth":I
+    .end local v3  # "pkgUser":Lcom/android/server/slice/SlicePermissionManager$PkgUser;
+    .end local v4  # "provider":Lcom/android/server/slice/SliceClientPermissions;
+    .end local v6  # "fullAccess":Ljava/lang/String;
+    :cond_a1
+    :goto_a1
+    invoke-interface {p0}, Lorg/xmlpull/v1/XmlPullParser;->getEventType()I
+
+    move-result v0
+
+    if-eq v0, v2, :cond_ac
+
+    .line 166
     invoke-interface {p0}, Lorg/xmlpull/v1/XmlPullParser;->next()I
 
     goto/16 :goto_0
+
+    .line 164
+    :cond_ac
+    new-instance v0, Lorg/xmlpull/v1/XmlPullParserException;
+
+    const-string v1, "Can\'t find client tag in xml"
+
+    invoke-direct {v0, v1}, Lorg/xmlpull/v1/XmlPullParserException;-><init>(Ljava/lang/String;)V
+
+    throw v0
 .end method
 
 .method public static getFileName(Lcom/android/server/slice/SlicePermissionManager$PkgUser;)Ljava/lang/String;
-    .registers 3
+    .registers 4
+    .param p0, "pkg"  # Lcom/android/server/slice/SlicePermissionManager$PkgUser;
 
-    .line 196
+    .line 202
     const/4 v0, 0x1
 
     new-array v0, v0, [Ljava/lang/Object;
 
     invoke-virtual {p0}, Lcom/android/server/slice/SlicePermissionManager$PkgUser;->toString()Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v1
 
-    const/4 v1, 0x0
+    const/4 v2, 0x0
 
-    aput-object p0, v0, v1
+    aput-object v1, v0, v2
 
-    const-string p0, "client_%s"
+    const-string v1, "client_%s"
 
-    invoke-static {p0, v0}, Ljava/lang/String;->format(Ljava/lang/String;[Ljava/lang/Object;)Ljava/lang/String;
+    invoke-static {v1, v0}, Ljava/lang/String;->format(Ljava/lang/String;[Ljava/lang/Object;)Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v0
 
-    return-object p0
+    return-object v0
 .end method
 
 
@@ -391,6 +444,7 @@
 
     return-object v0
 
+    .end local p0  # "this":Lcom/android/server/slice/SliceClientPermissions;
     :catchall_e
     move-exception v0
 
@@ -401,6 +455,7 @@
 
 .method public declared-synchronized getAuthority(Lcom/android/server/slice/SlicePermissionManager$PkgUser;)Lcom/android/server/slice/SliceClientPermissions$SliceAuthority;
     .registers 3
+    .param p1, "authority"  # Lcom/android/server/slice/SlicePermissionManager$PkgUser;
 
     monitor-enter p0
 
@@ -410,16 +465,18 @@
 
     invoke-virtual {v0, p1}, Landroid/util/ArrayMap;->get(Ljava/lang/Object;)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v0
 
-    check-cast p1, Lcom/android/server/slice/SliceClientPermissions$SliceAuthority;
+    check-cast v0, Lcom/android/server/slice/SliceClientPermissions$SliceAuthority;
     :try_end_9
     .catchall {:try_start_1 .. :try_end_9} :catchall_b
 
     monitor-exit p0
 
-    return-object p1
+    return-object v0
 
+    .end local p0  # "this":Lcom/android/server/slice/SliceClientPermissions;
+    .end local p1  # "authority":Lcom/android/server/slice/SlicePermissionManager$PkgUser;
     :catchall_b
     move-exception p1
 
@@ -442,7 +499,9 @@
 .end method
 
 .method public declared-synchronized getOrCreateAuthority(Lcom/android/server/slice/SlicePermissionManager$PkgUser;Lcom/android/server/slice/SlicePermissionManager$PkgUser;)Lcom/android/server/slice/SliceClientPermissions$SliceAuthority;
-    .registers 5
+    .registers 6
+    .param p1, "authority"  # Lcom/android/server/slice/SlicePermissionManager$PkgUser;
+    .param p2, "provider"  # Lcom/android/server/slice/SlicePermissionManager$PkgUser;
 
     monitor-enter p0
 
@@ -457,35 +516,42 @@
     check-cast v0, Lcom/android/server/slice/SliceClientPermissions$SliceAuthority;
 
     .line 74
-    if-nez v0, :cond_1c
+    .local v0, "ret":Lcom/android/server/slice/SliceClientPermissions$SliceAuthority;
+    if-nez v0, :cond_1d
 
     .line 75
-    new-instance v0, Lcom/android/server/slice/SliceClientPermissions$SliceAuthority;
+    new-instance v1, Lcom/android/server/slice/SliceClientPermissions$SliceAuthority;
 
     invoke-virtual {p1}, Lcom/android/server/slice/SlicePermissionManager$PkgUser;->getPkg()Ljava/lang/String;
 
-    move-result-object v1
+    move-result-object v2
 
-    invoke-direct {v0, v1, p2, p0}, Lcom/android/server/slice/SliceClientPermissions$SliceAuthority;-><init>(Ljava/lang/String;Lcom/android/server/slice/SlicePermissionManager$PkgUser;Lcom/android/server/slice/DirtyTracker;)V
+    invoke-direct {v1, v2, p2, p0}, Lcom/android/server/slice/SliceClientPermissions$SliceAuthority;-><init>(Ljava/lang/String;Lcom/android/server/slice/SlicePermissionManager$PkgUser;Lcom/android/server/slice/DirtyTracker;)V
+
+    move-object v0, v1
 
     .line 76
-    iget-object p2, p0, Lcom/android/server/slice/SliceClientPermissions;->mAuths:Landroid/util/ArrayMap;
+    iget-object v1, p0, Lcom/android/server/slice/SliceClientPermissions;->mAuths:Landroid/util/ArrayMap;
 
-    invoke-virtual {p2, p1, v0}, Landroid/util/ArrayMap;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+    invoke-virtual {v1, p1, v0}, Landroid/util/ArrayMap;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
 
     .line 77
     invoke-virtual {p0, v0}, Lcom/android/server/slice/SliceClientPermissions;->onPersistableDirty(Lcom/android/server/slice/DirtyTracker$Persistable;)V
-    :try_end_1c
-    .catchall {:try_start_1 .. :try_end_1c} :catchall_1e
+    :try_end_1d
+    .catchall {:try_start_1 .. :try_end_1d} :catchall_1f
 
     .line 79
-    :cond_1c
+    .end local p0  # "this":Lcom/android/server/slice/SliceClientPermissions;
+    :cond_1d
     monitor-exit p0
 
     return-object v0
 
     .line 72
-    :catchall_1e
+    .end local v0  # "ret":Lcom/android/server/slice/SliceClientPermissions$SliceAuthority;
+    .end local p1  # "authority":Lcom/android/server/slice/SlicePermissionManager$PkgUser;
+    .end local p2  # "provider":Lcom/android/server/slice/SlicePermissionManager$PkgUser;
+    :catchall_1f
     move-exception p1
 
     monitor-exit p0
@@ -504,6 +570,8 @@
 
 .method public grantUri(Landroid/net/Uri;Lcom/android/server/slice/SlicePermissionManager$PkgUser;)V
     .registers 6
+    .param p1, "uri"  # Landroid/net/Uri;
+    .param p2, "providerPkg"  # Lcom/android/server/slice/SlicePermissionManager$PkgUser;
 
     .line 109
     new-instance v0, Lcom/android/server/slice/SlicePermissionManager$PkgUser;
@@ -522,14 +590,15 @@
     .line 109
     invoke-virtual {p0, v0, p2}, Lcom/android/server/slice/SliceClientPermissions;->getOrCreateAuthority(Lcom/android/server/slice/SlicePermissionManager$PkgUser;Lcom/android/server/slice/SlicePermissionManager$PkgUser;)Lcom/android/server/slice/SliceClientPermissions$SliceAuthority;
 
-    move-result-object p2
+    move-result-object v0
 
     .line 112
+    .local v0, "authority":Lcom/android/server/slice/SliceClientPermissions$SliceAuthority;
     invoke-virtual {p1}, Landroid/net/Uri;->getPathSegments()Ljava/util/List;
 
-    move-result-object p1
+    move-result-object v1
 
-    invoke-virtual {p2, p1}, Lcom/android/server/slice/SliceClientPermissions$SliceAuthority;->addPath(Ljava/util/List;)V
+    invoke-virtual {v0, v1}, Lcom/android/server/slice/SliceClientPermissions$SliceAuthority;->addPath(Ljava/util/List;)V
 
     .line 113
     return-void
@@ -546,6 +615,8 @@
 
 .method public declared-synchronized hasPermission(Landroid/net/Uri;I)Z
     .registers 6
+    .param p1, "uri"  # Landroid/net/Uri;
+    .param p2, "userId"  # I
 
     monitor-enter p0
 
@@ -584,31 +655,36 @@
 
     invoke-virtual {p0, v0}, Lcom/android/server/slice/SliceClientPermissions;->getAuthority(Lcom/android/server/slice/SlicePermissionManager$PkgUser;)Lcom/android/server/slice/SliceClientPermissions$SliceAuthority;
 
-    move-result-object p2
+    move-result-object v0
 
     .line 105
-    if-eqz p2, :cond_2a
+    .local v0, "authority":Lcom/android/server/slice/SliceClientPermissions$SliceAuthority;
+    if-eqz v0, :cond_2a
 
     invoke-virtual {p1}, Landroid/net/Uri;->getPathSegments()Ljava/util/List;
 
-    move-result-object p1
+    move-result-object v2
 
-    invoke-virtual {p2, p1}, Lcom/android/server/slice/SliceClientPermissions$SliceAuthority;->hasPermission(Ljava/util/List;)Z
+    invoke-virtual {v0, v2}, Lcom/android/server/slice/SliceClientPermissions$SliceAuthority;->hasPermission(Ljava/util/List;)Z
 
-    move-result p1
+    move-result v2
     :try_end_27
     .catchall {:try_start_10 .. :try_end_27} :catchall_2c
 
-    if-eqz p1, :cond_2a
+    if-eqz v2, :cond_2a
 
     const/4 v1, 0x1
 
+    .end local p0  # "this":Lcom/android/server/slice/SliceClientPermissions;
     :cond_2a
     monitor-exit p0
 
     return v1
 
     .line 102
+    .end local v0  # "authority":Lcom/android/server/slice/SliceClientPermissions$SliceAuthority;
+    .end local p1  # "uri":Landroid/net/Uri;
+    .end local p2  # "userId":I
     :catchall_2c
     move-exception p1
 
@@ -618,12 +694,13 @@
 .end method
 
 .method public onPersistableDirty(Lcom/android/server/slice/DirtyTracker$Persistable;)V
-    .registers 2
+    .registers 3
+    .param p1, "obj"  # Lcom/android/server/slice/DirtyTracker$Persistable;
 
     .line 131
-    iget-object p1, p0, Lcom/android/server/slice/SliceClientPermissions;->mTracker:Lcom/android/server/slice/DirtyTracker;
+    iget-object v0, p0, Lcom/android/server/slice/SliceClientPermissions;->mTracker:Lcom/android/server/slice/DirtyTracker;
 
-    invoke-interface {p1, p0}, Lcom/android/server/slice/DirtyTracker;->onPersistableDirty(Lcom/android/server/slice/DirtyTracker$Persistable;)V
+    invoke-interface {v0, p0}, Lcom/android/server/slice/DirtyTracker;->onPersistableDirty(Lcom/android/server/slice/DirtyTracker$Persistable;)V
 
     .line 132
     return-void
@@ -631,6 +708,8 @@
 
 .method public removeAuthority(Ljava/lang/String;I)V
     .registers 5
+    .param p1, "authority"  # Ljava/lang/String;
+    .param p2, "userId"  # I
 
     .line 97
     iget-object v0, p0, Lcom/android/server/slice/SliceClientPermissions;->mAuths:Landroid/util/ArrayMap;
@@ -641,14 +720,14 @@
 
     invoke-virtual {v0, v1}, Landroid/util/ArrayMap;->remove(Ljava/lang/Object;)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v0
 
-    if-eqz p1, :cond_12
+    if-eqz v0, :cond_12
 
     .line 98
-    iget-object p1, p0, Lcom/android/server/slice/SliceClientPermissions;->mTracker:Lcom/android/server/slice/DirtyTracker;
+    iget-object v0, p0, Lcom/android/server/slice/SliceClientPermissions;->mTracker:Lcom/android/server/slice/DirtyTracker;
 
-    invoke-interface {p1, p0}, Lcom/android/server/slice/DirtyTracker;->onPersistableDirty(Lcom/android/server/slice/DirtyTracker$Persistable;)V
+    invoke-interface {v0, p0}, Lcom/android/server/slice/DirtyTracker;->onPersistableDirty(Lcom/android/server/slice/DirtyTracker$Persistable;)V
 
     .line 100
     :cond_12
@@ -657,6 +736,8 @@
 
 .method public revokeUri(Landroid/net/Uri;Lcom/android/server/slice/SlicePermissionManager$PkgUser;)V
     .registers 6
+    .param p1, "uri"  # Landroid/net/Uri;
+    .param p2, "providerPkg"  # Lcom/android/server/slice/SlicePermissionManager$PkgUser;
 
     .line 116
     new-instance v0, Lcom/android/server/slice/SlicePermissionManager$PkgUser;
@@ -675,14 +756,15 @@
     .line 116
     invoke-virtual {p0, v0, p2}, Lcom/android/server/slice/SliceClientPermissions;->getOrCreateAuthority(Lcom/android/server/slice/SlicePermissionManager$PkgUser;Lcom/android/server/slice/SlicePermissionManager$PkgUser;)Lcom/android/server/slice/SliceClientPermissions$SliceAuthority;
 
-    move-result-object p2
+    move-result-object v0
 
     .line 119
+    .local v0, "authority":Lcom/android/server/slice/SliceClientPermissions$SliceAuthority;
     invoke-virtual {p1}, Landroid/net/Uri;->getPathSegments()Ljava/util/List;
 
-    move-result-object p1
+    move-result-object v1
 
-    invoke-virtual {p2, p1}, Lcom/android/server/slice/SliceClientPermissions$SliceAuthority;->removePath(Ljava/util/List;)V
+    invoke-virtual {v0, v1}, Lcom/android/server/slice/SliceClientPermissions$SliceAuthority;->removePath(Ljava/util/List;)V
 
     .line 120
     return-void
@@ -690,6 +772,7 @@
 
 .method public setHasFullAccess(Z)V
     .registers 3
+    .param p1, "hasFullAccess"  # Z
 
     .line 91
     iget-boolean v0, p0, Lcom/android/server/slice/SliceClientPermissions;->mHasFullAccess:Z
@@ -703,9 +786,9 @@
     iput-boolean p1, p0, Lcom/android/server/slice/SliceClientPermissions;->mHasFullAccess:Z
 
     .line 93
-    iget-object p1, p0, Lcom/android/server/slice/SliceClientPermissions;->mTracker:Lcom/android/server/slice/DirtyTracker;
+    iget-object v0, p0, Lcom/android/server/slice/SliceClientPermissions;->mTracker:Lcom/android/server/slice/DirtyTracker;
 
-    invoke-interface {p1, p0}, Lcom/android/server/slice/DirtyTracker;->onPersistableDirty(Lcom/android/server/slice/DirtyTracker$Persistable;)V
+    invoke-interface {v0, p0}, Lcom/android/server/slice/DirtyTracker;->onPersistableDirty(Lcom/android/server/slice/DirtyTracker$Persistable;)V
 
     .line 94
     return-void
@@ -713,6 +796,7 @@
 
 .method public declared-synchronized writeTo(Lorg/xmlpull/v1/XmlSerializer;)V
     .registers 7
+    .param p1, "out"  # Lorg/xmlpull/v1/XmlSerializer;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Ljava/io/IOException;
@@ -755,6 +839,7 @@
 
     goto :goto_23
 
+    .end local p0  # "this":Lcom/android/server/slice/SliceClientPermissions;
     :cond_21
     const-string v2, "0"
 
@@ -769,8 +854,10 @@
     move-result v0
 
     .line 145
+    .local v0, "N":I
     const/4 v1, 0x0
 
+    .local v1, "i":I
     :goto_2d
     if-ge v1, v0, :cond_76
 
@@ -847,12 +934,13 @@
     goto :goto_2d
 
     .line 155
+    .end local v1  # "i":I
     :cond_76
-    sget-object v0, Lcom/android/server/slice/SliceClientPermissions;->NAMESPACE:Ljava/lang/String;
+    sget-object v1, Lcom/android/server/slice/SliceClientPermissions;->NAMESPACE:Ljava/lang/String;
 
-    const-string v1, "client"
+    const-string v2, "client"
 
-    invoke-interface {p1, v0, v1}, Lorg/xmlpull/v1/XmlSerializer;->endTag(Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
+    invoke-interface {p1, v1, v2}, Lorg/xmlpull/v1/XmlSerializer;->endTag(Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
     :try_end_7d
     .catchall {:try_start_1 .. :try_end_7d} :catchall_7f
 
@@ -862,6 +950,8 @@
     return-void
 
     .line 139
+    .end local v0  # "N":I
+    .end local p1  # "out":Lorg/xmlpull/v1/XmlSerializer;
     :catchall_7f
     move-exception p1
 

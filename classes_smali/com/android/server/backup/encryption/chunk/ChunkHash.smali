@@ -30,6 +30,7 @@
 # direct methods
 .method public constructor <init>([B)V
     .registers 4
+    .param p1, "hash"  # [B
 
     .line 38
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -62,6 +63,8 @@
 
 .method private static lexicographicalCompareUnsignedBytes([B[B)I
     .registers 6
+    .param p0, "left"  # [B
+    .param p1, "right"  # [B
 
     .line 76
     array-length v0, p0
@@ -73,8 +76,10 @@
     move-result v0
 
     .line 77
+    .local v0, "minLength":I
     const/4 v1, 0x0
 
+    .local v1, "i":I
     :goto_7
     if-ge v1, v0, :cond_1c
 
@@ -94,41 +99,46 @@
     sub-int/2addr v2, v3
 
     .line 79
+    .local v2, "result":I
     if-eqz v2, :cond_19
 
     .line 80
     return v2
 
     .line 77
+    .end local v2  # "result":I
     :cond_19
     add-int/lit8 v1, v1, 0x1
 
     goto :goto_7
 
     .line 83
+    .end local v1  # "i":I
     :cond_1c
-    array-length p0, p0
+    array-length v1, p0
 
-    array-length p1, p1
+    array-length v2, p1
 
-    sub-int/2addr p0, p1
+    sub-int/2addr v1, v2
 
-    return p0
+    return v1
 .end method
 
 .method private static toInt(B)I
-    .registers 1
+    .registers 2
+    .param p0, "value"  # B
 
     .line 87
-    and-int/lit16 p0, p0, 0xff
+    and-int/lit16 v0, p0, 0xff
 
-    return p0
+    return v0
 .end method
 
 
 # virtual methods
 .method public compareTo(Lcom/android/server/backup/encryption/chunk/ChunkHash;)I
-    .registers 3
+    .registers 4
+    .param p1, "other"  # Lcom/android/server/backup/encryption/chunk/ChunkHash;
 
     .line 67
     invoke-virtual {p0}, Lcom/android/server/backup/encryption/chunk/ChunkHash;->getHash()[B
@@ -137,13 +147,13 @@
 
     invoke-virtual {p1}, Lcom/android/server/backup/encryption/chunk/ChunkHash;->getHash()[B
 
-    move-result-object p1
+    move-result-object v1
 
-    invoke-static {v0, p1}, Lcom/android/server/backup/encryption/chunk/ChunkHash;->lexicographicalCompareUnsignedBytes([B[B)I
+    invoke-static {v0, v1}, Lcom/android/server/backup/encryption/chunk/ChunkHash;->lexicographicalCompareUnsignedBytes([B[B)I
 
-    move-result p1
+    move-result v0
 
-    return p1
+    return v0
 .end method
 
 .method public bridge synthetic compareTo(Ljava/lang/Object;)I
@@ -160,15 +170,16 @@
 .end method
 
 .method public equals(Ljava/lang/Object;)Z
-    .registers 3
+    .registers 5
+    .param p1, "o"  # Ljava/lang/Object;
 
     .line 49
     if-ne p0, p1, :cond_4
 
     .line 50
-    const/4 p1, 0x1
+    const/4 v0, 0x1
 
-    return p1
+    return v0
 
     .line 52
     :cond_4
@@ -177,24 +188,27 @@
     if-nez v0, :cond_a
 
     .line 53
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    return p1
+    return v0
 
     .line 56
     :cond_a
-    check-cast p1, Lcom/android/server/backup/encryption/chunk/ChunkHash;
+    move-object v0, p1
+
+    check-cast v0, Lcom/android/server/backup/encryption/chunk/ChunkHash;
 
     .line 57
-    iget-object v0, p0, Lcom/android/server/backup/encryption/chunk/ChunkHash;->mHash:[B
+    .local v0, "chunkHash":Lcom/android/server/backup/encryption/chunk/ChunkHash;
+    iget-object v1, p0, Lcom/android/server/backup/encryption/chunk/ChunkHash;->mHash:[B
 
-    iget-object p1, p1, Lcom/android/server/backup/encryption/chunk/ChunkHash;->mHash:[B
+    iget-object v2, v0, Lcom/android/server/backup/encryption/chunk/ChunkHash;->mHash:[B
 
-    invoke-static {v0, p1}, Ljava/util/Arrays;->equals([B[B)Z
+    invoke-static {v1, v2}, Ljava/util/Arrays;->equals([B[B)Z
 
-    move-result p1
+    move-result v1
 
-    return p1
+    return v1
 .end method
 
 .method public getHash()[B

@@ -24,6 +24,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/devicepolicy/NetworkLoggingHandler;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/devicepolicy/NetworkLoggingHandler;
 
     .line 78
     iput-object p1, p0, Lcom/android/server/devicepolicy/NetworkLoggingHandler$1;->this$0:Lcom/android/server/devicepolicy/NetworkLoggingHandler;
@@ -76,46 +77,49 @@
     invoke-static {v0, v1}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 83
-    nop
+    const/4 v0, 0x0
 
     .line 84
-    iget-object v0, p0, Lcom/android/server/devicepolicy/NetworkLoggingHandler$1;->this$0:Lcom/android/server/devicepolicy/NetworkLoggingHandler;
+    .local v0, "notificationExtras":Landroid/os/Bundle;
+    iget-object v1, p0, Lcom/android/server/devicepolicy/NetworkLoggingHandler$1;->this$0:Lcom/android/server/devicepolicy/NetworkLoggingHandler;
 
-    monitor-enter v0
+    monitor-enter v1
 
     .line 85
     :try_start_2b
-    iget-object v1, p0, Lcom/android/server/devicepolicy/NetworkLoggingHandler$1;->this$0:Lcom/android/server/devicepolicy/NetworkLoggingHandler;
+    iget-object v2, p0, Lcom/android/server/devicepolicy/NetworkLoggingHandler$1;->this$0:Lcom/android/server/devicepolicy/NetworkLoggingHandler;
 
-    invoke-static {v1}, Lcom/android/server/devicepolicy/NetworkLoggingHandler;->access$200(Lcom/android/server/devicepolicy/NetworkLoggingHandler;)Landroid/os/Bundle;
+    invoke-static {v2}, Lcom/android/server/devicepolicy/NetworkLoggingHandler;->access$200(Lcom/android/server/devicepolicy/NetworkLoggingHandler;)Landroid/os/Bundle;
 
-    move-result-object v1
+    move-result-object v2
+
+    move-object v0, v2
 
     .line 86
-    monitor-exit v0
-    :try_end_32
-    .catchall {:try_start_2b .. :try_end_32} :catchall_3a
+    monitor-exit v1
+    :try_end_33
+    .catchall {:try_start_2b .. :try_end_33} :catchall_3b
 
     .line 87
-    if-eqz v1, :cond_39
+    if-eqz v0, :cond_3a
 
     .line 88
-    iget-object v0, p0, Lcom/android/server/devicepolicy/NetworkLoggingHandler$1;->this$0:Lcom/android/server/devicepolicy/NetworkLoggingHandler;
+    iget-object v1, p0, Lcom/android/server/devicepolicy/NetworkLoggingHandler$1;->this$0:Lcom/android/server/devicepolicy/NetworkLoggingHandler;
 
-    invoke-static {v0, v1}, Lcom/android/server/devicepolicy/NetworkLoggingHandler;->access$300(Lcom/android/server/devicepolicy/NetworkLoggingHandler;Landroid/os/Bundle;)V
+    invoke-static {v1, v0}, Lcom/android/server/devicepolicy/NetworkLoggingHandler;->access$300(Lcom/android/server/devicepolicy/NetworkLoggingHandler;Landroid/os/Bundle;)V
 
     .line 90
-    :cond_39
+    :cond_3a
     return-void
 
     .line 86
-    :catchall_3a
-    move-exception v1
+    :catchall_3b
+    move-exception v2
 
-    :try_start_3b
-    monitor-exit v0
-    :try_end_3c
-    .catchall {:try_start_3b .. :try_end_3c} :catchall_3a
+    :try_start_3c
+    monitor-exit v1
+    :try_end_3d
+    .catchall {:try_start_3c .. :try_end_3d} :catchall_3b
 
-    throw v1
+    throw v2
 .end method

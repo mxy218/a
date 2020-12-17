@@ -34,7 +34,9 @@
 
 # virtual methods
 .method public packageDeleted(Ljava/lang/String;I)V
-    .registers 4
+    .registers 6
+    .param p1, "packageName"  # Ljava/lang/String;
+    .param p2, "returnCode"  # I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -42,38 +44,38 @@
     .end annotation
 
     .line 64
-    iget-object p1, p0, Lcom/android/server/backup/restore/RestoreDeleteObserver;->mDone:Ljava/util/concurrent/atomic/AtomicBoolean;
+    iget-object v0, p0, Lcom/android/server/backup/restore/RestoreDeleteObserver;->mDone:Ljava/util/concurrent/atomic/AtomicBoolean;
 
-    monitor-enter p1
+    monitor-enter v0
 
     .line 65
     :try_start_3
-    iget-object p2, p0, Lcom/android/server/backup/restore/RestoreDeleteObserver;->mDone:Ljava/util/concurrent/atomic/AtomicBoolean;
+    iget-object v1, p0, Lcom/android/server/backup/restore/RestoreDeleteObserver;->mDone:Ljava/util/concurrent/atomic/AtomicBoolean;
 
-    const/4 v0, 0x1
+    const/4 v2, 0x1
 
-    invoke-virtual {p2, v0}, Ljava/util/concurrent/atomic/AtomicBoolean;->set(Z)V
+    invoke-virtual {v1, v2}, Ljava/util/concurrent/atomic/AtomicBoolean;->set(Z)V
 
     .line 66
-    iget-object p2, p0, Lcom/android/server/backup/restore/RestoreDeleteObserver;->mDone:Ljava/util/concurrent/atomic/AtomicBoolean;
+    iget-object v1, p0, Lcom/android/server/backup/restore/RestoreDeleteObserver;->mDone:Ljava/util/concurrent/atomic/AtomicBoolean;
 
-    invoke-virtual {p2}, Ljava/lang/Object;->notifyAll()V
+    invoke-virtual {v1}, Ljava/lang/Object;->notifyAll()V
 
     .line 67
-    monitor-exit p1
+    monitor-exit v0
 
     .line 68
     return-void
 
     .line 67
     :catchall_10
-    move-exception p2
+    move-exception v1
 
-    monitor-exit p1
+    monitor-exit v0
     :try_end_12
     .catchall {:try_start_3 .. :try_end_12} :catchall_10
 
-    throw p2
+    throw v1
 .end method
 
 .method public reset()V

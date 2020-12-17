@@ -3,12 +3,12 @@
 .source "Tethering.java"
 
 # interfaces
-.implements Landroid/bluetooth/BluetoothProfile$ServiceListener;
+.implements Landroid/net/wifi/WifiManager$SoftApCallback;
 
 
 # annotations
-.annotation system Ldalvik/annotation/EnclosingMethod;
-    value = Lcom/android/server/connectivity/Tethering;->setBluetoothTethering(ZLandroid/os/ResultReceiver;)V
+.annotation system Ldalvik/annotation/EnclosingClass;
+    value = Lcom/android/server/connectivity/Tethering;
 .end annotation
 
 .annotation system Ldalvik/annotation/InnerClass;
@@ -20,25 +20,14 @@
 # instance fields
 .field final synthetic this$0:Lcom/android/server/connectivity/Tethering;
 
-.field final synthetic val$adapter:Landroid/bluetooth/BluetoothAdapter;
-
-.field final synthetic val$enable:Z
-
-.field final synthetic val$receiver:Landroid/os/ResultReceiver;
-
 
 # direct methods
-.method constructor <init>(Lcom/android/server/connectivity/Tethering;ZLandroid/os/ResultReceiver;Landroid/bluetooth/BluetoothAdapter;)V
-    .registers 5
+.method constructor <init>(Lcom/android/server/connectivity/Tethering;)V
+    .registers 2
+    .param p1, "this$0"  # Lcom/android/server/connectivity/Tethering;
 
-    .line 468
+    .line 2190
     iput-object p1, p0, Lcom/android/server/connectivity/Tethering$3;->this$0:Lcom/android/server/connectivity/Tethering;
-
-    iput-boolean p2, p0, Lcom/android/server/connectivity/Tethering$3;->val$enable:Z
-
-    iput-object p3, p0, Lcom/android/server/connectivity/Tethering$3;->val$receiver:Landroid/os/ResultReceiver;
-
-    iput-object p4, p0, Lcom/android/server/connectivity/Tethering$3;->val$adapter:Landroid/bluetooth/BluetoothAdapter;
 
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
@@ -47,84 +36,81 @@
 
 
 # virtual methods
-.method public onServiceConnected(ILandroid/bluetooth/BluetoothProfile;)V
-    .registers 6
+.method public onNumClientsChanged(I)V
+    .registers 2
+    .param p1, "numClients"  # I
 
-    .line 482
-    invoke-static {}, Landroid/os/Binder;->clearCallingIdentity()J
-
-    move-result-wide v0
-
-    .line 484
-    :try_start_4
-    move-object p1, p2
-
-    check-cast p1, Landroid/bluetooth/BluetoothPan;
-
-    iget-boolean v2, p0, Lcom/android/server/connectivity/Tethering$3;->val$enable:Z
-
-    invoke-virtual {p1, v2}, Landroid/bluetooth/BluetoothPan;->setBluetoothTethering(Z)V
-    :try_end_c
-    .catchall {:try_start_4 .. :try_end_c} :catchall_2c
-
-    .line 486
-    invoke-static {v0, v1}, Landroid/os/Binder;->restoreCallingIdentity(J)V
-
-    .line 487
-    nop
-
-    .line 490
-    move-object p1, p2
-
-    check-cast p1, Landroid/bluetooth/BluetoothPan;
-
-    invoke-virtual {p1}, Landroid/bluetooth/BluetoothPan;->isTetheringOn()Z
-
-    move-result p1
-
-    iget-boolean v0, p0, Lcom/android/server/connectivity/Tethering$3;->val$enable:Z
-
-    const/4 v1, 0x5
-
-    if-ne p1, v0, :cond_1e
-
-    .line 491
-    const/4 p1, 0x0
-
-    goto :goto_1f
-
-    .line 492
-    :cond_1e
-    move p1, v1
-
-    .line 493
-    :goto_1f
-    iget-object v0, p0, Lcom/android/server/connectivity/Tethering$3;->this$0:Lcom/android/server/connectivity/Tethering;
-
-    iget-object v2, p0, Lcom/android/server/connectivity/Tethering$3;->val$receiver:Landroid/os/ResultReceiver;
-
-    invoke-static {v0, v2, p1}, Lcom/android/server/connectivity/Tethering;->access$700(Lcom/android/server/connectivity/Tethering;Landroid/os/ResultReceiver;I)V
-
-    .line 494
-    iget-object p1, p0, Lcom/android/server/connectivity/Tethering$3;->val$adapter:Landroid/bluetooth/BluetoothAdapter;
-
-    invoke-virtual {p1, v1, p2}, Landroid/bluetooth/BluetoothAdapter;->closeProfileProxy(ILandroid/bluetooth/BluetoothProfile;)V
-
-    .line 495
+    .line 2212
     return-void
-
-    .line 486
-    :catchall_2c
-    move-exception p1
-
-    invoke-static {v0, v1}, Landroid/os/Binder;->restoreCallingIdentity(J)V
-
-    throw p1
 .end method
 
-.method public onServiceDisconnected(I)V
-    .registers 2
+.method public onStaConnected(Ljava/lang/String;I)V
+    .registers 6
+    .param p1, "Macaddr"  # Ljava/lang/String;
+    .param p2, "numClients"  # I
 
-    .line 470
+    .line 2203
+    iget-object v0, p0, Lcom/android/server/connectivity/Tethering$3;->this$0:Lcom/android/server/connectivity/Tethering;
+
+    iget-object v0, v0, Lcom/android/server/connectivity/Tethering;->mWifiManager:Landroid/net/wifi/WifiManager;
+
+    invoke-virtual {v0}, Landroid/net/wifi/WifiManager;->getWifiApState()I
+
+    move-result v0
+
+    const/16 v1, 0xd
+
+    if-eq v0, v1, :cond_16
+
+    .line 2204
+    invoke-static {}, Lcom/android/server/connectivity/Tethering;->access$500()Ljava/lang/String;
+
+    move-result-object v0
+
+    const-string v1, "The softap is not enabled. Do not update the notification."
+
+    invoke-static {v0, v1}, Landroid/util/Log;->w(Ljava/lang/String;Ljava/lang/String;)I
+
+    .line 2205
+    return-void
+
+    .line 2207
+    :cond_16
+    iget-object v0, p0, Lcom/android/server/connectivity/Tethering$3;->this$0:Lcom/android/server/connectivity/Tethering;
+
+    const v1, 0xa0802ba
+
+    const/4 v2, 0x0
+
+    invoke-static {v0, v1, v2}, Lcom/android/server/connectivity/Tethering;->access$1300(Lcom/android/server/connectivity/Tethering;IZ)V
+
+    .line 2208
+    return-void
+.end method
+
+.method public onStaDisconnected(Ljava/lang/String;I)V
+    .registers 6
+    .param p1, "Macaddr"  # Ljava/lang/String;
+    .param p2, "numClients"  # I
+
+    .line 2198
+    iget-object v0, p0, Lcom/android/server/connectivity/Tethering$3;->this$0:Lcom/android/server/connectivity/Tethering;
+
+    const v1, 0xa0802ba
+
+    const/4 v2, 0x0
+
+    invoke-static {v0, v1, v2}, Lcom/android/server/connectivity/Tethering;->access$1300(Lcom/android/server/connectivity/Tethering;IZ)V
+
+    .line 2199
+    return-void
+.end method
+
+.method public onStateChanged(II)V
+    .registers 3
+    .param p1, "state"  # I
+    .param p2, "failureReason"  # I
+
+    .line 2194
     return-void
 .end method

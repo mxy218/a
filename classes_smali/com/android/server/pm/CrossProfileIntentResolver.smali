@@ -40,12 +40,14 @@
 .end method
 
 .method protected isPackageForFilter(Ljava/lang/String;Lcom/android/server/pm/CrossProfileIntentFilter;)Z
-    .registers 3
+    .registers 4
+    .param p1, "packageName"  # Ljava/lang/String;
+    .param p2, "filter"  # Lcom/android/server/pm/CrossProfileIntentFilter;
 
     .line 36
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    return p1
+    return v0
 .end method
 
 .method protected bridge synthetic newArray(I)[Landroid/content/IntentFilter;
@@ -60,12 +62,13 @@
 .end method
 
 .method protected newArray(I)[Lcom/android/server/pm/CrossProfileIntentFilter;
-    .registers 2
+    .registers 3
+    .param p1, "size"  # I
 
     .line 31
-    new-array p1, p1, [Lcom/android/server/pm/CrossProfileIntentFilter;
+    new-array v0, p1, [Lcom/android/server/pm/CrossProfileIntentFilter;
 
-    return-object p1
+    return-object v0
 .end method
 
 .method protected sortResults(Ljava/util/List;)V
@@ -80,5 +83,6 @@
     .end annotation
 
     .line 42
+    .local p1, "results":Ljava/util/List;, "Ljava/util/List<Lcom/android/server/pm/CrossProfileIntentFilter;>;"
     return-void
 .end method

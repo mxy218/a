@@ -14,6 +14,7 @@
 # direct methods
 .method public constructor <init>(Ljavax/crypto/SecretKey;)V
     .registers 2
+    .param p1, "secretKey"  # Ljavax/crypto/SecretKey;
 
     .line 32
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -28,7 +29,8 @@
 
 # virtual methods
 .method public computeHash([B)Lcom/android/server/backup/encryption/chunk/ChunkHash;
-    .registers 4
+    .registers 5
+    .param p1, "plaintext"  # [B
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Ljava/security/InvalidKeyException;
@@ -44,6 +46,7 @@
     move-result-object v0
 
     .line 40
+    .local v0, "mac":Ljavax/crypto/Mac;
     iget-object v1, p0, Lcom/android/server/backup/encryption/chunking/ChunkHasher;->mSecretKey:Ljavax/crypto/SecretKey;
 
     invoke-virtual {v0, v1}, Ljavax/crypto/Mac;->init(Ljava/security/Key;)V
@@ -53,22 +56,24 @@
 
     invoke-virtual {v0, p1}, Ljavax/crypto/Mac;->doFinal([B)[B
 
-    move-result-object p1
+    move-result-object v2
 
-    invoke-direct {v1, p1}, Lcom/android/server/backup/encryption/chunk/ChunkHash;-><init>([B)V
+    invoke-direct {v1, v2}, Lcom/android/server/backup/encryption/chunk/ChunkHash;-><init>([B)V
     :try_end_14
     .catch Ljava/security/NoSuchAlgorithmException; {:try_start_0 .. :try_end_14} :catch_15
 
     return-object v1
 
     .line 42
+    .end local v0  # "mac":Ljavax/crypto/Mac;
     :catch_15
-    move-exception p1
+    move-exception v0
 
     .line 44
-    new-instance v0, Ljava/lang/AssertionError;
+    .local v0, "e":Ljava/security/NoSuchAlgorithmException;
+    new-instance v1, Ljava/lang/AssertionError;
 
-    invoke-direct {v0, p1}, Ljava/lang/AssertionError;-><init>(Ljava/lang/Object;)V
+    invoke-direct {v1, v0}, Ljava/lang/AssertionError;-><init>(Ljava/lang/Object;)V
 
-    throw v0
+    throw v1
 .end method

@@ -119,6 +119,7 @@
     .end annotation
 
     .line 52
+    .local p0, "prefixes":Ljava/util/Set;, "Ljava/util/Set<Landroid/net/IpPrefix;>;"
     sget-object v0, Landroid/net/util/PrefixUtils;->MIN_NON_FORWARDABLE_PREFIXES:[Landroid/net/IpPrefix;
 
     invoke-static {p0, v0}, Ljava/util/Collections;->addAll(Ljava/util/Collection;[Ljava/lang/Object;)Z
@@ -128,7 +129,8 @@
 .end method
 
 .method public static asIpPrefix(Landroid/net/LinkAddress;)Landroid/net/IpPrefix;
-    .registers 3
+    .registers 4
+    .param p0, "addr"  # Landroid/net/LinkAddress;
 
     .line 70
     new-instance v0, Landroid/net/IpPrefix;
@@ -139,9 +141,9 @@
 
     invoke-virtual {p0}, Landroid/net/LinkAddress;->getPrefixLength()I
 
-    move-result p0
+    move-result v2
 
-    invoke-direct {v0, v1, p0}, Landroid/net/IpPrefix;-><init>(Ljava/net/InetAddress;I)V
+    invoke-direct {v0, v1, v2}, Landroid/net/IpPrefix;-><init>(Ljava/net/InetAddress;I)V
 
     return-object v0
 .end method
@@ -163,6 +165,7 @@
     invoke-direct {v0}, Ljava/util/HashSet;-><init>()V
 
     .line 47
+    .local v0, "prefixes":Ljava/util/HashSet;, "Ljava/util/HashSet<Landroid/net/IpPrefix;>;"
     invoke-static {v0}, Landroid/net/util/PrefixUtils;->addNonForwardablePrefixes(Ljava/util/Set;)V
 
     .line 48
@@ -171,6 +174,7 @@
 
 .method public static ipAddressAsPrefix(Ljava/net/InetAddress;)Landroid/net/IpPrefix;
     .registers 3
+    .param p0, "ip"  # Ljava/net/InetAddress;
 
     .line 74
     instance-of v0, p0, Ljava/net/Inet4Address;
@@ -186,8 +190,11 @@
     :cond_7
     const/16 v0, 0x80
 
-    .line 77
     :goto_9
+    nop
+
+    .line 77
+    .local v0, "bitLength":I
     new-instance v1, Landroid/net/IpPrefix;
 
     invoke-direct {v1, p0, v0}, Landroid/net/IpPrefix;-><init>(Ljava/net/InetAddress;I)V
@@ -196,7 +203,8 @@
 .end method
 
 .method public static localPrefixesFrom(Landroid/net/LinkProperties;)Ljava/util/Set;
-    .registers 4
+    .registers 5
+    .param p0, "lp"  # Landroid/net/LinkProperties;
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(",
@@ -214,6 +222,7 @@
     invoke-direct {v0}, Ljava/util/HashSet;-><init>()V
 
     .line 57
+    .local v0, "localPrefixes":Ljava/util/HashSet;, "Ljava/util/HashSet<Landroid/net/IpPrefix;>;"
     if-nez p0, :cond_8
 
     return-object v0
@@ -222,47 +231,49 @@
     :cond_8
     invoke-virtual {p0}, Landroid/net/LinkProperties;->getAllLinkAddresses()Ljava/util/List;
 
-    move-result-object p0
+    move-result-object v1
 
-    invoke-interface {p0}, Ljava/util/List;->iterator()Ljava/util/Iterator;
-
-    move-result-object p0
-
-    :goto_10
-    invoke-interface {p0}, Ljava/util/Iterator;->hasNext()Z
-
-    move-result v1
-
-    if-eqz v1, :cond_2f
-
-    invoke-interface {p0}, Ljava/util/Iterator;->next()Ljava/lang/Object;
+    invoke-interface {v1}, Ljava/util/List;->iterator()Ljava/util/Iterator;
 
     move-result-object v1
 
-    check-cast v1, Landroid/net/LinkAddress;
-
-    .line 60
-    invoke-virtual {v1}, Landroid/net/LinkAddress;->getAddress()Ljava/net/InetAddress;
-
-    move-result-object v2
-
-    invoke-virtual {v2}, Ljava/net/InetAddress;->isLinkLocalAddress()Z
+    :goto_10
+    invoke-interface {v1}, Ljava/util/Iterator;->hasNext()Z
 
     move-result v2
 
-    if-eqz v2, :cond_27
+    if-eqz v2, :cond_2f
+
+    invoke-interface {v1}, Ljava/util/Iterator;->next()Ljava/lang/Object;
+
+    move-result-object v2
+
+    check-cast v2, Landroid/net/LinkAddress;
+
+    .line 60
+    .local v2, "addr":Landroid/net/LinkAddress;
+    invoke-virtual {v2}, Landroid/net/LinkAddress;->getAddress()Ljava/net/InetAddress;
+
+    move-result-object v3
+
+    invoke-virtual {v3}, Ljava/net/InetAddress;->isLinkLocalAddress()Z
+
+    move-result v3
+
+    if-eqz v3, :cond_27
 
     goto :goto_10
 
     .line 61
     :cond_27
-    invoke-static {v1}, Landroid/net/util/PrefixUtils;->asIpPrefix(Landroid/net/LinkAddress;)Landroid/net/IpPrefix;
+    invoke-static {v2}, Landroid/net/util/PrefixUtils;->asIpPrefix(Landroid/net/LinkAddress;)Landroid/net/IpPrefix;
 
-    move-result-object v1
+    move-result-object v3
 
-    invoke-virtual {v0, v1}, Ljava/util/HashSet;->add(Ljava/lang/Object;)Z
+    invoke-virtual {v0, v3}, Ljava/util/HashSet;->add(Ljava/lang/Object;)Z
 
     .line 62
+    .end local v2  # "addr":Landroid/net/LinkAddress;
     goto :goto_10
 
     .line 66
@@ -272,6 +283,7 @@
 
 .method private static pfx(Ljava/lang/String;)Landroid/net/IpPrefix;
     .registers 2
+    .param p0, "prefixStr"  # Ljava/lang/String;
 
     .line 81
     new-instance v0, Landroid/net/IpPrefix;

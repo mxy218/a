@@ -33,6 +33,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/content/SyncManager;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/content/SyncManager;
 
     .line 617
     iput-object p1, p0, Lcom/android/server/content/SyncManager$11;->this$0:Lcom/android/server/content/SyncManager;
@@ -46,6 +47,9 @@
 # virtual methods
 .method public onServiceChanged(Landroid/content/SyncAdapterType;IZ)V
     .registers 15
+    .param p1, "type"  # Landroid/content/SyncAdapterType;
+    .param p2, "userId"  # I
+    .param p3, "removed"  # Z
 
     .line 620
     if-nez p3, :cond_15

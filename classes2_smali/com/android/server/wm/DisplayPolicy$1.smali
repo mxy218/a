@@ -24,8 +24,9 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/wm/DisplayPolicy;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/wm/DisplayPolicy;
 
-    .line 300
+    .line 318
     iput-object p1, p0, Lcom/android/server/wm/DisplayPolicy$1;->this$0:Lcom/android/server/wm/DisplayPolicy;
 
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -37,8 +38,9 @@
 # virtual methods
 .method public onBarVisibilityChanged(Z)V
     .registers 3
+    .param p1, "visible"  # Z
 
-    .line 303
+    .line 321
     iget-object v0, p0, Lcom/android/server/wm/DisplayPolicy$1;->this$0:Lcom/android/server/wm/DisplayPolicy;
 
     invoke-static {v0}, Lcom/android/server/wm/DisplayPolicy;->access$000(Lcom/android/server/wm/DisplayPolicy;)Landroid/view/accessibility/AccessibilityManager;
@@ -47,10 +49,10 @@
 
     if-nez v0, :cond_9
 
-    .line 304
+    .line 322
     return-void
 
-    .line 306
+    .line 324
     :cond_9
     iget-object v0, p0, Lcom/android/server/wm/DisplayPolicy$1;->this$0:Lcom/android/server/wm/DisplayPolicy;
 
@@ -60,6 +62,6 @@
 
     invoke-virtual {v0, p1}, Landroid/view/accessibility/AccessibilityManager;->notifyAccessibilityButtonVisibilityChanged(Z)V
 
-    .line 307
+    .line 325
     return-void
 .end method

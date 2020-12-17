@@ -23,6 +23,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/pm/DynamicCodeLoggingService;Landroid/app/job/JobParameters;)V
     .registers 3
+    .param p2, "params"  # Landroid/app/job/JobParameters;
 
     .line 142
     iput-object p1, p0, Lcom/android/server/pm/DynamicCodeLoggingService$IdleLoggingThread;->this$0:Lcom/android/server/pm/DynamicCodeLoggingService;
@@ -50,6 +51,7 @@
     move-result-object v0
 
     .line 154
+    .local v0, "dynamicCodeLogger":Lcom/android/server/pm/dex/DynamicCodeLogger;
     invoke-virtual {v0}, Lcom/android/server/pm/dex/DynamicCodeLogger;->getAllPackagesWithDynamicCodeLoading()Ljava/util/Set;
 
     move-result-object v1
@@ -72,6 +74,7 @@
     check-cast v2, Ljava/lang/String;
 
     .line 155
+    .local v2, "packageName":Ljava/lang/String;
     iget-object v3, p0, Lcom/android/server/pm/DynamicCodeLoggingService$IdleLoggingThread;->this$0:Lcom/android/server/pm/DynamicCodeLoggingService;
 
     invoke-static {v3}, Lcom/android/server/pm/DynamicCodeLoggingService;->access$100(Lcom/android/server/pm/DynamicCodeLoggingService;)Z
@@ -83,11 +86,11 @@
     .line 156
     invoke-static {}, Lcom/android/server/pm/DynamicCodeLoggingService;->access$200()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v1
 
-    const-string v1, "Stopping IdleLoggingJob run at scheduler request"
+    const-string v3, "Stopping IdleLoggingJob run at scheduler request"
 
-    invoke-static {v0, v1}, Landroid/util/Log;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v3}, Landroid/util/Log;->w(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 157
     return-void
@@ -97,17 +100,18 @@
     invoke-virtual {v0, v2}, Lcom/android/server/pm/dex/DynamicCodeLogger;->logDynamicCodeLoading(Ljava/lang/String;)V
 
     .line 161
+    .end local v2  # "packageName":Ljava/lang/String;
     goto :goto_c
 
     .line 163
     :cond_2e
-    iget-object v0, p0, Lcom/android/server/pm/DynamicCodeLoggingService$IdleLoggingThread;->this$0:Lcom/android/server/pm/DynamicCodeLoggingService;
+    iget-object v1, p0, Lcom/android/server/pm/DynamicCodeLoggingService$IdleLoggingThread;->this$0:Lcom/android/server/pm/DynamicCodeLoggingService;
 
-    iget-object v1, p0, Lcom/android/server/pm/DynamicCodeLoggingService$IdleLoggingThread;->mParams:Landroid/app/job/JobParameters;
+    iget-object v2, p0, Lcom/android/server/pm/DynamicCodeLoggingService$IdleLoggingThread;->mParams:Landroid/app/job/JobParameters;
 
-    const/4 v2, 0x0
+    const/4 v3, 0x0
 
-    invoke-virtual {v0, v1, v2}, Lcom/android/server/pm/DynamicCodeLoggingService;->jobFinished(Landroid/app/job/JobParameters;Z)V
+    invoke-virtual {v1, v2, v3}, Lcom/android/server/pm/DynamicCodeLoggingService;->jobFinished(Landroid/app/job/JobParameters;Z)V
 
     .line 167
     return-void

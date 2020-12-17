@@ -21,6 +21,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/devicepolicy/CertificateMonitor;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/devicepolicy/CertificateMonitor;
 
     .line 133
     iput-object p1, p0, Lcom/android/server/devicepolicy/CertificateMonitor$1;->this$0:Lcom/android/server/devicepolicy/CertificateMonitor;
@@ -33,14 +34,16 @@
 
 # virtual methods
 .method public onReceive(Landroid/content/Context;Landroid/content/Intent;)V
-    .registers 4
+    .registers 6
+    .param p1, "context"  # Landroid/content/Context;
+    .param p2, "intent"  # Landroid/content/Intent;
 
     .line 136
     invoke-static {}, Landroid/os/storage/StorageManager;->inCryptKeeperBounce()Z
 
-    move-result p1
+    move-result v0
 
-    if-eqz p1, :cond_7
+    if-eqz v0, :cond_7
 
     .line 137
     return-void
@@ -49,22 +52,23 @@
     :cond_7
     invoke-virtual {p0}, Lcom/android/server/devicepolicy/CertificateMonitor$1;->getSendingUserId()I
 
-    move-result p1
+    move-result v0
 
-    const-string v0, "android.intent.extra.user_handle"
+    const-string v1, "android.intent.extra.user_handle"
 
-    invoke-virtual {p2, v0, p1}, Landroid/content/Intent;->getIntExtra(Ljava/lang/String;I)I
+    invoke-virtual {p2, v1, v0}, Landroid/content/Intent;->getIntExtra(Ljava/lang/String;I)I
 
-    move-result p1
+    move-result v0
 
     .line 140
-    iget-object p2, p0, Lcom/android/server/devicepolicy/CertificateMonitor$1;->this$0:Lcom/android/server/devicepolicy/CertificateMonitor;
+    .local v0, "userId":I
+    iget-object v1, p0, Lcom/android/server/devicepolicy/CertificateMonitor$1;->this$0:Lcom/android/server/devicepolicy/CertificateMonitor;
 
-    invoke-static {p1}, Landroid/os/UserHandle;->of(I)Landroid/os/UserHandle;
+    invoke-static {v0}, Landroid/os/UserHandle;->of(I)Landroid/os/UserHandle;
 
-    move-result-object p1
+    move-result-object v2
 
-    invoke-static {p2, p1}, Lcom/android/server/devicepolicy/CertificateMonitor;->access$000(Lcom/android/server/devicepolicy/CertificateMonitor;Landroid/os/UserHandle;)V
+    invoke-static {v1, v2}, Lcom/android/server/devicepolicy/CertificateMonitor;->access$000(Lcom/android/server/devicepolicy/CertificateMonitor;Landroid/os/UserHandle;)V
 
     .line 141
     return-void

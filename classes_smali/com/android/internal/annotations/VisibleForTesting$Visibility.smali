@@ -107,17 +107,18 @@
 
 .method public static valueOf(Ljava/lang/String;)Lcom/android/internal/annotations/VisibleForTesting$Visibility;
     .registers 2
+    .param p0, "name"  # Ljava/lang/String;
 
     .line 36
     const-class v0, Lcom/android/internal/annotations/VisibleForTesting$Visibility;
 
     invoke-static {v0, p0}, Ljava/lang/Enum;->valueOf(Ljava/lang/Class;Ljava/lang/String;)Ljava/lang/Enum;
 
-    move-result-object p0
+    move-result-object v0
 
-    check-cast p0, Lcom/android/internal/annotations/VisibleForTesting$Visibility;
+    check-cast v0, Lcom/android/internal/annotations/VisibleForTesting$Visibility;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method public static values()[Lcom/android/internal/annotations/VisibleForTesting$Visibility;

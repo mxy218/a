@@ -49,6 +49,9 @@
 
 .method public onNetworkAttributesRetrieved(Landroid/net/ipmemorystore/StatusParcelable;Ljava/lang/String;Landroid/net/ipmemorystore/NetworkAttributesParcelable;)V
     .registers 4
+    .param p1, "status"  # Landroid/net/ipmemorystore/StatusParcelable;
+    .param p2, "l2Key"  # Ljava/lang/String;
+    .param p3, "attributes"  # Landroid/net/ipmemorystore/NetworkAttributesParcelable;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;

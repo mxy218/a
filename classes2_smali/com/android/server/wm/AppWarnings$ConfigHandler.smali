@@ -27,6 +27,7 @@
 # direct methods
 .method public constructor <init>(Lcom/android/server/wm/AppWarnings;Landroid/os/Looper;)V
     .registers 4
+    .param p2, "looper"  # Landroid/os/Looper;
 
     .line 440
     iput-object p1, p0, Lcom/android/server/wm/AppWarnings$ConfigHandler;->this$0:Lcom/android/server/wm/AppWarnings;
@@ -45,22 +46,23 @@
 
 # virtual methods
 .method public handleMessage(Landroid/os/Message;)V
-    .registers 3
+    .registers 4
+    .param p1, "msg"  # Landroid/os/Message;
 
     .line 446
-    iget p1, p1, Landroid/os/Message;->what:I
+    iget v0, p1, Landroid/os/Message;->what:I
 
-    const/4 v0, 0x1
+    const/4 v1, 0x1
 
-    if-eq p1, v0, :cond_6
+    if-eq v0, v1, :cond_6
 
     goto :goto_b
 
     .line 448
     :cond_6
-    iget-object p1, p0, Lcom/android/server/wm/AppWarnings$ConfigHandler;->this$0:Lcom/android/server/wm/AppWarnings;
+    iget-object v0, p0, Lcom/android/server/wm/AppWarnings$ConfigHandler;->this$0:Lcom/android/server/wm/AppWarnings;
 
-    invoke-static {p1}, Lcom/android/server/wm/AppWarnings;->access$500(Lcom/android/server/wm/AppWarnings;)V
+    invoke-static {v0}, Lcom/android/server/wm/AppWarnings;->access$500(Lcom/android/server/wm/AppWarnings;)V
 
     .line 451
     :goto_b

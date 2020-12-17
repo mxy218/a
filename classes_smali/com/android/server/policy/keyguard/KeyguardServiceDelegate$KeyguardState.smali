@@ -60,6 +60,7 @@
 
 .method static synthetic access$400(Lcom/android/server/policy/keyguard/KeyguardServiceDelegate$KeyguardState;)V
     .registers 1
+    .param p0, "x0"  # Lcom/android/server/policy/keyguard/KeyguardServiceDelegate$KeyguardState;
 
     .line 61
     invoke-direct {p0}, Lcom/android/server/policy/keyguard/KeyguardServiceDelegate$KeyguardState;->reset()V

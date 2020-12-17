@@ -24,6 +24,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/hdmi/TimerRecordingAction;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/hdmi/TimerRecordingAction;
 
     .line 81
     iput-object p1, p0, Lcom/android/server/hdmi/TimerRecordingAction$1;->this$0:Lcom/android/server/hdmi/TimerRecordingAction;
@@ -36,7 +37,8 @@
 
 # virtual methods
 .method public onSendCompleted(I)V
-    .registers 4
+    .registers 5
+    .param p1, "error"  # I
 
     .line 84
     const/4 v0, 0x1
@@ -44,40 +46,40 @@
     if-eqz p1, :cond_18
 
     .line 85
-    iget-object p1, p0, Lcom/android/server/hdmi/TimerRecordingAction$1;->this$0:Lcom/android/server/hdmi/TimerRecordingAction;
-
-    invoke-virtual {p1}, Lcom/android/server/hdmi/TimerRecordingAction;->tv()Lcom/android/server/hdmi/HdmiCecLocalDeviceTv;
-
-    move-result-object p1
-
     iget-object v1, p0, Lcom/android/server/hdmi/TimerRecordingAction$1;->this$0:Lcom/android/server/hdmi/TimerRecordingAction;
 
-    invoke-static {v1}, Lcom/android/server/hdmi/TimerRecordingAction;->access$000(Lcom/android/server/hdmi/TimerRecordingAction;)I
+    invoke-virtual {v1}, Lcom/android/server/hdmi/TimerRecordingAction;->tv()Lcom/android/server/hdmi/HdmiCecLocalDeviceTv;
 
-    move-result v1
+    move-result-object v1
 
-    invoke-virtual {p1, v1, v0}, Lcom/android/server/hdmi/HdmiCecLocalDeviceTv;->announceTimerRecordingResult(II)V
+    iget-object v2, p0, Lcom/android/server/hdmi/TimerRecordingAction$1;->this$0:Lcom/android/server/hdmi/TimerRecordingAction;
+
+    invoke-static {v2}, Lcom/android/server/hdmi/TimerRecordingAction;->access$000(Lcom/android/server/hdmi/TimerRecordingAction;)I
+
+    move-result v2
+
+    invoke-virtual {v1, v2, v0}, Lcom/android/server/hdmi/HdmiCecLocalDeviceTv;->announceTimerRecordingResult(II)V
 
     .line 87
-    iget-object p1, p0, Lcom/android/server/hdmi/TimerRecordingAction$1;->this$0:Lcom/android/server/hdmi/TimerRecordingAction;
+    iget-object v0, p0, Lcom/android/server/hdmi/TimerRecordingAction$1;->this$0:Lcom/android/server/hdmi/TimerRecordingAction;
 
-    invoke-virtual {p1}, Lcom/android/server/hdmi/TimerRecordingAction;->finish()V
+    invoke-virtual {v0}, Lcom/android/server/hdmi/TimerRecordingAction;->finish()V
 
     .line 88
     return-void
 
     .line 90
     :cond_18
-    iget-object p1, p0, Lcom/android/server/hdmi/TimerRecordingAction$1;->this$0:Lcom/android/server/hdmi/TimerRecordingAction;
+    iget-object v1, p0, Lcom/android/server/hdmi/TimerRecordingAction$1;->this$0:Lcom/android/server/hdmi/TimerRecordingAction;
 
-    iput v0, p1, Lcom/android/server/hdmi/TimerRecordingAction;->mState:I
+    iput v0, v1, Lcom/android/server/hdmi/TimerRecordingAction;->mState:I
 
     .line 91
-    iget v0, p1, Lcom/android/server/hdmi/TimerRecordingAction;->mState:I
+    iget v0, v1, Lcom/android/server/hdmi/TimerRecordingAction;->mState:I
 
-    const v1, 0x1d4c0
+    const v2, 0x1d4c0
 
-    invoke-virtual {p1, v0, v1}, Lcom/android/server/hdmi/TimerRecordingAction;->addTimer(II)V
+    invoke-virtual {v1, v0, v2}, Lcom/android/server/hdmi/TimerRecordingAction;->addTimer(II)V
 
     .line 92
     return-void

@@ -26,6 +26,9 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/hdmi/HdmiCecLocalDevice;II)V
     .registers 4
+    .param p1, "source"  # Lcom/android/server/hdmi/HdmiCecLocalDevice;
+    .param p2, "targetAddress"  # I
+    .param p3, "keycode"  # I
 
     .line 78
     invoke-direct {p0, p1}, Lcom/android/server/hdmi/HdmiCecFeatureAction;-><init>(Lcom/android/server/hdmi/HdmiCecLocalDevice;)V
@@ -52,52 +55,54 @@
 .end method
 
 .method private sendKeyDown(I)V
-    .registers 4
+    .registers 5
+    .param p1, "keycode"  # I
 
     .line 147
     invoke-static {p1}, Lcom/android/server/hdmi/HdmiCecKeycode;->androidKeyToCecKey(I)[B
 
-    move-result-object p1
+    move-result-object v0
 
     .line 148
-    if-nez p1, :cond_7
+    .local v0, "cecKeycodeAndParams":[B
+    if-nez v0, :cond_7
 
     .line 149
     return-void
 
     .line 154
     :cond_7
-    iget v0, p0, Lcom/android/server/hdmi/SendKeyAction;->mTargetAddress:I
+    iget v1, p0, Lcom/android/server/hdmi/SendKeyAction;->mTargetAddress:I
 
-    const/4 v1, 0x5
+    const/4 v2, 0x5
 
-    if-ne v0, v1, :cond_27
+    if-ne v1, v2, :cond_27
 
     .line 155
     invoke-virtual {p0}, Lcom/android/server/hdmi/SendKeyAction;->localDevice()Lcom/android/server/hdmi/HdmiCecLocalDevice;
 
-    move-result-object v0
+    move-result-object v1
 
-    iget v0, v0, Lcom/android/server/hdmi/HdmiCecLocalDevice;->mAddress:I
+    iget v1, v1, Lcom/android/server/hdmi/HdmiCecLocalDevice;->mAddress:I
 
-    if-eqz v0, :cond_27
+    if-eqz v1, :cond_27
 
     .line 156
     invoke-virtual {p0}, Lcom/android/server/hdmi/SendKeyAction;->getSourceAddress()I
 
-    move-result v0
+    move-result v1
 
-    iget v1, p0, Lcom/android/server/hdmi/SendKeyAction;->mTargetAddress:I
+    iget v2, p0, Lcom/android/server/hdmi/SendKeyAction;->mTargetAddress:I
 
-    invoke-static {v0, v1, p1}, Lcom/android/server/hdmi/HdmiCecMessageBuilder;->buildUserControlPressed(II[B)Lcom/android/server/hdmi/HdmiCecMessage;
+    invoke-static {v1, v2, v0}, Lcom/android/server/hdmi/HdmiCecMessageBuilder;->buildUserControlPressed(II[B)Lcom/android/server/hdmi/HdmiCecMessage;
 
-    move-result-object p1
+    move-result-object v1
 
-    new-instance v0, Lcom/android/server/hdmi/SendKeyAction$1;
+    new-instance v2, Lcom/android/server/hdmi/SendKeyAction$1;
 
-    invoke-direct {v0, p0}, Lcom/android/server/hdmi/SendKeyAction$1;-><init>(Lcom/android/server/hdmi/SendKeyAction;)V
+    invoke-direct {v2, p0}, Lcom/android/server/hdmi/SendKeyAction$1;-><init>(Lcom/android/server/hdmi/SendKeyAction;)V
 
-    invoke-virtual {p0, p1, v0}, Lcom/android/server/hdmi/SendKeyAction;->sendCommand(Lcom/android/server/hdmi/HdmiCecMessage;Lcom/android/server/hdmi/HdmiControlService$SendMessageCallback;)V
+    invoke-virtual {p0, v1, v2}, Lcom/android/server/hdmi/SendKeyAction;->sendCommand(Lcom/android/server/hdmi/HdmiCecMessage;Lcom/android/server/hdmi/HdmiControlService$SendMessageCallback;)V
 
     goto :goto_34
 
@@ -105,15 +110,15 @@
     :cond_27
     invoke-virtual {p0}, Lcom/android/server/hdmi/SendKeyAction;->getSourceAddress()I
 
-    move-result v0
+    move-result v1
 
-    iget v1, p0, Lcom/android/server/hdmi/SendKeyAction;->mTargetAddress:I
+    iget v2, p0, Lcom/android/server/hdmi/SendKeyAction;->mTargetAddress:I
 
-    invoke-static {v0, v1, p1}, Lcom/android/server/hdmi/HdmiCecMessageBuilder;->buildUserControlPressed(II[B)Lcom/android/server/hdmi/HdmiCecMessage;
+    invoke-static {v1, v2, v0}, Lcom/android/server/hdmi/HdmiCecMessageBuilder;->buildUserControlPressed(II[B)Lcom/android/server/hdmi/HdmiCecMessage;
 
-    move-result-object p1
+    move-result-object v1
 
-    invoke-virtual {p0, p1}, Lcom/android/server/hdmi/SendKeyAction;->sendCommand(Lcom/android/server/hdmi/HdmiCecMessage;)V
+    invoke-virtual {p0, v1}, Lcom/android/server/hdmi/SendKeyAction;->sendCommand(Lcom/android/server/hdmi/HdmiCecMessage;)V
 
     .line 171
     :goto_34
@@ -143,25 +148,26 @@
 
 # virtual methods
 .method public handleTimerEvent(I)V
-    .registers 4
+    .registers 5
+    .param p1, "state"  # I
 
     .line 186
-    iget p1, p0, Lcom/android/server/hdmi/SendKeyAction;->mState:I
+    iget v0, p0, Lcom/android/server/hdmi/SendKeyAction;->mState:I
 
-    const/4 v0, 0x1
+    const/4 v1, 0x1
 
-    const/4 v1, 0x2
+    const/4 v2, 0x2
 
-    if-eq p1, v0, :cond_17
+    if-eq v0, v1, :cond_17
 
-    if-eq p1, v1, :cond_10
+    if-eq v0, v2, :cond_10
 
     .line 201
-    const-string p1, "SendKeyAction"
+    const-string v0, "SendKeyAction"
 
-    const-string v0, "Not in a valid state"
+    const-string v1, "Not in a valid state"
 
-    invoke-static {p1, v0}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v0, v1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
     goto :goto_31
 
@@ -177,17 +183,17 @@
 
     .line 189
     :cond_17
-    iget-object p1, p0, Lcom/android/server/hdmi/SendKeyAction;->mActionTimer:Lcom/android/server/hdmi/HdmiCecFeatureAction$ActionTimer;
+    iget-object v0, p0, Lcom/android/server/hdmi/SendKeyAction;->mActionTimer:Lcom/android/server/hdmi/HdmiCecFeatureAction$ActionTimer;
 
-    invoke-interface {p1}, Lcom/android/server/hdmi/HdmiCecFeatureAction$ActionTimer;->clearTimerMessage()V
+    invoke-interface {v0}, Lcom/android/server/hdmi/HdmiCecFeatureAction$ActionTimer;->clearTimerMessage()V
 
     .line 190
-    iput v1, p0, Lcom/android/server/hdmi/SendKeyAction;->mState:I
+    iput v2, p0, Lcom/android/server/hdmi/SendKeyAction;->mState:I
 
     .line 191
-    iget p1, p0, Lcom/android/server/hdmi/SendKeyAction;->mLastKeycode:I
+    iget v0, p0, Lcom/android/server/hdmi/SendKeyAction;->mLastKeycode:I
 
-    invoke-direct {p0, p1}, Lcom/android/server/hdmi/SendKeyAction;->sendKeyDown(I)V
+    invoke-direct {p0, v0}, Lcom/android/server/hdmi/SendKeyAction;->sendKeyDown(I)V
 
     .line 192
     invoke-direct {p0}, Lcom/android/server/hdmi/SendKeyAction;->getCurrentTime()J
@@ -197,11 +203,11 @@
     iput-wide v0, p0, Lcom/android/server/hdmi/SendKeyAction;->mLastSendKeyTime:J
 
     .line 193
-    iget p1, p0, Lcom/android/server/hdmi/SendKeyAction;->mState:I
+    iget v0, p0, Lcom/android/server/hdmi/SendKeyAction;->mState:I
 
-    const/16 v0, 0x3e8
+    const/16 v1, 0x3e8
 
-    invoke-virtual {p0, p1, v0}, Lcom/android/server/hdmi/SendKeyAction;->addTimer(II)V
+    invoke-virtual {p0, v0, v1}, Lcom/android/server/hdmi/SendKeyAction;->addTimer(II)V
 
     .line 194
     nop
@@ -212,16 +218,19 @@
 .end method
 
 .method public processCommand(Lcom/android/server/hdmi/HdmiCecMessage;)Z
-    .registers 2
+    .registers 3
+    .param p1, "cmd"  # Lcom/android/server/hdmi/HdmiCecMessage;
 
     .line 181
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    return p1
+    return v0
 .end method
 
 .method processKeyEvent(IZ)V
     .registers 7
+    .param p1, "keycode"  # I
+    .param p2, "isPressed"  # Z
 
     .line 109
     iget v0, p0, Lcom/android/server/hdmi/SendKeyAction;->mState:I
@@ -237,11 +246,11 @@
     if-eq v0, v1, :cond_12
 
     .line 110
-    const-string p1, "SendKeyAction"
+    const-string v0, "SendKeyAction"
 
-    const-string p2, "Not in a valid state"
+    const-string v1, "Not in a valid state"
 
-    invoke-static {p1, p2}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v0, v1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 111
     return-void
@@ -251,9 +260,9 @@
     if-eqz p2, :cond_53
 
     .line 116
-    iget p2, p0, Lcom/android/server/hdmi/SendKeyAction;->mLastKeycode:I
+    iget v0, p0, Lcom/android/server/hdmi/SendKeyAction;->mLastKeycode:I
 
-    if-eq p1, p2, :cond_2e
+    if-eq p1, v0, :cond_2e
 
     .line 117
     invoke-direct {p0, p1}, Lcom/android/server/hdmi/SendKeyAction;->sendKeyDown(I)V
@@ -268,9 +277,9 @@
     .line 119
     invoke-static {p1}, Lcom/android/server/hdmi/HdmiCecKeycode;->isRepeatableKey(I)Z
 
-    move-result p2
+    move-result v0
 
-    if-nez p2, :cond_44
+    if-nez v0, :cond_44
 
     .line 120
     invoke-direct {p0}, Lcom/android/server/hdmi/SendKeyAction;->sendKeyUp()V
@@ -293,9 +302,9 @@
 
     const-wide/16 v2, 0x12c
 
-    cmp-long p2, v0, v2
+    cmp-long v0, v0, v2
 
-    if-ltz p2, :cond_44
+    if-ltz v0, :cond_44
 
     .line 129
     invoke-direct {p0, p1}, Lcom/android/server/hdmi/SendKeyAction;->sendKeyDown(I)V
@@ -309,16 +318,16 @@
 
     .line 133
     :cond_44
-    iget-object p2, p0, Lcom/android/server/hdmi/SendKeyAction;->mActionTimer:Lcom/android/server/hdmi/HdmiCecFeatureAction$ActionTimer;
+    iget-object v0, p0, Lcom/android/server/hdmi/SendKeyAction;->mActionTimer:Lcom/android/server/hdmi/HdmiCecFeatureAction$ActionTimer;
 
-    invoke-interface {p2}, Lcom/android/server/hdmi/HdmiCecFeatureAction$ActionTimer;->clearTimerMessage()V
+    invoke-interface {v0}, Lcom/android/server/hdmi/HdmiCecFeatureAction$ActionTimer;->clearTimerMessage()V
 
     .line 134
-    iget p2, p0, Lcom/android/server/hdmi/SendKeyAction;->mState:I
+    iget v0, p0, Lcom/android/server/hdmi/SendKeyAction;->mState:I
 
-    const/16 v0, 0x3e8
+    const/16 v1, 0x3e8
 
-    invoke-virtual {p0, p2, v0}, Lcom/android/server/hdmi/SendKeyAction;->addTimer(II)V
+    invoke-virtual {p0, v0, v1}, Lcom/android/server/hdmi/SendKeyAction;->addTimer(II)V
 
     .line 135
     iput p1, p0, Lcom/android/server/hdmi/SendKeyAction;->mLastKeycode:I
@@ -327,9 +336,9 @@
 
     .line 139
     :cond_53
-    iget p2, p0, Lcom/android/server/hdmi/SendKeyAction;->mLastKeycode:I
+    iget v0, p0, Lcom/android/server/hdmi/SendKeyAction;->mLastKeycode:I
 
-    if-ne p1, p2, :cond_5d
+    if-ne p1, v0, :cond_5d
 
     .line 140
     invoke-direct {p0}, Lcom/android/server/hdmi/SendKeyAction;->sendKeyUp()V

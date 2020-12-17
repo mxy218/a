@@ -26,37 +26,40 @@
 
 # direct methods
 .method public constructor <init>(Lcom/android/server/wm/RootActivityContainer;Ljava/lang/String;I)V
-    .registers 4
+    .registers 6
+    .param p2, "tag"  # Ljava/lang/String;
+    .param p3, "displayId"  # I
 
-    .line 2454
+    .line 2439
     iput-object p1, p0, Lcom/android/server/wm/RootActivityContainer$SleepTokenImpl;->this$0:Lcom/android/server/wm/RootActivityContainer;
 
     invoke-direct {p0}, Lcom/android/server/wm/ActivityTaskManagerInternal$SleepToken;-><init>()V
 
-    .line 2455
+    .line 2440
     iput-object p2, p0, Lcom/android/server/wm/RootActivityContainer$SleepTokenImpl;->mTag:Ljava/lang/String;
 
-    .line 2456
+    .line 2441
     iput p3, p0, Lcom/android/server/wm/RootActivityContainer$SleepTokenImpl;->mDisplayId:I
 
-    .line 2457
+    .line 2442
     invoke-static {}, Landroid/os/SystemClock;->uptimeMillis()J
 
-    move-result-wide p1
+    move-result-wide v0
 
-    iput-wide p1, p0, Lcom/android/server/wm/RootActivityContainer$SleepTokenImpl;->mAcquireTime:J
+    iput-wide v0, p0, Lcom/android/server/wm/RootActivityContainer$SleepTokenImpl;->mAcquireTime:J
 
-    .line 2458
+    .line 2443
     return-void
 .end method
 
 .method static synthetic access$000(Lcom/android/server/wm/RootActivityContainer$SleepTokenImpl;)I
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/wm/RootActivityContainer$SleepTokenImpl;
 
-    .line 2449
-    iget p0, p0, Lcom/android/server/wm/RootActivityContainer$SleepTokenImpl;->mDisplayId:I
+    .line 2434
+    iget v0, p0, Lcom/android/server/wm/RootActivityContainer$SleepTokenImpl;->mDisplayId:I
 
-    return p0
+    return v0
 .end method
 
 
@@ -64,7 +67,7 @@
 .method public release()V
     .registers 3
 
-    .line 2462
+    .line 2447
     iget-object v0, p0, Lcom/android/server/wm/RootActivityContainer$SleepTokenImpl;->this$0:Lcom/android/server/wm/RootActivityContainer;
 
     iget-object v0, v0, Lcom/android/server/wm/RootActivityContainer;->mService:Lcom/android/server/wm/ActivityTaskManagerService;
@@ -76,22 +79,22 @@
     :try_start_7
     invoke-static {}, Lcom/android/server/wm/WindowManagerService;->boostPriorityForLockedSection()V
 
-    .line 2463
+    .line 2448
     iget-object v1, p0, Lcom/android/server/wm/RootActivityContainer$SleepTokenImpl;->this$0:Lcom/android/server/wm/RootActivityContainer;
 
     invoke-static {v1, p0}, Lcom/android/server/wm/RootActivityContainer;->access$100(Lcom/android/server/wm/RootActivityContainer;Lcom/android/server/wm/RootActivityContainer$SleepTokenImpl;)V
 
-    .line 2464
+    .line 2449
     monitor-exit v0
     :try_end_10
     .catchall {:try_start_7 .. :try_end_10} :catchall_14
 
     invoke-static {}, Lcom/android/server/wm/WindowManagerService;->resetPriorityAfterLockedSection()V
 
-    .line 2465
+    .line 2450
     return-void
 
-    .line 2464
+    .line 2449
     :catchall_14
     move-exception v1
 
@@ -108,7 +111,7 @@
 .method public toString()Ljava/lang/String;
     .registers 4
 
-    .line 2469
+    .line 2454
     new-instance v0, Ljava/lang/StringBuilder;
 
     invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
@@ -135,7 +138,7 @@
 
     iget-wide v1, p0, Lcom/android/server/wm/RootActivityContainer$SleepTokenImpl;->mAcquireTime:J
 
-    .line 2470
+    .line 2455
     invoke-static {v1, v2}, Landroid/util/TimeUtils;->formatUptime(J)Ljava/lang/String;
 
     move-result-object v1
@@ -150,6 +153,6 @@
 
     move-result-object v0
 
-    .line 2469
+    .line 2454
     return-object v0
 .end method

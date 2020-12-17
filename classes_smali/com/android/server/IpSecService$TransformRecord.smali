@@ -27,6 +27,10 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/IpSecService;ILandroid/net/IpSecConfig;Lcom/android/server/IpSecService$SpiRecord;Lcom/android/server/IpSecService$EncapSocketRecord;)V
     .registers 6
+    .param p2, "resourceId"  # I
+    .param p3, "config"  # Landroid/net/IpSecConfig;
+    .param p4, "spi"  # Lcom/android/server/IpSecService$SpiRecord;
+    .param p5, "socket"  # Lcom/android/server/IpSecService$EncapSocketRecord;
 
     .line 594
     iput-object p1, p0, Lcom/android/server/IpSecService$TransformRecord;->this$0:Lcom/android/server/IpSecService;
@@ -60,99 +64,104 @@
 
     invoke-virtual {v0}, Lcom/android/server/IpSecService$SpiRecord;->getSpi()I
 
-    move-result v5
+    move-result v0
 
     .line 620
+    .local v0, "spi":I
     :try_start_6
-    iget-object v0, p0, Lcom/android/server/IpSecService$TransformRecord;->this$0:Lcom/android/server/IpSecService;
+    iget-object v1, p0, Lcom/android/server/IpSecService$TransformRecord;->this$0:Lcom/android/server/IpSecService;
 
-    invoke-static {v0}, Lcom/android/server/IpSecService;->access$000(Lcom/android/server/IpSecService;)Lcom/android/server/IpSecService$IpSecServiceConfiguration;
+    invoke-static {v1}, Lcom/android/server/IpSecService;->access$000(Lcom/android/server/IpSecService;)Lcom/android/server/IpSecService$IpSecServiceConfiguration;
 
-    move-result-object v0
+    move-result-object v1
 
     .line 621
-    invoke-interface {v0}, Lcom/android/server/IpSecService$IpSecServiceConfiguration;->getNetdInstance()Landroid/net/INetd;
+    invoke-interface {v1}, Lcom/android/server/IpSecService$IpSecServiceConfiguration;->getNetdInstance()Landroid/net/INetd;
 
     move-result-object v1
 
     iget v2, p0, Lcom/android/server/IpSecService$TransformRecord;->uid:I
 
-    iget-object v0, p0, Lcom/android/server/IpSecService$TransformRecord;->mConfig:Landroid/net/IpSecConfig;
+    iget-object v3, p0, Lcom/android/server/IpSecService$TransformRecord;->mConfig:Landroid/net/IpSecConfig;
 
     .line 624
-    invoke-virtual {v0}, Landroid/net/IpSecConfig;->getSourceAddress()Ljava/lang/String;
+    invoke-virtual {v3}, Landroid/net/IpSecConfig;->getSourceAddress()Ljava/lang/String;
 
     move-result-object v3
 
-    iget-object v0, p0, Lcom/android/server/IpSecService$TransformRecord;->mConfig:Landroid/net/IpSecConfig;
+    iget-object v4, p0, Lcom/android/server/IpSecService$TransformRecord;->mConfig:Landroid/net/IpSecConfig;
 
     .line 625
-    invoke-virtual {v0}, Landroid/net/IpSecConfig;->getDestinationAddress()Ljava/lang/String;
+    invoke-virtual {v4}, Landroid/net/IpSecConfig;->getDestinationAddress()Ljava/lang/String;
 
     move-result-object v4
 
-    iget-object v0, p0, Lcom/android/server/IpSecService$TransformRecord;->mConfig:Landroid/net/IpSecConfig;
+    iget-object v5, p0, Lcom/android/server/IpSecService$TransformRecord;->mConfig:Landroid/net/IpSecConfig;
 
     .line 627
-    invoke-virtual {v0}, Landroid/net/IpSecConfig;->getMarkValue()I
+    invoke-virtual {v5}, Landroid/net/IpSecConfig;->getMarkValue()I
 
     move-result v6
 
-    iget-object v0, p0, Lcom/android/server/IpSecService$TransformRecord;->mConfig:Landroid/net/IpSecConfig;
+    iget-object v5, p0, Lcom/android/server/IpSecService$TransformRecord;->mConfig:Landroid/net/IpSecConfig;
 
     .line 628
-    invoke-virtual {v0}, Landroid/net/IpSecConfig;->getMarkMask()I
+    invoke-virtual {v5}, Landroid/net/IpSecConfig;->getMarkMask()I
 
     move-result v7
 
-    iget-object v0, p0, Lcom/android/server/IpSecService$TransformRecord;->mConfig:Landroid/net/IpSecConfig;
+    iget-object v5, p0, Lcom/android/server/IpSecService$TransformRecord;->mConfig:Landroid/net/IpSecConfig;
 
     .line 629
-    invoke-virtual {v0}, Landroid/net/IpSecConfig;->getXfrmInterfaceId()I
+    invoke-virtual {v5}, Landroid/net/IpSecConfig;->getXfrmInterfaceId()I
 
     move-result v8
 
     .line 622
+    move v5, v0
+
     invoke-interface/range {v1 .. v8}, Landroid/net/INetd;->ipSecDeleteSecurityAssociation(ILjava/lang/String;Ljava/lang/String;IIII)V
-    :try_end_33
-    .catch Landroid/os/RemoteException; {:try_start_6 .. :try_end_33} :catch_34
-    .catch Landroid/os/ServiceSpecificException; {:try_start_6 .. :try_end_33} :catch_34
+    :try_end_34
+    .catch Landroid/os/RemoteException; {:try_start_6 .. :try_end_34} :catch_35
+    .catch Landroid/os/ServiceSpecificException; {:try_start_6 .. :try_end_34} :catch_35
 
     .line 632
-    goto :goto_4d
+    goto :goto_4e
 
     .line 630
-    :catch_34
-    move-exception v0
+    :catch_35
+    move-exception v1
 
     .line 631
-    new-instance v1, Ljava/lang/StringBuilder;
+    .local v1, "e":Ljava/lang/Exception;
+    new-instance v2, Ljava/lang/StringBuilder;
 
-    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v2, "Failed to delete SA with ID: "
+    const-string v3, "Failed to delete SA with ID: "
 
-    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    iget v2, p0, Lcom/android/server/IpSecService$TransformRecord;->mResourceId:I
+    iget v3, p0, Lcom/android/server/IpSecService$TransformRecord;->mResourceId:I
 
-    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v2
+
+    const-string v3, "IpSecService"
+
+    invoke-static {v3, v2, v1}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+
+    .line 634
+    .end local v1  # "e":Ljava/lang/Exception;
+    :goto_4e
+    invoke-virtual {p0}, Lcom/android/server/IpSecService$TransformRecord;->getResourceTracker()Lcom/android/server/IpSecService$ResourceTracker;
 
     move-result-object v1
 
-    const-string v2, "IpSecService"
-
-    invoke-static {v2, v1, v0}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
-
-    .line 634
-    :goto_4d
-    invoke-virtual {p0}, Lcom/android/server/IpSecService$TransformRecord;->getResourceTracker()Lcom/android/server/IpSecService$ResourceTracker;
-
-    move-result-object v0
-
-    invoke-virtual {v0}, Lcom/android/server/IpSecService$ResourceTracker;->give()V
+    invoke-virtual {v1}, Lcom/android/server/IpSecService$ResourceTracker;->give()V
 
     .line 635
     return-void
@@ -228,6 +237,7 @@
     invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
 
     .line 650
+    .local v0, "strBuilder":Ljava/lang/StringBuilder;
     nop
 
     .line 651
@@ -282,7 +292,7 @@
     .line 660
     invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v1
 
-    return-object v0
+    return-object v1
 .end method

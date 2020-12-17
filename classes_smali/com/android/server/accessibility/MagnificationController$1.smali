@@ -35,6 +35,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/accessibility/MagnificationController;FI)V
     .registers 4
+    .param p1, "this$0"  # Lcom/android/server/accessibility/MagnificationController;
 
     .line 996
     iput-object p1, p0, Lcom/android/server/accessibility/MagnificationController$1;->this$0:Lcom/android/server/accessibility/MagnificationController;
@@ -64,23 +65,24 @@
 .end method
 
 .method protected varargs doInBackground([Ljava/lang/Void;)Ljava/lang/Void;
-    .registers 4
+    .registers 5
+    .param p1, "params"  # [Ljava/lang/Void;
 
     .line 999
-    iget-object p1, p0, Lcom/android/server/accessibility/MagnificationController$1;->this$0:Lcom/android/server/accessibility/MagnificationController;
+    iget-object v0, p0, Lcom/android/server/accessibility/MagnificationController$1;->this$0:Lcom/android/server/accessibility/MagnificationController;
 
-    invoke-static {p1}, Lcom/android/server/accessibility/MagnificationController;->access$000(Lcom/android/server/accessibility/MagnificationController;)Lcom/android/server/accessibility/MagnificationController$ControllerContext;
+    invoke-static {v0}, Lcom/android/server/accessibility/MagnificationController;->access$000(Lcom/android/server/accessibility/MagnificationController;)Lcom/android/server/accessibility/MagnificationController$ControllerContext;
 
-    move-result-object p1
+    move-result-object v0
 
-    iget v0, p0, Lcom/android/server/accessibility/MagnificationController$1;->val$scale:F
+    iget v1, p0, Lcom/android/server/accessibility/MagnificationController$1;->val$scale:F
 
-    iget v1, p0, Lcom/android/server/accessibility/MagnificationController$1;->val$userId:I
+    iget v2, p0, Lcom/android/server/accessibility/MagnificationController$1;->val$userId:I
 
-    invoke-virtual {p1, v0, v1}, Lcom/android/server/accessibility/MagnificationController$ControllerContext;->putMagnificationScale(FI)V
+    invoke-virtual {v0, v1, v2}, Lcom/android/server/accessibility/MagnificationController$ControllerContext;->putMagnificationScale(FI)V
 
     .line 1000
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    return-object p1
+    return-object v0
 .end method

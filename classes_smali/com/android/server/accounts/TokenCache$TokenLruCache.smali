@@ -86,7 +86,11 @@
 
 # virtual methods
 .method protected entryRemoved(ZLcom/android/server/accounts/TokenCache$Key;Lcom/android/server/accounts/TokenCache$Value;Lcom/android/server/accounts/TokenCache$Value;)V
-    .registers 5
+    .registers 9
+    .param p1, "evicted"  # Z
+    .param p2, "k"  # Lcom/android/server/accounts/TokenCache$Key;
+    .param p3, "oldVal"  # Lcom/android/server/accounts/TokenCache$Value;
+    .param p4, "newVal"  # Lcom/android/server/accounts/TokenCache$Value;
 
     .line 123
     if-eqz p3, :cond_1c
@@ -94,31 +98,33 @@
     if-nez p4, :cond_1c
 
     .line 128
-    iget-object p1, p0, Lcom/android/server/accounts/TokenCache$TokenLruCache;->mTokenEvictors:Ljava/util/HashMap;
+    iget-object v0, p0, Lcom/android/server/accounts/TokenCache$TokenLruCache;->mTokenEvictors:Ljava/util/HashMap;
 
-    new-instance p4, Landroid/util/Pair;
+    new-instance v1, Landroid/util/Pair;
 
-    iget-object p2, p2, Lcom/android/server/accounts/TokenCache$Key;->account:Landroid/accounts/Account;
+    iget-object v2, p2, Lcom/android/server/accounts/TokenCache$Key;->account:Landroid/accounts/Account;
 
-    iget-object p2, p2, Landroid/accounts/Account;->type:Ljava/lang/String;
+    iget-object v2, v2, Landroid/accounts/Account;->type:Ljava/lang/String;
 
-    iget-object p3, p3, Lcom/android/server/accounts/TokenCache$Value;->token:Ljava/lang/String;
+    iget-object v3, p3, Lcom/android/server/accounts/TokenCache$Value;->token:Ljava/lang/String;
 
-    invoke-direct {p4, p2, p3}, Landroid/util/Pair;-><init>(Ljava/lang/Object;Ljava/lang/Object;)V
+    invoke-direct {v1, v2, v3}, Landroid/util/Pair;-><init>(Ljava/lang/Object;Ljava/lang/Object;)V
 
-    invoke-virtual {p1, p4}, Ljava/util/HashMap;->remove(Ljava/lang/Object;)Ljava/lang/Object;
+    invoke-virtual {v0, v1}, Ljava/util/HashMap;->remove(Ljava/lang/Object;)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v0
 
-    check-cast p1, Lcom/android/server/accounts/TokenCache$TokenLruCache$Evictor;
+    check-cast v0, Lcom/android/server/accounts/TokenCache$TokenLruCache$Evictor;
 
     .line 129
-    if-eqz p1, :cond_1c
+    .local v0, "evictor":Lcom/android/server/accounts/TokenCache$TokenLruCache$Evictor;
+    if-eqz v0, :cond_1c
 
     .line 130
-    invoke-virtual {p1}, Lcom/android/server/accounts/TokenCache$TokenLruCache$Evictor;->evict()V
+    invoke-virtual {v0}, Lcom/android/server/accounts/TokenCache$TokenLruCache$Evictor;->evict()V
 
     .line 133
+    .end local v0  # "evictor":Lcom/android/server/accounts/TokenCache$TokenLruCache$Evictor;
     :cond_1c
     return-void
 .end method
@@ -140,21 +146,23 @@
 
 .method public evict(Landroid/accounts/Account;)V
     .registers 3
+    .param p1, "account"  # Landroid/accounts/Account;
 
     .line 166
     iget-object v0, p0, Lcom/android/server/accounts/TokenCache$TokenLruCache;->mAccountEvictors:Ljava/util/HashMap;
 
     invoke-virtual {v0, p1}, Ljava/util/HashMap;->get(Ljava/lang/Object;)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v0
 
-    check-cast p1, Lcom/android/server/accounts/TokenCache$TokenLruCache$Evictor;
+    check-cast v0, Lcom/android/server/accounts/TokenCache$TokenLruCache$Evictor;
 
     .line 167
-    if-eqz p1, :cond_d
+    .local v0, "evictor":Lcom/android/server/accounts/TokenCache$TokenLruCache$Evictor;
+    if-eqz v0, :cond_d
 
     .line 168
-    invoke-virtual {p1}, Lcom/android/server/accounts/TokenCache$TokenLruCache$Evictor;->evict()V
+    invoke-virtual {v0}, Lcom/android/server/accounts/TokenCache$TokenLruCache$Evictor;->evict()V
 
     .line 170
     :cond_d
@@ -163,6 +171,8 @@
 
 .method public evict(Ljava/lang/String;Ljava/lang/String;)V
     .registers 5
+    .param p1, "accountType"  # Ljava/lang/String;
+    .param p2, "token"  # Ljava/lang/String;
 
     .line 158
     iget-object v0, p0, Lcom/android/server/accounts/TokenCache$TokenLruCache;->mTokenEvictors:Ljava/util/HashMap;
@@ -173,15 +183,16 @@
 
     invoke-virtual {v0, v1}, Ljava/util/HashMap;->get(Ljava/lang/Object;)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v0
 
-    check-cast p1, Lcom/android/server/accounts/TokenCache$TokenLruCache$Evictor;
+    check-cast v0, Lcom/android/server/accounts/TokenCache$TokenLruCache$Evictor;
 
     .line 159
-    if-eqz p1, :cond_12
+    .local v0, "evictor":Lcom/android/server/accounts/TokenCache$TokenLruCache$Evictor;
+    if-eqz v0, :cond_12
 
     .line 160
-    invoke-virtual {p1}, Lcom/android/server/accounts/TokenCache$TokenLruCache$Evictor;->evict()V
+    invoke-virtual {v0}, Lcom/android/server/accounts/TokenCache$TokenLruCache$Evictor;->evict()V
 
     .line 163
     :cond_12
@@ -189,7 +200,9 @@
 .end method
 
 .method public putToken(Lcom/android/server/accounts/TokenCache$Key;Lcom/android/server/accounts/TokenCache$Value;)V
-    .registers 6
+    .registers 8
+    .param p1, "k"  # Lcom/android/server/accounts/TokenCache$Key;
+    .param p2, "v"  # Lcom/android/server/accounts/TokenCache$Value;
 
     .line 137
     new-instance v0, Landroid/util/Pair;
@@ -203,6 +216,7 @@
     invoke-direct {v0, v1, v2}, Landroid/util/Pair;-><init>(Ljava/lang/Object;Ljava/lang/Object;)V
 
     .line 138
+    .local v0, "mapKey":Landroid/util/Pair;, "Landroid/util/Pair<Ljava/lang/String;Ljava/lang/String;>;"
     iget-object v1, p0, Lcom/android/server/accounts/TokenCache$TokenLruCache;->mTokenEvictors:Ljava/util/HashMap;
 
     invoke-virtual {v1, v0}, Ljava/util/HashMap;->get(Ljava/lang/Object;)Ljava/lang/Object;
@@ -212,15 +226,18 @@
     check-cast v1, Lcom/android/server/accounts/TokenCache$TokenLruCache$Evictor;
 
     .line 139
-    if-nez v1, :cond_1a
+    .local v1, "tokenEvictor":Lcom/android/server/accounts/TokenCache$TokenLruCache$Evictor;
+    if-nez v1, :cond_1b
 
     .line 140
-    new-instance v1, Lcom/android/server/accounts/TokenCache$TokenLruCache$Evictor;
+    new-instance v2, Lcom/android/server/accounts/TokenCache$TokenLruCache$Evictor;
 
-    invoke-direct {v1, p0}, Lcom/android/server/accounts/TokenCache$TokenLruCache$Evictor;-><init>(Lcom/android/server/accounts/TokenCache$TokenLruCache;)V
+    invoke-direct {v2, p0}, Lcom/android/server/accounts/TokenCache$TokenLruCache$Evictor;-><init>(Lcom/android/server/accounts/TokenCache$TokenLruCache;)V
+
+    move-object v1, v2
 
     .line 142
-    :cond_1a
+    :cond_1b
     invoke-virtual {v1, p1}, Lcom/android/server/accounts/TokenCache$TokenLruCache$Evictor;->add(Lcom/android/server/accounts/TokenCache$Key;)V
 
     .line 143
@@ -229,34 +246,37 @@
     invoke-virtual {v2, v0, v1}, Ljava/util/HashMap;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
 
     .line 146
-    iget-object v0, p0, Lcom/android/server/accounts/TokenCache$TokenLruCache;->mAccountEvictors:Ljava/util/HashMap;
+    iget-object v2, p0, Lcom/android/server/accounts/TokenCache$TokenLruCache;->mAccountEvictors:Ljava/util/HashMap;
 
-    iget-object v1, p1, Lcom/android/server/accounts/TokenCache$Key;->account:Landroid/accounts/Account;
+    iget-object v3, p1, Lcom/android/server/accounts/TokenCache$Key;->account:Landroid/accounts/Account;
 
-    invoke-virtual {v0, v1}, Ljava/util/HashMap;->get(Ljava/lang/Object;)Ljava/lang/Object;
+    invoke-virtual {v2, v3}, Ljava/util/HashMap;->get(Ljava/lang/Object;)Ljava/lang/Object;
 
-    move-result-object v0
+    move-result-object v2
 
-    check-cast v0, Lcom/android/server/accounts/TokenCache$TokenLruCache$Evictor;
+    check-cast v2, Lcom/android/server/accounts/TokenCache$TokenLruCache$Evictor;
 
     .line 147
-    if-nez v0, :cond_33
+    .local v2, "accountEvictor":Lcom/android/server/accounts/TokenCache$TokenLruCache$Evictor;
+    if-nez v2, :cond_35
 
     .line 148
-    new-instance v0, Lcom/android/server/accounts/TokenCache$TokenLruCache$Evictor;
+    new-instance v3, Lcom/android/server/accounts/TokenCache$TokenLruCache$Evictor;
 
-    invoke-direct {v0, p0}, Lcom/android/server/accounts/TokenCache$TokenLruCache$Evictor;-><init>(Lcom/android/server/accounts/TokenCache$TokenLruCache;)V
+    invoke-direct {v3, p0}, Lcom/android/server/accounts/TokenCache$TokenLruCache$Evictor;-><init>(Lcom/android/server/accounts/TokenCache$TokenLruCache;)V
+
+    move-object v2, v3
 
     .line 150
-    :cond_33
-    invoke-virtual {v0, p1}, Lcom/android/server/accounts/TokenCache$TokenLruCache$Evictor;->add(Lcom/android/server/accounts/TokenCache$Key;)V
+    :cond_35
+    invoke-virtual {v2, p1}, Lcom/android/server/accounts/TokenCache$TokenLruCache$Evictor;->add(Lcom/android/server/accounts/TokenCache$Key;)V
 
     .line 151
-    iget-object v1, p0, Lcom/android/server/accounts/TokenCache$TokenLruCache;->mAccountEvictors:Ljava/util/HashMap;
+    iget-object v3, p0, Lcom/android/server/accounts/TokenCache$TokenLruCache;->mAccountEvictors:Ljava/util/HashMap;
 
-    iget-object v2, p1, Lcom/android/server/accounts/TokenCache$Key;->account:Landroid/accounts/Account;
+    iget-object v4, p1, Lcom/android/server/accounts/TokenCache$Key;->account:Landroid/accounts/Account;
 
-    invoke-virtual {v1, v2, v0}, Ljava/util/HashMap;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+    invoke-virtual {v3, v4, v1}, Ljava/util/HashMap;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
 
     .line 154
     invoke-virtual {p0, p1, p2}, Lcom/android/server/accounts/TokenCache$TokenLruCache;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
@@ -266,16 +286,18 @@
 .end method
 
 .method protected sizeOf(Lcom/android/server/accounts/TokenCache$Key;Lcom/android/server/accounts/TokenCache$Value;)I
-    .registers 3
+    .registers 4
+    .param p1, "k"  # Lcom/android/server/accounts/TokenCache$Key;
+    .param p2, "v"  # Lcom/android/server/accounts/TokenCache$Value;
 
     .line 117
-    iget-object p1, p2, Lcom/android/server/accounts/TokenCache$Value;->token:Ljava/lang/String;
+    iget-object v0, p2, Lcom/android/server/accounts/TokenCache$Value;->token:Ljava/lang/String;
 
-    invoke-virtual {p1}, Ljava/lang/String;->length()I
+    invoke-virtual {v0}, Ljava/lang/String;->length()I
 
-    move-result p1
+    move-result v0
 
-    return p1
+    return v0
 .end method
 
 .method protected bridge synthetic sizeOf(Ljava/lang/Object;Ljava/lang/Object;)I

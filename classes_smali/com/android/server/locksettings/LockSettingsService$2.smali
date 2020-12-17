@@ -21,8 +21,9 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/locksettings/LockSettingsService;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/locksettings/LockSettingsService;
 
-    .line 673
+    .line 664
     iput-object p1, p0, Lcom/android/server/locksettings/LockSettingsService$2;->this$0:Lcom/android/server/locksettings/LockSettingsService;
 
     invoke-direct {p0}, Landroid/content/BroadcastReceiver;-><init>()V
@@ -33,136 +34,150 @@
 
 # virtual methods
 .method public onReceive(Landroid/content/Context;Landroid/content/Intent;)V
-    .registers 6
+    .registers 7
+    .param p1, "context"  # Landroid/content/Context;
+    .param p2, "intent"  # Landroid/content/Intent;
 
-    .line 676
+    .line 667
     invoke-virtual {p2}, Landroid/content/Intent;->getAction()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    const-string v0, "android.intent.action.USER_ADDED"
+    const-string v1, "android.intent.action.USER_ADDED"
 
-    invoke-virtual {v0, p1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v1, v0}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result p1
+    move-result v0
 
-    const-string v0, "android.intent.extra.user_handle"
+    const-string v1, "android.intent.extra.user_handle"
 
-    const/4 v1, 0x0
+    const/4 v2, 0x0
 
-    if-eqz p1, :cond_33
+    if-eqz v0, :cond_33
 
-    .line 678
-    invoke-virtual {p2, v0, v1}, Landroid/content/Intent;->getIntExtra(Ljava/lang/String;I)I
+    .line 669
+    invoke-virtual {p2, v1, v2}, Landroid/content/Intent;->getIntExtra(Ljava/lang/String;I)I
 
-    move-result p1
+    move-result v0
 
-    .line 679
-    if-lez p1, :cond_1b
+    .line 670
+    .local v0, "userHandle":I
+    if-lez v0, :cond_1b
 
-    .line 680
-    iget-object p2, p0, Lcom/android/server/locksettings/LockSettingsService$2;->this$0:Lcom/android/server/locksettings/LockSettingsService;
+    .line 671
+    iget-object v1, p0, Lcom/android/server/locksettings/LockSettingsService$2;->this$0:Lcom/android/server/locksettings/LockSettingsService;
 
-    const/4 v0, 0x1
+    const/4 v2, 0x1
 
-    invoke-static {p2, p1, v0}, Lcom/android/server/locksettings/LockSettingsService;->access$700(Lcom/android/server/locksettings/LockSettingsService;IZ)V
+    invoke-static {v1, v0, v2}, Lcom/android/server/locksettings/LockSettingsService;->access$700(Lcom/android/server/locksettings/LockSettingsService;IZ)V
 
-    .line 682
+    .line 673
     :cond_1b
     invoke-static {}, Landroid/security/KeyStore;->getInstance()Landroid/security/KeyStore;
 
-    move-result-object p2
+    move-result-object v1
 
-    .line 683
-    iget-object v0, p0, Lcom/android/server/locksettings/LockSettingsService$2;->this$0:Lcom/android/server/locksettings/LockSettingsService;
+    .line 674
+    .local v1, "ks":Landroid/security/KeyStore;
+    iget-object v2, p0, Lcom/android/server/locksettings/LockSettingsService$2;->this$0:Lcom/android/server/locksettings/LockSettingsService;
 
-    invoke-static {v0}, Lcom/android/server/locksettings/LockSettingsService;->access$400(Lcom/android/server/locksettings/LockSettingsService;)Landroid/os/UserManager;
+    invoke-static {v2}, Lcom/android/server/locksettings/LockSettingsService;->access$400(Lcom/android/server/locksettings/LockSettingsService;)Landroid/os/UserManager;
 
-    move-result-object v0
+    move-result-object v2
 
-    invoke-virtual {v0, p1}, Landroid/os/UserManager;->getProfileParent(I)Landroid/content/pm/UserInfo;
+    invoke-virtual {v2, v0}, Landroid/os/UserManager;->getProfileParent(I)Landroid/content/pm/UserInfo;
 
-    move-result-object v0
+    move-result-object v2
 
-    .line 684
-    if-eqz v0, :cond_2e
+    .line 675
+    .local v2, "parentInfo":Landroid/content/pm/UserInfo;
+    if-eqz v2, :cond_2e
 
-    iget v0, v0, Landroid/content/pm/UserInfo;->id:I
+    iget v3, v2, Landroid/content/pm/UserInfo;->id:I
 
     goto :goto_2f
 
     :cond_2e
-    const/4 v0, -0x1
+    const/4 v3, -0x1
 
-    .line 685
+    .line 676
+    .local v3, "parentHandle":I
     :goto_2f
-    invoke-virtual {p2, p1, v0}, Landroid/security/KeyStore;->onUserAdded(II)V
+    invoke-virtual {v1, v0, v3}, Landroid/security/KeyStore;->onUserAdded(II)V
 
-    .line 686
+    .line 677
+    .end local v0  # "userHandle":I
+    .end local v1  # "ks":Landroid/security/KeyStore;
+    .end local v2  # "parentInfo":Landroid/content/pm/UserInfo;
+    .end local v3  # "parentHandle":I
     goto :goto_64
 
     :cond_33
     invoke-virtual {p2}, Landroid/content/Intent;->getAction()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    const-string v2, "android.intent.action.USER_STARTING"
+    const-string v3, "android.intent.action.USER_STARTING"
 
-    invoke-virtual {v2, p1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v3, v0}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result p1
+    move-result v0
 
-    if-eqz p1, :cond_4b
+    if-eqz v0, :cond_4b
 
-    .line 687
-    invoke-virtual {p2, v0, v1}, Landroid/content/Intent;->getIntExtra(Ljava/lang/String;I)I
+    .line 678
+    invoke-virtual {p2, v1, v2}, Landroid/content/Intent;->getIntExtra(Ljava/lang/String;I)I
 
-    move-result p1
+    move-result v0
 
-    .line 688
-    iget-object p2, p0, Lcom/android/server/locksettings/LockSettingsService$2;->this$0:Lcom/android/server/locksettings/LockSettingsService;
+    .line 679
+    .restart local v0  # "userHandle":I
+    iget-object v1, p0, Lcom/android/server/locksettings/LockSettingsService$2;->this$0:Lcom/android/server/locksettings/LockSettingsService;
 
-    iget-object p2, p2, Lcom/android/server/locksettings/LockSettingsService;->mStorage:Lcom/android/server/locksettings/LockSettingsStorage;
+    iget-object v1, v1, Lcom/android/server/locksettings/LockSettingsService;->mStorage:Lcom/android/server/locksettings/LockSettingsStorage;
 
-    invoke-virtual {p2, p1}, Lcom/android/server/locksettings/LockSettingsStorage;->prefetchUser(I)V
+    invoke-virtual {v1, v0}, Lcom/android/server/locksettings/LockSettingsStorage;->prefetchUser(I)V
 
+    .end local v0  # "userHandle":I
     goto :goto_63
 
-    .line 689
+    .line 680
     :cond_4b
     invoke-virtual {p2}, Landroid/content/Intent;->getAction()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    const-string v2, "android.intent.action.USER_REMOVED"
+    const-string v3, "android.intent.action.USER_REMOVED"
 
-    invoke-virtual {v2, p1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v3, v0}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result p1
+    move-result v0
 
-    if-eqz p1, :cond_63
+    if-eqz v0, :cond_63
 
-    .line 690
-    invoke-virtual {p2, v0, v1}, Landroid/content/Intent;->getIntExtra(Ljava/lang/String;I)I
+    .line 681
+    invoke-virtual {p2, v1, v2}, Landroid/content/Intent;->getIntExtra(Ljava/lang/String;I)I
 
-    move-result p1
+    move-result v0
 
-    .line 691
-    if-lez p1, :cond_64
+    .line 682
+    .restart local v0  # "userHandle":I
+    if-lez v0, :cond_64
 
-    .line 692
-    iget-object p2, p0, Lcom/android/server/locksettings/LockSettingsService$2;->this$0:Lcom/android/server/locksettings/LockSettingsService;
+    .line 683
+    iget-object v1, p0, Lcom/android/server/locksettings/LockSettingsService$2;->this$0:Lcom/android/server/locksettings/LockSettingsService;
 
-    invoke-static {p2, p1, v1}, Lcom/android/server/locksettings/LockSettingsService;->access$700(Lcom/android/server/locksettings/LockSettingsService;IZ)V
+    invoke-static {v1, v0, v2}, Lcom/android/server/locksettings/LockSettingsService;->access$700(Lcom/android/server/locksettings/LockSettingsService;IZ)V
 
     goto :goto_64
 
-    .line 689
+    .line 680
+    .end local v0  # "userHandle":I
     :cond_63
     :goto_63
     nop
 
-    .line 695
+    .line 686
     :cond_64
     :goto_64
     return-void

@@ -26,6 +26,12 @@
 # direct methods
 .method public constructor <init>(Ljava/lang/String;IIILjava/lang/String;Ljava/lang/String;)V
     .registers 7
+    .param p1, "_name"  # Ljava/lang/String;
+    .param p2, "_pid"  # I
+    .param p3, "_oomAdj"  # I
+    .param p4, "_procState"  # I
+    .param p5, "_adjType"  # Ljava/lang/String;
+    .param p6, "_adjReason"  # Ljava/lang/String;
 
     .line 31
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V

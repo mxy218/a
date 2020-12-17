@@ -37,7 +37,8 @@
 
 # virtual methods
 .method public equals(Ljava/lang/Object;)Z
-    .registers 8
+    .registers 9
+    .param p1, "o"  # Ljava/lang/Object;
 
     .line 370
     const/4 v0, 0x1
@@ -50,7 +51,7 @@
     :cond_4
     const/4 v1, 0x0
 
-    if-eqz p1, :cond_33
+    if-eqz p1, :cond_34
 
     invoke-virtual {p0}, Ljava/lang/Object;->getClass()Ljava/lang/Class;
 
@@ -62,52 +63,56 @@
 
     if-eq v2, v3, :cond_12
 
-    goto :goto_33
+    goto :goto_34
 
     .line 372
     :cond_12
-    check-cast p1, Lcom/android/server/am/MemoryStatUtil$IonAllocations;
+    move-object v2, p1
+
+    check-cast v2, Lcom/android/server/am/MemoryStatUtil$IonAllocations;
 
     .line 373
-    iget v2, p0, Lcom/android/server/am/MemoryStatUtil$IonAllocations;->pid:I
+    .local v2, "that":Lcom/android/server/am/MemoryStatUtil$IonAllocations;
+    iget v3, p0, Lcom/android/server/am/MemoryStatUtil$IonAllocations;->pid:I
 
-    iget v3, p1, Lcom/android/server/am/MemoryStatUtil$IonAllocations;->pid:I
+    iget v4, v2, Lcom/android/server/am/MemoryStatUtil$IonAllocations;->pid:I
 
-    if-ne v2, v3, :cond_31
+    if-ne v3, v4, :cond_32
 
-    iget-wide v2, p0, Lcom/android/server/am/MemoryStatUtil$IonAllocations;->totalSizeInBytes:J
+    iget-wide v3, p0, Lcom/android/server/am/MemoryStatUtil$IonAllocations;->totalSizeInBytes:J
 
-    iget-wide v4, p1, Lcom/android/server/am/MemoryStatUtil$IonAllocations;->totalSizeInBytes:J
+    iget-wide v5, v2, Lcom/android/server/am/MemoryStatUtil$IonAllocations;->totalSizeInBytes:J
 
-    cmp-long v2, v2, v4
+    cmp-long v3, v3, v5
 
-    if-nez v2, :cond_31
+    if-nez v3, :cond_32
 
-    iget v2, p0, Lcom/android/server/am/MemoryStatUtil$IonAllocations;->count:I
+    iget v3, p0, Lcom/android/server/am/MemoryStatUtil$IonAllocations;->count:I
 
-    iget v3, p1, Lcom/android/server/am/MemoryStatUtil$IonAllocations;->count:I
+    iget v4, v2, Lcom/android/server/am/MemoryStatUtil$IonAllocations;->count:I
 
-    if-ne v2, v3, :cond_31
+    if-ne v3, v4, :cond_32
 
-    iget-wide v2, p0, Lcom/android/server/am/MemoryStatUtil$IonAllocations;->maxSizeInBytes:J
+    iget-wide v3, p0, Lcom/android/server/am/MemoryStatUtil$IonAllocations;->maxSizeInBytes:J
 
-    iget-wide v4, p1, Lcom/android/server/am/MemoryStatUtil$IonAllocations;->maxSizeInBytes:J
+    iget-wide v5, v2, Lcom/android/server/am/MemoryStatUtil$IonAllocations;->maxSizeInBytes:J
 
-    cmp-long p1, v2, v4
+    cmp-long v3, v3, v5
 
-    if-nez p1, :cond_31
+    if-nez v3, :cond_32
 
-    goto :goto_32
+    goto :goto_33
 
-    :cond_31
+    :cond_32
     move v0, v1
 
-    :goto_32
+    :goto_33
     return v0
 
     .line 371
-    :cond_33
-    :goto_33
+    .end local v2  # "that":Lcom/android/server/am/MemoryStatUtil$IonAllocations;
+    :cond_34
+    :goto_34
     return v1
 .end method
 

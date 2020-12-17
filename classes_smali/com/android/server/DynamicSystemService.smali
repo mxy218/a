@@ -25,6 +25,7 @@
 # direct methods
 .method constructor <init>(Landroid/content/Context;)V
     .registers 2
+    .param p1, "context"  # Landroid/content/Context;
 
     .line 50
     invoke-direct {p0}, Landroid/os/image/IDynamicSystemService$Stub;-><init>()V
@@ -66,6 +67,7 @@
 
 .method private static connect(Landroid/os/IBinder$DeathRecipient;)Landroid/gsi/IGsiService;
     .registers 3
+    .param p0, "recipient"  # Landroid/os/IBinder$DeathRecipient;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -80,12 +82,13 @@
     move-result-object v0
 
     .line 56
+    .local v0, "binder":Landroid/os/IBinder;
     if-nez v0, :cond_a
 
     .line 57
-    const/4 p0, 0x0
+    const/4 v1, 0x0
 
-    return-object p0
+    return-object v1
 
     .line 63
     :cond_a
@@ -96,9 +99,9 @@
     .line 64
     invoke-static {v0}, Landroid/gsi/IGsiService$Stub;->asInterface(Landroid/os/IBinder;)Landroid/gsi/IGsiService;
 
-    move-result-object p0
+    move-result-object v1
 
-    return-object p0
+    return-object v1
 .end method
 
 .method private getGsiService()Landroid/gsi/IGsiService;
@@ -113,7 +116,7 @@
     invoke-direct {p0}, Lcom/android/server/DynamicSystemService;->checkPermission()V
 
     .line 79
-    const-string v0, "init.svc.gsid"
+    const-string/jumbo v0, "init.svc.gsid"
 
     invoke-static {v0}, Landroid/os/SystemProperties;->get(Ljava/lang/String;)Ljava/lang/String;
 
@@ -125,7 +128,7 @@
 
     move-result v0
 
-    if-nez v0, :cond_19
+    if-nez v0, :cond_1a
 
     .line 80
     const-string v0, "ctl.start"
@@ -135,22 +138,23 @@
     invoke-static {v0, v1}, Landroid/os/SystemProperties;->set(Ljava/lang/String;Ljava/lang/String;)V
 
     .line 83
-    :cond_19
+    :cond_1a
     const/16 v0, 0x40
 
-    :goto_1b
+    .local v0, "sleepMs":I
+    :goto_1c
     const/16 v1, 0x4000
 
-    if-gt v0, v1, :cond_64
+    if-gt v0, v1, :cond_65
 
     .line 84
     monitor-enter p0
 
     .line 85
-    :try_start_20
+    :try_start_21
     iget-object v1, p0, Lcom/android/server/DynamicSystemService;->mGsiService:Landroid/gsi/IGsiService;
 
-    if-nez v1, :cond_2a
+    if-nez v1, :cond_2b
 
     .line 86
     invoke-static {p0}, Lcom/android/server/DynamicSystemService;->connect(Landroid/os/IBinder$DeathRecipient;)Landroid/gsi/IGsiService;
@@ -160,26 +164,26 @@
     iput-object v1, p0, Lcom/android/server/DynamicSystemService;->mGsiService:Landroid/gsi/IGsiService;
 
     .line 88
-    :cond_2a
+    :cond_2b
     iget-object v1, p0, Lcom/android/server/DynamicSystemService;->mGsiService:Landroid/gsi/IGsiService;
 
-    if-eqz v1, :cond_32
+    if-eqz v1, :cond_33
 
     .line 89
-    iget-object v0, p0, Lcom/android/server/DynamicSystemService;->mGsiService:Landroid/gsi/IGsiService;
+    iget-object v1, p0, Lcom/android/server/DynamicSystemService;->mGsiService:Landroid/gsi/IGsiService;
 
     monitor-exit p0
 
-    return-object v0
+    return-object v1
 
     .line 91
-    :cond_32
+    :cond_33
     monitor-exit p0
-    :try_end_33
-    .catchall {:try_start_20 .. :try_end_33} :catchall_61
+    :try_end_34
+    .catchall {:try_start_21 .. :try_end_34} :catchall_62
 
     .line 94
-    :try_start_33
+    :try_start_34
     const-string v1, "DynamicSystemService"
 
     new-instance v2, Ljava/lang/StringBuilder;
@@ -206,8 +210,8 @@
     int-to-long v1, v0
 
     invoke-static {v1, v2}, Ljava/lang/Thread;->sleep(J)V
-    :try_end_53
-    .catch Ljava/lang/InterruptedException; {:try_start_33 .. :try_end_53} :catch_57
+    :try_end_54
+    .catch Ljava/lang/InterruptedException; {:try_start_34 .. :try_end_54} :catch_58
 
     .line 99
     nop
@@ -215,37 +219,40 @@
     .line 83
     shl-int/lit8 v0, v0, 0x1
 
-    goto :goto_1b
+    goto :goto_1c
 
     .line 96
-    :catch_57
-    move-exception v0
+    :catch_58
+    move-exception v1
 
     .line 97
-    const-string v0, "DynamicSystemService"
+    .local v1, "e":Ljava/lang/InterruptedException;
+    const-string v2, "DynamicSystemService"
 
-    const-string v1, "Interrupted when waiting for GSID"
+    const-string v3, "Interrupted when waiting for GSID"
 
-    invoke-static {v0, v1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v2, v3}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 98
-    const/4 v0, 0x0
+    const/4 v2, 0x0
 
-    return-object v0
+    return-object v2
 
     .line 91
-    :catchall_61
-    move-exception v0
+    .end local v1  # "e":Ljava/lang/InterruptedException;
+    :catchall_62
+    move-exception v1
 
-    :try_start_62
+    :try_start_63
     monitor-exit p0
-    :try_end_63
-    .catchall {:try_start_62 .. :try_end_63} :catchall_61
+    :try_end_64
+    .catchall {:try_start_63 .. :try_end_64} :catchall_62
 
-    throw v0
+    throw v1
 
     .line 102
-    :cond_64
+    .end local v0  # "sleepMs":I
+    :cond_65
     new-instance v0, Landroid/os/RemoteException;
 
     const-string/jumbo v1, "no gsiservice"
@@ -384,7 +391,7 @@
 .end method
 
 .method public isInUse()Z
-    .registers 5
+    .registers 6
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -396,7 +403,7 @@
 
     const-string v1, "ctl.stop"
 
-    const-string v2, "init.svc.gsid"
+    const-string/jumbo v2, "init.svc.gsid"
 
     invoke-static {v2}, Landroid/os/SystemProperties;->get(Ljava/lang/String;)Ljava/lang/String;
 
@@ -409,43 +416,49 @@
     move-result v2
 
     .line 156
-    nop
+    .local v2, "gsidWasRunning":Z
+    const/4 v3, 0x0
 
     .line 159
-    :try_start_12
+    .local v3, "isInUse":Z
+    :try_start_13
     invoke-direct {p0}, Lcom/android/server/DynamicSystemService;->getGsiService()Landroid/gsi/IGsiService;
 
-    move-result-object v3
+    move-result-object v4
 
-    invoke-interface {v3}, Landroid/gsi/IGsiService;->isGsiRunning()Z
+    invoke-interface {v4}, Landroid/gsi/IGsiService;->isGsiRunning()Z
 
-    move-result v3
-    :try_end_1a
-    .catchall {:try_start_12 .. :try_end_1a} :catchall_22
+    move-result v4
+    :try_end_1b
+    .catchall {:try_start_13 .. :try_end_1b} :catchall_24
+
+    move v3, v4
 
     .line 161
-    if-nez v2, :cond_21
+    if-nez v2, :cond_23
 
-    if-nez v3, :cond_21
+    if-nez v3, :cond_23
 
     .line 162
     invoke-static {v1, v0}, Landroid/os/SystemProperties;->set(Ljava/lang/String;Ljava/lang/String;)V
 
     .line 166
-    :cond_21
+    :cond_23
     return v3
 
     .line 161
-    :catchall_22
-    move-exception v3
+    :catchall_24
+    move-exception v4
 
-    if-nez v2, :cond_28
+    if-nez v2, :cond_2c
+
+    if-nez v3, :cond_2c
 
     .line 162
     invoke-static {v1, v0}, Landroid/os/SystemProperties;->set(Ljava/lang/String;Ljava/lang/String;)V
 
-    :cond_28
-    throw v3
+    :cond_2c
+    throw v4
 .end method
 
 .method public isInstalled()Z
@@ -489,7 +502,8 @@
 .end method
 
 .method public setEnable(Z)Z
-    .registers 6
+    .registers 8
+    .param p1, "enable"  # Z
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -502,56 +516,63 @@
     move-result-object v0
 
     .line 187
+    .local v0, "gsiService":Landroid/gsi/IGsiService;
     if-eqz p1, :cond_1b
 
     .line 188
     invoke-interface {v0}, Landroid/gsi/IGsiService;->getGsiBootStatus()I
 
-    move-result p1
+    move-result v1
 
     .line 189
-    const/4 v1, 0x2
+    .local v1, "status":I
+    const/4 v2, 0x2
 
-    const/4 v2, 0x1
+    const/4 v3, 0x1
 
-    const/4 v3, 0x0
+    const/4 v4, 0x0
 
-    if-ne p1, v1, :cond_11
+    if-ne v1, v2, :cond_11
 
-    move p1, v2
+    move v2, v3
 
     goto :goto_12
 
     :cond_11
-    move p1, v3
+    move v2, v4
 
     .line 190
+    .local v2, "singleBoot":Z
     :goto_12
-    invoke-interface {v0, p1}, Landroid/gsi/IGsiService;->setGsiBootable(Z)I
+    invoke-interface {v0, v2}, Landroid/gsi/IGsiService;->setGsiBootable(Z)I
 
-    move-result p1
+    move-result v5
 
-    if-nez p1, :cond_19
+    if-nez v5, :cond_19
 
     goto :goto_1a
 
     :cond_19
-    move v2, v3
+    move v3, v4
 
     :goto_1a
-    return v2
+    return v3
 
     .line 192
+    .end local v1  # "status":I
+    .end local v2  # "singleBoot":Z
     :cond_1b
     invoke-interface {v0}, Landroid/gsi/IGsiService;->disableGsiInstall()Z
 
-    move-result p1
+    move-result v1
 
-    return p1
+    return v1
 .end method
 
 .method public startInstallation(JJ)Z
-    .registers 13
+    .registers 14
+    .param p1, "systemSize"  # J
+    .param p3, "userdataSize"  # J
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -566,6 +587,7 @@
     move-result-object v0
 
     .line 117
+    .local v0, "path":Ljava/lang/String;
     invoke-virtual {v0}, Ljava/lang/String;->isEmpty()Z
 
     move-result v1
@@ -580,73 +602,77 @@
     move-result v1
 
     .line 119
+    .local v1, "userId":I
     const/16 v3, 0x100
 
     .line 120
     invoke-static {v1, v3}, Landroid/os/storage/StorageManager;->getVolumeList(II)[Landroid/os/storage/StorageVolume;
 
-    move-result-object v1
+    move-result-object v3
 
     .line 121
-    array-length v3, v1
+    .local v3, "volumes":[Landroid/os/storage/StorageVolume;
+    array-length v4, v3
 
-    move v4, v2
+    move v5, v2
 
     :goto_1a
-    if-ge v4, v3, :cond_4c
+    if-ge v5, v4, :cond_4c
 
-    aget-object v5, v1, v4
+    aget-object v6, v3, v5
 
     .line 122
-    invoke-virtual {v5}, Landroid/os/storage/StorageVolume;->isEmulated()Z
+    .local v6, "volume":Landroid/os/storage/StorageVolume;
+    invoke-virtual {v6}, Landroid/os/storage/StorageVolume;->isEmulated()Z
 
-    move-result v6
+    move-result v7
 
-    if-eqz v6, :cond_25
+    if-eqz v7, :cond_25
 
     goto :goto_49
 
     .line 123
     :cond_25
-    invoke-virtual {v5}, Landroid/os/storage/StorageVolume;->isRemovable()Z
+    invoke-virtual {v6}, Landroid/os/storage/StorageVolume;->isRemovable()Z
 
-    move-result v6
+    move-result v7
 
-    if-nez v6, :cond_2c
+    if-nez v7, :cond_2c
 
     goto :goto_49
 
     .line 124
     :cond_2c
-    invoke-virtual {v5}, Landroid/os/storage/StorageVolume;->getState()Ljava/lang/String;
+    invoke-virtual {v6}, Landroid/os/storage/StorageVolume;->getState()Ljava/lang/String;
 
-    move-result-object v6
+    move-result-object v7
 
-    const-string/jumbo v7, "mounted"
+    const-string/jumbo v8, "mounted"
 
-    invoke-virtual {v7, v6}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v8, v7}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result v6
+    move-result v7
 
-    if-nez v6, :cond_3a
+    if-nez v7, :cond_3a
 
     goto :goto_49
 
     .line 125
     :cond_3a
-    invoke-virtual {v5}, Landroid/os/storage/StorageVolume;->getPathFile()Ljava/io/File;
+    invoke-virtual {v6}, Landroid/os/storage/StorageVolume;->getPathFile()Ljava/io/File;
 
-    move-result-object v5
+    move-result-object v7
 
     .line 126
-    invoke-virtual {v5}, Ljava/io/File;->isDirectory()Z
+    .local v7, "sdCard":Ljava/io/File;
+    invoke-virtual {v7}, Ljava/io/File;->isDirectory()Z
 
-    move-result v6
+    move-result v8
 
-    if-eqz v6, :cond_49
+    if-eqz v8, :cond_49
 
     .line 127
-    invoke-virtual {v5}, Ljava/io/File;->getPath()Ljava/lang/String;
+    invoke-virtual {v7}, Ljava/io/File;->getPath()Ljava/lang/String;
 
     move-result-object v0
 
@@ -654,9 +680,11 @@
     goto :goto_4c
 
     .line 121
+    .end local v6  # "volume":Landroid/os/storage/StorageVolume;
+    .end local v7  # "sdCard":Ljava/io/File;
     :cond_49
     :goto_49
-    add-int/lit8 v4, v4, 0x1
+    add-int/lit8 v5, v5, 0x1
 
     goto :goto_1a
 
@@ -665,40 +693,43 @@
     :goto_4c
     invoke-virtual {v0}, Ljava/lang/String;->isEmpty()Z
 
-    move-result v1
+    move-result v4
 
-    if-eqz v1, :cond_54
+    if-eqz v4, :cond_54
 
     .line 132
     const-string v0, "/data/gsi"
 
     .line 134
     :cond_54
-    new-instance v1, Ljava/lang/StringBuilder;
+    new-instance v4, Ljava/lang/StringBuilder;
 
-    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v4}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string/jumbo v3, "startInstallation -> "
+    const-string/jumbo v5, "startInstallation -> "
 
-    invoke-virtual {v1, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v1, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v4, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v4}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v1
+    move-result-object v4
 
-    const-string v3, "DynamicSystemService"
+    const-string v5, "DynamicSystemService"
 
-    invoke-static {v3, v1}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v5, v4}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 136
+    .end local v1  # "userId":I
+    .end local v3  # "volumes":[Landroid/os/storage/StorageVolume;
     :cond_6b
     new-instance v1, Landroid/gsi/GsiInstallParams;
 
     invoke-direct {v1}, Landroid/gsi/GsiInstallParams;-><init>()V
 
     .line 137
+    .local v1, "installParams":Landroid/gsi/GsiInstallParams;
     iput-object v0, v1, Landroid/gsi/GsiInstallParams;->installDir:Ljava/lang/String;
 
     .line 138
@@ -710,13 +741,13 @@
     .line 140
     invoke-direct {p0}, Lcom/android/server/DynamicSystemService;->getGsiService()Landroid/gsi/IGsiService;
 
-    move-result-object p1
+    move-result-object v3
 
-    invoke-interface {p1, v1}, Landroid/gsi/IGsiService;->beginGsiInstall(Landroid/gsi/GsiInstallParams;)I
+    invoke-interface {v3, v1}, Landroid/gsi/IGsiService;->beginGsiInstall(Landroid/gsi/GsiInstallParams;)I
 
-    move-result p1
+    move-result v3
 
-    if-nez p1, :cond_81
+    if-nez v3, :cond_81
 
     const/4 v2, 0x1
 
@@ -726,6 +757,7 @@
 
 .method public write([B)Z
     .registers 3
+    .param p1, "buf"  # [B
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -739,7 +771,7 @@
 
     invoke-interface {v0, p1}, Landroid/gsi/IGsiService;->commitGsiChunkFromMemory([B)Z
 
-    move-result p1
+    move-result v0
 
-    return p1
+    return v0
 .end method

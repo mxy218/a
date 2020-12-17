@@ -26,6 +26,7 @@
 # direct methods
 .method public constructor <init>(Lcom/android/server/hdmi/HdmiControlService;Landroid/hardware/hdmi/IHdmiSystemAudioModeChangeListener;)V
     .registers 3
+    .param p2, "listener"  # Landroid/hardware/hdmi/IHdmiSystemAudioModeChangeListener;
 
     .line 1366
     iput-object p1, p0, Lcom/android/server/hdmi/HdmiControlService$SystemAudioModeChangeListenerRecord;->this$0:Lcom/android/server/hdmi/HdmiControlService;
@@ -40,12 +41,13 @@
 .end method
 
 .method static synthetic access$2000(Lcom/android/server/hdmi/HdmiControlService$SystemAudioModeChangeListenerRecord;)Landroid/hardware/hdmi/IHdmiSystemAudioModeChangeListener;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/hdmi/HdmiControlService$SystemAudioModeChangeListenerRecord;
 
     .line 1363
-    iget-object p0, p0, Lcom/android/server/hdmi/HdmiControlService$SystemAudioModeChangeListenerRecord;->mListener:Landroid/hardware/hdmi/IHdmiSystemAudioModeChangeListener;
+    iget-object v0, p0, Lcom/android/server/hdmi/HdmiControlService$SystemAudioModeChangeListenerRecord;->mListener:Landroid/hardware/hdmi/IHdmiSystemAudioModeChangeListener;
 
-    return-object p0
+    return-object v0
 .end method
 
 

@@ -28,6 +28,7 @@
 # direct methods
 .method public constructor <init>(Lcom/android/server/display/AmbientBrightnessStatsTracker$Clock;)V
     .registers 2
+    .param p1, "clock"  # Lcom/android/server/display/AmbientBrightnessStatsTracker$Clock;
 
     .line 318
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V

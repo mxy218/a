@@ -4,13 +4,22 @@
 
 
 # virtual methods
+.method public abstract addPackageClickNumber(Lcom/android/server/notification/NotificationRecord;)V
+.end method
+
+.method public abstract addPackageRemoveByUserNumber(Lcom/android/server/notification/NotificationRecord;)V
+.end method
+
+.method public abstract addPackageSendNumber(Lcom/android/server/notification/NotificationRecord;)V
+.end method
+
 .method public abstract areBubblesAllowed(Ljava/lang/String;I)Z
 .end method
 
 .method public abstract badgingEnabled(Landroid/os/UserHandle;)Z
 .end method
 
-.method public abstract bubblesEnabled()Z
+.method public abstract bubblesEnabled(Landroid/os/UserHandle;)Z
 .end method
 
 .method public abstract canShowBadge(Ljava/lang/String;I)Z
@@ -26,6 +35,9 @@
 .end method
 
 .method public abstract getImportance(Ljava/lang/String;I)I
+.end method
+
+.method public abstract getMaxPriority(Ljava/lang/String;I)Z
 .end method
 
 .method public abstract getNotificationChannel(Ljava/lang/String;ILjava/lang/String;Z)Landroid/app/NotificationChannel;
@@ -70,6 +82,24 @@
     .end annotation
 .end method
 
+.method public abstract getPackageCategoryScore(Lcom/android/server/notification/NotificationRecord;)F
+.end method
+
+.method public abstract getPackageClickPercentage(Ljava/lang/String;Ljava/lang/String;)F
+.end method
+
+.method public abstract getPackageHeadsUpVisibility(Ljava/lang/String;I)I
+.end method
+
+.method public abstract getPackageRemindEnable(Ljava/lang/String;I)Z
+.end method
+
+.method public abstract getPackageScore(Ljava/lang/String;Ljava/lang/String;)F
+.end method
+
+.method public abstract getUserFilter(Ljava/lang/String;I)I
+.end method
+
 .method public abstract isGroupBlocked(Ljava/lang/String;ILjava/lang/String;)Z
 .end method
 
@@ -79,10 +109,25 @@
 .method public abstract permanentlyDeleteNotificationChannels(Ljava/lang/String;I)V
 .end method
 
+.method public abstract saveRankingDaily()V
+.end method
+
 .method public abstract setImportance(Ljava/lang/String;II)V
 .end method
 
+.method public abstract setMaxPriority(Ljava/lang/String;IZ)V
+.end method
+
+.method public abstract setPackageHeadsUpVisibility(Ljava/lang/String;II)V
+.end method
+
+.method public abstract setPackageRemindEnable(Ljava/lang/String;IZ)V
+.end method
+
 .method public abstract setShowBadge(Ljava/lang/String;IZ)V
+.end method
+
+.method public abstract setUserFilter(Ljava/lang/String;II)V
 .end method
 
 .method public abstract updateNotificationChannel(Ljava/lang/String;ILandroid/app/NotificationChannel;Z)V

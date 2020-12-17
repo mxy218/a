@@ -31,6 +31,8 @@
 # direct methods
 .method public constructor <init>(ILjava/lang/String;)V
     .registers 4
+    .param p1, "size"  # I
+    .param p2, "title"  # Ljava/lang/String;
 
     .line 96
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -55,7 +57,8 @@
 
 # virtual methods
 .method public declared-synchronized dump(Ljava/io/PrintWriter;)V
-    .registers 4
+    .registers 5
+    .param p1, "pw"  # Ljava/io/PrintWriter;
 
     monitor-enter p0
 
@@ -100,24 +103,28 @@
     check-cast v1, Lcom/android/server/audio/AudioEventLogger$Event;
 
     .line 112
+    .local v1, "evt":Lcom/android/server/audio/AudioEventLogger$Event;
     invoke-virtual {v1}, Lcom/android/server/audio/AudioEventLogger$Event;->toString()Ljava/lang/String;
 
-    move-result-object v1
+    move-result-object v2
 
-    invoke-virtual {p1, v1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {p1, v2}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
     :try_end_30
     .catchall {:try_start_1 .. :try_end_30} :catchall_33
 
     .line 113
+    .end local v1  # "evt":Lcom/android/server/audio/AudioEventLogger$Event;
     goto :goto_1d
 
     .line 114
+    .end local p0  # "this":Lcom/android/server/audio/AudioEventLogger;
     :cond_31
     monitor-exit p0
 
     return-void
 
     .line 109
+    .end local p1  # "pw":Ljava/io/PrintWriter;
     :catchall_33
     move-exception p1
 
@@ -128,6 +135,7 @@
 
 .method public declared-synchronized log(Lcom/android/server/audio/AudioEventLogger$Event;)V
     .registers 4
+    .param p1, "evt"  # Lcom/android/server/audio/AudioEventLogger$Event;
 
     monitor-enter p0
 
@@ -149,6 +157,7 @@
     invoke-virtual {v0}, Ljava/util/LinkedList;->removeFirst()Ljava/lang/Object;
 
     .line 106
+    .end local p0  # "this":Lcom/android/server/audio/AudioEventLogger;
     :cond_10
     iget-object v0, p0, Lcom/android/server/audio/AudioEventLogger;->mEvents:Ljava/util/LinkedList;
 
@@ -162,6 +171,7 @@
     return-void
 
     .line 102
+    .end local p1  # "evt":Lcom/android/server/audio/AudioEventLogger$Event;
     :catchall_17
     move-exception p1
 

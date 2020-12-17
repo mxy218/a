@@ -52,6 +52,8 @@
 
 .method synthetic constructor <init>(Landroid/net/ip/RouterAdvertisementDaemon;Landroid/net/ip/RouterAdvertisementDaemon$1;)V
     .registers 3
+    .param p1, "x0"  # Landroid/net/ip/RouterAdvertisementDaemon;
+    .param p2, "x1"  # Landroid/net/ip/RouterAdvertisementDaemon$1;
 
     .line 688
     invoke-direct {p0, p1}, Landroid/net/ip/RouterAdvertisementDaemon$MulticastTransmitter;-><init>(Landroid/net/ip/RouterAdvertisementDaemon;)V
@@ -77,111 +79,116 @@
 .end method
 
 .method private getNextMulticastTransmitDelaySec()I
-    .registers 4
+    .registers 5
 
     .line 722
-    nop
+    const/4 v0, 0x0
 
     .line 723
-    iget-object v0, p0, Landroid/net/ip/RouterAdvertisementDaemon$MulticastTransmitter;->this$0:Landroid/net/ip/RouterAdvertisementDaemon;
-
-    invoke-static {v0}, Landroid/net/ip/RouterAdvertisementDaemon;->access$900(Landroid/net/ip/RouterAdvertisementDaemon;)Ljava/lang/Object;
-
-    move-result-object v0
-
-    monitor-enter v0
-
-    .line 724
-    :try_start_8
+    .local v0, "deprecationInProgress":Z
     iget-object v1, p0, Landroid/net/ip/RouterAdvertisementDaemon$MulticastTransmitter;->this$0:Landroid/net/ip/RouterAdvertisementDaemon;
 
-    invoke-static {v1}, Landroid/net/ip/RouterAdvertisementDaemon;->access$1300(Landroid/net/ip/RouterAdvertisementDaemon;)I
-
-    move-result v1
-
-    const/16 v2, 0x10
-
-    if-ge v1, v2, :cond_17
-
-    .line 726
-    const v1, 0x15180
-
-    monitor-exit v0
-
-    return v1
-
-    .line 728
-    :cond_17
-    iget-object v1, p0, Landroid/net/ip/RouterAdvertisementDaemon$MulticastTransmitter;->this$0:Landroid/net/ip/RouterAdvertisementDaemon;
-
-    invoke-static {v1}, Landroid/net/ip/RouterAdvertisementDaemon;->access$1000(Landroid/net/ip/RouterAdvertisementDaemon;)Landroid/net/ip/RouterAdvertisementDaemon$DeprecatedInfoTracker;
+    invoke-static {v1}, Landroid/net/ip/RouterAdvertisementDaemon;->access$900(Landroid/net/ip/RouterAdvertisementDaemon;)Ljava/lang/Object;
 
     move-result-object v1
 
-    invoke-virtual {v1}, Landroid/net/ip/RouterAdvertisementDaemon$DeprecatedInfoTracker;->isEmpty()Z
+    monitor-enter v1
 
-    move-result v1
+    .line 724
+    :try_start_8
+    iget-object v2, p0, Landroid/net/ip/RouterAdvertisementDaemon$MulticastTransmitter;->this$0:Landroid/net/ip/RouterAdvertisementDaemon;
 
-    if-nez v1, :cond_25
+    invoke-static {v2}, Landroid/net/ip/RouterAdvertisementDaemon;->access$1300(Landroid/net/ip/RouterAdvertisementDaemon;)I
 
-    const/4 v1, 0x1
+    move-result v2
+
+    const/16 v3, 0x10
+
+    if-ge v2, v3, :cond_17
+
+    .line 726
+    const v2, 0x15180
+
+    monitor-exit v1
+
+    return v2
+
+    .line 728
+    :cond_17
+    iget-object v2, p0, Landroid/net/ip/RouterAdvertisementDaemon$MulticastTransmitter;->this$0:Landroid/net/ip/RouterAdvertisementDaemon;
+
+    invoke-static {v2}, Landroid/net/ip/RouterAdvertisementDaemon;->access$1000(Landroid/net/ip/RouterAdvertisementDaemon;)Landroid/net/ip/RouterAdvertisementDaemon$DeprecatedInfoTracker;
+
+    move-result-object v2
+
+    invoke-virtual {v2}, Landroid/net/ip/RouterAdvertisementDaemon$DeprecatedInfoTracker;->isEmpty()Z
+
+    move-result v2
+
+    if-nez v2, :cond_25
+
+    const/4 v2, 0x1
 
     goto :goto_26
 
     :cond_25
-    const/4 v1, 0x0
+    const/4 v2, 0x0
+
+    :goto_26
+    move v0, v2
 
     .line 729
-    :goto_26
-    monitor-exit v0
-    :try_end_27
-    .catchall {:try_start_8 .. :try_end_27} :catchall_3e
+    monitor-exit v1
+    :try_end_28
+    .catchall {:try_start_8 .. :try_end_28} :catchall_3f
 
     .line 731
-    iget-object v0, p0, Landroid/net/ip/RouterAdvertisementDaemon$MulticastTransmitter;->mUrgentAnnouncements:Ljava/util/concurrent/atomic/AtomicInteger;
+    iget-object v1, p0, Landroid/net/ip/RouterAdvertisementDaemon$MulticastTransmitter;->mUrgentAnnouncements:Ljava/util/concurrent/atomic/AtomicInteger;
 
-    invoke-virtual {v0}, Ljava/util/concurrent/atomic/AtomicInteger;->getAndDecrement()I
+    invoke-virtual {v1}, Ljava/util/concurrent/atomic/AtomicInteger;->getAndDecrement()I
 
-    move-result v0
+    move-result v1
 
     .line 732
-    if-gtz v0, :cond_3c
+    .local v1, "urgentPending":I
+    if-gtz v1, :cond_3d
 
-    if-eqz v1, :cond_32
+    if-eqz v0, :cond_33
 
-    goto :goto_3c
+    goto :goto_3d
 
     .line 736
-    :cond_32
-    iget-object v0, p0, Landroid/net/ip/RouterAdvertisementDaemon$MulticastTransmitter;->mRandom:Ljava/util/Random;
+    :cond_33
+    iget-object v2, p0, Landroid/net/ip/RouterAdvertisementDaemon$MulticastTransmitter;->mRandom:Ljava/util/Random;
 
-    const/16 v1, 0x12c
+    const/16 v3, 0x12c
 
-    invoke-virtual {v0, v1}, Ljava/util/Random;->nextInt(I)I
+    invoke-virtual {v2, v3}, Ljava/util/Random;->nextInt(I)I
 
-    move-result v0
+    move-result v2
 
-    add-int/2addr v0, v1
+    add-int/2addr v2, v3
 
-    return v0
+    return v2
 
     .line 733
-    :cond_3c
-    :goto_3c
-    const/4 v0, 0x3
+    :cond_3d
+    :goto_3d
+    const/4 v2, 0x3
 
-    return v0
+    return v2
 
     .line 729
-    :catchall_3e
-    move-exception v1
+    .end local v1  # "urgentPending":I
+    :catchall_3f
+    move-exception v2
 
-    :try_start_3f
-    monitor-exit v0
-    :try_end_40
-    .catchall {:try_start_3f .. :try_end_40} :catchall_3e
+    :try_start_40
+    monitor-exit v1
+    :try_end_41
+    .catchall {:try_start_40 .. :try_end_41} :catchall_3f
 
-    throw v1
+    throw v2
 .end method
 
 

@@ -26,6 +26,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/hdmi/HdmiControlService$CecMessageBuffer;Lcom/android/server/hdmi/HdmiCecMessage;)V
     .registers 3
+    .param p1, "this$1"  # Lcom/android/server/hdmi/HdmiControlService$CecMessageBuffer;
 
     .line 390
     iput-object p1, p0, Lcom/android/server/hdmi/HdmiControlService$CecMessageBuffer$1;->this$1:Lcom/android/server/hdmi/HdmiControlService$CecMessageBuffer;

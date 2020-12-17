@@ -15,6 +15,7 @@
 
 .method public static createNewFile(Ljava/io/File;)Ljava/io/File;
     .registers 4
+    .param p0, "file"  # Ljava/io/File;
 
     .line 34
     :try_start_0
@@ -30,6 +31,7 @@
     move-exception v0
 
     .line 36
+    .local v0, "e":Ljava/io/IOException;
     new-instance v1, Ljava/lang/StringBuilder;
 
     invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
@@ -53,6 +55,7 @@
     invoke-static {v2, v1, v0}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
     .line 38
+    .end local v0  # "e":Ljava/io/IOException;
     :goto_1f
     return-object p0
 .end method

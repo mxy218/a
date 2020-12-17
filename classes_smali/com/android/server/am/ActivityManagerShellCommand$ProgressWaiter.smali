@@ -43,6 +43,8 @@
 
 .method synthetic constructor <init>(Lcom/android/server/am/ActivityManagerShellCommand;Lcom/android/server/am/ActivityManagerShellCommand$1;)V
     .registers 3
+    .param p1, "x0"  # Lcom/android/server/am/ActivityManagerShellCommand;
+    .param p2, "x1"  # Lcom/android/server/am/ActivityManagerShellCommand$1;
 
     .line 382
     invoke-direct {p0, p1}, Lcom/android/server/am/ActivityManagerShellCommand$ProgressWaiter;-><init>(Lcom/android/server/am/ActivityManagerShellCommand;)V
@@ -53,12 +55,14 @@
 
 # virtual methods
 .method public onFinished(ILandroid/os/Bundle;)V
-    .registers 3
+    .registers 4
+    .param p1, "id"  # I
+    .param p2, "extras"  # Landroid/os/Bundle;
 
     .line 393
-    iget-object p1, p0, Lcom/android/server/am/ActivityManagerShellCommand$ProgressWaiter;->mFinishedLatch:Ljava/util/concurrent/CountDownLatch;
+    iget-object v0, p0, Lcom/android/server/am/ActivityManagerShellCommand$ProgressWaiter;->mFinishedLatch:Ljava/util/concurrent/CountDownLatch;
 
-    invoke-virtual {p1}, Ljava/util/concurrent/CountDownLatch;->countDown()V
+    invoke-virtual {v0}, Ljava/util/concurrent/CountDownLatch;->countDown()V
 
     .line 394
     return-void
@@ -66,6 +70,9 @@
 
 .method public onProgress(IILandroid/os/Bundle;)V
     .registers 4
+    .param p1, "id"  # I
+    .param p2, "progress"  # I
+    .param p3, "extras"  # Landroid/os/Bundle;
 
     .line 389
     return-void
@@ -73,13 +80,16 @@
 
 .method public onStarted(ILandroid/os/Bundle;)V
     .registers 3
+    .param p1, "id"  # I
+    .param p2, "extras"  # Landroid/os/Bundle;
 
     .line 386
     return-void
 .end method
 
 .method public waitForFinish(J)Z
-    .registers 5
+    .registers 6
+    .param p1, "timeoutMillis"  # J
 
     .line 398
     :try_start_0
@@ -89,25 +99,26 @@
 
     invoke-virtual {v0, p1, p2, v1}, Ljava/util/concurrent/CountDownLatch;->await(JLjava/util/concurrent/TimeUnit;)Z
 
-    move-result p1
+    move-result v0
     :try_end_8
     .catch Ljava/lang/InterruptedException; {:try_start_0 .. :try_end_8} :catch_9
 
-    return p1
+    return v0
 
     .line 399
     :catch_9
-    move-exception p1
+    move-exception v0
 
     .line 400
-    sget-object p1, Ljava/lang/System;->err:Ljava/io/PrintStream;
+    .local v0, "e":Ljava/lang/InterruptedException;
+    sget-object v1, Ljava/lang/System;->err:Ljava/io/PrintStream;
 
-    const-string p2, "Thread interrupted unexpectedly."
+    const-string v2, "Thread interrupted unexpectedly."
 
-    invoke-virtual {p1, p2}, Ljava/io/PrintStream;->println(Ljava/lang/String;)V
+    invoke-virtual {v1, v2}, Ljava/io/PrintStream;->println(Ljava/lang/String;)V
 
     .line 401
-    const/4 p1, 0x0
+    const/4 v1, 0x0
 
-    return p1
+    return v1
 .end method

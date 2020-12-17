@@ -37,10 +37,10 @@
 .method private constructor <init>()V
     .registers 2
 
-    .line 730
+    .line 648
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
-    .line 731
+    .line 649
     new-instance v0, Ljava/util/HashMap;
 
     invoke-direct {v0}, Ljava/util/HashMap;-><init>()V
@@ -52,8 +52,9 @@
 
 .method synthetic constructor <init>(Lcom/android/server/audio/PlaybackActivityMonitor$1;)V
     .registers 2
+    .param p1, "x0"  # Lcom/android/server/audio/PlaybackActivityMonitor$1;
 
-    .line 730
+    .line 648
     invoke-direct {p0}, Lcom/android/server/audio/PlaybackActivityMonitor$DuckingManager;-><init>()V
 
     return-void
@@ -63,10 +64,11 @@
 # virtual methods
 .method declared-synchronized checkDuck(Landroid/media/AudioPlaybackConfiguration;)V
     .registers 4
+    .param p1, "apc"  # Landroid/media/AudioPlaybackConfiguration;
 
     monitor-enter p0
 
-    .line 757
+    .line 675
     :try_start_1
     iget-object v0, p0, Lcom/android/server/audio/PlaybackActivityMonitor$DuckingManager;->mDuckers:Ljava/util/HashMap;
 
@@ -86,15 +88,16 @@
     :try_end_11
     .catchall {:try_start_1 .. :try_end_11} :catchall_1b
 
-    .line 758
+    .line 676
+    .local v0, "da":Lcom/android/server/audio/PlaybackActivityMonitor$DuckingManager$DuckedApp;
     if-nez v0, :cond_15
 
-    .line 759
+    .line 677
     monitor-exit p0
 
     return-void
 
-    .line 761
+    .line 679
     :cond_15
     const/4 v1, 0x1
 
@@ -103,12 +106,15 @@
     :try_end_19
     .catchall {:try_start_16 .. :try_end_19} :catchall_1b
 
-    .line 762
+    .line 680
     monitor-exit p0
 
     return-void
 
-    .line 756
+    .line 674
+    .end local v0  # "da":Lcom/android/server/audio/PlaybackActivityMonitor$DuckingManager$DuckedApp;
+    .end local p0  # "this":Lcom/android/server/audio/PlaybackActivityMonitor$DuckingManager;
+    .end local p1  # "apc":Landroid/media/AudioPlaybackConfiguration;
     :catchall_1b
     move-exception p1
 
@@ -118,7 +124,8 @@
 .end method
 
 .method declared-synchronized duckUid(ILjava/util/ArrayList;)V
-    .registers 6
+    .registers 7
+    .param p1, "uid"  # I
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(I",
@@ -128,9 +135,10 @@
         }
     .end annotation
 
+    .local p2, "apcsToDuck":Ljava/util/ArrayList;, "Ljava/util/ArrayList<Landroid/media/AudioPlaybackConfiguration;>;"
     monitor-enter p0
 
-    .line 735
+    .line 653
     :try_start_1
     iget-object v0, p0, Lcom/android/server/audio/PlaybackActivityMonitor$DuckingManager;->mDuckers:Ljava/util/HashMap;
 
@@ -144,7 +152,7 @@
 
     if-nez v0, :cond_1b
 
-    .line 736
+    .line 654
     iget-object v0, p0, Lcom/android/server/audio/PlaybackActivityMonitor$DuckingManager;->mDuckers:Ljava/util/HashMap;
 
     invoke-static {p1}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
@@ -157,55 +165,62 @@
 
     invoke-virtual {v0, v1, v2}, Ljava/util/HashMap;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
 
-    .line 738
+    .line 656
+    .end local p0  # "this":Lcom/android/server/audio/PlaybackActivityMonitor$DuckingManager;
     :cond_1b
     iget-object v0, p0, Lcom/android/server/audio/PlaybackActivityMonitor$DuckingManager;->mDuckers:Ljava/util/HashMap;
 
     invoke-static {p1}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
 
-    move-result-object p1
+    move-result-object v1
 
-    invoke-virtual {v0, p1}, Ljava/util/HashMap;->get(Ljava/lang/Object;)Ljava/lang/Object;
-
-    move-result-object p1
-
-    check-cast p1, Lcom/android/server/audio/PlaybackActivityMonitor$DuckingManager$DuckedApp;
-
-    .line 739
-    invoke-virtual {p2}, Ljava/util/ArrayList;->iterator()Ljava/util/Iterator;
-
-    move-result-object p2
-
-    :goto_2b
-    invoke-interface {p2}, Ljava/util/Iterator;->hasNext()Z
-
-    move-result v0
-
-    if-eqz v0, :cond_3c
-
-    invoke-interface {p2}, Ljava/util/Iterator;->next()Ljava/lang/Object;
+    invoke-virtual {v0, v1}, Ljava/util/HashMap;->get(Ljava/lang/Object;)Ljava/lang/Object;
 
     move-result-object v0
 
-    check-cast v0, Landroid/media/AudioPlaybackConfiguration;
+    check-cast v0, Lcom/android/server/audio/PlaybackActivityMonitor$DuckingManager$DuckedApp;
 
-    .line 740
-    const/4 v1, 0x0
+    .line 657
+    .local v0, "da":Lcom/android/server/audio/PlaybackActivityMonitor$DuckingManager$DuckedApp;
+    invoke-virtual {p2}, Ljava/util/ArrayList;->iterator()Ljava/util/Iterator;
 
-    invoke-virtual {p1, v0, v1}, Lcom/android/server/audio/PlaybackActivityMonitor$DuckingManager$DuckedApp;->addDuck(Landroid/media/AudioPlaybackConfiguration;Z)V
+    move-result-object v1
+
+    :goto_2b
+    invoke-interface {v1}, Ljava/util/Iterator;->hasNext()Z
+
+    move-result v2
+
+    if-eqz v2, :cond_3c
+
+    invoke-interface {v1}, Ljava/util/Iterator;->next()Ljava/lang/Object;
+
+    move-result-object v2
+
+    check-cast v2, Landroid/media/AudioPlaybackConfiguration;
+
+    .line 658
+    .local v2, "apc":Landroid/media/AudioPlaybackConfiguration;
+    const/4 v3, 0x0
+
+    invoke-virtual {v0, v2, v3}, Lcom/android/server/audio/PlaybackActivityMonitor$DuckingManager$DuckedApp;->addDuck(Landroid/media/AudioPlaybackConfiguration;Z)V
     :try_end_3b
     .catchall {:try_start_1 .. :try_end_3b} :catchall_3e
 
-    .line 741
+    .line 659
+    .end local v2  # "apc":Landroid/media/AudioPlaybackConfiguration;
     goto :goto_2b
 
-    .line 742
+    .line 660
     :cond_3c
     monitor-exit p0
 
     return-void
 
-    .line 734
+    .line 652
+    .end local v0  # "da":Lcom/android/server/audio/PlaybackActivityMonitor$DuckingManager$DuckedApp;
+    .end local p1  # "uid":I
+    .end local p2  # "apcsToDuck":Ljava/util/ArrayList;, "Ljava/util/ArrayList<Landroid/media/AudioPlaybackConfiguration;>;"
     :catchall_3e
     move-exception p1
 
@@ -216,10 +231,11 @@
 
 .method declared-synchronized dump(Ljava/io/PrintWriter;)V
     .registers 4
+    .param p1, "pw"  # Ljava/io/PrintWriter;
 
     monitor-enter p0
 
-    .line 765
+    .line 683
     :try_start_1
     iget-object v0, p0, Lcom/android/server/audio/PlaybackActivityMonitor$DuckingManager;->mDuckers:Ljava/util/HashMap;
 
@@ -244,21 +260,25 @@
 
     check-cast v1, Lcom/android/server/audio/PlaybackActivityMonitor$DuckingManager$DuckedApp;
 
-    .line 766
+    .line 684
+    .local v1, "da":Lcom/android/server/audio/PlaybackActivityMonitor$DuckingManager$DuckedApp;
     invoke-virtual {v1, p1}, Lcom/android/server/audio/PlaybackActivityMonitor$DuckingManager$DuckedApp;->dump(Ljava/io/PrintWriter;)V
     :try_end_1a
     .catchall {:try_start_1 .. :try_end_1a} :catchall_1d
 
-    .line 767
+    .line 685
+    .end local v1  # "da":Lcom/android/server/audio/PlaybackActivityMonitor$DuckingManager$DuckedApp;
     goto :goto_b
 
-    .line 768
+    .line 686
+    .end local p0  # "this":Lcom/android/server/audio/PlaybackActivityMonitor$DuckingManager;
     :cond_1b
     monitor-exit p0
 
     return-void
 
-    .line 764
+    .line 682
+    .end local p1  # "pw":Ljava/io/PrintWriter;
     :catchall_1d
     move-exception p1
 
@@ -268,52 +288,59 @@
 .end method
 
 .method declared-synchronized removeReleased(Landroid/media/AudioPlaybackConfiguration;)V
-    .registers 4
+    .registers 5
+    .param p1, "apc"  # Landroid/media/AudioPlaybackConfiguration;
 
     monitor-enter p0
 
-    .line 771
+    .line 689
     :try_start_1
     invoke-virtual {p1}, Landroid/media/AudioPlaybackConfiguration;->getClientUid()I
 
     move-result v0
 
-    .line 774
+    .line 692
+    .local v0, "uid":I
     iget-object v1, p0, Lcom/android/server/audio/PlaybackActivityMonitor$DuckingManager;->mDuckers:Ljava/util/HashMap;
 
     invoke-static {v0}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
 
-    move-result-object v0
+    move-result-object v2
 
-    invoke-virtual {v1, v0}, Ljava/util/HashMap;->get(Ljava/lang/Object;)Ljava/lang/Object;
+    invoke-virtual {v1, v2}, Ljava/util/HashMap;->get(Ljava/lang/Object;)Ljava/lang/Object;
 
-    move-result-object v0
+    move-result-object v1
 
-    check-cast v0, Lcom/android/server/audio/PlaybackActivityMonitor$DuckingManager$DuckedApp;
+    check-cast v1, Lcom/android/server/audio/PlaybackActivityMonitor$DuckingManager$DuckedApp;
     :try_end_11
     .catchall {:try_start_1 .. :try_end_11} :catchall_1a
 
-    .line 775
-    if-nez v0, :cond_15
+    .line 693
+    .local v1, "da":Lcom/android/server/audio/PlaybackActivityMonitor$DuckingManager$DuckedApp;
+    if-nez v1, :cond_15
 
-    .line 776
+    .line 694
     monitor-exit p0
 
     return-void
 
-    .line 778
+    .line 696
     :cond_15
     :try_start_15
-    invoke-virtual {v0, p1}, Lcom/android/server/audio/PlaybackActivityMonitor$DuckingManager$DuckedApp;->removeReleased(Landroid/media/AudioPlaybackConfiguration;)V
+    invoke-virtual {v1, p1}, Lcom/android/server/audio/PlaybackActivityMonitor$DuckingManager$DuckedApp;->removeReleased(Landroid/media/AudioPlaybackConfiguration;)V
     :try_end_18
     .catchall {:try_start_15 .. :try_end_18} :catchall_1a
 
-    .line 779
+    .line 697
     monitor-exit p0
 
     return-void
 
-    .line 770
+    .line 688
+    .end local v0  # "uid":I
+    .end local v1  # "da":Lcom/android/server/audio/PlaybackActivityMonitor$DuckingManager$DuckedApp;
+    .end local p0  # "this":Lcom/android/server/audio/PlaybackActivityMonitor$DuckingManager;
+    .end local p1  # "apc":Landroid/media/AudioPlaybackConfiguration;
     :catchall_1a
     move-exception p1
 
@@ -323,7 +350,8 @@
 .end method
 
 .method declared-synchronized unduckUid(ILjava/util/HashMap;)V
-    .registers 4
+    .registers 5
+    .param p1, "uid"  # I
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(I",
@@ -334,45 +362,51 @@
         }
     .end annotation
 
+    .local p2, "players":Ljava/util/HashMap;, "Ljava/util/HashMap<Ljava/lang/Integer;Landroid/media/AudioPlaybackConfiguration;>;"
     monitor-enter p0
 
-    .line 746
+    .line 664
     :try_start_1
     iget-object v0, p0, Lcom/android/server/audio/PlaybackActivityMonitor$DuckingManager;->mDuckers:Ljava/util/HashMap;
 
     invoke-static {p1}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
 
-    move-result-object p1
+    move-result-object v1
 
-    invoke-virtual {v0, p1}, Ljava/util/HashMap;->remove(Ljava/lang/Object;)Ljava/lang/Object;
+    invoke-virtual {v0, v1}, Ljava/util/HashMap;->remove(Ljava/lang/Object;)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v0
 
-    check-cast p1, Lcom/android/server/audio/PlaybackActivityMonitor$DuckingManager$DuckedApp;
+    check-cast v0, Lcom/android/server/audio/PlaybackActivityMonitor$DuckingManager$DuckedApp;
     :try_end_d
     .catchall {:try_start_1 .. :try_end_d} :catchall_16
 
-    .line 747
-    if-nez p1, :cond_11
+    .line 665
+    .local v0, "da":Lcom/android/server/audio/PlaybackActivityMonitor$DuckingManager$DuckedApp;
+    if-nez v0, :cond_11
 
-    .line 748
+    .line 666
     monitor-exit p0
 
     return-void
 
-    .line 750
+    .line 668
     :cond_11
     :try_start_11
-    invoke-virtual {p1, p2}, Lcom/android/server/audio/PlaybackActivityMonitor$DuckingManager$DuckedApp;->removeUnduckAll(Ljava/util/HashMap;)V
+    invoke-virtual {v0, p2}, Lcom/android/server/audio/PlaybackActivityMonitor$DuckingManager$DuckedApp;->removeUnduckAll(Ljava/util/HashMap;)V
     :try_end_14
     .catchall {:try_start_11 .. :try_end_14} :catchall_16
 
-    .line 751
+    .line 669
     monitor-exit p0
 
     return-void
 
-    .line 745
+    .line 663
+    .end local v0  # "da":Lcom/android/server/audio/PlaybackActivityMonitor$DuckingManager$DuckedApp;
+    .end local p0  # "this":Lcom/android/server/audio/PlaybackActivityMonitor$DuckingManager;
+    .end local p1  # "uid":I
+    .end local p2  # "players":Ljava/util/HashMap;, "Ljava/util/HashMap<Ljava/lang/Integer;Landroid/media/AudioPlaybackConfiguration;>;"
     :catchall_16
     move-exception p1
 

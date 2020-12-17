@@ -1,11 +1,11 @@
 .class Lcom/android/server/ConnectivityService$3;
-.super Lcom/android/server/net/BaseNetworkObserver;
+.super Lcom/android/server/connectivity/tethering/TetheringDependencies;
 .source "ConnectivityService.java"
 
 
 # annotations
-.annotation system Ldalvik/annotation/EnclosingClass;
-    value = Lcom/android/server/ConnectivityService;
+.annotation system Ldalvik/annotation/EnclosingMethod;
+    value = Lcom/android/server/ConnectivityService;->makeTethering()Lcom/android/server/connectivity/Tethering;
 .end annotation
 
 .annotation system Ldalvik/annotation/InnerClass;
@@ -21,30 +21,40 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/ConnectivityService;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/ConnectivityService;
 
-    .line 1659
+    .line 1093
     iput-object p1, p0, Lcom/android/server/ConnectivityService$3;->this$0:Lcom/android/server/ConnectivityService;
 
-    invoke-direct {p0}, Lcom/android/server/net/BaseNetworkObserver;-><init>()V
+    invoke-direct {p0}, Lcom/android/server/connectivity/tethering/TetheringDependencies;-><init>()V
 
     return-void
 .end method
 
 
 # virtual methods
-.method public interfaceClassDataActivityChanged(Ljava/lang/String;ZJ)V
-    .registers 6
+.method public getDefaultNetworkRequest()Landroid/net/NetworkRequest;
+    .registers 2
 
-    .line 1662
-    invoke-static {p1}, Ljava/lang/Integer;->parseInt(Ljava/lang/String;)I
-
-    move-result p1
-
-    .line 1663
+    .line 1100
     iget-object v0, p0, Lcom/android/server/ConnectivityService$3;->this$0:Lcom/android/server/ConnectivityService;
 
-    invoke-static {v0, p1, p2, p3, p4}, Lcom/android/server/ConnectivityService;->access$400(Lcom/android/server/ConnectivityService;IZJ)V
+    invoke-static {v0}, Lcom/android/server/ConnectivityService;->access$500(Lcom/android/server/ConnectivityService;)Landroid/net/NetworkRequest;
 
-    .line 1664
-    return-void
+    move-result-object v0
+
+    return-object v0
+.end method
+
+.method public isTetheringSupported()Z
+    .registers 2
+
+    .line 1096
+    iget-object v0, p0, Lcom/android/server/ConnectivityService$3;->this$0:Lcom/android/server/ConnectivityService;
+
+    invoke-static {v0}, Lcom/android/server/ConnectivityService;->access$400(Lcom/android/server/ConnectivityService;)Z
+
+    move-result v0
+
+    return v0
 .end method

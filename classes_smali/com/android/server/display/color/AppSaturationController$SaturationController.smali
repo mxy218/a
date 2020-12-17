@@ -62,6 +62,7 @@
 
 .method synthetic constructor <init>(Lcom/android/server/display/color/AppSaturationController$1;)V
     .registers 2
+    .param p1, "x0"  # Lcom/android/server/display/color/AppSaturationController$1;
 
     .line 149
     invoke-direct {p0}, Lcom/android/server/display/color/AppSaturationController$SaturationController;-><init>()V
@@ -70,29 +71,35 @@
 .end method
 
 .method static synthetic access$000(Lcom/android/server/display/color/AppSaturationController$SaturationController;Ljava/lang/ref/WeakReference;)Z
-    .registers 2
+    .registers 3
+    .param p0, "x0"  # Lcom/android/server/display/color/AppSaturationController$SaturationController;
+    .param p1, "x1"  # Ljava/lang/ref/WeakReference;
 
     .line 149
     invoke-direct {p0, p1}, Lcom/android/server/display/color/AppSaturationController$SaturationController;->addColorTransformController(Ljava/lang/ref/WeakReference;)Z
 
-    move-result p0
+    move-result v0
 
-    return p0
+    return v0
 .end method
 
 .method static synthetic access$100(Lcom/android/server/display/color/AppSaturationController$SaturationController;I)Z
-    .registers 2
+    .registers 3
+    .param p0, "x0"  # Lcom/android/server/display/color/AppSaturationController$SaturationController;
+    .param p1, "x1"  # I
 
     .line 149
     invoke-direct {p0, p1}, Lcom/android/server/display/color/AppSaturationController$SaturationController;->setSaturationLevel(I)Z
 
-    move-result p0
+    move-result v0
 
-    return p0
+    return v0
 .end method
 
 .method static synthetic access$200(Lcom/android/server/display/color/AppSaturationController$SaturationController;Ljava/io/PrintWriter;)V
     .registers 2
+    .param p0, "x0"  # Lcom/android/server/display/color/AppSaturationController$SaturationController;
+    .param p1, "x1"  # Ljava/io/PrintWriter;
 
     .line 149
     invoke-direct {p0, p1}, Lcom/android/server/display/color/AppSaturationController$SaturationController;->dump(Ljava/io/PrintWriter;)V
@@ -101,7 +108,7 @@
 .end method
 
 .method private addColorTransformController(Ljava/lang/ref/WeakReference;)Z
-    .registers 3
+    .registers 4
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(",
@@ -112,36 +119,37 @@
     .end annotation
 
     .line 166
+    .local p1, "controller":Ljava/lang/ref/WeakReference;, "Ljava/lang/ref/WeakReference<Lcom/android/server/display/color/ColorDisplayService$ColorTransformController;>;"
     iget-object v0, p0, Lcom/android/server/display/color/AppSaturationController$SaturationController;->mControllerRefs:Ljava/util/List;
 
     invoke-interface {v0, p1}, Ljava/util/List;->add(Ljava/lang/Object;)Z
 
     .line 167
-    iget p1, p0, Lcom/android/server/display/color/AppSaturationController$SaturationController;->mSaturationLevel:I
+    iget v0, p0, Lcom/android/server/display/color/AppSaturationController$SaturationController;->mSaturationLevel:I
 
-    const/16 v0, 0x64
+    const/16 v1, 0x64
 
-    if-eq p1, v0, :cond_10
+    if-eq v0, v1, :cond_10
 
     .line 168
     invoke-direct {p0}, Lcom/android/server/display/color/AppSaturationController$SaturationController;->updateState()Z
 
-    move-result p1
+    move-result v0
 
-    return p1
+    return v0
 
     .line 170
     :cond_10
     invoke-direct {p0}, Lcom/android/server/display/color/AppSaturationController$SaturationController;->clearExpiredReferences()V
 
     .line 172
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    return p1
+    return v0
 .end method
 
 .method private clearExpiredReferences()V
-    .registers 3
+    .registers 4
 
     .line 197
     iget-object v0, p0, Lcom/android/server/display/color/AppSaturationController$SaturationController;->mControllerRefs:Ljava/util/List;
@@ -152,6 +160,7 @@
     move-result-object v0
 
     .line 199
+    .local v0, "iterator":Ljava/util/Iterator;, "Ljava/util/Iterator<Ljava/lang/ref/WeakReference<Lcom/android/server/display/color/ColorDisplayService$ColorTransformController;>;>;"
     :goto_6
     invoke-interface {v0}, Ljava/util/Iterator;->hasNext()Z
 
@@ -167,19 +176,23 @@
     check-cast v1, Ljava/lang/ref/WeakReference;
 
     .line 201
+    .local v1, "controllerRef":Ljava/lang/ref/WeakReference;, "Ljava/lang/ref/WeakReference<Lcom/android/server/display/color/ColorDisplayService$ColorTransformController;>;"
     invoke-virtual {v1}, Ljava/lang/ref/WeakReference;->get()Ljava/lang/Object;
 
-    move-result-object v1
+    move-result-object v2
 
-    check-cast v1, Lcom/android/server/display/color/ColorDisplayService$ColorTransformController;
+    check-cast v2, Lcom/android/server/display/color/ColorDisplayService$ColorTransformController;
 
     .line 202
-    if-nez v1, :cond_1d
+    .local v2, "controller":Lcom/android/server/display/color/ColorDisplayService$ColorTransformController;
+    if-nez v2, :cond_1d
 
     .line 203
     invoke-interface {v0}, Ljava/util/Iterator;->remove()V
 
     .line 205
+    .end local v1  # "controllerRef":Ljava/lang/ref/WeakReference;, "Ljava/lang/ref/WeakReference<Lcom/android/server/display/color/ColorDisplayService$ColorTransformController;>;"
+    .end local v2  # "controller":Lcom/android/server/display/color/ColorDisplayService$ColorTransformController;
     :cond_1d
     goto :goto_6
 
@@ -190,6 +203,7 @@
 
 .method private dump(Ljava/io/PrintWriter;)V
     .registers 4
+    .param p1, "pw"  # Ljava/io/PrintWriter;
 
     .line 209
     new-instance v0, Ljava/lang/StringBuilder;
@@ -238,36 +252,37 @@
 .end method
 
 .method private setSaturationLevel(I)Z
-    .registers 2
+    .registers 3
+    .param p1, "saturationLevel"  # I
 
     .line 157
     iput p1, p0, Lcom/android/server/display/color/AppSaturationController$SaturationController;->mSaturationLevel:I
 
     .line 158
-    iget-object p1, p0, Lcom/android/server/display/color/AppSaturationController$SaturationController;->mControllerRefs:Ljava/util/List;
+    iget-object v0, p0, Lcom/android/server/display/color/AppSaturationController$SaturationController;->mControllerRefs:Ljava/util/List;
 
-    invoke-interface {p1}, Ljava/util/List;->isEmpty()Z
+    invoke-interface {v0}, Ljava/util/List;->isEmpty()Z
 
-    move-result p1
+    move-result v0
 
-    if-nez p1, :cond_f
+    if-nez v0, :cond_f
 
     .line 159
     invoke-direct {p0}, Lcom/android/server/display/color/AppSaturationController$SaturationController;->updateState()Z
 
-    move-result p1
+    move-result v0
 
-    return p1
+    return v0
 
     .line 161
     :cond_f
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    return p1
+    return v0
 .end method
 
 .method private updateState()Z
-    .registers 5
+    .registers 7
 
     .line 176
     iget v0, p0, Lcom/android/server/display/color/AppSaturationController$SaturationController;->mSaturationLevel:I
@@ -283,64 +298,68 @@
     invoke-static {v0, v1}, Lcom/android/server/display/color/AppSaturationController;->computeGrayscaleTransformMatrix(F[F)V
 
     .line 178
-    nop
+    const/4 v0, 0x0
 
     .line 179
-    iget-object v0, p0, Lcom/android/server/display/color/AppSaturationController$SaturationController;->mControllerRefs:Ljava/util/List;
+    .local v0, "updated":Z
+    iget-object v1, p0, Lcom/android/server/display/color/AppSaturationController$SaturationController;->mControllerRefs:Ljava/util/List;
 
     .line 180
-    invoke-interface {v0}, Ljava/util/List;->iterator()Ljava/util/Iterator;
+    invoke-interface {v1}, Ljava/util/List;->iterator()Ljava/util/Iterator;
 
-    move-result-object v0
-
-    const/4 v1, 0x0
+    move-result-object v1
 
     .line 181
-    :goto_13
-    invoke-interface {v0}, Ljava/util/Iterator;->hasNext()Z
+    .local v1, "iterator":Ljava/util/Iterator;, "Ljava/util/Iterator<Ljava/lang/ref/WeakReference<Lcom/android/server/display/color/ColorDisplayService$ColorTransformController;>;>;"
+    :goto_12
+    invoke-interface {v1}, Ljava/util/Iterator;->hasNext()Z
 
     move-result v2
 
-    if-eqz v2, :cond_34
+    if-eqz v2, :cond_33
 
     .line 182
-    invoke-interface {v0}, Ljava/util/Iterator;->next()Ljava/lang/Object;
+    invoke-interface {v1}, Ljava/util/Iterator;->next()Ljava/lang/Object;
 
     move-result-object v2
 
     check-cast v2, Ljava/lang/ref/WeakReference;
 
     .line 183
+    .local v2, "controllerRef":Ljava/lang/ref/WeakReference;, "Ljava/lang/ref/WeakReference<Lcom/android/server/display/color/ColorDisplayService$ColorTransformController;>;"
     invoke-virtual {v2}, Ljava/lang/ref/WeakReference;->get()Ljava/lang/Object;
 
-    move-result-object v2
+    move-result-object v3
 
-    check-cast v2, Lcom/android/server/display/color/ColorDisplayService$ColorTransformController;
+    check-cast v3, Lcom/android/server/display/color/ColorDisplayService$ColorTransformController;
 
     .line 184
-    if-eqz v2, :cond_30
+    .local v3, "controller":Lcom/android/server/display/color/ColorDisplayService$ColorTransformController;
+    if-eqz v3, :cond_2f
 
     .line 185
-    iget-object v1, p0, Lcom/android/server/display/color/AppSaturationController$SaturationController;->mTransformMatrix:[F
+    iget-object v4, p0, Lcom/android/server/display/color/AppSaturationController$SaturationController;->mTransformMatrix:[F
 
-    sget-object v3, Lcom/android/server/display/color/AppSaturationController;->TRANSLATION_VECTOR:[F
+    sget-object v5, Lcom/android/server/display/color/AppSaturationController;->TRANSLATION_VECTOR:[F
 
-    invoke-interface {v2, v1, v3}, Lcom/android/server/display/color/ColorDisplayService$ColorTransformController;->applyAppSaturation([F[F)V
+    invoke-interface {v3, v4, v5}, Lcom/android/server/display/color/ColorDisplayService$ColorTransformController;->applyAppSaturation([F[F)V
 
     .line 186
-    const/4 v1, 0x1
+    const/4 v0, 0x1
 
-    goto :goto_33
+    goto :goto_32
 
     .line 189
-    :cond_30
-    invoke-interface {v0}, Ljava/util/Iterator;->remove()V
+    :cond_2f
+    invoke-interface {v1}, Ljava/util/Iterator;->remove()V
 
     .line 191
-    :goto_33
-    goto :goto_13
+    .end local v2  # "controllerRef":Ljava/lang/ref/WeakReference;, "Ljava/lang/ref/WeakReference<Lcom/android/server/display/color/ColorDisplayService$ColorTransformController;>;"
+    .end local v3  # "controller":Lcom/android/server/display/color/ColorDisplayService$ColorTransformController;
+    :goto_32
+    goto :goto_12
 
     .line 192
-    :cond_34
-    return v1
+    :cond_33
+    return v0
 .end method

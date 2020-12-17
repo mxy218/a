@@ -27,19 +27,20 @@
 # direct methods
 .method constructor <init>(I)V
     .registers 4
+    .param p1, "displayId"  # I
 
-    .line 975
+    .line 1005
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
-    .line 970
+    .line 1000
     const/4 v0, -0x1
 
     iput v0, p0, Lcom/android/server/wallpaper/WallpaperManagerService$DisplayData;->mWidth:I
 
-    .line 971
+    .line 1001
     iput v0, p0, Lcom/android/server/wallpaper/WallpaperManagerService$DisplayData;->mHeight:I
 
-    .line 972
+    .line 1002
     new-instance v0, Landroid/graphics/Rect;
 
     const/4 v1, 0x0
@@ -48,9 +49,9 @@
 
     iput-object v0, p0, Lcom/android/server/wallpaper/WallpaperManagerService$DisplayData;->mPadding:Landroid/graphics/Rect;
 
-    .line 976
+    .line 1006
     iput p1, p0, Lcom/android/server/wallpaper/WallpaperManagerService$DisplayData;->mDisplayId:I
 
-    .line 977
+    .line 1007
     return-void
 .end method

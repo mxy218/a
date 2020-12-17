@@ -85,6 +85,7 @@
     .end annotation
 
     .line 113
+    .local p1, "packages":Landroid/util/ArrayMap;, "Landroid/util/ArrayMap<Ljava/lang/String;Lcom/android/server/pm/PackageSetting;>;"
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
     .line 66
@@ -124,7 +125,7 @@
 .end method
 
 .method private addKeySetLPw(Landroid/util/ArraySet;)Lcom/android/server/pm/KeySetHandle;
-    .registers 9
+    .registers 10
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(",
@@ -136,13 +137,14 @@
     .end annotation
 
     .line 433
-    if-eqz p1, :cond_6a
+    .local p1, "keys":Landroid/util/ArraySet;, "Landroid/util/ArraySet<Ljava/security/PublicKey;>;"
+    if-eqz p1, :cond_69
 
     invoke-virtual {p1}, Landroid/util/ArraySet;->size()I
 
     move-result v0
 
-    if-eqz v0, :cond_6a
+    if-eqz v0, :cond_69
 
     .line 438
     new-instance v0, Landroid/util/ArraySet;
@@ -154,131 +156,148 @@
     invoke-direct {v0, v1}, Landroid/util/ArraySet;-><init>(I)V
 
     .line 439
+    .local v0, "addedKeyIds":Landroid/util/ArraySet;, "Landroid/util/ArraySet<Ljava/lang/Long;>;"
     invoke-virtual {p1}, Landroid/util/ArraySet;->size()I
 
     move-result v1
 
     .line 440
+    .local v1, "kSize":I
     const/4 v2, 0x0
 
-    move v3, v2
-
-    :goto_17
-    if-ge v3, v1, :cond_2d
+    .local v2, "i":I
+    :goto_16
+    if-ge v2, v1, :cond_2c
 
     .line 441
-    invoke-virtual {p1, v3}, Landroid/util/ArraySet;->valueAt(I)Ljava/lang/Object;
+    invoke-virtual {p1, v2}, Landroid/util/ArraySet;->valueAt(I)Ljava/lang/Object;
 
-    move-result-object v4
+    move-result-object v3
 
-    check-cast v4, Ljava/security/PublicKey;
+    check-cast v3, Ljava/security/PublicKey;
 
-    invoke-direct {p0, v4}, Lcom/android/server/pm/KeySetManagerService;->addPublicKeyLPw(Ljava/security/PublicKey;)J
-
-    move-result-wide v4
-
-    .line 442
-    invoke-static {v4, v5}, Ljava/lang/Long;->valueOf(J)Ljava/lang/Long;
-
-    move-result-object v4
-
-    invoke-virtual {v0, v4}, Landroid/util/ArraySet;->add(Ljava/lang/Object;)Z
-
-    .line 440
-    add-int/lit8 v3, v3, 0x1
-
-    goto :goto_17
-
-    .line 446
-    :cond_2d
-    invoke-direct {p0, v0}, Lcom/android/server/pm/KeySetManagerService;->getIdFromKeyIdsLPr(Ljava/util/Set;)J
+    invoke-direct {p0, v3}, Lcom/android/server/pm/KeySetManagerService;->addPublicKeyLPw(Ljava/security/PublicKey;)J
 
     move-result-wide v3
 
+    .line 442
+    .local v3, "id":J
+    invoke-static {v3, v4}, Ljava/lang/Long;->valueOf(J)Ljava/lang/Long;
+
+    move-result-object v5
+
+    invoke-virtual {v0, v5}, Landroid/util/ArraySet;->add(Ljava/lang/Object;)Z
+
+    .line 440
+    .end local v3  # "id":J
+    add-int/lit8 v2, v2, 0x1
+
+    goto :goto_16
+
+    .line 446
+    .end local v2  # "i":I
+    :cond_2c
+    invoke-direct {p0, v0}, Lcom/android/server/pm/KeySetManagerService;->getIdFromKeyIdsLPr(Ljava/util/Set;)J
+
+    move-result-wide v2
+
     .line 447
-    const-wide/16 v5, -0x1
+    .local v2, "existingKeySetId":J
+    const-wide/16 v4, -0x1
 
-    cmp-long p1, v3, v5
+    cmp-long v4, v2, v4
 
-    if-eqz p1, :cond_56
+    if-eqz v4, :cond_55
 
     .line 450
-    nop
+    const/4 v4, 0x0
 
-    :goto_38
-    if-ge v2, v1, :cond_4a
+    .local v4, "i":I
+    :goto_37
+    if-ge v4, v1, :cond_49
 
     .line 451
-    invoke-virtual {v0, v2}, Landroid/util/ArraySet;->valueAt(I)Ljava/lang/Object;
+    invoke-virtual {v0, v4}, Landroid/util/ArraySet;->valueAt(I)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v5
 
-    check-cast p1, Ljava/lang/Long;
+    check-cast v5, Ljava/lang/Long;
 
-    invoke-virtual {p1}, Ljava/lang/Long;->longValue()J
+    invoke-virtual {v5}, Ljava/lang/Long;->longValue()J
 
     move-result-wide v5
 
     invoke-direct {p0, v5, v6}, Lcom/android/server/pm/KeySetManagerService;->decrementPublicKeyLPw(J)V
 
     .line 450
-    add-int/lit8 v2, v2, 0x1
+    add-int/lit8 v4, v4, 0x1
 
-    goto :goto_38
+    goto :goto_37
 
     .line 453
-    :cond_4a
-    iget-object p1, p0, Lcom/android/server/pm/KeySetManagerService;->mKeySets:Landroid/util/LongSparseArray;
+    .end local v4  # "i":I
+    :cond_49
+    iget-object v4, p0, Lcom/android/server/pm/KeySetManagerService;->mKeySets:Landroid/util/LongSparseArray;
 
-    invoke-virtual {p1, v3, v4}, Landroid/util/LongSparseArray;->get(J)Ljava/lang/Object;
+    invoke-virtual {v4, v2, v3}, Landroid/util/LongSparseArray;->get(J)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v4
 
-    check-cast p1, Lcom/android/server/pm/KeySetHandle;
+    check-cast v4, Lcom/android/server/pm/KeySetHandle;
 
     .line 454
-    invoke-virtual {p1}, Lcom/android/server/pm/KeySetHandle;->incrRefCountLPw()V
+    .local v4, "ks":Lcom/android/server/pm/KeySetHandle;
+    invoke-virtual {v4}, Lcom/android/server/pm/KeySetHandle;->incrRefCountLPw()V
 
     .line 455
-    return-object p1
+    return-object v4
 
     .line 459
-    :cond_56
+    .end local v4  # "ks":Lcom/android/server/pm/KeySetHandle;
+    :cond_55
     invoke-direct {p0}, Lcom/android/server/pm/KeySetManagerService;->getFreeKeySetIDLPw()J
 
-    move-result-wide v1
+    move-result-wide v4
 
     .line 462
-    new-instance p1, Lcom/android/server/pm/KeySetHandle;
+    .local v4, "id":J
+    new-instance v6, Lcom/android/server/pm/KeySetHandle;
 
-    invoke-direct {p1, v1, v2}, Lcom/android/server/pm/KeySetHandle;-><init>(J)V
+    invoke-direct {v6, v4, v5}, Lcom/android/server/pm/KeySetHandle;-><init>(J)V
 
     .line 463
-    iget-object v3, p0, Lcom/android/server/pm/KeySetManagerService;->mKeySets:Landroid/util/LongSparseArray;
+    .local v6, "ks":Lcom/android/server/pm/KeySetHandle;
+    iget-object v7, p0, Lcom/android/server/pm/KeySetManagerService;->mKeySets:Landroid/util/LongSparseArray;
 
-    invoke-virtual {v3, v1, v2, p1}, Landroid/util/LongSparseArray;->put(JLjava/lang/Object;)V
+    invoke-virtual {v7, v4, v5, v6}, Landroid/util/LongSparseArray;->put(JLjava/lang/Object;)V
 
     .line 464
-    iget-object v3, p0, Lcom/android/server/pm/KeySetManagerService;->mKeySetMapping:Landroid/util/LongSparseArray;
+    iget-object v7, p0, Lcom/android/server/pm/KeySetManagerService;->mKeySetMapping:Landroid/util/LongSparseArray;
 
-    invoke-virtual {v3, v1, v2, v0}, Landroid/util/LongSparseArray;->put(JLjava/lang/Object;)V
+    invoke-virtual {v7, v4, v5, v0}, Landroid/util/LongSparseArray;->put(JLjava/lang/Object;)V
 
     .line 465
-    return-object p1
+    return-object v6
 
     .line 434
-    :cond_6a
-    new-instance p1, Ljava/lang/IllegalArgumentException;
+    .end local v0  # "addedKeyIds":Landroid/util/ArraySet;, "Landroid/util/ArraySet<Ljava/lang/Long;>;"
+    .end local v1  # "kSize":I
+    .end local v2  # "existingKeySetId":J
+    .end local v4  # "id":J
+    .end local v6  # "ks":Lcom/android/server/pm/KeySetHandle;
+    :cond_69
+    new-instance v0, Ljava/lang/IllegalArgumentException;
 
-    const-string v0, "Cannot add an empty set of keys!"
+    const-string v1, "Cannot add an empty set of keys!"
 
-    invoke-direct {p1, v0}, Ljava/lang/IllegalArgumentException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v0, v1}, Ljava/lang/IllegalArgumentException;-><init>(Ljava/lang/String;)V
 
-    throw p1
+    throw v0
 .end method
 
 .method private addPublicKeyLPw(Ljava/security/PublicKey;)J
     .registers 6
+    .param p1, "key"  # Ljava/security/PublicKey;
 
     .line 509
     const-string v0, "Cannot add null public key!"
@@ -291,6 +310,7 @@
     move-result-wide v0
 
     .line 511
+    .local v0, "id":J
     const-wide/16 v2, -0x1
 
     cmp-long v2, v0, v2
@@ -298,15 +318,15 @@
     if-eqz v2, :cond_1b
 
     .line 514
-    iget-object p1, p0, Lcom/android/server/pm/KeySetManagerService;->mPublicKeys:Landroid/util/LongSparseArray;
+    iget-object v2, p0, Lcom/android/server/pm/KeySetManagerService;->mPublicKeys:Landroid/util/LongSparseArray;
 
-    invoke-virtual {p1, v0, v1}, Landroid/util/LongSparseArray;->get(J)Ljava/lang/Object;
+    invoke-virtual {v2, v0, v1}, Landroid/util/LongSparseArray;->get(J)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v2
 
-    check-cast p1, Lcom/android/server/pm/KeySetManagerService$PublicKeyHandle;
+    check-cast v2, Lcom/android/server/pm/KeySetManagerService$PublicKeyHandle;
 
-    invoke-virtual {p1}, Lcom/android/server/pm/KeySetManagerService$PublicKeyHandle;->incrRefCountLPw()V
+    invoke-virtual {v2}, Lcom/android/server/pm/KeySetManagerService$PublicKeyHandle;->incrRefCountLPw()V
 
     .line 515
     return-wide v0
@@ -331,7 +351,7 @@
 .end method
 
 .method private addRefCountsFromSavedPackagesLPw(Landroid/util/ArrayMap;)V
-    .registers 12
+    .registers 13
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(",
@@ -343,24 +363,205 @@
     .end annotation
 
     .line 820
+    .local p1, "keySetRefCounts":Landroid/util/ArrayMap;, "Landroid/util/ArrayMap<Ljava/lang/Long;Ljava/lang/Integer;>;"
     invoke-virtual {p1}, Landroid/util/ArrayMap;->size()I
 
     move-result v0
 
     .line 821
+    .local v0, "numRefCounts":I
     const/4 v1, 0x0
 
-    move v2, v1
+    .local v1, "i":I
+    :goto_5
+    const-string v2, "KeySetManagerService"
 
-    :goto_6
-    const-string v3, "KeySetManagerService"
-
-    if-ge v2, v0, :cond_34
+    if-ge v1, v0, :cond_33
 
     .line 822
-    iget-object v4, p0, Lcom/android/server/pm/KeySetManagerService;->mKeySets:Landroid/util/LongSparseArray;
+    iget-object v3, p0, Lcom/android/server/pm/KeySetManagerService;->mKeySets:Landroid/util/LongSparseArray;
 
-    invoke-virtual {p1, v2}, Landroid/util/ArrayMap;->keyAt(I)Ljava/lang/Object;
+    invoke-virtual {p1, v1}, Landroid/util/ArrayMap;->keyAt(I)Ljava/lang/Object;
+
+    move-result-object v4
+
+    check-cast v4, Ljava/lang/Long;
+
+    invoke-virtual {v4}, Ljava/lang/Long;->longValue()J
+
+    move-result-wide v4
+
+    invoke-virtual {v3, v4, v5}, Landroid/util/LongSparseArray;->get(J)Ljava/lang/Object;
+
+    move-result-object v3
+
+    check-cast v3, Lcom/android/server/pm/KeySetHandle;
+
+    .line 823
+    .local v3, "ks":Lcom/android/server/pm/KeySetHandle;
+    if-nez v3, :cond_23
+
+    .line 825
+    const-string v4, "Encountered non-existent key-set reference when reading settings"
+
+    invoke-static {v2, v4}, Landroid/util/Slog;->wtf(Ljava/lang/String;Ljava/lang/String;)I
+
+    .line 826
+    goto :goto_30
+
+    .line 828
+    :cond_23
+    invoke-virtual {p1, v1}, Landroid/util/ArrayMap;->valueAt(I)Ljava/lang/Object;
+
+    move-result-object v2
+
+    check-cast v2, Ljava/lang/Integer;
+
+    invoke-virtual {v2}, Ljava/lang/Integer;->intValue()I
+
+    move-result v2
+
+    invoke-virtual {v3, v2}, Lcom/android/server/pm/KeySetHandle;->setRefCountLPw(I)V
+
+    .line 821
+    .end local v3  # "ks":Lcom/android/server/pm/KeySetHandle;
+    :goto_30
+    add-int/lit8 v1, v1, 0x1
+
+    goto :goto_5
+
+    .line 837
+    .end local v1  # "i":I
+    :cond_33
+    new-instance v1, Landroid/util/ArraySet;
+
+    invoke-direct {v1}, Landroid/util/ArraySet;-><init>()V
+
+    .line 838
+    .local v1, "orphanedKeySets":Landroid/util/ArraySet;, "Landroid/util/ArraySet<Ljava/lang/Long;>;"
+    iget-object v3, p0, Lcom/android/server/pm/KeySetManagerService;->mKeySets:Landroid/util/LongSparseArray;
+
+    invoke-virtual {v3}, Landroid/util/LongSparseArray;->size()I
+
+    move-result v3
+
+    .line 839
+    .local v3, "numKeySets":I
+    const/4 v4, 0x0
+
+    .local v4, "i":I
+    :goto_3f
+    if-ge v4, v3, :cond_8b
+
+    .line 840
+    iget-object v5, p0, Lcom/android/server/pm/KeySetManagerService;->mKeySets:Landroid/util/LongSparseArray;
+
+    invoke-virtual {v5, v4}, Landroid/util/LongSparseArray;->valueAt(I)Ljava/lang/Object;
+
+    move-result-object v5
+
+    check-cast v5, Lcom/android/server/pm/KeySetHandle;
+
+    invoke-virtual {v5}, Lcom/android/server/pm/KeySetHandle;->getRefCountLPr()I
+
+    move-result v5
+
+    if-nez v5, :cond_61
+
+    .line 841
+    const-string v5, "Encountered key-set w/out package references when reading settings"
+
+    invoke-static {v2, v5}, Landroid/util/Slog;->wtf(Ljava/lang/String;Ljava/lang/String;)I
+
+    .line 842
+    iget-object v5, p0, Lcom/android/server/pm/KeySetManagerService;->mKeySets:Landroid/util/LongSparseArray;
+
+    invoke-virtual {v5, v4}, Landroid/util/LongSparseArray;->keyAt(I)J
+
+    move-result-wide v5
+
+    invoke-static {v5, v6}, Ljava/lang/Long;->valueOf(J)Ljava/lang/Long;
+
+    move-result-object v5
+
+    invoke-virtual {v1, v5}, Landroid/util/ArraySet;->add(Ljava/lang/Object;)Z
+
+    .line 844
+    :cond_61
+    iget-object v5, p0, Lcom/android/server/pm/KeySetManagerService;->mKeySetMapping:Landroid/util/LongSparseArray;
+
+    invoke-virtual {v5, v4}, Landroid/util/LongSparseArray;->valueAt(I)Ljava/lang/Object;
+
+    move-result-object v5
+
+    check-cast v5, Landroid/util/ArraySet;
+
+    .line 845
+    .local v5, "pubKeys":Landroid/util/ArraySet;, "Landroid/util/ArraySet<Ljava/lang/Long;>;"
+    invoke-virtual {v5}, Landroid/util/ArraySet;->size()I
+
+    move-result v6
+
+    .line 846
+    .local v6, "pkSize":I
+    const/4 v7, 0x0
+
+    .local v7, "j":I
+    :goto_6e
+    if-ge v7, v6, :cond_88
+
+    .line 847
+    iget-object v8, p0, Lcom/android/server/pm/KeySetManagerService;->mPublicKeys:Landroid/util/LongSparseArray;
+
+    invoke-virtual {v5, v7}, Landroid/util/ArraySet;->valueAt(I)Ljava/lang/Object;
+
+    move-result-object v9
+
+    check-cast v9, Ljava/lang/Long;
+
+    invoke-virtual {v9}, Ljava/lang/Long;->longValue()J
+
+    move-result-wide v9
+
+    invoke-virtual {v8, v9, v10}, Landroid/util/LongSparseArray;->get(J)Ljava/lang/Object;
+
+    move-result-object v8
+
+    check-cast v8, Lcom/android/server/pm/KeySetManagerService$PublicKeyHandle;
+
+    invoke-virtual {v8}, Lcom/android/server/pm/KeySetManagerService$PublicKeyHandle;->incrRefCountLPw()V
+
+    .line 846
+    add-int/lit8 v7, v7, 0x1
+
+    goto :goto_6e
+
+    .line 839
+    .end local v5  # "pubKeys":Landroid/util/ArraySet;, "Landroid/util/ArraySet<Ljava/lang/Long;>;"
+    .end local v6  # "pkSize":I
+    .end local v7  # "j":I
+    :cond_88
+    add-int/lit8 v4, v4, 0x1
+
+    goto :goto_3f
+
+    .line 850
+    .end local v4  # "i":I
+    :cond_8b
+    invoke-virtual {v1}, Landroid/util/ArraySet;->size()I
+
+    move-result v2
+
+    .line 851
+    .local v2, "numOrphans":I
+    const/4 v4, 0x0
+
+    .restart local v4  # "i":I
+    :goto_90
+    if-ge v4, v2, :cond_a2
+
+    .line 852
+    invoke-virtual {v1, v4}, Landroid/util/ArraySet;->valueAt(I)Ljava/lang/Object;
 
     move-result-object v5
 
@@ -370,185 +571,22 @@
 
     move-result-wide v5
 
-    invoke-virtual {v4, v5, v6}, Landroid/util/LongSparseArray;->get(J)Ljava/lang/Object;
-
-    move-result-object v4
-
-    check-cast v4, Lcom/android/server/pm/KeySetHandle;
-
-    .line 823
-    if-nez v4, :cond_24
-
-    .line 825
-    const-string v4, "Encountered non-existent key-set reference when reading settings"
-
-    invoke-static {v3, v4}, Landroid/util/Slog;->wtf(Ljava/lang/String;Ljava/lang/String;)I
-
-    .line 826
-    goto :goto_31
-
-    .line 828
-    :cond_24
-    invoke-virtual {p1, v2}, Landroid/util/ArrayMap;->valueAt(I)Ljava/lang/Object;
-
-    move-result-object v3
-
-    check-cast v3, Ljava/lang/Integer;
-
-    invoke-virtual {v3}, Ljava/lang/Integer;->intValue()I
-
-    move-result v3
-
-    invoke-virtual {v4, v3}, Lcom/android/server/pm/KeySetHandle;->setRefCountLPw(I)V
-
-    .line 821
-    :goto_31
-    add-int/lit8 v2, v2, 0x1
-
-    goto :goto_6
-
-    .line 837
-    :cond_34
-    new-instance p1, Landroid/util/ArraySet;
-
-    invoke-direct {p1}, Landroid/util/ArraySet;-><init>()V
-
-    .line 838
-    iget-object v0, p0, Lcom/android/server/pm/KeySetManagerService;->mKeySets:Landroid/util/LongSparseArray;
-
-    invoke-virtual {v0}, Landroid/util/LongSparseArray;->size()I
-
-    move-result v0
-
-    .line 839
-    move v2, v1
-
-    :goto_40
-    if-ge v2, v0, :cond_8c
-
-    .line 840
-    iget-object v4, p0, Lcom/android/server/pm/KeySetManagerService;->mKeySets:Landroid/util/LongSparseArray;
-
-    invoke-virtual {v4, v2}, Landroid/util/LongSparseArray;->valueAt(I)Ljava/lang/Object;
-
-    move-result-object v4
-
-    check-cast v4, Lcom/android/server/pm/KeySetHandle;
-
-    invoke-virtual {v4}, Lcom/android/server/pm/KeySetHandle;->getRefCountLPr()I
-
-    move-result v4
-
-    if-nez v4, :cond_62
-
-    .line 841
-    const-string v4, "Encountered key-set w/out package references when reading settings"
-
-    invoke-static {v3, v4}, Landroid/util/Slog;->wtf(Ljava/lang/String;Ljava/lang/String;)I
-
-    .line 842
-    iget-object v4, p0, Lcom/android/server/pm/KeySetManagerService;->mKeySets:Landroid/util/LongSparseArray;
-
-    invoke-virtual {v4, v2}, Landroid/util/LongSparseArray;->keyAt(I)J
-
-    move-result-wide v4
-
-    invoke-static {v4, v5}, Ljava/lang/Long;->valueOf(J)Ljava/lang/Long;
-
-    move-result-object v4
-
-    invoke-virtual {p1, v4}, Landroid/util/ArraySet;->add(Ljava/lang/Object;)Z
-
-    .line 844
-    :cond_62
-    iget-object v4, p0, Lcom/android/server/pm/KeySetManagerService;->mKeySetMapping:Landroid/util/LongSparseArray;
-
-    invoke-virtual {v4, v2}, Landroid/util/LongSparseArray;->valueAt(I)Ljava/lang/Object;
-
-    move-result-object v4
-
-    check-cast v4, Landroid/util/ArraySet;
-
-    .line 845
-    invoke-virtual {v4}, Landroid/util/ArraySet;->size()I
-
-    move-result v5
-
-    .line 846
-    move v6, v1
-
-    :goto_6f
-    if-ge v6, v5, :cond_89
-
-    .line 847
-    iget-object v7, p0, Lcom/android/server/pm/KeySetManagerService;->mPublicKeys:Landroid/util/LongSparseArray;
-
-    invoke-virtual {v4, v6}, Landroid/util/ArraySet;->valueAt(I)Ljava/lang/Object;
-
-    move-result-object v8
-
-    check-cast v8, Ljava/lang/Long;
-
-    invoke-virtual {v8}, Ljava/lang/Long;->longValue()J
-
-    move-result-wide v8
-
-    invoke-virtual {v7, v8, v9}, Landroid/util/LongSparseArray;->get(J)Ljava/lang/Object;
-
-    move-result-object v7
-
-    check-cast v7, Lcom/android/server/pm/KeySetManagerService$PublicKeyHandle;
-
-    invoke-virtual {v7}, Lcom/android/server/pm/KeySetManagerService$PublicKeyHandle;->incrRefCountLPw()V
-
-    .line 846
-    add-int/lit8 v6, v6, 0x1
-
-    goto :goto_6f
-
-    .line 839
-    :cond_89
-    add-int/lit8 v2, v2, 0x1
-
-    goto :goto_40
-
-    .line 850
-    :cond_8c
-    invoke-virtual {p1}, Landroid/util/ArraySet;->size()I
-
-    move-result v0
+    invoke-direct {p0, v5, v6}, Lcom/android/server/pm/KeySetManagerService;->decrementKeySetLPw(J)V
 
     .line 851
-    nop
+    add-int/lit8 v4, v4, 0x1
 
-    :goto_91
-    if-ge v1, v0, :cond_a3
-
-    .line 852
-    invoke-virtual {p1, v1}, Landroid/util/ArraySet;->valueAt(I)Ljava/lang/Object;
-
-    move-result-object v2
-
-    check-cast v2, Ljava/lang/Long;
-
-    invoke-virtual {v2}, Ljava/lang/Long;->longValue()J
-
-    move-result-wide v2
-
-    invoke-direct {p0, v2, v3}, Lcom/android/server/pm/KeySetManagerService;->decrementKeySetLPw(J)V
-
-    .line 851
-    add-int/lit8 v1, v1, 0x1
-
-    goto :goto_91
+    goto :goto_90
 
     .line 854
-    :cond_a3
+    .end local v4  # "i":I
+    :cond_a2
     return-void
 .end method
 
 .method private clearPackageKeySetDataLPw(Lcom/android/server/pm/PackageSetting;)V
     .registers 5
+    .param p1, "pkg"  # Lcom/android/server/pm/PackageSetting;
 
     .line 594
     iget-object v0, p1, Lcom/android/server/pm/PackageSetting;->keySetData:Lcom/android/server/pm/PackageKeySetData;
@@ -563,16 +601,17 @@
     invoke-virtual {v0}, Lcom/android/server/pm/PackageKeySetData;->removeAllDefinedKeySets()V
 
     .line 596
-    iget-object p1, p1, Lcom/android/server/pm/PackageSetting;->keySetData:Lcom/android/server/pm/PackageKeySetData;
+    iget-object v0, p1, Lcom/android/server/pm/PackageSetting;->keySetData:Lcom/android/server/pm/PackageKeySetData;
 
-    invoke-virtual {p1}, Lcom/android/server/pm/PackageKeySetData;->removeAllUpgradeKeySets()V
+    invoke-virtual {v0}, Lcom/android/server/pm/PackageKeySetData;->removeAllUpgradeKeySets()V
 
     .line 597
     return-void
 .end method
 
 .method private decrementKeySetLPw(J)V
-    .registers 8
+    .registers 9
+    .param p1, "id"  # J
 
     .line 474
     iget-object v0, p0, Lcom/android/server/pm/KeySetManagerService;->mKeySets:Landroid/util/LongSparseArray;
@@ -584,6 +623,7 @@
     check-cast v0, Lcom/android/server/pm/KeySetHandle;
 
     .line 475
+    .local v0, "ks":Lcom/android/server/pm/KeySetHandle;
     if-nez v0, :cond_b
 
     .line 477
@@ -593,66 +633,73 @@
     :cond_b
     invoke-virtual {v0}, Lcom/android/server/pm/KeySetHandle;->decrRefCountLPw()I
 
-    move-result v0
-
-    if-gtz v0, :cond_3a
-
-    .line 480
-    iget-object v0, p0, Lcom/android/server/pm/KeySetManagerService;->mKeySetMapping:Landroid/util/LongSparseArray;
-
-    invoke-virtual {v0, p1, p2}, Landroid/util/LongSparseArray;->get(J)Ljava/lang/Object;
-
-    move-result-object v0
-
-    check-cast v0, Landroid/util/ArraySet;
-
-    .line 481
-    invoke-virtual {v0}, Landroid/util/ArraySet;->size()I
-
     move-result v1
 
-    .line 482
-    const/4 v2, 0x0
+    if-gtz v1, :cond_3a
 
+    .line 480
+    iget-object v1, p0, Lcom/android/server/pm/KeySetManagerService;->mKeySetMapping:Landroid/util/LongSparseArray;
+
+    invoke-virtual {v1, p1, p2}, Landroid/util/LongSparseArray;->get(J)Ljava/lang/Object;
+
+    move-result-object v1
+
+    check-cast v1, Landroid/util/ArraySet;
+
+    .line 481
+    .local v1, "pubKeys":Landroid/util/ArraySet;, "Landroid/util/ArraySet<Ljava/lang/Long;>;"
+    invoke-virtual {v1}, Landroid/util/ArraySet;->size()I
+
+    move-result v2
+
+    .line 482
+    .local v2, "pkSize":I
+    const/4 v3, 0x0
+
+    .local v3, "i":I
     :goto_1e
-    if-ge v2, v1, :cond_30
+    if-ge v3, v2, :cond_30
 
     .line 483
-    invoke-virtual {v0, v2}, Landroid/util/ArraySet;->valueAt(I)Ljava/lang/Object;
+    invoke-virtual {v1, v3}, Landroid/util/ArraySet;->valueAt(I)Ljava/lang/Object;
 
-    move-result-object v3
+    move-result-object v4
 
-    check-cast v3, Ljava/lang/Long;
+    check-cast v4, Ljava/lang/Long;
 
-    invoke-virtual {v3}, Ljava/lang/Long;->longValue()J
+    invoke-virtual {v4}, Ljava/lang/Long;->longValue()J
 
-    move-result-wide v3
+    move-result-wide v4
 
-    invoke-direct {p0, v3, v4}, Lcom/android/server/pm/KeySetManagerService;->decrementPublicKeyLPw(J)V
+    invoke-direct {p0, v4, v5}, Lcom/android/server/pm/KeySetManagerService;->decrementPublicKeyLPw(J)V
 
     .line 482
-    add-int/lit8 v2, v2, 0x1
+    add-int/lit8 v3, v3, 0x1
 
     goto :goto_1e
 
     .line 485
+    .end local v3  # "i":I
     :cond_30
-    iget-object v0, p0, Lcom/android/server/pm/KeySetManagerService;->mKeySets:Landroid/util/LongSparseArray;
+    iget-object v3, p0, Lcom/android/server/pm/KeySetManagerService;->mKeySets:Landroid/util/LongSparseArray;
 
-    invoke-virtual {v0, p1, p2}, Landroid/util/LongSparseArray;->delete(J)V
+    invoke-virtual {v3, p1, p2}, Landroid/util/LongSparseArray;->delete(J)V
 
     .line 486
-    iget-object v0, p0, Lcom/android/server/pm/KeySetManagerService;->mKeySetMapping:Landroid/util/LongSparseArray;
+    iget-object v3, p0, Lcom/android/server/pm/KeySetManagerService;->mKeySetMapping:Landroid/util/LongSparseArray;
 
-    invoke-virtual {v0, p1, p2}, Landroid/util/LongSparseArray;->delete(J)V
+    invoke-virtual {v3, p1, p2}, Landroid/util/LongSparseArray;->delete(J)V
 
     .line 488
+    .end local v1  # "pubKeys":Landroid/util/ArraySet;, "Landroid/util/ArraySet<Ljava/lang/Long;>;"
+    .end local v2  # "pkSize":I
     :cond_3a
     return-void
 .end method
 
 .method private decrementPublicKeyLPw(J)V
-    .registers 7
+    .registers 8
+    .param p1, "id"  # J
 
     .line 495
     iget-object v0, p0, Lcom/android/server/pm/KeySetManagerService;->mPublicKeys:Landroid/util/LongSparseArray;
@@ -664,6 +711,7 @@
     check-cast v0, Lcom/android/server/pm/KeySetManagerService$PublicKeyHandle;
 
     .line 496
+    .local v0, "pk":Lcom/android/server/pm/KeySetManagerService$PublicKeyHandle;
     if-nez v0, :cond_b
 
     .line 498
@@ -673,18 +721,18 @@
     :cond_b
     invoke-virtual {v0}, Lcom/android/server/pm/KeySetManagerService$PublicKeyHandle;->decrRefCountLPw()J
 
-    move-result-wide v0
+    move-result-wide v1
 
-    const-wide/16 v2, 0x0
+    const-wide/16 v3, 0x0
 
-    cmp-long v0, v0, v2
+    cmp-long v1, v1, v3
 
-    if-gtz v0, :cond_1a
+    if-gtz v1, :cond_1a
 
     .line 501
-    iget-object v0, p0, Lcom/android/server/pm/KeySetManagerService;->mPublicKeys:Landroid/util/LongSparseArray;
+    iget-object v1, p0, Lcom/android/server/pm/KeySetManagerService;->mPublicKeys:Landroid/util/LongSparseArray;
 
-    invoke-virtual {v0, p1, p2}, Landroid/util/LongSparseArray;->delete(J)V
+    invoke-virtual {v1, p1, p2}, Landroid/util/LongSparseArray;->delete(J)V
 
     .line 503
     :cond_1a
@@ -728,11 +776,13 @@
 .end method
 
 .method private getIdByKeySetLPr(Lcom/android/server/pm/KeySetHandle;)J
-    .registers 4
+    .registers 6
+    .param p1, "ks"  # Lcom/android/server/pm/KeySetHandle;
 
     .line 269
     const/4 v0, 0x0
 
+    .local v0, "keySetIndex":I
     :goto_1
     iget-object v1, p0, Lcom/android/server/pm/KeySetManagerService;->mKeySets:Landroid/util/LongSparseArray;
 
@@ -752,28 +802,31 @@
     check-cast v1, Lcom/android/server/pm/KeySetHandle;
 
     .line 271
+    .local v1, "value":Lcom/android/server/pm/KeySetHandle;
     invoke-virtual {p1, v1}, Ljava/lang/Object;->equals(Ljava/lang/Object;)Z
 
-    move-result v1
+    move-result v2
 
-    if-eqz v1, :cond_1e
+    if-eqz v2, :cond_1e
 
     .line 272
-    iget-object p1, p0, Lcom/android/server/pm/KeySetManagerService;->mKeySets:Landroid/util/LongSparseArray;
+    iget-object v2, p0, Lcom/android/server/pm/KeySetManagerService;->mKeySets:Landroid/util/LongSparseArray;
 
-    invoke-virtual {p1, v0}, Landroid/util/LongSparseArray;->keyAt(I)J
+    invoke-virtual {v2, v0}, Landroid/util/LongSparseArray;->keyAt(I)J
 
-    move-result-wide v0
+    move-result-wide v2
 
-    return-wide v0
+    return-wide v2
 
     .line 269
+    .end local v1  # "value":Lcom/android/server/pm/KeySetHandle;
     :cond_1e
     add-int/lit8 v0, v0, 0x1
 
     goto :goto_1
 
     .line 275
+    .end local v0  # "keySetIndex":I
     :cond_21
     const-wide/16 v0, -0x1
 
@@ -781,82 +834,90 @@
 .end method
 
 .method private getIdForPublicKeyLPr(Ljava/security/PublicKey;)J
-    .registers 5
+    .registers 8
+    .param p1, "k"  # Ljava/security/PublicKey;
 
     .line 543
     new-instance v0, Ljava/lang/String;
 
     invoke-interface {p1}, Ljava/security/PublicKey;->getEncoded()[B
 
-    move-result-object p1
+    move-result-object v1
 
-    invoke-direct {v0, p1}, Ljava/lang/String;-><init>([B)V
+    invoke-direct {v0, v1}, Ljava/lang/String;-><init>([B)V
 
     .line 544
-    const/4 p1, 0x0
+    .local v0, "encodedPublicKey":Ljava/lang/String;
+    const/4 v1, 0x0
 
+    .local v1, "publicKeyIndex":I
     :goto_a
-    iget-object v1, p0, Lcom/android/server/pm/KeySetManagerService;->mPublicKeys:Landroid/util/LongSparseArray;
+    iget-object v2, p0, Lcom/android/server/pm/KeySetManagerService;->mPublicKeys:Landroid/util/LongSparseArray;
 
-    invoke-virtual {v1}, Landroid/util/LongSparseArray;->size()I
+    invoke-virtual {v2}, Landroid/util/LongSparseArray;->size()I
 
-    move-result v1
+    move-result v2
 
-    if-ge p1, v1, :cond_37
+    if-ge v1, v2, :cond_37
 
     .line 545
-    iget-object v1, p0, Lcom/android/server/pm/KeySetManagerService;->mPublicKeys:Landroid/util/LongSparseArray;
+    iget-object v2, p0, Lcom/android/server/pm/KeySetManagerService;->mPublicKeys:Landroid/util/LongSparseArray;
 
-    invoke-virtual {v1, p1}, Landroid/util/LongSparseArray;->valueAt(I)Ljava/lang/Object;
+    invoke-virtual {v2, v1}, Landroid/util/LongSparseArray;->valueAt(I)Ljava/lang/Object;
 
-    move-result-object v1
+    move-result-object v2
 
-    check-cast v1, Lcom/android/server/pm/KeySetManagerService$PublicKeyHandle;
+    check-cast v2, Lcom/android/server/pm/KeySetManagerService$PublicKeyHandle;
 
-    invoke-virtual {v1}, Lcom/android/server/pm/KeySetManagerService$PublicKeyHandle;->getKey()Ljava/security/PublicKey;
+    invoke-virtual {v2}, Lcom/android/server/pm/KeySetManagerService$PublicKeyHandle;->getKey()Ljava/security/PublicKey;
 
-    move-result-object v1
+    move-result-object v2
 
     .line 546
-    new-instance v2, Ljava/lang/String;
+    .local v2, "value":Ljava/security/PublicKey;
+    new-instance v3, Ljava/lang/String;
 
-    invoke-interface {v1}, Ljava/security/PublicKey;->getEncoded()[B
+    invoke-interface {v2}, Ljava/security/PublicKey;->getEncoded()[B
 
-    move-result-object v1
+    move-result-object v4
 
-    invoke-direct {v2, v1}, Ljava/lang/String;-><init>([B)V
+    invoke-direct {v3, v4}, Ljava/lang/String;-><init>([B)V
 
     .line 547
-    invoke-virtual {v0, v2}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    .local v3, "encodedExistingKey":Ljava/lang/String;
+    invoke-virtual {v0, v3}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result v1
+    move-result v4
 
-    if-eqz v1, :cond_34
+    if-eqz v4, :cond_34
 
     .line 548
-    iget-object v0, p0, Lcom/android/server/pm/KeySetManagerService;->mPublicKeys:Landroid/util/LongSparseArray;
+    iget-object v4, p0, Lcom/android/server/pm/KeySetManagerService;->mPublicKeys:Landroid/util/LongSparseArray;
 
-    invoke-virtual {v0, p1}, Landroid/util/LongSparseArray;->keyAt(I)J
+    invoke-virtual {v4, v1}, Landroid/util/LongSparseArray;->keyAt(I)J
 
-    move-result-wide v0
+    move-result-wide v4
 
-    return-wide v0
+    return-wide v4
 
     .line 544
+    .end local v2  # "value":Ljava/security/PublicKey;
+    .end local v3  # "encodedExistingKey":Ljava/lang/String;
     :cond_34
-    add-int/lit8 p1, p1, 0x1
+    add-int/lit8 v1, v1, 0x1
 
     goto :goto_a
 
     .line 551
+    .end local v1  # "publicKeyIndex":I
     :cond_37
-    const-wide/16 v0, -0x1
+    const-wide/16 v1, -0x1
 
-    return-wide v0
+    return-wide v1
 .end method
 
 .method private getIdFromKeyIdsLPr(Ljava/util/Set;)J
-    .registers 4
+    .registers 6
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(",
@@ -867,8 +928,10 @@
     .end annotation
 
     .line 530
+    .local p1, "publicKeyIds":Ljava/util/Set;, "Ljava/util/Set<Ljava/lang/Long;>;"
     const/4 v0, 0x0
 
+    .local v0, "keyMapIndex":I
     :goto_1
     iget-object v1, p0, Lcom/android/server/pm/KeySetManagerService;->mKeySetMapping:Landroid/util/LongSparseArray;
 
@@ -888,28 +951,31 @@
     check-cast v1, Landroid/util/ArraySet;
 
     .line 532
+    .local v1, "value":Landroid/util/ArraySet;, "Landroid/util/ArraySet<Ljava/lang/Long;>;"
     invoke-virtual {v1, p1}, Landroid/util/ArraySet;->equals(Ljava/lang/Object;)Z
 
-    move-result v1
+    move-result v2
 
-    if-eqz v1, :cond_1e
+    if-eqz v2, :cond_1e
 
     .line 533
-    iget-object p1, p0, Lcom/android/server/pm/KeySetManagerService;->mKeySetMapping:Landroid/util/LongSparseArray;
+    iget-object v2, p0, Lcom/android/server/pm/KeySetManagerService;->mKeySetMapping:Landroid/util/LongSparseArray;
 
-    invoke-virtual {p1, v0}, Landroid/util/LongSparseArray;->keyAt(I)J
+    invoke-virtual {v2, v0}, Landroid/util/LongSparseArray;->keyAt(I)J
 
-    move-result-wide v0
+    move-result-wide v2
 
-    return-wide v0
+    return-wide v2
 
     .line 530
+    .end local v1  # "value":Landroid/util/ArraySet;, "Landroid/util/ArraySet<Ljava/lang/Long;>;"
     :cond_1e
     add-int/lit8 v0, v0, 0x1
 
     goto :goto_1
 
     .line 536
+    .end local v0  # "keyMapIndex":I
     :cond_21
     const-wide/16 v0, -0x1
 
@@ -919,7 +985,8 @@
 
 # virtual methods
 .method addDefinedKeySetsToPackageLPw(Lcom/android/server/pm/PackageSetting;Landroid/util/ArrayMap;)V
-    .registers 11
+    .registers 12
+    .param p1, "pkg"  # Lcom/android/server/pm/PackageSetting;
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(",
@@ -933,6 +1000,7 @@
     .end annotation
 
     .line 284
+    .local p2, "definedMapping":Landroid/util/ArrayMap;, "Landroid/util/ArrayMap<Ljava/lang/String;Landroid/util/ArraySet<Ljava/security/PublicKey;>;>;"
     iget-object v0, p1, Lcom/android/server/pm/PackageSetting;->keySetData:Lcom/android/server/pm/PackageKeySetData;
 
     invoke-virtual {v0}, Lcom/android/server/pm/PackageKeySetData;->getAliases()Landroid/util/ArrayMap;
@@ -940,110 +1008,122 @@
     move-result-object v0
 
     .line 287
+    .local v0, "prevDefinedKeySets":Landroid/util/ArrayMap;, "Landroid/util/ArrayMap<Ljava/lang/String;Ljava/lang/Long;>;"
     new-instance v1, Landroid/util/ArrayMap;
 
     invoke-direct {v1}, Landroid/util/ArrayMap;-><init>()V
 
     .line 288
+    .local v1, "newKeySetAliases":Landroid/util/ArrayMap;, "Landroid/util/ArrayMap<Ljava/lang/String;Ljava/lang/Long;>;"
     invoke-virtual {p2}, Landroid/util/ArrayMap;->size()I
 
     move-result v2
 
     .line 289
+    .local v2, "defMapSize":I
     const/4 v3, 0x0
 
-    move v4, v3
-
-    :goto_11
-    if-ge v4, v2, :cond_3b
+    .local v3, "i":I
+    :goto_10
+    if-ge v3, v2, :cond_3a
 
     .line 290
-    invoke-virtual {p2, v4}, Landroid/util/ArrayMap;->keyAt(I)Ljava/lang/Object;
+    invoke-virtual {p2, v3}, Landroid/util/ArrayMap;->keyAt(I)Ljava/lang/Object;
+
+    move-result-object v4
+
+    check-cast v4, Ljava/lang/String;
+
+    .line 291
+    .local v4, "alias":Ljava/lang/String;
+    invoke-virtual {p2, v3}, Landroid/util/ArrayMap;->valueAt(I)Ljava/lang/Object;
 
     move-result-object v5
 
-    check-cast v5, Ljava/lang/String;
-
-    .line 291
-    invoke-virtual {p2, v4}, Landroid/util/ArrayMap;->valueAt(I)Ljava/lang/Object;
-
-    move-result-object v6
-
-    check-cast v6, Landroid/util/ArraySet;
+    check-cast v5, Landroid/util/ArraySet;
 
     .line 292
-    if-eqz v5, :cond_38
+    .local v5, "pubKeys":Landroid/util/ArraySet;, "Landroid/util/ArraySet<Ljava/security/PublicKey;>;"
+    if-eqz v4, :cond_37
 
-    if-eqz v6, :cond_38
+    if-eqz v5, :cond_37
 
-    invoke-virtual {v6}, Landroid/util/ArraySet;->size()I
+    invoke-virtual {v5}, Landroid/util/ArraySet;->size()I
 
-    move-result v7
+    move-result v6
 
-    if-lez v7, :cond_38
+    if-lez v6, :cond_37
 
     .line 293
-    invoke-direct {p0, v6}, Lcom/android/server/pm/KeySetManagerService;->addKeySetLPw(Landroid/util/ArraySet;)Lcom/android/server/pm/KeySetHandle;
+    invoke-direct {p0, v5}, Lcom/android/server/pm/KeySetManagerService;->addKeySetLPw(Landroid/util/ArraySet;)Lcom/android/server/pm/KeySetHandle;
 
     move-result-object v6
 
     .line 294
+    .local v6, "ks":Lcom/android/server/pm/KeySetHandle;
     invoke-virtual {v6}, Lcom/android/server/pm/KeySetHandle;->getId()J
 
-    move-result-wide v6
+    move-result-wide v7
 
-    invoke-static {v6, v7}, Ljava/lang/Long;->valueOf(J)Ljava/lang/Long;
+    invoke-static {v7, v8}, Ljava/lang/Long;->valueOf(J)Ljava/lang/Long;
 
-    move-result-object v6
+    move-result-object v7
 
-    invoke-virtual {v1, v5, v6}, Landroid/util/ArrayMap;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+    invoke-virtual {v1, v4, v7}, Landroid/util/ArrayMap;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
 
     .line 289
-    :cond_38
-    add-int/lit8 v4, v4, 0x1
-
-    goto :goto_11
-
-    .line 299
-    :cond_3b
-    invoke-virtual {v0}, Landroid/util/ArrayMap;->size()I
-
-    move-result p2
-
-    .line 300
-    nop
-
-    :goto_40
-    if-ge v3, p2, :cond_52
-
-    .line 301
-    invoke-virtual {v0, v3}, Landroid/util/ArrayMap;->valueAt(I)Ljava/lang/Object;
-
-    move-result-object v2
-
-    check-cast v2, Ljava/lang/Long;
-
-    invoke-virtual {v2}, Ljava/lang/Long;->longValue()J
-
-    move-result-wide v4
-
-    invoke-direct {p0, v4, v5}, Lcom/android/server/pm/KeySetManagerService;->decrementKeySetLPw(J)V
-
-    .line 300
+    .end local v4  # "alias":Ljava/lang/String;
+    .end local v5  # "pubKeys":Landroid/util/ArraySet;, "Landroid/util/ArraySet<Ljava/security/PublicKey;>;"
+    .end local v6  # "ks":Lcom/android/server/pm/KeySetHandle;
+    :cond_37
     add-int/lit8 v3, v3, 0x1
 
-    goto :goto_40
+    goto :goto_10
+
+    .line 299
+    .end local v3  # "i":I
+    :cond_3a
+    invoke-virtual {v0}, Landroid/util/ArrayMap;->size()I
+
+    move-result v3
+
+    .line 300
+    .local v3, "prevDefSize":I
+    const/4 v4, 0x0
+
+    .local v4, "i":I
+    :goto_3f
+    if-ge v4, v3, :cond_51
+
+    .line 301
+    invoke-virtual {v0, v4}, Landroid/util/ArrayMap;->valueAt(I)Ljava/lang/Object;
+
+    move-result-object v5
+
+    check-cast v5, Ljava/lang/Long;
+
+    invoke-virtual {v5}, Ljava/lang/Long;->longValue()J
+
+    move-result-wide v5
+
+    invoke-direct {p0, v5, v6}, Lcom/android/server/pm/KeySetManagerService;->decrementKeySetLPw(J)V
+
+    .line 300
+    add-int/lit8 v4, v4, 0x1
+
+    goto :goto_3f
 
     .line 303
-    :cond_52
-    iget-object p2, p1, Lcom/android/server/pm/PackageSetting;->keySetData:Lcom/android/server/pm/PackageKeySetData;
+    .end local v4  # "i":I
+    :cond_51
+    iget-object v4, p1, Lcom/android/server/pm/PackageSetting;->keySetData:Lcom/android/server/pm/PackageKeySetData;
 
-    invoke-virtual {p2}, Lcom/android/server/pm/PackageKeySetData;->removeAllUpgradeKeySets()V
+    invoke-virtual {v4}, Lcom/android/server/pm/PackageKeySetData;->removeAllUpgradeKeySets()V
 
     .line 306
-    iget-object p1, p1, Lcom/android/server/pm/PackageSetting;->keySetData:Lcom/android/server/pm/PackageKeySetData;
+    iget-object v4, p1, Lcom/android/server/pm/PackageSetting;->keySetData:Lcom/android/server/pm/PackageKeySetData;
 
-    invoke-virtual {p1, v1}, Lcom/android/server/pm/PackageKeySetData;->setAliases(Landroid/util/ArrayMap;)V
+    invoke-virtual {v4, v1}, Lcom/android/server/pm/PackageKeySetData;->setAliases(Landroid/util/ArrayMap;)V
 
     .line 307
     return-void
@@ -1051,6 +1131,7 @@
 
 .method public addScannedPackageLPw(Landroid/content/pm/PackageParser$Package;)V
     .registers 5
+    .param p1, "pkg"  # Landroid/content/pm/PackageParser$Package;
 
     .line 221
     const-string v0, "Attempted to add null pkg to ksms."
@@ -1074,6 +1155,7 @@
     check-cast v0, Lcom/android/server/pm/PackageSetting;
 
     .line 224
+    .local v0, "ps":Lcom/android/server/pm/PackageSetting;
     new-instance v1, Ljava/lang/StringBuilder;
 
     invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
@@ -1119,9 +1201,9 @@
     if-eqz v1, :cond_49
 
     .line 230
-    iget-object p1, p1, Landroid/content/pm/PackageParser$Package;->mUpgradeKeySets:Landroid/util/ArraySet;
+    iget-object v1, p1, Landroid/content/pm/PackageParser$Package;->mUpgradeKeySets:Landroid/util/ArraySet;
 
-    invoke-virtual {p0, v0, p1}, Lcom/android/server/pm/KeySetManagerService;->addUpgradeKeySetsToPackageLPw(Lcom/android/server/pm/PackageSetting;Landroid/util/ArraySet;)V
+    invoke-virtual {p0, v0, v1}, Lcom/android/server/pm/KeySetManagerService;->addUpgradeKeySetsToPackageLPw(Lcom/android/server/pm/PackageSetting;Landroid/util/ArraySet;)V
 
     .line 233
     :cond_49
@@ -1129,7 +1211,8 @@
 .end method
 
 .method addSigningKeySetToPackageLPw(Lcom/android/server/pm/PackageSetting;Landroid/util/ArraySet;)V
-    .registers 7
+    .registers 9
+    .param p1, "pkg"  # Lcom/android/server/pm/PackageSetting;
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(",
@@ -1141,6 +1224,7 @@
     .end annotation
 
     .line 242
+    .local p2, "signingKeys":Landroid/util/ArraySet;, "Landroid/util/ArraySet<Ljava/security/PublicKey;>;"
     iget-object v0, p1, Lcom/android/server/pm/PackageSetting;->keySetData:Lcom/android/server/pm/PackageKeySetData;
 
     invoke-virtual {v0}, Lcom/android/server/pm/PackageKeySetData;->getProperSigningKeySet()J
@@ -1148,6 +1232,7 @@
     move-result-wide v0
 
     .line 244
+    .local v0, "signingKeySetId":J
     const-wide/16 v2, -0x1
 
     cmp-long v2, v0, v2
@@ -1160,13 +1245,14 @@
     move-result-object v2
 
     .line 246
+    .local v2, "existingKeys":Landroid/util/ArraySet;, "Landroid/util/ArraySet<Ljava/security/PublicKey;>;"
     if-eqz v2, :cond_19
 
     invoke-virtual {v2, p2}, Landroid/util/ArraySet;->equals(Ljava/lang/Object;)Z
 
-    move-result v2
+    move-result v3
 
-    if-eqz v2, :cond_19
+    if-eqz v3, :cond_19
 
     .line 249
     return-void
@@ -1176,20 +1262,23 @@
     invoke-direct {p0, v0, v1}, Lcom/android/server/pm/KeySetManagerService;->decrementKeySetLPw(J)V
 
     .line 258
+    .end local v2  # "existingKeys":Landroid/util/ArraySet;, "Landroid/util/ArraySet<Ljava/security/PublicKey;>;"
     :cond_1c
     invoke-direct {p0, p2}, Lcom/android/server/pm/KeySetManagerService;->addKeySetLPw(Landroid/util/ArraySet;)Lcom/android/server/pm/KeySetHandle;
 
-    move-result-object p2
+    move-result-object v2
 
     .line 259
-    invoke-virtual {p2}, Lcom/android/server/pm/KeySetHandle;->getId()J
+    .local v2, "ks":Lcom/android/server/pm/KeySetHandle;
+    invoke-virtual {v2}, Lcom/android/server/pm/KeySetHandle;->getId()J
 
-    move-result-wide v0
+    move-result-wide v3
 
     .line 260
-    iget-object p1, p1, Lcom/android/server/pm/PackageSetting;->keySetData:Lcom/android/server/pm/PackageKeySetData;
+    .local v3, "id":J
+    iget-object v5, p1, Lcom/android/server/pm/PackageSetting;->keySetData:Lcom/android/server/pm/PackageKeySetData;
 
-    invoke-virtual {p1, v0, v1}, Lcom/android/server/pm/PackageKeySetData;->setProperSigningKeySet(J)V
+    invoke-virtual {v5, v3, v4}, Lcom/android/server/pm/PackageKeySetData;->setProperSigningKeySet(J)V
 
     .line 261
     return-void
@@ -1197,6 +1286,7 @@
 
 .method addUpgradeKeySetsToPackageLPw(Lcom/android/server/pm/PackageSetting;Landroid/util/ArraySet;)V
     .registers 7
+    .param p1, "pkg"  # Lcom/android/server/pm/PackageSetting;
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(",
@@ -1208,13 +1298,16 @@
     .end annotation
 
     .line 317
+    .local p2, "upgradeAliases":Landroid/util/ArraySet;, "Landroid/util/ArraySet<Ljava/lang/String;>;"
     invoke-virtual {p2}, Landroid/util/ArraySet;->size()I
 
     move-result v0
 
     .line 318
+    .local v0, "uaSize":I
     const/4 v1, 0x0
 
+    .local v1, "i":I
     :goto_5
     if-ge v1, v0, :cond_15
 
@@ -1235,12 +1328,14 @@
     goto :goto_5
 
     .line 321
+    .end local v1  # "i":I
     :cond_15
     return-void
 .end method
 
 .method public assertScannedPackageValid(Landroid/content/pm/PackageParser$Package;)V
-    .registers 8
+    .registers 9
+    .param p1, "pkg"  # Landroid/content/pm/PackageParser$Package;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Lcom/android/server/pm/PackageManagerException;
@@ -1262,6 +1357,7 @@
     iget-object v1, v1, Landroid/content/pm/PackageParser$SigningDetails;->publicKeys:Landroid/util/ArraySet;
 
     .line 192
+    .local v1, "signingKeys":Landroid/util/ArraySet;, "Landroid/util/ArraySet<Ljava/security/PublicKey;>;"
     if-eqz v1, :cond_76
 
     invoke-virtual {v1}, Landroid/util/ArraySet;->size()I
@@ -1274,122 +1370,128 @@
 
     invoke-virtual {v1, v2}, Landroid/util/ArraySet;->contains(Ljava/lang/Object;)Z
 
-    move-result v1
+    move-result v3
 
-    if-nez v1, :cond_76
+    if-nez v3, :cond_76
 
     .line 196
-    iget-object v1, p1, Landroid/content/pm/PackageParser$Package;->mKeySetMapping:Landroid/util/ArrayMap;
+    iget-object v3, p1, Landroid/content/pm/PackageParser$Package;->mKeySetMapping:Landroid/util/ArrayMap;
 
     .line 197
-    if-eqz v1, :cond_5c
+    .local v3, "definedMapping":Landroid/util/ArrayMap;, "Landroid/util/ArrayMap<Ljava/lang/String;Landroid/util/ArraySet<Ljava/security/PublicKey;>;>;"
+    if-eqz v3, :cond_5c
 
     .line 198
-    invoke-virtual {v1, v2}, Landroid/util/ArrayMap;->containsKey(Ljava/lang/Object;)Z
+    invoke-virtual {v3, v2}, Landroid/util/ArrayMap;->containsKey(Ljava/lang/Object;)Z
 
-    move-result v3
+    move-result v4
 
-    if-nez v3, :cond_54
+    if-nez v4, :cond_54
 
-    invoke-virtual {v1, v2}, Landroid/util/ArrayMap;->containsValue(Ljava/lang/Object;)Z
+    invoke-virtual {v3, v2}, Landroid/util/ArrayMap;->containsValue(Ljava/lang/Object;)Z
 
-    move-result v3
+    move-result v4
 
-    if-nez v3, :cond_54
+    if-nez v4, :cond_54
 
     .line 202
-    invoke-virtual {v1}, Landroid/util/ArrayMap;->size()I
+    invoke-virtual {v3}, Landroid/util/ArrayMap;->size()I
 
-    move-result v3
+    move-result v4
 
     .line 203
-    const/4 v4, 0x0
+    .local v4, "defMapSize":I
+    const/4 v5, 0x0
 
+    .local v5, "i":I
     :goto_2f
-    if-ge v4, v3, :cond_5c
+    if-ge v5, v4, :cond_5c
 
     .line 204
-    invoke-virtual {v1, v4}, Landroid/util/ArrayMap;->valueAt(I)Ljava/lang/Object;
+    invoke-virtual {v3, v5}, Landroid/util/ArrayMap;->valueAt(I)Ljava/lang/Object;
 
-    move-result-object v5
+    move-result-object v6
 
-    check-cast v5, Landroid/util/ArraySet;
+    check-cast v6, Landroid/util/ArraySet;
 
-    invoke-virtual {v5}, Landroid/util/ArraySet;->size()I
+    invoke-virtual {v6}, Landroid/util/ArraySet;->size()I
 
-    move-result v5
+    move-result v6
 
-    if-lez v5, :cond_4c
+    if-lez v6, :cond_4c
 
     .line 205
-    invoke-virtual {v1, v4}, Landroid/util/ArrayMap;->valueAt(I)Ljava/lang/Object;
+    invoke-virtual {v3, v5}, Landroid/util/ArrayMap;->valueAt(I)Ljava/lang/Object;
 
-    move-result-object v5
+    move-result-object v6
 
-    check-cast v5, Landroid/util/ArraySet;
+    check-cast v6, Landroid/util/ArraySet;
 
-    invoke-virtual {v5, v2}, Landroid/util/ArraySet;->contains(Ljava/lang/Object;)Z
+    invoke-virtual {v6, v2}, Landroid/util/ArraySet;->contains(Ljava/lang/Object;)Z
 
-    move-result v5
+    move-result v6
 
-    if-nez v5, :cond_4c
+    if-nez v6, :cond_4c
 
     .line 203
-    add-int/lit8 v4, v4, 0x1
+    add-int/lit8 v5, v5, 0x1
 
     goto :goto_2f
 
     .line 206
     :cond_4c
-    new-instance p1, Lcom/android/server/pm/PackageManagerException;
+    new-instance v2, Lcom/android/server/pm/PackageManagerException;
 
-    const-string v1, "Package has null/no public keys for defined key-sets."
+    const-string v6, "Package has null/no public keys for defined key-sets."
 
-    invoke-direct {p1, v0, v1}, Lcom/android/server/pm/PackageManagerException;-><init>(ILjava/lang/String;)V
+    invoke-direct {v2, v0, v6}, Lcom/android/server/pm/PackageManagerException;-><init>(ILjava/lang/String;)V
 
-    throw p1
+    throw v2
 
     .line 199
+    .end local v4  # "defMapSize":I
+    .end local v5  # "i":I
     :cond_54
-    new-instance p1, Lcom/android/server/pm/PackageManagerException;
+    new-instance v2, Lcom/android/server/pm/PackageManagerException;
 
-    const-string v1, "Package has null defined key set."
+    const-string v4, "Package has null defined key set."
 
-    invoke-direct {p1, v0, v1}, Lcom/android/server/pm/PackageManagerException;-><init>(ILjava/lang/String;)V
+    invoke-direct {v2, v0, v4}, Lcom/android/server/pm/PackageManagerException;-><init>(ILjava/lang/String;)V
 
-    throw p1
+    throw v2
 
     .line 211
     :cond_5c
-    iget-object p1, p1, Landroid/content/pm/PackageParser$Package;->mUpgradeKeySets:Landroid/util/ArraySet;
+    iget-object v2, p1, Landroid/content/pm/PackageParser$Package;->mUpgradeKeySets:Landroid/util/ArraySet;
 
     .line 212
-    if-eqz p1, :cond_75
+    .local v2, "upgradeAliases":Landroid/util/ArraySet;, "Landroid/util/ArraySet<Ljava/lang/String;>;"
+    if-eqz v2, :cond_75
 
     .line 213
-    if-eqz v1, :cond_6d
+    if-eqz v3, :cond_6d
 
-    invoke-virtual {v1}, Landroid/util/ArrayMap;->keySet()Ljava/util/Set;
+    invoke-virtual {v3}, Landroid/util/ArrayMap;->keySet()Ljava/util/Set;
 
-    move-result-object v1
+    move-result-object v4
 
-    invoke-interface {v1, p1}, Ljava/util/Set;->containsAll(Ljava/util/Collection;)Z
+    invoke-interface {v4, v2}, Ljava/util/Set;->containsAll(Ljava/util/Collection;)Z
 
-    move-result p1
+    move-result v4
 
-    if-eqz p1, :cond_6d
+    if-eqz v4, :cond_6d
 
     goto :goto_75
 
     .line 214
     :cond_6d
-    new-instance p1, Lcom/android/server/pm/PackageManagerException;
+    new-instance v4, Lcom/android/server/pm/PackageManagerException;
 
-    const-string v1, "Package has upgrade-key-sets without corresponding definitions."
+    const-string v5, "Package has upgrade-key-sets without corresponding definitions."
 
-    invoke-direct {p1, v0, v1}, Lcom/android/server/pm/PackageManagerException;-><init>(ILjava/lang/String;)V
+    invoke-direct {v4, v0, v5}, Lcom/android/server/pm/PackageManagerException;-><init>(ILjava/lang/String;)V
 
-    throw p1
+    throw v4
 
     .line 218
     :cond_75
@@ -1397,55 +1499,61 @@
     return-void
 
     .line 193
+    .end local v2  # "upgradeAliases":Landroid/util/ArraySet;, "Landroid/util/ArraySet<Ljava/lang/String;>;"
+    .end local v3  # "definedMapping":Landroid/util/ArrayMap;, "Landroid/util/ArrayMap<Ljava/lang/String;Landroid/util/ArraySet<Ljava/security/PublicKey;>;>;"
     :cond_76
-    new-instance p1, Lcom/android/server/pm/PackageManagerException;
+    new-instance v2, Lcom/android/server/pm/PackageManagerException;
 
-    const-string v1, "Package has invalid signing-key-set."
+    const-string v3, "Package has invalid signing-key-set."
 
-    invoke-direct {p1, v0, v1}, Lcom/android/server/pm/PackageManagerException;-><init>(ILjava/lang/String;)V
+    invoke-direct {v2, v0, v3}, Lcom/android/server/pm/PackageManagerException;-><init>(ILjava/lang/String;)V
 
-    throw p1
+    throw v2
 
     .line 188
+    .end local v1  # "signingKeys":Landroid/util/ArraySet;, "Landroid/util/ArraySet<Ljava/security/PublicKey;>;"
     :cond_7e
-    new-instance p1, Lcom/android/server/pm/PackageManagerException;
+    new-instance v1, Lcom/android/server/pm/PackageManagerException;
 
-    const-string v1, "Passed invalid package to keyset validation."
+    const-string v2, "Passed invalid package to keyset validation."
 
-    invoke-direct {p1, v0, v1}, Lcom/android/server/pm/PackageManagerException;-><init>(ILjava/lang/String;)V
+    invoke-direct {v1, v0, v2}, Lcom/android/server/pm/PackageManagerException;-><init>(ILjava/lang/String;)V
 
-    throw p1
+    throw v1
 .end method
 
 .method public checkUpgradeKeySetLocked(Lcom/android/server/pm/PackageSettingBase;Landroid/content/pm/PackageParser$Package;)Z
     .registers 7
+    .param p1, "oldPS"  # Lcom/android/server/pm/PackageSettingBase;
+    .param p2, "newPkg"  # Landroid/content/pm/PackageParser$Package;
 
     .line 371
-    iget-object p1, p1, Lcom/android/server/pm/PackageSettingBase;->keySetData:Lcom/android/server/pm/PackageKeySetData;
+    iget-object v0, p1, Lcom/android/server/pm/PackageSettingBase;->keySetData:Lcom/android/server/pm/PackageKeySetData;
 
-    invoke-virtual {p1}, Lcom/android/server/pm/PackageKeySetData;->getUpgradeKeySets()[J
+    invoke-virtual {v0}, Lcom/android/server/pm/PackageKeySetData;->getUpgradeKeySets()[J
 
-    move-result-object p1
+    move-result-object v0
 
     .line 372
-    const/4 v0, 0x0
+    .local v0, "upgradeKeySets":[J
+    const/4 v1, 0x0
 
-    move v1, v0
+    .local v1, "i":I
+    :goto_7
+    array-length v2, v0
 
-    :goto_8
-    array-length v2, p1
-
-    if-ge v1, v2, :cond_22
+    if-ge v1, v2, :cond_21
 
     .line 373
-    aget-wide v2, p1, v1
+    aget-wide v2, v0, v1
 
     invoke-virtual {p0, v2, v3}, Lcom/android/server/pm/KeySetManagerService;->getPublicKeysFromKeySetLPr(J)Landroid/util/ArraySet;
 
     move-result-object v2
 
     .line 374
-    if-eqz v2, :cond_1f
+    .local v2, "upgradeSet":Ljava/util/Set;, "Ljava/util/Set<Ljava/security/PublicKey;>;"
+    if-eqz v2, :cond_1e
 
     iget-object v3, p2, Landroid/content/pm/PackageParser$Package;->mSigningDetails:Landroid/content/pm/PackageParser$SigningDetails;
 
@@ -1453,65 +1561,72 @@
 
     invoke-virtual {v3, v2}, Landroid/util/ArraySet;->containsAll(Ljava/util/Collection;)Z
 
-    move-result v2
+    move-result v3
 
-    if-eqz v2, :cond_1f
+    if-eqz v3, :cond_1e
 
     .line 375
-    const/4 p1, 0x1
+    const/4 v3, 0x1
 
-    return p1
+    return v3
 
     .line 372
-    :cond_1f
+    .end local v2  # "upgradeSet":Ljava/util/Set;, "Ljava/util/Set<Ljava/security/PublicKey;>;"
+    :cond_1e
     add-int/lit8 v1, v1, 0x1
 
-    goto :goto_8
+    goto :goto_7
 
     .line 378
-    :cond_22
-    return v0
+    .end local v1  # "i":I
+    :cond_21
+    const/4 v1, 0x0
+
+    return v1
 .end method
 
 .method public dumpLPr(Ljava/io/PrintWriter;Ljava/lang/String;Lcom/android/server/pm/DumpState;)V
-    .registers 19
+    .registers 22
+    .param p1, "pw"  # Ljava/io/PrintWriter;
+    .param p2, "packageName"  # Ljava/lang/String;
+    .param p3, "dumpState"  # Lcom/android/server/pm/DumpState;
 
     .line 606
     move-object/from16 v0, p1
 
     move-object/from16 v1, p2
 
+    const/4 v2, 0x0
+
     .line 607
-    move-object v2, p0
+    .local v2, "printedHeader":Z
+    move-object/from16 v3, p0
 
-    iget-object v2, v2, Lcom/android/server/pm/KeySetManagerService;->mPackages:Landroid/util/ArrayMap;
+    iget-object v4, v3, Lcom/android/server/pm/KeySetManagerService;->mPackages:Landroid/util/ArrayMap;
 
-    invoke-virtual {v2}, Landroid/util/ArrayMap;->entrySet()Ljava/util/Set;
+    invoke-virtual {v4}, Landroid/util/ArrayMap;->entrySet()Ljava/util/Set;
 
-    move-result-object v2
+    move-result-object v4
 
-    invoke-interface {v2}, Ljava/util/Set;->iterator()Ljava/util/Iterator;
+    invoke-interface {v4}, Ljava/util/Set;->iterator()Ljava/util/Iterator;
 
-    move-result-object v2
-
-    const/4 v3, 0x0
-
-    move v4, v3
+    move-result-object v4
 
     :goto_11
-    invoke-interface {v2}, Ljava/util/Iterator;->hasNext()Z
+    invoke-interface {v4}, Ljava/util/Iterator;->hasNext()Z
 
     move-result v5
 
-    if-eqz v5, :cond_12c
+    if-eqz v5, :cond_12a
 
-    invoke-interface {v2}, Ljava/util/Iterator;->next()Ljava/lang/Object;
+    invoke-interface {v4}, Ljava/util/Iterator;->next()Ljava/lang/Object;
 
     move-result-object v5
 
     check-cast v5, Ljava/util/Map$Entry;
 
     .line 608
+    .local v5, "e":Ljava/util/Map$Entry;, "Ljava/util/Map$Entry<Ljava/lang/String;Lcom/android/server/pm/PackageSetting;>;"
     invoke-interface {v5}, Ljava/util/Map$Entry;->getKey()Ljava/lang/Object;
 
     move-result-object v6
@@ -1519,6 +1634,7 @@
     check-cast v6, Ljava/lang/String;
 
     .line 609
+    .local v6, "keySetPackage":Ljava/lang/String;
     if-eqz v1, :cond_2c
 
     invoke-virtual {v1, v6}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
@@ -1532,338 +1648,345 @@
 
     .line 612
     :cond_2c
-    const/4 v7, 0x1
-
-    if-nez v4, :cond_3e
+    if-nez v2, :cond_3d
 
     .line 613
     invoke-virtual/range {p3 .. p3}, Lcom/android/server/pm/DumpState;->onTitlePrinted()Z
 
-    move-result v4
+    move-result v7
 
-    if-eqz v4, :cond_38
+    if-eqz v7, :cond_37
 
     .line 614
     invoke-virtual/range {p1 .. p1}, Ljava/io/PrintWriter;->println()V
 
     .line 615
-    :cond_38
-    const-string v4, "Key Set Manager:"
+    :cond_37
+    const-string v7, "Key Set Manager:"
 
-    invoke-virtual {v0, v4}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {v0, v7}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
     .line 616
-    move v4, v7
+    const/4 v2, 0x1
 
     .line 618
-    :cond_3e
+    :cond_3d
     invoke-interface {v5}, Ljava/util/Map$Entry;->getValue()Ljava/lang/Object;
 
-    move-result-object v5
+    move-result-object v7
 
-    check-cast v5, Lcom/android/server/pm/PackageSetting;
+    check-cast v7, Lcom/android/server/pm/PackageSetting;
 
     .line 619
+    .local v7, "pkg":Lcom/android/server/pm/PackageSetting;
     const-string v8, "  ["
 
     invoke-virtual {v0, v8}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
     invoke-virtual {v0, v6}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
-    const-string v6, "]"
+    const-string v8, "]"
 
-    invoke-virtual {v0, v6}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {v0, v8}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
     .line 620
-    iget-object v6, v5, Lcom/android/server/pm/PackageSetting;->keySetData:Lcom/android/server/pm/PackageKeySetData;
+    iget-object v8, v7, Lcom/android/server/pm/PackageSetting;->keySetData:Lcom/android/server/pm/PackageKeySetData;
 
-    if-eqz v6, :cond_12a
+    if-eqz v8, :cond_126
 
     .line 621
-    nop
+    const/4 v8, 0x0
 
     .line 622
-    iget-object v6, v5, Lcom/android/server/pm/PackageSetting;->keySetData:Lcom/android/server/pm/PackageKeySetData;
+    .local v8, "printedLabel":Z
+    iget-object v9, v7, Lcom/android/server/pm/PackageSetting;->keySetData:Lcom/android/server/pm/PackageKeySetData;
 
-    invoke-virtual {v6}, Lcom/android/server/pm/PackageKeySetData;->getAliases()Landroid/util/ArrayMap;
-
-    move-result-object v6
-
-    invoke-virtual {v6}, Landroid/util/ArrayMap;->entrySet()Ljava/util/Set;
-
-    move-result-object v6
-
-    invoke-interface {v6}, Ljava/util/Set;->iterator()Ljava/util/Iterator;
-
-    move-result-object v6
-
-    move v8, v3
-
-    :goto_65
-    invoke-interface {v6}, Ljava/util/Iterator;->hasNext()Z
-
-    move-result v9
-
-    const-string v10, ", "
-
-    if-eqz v9, :cond_9f
-
-    invoke-interface {v6}, Ljava/util/Iterator;->next()Ljava/lang/Object;
+    invoke-virtual {v9}, Lcom/android/server/pm/PackageKeySetData;->getAliases()Landroid/util/ArrayMap;
 
     move-result-object v9
 
-    check-cast v9, Ljava/util/Map$Entry;
+    invoke-virtual {v9}, Landroid/util/ArrayMap;->entrySet()Ljava/util/Set;
 
-    .line 623
-    if-nez v8, :cond_7c
+    move-result-object v9
 
-    .line 624
-    const-string v8, "      KeySets Aliases: "
+    invoke-interface {v9}, Ljava/util/Set;->iterator()Ljava/util/Iterator;
 
-    invoke-virtual {v0, v8}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
+    move-result-object v9
 
-    .line 625
-    move v8, v7
+    :goto_63
+    invoke-interface {v9}, Ljava/util/Iterator;->hasNext()Z
 
-    goto :goto_7f
+    move-result v10
 
-    .line 627
-    :cond_7c
-    invoke-virtual {v0, v10}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
+    const-string v11, ", "
 
-    .line 629
-    :goto_7f
-    invoke-interface {v9}, Ljava/util/Map$Entry;->getKey()Ljava/lang/Object;
+    if-eqz v10, :cond_9d
+
+    invoke-interface {v9}, Ljava/util/Iterator;->next()Ljava/lang/Object;
 
     move-result-object v10
 
-    check-cast v10, Ljava/lang/String;
+    check-cast v10, Ljava/util/Map$Entry;
 
-    invoke-virtual {v0, v10}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
+    .line 623
+    .local v10, "entry":Ljava/util/Map$Entry;, "Ljava/util/Map$Entry<Ljava/lang/String;Ljava/lang/Long;>;"
+    if-nez v8, :cond_7a
+
+    .line 624
+    const-string v11, "      KeySets Aliases: "
+
+    invoke-virtual {v0, v11}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
+
+    .line 625
+    const/4 v8, 0x1
+
+    goto :goto_7d
+
+    .line 627
+    :cond_7a
+    invoke-virtual {v0, v11}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
+
+    .line 629
+    :goto_7d
+    invoke-interface {v10}, Ljava/util/Map$Entry;->getKey()Ljava/lang/Object;
+
+    move-result-object v11
+
+    check-cast v11, Ljava/lang/String;
+
+    invoke-virtual {v0, v11}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
     .line 630
-    const/16 v10, 0x3d
+    const/16 v11, 0x3d
 
-    invoke-virtual {v0, v10}, Ljava/io/PrintWriter;->print(C)V
+    invoke-virtual {v0, v11}, Ljava/io/PrintWriter;->print(C)V
 
     .line 631
-    invoke-interface {v9}, Ljava/util/Map$Entry;->getValue()Ljava/lang/Object;
+    invoke-interface {v10}, Ljava/util/Map$Entry;->getValue()Ljava/lang/Object;
 
-    move-result-object v9
+    move-result-object v11
 
-    check-cast v9, Ljava/lang/Long;
+    check-cast v11, Ljava/lang/Long;
 
-    invoke-virtual {v9}, Ljava/lang/Long;->longValue()J
+    invoke-virtual {v11}, Ljava/lang/Long;->longValue()J
 
-    move-result-wide v9
+    move-result-wide v11
 
-    invoke-static {v9, v10}, Ljava/lang/Long;->toString(J)Ljava/lang/String;
+    invoke-static {v11, v12}, Ljava/lang/Long;->toString(J)Ljava/lang/String;
 
-    move-result-object v9
+    move-result-object v11
 
-    invoke-virtual {v0, v9}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
+    invoke-virtual {v0, v11}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
     .line 632
-    goto :goto_65
+    .end local v10  # "entry":Ljava/util/Map$Entry;, "Ljava/util/Map$Entry<Ljava/lang/String;Ljava/lang/Long;>;"
+    goto :goto_63
 
     .line 633
-    :cond_9f
-    const-string v6, ""
+    :cond_9d
+    const-string v9, ""
 
-    if-eqz v8, :cond_a6
+    if-eqz v8, :cond_a4
 
     .line 634
-    invoke-virtual {v0, v6}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {v0, v9}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
     .line 636
-    :cond_a6
-    nop
+    :cond_a4
+    const/4 v8, 0x0
 
     .line 637
-    iget-object v8, v5, Lcom/android/server/pm/PackageSetting;->keySetData:Lcom/android/server/pm/PackageKeySetData;
+    iget-object v10, v7, Lcom/android/server/pm/PackageSetting;->keySetData:Lcom/android/server/pm/PackageKeySetData;
 
-    invoke-virtual {v8}, Lcom/android/server/pm/PackageKeySetData;->isUsingDefinedKeySets()Z
+    invoke-virtual {v10}, Lcom/android/server/pm/PackageKeySetData;->isUsingDefinedKeySets()Z
 
-    move-result v8
+    move-result v10
 
-    if-eqz v8, :cond_dd
+    if-eqz v10, :cond_da
 
     .line 638
-    iget-object v8, v5, Lcom/android/server/pm/PackageSetting;->keySetData:Lcom/android/server/pm/PackageKeySetData;
+    iget-object v10, v7, Lcom/android/server/pm/PackageSetting;->keySetData:Lcom/android/server/pm/PackageKeySetData;
 
-    invoke-virtual {v8}, Lcom/android/server/pm/PackageKeySetData;->getAliases()Landroid/util/ArrayMap;
+    invoke-virtual {v10}, Lcom/android/server/pm/PackageKeySetData;->getAliases()Landroid/util/ArrayMap;
 
-    move-result-object v8
+    move-result-object v10
 
     .line 639
-    invoke-virtual {v8}, Landroid/util/ArrayMap;->size()I
+    .local v10, "definedKeySets":Landroid/util/ArrayMap;, "Landroid/util/ArrayMap<Ljava/lang/String;Ljava/lang/Long;>;"
+    invoke-virtual {v10}, Landroid/util/ArrayMap;->size()I
 
-    move-result v9
+    move-result v12
 
     .line 640
-    move v11, v3
+    .local v12, "dksSize":I
+    const/4 v13, 0x0
 
-    move v12, v11
-
-    :goto_bb
-    if-ge v11, v9, :cond_de
+    .local v13, "i":I
+    :goto_b8
+    if-ge v13, v12, :cond_da
 
     .line 641
-    if-nez v12, :cond_c6
+    if-nez v8, :cond_c3
 
     .line 642
-    const-string v12, "      Defined KeySets: "
+    const-string v14, "      Defined KeySets: "
 
-    invoke-virtual {v0, v12}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
+    invoke-virtual {v0, v14}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
     .line 643
-    move v12, v7
+    const/4 v8, 0x1
 
-    goto :goto_c9
+    goto :goto_c6
 
     .line 645
-    :cond_c6
-    invoke-virtual {v0, v10}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
+    :cond_c3
+    invoke-virtual {v0, v11}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
     .line 647
-    :goto_c9
-    invoke-virtual {v8, v11}, Landroid/util/ArrayMap;->valueAt(I)Ljava/lang/Object;
+    :goto_c6
+    invoke-virtual {v10, v13}, Landroid/util/ArrayMap;->valueAt(I)Ljava/lang/Object;
 
-    move-result-object v13
+    move-result-object v14
 
-    check-cast v13, Ljava/lang/Long;
+    check-cast v14, Ljava/lang/Long;
 
-    invoke-virtual {v13}, Ljava/lang/Long;->longValue()J
+    invoke-virtual {v14}, Ljava/lang/Long;->longValue()J
 
-    move-result-wide v13
+    move-result-wide v14
 
-    invoke-static {v13, v14}, Ljava/lang/Long;->toString(J)Ljava/lang/String;
+    invoke-static {v14, v15}, Ljava/lang/Long;->toString(J)Ljava/lang/String;
 
-    move-result-object v13
+    move-result-object v14
 
-    invoke-virtual {v0, v13}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
+    invoke-virtual {v0, v14}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
     .line 640
-    add-int/lit8 v11, v11, 0x1
+    add-int/lit8 v13, v13, 0x1
 
-    goto :goto_bb
-
-    .line 637
-    :cond_dd
-    move v12, v3
+    goto :goto_b8
 
     .line 650
-    :cond_de
-    if-eqz v12, :cond_e3
+    .end local v10  # "definedKeySets":Landroid/util/ArrayMap;, "Landroid/util/ArrayMap<Ljava/lang/String;Ljava/lang/Long;>;"
+    .end local v12  # "dksSize":I
+    .end local v13  # "i":I
+    :cond_da
+    if-eqz v8, :cond_df
 
     .line 651
-    invoke-virtual {v0, v6}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {v0, v9}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
     .line 653
-    :cond_e3
-    nop
+    :cond_df
+    const/4 v8, 0x0
 
     .line 654
-    iget-object v8, v5, Lcom/android/server/pm/PackageSetting;->keySetData:Lcom/android/server/pm/PackageKeySetData;
+    iget-object v10, v7, Lcom/android/server/pm/PackageSetting;->keySetData:Lcom/android/server/pm/PackageKeySetData;
 
-    invoke-virtual {v8}, Lcom/android/server/pm/PackageKeySetData;->getProperSigningKeySet()J
+    invoke-virtual {v10}, Lcom/android/server/pm/PackageKeySetData;->getProperSigningKeySet()J
 
-    move-result-wide v8
+    move-result-wide v12
 
     .line 655
-    const-string v11, "      Signing KeySets: "
+    .local v12, "signingKeySet":J
+    const-string v10, "      Signing KeySets: "
 
-    invoke-virtual {v0, v11}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
-
-    .line 656
-    invoke-static {v8, v9}, Ljava/lang/Long;->toString(J)Ljava/lang/String;
-
-    move-result-object v8
-
-    invoke-virtual {v0, v8}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
-
-    .line 657
-    invoke-virtual {v0, v6}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
-
-    .line 658
-    iget-object v8, v5, Lcom/android/server/pm/PackageSetting;->keySetData:Lcom/android/server/pm/PackageKeySetData;
-
-    invoke-virtual {v8}, Lcom/android/server/pm/PackageKeySetData;->isUsingUpgradeKeySets()Z
-
-    move-result v8
-
-    if-eqz v8, :cond_124
-
-    .line 659
-    iget-object v5, v5, Lcom/android/server/pm/PackageSetting;->keySetData:Lcom/android/server/pm/PackageKeySetData;
-
-    invoke-virtual {v5}, Lcom/android/server/pm/PackageKeySetData;->getUpgradeKeySets()[J
-
-    move-result-object v5
-
-    array-length v8, v5
-
-    move v9, v3
-
-    move v11, v9
-
-    :goto_10a
-    if-ge v9, v8, :cond_125
-
-    aget-wide v12, v5, v9
-
-    .line 660
-    if-nez v11, :cond_117
-
-    .line 661
-    const-string v11, "      Upgrade KeySets: "
-
-    invoke-virtual {v0, v11}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
-
-    .line 662
-    move v11, v7
-
-    goto :goto_11a
-
-    .line 664
-    :cond_117
     invoke-virtual {v0, v10}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
-    .line 666
-    :goto_11a
+    .line 656
     invoke-static {v12, v13}, Ljava/lang/Long;->toString(J)Ljava/lang/String;
 
-    move-result-object v12
+    move-result-object v10
 
-    invoke-virtual {v0, v12}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
+    invoke-virtual {v0, v10}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
-    .line 659
-    add-int/lit8 v9, v9, 0x1
-
-    goto :goto_10a
+    .line 657
+    invoke-virtual {v0, v9}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
     .line 658
-    :cond_124
-    move v11, v3
+    iget-object v10, v7, Lcom/android/server/pm/PackageSetting;->keySetData:Lcom/android/server/pm/PackageKeySetData;
+
+    invoke-virtual {v10}, Lcom/android/server/pm/PackageKeySetData;->isUsingUpgradeKeySets()Z
+
+    move-result v10
+
+    if-eqz v10, :cond_121
+
+    .line 659
+    iget-object v10, v7, Lcom/android/server/pm/PackageSetting;->keySetData:Lcom/android/server/pm/PackageKeySetData;
+
+    invoke-virtual {v10}, Lcom/android/server/pm/PackageKeySetData;->getUpgradeKeySets()[J
+
+    move-result-object v10
+
+    array-length v14, v10
+
+    const/4 v15, 0x0
+
+    :goto_105
+    if-ge v15, v14, :cond_121
+
+    aget-wide v16, v10, v15
+
+    .line 660
+    .local v16, "keySetId":J
+    if-nez v8, :cond_112
+
+    .line 661
+    const-string v1, "      Upgrade KeySets: "
+
+    invoke-virtual {v0, v1}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
+
+    .line 662
+    const/4 v8, 0x1
+
+    goto :goto_115
+
+    .line 664
+    :cond_112
+    invoke-virtual {v0, v11}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
+
+    .line 666
+    :goto_115
+    invoke-static/range {v16 .. v17}, Ljava/lang/Long;->toString(J)Ljava/lang/String;
+
+    move-result-object v1
+
+    invoke-virtual {v0, v1}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
+
+    .line 659
+    .end local v16  # "keySetId":J
+    add-int/lit8 v15, v15, 0x1
+
+    move-object/from16 v1, p2
+
+    goto :goto_105
 
     .line 669
-    :cond_125
-    if-eqz v11, :cond_12a
+    :cond_121
+    if-eqz v8, :cond_126
 
     .line 670
-    invoke-virtual {v0, v6}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {v0, v9}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
     .line 673
-    :cond_12a
+    .end local v5  # "e":Ljava/util/Map$Entry;, "Ljava/util/Map$Entry<Ljava/lang/String;Lcom/android/server/pm/PackageSetting;>;"
+    .end local v6  # "keySetPackage":Ljava/lang/String;
+    .end local v7  # "pkg":Lcom/android/server/pm/PackageSetting;
+    .end local v8  # "printedLabel":Z
+    .end local v12  # "signingKeySet":J
+    :cond_126
+    move-object/from16 v1, p2
+
     goto/16 :goto_11
 
     .line 674
-    :cond_12c
+    :cond_12a
     return-void
 .end method
 
 .method public encodePublicKey(Ljava/security/PublicKey;)Ljava/lang/String;
-    .registers 4
+    .registers 5
+    .param p1, "k"  # Ljava/security/PublicKey;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Ljava/io/IOException;
@@ -1875,104 +1998,110 @@
 
     invoke-interface {p1}, Ljava/security/PublicKey;->getEncoded()[B
 
-    move-result-object p1
+    move-result-object v1
 
-    const/4 v1, 0x2
+    const/4 v2, 0x2
 
-    invoke-static {p1, v1}, Landroid/util/Base64;->encode([BI)[B
+    invoke-static {v1, v2}, Landroid/util/Base64;->encode([BI)[B
 
-    move-result-object p1
+    move-result-object v1
 
-    invoke-direct {v0, p1}, Ljava/lang/String;-><init>([B)V
+    invoke-direct {v0, v1}, Ljava/lang/String;-><init>([B)V
 
     return-object v0
 .end method
 
 .method public getKeySetByAliasAndPackageNameLPr(Ljava/lang/String;Ljava/lang/String;)Lcom/android/server/pm/KeySetHandle;
-    .registers 5
+    .registers 8
+    .param p1, "packageName"  # Ljava/lang/String;
+    .param p2, "alias"  # Ljava/lang/String;
 
     .line 330
     iget-object v0, p0, Lcom/android/server/pm/KeySetManagerService;->mPackages:Landroid/util/ArrayMap;
 
     invoke-virtual {v0, p1}, Landroid/util/ArrayMap;->get(Ljava/lang/Object;)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v0
 
-    check-cast p1, Lcom/android/server/pm/PackageSetting;
+    check-cast v0, Lcom/android/server/pm/PackageSetting;
 
     .line 331
-    if-eqz p1, :cond_41
+    .local v0, "p":Lcom/android/server/pm/PackageSetting;
+    if-eqz v0, :cond_41
 
-    iget-object v0, p1, Lcom/android/server/pm/PackageSetting;->keySetData:Lcom/android/server/pm/PackageKeySetData;
+    iget-object v1, v0, Lcom/android/server/pm/PackageSetting;->keySetData:Lcom/android/server/pm/PackageKeySetData;
 
-    if-nez v0, :cond_f
+    if-nez v1, :cond_f
 
     goto :goto_41
 
     .line 334
     :cond_f
-    iget-object p1, p1, Lcom/android/server/pm/PackageSetting;->keySetData:Lcom/android/server/pm/PackageKeySetData;
+    iget-object v1, v0, Lcom/android/server/pm/PackageSetting;->keySetData:Lcom/android/server/pm/PackageKeySetData;
 
-    invoke-virtual {p1}, Lcom/android/server/pm/PackageKeySetData;->getAliases()Landroid/util/ArrayMap;
+    invoke-virtual {v1}, Lcom/android/server/pm/PackageKeySetData;->getAliases()Landroid/util/ArrayMap;
 
-    move-result-object p1
+    move-result-object v1
 
-    invoke-virtual {p1, p2}, Landroid/util/ArrayMap;->get(Ljava/lang/Object;)Ljava/lang/Object;
+    invoke-virtual {v1, p2}, Landroid/util/ArrayMap;->get(Ljava/lang/Object;)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v1
 
-    check-cast p1, Ljava/lang/Long;
+    check-cast v1, Ljava/lang/Long;
 
     .line 335
-    if-eqz p1, :cond_2a
+    .local v1, "keySetId":Ljava/lang/Long;
+    if-eqz v1, :cond_2a
 
     .line 338
-    iget-object p2, p0, Lcom/android/server/pm/KeySetManagerService;->mKeySets:Landroid/util/LongSparseArray;
+    iget-object v2, p0, Lcom/android/server/pm/KeySetManagerService;->mKeySets:Landroid/util/LongSparseArray;
 
-    invoke-virtual {p1}, Ljava/lang/Long;->longValue()J
+    invoke-virtual {v1}, Ljava/lang/Long;->longValue()J
 
-    move-result-wide v0
+    move-result-wide v3
 
-    invoke-virtual {p2, v0, v1}, Landroid/util/LongSparseArray;->get(J)Ljava/lang/Object;
+    invoke-virtual {v2, v3, v4}, Landroid/util/LongSparseArray;->get(J)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v2
 
-    check-cast p1, Lcom/android/server/pm/KeySetHandle;
+    check-cast v2, Lcom/android/server/pm/KeySetHandle;
 
-    return-object p1
+    return-object v2
 
     .line 336
     :cond_2a
-    new-instance p1, Ljava/lang/IllegalArgumentException;
+    new-instance v2, Ljava/lang/IllegalArgumentException;
 
-    new-instance v0, Ljava/lang/StringBuilder;
+    new-instance v3, Ljava/lang/StringBuilder;
 
-    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v1, "Unknown KeySet alias: "
+    const-string v4, "Unknown KeySet alias: "
 
-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p2
+    move-result-object v3
 
-    invoke-direct {p1, p2}, Ljava/lang/IllegalArgumentException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v2, v3}, Ljava/lang/IllegalArgumentException;-><init>(Ljava/lang/String;)V
 
-    throw p1
+    throw v2
 
     .line 332
+    .end local v1  # "keySetId":Ljava/lang/Long;
     :cond_41
     :goto_41
-    const/4 p1, 0x0
+    const/4 v1, 0x0
 
-    return-object p1
+    return-object v1
 .end method
 
 .method public getPublicKeysFromKeySetLPr(J)Landroid/util/ArraySet;
-    .registers 8
+    .registers 10
+    .param p1, "id"  # J
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(J)",
@@ -1987,346 +2116,373 @@
 
     invoke-virtual {v0, p1, p2}, Landroid/util/LongSparseArray;->get(J)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v0
 
-    check-cast p1, Landroid/util/ArraySet;
+    check-cast v0, Landroid/util/ArraySet;
 
     .line 390
-    if-nez p1, :cond_c
+    .local v0, "pkIds":Landroid/util/ArraySet;, "Landroid/util/ArraySet<Ljava/lang/Long;>;"
+    if-nez v0, :cond_c
 
     .line 391
-    const/4 p1, 0x0
+    const/4 v1, 0x0
 
-    return-object p1
+    return-object v1
 
     .line 393
     :cond_c
-    new-instance p2, Landroid/util/ArraySet;
+    new-instance v1, Landroid/util/ArraySet;
 
-    invoke-direct {p2}, Landroid/util/ArraySet;-><init>()V
+    invoke-direct {v1}, Landroid/util/ArraySet;-><init>()V
 
     .line 394
-    invoke-virtual {p1}, Landroid/util/ArraySet;->size()I
+    .local v1, "mPubKeys":Landroid/util/ArraySet;, "Landroid/util/ArraySet<Ljava/security/PublicKey;>;"
+    invoke-virtual {v0}, Landroid/util/ArraySet;->size()I
 
-    move-result v0
+    move-result v2
 
     .line 395
-    const/4 v1, 0x0
+    .local v2, "pkSize":I
+    const/4 v3, 0x0
 
+    .local v3, "i":I
     :goto_16
-    if-ge v1, v0, :cond_34
+    if-ge v3, v2, :cond_34
 
     .line 396
-    iget-object v2, p0, Lcom/android/server/pm/KeySetManagerService;->mPublicKeys:Landroid/util/LongSparseArray;
+    iget-object v4, p0, Lcom/android/server/pm/KeySetManagerService;->mPublicKeys:Landroid/util/LongSparseArray;
 
-    invoke-virtual {p1, v1}, Landroid/util/ArraySet;->valueAt(I)Ljava/lang/Object;
+    invoke-virtual {v0, v3}, Landroid/util/ArraySet;->valueAt(I)Ljava/lang/Object;
 
-    move-result-object v3
+    move-result-object v5
 
-    check-cast v3, Ljava/lang/Long;
+    check-cast v5, Ljava/lang/Long;
 
-    invoke-virtual {v3}, Ljava/lang/Long;->longValue()J
+    invoke-virtual {v5}, Ljava/lang/Long;->longValue()J
 
-    move-result-wide v3
+    move-result-wide v5
 
-    invoke-virtual {v2, v3, v4}, Landroid/util/LongSparseArray;->get(J)Ljava/lang/Object;
+    invoke-virtual {v4, v5, v6}, Landroid/util/LongSparseArray;->get(J)Ljava/lang/Object;
 
-    move-result-object v2
+    move-result-object v4
 
-    check-cast v2, Lcom/android/server/pm/KeySetManagerService$PublicKeyHandle;
+    check-cast v4, Lcom/android/server/pm/KeySetManagerService$PublicKeyHandle;
 
-    invoke-virtual {v2}, Lcom/android/server/pm/KeySetManagerService$PublicKeyHandle;->getKey()Ljava/security/PublicKey;
+    invoke-virtual {v4}, Lcom/android/server/pm/KeySetManagerService$PublicKeyHandle;->getKey()Ljava/security/PublicKey;
 
-    move-result-object v2
+    move-result-object v4
 
-    invoke-virtual {p2, v2}, Landroid/util/ArraySet;->add(Ljava/lang/Object;)Z
+    invoke-virtual {v1, v4}, Landroid/util/ArraySet;->add(Ljava/lang/Object;)Z
 
     .line 395
-    add-int/lit8 v1, v1, 0x1
+    add-int/lit8 v3, v3, 0x1
 
     goto :goto_16
 
     .line 398
+    .end local v3  # "i":I
     :cond_34
-    return-object p2
+    return-object v1
 .end method
 
 .method public getSigningKeySetByPackageNameLPr(Ljava/lang/String;)Lcom/android/server/pm/KeySetHandle;
-    .registers 6
+    .registers 7
+    .param p1, "packageName"  # Ljava/lang/String;
 
     .line 409
     iget-object v0, p0, Lcom/android/server/pm/KeySetManagerService;->mPackages:Landroid/util/ArrayMap;
 
     invoke-virtual {v0, p1}, Landroid/util/ArrayMap;->get(Ljava/lang/Object;)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v0
 
-    check-cast p1, Lcom/android/server/pm/PackageSetting;
+    check-cast v0, Lcom/android/server/pm/PackageSetting;
 
     .line 410
-    if-eqz p1, :cond_2a
-
-    iget-object v0, p1, Lcom/android/server/pm/PackageSetting;->keySetData:Lcom/android/server/pm/PackageKeySetData;
-
+    .local v0, "p":Lcom/android/server/pm/PackageSetting;
     if-eqz v0, :cond_2a
 
-    iget-object v0, p1, Lcom/android/server/pm/PackageSetting;->keySetData:Lcom/android/server/pm/PackageKeySetData;
+    iget-object v1, v0, Lcom/android/server/pm/PackageSetting;->keySetData:Lcom/android/server/pm/PackageKeySetData;
+
+    if-eqz v1, :cond_2a
+
+    iget-object v1, v0, Lcom/android/server/pm/PackageSetting;->keySetData:Lcom/android/server/pm/PackageKeySetData;
 
     .line 412
-    invoke-virtual {v0}, Lcom/android/server/pm/PackageKeySetData;->getProperSigningKeySet()J
+    invoke-virtual {v1}, Lcom/android/server/pm/PackageKeySetData;->getProperSigningKeySet()J
 
-    move-result-wide v0
+    move-result-wide v1
 
-    const-wide/16 v2, -0x1
+    const-wide/16 v3, -0x1
 
-    cmp-long v0, v0, v2
+    cmp-long v1, v1, v3
 
-    if-nez v0, :cond_1b
+    if-nez v1, :cond_1b
 
     goto :goto_2a
 
     .line 416
     :cond_1b
-    iget-object v0, p0, Lcom/android/server/pm/KeySetManagerService;->mKeySets:Landroid/util/LongSparseArray;
+    iget-object v1, p0, Lcom/android/server/pm/KeySetManagerService;->mKeySets:Landroid/util/LongSparseArray;
 
-    iget-object p1, p1, Lcom/android/server/pm/PackageSetting;->keySetData:Lcom/android/server/pm/PackageKeySetData;
+    iget-object v2, v0, Lcom/android/server/pm/PackageSetting;->keySetData:Lcom/android/server/pm/PackageKeySetData;
 
-    invoke-virtual {p1}, Lcom/android/server/pm/PackageKeySetData;->getProperSigningKeySet()J
+    invoke-virtual {v2}, Lcom/android/server/pm/PackageKeySetData;->getProperSigningKeySet()J
 
-    move-result-wide v1
+    move-result-wide v2
 
-    invoke-virtual {v0, v1, v2}, Landroid/util/LongSparseArray;->get(J)Ljava/lang/Object;
+    invoke-virtual {v1, v2, v3}, Landroid/util/LongSparseArray;->get(J)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v1
 
-    check-cast p1, Lcom/android/server/pm/KeySetHandle;
+    check-cast v1, Lcom/android/server/pm/KeySetHandle;
 
-    return-object p1
+    return-object v1
 
     .line 414
     :cond_2a
     :goto_2a
-    const/4 p1, 0x0
+    const/4 v1, 0x0
 
-    return-object p1
+    return-object v1
 .end method
 
 .method public isIdValidKeySetId(J)Z
     .registers 4
+    .param p1, "id"  # J
 
     .line 343
     iget-object v0, p0, Lcom/android/server/pm/KeySetManagerService;->mKeySets:Landroid/util/LongSparseArray;
 
     invoke-virtual {v0, p1, p2}, Landroid/util/LongSparseArray;->get(J)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v0
 
-    if-eqz p1, :cond_a
+    if-eqz v0, :cond_a
 
-    const/4 p1, 0x1
+    const/4 v0, 0x1
 
     goto :goto_b
 
     :cond_a
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
     :goto_b
-    return p1
+    return v0
 .end method
 
 .method public packageIsSignedByExactlyLPr(Ljava/lang/String;Lcom/android/server/pm/KeySetHandle;)Z
-    .registers 7
+    .registers 9
+    .param p1, "packageName"  # Ljava/lang/String;
+    .param p2, "ks"  # Lcom/android/server/pm/KeySetHandle;
 
     .line 158
     iget-object v0, p0, Lcom/android/server/pm/KeySetManagerService;->mPackages:Landroid/util/ArrayMap;
 
     invoke-virtual {v0, p1}, Landroid/util/ArrayMap;->get(Ljava/lang/Object;)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v0
 
-    check-cast p1, Lcom/android/server/pm/PackageSetting;
+    check-cast v0, Lcom/android/server/pm/PackageSetting;
 
     .line 159
-    if-eqz p1, :cond_47
+    .local v0, "pkg":Lcom/android/server/pm/PackageSetting;
+    if-eqz v0, :cond_47
 
     .line 162
-    iget-object v0, p1, Lcom/android/server/pm/PackageSetting;->keySetData:Lcom/android/server/pm/PackageKeySetData;
+    iget-object v1, v0, Lcom/android/server/pm/PackageSetting;->keySetData:Lcom/android/server/pm/PackageKeySetData;
 
-    if-eqz v0, :cond_3f
+    if-eqz v1, :cond_3f
 
-    iget-object v0, p1, Lcom/android/server/pm/PackageSetting;->keySetData:Lcom/android/server/pm/PackageKeySetData;
+    iget-object v1, v0, Lcom/android/server/pm/PackageSetting;->keySetData:Lcom/android/server/pm/PackageKeySetData;
 
     .line 163
-    invoke-virtual {v0}, Lcom/android/server/pm/PackageKeySetData;->getProperSigningKeySet()J
+    invoke-virtual {v1}, Lcom/android/server/pm/PackageKeySetData;->getProperSigningKeySet()J
 
-    move-result-wide v0
+    move-result-wide v1
 
-    const-wide/16 v2, -0x1
+    const-wide/16 v3, -0x1
 
-    cmp-long v0, v0, v2
+    cmp-long v1, v1, v3
 
-    if-eqz v0, :cond_3f
+    if-eqz v1, :cond_3f
 
     .line 167
     invoke-direct {p0, p2}, Lcom/android/server/pm/KeySetManagerService;->getIdByKeySetLPr(Lcom/android/server/pm/KeySetHandle;)J
 
-    move-result-wide v0
+    move-result-wide v1
 
     .line 168
-    cmp-long p2, v0, v2
+    .local v1, "id":J
+    cmp-long v3, v1, v3
 
-    if-nez p2, :cond_24
+    if-nez v3, :cond_24
 
     .line 169
-    const/4 p1, 0x0
+    const/4 v3, 0x0
 
-    return p1
+    return v3
 
     .line 171
     :cond_24
-    iget-object p2, p0, Lcom/android/server/pm/KeySetManagerService;->mKeySetMapping:Landroid/util/LongSparseArray;
+    iget-object v3, p0, Lcom/android/server/pm/KeySetManagerService;->mKeySetMapping:Landroid/util/LongSparseArray;
 
-    iget-object p1, p1, Lcom/android/server/pm/PackageSetting;->keySetData:Lcom/android/server/pm/PackageKeySetData;
+    iget-object v4, v0, Lcom/android/server/pm/PackageSetting;->keySetData:Lcom/android/server/pm/PackageKeySetData;
 
-    invoke-virtual {p1}, Lcom/android/server/pm/PackageKeySetData;->getProperSigningKeySet()J
+    invoke-virtual {v4}, Lcom/android/server/pm/PackageKeySetData;->getProperSigningKeySet()J
 
-    move-result-wide v2
+    move-result-wide v4
 
-    invoke-virtual {p2, v2, v3}, Landroid/util/LongSparseArray;->get(J)Ljava/lang/Object;
+    invoke-virtual {v3, v4, v5}, Landroid/util/LongSparseArray;->get(J)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v3
 
-    check-cast p1, Landroid/util/ArraySet;
+    check-cast v3, Landroid/util/ArraySet;
 
     .line 172
-    iget-object p2, p0, Lcom/android/server/pm/KeySetManagerService;->mKeySetMapping:Landroid/util/LongSparseArray;
+    .local v3, "pkgKeys":Landroid/util/ArraySet;, "Landroid/util/ArraySet<Ljava/lang/Long;>;"
+    iget-object v4, p0, Lcom/android/server/pm/KeySetManagerService;->mKeySetMapping:Landroid/util/LongSparseArray;
 
-    invoke-virtual {p2, v0, v1}, Landroid/util/LongSparseArray;->get(J)Ljava/lang/Object;
+    invoke-virtual {v4, v1, v2}, Landroid/util/LongSparseArray;->get(J)Ljava/lang/Object;
 
-    move-result-object p2
+    move-result-object v4
 
-    check-cast p2, Landroid/util/ArraySet;
+    check-cast v4, Landroid/util/ArraySet;
 
     .line 173
-    invoke-virtual {p1, p2}, Landroid/util/ArraySet;->equals(Ljava/lang/Object;)Z
+    .local v4, "testKeys":Landroid/util/ArraySet;, "Landroid/util/ArraySet<Ljava/lang/Long;>;"
+    invoke-virtual {v3, v4}, Landroid/util/ArraySet;->equals(Ljava/lang/Object;)Z
 
-    move-result p1
+    move-result v5
 
-    return p1
+    return v5
 
     .line 165
+    .end local v1  # "id":J
+    .end local v3  # "pkgKeys":Landroid/util/ArraySet;, "Landroid/util/ArraySet<Ljava/lang/Long;>;"
+    .end local v4  # "testKeys":Landroid/util/ArraySet;, "Landroid/util/ArraySet<Ljava/lang/Long;>;"
     :cond_3f
-    new-instance p1, Ljava/lang/NullPointerException;
+    new-instance v1, Ljava/lang/NullPointerException;
 
-    const-string p2, "Package has no KeySet data"
+    const-string v2, "Package has no KeySet data"
 
-    invoke-direct {p1, p2}, Ljava/lang/NullPointerException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v1, v2}, Ljava/lang/NullPointerException;-><init>(Ljava/lang/String;)V
 
-    throw p1
+    throw v1
 
     .line 160
     :cond_47
-    new-instance p1, Ljava/lang/NullPointerException;
+    new-instance v1, Ljava/lang/NullPointerException;
 
-    const-string p2, "Invalid package name"
+    const-string v2, "Invalid package name"
 
-    invoke-direct {p1, p2}, Ljava/lang/NullPointerException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v1, v2}, Ljava/lang/NullPointerException;-><init>(Ljava/lang/String;)V
 
-    throw p1
+    throw v1
 .end method
 
 .method public packageIsSignedByLPr(Ljava/lang/String;Lcom/android/server/pm/KeySetHandle;)Z
-    .registers 7
+    .registers 9
+    .param p1, "packageName"  # Ljava/lang/String;
+    .param p2, "ks"  # Lcom/android/server/pm/KeySetHandle;
 
     .line 132
     iget-object v0, p0, Lcom/android/server/pm/KeySetManagerService;->mPackages:Landroid/util/ArrayMap;
 
     invoke-virtual {v0, p1}, Landroid/util/ArrayMap;->get(Ljava/lang/Object;)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v0
 
-    check-cast p1, Lcom/android/server/pm/PackageSetting;
+    check-cast v0, Lcom/android/server/pm/PackageSetting;
 
     .line 133
-    if-eqz p1, :cond_3d
+    .local v0, "pkg":Lcom/android/server/pm/PackageSetting;
+    if-eqz v0, :cond_3d
 
     .line 136
-    iget-object v0, p1, Lcom/android/server/pm/PackageSetting;->keySetData:Lcom/android/server/pm/PackageKeySetData;
+    iget-object v1, v0, Lcom/android/server/pm/PackageSetting;->keySetData:Lcom/android/server/pm/PackageKeySetData;
 
-    if-eqz v0, :cond_35
+    if-eqz v1, :cond_35
 
     .line 139
     invoke-direct {p0, p2}, Lcom/android/server/pm/KeySetManagerService;->getIdByKeySetLPr(Lcom/android/server/pm/KeySetHandle;)J
 
-    move-result-wide v0
+    move-result-wide v1
 
     .line 140
-    const-wide/16 v2, -0x1
+    .local v1, "id":J
+    const-wide/16 v3, -0x1
 
-    cmp-long p2, v0, v2
+    cmp-long v3, v1, v3
 
-    if-nez p2, :cond_1a
+    if-nez v3, :cond_1a
 
     .line 141
-    const/4 p1, 0x0
+    const/4 v3, 0x0
 
-    return p1
+    return v3
 
     .line 143
     :cond_1a
-    iget-object p2, p0, Lcom/android/server/pm/KeySetManagerService;->mKeySetMapping:Landroid/util/LongSparseArray;
+    iget-object v3, p0, Lcom/android/server/pm/KeySetManagerService;->mKeySetMapping:Landroid/util/LongSparseArray;
 
-    iget-object p1, p1, Lcom/android/server/pm/PackageSetting;->keySetData:Lcom/android/server/pm/PackageKeySetData;
+    iget-object v4, v0, Lcom/android/server/pm/PackageSetting;->keySetData:Lcom/android/server/pm/PackageKeySetData;
 
-    invoke-virtual {p1}, Lcom/android/server/pm/PackageKeySetData;->getProperSigningKeySet()J
+    invoke-virtual {v4}, Lcom/android/server/pm/PackageKeySetData;->getProperSigningKeySet()J
 
-    move-result-wide v2
+    move-result-wide v4
 
-    invoke-virtual {p2, v2, v3}, Landroid/util/LongSparseArray;->get(J)Ljava/lang/Object;
+    invoke-virtual {v3, v4, v5}, Landroid/util/LongSparseArray;->get(J)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v3
 
-    check-cast p1, Landroid/util/ArraySet;
+    check-cast v3, Landroid/util/ArraySet;
 
     .line 144
-    iget-object p2, p0, Lcom/android/server/pm/KeySetManagerService;->mKeySetMapping:Landroid/util/LongSparseArray;
+    .local v3, "pkgKeys":Landroid/util/ArraySet;, "Landroid/util/ArraySet<Ljava/lang/Long;>;"
+    iget-object v4, p0, Lcom/android/server/pm/KeySetManagerService;->mKeySetMapping:Landroid/util/LongSparseArray;
 
-    invoke-virtual {p2, v0, v1}, Landroid/util/LongSparseArray;->get(J)Ljava/lang/Object;
+    invoke-virtual {v4, v1, v2}, Landroid/util/LongSparseArray;->get(J)Ljava/lang/Object;
 
-    move-result-object p2
+    move-result-object v4
 
-    check-cast p2, Landroid/util/ArraySet;
+    check-cast v4, Landroid/util/ArraySet;
 
     .line 145
-    invoke-virtual {p1, p2}, Landroid/util/ArraySet;->containsAll(Ljava/util/Collection;)Z
+    .local v4, "testKeys":Landroid/util/ArraySet;, "Landroid/util/ArraySet<Ljava/lang/Long;>;"
+    invoke-virtual {v3, v4}, Landroid/util/ArraySet;->containsAll(Ljava/util/Collection;)Z
 
-    move-result p1
+    move-result v5
 
-    return p1
+    return v5
 
     .line 137
+    .end local v1  # "id":J
+    .end local v3  # "pkgKeys":Landroid/util/ArraySet;, "Landroid/util/ArraySet<Ljava/lang/Long;>;"
+    .end local v4  # "testKeys":Landroid/util/ArraySet;, "Landroid/util/ArraySet<Ljava/lang/Long;>;"
     :cond_35
-    new-instance p1, Ljava/lang/NullPointerException;
+    new-instance v1, Ljava/lang/NullPointerException;
 
-    const-string p2, "Package has no KeySet data"
+    const-string v2, "Package has no KeySet data"
 
-    invoke-direct {p1, p2}, Ljava/lang/NullPointerException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v1, v2}, Ljava/lang/NullPointerException;-><init>(Ljava/lang/String;)V
 
-    throw p1
+    throw v1
 
     .line 134
     :cond_3d
-    new-instance p1, Ljava/lang/NullPointerException;
+    new-instance v1, Ljava/lang/NullPointerException;
 
-    const-string p2, "Invalid package name"
+    const-string v2, "Invalid package name"
 
-    invoke-direct {p1, p2}, Ljava/lang/NullPointerException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v1, v2}, Ljava/lang/NullPointerException;-><init>(Ljava/lang/String;)V
 
-    throw p1
+    throw v1
 .end method
 
 .method readKeySetListLPw(Lorg/xmlpull/v1/XmlPullParser;)V
-    .registers 9
+    .registers 12
+    .param p1, "parser"  # Lorg/xmlpull/v1/XmlPullParser;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Lorg/xmlpull/v1/XmlPullParserException;,
@@ -2340,140 +2496,156 @@
     move-result v0
 
     .line 782
+    .local v0, "outerDepth":I
     const-wide/16 v1, 0x0
 
     .line 783
+    .local v1, "currentKeySetId":J
     :cond_6
     :goto_6
     invoke-interface {p1}, Lorg/xmlpull/v1/XmlPullParser;->next()I
 
     move-result v3
 
-    const/4 v4, 0x1
+    move v4, v3
 
-    if-eq v3, v4, :cond_69
+    .local v4, "type":I
+    const/4 v5, 0x1
 
-    const/4 v4, 0x3
+    if-eq v3, v5, :cond_6d
 
-    if-ne v3, v4, :cond_16
+    const/4 v3, 0x3
+
+    if-ne v4, v3, :cond_17
 
     .line 784
     invoke-interface {p1}, Lorg/xmlpull/v1/XmlPullParser;->getDepth()I
 
     move-result v5
 
-    if-le v5, v0, :cond_69
+    if-le v5, v0, :cond_6d
 
     .line 785
-    :cond_16
-    if-eq v3, v4, :cond_6
+    :cond_17
+    if-eq v4, v3, :cond_6
 
-    const/4 v4, 0x4
+    const/4 v3, 0x4
 
-    if-ne v3, v4, :cond_1c
+    if-ne v4, v3, :cond_1d
 
     .line 786
     goto :goto_6
 
     .line 788
-    :cond_1c
+    :cond_1d
     invoke-interface {p1}, Lorg/xmlpull/v1/XmlPullParser;->getName()Ljava/lang/String;
 
     move-result-object v3
 
     .line 789
-    const-string v4, "keyset"
+    .local v3, "tagName":Ljava/lang/String;
+    const-string/jumbo v5, "keyset"
 
-    invoke-virtual {v3, v4}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v3, v5}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result v4
+    move-result v5
 
-    const-string v5, "identifier"
+    const-string/jumbo v6, "identifier"
 
-    const/4 v6, 0x0
+    const/4 v7, 0x0
 
-    if-eqz v4, :cond_49
+    if-eqz v5, :cond_4c
 
     .line 790
-    invoke-interface {p1, v6, v5}, Lorg/xmlpull/v1/XmlPullParser;->getAttributeValue(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+    invoke-interface {p1, v7, v6}, Lorg/xmlpull/v1/XmlPullParser;->getAttributeValue(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
 
-    move-result-object v1
+    move-result-object v5
 
     .line 791
-    invoke-static {v1}, Ljava/lang/Long;->parseLong(Ljava/lang/String;)J
+    .local v5, "encodedID":Ljava/lang/String;
+    invoke-static {v5}, Ljava/lang/Long;->parseLong(Ljava/lang/String;)J
 
     move-result-wide v1
 
     .line 792
-    const/4 v3, 0x0
+    const/4 v6, 0x0
 
     .line 793
-    iget-object v4, p0, Lcom/android/server/pm/KeySetManagerService;->mKeySets:Landroid/util/LongSparseArray;
+    .local v6, "refCount":I
+    iget-object v7, p0, Lcom/android/server/pm/KeySetManagerService;->mKeySets:Landroid/util/LongSparseArray;
 
-    new-instance v5, Lcom/android/server/pm/KeySetHandle;
+    new-instance v8, Lcom/android/server/pm/KeySetHandle;
 
-    invoke-direct {v5, v1, v2, v3}, Lcom/android/server/pm/KeySetHandle;-><init>(JI)V
+    invoke-direct {v8, v1, v2, v6}, Lcom/android/server/pm/KeySetHandle;-><init>(JI)V
 
-    invoke-virtual {v4, v1, v2, v5}, Landroid/util/LongSparseArray;->put(JLjava/lang/Object;)V
+    invoke-virtual {v7, v1, v2, v8}, Landroid/util/LongSparseArray;->put(JLjava/lang/Object;)V
 
     .line 794
-    iget-object v3, p0, Lcom/android/server/pm/KeySetManagerService;->mKeySetMapping:Landroid/util/LongSparseArray;
+    iget-object v7, p0, Lcom/android/server/pm/KeySetManagerService;->mKeySetMapping:Landroid/util/LongSparseArray;
 
-    new-instance v4, Landroid/util/ArraySet;
+    new-instance v8, Landroid/util/ArraySet;
 
-    invoke-direct {v4}, Landroid/util/ArraySet;-><init>()V
+    invoke-direct {v8}, Landroid/util/ArraySet;-><init>()V
 
-    invoke-virtual {v3, v1, v2, v4}, Landroid/util/LongSparseArray;->put(JLjava/lang/Object;)V
+    invoke-virtual {v7, v1, v2, v8}, Landroid/util/LongSparseArray;->put(JLjava/lang/Object;)V
 
     .line 795
-    :cond_48
-    goto :goto_68
+    .end local v5  # "encodedID":Ljava/lang/String;
+    .end local v6  # "refCount":I
+    :cond_4b
+    goto :goto_6c
 
-    :cond_49
-    const-string v4, "key-id"
+    :cond_4c
+    const-string/jumbo v5, "key-id"
 
-    invoke-virtual {v3, v4}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v3, v5}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result v3
+    move-result v5
 
-    if-eqz v3, :cond_48
+    if-eqz v5, :cond_4b
 
     .line 796
-    invoke-interface {p1, v6, v5}, Lorg/xmlpull/v1/XmlPullParser;->getAttributeValue(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
-
-    move-result-object v3
-
-    .line 797
-    invoke-static {v3}, Ljava/lang/Long;->parseLong(Ljava/lang/String;)J
-
-    move-result-wide v3
-
-    .line 798
-    iget-object v5, p0, Lcom/android/server/pm/KeySetManagerService;->mKeySetMapping:Landroid/util/LongSparseArray;
-
-    invoke-virtual {v5, v1, v2}, Landroid/util/LongSparseArray;->get(J)Ljava/lang/Object;
+    invoke-interface {p1, v7, v6}, Lorg/xmlpull/v1/XmlPullParser;->getAttributeValue(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
 
     move-result-object v5
 
-    check-cast v5, Landroid/util/ArraySet;
+    .line 797
+    .restart local v5  # "encodedID":Ljava/lang/String;
+    invoke-static {v5}, Ljava/lang/Long;->parseLong(Ljava/lang/String;)J
 
-    invoke-static {v3, v4}, Ljava/lang/Long;->valueOf(J)Ljava/lang/Long;
+    move-result-wide v6
 
-    move-result-object v3
+    .line 798
+    .local v6, "id":J
+    iget-object v8, p0, Lcom/android/server/pm/KeySetManagerService;->mKeySetMapping:Landroid/util/LongSparseArray;
 
-    invoke-virtual {v5, v3}, Landroid/util/ArraySet;->add(Ljava/lang/Object;)Z
+    invoke-virtual {v8, v1, v2}, Landroid/util/LongSparseArray;->get(J)Ljava/lang/Object;
+
+    move-result-object v8
+
+    check-cast v8, Landroid/util/ArraySet;
+
+    invoke-static {v6, v7}, Ljava/lang/Long;->valueOf(J)Ljava/lang/Long;
+
+    move-result-object v9
+
+    invoke-virtual {v8, v9}, Landroid/util/ArraySet;->add(Ljava/lang/Object;)Z
 
     .line 800
-    :goto_68
+    .end local v3  # "tagName":Ljava/lang/String;
+    .end local v5  # "encodedID":Ljava/lang/String;
+    .end local v6  # "id":J
+    :goto_6c
     goto :goto_6
 
     .line 801
-    :cond_69
+    :cond_6d
     return-void
 .end method
 
 .method readKeySetsLPw(Lorg/xmlpull/v1/XmlPullParser;Landroid/util/ArrayMap;)V
-    .registers 10
+    .registers 15
+    .param p1, "parser"  # Lorg/xmlpull/v1/XmlPullParser;
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(",
@@ -2493,206 +2665,224 @@
     .end annotation
 
     .line 724
-    nop
+    .local p2, "keySetRefCounts":Landroid/util/ArrayMap;, "Landroid/util/ArrayMap<Ljava/lang/Long;Ljava/lang/Integer;>;"
+    const-wide/16 v0, 0x0
 
     .line 725
+    .local v0, "currentKeySetId":J
     invoke-interface {p1}, Lorg/xmlpull/v1/XmlPullParser;->getDepth()I
 
-    move-result v0
+    move-result v2
 
     .line 726
-    const/4 v1, 0x0
+    .local v2, "outerDepth":I
+    const/4 v3, 0x0
 
-    const-string/jumbo v2, "version"
+    const-string/jumbo v4, "version"
 
-    invoke-interface {p1, v1, v2}, Lorg/xmlpull/v1/XmlPullParser;->getAttributeValue(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+    invoke-interface {p1, v3, v4}, Lorg/xmlpull/v1/XmlPullParser;->getAttributeValue(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
 
-    move-result-object v2
+    move-result-object v4
 
     .line 727
-    const/4 v3, 0x1
+    .local v4, "recordedVersionStr":Ljava/lang/String;
+    const/4 v5, 0x1
 
-    const/4 v4, 0x3
+    const/4 v6, 0x3
 
-    if-nez v2, :cond_3b
+    if-nez v4, :cond_3d
 
     .line 730
-    :cond_11
-    :goto_11
+    :cond_12
+    :goto_12
     invoke-interface {p1}, Lorg/xmlpull/v1/XmlPullParser;->next()I
 
-    move-result p2
+    move-result v3
 
-    if-eq p2, v3, :cond_20
+    move v7, v3
 
-    if-ne p2, v4, :cond_11
+    .local v7, "type":I
+    if-eq v3, v5, :cond_22
+
+    if-ne v7, v6, :cond_12
 
     .line 731
     invoke-interface {p1}, Lorg/xmlpull/v1/XmlPullParser;->getDepth()I
 
-    move-result p2
+    move-result v3
 
-    if-le p2, v0, :cond_20
+    if-le v3, v2, :cond_22
 
     .line 732
-    goto :goto_11
+    goto :goto_12
 
     .line 736
-    :cond_20
-    iget-object p1, p0, Lcom/android/server/pm/KeySetManagerService;->mPackages:Landroid/util/ArrayMap;
+    :cond_22
+    iget-object v3, p0, Lcom/android/server/pm/KeySetManagerService;->mPackages:Landroid/util/ArrayMap;
 
-    invoke-virtual {p1}, Landroid/util/ArrayMap;->values()Ljava/util/Collection;
+    invoke-virtual {v3}, Landroid/util/ArrayMap;->values()Ljava/util/Collection;
 
-    move-result-object p1
+    move-result-object v3
 
-    invoke-interface {p1}, Ljava/util/Collection;->iterator()Ljava/util/Iterator;
+    invoke-interface {v3}, Ljava/util/Collection;->iterator()Ljava/util/Iterator;
 
-    move-result-object p1
+    move-result-object v3
 
-    :goto_2a
-    invoke-interface {p1}, Ljava/util/Iterator;->hasNext()Z
+    :goto_2c
+    invoke-interface {v3}, Ljava/util/Iterator;->hasNext()Z
 
-    move-result p2
+    move-result v5
 
-    if-eqz p2, :cond_3a
+    if-eqz v5, :cond_3c
 
-    invoke-interface {p1}, Ljava/util/Iterator;->next()Ljava/lang/Object;
+    invoke-interface {v3}, Ljava/util/Iterator;->next()Ljava/lang/Object;
 
-    move-result-object p2
+    move-result-object v5
 
-    check-cast p2, Lcom/android/server/pm/PackageSetting;
+    check-cast v5, Lcom/android/server/pm/PackageSetting;
 
     .line 737
-    invoke-direct {p0, p2}, Lcom/android/server/pm/KeySetManagerService;->clearPackageKeySetDataLPw(Lcom/android/server/pm/PackageSetting;)V
+    .local v5, "p":Lcom/android/server/pm/PackageSetting;
+    invoke-direct {p0, v5}, Lcom/android/server/pm/KeySetManagerService;->clearPackageKeySetDataLPw(Lcom/android/server/pm/PackageSetting;)V
 
     .line 738
-    goto :goto_2a
+    .end local v5  # "p":Lcom/android/server/pm/PackageSetting;
+    goto :goto_2c
 
     .line 739
-    :cond_3a
+    :cond_3c
     return-void
 
     .line 741
-    :cond_3b
-    invoke-static {v2}, Ljava/lang/Integer;->parseInt(Ljava/lang/String;)I
+    .end local v7  # "type":I
+    :cond_3d
+    invoke-static {v4}, Ljava/lang/Integer;->parseInt(Ljava/lang/String;)I
+
+    move-result v7
 
     .line 742
-    :cond_3e
-    :goto_3e
+    .local v7, "recordedVersion":I
+    :cond_41
+    :goto_41
     invoke-interface {p1}, Lorg/xmlpull/v1/XmlPullParser;->next()I
 
-    move-result v2
+    move-result v8
 
-    if-eq v2, v3, :cond_97
+    move v9, v8
 
-    if-ne v2, v4, :cond_4c
+    .local v9, "type":I
+    if-eq v8, v5, :cond_9f
+
+    if-ne v9, v6, :cond_50
 
     .line 743
     invoke-interface {p1}, Lorg/xmlpull/v1/XmlPullParser;->getDepth()I
 
-    move-result v5
+    move-result v8
 
-    if-le v5, v0, :cond_97
+    if-le v8, v2, :cond_9f
 
     .line 744
-    :cond_4c
-    if-eq v2, v4, :cond_3e
+    :cond_50
+    if-eq v9, v6, :cond_41
 
-    const/4 v5, 0x4
+    const/4 v8, 0x4
 
-    if-ne v2, v5, :cond_52
+    if-ne v9, v8, :cond_56
 
     .line 745
-    goto :goto_3e
+    goto :goto_41
 
     .line 747
-    :cond_52
+    :cond_56
     invoke-interface {p1}, Lorg/xmlpull/v1/XmlPullParser;->getName()Ljava/lang/String;
 
-    move-result-object v2
+    move-result-object v8
 
     .line 748
-    const-string v5, "keys"
+    .local v8, "tagName":Ljava/lang/String;
+    const-string/jumbo v10, "keys"
 
-    invoke-virtual {v2, v5}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v8, v10}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result v5
+    move-result v10
 
-    if-eqz v5, :cond_62
+    if-eqz v10, :cond_67
 
     .line 749
     invoke-virtual {p0, p1}, Lcom/android/server/pm/KeySetManagerService;->readKeysLPw(Lorg/xmlpull/v1/XmlPullParser;)V
 
-    goto :goto_96
+    goto :goto_9e
 
     .line 750
-    :cond_62
-    const-string v5, "keysets"
+    :cond_67
+    const-string/jumbo v10, "keysets"
 
-    invoke-virtual {v2, v5}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v8, v10}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result v5
+    move-result v10
 
-    if-eqz v5, :cond_6e
+    if-eqz v10, :cond_74
 
     .line 751
     invoke-virtual {p0, p1}, Lcom/android/server/pm/KeySetManagerService;->readKeySetListLPw(Lorg/xmlpull/v1/XmlPullParser;)V
 
-    goto :goto_96
+    goto :goto_9e
 
     .line 752
-    :cond_6e
-    const-string v5, "lastIssuedKeyId"
+    :cond_74
+    const-string/jumbo v10, "lastIssuedKeyId"
 
-    invoke-virtual {v2, v5}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v8, v10}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result v5
+    move-result v10
 
-    const-string/jumbo v6, "value"
+    const-string/jumbo v11, "value"
 
-    if-eqz v5, :cond_84
+    if-eqz v10, :cond_8b
 
     .line 753
-    invoke-interface {p1, v1, v6}, Lorg/xmlpull/v1/XmlPullParser;->getAttributeValue(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+    invoke-interface {p1, v3, v11}, Lorg/xmlpull/v1/XmlPullParser;->getAttributeValue(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
 
-    move-result-object v2
+    move-result-object v10
 
-    invoke-static {v2}, Ljava/lang/Long;->parseLong(Ljava/lang/String;)J
+    invoke-static {v10}, Ljava/lang/Long;->parseLong(Ljava/lang/String;)J
 
-    move-result-wide v5
+    move-result-wide v10
 
-    iput-wide v5, p0, Lcom/android/server/pm/KeySetManagerService;->lastIssuedKeyId:J
+    iput-wide v10, p0, Lcom/android/server/pm/KeySetManagerService;->lastIssuedKeyId:J
 
-    goto :goto_96
+    goto :goto_9e
 
     .line 754
-    :cond_84
-    const-string v5, "lastIssuedKeySetId"
+    :cond_8b
+    const-string/jumbo v10, "lastIssuedKeySetId"
 
-    invoke-virtual {v2, v5}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v8, v10}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result v2
+    move-result v10
 
-    if-eqz v2, :cond_96
+    if-eqz v10, :cond_9e
 
     .line 755
-    invoke-interface {p1, v1, v6}, Lorg/xmlpull/v1/XmlPullParser;->getAttributeValue(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+    invoke-interface {p1, v3, v11}, Lorg/xmlpull/v1/XmlPullParser;->getAttributeValue(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
 
-    move-result-object v2
+    move-result-object v10
 
-    invoke-static {v2}, Ljava/lang/Long;->parseLong(Ljava/lang/String;)J
+    invoke-static {v10}, Ljava/lang/Long;->parseLong(Ljava/lang/String;)J
 
-    move-result-wide v5
+    move-result-wide v10
 
-    iput-wide v5, p0, Lcom/android/server/pm/KeySetManagerService;->lastIssuedKeySetId:J
+    iput-wide v10, p0, Lcom/android/server/pm/KeySetManagerService;->lastIssuedKeySetId:J
 
     .line 757
-    :cond_96
-    :goto_96
-    goto :goto_3e
+    .end local v8  # "tagName":Ljava/lang/String;
+    :cond_9e
+    :goto_9e
+    goto :goto_41
 
     .line 759
-    :cond_97
+    :cond_9f
     invoke-direct {p0, p2}, Lcom/android/server/pm/KeySetManagerService;->addRefCountsFromSavedPackagesLPw(Landroid/util/ArrayMap;)V
 
     .line 760
@@ -2701,6 +2891,7 @@
 
 .method readKeysLPw(Lorg/xmlpull/v1/XmlPullParser;)V
     .registers 6
+    .param p1, "parser"  # Lorg/xmlpull/v1/XmlPullParser;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Lorg/xmlpull/v1/XmlPullParserException;,
@@ -2714,67 +2905,74 @@
     move-result v0
 
     .line 766
+    .local v0, "outerDepth":I
     :cond_4
     :goto_4
     invoke-interface {p1}, Lorg/xmlpull/v1/XmlPullParser;->next()I
 
     move-result v1
 
-    const/4 v2, 0x1
+    move v2, v1
 
-    if-eq v1, v2, :cond_2b
+    .local v2, "type":I
+    const/4 v3, 0x1
 
-    const/4 v2, 0x3
+    if-eq v1, v3, :cond_2c
 
-    if-ne v1, v2, :cond_14
+    const/4 v1, 0x3
+
+    if-ne v2, v1, :cond_15
 
     .line 767
     invoke-interface {p1}, Lorg/xmlpull/v1/XmlPullParser;->getDepth()I
 
     move-result v3
 
-    if-le v3, v0, :cond_2b
+    if-le v3, v0, :cond_2c
 
     .line 768
-    :cond_14
-    if-eq v1, v2, :cond_4
+    :cond_15
+    if-eq v2, v1, :cond_4
 
-    const/4 v2, 0x4
+    const/4 v1, 0x4
 
-    if-ne v1, v2, :cond_1a
+    if-ne v2, v1, :cond_1b
 
     .line 769
     goto :goto_4
 
     .line 771
-    :cond_1a
+    :cond_1b
     invoke-interface {p1}, Lorg/xmlpull/v1/XmlPullParser;->getName()Ljava/lang/String;
 
     move-result-object v1
 
     .line 772
-    const-string/jumbo v2, "public-key"
+    .local v1, "tagName":Ljava/lang/String;
+    const-string/jumbo v3, "public-key"
 
-    invoke-virtual {v1, v2}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v1, v3}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result v1
+    move-result v3
 
-    if-eqz v1, :cond_2a
+    if-eqz v3, :cond_2b
 
     .line 773
     invoke-virtual {p0, p1}, Lcom/android/server/pm/KeySetManagerService;->readPublicKeyLPw(Lorg/xmlpull/v1/XmlPullParser;)V
 
     .line 775
-    :cond_2a
+    .end local v1  # "tagName":Ljava/lang/String;
+    :cond_2b
     goto :goto_4
 
     .line 776
-    :cond_2b
+    :cond_2c
     return-void
 .end method
 
 .method readPublicKeyLPw(Lorg/xmlpull/v1/XmlPullParser;)V
-    .registers 13
+    .registers 16
+    .param p1, "parser"  # Lorg/xmlpull/v1/XmlPullParser;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Lorg/xmlpull/v1/XmlPullParserException;
@@ -2784,62 +2982,72 @@
     .line 805
     const/4 v0, 0x0
 
-    const-string v1, "identifier"
+    const-string/jumbo v1, "identifier"
 
     invoke-interface {p1, v0, v1}, Lorg/xmlpull/v1/XmlPullParser;->getAttributeValue(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
 
     move-result-object v1
 
     .line 806
+    .local v1, "encodedID":Ljava/lang/String;
     invoke-static {v1}, Ljava/lang/Long;->parseLong(Ljava/lang/String;)J
 
     move-result-wide v9
 
     .line 807
-    nop
+    .local v9, "identifier":J
+    const/4 v11, 0x0
 
     .line 808
-    const-string/jumbo v1, "value"
+    .local v11, "refCount":I
+    const-string/jumbo v2, "value"
 
-    invoke-interface {p1, v0, v1}, Lorg/xmlpull/v1/XmlPullParser;->getAttributeValue(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+    invoke-interface {p1, v0, v2}, Lorg/xmlpull/v1/XmlPullParser;->getAttributeValue(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
     .line 809
-    invoke-static {p1}, Landroid/content/pm/PackageParser;->parsePublicKey(Ljava/lang/String;)Ljava/security/PublicKey;
+    .local v0, "encodedPublicKey":Ljava/lang/String;
+    invoke-static {v0}, Landroid/content/pm/PackageParser;->parsePublicKey(Ljava/lang/String;)Ljava/security/PublicKey;
 
-    move-result-object v7
+    move-result-object v12
 
     .line 810
-    if-eqz v7, :cond_28
+    .local v12, "pub":Ljava/security/PublicKey;
+    if-eqz v12, :cond_2a
 
     .line 811
-    new-instance p1, Lcom/android/server/pm/KeySetManagerService$PublicKeyHandle;
+    new-instance v13, Lcom/android/server/pm/KeySetManagerService$PublicKeyHandle;
 
     const/4 v8, 0x0
 
-    const/4 v6, 0x0
-
-    move-object v2, p1
+    move-object v2, v13
 
     move-object v3, p0
 
     move-wide v4, v9
 
+    move v6, v11
+
+    move-object v7, v12
+
     invoke-direct/range {v2 .. v8}, Lcom/android/server/pm/KeySetManagerService$PublicKeyHandle;-><init>(Lcom/android/server/pm/KeySetManagerService;JILjava/security/PublicKey;Lcom/android/server/pm/KeySetManagerService$1;)V
 
     .line 812
-    iget-object v0, p0, Lcom/android/server/pm/KeySetManagerService;->mPublicKeys:Landroid/util/LongSparseArray;
+    .local v2, "pkh":Lcom/android/server/pm/KeySetManagerService$PublicKeyHandle;
+    iget-object v3, p0, Lcom/android/server/pm/KeySetManagerService;->mPublicKeys:Landroid/util/LongSparseArray;
 
-    invoke-virtual {v0, v9, v10, p1}, Landroid/util/LongSparseArray;->put(JLjava/lang/Object;)V
+    invoke-virtual {v3, v9, v10, v2}, Landroid/util/LongSparseArray;->put(JLjava/lang/Object;)V
 
     .line 814
-    :cond_28
+    .end local v2  # "pkh":Lcom/android/server/pm/KeySetManagerService$PublicKeyHandle;
+    :cond_2a
     return-void
 .end method
 
 .method public removeAppKeySetDataLPw(Ljava/lang/String;)V
-    .registers 6
+    .registers 9
+    .param p1, "packageName"  # Ljava/lang/String;
 
     .line 578
     iget-object v0, p0, Lcom/android/server/pm/KeySetManagerService;->mPackages:Landroid/util/ArrayMap;
@@ -2851,6 +3059,7 @@
     check-cast v0, Lcom/android/server/pm/PackageSetting;
 
     .line 579
+    .local v0, "pkg":Lcom/android/server/pm/PackageSetting;
     new-instance v1, Ljava/lang/StringBuilder;
 
     invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
@@ -2861,62 +3070,66 @@
 
     invoke-virtual {v1, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string p1, "does not have a corresponding entry in mPackages."
+    const-string v2, "does not have a corresponding entry in mPackages."
 
-    invoke-virtual {v1, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v1
 
-    invoke-static {v0, p1}, Lcom/android/internal/util/Preconditions;->checkNotNull(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+    invoke-static {v0, v1}, Lcom/android/internal/util/Preconditions;->checkNotNull(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
 
     .line 581
-    iget-object p1, v0, Lcom/android/server/pm/PackageSetting;->keySetData:Lcom/android/server/pm/PackageKeySetData;
+    iget-object v1, v0, Lcom/android/server/pm/PackageSetting;->keySetData:Lcom/android/server/pm/PackageKeySetData;
 
-    invoke-virtual {p1}, Lcom/android/server/pm/PackageKeySetData;->getProperSigningKeySet()J
+    invoke-virtual {v1}, Lcom/android/server/pm/PackageKeySetData;->getProperSigningKeySet()J
 
     move-result-wide v1
 
     .line 582
+    .local v1, "signingKeySetId":J
     invoke-direct {p0, v1, v2}, Lcom/android/server/pm/KeySetManagerService;->decrementKeySetLPw(J)V
 
     .line 583
-    iget-object p1, v0, Lcom/android/server/pm/PackageSetting;->keySetData:Lcom/android/server/pm/PackageKeySetData;
+    iget-object v3, v0, Lcom/android/server/pm/PackageSetting;->keySetData:Lcom/android/server/pm/PackageKeySetData;
 
-    invoke-virtual {p1}, Lcom/android/server/pm/PackageKeySetData;->getAliases()Landroid/util/ArrayMap;
+    invoke-virtual {v3}, Lcom/android/server/pm/PackageKeySetData;->getAliases()Landroid/util/ArrayMap;
 
-    move-result-object p1
+    move-result-object v3
 
     .line 584
-    const/4 v1, 0x0
+    .local v3, "definedKeySets":Landroid/util/ArrayMap;, "Landroid/util/ArrayMap<Ljava/lang/String;Ljava/lang/Long;>;"
+    const/4 v4, 0x0
 
+    .local v4, "i":I
     :goto_32
-    invoke-virtual {p1}, Landroid/util/ArrayMap;->size()I
+    invoke-virtual {v3}, Landroid/util/ArrayMap;->size()I
 
-    move-result v2
+    move-result v5
 
-    if-ge v1, v2, :cond_48
+    if-ge v4, v5, :cond_48
 
     .line 585
-    invoke-virtual {p1, v1}, Landroid/util/ArrayMap;->valueAt(I)Ljava/lang/Object;
+    invoke-virtual {v3, v4}, Landroid/util/ArrayMap;->valueAt(I)Ljava/lang/Object;
 
-    move-result-object v2
+    move-result-object v5
 
-    check-cast v2, Ljava/lang/Long;
+    check-cast v5, Ljava/lang/Long;
 
-    invoke-virtual {v2}, Ljava/lang/Long;->longValue()J
+    invoke-virtual {v5}, Ljava/lang/Long;->longValue()J
 
-    move-result-wide v2
+    move-result-wide v5
 
-    invoke-direct {p0, v2, v3}, Lcom/android/server/pm/KeySetManagerService;->decrementKeySetLPw(J)V
+    invoke-direct {p0, v5, v6}, Lcom/android/server/pm/KeySetManagerService;->decrementKeySetLPw(J)V
 
     .line 584
-    add-int/lit8 v1, v1, 0x1
+    add-int/lit8 v4, v4, 0x1
 
     goto :goto_32
 
     .line 589
+    .end local v4  # "i":I
     :cond_48
     invoke-direct {p0, v0}, Lcom/android/server/pm/KeySetManagerService;->clearPackageKeySetDataLPw(Lcom/android/server/pm/PackageSetting;)V
 
@@ -2925,120 +3138,126 @@
 .end method
 
 .method public shouldCheckUpgradeKeySetLocked(Lcom/android/server/pm/PackageSettingBase;I)Z
-    .registers 7
+    .registers 9
+    .param p1, "oldPs"  # Lcom/android/server/pm/PackageSettingBase;
+    .param p2, "scanFlags"  # I
 
     .line 348
     const/4 v0, 0x0
 
     if-eqz p1, :cond_5c
 
-    and-int/lit16 p2, p2, 0x200
+    and-int/lit16 v1, p2, 0x200
 
-    if-nez p2, :cond_5c
+    if-nez v1, :cond_5c
 
     invoke-virtual {p1}, Lcom/android/server/pm/PackageSettingBase;->isSharedUser()Z
 
-    move-result p2
+    move-result v1
 
-    if-nez p2, :cond_5c
+    if-nez v1, :cond_5c
 
-    iget-object p2, p1, Lcom/android/server/pm/PackageSettingBase;->keySetData:Lcom/android/server/pm/PackageKeySetData;
+    iget-object v1, p1, Lcom/android/server/pm/PackageSettingBase;->keySetData:Lcom/android/server/pm/PackageKeySetData;
 
     .line 349
-    invoke-virtual {p2}, Lcom/android/server/pm/PackageKeySetData;->isUsingUpgradeKeySets()Z
+    invoke-virtual {v1}, Lcom/android/server/pm/PackageKeySetData;->isUsingUpgradeKeySets()Z
 
-    move-result p2
+    move-result v1
 
-    if-nez p2, :cond_16
+    if-nez v1, :cond_16
 
     goto :goto_5c
 
     .line 353
     :cond_16
-    iget-object p2, p1, Lcom/android/server/pm/PackageSettingBase;->keySetData:Lcom/android/server/pm/PackageKeySetData;
+    iget-object v1, p1, Lcom/android/server/pm/PackageSettingBase;->keySetData:Lcom/android/server/pm/PackageKeySetData;
 
-    invoke-virtual {p2}, Lcom/android/server/pm/PackageKeySetData;->getUpgradeKeySets()[J
+    invoke-virtual {v1}, Lcom/android/server/pm/PackageKeySetData;->getUpgradeKeySets()[J
 
-    move-result-object p2
+    move-result-object v1
 
     .line 354
-    move v1, v0
+    .local v1, "upgradeKeySets":[J
+    const/4 v2, 0x0
 
+    .local v2, "i":I
     :goto_1d
-    array-length v2, p2
+    array-length v3, v1
 
-    if-ge v1, v2, :cond_5a
+    if-ge v2, v3, :cond_5a
 
     .line 355
-    aget-wide v2, p2, v1
+    aget-wide v3, v1, v2
 
-    invoke-virtual {p0, v2, v3}, Lcom/android/server/pm/KeySetManagerService;->isIdValidKeySetId(J)Z
+    invoke-virtual {p0, v3, v4}, Lcom/android/server/pm/KeySetManagerService;->isIdValidKeySetId(J)Z
 
-    move-result v2
+    move-result v3
 
-    if-nez v2, :cond_57
+    if-nez v3, :cond_57
 
     .line 356
-    new-instance v2, Ljava/lang/StringBuilder;
+    new-instance v3, Ljava/lang/StringBuilder;
 
-    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v3, "Package "
+    const-string v4, "Package "
 
-    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     .line 357
-    iget-object v3, p1, Lcom/android/server/pm/PackageSettingBase;->name:Ljava/lang/String;
+    iget-object v4, p1, Lcom/android/server/pm/PackageSettingBase;->name:Ljava/lang/String;
 
-    if-eqz v3, :cond_39
+    if-eqz v4, :cond_39
 
-    iget-object p1, p1, Lcom/android/server/pm/PackageSettingBase;->name:Ljava/lang/String;
+    iget-object v4, p1, Lcom/android/server/pm/PackageSettingBase;->name:Ljava/lang/String;
 
     goto :goto_3b
 
     :cond_39
-    const-string p1, "<null>"
+    const-string v4, "<null>"
 
     :goto_3b
-    invoke-virtual {v2, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string p1, " contains upgrade-key-set reference to unknown key-set: "
+    const-string v4, " contains upgrade-key-set reference to unknown key-set: "
 
-    invoke-virtual {v2, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    aget-wide p1, p2, v1
+    aget-wide v4, v1, v2
 
-    invoke-virtual {v2, p1, p2}, Ljava/lang/StringBuilder;->append(J)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v4, v5}, Ljava/lang/StringBuilder;->append(J)Ljava/lang/StringBuilder;
 
-    const-string p1, " reverting to signatures check."
+    const-string v4, " reverting to signatures check."
 
-    invoke-virtual {v2, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v3
 
     .line 356
-    const-string p2, "KeySetManagerService"
+    const-string v4, "KeySetManagerService"
 
-    invoke-static {p2, p1}, Landroid/util/Slog;->wtf(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v4, v3}, Landroid/util/Slog;->wtf(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 361
     return v0
 
     .line 354
     :cond_57
-    add-int/lit8 v1, v1, 0x1
+    add-int/lit8 v2, v2, 0x1
 
     goto :goto_1d
 
     .line 364
+    .end local v2  # "i":I
     :cond_5a
-    const/4 p1, 0x1
+    const/4 v0, 0x1
 
-    return p1
+    return v0
 
     .line 350
+    .end local v1  # "upgradeKeySets":[J
     :cond_5c
     :goto_5c
     return v0
@@ -3046,6 +3265,7 @@
 
 .method writeKeySetManagerServiceLPr(Lorg/xmlpull/v1/XmlSerializer;)V
     .registers 9
+    .param p1, "serializer"  # Lorg/xmlpull/v1/XmlSerializer;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Ljava/io/IOException;
@@ -3053,7 +3273,7 @@
     .end annotation
 
     .line 677
-    const-string v0, "keyset-settings"
+    const-string/jumbo v0, "keyset-settings"
 
     const/4 v1, 0x0
 
@@ -3077,7 +3297,7 @@
     invoke-virtual {p0, p1}, Lcom/android/server/pm/KeySetManagerService;->writeKeySetsLPr(Lorg/xmlpull/v1/XmlSerializer;)V
 
     .line 681
-    const-string v2, "lastIssuedKeyId"
+    const-string/jumbo v2, "lastIssuedKeyId"
 
     invoke-interface {p1, v1, v2}, Lorg/xmlpull/v1/XmlSerializer;->startTag(Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
 
@@ -3096,7 +3316,7 @@
     invoke-interface {p1, v1, v2}, Lorg/xmlpull/v1/XmlSerializer;->endTag(Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
 
     .line 684
-    const-string v2, "lastIssuedKeySetId"
+    const-string/jumbo v2, "lastIssuedKeySetId"
 
     invoke-interface {p1, v1, v2}, Lorg/xmlpull/v1/XmlSerializer;->startTag(Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
 
@@ -3120,7 +3340,8 @@
 .end method
 
 .method writeKeySetsLPr(Lorg/xmlpull/v1/XmlSerializer;)V
-    .registers 11
+    .registers 15
+    .param p1, "serializer"  # Lorg/xmlpull/v1/XmlSerializer;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Ljava/io/IOException;
@@ -3128,7 +3349,7 @@
     .end annotation
 
     .line 705
-    const-string v0, "keysets"
+    const-string/jumbo v0, "keysets"
 
     const/4 v1, 0x0
 
@@ -3137,14 +3358,15 @@
     .line 706
     const/4 v2, 0x0
 
-    :goto_7
+    .local v2, "keySetIndex":I
+    :goto_8
     iget-object v3, p0, Lcom/android/server/pm/KeySetManagerService;->mKeySetMapping:Landroid/util/LongSparseArray;
 
     invoke-virtual {v3}, Landroid/util/LongSparseArray;->size()I
 
     move-result v3
 
-    if-ge v2, v3, :cond_55
+    if-ge v2, v3, :cond_59
 
     .line 707
     iget-object v3, p0, Lcom/android/server/pm/KeySetManagerService;->mKeySetMapping:Landroid/util/LongSparseArray;
@@ -3154,6 +3376,7 @@
     move-result-wide v3
 
     .line 708
+    .local v3, "id":J
     iget-object v5, p0, Lcom/android/server/pm/KeySetManagerService;->mKeySetMapping:Landroid/util/LongSparseArray;
 
     invoke-virtual {v5, v2}, Landroid/util/LongSparseArray;->valueAt(I)Ljava/lang/Object;
@@ -3163,70 +3386,76 @@
     check-cast v5, Landroid/util/ArraySet;
 
     .line 709
-    const-string v6, "keyset"
+    .local v5, "keys":Landroid/util/ArraySet;, "Landroid/util/ArraySet<Ljava/lang/Long;>;"
+    const-string/jumbo v6, "keyset"
 
     invoke-interface {p1, v1, v6}, Lorg/xmlpull/v1/XmlSerializer;->startTag(Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
 
     .line 710
     invoke-static {v3, v4}, Ljava/lang/Long;->toString(J)Ljava/lang/String;
 
-    move-result-object v3
+    move-result-object v7
 
-    const-string v4, "identifier"
+    const-string/jumbo v8, "identifier"
 
-    invoke-interface {p1, v1, v4, v3}, Lorg/xmlpull/v1/XmlSerializer;->attribute(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
+    invoke-interface {p1, v1, v8, v7}, Lorg/xmlpull/v1/XmlSerializer;->attribute(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
 
     .line 711
     invoke-virtual {v5}, Landroid/util/ArraySet;->iterator()Ljava/util/Iterator;
 
-    move-result-object v3
-
-    :goto_2f
-    invoke-interface {v3}, Ljava/util/Iterator;->hasNext()Z
-
-    move-result v5
-
-    if-eqz v5, :cond_4f
-
-    invoke-interface {v3}, Ljava/util/Iterator;->next()Ljava/lang/Object;
-
-    move-result-object v5
-
-    check-cast v5, Ljava/lang/Long;
-
-    invoke-virtual {v5}, Ljava/lang/Long;->longValue()J
-
-    move-result-wide v7
-
-    .line 712
-    const-string v5, "key-id"
-
-    invoke-interface {p1, v1, v5}, Lorg/xmlpull/v1/XmlSerializer;->startTag(Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
-
-    .line 713
-    invoke-static {v7, v8}, Ljava/lang/Long;->toString(J)Ljava/lang/String;
-
     move-result-object v7
 
-    invoke-interface {p1, v1, v4, v7}, Lorg/xmlpull/v1/XmlSerializer;->attribute(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
+    :goto_32
+    invoke-interface {v7}, Ljava/util/Iterator;->hasNext()Z
+
+    move-result v9
+
+    if-eqz v9, :cond_53
+
+    invoke-interface {v7}, Ljava/util/Iterator;->next()Ljava/lang/Object;
+
+    move-result-object v9
+
+    check-cast v9, Ljava/lang/Long;
+
+    invoke-virtual {v9}, Ljava/lang/Long;->longValue()J
+
+    move-result-wide v9
+
+    .line 712
+    .local v9, "keyId":J
+    const-string/jumbo v11, "key-id"
+
+    invoke-interface {p1, v1, v11}, Lorg/xmlpull/v1/XmlSerializer;->startTag(Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
+
+    .line 713
+    invoke-static {v9, v10}, Ljava/lang/Long;->toString(J)Ljava/lang/String;
+
+    move-result-object v12
+
+    invoke-interface {p1, v1, v8, v12}, Lorg/xmlpull/v1/XmlSerializer;->attribute(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
 
     .line 714
-    invoke-interface {p1, v1, v5}, Lorg/xmlpull/v1/XmlSerializer;->endTag(Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
+    invoke-interface {p1, v1, v11}, Lorg/xmlpull/v1/XmlSerializer;->endTag(Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
 
     .line 715
-    goto :goto_2f
+    .end local v9  # "keyId":J
+    goto :goto_32
 
     .line 716
-    :cond_4f
+    :cond_53
     invoke-interface {p1, v1, v6}, Lorg/xmlpull/v1/XmlSerializer;->endTag(Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
 
     .line 706
+    .end local v3  # "id":J
+    .end local v5  # "keys":Landroid/util/ArraySet;, "Landroid/util/ArraySet<Ljava/lang/Long;>;"
     add-int/lit8 v2, v2, 0x1
 
-    goto :goto_7
+    goto :goto_8
 
     .line 718
-    :cond_55
+    .end local v2  # "keySetIndex":I
+    :cond_59
     invoke-interface {p1, v1, v0}, Lorg/xmlpull/v1/XmlSerializer;->endTag(Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
 
     .line 719
@@ -3234,7 +3463,8 @@
 .end method
 
 .method writePublicKeysLPr(Lorg/xmlpull/v1/XmlSerializer;)V
-    .registers 9
+    .registers 12
+    .param p1, "serializer"  # Lorg/xmlpull/v1/XmlSerializer;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Ljava/io/IOException;
@@ -3242,7 +3472,7 @@
     .end annotation
 
     .line 691
-    const-string v0, "keys"
+    const-string/jumbo v0, "keys"
 
     const/4 v1, 0x0
 
@@ -3251,14 +3481,15 @@
     .line 692
     const/4 v2, 0x0
 
-    :goto_7
+    .local v2, "pKeyIndex":I
+    :goto_8
     iget-object v3, p0, Lcom/android/server/pm/KeySetManagerService;->mPublicKeys:Landroid/util/LongSparseArray;
 
     invoke-virtual {v3}, Landroid/util/LongSparseArray;->size()I
 
     move-result v3
 
-    if-ge v2, v3, :cond_40
+    if-ge v2, v3, :cond_42
 
     .line 693
     iget-object v3, p0, Lcom/android/server/pm/KeySetManagerService;->mPublicKeys:Landroid/util/LongSparseArray;
@@ -3268,6 +3499,7 @@
     move-result-wide v3
 
     .line 694
+    .local v3, "id":J
     iget-object v5, p0, Lcom/android/server/pm/KeySetManagerService;->mPublicKeys:Landroid/util/LongSparseArray;
 
     invoke-virtual {v5, v2}, Landroid/util/LongSparseArray;->valueAt(I)Ljava/lang/Object;
@@ -3277,43 +3509,49 @@
     check-cast v5, Lcom/android/server/pm/KeySetManagerService$PublicKeyHandle;
 
     .line 695
+    .local v5, "pkh":Lcom/android/server/pm/KeySetManagerService$PublicKeyHandle;
     invoke-virtual {v5}, Lcom/android/server/pm/KeySetManagerService$PublicKeyHandle;->getKey()Ljava/security/PublicKey;
 
-    move-result-object v5
+    move-result-object v6
 
-    invoke-virtual {p0, v5}, Lcom/android/server/pm/KeySetManagerService;->encodePublicKey(Ljava/security/PublicKey;)Ljava/lang/String;
+    invoke-virtual {p0, v6}, Lcom/android/server/pm/KeySetManagerService;->encodePublicKey(Ljava/security/PublicKey;)Ljava/lang/String;
 
-    move-result-object v5
+    move-result-object v6
 
     .line 696
-    const-string/jumbo v6, "public-key"
+    .local v6, "encodedKey":Ljava/lang/String;
+    const-string/jumbo v7, "public-key"
 
-    invoke-interface {p1, v1, v6}, Lorg/xmlpull/v1/XmlSerializer;->startTag(Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
+    invoke-interface {p1, v1, v7}, Lorg/xmlpull/v1/XmlSerializer;->startTag(Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
 
     .line 697
     invoke-static {v3, v4}, Ljava/lang/Long;->toString(J)Ljava/lang/String;
 
-    move-result-object v3
+    move-result-object v8
 
-    const-string v4, "identifier"
+    const-string/jumbo v9, "identifier"
 
-    invoke-interface {p1, v1, v4, v3}, Lorg/xmlpull/v1/XmlSerializer;->attribute(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
+    invoke-interface {p1, v1, v9, v8}, Lorg/xmlpull/v1/XmlSerializer;->attribute(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
 
     .line 698
-    const-string/jumbo v3, "value"
+    const-string/jumbo v8, "value"
 
-    invoke-interface {p1, v1, v3, v5}, Lorg/xmlpull/v1/XmlSerializer;->attribute(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
+    invoke-interface {p1, v1, v8, v6}, Lorg/xmlpull/v1/XmlSerializer;->attribute(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
 
     .line 699
-    invoke-interface {p1, v1, v6}, Lorg/xmlpull/v1/XmlSerializer;->endTag(Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
+    invoke-interface {p1, v1, v7}, Lorg/xmlpull/v1/XmlSerializer;->endTag(Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
 
     .line 692
+    .end local v3  # "id":J
+    .end local v5  # "pkh":Lcom/android/server/pm/KeySetManagerService$PublicKeyHandle;
+    .end local v6  # "encodedKey":Ljava/lang/String;
     add-int/lit8 v2, v2, 0x1
 
-    goto :goto_7
+    goto :goto_8
 
     .line 701
-    :cond_40
+    .end local v2  # "pKeyIndex":I
+    :cond_42
     invoke-interface {p1, v1, v0}, Lorg/xmlpull/v1/XmlSerializer;->endTag(Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
 
     .line 702

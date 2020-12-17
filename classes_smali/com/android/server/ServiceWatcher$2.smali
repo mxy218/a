@@ -21,8 +21,9 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/ServiceWatcher;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/ServiceWatcher;
 
-    .line 216
+    .line 237
     iput-object p1, p0, Lcom/android/server/ServiceWatcher$2;->this$0:Lcom/android/server/ServiceWatcher;
 
     invoke-direct {p0}, Landroid/content/BroadcastReceiver;-><init>()V
@@ -33,70 +34,74 @@
 
 # virtual methods
 .method public onReceive(Landroid/content/Context;Landroid/content/Intent;)V
-    .registers 5
+    .registers 7
+    .param p1, "context"  # Landroid/content/Context;
+    .param p2, "intent"  # Landroid/content/Intent;
 
-    .line 219
+    .line 240
     invoke-virtual {p2}, Landroid/content/Intent;->getAction()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    .line 220
-    const-string v0, "android.intent.extra.user_handle"
+    .line 241
+    .local v0, "action":Ljava/lang/String;
+    const-string v1, "android.intent.extra.user_handle"
 
-    const/16 v1, -0x2710
+    const/16 v2, -0x2710
 
-    invoke-virtual {p2, v0, v1}, Landroid/content/Intent;->getIntExtra(Ljava/lang/String;I)I
+    invoke-virtual {p2, v1, v2}, Landroid/content/Intent;->getIntExtra(Ljava/lang/String;I)I
 
-    move-result p2
+    move-result v1
 
-    .line 222
-    const-string v0, "android.intent.action.USER_SWITCHED"
+    .line 243
+    .local v1, "userId":I
+    const-string v2, "android.intent.action.USER_SWITCHED"
 
-    invoke-virtual {v0, p1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v2, v0}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result v0
+    move-result v2
 
-    const/4 v1, 0x0
+    const/4 v3, 0x0
 
-    if-eqz v0, :cond_20
+    if-eqz v2, :cond_20
 
-    .line 223
-    iget-object p1, p0, Lcom/android/server/ServiceWatcher$2;->this$0:Lcom/android/server/ServiceWatcher;
+    .line 244
+    iget-object v2, p0, Lcom/android/server/ServiceWatcher$2;->this$0:Lcom/android/server/ServiceWatcher;
 
-    invoke-static {p1, p2}, Lcom/android/server/ServiceWatcher;->access$102(Lcom/android/server/ServiceWatcher;I)I
+    invoke-static {v2, v1}, Lcom/android/server/ServiceWatcher;->access$102(Lcom/android/server/ServiceWatcher;I)I
 
-    .line 224
-    iget-object p1, p0, Lcom/android/server/ServiceWatcher$2;->this$0:Lcom/android/server/ServiceWatcher;
+    .line 245
+    iget-object v2, p0, Lcom/android/server/ServiceWatcher$2;->this$0:Lcom/android/server/ServiceWatcher;
 
-    invoke-static {p1, v1}, Lcom/android/server/ServiceWatcher;->access$000(Lcom/android/server/ServiceWatcher;Z)V
+    invoke-static {v2, v3}, Lcom/android/server/ServiceWatcher;->access$000(Lcom/android/server/ServiceWatcher;Z)V
 
     goto :goto_35
 
-    .line 225
+    .line 246
     :cond_20
-    const-string v0, "android.intent.action.USER_UNLOCKED"
+    const-string v2, "android.intent.action.USER_UNLOCKED"
 
-    invoke-virtual {v0, p1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v2, v0}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result p1
+    move-result v2
 
-    if-eqz p1, :cond_35
+    if-eqz v2, :cond_35
 
-    .line 226
-    iget-object p1, p0, Lcom/android/server/ServiceWatcher$2;->this$0:Lcom/android/server/ServiceWatcher;
+    .line 247
+    iget-object v2, p0, Lcom/android/server/ServiceWatcher$2;->this$0:Lcom/android/server/ServiceWatcher;
 
-    invoke-static {p1}, Lcom/android/server/ServiceWatcher;->access$100(Lcom/android/server/ServiceWatcher;)I
+    invoke-static {v2}, Lcom/android/server/ServiceWatcher;->access$100(Lcom/android/server/ServiceWatcher;)I
 
-    move-result p1
+    move-result v2
 
-    if-ne p2, p1, :cond_35
+    if-ne v1, v2, :cond_35
 
-    .line 227
-    iget-object p1, p0, Lcom/android/server/ServiceWatcher$2;->this$0:Lcom/android/server/ServiceWatcher;
+    .line 248
+    iget-object v2, p0, Lcom/android/server/ServiceWatcher$2;->this$0:Lcom/android/server/ServiceWatcher;
 
-    invoke-static {p1, v1}, Lcom/android/server/ServiceWatcher;->access$000(Lcom/android/server/ServiceWatcher;Z)V
+    invoke-static {v2, v3}, Lcom/android/server/ServiceWatcher;->access$000(Lcom/android/server/ServiceWatcher;Z)V
 
-    .line 230
+    .line 251
     :cond_35
     :goto_35
     return-void

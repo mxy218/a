@@ -39,127 +39,133 @@
 
 # direct methods
 .method public constructor <init>(Landroid/content/Context;)V
-    .registers 4
+    .registers 5
+    .param p1, "context"  # Landroid/content/Context;
 
     .line 53
     invoke-direct {p0, p1}, Lcom/android/server/SystemService;-><init>(Landroid/content/Context;)V
 
     .line 44
-    new-instance p1, Lcom/android/server/broadcastradio/BroadcastRadioService$ServiceImpl;
+    new-instance v0, Lcom/android/server/broadcastradio/BroadcastRadioService$ServiceImpl;
 
-    const/4 v0, 0x0
+    const/4 v1, 0x0
 
-    invoke-direct {p1, p0, v0}, Lcom/android/server/broadcastradio/BroadcastRadioService$ServiceImpl;-><init>(Lcom/android/server/broadcastradio/BroadcastRadioService;Lcom/android/server/broadcastradio/BroadcastRadioService$1;)V
+    invoke-direct {v0, p0, v1}, Lcom/android/server/broadcastradio/BroadcastRadioService$ServiceImpl;-><init>(Lcom/android/server/broadcastradio/BroadcastRadioService;Lcom/android/server/broadcastradio/BroadcastRadioService$1;)V
 
-    iput-object p1, p0, Lcom/android/server/broadcastradio/BroadcastRadioService;->mServiceImpl:Lcom/android/server/broadcastradio/BroadcastRadioService$ServiceImpl;
+    iput-object v0, p0, Lcom/android/server/broadcastradio/BroadcastRadioService;->mServiceImpl:Lcom/android/server/broadcastradio/BroadcastRadioService$ServiceImpl;
 
     .line 49
-    new-instance p1, Ljava/lang/Object;
+    new-instance v0, Ljava/lang/Object;
 
-    invoke-direct {p1}, Ljava/lang/Object;-><init>()V
+    invoke-direct {v0}, Ljava/lang/Object;-><init>()V
 
-    iput-object p1, p0, Lcom/android/server/broadcastradio/BroadcastRadioService;->mLock:Ljava/lang/Object;
+    iput-object v0, p0, Lcom/android/server/broadcastradio/BroadcastRadioService;->mLock:Ljava/lang/Object;
 
     .line 50
-    iput-object v0, p0, Lcom/android/server/broadcastradio/BroadcastRadioService;->mV1Modules:Ljava/util/List;
+    iput-object v1, p0, Lcom/android/server/broadcastradio/BroadcastRadioService;->mV1Modules:Ljava/util/List;
 
     .line 55
-    new-instance p1, Lcom/android/server/broadcastradio/hal1/BroadcastRadioService;
+    new-instance v0, Lcom/android/server/broadcastradio/hal1/BroadcastRadioService;
 
-    invoke-direct {p1}, Lcom/android/server/broadcastradio/hal1/BroadcastRadioService;-><init>()V
+    invoke-direct {v0}, Lcom/android/server/broadcastradio/hal1/BroadcastRadioService;-><init>()V
 
-    iput-object p1, p0, Lcom/android/server/broadcastradio/BroadcastRadioService;->mHal1:Lcom/android/server/broadcastradio/hal1/BroadcastRadioService;
+    iput-object v0, p0, Lcom/android/server/broadcastradio/BroadcastRadioService;->mHal1:Lcom/android/server/broadcastradio/hal1/BroadcastRadioService;
 
     .line 56
-    iget-object p1, p0, Lcom/android/server/broadcastradio/BroadcastRadioService;->mHal1:Lcom/android/server/broadcastradio/hal1/BroadcastRadioService;
+    iget-object v0, p0, Lcom/android/server/broadcastradio/BroadcastRadioService;->mHal1:Lcom/android/server/broadcastradio/hal1/BroadcastRadioService;
 
-    invoke-virtual {p1}, Lcom/android/server/broadcastradio/hal1/BroadcastRadioService;->loadModules()Ljava/util/List;
+    invoke-virtual {v0}, Lcom/android/server/broadcastradio/hal1/BroadcastRadioService;->loadModules()Ljava/util/List;
 
-    move-result-object p1
+    move-result-object v0
 
-    iput-object p1, p0, Lcom/android/server/broadcastradio/BroadcastRadioService;->mV1Modules:Ljava/util/List;
+    iput-object v0, p0, Lcom/android/server/broadcastradio/BroadcastRadioService;->mV1Modules:Ljava/util/List;
 
     .line 57
-    iget-object p1, p0, Lcom/android/server/broadcastradio/BroadcastRadioService;->mV1Modules:Ljava/util/List;
+    iget-object v0, p0, Lcom/android/server/broadcastradio/BroadcastRadioService;->mV1Modules:Ljava/util/List;
 
-    invoke-interface {p1}, Ljava/util/List;->stream()Ljava/util/stream/Stream;
+    invoke-interface {v0}, Ljava/util/List;->stream()Ljava/util/stream/Stream;
 
-    move-result-object p1
+    move-result-object v0
 
-    sget-object v0, Lcom/android/server/broadcastradio/-$$Lambda$h9uu6awtPxlZjabQhUCMBWQXSFM;->INSTANCE:Lcom/android/server/broadcastradio/-$$Lambda$h9uu6awtPxlZjabQhUCMBWQXSFM;
+    sget-object v1, Lcom/android/server/broadcastradio/-$$Lambda$h9uu6awtPxlZjabQhUCMBWQXSFM;->INSTANCE:Lcom/android/server/broadcastradio/-$$Lambda$h9uu6awtPxlZjabQhUCMBWQXSFM;
 
-    invoke-interface {p1, v0}, Ljava/util/stream/Stream;->mapToInt(Ljava/util/function/ToIntFunction;)Ljava/util/stream/IntStream;
+    invoke-interface {v0, v1}, Ljava/util/stream/Stream;->mapToInt(Ljava/util/function/ToIntFunction;)Ljava/util/stream/IntStream;
 
-    move-result-object p1
+    move-result-object v0
 
-    invoke-interface {p1}, Ljava/util/stream/IntStream;->max()Ljava/util/OptionalInt;
+    invoke-interface {v0}, Ljava/util/stream/IntStream;->max()Ljava/util/OptionalInt;
 
-    move-result-object p1
+    move-result-object v0
 
     .line 58
-    new-instance v0, Lcom/android/server/broadcastradio/hal2/BroadcastRadioService;
+    .local v0, "max":Ljava/util/OptionalInt;
+    new-instance v1, Lcom/android/server/broadcastradio/hal2/BroadcastRadioService;
 
     .line 59
-    invoke-virtual {p1}, Ljava/util/OptionalInt;->isPresent()Z
+    invoke-virtual {v0}, Ljava/util/OptionalInt;->isPresent()Z
 
-    move-result v1
+    move-result v2
 
-    if-eqz v1, :cond_42
+    if-eqz v2, :cond_42
 
-    invoke-virtual {p1}, Ljava/util/OptionalInt;->getAsInt()I
+    invoke-virtual {v0}, Ljava/util/OptionalInt;->getAsInt()I
 
-    move-result p1
+    move-result v2
 
-    add-int/lit8 p1, p1, 0x1
+    add-int/lit8 v2, v2, 0x1
 
     goto :goto_43
 
     :cond_42
-    const/4 p1, 0x0
+    const/4 v2, 0x0
 
     :goto_43
-    invoke-direct {v0, p1}, Lcom/android/server/broadcastradio/hal2/BroadcastRadioService;-><init>(I)V
+    invoke-direct {v1, v2}, Lcom/android/server/broadcastradio/hal2/BroadcastRadioService;-><init>(I)V
 
-    iput-object v0, p0, Lcom/android/server/broadcastradio/BroadcastRadioService;->mHal2:Lcom/android/server/broadcastradio/hal2/BroadcastRadioService;
+    iput-object v1, p0, Lcom/android/server/broadcastradio/BroadcastRadioService;->mHal2:Lcom/android/server/broadcastradio/hal2/BroadcastRadioService;
 
     .line 60
     return-void
 .end method
 
 .method static synthetic access$100(Lcom/android/server/broadcastradio/BroadcastRadioService;)Ljava/util/List;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/broadcastradio/BroadcastRadioService;
 
     .line 40
-    iget-object p0, p0, Lcom/android/server/broadcastradio/BroadcastRadioService;->mV1Modules:Ljava/util/List;
+    iget-object v0, p0, Lcom/android/server/broadcastradio/BroadcastRadioService;->mV1Modules:Ljava/util/List;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$200(Lcom/android/server/broadcastradio/BroadcastRadioService;)Lcom/android/server/broadcastradio/hal2/BroadcastRadioService;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/broadcastradio/BroadcastRadioService;
 
     .line 40
-    iget-object p0, p0, Lcom/android/server/broadcastradio/BroadcastRadioService;->mHal2:Lcom/android/server/broadcastradio/hal2/BroadcastRadioService;
+    iget-object v0, p0, Lcom/android/server/broadcastradio/BroadcastRadioService;->mHal2:Lcom/android/server/broadcastradio/hal2/BroadcastRadioService;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$300(Lcom/android/server/broadcastradio/BroadcastRadioService;)Ljava/lang/Object;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/broadcastradio/BroadcastRadioService;
 
     .line 40
-    iget-object p0, p0, Lcom/android/server/broadcastradio/BroadcastRadioService;->mLock:Ljava/lang/Object;
+    iget-object v0, p0, Lcom/android/server/broadcastradio/BroadcastRadioService;->mLock:Ljava/lang/Object;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$400(Lcom/android/server/broadcastradio/BroadcastRadioService;)Lcom/android/server/broadcastradio/hal1/BroadcastRadioService;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/broadcastradio/BroadcastRadioService;
 
     .line 40
-    iget-object p0, p0, Lcom/android/server/broadcastradio/BroadcastRadioService;->mHal1:Lcom/android/server/broadcastradio/hal1/BroadcastRadioService;
+    iget-object v0, p0, Lcom/android/server/broadcastradio/BroadcastRadioService;->mHal1:Lcom/android/server/broadcastradio/hal1/BroadcastRadioService;
 
-    return-object p0
+    return-object v0
 .end method
 
 

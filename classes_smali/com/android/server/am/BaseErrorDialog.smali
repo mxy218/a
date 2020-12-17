@@ -17,7 +17,8 @@
 
 # direct methods
 .method public constructor <init>(Landroid/content/Context;)V
-    .registers 3
+    .registers 4
+    .param p1, "context"  # Landroid/content/Context;
 
     .line 36
     const v0, 0x10303e0
@@ -42,41 +43,42 @@
     .line 39
     invoke-virtual {p0}, Lcom/android/server/am/BaseErrorDialog;->getWindow()Landroid/view/Window;
 
-    move-result-object p1
+    move-result-object v0
 
-    const/16 v0, 0x7d3
+    const/16 v1, 0x7d3
 
-    invoke-virtual {p1, v0}, Landroid/view/Window;->setType(I)V
+    invoke-virtual {v0, v1}, Landroid/view/Window;->setType(I)V
 
     .line 40
     invoke-virtual {p0}, Lcom/android/server/am/BaseErrorDialog;->getWindow()Landroid/view/Window;
 
-    move-result-object p1
+    move-result-object v0
 
-    const/high16 v0, 0x20000
+    const/high16 v1, 0x20000
 
-    invoke-virtual {p1, v0, v0}, Landroid/view/Window;->setFlags(II)V
+    invoke-virtual {v0, v1, v1}, Landroid/view/Window;->setFlags(II)V
 
     .line 42
     invoke-virtual {p0}, Lcom/android/server/am/BaseErrorDialog;->getWindow()Landroid/view/Window;
 
-    move-result-object p1
+    move-result-object v0
 
-    invoke-virtual {p1}, Landroid/view/Window;->getAttributes()Landroid/view/WindowManager$LayoutParams;
+    invoke-virtual {v0}, Landroid/view/Window;->getAttributes()Landroid/view/WindowManager$LayoutParams;
 
-    move-result-object p1
+    move-result-object v0
 
     .line 43
-    const-string v0, "Error Dialog"
+    .local v0, "attrs":Landroid/view/WindowManager$LayoutParams;
+    const-string v1, "Error Dialog"
 
-    invoke-virtual {p1, v0}, Landroid/view/WindowManager$LayoutParams;->setTitle(Ljava/lang/CharSequence;)V
+    invoke-virtual {v0, v1}, Landroid/view/WindowManager$LayoutParams;->setTitle(Ljava/lang/CharSequence;)V
 
     .line 44
     invoke-virtual {p0}, Lcom/android/server/am/BaseErrorDialog;->getWindow()Landroid/view/Window;
 
-    move-result-object v0
+    move-result-object v1
 
-    invoke-virtual {v0, p1}, Landroid/view/Window;->setAttributes(Landroid/view/WindowManager$LayoutParams;)V
+    invoke-virtual {v1, v0}, Landroid/view/Window;->setAttributes(Landroid/view/WindowManager$LayoutParams;)V
 
     .line 45
     return-void
@@ -84,6 +86,8 @@
 
 .method static synthetic access$002(Lcom/android/server/am/BaseErrorDialog;Z)Z
     .registers 2
+    .param p0, "x0"  # Lcom/android/server/am/BaseErrorDialog;
+    .param p1, "x1"  # Z
 
     .line 29
     iput-boolean p1, p0, Lcom/android/server/am/BaseErrorDialog;->mConsuming:Z
@@ -93,6 +97,8 @@
 
 .method static synthetic access$100(Lcom/android/server/am/BaseErrorDialog;Z)V
     .registers 2
+    .param p0, "x0"  # Lcom/android/server/am/BaseErrorDialog;
+    .param p1, "x1"  # Z
 
     .line 29
     invoke-direct {p0, p1}, Lcom/android/server/am/BaseErrorDialog;->setEnabled(Z)V
@@ -101,7 +107,8 @@
 .end method
 
 .method private setEnabled(Z)V
-    .registers 3
+    .registers 4
+    .param p1, "enabled"  # Z
 
     .line 63
     const v0, 0x1020019
@@ -113,6 +120,7 @@
     check-cast v0, Landroid/widget/Button;
 
     .line 64
+    .local v0, "b":Landroid/widget/Button;
     if-eqz v0, :cond_e
 
     .line 65
@@ -120,38 +128,42 @@
 
     .line 67
     :cond_e
-    const v0, 0x102001a
+    const v1, 0x102001a
 
-    invoke-virtual {p0, v0}, Lcom/android/server/am/BaseErrorDialog;->findViewById(I)Landroid/view/View;
+    invoke-virtual {p0, v1}, Lcom/android/server/am/BaseErrorDialog;->findViewById(I)Landroid/view/View;
 
-    move-result-object v0
+    move-result-object v1
+
+    move-object v0, v1
 
     check-cast v0, Landroid/widget/Button;
 
     .line 68
-    if-eqz v0, :cond_1c
+    if-eqz v0, :cond_1d
 
     .line 69
     invoke-virtual {v0, p1}, Landroid/widget/Button;->setEnabled(Z)V
 
     .line 71
-    :cond_1c
-    const v0, 0x102001b
+    :cond_1d
+    const v1, 0x102001b
 
-    invoke-virtual {p0, v0}, Lcom/android/server/am/BaseErrorDialog;->findViewById(I)Landroid/view/View;
+    invoke-virtual {p0, v1}, Lcom/android/server/am/BaseErrorDialog;->findViewById(I)Landroid/view/View;
 
-    move-result-object v0
+    move-result-object v1
+
+    move-object v0, v1
 
     check-cast v0, Landroid/widget/Button;
 
     .line 72
-    if-eqz v0, :cond_2a
+    if-eqz v0, :cond_2c
 
     .line 73
     invoke-virtual {v0, p1}, Landroid/widget/Button;->setEnabled(Z)V
 
     .line 75
-    :cond_2a
+    :cond_2c
     return-void
 .end method
 
@@ -159,6 +171,7 @@
 # virtual methods
 .method public dispatchKeyEvent(Landroid/view/KeyEvent;)Z
     .registers 3
+    .param p1, "event"  # Landroid/view/KeyEvent;
 
     .line 54
     iget-boolean v0, p0, Lcom/android/server/am/BaseErrorDialog;->mConsuming:Z
@@ -166,17 +179,17 @@
     if-eqz v0, :cond_6
 
     .line 56
-    const/4 p1, 0x1
+    const/4 v0, 0x1
 
-    return p1
+    return v0
 
     .line 59
     :cond_6
     invoke-super {p0, p1}, Landroid/app/AlertDialog;->dispatchKeyEvent(Landroid/view/KeyEvent;)Z
 
-    move-result p1
+    move-result v0
 
-    return p1
+    return v0
 .end method
 
 .method public onStart()V

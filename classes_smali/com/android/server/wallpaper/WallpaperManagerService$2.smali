@@ -21,8 +21,9 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/wallpaper/WallpaperManagerService;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/wallpaper/WallpaperManagerService;
 
-    .line 1716
+    .line 1725
     iput-object p1, p0, Lcom/android/server/wallpaper/WallpaperManagerService$2;->this$0:Lcom/android/server/wallpaper/WallpaperManagerService;
 
     invoke-direct {p0}, Landroid/content/BroadcastReceiver;-><init>()V
@@ -33,36 +34,39 @@
 
 # virtual methods
 .method public onReceive(Landroid/content/Context;Landroid/content/Intent;)V
-    .registers 5
+    .registers 7
+    .param p1, "context"  # Landroid/content/Context;
+    .param p2, "intent"  # Landroid/content/Intent;
 
-    .line 1719
+    .line 1728
     invoke-virtual {p2}, Landroid/content/Intent;->getAction()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    .line 1720
-    const-string v0, "android.intent.action.USER_REMOVED"
+    .line 1729
+    .local v0, "action":Ljava/lang/String;
+    const-string v1, "android.intent.action.USER_REMOVED"
 
-    invoke-virtual {v0, p1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v1, v0}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result p1
+    move-result v1
 
-    if-eqz p1, :cond_19
+    if-eqz v1, :cond_19
 
-    .line 1721
-    iget-object p1, p0, Lcom/android/server/wallpaper/WallpaperManagerService$2;->this$0:Lcom/android/server/wallpaper/WallpaperManagerService;
+    .line 1730
+    iget-object v1, p0, Lcom/android/server/wallpaper/WallpaperManagerService$2;->this$0:Lcom/android/server/wallpaper/WallpaperManagerService;
 
-    const/16 v0, -0x2710
+    const/16 v2, -0x2710
 
-    const-string v1, "android.intent.extra.user_handle"
+    const-string v3, "android.intent.extra.user_handle"
 
-    invoke-virtual {p2, v1, v0}, Landroid/content/Intent;->getIntExtra(Ljava/lang/String;I)I
+    invoke-virtual {p2, v3, v2}, Landroid/content/Intent;->getIntExtra(Ljava/lang/String;I)I
 
-    move-result p2
+    move-result v2
 
-    invoke-virtual {p1, p2}, Lcom/android/server/wallpaper/WallpaperManagerService;->onRemoveUser(I)V
+    invoke-virtual {v1, v2}, Lcom/android/server/wallpaper/WallpaperManagerService;->onRemoveUser(I)V
 
-    .line 1724
+    .line 1733
     :cond_19
     return-void
 .end method

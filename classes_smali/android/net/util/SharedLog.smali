@@ -28,6 +28,8 @@
 # direct methods
 .method public constructor <init>(ILjava/lang/String;)V
     .registers 4
+    .param p1, "maxRecords"  # I
+    .param p2, "tag"  # Ljava/lang/String;
 
     .line 64
     new-instance v0, Landroid/util/LocalLog;
@@ -42,6 +44,9 @@
 
 .method private constructor <init>(Landroid/util/LocalLog;Ljava/lang/String;Ljava/lang/String;)V
     .registers 4
+    .param p1, "localLog"  # Landroid/util/LocalLog;
+    .param p2, "tag"  # Ljava/lang/String;
+    .param p3, "component"  # Ljava/lang/String;
 
     .line 67
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -61,6 +66,7 @@
 
 .method public constructor <init>(Ljava/lang/String;)V
     .registers 3
+    .param p1, "tag"  # Ljava/lang/String;
 
     .line 60
     const/16 v0, 0x1f4
@@ -110,6 +116,8 @@
 
 .method private logLine(Landroid/net/util/SharedLog$Category;Ljava/lang/String;)Ljava/lang/String;
     .registers 6
+    .param p1, "category"  # Landroid/net/util/SharedLog$Category;
+    .param p2, "msg"  # Ljava/lang/String;
 
     .line 190
     new-instance v0, Ljava/util/StringJoiner;
@@ -119,6 +127,7 @@
     invoke-direct {v0, v1}, Ljava/util/StringJoiner;-><init>(Ljava/lang/CharSequence;)V
 
     .line 191
+    .local v0, "sj":Ljava/util/StringJoiner;
     invoke-direct {p0}, Landroid/net/util/SharedLog;->isRootLogInstance()Z
 
     move-result v1
@@ -155,44 +164,50 @@
 
     invoke-virtual {p1}, Landroid/net/util/SharedLog$Category;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v1
 
-    invoke-virtual {v0, p1}, Ljava/util/StringJoiner;->add(Ljava/lang/CharSequence;)Ljava/util/StringJoiner;
+    invoke-virtual {v0, v1}, Ljava/util/StringJoiner;->add(Ljava/lang/CharSequence;)Ljava/util/StringJoiner;
 
     .line 193
     :cond_33
     invoke-virtual {v0, p2}, Ljava/util/StringJoiner;->add(Ljava/lang/CharSequence;)Ljava/util/StringJoiner;
 
-    move-result-object p1
+    move-result-object v1
 
-    invoke-virtual {p1}, Ljava/util/StringJoiner;->toString()Ljava/lang/String;
+    invoke-virtual {v1}, Ljava/util/StringJoiner;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v1
 
-    return-object p1
+    return-object v1
 .end method
 
 .method private record(Landroid/net/util/SharedLog$Category;Ljava/lang/String;)Ljava/lang/String;
-    .registers 3
+    .registers 5
+    .param p1, "category"  # Landroid/net/util/SharedLog$Category;
+    .param p2, "msg"  # Ljava/lang/String;
 
     .line 184
     invoke-direct {p0, p1, p2}, Landroid/net/util/SharedLog;->logLine(Landroid/net/util/SharedLog$Category;Ljava/lang/String;)Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
     .line 185
-    iget-object p2, p0, Landroid/net/util/SharedLog;->mLocalLog:Landroid/util/LocalLog;
+    .local v0, "entry":Ljava/lang/String;
+    iget-object v1, p0, Landroid/net/util/SharedLog;->mLocalLog:Landroid/util/LocalLog;
 
-    invoke-virtual {p2, p1}, Landroid/util/LocalLog;->log(Ljava/lang/String;)V
+    invoke-virtual {v1, v0}, Landroid/util/LocalLog;->log(Ljava/lang/String;)V
 
     .line 186
-    return-object p1
+    return-object v0
 .end method
 
 
 # virtual methods
 .method public dump(Ljava/io/FileDescriptor;Ljava/io/PrintWriter;[Ljava/lang/String;)V
     .registers 5
+    .param p1, "fd"  # Ljava/io/FileDescriptor;
+    .param p2, "writer"  # Ljava/io/PrintWriter;
+    .param p3, "args"  # [Ljava/lang/String;
 
     .line 93
     iget-object v0, p0, Landroid/net/util/SharedLog;->mLocalLog:Landroid/util/LocalLog;
@@ -208,7 +223,8 @@
 .end method
 
 .method public e(Ljava/lang/Exception;)V
-    .registers 4
+    .registers 5
+    .param p1, "e"  # Ljava/lang/Exception;
 
     .line 107
     iget-object v0, p0, Landroid/net/util/SharedLog;->mTag:Ljava/lang/String;
@@ -217,13 +233,13 @@
 
     invoke-virtual {p1}, Ljava/lang/Exception;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v2
 
-    invoke-direct {p0, v1, p1}, Landroid/net/util/SharedLog;->record(Landroid/net/util/SharedLog$Category;Ljava/lang/String;)Ljava/lang/String;
+    invoke-direct {p0, v1, v2}, Landroid/net/util/SharedLog;->record(Landroid/net/util/SharedLog$Category;Ljava/lang/String;)Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v1
 
-    invoke-static {v0, p1}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v0, v1}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 108
     return-void
@@ -231,6 +247,7 @@
 
 .method public e(Ljava/lang/String;)V
     .registers 4
+    .param p1, "msg"  # Ljava/lang/String;
 
     .line 116
     iget-object v0, p0, Landroid/net/util/SharedLog;->mTag:Ljava/lang/String;
@@ -239,16 +256,18 @@
 
     invoke-direct {p0, v1, p1}, Landroid/net/util/SharedLog;->record(Landroid/net/util/SharedLog$Category;Ljava/lang/String;)Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v1
 
-    invoke-static {v0, p1}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v0, v1}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 117
     return-void
 .end method
 
 .method public e(Ljava/lang/String;Ljava/lang/Throwable;)V
-    .registers 6
+    .registers 7
+    .param p1, "msg"  # Ljava/lang/String;
+    .param p2, "exception"  # Ljava/lang/Throwable;
 
     .line 126
     if-nez p2, :cond_6
@@ -271,25 +290,25 @@
 
     invoke-virtual {v2, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string p1, ": "
+    const-string v3, ": "
 
-    invoke-virtual {v2, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {p2}, Ljava/lang/Throwable;->getMessage()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v3
 
-    invoke-virtual {v2, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v2
 
-    invoke-direct {p0, v1, p1}, Landroid/net/util/SharedLog;->record(Landroid/net/util/SharedLog$Category;Ljava/lang/String;)Ljava/lang/String;
+    invoke-direct {p0, v1, v2}, Landroid/net/util/SharedLog;->record(Landroid/net/util/SharedLog$Category;Ljava/lang/String;)Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v1
 
-    invoke-static {v0, p1, p2}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    invoke-static {v0, v1, p2}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
     .line 131
     return-void
@@ -297,6 +316,7 @@
 
 .method public forSubComponent(Ljava/lang/String;)Landroid/net/util/SharedLog;
     .registers 5
+    .param p1, "component"  # Ljava/lang/String;
 
     .line 81
     invoke-direct {p0}, Landroid/net/util/SharedLog;->isRootLogInstance()Z
@@ -348,6 +368,7 @@
 
 .method public i(Ljava/lang/String;)V
     .registers 4
+    .param p1, "msg"  # Ljava/lang/String;
 
     .line 139
     iget-object v0, p0, Landroid/net/util/SharedLog;->mTag:Ljava/lang/String;
@@ -356,9 +377,9 @@
 
     invoke-direct {p0, v1, p1}, Landroid/net/util/SharedLog;->record(Landroid/net/util/SharedLog$Category;Ljava/lang/String;)Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v1
 
-    invoke-static {v0, p1}, Landroid/util/Log;->i(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v0, v1}, Landroid/util/Log;->i(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 140
     return-void
@@ -366,6 +387,7 @@
 
 .method public log(Ljava/lang/String;)V
     .registers 3
+    .param p1, "msg"  # Ljava/lang/String;
 
     .line 161
     sget-object v0, Landroid/net/util/SharedLog$Category;->NONE:Landroid/net/util/SharedLog$Category;
@@ -377,14 +399,16 @@
 .end method
 
 .method public varargs logf(Ljava/lang/String;[Ljava/lang/Object;)V
-    .registers 3
+    .registers 4
+    .param p1, "fmt"  # Ljava/lang/String;
+    .param p2, "args"  # [Ljava/lang/Object;
 
     .line 171
     invoke-static {p1, p2}, Ljava/lang/String;->format(Ljava/lang/String;[Ljava/lang/Object;)Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    invoke-virtual {p0, p1}, Landroid/net/util/SharedLog;->log(Ljava/lang/String;)V
+    invoke-virtual {p0, v0}, Landroid/net/util/SharedLog;->log(Ljava/lang/String;)V
 
     .line 172
     return-void
@@ -392,6 +416,7 @@
 
 .method public mark(Ljava/lang/String;)V
     .registers 3
+    .param p1, "msg"  # Ljava/lang/String;
 
     .line 180
     sget-object v0, Landroid/net/util/SharedLog$Category;->MARK:Landroid/net/util/SharedLog$Category;
@@ -404,6 +429,7 @@
 
 .method public w(Ljava/lang/String;)V
     .registers 4
+    .param p1, "msg"  # Ljava/lang/String;
 
     .line 148
     iget-object v0, p0, Landroid/net/util/SharedLog;->mTag:Ljava/lang/String;
@@ -412,9 +438,9 @@
 
     invoke-direct {p0, v1, p1}, Landroid/net/util/SharedLog;->record(Landroid/net/util/SharedLog$Category;Ljava/lang/String;)Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v1
 
-    invoke-static {v0, p1}, Landroid/util/Log;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v0, v1}, Landroid/util/Log;->w(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 149
     return-void

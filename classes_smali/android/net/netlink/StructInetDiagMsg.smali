@@ -25,6 +25,7 @@
 
 .method public static parse(Ljava/nio/ByteBuffer;)Landroid/net/netlink/StructInetDiagMsg;
     .registers 3
+    .param p0, "byteBuffer"  # Ljava/nio/ByteBuffer;
 
     .line 56
     new-instance v0, Landroid/net/netlink/StructInetDiagMsg;
@@ -32,13 +33,14 @@
     invoke-direct {v0}, Landroid/net/netlink/StructInetDiagMsg;-><init>()V
 
     .line 57
+    .local v0, "struct":Landroid/net/netlink/StructInetDiagMsg;
     const/16 v1, 0x50
 
     invoke-virtual {p0, v1}, Ljava/nio/ByteBuffer;->getInt(I)I
 
-    move-result p0
+    move-result v1
 
-    iput p0, v0, Landroid/net/netlink/StructInetDiagMsg;->idiag_uid:I
+    iput v1, v0, Landroid/net/netlink/StructInetDiagMsg;->idiag_uid:I
 
     .line 58
     return-object v0

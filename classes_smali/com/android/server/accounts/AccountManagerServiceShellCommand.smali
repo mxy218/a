@@ -10,29 +10,31 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/accounts/AccountManagerService;)V
     .registers 2
+    .param p1, "service"  # Lcom/android/server/accounts/AccountManagerService;
 
-    .line 32
+    .line 31
     invoke-direct {p0}, Landroid/os/ShellCommand;-><init>()V
 
-    .line 33
+    .line 32
     iput-object p1, p0, Lcom/android/server/accounts/AccountManagerServiceShellCommand;->mService:Lcom/android/server/accounts/AccountManagerService;
 
-    .line 34
+    .line 33
     return-void
 .end method
 
 .method private parseUserId()Ljava/lang/Integer;
     .registers 5
 
-    .line 78
+    .line 77
     invoke-virtual {p0}, Lcom/android/server/accounts/AccountManagerServiceShellCommand;->getNextOption()Ljava/lang/String;
 
     move-result-object v0
 
-    .line 79
+    .line 78
+    .local v0, "option":Ljava/lang/String;
     if-eqz v0, :cond_35
 
-    .line 80
+    .line 79
     const-string v1, "--user"
 
     invoke-virtual {v0, v1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
@@ -41,22 +43,22 @@
 
     if-eqz v1, :cond_1b
 
-    .line 81
+    .line 80
     invoke-virtual {p0}, Lcom/android/server/accounts/AccountManagerServiceShellCommand;->getNextArgRequired()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v1
 
-    invoke-static {v0}, Landroid/os/UserHandle;->parseUserArg(Ljava/lang/String;)I
+    invoke-static {v1}, Landroid/os/UserHandle;->parseUserArg(Ljava/lang/String;)I
 
-    move-result v0
+    move-result v1
 
-    invoke-static {v0}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
+    invoke-static {v1}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
 
-    move-result-object v0
+    move-result-object v1
 
-    return-object v0
+    return-object v1
 
-    .line 83
+    .line 82
     :cond_1b
     invoke-virtual {p0}, Lcom/android/server/accounts/AccountManagerServiceShellCommand;->getErrPrintWriter()Ljava/io/PrintWriter;
 
@@ -74,45 +76,44 @@
 
     invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v2
 
-    invoke-virtual {v1, v0}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {v1, v2}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
-    .line 84
-    const/4 v0, 0x0
+    .line 83
+    const/4 v1, 0x0
 
-    return-object v0
+    return-object v1
 
-    .line 87
+    .line 86
     :cond_35
-    invoke-static {}, Landroid/app/ActivityManager;->getCurrentUser()I
+    const/4 v1, 0x0
 
-    move-result v0
+    invoke-static {v1}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
 
-    invoke-static {v0}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
+    move-result-object v1
 
-    move-result-object v0
-
-    return-object v0
+    return-object v1
 .end method
 
 .method private runGetBindInstantServiceAllowed()I
-    .registers 4
+    .registers 5
 
-    .line 53
+    .line 52
     invoke-direct {p0}, Lcom/android/server/accounts/AccountManagerServiceShellCommand;->parseUserId()Ljava/lang/Integer;
 
     move-result-object v0
 
-    .line 54
+    .line 53
+    .local v0, "userId":Ljava/lang/Integer;
     if-nez v0, :cond_8
 
-    .line 55
-    const/4 v0, -0x1
+    .line 54
+    const/4 v1, -0x1
 
-    return v0
+    return v1
 
-    .line 57
+    .line 56
     :cond_8
     invoke-virtual {p0}, Lcom/android/server/accounts/AccountManagerServiceShellCommand;->getOutPrintWriter()Ljava/io/PrintWriter;
 
@@ -120,103 +121,106 @@
 
     iget-object v2, p0, Lcom/android/server/accounts/AccountManagerServiceShellCommand;->mService:Lcom/android/server/accounts/AccountManagerService;
 
-    .line 58
+    .line 57
     invoke-virtual {v0}, Ljava/lang/Integer;->intValue()I
 
-    move-result v0
+    move-result v3
 
-    invoke-virtual {v2, v0}, Lcom/android/server/accounts/AccountManagerService;->getBindInstantServiceAllowed(I)Z
+    invoke-virtual {v2, v3}, Lcom/android/server/accounts/AccountManagerService;->getBindInstantServiceAllowed(I)Z
 
-    move-result v0
+    move-result v2
 
-    .line 57
-    invoke-static {v0}, Ljava/lang/Boolean;->toString(Z)Ljava/lang/String;
+    .line 56
+    invoke-static {v2}, Ljava/lang/Boolean;->toString(Z)Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v2
 
-    invoke-virtual {v1, v0}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {v1, v2}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
-    .line 59
-    const/4 v0, 0x0
+    .line 58
+    const/4 v1, 0x0
 
-    return v0
+    return v1
 .end method
 
 .method private runSetBindInstantServiceAllowed()I
-    .registers 4
+    .registers 6
 
-    .line 63
+    .line 62
     invoke-direct {p0}, Lcom/android/server/accounts/AccountManagerServiceShellCommand;->parseUserId()Ljava/lang/Integer;
 
     move-result-object v0
 
-    .line 64
+    .line 63
+    .local v0, "userId":Ljava/lang/Integer;
     const/4 v1, -0x1
 
     if-nez v0, :cond_8
 
-    .line 65
+    .line 64
     return v1
 
-    .line 67
+    .line 66
     :cond_8
     invoke-virtual {p0}, Lcom/android/server/accounts/AccountManagerServiceShellCommand;->getNextArgRequired()Ljava/lang/String;
 
     move-result-object v2
 
-    .line 68
+    .line 67
+    .local v2, "allowed":Ljava/lang/String;
     if-nez v2, :cond_18
 
-    .line 69
+    .line 68
     invoke-virtual {p0}, Lcom/android/server/accounts/AccountManagerServiceShellCommand;->getErrPrintWriter()Ljava/io/PrintWriter;
 
-    move-result-object v0
+    move-result-object v3
 
-    const-string v2, "Error: no true/false specified"
+    const-string v4, "Error: no true/false specified"
 
-    invoke-virtual {v0, v2}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {v3, v4}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
-    .line 70
+    .line 69
     return v1
 
-    .line 72
+    .line 71
     :cond_18
     iget-object v1, p0, Lcom/android/server/accounts/AccountManagerServiceShellCommand;->mService:Lcom/android/server/accounts/AccountManagerService;
 
     invoke-virtual {v0}, Ljava/lang/Integer;->intValue()I
 
-    move-result v0
-
-    .line 73
-    invoke-static {v2}, Ljava/lang/Boolean;->parseBoolean(Ljava/lang/String;)Z
-
-    move-result v2
+    move-result v3
 
     .line 72
-    invoke-virtual {v1, v0, v2}, Lcom/android/server/accounts/AccountManagerService;->setBindInstantServiceAllowed(IZ)V
+    invoke-static {v2}, Ljava/lang/Boolean;->parseBoolean(Ljava/lang/String;)Z
 
-    .line 74
-    const/4 v0, 0x0
+    move-result v4
 
-    return v0
+    .line 71
+    invoke-virtual {v1, v3, v4}, Lcom/android/server/accounts/AccountManagerService;->setBindInstantServiceAllowed(IZ)V
+
+    .line 73
+    const/4 v1, 0x0
+
+    return v1
 .end method
 
 
 # virtual methods
 .method public onCommand(Ljava/lang/String;)I
     .registers 6
+    .param p1, "cmd"  # Ljava/lang/String;
 
-    .line 38
+    .line 37
     if-nez p1, :cond_7
 
-    .line 39
+    .line 38
     invoke-virtual {p0, p1}, Lcom/android/server/accounts/AccountManagerServiceShellCommand;->handleDefaultCommands(Ljava/lang/String;)I
 
-    move-result p1
+    move-result v0
 
-    return p1
+    return v0
 
-    .line 41
+    .line 40
     :cond_7
     invoke-virtual {p1}, Ljava/lang/String;->hashCode()I
 
@@ -242,11 +246,11 @@
 
     invoke-virtual {p1, v0}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result p1
+    move-result v0
 
-    if-eqz p1, :cond_17
+    if-eqz v0, :cond_17
 
-    move p1, v2
+    move v0, v2
 
     goto :goto_2e
 
@@ -255,85 +259,86 @@
 
     invoke-virtual {p1, v0}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result p1
+    move-result v0
 
-    if-eqz p1, :cond_17
+    if-eqz v0, :cond_17
 
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
     goto :goto_2e
 
     :goto_2d
-    move p1, v3
+    move v0, v3
 
     :goto_2e
-    if-eqz p1, :cond_38
+    if-eqz v0, :cond_38
 
-    if-eq p1, v2, :cond_33
+    if-eq v0, v2, :cond_33
 
-    .line 49
+    .line 48
     return v3
 
-    .line 46
+    .line 45
     :cond_33
     invoke-direct {p0}, Lcom/android/server/accounts/AccountManagerServiceShellCommand;->runSetBindInstantServiceAllowed()I
 
-    move-result p1
+    move-result v0
 
-    return p1
+    return v0
 
-    .line 43
+    .line 42
     :cond_38
     invoke-direct {p0}, Lcom/android/server/accounts/AccountManagerServiceShellCommand;->runGetBindInstantServiceAllowed()I
 
-    move-result p1
+    move-result v0
 
-    return p1
+    return v0
 .end method
 
 .method public onHelp()V
     .registers 3
 
-    .line 92
+    .line 91
     invoke-virtual {p0}, Lcom/android/server/accounts/AccountManagerServiceShellCommand;->getOutPrintWriter()Ljava/io/PrintWriter;
 
     move-result-object v0
 
-    .line 93
+    .line 92
+    .local v0, "pw":Ljava/io/PrintWriter;
     const-string v1, "Account manager service commands:"
 
     invoke-virtual {v0, v1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
-    .line 94
+    .line 93
     const-string v1, "  help"
 
     invoke-virtual {v0, v1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
-    .line 95
+    .line 94
     const-string v1, "    Print this help text."
 
     invoke-virtual {v0, v1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
-    .line 96
-    const-string v1, "  set-bind-instant-service-allowed [--user <USER_ID> (current user if not specified)] true|false "
+    .line 95
+    const-string v1, "  set-bind-instant-service-allowed [--user <USER_ID>] true|false "
 
     invoke-virtual {v0, v1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
-    .line 98
+    .line 96
     const-string v1, "    Set whether binding to services provided by instant apps is allowed."
 
     invoke-virtual {v0, v1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
-    .line 99
-    const-string v1, "  get-bind-instant-service-allowed [--user <USER_ID> (current user if not specified)]"
+    .line 97
+    const-string v1, "  get-bind-instant-service-allowed [--user <USER_ID>]"
 
     invoke-virtual {v0, v1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
-    .line 101
+    .line 98
     const-string v1, "    Get whether binding to services provided by instant apps is allowed."
 
     invoke-virtual {v0, v1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
-    .line 102
+    .line 99
     return-void
 .end method

@@ -24,8 +24,9 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/am/ActivityManagerConstants;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/am/ActivityManagerConstants;
 
-    .line 305
+    .line 317
     iput-object p1, p0, Lcom/android/server/am/ActivityManagerConstants$1;->this$0:Lcom/android/server/am/ActivityManagerConstants;
 
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -36,111 +37,114 @@
 
 # virtual methods
 .method public onPropertiesChanged(Landroid/provider/DeviceConfig$Properties;)V
-    .registers 7
+    .registers 8
+    .param p1, "properties"  # Landroid/provider/DeviceConfig$Properties;
 
-    .line 308
+    .line 320
     invoke-virtual {p1}, Landroid/provider/DeviceConfig$Properties;->getKeyset()Ljava/util/Set;
-
-    move-result-object p1
-
-    invoke-interface {p1}, Ljava/util/Set;->iterator()Ljava/util/Iterator;
-
-    move-result-object p1
-
-    :goto_8
-    invoke-interface {p1}, Ljava/util/Iterator;->hasNext()Z
-
-    move-result v0
-
-    if-eqz v0, :cond_4d
-
-    invoke-interface {p1}, Ljava/util/Iterator;->next()Ljava/lang/Object;
 
     move-result-object v0
 
-    check-cast v0, Ljava/lang/String;
+    invoke-interface {v0}, Ljava/util/Set;->iterator()Ljava/util/Iterator;
 
-    .line 309
-    if-nez v0, :cond_17
+    move-result-object v0
 
-    .line 310
-    return-void
+    :goto_8
+    invoke-interface {v0}, Ljava/util/Iterator;->hasNext()Z
 
-    .line 312
-    :cond_17
-    const/4 v1, -0x1
+    move-result v1
 
-    invoke-virtual {v0}, Ljava/lang/String;->hashCode()I
+    if-eqz v1, :cond_4e
 
-    move-result v2
+    invoke-interface {v0}, Ljava/util/Iterator;->next()Ljava/lang/Object;
 
-    const v3, -0x6a37b8d0
+    move-result-object v1
 
-    const/4 v4, 0x1
+    check-cast v1, Ljava/lang/String;
 
-    if-eq v2, v3, :cond_32
-
-    const v3, -0x41254a05
-
-    if-eq v2, v3, :cond_28
-
-    :cond_27
-    goto :goto_3b
-
-    :cond_28
-    const-string v2, "max_cached_processes"
-
-    invoke-virtual {v0, v2}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
-
-    move-result v0
-
-    if-eqz v0, :cond_27
-
-    const/4 v1, 0x0
-
-    goto :goto_3b
-
-    :cond_32
-    const-string v2, "default_background_activity_starts_enabled"
-
-    invoke-virtual {v0, v2}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
-
-    move-result v0
-
-    if-eqz v0, :cond_27
-
-    move v1, v4
-
-    :goto_3b
-    if-eqz v1, :cond_46
-
-    if-eq v1, v4, :cond_40
-
-    goto :goto_4c
-
-    .line 317
-    :cond_40
-    iget-object v0, p0, Lcom/android/server/am/ActivityManagerConstants$1;->this$0:Lcom/android/server/am/ActivityManagerConstants;
-
-    invoke-static {v0}, Lcom/android/server/am/ActivityManagerConstants;->access$100(Lcom/android/server/am/ActivityManagerConstants;)V
-
-    .line 318
-    goto :goto_4c
-
-    .line 314
-    :cond_46
-    iget-object v0, p0, Lcom/android/server/am/ActivityManagerConstants$1;->this$0:Lcom/android/server/am/ActivityManagerConstants;
-
-    invoke-static {v0}, Lcom/android/server/am/ActivityManagerConstants;->access$000(Lcom/android/server/am/ActivityManagerConstants;)V
-
-    .line 315
-    nop
+    .line 321
+    .local v1, "name":Ljava/lang/String;
+    if-nez v1, :cond_17
 
     .line 322
-    :goto_4c
+    return-void
+
+    .line 324
+    :cond_17
+    const/4 v2, -0x1
+
+    invoke-virtual {v1}, Ljava/lang/String;->hashCode()I
+
+    move-result v3
+
+    const v4, -0x6a37b8d0
+
+    const/4 v5, 0x1
+
+    if-eq v3, v4, :cond_33
+
+    const v4, -0x41254a05
+
+    if-eq v3, v4, :cond_28
+
+    :cond_27
+    goto :goto_3c
+
+    :cond_28
+    const-string/jumbo v3, "max_cached_processes"
+
+    invoke-virtual {v1, v3}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+
+    move-result v3
+
+    if-eqz v3, :cond_27
+
+    const/4 v2, 0x0
+
+    goto :goto_3c
+
+    :cond_33
+    const-string v3, "default_background_activity_starts_enabled"
+
+    invoke-virtual {v1, v3}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+
+    move-result v3
+
+    if-eqz v3, :cond_27
+
+    move v2, v5
+
+    :goto_3c
+    if-eqz v2, :cond_47
+
+    if-eq v2, v5, :cond_41
+
+    goto :goto_4d
+
+    .line 329
+    :cond_41
+    iget-object v2, p0, Lcom/android/server/am/ActivityManagerConstants$1;->this$0:Lcom/android/server/am/ActivityManagerConstants;
+
+    invoke-static {v2}, Lcom/android/server/am/ActivityManagerConstants;->access$100(Lcom/android/server/am/ActivityManagerConstants;)V
+
+    .line 330
+    goto :goto_4d
+
+    .line 326
+    :cond_47
+    iget-object v2, p0, Lcom/android/server/am/ActivityManagerConstants$1;->this$0:Lcom/android/server/am/ActivityManagerConstants;
+
+    invoke-static {v2}, Lcom/android/server/am/ActivityManagerConstants;->access$000(Lcom/android/server/am/ActivityManagerConstants;)V
+
+    .line 327
+    nop
+
+    .line 334
+    .end local v1  # "name":Ljava/lang/String;
+    :goto_4d
     goto :goto_8
 
-    .line 323
-    :cond_4d
+    .line 335
+    :cond_4e
     return-void
 .end method

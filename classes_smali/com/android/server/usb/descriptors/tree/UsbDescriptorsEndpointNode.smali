@@ -14,6 +14,7 @@
 # direct methods
 .method public constructor <init>(Lcom/android/server/usb/descriptors/UsbEndpointDescriptor;)V
     .registers 2
+    .param p1, "endpointDescriptor"  # Lcom/android/server/usb/descriptors/UsbEndpointDescriptor;
 
     .line 34
     invoke-direct {p0}, Lcom/android/server/usb/descriptors/tree/UsbDescriptorsTreeNode;-><init>()V
@@ -29,6 +30,7 @@
 # virtual methods
 .method public report(Lcom/android/server/usb/descriptors/report/ReportCanvas;)V
     .registers 3
+    .param p1, "canvas"  # Lcom/android/server/usb/descriptors/report/ReportCanvas;
 
     .line 40
     iget-object v0, p0, Lcom/android/server/usb/descriptors/tree/UsbDescriptorsEndpointNode;->mEndpointDescriptor:Lcom/android/server/usb/descriptors/UsbEndpointDescriptor;

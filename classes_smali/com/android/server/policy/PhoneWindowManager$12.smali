@@ -21,8 +21,9 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/policy/PhoneWindowManager;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/policy/PhoneWindowManager;
 
-    .line 5139
+    .line 4645
     iput-object p1, p0, Lcom/android/server/policy/PhoneWindowManager$12;->this$0:Lcom/android/server/policy/PhoneWindowManager;
 
     invoke-direct {p0}, Landroid/content/BroadcastReceiver;-><init>()V
@@ -34,85 +35,68 @@
 # virtual methods
 .method public onReceive(Landroid/content/Context;Landroid/content/Intent;)V
     .registers 5
+    .param p1, "context"  # Landroid/content/Context;
+    .param p2, "intent"  # Landroid/content/Intent;
 
-    .line 5142
+    .line 4648
     invoke-virtual {p2}, Landroid/content/Intent;->getAction()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    const-string v0, "android.intent.action.DOCK_EVENT"
+    const-string v1, "android.intent.action.DREAMING_STARTED"
 
-    invoke-virtual {v0, p1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v1, v0}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result p1
+    move-result v0
 
-    if-eqz p1, :cond_1b
+    if-eqz v0, :cond_1a
 
-    .line 5143
-    iget-object p1, p0, Lcom/android/server/policy/PhoneWindowManager$12;->this$0:Lcom/android/server/policy/PhoneWindowManager;
+    .line 4649
+    iget-object v0, p0, Lcom/android/server/policy/PhoneWindowManager$12;->this$0:Lcom/android/server/policy/PhoneWindowManager;
 
-    iget-object p1, p1, Lcom/android/server/policy/PhoneWindowManager;->mDefaultDisplayPolicy:Lcom/android/server/wm/DisplayPolicy;
+    iget-object v0, v0, Lcom/android/server/policy/PhoneWindowManager;->mKeyguardDelegate:Lcom/android/server/policy/keyguard/KeyguardServiceDelegate;
 
-    const/4 v0, 0x0
+    if-eqz v0, :cond_33
 
-    const-string v1, "android.intent.extra.DOCK_STATE"
+    .line 4650
+    iget-object v0, p0, Lcom/android/server/policy/PhoneWindowManager$12;->this$0:Lcom/android/server/policy/PhoneWindowManager;
 
-    invoke-virtual {p2, v1, v0}, Landroid/content/Intent;->getIntExtra(Ljava/lang/String;I)I
+    iget-object v0, v0, Lcom/android/server/policy/PhoneWindowManager;->mKeyguardDelegate:Lcom/android/server/policy/keyguard/KeyguardServiceDelegate;
 
-    move-result p2
+    invoke-virtual {v0}, Lcom/android/server/policy/keyguard/KeyguardServiceDelegate;->onDreamingStarted()V
 
-    invoke-virtual {p1, p2}, Lcom/android/server/wm/DisplayPolicy;->setDockMode(I)V
+    goto :goto_33
 
-    goto :goto_30
+    .line 4652
+    :cond_1a
+    invoke-virtual {p2}, Landroid/content/Intent;->getAction()Ljava/lang/String;
 
-    .line 5147
-    :cond_1b
-    :try_start_1b
-    const-string/jumbo p1, "uimode"
+    move-result-object v0
 
-    .line 5148
-    invoke-static {p1}, Landroid/os/ServiceManager;->getService(Ljava/lang/String;)Landroid/os/IBinder;
+    const-string v1, "android.intent.action.DREAMING_STOPPED"
 
-    move-result-object p1
+    invoke-virtual {v1, v0}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    .line 5147
-    invoke-static {p1}, Landroid/app/IUiModeManager$Stub;->asInterface(Landroid/os/IBinder;)Landroid/app/IUiModeManager;
+    move-result v0
 
-    move-result-object p1
+    if-eqz v0, :cond_33
 
-    .line 5149
-    iget-object p2, p0, Lcom/android/server/policy/PhoneWindowManager$12;->this$0:Lcom/android/server/policy/PhoneWindowManager;
+    .line 4653
+    iget-object v0, p0, Lcom/android/server/policy/PhoneWindowManager$12;->this$0:Lcom/android/server/policy/PhoneWindowManager;
 
-    invoke-interface {p1}, Landroid/app/IUiModeManager;->getCurrentModeType()I
+    iget-object v0, v0, Lcom/android/server/policy/PhoneWindowManager;->mKeyguardDelegate:Lcom/android/server/policy/keyguard/KeyguardServiceDelegate;
 
-    move-result p1
+    if-eqz v0, :cond_33
 
-    iput p1, p2, Lcom/android/server/policy/PhoneWindowManager;->mUiMode:I
-    :try_end_2e
-    .catch Landroid/os/RemoteException; {:try_start_1b .. :try_end_2e} :catch_2f
+    .line 4654
+    iget-object v0, p0, Lcom/android/server/policy/PhoneWindowManager$12;->this$0:Lcom/android/server/policy/PhoneWindowManager;
 
-    .line 5151
-    goto :goto_30
+    iget-object v0, v0, Lcom/android/server/policy/PhoneWindowManager;->mKeyguardDelegate:Lcom/android/server/policy/keyguard/KeyguardServiceDelegate;
 
-    .line 5150
-    :catch_2f
-    move-exception p1
+    invoke-virtual {v0}, Lcom/android/server/policy/keyguard/KeyguardServiceDelegate;->onDreamingStopped()V
 
-    .line 5153
-    :goto_30
-    iget-object p1, p0, Lcom/android/server/policy/PhoneWindowManager$12;->this$0:Lcom/android/server/policy/PhoneWindowManager;
-
-    const/4 p2, 0x1
-
-    invoke-virtual {p1, p2}, Lcom/android/server/policy/PhoneWindowManager;->updateRotation(Z)V
-
-    .line 5154
-    iget-object p1, p0, Lcom/android/server/policy/PhoneWindowManager$12;->this$0:Lcom/android/server/policy/PhoneWindowManager;
-
-    iget-object p1, p1, Lcom/android/server/policy/PhoneWindowManager;->mDefaultDisplayRotation:Lcom/android/server/wm/DisplayRotation;
-
-    invoke-virtual {p1}, Lcom/android/server/wm/DisplayRotation;->updateOrientationListener()V
-
-    .line 5155
+    .line 4657
+    :cond_33
+    :goto_33
     return-void
 .end method

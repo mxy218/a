@@ -12,6 +12,7 @@
 # direct methods
 .method public constructor <init>(Landroid/content/Context;)V
     .registers 3
+    .param p1, "context"  # Landroid/content/Context;
 
     .line 29
     invoke-direct {p0, p1}, Lcom/android/server/SystemService;-><init>(Landroid/content/Context;)V
@@ -58,7 +59,8 @@
 
 # virtual methods
 .method public onBootPhase(I)V
-    .registers 3
+    .registers 4
+    .param p1, "phase"  # I
 
     .line 46
     const/16 v0, 0x1f4
@@ -66,11 +68,11 @@
     if-ne p1, v0, :cond_c
 
     .line 47
-    iget-object p1, p0, Lcom/android/server/BluetoothService;->mBluetoothManagerService:Lcom/android/server/BluetoothManagerService;
+    iget-object v0, p0, Lcom/android/server/BluetoothService;->mBluetoothManagerService:Lcom/android/server/BluetoothManagerService;
 
-    const-string v0, "bluetooth_manager"
+    const-string v1, "bluetooth_manager"
 
-    invoke-virtual {p0, v0, p1}, Lcom/android/server/BluetoothService;->publishBinderService(Ljava/lang/String;Landroid/os/IBinder;)V
+    invoke-virtual {p0, v1, v0}, Lcom/android/server/BluetoothService;->publishBinderService(Ljava/lang/String;Landroid/os/IBinder;)V
 
     goto :goto_17
 
@@ -80,9 +82,9 @@
 
     if-ne p1, v0, :cond_17
 
-    sget-boolean p1, Lcom/android/internal/os/RoSystemProperties;->MULTIUSER_HEADLESS_SYSTEM_USER:Z
+    sget-boolean v0, Lcom/android/internal/os/RoSystemProperties;->MULTIUSER_HEADLESS_SYSTEM_USER:Z
 
-    if-nez p1, :cond_17
+    if-nez v0, :cond_17
 
     .line 51
     invoke-direct {p0}, Lcom/android/server/BluetoothService;->initialize()V
@@ -102,36 +104,29 @@
 
 .method public onSwitchUser(I)V
     .registers 3
+    .param p1, "userHandle"  # I
 
     .line 57
-    iget-boolean v0, p0, Lcom/android/server/BluetoothService;->mInitialized:Z
-
-    if-nez v0, :cond_8
-
-    .line 58
     invoke-direct {p0}, Lcom/android/server/BluetoothService;->initialize()V
 
-    goto :goto_d
-
-    .line 60
-    :cond_8
+    .line 58
     iget-object v0, p0, Lcom/android/server/BluetoothService;->mBluetoothManagerService:Lcom/android/server/BluetoothManagerService;
 
     invoke-virtual {v0, p1}, Lcom/android/server/BluetoothManagerService;->handleOnSwitchUser(I)V
 
-    .line 62
-    :goto_d
+    .line 59
     return-void
 .end method
 
 .method public onUnlockUser(I)V
     .registers 3
+    .param p1, "userHandle"  # I
 
-    .line 66
+    .line 63
     iget-object v0, p0, Lcom/android/server/BluetoothService;->mBluetoothManagerService:Lcom/android/server/BluetoothManagerService;
 
     invoke-virtual {v0, p1}, Lcom/android/server/BluetoothManagerService;->handleOnUnlockUser(I)V
 
-    .line 67
+    .line 64
     return-void
 .end method

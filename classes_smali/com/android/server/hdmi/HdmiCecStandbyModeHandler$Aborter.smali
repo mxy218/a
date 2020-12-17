@@ -26,6 +26,7 @@
 # direct methods
 .method public constructor <init>(Lcom/android/server/hdmi/HdmiCecStandbyModeHandler;I)V
     .registers 3
+    .param p2, "reason"  # I
 
     .line 46
     iput-object p1, p0, Lcom/android/server/hdmi/HdmiCecStandbyModeHandler$Aborter;->this$0:Lcom/android/server/hdmi/HdmiCecStandbyModeHandler;
@@ -43,6 +44,7 @@
 # virtual methods
 .method public handle(Lcom/android/server/hdmi/HdmiCecMessage;)Z
     .registers 4
+    .param p1, "message"  # Lcom/android/server/hdmi/HdmiCecMessage;
 
     .line 51
     iget-object v0, p0, Lcom/android/server/hdmi/HdmiCecStandbyModeHandler$Aborter;->this$0:Lcom/android/server/hdmi/HdmiCecStandbyModeHandler;
@@ -56,7 +58,7 @@
     invoke-virtual {v0, p1, v1}, Lcom/android/server/hdmi/HdmiControlService;->maySendFeatureAbortCommand(Lcom/android/server/hdmi/HdmiCecMessage;I)V
 
     .line 52
-    const/4 p1, 0x1
+    const/4 v0, 0x1
 
-    return p1
+    return v0
 .end method

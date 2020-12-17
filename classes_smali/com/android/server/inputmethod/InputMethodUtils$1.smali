@@ -30,7 +30,7 @@
 .method constructor <init>()V
     .registers 1
 
-    .line 423
+    .line 440
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
     return-void
@@ -39,28 +39,29 @@
 
 # virtual methods
 .method public get(Landroid/view/inputmethod/InputMethodSubtype;)Ljava/util/Locale;
-    .registers 2
+    .registers 3
+    .param p1, "source"  # Landroid/view/inputmethod/InputMethodSubtype;
 
-    .line 426
+    .line 443
     if-eqz p1, :cond_7
 
     invoke-virtual {p1}, Landroid/view/inputmethod/InputMethodSubtype;->getLocaleObject()Ljava/util/Locale;
 
-    move-result-object p1
+    move-result-object v0
 
     goto :goto_8
 
     :cond_7
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
     :goto_8
-    return-object p1
+    return-object v0
 .end method
 
 .method public bridge synthetic get(Ljava/lang/Object;)Ljava/util/Locale;
     .registers 2
 
-    .line 423
+    .line 440
     check-cast p1, Landroid/view/inputmethod/InputMethodSubtype;
 
     invoke-virtual {p0, p1}, Lcom/android/server/inputmethod/InputMethodUtils$1;->get(Landroid/view/inputmethod/InputMethodSubtype;)Ljava/util/Locale;

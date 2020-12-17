@@ -23,7 +23,8 @@
 
 # direct methods
 .method public constructor <init>(Landroid/os/IHwBinder;)V
-    .registers 2
+    .registers 3
+    .param p1, "remote"  # Landroid/os/IHwBinder;
 
     .line 153
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -31,11 +32,11 @@
     .line 154
     invoke-static {p1}, Ljava/util/Objects;->requireNonNull(Ljava/lang/Object;)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v0
 
-    check-cast p1, Landroid/os/IHwBinder;
+    check-cast v0, Landroid/os/IHwBinder;
 
-    iput-object p1, p0, Landroid/hardware/health/V1_0/IHealth$Proxy;->mRemote:Landroid/os/IHwBinder;
+    iput-object v0, p0, Landroid/hardware/health/V1_0/IHealth$Proxy;->mRemote:Landroid/os/IHwBinder;
 
     .line 155
     return-void
@@ -53,7 +54,8 @@
 .end method
 
 .method public debug(Landroid/os/NativeHandle;Ljava/util/ArrayList;)V
-    .registers 6
+    .registers 8
+    .param p1, "fd"  # Landroid/os/NativeHandle;
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(",
@@ -71,11 +73,13 @@
     .end annotation
 
     .line 269
+    .local p2, "options":Ljava/util/ArrayList;, "Ljava/util/ArrayList<Ljava/lang/String;>;"
     new-instance v0, Landroid/os/HwParcel;
 
     invoke-direct {v0}, Landroid/os/HwParcel;-><init>()V
 
     .line 270
+    .local v0, "_hidl_request":Landroid/os/HwParcel;
     const-string v1, "android.hidl.base@1.0::IBase"
 
     invoke-virtual {v0, v1}, Landroid/os/HwParcel;->writeInterfaceToken(Ljava/lang/String;)V
@@ -87,22 +91,23 @@
     invoke-virtual {v0, p2}, Landroid/os/HwParcel;->writeStringVector(Ljava/util/ArrayList;)V
 
     .line 274
-    new-instance p1, Landroid/os/HwParcel;
+    new-instance v1, Landroid/os/HwParcel;
 
-    invoke-direct {p1}, Landroid/os/HwParcel;-><init>()V
+    invoke-direct {v1}, Landroid/os/HwParcel;-><init>()V
 
     .line 276
+    .local v1, "_hidl_reply":Landroid/os/HwParcel;
     :try_start_15
-    iget-object p2, p0, Landroid/hardware/health/V1_0/IHealth$Proxy;->mRemote:Landroid/os/IHwBinder;
+    iget-object v2, p0, Landroid/hardware/health/V1_0/IHealth$Proxy;->mRemote:Landroid/os/IHwBinder;
 
-    const v1, 0xf444247
+    const v3, 0xf444247
 
-    const/4 v2, 0x0
+    const/4 v4, 0x0
 
-    invoke-interface {p2, v1, v0, p1, v2}, Landroid/os/IHwBinder;->transact(ILandroid/os/HwParcel;Landroid/os/HwParcel;I)V
+    invoke-interface {v2, v3, v0, v1, v4}, Landroid/os/IHwBinder;->transact(ILandroid/os/HwParcel;Landroid/os/HwParcel;I)V
 
     .line 277
-    invoke-virtual {p1}, Landroid/os/HwParcel;->verifySuccess()V
+    invoke-virtual {v1}, Landroid/os/HwParcel;->verifySuccess()V
 
     .line 278
     invoke-virtual {v0}, Landroid/os/HwParcel;->releaseTemporaryStorage()V
@@ -110,7 +115,7 @@
     .catchall {:try_start_15 .. :try_end_24} :catchall_29
 
     .line 280
-    invoke-virtual {p1}, Landroid/os/HwParcel;->release()V
+    invoke-virtual {v1}, Landroid/os/HwParcel;->release()V
 
     .line 281
     nop
@@ -120,15 +125,16 @@
 
     .line 280
     :catchall_29
-    move-exception p2
+    move-exception v2
 
-    invoke-virtual {p1}, Landroid/os/HwParcel;->release()V
+    invoke-virtual {v1}, Landroid/os/HwParcel;->release()V
 
-    throw p2
+    throw v2
 .end method
 
 .method public energyCounter(Landroid/hardware/health/V1_0/IHealth$energyCounterCallback;)V
     .registers 7
+    .param p1, "_hidl_cb"  # Landroid/hardware/health/V1_0/IHealth$energyCounterCallback;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -141,6 +147,7 @@
     invoke-direct {v0}, Landroid/os/HwParcel;-><init>()V
 
     .line 230
+    .local v0, "_hidl_request":Landroid/os/HwParcel;
     const-string v1, "android.hardware.health@1.0::IHealth"
 
     invoke-virtual {v0, v1}, Landroid/os/HwParcel;->writeInterfaceToken(Ljava/lang/String;)V
@@ -151,6 +158,7 @@
     invoke-direct {v1}, Landroid/os/HwParcel;-><init>()V
 
     .line 234
+    .local v1, "_hidl_reply":Landroid/os/HwParcel;
     :try_start_f
     iget-object v2, p0, Landroid/hardware/health/V1_0/IHealth$Proxy;->mRemote:Landroid/os/IHwBinder;
 
@@ -169,19 +177,23 @@
     .line 238
     invoke-virtual {v1}, Landroid/os/HwParcel;->readInt32()I
 
-    move-result v0
+    move-result v2
 
     .line 239
+    .local v2, "_hidl_out_result":I
     invoke-virtual {v1}, Landroid/os/HwParcel;->readInt64()J
 
-    move-result-wide v2
+    move-result-wide v3
 
     .line 240
-    invoke-interface {p1, v0, v2, v3}, Landroid/hardware/health/V1_0/IHealth$energyCounterCallback;->onValues(IJ)V
+    .local v3, "_hidl_out_energy":J
+    invoke-interface {p1, v2, v3, v4}, Landroid/hardware/health/V1_0/IHealth$energyCounterCallback;->onValues(IJ)V
     :try_end_27
     .catchall {:try_start_f .. :try_end_27} :catchall_2c
 
     .line 242
+    .end local v2  # "_hidl_out_result":I
+    .end local v3  # "_hidl_out_energy":J
     invoke-virtual {v1}, Landroid/os/HwParcel;->release()V
 
     .line 243
@@ -192,22 +204,23 @@
 
     .line 242
     :catchall_2c
-    move-exception p1
+    move-exception v2
 
     invoke-virtual {v1}, Landroid/os/HwParcel;->release()V
 
-    throw p1
+    throw v2
 .end method
 
 .method public final equals(Ljava/lang/Object;)Z
-    .registers 2
+    .registers 3
+    .param p1, "other"  # Ljava/lang/Object;
 
     .line 174
     invoke-static {p0, p1}, Landroid/os/HidlSupport;->interfacesEqual(Landroid/os/IHwInterface;Ljava/lang/Object;)Z
 
-    move-result p1
+    move-result v0
 
-    return p1
+    return v0
 .end method
 
 .method public getDebugInfo()Landroid/hidl/base/V1_0/DebugInfo;
@@ -224,6 +237,7 @@
     invoke-direct {v0}, Landroid/os/HwParcel;-><init>()V
 
     .line 382
+    .local v0, "_hidl_request":Landroid/os/HwParcel;
     const-string v1, "android.hidl.base@1.0::IBase"
 
     invoke-virtual {v0, v1}, Landroid/os/HwParcel;->writeInterfaceToken(Ljava/lang/String;)V
@@ -234,6 +248,7 @@
     invoke-direct {v1}, Landroid/os/HwParcel;-><init>()V
 
     .line 386
+    .local v1, "_hidl_reply":Landroid/os/HwParcel;
     :try_start_f
     iget-object v2, p0, Landroid/hardware/health/V1_0/IHealth$Proxy;->mRemote:Landroid/os/IHwBinder;
 
@@ -250,12 +265,13 @@
     invoke-virtual {v0}, Landroid/os/HwParcel;->releaseTemporaryStorage()V
 
     .line 390
-    new-instance v0, Landroid/hidl/base/V1_0/DebugInfo;
+    new-instance v2, Landroid/hidl/base/V1_0/DebugInfo;
 
-    invoke-direct {v0}, Landroid/hidl/base/V1_0/DebugInfo;-><init>()V
+    invoke-direct {v2}, Landroid/hidl/base/V1_0/DebugInfo;-><init>()V
 
     .line 391
-    invoke-virtual {v0, v1}, Landroid/hidl/base/V1_0/DebugInfo;->readFromParcel(Landroid/os/HwParcel;)V
+    .local v2, "_hidl_out_info":Landroid/hidl/base/V1_0/DebugInfo;
+    invoke-virtual {v2, v1}, Landroid/hidl/base/V1_0/DebugInfo;->readFromParcel(Landroid/os/HwParcel;)V
     :try_end_26
     .catchall {:try_start_f .. :try_end_26} :catchall_2b
 
@@ -266,19 +282,20 @@
     invoke-virtual {v1}, Landroid/os/HwParcel;->release()V
 
     .line 392
-    return-object v0
+    return-object v2
 
     .line 394
+    .end local v2  # "_hidl_out_info":Landroid/hidl/base/V1_0/DebugInfo;
     :catchall_2b
-    move-exception v0
+    move-exception v2
 
     invoke-virtual {v1}, Landroid/os/HwParcel;->release()V
 
-    throw v0
+    throw v2
 .end method
 
 .method public getHashChain()Ljava/util/ArrayList;
-    .registers 13
+    .registers 14
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "()",
@@ -299,6 +316,7 @@
     invoke-direct {v0}, Landroid/os/HwParcel;-><init>()V
 
     .line 307
+    .local v0, "_hidl_request":Landroid/os/HwParcel;
     const-string v1, "android.hidl.base@1.0::IBase"
 
     invoke-virtual {v0, v1}, Landroid/os/HwParcel;->writeInterfaceToken(Ljava/lang/String;)V
@@ -309,14 +327,15 @@
     invoke-direct {v1}, Landroid/os/HwParcel;-><init>()V
 
     .line 311
+    .local v1, "_hidl_reply":Landroid/os/HwParcel;
     :try_start_f
     iget-object v2, p0, Landroid/hardware/health/V1_0/IHealth$Proxy;->mRemote:Landroid/os/IHwBinder;
 
     const v3, 0xf485348
 
-    const/4 v10, 0x0
+    const/4 v4, 0x0
 
-    invoke-interface {v2, v3, v0, v1, v10}, Landroid/os/IHwBinder;->transact(ILandroid/os/HwParcel;Landroid/os/HwParcel;I)V
+    invoke-interface {v2, v3, v0, v1, v4}, Landroid/os/IHwBinder;->transact(ILandroid/os/HwParcel;Landroid/os/HwParcel;I)V
 
     .line 312
     invoke-virtual {v1}, Landroid/os/HwParcel;->verifySuccess()V
@@ -325,31 +344,40 @@
     invoke-virtual {v0}, Landroid/os/HwParcel;->releaseTemporaryStorage()V
 
     .line 315
-    new-instance v0, Ljava/util/ArrayList;
+    new-instance v2, Ljava/util/ArrayList;
 
-    invoke-direct {v0}, Ljava/util/ArrayList;-><init>()V
+    invoke-direct {v2}, Ljava/util/ArrayList;-><init>()V
+
+    move-object v10, v2
 
     .line 317
+    .local v10, "_hidl_out_hashchain":Ljava/util/ArrayList;, "Ljava/util/ArrayList<[B>;"
     const-wide/16 v2, 0x10
 
     invoke-virtual {v1, v2, v3}, Landroid/os/HwParcel;->readBuffer(J)Landroid/os/HwBlob;
 
     move-result-object v2
 
+    move-object v11, v2
+
     .line 319
-    const-wide/16 v3, 0x8
+    .local v11, "_hidl_blob":Landroid/os/HwBlob;
+    const-wide/16 v2, 0x8
 
-    invoke-virtual {v2, v3, v4}, Landroid/os/HwBlob;->getInt32(J)I
+    invoke-virtual {v11, v2, v3}, Landroid/os/HwBlob;->getInt32(J)I
 
-    move-result v11
+    move-result v2
+
+    move v12, v2
 
     .line 320
-    mul-int/lit8 v3, v11, 0x20
+    .local v12, "_hidl_vec_size":I
+    mul-int/lit8 v2, v12, 0x20
 
-    int-to-long v3, v3
+    int-to-long v3, v2
 
     .line 321
-    invoke-virtual {v2}, Landroid/os/HwBlob;->handle()J
+    invoke-virtual {v11}, Landroid/os/HwBlob;->handle()J
 
     move-result-wide v5
 
@@ -365,57 +393,70 @@
     move-result-object v2
 
     .line 324
-    invoke-virtual {v0}, Ljava/util/ArrayList;->clear()V
+    .local v2, "childBlob":Landroid/os/HwBlob;
+    invoke-virtual {v10}, Ljava/util/ArrayList;->clear()V
 
     .line 325
-    nop
+    const/4 v3, 0x0
 
-    :goto_42
-    if-ge v10, v11, :cond_55
+    .local v3, "_hidl_index_0":I
+    :goto_45
+    if-ge v3, v12, :cond_59
 
     .line 326
-    const/16 v3, 0x20
+    const/16 v4, 0x20
 
-    new-array v4, v3, [B
+    new-array v5, v4, [B
 
     .line 328
-    mul-int/lit8 v5, v10, 0x20
+    .local v5, "_hidl_vec_element":[B
+    mul-int/lit8 v6, v3, 0x20
 
-    int-to-long v5, v5
+    int-to-long v6, v6
 
     .line 329
-    invoke-virtual {v2, v5, v6, v4, v3}, Landroid/os/HwBlob;->copyToInt8Array(J[BI)V
+    .local v6, "_hidl_array_offset_1":J
+    invoke-virtual {v2, v6, v7, v5, v4}, Landroid/os/HwBlob;->copyToInt8Array(J[BI)V
 
     .line 330
     nop
 
     .line 332
-    invoke-virtual {v0, v4}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
-    :try_end_52
-    .catchall {:try_start_f .. :try_end_52} :catchall_5a
+    .end local v6  # "_hidl_array_offset_1":J
+    invoke-virtual {v10, v5}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
+    :try_end_55
+    .catchall {:try_start_f .. :try_end_55} :catchall_5e
 
     .line 325
-    add-int/lit8 v10, v10, 0x1
+    nop
 
-    goto :goto_42
+    .end local v5  # "_hidl_vec_element":[B
+    add-int/lit8 v3, v3, 0x1
+
+    goto :goto_45
 
     .line 336
-    :cond_55
+    .end local v2  # "childBlob":Landroid/os/HwBlob;
+    .end local v3  # "_hidl_index_0":I
+    .end local v11  # "_hidl_blob":Landroid/os/HwBlob;
+    .end local v12  # "_hidl_vec_size":I
+    :cond_59
     nop
 
     .line 338
     invoke-virtual {v1}, Landroid/os/HwParcel;->release()V
 
     .line 336
-    return-object v0
+    return-object v10
 
     .line 338
-    :catchall_5a
-    move-exception v0
+    .end local v10  # "_hidl_out_hashchain":Ljava/util/ArrayList;, "Ljava/util/ArrayList<[B>;"
+    :catchall_5e
+    move-exception v2
 
     invoke-virtual {v1}, Landroid/os/HwParcel;->release()V
 
-    throw v0
+    throw v2
 .end method
 
 .method public final hashCode()I
@@ -434,7 +475,8 @@
 .end method
 
 .method public init(Landroid/hardware/health/V1_0/HealthConfig;)Landroid/hardware/health/V1_0/HealthConfig;
-    .registers 6
+    .registers 7
+    .param p1, "config"  # Landroid/hardware/health/V1_0/HealthConfig;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -447,6 +489,7 @@
     invoke-direct {v0}, Landroid/os/HwParcel;-><init>()V
 
     .line 187
+    .local v0, "_hidl_request":Landroid/os/HwParcel;
     const-string v1, "android.hardware.health@1.0::IHealth"
 
     invoke-virtual {v0, v1}, Landroid/os/HwParcel;->writeInterfaceToken(Ljava/lang/String;)V
@@ -455,33 +498,35 @@
     invoke-virtual {p1, v0}, Landroid/hardware/health/V1_0/HealthConfig;->writeToParcel(Landroid/os/HwParcel;)V
 
     .line 190
-    new-instance p1, Landroid/os/HwParcel;
+    new-instance v1, Landroid/os/HwParcel;
 
-    invoke-direct {p1}, Landroid/os/HwParcel;-><init>()V
+    invoke-direct {v1}, Landroid/os/HwParcel;-><init>()V
 
     .line 192
+    .local v1, "_hidl_reply":Landroid/os/HwParcel;
     :try_start_12
-    iget-object v1, p0, Landroid/hardware/health/V1_0/IHealth$Proxy;->mRemote:Landroid/os/IHwBinder;
+    iget-object v2, p0, Landroid/hardware/health/V1_0/IHealth$Proxy;->mRemote:Landroid/os/IHwBinder;
 
-    const/4 v2, 0x1
+    const/4 v3, 0x1
 
-    const/4 v3, 0x0
+    const/4 v4, 0x0
 
-    invoke-interface {v1, v2, v0, p1, v3}, Landroid/os/IHwBinder;->transact(ILandroid/os/HwParcel;Landroid/os/HwParcel;I)V
+    invoke-interface {v2, v3, v0, v1, v4}, Landroid/os/IHwBinder;->transact(ILandroid/os/HwParcel;Landroid/os/HwParcel;I)V
 
     .line 193
-    invoke-virtual {p1}, Landroid/os/HwParcel;->verifySuccess()V
+    invoke-virtual {v1}, Landroid/os/HwParcel;->verifySuccess()V
 
     .line 194
     invoke-virtual {v0}, Landroid/os/HwParcel;->releaseTemporaryStorage()V
 
     .line 196
-    new-instance v0, Landroid/hardware/health/V1_0/HealthConfig;
+    new-instance v2, Landroid/hardware/health/V1_0/HealthConfig;
 
-    invoke-direct {v0}, Landroid/hardware/health/V1_0/HealthConfig;-><init>()V
+    invoke-direct {v2}, Landroid/hardware/health/V1_0/HealthConfig;-><init>()V
 
     .line 197
-    invoke-virtual {v0, p1}, Landroid/hardware/health/V1_0/HealthConfig;->readFromParcel(Landroid/os/HwParcel;)V
+    .local v2, "_hidl_out_configOut":Landroid/hardware/health/V1_0/HealthConfig;
+    invoke-virtual {v2, v1}, Landroid/hardware/health/V1_0/HealthConfig;->readFromParcel(Landroid/os/HwParcel;)V
     :try_end_27
     .catchall {:try_start_12 .. :try_end_27} :catchall_2c
 
@@ -489,18 +534,19 @@
     nop
 
     .line 200
-    invoke-virtual {p1}, Landroid/os/HwParcel;->release()V
+    invoke-virtual {v1}, Landroid/os/HwParcel;->release()V
 
     .line 198
-    return-object v0
+    return-object v2
 
     .line 200
+    .end local v2  # "_hidl_out_configOut":Landroid/hardware/health/V1_0/HealthConfig;
     :catchall_2c
-    move-exception v0
+    move-exception v2
 
-    invoke-virtual {p1}, Landroid/os/HwParcel;->release()V
+    invoke-virtual {v1}, Landroid/os/HwParcel;->release()V
 
-    throw v0
+    throw v2
 .end method
 
 .method public interfaceChain()Ljava/util/ArrayList;
@@ -526,6 +572,7 @@
     invoke-direct {v0}, Landroid/os/HwParcel;-><init>()V
 
     .line 251
+    .local v0, "_hidl_request":Landroid/os/HwParcel;
     const-string v1, "android.hidl.base@1.0::IBase"
 
     invoke-virtual {v0, v1}, Landroid/os/HwParcel;->writeInterfaceToken(Ljava/lang/String;)V
@@ -536,6 +583,7 @@
     invoke-direct {v1}, Landroid/os/HwParcel;-><init>()V
 
     .line 255
+    .local v1, "_hidl_reply":Landroid/os/HwParcel;
     :try_start_f
     iget-object v2, p0, Landroid/hardware/health/V1_0/IHealth$Proxy;->mRemote:Landroid/os/IHwBinder;
 
@@ -554,26 +602,28 @@
     .line 259
     invoke-virtual {v1}, Landroid/os/HwParcel;->readStringVector()Ljava/util/ArrayList;
 
-    move-result-object v0
+    move-result-object v2
     :try_end_22
     .catchall {:try_start_f .. :try_end_22} :catchall_27
 
     .line 260
+    .local v2, "_hidl_out_descriptors":Ljava/util/ArrayList;, "Ljava/util/ArrayList<Ljava/lang/String;>;"
     nop
 
     .line 262
     invoke-virtual {v1}, Landroid/os/HwParcel;->release()V
 
     .line 260
-    return-object v0
+    return-object v2
 
     .line 262
+    .end local v2  # "_hidl_out_descriptors":Ljava/util/ArrayList;, "Ljava/util/ArrayList<Ljava/lang/String;>;"
     :catchall_27
-    move-exception v0
+    move-exception v2
 
     invoke-virtual {v1}, Landroid/os/HwParcel;->release()V
 
-    throw v0
+    throw v2
 .end method
 
 .method public interfaceDescriptor()Ljava/lang/String;
@@ -590,6 +640,7 @@
     invoke-direct {v0}, Landroid/os/HwParcel;-><init>()V
 
     .line 288
+    .local v0, "_hidl_request":Landroid/os/HwParcel;
     const-string v1, "android.hidl.base@1.0::IBase"
 
     invoke-virtual {v0, v1}, Landroid/os/HwParcel;->writeInterfaceToken(Ljava/lang/String;)V
@@ -600,6 +651,7 @@
     invoke-direct {v1}, Landroid/os/HwParcel;-><init>()V
 
     .line 292
+    .local v1, "_hidl_reply":Landroid/os/HwParcel;
     :try_start_f
     iget-object v2, p0, Landroid/hardware/health/V1_0/IHealth$Proxy;->mRemote:Landroid/os/IHwBinder;
 
@@ -618,30 +670,34 @@
     .line 296
     invoke-virtual {v1}, Landroid/os/HwParcel;->readString()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v2
     :try_end_22
     .catchall {:try_start_f .. :try_end_22} :catchall_27
 
     .line 297
+    .local v2, "_hidl_out_descriptor":Ljava/lang/String;
     nop
 
     .line 299
     invoke-virtual {v1}, Landroid/os/HwParcel;->release()V
 
     .line 297
-    return-object v0
+    return-object v2
 
     .line 299
+    .end local v2  # "_hidl_out_descriptor":Ljava/lang/String;
     :catchall_27
-    move-exception v0
+    move-exception v2
 
     invoke-virtual {v1}, Landroid/os/HwParcel;->release()V
 
-    throw v0
+    throw v2
 .end method
 
 .method public linkToDeath(Landroid/os/IHwBinder$DeathRecipient;J)Z
     .registers 5
+    .param p1, "recipient"  # Landroid/os/IHwBinder$DeathRecipient;
+    .param p2, "cookie"  # J
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -653,9 +709,9 @@
 
     invoke-interface {v0, p1, p2, p3}, Landroid/os/IHwBinder;->linkToDeath(Landroid/os/IHwBinder$DeathRecipient;J)Z
 
-    move-result p1
+    move-result v0
 
-    return p1
+    return v0
 .end method
 
 .method public notifySyspropsChanged()V
@@ -672,6 +728,7 @@
     invoke-direct {v0}, Landroid/os/HwParcel;-><init>()V
 
     .line 402
+    .local v0, "_hidl_request":Landroid/os/HwParcel;
     const-string v1, "android.hidl.base@1.0::IBase"
 
     invoke-virtual {v0, v1}, Landroid/os/HwParcel;->writeInterfaceToken(Ljava/lang/String;)V
@@ -682,6 +739,7 @@
     invoke-direct {v1}, Landroid/os/HwParcel;-><init>()V
 
     .line 406
+    .local v1, "_hidl_reply":Landroid/os/HwParcel;
     :try_start_f
     iget-object v2, p0, Landroid/hardware/health/V1_0/IHealth$Proxy;->mRemote:Landroid/os/IHwBinder;
 
@@ -707,11 +765,11 @@
 
     .line 409
     :catchall_20
-    move-exception v0
+    move-exception v2
 
     invoke-virtual {v1}, Landroid/os/HwParcel;->release()V
 
-    throw v0
+    throw v2
 .end method
 
 .method public ping()V
@@ -728,6 +786,7 @@
     invoke-direct {v0}, Landroid/os/HwParcel;-><init>()V
 
     .line 366
+    .local v0, "_hidl_request":Landroid/os/HwParcel;
     const-string v1, "android.hidl.base@1.0::IBase"
 
     invoke-virtual {v0, v1}, Landroid/os/HwParcel;->writeInterfaceToken(Ljava/lang/String;)V
@@ -738,6 +797,7 @@
     invoke-direct {v1}, Landroid/os/HwParcel;-><init>()V
 
     .line 370
+    .local v1, "_hidl_reply":Landroid/os/HwParcel;
     :try_start_f
     iget-object v2, p0, Landroid/hardware/health/V1_0/IHealth$Proxy;->mRemote:Landroid/os/IHwBinder;
 
@@ -766,11 +826,11 @@
 
     .line 374
     :catchall_23
-    move-exception v0
+    move-exception v2
 
     invoke-virtual {v1}, Landroid/os/HwParcel;->release()V
 
-    throw v0
+    throw v2
 .end method
 
 .method public setHALInstrumentation()V
@@ -787,6 +847,7 @@
     invoke-direct {v0}, Landroid/os/HwParcel;-><init>()V
 
     .line 346
+    .local v0, "_hidl_request":Landroid/os/HwParcel;
     const-string v1, "android.hidl.base@1.0::IBase"
 
     invoke-virtual {v0, v1}, Landroid/os/HwParcel;->writeInterfaceToken(Ljava/lang/String;)V
@@ -797,6 +858,7 @@
     invoke-direct {v1}, Landroid/os/HwParcel;-><init>()V
 
     .line 350
+    .local v1, "_hidl_reply":Landroid/os/HwParcel;
     :try_start_f
     iget-object v2, p0, Landroid/hardware/health/V1_0/IHealth$Proxy;->mRemote:Landroid/os/IHwBinder;
 
@@ -822,11 +884,11 @@
 
     .line 353
     :catchall_20
-    move-exception v0
+    move-exception v2
 
     invoke-virtual {v1}, Landroid/os/HwParcel;->release()V
 
-    throw v0
+    throw v2
 .end method
 
 .method public toString()Ljava/lang/String;
@@ -868,6 +930,7 @@
 
 .method public unlinkToDeath(Landroid/os/IHwBinder$DeathRecipient;)Z
     .registers 3
+    .param p1, "recipient"  # Landroid/os/IHwBinder$DeathRecipient;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -879,13 +942,15 @@
 
     invoke-interface {v0, p1}, Landroid/os/IHwBinder;->unlinkToDeath(Landroid/os/IHwBinder$DeathRecipient;)Z
 
-    move-result p1
+    move-result v0
 
-    return p1
+    return v0
 .end method
 
 .method public update(Landroid/hardware/health/V1_0/HealthInfo;Landroid/hardware/health/V1_0/IHealth$updateCallback;)V
-    .registers 7
+    .registers 8
+    .param p1, "info"  # Landroid/hardware/health/V1_0/HealthInfo;
+    .param p2, "_hidl_cb"  # Landroid/hardware/health/V1_0/IHealth$updateCallback;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -898,6 +963,7 @@
     invoke-direct {v0}, Landroid/os/HwParcel;-><init>()V
 
     .line 208
+    .local v0, "_hidl_request":Landroid/os/HwParcel;
     const-string v1, "android.hardware.health@1.0::IHealth"
 
     invoke-virtual {v0, v1}, Landroid/os/HwParcel;->writeInterfaceToken(Ljava/lang/String;)V
@@ -906,46 +972,51 @@
     invoke-virtual {p1, v0}, Landroid/hardware/health/V1_0/HealthInfo;->writeToParcel(Landroid/os/HwParcel;)V
 
     .line 211
-    new-instance p1, Landroid/os/HwParcel;
+    new-instance v1, Landroid/os/HwParcel;
 
-    invoke-direct {p1}, Landroid/os/HwParcel;-><init>()V
+    invoke-direct {v1}, Landroid/os/HwParcel;-><init>()V
 
     .line 213
+    .local v1, "_hidl_reply":Landroid/os/HwParcel;
     :try_start_12
-    iget-object v1, p0, Landroid/hardware/health/V1_0/IHealth$Proxy;->mRemote:Landroid/os/IHwBinder;
+    iget-object v2, p0, Landroid/hardware/health/V1_0/IHealth$Proxy;->mRemote:Landroid/os/IHwBinder;
 
-    const/4 v2, 0x2
+    const/4 v3, 0x2
 
-    const/4 v3, 0x0
+    const/4 v4, 0x0
 
-    invoke-interface {v1, v2, v0, p1, v3}, Landroid/os/IHwBinder;->transact(ILandroid/os/HwParcel;Landroid/os/HwParcel;I)V
+    invoke-interface {v2, v3, v0, v1, v4}, Landroid/os/IHwBinder;->transact(ILandroid/os/HwParcel;Landroid/os/HwParcel;I)V
 
     .line 214
-    invoke-virtual {p1}, Landroid/os/HwParcel;->verifySuccess()V
+    invoke-virtual {v1}, Landroid/os/HwParcel;->verifySuccess()V
 
     .line 215
     invoke-virtual {v0}, Landroid/os/HwParcel;->releaseTemporaryStorage()V
 
     .line 217
-    invoke-virtual {p1}, Landroid/os/HwParcel;->readBool()Z
+    invoke-virtual {v1}, Landroid/os/HwParcel;->readBool()Z
 
-    move-result v0
+    move-result v2
 
     .line 218
-    new-instance v1, Landroid/hardware/health/V1_0/HealthInfo;
+    .local v2, "_hidl_out_skipLogging":Z
+    new-instance v3, Landroid/hardware/health/V1_0/HealthInfo;
 
-    invoke-direct {v1}, Landroid/hardware/health/V1_0/HealthInfo;-><init>()V
+    invoke-direct {v3}, Landroid/hardware/health/V1_0/HealthInfo;-><init>()V
 
     .line 219
-    invoke-virtual {v1, p1}, Landroid/hardware/health/V1_0/HealthInfo;->readFromParcel(Landroid/os/HwParcel;)V
+    .local v3, "_hidl_out_infoOut":Landroid/hardware/health/V1_0/HealthInfo;
+    invoke-virtual {v3, v1}, Landroid/hardware/health/V1_0/HealthInfo;->readFromParcel(Landroid/os/HwParcel;)V
 
     .line 220
-    invoke-interface {p2, v0, v1}, Landroid/hardware/health/V1_0/IHealth$updateCallback;->onValues(ZLandroid/hardware/health/V1_0/HealthInfo;)V
+    invoke-interface {p2, v2, v3}, Landroid/hardware/health/V1_0/IHealth$updateCallback;->onValues(ZLandroid/hardware/health/V1_0/HealthInfo;)V
     :try_end_2e
     .catchall {:try_start_12 .. :try_end_2e} :catchall_33
 
     .line 222
-    invoke-virtual {p1}, Landroid/os/HwParcel;->release()V
+    .end local v2  # "_hidl_out_skipLogging":Z
+    .end local v3  # "_hidl_out_infoOut":Landroid/hardware/health/V1_0/HealthInfo;
+    invoke-virtual {v1}, Landroid/os/HwParcel;->release()V
 
     .line 223
     nop
@@ -955,9 +1026,9 @@
 
     .line 222
     :catchall_33
-    move-exception p2
+    move-exception v2
 
-    invoke-virtual {p1}, Landroid/os/HwParcel;->release()V
+    invoke-virtual {v1}, Landroid/os/HwParcel;->release()V
 
-    throw p2
+    throw v2
 .end method

@@ -25,6 +25,9 @@
 # direct methods
 .method constructor <init>(Landroid/net/ip/IpServer;IS)V
     .registers 4
+    .param p1, "ipServer"  # Landroid/net/ip/IpServer;
+    .param p2, "mode"  # I
+    .param p3, "subnetId"  # S
 
     .line 59
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V

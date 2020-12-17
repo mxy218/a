@@ -26,17 +26,19 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/inputmethod/InputMethodManagerService;Lcom/android/internal/view/IInputMethodClient;)V
     .registers 3
+    .param p1, "imms"  # Lcom/android/server/inputmethod/InputMethodManagerService;
+    .param p2, "client"  # Lcom/android/internal/view/IInputMethodClient;
 
-    .line 396
+    .line 415
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
-    .line 397
+    .line 416
     iput-object p1, p0, Lcom/android/server/inputmethod/InputMethodManagerService$ClientDeathRecipient;->mImms:Lcom/android/server/inputmethod/InputMethodManagerService;
 
-    .line 398
+    .line 417
     iput-object p2, p0, Lcom/android/server/inputmethod/InputMethodManagerService$ClientDeathRecipient;->mClient:Lcom/android/internal/view/IInputMethodClient;
 
-    .line 399
+    .line 418
     return-void
 .end method
 
@@ -45,13 +47,13 @@
 .method public binderDied()V
     .registers 3
 
-    .line 403
+    .line 422
     iget-object v0, p0, Lcom/android/server/inputmethod/InputMethodManagerService$ClientDeathRecipient;->mImms:Lcom/android/server/inputmethod/InputMethodManagerService;
 
     iget-object v1, p0, Lcom/android/server/inputmethod/InputMethodManagerService$ClientDeathRecipient;->mClient:Lcom/android/internal/view/IInputMethodClient;
 
     invoke-virtual {v0, v1}, Lcom/android/server/inputmethod/InputMethodManagerService;->removeClient(Lcom/android/internal/view/IInputMethodClient;)V
 
-    .line 404
+    .line 423
     return-void
 .end method

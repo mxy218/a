@@ -24,6 +24,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/tv/TvInputHardwareManager$TvInputHardwareImpl;)V
     .registers 2
+    .param p1, "this$1"  # Lcom/android/server/tv/TvInputHardwareManager$TvInputHardwareImpl;
 
     .line 738
     iput-object p1, p0, Lcom/android/server/tv/TvInputHardwareManager$TvInputHardwareImpl$1;->this$1:Lcom/android/server/tv/TvInputHardwareManager$TvInputHardwareImpl;
@@ -37,44 +38,46 @@
 # virtual methods
 .method public onAudioPatchListUpdate([Landroid/media/AudioPatch;)V
     .registers 2
+    .param p1, "patchList"  # [Landroid/media/AudioPatch;
 
     .line 749
     return-void
 .end method
 
 .method public onAudioPortListUpdate([Landroid/media/AudioPort;)V
-    .registers 3
+    .registers 4
+    .param p1, "portList"  # [Landroid/media/AudioPort;
 
     .line 741
-    iget-object p1, p0, Lcom/android/server/tv/TvInputHardwareManager$TvInputHardwareImpl$1;->this$1:Lcom/android/server/tv/TvInputHardwareManager$TvInputHardwareImpl;
+    iget-object v0, p0, Lcom/android/server/tv/TvInputHardwareManager$TvInputHardwareImpl$1;->this$1:Lcom/android/server/tv/TvInputHardwareManager$TvInputHardwareImpl;
 
-    invoke-static {p1}, Lcom/android/server/tv/TvInputHardwareManager$TvInputHardwareImpl;->access$1100(Lcom/android/server/tv/TvInputHardwareManager$TvInputHardwareImpl;)Ljava/lang/Object;
+    invoke-static {v0}, Lcom/android/server/tv/TvInputHardwareManager$TvInputHardwareImpl;->access$1100(Lcom/android/server/tv/TvInputHardwareManager$TvInputHardwareImpl;)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v0
 
-    monitor-enter p1
+    monitor-enter v0
 
     .line 742
     :try_start_7
-    iget-object v0, p0, Lcom/android/server/tv/TvInputHardwareManager$TvInputHardwareImpl$1;->this$1:Lcom/android/server/tv/TvInputHardwareManager$TvInputHardwareImpl;
+    iget-object v1, p0, Lcom/android/server/tv/TvInputHardwareManager$TvInputHardwareImpl$1;->this$1:Lcom/android/server/tv/TvInputHardwareManager$TvInputHardwareImpl;
 
-    invoke-static {v0}, Lcom/android/server/tv/TvInputHardwareManager$TvInputHardwareImpl;->access$1200(Lcom/android/server/tv/TvInputHardwareManager$TvInputHardwareImpl;)V
+    invoke-static {v1}, Lcom/android/server/tv/TvInputHardwareManager$TvInputHardwareImpl;->access$1200(Lcom/android/server/tv/TvInputHardwareManager$TvInputHardwareImpl;)V
 
     .line 743
-    monitor-exit p1
+    monitor-exit v0
 
     .line 744
     return-void
 
     .line 743
     :catchall_e
-    move-exception v0
+    move-exception v1
 
-    monitor-exit p1
+    monitor-exit v0
     :try_end_10
     .catchall {:try_start_7 .. :try_end_10} :catchall_e
 
-    throw v0
+    throw v1
 .end method
 
 .method public onServiceDied()V

@@ -25,7 +25,9 @@
 
 # direct methods
 .method public constructor <init>(Landroid/content/Context;Landroid/os/Handler;)V
-    .registers 4
+    .registers 5
+    .param p1, "context"  # Landroid/content/Context;
+    .param p2, "handler"  # Landroid/os/Handler;
 
     .line 42
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -56,41 +58,44 @@
 
     invoke-virtual {p1, v0}, Landroid/content/Context;->getSystemService(Ljava/lang/String;)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v0
 
-    check-cast p1, Landroid/hardware/SensorManager;
+    check-cast v0, Landroid/hardware/SensorManager;
 
-    iput-object p1, p0, Lcom/android/server/policy/WakeGestureListener;->mSensorManager:Landroid/hardware/SensorManager;
+    iput-object v0, p0, Lcom/android/server/policy/WakeGestureListener;->mSensorManager:Landroid/hardware/SensorManager;
 
     .line 44
     iput-object p2, p0, Lcom/android/server/policy/WakeGestureListener;->mHandler:Landroid/os/Handler;
 
     .line 46
-    iget-object p1, p0, Lcom/android/server/policy/WakeGestureListener;->mSensorManager:Landroid/hardware/SensorManager;
+    iget-object v0, p0, Lcom/android/server/policy/WakeGestureListener;->mSensorManager:Landroid/hardware/SensorManager;
 
-    const/16 p2, 0x17
+    const/16 v1, 0x17
 
-    invoke-virtual {p1, p2}, Landroid/hardware/SensorManager;->getDefaultSensor(I)Landroid/hardware/Sensor;
+    invoke-virtual {v0, v1}, Landroid/hardware/SensorManager;->getDefaultSensor(I)Landroid/hardware/Sensor;
 
-    move-result-object p1
+    move-result-object v0
 
-    iput-object p1, p0, Lcom/android/server/policy/WakeGestureListener;->mSensor:Landroid/hardware/Sensor;
+    iput-object v0, p0, Lcom/android/server/policy/WakeGestureListener;->mSensor:Landroid/hardware/Sensor;
 
     .line 47
     return-void
 .end method
 
 .method static synthetic access$000(Lcom/android/server/policy/WakeGestureListener;)Ljava/lang/Object;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/policy/WakeGestureListener;
 
     .line 31
-    iget-object p0, p0, Lcom/android/server/policy/WakeGestureListener;->mLock:Ljava/lang/Object;
+    iget-object v0, p0, Lcom/android/server/policy/WakeGestureListener;->mLock:Ljava/lang/Object;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$102(Lcom/android/server/policy/WakeGestureListener;Z)Z
     .registers 2
+    .param p0, "x0"  # Lcom/android/server/policy/WakeGestureListener;
+    .param p1, "x1"  # Z
 
     .line 31
     iput-boolean p1, p0, Lcom/android/server/policy/WakeGestureListener;->mTriggerRequested:Z
@@ -99,21 +104,23 @@
 .end method
 
 .method static synthetic access$200(Lcom/android/server/policy/WakeGestureListener;)Ljava/lang/Runnable;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/policy/WakeGestureListener;
 
     .line 31
-    iget-object p0, p0, Lcom/android/server/policy/WakeGestureListener;->mWakeUpRunnable:Ljava/lang/Runnable;
+    iget-object v0, p0, Lcom/android/server/policy/WakeGestureListener;->mWakeUpRunnable:Ljava/lang/Runnable;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$300(Lcom/android/server/policy/WakeGestureListener;)Landroid/os/Handler;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/policy/WakeGestureListener;
 
     .line 31
-    iget-object p0, p0, Lcom/android/server/policy/WakeGestureListener;->mHandler:Landroid/os/Handler;
+    iget-object v0, p0, Lcom/android/server/policy/WakeGestureListener;->mHandler:Landroid/os/Handler;
 
-    return-object p0
+    return-object v0
 .end method
 
 
@@ -170,6 +177,8 @@
 
 .method public dump(Ljava/io/PrintWriter;Ljava/lang/String;)V
     .registers 6
+    .param p1, "pw"  # Ljava/io/PrintWriter;
+    .param p2, "prefix"  # Ljava/lang/String;
 
     .line 76
     iget-object v0, p0, Lcom/android/server/policy/WakeGestureListener;->mLock:Ljava/lang/Object;
@@ -201,13 +210,15 @@
 
     invoke-virtual {v1, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string p2, "  "
+    const-string v2, "  "
 
-    invoke-virtual {v1, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p2
+    move-result-object v1
+
+    move-object p2, v1
 
     .line 79
     new-instance v1, Ljava/lang/StringBuilder;
@@ -216,7 +227,7 @@
 
     invoke-virtual {v1, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string v2, "mTriggerRequested="
+    const-string/jumbo v2, "mTriggerRequested="
 
     invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
@@ -237,19 +248,19 @@
 
     invoke-virtual {v1, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string p2, "mSensor="
+    const-string/jumbo v2, "mSensor="
 
-    invoke-virtual {v1, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    iget-object p2, p0, Lcom/android/server/policy/WakeGestureListener;->mSensor:Landroid/hardware/Sensor;
+    iget-object v2, p0, Lcom/android/server/policy/WakeGestureListener;->mSensor:Landroid/hardware/Sensor;
 
-    invoke-virtual {v1, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p2
+    move-result-object v1
 
-    invoke-virtual {p1, p2}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {p1, v1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
     .line 81
     monitor-exit v0
@@ -258,14 +269,14 @@
     return-void
 
     .line 81
-    :catchall_5c
-    move-exception p1
+    :catchall_5f
+    move-exception v1
 
     monitor-exit v0
-    :try_end_5e
-    .catchall {:try_start_3 .. :try_end_5e} :catchall_5c
+    :try_end_61
+    .catchall {:try_start_3 .. :try_end_61} :catchall_5f
 
-    throw p1
+    throw v1
 .end method
 
 .method public isSupported()Z

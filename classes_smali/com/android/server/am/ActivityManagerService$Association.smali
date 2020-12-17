@@ -43,35 +43,40 @@
 # direct methods
 .method constructor <init>(ILjava/lang/String;ILandroid/content/ComponentName;Ljava/lang/String;)V
     .registers 7
+    .param p1, "sourceUid"  # I
+    .param p2, "sourceProcess"  # Ljava/lang/String;
+    .param p3, "targetUid"  # I
+    .param p4, "targetComponent"  # Landroid/content/ComponentName;
+    .param p5, "targetProcess"  # Ljava/lang/String;
 
-    .line 1032
+    .line 1110
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
-    .line 1026
+    .line 1104
     const/16 v0, 0x16
 
     iput v0, p0, Lcom/android/server/am/ActivityManagerService$Association;->mLastState:I
 
-    .line 1028
+    .line 1106
     new-array v0, v0, [J
 
     iput-object v0, p0, Lcom/android/server/am/ActivityManagerService$Association;->mStateTimes:[J
 
-    .line 1033
+    .line 1111
     iput p1, p0, Lcom/android/server/am/ActivityManagerService$Association;->mSourceUid:I
 
-    .line 1034
+    .line 1112
     iput-object p2, p0, Lcom/android/server/am/ActivityManagerService$Association;->mSourceProcess:Ljava/lang/String;
 
-    .line 1035
+    .line 1113
     iput p3, p0, Lcom/android/server/am/ActivityManagerService$Association;->mTargetUid:I
 
-    .line 1036
+    .line 1114
     iput-object p4, p0, Lcom/android/server/am/ActivityManagerService$Association;->mTargetComponent:Landroid/content/ComponentName;
 
-    .line 1037
+    .line 1115
     iput-object p5, p0, Lcom/android/server/am/ActivityManagerService$Association;->mTargetProcess:Ljava/lang/String;
 
-    .line 1038
+    .line 1116
     return-void
 .end method

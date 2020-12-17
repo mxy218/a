@@ -26,6 +26,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/print/PrintManagerService$PrintManagerImpl;I)V
     .registers 3
+    .param p1, "this$1"  # Lcom/android/server/print/PrintManagerService$PrintManagerImpl;
 
     .line 1008
     iput-object p1, p0, Lcom/android/server/print/PrintManagerService$PrintManagerImpl$4;->this$1:Lcom/android/server/print/PrintManagerService$PrintManagerImpl;
@@ -40,7 +41,7 @@
 
 # virtual methods
 .method public run()V
-    .registers 4
+    .registers 5
 
     .line 1011
     iget-object v0, p0, Lcom/android/server/print/PrintManagerService$PrintManagerImpl$4;->this$1:Lcom/android/server/print/PrintManagerService$PrintManagerImpl;
@@ -68,23 +69,25 @@
     check-cast v1, Lcom/android/server/print/UserState;
 
     .line 1013
+    .local v1, "userState":Lcom/android/server/print/UserState;
     if-eqz v1, :cond_25
 
     .line 1014
     invoke-virtual {v1}, Lcom/android/server/print/UserState;->destroyLocked()V
 
     .line 1015
-    iget-object v1, p0, Lcom/android/server/print/PrintManagerService$PrintManagerImpl$4;->this$1:Lcom/android/server/print/PrintManagerService$PrintManagerImpl;
+    iget-object v2, p0, Lcom/android/server/print/PrintManagerService$PrintManagerImpl$4;->this$1:Lcom/android/server/print/PrintManagerService$PrintManagerImpl;
 
-    invoke-static {v1}, Lcom/android/server/print/PrintManagerService$PrintManagerImpl;->access$300(Lcom/android/server/print/PrintManagerService$PrintManagerImpl;)Landroid/util/SparseArray;
+    invoke-static {v2}, Lcom/android/server/print/PrintManagerService$PrintManagerImpl;->access$300(Lcom/android/server/print/PrintManagerService$PrintManagerImpl;)Landroid/util/SparseArray;
 
-    move-result-object v1
+    move-result-object v2
 
-    iget v2, p0, Lcom/android/server/print/PrintManagerService$PrintManagerImpl$4;->val$userId:I
+    iget v3, p0, Lcom/android/server/print/PrintManagerService$PrintManagerImpl$4;->val$userId:I
 
-    invoke-virtual {v1, v2}, Landroid/util/SparseArray;->remove(I)V
+    invoke-virtual {v2, v3}, Landroid/util/SparseArray;->remove(I)V
 
     .line 1017
+    .end local v1  # "userState":Lcom/android/server/print/UserState;
     :cond_25
     monitor-exit v0
 

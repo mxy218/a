@@ -21,6 +21,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/role/RoleManagerService;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/role/RoleManagerService;
 
     .line 169
     iput-object p1, p0, Lcom/android/server/role/RoleManagerService$1;->this$0:Lcom/android/server/role/RoleManagerService;
@@ -33,36 +34,40 @@
 
 # virtual methods
 .method public onReceive(Landroid/content/Context;Landroid/content/Intent;)V
-    .registers 4
+    .registers 5
+    .param p1, "context"  # Landroid/content/Context;
+    .param p2, "intent"  # Landroid/content/Intent;
 
     .line 172
     invoke-virtual {p2}, Landroid/content/Intent;->getAction()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    const-string v0, "android.intent.action.USER_REMOVED"
+    const-string v1, "android.intent.action.USER_REMOVED"
 
-    invoke-static {p1, v0}, Landroid/text/TextUtils;->equals(Ljava/lang/CharSequence;Ljava/lang/CharSequence;)Z
+    invoke-static {v0, v1}, Landroid/text/TextUtils;->equals(Ljava/lang/CharSequence;Ljava/lang/CharSequence;)Z
 
-    move-result p1
+    move-result v0
 
-    if-eqz p1, :cond_18
+    if-eqz v0, :cond_18
 
     .line 173
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    const-string v0, "android.intent.extra.user_handle"
+    const-string v1, "android.intent.extra.user_handle"
 
-    invoke-virtual {p2, v0, p1}, Landroid/content/Intent;->getIntExtra(Ljava/lang/String;I)I
+    invoke-virtual {p2, v1, v0}, Landroid/content/Intent;->getIntExtra(Ljava/lang/String;I)I
 
-    move-result p1
+    move-result v0
 
     .line 174
-    iget-object p2, p0, Lcom/android/server/role/RoleManagerService$1;->this$0:Lcom/android/server/role/RoleManagerService;
+    .local v0, "userId":I
+    iget-object v1, p0, Lcom/android/server/role/RoleManagerService$1;->this$0:Lcom/android/server/role/RoleManagerService;
 
-    invoke-static {p2, p1}, Lcom/android/server/role/RoleManagerService;->access$400(Lcom/android/server/role/RoleManagerService;I)V
+    invoke-static {v1, v0}, Lcom/android/server/role/RoleManagerService;->access$400(Lcom/android/server/role/RoleManagerService;I)V
 
     .line 176
+    .end local v0  # "userId":I
     :cond_18
     return-void
 .end method

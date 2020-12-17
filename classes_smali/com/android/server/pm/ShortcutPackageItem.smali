@@ -21,7 +21,11 @@
 
 # direct methods
 .method protected constructor <init>(Lcom/android/server/pm/ShortcutUser;ILjava/lang/String;Lcom/android/server/pm/ShortcutPackageInfo;)V
-    .registers 5
+    .registers 6
+    .param p1, "shortcutUser"  # Lcom/android/server/pm/ShortcutUser;
+    .param p2, "packageUserId"  # I
+    .param p3, "packageName"  # Ljava/lang/String;
+    .param p4, "packageInfo"  # Lcom/android/server/pm/ShortcutPackageInfo;
 
     .line 48
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -35,20 +39,20 @@
     .line 51
     invoke-static {p3}, Lcom/android/internal/util/Preconditions;->checkStringNotEmpty(Ljava/lang/CharSequence;)Ljava/lang/CharSequence;
 
-    move-result-object p1
+    move-result-object v0
 
-    check-cast p1, Ljava/lang/String;
+    check-cast v0, Ljava/lang/String;
 
-    iput-object p1, p0, Lcom/android/server/pm/ShortcutPackageItem;->mPackageName:Ljava/lang/String;
+    iput-object v0, p0, Lcom/android/server/pm/ShortcutPackageItem;->mPackageName:Ljava/lang/String;
 
     .line 52
     invoke-static {p4}, Lcom/android/internal/util/Preconditions;->checkNotNull(Ljava/lang/Object;)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v0
 
-    check-cast p1, Lcom/android/server/pm/ShortcutPackageInfo;
+    check-cast v0, Lcom/android/server/pm/ShortcutPackageInfo;
 
-    iput-object p1, p0, Lcom/android/server/pm/ShortcutPackageItem;->mPackageInfo:Lcom/android/server/pm/ShortcutPackageInfo;
+    iput-object v0, p0, Lcom/android/server/pm/ShortcutPackageItem;->mPackageInfo:Lcom/android/server/pm/ShortcutPackageInfo;
 
     .line 53
     return-void
@@ -57,7 +61,7 @@
 
 # virtual methods
 .method public attemptToRestoreIfNeededAndSave()V
-    .registers 5
+    .registers 7
 
     .line 99
     iget-object v0, p0, Lcom/android/server/pm/ShortcutPackageItem;->mPackageInfo:Lcom/android/server/pm/ShortcutPackageInfo;
@@ -78,6 +82,7 @@
     iget-object v0, v0, Lcom/android/server/pm/ShortcutUser;->mService:Lcom/android/server/pm/ShortcutService;
 
     .line 103
+    .local v0, "s":Lcom/android/server/pm/ShortcutService;
     iget-object v1, p0, Lcom/android/server/pm/ShortcutPackageItem;->mPackageName:Ljava/lang/String;
 
     iget v2, p0, Lcom/android/server/pm/ShortcutPackageItem;->mPackageUserId:I
@@ -93,92 +98,99 @@
 
     .line 111
     :cond_18
-    nop
+    const-wide/16 v1, -0x1
 
     .line 113
-    iget-object v1, p0, Lcom/android/server/pm/ShortcutPackageItem;->mPackageInfo:Lcom/android/server/pm/ShortcutPackageInfo;
+    .local v1, "currentVersionCode":J
+    iget-object v3, p0, Lcom/android/server/pm/ShortcutPackageItem;->mPackageInfo:Lcom/android/server/pm/ShortcutPackageInfo;
 
-    invoke-virtual {v1}, Lcom/android/server/pm/ShortcutPackageInfo;->hasSignatures()Z
-
-    move-result v1
-
-    if-nez v1, :cond_49
-
-    .line 114
-    new-instance v1, Ljava/lang/StringBuilder;
-
-    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
-
-    const-string v2, "Attempted to restore package "
-
-    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    iget-object v2, p0, Lcom/android/server/pm/ShortcutPackageItem;->mPackageName:Ljava/lang/String;
-
-    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    const-string v2, "/u"
-
-    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    iget v2, p0, Lcom/android/server/pm/ShortcutPackageItem;->mPackageUserId:I
-
-    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
-
-    const-string v2, " but signatures not found in the restore data."
-
-    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
-
-    move-result-object v1
-
-    invoke-virtual {v0, v1}, Lcom/android/server/pm/ShortcutService;->wtf(Ljava/lang/String;)V
-
-    .line 116
-    const/16 v1, 0x66
-
-    goto :goto_5e
-
-    .line 118
-    :cond_49
-    iget-object v1, p0, Lcom/android/server/pm/ShortcutPackageItem;->mPackageName:Ljava/lang/String;
-
-    iget v2, p0, Lcom/android/server/pm/ShortcutPackageItem;->mPackageUserId:I
-
-    invoke-virtual {v0, v1, v2}, Lcom/android/server/pm/ShortcutService;->getPackageInfoWithSignatures(Ljava/lang/String;I)Landroid/content/pm/PackageInfo;
-
-    move-result-object v1
-
-    .line 119
-    invoke-virtual {v1}, Landroid/content/pm/PackageInfo;->getLongVersionCode()J
-
-    .line 120
-    iget-object v2, p0, Lcom/android/server/pm/ShortcutPackageItem;->mPackageInfo:Lcom/android/server/pm/ShortcutPackageInfo;
-
-    invoke-virtual {p0}, Lcom/android/server/pm/ShortcutPackageItem;->canRestoreAnyVersion()Z
+    invoke-virtual {v3}, Lcom/android/server/pm/ShortcutPackageInfo;->hasSignatures()Z
 
     move-result v3
 
-    invoke-virtual {v2, v0, v1, v3}, Lcom/android/server/pm/ShortcutPackageInfo;->canRestoreTo(Lcom/android/server/pm/ShortcutService;Landroid/content/pm/PackageInfo;Z)I
+    if-nez v3, :cond_4a
 
-    move-result v1
+    .line 114
+    new-instance v3, Ljava/lang/StringBuilder;
+
+    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
+
+    const-string v4, "Attempted to restore package "
+
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    iget-object v4, p0, Lcom/android/server/pm/ShortcutPackageItem;->mPackageName:Ljava/lang/String;
+
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    const-string v4, "/u"
+
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    iget v4, p0, Lcom/android/server/pm/ShortcutPackageItem;->mPackageUserId:I
+
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+
+    const-string v4, " but signatures not found in the restore data."
+
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v3
+
+    invoke-virtual {v0, v3}, Lcom/android/server/pm/ShortcutService;->wtf(Ljava/lang/String;)V
+
+    .line 116
+    const/16 v3, 0x66
+
+    .local v3, "restoreBlockReason":I
+    goto :goto_60
+
+    .line 118
+    .end local v3  # "restoreBlockReason":I
+    :cond_4a
+    iget-object v3, p0, Lcom/android/server/pm/ShortcutPackageItem;->mPackageName:Ljava/lang/String;
+
+    iget v4, p0, Lcom/android/server/pm/ShortcutPackageItem;->mPackageUserId:I
+
+    invoke-virtual {v0, v3, v4}, Lcom/android/server/pm/ShortcutService;->getPackageInfoWithSignatures(Ljava/lang/String;I)Landroid/content/pm/PackageInfo;
+
+    move-result-object v3
+
+    .line 119
+    .local v3, "pi":Landroid/content/pm/PackageInfo;
+    invoke-virtual {v3}, Landroid/content/pm/PackageInfo;->getLongVersionCode()J
+
+    move-result-wide v1
+
+    .line 120
+    iget-object v4, p0, Lcom/android/server/pm/ShortcutPackageItem;->mPackageInfo:Lcom/android/server/pm/ShortcutPackageInfo;
+
+    invoke-virtual {p0}, Lcom/android/server/pm/ShortcutPackageItem;->canRestoreAnyVersion()Z
+
+    move-result v5
+
+    invoke-virtual {v4, v0, v3, v5}, Lcom/android/server/pm/ShortcutPackageInfo;->canRestoreTo(Lcom/android/server/pm/ShortcutService;Landroid/content/pm/PackageInfo;Z)I
+
+    move-result v3
 
     .line 130
-    :goto_5e
-    invoke-virtual {p0, v1}, Lcom/android/server/pm/ShortcutPackageItem;->onRestored(I)V
+    .local v3, "restoreBlockReason":I
+    :goto_60
+    invoke-virtual {p0, v3}, Lcom/android/server/pm/ShortcutPackageItem;->onRestored(I)V
 
     .line 133
-    iget-object v1, p0, Lcom/android/server/pm/ShortcutPackageItem;->mPackageInfo:Lcom/android/server/pm/ShortcutPackageInfo;
+    iget-object v4, p0, Lcom/android/server/pm/ShortcutPackageItem;->mPackageInfo:Lcom/android/server/pm/ShortcutPackageInfo;
 
-    const/4 v2, 0x0
+    const/4 v5, 0x0
 
-    invoke-virtual {v1, v2}, Lcom/android/server/pm/ShortcutPackageInfo;->setShadow(Z)V
+    invoke-virtual {v4, v5}, Lcom/android/server/pm/ShortcutPackageInfo;->setShadow(Z)V
 
     .line 135
-    iget v1, p0, Lcom/android/server/pm/ShortcutPackageItem;->mPackageUserId:I
+    iget v4, p0, Lcom/android/server/pm/ShortcutPackageItem;->mPackageUserId:I
 
-    invoke-virtual {v0, v1}, Lcom/android/server/pm/ShortcutService;->scheduleSaveUser(I)V
+    invoke-virtual {v0, v4}, Lcom/android/server/pm/ShortcutService;->scheduleSaveUser(I)V
 
     .line 136
     return-void
@@ -188,7 +200,8 @@
 .end method
 
 .method public dumpCheckin(Z)Lorg/json/JSONObject;
-    .registers 4
+    .registers 5
+    .param p1, "clear"  # Z
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Lorg/json/JSONException;
@@ -196,19 +209,20 @@
     .end annotation
 
     .line 146
-    new-instance p1, Lorg/json/JSONObject;
+    new-instance v0, Lorg/json/JSONObject;
 
-    invoke-direct {p1}, Lorg/json/JSONObject;-><init>()V
+    invoke-direct {v0}, Lorg/json/JSONObject;-><init>()V
 
     .line 147
-    iget-object v0, p0, Lcom/android/server/pm/ShortcutPackageItem;->mPackageName:Ljava/lang/String;
+    .local v0, "result":Lorg/json/JSONObject;
+    iget-object v1, p0, Lcom/android/server/pm/ShortcutPackageItem;->mPackageName:Ljava/lang/String;
 
-    const-string/jumbo v1, "name"
+    const-string/jumbo v2, "name"
 
-    invoke-virtual {p1, v1, v0}, Lorg/json/JSONObject;->put(Ljava/lang/String;Ljava/lang/Object;)Lorg/json/JSONObject;
+    invoke-virtual {v0, v2, v1}, Lorg/json/JSONObject;->put(Ljava/lang/String;Ljava/lang/Object;)Lorg/json/JSONObject;
 
     .line 148
-    return-object p1
+    return-object v0
 .end method
 
 .method public abstract getOwnerUserId()I
@@ -275,6 +289,7 @@
     iget-object v0, v0, Lcom/android/server/pm/ShortcutUser;->mService:Lcom/android/server/pm/ShortcutService;
 
     .line 94
+    .local v0, "s":Lcom/android/server/pm/ShortcutService;
     iget-object v1, p0, Lcom/android/server/pm/ShortcutPackageItem;->mPackageInfo:Lcom/android/server/pm/ShortcutPackageInfo;
 
     invoke-virtual {v1, v0, p0}, Lcom/android/server/pm/ShortcutPackageInfo;->refreshSignature(Lcom/android/server/pm/ShortcutService;Lcom/android/server/pm/ShortcutPackageItem;)V
@@ -292,6 +307,7 @@
 
 .method public replaceUser(Lcom/android/server/pm/ShortcutUser;)V
     .registers 2
+    .param p1, "user"  # Lcom/android/server/pm/ShortcutUser;
 
     .line 59
     iput-object p1, p0, Lcom/android/server/pm/ShortcutPackageItem;->mShortcutUser:Lcom/android/server/pm/ShortcutUser;

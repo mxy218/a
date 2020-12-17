@@ -61,14 +61,15 @@
 
 .method public static asInterface(Landroid/os/IBinder;)Landroid/net/IIpMemoryStore;
     .registers 3
+    .param p0, "obj"  # Landroid/os/IBinder;
 
     .line 62
     if-nez p0, :cond_4
 
     .line 63
-    const/4 p0, 0x0
+    const/4 v0, 0x0
 
-    return-object p0
+    return-object v0
 
     .line 65
     :cond_4
@@ -79,24 +80,27 @@
     move-result-object v0
 
     .line 66
-    if-eqz v0, :cond_13
+    .local v0, "iin":Landroid/os/IInterface;
+    if-eqz v0, :cond_14
 
     instance-of v1, v0, Landroid/net/IIpMemoryStore;
 
-    if-eqz v1, :cond_13
+    if-eqz v1, :cond_14
 
     .line 67
-    check-cast v0, Landroid/net/IIpMemoryStore;
+    move-object v1, v0
 
-    return-object v0
+    check-cast v1, Landroid/net/IIpMemoryStore;
+
+    return-object v1
 
     .line 69
-    :cond_13
-    new-instance v0, Landroid/net/IIpMemoryStore$Stub$Proxy;
+    :cond_14
+    new-instance v1, Landroid/net/IIpMemoryStore$Stub$Proxy;
 
-    invoke-direct {v0, p0}, Landroid/net/IIpMemoryStore$Stub$Proxy;-><init>(Landroid/os/IBinder;)V
+    invoke-direct {v1, p0}, Landroid/net/IIpMemoryStore$Stub$Proxy;-><init>(Landroid/os/IBinder;)V
 
-    return-object v0
+    return-object v1
 .end method
 
 .method public static getDefaultImpl()Landroid/net/IIpMemoryStore;
@@ -110,6 +114,7 @@
 
 .method public static setDefaultImpl(Landroid/net/IIpMemoryStore;)Z
     .registers 2
+    .param p0, "impl"  # Landroid/net/IIpMemoryStore;
 
     .line 379
     sget-object v0, Landroid/net/IIpMemoryStore$Stub$Proxy;->sDefaultImpl:Landroid/net/IIpMemoryStore;
@@ -122,15 +127,15 @@
     sput-object p0, Landroid/net/IIpMemoryStore$Stub$Proxy;->sDefaultImpl:Landroid/net/IIpMemoryStore;
 
     .line 381
-    const/4 p0, 0x1
+    const/4 v0, 0x1
 
-    return p0
+    return v0
 
     .line 383
     :cond_a
-    const/4 p0, 0x0
+    const/4 v0, 0x0
 
-    return p0
+    return v0
 .end method
 
 
@@ -143,7 +148,11 @@
 .end method
 
 .method public onTransact(ILandroid/os/Parcel;Landroid/os/Parcel;I)Z
-    .registers 13
+    .registers 22
+    .param p1, "code"  # I
+    .param p2, "data"  # Landroid/os/Parcel;
+    .param p3, "reply"  # Landroid/os/Parcel;
+    .param p4, "flags"  # I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -151,319 +160,372 @@
     .end annotation
 
     .line 77
-    nop
+    move-object/from16 v6, p0
+
+    move/from16 v7, p1
+
+    move-object/from16 v8, p2
+
+    move-object/from16 v9, p3
+
+    const-string v10, "android.net.IIpMemoryStore"
 
     .line 78
+    .local v10, "descriptor":Ljava/lang/String;
     const v0, 0xffffff
 
-    const/4 v1, 0x1
+    const/4 v11, 0x1
 
-    const-string v2, "android.net.IIpMemoryStore"
-
-    if-eq p1, v0, :cond_d9
+    if-eq v7, v0, :cond_e4
 
     const v0, 0x5f4e5446
 
-    if-eq p1, v0, :cond_d5
+    if-eq v7, v0, :cond_e0
 
-    const/4 v0, 0x0
-
-    packed-switch p1, :pswitch_data_e8
+    packed-switch v7, :pswitch_data_f2
 
     .line 189
-    invoke-super {p0, p1, p2, p3, p4}, Landroid/os/Binder;->onTransact(ILandroid/os/Parcel;Landroid/os/Parcel;I)Z
+    invoke-super/range {p0 .. p4}, Landroid/os/Binder;->onTransact(ILandroid/os/Parcel;Landroid/os/Parcel;I)Z
 
-    move-result p1
+    move-result v0
 
-    return p1
+    return v0
 
     .line 176
-    :pswitch_17  #0x7
-    invoke-virtual {p2, v2}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
+    :pswitch_1d  #0x7
+    invoke-virtual {v8, v10}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
 
     .line 177
-    invoke-virtual {p0}, Landroid/net/IIpMemoryStore$Stub;->factoryReset()V
+    invoke-virtual/range {p0 .. p0}, Landroid/net/IIpMemoryStore$Stub;->factoryReset()V
 
     .line 178
-    return v1
+    return v11
 
     .line 162
-    :pswitch_1e  #0x6
-    invoke-virtual {p2, v2}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
+    :pswitch_24  #0x6
+    invoke-virtual {v8, v10}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
 
     .line 164
-    invoke-virtual {p2}, Landroid/os/Parcel;->readString()Ljava/lang/String;
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
     .line 166
-    invoke-virtual {p2}, Landroid/os/Parcel;->readString()Ljava/lang/String;
+    .local v0, "_arg0":Ljava/lang/String;
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readString()Ljava/lang/String;
 
-    move-result-object p3
+    move-result-object v1
 
     .line 168
-    invoke-virtual {p2}, Landroid/os/Parcel;->readString()Ljava/lang/String;
+    .local v1, "_arg1":Ljava/lang/String;
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readString()Ljava/lang/String;
 
-    move-result-object p4
+    move-result-object v2
 
     .line 170
-    invoke-virtual {p2}, Landroid/os/Parcel;->readStrongBinder()Landroid/os/IBinder;
-
-    move-result-object p2
-
-    invoke-static {p2}, Landroid/net/ipmemorystore/IOnBlobRetrievedListener$Stub;->asInterface(Landroid/os/IBinder;)Landroid/net/ipmemorystore/IOnBlobRetrievedListener;
-
-    move-result-object p2
-
-    .line 171
-    invoke-virtual {p0, p1, p3, p4, p2}, Landroid/net/IIpMemoryStore$Stub;->retrieveBlob(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Landroid/net/ipmemorystore/IOnBlobRetrievedListener;)V
-
-    .line 172
-    return v1
-
-    .line 152
-    :pswitch_39  #0x5
-    invoke-virtual {p2, v2}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
-
-    .line 154
-    invoke-virtual {p2}, Landroid/os/Parcel;->readString()Ljava/lang/String;
-
-    move-result-object p1
-
-    .line 156
-    invoke-virtual {p2}, Landroid/os/Parcel;->readStrongBinder()Landroid/os/IBinder;
-
-    move-result-object p2
-
-    invoke-static {p2}, Landroid/net/ipmemorystore/IOnNetworkAttributesRetrievedListener$Stub;->asInterface(Landroid/os/IBinder;)Landroid/net/ipmemorystore/IOnNetworkAttributesRetrievedListener;
-
-    move-result-object p2
-
-    .line 157
-    invoke-virtual {p0, p1, p2}, Landroid/net/IIpMemoryStore$Stub;->retrieveNetworkAttributes(Ljava/lang/String;Landroid/net/ipmemorystore/IOnNetworkAttributesRetrievedListener;)V
-
-    .line 158
-    return v1
-
-    .line 140
-    :pswitch_4c  #0x4
-    invoke-virtual {p2, v2}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
-
-    .line 142
-    invoke-virtual {p2}, Landroid/os/Parcel;->readString()Ljava/lang/String;
-
-    move-result-object p1
-
-    .line 144
-    invoke-virtual {p2}, Landroid/os/Parcel;->readString()Ljava/lang/String;
-
-    move-result-object p3
-
-    .line 146
-    invoke-virtual {p2}, Landroid/os/Parcel;->readStrongBinder()Landroid/os/IBinder;
-
-    move-result-object p2
-
-    invoke-static {p2}, Landroid/net/ipmemorystore/IOnSameL3NetworkResponseListener$Stub;->asInterface(Landroid/os/IBinder;)Landroid/net/ipmemorystore/IOnSameL3NetworkResponseListener;
-
-    move-result-object p2
-
-    .line 147
-    invoke-virtual {p0, p1, p3, p2}, Landroid/net/IIpMemoryStore$Stub;->isSameNetwork(Ljava/lang/String;Ljava/lang/String;Landroid/net/ipmemorystore/IOnSameL3NetworkResponseListener;)V
-
-    .line 148
-    return v1
-
-    .line 125
-    :pswitch_63  #0x3
-    invoke-virtual {p2, v2}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
-
-    .line 127
-    invoke-virtual {p2}, Landroid/os/Parcel;->readInt()I
-
-    move-result p1
-
-    if-eqz p1, :cond_76
-
-    .line 128
-    sget-object p1, Landroid/net/ipmemorystore/NetworkAttributesParcelable;->CREATOR:Landroid/os/Parcelable$Creator;
-
-    invoke-interface {p1, p2}, Landroid/os/Parcelable$Creator;->createFromParcel(Landroid/os/Parcel;)Ljava/lang/Object;
-
-    move-result-object p1
-
-    move-object v0, p1
-
-    check-cast v0, Landroid/net/ipmemorystore/NetworkAttributesParcelable;
-
-    goto :goto_77
-
-    .line 131
-    :cond_76
-    nop
-
-    .line 134
-    :goto_77
-    invoke-virtual {p2}, Landroid/os/Parcel;->readStrongBinder()Landroid/os/IBinder;
-
-    move-result-object p1
-
-    invoke-static {p1}, Landroid/net/ipmemorystore/IOnL2KeyResponseListener$Stub;->asInterface(Landroid/os/IBinder;)Landroid/net/ipmemorystore/IOnL2KeyResponseListener;
-
-    move-result-object p1
-
-    .line 135
-    invoke-virtual {p0, v0, p1}, Landroid/net/IIpMemoryStore$Stub;->findL2Key(Landroid/net/ipmemorystore/NetworkAttributesParcelable;Landroid/net/ipmemorystore/IOnL2KeyResponseListener;)V
-
-    .line 136
-    return v1
-
-    .line 104
-    :pswitch_83  #0x2
-    invoke-virtual {p2, v2}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
-
-    .line 106
-    invoke-virtual {p2}, Landroid/os/Parcel;->readString()Ljava/lang/String;
+    .local v2, "_arg2":Ljava/lang/String;
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readStrongBinder()Landroid/os/IBinder;
 
     move-result-object v3
 
-    .line 108
-    invoke-virtual {p2}, Landroid/os/Parcel;->readString()Ljava/lang/String;
+    invoke-static {v3}, Landroid/net/ipmemorystore/IOnBlobRetrievedListener$Stub;->asInterface(Landroid/os/IBinder;)Landroid/net/ipmemorystore/IOnBlobRetrievedListener;
 
-    move-result-object v4
+    move-result-object v3
 
-    .line 110
-    invoke-virtual {p2}, Landroid/os/Parcel;->readString()Ljava/lang/String;
+    .line 171
+    .local v3, "_arg3":Landroid/net/ipmemorystore/IOnBlobRetrievedListener;
+    invoke-virtual {v6, v0, v1, v2, v3}, Landroid/net/IIpMemoryStore$Stub;->retrieveBlob(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Landroid/net/ipmemorystore/IOnBlobRetrievedListener;)V
 
-    move-result-object v5
+    .line 172
+    return v11
 
-    .line 112
-    invoke-virtual {p2}, Landroid/os/Parcel;->readInt()I
+    .line 152
+    .end local v0  # "_arg0":Ljava/lang/String;
+    .end local v1  # "_arg1":Ljava/lang/String;
+    .end local v2  # "_arg2":Ljava/lang/String;
+    .end local v3  # "_arg3":Landroid/net/ipmemorystore/IOnBlobRetrievedListener;
+    :pswitch_3f  #0x5
+    invoke-virtual {v8, v10}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
 
-    move-result p1
+    .line 154
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readString()Ljava/lang/String;
 
-    if-eqz p1, :cond_a3
+    move-result-object v0
 
-    .line 113
-    sget-object p1, Landroid/net/ipmemorystore/Blob;->CREATOR:Landroid/os/Parcelable$Creator;
+    .line 156
+    .restart local v0  # "_arg0":Ljava/lang/String;
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readStrongBinder()Landroid/os/IBinder;
 
-    invoke-interface {p1, p2}, Landroid/os/Parcelable$Creator;->createFromParcel(Landroid/os/Parcel;)Ljava/lang/Object;
+    move-result-object v1
 
-    move-result-object p1
+    invoke-static {v1}, Landroid/net/ipmemorystore/IOnNetworkAttributesRetrievedListener$Stub;->asInterface(Landroid/os/IBinder;)Landroid/net/ipmemorystore/IOnNetworkAttributesRetrievedListener;
 
-    move-object v0, p1
+    move-result-object v1
 
-    check-cast v0, Landroid/net/ipmemorystore/Blob;
+    .line 157
+    .local v1, "_arg1":Landroid/net/ipmemorystore/IOnNetworkAttributesRetrievedListener;
+    invoke-virtual {v6, v0, v1}, Landroid/net/IIpMemoryStore$Stub;->retrieveNetworkAttributes(Ljava/lang/String;Landroid/net/ipmemorystore/IOnNetworkAttributesRetrievedListener;)V
 
-    move-object v6, v0
+    .line 158
+    return v11
 
-    goto :goto_a4
+    .line 140
+    .end local v0  # "_arg0":Ljava/lang/String;
+    .end local v1  # "_arg1":Landroid/net/ipmemorystore/IOnNetworkAttributesRetrievedListener;
+    :pswitch_52  #0x4
+    invoke-virtual {v8, v10}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
 
-    .line 116
-    :cond_a3
-    move-object v6, v0
+    .line 142
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readString()Ljava/lang/String;
 
-    .line 119
-    :goto_a4
-    invoke-virtual {p2}, Landroid/os/Parcel;->readStrongBinder()Landroid/os/IBinder;
+    move-result-object v0
 
-    move-result-object p1
+    .line 144
+    .restart local v0  # "_arg0":Ljava/lang/String;
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readString()Ljava/lang/String;
 
-    invoke-static {p1}, Landroid/net/ipmemorystore/IOnStatusListener$Stub;->asInterface(Landroid/os/IBinder;)Landroid/net/ipmemorystore/IOnStatusListener;
+    move-result-object v1
 
-    move-result-object v7
+    .line 146
+    .local v1, "_arg1":Ljava/lang/String;
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readStrongBinder()Landroid/os/IBinder;
 
-    .line 120
-    move-object v2, p0
+    move-result-object v2
 
-    invoke-virtual/range {v2 .. v7}, Landroid/net/IIpMemoryStore$Stub;->storeBlob(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Landroid/net/ipmemorystore/Blob;Landroid/net/ipmemorystore/IOnStatusListener;)V
+    invoke-static {v2}, Landroid/net/ipmemorystore/IOnSameL3NetworkResponseListener$Stub;->asInterface(Landroid/os/IBinder;)Landroid/net/ipmemorystore/IOnSameL3NetworkResponseListener;
 
-    .line 121
-    return v1
+    move-result-object v2
 
-    .line 87
-    :pswitch_b1  #0x1
-    invoke-virtual {p2, v2}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
+    .line 147
+    .local v2, "_arg2":Landroid/net/ipmemorystore/IOnSameL3NetworkResponseListener;
+    invoke-virtual {v6, v0, v1, v2}, Landroid/net/IIpMemoryStore$Stub;->isSameNetwork(Ljava/lang/String;Ljava/lang/String;Landroid/net/ipmemorystore/IOnSameL3NetworkResponseListener;)V
 
-    .line 89
-    invoke-virtual {p2}, Landroid/os/Parcel;->readString()Ljava/lang/String;
+    .line 148
+    return v11
 
-    move-result-object p1
+    .line 125
+    .end local v0  # "_arg0":Ljava/lang/String;
+    .end local v1  # "_arg1":Ljava/lang/String;
+    .end local v2  # "_arg2":Landroid/net/ipmemorystore/IOnSameL3NetworkResponseListener;
+    :pswitch_69  #0x3
+    invoke-virtual {v8, v10}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
 
-    .line 91
-    invoke-virtual {p2}, Landroid/os/Parcel;->readInt()I
+    .line 127
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
 
-    move-result p3
+    move-result v0
 
-    if-eqz p3, :cond_c8
+    if-eqz v0, :cond_7b
 
-    .line 92
-    sget-object p3, Landroid/net/ipmemorystore/NetworkAttributesParcelable;->CREATOR:Landroid/os/Parcelable$Creator;
+    .line 128
+    sget-object v0, Landroid/net/ipmemorystore/NetworkAttributesParcelable;->CREATOR:Landroid/os/Parcelable$Creator;
 
-    invoke-interface {p3, p2}, Landroid/os/Parcelable$Creator;->createFromParcel(Landroid/os/Parcel;)Ljava/lang/Object;
+    invoke-interface {v0, v8}, Landroid/os/Parcelable$Creator;->createFromParcel(Landroid/os/Parcel;)Ljava/lang/Object;
 
-    move-result-object p3
-
-    move-object v0, p3
+    move-result-object v0
 
     check-cast v0, Landroid/net/ipmemorystore/NetworkAttributesParcelable;
 
-    goto :goto_c9
+    .local v0, "_arg0":Landroid/net/ipmemorystore/NetworkAttributesParcelable;
+    goto :goto_7c
+
+    .line 131
+    .end local v0  # "_arg0":Landroid/net/ipmemorystore/NetworkAttributesParcelable;
+    :cond_7b
+    const/4 v0, 0x0
+
+    .line 134
+    .restart local v0  # "_arg0":Landroid/net/ipmemorystore/NetworkAttributesParcelable;
+    :goto_7c
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readStrongBinder()Landroid/os/IBinder;
+
+    move-result-object v1
+
+    invoke-static {v1}, Landroid/net/ipmemorystore/IOnL2KeyResponseListener$Stub;->asInterface(Landroid/os/IBinder;)Landroid/net/ipmemorystore/IOnL2KeyResponseListener;
+
+    move-result-object v1
+
+    .line 135
+    .local v1, "_arg1":Landroid/net/ipmemorystore/IOnL2KeyResponseListener;
+    invoke-virtual {v6, v0, v1}, Landroid/net/IIpMemoryStore$Stub;->findL2Key(Landroid/net/ipmemorystore/NetworkAttributesParcelable;Landroid/net/ipmemorystore/IOnL2KeyResponseListener;)V
+
+    .line 136
+    return v11
+
+    .line 104
+    .end local v0  # "_arg0":Landroid/net/ipmemorystore/NetworkAttributesParcelable;
+    .end local v1  # "_arg1":Landroid/net/ipmemorystore/IOnL2KeyResponseListener;
+    :pswitch_88  #0x2
+    invoke-virtual {v8, v10}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
+
+    .line 106
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readString()Ljava/lang/String;
+
+    move-result-object v12
+
+    .line 108
+    .local v12, "_arg0":Ljava/lang/String;
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readString()Ljava/lang/String;
+
+    move-result-object v13
+
+    .line 110
+    .local v13, "_arg1":Ljava/lang/String;
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readString()Ljava/lang/String;
+
+    move-result-object v14
+
+    .line 112
+    .local v14, "_arg2":Ljava/lang/String;
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
+
+    move-result v0
+
+    if-eqz v0, :cond_a7
+
+    .line 113
+    sget-object v0, Landroid/net/ipmemorystore/Blob;->CREATOR:Landroid/os/Parcelable$Creator;
+
+    invoke-interface {v0, v8}, Landroid/os/Parcelable$Creator;->createFromParcel(Landroid/os/Parcel;)Ljava/lang/Object;
+
+    move-result-object v0
+
+    check-cast v0, Landroid/net/ipmemorystore/Blob;
+
+    move-object v15, v0
+
+    .local v0, "_arg3":Landroid/net/ipmemorystore/Blob;
+    goto :goto_a9
+
+    .line 116
+    .end local v0  # "_arg3":Landroid/net/ipmemorystore/Blob;
+    :cond_a7
+    const/4 v0, 0x0
+
+    move-object v15, v0
+
+    .line 119
+    .local v15, "_arg3":Landroid/net/ipmemorystore/Blob;
+    :goto_a9
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readStrongBinder()Landroid/os/IBinder;
+
+    move-result-object v0
+
+    invoke-static {v0}, Landroid/net/ipmemorystore/IOnStatusListener$Stub;->asInterface(Landroid/os/IBinder;)Landroid/net/ipmemorystore/IOnStatusListener;
+
+    move-result-object v16
+
+    .line 120
+    .local v16, "_arg4":Landroid/net/ipmemorystore/IOnStatusListener;
+    move-object/from16 v0, p0
+
+    move-object v1, v12
+
+    move-object v2, v13
+
+    move-object v3, v14
+
+    move-object v4, v15
+
+    move-object/from16 v5, v16
+
+    invoke-virtual/range {v0 .. v5}, Landroid/net/IIpMemoryStore$Stub;->storeBlob(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Landroid/net/ipmemorystore/Blob;Landroid/net/ipmemorystore/IOnStatusListener;)V
+
+    .line 121
+    return v11
+
+    .line 87
+    .end local v12  # "_arg0":Ljava/lang/String;
+    .end local v13  # "_arg1":Ljava/lang/String;
+    .end local v14  # "_arg2":Ljava/lang/String;
+    .end local v15  # "_arg3":Landroid/net/ipmemorystore/Blob;
+    .end local v16  # "_arg4":Landroid/net/ipmemorystore/IOnStatusListener;
+    :pswitch_bd  #0x1
+    invoke-virtual {v8, v10}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
+
+    .line 89
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readString()Ljava/lang/String;
+
+    move-result-object v0
+
+    .line 91
+    .local v0, "_arg0":Ljava/lang/String;
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readInt()I
+
+    move-result v1
+
+    if-eqz v1, :cond_d3
+
+    .line 92
+    sget-object v1, Landroid/net/ipmemorystore/NetworkAttributesParcelable;->CREATOR:Landroid/os/Parcelable$Creator;
+
+    invoke-interface {v1, v8}, Landroid/os/Parcelable$Creator;->createFromParcel(Landroid/os/Parcel;)Ljava/lang/Object;
+
+    move-result-object v1
+
+    check-cast v1, Landroid/net/ipmemorystore/NetworkAttributesParcelable;
+
+    .local v1, "_arg1":Landroid/net/ipmemorystore/NetworkAttributesParcelable;
+    goto :goto_d4
 
     .line 95
-    :cond_c8
-    nop
+    .end local v1  # "_arg1":Landroid/net/ipmemorystore/NetworkAttributesParcelable;
+    :cond_d3
+    const/4 v1, 0x0
 
     .line 98
-    :goto_c9
-    invoke-virtual {p2}, Landroid/os/Parcel;->readStrongBinder()Landroid/os/IBinder;
+    .restart local v1  # "_arg1":Landroid/net/ipmemorystore/NetworkAttributesParcelable;
+    :goto_d4
+    invoke-virtual/range {p2 .. p2}, Landroid/os/Parcel;->readStrongBinder()Landroid/os/IBinder;
 
-    move-result-object p2
+    move-result-object v2
 
-    invoke-static {p2}, Landroid/net/ipmemorystore/IOnStatusListener$Stub;->asInterface(Landroid/os/IBinder;)Landroid/net/ipmemorystore/IOnStatusListener;
+    invoke-static {v2}, Landroid/net/ipmemorystore/IOnStatusListener$Stub;->asInterface(Landroid/os/IBinder;)Landroid/net/ipmemorystore/IOnStatusListener;
 
-    move-result-object p2
+    move-result-object v2
 
     .line 99
-    invoke-virtual {p0, p1, v0, p2}, Landroid/net/IIpMemoryStore$Stub;->storeNetworkAttributes(Ljava/lang/String;Landroid/net/ipmemorystore/NetworkAttributesParcelable;Landroid/net/ipmemorystore/IOnStatusListener;)V
+    .local v2, "_arg2":Landroid/net/ipmemorystore/IOnStatusListener;
+    invoke-virtual {v6, v0, v1, v2}, Landroid/net/IIpMemoryStore$Stub;->storeNetworkAttributes(Ljava/lang/String;Landroid/net/ipmemorystore/NetworkAttributesParcelable;Landroid/net/ipmemorystore/IOnStatusListener;)V
 
     .line 100
-    return v1
+    return v11
 
     .line 82
-    :cond_d5
-    invoke-virtual {p3, v2}, Landroid/os/Parcel;->writeString(Ljava/lang/String;)V
+    .end local v0  # "_arg0":Ljava/lang/String;
+    .end local v1  # "_arg1":Landroid/net/ipmemorystore/NetworkAttributesParcelable;
+    .end local v2  # "_arg2":Landroid/net/ipmemorystore/IOnStatusListener;
+    :cond_e0
+    invoke-virtual {v9, v10}, Landroid/os/Parcel;->writeString(Ljava/lang/String;)V
 
     .line 83
-    return v1
+    return v11
 
     .line 182
-    :cond_d9
-    invoke-virtual {p2, v2}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
+    :cond_e4
+    invoke-virtual {v8, v10}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
 
     .line 183
-    invoke-virtual {p3}, Landroid/os/Parcel;->writeNoException()V
+    invoke-virtual/range {p3 .. p3}, Landroid/os/Parcel;->writeNoException()V
 
     .line 184
-    invoke-virtual {p0}, Landroid/net/IIpMemoryStore$Stub;->getInterfaceVersion()I
+    invoke-virtual/range {p0 .. p0}, Landroid/net/IIpMemoryStore$Stub;->getInterfaceVersion()I
 
-    move-result p1
+    move-result v0
 
-    invoke-virtual {p3, p1}, Landroid/os/Parcel;->writeInt(I)V
+    invoke-virtual {v9, v0}, Landroid/os/Parcel;->writeInt(I)V
 
     .line 185
-    return v1
+    return v11
 
-    nop
-
-    :pswitch_data_e8
+    :pswitch_data_f2
     .packed-switch 0x1
-        :pswitch_b1  #00000001
-        :pswitch_83  #00000002
-        :pswitch_63  #00000003
-        :pswitch_4c  #00000004
-        :pswitch_39  #00000005
-        :pswitch_1e  #00000006
-        :pswitch_17  #00000007
+        :pswitch_bd  #00000001
+        :pswitch_88  #00000002
+        :pswitch_69  #00000003
+        :pswitch_52  #00000004
+        :pswitch_3f  #00000005
+        :pswitch_24  #00000006
+        :pswitch_1d  #00000007
     .end packed-switch
 .end method

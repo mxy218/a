@@ -12,7 +12,7 @@
 
     const-string/jumbo v1, "network_watchlist.xml"
 
-    const-string v2, "metadata/"
+    const-string/jumbo v2, "metadata/"
 
     const-string/jumbo v3, "version"
 
@@ -25,19 +25,21 @@
 
 # virtual methods
 .method protected postInstall(Landroid/content/Context;Landroid/content/Intent;)V
-    .registers 3
+    .registers 6
+    .param p1, "context"  # Landroid/content/Context;
+    .param p2, "intent"  # Landroid/content/Intent;
 
     .line 34
     :try_start_0
-    const-class p2, Landroid/net/NetworkWatchlistManager;
+    const-class v0, Landroid/net/NetworkWatchlistManager;
 
-    invoke-virtual {p1, p2}, Landroid/content/Context;->getSystemService(Ljava/lang/Class;)Ljava/lang/Object;
+    invoke-virtual {p1, v0}, Landroid/content/Context;->getSystemService(Ljava/lang/Class;)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v0
 
-    check-cast p1, Landroid/net/NetworkWatchlistManager;
+    check-cast v0, Landroid/net/NetworkWatchlistManager;
 
-    invoke-virtual {p1}, Landroid/net/NetworkWatchlistManager;->reloadWatchlist()V
+    invoke-virtual {v0}, Landroid/net/NetworkWatchlistManager;->reloadWatchlist()V
     :try_end_b
     .catch Ljava/lang/Exception; {:try_start_0 .. :try_end_b} :catch_c
 
@@ -46,16 +48,18 @@
 
     .line 35
     :catch_c
-    move-exception p1
+    move-exception v0
 
     .line 37
-    const-string p1, "NetworkWatchlistInstallReceiver"
+    .local v0, "e":Ljava/lang/Exception;
+    const-string v1, "NetworkWatchlistInstallReceiver"
 
-    const-string p2, "Unable to reload watchlist"
+    const-string v2, "Unable to reload watchlist"
 
-    invoke-static {p1, p2}, Landroid/util/Slog;->wtf(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v2}, Landroid/util/Slog;->wtf(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 39
+    .end local v0  # "e":Ljava/lang/Exception;
     :goto_14
     return-void
 .end method

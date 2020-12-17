@@ -12,7 +12,7 @@
 
     const-string v1, "codes"
 
-    const-string v2, "metadata/"
+    const-string/jumbo v2, "metadata/"
 
     const-string/jumbo v3, "version"
 

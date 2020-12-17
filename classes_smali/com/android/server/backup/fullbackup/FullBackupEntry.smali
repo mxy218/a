@@ -26,6 +26,8 @@
 # direct methods
 .method public constructor <init>(Ljava/lang/String;J)V
     .registers 4
+    .param p1, "pkg"  # Ljava/lang/String;
+    .param p2, "when"  # J
 
     .line 24
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -43,38 +45,39 @@
 
 # virtual methods
 .method public compareTo(Lcom/android/server/backup/fullbackup/FullBackupEntry;)I
-    .registers 6
+    .registers 7
+    .param p1, "other"  # Lcom/android/server/backup/fullbackup/FullBackupEntry;
 
     .line 31
     iget-wide v0, p0, Lcom/android/server/backup/fullbackup/FullBackupEntry;->lastBackup:J
 
     iget-wide v2, p1, Lcom/android/server/backup/fullbackup/FullBackupEntry;->lastBackup:J
 
-    cmp-long p1, v0, v2
+    cmp-long v4, v0, v2
 
-    if-gez p1, :cond_a
+    if-gez v4, :cond_a
 
     .line 32
-    const/4 p1, -0x1
+    const/4 v0, -0x1
 
-    return p1
+    return v0
 
     .line 33
     :cond_a
-    cmp-long p1, v0, v2
+    cmp-long v0, v0, v2
 
-    if-lez p1, :cond_10
+    if-lez v0, :cond_10
 
     .line 34
-    const/4 p1, 0x1
+    const/4 v0, 0x1
 
-    return p1
+    return v0
 
     .line 36
     :cond_10
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    return p1
+    return v0
 .end method
 
 .method public bridge synthetic compareTo(Ljava/lang/Object;)I

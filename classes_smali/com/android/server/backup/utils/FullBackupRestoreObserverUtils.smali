@@ -14,7 +14,8 @@
 .end method
 
 .method public static sendEndRestore(Landroid/app/backup/IFullBackupRestoreObserver;)Landroid/app/backup/IFullBackupRestoreObserver;
-    .registers 2
+    .registers 4
+    .param p0, "observer"  # Landroid/app/backup/IFullBackupRestoreObserver;
 
     .line 78
     if-eqz p0, :cond_f
@@ -30,26 +31,30 @@
 
     .line 81
     :catch_6
-    move-exception p0
+    move-exception v0
 
     .line 82
-    const-string p0, "BackupManagerService"
+    .local v0, "e":Landroid/os/RemoteException;
+    const-string v1, "BackupManagerService"
 
-    const-string v0, "full restore observer went away: endRestore"
+    const-string v2, "full restore observer went away: endRestore"
 
-    invoke-static {p0, v0}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v2}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 83
     const/4 p0, 0x0
 
     .line 86
+    .end local v0  # "e":Landroid/os/RemoteException;
     :cond_f
     :goto_f
     return-object p0
 .end method
 
 .method public static sendOnRestorePackage(Landroid/app/backup/IFullBackupRestoreObserver;Ljava/lang/String;)Landroid/app/backup/IFullBackupRestoreObserver;
-    .registers 2
+    .registers 5
+    .param p0, "observer"  # Landroid/app/backup/IFullBackupRestoreObserver;
+    .param p1, "name"  # Ljava/lang/String;
 
     .line 58
     if-eqz p0, :cond_f
@@ -65,26 +70,29 @@
 
     .line 62
     :catch_6
-    move-exception p0
+    move-exception v0
 
     .line 63
-    const-string p0, "BackupManagerService"
+    .local v0, "e":Landroid/os/RemoteException;
+    const-string v1, "BackupManagerService"
 
-    const-string p1, "full restore observer went away: restorePackage"
+    const-string v2, "full restore observer went away: restorePackage"
 
-    invoke-static {p0, p1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v2}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 64
     const/4 p0, 0x0
 
     .line 67
+    .end local v0  # "e":Landroid/os/RemoteException;
     :cond_f
     :goto_f
     return-object p0
 .end method
 
 .method public static sendStartRestore(Landroid/app/backup/IFullBackupRestoreObserver;)Landroid/app/backup/IFullBackupRestoreObserver;
-    .registers 2
+    .registers 4
+    .param p0, "observer"  # Landroid/app/backup/IFullBackupRestoreObserver;
 
     .line 37
     if-eqz p0, :cond_f
@@ -100,19 +108,21 @@
 
     .line 40
     :catch_6
-    move-exception p0
+    move-exception v0
 
     .line 41
-    const-string p0, "BackupManagerService"
+    .local v0, "e":Landroid/os/RemoteException;
+    const-string v1, "BackupManagerService"
 
-    const-string v0, "full restore observer went away: startRestore"
+    const-string v2, "full restore observer went away: startRestore"
 
-    invoke-static {p0, v0}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v2}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 42
     const/4 p0, 0x0
 
     .line 45
+    .end local v0  # "e":Landroid/os/RemoteException;
     :cond_f
     :goto_f
     return-object p0

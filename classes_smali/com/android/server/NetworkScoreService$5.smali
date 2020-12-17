@@ -34,6 +34,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/NetworkScoreService;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/NetworkScoreService;
 
     .line 814
     iput-object p1, p0, Lcom/android/server/NetworkScoreService$5;->this$0:Lcom/android/server/NetworkScoreService;
@@ -46,7 +47,9 @@
 
 # virtual methods
 .method public accept(Landroid/net/INetworkScoreCache;Ljava/lang/Object;)V
-    .registers 4
+    .registers 6
+    .param p1, "networkScoreCache"  # Landroid/net/INetworkScoreCache;
+    .param p2, "cookie"  # Ljava/lang/Object;
 
     .line 818
     :try_start_0
@@ -59,25 +62,27 @@
 
     .line 819
     :catch_4
-    move-exception p1
+    move-exception v0
 
     .line 820
-    const/4 p2, 0x2
+    .local v0, "e":Landroid/os/RemoteException;
+    const/4 v1, 0x2
 
-    const-string v0, "NetworkScoreService"
+    const-string v2, "NetworkScoreService"
 
-    invoke-static {v0, p2}, Landroid/util/Log;->isLoggable(Ljava/lang/String;I)Z
+    invoke-static {v2, v1}, Landroid/util/Log;->isLoggable(Ljava/lang/String;I)Z
 
-    move-result p2
+    move-result v1
 
-    if-eqz p2, :cond_13
+    if-eqz v1, :cond_13
 
     .line 821
-    const-string p2, "Unable to clear scores"
+    const-string v1, "Unable to clear scores"
 
-    invoke-static {v0, p2, p1}, Landroid/util/Log;->v(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    invoke-static {v2, v1, v0}, Landroid/util/Log;->v(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
     .line 824
+    .end local v0  # "e":Landroid/os/RemoteException;
     :cond_13
     :goto_13
     return-void

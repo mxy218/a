@@ -32,6 +32,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/hdmi/HdmiControlService$BinderService;IZI[B)V
     .registers 6
+    .param p1, "this$1"  # Lcom/android/server/hdmi/HdmiControlService$BinderService;
 
     .line 1855
     iput-object p1, p0, Lcom/android/server/hdmi/HdmiControlService$BinderService$13;->this$1:Lcom/android/server/hdmi/HdmiControlService$BinderService;
@@ -52,7 +53,7 @@
 
 # virtual methods
 .method public run()V
-    .registers 6
+    .registers 7
 
     .line 1858
     iget-object v0, p0, Lcom/android/server/hdmi/HdmiControlService$BinderService$13;->this$1:Lcom/android/server/hdmi/HdmiControlService$BinderService;
@@ -70,14 +71,15 @@
     move-result-object v0
 
     .line 1859
+    .local v0, "device":Lcom/android/server/hdmi/HdmiCecLocalDevice;
     if-nez v0, :cond_18
 
     .line 1860
-    const-string v0, "HdmiControlService"
+    const-string v1, "HdmiControlService"
 
-    const-string v1, "Local device not available"
+    const-string v2, "Local device not available"
 
-    invoke-static {v0, v1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v2}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 1861
     return-void
@@ -96,31 +98,31 @@
     .line 1865
     invoke-virtual {v0}, Lcom/android/server/hdmi/HdmiCecLocalDevice;->getDeviceInfo()Landroid/hardware/hdmi/HdmiDeviceInfo;
 
-    move-result-object v0
+    move-result-object v2
 
-    invoke-virtual {v0}, Landroid/hardware/hdmi/HdmiDeviceInfo;->getLogicalAddress()I
+    invoke-virtual {v2}, Landroid/hardware/hdmi/HdmiDeviceInfo;->getLogicalAddress()I
 
-    move-result v0
+    move-result v2
 
-    iget v2, p0, Lcom/android/server/hdmi/HdmiControlService$BinderService$13;->val$targetAddress:I
+    iget v3, p0, Lcom/android/server/hdmi/HdmiControlService$BinderService$13;->val$targetAddress:I
 
-    iget-object v3, p0, Lcom/android/server/hdmi/HdmiControlService$BinderService$13;->this$1:Lcom/android/server/hdmi/HdmiControlService$BinderService;
+    iget-object v4, p0, Lcom/android/server/hdmi/HdmiControlService$BinderService$13;->this$1:Lcom/android/server/hdmi/HdmiControlService$BinderService;
 
-    iget-object v3, v3, Lcom/android/server/hdmi/HdmiControlService$BinderService;->this$0:Lcom/android/server/hdmi/HdmiControlService;
+    iget-object v4, v4, Lcom/android/server/hdmi/HdmiControlService$BinderService;->this$0:Lcom/android/server/hdmi/HdmiControlService;
 
     .line 1866
-    invoke-virtual {v3}, Lcom/android/server/hdmi/HdmiControlService;->getVendorId()I
+    invoke-virtual {v4}, Lcom/android/server/hdmi/HdmiControlService;->getVendorId()I
 
-    move-result v3
+    move-result v4
 
-    iget-object v4, p0, Lcom/android/server/hdmi/HdmiControlService$BinderService$13;->val$params:[B
+    iget-object v5, p0, Lcom/android/server/hdmi/HdmiControlService$BinderService$13;->val$params:[B
 
     .line 1864
-    invoke-static {v0, v2, v3, v4}, Lcom/android/server/hdmi/HdmiCecMessageBuilder;->buildVendorCommandWithId(III[B)Lcom/android/server/hdmi/HdmiCecMessage;
+    invoke-static {v2, v3, v4, v5}, Lcom/android/server/hdmi/HdmiCecMessageBuilder;->buildVendorCommandWithId(III[B)Lcom/android/server/hdmi/HdmiCecMessage;
 
-    move-result-object v0
+    move-result-object v2
 
-    invoke-virtual {v1, v0}, Lcom/android/server/hdmi/HdmiControlService;->sendCecCommand(Lcom/android/server/hdmi/HdmiCecMessage;)V
+    invoke-virtual {v1, v2}, Lcom/android/server/hdmi/HdmiControlService;->sendCecCommand(Lcom/android/server/hdmi/HdmiCecMessage;)V
 
     goto :goto_53
 
@@ -133,22 +135,22 @@
     .line 1869
     invoke-virtual {v0}, Lcom/android/server/hdmi/HdmiCecLocalDevice;->getDeviceInfo()Landroid/hardware/hdmi/HdmiDeviceInfo;
 
-    move-result-object v0
+    move-result-object v2
 
-    invoke-virtual {v0}, Landroid/hardware/hdmi/HdmiDeviceInfo;->getLogicalAddress()I
+    invoke-virtual {v2}, Landroid/hardware/hdmi/HdmiDeviceInfo;->getLogicalAddress()I
 
-    move-result v0
+    move-result v2
 
-    iget v2, p0, Lcom/android/server/hdmi/HdmiControlService$BinderService$13;->val$targetAddress:I
+    iget v3, p0, Lcom/android/server/hdmi/HdmiControlService$BinderService$13;->val$targetAddress:I
 
-    iget-object v3, p0, Lcom/android/server/hdmi/HdmiControlService$BinderService$13;->val$params:[B
+    iget-object v4, p0, Lcom/android/server/hdmi/HdmiControlService$BinderService$13;->val$params:[B
 
     .line 1868
-    invoke-static {v0, v2, v3}, Lcom/android/server/hdmi/HdmiCecMessageBuilder;->buildVendorCommand(II[B)Lcom/android/server/hdmi/HdmiCecMessage;
+    invoke-static {v2, v3, v4}, Lcom/android/server/hdmi/HdmiCecMessageBuilder;->buildVendorCommand(II[B)Lcom/android/server/hdmi/HdmiCecMessage;
 
-    move-result-object v0
+    move-result-object v2
 
-    invoke-virtual {v1, v0}, Lcom/android/server/hdmi/HdmiControlService;->sendCecCommand(Lcom/android/server/hdmi/HdmiCecMessage;)V
+    invoke-virtual {v1, v2}, Lcom/android/server/hdmi/HdmiControlService;->sendCecCommand(Lcom/android/server/hdmi/HdmiCecMessage;)V
 
     .line 1871
     :goto_53

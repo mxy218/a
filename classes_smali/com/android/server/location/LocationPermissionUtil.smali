@@ -15,6 +15,8 @@
 
 .method public static doesCallerReportToAppOps(Landroid/content/Context;Lcom/android/server/location/CallerIdentity;)Z
     .registers 3
+    .param p0, "context"  # Landroid/content/Context;
+    .param p1, "callerIdentity"  # Lcom/android/server/location/CallerIdentity;
 
     .line 45
     invoke-static {p0, p1}, Lcom/android/server/location/LocationPermissionUtil;->hasPermissionLocationHardware(Landroid/content/Context;Lcom/android/server/location/CallerIdentity;)Z
@@ -26,72 +28,76 @@
     .line 46
     invoke-static {p0, p1}, Lcom/android/server/location/LocationPermissionUtil;->hasPermissionUpdateAppOpsStats(Landroid/content/Context;Lcom/android/server/location/CallerIdentity;)Z
 
-    move-result p0
+    move-result v0
 
-    if-eqz p0, :cond_e
+    if-eqz v0, :cond_e
 
-    const/4 p0, 0x1
+    const/4 v0, 0x1
 
     goto :goto_f
 
     :cond_e
-    const/4 p0, 0x0
+    const/4 v0, 0x0
 
     .line 45
     :goto_f
-    return p0
+    return v0
 .end method
 
 .method private static hasPermissionLocationHardware(Landroid/content/Context;Lcom/android/server/location/CallerIdentity;)Z
-    .registers 4
+    .registers 5
+    .param p0, "context"  # Landroid/content/Context;
+    .param p1, "callerIdentity"  # Lcom/android/server/location/CallerIdentity;
 
     .line 51
     iget v0, p1, Lcom/android/server/location/CallerIdentity;->mPid:I
 
-    iget p1, p1, Lcom/android/server/location/CallerIdentity;->mUid:I
+    iget v1, p1, Lcom/android/server/location/CallerIdentity;->mUid:I
 
-    const-string v1, "android.permission.LOCATION_HARDWARE"
+    const-string v2, "android.permission.LOCATION_HARDWARE"
 
-    invoke-virtual {p0, v1, v0, p1}, Landroid/content/Context;->checkPermission(Ljava/lang/String;II)I
+    invoke-virtual {p0, v2, v0, v1}, Landroid/content/Context;->checkPermission(Ljava/lang/String;II)I
 
-    move-result p0
+    move-result v0
 
-    if-nez p0, :cond_e
+    if-nez v0, :cond_e
 
-    const/4 p0, 0x1
+    const/4 v0, 0x1
 
     goto :goto_f
 
     :cond_e
-    const/4 p0, 0x0
+    const/4 v0, 0x0
 
     :goto_f
-    return p0
+    return v0
 .end method
 
 .method private static hasPermissionUpdateAppOpsStats(Landroid/content/Context;Lcom/android/server/location/CallerIdentity;)Z
-    .registers 4
+    .registers 5
+    .param p0, "context"  # Landroid/content/Context;
+    .param p1, "callerIdentity"  # Lcom/android/server/location/CallerIdentity;
 
     .line 57
     iget v0, p1, Lcom/android/server/location/CallerIdentity;->mPid:I
 
-    iget p1, p1, Lcom/android/server/location/CallerIdentity;->mUid:I
+    iget v1, p1, Lcom/android/server/location/CallerIdentity;->mUid:I
 
-    const-string v1, "android.permission.UPDATE_APP_OPS_STATS"
+    const-string v2, "android.permission.UPDATE_APP_OPS_STATS"
 
-    invoke-virtual {p0, v1, v0, p1}, Landroid/content/Context;->checkPermission(Ljava/lang/String;II)I
+    invoke-virtual {p0, v2, v0, v1}, Landroid/content/Context;->checkPermission(Ljava/lang/String;II)I
 
-    move-result p0
+    move-result v0
 
-    if-nez p0, :cond_e
+    if-nez v0, :cond_e
 
-    const/4 p0, 0x1
+    const/4 v0, 0x1
 
     goto :goto_f
 
     :cond_e
-    const/4 p0, 0x0
+    const/4 v0, 0x0
 
     :goto_f
-    return p0
+    return v0
 .end method

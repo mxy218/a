@@ -1,9 +1,6 @@
 .class Lcom/android/server/policy/PhoneWindowManager$5;
-.super Ljava/lang/Object;
+.super Landroid/service/vr/IPersistentVrStateCallbacks$Stub;
 .source "PhoneWindowManager.java"
-
-# interfaces
-.implements Ljava/lang/Runnable;
 
 
 # annotations
@@ -24,27 +21,29 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/policy/PhoneWindowManager;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/policy/PhoneWindowManager;
 
-    .line 1000
+    .line 849
     iput-object p1, p0, Lcom/android/server/policy/PhoneWindowManager$5;->this$0:Lcom/android/server/policy/PhoneWindowManager;
 
-    invoke-direct {p0}, Ljava/lang/Object;-><init>()V
+    invoke-direct {p0}, Landroid/service/vr/IPersistentVrStateCallbacks$Stub;-><init>()V
 
     return-void
 .end method
 
 
 # virtual methods
-.method public run()V
-    .registers 2
+.method public onPersistentVrStateChanged(Z)V
+    .registers 3
+    .param p1, "enabled"  # Z
 
-    .line 1003
+    .line 852
     iget-object v0, p0, Lcom/android/server/policy/PhoneWindowManager$5;->this$0:Lcom/android/server/policy/PhoneWindowManager;
 
-    iget-object v0, v0, Lcom/android/server/policy/PhoneWindowManager;->mActivityManagerInternal:Landroid/app/ActivityManagerInternal;
+    iget-object v0, v0, Lcom/android/server/policy/PhoneWindowManager;->mDefaultDisplayPolicy:Lcom/android/server/wm/DisplayPolicy;
 
-    invoke-virtual {v0}, Landroid/app/ActivityManagerInternal;->prepareForPossibleShutdown()V
+    invoke-virtual {v0, p1}, Lcom/android/server/wm/DisplayPolicy;->setPersistentVrModeEnabled(Z)V
 
-    .line 1004
+    .line 853
     return-void
 .end method

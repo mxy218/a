@@ -23,6 +23,8 @@
 # direct methods
 .method public constructor <init>(Landroid/content/pm/InstantAppInfo;J)V
     .registers 4
+    .param p1, "instantApp"  # Landroid/content/pm/InstantAppInfo;
+    .param p2, "timestamp"  # J
 
     .line 1170
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V

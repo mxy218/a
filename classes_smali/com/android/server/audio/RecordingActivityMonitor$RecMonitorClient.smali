@@ -30,6 +30,8 @@
 # direct methods
 .method constructor <init>(Landroid/media/IRecordingConfigDispatcher;Z)V
     .registers 3
+    .param p1, "rcdb"  # Landroid/media/IRecordingConfigDispatcher;
+    .param p2, "isPrivileged"  # Z
 
     .line 471
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -94,6 +96,7 @@
     move-exception v1
 
     .line 486
+    .local v1, "e":Landroid/os/RemoteException;
     const-string v2, "AudioService.RecordingActivityMonitor"
 
     const-string v3, "Could not link to client death"

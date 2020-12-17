@@ -39,7 +39,10 @@
 
 # virtual methods
 .method readInner(Lorg/xmlpull/v1/XmlPullParser;ILjava/lang/String;)Z
-    .registers 12
+    .registers 13
+    .param p1, "parser"  # Lorg/xmlpull/v1/XmlPullParser;
+    .param p2, "depth"  # I
+    .param p3, "tag"  # Ljava/lang/String;
 
     .line 855
     const/4 v0, 0x2
@@ -53,234 +56,238 @@
 
     .line 858
     :cond_5
-    const/4 p2, -0x1
+    const/4 v2, -0x1
 
     invoke-virtual {p3}, Ljava/lang/String;->hashCode()I
 
-    move-result v2
+    move-result v3
 
-    const/4 v3, 0x5
+    const/4 v4, 0x5
 
-    const/4 v4, 0x4
+    const/4 v5, 0x4
 
-    const/4 v5, 0x3
+    const/4 v6, 0x3
 
-    const/4 v6, 0x0
+    const/4 v7, 0x0
 
-    sparse-switch v2, :sswitch_data_106
+    sparse-switch v3, :sswitch_data_106
 
     :cond_11
     goto :goto_4f
 
     :sswitch_12
-    const-string/jumbo v2, "system-update-policy"
+    const-string/jumbo v3, "system-update-policy"
 
-    invoke-virtual {p3, v2}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {p3, v3}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result v2
+    move-result v3
 
-    if-eqz v2, :cond_11
+    if-eqz v3, :cond_11
 
-    move p2, v5
+    move v2, v6
 
     goto :goto_4f
 
     :sswitch_1d
-    const-string v2, "freeze-record"
+    const-string v3, "freeze-record"
 
-    invoke-virtual {p3, v2}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {p3, v3}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result v2
+    move-result v3
 
-    if-eqz v2, :cond_11
+    if-eqz v3, :cond_11
 
-    move p2, v3
+    move v2, v4
 
     goto :goto_4f
 
     :sswitch_27
-    const-string v2, "device-owner-context"
+    const-string v3, "device-owner-context"
 
-    invoke-virtual {p3, v2}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {p3, v3}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result v2
+    move-result v3
 
-    if-eqz v2, :cond_11
+    if-eqz v3, :cond_11
 
-    move p2, v1
+    move v2, v1
 
     goto :goto_4f
 
     :sswitch_31
-    const-string v2, "device-owner"
+    const-string v3, "device-owner"
 
-    invoke-virtual {p3, v2}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {p3, v3}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result v2
+    move-result v3
 
-    if-eqz v2, :cond_11
+    if-eqz v3, :cond_11
 
-    move p2, v6
+    move v2, v7
 
     goto :goto_4f
 
     :sswitch_3b
-    const-string v2, "device-initializer"
+    const-string v3, "device-initializer"
 
-    invoke-virtual {p3, v2}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {p3, v3}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result v2
+    move-result v3
 
-    if-eqz v2, :cond_11
+    if-eqz v3, :cond_11
 
-    move p2, v0
+    move v2, v0
 
     goto :goto_4f
 
     :sswitch_45
-    const-string/jumbo v2, "pending-ota-info"
+    const-string/jumbo v3, "pending-ota-info"
 
-    invoke-virtual {p3, v2}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {p3, v3}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result v2
+    move-result v3
 
-    if-eqz v2, :cond_11
+    if-eqz v3, :cond_11
 
-    move p2, v4
+    move v2, v5
 
     :goto_4f
-    if-eqz p2, :cond_f5
+    if-eqz v2, :cond_f5
 
-    const-string v2, "DevicePolicyManagerService"
+    const-string v3, "DevicePolicyManagerService"
 
-    const/4 v7, 0x0
+    const/4 v8, 0x0
 
-    if-eq p2, v1, :cond_cd
+    if-eq v2, v1, :cond_cd
 
-    if-eq p2, v0, :cond_cc
+    if-eq v2, v0, :cond_cc
 
-    if-eq p2, v5, :cond_c2
+    if-eq v2, v6, :cond_c2
 
-    if-eq p2, v4, :cond_b8
+    if-eq v2, v5, :cond_b8
 
-    if-eq p2, v3, :cond_73
+    if-eq v2, v4, :cond_73
 
     .line 896
-    new-instance p1, Ljava/lang/StringBuilder;
+    new-instance v0, Ljava/lang/StringBuilder;
 
-    invoke-direct {p1}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string p2, "Unexpected tag: "
+    const-string v1, "Unexpected tag: "
 
-    invoke-virtual {p1, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p1, p3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, p3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    invoke-static {v2, p1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v3, v0}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 897
-    return v6
+    return v7
 
     .line 883
     :cond_73
-    const-string/jumbo p2, "start"
+    const-string/jumbo v0, "start"
 
-    invoke-interface {p1, v7, p2}, Lorg/xmlpull/v1/XmlPullParser;->getAttributeValue(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+    invoke-interface {p1, v8, v0}, Lorg/xmlpull/v1/XmlPullParser;->getAttributeValue(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
 
-    move-result-object p2
+    move-result-object v0
 
     .line 884
-    const-string p3, "end"
+    .local v0, "startDate":Ljava/lang/String;
+    const-string v2, "end"
 
-    invoke-interface {p1, v7, p3}, Lorg/xmlpull/v1/XmlPullParser;->getAttributeValue(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+    invoke-interface {p1, v8, v2}, Lorg/xmlpull/v1/XmlPullParser;->getAttributeValue(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v2
 
     .line 885
-    if-eqz p2, :cond_104
+    .local v2, "endDate":Ljava/lang/String;
+    if-eqz v0, :cond_104
 
-    if-eqz p1, :cond_104
+    if-eqz v2, :cond_104
 
     .line 886
-    iget-object p3, p0, Lcom/android/server/devicepolicy/Owners$DeviceOwnerReadWriter;->this$0:Lcom/android/server/devicepolicy/Owners;
+    iget-object v4, p0, Lcom/android/server/devicepolicy/Owners$DeviceOwnerReadWriter;->this$0:Lcom/android/server/devicepolicy/Owners;
 
-    invoke-static {p2}, Ljava/time/LocalDate;->parse(Ljava/lang/CharSequence;)Ljava/time/LocalDate;
+    invoke-static {v0}, Ljava/time/LocalDate;->parse(Ljava/lang/CharSequence;)Ljava/time/LocalDate;
 
-    move-result-object p2
+    move-result-object v5
 
-    invoke-static {p3, p2}, Lcom/android/server/devicepolicy/Owners;->access$402(Lcom/android/server/devicepolicy/Owners;Ljava/time/LocalDate;)Ljava/time/LocalDate;
+    invoke-static {v4, v5}, Lcom/android/server/devicepolicy/Owners;->access$402(Lcom/android/server/devicepolicy/Owners;Ljava/time/LocalDate;)Ljava/time/LocalDate;
 
     .line 887
-    iget-object p2, p0, Lcom/android/server/devicepolicy/Owners$DeviceOwnerReadWriter;->this$0:Lcom/android/server/devicepolicy/Owners;
+    iget-object v4, p0, Lcom/android/server/devicepolicy/Owners$DeviceOwnerReadWriter;->this$0:Lcom/android/server/devicepolicy/Owners;
 
-    invoke-static {p1}, Ljava/time/LocalDate;->parse(Ljava/lang/CharSequence;)Ljava/time/LocalDate;
+    invoke-static {v2}, Ljava/time/LocalDate;->parse(Ljava/lang/CharSequence;)Ljava/time/LocalDate;
 
-    move-result-object p1
+    move-result-object v5
 
-    invoke-static {p2, p1}, Lcom/android/server/devicepolicy/Owners;->access$502(Lcom/android/server/devicepolicy/Owners;Ljava/time/LocalDate;)Ljava/time/LocalDate;
+    invoke-static {v4, v5}, Lcom/android/server/devicepolicy/Owners;->access$502(Lcom/android/server/devicepolicy/Owners;Ljava/time/LocalDate;)Ljava/time/LocalDate;
 
     .line 888
-    iget-object p1, p0, Lcom/android/server/devicepolicy/Owners$DeviceOwnerReadWriter;->this$0:Lcom/android/server/devicepolicy/Owners;
+    iget-object v4, p0, Lcom/android/server/devicepolicy/Owners$DeviceOwnerReadWriter;->this$0:Lcom/android/server/devicepolicy/Owners;
 
-    invoke-static {p1}, Lcom/android/server/devicepolicy/Owners;->access$400(Lcom/android/server/devicepolicy/Owners;)Ljava/time/LocalDate;
+    invoke-static {v4}, Lcom/android/server/devicepolicy/Owners;->access$400(Lcom/android/server/devicepolicy/Owners;)Ljava/time/LocalDate;
 
-    move-result-object p1
+    move-result-object v4
 
-    iget-object p2, p0, Lcom/android/server/devicepolicy/Owners$DeviceOwnerReadWriter;->this$0:Lcom/android/server/devicepolicy/Owners;
+    iget-object v5, p0, Lcom/android/server/devicepolicy/Owners$DeviceOwnerReadWriter;->this$0:Lcom/android/server/devicepolicy/Owners;
 
-    invoke-static {p2}, Lcom/android/server/devicepolicy/Owners;->access$500(Lcom/android/server/devicepolicy/Owners;)Ljava/time/LocalDate;
+    invoke-static {v5}, Lcom/android/server/devicepolicy/Owners;->access$500(Lcom/android/server/devicepolicy/Owners;)Ljava/time/LocalDate;
 
-    move-result-object p2
+    move-result-object v5
 
-    invoke-virtual {p1, p2}, Ljava/time/LocalDate;->isAfter(Ljava/time/chrono/ChronoLocalDate;)Z
+    invoke-virtual {v4, v5}, Ljava/time/LocalDate;->isAfter(Ljava/time/chrono/ChronoLocalDate;)Z
 
-    move-result p1
+    move-result v4
 
-    if-eqz p1, :cond_104
+    if-eqz v4, :cond_104
 
     .line 889
-    const-string p1, "Invalid system update freeze record loaded"
+    const-string v4, "Invalid system update freeze record loaded"
 
-    invoke-static {v2, p1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v3, v4}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 890
-    iget-object p1, p0, Lcom/android/server/devicepolicy/Owners$DeviceOwnerReadWriter;->this$0:Lcom/android/server/devicepolicy/Owners;
+    iget-object v3, p0, Lcom/android/server/devicepolicy/Owners$DeviceOwnerReadWriter;->this$0:Lcom/android/server/devicepolicy/Owners;
 
-    invoke-static {p1, v7}, Lcom/android/server/devicepolicy/Owners;->access$402(Lcom/android/server/devicepolicy/Owners;Ljava/time/LocalDate;)Ljava/time/LocalDate;
+    invoke-static {v3, v8}, Lcom/android/server/devicepolicy/Owners;->access$402(Lcom/android/server/devicepolicy/Owners;Ljava/time/LocalDate;)Ljava/time/LocalDate;
 
     .line 891
-    iget-object p1, p0, Lcom/android/server/devicepolicy/Owners$DeviceOwnerReadWriter;->this$0:Lcom/android/server/devicepolicy/Owners;
+    iget-object v3, p0, Lcom/android/server/devicepolicy/Owners$DeviceOwnerReadWriter;->this$0:Lcom/android/server/devicepolicy/Owners;
 
-    invoke-static {p1, v7}, Lcom/android/server/devicepolicy/Owners;->access$502(Lcom/android/server/devicepolicy/Owners;Ljava/time/LocalDate;)Ljava/time/LocalDate;
+    invoke-static {v3, v8}, Lcom/android/server/devicepolicy/Owners;->access$502(Lcom/android/server/devicepolicy/Owners;Ljava/time/LocalDate;)Ljava/time/LocalDate;
 
     goto :goto_104
 
     .line 880
+    .end local v0  # "startDate":Ljava/lang/String;
+    .end local v2  # "endDate":Ljava/lang/String;
     :cond_b8
-    iget-object p2, p0, Lcom/android/server/devicepolicy/Owners$DeviceOwnerReadWriter;->this$0:Lcom/android/server/devicepolicy/Owners;
+    iget-object v0, p0, Lcom/android/server/devicepolicy/Owners$DeviceOwnerReadWriter;->this$0:Lcom/android/server/devicepolicy/Owners;
 
     invoke-static {p1}, Landroid/app/admin/SystemUpdateInfo;->readFromXml(Lorg/xmlpull/v1/XmlPullParser;)Landroid/app/admin/SystemUpdateInfo;
 
-    move-result-object p1
+    move-result-object v2
 
-    invoke-static {p2, p1}, Lcom/android/server/devicepolicy/Owners;->access$202(Lcom/android/server/devicepolicy/Owners;Landroid/app/admin/SystemUpdateInfo;)Landroid/app/admin/SystemUpdateInfo;
+    invoke-static {v0, v2}, Lcom/android/server/devicepolicy/Owners;->access$202(Lcom/android/server/devicepolicy/Owners;Landroid/app/admin/SystemUpdateInfo;)Landroid/app/admin/SystemUpdateInfo;
 
     .line 881
     goto :goto_104
 
     .line 877
     :cond_c2
-    iget-object p2, p0, Lcom/android/server/devicepolicy/Owners$DeviceOwnerReadWriter;->this$0:Lcom/android/server/devicepolicy/Owners;
+    iget-object v0, p0, Lcom/android/server/devicepolicy/Owners$DeviceOwnerReadWriter;->this$0:Lcom/android/server/devicepolicy/Owners;
 
     invoke-static {p1}, Landroid/app/admin/SystemUpdatePolicy;->restoreFromXml(Lorg/xmlpull/v1/XmlPullParser;)Landroid/app/admin/SystemUpdatePolicy;
 
-    move-result-object p1
+    move-result-object v2
 
-    invoke-static {p2, p1}, Lcom/android/server/devicepolicy/Owners;->access$102(Lcom/android/server/devicepolicy/Owners;Landroid/app/admin/SystemUpdatePolicy;)Landroid/app/admin/SystemUpdatePolicy;
+    invoke-static {v0, v2}, Lcom/android/server/devicepolicy/Owners;->access$102(Lcom/android/server/devicepolicy/Owners;Landroid/app/admin/SystemUpdatePolicy;)Landroid/app/admin/SystemUpdatePolicy;
 
     .line 878
     goto :goto_104
@@ -294,21 +301,22 @@
     nop
 
     .line 865
-    const-string/jumbo p2, "userId"
+    const-string/jumbo v0, "userId"
 
-    invoke-interface {p1, v7, p2}, Lorg/xmlpull/v1/XmlPullParser;->getAttributeValue(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+    invoke-interface {p1, v8, v0}, Lorg/xmlpull/v1/XmlPullParser;->getAttributeValue(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
     .line 867
+    .local v0, "userIdString":Ljava/lang/String;
     :try_start_d5
-    iget-object p2, p0, Lcom/android/server/devicepolicy/Owners$DeviceOwnerReadWriter;->this$0:Lcom/android/server/devicepolicy/Owners;
+    iget-object v2, p0, Lcom/android/server/devicepolicy/Owners$DeviceOwnerReadWriter;->this$0:Lcom/android/server/devicepolicy/Owners;
 
-    invoke-static {p1}, Ljava/lang/Integer;->parseInt(Ljava/lang/String;)I
+    invoke-static {v0}, Ljava/lang/Integer;->parseInt(Ljava/lang/String;)I
 
-    move-result p3
+    move-result v4
 
-    invoke-static {p2, p3}, Lcom/android/server/devicepolicy/Owners;->access$302(Lcom/android/server/devicepolicy/Owners;I)I
+    invoke-static {v2, v4}, Lcom/android/server/devicepolicy/Owners;->access$302(Lcom/android/server/devicepolicy/Owners;I)I
     :try_end_de
     .catch Ljava/lang/NumberFormatException; {:try_start_d5 .. :try_end_de} :catch_df
 
@@ -317,42 +325,45 @@
 
     .line 868
     :catch_df
-    move-exception p2
+    move-exception v2
 
     .line 869
-    new-instance p2, Ljava/lang/StringBuilder;
+    .local v2, "e":Ljava/lang/NumberFormatException;
+    new-instance v4, Ljava/lang/StringBuilder;
 
-    invoke-direct {p2}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v4}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string p3, "Error parsing user-id "
+    const-string v5, "Error parsing user-id "
 
-    invoke-virtual {p2, p3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p2, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v4, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v4}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v4
 
-    invoke-static {v2, p1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v3, v4}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 871
+    .end local v2  # "e":Ljava/lang/NumberFormatException;
     goto :goto_104
 
     .line 860
+    .end local v0  # "userIdString":Ljava/lang/String;
     :cond_f5
-    iget-object p2, p0, Lcom/android/server/devicepolicy/Owners$DeviceOwnerReadWriter;->this$0:Lcom/android/server/devicepolicy/Owners;
+    iget-object v0, p0, Lcom/android/server/devicepolicy/Owners$DeviceOwnerReadWriter;->this$0:Lcom/android/server/devicepolicy/Owners;
 
     invoke-static {p1}, Lcom/android/server/devicepolicy/Owners$OwnerInfo;->readFromXml(Lorg/xmlpull/v1/XmlPullParser;)Lcom/android/server/devicepolicy/Owners$OwnerInfo;
 
-    move-result-object p1
+    move-result-object v2
 
-    invoke-static {p2, p1}, Lcom/android/server/devicepolicy/Owners;->access$002(Lcom/android/server/devicepolicy/Owners;Lcom/android/server/devicepolicy/Owners$OwnerInfo;)Lcom/android/server/devicepolicy/Owners$OwnerInfo;
+    invoke-static {v0, v2}, Lcom/android/server/devicepolicy/Owners;->access$002(Lcom/android/server/devicepolicy/Owners;Lcom/android/server/devicepolicy/Owners$OwnerInfo;)Lcom/android/server/devicepolicy/Owners$OwnerInfo;
 
     .line 861
-    iget-object p1, p0, Lcom/android/server/devicepolicy/Owners$DeviceOwnerReadWriter;->this$0:Lcom/android/server/devicepolicy/Owners;
+    iget-object v0, p0, Lcom/android/server/devicepolicy/Owners$DeviceOwnerReadWriter;->this$0:Lcom/android/server/devicepolicy/Owners;
 
-    invoke-static {p1, v6}, Lcom/android/server/devicepolicy/Owners;->access$302(Lcom/android/server/devicepolicy/Owners;I)I
+    invoke-static {v0, v7}, Lcom/android/server/devicepolicy/Owners;->access$302(Lcom/android/server/devicepolicy/Owners;I)I
 
     .line 862
     nop
@@ -422,6 +433,7 @@
 
 .method writeInner(Lorg/xmlpull/v1/XmlSerializer;)V
     .registers 6
+    .param p1, "out"  # Lorg/xmlpull/v1/XmlSerializer;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Ljava/io/IOException;

@@ -48,6 +48,9 @@
 # direct methods
 .method constructor <init>(Landroid/content/Context;Ljava/io/File;Ljava/security/SecureRandom;)V
     .registers 4
+    .param p1, "context"  # Landroid/content/Context;
+    .param p2, "baseStateDir"  # Ljava/io/File;
+    .param p3, "secureRandom"  # Ljava/security/SecureRandom;
 
     .line 71
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -69,7 +72,7 @@
 .end method
 
 .method private clearPassword()Z
-    .registers 3
+    .registers 4
 
     .line 163
     invoke-direct {p0}, Lcom/android/server/backup/BackupPasswordManager;->getPasswordHashFile()Ljava/io/File;
@@ -77,6 +80,7 @@
     move-result-object v0
 
     .line 164
+    .local v0, "passwordHashFile":Ljava/io/File;
     invoke-virtual {v0}, Ljava/io/File;->exists()Z
 
     move-result v1
@@ -85,35 +89,35 @@
 
     invoke-virtual {v0}, Ljava/io/File;->delete()Z
 
-    move-result v0
+    move-result v1
 
-    if-nez v0, :cond_19
+    if-nez v1, :cond_19
 
     .line 165
-    const-string v0, "BackupPasswordManager"
+    const-string v1, "BackupPasswordManager"
 
-    const-string v1, "Unable to clear backup password"
+    const-string v2, "Unable to clear backup password"
 
-    invoke-static {v0, v1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v2}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 166
-    const/4 v0, 0x0
+    const/4 v1, 0x0
 
-    return v0
+    return v1
 
     .line 169
     :cond_19
-    const/4 v0, 0x0
+    const/4 v1, 0x0
 
-    iput-object v0, p0, Lcom/android/server/backup/BackupPasswordManager;->mPasswordHash:Ljava/lang/String;
+    iput-object v1, p0, Lcom/android/server/backup/BackupPasswordManager;->mPasswordHash:Ljava/lang/String;
 
     .line 170
-    iput-object v0, p0, Lcom/android/server/backup/BackupPasswordManager;->mPasswordSalt:[B
+    iput-object v1, p0, Lcom/android/server/backup/BackupPasswordManager;->mPasswordSalt:[B
 
     .line 171
-    const/4 v0, 0x1
+    const/4 v1, 0x1
 
-    return v0
+    return v1
 .end method
 
 .method private getPasswordHashFile()Ljava/io/File;
@@ -226,16 +230,18 @@
     move-exception v1
 
     .line 182
-    const-string v1, "Unable to read backup pw version"
+    .local v1, "e":Ljava/io/IOException;
+    const-string v2, "Unable to read backup pw version"
 
-    invoke-static {v0, v1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v0, v2}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 183
-    const/4 v1, 0x1
+    const/4 v2, 0x1
 
-    iput v1, p0, Lcom/android/server/backup/BackupPasswordManager;->mPasswordVersion:I
+    iput v2, p0, Lcom/android/server/backup/BackupPasswordManager;->mPasswordVersion:I
 
     .line 187
+    .end local v1  # "e":Ljava/io/IOException;
     :goto_1c
     :try_start_1c
     invoke-direct {p0}, Lcom/android/server/backup/BackupPasswordManager;->getPasswordHashFileCodec()Lcom/android/server/backup/utils/DataStreamFileCodec;
@@ -249,18 +255,20 @@
     check-cast v1, Lcom/android/server/backup/BackupPasswordManager$BackupPasswordHash;
 
     .line 188
+    .local v1, "hash":Lcom/android/server/backup/BackupPasswordManager$BackupPasswordHash;
     iget-object v2, v1, Lcom/android/server/backup/BackupPasswordManager$BackupPasswordHash;->hash:Ljava/lang/String;
 
     iput-object v2, p0, Lcom/android/server/backup/BackupPasswordManager;->mPasswordHash:Ljava/lang/String;
 
     .line 189
-    iget-object v1, v1, Lcom/android/server/backup/BackupPasswordManager$BackupPasswordHash;->salt:[B
+    iget-object v2, v1, Lcom/android/server/backup/BackupPasswordManager$BackupPasswordHash;->salt:[B
 
-    iput-object v1, p0, Lcom/android/server/backup/BackupPasswordManager;->mPasswordSalt:[B
+    iput-object v2, p0, Lcom/android/server/backup/BackupPasswordManager;->mPasswordSalt:[B
     :try_end_2e
     .catch Ljava/io/IOException; {:try_start_1c .. :try_end_2e} :catch_2f
 
     .line 192
+    .end local v1  # "hash":Lcom/android/server/backup/BackupPasswordManager$BackupPasswordHash;
     goto :goto_35
 
     .line 190
@@ -268,17 +276,20 @@
     move-exception v1
 
     .line 191
-    const-string v1, "Unable to read saved backup pw hash"
+    .local v1, "e":Ljava/io/IOException;
+    const-string v2, "Unable to read saved backup pw hash"
 
-    invoke-static {v0, v1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v0, v2}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 193
+    .end local v1  # "e":Ljava/io/IOException;
     :goto_35
     return-void
 .end method
 
 .method private passwordMatchesSaved(Ljava/lang/String;)Z
     .registers 3
+    .param p1, "candidatePassword"  # Ljava/lang/String;
 
     .line 203
     const-string v0, "PBKDF2WithHmacSHA1"
@@ -300,28 +311,30 @@
 
     invoke-direct {p0, v0, p1}, Lcom/android/server/backup/BackupPasswordManager;->passwordMatchesSaved(Ljava/lang/String;Ljava/lang/String;)Z
 
-    move-result p1
+    move-result v0
 
-    if-eqz p1, :cond_17
+    if-eqz v0, :cond_17
 
     goto :goto_19
 
     :cond_17
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
     goto :goto_1a
 
     :cond_19
     :goto_19
-    const/4 p1, 0x1
+    const/4 v0, 0x1
 
     .line 203
     :goto_1a
-    return p1
+    return v0
 .end method
 
 .method private passwordMatchesSaved(Ljava/lang/String;Ljava/lang/String;)Z
     .registers 5
+    .param p1, "algorithm"  # Ljava/lang/String;
+    .param p2, "candidatePassword"  # Ljava/lang/String;
 
     .line 215
     iget-object v0, p0, Lcom/android/server/backup/BackupPasswordManager;->mPasswordHash:Ljava/lang/String;
@@ -333,13 +346,13 @@
     .line 216
     if-eqz p2, :cond_f
 
-    const-string p1, ""
+    const-string v0, ""
 
-    invoke-virtual {p2, p1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {p2, v0}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result p1
+    move-result v0
 
-    if-eqz p1, :cond_10
+    if-eqz v0, :cond_10
 
     :cond_f
     const/4 v1, 0x1
@@ -367,41 +380,47 @@
 
     invoke-static {p1, p2, v0, v1}, Lcom/android/server/backup/utils/PasswordUtils;->buildPasswordHash(Ljava/lang/String;Ljava/lang/String;[BI)Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
     .line 223
-    iget-object p2, p0, Lcom/android/server/backup/BackupPasswordManager;->mPasswordHash:Ljava/lang/String;
+    .local v0, "candidatePasswordHash":Ljava/lang/String;
+    iget-object v1, p0, Lcom/android/server/backup/BackupPasswordManager;->mPasswordHash:Ljava/lang/String;
 
-    invoke-virtual {p2, p1}, Ljava/lang/String;->equalsIgnoreCase(Ljava/lang/String;)Z
+    invoke-virtual {v1, v0}, Ljava/lang/String;->equalsIgnoreCase(Ljava/lang/String;)Z
 
-    move-result p1
+    move-result v1
 
-    return p1
+    return v1
 
     .line 219
+    .end local v0  # "candidatePasswordHash":Ljava/lang/String;
     :cond_29
     :goto_29
     return v1
 .end method
 
 .method private randomSalt()[B
-    .registers 3
+    .registers 4
 
     .line 228
-    nop
+    const/16 v0, 0x8
 
     .line 229
-    const/16 v0, 0x40
+    .local v0, "bitsPerByte":I
+    const/16 v1, 0x200
 
-    new-array v0, v0, [B
+    div-int/2addr v1, v0
+
+    new-array v1, v1, [B
 
     .line 230
-    iget-object v1, p0, Lcom/android/server/backup/BackupPasswordManager;->mRng:Ljava/security/SecureRandom;
+    .local v1, "array":[B
+    iget-object v2, p0, Lcom/android/server/backup/BackupPasswordManager;->mRng:Ljava/security/SecureRandom;
 
-    invoke-virtual {v1, v0}, Ljava/security/SecureRandom;->nextBytes([B)V
+    invoke-virtual {v2, v1}, Ljava/security/SecureRandom;->nextBytes([B)V
 
     .line 231
-    return-object v0
+    return-object v1
 .end method
 
 .method private usePbkdf2Fallback()Z
@@ -429,6 +448,7 @@
 # virtual methods
 .method backupPasswordMatches(Ljava/lang/String;)Z
     .registers 3
+    .param p1, "password"  # Ljava/lang/String;
 
     .line 97
     invoke-virtual {p0}, Lcom/android/server/backup/BackupPasswordManager;->hasBackupPassword()Z
@@ -439,20 +459,20 @@
 
     invoke-direct {p0, p1}, Lcom/android/server/backup/BackupPasswordManager;->passwordMatchesSaved(Ljava/lang/String;)Z
 
-    move-result p1
+    move-result v0
 
-    if-nez p1, :cond_e
+    if-nez v0, :cond_e
 
     .line 99
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    return p1
+    return v0
 
     .line 101
     :cond_e
-    const/4 p1, 0x1
+    const/4 v0, 0x1
 
-    return p1
+    return v0
 .end method
 
 .method hasBackupPassword()Z
@@ -490,7 +510,9 @@
 .end method
 
 .method setBackupPassword(Ljava/lang/String;Ljava/lang/String;)Z
-    .registers 7
+    .registers 9
+    .param p1, "currentPassword"  # Ljava/lang/String;
+    .param p2, "newPassword"  # Ljava/lang/String;
 
     .line 113
     const-string v0, "BackupPasswordManager"
@@ -506,32 +528,32 @@
     .line 116
     invoke-direct {p0, p1}, Lcom/android/server/backup/BackupPasswordManager;->passwordMatchesSaved(Ljava/lang/String;)Z
 
-    move-result p1
+    move-result v1
 
-    const/4 v1, 0x0
+    const/4 v2, 0x0
 
-    if-nez p1, :cond_14
+    if-nez v1, :cond_14
 
     .line 117
-    return v1
+    return v2
 
     .line 122
     :cond_14
     :try_start_14
     invoke-direct {p0}, Lcom/android/server/backup/BackupPasswordManager;->getPasswordVersionFileCodec()Lcom/android/server/backup/utils/DataStreamFileCodec;
 
-    move-result-object p1
+    move-result-object v1
 
-    const/4 v2, 0x2
+    const/4 v3, 0x2
 
-    invoke-static {v2}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
+    invoke-static {v3}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
 
-    move-result-object v3
+    move-result-object v4
 
-    invoke-virtual {p1, v3}, Lcom/android/server/backup/utils/DataStreamFileCodec;->serialize(Ljava/lang/Object;)V
+    invoke-virtual {v1, v4}, Lcom/android/server/backup/utils/DataStreamFileCodec;->serialize(Ljava/lang/Object;)V
 
     .line 123
-    iput v2, p0, Lcom/android/server/backup/BackupPasswordManager;->mPasswordVersion:I
+    iput v3, p0, Lcom/android/server/backup/BackupPasswordManager;->mPasswordVersion:I
     :try_end_22
     .catch Ljava/io/IOException; {:try_start_14 .. :try_end_22} :catch_56
 
@@ -543,9 +565,9 @@
 
     invoke-virtual {p2}, Ljava/lang/String;->isEmpty()Z
 
-    move-result p1
+    move-result v1
 
-    if-eqz p1, :cond_2c
+    if-eqz v1, :cond_2c
 
     goto :goto_51
 
@@ -554,71 +576,78 @@
     :try_start_2c
     invoke-direct {p0}, Lcom/android/server/backup/BackupPasswordManager;->randomSalt()[B
 
-    move-result-object p1
+    move-result-object v1
 
     .line 135
-    const-string v2, "PBKDF2WithHmacSHA1"
+    .local v1, "salt":[B
+    const-string v3, "PBKDF2WithHmacSHA1"
 
-    const/16 v3, 0x2710
+    const/16 v4, 0x2710
 
-    invoke-static {v2, p2, p1, v3}, Lcom/android/server/backup/utils/PasswordUtils;->buildPasswordHash(Ljava/lang/String;Ljava/lang/String;[BI)Ljava/lang/String;
+    invoke-static {v3, p2, v1, v4}, Lcom/android/server/backup/utils/PasswordUtils;->buildPasswordHash(Ljava/lang/String;Ljava/lang/String;[BI)Ljava/lang/String;
 
-    move-result-object p2
+    move-result-object v3
 
     .line 138
+    .local v3, "newPwHash":Ljava/lang/String;
     invoke-direct {p0}, Lcom/android/server/backup/BackupPasswordManager;->getPasswordHashFileCodec()Lcom/android/server/backup/utils/DataStreamFileCodec;
 
-    move-result-object v2
+    move-result-object v4
 
-    new-instance v3, Lcom/android/server/backup/BackupPasswordManager$BackupPasswordHash;
+    new-instance v5, Lcom/android/server/backup/BackupPasswordManager$BackupPasswordHash;
 
-    invoke-direct {v3, p2, p1}, Lcom/android/server/backup/BackupPasswordManager$BackupPasswordHash;-><init>(Ljava/lang/String;[B)V
+    invoke-direct {v5, v3, v1}, Lcom/android/server/backup/BackupPasswordManager$BackupPasswordHash;-><init>(Ljava/lang/String;[B)V
 
-    invoke-virtual {v2, v3}, Lcom/android/server/backup/utils/DataStreamFileCodec;->serialize(Ljava/lang/Object;)V
+    invoke-virtual {v4, v5}, Lcom/android/server/backup/utils/DataStreamFileCodec;->serialize(Ljava/lang/Object;)V
 
     .line 139
-    iput-object p2, p0, Lcom/android/server/backup/BackupPasswordManager;->mPasswordHash:Ljava/lang/String;
+    iput-object v3, p0, Lcom/android/server/backup/BackupPasswordManager;->mPasswordHash:Ljava/lang/String;
 
     .line 140
-    iput-object p1, p0, Lcom/android/server/backup/BackupPasswordManager;->mPasswordSalt:[B
+    iput-object v1, p0, Lcom/android/server/backup/BackupPasswordManager;->mPasswordSalt:[B
     :try_end_48
     .catch Ljava/io/IOException; {:try_start_2c .. :try_end_48} :catch_4a
 
     .line 141
-    const/4 p1, 0x1
+    const/4 v0, 0x1
 
-    return p1
+    return v0
 
     .line 142
+    .end local v1  # "salt":[B
+    .end local v3  # "newPwHash":Ljava/lang/String;
     :catch_4a
-    move-exception p1
+    move-exception v1
 
     .line 143
-    const-string p1, "Unable to set backup password"
+    .local v1, "e":Ljava/io/IOException;
+    const-string v3, "Unable to set backup password"
 
-    invoke-static {v0, p1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v0, v3}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 145
-    return v1
+    .end local v1  # "e":Ljava/io/IOException;
+    return v2
 
     .line 130
     :cond_51
     :goto_51
     invoke-direct {p0}, Lcom/android/server/backup/BackupPasswordManager;->clearPassword()Z
 
-    move-result p1
+    move-result v0
 
-    return p1
+    return v0
 
     .line 124
     :catch_56
-    move-exception p1
+    move-exception v1
 
     .line 125
-    const-string p1, "Unable to write backup pw version; password not changed"
+    .restart local v1  # "e":Ljava/io/IOException;
+    const-string v3, "Unable to write backup pw version; password not changed"
 
-    invoke-static {v0, p1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v0, v3}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 126
-    return v1
+    return v2
 .end method

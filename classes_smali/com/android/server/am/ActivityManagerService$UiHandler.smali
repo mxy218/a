@@ -20,36 +20,38 @@
 
 # direct methods
 .method public constructor <init>(Lcom/android/server/am/ActivityManagerService;)V
-    .registers 4
+    .registers 5
+    .param p1, "this$0"  # Lcom/android/server/am/ActivityManagerService;
 
-    .line 1582
+    .line 1668
     iput-object p1, p0, Lcom/android/server/am/ActivityManagerService$UiHandler;->this$0:Lcom/android/server/am/ActivityManagerService;
 
-    .line 1583
+    .line 1669
     invoke-static {}, Lcom/android/server/UiThread;->get()Lcom/android/server/UiThread;
 
-    move-result-object p1
+    move-result-object v0
 
-    invoke-virtual {p1}, Lcom/android/server/UiThread;->getLooper()Landroid/os/Looper;
+    invoke-virtual {v0}, Lcom/android/server/UiThread;->getLooper()Landroid/os/Looper;
 
-    move-result-object p1
+    move-result-object v0
 
-    const/4 v0, 0x0
+    const/4 v1, 0x0
 
-    const/4 v1, 0x1
+    const/4 v2, 0x1
 
-    invoke-direct {p0, p1, v0, v1}, Landroid/os/Handler;-><init>(Landroid/os/Looper;Landroid/os/Handler$Callback;Z)V
+    invoke-direct {p0, v0, v1, v2}, Landroid/os/Handler;-><init>(Landroid/os/Looper;Landroid/os/Handler$Callback;Z)V
 
-    .line 1584
+    .line 1670
     return-void
 .end method
 
 
 # virtual methods
 .method public handleMessage(Landroid/os/Message;)V
-    .registers 7
+    .registers 9
+    .param p1, "msg"  # Landroid/os/Message;
 
-    .line 1588
+    .line 1674
     iget v0, p1, Landroid/os/Message;->what:I
 
     const/4 v1, 0x1
@@ -90,95 +92,101 @@
 
     goto/16 :goto_11e
 
-    .line 1648
+    .line 1734
     :cond_25
     iget v0, p1, Landroid/os/Message;->arg1:I
 
-    .line 1649
-    iget p1, p1, Landroid/os/Message;->arg2:I
+    .line 1735
+    .local v0, "pid":I
+    iget v1, p1, Landroid/os/Message;->arg2:I
 
-    .line 1650
-    iget-object v1, p0, Lcom/android/server/am/ActivityManagerService$UiHandler;->this$0:Lcom/android/server/am/ActivityManagerService;
+    .line 1736
+    .local v1, "uid":I
+    iget-object v2, p0, Lcom/android/server/am/ActivityManagerService$UiHandler;->this$0:Lcom/android/server/am/ActivityManagerService;
 
-    invoke-static {v1, v0, p1}, Lcom/android/server/am/ActivityManagerService;->access$300(Lcom/android/server/am/ActivityManagerService;II)V
+    invoke-static {v2, v0, v1}, Lcom/android/server/am/ActivityManagerService;->access$300(Lcom/android/server/am/ActivityManagerService;II)V
 
-    .line 1651
+    .line 1737
     goto/16 :goto_11e
 
-    .line 1644
+    .line 1730
+    .end local v0  # "pid":I
+    .end local v1  # "uid":I
     :cond_30
-    iget-object p1, p0, Lcom/android/server/am/ActivityManagerService$UiHandler;->this$0:Lcom/android/server/am/ActivityManagerService;
+    iget-object v0, p0, Lcom/android/server/am/ActivityManagerService$UiHandler;->this$0:Lcom/android/server/am/ActivityManagerService;
 
-    invoke-static {p1}, Lcom/android/server/am/ActivityManagerService;->access$200(Lcom/android/server/am/ActivityManagerService;)V
+    invoke-static {v0}, Lcom/android/server/am/ActivityManagerService;->access$200(Lcom/android/server/am/ActivityManagerService;)V
 
-    .line 1645
+    .line 1731
     goto/16 :goto_11e
 
-    .line 1660
+    .line 1746
     :cond_37
     iget-object v0, p0, Lcom/android/server/am/ActivityManagerService$UiHandler;->this$0:Lcom/android/server/am/ActivityManagerService;
 
-    iget-object p1, p1, Landroid/os/Message;->obj:Ljava/lang/Object;
+    iget-object v1, p1, Landroid/os/Message;->obj:Ljava/lang/Object;
 
-    check-cast p1, Ljava/lang/String;
+    check-cast v1, Ljava/lang/String;
 
-    invoke-virtual {v0, p1}, Lcom/android/server/am/ActivityManagerService;->dispatchOomAdjObserver(Ljava/lang/String;)V
+    invoke-virtual {v0, v1}, Lcom/android/server/am/ActivityManagerService;->dispatchOomAdjObserver(Ljava/lang/String;)V
 
-    .line 1661
+    .line 1747
     goto/16 :goto_11e
 
-    .line 1663
+    .line 1749
     :cond_42
-    iget-object p1, p0, Lcom/android/server/am/ActivityManagerService$UiHandler;->this$0:Lcom/android/server/am/ActivityManagerService;
-
-    invoke-virtual {p1}, Lcom/android/server/am/ActivityManagerService;->pushTempWhitelist()V
-
-    goto/16 :goto_11e
-
-    .line 1657
-    :cond_49
-    iget-object p1, p0, Lcom/android/server/am/ActivityManagerService$UiHandler;->this$0:Lcom/android/server/am/ActivityManagerService;
-
-    invoke-virtual {p1}, Lcom/android/server/am/ActivityManagerService;->dispatchUidsChanged()V
-
-    .line 1658
-    goto/16 :goto_11e
-
-    .line 1598
-    :cond_50
-    iget-object p1, p1, Landroid/os/Message;->obj:Ljava/lang/Object;
-
-    check-cast p1, Ljava/util/HashMap;
-
-    .line 1599
     iget-object v0, p0, Lcom/android/server/am/ActivityManagerService$UiHandler;->this$0:Lcom/android/server/am/ActivityManagerService;
 
-    monitor-enter v0
+    invoke-virtual {v0}, Lcom/android/server/am/ActivityManagerService;->pushTempWhitelist()V
+
+    goto/16 :goto_11e
+
+    .line 1743
+    :cond_49
+    iget-object v0, p0, Lcom/android/server/am/ActivityManagerService$UiHandler;->this$0:Lcom/android/server/am/ActivityManagerService;
+
+    invoke-virtual {v0}, Lcom/android/server/am/ActivityManagerService;->dispatchUidsChanged()V
+
+    .line 1744
+    goto/16 :goto_11e
+
+    .line 1684
+    :cond_50
+    iget-object v0, p1, Landroid/os/Message;->obj:Ljava/lang/Object;
+
+    check-cast v0, Ljava/util/HashMap;
+
+    .line 1685
+    .local v0, "data":Ljava/util/HashMap;, "Ljava/util/HashMap<Ljava/lang/String;Ljava/lang/Object;>;"
+    iget-object v2, p0, Lcom/android/server/am/ActivityManagerService$UiHandler;->this$0:Lcom/android/server/am/ActivityManagerService;
+
+    monitor-enter v2
 
     :try_start_57
     invoke-static {}, Lcom/android/server/am/ActivityManagerService;->boostPriorityForLockedSection()V
 
-    .line 1600
+    .line 1686
     const-string v1, "app"
 
-    invoke-virtual {p1, v1}, Ljava/util/HashMap;->get(Ljava/lang/Object;)Ljava/lang/Object;
+    invoke-virtual {v0, v1}, Ljava/util/HashMap;->get(Ljava/lang/Object;)Ljava/lang/Object;
 
     move-result-object v1
 
     check-cast v1, Lcom/android/server/am/ProcessRecord;
 
-    .line 1601
+    .line 1687
+    .local v1, "proc":Lcom/android/server/am/ProcessRecord;
     if-nez v1, :cond_71
 
-    .line 1602
-    const-string p1, "ActivityManager"
+    .line 1688
+    const-string v3, "ActivityManager"
 
-    const-string v1, "App not found when showing strict mode dialog."
+    const-string v4, "App not found when showing strict mode dialog."
 
-    invoke-static {p1, v1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v3, v4}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 1603
-    monitor-exit v0
+    .line 1689
+    monitor-exit v2
     :try_end_6c
     .catchall {:try_start_57 .. :try_end_6c} :catchall_c2
 
@@ -186,34 +194,34 @@
 
     goto/16 :goto_11e
 
-    .line 1605
+    .line 1691
     :cond_71
     :try_start_71
-    iget-object v2, v1, Lcom/android/server/am/ProcessRecord;->crashDialog:Landroid/app/Dialog;
+    iget-object v3, v1, Lcom/android/server/am/ProcessRecord;->crashDialog:Landroid/app/Dialog;
 
-    if-eqz v2, :cond_90
+    if-eqz v3, :cond_90
 
-    .line 1606
-    const-string p1, "ActivityManager"
+    .line 1692
+    const-string v3, "ActivityManager"
 
-    new-instance v2, Ljava/lang/StringBuilder;
+    new-instance v4, Ljava/lang/StringBuilder;
 
-    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v4}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v3, "App already has strict mode dialog: "
+    const-string v5, "App already has strict mode dialog: "
 
-    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v2, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    invoke-virtual {v4, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v4}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v1
+    move-result-object v4
 
-    invoke-static {p1, v1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v3, v4}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 1607
-    monitor-exit v0
+    .line 1693
+    monitor-exit v2
     :try_end_8c
     .catchall {:try_start_71 .. :try_end_8c} :catchall_c2
 
@@ -221,84 +229,92 @@
 
     return-void
 
-    .line 1609
+    .line 1695
     :cond_90
     :try_start_90
-    const-string/jumbo v2, "result"
+    const-string/jumbo v3, "result"
 
-    invoke-virtual {p1, v2}, Ljava/util/HashMap;->get(Ljava/lang/Object;)Ljava/lang/Object;
+    invoke-virtual {v0, v3}, Ljava/util/HashMap;->get(Ljava/lang/Object;)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v3
 
-    check-cast p1, Lcom/android/server/am/AppErrorResult;
+    check-cast v3, Lcom/android/server/am/AppErrorResult;
 
-    .line 1610
-    iget-object v2, p0, Lcom/android/server/am/ActivityManagerService$UiHandler;->this$0:Lcom/android/server/am/ActivityManagerService;
-
-    iget-object v2, v2, Lcom/android/server/am/ActivityManagerService;->mAtmInternal:Lcom/android/server/wm/ActivityTaskManagerInternal;
-
-    invoke-virtual {v2}, Lcom/android/server/wm/ActivityTaskManagerInternal;->showStrictModeViolationDialog()Z
-
-    move-result v2
-
-    if-eqz v2, :cond_b4
-
-    .line 1611
-    new-instance v2, Lcom/android/server/am/StrictModeViolationDialog;
-
-    iget-object v3, p0, Lcom/android/server/am/ActivityManagerService$UiHandler;->this$0:Lcom/android/server/am/ActivityManagerService;
-
-    iget-object v3, v3, Lcom/android/server/am/ActivityManagerService;->mUiContext:Landroid/content/Context;
-
+    .line 1696
+    .local v3, "res":Lcom/android/server/am/AppErrorResult;
     iget-object v4, p0, Lcom/android/server/am/ActivityManagerService$UiHandler;->this$0:Lcom/android/server/am/ActivityManagerService;
 
-    invoke-direct {v2, v3, v4, p1, v1}, Lcom/android/server/am/StrictModeViolationDialog;-><init>(Landroid/content/Context;Lcom/android/server/am/ActivityManagerService;Lcom/android/server/am/AppErrorResult;Lcom/android/server/am/ProcessRecord;)V
+    iget-object v4, v4, Lcom/android/server/am/ActivityManagerService;->mAtmInternal:Lcom/android/server/wm/ActivityTaskManagerInternal;
 
-    .line 1613
-    invoke-virtual {v2}, Landroid/app/Dialog;->show()V
+    invoke-virtual {v4}, Lcom/android/server/wm/ActivityTaskManagerInternal;->showStrictModeViolationDialog()Z
 
-    .line 1614
-    iput-object v2, v1, Lcom/android/server/am/ProcessRecord;->crashDialog:Landroid/app/Dialog;
+    move-result v4
 
-    .line 1615
+    if-eqz v4, :cond_b4
+
+    .line 1697
+    new-instance v4, Lcom/android/server/am/StrictModeViolationDialog;
+
+    iget-object v5, p0, Lcom/android/server/am/ActivityManagerService$UiHandler;->this$0:Lcom/android/server/am/ActivityManagerService;
+
+    iget-object v5, v5, Lcom/android/server/am/ActivityManagerService;->mUiContext:Landroid/content/Context;
+
+    iget-object v6, p0, Lcom/android/server/am/ActivityManagerService$UiHandler;->this$0:Lcom/android/server/am/ActivityManagerService;
+
+    invoke-direct {v4, v5, v6, v3, v1}, Lcom/android/server/am/StrictModeViolationDialog;-><init>(Landroid/content/Context;Lcom/android/server/am/ActivityManagerService;Lcom/android/server/am/AppErrorResult;Lcom/android/server/am/ProcessRecord;)V
+
+    .line 1699
+    .local v4, "d":Landroid/app/Dialog;
+    invoke-virtual {v4}, Landroid/app/Dialog;->show()V
+
+    .line 1700
+    iput-object v4, v1, Lcom/android/server/am/ProcessRecord;->crashDialog:Landroid/app/Dialog;
+
+    .line 1701
+    .end local v4  # "d":Landroid/app/Dialog;
     goto :goto_b8
 
-    .line 1618
+    .line 1704
     :cond_b4
-    const/4 v1, 0x0
+    const/4 v4, 0x0
 
-    invoke-virtual {p1, v1}, Lcom/android/server/am/AppErrorResult;->set(I)V
+    invoke-virtual {v3, v4}, Lcom/android/server/am/AppErrorResult;->set(I)V
 
-    .line 1620
+    .line 1706
+    .end local v1  # "proc":Lcom/android/server/am/ProcessRecord;
+    .end local v3  # "res":Lcom/android/server/am/AppErrorResult;
     :goto_b8
-    monitor-exit v0
+    monitor-exit v2
     :try_end_b9
     .catchall {:try_start_90 .. :try_end_b9} :catchall_c2
 
     invoke-static {}, Lcom/android/server/am/ActivityManagerService;->resetPriorityAfterLockedSection()V
 
-    .line 1621
-    iget-object p1, p0, Lcom/android/server/am/ActivityManagerService$UiHandler;->this$0:Lcom/android/server/am/ActivityManagerService;
+    .line 1707
+    iget-object v1, p0, Lcom/android/server/am/ActivityManagerService$UiHandler;->this$0:Lcom/android/server/am/ActivityManagerService;
 
-    invoke-virtual {p1}, Lcom/android/server/am/ActivityManagerService;->ensureBootCompleted()V
+    invoke-virtual {v1}, Lcom/android/server/am/ActivityManagerService;->ensureBootCompleted()V
 
-    .line 1622
+    .line 1708
+    .end local v0  # "data":Ljava/util/HashMap;, "Ljava/util/HashMap<Ljava/lang/String;Ljava/lang/Object;>;"
     goto :goto_11e
 
-    .line 1620
+    .line 1706
+    .restart local v0  # "data":Ljava/util/HashMap;, "Ljava/util/HashMap<Ljava/lang/String;Ljava/lang/Object;>;"
     :catchall_c2
-    move-exception p1
+    move-exception v1
 
     :try_start_c3
-    monitor-exit v0
+    monitor-exit v2
     :try_end_c4
     .catchall {:try_start_c3 .. :try_end_c4} :catchall_c2
 
     invoke-static {}, Lcom/android/server/am/ActivityManagerService;->resetPriorityAfterLockedSection()V
 
-    throw p1
+    throw v1
 
-    .line 1624
+    .line 1710
+    .end local v0  # "data":Ljava/util/HashMap;, "Ljava/util/HashMap<Ljava/lang/String;Ljava/lang/Object;>;"
     :cond_c8
     iget-object v0, p0, Lcom/android/server/am/ActivityManagerService$UiHandler;->this$0:Lcom/android/server/am/ActivityManagerService;
 
@@ -307,61 +323,65 @@
     :try_start_cb
     invoke-static {}, Lcom/android/server/am/ActivityManagerService;->boostPriorityForLockedSection()V
 
-    .line 1625
+    .line 1711
     iget-object v2, p1, Landroid/os/Message;->obj:Ljava/lang/Object;
 
     check-cast v2, Lcom/android/server/am/ProcessRecord;
 
-    .line 1626
-    iget p1, p1, Landroid/os/Message;->arg1:I
+    .line 1712
+    .local v2, "app":Lcom/android/server/am/ProcessRecord;
+    iget v3, p1, Landroid/os/Message;->arg1:I
 
-    if-eqz p1, :cond_ed
+    if-eqz v3, :cond_ed
 
-    .line 1627
-    iget-boolean p1, v2, Lcom/android/server/am/ProcessRecord;->waitedForDebugger:Z
+    .line 1713
+    iget-boolean v3, v2, Lcom/android/server/am/ProcessRecord;->waitedForDebugger:Z
 
-    if-nez p1, :cond_f9
+    if-nez v3, :cond_f9
 
-    .line 1628
-    new-instance p1, Lcom/android/server/am/AppWaitingForDebuggerDialog;
-
-    iget-object v3, p0, Lcom/android/server/am/ActivityManagerService$UiHandler;->this$0:Lcom/android/server/am/ActivityManagerService;
+    .line 1714
+    new-instance v3, Lcom/android/server/am/AppWaitingForDebuggerDialog;
 
     iget-object v4, p0, Lcom/android/server/am/ActivityManagerService$UiHandler;->this$0:Lcom/android/server/am/ActivityManagerService;
 
-    iget-object v4, v4, Lcom/android/server/am/ActivityManagerService;->mUiContext:Landroid/content/Context;
+    iget-object v5, p0, Lcom/android/server/am/ActivityManagerService$UiHandler;->this$0:Lcom/android/server/am/ActivityManagerService;
 
-    invoke-direct {p1, v3, v4, v2}, Lcom/android/server/am/AppWaitingForDebuggerDialog;-><init>(Lcom/android/server/am/ActivityManagerService;Landroid/content/Context;Lcom/android/server/am/ProcessRecord;)V
+    iget-object v5, v5, Lcom/android/server/am/ActivityManagerService;->mUiContext:Landroid/content/Context;
 
-    .line 1631
-    iput-object p1, v2, Lcom/android/server/am/ProcessRecord;->waitDialog:Landroid/app/Dialog;
+    invoke-direct {v3, v4, v5, v2}, Lcom/android/server/am/AppWaitingForDebuggerDialog;-><init>(Lcom/android/server/am/ActivityManagerService;Landroid/content/Context;Lcom/android/server/am/ProcessRecord;)V
 
-    .line 1632
+    .line 1717
+    .local v3, "d":Landroid/app/Dialog;
+    iput-object v3, v2, Lcom/android/server/am/ProcessRecord;->waitDialog:Landroid/app/Dialog;
+
+    .line 1718
     iput-boolean v1, v2, Lcom/android/server/am/ProcessRecord;->waitedForDebugger:Z
 
-    .line 1633
-    invoke-virtual {p1}, Landroid/app/Dialog;->show()V
+    .line 1719
+    invoke-virtual {v3}, Landroid/app/Dialog;->show()V
 
-    .line 1634
+    .line 1720
+    .end local v3  # "d":Landroid/app/Dialog;
     goto :goto_f9
 
-    .line 1636
+    .line 1722
     :cond_ed
-    iget-object p1, v2, Lcom/android/server/am/ProcessRecord;->waitDialog:Landroid/app/Dialog;
+    iget-object v1, v2, Lcom/android/server/am/ProcessRecord;->waitDialog:Landroid/app/Dialog;
 
-    if-eqz p1, :cond_f9
+    if-eqz v1, :cond_f9
 
-    .line 1637
-    iget-object p1, v2, Lcom/android/server/am/ProcessRecord;->waitDialog:Landroid/app/Dialog;
+    .line 1723
+    iget-object v1, v2, Lcom/android/server/am/ProcessRecord;->waitDialog:Landroid/app/Dialog;
 
-    invoke-virtual {p1}, Landroid/app/Dialog;->dismiss()V
+    invoke-virtual {v1}, Landroid/app/Dialog;->dismiss()V
 
-    .line 1638
-    const/4 p1, 0x0
+    .line 1724
+    const/4 v1, 0x0
 
-    iput-object p1, v2, Lcom/android/server/am/ProcessRecord;->waitDialog:Landroid/app/Dialog;
+    iput-object v1, v2, Lcom/android/server/am/ProcessRecord;->waitDialog:Landroid/app/Dialog;
 
-    .line 1641
+    .line 1727
+    .end local v2  # "app":Lcom/android/server/am/ProcessRecord;
     :cond_f9
     :goto_f9
     monitor-exit v0
@@ -370,12 +390,12 @@
 
     invoke-static {}, Lcom/android/server/am/ActivityManagerService;->resetPriorityAfterLockedSection()V
 
-    .line 1642
+    .line 1728
     goto :goto_11e
 
-    .line 1641
+    .line 1727
     :catchall_fe
-    move-exception p1
+    move-exception v1
 
     :try_start_ff
     monitor-exit v0
@@ -384,9 +404,9 @@
 
     invoke-static {}, Lcom/android/server/am/ActivityManagerService;->resetPriorityAfterLockedSection()V
 
-    throw p1
+    throw v1
 
-    .line 1594
+    .line 1680
     :cond_104
     iget-object v0, p0, Lcom/android/server/am/ActivityManagerService$UiHandler;->this$0:Lcom/android/server/am/ActivityManagerService;
 
@@ -394,15 +414,15 @@
 
     invoke-virtual {v0, p1}, Lcom/android/server/am/AppErrors;->handleShowAnrUi(Landroid/os/Message;)V
 
-    .line 1595
-    iget-object p1, p0, Lcom/android/server/am/ActivityManagerService$UiHandler;->this$0:Lcom/android/server/am/ActivityManagerService;
+    .line 1681
+    iget-object v0, p0, Lcom/android/server/am/ActivityManagerService$UiHandler;->this$0:Lcom/android/server/am/ActivityManagerService;
 
-    invoke-virtual {p1}, Lcom/android/server/am/ActivityManagerService;->ensureBootCompleted()V
+    invoke-virtual {v0}, Lcom/android/server/am/ActivityManagerService;->ensureBootCompleted()V
 
-    .line 1596
+    .line 1682
     goto :goto_11e
 
-    .line 1590
+    .line 1676
     :cond_111
     iget-object v0, p0, Lcom/android/server/am/ActivityManagerService$UiHandler;->this$0:Lcom/android/server/am/ActivityManagerService;
 
@@ -410,15 +430,15 @@
 
     invoke-virtual {v0, p1}, Lcom/android/server/am/AppErrors;->handleShowAppErrorUi(Landroid/os/Message;)V
 
-    .line 1591
-    iget-object p1, p0, Lcom/android/server/am/ActivityManagerService$UiHandler;->this$0:Lcom/android/server/am/ActivityManagerService;
+    .line 1677
+    iget-object v0, p0, Lcom/android/server/am/ActivityManagerService$UiHandler;->this$0:Lcom/android/server/am/ActivityManagerService;
 
-    invoke-virtual {p1}, Lcom/android/server/am/ActivityManagerService;->ensureBootCompleted()V
+    invoke-virtual {v0}, Lcom/android/server/am/ActivityManagerService;->ensureBootCompleted()V
 
-    .line 1592
+    .line 1678
     nop
 
-    .line 1666
+    .line 1752
     :goto_11e
     return-void
 .end method

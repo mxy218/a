@@ -40,32 +40,34 @@
 
 # virtual methods
 .method public onProvisioningFailure(Landroid/net/LinkProperties;)V
-    .registers 2
+    .registers 3
+    .param p1, "newLp"  # Landroid/net/LinkProperties;
 
     .line 66
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    iput-object p1, p0, Landroid/net/ip/IpClientUtil$WaitForProvisioningCallbacks;->mCallbackLinkProperties:Landroid/net/LinkProperties;
+    iput-object v0, p0, Landroid/net/ip/IpClientUtil$WaitForProvisioningCallbacks;->mCallbackLinkProperties:Landroid/net/LinkProperties;
 
     .line 67
-    iget-object p1, p0, Landroid/net/ip/IpClientUtil$WaitForProvisioningCallbacks;->mCV:Landroid/os/ConditionVariable;
+    iget-object v0, p0, Landroid/net/ip/IpClientUtil$WaitForProvisioningCallbacks;->mCV:Landroid/os/ConditionVariable;
 
-    invoke-virtual {p1}, Landroid/os/ConditionVariable;->open()V
+    invoke-virtual {v0}, Landroid/os/ConditionVariable;->open()V
 
     .line 68
     return-void
 .end method
 
 .method public onProvisioningSuccess(Landroid/net/LinkProperties;)V
-    .registers 2
+    .registers 3
+    .param p1, "newLp"  # Landroid/net/LinkProperties;
 
     .line 60
     iput-object p1, p0, Landroid/net/ip/IpClientUtil$WaitForProvisioningCallbacks;->mCallbackLinkProperties:Landroid/net/LinkProperties;
 
     .line 61
-    iget-object p1, p0, Landroid/net/ip/IpClientUtil$WaitForProvisioningCallbacks;->mCV:Landroid/os/ConditionVariable;
+    iget-object v0, p0, Landroid/net/ip/IpClientUtil$WaitForProvisioningCallbacks;->mCV:Landroid/os/ConditionVariable;
 
-    invoke-virtual {p1}, Landroid/os/ConditionVariable;->open()V
+    invoke-virtual {v0}, Landroid/os/ConditionVariable;->open()V
 
     .line 62
     return-void

@@ -29,6 +29,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/usage/AppTimeLimitController;Landroid/os/Looper;)V
     .registers 3
+    .param p2, "looper"  # Landroid/os/Looper;
 
     .line 552
     iput-object p1, p0, Lcom/android/server/usage/AppTimeLimitController$MyHandler;->this$0:Lcom/android/server/usage/AppTimeLimitController;
@@ -43,7 +44,8 @@
 
 # virtual methods
 .method public handleMessage(Landroid/os/Message;)V
-    .registers 5
+    .registers 6
+    .param p1, "msg"  # Landroid/os/Message;
 
     .line 558
     iget v0, p1, Landroid/os/Message;->what:I
@@ -77,11 +79,11 @@
 
     .line 571
     :try_start_16
-    iget-object p1, p1, Landroid/os/Message;->obj:Ljava/lang/Object;
+    iget-object v1, p1, Landroid/os/Message;->obj:Ljava/lang/Object;
 
-    check-cast p1, Lcom/android/server/usage/AppTimeLimitController$SessionUsageGroup;
+    check-cast v1, Lcom/android/server/usage/AppTimeLimitController$SessionUsageGroup;
 
-    invoke-virtual {p1}, Lcom/android/server/usage/AppTimeLimitController$SessionUsageGroup;->onSessionEnd()V
+    invoke-virtual {v1}, Lcom/android/server/usage/AppTimeLimitController$SessionUsageGroup;->onSessionEnd()V
 
     .line 572
     monitor-exit v0
@@ -91,13 +93,13 @@
 
     .line 572
     :catchall_1f
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_21
     .catchall {:try_start_16 .. :try_end_21} :catchall_1f
 
-    throw p1
+    throw v1
 
     .line 565
     :cond_22
@@ -111,11 +113,11 @@
 
     .line 566
     :try_start_29
-    iget-object p1, p1, Landroid/os/Message;->obj:Ljava/lang/Object;
+    iget-object v1, p1, Landroid/os/Message;->obj:Ljava/lang/Object;
 
-    check-cast p1, Lcom/android/server/usage/AppTimeLimitController$UsageGroup;
+    check-cast v1, Lcom/android/server/usage/AppTimeLimitController$UsageGroup;
 
-    invoke-virtual {p1}, Lcom/android/server/usage/AppTimeLimitController$UsageGroup;->onLimitReached()V
+    invoke-virtual {v1}, Lcom/android/server/usage/AppTimeLimitController$UsageGroup;->onLimitReached()V
 
     .line 567
     monitor-exit v0
@@ -125,13 +127,13 @@
 
     .line 567
     :catchall_32
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_34
     .catchall {:try_start_29 .. :try_end_34} :catchall_32
 
-    throw p1
+    throw v1
 
     .line 560
     :cond_35
@@ -145,17 +147,17 @@
 
     .line 561
     :try_start_3c
-    iget-object p1, p1, Landroid/os/Message;->obj:Ljava/lang/Object;
+    iget-object v1, p1, Landroid/os/Message;->obj:Ljava/lang/Object;
 
-    check-cast p1, Lcom/android/server/usage/AppTimeLimitController$UsageGroup;
+    check-cast v1, Lcom/android/server/usage/AppTimeLimitController$UsageGroup;
 
-    iget-object v1, p0, Lcom/android/server/usage/AppTimeLimitController$MyHandler;->this$0:Lcom/android/server/usage/AppTimeLimitController;
+    iget-object v2, p0, Lcom/android/server/usage/AppTimeLimitController$MyHandler;->this$0:Lcom/android/server/usage/AppTimeLimitController;
 
-    invoke-virtual {v1}, Lcom/android/server/usage/AppTimeLimitController;->getUptimeMillis()J
+    invoke-virtual {v2}, Lcom/android/server/usage/AppTimeLimitController;->getUptimeMillis()J
 
-    move-result-wide v1
+    move-result-wide v2
 
-    invoke-virtual {p1, v1, v2}, Lcom/android/server/usage/AppTimeLimitController$UsageGroup;->checkTimeout(J)V
+    invoke-virtual {v1, v2, v3}, Lcom/android/server/usage/AppTimeLimitController$UsageGroup;->checkTimeout(J)V
 
     .line 562
     monitor-exit v0
@@ -169,11 +171,11 @@
 
     .line 562
     :catchall_4c
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_4e
     .catchall {:try_start_3c .. :try_end_4e} :catchall_4c
 
-    throw p1
+    throw v1
 .end method

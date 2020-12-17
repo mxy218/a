@@ -16,6 +16,9 @@
 # direct methods
 .method constructor <init>(Landroid/content/Context;Lcom/android/server/usb/UsbSettingsManager;Ljava/lang/String;)V
     .registers 4
+    .param p1, "context"  # Landroid/content/Context;
+    .param p2, "settingsManager"  # Lcom/android/server/usb/UsbSettingsManager;
+    .param p3, "serialNumber"  # Ljava/lang/String;
 
     .line 55
     invoke-direct {p0}, Landroid/hardware/usb/IUsbSerialReader$Stub;-><init>()V
@@ -34,7 +37,9 @@
 .end method
 
 .method private enforcePackageBelongsToUid(ILjava/lang/String;)V
-    .registers 5
+    .registers 7
+    .param p1, "uid"  # I
+    .param p2, "packageName"  # Ljava/lang/String;
 
     .line 111
     iget-object v0, p0, Lcom/android/server/usb/UsbSerialReader;->mContext:Landroid/content/Context;
@@ -48,44 +53,46 @@
     move-result-object v0
 
     .line 113
+    .local v0, "packages":[Ljava/lang/String;
     invoke-static {v0, p2}, Lcom/android/internal/util/ArrayUtils;->contains([Ljava/lang/Object;Ljava/lang/Object;)Z
 
-    move-result v0
+    move-result v1
 
-    if-eqz v0, :cond_11
+    if-eqz v1, :cond_11
 
     .line 116
     return-void
 
     .line 114
     :cond_11
-    new-instance v0, Ljava/lang/IllegalArgumentException;
+    new-instance v1, Ljava/lang/IllegalArgumentException;
 
-    new-instance v1, Ljava/lang/StringBuilder;
+    new-instance v2, Ljava/lang/StringBuilder;
 
-    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
 
-    invoke-virtual {v1, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string p2, " does to belong to the "
+    const-string v3, " does to belong to the "
 
-    invoke-virtual {v1, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v1, p1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, p1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v2
 
-    invoke-direct {v0, p1}, Ljava/lang/IllegalArgumentException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v1, v2}, Ljava/lang/IllegalArgumentException;-><init>(Ljava/lang/String;)V
 
-    throw v0
+    throw v1
 .end method
 
 
 # virtual methods
 .method public getSerial(Ljava/lang/String;)Ljava/lang/String;
-    .registers 8
+    .registers 10
+    .param p1, "packageName"  # Ljava/lang/String;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -98,11 +105,13 @@
     move-result v0
 
     .line 73
+    .local v0, "pid":I
     invoke-static {}, Landroid/os/Binder;->getCallingUid()I
 
     move-result v1
 
     .line 75
+    .local v1, "uid":I
     const/16 v2, 0x3e8
 
     if-eq v1, v2, :cond_79
@@ -116,6 +125,7 @@
     move-result-wide v2
 
     .line 83
+    .local v2, "token":J
     :try_start_13
     iget-object v4, p0, Lcom/android/server/usb/UsbSerialReader;->mContext:Landroid/content/Context;
 
@@ -133,72 +143,77 @@
     .catchall {:try_start_13 .. :try_end_1e} :catchall_55
 
     .line 86
+    .local v4, "pkg":Landroid/content/pm/PackageInfo;
     nop
 
     .line 87
     :try_start_1f
-    iget-object v4, v4, Landroid/content/pm/PackageInfo;->applicationInfo:Landroid/content/pm/ApplicationInfo;
+    iget-object v5, v4, Landroid/content/pm/PackageInfo;->applicationInfo:Landroid/content/pm/ApplicationInfo;
 
-    iget v4, v4, Landroid/content/pm/ApplicationInfo;->targetSdkVersion:I
+    iget v5, v5, Landroid/content/pm/ApplicationInfo;->targetSdkVersion:I
 
     .line 89
-    const/16 v5, 0x1d
+    .local v5, "packageTargetSdkVersion":I
+    const/16 v6, 0x1d
 
-    if-lt v4, v5, :cond_51
+    if-lt v5, v6, :cond_51
 
     .line 90
-    iget-object v4, p0, Lcom/android/server/usb/UsbSerialReader;->mContext:Landroid/content/Context;
+    iget-object v6, p0, Lcom/android/server/usb/UsbSerialReader;->mContext:Landroid/content/Context;
 
-    const-string v5, "android.permission.MANAGE_USB"
+    const-string v7, "android.permission.MANAGE_USB"
 
-    invoke-virtual {v4, v5, v0, v1}, Landroid/content/Context;->checkPermission(Ljava/lang/String;II)I
+    invoke-virtual {v6, v7, v0, v1}, Landroid/content/Context;->checkPermission(Ljava/lang/String;II)I
 
-    move-result v4
+    move-result v6
 
-    const/4 v5, -0x1
+    const/4 v7, -0x1
 
-    if-ne v4, v5, :cond_51
+    if-ne v6, v7, :cond_51
 
     .line 92
-    iget-object v4, p0, Lcom/android/server/usb/UsbSerialReader;->mSettingsManager:Lcom/android/server/usb/UsbSettingsManager;
+    iget-object v6, p0, Lcom/android/server/usb/UsbSerialReader;->mSettingsManager:Lcom/android/server/usb/UsbSettingsManager;
 
     .line 93
     invoke-static {v1}, Landroid/os/UserHandle;->getUserId(I)I
 
-    move-result v5
+    move-result v7
 
     .line 92
-    invoke-virtual {v4, v5}, Lcom/android/server/usb/UsbSettingsManager;->getSettingsForUser(I)Lcom/android/server/usb/UsbUserSettingsManager;
+    invoke-virtual {v6, v7}, Lcom/android/server/usb/UsbSettingsManager;->getSettingsForUser(I)Lcom/android/server/usb/UsbUserSettingsManager;
 
-    move-result-object v4
+    move-result-object v6
 
     .line 95
-    iget-object v5, p0, Lcom/android/server/usb/UsbSerialReader;->mDevice:Ljava/lang/Object;
+    .local v6, "settings":Lcom/android/server/usb/UsbUserSettingsManager;
+    iget-object v7, p0, Lcom/android/server/usb/UsbSerialReader;->mDevice:Ljava/lang/Object;
 
-    instance-of v5, v5, Landroid/hardware/usb/UsbDevice;
+    instance-of v7, v7, Landroid/hardware/usb/UsbDevice;
 
-    if-eqz v5, :cond_4a
+    if-eqz v7, :cond_4a
 
     .line 96
-    iget-object v5, p0, Lcom/android/server/usb/UsbSerialReader;->mDevice:Ljava/lang/Object;
+    iget-object v7, p0, Lcom/android/server/usb/UsbSerialReader;->mDevice:Ljava/lang/Object;
 
-    check-cast v5, Landroid/hardware/usb/UsbDevice;
+    check-cast v7, Landroid/hardware/usb/UsbDevice;
 
-    invoke-virtual {v4, v5, p1, v0, v1}, Lcom/android/server/usb/UsbUserSettingsManager;->checkPermission(Landroid/hardware/usb/UsbDevice;Ljava/lang/String;II)V
+    invoke-virtual {v6, v7, p1, v1}, Lcom/android/server/usb/UsbUserSettingsManager;->checkPermission(Landroid/hardware/usb/UsbDevice;Ljava/lang/String;I)V
 
     goto :goto_51
 
     .line 98
     :cond_4a
-    iget-object p1, p0, Lcom/android/server/usb/UsbSerialReader;->mDevice:Ljava/lang/Object;
+    iget-object v7, p0, Lcom/android/server/usb/UsbSerialReader;->mDevice:Ljava/lang/Object;
 
-    check-cast p1, Landroid/hardware/usb/UsbAccessory;
+    check-cast v7, Landroid/hardware/usb/UsbAccessory;
 
-    invoke-virtual {v4, p1, v1}, Lcom/android/server/usb/UsbUserSettingsManager;->checkPermission(Landroid/hardware/usb/UsbAccessory;I)V
+    invoke-virtual {v6, v7, v1}, Lcom/android/server/usb/UsbUserSettingsManager;->checkPermission(Landroid/hardware/usb/UsbAccessory;I)V
     :try_end_51
     .catchall {:try_start_1f .. :try_end_51} :catchall_55
 
     .line 103
+    .end local v4  # "pkg":Landroid/content/pm/PackageInfo;
+    .end local v6  # "settings":Lcom/android/server/usb/UsbUserSettingsManager;
     :cond_51
     :goto_51
     invoke-static {v2, v3}, Landroid/os/Binder;->restoreCallingIdentity(J)V
@@ -207,59 +222,74 @@
     goto :goto_79
 
     .line 103
+    .end local v5  # "packageTargetSdkVersion":I
     :catchall_55
-    move-exception p1
+    move-exception v4
 
     goto :goto_75
 
     .line 84
     :catch_57
-    move-exception v0
+    move-exception v4
 
     .line 85
+    .local v4, "e":Landroid/content/pm/PackageManager$NameNotFoundException;
     :try_start_58
-    new-instance v0, Landroid/os/RemoteException;
+    new-instance v5, Landroid/os/RemoteException;
 
-    new-instance v1, Ljava/lang/StringBuilder;
+    new-instance v6, Ljava/lang/StringBuilder;
 
-    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v6}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string/jumbo v4, "package "
+    const-string/jumbo v7, "package "
 
-    invoke-virtual {v1, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v6, v7}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v1, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v6, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string p1, " cannot be found"
+    const-string v7, " cannot be found"
 
-    invoke-virtual {v1, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v6, v7}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v6}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v6
 
-    invoke-direct {v0, p1}, Landroid/os/RemoteException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v5, v6}, Landroid/os/RemoteException;-><init>(Ljava/lang/String;)V
 
-    throw v0
+    .end local v0  # "pid":I
+    .end local v1  # "uid":I
+    .end local v2  # "token":J
+    .end local p0  # "this":Lcom/android/server/usb/UsbSerialReader;
+    .end local p1  # "packageName":Ljava/lang/String;
+    throw v5
     :try_end_75
     .catchall {:try_start_58 .. :try_end_75} :catchall_55
 
     .line 103
+    .end local v4  # "e":Landroid/content/pm/PackageManager$NameNotFoundException;
+    .restart local v0  # "pid":I
+    .restart local v1  # "uid":I
+    .restart local v2  # "token":J
+    .restart local p0  # "this":Lcom/android/server/usb/UsbSerialReader;
+    .restart local p1  # "packageName":Ljava/lang/String;
     :goto_75
     invoke-static {v2, v3}, Landroid/os/Binder;->restoreCallingIdentity(J)V
 
-    throw p1
+    throw v4
 
     .line 107
+    .end local v2  # "token":J
     :cond_79
     :goto_79
-    iget-object p1, p0, Lcom/android/server/usb/UsbSerialReader;->mSerialNumber:Ljava/lang/String;
+    iget-object v2, p0, Lcom/android/server/usb/UsbSerialReader;->mSerialNumber:Ljava/lang/String;
 
-    return-object p1
+    return-object v2
 .end method
 
 .method public setDevice(Ljava/lang/Object;)V
     .registers 2
+    .param p1, "device"  # Ljava/lang/Object;
 
     .line 67
     iput-object p1, p0, Lcom/android/server/usb/UsbSerialReader;->mDevice:Ljava/lang/Object;

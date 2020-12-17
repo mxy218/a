@@ -32,6 +32,7 @@
 # direct methods
 .method private constructor <init>(Ljava/util/Map;[I)V
     .registers 3
+    .param p2, "allUsers"  # [I
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(",
@@ -42,23 +43,27 @@
         }
     .end annotation
 
-    .line 16464
+    .line 17036
+    .local p1, "reconciledPackages":Ljava/util/Map;, "Ljava/util/Map<Ljava/lang/String;Lcom/android/server/pm/PackageManagerService$ReconciledPackage;>;"
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
-    .line 16465
+    .line 17037
     iput-object p1, p0, Lcom/android/server/pm/PackageManagerService$CommitRequest;->reconciledPackages:Ljava/util/Map;
 
-    .line 16466
+    .line 17038
     iput-object p2, p0, Lcom/android/server/pm/PackageManagerService$CommitRequest;->mAllUsers:[I
 
-    .line 16467
+    .line 17039
     return-void
 .end method
 
 .method synthetic constructor <init>(Ljava/util/Map;[ILcom/android/server/pm/PackageManagerService$1;)V
     .registers 4
+    .param p1, "x0"  # Ljava/util/Map;
+    .param p2, "x1"  # [I
+    .param p3, "x2"  # Lcom/android/server/pm/PackageManagerService$1;
 
-    .line 16460
+    .line 17032
     invoke-direct {p0, p1, p2}, Lcom/android/server/pm/PackageManagerService$CommitRequest;-><init>(Ljava/util/Map;[I)V
 
     return-void

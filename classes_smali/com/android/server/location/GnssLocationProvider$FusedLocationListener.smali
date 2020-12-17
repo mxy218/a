@@ -22,7 +22,7 @@
 .method private constructor <init>(Lcom/android/server/location/GnssLocationProvider;)V
     .registers 3
 
-    .line 2178
+    .line 2186
     iput-object p1, p0, Lcom/android/server/location/GnssLocationProvider$FusedLocationListener;->this$0:Lcom/android/server/location/GnssLocationProvider;
 
     const/4 v0, 0x0
@@ -34,8 +34,10 @@
 
 .method synthetic constructor <init>(Lcom/android/server/location/GnssLocationProvider;Lcom/android/server/location/GnssLocationProvider$1;)V
     .registers 3
+    .param p1, "x0"  # Lcom/android/server/location/GnssLocationProvider;
+    .param p2, "x1"  # Lcom/android/server/location/GnssLocationProvider$1;
 
-    .line 2178
+    .line 2186
     invoke-direct {p0, p1}, Lcom/android/server/location/GnssLocationProvider$FusedLocationListener;-><init>(Lcom/android/server/location/GnssLocationProvider;)V
 
     return-void
@@ -45,8 +47,9 @@
 # virtual methods
 .method public onLocationChanged(Landroid/location/Location;)V
     .registers 4
+    .param p1, "location"  # Landroid/location/Location;
 
-    .line 2181
+    .line 2189
     invoke-virtual {p1}, Landroid/location/Location;->getProvider()Ljava/lang/String;
 
     move-result-object v0
@@ -59,12 +62,12 @@
 
     if-eqz v0, :cond_11
 
-    .line 2182
+    .line 2190
     iget-object v0, p0, Lcom/android/server/location/GnssLocationProvider$FusedLocationListener;->this$0:Lcom/android/server/location/GnssLocationProvider;
 
-    invoke-static {v0, p1}, Lcom/android/server/location/GnssLocationProvider;->access$4400(Lcom/android/server/location/GnssLocationProvider;Landroid/location/Location;)V
+    invoke-static {v0, p1}, Lcom/android/server/location/GnssLocationProvider;->access$4000(Lcom/android/server/location/GnssLocationProvider;Landroid/location/Location;)V
 
-    .line 2184
+    .line 2192
     :cond_11
     return-void
 .end method

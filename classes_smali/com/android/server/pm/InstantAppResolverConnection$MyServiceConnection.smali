@@ -35,6 +35,8 @@
 
 .method synthetic constructor <init>(Lcom/android/server/pm/InstantAppResolverConnection;Lcom/android/server/pm/InstantAppResolverConnection$1;)V
     .registers 3
+    .param p1, "x0"  # Lcom/android/server/pm/InstantAppResolverConnection;
+    .param p2, "x1"  # Lcom/android/server/pm/InstantAppResolverConnection$1;
 
     .line 305
     invoke-direct {p0, p1}, Lcom/android/server/pm/InstantAppResolverConnection$MyServiceConnection;-><init>(Lcom/android/server/pm/InstantAppResolverConnection;)V
@@ -45,68 +47,70 @@
 
 # virtual methods
 .method public onServiceConnected(Landroid/content/ComponentName;Landroid/os/IBinder;)V
-    .registers 6
+    .registers 7
+    .param p1, "name"  # Landroid/content/ComponentName;
+    .param p2, "service"  # Landroid/os/IBinder;
 
     .line 308
     invoke-static {}, Lcom/android/server/pm/InstantAppResolverConnection;->access$100()Z
 
-    move-result p1
+    move-result v0
 
-    if-eqz p1, :cond_d
+    if-eqz v0, :cond_d
 
     .line 309
-    const-string p1, "PackageManager"
+    const-string v0, "PackageManager"
 
-    const-string v0, "Connected to instant app resolver"
+    const-string v1, "Connected to instant app resolver"
 
-    invoke-static {p1, v0}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v0, v1}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 311
     :cond_d
-    iget-object p1, p0, Lcom/android/server/pm/InstantAppResolverConnection$MyServiceConnection;->this$0:Lcom/android/server/pm/InstantAppResolverConnection;
+    iget-object v0, p0, Lcom/android/server/pm/InstantAppResolverConnection$MyServiceConnection;->this$0:Lcom/android/server/pm/InstantAppResolverConnection;
 
-    invoke-static {p1}, Lcom/android/server/pm/InstantAppResolverConnection;->access$200(Lcom/android/server/pm/InstantAppResolverConnection;)Ljava/lang/Object;
+    invoke-static {v0}, Lcom/android/server/pm/InstantAppResolverConnection;->access$200(Lcom/android/server/pm/InstantAppResolverConnection;)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v0
 
-    monitor-enter p1
+    monitor-enter v0
 
     .line 312
     :try_start_14
-    iget-object v0, p0, Lcom/android/server/pm/InstantAppResolverConnection$MyServiceConnection;->this$0:Lcom/android/server/pm/InstantAppResolverConnection;
+    iget-object v1, p0, Lcom/android/server/pm/InstantAppResolverConnection$MyServiceConnection;->this$0:Lcom/android/server/pm/InstantAppResolverConnection;
 
     invoke-static {p2}, Landroid/app/IInstantAppResolver$Stub;->asInterface(Landroid/os/IBinder;)Landroid/app/IInstantAppResolver;
 
-    move-result-object v1
+    move-result-object v2
 
-    invoke-static {v0, v1}, Lcom/android/server/pm/InstantAppResolverConnection;->access$302(Lcom/android/server/pm/InstantAppResolverConnection;Landroid/app/IInstantAppResolver;)Landroid/app/IInstantAppResolver;
+    invoke-static {v1, v2}, Lcom/android/server/pm/InstantAppResolverConnection;->access$302(Lcom/android/server/pm/InstantAppResolverConnection;Landroid/app/IInstantAppResolver;)Landroid/app/IInstantAppResolver;
 
     .line 313
-    iget-object v0, p0, Lcom/android/server/pm/InstantAppResolverConnection$MyServiceConnection;->this$0:Lcom/android/server/pm/InstantAppResolverConnection;
+    iget-object v1, p0, Lcom/android/server/pm/InstantAppResolverConnection$MyServiceConnection;->this$0:Lcom/android/server/pm/InstantAppResolverConnection;
 
-    invoke-static {v0}, Lcom/android/server/pm/InstantAppResolverConnection;->access$400(Lcom/android/server/pm/InstantAppResolverConnection;)I
+    invoke-static {v1}, Lcom/android/server/pm/InstantAppResolverConnection;->access$400(Lcom/android/server/pm/InstantAppResolverConnection;)I
 
-    move-result v0
+    move-result v1
 
-    const/4 v1, 0x2
+    const/4 v2, 0x2
 
-    const/4 v2, 0x0
+    const/4 v3, 0x0
 
-    if-ne v0, v1, :cond_2c
+    if-ne v1, v2, :cond_2c
 
     .line 314
-    iget-object v0, p0, Lcom/android/server/pm/InstantAppResolverConnection$MyServiceConnection;->this$0:Lcom/android/server/pm/InstantAppResolverConnection;
+    iget-object v1, p0, Lcom/android/server/pm/InstantAppResolverConnection$MyServiceConnection;->this$0:Lcom/android/server/pm/InstantAppResolverConnection;
 
-    invoke-static {v0, v2}, Lcom/android/server/pm/InstantAppResolverConnection;->access$402(Lcom/android/server/pm/InstantAppResolverConnection;I)I
+    invoke-static {v1, v3}, Lcom/android/server/pm/InstantAppResolverConnection;->access$402(Lcom/android/server/pm/InstantAppResolverConnection;I)I
     :try_end_2c
     .catchall {:try_start_14 .. :try_end_2c} :catchall_43
 
     .line 317
     :cond_2c
     :try_start_2c
-    iget-object v0, p0, Lcom/android/server/pm/InstantAppResolverConnection$MyServiceConnection;->this$0:Lcom/android/server/pm/InstantAppResolverConnection;
+    iget-object v1, p0, Lcom/android/server/pm/InstantAppResolverConnection$MyServiceConnection;->this$0:Lcom/android/server/pm/InstantAppResolverConnection;
 
-    invoke-interface {p2, v0, v2}, Landroid/os/IBinder;->linkToDeath(Landroid/os/IBinder$DeathRecipient;I)V
+    invoke-interface {p2, v1, v3}, Landroid/os/IBinder;->linkToDeath(Landroid/os/IBinder$DeathRecipient;I)V
     :try_end_31
     .catch Landroid/os/RemoteException; {:try_start_2c .. :try_end_31} :catch_32
     .catchall {:try_start_2c .. :try_end_31} :catchall_43
@@ -116,87 +120,90 @@
 
     .line 318
     :catch_32
-    move-exception p2
+    move-exception v1
 
     .line 319
+    .local v1, "e":Landroid/os/RemoteException;
     :try_start_33
-    iget-object p2, p0, Lcom/android/server/pm/InstantAppResolverConnection$MyServiceConnection;->this$0:Lcom/android/server/pm/InstantAppResolverConnection;
+    iget-object v2, p0, Lcom/android/server/pm/InstantAppResolverConnection$MyServiceConnection;->this$0:Lcom/android/server/pm/InstantAppResolverConnection;
 
-    invoke-static {p2}, Lcom/android/server/pm/InstantAppResolverConnection;->access$500(Lcom/android/server/pm/InstantAppResolverConnection;)V
+    invoke-static {v2}, Lcom/android/server/pm/InstantAppResolverConnection;->access$500(Lcom/android/server/pm/InstantAppResolverConnection;)V
 
     .line 321
+    .end local v1  # "e":Landroid/os/RemoteException;
     :goto_38
-    iget-object p2, p0, Lcom/android/server/pm/InstantAppResolverConnection$MyServiceConnection;->this$0:Lcom/android/server/pm/InstantAppResolverConnection;
+    iget-object v1, p0, Lcom/android/server/pm/InstantAppResolverConnection$MyServiceConnection;->this$0:Lcom/android/server/pm/InstantAppResolverConnection;
 
-    invoke-static {p2}, Lcom/android/server/pm/InstantAppResolverConnection;->access$200(Lcom/android/server/pm/InstantAppResolverConnection;)Ljava/lang/Object;
+    invoke-static {v1}, Lcom/android/server/pm/InstantAppResolverConnection;->access$200(Lcom/android/server/pm/InstantAppResolverConnection;)Ljava/lang/Object;
 
-    move-result-object p2
+    move-result-object v1
 
-    invoke-virtual {p2}, Ljava/lang/Object;->notifyAll()V
+    invoke-virtual {v1}, Ljava/lang/Object;->notifyAll()V
 
     .line 322
-    monitor-exit p1
+    monitor-exit v0
 
     .line 323
     return-void
 
     .line 322
     :catchall_43
-    move-exception p2
+    move-exception v1
 
-    monitor-exit p1
+    monitor-exit v0
     :try_end_45
     .catchall {:try_start_33 .. :try_end_45} :catchall_43
 
-    throw p2
+    throw v1
 .end method
 
 .method public onServiceDisconnected(Landroid/content/ComponentName;)V
-    .registers 3
+    .registers 4
+    .param p1, "name"  # Landroid/content/ComponentName;
 
     .line 327
     invoke-static {}, Lcom/android/server/pm/InstantAppResolverConnection;->access$100()Z
 
-    move-result p1
+    move-result v0
 
-    if-eqz p1, :cond_d
+    if-eqz v0, :cond_d
 
     .line 328
-    const-string p1, "PackageManager"
+    const-string v0, "PackageManager"
 
-    const-string v0, "Disconnected from instant app resolver"
+    const-string v1, "Disconnected from instant app resolver"
 
-    invoke-static {p1, v0}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v0, v1}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 330
     :cond_d
-    iget-object p1, p0, Lcom/android/server/pm/InstantAppResolverConnection$MyServiceConnection;->this$0:Lcom/android/server/pm/InstantAppResolverConnection;
+    iget-object v0, p0, Lcom/android/server/pm/InstantAppResolverConnection$MyServiceConnection;->this$0:Lcom/android/server/pm/InstantAppResolverConnection;
 
-    invoke-static {p1}, Lcom/android/server/pm/InstantAppResolverConnection;->access$200(Lcom/android/server/pm/InstantAppResolverConnection;)Ljava/lang/Object;
+    invoke-static {v0}, Lcom/android/server/pm/InstantAppResolverConnection;->access$200(Lcom/android/server/pm/InstantAppResolverConnection;)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v0
 
-    monitor-enter p1
+    monitor-enter v0
 
     .line 331
     :try_start_14
-    iget-object v0, p0, Lcom/android/server/pm/InstantAppResolverConnection$MyServiceConnection;->this$0:Lcom/android/server/pm/InstantAppResolverConnection;
+    iget-object v1, p0, Lcom/android/server/pm/InstantAppResolverConnection$MyServiceConnection;->this$0:Lcom/android/server/pm/InstantAppResolverConnection;
 
-    invoke-static {v0}, Lcom/android/server/pm/InstantAppResolverConnection;->access$500(Lcom/android/server/pm/InstantAppResolverConnection;)V
+    invoke-static {v1}, Lcom/android/server/pm/InstantAppResolverConnection;->access$500(Lcom/android/server/pm/InstantAppResolverConnection;)V
 
     .line 332
-    monitor-exit p1
+    monitor-exit v0
 
     .line 333
     return-void
 
     .line 332
     :catchall_1b
-    move-exception v0
+    move-exception v1
 
-    monitor-exit p1
+    monitor-exit v0
     :try_end_1d
     .catchall {:try_start_14 .. :try_end_1d} :catchall_1b
 
-    throw v0
+    throw v1
 .end method

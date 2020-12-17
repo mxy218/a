@@ -32,8 +32,9 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/policy/WindowOrientationListener;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/policy/WindowOrientationListener;
 
-    .line 291
+    .line 294
     iput-object p1, p0, Lcom/android/server/policy/WindowOrientationListener$OrientationJudge;->this$0:Lcom/android/server/policy/WindowOrientationListener;
 
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V

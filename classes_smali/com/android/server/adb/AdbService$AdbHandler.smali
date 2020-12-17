@@ -20,7 +20,8 @@
 
 # direct methods
 .method constructor <init>(Lcom/android/server/adb/AdbService;Landroid/os/Looper;)V
-    .registers 6
+    .registers 7
+    .param p2, "looper"  # Landroid/os/Looper;
 
     .line 112
     iput-object p1, p0, Lcom/android/server/adb/AdbService$AdbHandler;->this$0:Lcom/android/server/adb/AdbService;
@@ -30,44 +31,44 @@
 
     .line 119
     :try_start_5
-    const-string/jumbo p2, "persist.sys.usb.config"
+    const-string/jumbo v0, "persist.sys.usb.config"
 
-    const-string v0, ""
+    const-string v1, ""
 
     .line 120
-    invoke-static {p2, v0}, Landroid/os/SystemProperties;->get(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+    invoke-static {v0, v1}, Landroid/os/SystemProperties;->get(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
 
-    move-result-object p2
+    move-result-object v0
 
-    const-string v0, "adb"
+    const-string v1, "adb"
 
     .line 119
-    invoke-direct {p0, p2, v0}, Lcom/android/server/adb/AdbService$AdbHandler;->containsFunction(Ljava/lang/String;Ljava/lang/String;)Z
+    invoke-direct {p0, v0, v1}, Lcom/android/server/adb/AdbService$AdbHandler;->containsFunction(Ljava/lang/String;Ljava/lang/String;)Z
 
-    move-result p2
+    move-result v0
 
-    invoke-static {p1, p2}, Lcom/android/server/adb/AdbService;->access$202(Lcom/android/server/adb/AdbService;Z)Z
+    invoke-static {p1, v0}, Lcom/android/server/adb/AdbService;->access$202(Lcom/android/server/adb/AdbService;Z)Z
 
     .line 124
     invoke-static {p1}, Lcom/android/server/adb/AdbService;->access$400(Lcom/android/server/adb/AdbService;)Landroid/content/ContentResolver;
 
-    move-result-object p2
-
-    const-string v0, "adb_enabled"
-
-    .line 125
-    invoke-static {v0}, Landroid/provider/Settings$Global;->getUriFor(Ljava/lang/String;)Landroid/net/Uri;
-
     move-result-object v0
 
-    const/4 v1, 0x0
+    const-string v1, "adb_enabled"
 
-    new-instance v2, Lcom/android/server/adb/AdbService$AdbSettingsObserver;
+    .line 125
+    invoke-static {v1}, Landroid/provider/Settings$Global;->getUriFor(Ljava/lang/String;)Landroid/net/Uri;
 
-    invoke-direct {v2, p1}, Lcom/android/server/adb/AdbService$AdbSettingsObserver;-><init>(Lcom/android/server/adb/AdbService;)V
+    move-result-object v1
+
+    const/4 v2, 0x0
+
+    new-instance v3, Lcom/android/server/adb/AdbService$AdbSettingsObserver;
+
+    invoke-direct {v3, p1}, Lcom/android/server/adb/AdbService$AdbSettingsObserver;-><init>(Lcom/android/server/adb/AdbService;)V
 
     .line 124
-    invoke-virtual {p2, v0, v1, v2}, Landroid/content/ContentResolver;->registerContentObserver(Landroid/net/Uri;ZLandroid/database/ContentObserver;)V
+    invoke-virtual {v0, v1, v2, v3}, Landroid/content/ContentResolver;->registerContentObserver(Landroid/net/Uri;ZLandroid/database/ContentObserver;)V
     :try_end_2a
     .catch Ljava/lang/Exception; {:try_start_5 .. :try_end_2a} :catch_2b
 
@@ -79,19 +80,23 @@
     move-exception p1
 
     .line 128
-    const-string p2, "AdbService"
+    .local p1, "e":Ljava/lang/Exception;
+    const-string v0, "AdbService"
 
-    const-string v0, "Error initializing AdbHandler"
+    const-string v1, "Error initializing AdbHandler"
 
-    invoke-static {p2, v0, p1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    invoke-static {v0, v1, p1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
     .line 130
+    .end local p1  # "e":Ljava/lang/Exception;
     :goto_33
     return-void
 .end method
 
 .method private containsFunction(Ljava/lang/String;Ljava/lang/String;)Z
-    .registers 7
+    .registers 8
+    .param p1, "functions"  # Ljava/lang/String;
+    .param p2, "function"  # Ljava/lang/String;
 
     .line 133
     invoke-virtual {p1, p2}, Ljava/lang/String;->indexOf(Ljava/lang/String;)I
@@ -99,6 +104,7 @@
     move-result v0
 
     .line 134
+    .local v0, "index":I
     const/4 v1, 0x0
 
     if-gez v0, :cond_8
@@ -125,36 +131,38 @@
     :cond_15
     invoke-virtual {p2}, Ljava/lang/String;->length()I
 
-    move-result p2
+    move-result v3
 
-    add-int/2addr v0, p2
+    add-int/2addr v3, v0
 
     .line 137
+    .local v3, "charAfter":I
     invoke-virtual {p1}, Ljava/lang/String;->length()I
 
-    move-result p2
+    move-result v4
 
-    if-ge v0, p2, :cond_27
+    if-ge v3, v4, :cond_27
 
-    invoke-virtual {p1, v0}, Ljava/lang/String;->charAt(I)C
+    invoke-virtual {p1, v3}, Ljava/lang/String;->charAt(I)C
 
-    move-result p1
+    move-result v4
 
-    if-eq p1, v2, :cond_27
+    if-eq v4, v2, :cond_27
 
     return v1
 
     .line 138
     :cond_27
-    const/4 p1, 0x1
+    const/4 v1, 0x1
 
-    return p1
+    return v1
 .end method
 
 
 # virtual methods
 .method public handleMessage(Landroid/os/Message;)V
-    .registers 4
+    .registers 5
+    .param p1, "msg"  # Landroid/os/Message;
 
     .line 150
     iget v0, p1, Landroid/os/Message;->what:I
@@ -163,36 +171,36 @@
 
     if-eq v0, v1, :cond_21
 
-    const/4 p1, 0x2
+    const/4 v1, 0x2
 
-    if-eq v0, p1, :cond_9
+    if-eq v0, v1, :cond_9
 
     goto :goto_2d
 
     .line 155
     :cond_9
-    iget-object p1, p0, Lcom/android/server/adb/AdbService$AdbHandler;->this$0:Lcom/android/server/adb/AdbService;
-
-    invoke-static {p1}, Lcom/android/server/adb/AdbService;->access$300(Lcom/android/server/adb/AdbService;)Lcom/android/server/adb/AdbDebuggingManager;
-
-    move-result-object p1
-
-    if-eqz p1, :cond_2d
-
-    .line 156
-    iget-object p1, p0, Lcom/android/server/adb/AdbService$AdbHandler;->this$0:Lcom/android/server/adb/AdbService;
-
-    invoke-static {p1}, Lcom/android/server/adb/AdbService;->access$300(Lcom/android/server/adb/AdbService;)Lcom/android/server/adb/AdbDebuggingManager;
-
-    move-result-object p1
-
     iget-object v0, p0, Lcom/android/server/adb/AdbService$AdbHandler;->this$0:Lcom/android/server/adb/AdbService;
 
-    invoke-static {v0}, Lcom/android/server/adb/AdbService;->access$200(Lcom/android/server/adb/AdbService;)Z
+    invoke-static {v0}, Lcom/android/server/adb/AdbService;->access$300(Lcom/android/server/adb/AdbService;)Lcom/android/server/adb/AdbDebuggingManager;
 
-    move-result v0
+    move-result-object v0
 
-    invoke-virtual {p1, v0}, Lcom/android/server/adb/AdbDebuggingManager;->setAdbEnabled(Z)V
+    if-eqz v0, :cond_2d
+
+    .line 156
+    iget-object v0, p0, Lcom/android/server/adb/AdbService$AdbHandler;->this$0:Lcom/android/server/adb/AdbService;
+
+    invoke-static {v0}, Lcom/android/server/adb/AdbService;->access$300(Lcom/android/server/adb/AdbService;)Lcom/android/server/adb/AdbDebuggingManager;
+
+    move-result-object v0
+
+    iget-object v1, p0, Lcom/android/server/adb/AdbService$AdbHandler;->this$0:Lcom/android/server/adb/AdbService;
+
+    invoke-static {v1}, Lcom/android/server/adb/AdbService;->access$200(Lcom/android/server/adb/AdbService;)Z
+
+    move-result v1
+
+    invoke-virtual {v0, v1}, Lcom/android/server/adb/AdbDebuggingManager;->setAdbEnabled(Z)V
 
     goto :goto_2d
 
@@ -200,9 +208,9 @@
     :cond_21
     iget-object v0, p0, Lcom/android/server/adb/AdbService$AdbHandler;->this$0:Lcom/android/server/adb/AdbService;
 
-    iget p1, p1, Landroid/os/Message;->arg1:I
+    iget v2, p1, Landroid/os/Message;->arg1:I
 
-    if-ne p1, v1, :cond_28
+    if-ne v2, v1, :cond_28
 
     goto :goto_29
 
@@ -222,7 +230,9 @@
 .end method
 
 .method public sendMessage(IZ)V
-    .registers 3
+    .registers 4
+    .param p1, "what"  # I
+    .param p2, "arg"  # Z
 
     .line 142
     invoke-virtual {p0, p1}, Lcom/android/server/adb/AdbService$AdbHandler;->removeMessages(I)V
@@ -230,13 +240,14 @@
     .line 143
     invoke-static {p0, p1}, Landroid/os/Message;->obtain(Landroid/os/Handler;I)Landroid/os/Message;
 
-    move-result-object p1
+    move-result-object v0
 
     .line 144
-    iput p2, p1, Landroid/os/Message;->arg1:I
+    .local v0, "m":Landroid/os/Message;
+    iput p2, v0, Landroid/os/Message;->arg1:I
 
     .line 145
-    invoke-virtual {p0, p1}, Lcom/android/server/adb/AdbService$AdbHandler;->sendMessage(Landroid/os/Message;)Z
+    invoke-virtual {p0, v0}, Lcom/android/server/adb/AdbService$AdbHandler;->sendMessage(Landroid/os/Message;)Z
 
     .line 146
     return-void

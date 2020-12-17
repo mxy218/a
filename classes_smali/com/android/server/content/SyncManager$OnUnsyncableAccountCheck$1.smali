@@ -21,8 +21,9 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/content/SyncManager$OnUnsyncableAccountCheck;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/content/SyncManager$OnUnsyncableAccountCheck;
 
-    .line 2791
+    .line 2804
     iput-object p1, p0, Lcom/android/server/content/SyncManager$OnUnsyncableAccountCheck$1;->this$0:Lcom/android/server/content/SyncManager$OnUnsyncableAccountCheck;
 
     invoke-direct {p0}, Landroid/content/ISyncAdapterUnsyncableAccountCallback$Stub;-><init>()V
@@ -33,17 +34,18 @@
 
 # virtual methods
 .method public onUnsyncableAccountDone(Z)V
-    .registers 2
+    .registers 3
+    .param p1, "isReady"  # Z
 
-    .line 2794
+    .line 2807
     if-eqz p1, :cond_7
 
-    .line 2795
-    iget-object p1, p0, Lcom/android/server/content/SyncManager$OnUnsyncableAccountCheck$1;->this$0:Lcom/android/server/content/SyncManager$OnUnsyncableAccountCheck;
+    .line 2808
+    iget-object v0, p0, Lcom/android/server/content/SyncManager$OnUnsyncableAccountCheck$1;->this$0:Lcom/android/server/content/SyncManager$OnUnsyncableAccountCheck;
 
-    invoke-static {p1}, Lcom/android/server/content/SyncManager$OnUnsyncableAccountCheck;->access$2400(Lcom/android/server/content/SyncManager$OnUnsyncableAccountCheck;)V
+    invoke-static {v0}, Lcom/android/server/content/SyncManager$OnUnsyncableAccountCheck;->access$2400(Lcom/android/server/content/SyncManager$OnUnsyncableAccountCheck;)V
 
-    .line 2797
+    .line 2810
     :cond_7
     return-void
 .end method

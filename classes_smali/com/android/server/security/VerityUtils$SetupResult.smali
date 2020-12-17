@@ -33,6 +33,9 @@
 # direct methods
 .method private constructor <init>(ILjava/io/FileDescriptor;I)V
     .registers 4
+    .param p1, "code"  # I
+    .param p2, "fileDescriptor"  # Ljava/io/FileDescriptor;
+    .param p3, "contentSize"  # I
 
     .line 342
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -69,6 +72,8 @@
 
 .method public static ok(Ljava/io/FileDescriptor;I)Lcom/android/server/security/VerityUtils$SetupResult;
     .registers 4
+    .param p0, "fileDescriptor"  # Ljava/io/FileDescriptor;
+    .param p1, "contentSize"  # I
 
     .line 331
     new-instance v0, Lcom/android/server/security/VerityUtils$SetupResult;

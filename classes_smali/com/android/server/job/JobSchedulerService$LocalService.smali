@@ -24,6 +24,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/job/JobSchedulerService;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/job/JobSchedulerService;
 
     .line 2437
     iput-object p1, p0, Lcom/android/server/job/JobSchedulerService$LocalService;->this$0:Lcom/android/server/job/JobSchedulerService;
@@ -37,6 +38,7 @@
 # virtual methods
 .method public addBackingUpUid(I)V
     .registers 4
+    .param p1, "uid"  # I
 
     .line 2513
     iget-object v0, p0, Lcom/android/server/job/JobSchedulerService$LocalService;->this$0:Lcom/android/server/job/JobSchedulerService;
@@ -61,17 +63,20 @@
 
     .line 2518
     :catchall_e
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_10
     .catchall {:try_start_5 .. :try_end_10} :catchall_e
 
-    throw p1
+    throw v1
 .end method
 
 .method public baseHeartbeatForApp(Ljava/lang/String;II)J
-    .registers 9
+    .registers 10
+    .param p1, "packageName"  # Ljava/lang/String;
+    .param p2, "userId"  # I
+    .param p3, "appStandbyBucket"  # I
 
     .line 2463
     const-string v0, "/"
@@ -94,85 +99,89 @@
 
     .line 2475
     :cond_10
-    iget-object p3, p0, Lcom/android/server/job/JobSchedulerService$LocalService;->this$0:Lcom/android/server/job/JobSchedulerService;
+    iget-object v2, p0, Lcom/android/server/job/JobSchedulerService$LocalService;->this$0:Lcom/android/server/job/JobSchedulerService;
 
-    invoke-virtual {p3, p1, p2}, Lcom/android/server/job/JobSchedulerService;->heartbeatWhenJobsLastRun(Ljava/lang/String;I)J
+    invoke-virtual {v2, p1, p2}, Lcom/android/server/job/JobSchedulerService;->heartbeatWhenJobsLastRun(Ljava/lang/String;I)J
 
     move-result-wide v2
 
     .line 2476
-    sget-boolean p3, Lcom/android/server/job/JobSchedulerService;->DEBUG_STANDBY:Z
+    .local v2, "baseHeartbeat":J
+    sget-boolean v4, Lcom/android/server/job/JobSchedulerService;->DEBUG_STANDBY:Z
 
-    if-eqz p3, :cond_3c
+    if-eqz v4, :cond_3c
 
     .line 2477
-    new-instance p3, Ljava/lang/StringBuilder;
+    new-instance v4, Ljava/lang/StringBuilder;
 
-    invoke-direct {p3}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v4}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v4, "Base heartbeat "
+    const-string v5, "Base heartbeat "
 
-    invoke-virtual {p3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p3, v2, v3}, Ljava/lang/StringBuilder;->append(J)Ljava/lang/StringBuilder;
+    invoke-virtual {v4, v2, v3}, Ljava/lang/StringBuilder;->append(J)Ljava/lang/StringBuilder;
 
-    const-string v4, " for new job in "
+    const-string v5, " for new job in "
 
-    invoke-virtual {p3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p3, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v4, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p3, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v4, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p3, p2}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v4, p2}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v4}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    invoke-static {v1, p1}, Landroid/util/Slog;->v(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v0}, Landroid/util/Slog;->v(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 2480
     :cond_3c
     return-wide v2
 
     .line 2468
+    .end local v2  # "baseHeartbeat":J
     :cond_3d
     :goto_3d
-    sget-boolean p3, Lcom/android/server/job/JobSchedulerService;->DEBUG_STANDBY:Z
+    sget-boolean v2, Lcom/android/server/job/JobSchedulerService;->DEBUG_STANDBY:Z
 
-    if-eqz p3, :cond_5b
+    if-eqz v2, :cond_5b
 
     .line 2469
-    new-instance p3, Ljava/lang/StringBuilder;
+    new-instance v2, Ljava/lang/StringBuilder;
 
-    invoke-direct {p3}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v2, "Base heartbeat forced ZERO for new job in "
+    const-string v3, "Base heartbeat forced ZERO for new job in "
 
-    invoke-virtual {p3, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p3, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p3, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p3, p2}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, p2}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    invoke-static {v1, p1}, Landroid/util/Slog;->v(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v0}, Landroid/util/Slog;->v(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 2472
     :cond_5b
-    const-wide/16 p1, 0x0
+    const-wide/16 v0, 0x0
 
-    return-wide p1
+    return-wide v0
 .end method
 
 .method public cancelJobsForUid(ILjava/lang/String;)V
     .registers 4
+    .param p1, "uid"  # I
+    .param p2, "reason"  # Ljava/lang/String;
 
     .line 2508
     iget-object v0, p0, Lcom/android/server/job/JobSchedulerService$LocalService;->this$0:Lcom/android/server/job/JobSchedulerService;
@@ -320,6 +329,7 @@
     invoke-direct {v1}, Ljava/util/ArrayList;-><init>()V
 
     .line 2497
+    .local v1, "pendingJobs":Ljava/util/List;, "Ljava/util/List<Landroid/app/job/JobInfo;>;"
     iget-object v2, p0, Lcom/android/server/job/JobSchedulerService$LocalService;->this$0:Lcom/android/server/job/JobSchedulerService;
 
     iget-object v2, v2, Lcom/android/server/job/JobSchedulerService;->mJobs:Lcom/android/server/job/JobStore;
@@ -338,6 +348,7 @@
     return-object v1
 
     .line 2503
+    .end local v1  # "pendingJobs":Ljava/util/List;, "Ljava/util/List<Landroid/app/job/JobInfo;>;"
     :catchall_1a
     move-exception v1
 
@@ -350,6 +361,8 @@
 
 .method public synthetic lambda$getSystemScheduledPendingJobs$0$JobSchedulerService$LocalService(Ljava/util/List;Lcom/android/server/job/controllers/JobStatus;)V
     .registers 4
+    .param p1, "pendingJobs"  # Ljava/util/List;
+    .param p2, "job"  # Lcom/android/server/job/controllers/JobStatus;
 
     .line 2498
     invoke-virtual {p2}, Lcom/android/server/job/controllers/JobStatus;->getJob()Landroid/app/job/JobInfo;
@@ -374,9 +387,9 @@
     :cond_12
     invoke-virtual {p2}, Lcom/android/server/job/controllers/JobStatus;->getJob()Landroid/app/job/JobInfo;
 
-    move-result-object p2
+    move-result-object v0
 
-    invoke-interface {p1, p2}, Ljava/util/List;->add(Ljava/lang/Object;)Z
+    invoke-interface {p1, v0}, Ljava/util/List;->add(Ljava/lang/Object;)Z
 
     .line 2501
     :cond_19
@@ -385,6 +398,7 @@
 
 .method public nextHeartbeatForBucket(I)J
     .registers 5
+    .param p1, "bucket"  # I
 
     .line 2450
     iget-object v0, p0, Lcom/android/server/job/JobSchedulerService$LocalService;->this$0:Lcom/android/server/job/JobSchedulerService;
@@ -407,17 +421,19 @@
 
     .line 2452
     :catchall_d
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_f
     .catchall {:try_start_5 .. :try_end_f} :catchall_d
 
-    throw p1
+    throw v1
 .end method
 
 .method public noteJobStart(Ljava/lang/String;I)V
     .registers 7
+    .param p1, "packageName"  # Ljava/lang/String;
+    .param p2, "userId"  # I
 
     .line 2484
     iget-object v0, p0, Lcom/android/server/job/JobSchedulerService$LocalService;->this$0:Lcom/android/server/job/JobSchedulerService;
@@ -444,17 +460,18 @@
 
     .line 2486
     :catchall_10
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_12
     .catchall {:try_start_5 .. :try_end_12} :catchall_10
 
-    throw p1
+    throw v1
 .end method
 
 .method public removeBackingUpUid(I)V
-    .registers 4
+    .registers 5
+    .param p1, "uid"  # I
 
     .line 2523
     iget-object v0, p0, Lcom/android/server/job/JobSchedulerService$LocalService;->this$0:Lcom/android/server/job/JobSchedulerService;
@@ -478,22 +495,22 @@
 
     invoke-virtual {v1, p1}, Lcom/android/server/job/JobStore;->countJobsForUid(I)I
 
-    move-result p1
+    move-result v1
 
-    if-lez p1, :cond_22
+    if-lez v1, :cond_22
 
     .line 2528
-    iget-object p1, p0, Lcom/android/server/job/JobSchedulerService$LocalService;->this$0:Lcom/android/server/job/JobSchedulerService;
+    iget-object v1, p0, Lcom/android/server/job/JobSchedulerService$LocalService;->this$0:Lcom/android/server/job/JobSchedulerService;
 
-    iget-object p1, p1, Lcom/android/server/job/JobSchedulerService;->mHandler:Lcom/android/server/job/JobSchedulerService$JobHandler;
+    iget-object v1, v1, Lcom/android/server/job/JobSchedulerService;->mHandler:Lcom/android/server/job/JobSchedulerService$JobHandler;
 
-    const/4 v1, 0x1
+    const/4 v2, 0x1
 
-    invoke-virtual {p1, v1}, Lcom/android/server/job/JobSchedulerService$JobHandler;->obtainMessage(I)Landroid/os/Message;
+    invoke-virtual {v1, v2}, Lcom/android/server/job/JobSchedulerService$JobHandler;->obtainMessage(I)Landroid/os/Message;
 
-    move-result-object p1
+    move-result-object v1
 
-    invoke-virtual {p1}, Landroid/os/Message;->sendToTarget()V
+    invoke-virtual {v1}, Landroid/os/Message;->sendToTarget()V
 
     .line 2530
     :cond_22
@@ -504,17 +521,19 @@
 
     .line 2530
     :catchall_24
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_26
     .catchall {:try_start_5 .. :try_end_26} :catchall_24
 
-    throw p1
+    throw v1
 .end method
 
 .method public reportAppUsage(Ljava/lang/String;I)V
     .registers 4
+    .param p1, "packageName"  # Ljava/lang/String;
+    .param p2, "userId"  # I
 
     .line 2545
     iget-object v0, p0, Lcom/android/server/job/JobSchedulerService$LocalService;->this$0:Lcom/android/server/job/JobSchedulerService;

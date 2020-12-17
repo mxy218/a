@@ -32,6 +32,7 @@
 # direct methods
 .method constructor <init>(Landroid/accounts/AccountAndUser;)V
     .registers 3
+    .param p1, "accountAndUser"  # Landroid/accounts/AccountAndUser;
 
     .line 178
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V

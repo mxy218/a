@@ -38,7 +38,8 @@
 
 # virtual methods
 .method protected readChild(Lorg/xmlpull/v1/XmlPullParser;)V
-    .registers 3
+    .registers 4
+    .param p1, "parser"  # Lorg/xmlpull/v1/XmlPullParser;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Ljava/io/IOException;,
@@ -49,12 +50,13 @@
     .line 38
     invoke-static {p1}, Lcom/android/server/firewall/IntentFirewall;->parseFilter(Lorg/xmlpull/v1/XmlPullParser;)Lcom/android/server/firewall/Filter;
 
-    move-result-object p1
+    move-result-object v0
 
     .line 39
-    iget-object v0, p0, Lcom/android/server/firewall/FilterList;->children:Ljava/util/ArrayList;
+    .local v0, "filter":Lcom/android/server/firewall/Filter;
+    iget-object v1, p0, Lcom/android/server/firewall/FilterList;->children:Ljava/util/ArrayList;
 
-    invoke-virtual {v0, p1}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
+    invoke-virtual {v1, v0}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
 
     .line 40
     return-void
@@ -62,6 +64,7 @@
 
 .method public readFromXml(Lorg/xmlpull/v1/XmlPullParser;)Lcom/android/server/firewall/FilterList;
     .registers 4
+    .param p1, "parser"  # Lorg/xmlpull/v1/XmlPullParser;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Ljava/io/IOException;,
@@ -75,6 +78,7 @@
     move-result v0
 
     .line 31
+    .local v0, "outerDepth":I
     :goto_4
     invoke-static {p1, v0}, Lcom/android/internal/util/XmlUtils;->nextElementWithin(Lorg/xmlpull/v1/XmlPullParser;I)Z
 

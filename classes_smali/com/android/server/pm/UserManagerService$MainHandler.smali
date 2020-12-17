@@ -21,8 +21,9 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/pm/UserManagerService;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/pm/UserManagerService;
 
-    .line 4093
+    .line 3851
     iput-object p1, p0, Lcom/android/server/pm/UserManagerService$MainHandler;->this$0:Lcom/android/server/pm/UserManagerService;
 
     invoke-direct {p0}, Landroid/os/Handler;-><init>()V
@@ -33,9 +34,10 @@
 
 # virtual methods
 .method public handleMessage(Landroid/os/Message;)V
-    .registers 4
+    .registers 6
+    .param p1, "msg"  # Landroid/os/Message;
 
-    .line 4097
+    .line 3855
     iget v0, p1, Landroid/os/Message;->what:I
 
     const/4 v1, 0x1
@@ -44,61 +46,65 @@
 
     goto :goto_28
 
-    .line 4099
+    .line 3857
     :cond_6
     iget-object v0, p1, Landroid/os/Message;->obj:Ljava/lang/Object;
 
     invoke-virtual {p0, v1, v0}, Lcom/android/server/pm/UserManagerService$MainHandler;->removeMessages(ILjava/lang/Object;)V
 
-    .line 4100
+    .line 3858
     iget-object v0, p0, Lcom/android/server/pm/UserManagerService$MainHandler;->this$0:Lcom/android/server/pm/UserManagerService;
 
-    invoke-static {v0}, Lcom/android/server/pm/UserManagerService;->access$1200(Lcom/android/server/pm/UserManagerService;)Ljava/lang/Object;
+    invoke-static {v0}, Lcom/android/server/pm/UserManagerService;->access$1100(Lcom/android/server/pm/UserManagerService;)Ljava/lang/Object;
 
     move-result-object v0
 
     monitor-enter v0
 
-    .line 4101
+    .line 3859
     :try_start_12
-    iget-object p1, p1, Landroid/os/Message;->obj:Ljava/lang/Object;
+    iget-object v1, p1, Landroid/os/Message;->obj:Ljava/lang/Object;
 
-    check-cast p1, Lcom/android/server/pm/UserManagerService$UserData;
+    check-cast v1, Lcom/android/server/pm/UserManagerService$UserData;
 
-    iget-object p1, p1, Lcom/android/server/pm/UserManagerService$UserData;->info:Landroid/content/pm/UserInfo;
+    iget-object v1, v1, Lcom/android/server/pm/UserManagerService$UserData;->info:Landroid/content/pm/UserInfo;
 
-    iget p1, p1, Landroid/content/pm/UserInfo;->id:I
+    iget v1, v1, Landroid/content/pm/UserInfo;->id:I
 
-    .line 4102
-    iget-object v1, p0, Lcom/android/server/pm/UserManagerService$MainHandler;->this$0:Lcom/android/server/pm/UserManagerService;
+    .line 3860
+    .local v1, "userId":I
+    iget-object v2, p0, Lcom/android/server/pm/UserManagerService$MainHandler;->this$0:Lcom/android/server/pm/UserManagerService;
 
-    invoke-static {v1, p1}, Lcom/android/server/pm/UserManagerService;->access$1300(Lcom/android/server/pm/UserManagerService;I)Lcom/android/server/pm/UserManagerService$UserData;
+    invoke-static {v2, v1}, Lcom/android/server/pm/UserManagerService;->access$1200(Lcom/android/server/pm/UserManagerService;I)Lcom/android/server/pm/UserManagerService$UserData;
 
-    move-result-object p1
+    move-result-object v2
 
-    .line 4103
-    if-eqz p1, :cond_27
+    .line 3861
+    .local v2, "userData":Lcom/android/server/pm/UserManagerService$UserData;
+    if-eqz v2, :cond_27
 
-    .line 4104
-    iget-object v1, p0, Lcom/android/server/pm/UserManagerService$MainHandler;->this$0:Lcom/android/server/pm/UserManagerService;
+    .line 3862
+    iget-object v3, p0, Lcom/android/server/pm/UserManagerService$MainHandler;->this$0:Lcom/android/server/pm/UserManagerService;
 
-    invoke-static {v1, p1}, Lcom/android/server/pm/UserManagerService;->access$1400(Lcom/android/server/pm/UserManagerService;Lcom/android/server/pm/UserManagerService$UserData;)V
+    invoke-static {v3, v2}, Lcom/android/server/pm/UserManagerService;->access$1300(Lcom/android/server/pm/UserManagerService;Lcom/android/server/pm/UserManagerService$UserData;)V
 
-    .line 4106
+    .line 3864
+    .end local v1  # "userId":I
+    .end local v2  # "userData":Lcom/android/server/pm/UserManagerService$UserData;
     :cond_27
     monitor-exit v0
 
-    .line 4108
+    .line 3866
     :goto_28
     return-void
 
-    .line 4106
+    .line 3864
     :catchall_29
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_2b
     .catchall {:try_start_12 .. :try_end_2b} :catchall_29
 
-    throw p1
+    throw v1
 .end method

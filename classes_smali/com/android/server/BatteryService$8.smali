@@ -8,7 +8,7 @@
 
 # annotations
 .annotation system Ldalvik/annotation/EnclosingMethod;
-    value = Lcom/android/server/BatteryService;->processValuesLocked(Z)V
+    value = Lcom/android/server/BatteryService;->shutdownIfOverTempLocked()V
 .end annotation
 
 .annotation system Ldalvik/annotation/InnerClass;
@@ -20,17 +20,14 @@
 # instance fields
 .field final synthetic this$0:Lcom/android/server/BatteryService;
 
-.field final synthetic val$statusIntent:Landroid/content/Intent;
-
 
 # direct methods
-.method constructor <init>(Lcom/android/server/BatteryService;Landroid/content/Intent;)V
-    .registers 3
+.method constructor <init>(Lcom/android/server/BatteryService;)V
+    .registers 2
+    .param p1, "this$0"  # Lcom/android/server/BatteryService;
 
-    .line 621
+    .line 651
     iput-object p1, p0, Lcom/android/server/BatteryService$8;->this$0:Lcom/android/server/BatteryService;
-
-    iput-object p2, p0, Lcom/android/server/BatteryService$8;->val$statusIntent:Landroid/content/Intent;
 
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
@@ -42,19 +39,59 @@
 .method public run()V
     .registers 4
 
-    .line 624
+    .line 654
     iget-object v0, p0, Lcom/android/server/BatteryService$8;->this$0:Lcom/android/server/BatteryService;
 
-    invoke-static {v0}, Lcom/android/server/BatteryService;->access$900(Lcom/android/server/BatteryService;)Landroid/content/Context;
+    invoke-static {v0}, Lcom/android/server/BatteryService;->access$800(Lcom/android/server/BatteryService;)Landroid/app/ActivityManagerInternal;
 
     move-result-object v0
 
-    iget-object v1, p0, Lcom/android/server/BatteryService$8;->val$statusIntent:Landroid/content/Intent;
+    invoke-virtual {v0}, Landroid/app/ActivityManagerInternal;->isSystemReady()Z
 
-    sget-object v2, Landroid/os/UserHandle;->ALL:Landroid/os/UserHandle;
+    move-result v0
 
-    invoke-virtual {v0, v1, v2}, Landroid/content/Context;->sendBroadcastAsUser(Landroid/content/Intent;Landroid/os/UserHandle;)V
+    if-eqz v0, :cond_31
 
-    .line 625
+    .line 655
+    new-instance v0, Landroid/content/Intent;
+
+    const-string v1, "com.android.internal.intent.action.REQUEST_SHUTDOWN"
+
+    invoke-direct {v0, v1}, Landroid/content/Intent;-><init>(Ljava/lang/String;)V
+
+    .line 656
+    .local v0, "intent":Landroid/content/Intent;
+    const/4 v1, 0x0
+
+    const-string v2, "android.intent.extra.KEY_CONFIRM"
+
+    invoke-virtual {v0, v2, v1}, Landroid/content/Intent;->putExtra(Ljava/lang/String;Z)Landroid/content/Intent;
+
+    .line 657
+    const-string v1, "android.intent.extra.REASON"
+
+    const-string/jumbo v2, "thermal,battery"
+
+    invoke-virtual {v0, v1, v2}, Landroid/content/Intent;->putExtra(Ljava/lang/String;Ljava/lang/String;)Landroid/content/Intent;
+
+    .line 659
+    const/high16 v1, 0x10000000
+
+    invoke-virtual {v0, v1}, Landroid/content/Intent;->setFlags(I)Landroid/content/Intent;
+
+    .line 660
+    iget-object v1, p0, Lcom/android/server/BatteryService$8;->this$0:Lcom/android/server/BatteryService;
+
+    invoke-static {v1}, Lcom/android/server/BatteryService;->access$1000(Lcom/android/server/BatteryService;)Landroid/content/Context;
+
+    move-result-object v1
+
+    sget-object v2, Landroid/os/UserHandle;->CURRENT:Landroid/os/UserHandle;
+
+    invoke-virtual {v1, v0, v2}, Landroid/content/Context;->startActivityAsUser(Landroid/content/Intent;Landroid/os/UserHandle;)V
+
+    .line 662
+    .end local v0  # "intent":Landroid/content/Intent;
+    :cond_31
     return-void
 .end method

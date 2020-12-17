@@ -31,8 +31,9 @@
 # direct methods
 .method protected constructor <init>(Lcom/android/server/biometrics/BiometricServiceBase;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/biometrics/BiometricServiceBase;
 
-    .line 115
+    .line 118
     iput-object p1, p0, Lcom/android/server/biometrics/BiometricServiceBase$PerformanceStats;->this$0:Lcom/android/server/biometrics/BiometricServiceBase;
 
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V

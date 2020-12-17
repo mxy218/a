@@ -21,6 +21,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/trust/TrustManagerService;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/trust/TrustManagerService;
 
     .line 1402
     iput-object p1, p0, Lcom/android/server/trust/TrustManagerService$3;->this$0:Lcom/android/server/trust/TrustManagerService;
@@ -33,21 +34,26 @@
 
 # virtual methods
 .method public onPackageChanged(Ljava/lang/String;I[Ljava/lang/String;)Z
-    .registers 4
+    .registers 5
+    .param p1, "packageName"  # Ljava/lang/String;
+    .param p2, "uid"  # I
+    .param p3, "components"  # [Ljava/lang/String;
 
     .line 1411
-    const/4 p1, 0x1
+    const/4 v0, 0x1
 
-    return p1
+    return v0
 .end method
 
 .method public onPackageDisappeared(Ljava/lang/String;I)V
-    .registers 3
+    .registers 4
+    .param p1, "packageName"  # Ljava/lang/String;
+    .param p2, "reason"  # I
 
     .line 1416
-    iget-object p2, p0, Lcom/android/server/trust/TrustManagerService$3;->this$0:Lcom/android/server/trust/TrustManagerService;
+    iget-object v0, p0, Lcom/android/server/trust/TrustManagerService$3;->this$0:Lcom/android/server/trust/TrustManagerService;
 
-    invoke-static {p2, p1}, Lcom/android/server/trust/TrustManagerService;->access$2700(Lcom/android/server/trust/TrustManagerService;Ljava/lang/String;)V
+    invoke-static {v0, p1}, Lcom/android/server/trust/TrustManagerService;->access$2700(Lcom/android/server/trust/TrustManagerService;Ljava/lang/String;)V
 
     .line 1417
     return-void

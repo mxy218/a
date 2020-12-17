@@ -1,6 +1,9 @@
 .class Lcom/android/server/VibratorService$3;
-.super Landroid/content/BroadcastReceiver;
+.super Ljava/lang/Object;
 .source "VibratorService.java"
+
+# interfaces
+.implements Landroid/os/PowerManagerInternal$LowPowerModeListener;
 
 
 # annotations
@@ -21,25 +24,36 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/VibratorService;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/VibratorService;
 
-    .line 460
+    .line 466
     iput-object p1, p0, Lcom/android/server/VibratorService$3;->this$0:Lcom/android/server/VibratorService;
 
-    invoke-direct {p0}, Landroid/content/BroadcastReceiver;-><init>()V
+    invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
     return-void
 .end method
 
 
 # virtual methods
-.method public onReceive(Landroid/content/Context;Landroid/content/Intent;)V
+.method public getServiceType()I
+    .registers 2
+
+    .line 469
+    const/4 v0, 0x2
+
+    return v0
+.end method
+
+.method public onLowPowerModeChanged(Landroid/os/PowerSaveState;)V
     .registers 3
+    .param p1, "result"  # Landroid/os/PowerSaveState;
 
-    .line 463
-    iget-object p1, p0, Lcom/android/server/VibratorService$3;->this$0:Lcom/android/server/VibratorService;
+    .line 474
+    iget-object v0, p0, Lcom/android/server/VibratorService$3;->this$0:Lcom/android/server/VibratorService;
 
-    invoke-static {p1}, Lcom/android/server/VibratorService;->access$800(Lcom/android/server/VibratorService;)V
+    invoke-static {v0}, Lcom/android/server/VibratorService;->access$1000(Lcom/android/server/VibratorService;)V
 
-    .line 464
+    .line 475
     return-void
 .end method

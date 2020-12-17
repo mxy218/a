@@ -88,6 +88,11 @@
 
 .method private constructor <init>(Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/Object;Ljava/util/Collection;)V
     .registers 8
+    .param p1, "context"  # Landroid/content/Context;
+    .param p2, "settingName"  # Ljava/lang/String;
+    .param p3, "servicePermission"  # Ljava/lang/String;
+    .param p4, "serviceName"  # Ljava/lang/String;
+    .param p5, "lock"  # Ljava/lang/Object;
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(",
@@ -103,6 +108,7 @@
     .end annotation
 
     .line 81
+    .local p6, "listeners":Ljava/util/Collection;, "Ljava/util/Collection<Lcom/android/server/vr/EnabledComponentsObserver$EnabledComponentChangeListener;>;"
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
     .line 64
@@ -142,16 +148,23 @@
     iput-object p3, p0, Lcom/android/server/vr/EnabledComponentsObserver;->mServicePermission:Ljava/lang/String;
 
     .line 87
-    iget-object p1, p0, Lcom/android/server/vr/EnabledComponentsObserver;->mEnabledComponentListeners:Ljava/util/Set;
+    iget-object v0, p0, Lcom/android/server/vr/EnabledComponentsObserver;->mEnabledComponentListeners:Ljava/util/Set;
 
-    invoke-interface {p1, p6}, Ljava/util/Set;->addAll(Ljava/util/Collection;)Z
+    invoke-interface {v0, p6}, Ljava/util/Set;->addAll(Ljava/util/Collection;)Z
 
     .line 88
     return-void
 .end method
 
 .method public static build(Landroid/content/Context;Landroid/os/Handler;Ljava/lang/String;Landroid/os/Looper;Ljava/lang/String;Ljava/lang/String;Ljava/lang/Object;Ljava/util/Collection;)Lcom/android/server/vr/EnabledComponentsObserver;
-    .registers 16
+    .registers 17
+    .param p0, "context"  # Landroid/content/Context;
+    .param p1, "handler"  # Landroid/os/Handler;
+    .param p2, "settingName"  # Ljava/lang/String;
+    .param p3, "looper"  # Landroid/os/Looper;
+    .param p4, "servicePermission"  # Ljava/lang/String;
+    .param p5, "serviceName"  # Ljava/lang/String;
+    .param p6, "lock"  # Ljava/lang/Object;
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(",
@@ -170,46 +183,54 @@
     .end annotation
 
     .line 108
+    .local p7, "listeners":Ljava/util/Collection;, "Ljava/util/Collection<Lcom/android/server/vr/EnabledComponentsObserver$EnabledComponentChangeListener;>;"
     invoke-static {p0, p1, p2}, Lcom/android/server/vr/SettingsObserver;->build(Landroid/content/Context;Landroid/os/Handler;Ljava/lang/String;)Lcom/android/server/vr/SettingsObserver;
 
-    move-result-object p1
+    move-result-object v0
 
     .line 110
-    new-instance v7, Lcom/android/server/vr/EnabledComponentsObserver;
+    .local v0, "s":Lcom/android/server/vr/SettingsObserver;
+    new-instance v8, Lcom/android/server/vr/EnabledComponentsObserver;
 
-    move-object v0, v7
+    move-object v1, v8
 
-    move-object v1, p0
+    move-object v2, p0
 
-    move-object v2, p2
+    move-object v3, p2
 
-    move-object v3, p4
+    move-object v4, p4
 
-    move-object v4, p5
+    move-object v5, p5
 
-    move-object v5, p6
+    move-object v6, p6
 
-    move-object v6, p7
+    move-object/from16 v7, p7
 
-    invoke-direct/range {v0 .. v6}, Lcom/android/server/vr/EnabledComponentsObserver;-><init>(Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/Object;Ljava/util/Collection;)V
+    invoke-direct/range {v1 .. v7}, Lcom/android/server/vr/EnabledComponentsObserver;-><init>(Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/Object;Ljava/util/Collection;)V
 
     .line 113
-    new-instance p2, Lcom/android/server/vr/EnabledComponentsObserver$1;
+    .local v1, "o":Lcom/android/server/vr/EnabledComponentsObserver;
+    new-instance v2, Lcom/android/server/vr/EnabledComponentsObserver$1;
 
-    invoke-direct {p2, v7}, Lcom/android/server/vr/EnabledComponentsObserver$1;-><init>(Lcom/android/server/vr/EnabledComponentsObserver;)V
+    invoke-direct {v2, v1}, Lcom/android/server/vr/EnabledComponentsObserver$1;-><init>(Lcom/android/server/vr/EnabledComponentsObserver;)V
 
     .line 141
-    sget-object p4, Landroid/os/UserHandle;->ALL:Landroid/os/UserHandle;
+    .local v2, "packageMonitor":Lcom/android/internal/content/PackageMonitor;
+    sget-object v3, Landroid/os/UserHandle;->ALL:Landroid/os/UserHandle;
 
-    const/4 p5, 0x1
+    const/4 v4, 0x1
 
-    invoke-virtual {p2, p0, p3, p4, p5}, Lcom/android/internal/content/PackageMonitor;->register(Landroid/content/Context;Landroid/os/Looper;Landroid/os/UserHandle;Z)V
+    move-object v5, p0
+
+    move-object v6, p3
+
+    invoke-virtual {v2, p0, p3, v3, v4}, Lcom/android/internal/content/PackageMonitor;->register(Landroid/content/Context;Landroid/os/Looper;Landroid/os/UserHandle;Z)V
 
     .line 143
-    invoke-virtual {p1, v7}, Lcom/android/server/vr/SettingsObserver;->addListener(Lcom/android/server/vr/SettingsObserver$SettingChangeListener;)V
+    invoke-virtual {v0, v1}, Lcom/android/server/vr/SettingsObserver;->addListener(Lcom/android/server/vr/SettingsObserver$SettingChangeListener;)V
 
     .line 145
-    return-object v7
+    return-object v1
 .end method
 
 .method private getCurrentProfileIds()[I
@@ -227,12 +248,13 @@
     check-cast v0, Landroid/os/UserManager;
 
     .line 245
+    .local v0, "userManager":Landroid/os/UserManager;
     if-nez v0, :cond_f
 
     .line 246
-    const/4 v0, 0x0
+    const/4 v1, 0x0
 
-    return-object v0
+    return-object v1
 
     .line 248
     :cond_f
@@ -242,13 +264,17 @@
 
     invoke-virtual {v0, v1}, Landroid/os/UserManager;->getEnabledProfileIds(I)[I
 
-    move-result-object v0
+    move-result-object v1
 
-    return-object v0
+    return-object v1
 .end method
 
 .method public static loadComponentNames(Landroid/content/pm/PackageManager;ILjava/lang/String;Ljava/lang/String;)Landroid/util/ArraySet;
-    .registers 9
+    .registers 15
+    .param p0, "pm"  # Landroid/content/pm/PackageManager;
+    .param p1, "userId"  # I
+    .param p2, "serviceName"  # Ljava/lang/String;
+    .param p3, "permissionName"  # Ljava/lang/String;
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(",
@@ -269,113 +295,127 @@
     invoke-direct {v0}, Landroid/util/ArraySet;-><init>()V
 
     .line 255
+    .local v0, "installed":Landroid/util/ArraySet;, "Landroid/util/ArraySet<Landroid/content/ComponentName;>;"
     new-instance v1, Landroid/content/Intent;
 
     invoke-direct {v1, p2}, Landroid/content/Intent;-><init>(Ljava/lang/String;)V
 
     .line 256
-    const p2, 0xc0084
+    .local v1, "queryIntent":Landroid/content/Intent;
+    const v2, 0xc0084
 
-    invoke-virtual {p0, v1, p2, p1}, Landroid/content/pm/PackageManager;->queryIntentServicesAsUser(Landroid/content/Intent;II)Ljava/util/List;
+    invoke-virtual {p0, v1, v2, p1}, Landroid/content/pm/PackageManager;->queryIntentServicesAsUser(Landroid/content/Intent;II)Ljava/util/List;
 
-    move-result-object p0
+    move-result-object v2
 
     .line 262
-    if-eqz p0, :cond_64
+    .local v2, "installedServices":Ljava/util/List;, "Ljava/util/List<Landroid/content/pm/ResolveInfo;>;"
+    if-eqz v2, :cond_64
 
     .line 263
-    const/4 p1, 0x0
+    const/4 v3, 0x0
 
-    invoke-interface {p0}, Ljava/util/List;->size()I
+    .local v3, "i":I
+    invoke-interface {v2}, Ljava/util/List;->size()I
 
-    move-result p2
+    move-result v4
 
+    .local v4, "count":I
     :goto_18
-    if-ge p1, p2, :cond_64
+    if-ge v3, v4, :cond_64
 
     .line 264
-    invoke-interface {p0, p1}, Ljava/util/List;->get(I)Ljava/lang/Object;
+    invoke-interface {v2, v3}, Ljava/util/List;->get(I)Ljava/lang/Object;
 
-    move-result-object v1
+    move-result-object v5
 
-    check-cast v1, Landroid/content/pm/ResolveInfo;
+    check-cast v5, Landroid/content/pm/ResolveInfo;
 
     .line 265
-    iget-object v1, v1, Landroid/content/pm/ResolveInfo;->serviceInfo:Landroid/content/pm/ServiceInfo;
+    .local v5, "resolveInfo":Landroid/content/pm/ResolveInfo;
+    iget-object v6, v5, Landroid/content/pm/ResolveInfo;->serviceInfo:Landroid/content/pm/ServiceInfo;
 
     .line 267
-    new-instance v2, Landroid/content/ComponentName;
+    .local v6, "info":Landroid/content/pm/ServiceInfo;
+    new-instance v7, Landroid/content/ComponentName;
 
-    iget-object v3, v1, Landroid/content/pm/ServiceInfo;->packageName:Ljava/lang/String;
+    iget-object v8, v6, Landroid/content/pm/ServiceInfo;->packageName:Ljava/lang/String;
 
-    iget-object v4, v1, Landroid/content/pm/ServiceInfo;->name:Ljava/lang/String;
+    iget-object v9, v6, Landroid/content/pm/ServiceInfo;->name:Ljava/lang/String;
 
-    invoke-direct {v2, v3, v4}, Landroid/content/ComponentName;-><init>(Ljava/lang/String;Ljava/lang/String;)V
+    invoke-direct {v7, v8, v9}, Landroid/content/ComponentName;-><init>(Ljava/lang/String;Ljava/lang/String;)V
 
     .line 268
-    iget-object v3, v1, Landroid/content/pm/ServiceInfo;->permission:Ljava/lang/String;
+    .local v7, "component":Landroid/content/ComponentName;
+    iget-object v8, v6, Landroid/content/pm/ServiceInfo;->permission:Ljava/lang/String;
 
-    invoke-virtual {p3, v3}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {p3, v8}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result v3
+    move-result v8
 
-    if-nez v3, :cond_5e
+    if-nez v8, :cond_5e
 
     .line 269
-    sget-object v2, Lcom/android/server/vr/EnabledComponentsObserver;->TAG:Ljava/lang/String;
+    sget-object v8, Lcom/android/server/vr/EnabledComponentsObserver;->TAG:Ljava/lang/String;
 
-    new-instance v3, Ljava/lang/StringBuilder;
+    new-instance v9, Ljava/lang/StringBuilder;
 
-    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v9}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v4, "Skipping service "
+    const-string v10, "Skipping service "
 
-    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v9, v10}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    iget-object v4, v1, Landroid/content/pm/ServiceInfo;->packageName:Ljava/lang/String;
+    iget-object v10, v6, Landroid/content/pm/ServiceInfo;->packageName:Ljava/lang/String;
 
-    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v9, v10}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string v4, "/"
+    const-string v10, "/"
 
-    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v9, v10}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    iget-object v1, v1, Landroid/content/pm/ServiceInfo;->name:Ljava/lang/String;
+    iget-object v10, v6, Landroid/content/pm/ServiceInfo;->name:Ljava/lang/String;
 
-    invoke-virtual {v3, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v9, v10}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string v1, ": it does not require the permission "
+    const-string v10, ": it does not require the permission "
 
-    invoke-virtual {v3, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v9, v10}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v3, p3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v9, p3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v9}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v1
+    move-result-object v9
 
-    invoke-static {v2, v1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v8, v9}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 272
     goto :goto_61
 
     .line 274
     :cond_5e
-    invoke-virtual {v0, v2}, Landroid/util/ArraySet;->add(Ljava/lang/Object;)Z
+    invoke-virtual {v0, v7}, Landroid/util/ArraySet;->add(Ljava/lang/Object;)Z
 
     .line 263
+    .end local v5  # "resolveInfo":Landroid/content/pm/ResolveInfo;
+    .end local v6  # "info":Landroid/content/pm/ServiceInfo;
+    .end local v7  # "component":Landroid/content/ComponentName;
     :goto_61
-    add-int/lit8 p1, p1, 0x1
+    add-int/lit8 v3, v3, 0x1
 
     goto :goto_18
 
     .line 277
+    .end local v3  # "i":I
+    .end local v4  # "count":I
     :cond_64
     return-object v0
 .end method
 
 .method private loadComponentNamesForUser(I)Landroid/util/ArraySet;
     .registers 5
+    .param p1, "userId"  # I
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(I)",
@@ -398,13 +438,15 @@
 
     invoke-static {v0, p1, v1, v2}, Lcom/android/server/vr/EnabledComponentsObserver;->loadComponentNames(Landroid/content/pm/PackageManager;ILjava/lang/String;Ljava/lang/String;)Landroid/util/ArraySet;
 
-    move-result-object p1
+    move-result-object v0
 
-    return-object p1
+    return-object v0
 .end method
 
 .method private loadComponentNamesFromSetting(Ljava/lang/String;I)Landroid/util/ArraySet;
-    .registers 5
+    .registers 9
+    .param p1, "settingName"  # Ljava/lang/String;
+    .param p2, "userId"  # I
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(",
@@ -424,69 +466,77 @@
     move-result-object v0
 
     .line 288
+    .local v0, "cr":Landroid/content/ContentResolver;
     invoke-static {v0, p1, p2}, Landroid/provider/Settings$Secure;->getStringForUser(Landroid/content/ContentResolver;Ljava/lang/String;I)Ljava/lang/String;
-
-    move-result-object p1
-
-    .line 292
-    invoke-static {p1}, Landroid/text/TextUtils;->isEmpty(Ljava/lang/CharSequence;)Z
-
-    move-result p2
-
-    if-eqz p2, :cond_16
-
-    .line 293
-    new-instance p1, Landroid/util/ArraySet;
-
-    invoke-direct {p1}, Landroid/util/ArraySet;-><init>()V
-
-    return-object p1
-
-    .line 294
-    :cond_16
-    const-string p2, ":"
-
-    invoke-virtual {p1, p2}, Ljava/lang/String;->split(Ljava/lang/String;)[Ljava/lang/String;
-
-    move-result-object p1
-
-    .line 295
-    new-instance p2, Landroid/util/ArraySet;
-
-    array-length v0, p1
-
-    invoke-direct {p2, v0}, Landroid/util/ArraySet;-><init>(I)V
-
-    .line 296
-    const/4 v0, 0x0
-
-    :goto_23
-    array-length v1, p1
-
-    if-ge v0, v1, :cond_34
-
-    .line 297
-    aget-object v1, p1, v0
-
-    invoke-static {v1}, Landroid/content/ComponentName;->unflattenFromString(Ljava/lang/String;)Landroid/content/ComponentName;
 
     move-result-object v1
 
-    .line 298
-    if-eqz v1, :cond_31
+    .line 292
+    .local v1, "settingValue":Ljava/lang/String;
+    invoke-static {v1}, Landroid/text/TextUtils;->isEmpty(Ljava/lang/CharSequence;)Z
 
-    .line 299
-    invoke-virtual {p2, v1}, Landroid/util/ArraySet;->add(Ljava/lang/Object;)Z
+    move-result v2
+
+    if-eqz v2, :cond_16
+
+    .line 293
+    new-instance v2, Landroid/util/ArraySet;
+
+    invoke-direct {v2}, Landroid/util/ArraySet;-><init>()V
+
+    return-object v2
+
+    .line 294
+    :cond_16
+    const-string v2, ":"
+
+    invoke-virtual {v1, v2}, Ljava/lang/String;->split(Ljava/lang/String;)[Ljava/lang/String;
+
+    move-result-object v2
+
+    .line 295
+    .local v2, "restored":[Ljava/lang/String;
+    new-instance v3, Landroid/util/ArraySet;
+
+    array-length v4, v2
+
+    invoke-direct {v3, v4}, Landroid/util/ArraySet;-><init>(I)V
 
     .line 296
+    .local v3, "result":Landroid/util/ArraySet;, "Landroid/util/ArraySet<Landroid/content/ComponentName;>;"
+    const/4 v4, 0x0
+
+    .local v4, "i":I
+    :goto_23
+    array-length v5, v2
+
+    if-ge v4, v5, :cond_34
+
+    .line 297
+    aget-object v5, v2, v4
+
+    invoke-static {v5}, Landroid/content/ComponentName;->unflattenFromString(Ljava/lang/String;)Landroid/content/ComponentName;
+
+    move-result-object v5
+
+    .line 298
+    .local v5, "value":Landroid/content/ComponentName;
+    if-eqz v5, :cond_31
+
+    .line 299
+    invoke-virtual {v3, v5}, Landroid/util/ArraySet;->add(Ljava/lang/Object;)Z
+
+    .line 296
+    .end local v5  # "value":Landroid/content/ComponentName;
     :cond_31
-    add-int/lit8 v0, v0, 0x1
+    add-int/lit8 v4, v4, 0x1
 
     goto :goto_23
 
     .line 302
+    .end local v4  # "i":I
     :cond_34
-    return-object p2
+    return-object v3
 .end method
 
 .method private sendSettingChanged()V
@@ -513,9 +563,11 @@
     check-cast v1, Lcom/android/server/vr/EnabledComponentsObserver$EnabledComponentChangeListener;
 
     .line 307
+    .local v1, "l":Lcom/android/server/vr/EnabledComponentsObserver$EnabledComponentChangeListener;
     invoke-interface {v1}, Lcom/android/server/vr/EnabledComponentsObserver$EnabledComponentChangeListener;->onEnabledComponentChanged()V
 
     .line 308
+    .end local v1  # "l":Lcom/android/server/vr/EnabledComponentsObserver$EnabledComponentChangeListener;
     goto :goto_6
 
     .line 309
@@ -526,7 +578,8 @@
 
 # virtual methods
 .method public getEnabled(I)Landroid/util/ArraySet;
-    .registers 4
+    .registers 5
+    .param p1, "userId"  # I
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(I)",
@@ -547,41 +600,44 @@
 
     invoke-virtual {v1, p1}, Landroid/util/SparseArray;->get(I)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v1
 
-    check-cast p1, Landroid/util/ArraySet;
+    check-cast v1, Landroid/util/ArraySet;
 
     .line 235
-    if-nez p1, :cond_14
+    .local v1, "ret":Landroid/util/ArraySet;, "Landroid/util/ArraySet<Landroid/content/ComponentName;>;"
+    if-nez v1, :cond_14
 
     .line 236
-    new-instance p1, Landroid/util/ArraySet;
+    new-instance v2, Landroid/util/ArraySet;
 
-    invoke-direct {p1}, Landroid/util/ArraySet;-><init>()V
+    invoke-direct {v2}, Landroid/util/ArraySet;-><init>()V
 
     monitor-exit v0
 
-    return-object p1
+    return-object v2
 
     .line 238
     :cond_14
     monitor-exit v0
 
-    return-object p1
+    return-object v1
 
     .line 240
+    .end local v1  # "ret":Landroid/util/ArraySet;, "Landroid/util/ArraySet<Landroid/content/ComponentName;>;"
     :catchall_16
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_18
     .catchall {:try_start_3 .. :try_end_18} :catchall_16
 
-    throw p1
+    throw v1
 .end method
 
 .method public getInstalled(I)Landroid/util/ArraySet;
-    .registers 4
+    .registers 5
+    .param p1, "userId"  # I
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(I)",
@@ -602,41 +658,45 @@
 
     invoke-virtual {v1, p1}, Landroid/util/SparseArray;->get(I)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v1
 
-    check-cast p1, Landroid/util/ArraySet;
+    check-cast v1, Landroid/util/ArraySet;
 
     .line 219
-    if-nez p1, :cond_14
+    .local v1, "ret":Landroid/util/ArraySet;, "Landroid/util/ArraySet<Landroid/content/ComponentName;>;"
+    if-nez v1, :cond_14
 
     .line 220
-    new-instance p1, Landroid/util/ArraySet;
+    new-instance v2, Landroid/util/ArraySet;
 
-    invoke-direct {p1}, Landroid/util/ArraySet;-><init>()V
+    invoke-direct {v2}, Landroid/util/ArraySet;-><init>()V
 
     monitor-exit v0
 
-    return-object p1
+    return-object v2
 
     .line 222
     :cond_14
     monitor-exit v0
 
-    return-object p1
+    return-object v1
 
     .line 223
+    .end local v1  # "ret":Landroid/util/ArraySet;, "Landroid/util/ArraySet<Landroid/content/ComponentName;>;"
     :catchall_16
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_18
     .catchall {:try_start_3 .. :try_end_18} :catchall_16
 
-    throw p1
+    throw v1
 .end method
 
 .method public isValid(Landroid/content/ComponentName;I)I
-    .registers 5
+    .registers 7
+    .param p1, "component"  # Landroid/content/ComponentName;
+    .param p2, "userId"  # I
 
     .line 197
     iget-object v0, p0, Lcom/android/server/vr/EnabledComponentsObserver;->mLock:Ljava/lang/Object;
@@ -654,72 +714,76 @@
     check-cast v1, Landroid/util/ArraySet;
 
     .line 199
+    .local v1, "installedComponents":Landroid/util/ArraySet;, "Landroid/util/ArraySet<Landroid/content/ComponentName;>;"
     if-eqz v1, :cond_2b
 
     invoke-virtual {v1, p1}, Landroid/util/ArraySet;->contains(Ljava/lang/Object;)Z
 
-    move-result v1
+    move-result v2
 
-    if-nez v1, :cond_14
+    if-nez v2, :cond_14
 
     goto :goto_2b
 
     .line 202
     :cond_14
-    iget-object v1, p0, Lcom/android/server/vr/EnabledComponentsObserver;->mEnabledSet:Landroid/util/SparseArray;
+    iget-object v2, p0, Lcom/android/server/vr/EnabledComponentsObserver;->mEnabledSet:Landroid/util/SparseArray;
 
-    invoke-virtual {v1, p2}, Landroid/util/SparseArray;->get(I)Ljava/lang/Object;
+    invoke-virtual {v2, p2}, Landroid/util/SparseArray;->get(I)Ljava/lang/Object;
 
-    move-result-object p2
+    move-result-object v2
 
-    check-cast p2, Landroid/util/ArraySet;
+    check-cast v2, Landroid/util/ArraySet;
 
     .line 203
-    if-eqz p2, :cond_28
+    .local v2, "validComponents":Landroid/util/ArraySet;, "Landroid/util/ArraySet<Landroid/content/ComponentName;>;"
+    if-eqz v2, :cond_28
 
-    invoke-virtual {p2, p1}, Landroid/util/ArraySet;->contains(Ljava/lang/Object;)Z
+    invoke-virtual {v2, p1}, Landroid/util/ArraySet;->contains(Ljava/lang/Object;)Z
 
-    move-result p1
+    move-result v3
 
-    if-nez p1, :cond_25
+    if-nez v3, :cond_25
 
     goto :goto_28
 
     .line 206
     :cond_25
-    const/4 p1, 0x0
+    const/4 v3, 0x0
 
     monitor-exit v0
 
-    return p1
+    return v3
 
     .line 204
     :cond_28
     :goto_28
-    const/4 p1, -0x1
+    const/4 v3, -0x1
 
     monitor-exit v0
 
-    return p1
+    return v3
 
     .line 200
+    .end local v2  # "validComponents":Landroid/util/ArraySet;, "Landroid/util/ArraySet<Landroid/content/ComponentName;>;"
     :cond_2b
     :goto_2b
-    const/4 p1, -0x2
+    const/4 v2, -0x2
 
     monitor-exit v0
 
-    return p1
+    return v2
 
     .line 207
+    .end local v1  # "installedComponents":Landroid/util/ArraySet;, "Landroid/util/ArraySet<Landroid/content/ComponentName;>;"
     :catchall_2e
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_30
     .catchall {:try_start_3 .. :try_end_30} :catchall_2e
 
-    throw p1
+    throw v1
 .end method
 
 .method public onPackagesChanged()V
@@ -744,6 +808,9 @@
 
 .method public onSettingRestored(Ljava/lang/String;Ljava/lang/String;I)V
     .registers 4
+    .param p1, "prevValue"  # Ljava/lang/String;
+    .param p2, "newValue"  # Ljava/lang/String;
+    .param p3, "userId"  # I
 
     .line 160
     invoke-virtual {p0}, Lcom/android/server/vr/EnabledComponentsObserver;->rebuildAll()V
@@ -787,6 +854,7 @@
     move-result-object v1
 
     .line 175
+    .local v1, "userIds":[I
     array-length v2, v1
 
     const/4 v3, 0x0
@@ -797,11 +865,13 @@
     aget v4, v1, v3
 
     .line 176
+    .local v4, "i":I
     invoke-direct {p0, v4}, Lcom/android/server/vr/EnabledComponentsObserver;->loadComponentNamesForUser(I)Landroid/util/ArraySet;
 
     move-result-object v5
 
     .line 177
+    .local v5, "implementingPackages":Landroid/util/ArraySet;, "Landroid/util/ArraySet<Landroid/content/ComponentName;>;"
     iget-object v6, p0, Lcom/android/server/vr/EnabledComponentsObserver;->mSettingName:Ljava/lang/String;
 
     .line 178
@@ -810,6 +880,7 @@
     move-result-object v6
 
     .line 179
+    .local v6, "packagesFromSettings":Landroid/util/ArraySet;, "Landroid/util/ArraySet<Landroid/content/ComponentName;>;"
     invoke-virtual {v6, v5}, Landroid/util/ArraySet;->retainAll(Ljava/util/Collection;)Z
 
     .line 181
@@ -818,16 +889,20 @@
     invoke-virtual {v7, v4, v5}, Landroid/util/SparseArray;->put(ILjava/lang/Object;)V
 
     .line 182
-    iget-object v5, p0, Lcom/android/server/vr/EnabledComponentsObserver;->mEnabledSet:Landroid/util/SparseArray;
+    iget-object v7, p0, Lcom/android/server/vr/EnabledComponentsObserver;->mEnabledSet:Landroid/util/SparseArray;
 
-    invoke-virtual {v5, v4, v6}, Landroid/util/SparseArray;->put(ILjava/lang/Object;)V
+    invoke-virtual {v7, v4, v6}, Landroid/util/SparseArray;->put(ILjava/lang/Object;)V
 
     .line 175
+    .end local v4  # "i":I
+    .end local v5  # "implementingPackages":Landroid/util/ArraySet;, "Landroid/util/ArraySet<Landroid/content/ComponentName;>;"
+    .end local v6  # "packagesFromSettings":Landroid/util/ArraySet;, "Landroid/util/ArraySet<Landroid/content/ComponentName;>;"
     add-int/lit8 v3, v3, 0x1
 
     goto :goto_13
 
     .line 185
+    .end local v1  # "userIds":[I
     :cond_31
     monitor-exit v0
     :try_end_32

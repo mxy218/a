@@ -23,7 +23,9 @@
 .end method
 
 .method private static calculateMatchingSubScore(Landroid/icu/util/ULocale;Landroid/icu/util/ULocale;)B
-    .registers 5
+    .registers 6
+    .param p0, "supported"  # Landroid/icu/util/ULocale;
+    .param p1, "desired"  # Landroid/icu/util/ULocale;
 
     .line 51
     invoke-virtual {p0, p1}, Landroid/icu/util/ULocale;->equals(Ljava/lang/Object;)Z
@@ -44,6 +46,7 @@
     move-result-object v0
 
     .line 58
+    .local v0, "supportedScript":Ljava/lang/String;
     invoke-virtual {v0}, Ljava/lang/String;->isEmpty()Z
 
     move-result v2
@@ -56,9 +59,9 @@
 
     invoke-virtual {v0, v2}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result v0
+    move-result v2
 
-    if-nez v0, :cond_1d
+    if-nez v2, :cond_1d
 
     goto :goto_35
 
@@ -66,24 +69,25 @@
     :cond_1d
     invoke-virtual {p0}, Landroid/icu/util/ULocale;->getCountry()Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v2
 
     .line 64
-    invoke-virtual {p0}, Ljava/lang/String;->isEmpty()Z
+    .local v2, "supportedCountry":Ljava/lang/String;
+    invoke-virtual {v2}, Ljava/lang/String;->isEmpty()Z
 
-    move-result v0
+    move-result v3
 
-    if-nez v0, :cond_33
+    if-nez v3, :cond_33
 
     invoke-virtual {p1}, Landroid/icu/util/ULocale;->getCountry()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v3
 
-    invoke-virtual {p0, p1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v2, v3}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result p0
+    move-result v3
 
-    if-nez p0, :cond_32
+    if-nez v3, :cond_32
 
     goto :goto_33
 
@@ -94,20 +98,22 @@
     .line 65
     :cond_33
     :goto_33
-    const/4 p0, 0x2
+    const/4 v1, 0x2
 
-    return p0
+    return v1
 
     .line 60
+    .end local v2  # "supportedCountry":Ljava/lang/String;
     :cond_35
     :goto_35
-    const/4 p0, 0x1
+    const/4 v1, 0x1
 
-    return p0
+    return v1
 .end method
 
 .method public static filterByLanguage(Ljava/util/List;Lcom/android/server/inputmethod/LocaleUtils$LocaleExtractor;Landroid/os/LocaleList;Ljava/util/ArrayList;)V
     .registers 20
+    .param p2, "preferredLocales"  # Landroid/os/LocaleList;
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "<T:",
@@ -124,6 +130,9 @@
     .end annotation
 
     .line 153
+    .local p0, "sources":Ljava/util/List;, "Ljava/util/List<TT;>;"
+    .local p1, "extractor":Lcom/android/server/inputmethod/LocaleUtils$LocaleExtractor;, "Lcom/android/server/inputmethod/LocaleUtils$LocaleExtractor<TT;>;"
+    .local p3, "dest":Ljava/util/ArrayList;, "Ljava/util/ArrayList<TT;>;"
     move-object/from16 v0, p0
 
     invoke-virtual/range {p2 .. p2}, Landroid/os/LocaleList;->isEmpty()Z
@@ -142,31 +151,37 @@
     move-result v1
 
     .line 158
+    .local v1, "numPreferredLocales":I
     new-instance v2, Landroid/util/ArrayMap;
 
     invoke-direct {v2}, Landroid/util/ArrayMap;-><init>()V
 
     .line 159
+    .local v2, "scoreboard":Landroid/util/ArrayMap;, "Landroid/util/ArrayMap<Ljava/lang/String;Lcom/android/server/inputmethod/LocaleUtils$ScoreEntry;>;"
     new-array v3, v1, [B
 
     .line 160
+    .local v3, "score":[B
     new-array v4, v1, [Landroid/icu/util/ULocale;
 
     .line 162
+    .local v4, "preferredULocaleCache":[Landroid/icu/util/ULocale;
     invoke-interface/range {p0 .. p0}, Ljava/util/List;->size()I
 
     move-result v5
 
     .line 163
+    .local v5, "sourceSize":I
     const/4 v6, 0x0
 
-    move v7, v6
+    .local v6, "i":I
+    :goto_1b
+    const/4 v7, 0x0
 
-    :goto_1c
-    if-ge v7, v5, :cond_93
+    if-ge v6, v5, :cond_91
 
     .line 164
-    invoke-interface {v0, v7}, Ljava/util/List;->get(I)Ljava/lang/Object;
+    invoke-interface {v0, v6}, Ljava/util/List;->get(I)Ljava/lang/Object;
 
     move-result-object v8
 
@@ -177,35 +192,35 @@
     move-result-object v8
 
     .line 165
+    .local v8, "locale":Ljava/util/Locale;
     if-nez v8, :cond_2d
 
     .line 166
     move-object/from16 v12, p2
 
-    goto :goto_90
+    goto :goto_8e
 
     .line 169
     :cond_2d
-    nop
-
-    .line 170
     const/4 v10, 0x1
 
-    move v11, v10
+    .line 170
+    .local v10, "canSkip":Z
+    const/4 v11, 0x0
 
-    move v10, v6
-
-    :goto_31
-    if-ge v10, v1, :cond_73
+    .local v11, "j":I
+    :goto_2f
+    if-ge v11, v1, :cond_71
 
     .line 171
     move-object/from16 v12, p2
 
-    invoke-virtual {v12, v10}, Landroid/os/LocaleList;->get(I)Ljava/util/Locale;
+    invoke-virtual {v12, v11}, Landroid/os/LocaleList;->get(I)Ljava/util/Locale;
 
     move-result-object v13
 
     .line 172
+    .local v13, "preferredLocale":Ljava/util/Locale;
     invoke-virtual {v8}, Ljava/util/Locale;->getLanguage()Ljava/lang/String;
 
     move-result-object v14
@@ -218,19 +233,19 @@
 
     move-result v14
 
-    if-nez v14, :cond_4a
+    if-nez v14, :cond_48
 
     .line 173
-    aput-byte v6, v3, v10
+    aput-byte v7, v3, v11
 
     .line 174
-    goto :goto_70
+    goto :goto_6e
 
     .line 176
-    :cond_4a
-    aget-object v14, v4, v10
+    :cond_48
+    aget-object v14, v4, v11
 
-    if-nez v14, :cond_59
+    if-nez v14, :cond_57
 
     .line 177
     nop
@@ -238,154 +253,175 @@
     .line 178
     invoke-static {v13}, Landroid/icu/util/ULocale;->forLocale(Ljava/util/Locale;)Landroid/icu/util/ULocale;
 
-    move-result-object v13
-
-    .line 177
-    invoke-static {v13}, Landroid/icu/util/ULocale;->addLikelySubtags(Landroid/icu/util/ULocale;)Landroid/icu/util/ULocale;
-
-    move-result-object v13
-
-    aput-object v13, v4, v10
-
-    .line 180
-    :cond_59
-    aget-object v13, v4, v10
-
-    .line 182
-    invoke-static {v8}, Landroid/icu/util/ULocale;->forLocale(Ljava/util/Locale;)Landroid/icu/util/ULocale;
-
     move-result-object v14
 
+    .line 177
     invoke-static {v14}, Landroid/icu/util/ULocale;->addLikelySubtags(Landroid/icu/util/ULocale;)Landroid/icu/util/ULocale;
 
     move-result-object v14
 
+    aput-object v14, v4, v11
+
     .line 180
-    invoke-static {v13, v14}, Lcom/android/server/inputmethod/LocaleUtils;->calculateMatchingSubScore(Landroid/icu/util/ULocale;Landroid/icu/util/ULocale;)B
+    :cond_57
+    aget-object v14, v4, v11
 
-    move-result v13
+    .line 182
+    invoke-static {v8}, Landroid/icu/util/ULocale;->forLocale(Ljava/util/Locale;)Landroid/icu/util/ULocale;
 
-    aput-byte v13, v3, v10
+    move-result-object v15
+
+    invoke-static {v15}, Landroid/icu/util/ULocale;->addLikelySubtags(Landroid/icu/util/ULocale;)Landroid/icu/util/ULocale;
+
+    move-result-object v15
+
+    .line 180
+    invoke-static {v14, v15}, Lcom/android/server/inputmethod/LocaleUtils;->calculateMatchingSubScore(Landroid/icu/util/ULocale;Landroid/icu/util/ULocale;)B
+
+    move-result v14
+
+    aput-byte v14, v3, v11
 
     .line 183
-    if-eqz v11, :cond_70
+    if-eqz v10, :cond_6e
 
-    aget-byte v13, v3, v10
+    aget-byte v14, v3, v11
 
-    if-eqz v13, :cond_70
+    if-eqz v14, :cond_6e
 
     .line 184
-    move v11, v6
+    const/4 v10, 0x0
 
     .line 170
-    :cond_70
-    :goto_70
-    add-int/lit8 v10, v10, 0x1
+    .end local v13  # "preferredLocale":Ljava/util/Locale;
+    :cond_6e
+    :goto_6e
+    add-int/lit8 v11, v11, 0x1
 
-    goto :goto_31
+    goto :goto_2f
 
-    .line 187
-    :cond_73
+    :cond_71
     move-object/from16 v12, p2
 
-    if-eqz v11, :cond_78
+    .line 187
+    .end local v11  # "j":I
+    if-eqz v10, :cond_76
 
     .line 188
-    goto :goto_90
+    goto :goto_8e
 
     .line 191
-    :cond_78
+    :cond_76
     invoke-virtual {v8}, Ljava/util/Locale;->getLanguage()Ljava/lang/String;
 
-    move-result-object v8
+    move-result-object v7
 
     .line 192
-    invoke-virtual {v2, v8}, Landroid/util/ArrayMap;->get(Ljava/lang/Object;)Ljava/lang/Object;
+    .local v7, "lang":Ljava/lang/String;
+    invoke-virtual {v2, v7}, Landroid/util/ArrayMap;->get(Ljava/lang/Object;)Ljava/lang/Object;
 
-    move-result-object v10
+    move-result-object v11
 
-    check-cast v10, Lcom/android/server/inputmethod/LocaleUtils$ScoreEntry;
+    check-cast v11, Lcom/android/server/inputmethod/LocaleUtils$ScoreEntry;
 
     .line 193
-    if-nez v10, :cond_8d
+    .local v11, "bestScore":Lcom/android/server/inputmethod/LocaleUtils$ScoreEntry;
+    if-nez v11, :cond_8b
 
     .line 194
-    new-instance v10, Lcom/android/server/inputmethod/LocaleUtils$ScoreEntry;
+    new-instance v13, Lcom/android/server/inputmethod/LocaleUtils$ScoreEntry;
 
-    invoke-direct {v10, v3, v7}, Lcom/android/server/inputmethod/LocaleUtils$ScoreEntry;-><init>([BI)V
+    invoke-direct {v13, v3, v6}, Lcom/android/server/inputmethod/LocaleUtils$ScoreEntry;-><init>([BI)V
 
-    invoke-virtual {v2, v8, v10}, Landroid/util/ArrayMap;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+    invoke-virtual {v2, v7, v13}, Landroid/util/ArrayMap;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
 
-    goto :goto_90
+    goto :goto_8e
 
     .line 196
-    :cond_8d
-    invoke-virtual {v10, v3, v7}, Lcom/android/server/inputmethod/LocaleUtils$ScoreEntry;->updateIfBetter([BI)V
+    :cond_8b
+    invoke-virtual {v11, v3, v6}, Lcom/android/server/inputmethod/LocaleUtils$ScoreEntry;->updateIfBetter([BI)V
 
     .line 163
-    :goto_90
-    add-int/lit8 v7, v7, 0x1
-
-    goto :goto_1c
-
-    .line 200
-    :cond_93
-    invoke-virtual {v2}, Landroid/util/ArrayMap;->size()I
-
-    move-result v1
-
-    .line 201
-    new-array v3, v1, [Lcom/android/server/inputmethod/LocaleUtils$ScoreEntry;
-
-    .line 202
-    move v4, v6
-
-    :goto_9a
-    if-ge v4, v1, :cond_a7
-
-    .line 203
-    invoke-virtual {v2, v4}, Landroid/util/ArrayMap;->valueAt(I)Ljava/lang/Object;
-
-    move-result-object v5
-
-    check-cast v5, Lcom/android/server/inputmethod/LocaleUtils$ScoreEntry;
-
-    aput-object v5, v3, v4
-
-    .line 202
-    add-int/lit8 v4, v4, 0x1
-
-    goto :goto_9a
-
-    .line 205
-    :cond_a7
-    invoke-static {v3}, Ljava/util/Arrays;->sort([Ljava/lang/Object;)V
-
-    .line 206
-    array-length v1, v3
-
-    :goto_ab
-    if-ge v6, v1, :cond_bd
-
-    aget-object v2, v3, v6
-
-    .line 207
-    iget v2, v2, Lcom/android/server/inputmethod/LocaleUtils$ScoreEntry;->mIndex:I
-
-    invoke-interface {v0, v2}, Ljava/util/List;->get(I)Ljava/lang/Object;
-
-    move-result-object v2
-
-    move-object/from16 v4, p3
-
-    invoke-virtual {v4, v2}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
-
-    .line 206
+    .end local v7  # "lang":Ljava/lang/String;
+    .end local v8  # "locale":Ljava/util/Locale;
+    .end local v10  # "canSkip":Z
+    .end local v11  # "bestScore":Lcom/android/server/inputmethod/LocaleUtils$ScoreEntry;
+    :goto_8e
     add-int/lit8 v6, v6, 0x1
 
-    goto :goto_ab
+    goto :goto_1b
+
+    :cond_91
+    move-object/from16 v9, p1
+
+    move-object/from16 v12, p2
+
+    .line 200
+    .end local v6  # "i":I
+    invoke-virtual {v2}, Landroid/util/ArrayMap;->size()I
+
+    move-result v6
+
+    .line 201
+    .local v6, "numEntries":I
+    new-array v8, v6, [Lcom/android/server/inputmethod/LocaleUtils$ScoreEntry;
+
+    .line 202
+    .local v8, "result":[Lcom/android/server/inputmethod/LocaleUtils$ScoreEntry;
+    const/4 v10, 0x0
+
+    .local v10, "i":I
+    :goto_9c
+    if-ge v10, v6, :cond_a9
+
+    .line 203
+    invoke-virtual {v2, v10}, Landroid/util/ArrayMap;->valueAt(I)Ljava/lang/Object;
+
+    move-result-object v11
+
+    check-cast v11, Lcom/android/server/inputmethod/LocaleUtils$ScoreEntry;
+
+    aput-object v11, v8, v10
+
+    .line 202
+    add-int/lit8 v10, v10, 0x1
+
+    goto :goto_9c
+
+    .line 205
+    .end local v10  # "i":I
+    :cond_a9
+    invoke-static {v8}, Ljava/util/Arrays;->sort([Ljava/lang/Object;)V
+
+    .line 206
+    array-length v10, v8
+
+    :goto_ad
+    if-ge v7, v10, :cond_bf
+
+    aget-object v11, v8, v7
+
+    .line 207
+    .local v11, "entry":Lcom/android/server/inputmethod/LocaleUtils$ScoreEntry;
+    iget v13, v11, Lcom/android/server/inputmethod/LocaleUtils$ScoreEntry;->mIndex:I
+
+    invoke-interface {v0, v13}, Ljava/util/List;->get(I)Ljava/lang/Object;
+
+    move-result-object v13
+
+    move-object/from16 v14, p3
+
+    invoke-virtual {v14, v13}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
+
+    .line 206
+    .end local v11  # "entry":Lcom/android/server/inputmethod/LocaleUtils$ScoreEntry;
+    add-int/lit8 v7, v7, 0x1
+
+    goto :goto_ad
 
     .line 209
-    :cond_bd
+    :cond_bf
+    move-object/from16 v14, p3
+
     return-void
 .end method

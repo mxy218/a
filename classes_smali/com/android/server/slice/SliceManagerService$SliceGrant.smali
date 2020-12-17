@@ -27,6 +27,9 @@
 # direct methods
 .method public constructor <init>(Lcom/android/server/slice/SliceManagerService;Landroid/net/Uri;Ljava/lang/String;I)V
     .registers 5
+    .param p2, "uri"  # Landroid/net/Uri;
+    .param p3, "pkg"  # Ljava/lang/String;
+    .param p4, "userId"  # I
 
     .line 628
     iput-object p1, p0, Lcom/android/server/slice/SliceManagerService$SliceGrant;->this$0:Lcom/android/server/slice/SliceManagerService;
@@ -49,7 +52,8 @@
 
 # virtual methods
 .method public equals(Ljava/lang/Object;)Z
-    .registers 5
+    .registers 6
+    .param p1, "obj"  # Ljava/lang/Object;
 
     .line 641
     instance-of v0, p1, Lcom/android/server/slice/SliceManagerService$SliceGrant;
@@ -62,38 +66,41 @@
 
     .line 642
     :cond_6
-    check-cast p1, Lcom/android/server/slice/SliceManagerService$SliceGrant;
+    move-object v0, p1
+
+    check-cast v0, Lcom/android/server/slice/SliceManagerService$SliceGrant;
 
     .line 643
-    iget-object v0, p1, Lcom/android/server/slice/SliceManagerService$SliceGrant;->mUri:Landroid/net/Uri;
+    .local v0, "other":Lcom/android/server/slice/SliceManagerService$SliceGrant;
+    iget-object v2, v0, Lcom/android/server/slice/SliceManagerService$SliceGrant;->mUri:Landroid/net/Uri;
 
-    iget-object v2, p0, Lcom/android/server/slice/SliceManagerService$SliceGrant;->mUri:Landroid/net/Uri;
+    iget-object v3, p0, Lcom/android/server/slice/SliceManagerService$SliceGrant;->mUri:Landroid/net/Uri;
 
-    invoke-static {v0, v2}, Ljava/util/Objects;->equals(Ljava/lang/Object;Ljava/lang/Object;)Z
+    invoke-static {v2, v3}, Ljava/util/Objects;->equals(Ljava/lang/Object;Ljava/lang/Object;)Z
 
-    move-result v0
+    move-result v2
 
-    if-eqz v0, :cond_23
+    if-eqz v2, :cond_24
 
-    iget-object v0, p1, Lcom/android/server/slice/SliceManagerService$SliceGrant;->mPkg:Ljava/lang/String;
+    iget-object v2, v0, Lcom/android/server/slice/SliceManagerService$SliceGrant;->mPkg:Ljava/lang/String;
 
-    iget-object v2, p0, Lcom/android/server/slice/SliceManagerService$SliceGrant;->mPkg:Ljava/lang/String;
+    iget-object v3, p0, Lcom/android/server/slice/SliceManagerService$SliceGrant;->mPkg:Ljava/lang/String;
 
-    invoke-static {v0, v2}, Ljava/util/Objects;->equals(Ljava/lang/Object;Ljava/lang/Object;)Z
+    invoke-static {v2, v3}, Ljava/util/Objects;->equals(Ljava/lang/Object;Ljava/lang/Object;)Z
 
-    move-result v0
+    move-result v2
 
-    if-eqz v0, :cond_23
+    if-eqz v2, :cond_24
 
-    iget p1, p1, Lcom/android/server/slice/SliceManagerService$SliceGrant;->mUserId:I
+    iget v2, v0, Lcom/android/server/slice/SliceManagerService$SliceGrant;->mUserId:I
 
-    iget v0, p0, Lcom/android/server/slice/SliceManagerService$SliceGrant;->mUserId:I
+    iget v3, p0, Lcom/android/server/slice/SliceManagerService$SliceGrant;->mUserId:I
 
-    if-ne p1, v0, :cond_23
+    if-ne v2, v3, :cond_24
 
     const/4 v1, 0x1
 
-    :cond_23
+    :cond_24
     return v1
 .end method
 

@@ -31,6 +31,7 @@
 # direct methods
 .method public constructor <init>(Ljava/lang/String;Ljava/util/List;)V
     .registers 3
+    .param p1, "name"  # Ljava/lang/String;
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(",
@@ -42,6 +43,7 @@
     .end annotation
 
     .line 617
+    .local p2, "supportedCodecs":Ljava/util/List;, "Ljava/util/List<Lcom/android/server/hdmi/HdmiUtils$CodecSad;>;"
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
     .line 618
@@ -57,53 +59,58 @@
 
 # virtual methods
 .method public equals(Ljava/lang/Object;)Z
-    .registers 5
+    .registers 6
+    .param p1, "obj"  # Ljava/lang/Object;
 
     .line 624
     instance-of v0, p1, Lcom/android/server/hdmi/HdmiUtils$DeviceConfig;
 
     const/4 v1, 0x0
 
-    if-eqz v0, :cond_1f
+    if-eqz v0, :cond_20
 
     .line 625
-    check-cast p1, Lcom/android/server/hdmi/HdmiUtils$DeviceConfig;
+    move-object v0, p1
+
+    check-cast v0, Lcom/android/server/hdmi/HdmiUtils$DeviceConfig;
 
     .line 626
-    iget-object v0, p1, Lcom/android/server/hdmi/HdmiUtils$DeviceConfig;->name:Ljava/lang/String;
+    .local v0, "that":Lcom/android/server/hdmi/HdmiUtils$DeviceConfig;
+    iget-object v2, v0, Lcom/android/server/hdmi/HdmiUtils$DeviceConfig;->name:Ljava/lang/String;
 
-    iget-object v2, p0, Lcom/android/server/hdmi/HdmiUtils$DeviceConfig;->name:Ljava/lang/String;
+    iget-object v3, p0, Lcom/android/server/hdmi/HdmiUtils$DeviceConfig;->name:Ljava/lang/String;
 
-    invoke-virtual {v0, v2}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v2, v3}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result v0
+    move-result v2
 
-    if-eqz v0, :cond_1d
+    if-eqz v2, :cond_1e
 
-    iget-object p1, p1, Lcom/android/server/hdmi/HdmiUtils$DeviceConfig;->supportedCodecs:Ljava/util/List;
+    iget-object v2, v0, Lcom/android/server/hdmi/HdmiUtils$DeviceConfig;->supportedCodecs:Ljava/util/List;
 
-    iget-object v0, p0, Lcom/android/server/hdmi/HdmiUtils$DeviceConfig;->supportedCodecs:Ljava/util/List;
+    iget-object v3, p0, Lcom/android/server/hdmi/HdmiUtils$DeviceConfig;->supportedCodecs:Ljava/util/List;
 
     .line 627
-    invoke-interface {p1, v0}, Ljava/util/List;->equals(Ljava/lang/Object;)Z
+    invoke-interface {v2, v3}, Ljava/util/List;->equals(Ljava/lang/Object;)Z
 
-    move-result p1
+    move-result v2
 
-    if-eqz p1, :cond_1d
+    if-eqz v2, :cond_1e
 
     const/4 v1, 0x1
 
-    goto :goto_1e
+    goto :goto_1f
 
-    :cond_1d
+    :cond_1e
     nop
 
     .line 626
-    :goto_1e
+    :goto_1f
     return v1
 
     .line 629
-    :cond_1f
+    .end local v0  # "that":Lcom/android/server/hdmi/HdmiUtils$DeviceConfig;
+    :cond_20
     return v1
 .end method
 

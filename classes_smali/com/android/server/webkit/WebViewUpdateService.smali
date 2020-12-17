@@ -32,6 +32,7 @@
 # direct methods
 .method public constructor <init>(Landroid/content/Context;)V
     .registers 4
+    .param p1, "context"  # Landroid/content/Context;
 
     .line 60
     invoke-direct {p0, p1}, Lcom/android/server/SystemService;-><init>(Landroid/content/Context;)V
@@ -52,27 +53,30 @@
 .end method
 
 .method static synthetic access$000(Landroid/content/Intent;)Ljava/lang/String;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Landroid/content/Intent;
 
     .line 47
     invoke-static {p0}, Lcom/android/server/webkit/WebViewUpdateService;->packageNameFromIntent(Landroid/content/Intent;)Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v0
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$100(Lcom/android/server/webkit/WebViewUpdateService;)Lcom/android/server/webkit/WebViewUpdateServiceImpl;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/webkit/WebViewUpdateService;
 
     .line 47
-    iget-object p0, p0, Lcom/android/server/webkit/WebViewUpdateService;->mImpl:Lcom/android/server/webkit/WebViewUpdateServiceImpl;
+    iget-object v0, p0, Lcom/android/server/webkit/WebViewUpdateService;->mImpl:Lcom/android/server/webkit/WebViewUpdateServiceImpl;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method public static entirePackageChanged(Landroid/content/Intent;)Z
-    .registers 3
+    .registers 5
+    .param p0, "intent"  # Landroid/content/Intent;
 
     .line 140
     nop
@@ -85,14 +89,42 @@
     move-result-object v0
 
     .line 142
+    .local v0, "componentList":[Ljava/lang/String;
     invoke-static {v0}, Ljava/util/Arrays;->asList([Ljava/lang/Object;)Ljava/util/List;
 
-    move-result-object v0
+    move-result-object v1
 
     .line 143
     invoke-virtual {p0}, Landroid/content/Intent;->getDataString()Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v2
+
+    const-string/jumbo v3, "package:"
+
+    invoke-virtual {v3}, Ljava/lang/String;->length()I
+
+    move-result v3
+
+    invoke-virtual {v2, v3}, Ljava/lang/String;->substring(I)Ljava/lang/String;
+
+    move-result-object v2
+
+    .line 142
+    invoke-interface {v1, v2}, Ljava/util/List;->contains(Ljava/lang/Object;)Z
+
+    move-result v1
+
+    return v1
+.end method
+
+.method private static packageNameFromIntent(Landroid/content/Intent;)Ljava/lang/String;
+    .registers 3
+    .param p0, "intent"  # Landroid/content/Intent;
+
+    .line 131
+    invoke-virtual {p0}, Landroid/content/Intent;->getDataString()Ljava/lang/String;
+
+    move-result-object v0
 
     const-string/jumbo v1, "package:"
 
@@ -100,43 +132,17 @@
 
     move-result v1
 
-    invoke-virtual {p0, v1}, Ljava/lang/String;->substring(I)Ljava/lang/String;
+    invoke-virtual {v0, v1}, Ljava/lang/String;->substring(I)Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v0
 
-    .line 142
-    invoke-interface {v0, p0}, Ljava/util/List;->contains(Ljava/lang/Object;)Z
-
-    move-result p0
-
-    return p0
-.end method
-
-.method private static packageNameFromIntent(Landroid/content/Intent;)Ljava/lang/String;
-    .registers 2
-
-    .line 131
-    invoke-virtual {p0}, Landroid/content/Intent;->getDataString()Ljava/lang/String;
-
-    move-result-object p0
-
-    const-string/jumbo v0, "package:"
-
-    invoke-virtual {v0}, Ljava/lang/String;->length()I
-
-    move-result v0
-
-    invoke-virtual {p0, v0}, Ljava/lang/String;->substring(I)Ljava/lang/String;
-
-    move-result-object p0
-
-    return-object p0
+    return-object v0
 .end method
 
 
 # virtual methods
 .method public onStart()V
-    .registers 14
+    .registers 9
 
     .line 66
     new-instance v0, Lcom/android/server/webkit/WebViewUpdateService$1;
@@ -146,55 +152,58 @@
     iput-object v0, p0, Lcom/android/server/webkit/WebViewUpdateService;->mWebViewUpdatedReceiver:Landroid/content/BroadcastReceiver;
 
     .line 104
-    new-instance v4, Landroid/content/IntentFilter;
+    new-instance v0, Landroid/content/IntentFilter;
 
-    invoke-direct {v4}, Landroid/content/IntentFilter;-><init>()V
+    invoke-direct {v0}, Landroid/content/IntentFilter;-><init>()V
 
     .line 105
-    const-string v0, "android.intent.action.PACKAGE_ADDED"
+    .local v0, "filter":Landroid/content/IntentFilter;
+    const-string v1, "android.intent.action.PACKAGE_ADDED"
 
-    invoke-virtual {v4, v0}, Landroid/content/IntentFilter;->addAction(Ljava/lang/String;)V
+    invoke-virtual {v0, v1}, Landroid/content/IntentFilter;->addAction(Ljava/lang/String;)V
 
     .line 106
-    const-string v0, "android.intent.action.PACKAGE_REMOVED"
+    const-string v1, "android.intent.action.PACKAGE_REMOVED"
 
-    invoke-virtual {v4, v0}, Landroid/content/IntentFilter;->addAction(Ljava/lang/String;)V
+    invoke-virtual {v0, v1}, Landroid/content/IntentFilter;->addAction(Ljava/lang/String;)V
 
     .line 107
-    const-string v0, "android.intent.action.PACKAGE_CHANGED"
+    const-string v1, "android.intent.action.PACKAGE_CHANGED"
 
-    invoke-virtual {v4, v0}, Landroid/content/IntentFilter;->addAction(Ljava/lang/String;)V
+    invoke-virtual {v0, v1}, Landroid/content/IntentFilter;->addAction(Ljava/lang/String;)V
 
     .line 108
-    const-string/jumbo v0, "package"
+    const-string/jumbo v1, "package"
 
-    invoke-virtual {v4, v0}, Landroid/content/IntentFilter;->addDataScheme(Ljava/lang/String;)V
+    invoke-virtual {v0, v1}, Landroid/content/IntentFilter;->addDataScheme(Ljava/lang/String;)V
 
     .line 110
-    iget-object v0, p0, Lcom/android/server/webkit/WebViewUpdateService;->mImpl:Lcom/android/server/webkit/WebViewUpdateServiceImpl;
+    iget-object v1, p0, Lcom/android/server/webkit/WebViewUpdateService;->mImpl:Lcom/android/server/webkit/WebViewUpdateServiceImpl;
 
-    invoke-virtual {v0}, Lcom/android/server/webkit/WebViewUpdateServiceImpl;->getWebViewPackages()[Landroid/webkit/WebViewProviderInfo;
+    invoke-virtual {v1}, Lcom/android/server/webkit/WebViewUpdateServiceImpl;->getWebViewPackages()[Landroid/webkit/WebViewProviderInfo;
 
-    move-result-object v0
+    move-result-object v1
 
-    array-length v1, v0
+    array-length v2, v1
 
-    const/4 v2, 0x0
+    const/4 v3, 0x0
 
-    move v3, v2
+    move v4, v3
 
     :goto_2a
-    if-ge v3, v1, :cond_36
+    if-ge v4, v2, :cond_36
 
-    aget-object v5, v0, v3
+    aget-object v5, v1, v4
 
     .line 111
-    iget-object v5, v5, Landroid/webkit/WebViewProviderInfo;->packageName:Ljava/lang/String;
+    .local v5, "provider":Landroid/webkit/WebViewProviderInfo;
+    iget-object v6, v5, Landroid/webkit/WebViewProviderInfo;->packageName:Ljava/lang/String;
 
-    invoke-virtual {v4, v5, v2}, Landroid/content/IntentFilter;->addDataSchemeSpecificPart(Ljava/lang/String;I)V
+    invoke-virtual {v0, v6, v3}, Landroid/content/IntentFilter;->addDataSchemeSpecificPart(Ljava/lang/String;I)V
 
     .line 110
-    add-int/lit8 v3, v3, 0x1
+    .end local v5  # "provider":Landroid/webkit/WebViewProviderInfo;
+    add-int/lit8 v4, v4, 0x1
 
     goto :goto_2a
 
@@ -212,50 +221,53 @@
 
     const/4 v6, 0x0
 
+    move-object v4, v0
+
     invoke-virtual/range {v1 .. v6}, Landroid/content/Context;->registerReceiverAsUser(Landroid/content/BroadcastReceiver;Landroid/os/UserHandle;Landroid/content/IntentFilter;Ljava/lang/String;Landroid/os/Handler;)Landroid/content/Intent;
 
     .line 117
-    new-instance v10, Landroid/content/IntentFilter;
+    new-instance v1, Landroid/content/IntentFilter;
 
-    invoke-direct {v10}, Landroid/content/IntentFilter;-><init>()V
+    invoke-direct {v1}, Landroid/content/IntentFilter;-><init>()V
 
     .line 118
-    const-string v0, "android.intent.action.USER_STARTED"
+    .local v1, "userAddedFilter":Landroid/content/IntentFilter;
+    const-string v2, "android.intent.action.USER_STARTED"
 
-    invoke-virtual {v10, v0}, Landroid/content/IntentFilter;->addAction(Ljava/lang/String;)V
+    invoke-virtual {v1, v2}, Landroid/content/IntentFilter;->addAction(Ljava/lang/String;)V
 
     .line 119
-    const-string v0, "android.intent.action.USER_REMOVED"
+    const-string v2, "android.intent.action.USER_REMOVED"
 
-    invoke-virtual {v10, v0}, Landroid/content/IntentFilter;->addAction(Ljava/lang/String;)V
+    invoke-virtual {v1, v2}, Landroid/content/IntentFilter;->addAction(Ljava/lang/String;)V
 
     .line 120
     invoke-virtual {p0}, Lcom/android/server/webkit/WebViewUpdateService;->getContext()Landroid/content/Context;
 
-    move-result-object v7
+    move-result-object v2
 
-    iget-object v8, p0, Lcom/android/server/webkit/WebViewUpdateService;->mWebViewUpdatedReceiver:Landroid/content/BroadcastReceiver;
+    iget-object v3, p0, Lcom/android/server/webkit/WebViewUpdateService;->mWebViewUpdatedReceiver:Landroid/content/BroadcastReceiver;
 
-    sget-object v9, Landroid/os/UserHandle;->ALL:Landroid/os/UserHandle;
+    sget-object v4, Landroid/os/UserHandle;->ALL:Landroid/os/UserHandle;
 
-    const/4 v11, 0x0
+    const/4 v7, 0x0
 
-    const/4 v12, 0x0
+    move-object v5, v1
 
-    invoke-virtual/range {v7 .. v12}, Landroid/content/Context;->registerReceiverAsUser(Landroid/content/BroadcastReceiver;Landroid/os/UserHandle;Landroid/content/IntentFilter;Ljava/lang/String;Landroid/os/Handler;)Landroid/content/Intent;
+    invoke-virtual/range {v2 .. v7}, Landroid/content/Context;->registerReceiverAsUser(Landroid/content/BroadcastReceiver;Landroid/os/UserHandle;Landroid/content/IntentFilter;Ljava/lang/String;Landroid/os/Handler;)Landroid/content/Intent;
 
     .line 123
-    new-instance v0, Lcom/android/server/webkit/WebViewUpdateService$BinderService;
+    new-instance v2, Lcom/android/server/webkit/WebViewUpdateService$BinderService;
 
-    const/4 v1, 0x0
+    const/4 v3, 0x0
 
-    invoke-direct {v0, p0, v1}, Lcom/android/server/webkit/WebViewUpdateService$BinderService;-><init>(Lcom/android/server/webkit/WebViewUpdateService;Lcom/android/server/webkit/WebViewUpdateService$1;)V
+    invoke-direct {v2, p0, v3}, Lcom/android/server/webkit/WebViewUpdateService$BinderService;-><init>(Lcom/android/server/webkit/WebViewUpdateService;Lcom/android/server/webkit/WebViewUpdateService$1;)V
 
-    const/4 v1, 0x1
+    const/4 v3, 0x1
 
-    const-string/jumbo v2, "webviewupdate"
+    const-string/jumbo v4, "webviewupdate"
 
-    invoke-virtual {p0, v2, v0, v1}, Lcom/android/server/webkit/WebViewUpdateService;->publishBinderService(Ljava/lang/String;Landroid/os/IBinder;Z)V
+    invoke-virtual {p0, v4, v2, v3}, Lcom/android/server/webkit/WebViewUpdateService;->publishBinderService(Ljava/lang/String;Landroid/os/IBinder;Z)V
 
     .line 124
     return-void

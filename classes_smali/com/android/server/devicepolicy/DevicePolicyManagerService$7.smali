@@ -23,6 +23,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/devicepolicy/DevicePolicyManagerService;Landroid/os/RemoteCallback;)V
     .registers 3
+    .param p1, "this$0"  # Lcom/android/server/devicepolicy/DevicePolicyManagerService;
 
     .line 6641
     iput-object p1, p0, Lcom/android/server/devicepolicy/DevicePolicyManagerService$7;->this$0:Lcom/android/server/devicepolicy/DevicePolicyManagerService;
@@ -37,18 +38,20 @@
 
 # virtual methods
 .method public onReceive(Landroid/content/Context;Landroid/content/Intent;)V
-    .registers 3
+    .registers 5
+    .param p1, "context"  # Landroid/content/Context;
+    .param p2, "intent"  # Landroid/content/Intent;
 
     .line 6644
-    iget-object p1, p0, Lcom/android/server/devicepolicy/DevicePolicyManagerService$7;->val$result:Landroid/os/RemoteCallback;
+    iget-object v0, p0, Lcom/android/server/devicepolicy/DevicePolicyManagerService$7;->val$result:Landroid/os/RemoteCallback;
 
-    const/4 p2, 0x0
+    const/4 v1, 0x0
 
-    invoke-virtual {p0, p2}, Lcom/android/server/devicepolicy/DevicePolicyManagerService$7;->getResultExtras(Z)Landroid/os/Bundle;
+    invoke-virtual {p0, v1}, Lcom/android/server/devicepolicy/DevicePolicyManagerService$7;->getResultExtras(Z)Landroid/os/Bundle;
 
-    move-result-object p2
+    move-result-object v1
 
-    invoke-virtual {p1, p2}, Landroid/os/RemoteCallback;->sendResult(Landroid/os/Bundle;)V
+    invoke-virtual {v0, v1}, Landroid/os/RemoteCallback;->sendResult(Landroid/os/Bundle;)V
 
     .line 6645
     return-void

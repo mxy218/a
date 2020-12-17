@@ -27,22 +27,26 @@
 # direct methods
 .method public constructor <init>(Lcom/android/server/wm/ActivityTaskManagerInternal;Landroid/os/IBinder;Landroid/os/IBinder;Landroid/app/IApplicationThread;)V
     .registers 5
+    .param p1, "this$0"  # Lcom/android/server/wm/ActivityTaskManagerInternal;
+    .param p2, "activityToken"  # Landroid/os/IBinder;
+    .param p3, "assistToken"  # Landroid/os/IBinder;
+    .param p4, "appThread"  # Landroid/app/IApplicationThread;
 
-    .line 354
+    .line 348
     iput-object p1, p0, Lcom/android/server/wm/ActivityTaskManagerInternal$ActivityTokens;->this$0:Lcom/android/server/wm/ActivityTaskManagerInternal;
 
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
-    .line 355
+    .line 349
     iput-object p2, p0, Lcom/android/server/wm/ActivityTaskManagerInternal$ActivityTokens;->mActivityToken:Landroid/os/IBinder;
 
-    .line 356
+    .line 350
     iput-object p3, p0, Lcom/android/server/wm/ActivityTaskManagerInternal$ActivityTokens;->mAssistToken:Landroid/os/IBinder;
 
-    .line 357
+    .line 351
     iput-object p4, p0, Lcom/android/server/wm/ActivityTaskManagerInternal$ActivityTokens;->mAppThread:Landroid/app/IApplicationThread;
 
-    .line 358
+    .line 352
     return-void
 .end method
 
@@ -51,7 +55,7 @@
 .method public getActivityToken()Landroid/os/IBinder;
     .registers 2
 
-    .line 364
+    .line 358
     iget-object v0, p0, Lcom/android/server/wm/ActivityTaskManagerInternal$ActivityTokens;->mActivityToken:Landroid/os/IBinder;
 
     return-object v0
@@ -60,7 +64,7 @@
 .method public getApplicationThread()Landroid/app/IApplicationThread;
     .registers 2
 
-    .line 378
+    .line 372
     iget-object v0, p0, Lcom/android/server/wm/ActivityTaskManagerInternal$ActivityTokens;->mAppThread:Landroid/app/IApplicationThread;
 
     return-object v0
@@ -69,7 +73,7 @@
 .method public getAssistToken()Landroid/os/IBinder;
     .registers 2
 
-    .line 371
+    .line 365
     iget-object v0, p0, Lcom/android/server/wm/ActivityTaskManagerInternal$ActivityTokens;->mAssistToken:Landroid/os/IBinder;
 
     return-object v0

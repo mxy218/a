@@ -88,6 +88,7 @@
 
 .method public constructor <init>(Landroid/net/ip/RouterAdvertisementDaemon$RaParams;)V
     .registers 3
+    .param p1, "other"  # Landroid/net/ip/RouterAdvertisementDaemon$RaParams;
 
     .line 145
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -119,15 +120,15 @@
     iput-object v0, p0, Landroid/net/ip/RouterAdvertisementDaemon$RaParams;->prefixes:Ljava/util/HashSet;
 
     .line 150
-    iget-object p1, p1, Landroid/net/ip/RouterAdvertisementDaemon$RaParams;->dnses:Ljava/util/HashSet;
+    iget-object v0, p1, Landroid/net/ip/RouterAdvertisementDaemon$RaParams;->dnses:Ljava/util/HashSet;
 
-    invoke-virtual {p1}, Ljava/util/HashSet;->clone()Ljava/lang/Object;
+    invoke-virtual {v0}, Ljava/util/HashSet;->clone()Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v0
 
-    check-cast p1, Ljava/util/HashSet;
+    check-cast v0, Ljava/util/HashSet;
 
-    iput-object p1, p0, Landroid/net/ip/RouterAdvertisementDaemon$RaParams;->dnses:Ljava/util/HashSet;
+    iput-object v0, p0, Landroid/net/ip/RouterAdvertisementDaemon$RaParams;->dnses:Ljava/util/HashSet;
 
     .line 151
     return-void
@@ -135,6 +136,8 @@
 
 .method public static getDeprecatedRaParams(Landroid/net/ip/RouterAdvertisementDaemon$RaParams;Landroid/net/ip/RouterAdvertisementDaemon$RaParams;)Landroid/net/ip/RouterAdvertisementDaemon$RaParams;
     .registers 6
+    .param p0, "oldRa"  # Landroid/net/ip/RouterAdvertisementDaemon$RaParams;
+    .param p1, "newRa"  # Landroid/net/ip/RouterAdvertisementDaemon$RaParams;
 
     .line 158
     new-instance v0, Landroid/net/ip/RouterAdvertisementDaemon$RaParams;
@@ -142,6 +145,7 @@
     invoke-direct {v0}, Landroid/net/ip/RouterAdvertisementDaemon$RaParams;-><init>()V
 
     .line 160
+    .local v0, "newlyDeprecated":Landroid/net/ip/RouterAdvertisementDaemon$RaParams;
     if-eqz p0, :cond_4b
 
     .line 161
@@ -165,6 +169,7 @@
     check-cast v2, Landroid/net/IpPrefix;
 
     .line 162
+    .local v2, "ipp":Landroid/net/IpPrefix;
     if-eqz p1, :cond_23
 
     iget-object v3, p1, Landroid/net/ip/RouterAdvertisementDaemon$RaParams;->prefixes:Ljava/util/HashSet;
@@ -182,48 +187,51 @@
     invoke-virtual {v3, v2}, Ljava/util/HashSet;->add(Ljava/lang/Object;)Z
 
     .line 165
+    .end local v2  # "ipp":Landroid/net/IpPrefix;
     :cond_28
     goto :goto_d
 
     .line 167
     :cond_29
-    iget-object p0, p0, Landroid/net/ip/RouterAdvertisementDaemon$RaParams;->dnses:Ljava/util/HashSet;
+    iget-object v1, p0, Landroid/net/ip/RouterAdvertisementDaemon$RaParams;->dnses:Ljava/util/HashSet;
 
-    invoke-virtual {p0}, Ljava/util/HashSet;->iterator()Ljava/util/Iterator;
-
-    move-result-object p0
-
-    :goto_2f
-    invoke-interface {p0}, Ljava/util/Iterator;->hasNext()Z
-
-    move-result v1
-
-    if-eqz v1, :cond_4b
-
-    invoke-interface {p0}, Ljava/util/Iterator;->next()Ljava/lang/Object;
+    invoke-virtual {v1}, Ljava/util/HashSet;->iterator()Ljava/util/Iterator;
 
     move-result-object v1
 
-    check-cast v1, Ljava/net/Inet6Address;
-
-    .line 168
-    if-eqz p1, :cond_45
-
-    iget-object v2, p1, Landroid/net/ip/RouterAdvertisementDaemon$RaParams;->dnses:Ljava/util/HashSet;
-
-    invoke-virtual {v2, v1}, Ljava/util/HashSet;->contains(Ljava/lang/Object;)Z
+    :goto_2f
+    invoke-interface {v1}, Ljava/util/Iterator;->hasNext()Z
 
     move-result v2
 
-    if-nez v2, :cond_4a
+    if-eqz v2, :cond_4b
+
+    invoke-interface {v1}, Ljava/util/Iterator;->next()Ljava/lang/Object;
+
+    move-result-object v2
+
+    check-cast v2, Ljava/net/Inet6Address;
+
+    .line 168
+    .local v2, "dns":Ljava/net/Inet6Address;
+    if-eqz p1, :cond_45
+
+    iget-object v3, p1, Landroid/net/ip/RouterAdvertisementDaemon$RaParams;->dnses:Ljava/util/HashSet;
+
+    invoke-virtual {v3, v2}, Ljava/util/HashSet;->contains(Ljava/lang/Object;)Z
+
+    move-result v3
+
+    if-nez v3, :cond_4a
 
     .line 169
     :cond_45
-    iget-object v2, v0, Landroid/net/ip/RouterAdvertisementDaemon$RaParams;->dnses:Ljava/util/HashSet;
+    iget-object v3, v0, Landroid/net/ip/RouterAdvertisementDaemon$RaParams;->dnses:Ljava/util/HashSet;
 
-    invoke-virtual {v2, v1}, Ljava/util/HashSet;->add(Ljava/lang/Object;)Z
+    invoke-virtual {v3, v2}, Ljava/util/HashSet;->add(Ljava/lang/Object;)Z
 
     .line 171
+    .end local v2  # "dns":Ljava/net/Inet6Address;
     :cond_4a
     goto :goto_2f
 

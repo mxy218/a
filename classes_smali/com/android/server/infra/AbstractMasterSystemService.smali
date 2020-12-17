@@ -8,7 +8,7 @@
     value = {
         Lcom/android/server/infra/AbstractMasterSystemService$SettingsObserver;,
         Lcom/android/server/infra/AbstractMasterSystemService$Visitor;,
-        Lcom/android/server/infra/AbstractMasterSystemService$ServicePackagePolicyFlags;
+        Lcom/android/server/infra/AbstractMasterSystemService$PackageUpdatePolicy;
     }
 .end annotation
 
@@ -25,17 +25,11 @@
 
 
 # static fields
-.field public static final PACKAGE_RESTART_POLICY_NO_REFRESH:I = 0x10
+.field public static final PACKAGE_UPDATE_POLICY_NO_REFRESH:I = 0x0
 
-.field public static final PACKAGE_RESTART_POLICY_REFRESH_EAGER:I = 0x40
+.field public static final PACKAGE_UPDATE_POLICY_REFRESH_EAGER:I = 0x2
 
-.field public static final PACKAGE_RESTART_POLICY_REFRESH_LAZY:I = 0x20
-
-.field public static final PACKAGE_UPDATE_POLICY_NO_REFRESH:I = 0x1
-
-.field public static final PACKAGE_UPDATE_POLICY_REFRESH_EAGER:I = 0x4
-
-.field public static final PACKAGE_UPDATE_POLICY_REFRESH_LAZY:I = 0x2
+.field public static final PACKAGE_UPDATE_POLICY_REFRESH_LAZY:I = 0x1
 
 
 # instance fields
@@ -59,9 +53,9 @@
 
 .field protected final mLock:Ljava/lang/Object;
 
-.field protected final mServiceNameResolver:Lcom/android/server/infra/ServiceNameResolver;
+.field private final mPackageUpdatePolicy:I
 
-.field private final mServicePackagePolicyFlags:I
+.field protected final mServiceNameResolver:Lcom/android/server/infra/ServiceNameResolver;
 
 .field private final mServicesCache:Landroid/util/SparseArray;
     .annotation build Lcom/android/internal/annotations/GuardedBy;
@@ -102,23 +96,32 @@
 # direct methods
 .method protected constructor <init>(Landroid/content/Context;Lcom/android/server/infra/ServiceNameResolver;Ljava/lang/String;)V
     .registers 5
+    .param p1, "context"  # Landroid/content/Context;
+    .param p2, "serviceNameResolver"  # Lcom/android/server/infra/ServiceNameResolver;
+    .param p3, "disallowProperty"  # Ljava/lang/String;
 
-    .line 204
-    const/16 v0, 0x22
+    .line 186
+    .local p0, "this":Lcom/android/server/infra/AbstractMasterSystemService;, "Lcom/android/server/infra/AbstractMasterSystemService<TM;TS;>;"
+    const/4 v0, 0x1
 
     invoke-direct {p0, p1, p2, p3, v0}, Lcom/android/server/infra/AbstractMasterSystemService;-><init>(Landroid/content/Context;Lcom/android/server/infra/ServiceNameResolver;Ljava/lang/String;I)V
 
-    .line 206
+    .line 188
     return-void
 .end method
 
 .method protected constructor <init>(Landroid/content/Context;Lcom/android/server/infra/ServiceNameResolver;Ljava/lang/String;I)V
-    .registers 10
+    .registers 14
+    .param p1, "context"  # Landroid/content/Context;
+    .param p2, "serviceNameResolver"  # Lcom/android/server/infra/ServiceNameResolver;
+    .param p3, "disallowProperty"  # Ljava/lang/String;
+    .param p4, "packageUpdatePolicy"  # I
 
-    .line 229
+    .line 210
+    .local p0, "this":Lcom/android/server/infra/AbstractMasterSystemService;, "Lcom/android/server/infra/AbstractMasterSystemService<TM;TS;>;"
     invoke-direct {p0, p1}, Lcom/android/server/SystemService;-><init>(Landroid/content/Context;)V
 
-    .line 128
+    .line 108
     invoke-virtual {p0}, Ljava/lang/Object;->getClass()Ljava/lang/Class;
 
     move-result-object v0
@@ -129,190 +132,187 @@
 
     iput-object v0, p0, Lcom/android/server/infra/AbstractMasterSystemService;->mTag:Ljava/lang/String;
 
-    .line 134
+    .line 114
     new-instance v0, Ljava/lang/Object;
 
     invoke-direct {v0}, Ljava/lang/Object;-><init>()V
 
     iput-object v0, p0, Lcom/android/server/infra/AbstractMasterSystemService;->mLock:Ljava/lang/Object;
 
-    .line 147
+    .line 127
     const/4 v0, 0x0
 
     iput-boolean v0, p0, Lcom/android/server/infra/AbstractMasterSystemService;->verbose:Z
 
-    .line 153
+    .line 133
     iput-boolean v0, p0, Lcom/android/server/infra/AbstractMasterSystemService;->debug:Z
 
-    .line 172
-    new-instance v1, Landroid/util/SparseArray;
+    .line 152
+    new-instance v0, Landroid/util/SparseArray;
 
-    invoke-direct {v1}, Landroid/util/SparseArray;-><init>()V
+    invoke-direct {v0}, Landroid/util/SparseArray;-><init>()V
 
-    iput-object v1, p0, Lcom/android/server/infra/AbstractMasterSystemService;->mServicesCache:Landroid/util/SparseArray;
+    iput-object v0, p0, Lcom/android/server/infra/AbstractMasterSystemService;->mServicesCache:Landroid/util/SparseArray;
 
-    .line 233
-    and-int/lit8 v1, p4, 0x7
+    .line 212
+    iput p4, p0, Lcom/android/server/infra/AbstractMasterSystemService;->mPackageUpdatePolicy:I
 
-    if-nez v1, :cond_26
-
-    .line 235
-    or-int/lit8 p4, p4, 0x2
-
-    .line 239
-    :cond_26
-    and-int/lit8 v1, p4, 0x70
-
-    if-nez v1, :cond_2c
-
-    .line 241
-    or-int/lit8 p4, p4, 0x20
-
-    .line 243
-    :cond_2c
-    iput p4, p0, Lcom/android/server/infra/AbstractMasterSystemService;->mServicePackagePolicyFlags:I
-
-    .line 245
+    .line 214
     iput-object p2, p0, Lcom/android/server/infra/AbstractMasterSystemService;->mServiceNameResolver:Lcom/android/server/infra/ServiceNameResolver;
 
-    .line 246
-    iget-object p2, p0, Lcom/android/server/infra/AbstractMasterSystemService;->mServiceNameResolver:Lcom/android/server/infra/ServiceNameResolver;
+    .line 215
+    iget-object v0, p0, Lcom/android/server/infra/AbstractMasterSystemService;->mServiceNameResolver:Lcom/android/server/infra/ServiceNameResolver;
 
-    if-eqz p2, :cond_3c
+    if-eqz v0, :cond_30
 
-    .line 247
-    new-instance p4, Lcom/android/server/infra/-$$Lambda$AbstractMasterSystemService$su3lJpEVIbL-C7doP4eboTpqjxU;
+    .line 216
+    new-instance v1, Lcom/android/server/infra/-$$Lambda$AbstractMasterSystemService$su3lJpEVIbL-C7doP4eboTpqjxU;
 
-    invoke-direct {p4, p0}, Lcom/android/server/infra/-$$Lambda$AbstractMasterSystemService$su3lJpEVIbL-C7doP4eboTpqjxU;-><init>(Lcom/android/server/infra/AbstractMasterSystemService;)V
+    invoke-direct {v1, p0}, Lcom/android/server/infra/-$$Lambda$AbstractMasterSystemService$su3lJpEVIbL-C7doP4eboTpqjxU;-><init>(Lcom/android/server/infra/AbstractMasterSystemService;)V
 
-    invoke-interface {p2, p4}, Lcom/android/server/infra/ServiceNameResolver;->setOnTemporaryServiceNameChangedCallback(Lcom/android/server/infra/ServiceNameResolver$NameResolverListener;)V
+    invoke-interface {v0, v1}, Lcom/android/server/infra/ServiceNameResolver;->setOnTemporaryServiceNameChangedCallback(Lcom/android/server/infra/ServiceNameResolver$NameResolverListener;)V
 
-    .line 251
-    :cond_3c
-    if-nez p3, :cond_42
+    .line 220
+    :cond_30
+    if-nez p3, :cond_36
 
-    .line 252
-    const/4 p1, 0x0
+    .line 221
+    const/4 v0, 0x0
 
-    iput-object p1, p0, Lcom/android/server/infra/AbstractMasterSystemService;->mDisabledByUserRestriction:Landroid/util/SparseBooleanArray;
+    iput-object v0, p0, Lcom/android/server/infra/AbstractMasterSystemService;->mDisabledByUserRestriction:Landroid/util/SparseBooleanArray;
 
-    goto :goto_98
+    goto :goto_8c
+
+    .line 223
+    :cond_36
+    new-instance v0, Landroid/util/SparseBooleanArray;
+
+    invoke-direct {v0}, Landroid/util/SparseBooleanArray;-><init>()V
+
+    iput-object v0, p0, Lcom/android/server/infra/AbstractMasterSystemService;->mDisabledByUserRestriction:Landroid/util/SparseBooleanArray;
+
+    .line 225
+    const-class v0, Landroid/os/UserManager;
+
+    invoke-virtual {p1, v0}, Landroid/content/Context;->getSystemService(Ljava/lang/Class;)Ljava/lang/Object;
+
+    move-result-object v0
+
+    check-cast v0, Landroid/os/UserManager;
+
+    .line 226
+    .local v0, "um":Landroid/os/UserManager;
+    const-class v1, Landroid/os/UserManagerInternal;
+
+    invoke-static {v1}, Lcom/android/server/LocalServices;->getService(Ljava/lang/Class;)Ljava/lang/Object;
+
+    move-result-object v1
+
+    check-cast v1, Landroid/os/UserManagerInternal;
+
+    .line 227
+    .local v1, "umi":Landroid/os/UserManagerInternal;
+    invoke-virtual {v0}, Landroid/os/UserManager;->getUsers()Ljava/util/List;
+
+    move-result-object v2
+
+    .line 228
+    .local v2, "users":Ljava/util/List;, "Ljava/util/List<Landroid/content/pm/UserInfo;>;"
+    const/4 v3, 0x0
+
+    .local v3, "i":I
+    :goto_52
+    invoke-interface {v2}, Ljava/util/List;->size()I
+
+    move-result v4
+
+    if-ge v3, v4, :cond_84
+
+    .line 229
+    invoke-interface {v2, v3}, Ljava/util/List;->get(I)Ljava/lang/Object;
+
+    move-result-object v4
+
+    check-cast v4, Landroid/content/pm/UserInfo;
+
+    iget v4, v4, Landroid/content/pm/UserInfo;->id:I
+
+    .line 230
+    .local v4, "userId":I
+    invoke-virtual {v1, v4, p3}, Landroid/os/UserManagerInternal;->getUserRestriction(ILjava/lang/String;)Z
+
+    move-result v5
+
+    .line 231
+    .local v5, "disabled":Z
+    if-eqz v5, :cond_81
+
+    .line 232
+    iget-object v6, p0, Lcom/android/server/infra/AbstractMasterSystemService;->mTag:Ljava/lang/String;
+
+    new-instance v7, Ljava/lang/StringBuilder;
+
+    invoke-direct {v7}, Ljava/lang/StringBuilder;-><init>()V
+
+    const-string v8, "Disabling by restrictions user "
+
+    invoke-virtual {v7, v8}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v7, v4}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v7}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v7
+
+    invoke-static {v6, v7}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
+
+    .line 233
+    iget-object v6, p0, Lcom/android/server/infra/AbstractMasterSystemService;->mDisabledByUserRestriction:Landroid/util/SparseBooleanArray;
+
+    invoke-virtual {v6, v4, v5}, Landroid/util/SparseBooleanArray;->put(IZ)V
+
+    .line 228
+    .end local v4  # "userId":I
+    .end local v5  # "disabled":Z
+    :cond_81
+    add-int/lit8 v3, v3, 0x1
+
+    goto :goto_52
+
+    .line 236
+    .end local v3  # "i":I
+    :cond_84
+    new-instance v3, Lcom/android/server/infra/-$$Lambda$AbstractMasterSystemService$_fKw-VUP0pSfcMMlgRqoT4OPhxw;
+
+    invoke-direct {v3, p0, p3}, Lcom/android/server/infra/-$$Lambda$AbstractMasterSystemService$_fKw-VUP0pSfcMMlgRqoT4OPhxw;-><init>(Lcom/android/server/infra/AbstractMasterSystemService;Ljava/lang/String;)V
+
+    invoke-virtual {v1, v3}, Landroid/os/UserManagerInternal;->addUserRestrictionsListener(Landroid/os/UserManagerInternal$UserRestrictionsListener;)V
 
     .line 254
-    :cond_42
-    new-instance p2, Landroid/util/SparseBooleanArray;
-
-    invoke-direct {p2}, Landroid/util/SparseBooleanArray;-><init>()V
-
-    iput-object p2, p0, Lcom/android/server/infra/AbstractMasterSystemService;->mDisabledByUserRestriction:Landroid/util/SparseBooleanArray;
-
-    .line 256
-    const-class p2, Landroid/os/UserManager;
-
-    invoke-virtual {p1, p2}, Landroid/content/Context;->getSystemService(Ljava/lang/Class;)Ljava/lang/Object;
-
-    move-result-object p1
-
-    check-cast p1, Landroid/os/UserManager;
-
-    .line 257
-    const-class p2, Landroid/os/UserManagerInternal;
-
-    invoke-static {p2}, Lcom/android/server/LocalServices;->getService(Ljava/lang/Class;)Ljava/lang/Object;
-
-    move-result-object p2
-
-    check-cast p2, Landroid/os/UserManagerInternal;
-
-    .line 258
-    invoke-virtual {p1}, Landroid/os/UserManager;->getUsers()Ljava/util/List;
-
-    move-result-object p1
-
-    .line 259
-    nop
-
-    :goto_5e
-    invoke-interface {p1}, Ljava/util/List;->size()I
-
-    move-result p4
-
-    if-ge v0, p4, :cond_90
-
-    .line 260
-    invoke-interface {p1, v0}, Ljava/util/List;->get(I)Ljava/lang/Object;
-
-    move-result-object p4
-
-    check-cast p4, Landroid/content/pm/UserInfo;
-
-    iget p4, p4, Landroid/content/pm/UserInfo;->id:I
-
-    .line 261
-    invoke-virtual {p2, p4, p3}, Landroid/os/UserManagerInternal;->getUserRestriction(ILjava/lang/String;)Z
-
-    move-result v1
-
-    .line 262
-    if-eqz v1, :cond_8d
-
-    .line 263
-    iget-object v2, p0, Lcom/android/server/infra/AbstractMasterSystemService;->mTag:Ljava/lang/String;
-
-    new-instance v3, Ljava/lang/StringBuilder;
-
-    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
-
-    const-string v4, "Disabling by restrictions user "
-
-    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v3, p4}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
-
-    move-result-object v3
-
-    invoke-static {v2, v3}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
-
-    .line 264
-    iget-object v2, p0, Lcom/android/server/infra/AbstractMasterSystemService;->mDisabledByUserRestriction:Landroid/util/SparseBooleanArray;
-
-    invoke-virtual {v2, p4, v1}, Landroid/util/SparseBooleanArray;->put(IZ)V
-
-    .line 259
-    :cond_8d
-    add-int/lit8 v0, v0, 0x1
-
-    goto :goto_5e
-
-    .line 267
-    :cond_90
-    new-instance p1, Lcom/android/server/infra/-$$Lambda$AbstractMasterSystemService$_fKw-VUP0pSfcMMlgRqoT4OPhxw;
-
-    invoke-direct {p1, p0, p3}, Lcom/android/server/infra/-$$Lambda$AbstractMasterSystemService$_fKw-VUP0pSfcMMlgRqoT4OPhxw;-><init>(Lcom/android/server/infra/AbstractMasterSystemService;Ljava/lang/String;)V
-
-    invoke-virtual {p2, p1}, Landroid/os/UserManagerInternal;->addUserRestrictionsListener(Landroid/os/UserManagerInternal$UserRestrictionsListener;)V
-
-    .line 285
-    :goto_98
+    .end local v0  # "um":Landroid/os/UserManager;
+    .end local v1  # "umi":Landroid/os/UserManagerInternal;
+    .end local v2  # "users":Ljava/util/List;, "Ljava/util/List<Landroid/content/pm/UserInfo;>;"
+    :goto_8c
     invoke-direct {p0}, Lcom/android/server/infra/AbstractMasterSystemService;->startTrackingPackageChanges()V
 
-    .line 286
+    .line 255
     return-void
 .end method
 
 .method static synthetic access$000(Lcom/android/server/infra/AbstractMasterSystemService;)Landroid/util/SparseArray;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/infra/AbstractMasterSystemService;
 
     .line 78
-    iget-object p0, p0, Lcom/android/server/infra/AbstractMasterSystemService;->mUpdatingPackageNames:Landroid/util/SparseArray;
+    iget-object v0, p0, Lcom/android/server/infra/AbstractMasterSystemService;->mUpdatingPackageNames:Landroid/util/SparseArray;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$002(Lcom/android/server/infra/AbstractMasterSystemService;Landroid/util/SparseArray;)Landroid/util/SparseArray;
     .registers 2
+    .param p0, "x0"  # Lcom/android/server/infra/AbstractMasterSystemService;
+    .param p1, "x1"  # Landroid/util/SparseArray;
 
     .line 78
     iput-object p1, p0, Lcom/android/server/infra/AbstractMasterSystemService;->mUpdatingPackageNames:Landroid/util/SparseArray;
@@ -321,32 +321,36 @@
 .end method
 
 .method static synthetic access$100(Lcom/android/server/infra/AbstractMasterSystemService;)Landroid/util/SparseArray;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/infra/AbstractMasterSystemService;
 
     .line 78
-    iget-object p0, p0, Lcom/android/server/infra/AbstractMasterSystemService;->mServicesCache:Landroid/util/SparseArray;
+    iget-object v0, p0, Lcom/android/server/infra/AbstractMasterSystemService;->mServicesCache:Landroid/util/SparseArray;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$200(Lcom/android/server/infra/AbstractMasterSystemService;)I
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/infra/AbstractMasterSystemService;
 
     .line 78
-    iget p0, p0, Lcom/android/server/infra/AbstractMasterSystemService;->mServicePackagePolicyFlags:I
+    iget v0, p0, Lcom/android/server/infra/AbstractMasterSystemService;->mPackageUpdatePolicy:I
 
-    return p0
+    return v0
 .end method
 
 .method private startTrackingPackageChanges()V
     .registers 6
 
-    .line 766
+    .line 721
+    .local p0, "this":Lcom/android/server/infra/AbstractMasterSystemService;, "Lcom/android/server/infra/AbstractMasterSystemService<TM;TS;>;"
     new-instance v0, Lcom/android/server/infra/AbstractMasterSystemService$1;
 
     invoke-direct {v0, p0}, Lcom/android/server/infra/AbstractMasterSystemService$1;-><init>(Lcom/android/server/infra/AbstractMasterSystemService;)V
 
-    .line 941
+    .line 847
+    .local v0, "monitor":Lcom/android/internal/content/PackageMonitor;
     invoke-virtual {p0}, Lcom/android/server/infra/AbstractMasterSystemService;->getContext()Landroid/content/Context;
 
     move-result-object v1
@@ -359,24 +363,27 @@
 
     invoke-virtual {v0, v1, v3, v2, v4}, Lcom/android/internal/content/PackageMonitor;->register(Landroid/content/Context;Landroid/os/Looper;Landroid/os/UserHandle;Z)V
 
-    .line 942
+    .line 848
     return-void
 .end method
 
 
 # virtual methods
 .method protected final assertCalledByPackageOwner(Ljava/lang/String;)V
-    .registers 7
+    .registers 8
+    .param p1, "packageName"  # Ljava/lang/String;
 
-    .line 702
+    .line 657
+    .local p0, "this":Lcom/android/server/infra/AbstractMasterSystemService;, "Lcom/android/server/infra/AbstractMasterSystemService<TM;TS;>;"
     invoke-static {p1}, Lcom/android/internal/util/Preconditions;->checkNotNull(Ljava/lang/Object;)Ljava/lang/Object;
 
-    .line 703
+    .line 658
     invoke-static {}, Landroid/os/Binder;->getCallingUid()I
 
     move-result v0
 
-    .line 704
+    .line 659
+    .local v0, "uid":I
     invoke-virtual {p0}, Lcom/android/server/infra/AbstractMasterSystemService;->getContext()Landroid/content/Context;
 
     move-result-object v1
@@ -389,10 +396,11 @@
 
     move-result-object v1
 
-    .line 705
+    .line 660
+    .local v1, "packages":[Ljava/lang/String;
     if-eqz v1, :cond_25
 
-    .line 706
+    .line 661
     array-length v2, v1
 
     const/4 v3, 0x0
@@ -402,48 +410,50 @@
 
     aget-object v4, v1, v3
 
-    .line 707
+    .line 662
+    .local v4, "candidate":Ljava/lang/String;
     invoke-virtual {p1, v4}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result v4
+    move-result v5
 
-    if-eqz v4, :cond_22
+    if-eqz v5, :cond_22
 
     return-void
 
-    .line 706
+    .line 661
+    .end local v4  # "candidate":Ljava/lang/String;
     :cond_22
     add-int/lit8 v3, v3, 0x1
 
     goto :goto_17
 
-    .line 710
+    .line 665
     :cond_25
-    new-instance v1, Ljava/lang/SecurityException;
+    new-instance v2, Ljava/lang/SecurityException;
 
-    new-instance v2, Ljava/lang/StringBuilder;
+    new-instance v3, Ljava/lang/StringBuilder;
 
-    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v3, "UID "
+    const-string v4, "UID "
 
-    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v2, v0}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v0}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    const-string v0, " does not own "
+    const-string v4, " does not own "
 
-    invoke-virtual {v2, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v2, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v3
 
-    invoke-direct {v1, p1}, Ljava/lang/SecurityException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v2, v3}, Ljava/lang/SecurityException;-><init>(Ljava/lang/String;)V
 
-    throw v1
+    throw v2
 .end method
 
 .method protected clearCacheLocked()V
@@ -454,295 +464,320 @@
         }
     .end annotation
 
-    .line 693
+    .line 648
+    .local p0, "this":Lcom/android/server/infra/AbstractMasterSystemService;, "Lcom/android/server/infra/AbstractMasterSystemService<TM;TS;>;"
     iget-object v0, p0, Lcom/android/server/infra/AbstractMasterSystemService;->mServicesCache:Landroid/util/SparseArray;
 
     invoke-virtual {v0}, Landroid/util/SparseArray;->clear()V
 
-    .line 694
+    .line 649
     return-void
 .end method
 
 .method protected dumpLocked(Ljava/lang/String;Ljava/io/PrintWriter;)V
-    .registers 13
+    .registers 14
+    .param p1, "prefix"  # Ljava/lang/String;
+    .param p2, "pw"  # Ljava/io/PrintWriter;
 
-    .line 715
+    .line 670
+    .local p0, "this":Lcom/android/server/infra/AbstractMasterSystemService;, "Lcom/android/server/infra/AbstractMasterSystemService<TM;TS;>;"
     iget-boolean v0, p0, Lcom/android/server/infra/AbstractMasterSystemService;->debug:Z
 
-    .line 716
+    .line 671
+    .local v0, "realDebug":Z
     iget-boolean v1, p0, Lcom/android/server/infra/AbstractMasterSystemService;->verbose:Z
 
-    .line 721
-    const/4 v2, 0x1
+    .line 672
+    .local v1, "realVerbose":Z
+    const-string v2, "    "
 
-    :try_start_5
-    iput-boolean v2, p0, Lcom/android/server/infra/AbstractMasterSystemService;->verbose:Z
+    .line 676
+    .local v2, "prefix2":Ljava/lang/String;
+    const/4 v3, 0x1
 
-    iput-boolean v2, p0, Lcom/android/server/infra/AbstractMasterSystemService;->debug:Z
+    :try_start_7
+    iput-boolean v3, p0, Lcom/android/server/infra/AbstractMasterSystemService;->verbose:Z
 
-    .line 722
-    iget-object v2, p0, Lcom/android/server/infra/AbstractMasterSystemService;->mServicesCache:Landroid/util/SparseArray;
+    iput-boolean v3, p0, Lcom/android/server/infra/AbstractMasterSystemService;->debug:Z
 
-    invoke-virtual {v2}, Landroid/util/SparseArray;->size()I
+    .line 677
+    iget-object v3, p0, Lcom/android/server/infra/AbstractMasterSystemService;->mServicesCache:Landroid/util/SparseArray;
 
-    move-result v2
+    invoke-virtual {v3}, Landroid/util/SparseArray;->size()I
 
-    .line 723
+    move-result v3
+
+    .line 678
+    .local v3, "size":I
     invoke-virtual {p2, p1}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
-    const-string v3, "Debug: "
-
-    invoke-virtual {p2, v3}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
-
-    invoke-virtual {p2, v0}, Ljava/io/PrintWriter;->print(Z)V
-
-    .line 724
-    const-string v3, " Verbose: "
-
-    invoke-virtual {p2, v3}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
-
-    invoke-virtual {p2, v1}, Ljava/io/PrintWriter;->println(Z)V
-
-    .line 725
-    const-string v3, "Package policy flags: "
-
-    invoke-virtual {p2, v3}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
-
-    iget v3, p0, Lcom/android/server/infra/AbstractMasterSystemService;->mServicePackagePolicyFlags:I
-
-    invoke-virtual {p2, v3}, Ljava/io/PrintWriter;->println(I)V
-
-    .line 726
-    iget-object v3, p0, Lcom/android/server/infra/AbstractMasterSystemService;->mUpdatingPackageNames:Landroid/util/SparseArray;
-
-    if-eqz v3, :cond_3a
-
-    .line 727
-    const-string v3, "Packages being updated: "
-
-    invoke-virtual {p2, v3}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
-
-    iget-object v3, p0, Lcom/android/server/infra/AbstractMasterSystemService;->mUpdatingPackageNames:Landroid/util/SparseArray;
-
-    invoke-virtual {p2, v3}, Ljava/io/PrintWriter;->println(Ljava/lang/Object;)V
-
-    .line 729
-    :cond_3a
-    iget-object v3, p0, Lcom/android/server/infra/AbstractMasterSystemService;->mServiceNameResolver:Lcom/android/server/infra/ServiceNameResolver;
-    :try_end_3c
-    .catchall {:try_start_5 .. :try_end_3c} :catchall_ed
-
-    const-string v4, ": "
-
-    const-string v5, "    "
-
-    const/4 v6, 0x0
-
-    if-eqz v3, :cond_86
-
-    .line 730
-    :try_start_43
-    invoke-virtual {p2, p1}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
-
-    const-string v3, "Name resolver: "
-
-    invoke-virtual {p2, v3}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
-
-    .line 731
-    iget-object v3, p0, Lcom/android/server/infra/AbstractMasterSystemService;->mServiceNameResolver:Lcom/android/server/infra/ServiceNameResolver;
-
-    invoke-interface {v3, p2}, Lcom/android/server/infra/ServiceNameResolver;->dumpShort(Ljava/io/PrintWriter;)V
-
-    invoke-virtual {p2}, Ljava/io/PrintWriter;->println()V
-
-    .line 732
-    invoke-virtual {p0}, Lcom/android/server/infra/AbstractMasterSystemService;->getContext()Landroid/content/Context;
-
-    move-result-object v3
-
-    const-class v7, Landroid/os/UserManager;
-
-    invoke-virtual {v3, v7}, Landroid/content/Context;->getSystemService(Ljava/lang/Class;)Ljava/lang/Object;
-
-    move-result-object v3
-
-    check-cast v3, Landroid/os/UserManager;
-
-    .line 733
-    invoke-virtual {v3}, Landroid/os/UserManager;->getUsers()Ljava/util/List;
-
-    move-result-object v3
-
-    .line 734
-    move v7, v6
-
-    :goto_64
-    invoke-interface {v3}, Ljava/util/List;->size()I
-
-    move-result v8
-
-    if-ge v7, v8, :cond_86
-
-    .line 735
-    invoke-interface {v3, v7}, Ljava/util/List;->get(I)Ljava/lang/Object;
-
-    move-result-object v8
-
-    check-cast v8, Landroid/content/pm/UserInfo;
-
-    iget v8, v8, Landroid/content/pm/UserInfo;->id:I
-
-    .line 736
-    invoke-virtual {p2, v5}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
-
-    invoke-virtual {p2, v8}, Ljava/io/PrintWriter;->print(I)V
+    const-string v4, "Debug: "
 
     invoke-virtual {p2, v4}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
-    .line 737
-    iget-object v9, p0, Lcom/android/server/infra/AbstractMasterSystemService;->mServiceNameResolver:Lcom/android/server/infra/ServiceNameResolver;
+    invoke-virtual {p2, v0}, Ljava/io/PrintWriter;->print(Z)V
 
-    invoke-interface {v9, p2, v8}, Lcom/android/server/infra/ServiceNameResolver;->dumpShort(Ljava/io/PrintWriter;I)V
+    .line 679
+    const-string v4, " Verbose: "
+
+    invoke-virtual {p2, v4}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
+
+    invoke-virtual {p2, v1}, Ljava/io/PrintWriter;->println(Z)V
+
+    .line 680
+    const-string v4, "Refresh on package update: "
+
+    invoke-virtual {p2, v4}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
+
+    iget v4, p0, Lcom/android/server/infra/AbstractMasterSystemService;->mPackageUpdatePolicy:I
+
+    invoke-virtual {p2, v4}, Ljava/io/PrintWriter;->println(I)V
+
+    .line 681
+    iget-object v4, p0, Lcom/android/server/infra/AbstractMasterSystemService;->mUpdatingPackageNames:Landroid/util/SparseArray;
+
+    if-eqz v4, :cond_3c
+
+    .line 682
+    const-string v4, "Packages being updated: "
+
+    invoke-virtual {p2, v4}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
+
+    iget-object v4, p0, Lcom/android/server/infra/AbstractMasterSystemService;->mUpdatingPackageNames:Landroid/util/SparseArray;
+
+    invoke-virtual {p2, v4}, Ljava/io/PrintWriter;->println(Ljava/lang/Object;)V
+
+    .line 684
+    :cond_3c
+    iget-object v4, p0, Lcom/android/server/infra/AbstractMasterSystemService;->mServiceNameResolver:Lcom/android/server/infra/ServiceNameResolver;
+    :try_end_3e
+    .catchall {:try_start_7 .. :try_end_3e} :catchall_ee
+
+    const-string v5, ": "
+
+    const-string v6, "    "
+
+    if-eqz v4, :cond_87
+
+    .line 685
+    :try_start_44
+    invoke-virtual {p2, p1}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
+
+    const-string v4, "Name resolver: "
+
+    invoke-virtual {p2, v4}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
+
+    .line 686
+    iget-object v4, p0, Lcom/android/server/infra/AbstractMasterSystemService;->mServiceNameResolver:Lcom/android/server/infra/ServiceNameResolver;
+
+    invoke-interface {v4, p2}, Lcom/android/server/infra/ServiceNameResolver;->dumpShort(Ljava/io/PrintWriter;)V
 
     invoke-virtual {p2}, Ljava/io/PrintWriter;->println()V
 
-    .line 734
-    add-int/lit8 v7, v7, 0x1
+    .line 687
+    invoke-virtual {p0}, Lcom/android/server/infra/AbstractMasterSystemService;->getContext()Landroid/content/Context;
 
-    goto :goto_64
+    move-result-object v4
 
-    .line 740
-    :cond_86
+    const-class v7, Landroid/os/UserManager;
+
+    invoke-virtual {v4, v7}, Landroid/content/Context;->getSystemService(Ljava/lang/Class;)Ljava/lang/Object;
+
+    move-result-object v4
+
+    check-cast v4, Landroid/os/UserManager;
+
+    .line 688
+    .local v4, "um":Landroid/os/UserManager;
+    invoke-virtual {v4}, Landroid/os/UserManager;->getUsers()Ljava/util/List;
+
+    move-result-object v7
+
+    .line 689
+    .local v7, "users":Ljava/util/List;, "Ljava/util/List<Landroid/content/pm/UserInfo;>;"
+    const/4 v8, 0x0
+
+    .local v8, "i":I
+    :goto_65
+    invoke-interface {v7}, Ljava/util/List;->size()I
+
+    move-result v9
+
+    if-ge v8, v9, :cond_87
+
+    .line 690
+    invoke-interface {v7, v8}, Ljava/util/List;->get(I)Ljava/lang/Object;
+
+    move-result-object v9
+
+    check-cast v9, Landroid/content/pm/UserInfo;
+
+    iget v9, v9, Landroid/content/pm/UserInfo;->id:I
+
+    .line 691
+    .local v9, "userId":I
+    invoke-virtual {p2, v6}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
+
+    invoke-virtual {p2, v9}, Ljava/io/PrintWriter;->print(I)V
+
+    invoke-virtual {p2, v5}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
+
+    .line 692
+    iget-object v10, p0, Lcom/android/server/infra/AbstractMasterSystemService;->mServiceNameResolver:Lcom/android/server/infra/ServiceNameResolver;
+
+    invoke-interface {v10, p2, v9}, Lcom/android/server/infra/ServiceNameResolver;->dumpShort(Ljava/io/PrintWriter;I)V
+
+    invoke-virtual {p2}, Ljava/io/PrintWriter;->println()V
+
+    .line 689
+    .end local v9  # "userId":I
+    add-int/lit8 v8, v8, 0x1
+
+    goto :goto_65
+
+    .line 695
+    .end local v4  # "um":Landroid/os/UserManager;
+    .end local v7  # "users":Ljava/util/List;, "Ljava/util/List<Landroid/content/pm/UserInfo;>;"
+    .end local v8  # "i":I
+    :cond_87
     invoke-virtual {p2, p1}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
-    const-string v3, "Users disabled by restriction: "
+    const-string v4, "Users disabled by restriction: "
 
-    invoke-virtual {p2, v3}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
+    invoke-virtual {p2, v4}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
-    .line 741
-    iget-object v3, p0, Lcom/android/server/infra/AbstractMasterSystemService;->mDisabledByUserRestriction:Landroid/util/SparseBooleanArray;
+    .line 696
+    iget-object v4, p0, Lcom/android/server/infra/AbstractMasterSystemService;->mDisabledByUserRestriction:Landroid/util/SparseBooleanArray;
 
-    invoke-virtual {p2, v3}, Ljava/io/PrintWriter;->println(Ljava/lang/Object;)V
+    invoke-virtual {p2, v4}, Ljava/io/PrintWriter;->println(Ljava/lang/Object;)V
 
-    .line 742
+    .line 697
     invoke-virtual {p2, p1}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
-    const-string v3, "Allow instant service: "
+    const-string v4, "Allow instant service: "
 
-    invoke-virtual {p2, v3}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
+    invoke-virtual {p2, v4}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
-    iget-boolean v3, p0, Lcom/android/server/infra/AbstractMasterSystemService;->mAllowInstantService:Z
+    iget-boolean v4, p0, Lcom/android/server/infra/AbstractMasterSystemService;->mAllowInstantService:Z
 
-    invoke-virtual {p2, v3}, Ljava/io/PrintWriter;->println(Z)V
+    invoke-virtual {p2, v4}, Ljava/io/PrintWriter;->println(Z)V
 
-    .line 743
+    .line 698
     invoke-virtual {p0}, Lcom/android/server/infra/AbstractMasterSystemService;->getServiceSettingsProperty()Ljava/lang/String;
 
-    move-result-object v3
+    move-result-object v4
 
-    .line 744
-    if-eqz v3, :cond_b1
+    .line 699
+    .local v4, "settingsProperty":Ljava/lang/String;
+    if-eqz v4, :cond_b2
 
-    .line 745
+    .line 700
     invoke-virtual {p2, p1}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
     const-string v7, "Settings property: "
 
     invoke-virtual {p2, v7}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
-    invoke-virtual {p2, v3}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
-
-    .line 747
-    :cond_b1
-    invoke-virtual {p2, p1}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
-
-    const-string v3, "Cached services: "
-
-    invoke-virtual {p2, v3}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
-
-    .line 748
-    if-nez v2, :cond_c2
-
-    .line 749
-    const-string/jumbo p1, "none"
-
-    invoke-virtual {p2, p1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
-
-    goto :goto_e7
-
-    .line 751
-    :cond_c2
-    invoke-virtual {p2, v2}, Ljava/io/PrintWriter;->println(I)V
-
-    .line 752
-    nop
-
-    :goto_c6
-    if-ge v6, v2, :cond_e7
-
-    .line 753
-    invoke-virtual {p2, p1}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
-
-    const-string v3, "Service at "
-
-    invoke-virtual {p2, v3}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
-
-    invoke-virtual {p2, v6}, Ljava/io/PrintWriter;->print(I)V
-
     invoke-virtual {p2, v4}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
-    .line 754
-    iget-object v3, p0, Lcom/android/server/infra/AbstractMasterSystemService;->mServicesCache:Landroid/util/SparseArray;
+    .line 702
+    :cond_b2
+    invoke-virtual {p2, p1}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
-    invoke-virtual {v3, v6}, Landroid/util/SparseArray;->valueAt(I)Ljava/lang/Object;
+    const-string v7, "Cached services: "
 
-    move-result-object v3
+    invoke-virtual {p2, v7}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
-    check-cast v3, Lcom/android/server/infra/AbstractPerUserSystemService;
+    .line 703
+    if-nez v3, :cond_c3
 
-    .line 755
-    invoke-virtual {v3, v5, p2}, Lcom/android/server/infra/AbstractPerUserSystemService;->dumpLocked(Ljava/lang/String;Ljava/io/PrintWriter;)V
+    .line 704
+    const-string/jumbo v5, "none"
 
-    .line 756
+    invoke-virtual {p2, v5}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+
+    goto :goto_e8
+
+    .line 706
+    :cond_c3
+    invoke-virtual {p2, v3}, Ljava/io/PrintWriter;->println(I)V
+
+    .line 707
+    const/4 v7, 0x0
+
+    .local v7, "i":I
+    :goto_c7
+    if-ge v7, v3, :cond_e8
+
+    .line 708
+    invoke-virtual {p2, p1}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
+
+    const-string v8, "Service at "
+
+    invoke-virtual {p2, v8}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
+
+    invoke-virtual {p2, v7}, Ljava/io/PrintWriter;->print(I)V
+
+    invoke-virtual {p2, v5}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+
+    .line 709
+    iget-object v8, p0, Lcom/android/server/infra/AbstractMasterSystemService;->mServicesCache:Landroid/util/SparseArray;
+
+    invoke-virtual {v8, v7}, Landroid/util/SparseArray;->valueAt(I)Ljava/lang/Object;
+
+    move-result-object v8
+
+    check-cast v8, Lcom/android/server/infra/AbstractPerUserSystemService;
+
+    .line 710
+    .local v8, "service":Lcom/android/server/infra/AbstractPerUserSystemService;, "TS;"
+    invoke-virtual {v8, v6, p2}, Lcom/android/server/infra/AbstractPerUserSystemService;->dumpLocked(Ljava/lang/String;Ljava/io/PrintWriter;)V
+
+    .line 711
     invoke-virtual {p2}, Ljava/io/PrintWriter;->println()V
-    :try_end_e4
-    .catchall {:try_start_43 .. :try_end_e4} :catchall_ed
+    :try_end_e5
+    .catchall {:try_start_44 .. :try_end_e5} :catchall_ee
 
-    .line 752
-    add-int/lit8 v6, v6, 0x1
+    .line 707
+    .end local v8  # "service":Lcom/android/server/infra/AbstractPerUserSystemService;, "TS;"
+    add-int/lit8 v7, v7, 0x1
 
-    goto :goto_c6
+    goto :goto_c7
 
-    .line 760
-    :cond_e7
-    :goto_e7
+    .line 715
+    .end local v3  # "size":I
+    .end local v4  # "settingsProperty":Ljava/lang/String;
+    .end local v7  # "i":I
+    :cond_e8
+    :goto_e8
     iput-boolean v0, p0, Lcom/android/server/infra/AbstractMasterSystemService;->debug:Z
 
-    .line 761
+    .line 716
     iput-boolean v1, p0, Lcom/android/server/infra/AbstractMasterSystemService;->verbose:Z
 
-    .line 762
+    .line 717
     nop
 
-    .line 763
+    .line 718
     return-void
 
-    .line 760
-    :catchall_ed
-    move-exception p1
+    .line 715
+    :catchall_ee
+    move-exception v3
 
     iput-boolean v0, p0, Lcom/android/server/infra/AbstractMasterSystemService;->debug:Z
 
-    .line 761
+    .line 716
     iput-boolean v1, p0, Lcom/android/server/infra/AbstractMasterSystemService;->verbose:Z
 
-    throw p1
+    throw v3
 .end method
 
 .method protected enforceCallingPermissionForManagement()V
     .registers 4
 
-    .line 472
+    .line 441
+    .local p0, "this":Lcom/android/server/infra/AbstractMasterSystemService;, "Lcom/android/server/infra/AbstractMasterSystemService<TM;TS;>;"
     new-instance v0, Ljava/lang/UnsupportedOperationException;
 
     new-instance v1, Ljava/lang/StringBuilder;
@@ -771,15 +806,16 @@
 .method public final getAllowInstantService()Z
     .registers 3
 
-    .line 317
+    .line 286
+    .local p0, "this":Lcom/android/server/infra/AbstractMasterSystemService;, "Lcom/android/server/infra/AbstractMasterSystemService<TM;TS;>;"
     invoke-virtual {p0}, Lcom/android/server/infra/AbstractMasterSystemService;->enforceCallingPermissionForManagement()V
 
-    .line 318
+    .line 287
     iget-object v0, p0, Lcom/android/server/infra/AbstractMasterSystemService;->mLock:Ljava/lang/Object;
 
     monitor-enter v0
 
-    .line 319
+    .line 288
     :try_start_6
     iget-boolean v1, p0, Lcom/android/server/infra/AbstractMasterSystemService;->mAllowInstantService:Z
 
@@ -787,7 +823,7 @@
 
     return v1
 
-    .line 320
+    .line 289
     :catchall_a
     move-exception v1
 
@@ -801,7 +837,8 @@
 .method protected getMaximumTemporaryServiceDurationMs()I
     .registers 4
 
-    .line 442
+    .line 411
+    .local p0, "this":Lcom/android/server/infra/AbstractMasterSystemService;, "Lcom/android/server/infra/AbstractMasterSystemService<TM;TS;>;"
     new-instance v0, Ljava/lang/UnsupportedOperationException;
 
     new-instance v1, Ljava/lang/StringBuilder;
@@ -829,6 +866,7 @@
 
 .method protected getServiceForUserLocked(I)Lcom/android/server/infra/AbstractPerUserSystemService;
     .registers 9
+    .param p1, "userId"  # I
     .annotation build Lcom/android/internal/annotations/GuardedBy;
         value = {
             "mLock"
@@ -841,17 +879,18 @@
         }
     .end annotation
 
-    .line 526
+    .line 495
+    .local p0, "this":Lcom/android/server/infra/AbstractMasterSystemService;, "Lcom/android/server/infra/AbstractMasterSystemService<TM;TS;>;"
     invoke-static {}, Landroid/os/Binder;->getCallingPid()I
 
     move-result v0
 
-    .line 527
+    .line 496
     invoke-static {}, Landroid/os/Binder;->getCallingUid()I
 
     move-result v1
 
-    .line 526
+    .line 495
     const/4 v3, 0x0
 
     const/4 v4, 0x0
@@ -866,7 +905,8 @@
 
     move-result v0
 
-    .line 528
+    .line 497
+    .local v0, "resolvedUserId":I
     iget-object v1, p0, Lcom/android/server/infra/AbstractMasterSystemService;->mServicesCache:Landroid/util/SparseArray;
 
     invoke-virtual {v1, v0}, Landroid/util/SparseArray;->get(I)Ljava/lang/Object;
@@ -875,42 +915,44 @@
 
     check-cast v1, Lcom/android/server/infra/AbstractPerUserSystemService;
 
-    .line 529
-    if-nez v1, :cond_2e
+    .line 498
+    .local v1, "service":Lcom/android/server/infra/AbstractPerUserSystemService;, "TS;"
+    if-nez v1, :cond_2d
 
-    .line 530
+    .line 499
     invoke-virtual {p0, p1}, Lcom/android/server/infra/AbstractMasterSystemService;->isDisabledLocked(I)Z
 
-    move-result v1
+    move-result v2
 
-    .line 531
-    invoke-virtual {p0, v0, v1}, Lcom/android/server/infra/AbstractMasterSystemService;->newServiceLocked(IZ)Lcom/android/server/infra/AbstractPerUserSystemService;
+    .line 500
+    .local v2, "disabled":Z
+    invoke-virtual {p0, v0, v2}, Lcom/android/server/infra/AbstractMasterSystemService;->newServiceLocked(IZ)Lcom/android/server/infra/AbstractPerUserSystemService;
 
-    move-result-object v2
+    move-result-object v1
 
-    .line 532
-    if-nez v1, :cond_28
+    .line 501
+    if-nez v2, :cond_28
 
-    .line 533
-    invoke-virtual {p0, v2, v0}, Lcom/android/server/infra/AbstractMasterSystemService;->onServiceEnabledLocked(Lcom/android/server/infra/AbstractPerUserSystemService;I)V
+    .line 502
+    invoke-virtual {p0, v1, v0}, Lcom/android/server/infra/AbstractMasterSystemService;->onServiceEnabledLocked(Lcom/android/server/infra/AbstractPerUserSystemService;I)V
 
-    .line 535
+    .line 504
     :cond_28
-    iget-object v0, p0, Lcom/android/server/infra/AbstractMasterSystemService;->mServicesCache:Landroid/util/SparseArray;
+    iget-object v3, p0, Lcom/android/server/infra/AbstractMasterSystemService;->mServicesCache:Landroid/util/SparseArray;
 
-    invoke-virtual {v0, p1, v2}, Landroid/util/SparseArray;->put(ILjava/lang/Object;)V
+    invoke-virtual {v3, p1, v1}, Landroid/util/SparseArray;->put(ILjava/lang/Object;)V
 
-    move-object v1, v2
-
-    .line 537
-    :cond_2e
+    .line 506
+    .end local v2  # "disabled":Z
+    :cond_2d
     return-object v1
 .end method
 
 .method protected getServiceSettingsProperty()Ljava/lang/String;
     .registers 2
 
-    .line 596
+    .line 565
+    .local p0, "this":Lcom/android/server/infra/AbstractMasterSystemService;, "Lcom/android/server/infra/AbstractMasterSystemService<TM;TS;>;"
     const/4 v0, 0x0
 
     return-object v0
@@ -919,12 +961,13 @@
 .method public final isBindInstantServiceAllowed()Z
     .registers 3
 
-    .line 332
+    .line 301
+    .local p0, "this":Lcom/android/server/infra/AbstractMasterSystemService;, "Lcom/android/server/infra/AbstractMasterSystemService<TM;TS;>;"
     iget-object v0, p0, Lcom/android/server/infra/AbstractMasterSystemService;->mLock:Ljava/lang/Object;
 
     monitor-enter v0
 
-    .line 333
+    .line 302
     :try_start_3
     iget-boolean v1, p0, Lcom/android/server/infra/AbstractMasterSystemService;->mAllowInstantService:Z
 
@@ -932,7 +975,7 @@
 
     return v1
 
-    .line 334
+    .line 303
     :catchall_7
     move-exception v1
 
@@ -945,175 +988,193 @@
 
 .method public final isDefaultServiceEnabled(I)Z
     .registers 4
+    .param p1, "userId"  # I
 
-    .line 429
+    .line 398
+    .local p0, "this":Lcom/android/server/infra/AbstractMasterSystemService;, "Lcom/android/server/infra/AbstractMasterSystemService<TM;TS;>;"
     invoke-virtual {p0}, Lcom/android/server/infra/AbstractMasterSystemService;->enforceCallingPermissionForManagement()V
 
-    .line 431
+    .line 400
     iget-object v0, p0, Lcom/android/server/infra/AbstractMasterSystemService;->mLock:Ljava/lang/Object;
 
     monitor-enter v0
 
-    .line 432
+    .line 401
     :try_start_6
     iget-object v1, p0, Lcom/android/server/infra/AbstractMasterSystemService;->mServiceNameResolver:Lcom/android/server/infra/ServiceNameResolver;
 
     invoke-interface {v1, p1}, Lcom/android/server/infra/ServiceNameResolver;->isDefaultServiceEnabled(I)Z
 
-    move-result p1
+    move-result v1
 
     monitor-exit v0
 
-    return p1
+    return v1
 
-    .line 433
+    .line 402
     :catchall_e
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_10
     .catchall {:try_start_6 .. :try_end_10} :catchall_e
 
-    throw p1
+    throw v1
 .end method
 
 .method protected isDisabledLocked(I)Z
     .registers 3
+    .param p1, "userId"  # I
 
-    .line 565
+    .line 534
+    .local p0, "this":Lcom/android/server/infra/AbstractMasterSystemService;, "Lcom/android/server/infra/AbstractMasterSystemService<TM;TS;>;"
     iget-object v0, p0, Lcom/android/server/infra/AbstractMasterSystemService;->mDisabledByUserRestriction:Landroid/util/SparseBooleanArray;
 
     if-nez v0, :cond_6
 
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
     goto :goto_a
 
     :cond_6
     invoke-virtual {v0, p1}, Landroid/util/SparseBooleanArray;->get(I)Z
 
-    move-result p1
+    move-result v0
 
     :goto_a
-    return p1
+    return v0
 .end method
 
 .method public synthetic lambda$new$0$AbstractMasterSystemService(ILjava/lang/String;Z)V
     .registers 4
+    .param p1, "u"  # I
+    .param p2, "s"  # Ljava/lang/String;
+    .param p3, "t"  # Z
 
-    .line 248
+    .line 217
+    .local p0, "this":Lcom/android/server/infra/AbstractMasterSystemService;, "Lcom/android/server/infra/AbstractMasterSystemService<TM;TS;>;"
     invoke-virtual {p0, p1, p2, p3}, Lcom/android/server/infra/AbstractMasterSystemService;->onServiceNameChanged(ILjava/lang/String;Z)V
 
     return-void
 .end method
 
 .method public synthetic lambda$new$1$AbstractMasterSystemService(Ljava/lang/String;ILandroid/os/Bundle;Landroid/os/Bundle;)V
-    .registers 7
+    .registers 11
+    .param p1, "disallowProperty"  # Ljava/lang/String;
+    .param p2, "userId"  # I
+    .param p3, "newRestrictions"  # Landroid/os/Bundle;
+    .param p4, "prevRestrictions"  # Landroid/os/Bundle;
 
-    .line 268
+    .line 237
+    .local p0, "this":Lcom/android/server/infra/AbstractMasterSystemService;, "Lcom/android/server/infra/AbstractMasterSystemService<TM;TS;>;"
     nop
 
-    .line 269
-    const/4 p4, 0x0
+    .line 238
+    const/4 v0, 0x0
 
-    invoke-virtual {p3, p1, p4}, Landroid/os/Bundle;->getBoolean(Ljava/lang/String;Z)Z
+    invoke-virtual {p3, p1, v0}, Landroid/os/Bundle;->getBoolean(Ljava/lang/String;Z)Z
 
-    move-result p1
+    move-result v0
 
-    .line 270
-    iget-object p3, p0, Lcom/android/server/infra/AbstractMasterSystemService;->mLock:Ljava/lang/Object;
+    .line 239
+    .local v0, "disabledNow":Z
+    iget-object v1, p0, Lcom/android/server/infra/AbstractMasterSystemService;->mLock:Ljava/lang/Object;
 
-    monitor-enter p3
+    monitor-enter v1
 
-    .line 271
+    .line 240
     :try_start_9
-    iget-object p4, p0, Lcom/android/server/infra/AbstractMasterSystemService;->mDisabledByUserRestriction:Landroid/util/SparseBooleanArray;
+    iget-object v2, p0, Lcom/android/server/infra/AbstractMasterSystemService;->mDisabledByUserRestriction:Landroid/util/SparseBooleanArray;
 
-    invoke-virtual {p4, p2}, Landroid/util/SparseBooleanArray;->get(I)Z
+    invoke-virtual {v2, p2}, Landroid/util/SparseBooleanArray;->get(I)Z
 
-    move-result p4
+    move-result v2
 
-    .line 272
-    if-ne p4, p1, :cond_2d
+    .line 241
+    .local v2, "disabledBefore":Z
+    if-ne v2, v0, :cond_2d
 
-    .line 274
-    iget-boolean p4, p0, Lcom/android/server/infra/AbstractMasterSystemService;->debug:Z
+    .line 243
+    iget-boolean v3, p0, Lcom/android/server/infra/AbstractMasterSystemService;->debug:Z
 
-    if-eqz p4, :cond_2d
+    if-eqz v3, :cond_2d
 
-    .line 275
-    iget-object p1, p0, Lcom/android/server/infra/AbstractMasterSystemService;->mTag:Ljava/lang/String;
+    .line 244
+    iget-object v3, p0, Lcom/android/server/infra/AbstractMasterSystemService;->mTag:Ljava/lang/String;
 
-    new-instance p4, Ljava/lang/StringBuilder;
+    new-instance v4, Ljava/lang/StringBuilder;
 
-    invoke-direct {p4}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v4}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v0, "Restriction did not change for user "
+    const-string v5, "Restriction did not change for user "
 
-    invoke-virtual {p4, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p4, p2}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v4, p2}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p4}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v4}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p2
+    move-result-object v4
 
-    invoke-static {p1, p2}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v3, v4}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 276
-    monitor-exit p3
+    .line 245
+    monitor-exit v1
 
     return-void
 
-    .line 279
+    .line 248
     :cond_2d
-    iget-object p4, p0, Lcom/android/server/infra/AbstractMasterSystemService;->mTag:Ljava/lang/String;
+    iget-object v3, p0, Lcom/android/server/infra/AbstractMasterSystemService;->mTag:Ljava/lang/String;
 
-    new-instance v0, Ljava/lang/StringBuilder;
+    new-instance v4, Ljava/lang/StringBuilder;
 
-    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v4}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v1, "Updating for user "
+    const-string v5, "Updating for user "
 
-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0, p2}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v4, p2}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    const-string v1, ": disabled="
+    const-string v5, ": disabled="
 
-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Z)Ljava/lang/StringBuilder;
+    invoke-virtual {v4, v0}, Ljava/lang/StringBuilder;->append(Z)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v4}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v4
 
-    invoke-static {p4, v0}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v3, v4}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 280
-    iget-object p4, p0, Lcom/android/server/infra/AbstractMasterSystemService;->mDisabledByUserRestriction:Landroid/util/SparseBooleanArray;
+    .line 249
+    iget-object v3, p0, Lcom/android/server/infra/AbstractMasterSystemService;->mDisabledByUserRestriction:Landroid/util/SparseBooleanArray;
 
-    invoke-virtual {p4, p2, p1}, Landroid/util/SparseBooleanArray;->put(IZ)V
+    invoke-virtual {v3, p2, v0}, Landroid/util/SparseBooleanArray;->put(IZ)V
 
-    .line 281
-    invoke-virtual {p0, p2, p1}, Lcom/android/server/infra/AbstractMasterSystemService;->updateCachedServiceLocked(IZ)Lcom/android/server/infra/AbstractPerUserSystemService;
+    .line 250
+    invoke-virtual {p0, p2, v0}, Lcom/android/server/infra/AbstractMasterSystemService;->updateCachedServiceLocked(IZ)Lcom/android/server/infra/AbstractPerUserSystemService;
 
-    .line 282
-    monitor-exit p3
+    .line 251
+    nop
 
-    .line 283
+    .end local v2  # "disabledBefore":Z
+    monitor-exit v1
+
+    .line 252
     return-void
 
-    .line 282
-    :catchall_55
-    move-exception p1
+    .line 251
+    :catchall_56
+    move-exception v2
 
-    monitor-exit p3
-    :try_end_57
-    .catchall {:try_start_9 .. :try_end_57} :catchall_55
+    monitor-exit v1
+    :try_end_58
+    .catchall {:try_start_9 .. :try_end_58} :catchall_56
 
-    throw p1
+    throw v2
 .end method
 
 .method protected abstract newServiceLocked(IZ)Lcom/android/server/infra/AbstractPerUserSystemService;
@@ -1125,171 +1186,114 @@
 .end method
 
 .method public onBootPhase(I)V
-    .registers 3
+    .registers 4
+    .param p1, "phase"  # I
 
-    .line 290
+    .line 259
+    .local p0, "this":Lcom/android/server/infra/AbstractMasterSystemService;, "Lcom/android/server/infra/AbstractMasterSystemService<TM;TS;>;"
     const/16 v0, 0x258
 
     if-ne p1, v0, :cond_d
 
-    .line 291
-    new-instance p1, Lcom/android/server/infra/AbstractMasterSystemService$SettingsObserver;
+    .line 260
+    new-instance v0, Lcom/android/server/infra/AbstractMasterSystemService$SettingsObserver;
 
     invoke-static {}, Lcom/android/internal/os/BackgroundThread;->getHandler()Landroid/os/Handler;
 
-    move-result-object v0
+    move-result-object v1
 
-    invoke-direct {p1, p0, v0}, Lcom/android/server/infra/AbstractMasterSystemService$SettingsObserver;-><init>(Lcom/android/server/infra/AbstractMasterSystemService;Landroid/os/Handler;)V
+    invoke-direct {v0, p0, v1}, Lcom/android/server/infra/AbstractMasterSystemService$SettingsObserver;-><init>(Lcom/android/server/infra/AbstractMasterSystemService;Landroid/os/Handler;)V
 
-    .line 293
+    .line 262
     :cond_d
     return-void
 .end method
 
 .method public onCleanupUser(I)V
-    .registers 3
+    .registers 4
+    .param p1, "userId"  # I
 
-    .line 304
+    .line 273
+    .local p0, "this":Lcom/android/server/infra/AbstractMasterSystemService;, "Lcom/android/server/infra/AbstractMasterSystemService<TM;TS;>;"
     iget-object v0, p0, Lcom/android/server/infra/AbstractMasterSystemService;->mLock:Ljava/lang/Object;
 
     monitor-enter v0
 
-    .line 305
+    .line 274
     :try_start_3
     invoke-virtual {p0, p1}, Lcom/android/server/infra/AbstractMasterSystemService;->removeCachedServiceLocked(I)Lcom/android/server/infra/AbstractPerUserSystemService;
 
-    .line 306
+    .line 275
     monitor-exit v0
 
-    .line 307
+    .line 276
     return-void
 
-    .line 306
+    .line 275
     :catchall_8
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_a
     .catchall {:try_start_3 .. :try_end_a} :catchall_8
 
-    throw p1
+    throw v1
 .end method
 
 .method protected onServiceEnabledLocked(Lcom/android/server/infra/AbstractPerUserSystemService;I)V
     .registers 3
+    .param p2, "userId"  # I
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(TS;I)V"
         }
     .end annotation
 
-    .line 607
+    .line 576
+    .local p0, "this":Lcom/android/server/infra/AbstractMasterSystemService;, "Lcom/android/server/infra/AbstractMasterSystemService<TM;TS;>;"
+    .local p1, "service":Lcom/android/server/infra/AbstractPerUserSystemService;, "TS;"
     return-void
 .end method
 
 .method protected onServiceNameChanged(ILjava/lang/String;Z)V
-    .registers 4
+    .registers 6
+    .param p1, "userId"  # I
+    .param p2, "serviceName"  # Ljava/lang/String;
+    .param p3, "isTemporary"  # Z
 
-    .line 672
-    iget-object p2, p0, Lcom/android/server/infra/AbstractMasterSystemService;->mLock:Ljava/lang/Object;
+    .line 627
+    .local p0, "this":Lcom/android/server/infra/AbstractMasterSystemService;, "Lcom/android/server/infra/AbstractMasterSystemService<TM;TS;>;"
+    iget-object v0, p0, Lcom/android/server/infra/AbstractMasterSystemService;->mLock:Ljava/lang/Object;
 
-    monitor-enter p2
+    monitor-enter v0
 
-    .line 673
+    .line 628
     :try_start_3
     invoke-virtual {p0, p1}, Lcom/android/server/infra/AbstractMasterSystemService;->updateCachedServiceLocked(I)V
 
-    .line 674
-    monitor-exit p2
+    .line 629
+    monitor-exit v0
 
-    .line 675
+    .line 630
     return-void
 
-    .line 674
+    .line 629
     :catchall_8
-    move-exception p1
+    move-exception v1
 
-    monitor-exit p2
+    monitor-exit v0
     :try_end_a
     .catchall {:try_start_3 .. :try_end_a} :catchall_8
 
-    throw p1
-.end method
-
-.method protected onServicePackageDataClearedLocked(I)V
-    .registers 5
-
-    .line 643
-    iget-boolean v0, p0, Lcom/android/server/infra/AbstractMasterSystemService;->verbose:Z
-
-    if-eqz v0, :cond_20
-
-    iget-object v0, p0, Lcom/android/server/infra/AbstractMasterSystemService;->mTag:Ljava/lang/String;
-
-    new-instance v1, Ljava/lang/StringBuilder;
-
-    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
-
-    const-string/jumbo v2, "onServicePackageDataCleared("
-
-    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v1, p1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
-
-    const-string p1, ")"
-
-    invoke-virtual {v1, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
-
-    move-result-object p1
-
-    invoke-static {v0, p1}, Landroid/util/Slog;->v(Ljava/lang/String;Ljava/lang/String;)I
-
-    .line 644
-    :cond_20
-    return-void
-.end method
-
-.method protected onServicePackageRestartedLocked(I)V
-    .registers 5
-
-    .line 650
-    iget-boolean v0, p0, Lcom/android/server/infra/AbstractMasterSystemService;->verbose:Z
-
-    if-eqz v0, :cond_20
-
-    iget-object v0, p0, Lcom/android/server/infra/AbstractMasterSystemService;->mTag:Ljava/lang/String;
-
-    new-instance v1, Ljava/lang/StringBuilder;
-
-    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
-
-    const-string/jumbo v2, "onServicePackageRestarted("
-
-    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v1, p1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
-
-    const-string p1, ")"
-
-    invoke-virtual {v1, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
-
-    move-result-object p1
-
-    invoke-static {v0, p1}, Landroid/util/Slog;->v(Ljava/lang/String;Ljava/lang/String;)I
-
-    .line 651
-    :cond_20
-    return-void
+    throw v1
 .end method
 
 .method protected onServicePackageUpdatedLocked(I)V
     .registers 5
+    .param p1, "userId"  # I
 
-    .line 636
+    .line 605
+    .local p0, "this":Lcom/android/server/infra/AbstractMasterSystemService;, "Lcom/android/server/infra/AbstractMasterSystemService<TM;TS;>;"
     iget-boolean v0, p0, Lcom/android/server/infra/AbstractMasterSystemService;->verbose:Z
 
     if-eqz v0, :cond_20
@@ -1306,25 +1310,27 @@
 
     invoke-virtual {v1, p1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    const-string p1, ")"
+    const-string v2, ")"
 
-    invoke-virtual {v1, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v1
 
-    invoke-static {v0, p1}, Landroid/util/Slog;->v(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v0, v1}, Landroid/util/Slog;->v(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 637
+    .line 606
     :cond_20
     return-void
 .end method
 
 .method protected onServicePackageUpdatingLocked(I)V
     .registers 5
+    .param p1, "userId"  # I
 
-    .line 629
+    .line 598
+    .local p0, "this":Lcom/android/server/infra/AbstractMasterSystemService;, "Lcom/android/server/infra/AbstractMasterSystemService<TM;TS;>;"
     iget-boolean v0, p0, Lcom/android/server/infra/AbstractMasterSystemService;->verbose:Z
 
     if-eqz v0, :cond_20
@@ -1341,71 +1347,80 @@
 
     invoke-virtual {v1, p1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    const-string p1, ")"
+    const-string v2, ")"
 
-    invoke-virtual {v1, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v1
 
-    invoke-static {v0, p1}, Landroid/util/Slog;->v(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v0, v1}, Landroid/util/Slog;->v(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 630
+    .line 599
     :cond_20
     return-void
 .end method
 
 .method protected onServiceRemoved(Lcom/android/server/infra/AbstractPerUserSystemService;I)V
     .registers 3
+    .param p2, "userId"  # I
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(TS;I)V"
         }
     .end annotation
 
-    .line 658
+    .line 613
+    .local p0, "this":Lcom/android/server/infra/AbstractMasterSystemService;, "Lcom/android/server/infra/AbstractMasterSystemService<TM;TS;>;"
+    .local p1, "service":Lcom/android/server/infra/AbstractPerUserSystemService;, "TS;"
     return-void
 .end method
 
 .method protected onSettingsChanged(ILjava/lang/String;)V
     .registers 3
+    .param p1, "userId"  # I
+    .param p2, "property"  # Ljava/lang/String;
 
-    .line 518
+    .line 487
+    .local p0, "this":Lcom/android/server/infra/AbstractMasterSystemService;, "Lcom/android/server/infra/AbstractMasterSystemService<TM;TS;>;"
     return-void
 .end method
 
 .method public onUnlockUser(I)V
-    .registers 3
+    .registers 4
+    .param p1, "userId"  # I
 
-    .line 297
+    .line 266
+    .local p0, "this":Lcom/android/server/infra/AbstractMasterSystemService;, "Lcom/android/server/infra/AbstractMasterSystemService<TM;TS;>;"
     iget-object v0, p0, Lcom/android/server/infra/AbstractMasterSystemService;->mLock:Ljava/lang/Object;
 
     monitor-enter v0
 
-    .line 298
+    .line 267
     :try_start_3
     invoke-virtual {p0, p1}, Lcom/android/server/infra/AbstractMasterSystemService;->updateCachedServiceLocked(I)V
 
-    .line 299
+    .line 268
     monitor-exit v0
 
-    .line 300
+    .line 269
     return-void
 
-    .line 299
+    .line 268
     :catchall_8
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_a
     .catchall {:try_start_3 .. :try_end_a} :catchall_8
 
-    throw p1
+    throw v1
 .end method
 
 .method protected peekServiceForUserLocked(I)Lcom/android/server/infra/AbstractPerUserSystemService;
     .registers 9
+    .param p1, "userId"  # I
     .annotation build Lcom/android/internal/annotations/GuardedBy;
         value = {
             "mLock"
@@ -1418,17 +1433,18 @@
         }
     .end annotation
 
-    .line 547
+    .line 516
+    .local p0, "this":Lcom/android/server/infra/AbstractMasterSystemService;, "Lcom/android/server/infra/AbstractMasterSystemService<TM;TS;>;"
     invoke-static {}, Landroid/os/Binder;->getCallingPid()I
 
     move-result v0
 
-    .line 548
+    .line 517
     invoke-static {}, Landroid/os/Binder;->getCallingUid()I
 
     move-result v1
 
-    .line 547
+    .line 516
     const/4 v3, 0x0
 
     const/4 v4, 0x0
@@ -1441,29 +1457,34 @@
 
     invoke-static/range {v0 .. v6}, Landroid/app/ActivityManager;->handleIncomingUser(IIIZZLjava/lang/String;Ljava/lang/String;)I
 
-    move-result p1
+    move-result v0
 
-    .line 549
-    iget-object v0, p0, Lcom/android/server/infra/AbstractMasterSystemService;->mServicesCache:Landroid/util/SparseArray;
+    .line 518
+    .local v0, "resolvedUserId":I
+    iget-object v1, p0, Lcom/android/server/infra/AbstractMasterSystemService;->mServicesCache:Landroid/util/SparseArray;
 
-    invoke-virtual {v0, p1}, Landroid/util/SparseArray;->get(I)Ljava/lang/Object;
+    invoke-virtual {v1, v0}, Landroid/util/SparseArray;->get(I)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v1
 
-    check-cast p1, Lcom/android/server/infra/AbstractPerUserSystemService;
+    check-cast v1, Lcom/android/server/infra/AbstractPerUserSystemService;
 
-    return-object p1
+    return-object v1
 .end method
 
 .method protected registerForExtraSettingsChanges(Landroid/content/ContentResolver;Landroid/database/ContentObserver;)V
     .registers 3
+    .param p1, "resolver"  # Landroid/content/ContentResolver;
+    .param p2, "observer"  # Landroid/database/ContentObserver;
 
-    .line 508
+    .line 477
+    .local p0, "this":Lcom/android/server/infra/AbstractMasterSystemService;, "Lcom/android/server/infra/AbstractMasterSystemService<TM;TS;>;"
     return-void
 .end method
 
 .method protected final removeCachedServiceLocked(I)Lcom/android/server/infra/AbstractPerUserSystemService;
     .registers 4
+    .param p1, "userId"  # I
     .annotation build Lcom/android/internal/annotations/GuardedBy;
         value = {
             "mLock"
@@ -1476,31 +1497,35 @@
         }
     .end annotation
 
-    .line 617
+    .line 586
+    .local p0, "this":Lcom/android/server/infra/AbstractMasterSystemService;, "Lcom/android/server/infra/AbstractMasterSystemService<TM;TS;>;"
     invoke-virtual {p0, p1}, Lcom/android/server/infra/AbstractMasterSystemService;->peekServiceForUserLocked(I)Lcom/android/server/infra/AbstractPerUserSystemService;
 
     move-result-object v0
 
-    .line 618
+    .line 587
+    .local v0, "service":Lcom/android/server/infra/AbstractPerUserSystemService;, "TS;"
     if-eqz v0, :cond_e
 
-    .line 619
+    .line 588
     iget-object v1, p0, Lcom/android/server/infra/AbstractMasterSystemService;->mServicesCache:Landroid/util/SparseArray;
 
     invoke-virtual {v1, p1}, Landroid/util/SparseArray;->delete(I)V
 
-    .line 620
+    .line 589
     invoke-virtual {p0, v0, p1}, Lcom/android/server/infra/AbstractMasterSystemService;->onServiceRemoved(Lcom/android/server/infra/AbstractPerUserSystemService;I)V
 
-    .line 622
+    .line 591
     :cond_e
     return-object v0
 .end method
 
 .method public final resetTemporaryService(I)V
     .registers 5
+    .param p1, "userId"  # I
 
-    .line 453
+    .line 422
+    .local p0, "this":Lcom/android/server/infra/AbstractMasterSystemService;, "Lcom/android/server/infra/AbstractMasterSystemService<TM;TS;>;"
     iget-object v0, p0, Lcom/android/server/infra/AbstractMasterSystemService;->mTag:Ljava/lang/String;
 
     new-instance v1, Ljava/lang/StringBuilder;
@@ -1519,48 +1544,52 @@
 
     invoke-static {v0, v1}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 454
+    .line 423
     invoke-virtual {p0}, Lcom/android/server/infra/AbstractMasterSystemService;->enforceCallingPermissionForManagement()V
 
-    .line 455
+    .line 424
     iget-object v0, p0, Lcom/android/server/infra/AbstractMasterSystemService;->mLock:Ljava/lang/Object;
 
     monitor-enter v0
 
-    .line 456
+    .line 425
     :try_start_1d
     invoke-virtual {p0, p1}, Lcom/android/server/infra/AbstractMasterSystemService;->getServiceForUserLocked(I)Lcom/android/server/infra/AbstractPerUserSystemService;
 
-    move-result-object p1
+    move-result-object v1
 
-    .line 457
-    if-eqz p1, :cond_26
+    .line 426
+    .local v1, "service":Lcom/android/server/infra/AbstractPerUserSystemService;, "TS;"
+    if-eqz v1, :cond_26
 
-    .line 458
-    invoke-virtual {p1}, Lcom/android/server/infra/AbstractPerUserSystemService;->resetTemporaryServiceLocked()V
+    .line 427
+    invoke-virtual {v1}, Lcom/android/server/infra/AbstractPerUserSystemService;->resetTemporaryServiceLocked()V
 
-    .line 460
+    .line 429
+    .end local v1  # "service":Lcom/android/server/infra/AbstractPerUserSystemService;, "TS;"
     :cond_26
     monitor-exit v0
 
-    .line 461
+    .line 430
     return-void
 
-    .line 460
+    .line 429
     :catchall_28
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_2a
     .catchall {:try_start_1d .. :try_end_2a} :catchall_28
 
-    throw p1
+    throw v1
 .end method
 
 .method public final setAllowInstantService(Z)V
     .registers 5
+    .param p1, "mode"  # Z
 
-    .line 345
+    .line 314
+    .local p0, "this":Lcom/android/server/infra/AbstractMasterSystemService;, "Lcom/android/server/infra/AbstractMasterSystemService<TM;TS;>;"
     iget-object v0, p0, Lcom/android/server/infra/AbstractMasterSystemService;->mTag:Ljava/lang/String;
 
     new-instance v1, Ljava/lang/StringBuilder;
@@ -1579,39 +1608,42 @@
 
     invoke-static {v0, v1}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 346
+    .line 315
     invoke-virtual {p0}, Lcom/android/server/infra/AbstractMasterSystemService;->enforceCallingPermissionForManagement()V
 
-    .line 347
+    .line 316
     iget-object v0, p0, Lcom/android/server/infra/AbstractMasterSystemService;->mLock:Ljava/lang/Object;
 
     monitor-enter v0
 
-    .line 348
+    .line 317
     :try_start_1d
     iput-boolean p1, p0, Lcom/android/server/infra/AbstractMasterSystemService;->mAllowInstantService:Z
 
-    .line 349
+    .line 318
     monitor-exit v0
 
-    .line 350
+    .line 319
     return-void
 
-    .line 349
+    .line 318
     :catchall_21
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_23
     .catchall {:try_start_1d .. :try_end_23} :catchall_21
 
-    throw p1
+    throw v1
 .end method
 
 .method public final setDefaultServiceEnabled(IZ)Z
-    .registers 7
+    .registers 8
+    .param p1, "userId"  # I
+    .param p2, "enabled"  # Z
 
-    .line 397
+    .line 366
+    .local p0, "this":Lcom/android/server/infra/AbstractMasterSystemService;, "Lcom/android/server/infra/AbstractMasterSystemService<TM;TS;>;"
     iget-object v0, p0, Lcom/android/server/infra/AbstractMasterSystemService;->mTag:Ljava/lang/String;
 
     new-instance v1, Ljava/lang/StringBuilder;
@@ -1636,15 +1668,15 @@
 
     invoke-static {v0, v1}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 398
+    .line 367
     invoke-virtual {p0}, Lcom/android/server/infra/AbstractMasterSystemService;->enforceCallingPermissionForManagement()V
 
-    .line 400
+    .line 369
     iget-object v0, p0, Lcom/android/server/infra/AbstractMasterSystemService;->mLock:Ljava/lang/Object;
 
     monitor-enter v0
 
-    .line 401
+    .line 370
     :try_start_25
     iget-object v1, p0, Lcom/android/server/infra/AbstractMasterSystemService;->mServiceNameResolver:Lcom/android/server/infra/ServiceNameResolver;
 
@@ -1652,86 +1684,94 @@
 
     move-result v1
 
-    .line 402
+    .line 371
+    .local v1, "changed":Z
     if-nez v1, :cond_53
 
-    .line 403
-    iget-boolean v1, p0, Lcom/android/server/infra/AbstractMasterSystemService;->verbose:Z
+    .line 372
+    iget-boolean v2, p0, Lcom/android/server/infra/AbstractMasterSystemService;->verbose:Z
 
-    if-eqz v1, :cond_50
+    if-eqz v2, :cond_50
 
-    .line 404
-    iget-object v1, p0, Lcom/android/server/infra/AbstractMasterSystemService;->mTag:Ljava/lang/String;
+    .line 373
+    iget-object v2, p0, Lcom/android/server/infra/AbstractMasterSystemService;->mTag:Ljava/lang/String;
 
-    new-instance v2, Ljava/lang/StringBuilder;
+    new-instance v3, Ljava/lang/StringBuilder;
 
-    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string/jumbo v3, "setDefaultServiceEnabled("
+    const-string/jumbo v4, "setDefaultServiceEnabled("
 
-    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v2, p1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, p1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    const-string p1, "): already "
+    const-string v4, "): already "
 
-    invoke-virtual {v2, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v2, p2}, Ljava/lang/StringBuilder;->append(Z)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, p2}, Ljava/lang/StringBuilder;->append(Z)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v3
 
-    invoke-static {v1, p1}, Landroid/util/Slog;->v(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v2, v3}, Landroid/util/Slog;->v(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 406
+    .line 375
     :cond_50
-    const/4 p1, 0x0
+    const/4 v2, 0x0
 
     monitor-exit v0
 
-    return p1
+    return v2
 
-    .line 409
+    .line 378
     :cond_53
     invoke-virtual {p0, p1}, Lcom/android/server/infra/AbstractMasterSystemService;->peekServiceForUserLocked(I)Lcom/android/server/infra/AbstractPerUserSystemService;
 
-    move-result-object p2
+    move-result-object v2
 
-    .line 410
-    if-eqz p2, :cond_5c
+    .line 379
+    .local v2, "oldService":Lcom/android/server/infra/AbstractPerUserSystemService;, "TS;"
+    if-eqz v2, :cond_5c
 
-    .line 411
-    invoke-virtual {p2}, Lcom/android/server/infra/AbstractPerUserSystemService;->removeSelfFromCacheLocked()V
+    .line 380
+    invoke-virtual {v2}, Lcom/android/server/infra/AbstractPerUserSystemService;->removeSelfFromCacheLocked()V
 
-    .line 415
+    .line 384
     :cond_5c
     invoke-virtual {p0, p1}, Lcom/android/server/infra/AbstractMasterSystemService;->updateCachedServiceLocked(I)V
 
-    .line 416
+    .line 385
+    .end local v1  # "changed":Z
+    .end local v2  # "oldService":Lcom/android/server/infra/AbstractPerUserSystemService;, "TS;"
     monitor-exit v0
 
-    .line 417
-    const/4 p1, 0x1
+    .line 386
+    const/4 v0, 0x1
 
-    return p1
+    return v0
 
-    .line 416
+    .line 385
     :catchall_62
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_64
     .catchall {:try_start_25 .. :try_end_64} :catchall_62
 
-    throw p1
+    throw v1
 .end method
 
 .method public final setTemporaryService(ILjava/lang/String;I)V
-    .registers 7
+    .registers 8
+    .param p1, "userId"  # I
+    .param p2, "componentName"  # Ljava/lang/String;
+    .param p3, "durationMs"  # I
 
-    .line 366
+    .line 335
+    .local p0, "this":Lcom/android/server/infra/AbstractMasterSystemService;, "Lcom/android/server/infra/AbstractMasterSystemService<TM;TS;>;"
     iget-object v0, p0, Lcom/android/server/infra/AbstractMasterSystemService;->mTag:Ljava/lang/String;
 
     new-instance v1, Ljava/lang/StringBuilder;
@@ -1766,94 +1806,99 @@
 
     invoke-static {v0, v1}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 368
+    .line 337
     invoke-virtual {p0}, Lcom/android/server/infra/AbstractMasterSystemService;->enforceCallingPermissionForManagement()V
 
-    .line 370
+    .line 339
     invoke-static {p2}, Lcom/android/internal/util/Preconditions;->checkNotNull(Ljava/lang/Object;)Ljava/lang/Object;
 
-    .line 371
+    .line 340
     invoke-virtual {p0}, Lcom/android/server/infra/AbstractMasterSystemService;->getMaximumTemporaryServiceDurationMs()I
 
     move-result v0
 
-    .line 372
+    .line 341
+    .local v0, "maxDurationMs":I
     if-gt p3, v0, :cond_4f
 
-    .line 377
+    .line 346
     iget-object v1, p0, Lcom/android/server/infra/AbstractMasterSystemService;->mLock:Ljava/lang/Object;
 
     monitor-enter v1
 
-    .line 378
+    .line 347
     :try_start_3c
     invoke-virtual {p0, p1}, Lcom/android/server/infra/AbstractMasterSystemService;->peekServiceForUserLocked(I)Lcom/android/server/infra/AbstractPerUserSystemService;
 
-    move-result-object v0
+    move-result-object v2
 
-    .line 379
-    if-eqz v0, :cond_45
+    .line 348
+    .local v2, "oldService":Lcom/android/server/infra/AbstractPerUserSystemService;, "TS;"
+    if-eqz v2, :cond_45
 
-    .line 380
-    invoke-virtual {v0}, Lcom/android/server/infra/AbstractPerUserSystemService;->removeSelfFromCacheLocked()V
+    .line 349
+    invoke-virtual {v2}, Lcom/android/server/infra/AbstractPerUserSystemService;->removeSelfFromCacheLocked()V
 
-    .line 382
+    .line 351
     :cond_45
-    iget-object v0, p0, Lcom/android/server/infra/AbstractMasterSystemService;->mServiceNameResolver:Lcom/android/server/infra/ServiceNameResolver;
+    iget-object v3, p0, Lcom/android/server/infra/AbstractMasterSystemService;->mServiceNameResolver:Lcom/android/server/infra/ServiceNameResolver;
 
-    invoke-interface {v0, p1, p2, p3}, Lcom/android/server/infra/ServiceNameResolver;->setTemporaryService(ILjava/lang/String;I)V
+    invoke-interface {v3, p1, p2, p3}, Lcom/android/server/infra/ServiceNameResolver;->setTemporaryService(ILjava/lang/String;I)V
 
-    .line 383
+    .line 352
+    .end local v2  # "oldService":Lcom/android/server/infra/AbstractPerUserSystemService;, "TS;"
     monitor-exit v1
 
-    .line 384
+    .line 353
     return-void
 
-    .line 383
+    .line 352
     :catchall_4c
-    move-exception p1
+    move-exception v2
 
     monitor-exit v1
     :try_end_4e
     .catchall {:try_start_3c .. :try_end_4e} :catchall_4c
 
-    throw p1
+    throw v2
 
-    .line 373
+    .line 342
     :cond_4f
-    new-instance p1, Ljava/lang/IllegalArgumentException;
+    new-instance v1, Ljava/lang/IllegalArgumentException;
 
-    new-instance p2, Ljava/lang/StringBuilder;
+    new-instance v2, Ljava/lang/StringBuilder;
 
-    invoke-direct {p2}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v1, "Max duration is "
+    const-string v3, "Max duration is "
 
-    invoke-virtual {p2, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p2, v0}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v0}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    const-string v0, " (called with "
+    const-string v3, " (called with "
 
-    invoke-virtual {p2, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p2, p3}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, p3}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    const-string p3, ")"
+    const-string v3, ")"
 
-    invoke-virtual {p2, p3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p2
+    move-result-object v2
 
-    invoke-direct {p1, p2}, Ljava/lang/IllegalArgumentException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v1, v2}, Ljava/lang/IllegalArgumentException;-><init>(Ljava/lang/String;)V
 
-    throw p1
+    throw v1
 .end method
 
 .method protected updateCachedServiceLocked(IZ)Lcom/android/server/infra/AbstractPerUserSystemService;
-    .registers 4
+    .registers 5
+    .param p1, "userId"  # I
+    .param p2, "disabled"  # Z
     .annotation build Lcom/android/internal/annotations/GuardedBy;
         value = {
             "mLock"
@@ -1866,34 +1911,36 @@
         }
     .end annotation
 
-    .line 577
+    .line 546
+    .local p0, "this":Lcom/android/server/infra/AbstractMasterSystemService;, "Lcom/android/server/infra/AbstractMasterSystemService<TM;TS;>;"
     invoke-virtual {p0, p1}, Lcom/android/server/infra/AbstractMasterSystemService;->getServiceForUserLocked(I)Lcom/android/server/infra/AbstractPerUserSystemService;
 
     move-result-object v0
 
-    .line 578
+    .line 547
+    .local v0, "service":Lcom/android/server/infra/AbstractPerUserSystemService;, "TS;"
     if-eqz v0, :cond_16
 
-    .line 579
+    .line 548
     invoke-virtual {v0, p2}, Lcom/android/server/infra/AbstractPerUserSystemService;->updateLocked(Z)Z
 
-    .line 580
+    .line 549
     invoke-virtual {v0}, Lcom/android/server/infra/AbstractPerUserSystemService;->isEnabledLocked()Z
 
-    move-result p2
+    move-result v1
 
-    if-nez p2, :cond_13
+    if-nez v1, :cond_13
 
-    .line 581
+    .line 550
     invoke-virtual {p0, p1}, Lcom/android/server/infra/AbstractMasterSystemService;->removeCachedServiceLocked(I)Lcom/android/server/infra/AbstractPerUserSystemService;
 
     goto :goto_16
 
-    .line 583
+    .line 552
     :cond_13
     invoke-virtual {p0, v0, p1}, Lcom/android/server/infra/AbstractMasterSystemService;->onServiceEnabledLocked(Lcom/android/server/infra/AbstractPerUserSystemService;I)V
 
-    .line 586
+    .line 555
     :cond_16
     :goto_16
     return-object v0
@@ -1901,20 +1948,22 @@
 
 .method protected updateCachedServiceLocked(I)V
     .registers 3
+    .param p1, "userId"  # I
     .annotation build Lcom/android/internal/annotations/GuardedBy;
         value = {
             "mLock"
         }
     .end annotation
 
-    .line 557
+    .line 526
+    .local p0, "this":Lcom/android/server/infra/AbstractMasterSystemService;, "Lcom/android/server/infra/AbstractMasterSystemService<TM;TS;>;"
     invoke-virtual {p0, p1}, Lcom/android/server/infra/AbstractMasterSystemService;->isDisabledLocked(I)Z
 
     move-result v0
 
     invoke-virtual {p0, p1, v0}, Lcom/android/server/infra/AbstractMasterSystemService;->updateCachedServiceLocked(IZ)Lcom/android/server/infra/AbstractPerUserSystemService;
 
-    .line 558
+    .line 527
     return-void
 .end method
 
@@ -1934,20 +1983,24 @@
         }
     .end annotation
 
-    .line 682
+    .line 637
+    .local p0, "this":Lcom/android/server/infra/AbstractMasterSystemService;, "Lcom/android/server/infra/AbstractMasterSystemService<TM;TS;>;"
+    .local p1, "visitor":Lcom/android/server/infra/AbstractMasterSystemService$Visitor;, "Lcom/android/server/infra/AbstractMasterSystemService$Visitor<TS;>;"
     iget-object v0, p0, Lcom/android/server/infra/AbstractMasterSystemService;->mServicesCache:Landroid/util/SparseArray;
 
     invoke-virtual {v0}, Landroid/util/SparseArray;->size()I
 
     move-result v0
 
-    .line 683
+    .line 638
+    .local v0, "size":I
     const/4 v1, 0x0
 
+    .local v1, "i":I
     :goto_7
     if-ge v1, v0, :cond_17
 
-    .line 684
+    .line 639
     iget-object v2, p0, Lcom/android/server/infra/AbstractMasterSystemService;->mServicesCache:Landroid/util/SparseArray;
 
     invoke-virtual {v2, v1}, Landroid/util/SparseArray;->valueAt(I)Ljava/lang/Object;
@@ -1958,12 +2011,13 @@
 
     invoke-interface {p1, v2}, Lcom/android/server/infra/AbstractMasterSystemService$Visitor;->visit(Ljava/lang/Object;)V
 
-    .line 683
+    .line 638
     add-int/lit8 v1, v1, 0x1
 
     goto :goto_7
 
-    .line 686
+    .line 641
+    .end local v1  # "i":I
     :cond_17
     return-void
 .end method

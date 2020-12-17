@@ -24,6 +24,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/hdmi/SystemAudioStatusAction;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/hdmi/SystemAudioStatusAction;
 
     .line 56
     iput-object p1, p0, Lcom/android/server/hdmi/SystemAudioStatusAction$1;->this$0:Lcom/android/server/hdmi/SystemAudioStatusAction;
@@ -36,15 +37,16 @@
 
 # virtual methods
 .method public onSendCompleted(I)V
-    .registers 2
+    .registers 3
+    .param p1, "error"  # I
 
     .line 59
     if-eqz p1, :cond_7
 
     .line 60
-    iget-object p1, p0, Lcom/android/server/hdmi/SystemAudioStatusAction$1;->this$0:Lcom/android/server/hdmi/SystemAudioStatusAction;
+    iget-object v0, p0, Lcom/android/server/hdmi/SystemAudioStatusAction$1;->this$0:Lcom/android/server/hdmi/SystemAudioStatusAction;
 
-    invoke-static {p1}, Lcom/android/server/hdmi/SystemAudioStatusAction;->access$000(Lcom/android/server/hdmi/SystemAudioStatusAction;)V
+    invoke-static {v0}, Lcom/android/server/hdmi/SystemAudioStatusAction;->access$000(Lcom/android/server/hdmi/SystemAudioStatusAction;)V
 
     .line 62
     :cond_7

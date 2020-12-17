@@ -31,7 +31,7 @@
 .end method
 
 .method public static get()Lcom/android/server/textservices/TextServicesManagerInternal;
-    .registers 1
+    .registers 2
 
     .line 59
     const-class v0, Lcom/android/server/textservices/TextServicesManagerInternal;
@@ -44,15 +44,18 @@
     check-cast v0, Lcom/android/server/textservices/TextServicesManagerInternal;
 
     .line 61
-    if-eqz v0, :cond_b
+    .local v0, "instance":Lcom/android/server/textservices/TextServicesManagerInternal;
+    if-eqz v0, :cond_c
 
-    goto :goto_d
+    move-object v1, v0
 
-    :cond_b
-    sget-object v0, Lcom/android/server/textservices/TextServicesManagerInternal;->NOP:Lcom/android/server/textservices/TextServicesManagerInternal;
+    goto :goto_e
 
-    :goto_d
-    return-object v0
+    :cond_c
+    sget-object v1, Lcom/android/server/textservices/TextServicesManagerInternal;->NOP:Lcom/android/server/textservices/TextServicesManagerInternal;
+
+    :goto_e
+    return-object v1
 .end method
 
 

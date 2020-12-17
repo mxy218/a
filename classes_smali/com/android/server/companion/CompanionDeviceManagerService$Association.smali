@@ -27,16 +27,19 @@
 # direct methods
 .method private constructor <init>(Lcom/android/server/companion/CompanionDeviceManagerService;ILjava/lang/String;Ljava/lang/String;)V
     .registers 5
+    .param p2, "uid"  # I
+    .param p3, "deviceAddress"  # Ljava/lang/String;
+    .param p4, "companionAppPackage"  # Ljava/lang/String;
 
-    .line 631
+    .line 629
     iput-object p1, p0, Lcom/android/server/companion/CompanionDeviceManagerService$Association;->this$0:Lcom/android/server/companion/CompanionDeviceManagerService;
 
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
-    .line 632
+    .line 630
     iput p2, p0, Lcom/android/server/companion/CompanionDeviceManagerService$Association;->uid:I
 
-    .line 633
+    .line 631
     invoke-static {p3}, Lcom/android/internal/util/Preconditions;->checkNotNull(Ljava/lang/Object;)Ljava/lang/Object;
 
     move-result-object p1
@@ -45,7 +48,7 @@
 
     iput-object p1, p0, Lcom/android/server/companion/CompanionDeviceManagerService$Association;->deviceAddress:Ljava/lang/String;
 
-    .line 634
+    .line 632
     invoke-static {p4}, Lcom/android/internal/util/Preconditions;->checkNotNull(Ljava/lang/Object;)Ljava/lang/Object;
 
     move-result-object p1
@@ -54,14 +57,19 @@
 
     iput-object p1, p0, Lcom/android/server/companion/CompanionDeviceManagerService$Association;->companionAppPackage:Ljava/lang/String;
 
-    .line 635
+    .line 633
     return-void
 .end method
 
 .method synthetic constructor <init>(Lcom/android/server/companion/CompanionDeviceManagerService;ILjava/lang/String;Ljava/lang/String;Lcom/android/server/companion/CompanionDeviceManagerService$1;)V
     .registers 6
+    .param p1, "x0"  # Lcom/android/server/companion/CompanionDeviceManagerService;
+    .param p2, "x1"  # I
+    .param p3, "x2"  # Ljava/lang/String;
+    .param p4, "x3"  # Ljava/lang/String;
+    .param p5, "x4"  # Lcom/android/server/companion/CompanionDeviceManagerService$1;
 
-    .line 626
+    .line 624
     invoke-direct {p0, p1, p2, p3, p4}, Lcom/android/server/companion/CompanionDeviceManagerService$Association;-><init>(Lcom/android/server/companion/CompanionDeviceManagerService;ILjava/lang/String;Ljava/lang/String;)V
 
     return-void
@@ -70,20 +78,21 @@
 
 # virtual methods
 .method public equals(Ljava/lang/Object;)Z
-    .registers 5
+    .registers 6
+    .param p1, "o"  # Ljava/lang/Object;
 
-    .line 639
+    .line 637
     if-ne p0, p1, :cond_4
 
-    const/4 p1, 0x1
+    const/4 v0, 0x1
 
-    return p1
+    return v0
 
-    .line 640
+    .line 638
     :cond_4
     const/4 v0, 0x0
 
-    if-eqz p1, :cond_2f
+    if-eqz p1, :cond_30
 
     invoke-virtual {p0}, Ljava/lang/Object;->getClass()Ljava/lang/Class;
 
@@ -95,81 +104,90 @@
 
     if-eq v1, v2, :cond_12
 
-    goto :goto_2f
-
-    .line 642
-    :cond_12
-    check-cast p1, Lcom/android/server/companion/CompanionDeviceManagerService$Association;
-
-    .line 644
-    iget v1, p0, Lcom/android/server/companion/CompanionDeviceManagerService$Association;->uid:I
-
-    iget v2, p1, Lcom/android/server/companion/CompanionDeviceManagerService$Association;->uid:I
-
-    if-eq v1, v2, :cond_1b
-
-    return v0
-
-    .line 645
-    :cond_1b
-    iget-object v1, p0, Lcom/android/server/companion/CompanionDeviceManagerService$Association;->deviceAddress:Ljava/lang/String;
-
-    iget-object v2, p1, Lcom/android/server/companion/CompanionDeviceManagerService$Association;->deviceAddress:Ljava/lang/String;
-
-    invoke-virtual {v1, v2}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
-
-    move-result v1
-
-    if-nez v1, :cond_26
-
-    return v0
-
-    .line 646
-    :cond_26
-    iget-object v0, p0, Lcom/android/server/companion/CompanionDeviceManagerService$Association;->companionAppPackage:Ljava/lang/String;
-
-    iget-object p1, p1, Lcom/android/server/companion/CompanionDeviceManagerService$Association;->companionAppPackage:Ljava/lang/String;
-
-    invoke-virtual {v0, p1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
-
-    move-result p1
-
-    return p1
+    goto :goto_30
 
     .line 640
-    :cond_2f
-    :goto_2f
+    :cond_12
+    move-object v1, p1
+
+    check-cast v1, Lcom/android/server/companion/CompanionDeviceManagerService$Association;
+
+    .line 642
+    .local v1, "that":Lcom/android/server/companion/CompanionDeviceManagerService$Association;
+    iget v2, p0, Lcom/android/server/companion/CompanionDeviceManagerService$Association;->uid:I
+
+    iget v3, v1, Lcom/android/server/companion/CompanionDeviceManagerService$Association;->uid:I
+
+    if-eq v2, v3, :cond_1c
+
+    return v0
+
+    .line 643
+    :cond_1c
+    iget-object v2, p0, Lcom/android/server/companion/CompanionDeviceManagerService$Association;->deviceAddress:Ljava/lang/String;
+
+    iget-object v3, v1, Lcom/android/server/companion/CompanionDeviceManagerService$Association;->deviceAddress:Ljava/lang/String;
+
+    invoke-virtual {v2, v3}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+
+    move-result v2
+
+    if-nez v2, :cond_27
+
+    return v0
+
+    .line 644
+    :cond_27
+    iget-object v0, p0, Lcom/android/server/companion/CompanionDeviceManagerService$Association;->companionAppPackage:Ljava/lang/String;
+
+    iget-object v2, v1, Lcom/android/server/companion/CompanionDeviceManagerService$Association;->companionAppPackage:Ljava/lang/String;
+
+    invoke-virtual {v0, v2}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+
+    move-result v0
+
+    return v0
+
+    .line 638
+    .end local v1  # "that":Lcom/android/server/companion/CompanionDeviceManagerService$Association;
+    :cond_30
+    :goto_30
     return v0
 .end method
 
 .method public hashCode()I
-    .registers 3
+    .registers 4
 
-    .line 652
+    .line 650
     iget v0, p0, Lcom/android/server/companion/CompanionDeviceManagerService$Association;->uid:I
 
+    .line 651
+    .local v0, "result":I
+    mul-int/lit8 v1, v0, 0x1f
+
+    iget-object v2, p0, Lcom/android/server/companion/CompanionDeviceManagerService$Association;->deviceAddress:Ljava/lang/String;
+
+    invoke-virtual {v2}, Ljava/lang/String;->hashCode()I
+
+    move-result v2
+
+    add-int/2addr v1, v2
+
+    .line 652
+    .end local v0  # "result":I
+    .local v1, "result":I
+    mul-int/lit8 v0, v1, 0x1f
+
+    iget-object v2, p0, Lcom/android/server/companion/CompanionDeviceManagerService$Association;->companionAppPackage:Ljava/lang/String;
+
+    invoke-virtual {v2}, Ljava/lang/String;->hashCode()I
+
+    move-result v2
+
+    add-int/2addr v0, v2
+
     .line 653
-    mul-int/lit8 v0, v0, 0x1f
-
-    iget-object v1, p0, Lcom/android/server/companion/CompanionDeviceManagerService$Association;->deviceAddress:Ljava/lang/String;
-
-    invoke-virtual {v1}, Ljava/lang/String;->hashCode()I
-
-    move-result v1
-
-    add-int/2addr v0, v1
-
-    .line 654
-    mul-int/lit8 v0, v0, 0x1f
-
-    iget-object v1, p0, Lcom/android/server/companion/CompanionDeviceManagerService$Association;->companionAppPackage:Ljava/lang/String;
-
-    invoke-virtual {v1}, Ljava/lang/String;->hashCode()I
-
-    move-result v1
-
-    add-int/2addr v0, v1
-
-    .line 655
+    .end local v1  # "result":I
+    .restart local v0  # "result":I
     return v0
 .end method

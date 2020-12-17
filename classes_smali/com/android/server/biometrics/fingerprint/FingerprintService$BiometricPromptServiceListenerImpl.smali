@@ -21,93 +21,101 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/biometrics/fingerprint/FingerprintService;Landroid/hardware/biometrics/IBiometricServiceReceiverInternal;)V
     .registers 3
+    .param p2, "wrapperReceiver"  # Landroid/hardware/biometrics/IBiometricServiceReceiverInternal;
 
-    .line 474
+    .line 602
     iput-object p1, p0, Lcom/android/server/biometrics/fingerprint/FingerprintService$BiometricPromptServiceListenerImpl;->this$0:Lcom/android/server/biometrics/fingerprint/FingerprintService;
 
-    .line 475
+    .line 603
     invoke-direct {p0, p1, p2}, Lcom/android/server/biometrics/BiometricServiceBase$BiometricServiceListener;-><init>(Lcom/android/server/biometrics/BiometricServiceBase;Landroid/hardware/biometrics/IBiometricServiceReceiverInternal;)V
 
-    .line 476
+    .line 604
     return-void
 .end method
 
 
 # virtual methods
 .method public onAcquired(JII)V
-    .registers 5
+    .registers 7
+    .param p1, "deviceId"  # J
+    .param p3, "acquiredInfo"  # I
+    .param p4, "vendorCode"  # I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
         }
     .end annotation
 
-    .line 481
+    .line 609
     invoke-virtual {p0}, Lcom/android/server/biometrics/fingerprint/FingerprintService$BiometricPromptServiceListenerImpl;->getWrapperReceiver()Landroid/hardware/biometrics/IBiometricServiceReceiverInternal;
 
-    move-result-object p1
+    move-result-object v0
 
-    if-eqz p1, :cond_17
+    if-eqz v0, :cond_17
 
-    .line 482
+    .line 610
     invoke-virtual {p0}, Lcom/android/server/biometrics/fingerprint/FingerprintService$BiometricPromptServiceListenerImpl;->getWrapperReceiver()Landroid/hardware/biometrics/IBiometricServiceReceiverInternal;
 
-    move-result-object p1
+    move-result-object v0
 
-    iget-object p2, p0, Lcom/android/server/biometrics/fingerprint/FingerprintService$BiometricPromptServiceListenerImpl;->this$0:Lcom/android/server/biometrics/fingerprint/FingerprintService;
+    iget-object v1, p0, Lcom/android/server/biometrics/fingerprint/FingerprintService$BiometricPromptServiceListenerImpl;->this$0:Lcom/android/server/biometrics/fingerprint/FingerprintService;
 
-    .line 483
-    invoke-virtual {p2}, Lcom/android/server/biometrics/fingerprint/FingerprintService;->getContext()Landroid/content/Context;
+    .line 611
+    invoke-virtual {v1}, Lcom/android/server/biometrics/fingerprint/FingerprintService;->getContext()Landroid/content/Context;
 
-    move-result-object p2
+    move-result-object v1
 
-    .line 482
-    invoke-static {p2, p3, p4}, Landroid/hardware/fingerprint/FingerprintManager;->getAcquiredString(Landroid/content/Context;II)Ljava/lang/String;
+    .line 610
+    invoke-static {v1, p3, p4}, Landroid/hardware/fingerprint/FingerprintManager;->getAcquiredString(Landroid/content/Context;II)Ljava/lang/String;
 
-    move-result-object p2
+    move-result-object v1
 
-    invoke-interface {p1, p3, p2}, Landroid/hardware/biometrics/IBiometricServiceReceiverInternal;->onAcquired(ILjava/lang/String;)V
+    invoke-interface {v0, p3, v1}, Landroid/hardware/biometrics/IBiometricServiceReceiverInternal;->onAcquired(ILjava/lang/String;)V
 
-    .line 485
+    .line 613
     :cond_17
     return-void
 .end method
 
 .method public onError(JIII)V
-    .registers 6
+    .registers 8
+    .param p1, "deviceId"  # J
+    .param p3, "error"  # I
+    .param p4, "vendorCode"  # I
+    .param p5, "cookie"  # I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
         }
     .end annotation
 
-    .line 490
+    .line 618
     invoke-virtual {p0}, Lcom/android/server/biometrics/fingerprint/FingerprintService$BiometricPromptServiceListenerImpl;->getWrapperReceiver()Landroid/hardware/biometrics/IBiometricServiceReceiverInternal;
 
-    move-result-object p1
+    move-result-object v0
 
-    if-eqz p1, :cond_17
+    if-eqz v0, :cond_17
 
-    .line 491
+    .line 619
     invoke-virtual {p0}, Lcom/android/server/biometrics/fingerprint/FingerprintService$BiometricPromptServiceListenerImpl;->getWrapperReceiver()Landroid/hardware/biometrics/IBiometricServiceReceiverInternal;
 
-    move-result-object p1
+    move-result-object v0
 
-    iget-object p2, p0, Lcom/android/server/biometrics/fingerprint/FingerprintService$BiometricPromptServiceListenerImpl;->this$0:Lcom/android/server/biometrics/fingerprint/FingerprintService;
+    iget-object v1, p0, Lcom/android/server/biometrics/fingerprint/FingerprintService$BiometricPromptServiceListenerImpl;->this$0:Lcom/android/server/biometrics/fingerprint/FingerprintService;
 
-    .line 492
-    invoke-virtual {p2}, Lcom/android/server/biometrics/fingerprint/FingerprintService;->getContext()Landroid/content/Context;
+    .line 620
+    invoke-virtual {v1}, Lcom/android/server/biometrics/fingerprint/FingerprintService;->getContext()Landroid/content/Context;
 
-    move-result-object p2
+    move-result-object v1
 
-    invoke-static {p2, p3, p4}, Landroid/hardware/fingerprint/FingerprintManager;->getErrorString(Landroid/content/Context;II)Ljava/lang/String;
+    invoke-static {v1, p3, p4}, Landroid/hardware/fingerprint/FingerprintManager;->getErrorString(Landroid/content/Context;II)Ljava/lang/String;
 
-    move-result-object p2
+    move-result-object v1
 
-    .line 491
-    invoke-interface {p1, p5, p3, p2}, Landroid/hardware/biometrics/IBiometricServiceReceiverInternal;->onError(IILjava/lang/String;)V
+    .line 619
+    invoke-interface {v0, p5, p3, v1}, Landroid/hardware/biometrics/IBiometricServiceReceiverInternal;->onError(IILjava/lang/String;)V
 
-    .line 494
+    .line 622
     :cond_17
     return-void
 .end method

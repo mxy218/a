@@ -21,6 +21,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/oemlock/OemLockService;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/oemlock/OemLockService;
 
     .line 114
     iput-object p1, p0, Lcom/android/server/oemlock/OemLockService$2;->this$0:Lcom/android/server/oemlock/OemLockService;
@@ -46,6 +47,7 @@
     move-result-wide v0
 
     .line 122
+    .local v0, "token":J
     :try_start_9
     iget-object v2, p0, Lcom/android/server/oemlock/OemLockService$2;->this$0:Lcom/android/server/oemlock/OemLockService;
 
@@ -90,6 +92,7 @@
     move-result-object v0
 
     .line 219
+    .local v0, "locked":Ljava/lang/String;
     invoke-virtual {v0}, Ljava/lang/String;->hashCode()I
 
     move-result v1
@@ -108,28 +111,28 @@
 
     invoke-virtual {v0, v1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result v0
+    move-result v1
 
-    if-eqz v0, :cond_15
+    if-eqz v1, :cond_15
 
-    move v0, v2
+    move v1, v2
 
     goto :goto_21
 
     :goto_20
-    const/4 v0, -0x1
+    const/4 v1, -0x1
 
     :goto_21
-    if-eqz v0, :cond_24
+    if-eqz v1, :cond_24
 
     .line 223
     return v2
 
     .line 221
     :cond_24
-    const/4 v0, 0x1
+    const/4 v1, 0x1
 
-    return v0
+    return v1
 .end method
 
 .method public isOemUnlockAllowed()Z
@@ -146,6 +149,7 @@
     move-result-wide v0
 
     .line 205
+    .local v0, "token":J
     :try_start_9
     iget-object v2, p0, Lcom/android/server/oemlock/OemLockService$2;->this$0:Lcom/android/server/oemlock/OemLockService;
 
@@ -180,6 +184,7 @@
     const/4 v2, 0x0
 
     .line 207
+    .local v2, "allowed":Z
     :goto_24
     iget-object v3, p0, Lcom/android/server/oemlock/OemLockService$2;->this$0:Lcom/android/server/oemlock/OemLockService;
 
@@ -197,6 +202,7 @@
     return v2
 
     .line 210
+    .end local v2  # "allowed":Z
     :catchall_2e
     move-exception v2
 
@@ -219,6 +225,7 @@
     move-result-wide v0
 
     .line 147
+    .local v0, "token":J
     :try_start_9
     iget-object v2, p0, Lcom/android/server/oemlock/OemLockService$2;->this$0:Lcom/android/server/oemlock/OemLockService;
 
@@ -261,6 +268,7 @@
     move-result-wide v0
 
     .line 188
+    .local v0, "token":J
     :try_start_9
     iget-object v2, p0, Lcom/android/server/oemlock/OemLockService$2;->this$0:Lcom/android/server/oemlock/OemLockService;
 
@@ -291,6 +299,8 @@
 
 .method public setOemUnlockAllowedByCarrier(Z[B)V
     .registers 6
+    .param p1, "allowed"  # Z
+    .param p2, "signature"  # [B
 
     .line 130
     iget-object v0, p0, Lcom/android/server/oemlock/OemLockService$2;->this$0:Lcom/android/server/oemlock/OemLockService;
@@ -308,6 +318,7 @@
     move-result-wide v0
 
     .line 135
+    .local v0, "token":J
     :try_start_e
     iget-object v2, p0, Lcom/android/server/oemlock/OemLockService$2;->this$0:Lcom/android/server/oemlock/OemLockService;
 
@@ -330,15 +341,16 @@
 
     .line 137
     :catchall_1c
-    move-exception p1
+    move-exception v2
 
     invoke-static {v0, v1}, Landroid/os/Binder;->restoreCallingIdentity(J)V
 
-    throw p1
+    throw v2
 .end method
 
 .method public setOemUnlockAllowedByUser(Z)V
-    .registers 5
+    .registers 6
+    .param p1, "allowedByUser"  # Z
 
     .line 157
     invoke-static {}, Landroid/app/ActivityManager;->isUserAMonkey()Z
@@ -367,6 +379,7 @@
     move-result-wide v0
 
     .line 167
+    .local v0, "token":J
     :try_start_15
     iget-object v2, p0, Lcom/android/server/oemlock/OemLockService$2;->this$0:Lcom/android/server/oemlock/OemLockService;
 
@@ -417,31 +430,43 @@
     .line 172
     :cond_3c
     :try_start_3c
-    new-instance p1, Ljava/lang/SecurityException;
+    new-instance v2, Ljava/lang/SecurityException;
 
-    const-string v2, "Carrier does not allow OEM unlock"
+    const-string v3, "Carrier does not allow OEM unlock"
 
-    invoke-direct {p1, v2}, Ljava/lang/SecurityException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v2, v3}, Ljava/lang/SecurityException;-><init>(Ljava/lang/String;)V
 
-    throw p1
+    .end local v0  # "token":J
+    .end local p0  # "this":Lcom/android/server/oemlock/OemLockService$2;
+    .end local p1  # "allowedByUser":Z
+    throw v2
 
     .line 168
+    .restart local v0  # "token":J
+    .restart local p0  # "this":Lcom/android/server/oemlock/OemLockService$2;
+    .restart local p1  # "allowedByUser":Z
     :cond_44
-    new-instance p1, Ljava/lang/SecurityException;
+    new-instance v2, Ljava/lang/SecurityException;
 
-    const-string v2, "Admin does not allow OEM unlock"
+    const-string v3, "Admin does not allow OEM unlock"
 
-    invoke-direct {p1, v2}, Ljava/lang/SecurityException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v2, v3}, Ljava/lang/SecurityException;-><init>(Ljava/lang/String;)V
 
-    throw p1
+    .end local v0  # "token":J
+    .end local p0  # "this":Lcom/android/server/oemlock/OemLockService$2;
+    .end local p1  # "allowedByUser":Z
+    throw v2
     :try_end_4c
     .catchall {:try_start_3c .. :try_end_4c} :catchall_4c
 
     .line 178
+    .restart local v0  # "token":J
+    .restart local p0  # "this":Lcom/android/server/oemlock/OemLockService$2;
+    .restart local p1  # "allowedByUser":Z
     :catchall_4c
-    move-exception p1
+    move-exception v2
 
     invoke-static {v0, v1}, Landroid/os/Binder;->restoreCallingIdentity(J)V
 
-    throw p1
+    throw v2
 .end method

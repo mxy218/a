@@ -10,6 +10,9 @@
 # direct methods
 .method public constructor <init>(IBI)V
     .registers 4
+    .param p1, "length"  # I
+    .param p2, "type"  # B
+    .param p3, "subclass"  # I
 
     .line 28
     invoke-direct {p0, p1, p2, p3}, Lcom/android/server/usb/descriptors/UsbACEndpoint;-><init>(IBI)V
@@ -44,6 +47,7 @@
 
 .method public parseRawDescriptors(Lcom/android/server/usb/descriptors/ByteStream;)I
     .registers 4
+    .param p1, "stream"  # Lcom/android/server/usb/descriptors/ByteStream;
 
     .line 33
     invoke-super {p0, p1}, Lcom/android/server/usb/descriptors/UsbACEndpoint;->parseRawDescriptors(Lcom/android/server/usb/descriptors/ByteStream;)I
@@ -60,7 +64,7 @@
     invoke-virtual {p1, v0}, Lcom/android/server/usb/descriptors/ByteStream;->advance(I)V
 
     .line 37
-    iget p1, p0, Lcom/android/server/usb/descriptors/UsbACAudioStreamEndpoint;->mLength:I
+    iget v0, p0, Lcom/android/server/usb/descriptors/UsbACAudioStreamEndpoint;->mLength:I
 
-    return p1
+    return v0
 .end method

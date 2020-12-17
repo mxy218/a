@@ -31,6 +31,7 @@
 # direct methods
 .method public constructor <init>(Lcom/android/server/pm/permission/BasePermission;)V
     .registers 3
+    .param p1, "perm"  # Lcom/android/server/pm/permission/BasePermission;
 
     .line 714
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -51,6 +52,7 @@
 
 .method public constructor <init>(Lcom/android/server/pm/permission/PermissionsState$PermissionData;)V
     .registers 8
+    .param p1, "other"  # Lcom/android/server/pm/permission/PermissionsState$PermissionData;
 
     .line 719
     iget-object v0, p1, Lcom/android/server/pm/permission/PermissionsState$PermissionData;->mPerm:Lcom/android/server/pm/permission/BasePermission;
@@ -65,8 +67,10 @@
     move-result v0
 
     .line 721
+    .local v0, "otherStateCount":I
     const/4 v1, 0x0
 
+    .local v1, "i":I
     :goto_c
     if-ge v1, v0, :cond_29
 
@@ -78,6 +82,7 @@
     move-result v2
 
     .line 723
+    .local v2, "otherUserId":I
     iget-object v3, p1, Lcom/android/server/pm/permission/PermissionsState$PermissionData;->mUserStates:Landroid/util/SparseArray;
 
     invoke-virtual {v3, v1}, Landroid/util/SparseArray;->valueAt(I)Ljava/lang/Object;
@@ -87,6 +92,7 @@
     check-cast v3, Lcom/android/server/pm/permission/PermissionsState$PermissionState;
 
     .line 724
+    .local v3, "otherState":Lcom/android/server/pm/permission/PermissionsState$PermissionState;
     iget-object v4, p0, Lcom/android/server/pm/permission/PermissionsState$PermissionData;->mUserStates:Landroid/util/SparseArray;
 
     new-instance v5, Lcom/android/server/pm/permission/PermissionsState$PermissionState;
@@ -96,17 +102,21 @@
     invoke-virtual {v4, v2, v5}, Landroid/util/SparseArray;->put(ILjava/lang/Object;)V
 
     .line 721
+    .end local v2  # "otherUserId":I
+    .end local v3  # "otherState":Lcom/android/server/pm/permission/PermissionsState$PermissionState;
     add-int/lit8 v1, v1, 0x1
 
     goto :goto_c
 
     .line 726
+    .end local v1  # "i":I
     :cond_29
     return-void
 .end method
 
 .method private isCompatibleUserId(I)Z
-    .registers 3
+    .registers 4
+    .param p1, "userId"  # I
 
     .line 834
     invoke-virtual {p0}, Lcom/android/server/pm/permission/PermissionsState$PermissionData;->isDefault()Z
@@ -121,25 +131,25 @@
 
     invoke-static {p1}, Lcom/android/server/pm/permission/PermissionsState$PermissionData;->isInstallPermissionKey(I)Z
 
-    move-result p1
+    move-result v1
 
-    xor-int/2addr p1, v0
+    xor-int/2addr v0, v1
 
-    if-nez p1, :cond_12
+    if-nez v0, :cond_12
 
     goto :goto_14
 
     :cond_12
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
     goto :goto_15
 
     :cond_14
     :goto_14
-    const/4 p1, 0x1
+    const/4 v0, 0x1
 
     :goto_15
-    return p1
+    return v0
 .end method
 
 .method private isInstallPermission()Z
@@ -179,84 +189,90 @@
 
 .method public static isInstallPermissionKey(I)Z
     .registers 2
+    .param p0, "userId"  # I
 
     .line 801
     const/4 v0, -0x1
 
     if-ne p0, v0, :cond_5
 
-    const/4 p0, 0x1
+    const/4 v0, 0x1
 
     goto :goto_6
 
     :cond_5
-    const/4 p0, 0x0
+    const/4 v0, 0x0
 
     :goto_6
-    return p0
+    return v0
 .end method
 
 
 # virtual methods
 .method public computeGids(I)[I
     .registers 3
+    .param p1, "userId"  # I
 
     .line 729
     iget-object v0, p0, Lcom/android/server/pm/permission/PermissionsState$PermissionData;->mPerm:Lcom/android/server/pm/permission/BasePermission;
 
     invoke-virtual {v0, p1}, Lcom/android/server/pm/permission/BasePermission;->computeGids(I)[I
 
-    move-result-object p1
+    move-result-object v0
 
-    return-object p1
+    return-object v0
 .end method
 
 .method public getFlags(I)I
-    .registers 3
+    .registers 4
+    .param p1, "userId"  # I
 
     .line 789
     iget-object v0, p0, Lcom/android/server/pm/permission/PermissionsState$PermissionData;->mUserStates:Landroid/util/SparseArray;
 
     invoke-virtual {v0, p1}, Landroid/util/SparseArray;->get(I)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v0
 
-    check-cast p1, Lcom/android/server/pm/permission/PermissionsState$PermissionState;
+    check-cast v0, Lcom/android/server/pm/permission/PermissionsState$PermissionState;
 
     .line 790
-    if-eqz p1, :cond_f
+    .local v0, "userState":Lcom/android/server/pm/permission/PermissionsState$PermissionState;
+    if-eqz v0, :cond_f
 
     .line 791
-    invoke-static {p1}, Lcom/android/server/pm/permission/PermissionsState$PermissionState;->access$100(Lcom/android/server/pm/permission/PermissionsState$PermissionState;)I
+    invoke-static {v0}, Lcom/android/server/pm/permission/PermissionsState$PermissionState;->access$100(Lcom/android/server/pm/permission/PermissionsState$PermissionState;)I
 
-    move-result p1
+    move-result v1
 
-    return p1
+    return v1
 
     .line 793
     :cond_f
-    const/4 p1, 0x0
+    const/4 v1, 0x0
 
-    return p1
+    return v1
 .end method
 
 .method public getPermissionState(I)Lcom/android/server/pm/permission/PermissionsState$PermissionState;
     .registers 3
+    .param p1, "userId"  # I
 
     .line 785
     iget-object v0, p0, Lcom/android/server/pm/permission/PermissionsState$PermissionData;->mUserStates:Landroid/util/SparseArray;
 
     invoke-virtual {v0, p1}, Landroid/util/SparseArray;->get(I)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v0
 
-    check-cast p1, Lcom/android/server/pm/permission/PermissionsState$PermissionState;
+    check-cast v0, Lcom/android/server/pm/permission/PermissionsState$PermissionState;
 
-    return-object p1
+    return-object v0
 .end method
 
 .method public grant(I)Z
-    .registers 4
+    .registers 5
+    .param p1, "userId"  # I
 
     .line 746
     invoke-direct {p0, p1}, Lcom/android/server/pm/permission/PermissionsState$PermissionData;->isCompatibleUserId(I)Z
@@ -292,18 +308,21 @@
     check-cast v0, Lcom/android/server/pm/permission/PermissionsState$PermissionState;
 
     .line 755
-    if-nez v0, :cond_29
+    .local v0, "userState":Lcom/android/server/pm/permission/PermissionsState$PermissionState;
+    if-nez v0, :cond_2a
 
     .line 756
-    new-instance v0, Lcom/android/server/pm/permission/PermissionsState$PermissionState;
+    new-instance v1, Lcom/android/server/pm/permission/PermissionsState$PermissionState;
 
-    iget-object v1, p0, Lcom/android/server/pm/permission/PermissionsState$PermissionData;->mPerm:Lcom/android/server/pm/permission/BasePermission;
+    iget-object v2, p0, Lcom/android/server/pm/permission/PermissionsState$PermissionData;->mPerm:Lcom/android/server/pm/permission/BasePermission;
 
-    invoke-virtual {v1}, Lcom/android/server/pm/permission/BasePermission;->getName()Ljava/lang/String;
+    invoke-virtual {v2}, Lcom/android/server/pm/permission/BasePermission;->getName()Ljava/lang/String;
 
-    move-result-object v1
+    move-result-object v2
 
-    invoke-direct {v0, v1}, Lcom/android/server/pm/permission/PermissionsState$PermissionState;-><init>(Ljava/lang/String;)V
+    invoke-direct {v1, v2}, Lcom/android/server/pm/permission/PermissionsState$PermissionState;-><init>(Ljava/lang/String;)V
+
+    move-object v0, v1
 
     .line 757
     iget-object v1, p0, Lcom/android/server/pm/permission/PermissionsState$PermissionData;->mUserStates:Landroid/util/SparseArray;
@@ -311,13 +330,13 @@
     invoke-virtual {v1, p1, v0}, Landroid/util/SparseArray;->put(ILjava/lang/Object;)V
 
     .line 760
-    :cond_29
-    const/4 p1, 0x1
+    :cond_2a
+    const/4 v1, 0x1
 
-    invoke-static {v0, p1}, Lcom/android/server/pm/permission/PermissionsState$PermissionState;->access$002(Lcom/android/server/pm/permission/PermissionsState$PermissionState;Z)Z
+    invoke-static {v0, v1}, Lcom/android/server/pm/permission/PermissionsState$PermissionState;->access$002(Lcom/android/server/pm/permission/PermissionsState$PermissionState;Z)Z
 
     .line 762
-    return p1
+    return v1
 .end method
 
 .method public isDefault()Z
@@ -344,7 +363,8 @@
 .end method
 
 .method public isGranted(I)Z
-    .registers 3
+    .registers 4
+    .param p1, "userId"  # I
 
     .line 733
     invoke-direct {p0}, Lcom/android/server/pm/permission/PermissionsState$PermissionData;->isInstallPermission()Z
@@ -362,29 +382,31 @@
 
     invoke-virtual {v0, p1}, Landroid/util/SparseArray;->get(I)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v0
 
-    check-cast p1, Lcom/android/server/pm/permission/PermissionsState$PermissionState;
+    check-cast v0, Lcom/android/server/pm/permission/PermissionsState$PermissionState;
 
     .line 738
-    if-nez p1, :cond_13
+    .local v0, "userState":Lcom/android/server/pm/permission/PermissionsState$PermissionState;
+    if-nez v0, :cond_13
 
     .line 739
-    const/4 p1, 0x0
+    const/4 v1, 0x0
 
-    return p1
+    return v1
 
     .line 742
     :cond_13
-    invoke-static {p1}, Lcom/android/server/pm/permission/PermissionsState$PermissionState;->access$000(Lcom/android/server/pm/permission/PermissionsState$PermissionState;)Z
+    invoke-static {v0}, Lcom/android/server/pm/permission/PermissionsState$PermissionState;->access$000(Lcom/android/server/pm/permission/PermissionsState$PermissionState;)Z
 
-    move-result p1
+    move-result v1
 
-    return p1
+    return v1
 .end method
 
 .method public revoke(I)Z
     .registers 4
+    .param p1, "userId"  # I
 
     .line 766
     invoke-direct {p0, p1}, Lcom/android/server/pm/permission/PermissionsState$PermissionData;->isCompatibleUserId(I)Z
@@ -420,29 +442,33 @@
     check-cast v0, Lcom/android/server/pm/permission/PermissionsState$PermissionState;
 
     .line 775
+    .local v0, "userState":Lcom/android/server/pm/permission/PermissionsState$PermissionState;
     invoke-static {v0, v1}, Lcom/android/server/pm/permission/PermissionsState$PermissionState;->access$002(Lcom/android/server/pm/permission/PermissionsState$PermissionState;Z)Z
 
     .line 777
     invoke-virtual {v0}, Lcom/android/server/pm/permission/PermissionsState$PermissionState;->isDefault()Z
 
-    move-result v0
+    move-result v1
 
-    if-eqz v0, :cond_25
+    if-eqz v1, :cond_25
 
     .line 778
-    iget-object v0, p0, Lcom/android/server/pm/permission/PermissionsState$PermissionData;->mUserStates:Landroid/util/SparseArray;
+    iget-object v1, p0, Lcom/android/server/pm/permission/PermissionsState$PermissionData;->mUserStates:Landroid/util/SparseArray;
 
-    invoke-virtual {v0, p1}, Landroid/util/SparseArray;->remove(I)V
+    invoke-virtual {v1, p1}, Landroid/util/SparseArray;->remove(I)V
 
     .line 781
     :cond_25
-    const/4 p1, 0x1
+    const/4 v1, 0x1
 
-    return p1
+    return v1
 .end method
 
 .method public updateFlags(III)Z
-    .registers 9
+    .registers 11
+    .param p1, "userId"  # I
+    .param p2, "flagMask"  # I
+    .param p3, "flagValues"  # I
 
     .line 805
     invoke-direct {p0}, Lcom/android/server/pm/permission/PermissionsState$PermissionData;->isInstallPermission()Z
@@ -469,92 +495,100 @@
 
     .line 813
     :cond_f
-    and-int/2addr p3, p2
+    and-int v0, p3, p2
 
     .line 815
-    iget-object v0, p0, Lcom/android/server/pm/permission/PermissionsState$PermissionData;->mUserStates:Landroid/util/SparseArray;
+    .local v0, "newFlags":I
+    iget-object v2, p0, Lcom/android/server/pm/permission/PermissionsState$PermissionData;->mUserStates:Landroid/util/SparseArray;
 
-    invoke-virtual {v0, p1}, Landroid/util/SparseArray;->get(I)Ljava/lang/Object;
+    invoke-virtual {v2, p1}, Landroid/util/SparseArray;->get(I)Ljava/lang/Object;
 
-    move-result-object v0
+    move-result-object v2
 
-    check-cast v0, Lcom/android/server/pm/permission/PermissionsState$PermissionState;
+    check-cast v2, Lcom/android/server/pm/permission/PermissionsState$PermissionState;
 
     .line 816
-    const/4 v2, 0x1
+    .local v2, "userState":Lcom/android/server/pm/permission/PermissionsState$PermissionState;
+    const/4 v3, 0x1
 
-    if-eqz v0, :cond_3c
+    if-eqz v2, :cond_3d
 
     .line 817
-    invoke-static {v0}, Lcom/android/server/pm/permission/PermissionsState$PermissionState;->access$100(Lcom/android/server/pm/permission/PermissionsState$PermissionState;)I
-
-    move-result v3
-
-    .line 818
-    invoke-static {v0}, Lcom/android/server/pm/permission/PermissionsState$PermissionState;->access$100(Lcom/android/server/pm/permission/PermissionsState$PermissionState;)I
+    invoke-static {v2}, Lcom/android/server/pm/permission/PermissionsState$PermissionState;->access$100(Lcom/android/server/pm/permission/PermissionsState$PermissionState;)I
 
     move-result v4
 
-    not-int p2, p2
+    .line 818
+    .local v4, "oldFlags":I
+    invoke-static {v2}, Lcom/android/server/pm/permission/PermissionsState$PermissionState;->access$100(Lcom/android/server/pm/permission/PermissionsState$PermissionState;)I
 
-    and-int/2addr p2, v4
+    move-result v5
 
-    or-int/2addr p2, p3
+    not-int v6, p2
 
-    invoke-static {v0, p2}, Lcom/android/server/pm/permission/PermissionsState$PermissionState;->access$102(Lcom/android/server/pm/permission/PermissionsState$PermissionState;I)I
+    and-int/2addr v5, v6
+
+    or-int/2addr v5, v0
+
+    invoke-static {v2, v5}, Lcom/android/server/pm/permission/PermissionsState$PermissionState;->access$102(Lcom/android/server/pm/permission/PermissionsState$PermissionState;I)I
 
     .line 819
-    invoke-virtual {v0}, Lcom/android/server/pm/permission/PermissionsState$PermissionState;->isDefault()Z
+    invoke-virtual {v2}, Lcom/android/server/pm/permission/PermissionsState$PermissionState;->isDefault()Z
 
-    move-result p2
+    move-result v5
 
-    if-eqz p2, :cond_34
+    if-eqz v5, :cond_35
 
     .line 820
-    iget-object p2, p0, Lcom/android/server/pm/permission/PermissionsState$PermissionData;->mUserStates:Landroid/util/SparseArray;
+    iget-object v5, p0, Lcom/android/server/pm/permission/PermissionsState$PermissionData;->mUserStates:Landroid/util/SparseArray;
 
-    invoke-virtual {p2, p1}, Landroid/util/SparseArray;->remove(I)V
+    invoke-virtual {v5, p1}, Landroid/util/SparseArray;->remove(I)V
 
     .line 822
-    :cond_34
-    invoke-static {v0}, Lcom/android/server/pm/permission/PermissionsState$PermissionState;->access$100(Lcom/android/server/pm/permission/PermissionsState$PermissionState;)I
+    :cond_35
+    invoke-static {v2}, Lcom/android/server/pm/permission/PermissionsState$PermissionState;->access$100(Lcom/android/server/pm/permission/PermissionsState$PermissionState;)I
 
-    move-result p1
+    move-result v5
 
-    if-eq p1, v3, :cond_3b
+    if-eq v5, v4, :cond_3c
 
-    move v1, v2
+    move v1, v3
 
-    :cond_3b
+    :cond_3c
     return v1
 
     .line 823
-    :cond_3c
-    if-eqz p3, :cond_52
+    .end local v4  # "oldFlags":I
+    :cond_3d
+    if-eqz v0, :cond_53
 
     .line 824
-    new-instance p2, Lcom/android/server/pm/permission/PermissionsState$PermissionState;
+    new-instance v1, Lcom/android/server/pm/permission/PermissionsState$PermissionState;
 
-    iget-object v0, p0, Lcom/android/server/pm/permission/PermissionsState$PermissionData;->mPerm:Lcom/android/server/pm/permission/BasePermission;
+    iget-object v4, p0, Lcom/android/server/pm/permission/PermissionsState$PermissionData;->mPerm:Lcom/android/server/pm/permission/BasePermission;
 
-    invoke-virtual {v0}, Lcom/android/server/pm/permission/BasePermission;->getName()Ljava/lang/String;
+    invoke-virtual {v4}, Lcom/android/server/pm/permission/BasePermission;->getName()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v4
 
-    invoke-direct {p2, v0}, Lcom/android/server/pm/permission/PermissionsState$PermissionState;-><init>(Ljava/lang/String;)V
+    invoke-direct {v1, v4}, Lcom/android/server/pm/permission/PermissionsState$PermissionState;-><init>(Ljava/lang/String;)V
 
     .line 825
-    invoke-static {p2, p3}, Lcom/android/server/pm/permission/PermissionsState$PermissionState;->access$102(Lcom/android/server/pm/permission/PermissionsState$PermissionState;I)I
+    .end local v2  # "userState":Lcom/android/server/pm/permission/PermissionsState$PermissionState;
+    .local v1, "userState":Lcom/android/server/pm/permission/PermissionsState$PermissionState;
+    invoke-static {v1, v0}, Lcom/android/server/pm/permission/PermissionsState$PermissionState;->access$102(Lcom/android/server/pm/permission/PermissionsState$PermissionState;I)I
 
     .line 826
-    iget-object p3, p0, Lcom/android/server/pm/permission/PermissionsState$PermissionData;->mUserStates:Landroid/util/SparseArray;
+    iget-object v2, p0, Lcom/android/server/pm/permission/PermissionsState$PermissionData;->mUserStates:Landroid/util/SparseArray;
 
-    invoke-virtual {p3, p1, p2}, Landroid/util/SparseArray;->put(ILjava/lang/Object;)V
+    invoke-virtual {v2, p1, v1}, Landroid/util/SparseArray;->put(ILjava/lang/Object;)V
 
     .line 827
-    return v2
+    return v3
 
     .line 830
-    :cond_52
+    .end local v1  # "userState":Lcom/android/server/pm/permission/PermissionsState$PermissionState;
+    .restart local v2  # "userState":Lcom/android/server/pm/permission/PermissionsState$PermissionState;
+    :cond_53
     return v1
 .end method

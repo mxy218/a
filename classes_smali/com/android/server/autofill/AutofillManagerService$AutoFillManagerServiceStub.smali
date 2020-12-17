@@ -21,6 +21,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/autofill/AutofillManagerService;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/autofill/AutofillManagerService;
 
     .line 1046
     iput-object p1, p0, Lcom/android/server/autofill/AutofillManagerService$AutoFillManagerServiceStub;->this$0:Lcom/android/server/autofill/AutofillManagerService;
@@ -33,88 +34,95 @@
 
 # virtual methods
 .method public addClient(Landroid/view/autofill/IAutoFillManagerClient;Landroid/content/ComponentName;ILcom/android/internal/os/IResultReceiver;)V
-    .registers 7
+    .registers 9
+    .param p1, "client"  # Landroid/view/autofill/IAutoFillManagerClient;
+    .param p2, "componentName"  # Landroid/content/ComponentName;
+    .param p3, "userId"  # I
+    .param p4, "receiver"  # Lcom/android/internal/os/IResultReceiver;
 
     .line 1050
-    nop
+    const/4 v0, 0x0
 
     .line 1051
-    iget-object v0, p0, Lcom/android/server/autofill/AutofillManagerService$AutoFillManagerServiceStub;->this$0:Lcom/android/server/autofill/AutofillManagerService;
+    .local v0, "flags":I
+    iget-object v1, p0, Lcom/android/server/autofill/AutofillManagerService$AutoFillManagerServiceStub;->this$0:Lcom/android/server/autofill/AutofillManagerService;
 
-    invoke-static {v0}, Lcom/android/server/autofill/AutofillManagerService;->access$1200(Lcom/android/server/autofill/AutofillManagerService;)Ljava/lang/Object;
+    invoke-static {v1}, Lcom/android/server/autofill/AutofillManagerService;->access$1200(Lcom/android/server/autofill/AutofillManagerService;)Ljava/lang/Object;
 
-    move-result-object v0
+    move-result-object v1
 
-    monitor-enter v0
+    monitor-enter v1
 
     .line 1052
     :try_start_8
-    iget-object v1, p0, Lcom/android/server/autofill/AutofillManagerService$AutoFillManagerServiceStub;->this$0:Lcom/android/server/autofill/AutofillManagerService;
+    iget-object v2, p0, Lcom/android/server/autofill/AutofillManagerService$AutoFillManagerServiceStub;->this$0:Lcom/android/server/autofill/AutofillManagerService;
 
-    invoke-static {v1, p3}, Lcom/android/server/autofill/AutofillManagerService;->access$1300(Lcom/android/server/autofill/AutofillManagerService;I)Lcom/android/server/infra/AbstractPerUserSystemService;
+    invoke-static {v2, p3}, Lcom/android/server/autofill/AutofillManagerService;->access$1300(Lcom/android/server/autofill/AutofillManagerService;I)Lcom/android/server/infra/AbstractPerUserSystemService;
 
-    move-result-object p3
+    move-result-object v2
 
-    check-cast p3, Lcom/android/server/autofill/AutofillManagerServiceImpl;
+    check-cast v2, Lcom/android/server/autofill/AutofillManagerServiceImpl;
 
-    invoke-virtual {p3, p1, p2}, Lcom/android/server/autofill/AutofillManagerServiceImpl;->addClientLocked(Landroid/view/autofill/IAutoFillManagerClient;Landroid/content/ComponentName;)I
+    invoke-virtual {v2, p1, p2}, Lcom/android/server/autofill/AutofillManagerServiceImpl;->addClientLocked(Landroid/view/autofill/IAutoFillManagerClient;Landroid/content/ComponentName;)I
 
-    move-result p1
+    move-result v2
 
     .line 1054
-    const/4 p2, 0x0
-
-    if-eqz p1, :cond_18
+    .local v2, "enabledFlags":I
+    if-eqz v2, :cond_17
 
     .line 1055
-    or-int/2addr p2, p1
+    or-int/2addr v0, v2
 
     .line 1057
-    :cond_18
-    sget-boolean p1, Lcom/android/server/autofill/Helper;->sDebug:Z
+    :cond_17
+    sget-boolean v3, Lcom/android/server/autofill/Helper;->sDebug:Z
 
-    if-eqz p1, :cond_1e
+    if-eqz v3, :cond_1d
 
     .line 1058
-    or-int/lit8 p2, p2, 0x2
+    or-int/lit8 v0, v0, 0x2
 
     .line 1060
-    :cond_1e
-    sget-boolean p1, Lcom/android/server/autofill/Helper;->sVerbose:Z
+    :cond_1d
+    sget-boolean v3, Lcom/android/server/autofill/Helper;->sVerbose:Z
 
-    if-eqz p1, :cond_24
+    if-eqz v3, :cond_23
 
     .line 1061
-    or-int/lit8 p2, p2, 0x4
+    or-int/lit8 v0, v0, 0x4
 
     .line 1063
-    :cond_24
-    monitor-exit v0
-    :try_end_25
-    .catchall {:try_start_8 .. :try_end_25} :catchall_2b
+    .end local v2  # "enabledFlags":I
+    :cond_23
+    monitor-exit v1
+    :try_end_24
+    .catchall {:try_start_8 .. :try_end_24} :catchall_2a
 
     .line 1064
-    iget-object p1, p0, Lcom/android/server/autofill/AutofillManagerService$AutoFillManagerServiceStub;->this$0:Lcom/android/server/autofill/AutofillManagerService;
+    iget-object v1, p0, Lcom/android/server/autofill/AutofillManagerService$AutoFillManagerServiceStub;->this$0:Lcom/android/server/autofill/AutofillManagerService;
 
-    invoke-static {p1, p4, p2}, Lcom/android/server/autofill/AutofillManagerService;->access$1400(Lcom/android/server/autofill/AutofillManagerService;Lcom/android/internal/os/IResultReceiver;I)V
+    invoke-static {v1, p4, v0}, Lcom/android/server/autofill/AutofillManagerService;->access$1400(Lcom/android/server/autofill/AutofillManagerService;Lcom/android/internal/os/IResultReceiver;I)V
 
     .line 1065
     return-void
 
     .line 1063
-    :catchall_2b
-    move-exception p1
+    :catchall_2a
+    move-exception v2
 
-    :try_start_2c
-    monitor-exit v0
-    :try_end_2d
-    .catchall {:try_start_2c .. :try_end_2d} :catchall_2b
+    :try_start_2b
+    monitor-exit v1
+    :try_end_2c
+    .catchall {:try_start_2b .. :try_end_2c} :catchall_2a
 
-    throw p1
+    throw v2
 .end method
 
 .method public cancelSession(II)V
-    .registers 6
+    .registers 8
+    .param p1, "sessionId"  # I
+    .param p2, "userId"  # I
 
     .line 1354
     iget-object v0, p0, Lcom/android/server/autofill/AutofillManagerService$AutoFillManagerServiceStub;->this$0:Lcom/android/server/autofill/AutofillManagerService;
@@ -136,43 +144,45 @@
     check-cast v1, Lcom/android/server/autofill/AutofillManagerServiceImpl;
 
     .line 1356
+    .local v1, "service":Lcom/android/server/autofill/AutofillManagerServiceImpl;
     if-eqz v1, :cond_19
 
     .line 1357
     invoke-static {}, Lcom/android/server/autofill/AutofillManagerService$AutoFillManagerServiceStub;->getCallingUid()I
 
-    move-result p2
+    move-result v2
 
-    invoke-virtual {v1, p1, p2}, Lcom/android/server/autofill/AutofillManagerServiceImpl;->cancelSessionLocked(II)V
+    invoke-virtual {v1, p1, v2}, Lcom/android/server/autofill/AutofillManagerServiceImpl;->cancelSessionLocked(II)V
 
     goto :goto_33
 
     .line 1358
     :cond_19
-    sget-boolean p1, Lcom/android/server/autofill/Helper;->sVerbose:Z
+    sget-boolean v2, Lcom/android/server/autofill/Helper;->sVerbose:Z
 
-    if-eqz p1, :cond_33
+    if-eqz v2, :cond_33
 
     .line 1359
-    const-string p1, "AutofillManagerService"
+    const-string v2, "AutofillManagerService"
 
-    new-instance v1, Ljava/lang/StringBuilder;
+    new-instance v3, Ljava/lang/StringBuilder;
 
-    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v2, "cancelSession(): no service for "
+    const-string v4, "cancelSession(): no service for "
 
-    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v1, p2}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, p2}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p2
+    move-result-object v3
 
-    invoke-static {p1, p2}, Landroid/util/Slog;->v(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v2, v3}, Landroid/util/Slog;->v(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 1361
+    .end local v1  # "service":Lcom/android/server/autofill/AutofillManagerServiceImpl;
     :cond_33
     :goto_33
     monitor-exit v0
@@ -182,17 +192,18 @@
 
     .line 1361
     :catchall_35
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_37
     .catchall {:try_start_7 .. :try_end_37} :catchall_35
 
-    throw p1
+    throw v1
 .end method
 
 .method public disableOwnedAutofillServices(I)V
-    .registers 6
+    .registers 7
+    .param p1, "userId"  # I
 
     .line 1366
     iget-object v0, p0, Lcom/android/server/autofill/AutofillManagerService$AutoFillManagerServiceStub;->this$0:Lcom/android/server/autofill/AutofillManagerService;
@@ -214,43 +225,45 @@
     check-cast v1, Lcom/android/server/autofill/AutofillManagerServiceImpl;
 
     .line 1368
+    .local v1, "service":Lcom/android/server/autofill/AutofillManagerServiceImpl;
     if-eqz v1, :cond_19
 
     .line 1369
     invoke-static {}, Landroid/os/Binder;->getCallingUid()I
 
-    move-result p1
+    move-result v2
 
-    invoke-virtual {v1, p1}, Lcom/android/server/autofill/AutofillManagerServiceImpl;->disableOwnedAutofillServicesLocked(I)V
+    invoke-virtual {v1, v2}, Lcom/android/server/autofill/AutofillManagerServiceImpl;->disableOwnedAutofillServicesLocked(I)V
 
     goto :goto_33
 
     .line 1370
     :cond_19
-    sget-boolean v1, Lcom/android/server/autofill/Helper;->sVerbose:Z
+    sget-boolean v2, Lcom/android/server/autofill/Helper;->sVerbose:Z
 
-    if-eqz v1, :cond_33
+    if-eqz v2, :cond_33
 
     .line 1371
-    const-string v1, "AutofillManagerService"
+    const-string v2, "AutofillManagerService"
 
-    new-instance v2, Ljava/lang/StringBuilder;
+    new-instance v3, Ljava/lang/StringBuilder;
 
-    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v3, "cancelSession(): no service for "
+    const-string v4, "cancelSession(): no service for "
 
-    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v2, p1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, p1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v3
 
-    invoke-static {v1, p1}, Landroid/util/Slog;->v(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v2, v3}, Landroid/util/Slog;->v(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 1373
+    .end local v1  # "service":Lcom/android/server/autofill/AutofillManagerServiceImpl;
     :cond_33
     :goto_33
     monitor-exit v0
@@ -260,17 +273,20 @@
 
     .line 1373
     :catchall_35
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_37
     .catchall {:try_start_7 .. :try_end_37} :catchall_35
 
-    throw p1
+    throw v1
 .end method
 
 .method public dump(Ljava/io/FileDescriptor;Ljava/io/PrintWriter;[Ljava/lang/String;)V
     .registers 15
+    .param p1, "fd"  # Ljava/io/FileDescriptor;
+    .param p2, "pw"  # Ljava/io/PrintWriter;
+    .param p3, "args"  # [Ljava/lang/String;
 
     .line 1417
     iget-object v0, p0, Lcom/android/server/autofill/AutofillManagerService$AutoFillManagerServiceStub;->this$0:Lcom/android/server/autofill/AutofillManagerService;
@@ -291,33 +307,39 @@
 
     .line 1419
     :cond_f
-    nop
+    const/4 v0, 0x1
 
     .line 1420
-    nop
+    .local v0, "showHistory":Z
+    const/4 v1, 0x0
 
     .line 1421
-    const/4 v0, 0x0
+    .local v1, "uiOnly":Z
+    const/4 v2, 0x1
 
-    const/4 v1, 0x1
-
-    if-eqz p3, :cond_7d
+    if-eqz p3, :cond_7c
 
     .line 1422
-    array-length v2, p3
+    array-length v3, p3
 
-    move v3, v0
-
-    move v4, v3
+    const/4 v4, 0x0
 
     move v5, v1
 
-    :goto_19
-    if-ge v3, v2, :cond_7b
+    move v1, v0
 
-    aget-object v6, p3, v3
+    move v0, v4
+
+    .end local v0  # "showHistory":Z
+    .local v1, "showHistory":Z
+    .local v5, "uiOnly":Z
+    :goto_19
+    if-ge v0, v3, :cond_7a
+
+    aget-object v6, p3, v0
 
     .line 1423
+    .local v6, "arg":Ljava/lang/String;
     const/4 v7, -0x1
 
     invoke-virtual {v6}, Ljava/lang/String;->hashCode()I
@@ -363,7 +385,7 @@
 
     if-eqz v8, :cond_32
 
-    move v7, v0
+    move v7, v4
 
     goto :goto_50
 
@@ -376,12 +398,12 @@
 
     if-eqz v8, :cond_32
 
-    move v7, v1
+    move v7, v2
 
     :goto_50
-    if-eqz v7, :cond_76
+    if-eqz v7, :cond_75
 
-    if-eq v7, v1, :cond_73
+    if-eq v7, v2, :cond_73
 
     if-eq v7, v10, :cond_6d
 
@@ -398,344 +420,348 @@
 
     invoke-virtual {v7}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v6
+    move-result-object v7
 
-    const-string v7, "AutofillManagerService"
+    const-string v8, "AutofillManagerService"
 
-    invoke-static {v7, v6}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v8, v7}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
-    goto :goto_78
+    goto :goto_77
 
     .line 1431
     :cond_6d
-    const-string p1, "Usage: dumpsys autofill [--ui-only|--no-history]"
+    const-string v0, "Usage: dumpsys autofill [--ui-only|--no-history]"
 
-    invoke-virtual {p2, p1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {p2, v0}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
     .line 1432
     return-void
 
     .line 1428
     :cond_73
-    nop
+    const/4 v5, 0x1
 
     .line 1429
-    move v4, v1
-
-    goto :goto_78
+    goto :goto_77
 
     .line 1425
-    :cond_76
-    nop
+    :cond_75
+    const/4 v1, 0x0
 
     .line 1426
-    move v5, v0
+    nop
 
     .line 1422
-    :goto_78
-    add-int/lit8 v3, v3, 0x1
+    .end local v6  # "arg":Ljava/lang/String;
+    :goto_77
+    add-int/lit8 v0, v0, 0x1
 
     goto :goto_19
 
-    :cond_7b
-    move v0, v4
+    :cond_7a
+    move v0, v1
 
-    goto :goto_7e
-
-    .line 1421
-    :cond_7d
-    move v5, v1
+    move v1, v5
 
     .line 1439
-    :goto_7e
-    if-eqz v0, :cond_8a
+    .end local v5  # "uiOnly":Z
+    .restart local v0  # "showHistory":Z
+    .local v1, "uiOnly":Z
+    :cond_7c
+    if-eqz v1, :cond_88
 
     .line 1440
-    iget-object p1, p0, Lcom/android/server/autofill/AutofillManagerService$AutoFillManagerServiceStub;->this$0:Lcom/android/server/autofill/AutofillManagerService;
+    iget-object v2, p0, Lcom/android/server/autofill/AutofillManagerService$AutoFillManagerServiceStub;->this$0:Lcom/android/server/autofill/AutofillManagerService;
 
-    invoke-static {p1}, Lcom/android/server/autofill/AutofillManagerService;->access$300(Lcom/android/server/autofill/AutofillManagerService;)Lcom/android/server/autofill/ui/AutoFillUI;
+    invoke-static {v2}, Lcom/android/server/autofill/AutofillManagerService;->access$300(Lcom/android/server/autofill/AutofillManagerService;)Lcom/android/server/autofill/ui/AutoFillUI;
 
-    move-result-object p1
+    move-result-object v2
 
-    invoke-virtual {p1, p2}, Lcom/android/server/autofill/ui/AutoFillUI;->dump(Ljava/io/PrintWriter;)V
+    invoke-virtual {v2, p2}, Lcom/android/server/autofill/ui/AutoFillUI;->dump(Ljava/io/PrintWriter;)V
 
     .line 1441
     return-void
 
+    .line 1444
+    :cond_88
+    const-string v3, "  "
+
     .line 1445
-    :cond_8a
-    sget-boolean v0, Lcom/android/server/autofill/Helper;->sDebug:Z
+    .local v3, "prefix":Ljava/lang/String;
+    sget-boolean v4, Lcom/android/server/autofill/Helper;->sDebug:Z
 
     .line 1446
-    sget-boolean v2, Lcom/android/server/autofill/Helper;->sVerbose:Z
+    .local v4, "realDebug":Z
+    sget-boolean v5, Lcom/android/server/autofill/Helper;->sVerbose:Z
 
     .line 1448
+    .local v5, "realVerbose":Z
     :try_start_8e
-    sput-boolean v1, Lcom/android/server/autofill/Helper;->sVerbose:Z
+    sput-boolean v2, Lcom/android/server/autofill/Helper;->sVerbose:Z
 
-    sput-boolean v1, Lcom/android/server/autofill/Helper;->sDebug:Z
+    sput-boolean v2, Lcom/android/server/autofill/Helper;->sDebug:Z
 
     .line 1449
-    iget-object v1, p0, Lcom/android/server/autofill/AutofillManagerService$AutoFillManagerServiceStub;->this$0:Lcom/android/server/autofill/AutofillManagerService;
+    iget-object v2, p0, Lcom/android/server/autofill/AutofillManagerService$AutoFillManagerServiceStub;->this$0:Lcom/android/server/autofill/AutofillManagerService;
 
-    invoke-static {v1}, Lcom/android/server/autofill/AutofillManagerService;->access$6600(Lcom/android/server/autofill/AutofillManagerService;)Ljava/lang/Object;
+    invoke-static {v2}, Lcom/android/server/autofill/AutofillManagerService;->access$6600(Lcom/android/server/autofill/AutofillManagerService;)Ljava/lang/Object;
 
-    move-result-object v1
+    move-result-object v2
 
-    monitor-enter v1
+    monitor-enter v2
     :try_end_99
     .catchall {:try_start_8e .. :try_end_99} :catchall_19a
 
     .line 1450
     :try_start_99
-    const-string/jumbo v3, "sDebug: "
+    const-string/jumbo v6, "sDebug: "
 
-    invoke-virtual {p2, v3}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
+    invoke-virtual {p2, v6}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
-    invoke-virtual {p2, v0}, Ljava/io/PrintWriter;->print(Z)V
+    invoke-virtual {p2, v4}, Ljava/io/PrintWriter;->print(Z)V
 
     .line 1451
-    const-string v3, " sVerbose: "
+    const-string v6, " sVerbose: "
 
-    invoke-virtual {p2, v3}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
+    invoke-virtual {p2, v6}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
-    invoke-virtual {p2, v2}, Ljava/io/PrintWriter;->println(Z)V
+    invoke-virtual {p2, v5}, Ljava/io/PrintWriter;->println(Z)V
 
     .line 1453
-    iget-object v3, p0, Lcom/android/server/autofill/AutofillManagerService$AutoFillManagerServiceStub;->this$0:Lcom/android/server/autofill/AutofillManagerService;
+    iget-object v6, p0, Lcom/android/server/autofill/AutofillManagerService$AutoFillManagerServiceStub;->this$0:Lcom/android/server/autofill/AutofillManagerService;
 
-    const-string v4, ""
+    const-string v7, ""
 
-    invoke-static {v3, v4, p2}, Lcom/android/server/autofill/AutofillManagerService;->access$6700(Lcom/android/server/autofill/AutofillManagerService;Ljava/lang/String;Ljava/io/PrintWriter;)V
+    invoke-static {v6, v7, p2}, Lcom/android/server/autofill/AutofillManagerService;->access$6700(Lcom/android/server/autofill/AutofillManagerService;Ljava/lang/String;Ljava/io/PrintWriter;)V
 
     .line 1454
-    iget-object v3, p0, Lcom/android/server/autofill/AutofillManagerService$AutoFillManagerServiceStub;->this$0:Lcom/android/server/autofill/AutofillManagerService;
+    iget-object v6, p0, Lcom/android/server/autofill/AutofillManagerService$AutoFillManagerServiceStub;->this$0:Lcom/android/server/autofill/AutofillManagerService;
 
-    iget-object v3, v3, Lcom/android/server/autofill/AutofillManagerService;->mAugmentedAutofillResolver:Lcom/android/server/infra/FrameworkResourcesServiceNameResolver;
+    iget-object v6, v6, Lcom/android/server/autofill/AutofillManagerService;->mAugmentedAutofillResolver:Lcom/android/server/infra/FrameworkResourcesServiceNameResolver;
 
-    invoke-virtual {v3, p2}, Lcom/android/server/infra/FrameworkResourcesServiceNameResolver;->dumpShort(Ljava/io/PrintWriter;)V
+    invoke-virtual {v6, p2}, Lcom/android/server/infra/FrameworkResourcesServiceNameResolver;->dumpShort(Ljava/io/PrintWriter;)V
 
     invoke-virtual {p2}, Ljava/io/PrintWriter;->println()V
 
     .line 1455
-    const-string v3, "Max partitions per session: "
+    const-string v6, "Max partitions per session: "
 
-    invoke-virtual {p2, v3}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
+    invoke-virtual {p2, v6}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
     invoke-static {}, Lcom/android/server/autofill/AutofillManagerService;->access$6800()I
 
-    move-result v3
+    move-result v6
 
-    invoke-virtual {p2, v3}, Ljava/io/PrintWriter;->println(I)V
+    invoke-virtual {p2, v6}, Ljava/io/PrintWriter;->println(I)V
 
     .line 1456
-    const-string v3, "Max visible datasets: "
+    const-string v6, "Max visible datasets: "
 
-    invoke-virtual {p2, v3}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
+    invoke-virtual {p2, v6}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
     invoke-static {}, Lcom/android/server/autofill/AutofillManagerService;->access$6900()I
 
-    move-result v3
+    move-result v6
 
-    invoke-virtual {p2, v3}, Ljava/io/PrintWriter;->println(I)V
+    invoke-virtual {p2, v6}, Ljava/io/PrintWriter;->println(I)V
 
     .line 1457
-    sget-object v3, Lcom/android/server/autofill/Helper;->sFullScreenMode:Ljava/lang/Boolean;
+    sget-object v6, Lcom/android/server/autofill/Helper;->sFullScreenMode:Ljava/lang/Boolean;
 
-    if-eqz v3, :cond_e1
+    if-eqz v6, :cond_e1
 
     .line 1458
-    const-string v3, "Overridden full-screen mode: "
+    const-string v6, "Overridden full-screen mode: "
 
-    invoke-virtual {p2, v3}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
+    invoke-virtual {p2, v6}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
-    sget-object v3, Lcom/android/server/autofill/Helper;->sFullScreenMode:Ljava/lang/Boolean;
+    sget-object v6, Lcom/android/server/autofill/Helper;->sFullScreenMode:Ljava/lang/Boolean;
 
-    invoke-virtual {p2, v3}, Ljava/io/PrintWriter;->println(Ljava/lang/Object;)V
+    invoke-virtual {p2, v6}, Ljava/io/PrintWriter;->println(Ljava/lang/Object;)V
 
     .line 1460
     :cond_e1
-    const-string v3, "User data constraints: "
+    const-string v6, "User data constraints: "
 
-    invoke-virtual {p2, v3}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {p2, v6}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
-    const-string v3, "  "
+    const-string v6, "  "
 
-    invoke-static {v3, p2}, Landroid/service/autofill/UserData;->dumpConstraints(Ljava/lang/String;Ljava/io/PrintWriter;)V
+    invoke-static {v6, p2}, Landroid/service/autofill/UserData;->dumpConstraints(Ljava/lang/String;Ljava/io/PrintWriter;)V
 
     .line 1461
-    iget-object v3, p0, Lcom/android/server/autofill/AutofillManagerService$AutoFillManagerServiceStub;->this$0:Lcom/android/server/autofill/AutofillManagerService;
+    iget-object v6, p0, Lcom/android/server/autofill/AutofillManagerService$AutoFillManagerServiceStub;->this$0:Lcom/android/server/autofill/AutofillManagerService;
 
-    invoke-static {v3}, Lcom/android/server/autofill/AutofillManagerService;->access$300(Lcom/android/server/autofill/AutofillManagerService;)Lcom/android/server/autofill/ui/AutoFillUI;
+    invoke-static {v6}, Lcom/android/server/autofill/AutofillManagerService;->access$300(Lcom/android/server/autofill/AutofillManagerService;)Lcom/android/server/autofill/ui/AutoFillUI;
 
-    move-result-object v3
+    move-result-object v6
 
-    invoke-virtual {v3, p2}, Lcom/android/server/autofill/ui/AutoFillUI;->dump(Ljava/io/PrintWriter;)V
+    invoke-virtual {v6, p2}, Lcom/android/server/autofill/ui/AutoFillUI;->dump(Ljava/io/PrintWriter;)V
 
     .line 1462
-    const-string v3, "Autofill Compat State: "
+    const-string v6, "Autofill Compat State: "
 
-    invoke-virtual {p2, v3}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
+    invoke-virtual {p2, v6}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
     .line 1463
-    iget-object v3, p0, Lcom/android/server/autofill/AutofillManagerService$AutoFillManagerServiceStub;->this$0:Lcom/android/server/autofill/AutofillManagerService;
+    iget-object v6, p0, Lcom/android/server/autofill/AutofillManagerService$AutoFillManagerServiceStub;->this$0:Lcom/android/server/autofill/AutofillManagerService;
 
-    invoke-static {v3}, Lcom/android/server/autofill/AutofillManagerService;->access$700(Lcom/android/server/autofill/AutofillManagerService;)Lcom/android/server/autofill/AutofillManagerService$AutofillCompatState;
+    invoke-static {v6}, Lcom/android/server/autofill/AutofillManagerService;->access$700(Lcom/android/server/autofill/AutofillManagerService;)Lcom/android/server/autofill/AutofillManagerService$AutofillCompatState;
 
-    move-result-object v3
+    move-result-object v6
 
-    const-string v4, "  "
+    const-string v7, "  "
 
-    invoke-static {v3, v4, p2}, Lcom/android/server/autofill/AutofillManagerService$AutofillCompatState;->access$7000(Lcom/android/server/autofill/AutofillManagerService$AutofillCompatState;Ljava/lang/String;Ljava/io/PrintWriter;)V
+    invoke-static {v6, v7, p2}, Lcom/android/server/autofill/AutofillManagerService$AutofillCompatState;->access$7000(Lcom/android/server/autofill/AutofillManagerService$AutofillCompatState;Ljava/lang/String;Ljava/io/PrintWriter;)V
 
     .line 1464
-    const-string v3, "from settings: "
+    const-string v6, "from settings: "
 
-    invoke-virtual {p2, v3}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
+    invoke-virtual {p2, v6}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
     .line 1465
-    iget-object v3, p0, Lcom/android/server/autofill/AutofillManagerService$AutoFillManagerServiceStub;->this$0:Lcom/android/server/autofill/AutofillManagerService;
+    iget-object v6, p0, Lcom/android/server/autofill/AutofillManagerService$AutoFillManagerServiceStub;->this$0:Lcom/android/server/autofill/AutofillManagerService;
 
-    invoke-static {v3}, Lcom/android/server/autofill/AutofillManagerService;->access$7100(Lcom/android/server/autofill/AutofillManagerService;)Ljava/lang/String;
+    invoke-static {v6}, Lcom/android/server/autofill/AutofillManagerService;->access$7100(Lcom/android/server/autofill/AutofillManagerService;)Ljava/lang/String;
 
-    move-result-object v3
+    move-result-object v6
 
-    invoke-virtual {p2, v3}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {p2, v6}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
     .line 1466
-    iget-object v3, p0, Lcom/android/server/autofill/AutofillManagerService$AutoFillManagerServiceStub;->this$0:Lcom/android/server/autofill/AutofillManagerService;
+    iget-object v6, p0, Lcom/android/server/autofill/AutofillManagerService$AutoFillManagerServiceStub;->this$0:Lcom/android/server/autofill/AutofillManagerService;
 
-    invoke-static {v3}, Lcom/android/server/autofill/AutofillManagerService;->access$7200(Lcom/android/server/autofill/AutofillManagerService;)I
+    invoke-static {v6}, Lcom/android/server/autofill/AutofillManagerService;->access$7200(Lcom/android/server/autofill/AutofillManagerService;)I
 
-    move-result v3
+    move-result v6
 
-    if-eqz v3, :cond_12c
+    if-eqz v6, :cond_12c
 
     .line 1467
-    const-string v3, "Smart Suggestion modes: "
+    const-string v6, "Smart Suggestion modes: "
 
-    invoke-virtual {p2, v3}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
+    invoke-virtual {p2, v6}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
     .line 1468
-    iget-object v3, p0, Lcom/android/server/autofill/AutofillManagerService$AutoFillManagerServiceStub;->this$0:Lcom/android/server/autofill/AutofillManagerService;
+    iget-object v6, p0, Lcom/android/server/autofill/AutofillManagerService$AutoFillManagerServiceStub;->this$0:Lcom/android/server/autofill/AutofillManagerService;
 
-    invoke-static {v3}, Lcom/android/server/autofill/AutofillManagerService;->access$7200(Lcom/android/server/autofill/AutofillManagerService;)I
+    invoke-static {v6}, Lcom/android/server/autofill/AutofillManagerService;->access$7200(Lcom/android/server/autofill/AutofillManagerService;)I
 
-    move-result v3
+    move-result v6
 
-    invoke-static {v3}, Landroid/view/autofill/AutofillManager;->getSmartSuggestionModeToString(I)Ljava/lang/String;
+    invoke-static {v6}, Landroid/view/autofill/AutofillManager;->getSmartSuggestionModeToString(I)Ljava/lang/String;
 
-    move-result-object v3
+    move-result-object v6
 
-    invoke-virtual {p2, v3}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {p2, v6}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
     .line 1470
     :cond_12c
-    const-string v3, "Augmented Service Idle Unbind Timeout: "
+    const-string v6, "Augmented Service Idle Unbind Timeout: "
 
-    invoke-virtual {p2, v3}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
+    invoke-virtual {p2, v6}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
     .line 1471
-    iget-object v3, p0, Lcom/android/server/autofill/AutofillManagerService$AutoFillManagerServiceStub;->this$0:Lcom/android/server/autofill/AutofillManagerService;
+    iget-object v6, p0, Lcom/android/server/autofill/AutofillManagerService$AutoFillManagerServiceStub;->this$0:Lcom/android/server/autofill/AutofillManagerService;
 
-    iget v3, v3, Lcom/android/server/autofill/AutofillManagerService;->mAugmentedServiceIdleUnbindTimeoutMs:I
+    iget v6, v6, Lcom/android/server/autofill/AutofillManagerService;->mAugmentedServiceIdleUnbindTimeoutMs:I
 
-    invoke-virtual {p2, v3}, Ljava/io/PrintWriter;->println(I)V
+    invoke-virtual {p2, v6}, Ljava/io/PrintWriter;->println(I)V
 
     .line 1472
-    const-string v3, "Augmented Service Request Timeout: "
+    const-string v6, "Augmented Service Request Timeout: "
 
-    invoke-virtual {p2, v3}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
+    invoke-virtual {p2, v6}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
     .line 1473
-    iget-object v3, p0, Lcom/android/server/autofill/AutofillManagerService$AutoFillManagerServiceStub;->this$0:Lcom/android/server/autofill/AutofillManagerService;
+    iget-object v6, p0, Lcom/android/server/autofill/AutofillManagerService$AutoFillManagerServiceStub;->this$0:Lcom/android/server/autofill/AutofillManagerService;
 
-    iget v3, v3, Lcom/android/server/autofill/AutofillManagerService;->mAugmentedServiceRequestTimeoutMs:I
+    iget v6, v6, Lcom/android/server/autofill/AutofillManagerService;->mAugmentedServiceRequestTimeoutMs:I
 
-    invoke-virtual {p2, v3}, Ljava/io/PrintWriter;->println(I)V
+    invoke-virtual {p2, v6}, Ljava/io/PrintWriter;->println(I)V
 
     .line 1474
-    if-eqz v5, :cond_182
+    if-eqz v0, :cond_182
 
     .line 1475
     invoke-virtual {p2}, Ljava/io/PrintWriter;->println()V
 
-    const-string v3, "Requests history:"
+    const-string v6, "Requests history:"
 
-    invoke-virtual {p2, v3}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {p2, v6}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
     invoke-virtual {p2}, Ljava/io/PrintWriter;->println()V
 
     .line 1476
-    iget-object v3, p0, Lcom/android/server/autofill/AutofillManagerService$AutoFillManagerServiceStub;->this$0:Lcom/android/server/autofill/AutofillManagerService;
+    iget-object v6, p0, Lcom/android/server/autofill/AutofillManagerService$AutoFillManagerServiceStub;->this$0:Lcom/android/server/autofill/AutofillManagerService;
 
-    invoke-static {v3}, Lcom/android/server/autofill/AutofillManagerService;->access$7300(Lcom/android/server/autofill/AutofillManagerService;)Landroid/util/LocalLog;
+    invoke-static {v6}, Lcom/android/server/autofill/AutofillManagerService;->access$7300(Lcom/android/server/autofill/AutofillManagerService;)Landroid/util/LocalLog;
 
-    move-result-object v3
+    move-result-object v6
 
-    invoke-virtual {v3, p1, p2, p3}, Landroid/util/LocalLog;->reverseDump(Ljava/io/FileDescriptor;Ljava/io/PrintWriter;[Ljava/lang/String;)V
+    invoke-virtual {v6, p1, p2, p3}, Landroid/util/LocalLog;->reverseDump(Ljava/io/FileDescriptor;Ljava/io/PrintWriter;[Ljava/lang/String;)V
 
     .line 1477
     invoke-virtual {p2}, Ljava/io/PrintWriter;->println()V
 
-    const-string v3, "UI latency history:"
+    const-string v6, "UI latency history:"
 
-    invoke-virtual {p2, v3}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {p2, v6}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
     invoke-virtual {p2}, Ljava/io/PrintWriter;->println()V
 
     .line 1478
-    iget-object v3, p0, Lcom/android/server/autofill/AutofillManagerService$AutoFillManagerServiceStub;->this$0:Lcom/android/server/autofill/AutofillManagerService;
+    iget-object v6, p0, Lcom/android/server/autofill/AutofillManagerService$AutoFillManagerServiceStub;->this$0:Lcom/android/server/autofill/AutofillManagerService;
 
-    invoke-static {v3}, Lcom/android/server/autofill/AutofillManagerService;->access$7400(Lcom/android/server/autofill/AutofillManagerService;)Landroid/util/LocalLog;
+    invoke-static {v6}, Lcom/android/server/autofill/AutofillManagerService;->access$7400(Lcom/android/server/autofill/AutofillManagerService;)Landroid/util/LocalLog;
 
-    move-result-object v3
+    move-result-object v6
 
-    invoke-virtual {v3, p1, p2, p3}, Landroid/util/LocalLog;->reverseDump(Ljava/io/FileDescriptor;Ljava/io/PrintWriter;[Ljava/lang/String;)V
+    invoke-virtual {v6, p1, p2, p3}, Landroid/util/LocalLog;->reverseDump(Ljava/io/FileDescriptor;Ljava/io/PrintWriter;[Ljava/lang/String;)V
 
     .line 1479
     invoke-virtual {p2}, Ljava/io/PrintWriter;->println()V
 
-    const-string v3, "WTF history:"
+    const-string v6, "WTF history:"
 
-    invoke-virtual {p2, v3}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {p2, v6}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
     invoke-virtual {p2}, Ljava/io/PrintWriter;->println()V
 
     .line 1480
-    iget-object v3, p0, Lcom/android/server/autofill/AutofillManagerService$AutoFillManagerServiceStub;->this$0:Lcom/android/server/autofill/AutofillManagerService;
+    iget-object v6, p0, Lcom/android/server/autofill/AutofillManagerService$AutoFillManagerServiceStub;->this$0:Lcom/android/server/autofill/AutofillManagerService;
 
-    invoke-static {v3}, Lcom/android/server/autofill/AutofillManagerService;->access$7500(Lcom/android/server/autofill/AutofillManagerService;)Landroid/util/LocalLog;
+    invoke-static {v6}, Lcom/android/server/autofill/AutofillManagerService;->access$7500(Lcom/android/server/autofill/AutofillManagerService;)Landroid/util/LocalLog;
 
-    move-result-object v3
+    move-result-object v6
 
-    invoke-virtual {v3, p1, p2, p3}, Landroid/util/LocalLog;->reverseDump(Ljava/io/FileDescriptor;Ljava/io/PrintWriter;[Ljava/lang/String;)V
+    invoke-virtual {v6, p1, p2, p3}, Landroid/util/LocalLog;->reverseDump(Ljava/io/FileDescriptor;Ljava/io/PrintWriter;[Ljava/lang/String;)V
 
     .line 1482
     :cond_182
-    const-string p1, "Augmented Autofill State: "
+    const-string v6, "Augmented Autofill State: "
 
-    invoke-virtual {p2, p1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {p2, v6}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
     .line 1483
-    iget-object p1, p0, Lcom/android/server/autofill/AutofillManagerService$AutoFillManagerServiceStub;->this$0:Lcom/android/server/autofill/AutofillManagerService;
+    iget-object v6, p0, Lcom/android/server/autofill/AutofillManagerService$AutoFillManagerServiceStub;->this$0:Lcom/android/server/autofill/AutofillManagerService;
 
-    iget-object p1, p1, Lcom/android/server/autofill/AutofillManagerService;->mAugmentedAutofillState:Lcom/android/server/autofill/AutofillManagerService$AugmentedAutofillState;
+    iget-object v6, v6, Lcom/android/server/autofill/AutofillManagerService;->mAugmentedAutofillState:Lcom/android/server/autofill/AutofillManagerService$AugmentedAutofillState;
 
-    const-string p3, "  "
+    const-string v7, "  "
 
-    invoke-virtual {p1, p3, p2}, Lcom/android/server/autofill/AutofillManagerService$AugmentedAutofillState;->dump(Ljava/lang/String;Ljava/io/PrintWriter;)V
+    invoke-virtual {v6, v7, p2}, Lcom/android/server/autofill/AutofillManagerService$AugmentedAutofillState;->dump(Ljava/lang/String;Ljava/io/PrintWriter;)V
 
     .line 1484
-    monitor-exit v1
+    monitor-exit v2
     :try_end_191
     .catchall {:try_start_99 .. :try_end_191} :catchall_197
 
     .line 1486
-    sput-boolean v0, Lcom/android/server/autofill/Helper;->sDebug:Z
+    sput-boolean v4, Lcom/android/server/autofill/Helper;->sDebug:Z
 
     .line 1487
-    sput-boolean v2, Lcom/android/server/autofill/Helper;->sVerbose:Z
+    sput-boolean v5, Lcom/android/server/autofill/Helper;->sVerbose:Z
 
     .line 1488
     nop
@@ -745,32 +771,52 @@
 
     .line 1484
     :catchall_197
-    move-exception p1
+    move-exception v6
 
     :try_start_198
-    monitor-exit v1
+    monitor-exit v2
     :try_end_199
     .catchall {:try_start_198 .. :try_end_199} :catchall_197
 
+    .end local v0  # "showHistory":Z
+    .end local v1  # "uiOnly":Z
+    .end local v3  # "prefix":Ljava/lang/String;
+    .end local v4  # "realDebug":Z
+    .end local v5  # "realVerbose":Z
+    .end local p0  # "this":Lcom/android/server/autofill/AutofillManagerService$AutoFillManagerServiceStub;
+    .end local p1  # "fd":Ljava/io/FileDescriptor;
+    .end local p2  # "pw":Ljava/io/PrintWriter;
+    .end local p3  # "args":[Ljava/lang/String;
     :try_start_199
-    throw p1
+    throw v6
     :try_end_19a
     .catchall {:try_start_199 .. :try_end_19a} :catchall_19a
 
     .line 1486
+    .restart local v0  # "showHistory":Z
+    .restart local v1  # "uiOnly":Z
+    .restart local v3  # "prefix":Ljava/lang/String;
+    .restart local v4  # "realDebug":Z
+    .restart local v5  # "realVerbose":Z
+    .restart local p0  # "this":Lcom/android/server/autofill/AutofillManagerService$AutoFillManagerServiceStub;
+    .restart local p1  # "fd":Ljava/io/FileDescriptor;
+    .restart local p2  # "pw":Ljava/io/PrintWriter;
+    .restart local p3  # "args":[Ljava/lang/String;
     :catchall_19a
-    move-exception p1
+    move-exception v2
 
-    sput-boolean v0, Lcom/android/server/autofill/Helper;->sDebug:Z
+    sput-boolean v4, Lcom/android/server/autofill/Helper;->sDebug:Z
 
     .line 1487
-    sput-boolean v2, Lcom/android/server/autofill/Helper;->sVerbose:Z
+    sput-boolean v5, Lcom/android/server/autofill/Helper;->sVerbose:Z
 
-    throw p1
+    throw v2
 .end method
 
 .method public finishSession(II)V
-    .registers 6
+    .registers 8
+    .param p1, "sessionId"  # I
+    .param p2, "userId"  # I
 
     .line 1342
     iget-object v0, p0, Lcom/android/server/autofill/AutofillManagerService$AutoFillManagerServiceStub;->this$0:Lcom/android/server/autofill/AutofillManagerService;
@@ -792,43 +838,45 @@
     check-cast v1, Lcom/android/server/autofill/AutofillManagerServiceImpl;
 
     .line 1344
+    .local v1, "service":Lcom/android/server/autofill/AutofillManagerServiceImpl;
     if-eqz v1, :cond_19
 
     .line 1345
     invoke-static {}, Lcom/android/server/autofill/AutofillManagerService$AutoFillManagerServiceStub;->getCallingUid()I
 
-    move-result p2
+    move-result v2
 
-    invoke-virtual {v1, p1, p2}, Lcom/android/server/autofill/AutofillManagerServiceImpl;->finishSessionLocked(II)V
+    invoke-virtual {v1, p1, v2}, Lcom/android/server/autofill/AutofillManagerServiceImpl;->finishSessionLocked(II)V
 
     goto :goto_33
 
     .line 1346
     :cond_19
-    sget-boolean p1, Lcom/android/server/autofill/Helper;->sVerbose:Z
+    sget-boolean v2, Lcom/android/server/autofill/Helper;->sVerbose:Z
 
-    if-eqz p1, :cond_33
+    if-eqz v2, :cond_33
 
     .line 1347
-    const-string p1, "AutofillManagerService"
+    const-string v2, "AutofillManagerService"
 
-    new-instance v1, Ljava/lang/StringBuilder;
+    new-instance v3, Ljava/lang/StringBuilder;
 
-    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v2, "finishSession(): no service for "
+    const-string v4, "finishSession(): no service for "
 
-    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v1, p2}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, p2}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p2
+    move-result-object v3
 
-    invoke-static {p1, p2}, Landroid/util/Slog;->v(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v2, v3}, Landroid/util/Slog;->v(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 1349
+    .end local v1  # "service":Lcom/android/server/autofill/AutofillManagerServiceImpl;
     :cond_33
     :goto_33
     monitor-exit v0
@@ -838,17 +886,18 @@
 
     .line 1349
     :catchall_35
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_37
     .catchall {:try_start_7 .. :try_end_37} :catchall_35
 
-    throw p1
+    throw v1
 .end method
 
 .method public getAutofillServiceComponentName(Lcom/android/internal/os/IResultReceiver;)V
-    .registers 7
+    .registers 9
+    .param p1, "receiver"  # Lcom/android/internal/os/IResultReceiver;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -861,93 +910,98 @@
     move-result v0
 
     .line 1281
-    nop
+    .local v0, "userId":I
+    const/4 v1, 0x0
 
     .line 1282
-    iget-object v1, p0, Lcom/android/server/autofill/AutofillManagerService$AutoFillManagerServiceStub;->this$0:Lcom/android/server/autofill/AutofillManagerService;
-
-    invoke-static {v1}, Lcom/android/server/autofill/AutofillManagerService;->access$4600(Lcom/android/server/autofill/AutofillManagerService;)Ljava/lang/Object;
-
-    move-result-object v1
-
-    monitor-enter v1
-
-    .line 1283
-    :try_start_c
+    .local v1, "componentName":Landroid/content/ComponentName;
     iget-object v2, p0, Lcom/android/server/autofill/AutofillManagerService$AutoFillManagerServiceStub;->this$0:Lcom/android/server/autofill/AutofillManagerService;
 
-    invoke-static {v2, v0}, Lcom/android/server/autofill/AutofillManagerService;->access$4700(Lcom/android/server/autofill/AutofillManagerService;I)Lcom/android/server/infra/AbstractPerUserSystemService;
+    invoke-static {v2}, Lcom/android/server/autofill/AutofillManagerService;->access$4600(Lcom/android/server/autofill/AutofillManagerService;)Ljava/lang/Object;
 
     move-result-object v2
 
-    check-cast v2, Lcom/android/server/autofill/AutofillManagerServiceImpl;
+    monitor-enter v2
+
+    .line 1283
+    :try_start_c
+    iget-object v3, p0, Lcom/android/server/autofill/AutofillManagerService$AutoFillManagerServiceStub;->this$0:Lcom/android/server/autofill/AutofillManagerService;
+
+    invoke-static {v3, v0}, Lcom/android/server/autofill/AutofillManagerService;->access$4700(Lcom/android/server/autofill/AutofillManagerService;I)Lcom/android/server/infra/AbstractPerUserSystemService;
+
+    move-result-object v3
+
+    check-cast v3, Lcom/android/server/autofill/AutofillManagerServiceImpl;
 
     .line 1284
-    if-eqz v2, :cond_1b
+    .local v3, "service":Lcom/android/server/autofill/AutofillManagerServiceImpl;
+    if-eqz v3, :cond_1c
 
     .line 1285
-    invoke-virtual {v2}, Lcom/android/server/autofill/AutofillManagerServiceImpl;->getServiceComponentName()Landroid/content/ComponentName;
+    invoke-virtual {v3}, Lcom/android/server/autofill/AutofillManagerServiceImpl;->getServiceComponentName()Landroid/content/ComponentName;
 
-    move-result-object v0
+    move-result-object v4
+
+    move-object v1, v4
 
     goto :goto_36
 
     .line 1286
-    :cond_1b
-    sget-boolean v2, Lcom/android/server/autofill/Helper;->sVerbose:Z
+    :cond_1c
+    sget-boolean v4, Lcom/android/server/autofill/Helper;->sVerbose:Z
 
-    if-eqz v2, :cond_35
+    if-eqz v4, :cond_36
 
     .line 1287
-    const-string v2, "AutofillManagerService"
+    const-string v4, "AutofillManagerService"
 
-    new-instance v3, Ljava/lang/StringBuilder;
+    new-instance v5, Ljava/lang/StringBuilder;
 
-    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v5}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v4, "getAutofillServiceComponentName(): no service for "
+    const-string v6, "getAutofillServiceComponentName(): no service for "
 
-    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v3, v0}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v5, v0}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v5}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v5
 
-    invoke-static {v2, v0}, Landroid/util/Slog;->v(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v4, v5}, Landroid/util/Slog;->v(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 1289
-    :cond_35
-    const/4 v0, 0x0
-
+    .end local v3  # "service":Lcom/android/server/autofill/AutofillManagerServiceImpl;
+    :cond_36
     :goto_36
-    monitor-exit v1
+    monitor-exit v2
     :try_end_37
     .catchall {:try_start_c .. :try_end_37} :catchall_3d
 
     .line 1290
-    iget-object v1, p0, Lcom/android/server/autofill/AutofillManagerService$AutoFillManagerServiceStub;->this$0:Lcom/android/server/autofill/AutofillManagerService;
+    iget-object v2, p0, Lcom/android/server/autofill/AutofillManagerService$AutoFillManagerServiceStub;->this$0:Lcom/android/server/autofill/AutofillManagerService;
 
-    invoke-static {v1, p1, v0}, Lcom/android/server/autofill/AutofillManagerService;->access$2800(Lcom/android/server/autofill/AutofillManagerService;Lcom/android/internal/os/IResultReceiver;Landroid/os/Parcelable;)V
+    invoke-static {v2, p1, v1}, Lcom/android/server/autofill/AutofillManagerService;->access$2800(Lcom/android/server/autofill/AutofillManagerService;Lcom/android/internal/os/IResultReceiver;Landroid/os/Parcelable;)V
 
     .line 1291
     return-void
 
     .line 1289
     :catchall_3d
-    move-exception p1
+    move-exception v3
 
     :try_start_3e
-    monitor-exit v1
+    monitor-exit v2
     :try_end_3f
     .catchall {:try_start_3e .. :try_end_3f} :catchall_3d
 
-    throw p1
+    throw v3
 .end method
 
 .method public getAvailableFieldClassificationAlgorithms(Lcom/android/internal/os/IResultReceiver;)V
-    .registers 7
+    .registers 9
+    .param p1, "receiver"  # Lcom/android/internal/os/IResultReceiver;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -960,97 +1014,102 @@
     move-result v0
 
     .line 1261
-    nop
+    .local v0, "userId":I
+    const/4 v1, 0x0
 
     .line 1263
-    iget-object v1, p0, Lcom/android/server/autofill/AutofillManagerService$AutoFillManagerServiceStub;->this$0:Lcom/android/server/autofill/AutofillManagerService;
-
-    invoke-static {v1}, Lcom/android/server/autofill/AutofillManagerService;->access$4300(Lcom/android/server/autofill/AutofillManagerService;)Ljava/lang/Object;
-
-    move-result-object v1
-
-    monitor-enter v1
-
-    .line 1264
-    :try_start_c
+    .local v1, "algorithms":[Ljava/lang/String;
     iget-object v2, p0, Lcom/android/server/autofill/AutofillManagerService$AutoFillManagerServiceStub;->this$0:Lcom/android/server/autofill/AutofillManagerService;
 
-    invoke-static {v2, v0}, Lcom/android/server/autofill/AutofillManagerService;->access$4400(Lcom/android/server/autofill/AutofillManagerService;I)Lcom/android/server/infra/AbstractPerUserSystemService;
+    invoke-static {v2}, Lcom/android/server/autofill/AutofillManagerService;->access$4300(Lcom/android/server/autofill/AutofillManagerService;)Ljava/lang/Object;
 
     move-result-object v2
 
-    check-cast v2, Lcom/android/server/autofill/AutofillManagerServiceImpl;
+    monitor-enter v2
+
+    .line 1264
+    :try_start_c
+    iget-object v3, p0, Lcom/android/server/autofill/AutofillManagerService$AutoFillManagerServiceStub;->this$0:Lcom/android/server/autofill/AutofillManagerService;
+
+    invoke-static {v3, v0}, Lcom/android/server/autofill/AutofillManagerService;->access$4400(Lcom/android/server/autofill/AutofillManagerService;I)Lcom/android/server/infra/AbstractPerUserSystemService;
+
+    move-result-object v3
+
+    check-cast v3, Lcom/android/server/autofill/AutofillManagerServiceImpl;
 
     .line 1265
-    if-eqz v2, :cond_1f
+    .local v3, "service":Lcom/android/server/autofill/AutofillManagerServiceImpl;
+    if-eqz v3, :cond_20
 
     .line 1266
     invoke-static {}, Lcom/android/server/autofill/AutofillManagerService$AutoFillManagerServiceStub;->getCallingUid()I
 
-    move-result v0
+    move-result v4
 
-    invoke-virtual {v2, v0}, Lcom/android/server/autofill/AutofillManagerServiceImpl;->getAvailableFieldClassificationAlgorithms(I)[Ljava/lang/String;
+    invoke-virtual {v3, v4}, Lcom/android/server/autofill/AutofillManagerServiceImpl;->getAvailableFieldClassificationAlgorithms(I)[Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v4
+
+    move-object v1, v4
 
     goto :goto_3a
 
     .line 1268
-    :cond_1f
-    sget-boolean v2, Lcom/android/server/autofill/Helper;->sVerbose:Z
+    :cond_20
+    sget-boolean v4, Lcom/android/server/autofill/Helper;->sVerbose:Z
 
-    if-eqz v2, :cond_39
+    if-eqz v4, :cond_3a
 
     .line 1269
-    const-string v2, "AutofillManagerService"
+    const-string v4, "AutofillManagerService"
 
-    new-instance v3, Ljava/lang/StringBuilder;
+    new-instance v5, Ljava/lang/StringBuilder;
 
-    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v5}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v4, "getAvailableFcAlgorithms(): no service for "
+    const-string v6, "getAvailableFcAlgorithms(): no service for "
 
-    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v3, v0}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v5, v0}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v5}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v5
 
-    invoke-static {v2, v0}, Landroid/util/Slog;->v(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v4, v5}, Landroid/util/Slog;->v(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 1272
-    :cond_39
-    const/4 v0, 0x0
-
+    .end local v3  # "service":Lcom/android/server/autofill/AutofillManagerServiceImpl;
+    :cond_3a
     :goto_3a
-    monitor-exit v1
+    monitor-exit v2
     :try_end_3b
     .catchall {:try_start_c .. :try_end_3b} :catchall_41
 
     .line 1273
-    iget-object v1, p0, Lcom/android/server/autofill/AutofillManagerService$AutoFillManagerServiceStub;->this$0:Lcom/android/server/autofill/AutofillManagerService;
+    iget-object v2, p0, Lcom/android/server/autofill/AutofillManagerService$AutoFillManagerServiceStub;->this$0:Lcom/android/server/autofill/AutofillManagerService;
 
-    invoke-static {v1, p1, v0}, Lcom/android/server/autofill/AutofillManagerService;->access$4500(Lcom/android/server/autofill/AutofillManagerService;Lcom/android/internal/os/IResultReceiver;[Ljava/lang/String;)V
+    invoke-static {v2, p1, v1}, Lcom/android/server/autofill/AutofillManagerService;->access$4500(Lcom/android/server/autofill/AutofillManagerService;Lcom/android/internal/os/IResultReceiver;[Ljava/lang/String;)V
 
     .line 1274
     return-void
 
     .line 1272
     :catchall_41
-    move-exception p1
+    move-exception v3
 
     :try_start_42
-    monitor-exit v1
+    monitor-exit v2
     :try_end_43
     .catchall {:try_start_42 .. :try_end_43} :catchall_41
 
-    throw p1
+    throw v3
 .end method
 
 .method public getDefaultFieldClassificationAlgorithm(Lcom/android/internal/os/IResultReceiver;)V
-    .registers 7
+    .registers 9
+    .param p1, "receiver"  # Lcom/android/internal/os/IResultReceiver;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -1063,97 +1122,102 @@
     move-result v0
 
     .line 1219
-    nop
+    .local v0, "userId":I
+    const/4 v1, 0x0
 
     .line 1221
-    iget-object v1, p0, Lcom/android/server/autofill/AutofillManagerService$AutoFillManagerServiceStub;->this$0:Lcom/android/server/autofill/AutofillManagerService;
-
-    invoke-static {v1}, Lcom/android/server/autofill/AutofillManagerService;->access$3900(Lcom/android/server/autofill/AutofillManagerService;)Ljava/lang/Object;
-
-    move-result-object v1
-
-    monitor-enter v1
-
-    .line 1222
-    :try_start_c
+    .local v1, "algorithm":Ljava/lang/String;
     iget-object v2, p0, Lcom/android/server/autofill/AutofillManagerService$AutoFillManagerServiceStub;->this$0:Lcom/android/server/autofill/AutofillManagerService;
 
-    invoke-static {v2, v0}, Lcom/android/server/autofill/AutofillManagerService;->access$4000(Lcom/android/server/autofill/AutofillManagerService;I)Lcom/android/server/infra/AbstractPerUserSystemService;
+    invoke-static {v2}, Lcom/android/server/autofill/AutofillManagerService;->access$3900(Lcom/android/server/autofill/AutofillManagerService;)Ljava/lang/Object;
 
     move-result-object v2
 
-    check-cast v2, Lcom/android/server/autofill/AutofillManagerServiceImpl;
+    monitor-enter v2
+
+    .line 1222
+    :try_start_c
+    iget-object v3, p0, Lcom/android/server/autofill/AutofillManagerService$AutoFillManagerServiceStub;->this$0:Lcom/android/server/autofill/AutofillManagerService;
+
+    invoke-static {v3, v0}, Lcom/android/server/autofill/AutofillManagerService;->access$4000(Lcom/android/server/autofill/AutofillManagerService;I)Lcom/android/server/infra/AbstractPerUserSystemService;
+
+    move-result-object v3
+
+    check-cast v3, Lcom/android/server/autofill/AutofillManagerServiceImpl;
 
     .line 1223
-    if-eqz v2, :cond_1f
+    .local v3, "service":Lcom/android/server/autofill/AutofillManagerServiceImpl;
+    if-eqz v3, :cond_20
 
     .line 1224
     invoke-static {}, Lcom/android/server/autofill/AutofillManagerService$AutoFillManagerServiceStub;->getCallingUid()I
 
-    move-result v0
+    move-result v4
 
-    invoke-virtual {v2, v0}, Lcom/android/server/autofill/AutofillManagerServiceImpl;->getDefaultFieldClassificationAlgorithm(I)Ljava/lang/String;
+    invoke-virtual {v3, v4}, Lcom/android/server/autofill/AutofillManagerServiceImpl;->getDefaultFieldClassificationAlgorithm(I)Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v4
+
+    move-object v1, v4
 
     goto :goto_3a
 
     .line 1226
-    :cond_1f
-    sget-boolean v2, Lcom/android/server/autofill/Helper;->sVerbose:Z
+    :cond_20
+    sget-boolean v4, Lcom/android/server/autofill/Helper;->sVerbose:Z
 
-    if-eqz v2, :cond_39
+    if-eqz v4, :cond_3a
 
     .line 1227
-    const-string v2, "AutofillManagerService"
+    const-string v4, "AutofillManagerService"
 
-    new-instance v3, Ljava/lang/StringBuilder;
+    new-instance v5, Ljava/lang/StringBuilder;
 
-    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v5}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v4, "getDefaultFcAlgorithm(): no service for "
+    const-string v6, "getDefaultFcAlgorithm(): no service for "
 
-    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v3, v0}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v5, v0}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v5}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v5
 
-    invoke-static {v2, v0}, Landroid/util/Slog;->v(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v4, v5}, Landroid/util/Slog;->v(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 1230
-    :cond_39
-    const/4 v0, 0x0
-
+    .end local v3  # "service":Lcom/android/server/autofill/AutofillManagerServiceImpl;
+    :cond_3a
     :goto_3a
-    monitor-exit v1
+    monitor-exit v2
     :try_end_3b
     .catchall {:try_start_c .. :try_end_3b} :catchall_41
 
     .line 1231
-    iget-object v1, p0, Lcom/android/server/autofill/AutofillManagerService$AutoFillManagerServiceStub;->this$0:Lcom/android/server/autofill/AutofillManagerService;
+    iget-object v2, p0, Lcom/android/server/autofill/AutofillManagerService$AutoFillManagerServiceStub;->this$0:Lcom/android/server/autofill/AutofillManagerService;
 
-    invoke-static {v1, p1, v0}, Lcom/android/server/autofill/AutofillManagerService;->access$3300(Lcom/android/server/autofill/AutofillManagerService;Lcom/android/internal/os/IResultReceiver;Ljava/lang/String;)V
+    invoke-static {v2, p1, v1}, Lcom/android/server/autofill/AutofillManagerService;->access$3300(Lcom/android/server/autofill/AutofillManagerService;Lcom/android/internal/os/IResultReceiver;Ljava/lang/String;)V
 
     .line 1232
     return-void
 
     .line 1230
     :catchall_41
-    move-exception p1
+    move-exception v3
 
     :try_start_42
-    monitor-exit v1
+    monitor-exit v2
     :try_end_43
     .catchall {:try_start_42 .. :try_end_43} :catchall_41
 
-    throw p1
+    throw v3
 .end method
 
 .method public getFillEventHistory(Lcom/android/internal/os/IResultReceiver;)V
-    .registers 7
+    .registers 9
+    .param p1, "receiver"  # Lcom/android/internal/os/IResultReceiver;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -1166,97 +1230,102 @@
     move-result v0
 
     .line 1139
-    nop
+    .local v0, "userId":I
+    const/4 v1, 0x0
 
     .line 1140
-    iget-object v1, p0, Lcom/android/server/autofill/AutofillManagerService$AutoFillManagerServiceStub;->this$0:Lcom/android/server/autofill/AutofillManagerService;
-
-    invoke-static {v1}, Lcom/android/server/autofill/AutofillManagerService;->access$2600(Lcom/android/server/autofill/AutofillManagerService;)Ljava/lang/Object;
-
-    move-result-object v1
-
-    monitor-enter v1
-
-    .line 1141
-    :try_start_c
+    .local v1, "fillEventHistory":Landroid/service/autofill/FillEventHistory;
     iget-object v2, p0, Lcom/android/server/autofill/AutofillManagerService$AutoFillManagerServiceStub;->this$0:Lcom/android/server/autofill/AutofillManagerService;
 
-    invoke-static {v2, v0}, Lcom/android/server/autofill/AutofillManagerService;->access$2700(Lcom/android/server/autofill/AutofillManagerService;I)Lcom/android/server/infra/AbstractPerUserSystemService;
+    invoke-static {v2}, Lcom/android/server/autofill/AutofillManagerService;->access$2600(Lcom/android/server/autofill/AutofillManagerService;)Ljava/lang/Object;
 
     move-result-object v2
 
-    check-cast v2, Lcom/android/server/autofill/AutofillManagerServiceImpl;
+    monitor-enter v2
+
+    .line 1141
+    :try_start_c
+    iget-object v3, p0, Lcom/android/server/autofill/AutofillManagerService$AutoFillManagerServiceStub;->this$0:Lcom/android/server/autofill/AutofillManagerService;
+
+    invoke-static {v3, v0}, Lcom/android/server/autofill/AutofillManagerService;->access$2700(Lcom/android/server/autofill/AutofillManagerService;I)Lcom/android/server/infra/AbstractPerUserSystemService;
+
+    move-result-object v3
+
+    check-cast v3, Lcom/android/server/autofill/AutofillManagerServiceImpl;
 
     .line 1142
-    if-eqz v2, :cond_1f
+    .local v3, "service":Lcom/android/server/autofill/AutofillManagerServiceImpl;
+    if-eqz v3, :cond_20
 
     .line 1143
     invoke-static {}, Lcom/android/server/autofill/AutofillManagerService$AutoFillManagerServiceStub;->getCallingUid()I
 
-    move-result v0
+    move-result v4
 
-    invoke-virtual {v2, v0}, Lcom/android/server/autofill/AutofillManagerServiceImpl;->getFillEventHistory(I)Landroid/service/autofill/FillEventHistory;
+    invoke-virtual {v3, v4}, Lcom/android/server/autofill/AutofillManagerServiceImpl;->getFillEventHistory(I)Landroid/service/autofill/FillEventHistory;
 
-    move-result-object v0
+    move-result-object v4
+
+    move-object v1, v4
 
     goto :goto_3a
 
     .line 1144
-    :cond_1f
-    sget-boolean v2, Lcom/android/server/autofill/Helper;->sVerbose:Z
+    :cond_20
+    sget-boolean v4, Lcom/android/server/autofill/Helper;->sVerbose:Z
 
-    if-eqz v2, :cond_39
+    if-eqz v4, :cond_3a
 
     .line 1145
-    const-string v2, "AutofillManagerService"
+    const-string v4, "AutofillManagerService"
 
-    new-instance v3, Ljava/lang/StringBuilder;
+    new-instance v5, Ljava/lang/StringBuilder;
 
-    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v5}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v4, "getFillEventHistory(): no service for "
+    const-string v6, "getFillEventHistory(): no service for "
 
-    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v3, v0}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v5, v0}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v5}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v5
 
-    invoke-static {v2, v0}, Landroid/util/Slog;->v(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v4, v5}, Landroid/util/Slog;->v(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 1147
-    :cond_39
-    const/4 v0, 0x0
-
+    .end local v3  # "service":Lcom/android/server/autofill/AutofillManagerServiceImpl;
+    :cond_3a
     :goto_3a
-    monitor-exit v1
+    monitor-exit v2
     :try_end_3b
     .catchall {:try_start_c .. :try_end_3b} :catchall_41
 
     .line 1148
-    iget-object v1, p0, Lcom/android/server/autofill/AutofillManagerService$AutoFillManagerServiceStub;->this$0:Lcom/android/server/autofill/AutofillManagerService;
+    iget-object v2, p0, Lcom/android/server/autofill/AutofillManagerService$AutoFillManagerServiceStub;->this$0:Lcom/android/server/autofill/AutofillManagerService;
 
-    invoke-static {v1, p1, v0}, Lcom/android/server/autofill/AutofillManagerService;->access$2800(Lcom/android/server/autofill/AutofillManagerService;Lcom/android/internal/os/IResultReceiver;Landroid/os/Parcelable;)V
+    invoke-static {v2, p1, v1}, Lcom/android/server/autofill/AutofillManagerService;->access$2800(Lcom/android/server/autofill/AutofillManagerService;Lcom/android/internal/os/IResultReceiver;Landroid/os/Parcelable;)V
 
     .line 1149
     return-void
 
     .line 1147
     :catchall_41
-    move-exception p1
+    move-exception v3
 
     :try_start_42
-    monitor-exit v1
+    monitor-exit v2
     :try_end_43
     .catchall {:try_start_42 .. :try_end_43} :catchall_41
 
-    throw p1
+    throw v3
 .end method
 
 .method public getUserData(Lcom/android/internal/os/IResultReceiver;)V
-    .registers 7
+    .registers 9
+    .param p1, "receiver"  # Lcom/android/internal/os/IResultReceiver;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -1269,97 +1338,102 @@
     move-result v0
 
     .line 1155
-    nop
+    .local v0, "userId":I
+    const/4 v1, 0x0
 
     .line 1156
-    iget-object v1, p0, Lcom/android/server/autofill/AutofillManagerService$AutoFillManagerServiceStub;->this$0:Lcom/android/server/autofill/AutofillManagerService;
-
-    invoke-static {v1}, Lcom/android/server/autofill/AutofillManagerService;->access$2900(Lcom/android/server/autofill/AutofillManagerService;)Ljava/lang/Object;
-
-    move-result-object v1
-
-    monitor-enter v1
-
-    .line 1157
-    :try_start_c
+    .local v1, "userData":Landroid/service/autofill/UserData;
     iget-object v2, p0, Lcom/android/server/autofill/AutofillManagerService$AutoFillManagerServiceStub;->this$0:Lcom/android/server/autofill/AutofillManagerService;
 
-    invoke-static {v2, v0}, Lcom/android/server/autofill/AutofillManagerService;->access$3000(Lcom/android/server/autofill/AutofillManagerService;I)Lcom/android/server/infra/AbstractPerUserSystemService;
+    invoke-static {v2}, Lcom/android/server/autofill/AutofillManagerService;->access$2900(Lcom/android/server/autofill/AutofillManagerService;)Ljava/lang/Object;
 
     move-result-object v2
 
-    check-cast v2, Lcom/android/server/autofill/AutofillManagerServiceImpl;
+    monitor-enter v2
+
+    .line 1157
+    :try_start_c
+    iget-object v3, p0, Lcom/android/server/autofill/AutofillManagerService$AutoFillManagerServiceStub;->this$0:Lcom/android/server/autofill/AutofillManagerService;
+
+    invoke-static {v3, v0}, Lcom/android/server/autofill/AutofillManagerService;->access$3000(Lcom/android/server/autofill/AutofillManagerService;I)Lcom/android/server/infra/AbstractPerUserSystemService;
+
+    move-result-object v3
+
+    check-cast v3, Lcom/android/server/autofill/AutofillManagerServiceImpl;
 
     .line 1158
-    if-eqz v2, :cond_1f
+    .local v3, "service":Lcom/android/server/autofill/AutofillManagerServiceImpl;
+    if-eqz v3, :cond_20
 
     .line 1159
     invoke-static {}, Lcom/android/server/autofill/AutofillManagerService$AutoFillManagerServiceStub;->getCallingUid()I
 
-    move-result v0
+    move-result v4
 
-    invoke-virtual {v2, v0}, Lcom/android/server/autofill/AutofillManagerServiceImpl;->getUserData(I)Landroid/service/autofill/UserData;
+    invoke-virtual {v3, v4}, Lcom/android/server/autofill/AutofillManagerServiceImpl;->getUserData(I)Landroid/service/autofill/UserData;
 
-    move-result-object v0
+    move-result-object v4
+
+    move-object v1, v4
 
     goto :goto_3a
 
     .line 1160
-    :cond_1f
-    sget-boolean v2, Lcom/android/server/autofill/Helper;->sVerbose:Z
+    :cond_20
+    sget-boolean v4, Lcom/android/server/autofill/Helper;->sVerbose:Z
 
-    if-eqz v2, :cond_39
+    if-eqz v4, :cond_3a
 
     .line 1161
-    const-string v2, "AutofillManagerService"
+    const-string v4, "AutofillManagerService"
 
-    new-instance v3, Ljava/lang/StringBuilder;
+    new-instance v5, Ljava/lang/StringBuilder;
 
-    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v5}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v4, "getUserData(): no service for "
+    const-string v6, "getUserData(): no service for "
 
-    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v3, v0}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v5, v0}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v5}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v5
 
-    invoke-static {v2, v0}, Landroid/util/Slog;->v(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v4, v5}, Landroid/util/Slog;->v(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 1163
-    :cond_39
-    const/4 v0, 0x0
-
+    .end local v3  # "service":Lcom/android/server/autofill/AutofillManagerServiceImpl;
+    :cond_3a
     :goto_3a
-    monitor-exit v1
+    monitor-exit v2
     :try_end_3b
     .catchall {:try_start_c .. :try_end_3b} :catchall_41
 
     .line 1164
-    iget-object v1, p0, Lcom/android/server/autofill/AutofillManagerService$AutoFillManagerServiceStub;->this$0:Lcom/android/server/autofill/AutofillManagerService;
+    iget-object v2, p0, Lcom/android/server/autofill/AutofillManagerService$AutoFillManagerServiceStub;->this$0:Lcom/android/server/autofill/AutofillManagerService;
 
-    invoke-static {v1, p1, v0}, Lcom/android/server/autofill/AutofillManagerService;->access$2800(Lcom/android/server/autofill/AutofillManagerService;Lcom/android/internal/os/IResultReceiver;Landroid/os/Parcelable;)V
+    invoke-static {v2, p1, v1}, Lcom/android/server/autofill/AutofillManagerService;->access$2800(Lcom/android/server/autofill/AutofillManagerService;Lcom/android/internal/os/IResultReceiver;Landroid/os/Parcelable;)V
 
     .line 1165
     return-void
 
     .line 1163
     :catchall_41
-    move-exception p1
+    move-exception v3
 
     :try_start_42
-    monitor-exit v1
+    monitor-exit v2
     :try_end_43
     .catchall {:try_start_42 .. :try_end_43} :catchall_41
 
-    throw p1
+    throw v3
 .end method
 
 .method public getUserDataId(Lcom/android/internal/os/IResultReceiver;)V
-    .registers 8
+    .registers 9
+    .param p1, "receiver"  # Lcom/android/internal/os/IResultReceiver;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -1372,110 +1446,117 @@
     move-result v0
 
     .line 1170
-    nop
+    .local v0, "userId":I
+    const/4 v1, 0x0
 
     .line 1172
-    iget-object v1, p0, Lcom/android/server/autofill/AutofillManagerService$AutoFillManagerServiceStub;->this$0:Lcom/android/server/autofill/AutofillManagerService;
-
-    invoke-static {v1}, Lcom/android/server/autofill/AutofillManagerService;->access$3100(Lcom/android/server/autofill/AutofillManagerService;)Ljava/lang/Object;
-
-    move-result-object v1
-
-    monitor-enter v1
-
-    .line 1173
-    :try_start_c
+    .local v1, "userData":Landroid/service/autofill/UserData;
     iget-object v2, p0, Lcom/android/server/autofill/AutofillManagerService$AutoFillManagerServiceStub;->this$0:Lcom/android/server/autofill/AutofillManagerService;
 
-    invoke-static {v2, v0}, Lcom/android/server/autofill/AutofillManagerService;->access$3200(Lcom/android/server/autofill/AutofillManagerService;I)Lcom/android/server/infra/AbstractPerUserSystemService;
+    invoke-static {v2}, Lcom/android/server/autofill/AutofillManagerService;->access$3100(Lcom/android/server/autofill/AutofillManagerService;)Ljava/lang/Object;
 
     move-result-object v2
 
-    check-cast v2, Lcom/android/server/autofill/AutofillManagerServiceImpl;
+    monitor-enter v2
+
+    .line 1173
+    :try_start_c
+    iget-object v3, p0, Lcom/android/server/autofill/AutofillManagerService$AutoFillManagerServiceStub;->this$0:Lcom/android/server/autofill/AutofillManagerService;
+
+    invoke-static {v3, v0}, Lcom/android/server/autofill/AutofillManagerService;->access$3200(Lcom/android/server/autofill/AutofillManagerService;I)Lcom/android/server/infra/AbstractPerUserSystemService;
+
+    move-result-object v3
+
+    check-cast v3, Lcom/android/server/autofill/AutofillManagerServiceImpl;
 
     .line 1174
-    const/4 v3, 0x0
-
-    if-eqz v2, :cond_20
+    .local v3, "service":Lcom/android/server/autofill/AutofillManagerServiceImpl;
+    if-eqz v3, :cond_20
 
     .line 1175
     invoke-static {}, Lcom/android/server/autofill/AutofillManagerService$AutoFillManagerServiceStub;->getCallingUid()I
 
-    move-result v0
+    move-result v4
 
-    invoke-virtual {v2, v0}, Lcom/android/server/autofill/AutofillManagerServiceImpl;->getUserData(I)Landroid/service/autofill/UserData;
+    invoke-virtual {v3, v4}, Lcom/android/server/autofill/AutofillManagerServiceImpl;->getUserData(I)Landroid/service/autofill/UserData;
 
-    move-result-object v0
+    move-result-object v4
 
-    goto :goto_3b
+    move-object v1, v4
+
+    goto :goto_3a
 
     .line 1176
     :cond_20
-    sget-boolean v2, Lcom/android/server/autofill/Helper;->sVerbose:Z
+    sget-boolean v4, Lcom/android/server/autofill/Helper;->sVerbose:Z
 
-    if-eqz v2, :cond_3a
+    if-eqz v4, :cond_3a
 
     .line 1177
-    const-string v2, "AutofillManagerService"
+    const-string v4, "AutofillManagerService"
 
-    new-instance v4, Ljava/lang/StringBuilder;
+    new-instance v5, Ljava/lang/StringBuilder;
 
-    invoke-direct {v4}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v5}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v5, "getUserDataId(): no service for "
+    const-string v6, "getUserDataId(): no service for "
 
-    invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v4, v0}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v5, v0}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v4}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v5}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v5
 
-    invoke-static {v2, v0}, Landroid/util/Slog;->v(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v4, v5}, Landroid/util/Slog;->v(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 1179
+    .end local v3  # "service":Lcom/android/server/autofill/AutofillManagerServiceImpl;
     :cond_3a
-    move-object v0, v3
-
-    :goto_3b
-    monitor-exit v1
-    :try_end_3c
-    .catchall {:try_start_c .. :try_end_3c} :catchall_49
+    :goto_3a
+    monitor-exit v2
+    :try_end_3b
+    .catchall {:try_start_c .. :try_end_3b} :catchall_49
 
     .line 1180
-    if-nez v0, :cond_3f
+    if-nez v1, :cond_3f
+
+    const/4 v2, 0x0
 
     goto :goto_43
 
     :cond_3f
-    invoke-virtual {v0}, Landroid/service/autofill/UserData;->getId()Ljava/lang/String;
+    invoke-virtual {v1}, Landroid/service/autofill/UserData;->getId()Ljava/lang/String;
 
-    move-result-object v3
+    move-result-object v2
 
     .line 1181
+    .local v2, "userDataId":Ljava/lang/String;
     :goto_43
-    iget-object v0, p0, Lcom/android/server/autofill/AutofillManagerService$AutoFillManagerServiceStub;->this$0:Lcom/android/server/autofill/AutofillManagerService;
+    iget-object v3, p0, Lcom/android/server/autofill/AutofillManagerService$AutoFillManagerServiceStub;->this$0:Lcom/android/server/autofill/AutofillManagerService;
 
-    invoke-static {v0, p1, v3}, Lcom/android/server/autofill/AutofillManagerService;->access$3300(Lcom/android/server/autofill/AutofillManagerService;Lcom/android/internal/os/IResultReceiver;Ljava/lang/String;)V
+    invoke-static {v3, p1, v2}, Lcom/android/server/autofill/AutofillManagerService;->access$3300(Lcom/android/server/autofill/AutofillManagerService;Lcom/android/internal/os/IResultReceiver;Ljava/lang/String;)V
 
     .line 1182
     return-void
 
     .line 1179
+    .end local v2  # "userDataId":Ljava/lang/String;
     :catchall_49
-    move-exception p1
+    move-exception v3
 
     :try_start_4a
-    monitor-exit v1
+    monitor-exit v2
     :try_end_4b
     .catchall {:try_start_4a .. :try_end_4b} :catchall_49
 
-    throw p1
+    throw v3
 .end method
 
 .method public isFieldClassificationEnabled(Lcom/android/internal/os/IResultReceiver;)V
-    .registers 7
+    .registers 9
+    .param p1, "receiver"  # Lcom/android/internal/os/IResultReceiver;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -1488,248 +1569,265 @@
     move-result v0
 
     .line 1202
-    nop
+    .local v0, "userId":I
+    const/4 v1, 0x0
 
     .line 1204
-    iget-object v1, p0, Lcom/android/server/autofill/AutofillManagerService$AutoFillManagerServiceStub;->this$0:Lcom/android/server/autofill/AutofillManagerService;
-
-    invoke-static {v1}, Lcom/android/server/autofill/AutofillManagerService;->access$3600(Lcom/android/server/autofill/AutofillManagerService;)Ljava/lang/Object;
-
-    move-result-object v1
-
-    monitor-enter v1
-
-    .line 1205
-    :try_start_c
+    .local v1, "enabled":Z
     iget-object v2, p0, Lcom/android/server/autofill/AutofillManagerService$AutoFillManagerServiceStub;->this$0:Lcom/android/server/autofill/AutofillManagerService;
 
-    invoke-static {v2, v0}, Lcom/android/server/autofill/AutofillManagerService;->access$3700(Lcom/android/server/autofill/AutofillManagerService;I)Lcom/android/server/infra/AbstractPerUserSystemService;
+    invoke-static {v2}, Lcom/android/server/autofill/AutofillManagerService;->access$3600(Lcom/android/server/autofill/AutofillManagerService;)Ljava/lang/Object;
 
     move-result-object v2
 
-    check-cast v2, Lcom/android/server/autofill/AutofillManagerServiceImpl;
+    monitor-enter v2
+
+    .line 1205
+    :try_start_c
+    iget-object v3, p0, Lcom/android/server/autofill/AutofillManagerService$AutoFillManagerServiceStub;->this$0:Lcom/android/server/autofill/AutofillManagerService;
+
+    invoke-static {v3, v0}, Lcom/android/server/autofill/AutofillManagerService;->access$3700(Lcom/android/server/autofill/AutofillManagerService;I)Lcom/android/server/infra/AbstractPerUserSystemService;
+
+    move-result-object v3
+
+    check-cast v3, Lcom/android/server/autofill/AutofillManagerServiceImpl;
 
     .line 1206
-    if-eqz v2, :cond_1f
+    .local v3, "service":Lcom/android/server/autofill/AutofillManagerServiceImpl;
+    if-eqz v3, :cond_20
 
     .line 1207
     invoke-static {}, Lcom/android/server/autofill/AutofillManagerService$AutoFillManagerServiceStub;->getCallingUid()I
 
-    move-result v0
+    move-result v4
 
-    invoke-virtual {v2, v0}, Lcom/android/server/autofill/AutofillManagerServiceImpl;->isFieldClassificationEnabled(I)Z
+    invoke-virtual {v3, v4}, Lcom/android/server/autofill/AutofillManagerServiceImpl;->isFieldClassificationEnabled(I)Z
 
-    move-result v0
+    move-result v4
 
-    goto :goto_3a
+    move v1, v4
+
+    goto :goto_3b
 
     .line 1208
-    :cond_1f
-    sget-boolean v2, Lcom/android/server/autofill/Helper;->sVerbose:Z
+    :cond_20
+    sget-boolean v4, Lcom/android/server/autofill/Helper;->sVerbose:Z
 
-    if-eqz v2, :cond_39
+    if-eqz v4, :cond_3b
 
     .line 1209
-    const-string v2, "AutofillManagerService"
+    const-string v4, "AutofillManagerService"
 
-    new-instance v3, Ljava/lang/StringBuilder;
+    new-instance v5, Ljava/lang/StringBuilder;
 
-    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v5}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v4, "isFieldClassificationEnabled(): no service for "
+    const-string/jumbo v6, "isFieldClassificationEnabled(): no service for "
 
-    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v3, v0}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v5, v0}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v5}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v5
 
-    invoke-static {v2, v0}, Landroid/util/Slog;->v(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v4, v5}, Landroid/util/Slog;->v(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 1211
-    :cond_39
-    const/4 v0, 0x0
-
-    :goto_3a
-    monitor-exit v1
-    :try_end_3b
-    .catchall {:try_start_c .. :try_end_3b} :catchall_41
+    .end local v3  # "service":Lcom/android/server/autofill/AutofillManagerServiceImpl;
+    :cond_3b
+    :goto_3b
+    monitor-exit v2
+    :try_end_3c
+    .catchall {:try_start_c .. :try_end_3c} :catchall_42
 
     .line 1212
-    iget-object v1, p0, Lcom/android/server/autofill/AutofillManagerService$AutoFillManagerServiceStub;->this$0:Lcom/android/server/autofill/AutofillManagerService;
+    iget-object v2, p0, Lcom/android/server/autofill/AutofillManagerService$AutoFillManagerServiceStub;->this$0:Lcom/android/server/autofill/AutofillManagerService;
 
-    invoke-static {v1, p1, v0}, Lcom/android/server/autofill/AutofillManagerService;->access$3800(Lcom/android/server/autofill/AutofillManagerService;Lcom/android/internal/os/IResultReceiver;Z)V
+    invoke-static {v2, p1, v1}, Lcom/android/server/autofill/AutofillManagerService;->access$3800(Lcom/android/server/autofill/AutofillManagerService;Lcom/android/internal/os/IResultReceiver;Z)V
 
     .line 1213
     return-void
 
     .line 1211
-    :catchall_41
-    move-exception p1
+    :catchall_42
+    move-exception v3
 
-    :try_start_42
-    monitor-exit v1
-    :try_end_43
-    .catchall {:try_start_42 .. :try_end_43} :catchall_41
+    :try_start_43
+    monitor-exit v2
+    :try_end_44
+    .catchall {:try_start_43 .. :try_end_44} :catchall_42
 
-    throw p1
+    throw v3
 .end method
 
 .method public isServiceEnabled(ILjava/lang/String;Lcom/android/internal/os/IResultReceiver;)V
-    .registers 7
+    .registers 10
+    .param p1, "userId"  # I
+    .param p2, "packageName"  # Ljava/lang/String;
+    .param p3, "receiver"  # Lcom/android/internal/os/IResultReceiver;
 
     .line 1388
-    nop
+    const/4 v0, 0x0
 
     .line 1389
-    iget-object v0, p0, Lcom/android/server/autofill/AutofillManagerService$AutoFillManagerServiceStub;->this$0:Lcom/android/server/autofill/AutofillManagerService;
-
-    invoke-static {v0}, Lcom/android/server/autofill/AutofillManagerService;->access$6200(Lcom/android/server/autofill/AutofillManagerService;)Ljava/lang/Object;
-
-    move-result-object v0
-
-    monitor-enter v0
-
-    .line 1390
-    :try_start_8
+    .local v0, "enabled":Z
     iget-object v1, p0, Lcom/android/server/autofill/AutofillManagerService$AutoFillManagerServiceStub;->this$0:Lcom/android/server/autofill/AutofillManagerService;
 
-    invoke-static {v1, p1}, Lcom/android/server/autofill/AutofillManagerService;->access$6300(Lcom/android/server/autofill/AutofillManagerService;I)Lcom/android/server/infra/AbstractPerUserSystemService;
+    invoke-static {v1}, Lcom/android/server/autofill/AutofillManagerService;->access$6200(Lcom/android/server/autofill/AutofillManagerService;)Ljava/lang/Object;
 
     move-result-object v1
 
-    check-cast v1, Lcom/android/server/autofill/AutofillManagerServiceImpl;
+    monitor-enter v1
+
+    .line 1390
+    :try_start_8
+    iget-object v2, p0, Lcom/android/server/autofill/AutofillManagerService$AutoFillManagerServiceStub;->this$0:Lcom/android/server/autofill/AutofillManagerService;
+
+    invoke-static {v2, p1}, Lcom/android/server/autofill/AutofillManagerService;->access$6300(Lcom/android/server/autofill/AutofillManagerService;I)Lcom/android/server/infra/AbstractPerUserSystemService;
+
+    move-result-object v2
+
+    check-cast v2, Lcom/android/server/autofill/AutofillManagerServiceImpl;
 
     .line 1391
-    if-eqz v1, :cond_1b
+    .local v2, "service":Lcom/android/server/autofill/AutofillManagerServiceImpl;
+    if-eqz v2, :cond_1c
 
     .line 1392
-    invoke-virtual {v1}, Lcom/android/server/autofill/AutofillManagerServiceImpl;->getServicePackageName()Ljava/lang/String;
+    invoke-virtual {v2}, Lcom/android/server/autofill/AutofillManagerServiceImpl;->getServicePackageName()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v3
 
-    invoke-static {p2, p1}, Ljava/util/Objects;->equals(Ljava/lang/Object;Ljava/lang/Object;)Z
+    invoke-static {p2, v3}, Ljava/util/Objects;->equals(Ljava/lang/Object;Ljava/lang/Object;)Z
 
-    move-result p1
+    move-result v3
 
-    goto :goto_36
+    move v0, v3
+
+    goto :goto_37
 
     .line 1393
-    :cond_1b
-    sget-boolean p2, Lcom/android/server/autofill/Helper;->sVerbose:Z
+    :cond_1c
+    sget-boolean v3, Lcom/android/server/autofill/Helper;->sVerbose:Z
 
-    if-eqz p2, :cond_35
+    if-eqz v3, :cond_37
 
     .line 1394
-    const-string p2, "AutofillManagerService"
+    const-string v3, "AutofillManagerService"
 
-    new-instance v1, Ljava/lang/StringBuilder;
+    new-instance v4, Ljava/lang/StringBuilder;
 
-    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v4}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v2, "isServiceEnabled(): no service for "
+    const-string/jumbo v5, "isServiceEnabled(): no service for "
 
-    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v1, p1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v4, p1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v4}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v4
 
-    invoke-static {p2, p1}, Landroid/util/Slog;->v(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v3, v4}, Landroid/util/Slog;->v(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 1396
-    :cond_35
-    const/4 p1, 0x0
-
-    :goto_36
-    monitor-exit v0
-    :try_end_37
-    .catchall {:try_start_8 .. :try_end_37} :catchall_3d
+    .end local v2  # "service":Lcom/android/server/autofill/AutofillManagerServiceImpl;
+    :cond_37
+    :goto_37
+    monitor-exit v1
+    :try_end_38
+    .catchall {:try_start_8 .. :try_end_38} :catchall_3e
 
     .line 1397
-    iget-object p2, p0, Lcom/android/server/autofill/AutofillManagerService$AutoFillManagerServiceStub;->this$0:Lcom/android/server/autofill/AutofillManagerService;
+    iget-object v1, p0, Lcom/android/server/autofill/AutofillManagerService$AutoFillManagerServiceStub;->this$0:Lcom/android/server/autofill/AutofillManagerService;
 
-    invoke-static {p2, p3, p1}, Lcom/android/server/autofill/AutofillManagerService;->access$3800(Lcom/android/server/autofill/AutofillManagerService;Lcom/android/internal/os/IResultReceiver;Z)V
+    invoke-static {v1, p3, v0}, Lcom/android/server/autofill/AutofillManagerService;->access$3800(Lcom/android/server/autofill/AutofillManagerService;Lcom/android/internal/os/IResultReceiver;Z)V
 
     .line 1398
     return-void
 
     .line 1396
-    :catchall_3d
-    move-exception p1
+    :catchall_3e
+    move-exception v2
 
-    :try_start_3e
-    monitor-exit v0
-    :try_end_3f
-    .catchall {:try_start_3e .. :try_end_3f} :catchall_3d
+    :try_start_3f
+    monitor-exit v1
+    :try_end_40
+    .catchall {:try_start_3f .. :try_end_40} :catchall_3e
 
-    throw p1
+    throw v2
 .end method
 
 .method public isServiceSupported(ILcom/android/internal/os/IResultReceiver;)V
-    .registers 5
+    .registers 6
+    .param p1, "userId"  # I
+    .param p2, "receiver"  # Lcom/android/internal/os/IResultReceiver;
 
     .line 1378
-    nop
+    const/4 v0, 0x0
 
     .line 1379
-    iget-object v0, p0, Lcom/android/server/autofill/AutofillManagerService$AutoFillManagerServiceStub;->this$0:Lcom/android/server/autofill/AutofillManagerService;
+    .local v0, "supported":Z
+    iget-object v1, p0, Lcom/android/server/autofill/AutofillManagerService$AutoFillManagerServiceStub;->this$0:Lcom/android/server/autofill/AutofillManagerService;
 
-    invoke-static {v0}, Lcom/android/server/autofill/AutofillManagerService;->access$6000(Lcom/android/server/autofill/AutofillManagerService;)Ljava/lang/Object;
+    invoke-static {v1}, Lcom/android/server/autofill/AutofillManagerService;->access$6000(Lcom/android/server/autofill/AutofillManagerService;)Ljava/lang/Object;
 
-    move-result-object v0
+    move-result-object v1
 
-    monitor-enter v0
+    monitor-enter v1
 
     .line 1380
     :try_start_8
-    iget-object v1, p0, Lcom/android/server/autofill/AutofillManagerService$AutoFillManagerServiceStub;->this$0:Lcom/android/server/autofill/AutofillManagerService;
+    iget-object v2, p0, Lcom/android/server/autofill/AutofillManagerService$AutoFillManagerServiceStub;->this$0:Lcom/android/server/autofill/AutofillManagerService;
 
-    invoke-static {v1, p1}, Lcom/android/server/autofill/AutofillManagerService;->access$6100(Lcom/android/server/autofill/AutofillManagerService;I)Z
+    invoke-static {v2, p1}, Lcom/android/server/autofill/AutofillManagerService;->access$6100(Lcom/android/server/autofill/AutofillManagerService;I)Z
 
-    move-result p1
+    move-result v2
 
-    if-nez p1, :cond_12
+    if-nez v2, :cond_12
 
-    const/4 p1, 0x1
+    const/4 v2, 0x1
 
     goto :goto_13
 
     :cond_12
-    const/4 p1, 0x0
+    const/4 v2, 0x0
+
+    :goto_13
+    move v0, v2
 
     .line 1381
-    :goto_13
-    monitor-exit v0
-    :try_end_14
-    .catchall {:try_start_8 .. :try_end_14} :catchall_1a
+    monitor-exit v1
+    :try_end_15
+    .catchall {:try_start_8 .. :try_end_15} :catchall_1b
 
     .line 1382
-    iget-object v0, p0, Lcom/android/server/autofill/AutofillManagerService$AutoFillManagerServiceStub;->this$0:Lcom/android/server/autofill/AutofillManagerService;
+    iget-object v1, p0, Lcom/android/server/autofill/AutofillManagerService$AutoFillManagerServiceStub;->this$0:Lcom/android/server/autofill/AutofillManagerService;
 
-    invoke-static {v0, p2, p1}, Lcom/android/server/autofill/AutofillManagerService;->access$3800(Lcom/android/server/autofill/AutofillManagerService;Lcom/android/internal/os/IResultReceiver;Z)V
+    invoke-static {v1, p2, v0}, Lcom/android/server/autofill/AutofillManagerService;->access$3800(Lcom/android/server/autofill/AutofillManagerService;Lcom/android/internal/os/IResultReceiver;Z)V
 
     .line 1383
     return-void
 
     .line 1381
-    :catchall_1a
-    move-exception p1
+    :catchall_1b
+    move-exception v2
 
-    :try_start_1b
-    monitor-exit v0
-    :try_end_1c
-    .catchall {:try_start_1b .. :try_end_1c} :catchall_1a
+    :try_start_1c
+    monitor-exit v1
+    :try_end_1d
+    .catchall {:try_start_1c .. :try_end_1d} :catchall_1b
 
-    throw p1
+    throw v2
 .end method
 
 .method public onPendingSaveUi(ILandroid/os/IBinder;)V
     .registers 7
+    .param p1, "operation"  # I
+    .param p2, "token"  # Landroid/os/IBinder;
 
     .line 1402
     const-string/jumbo v0, "token"
@@ -1769,7 +1867,7 @@
     aput-object v3, v1, v0
 
     .line 1403
-    const-string v0, "invalid operation: %d"
+    const-string/jumbo v0, "invalid operation: %d"
 
     invoke-static {v2, v0, v1}, Lcom/android/internal/util/Preconditions;->checkArgument(ZLjava/lang/String;[Ljava/lang/Object;)V
 
@@ -1783,7 +1881,7 @@
     monitor-enter v0
 
     .line 1407
-    :try_start_25
+    :try_start_26
     iget-object v1, p0, Lcom/android/server/autofill/AutofillManagerService$AutoFillManagerServiceStub;->this$0:Lcom/android/server/autofill/AutofillManagerService;
 
     .line 1408
@@ -1799,31 +1897,39 @@
     check-cast v1, Lcom/android/server/autofill/AutofillManagerServiceImpl;
 
     .line 1409
-    if-eqz v1, :cond_36
+    .local v1, "service":Lcom/android/server/autofill/AutofillManagerServiceImpl;
+    if-eqz v1, :cond_37
 
     .line 1410
     invoke-virtual {v1, p1, p2}, Lcom/android/server/autofill/AutofillManagerServiceImpl;->onPendingSaveUi(ILandroid/os/IBinder;)V
 
     .line 1412
-    :cond_36
+    .end local v1  # "service":Lcom/android/server/autofill/AutofillManagerServiceImpl;
+    :cond_37
     monitor-exit v0
 
     .line 1413
     return-void
 
     .line 1412
-    :catchall_38
-    move-exception p1
+    :catchall_39
+    move-exception v1
 
     monitor-exit v0
-    :try_end_3a
-    .catchall {:try_start_25 .. :try_end_3a} :catchall_38
+    :try_end_3b
+    .catchall {:try_start_26 .. :try_end_3b} :catchall_39
 
-    throw p1
+    throw v1
 .end method
 
 .method public onShellCommand(Ljava/io/FileDescriptor;Ljava/io/FileDescriptor;Ljava/io/FileDescriptor;[Ljava/lang/String;Landroid/os/ShellCallback;Landroid/os/ResultReceiver;)V
     .registers 15
+    .param p1, "in"  # Ljava/io/FileDescriptor;
+    .param p2, "out"  # Ljava/io/FileDescriptor;
+    .param p3, "err"  # Ljava/io/FileDescriptor;
+    .param p4, "args"  # [Ljava/lang/String;
+    .param p5, "callback"  # Landroid/os/ShellCallback;
+    .param p6, "resultReceiver"  # Landroid/os/ResultReceiver;
 
     .line 1494
     new-instance v0, Lcom/android/server/autofill/AutofillManagerServiceShellCommand;
@@ -1853,7 +1959,9 @@
 .end method
 
 .method public removeClient(Landroid/view/autofill/IAutoFillManagerClient;I)V
-    .registers 6
+    .registers 8
+    .param p1, "client"  # Landroid/view/autofill/IAutoFillManagerClient;
+    .param p2, "userId"  # I
 
     .line 1069
     iget-object v0, p0, Lcom/android/server/autofill/AutofillManagerService$AutoFillManagerServiceStub;->this$0:Lcom/android/server/autofill/AutofillManagerService;
@@ -1875,6 +1983,7 @@
     check-cast v1, Lcom/android/server/autofill/AutofillManagerServiceImpl;
 
     .line 1071
+    .local v1, "service":Lcom/android/server/autofill/AutofillManagerServiceImpl;
     if-eqz v1, :cond_15
 
     .line 1072
@@ -1884,30 +1993,31 @@
 
     .line 1073
     :cond_15
-    sget-boolean p1, Lcom/android/server/autofill/Helper;->sVerbose:Z
+    sget-boolean v2, Lcom/android/server/autofill/Helper;->sVerbose:Z
 
-    if-eqz p1, :cond_30
+    if-eqz v2, :cond_30
 
     .line 1074
-    const-string p1, "AutofillManagerService"
+    const-string v2, "AutofillManagerService"
 
-    new-instance v1, Ljava/lang/StringBuilder;
+    new-instance v3, Ljava/lang/StringBuilder;
 
-    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string/jumbo v2, "removeClient(): no service for "
+    const-string/jumbo v4, "removeClient(): no service for "
 
-    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v1, p2}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, p2}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p2
+    move-result-object v3
 
-    invoke-static {p1, p2}, Landroid/util/Slog;->v(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v2, v3}, Landroid/util/Slog;->v(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 1076
+    .end local v1  # "service":Lcom/android/server/autofill/AutofillManagerServiceImpl;
     :cond_30
     :goto_30
     monitor-exit v0
@@ -1917,17 +2027,21 @@
 
     .line 1076
     :catchall_32
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_34
     .catchall {:try_start_7 .. :try_end_34} :catchall_32
 
-    throw p1
+    throw v1
 .end method
 
 .method public restoreSession(ILandroid/os/IBinder;Landroid/os/IBinder;Lcom/android/internal/os/IResultReceiver;)V
-    .registers 8
+    .registers 12
+    .param p1, "sessionId"  # I
+    .param p2, "activityToken"  # Landroid/os/IBinder;
+    .param p3, "appCallback"  # Landroid/os/IBinder;
+    .param p4, "receiver"  # Lcom/android/internal/os/IResultReceiver;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -1940,11 +2054,14 @@
     move-result v0
 
     .line 1298
+    .local v0, "userId":I
     const-string v1, "activityToken"
 
     invoke-static {p2, v1}, Lcom/android/internal/util/Preconditions;->checkNotNull(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
 
-    move-result-object p2
+    move-result-object v1
+
+    move-object p2, v1
 
     check-cast p2, Landroid/os/IBinder;
 
@@ -1953,102 +2070,108 @@
 
     invoke-static {p3, v1}, Lcom/android/internal/util/Preconditions;->checkNotNull(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
 
-    move-result-object p3
+    move-result-object v1
+
+    move-object p3, v1
 
     check-cast p3, Landroid/os/IBinder;
 
     .line 1301
-    nop
+    const/4 v1, 0x0
 
     .line 1302
-    iget-object v1, p0, Lcom/android/server/autofill/AutofillManagerService$AutoFillManagerServiceStub;->this$0:Lcom/android/server/autofill/AutofillManagerService;
-
-    invoke-static {v1}, Lcom/android/server/autofill/AutofillManagerService;->access$4800(Lcom/android/server/autofill/AutofillManagerService;)Ljava/lang/Object;
-
-    move-result-object v1
-
-    monitor-enter v1
-
-    .line 1303
-    :try_start_1c
+    .local v1, "restored":Z
     iget-object v2, p0, Lcom/android/server/autofill/AutofillManagerService$AutoFillManagerServiceStub;->this$0:Lcom/android/server/autofill/AutofillManagerService;
 
-    invoke-static {v2, v0}, Lcom/android/server/autofill/AutofillManagerService;->access$4900(Lcom/android/server/autofill/AutofillManagerService;I)Lcom/android/server/infra/AbstractPerUserSystemService;
+    invoke-static {v2}, Lcom/android/server/autofill/AutofillManagerService;->access$4800(Lcom/android/server/autofill/AutofillManagerService;)Ljava/lang/Object;
 
     move-result-object v2
 
-    check-cast v2, Lcom/android/server/autofill/AutofillManagerServiceImpl;
+    monitor-enter v2
+
+    .line 1303
+    :try_start_1e
+    iget-object v3, p0, Lcom/android/server/autofill/AutofillManagerService$AutoFillManagerServiceStub;->this$0:Lcom/android/server/autofill/AutofillManagerService;
+
+    invoke-static {v3, v0}, Lcom/android/server/autofill/AutofillManagerService;->access$4900(Lcom/android/server/autofill/AutofillManagerService;I)Lcom/android/server/infra/AbstractPerUserSystemService;
+
+    move-result-object v3
+
+    check-cast v3, Lcom/android/server/autofill/AutofillManagerServiceImpl;
 
     .line 1304
-    if-eqz v2, :cond_2f
+    .local v3, "service":Lcom/android/server/autofill/AutofillManagerServiceImpl;
+    if-eqz v3, :cond_32
 
     .line 1305
     invoke-static {}, Lcom/android/server/autofill/AutofillManagerService$AutoFillManagerServiceStub;->getCallingUid()I
 
-    move-result v0
+    move-result v4
 
-    invoke-virtual {v2, p1, v0, p2, p3}, Lcom/android/server/autofill/AutofillManagerServiceImpl;->restoreSession(IILandroid/os/IBinder;Landroid/os/IBinder;)Z
+    invoke-virtual {v3, p1, v4, p2, p3}, Lcom/android/server/autofill/AutofillManagerServiceImpl;->restoreSession(IILandroid/os/IBinder;Landroid/os/IBinder;)Z
 
-    move-result p1
+    move-result v4
 
-    goto :goto_4b
+    move v1, v4
+
+    goto :goto_4d
 
     .line 1307
-    :cond_2f
-    sget-boolean p1, Lcom/android/server/autofill/Helper;->sVerbose:Z
+    :cond_32
+    sget-boolean v4, Lcom/android/server/autofill/Helper;->sVerbose:Z
 
-    if-eqz p1, :cond_4a
+    if-eqz v4, :cond_4d
 
     .line 1308
-    const-string p1, "AutofillManagerService"
+    const-string v4, "AutofillManagerService"
 
-    new-instance p2, Ljava/lang/StringBuilder;
+    new-instance v5, Ljava/lang/StringBuilder;
 
-    invoke-direct {p2}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v5}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string/jumbo p3, "restoreSession(): no service for "
+    const-string/jumbo v6, "restoreSession(): no service for "
 
-    invoke-virtual {p2, p3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p2, v0}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v5, v0}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v5}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p2
+    move-result-object v5
 
-    invoke-static {p1, p2}, Landroid/util/Slog;->v(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v4, v5}, Landroid/util/Slog;->v(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 1310
-    :cond_4a
-    const/4 p1, 0x0
-
-    :goto_4b
-    monitor-exit v1
-    :try_end_4c
-    .catchall {:try_start_1c .. :try_end_4c} :catchall_52
+    .end local v3  # "service":Lcom/android/server/autofill/AutofillManagerServiceImpl;
+    :cond_4d
+    :goto_4d
+    monitor-exit v2
+    :try_end_4e
+    .catchall {:try_start_1e .. :try_end_4e} :catchall_54
 
     .line 1311
-    iget-object p2, p0, Lcom/android/server/autofill/AutofillManagerService$AutoFillManagerServiceStub;->this$0:Lcom/android/server/autofill/AutofillManagerService;
+    iget-object v2, p0, Lcom/android/server/autofill/AutofillManagerService$AutoFillManagerServiceStub;->this$0:Lcom/android/server/autofill/AutofillManagerService;
 
-    invoke-static {p2, p4, p1}, Lcom/android/server/autofill/AutofillManagerService;->access$3800(Lcom/android/server/autofill/AutofillManagerService;Lcom/android/internal/os/IResultReceiver;Z)V
+    invoke-static {v2, p4, v1}, Lcom/android/server/autofill/AutofillManagerService;->access$3800(Lcom/android/server/autofill/AutofillManagerService;Lcom/android/internal/os/IResultReceiver;Z)V
 
     .line 1312
     return-void
 
     .line 1310
-    :catchall_52
-    move-exception p1
+    :catchall_54
+    move-exception v3
 
-    :try_start_53
-    monitor-exit v1
-    :try_end_54
-    .catchall {:try_start_53 .. :try_end_54} :catchall_52
+    :try_start_55
+    monitor-exit v2
+    :try_end_56
+    .catchall {:try_start_55 .. :try_end_56} :catchall_54
 
-    throw p1
+    throw v3
 .end method
 
 .method public setAugmentedAutofillWhitelist(Ljava/util/List;Ljava/util/List;Lcom/android/internal/os/IResultReceiver;)V
-    .registers 8
+    .registers 11
+    .param p3, "receiver"  # Lcom/android/internal/os/IResultReceiver;
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(",
@@ -2070,11 +2193,14 @@
     .end annotation
 
     .line 1238
+    .local p1, "packages":Ljava/util/List;, "Ljava/util/List<Ljava/lang/String;>;"
+    .local p2, "activities":Ljava/util/List;, "Ljava/util/List<Landroid/content/ComponentName;>;"
     invoke-static {}, Landroid/os/UserHandle;->getCallingUserId()I
 
     move-result v0
 
     .line 1241
+    .local v0, "userId":I
     iget-object v1, p0, Lcom/android/server/autofill/AutofillManagerService$AutoFillManagerServiceStub;->this$0:Lcom/android/server/autofill/AutofillManagerService;
 
     invoke-static {v1}, Lcom/android/server/autofill/AutofillManagerService;->access$4100(Lcom/android/server/autofill/AutofillManagerService;)Ljava/lang/Object;
@@ -2094,6 +2220,7 @@
     check-cast v2, Lcom/android/server/autofill/AutofillManagerServiceImpl;
 
     .line 1243
+    .local v2, "service":Lcom/android/server/autofill/AutofillManagerServiceImpl;
     const/4 v3, 0x0
 
     if-eqz v2, :cond_20
@@ -2104,55 +2231,59 @@
     .line 1245
     invoke-static {}, Lcom/android/server/autofill/AutofillManagerService$AutoFillManagerServiceStub;->getCallingUid()I
 
-    move-result v0
+    move-result v4
 
     .line 1244
-    invoke-virtual {v2, p1, p2, v0}, Lcom/android/server/autofill/AutofillManagerServiceImpl;->setAugmentedAutofillWhitelistLocked(Ljava/util/List;Ljava/util/List;I)Z
+    invoke-virtual {v2, p1, p2, v4}, Lcom/android/server/autofill/AutofillManagerServiceImpl;->setAugmentedAutofillWhitelistLocked(Ljava/util/List;Ljava/util/List;I)Z
 
-    move-result p1
+    move-result v4
 
+    .local v4, "ok":Z
     goto :goto_3c
 
     .line 1247
+    .end local v4  # "ok":Z
     :cond_20
-    sget-boolean p1, Lcom/android/server/autofill/Helper;->sVerbose:Z
+    sget-boolean v4, Lcom/android/server/autofill/Helper;->sVerbose:Z
 
-    if-eqz p1, :cond_3b
+    if-eqz v4, :cond_3b
 
     .line 1248
-    const-string p1, "AutofillManagerService"
+    const-string v4, "AutofillManagerService"
 
-    new-instance p2, Ljava/lang/StringBuilder;
+    new-instance v5, Ljava/lang/StringBuilder;
 
-    invoke-direct {p2}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v5}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string/jumbo v2, "setAugmentedAutofillWhitelist(): no service for "
+    const-string/jumbo v6, "setAugmentedAutofillWhitelist(): no service for "
 
-    invoke-virtual {p2, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p2, v0}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v5, v0}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v5}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p2
+    move-result-object v5
 
-    invoke-static {p1, p2}, Landroid/util/Slog;->v(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v4, v5}, Landroid/util/Slog;->v(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 1250
     :cond_3b
-    move p1, v3
+    move v4, v3
 
     .line 1252
+    .end local v2  # "service":Lcom/android/server/autofill/AutofillManagerServiceImpl;
+    .restart local v4  # "ok":Z
     :goto_3c
     monitor-exit v1
     :try_end_3d
     .catchall {:try_start_b .. :try_end_3d} :catchall_47
 
     .line 1253
-    iget-object p2, p0, Lcom/android/server/autofill/AutofillManagerService$AutoFillManagerServiceStub;->this$0:Lcom/android/server/autofill/AutofillManagerService;
+    iget-object v1, p0, Lcom/android/server/autofill/AutofillManagerService$AutoFillManagerServiceStub;->this$0:Lcom/android/server/autofill/AutofillManagerService;
 
     .line 1254
-    if-eqz p1, :cond_42
+    if-eqz v4, :cond_42
 
     goto :goto_43
 
@@ -2161,25 +2292,30 @@
 
     .line 1253
     :goto_43
-    invoke-static {p2, p3, v3}, Lcom/android/server/autofill/AutofillManagerService;->access$1400(Lcom/android/server/autofill/AutofillManagerService;Lcom/android/internal/os/IResultReceiver;I)V
+    invoke-static {v1, p3, v3}, Lcom/android/server/autofill/AutofillManagerService;->access$1400(Lcom/android/server/autofill/AutofillManagerService;Lcom/android/internal/os/IResultReceiver;I)V
 
     .line 1255
     return-void
 
     .line 1252
+    .end local v4  # "ok":Z
     :catchall_47
-    move-exception p1
+    move-exception v2
 
     :try_start_48
     monitor-exit v1
     :try_end_49
     .catchall {:try_start_48 .. :try_end_49} :catchall_47
 
-    throw p1
+    throw v2
 .end method
 
 .method public setAuthenticationResult(Landroid/os/Bundle;III)V
-    .registers 7
+    .registers 8
+    .param p1, "data"  # Landroid/os/Bundle;
+    .param p2, "sessionId"  # I
+    .param p3, "authenticationId"  # I
+    .param p4, "userId"  # I
 
     .line 1082
     iget-object v0, p0, Lcom/android/server/autofill/AutofillManagerService$AutoFillManagerServiceStub;->this$0:Lcom/android/server/autofill/AutofillManagerService;
@@ -2196,22 +2332,24 @@
 
     invoke-static {v1, p4}, Lcom/android/server/autofill/AutofillManagerService;->access$1800(Lcom/android/server/autofill/AutofillManagerService;I)Lcom/android/server/infra/AbstractPerUserSystemService;
 
-    move-result-object p4
+    move-result-object v1
 
-    check-cast p4, Lcom/android/server/autofill/AutofillManagerServiceImpl;
+    check-cast v1, Lcom/android/server/autofill/AutofillManagerServiceImpl;
 
     .line 1084
+    .local v1, "service":Lcom/android/server/autofill/AutofillManagerServiceImpl;
     nop
 
     .line 1085
     invoke-static {}, Lcom/android/server/autofill/AutofillManagerService$AutoFillManagerServiceStub;->getCallingUid()I
 
-    move-result v1
+    move-result v2
 
     .line 1084
-    invoke-virtual {p4, p1, p2, p3, v1}, Lcom/android/server/autofill/AutofillManagerServiceImpl;->setAuthenticationResultLocked(Landroid/os/Bundle;III)V
+    invoke-virtual {v1, p1, p2, p3, v2}, Lcom/android/server/autofill/AutofillManagerServiceImpl;->setAuthenticationResultLocked(Landroid/os/Bundle;III)V
 
     .line 1086
+    .end local v1  # "service":Lcom/android/server/autofill/AutofillManagerServiceImpl;
     monitor-exit v0
 
     .line 1087
@@ -2219,17 +2357,19 @@
 
     .line 1086
     :catchall_19
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_1b
     .catchall {:try_start_7 .. :try_end_1b} :catchall_19
 
-    throw p1
+    throw v1
 .end method
 
 .method public setAutofillFailure(ILjava/util/List;I)V
-    .registers 6
+    .registers 9
+    .param p1, "sessionId"  # I
+    .param p3, "userId"  # I
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(I",
@@ -2240,6 +2380,7 @@
     .end annotation
 
     .line 1330
+    .local p2, "ids":Ljava/util/List;, "Ljava/util/List<Landroid/view/autofill/AutofillId;>;"
     iget-object v0, p0, Lcom/android/server/autofill/AutofillManagerService$AutoFillManagerServiceStub;->this$0:Lcom/android/server/autofill/AutofillManagerService;
 
     invoke-static {v0}, Lcom/android/server/autofill/AutofillManagerService;->access$5200(Lcom/android/server/autofill/AutofillManagerService;)Ljava/lang/Object;
@@ -2259,43 +2400,45 @@
     check-cast v1, Lcom/android/server/autofill/AutofillManagerServiceImpl;
 
     .line 1332
+    .local v1, "service":Lcom/android/server/autofill/AutofillManagerServiceImpl;
     if-eqz v1, :cond_19
 
     .line 1333
     invoke-static {}, Lcom/android/server/autofill/AutofillManagerService$AutoFillManagerServiceStub;->getCallingUid()I
 
-    move-result p3
+    move-result v2
 
-    invoke-virtual {v1, p1, p3, p2}, Lcom/android/server/autofill/AutofillManagerServiceImpl;->setAutofillFailureLocked(IILjava/util/List;)V
+    invoke-virtual {v1, p1, v2, p2}, Lcom/android/server/autofill/AutofillManagerServiceImpl;->setAutofillFailureLocked(IILjava/util/List;)V
 
     goto :goto_34
 
     .line 1334
     :cond_19
-    sget-boolean p1, Lcom/android/server/autofill/Helper;->sVerbose:Z
+    sget-boolean v2, Lcom/android/server/autofill/Helper;->sVerbose:Z
 
-    if-eqz p1, :cond_34
+    if-eqz v2, :cond_34
 
     .line 1335
-    const-string p1, "AutofillManagerService"
+    const-string v2, "AutofillManagerService"
 
-    new-instance p2, Ljava/lang/StringBuilder;
+    new-instance v3, Ljava/lang/StringBuilder;
 
-    invoke-direct {p2}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string/jumbo v1, "setAutofillFailure(): no service for "
+    const-string/jumbo v4, "setAutofillFailure(): no service for "
 
-    invoke-virtual {p2, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p2, p3}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, p3}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p2
+    move-result-object v3
 
-    invoke-static {p1, p2}, Landroid/util/Slog;->v(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v2, v3}, Landroid/util/Slog;->v(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 1337
+    .end local v1  # "service":Lcom/android/server/autofill/AutofillManagerServiceImpl;
     :cond_34
     :goto_34
     monitor-exit v0
@@ -2305,17 +2448,20 @@
 
     .line 1337
     :catchall_36
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_38
     .catchall {:try_start_7 .. :try_end_38} :catchall_36
 
-    throw p1
+    throw v1
 .end method
 
 .method public setHasCallback(IIZ)V
-    .registers 6
+    .registers 7
+    .param p1, "sessionId"  # I
+    .param p2, "userId"  # I
+    .param p3, "hasIt"  # Z
 
     .line 1091
     iget-object v0, p0, Lcom/android/server/autofill/AutofillManagerService$AutoFillManagerServiceStub;->this$0:Lcom/android/server/autofill/AutofillManagerService;
@@ -2332,18 +2478,20 @@
 
     invoke-static {v1, p2}, Lcom/android/server/autofill/AutofillManagerService;->access$2000(Lcom/android/server/autofill/AutofillManagerService;I)Lcom/android/server/infra/AbstractPerUserSystemService;
 
-    move-result-object p2
+    move-result-object v1
 
-    check-cast p2, Lcom/android/server/autofill/AutofillManagerServiceImpl;
+    check-cast v1, Lcom/android/server/autofill/AutofillManagerServiceImpl;
 
     .line 1093
+    .local v1, "service":Lcom/android/server/autofill/AutofillManagerServiceImpl;
     invoke-static {}, Lcom/android/server/autofill/AutofillManagerService$AutoFillManagerServiceStub;->getCallingUid()I
 
-    move-result v1
+    move-result v2
 
-    invoke-virtual {p2, p1, v1, p3}, Lcom/android/server/autofill/AutofillManagerServiceImpl;->setHasCallback(IIZ)V
+    invoke-virtual {v1, p1, v2, p3}, Lcom/android/server/autofill/AutofillManagerServiceImpl;->setHasCallback(IIZ)V
 
     .line 1094
+    .end local v1  # "service":Lcom/android/server/autofill/AutofillManagerServiceImpl;
     monitor-exit v0
 
     .line 1095
@@ -2351,17 +2499,18 @@
 
     .line 1094
     :catchall_18
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_1a
     .catchall {:try_start_7 .. :try_end_1a} :catchall_18
 
-    throw p1
+    throw v1
 .end method
 
 .method public setUserData(Landroid/service/autofill/UserData;)V
-    .registers 6
+    .registers 8
+    .param p1, "userData"  # Landroid/service/autofill/UserData;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -2374,6 +2523,7 @@
     move-result v0
 
     .line 1188
+    .local v0, "userId":I
     iget-object v1, p0, Lcom/android/server/autofill/AutofillManagerService$AutoFillManagerServiceStub;->this$0:Lcom/android/server/autofill/AutofillManagerService;
 
     invoke-static {v1}, Lcom/android/server/autofill/AutofillManagerService;->access$3400(Lcom/android/server/autofill/AutofillManagerService;)Ljava/lang/Object;
@@ -2393,43 +2543,45 @@
     check-cast v2, Lcom/android/server/autofill/AutofillManagerServiceImpl;
 
     .line 1190
+    .local v2, "service":Lcom/android/server/autofill/AutofillManagerServiceImpl;
     if-eqz v2, :cond_1d
 
     .line 1191
     invoke-static {}, Lcom/android/server/autofill/AutofillManagerService$AutoFillManagerServiceStub;->getCallingUid()I
 
-    move-result v0
+    move-result v3
 
-    invoke-virtual {v2, v0, p1}, Lcom/android/server/autofill/AutofillManagerServiceImpl;->setUserData(ILandroid/service/autofill/UserData;)V
+    invoke-virtual {v2, v3, p1}, Lcom/android/server/autofill/AutofillManagerServiceImpl;->setUserData(ILandroid/service/autofill/UserData;)V
 
     goto :goto_38
 
     .line 1192
     :cond_1d
-    sget-boolean p1, Lcom/android/server/autofill/Helper;->sVerbose:Z
+    sget-boolean v3, Lcom/android/server/autofill/Helper;->sVerbose:Z
 
-    if-eqz p1, :cond_38
+    if-eqz v3, :cond_38
 
     .line 1193
-    const-string p1, "AutofillManagerService"
+    const-string v3, "AutofillManagerService"
 
-    new-instance v2, Ljava/lang/StringBuilder;
+    new-instance v4, Ljava/lang/StringBuilder;
 
-    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v4}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string/jumbo v3, "setUserData(): no service for "
+    const-string/jumbo v5, "setUserData(): no service for "
 
-    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v2, v0}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v4, v0}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v4}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v4
 
-    invoke-static {p1, v0}, Landroid/util/Slog;->v(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v3, v4}, Landroid/util/Slog;->v(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 1195
+    .end local v2  # "service":Lcom/android/server/autofill/AutofillManagerServiceImpl;
     :cond_38
     :goto_38
     monitor-exit v1
@@ -2439,354 +2591,450 @@
 
     .line 1195
     :catchall_3a
-    move-exception p1
+    move-exception v2
 
     monitor-exit v1
     :try_end_3c
     .catchall {:try_start_b .. :try_end_3c} :catchall_3a
 
-    throw p1
+    throw v2
 .end method
 
 .method public startSession(Landroid/os/IBinder;Landroid/os/IBinder;Landroid/view/autofill/AutofillId;Landroid/graphics/Rect;Landroid/view/autofill/AutofillValue;IZILandroid/content/ComponentName;ZLcom/android/internal/os/IResultReceiver;)V
-    .registers 30
+    .registers 35
+    .param p1, "activityToken"  # Landroid/os/IBinder;
+    .param p2, "appCallback"  # Landroid/os/IBinder;
+    .param p3, "autofillId"  # Landroid/view/autofill/AutofillId;
+    .param p4, "bounds"  # Landroid/graphics/Rect;
+    .param p5, "value"  # Landroid/view/autofill/AutofillValue;
+    .param p6, "userId"  # I
+    .param p7, "hasCallback"  # Z
+    .param p8, "flags"  # I
+    .param p9, "componentName"  # Landroid/content/ComponentName;
+    .param p10, "compatMode"  # Z
+    .param p11, "receiver"  # Lcom/android/internal/os/IResultReceiver;
 
     .line 1102
-    move-object/from16 v0, p0
+    move-object/from16 v1, p0
 
-    move/from16 v1, p6
+    move/from16 v2, p6
 
-    move-object/from16 v2, p11
+    move-object/from16 v3, p11
 
-    const-string v3, "activityToken"
+    const-string v0, "activityToken"
 
     move-object/from16 v4, p1
 
-    invoke-static {v4, v3}, Lcom/android/internal/util/Preconditions;->checkNotNull(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+    invoke-static {v4, v0}, Lcom/android/internal/util/Preconditions;->checkNotNull(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
 
-    move-result-object v3
+    move-result-object v0
 
-    move-object v5, v3
+    move-object v15, v0
 
-    check-cast v5, Landroid/os/IBinder;
+    check-cast v15, Landroid/os/IBinder;
 
     .line 1103
-    const-string v3, "appCallback"
+    .end local p1  # "activityToken":Landroid/os/IBinder;
+    .local v15, "activityToken":Landroid/os/IBinder;
+    const-string v0, "appCallback"
 
     move-object/from16 v4, p2
 
-    invoke-static {v4, v3}, Lcom/android/internal/util/Preconditions;->checkNotNull(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+    invoke-static {v4, v0}, Lcom/android/internal/util/Preconditions;->checkNotNull(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
 
-    move-result-object v3
+    move-result-object v0
 
-    move-object v8, v3
+    move-object/from16 v17, v0
 
-    check-cast v8, Landroid/os/IBinder;
+    check-cast v17, Landroid/os/IBinder;
 
     .line 1104
-    const-string v3, "autoFillId"
+    .end local p2  # "appCallback":Landroid/os/IBinder;
+    .local v17, "appCallback":Landroid/os/IBinder;
+    const-string v0, "autoFillId"
 
     move-object/from16 v4, p3
 
-    invoke-static {v4, v3}, Lcom/android/internal/util/Preconditions;->checkNotNull(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+    invoke-static {v4, v0}, Lcom/android/internal/util/Preconditions;->checkNotNull(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
 
-    move-result-object v3
+    move-result-object v0
 
-    move-object v9, v3
+    move-object/from16 v18, v0
 
-    check-cast v9, Landroid/view/autofill/AutofillId;
+    check-cast v18, Landroid/view/autofill/AutofillId;
 
     .line 1105
-    const-string v3, "componentName"
+    .end local p3  # "autofillId":Landroid/view/autofill/AutofillId;
+    .local v18, "autofillId":Landroid/view/autofill/AutofillId;
+    const-string v0, "componentName"
 
     move-object/from16 v4, p9
 
-    invoke-static {v4, v3}, Lcom/android/internal/util/Preconditions;->checkNotNull(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+    invoke-static {v4, v0}, Lcom/android/internal/util/Preconditions;->checkNotNull(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
 
-    move-result-object v3
+    move-result-object v0
 
-    move-object v13, v3
+    move-object/from16 v19, v0
 
-    check-cast v13, Landroid/content/ComponentName;
+    check-cast v19, Landroid/content/ComponentName;
 
     .line 1106
-    invoke-virtual {v13}, Landroid/content/ComponentName;->getPackageName()Ljava/lang/String;
+    .end local p9  # "componentName":Landroid/content/ComponentName;
+    .local v19, "componentName":Landroid/content/ComponentName;
+    invoke-virtual/range {v19 .. v19}, Landroid/content/ComponentName;->getPackageName()Ljava/lang/String;
 
-    move-result-object v3
+    move-result-object v0
 
-    invoke-static {v3}, Lcom/android/internal/util/Preconditions;->checkNotNull(Ljava/lang/Object;)Ljava/lang/Object;
+    invoke-static {v0}, Lcom/android/internal/util/Preconditions;->checkNotNull(Ljava/lang/Object;)Ljava/lang/Object;
 
-    move-result-object v3
+    move-result-object v0
 
-    check-cast v3, Ljava/lang/String;
+    move-object v14, v0
+
+    check-cast v14, Ljava/lang/String;
 
     .line 1108
+    .local v14, "packageName":Ljava/lang/String;
     invoke-static {}, Lcom/android/server/autofill/AutofillManagerService$AutoFillManagerServiceStub;->getCallingUid()I
 
-    move-result v4
+    move-result v0
 
-    invoke-static {v4}, Landroid/os/UserHandle;->getUserId(I)I
+    invoke-static {v0}, Landroid/os/UserHandle;->getUserId(I)I
 
-    move-result v4
+    move-result v0
 
-    const/4 v6, 0x0
+    const/4 v4, 0x0
 
-    if-ne v1, v4, :cond_49
+    if-ne v2, v0, :cond_4d
 
-    const/4 v4, 0x1
+    const/4 v0, 0x1
 
-    goto :goto_4a
+    goto :goto_4e
 
-    :cond_49
-    move v4, v6
+    :cond_4d
+    move v0, v4
 
-    :goto_4a
-    const-string/jumbo v7, "userId"
+    :goto_4e
+    const-string/jumbo v5, "userId"
 
-    invoke-static {v4, v7}, Lcom/android/internal/util/Preconditions;->checkArgument(ZLjava/lang/Object;)V
+    invoke-static {v0, v5}, Lcom/android/internal/util/Preconditions;->checkArgument(ZLjava/lang/Object;)V
 
     .line 1111
-    :try_start_50
-    iget-object v4, v0, Lcom/android/server/autofill/AutofillManagerService$AutoFillManagerServiceStub;->this$0:Lcom/android/server/autofill/AutofillManagerService;
+    :try_start_54
+    iget-object v0, v1, Lcom/android/server/autofill/AutofillManagerService$AutoFillManagerServiceStub;->this$0:Lcom/android/server/autofill/AutofillManagerService;
 
-    invoke-virtual {v4}, Lcom/android/server/autofill/AutofillManagerService;->getContext()Landroid/content/Context;
+    invoke-virtual {v0}, Lcom/android/server/autofill/AutofillManagerService;->getContext()Landroid/content/Context;
 
-    move-result-object v4
+    move-result-object v0
 
-    invoke-virtual {v4}, Landroid/content/Context;->getPackageManager()Landroid/content/pm/PackageManager;
+    invoke-virtual {v0}, Landroid/content/Context;->getPackageManager()Landroid/content/pm/PackageManager;
 
-    move-result-object v4
+    move-result-object v0
 
-    invoke-virtual {v4, v3, v6, v1}, Landroid/content/pm/PackageManager;->getPackageInfoAsUser(Ljava/lang/String;II)Landroid/content/pm/PackageInfo;
-    :try_end_5d
-    .catch Landroid/content/pm/PackageManager$NameNotFoundException; {:try_start_50 .. :try_end_5d} :catch_a7
+    invoke-virtual {v0, v14, v4, v2}, Landroid/content/pm/PackageManager;->getPackageInfoAsUser(Ljava/lang/String;II)Landroid/content/pm/PackageInfo;
+    :try_end_61
+    .catch Landroid/content/pm/PackageManager$NameNotFoundException; {:try_start_54 .. :try_end_61} :catch_bf
 
     .line 1114
     nop
 
     .line 1118
-    iget-object v3, v0, Lcom/android/server/autofill/AutofillManagerService$AutoFillManagerServiceStub;->this$0:Lcom/android/server/autofill/AutofillManagerService;
+    iget-object v0, v1, Lcom/android/server/autofill/AutofillManagerService$AutoFillManagerServiceStub;->this$0:Lcom/android/server/autofill/AutofillManagerService;
 
-    invoke-static {v3}, Lcom/android/server/autofill/AutofillManagerService;->access$2100(Lcom/android/server/autofill/AutofillManagerService;)Landroid/app/ActivityManagerInternal;
+    invoke-static {v0}, Lcom/android/server/autofill/AutofillManagerService;->access$2100(Lcom/android/server/autofill/AutofillManagerService;)Landroid/app/ActivityManagerInternal;
 
-    move-result-object v3
+    move-result-object v0
 
-    invoke-virtual {v3, v5, v6}, Landroid/app/ActivityManagerInternal;->getTaskIdForActivity(Landroid/os/IBinder;Z)I
+    invoke-virtual {v0, v15, v4}, Landroid/app/ActivityManagerInternal;->getTaskIdForActivity(Landroid/os/IBinder;Z)I
 
-    move-result v6
+    move-result v20
 
     .line 1120
-    iget-object v3, v0, Lcom/android/server/autofill/AutofillManagerService$AutoFillManagerServiceStub;->this$0:Lcom/android/server/autofill/AutofillManagerService;
+    .local v20, "taskId":I
+    iget-object v0, v1, Lcom/android/server/autofill/AutofillManagerService$AutoFillManagerServiceStub;->this$0:Lcom/android/server/autofill/AutofillManagerService;
 
-    invoke-static {v3}, Lcom/android/server/autofill/AutofillManagerService;->access$2200(Lcom/android/server/autofill/AutofillManagerService;)Ljava/lang/Object;
+    invoke-static {v0}, Lcom/android/server/autofill/AutofillManagerService;->access$2200(Lcom/android/server/autofill/AutofillManagerService;)Ljava/lang/Object;
 
-    move-result-object v17
+    move-result-object v21
 
-    monitor-enter v17
+    monitor-enter v21
 
     .line 1121
-    :try_start_6f
-    iget-object v3, v0, Lcom/android/server/autofill/AutofillManagerService$AutoFillManagerServiceStub;->this$0:Lcom/android/server/autofill/AutofillManagerService;
+    :try_start_73
+    iget-object v0, v1, Lcom/android/server/autofill/AutofillManagerService$AutoFillManagerServiceStub;->this$0:Lcom/android/server/autofill/AutofillManagerService;
 
-    invoke-static {v3, v1}, Lcom/android/server/autofill/AutofillManagerService;->access$2300(Lcom/android/server/autofill/AutofillManagerService;I)Lcom/android/server/infra/AbstractPerUserSystemService;
+    invoke-static {v0, v2}, Lcom/android/server/autofill/AutofillManagerService;->access$2300(Lcom/android/server/autofill/AutofillManagerService;I)Lcom/android/server/infra/AbstractPerUserSystemService;
 
-    move-result-object v1
+    move-result-object v0
 
-    move-object v4, v1
+    move-object v4, v0
 
     check-cast v4, Lcom/android/server/autofill/AutofillManagerServiceImpl;
 
     .line 1122
+    .local v4, "service":Lcom/android/server/autofill/AutofillManagerServiceImpl;
     invoke-static {}, Lcom/android/server/autofill/AutofillManagerService$AutoFillManagerServiceStub;->getCallingUid()I
 
     move-result v7
 
-    iget-object v1, v0, Lcom/android/server/autofill/AutofillManagerService$AutoFillManagerServiceStub;->this$0:Lcom/android/server/autofill/AutofillManagerService;
+    iget-object v0, v1, Lcom/android/server/autofill/AutofillManagerService$AutoFillManagerServiceStub;->this$0:Lcom/android/server/autofill/AutofillManagerService;
 
     .line 1124
-    invoke-static {v1}, Lcom/android/server/autofill/AutofillManagerService;->access$2400(Lcom/android/server/autofill/AutofillManagerService;)Z
+    invoke-static {v0}, Lcom/android/server/autofill/AutofillManagerService;->access$2400(Lcom/android/server/autofill/AutofillManagerService;)Z
 
-    move-result v15
+    move-result v0
+    :try_end_86
+    .catchall {:try_start_73 .. :try_end_86} :catchall_b7
 
     .line 1122
+    move-object v5, v15
+
+    move/from16 v6, v20
+
+    move-object/from16 v8, v17
+
+    move-object/from16 v9, v18
+
     move-object/from16 v10, p4
 
     move-object/from16 v11, p5
 
     move/from16 v12, p7
 
+    move-object/from16 v13, v19
+
+    move-object v2, v14
+
+    .end local v14  # "packageName":Ljava/lang/String;
+    .local v2, "packageName":Ljava/lang/String;
     move/from16 v14, p10
+
+    move-object/from16 v22, v15
+
+    .end local v15  # "activityToken":Landroid/os/IBinder;
+    .local v22, "activityToken":Landroid/os/IBinder;
+    move v15, v0
 
     move/from16 v16, p8
 
+    :try_start_9d
     invoke-virtual/range {v4 .. v16}, Lcom/android/server/autofill/AutofillManagerServiceImpl;->startSessionLocked(Landroid/os/IBinder;IILandroid/os/IBinder;Landroid/view/autofill/AutofillId;Landroid/graphics/Rect;Landroid/view/autofill/AutofillValue;ZLandroid/content/ComponentName;ZZI)J
 
-    move-result-wide v3
+    move-result-wide v5
+
+    move-wide v4, v5
 
     .line 1125
-    monitor-exit v17
-    :try_end_91
-    .catchall {:try_start_6f .. :try_end_91} :catchall_a4
+    .local v4, "result":J
+    monitor-exit v21
+    :try_end_a3
+    .catchall {:try_start_9d .. :try_end_a3} :catchall_bd
 
     .line 1126
-    long-to-int v1, v3
+    long-to-int v0, v4
 
     .line 1127
-    const/16 v5, 0x20
+    .local v0, "sessionId":I
+    const/16 v6, 0x20
 
-    shr-long/2addr v3, v5
+    shr-long v6, v4, v6
 
-    long-to-int v3, v3
+    long-to-int v6, v6
 
     .line 1128
-    if-eqz v3, :cond_9e
+    .local v6, "resultFlags":I
+    if-eqz v6, :cond_b1
 
     .line 1129
-    iget-object v0, v0, Lcom/android/server/autofill/AutofillManagerService$AutoFillManagerServiceStub;->this$0:Lcom/android/server/autofill/AutofillManagerService;
+    iget-object v7, v1, Lcom/android/server/autofill/AutofillManagerService$AutoFillManagerServiceStub;->this$0:Lcom/android/server/autofill/AutofillManagerService;
 
-    invoke-static {v0, v2, v1, v3}, Lcom/android/server/autofill/AutofillManagerService;->access$2500(Lcom/android/server/autofill/AutofillManagerService;Lcom/android/internal/os/IResultReceiver;II)V
+    invoke-static {v7, v3, v0, v6}, Lcom/android/server/autofill/AutofillManagerService;->access$2500(Lcom/android/server/autofill/AutofillManagerService;Lcom/android/internal/os/IResultReceiver;II)V
 
-    goto :goto_a3
+    goto :goto_b6
 
     .line 1131
-    :cond_9e
-    iget-object v0, v0, Lcom/android/server/autofill/AutofillManagerService$AutoFillManagerServiceStub;->this$0:Lcom/android/server/autofill/AutofillManagerService;
+    :cond_b1
+    iget-object v7, v1, Lcom/android/server/autofill/AutofillManagerService$AutoFillManagerServiceStub;->this$0:Lcom/android/server/autofill/AutofillManagerService;
 
-    invoke-static {v0, v2, v1}, Lcom/android/server/autofill/AutofillManagerService;->access$1400(Lcom/android/server/autofill/AutofillManagerService;Lcom/android/internal/os/IResultReceiver;I)V
+    invoke-static {v7, v3, v0}, Lcom/android/server/autofill/AutofillManagerService;->access$1400(Lcom/android/server/autofill/AutofillManagerService;Lcom/android/internal/os/IResultReceiver;I)V
 
     .line 1133
-    :goto_a3
+    :goto_b6
     return-void
 
     .line 1125
-    :catchall_a4
+    .end local v0  # "sessionId":I
+    .end local v2  # "packageName":Ljava/lang/String;
+    .end local v4  # "result":J
+    .end local v6  # "resultFlags":I
+    .end local v22  # "activityToken":Landroid/os/IBinder;
+    .restart local v14  # "packageName":Ljava/lang/String;
+    .restart local v15  # "activityToken":Landroid/os/IBinder;
+    :catchall_b7
     move-exception v0
 
-    :try_start_a5
-    monitor-exit v17
-    :try_end_a6
-    .catchall {:try_start_a5 .. :try_end_a6} :catchall_a4
+    move-object v2, v14
+
+    move-object/from16 v22, v15
+
+    .end local v14  # "packageName":Ljava/lang/String;
+    .end local v15  # "activityToken":Landroid/os/IBinder;
+    .restart local v2  # "packageName":Ljava/lang/String;
+    .restart local v22  # "activityToken":Landroid/os/IBinder;
+    :goto_bb
+    :try_start_bb
+    monitor-exit v21
+    :try_end_bc
+    .catchall {:try_start_bb .. :try_end_bc} :catchall_bd
 
     throw v0
 
-    .line 1112
-    :catch_a7
+    :catchall_bd
     move-exception v0
 
+    goto :goto_bb
+
+    .line 1112
+    .end local v2  # "packageName":Ljava/lang/String;
+    .end local v20  # "taskId":I
+    .end local v22  # "activityToken":Landroid/os/IBinder;
+    .restart local v14  # "packageName":Ljava/lang/String;
+    .restart local v15  # "activityToken":Landroid/os/IBinder;
+    :catch_bf
+    move-exception v0
+
+    move-object v2, v14
+
+    move-object/from16 v22, v15
+
     .line 1113
-    new-instance v1, Ljava/lang/IllegalArgumentException;
+    .end local v14  # "packageName":Ljava/lang/String;
+    .end local v15  # "activityToken":Landroid/os/IBinder;
+    .local v0, "e":Landroid/content/pm/PackageManager$NameNotFoundException;
+    .restart local v2  # "packageName":Ljava/lang/String;
+    .restart local v22  # "activityToken":Landroid/os/IBinder;
+    new-instance v4, Ljava/lang/IllegalArgumentException;
 
-    new-instance v2, Ljava/lang/StringBuilder;
+    new-instance v5, Ljava/lang/StringBuilder;
 
-    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v5}, Ljava/lang/StringBuilder;-><init>()V
 
-    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v5, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string v3, " is not a valid package"
+    const-string v6, " is not a valid package"
 
-    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v5}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v2
+    move-result-object v5
 
-    invoke-direct {v1, v2, v0}, Ljava/lang/IllegalArgumentException;-><init>(Ljava/lang/String;Ljava/lang/Throwable;)V
+    invoke-direct {v4, v5, v0}, Ljava/lang/IllegalArgumentException;-><init>(Ljava/lang/String;Ljava/lang/Throwable;)V
 
-    throw v1
+    throw v4
 .end method
 
 .method public updateSession(ILandroid/view/autofill/AutofillId;Landroid/graphics/Rect;Landroid/view/autofill/AutofillValue;III)V
-    .registers 19
+    .registers 20
+    .param p1, "sessionId"  # I
+    .param p2, "autoFillId"  # Landroid/view/autofill/AutofillId;
+    .param p3, "bounds"  # Landroid/graphics/Rect;
+    .param p4, "value"  # Landroid/view/autofill/AutofillValue;
+    .param p5, "action"  # I
+    .param p6, "flags"  # I
+    .param p7, "userId"  # I
 
     .line 1317
-    move-object v0, p0
+    move-object v1, p0
 
-    move/from16 v1, p7
+    move/from16 v2, p7
 
-    iget-object v2, v0, Lcom/android/server/autofill/AutofillManagerService$AutoFillManagerServiceStub;->this$0:Lcom/android/server/autofill/AutofillManagerService;
+    iget-object v0, v1, Lcom/android/server/autofill/AutofillManagerService$AutoFillManagerServiceStub;->this$0:Lcom/android/server/autofill/AutofillManagerService;
 
-    invoke-static {v2}, Lcom/android/server/autofill/AutofillManagerService;->access$5000(Lcom/android/server/autofill/AutofillManagerService;)Ljava/lang/Object;
+    invoke-static {v0}, Lcom/android/server/autofill/AutofillManagerService;->access$5000(Lcom/android/server/autofill/AutofillManagerService;)Ljava/lang/Object;
 
-    move-result-object v2
+    move-result-object v3
 
-    monitor-enter v2
+    monitor-enter v3
 
     .line 1318
     :try_start_a
-    iget-object v0, v0, Lcom/android/server/autofill/AutofillManagerService$AutoFillManagerServiceStub;->this$0:Lcom/android/server/autofill/AutofillManagerService;
+    iget-object v0, v1, Lcom/android/server/autofill/AutofillManagerService$AutoFillManagerServiceStub;->this$0:Lcom/android/server/autofill/AutofillManagerService;
 
-    invoke-static {v0, v1}, Lcom/android/server/autofill/AutofillManagerService;->access$5100(Lcom/android/server/autofill/AutofillManagerService;I)Lcom/android/server/infra/AbstractPerUserSystemService;
+    invoke-static {v0, v2}, Lcom/android/server/autofill/AutofillManagerService;->access$5100(Lcom/android/server/autofill/AutofillManagerService;I)Lcom/android/server/infra/AbstractPerUserSystemService;
 
     move-result-object v0
 
-    move-object v3, v0
-
-    check-cast v3, Lcom/android/server/autofill/AutofillManagerServiceImpl;
+    check-cast v0, Lcom/android/server/autofill/AutofillManagerServiceImpl;
 
     .line 1319
-    if-eqz v3, :cond_25
+    .local v0, "service":Lcom/android/server/autofill/AutofillManagerServiceImpl;
+    if-eqz v0, :cond_26
 
     .line 1320
     invoke-static {}, Lcom/android/server/autofill/AutofillManagerService$AutoFillManagerServiceStub;->getCallingUid()I
 
-    move-result v5
+    move-result v6
 
-    move v4, p1
+    move-object v4, v0
 
-    move-object v6, p2
+    move v5, p1
 
-    move-object v7, p3
+    move-object v7, p2
 
-    move-object v8, p4
+    move-object v8, p3
 
-    move/from16 v9, p5
+    move-object/from16 v9, p4
 
-    move/from16 v10, p6
+    move/from16 v10, p5
 
-    invoke-virtual/range {v3 .. v10}, Lcom/android/server/autofill/AutofillManagerServiceImpl;->updateSessionLocked(IILandroid/view/autofill/AutofillId;Landroid/graphics/Rect;Landroid/view/autofill/AutofillValue;II)Z
+    move/from16 v11, p6
 
-    goto :goto_40
+    invoke-virtual/range {v4 .. v11}, Lcom/android/server/autofill/AutofillManagerServiceImpl;->updateSessionLocked(IILandroid/view/autofill/AutofillId;Landroid/graphics/Rect;Landroid/view/autofill/AutofillValue;II)Z
+
+    goto :goto_41
 
     .line 1322
-    :cond_25
-    sget-boolean v0, Lcom/android/server/autofill/Helper;->sVerbose:Z
+    :cond_26
+    sget-boolean v4, Lcom/android/server/autofill/Helper;->sVerbose:Z
 
-    if-eqz v0, :cond_40
+    if-eqz v4, :cond_41
 
     .line 1323
-    const-string v0, "AutofillManagerService"
+    const-string v4, "AutofillManagerService"
 
-    new-instance v3, Ljava/lang/StringBuilder;
+    new-instance v5, Ljava/lang/StringBuilder;
 
-    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v5}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string/jumbo v4, "updateSession(): no service for "
+    const-string/jumbo v6, "updateSession(): no service for "
 
-    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v3, v1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v5, v2}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v5}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v1
+    move-result-object v5
 
-    invoke-static {v0, v1}, Landroid/util/Slog;->v(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v4, v5}, Landroid/util/Slog;->v(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 1325
-    :cond_40
-    :goto_40
-    monitor-exit v2
+    .end local v0  # "service":Lcom/android/server/autofill/AutofillManagerServiceImpl;
+    :cond_41
+    :goto_41
+    monitor-exit v3
 
     .line 1326
     return-void
 
     .line 1325
-    :catchall_42
+    :catchall_43
     move-exception v0
 
-    monitor-exit v2
-    :try_end_44
-    .catchall {:try_start_a .. :try_end_44} :catchall_42
+    monitor-exit v3
+    :try_end_45
+    .catchall {:try_start_a .. :try_end_45} :catchall_43
 
     throw v0
 .end method

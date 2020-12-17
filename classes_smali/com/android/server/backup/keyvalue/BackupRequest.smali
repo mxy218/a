@@ -10,6 +10,7 @@
 # direct methods
 .method public constructor <init>(Ljava/lang/String;)V
     .registers 2
+    .param p1, "pkgName"  # Ljava/lang/String;
 
     .line 27
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -24,15 +25,16 @@
 
 # virtual methods
 .method public equals(Ljava/lang/Object;)Z
-    .registers 3
+    .registers 5
+    .param p1, "o"  # Ljava/lang/Object;
 
     .line 37
     if-ne p0, p1, :cond_4
 
     .line 38
-    const/4 p1, 0x1
+    const/4 v0, 0x1
 
-    return p1
+    return v0
 
     .line 40
     :cond_4
@@ -41,24 +43,27 @@
     if-nez v0, :cond_a
 
     .line 41
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    return p1
+    return v0
 
     .line 43
     :cond_a
-    check-cast p1, Lcom/android/server/backup/keyvalue/BackupRequest;
+    move-object v0, p1
+
+    check-cast v0, Lcom/android/server/backup/keyvalue/BackupRequest;
 
     .line 44
-    iget-object v0, p0, Lcom/android/server/backup/keyvalue/BackupRequest;->packageName:Ljava/lang/String;
+    .local v0, "that":Lcom/android/server/backup/keyvalue/BackupRequest;
+    iget-object v1, p0, Lcom/android/server/backup/keyvalue/BackupRequest;->packageName:Ljava/lang/String;
 
-    iget-object p1, p1, Lcom/android/server/backup/keyvalue/BackupRequest;->packageName:Ljava/lang/String;
+    iget-object v2, v0, Lcom/android/server/backup/keyvalue/BackupRequest;->packageName:Ljava/lang/String;
 
-    invoke-static {v0, p1}, Ljava/util/Objects;->equals(Ljava/lang/Object;Ljava/lang/Object;)Z
+    invoke-static {v1, v2}, Ljava/util/Objects;->equals(Ljava/lang/Object;Ljava/lang/Object;)Z
 
-    move-result p1
+    move-result v1
 
-    return p1
+    return v1
 .end method
 
 .method public hashCode()I

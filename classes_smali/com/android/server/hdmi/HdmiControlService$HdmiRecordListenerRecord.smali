@@ -26,6 +26,7 @@
 # direct methods
 .method public constructor <init>(Lcom/android/server/hdmi/HdmiControlService;Landroid/hardware/hdmi/IHdmiRecordListener;)V
     .registers 3
+    .param p2, "listener"  # Landroid/hardware/hdmi/IHdmiRecordListener;
 
     .line 1398
     iput-object p1, p0, Lcom/android/server/hdmi/HdmiControlService$HdmiRecordListenerRecord;->this$0:Lcom/android/server/hdmi/HdmiControlService;
@@ -40,12 +41,13 @@
 .end method
 
 .method static synthetic access$5700(Lcom/android/server/hdmi/HdmiControlService$HdmiRecordListenerRecord;)Landroid/hardware/hdmi/IHdmiRecordListener;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/hdmi/HdmiControlService$HdmiRecordListenerRecord;
 
     .line 1395
-    iget-object p0, p0, Lcom/android/server/hdmi/HdmiControlService$HdmiRecordListenerRecord;->mListener:Landroid/hardware/hdmi/IHdmiRecordListener;
+    iget-object v0, p0, Lcom/android/server/hdmi/HdmiControlService$HdmiRecordListenerRecord;->mListener:Landroid/hardware/hdmi/IHdmiRecordListener;
 
-    return-object p0
+    return-object v0
 .end method
 
 

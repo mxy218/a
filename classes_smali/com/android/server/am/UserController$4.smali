@@ -25,8 +25,9 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/am/UserController;ILcom/android/server/am/UserState;)V
     .registers 4
+    .param p1, "this$0"  # Lcom/android/server/am/UserController;
 
-    .line 728
+    .line 709
     iput-object p1, p0, Lcom/android/server/am/UserController$4;->this$0:Lcom/android/server/am/UserController;
 
     iput p2, p0, Lcom/android/server/am/UserController$4;->val$userId:I
@@ -42,8 +43,10 @@
 # virtual methods
 .method public synthetic lambda$performReceive$0$UserController$4(ILcom/android/server/am/UserState;)V
     .registers 4
+    .param p1, "userId"  # I
+    .param p2, "uss"  # Lcom/android/server/am/UserState;
 
-    .line 732
+    .line 713
     iget-object v0, p0, Lcom/android/server/am/UserController$4;->this$0:Lcom/android/server/am/UserController;
 
     invoke-virtual {v0, p1, p2}, Lcom/android/server/am/UserController;->finishUserStopping(ILcom/android/server/am/UserState;)V
@@ -52,25 +55,32 @@
 .end method
 
 .method public performReceive(Landroid/content/Intent;ILjava/lang/String;Landroid/os/Bundle;ZZI)V
-    .registers 8
+    .registers 12
+    .param p1, "intent"  # Landroid/content/Intent;
+    .param p2, "resultCode"  # I
+    .param p3, "data"  # Ljava/lang/String;
+    .param p4, "extras"  # Landroid/os/Bundle;
+    .param p5, "ordered"  # Z
+    .param p6, "sticky"  # Z
+    .param p7, "sendingUser"  # I
 
-    .line 732
-    iget-object p1, p0, Lcom/android/server/am/UserController$4;->this$0:Lcom/android/server/am/UserController;
+    .line 713
+    iget-object v0, p0, Lcom/android/server/am/UserController$4;->this$0:Lcom/android/server/am/UserController;
 
-    invoke-static {p1}, Lcom/android/server/am/UserController;->access$200(Lcom/android/server/am/UserController;)Landroid/os/Handler;
+    invoke-static {v0}, Lcom/android/server/am/UserController;->access$200(Lcom/android/server/am/UserController;)Landroid/os/Handler;
 
-    move-result-object p1
+    move-result-object v0
 
-    iget p2, p0, Lcom/android/server/am/UserController$4;->val$userId:I
+    iget v1, p0, Lcom/android/server/am/UserController$4;->val$userId:I
 
-    iget-object p3, p0, Lcom/android/server/am/UserController$4;->val$uss:Lcom/android/server/am/UserState;
+    iget-object v2, p0, Lcom/android/server/am/UserController$4;->val$uss:Lcom/android/server/am/UserState;
 
-    new-instance p4, Lcom/android/server/am/-$$Lambda$UserController$4$P3Sj7pxBXLC7k_puCIIki2uVgGE;
+    new-instance v3, Lcom/android/server/am/-$$Lambda$UserController$4$P3Sj7pxBXLC7k_puCIIki2uVgGE;
 
-    invoke-direct {p4, p0, p2, p3}, Lcom/android/server/am/-$$Lambda$UserController$4$P3Sj7pxBXLC7k_puCIIki2uVgGE;-><init>(Lcom/android/server/am/UserController$4;ILcom/android/server/am/UserState;)V
+    invoke-direct {v3, p0, v1, v2}, Lcom/android/server/am/-$$Lambda$UserController$4$P3Sj7pxBXLC7k_puCIIki2uVgGE;-><init>(Lcom/android/server/am/UserController$4;ILcom/android/server/am/UserState;)V
 
-    invoke-virtual {p1, p4}, Landroid/os/Handler;->post(Ljava/lang/Runnable;)Z
+    invoke-virtual {v0, v3}, Landroid/os/Handler;->post(Ljava/lang/Runnable;)Z
 
-    .line 733
+    .line 714
     return-void
 .end method

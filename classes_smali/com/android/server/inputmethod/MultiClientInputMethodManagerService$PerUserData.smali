@@ -105,6 +105,10 @@
 # direct methods
 .method constructor <init>(ILandroid/view/inputmethod/InputMethodInfo;ILcom/android/server/inputmethod/MultiClientInputMethodManagerService$OnWorkerThreadCallback;)V
     .registers 6
+    .param p1, "userId"  # I
+    .param p2, "inputMethodInfo"  # Landroid/view/inputmethod/InputMethodInfo;
+    .param p3, "initialState"  # I
+    .param p4, "callback"  # Lcom/android/server/inputmethod/MultiClientInputMethodManagerService$OnWorkerThreadCallback;
 
     .line 850
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -147,29 +151,34 @@
     iput p3, p0, Lcom/android/server/inputmethod/MultiClientInputMethodManagerService$PerUserData;->mState:I
 
     .line 854
-    new-instance p1, Lcom/android/server/inputmethod/MultiClientInputMethodManagerService$PerUserData$OnWorkerThreadServiceConnection;
+    new-instance v0, Lcom/android/server/inputmethod/MultiClientInputMethodManagerService$PerUserData$OnWorkerThreadServiceConnection;
 
-    invoke-direct {p1, p0, p4}, Lcom/android/server/inputmethod/MultiClientInputMethodManagerService$PerUserData$OnWorkerThreadServiceConnection;-><init>(Lcom/android/server/inputmethod/MultiClientInputMethodManagerService$PerUserData;Lcom/android/server/inputmethod/MultiClientInputMethodManagerService$OnWorkerThreadCallback;)V
+    invoke-direct {v0, p0, p4}, Lcom/android/server/inputmethod/MultiClientInputMethodManagerService$PerUserData$OnWorkerThreadServiceConnection;-><init>(Lcom/android/server/inputmethod/MultiClientInputMethodManagerService$PerUserData;Lcom/android/server/inputmethod/MultiClientInputMethodManagerService$OnWorkerThreadCallback;)V
 
-    iput-object p1, p0, Lcom/android/server/inputmethod/MultiClientInputMethodManagerService$PerUserData;->mOnWorkerThreadServiceConnection:Lcom/android/server/inputmethod/MultiClientInputMethodManagerService$PerUserData$OnWorkerThreadServiceConnection;
+    iput-object v0, p0, Lcom/android/server/inputmethod/MultiClientInputMethodManagerService$PerUserData;->mOnWorkerThreadServiceConnection:Lcom/android/server/inputmethod/MultiClientInputMethodManagerService$PerUserData$OnWorkerThreadServiceConnection;
 
     .line 856
     return-void
 .end method
 
 .method static synthetic access$500(Lcom/android/server/inputmethod/MultiClientInputMethodManagerService$PerUserData;)I
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/inputmethod/MultiClientInputMethodManagerService$PerUserData;
 
     .line 762
-    iget p0, p0, Lcom/android/server/inputmethod/MultiClientInputMethodManagerService$PerUserData;->mUserId:I
+    iget v0, p0, Lcom/android/server/inputmethod/MultiClientInputMethodManagerService$PerUserData;->mUserId:I
 
-    return p0
+    return v0
 .end method
 
 
 # virtual methods
 .method addClientLocked(IILcom/android/internal/view/IInputMethodClient;I)V
-    .registers 8
+    .registers 12
+    .param p1, "uid"  # I
+    .param p2, "pid"  # I
+    .param p3, "client"  # Lcom/android/internal/view/IInputMethodClient;
+    .param p4, "selfReportedDisplayId"  # I
     .annotation build Lcom/android/internal/annotations/GuardedBy;
         value = {
             "mLock"
@@ -184,11 +193,11 @@
     if-eqz v0, :cond_e
 
     .line 908
-    const-string p1, "MultiClientInputMethodManagerService"
+    const-string v0, "MultiClientInputMethodManagerService"
 
-    const-string p2, "The same client is added multiple times"
+    const-string v1, "The same client is added multiple times"
 
-    invoke-static {p1, p2}, Landroid/util/Slog;->wtf(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v0, v1}, Landroid/util/Slog;->wtf(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 909
     return-void
@@ -200,6 +209,7 @@
     invoke-direct {v0, p0, p3}, Lcom/android/server/inputmethod/MultiClientInputMethodManagerService$PerUserData$ClientDeathRecipient;-><init>(Lcom/android/server/inputmethod/MultiClientInputMethodManagerService$PerUserData;Lcom/android/internal/view/IInputMethodClient;)V
 
     .line 913
+    .local v0, "deathRecipient":Lcom/android/server/inputmethod/MultiClientInputMethodManagerService$PerUserData$ClientDeathRecipient;
     :try_start_13
     invoke-interface {p3}, Lcom/android/internal/view/IInputMethodClient;->asBinder()Landroid/os/IBinder;
 
@@ -215,59 +225,60 @@
     nop
 
     .line 917
-    new-instance v0, Lcom/android/server/inputmethod/MultiClientInputMethodManagerService$InputMethodClientInfo;
+    new-instance v1, Lcom/android/server/inputmethod/MultiClientInputMethodManagerService$InputMethodClientInfo;
 
-    invoke-direct {v0, p3, p1, p2, p4}, Lcom/android/server/inputmethod/MultiClientInputMethodManagerService$InputMethodClientInfo;-><init>(Lcom/android/internal/view/IInputMethodClient;III)V
+    invoke-direct {v1, p3, p1, p2, p4}, Lcom/android/server/inputmethod/MultiClientInputMethodManagerService$InputMethodClientInfo;-><init>(Lcom/android/internal/view/IInputMethodClient;III)V
 
     .line 919
-    const/4 p1, 0x1
+    .local v1, "clientInfo":Lcom/android/server/inputmethod/MultiClientInputMethodManagerService$InputMethodClientInfo;
+    const/4 v2, 0x1
 
-    iput p1, v0, Lcom/android/server/inputmethod/MultiClientInputMethodManagerService$InputMethodClientInfo;->mState:I
+    iput v2, v1, Lcom/android/server/inputmethod/MultiClientInputMethodManagerService$InputMethodClientInfo;->mState:I
 
     .line 920
-    iget-object p1, p0, Lcom/android/server/inputmethod/MultiClientInputMethodManagerService$PerUserData;->mClientMap:Landroid/util/ArrayMap;
+    iget-object v2, p0, Lcom/android/server/inputmethod/MultiClientInputMethodManagerService$PerUserData;->mClientMap:Landroid/util/ArrayMap;
 
     invoke-interface {p3}, Lcom/android/internal/view/IInputMethodClient;->asBinder()Landroid/os/IBinder;
 
-    move-result-object p2
+    move-result-object v3
 
-    invoke-virtual {p1, p2, v0}, Landroid/util/ArrayMap;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+    invoke-virtual {v2, v3, v1}, Landroid/util/ArrayMap;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
 
     .line 921
-    iget-object p1, p0, Lcom/android/server/inputmethod/MultiClientInputMethodManagerService$PerUserData;->mClientIdToClientMap:Landroid/util/SparseArray;
+    iget-object v2, p0, Lcom/android/server/inputmethod/MultiClientInputMethodManagerService$PerUserData;->mClientIdToClientMap:Landroid/util/SparseArray;
 
-    iget p2, v0, Lcom/android/server/inputmethod/MultiClientInputMethodManagerService$InputMethodClientInfo;->mClientId:I
+    iget v3, v1, Lcom/android/server/inputmethod/MultiClientInputMethodManagerService$InputMethodClientInfo;->mClientId:I
 
-    invoke-virtual {p1, p2, v0}, Landroid/util/SparseArray;->put(ILjava/lang/Object;)V
+    invoke-virtual {v2, v3, v1}, Landroid/util/SparseArray;->put(ILjava/lang/Object;)V
 
     .line 922
-    iget p1, p0, Lcom/android/server/inputmethod/MultiClientInputMethodManagerService$PerUserData;->mState:I
+    iget v2, p0, Lcom/android/server/inputmethod/MultiClientInputMethodManagerService$PerUserData;->mState:I
 
-    const/4 p2, 0x5
+    const/4 v3, 0x5
 
-    if-eq p1, p2, :cond_3a
+    if-eq v2, v3, :cond_3a
 
     goto :goto_4c
 
     .line 925
     :cond_3a
     :try_start_3a
-    iget-object p1, p0, Lcom/android/server/inputmethod/MultiClientInputMethodManagerService$PerUserData;->mCurrentInputMethod:Lcom/android/internal/inputmethod/IMultiClientInputMethod;
+    iget-object v2, p0, Lcom/android/server/inputmethod/MultiClientInputMethodManagerService$PerUserData;->mCurrentInputMethod:Lcom/android/internal/inputmethod/IMultiClientInputMethod;
 
-    iget p2, v0, Lcom/android/server/inputmethod/MultiClientInputMethodManagerService$InputMethodClientInfo;->mClientId:I
+    iget v3, v1, Lcom/android/server/inputmethod/MultiClientInputMethodManagerService$InputMethodClientInfo;->mClientId:I
 
-    iget p3, v0, Lcom/android/server/inputmethod/MultiClientInputMethodManagerService$InputMethodClientInfo;->mPid:I
+    iget v4, v1, Lcom/android/server/inputmethod/MultiClientInputMethodManagerService$InputMethodClientInfo;->mPid:I
 
-    iget p4, v0, Lcom/android/server/inputmethod/MultiClientInputMethodManagerService$InputMethodClientInfo;->mUid:I
+    iget v5, v1, Lcom/android/server/inputmethod/MultiClientInputMethodManagerService$InputMethodClientInfo;->mUid:I
 
-    iget v1, v0, Lcom/android/server/inputmethod/MultiClientInputMethodManagerService$InputMethodClientInfo;->mSelfReportedDisplayId:I
+    iget v6, v1, Lcom/android/server/inputmethod/MultiClientInputMethodManagerService$InputMethodClientInfo;->mSelfReportedDisplayId:I
 
-    invoke-interface {p1, p2, p3, p4, v1}, Lcom/android/internal/inputmethod/IMultiClientInputMethod;->addClient(IIII)V
+    invoke-interface {v2, v3, v4, v5, v6}, Lcom/android/internal/inputmethod/IMultiClientInputMethod;->addClient(IIII)V
 
     .line 928
-    const/4 p1, 0x2
+    const/4 v2, 0x2
 
-    iput p1, v0, Lcom/android/server/inputmethod/MultiClientInputMethodManagerService$InputMethodClientInfo;->mState:I
+    iput v2, v1, Lcom/android/server/inputmethod/MultiClientInputMethodManagerService$InputMethodClientInfo;->mState:I
     :try_end_4a
     .catch Landroid/os/RemoteException; {:try_start_3a .. :try_end_4a} :catch_4b
 
@@ -276,26 +287,30 @@
 
     .line 929
     :catch_4b
-    move-exception p1
+    move-exception v2
 
     .line 934
     :goto_4c
     return-void
 
     .line 914
+    .end local v1  # "clientInfo":Lcom/android/server/inputmethod/MultiClientInputMethodManagerService$InputMethodClientInfo;
     :catch_4d
-    move-exception p1
+    move-exception v1
 
     .line 915
-    new-instance p2, Ljava/lang/IllegalStateException;
+    .local v1, "e":Landroid/os/RemoteException;
+    new-instance v2, Ljava/lang/IllegalStateException;
 
-    invoke-direct {p2, p1}, Ljava/lang/IllegalStateException;-><init>(Ljava/lang/Throwable;)V
+    invoke-direct {v2, v1}, Ljava/lang/IllegalStateException;-><init>(Ljava/lang/Throwable;)V
 
-    throw p2
+    throw v2
 .end method
 
 .method bindServiceLocked(Landroid/content/Context;I)Z
     .registers 12
+    .param p1, "context"  # Landroid/content/Context;
+    .param p2, "userId"  # I
     .annotation build Lcom/android/internal/annotations/GuardedBy;
         value = {
             "mLock"
@@ -323,7 +338,7 @@
     .line 863
     const-string v1, "android.intent.extra.client_label"
 
-    const v2, 0x104030f
+    const v2, 0x104030b
 
     invoke-virtual {v0, v1, v2}, Landroid/content/Intent;->putExtra(Ljava/lang/String;I)Landroid/content/Intent;
 
@@ -346,9 +361,10 @@
 
     invoke-virtual {v0, v2, v1}, Landroid/content/Intent;->putExtra(Ljava/lang/String;Landroid/os/Parcelable;)Landroid/content/Intent;
 
-    move-result-object v4
+    move-result-object v0
 
     .line 872
+    .local v0, "intent":Landroid/content/Intent;
     iget-object v5, p0, Lcom/android/server/inputmethod/MultiClientInputMethodManagerService$PerUserData;->mOnWorkerThreadServiceConnection:Lcom/android/server/inputmethod/MultiClientInputMethodManagerService$PerUserData$OnWorkerThreadServiceConnection;
 
     .line 874
@@ -365,15 +381,20 @@
 
     move-object v3, p1
 
+    move-object v4, v0
+
     invoke-virtual/range {v3 .. v8}, Landroid/content/Context;->bindServiceAsUser(Landroid/content/Intent;Landroid/content/ServiceConnection;ILandroid/os/Handler;Landroid/os/UserHandle;)Z
 
-    move-result p1
+    move-result v1
 
-    return p1
+    return v1
 .end method
 
 .method dump(Ljava/io/FileDescriptor;Lcom/android/internal/util/IndentingPrintWriter;[Ljava/lang/String;)V
-    .registers 9
+    .registers 10
+    .param p1, "fd"  # Ljava/io/FileDescriptor;
+    .param p2, "ipw"  # Lcom/android/internal/util/IndentingPrintWriter;
+    .param p3, "args"  # [Ljava/lang/String;
 
     .line 1001
     iget-object v0, p0, Lcom/android/server/inputmethod/MultiClientInputMethodManagerService$PerUserData;->mLock:Ljava/lang/Object;
@@ -386,7 +407,7 @@
 
     invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v2, "mState="
+    const-string/jumbo v2, "mState="
 
     invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
@@ -419,7 +440,7 @@
     .line 1006
     iget-object v1, p0, Lcom/android/server/inputmethod/MultiClientInputMethodManagerService$PerUserData;->mCurrentInputMethod:Lcom/android/internal/inputmethod/IMultiClientInputMethod;
 
-    if-eqz v1, :cond_5d
+    if-eqz v1, :cond_5e
 
     .line 1008
     const-string v1, ">>Dump CurrentInputMethod>>"
@@ -428,11 +449,11 @@
 
     .line 1009
     invoke-virtual {p2}, Lcom/android/internal/util/IndentingPrintWriter;->flush()V
-    :try_end_39
-    .catchall {:try_start_3 .. :try_end_39} :catchall_15a
+    :try_end_3a
+    .catchall {:try_start_3 .. :try_end_3a} :catchall_15e
 
     .line 1011
-    :try_start_39
+    :try_start_3a
     iget-object v1, p0, Lcom/android/server/inputmethod/MultiClientInputMethodManagerService$PerUserData;->mCurrentInputMethod:Lcom/android/internal/inputmethod/IMultiClientInputMethod;
 
     invoke-interface {v1}, Lcom/android/internal/inputmethod/IMultiClientInputMethod;->asBinder()Landroid/os/IBinder;
@@ -440,20 +461,21 @@
     move-result-object v1
 
     invoke-static {v1, p1, p3}, Lcom/android/internal/os/TransferPipe;->dumpAsync(Landroid/os/IBinder;Ljava/io/FileDescriptor;[Ljava/lang/String;)V
-    :try_end_42
-    .catch Ljava/io/IOException; {:try_start_39 .. :try_end_42} :catch_43
-    .catch Landroid/os/RemoteException; {:try_start_39 .. :try_end_42} :catch_43
-    .catchall {:try_start_39 .. :try_end_42} :catchall_15a
+    :try_end_43
+    .catch Ljava/io/IOException; {:try_start_3a .. :try_end_43} :catch_44
+    .catch Landroid/os/RemoteException; {:try_start_3a .. :try_end_43} :catch_44
+    .catchall {:try_start_3a .. :try_end_43} :catchall_15e
 
     .line 1014
-    goto :goto_58
+    goto :goto_59
 
     .line 1012
-    :catch_43
+    :catch_44
     move-exception v1
 
     .line 1013
-    :try_start_44
+    .local v1, "e":Ljava/lang/Exception;
+    :try_start_45
     new-instance v2, Ljava/lang/StringBuilder;
 
     invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
@@ -466,19 +488,20 @@
 
     invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v1
+    move-result-object v2
 
-    invoke-virtual {p2, v1}, Lcom/android/internal/util/IndentingPrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {p2, v2}, Lcom/android/internal/util/IndentingPrintWriter;->println(Ljava/lang/String;)V
 
     .line 1015
-    :goto_58
+    .end local v1  # "e":Ljava/lang/Exception;
+    :goto_59
     const-string v1, "<<Dump CurrentInputMethod<<"
 
     invoke-virtual {p2, v1}, Lcom/android/internal/util/IndentingPrintWriter;->println(Ljava/lang/String;)V
 
     .line 1018
-    :cond_5d
-    const-string v1, "mDisplayIdToImeWindowTokenMap="
+    :cond_5e
+    const-string/jumbo v1, "mDisplayIdToImeWindowTokenMap="
 
     invoke-virtual {p2, v1}, Lcom/android/internal/util/IndentingPrintWriter;->println(Ljava/lang/String;)V
 
@@ -489,12 +512,12 @@
 
     move-result-object v1
 
-    :goto_68
+    :goto_6a
     invoke-interface {v1}, Ljava/util/Iterator;->hasNext()Z
 
     move-result v2
 
-    if-eqz v2, :cond_95
+    if-eqz v2, :cond_97
 
     invoke-interface {v1}, Ljava/util/Iterator;->next()Ljava/lang/Object;
 
@@ -503,6 +526,7 @@
     check-cast v2, Lcom/android/server/inputmethod/MultiClientInputMethodManagerService$TokenInfo;
 
     .line 1020
+    .local v2, "info":Lcom/android/server/inputmethod/MultiClientInputMethodManagerService$TokenInfo;
     new-instance v3, Ljava/lang/StringBuilder;
 
     invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
@@ -519,22 +543,23 @@
 
     invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    iget-object v2, v2, Lcom/android/server/inputmethod/MultiClientInputMethodManagerService$TokenInfo;->mToken:Landroid/os/Binder;
+    iget-object v4, v2, Lcom/android/server/inputmethod/MultiClientInputMethodManagerService$TokenInfo;->mToken:Landroid/os/Binder;
 
-    invoke-virtual {v3, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v2
+    move-result-object v3
 
-    invoke-virtual {p2, v2}, Lcom/android/internal/util/IndentingPrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {p2, v3}, Lcom/android/internal/util/IndentingPrintWriter;->println(Ljava/lang/String;)V
 
     .line 1022
-    goto :goto_68
+    .end local v2  # "info":Lcom/android/server/inputmethod/MultiClientInputMethodManagerService$TokenInfo;
+    goto :goto_6a
 
     .line 1023
-    :cond_95
-    const-string v1, "mClientMap="
+    :cond_97
+    const-string/jumbo v1, "mClientMap="
 
     invoke-virtual {p2, v1}, Lcom/android/internal/util/IndentingPrintWriter;->println(Ljava/lang/String;)V
 
@@ -546,14 +571,15 @@
 
     move v2, v1
 
-    :goto_9f
+    .local v2, "i":I
+    :goto_a2
     iget-object v3, p0, Lcom/android/server/inputmethod/MultiClientInputMethodManagerService$PerUserData;->mClientMap:Landroid/util/ArrayMap;
 
     invoke-virtual {v3}, Landroid/util/ArrayMap;->size()I
 
     move-result v3
 
-    if-ge v2, v3, :cond_dc
+    if-ge v2, v3, :cond_df
 
     .line 1027
     new-instance v3, Ljava/lang/StringBuilder;
@@ -593,7 +619,8 @@
     check-cast v3, Lcom/android/server/inputmethod/MultiClientInputMethodManagerService$InputMethodClientInfo;
 
     .line 1030
-    if-eqz v3, :cond_d9
+    .local v3, "info":Lcom/android/server/inputmethod/MultiClientInputMethodManagerService$InputMethodClientInfo;
+    if-eqz v3, :cond_dc
 
     .line 1031
     invoke-virtual {p2}, Lcom/android/internal/util/IndentingPrintWriter;->increaseIndent()Lcom/android/internal/util/IndentingPrintWriter;
@@ -605,17 +632,19 @@
     invoke-virtual {p2}, Lcom/android/internal/util/IndentingPrintWriter;->decreaseIndent()Lcom/android/internal/util/IndentingPrintWriter;
 
     .line 1025
-    :cond_d9
+    .end local v3  # "info":Lcom/android/server/inputmethod/MultiClientInputMethodManagerService$InputMethodClientInfo;
+    :cond_dc
     add-int/lit8 v2, v2, 0x1
 
-    goto :goto_9f
+    goto :goto_a2
 
     .line 1036
-    :cond_dc
+    .end local v2  # "i":I
+    :cond_df
     invoke-virtual {p2}, Lcom/android/internal/util/IndentingPrintWriter;->decreaseIndent()Lcom/android/internal/util/IndentingPrintWriter;
 
     .line 1037
-    const-string v2, "mClientIdToClientMap="
+    const-string/jumbo v2, "mClientIdToClientMap="
 
     invoke-virtual {p2, v2}, Lcom/android/internal/util/IndentingPrintWriter;->println(Ljava/lang/String;)V
 
@@ -625,14 +654,15 @@
     .line 1039
     nop
 
-    :goto_e8
+    .local v1, "i":I
+    :goto_ec
     iget-object v2, p0, Lcom/android/server/inputmethod/MultiClientInputMethodManagerService$PerUserData;->mClientIdToClientMap:Landroid/util/SparseArray;
 
     invoke-virtual {v2}, Landroid/util/SparseArray;->size()I
 
     move-result v2
 
-    if-ge v1, v2, :cond_155
+    if-ge v1, v2, :cond_159
 
     .line 1040
     new-instance v2, Ljava/lang/StringBuilder;
@@ -672,7 +702,8 @@
     check-cast v2, Lcom/android/server/inputmethod/MultiClientInputMethodManagerService$InputMethodClientInfo;
 
     .line 1043
-    if-eqz v2, :cond_122
+    .local v2, "info":Lcom/android/server/inputmethod/MultiClientInputMethodManagerService$InputMethodClientInfo;
+    if-eqz v2, :cond_126
 
     .line 1044
     invoke-virtual {p2}, Lcom/android/internal/util/IndentingPrintWriter;->increaseIndent()Lcom/android/internal/util/IndentingPrintWriter;
@@ -684,10 +715,10 @@
     invoke-virtual {p2}, Lcom/android/internal/util/IndentingPrintWriter;->decreaseIndent()Lcom/android/internal/util/IndentingPrintWriter;
 
     .line 1048
-    :cond_122
+    :cond_126
     iget-object v3, v2, Lcom/android/server/inputmethod/MultiClientInputMethodManagerService$InputMethodClientInfo;->mClient:Lcom/android/internal/view/IInputMethodClient;
 
-    if-eqz v3, :cond_152
+    if-eqz v3, :cond_156
 
     .line 1050
     const-string v3, ">>DumpClientStart>>"
@@ -696,62 +727,66 @@
 
     .line 1051
     invoke-virtual {p2}, Lcom/android/internal/util/IndentingPrintWriter;->flush()V
-    :try_end_12e
-    .catchall {:try_start_44 .. :try_end_12e} :catchall_15a
+    :try_end_132
+    .catchall {:try_start_45 .. :try_end_132} :catchall_15e
 
     .line 1053
-    :try_start_12e
-    iget-object v2, v2, Lcom/android/server/inputmethod/MultiClientInputMethodManagerService$InputMethodClientInfo;->mClient:Lcom/android/internal/view/IInputMethodClient;
+    :try_start_132
+    iget-object v3, v2, Lcom/android/server/inputmethod/MultiClientInputMethodManagerService$InputMethodClientInfo;->mClient:Lcom/android/internal/view/IInputMethodClient;
 
-    invoke-interface {v2}, Lcom/android/internal/view/IInputMethodClient;->asBinder()Landroid/os/IBinder;
+    invoke-interface {v3}, Lcom/android/internal/view/IInputMethodClient;->asBinder()Landroid/os/IBinder;
 
-    move-result-object v2
+    move-result-object v3
 
-    invoke-static {v2, p1, p3}, Lcom/android/internal/os/TransferPipe;->dumpAsync(Landroid/os/IBinder;Ljava/io/FileDescriptor;[Ljava/lang/String;)V
-    :try_end_137
-    .catch Ljava/io/IOException; {:try_start_12e .. :try_end_137} :catch_138
-    .catch Landroid/os/RemoteException; {:try_start_12e .. :try_end_137} :catch_138
-    .catchall {:try_start_12e .. :try_end_137} :catchall_15a
+    invoke-static {v3, p1, p3}, Lcom/android/internal/os/TransferPipe;->dumpAsync(Landroid/os/IBinder;Ljava/io/FileDescriptor;[Ljava/lang/String;)V
+    :try_end_13b
+    .catch Ljava/io/IOException; {:try_start_132 .. :try_end_13b} :catch_13c
+    .catch Landroid/os/RemoteException; {:try_start_132 .. :try_end_13b} :catch_13c
+    .catchall {:try_start_132 .. :try_end_13b} :catchall_15e
 
     .line 1056
-    goto :goto_14d
+    goto :goto_151
 
     .line 1054
-    :catch_138
-    move-exception v2
+    :catch_13c
+    move-exception v3
 
     .line 1055
-    :try_start_139
-    new-instance v3, Ljava/lang/StringBuilder;
+    .local v3, "e":Ljava/lang/Exception;
+    :try_start_13d
+    new-instance v4, Ljava/lang/StringBuilder;
 
-    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v4}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v4, " Failed to dump client:"
+    const-string v5, " Failed to dump client:"
 
-    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v3, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    invoke-virtual {v4, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v4}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v2
+    move-result-object v4
 
-    invoke-virtual {p2, v2}, Lcom/android/internal/util/IndentingPrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {p2, v4}, Lcom/android/internal/util/IndentingPrintWriter;->println(Ljava/lang/String;)V
 
     .line 1057
-    :goto_14d
-    const-string v2, "<<DumpClientEnd<<"
+    .end local v3  # "e":Ljava/lang/Exception;
+    :goto_151
+    const-string v3, "<<DumpClientEnd<<"
 
-    invoke-virtual {p2, v2}, Lcom/android/internal/util/IndentingPrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {p2, v3}, Lcom/android/internal/util/IndentingPrintWriter;->println(Ljava/lang/String;)V
 
     .line 1039
-    :cond_152
+    .end local v2  # "info":Lcom/android/server/inputmethod/MultiClientInputMethodManagerService$InputMethodClientInfo;
+    :cond_156
     add-int/lit8 v1, v1, 0x1
 
-    goto :goto_e8
+    goto :goto_ec
 
     .line 1060
-    :cond_155
+    .end local v1  # "i":I
+    :cond_159
     invoke-virtual {p2}, Lcom/android/internal/util/IndentingPrintWriter;->decreaseIndent()Lcom/android/internal/util/IndentingPrintWriter;
 
     .line 1061
@@ -761,18 +796,19 @@
     return-void
 
     .line 1061
-    :catchall_15a
-    move-exception p1
+    :catchall_15e
+    move-exception v1
 
     monitor-exit v0
-    :try_end_15c
-    .catchall {:try_start_139 .. :try_end_15c} :catchall_15a
+    :try_end_160
+    .catchall {:try_start_13d .. :try_end_160} :catchall_15e
 
-    throw p1
+    throw v1
 .end method
 
 .method getClientFromIdLocked(I)Lcom/android/server/inputmethod/MultiClientInputMethodManagerService$InputMethodClientInfo;
     .registers 3
+    .param p1, "clientId"  # I
     .annotation build Lcom/android/internal/annotations/GuardedBy;
         value = {
             "mLock"
@@ -784,15 +820,16 @@
 
     invoke-virtual {v0, p1}, Landroid/util/SparseArray;->get(I)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v0
 
-    check-cast p1, Lcom/android/server/inputmethod/MultiClientInputMethodManagerService$InputMethodClientInfo;
+    check-cast v0, Lcom/android/server/inputmethod/MultiClientInputMethodManagerService$InputMethodClientInfo;
 
-    return-object p1
+    return-object v0
 .end method
 
 .method getClientLocked(Lcom/android/internal/view/IInputMethodClient;)Lcom/android/server/inputmethod/MultiClientInputMethodManagerService$InputMethodClientInfo;
-    .registers 3
+    .registers 4
+    .param p1, "client"  # Lcom/android/internal/view/IInputMethodClient;
     .annotation build Lcom/android/internal/annotations/GuardedBy;
         value = {
             "mLock"
@@ -804,15 +841,15 @@
 
     invoke-interface {p1}, Lcom/android/internal/view/IInputMethodClient;->asBinder()Landroid/os/IBinder;
 
-    move-result-object p1
+    move-result-object v1
 
-    invoke-virtual {v0, p1}, Landroid/util/ArrayMap;->get(Ljava/lang/Object;)Ljava/lang/Object;
+    invoke-virtual {v0, v1}, Landroid/util/ArrayMap;->get(Ljava/lang/Object;)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v0
 
-    check-cast p1, Lcom/android/server/inputmethod/MultiClientInputMethodManagerService$InputMethodClientInfo;
+    check-cast v0, Lcom/android/server/inputmethod/MultiClientInputMethodManagerService$InputMethodClientInfo;
 
-    return-object p1
+    return-object v0
 .end method
 
 .method onInputMethodConnectedLocked()V
@@ -831,8 +868,10 @@
     move-result v0
 
     .line 939
+    .local v0, "numClients":I
     const/4 v1, 0x0
 
+    .local v1, "i":I
     :goto_7
     if-ge v1, v0, :cond_45
 
@@ -846,6 +885,7 @@
     check-cast v2, Lcom/android/server/inputmethod/MultiClientInputMethodManagerService$InputMethodClientInfo;
 
     .line 941
+    .local v2, "clientInfo":Lcom/android/server/inputmethod/MultiClientInputMethodManagerService$InputMethodClientInfo;
     iget v3, v2, Lcom/android/server/inputmethod/MultiClientInputMethodManagerService$InputMethodClientInfo;->mState:I
 
     const/4 v4, 0x1
@@ -853,25 +893,25 @@
     if-eq v3, v4, :cond_2f
 
     .line 946
-    new-instance v0, Ljava/lang/StringBuilder;
+    new-instance v3, Ljava/lang/StringBuilder;
 
-    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v1, "Unexpected state="
+    const-string v4, "Unexpected state="
 
-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    iget v1, v2, Lcom/android/server/inputmethod/MultiClientInputMethodManagerService$InputMethodClientInfo;->mState:I
+    iget v4, v2, Lcom/android/server/inputmethod/MultiClientInputMethodManagerService$InputMethodClientInfo;->mState:I
 
-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v3
 
-    const-string v1, "MultiClientInputMethodManagerService"
+    const-string v4, "MultiClientInputMethodManagerService"
 
-    invoke-static {v1, v0}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v4, v3}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 947
     return-void
@@ -906,15 +946,17 @@
 
     .line 954
     :catch_41
-    move-exception v2
+    move-exception v3
 
     .line 939
+    .end local v2  # "clientInfo":Lcom/android/server/inputmethod/MultiClientInputMethodManagerService$InputMethodClientInfo;
     :goto_42
     add-int/lit8 v1, v1, 0x1
 
     goto :goto_7
 
     .line 957
+    .end local v1  # "i":I
     :cond_45
     return-void
 .end method
@@ -935,8 +977,10 @@
     move-result v0
 
     .line 962
+    .local v0, "numClients":I
     const/4 v1, 0x0
 
+    .local v1, "i":I
     :goto_7
     if-ge v1, v0, :cond_55
 
@@ -950,6 +994,7 @@
     check-cast v2, Lcom/android/server/inputmethod/MultiClientInputMethodManagerService$InputMethodClientInfo;
 
     .line 964
+    .local v2, "clientInfo":Lcom/android/server/inputmethod/MultiClientInputMethodManagerService$InputMethodClientInfo;
     iget v3, v2, Lcom/android/server/inputmethod/MultiClientInputMethodManagerService$InputMethodClientInfo;->mState:I
 
     const/4 v4, 0x1
@@ -1052,6 +1097,7 @@
     nop
 
     .line 962
+    .end local v2  # "clientInfo":Lcom/android/server/inputmethod/MultiClientInputMethodManagerService$InputMethodClientInfo;
     :cond_52
     :goto_52
     add-int/lit8 v1, v1, 0x1
@@ -1059,12 +1105,14 @@
     goto :goto_7
 
     .line 997
+    .end local v1  # "i":I
     :cond_55
     return-void
 .end method
 
 .method removeClientLocked(Lcom/android/internal/view/IInputMethodClient;)Lcom/android/server/inputmethod/MultiClientInputMethodManagerService$InputMethodClientInfo;
-    .registers 4
+    .registers 5
+    .param p1, "client"  # Lcom/android/internal/view/IInputMethodClient;
     .annotation build Lcom/android/internal/annotations/GuardedBy;
         value = {
             "mLock"
@@ -1076,31 +1124,33 @@
 
     invoke-interface {p1}, Lcom/android/internal/view/IInputMethodClient;->asBinder()Landroid/os/IBinder;
 
-    move-result-object p1
+    move-result-object v1
 
-    invoke-virtual {v0, p1}, Landroid/util/ArrayMap;->remove(Ljava/lang/Object;)Ljava/lang/Object;
+    invoke-virtual {v0, v1}, Landroid/util/ArrayMap;->remove(Ljava/lang/Object;)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v0
 
-    check-cast p1, Lcom/android/server/inputmethod/MultiClientInputMethodManagerService$InputMethodClientInfo;
+    check-cast v0, Lcom/android/server/inputmethod/MultiClientInputMethodManagerService$InputMethodClientInfo;
 
     .line 898
-    if-eqz p1, :cond_15
+    .local v0, "info":Lcom/android/server/inputmethod/MultiClientInputMethodManagerService$InputMethodClientInfo;
+    if-eqz v0, :cond_15
 
     .line 899
-    iget-object v0, p0, Lcom/android/server/inputmethod/MultiClientInputMethodManagerService$PerUserData;->mClientIdToClientMap:Landroid/util/SparseArray;
+    iget-object v1, p0, Lcom/android/server/inputmethod/MultiClientInputMethodManagerService$PerUserData;->mClientIdToClientMap:Landroid/util/SparseArray;
 
-    iget v1, p1, Lcom/android/server/inputmethod/MultiClientInputMethodManagerService$InputMethodClientInfo;->mClientId:I
+    iget v2, v0, Lcom/android/server/inputmethod/MultiClientInputMethodManagerService$InputMethodClientInfo;->mClientId:I
 
-    invoke-virtual {v0, v1}, Landroid/util/SparseArray;->remove(I)V
+    invoke-virtual {v1, v2}, Landroid/util/SparseArray;->remove(I)V
 
     .line 901
     :cond_15
-    return-object p1
+    return-object v0
 .end method
 
 .method unbindServiceLocked(Landroid/content/Context;)V
     .registers 3
+    .param p1, "context"  # Landroid/content/Context;
     .annotation build Lcom/android/internal/annotations/GuardedBy;
         value = {
             "mLock"

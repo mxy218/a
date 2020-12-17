@@ -158,6 +158,8 @@
 # direct methods
 .method constructor <init>(Landroid/content/Context;Lcom/android/internal/os/BatteryStatsImpl;)V
     .registers 23
+    .param p1, "context"  # Landroid/content/Context;
+    .param p2, "stats"  # Lcom/android/internal/os/BatteryStatsImpl;
 
     .line 138
     move-object/from16 v0, p0
@@ -261,25 +263,28 @@
     iput-object v1, v0, Lcom/android/server/am/BatteryExternalStatsWorker;->mContext:Landroid/content/Context;
 
     .line 140
-    move-object/from16 v1, p2
+    move-object/from16 v2, p2
 
-    iput-object v1, v0, Lcom/android/server/am/BatteryExternalStatsWorker;->mStats:Lcom/android/internal/os/BatteryStatsImpl;
+    iput-object v2, v0, Lcom/android/server/am/BatteryExternalStatsWorker;->mStats:Lcom/android/internal/os/BatteryStatsImpl;
 
     .line 141
     return-void
 .end method
 
 .method static synthetic access$000(Lcom/android/server/am/BatteryExternalStatsWorker;)I
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/am/BatteryExternalStatsWorker;
 
     .line 62
-    iget p0, p0, Lcom/android/server/am/BatteryExternalStatsWorker;->mUpdateFlags:I
+    iget v0, p0, Lcom/android/server/am/BatteryExternalStatsWorker;->mUpdateFlags:I
 
-    return p0
+    return v0
 .end method
 
 .method static synthetic access$002(Lcom/android/server/am/BatteryExternalStatsWorker;I)I
     .registers 2
+    .param p0, "x0"  # Lcom/android/server/am/BatteryExternalStatsWorker;
+    .param p1, "x1"  # I
 
     .line 62
     iput p1, p0, Lcom/android/server/am/BatteryExternalStatsWorker;->mUpdateFlags:I
@@ -288,25 +293,29 @@
 .end method
 
 .method static synthetic access$100(Lcom/android/server/am/BatteryExternalStatsWorker;)Ljava/lang/String;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/am/BatteryExternalStatsWorker;
 
     .line 62
-    iget-object p0, p0, Lcom/android/server/am/BatteryExternalStatsWorker;->mCurrentReason:Ljava/lang/String;
+    iget-object v0, p0, Lcom/android/server/am/BatteryExternalStatsWorker;->mCurrentReason:Ljava/lang/String;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$1000(Lcom/android/server/am/BatteryExternalStatsWorker;)Lcom/android/internal/os/BatteryStatsImpl;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/am/BatteryExternalStatsWorker;
 
     .line 62
-    iget-object p0, p0, Lcom/android/server/am/BatteryExternalStatsWorker;->mStats:Lcom/android/internal/os/BatteryStatsImpl;
+    iget-object v0, p0, Lcom/android/server/am/BatteryExternalStatsWorker;->mStats:Lcom/android/internal/os/BatteryStatsImpl;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$102(Lcom/android/server/am/BatteryExternalStatsWorker;Ljava/lang/String;)Ljava/lang/String;
     .registers 2
+    .param p0, "x0"  # Lcom/android/server/am/BatteryExternalStatsWorker;
+    .param p1, "x1"  # Ljava/lang/String;
 
     .line 62
     iput-object p1, p0, Lcom/android/server/am/BatteryExternalStatsWorker;->mCurrentReason:Ljava/lang/String;
@@ -316,6 +325,8 @@
 
 .method static synthetic access$1102(Lcom/android/server/am/BatteryExternalStatsWorker;J)J
     .registers 3
+    .param p0, "x0"  # Lcom/android/server/am/BatteryExternalStatsWorker;
+    .param p1, "x1"  # J
 
     .line 62
     iput-wide p1, p0, Lcom/android/server/am/BatteryExternalStatsWorker;->mLastCollectionTimeStamp:J
@@ -324,43 +335,49 @@
 .end method
 
 .method static synthetic access$200(Lcom/android/server/am/BatteryExternalStatsWorker;)Landroid/util/IntArray;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/am/BatteryExternalStatsWorker;
 
     .line 62
-    iget-object p0, p0, Lcom/android/server/am/BatteryExternalStatsWorker;->mUidsToRemove:Landroid/util/IntArray;
+    iget-object v0, p0, Lcom/android/server/am/BatteryExternalStatsWorker;->mUidsToRemove:Landroid/util/IntArray;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$300(Lcom/android/server/am/BatteryExternalStatsWorker;)Z
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/am/BatteryExternalStatsWorker;
 
     .line 62
-    iget-boolean p0, p0, Lcom/android/server/am/BatteryExternalStatsWorker;->mOnBattery:Z
+    iget-boolean v0, p0, Lcom/android/server/am/BatteryExternalStatsWorker;->mOnBattery:Z
 
-    return p0
+    return v0
 .end method
 
 .method static synthetic access$400(Lcom/android/server/am/BatteryExternalStatsWorker;)Z
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/am/BatteryExternalStatsWorker;
 
     .line 62
-    iget-boolean p0, p0, Lcom/android/server/am/BatteryExternalStatsWorker;->mOnBatteryScreenOff:Z
+    iget-boolean v0, p0, Lcom/android/server/am/BatteryExternalStatsWorker;->mOnBatteryScreenOff:Z
 
-    return p0
+    return v0
 .end method
 
 .method static synthetic access$500(Lcom/android/server/am/BatteryExternalStatsWorker;)Z
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/am/BatteryExternalStatsWorker;
 
     .line 62
-    iget-boolean p0, p0, Lcom/android/server/am/BatteryExternalStatsWorker;->mUseLatestStates:Z
+    iget-boolean v0, p0, Lcom/android/server/am/BatteryExternalStatsWorker;->mUseLatestStates:Z
 
-    return p0
+    return v0
 .end method
 
 .method static synthetic access$502(Lcom/android/server/am/BatteryExternalStatsWorker;Z)Z
     .registers 2
+    .param p0, "x0"  # Lcom/android/server/am/BatteryExternalStatsWorker;
+    .param p1, "x1"  # Z
 
     .line 62
     iput-boolean p1, p0, Lcom/android/server/am/BatteryExternalStatsWorker;->mUseLatestStates:Z
@@ -370,6 +387,8 @@
 
 .method static synthetic access$602(Lcom/android/server/am/BatteryExternalStatsWorker;Ljava/util/concurrent/Future;)Ljava/util/concurrent/Future;
     .registers 2
+    .param p0, "x0"  # Lcom/android/server/am/BatteryExternalStatsWorker;
+    .param p1, "x1"  # Ljava/util/concurrent/Future;
 
     .line 62
     iput-object p1, p0, Lcom/android/server/am/BatteryExternalStatsWorker;->mCurrentFuture:Ljava/util/concurrent/Future;
@@ -379,6 +398,7 @@
 
 .method static synthetic access$700(Lcom/android/server/am/BatteryExternalStatsWorker;)V
     .registers 1
+    .param p0, "x0"  # Lcom/android/server/am/BatteryExternalStatsWorker;
 
     .line 62
     invoke-direct {p0}, Lcom/android/server/am/BatteryExternalStatsWorker;->cancelSyncDueToBatteryLevelChangeLocked()V
@@ -387,16 +407,23 @@
 .end method
 
 .method static synthetic access$800(Lcom/android/server/am/BatteryExternalStatsWorker;)Ljava/lang/Object;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/am/BatteryExternalStatsWorker;
 
     .line 62
-    iget-object p0, p0, Lcom/android/server/am/BatteryExternalStatsWorker;->mWorkerLock:Ljava/lang/Object;
+    iget-object v0, p0, Lcom/android/server/am/BatteryExternalStatsWorker;->mWorkerLock:Ljava/lang/Object;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$900(Lcom/android/server/am/BatteryExternalStatsWorker;Ljava/lang/String;IZZZ)V
     .registers 6
+    .param p0, "x0"  # Lcom/android/server/am/BatteryExternalStatsWorker;
+    .param p1, "x1"  # Ljava/lang/String;
+    .param p2, "x2"  # I
+    .param p3, "x3"  # Z
+    .param p4, "x4"  # Z
+    .param p5, "x5"  # Z
 
     .line 62
     invoke-direct/range {p0 .. p5}, Lcom/android/server/am/BatteryExternalStatsWorker;->updateExternalStatsLocked(Ljava/lang/String;IZZZ)V
@@ -406,6 +433,7 @@
 
 .method private static awaitControllerInfo(Landroid/os/SynchronousResultReceiver;)Landroid/os/Parcelable;
     .registers 6
+    .param p0, "receiver"  # Landroid/os/SynchronousResultReceiver;
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "<T::",
@@ -437,6 +465,7 @@
     move-result-object v2
 
     .line 532
+    .local v2, "result":Landroid/os/SynchronousResultReceiver$Result;
     iget-object v3, v2, Landroid/os/SynchronousResultReceiver$Result;->bundle:Landroid/os/Bundle;
 
     if-eqz v3, :cond_21
@@ -449,78 +478,85 @@
     invoke-virtual {v3, v4}, Landroid/os/Bundle;->setDefusable(Z)V
 
     .line 536
-    iget-object v2, v2, Landroid/os/SynchronousResultReceiver$Result;->bundle:Landroid/os/Bundle;
+    iget-object v3, v2, Landroid/os/SynchronousResultReceiver$Result;->bundle:Landroid/os/Bundle;
 
-    const-string v3, "controller_activity"
+    const-string v4, "controller_activity"
 
-    invoke-virtual {v2, v3}, Landroid/os/Bundle;->getParcelable(Ljava/lang/String;)Landroid/os/Parcelable;
-
-    move-result-object v2
-
-    .line 538
-    if-eqz v2, :cond_21
-
-    .line 539
-    return-object v2
-
-    .line 542
-    :cond_21
-    new-instance v2, Ljava/lang/StringBuilder;
-
-    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
-
-    const-string/jumbo v3, "no controller energy info supplied for "
-
-    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {p0}, Landroid/os/SynchronousResultReceiver;->getName()Ljava/lang/String;
+    invoke-virtual {v3, v4}, Landroid/os/Bundle;->getParcelable(Ljava/lang/String;)Landroid/os/Parcelable;
 
     move-result-object v3
 
-    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    .line 538
+    .local v3, "data":Landroid/os/Parcelable;, "TT;"
+    if-eqz v3, :cond_21
 
-    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    .line 539
+    return-object v3
 
-    move-result-object v2
+    .line 542
+    .end local v3  # "data":Landroid/os/Parcelable;, "TT;"
+    :cond_21
+    new-instance v3, Ljava/lang/StringBuilder;
 
-    invoke-static {v0, v2}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
-    :try_end_3a
-    .catch Ljava/util/concurrent/TimeoutException; {:try_start_8 .. :try_end_3a} :catch_3b
+    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
 
-    .line 545
-    goto :goto_5a
+    const-string/jumbo v4, "no controller energy info supplied for "
 
-    .line 543
-    :catch_3b
-    move-exception v2
-
-    .line 544
-    new-instance v2, Ljava/lang/StringBuilder;
-
-    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
-
-    const-string/jumbo v3, "timeout reading "
-
-    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {p0}, Landroid/os/SynchronousResultReceiver;->getName()Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v4
 
-    invoke-virtual {v2, p0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string p0, " stats"
+    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    invoke-virtual {v2, p0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    move-result-object v3
 
-    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-static {v0, v3}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
+    :try_end_3a
+    .catch Ljava/util/concurrent/TimeoutException; {:try_start_8 .. :try_end_3a} :catch_3c
 
-    move-result-object p0
+    .line 545
+    nop
 
-    invoke-static {v0, p0}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    .end local v2  # "result":Landroid/os/SynchronousResultReceiver$Result;
+    goto :goto_5b
+
+    .line 543
+    :catch_3c
+    move-exception v2
+
+    .line 544
+    .local v2, "e":Ljava/util/concurrent/TimeoutException;
+    new-instance v3, Ljava/lang/StringBuilder;
+
+    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
+
+    const-string/jumbo v4, "timeout reading "
+
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {p0}, Landroid/os/SynchronousResultReceiver;->getName()Ljava/lang/String;
+
+    move-result-object v4
+
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    const-string v4, " stats"
+
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v3
+
+    invoke-static {v0, v3}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 546
-    :goto_5a
+    .end local v2  # "e":Ljava/util/concurrent/TimeoutException;
+    :goto_5b
     return-object v1
 .end method
 
@@ -553,7 +589,8 @@
 .end method
 
 .method private extractDeltaLocked(Landroid/net/wifi/WifiActivityEnergyInfo;)Landroid/net/wifi/WifiActivityEnergyInfo;
-    .registers 32
+    .registers 42
+    .param p1, "latest"  # Landroid/net/wifi/WifiActivityEnergyInfo;
     .annotation build Lcom/android/internal/annotations/GuardedBy;
         value = {
             "mWorkerLock"
@@ -574,36 +611,45 @@
     sub-long/2addr v2, v4
 
     .line 552
+    .local v2, "timePeriodMs":J
     iget-object v4, v0, Lcom/android/server/am/BatteryExternalStatsWorker;->mLastInfo:Landroid/net/wifi/WifiActivityEnergyInfo;
 
     iget-wide v4, v4, Landroid/net/wifi/WifiActivityEnergyInfo;->mControllerScanTimeMs:J
 
     .line 553
+    .local v4, "lastScanMs":J
     iget-object v6, v0, Lcom/android/server/am/BatteryExternalStatsWorker;->mLastInfo:Landroid/net/wifi/WifiActivityEnergyInfo;
 
     iget-wide v6, v6, Landroid/net/wifi/WifiActivityEnergyInfo;->mControllerIdleTimeMs:J
 
     .line 554
+    .local v6, "lastIdleMs":J
     iget-object v8, v0, Lcom/android/server/am/BatteryExternalStatsWorker;->mLastInfo:Landroid/net/wifi/WifiActivityEnergyInfo;
 
     iget-wide v8, v8, Landroid/net/wifi/WifiActivityEnergyInfo;->mControllerTxTimeMs:J
 
     .line 555
+    .local v8, "lastTxMs":J
     iget-object v10, v0, Lcom/android/server/am/BatteryExternalStatsWorker;->mLastInfo:Landroid/net/wifi/WifiActivityEnergyInfo;
 
     iget-wide v10, v10, Landroid/net/wifi/WifiActivityEnergyInfo;->mControllerRxTimeMs:J
 
     .line 556
+    .local v10, "lastRxMs":J
     iget-object v12, v0, Lcom/android/server/am/BatteryExternalStatsWorker;->mLastInfo:Landroid/net/wifi/WifiActivityEnergyInfo;
 
     iget-wide v12, v12, Landroid/net/wifi/WifiActivityEnergyInfo;->mControllerEnergyUsed:J
 
     .line 560
+    .local v12, "lastEnergy":J
     iget-object v14, v0, Lcom/android/server/am/BatteryExternalStatsWorker;->mLastInfo:Landroid/net/wifi/WifiActivityEnergyInfo;
 
     .line 561
+    .local v14, "delta":Landroid/net/wifi/WifiActivityEnergyInfo;
     move-wide v15, v12
 
+    .end local v12  # "lastEnergy":J
+    .local v15, "lastEnergy":J
     invoke-virtual/range {p1 .. p1}, Landroid/net/wifi/WifiActivityEnergyInfo;->getTimeStamp()J
 
     move-result-wide v12
@@ -623,77 +669,103 @@
     sub-long/2addr v12, v8
 
     .line 565
+    .local v12, "txTimeMs":J
     move-object/from16 v17, v14
 
     move-wide/from16 v18, v15
 
+    .end local v14  # "delta":Landroid/net/wifi/WifiActivityEnergyInfo;
+    .end local v15  # "lastEnergy":J
+    .local v17, "delta":Landroid/net/wifi/WifiActivityEnergyInfo;
+    .local v18, "lastEnergy":J
     iget-wide v14, v1, Landroid/net/wifi/WifiActivityEnergyInfo;->mControllerRxTimeMs:J
 
     sub-long/2addr v14, v10
 
     .line 566
+    .local v14, "rxTimeMs":J
     move-wide/from16 v20, v8
 
+    .end local v8  # "lastTxMs":J
+    .local v20, "lastTxMs":J
     iget-wide v8, v1, Landroid/net/wifi/WifiActivityEnergyInfo;->mControllerIdleTimeMs:J
 
     sub-long/2addr v8, v6
 
     .line 567
+    .local v8, "idleTimeMs":J
     move-wide/from16 v22, v10
 
+    .end local v10  # "lastRxMs":J
+    .local v22, "lastRxMs":J
     iget-wide v10, v1, Landroid/net/wifi/WifiActivityEnergyInfo;->mControllerScanTimeMs:J
 
     sub-long/2addr v10, v4
 
     .line 569
+    .local v10, "scanTimeMs":J
+    move-wide/from16 v24, v4
+
+    .end local v4  # "lastScanMs":J
+    .local v24, "lastScanMs":J
     const-wide/16 v4, 0x0
 
     cmp-long v16, v12, v4
 
     const-string v4, "BatteryExternalStatsWorker"
 
-    const-wide/16 v26, 0x2ee
+    const-wide/16 v28, 0x2ee
 
-    if-ltz v16, :cond_10b
+    if-ltz v16, :cond_12f
 
-    const-wide/16 v24, 0x0
+    const-wide/16 v26, 0x0
 
-    cmp-long v5, v14, v24
+    cmp-long v5, v14, v26
 
-    if-ltz v5, :cond_10b
+    if-ltz v5, :cond_12f
 
-    cmp-long v5, v10, v24
+    cmp-long v5, v10, v26
 
-    if-ltz v5, :cond_10b
-
-    cmp-long v5, v8, v24
-
-    if-gez v5, :cond_5e
-
-    move-object/from16 v0, v17
-
-    goto/16 :goto_10d
-
-    .line 590
-    :cond_5e
-    move-wide/from16 v28, v8
-
-    add-long v8, v12, v14
-
-    .line 592
-    cmp-long v5, v8, v2
-
-    if-lez v5, :cond_e8
-
-    .line 594
-    nop
-
-    .line 595
-    add-long v26, v2, v26
+    if-ltz v5, :cond_12f
 
     cmp-long v5, v8, v26
 
-    if-lez v5, :cond_e3
+    if-gez v5, :cond_65
+
+    move-wide/from16 v34, v6
+
+    move-wide v6, v8
+
+    move-wide/from16 v36, v10
+
+    move-object/from16 v0, v17
+
+    goto/16 :goto_136
+
+    .line 590
+    :cond_65
+    move-wide/from16 v30, v8
+
+    .end local v8  # "idleTimeMs":J
+    .local v30, "idleTimeMs":J
+    add-long v8, v12, v14
+
+    .line 592
+    .local v8, "totalActiveTimeMs":J
+    cmp-long v5, v8, v2
+
+    if-lez v5, :cond_fe
+
+    .line 594
+    const-wide/16 v32, 0x0
+
+    .line 595
+    .local v32, "maxExpectedIdleTimeMs":J
+    add-long v28, v2, v28
+
+    cmp-long v5, v8, v28
+
+    if-lez v5, :cond_f5
 
     .line 596
     new-instance v5, Ljava/lang/StringBuilder;
@@ -701,6 +773,7 @@
     invoke-direct {v5}, Ljava/lang/StringBuilder;-><init>()V
 
     .line 597
+    .local v5, "sb":Ljava/lang/StringBuilder;
     const-string v0, "Total Active time "
 
     invoke-virtual {v5, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
@@ -726,7 +799,7 @@
 
     invoke-virtual {v5, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string v0, "idle="
+    const-string/jumbo v0, "idle="
 
     invoke-virtual {v5, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
@@ -734,73 +807,98 @@
     invoke-static {v6, v7, v5}, Landroid/util/TimeUtils;->formatDuration(JLjava/lang/StringBuilder;)V
 
     .line 604
-    const-string v2, " rx="
+    move-wide/from16 v34, v6
 
-    invoke-virtual {v5, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    .line 605
-    move-wide/from16 v6, v22
-
-    invoke-static {v6, v7, v5}, Landroid/util/TimeUtils;->formatDuration(JLjava/lang/StringBuilder;)V
-
-    .line 606
-    const-string v3, " tx="
-
-    invoke-virtual {v5, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    .line 607
-    move-wide/from16 v6, v20
-
-    invoke-static {v6, v7, v5}, Landroid/util/TimeUtils;->formatDuration(JLjava/lang/StringBuilder;)V
-
-    .line 608
-    const-string v6, " e="
+    .end local v6  # "lastIdleMs":J
+    .local v34, "lastIdleMs":J
+    const-string v6, " rx="
 
     invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    move-wide/from16 v7, v18
+    .line 605
+    move-wide/from16 v36, v10
 
-    invoke-virtual {v5, v7, v8}, Ljava/lang/StringBuilder;->append(J)Ljava/lang/StringBuilder;
+    move-wide/from16 v10, v22
+
+    .end local v22  # "lastRxMs":J
+    .local v10, "lastRxMs":J
+    .local v36, "scanTimeMs":J
+    invoke-static {v10, v11, v5}, Landroid/util/TimeUtils;->formatDuration(JLjava/lang/StringBuilder;)V
+
+    .line 606
+    const-string v7, " tx="
+
+    invoke-virtual {v5, v7}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    .line 607
+    move-wide/from16 v10, v20
+
+    .end local v20  # "lastTxMs":J
+    .local v10, "lastTxMs":J
+    .restart local v22  # "lastRxMs":J
+    invoke-static {v10, v11, v5}, Landroid/util/TimeUtils;->formatDuration(JLjava/lang/StringBuilder;)V
+
+    .line 608
+    nop
+
+    .end local v10  # "lastTxMs":J
+    .restart local v20  # "lastTxMs":J
+    const-string v10, " e="
+
+    invoke-virtual {v5, v10}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    move-wide/from16 v38, v14
+
+    move-wide/from16 v14, v18
+
+    .end local v18  # "lastEnergy":J
+    .local v14, "lastEnergy":J
+    .local v38, "rxTimeMs":J
+    invoke-virtual {v5, v14, v15}, Ljava/lang/StringBuilder;->append(J)Ljava/lang/StringBuilder;
 
     .line 609
-    const-string v9, "\n"
+    const-string v11, "\n"
 
-    invoke-virtual {v5, v9}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v5, v11}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     .line 610
-    const-string v9, "Current WiFi snapshot: "
+    const-string v11, "Current WiFi snapshot: "
 
-    invoke-virtual {v5, v9}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v5, v11}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v5, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     .line 611
-    iget-wide v7, v1, Landroid/net/wifi/WifiActivityEnergyInfo;->mControllerIdleTimeMs:J
+    nop
 
-    invoke-static {v7, v8, v5}, Landroid/util/TimeUtils;->formatDuration(JLjava/lang/StringBuilder;)V
+    .end local v14  # "lastEnergy":J
+    .restart local v18  # "lastEnergy":J
+    iget-wide v14, v1, Landroid/net/wifi/WifiActivityEnergyInfo;->mControllerIdleTimeMs:J
+
+    invoke-static {v14, v15, v5}, Landroid/util/TimeUtils;->formatDuration(JLjava/lang/StringBuilder;)V
 
     .line 612
-    invoke-virtual {v5, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    .line 613
-    iget-wide v7, v1, Landroid/net/wifi/WifiActivityEnergyInfo;->mControllerRxTimeMs:J
-
-    invoke-static {v7, v8, v5}, Landroid/util/TimeUtils;->formatDuration(JLjava/lang/StringBuilder;)V
-
-    .line 614
-    invoke-virtual {v5, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    .line 615
-    iget-wide v2, v1, Landroid/net/wifi/WifiActivityEnergyInfo;->mControllerTxTimeMs:J
-
-    invoke-static {v2, v3, v5}, Landroid/util/TimeUtils;->formatDuration(JLjava/lang/StringBuilder;)V
-
-    .line 616
     invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    iget-wide v2, v1, Landroid/net/wifi/WifiActivityEnergyInfo;->mControllerEnergyUsed:J
+    .line 613
+    iget-wide v14, v1, Landroid/net/wifi/WifiActivityEnergyInfo;->mControllerRxTimeMs:J
 
-    invoke-virtual {v5, v2, v3}, Ljava/lang/StringBuilder;->append(J)Ljava/lang/StringBuilder;
+    invoke-static {v14, v15, v5}, Landroid/util/TimeUtils;->formatDuration(JLjava/lang/StringBuilder;)V
+
+    .line 614
+    invoke-virtual {v5, v7}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    .line 615
+    iget-wide v6, v1, Landroid/net/wifi/WifiActivityEnergyInfo;->mControllerTxTimeMs:J
+
+    invoke-static {v6, v7, v5}, Landroid/util/TimeUtils;->formatDuration(JLjava/lang/StringBuilder;)V
+
+    .line 616
+    invoke-virtual {v5, v10}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    iget-wide v6, v1, Landroid/net/wifi/WifiActivityEnergyInfo;->mControllerEnergyUsed:J
+
+    invoke-virtual {v5, v6, v7}, Ljava/lang/StringBuilder;->append(J)Ljava/lang/StringBuilder;
 
     .line 617
     invoke-virtual {v5}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
@@ -809,154 +907,238 @@
 
     invoke-static {v4, v0}, Landroid/util/Slog;->wtf(Ljava/lang/String;Ljava/lang/String;)I
 
+    .line 618
+    .end local v5  # "sb":Ljava/lang/StringBuilder;
+    goto :goto_fb
+
+    .line 595
+    .end local v34  # "lastIdleMs":J
+    .end local v36  # "scanTimeMs":J
+    .end local v38  # "rxTimeMs":J
+    .restart local v6  # "lastIdleMs":J
+    .local v10, "scanTimeMs":J
+    .local v14, "rxTimeMs":J
+    :cond_f5
+    move-wide/from16 v34, v6
+
+    move-wide/from16 v36, v10
+
+    move-wide/from16 v38, v14
+
     .line 623
-    :cond_e3
-    move-wide/from16 v4, v18
+    .end local v6  # "lastIdleMs":J
+    .end local v10  # "scanTimeMs":J
+    .end local v14  # "rxTimeMs":J
+    .restart local v34  # "lastIdleMs":J
+    .restart local v36  # "scanTimeMs":J
+    .restart local v38  # "rxTimeMs":J
+    :goto_fb
+    move-wide/from16 v4, v32
 
-    const-wide/16 v2, 0x0
-
-    goto :goto_eb
+    goto :goto_108
 
     .line 620
-    :cond_e8
-    move-wide/from16 v4, v18
+    .end local v32  # "maxExpectedIdleTimeMs":J
+    .end local v34  # "lastIdleMs":J
+    .end local v36  # "scanTimeMs":J
+    .end local v38  # "rxTimeMs":J
+    .restart local v6  # "lastIdleMs":J
+    .restart local v10  # "scanTimeMs":J
+    .restart local v14  # "rxTimeMs":J
+    :cond_fe
+    move-wide/from16 v34, v6
 
-    sub-long/2addr v2, v8
+    move-wide/from16 v36, v10
+
+    move-wide/from16 v38, v14
+
+    .end local v6  # "lastIdleMs":J
+    .end local v10  # "scanTimeMs":J
+    .end local v14  # "rxTimeMs":J
+    .restart local v34  # "lastIdleMs":J
+    .restart local v36  # "scanTimeMs":J
+    .restart local v38  # "rxTimeMs":J
+    sub-long v32, v2, v8
+
+    move-wide/from16 v4, v32
 
     .line 623
-    :goto_eb
+    .local v4, "maxExpectedIdleTimeMs":J
+    :goto_108
     move-object/from16 v0, v17
 
+    .end local v17  # "delta":Landroid/net/wifi/WifiActivityEnergyInfo;
+    .local v0, "delta":Landroid/net/wifi/WifiActivityEnergyInfo;
     iput-wide v12, v0, Landroid/net/wifi/WifiActivityEnergyInfo;->mControllerTxTimeMs:J
 
     .line 624
+    move-wide/from16 v14, v38
+
+    .end local v38  # "rxTimeMs":J
+    .restart local v14  # "rxTimeMs":J
     iput-wide v14, v0, Landroid/net/wifi/WifiActivityEnergyInfo;->mControllerRxTimeMs:J
 
     .line 625
+    move-wide/from16 v10, v36
+
+    .end local v36  # "scanTimeMs":J
+    .restart local v10  # "scanTimeMs":J
     iput-wide v10, v0, Landroid/net/wifi/WifiActivityEnergyInfo;->mControllerScanTimeMs:J
 
     .line 631
-    move-wide/from16 v8, v28
+    move-wide/from16 v16, v8
 
-    const-wide/16 v6, 0x0
+    move-wide/from16 v6, v30
 
-    invoke-static {v6, v7, v8, v9}, Ljava/lang/Math;->max(JJ)J
+    const-wide/16 v8, 0x0
+
+    .end local v8  # "totalActiveTimeMs":J
+    .end local v10  # "scanTimeMs":J
+    .end local v30  # "idleTimeMs":J
+    .local v6, "idleTimeMs":J
+    .local v16, "totalActiveTimeMs":J
+    .restart local v36  # "scanTimeMs":J
+    invoke-static {v8, v9, v6, v7}, Ljava/lang/Math;->max(JJ)J
+
+    move-result-wide v10
+
+    invoke-static {v4, v5, v10, v11}, Ljava/lang/Math;->min(JJ)J
+
+    move-result-wide v10
+
+    iput-wide v10, v0, Landroid/net/wifi/WifiActivityEnergyInfo;->mControllerIdleTimeMs:J
+
+    .line 632
+    iget-wide v10, v1, Landroid/net/wifi/WifiActivityEnergyInfo;->mControllerEnergyUsed:J
+
+    sub-long v10, v10, v18
+
+    invoke-static {v8, v9, v10, v11}, Ljava/lang/Math;->max(JJ)J
 
     move-result-wide v8
 
-    invoke-static {v2, v3, v8, v9}, Ljava/lang/Math;->min(JJ)J
+    iput-wide v8, v0, Landroid/net/wifi/WifiActivityEnergyInfo;->mControllerEnergyUsed:J
 
-    move-result-wide v2
-
-    iput-wide v2, v0, Landroid/net/wifi/WifiActivityEnergyInfo;->mControllerIdleTimeMs:J
-
-    .line 632
-    iget-wide v2, v1, Landroid/net/wifi/WifiActivityEnergyInfo;->mControllerEnergyUsed:J
-
-    sub-long/2addr v2, v4
-
-    invoke-static {v6, v7, v2, v3}, Ljava/lang/Math;->max(JJ)J
-
-    move-result-wide v2
-
-    iput-wide v2, v0, Landroid/net/wifi/WifiActivityEnergyInfo;->mControllerEnergyUsed:J
-
-    goto :goto_151
+    goto :goto_17a
 
     .line 569
-    :cond_10b
+    .end local v0  # "delta":Landroid/net/wifi/WifiActivityEnergyInfo;
+    .end local v4  # "maxExpectedIdleTimeMs":J
+    .end local v16  # "totalActiveTimeMs":J
+    .end local v34  # "lastIdleMs":J
+    .end local v36  # "scanTimeMs":J
+    .local v6, "lastIdleMs":J
+    .local v8, "idleTimeMs":J
+    .restart local v10  # "scanTimeMs":J
+    .restart local v17  # "delta":Landroid/net/wifi/WifiActivityEnergyInfo;
+    :cond_12f
+    move-wide/from16 v34, v6
+
+    move-wide v6, v8
+
+    move-wide/from16 v36, v10
+
     move-object/from16 v0, v17
 
     .line 573
-    :goto_10d
-    iget-wide v5, v1, Landroid/net/wifi/WifiActivityEnergyInfo;->mControllerTxTimeMs:J
+    .end local v8  # "idleTimeMs":J
+    .end local v10  # "scanTimeMs":J
+    .end local v17  # "delta":Landroid/net/wifi/WifiActivityEnergyInfo;
+    .restart local v0  # "delta":Landroid/net/wifi/WifiActivityEnergyInfo;
+    .local v6, "idleTimeMs":J
+    .restart local v34  # "lastIdleMs":J
+    .restart local v36  # "scanTimeMs":J
+    :goto_136
+    iget-wide v8, v1, Landroid/net/wifi/WifiActivityEnergyInfo;->mControllerTxTimeMs:J
 
-    iget-wide v7, v1, Landroid/net/wifi/WifiActivityEnergyInfo;->mControllerRxTimeMs:J
+    iget-wide v10, v1, Landroid/net/wifi/WifiActivityEnergyInfo;->mControllerRxTimeMs:J
 
-    add-long/2addr v5, v7
+    add-long/2addr v8, v10
 
-    iget-wide v7, v1, Landroid/net/wifi/WifiActivityEnergyInfo;->mControllerIdleTimeMs:J
+    iget-wide v10, v1, Landroid/net/wifi/WifiActivityEnergyInfo;->mControllerIdleTimeMs:J
 
-    add-long/2addr v5, v7
+    add-long/2addr v8, v10
 
     .line 575
-    add-long v2, v2, v26
+    .local v8, "totalOnTimeMs":J
+    add-long v28, v2, v28
 
-    cmp-long v2, v5, v2
+    cmp-long v5, v8, v28
 
-    if-gtz v2, :cond_130
+    if-gtz v5, :cond_159
 
     .line 576
-    iget-wide v2, v1, Landroid/net/wifi/WifiActivityEnergyInfo;->mControllerEnergyUsed:J
+    iget-wide v10, v1, Landroid/net/wifi/WifiActivityEnergyInfo;->mControllerEnergyUsed:J
 
-    iput-wide v2, v0, Landroid/net/wifi/WifiActivityEnergyInfo;->mControllerEnergyUsed:J
+    iput-wide v10, v0, Landroid/net/wifi/WifiActivityEnergyInfo;->mControllerEnergyUsed:J
 
     .line 577
-    iget-wide v2, v1, Landroid/net/wifi/WifiActivityEnergyInfo;->mControllerRxTimeMs:J
+    iget-wide v10, v1, Landroid/net/wifi/WifiActivityEnergyInfo;->mControllerRxTimeMs:J
 
-    iput-wide v2, v0, Landroid/net/wifi/WifiActivityEnergyInfo;->mControllerRxTimeMs:J
+    iput-wide v10, v0, Landroid/net/wifi/WifiActivityEnergyInfo;->mControllerRxTimeMs:J
 
     .line 578
-    iget-wide v2, v1, Landroid/net/wifi/WifiActivityEnergyInfo;->mControllerTxTimeMs:J
+    iget-wide v10, v1, Landroid/net/wifi/WifiActivityEnergyInfo;->mControllerTxTimeMs:J
 
-    iput-wide v2, v0, Landroid/net/wifi/WifiActivityEnergyInfo;->mControllerTxTimeMs:J
+    iput-wide v10, v0, Landroid/net/wifi/WifiActivityEnergyInfo;->mControllerTxTimeMs:J
 
     .line 579
-    iget-wide v2, v1, Landroid/net/wifi/WifiActivityEnergyInfo;->mControllerIdleTimeMs:J
+    iget-wide v10, v1, Landroid/net/wifi/WifiActivityEnergyInfo;->mControllerIdleTimeMs:J
 
-    iput-wide v2, v0, Landroid/net/wifi/WifiActivityEnergyInfo;->mControllerIdleTimeMs:J
+    iput-wide v10, v0, Landroid/net/wifi/WifiActivityEnergyInfo;->mControllerIdleTimeMs:J
 
     .line 580
-    iget-wide v2, v1, Landroid/net/wifi/WifiActivityEnergyInfo;->mControllerScanTimeMs:J
+    iget-wide v10, v1, Landroid/net/wifi/WifiActivityEnergyInfo;->mControllerScanTimeMs:J
 
-    iput-wide v2, v0, Landroid/net/wifi/WifiActivityEnergyInfo;->mControllerScanTimeMs:J
+    iput-wide v10, v0, Landroid/net/wifi/WifiActivityEnergyInfo;->mControllerScanTimeMs:J
 
-    goto :goto_13c
+    goto :goto_165
 
     .line 582
-    :cond_130
-    const-wide/16 v2, 0x0
+    :cond_159
+    const-wide/16 v10, 0x0
 
-    iput-wide v2, v0, Landroid/net/wifi/WifiActivityEnergyInfo;->mControllerEnergyUsed:J
+    iput-wide v10, v0, Landroid/net/wifi/WifiActivityEnergyInfo;->mControllerEnergyUsed:J
 
     .line 583
-    iput-wide v2, v0, Landroid/net/wifi/WifiActivityEnergyInfo;->mControllerRxTimeMs:J
+    iput-wide v10, v0, Landroid/net/wifi/WifiActivityEnergyInfo;->mControllerRxTimeMs:J
 
     .line 584
-    iput-wide v2, v0, Landroid/net/wifi/WifiActivityEnergyInfo;->mControllerTxTimeMs:J
+    iput-wide v10, v0, Landroid/net/wifi/WifiActivityEnergyInfo;->mControllerTxTimeMs:J
 
     .line 585
-    iput-wide v2, v0, Landroid/net/wifi/WifiActivityEnergyInfo;->mControllerIdleTimeMs:J
+    iput-wide v10, v0, Landroid/net/wifi/WifiActivityEnergyInfo;->mControllerIdleTimeMs:J
 
     .line 586
-    iput-wide v2, v0, Landroid/net/wifi/WifiActivityEnergyInfo;->mControllerScanTimeMs:J
+    iput-wide v10, v0, Landroid/net/wifi/WifiActivityEnergyInfo;->mControllerScanTimeMs:J
 
     .line 588
-    :goto_13c
-    new-instance v2, Ljava/lang/StringBuilder;
+    :goto_165
+    new-instance v5, Ljava/lang/StringBuilder;
 
-    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v5}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v3, "WiFi energy data was reset, new WiFi energy data is "
+    const-string v10, "WiFi energy data was reset, new WiFi energy data is "
 
-    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v5, v10}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v2, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    invoke-virtual {v5, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v5}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v2
+    move-result-object v5
 
-    invoke-static {v4, v2}, Landroid/util/Slog;->v(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v4, v5}, Landroid/util/Slog;->v(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 589
+    .end local v8  # "totalOnTimeMs":J
     nop
 
     .line 635
-    :goto_151
-    move-object/from16 v2, p0
+    :goto_17a
+    move-object/from16 v4, p0
 
-    iput-object v1, v2, Lcom/android/server/am/BatteryExternalStatsWorker;->mLastInfo:Landroid/net/wifi/WifiActivityEnergyInfo;
+    iput-object v1, v4, Lcom/android/server/am/BatteryExternalStatsWorker;->mLastInfo:Landroid/net/wifi/WifiActivityEnergyInfo;
 
     .line 636
     return-object v0
@@ -964,6 +1146,7 @@
 
 .method static synthetic lambda$new$0(Ljava/lang/Runnable;)V
     .registers 2
+    .param p0, "r"  # Ljava/lang/Runnable;
 
     .line 79
     invoke-static {}, Landroid/os/Process;->myUid()I
@@ -980,7 +1163,8 @@
 .end method
 
 .method static synthetic lambda$new$1(Ljava/lang/Runnable;)Ljava/lang/Thread;
-    .registers 3
+    .registers 4
+    .param p0, "r"  # Ljava/lang/Runnable;
 
     .line 77
     new-instance v0, Ljava/lang/Thread;
@@ -989,14 +1173,15 @@
 
     invoke-direct {v1, p0}, Lcom/android/server/am/-$$Lambda$BatteryExternalStatsWorker$ddVY5lmqswnSjXppAxPTOHbuzzQ;-><init>(Ljava/lang/Runnable;)V
 
-    const-string p0, "batterystats-worker"
+    const-string v2, "batterystats-worker"
 
-    invoke-direct {v0, v1, p0}, Ljava/lang/Thread;-><init>(Ljava/lang/Runnable;Ljava/lang/String;)V
+    invoke-direct {v0, v1, v2}, Ljava/lang/Thread;-><init>(Ljava/lang/Runnable;Ljava/lang/String;)V
 
     .line 83
-    const/4 p0, 0x5
+    .local v0, "t":Ljava/lang/Thread;
+    const/4 v1, 0x5
 
-    invoke-virtual {v0, p0}, Ljava/lang/Thread;->setPriority(I)V
+    invoke-virtual {v0, v1}, Ljava/lang/Thread;->setPriority(I)V
 
     .line 84
     return-object v0
@@ -1004,6 +1189,8 @@
 
 .method private scheduleDelayedSyncLocked(Ljava/util/concurrent/Future;Ljava/lang/Runnable;J)Ljava/util/concurrent/Future;
     .registers 7
+    .param p2, "syncRunnable"  # Ljava/lang/Runnable;
+    .param p3, "delayMillis"  # J
     .annotation build Lcom/android/internal/annotations/GuardedBy;
         value = {
             "this"
@@ -1023,6 +1210,7 @@
     .end annotation
 
     .line 263
+    .local p1, "lastScheduledSync":Ljava/util/concurrent/Future;, "Ljava/util/concurrent/Future<*>;"
     iget-object v0, p0, Lcom/android/server/am/BatteryExternalStatsWorker;->mExecutorService:Ljava/util/concurrent/ScheduledExecutorService;
 
     invoke-interface {v0}, Ljava/util/concurrent/ScheduledExecutorService;->isShutdown()Z
@@ -1032,17 +1220,17 @@
     if-eqz v0, :cond_15
 
     .line 264
-    new-instance p1, Ljava/lang/IllegalStateException;
+    new-instance v0, Ljava/lang/IllegalStateException;
 
-    const-string/jumbo p2, "worker shutdown"
+    const-string/jumbo v1, "worker shutdown"
 
-    invoke-direct {p1, p2}, Ljava/lang/IllegalStateException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v0, v1}, Ljava/lang/IllegalStateException;-><init>(Ljava/lang/String;)V
 
-    invoke-static {p1}, Ljava/util/concurrent/CompletableFuture;->failedFuture(Ljava/lang/Throwable;)Ljava/util/concurrent/CompletableFuture;
+    invoke-static {v0}, Ljava/util/concurrent/CompletableFuture;->failedFuture(Ljava/lang/Throwable;)Ljava/util/concurrent/CompletableFuture;
 
-    move-result-object p1
+    move-result-object v0
 
-    return-object p1
+    return-object v0
 
     .line 267
     :cond_15
@@ -1069,19 +1257,21 @@
     .line 277
     :cond_23
     :goto_23
-    iget-object p1, p0, Lcom/android/server/am/BatteryExternalStatsWorker;->mExecutorService:Ljava/util/concurrent/ScheduledExecutorService;
+    iget-object v0, p0, Lcom/android/server/am/BatteryExternalStatsWorker;->mExecutorService:Ljava/util/concurrent/ScheduledExecutorService;
 
-    sget-object v0, Ljava/util/concurrent/TimeUnit;->MILLISECONDS:Ljava/util/concurrent/TimeUnit;
+    sget-object v1, Ljava/util/concurrent/TimeUnit;->MILLISECONDS:Ljava/util/concurrent/TimeUnit;
 
-    invoke-interface {p1, p2, p3, p4, v0}, Ljava/util/concurrent/ScheduledExecutorService;->schedule(Ljava/lang/Runnable;JLjava/util/concurrent/TimeUnit;)Ljava/util/concurrent/ScheduledFuture;
+    invoke-interface {v0, p2, p3, p4, v1}, Ljava/util/concurrent/ScheduledExecutorService;->schedule(Ljava/lang/Runnable;JLjava/util/concurrent/TimeUnit;)Ljava/util/concurrent/ScheduledFuture;
 
-    move-result-object p1
+    move-result-object v0
 
-    return-object p1
+    return-object v0
 .end method
 
 .method private scheduleSyncLocked(Ljava/lang/String;I)Ljava/util/concurrent/Future;
-    .registers 4
+    .registers 5
+    .param p1, "reason"  # Ljava/lang/String;
+    .param p2, "flags"  # I
     .annotation build Lcom/android/internal/annotations/GuardedBy;
         value = {
             "this"
@@ -1108,17 +1298,17 @@
     if-eqz v0, :cond_15
 
     .line 308
-    new-instance p1, Ljava/lang/IllegalStateException;
+    new-instance v0, Ljava/lang/IllegalStateException;
 
-    const-string/jumbo p2, "worker shutdown"
+    const-string/jumbo v1, "worker shutdown"
 
-    invoke-direct {p1, p2}, Ljava/lang/IllegalStateException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v0, v1}, Ljava/lang/IllegalStateException;-><init>(Ljava/lang/String;)V
 
-    invoke-static {p1}, Ljava/util/concurrent/CompletableFuture;->failedFuture(Ljava/lang/Throwable;)Ljava/util/concurrent/CompletableFuture;
+    invoke-static {v0}, Ljava/util/concurrent/CompletableFuture;->failedFuture(Ljava/lang/Throwable;)Ljava/util/concurrent/CompletableFuture;
 
-    move-result-object p1
+    move-result-object v0
 
-    return-object p1
+    return-object v0
 
     .line 311
     :cond_15
@@ -1133,32 +1323,37 @@
     iput-object p1, p0, Lcom/android/server/am/BatteryExternalStatsWorker;->mCurrentReason:Ljava/lang/String;
 
     .line 314
-    iget-object p1, p0, Lcom/android/server/am/BatteryExternalStatsWorker;->mExecutorService:Ljava/util/concurrent/ScheduledExecutorService;
+    iget-object v0, p0, Lcom/android/server/am/BatteryExternalStatsWorker;->mExecutorService:Ljava/util/concurrent/ScheduledExecutorService;
 
-    iget-object v0, p0, Lcom/android/server/am/BatteryExternalStatsWorker;->mSyncTask:Ljava/lang/Runnable;
+    iget-object v1, p0, Lcom/android/server/am/BatteryExternalStatsWorker;->mSyncTask:Ljava/lang/Runnable;
 
-    invoke-interface {p1, v0}, Ljava/util/concurrent/ScheduledExecutorService;->submit(Ljava/lang/Runnable;)Ljava/util/concurrent/Future;
+    invoke-interface {v0, v1}, Ljava/util/concurrent/ScheduledExecutorService;->submit(Ljava/lang/Runnable;)Ljava/util/concurrent/Future;
 
-    move-result-object p1
+    move-result-object v0
 
-    iput-object p1, p0, Lcom/android/server/am/BatteryExternalStatsWorker;->mCurrentFuture:Ljava/util/concurrent/Future;
+    iput-object v0, p0, Lcom/android/server/am/BatteryExternalStatsWorker;->mCurrentFuture:Ljava/util/concurrent/Future;
 
     .line 316
     :cond_27
-    iget p1, p0, Lcom/android/server/am/BatteryExternalStatsWorker;->mUpdateFlags:I
+    iget v0, p0, Lcom/android/server/am/BatteryExternalStatsWorker;->mUpdateFlags:I
 
-    or-int/2addr p1, p2
+    or-int/2addr v0, p2
 
-    iput p1, p0, Lcom/android/server/am/BatteryExternalStatsWorker;->mUpdateFlags:I
+    iput v0, p0, Lcom/android/server/am/BatteryExternalStatsWorker;->mUpdateFlags:I
 
     .line 317
-    iget-object p1, p0, Lcom/android/server/am/BatteryExternalStatsWorker;->mCurrentFuture:Ljava/util/concurrent/Future;
+    iget-object v0, p0, Lcom/android/server/am/BatteryExternalStatsWorker;->mCurrentFuture:Ljava/util/concurrent/Future;
 
-    return-object p1
+    return-object v0
 .end method
 
 .method private updateExternalStatsLocked(Ljava/lang/String;IZZZ)V
-    .registers 19
+    .registers 24
+    .param p1, "reason"  # Ljava/lang/String;
+    .param p2, "updateFlags"  # I
+    .param p3, "onBattery"  # Z
+    .param p4, "onBatteryScreenOff"  # Z
+    .param p5, "useLatestStates"  # Z
     .annotation build Lcom/android/internal/annotations/GuardedBy;
         value = {
             "mWorkerLock"
@@ -1166,28 +1361,32 @@
     .end annotation
 
     .line 407
-    move-object v1, p0
-
-    .line 408
-    nop
-
-    .line 409
-    nop
-
-    .line 410
-    nop
-
-    .line 412
-    and-int/lit8 v0, p2, 0x2
+    move-object/from16 v1, p0
 
     const/4 v2, 0x0
+
+    .line 408
+    .local v2, "wifiReceiver":Landroid/os/SynchronousResultReceiver;
+    const/4 v3, 0x0
+
+    .line 409
+    .local v3, "bluetoothReceiver":Landroid/os/SynchronousResultReceiver;
+    const/4 v4, 0x0
+
+    .line 410
+    .local v4, "modemReceiver":Landroid/os/SynchronousResultReceiver;
+    const/4 v5, 0x0
+
+    .line 412
+    .local v5, "railUpdated":Z
+    and-int/lit8 v0, p2, 0x2
 
     if-eqz v0, :cond_50
 
     .line 414
     iget-object v0, v1, Lcom/android/server/am/BatteryExternalStatsWorker;->mWifiManager:Landroid/net/wifi/IWifiManager;
 
-    if-nez v0, :cond_1a
+    if-nez v0, :cond_1b
 
     .line 415
     const-string/jumbo v0, "wifi"
@@ -1203,458 +1402,522 @@
     iput-object v0, v1, Lcom/android/server/am/BatteryExternalStatsWorker;->mWifiManager:Landroid/net/wifi/IWifiManager;
 
     .line 419
-    :cond_1a
+    :cond_1b
     iget-object v0, v1, Lcom/android/server/am/BatteryExternalStatsWorker;->mWifiManager:Landroid/net/wifi/IWifiManager;
 
-    if-eqz v0, :cond_41
+    if-eqz v0, :cond_40
 
     .line 422
-    :try_start_1e
+    :try_start_1f
     invoke-interface {v0}, Landroid/net/wifi/IWifiManager;->getSupportedFeatures()J
 
-    move-result-wide v3
+    move-result-wide v6
 
-    const-wide/32 v5, 0x10000
+    const-wide/32 v8, 0x10000
 
-    and-long/2addr v3, v5
+    and-long/2addr v6, v8
 
-    const-wide/16 v5, 0x0
+    const-wide/16 v8, 0x0
 
-    cmp-long v0, v3, v5
+    cmp-long v0, v6, v8
 
-    if-eqz v0, :cond_3c
+    if-eqz v0, :cond_3b
 
     .line 423
-    new-instance v3, Landroid/os/SynchronousResultReceiver;
+    new-instance v0, Landroid/os/SynchronousResultReceiver;
 
-    const-string/jumbo v0, "wifi"
+    const-string/jumbo v6, "wifi"
 
-    invoke-direct {v3, v0}, Landroid/os/SynchronousResultReceiver;-><init>(Ljava/lang/String;)V
-    :try_end_34
-    .catch Landroid/os/RemoteException; {:try_start_1e .. :try_end_34} :catch_3e
+    invoke-direct {v0, v6}, Landroid/os/SynchronousResultReceiver;-><init>(Ljava/lang/String;)V
+
+    move-object v2, v0
 
     .line 424
-    :try_start_34
     iget-object v0, v1, Lcom/android/server/am/BatteryExternalStatsWorker;->mWifiManager:Landroid/net/wifi/IWifiManager;
 
-    invoke-interface {v0, v3}, Landroid/net/wifi/IWifiManager;->requestActivityInfo(Landroid/os/ResultReceiver;)V
-    :try_end_39
-    .catch Landroid/os/RemoteException; {:try_start_34 .. :try_end_39} :catch_3a
-
-    goto :goto_3d
-
-    .line 426
-    :catch_3a
-    move-exception v0
-
-    goto :goto_42
-
-    .line 422
-    :cond_3c
-    move-object v3, v2
+    invoke-interface {v0, v2}, Landroid/net/wifi/IWifiManager;->requestActivityInfo(Landroid/os/ResultReceiver;)V
+    :try_end_3b
+    .catch Landroid/os/RemoteException; {:try_start_1f .. :try_end_3b} :catch_3d
 
     .line 428
-    :goto_3d
-    goto :goto_42
+    :cond_3b
+    move-object v6, v2
+
+    goto :goto_41
 
     .line 426
-    :catch_3e
+    :catch_3d
     move-exception v0
 
-    move-object v3, v2
+    move-object v6, v2
 
-    goto :goto_42
+    goto :goto_41
 
     .line 419
-    :cond_41
-    move-object v3, v2
+    :cond_40
+    move-object v6, v2
 
     .line 430
-    :goto_42
-    iget-object v4, v1, Lcom/android/server/am/BatteryExternalStatsWorker;->mStats:Lcom/android/internal/os/BatteryStatsImpl;
+    .end local v2  # "wifiReceiver":Landroid/os/SynchronousResultReceiver;
+    .local v6, "wifiReceiver":Landroid/os/SynchronousResultReceiver;
+    :goto_41
+    iget-object v7, v1, Lcom/android/server/am/BatteryExternalStatsWorker;->mStats:Lcom/android/internal/os/BatteryStatsImpl;
 
-    monitor-enter v4
+    monitor-enter v7
 
     .line 431
-    :try_start_45
+    :try_start_44
     iget-object v0, v1, Lcom/android/server/am/BatteryExternalStatsWorker;->mStats:Lcom/android/internal/os/BatteryStatsImpl;
 
     invoke-virtual {v0}, Lcom/android/internal/os/BatteryStatsImpl;->updateRailStatsLocked()V
 
     .line 432
-    monitor-exit v4
+    monitor-exit v7
 
     .line 433
-    const/4 v0, 0x1
+    const/4 v5, 0x1
 
-    goto :goto_52
+    move-object v2, v6
+
+    goto :goto_50
 
     .line 432
     :catchall_4d
     move-exception v0
 
-    monitor-exit v4
+    monitor-exit v7
     :try_end_4f
-    .catchall {:try_start_45 .. :try_end_4f} :catchall_4d
+    .catchall {:try_start_44 .. :try_end_4f} :catchall_4d
 
     throw v0
 
-    .line 412
-    :cond_50
-    const/4 v0, 0x0
-
-    move-object v3, v2
-
     .line 436
-    :goto_52
-    and-int/lit8 v4, p2, 0x8
+    .end local v6  # "wifiReceiver":Landroid/os/SynchronousResultReceiver;
+    .restart local v2  # "wifiReceiver":Landroid/os/SynchronousResultReceiver;
+    :cond_50
+    :goto_50
+    and-int/lit8 v0, p2, 0x8
 
-    if-eqz v4, :cond_67
+    if-eqz v0, :cond_65
 
     .line 438
     invoke-static {}, Landroid/bluetooth/BluetoothAdapter;->getDefaultAdapter()Landroid/bluetooth/BluetoothAdapter;
 
-    move-result-object v4
+    move-result-object v0
 
     .line 439
-    if-eqz v4, :cond_67
+    .local v0, "adapter":Landroid/bluetooth/BluetoothAdapter;
+    if-eqz v0, :cond_65
 
     .line 440
-    new-instance v5, Landroid/os/SynchronousResultReceiver;
+    new-instance v6, Landroid/os/SynchronousResultReceiver;
 
-    const-string v6, "bluetooth"
+    const-string v7, "bluetooth"
 
-    invoke-direct {v5, v6}, Landroid/os/SynchronousResultReceiver;-><init>(Ljava/lang/String;)V
+    invoke-direct {v6, v7}, Landroid/os/SynchronousResultReceiver;-><init>(Ljava/lang/String;)V
+
+    move-object v3, v6
 
     .line 441
-    invoke-virtual {v4, v5}, Landroid/bluetooth/BluetoothAdapter;->requestControllerActivityEnergyInfo(Landroid/os/ResultReceiver;)V
-
-    goto :goto_68
+    invoke-virtual {v0, v3}, Landroid/bluetooth/BluetoothAdapter;->requestControllerActivityEnergyInfo(Landroid/os/ResultReceiver;)V
 
     .line 445
-    :cond_67
-    move-object v5, v2
+    .end local v0  # "adapter":Landroid/bluetooth/BluetoothAdapter;
+    :cond_65
+    and-int/lit8 v0, p2, 0x4
 
-    :goto_68
-    and-int/lit8 v4, p2, 0x4
-
-    if-eqz v4, :cond_98
+    if-eqz v0, :cond_96
 
     .line 447
-    iget-object v4, v1, Lcom/android/server/am/BatteryExternalStatsWorker;->mTelephony:Landroid/telephony/TelephonyManager;
+    iget-object v0, v1, Lcom/android/server/am/BatteryExternalStatsWorker;->mTelephony:Landroid/telephony/TelephonyManager;
 
-    if-nez v4, :cond_78
+    if-nez v0, :cond_75
 
     .line 448
-    iget-object v4, v1, Lcom/android/server/am/BatteryExternalStatsWorker;->mContext:Landroid/content/Context;
+    iget-object v0, v1, Lcom/android/server/am/BatteryExternalStatsWorker;->mContext:Landroid/content/Context;
 
-    invoke-static {v4}, Landroid/telephony/TelephonyManager;->from(Landroid/content/Context;)Landroid/telephony/TelephonyManager;
+    invoke-static {v0}, Landroid/telephony/TelephonyManager;->from(Landroid/content/Context;)Landroid/telephony/TelephonyManager;
 
-    move-result-object v4
+    move-result-object v0
 
-    iput-object v4, v1, Lcom/android/server/am/BatteryExternalStatsWorker;->mTelephony:Landroid/telephony/TelephonyManager;
+    iput-object v0, v1, Lcom/android/server/am/BatteryExternalStatsWorker;->mTelephony:Landroid/telephony/TelephonyManager;
 
     .line 451
-    :cond_78
-    iget-object v4, v1, Lcom/android/server/am/BatteryExternalStatsWorker;->mTelephony:Landroid/telephony/TelephonyManager;
+    :cond_75
+    iget-object v0, v1, Lcom/android/server/am/BatteryExternalStatsWorker;->mTelephony:Landroid/telephony/TelephonyManager;
 
-    if-eqz v4, :cond_89
+    if-eqz v0, :cond_87
 
     .line 452
-    new-instance v2, Landroid/os/SynchronousResultReceiver;
+    new-instance v0, Landroid/os/SynchronousResultReceiver;
 
-    const-string/jumbo v4, "telephony"
+    const-string/jumbo v6, "telephony"
 
-    invoke-direct {v2, v4}, Landroid/os/SynchronousResultReceiver;-><init>(Ljava/lang/String;)V
+    invoke-direct {v0, v6}, Landroid/os/SynchronousResultReceiver;-><init>(Ljava/lang/String;)V
+
+    move-object v4, v0
 
     .line 453
-    iget-object v4, v1, Lcom/android/server/am/BatteryExternalStatsWorker;->mTelephony:Landroid/telephony/TelephonyManager;
+    iget-object v0, v1, Lcom/android/server/am/BatteryExternalStatsWorker;->mTelephony:Landroid/telephony/TelephonyManager;
 
-    invoke-virtual {v4, v2}, Landroid/telephony/TelephonyManager;->requestModemActivityInfo(Landroid/os/ResultReceiver;)V
+    invoke-virtual {v0, v4}, Landroid/telephony/TelephonyManager;->requestModemActivityInfo(Landroid/os/ResultReceiver;)V
 
     .line 455
-    :cond_89
-    if-nez v0, :cond_98
+    :cond_87
+    if-nez v5, :cond_96
 
     .line 456
-    iget-object v4, v1, Lcom/android/server/am/BatteryExternalStatsWorker;->mStats:Lcom/android/internal/os/BatteryStatsImpl;
+    iget-object v6, v1, Lcom/android/server/am/BatteryExternalStatsWorker;->mStats:Lcom/android/internal/os/BatteryStatsImpl;
 
-    monitor-enter v4
+    monitor-enter v6
 
     .line 457
-    :try_start_8e
+    :try_start_8c
     iget-object v0, v1, Lcom/android/server/am/BatteryExternalStatsWorker;->mStats:Lcom/android/internal/os/BatteryStatsImpl;
 
     invoke-virtual {v0}, Lcom/android/internal/os/BatteryStatsImpl;->updateRailStatsLocked()V
 
     .line 458
-    monitor-exit v4
+    monitor-exit v6
 
-    goto :goto_98
+    goto :goto_96
 
-    :catchall_95
+    :catchall_93
     move-exception v0
 
-    monitor-exit v4
-    :try_end_97
-    .catchall {:try_start_8e .. :try_end_97} :catchall_95
+    monitor-exit v6
+    :try_end_95
+    .catchall {:try_start_8c .. :try_end_95} :catchall_93
 
     throw v0
 
     .line 462
-    :cond_98
-    :goto_98
+    :cond_96
+    :goto_96
+    invoke-static {v2}, Lcom/android/server/am/BatteryExternalStatsWorker;->awaitControllerInfo(Landroid/os/SynchronousResultReceiver;)Landroid/os/Parcelable;
+
+    move-result-object v0
+
+    move-object v6, v0
+
+    check-cast v6, Landroid/net/wifi/WifiActivityEnergyInfo;
+
+    .line 463
+    .local v6, "wifiInfo":Landroid/net/wifi/WifiActivityEnergyInfo;
     invoke-static {v3}, Lcom/android/server/am/BatteryExternalStatsWorker;->awaitControllerInfo(Landroid/os/SynchronousResultReceiver;)Landroid/os/Parcelable;
 
     move-result-object v0
 
-    check-cast v0, Landroid/net/wifi/WifiActivityEnergyInfo;
+    move-object v7, v0
 
-    .line 463
-    invoke-static {v5}, Lcom/android/server/am/BatteryExternalStatsWorker;->awaitControllerInfo(Landroid/os/SynchronousResultReceiver;)Landroid/os/Parcelable;
-
-    move-result-object v3
-
-    check-cast v3, Landroid/bluetooth/BluetoothActivityEnergyInfo;
+    check-cast v7, Landroid/bluetooth/BluetoothActivityEnergyInfo;
 
     .line 464
-    invoke-static {v2}, Lcom/android/server/am/BatteryExternalStatsWorker;->awaitControllerInfo(Landroid/os/SynchronousResultReceiver;)Landroid/os/Parcelable;
+    .local v7, "bluetoothInfo":Landroid/bluetooth/BluetoothActivityEnergyInfo;
+    invoke-static {v4}, Lcom/android/server/am/BatteryExternalStatsWorker;->awaitControllerInfo(Landroid/os/SynchronousResultReceiver;)Landroid/os/Parcelable;
 
-    move-result-object v2
+    move-result-object v0
 
-    check-cast v2, Landroid/telephony/ModemActivityInfo;
+    move-object v8, v0
+
+    check-cast v8, Landroid/telephony/ModemActivityInfo;
 
     .line 466
-    iget-object v4, v1, Lcom/android/server/am/BatteryExternalStatsWorker;->mStats:Lcom/android/internal/os/BatteryStatsImpl;
+    .local v8, "modemInfo":Landroid/telephony/ModemActivityInfo;
+    iget-object v9, v1, Lcom/android/server/am/BatteryExternalStatsWorker;->mStats:Lcom/android/internal/os/BatteryStatsImpl;
 
-    monitor-enter v4
+    monitor-enter v9
 
     .line 467
-    :try_start_ad
-    iget-object v5, v1, Lcom/android/server/am/BatteryExternalStatsWorker;->mStats:Lcom/android/internal/os/BatteryStatsImpl;
+    :try_start_ae
+    iget-object v10, v1, Lcom/android/server/am/BatteryExternalStatsWorker;->mStats:Lcom/android/internal/os/BatteryStatsImpl;
 
     .line 468
     invoke-static {}, Landroid/os/SystemClock;->elapsedRealtime()J
 
-    move-result-wide v6
+    move-result-wide v11
 
     .line 469
     invoke-static {}, Landroid/os/SystemClock;->uptimeMillis()J
 
-    move-result-wide v8
+    move-result-wide v13
 
-    const/16 v10, 0xe
+    const/16 v15, 0xe
 
-    const/4 v12, 0x0
+    const/16 v17, 0x0
 
     .line 467
-    move-object v11, p1
+    move-object/from16 v16, p1
 
-    invoke-virtual/range {v5 .. v12}, Lcom/android/internal/os/BatteryStatsImpl;->addHistoryEventLocked(JJILjava/lang/String;I)V
+    invoke-virtual/range {v10 .. v17}, Lcom/android/internal/os/BatteryStatsImpl;->addHistoryEventLocked(JJILjava/lang/String;I)V
 
     .line 473
-    and-int/lit8 v5, p2, 0x1
+    and-int/lit8 v0, p2, 0x1
 
-    if-eqz v5, :cond_da
+    if-eqz v0, :cond_e5
 
     .line 474
-    if-eqz p5, :cond_d1
+    if-eqz p5, :cond_db
 
     .line 475
-    iget-object v5, v1, Lcom/android/server/am/BatteryExternalStatsWorker;->mStats:Lcom/android/internal/os/BatteryStatsImpl;
+    iget-object v0, v1, Lcom/android/server/am/BatteryExternalStatsWorker;->mStats:Lcom/android/internal/os/BatteryStatsImpl;
 
-    invoke-virtual {v5}, Lcom/android/internal/os/BatteryStatsImpl;->isOnBatteryLocked()Z
+    invoke-virtual {v0}, Lcom/android/internal/os/BatteryStatsImpl;->isOnBatteryLocked()Z
 
-    move-result v5
+    move-result v0
+    :try_end_cd
+    .catchall {:try_start_ae .. :try_end_cd} :catchall_174
+
+    move v10, v0
 
     .line 476
-    iget-object v6, v1, Lcom/android/server/am/BatteryExternalStatsWorker;->mStats:Lcom/android/internal/os/BatteryStatsImpl;
+    .end local p3  # "onBattery":Z
+    .local v10, "onBattery":Z
+    :try_start_ce
+    iget-object v0, v1, Lcom/android/server/am/BatteryExternalStatsWorker;->mStats:Lcom/android/internal/os/BatteryStatsImpl;
 
-    invoke-virtual {v6}, Lcom/android/internal/os/BatteryStatsImpl;->isOnBatteryScreenOffLocked()Z
+    invoke-virtual {v0}, Lcom/android/internal/os/BatteryStatsImpl;->isOnBatteryScreenOffLocked()Z
 
-    move-result v6
+    move-result v0
+    :try_end_d4
+    .catchall {:try_start_ce .. :try_end_d4} :catchall_d6
 
-    goto :goto_d5
+    move v11, v0
 
-    .line 474
-    :cond_d1
-    move/from16 v5, p3
-
-    move/from16 v6, p4
-
-    .line 478
-    :goto_d5
-    iget-object v7, v1, Lcom/android/server/am/BatteryExternalStatsWorker;->mStats:Lcom/android/internal/os/BatteryStatsImpl;
-
-    invoke-virtual {v7, v5, v6}, Lcom/android/internal/os/BatteryStatsImpl;->updateCpuTimeLocked(ZZ)V
-
-    .line 481
-    :cond_da
-    and-int/lit8 v5, p2, 0x1f
-
-    if-eqz v5, :cond_e8
-
-    .line 482
-    iget-object v5, v1, Lcom/android/server/am/BatteryExternalStatsWorker;->mStats:Lcom/android/internal/os/BatteryStatsImpl;
-
-    invoke-virtual {v5}, Lcom/android/internal/os/BatteryStatsImpl;->updateKernelWakelocksLocked()V
-
-    .line 483
-    iget-object v5, v1, Lcom/android/server/am/BatteryExternalStatsWorker;->mStats:Lcom/android/internal/os/BatteryStatsImpl;
-
-    invoke-virtual {v5}, Lcom/android/internal/os/BatteryStatsImpl;->updateKernelMemoryBandwidthLocked()V
-
-    .line 486
-    :cond_e8
-    and-int/lit8 v5, p2, 0x10
-
-    if-eqz v5, :cond_f1
-
-    .line 487
-    iget-object v5, v1, Lcom/android/server/am/BatteryExternalStatsWorker;->mStats:Lcom/android/internal/os/BatteryStatsImpl;
-
-    invoke-virtual {v5}, Lcom/android/internal/os/BatteryStatsImpl;->updateRpmStatsLocked()V
-
-    .line 490
-    :cond_f1
-    if-eqz v3, :cond_115
-
-    .line 491
-    invoke-virtual {v3}, Landroid/bluetooth/BluetoothActivityEnergyInfo;->isValid()Z
-
-    move-result v5
-
-    if-eqz v5, :cond_ff
-
-    .line 492
-    iget-object v5, v1, Lcom/android/server/am/BatteryExternalStatsWorker;->mStats:Lcom/android/internal/os/BatteryStatsImpl;
-
-    invoke-virtual {v5, v3}, Lcom/android/internal/os/BatteryStatsImpl;->updateBluetoothStateLocked(Landroid/bluetooth/BluetoothActivityEnergyInfo;)V
-
-    goto :goto_115
-
-    .line 494
-    :cond_ff
-    const-string v5, "BatteryExternalStatsWorker"
-
-    new-instance v6, Ljava/lang/StringBuilder;
-
-    invoke-direct {v6}, Ljava/lang/StringBuilder;-><init>()V
-
-    const-string v7, "bluetooth info is invalid: "
-
-    invoke-virtual {v6, v7}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v6, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v6}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
-
-    move-result-object v3
-
-    invoke-static {v5, v3}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    .end local p4  # "onBatteryScreenOff":Z
+    .local v0, "onBatteryScreenOff":Z
+    goto :goto_df
 
     .line 497
-    :cond_115
-    :goto_115
-    monitor-exit v4
-    :try_end_116
-    .catchall {:try_start_ad .. :try_end_116} :catchall_164
+    .end local v0  # "onBatteryScreenOff":Z
+    .restart local p4  # "onBatteryScreenOff":Z
+    :catchall_d6
+    move-exception v0
 
-    .line 502
-    if-eqz v0, :cond_13f
+    move/from16 v11, p4
 
-    .line 503
-    invoke-virtual {v0}, Landroid/net/wifi/WifiActivityEnergyInfo;->isValid()Z
+    goto/16 :goto_179
 
-    move-result v3
+    .line 474
+    .end local v10  # "onBattery":Z
+    .restart local p3  # "onBattery":Z
+    :cond_db
+    move/from16 v10, p3
 
-    if-eqz v3, :cond_128
+    move/from16 v11, p4
 
-    .line 504
-    iget-object v3, v1, Lcom/android/server/am/BatteryExternalStatsWorker;->mStats:Lcom/android/internal/os/BatteryStatsImpl;
+    .line 478
+    .end local p3  # "onBattery":Z
+    .end local p4  # "onBatteryScreenOff":Z
+    .restart local v10  # "onBattery":Z
+    .local v11, "onBatteryScreenOff":Z
+    :goto_df
+    :try_start_df
+    iget-object v0, v1, Lcom/android/server/am/BatteryExternalStatsWorker;->mStats:Lcom/android/internal/os/BatteryStatsImpl;
 
-    invoke-direct {p0, v0}, Lcom/android/server/am/BatteryExternalStatsWorker;->extractDeltaLocked(Landroid/net/wifi/WifiActivityEnergyInfo;)Landroid/net/wifi/WifiActivityEnergyInfo;
+    invoke-virtual {v0, v10, v11}, Lcom/android/internal/os/BatteryStatsImpl;->updateCpuTimeLocked(ZZ)V
 
-    move-result-object v0
+    goto :goto_e9
 
-    invoke-virtual {v3, v0}, Lcom/android/internal/os/BatteryStatsImpl;->updateWifiState(Landroid/net/wifi/WifiActivityEnergyInfo;)V
+    .line 473
+    .end local v10  # "onBattery":Z
+    .end local v11  # "onBatteryScreenOff":Z
+    .restart local p3  # "onBattery":Z
+    .restart local p4  # "onBatteryScreenOff":Z
+    :cond_e5
+    move/from16 v10, p3
 
-    goto :goto_13f
+    move/from16 v11, p4
 
-    .line 506
-    :cond_128
-    new-instance v3, Ljava/lang/StringBuilder;
+    .line 481
+    .end local p3  # "onBattery":Z
+    .end local p4  # "onBatteryScreenOff":Z
+    .restart local v10  # "onBattery":Z
+    .restart local v11  # "onBatteryScreenOff":Z
+    :goto_e9
+    and-int/lit8 v0, p2, 0x1f
 
-    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
+    if-eqz v0, :cond_f7
 
-    const-string/jumbo v4, "wifi info is invalid: "
+    .line 482
+    iget-object v0, v1, Lcom/android/server/am/BatteryExternalStatsWorker;->mStats:Lcom/android/internal/os/BatteryStatsImpl;
 
-    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0}, Lcom/android/internal/os/BatteryStatsImpl;->updateKernelWakelocksLocked()V
 
-    invoke-virtual {v3, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    .line 483
+    iget-object v0, v1, Lcom/android/server/am/BatteryExternalStatsWorker;->mStats:Lcom/android/internal/os/BatteryStatsImpl;
 
-    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v0}, Lcom/android/internal/os/BatteryStatsImpl;->updateKernelMemoryBandwidthLocked()V
 
-    move-result-object v0
+    .line 486
+    :cond_f7
+    and-int/lit8 v0, p2, 0x10
 
-    const-string v3, "BatteryExternalStatsWorker"
+    if-eqz v0, :cond_100
 
-    invoke-static {v3, v0}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    .line 487
+    iget-object v0, v1, Lcom/android/server/am/BatteryExternalStatsWorker;->mStats:Lcom/android/internal/os/BatteryStatsImpl;
 
-    .line 510
-    :cond_13f
-    :goto_13f
-    if-eqz v2, :cond_163
+    invoke-virtual {v0}, Lcom/android/internal/os/BatteryStatsImpl;->updateRpmStatsLocked()V
 
-    .line 511
-    invoke-virtual {v2}, Landroid/telephony/ModemActivityInfo;->isValid()Z
+    .line 490
+    :cond_100
+    if-eqz v7, :cond_124
+
+    .line 491
+    invoke-virtual {v7}, Landroid/bluetooth/BluetoothActivityEnergyInfo;->isValid()Z
 
     move-result v0
 
-    if-eqz v0, :cond_14d
+    if-eqz v0, :cond_10e
 
-    .line 512
+    .line 492
     iget-object v0, v1, Lcom/android/server/am/BatteryExternalStatsWorker;->mStats:Lcom/android/internal/os/BatteryStatsImpl;
 
-    invoke-virtual {v0, v2}, Lcom/android/internal/os/BatteryStatsImpl;->updateMobileRadioState(Landroid/telephony/ModemActivityInfo;)V
+    invoke-virtual {v0, v7}, Lcom/android/internal/os/BatteryStatsImpl;->updateBluetoothStateLocked(Landroid/bluetooth/BluetoothActivityEnergyInfo;)V
 
-    goto :goto_163
+    goto :goto_124
 
-    .line 514
-    :cond_14d
+    .line 494
+    :cond_10e
+    const-string v0, "BatteryExternalStatsWorker"
+
+    new-instance v12, Ljava/lang/StringBuilder;
+
+    invoke-direct {v12}, Ljava/lang/StringBuilder;-><init>()V
+
+    const-string v13, "bluetooth info is invalid: "
+
+    invoke-virtual {v12, v13}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v12, v7}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v12}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v12
+
+    invoke-static {v0, v12}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+
+    .line 497
+    :cond_124
+    :goto_124
+    monitor-exit v9
+    :try_end_125
+    .catchall {:try_start_df .. :try_end_125} :catchall_17b
+
+    .line 502
+    if-eqz v6, :cond_14e
+
+    .line 503
+    invoke-virtual {v6}, Landroid/net/wifi/WifiActivityEnergyInfo;->isValid()Z
+
+    move-result v0
+
+    if-eqz v0, :cond_137
+
+    .line 504
+    iget-object v0, v1, Lcom/android/server/am/BatteryExternalStatsWorker;->mStats:Lcom/android/internal/os/BatteryStatsImpl;
+
+    invoke-direct {v1, v6}, Lcom/android/server/am/BatteryExternalStatsWorker;->extractDeltaLocked(Landroid/net/wifi/WifiActivityEnergyInfo;)Landroid/net/wifi/WifiActivityEnergyInfo;
+
+    move-result-object v9
+
+    invoke-virtual {v0, v9}, Lcom/android/internal/os/BatteryStatsImpl;->updateWifiState(Landroid/net/wifi/WifiActivityEnergyInfo;)V
+
+    goto :goto_14e
+
+    .line 506
+    :cond_137
     new-instance v0, Ljava/lang/StringBuilder;
 
     invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v1, "modem info is invalid: "
+    const-string/jumbo v9, "wifi info is invalid: "
 
-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v9}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
     move-result-object v0
 
-    const-string v1, "BatteryExternalStatsWorker"
+    const-string v9, "BatteryExternalStatsWorker"
 
-    invoke-static {v1, v0}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v9, v0}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+
+    .line 510
+    :cond_14e
+    :goto_14e
+    if-eqz v8, :cond_173
+
+    .line 511
+    invoke-virtual {v8}, Landroid/telephony/ModemActivityInfo;->isValid()Z
+
+    move-result v0
+
+    if-eqz v0, :cond_15c
+
+    .line 512
+    iget-object v0, v1, Lcom/android/server/am/BatteryExternalStatsWorker;->mStats:Lcom/android/internal/os/BatteryStatsImpl;
+
+    invoke-virtual {v0, v8}, Lcom/android/internal/os/BatteryStatsImpl;->updateMobileRadioState(Landroid/telephony/ModemActivityInfo;)V
+
+    goto :goto_173
+
+    .line 514
+    :cond_15c
+    new-instance v0, Ljava/lang/StringBuilder;
+
+    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
+
+    const-string/jumbo v9, "modem info is invalid: "
+
+    invoke-virtual {v0, v9}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v0, v8}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v0
+
+    const-string v9, "BatteryExternalStatsWorker"
+
+    invoke-static {v9, v0}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 517
-    :cond_163
-    :goto_163
+    :cond_173
+    :goto_173
     return-void
 
     .line 497
-    :catchall_164
+    .end local v10  # "onBattery":Z
+    .end local v11  # "onBatteryScreenOff":Z
+    .restart local p3  # "onBattery":Z
+    .restart local p4  # "onBatteryScreenOff":Z
+    :catchall_174
     move-exception v0
 
-    :try_start_165
-    monitor-exit v4
-    :try_end_166
-    .catchall {:try_start_165 .. :try_end_166} :catchall_164
+    move/from16 v10, p3
+
+    move/from16 v11, p4
+
+    .end local p3  # "onBattery":Z
+    .end local p4  # "onBatteryScreenOff":Z
+    .restart local v10  # "onBattery":Z
+    .restart local v11  # "onBatteryScreenOff":Z
+    :goto_179
+    :try_start_179
+    monitor-exit v9
+    :try_end_17a
+    .catchall {:try_start_179 .. :try_end_17a} :catchall_17b
 
     throw v0
+
+    :catchall_17b
+    move-exception v0
+
+    goto :goto_179
 .end method
 
 
@@ -1772,7 +2035,9 @@
 .end method
 
 .method public scheduleCopyFromAllUidsCpuTimes(ZZ)Ljava/util/concurrent/Future;
-    .registers 6
+    .registers 8
+    .param p1, "onBattery"  # Z
+    .param p2, "onBatteryScreenOff"  # Z
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(ZZ)",
@@ -1832,30 +2097,30 @@
     .line 190
     invoke-static {p1}, Ljava/lang/Boolean;->valueOf(Z)Ljava/lang/Boolean;
 
-    move-result-object p1
+    move-result-object v3
 
     invoke-static {p2}, Ljava/lang/Boolean;->valueOf(Z)Ljava/lang/Boolean;
 
-    move-result-object p2
+    move-result-object v4
 
     .line 188
-    invoke-static {v1, v2, p1, p2}, Lcom/android/internal/util/function/pooled/PooledLambda;->obtainRunnable(Lcom/android/internal/util/function/TriConsumer;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;)Lcom/android/internal/util/function/pooled/PooledRunnable;
+    invoke-static {v1, v2, v3, v4}, Lcom/android/internal/util/function/pooled/PooledLambda;->obtainRunnable(Lcom/android/internal/util/function/TriConsumer;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;)Lcom/android/internal/util/function/pooled/PooledRunnable;
 
-    move-result-object p1
+    move-result-object v1
 
     .line 190
-    invoke-interface {p1}, Lcom/android/internal/util/function/pooled/PooledRunnable;->recycleOnUse()Lcom/android/internal/util/function/pooled/PooledRunnable;
+    invoke-interface {v1}, Lcom/android/internal/util/function/pooled/PooledRunnable;->recycleOnUse()Lcom/android/internal/util/function/pooled/PooledRunnable;
 
-    move-result-object p1
+    move-result-object v1
 
     .line 188
-    invoke-interface {v0, p1}, Ljava/util/concurrent/ScheduledExecutorService;->submit(Ljava/lang/Runnable;)Ljava/util/concurrent/Future;
+    invoke-interface {v0, v1}, Ljava/util/concurrent/ScheduledExecutorService;->submit(Ljava/lang/Runnable;)Ljava/util/concurrent/Future;
 
-    move-result-object p1
+    move-result-object v0
 
     monitor-exit p0
 
-    return-object p1
+    return-object v0
 
     .line 192
     :cond_34
@@ -1866,28 +2131,29 @@
 
     .line 192
     :catchall_36
-    move-exception p1
+    move-exception v0
 
     monitor-exit p0
     :try_end_38
     .catchall {:try_start_10 .. :try_end_38} :catchall_36
 
-    throw p1
+    throw v0
 
     .line 185
     :catchall_39
-    move-exception p1
+    move-exception v1
 
     :try_start_3a
     monitor-exit v0
     :try_end_3b
     .catchall {:try_start_3a .. :try_end_3b} :catchall_39
 
-    throw p1
+    throw v1
 .end method
 
 .method public declared-synchronized scheduleCpuSyncDueToRemovedUid(I)Ljava/util/concurrent/Future;
-    .registers 3
+    .registers 4
+    .param p1, "uid"  # I
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(I)",
@@ -1905,21 +2171,23 @@
     invoke-virtual {v0, p1}, Landroid/util/IntArray;->add(I)V
 
     .line 151
-    const-string/jumbo p1, "remove-uid"
+    const-string/jumbo v0, "remove-uid"
 
-    const/4 v0, 0x1
+    const/4 v1, 0x1
 
-    invoke-direct {p0, p1, v0}, Lcom/android/server/am/BatteryExternalStatsWorker;->scheduleSyncLocked(Ljava/lang/String;I)Ljava/util/concurrent/Future;
+    invoke-direct {p0, v0, v1}, Lcom/android/server/am/BatteryExternalStatsWorker;->scheduleSyncLocked(Ljava/lang/String;I)Ljava/util/concurrent/Future;
 
-    move-result-object p1
+    move-result-object v0
     :try_end_e
     .catchall {:try_start_1 .. :try_end_e} :catchall_10
 
     monitor-exit p0
 
-    return-object p1
+    return-object v0
 
     .line 149
+    .end local p0  # "this":Lcom/android/server/am/BatteryExternalStatsWorker;
+    .end local p1  # "uid":I
     :catchall_10
     move-exception p1
 
@@ -1930,6 +2198,8 @@
 
 .method public scheduleCpuSyncDueToScreenStateChange(ZZ)Ljava/util/concurrent/Future;
     .registers 5
+    .param p1, "onBattery"  # Z
+    .param p2, "onBatteryScreenOff"  # Z
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(ZZ)",
@@ -1963,31 +2233,31 @@
     iput-boolean p2, p0, Lcom/android/server/am/BatteryExternalStatsWorker;->mOnBatteryScreenOff:Z
 
     .line 203
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    iput-boolean p1, p0, Lcom/android/server/am/BatteryExternalStatsWorker;->mUseLatestStates:Z
+    iput-boolean v0, p0, Lcom/android/server/am/BatteryExternalStatsWorker;->mUseLatestStates:Z
 
     .line 205
     :cond_12
-    const-string/jumbo p1, "screen-state"
+    const-string/jumbo v0, "screen-state"
 
-    invoke-direct {p0, p1, v1}, Lcom/android/server/am/BatteryExternalStatsWorker;->scheduleSyncLocked(Ljava/lang/String;I)Ljava/util/concurrent/Future;
+    invoke-direct {p0, v0, v1}, Lcom/android/server/am/BatteryExternalStatsWorker;->scheduleSyncLocked(Ljava/lang/String;I)Ljava/util/concurrent/Future;
 
-    move-result-object p1
+    move-result-object v0
 
     monitor-exit p0
 
-    return-object p1
+    return-object v0
 
     .line 206
     :catchall_1b
-    move-exception p1
+    move-exception v0
 
     monitor-exit p0
     :try_end_1d
     .catchall {:try_start_1 .. :try_end_1d} :catchall_1b
 
-    throw p1
+    throw v0
 .end method
 
 .method public declared-synchronized scheduleCpuSyncDueToSettingChange()Ljava/util/concurrent/Future;
@@ -2018,6 +2288,7 @@
 
     return-object v0
 
+    .end local p0  # "this":Lcom/android/server/am/BatteryExternalStatsWorker;
     :catchall_b
     move-exception v0
 
@@ -2028,6 +2299,7 @@
 
 .method public scheduleCpuSyncDueToWakelockChange(J)Ljava/util/concurrent/Future;
     .registers 5
+    .param p1, "delayMillis"  # J
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(J)",
@@ -2049,30 +2321,33 @@
 
     invoke-direct {p0, v0, v1, p1, p2}, Lcom/android/server/am/BatteryExternalStatsWorker;->scheduleDelayedSyncLocked(Ljava/util/concurrent/Future;Ljava/lang/Runnable;J)Ljava/util/concurrent/Future;
 
-    move-result-object p1
+    move-result-object v0
 
-    iput-object p1, p0, Lcom/android/server/am/BatteryExternalStatsWorker;->mWakelockChangesUpdate:Ljava/util/concurrent/Future;
+    iput-object v0, p0, Lcom/android/server/am/BatteryExternalStatsWorker;->mWakelockChangesUpdate:Ljava/util/concurrent/Future;
 
     .line 218
-    iget-object p1, p0, Lcom/android/server/am/BatteryExternalStatsWorker;->mWakelockChangesUpdate:Ljava/util/concurrent/Future;
+    iget-object v0, p0, Lcom/android/server/am/BatteryExternalStatsWorker;->mWakelockChangesUpdate:Ljava/util/concurrent/Future;
 
     monitor-exit p0
 
-    return-object p1
+    return-object v0
 
     .line 219
     :catchall_12
-    move-exception p1
+    move-exception v0
 
     monitor-exit p0
     :try_end_14
     .catchall {:try_start_1 .. :try_end_14} :catchall_12
 
-    throw p1
+    throw v0
 .end method
 
 .method public scheduleReadProcStateCpuTimes(ZZJ)Ljava/util/concurrent/Future;
-    .registers 8
+    .registers 10
+    .param p1, "onBattery"  # Z
+    .param p2, "onBatteryScreenOff"  # Z
+    .param p3, "delayMillis"  # J
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(ZZJ)",
@@ -2132,32 +2407,32 @@
     .line 171
     invoke-static {p1}, Ljava/lang/Boolean;->valueOf(Z)Ljava/lang/Boolean;
 
-    move-result-object p1
+    move-result-object v3
 
     invoke-static {p2}, Ljava/lang/Boolean;->valueOf(Z)Ljava/lang/Boolean;
 
-    move-result-object p2
+    move-result-object v4
 
     .line 169
-    invoke-static {v1, v2, p1, p2}, Lcom/android/internal/util/function/pooled/PooledLambda;->obtainRunnable(Lcom/android/internal/util/function/TriConsumer;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;)Lcom/android/internal/util/function/pooled/PooledRunnable;
+    invoke-static {v1, v2, v3, v4}, Lcom/android/internal/util/function/pooled/PooledLambda;->obtainRunnable(Lcom/android/internal/util/function/TriConsumer;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;)Lcom/android/internal/util/function/pooled/PooledRunnable;
 
-    move-result-object p1
+    move-result-object v1
 
     .line 171
-    invoke-interface {p1}, Lcom/android/internal/util/function/pooled/PooledRunnable;->recycleOnUse()Lcom/android/internal/util/function/pooled/PooledRunnable;
+    invoke-interface {v1}, Lcom/android/internal/util/function/pooled/PooledRunnable;->recycleOnUse()Lcom/android/internal/util/function/pooled/PooledRunnable;
 
-    move-result-object p1
+    move-result-object v1
 
-    sget-object p2, Ljava/util/concurrent/TimeUnit;->MILLISECONDS:Ljava/util/concurrent/TimeUnit;
+    sget-object v2, Ljava/util/concurrent/TimeUnit;->MILLISECONDS:Ljava/util/concurrent/TimeUnit;
 
     .line 169
-    invoke-interface {v0, p1, p3, p4, p2}, Ljava/util/concurrent/ScheduledExecutorService;->schedule(Ljava/lang/Runnable;JLjava/util/concurrent/TimeUnit;)Ljava/util/concurrent/ScheduledFuture;
+    invoke-interface {v0, v1, p3, p4, v2}, Ljava/util/concurrent/ScheduledExecutorService;->schedule(Ljava/lang/Runnable;JLjava/util/concurrent/TimeUnit;)Ljava/util/concurrent/ScheduledFuture;
 
-    move-result-object p1
+    move-result-object v0
 
     monitor-exit p0
 
-    return-object p1
+    return-object v0
 
     .line 174
     :cond_36
@@ -2168,28 +2443,29 @@
 
     .line 174
     :catchall_38
-    move-exception p1
+    move-exception v0
 
     monitor-exit p0
     :try_end_3a
     .catchall {:try_start_10 .. :try_end_3a} :catchall_38
 
-    throw p1
+    throw v0
 
     .line 166
     :catchall_3b
-    move-exception p1
+    move-exception v1
 
     :try_start_3c
     monitor-exit v0
     :try_end_3d
     .catchall {:try_start_3c .. :try_end_3d} :catchall_3b
 
-    throw p1
+    throw v1
 .end method
 
 .method public declared-synchronized scheduleRunnable(Ljava/lang/Runnable;)V
     .registers 3
+    .param p1, "runnable"  # Ljava/lang/Runnable;
 
     monitor-enter p0
 
@@ -2211,12 +2487,14 @@
     .catchall {:try_start_1 .. :try_end_e} :catchall_10
 
     .line 299
+    .end local p0  # "this":Lcom/android/server/am/BatteryExternalStatsWorker;
     :cond_e
     monitor-exit p0
 
     return-void
 
     .line 295
+    .end local p1  # "runnable":Ljava/lang/Runnable;
     :catchall_10
     move-exception p1
 
@@ -2226,7 +2504,9 @@
 .end method
 
 .method public declared-synchronized scheduleSync(Ljava/lang/String;I)Ljava/util/concurrent/Future;
-    .registers 3
+    .registers 4
+    .param p1, "reason"  # Ljava/lang/String;
+    .param p2, "flags"  # I
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(",
@@ -2243,14 +2523,17 @@
     :try_start_1
     invoke-direct {p0, p1, p2}, Lcom/android/server/am/BatteryExternalStatsWorker;->scheduleSyncLocked(Ljava/lang/String;I)Ljava/util/concurrent/Future;
 
-    move-result-object p1
+    move-result-object v0
     :try_end_5
     .catchall {:try_start_1 .. :try_end_5} :catchall_7
 
     monitor-exit p0
 
-    return-object p1
+    return-object v0
 
+    .end local p0  # "this":Lcom/android/server/am/BatteryExternalStatsWorker;
+    .end local p1  # "reason":Ljava/lang/String;
+    .end local p2  # "flags":I
     :catchall_7
     move-exception p1
 
@@ -2261,6 +2544,7 @@
 
 .method public scheduleSyncDueToBatteryLevelChange(J)Ljava/util/concurrent/Future;
     .registers 5
+    .param p1, "delayMillis"  # J
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(J)",
@@ -2282,26 +2566,26 @@
 
     invoke-direct {p0, v0, v1, p1, p2}, Lcom/android/server/am/BatteryExternalStatsWorker;->scheduleDelayedSyncLocked(Ljava/util/concurrent/Future;Ljava/lang/Runnable;J)Ljava/util/concurrent/Future;
 
-    move-result-object p1
+    move-result-object v0
 
-    iput-object p1, p0, Lcom/android/server/am/BatteryExternalStatsWorker;->mBatteryLevelSync:Ljava/util/concurrent/Future;
+    iput-object v0, p0, Lcom/android/server/am/BatteryExternalStatsWorker;->mBatteryLevelSync:Ljava/util/concurrent/Future;
 
     .line 238
-    iget-object p1, p0, Lcom/android/server/am/BatteryExternalStatsWorker;->mBatteryLevelSync:Ljava/util/concurrent/Future;
+    iget-object v0, p0, Lcom/android/server/am/BatteryExternalStatsWorker;->mBatteryLevelSync:Ljava/util/concurrent/Future;
 
     monitor-exit p0
 
-    return-object p1
+    return-object v0
 
     .line 239
     :catchall_12
-    move-exception p1
+    move-exception v0
 
     monitor-exit p0
     :try_end_14
     .catchall {:try_start_1 .. :try_end_14} :catchall_12
 
-    throw p1
+    throw v0
 .end method
 
 .method public declared-synchronized scheduleWrite()Ljava/util/concurrent/Future;
@@ -2344,6 +2628,7 @@
     return-object v0
 
     .line 285
+    .end local p0  # "this":Lcom/android/server/am/BatteryExternalStatsWorker;
     :cond_17
     :try_start_17
     const-string/jumbo v0, "write"

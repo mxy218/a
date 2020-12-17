@@ -21,8 +21,9 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/LocationManagerService;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/LocationManagerService;
 
-    .line 440
+    .line 531
     iput-object p1, p0, Lcom/android/server/LocationManagerService$8;->this$0:Lcom/android/server/LocationManagerService;
 
     invoke-direct {p0}, Landroid/content/BroadcastReceiver;-><init>()V
@@ -33,176 +34,179 @@
 
 # virtual methods
 .method public onReceive(Landroid/content/Context;Landroid/content/Intent;)V
-    .registers 11
+    .registers 12
+    .param p1, "context"  # Landroid/content/Context;
+    .param p2, "intent"  # Landroid/content/Intent;
 
-    .line 443
+    .line 534
     invoke-virtual {p2}, Landroid/content/Intent;->getAction()Ljava/lang/String;
-
-    move-result-object p1
-
-    .line 444
-    if-nez p1, :cond_7
-
-    .line 445
-    return-void
-
-    .line 447
-    :cond_7
-    iget-object v0, p0, Lcom/android/server/LocationManagerService$8;->this$0:Lcom/android/server/LocationManagerService;
-
-    invoke-static {v0}, Lcom/android/server/LocationManagerService;->access$100(Lcom/android/server/LocationManagerService;)Ljava/lang/Object;
 
     move-result-object v0
 
-    monitor-enter v0
+    .line 535
+    .local v0, "action":Ljava/lang/String;
+    if-nez v0, :cond_7
 
-    .line 448
-    const/4 v1, -0x1
+    .line 536
+    return-void
+
+    .line 538
+    :cond_7
+    iget-object v1, p0, Lcom/android/server/LocationManagerService$8;->this$0:Lcom/android/server/LocationManagerService;
+
+    invoke-static {v1}, Lcom/android/server/LocationManagerService;->access$100(Lcom/android/server/LocationManagerService;)Ljava/lang/Object;
+
+    move-result-object v1
+
+    monitor-enter v1
+
+    .line 539
+    const/4 v2, -0x1
 
     :try_start_f
-    invoke-virtual {p1}, Ljava/lang/String;->hashCode()I
+    invoke-virtual {v0}, Ljava/lang/String;->hashCode()I
 
-    move-result v2
+    move-result v3
 
-    const/4 v3, 0x0
+    const/4 v4, 0x0
 
-    const/4 v4, 0x4
+    const/4 v5, 0x4
 
-    const/4 v5, 0x3
+    const/4 v6, 0x3
 
-    const/4 v6, 0x2
+    const/4 v7, 0x2
 
-    const/4 v7, 0x1
+    const/4 v8, 0x1
 
-    sparse-switch v2, :sswitch_data_76
+    sparse-switch v3, :sswitch_data_76
 
     :cond_1b
     goto :goto_4d
 
     :sswitch_1c
-    const-string v2, "android.intent.action.MANAGED_PROFILE_REMOVED"
+    const-string v3, "android.intent.action.MANAGED_PROFILE_REMOVED"
 
-    invoke-virtual {p1, v2}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v0, v3}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result p1
+    move-result v3
 
-    if-eqz p1, :cond_1b
+    if-eqz v3, :cond_1b
 
-    move v1, v6
+    move v2, v7
 
     goto :goto_4d
 
     :sswitch_26
-    const-string v2, "android.intent.action.USER_SWITCHED"
+    const-string v3, "android.intent.action.USER_SWITCHED"
 
-    invoke-virtual {p1, v2}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v0, v3}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result p1
+    move-result v3
 
-    if-eqz p1, :cond_1b
+    if-eqz v3, :cond_1b
 
-    move v1, v3
+    move v2, v4
 
     goto :goto_4d
 
     :sswitch_30
-    const-string v2, "android.intent.action.MANAGED_PROFILE_ADDED"
+    const-string v3, "android.intent.action.MANAGED_PROFILE_ADDED"
 
-    invoke-virtual {p1, v2}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v0, v3}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result p1
+    move-result v3
 
-    if-eqz p1, :cond_1b
+    if-eqz v3, :cond_1b
 
-    move v1, v7
+    move v2, v8
 
     goto :goto_4d
 
     :sswitch_3a
-    const-string v2, "android.intent.action.SCREEN_ON"
+    const-string v3, "android.intent.action.SCREEN_ON"
 
-    invoke-virtual {p1, v2}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v0, v3}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result p1
+    move-result v3
 
-    if-eqz p1, :cond_1b
+    if-eqz v3, :cond_1b
 
-    move v1, v5
+    move v2, v6
 
     goto :goto_4d
 
     :sswitch_44
-    const-string v2, "android.intent.action.SCREEN_OFF"
+    const-string v3, "android.intent.action.SCREEN_OFF"
 
-    invoke-virtual {p1, v2}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v0, v3}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result p1
+    move-result v3
 
-    if-eqz p1, :cond_1b
+    if-eqz v3, :cond_1b
 
-    move v1, v4
+    move v2, v5
 
     :goto_4d
-    if-eqz v1, :cond_64
+    if-eqz v2, :cond_64
 
-    if-eq v1, v7, :cond_5e
+    if-eq v2, v8, :cond_5e
 
-    if-eq v1, v6, :cond_5e
+    if-eq v2, v7, :cond_5e
 
-    if-eq v1, v5, :cond_58
+    if-eq v2, v6, :cond_58
 
-    if-eq v1, v4, :cond_58
+    if-eq v2, v5, :cond_58
 
     goto :goto_70
 
-    .line 458
+    .line 549
     :cond_58
-    iget-object p1, p0, Lcom/android/server/LocationManagerService$8;->this$0:Lcom/android/server/LocationManagerService;
+    iget-object v2, p0, Lcom/android/server/LocationManagerService$8;->this$0:Lcom/android/server/LocationManagerService;
 
-    invoke-static {p1}, Lcom/android/server/LocationManagerService;->access$1100(Lcom/android/server/LocationManagerService;)V
+    invoke-static {v2}, Lcom/android/server/LocationManagerService;->access$1200(Lcom/android/server/LocationManagerService;)V
 
     goto :goto_70
 
-    .line 454
+    .line 545
     :cond_5e
-    iget-object p1, p0, Lcom/android/server/LocationManagerService$8;->this$0:Lcom/android/server/LocationManagerService;
+    iget-object v2, p0, Lcom/android/server/LocationManagerService$8;->this$0:Lcom/android/server/LocationManagerService;
 
-    invoke-static {p1}, Lcom/android/server/LocationManagerService;->access$1000(Lcom/android/server/LocationManagerService;)V
+    invoke-static {v2}, Lcom/android/server/LocationManagerService;->access$1100(Lcom/android/server/LocationManagerService;)V
 
-    .line 455
+    .line 546
     goto :goto_70
 
-    .line 450
+    .line 541
     :cond_64
-    iget-object p1, p0, Lcom/android/server/LocationManagerService$8;->this$0:Lcom/android/server/LocationManagerService;
+    iget-object v2, p0, Lcom/android/server/LocationManagerService$8;->this$0:Lcom/android/server/LocationManagerService;
 
-    const-string v1, "android.intent.extra.user_handle"
+    const-string v3, "android.intent.extra.user_handle"
 
-    invoke-virtual {p2, v1, v3}, Landroid/content/Intent;->getIntExtra(Ljava/lang/String;I)I
+    invoke-virtual {p2, v3, v4}, Landroid/content/Intent;->getIntExtra(Ljava/lang/String;I)I
 
-    move-result p2
+    move-result v3
 
-    invoke-static {p1, p2}, Lcom/android/server/LocationManagerService;->access$900(Lcom/android/server/LocationManagerService;I)V
+    invoke-static {v2, v3}, Lcom/android/server/LocationManagerService;->access$1000(Lcom/android/server/LocationManagerService;I)V
 
-    .line 451
+    .line 542
     nop
 
-    .line 461
+    .line 552
     :goto_70
-    monitor-exit v0
+    monitor-exit v1
 
-    .line 462
+    .line 553
     return-void
 
-    .line 461
+    .line 552
     :catchall_72
-    move-exception p1
+    move-exception v2
 
-    monitor-exit v0
+    monitor-exit v1
     :try_end_74
     .catchall {:try_start_f .. :try_end_74} :catchall_72
 
-    throw p1
+    throw v2
 
     nop
 

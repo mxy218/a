@@ -38,6 +38,9 @@
 # virtual methods
 .method addToEventStats(Ljava/util/List;IJJ)V
     .registers 11
+    .param p2, "event"  # I
+    .param p3, "beginTime"  # J
+    .param p5, "endTime"  # J
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(",
@@ -48,6 +51,7 @@
     .end annotation
 
     .line 101
+    .local p1, "out":Ljava/util/List;, "Ljava/util/List<Landroid/app/usage/EventStats;>;"
     iget v0, p0, Lcom/android/server/usage/IntervalStats$EventTracker;->count:I
 
     if-nez v0, :cond_c
@@ -67,12 +71,13 @@
     invoke-direct {v0}, Landroid/app/usage/EventStats;-><init>()V
 
     .line 103
+    .local v0, "ev":Landroid/app/usage/EventStats;
     iput p2, v0, Landroid/app/usage/EventStats;->mEventType:I
 
     .line 104
-    iget p2, p0, Lcom/android/server/usage/IntervalStats$EventTracker;->count:I
+    iget v1, p0, Lcom/android/server/usage/IntervalStats$EventTracker;->count:I
 
-    iput p2, v0, Landroid/app/usage/EventStats;->mCount:I
+    iput v1, v0, Landroid/app/usage/EventStats;->mCount:I
 
     .line 105
     iget-wide v1, p0, Lcom/android/server/usage/IntervalStats$EventTracker;->duration:J
@@ -94,12 +99,14 @@
     invoke-interface {p1, v0}, Ljava/util/List;->add(Ljava/lang/Object;)Z
 
     .line 111
+    .end local v0  # "ev":Landroid/app/usage/EventStats;
     :cond_26
     return-void
 .end method
 
 .method public commitTime(J)V
     .registers 9
+    .param p1, "timeStamp"  # J
 
     .line 84
     iget-wide v0, p0, Lcom/android/server/usage/IntervalStats$EventTracker;->curStartTime:J
@@ -108,14 +115,14 @@
 
     cmp-long v4, v0, v2
 
-    if-eqz v4, :cond_10
+    if-eqz v4, :cond_11
 
     .line 85
     iget-wide v4, p0, Lcom/android/server/usage/IntervalStats$EventTracker;->duration:J
 
-    sub-long/2addr p1, v0
+    sub-long v0, p1, v0
 
-    add-long/2addr v4, p1
+    add-long/2addr v4, v0
 
     iput-wide v4, p0, Lcom/android/server/usage/IntervalStats$EventTracker;->duration:J
 
@@ -123,12 +130,13 @@
     iput-wide v2, p0, Lcom/android/server/usage/IntervalStats$EventTracker;->curStartTime:J
 
     .line 88
-    :cond_10
+    :cond_11
     return-void
 .end method
 
 .method public update(J)V
     .registers 7
+    .param p1, "timeStamp"  # J
 
     .line 91
     iget-wide v0, p0, Lcom/android/server/usage/IntervalStats$EventTracker;->curStartTime:J

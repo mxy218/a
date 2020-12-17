@@ -24,6 +24,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/wm/DragDropController;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/wm/DragDropController;
 
     .line 70
     iput-object p1, p0, Lcom/android/server/wm/DragDropController$1;->this$0:Lcom/android/server/wm/DragDropController;

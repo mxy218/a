@@ -24,6 +24,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/connectivity/PacManager;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/connectivity/PacManager;
 
     .line 108
     iput-object p1, p0, Lcom/android/server/connectivity/PacManager$1;->this$0:Lcom/android/server/connectivity/PacManager;
@@ -36,7 +37,7 @@
 
 # virtual methods
 .method public run()V
-    .registers 7
+    .registers 8
 
     .line 113
     iget-object v0, p0, Lcom/android/server/connectivity/PacManager$1;->this$0:Lcom/android/server/connectivity/PacManager;
@@ -46,6 +47,7 @@
     move-result-object v0
 
     .line 114
+    .local v0, "pacUrl":Landroid/net/Uri;
     sget-object v1, Landroid/net/Uri;->EMPTY:Landroid/net/Uri;
 
     invoke-virtual {v1, v0}, Landroid/net/Uri;->equals(Ljava/lang/Object;)Z
@@ -65,142 +67,153 @@
     move-result v1
 
     .line 118
+    .local v1, "oldTag":I
     :try_start_15
     invoke-static {v0}, Lcom/android/server/connectivity/PacManager;->access$100(Landroid/net/Uri;)Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v2
     :try_end_19
     .catch Ljava/io/IOException; {:try_start_15 .. :try_end_19} :catch_1f
     .catchall {:try_start_15 .. :try_end_19} :catchall_1d
 
     .line 123
+    .local v2, "file":Ljava/lang/String;
     invoke-static {v1}, Landroid/net/TrafficStats;->setThreadStatsTag(I)V
 
     .line 124
-    goto :goto_3b
+    goto :goto_3c
 
     .line 123
+    .end local v2  # "file":Ljava/lang/String;
     :catchall_1d
-    move-exception v0
+    move-exception v2
 
-    goto :goto_70
+    goto :goto_71
 
     .line 119
     :catch_1f
-    move-exception v0
+    move-exception v2
 
     .line 120
-    const/4 v2, 0x0
+    .local v2, "ioe":Ljava/io/IOException;
+    const/4 v3, 0x0
 
     .line 121
+    .local v3, "file":Ljava/lang/String;
     :try_start_21
-    const-string v3, "PacManager"
+    const-string v4, "PacManager"
 
-    new-instance v4, Ljava/lang/StringBuilder;
+    new-instance v5, Ljava/lang/StringBuilder;
 
-    invoke-direct {v4}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v5}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v5, "Failed to load PAC file: "
+    const-string v6, "Failed to load PAC file: "
 
-    invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v4, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    invoke-virtual {v5, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v4}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v5}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v5
 
-    invoke-static {v3, v0}, Landroid/util/Log;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v4, v5}, Landroid/util/Log;->w(Ljava/lang/String;Ljava/lang/String;)I
     :try_end_37
     .catchall {:try_start_21 .. :try_end_37} :catchall_1d
 
     .line 123
+    nop
+
+    .end local v2  # "ioe":Ljava/io/IOException;
     invoke-static {v1}, Landroid/net/TrafficStats;->setThreadStatsTag(I)V
 
     .line 124
-    move-object v0, v2
+    move-object v2, v3
 
     .line 125
-    :goto_3b
-    if-eqz v0, :cond_6a
+    .end local v3  # "file":Ljava/lang/String;
+    .local v2, "file":Ljava/lang/String;
+    :goto_3c
+    if-eqz v2, :cond_6b
 
     .line 126
-    iget-object v1, p0, Lcom/android/server/connectivity/PacManager$1;->this$0:Lcom/android/server/connectivity/PacManager;
+    iget-object v3, p0, Lcom/android/server/connectivity/PacManager$1;->this$0:Lcom/android/server/connectivity/PacManager;
 
-    invoke-static {v1}, Lcom/android/server/connectivity/PacManager;->access$200(Lcom/android/server/connectivity/PacManager;)Ljava/lang/Object;
+    invoke-static {v3}, Lcom/android/server/connectivity/PacManager;->access$200(Lcom/android/server/connectivity/PacManager;)Ljava/lang/Object;
 
-    move-result-object v1
+    move-result-object v3
 
-    monitor-enter v1
+    monitor-enter v3
 
     .line 127
-    :try_start_44
-    iget-object v2, p0, Lcom/android/server/connectivity/PacManager$1;->this$0:Lcom/android/server/connectivity/PacManager;
+    :try_start_45
+    iget-object v4, p0, Lcom/android/server/connectivity/PacManager$1;->this$0:Lcom/android/server/connectivity/PacManager;
 
-    invoke-static {v2}, Lcom/android/server/connectivity/PacManager;->access$300(Lcom/android/server/connectivity/PacManager;)Ljava/lang/String;
+    invoke-static {v4}, Lcom/android/server/connectivity/PacManager;->access$300(Lcom/android/server/connectivity/PacManager;)Ljava/lang/String;
 
-    move-result-object v2
+    move-result-object v4
 
-    invoke-virtual {v0, v2}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v2, v4}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result v2
+    move-result v4
 
-    if-nez v2, :cond_55
+    if-nez v4, :cond_56
 
     .line 128
-    iget-object v2, p0, Lcom/android/server/connectivity/PacManager$1;->this$0:Lcom/android/server/connectivity/PacManager;
+    iget-object v4, p0, Lcom/android/server/connectivity/PacManager$1;->this$0:Lcom/android/server/connectivity/PacManager;
 
-    invoke-static {v2, v0}, Lcom/android/server/connectivity/PacManager;->access$400(Lcom/android/server/connectivity/PacManager;Ljava/lang/String;)V
+    invoke-static {v4, v2}, Lcom/android/server/connectivity/PacManager;->access$400(Lcom/android/server/connectivity/PacManager;Ljava/lang/String;)V
 
     .line 130
-    :cond_55
-    monitor-exit v1
-    :try_end_56
-    .catchall {:try_start_44 .. :try_end_56} :catchall_67
+    :cond_56
+    monitor-exit v3
+    :try_end_57
+    .catchall {:try_start_45 .. :try_end_57} :catchall_68
 
     .line 131
-    iget-object v0, p0, Lcom/android/server/connectivity/PacManager$1;->this$0:Lcom/android/server/connectivity/PacManager;
+    iget-object v3, p0, Lcom/android/server/connectivity/PacManager$1;->this$0:Lcom/android/server/connectivity/PacManager;
 
-    const/4 v1, 0x1
+    const/4 v4, 0x1
 
-    invoke-static {v0, v1}, Lcom/android/server/connectivity/PacManager;->access$502(Lcom/android/server/connectivity/PacManager;Z)Z
+    invoke-static {v3, v4}, Lcom/android/server/connectivity/PacManager;->access$502(Lcom/android/server/connectivity/PacManager;Z)Z
 
     .line 132
-    iget-object v0, p0, Lcom/android/server/connectivity/PacManager$1;->this$0:Lcom/android/server/connectivity/PacManager;
+    iget-object v3, p0, Lcom/android/server/connectivity/PacManager$1;->this$0:Lcom/android/server/connectivity/PacManager;
 
-    invoke-static {v0}, Lcom/android/server/connectivity/PacManager;->access$600(Lcom/android/server/connectivity/PacManager;)V
+    invoke-static {v3}, Lcom/android/server/connectivity/PacManager;->access$600(Lcom/android/server/connectivity/PacManager;)V
 
     .line 133
-    iget-object v0, p0, Lcom/android/server/connectivity/PacManager$1;->this$0:Lcom/android/server/connectivity/PacManager;
+    iget-object v3, p0, Lcom/android/server/connectivity/PacManager$1;->this$0:Lcom/android/server/connectivity/PacManager;
 
-    invoke-static {v0}, Lcom/android/server/connectivity/PacManager;->access$700(Lcom/android/server/connectivity/PacManager;)V
+    invoke-static {v3}, Lcom/android/server/connectivity/PacManager;->access$700(Lcom/android/server/connectivity/PacManager;)V
 
-    goto :goto_6f
+    goto :goto_70
 
     .line 130
-    :catchall_67
-    move-exception v0
+    :catchall_68
+    move-exception v4
 
-    :try_start_68
-    monitor-exit v1
-    :try_end_69
-    .catchall {:try_start_68 .. :try_end_69} :catchall_67
+    :try_start_69
+    monitor-exit v3
+    :try_end_6a
+    .catchall {:try_start_69 .. :try_end_6a} :catchall_68
 
-    throw v0
+    throw v4
 
     .line 135
-    :cond_6a
-    iget-object v0, p0, Lcom/android/server/connectivity/PacManager$1;->this$0:Lcom/android/server/connectivity/PacManager;
+    :cond_6b
+    iget-object v3, p0, Lcom/android/server/connectivity/PacManager$1;->this$0:Lcom/android/server/connectivity/PacManager;
 
-    invoke-static {v0}, Lcom/android/server/connectivity/PacManager;->access$800(Lcom/android/server/connectivity/PacManager;)V
+    invoke-static {v3}, Lcom/android/server/connectivity/PacManager;->access$800(Lcom/android/server/connectivity/PacManager;)V
 
     .line 137
-    :goto_6f
+    :goto_70
     return-void
 
     .line 123
-    :goto_70
+    .end local v2  # "file":Ljava/lang/String;
+    :goto_71
     invoke-static {v1}, Landroid/net/TrafficStats;->setThreadStatsTag(I)V
 
-    throw v0
+    throw v2
 .end method

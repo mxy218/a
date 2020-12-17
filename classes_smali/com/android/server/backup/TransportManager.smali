@@ -73,7 +73,10 @@
 
 # direct methods
 .method constructor <init>(ILandroid/content/Context;Ljava/util/Set;Ljava/lang/String;)V
-    .registers 7
+    .registers 8
+    .param p1, "userId"  # I
+    .param p2, "context"  # Landroid/content/Context;
+    .param p4, "selectedTransport"  # Ljava/lang/String;
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(I",
@@ -87,6 +90,7 @@
     .end annotation
 
     .line 90
+    .local p3, "whitelist":Ljava/util/Set;, "Ljava/util/Set<Landroid/content/ComponentName;>;"
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
     .line 63
@@ -123,39 +127,39 @@
     .line 92
     invoke-virtual {p2}, Landroid/content/Context;->getPackageManager()Landroid/content/pm/PackageManager;
 
-    move-result-object p1
+    move-result-object v0
 
-    iput-object p1, p0, Lcom/android/server/backup/TransportManager;->mPackageManager:Landroid/content/pm/PackageManager;
+    iput-object v0, p0, Lcom/android/server/backup/TransportManager;->mPackageManager:Landroid/content/pm/PackageManager;
 
     .line 93
     invoke-static {p3}, Lcom/android/internal/util/Preconditions;->checkNotNull(Ljava/lang/Object;)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v0
 
-    check-cast p1, Ljava/util/Set;
+    check-cast v0, Ljava/util/Set;
 
-    iput-object p1, p0, Lcom/android/server/backup/TransportManager;->mTransportWhitelist:Ljava/util/Set;
+    iput-object v0, p0, Lcom/android/server/backup/TransportManager;->mTransportWhitelist:Ljava/util/Set;
 
     .line 94
     iput-object p4, p0, Lcom/android/server/backup/TransportManager;->mCurrentTransportName:Ljava/lang/String;
 
     .line 95
-    new-instance p1, Lcom/android/server/backup/transport/TransportStats;
+    new-instance v0, Lcom/android/server/backup/transport/TransportStats;
 
-    invoke-direct {p1}, Lcom/android/server/backup/transport/TransportStats;-><init>()V
+    invoke-direct {v0}, Lcom/android/server/backup/transport/TransportStats;-><init>()V
 
-    iput-object p1, p0, Lcom/android/server/backup/TransportManager;->mTransportStats:Lcom/android/server/backup/transport/TransportStats;
+    iput-object v0, p0, Lcom/android/server/backup/TransportManager;->mTransportStats:Lcom/android/server/backup/transport/TransportStats;
 
     .line 96
-    new-instance p1, Lcom/android/server/backup/transport/TransportClientManager;
+    new-instance v0, Lcom/android/server/backup/transport/TransportClientManager;
 
-    iget p3, p0, Lcom/android/server/backup/TransportManager;->mUserId:I
+    iget v1, p0, Lcom/android/server/backup/TransportManager;->mUserId:I
 
-    iget-object p4, p0, Lcom/android/server/backup/TransportManager;->mTransportStats:Lcom/android/server/backup/transport/TransportStats;
+    iget-object v2, p0, Lcom/android/server/backup/TransportManager;->mTransportStats:Lcom/android/server/backup/transport/TransportStats;
 
-    invoke-direct {p1, p3, p2, p4}, Lcom/android/server/backup/transport/TransportClientManager;-><init>(ILandroid/content/Context;Lcom/android/server/backup/transport/TransportStats;)V
+    invoke-direct {v0, v1, p2, v2}, Lcom/android/server/backup/transport/TransportClientManager;-><init>(ILandroid/content/Context;Lcom/android/server/backup/transport/TransportStats;)V
 
-    iput-object p1, p0, Lcom/android/server/backup/TransportManager;->mTransportClientManager:Lcom/android/server/backup/transport/TransportClientManager;
+    iput-object v0, p0, Lcom/android/server/backup/TransportManager;->mTransportClientManager:Lcom/android/server/backup/transport/TransportClientManager;
 
     .line 97
     return-void
@@ -163,6 +167,10 @@
 
 .method constructor <init>(ILandroid/content/Context;Ljava/util/Set;Ljava/lang/String;Lcom/android/server/backup/transport/TransportClientManager;)V
     .registers 8
+    .param p1, "userId"  # I
+    .param p2, "context"  # Landroid/content/Context;
+    .param p4, "selectedTransport"  # Ljava/lang/String;
+    .param p5, "transportClientManager"  # Lcom/android/server/backup/transport/TransportClientManager;
     .annotation build Lcom/android/internal/annotations/VisibleForTesting;
     .end annotation
 
@@ -180,6 +188,7 @@
     .end annotation
 
     .line 105
+    .local p3, "whitelist":Ljava/util/Set;, "Ljava/util/Set<Landroid/content/ComponentName;>;"
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
     .line 63
@@ -216,28 +225,28 @@
     .line 107
     invoke-virtual {p2}, Landroid/content/Context;->getPackageManager()Landroid/content/pm/PackageManager;
 
-    move-result-object p1
+    move-result-object v0
 
-    iput-object p1, p0, Lcom/android/server/backup/TransportManager;->mPackageManager:Landroid/content/pm/PackageManager;
+    iput-object v0, p0, Lcom/android/server/backup/TransportManager;->mPackageManager:Landroid/content/pm/PackageManager;
 
     .line 108
     invoke-static {p3}, Lcom/android/internal/util/Preconditions;->checkNotNull(Ljava/lang/Object;)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v0
 
-    check-cast p1, Ljava/util/Set;
+    check-cast v0, Ljava/util/Set;
 
-    iput-object p1, p0, Lcom/android/server/backup/TransportManager;->mTransportWhitelist:Ljava/util/Set;
+    iput-object v0, p0, Lcom/android/server/backup/TransportManager;->mTransportWhitelist:Ljava/util/Set;
 
     .line 109
     iput-object p4, p0, Lcom/android/server/backup/TransportManager;->mCurrentTransportName:Ljava/lang/String;
 
     .line 110
-    new-instance p1, Lcom/android/server/backup/transport/TransportStats;
+    new-instance v0, Lcom/android/server/backup/transport/TransportStats;
 
-    invoke-direct {p1}, Lcom/android/server/backup/transport/TransportStats;-><init>()V
+    invoke-direct {v0}, Lcom/android/server/backup/transport/TransportStats;-><init>()V
 
-    iput-object p1, p0, Lcom/android/server/backup/TransportManager;->mTransportStats:Lcom/android/server/backup/transport/TransportStats;
+    iput-object v0, p0, Lcom/android/server/backup/TransportManager;->mTransportStats:Lcom/android/server/backup/transport/TransportStats;
 
     .line 111
     iput-object p5, p0, Lcom/android/server/backup/TransportManager;->mTransportClientManager:Lcom/android/server/backup/transport/TransportClientManager;
@@ -270,6 +279,7 @@
 
 .method private static fromPackageFilter(Ljava/lang/String;)Ljava/util/function/Predicate;
     .registers 2
+    .param p0, "packageName"  # Ljava/lang/String;
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(",
@@ -290,7 +300,8 @@
 .end method
 
 .method private getRegisteredTransportComponentLocked(Ljava/lang/String;)Landroid/content/ComponentName;
-    .registers 2
+    .registers 4
+    .param p1, "transportName"  # Ljava/lang/String;
     .annotation build Lcom/android/internal/annotations/GuardedBy;
         value = {
             "mTransportLock"
@@ -303,28 +314,30 @@
     .line 382
     invoke-direct {p0, p1}, Lcom/android/server/backup/TransportManager;->getRegisteredTransportEntryLocked(Ljava/lang/String;)Ljava/util/Map$Entry;
 
-    move-result-object p1
+    move-result-object v0
 
     .line 383
-    if-nez p1, :cond_9
+    .local v0, "entry":Ljava/util/Map$Entry;, "Ljava/util/Map$Entry<Landroid/content/ComponentName;Lcom/android/server/backup/TransportManager$TransportDescription;>;"
+    if-nez v0, :cond_9
 
-    const/4 p1, 0x0
+    const/4 v1, 0x0
 
     goto :goto_f
 
     :cond_9
-    invoke-interface {p1}, Ljava/util/Map$Entry;->getKey()Ljava/lang/Object;
+    invoke-interface {v0}, Ljava/util/Map$Entry;->getKey()Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v1
 
-    check-cast p1, Landroid/content/ComponentName;
+    check-cast v1, Landroid/content/ComponentName;
 
     :goto_f
-    return-object p1
+    return-object v1
 .end method
 
 .method private getRegisteredTransportComponentOrThrowLocked(Ljava/lang/String;)Landroid/content/ComponentName;
-    .registers 3
+    .registers 4
+    .param p1, "transportName"  # Ljava/lang/String;
     .annotation build Lcom/android/internal/annotations/GuardedBy;
         value = {
             "mTransportLock"
@@ -343,6 +356,7 @@
     move-result-object v0
 
     .line 351
+    .local v0, "transportComponent":Landroid/content/ComponentName;
     if-eqz v0, :cond_7
 
     .line 354
@@ -350,15 +364,16 @@
 
     .line 352
     :cond_7
-    new-instance v0, Lcom/android/server/backup/transport/TransportNotRegisteredException;
+    new-instance v1, Lcom/android/server/backup/transport/TransportNotRegisteredException;
 
-    invoke-direct {v0, p1}, Lcom/android/server/backup/transport/TransportNotRegisteredException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v1, p1}, Lcom/android/server/backup/transport/TransportNotRegisteredException;-><init>(Ljava/lang/String;)V
 
-    throw v0
+    throw v1
 .end method
 
 .method private getRegisteredTransportDescriptionLocked(Ljava/lang/String;)Lcom/android/server/backup/TransportManager$TransportDescription;
-    .registers 2
+    .registers 4
+    .param p1, "transportName"  # Ljava/lang/String;
     .annotation build Lcom/android/internal/annotations/GuardedBy;
         value = {
             "mTransportLock"
@@ -371,28 +386,30 @@
     .line 390
     invoke-direct {p0, p1}, Lcom/android/server/backup/TransportManager;->getRegisteredTransportEntryLocked(Ljava/lang/String;)Ljava/util/Map$Entry;
 
-    move-result-object p1
+    move-result-object v0
 
     .line 391
-    if-nez p1, :cond_9
+    .local v0, "entry":Ljava/util/Map$Entry;, "Ljava/util/Map$Entry<Landroid/content/ComponentName;Lcom/android/server/backup/TransportManager$TransportDescription;>;"
+    if-nez v0, :cond_9
 
-    const/4 p1, 0x0
+    const/4 v1, 0x0
 
     goto :goto_f
 
     :cond_9
-    invoke-interface {p1}, Ljava/util/Map$Entry;->getValue()Ljava/lang/Object;
+    invoke-interface {v0}, Ljava/util/Map$Entry;->getValue()Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v1
 
-    check-cast p1, Lcom/android/server/backup/TransportManager$TransportDescription;
+    check-cast v1, Lcom/android/server/backup/TransportManager$TransportDescription;
 
     :goto_f
-    return-object p1
+    return-object v1
 .end method
 
 .method private getRegisteredTransportDescriptionOrThrowLocked(Landroid/content/ComponentName;)Lcom/android/server/backup/TransportManager$TransportDescription;
-    .registers 3
+    .registers 4
+    .param p1, "transportComponent"  # Landroid/content/ComponentName;
     .annotation build Lcom/android/internal/annotations/GuardedBy;
         value = {
             "mTransportLock"
@@ -416,6 +433,7 @@
     check-cast v0, Lcom/android/server/backup/TransportManager$TransportDescription;
 
     .line 362
+    .local v0, "description":Lcom/android/server/backup/TransportManager$TransportDescription;
     if-eqz v0, :cond_b
 
     .line 365
@@ -423,15 +441,16 @@
 
     .line 363
     :cond_b
-    new-instance v0, Lcom/android/server/backup/transport/TransportNotRegisteredException;
+    new-instance v1, Lcom/android/server/backup/transport/TransportNotRegisteredException;
 
-    invoke-direct {v0, p1}, Lcom/android/server/backup/transport/TransportNotRegisteredException;-><init>(Landroid/content/ComponentName;)V
+    invoke-direct {v1, p1}, Lcom/android/server/backup/transport/TransportNotRegisteredException;-><init>(Landroid/content/ComponentName;)V
 
-    throw v0
+    throw v1
 .end method
 
 .method private getRegisteredTransportDescriptionOrThrowLocked(Ljava/lang/String;)Lcom/android/server/backup/TransportManager$TransportDescription;
-    .registers 3
+    .registers 4
+    .param p1, "transportName"  # Ljava/lang/String;
     .annotation build Lcom/android/internal/annotations/GuardedBy;
         value = {
             "mTransportLock"
@@ -450,6 +469,7 @@
     move-result-object v0
 
     .line 372
+    .local v0, "description":Lcom/android/server/backup/TransportManager$TransportDescription;
     if-eqz v0, :cond_7
 
     .line 375
@@ -457,15 +477,16 @@
 
     .line 373
     :cond_7
-    new-instance v0, Lcom/android/server/backup/transport/TransportNotRegisteredException;
+    new-instance v1, Lcom/android/server/backup/transport/TransportNotRegisteredException;
 
-    invoke-direct {v0, p1}, Lcom/android/server/backup/transport/TransportNotRegisteredException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v1, p1}, Lcom/android/server/backup/transport/TransportNotRegisteredException;-><init>(Ljava/lang/String;)V
 
-    throw v0
+    throw v1
 .end method
 
 .method private getRegisteredTransportEntryLocked(Ljava/lang/String;)Ljava/util/Map$Entry;
-    .registers 5
+    .registers 6
+    .param p1, "transportName"  # Ljava/lang/String;
     .annotation build Lcom/android/internal/annotations/GuardedBy;
         value = {
             "mTransportLock"
@@ -509,6 +530,7 @@
     check-cast v1, Ljava/util/Map$Entry;
 
     .line 400
+    .local v1, "entry":Ljava/util/Map$Entry;, "Ljava/util/Map$Entry<Landroid/content/ComponentName;Lcom/android/server/backup/TransportManager$TransportDescription;>;"
     invoke-interface {v1}, Ljava/util/Map$Entry;->getValue()Ljava/lang/Object;
 
     move-result-object v2
@@ -516,32 +538,36 @@
     check-cast v2, Lcom/android/server/backup/TransportManager$TransportDescription;
 
     .line 401
+    .local v2, "description":Lcom/android/server/backup/TransportManager$TransportDescription;
     invoke-static {v2}, Lcom/android/server/backup/TransportManager$TransportDescription;->access$000(Lcom/android/server/backup/TransportManager$TransportDescription;)Ljava/lang/String;
 
-    move-result-object v2
+    move-result-object v3
 
-    invoke-virtual {p1, v2}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {p1, v3}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result v2
+    move-result v3
 
-    if-eqz v2, :cond_27
+    if-eqz v3, :cond_27
 
     .line 402
     return-object v1
 
     .line 404
+    .end local v1  # "entry":Ljava/util/Map$Entry;, "Ljava/util/Map$Entry<Landroid/content/ComponentName;Lcom/android/server/backup/TransportManager$TransportDescription;>;"
+    .end local v2  # "description":Lcom/android/server/backup/TransportManager$TransportDescription;
     :cond_27
     goto :goto_a
 
     .line 405
     :cond_28
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    return-object p1
+    return-object v0
 .end method
 
 .method private isTransportTrusted(Landroid/content/ComponentName;)Z
     .registers 7
+    .param p1, "transport"  # Landroid/content/ComponentName;
 
     .line 595
     iget-object v0, p0, Lcom/android/server/backup/TransportManager;->mTransportWhitelist:Ljava/util/Set;
@@ -568,20 +594,20 @@
     .line 598
     invoke-virtual {p1}, Landroid/content/ComponentName;->flattenToShortString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v3
 
-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string p1, " not whitelisted."
+    const-string v3, " not whitelisted."
 
-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
     .line 596
-    invoke-static {v1, p1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v0}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 599
     return v2
@@ -603,38 +629,39 @@
     move-result-object v0
 
     .line 604
-    iget-object v0, v0, Landroid/content/pm/PackageInfo;->applicationInfo:Landroid/content/pm/ApplicationInfo;
+    .local v0, "packInfo":Landroid/content/pm/PackageInfo;
+    iget-object v3, v0, Landroid/content/pm/PackageInfo;->applicationInfo:Landroid/content/pm/ApplicationInfo;
 
-    iget v0, v0, Landroid/content/pm/ApplicationInfo;->privateFlags:I
+    iget v3, v3, Landroid/content/pm/ApplicationInfo;->privateFlags:I
 
-    and-int/lit8 v0, v0, 0x8
+    and-int/lit8 v3, v3, 0x8
 
-    if-nez v0, :cond_5b
+    if-nez v3, :cond_5b
 
     .line 606
-    new-instance v0, Ljava/lang/StringBuilder;
+    new-instance v3, Ljava/lang/StringBuilder;
 
-    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v3, "Transport package "
+    const-string v4, "Transport package "
 
-    invoke-virtual {v0, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {p1}, Landroid/content/ComponentName;->getPackageName()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v4
 
-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string p1, " not privileged"
+    const-string v4, " not privileged"
 
-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v3
 
-    invoke-static {v1, p1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v3}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
     :try_end_5a
     .catch Landroid/content/pm/PackageManager$NameNotFoundException; {:try_start_29 .. :try_end_5a} :catch_5e
 
@@ -642,69 +669,78 @@
     return v2
 
     .line 612
+    .end local v0  # "packInfo":Landroid/content/pm/PackageInfo;
     :cond_5b
     nop
 
     .line 613
-    const/4 p1, 0x1
+    const/4 v0, 0x1
 
-    return p1
+    return v0
 
     .line 609
     :catch_5e
-    move-exception p1
+    move-exception v0
 
     .line 610
-    const-string v0, "Package not found."
+    .local v0, "e":Landroid/content/pm/PackageManager$NameNotFoundException;
+    const-string v3, "Package not found."
 
-    invoke-static {v1, v0, p1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    invoke-static {v1, v3, v0}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
     .line 611
     return v2
 .end method
 
 .method static synthetic lambda$fromPackageFilter$3(Ljava/lang/String;Landroid/content/ComponentName;)Z
-    .registers 2
+    .registers 3
+    .param p0, "packageName"  # Ljava/lang/String;
+    .param p1, "transportComponent"  # Landroid/content/ComponentName;
 
     .line 701
     invoke-virtual {p1}, Landroid/content/ComponentName;->getPackageName()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    invoke-virtual {p0, p1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {p0, v0}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result p0
+    move-result v0
 
-    return p0
+    return v0
 .end method
 
 .method static synthetic lambda$new$0(Ljava/lang/String;Ljava/lang/String;)V
     .registers 2
+    .param p0, "c"  # Ljava/lang/String;
+    .param p1, "n"  # Ljava/lang/String;
 
     .line 69
     return-void
 .end method
 
 .method static synthetic lambda$onPackageAdded$1(Landroid/content/ComponentName;)Z
-    .registers 1
+    .registers 2
+    .param p0, "transportComponent"  # Landroid/content/ComponentName;
 
     .line 121
-    const/4 p0, 0x1
+    const/4 v0, 0x1
 
-    return p0
+    return v0
 .end method
 
 .method static synthetic lambda$registerTransports$2(Landroid/content/ComponentName;)Z
-    .registers 1
+    .registers 2
+    .param p0, "transportComponent"  # Landroid/content/ComponentName;
 
     .line 558
-    const/4 p0, 0x1
+    const/4 v0, 0x1
 
-    return p0
+    return v0
 .end method
 
 .method private registerTransport(Landroid/content/ComponentName;)I
-    .registers 11
+    .registers 13
+    .param p1, "transportComponent"  # Landroid/content/ComponentName;
 
     .line 627
     const-string v0, "Transport "
@@ -721,9 +757,9 @@
     if-nez v2, :cond_f
 
     .line 630
-    const/4 p1, -0x2
+    const/4 v0, -0x2
 
-    return p1
+    return v0
 
     .line 633
     :cond_f
@@ -732,14 +768,17 @@
     move-result-object v2
 
     .line 634
+    .local v2, "transportString":Ljava/lang/String;
     const-string v3, "TransportManager.registerTransport()"
 
     .line 636
+    .local v3, "callerLogString":Ljava/lang/String;
     new-instance v4, Landroid/os/Bundle;
 
     invoke-direct {v4}, Landroid/os/Bundle;-><init>()V
 
     .line 637
+    .local v4, "extras":Landroid/os/Bundle;
     const/4 v5, 0x1
 
     const-string v6, "android.app.backup.extra.TRANSPORT_REGISTRATION"
@@ -752,138 +791,154 @@
     .line 640
     invoke-virtual {v5, p1, v4, v3}, Lcom/android/server/backup/transport/TransportClientManager;->getTransportClient(Landroid/content/ComponentName;Landroid/os/Bundle;Ljava/lang/String;)Lcom/android/server/backup/transport/TransportClient;
 
-    move-result-object v4
+    move-result-object v5
 
     .line 644
-    const/4 v5, -0x1
-
-    :try_start_27
-    invoke-virtual {v4, v3}, Lcom/android/server/backup/transport/TransportClient;->connectOrThrow(Ljava/lang/String;)Lcom/android/internal/backup/IBackupTransport;
+    .local v5, "transportClient":Lcom/android/server/backup/transport/TransportClient;
+    :try_start_26
+    invoke-virtual {v5, v3}, Lcom/android/server/backup/transport/TransportClient;->connectOrThrow(Ljava/lang/String;)Lcom/android/internal/backup/IBackupTransport;
 
     move-result-object v6
-    :try_end_2b
-    .catch Lcom/android/server/backup/transport/TransportNotAvailableException; {:try_start_27 .. :try_end_2b} :catch_74
+    :try_end_2a
+    .catch Lcom/android/server/backup/transport/TransportNotAvailableException; {:try_start_26 .. :try_end_2a} :catch_73
 
     .line 649
+    .local v6, "transport":Lcom/android/internal/backup/IBackupTransport;
     nop
 
     .line 653
-    :try_start_2c
+    :try_start_2b
     invoke-interface {v6}, Lcom/android/internal/backup/IBackupTransport;->name()Ljava/lang/String;
 
     move-result-object v7
 
     .line 654
+    .local v7, "transportName":Ljava/lang/String;
     invoke-interface {v6}, Lcom/android/internal/backup/IBackupTransport;->transportDirName()Ljava/lang/String;
 
     move-result-object v8
 
     .line 655
+    .local v8, "transportDirName":Ljava/lang/String;
     invoke-direct {p0, p1, v6}, Lcom/android/server/backup/TransportManager;->registerTransport(Landroid/content/ComponentName;Lcom/android/internal/backup/IBackupTransport;)V
 
     .line 657
-    new-instance p1, Ljava/lang/StringBuilder;
+    new-instance v9, Ljava/lang/StringBuilder;
 
-    invoke-direct {p1}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v9}, Ljava/lang/StringBuilder;-><init>()V
 
-    invoke-virtual {p1, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v9, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v9, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string v6, " registered"
+    const-string v10, " registered"
 
-    invoke-virtual {p1, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v9, v10}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v9}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v9
 
-    invoke-static {v1, p1}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v9}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 658
-    iget-object p1, p0, Lcom/android/server/backup/TransportManager;->mOnTransportRegisteredListener:Lcom/android/server/backup/transport/OnTransportRegisteredListener;
+    iget-object v9, p0, Lcom/android/server/backup/TransportManager;->mOnTransportRegisteredListener:Lcom/android/server/backup/transport/OnTransportRegisteredListener;
 
-    invoke-interface {p1, v7, v8}, Lcom/android/server/backup/transport/OnTransportRegisteredListener;->onTransportRegistered(Ljava/lang/String;Ljava/lang/String;)V
-    :try_end_53
-    .catch Landroid/os/RemoteException; {:try_start_2c .. :try_end_53} :catch_55
+    invoke-interface {v9, v7, v8}, Lcom/android/server/backup/transport/OnTransportRegisteredListener;->onTransportRegistered(Ljava/lang/String;Ljava/lang/String;)V
+    :try_end_52
+    .catch Landroid/os/RemoteException; {:try_start_2b .. :try_end_52} :catch_54
 
     .line 659
-    const/4 v5, 0x0
+    const/4 v0, 0x0
 
     .line 663
-    goto :goto_6e
+    .end local v7  # "transportName":Ljava/lang/String;
+    .end local v8  # "transportDirName":Ljava/lang/String;
+    .local v0, "result":I
+    goto :goto_6d
 
     .line 660
-    :catch_55
-    move-exception p1
+    .end local v0  # "result":I
+    :catch_54
+    move-exception v7
 
     .line 661
-    new-instance p1, Ljava/lang/StringBuilder;
+    .local v7, "e":Landroid/os/RemoteException;
+    new-instance v8, Ljava/lang/StringBuilder;
 
-    invoke-direct {p1}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v8}, Ljava/lang/StringBuilder;-><init>()V
 
-    invoke-virtual {p1, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v8, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v8, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     const-string v0, " died while registering"
 
-    invoke-virtual {p1, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v8, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v8}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    invoke-static {v1, p1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v0}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 662
-    nop
+    const/4 v0, -0x1
 
     .line 665
-    :goto_6e
-    iget-object p1, p0, Lcom/android/server/backup/TransportManager;->mTransportClientManager:Lcom/android/server/backup/transport/TransportClientManager;
+    .end local v7  # "e":Landroid/os/RemoteException;
+    .restart local v0  # "result":I
+    :goto_6d
+    iget-object v1, p0, Lcom/android/server/backup/TransportManager;->mTransportClientManager:Lcom/android/server/backup/transport/TransportClientManager;
 
-    invoke-virtual {p1, v4, v3}, Lcom/android/server/backup/transport/TransportClientManager;->disposeOfTransportClient(Lcom/android/server/backup/transport/TransportClient;Ljava/lang/String;)V
+    invoke-virtual {v1, v5, v3}, Lcom/android/server/backup/transport/TransportClientManager;->disposeOfTransportClient(Lcom/android/server/backup/transport/TransportClient;Ljava/lang/String;)V
 
     .line 666
-    return v5
+    return v0
 
     .line 645
-    :catch_74
-    move-exception p1
+    .end local v0  # "result":I
+    .end local v6  # "transport":Lcom/android/internal/backup/IBackupTransport;
+    :catch_73
+    move-exception v0
 
     .line 646
-    new-instance p1, Ljava/lang/StringBuilder;
+    .local v0, "e":Lcom/android/server/backup/transport/TransportNotAvailableException;
+    new-instance v6, Ljava/lang/StringBuilder;
 
-    invoke-direct {p1}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v6}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v0, "Couldn\'t connect to transport "
+    const-string v7, "Couldn\'t connect to transport "
 
-    invoke-virtual {p1, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v6, v7}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v6, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string v0, " for registration"
+    const-string v7, " for registration"
 
-    invoke-virtual {p1, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v6, v7}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v6}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v6
 
-    invoke-static {v1, p1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v6}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 647
-    iget-object p1, p0, Lcom/android/server/backup/TransportManager;->mTransportClientManager:Lcom/android/server/backup/transport/TransportClientManager;
+    iget-object v1, p0, Lcom/android/server/backup/TransportManager;->mTransportClientManager:Lcom/android/server/backup/transport/TransportClientManager;
 
-    invoke-virtual {p1, v4, v3}, Lcom/android/server/backup/transport/TransportClientManager;->disposeOfTransportClient(Lcom/android/server/backup/transport/TransportClient;Ljava/lang/String;)V
+    invoke-virtual {v1, v5, v3}, Lcom/android/server/backup/transport/TransportClientManager;->disposeOfTransportClient(Lcom/android/server/backup/transport/TransportClient;Ljava/lang/String;)V
 
     .line 648
-    return v5
+    const/4 v1, -0x1
+
+    return v1
 .end method
 
 .method private registerTransport(Landroid/content/ComponentName;Lcom/android/internal/backup/IBackupTransport;)V
     .registers 12
+    .param p1, "transportComponent"  # Landroid/content/ComponentName;
+    .param p2, "transport"  # Lcom/android/internal/backup/IBackupTransport;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -933,35 +988,37 @@
     invoke-direct/range {v0 .. v7}, Lcom/android/server/backup/TransportManager$TransportDescription;-><init>(Ljava/lang/String;Ljava/lang/String;Landroid/content/Intent;Ljava/lang/String;Landroid/content/Intent;Ljava/lang/CharSequence;Lcom/android/server/backup/TransportManager$1;)V
 
     .line 682
-    iget-object p2, p0, Lcom/android/server/backup/TransportManager;->mTransportLock:Ljava/lang/Object;
+    .local v0, "description":Lcom/android/server/backup/TransportManager$TransportDescription;
+    iget-object v1, p0, Lcom/android/server/backup/TransportManager;->mTransportLock:Ljava/lang/Object;
 
-    monitor-enter p2
+    monitor-enter v1
 
     .line 683
     :try_start_25
-    iget-object v0, p0, Lcom/android/server/backup/TransportManager;->mRegisteredTransportsDescriptionMap:Ljava/util/Map;
+    iget-object v2, p0, Lcom/android/server/backup/TransportManager;->mRegisteredTransportsDescriptionMap:Ljava/util/Map;
 
-    invoke-interface {v0, p1, v8}, Ljava/util/Map;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+    invoke-interface {v2, p1, v0}, Ljava/util/Map;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
 
     .line 684
-    monitor-exit p2
+    monitor-exit v1
 
     .line 685
     return-void
 
     .line 684
     :catchall_2c
-    move-exception p1
+    move-exception v2
 
-    monitor-exit p2
+    monitor-exit v1
     :try_end_2e
     .catchall {:try_start_25 .. :try_end_2e} :catchall_2c
 
-    throw p1
+    throw v2
 .end method
 
 .method private registerTransportsForIntent(Landroid/content/Intent;Ljava/util/function/Predicate;)V
-    .registers 6
+    .registers 8
+    .param p1, "intent"  # Landroid/content/Intent;
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(",
@@ -973,6 +1030,7 @@
     .end annotation
 
     .line 579
+    .local p2, "transportComponentFilter":Ljava/util/function/Predicate;, "Ljava/util/function/Predicate<Landroid/content/ComponentName;>;"
     iget-object v0, p0, Lcom/android/server/backup/TransportManager;->mPackageManager:Landroid/content/pm/PackageManager;
 
     iget v1, p0, Lcom/android/server/backup/TransportManager;->mUserId:I
@@ -982,58 +1040,63 @@
 
     invoke-virtual {v0, p1, v2, v1}, Landroid/content/pm/PackageManager;->queryIntentServicesAsUser(Landroid/content/Intent;II)Ljava/util/List;
 
-    move-result-object p1
+    move-result-object v0
 
     .line 581
-    if-nez p1, :cond_c
+    .local v0, "hosts":Ljava/util/List;, "Ljava/util/List<Landroid/content/pm/ResolveInfo;>;"
+    if-nez v0, :cond_c
 
     .line 582
     return-void
 
     .line 584
     :cond_c
-    invoke-interface {p1}, Ljava/util/List;->iterator()Ljava/util/Iterator;
+    invoke-interface {v0}, Ljava/util/List;->iterator()Ljava/util/Iterator;
 
-    move-result-object p1
+    move-result-object v1
 
     :goto_10
-    invoke-interface {p1}, Ljava/util/Iterator;->hasNext()Z
+    invoke-interface {v1}, Ljava/util/Iterator;->hasNext()Z
 
-    move-result v0
+    move-result v2
 
-    if-eqz v0, :cond_32
+    if-eqz v2, :cond_32
 
-    invoke-interface {p1}, Ljava/util/Iterator;->next()Ljava/lang/Object;
+    invoke-interface {v1}, Ljava/util/Iterator;->next()Ljava/lang/Object;
 
-    move-result-object v0
+    move-result-object v2
 
-    check-cast v0, Landroid/content/pm/ResolveInfo;
+    check-cast v2, Landroid/content/pm/ResolveInfo;
 
     .line 585
-    iget-object v0, v0, Landroid/content/pm/ResolveInfo;->serviceInfo:Landroid/content/pm/ServiceInfo;
+    .local v2, "host":Landroid/content/pm/ResolveInfo;
+    iget-object v3, v2, Landroid/content/pm/ResolveInfo;->serviceInfo:Landroid/content/pm/ServiceInfo;
 
-    invoke-virtual {v0}, Landroid/content/pm/ServiceInfo;->getComponentName()Landroid/content/ComponentName;
+    invoke-virtual {v3}, Landroid/content/pm/ServiceInfo;->getComponentName()Landroid/content/ComponentName;
 
-    move-result-object v0
+    move-result-object v3
 
     .line 586
-    invoke-interface {p2, v0}, Ljava/util/function/Predicate;->test(Ljava/lang/Object;)Z
+    .local v3, "transportComponent":Landroid/content/ComponentName;
+    invoke-interface {p2, v3}, Ljava/util/function/Predicate;->test(Ljava/lang/Object;)Z
 
-    move-result v1
+    move-result v4
 
-    if-eqz v1, :cond_31
+    if-eqz v4, :cond_31
 
     .line 587
-    invoke-direct {p0, v0}, Lcom/android/server/backup/TransportManager;->isTransportTrusted(Landroid/content/ComponentName;)Z
+    invoke-direct {p0, v3}, Lcom/android/server/backup/TransportManager;->isTransportTrusted(Landroid/content/ComponentName;)Z
 
-    move-result v1
+    move-result v4
 
-    if-eqz v1, :cond_31
+    if-eqz v4, :cond_31
 
     .line 588
-    invoke-direct {p0, v0}, Lcom/android/server/backup/TransportManager;->registerTransport(Landroid/content/ComponentName;)I
+    invoke-direct {p0, v3}, Lcom/android/server/backup/TransportManager;->registerTransport(Landroid/content/ComponentName;)I
 
     .line 590
+    .end local v2  # "host":Landroid/content/pm/ResolveInfo;
+    .end local v3  # "transportComponent":Landroid/content/ComponentName;
     :cond_31
     goto :goto_10
 
@@ -1044,6 +1107,7 @@
 
 .method private registerTransportsFromPackage(Ljava/lang/String;Ljava/util/function/Predicate;)V
     .registers 6
+    .param p1, "packageName"  # Ljava/lang/String;
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(",
@@ -1055,6 +1119,7 @@
     .end annotation
 
     .line 565
+    .local p2, "transportComponentFilter":Ljava/util/function/Predicate;, "Ljava/util/function/Predicate<Landroid/content/ComponentName;>;"
     :try_start_0
     iget-object v0, p0, Lcom/android/server/backup/TransportManager;->mPackageManager:Landroid/content/pm/PackageManager;
 
@@ -1084,40 +1149,41 @@
     .line 573
     invoke-static {p1}, Lcom/android/server/backup/TransportManager;->fromPackageFilter(Ljava/lang/String;)Ljava/util/function/Predicate;
 
-    move-result-object p1
+    move-result-object v1
 
-    invoke-interface {p2, p1}, Ljava/util/function/Predicate;->and(Ljava/util/function/Predicate;)Ljava/util/function/Predicate;
+    invoke-interface {p2, v1}, Ljava/util/function/Predicate;->and(Ljava/util/function/Predicate;)Ljava/util/function/Predicate;
 
-    move-result-object p1
+    move-result-object v1
 
     .line 571
-    invoke-direct {p0, v0, p1}, Lcom/android/server/backup/TransportManager;->registerTransportsForIntent(Landroid/content/Intent;Ljava/util/function/Predicate;)V
+    invoke-direct {p0, v0, v1}, Lcom/android/server/backup/TransportManager;->registerTransportsForIntent(Landroid/content/Intent;Ljava/util/function/Predicate;)V
 
     .line 574
     return-void
 
     .line 566
     :catch_20
-    move-exception p2
+    move-exception v0
 
     .line 567
-    new-instance p2, Ljava/lang/StringBuilder;
+    .local v0, "e":Landroid/content/pm/PackageManager$NameNotFoundException;
+    new-instance v1, Ljava/lang/StringBuilder;
 
-    invoke-direct {p2}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v0, "Trying to register transports from package not found "
+    const-string v2, "Trying to register transports from package not found "
 
-    invoke-virtual {p2, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p2, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v1
 
-    const-string p2, "BackupTransportManager"
+    const-string v2, "BackupTransportManager"
 
-    invoke-static {p2, p1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v2, v1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 568
     return-void
@@ -1127,6 +1193,8 @@
 # virtual methods
 .method public disposeOfTransportClient(Lcom/android/server/backup/transport/TransportClient;Ljava/lang/String;)V
     .registers 4
+    .param p1, "transportClient"  # Lcom/android/server/backup/transport/TransportClient;
+    .param p2, "caller"  # Ljava/lang/String;
 
     .line 498
     iget-object v0, p0, Lcom/android/server/backup/TransportManager;->mTransportClientManager:Lcom/android/server/backup/transport/TransportClientManager;
@@ -1139,6 +1207,7 @@
 
 .method public dumpTransportClients(Ljava/io/PrintWriter;)V
     .registers 3
+    .param p1, "pw"  # Ljava/io/PrintWriter;
 
     .line 693
     iget-object v0, p0, Lcom/android/server/backup/TransportManager;->mTransportClientManager:Lcom/android/server/backup/transport/TransportClientManager;
@@ -1151,6 +1220,7 @@
 
 .method public dumpTransportStats(Ljava/io/PrintWriter;)V
     .registers 3
+    .param p1, "pw"  # Ljava/io/PrintWriter;
 
     .line 697
     iget-object v0, p0, Lcom/android/server/backup/TransportManager;->mTransportStats:Lcom/android/server/backup/transport/TransportStats;
@@ -1162,7 +1232,7 @@
 .end method
 
 .method public forEachRegisteredTransport(Ljava/util/function/Consumer;)V
-    .registers 5
+    .registers 6
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(",
@@ -1173,6 +1243,7 @@
     .end annotation
 
     .line 312
+    .local p1, "transportConsumer":Ljava/util/function/Consumer;, "Ljava/util/function/Consumer<Ljava/lang/String;>;"
     iget-object v0, p0, Lcom/android/server/backup/TransportManager;->mTransportLock:Ljava/lang/Object;
 
     monitor-enter v0
@@ -1203,13 +1274,15 @@
     check-cast v2, Lcom/android/server/backup/TransportManager$TransportDescription;
 
     .line 315
+    .local v2, "transportDescription":Lcom/android/server/backup/TransportManager$TransportDescription;
     invoke-static {v2}, Lcom/android/server/backup/TransportManager$TransportDescription;->access$000(Lcom/android/server/backup/TransportManager$TransportDescription;)Ljava/lang/String;
 
-    move-result-object v2
+    move-result-object v3
 
-    invoke-interface {p1, v2}, Ljava/util/function/Consumer;->accept(Ljava/lang/Object;)V
+    invoke-interface {p1, v3}, Ljava/util/function/Consumer;->accept(Ljava/lang/Object;)V
 
     .line 316
+    .end local v2  # "transportDescription":Lcom/android/server/backup/TransportManager$TransportDescription;
     goto :goto_d
 
     .line 317
@@ -1221,17 +1294,18 @@
 
     .line 317
     :catchall_23
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_25
     .catchall {:try_start_3 .. :try_end_25} :catchall_23
 
-    throw p1
+    throw v1
 .end method
 
 .method public getCurrentTransportClient(Ljava/lang/String;)Lcom/android/server/backup/transport/TransportClient;
     .registers 4
+    .param p1, "caller"  # Ljava/lang/String;
 
     .line 461
     iget-object v0, p0, Lcom/android/server/backup/TransportManager;->mCurrentTransportName:Ljava/lang/String;
@@ -1249,35 +1323,36 @@
 
     invoke-virtual {p0, v1, p1}, Lcom/android/server/backup/TransportManager;->getTransportClient(Ljava/lang/String;Ljava/lang/String;)Lcom/android/server/backup/transport/TransportClient;
 
-    move-result-object p1
+    move-result-object v1
 
     monitor-exit v0
 
-    return-object p1
+    return-object v1
 
     .line 466
     :catchall_f
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_11
     .catchall {:try_start_7 .. :try_end_11} :catchall_f
 
-    throw p1
+    throw v1
 
     .line 462
     :cond_12
-    new-instance p1, Ljava/lang/IllegalStateException;
+    new-instance v0, Ljava/lang/IllegalStateException;
 
-    const-string v0, "No transport selected"
+    const-string v1, "No transport selected"
 
-    invoke-direct {p1, v0}, Ljava/lang/IllegalStateException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v0, v1}, Ljava/lang/IllegalStateException;-><init>(Ljava/lang/String;)V
 
-    throw p1
+    throw v0
 .end method
 
 .method public getCurrentTransportClientOrThrow(Ljava/lang/String;)Lcom/android/server/backup/transport/TransportClient;
     .registers 4
+    .param p1, "caller"  # Ljava/lang/String;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Lcom/android/server/backup/transport/TransportNotRegisteredException;
@@ -1300,31 +1375,31 @@
 
     invoke-virtual {p0, v1, p1}, Lcom/android/server/backup/TransportManager;->getTransportClientOrThrow(Ljava/lang/String;Ljava/lang/String;)Lcom/android/server/backup/transport/TransportClient;
 
-    move-result-object p1
+    move-result-object v1
 
     monitor-exit v0
 
-    return-object p1
+    return-object v1
 
     .line 486
     :catchall_f
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_11
     .catchall {:try_start_7 .. :try_end_11} :catchall_f
 
-    throw p1
+    throw v1
 
     .line 482
     :cond_12
-    new-instance p1, Ljava/lang/IllegalStateException;
+    new-instance v0, Ljava/lang/IllegalStateException;
 
-    const-string v0, "No transport selected"
+    const-string v1, "No transport selected"
 
-    invoke-direct {p1, v0}, Ljava/lang/IllegalStateException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v0, v1}, Ljava/lang/IllegalStateException;-><init>(Ljava/lang/String;)V
 
-    throw p1
+    throw v0
 .end method
 
 .method public getCurrentTransportComponent()Landroid/content/ComponentName;
@@ -1434,7 +1509,7 @@
 .end method
 
 .method getRegisteredTransportNames()[Ljava/lang/String;
-    .registers 6
+    .registers 7
 
     .line 165
     iget-object v0, p0, Lcom/android/server/backup/TransportManager;->mTransportLock:Ljava/lang/Object;
@@ -1452,9 +1527,11 @@
     new-array v1, v1, [Ljava/lang/String;
 
     .line 167
+    .local v1, "transportNames":[Ljava/lang/String;
     const/4 v2, 0x0
 
     .line 168
+    .local v2, "i":I
     iget-object v3, p0, Lcom/android/server/backup/TransportManager;->mRegisteredTransportsDescriptionMap:Ljava/util/Map;
 
     invoke-interface {v3}, Ljava/util/Map;->values()Ljava/util/Collection;
@@ -1470,7 +1547,7 @@
 
     move-result v4
 
-    if-eqz v4, :cond_2b
+    if-eqz v4, :cond_2c
 
     invoke-interface {v3}, Ljava/util/Iterator;->next()Ljava/lang/Object;
 
@@ -1479,83 +1556,94 @@
     check-cast v4, Lcom/android/server/backup/TransportManager$TransportDescription;
 
     .line 169
+    .local v4, "description":Lcom/android/server/backup/TransportManager$TransportDescription;
     invoke-static {v4}, Lcom/android/server/backup/TransportManager$TransportDescription;->access$000(Lcom/android/server/backup/TransportManager$TransportDescription;)Ljava/lang/String;
 
-    move-result-object v4
+    move-result-object v5
 
-    aput-object v4, v1, v2
+    aput-object v5, v1, v2
 
     .line 170
+    nop
+
+    .end local v4  # "description":Lcom/android/server/backup/TransportManager$TransportDescription;
     add-int/lit8 v2, v2, 0x1
 
     .line 171
     goto :goto_16
 
     .line 172
-    :cond_2b
+    :cond_2c
     monitor-exit v0
 
     return-object v1
 
     .line 173
-    :catchall_2d
+    .end local v1  # "transportNames":[Ljava/lang/String;
+    .end local v2  # "i":I
+    :catchall_2e
     move-exception v1
 
     monitor-exit v0
-    :try_end_2f
-    .catchall {:try_start_3 .. :try_end_2f} :catchall_2d
+    :try_end_30
+    .catchall {:try_start_3 .. :try_end_30} :catchall_2e
 
     throw v1
 .end method
 
 .method public getTransportClient(Ljava/lang/String;Ljava/lang/String;)Lcom/android/server/backup/transport/TransportClient;
-    .registers 4
+    .registers 6
+    .param p1, "transportName"  # Ljava/lang/String;
+    .param p2, "caller"  # Ljava/lang/String;
 
     .line 421
     :try_start_0
     invoke-virtual {p0, p1, p2}, Lcom/android/server/backup/TransportManager;->getTransportClientOrThrow(Ljava/lang/String;Ljava/lang/String;)Lcom/android/server/backup/transport/TransportClient;
 
-    move-result-object p1
+    move-result-object v0
     :try_end_4
     .catch Lcom/android/server/backup/transport/TransportNotRegisteredException; {:try_start_0 .. :try_end_4} :catch_5
 
-    return-object p1
+    return-object v0
 
     .line 422
     :catch_5
-    move-exception p2
+    move-exception v0
 
     .line 423
-    new-instance p2, Ljava/lang/StringBuilder;
+    .local v0, "e":Lcom/android/server/backup/transport/TransportNotRegisteredException;
+    new-instance v1, Ljava/lang/StringBuilder;
 
-    invoke-direct {p2}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v0, "Transport "
+    const-string v2, "Transport "
 
-    invoke-virtual {p2, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p2, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string p1, " not registered"
+    const-string v2, " not registered"
 
-    invoke-virtual {p2, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v1
 
-    const-string p2, "BackupTransportManager"
+    const-string v2, "BackupTransportManager"
 
-    invoke-static {p2, p1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v2, v1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 424
-    const/4 p1, 0x0
+    const/4 v1, 0x0
 
-    return-object p1
+    return-object v1
 .end method
 
 .method public getTransportClientOrThrow(Ljava/lang/String;Ljava/lang/String;)Lcom/android/server/backup/transport/TransportClient;
-    .registers 5
+    .registers 6
+    .param p1, "transportName"  # Ljava/lang/String;
+    .param p2, "caller"  # Ljava/lang/String;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Lcom/android/server/backup/transport/TransportNotRegisteredException;
@@ -1574,40 +1662,49 @@
     move-result-object v1
 
     .line 442
+    .local v1, "component":Landroid/content/ComponentName;
     if-eqz v1, :cond_11
 
     .line 445
-    iget-object p1, p0, Lcom/android/server/backup/TransportManager;->mTransportClientManager:Lcom/android/server/backup/transport/TransportClientManager;
+    iget-object v2, p0, Lcom/android/server/backup/TransportManager;->mTransportClientManager:Lcom/android/server/backup/transport/TransportClientManager;
 
-    invoke-virtual {p1, v1, p2}, Lcom/android/server/backup/transport/TransportClientManager;->getTransportClient(Landroid/content/ComponentName;Ljava/lang/String;)Lcom/android/server/backup/transport/TransportClient;
+    invoke-virtual {v2, v1, p2}, Lcom/android/server/backup/transport/TransportClientManager;->getTransportClient(Landroid/content/ComponentName;Ljava/lang/String;)Lcom/android/server/backup/transport/TransportClient;
 
-    move-result-object p1
+    move-result-object v2
 
     monitor-exit v0
 
-    return-object p1
+    return-object v2
 
     .line 443
     :cond_11
-    new-instance p2, Lcom/android/server/backup/transport/TransportNotRegisteredException;
+    new-instance v2, Lcom/android/server/backup/transport/TransportNotRegisteredException;
 
-    invoke-direct {p2, p1}, Lcom/android/server/backup/transport/TransportNotRegisteredException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v2, p1}, Lcom/android/server/backup/transport/TransportNotRegisteredException;-><init>(Ljava/lang/String;)V
 
-    throw p2
+    .end local p0  # "this":Lcom/android/server/backup/TransportManager;
+    .end local p1  # "transportName":Ljava/lang/String;
+    .end local p2  # "caller":Ljava/lang/String;
+    throw v2
 
     .line 446
+    .end local v1  # "component":Landroid/content/ComponentName;
+    .restart local p0  # "this":Lcom/android/server/backup/TransportManager;
+    .restart local p1  # "transportName":Ljava/lang/String;
+    .restart local p2  # "caller":Ljava/lang/String;
     :catchall_17
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_19
     .catchall {:try_start_3 .. :try_end_19} :catchall_17
 
-    throw p1
+    throw v1
 .end method
 
 .method public getTransportConfigurationIntent(Ljava/lang/String;)Landroid/content/Intent;
-    .registers 3
+    .registers 4
+    .param p1, "transportName"  # Ljava/lang/String;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Lcom/android/server/backup/transport/TransportNotRegisteredException;
@@ -1623,31 +1720,32 @@
     :try_start_3
     invoke-direct {p0, p1}, Lcom/android/server/backup/TransportManager;->getRegisteredTransportDescriptionOrThrowLocked(Ljava/lang/String;)Lcom/android/server/backup/TransportManager$TransportDescription;
 
-    move-result-object p1
+    move-result-object v1
 
     .line 250
-    invoke-static {p1}, Lcom/android/server/backup/TransportManager$TransportDescription;->access$200(Lcom/android/server/backup/TransportManager$TransportDescription;)Landroid/content/Intent;
+    invoke-static {v1}, Lcom/android/server/backup/TransportManager$TransportDescription;->access$200(Lcom/android/server/backup/TransportManager$TransportDescription;)Landroid/content/Intent;
 
-    move-result-object p1
+    move-result-object v1
 
     monitor-exit v0
 
     .line 249
-    return-object p1
+    return-object v1
 
     .line 251
     :catchall_d
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_f
     .catchall {:try_start_3 .. :try_end_f} :catchall_d
 
-    throw p1
+    throw v1
 .end method
 
 .method public getTransportCurrentDestinationString(Ljava/lang/String;)Ljava/lang/String;
-    .registers 3
+    .registers 4
+    .param p1, "transportName"  # Ljava/lang/String;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Lcom/android/server/backup/transport/TransportNotRegisteredException;
@@ -1663,31 +1761,32 @@
     :try_start_3
     invoke-direct {p0, p1}, Lcom/android/server/backup/TransportManager;->getRegisteredTransportDescriptionOrThrowLocked(Ljava/lang/String;)Lcom/android/server/backup/TransportManager$TransportDescription;
 
-    move-result-object p1
+    move-result-object v1
 
     .line 263
-    invoke-static {p1}, Lcom/android/server/backup/TransportManager$TransportDescription;->access$300(Lcom/android/server/backup/TransportManager$TransportDescription;)Ljava/lang/String;
+    invoke-static {v1}, Lcom/android/server/backup/TransportManager$TransportDescription;->access$300(Lcom/android/server/backup/TransportManager$TransportDescription;)Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v1
 
     monitor-exit v0
 
     .line 262
-    return-object p1
+    return-object v1
 
     .line 264
     :catchall_d
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_f
     .catchall {:try_start_3 .. :try_end_f} :catchall_d
 
-    throw p1
+    throw v1
 .end method
 
 .method public getTransportDataManagementIntent(Ljava/lang/String;)Landroid/content/Intent;
-    .registers 3
+    .registers 4
+    .param p1, "transportName"  # Ljava/lang/String;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Lcom/android/server/backup/transport/TransportNotRegisteredException;
@@ -1703,31 +1802,32 @@
     :try_start_3
     invoke-direct {p0, p1}, Lcom/android/server/backup/TransportManager;->getRegisteredTransportDescriptionOrThrowLocked(Ljava/lang/String;)Lcom/android/server/backup/TransportManager$TransportDescription;
 
-    move-result-object p1
+    move-result-object v1
 
     .line 277
-    invoke-static {p1}, Lcom/android/server/backup/TransportManager$TransportDescription;->access$400(Lcom/android/server/backup/TransportManager$TransportDescription;)Landroid/content/Intent;
+    invoke-static {v1}, Lcom/android/server/backup/TransportManager$TransportDescription;->access$400(Lcom/android/server/backup/TransportManager$TransportDescription;)Landroid/content/Intent;
 
-    move-result-object p1
+    move-result-object v1
 
     monitor-exit v0
 
     .line 276
-    return-object p1
+    return-object v1
 
     .line 278
     :catchall_d
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_f
     .catchall {:try_start_3 .. :try_end_f} :catchall_d
 
-    throw p1
+    throw v1
 .end method
 
 .method public getTransportDataManagementLabel(Ljava/lang/String;)Ljava/lang/CharSequence;
-    .registers 3
+    .registers 4
+    .param p1, "transportName"  # Ljava/lang/String;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Lcom/android/server/backup/transport/TransportNotRegisteredException;
@@ -1743,31 +1843,32 @@
     :try_start_3
     invoke-direct {p0, p1}, Lcom/android/server/backup/TransportManager;->getRegisteredTransportDescriptionOrThrowLocked(Ljava/lang/String;)Lcom/android/server/backup/TransportManager$TransportDescription;
 
-    move-result-object p1
+    move-result-object v1
 
     .line 291
-    invoke-static {p1}, Lcom/android/server/backup/TransportManager$TransportDescription;->access$500(Lcom/android/server/backup/TransportManager$TransportDescription;)Ljava/lang/CharSequence;
+    invoke-static {v1}, Lcom/android/server/backup/TransportManager$TransportDescription;->access$500(Lcom/android/server/backup/TransportManager$TransportDescription;)Ljava/lang/CharSequence;
 
-    move-result-object p1
+    move-result-object v1
 
     monitor-exit v0
 
     .line 290
-    return-object p1
+    return-object v1
 
     .line 292
     :catchall_d
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_f
     .catchall {:try_start_3 .. :try_end_f} :catchall_d
 
-    throw p1
+    throw v1
 .end method
 
 .method public getTransportDirName(Landroid/content/ComponentName;)Ljava/lang/String;
-    .registers 3
+    .registers 4
+    .param p1, "transportComponent"  # Landroid/content/ComponentName;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Lcom/android/server/backup/transport/TransportNotRegisteredException;
@@ -1783,31 +1884,32 @@
     :try_start_3
     invoke-direct {p0, p1}, Lcom/android/server/backup/TransportManager;->getRegisteredTransportDescriptionOrThrowLocked(Landroid/content/ComponentName;)Lcom/android/server/backup/TransportManager$TransportDescription;
 
-    move-result-object p1
+    move-result-object v1
 
     .line 225
-    invoke-static {p1}, Lcom/android/server/backup/TransportManager$TransportDescription;->access$100(Lcom/android/server/backup/TransportManager$TransportDescription;)Ljava/lang/String;
+    invoke-static {v1}, Lcom/android/server/backup/TransportManager$TransportDescription;->access$100(Lcom/android/server/backup/TransportManager$TransportDescription;)Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v1
 
     monitor-exit v0
 
     .line 224
-    return-object p1
+    return-object v1
 
     .line 226
     :catchall_d
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_f
     .catchall {:try_start_3 .. :try_end_f} :catchall_d
 
-    throw p1
+    throw v1
 .end method
 
 .method public getTransportDirName(Ljava/lang/String;)Ljava/lang/String;
-    .registers 3
+    .registers 4
+    .param p1, "transportName"  # Ljava/lang/String;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Lcom/android/server/backup/transport/TransportNotRegisteredException;
@@ -1823,29 +1925,30 @@
     :try_start_3
     invoke-direct {p0, p1}, Lcom/android/server/backup/TransportManager;->getRegisteredTransportDescriptionOrThrowLocked(Ljava/lang/String;)Lcom/android/server/backup/TransportManager$TransportDescription;
 
-    move-result-object p1
+    move-result-object v1
 
-    invoke-static {p1}, Lcom/android/server/backup/TransportManager$TransportDescription;->access$100(Lcom/android/server/backup/TransportManager$TransportDescription;)Ljava/lang/String;
+    invoke-static {v1}, Lcom/android/server/backup/TransportManager$TransportDescription;->access$100(Lcom/android/server/backup/TransportManager$TransportDescription;)Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v1
 
     monitor-exit v0
 
-    return-object p1
+    return-object v1
 
     .line 237
     :catchall_d
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_f
     .catchall {:try_start_3 .. :try_end_f} :catchall_d
 
-    throw p1
+    throw v1
 .end method
 
 .method public getTransportName(Landroid/content/ComponentName;)Ljava/lang/String;
-    .registers 3
+    .registers 4
+    .param p1, "transportComponent"  # Landroid/content/ComponentName;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Lcom/android/server/backup/transport/TransportNotRegisteredException;
@@ -1861,25 +1964,25 @@
     :try_start_3
     invoke-direct {p0, p1}, Lcom/android/server/backup/TransportManager;->getRegisteredTransportDescriptionOrThrowLocked(Landroid/content/ComponentName;)Lcom/android/server/backup/TransportManager$TransportDescription;
 
-    move-result-object p1
+    move-result-object v1
 
-    invoke-static {p1}, Lcom/android/server/backup/TransportManager$TransportDescription;->access$000(Lcom/android/server/backup/TransportManager$TransportDescription;)Ljava/lang/String;
+    invoke-static {v1}, Lcom/android/server/backup/TransportManager$TransportDescription;->access$000(Lcom/android/server/backup/TransportManager$TransportDescription;)Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v1
 
     monitor-exit v0
 
-    return-object p1
+    return-object v1
 
     .line 213
     :catchall_d
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_f
     .catchall {:try_start_3 .. :try_end_f} :catchall_d
 
-    throw p1
+    throw v1
 .end method
 
 .method getTransportWhitelist()Ljava/util/Set;
@@ -1900,7 +2003,8 @@
 .end method
 
 .method public isTransportRegistered(Ljava/lang/String;)Z
-    .registers 3
+    .registers 4
+    .param p1, "transportName"  # Ljava/lang/String;
 
     .line 297
     iget-object v0, p0, Lcom/android/server/backup/TransportManager;->mTransportLock:Ljava/lang/Object;
@@ -1911,35 +2015,36 @@
     :try_start_3
     invoke-direct {p0, p1}, Lcom/android/server/backup/TransportManager;->getRegisteredTransportEntryLocked(Ljava/lang/String;)Ljava/util/Map$Entry;
 
-    move-result-object p1
+    move-result-object v1
 
-    if-eqz p1, :cond_b
+    if-eqz v1, :cond_b
 
-    const/4 p1, 0x1
+    const/4 v1, 0x1
 
     goto :goto_c
 
     :cond_b
-    const/4 p1, 0x0
+    const/4 v1, 0x0
 
     :goto_c
     monitor-exit v0
 
-    return p1
+    return v1
 
     .line 299
     :catchall_e
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_10
     .catchall {:try_start_3 .. :try_end_10} :catchall_e
 
-    throw p1
+    throw v1
 .end method
 
 .method onPackageAdded(Ljava/lang/String;)V
     .registers 3
+    .param p1, "packageName"  # Ljava/lang/String;
 
     .line 121
     sget-object v0, Lcom/android/server/backup/-$$Lambda$TransportManager$4ND1hZMerK5gHU67okq6DZjKDQw;->INSTANCE:Lcom/android/server/backup/-$$Lambda$TransportManager$4ND1hZMerK5gHU67okq6DZjKDQw;
@@ -1952,6 +2057,8 @@
 
 .method varargs onPackageChanged(Ljava/lang/String;[Ljava/lang/String;)V
     .registers 8
+    .param p1, "packageName"  # Ljava/lang/String;
+    .param p2, "components"  # [Ljava/lang/String;
 
     .line 134
     new-instance v0, Landroid/util/ArraySet;
@@ -1961,6 +2068,7 @@
     invoke-direct {v0, v1}, Landroid/util/ArraySet;-><init>(I)V
 
     .line 135
+    .local v0, "transportComponents":Ljava/util/Set;, "Ljava/util/Set<Landroid/content/ComponentName;>;"
     array-length v1, p2
 
     const/4 v2, 0x0
@@ -1971,6 +2079,7 @@
     aget-object v3, p2, v2
 
     .line 136
+    .local v3, "componentName":Ljava/lang/String;
     new-instance v4, Landroid/content/ComponentName;
 
     invoke-direct {v4, p1, v3}, Landroid/content/ComponentName;-><init>(Ljava/lang/String;Ljava/lang/String;)V
@@ -1978,59 +2087,65 @@
     invoke-interface {v0, v4}, Ljava/util/Set;->add(Ljava/lang/Object;)Z
 
     .line 135
+    .end local v3  # "componentName":Ljava/lang/String;
     add-int/lit8 v2, v2, 0x1
 
     goto :goto_8
 
     .line 138
     :cond_17
-    iget-object p2, p0, Lcom/android/server/backup/TransportManager;->mTransportLock:Ljava/lang/Object;
+    iget-object v1, p0, Lcom/android/server/backup/TransportManager;->mTransportLock:Ljava/lang/Object;
 
-    monitor-enter p2
+    monitor-enter v1
 
     .line 139
     :try_start_1a
-    iget-object v1, p0, Lcom/android/server/backup/TransportManager;->mRegisteredTransportsDescriptionMap:Ljava/util/Map;
+    iget-object v2, p0, Lcom/android/server/backup/TransportManager;->mRegisteredTransportsDescriptionMap:Ljava/util/Map;
 
-    invoke-interface {v1}, Ljava/util/Map;->keySet()Ljava/util/Set;
+    invoke-interface {v2}, Ljava/util/Map;->keySet()Ljava/util/Set;
 
-    move-result-object v1
+    move-result-object v2
 
-    new-instance v2, Lcom/android/server/backup/-$$Lambda$-xfpm33S8Jqv3KpU_-llxhj8ZPI;
+    invoke-static {v0}, Ljava/util/Objects;->requireNonNull(Ljava/lang/Object;)Ljava/lang/Object;
 
-    invoke-direct {v2, v0}, Lcom/android/server/backup/-$$Lambda$-xfpm33S8Jqv3KpU_-llxhj8ZPI;-><init>(Ljava/util/Set;)V
+    new-instance v3, Lcom/android/server/backup/-$$Lambda$-xfpm33S8Jqv3KpU_-llxhj8ZPI;
 
-    invoke-interface {v1, v2}, Ljava/util/Set;->removeIf(Ljava/util/function/Predicate;)Z
+    invoke-direct {v3, v0}, Lcom/android/server/backup/-$$Lambda$-xfpm33S8Jqv3KpU_-llxhj8ZPI;-><init>(Ljava/util/Set;)V
+
+    invoke-interface {v2, v3}, Ljava/util/Set;->removeIf(Ljava/util/function/Predicate;)Z
 
     .line 140
-    monitor-exit p2
-    :try_end_29
-    .catchall {:try_start_1a .. :try_end_29} :catchall_32
+    monitor-exit v1
+    :try_end_2c
+    .catchall {:try_start_1a .. :try_end_2c} :catchall_38
 
     .line 141
-    new-instance p2, Lcom/android/server/backup/-$$Lambda$-xfpm33S8Jqv3KpU_-llxhj8ZPI;
+    invoke-static {v0}, Ljava/util/Objects;->requireNonNull(Ljava/lang/Object;)Ljava/lang/Object;
 
-    invoke-direct {p2, v0}, Lcom/android/server/backup/-$$Lambda$-xfpm33S8Jqv3KpU_-llxhj8ZPI;-><init>(Ljava/util/Set;)V
+    new-instance v1, Lcom/android/server/backup/-$$Lambda$-xfpm33S8Jqv3KpU_-llxhj8ZPI;
 
-    invoke-direct {p0, p1, p2}, Lcom/android/server/backup/TransportManager;->registerTransportsFromPackage(Ljava/lang/String;Ljava/util/function/Predicate;)V
+    invoke-direct {v1, v0}, Lcom/android/server/backup/-$$Lambda$-xfpm33S8Jqv3KpU_-llxhj8ZPI;-><init>(Ljava/util/Set;)V
+
+    invoke-direct {p0, p1, v1}, Lcom/android/server/backup/TransportManager;->registerTransportsFromPackage(Ljava/lang/String;Ljava/util/function/Predicate;)V
 
     .line 142
     return-void
 
     .line 140
-    :catchall_32
-    move-exception p1
+    :catchall_38
+    move-exception v2
 
-    :try_start_33
-    monitor-exit p2
-    :try_end_34
-    .catchall {:try_start_33 .. :try_end_34} :catchall_32
+    :try_start_39
+    monitor-exit v1
+    :try_end_3a
+    .catchall {:try_start_39 .. :try_end_3a} :catchall_38
 
-    throw p1
+    throw v2
 .end method
 
 .method onPackageRemoved(Ljava/lang/String;)V
-    .registers 4
+    .registers 5
+    .param p1, "packageName"  # Ljava/lang/String;
 
     .line 125
     iget-object v0, p0, Lcom/android/server/backup/TransportManager;->mTransportLock:Ljava/lang/Object;
@@ -2047,9 +2162,9 @@
 
     invoke-static {p1}, Lcom/android/server/backup/TransportManager;->fromPackageFilter(Ljava/lang/String;)Ljava/util/function/Predicate;
 
-    move-result-object p1
+    move-result-object v2
 
-    invoke-interface {v1, p1}, Ljava/util/Set;->removeIf(Ljava/util/function/Predicate;)Z
+    invoke-interface {v1, v2}, Ljava/util/Set;->removeIf(Ljava/util/function/Predicate;)Z
 
     .line 127
     monitor-exit v0
@@ -2059,17 +2174,18 @@
 
     .line 127
     :catchall_12
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_14
     .catchall {:try_start_3 .. :try_end_14} :catchall_12
 
-    throw p1
+    throw v1
 .end method
 
 .method public registerAndSelectTransport(Landroid/content/ComponentName;)I
-    .registers 5
+    .registers 7
+    .param p1, "transportComponent"  # Landroid/content/ComponentName;
 
     .line 531
     iget-object v0, p0, Lcom/android/server/backup/TransportManager;->mTransportLock:Ljava/lang/Object;
@@ -2097,7 +2213,7 @@
 
     .line 538
     :catchall_d
-    move-exception p1
+    move-exception v1
 
     goto :goto_33
 
@@ -2113,77 +2229,81 @@
     .line 541
     invoke-direct {p0, p1}, Lcom/android/server/backup/TransportManager;->registerTransport(Landroid/content/ComponentName;)I
 
-    move-result v0
+    move-result v2
 
     .line 542
-    if-eqz v0, :cond_18
+    .local v2, "result":I
+    if-eqz v2, :cond_18
 
     .line 543
-    return v0
+    return v2
 
     .line 545
     :cond_18
-    iget-object v2, p0, Lcom/android/server/backup/TransportManager;->mTransportLock:Ljava/lang/Object;
+    iget-object v3, p0, Lcom/android/server/backup/TransportManager;->mTransportLock:Ljava/lang/Object;
 
-    monitor-enter v2
+    monitor-enter v3
 
     .line 547
     :try_start_1b
     invoke-virtual {p0, p1}, Lcom/android/server/backup/TransportManager;->getTransportName(Landroid/content/ComponentName;)Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    invoke-virtual {p0, p1}, Lcom/android/server/backup/TransportManager;->selectTransport(Ljava/lang/String;)Ljava/lang/String;
+    invoke-virtual {p0, v0}, Lcom/android/server/backup/TransportManager;->selectTransport(Ljava/lang/String;)Ljava/lang/String;
     :try_end_22
     .catch Lcom/android/server/backup/transport/TransportNotRegisteredException; {:try_start_1b .. :try_end_22} :catch_26
     .catchall {:try_start_1b .. :try_end_22} :catchall_24
 
     .line 548
     :try_start_22
-    monitor-exit v2
+    monitor-exit v3
 
     return v1
 
     .line 553
     :catchall_24
-    move-exception p1
+    move-exception v0
 
     goto :goto_31
 
     .line 549
     :catch_26
-    move-exception p1
+    move-exception v0
 
     .line 550
-    const-string p1, "BackupTransportManager"
+    .local v0, "e":Lcom/android/server/backup/transport/TransportNotRegisteredException;
+    const-string v1, "BackupTransportManager"
 
-    const-string v0, "Transport got unregistered"
+    const-string v4, "Transport got unregistered"
 
-    invoke-static {p1, v0}, Landroid/util/Slog;->wtf(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v4}, Landroid/util/Slog;->wtf(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 551
-    const/4 p1, -0x1
+    const/4 v1, -0x1
 
-    monitor-exit v2
+    monitor-exit v3
 
-    return p1
+    return v1
 
     .line 553
+    .end local v0  # "e":Lcom/android/server/backup/transport/TransportNotRegisteredException;
     :goto_31
-    monitor-exit v2
+    monitor-exit v3
     :try_end_32
     .catchall {:try_start_22 .. :try_end_32} :catchall_24
 
-    throw p1
+    throw v0
 
     .line 538
+    .end local v2  # "result":I
     :goto_33
     :try_start_33
     monitor-exit v0
     :try_end_34
     .catchall {:try_start_33 .. :try_end_34} :catchall_d
 
-    throw p1
+    throw v1
 .end method
 
 .method public registerTransports()V
@@ -2202,6 +2322,7 @@
 
 .method selectTransport(Ljava/lang/String;)Ljava/lang/String;
     .registers 4
+    .param p1, "transportName"  # Ljava/lang/String;
     .annotation runtime Ljava/lang/Deprecated;
     .end annotation
 
@@ -2215,6 +2336,7 @@
     iget-object v1, p0, Lcom/android/server/backup/TransportManager;->mCurrentTransportName:Ljava/lang/String;
 
     .line 516
+    .local v1, "prevTransport":Ljava/lang/String;
     iput-object p1, p0, Lcom/android/server/backup/TransportManager;->mCurrentTransportName:Ljava/lang/String;
 
     .line 517
@@ -2223,18 +2345,20 @@
     return-object v1
 
     .line 518
+    .end local v1  # "prevTransport":Ljava/lang/String;
     :catchall_9
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_b
     .catchall {:try_start_3 .. :try_end_b} :catchall_9
 
-    throw p1
+    throw v1
 .end method
 
 .method public setOnTransportRegisteredListener(Lcom/android/server/backup/transport/OnTransportRegisteredListener;)V
     .registers 2
+    .param p1, "listener"  # Lcom/android/server/backup/transport/OnTransportRegisteredListener;
 
     .line 116
     iput-object p1, p0, Lcom/android/server/backup/TransportManager;->mOnTransportRegisteredListener:Lcom/android/server/backup/transport/OnTransportRegisteredListener;
@@ -2244,7 +2368,13 @@
 .end method
 
 .method public updateTransportAttributes(Landroid/content/ComponentName;Ljava/lang/String;Landroid/content/Intent;Ljava/lang/String;Landroid/content/Intent;Ljava/lang/CharSequence;)V
-    .registers 9
+    .registers 12
+    .param p1, "transportComponent"  # Landroid/content/ComponentName;
+    .param p2, "name"  # Ljava/lang/String;
+    .param p3, "configurationIntent"  # Landroid/content/Intent;
+    .param p4, "currentDestinationString"  # Ljava/lang/String;
+    .param p5, "dataManagementIntent"  # Landroid/content/Intent;
+    .param p6, "dataManagementLabel"  # Ljava/lang/CharSequence;
 
     .line 331
     iget-object v0, p0, Lcom/android/server/backup/TransportManager;->mTransportLock:Ljava/lang/Object;
@@ -2258,35 +2388,36 @@
     .line 333
     invoke-interface {v1, p1}, Ljava/util/Map;->get(Ljava/lang/Object;)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v1
 
-    check-cast p1, Lcom/android/server/backup/TransportManager$TransportDescription;
+    check-cast v1, Lcom/android/server/backup/TransportManager$TransportDescription;
 
     .line 334
-    if-nez p1, :cond_2a
+    .local v1, "description":Lcom/android/server/backup/TransportManager$TransportDescription;
+    if-nez v1, :cond_2a
 
     .line 335
-    const-string p1, "BackupTransportManager"
+    const-string v2, "BackupTransportManager"
 
-    new-instance p3, Ljava/lang/StringBuilder;
+    new-instance v3, Ljava/lang/StringBuilder;
 
-    invoke-direct {p3}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string p4, "Transport "
+    const-string v4, "Transport "
 
-    invoke-virtual {p3, p4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p3, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string p2, " not registered tried to change description"
+    const-string v4, " not registered tried to change description"
 
-    invoke-virtual {p3, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p2
+    move-result-object v3
 
-    invoke-static {p1, p2}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v2, v3}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 336
     monitor-exit v0
@@ -2295,56 +2426,59 @@
 
     .line 338
     :cond_2a
-    invoke-static {p1, p2}, Lcom/android/server/backup/TransportManager$TransportDescription;->access$002(Lcom/android/server/backup/TransportManager$TransportDescription;Ljava/lang/String;)Ljava/lang/String;
+    invoke-static {v1, p2}, Lcom/android/server/backup/TransportManager$TransportDescription;->access$002(Lcom/android/server/backup/TransportManager$TransportDescription;Ljava/lang/String;)Ljava/lang/String;
 
     .line 339
-    invoke-static {p1, p3}, Lcom/android/server/backup/TransportManager$TransportDescription;->access$202(Lcom/android/server/backup/TransportManager$TransportDescription;Landroid/content/Intent;)Landroid/content/Intent;
+    invoke-static {v1, p3}, Lcom/android/server/backup/TransportManager$TransportDescription;->access$202(Lcom/android/server/backup/TransportManager$TransportDescription;Landroid/content/Intent;)Landroid/content/Intent;
 
     .line 340
-    invoke-static {p1, p4}, Lcom/android/server/backup/TransportManager$TransportDescription;->access$302(Lcom/android/server/backup/TransportManager$TransportDescription;Ljava/lang/String;)Ljava/lang/String;
+    invoke-static {v1, p4}, Lcom/android/server/backup/TransportManager$TransportDescription;->access$302(Lcom/android/server/backup/TransportManager$TransportDescription;Ljava/lang/String;)Ljava/lang/String;
 
     .line 341
-    invoke-static {p1, p5}, Lcom/android/server/backup/TransportManager$TransportDescription;->access$402(Lcom/android/server/backup/TransportManager$TransportDescription;Landroid/content/Intent;)Landroid/content/Intent;
+    invoke-static {v1, p5}, Lcom/android/server/backup/TransportManager$TransportDescription;->access$402(Lcom/android/server/backup/TransportManager$TransportDescription;Landroid/content/Intent;)Landroid/content/Intent;
 
     .line 342
-    invoke-static {p1, p6}, Lcom/android/server/backup/TransportManager$TransportDescription;->access$502(Lcom/android/server/backup/TransportManager$TransportDescription;Ljava/lang/CharSequence;)Ljava/lang/CharSequence;
+    invoke-static {v1, p6}, Lcom/android/server/backup/TransportManager$TransportDescription;->access$502(Lcom/android/server/backup/TransportManager$TransportDescription;Ljava/lang/CharSequence;)Ljava/lang/CharSequence;
 
     .line 343
-    const-string p1, "BackupTransportManager"
+    const-string v2, "BackupTransportManager"
 
-    new-instance p3, Ljava/lang/StringBuilder;
+    new-instance v3, Ljava/lang/StringBuilder;
 
-    invoke-direct {p3}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string p4, "Transport "
+    const-string v4, "Transport "
 
-    invoke-virtual {p3, p4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p3, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string p2, " updated its attributes"
+    const-string v4, " updated its attributes"
 
-    invoke-virtual {p3, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p2
+    move-result-object v3
 
-    invoke-static {p1, p2}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v2, v3}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 344
+    nop
+
+    .end local v1  # "description":Lcom/android/server/backup/TransportManager$TransportDescription;
     monitor-exit v0
 
     .line 345
     return-void
 
     .line 344
-    :catchall_56
-    move-exception p1
+    :catchall_57
+    move-exception v1
 
     monitor-exit v0
-    :try_end_58
-    .catchall {:try_start_3 .. :try_end_58} :catchall_56
+    :try_end_59
+    .catchall {:try_start_3 .. :try_end_59} :catchall_57
 
-    throw p1
+    throw v1
 .end method

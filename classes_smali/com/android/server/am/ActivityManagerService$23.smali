@@ -30,7 +30,7 @@
 .method constructor <init>()V
     .registers 1
 
-    .line 12072
+    .line 12793
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
     return-void
@@ -40,8 +40,10 @@
 # virtual methods
 .method public compare(Lcom/android/server/am/ActivityManagerService$MemItem;Lcom/android/server/am/ActivityManagerService$MemItem;)I
     .registers 7
+    .param p1, "lhs"  # Lcom/android/server/am/ActivityManagerService$MemItem;
+    .param p2, "rhs"  # Lcom/android/server/am/ActivityManagerService$MemItem;
 
-    .line 12075
+    .line 12796
     iget-wide v0, p1, Lcom/android/server/am/ActivityManagerService$MemItem;->pss:J
 
     iget-wide v2, p2, Lcom/android/server/am/ActivityManagerService$MemItem;->pss:J
@@ -50,37 +52,37 @@
 
     if-gez v0, :cond_a
 
-    .line 12076
-    const/4 p1, 0x1
+    .line 12797
+    const/4 v0, 0x1
 
-    return p1
+    return v0
 
-    .line 12077
+    .line 12798
     :cond_a
     iget-wide v0, p1, Lcom/android/server/am/ActivityManagerService$MemItem;->pss:J
 
-    iget-wide p1, p2, Lcom/android/server/am/ActivityManagerService$MemItem;->pss:J
+    iget-wide v2, p2, Lcom/android/server/am/ActivityManagerService$MemItem;->pss:J
 
-    cmp-long p1, v0, p1
+    cmp-long v0, v0, v2
 
-    if-lez p1, :cond_14
+    if-lez v0, :cond_14
 
-    .line 12078
-    const/4 p1, -0x1
+    .line 12799
+    const/4 v0, -0x1
 
-    return p1
+    return v0
 
-    .line 12080
+    .line 12801
     :cond_14
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    return p1
+    return v0
 .end method
 
 .method public bridge synthetic compare(Ljava/lang/Object;Ljava/lang/Object;)I
     .registers 3
 
-    .line 12072
+    .line 12793
     check-cast p1, Lcom/android/server/am/ActivityManagerService$MemItem;
 
     check-cast p2, Lcom/android/server/am/ActivityManagerService$MemItem;

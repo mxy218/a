@@ -23,123 +23,132 @@
 # direct methods
 .method constructor <init>(Ljava/io/PrintWriter;)V
     .registers 3
+    .param p1, "pw"  # Ljava/io/PrintWriter;
 
-    .line 680
+    .line 726
     invoke-direct {p0}, Landroid/content/IIntentReceiver$Stub;-><init>()V
 
-    .line 678
+    .line 724
     const/4 v0, 0x0
 
     iput-boolean v0, p0, Lcom/android/server/am/ActivityManagerShellCommand$IntentReceiver;->mFinished:Z
 
-    .line 681
+    .line 727
     iput-object p1, p0, Lcom/android/server/am/ActivityManagerShellCommand$IntentReceiver;->mPw:Ljava/io/PrintWriter;
 
-    .line 682
+    .line 728
     return-void
 .end method
 
 
 # virtual methods
 .method public performReceive(Landroid/content/Intent;ILjava/lang/String;Landroid/os/Bundle;ZZI)V
-    .registers 8
+    .registers 11
+    .param p1, "intent"  # Landroid/content/Intent;
+    .param p2, "resultCode"  # I
+    .param p3, "data"  # Ljava/lang/String;
+    .param p4, "extras"  # Landroid/os/Bundle;
+    .param p5, "ordered"  # Z
+    .param p6, "sticky"  # Z
+    .param p7, "sendingUser"  # I
 
-    .line 687
-    new-instance p1, Ljava/lang/StringBuilder;
+    .line 733
+    new-instance v0, Ljava/lang/StringBuilder;
 
-    invoke-direct {p1}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string p5, "Broadcast completed: result="
+    const-string v1, "Broadcast completed: result="
 
-    invoke-virtual {p1, p5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p1, p2}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, p2}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    .line 688
+    .line 734
+    .local v0, "line":Ljava/lang/String;
     if-eqz p3, :cond_2c
 
-    new-instance p2, Ljava/lang/StringBuilder;
+    new-instance v1, Ljava/lang/StringBuilder;
 
-    invoke-direct {p2}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
 
-    invoke-virtual {p2, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string p1, ", data=\""
+    const-string v2, ", data=\""
 
-    invoke-virtual {p2, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p2, p3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, p3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string p1, "\""
+    const-string v2, "\""
 
-    invoke-virtual {p2, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    .line 689
+    .line 735
     :cond_2c
     if-eqz p4, :cond_42
 
-    new-instance p2, Ljava/lang/StringBuilder;
+    new-instance v1, Ljava/lang/StringBuilder;
 
-    invoke-direct {p2}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
 
-    invoke-virtual {p2, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string p1, ", extras: "
+    const-string v2, ", extras: "
 
-    invoke-virtual {p2, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p2, p4}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, p4}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    .line 690
+    .line 736
     :cond_42
-    iget-object p2, p0, Lcom/android/server/am/ActivityManagerShellCommand$IntentReceiver;->mPw:Ljava/io/PrintWriter;
+    iget-object v1, p0, Lcom/android/server/am/ActivityManagerShellCommand$IntentReceiver;->mPw:Ljava/io/PrintWriter;
 
-    invoke-virtual {p2, p1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {v1, v0}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
-    .line 691
-    iget-object p1, p0, Lcom/android/server/am/ActivityManagerShellCommand$IntentReceiver;->mPw:Ljava/io/PrintWriter;
+    .line 737
+    iget-object v1, p0, Lcom/android/server/am/ActivityManagerShellCommand$IntentReceiver;->mPw:Ljava/io/PrintWriter;
 
-    invoke-virtual {p1}, Ljava/io/PrintWriter;->flush()V
+    invoke-virtual {v1}, Ljava/io/PrintWriter;->flush()V
 
-    .line 692
+    .line 738
     monitor-enter p0
 
-    .line 693
-    const/4 p1, 0x1
+    .line 739
+    const/4 v1, 0x1
 
     :try_start_4e
-    iput-boolean p1, p0, Lcom/android/server/am/ActivityManagerShellCommand$IntentReceiver;->mFinished:Z
+    iput-boolean v1, p0, Lcom/android/server/am/ActivityManagerShellCommand$IntentReceiver;->mFinished:Z
 
-    .line 694
+    .line 740
     invoke-virtual {p0}, Ljava/lang/Object;->notifyAll()V
 
-    .line 695
+    .line 741
     monitor-exit p0
 
-    .line 696
+    .line 742
     return-void
 
-    .line 695
+    .line 741
     :catchall_55
-    move-exception p1
+    move-exception v1
 
     monitor-exit p0
     :try_end_57
     .catchall {:try_start_4e .. :try_end_57} :catchall_55
 
-    throw p1
+    throw v1
 .end method
 
 .method public declared-synchronized waitForFinish()V
@@ -147,7 +156,7 @@
 
     monitor-enter p0
 
-    .line 700
+    .line 746
     :goto_1
     :try_start_1
     iget-boolean v0, p0, Lcom/android/server/am/ActivityManagerShellCommand$IntentReceiver;->mFinished:Z
@@ -161,26 +170,28 @@
 
     goto :goto_1
 
-    .line 703
+    .line 749
+    .end local p0  # "this":Lcom/android/server/am/ActivityManagerShellCommand$IntentReceiver;
     :cond_9
     nop
 
-    .line 704
+    .line 750
     monitor-exit p0
 
     return-void
 
-    .line 699
+    .line 745
     :catchall_c
     move-exception v0
 
     goto :goto_15
 
-    .line 701
+    .line 747
     :catch_e
     move-exception v0
 
-    .line 702
+    .line 748
+    .local v0, "e":Ljava/lang/InterruptedException;
     :try_start_f
     new-instance v1, Ljava/lang/IllegalStateException;
 
@@ -190,7 +201,8 @@
     :try_end_15
     .catchall {:try_start_f .. :try_end_15} :catchall_c
 
-    .line 699
+    .line 745
+    .end local v0  # "e":Ljava/lang/InterruptedException;
     :goto_15
     monitor-exit p0
 

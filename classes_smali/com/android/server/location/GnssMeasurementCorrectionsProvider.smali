@@ -34,6 +34,7 @@
 # direct methods
 .method constructor <init>(Landroid/os/Handler;)V
     .registers 3
+    .param p1, "handler"  # Landroid/os/Handler;
 
     .line 48
     new-instance v0, Lcom/android/server/location/GnssMeasurementCorrectionsProvider$GnssMeasurementCorrectionsProviderNative;
@@ -48,6 +49,8 @@
 
 .method constructor <init>(Landroid/os/Handler;Lcom/android/server/location/GnssMeasurementCorrectionsProvider$GnssMeasurementCorrectionsProviderNative;)V
     .registers 4
+    .param p1, "handler"  # Landroid/os/Handler;
+    .param p2, "aNative"  # Lcom/android/server/location/GnssMeasurementCorrectionsProvider$GnssMeasurementCorrectionsProviderNative;
     .annotation build Lcom/android/internal/annotations/VisibleForTesting;
     .end annotation
 
@@ -81,33 +84,36 @@
 .end method
 
 .method static synthetic access$100(Landroid/location/GnssMeasurementCorrections;)Z
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Landroid/location/GnssMeasurementCorrections;
 
     .line 33
     invoke-static {p0}, Lcom/android/server/location/GnssMeasurementCorrectionsProvider;->native_inject_gnss_measurement_corrections(Landroid/location/GnssMeasurementCorrections;)Z
 
-    move-result p0
+    move-result v0
 
-    return p0
+    return v0
 .end method
 
 .method private static hasCapability(II)Z
-    .registers 2
+    .registers 3
+    .param p0, "halCapabilities"  # I
+    .param p1, "capability"  # I
 
     .line 128
-    and-int/2addr p0, p1
+    and-int v0, p0, p1
 
-    if-eqz p0, :cond_5
+    if-eqz v0, :cond_6
 
-    const/4 p0, 0x1
+    const/4 v0, 0x1
 
-    goto :goto_6
+    goto :goto_7
 
-    :cond_5
-    const/4 p0, 0x0
+    :cond_6
+    const/4 v0, 0x0
 
-    :goto_6
-    return p0
+    :goto_7
+    return v0
 .end method
 
 .method private isCapabilitiesReceived()Z
@@ -150,6 +156,7 @@
 
 .method public injectGnssMeasurementCorrections(Landroid/location/GnssMeasurementCorrections;)V
     .registers 4
+    .param p1, "measurementCorrections"  # Landroid/location/GnssMeasurementCorrections;
 
     .line 73
     invoke-direct {p0}, Lcom/android/server/location/GnssMeasurementCorrectionsProvider;->isCapabilitiesReceived()Z
@@ -159,11 +166,11 @@
     if-nez v0, :cond_e
 
     .line 74
-    const-string p1, "GnssMeasurementCorrectionsProvider"
+    const-string v0, "GnssMeasurementCorrectionsProvider"
 
-    const-string v0, "Failed to inject GNSS measurement corrections. Capabilities not received yet."
+    const-string v1, "Failed to inject GNSS measurement corrections. Capabilities not received yet."
 
-    invoke-static {p1, v0}, Landroid/util/Log;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v0, v1}, Landroid/util/Log;->w(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 76
     return-void
@@ -196,23 +203,24 @@
 .end method
 
 .method public synthetic lambda$injectGnssMeasurementCorrections$0$GnssMeasurementCorrectionsProvider(Landroid/location/GnssMeasurementCorrections;)V
-    .registers 3
+    .registers 4
+    .param p1, "measurementCorrections"  # Landroid/location/GnssMeasurementCorrections;
 
     .line 79
     iget-object v0, p0, Lcom/android/server/location/GnssMeasurementCorrectionsProvider;->mNative:Lcom/android/server/location/GnssMeasurementCorrectionsProvider$GnssMeasurementCorrectionsProviderNative;
 
     invoke-virtual {v0, p1}, Lcom/android/server/location/GnssMeasurementCorrectionsProvider$GnssMeasurementCorrectionsProviderNative;->injectGnssMeasurementCorrections(Landroid/location/GnssMeasurementCorrections;)Z
 
-    move-result p1
+    move-result v0
 
-    if-nez p1, :cond_f
+    if-nez v0, :cond_f
 
     .line 80
-    const-string p1, "GnssMeasurementCorrectionsProvider"
+    const-string v0, "GnssMeasurementCorrectionsProvider"
 
-    const-string v0, "Failure in injecting GNSS corrections."
+    const-string v1, "Failure in injecting GNSS corrections."
 
-    invoke-static {p1, v0}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v0, v1}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 82
     :cond_f
@@ -221,6 +229,7 @@
 
 .method onCapabilitiesUpdated(I)Z
     .registers 4
+    .param p1, "capabilities"  # I
 
     .line 87
     const/4 v0, 0x1
@@ -254,27 +263,27 @@
     .line 93
     invoke-static {p1}, Ljava/lang/Integer;->toHexString(I)Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v1
 
-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string p1, " does not contain the mandatory LOS_SATS or the EXCESS_PATH_LENGTH capability."
+    const-string v1, " does not contain the mandatory LOS_SATS or the EXCESS_PATH_LENGTH capability."
 
-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
     .line 92
-    const-string v0, "GnssMeasurementCorrectionsProvider"
+    const-string v1, "GnssMeasurementCorrectionsProvider"
 
-    invoke-static {v0, p1}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v0}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 95
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    return p1
+    return v0
 
     .line 89
     :cond_30
@@ -294,12 +303,14 @@
     move-result v0
 
     .line 111
+    .local v0, "capabilities":I
     new-instance v1, Ljava/lang/StringBuilder;
 
     invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
 
     .line 112
-    const-string v2, "mCapabilities=0x"
+    .local v1, "s":Ljava/lang/StringBuilder;
+    const-string/jumbo v2, "mCapabilities=0x"
 
     invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
@@ -321,7 +332,7 @@
 
     move-result v2
 
-    if-eqz v2, :cond_26
+    if-eqz v2, :cond_27
 
     .line 115
     const-string v2, "LOS_SATS "
@@ -329,14 +340,14 @@
     invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     .line 117
-    :cond_26
+    :cond_27
     const/4 v2, 0x2
 
     invoke-static {v0, v2}, Lcom/android/server/location/GnssMeasurementCorrectionsProvider;->hasCapability(II)Z
 
     move-result v2
 
-    if-eqz v2, :cond_32
+    if-eqz v2, :cond_33
 
     .line 118
     const-string v2, "EXCESS_PATH_LENGTH "
@@ -344,30 +355,30 @@
     invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     .line 120
-    :cond_32
+    :cond_33
     const/4 v2, 0x4
 
     invoke-static {v0, v2}, Lcom/android/server/location/GnssMeasurementCorrectionsProvider;->hasCapability(II)Z
 
-    move-result v0
+    move-result v2
 
-    if-eqz v0, :cond_3e
+    if-eqz v2, :cond_3f
 
     .line 121
-    const-string v0, "REFLECTING_PLANE "
+    const-string v2, "REFLECTING_PLANE "
 
-    invoke-virtual {v1, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     .line 123
-    :cond_3e
-    const-string v0, ")"
+    :cond_3f
+    const-string v2, ")"
 
-    invoke-virtual {v1, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     .line 124
     invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v2
 
-    return-object v0
+    return-object v2
 .end method

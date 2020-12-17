@@ -33,8 +33,9 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/wm/TaskPersister;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/wm/TaskPersister;
 
-    .line 383
+    .line 386
     iput-object p1, p0, Lcom/android/server/wm/TaskPersister$1;->this$0:Lcom/android/server/wm/TaskPersister;
 
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -45,47 +46,52 @@
 
 # virtual methods
 .method public compare(Lcom/android/server/wm/TaskRecord;Lcom/android/server/wm/TaskRecord;)I
-    .registers 5
-
-    .line 386
-    iget-wide v0, p2, Lcom/android/server/wm/TaskRecord;->mLastTimeMoved:J
-
-    iget-wide p1, p1, Lcom/android/server/wm/TaskRecord;->mLastTimeMoved:J
-
-    sub-long/2addr v0, p1
-
-    .line 387
-    const-wide/16 p1, 0x0
-
-    cmp-long p1, v0, p1
-
-    if-gez p1, :cond_d
-
-    .line 388
-    const/4 p1, -0x1
-
-    return p1
+    .registers 8
+    .param p1, "lhs"  # Lcom/android/server/wm/TaskRecord;
+    .param p2, "rhs"  # Lcom/android/server/wm/TaskRecord;
 
     .line 389
-    :cond_d
-    if-lez p1, :cond_11
+    iget-wide v0, p2, Lcom/android/server/wm/TaskRecord;->mLastTimeMoved:J
+
+    iget-wide v2, p1, Lcom/android/server/wm/TaskRecord;->mLastTimeMoved:J
+
+    sub-long/2addr v0, v2
 
     .line 390
-    const/4 p1, 0x1
+    .local v0, "diff":J
+    const-wide/16 v2, 0x0
 
-    return p1
+    cmp-long v4, v0, v2
+
+    if-gez v4, :cond_d
+
+    .line 391
+    const/4 v2, -0x1
+
+    return v2
 
     .line 392
-    :cond_11
-    const/4 p1, 0x0
+    :cond_d
+    cmp-long v2, v0, v2
 
-    return p1
+    if-lez v2, :cond_13
+
+    .line 393
+    const/4 v2, 0x1
+
+    return v2
+
+    .line 395
+    :cond_13
+    const/4 v2, 0x0
+
+    return v2
 .end method
 
 .method public bridge synthetic compare(Ljava/lang/Object;Ljava/lang/Object;)I
     .registers 3
 
-    .line 383
+    .line 386
     check-cast p1, Lcom/android/server/wm/TaskRecord;
 
     check-cast p2, Lcom/android/server/wm/TaskRecord;

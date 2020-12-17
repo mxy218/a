@@ -46,16 +46,19 @@
 
 # direct methods
 .method constructor <init>(Landroid/content/Context;Lcom/android/internal/os/BinderCallsStats;Lcom/android/server/BinderCallsStatsService$AuthorizedWorkSourceProvider;)V
-    .registers 6
+    .registers 7
+    .param p1, "context"  # Landroid/content/Context;
+    .param p2, "binderCallsStats"  # Lcom/android/internal/os/BinderCallsStats;
+    .param p3, "workSourceProvider"  # Lcom/android/server/BinderCallsStatsService$AuthorizedWorkSourceProvider;
 
-    .line 140
+    .line 137
     invoke-static {}, Lcom/android/internal/os/BackgroundThread;->getHandler()Landroid/os/Handler;
 
     move-result-object v0
 
     invoke-direct {p0, v0}, Landroid/database/ContentObserver;-><init>(Landroid/os/Handler;)V
 
-    .line 132
+    .line 129
     const-string v0, "binder_calls_stats"
 
     invoke-static {v0}, Landroid/provider/Settings$Global;->getUriFor(Ljava/lang/String;)Landroid/net/Uri;
@@ -64,7 +67,7 @@
 
     iput-object v0, p0, Lcom/android/server/BinderCallsStatsService$SettingsObserver;->mUri:Landroid/net/Uri;
 
-    .line 134
+    .line 131
     new-instance v0, Landroid/util/KeyValueListParser;
 
     const/16 v1, 0x2c
@@ -73,42 +76,43 @@
 
     iput-object v0, p0, Lcom/android/server/BinderCallsStatsService$SettingsObserver;->mParser:Landroid/util/KeyValueListParser;
 
-    .line 141
+    .line 138
     iput-object p1, p0, Lcom/android/server/BinderCallsStatsService$SettingsObserver;->mContext:Landroid/content/Context;
 
-    .line 142
+    .line 139
     invoke-virtual {p1}, Landroid/content/Context;->getContentResolver()Landroid/content/ContentResolver;
 
-    move-result-object p1
+    move-result-object v0
 
-    iget-object v0, p0, Lcom/android/server/BinderCallsStatsService$SettingsObserver;->mUri:Landroid/net/Uri;
+    iget-object v1, p0, Lcom/android/server/BinderCallsStatsService$SettingsObserver;->mUri:Landroid/net/Uri;
 
-    const/4 v1, 0x0
+    const/4 v2, 0x0
 
-    invoke-virtual {p1, v0, v1, p0, v1}, Landroid/content/ContentResolver;->registerContentObserver(Landroid/net/Uri;ZLandroid/database/ContentObserver;I)V
+    invoke-virtual {v0, v1, v2, p0, v2}, Landroid/content/ContentResolver;->registerContentObserver(Landroid/net/Uri;ZLandroid/database/ContentObserver;I)V
 
-    .line 144
+    .line 141
     iput-object p2, p0, Lcom/android/server/BinderCallsStatsService$SettingsObserver;->mBinderCallsStats:Lcom/android/internal/os/BinderCallsStats;
 
-    .line 145
+    .line 142
     iput-object p3, p0, Lcom/android/server/BinderCallsStatsService$SettingsObserver;->mWorkSourceProvider:Lcom/android/server/BinderCallsStatsService$AuthorizedWorkSourceProvider;
 
-    .line 147
+    .line 144
     invoke-virtual {p0}, Lcom/android/server/BinderCallsStatsService$SettingsObserver;->onChange()V
 
-    .line 148
+    .line 145
     return-void
 .end method
 
 .method static synthetic lambda$onChange$0(I)I
-    .registers 1
+    .registers 2
+    .param p0, "x"  # I
 
-    .line 196
+    .line 193
     invoke-static {}, Landroid/os/Binder;->getCallingUid()I
 
-    move-result p0
+    move-result v0
 
-    return p0
+    return v0
 .end method
 
 
@@ -116,7 +120,7 @@
 .method public onChange()V
     .registers 6
 
-    .line 159
+    .line 156
     const-string/jumbo v0, "persist.sys.binder_calls_detailed_tracking"
 
     invoke-static {v0}, Landroid/os/SystemProperties;->get(Ljava/lang/String;)Ljava/lang/String;
@@ -129,10 +133,10 @@
 
     if-nez v0, :cond_e
 
-    .line 160
+    .line 157
     return-void
 
-    .line 164
+    .line 161
     :cond_e
     :try_start_e
     iget-object v0, p0, Lcom/android/server/BinderCallsStatsService$SettingsObserver;->mParser:Landroid/util/KeyValueListParser;
@@ -153,21 +157,23 @@
     :try_end_1f
     .catch Ljava/lang/IllegalArgumentException; {:try_start_e .. :try_end_1f} :catch_20
 
-    .line 168
+    .line 165
     goto :goto_28
 
-    .line 166
+    .line 163
     :catch_20
     move-exception v0
 
-    .line 167
+    .line 164
+    .local v0, "e":Ljava/lang/IllegalArgumentException;
     const-string v1, "BinderCallsStatsService"
 
     const-string v2, "Bad binder call stats settings"
 
     invoke-static {v1, v2, v0}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
-    .line 169
+    .line 166
+    .end local v0  # "e":Ljava/lang/IllegalArgumentException;
     :goto_28
     iget-object v0, p0, Lcom/android/server/BinderCallsStatsService$SettingsObserver;->mBinderCallsStats:Lcom/android/internal/os/BinderCallsStats;
 
@@ -183,7 +189,7 @@
 
     invoke-virtual {v0, v1}, Lcom/android/internal/os/BinderCallsStats;->setDetailedTracking(Z)V
 
-    .line 171
+    .line 168
     iget-object v0, p0, Lcom/android/server/BinderCallsStatsService$SettingsObserver;->mBinderCallsStats:Lcom/android/internal/os/BinderCallsStats;
 
     iget-object v1, p0, Lcom/android/server/BinderCallsStatsService$SettingsObserver;->mParser:Landroid/util/KeyValueListParser;
@@ -198,14 +204,14 @@
 
     invoke-virtual {v0, v1}, Lcom/android/internal/os/BinderCallsStats;->setSamplingInterval(I)V
 
-    .line 174
+    .line 171
     iget-object v0, p0, Lcom/android/server/BinderCallsStatsService$SettingsObserver;->mBinderCallsStats:Lcom/android/internal/os/BinderCallsStats;
 
     iget-object v1, p0, Lcom/android/server/BinderCallsStatsService$SettingsObserver;->mParser:Landroid/util/KeyValueListParser;
 
     const/16 v3, 0x5dc
 
-    const-string v4, "max_call_stats_count"
+    const-string/jumbo v4, "max_call_stats_count"
 
     invoke-virtual {v1, v4, v3}, Landroid/util/KeyValueListParser;->getInt(Ljava/lang/String;I)I
 
@@ -213,124 +219,128 @@
 
     invoke-virtual {v0, v1}, Lcom/android/internal/os/BinderCallsStats;->setMaxBinderCallStats(I)V
 
-    .line 177
+    .line 174
     iget-object v0, p0, Lcom/android/server/BinderCallsStatsService$SettingsObserver;->mBinderCallsStats:Lcom/android/internal/os/BinderCallsStats;
 
     iget-object v1, p0, Lcom/android/server/BinderCallsStatsService$SettingsObserver;->mParser:Landroid/util/KeyValueListParser;
 
     const/4 v3, 0x0
 
-    .line 178
+    .line 175
     const-string/jumbo v4, "track_screen_state"
 
     invoke-virtual {v1, v4, v3}, Landroid/util/KeyValueListParser;->getBoolean(Ljava/lang/String;Z)Z
 
     move-result v1
 
-    .line 177
+    .line 174
     invoke-virtual {v0, v1}, Lcom/android/internal/os/BinderCallsStats;->setTrackScreenInteractive(Z)V
 
-    .line 180
+    .line 177
     iget-object v0, p0, Lcom/android/server/BinderCallsStatsService$SettingsObserver;->mBinderCallsStats:Lcom/android/internal/os/BinderCallsStats;
 
     iget-object v1, p0, Lcom/android/server/BinderCallsStatsService$SettingsObserver;->mParser:Landroid/util/KeyValueListParser;
 
-    .line 181
+    .line 178
     const-string/jumbo v3, "track_calling_uid"
 
     invoke-virtual {v1, v3, v2}, Landroid/util/KeyValueListParser;->getBoolean(Ljava/lang/String;Z)Z
 
     move-result v1
 
-    .line 180
+    .line 177
     invoke-virtual {v0, v1}, Lcom/android/internal/os/BinderCallsStats;->setTrackDirectCallerUid(Z)V
 
-    .line 185
+    .line 182
     iget-object v0, p0, Lcom/android/server/BinderCallsStatsService$SettingsObserver;->mParser:Landroid/util/KeyValueListParser;
 
-    .line 186
+    .line 183
     const-string v1, "enabled"
 
     invoke-virtual {v0, v1, v2}, Landroid/util/KeyValueListParser;->getBoolean(Ljava/lang/String;Z)Z
 
     move-result v0
 
-    .line 187
+    .line 184
+    .local v0, "enabled":Z
     iget-boolean v1, p0, Lcom/android/server/BinderCallsStatsService$SettingsObserver;->mEnabled:Z
 
-    if-eq v1, v0, :cond_ab
+    if-eq v1, v0, :cond_ac
 
-    .line 188
-    if-eqz v0, :cond_93
+    .line 185
+    if-eqz v0, :cond_94
 
-    .line 189
+    .line 186
     iget-object v1, p0, Lcom/android/server/BinderCallsStatsService$SettingsObserver;->mBinderCallsStats:Lcom/android/internal/os/BinderCallsStats;
 
     invoke-static {v1}, Landroid/os/Binder;->setObserver(Lcom/android/internal/os/BinderInternal$Observer;)V
 
-    .line 190
+    .line 187
     new-instance v1, Landroid/os/Binder$PropagateWorkSourceTransactListener;
 
     invoke-direct {v1}, Landroid/os/Binder$PropagateWorkSourceTransactListener;-><init>()V
 
     invoke-static {v1}, Landroid/os/Binder;->setProxyTransactListener(Landroid/os/Binder$ProxyTransactListener;)V
 
-    .line 192
+    .line 189
     iget-object v1, p0, Lcom/android/server/BinderCallsStatsService$SettingsObserver;->mWorkSourceProvider:Lcom/android/server/BinderCallsStatsService$AuthorizedWorkSourceProvider;
 
     invoke-static {v1}, Landroid/os/Binder;->setWorkSourceProvider(Lcom/android/internal/os/BinderInternal$WorkSourceProvider;)V
 
-    goto :goto_9f
+    goto :goto_a0
 
-    .line 194
-    :cond_93
+    .line 191
+    :cond_94
     const/4 v1, 0x0
 
     invoke-static {v1}, Landroid/os/Binder;->setObserver(Lcom/android/internal/os/BinderInternal$Observer;)V
 
-    .line 195
+    .line 192
     invoke-static {v1}, Landroid/os/Binder;->setProxyTransactListener(Landroid/os/Binder$ProxyTransactListener;)V
 
-    .line 196
+    .line 193
     sget-object v1, Lcom/android/server/-$$Lambda$BinderCallsStatsService$SettingsObserver$bif9uA0lzoT6htcKe6MNsrH_ha4;->INSTANCE:Lcom/android/server/-$$Lambda$BinderCallsStatsService$SettingsObserver$bif9uA0lzoT6htcKe6MNsrH_ha4;
 
     invoke-static {v1}, Landroid/os/Binder;->setWorkSourceProvider(Lcom/android/internal/os/BinderInternal$WorkSourceProvider;)V
 
-    .line 198
-    :goto_9f
+    .line 195
+    :goto_a0
     iput-boolean v0, p0, Lcom/android/server/BinderCallsStatsService$SettingsObserver;->mEnabled:Z
 
-    .line 199
+    .line 196
     iget-object v1, p0, Lcom/android/server/BinderCallsStatsService$SettingsObserver;->mBinderCallsStats:Lcom/android/internal/os/BinderCallsStats;
 
     invoke-virtual {v1}, Lcom/android/internal/os/BinderCallsStats;->reset()V
 
-    .line 200
+    .line 197
     iget-object v1, p0, Lcom/android/server/BinderCallsStatsService$SettingsObserver;->mBinderCallsStats:Lcom/android/internal/os/BinderCallsStats;
 
     invoke-virtual {v1, v0}, Lcom/android/internal/os/BinderCallsStats;->setAddDebugEntries(Z)V
 
-    .line 202
-    :cond_ab
+    .line 199
+    :cond_ac
     return-void
 .end method
 
 .method public onChange(ZLandroid/net/Uri;I)V
-    .registers 4
+    .registers 5
+    .param p1, "selfChange"  # Z
+    .param p2, "uri"  # Landroid/net/Uri;
+    .param p3, "userId"  # I
 
-    .line 152
-    iget-object p1, p0, Lcom/android/server/BinderCallsStatsService$SettingsObserver;->mUri:Landroid/net/Uri;
+    .line 149
+    iget-object v0, p0, Lcom/android/server/BinderCallsStatsService$SettingsObserver;->mUri:Landroid/net/Uri;
 
-    invoke-virtual {p1, p2}, Landroid/net/Uri;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v0, p2}, Landroid/net/Uri;->equals(Ljava/lang/Object;)Z
 
-    move-result p1
+    move-result v0
 
-    if-eqz p1, :cond_b
+    if-eqz v0, :cond_b
 
-    .line 153
+    .line 150
     invoke-virtual {p0}, Lcom/android/server/BinderCallsStatsService$SettingsObserver;->onChange()V
 
-    .line 155
+    .line 152
     :cond_b
     return-void
 .end method

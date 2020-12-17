@@ -31,6 +31,7 @@
 
 .method public constructor <init>(Lcom/android/server/appprediction/AppPredictionManagerService;)V
     .registers 2
+    .param p1, "service"  # Lcom/android/server/appprediction/AppPredictionManagerService;
 
     .line 34
     invoke-direct {p0}, Landroid/os/ShellCommand;-><init>()V
@@ -45,7 +46,8 @@
 
 # virtual methods
 .method public onCommand(Ljava/lang/String;)I
-    .registers 7
+    .registers 10
+    .param p1, "cmd"  # Ljava/lang/String;
 
     .line 40
     if-nez p1, :cond_7
@@ -53,9 +55,9 @@
     .line 41
     invoke-virtual {p0, p1}, Lcom/android/server/appprediction/AppPredictionManagerServiceShellCommand;->handleDefaultCommands(Ljava/lang/String;)I
 
-    move-result p1
+    move-result v0
 
-    return p1
+    return v0
 
     .line 43
     :cond_7
@@ -64,6 +66,7 @@
     move-result-object v0
 
     .line 44
+    .local v0, "pw":Ljava/io/PrintWriter;
     invoke-virtual {p1}, Ljava/lang/String;->hashCode()I
 
     move-result v1
@@ -101,36 +104,37 @@
     .line 65
     invoke-virtual {p0, p1}, Lcom/android/server/appprediction/AppPredictionManagerServiceShellCommand;->handleDefaultCommands(Ljava/lang/String;)I
 
-    move-result p1
+    move-result v1
 
-    return p1
+    return v1
 
     .line 46
     :cond_2a
     invoke-virtual {p0}, Lcom/android/server/appprediction/AppPredictionManagerServiceShellCommand;->getNextArgRequired()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v1
 
     .line 47
-    invoke-virtual {p1}, Ljava/lang/String;->hashCode()I
+    .local v1, "what":Ljava/lang/String;
+    invoke-virtual {v1}, Ljava/lang/String;->hashCode()I
 
-    move-result v1
+    move-result v2
 
-    const v2, 0x77724739
+    const v5, 0x77724739
 
-    if-eq v1, v2, :cond_38
+    if-eq v2, v5, :cond_38
 
     :cond_37
     goto :goto_42
 
     :cond_38
-    const-string/jumbo v1, "temporary-service"
+    const-string/jumbo v2, "temporary-service"
 
-    invoke-virtual {p1, v1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v1, v2}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result p1
+    move-result v2
 
-    if-eqz p1, :cond_37
+    if-eqz v2, :cond_37
 
     move v3, v4
 
@@ -143,24 +147,26 @@
     :cond_45
     invoke-virtual {p0}, Lcom/android/server/appprediction/AppPredictionManagerServiceShellCommand;->getNextArgRequired()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v2
 
-    invoke-static {p1}, Ljava/lang/Integer;->parseInt(Ljava/lang/String;)I
+    invoke-static {v2}, Ljava/lang/Integer;->parseInt(Ljava/lang/String;)I
 
-    move-result p1
+    move-result v2
 
     .line 50
+    .local v2, "userId":I
     invoke-virtual {p0}, Lcom/android/server/appprediction/AppPredictionManagerServiceShellCommand;->getNextArg()Ljava/lang/String;
 
-    move-result-object v1
+    move-result-object v3
 
     .line 51
-    if-nez v1, :cond_59
+    .local v3, "serviceName":Ljava/lang/String;
+    if-nez v3, :cond_59
 
     .line 52
-    iget-object v0, p0, Lcom/android/server/appprediction/AppPredictionManagerServiceShellCommand;->mService:Lcom/android/server/appprediction/AppPredictionManagerService;
+    iget-object v5, p0, Lcom/android/server/appprediction/AppPredictionManagerServiceShellCommand;->mService:Lcom/android/server/appprediction/AppPredictionManagerService;
 
-    invoke-virtual {v0, p1}, Lcom/android/server/appprediction/AppPredictionManagerService;->resetTemporaryService(I)V
+    invoke-virtual {v5, v2}, Lcom/android/server/appprediction/AppPredictionManagerService;->resetTemporaryService(I)V
 
     .line 53
     return v4
@@ -169,48 +175,53 @@
     :cond_59
     invoke-virtual {p0}, Lcom/android/server/appprediction/AppPredictionManagerServiceShellCommand;->getNextArgRequired()Ljava/lang/String;
 
-    move-result-object v2
+    move-result-object v5
 
-    invoke-static {v2}, Ljava/lang/Integer;->parseInt(Ljava/lang/String;)I
+    invoke-static {v5}, Ljava/lang/Integer;->parseInt(Ljava/lang/String;)I
 
-    move-result v2
+    move-result v5
 
     .line 56
-    iget-object v3, p0, Lcom/android/server/appprediction/AppPredictionManagerServiceShellCommand;->mService:Lcom/android/server/appprediction/AppPredictionManagerService;
+    .local v5, "duration":I
+    iget-object v6, p0, Lcom/android/server/appprediction/AppPredictionManagerServiceShellCommand;->mService:Lcom/android/server/appprediction/AppPredictionManagerService;
 
-    invoke-virtual {v3, p1, v1, v2}, Lcom/android/server/appprediction/AppPredictionManagerService;->setTemporaryService(ILjava/lang/String;I)V
+    invoke-virtual {v6, v2, v3, v5}, Lcom/android/server/appprediction/AppPredictionManagerService;->setTemporaryService(ILjava/lang/String;I)V
 
     .line 57
-    new-instance p1, Ljava/lang/StringBuilder;
+    new-instance v6, Ljava/lang/StringBuilder;
 
-    invoke-direct {p1}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v6}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v3, "AppPredictionService temporarily set to "
+    const-string v7, "AppPredictionService temporarily set to "
 
-    invoke-virtual {p1, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v6, v7}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p1, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v6, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string v1, " for "
+    const-string v7, " for "
 
-    invoke-virtual {p1, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v6, v7}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p1, v2}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v6, v5}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    const-string/jumbo v1, "ms"
+    const-string/jumbo v7, "ms"
 
-    invoke-virtual {p1, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v6, v7}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v6}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v6
 
-    invoke-virtual {v0, p1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {v0, v6}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
     .line 59
     nop
 
     .line 63
+    .end local v1  # "what":Ljava/lang/String;
+    .end local v2  # "userId":I
+    .end local v3  # "serviceName":Ljava/lang/String;
+    .end local v5  # "duration":I
     :goto_89
     nop
 
@@ -219,7 +230,7 @@
 .end method
 
 .method public onHelp()V
-    .registers 4
+    .registers 5
 
     .line 72
     const-string v0, ""
@@ -229,6 +240,7 @@
     move-result-object v1
 
     .line 73
+    .local v1, "pw":Ljava/io/PrintWriter;
     :try_start_6
     const-string v2, "AppPredictionManagerService commands:"
 
@@ -271,18 +283,24 @@
     invoke-virtual {v1}, Ljava/io/PrintWriter;->close()V
 
     .line 82
+    .end local v1  # "pw":Ljava/io/PrintWriter;
     return-void
 
     .line 72
+    .restart local v1  # "pw":Ljava/io/PrintWriter;
     :catchall_2e
     move-exception v0
 
+    .end local v1  # "pw":Ljava/io/PrintWriter;
+    .end local p0  # "this":Lcom/android/server/appprediction/AppPredictionManagerServiceShellCommand;
     :try_start_2f
     throw v0
     :try_end_30
     .catchall {:try_start_2f .. :try_end_30} :catchall_30
 
     .line 81
+    .restart local v1  # "pw":Ljava/io/PrintWriter;
+    .restart local p0  # "this":Lcom/android/server/appprediction/AppPredictionManagerServiceShellCommand;
     :catchall_30
     move-exception v2
 
@@ -296,9 +314,9 @@
     goto :goto_3b
 
     :catchall_37
-    move-exception v1
+    move-exception v3
 
-    invoke-virtual {v0, v1}, Ljava/lang/Throwable;->addSuppressed(Ljava/lang/Throwable;)V
+    invoke-virtual {v0, v3}, Ljava/lang/Throwable;->addSuppressed(Ljava/lang/Throwable;)V
 
     :cond_3b
     :goto_3b

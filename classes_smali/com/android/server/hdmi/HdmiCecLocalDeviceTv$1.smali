@@ -21,6 +21,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/hdmi/HdmiCecLocalDeviceTv;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/hdmi/HdmiCecLocalDeviceTv;
 
     .line 138
     iput-object p1, p0, Lcom/android/server/hdmi/HdmiCecLocalDeviceTv$1;->this$0:Lcom/android/server/hdmi/HdmiCecLocalDeviceTv;
@@ -33,7 +34,8 @@
 
 # virtual methods
 .method public onInputAdded(Ljava/lang/String;)V
-    .registers 5
+    .registers 6
+    .param p1, "inputId"  # Ljava/lang/String;
 
     .line 141
     iget-object v0, p0, Lcom/android/server/hdmi/HdmiCecLocalDeviceTv$1;->this$0:Lcom/android/server/hdmi/HdmiCecLocalDeviceTv;
@@ -49,6 +51,7 @@
     move-result-object v0
 
     .line 142
+    .local v0, "tvInfo":Landroid/media/tv/TvInputInfo;
     if-nez v0, :cond_f
 
     return-void
@@ -57,38 +60,39 @@
     :cond_f
     invoke-virtual {v0}, Landroid/media/tv/TvInputInfo;->getHdmiDeviceInfo()Landroid/hardware/hdmi/HdmiDeviceInfo;
 
-    move-result-object v0
+    move-result-object v1
 
     .line 144
-    if-nez v0, :cond_16
+    .local v1, "info":Landroid/hardware/hdmi/HdmiDeviceInfo;
+    if-nez v1, :cond_16
 
     return-void
 
     .line 145
     :cond_16
-    iget-object v1, p0, Lcom/android/server/hdmi/HdmiCecLocalDeviceTv$1;->this$0:Lcom/android/server/hdmi/HdmiCecLocalDeviceTv;
+    iget-object v2, p0, Lcom/android/server/hdmi/HdmiCecLocalDeviceTv$1;->this$0:Lcom/android/server/hdmi/HdmiCecLocalDeviceTv;
 
-    invoke-virtual {v0}, Landroid/hardware/hdmi/HdmiDeviceInfo;->getId()I
+    invoke-virtual {v1}, Landroid/hardware/hdmi/HdmiDeviceInfo;->getId()I
+
+    move-result v3
+
+    invoke-static {v2, p1, v3}, Lcom/android/server/hdmi/HdmiCecLocalDeviceTv;->access$000(Lcom/android/server/hdmi/HdmiCecLocalDeviceTv;Ljava/lang/String;I)V
+
+    .line 146
+    invoke-virtual {v1}, Landroid/hardware/hdmi/HdmiDeviceInfo;->isCecDevice()Z
 
     move-result v2
 
-    invoke-static {v1, p1, v2}, Lcom/android/server/hdmi/HdmiCecLocalDeviceTv;->access$000(Lcom/android/server/hdmi/HdmiCecLocalDeviceTv;Ljava/lang/String;I)V
-
-    .line 146
-    invoke-virtual {v0}, Landroid/hardware/hdmi/HdmiDeviceInfo;->isCecDevice()Z
-
-    move-result p1
-
-    if-eqz p1, :cond_2e
+    if-eqz v2, :cond_2e
 
     .line 147
-    iget-object p1, p0, Lcom/android/server/hdmi/HdmiCecLocalDeviceTv$1;->this$0:Lcom/android/server/hdmi/HdmiCecLocalDeviceTv;
+    iget-object v2, p0, Lcom/android/server/hdmi/HdmiCecLocalDeviceTv$1;->this$0:Lcom/android/server/hdmi/HdmiCecLocalDeviceTv;
 
-    invoke-virtual {v0}, Landroid/hardware/hdmi/HdmiDeviceInfo;->getLogicalAddress()I
+    invoke-virtual {v1}, Landroid/hardware/hdmi/HdmiDeviceInfo;->getLogicalAddress()I
 
-    move-result v0
+    move-result v3
 
-    invoke-virtual {p1, v0}, Lcom/android/server/hdmi/HdmiCecLocalDeviceTv;->processDelayedActiveSource(I)V
+    invoke-virtual {v2, v3}, Lcom/android/server/hdmi/HdmiCecLocalDeviceTv;->processDelayedActiveSource(I)V
 
     .line 149
     :cond_2e
@@ -97,6 +101,7 @@
 
 .method public onInputRemoved(Ljava/lang/String;)V
     .registers 3
+    .param p1, "inputId"  # Ljava/lang/String;
 
     .line 153
     iget-object v0, p0, Lcom/android/server/hdmi/HdmiCecLocalDeviceTv$1;->this$0:Lcom/android/server/hdmi/HdmiCecLocalDeviceTv;

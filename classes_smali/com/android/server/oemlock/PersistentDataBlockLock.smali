@@ -14,6 +14,7 @@
 # direct methods
 .method constructor <init>(Landroid/content/Context;)V
     .registers 2
+    .param p1, "context"  # Landroid/content/Context;
 
     .line 38
     invoke-direct {p0}, Lcom/android/server/oemlock/OemLock;-><init>()V
@@ -26,7 +27,7 @@
 .end method
 
 .method private disallowUnlockIfNotUnlocked()V
-    .registers 3
+    .registers 4
 
     .line 100
     iget-object v0, p0, Lcom/android/server/oemlock/PersistentDataBlockLock;->mContext:Landroid/content/Context;
@@ -41,14 +42,15 @@
     check-cast v0, Landroid/service/persistentdata/PersistentDataBlockManager;
 
     .line 102
+    .local v0, "pdbm":Landroid/service/persistentdata/PersistentDataBlockManager;
     if-nez v0, :cond_15
 
     .line 103
-    const-string v0, "OemLock"
+    const-string v1, "OemLock"
 
-    const-string v1, "PersistentDataBlock is not supported on this device"
+    const-string v2, "PersistentDataBlock is not supported on this device"
 
-    invoke-static {v0, v1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v2}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 104
     return-void
@@ -108,7 +110,7 @@
 .end method
 
 .method isOemUnlockAllowedByDevice()Z
-    .registers 3
+    .registers 4
 
     .line 85
     iget-object v0, p0, Lcom/android/server/oemlock/PersistentDataBlockLock;->mContext:Landroid/content/Context;
@@ -123,57 +125,60 @@
     check-cast v0, Landroid/service/persistentdata/PersistentDataBlockManager;
 
     .line 87
+    .local v0, "pdbm":Landroid/service/persistentdata/PersistentDataBlockManager;
     if-nez v0, :cond_16
 
     .line 88
-    const-string v0, "OemLock"
+    const-string v1, "OemLock"
 
-    const-string v1, "PersistentDataBlock is not supported on this device"
+    const-string v2, "PersistentDataBlock is not supported on this device"
 
-    invoke-static {v0, v1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v2}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 89
-    const/4 v0, 0x0
+    const/4 v1, 0x0
 
-    return v0
+    return v1
 
     .line 91
     :cond_16
     invoke-virtual {v0}, Landroid/service/persistentdata/PersistentDataBlockManager;->getOemUnlockEnabled()Z
 
-    move-result v0
+    move-result v1
 
-    return v0
+    return v1
 .end method
 
 .method setOemUnlockAllowedByCarrier(Z[B)V
-    .registers 6
+    .registers 7
+    .param p1, "allowed"  # Z
+    .param p2, "signature"  # [B
 
     .line 51
     if-eqz p2, :cond_9
 
     .line 52
-    const-string p2, "OemLock"
+    const-string v0, "OemLock"
 
-    const-string v0, "Signature provided but is not being used"
+    const-string v1, "Signature provided but is not being used"
 
-    invoke-static {p2, v0}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v0, v1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 56
     :cond_9
-    iget-object p2, p0, Lcom/android/server/oemlock/PersistentDataBlockLock;->mContext:Landroid/content/Context;
+    iget-object v0, p0, Lcom/android/server/oemlock/PersistentDataBlockLock;->mContext:Landroid/content/Context;
 
-    invoke-static {p2}, Landroid/os/UserManager;->get(Landroid/content/Context;)Landroid/os/UserManager;
+    invoke-static {v0}, Landroid/os/UserManager;->get(Landroid/content/Context;)Landroid/os/UserManager;
 
-    move-result-object p2
+    move-result-object v0
 
-    xor-int/lit8 v0, p1, 0x1
+    xor-int/lit8 v1, p1, 0x1
 
-    sget-object v1, Landroid/os/UserHandle;->SYSTEM:Landroid/os/UserHandle;
+    sget-object v2, Landroid/os/UserHandle;->SYSTEM:Landroid/os/UserHandle;
 
-    const-string/jumbo v2, "no_oem_unlock"
+    const-string/jumbo v3, "no_oem_unlock"
 
-    invoke-virtual {p2, v2, v0, v1}, Landroid/os/UserManager;->setUserRestriction(Ljava/lang/String;ZLandroid/os/UserHandle;)V
+    invoke-virtual {v0, v3, v1, v2}, Landroid/os/UserManager;->setUserRestriction(Ljava/lang/String;ZLandroid/os/UserHandle;)V
 
     .line 59
     if-nez p1, :cond_1e
@@ -187,7 +192,8 @@
 .end method
 
 .method setOemUnlockAllowedByDevice(Z)V
-    .registers 4
+    .registers 5
+    .param p1, "allowedByDevice"  # Z
 
     .line 74
     iget-object v0, p0, Lcom/android/server/oemlock/PersistentDataBlockLock;->mContext:Landroid/content/Context;
@@ -202,14 +208,15 @@
     check-cast v0, Landroid/service/persistentdata/PersistentDataBlockManager;
 
     .line 76
+    .local v0, "pdbm":Landroid/service/persistentdata/PersistentDataBlockManager;
     if-nez v0, :cond_15
 
     .line 77
-    const-string p1, "OemLock"
+    const-string v1, "OemLock"
 
-    const-string v0, "PersistentDataBlock is not supported on this device"
+    const-string v2, "PersistentDataBlock is not supported on this device"
 
-    invoke-static {p1, v0}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v2}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 78
     return-void

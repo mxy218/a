@@ -24,6 +24,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/voiceinteraction/VoiceInteractionSessionConnection;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/voiceinteraction/VoiceInteractionSessionConnection;
 
     .line 490
     iput-object p1, p0, Lcom/android/server/voiceinteraction/VoiceInteractionSessionConnection$3;->this$0:Lcom/android/server/voiceinteraction/VoiceInteractionSessionConnection;
@@ -48,6 +49,7 @@
     check-cast v0, Lcom/android/server/statusbar/StatusBarManagerInternal;
 
     .line 495
+    .local v0, "statusBarInternal":Lcom/android/server/statusbar/StatusBarManagerInternal;
     if-eqz v0, :cond_d
 
     .line 496

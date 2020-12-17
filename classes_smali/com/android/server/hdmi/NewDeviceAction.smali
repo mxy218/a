@@ -27,7 +27,11 @@
 
 # direct methods
 .method constructor <init>(Lcom/android/server/hdmi/HdmiCecLocalDevice;III)V
-    .registers 5
+    .registers 6
+    .param p1, "source"  # Lcom/android/server/hdmi/HdmiCecLocalDevice;
+    .param p2, "deviceLogicalAddress"  # I
+    .param p3, "devicePhysicalAddress"  # I
+    .param p4, "deviceType"  # I
 
     .line 66
     invoke-direct {p0, p1}, Lcom/android/server/hdmi/HdmiCecFeatureAction;-><init>(Lcom/android/server/hdmi/HdmiCecLocalDevice;)V
@@ -42,9 +46,9 @@
     iput p4, p0, Lcom/android/server/hdmi/NewDeviceAction;->mDeviceType:I
 
     .line 70
-    const p1, 0xffffff
+    const v0, 0xffffff
 
-    iput p1, p0, Lcom/android/server/hdmi/NewDeviceAction;->mVendorId:I
+    iput v0, p0, Lcom/android/server/hdmi/NewDeviceAction;->mVendorId:I
 
     .line 71
     return-void
@@ -153,6 +157,7 @@
     invoke-direct/range {v1 .. v7}, Landroid/hardware/hdmi/HdmiDeviceInfo;-><init>(IIIIILjava/lang/String;)V
 
     .line 179
+    .local v0, "deviceInfo":Landroid/hardware/hdmi/HdmiDeviceInfo;
     invoke-virtual {p0}, Lcom/android/server/hdmi/NewDeviceAction;->tv()Lcom/android/server/hdmi/HdmiCecLocalDeviceTv;
 
     move-result-object v1
@@ -192,7 +197,9 @@
 .end method
 
 .method private mayProcessCommandIfCached(II)Z
-    .registers 4
+    .registers 5
+    .param p1, "destAddress"  # I
+    .param p2, "opcode"  # I
 
     .line 142
     invoke-virtual {p0}, Lcom/android/server/hdmi/NewDeviceAction;->getCecMessageCache()Lcom/android/server/hdmi/HdmiCecMessageCache;
@@ -201,52 +208,54 @@
 
     invoke-virtual {v0, p1, p2}, Lcom/android/server/hdmi/HdmiCecMessageCache;->getMessage(II)Lcom/android/server/hdmi/HdmiCecMessage;
 
-    move-result-object p1
+    move-result-object v0
 
     .line 143
-    if-eqz p1, :cond_f
+    .local v0, "message":Lcom/android/server/hdmi/HdmiCecMessage;
+    if-eqz v0, :cond_f
 
     .line 144
-    invoke-virtual {p0, p1}, Lcom/android/server/hdmi/NewDeviceAction;->processCommand(Lcom/android/server/hdmi/HdmiCecMessage;)Z
+    invoke-virtual {p0, v0}, Lcom/android/server/hdmi/NewDeviceAction;->processCommand(Lcom/android/server/hdmi/HdmiCecMessage;)Z
 
-    move-result p1
+    move-result v1
 
-    return p1
+    return v1
 
     .line 146
     :cond_f
-    const/4 p1, 0x0
+    const/4 v1, 0x0
 
-    return p1
+    return v1
 .end method
 
 .method private requestOsdName(Z)V
-    .registers 3
+    .registers 4
+    .param p1, "firstTry"  # Z
 
     .line 80
     if-eqz p1, :cond_5
 
     .line 81
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    iput p1, p0, Lcom/android/server/hdmi/NewDeviceAction;->mTimeoutRetry:I
+    iput v0, p0, Lcom/android/server/hdmi/NewDeviceAction;->mTimeoutRetry:I
 
     .line 83
     :cond_5
-    const/4 p1, 0x1
+    const/4 v0, 0x1
 
-    iput p1, p0, Lcom/android/server/hdmi/NewDeviceAction;->mState:I
+    iput v0, p0, Lcom/android/server/hdmi/NewDeviceAction;->mState:I
 
     .line 84
-    iget p1, p0, Lcom/android/server/hdmi/NewDeviceAction;->mDeviceLogicalAddress:I
+    iget v0, p0, Lcom/android/server/hdmi/NewDeviceAction;->mDeviceLogicalAddress:I
 
-    const/16 v0, 0x47
+    const/16 v1, 0x47
 
-    invoke-direct {p0, p1, v0}, Lcom/android/server/hdmi/NewDeviceAction;->mayProcessCommandIfCached(II)Z
+    invoke-direct {p0, v0, v1}, Lcom/android/server/hdmi/NewDeviceAction;->mayProcessCommandIfCached(II)Z
 
-    move-result p1
+    move-result v0
 
-    if-eqz p1, :cond_13
+    if-eqz v0, :cond_13
 
     .line 85
     return-void
@@ -255,54 +264,55 @@
     :cond_13
     invoke-virtual {p0}, Lcom/android/server/hdmi/NewDeviceAction;->getSourceAddress()I
 
-    move-result p1
+    move-result v0
 
-    iget v0, p0, Lcom/android/server/hdmi/NewDeviceAction;->mDeviceLogicalAddress:I
+    iget v1, p0, Lcom/android/server/hdmi/NewDeviceAction;->mDeviceLogicalAddress:I
 
-    invoke-static {p1, v0}, Lcom/android/server/hdmi/HdmiCecMessageBuilder;->buildGiveOsdNameCommand(II)Lcom/android/server/hdmi/HdmiCecMessage;
+    invoke-static {v0, v1}, Lcom/android/server/hdmi/HdmiCecMessageBuilder;->buildGiveOsdNameCommand(II)Lcom/android/server/hdmi/HdmiCecMessage;
 
-    move-result-object p1
+    move-result-object v0
 
-    invoke-virtual {p0, p1}, Lcom/android/server/hdmi/NewDeviceAction;->sendCommand(Lcom/android/server/hdmi/HdmiCecMessage;)V
+    invoke-virtual {p0, v0}, Lcom/android/server/hdmi/NewDeviceAction;->sendCommand(Lcom/android/server/hdmi/HdmiCecMessage;)V
 
     .line 90
-    iget p1, p0, Lcom/android/server/hdmi/NewDeviceAction;->mState:I
+    iget v0, p0, Lcom/android/server/hdmi/NewDeviceAction;->mState:I
 
-    const/16 v0, 0x7d0
+    const/16 v1, 0x7d0
 
-    invoke-virtual {p0, p1, v0}, Lcom/android/server/hdmi/NewDeviceAction;->addTimer(II)V
+    invoke-virtual {p0, v0, v1}, Lcom/android/server/hdmi/NewDeviceAction;->addTimer(II)V
 
     .line 91
     return-void
 .end method
 
 .method private requestVendorId(Z)V
-    .registers 3
+    .registers 4
+    .param p1, "firstTry"  # Z
 
     .line 150
     if-eqz p1, :cond_5
 
     .line 151
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    iput p1, p0, Lcom/android/server/hdmi/NewDeviceAction;->mTimeoutRetry:I
+    iput v0, p0, Lcom/android/server/hdmi/NewDeviceAction;->mTimeoutRetry:I
 
     .line 154
     :cond_5
-    const/4 p1, 0x2
+    const/4 v0, 0x2
 
-    iput p1, p0, Lcom/android/server/hdmi/NewDeviceAction;->mState:I
+    iput v0, p0, Lcom/android/server/hdmi/NewDeviceAction;->mState:I
 
     .line 156
-    iget p1, p0, Lcom/android/server/hdmi/NewDeviceAction;->mDeviceLogicalAddress:I
+    iget v0, p0, Lcom/android/server/hdmi/NewDeviceAction;->mDeviceLogicalAddress:I
 
-    const/16 v0, 0x87
+    const/16 v1, 0x87
 
-    invoke-direct {p0, p1, v0}, Lcom/android/server/hdmi/NewDeviceAction;->mayProcessCommandIfCached(II)Z
+    invoke-direct {p0, v0, v1}, Lcom/android/server/hdmi/NewDeviceAction;->mayProcessCommandIfCached(II)Z
 
-    move-result p1
+    move-result v0
 
-    if-eqz p1, :cond_13
+    if-eqz v0, :cond_13
 
     .line 158
     return-void
@@ -311,22 +321,22 @@
     :cond_13
     invoke-virtual {p0}, Lcom/android/server/hdmi/NewDeviceAction;->getSourceAddress()I
 
-    move-result p1
+    move-result v0
 
-    iget v0, p0, Lcom/android/server/hdmi/NewDeviceAction;->mDeviceLogicalAddress:I
+    iget v1, p0, Lcom/android/server/hdmi/NewDeviceAction;->mDeviceLogicalAddress:I
 
-    invoke-static {p1, v0}, Lcom/android/server/hdmi/HdmiCecMessageBuilder;->buildGiveDeviceVendorIdCommand(II)Lcom/android/server/hdmi/HdmiCecMessage;
+    invoke-static {v0, v1}, Lcom/android/server/hdmi/HdmiCecMessageBuilder;->buildGiveDeviceVendorIdCommand(II)Lcom/android/server/hdmi/HdmiCecMessage;
 
-    move-result-object p1
+    move-result-object v0
 
-    invoke-virtual {p0, p1}, Lcom/android/server/hdmi/NewDeviceAction;->sendCommand(Lcom/android/server/hdmi/HdmiCecMessage;)V
+    invoke-virtual {p0, v0}, Lcom/android/server/hdmi/NewDeviceAction;->sendCommand(Lcom/android/server/hdmi/HdmiCecMessage;)V
 
     .line 162
-    iget p1, p0, Lcom/android/server/hdmi/NewDeviceAction;->mState:I
+    iget v0, p0, Lcom/android/server/hdmi/NewDeviceAction;->mState:I
 
-    const/16 v0, 0x7d0
+    const/16 v1, 0x7d0
 
-    invoke-virtual {p0, p1, v0}, Lcom/android/server/hdmi/NewDeviceAction;->addTimer(II)V
+    invoke-virtual {p0, v0, v1}, Lcom/android/server/hdmi/NewDeviceAction;->addTimer(II)V
 
     .line 163
     return-void
@@ -336,6 +346,7 @@
 # virtual methods
 .method public handleTimerEvent(I)V
     .registers 6
+    .param p1, "state"  # I
 
     .line 192
     iget v0, p0, Lcom/android/server/hdmi/NewDeviceAction;->mState:I
@@ -359,13 +370,13 @@
     if-ne p1, v2, :cond_1d
 
     .line 196
-    iget p1, p0, Lcom/android/server/hdmi/NewDeviceAction;->mTimeoutRetry:I
+    iget v3, p0, Lcom/android/server/hdmi/NewDeviceAction;->mTimeoutRetry:I
 
-    add-int/2addr p1, v2
+    add-int/2addr v3, v2
 
-    iput p1, p0, Lcom/android/server/hdmi/NewDeviceAction;->mTimeoutRetry:I
+    iput v3, p0, Lcom/android/server/hdmi/NewDeviceAction;->mTimeoutRetry:I
 
-    if-ge p1, v1, :cond_19
+    if-ge v3, v1, :cond_19
 
     .line 197
     invoke-direct {p0, v0}, Lcom/android/server/hdmi/NewDeviceAction;->requestOsdName(Z)V
@@ -386,13 +397,13 @@
     if-ne p1, v3, :cond_31
 
     .line 203
-    iget p1, p0, Lcom/android/server/hdmi/NewDeviceAction;->mTimeoutRetry:I
+    iget v3, p0, Lcom/android/server/hdmi/NewDeviceAction;->mTimeoutRetry:I
 
-    add-int/2addr p1, v2
+    add-int/2addr v3, v2
 
-    iput p1, p0, Lcom/android/server/hdmi/NewDeviceAction;->mTimeoutRetry:I
+    iput v3, p0, Lcom/android/server/hdmi/NewDeviceAction;->mTimeoutRetry:I
 
-    if-ge p1, v1, :cond_2b
+    if-ge v3, v1, :cond_2b
 
     .line 204
     invoke-direct {p0, v0}, Lcom/android/server/hdmi/NewDeviceAction;->requestVendorId(Z)V
@@ -420,6 +431,7 @@
 
 .method isActionOf(Lcom/android/server/hdmi/HdmiCecLocalDevice$ActiveSource;)Z
     .registers 4
+    .param p1, "activeSource"  # Lcom/android/server/hdmi/HdmiCecLocalDevice$ActiveSource;
 
     .line 214
     iget v0, p0, Lcom/android/server/hdmi/NewDeviceAction;->mDeviceLogicalAddress:I
@@ -430,23 +442,24 @@
 
     iget v0, p0, Lcom/android/server/hdmi/NewDeviceAction;->mDevicePhysicalAddress:I
 
-    iget p1, p1, Lcom/android/server/hdmi/HdmiCecLocalDevice$ActiveSource;->physicalAddress:I
+    iget v1, p1, Lcom/android/server/hdmi/HdmiCecLocalDevice$ActiveSource;->physicalAddress:I
 
-    if-ne v0, p1, :cond_e
+    if-ne v0, v1, :cond_e
 
-    const/4 p1, 0x1
+    const/4 v0, 0x1
 
     goto :goto_f
 
     :cond_e
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
     :goto_f
-    return p1
+    return v0
 .end method
 
 .method public processCommand(Lcom/android/server/hdmi/HdmiCecMessage;)Z
-    .registers 7
+    .registers 9
+    .param p1, "cmd"  # Lcom/android/server/hdmi/HdmiCecMessage;
 
     .line 99
     invoke-virtual {p1}, Lcom/android/server/hdmi/HdmiCecMessage;->getOpcode()I
@@ -454,47 +467,50 @@
     move-result v0
 
     .line 100
+    .local v0, "opcode":I
     invoke-virtual {p1}, Lcom/android/server/hdmi/HdmiCecMessage;->getSource()I
 
     move-result v1
 
     .line 101
+    .local v1, "src":I
     invoke-virtual {p1}, Lcom/android/server/hdmi/HdmiCecMessage;->getParams()[B
 
-    move-result-object p1
+    move-result-object v2
 
     .line 103
-    iget v2, p0, Lcom/android/server/hdmi/NewDeviceAction;->mDeviceLogicalAddress:I
+    .local v2, "params":[B
+    iget v3, p0, Lcom/android/server/hdmi/NewDeviceAction;->mDeviceLogicalAddress:I
 
-    const/4 v3, 0x0
+    const/4 v4, 0x0
 
-    if-eq v2, v1, :cond_12
+    if-eq v3, v1, :cond_12
 
     .line 104
-    return v3
+    return v4
 
     .line 107
     :cond_12
-    iget v1, p0, Lcom/android/server/hdmi/NewDeviceAction;->mState:I
+    iget v3, p0, Lcom/android/server/hdmi/NewDeviceAction;->mState:I
 
-    const/4 v2, 0x1
+    const/4 v5, 0x1
 
-    if-ne v1, v2, :cond_53
+    if-ne v3, v5, :cond_53
 
     .line 108
-    const/16 v1, 0x47
+    const/16 v3, 0x47
 
-    if-ne v0, v1, :cond_44
+    if-ne v0, v3, :cond_44
 
     .line 110
     :try_start_1b
-    new-instance v0, Ljava/lang/String;
+    new-instance v3, Ljava/lang/String;
 
-    const-string v1, "US-ASCII"
+    const-string v4, "US-ASCII"
 
-    invoke-direct {v0, p1, v1}, Ljava/lang/String;-><init>([BLjava/lang/String;)V
+    invoke-direct {v3, v2, v4}, Ljava/lang/String;-><init>([BLjava/lang/String;)V
 
-    iput-object v0, p0, Lcom/android/server/hdmi/NewDeviceAction;->mDisplayName:Ljava/lang/String;
+    iput-object v3, p0, Lcom/android/server/hdmi/NewDeviceAction;->mDisplayName:Ljava/lang/String;
     :try_end_24
     .catch Ljava/io/UnsupportedEncodingException; {:try_start_1b .. :try_end_24} :catch_25
 
@@ -503,81 +519,85 @@
 
     .line 111
     :catch_25
-    move-exception p1
+    move-exception v3
 
     .line 112
-    new-instance v0, Ljava/lang/StringBuilder;
+    .local v3, "e":Ljava/io/UnsupportedEncodingException;
+    new-instance v4, Ljava/lang/StringBuilder;
 
-    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v4}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v1, "Failed to get OSD name: "
+    const-string v6, "Failed to get OSD name: "
 
-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v4, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p1}, Ljava/io/UnsupportedEncodingException;->getMessage()Ljava/lang/String;
+    invoke-virtual {v3}, Ljava/io/UnsupportedEncodingException;->getMessage()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v6
 
-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v4, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v4}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v4
 
-    const-string v0, "NewDeviceAction"
+    const-string v6, "NewDeviceAction"
 
-    invoke-static {v0, p1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v6, v4}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 114
+    .end local v3  # "e":Ljava/io/UnsupportedEncodingException;
     :goto_40
-    invoke-direct {p0, v2}, Lcom/android/server/hdmi/NewDeviceAction;->requestVendorId(Z)V
+    invoke-direct {p0, v5}, Lcom/android/server/hdmi/NewDeviceAction;->requestVendorId(Z)V
 
     .line 115
-    return v2
+    return v5
 
     .line 116
     :cond_44
     if-nez v0, :cond_7a
 
     .line 117
-    aget-byte p1, p1, v3
+    aget-byte v3, v2, v4
 
-    and-int/lit16 p1, p1, 0xff
+    and-int/lit16 v3, v3, 0xff
 
     .line 118
-    const/16 v0, 0x46
+    .local v3, "requestOpcode":I
+    const/16 v6, 0x46
 
-    if-ne p1, v0, :cond_52
+    if-ne v3, v6, :cond_52
 
     .line 119
-    invoke-direct {p0, v2}, Lcom/android/server/hdmi/NewDeviceAction;->requestVendorId(Z)V
+    invoke-direct {p0, v5}, Lcom/android/server/hdmi/NewDeviceAction;->requestVendorId(Z)V
 
     .line 120
-    return v2
+    return v5
 
     .line 122
+    .end local v3  # "requestOpcode":I
     :cond_52
     goto :goto_7a
 
     .line 123
     :cond_53
-    iget v1, p0, Lcom/android/server/hdmi/NewDeviceAction;->mState:I
+    iget v3, p0, Lcom/android/server/hdmi/NewDeviceAction;->mState:I
 
-    const/4 v4, 0x2
+    const/4 v6, 0x2
 
-    if-ne v1, v4, :cond_7a
+    if-ne v3, v6, :cond_7a
 
     .line 124
-    const/16 v1, 0x87
+    const/16 v3, 0x87
 
-    if-ne v0, v1, :cond_69
+    if-ne v0, v3, :cond_69
 
     .line 125
-    invoke-static {p1}, Lcom/android/server/hdmi/HdmiUtils;->threeBytesToInt([B)I
+    invoke-static {v2}, Lcom/android/server/hdmi/HdmiUtils;->threeBytesToInt([B)I
 
-    move-result p1
+    move-result v3
 
-    iput p1, p0, Lcom/android/server/hdmi/NewDeviceAction;->mVendorId:I
+    iput v3, p0, Lcom/android/server/hdmi/NewDeviceAction;->mVendorId:I
 
     .line 126
     invoke-direct {p0}, Lcom/android/server/hdmi/NewDeviceAction;->addDeviceInfo()V
@@ -586,21 +606,22 @@
     invoke-virtual {p0}, Lcom/android/server/hdmi/NewDeviceAction;->finish()V
 
     .line 128
-    return v2
+    return v5
 
     .line 129
     :cond_69
     if-nez v0, :cond_7a
 
     .line 130
-    aget-byte p1, p1, v3
+    aget-byte v3, v2, v4
 
-    and-int/lit16 p1, p1, 0xff
+    and-int/lit16 v3, v3, 0xff
 
     .line 131
-    const/16 v0, 0x8c
+    .restart local v3  # "requestOpcode":I
+    const/16 v6, 0x8c
 
-    if-ne p1, v0, :cond_7a
+    if-ne v3, v6, :cond_7a
 
     .line 132
     invoke-direct {p0}, Lcom/android/server/hdmi/NewDeviceAction;->addDeviceInfo()V
@@ -609,12 +630,13 @@
     invoke-virtual {p0}, Lcom/android/server/hdmi/NewDeviceAction;->finish()V
 
     .line 134
-    return v2
+    return v5
 
     .line 138
+    .end local v3  # "requestOpcode":I
     :cond_7a
     :goto_7a
-    return v3
+    return v4
 .end method
 
 .method public start()Z

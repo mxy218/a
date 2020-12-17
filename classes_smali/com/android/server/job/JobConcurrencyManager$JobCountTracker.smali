@@ -56,7 +56,8 @@
 
 # virtual methods
 .method canJobStart(Z)Z
-    .registers 5
+    .registers 6
+    .param p1, "isFg"  # Z
 
     .line 638
     const/4 v0, 0x1
@@ -66,15 +67,15 @@
     if-eqz p1, :cond_10
 
     .line 639
-    iget p1, p0, Lcom/android/server/job/JobConcurrencyManager$JobCountTracker;->mNumRunningFgJobs:I
+    iget v2, p0, Lcom/android/server/job/JobConcurrencyManager$JobCountTracker;->mNumRunningFgJobs:I
 
-    iget v2, p0, Lcom/android/server/job/JobConcurrencyManager$JobCountTracker;->mNumStartingFgJobs:I
+    iget v3, p0, Lcom/android/server/job/JobConcurrencyManager$JobCountTracker;->mNumStartingFgJobs:I
 
-    add-int/2addr p1, v2
+    add-int/2addr v2, v3
 
-    iget v2, p0, Lcom/android/server/job/JobConcurrencyManager$JobCountTracker;->mNumActualMaxFgJobs:I
+    iget v3, p0, Lcom/android/server/job/JobConcurrencyManager$JobCountTracker;->mNumActualMaxFgJobs:I
 
-    if-ge p1, v2, :cond_e
+    if-ge v2, v3, :cond_e
 
     goto :goto_f
 
@@ -86,15 +87,15 @@
 
     .line 641
     :cond_10
-    iget p1, p0, Lcom/android/server/job/JobConcurrencyManager$JobCountTracker;->mNumRunningBgJobs:I
+    iget v2, p0, Lcom/android/server/job/JobConcurrencyManager$JobCountTracker;->mNumRunningBgJobs:I
 
-    iget v2, p0, Lcom/android/server/job/JobConcurrencyManager$JobCountTracker;->mNumStartingBgJobs:I
+    iget v3, p0, Lcom/android/server/job/JobConcurrencyManager$JobCountTracker;->mNumStartingBgJobs:I
 
-    add-int/2addr p1, v2
+    add-int/2addr v2, v3
 
-    iget v2, p0, Lcom/android/server/job/JobConcurrencyManager$JobCountTracker;->mNumActualMaxBgJobs:I
+    iget v3, p0, Lcom/android/server/job/JobConcurrencyManager$JobCountTracker;->mNumActualMaxBgJobs:I
 
-    if-ge p1, v2, :cond_1a
+    if-ge v2, v3, :cond_1a
 
     goto :goto_1b
 
@@ -106,64 +107,67 @@
 .end method
 
 .method public dumpProto(Landroid/util/proto/ProtoOutputStream;J)V
-    .registers 7
+    .registers 9
+    .param p1, "proto"  # Landroid/util/proto/ProtoOutputStream;
+    .param p2, "fieldId"  # J
 
     .line 707
     invoke-virtual {p1, p2, p3}, Landroid/util/proto/ProtoOutputStream;->start(J)J
 
-    move-result-wide p2
+    move-result-wide v0
 
     .line 709
-    iget v0, p0, Lcom/android/server/job/JobConcurrencyManager$JobCountTracker;->mConfigNumMaxTotalJobs:I
+    .local v0, "token":J
+    iget v2, p0, Lcom/android/server/job/JobConcurrencyManager$JobCountTracker;->mConfigNumMaxTotalJobs:I
 
-    const-wide v1, 0x10500000001L
+    const-wide v3, 0x10500000001L
 
-    invoke-virtual {p1, v1, v2, v0}, Landroid/util/proto/ProtoOutputStream;->write(JI)V
+    invoke-virtual {p1, v3, v4, v2}, Landroid/util/proto/ProtoOutputStream;->write(JI)V
 
     .line 710
-    iget v0, p0, Lcom/android/server/job/JobConcurrencyManager$JobCountTracker;->mConfigNumMaxBgJobs:I
+    iget v2, p0, Lcom/android/server/job/JobConcurrencyManager$JobCountTracker;->mConfigNumMaxBgJobs:I
 
-    const-wide v1, 0x10500000002L
+    const-wide v3, 0x10500000002L
 
-    invoke-virtual {p1, v1, v2, v0}, Landroid/util/proto/ProtoOutputStream;->write(JI)V
+    invoke-virtual {p1, v3, v4, v2}, Landroid/util/proto/ProtoOutputStream;->write(JI)V
 
     .line 711
-    iget v0, p0, Lcom/android/server/job/JobConcurrencyManager$JobCountTracker;->mConfigNumMinBgJobs:I
+    iget v2, p0, Lcom/android/server/job/JobConcurrencyManager$JobCountTracker;->mConfigNumMinBgJobs:I
 
-    const-wide v1, 0x10500000003L
+    const-wide v3, 0x10500000003L
 
-    invoke-virtual {p1, v1, v2, v0}, Landroid/util/proto/ProtoOutputStream;->write(JI)V
+    invoke-virtual {p1, v3, v4, v2}, Landroid/util/proto/ProtoOutputStream;->write(JI)V
 
     .line 713
-    iget v0, p0, Lcom/android/server/job/JobConcurrencyManager$JobCountTracker;->mNumRunningFgJobs:I
+    iget v2, p0, Lcom/android/server/job/JobConcurrencyManager$JobCountTracker;->mNumRunningFgJobs:I
 
-    const-wide v1, 0x10500000004L
+    const-wide v3, 0x10500000004L
 
-    invoke-virtual {p1, v1, v2, v0}, Landroid/util/proto/ProtoOutputStream;->write(JI)V
+    invoke-virtual {p1, v3, v4, v2}, Landroid/util/proto/ProtoOutputStream;->write(JI)V
 
     .line 714
-    iget v0, p0, Lcom/android/server/job/JobConcurrencyManager$JobCountTracker;->mNumRunningBgJobs:I
+    iget v2, p0, Lcom/android/server/job/JobConcurrencyManager$JobCountTracker;->mNumRunningBgJobs:I
 
-    const-wide v1, 0x10500000005L
+    const-wide v3, 0x10500000005L
 
-    invoke-virtual {p1, v1, v2, v0}, Landroid/util/proto/ProtoOutputStream;->write(JI)V
+    invoke-virtual {p1, v3, v4, v2}, Landroid/util/proto/ProtoOutputStream;->write(JI)V
 
     .line 716
-    iget v0, p0, Lcom/android/server/job/JobConcurrencyManager$JobCountTracker;->mNumPendingFgJobs:I
+    iget v2, p0, Lcom/android/server/job/JobConcurrencyManager$JobCountTracker;->mNumPendingFgJobs:I
 
-    const-wide v1, 0x10500000006L
+    const-wide v3, 0x10500000006L
 
-    invoke-virtual {p1, v1, v2, v0}, Landroid/util/proto/ProtoOutputStream;->write(JI)V
+    invoke-virtual {p1, v3, v4, v2}, Landroid/util/proto/ProtoOutputStream;->write(JI)V
 
     .line 717
-    iget v0, p0, Lcom/android/server/job/JobConcurrencyManager$JobCountTracker;->mNumPendingBgJobs:I
+    iget v2, p0, Lcom/android/server/job/JobConcurrencyManager$JobCountTracker;->mNumPendingBgJobs:I
 
-    const-wide v1, 0x10500000007L
+    const-wide v3, 0x10500000007L
 
-    invoke-virtual {p1, v1, v2, v0}, Landroid/util/proto/ProtoOutputStream;->write(JI)V
+    invoke-virtual {p1, v3, v4, v2}, Landroid/util/proto/ProtoOutputStream;->write(JI)V
 
     .line 719
-    invoke-virtual {p1, p2, p3}, Landroid/util/proto/ProtoOutputStream;->end(J)V
+    invoke-virtual {p1, v0, v1}, Landroid/util/proto/ProtoOutputStream;->end(J)V
 
     .line 720
     return-void
@@ -222,27 +226,28 @@
 .end method
 
 .method incrementPendingJobCount(Z)V
-    .registers 2
+    .registers 3
+    .param p1, "isFg"  # Z
 
     .line 583
     if-eqz p1, :cond_9
 
     .line 584
-    iget p1, p0, Lcom/android/server/job/JobConcurrencyManager$JobCountTracker;->mNumPendingFgJobs:I
+    iget v0, p0, Lcom/android/server/job/JobConcurrencyManager$JobCountTracker;->mNumPendingFgJobs:I
 
-    add-int/lit8 p1, p1, 0x1
+    add-int/lit8 v0, v0, 0x1
 
-    iput p1, p0, Lcom/android/server/job/JobConcurrencyManager$JobCountTracker;->mNumPendingFgJobs:I
+    iput v0, p0, Lcom/android/server/job/JobConcurrencyManager$JobCountTracker;->mNumPendingFgJobs:I
 
     goto :goto_f
 
     .line 586
     :cond_9
-    iget p1, p0, Lcom/android/server/job/JobConcurrencyManager$JobCountTracker;->mNumPendingBgJobs:I
+    iget v0, p0, Lcom/android/server/job/JobConcurrencyManager$JobCountTracker;->mNumPendingBgJobs:I
 
-    add-int/lit8 p1, p1, 0x1
+    add-int/lit8 v0, v0, 0x1
 
-    iput p1, p0, Lcom/android/server/job/JobConcurrencyManager$JobCountTracker;->mNumPendingBgJobs:I
+    iput v0, p0, Lcom/android/server/job/JobConcurrencyManager$JobCountTracker;->mNumPendingBgJobs:I
 
     .line 588
     :goto_f
@@ -250,27 +255,28 @@
 .end method
 
 .method incrementRunningJobCount(Z)V
-    .registers 2
+    .registers 3
+    .param p1, "isFg"  # Z
 
     .line 575
     if-eqz p1, :cond_9
 
     .line 576
-    iget p1, p0, Lcom/android/server/job/JobConcurrencyManager$JobCountTracker;->mNumRunningFgJobs:I
+    iget v0, p0, Lcom/android/server/job/JobConcurrencyManager$JobCountTracker;->mNumRunningFgJobs:I
 
-    add-int/lit8 p1, p1, 0x1
+    add-int/lit8 v0, v0, 0x1
 
-    iput p1, p0, Lcom/android/server/job/JobConcurrencyManager$JobCountTracker;->mNumRunningFgJobs:I
+    iput v0, p0, Lcom/android/server/job/JobConcurrencyManager$JobCountTracker;->mNumRunningFgJobs:I
 
     goto :goto_f
 
     .line 578
     :cond_9
-    iget p1, p0, Lcom/android/server/job/JobConcurrencyManager$JobCountTracker;->mNumRunningBgJobs:I
+    iget v0, p0, Lcom/android/server/job/JobConcurrencyManager$JobCountTracker;->mNumRunningBgJobs:I
 
-    add-int/lit8 p1, p1, 0x1
+    add-int/lit8 v0, v0, 0x1
 
-    iput p1, p0, Lcom/android/server/job/JobConcurrencyManager$JobCountTracker;->mNumRunningBgJobs:I
+    iput v0, p0, Lcom/android/server/job/JobConcurrencyManager$JobCountTracker;->mNumRunningBgJobs:I
 
     .line 580
     :goto_f
@@ -312,7 +318,7 @@
 .end method
 
 .method onCountDone()V
-    .registers 4
+    .registers 6
 
     .line 605
     iget v0, p0, Lcom/android/server/job/JobConcurrencyManager$JobCountTracker;->mConfigNumMinBgJobs:I
@@ -328,6 +334,7 @@
     move-result v0
 
     .line 610
+    .local v0, "reservedForBg":I
     iget v1, p0, Lcom/android/server/job/JobConcurrencyManager$JobCountTracker;->mConfigNumMaxTotalJobs:I
 
     iget v2, p0, Lcom/android/server/job/JobConcurrencyManager$JobCountTracker;->mNumRunningFgJobs:I
@@ -336,89 +343,92 @@
 
     invoke-static {v0, v1}, Ljava/lang/Math;->min(II)I
 
-    move-result v0
-
-    iput v0, p0, Lcom/android/server/job/JobConcurrencyManager$JobCountTracker;->mNumReservedForBg:I
-
-    .line 615
-    iget v0, p0, Lcom/android/server/job/JobConcurrencyManager$JobCountTracker;->mConfigNumMaxTotalJobs:I
-
-    iget v1, p0, Lcom/android/server/job/JobConcurrencyManager$JobCountTracker;->mNumRunningBgJobs:I
-
-    iget v2, p0, Lcom/android/server/job/JobConcurrencyManager$JobCountTracker;->mNumReservedForBg:I
-
-    .line 616
-    invoke-static {v1, v2}, Ljava/lang/Math;->max(II)I
-
     move-result v1
 
-    sub-int/2addr v0, v1
+    iput v1, p0, Lcom/android/server/job/JobConcurrencyManager$JobCountTracker;->mNumReservedForBg:I
 
-    .line 620
-    iget v1, p0, Lcom/android/server/job/JobConcurrencyManager$JobCountTracker;->mNumRunningFgJobs:I
-
-    iget v2, p0, Lcom/android/server/job/JobConcurrencyManager$JobCountTracker;->mNumPendingFgJobs:I
-
-    add-int/2addr v1, v2
-
-    invoke-static {v0, v1}, Ljava/lang/Math;->min(II)I
-
-    move-result v0
-
-    iput v0, p0, Lcom/android/server/job/JobConcurrencyManager$JobCountTracker;->mNumActualMaxFgJobs:I
-
-    .line 625
-    iget v0, p0, Lcom/android/server/job/JobConcurrencyManager$JobCountTracker;->mConfigNumMaxBgJobs:I
-
+    .line 615
     iget v1, p0, Lcom/android/server/job/JobConcurrencyManager$JobCountTracker;->mConfigNumMaxTotalJobs:I
 
-    iget v2, p0, Lcom/android/server/job/JobConcurrencyManager$JobCountTracker;->mNumActualMaxFgJobs:I
+    iget v2, p0, Lcom/android/server/job/JobConcurrencyManager$JobCountTracker;->mNumRunningBgJobs:I
+
+    iget v3, p0, Lcom/android/server/job/JobConcurrencyManager$JobCountTracker;->mNumReservedForBg:I
+
+    .line 616
+    invoke-static {v2, v3}, Ljava/lang/Math;->max(II)I
+
+    move-result v2
 
     sub-int/2addr v1, v2
 
-    invoke-static {v0, v1}, Ljava/lang/Math;->min(II)I
+    .line 620
+    .local v1, "maxFg":I
+    iget v2, p0, Lcom/android/server/job/JobConcurrencyManager$JobCountTracker;->mNumRunningFgJobs:I
 
-    move-result v0
+    iget v3, p0, Lcom/android/server/job/JobConcurrencyManager$JobCountTracker;->mNumPendingFgJobs:I
+
+    add-int/2addr v2, v3
+
+    invoke-static {v1, v2}, Ljava/lang/Math;->min(II)I
+
+    move-result v2
+
+    iput v2, p0, Lcom/android/server/job/JobConcurrencyManager$JobCountTracker;->mNumActualMaxFgJobs:I
+
+    .line 625
+    iget v2, p0, Lcom/android/server/job/JobConcurrencyManager$JobCountTracker;->mConfigNumMaxBgJobs:I
+
+    iget v3, p0, Lcom/android/server/job/JobConcurrencyManager$JobCountTracker;->mConfigNumMaxTotalJobs:I
+
+    iget v4, p0, Lcom/android/server/job/JobConcurrencyManager$JobCountTracker;->mNumActualMaxFgJobs:I
+
+    sub-int/2addr v3, v4
+
+    invoke-static {v2, v3}, Ljava/lang/Math;->min(II)I
+
+    move-result v2
 
     .line 632
-    iget v1, p0, Lcom/android/server/job/JobConcurrencyManager$JobCountTracker;->mNumRunningBgJobs:I
+    .local v2, "maxBg":I
+    iget v3, p0, Lcom/android/server/job/JobConcurrencyManager$JobCountTracker;->mNumRunningBgJobs:I
 
-    iget v2, p0, Lcom/android/server/job/JobConcurrencyManager$JobCountTracker;->mNumPendingBgJobs:I
+    iget v4, p0, Lcom/android/server/job/JobConcurrencyManager$JobCountTracker;->mNumPendingBgJobs:I
 
-    add-int/2addr v1, v2
+    add-int/2addr v3, v4
 
-    invoke-static {v0, v1}, Ljava/lang/Math;->min(II)I
+    invoke-static {v2, v3}, Ljava/lang/Math;->min(II)I
 
-    move-result v0
+    move-result v3
 
-    iput v0, p0, Lcom/android/server/job/JobConcurrencyManager$JobCountTracker;->mNumActualMaxBgJobs:I
+    iput v3, p0, Lcom/android/server/job/JobConcurrencyManager$JobCountTracker;->mNumActualMaxBgJobs:I
 
     .line 635
     return-void
 .end method
 
 .method onStartingNewJob(Z)V
-    .registers 2
+    .registers 3
+    .param p1, "isFg"  # Z
 
     .line 591
     if-eqz p1, :cond_9
 
     .line 592
-    iget p1, p0, Lcom/android/server/job/JobConcurrencyManager$JobCountTracker;->mNumStartingFgJobs:I
+    iget v0, p0, Lcom/android/server/job/JobConcurrencyManager$JobCountTracker;->mNumStartingFgJobs:I
 
-    add-int/lit8 p1, p1, 0x1
+    add-int/lit8 v0, v0, 0x1
 
-    iput p1, p0, Lcom/android/server/job/JobConcurrencyManager$JobCountTracker;->mNumStartingFgJobs:I
+    iput v0, p0, Lcom/android/server/job/JobConcurrencyManager$JobCountTracker;->mNumStartingFgJobs:I
 
     goto :goto_f
 
     .line 594
     :cond_9
-    iget p1, p0, Lcom/android/server/job/JobConcurrencyManager$JobCountTracker;->mNumStartingBgJobs:I
+    iget v0, p0, Lcom/android/server/job/JobConcurrencyManager$JobCountTracker;->mNumStartingBgJobs:I
 
-    add-int/lit8 p1, p1, 0x1
+    add-int/lit8 v0, v0, 0x1
 
-    iput p1, p0, Lcom/android/server/job/JobConcurrencyManager$JobCountTracker;->mNumStartingBgJobs:I
+    iput v0, p0, Lcom/android/server/job/JobConcurrencyManager$JobCountTracker;->mNumStartingBgJobs:I
 
     .line 596
     :goto_f
@@ -426,7 +436,10 @@
 .end method
 
 .method reset(III)V
-    .registers 4
+    .registers 5
+    .param p1, "numTotalMaxJobs"  # I
+    .param p2, "numMaxBgJobs"  # I
+    .param p3, "numMinBgJobs"  # I
 
     .line 556
     iput p1, p0, Lcom/android/server/job/JobConcurrencyManager$JobCountTracker;->mConfigNumMaxTotalJobs:I
@@ -438,33 +451,33 @@
     iput p3, p0, Lcom/android/server/job/JobConcurrencyManager$JobCountTracker;->mConfigNumMinBgJobs:I
 
     .line 560
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    iput p1, p0, Lcom/android/server/job/JobConcurrencyManager$JobCountTracker;->mNumRunningFgJobs:I
+    iput v0, p0, Lcom/android/server/job/JobConcurrencyManager$JobCountTracker;->mNumRunningFgJobs:I
 
     .line 561
-    iput p1, p0, Lcom/android/server/job/JobConcurrencyManager$JobCountTracker;->mNumRunningBgJobs:I
+    iput v0, p0, Lcom/android/server/job/JobConcurrencyManager$JobCountTracker;->mNumRunningBgJobs:I
 
     .line 563
-    iput p1, p0, Lcom/android/server/job/JobConcurrencyManager$JobCountTracker;->mNumPendingFgJobs:I
+    iput v0, p0, Lcom/android/server/job/JobConcurrencyManager$JobCountTracker;->mNumPendingFgJobs:I
 
     .line 564
-    iput p1, p0, Lcom/android/server/job/JobConcurrencyManager$JobCountTracker;->mNumPendingBgJobs:I
+    iput v0, p0, Lcom/android/server/job/JobConcurrencyManager$JobCountTracker;->mNumPendingBgJobs:I
 
     .line 566
-    iput p1, p0, Lcom/android/server/job/JobConcurrencyManager$JobCountTracker;->mNumStartingFgJobs:I
+    iput v0, p0, Lcom/android/server/job/JobConcurrencyManager$JobCountTracker;->mNumStartingFgJobs:I
 
     .line 567
-    iput p1, p0, Lcom/android/server/job/JobConcurrencyManager$JobCountTracker;->mNumStartingBgJobs:I
+    iput v0, p0, Lcom/android/server/job/JobConcurrencyManager$JobCountTracker;->mNumStartingBgJobs:I
 
     .line 569
-    iput p1, p0, Lcom/android/server/job/JobConcurrencyManager$JobCountTracker;->mNumReservedForBg:I
+    iput v0, p0, Lcom/android/server/job/JobConcurrencyManager$JobCountTracker;->mNumReservedForBg:I
 
     .line 570
-    iput p1, p0, Lcom/android/server/job/JobConcurrencyManager$JobCountTracker;->mNumActualMaxFgJobs:I
+    iput v0, p0, Lcom/android/server/job/JobConcurrencyManager$JobCountTracker;->mNumActualMaxFgJobs:I
 
     .line 571
-    iput p1, p0, Lcom/android/server/job/JobConcurrencyManager$JobCountTracker;->mNumActualMaxBgJobs:I
+    iput v0, p0, Lcom/android/server/job/JobConcurrencyManager$JobCountTracker;->mNumActualMaxBgJobs:I
 
     .line 572
     return-void
@@ -481,6 +494,7 @@
     add-int/2addr v0, v1
 
     .line 670
+    .local v0, "totalFg":I
     iget v1, p0, Lcom/android/server/job/JobConcurrencyManager$JobCountTracker;->mNumRunningBgJobs:I
 
     iget v2, p0, Lcom/android/server/job/JobConcurrencyManager$JobCountTracker;->mNumStartingBgJobs:I
@@ -488,6 +502,7 @@
     add-int/2addr v1, v2
 
     .line 671
+    .local v1, "totalBg":I
     const/16 v2, 0x19
 
     new-array v2, v2, [Ljava/lang/Object;
@@ -792,35 +807,37 @@
 
     const/16 v3, 0x17
 
-    add-int/2addr v0, v1
+    add-int v6, v0, v1
 
     .line 702
-    invoke-static {v0}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
+    invoke-static {v6}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
 
-    move-result-object v1
+    move-result-object v6
 
-    aput-object v1, v2, v3
+    aput-object v6, v2, v3
 
-    const/16 v1, 0x18
+    const/16 v3, 0x18
 
-    iget v3, p0, Lcom/android/server/job/JobConcurrencyManager$JobCountTracker;->mConfigNumMaxTotalJobs:I
+    add-int v6, v0, v1
 
-    if-gt v0, v3, :cond_112
+    iget v7, p0, Lcom/android/server/job/JobConcurrencyManager$JobCountTracker;->mConfigNumMaxTotalJobs:I
 
-    goto :goto_113
+    if-gt v6, v7, :cond_115
 
-    :cond_112
+    goto :goto_116
+
+    :cond_115
     move-object v4, v5
 
-    :goto_113
-    aput-object v4, v2, v1
+    :goto_116
+    aput-object v4, v2, v3
 
     .line 671
-    const-string v0, "Config={tot=%d bg min/max=%d/%d} Running[FG/BG (total)]: %d / %d (%d) Pending: %d / %d (%d) Actual max: %d%s / %d%s (%d%s) Res BG: %d Starting: %d / %d (%d) Total: %d%s / %d%s (%d%s)"
+    const-string v3, "Config={tot=%d bg min/max=%d/%d} Running[FG/BG (total)]: %d / %d (%d) Pending: %d / %d (%d) Actual max: %d%s / %d%s (%d%s) Res BG: %d Starting: %d / %d (%d) Total: %d%s / %d%s (%d%s)"
 
-    invoke-static {v0, v2}, Ljava/lang/String;->format(Ljava/lang/String;[Ljava/lang/Object;)Ljava/lang/String;
+    invoke-static {v3, v2}, Ljava/lang/String;->format(Ljava/lang/String;[Ljava/lang/Object;)Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v2
 
-    return-object v0
+    return-object v2
 .end method

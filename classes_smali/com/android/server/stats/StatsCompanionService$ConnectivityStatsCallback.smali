@@ -18,7 +18,7 @@
 .method private constructor <init>()V
     .registers 1
 
-    .line 2763
+    .line 2717
     invoke-direct {p0}, Landroid/net/ConnectivityManager$NetworkCallback;-><init>()V
 
     return-void
@@ -26,8 +26,9 @@
 
 .method synthetic constructor <init>(Lcom/android/server/stats/StatsCompanionService$1;)V
     .registers 2
+    .param p1, "x0"  # Lcom/android/server/stats/StatsCompanionService$1;
 
-    .line 2763
+    .line 2717
     invoke-direct {p0}, Lcom/android/server/stats/StatsCompanionService$ConnectivityStatsCallback;-><init>()V
 
     return-void
@@ -36,33 +37,35 @@
 
 # virtual methods
 .method public onAvailable(Landroid/net/Network;)V
-    .registers 4
+    .registers 5
+    .param p1, "network"  # Landroid/net/Network;
 
-    .line 2767
-    iget p1, p1, Landroid/net/Network;->netId:I
+    .line 2721
+    iget v0, p1, Landroid/net/Network;->netId:I
 
-    const/16 v0, 0x62
+    const/16 v1, 0x62
 
-    const/4 v1, 0x1
+    const/4 v2, 0x1
 
-    invoke-static {v0, p1, v1}, Landroid/util/StatsLog;->write(III)I
+    invoke-static {v1, v0, v2}, Landroid/util/StatsLog;->write(III)I
 
-    .line 2769
+    .line 2723
     return-void
 .end method
 
 .method public onLost(Landroid/net/Network;)V
-    .registers 4
+    .registers 5
+    .param p1, "network"  # Landroid/net/Network;
 
-    .line 2773
-    iget p1, p1, Landroid/net/Network;->netId:I
+    .line 2727
+    iget v0, p1, Landroid/net/Network;->netId:I
 
-    const/16 v0, 0x62
+    const/16 v1, 0x62
 
-    const/4 v1, 0x2
+    const/4 v2, 0x2
 
-    invoke-static {v0, p1, v1}, Landroid/util/StatsLog;->write(III)I
+    invoke-static {v1, v0, v2}, Landroid/util/StatsLog;->write(III)I
 
-    .line 2775
+    .line 2729
     return-void
 .end method

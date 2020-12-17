@@ -41,6 +41,7 @@
 # direct methods
 .method public constructor <init>(Lcom/android/server/job/controllers/BackgroundJobsController;I)V
     .registers 3
+    .param p2, "newActiveState"  # I
 
     .line 215
     iput-object p1, p0, Lcom/android/server/job/controllers/BackgroundJobsController$UpdateJobFunctor;->this$0:Lcom/android/server/job/controllers/BackgroundJobsController;
@@ -69,6 +70,7 @@
 # virtual methods
 .method public accept(Lcom/android/server/job/controllers/JobStatus;)V
     .registers 5
+    .param p1, "jobStatus"  # Lcom/android/server/job/controllers/JobStatus;
 
     .line 221
     iget v0, p0, Lcom/android/server/job/controllers/BackgroundJobsController$UpdateJobFunctor;->mTotalCount:I
@@ -93,9 +95,9 @@
 
     invoke-virtual {v0, p1, v2}, Lcom/android/server/job/controllers/BackgroundJobsController;->updateSingleJobRestrictionLocked(Lcom/android/server/job/controllers/JobStatus;I)Z
 
-    move-result p1
+    move-result v0
 
-    if-eqz p1, :cond_17
+    if-eqz v0, :cond_17
 
     .line 224
     iput-boolean v1, p0, Lcom/android/server/job/controllers/BackgroundJobsController$UpdateJobFunctor;->mChanged:Z

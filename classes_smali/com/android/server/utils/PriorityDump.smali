@@ -49,17 +49,21 @@
 
 .method public static dump(Lcom/android/server/utils/PriorityDump$PriorityDumper;Ljava/io/FileDescriptor;Ljava/io/PrintWriter;[Ljava/lang/String;)V
     .registers 12
+    .param p0, "dumper"  # Lcom/android/server/utils/PriorityDump$PriorityDumper;
+    .param p1, "fd"  # Ljava/io/FileDescriptor;
+    .param p2, "pw"  # Ljava/io/PrintWriter;
+    .param p3, "args"  # [Ljava/lang/String;
 
     .line 141
-    nop
-
-    .line 142
-    nop
-
-    .line 144
     const/4 v0, 0x0
 
-    if-nez p3, :cond_9
+    .line 142
+    .local v0, "asProto":Z
+    const/4 v1, 0x0
+
+    .line 144
+    .local v1, "priority":I
+    if-nez p3, :cond_8
 
     .line 145
     invoke-interface {p0, p1, p2, p3, v0}, Lcom/android/server/utils/PriorityDump$PriorityDumper;->dump(Ljava/io/FileDescriptor;Ljava/io/PrintWriter;[Ljava/lang/String;Z)V
@@ -68,30 +72,29 @@
     return-void
 
     .line 149
-    :cond_9
-    array-length v1, p3
+    :cond_8
+    array-length v2, p3
 
-    new-array v1, v1, [Ljava/lang/String;
+    new-array v2, v2, [Ljava/lang/String;
 
     .line 150
-    nop
+    .local v2, "strippedArgs":[Ljava/lang/String;
+    const/4 v3, 0x0
 
     .line 151
-    move v2, v0
+    .local v3, "strippedCount":I
+    const/4 v4, 0x0
 
-    move v3, v2
-
-    move v4, v3
-
-    :goto_10
+    .local v4, "argIndex":I
+    :goto_d
     array-length v5, p3
 
     const/4 v6, 0x1
 
-    if-ge v0, v5, :cond_42
+    if-ge v4, v5, :cond_3e
 
     .line 152
-    aget-object v5, p3, v0
+    aget-object v5, p3, v4
 
     const-string v7, "--proto"
 
@@ -99,16 +102,16 @@
 
     move-result v5
 
-    if-eqz v5, :cond_20
+    if-eqz v5, :cond_1d
 
     .line 153
-    move v4, v6
+    const/4 v0, 0x1
 
-    goto :goto_40
+    goto :goto_3c
 
     .line 154
-    :cond_20
-    aget-object v5, p3, v0
+    :cond_1d
+    aget-object v5, p3, v4
 
     const-string v7, "--dump-priority"
 
@@ -116,98 +119,99 @@
 
     move-result v5
 
-    if-eqz v5, :cond_39
+    if-eqz v5, :cond_35
 
     .line 155
-    add-int/lit8 v5, v0, 0x1
+    add-int/lit8 v5, v4, 0x1
 
     array-length v7, p3
 
-    if-ge v5, v7, :cond_40
+    if-ge v5, v7, :cond_3c
 
     .line 156
-    nop
+    add-int/lit8 v4, v4, 0x1
 
     .line 157
-    aget-object v0, p3, v5
+    aget-object v5, p3, v4
 
-    invoke-static {v0}, Lcom/android/server/utils/PriorityDump;->getPriorityType(Ljava/lang/String;)I
+    invoke-static {v5}, Lcom/android/server/utils/PriorityDump;->getPriorityType(Ljava/lang/String;)I
 
-    move-result v0
+    move-result v1
 
-    move v3, v0
-
-    move v0, v5
-
-    goto :goto_40
+    goto :goto_3c
 
     .line 160
-    :cond_39
-    add-int/lit8 v5, v2, 0x1
+    :cond_35
+    add-int/lit8 v5, v3, 0x1
 
-    aget-object v7, p3, v0
+    .end local v3  # "strippedCount":I
+    .local v5, "strippedCount":I
+    aget-object v7, p3, v4
 
-    aput-object v7, v1, v2
+    aput-object v7, v2, v3
 
-    move v2, v5
+    move v3, v5
 
     .line 151
-    :cond_40
-    :goto_40
-    add-int/2addr v0, v6
+    .end local v5  # "strippedCount":I
+    .restart local v3  # "strippedCount":I
+    :cond_3c
+    :goto_3c
+    add-int/2addr v4, v6
 
-    goto :goto_10
+    goto :goto_d
 
     .line 164
-    :cond_42
-    array-length p3, p3
+    .end local v4  # "argIndex":I
+    :cond_3e
+    array-length v4, p3
 
-    if-ge v2, p3, :cond_4c
+    if-ge v3, v4, :cond_48
 
     .line 165
-    invoke-static {v1, v2}, Ljava/util/Arrays;->copyOf([Ljava/lang/Object;I)[Ljava/lang/Object;
+    invoke-static {v2, v3}, Ljava/util/Arrays;->copyOf([Ljava/lang/Object;I)[Ljava/lang/Object;
 
-    move-result-object p3
+    move-result-object v4
 
-    move-object v1, p3
+    move-object v2, v4
 
-    check-cast v1, [Ljava/lang/String;
+    check-cast v2, [Ljava/lang/String;
 
     .line 168
-    :cond_4c
-    if-eq v3, v6, :cond_60
+    :cond_48
+    if-eq v1, v6, :cond_5c
 
-    const/4 p3, 0x2
+    const/4 v4, 0x2
 
-    if-eq v3, p3, :cond_5c
+    if-eq v1, v4, :cond_58
 
-    const/4 p3, 0x3
+    const/4 v4, 0x3
 
-    if-eq v3, p3, :cond_58
+    if-eq v1, v4, :cond_54
 
     .line 182
-    invoke-interface {p0, p1, p2, v1, v4}, Lcom/android/server/utils/PriorityDump$PriorityDumper;->dump(Ljava/io/FileDescriptor;Ljava/io/PrintWriter;[Ljava/lang/String;Z)V
+    invoke-interface {p0, p1, p2, v2, v0}, Lcom/android/server/utils/PriorityDump$PriorityDumper;->dump(Ljava/io/FileDescriptor;Ljava/io/PrintWriter;[Ljava/lang/String;Z)V
 
     .line 183
     return-void
 
     .line 178
-    :cond_58
-    invoke-interface {p0, p1, p2, v1, v4}, Lcom/android/server/utils/PriorityDump$PriorityDumper;->dumpNormal(Ljava/io/FileDescriptor;Ljava/io/PrintWriter;[Ljava/lang/String;Z)V
+    :cond_54
+    invoke-interface {p0, p1, p2, v2, v0}, Lcom/android/server/utils/PriorityDump$PriorityDumper;->dumpNormal(Ljava/io/FileDescriptor;Ljava/io/PrintWriter;[Ljava/lang/String;Z)V
 
     .line 179
     return-void
 
     .line 174
-    :cond_5c
-    invoke-interface {p0, p1, p2, v1, v4}, Lcom/android/server/utils/PriorityDump$PriorityDumper;->dumpHigh(Ljava/io/FileDescriptor;Ljava/io/PrintWriter;[Ljava/lang/String;Z)V
+    :cond_58
+    invoke-interface {p0, p1, p2, v2, v0}, Lcom/android/server/utils/PriorityDump$PriorityDumper;->dumpHigh(Ljava/io/FileDescriptor;Ljava/io/PrintWriter;[Ljava/lang/String;Z)V
 
     .line 175
     return-void
 
     .line 170
-    :cond_60
-    invoke-interface {p0, p1, p2, v1, v4}, Lcom/android/server/utils/PriorityDump$PriorityDumper;->dumpCritical(Ljava/io/FileDescriptor;Ljava/io/PrintWriter;[Ljava/lang/String;Z)V
+    :cond_5c
+    invoke-interface {p0, p1, p2, v2, v0}, Lcom/android/server/utils/PriorityDump$PriorityDumper;->dumpCritical(Ljava/io/FileDescriptor;Ljava/io/PrintWriter;[Ljava/lang/String;Z)V
 
     .line 171
     return-void
@@ -215,6 +219,7 @@
 
 .method private static getPriorityType(Ljava/lang/String;)I
     .registers 6
+    .param p0, "arg"  # Ljava/lang/String;
 
     .line 192
     invoke-virtual {p0}, Ljava/lang/String;->hashCode()I
@@ -247,11 +252,11 @@
 
     invoke-virtual {p0, v0}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result p0
+    move-result v0
 
-    if-eqz p0, :cond_16
+    if-eqz v0, :cond_16
 
-    move p0, v4
+    move v0, v4
 
     goto :goto_36
 
@@ -260,11 +265,11 @@
 
     invoke-virtual {p0, v0}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result p0
+    move-result v0
 
-    if-eqz p0, :cond_16
+    if-eqz v0, :cond_16
 
-    move p0, v2
+    move v0, v2
 
     goto :goto_36
 
@@ -273,32 +278,32 @@
 
     invoke-virtual {p0, v0}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result p0
+    move-result v0
 
-    if-eqz p0, :cond_16
+    if-eqz v0, :cond_16
 
-    move p0, v3
+    move v0, v3
 
     goto :goto_36
 
     :goto_35
-    const/4 p0, -0x1
+    const/4 v0, -0x1
 
     :goto_36
-    if-eqz p0, :cond_40
+    if-eqz v0, :cond_40
 
-    if-eq p0, v4, :cond_3f
+    if-eq v0, v4, :cond_3f
 
-    if-eq p0, v3, :cond_3d
+    if-eq v0, v3, :cond_3d
 
     .line 203
     return v2
 
     .line 200
     :cond_3d
-    const/4 p0, 0x3
+    const/4 v0, 0x3
 
-    return p0
+    return v0
 
     .line 197
     :cond_3f

@@ -22,33 +22,36 @@
 
 # direct methods
 .method private constructor <init>(Lcom/android/server/media/MediaSessionService;)V
-    .registers 2
+    .registers 3
+    .param p1, "this$0"  # Lcom/android/server/media/MediaSessionService;
 
-    .line 978
+    .line 988
     iput-object p1, p0, Lcom/android/server/media/MediaSessionService$SettingsObserver;->this$0:Lcom/android/server/media/MediaSessionService;
 
-    .line 979
-    const/4 p1, 0x0
+    .line 989
+    const/4 v0, 0x0
 
-    invoke-direct {p0, p1}, Landroid/database/ContentObserver;-><init>(Landroid/os/Handler;)V
+    invoke-direct {p0, v0}, Landroid/database/ContentObserver;-><init>(Landroid/os/Handler;)V
 
-    .line 975
-    const-string p1, "enabled_notification_listeners"
+    .line 985
+    const-string v0, "enabled_notification_listeners"
 
-    invoke-static {p1}, Landroid/provider/Settings$Secure;->getUriFor(Ljava/lang/String;)Landroid/net/Uri;
+    invoke-static {v0}, Landroid/provider/Settings$Secure;->getUriFor(Ljava/lang/String;)Landroid/net/Uri;
 
-    move-result-object p1
+    move-result-object v0
 
-    iput-object p1, p0, Lcom/android/server/media/MediaSessionService$SettingsObserver;->mSecureSettingsUri:Landroid/net/Uri;
+    iput-object v0, p0, Lcom/android/server/media/MediaSessionService$SettingsObserver;->mSecureSettingsUri:Landroid/net/Uri;
 
-    .line 980
+    .line 990
     return-void
 .end method
 
 .method synthetic constructor <init>(Lcom/android/server/media/MediaSessionService;Lcom/android/server/media/MediaSessionService$1;)V
     .registers 3
+    .param p1, "x0"  # Lcom/android/server/media/MediaSessionService;
+    .param p2, "x1"  # Lcom/android/server/media/MediaSessionService$1;
 
-    .line 974
+    .line 984
     invoke-direct {p0, p1}, Lcom/android/server/media/MediaSessionService$SettingsObserver;-><init>(Lcom/android/server/media/MediaSessionService;)V
 
     return-void
@@ -56,8 +59,9 @@
 
 .method static synthetic access$100(Lcom/android/server/media/MediaSessionService$SettingsObserver;)V
     .registers 1
+    .param p0, "x0"  # Lcom/android/server/media/MediaSessionService$SettingsObserver;
 
-    .line 974
+    .line 984
     invoke-direct {p0}, Lcom/android/server/media/MediaSessionService$SettingsObserver;->observe()V
 
     return-void
@@ -66,7 +70,7 @@
 .method private observe()V
     .registers 5
 
-    .line 983
+    .line 993
     iget-object v0, p0, Lcom/android/server/media/MediaSessionService$SettingsObserver;->this$0:Lcom/android/server/media/MediaSessionService;
 
     invoke-static {v0}, Lcom/android/server/media/MediaSessionService;->access$700(Lcom/android/server/media/MediaSessionService;)Landroid/content/ContentResolver;
@@ -81,20 +85,22 @@
 
     invoke-virtual {v0, v1, v2, p0, v3}, Landroid/content/ContentResolver;->registerContentObserver(Landroid/net/Uri;ZLandroid/database/ContentObserver;I)V
 
-    .line 985
+    .line 995
     return-void
 .end method
 
 
 # virtual methods
 .method public onChange(ZLandroid/net/Uri;)V
-    .registers 3
+    .registers 4
+    .param p1, "selfChange"  # Z
+    .param p2, "uri"  # Landroid/net/Uri;
 
-    .line 989
-    iget-object p1, p0, Lcom/android/server/media/MediaSessionService$SettingsObserver;->this$0:Lcom/android/server/media/MediaSessionService;
+    .line 999
+    iget-object v0, p0, Lcom/android/server/media/MediaSessionService$SettingsObserver;->this$0:Lcom/android/server/media/MediaSessionService;
 
-    invoke-static {p1}, Lcom/android/server/media/MediaSessionService;->access$2000(Lcom/android/server/media/MediaSessionService;)V
+    invoke-static {v0}, Lcom/android/server/media/MediaSessionService;->access$2000(Lcom/android/server/media/MediaSessionService;)V
 
-    .line 990
+    .line 1000
     return-void
 .end method

@@ -35,17 +35,19 @@
 # direct methods
 .method public constructor <init>(Landroid/net/NetworkRequest;J)V
     .registers 4
+    .param p1, "request"  # Landroid/net/NetworkRequest;
+    .param p2, "expiryMs"  # J
 
-    .line 174
+    .line 179
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
-    .line 175
+    .line 180
     iput-object p1, p0, Lcom/android/server/connectivity/NetworkAgentInfo$LingerTimer;->request:Landroid/net/NetworkRequest;
 
-    .line 176
+    .line 181
     iput-wide p2, p0, Lcom/android/server/connectivity/NetworkAgentInfo$LingerTimer;->expiryMs:J
 
-    .line 177
+    .line 182
     return-void
 .end method
 
@@ -53,8 +55,9 @@
 # virtual methods
 .method public compareTo(Lcom/android/server/connectivity/NetworkAgentInfo$LingerTimer;)I
     .registers 7
+    .param p1, "other"  # Lcom/android/server/connectivity/NetworkAgentInfo$LingerTimer;
 
-    .line 187
+    .line 192
     iget-wide v0, p0, Lcom/android/server/connectivity/NetworkAgentInfo$LingerTimer;->expiryMs:J
 
     iget-wide v2, p1, Lcom/android/server/connectivity/NetworkAgentInfo$LingerTimer;->expiryMs:J
@@ -63,36 +66,36 @@
 
     if-eqz v4, :cond_d
 
-    .line 188
+    .line 193
     invoke-static {v0, v1, v2, v3}, Ljava/lang/Long;->compare(JJ)I
 
-    move-result p1
+    move-result v0
 
     goto :goto_19
 
-    .line 189
+    .line 194
     :cond_d
     iget-object v0, p0, Lcom/android/server/connectivity/NetworkAgentInfo$LingerTimer;->request:Landroid/net/NetworkRequest;
 
     iget v0, v0, Landroid/net/NetworkRequest;->requestId:I
 
-    iget-object p1, p1, Lcom/android/server/connectivity/NetworkAgentInfo$LingerTimer;->request:Landroid/net/NetworkRequest;
+    iget-object v1, p1, Lcom/android/server/connectivity/NetworkAgentInfo$LingerTimer;->request:Landroid/net/NetworkRequest;
 
-    iget p1, p1, Landroid/net/NetworkRequest;->requestId:I
+    iget v1, v1, Landroid/net/NetworkRequest;->requestId:I
 
-    invoke-static {v0, p1}, Ljava/lang/Integer;->compare(II)I
+    invoke-static {v0, v1}, Ljava/lang/Integer;->compare(II)I
 
-    move-result p1
+    move-result v0
 
-    .line 187
+    .line 192
     :goto_19
-    return p1
+    return v0
 .end method
 
 .method public bridge synthetic compareTo(Ljava/lang/Object;)I
     .registers 2
 
-    .line 170
+    .line 175
     check-cast p1, Lcom/android/server/connectivity/NetworkAgentInfo$LingerTimer;
 
     invoke-virtual {p0, p1}, Lcom/android/server/connectivity/NetworkAgentInfo$LingerTimer;->compareTo(Lcom/android/server/connectivity/NetworkAgentInfo$LingerTimer;)I
@@ -104,8 +107,9 @@
 
 .method public equals(Ljava/lang/Object;)Z
     .registers 8
+    .param p1, "o"  # Ljava/lang/Object;
 
-    .line 179
+    .line 184
     instance-of v0, p1, Lcom/android/server/connectivity/NetworkAgentInfo$LingerTimer;
 
     const/4 v1, 0x0
@@ -114,39 +118,42 @@
 
     return v1
 
-    .line 180
+    .line 185
     :cond_6
-    check-cast p1, Lcom/android/server/connectivity/NetworkAgentInfo$LingerTimer;
+    move-object v0, p1
 
-    .line 181
-    iget-object v0, p0, Lcom/android/server/connectivity/NetworkAgentInfo$LingerTimer;->request:Landroid/net/NetworkRequest;
+    check-cast v0, Lcom/android/server/connectivity/NetworkAgentInfo$LingerTimer;
 
-    iget v0, v0, Landroid/net/NetworkRequest;->requestId:I
-
-    iget-object v2, p1, Lcom/android/server/connectivity/NetworkAgentInfo$LingerTimer;->request:Landroid/net/NetworkRequest;
+    .line 186
+    .local v0, "other":Lcom/android/server/connectivity/NetworkAgentInfo$LingerTimer;
+    iget-object v2, p0, Lcom/android/server/connectivity/NetworkAgentInfo$LingerTimer;->request:Landroid/net/NetworkRequest;
 
     iget v2, v2, Landroid/net/NetworkRequest;->requestId:I
 
-    if-ne v0, v2, :cond_1b
+    iget-object v3, v0, Lcom/android/server/connectivity/NetworkAgentInfo$LingerTimer;->request:Landroid/net/NetworkRequest;
+
+    iget v3, v3, Landroid/net/NetworkRequest;->requestId:I
+
+    if-ne v2, v3, :cond_1c
 
     iget-wide v2, p0, Lcom/android/server/connectivity/NetworkAgentInfo$LingerTimer;->expiryMs:J
 
-    iget-wide v4, p1, Lcom/android/server/connectivity/NetworkAgentInfo$LingerTimer;->expiryMs:J
+    iget-wide v4, v0, Lcom/android/server/connectivity/NetworkAgentInfo$LingerTimer;->expiryMs:J
 
-    cmp-long p1, v2, v4
+    cmp-long v2, v2, v4
 
-    if-nez p1, :cond_1b
+    if-nez v2, :cond_1c
 
     const/4 v1, 0x1
 
-    :cond_1b
+    :cond_1c
     return v1
 .end method
 
 .method public hashCode()I
     .registers 4
 
-    .line 184
+    .line 189
     const/4 v0, 0x2
 
     new-array v0, v0, [Ljava/lang/Object;
@@ -183,7 +190,7 @@
 .method public toString()Ljava/lang/String;
     .registers 6
 
-    .line 192
+    .line 197
     const/4 v0, 0x2
 
     new-array v0, v0, [Ljava/lang/Object;
@@ -200,7 +207,7 @@
 
     iget-wide v1, p0, Lcom/android/server/connectivity/NetworkAgentInfo$LingerTimer;->expiryMs:J
 
-    .line 193
+    .line 198
     invoke-static {}, Landroid/os/SystemClock;->elapsedRealtime()J
 
     move-result-wide v3
@@ -215,7 +222,7 @@
 
     aput-object v1, v0, v2
 
-    .line 192
+    .line 197
     const-string v1, "%s, expires %dms"
 
     invoke-static {v1, v0}, Ljava/lang/String;->format(Ljava/lang/String;[Ljava/lang/Object;)Ljava/lang/String;

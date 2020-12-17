@@ -32,6 +32,8 @@
 
 .method synthetic constructor <init>(Lcom/android/server/pm/dex/ArtManagerService;Lcom/android/server/pm/dex/ArtManagerService$1;)V
     .registers 3
+    .param p1, "x0"  # Lcom/android/server/pm/dex/ArtManagerService;
+    .param p2, "x1"  # Lcom/android/server/pm/dex/ArtManagerService$1;
 
     .line 632
     invoke-direct {p0, p1}, Lcom/android/server/pm/dex/ArtManagerService$ArtManagerInternalImpl;-><init>(Lcom/android/server/pm/dex/ArtManagerService;)V
@@ -43,93 +45,103 @@
 # virtual methods
 .method public getPackageOptimizationInfo(Landroid/content/pm/ApplicationInfo;Ljava/lang/String;)Landroid/content/pm/dex/PackageOptimizationInfo;
     .registers 8
+    .param p1, "info"  # Landroid/content/pm/ApplicationInfo;
+    .param p2, "abi"  # Ljava/lang/String;
 
     .line 639
     const-string v0, "ArtManagerService"
 
-    const-string v1, "error"
-
-    :try_start_4
+    :try_start_2
     invoke-static {p2}, Ldalvik/system/VMRuntime;->getInstructionSet(Ljava/lang/String;)Ljava/lang/String;
 
-    move-result-object v2
+    move-result-object v1
 
     .line 640
+    .local v1, "isa":Ljava/lang/String;
     nop
 
     .line 641
     invoke-virtual {p1}, Landroid/content/pm/ApplicationInfo;->getBaseCodePath()Ljava/lang/String;
 
-    move-result-object v3
+    move-result-object v2
 
-    invoke-static {v3, v2}, Ldalvik/system/DexFile;->getDexFileOptimizationInfo(Ljava/lang/String;Ljava/lang/String;)Ldalvik/system/DexFile$OptimizationInfo;
+    invoke-static {v2, v1}, Ldalvik/system/DexFile;->getDexFileOptimizationInfo(Ljava/lang/String;Ljava/lang/String;)Ldalvik/system/DexFile$OptimizationInfo;
 
     move-result-object v2
 
     .line 642
+    .local v2, "optInfo":Ldalvik/system/DexFile$OptimizationInfo;
     invoke-virtual {v2}, Ldalvik/system/DexFile$OptimizationInfo;->getStatus()Ljava/lang/String;
 
     move-result-object v3
 
     .line 643
+    .local v3, "compilationFilter":Ljava/lang/String;
     invoke-virtual {v2}, Ldalvik/system/DexFile$OptimizationInfo;->getReason()Ljava/lang/String;
 
-    move-result-object v1
-    :try_end_19
-    .catch Ljava/io/FileNotFoundException; {:try_start_4 .. :try_end_19} :catch_40
-    .catch Ljava/lang/IllegalArgumentException; {:try_start_4 .. :try_end_19} :catch_1c
+    move-result-object v0
+    :try_end_17
+    .catch Ljava/io/FileNotFoundException; {:try_start_2 .. :try_end_17} :catch_3e
+    .catch Ljava/lang/IllegalArgumentException; {:try_start_2 .. :try_end_17} :catch_18
 
-    .line 653
-    move-object p1, v1
-
-    move-object v1, v3
-
-    goto :goto_5c
+    .end local v1  # "isa":Ljava/lang/String;
+    .end local v2  # "optInfo":Ldalvik/system/DexFile$OptimizationInfo;
+    .local v0, "compilationReason":Ljava/lang/String;
+    goto :goto_5b
 
     .line 648
-    :catch_1c
-    move-exception v2
+    .end local v0  # "compilationReason":Ljava/lang/String;
+    .end local v3  # "compilationFilter":Ljava/lang/String;
+    :catch_18
+    move-exception v1
 
     .line 649
-    new-instance v3, Ljava/lang/StringBuilder;
+    .local v1, "e":Ljava/lang/IllegalArgumentException;
+    new-instance v2, Ljava/lang/StringBuilder;
 
-    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v4, "Requested optimization status for "
+    const-string v3, "Requested optimization status for "
 
-    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {p1}, Landroid/content/pm/ApplicationInfo;->getBaseCodePath()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v3
 
-    invoke-virtual {v3, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string p1, " due to an invalid abi "
+    const-string v3, " due to an invalid abi "
 
-    invoke-virtual {v3, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v3, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v2
 
-    invoke-static {v0, p1, v2}, Landroid/util/Slog;->wtf(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    invoke-static {v0, v2, v1}, Landroid/util/Slog;->wtf(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
     .line 651
-    nop
+    const-string v3, "error"
 
     .line 652
-    move-object p1, v1
+    .restart local v3  # "compilationFilter":Ljava/lang/String;
+    const-string v0, "error"
 
+    .end local v1  # "e":Ljava/lang/IllegalArgumentException;
+    .restart local v0  # "compilationReason":Ljava/lang/String;
     goto :goto_5c
 
     .line 644
-    :catch_40
-    move-exception p2
+    .end local v0  # "compilationReason":Ljava/lang/String;
+    .end local v3  # "compilationFilter":Ljava/lang/String;
+    :catch_3e
+    move-exception v1
 
     .line 645
+    .local v1, "e":Ljava/io/FileNotFoundException;
     new-instance v2, Ljava/lang/StringBuilder;
 
     invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
@@ -140,40 +152,46 @@
 
     invoke-virtual {p1}, Landroid/content/pm/ApplicationInfo;->getBaseCodePath()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v3
 
-    invoke-virtual {v2, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v2
 
-    invoke-static {v0, p1, p2}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    invoke-static {v0, v2, v1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
     .line 646
-    nop
+    const-string v3, "error"
 
     .line 647
-    nop
+    .restart local v3  # "compilationFilter":Ljava/lang/String;
+    const-string v0, "error"
 
     .line 653
-    move-object p1, v1
+    .end local v1  # "e":Ljava/io/FileNotFoundException;
+    .restart local v0  # "compilationReason":Ljava/lang/String;
+    :goto_5b
+    nop
 
     .line 655
     :goto_5c
-    invoke-static {v1}, Lcom/android/server/pm/dex/ArtManagerService;->access$100(Ljava/lang/String;)I
+    invoke-static {v3}, Lcom/android/server/pm/dex/ArtManagerService;->access$100(Ljava/lang/String;)I
 
-    move-result p2
+    move-result v1
 
     .line 656
-    invoke-static {p1}, Lcom/android/server/pm/dex/ArtManagerService;->access$200(Ljava/lang/String;)I
+    .local v1, "compilationFilterTronValue":I
+    invoke-static {v0}, Lcom/android/server/pm/dex/ArtManagerService;->access$200(Ljava/lang/String;)I
 
-    move-result p1
+    move-result v2
 
     .line 658
-    new-instance v0, Landroid/content/pm/dex/PackageOptimizationInfo;
+    .local v2, "compilationReasonTronValue":I
+    new-instance v4, Landroid/content/pm/dex/PackageOptimizationInfo;
 
-    invoke-direct {v0, p2, p1}, Landroid/content/pm/dex/PackageOptimizationInfo;-><init>(II)V
+    invoke-direct {v4, v1, v2}, Landroid/content/pm/dex/PackageOptimizationInfo;-><init>(II)V
 
-    return-object v0
+    return-object v4
 .end method

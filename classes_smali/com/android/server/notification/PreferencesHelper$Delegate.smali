@@ -33,36 +33,40 @@
 # direct methods
 .method constructor <init>(Ljava/lang/String;IZZ)V
     .registers 6
+    .param p1, "pkg"  # Ljava/lang/String;
+    .param p2, "uid"  # I
+    .param p3, "enabled"  # Z
+    .param p4, "userAllowed"  # Z
 
-    .line 1951
+    .line 2069
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
-    .line 1947
+    .line 2065
     const/16 v0, -0x2710
 
     iput v0, p0, Lcom/android/server/notification/PreferencesHelper$Delegate;->mUid:I
 
-    .line 1948
+    .line 2066
     const/4 v0, 0x1
 
     iput-boolean v0, p0, Lcom/android/server/notification/PreferencesHelper$Delegate;->mEnabled:Z
 
-    .line 1949
+    .line 2067
     iput-boolean v0, p0, Lcom/android/server/notification/PreferencesHelper$Delegate;->mUserAllowed:Z
 
-    .line 1952
+    .line 2070
     iput-object p1, p0, Lcom/android/server/notification/PreferencesHelper$Delegate;->mPkg:Ljava/lang/String;
 
-    .line 1953
+    .line 2071
     iput p2, p0, Lcom/android/server/notification/PreferencesHelper$Delegate;->mUid:I
 
-    .line 1954
+    .line 2072
     iput-boolean p3, p0, Lcom/android/server/notification/PreferencesHelper$Delegate;->mEnabled:Z
 
-    .line 1955
+    .line 2073
     iput-boolean p4, p0, Lcom/android/server/notification/PreferencesHelper$Delegate;->mUserAllowed:Z
 
-    .line 1956
+    .line 2074
     return-void
 .end method
 
@@ -70,8 +74,10 @@
 # virtual methods
 .method public isAllowed(Ljava/lang/String;I)Z
     .registers 5
+    .param p1, "pkg"  # Ljava/lang/String;
+    .param p2, "uid"  # I
 
-    .line 1959
+    .line 2077
     const/4 v0, 0x0
 
     if-eqz p1, :cond_1e
@@ -82,34 +88,34 @@
 
     goto :goto_1e
 
-    .line 1962
+    .line 2080
     :cond_8
     iget-object v1, p0, Lcom/android/server/notification/PreferencesHelper$Delegate;->mPkg:Ljava/lang/String;
 
     invoke-virtual {p1, v1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result p1
+    move-result v1
 
-    if-eqz p1, :cond_1d
+    if-eqz v1, :cond_1d
 
-    iget p1, p0, Lcom/android/server/notification/PreferencesHelper$Delegate;->mUid:I
+    iget v1, p0, Lcom/android/server/notification/PreferencesHelper$Delegate;->mUid:I
 
-    if-ne p2, p1, :cond_1d
+    if-ne p2, v1, :cond_1d
 
-    iget-boolean p1, p0, Lcom/android/server/notification/PreferencesHelper$Delegate;->mUserAllowed:Z
+    iget-boolean v1, p0, Lcom/android/server/notification/PreferencesHelper$Delegate;->mUserAllowed:Z
 
-    if-eqz p1, :cond_1d
+    if-eqz v1, :cond_1d
 
-    iget-boolean p1, p0, Lcom/android/server/notification/PreferencesHelper$Delegate;->mEnabled:Z
+    iget-boolean v1, p0, Lcom/android/server/notification/PreferencesHelper$Delegate;->mEnabled:Z
 
-    if-eqz p1, :cond_1d
+    if-eqz v1, :cond_1d
 
     const/4 v0, 0x1
 
     :cond_1d
     return v0
 
-    .line 1960
+    .line 2078
     :cond_1e
     :goto_1e
     return v0

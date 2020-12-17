@@ -30,58 +30,61 @@
 
 # direct methods
 .method constructor <init>(Lcom/android/server/media/MediaSessionService$SessionManagerImpl;Landroid/os/Handler;)V
-    .registers 3
+    .registers 4
+    .param p1, "this$1"  # Lcom/android/server/media/MediaSessionService$SessionManagerImpl;
+    .param p2, "handler"  # Landroid/os/Handler;
 
-    .line 2154
+    .line 2182
     iput-object p1, p0, Lcom/android/server/media/MediaSessionService$SessionManagerImpl$KeyEventWakeLockReceiver;->this$1:Lcom/android/server/media/MediaSessionService$SessionManagerImpl;
 
-    .line 2155
+    .line 2183
     invoke-direct {p0, p2}, Landroid/os/ResultReceiver;-><init>(Landroid/os/Handler;)V
 
-    .line 2151
-    const/4 p1, 0x0
+    .line 2179
+    const/4 v0, 0x0
 
-    iput p1, p0, Lcom/android/server/media/MediaSessionService$SessionManagerImpl$KeyEventWakeLockReceiver;->mRefCount:I
+    iput v0, p0, Lcom/android/server/media/MediaSessionService$SessionManagerImpl$KeyEventWakeLockReceiver;->mRefCount:I
 
-    .line 2152
-    iput p1, p0, Lcom/android/server/media/MediaSessionService$SessionManagerImpl$KeyEventWakeLockReceiver;->mLastTimeoutId:I
+    .line 2180
+    iput v0, p0, Lcom/android/server/media/MediaSessionService$SessionManagerImpl$KeyEventWakeLockReceiver;->mLastTimeoutId:I
 
-    .line 2156
+    .line 2184
     iput-object p2, p0, Lcom/android/server/media/MediaSessionService$SessionManagerImpl$KeyEventWakeLockReceiver;->mHandler:Landroid/os/Handler;
 
-    .line 2157
+    .line 2185
     return-void
 .end method
 
-.method static synthetic access$4500(Lcom/android/server/media/MediaSessionService$SessionManagerImpl$KeyEventWakeLockReceiver;)I
-    .registers 1
+.method static synthetic access$4600(Lcom/android/server/media/MediaSessionService$SessionManagerImpl$KeyEventWakeLockReceiver;)I
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/media/MediaSessionService$SessionManagerImpl$KeyEventWakeLockReceiver;
 
-    .line 2148
-    iget p0, p0, Lcom/android/server/media/MediaSessionService$SessionManagerImpl$KeyEventWakeLockReceiver;->mLastTimeoutId:I
+    .line 2176
+    iget v0, p0, Lcom/android/server/media/MediaSessionService$SessionManagerImpl$KeyEventWakeLockReceiver;->mLastTimeoutId:I
 
-    return p0
+    return v0
 .end method
 
 .method private releaseWakeLockLocked()V
     .registers 2
 
-    .line 2205
+    .line 2233
     iget-object v0, p0, Lcom/android/server/media/MediaSessionService$SessionManagerImpl$KeyEventWakeLockReceiver;->this$1:Lcom/android/server/media/MediaSessionService$SessionManagerImpl;
 
     iget-object v0, v0, Lcom/android/server/media/MediaSessionService$SessionManagerImpl;->this$0:Lcom/android/server/media/MediaSessionService;
 
-    invoke-static {v0}, Lcom/android/server/media/MediaSessionService;->access$5100(Lcom/android/server/media/MediaSessionService;)Landroid/os/PowerManager$WakeLock;
+    invoke-static {v0}, Lcom/android/server/media/MediaSessionService;->access$5200(Lcom/android/server/media/MediaSessionService;)Landroid/os/PowerManager$WakeLock;
 
     move-result-object v0
 
     invoke-virtual {v0}, Landroid/os/PowerManager$WakeLock;->release()V
 
-    .line 2206
+    .line 2234
     iget-object v0, p0, Lcom/android/server/media/MediaSessionService$SessionManagerImpl$KeyEventWakeLockReceiver;->mHandler:Landroid/os/Handler;
 
     invoke-virtual {v0, p0}, Landroid/os/Handler;->removeCallbacks(Ljava/lang/Runnable;)V
 
-    .line 2207
+    .line 2235
     return-void
 .end method
 
@@ -90,23 +93,23 @@
 .method public aquireWakeLockLocked()V
     .registers 4
 
-    .line 2172
+    .line 2200
     iget v0, p0, Lcom/android/server/media/MediaSessionService$SessionManagerImpl$KeyEventWakeLockReceiver;->mRefCount:I
 
     if-nez v0, :cond_f
 
-    .line 2173
+    .line 2201
     iget-object v0, p0, Lcom/android/server/media/MediaSessionService$SessionManagerImpl$KeyEventWakeLockReceiver;->this$1:Lcom/android/server/media/MediaSessionService$SessionManagerImpl;
 
     iget-object v0, v0, Lcom/android/server/media/MediaSessionService$SessionManagerImpl;->this$0:Lcom/android/server/media/MediaSessionService;
 
-    invoke-static {v0}, Lcom/android/server/media/MediaSessionService;->access$5100(Lcom/android/server/media/MediaSessionService;)Landroid/os/PowerManager$WakeLock;
+    invoke-static {v0}, Lcom/android/server/media/MediaSessionService;->access$5200(Lcom/android/server/media/MediaSessionService;)Landroid/os/PowerManager$WakeLock;
 
     move-result-object v0
 
     invoke-virtual {v0}, Landroid/os/PowerManager$WakeLock;->acquire()V
 
-    .line 2175
+    .line 2203
     :cond_f
     iget v0, p0, Lcom/android/server/media/MediaSessionService$SessionManagerImpl$KeyEventWakeLockReceiver;->mRefCount:I
 
@@ -114,100 +117,37 @@
 
     iput v0, p0, Lcom/android/server/media/MediaSessionService$SessionManagerImpl$KeyEventWakeLockReceiver;->mRefCount:I
 
-    .line 2176
+    .line 2204
     iget-object v0, p0, Lcom/android/server/media/MediaSessionService$SessionManagerImpl$KeyEventWakeLockReceiver;->mHandler:Landroid/os/Handler;
 
     invoke-virtual {v0, p0}, Landroid/os/Handler;->removeCallbacks(Ljava/lang/Runnable;)V
 
-    .line 2177
+    .line 2205
     iget-object v0, p0, Lcom/android/server/media/MediaSessionService$SessionManagerImpl$KeyEventWakeLockReceiver;->mHandler:Landroid/os/Handler;
 
     const-wide/16 v1, 0x1388
 
     invoke-virtual {v0, p0, v1, v2}, Landroid/os/Handler;->postDelayed(Ljava/lang/Runnable;J)Z
 
-    .line 2179
+    .line 2207
     return-void
 .end method
 
 .method protected onReceiveResult(ILandroid/os/Bundle;)V
-    .registers 3
+    .registers 5
+    .param p1, "resultCode"  # I
+    .param p2, "resultData"  # Landroid/os/Bundle;
 
-    .line 2188
-    iget p2, p0, Lcom/android/server/media/MediaSessionService$SessionManagerImpl$KeyEventWakeLockReceiver;->mLastTimeoutId:I
+    .line 2216
+    iget v0, p0, Lcom/android/server/media/MediaSessionService$SessionManagerImpl$KeyEventWakeLockReceiver;->mLastTimeoutId:I
 
-    if-ge p1, p2, :cond_5
+    if-ge p1, v0, :cond_5
 
-    .line 2191
+    .line 2219
     return-void
 
-    .line 2193
+    .line 2221
     :cond_5
-    iget-object p1, p0, Lcom/android/server/media/MediaSessionService$SessionManagerImpl$KeyEventWakeLockReceiver;->this$1:Lcom/android/server/media/MediaSessionService$SessionManagerImpl;
-
-    iget-object p1, p1, Lcom/android/server/media/MediaSessionService$SessionManagerImpl;->this$0:Lcom/android/server/media/MediaSessionService;
-
-    invoke-static {p1}, Lcom/android/server/media/MediaSessionService;->access$1200(Lcom/android/server/media/MediaSessionService;)Ljava/lang/Object;
-
-    move-result-object p1
-
-    monitor-enter p1
-
-    .line 2194
-    :try_start_e
-    iget p2, p0, Lcom/android/server/media/MediaSessionService$SessionManagerImpl$KeyEventWakeLockReceiver;->mRefCount:I
-
-    if-lez p2, :cond_1f
-
-    .line 2195
-    iget p2, p0, Lcom/android/server/media/MediaSessionService$SessionManagerImpl$KeyEventWakeLockReceiver;->mRefCount:I
-
-    add-int/lit8 p2, p2, -0x1
-
-    iput p2, p0, Lcom/android/server/media/MediaSessionService$SessionManagerImpl$KeyEventWakeLockReceiver;->mRefCount:I
-
-    .line 2196
-    iget p2, p0, Lcom/android/server/media/MediaSessionService$SessionManagerImpl$KeyEventWakeLockReceiver;->mRefCount:I
-
-    if-nez p2, :cond_1f
-
-    .line 2197
-    invoke-direct {p0}, Lcom/android/server/media/MediaSessionService$SessionManagerImpl$KeyEventWakeLockReceiver;->releaseWakeLockLocked()V
-
-    .line 2200
-    :cond_1f
-    monitor-exit p1
-
-    .line 2202
-    return-void
-
-    .line 2200
-    :catchall_21
-    move-exception p2
-
-    monitor-exit p1
-    :try_end_23
-    .catchall {:try_start_e .. :try_end_23} :catchall_21
-
-    throw p2
-.end method
-
-.method public onSendFinished(Landroid/app/PendingIntent;Landroid/content/Intent;ILjava/lang/String;Landroid/os/Bundle;)V
-    .registers 6
-
-    .line 2212
-    const/4 p1, 0x0
-
-    invoke-virtual {p0, p3, p1}, Lcom/android/server/media/MediaSessionService$SessionManagerImpl$KeyEventWakeLockReceiver;->onReceiveResult(ILandroid/os/Bundle;)V
-
-    .line 2213
-    return-void
-.end method
-
-.method public onTimeout()V
-    .registers 3
-
-    .line 2160
     iget-object v0, p0, Lcom/android/server/media/MediaSessionService$SessionManagerImpl$KeyEventWakeLockReceiver;->this$1:Lcom/android/server/media/MediaSessionService$SessionManagerImpl;
 
     iget-object v0, v0, Lcom/android/server/media/MediaSessionService$SessionManagerImpl;->this$0:Lcom/android/server/media/MediaSessionService;
@@ -218,18 +158,88 @@
 
     monitor-enter v0
 
-    .line 2161
+    .line 2222
+    :try_start_e
+    iget v1, p0, Lcom/android/server/media/MediaSessionService$SessionManagerImpl$KeyEventWakeLockReceiver;->mRefCount:I
+
+    if-lez v1, :cond_1f
+
+    .line 2223
+    iget v1, p0, Lcom/android/server/media/MediaSessionService$SessionManagerImpl$KeyEventWakeLockReceiver;->mRefCount:I
+
+    add-int/lit8 v1, v1, -0x1
+
+    iput v1, p0, Lcom/android/server/media/MediaSessionService$SessionManagerImpl$KeyEventWakeLockReceiver;->mRefCount:I
+
+    .line 2224
+    iget v1, p0, Lcom/android/server/media/MediaSessionService$SessionManagerImpl$KeyEventWakeLockReceiver;->mRefCount:I
+
+    if-nez v1, :cond_1f
+
+    .line 2225
+    invoke-direct {p0}, Lcom/android/server/media/MediaSessionService$SessionManagerImpl$KeyEventWakeLockReceiver;->releaseWakeLockLocked()V
+
+    .line 2228
+    :cond_1f
+    monitor-exit v0
+
+    .line 2230
+    return-void
+
+    .line 2228
+    :catchall_21
+    move-exception v1
+
+    monitor-exit v0
+    :try_end_23
+    .catchall {:try_start_e .. :try_end_23} :catchall_21
+
+    throw v1
+.end method
+
+.method public onSendFinished(Landroid/app/PendingIntent;Landroid/content/Intent;ILjava/lang/String;Landroid/os/Bundle;)V
+    .registers 7
+    .param p1, "pendingIntent"  # Landroid/app/PendingIntent;
+    .param p2, "intent"  # Landroid/content/Intent;
+    .param p3, "resultCode"  # I
+    .param p4, "resultData"  # Ljava/lang/String;
+    .param p5, "resultExtras"  # Landroid/os/Bundle;
+
+    .line 2240
+    const/4 v0, 0x0
+
+    invoke-virtual {p0, p3, v0}, Lcom/android/server/media/MediaSessionService$SessionManagerImpl$KeyEventWakeLockReceiver;->onReceiveResult(ILandroid/os/Bundle;)V
+
+    .line 2241
+    return-void
+.end method
+
+.method public onTimeout()V
+    .registers 3
+
+    .line 2188
+    iget-object v0, p0, Lcom/android/server/media/MediaSessionService$SessionManagerImpl$KeyEventWakeLockReceiver;->this$1:Lcom/android/server/media/MediaSessionService$SessionManagerImpl;
+
+    iget-object v0, v0, Lcom/android/server/media/MediaSessionService$SessionManagerImpl;->this$0:Lcom/android/server/media/MediaSessionService;
+
+    invoke-static {v0}, Lcom/android/server/media/MediaSessionService;->access$1200(Lcom/android/server/media/MediaSessionService;)Ljava/lang/Object;
+
+    move-result-object v0
+
+    monitor-enter v0
+
+    .line 2189
     :try_start_9
     iget v1, p0, Lcom/android/server/media/MediaSessionService$SessionManagerImpl$KeyEventWakeLockReceiver;->mRefCount:I
 
     if-nez v1, :cond_f
 
-    .line 2163
+    .line 2191
     monitor-exit v0
 
     return-void
 
-    .line 2165
+    .line 2193
     :cond_f
     iget v1, p0, Lcom/android/server/media/MediaSessionService$SessionManagerImpl$KeyEventWakeLockReceiver;->mLastTimeoutId:I
 
@@ -237,21 +247,21 @@
 
     iput v1, p0, Lcom/android/server/media/MediaSessionService$SessionManagerImpl$KeyEventWakeLockReceiver;->mLastTimeoutId:I
 
-    .line 2166
+    .line 2194
     const/4 v1, 0x0
 
     iput v1, p0, Lcom/android/server/media/MediaSessionService$SessionManagerImpl$KeyEventWakeLockReceiver;->mRefCount:I
 
-    .line 2167
+    .line 2195
     invoke-direct {p0}, Lcom/android/server/media/MediaSessionService$SessionManagerImpl$KeyEventWakeLockReceiver;->releaseWakeLockLocked()V
 
-    .line 2168
+    .line 2196
     monitor-exit v0
 
-    .line 2169
+    .line 2197
     return-void
 
-    .line 2168
+    .line 2196
     :catchall_1d
     move-exception v1
 
@@ -265,9 +275,9 @@
 .method public run()V
     .registers 1
 
-    .line 2183
+    .line 2211
     invoke-virtual {p0}, Lcom/android/server/media/MediaSessionService$SessionManagerImpl$KeyEventWakeLockReceiver;->onTimeout()V
 
-    .line 2184
+    .line 2212
     return-void
 .end method

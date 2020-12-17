@@ -23,7 +23,8 @@
 
 # direct methods
 .method public constructor <init>(Landroid/os/IHwBinder;)V
-    .registers 2
+    .registers 3
+    .param p1, "remote"  # Landroid/os/IHwBinder;
 
     .line 173
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -31,11 +32,11 @@
     .line 174
     invoke-static {p1}, Ljava/util/Objects;->requireNonNull(Ljava/lang/Object;)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v0
 
-    check-cast p1, Landroid/os/IHwBinder;
+    check-cast v0, Landroid/os/IHwBinder;
 
-    iput-object p1, p0, Landroid/hardware/oemlock/V1_0/IOemLock$Proxy;->mRemote:Landroid/os/IHwBinder;
+    iput-object v0, p0, Landroid/hardware/oemlock/V1_0/IOemLock$Proxy;->mRemote:Landroid/os/IHwBinder;
 
     .line 175
     return-void
@@ -53,7 +54,8 @@
 .end method
 
 .method public debug(Landroid/os/NativeHandle;Ljava/util/ArrayList;)V
-    .registers 6
+    .registers 8
+    .param p1, "fd"  # Landroid/os/NativeHandle;
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(",
@@ -71,11 +73,13 @@
     .end annotation
 
     .line 327
+    .local p2, "options":Ljava/util/ArrayList;, "Ljava/util/ArrayList<Ljava/lang/String;>;"
     new-instance v0, Landroid/os/HwParcel;
 
     invoke-direct {v0}, Landroid/os/HwParcel;-><init>()V
 
     .line 328
+    .local v0, "_hidl_request":Landroid/os/HwParcel;
     const-string v1, "android.hidl.base@1.0::IBase"
 
     invoke-virtual {v0, v1}, Landroid/os/HwParcel;->writeInterfaceToken(Ljava/lang/String;)V
@@ -87,22 +91,23 @@
     invoke-virtual {v0, p2}, Landroid/os/HwParcel;->writeStringVector(Ljava/util/ArrayList;)V
 
     .line 332
-    new-instance p1, Landroid/os/HwParcel;
+    new-instance v1, Landroid/os/HwParcel;
 
-    invoke-direct {p1}, Landroid/os/HwParcel;-><init>()V
+    invoke-direct {v1}, Landroid/os/HwParcel;-><init>()V
 
     .line 334
+    .local v1, "_hidl_reply":Landroid/os/HwParcel;
     :try_start_15
-    iget-object p2, p0, Landroid/hardware/oemlock/V1_0/IOemLock$Proxy;->mRemote:Landroid/os/IHwBinder;
+    iget-object v2, p0, Landroid/hardware/oemlock/V1_0/IOemLock$Proxy;->mRemote:Landroid/os/IHwBinder;
 
-    const v1, 0xf444247
+    const v3, 0xf444247
 
-    const/4 v2, 0x0
+    const/4 v4, 0x0
 
-    invoke-interface {p2, v1, v0, p1, v2}, Landroid/os/IHwBinder;->transact(ILandroid/os/HwParcel;Landroid/os/HwParcel;I)V
+    invoke-interface {v2, v3, v0, v1, v4}, Landroid/os/IHwBinder;->transact(ILandroid/os/HwParcel;Landroid/os/HwParcel;I)V
 
     .line 335
-    invoke-virtual {p1}, Landroid/os/HwParcel;->verifySuccess()V
+    invoke-virtual {v1}, Landroid/os/HwParcel;->verifySuccess()V
 
     .line 336
     invoke-virtual {v0}, Landroid/os/HwParcel;->releaseTemporaryStorage()V
@@ -110,7 +115,7 @@
     .catchall {:try_start_15 .. :try_end_24} :catchall_29
 
     .line 338
-    invoke-virtual {p1}, Landroid/os/HwParcel;->release()V
+    invoke-virtual {v1}, Landroid/os/HwParcel;->release()V
 
     .line 339
     nop
@@ -120,22 +125,23 @@
 
     .line 338
     :catchall_29
-    move-exception p2
+    move-exception v2
 
-    invoke-virtual {p1}, Landroid/os/HwParcel;->release()V
+    invoke-virtual {v1}, Landroid/os/HwParcel;->release()V
 
-    throw p2
+    throw v2
 .end method
 
 .method public final equals(Ljava/lang/Object;)Z
-    .registers 2
+    .registers 3
+    .param p1, "other"  # Ljava/lang/Object;
 
     .line 194
     invoke-static {p0, p1}, Landroid/os/HidlSupport;->interfacesEqual(Landroid/os/IHwInterface;Ljava/lang/Object;)Z
 
-    move-result p1
+    move-result v0
 
-    return p1
+    return v0
 .end method
 
 .method public getDebugInfo()Landroid/hidl/base/V1_0/DebugInfo;
@@ -152,6 +158,7 @@
     invoke-direct {v0}, Landroid/os/HwParcel;-><init>()V
 
     .line 440
+    .local v0, "_hidl_request":Landroid/os/HwParcel;
     const-string v1, "android.hidl.base@1.0::IBase"
 
     invoke-virtual {v0, v1}, Landroid/os/HwParcel;->writeInterfaceToken(Ljava/lang/String;)V
@@ -162,6 +169,7 @@
     invoke-direct {v1}, Landroid/os/HwParcel;-><init>()V
 
     .line 444
+    .local v1, "_hidl_reply":Landroid/os/HwParcel;
     :try_start_f
     iget-object v2, p0, Landroid/hardware/oemlock/V1_0/IOemLock$Proxy;->mRemote:Landroid/os/IHwBinder;
 
@@ -178,12 +186,13 @@
     invoke-virtual {v0}, Landroid/os/HwParcel;->releaseTemporaryStorage()V
 
     .line 448
-    new-instance v0, Landroid/hidl/base/V1_0/DebugInfo;
+    new-instance v2, Landroid/hidl/base/V1_0/DebugInfo;
 
-    invoke-direct {v0}, Landroid/hidl/base/V1_0/DebugInfo;-><init>()V
+    invoke-direct {v2}, Landroid/hidl/base/V1_0/DebugInfo;-><init>()V
 
     .line 449
-    invoke-virtual {v0, v1}, Landroid/hidl/base/V1_0/DebugInfo;->readFromParcel(Landroid/os/HwParcel;)V
+    .local v2, "_hidl_out_info":Landroid/hidl/base/V1_0/DebugInfo;
+    invoke-virtual {v2, v1}, Landroid/hidl/base/V1_0/DebugInfo;->readFromParcel(Landroid/os/HwParcel;)V
     :try_end_26
     .catchall {:try_start_f .. :try_end_26} :catchall_2b
 
@@ -194,19 +203,20 @@
     invoke-virtual {v1}, Landroid/os/HwParcel;->release()V
 
     .line 450
-    return-object v0
+    return-object v2
 
     .line 452
+    .end local v2  # "_hidl_out_info":Landroid/hidl/base/V1_0/DebugInfo;
     :catchall_2b
-    move-exception v0
+    move-exception v2
 
     invoke-virtual {v1}, Landroid/os/HwParcel;->release()V
 
-    throw v0
+    throw v2
 .end method
 
 .method public getHashChain()Ljava/util/ArrayList;
-    .registers 13
+    .registers 14
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "()",
@@ -227,6 +237,7 @@
     invoke-direct {v0}, Landroid/os/HwParcel;-><init>()V
 
     .line 365
+    .local v0, "_hidl_request":Landroid/os/HwParcel;
     const-string v1, "android.hidl.base@1.0::IBase"
 
     invoke-virtual {v0, v1}, Landroid/os/HwParcel;->writeInterfaceToken(Ljava/lang/String;)V
@@ -237,14 +248,15 @@
     invoke-direct {v1}, Landroid/os/HwParcel;-><init>()V
 
     .line 369
+    .local v1, "_hidl_reply":Landroid/os/HwParcel;
     :try_start_f
     iget-object v2, p0, Landroid/hardware/oemlock/V1_0/IOemLock$Proxy;->mRemote:Landroid/os/IHwBinder;
 
     const v3, 0xf485348
 
-    const/4 v10, 0x0
+    const/4 v4, 0x0
 
-    invoke-interface {v2, v3, v0, v1, v10}, Landroid/os/IHwBinder;->transact(ILandroid/os/HwParcel;Landroid/os/HwParcel;I)V
+    invoke-interface {v2, v3, v0, v1, v4}, Landroid/os/IHwBinder;->transact(ILandroid/os/HwParcel;Landroid/os/HwParcel;I)V
 
     .line 370
     invoke-virtual {v1}, Landroid/os/HwParcel;->verifySuccess()V
@@ -253,31 +265,40 @@
     invoke-virtual {v0}, Landroid/os/HwParcel;->releaseTemporaryStorage()V
 
     .line 373
-    new-instance v0, Ljava/util/ArrayList;
+    new-instance v2, Ljava/util/ArrayList;
 
-    invoke-direct {v0}, Ljava/util/ArrayList;-><init>()V
+    invoke-direct {v2}, Ljava/util/ArrayList;-><init>()V
+
+    move-object v10, v2
 
     .line 375
+    .local v10, "_hidl_out_hashchain":Ljava/util/ArrayList;, "Ljava/util/ArrayList<[B>;"
     const-wide/16 v2, 0x10
 
     invoke-virtual {v1, v2, v3}, Landroid/os/HwParcel;->readBuffer(J)Landroid/os/HwBlob;
 
     move-result-object v2
 
+    move-object v11, v2
+
     .line 377
-    const-wide/16 v3, 0x8
+    .local v11, "_hidl_blob":Landroid/os/HwBlob;
+    const-wide/16 v2, 0x8
 
-    invoke-virtual {v2, v3, v4}, Landroid/os/HwBlob;->getInt32(J)I
+    invoke-virtual {v11, v2, v3}, Landroid/os/HwBlob;->getInt32(J)I
 
-    move-result v11
+    move-result v2
+
+    move v12, v2
 
     .line 378
-    mul-int/lit8 v3, v11, 0x20
+    .local v12, "_hidl_vec_size":I
+    mul-int/lit8 v2, v12, 0x20
 
-    int-to-long v3, v3
+    int-to-long v3, v2
 
     .line 379
-    invoke-virtual {v2}, Landroid/os/HwBlob;->handle()J
+    invoke-virtual {v11}, Landroid/os/HwBlob;->handle()J
 
     move-result-wide v5
 
@@ -293,61 +314,75 @@
     move-result-object v2
 
     .line 382
-    invoke-virtual {v0}, Ljava/util/ArrayList;->clear()V
+    .local v2, "childBlob":Landroid/os/HwBlob;
+    invoke-virtual {v10}, Ljava/util/ArrayList;->clear()V
 
     .line 383
-    nop
+    const/4 v3, 0x0
 
-    :goto_42
-    if-ge v10, v11, :cond_55
+    .local v3, "_hidl_index_0":I
+    :goto_45
+    if-ge v3, v12, :cond_59
 
     .line 384
-    const/16 v3, 0x20
+    const/16 v4, 0x20
 
-    new-array v4, v3, [B
+    new-array v5, v4, [B
 
     .line 386
-    mul-int/lit8 v5, v10, 0x20
+    .local v5, "_hidl_vec_element":[B
+    mul-int/lit8 v6, v3, 0x20
 
-    int-to-long v5, v5
+    int-to-long v6, v6
 
     .line 387
-    invoke-virtual {v2, v5, v6, v4, v3}, Landroid/os/HwBlob;->copyToInt8Array(J[BI)V
+    .local v6, "_hidl_array_offset_1":J
+    invoke-virtual {v2, v6, v7, v5, v4}, Landroid/os/HwBlob;->copyToInt8Array(J[BI)V
 
     .line 388
     nop
 
     .line 390
-    invoke-virtual {v0, v4}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
-    :try_end_52
-    .catchall {:try_start_f .. :try_end_52} :catchall_5a
+    .end local v6  # "_hidl_array_offset_1":J
+    invoke-virtual {v10, v5}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
+    :try_end_55
+    .catchall {:try_start_f .. :try_end_55} :catchall_5e
 
     .line 383
-    add-int/lit8 v10, v10, 0x1
+    nop
 
-    goto :goto_42
+    .end local v5  # "_hidl_vec_element":[B
+    add-int/lit8 v3, v3, 0x1
+
+    goto :goto_45
 
     .line 394
-    :cond_55
+    .end local v2  # "childBlob":Landroid/os/HwBlob;
+    .end local v3  # "_hidl_index_0":I
+    .end local v11  # "_hidl_blob":Landroid/os/HwBlob;
+    .end local v12  # "_hidl_vec_size":I
+    :cond_59
     nop
 
     .line 396
     invoke-virtual {v1}, Landroid/os/HwParcel;->release()V
 
     .line 394
-    return-object v0
+    return-object v10
 
     .line 396
-    :catchall_5a
-    move-exception v0
+    .end local v10  # "_hidl_out_hashchain":Ljava/util/ArrayList;, "Ljava/util/ArrayList<[B>;"
+    :catchall_5e
+    move-exception v2
 
     invoke-virtual {v1}, Landroid/os/HwParcel;->release()V
 
-    throw v0
+    throw v2
 .end method
 
 .method public getName(Landroid/hardware/oemlock/V1_0/IOemLock$getNameCallback;)V
     .registers 7
+    .param p1, "_hidl_cb"  # Landroid/hardware/oemlock/V1_0/IOemLock$getNameCallback;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -360,6 +395,7 @@
     invoke-direct {v0}, Landroid/os/HwParcel;-><init>()V
 
     .line 207
+    .local v0, "_hidl_request":Landroid/os/HwParcel;
     const-string v1, "android.hardware.oemlock@1.0::IOemLock"
 
     invoke-virtual {v0, v1}, Landroid/os/HwParcel;->writeInterfaceToken(Ljava/lang/String;)V
@@ -370,6 +406,7 @@
     invoke-direct {v1}, Landroid/os/HwParcel;-><init>()V
 
     .line 211
+    .local v1, "_hidl_reply":Landroid/os/HwParcel;
     :try_start_f
     iget-object v2, p0, Landroid/hardware/oemlock/V1_0/IOemLock$Proxy;->mRemote:Landroid/os/IHwBinder;
 
@@ -388,19 +425,23 @@
     .line 215
     invoke-virtual {v1}, Landroid/os/HwParcel;->readInt32()I
 
-    move-result v0
+    move-result v2
 
     .line 216
+    .local v2, "_hidl_out_status":I
     invoke-virtual {v1}, Landroid/os/HwParcel;->readString()Ljava/lang/String;
 
-    move-result-object v2
+    move-result-object v3
 
     .line 217
-    invoke-interface {p1, v0, v2}, Landroid/hardware/oemlock/V1_0/IOemLock$getNameCallback;->onValues(ILjava/lang/String;)V
+    .local v3, "_hidl_out_name":Ljava/lang/String;
+    invoke-interface {p1, v2, v3}, Landroid/hardware/oemlock/V1_0/IOemLock$getNameCallback;->onValues(ILjava/lang/String;)V
     :try_end_27
     .catchall {:try_start_f .. :try_end_27} :catchall_2c
 
     .line 219
+    .end local v2  # "_hidl_out_status":I
+    .end local v3  # "_hidl_out_name":Ljava/lang/String;
     invoke-virtual {v1}, Landroid/os/HwParcel;->release()V
 
     .line 220
@@ -411,11 +452,11 @@
 
     .line 219
     :catchall_2c
-    move-exception p1
+    move-exception v2
 
     invoke-virtual {v1}, Landroid/os/HwParcel;->release()V
 
-    throw p1
+    throw v2
 .end method
 
 .method public final hashCode()I
@@ -456,6 +497,7 @@
     invoke-direct {v0}, Landroid/os/HwParcel;-><init>()V
 
     .line 309
+    .local v0, "_hidl_request":Landroid/os/HwParcel;
     const-string v1, "android.hidl.base@1.0::IBase"
 
     invoke-virtual {v0, v1}, Landroid/os/HwParcel;->writeInterfaceToken(Ljava/lang/String;)V
@@ -466,6 +508,7 @@
     invoke-direct {v1}, Landroid/os/HwParcel;-><init>()V
 
     .line 313
+    .local v1, "_hidl_reply":Landroid/os/HwParcel;
     :try_start_f
     iget-object v2, p0, Landroid/hardware/oemlock/V1_0/IOemLock$Proxy;->mRemote:Landroid/os/IHwBinder;
 
@@ -484,26 +527,28 @@
     .line 317
     invoke-virtual {v1}, Landroid/os/HwParcel;->readStringVector()Ljava/util/ArrayList;
 
-    move-result-object v0
+    move-result-object v2
     :try_end_22
     .catchall {:try_start_f .. :try_end_22} :catchall_27
 
     .line 318
+    .local v2, "_hidl_out_descriptors":Ljava/util/ArrayList;, "Ljava/util/ArrayList<Ljava/lang/String;>;"
     nop
 
     .line 320
     invoke-virtual {v1}, Landroid/os/HwParcel;->release()V
 
     .line 318
-    return-object v0
+    return-object v2
 
     .line 320
+    .end local v2  # "_hidl_out_descriptors":Ljava/util/ArrayList;, "Ljava/util/ArrayList<Ljava/lang/String;>;"
     :catchall_27
-    move-exception v0
+    move-exception v2
 
     invoke-virtual {v1}, Landroid/os/HwParcel;->release()V
 
-    throw v0
+    throw v2
 .end method
 
 .method public interfaceDescriptor()Ljava/lang/String;
@@ -520,6 +565,7 @@
     invoke-direct {v0}, Landroid/os/HwParcel;-><init>()V
 
     .line 346
+    .local v0, "_hidl_request":Landroid/os/HwParcel;
     const-string v1, "android.hidl.base@1.0::IBase"
 
     invoke-virtual {v0, v1}, Landroid/os/HwParcel;->writeInterfaceToken(Ljava/lang/String;)V
@@ -530,6 +576,7 @@
     invoke-direct {v1}, Landroid/os/HwParcel;-><init>()V
 
     .line 350
+    .local v1, "_hidl_reply":Landroid/os/HwParcel;
     :try_start_f
     iget-object v2, p0, Landroid/hardware/oemlock/V1_0/IOemLock$Proxy;->mRemote:Landroid/os/IHwBinder;
 
@@ -548,30 +595,33 @@
     .line 354
     invoke-virtual {v1}, Landroid/os/HwParcel;->readString()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v2
     :try_end_22
     .catchall {:try_start_f .. :try_end_22} :catchall_27
 
     .line 355
+    .local v2, "_hidl_out_descriptor":Ljava/lang/String;
     nop
 
     .line 357
     invoke-virtual {v1}, Landroid/os/HwParcel;->release()V
 
     .line 355
-    return-object v0
+    return-object v2
 
     .line 357
+    .end local v2  # "_hidl_out_descriptor":Ljava/lang/String;
     :catchall_27
-    move-exception v0
+    move-exception v2
 
     invoke-virtual {v1}, Landroid/os/HwParcel;->release()V
 
-    throw v0
+    throw v2
 .end method
 
 .method public isOemUnlockAllowedByCarrier(Landroid/hardware/oemlock/V1_0/IOemLock$isOemUnlockAllowedByCarrierCallback;)V
     .registers 7
+    .param p1, "_hidl_cb"  # Landroid/hardware/oemlock/V1_0/IOemLock$isOemUnlockAllowedByCarrierCallback;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -584,6 +634,7 @@
     invoke-direct {v0}, Landroid/os/HwParcel;-><init>()V
 
     .line 248
+    .local v0, "_hidl_request":Landroid/os/HwParcel;
     const-string v1, "android.hardware.oemlock@1.0::IOemLock"
 
     invoke-virtual {v0, v1}, Landroid/os/HwParcel;->writeInterfaceToken(Ljava/lang/String;)V
@@ -594,6 +645,7 @@
     invoke-direct {v1}, Landroid/os/HwParcel;-><init>()V
 
     .line 252
+    .local v1, "_hidl_reply":Landroid/os/HwParcel;
     :try_start_f
     iget-object v2, p0, Landroid/hardware/oemlock/V1_0/IOemLock$Proxy;->mRemote:Landroid/os/IHwBinder;
 
@@ -612,19 +664,23 @@
     .line 256
     invoke-virtual {v1}, Landroid/os/HwParcel;->readInt32()I
 
-    move-result v0
-
-    .line 257
-    invoke-virtual {v1}, Landroid/os/HwParcel;->readBool()Z
-
     move-result v2
 
+    .line 257
+    .local v2, "_hidl_out_status":I
+    invoke-virtual {v1}, Landroid/os/HwParcel;->readBool()Z
+
+    move-result v3
+
     .line 258
-    invoke-interface {p1, v0, v2}, Landroid/hardware/oemlock/V1_0/IOemLock$isOemUnlockAllowedByCarrierCallback;->onValues(IZ)V
+    .local v3, "_hidl_out_allowed":Z
+    invoke-interface {p1, v2, v3}, Landroid/hardware/oemlock/V1_0/IOemLock$isOemUnlockAllowedByCarrierCallback;->onValues(IZ)V
     :try_end_27
     .catchall {:try_start_f .. :try_end_27} :catchall_2c
 
     .line 260
+    .end local v2  # "_hidl_out_status":I
+    .end local v3  # "_hidl_out_allowed":Z
     invoke-virtual {v1}, Landroid/os/HwParcel;->release()V
 
     .line 261
@@ -635,15 +691,16 @@
 
     .line 260
     :catchall_2c
-    move-exception p1
+    move-exception v2
 
     invoke-virtual {v1}, Landroid/os/HwParcel;->release()V
 
-    throw p1
+    throw v2
 .end method
 
 .method public isOemUnlockAllowedByDevice(Landroid/hardware/oemlock/V1_0/IOemLock$isOemUnlockAllowedByDeviceCallback;)V
     .registers 7
+    .param p1, "_hidl_cb"  # Landroid/hardware/oemlock/V1_0/IOemLock$isOemUnlockAllowedByDeviceCallback;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -656,6 +713,7 @@
     invoke-direct {v0}, Landroid/os/HwParcel;-><init>()V
 
     .line 288
+    .local v0, "_hidl_request":Landroid/os/HwParcel;
     const-string v1, "android.hardware.oemlock@1.0::IOemLock"
 
     invoke-virtual {v0, v1}, Landroid/os/HwParcel;->writeInterfaceToken(Ljava/lang/String;)V
@@ -666,6 +724,7 @@
     invoke-direct {v1}, Landroid/os/HwParcel;-><init>()V
 
     .line 292
+    .local v1, "_hidl_reply":Landroid/os/HwParcel;
     :try_start_f
     iget-object v2, p0, Landroid/hardware/oemlock/V1_0/IOemLock$Proxy;->mRemote:Landroid/os/IHwBinder;
 
@@ -684,19 +743,23 @@
     .line 296
     invoke-virtual {v1}, Landroid/os/HwParcel;->readInt32()I
 
-    move-result v0
-
-    .line 297
-    invoke-virtual {v1}, Landroid/os/HwParcel;->readBool()Z
-
     move-result v2
 
+    .line 297
+    .local v2, "_hidl_out_status":I
+    invoke-virtual {v1}, Landroid/os/HwParcel;->readBool()Z
+
+    move-result v3
+
     .line 298
-    invoke-interface {p1, v0, v2}, Landroid/hardware/oemlock/V1_0/IOemLock$isOemUnlockAllowedByDeviceCallback;->onValues(IZ)V
+    .local v3, "_hidl_out_allowed":Z
+    invoke-interface {p1, v2, v3}, Landroid/hardware/oemlock/V1_0/IOemLock$isOemUnlockAllowedByDeviceCallback;->onValues(IZ)V
     :try_end_27
     .catchall {:try_start_f .. :try_end_27} :catchall_2c
 
     .line 300
+    .end local v2  # "_hidl_out_status":I
+    .end local v3  # "_hidl_out_allowed":Z
     invoke-virtual {v1}, Landroid/os/HwParcel;->release()V
 
     .line 301
@@ -707,15 +770,17 @@
 
     .line 300
     :catchall_2c
-    move-exception p1
+    move-exception v2
 
     invoke-virtual {v1}, Landroid/os/HwParcel;->release()V
 
-    throw p1
+    throw v2
 .end method
 
 .method public linkToDeath(Landroid/os/IHwBinder$DeathRecipient;J)Z
     .registers 5
+    .param p1, "recipient"  # Landroid/os/IHwBinder$DeathRecipient;
+    .param p2, "cookie"  # J
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -727,9 +792,9 @@
 
     invoke-interface {v0, p1, p2, p3}, Landroid/os/IHwBinder;->linkToDeath(Landroid/os/IHwBinder$DeathRecipient;J)Z
 
-    move-result p1
+    move-result v0
 
-    return p1
+    return v0
 .end method
 
 .method public notifySyspropsChanged()V
@@ -746,6 +811,7 @@
     invoke-direct {v0}, Landroid/os/HwParcel;-><init>()V
 
     .line 460
+    .local v0, "_hidl_request":Landroid/os/HwParcel;
     const-string v1, "android.hidl.base@1.0::IBase"
 
     invoke-virtual {v0, v1}, Landroid/os/HwParcel;->writeInterfaceToken(Ljava/lang/String;)V
@@ -756,6 +822,7 @@
     invoke-direct {v1}, Landroid/os/HwParcel;-><init>()V
 
     .line 464
+    .local v1, "_hidl_reply":Landroid/os/HwParcel;
     :try_start_f
     iget-object v2, p0, Landroid/hardware/oemlock/V1_0/IOemLock$Proxy;->mRemote:Landroid/os/IHwBinder;
 
@@ -781,11 +848,11 @@
 
     .line 467
     :catchall_20
-    move-exception v0
+    move-exception v2
 
     invoke-virtual {v1}, Landroid/os/HwParcel;->release()V
 
-    throw v0
+    throw v2
 .end method
 
 .method public ping()V
@@ -802,6 +869,7 @@
     invoke-direct {v0}, Landroid/os/HwParcel;-><init>()V
 
     .line 424
+    .local v0, "_hidl_request":Landroid/os/HwParcel;
     const-string v1, "android.hidl.base@1.0::IBase"
 
     invoke-virtual {v0, v1}, Landroid/os/HwParcel;->writeInterfaceToken(Ljava/lang/String;)V
@@ -812,6 +880,7 @@
     invoke-direct {v1}, Landroid/os/HwParcel;-><init>()V
 
     .line 428
+    .local v1, "_hidl_reply":Landroid/os/HwParcel;
     :try_start_f
     iget-object v2, p0, Landroid/hardware/oemlock/V1_0/IOemLock$Proxy;->mRemote:Landroid/os/IHwBinder;
 
@@ -840,11 +909,11 @@
 
     .line 432
     :catchall_23
-    move-exception v0
+    move-exception v2
 
     invoke-virtual {v1}, Landroid/os/HwParcel;->release()V
 
-    throw v0
+    throw v2
 .end method
 
 .method public setHALInstrumentation()V
@@ -861,6 +930,7 @@
     invoke-direct {v0}, Landroid/os/HwParcel;-><init>()V
 
     .line 404
+    .local v0, "_hidl_request":Landroid/os/HwParcel;
     const-string v1, "android.hidl.base@1.0::IBase"
 
     invoke-virtual {v0, v1}, Landroid/os/HwParcel;->writeInterfaceToken(Ljava/lang/String;)V
@@ -871,6 +941,7 @@
     invoke-direct {v1}, Landroid/os/HwParcel;-><init>()V
 
     .line 408
+    .local v1, "_hidl_reply":Landroid/os/HwParcel;
     :try_start_f
     iget-object v2, p0, Landroid/hardware/oemlock/V1_0/IOemLock$Proxy;->mRemote:Landroid/os/IHwBinder;
 
@@ -896,15 +967,16 @@
 
     .line 411
     :catchall_20
-    move-exception v0
+    move-exception v2
 
     invoke-virtual {v1}, Landroid/os/HwParcel;->release()V
 
-    throw v0
+    throw v2
 .end method
 
 .method public setOemUnlockAllowedByCarrier(ZLjava/util/ArrayList;)I
-    .registers 6
+    .registers 8
+    .param p1, "allowed"  # Z
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(Z",
@@ -921,11 +993,13 @@
     .end annotation
 
     .line 226
+    .local p2, "signature":Ljava/util/ArrayList;, "Ljava/util/ArrayList<Ljava/lang/Byte;>;"
     new-instance v0, Landroid/os/HwParcel;
 
     invoke-direct {v0}, Landroid/os/HwParcel;-><init>()V
 
     .line 227
+    .local v0, "_hidl_request":Landroid/os/HwParcel;
     const-string v1, "android.hardware.oemlock@1.0::IOemLock"
 
     invoke-virtual {v0, v1}, Landroid/os/HwParcel;->writeInterfaceToken(Ljava/lang/String;)V
@@ -937,53 +1011,57 @@
     invoke-virtual {v0, p2}, Landroid/os/HwParcel;->writeInt8Vector(Ljava/util/ArrayList;)V
 
     .line 231
-    new-instance p1, Landroid/os/HwParcel;
+    new-instance v1, Landroid/os/HwParcel;
 
-    invoke-direct {p1}, Landroid/os/HwParcel;-><init>()V
+    invoke-direct {v1}, Landroid/os/HwParcel;-><init>()V
 
     .line 233
+    .local v1, "_hidl_reply":Landroid/os/HwParcel;
     :try_start_15
-    iget-object p2, p0, Landroid/hardware/oemlock/V1_0/IOemLock$Proxy;->mRemote:Landroid/os/IHwBinder;
+    iget-object v2, p0, Landroid/hardware/oemlock/V1_0/IOemLock$Proxy;->mRemote:Landroid/os/IHwBinder;
 
-    const/4 v1, 0x2
+    const/4 v3, 0x2
 
-    const/4 v2, 0x0
+    const/4 v4, 0x0
 
-    invoke-interface {p2, v1, v0, p1, v2}, Landroid/os/IHwBinder;->transact(ILandroid/os/HwParcel;Landroid/os/HwParcel;I)V
+    invoke-interface {v2, v3, v0, v1, v4}, Landroid/os/IHwBinder;->transact(ILandroid/os/HwParcel;Landroid/os/HwParcel;I)V
 
     .line 234
-    invoke-virtual {p1}, Landroid/os/HwParcel;->verifySuccess()V
+    invoke-virtual {v1}, Landroid/os/HwParcel;->verifySuccess()V
 
     .line 235
     invoke-virtual {v0}, Landroid/os/HwParcel;->releaseTemporaryStorage()V
 
     .line 237
-    invoke-virtual {p1}, Landroid/os/HwParcel;->readInt32()I
+    invoke-virtual {v1}, Landroid/os/HwParcel;->readInt32()I
 
-    move-result p2
+    move-result v2
     :try_end_26
     .catchall {:try_start_15 .. :try_end_26} :catchall_2b
 
     .line 238
+    .local v2, "_hidl_out_status":I
     nop
 
     .line 240
-    invoke-virtual {p1}, Landroid/os/HwParcel;->release()V
+    invoke-virtual {v1}, Landroid/os/HwParcel;->release()V
 
     .line 238
-    return p2
+    return v2
 
     .line 240
+    .end local v2  # "_hidl_out_status":I
     :catchall_2b
-    move-exception p2
+    move-exception v2
 
-    invoke-virtual {p1}, Landroid/os/HwParcel;->release()V
+    invoke-virtual {v1}, Landroid/os/HwParcel;->release()V
 
-    throw p2
+    throw v2
 .end method
 
 .method public setOemUnlockAllowedByDevice(Z)I
-    .registers 6
+    .registers 7
+    .param p1, "allowed"  # Z
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -996,6 +1074,7 @@
     invoke-direct {v0}, Landroid/os/HwParcel;-><init>()V
 
     .line 268
+    .local v0, "_hidl_request":Landroid/os/HwParcel;
     const-string v1, "android.hardware.oemlock@1.0::IOemLock"
 
     invoke-virtual {v0, v1}, Landroid/os/HwParcel;->writeInterfaceToken(Ljava/lang/String;)V
@@ -1004,49 +1083,52 @@
     invoke-virtual {v0, p1}, Landroid/os/HwParcel;->writeBool(Z)V
 
     .line 271
-    new-instance p1, Landroid/os/HwParcel;
+    new-instance v1, Landroid/os/HwParcel;
 
-    invoke-direct {p1}, Landroid/os/HwParcel;-><init>()V
+    invoke-direct {v1}, Landroid/os/HwParcel;-><init>()V
 
     .line 273
+    .local v1, "_hidl_reply":Landroid/os/HwParcel;
     :try_start_12
-    iget-object v1, p0, Landroid/hardware/oemlock/V1_0/IOemLock$Proxy;->mRemote:Landroid/os/IHwBinder;
+    iget-object v2, p0, Landroid/hardware/oemlock/V1_0/IOemLock$Proxy;->mRemote:Landroid/os/IHwBinder;
 
-    const/4 v2, 0x4
+    const/4 v3, 0x4
 
-    const/4 v3, 0x0
+    const/4 v4, 0x0
 
-    invoke-interface {v1, v2, v0, p1, v3}, Landroid/os/IHwBinder;->transact(ILandroid/os/HwParcel;Landroid/os/HwParcel;I)V
+    invoke-interface {v2, v3, v0, v1, v4}, Landroid/os/IHwBinder;->transact(ILandroid/os/HwParcel;Landroid/os/HwParcel;I)V
 
     .line 274
-    invoke-virtual {p1}, Landroid/os/HwParcel;->verifySuccess()V
+    invoke-virtual {v1}, Landroid/os/HwParcel;->verifySuccess()V
 
     .line 275
     invoke-virtual {v0}, Landroid/os/HwParcel;->releaseTemporaryStorage()V
 
     .line 277
-    invoke-virtual {p1}, Landroid/os/HwParcel;->readInt32()I
+    invoke-virtual {v1}, Landroid/os/HwParcel;->readInt32()I
 
-    move-result v0
+    move-result v2
     :try_end_23
     .catchall {:try_start_12 .. :try_end_23} :catchall_28
 
     .line 278
+    .local v2, "_hidl_out_status":I
     nop
 
     .line 280
-    invoke-virtual {p1}, Landroid/os/HwParcel;->release()V
+    invoke-virtual {v1}, Landroid/os/HwParcel;->release()V
 
     .line 278
-    return v0
+    return v2
 
     .line 280
+    .end local v2  # "_hidl_out_status":I
     :catchall_28
-    move-exception v0
+    move-exception v2
 
-    invoke-virtual {p1}, Landroid/os/HwParcel;->release()V
+    invoke-virtual {v1}, Landroid/os/HwParcel;->release()V
 
-    throw v0
+    throw v2
 .end method
 
 .method public toString()Ljava/lang/String;
@@ -1088,6 +1170,7 @@
 
 .method public unlinkToDeath(Landroid/os/IHwBinder$DeathRecipient;)Z
     .registers 3
+    .param p1, "recipient"  # Landroid/os/IHwBinder$DeathRecipient;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -1099,7 +1182,7 @@
 
     invoke-interface {v0, p1}, Landroid/os/IHwBinder;->unlinkToDeath(Landroid/os/IHwBinder$DeathRecipient;)Z
 
-    move-result p1
+    move-result v0
 
-    return p1
+    return v0
 .end method

@@ -24,8 +24,9 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/display/DisplayPowerController;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/display/DisplayPowerController;
 
-    .line 1721
+    .line 1898
     iput-object p1, p0, Lcom/android/server/display/DisplayPowerController$6;->this$0:Lcom/android/server/display/DisplayPowerController;
 
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -38,24 +39,24 @@
 .method public run()V
     .registers 2
 
-    .line 1724
+    .line 1901
     iget-object v0, p0, Lcom/android/server/display/DisplayPowerController$6;->this$0:Lcom/android/server/display/DisplayPowerController;
 
-    invoke-static {v0}, Lcom/android/server/display/DisplayPowerController;->access$400(Lcom/android/server/display/DisplayPowerController;)Landroid/hardware/display/DisplayManagerInternal$DisplayPowerCallbacks;
+    invoke-static {v0}, Lcom/android/server/display/DisplayPowerController;->access$700(Lcom/android/server/display/DisplayPowerController;)Landroid/hardware/display/DisplayManagerInternal$DisplayPowerCallbacks;
 
     move-result-object v0
 
     invoke-interface {v0}, Landroid/hardware/display/DisplayManagerInternal$DisplayPowerCallbacks;->onProximityNegative()V
 
-    .line 1725
+    .line 1902
     iget-object v0, p0, Lcom/android/server/display/DisplayPowerController$6;->this$0:Lcom/android/server/display/DisplayPowerController;
 
-    invoke-static {v0}, Lcom/android/server/display/DisplayPowerController;->access$400(Lcom/android/server/display/DisplayPowerController;)Landroid/hardware/display/DisplayManagerInternal$DisplayPowerCallbacks;
+    invoke-static {v0}, Lcom/android/server/display/DisplayPowerController;->access$700(Lcom/android/server/display/DisplayPowerController;)Landroid/hardware/display/DisplayManagerInternal$DisplayPowerCallbacks;
 
     move-result-object v0
 
     invoke-interface {v0}, Landroid/hardware/display/DisplayManagerInternal$DisplayPowerCallbacks;->releaseSuspendBlocker()V
 
-    .line 1726
+    .line 1903
     return-void
 .end method

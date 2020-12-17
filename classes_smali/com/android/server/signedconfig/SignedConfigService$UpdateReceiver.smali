@@ -26,6 +26,7 @@
 
 .method synthetic constructor <init>(Lcom/android/server/signedconfig/SignedConfigService$1;)V
     .registers 2
+    .param p1, "x0"  # Lcom/android/server/signedconfig/SignedConfigService$1;
 
     .line 49
     invoke-direct {p0}, Lcom/android/server/signedconfig/SignedConfigService$UpdateReceiver;-><init>()V
@@ -37,6 +38,8 @@
 # virtual methods
 .method public onReceive(Landroid/content/Context;Landroid/content/Intent;)V
     .registers 4
+    .param p1, "context"  # Landroid/content/Context;
+    .param p2, "intent"  # Landroid/content/Intent;
 
     .line 52
     new-instance v0, Lcom/android/server/signedconfig/SignedConfigService;

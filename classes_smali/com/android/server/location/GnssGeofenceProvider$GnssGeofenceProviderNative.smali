@@ -30,14 +30,22 @@
 
 # virtual methods
 .method public addGeofence(IDDDIIII)Z
-    .registers 12
+    .registers 13
+    .param p1, "geofenceId"  # I
+    .param p2, "latitude"  # D
+    .param p4, "longitude"  # D
+    .param p6, "radius"  # D
+    .param p8, "lastTransition"  # I
+    .param p9, "monitorTransitions"  # I
+    .param p10, "notificationResponsiveness"  # I
+    .param p11, "unknownTimer"  # I
 
     .line 145
     invoke-static/range {p1 .. p11}, Lcom/android/server/location/GnssGeofenceProvider;->access$200(IDDDIIII)Z
 
-    move-result p1
+    move-result v0
 
-    return p1
+    return v0
 .end method
 
 .method public isGeofenceSupported()Z
@@ -52,34 +60,38 @@
 .end method
 
 .method public pauseGeofence(I)Z
-    .registers 2
+    .registers 3
+    .param p1, "geofenceId"  # I
 
     .line 158
     invoke-static {p1}, Lcom/android/server/location/GnssGeofenceProvider;->access$500(I)Z
 
-    move-result p1
+    move-result v0
 
-    return p1
+    return v0
 .end method
 
 .method public removeGeofence(I)Z
-    .registers 2
+    .registers 3
+    .param p1, "geofenceId"  # I
 
     .line 150
     invoke-static {p1}, Lcom/android/server/location/GnssGeofenceProvider;->access$300(I)Z
 
-    move-result p1
+    move-result v0
 
-    return p1
+    return v0
 .end method
 
 .method public resumeGeofence(II)Z
-    .registers 3
+    .registers 4
+    .param p1, "geofenceId"  # I
+    .param p2, "transitions"  # I
 
     .line 154
     invoke-static {p1, p2}, Lcom/android/server/location/GnssGeofenceProvider;->access$400(II)Z
 
-    move-result p1
+    move-result v0
 
-    return p1
+    return v0
 .end method

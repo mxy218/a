@@ -10,6 +10,7 @@
 # direct methods
 .method constructor <init>(Landroid/print/IPrintManager;)V
     .registers 2
+    .param p1, "service"  # Landroid/print/IPrintManager;
 
     .line 34
     invoke-direct {p0}, Landroid/os/ShellCommand;-><init>()V
@@ -30,6 +31,7 @@
     move-result-object v0
 
     .line 88
+    .local v0, "option":Ljava/lang/String;
     if-eqz v0, :cond_35
 
     .line 89
@@ -44,17 +46,17 @@
     .line 90
     invoke-virtual {p0}, Lcom/android/server/print/PrintShellCommand;->getNextArgRequired()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v1
 
-    invoke-static {v0}, Landroid/os/UserHandle;->parseUserArg(Ljava/lang/String;)I
+    invoke-static {v1}, Landroid/os/UserHandle;->parseUserArg(Ljava/lang/String;)I
 
-    move-result v0
+    move-result v1
 
-    invoke-static {v0}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
+    invoke-static {v1}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
 
-    move-result-object v0
+    move-result-object v1
 
-    return-object v0
+    return-object v1
 
     .line 92
     :cond_1b
@@ -74,28 +76,28 @@
 
     invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v2
 
-    invoke-virtual {v1, v0}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {v1, v2}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
     .line 93
-    const/4 v0, 0x0
+    const/4 v1, 0x0
 
-    return-object v0
+    return-object v1
 
     .line 96
     :cond_35
-    const/4 v0, 0x0
+    const/4 v1, 0x0
 
-    invoke-static {v0}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
+    invoke-static {v1}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
 
-    move-result-object v0
+    move-result-object v1
 
-    return-object v0
+    return-object v1
 .end method
 
 .method private runGetBindInstantServiceAllowed()I
-    .registers 4
+    .registers 5
 
     .line 55
     invoke-direct {p0}, Lcom/android/server/print/PrintShellCommand;->parseUserId()Ljava/lang/Integer;
@@ -103,12 +105,13 @@
     move-result-object v0
 
     .line 56
+    .local v0, "userId":Ljava/lang/Integer;
     if-nez v0, :cond_8
 
     .line 57
-    const/4 v0, -0x1
+    const/4 v1, -0x1
 
-    return v0
+    return v1
 
     .line 60
     :cond_8
@@ -122,18 +125,18 @@
     .line 61
     invoke-virtual {v0}, Ljava/lang/Integer;->intValue()I
 
-    move-result v0
+    move-result v3
 
-    invoke-interface {v2, v0}, Landroid/print/IPrintManager;->getBindInstantServiceAllowed(I)Z
+    invoke-interface {v2, v3}, Landroid/print/IPrintManager;->getBindInstantServiceAllowed(I)Z
 
-    move-result v0
+    move-result v2
 
-    invoke-static {v0}, Ljava/lang/Boolean;->toString(Z)Ljava/lang/String;
+    invoke-static {v2}, Ljava/lang/Boolean;->toString(Z)Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v2
 
     .line 60
-    invoke-virtual {v1, v0}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {v1, v2}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
     :try_end_1d
     .catch Landroid/os/RemoteException; {:try_start_8 .. :try_end_1d} :catch_1e
 
@@ -142,20 +145,22 @@
 
     .line 62
     :catch_1e
-    move-exception v0
+    move-exception v1
 
     .line 63
-    invoke-virtual {v0}, Landroid/os/RemoteException;->rethrowFromSystemServer()Ljava/lang/RuntimeException;
+    .local v1, "e":Landroid/os/RemoteException;
+    invoke-virtual {v1}, Landroid/os/RemoteException;->rethrowFromSystemServer()Ljava/lang/RuntimeException;
 
     .line 65
+    .end local v1  # "e":Landroid/os/RemoteException;
     :goto_22
-    const/4 v0, 0x0
+    const/4 v1, 0x0
 
-    return v0
+    return v1
 .end method
 
 .method private runSetBindInstantServiceAllowed()I
-    .registers 4
+    .registers 6
 
     .line 69
     invoke-direct {p0}, Lcom/android/server/print/PrintShellCommand;->parseUserId()Ljava/lang/Integer;
@@ -163,6 +168,7 @@
     move-result-object v0
 
     .line 70
+    .local v0, "userId":Ljava/lang/Integer;
     const/4 v1, -0x1
 
     if-nez v0, :cond_8
@@ -177,16 +183,17 @@
     move-result-object v2
 
     .line 74
+    .local v2, "allowed":Ljava/lang/String;
     if-nez v2, :cond_18
 
     .line 75
     invoke-virtual {p0}, Lcom/android/server/print/PrintShellCommand;->getErrPrintWriter()Ljava/io/PrintWriter;
 
-    move-result-object v0
+    move-result-object v3
 
-    const-string v2, "Error: no true/false specified"
+    const-string v4, "Error: no true/false specified"
 
-    invoke-virtual {v0, v2}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {v3, v4}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
     .line 76
     return v1
@@ -198,13 +205,13 @@
 
     invoke-virtual {v0}, Ljava/lang/Integer;->intValue()I
 
-    move-result v0
+    move-result v3
 
     invoke-static {v2}, Ljava/lang/Boolean;->parseBoolean(Ljava/lang/String;)Z
 
-    move-result v2
+    move-result v4
 
-    invoke-interface {v1, v0, v2}, Landroid/print/IPrintManager;->setBindInstantServiceAllowed(IZ)V
+    invoke-interface {v1, v3, v4}, Landroid/print/IPrintManager;->setBindInstantServiceAllowed(IZ)V
     :try_end_25
     .catch Landroid/os/RemoteException; {:try_start_18 .. :try_end_25} :catch_26
 
@@ -213,22 +220,25 @@
 
     .line 80
     :catch_26
-    move-exception v0
+    move-exception v1
 
     .line 81
-    invoke-virtual {v0}, Landroid/os/RemoteException;->rethrowFromSystemServer()Ljava/lang/RuntimeException;
+    .local v1, "e":Landroid/os/RemoteException;
+    invoke-virtual {v1}, Landroid/os/RemoteException;->rethrowFromSystemServer()Ljava/lang/RuntimeException;
 
     .line 83
+    .end local v1  # "e":Landroid/os/RemoteException;
     :goto_2a
-    const/4 v0, 0x0
+    const/4 v1, 0x0
 
-    return v0
+    return v1
 .end method
 
 
 # virtual methods
 .method public onCommand(Ljava/lang/String;)I
     .registers 6
+    .param p1, "cmd"  # Ljava/lang/String;
 
     .line 40
     if-nez p1, :cond_7
@@ -236,9 +246,9 @@
     .line 41
     invoke-virtual {p0, p1}, Lcom/android/server/print/PrintShellCommand;->handleDefaultCommands(Ljava/lang/String;)I
 
-    move-result p1
+    move-result v0
 
-    return p1
+    return v0
 
     .line 43
     :cond_7
@@ -266,11 +276,11 @@
 
     invoke-virtual {p1, v0}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result p1
+    move-result v0
 
-    if-eqz p1, :cond_17
+    if-eqz v0, :cond_17
 
-    move p1, v2
+    move v0, v2
 
     goto :goto_2e
 
@@ -279,21 +289,21 @@
 
     invoke-virtual {p1, v0}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result p1
+    move-result v0
 
-    if-eqz p1, :cond_17
+    if-eqz v0, :cond_17
 
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
     goto :goto_2e
 
     :goto_2d
-    move p1, v3
+    move v0, v3
 
     :goto_2e
-    if-eqz p1, :cond_38
+    if-eqz v0, :cond_38
 
-    if-eq p1, v2, :cond_33
+    if-eq v0, v2, :cond_33
 
     .line 51
     return v3
@@ -302,17 +312,17 @@
     :cond_33
     invoke-direct {p0}, Lcom/android/server/print/PrintShellCommand;->runSetBindInstantServiceAllowed()I
 
-    move-result p1
+    move-result v0
 
-    return p1
+    return v0
 
     .line 45
     :cond_38
     invoke-direct {p0}, Lcom/android/server/print/PrintShellCommand;->runGetBindInstantServiceAllowed()I
 
-    move-result p1
+    move-result v0
 
-    return p1
+    return v0
 .end method
 
 .method public onHelp()V
@@ -324,6 +334,7 @@
     move-result-object v0
 
     .line 102
+    .local v0, "pw":Ljava/io/PrintWriter;
     const-string v1, "Print service commands:"
 
     invoke-virtual {v0, v1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V

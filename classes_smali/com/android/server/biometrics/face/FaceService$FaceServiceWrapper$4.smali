@@ -28,8 +28,9 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/biometrics/face/FaceService$FaceServiceWrapper;ILjava/lang/String;)V
     .registers 4
+    .param p1, "this$1"  # Lcom/android/server/biometrics/face/FaceService$FaceServiceWrapper;
 
-    .line 561
+    .line 420
     iput-object p1, p0, Lcom/android/server/biometrics/face/FaceService$FaceServiceWrapper$4;->this$1:Lcom/android/server/biometrics/face/FaceService$FaceServiceWrapper;
 
     iput p2, p0, Lcom/android/server/biometrics/face/FaceService$FaceServiceWrapper$4;->val$faceId:I
@@ -46,7 +47,7 @@
 .method public run()V
     .registers 6
 
-    .line 564
+    .line 423
     iget-object v0, p0, Lcom/android/server/biometrics/face/FaceService$FaceServiceWrapper$4;->this$1:Lcom/android/server/biometrics/face/FaceService$FaceServiceWrapper;
 
     iget-object v0, v0, Lcom/android/server/biometrics/face/FaceService$FaceServiceWrapper;->this$0:Lcom/android/server/biometrics/face/FaceService;
@@ -67,7 +68,7 @@
 
     iget-object v2, v2, Lcom/android/server/biometrics/face/FaceService$FaceServiceWrapper;->this$0:Lcom/android/server/biometrics/face/FaceService;
 
-    invoke-static {v2}, Lcom/android/server/biometrics/face/FaceService;->access$5900(Lcom/android/server/biometrics/face/FaceService;)I
+    invoke-static {v2}, Lcom/android/server/biometrics/face/FaceService;->access$5500(Lcom/android/server/biometrics/face/FaceService;)I
 
     move-result v2
 
@@ -77,6 +78,6 @@
 
     invoke-interface {v0, v1, v2, v3, v4}, Lcom/android/server/biometrics/BiometricUtils;->renameBiometricForUser(Landroid/content/Context;IILjava/lang/CharSequence;)V
 
-    .line 566
+    .line 425
     return-void
 .end method

@@ -21,6 +21,8 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/NetworkScoreService;Landroid/os/Handler;)V
     .registers 3
+    .param p1, "this$0"  # Lcom/android/server/NetworkScoreService;
+    .param p2, "x0"  # Landroid/os/Handler;
 
     .line 289
     iput-object p1, p0, Lcom/android/server/NetworkScoreService$3;->this$0:Lcom/android/server/NetworkScoreService;
@@ -33,57 +35,63 @@
 
 # virtual methods
 .method public onChange(ZLandroid/net/Uri;I)V
-    .registers 5
+    .registers 7
+    .param p1, "selfChange"  # Z
+    .param p2, "uri"  # Landroid/net/Uri;
+    .param p3, "userId"  # I
 
     .line 292
-    const-string/jumbo p1, "use_open_wifi_package"
+    const-string/jumbo v0, "use_open_wifi_package"
 
-    invoke-static {p1}, Landroid/provider/Settings$Global;->getUriFor(Ljava/lang/String;)Landroid/net/Uri;
+    invoke-static {v0}, Landroid/provider/Settings$Global;->getUriFor(Ljava/lang/String;)Landroid/net/Uri;
+
+    move-result-object v1
+
+    .line 293
+    .local v1, "useOpenWifiPkgUri":Landroid/net/Uri;
+    invoke-virtual {v1, p2}, Landroid/net/Uri;->equals(Ljava/lang/Object;)Z
+
+    move-result v2
+
+    if-eqz v2, :cond_2c
+
+    .line 294
+    iget-object v2, p0, Lcom/android/server/NetworkScoreService$3;->this$0:Lcom/android/server/NetworkScoreService;
+
+    invoke-static {v2}, Lcom/android/server/NetworkScoreService;->access$500(Lcom/android/server/NetworkScoreService;)Landroid/content/Context;
+
+    move-result-object v2
+
+    invoke-virtual {v2}, Landroid/content/Context;->getContentResolver()Landroid/content/ContentResolver;
+
+    move-result-object v2
+
+    invoke-static {v2, v0}, Landroid/provider/Settings$Global;->getString(Landroid/content/ContentResolver;Ljava/lang/String;)Ljava/lang/String;
 
     move-result-object v0
 
-    .line 293
-    invoke-virtual {v0, p2}, Landroid/net/Uri;->equals(Ljava/lang/Object;)Z
-
-    move-result p2
-
-    if-eqz p2, :cond_2c
-
-    .line 294
-    iget-object p2, p0, Lcom/android/server/NetworkScoreService$3;->this$0:Lcom/android/server/NetworkScoreService;
-
-    invoke-static {p2}, Lcom/android/server/NetworkScoreService;->access$500(Lcom/android/server/NetworkScoreService;)Landroid/content/Context;
-
-    move-result-object p2
-
-    invoke-virtual {p2}, Landroid/content/Context;->getContentResolver()Landroid/content/ContentResolver;
-
-    move-result-object p2
-
-    invoke-static {p2, p1}, Landroid/provider/Settings$Global;->getString(Landroid/content/ContentResolver;Ljava/lang/String;)Ljava/lang/String;
-
-    move-result-object p1
-
     .line 296
-    invoke-static {p1}, Landroid/text/TextUtils;->isEmpty(Ljava/lang/CharSequence;)Z
+    .local v0, "useOpenWifiPackage":Ljava/lang/String;
+    invoke-static {v0}, Landroid/text/TextUtils;->isEmpty(Ljava/lang/CharSequence;)Z
 
-    move-result p2
+    move-result v2
 
-    if-nez p2, :cond_2c
+    if-nez v2, :cond_2c
 
     .line 297
-    const-class p2, Landroid/content/pm/PackageManagerInternal;
+    const-class v2, Landroid/content/pm/PackageManagerInternal;
 
-    invoke-static {p2}, Lcom/android/server/LocalServices;->getService(Ljava/lang/Class;)Ljava/lang/Object;
+    invoke-static {v2}, Lcom/android/server/LocalServices;->getService(Ljava/lang/Class;)Ljava/lang/Object;
 
-    move-result-object p2
+    move-result-object v2
 
-    check-cast p2, Landroid/content/pm/PackageManagerInternal;
+    check-cast v2, Landroid/content/pm/PackageManagerInternal;
 
     .line 298
-    invoke-virtual {p2, p1, p3}, Landroid/content/pm/PackageManagerInternal;->grantDefaultPermissionsToDefaultUseOpenWifiApp(Ljava/lang/String;I)V
+    invoke-virtual {v2, v0, p3}, Landroid/content/pm/PackageManagerInternal;->grantDefaultPermissionsToDefaultUseOpenWifiApp(Ljava/lang/String;I)V
 
     .line 302
+    .end local v0  # "useOpenWifiPackage":Ljava/lang/String;
     :cond_2c
     return-void
 .end method

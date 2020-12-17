@@ -21,8 +21,10 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/location/GnssLocationProvider;Landroid/os/Handler;)V
     .registers 3
+    .param p1, "this$0"  # Lcom/android/server/location/GnssLocationProvider;
+    .param p2, "x0"  # Landroid/os/Handler;
 
-    .line 704
+    .line 689
     iput-object p1, p0, Lcom/android/server/location/GnssLocationProvider$6;->this$0:Lcom/android/server/location/GnssLocationProvider;
 
     invoke-direct {p0, p2}, Landroid/database/ContentObserver;-><init>(Landroid/os/Handler;)V
@@ -33,13 +35,14 @@
 
 # virtual methods
 .method public onChange(Z)V
-    .registers 2
+    .registers 3
+    .param p1, "selfChange"  # Z
 
-    .line 707
-    iget-object p1, p0, Lcom/android/server/location/GnssLocationProvider$6;->this$0:Lcom/android/server/location/GnssLocationProvider;
+    .line 692
+    iget-object v0, p0, Lcom/android/server/location/GnssLocationProvider$6;->this$0:Lcom/android/server/location/GnssLocationProvider;
 
-    invoke-static {p1}, Lcom/android/server/location/GnssLocationProvider;->access$1100(Lcom/android/server/location/GnssLocationProvider;)V
+    invoke-static {v0}, Lcom/android/server/location/GnssLocationProvider;->access$800(Lcom/android/server/location/GnssLocationProvider;)V
 
-    .line 708
+    .line 693
     return-void
 .end method

@@ -67,6 +67,7 @@
 
 .method public final shouldProcessKeyEvent(Landroid/view/KeyEvent;)Z
     .registers 6
+    .param p1, "event"  # Landroid/view/KeyEvent;
 
     .line 691
     invoke-virtual {p1}, Landroid/view/KeyEvent;->getDeviceId()I
@@ -74,6 +75,7 @@
     move-result v0
 
     .line 692
+    .local v0, "deviceId":I
     iget-object v1, p0, Lcom/android/server/accessibility/AccessibilityInputFilter$KeyboardEventStreamState;->mEventSequenceStartedMap:Landroid/util/SparseBooleanArray;
 
     const/4 v2, 0x0
@@ -93,27 +95,31 @@
     :cond_f
     invoke-virtual {p1}, Landroid/view/KeyEvent;->getAction()I
 
-    move-result p1
+    move-result v1
 
-    if-nez p1, :cond_16
+    if-nez v1, :cond_16
 
     move v2, v3
 
-    .line 696
     :cond_16
-    iget-object p1, p0, Lcom/android/server/accessibility/AccessibilityInputFilter$KeyboardEventStreamState;->mEventSequenceStartedMap:Landroid/util/SparseBooleanArray;
+    move v1, v2
 
-    invoke-virtual {p1, v0, v2}, Landroid/util/SparseBooleanArray;->put(IZ)V
+    .line 696
+    .local v1, "shouldProcess":Z
+    iget-object v2, p0, Lcom/android/server/accessibility/AccessibilityInputFilter$KeyboardEventStreamState;->mEventSequenceStartedMap:Landroid/util/SparseBooleanArray;
+
+    invoke-virtual {v2, v0, v1}, Landroid/util/SparseBooleanArray;->put(IZ)V
 
     .line 697
-    return v2
+    return v1
 .end method
 
 .method public updateInputSource(I)Z
-    .registers 2
+    .registers 3
+    .param p1, "deviceId"  # I
 
     .line 679
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    return p1
+    return v0
 .end method

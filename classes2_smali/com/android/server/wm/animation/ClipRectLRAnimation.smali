@@ -6,6 +6,10 @@
 # direct methods
 .method public constructor <init>(IIII)V
     .registers 14
+    .param p1, "fromL"  # I
+    .param p2, "fromR"  # I
+    .param p3, "toL"  # I
+    .param p4, "toR"  # I
 
     .line 36
     const/4 v2, 0x0
@@ -36,6 +40,8 @@
 # virtual methods
 .method protected applyTransformation(FLandroid/view/animation/Transformation;)V
     .registers 9
+    .param p1, "it"  # F
+    .param p2, "tr"  # Landroid/view/animation/Transformation;
 
     .line 45
     invoke-virtual {p2}, Landroid/view/animation/Transformation;->getClipRect()Landroid/graphics/Rect;
@@ -43,6 +49,7 @@
     move-result-object v0
 
     .line 46
+    .local v0, "oldClipRect":Landroid/graphics/Rect;
     iget-object v1, p0, Lcom/android/server/wm/animation/ClipRectLRAnimation;->mFromRect:Landroid/graphics/Rect;
 
     iget v1, v1, Landroid/graphics/Rect;->left:I
@@ -85,13 +92,13 @@
 
     mul-float/2addr v4, p1
 
-    float-to-int p1, v4
+    float-to-int v4, v4
 
-    add-int/2addr v3, p1
+    add-int/2addr v3, v4
 
-    iget p1, v0, Landroid/graphics/Rect;->bottom:I
+    iget v4, v0, Landroid/graphics/Rect;->bottom:I
 
-    invoke-virtual {p2, v1, v2, v3, p1}, Landroid/view/animation/Transformation;->setClipRect(IIII)V
+    invoke-virtual {p2, v1, v2, v3, v4}, Landroid/view/animation/Transformation;->setClipRect(IIII)V
 
     .line 50
     return-void

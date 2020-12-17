@@ -46,6 +46,7 @@
 
 .method synthetic constructor <init>(Lcom/android/server/location/GnssGeofenceProvider$1;)V
     .registers 2
+    .param p1, "x0"  # Lcom/android/server/location/GnssGeofenceProvider$1;
 
     .line 19
     invoke-direct {p0}, Lcom/android/server/location/GnssGeofenceProvider$GeofenceEntry;-><init>()V

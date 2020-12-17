@@ -56,7 +56,8 @@
 
 # direct methods
 .method constructor <init>(Lcom/android/server/content/SyncStorageEngine$AuthorityInfo;)V
-    .registers 5
+    .registers 6
+    .param p1, "toCopy"  # Lcom/android/server/content/SyncStorageEngine$AuthorityInfo;
 
     .line 299
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -104,35 +105,37 @@
     iput-object v0, p0, Lcom/android/server/content/SyncStorageEngine$AuthorityInfo;->periodicSyncs:Ljava/util/ArrayList;
 
     .line 308
-    iget-object p1, p1, Lcom/android/server/content/SyncStorageEngine$AuthorityInfo;->periodicSyncs:Ljava/util/ArrayList;
+    iget-object v0, p1, Lcom/android/server/content/SyncStorageEngine$AuthorityInfo;->periodicSyncs:Ljava/util/ArrayList;
 
-    invoke-virtual {p1}, Ljava/util/ArrayList;->iterator()Ljava/util/Iterator;
-
-    move-result-object p1
-
-    :goto_2c
-    invoke-interface {p1}, Ljava/util/Iterator;->hasNext()Z
-
-    move-result v0
-
-    if-eqz v0, :cond_43
-
-    invoke-interface {p1}, Ljava/util/Iterator;->next()Ljava/lang/Object;
+    invoke-virtual {v0}, Ljava/util/ArrayList;->iterator()Ljava/util/Iterator;
 
     move-result-object v0
 
-    check-cast v0, Landroid/content/PeriodicSync;
+    :goto_2c
+    invoke-interface {v0}, Ljava/util/Iterator;->hasNext()Z
+
+    move-result v1
+
+    if-eqz v1, :cond_43
+
+    invoke-interface {v0}, Ljava/util/Iterator;->next()Ljava/lang/Object;
+
+    move-result-object v1
+
+    check-cast v1, Landroid/content/PeriodicSync;
 
     .line 310
-    iget-object v1, p0, Lcom/android/server/content/SyncStorageEngine$AuthorityInfo;->periodicSyncs:Ljava/util/ArrayList;
+    .local v1, "sync":Landroid/content/PeriodicSync;
+    iget-object v2, p0, Lcom/android/server/content/SyncStorageEngine$AuthorityInfo;->periodicSyncs:Ljava/util/ArrayList;
 
-    new-instance v2, Landroid/content/PeriodicSync;
+    new-instance v3, Landroid/content/PeriodicSync;
 
-    invoke-direct {v2, v0}, Landroid/content/PeriodicSync;-><init>(Landroid/content/PeriodicSync;)V
+    invoke-direct {v3, v1}, Landroid/content/PeriodicSync;-><init>(Landroid/content/PeriodicSync;)V
 
-    invoke-virtual {v1, v2}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
+    invoke-virtual {v2, v3}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
 
     .line 311
+    .end local v1  # "sync":Landroid/content/PeriodicSync;
     goto :goto_2c
 
     .line 312
@@ -141,7 +144,9 @@
 .end method
 
 .method constructor <init>(Lcom/android/server/content/SyncStorageEngine$EndPoint;I)V
-    .registers 3
+    .registers 4
+    .param p1, "info"  # Lcom/android/server/content/SyncStorageEngine$EndPoint;
+    .param p2, "id"  # I
 
     .line 314
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -153,16 +158,16 @@
     iput p2, p0, Lcom/android/server/content/SyncStorageEngine$AuthorityInfo;->ident:I
 
     .line 317
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    iput-boolean p1, p0, Lcom/android/server/content/SyncStorageEngine$AuthorityInfo;->enabled:Z
+    iput-boolean v0, p0, Lcom/android/server/content/SyncStorageEngine$AuthorityInfo;->enabled:Z
 
     .line 318
-    new-instance p1, Ljava/util/ArrayList;
+    new-instance v0, Ljava/util/ArrayList;
 
-    invoke-direct {p1}, Ljava/util/ArrayList;-><init>()V
+    invoke-direct {v0}, Ljava/util/ArrayList;-><init>()V
 
-    iput-object p1, p0, Lcom/android/server/content/SyncStorageEngine$AuthorityInfo;->periodicSyncs:Ljava/util/ArrayList;
+    iput-object v0, p0, Lcom/android/server/content/SyncStorageEngine$AuthorityInfo;->periodicSyncs:Ljava/util/ArrayList;
 
     .line 319
     invoke-direct {p0}, Lcom/android/server/content/SyncStorageEngine$AuthorityInfo;->defaultInitialisation()V

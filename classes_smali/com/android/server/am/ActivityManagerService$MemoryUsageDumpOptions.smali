@@ -44,7 +44,7 @@
 .method private constructor <init>()V
     .registers 1
 
-    .line 12264
+    .line 12985
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
     return-void
@@ -52,8 +52,9 @@
 
 .method synthetic constructor <init>(Lcom/android/server/am/ActivityManagerService$1;)V
     .registers 2
+    .param p1, "x0"  # Lcom/android/server/am/ActivityManagerService$1;
 
-    .line 12264
+    .line 12985
     invoke-direct {p0}, Lcom/android/server/am/ActivityManagerService$MemoryUsageDumpOptions;-><init>()V
 
     return-void

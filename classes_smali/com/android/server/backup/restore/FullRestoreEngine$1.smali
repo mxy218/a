@@ -24,6 +24,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/backup/restore/FullRestoreEngine;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/backup/restore/FullRestoreEngine;
 
     .line 173
     iput-object p1, p0, Lcom/android/server/backup/restore/FullRestoreEngine$1;->this$0:Lcom/android/server/backup/restore/FullRestoreEngine;
@@ -37,6 +38,7 @@
 # virtual methods
 .method public onBytesRead(J)V
     .registers 4
+    .param p1, "bytesRead"  # J
 
     .line 176
     iget-object v0, p0, Lcom/android/server/backup/restore/FullRestoreEngine$1;->this$0:Lcom/android/server/backup/restore/FullRestoreEngine;

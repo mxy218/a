@@ -24,6 +24,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/hdmi/RoutingControlAction;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/hdmi/RoutingControlAction;
 
     .line 166
     iput-object p1, p0, Lcom/android/server/hdmi/RoutingControlAction$1;->this$0:Lcom/android/server/hdmi/RoutingControlAction;
@@ -36,22 +37,23 @@
 
 # virtual methods
 .method public onSendCompleted(I)V
-    .registers 3
+    .registers 4
+    .param p1, "error"  # I
 
     .line 169
     iget-object v0, p0, Lcom/android/server/hdmi/RoutingControlAction$1;->this$0:Lcom/android/server/hdmi/RoutingControlAction;
 
     if-nez p1, :cond_6
 
-    const/4 p1, 0x1
+    const/4 v1, 0x1
 
     goto :goto_7
 
     :cond_6
-    const/4 p1, 0x0
+    const/4 v1, 0x0
 
     :goto_7
-    invoke-static {v0, p1}, Lcom/android/server/hdmi/RoutingControlAction;->access$000(Lcom/android/server/hdmi/RoutingControlAction;Z)V
+    invoke-static {v0, v1}, Lcom/android/server/hdmi/RoutingControlAction;->access$000(Lcom/android/server/hdmi/RoutingControlAction;Z)V
 
     .line 171
     return-void

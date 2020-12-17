@@ -21,8 +21,9 @@
 # direct methods
 .method public constructor <init>(Lcom/android/server/display/color/ColorDisplayService;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/display/color/ColorDisplayService;
 
-    .line 1349
+    .line 1240
     iput-object p1, p0, Lcom/android/server/display/color/ColorDisplayService$ColorDisplayServiceInternal;->this$0:Lcom/android/server/display/color/ColorDisplayService;
 
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -34,6 +35,8 @@
 # virtual methods
 .method public attachColorTransformController(Ljava/lang/String;ILjava/lang/ref/WeakReference;)Z
     .registers 5
+    .param p1, "packageName"  # Ljava/lang/String;
+    .param p2, "userId"  # I
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(",
@@ -45,26 +48,27 @@
         }
     .end annotation
 
-    .line 1399
+    .line 1288
+    .local p3, "controller":Ljava/lang/ref/WeakReference;, "Ljava/lang/ref/WeakReference<Lcom/android/server/display/color/ColorDisplayService$ColorTransformController;>;"
     iget-object v0, p0, Lcom/android/server/display/color/ColorDisplayService$ColorDisplayServiceInternal;->this$0:Lcom/android/server/display/color/ColorDisplayService;
 
     invoke-static {v0}, Lcom/android/server/display/color/ColorDisplayService;->access$2800(Lcom/android/server/display/color/ColorDisplayService;)Lcom/android/server/display/color/AppSaturationController;
 
     move-result-object v0
 
-    .line 1400
+    .line 1289
     invoke-virtual {v0, p1, p2, p3}, Lcom/android/server/display/color/AppSaturationController;->addColorTransformController(Ljava/lang/String;ILjava/lang/ref/WeakReference;)Z
 
-    move-result p1
+    move-result v0
 
-    .line 1399
-    return p1
+    .line 1288
+    return v0
 .end method
 
 .method public isDisplayWhiteBalanceEnabled()Z
     .registers 2
 
-    .line 1390
+    .line 1279
     iget-object v0, p0, Lcom/android/server/display/color/ColorDisplayService$ColorDisplayServiceInternal;->this$0:Lcom/android/server/display/color/ColorDisplayService;
 
     invoke-static {v0}, Lcom/android/server/display/color/ColorDisplayService;->access$2700(Lcom/android/server/display/color/ColorDisplayService;)Z
@@ -75,9 +79,9 @@
 .end method
 
 .method public resetDisplayWhiteBalanceColorTemperature()Z
-    .registers 4
+    .registers 3
 
-    .line 1372
+    .line 1263
     iget-object v0, p0, Lcom/android/server/display/color/ColorDisplayService$ColorDisplayServiceInternal;->this$0:Lcom/android/server/display/color/ColorDisplayService;
 
     invoke-virtual {v0}, Lcom/android/server/display/color/ColorDisplayService;->getContext()Landroid/content/Context;
@@ -88,33 +92,14 @@
 
     move-result-object v0
 
-    .line 1373
-    const v1, 0x10e0046
+    .line 1264
+    const v1, 0x10e0045
 
     invoke-virtual {v0, v1}, Landroid/content/res/Resources;->getInteger(I)I
 
     move-result v0
 
-    .line 1374
-    new-instance v1, Ljava/lang/StringBuilder;
-
-    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
-
-    const-string/jumbo v2, "resetDisplayWhiteBalanceColorTemperature: "
-
-    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v1, v0}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
-
-    move-result-object v1
-
-    const-string v2, "ColorDisplayService"
-
-    invoke-static {v2, v1}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
-
-    .line 1375
+    .line 1263
     invoke-virtual {p0, v0}, Lcom/android/server/display/color/ColorDisplayService$ColorDisplayServiceInternal;->setDisplayWhiteBalanceColorTemperature(I)Z
 
     move-result v0
@@ -123,65 +108,67 @@
 .end method
 
 .method public setDisplayWhiteBalanceColorTemperature(I)Z
-    .registers 3
+    .registers 4
+    .param p1, "cct"  # I
 
-    .line 1359
+    .line 1250
     iget-object v0, p0, Lcom/android/server/display/color/ColorDisplayService$ColorDisplayServiceInternal;->this$0:Lcom/android/server/display/color/ColorDisplayService;
 
     iget-object v0, v0, Lcom/android/server/display/color/ColorDisplayService;->mDisplayWhiteBalanceTintController:Lcom/android/server/display/color/DisplayWhiteBalanceTintController;
 
     invoke-virtual {v0, p1}, Lcom/android/server/display/color/DisplayWhiteBalanceTintController;->setMatrix(I)V
 
-    .line 1361
-    iget-object p1, p0, Lcom/android/server/display/color/ColorDisplayService$ColorDisplayServiceInternal;->this$0:Lcom/android/server/display/color/ColorDisplayService;
+    .line 1252
+    iget-object v0, p0, Lcom/android/server/display/color/ColorDisplayService$ColorDisplayServiceInternal;->this$0:Lcom/android/server/display/color/ColorDisplayService;
 
-    iget-object p1, p1, Lcom/android/server/display/color/ColorDisplayService;->mDisplayWhiteBalanceTintController:Lcom/android/server/display/color/DisplayWhiteBalanceTintController;
+    iget-object v0, v0, Lcom/android/server/display/color/ColorDisplayService;->mDisplayWhiteBalanceTintController:Lcom/android/server/display/color/DisplayWhiteBalanceTintController;
 
-    invoke-virtual {p1}, Lcom/android/server/display/color/DisplayWhiteBalanceTintController;->isActivated()Z
+    invoke-virtual {v0}, Lcom/android/server/display/color/DisplayWhiteBalanceTintController;->isActivated()Z
 
-    move-result p1
+    move-result v0
 
-    if-eqz p1, :cond_1d
+    if-eqz v0, :cond_1d
 
-    .line 1362
-    iget-object p1, p0, Lcom/android/server/display/color/ColorDisplayService$ColorDisplayServiceInternal;->this$0:Lcom/android/server/display/color/ColorDisplayService;
+    .line 1253
+    iget-object v0, p0, Lcom/android/server/display/color/ColorDisplayService$ColorDisplayServiceInternal;->this$0:Lcom/android/server/display/color/ColorDisplayService;
 
-    invoke-static {p1}, Lcom/android/server/display/color/ColorDisplayService;->access$2400(Lcom/android/server/display/color/ColorDisplayService;)Landroid/os/Handler;
+    invoke-static {v0}, Lcom/android/server/display/color/ColorDisplayService;->access$2400(Lcom/android/server/display/color/ColorDisplayService;)Landroid/os/Handler;
 
-    move-result-object p1
+    move-result-object v0
 
-    const/4 v0, 0x5
+    const/4 v1, 0x5
 
-    invoke-virtual {p1, v0}, Landroid/os/Handler;->sendEmptyMessage(I)Z
+    invoke-virtual {v0, v1}, Landroid/os/Handler;->sendEmptyMessage(I)Z
 
-    .line 1363
-    const/4 p1, 0x1
+    .line 1254
+    const/4 v0, 0x1
 
-    return p1
+    return v0
 
-    .line 1365
+    .line 1256
     :cond_1d
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    return p1
+    return v0
 .end method
 
 .method public setDisplayWhiteBalanceListener(Lcom/android/server/display/color/ColorDisplayService$DisplayWhiteBalanceListener;)Z
     .registers 3
+    .param p1, "listener"  # Lcom/android/server/display/color/ColorDisplayService$DisplayWhiteBalanceListener;
 
-    .line 1382
+    .line 1271
     iget-object v0, p0, Lcom/android/server/display/color/ColorDisplayService$ColorDisplayServiceInternal;->this$0:Lcom/android/server/display/color/ColorDisplayService;
 
     invoke-static {v0, p1}, Lcom/android/server/display/color/ColorDisplayService;->access$2602(Lcom/android/server/display/color/ColorDisplayService;Lcom/android/server/display/color/ColorDisplayService$DisplayWhiteBalanceListener;)Lcom/android/server/display/color/ColorDisplayService$DisplayWhiteBalanceListener;
 
-    .line 1383
-    iget-object p1, p0, Lcom/android/server/display/color/ColorDisplayService$ColorDisplayServiceInternal;->this$0:Lcom/android/server/display/color/ColorDisplayService;
+    .line 1272
+    iget-object v0, p0, Lcom/android/server/display/color/ColorDisplayService$ColorDisplayServiceInternal;->this$0:Lcom/android/server/display/color/ColorDisplayService;
 
-    iget-object p1, p1, Lcom/android/server/display/color/ColorDisplayService;->mDisplayWhiteBalanceTintController:Lcom/android/server/display/color/DisplayWhiteBalanceTintController;
+    iget-object v0, v0, Lcom/android/server/display/color/ColorDisplayService;->mDisplayWhiteBalanceTintController:Lcom/android/server/display/color/DisplayWhiteBalanceTintController;
 
-    invoke-virtual {p1}, Lcom/android/server/display/color/DisplayWhiteBalanceTintController;->isActivated()Z
+    invoke-virtual {v0}, Lcom/android/server/display/color/DisplayWhiteBalanceTintController;->isActivated()Z
 
-    move-result p1
+    move-result v0
 
-    return p1
+    return v0
 .end method

@@ -37,7 +37,13 @@
 
 # direct methods
 .method public constructor <init>(Landroid/location/Geofence;JIILjava/lang/String;Landroid/app/PendingIntent;)V
-    .registers 10
+    .registers 11
+    .param p1, "fence"  # Landroid/location/Geofence;
+    .param p2, "expireAt"  # J
+    .param p4, "allowedResolutionLevel"  # I
+    .param p5, "uid"  # I
+    .param p6, "packageName"  # Ljava/lang/String;
+    .param p7, "intent"  # Landroid/app/PendingIntent;
 
     .line 47
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -71,31 +77,31 @@
     iput-object p7, p0, Lcom/android/server/location/GeofenceState;->mIntent:Landroid/app/PendingIntent;
 
     .line 58
-    new-instance p2, Landroid/location/Location;
+    new-instance v0, Landroid/location/Location;
 
-    const-string p3, ""
+    const-string v1, ""
 
-    invoke-direct {p2, p3}, Landroid/location/Location;-><init>(Ljava/lang/String;)V
+    invoke-direct {v0, v1}, Landroid/location/Location;-><init>(Ljava/lang/String;)V
 
-    iput-object p2, p0, Lcom/android/server/location/GeofenceState;->mLocation:Landroid/location/Location;
+    iput-object v0, p0, Lcom/android/server/location/GeofenceState;->mLocation:Landroid/location/Location;
 
     .line 59
-    iget-object p2, p0, Lcom/android/server/location/GeofenceState;->mLocation:Landroid/location/Location;
+    iget-object v0, p0, Lcom/android/server/location/GeofenceState;->mLocation:Landroid/location/Location;
 
     invoke-virtual {p1}, Landroid/location/Geofence;->getLatitude()D
 
-    move-result-wide p3
+    move-result-wide v1
 
-    invoke-virtual {p2, p3, p4}, Landroid/location/Location;->setLatitude(D)V
+    invoke-virtual {v0, v1, v2}, Landroid/location/Location;->setLatitude(D)V
 
     .line 60
-    iget-object p2, p0, Lcom/android/server/location/GeofenceState;->mLocation:Landroid/location/Location;
+    iget-object v0, p0, Lcom/android/server/location/GeofenceState;->mLocation:Landroid/location/Location;
 
     invoke-virtual {p1}, Landroid/location/Geofence;->getLongitude()D
 
-    move-result-wide p3
+    move-result-wide v1
 
-    invoke-virtual {p2, p3, p4}, Landroid/location/Location;->setLongitude(D)V
+    invoke-virtual {v0, v1, v2}, Landroid/location/Location;->setLongitude(D)V
 
     .line 61
     return-void
@@ -143,6 +149,7 @@
 
 .method public processLocation(Landroid/location/Location;)I
     .registers 7
+    .param p1, "location"  # Landroid/location/Location;
 
     .line 68
     iget-object v0, p0, Lcom/android/server/location/GeofenceState;->mLocation:Landroid/location/Location;
@@ -159,6 +166,7 @@
     iget v0, p0, Lcom/android/server/location/GeofenceState;->mState:I
 
     .line 72
+    .local v0, "prevState":I
     iget-wide v1, p0, Lcom/android/server/location/GeofenceState;->mDistanceToCenter:D
 
     iget-object v3, p0, Lcom/android/server/location/GeofenceState;->mFence:Landroid/location/Geofence;
@@ -169,57 +177,58 @@
 
     invoke-virtual {p1}, Landroid/location/Location;->getAccuracy()F
 
-    move-result p1
+    move-result v4
 
-    invoke-static {v3, p1}, Ljava/lang/Math;->max(FF)F
+    invoke-static {v3, v4}, Ljava/lang/Math;->max(FF)F
 
-    move-result p1
+    move-result v3
 
-    float-to-double v3, p1
+    float-to-double v3, v3
 
-    cmpg-double p1, v1, v3
+    cmpg-double v1, v1, v3
 
-    const/4 v1, 0x0
+    const/4 v2, 0x0
 
-    const/4 v2, 0x1
+    const/4 v3, 0x1
 
-    if-gtz p1, :cond_24
+    if-gtz v1, :cond_24
 
-    move p1, v2
+    move v1, v3
 
     goto :goto_25
 
     :cond_24
-    move p1, v1
+    move v1, v2
 
     .line 73
+    .local v1, "inside":Z
     :goto_25
-    if-eqz p1, :cond_2c
+    if-eqz v1, :cond_2c
 
     .line 74
-    iput v2, p0, Lcom/android/server/location/GeofenceState;->mState:I
+    iput v3, p0, Lcom/android/server/location/GeofenceState;->mState:I
 
     .line 75
-    if-eq v0, v2, :cond_32
+    if-eq v0, v3, :cond_32
 
     .line 76
-    return v2
+    return v3
 
     .line 79
     :cond_2c
-    const/4 p1, 0x2
+    const/4 v4, 0x2
 
-    iput p1, p0, Lcom/android/server/location/GeofenceState;->mState:I
+    iput v4, p0, Lcom/android/server/location/GeofenceState;->mState:I
 
     .line 80
-    if-ne v0, v2, :cond_32
+    if-ne v0, v3, :cond_32
 
     .line 81
-    return p1
+    return v4
 
     .line 84
     :cond_32
-    return v1
+    return v2
 .end method
 
 .method public toString()Ljava/lang/String;
@@ -232,33 +241,36 @@
 
     const/4 v2, 0x1
 
-    if-eq v0, v2, :cond_f
+    if-eq v0, v2, :cond_e
 
     if-eq v0, v1, :cond_b
 
     .line 110
     const-string v0, "?"
 
-    goto :goto_12
+    .local v0, "state":Ljava/lang/String;
+    goto :goto_11
 
     .line 107
+    .end local v0  # "state":Ljava/lang/String;
     :cond_b
-    nop
-
-    .line 108
     const-string v0, "OUT"
 
-    goto :goto_12
+    .line 108
+    .restart local v0  # "state":Ljava/lang/String;
+    goto :goto_11
 
     .line 104
-    :cond_f
-    nop
-
-    .line 105
+    .end local v0  # "state":Ljava/lang/String;
+    :cond_e
     const-string v0, "IN"
 
+    .line 105
+    .restart local v0  # "state":Ljava/lang/String;
+    nop
+
     .line 112
-    :goto_12
+    :goto_11
     const/4 v3, 0x3
 
     new-array v3, v3, [Ljava/lang/Object;
@@ -283,11 +295,11 @@
 
     aput-object v0, v3, v1
 
-    const-string v0, "%s d=%.0f %s"
+    const-string v1, "%s d=%.0f %s"
 
-    invoke-static {v0, v3}, Ljava/lang/String;->format(Ljava/lang/String;[Ljava/lang/Object;)Ljava/lang/String;
+    invoke-static {v1, v3}, Ljava/lang/String;->format(Ljava/lang/String;[Ljava/lang/Object;)Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v1
 
-    return-object v0
+    return-object v1
 .end method

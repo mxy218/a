@@ -12,7 +12,7 @@
 
     const-string/jumbo v1, "provisioning_urls.xml"
 
-    const-string v2, "metadata/"
+    const-string/jumbo v2, "metadata/"
 
     const-string/jumbo v3, "version"
 

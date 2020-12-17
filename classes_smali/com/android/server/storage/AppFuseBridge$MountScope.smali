@@ -30,6 +30,8 @@
 # direct methods
 .method public constructor <init>(II)V
     .registers 5
+    .param p1, "uid"  # I
+    .param p2, "mountId"  # I
 
     .line 134
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -78,6 +80,7 @@
 
 .method setMountResultLocked(Z)V
     .registers 6
+    .param p1, "result"  # Z
     .annotation build Lcom/android/internal/annotations/GuardedBy;
         value = {
             "AppFuseBridge.this"
@@ -105,9 +108,9 @@
     iput-boolean p1, p0, Lcom/android/server/storage/AppFuseBridge$MountScope;->mMountResult:Z
 
     .line 145
-    iget-object p1, p0, Lcom/android/server/storage/AppFuseBridge$MountScope;->mMounted:Ljava/util/concurrent/CountDownLatch;
+    iget-object v0, p0, Lcom/android/server/storage/AppFuseBridge$MountScope;->mMounted:Ljava/util/concurrent/CountDownLatch;
 
-    invoke-virtual {p1}, Ljava/util/concurrent/CountDownLatch;->countDown()V
+    invoke-virtual {v0}, Ljava/util/concurrent/CountDownLatch;->countDown()V
 
     .line 146
     return-void

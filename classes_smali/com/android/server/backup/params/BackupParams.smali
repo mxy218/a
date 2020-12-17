@@ -42,6 +42,13 @@
 # direct methods
 .method public constructor <init>(Lcom/android/server/backup/transport/TransportClient;Ljava/lang/String;Ljava/util/ArrayList;Ljava/util/ArrayList;Landroid/app/backup/IBackupObserver;Landroid/app/backup/IBackupManagerMonitor;Lcom/android/server/backup/internal/OnTaskFinishedListener;ZZ)V
     .registers 10
+    .param p1, "transportClient"  # Lcom/android/server/backup/transport/TransportClient;
+    .param p2, "dirName"  # Ljava/lang/String;
+    .param p5, "observer"  # Landroid/app/backup/IBackupObserver;
+    .param p6, "monitor"  # Landroid/app/backup/IBackupManagerMonitor;
+    .param p7, "listener"  # Lcom/android/server/backup/internal/OnTaskFinishedListener;
+    .param p8, "userInitiated"  # Z
+    .param p9, "nonIncrementalBackup"  # Z
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(",
@@ -61,6 +68,8 @@
     .end annotation
 
     .line 42
+    .local p3, "kvPackages":Ljava/util/ArrayList;, "Ljava/util/ArrayList<Ljava/lang/String;>;"
+    .local p4, "fullPackages":Ljava/util/ArrayList;, "Ljava/util/ArrayList<Ljava/lang/String;>;"
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
     .line 43

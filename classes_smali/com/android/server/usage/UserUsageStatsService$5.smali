@@ -26,8 +26,9 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/usage/UserUsageStatsService;Lcom/android/internal/util/IndentingPrintWriter;)V
     .registers 3
+    .param p1, "this$0"  # Lcom/android/server/usage/UserUsageStatsService;
 
-    .line 611
+    .line 619
     iput-object p1, p0, Lcom/android/server/usage/UserUsageStatsService$5;->this$0:Lcom/android/server/usage/UserUsageStatsService;
 
     iput-object p2, p0, Lcom/android/server/usage/UserUsageStatsService$5;->val$pw:Lcom/android/internal/util/IndentingPrintWriter;
@@ -41,8 +42,9 @@
 # virtual methods
 .method public checkin(Lcom/android/server/usage/IntervalStats;)Z
     .registers 8
+    .param p1, "stats"  # Lcom/android/server/usage/IntervalStats;
 
-    .line 614
+    .line 622
     iget-object v0, p0, Lcom/android/server/usage/UserUsageStatsService$5;->this$0:Lcom/android/server/usage/UserUsageStatsService;
 
     iget-object v1, p0, Lcom/android/server/usage/UserUsageStatsService$5;->val$pw:Lcom/android/internal/util/IndentingPrintWriter;
@@ -57,8 +59,8 @@
 
     invoke-virtual/range {v0 .. v5}, Lcom/android/server/usage/UserUsageStatsService;->printIntervalStats(Lcom/android/internal/util/IndentingPrintWriter;Lcom/android/server/usage/IntervalStats;ZZLjava/lang/String;)V
 
-    .line 615
-    const/4 p1, 0x1
+    .line 623
+    const/4 v0, 0x1
 
-    return p1
+    return v0
 .end method

@@ -38,7 +38,11 @@
 
 # direct methods
 .method constructor <init>(IJJI)V
-    .registers 7
+    .registers 9
+    .param p1, "uid"  # I
+    .param p2, "now"  # J
+    .param p4, "backoff"  # J
+    .param p6, "count"  # I
 
     .line 55
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -53,19 +57,19 @@
     iput-wide p4, p0, Lcom/android/server/am/BroadcastDispatcher$Deferrals;->deferredBy:J
 
     .line 59
-    add-long/2addr p2, p4
+    add-long v0, p2, p4
 
-    iput-wide p2, p0, Lcom/android/server/am/BroadcastDispatcher$Deferrals;->deferUntil:J
+    iput-wide v0, p0, Lcom/android/server/am/BroadcastDispatcher$Deferrals;->deferUntil:J
 
     .line 60
     iput p6, p0, Lcom/android/server/am/BroadcastDispatcher$Deferrals;->alarmCount:I
 
     .line 61
-    new-instance p1, Ljava/util/ArrayList;
+    new-instance v0, Ljava/util/ArrayList;
 
-    invoke-direct {p1}, Ljava/util/ArrayList;-><init>()V
+    invoke-direct {v0}, Ljava/util/ArrayList;-><init>()V
 
-    iput-object p1, p0, Lcom/android/server/am/BroadcastDispatcher$Deferrals;->broadcasts:Ljava/util/ArrayList;
+    iput-object v0, p0, Lcom/android/server/am/BroadcastDispatcher$Deferrals;->broadcasts:Ljava/util/ArrayList;
 
     .line 62
     return-void
@@ -75,6 +79,7 @@
 # virtual methods
 .method add(Lcom/android/server/am/BroadcastRecord;)V
     .registers 3
+    .param p1, "br"  # Lcom/android/server/am/BroadcastRecord;
 
     .line 65
     iget-object v0, p0, Lcom/android/server/am/BroadcastDispatcher$Deferrals;->broadcasts:Ljava/util/ArrayList;
@@ -87,6 +92,7 @@
 
 .method dumpLocked(Lcom/android/server/am/BroadcastDispatcher$Dumper;)V
     .registers 4
+    .param p1, "d"  # Lcom/android/server/am/BroadcastDispatcher$Dumper;
 
     .line 83
     iget-object v0, p0, Lcom/android/server/am/BroadcastDispatcher$Deferrals;->broadcasts:Ljava/util/ArrayList;
@@ -109,9 +115,11 @@
     check-cast v1, Lcom/android/server/am/BroadcastRecord;
 
     .line 84
+    .local v1, "br":Lcom/android/server/am/BroadcastRecord;
     invoke-virtual {p1, v1}, Lcom/android/server/am/BroadcastDispatcher$Dumper;->dump(Lcom/android/server/am/BroadcastRecord;)V
 
     .line 85
+    .end local v1  # "br":Lcom/android/server/am/BroadcastRecord;
     goto :goto_6
 
     .line 86
@@ -156,6 +164,7 @@
     invoke-direct {v0, v1}, Ljava/lang/StringBuilder;-><init>(I)V
 
     .line 91
+    .local v0, "sb":Ljava/lang/StringBuilder;
     const-string v1, "Deferrals{uid="
 
     invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
@@ -197,13 +206,15 @@
     .line 98
     invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v1
 
-    return-object v0
+    return-object v1
 .end method
 
 .method writeToProto(Landroid/util/proto/ProtoOutputStream;J)V
     .registers 6
+    .param p1, "proto"  # Landroid/util/proto/ProtoOutputStream;
+    .param p2, "fieldId"  # J
 
     .line 77
     iget-object v0, p0, Lcom/android/server/am/BroadcastDispatcher$Deferrals;->broadcasts:Ljava/util/ArrayList;
@@ -226,9 +237,11 @@
     check-cast v1, Lcom/android/server/am/BroadcastRecord;
 
     .line 78
+    .local v1, "br":Lcom/android/server/am/BroadcastRecord;
     invoke-virtual {v1, p1, p2, p3}, Lcom/android/server/am/BroadcastRecord;->writeToProto(Landroid/util/proto/ProtoOutputStream;J)V
 
     .line 79
+    .end local v1  # "br":Lcom/android/server/am/BroadcastRecord;
     goto :goto_6
 
     .line 80

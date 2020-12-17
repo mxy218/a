@@ -39,7 +39,9 @@
 
 # virtual methods
 .method public compare(Lcom/android/server/job/controllers/JobStatus;Lcom/android/server/job/controllers/JobStatus;)I
-    .registers 7
+    .registers 9
+    .param p1, "o1"  # Lcom/android/server/job/controllers/JobStatus;
+    .param p2, "o2"  # Lcom/android/server/job/controllers/JobStatus;
 
     .line 3230
     invoke-virtual {p1}, Lcom/android/server/job/controllers/JobStatus;->getUid()I
@@ -47,53 +49,57 @@
     move-result v0
 
     .line 3231
+    .local v0, "uid1":I
     invoke-virtual {p2}, Lcom/android/server/job/controllers/JobStatus;->getUid()I
 
     move-result v1
 
     .line 3232
+    .local v1, "uid2":I
     invoke-virtual {p1}, Lcom/android/server/job/controllers/JobStatus;->getJobId()I
 
-    move-result p1
+    move-result v2
 
     .line 3233
+    .local v2, "id1":I
     invoke-virtual {p2}, Lcom/android/server/job/controllers/JobStatus;->getJobId()I
 
-    move-result p2
+    move-result v3
 
     .line 3234
-    const/4 v2, 0x1
+    .local v3, "id2":I
+    const/4 v4, 0x1
 
-    const/4 v3, -0x1
+    const/4 v5, -0x1
 
     if-eq v0, v1, :cond_18
 
     .line 3235
     if-ge v0, v1, :cond_17
 
-    move v2, v3
+    move v4, v5
 
     :cond_17
-    return v2
+    return v4
 
     .line 3237
     :cond_18
-    if-ge p1, p2, :cond_1c
+    if-ge v2, v3, :cond_1c
 
-    move v2, v3
+    move v4, v5
 
     goto :goto_20
 
     :cond_1c
-    if-le p1, p2, :cond_1f
+    if-le v2, v3, :cond_1f
 
     goto :goto_20
 
     :cond_1f
-    const/4 v2, 0x0
+    const/4 v4, 0x0
 
     :goto_20
-    return v2
+    return v4
 .end method
 
 .method public bridge synthetic compare(Ljava/lang/Object;Ljava/lang/Object;)I

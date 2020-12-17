@@ -29,25 +29,30 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/audio/AudioService;IIII)V
     .registers 6
+    .param p1, "this$0"  # Lcom/android/server/audio/AudioService;
+    .param p2, "streamType"  # I
+    .param p3, "index"  # I
+    .param p4, "flags"  # I
+    .param p5, "device"  # I
 
-    .line 2040
+    .line 2246
     iput-object p1, p0, Lcom/android/server/audio/AudioService$StreamVolumeCommand;->this$0:Lcom/android/server/audio/AudioService;
 
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
-    .line 2041
+    .line 2247
     iput p2, p0, Lcom/android/server/audio/AudioService$StreamVolumeCommand;->mStreamType:I
 
-    .line 2042
+    .line 2248
     iput p3, p0, Lcom/android/server/audio/AudioService$StreamVolumeCommand;->mIndex:I
 
-    .line 2043
+    .line 2249
     iput p4, p0, Lcom/android/server/audio/AudioService$StreamVolumeCommand;->mFlags:I
 
-    .line 2044
+    .line 2250
     iput p5, p0, Lcom/android/server/audio/AudioService$StreamVolumeCommand;->mDevice:I
 
-    .line 2045
+    .line 2251
     return-void
 .end method
 
@@ -56,7 +61,7 @@
 .method public toString()Ljava/lang/String;
     .registers 3
 
-    .line 2049
+    .line 2255
     new-instance v0, Ljava/lang/StringBuilder;
 
     invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
@@ -75,7 +80,7 @@
 
     iget v1, p0, Lcom/android/server/audio/AudioService$StreamVolumeCommand;->mIndex:I
 
-    .line 2050
+    .line 2256
     invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
     const-string v1, ",flags="
@@ -92,7 +97,7 @@
 
     iget v1, p0, Lcom/android/server/audio/AudioService$StreamVolumeCommand;->mDevice:I
 
-    .line 2051
+    .line 2257
     invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
     const/16 v1, 0x7d
@@ -103,6 +108,6 @@
 
     move-result-object v0
 
-    .line 2049
+    .line 2255
     return-object v0
 .end method

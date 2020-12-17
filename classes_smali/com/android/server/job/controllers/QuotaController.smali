@@ -211,319 +211,322 @@
 .end method
 
 .method public constructor <init>(Lcom/android/server/job/JobSchedulerService;)V
-    .registers 10
+    .registers 11
+    .param p1, "service"  # Lcom/android/server/job/JobSchedulerService;
 
     .line 573
     invoke-direct {p0, p1}, Lcom/android/server/job/controllers/StateController;-><init>(Lcom/android/server/job/JobSchedulerService;)V
 
     .line 380
-    new-instance p1, Lcom/android/server/job/controllers/QuotaController$UserPackageMap;
+    new-instance v0, Lcom/android/server/job/controllers/QuotaController$UserPackageMap;
 
-    const/4 v0, 0x0
+    const/4 v1, 0x0
 
-    invoke-direct {p1, v0}, Lcom/android/server/job/controllers/QuotaController$UserPackageMap;-><init>(Lcom/android/server/job/controllers/QuotaController$1;)V
+    invoke-direct {v0, v1}, Lcom/android/server/job/controllers/QuotaController$UserPackageMap;-><init>(Lcom/android/server/job/controllers/QuotaController$1;)V
 
-    iput-object p1, p0, Lcom/android/server/job/controllers/QuotaController;->mTrackedJobs:Lcom/android/server/job/controllers/QuotaController$UserPackageMap;
+    iput-object v0, p0, Lcom/android/server/job/controllers/QuotaController;->mTrackedJobs:Lcom/android/server/job/controllers/QuotaController$UserPackageMap;
 
     .line 383
-    new-instance p1, Lcom/android/server/job/controllers/QuotaController$UserPackageMap;
+    new-instance v0, Lcom/android/server/job/controllers/QuotaController$UserPackageMap;
 
-    invoke-direct {p1, v0}, Lcom/android/server/job/controllers/QuotaController$UserPackageMap;-><init>(Lcom/android/server/job/controllers/QuotaController$1;)V
+    invoke-direct {v0, v1}, Lcom/android/server/job/controllers/QuotaController$UserPackageMap;-><init>(Lcom/android/server/job/controllers/QuotaController$1;)V
 
-    iput-object p1, p0, Lcom/android/server/job/controllers/QuotaController;->mPkgTimers:Lcom/android/server/job/controllers/QuotaController$UserPackageMap;
+    iput-object v0, p0, Lcom/android/server/job/controllers/QuotaController;->mPkgTimers:Lcom/android/server/job/controllers/QuotaController$UserPackageMap;
 
     .line 386
-    new-instance p1, Lcom/android/server/job/controllers/QuotaController$UserPackageMap;
+    new-instance v0, Lcom/android/server/job/controllers/QuotaController$UserPackageMap;
 
-    invoke-direct {p1, v0}, Lcom/android/server/job/controllers/QuotaController$UserPackageMap;-><init>(Lcom/android/server/job/controllers/QuotaController$1;)V
+    invoke-direct {v0, v1}, Lcom/android/server/job/controllers/QuotaController$UserPackageMap;-><init>(Lcom/android/server/job/controllers/QuotaController$1;)V
 
-    iput-object p1, p0, Lcom/android/server/job/controllers/QuotaController;->mTimingSessions:Lcom/android/server/job/controllers/QuotaController$UserPackageMap;
+    iput-object v0, p0, Lcom/android/server/job/controllers/QuotaController;->mTimingSessions:Lcom/android/server/job/controllers/QuotaController$UserPackageMap;
 
     .line 392
-    new-instance p1, Lcom/android/server/job/controllers/QuotaController$UserPackageMap;
+    new-instance v0, Lcom/android/server/job/controllers/QuotaController$UserPackageMap;
 
-    invoke-direct {p1, v0}, Lcom/android/server/job/controllers/QuotaController$UserPackageMap;-><init>(Lcom/android/server/job/controllers/QuotaController$1;)V
+    invoke-direct {v0, v1}, Lcom/android/server/job/controllers/QuotaController$UserPackageMap;-><init>(Lcom/android/server/job/controllers/QuotaController$1;)V
 
-    iput-object p1, p0, Lcom/android/server/job/controllers/QuotaController;->mInQuotaAlarmListeners:Lcom/android/server/job/controllers/QuotaController$UserPackageMap;
+    iput-object v0, p0, Lcom/android/server/job/controllers/QuotaController;->mInQuotaAlarmListeners:Lcom/android/server/job/controllers/QuotaController$UserPackageMap;
 
     .line 395
-    new-instance p1, Lcom/android/server/job/controllers/QuotaController$UserPackageMap;
+    new-instance v0, Lcom/android/server/job/controllers/QuotaController$UserPackageMap;
 
-    invoke-direct {p1, v0}, Lcom/android/server/job/controllers/QuotaController$UserPackageMap;-><init>(Lcom/android/server/job/controllers/QuotaController$1;)V
+    invoke-direct {v0, v1}, Lcom/android/server/job/controllers/QuotaController$UserPackageMap;-><init>(Lcom/android/server/job/controllers/QuotaController$1;)V
 
-    iput-object p1, p0, Lcom/android/server/job/controllers/QuotaController;->mExecutionStatsCache:Lcom/android/server/job/controllers/QuotaController$UserPackageMap;
+    iput-object v0, p0, Lcom/android/server/job/controllers/QuotaController;->mExecutionStatsCache:Lcom/android/server/job/controllers/QuotaController$UserPackageMap;
 
     .line 398
-    new-instance p1, Landroid/util/SparseBooleanArray;
+    new-instance v0, Landroid/util/SparseBooleanArray;
 
-    invoke-direct {p1}, Landroid/util/SparseBooleanArray;-><init>()V
+    invoke-direct {v0}, Landroid/util/SparseBooleanArray;-><init>()V
 
-    iput-object p1, p0, Lcom/android/server/job/controllers/QuotaController;->mForegroundUids:Landroid/util/SparseBooleanArray;
+    iput-object v0, p0, Lcom/android/server/job/controllers/QuotaController;->mForegroundUids:Landroid/util/SparseBooleanArray;
 
     .line 401
-    new-instance p1, Landroid/util/SparseSetArray;
+    new-instance v0, Landroid/util/SparseSetArray;
 
-    invoke-direct {p1}, Landroid/util/SparseSetArray;-><init>()V
+    invoke-direct {v0}, Landroid/util/SparseSetArray;-><init>()V
 
-    iput-object p1, p0, Lcom/android/server/job/controllers/QuotaController;->mUidToPackageCache:Landroid/util/SparseSetArray;
+    iput-object v0, p0, Lcom/android/server/job/controllers/QuotaController;->mUidToPackageCache:Landroid/util/SparseSetArray;
 
     .line 408
-    new-instance p1, Landroid/util/ArraySet;
+    new-instance v0, Landroid/util/ArraySet;
 
-    invoke-direct {p1}, Landroid/util/ArraySet;-><init>()V
+    invoke-direct {v0}, Landroid/util/ArraySet;-><init>()V
 
-    iput-object p1, p0, Lcom/android/server/job/controllers/QuotaController;->mTopStartedJobs:Landroid/util/ArraySet;
+    iput-object v0, p0, Lcom/android/server/job/controllers/QuotaController;->mTopStartedJobs:Landroid/util/ArraySet;
 
     .line 426
-    const-wide/32 v1, 0x927c0
+    const-wide/32 v2, 0x927c0
 
-    iput-wide v1, p0, Lcom/android/server/job/controllers/QuotaController;->mAllowedTimePerPeriodMs:J
+    iput-wide v2, p0, Lcom/android/server/job/controllers/QuotaController;->mAllowedTimePerPeriodMs:J
 
     .line 432
-    const-wide/32 v1, 0xdbba00
+    const-wide/32 v4, 0xdbba00
 
-    iput-wide v1, p0, Lcom/android/server/job/controllers/QuotaController;->mMaxExecutionTimeMs:J
+    iput-wide v4, p0, Lcom/android/server/job/controllers/QuotaController;->mMaxExecutionTimeMs:J
 
     .line 438
-    const-wide/16 v1, 0x7530
+    const-wide/16 v4, 0x7530
 
-    iput-wide v1, p0, Lcom/android/server/job/controllers/QuotaController;->mQuotaBufferMs:J
+    iput-wide v4, p0, Lcom/android/server/job/controllers/QuotaController;->mQuotaBufferMs:J
 
     .line 444
-    iget-wide v1, p0, Lcom/android/server/job/controllers/QuotaController;->mAllowedTimePerPeriodMs:J
+    iget-wide v4, p0, Lcom/android/server/job/controllers/QuotaController;->mAllowedTimePerPeriodMs:J
 
-    iget-wide v3, p0, Lcom/android/server/job/controllers/QuotaController;->mQuotaBufferMs:J
+    iget-wide v6, p0, Lcom/android/server/job/controllers/QuotaController;->mQuotaBufferMs:J
 
-    sub-long/2addr v1, v3
+    sub-long/2addr v4, v6
 
-    iput-wide v1, p0, Lcom/android/server/job/controllers/QuotaController;->mAllowedTimeIntoQuotaMs:J
+    iput-wide v4, p0, Lcom/android/server/job/controllers/QuotaController;->mAllowedTimeIntoQuotaMs:J
 
     .line 450
-    iget-wide v1, p0, Lcom/android/server/job/controllers/QuotaController;->mMaxExecutionTimeMs:J
+    iget-wide v4, p0, Lcom/android/server/job/controllers/QuotaController;->mMaxExecutionTimeMs:J
 
-    sub-long/2addr v1, v3
+    sub-long/2addr v4, v6
 
-    iput-wide v1, p0, Lcom/android/server/job/controllers/QuotaController;->mMaxExecutionTimeIntoQuotaMs:J
+    iput-wide v4, p0, Lcom/android/server/job/controllers/QuotaController;->mMaxExecutionTimeIntoQuotaMs:J
 
     .line 453
-    const-wide/32 v1, 0xea60
-
-    iput-wide v1, p0, Lcom/android/server/job/controllers/QuotaController;->mRateLimitingWindowMs:J
+    iput-wide v2, p0, Lcom/android/server/job/controllers/QuotaController;->mRateLimitingWindowMs:J
 
     .line 456
-    const/16 p1, 0x14
+    const/16 v0, 0x14
 
-    iput p1, p0, Lcom/android/server/job/controllers/QuotaController;->mMaxJobCountPerRateLimitingWindow:I
+    iput v0, p0, Lcom/android/server/job/controllers/QuotaController;->mMaxJobCountPerRateLimitingWindow:I
 
     .line 463
-    iput p1, p0, Lcom/android/server/job/controllers/QuotaController;->mMaxSessionCountPerRateLimitingWindow:I
+    iput v0, p0, Lcom/android/server/job/controllers/QuotaController;->mMaxSessionCountPerRateLimitingWindow:I
 
     .line 466
-    const-wide/16 v1, 0x0
+    const-wide/16 v2, 0x0
 
-    iput-wide v1, p0, Lcom/android/server/job/controllers/QuotaController;->mNextCleanupTimeElapsed:J
+    iput-wide v2, p0, Lcom/android/server/job/controllers/QuotaController;->mNextCleanupTimeElapsed:J
 
     .line 467
-    new-instance p1, Lcom/android/server/job/controllers/QuotaController$1;
+    new-instance v0, Lcom/android/server/job/controllers/QuotaController$1;
 
-    invoke-direct {p1, p0}, Lcom/android/server/job/controllers/QuotaController$1;-><init>(Lcom/android/server/job/controllers/QuotaController;)V
+    invoke-direct {v0, p0}, Lcom/android/server/job/controllers/QuotaController$1;-><init>(Lcom/android/server/job/controllers/QuotaController;)V
 
-    iput-object p1, p0, Lcom/android/server/job/controllers/QuotaController;->mSessionCleanupAlarmListener:Landroid/app/AlarmManager$OnAlarmListener;
+    iput-object v0, p0, Lcom/android/server/job/controllers/QuotaController;->mSessionCleanupAlarmListener:Landroid/app/AlarmManager$OnAlarmListener;
 
     .line 475
-    new-instance p1, Lcom/android/server/job/controllers/QuotaController$2;
+    new-instance v0, Lcom/android/server/job/controllers/QuotaController$2;
 
-    invoke-direct {p1, p0}, Lcom/android/server/job/controllers/QuotaController$2;-><init>(Lcom/android/server/job/controllers/QuotaController;)V
+    invoke-direct {v0, p0}, Lcom/android/server/job/controllers/QuotaController$2;-><init>(Lcom/android/server/job/controllers/QuotaController;)V
 
-    iput-object p1, p0, Lcom/android/server/job/controllers/QuotaController;->mUidObserver:Landroid/app/IUidObserver;
+    iput-object v0, p0, Lcom/android/server/job/controllers/QuotaController;->mUidObserver:Landroid/app/IUidObserver;
 
     .line 498
-    new-instance p1, Lcom/android/server/job/controllers/QuotaController$3;
+    new-instance v0, Lcom/android/server/job/controllers/QuotaController$3;
 
-    invoke-direct {p1, p0}, Lcom/android/server/job/controllers/QuotaController$3;-><init>(Lcom/android/server/job/controllers/QuotaController;)V
+    invoke-direct {v0, p0}, Lcom/android/server/job/controllers/QuotaController$3;-><init>(Lcom/android/server/job/controllers/QuotaController;)V
 
-    iput-object p1, p0, Lcom/android/server/job/controllers/QuotaController;->mPackageAddedReceiver:Landroid/content/BroadcastReceiver;
+    iput-object v0, p0, Lcom/android/server/job/controllers/QuotaController;->mPackageAddedReceiver:Landroid/content/BroadcastReceiver;
 
     .line 518
-    const/4 p1, 0x4
+    const/4 v0, 0x4
 
-    new-array v1, p1, [J
+    new-array v2, v0, [J
 
-    fill-array-data v1, :array_118
+    fill-array-data v2, :array_116
 
-    iput-object v1, p0, Lcom/android/server/job/controllers/QuotaController;->mBucketPeriodsMs:[J
+    iput-object v2, p0, Lcom/android/server/job/controllers/QuotaController;->mBucketPeriodsMs:[J
 
     .line 535
-    new-array v1, p1, [I
+    new-array v2, v0, [I
 
-    fill-array-data v1, :array_12c
+    fill-array-data v2, :array_12a
 
-    iput-object v1, p0, Lcom/android/server/job/controllers/QuotaController;->mMaxBucketJobCounts:[I
+    iput-object v2, p0, Lcom/android/server/job/controllers/QuotaController;->mMaxBucketJobCounts:[I
 
     .line 549
-    new-array p1, p1, [I
+    new-array v0, v0, [I
 
-    fill-array-data p1, :array_138
+    fill-array-data v0, :array_136
 
-    iput-object p1, p0, Lcom/android/server/job/controllers/QuotaController;->mMaxBucketSessionCounts:[I
+    iput-object v0, p0, Lcom/android/server/job/controllers/QuotaController;->mMaxBucketSessionCounts:[I
 
     .line 560
-    const-wide/16 v1, 0x1388
+    const-wide/16 v2, 0x1388
 
-    iput-wide v1, p0, Lcom/android/server/job/controllers/QuotaController;->mTimingSessionCoalescingDurationMs:J
+    iput-wide v2, p0, Lcom/android/server/job/controllers/QuotaController;->mTimingSessionCoalescingDurationMs:J
 
     .line 1190
-    new-instance p1, Lcom/android/server/job/controllers/QuotaController$EarliestEndTimeFunctor;
+    new-instance v0, Lcom/android/server/job/controllers/QuotaController$EarliestEndTimeFunctor;
 
-    invoke-direct {p1, p0, v0}, Lcom/android/server/job/controllers/QuotaController$EarliestEndTimeFunctor;-><init>(Lcom/android/server/job/controllers/QuotaController;Lcom/android/server/job/controllers/QuotaController$1;)V
+    invoke-direct {v0, p0, v1}, Lcom/android/server/job/controllers/QuotaController$EarliestEndTimeFunctor;-><init>(Lcom/android/server/job/controllers/QuotaController;Lcom/android/server/job/controllers/QuotaController$1;)V
 
-    iput-object p1, p0, Lcom/android/server/job/controllers/QuotaController;->mEarliestEndTimeFunctor:Lcom/android/server/job/controllers/QuotaController$EarliestEndTimeFunctor;
+    iput-object v0, p0, Lcom/android/server/job/controllers/QuotaController;->mEarliestEndTimeFunctor:Lcom/android/server/job/controllers/QuotaController$EarliestEndTimeFunctor;
 
     .line 1346
-    new-instance p1, Lcom/android/server/job/controllers/QuotaController$UidConstraintUpdater;
+    new-instance v0, Lcom/android/server/job/controllers/QuotaController$UidConstraintUpdater;
 
-    invoke-direct {p1, p0, v0}, Lcom/android/server/job/controllers/QuotaController$UidConstraintUpdater;-><init>(Lcom/android/server/job/controllers/QuotaController;Lcom/android/server/job/controllers/QuotaController$1;)V
+    invoke-direct {v0, p0, v1}, Lcom/android/server/job/controllers/QuotaController$UidConstraintUpdater;-><init>(Lcom/android/server/job/controllers/QuotaController;Lcom/android/server/job/controllers/QuotaController$1;)V
 
-    iput-object p1, p0, Lcom/android/server/job/controllers/QuotaController;->mUpdateUidConstraints:Lcom/android/server/job/controllers/QuotaController$UidConstraintUpdater;
+    iput-object v0, p0, Lcom/android/server/job/controllers/QuotaController;->mUpdateUidConstraints:Lcom/android/server/job/controllers/QuotaController$UidConstraintUpdater;
 
     .line 1849
-    new-instance p1, Lcom/android/server/job/controllers/QuotaController$DeleteTimingSessionsFunctor;
+    new-instance v0, Lcom/android/server/job/controllers/QuotaController$DeleteTimingSessionsFunctor;
 
-    invoke-direct {p1, p0, v0}, Lcom/android/server/job/controllers/QuotaController$DeleteTimingSessionsFunctor;-><init>(Lcom/android/server/job/controllers/QuotaController;Lcom/android/server/job/controllers/QuotaController$1;)V
+    invoke-direct {v0, p0, v1}, Lcom/android/server/job/controllers/QuotaController$DeleteTimingSessionsFunctor;-><init>(Lcom/android/server/job/controllers/QuotaController;Lcom/android/server/job/controllers/QuotaController$1;)V
 
-    iput-object p1, p0, Lcom/android/server/job/controllers/QuotaController;->mDeleteOldSessionsFunctor:Lcom/android/server/job/controllers/QuotaController$DeleteTimingSessionsFunctor;
+    iput-object v0, p0, Lcom/android/server/job/controllers/QuotaController;->mDeleteOldSessionsFunctor:Lcom/android/server/job/controllers/QuotaController$DeleteTimingSessionsFunctor;
 
     .line 574
-    new-instance p1, Lcom/android/server/job/controllers/QuotaController$QcHandler;
+    new-instance v0, Lcom/android/server/job/controllers/QuotaController$QcHandler;
 
-    iget-object v1, p0, Lcom/android/server/job/controllers/QuotaController;->mContext:Landroid/content/Context;
-
-    invoke-virtual {v1}, Landroid/content/Context;->getMainLooper()Landroid/os/Looper;
-
-    move-result-object v1
-
-    invoke-direct {p1, p0, v1}, Lcom/android/server/job/controllers/QuotaController$QcHandler;-><init>(Lcom/android/server/job/controllers/QuotaController;Landroid/os/Looper;)V
-
-    iput-object p1, p0, Lcom/android/server/job/controllers/QuotaController;->mHandler:Landroid/os/Handler;
-
-    .line 575
-    new-instance p1, Lcom/android/server/job/controllers/QuotaController$ChargingTracker;
-
-    invoke-direct {p1, p0}, Lcom/android/server/job/controllers/QuotaController$ChargingTracker;-><init>(Lcom/android/server/job/controllers/QuotaController;)V
-
-    iput-object p1, p0, Lcom/android/server/job/controllers/QuotaController;->mChargeTracker:Lcom/android/server/job/controllers/QuotaController$ChargingTracker;
-
-    .line 576
-    iget-object p1, p0, Lcom/android/server/job/controllers/QuotaController;->mChargeTracker:Lcom/android/server/job/controllers/QuotaController$ChargingTracker;
-
-    invoke-virtual {p1}, Lcom/android/server/job/controllers/QuotaController$ChargingTracker;->startTracking()V
-
-    .line 577
-    const-class p1, Landroid/app/ActivityManagerInternal;
-
-    invoke-static {p1}, Lcom/android/server/LocalServices;->getService(Ljava/lang/Class;)Ljava/lang/Object;
-
-    move-result-object p1
-
-    check-cast p1, Landroid/app/ActivityManagerInternal;
-
-    iput-object p1, p0, Lcom/android/server/job/controllers/QuotaController;->mActivityManagerInternal:Landroid/app/ActivityManagerInternal;
-
-    .line 578
-    iget-object p1, p0, Lcom/android/server/job/controllers/QuotaController;->mContext:Landroid/content/Context;
-
-    const-string v1, "alarm"
-
-    invoke-virtual {p1, v1}, Landroid/content/Context;->getSystemService(Ljava/lang/String;)Ljava/lang/Object;
-
-    move-result-object p1
-
-    check-cast p1, Landroid/app/AlarmManager;
-
-    iput-object p1, p0, Lcom/android/server/job/controllers/QuotaController;->mAlarmManager:Landroid/app/AlarmManager;
-
-    .line 579
-    new-instance p1, Lcom/android/server/job/controllers/QuotaController$QcConstants;
-
-    iget-object v1, p0, Lcom/android/server/job/controllers/QuotaController;->mHandler:Landroid/os/Handler;
-
-    invoke-direct {p1, p0, v1}, Lcom/android/server/job/controllers/QuotaController$QcConstants;-><init>(Lcom/android/server/job/controllers/QuotaController;Landroid/os/Handler;)V
-
-    iput-object p1, p0, Lcom/android/server/job/controllers/QuotaController;->mQcConstants:Lcom/android/server/job/controllers/QuotaController$QcConstants;
-
-    .line 581
-    new-instance v5, Landroid/content/IntentFilter;
-
-    const-string p1, "android.intent.action.PACKAGE_ADDED"
-
-    invoke-direct {v5, p1}, Landroid/content/IntentFilter;-><init>(Ljava/lang/String;)V
-
-    .line 582
     iget-object v2, p0, Lcom/android/server/job/controllers/QuotaController;->mContext:Landroid/content/Context;
 
-    iget-object v3, p0, Lcom/android/server/job/controllers/QuotaController;->mPackageAddedReceiver:Landroid/content/BroadcastReceiver;
+    invoke-virtual {v2}, Landroid/content/Context;->getMainLooper()Landroid/os/Looper;
 
-    sget-object v4, Landroid/os/UserHandle;->ALL:Landroid/os/UserHandle;
+    move-result-object v2
 
-    const/4 v6, 0x0
+    invoke-direct {v0, p0, v2}, Lcom/android/server/job/controllers/QuotaController$QcHandler;-><init>(Lcom/android/server/job/controllers/QuotaController;Landroid/os/Looper;)V
+
+    iput-object v0, p0, Lcom/android/server/job/controllers/QuotaController;->mHandler:Landroid/os/Handler;
+
+    .line 575
+    new-instance v0, Lcom/android/server/job/controllers/QuotaController$ChargingTracker;
+
+    invoke-direct {v0, p0}, Lcom/android/server/job/controllers/QuotaController$ChargingTracker;-><init>(Lcom/android/server/job/controllers/QuotaController;)V
+
+    iput-object v0, p0, Lcom/android/server/job/controllers/QuotaController;->mChargeTracker:Lcom/android/server/job/controllers/QuotaController$ChargingTracker;
+
+    .line 576
+    iget-object v0, p0, Lcom/android/server/job/controllers/QuotaController;->mChargeTracker:Lcom/android/server/job/controllers/QuotaController$ChargingTracker;
+
+    invoke-virtual {v0}, Lcom/android/server/job/controllers/QuotaController$ChargingTracker;->startTracking()V
+
+    .line 577
+    const-class v0, Landroid/app/ActivityManagerInternal;
+
+    invoke-static {v0}, Lcom/android/server/LocalServices;->getService(Ljava/lang/Class;)Ljava/lang/Object;
+
+    move-result-object v0
+
+    check-cast v0, Landroid/app/ActivityManagerInternal;
+
+    iput-object v0, p0, Lcom/android/server/job/controllers/QuotaController;->mActivityManagerInternal:Landroid/app/ActivityManagerInternal;
+
+    .line 578
+    iget-object v0, p0, Lcom/android/server/job/controllers/QuotaController;->mContext:Landroid/content/Context;
+
+    const-string v2, "alarm"
+
+    invoke-virtual {v0, v2}, Landroid/content/Context;->getSystemService(Ljava/lang/String;)Ljava/lang/Object;
+
+    move-result-object v0
+
+    check-cast v0, Landroid/app/AlarmManager;
+
+    iput-object v0, p0, Lcom/android/server/job/controllers/QuotaController;->mAlarmManager:Landroid/app/AlarmManager;
+
+    .line 579
+    new-instance v0, Lcom/android/server/job/controllers/QuotaController$QcConstants;
+
+    iget-object v2, p0, Lcom/android/server/job/controllers/QuotaController;->mHandler:Landroid/os/Handler;
+
+    invoke-direct {v0, p0, v2}, Lcom/android/server/job/controllers/QuotaController$QcConstants;-><init>(Lcom/android/server/job/controllers/QuotaController;Landroid/os/Handler;)V
+
+    iput-object v0, p0, Lcom/android/server/job/controllers/QuotaController;->mQcConstants:Lcom/android/server/job/controllers/QuotaController$QcConstants;
+
+    .line 581
+    new-instance v6, Landroid/content/IntentFilter;
+
+    const-string v0, "android.intent.action.PACKAGE_ADDED"
+
+    invoke-direct {v6, v0}, Landroid/content/IntentFilter;-><init>(Ljava/lang/String;)V
+
+    .line 582
+    .local v6, "filter":Landroid/content/IntentFilter;
+    iget-object v3, p0, Lcom/android/server/job/controllers/QuotaController;->mContext:Landroid/content/Context;
+
+    iget-object v4, p0, Lcom/android/server/job/controllers/QuotaController;->mPackageAddedReceiver:Landroid/content/BroadcastReceiver;
+
+    sget-object v5, Landroid/os/UserHandle;->ALL:Landroid/os/UserHandle;
 
     const/4 v7, 0x0
 
-    invoke-virtual/range {v2 .. v7}, Landroid/content/Context;->registerReceiverAsUser(Landroid/content/BroadcastReceiver;Landroid/os/UserHandle;Landroid/content/IntentFilter;Ljava/lang/String;Landroid/os/Handler;)Landroid/content/Intent;
+    const/4 v8, 0x0
+
+    invoke-virtual/range {v3 .. v8}, Landroid/content/Context;->registerReceiverAsUser(Landroid/content/BroadcastReceiver;Landroid/os/UserHandle;Landroid/content/IntentFilter;Ljava/lang/String;Landroid/os/Handler;)Landroid/content/Intent;
 
     .line 585
-    const-class p1, Landroid/app/usage/UsageStatsManagerInternal;
+    const-class v0, Landroid/app/usage/UsageStatsManagerInternal;
 
-    invoke-static {p1}, Lcom/android/server/LocalServices;->getService(Ljava/lang/Class;)Ljava/lang/Object;
+    invoke-static {v0}, Lcom/android/server/LocalServices;->getService(Ljava/lang/Class;)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v0
 
-    check-cast p1, Landroid/app/usage/UsageStatsManagerInternal;
+    check-cast v0, Landroid/app/usage/UsageStatsManagerInternal;
 
     .line 587
-    new-instance v1, Lcom/android/server/job/controllers/QuotaController$StandbyTracker;
+    .local v0, "usageStats":Landroid/app/usage/UsageStatsManagerInternal;
+    new-instance v2, Lcom/android/server/job/controllers/QuotaController$StandbyTracker;
 
-    invoke-direct {v1, p0}, Lcom/android/server/job/controllers/QuotaController$StandbyTracker;-><init>(Lcom/android/server/job/controllers/QuotaController;)V
+    invoke-direct {v2, p0}, Lcom/android/server/job/controllers/QuotaController$StandbyTracker;-><init>(Lcom/android/server/job/controllers/QuotaController;)V
 
-    invoke-virtual {p1, v1}, Landroid/app/usage/UsageStatsManagerInternal;->addAppIdleStateChangeListener(Landroid/app/usage/UsageStatsManagerInternal$AppIdleStateChangeListener;)V
+    invoke-virtual {v0, v2}, Landroid/app/usage/UsageStatsManagerInternal;->addAppIdleStateChangeListener(Landroid/app/usage/UsageStatsManagerInternal$AppIdleStateChangeListener;)V
 
     .line 590
-    const/4 p1, 0x1
+    const/4 v2, 0x1
 
-    :try_start_104
+    :try_start_101
     invoke-static {}, Landroid/app/ActivityManager;->getService()Landroid/app/IActivityManager;
 
-    move-result-object v1
+    move-result-object v3
 
-    iget-object v2, p0, Lcom/android/server/job/controllers/QuotaController;->mUidObserver:Landroid/app/IUidObserver;
+    iget-object v4, p0, Lcom/android/server/job/controllers/QuotaController;->mUidObserver:Landroid/app/IUidObserver;
 
-    const/4 v3, 0x5
+    const/4 v5, 0x5
 
-    invoke-interface {v1, v2, p1, v3, v0}, Landroid/app/IActivityManager;->registerUidObserver(Landroid/app/IUidObserver;IILjava/lang/String;)V
-    :try_end_10e
-    .catch Landroid/os/RemoteException; {:try_start_104 .. :try_end_10e} :catch_10f
+    invoke-interface {v3, v4, v2, v5, v1}, Landroid/app/IActivityManager;->registerUidObserver(Landroid/app/IUidObserver;IILjava/lang/String;)V
+    :try_end_10b
+    .catch Landroid/os/RemoteException; {:try_start_101 .. :try_end_10b} :catch_10c
 
     .line 595
-    goto :goto_110
+    goto :goto_10d
 
     .line 593
-    :catch_10f
-    move-exception v0
+    :catch_10c
+    move-exception v1
 
     .line 597
-    :goto_110
-    iget-object v0, p0, Lcom/android/server/job/controllers/QuotaController;->mConstants:Lcom/android/server/job/JobSchedulerService$Constants;
+    :goto_10d
+    iget-object v1, p0, Lcom/android/server/job/controllers/QuotaController;->mConstants:Lcom/android/server/job/JobSchedulerService$Constants;
 
-    iget-boolean v0, v0, Lcom/android/server/job/JobSchedulerService$Constants;->USE_HEARTBEATS:Z
+    iget-boolean v1, v1, Lcom/android/server/job/JobSchedulerService$Constants;->USE_HEARTBEATS:Z
 
-    xor-int/2addr p1, v0
+    xor-int/2addr v1, v2
 
-    iput-boolean p1, p0, Lcom/android/server/job/controllers/QuotaController;->mShouldThrottle:Z
+    iput-boolean v1, p0, Lcom/android/server/job/controllers/QuotaController;->mShouldThrottle:Z
 
     .line 598
     return-void
 
-    :array_118
+    nop
+
+    :array_116
     .array-data 8
         0x927c0
         0x6ddd00
@@ -531,17 +534,17 @@
         0x5265c00
     .end array-data
 
-    :array_12c
+    :array_12a
     .array-data 4
-        0x4b
+        0x14
         0x78
         0xc8
         0x30
     .end array-data
 
-    :array_138
+    :array_136
     .array-data 4
-        0x4b
+        0x14
         0xa
         0x8
         0x3
@@ -549,25 +552,28 @@
 .end method
 
 .method static synthetic access$000(ILjava/lang/String;)Ljava/lang/String;
-    .registers 2
+    .registers 3
+    .param p0, "x0"  # I
+    .param p1, "x1"  # Ljava/lang/String;
 
     .line 107
     invoke-static {p0, p1}, Lcom/android/server/job/controllers/QuotaController;->string(ILjava/lang/String;)Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v0
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$100(J)I
-    .registers 2
+    .registers 3
+    .param p0, "x0"  # J
 
     .line 107
     invoke-static {p0, p1}, Lcom/android/server/job/controllers/QuotaController;->hashLong(J)I
 
-    move-result p0
+    move-result v0
 
-    return p0
+    return v0
 .end method
 
 .method static synthetic access$1100()Z
@@ -581,6 +587,7 @@
 
 .method static synthetic access$1200(Lcom/android/server/job/controllers/QuotaController;)V
     .registers 1
+    .param p0, "x0"  # Lcom/android/server/job/controllers/QuotaController;
 
     .line 107
     invoke-direct {p0}, Lcom/android/server/job/controllers/QuotaController;->handleNewChargingStateLocked()V
@@ -589,27 +596,33 @@
 .end method
 
 .method static synthetic access$1300(Lcom/android/server/job/controllers/QuotaController;Lcom/android/server/job/controllers/JobStatus;)Z
-    .registers 2
+    .registers 3
+    .param p0, "x0"  # Lcom/android/server/job/controllers/QuotaController;
+    .param p1, "x1"  # Lcom/android/server/job/controllers/JobStatus;
 
     .line 107
     invoke-direct {p0, p1}, Lcom/android/server/job/controllers/QuotaController;->isTopStartedJobLocked(Lcom/android/server/job/controllers/JobStatus;)Z
 
-    move-result p0
+    move-result v0
 
-    return p0
+    return v0
 .end method
 
 .method static synthetic access$1400(Lcom/android/server/job/controllers/QuotaController;)Lcom/android/server/job/controllers/QuotaController$ChargingTracker;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/job/controllers/QuotaController;
 
     .line 107
-    iget-object p0, p0, Lcom/android/server/job/controllers/QuotaController;->mChargeTracker:Lcom/android/server/job/controllers/QuotaController$ChargingTracker;
+    iget-object v0, p0, Lcom/android/server/job/controllers/QuotaController;->mChargeTracker:Lcom/android/server/job/controllers/QuotaController$ChargingTracker;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$1500(Lcom/android/server/job/controllers/QuotaController;ILjava/lang/String;)V
     .registers 3
+    .param p0, "x0"  # Lcom/android/server/job/controllers/QuotaController;
+    .param p1, "x1"  # I
+    .param p2, "x2"  # Ljava/lang/String;
 
     .line 107
     invoke-direct {p0, p1, p2}, Lcom/android/server/job/controllers/QuotaController;->incrementTimingSessionCount(ILjava/lang/String;)V
@@ -618,16 +631,19 @@
 .end method
 
 .method static synthetic access$1600(Lcom/android/server/job/controllers/QuotaController;)Landroid/util/SparseBooleanArray;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/job/controllers/QuotaController;
 
     .line 107
-    iget-object p0, p0, Lcom/android/server/job/controllers/QuotaController;->mForegroundUids:Landroid/util/SparseBooleanArray;
+    iget-object v0, p0, Lcom/android/server/job/controllers/QuotaController;->mForegroundUids:Landroid/util/SparseBooleanArray;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$1702(Lcom/android/server/job/controllers/QuotaController;Z)Z
     .registers 2
+    .param p0, "x0"  # Lcom/android/server/job/controllers/QuotaController;
+    .param p1, "x1"  # Z
 
     .line 107
     iput-boolean p1, p0, Lcom/android/server/job/controllers/QuotaController;->mInParole:Z
@@ -637,6 +653,7 @@
 
 .method static synthetic access$1800(Lcom/android/server/job/controllers/QuotaController;)V
     .registers 1
+    .param p0, "x0"  # Lcom/android/server/job/controllers/QuotaController;
 
     .line 107
     invoke-direct {p0}, Lcom/android/server/job/controllers/QuotaController;->maybeUpdateAllConstraintsLocked()V
@@ -645,56 +662,65 @@
 .end method
 
 .method static synthetic access$1900(Lcom/android/server/job/controllers/QuotaController;)Lcom/android/server/job/controllers/QuotaController$UserPackageMap;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/job/controllers/QuotaController;
 
     .line 107
-    iget-object p0, p0, Lcom/android/server/job/controllers/QuotaController;->mTrackedJobs:Lcom/android/server/job/controllers/QuotaController$UserPackageMap;
+    iget-object v0, p0, Lcom/android/server/job/controllers/QuotaController;->mTrackedJobs:Lcom/android/server/job/controllers/QuotaController$UserPackageMap;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$2000(Lcom/android/server/job/controllers/QuotaController;)Lcom/android/server/job/controllers/QuotaController$UserPackageMap;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/job/controllers/QuotaController;
 
     .line 107
-    iget-object p0, p0, Lcom/android/server/job/controllers/QuotaController;->mPkgTimers:Lcom/android/server/job/controllers/QuotaController$UserPackageMap;
+    iget-object v0, p0, Lcom/android/server/job/controllers/QuotaController;->mPkgTimers:Lcom/android/server/job/controllers/QuotaController$UserPackageMap;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$2100(Lcom/android/server/job/controllers/QuotaController;)Z
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/job/controllers/QuotaController;
 
     .line 107
-    iget-boolean p0, p0, Lcom/android/server/job/controllers/QuotaController;->mShouldThrottle:Z
+    iget-boolean v0, p0, Lcom/android/server/job/controllers/QuotaController;->mShouldThrottle:Z
 
-    return p0
+    return v0
 .end method
 
 .method static synthetic access$2200(Lcom/android/server/job/controllers/QuotaController;ILjava/lang/String;)Z
-    .registers 3
+    .registers 4
+    .param p0, "x0"  # Lcom/android/server/job/controllers/QuotaController;
+    .param p1, "x1"  # I
+    .param p2, "x2"  # Ljava/lang/String;
 
     .line 107
     invoke-direct {p0, p1, p2}, Lcom/android/server/job/controllers/QuotaController;->maybeUpdateConstraintForPkgLocked(ILjava/lang/String;)Z
 
-    move-result p0
+    move-result v0
 
-    return p0
+    return v0
 .end method
 
 .method static synthetic access$2400(Lcom/android/server/job/controllers/QuotaController;I)Z
-    .registers 2
+    .registers 3
+    .param p0, "x0"  # Lcom/android/server/job/controllers/QuotaController;
+    .param p1, "x1"  # I
 
     .line 107
     invoke-direct {p0, p1}, Lcom/android/server/job/controllers/QuotaController;->maybeUpdateConstraintForUidLocked(I)Z
 
-    move-result p0
+    move-result v0
 
-    return p0
+    return v0
 .end method
 
 .method static synthetic access$2500(Lcom/android/server/job/controllers/QuotaController;)J
     .registers 3
+    .param p0, "x0"  # Lcom/android/server/job/controllers/QuotaController;
 
     .line 107
     iget-wide v0, p0, Lcom/android/server/job/controllers/QuotaController;->mMaxExecutionTimeMs:J
@@ -704,6 +730,8 @@
 
 .method static synthetic access$2502(Lcom/android/server/job/controllers/QuotaController;J)J
     .registers 3
+    .param p0, "x0"  # Lcom/android/server/job/controllers/QuotaController;
+    .param p1, "x1"  # J
 
     .line 107
     iput-wide p1, p0, Lcom/android/server/job/controllers/QuotaController;->mMaxExecutionTimeMs:J
@@ -713,6 +741,8 @@
 
 .method static synthetic access$2602(Lcom/android/server/job/controllers/QuotaController;J)J
     .registers 3
+    .param p0, "x0"  # Lcom/android/server/job/controllers/QuotaController;
+    .param p1, "x1"  # J
 
     .line 107
     iput-wide p1, p0, Lcom/android/server/job/controllers/QuotaController;->mMaxExecutionTimeIntoQuotaMs:J
@@ -722,6 +752,7 @@
 
 .method static synthetic access$2700(Lcom/android/server/job/controllers/QuotaController;)J
     .registers 3
+    .param p0, "x0"  # Lcom/android/server/job/controllers/QuotaController;
 
     .line 107
     iget-wide v0, p0, Lcom/android/server/job/controllers/QuotaController;->mQuotaBufferMs:J
@@ -731,6 +762,8 @@
 
 .method static synthetic access$2702(Lcom/android/server/job/controllers/QuotaController;J)J
     .registers 3
+    .param p0, "x0"  # Lcom/android/server/job/controllers/QuotaController;
+    .param p1, "x1"  # J
 
     .line 107
     iput-wide p1, p0, Lcom/android/server/job/controllers/QuotaController;->mQuotaBufferMs:J
@@ -740,6 +773,7 @@
 
 .method static synthetic access$2800(Lcom/android/server/job/controllers/QuotaController;)J
     .registers 3
+    .param p0, "x0"  # Lcom/android/server/job/controllers/QuotaController;
 
     .line 107
     iget-wide v0, p0, Lcom/android/server/job/controllers/QuotaController;->mAllowedTimePerPeriodMs:J
@@ -749,6 +783,8 @@
 
 .method static synthetic access$2802(Lcom/android/server/job/controllers/QuotaController;J)J
     .registers 3
+    .param p0, "x0"  # Lcom/android/server/job/controllers/QuotaController;
+    .param p1, "x1"  # J
 
     .line 107
     iput-wide p1, p0, Lcom/android/server/job/controllers/QuotaController;->mAllowedTimePerPeriodMs:J
@@ -758,6 +794,8 @@
 
 .method static synthetic access$2902(Lcom/android/server/job/controllers/QuotaController;J)J
     .registers 3
+    .param p0, "x0"  # Lcom/android/server/job/controllers/QuotaController;
+    .param p1, "x1"  # J
 
     .line 107
     iput-wide p1, p0, Lcom/android/server/job/controllers/QuotaController;->mAllowedTimeIntoQuotaMs:J
@@ -766,25 +804,28 @@
 .end method
 
 .method static synthetic access$300(Lcom/android/server/job/controllers/QuotaController;)Landroid/os/Handler;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/job/controllers/QuotaController;
 
     .line 107
-    iget-object p0, p0, Lcom/android/server/job/controllers/QuotaController;->mHandler:Landroid/os/Handler;
+    iget-object v0, p0, Lcom/android/server/job/controllers/QuotaController;->mHandler:Landroid/os/Handler;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$3000(Lcom/android/server/job/controllers/QuotaController;)[J
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/job/controllers/QuotaController;
 
     .line 107
-    iget-object p0, p0, Lcom/android/server/job/controllers/QuotaController;->mBucketPeriodsMs:[J
+    iget-object v0, p0, Lcom/android/server/job/controllers/QuotaController;->mBucketPeriodsMs:[J
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$3100(Lcom/android/server/job/controllers/QuotaController;)J
     .registers 3
+    .param p0, "x0"  # Lcom/android/server/job/controllers/QuotaController;
 
     .line 107
     iget-wide v0, p0, Lcom/android/server/job/controllers/QuotaController;->mRateLimitingWindowMs:J
@@ -794,6 +835,8 @@
 
 .method static synthetic access$3102(Lcom/android/server/job/controllers/QuotaController;J)J
     .registers 3
+    .param p0, "x0"  # Lcom/android/server/job/controllers/QuotaController;
+    .param p1, "x1"  # J
 
     .line 107
     iput-wide p1, p0, Lcom/android/server/job/controllers/QuotaController;->mRateLimitingWindowMs:J
@@ -802,16 +845,19 @@
 .end method
 
 .method static synthetic access$3200(Lcom/android/server/job/controllers/QuotaController;)I
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/job/controllers/QuotaController;
 
     .line 107
-    iget p0, p0, Lcom/android/server/job/controllers/QuotaController;->mMaxJobCountPerRateLimitingWindow:I
+    iget v0, p0, Lcom/android/server/job/controllers/QuotaController;->mMaxJobCountPerRateLimitingWindow:I
 
-    return p0
+    return v0
 .end method
 
 .method static synthetic access$3202(Lcom/android/server/job/controllers/QuotaController;I)I
     .registers 2
+    .param p0, "x0"  # Lcom/android/server/job/controllers/QuotaController;
+    .param p1, "x1"  # I
 
     .line 107
     iput p1, p0, Lcom/android/server/job/controllers/QuotaController;->mMaxJobCountPerRateLimitingWindow:I
@@ -820,25 +866,29 @@
 .end method
 
 .method static synthetic access$3300(Lcom/android/server/job/controllers/QuotaController;)[I
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/job/controllers/QuotaController;
 
     .line 107
-    iget-object p0, p0, Lcom/android/server/job/controllers/QuotaController;->mMaxBucketJobCounts:[I
+    iget-object v0, p0, Lcom/android/server/job/controllers/QuotaController;->mMaxBucketJobCounts:[I
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$3400(Lcom/android/server/job/controllers/QuotaController;)I
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/job/controllers/QuotaController;
 
     .line 107
-    iget p0, p0, Lcom/android/server/job/controllers/QuotaController;->mMaxSessionCountPerRateLimitingWindow:I
+    iget v0, p0, Lcom/android/server/job/controllers/QuotaController;->mMaxSessionCountPerRateLimitingWindow:I
 
-    return p0
+    return v0
 .end method
 
 .method static synthetic access$3402(Lcom/android/server/job/controllers/QuotaController;I)I
     .registers 2
+    .param p0, "x0"  # Lcom/android/server/job/controllers/QuotaController;
+    .param p1, "x1"  # I
 
     .line 107
     iput p1, p0, Lcom/android/server/job/controllers/QuotaController;->mMaxSessionCountPerRateLimitingWindow:I
@@ -847,16 +897,18 @@
 .end method
 
 .method static synthetic access$3500(Lcom/android/server/job/controllers/QuotaController;)[I
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/job/controllers/QuotaController;
 
     .line 107
-    iget-object p0, p0, Lcom/android/server/job/controllers/QuotaController;->mMaxBucketSessionCounts:[I
+    iget-object v0, p0, Lcom/android/server/job/controllers/QuotaController;->mMaxBucketSessionCounts:[I
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$3600(Lcom/android/server/job/controllers/QuotaController;)J
     .registers 3
+    .param p0, "x0"  # Lcom/android/server/job/controllers/QuotaController;
 
     .line 107
     iget-wide v0, p0, Lcom/android/server/job/controllers/QuotaController;->mTimingSessionCoalescingDurationMs:J
@@ -866,6 +918,8 @@
 
 .method static synthetic access$3602(Lcom/android/server/job/controllers/QuotaController;J)J
     .registers 3
+    .param p0, "x0"  # Lcom/android/server/job/controllers/QuotaController;
+    .param p1, "x1"  # J
 
     .line 107
     iput-wide p1, p0, Lcom/android/server/job/controllers/QuotaController;->mTimingSessionCoalescingDurationMs:J
@@ -874,45 +928,53 @@
 .end method
 
 .method static synthetic access$400(Lcom/android/server/job/controllers/QuotaController;)Landroid/util/SparseSetArray;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/job/controllers/QuotaController;
 
     .line 107
-    iget-object p0, p0, Lcom/android/server/job/controllers/QuotaController;->mUidToPackageCache:Landroid/util/SparseSetArray;
+    iget-object v0, p0, Lcom/android/server/job/controllers/QuotaController;->mUidToPackageCache:Landroid/util/SparseSetArray;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$700(Lcom/android/server/job/controllers/QuotaController;Lcom/android/server/job/controllers/JobStatus;Z)Z
-    .registers 3
+    .registers 4
+    .param p0, "x0"  # Lcom/android/server/job/controllers/QuotaController;
+    .param p1, "x1"  # Lcom/android/server/job/controllers/JobStatus;
+    .param p2, "x2"  # Z
 
     .line 107
     invoke-direct {p0, p1, p2}, Lcom/android/server/job/controllers/QuotaController;->setConstraintSatisfied(Lcom/android/server/job/controllers/JobStatus;Z)Z
 
-    move-result p0
+    move-result v0
 
-    return p0
+    return v0
 .end method
 
 .method static synthetic access$800(Lcom/android/server/job/controllers/QuotaController;)Lcom/android/server/job/controllers/QuotaController$UserPackageMap;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/job/controllers/QuotaController;
 
     .line 107
-    iget-object p0, p0, Lcom/android/server/job/controllers/QuotaController;->mInQuotaAlarmListeners:Lcom/android/server/job/controllers/QuotaController$UserPackageMap;
+    iget-object v0, p0, Lcom/android/server/job/controllers/QuotaController;->mInQuotaAlarmListeners:Lcom/android/server/job/controllers/QuotaController$UserPackageMap;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$900(Lcom/android/server/job/controllers/QuotaController;)Landroid/app/AlarmManager;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/job/controllers/QuotaController;
 
     .line 107
-    iget-object p0, p0, Lcom/android/server/job/controllers/QuotaController;->mAlarmManager:Landroid/app/AlarmManager;
+    iget-object v0, p0, Lcom/android/server/job/controllers/QuotaController;->mAlarmManager:Landroid/app/AlarmManager;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method private calculateTimeUntilQuotaConsumedLocked(Ljava/util/List;JJ)J
-    .registers 16
+    .registers 21
+    .param p2, "windowStartElapsed"  # J
+    .param p4, "deadSpaceMs"  # J
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(",
@@ -923,142 +985,157 @@
     .end annotation
 
     .line 888
-    nop
-
-    .line 889
-    nop
-
-    .line 890
+    .local p1, "sessions":Ljava/util/List;, "Ljava/util/List<Lcom/android/server/job/controllers/QuotaController$TimingSession;>;"
     const-wide/16 v0, 0x0
 
-    const/4 v2, 0x0
-
-    move-wide v3, v0
-
-    move-wide v0, p4
-
-    move-wide p4, p2
-
-    :goto_8
-    invoke-interface {p1}, Ljava/util/List;->size()I
-
-    move-result v5
-
-    if-ge v2, v5, :cond_3d
-
-    .line 891
-    invoke-interface {p1, v2}, Ljava/util/List;->get(I)Ljava/lang/Object;
-
-    move-result-object v5
-
-    check-cast v5, Lcom/android/server/job/controllers/QuotaController$TimingSession;
-
-    .line 893
-    iget-wide v6, v5, Lcom/android/server/job/controllers/QuotaController$TimingSession;->endTimeElapsed:J
-
-    cmp-long v6, v6, p2
-
-    if-gez v6, :cond_1b
-
-    .line 895
-    goto :goto_3a
-
-    .line 896
-    :cond_1b
-    iget-wide v6, v5, Lcom/android/server/job/controllers/QuotaController$TimingSession;->startTimeElapsed:J
-
-    cmp-long v6, v6, p2
-
-    if-gtz v6, :cond_28
-
-    .line 898
-    iget-wide p4, v5, Lcom/android/server/job/controllers/QuotaController$TimingSession;->endTimeElapsed:J
-
-    sub-long/2addr p4, p2
-
-    add-long/2addr v3, p4
-
-    .line 899
-    iget-wide p4, v5, Lcom/android/server/job/controllers/QuotaController$TimingSession;->endTimeElapsed:J
-
-    goto :goto_3a
-
-    .line 903
-    :cond_28
-    iget-wide v6, v5, Lcom/android/server/job/controllers/QuotaController$TimingSession;->startTimeElapsed:J
-
-    sub-long/2addr v6, p4
-
-    .line 904
-    cmp-long p4, v6, v0
-
-    if-lez p4, :cond_30
-
-    .line 905
-    goto :goto_3d
-
-    .line 907
-    :cond_30
-    iget-wide p4, v5, Lcom/android/server/job/controllers/QuotaController$TimingSession;->endTimeElapsed:J
-
-    iget-wide v8, v5, Lcom/android/server/job/controllers/QuotaController$TimingSession;->startTimeElapsed:J
-
-    sub-long/2addr p4, v8
-
-    add-long/2addr p4, v6
-
-    add-long/2addr v3, p4
-
-    .line 909
-    sub-long/2addr v0, v6
-
-    .line 910
-    iget-wide p4, v5, Lcom/android/server/job/controllers/QuotaController$TimingSession;->endTimeElapsed:J
+    .line 889
+    .local v0, "timeUntilQuotaConsumedMs":J
+    move-wide/from16 v2, p2
 
     .line 890
-    :goto_3a
-    add-int/lit8 v2, v2, 0x1
+    .local v2, "start":J
+    const/4 v4, 0x0
+
+    move-wide v5, v0
+
+    move-wide/from16 v0, p4
+
+    .end local p4  # "deadSpaceMs":J
+    .local v0, "deadSpaceMs":J
+    .local v4, "i":I
+    .local v5, "timeUntilQuotaConsumedMs":J
+    :goto_8
+    invoke-interface/range {p1 .. p1}, Ljava/util/List;->size()I
+
+    move-result v7
+
+    if-ge v4, v7, :cond_40
+
+    .line 891
+    move-object/from16 v7, p1
+
+    invoke-interface {v7, v4}, Ljava/util/List;->get(I)Ljava/lang/Object;
+
+    move-result-object v8
+
+    check-cast v8, Lcom/android/server/job/controllers/QuotaController$TimingSession;
+
+    .line 893
+    .local v8, "session":Lcom/android/server/job/controllers/QuotaController$TimingSession;
+    iget-wide v9, v8, Lcom/android/server/job/controllers/QuotaController$TimingSession;->endTimeElapsed:J
+
+    cmp-long v9, v9, p2
+
+    if-gez v9, :cond_1d
+
+    .line 895
+    goto :goto_3d
+
+    .line 896
+    :cond_1d
+    iget-wide v9, v8, Lcom/android/server/job/controllers/QuotaController$TimingSession;->startTimeElapsed:J
+
+    cmp-long v9, v9, p2
+
+    if-gtz v9, :cond_2b
+
+    .line 898
+    iget-wide v9, v8, Lcom/android/server/job/controllers/QuotaController$TimingSession;->endTimeElapsed:J
+
+    sub-long v9, v9, p2
+
+    add-long/2addr v5, v9
+
+    .line 899
+    iget-wide v2, v8, Lcom/android/server/job/controllers/QuotaController$TimingSession;->endTimeElapsed:J
+
+    goto :goto_3d
+
+    .line 903
+    :cond_2b
+    iget-wide v9, v8, Lcom/android/server/job/controllers/QuotaController$TimingSession;->startTimeElapsed:J
+
+    sub-long/2addr v9, v2
+
+    .line 904
+    .local v9, "diff":J
+    cmp-long v11, v9, v0
+
+    if-lez v11, :cond_33
+
+    .line 905
+    goto :goto_42
+
+    .line 907
+    :cond_33
+    iget-wide v11, v8, Lcom/android/server/job/controllers/QuotaController$TimingSession;->endTimeElapsed:J
+
+    iget-wide v13, v8, Lcom/android/server/job/controllers/QuotaController$TimingSession;->startTimeElapsed:J
+
+    sub-long/2addr v11, v13
+
+    add-long/2addr v11, v9
+
+    add-long/2addr v5, v11
+
+    .line 909
+    sub-long/2addr v0, v9
+
+    .line 910
+    iget-wide v2, v8, Lcom/android/server/job/controllers/QuotaController$TimingSession;->endTimeElapsed:J
+
+    .line 890
+    .end local v8  # "session":Lcom/android/server/job/controllers/QuotaController$TimingSession;
+    .end local v9  # "diff":J
+    :goto_3d
+    add-int/lit8 v4, v4, 0x1
 
     goto :goto_8
 
+    :cond_40
+    move-object/from16 v7, p1
+
     .line 914
-    :cond_3d
-    :goto_3d
-    add-long/2addr v3, v0
+    .end local v4  # "i":I
+    :goto_42
+    add-long/2addr v5, v0
 
     .line 915
-    iget-wide p1, p0, Lcom/android/server/job/controllers/QuotaController;->mMaxExecutionTimeMs:J
+    move-object v4, p0
 
-    cmp-long p1, v3, p1
+    iget-wide v8, v4, Lcom/android/server/job/controllers/QuotaController;->mMaxExecutionTimeMs:J
 
-    if-lez p1, :cond_5a
+    cmp-long v8, v5, v8
+
+    if-lez v8, :cond_60
 
     .line 916
-    new-instance p1, Ljava/lang/StringBuilder;
+    new-instance v8, Ljava/lang/StringBuilder;
 
-    invoke-direct {p1}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v8}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string p2, "Calculated quota consumed time too high: "
+    const-string v9, "Calculated quota consumed time too high: "
 
-    invoke-virtual {p1, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v8, v9}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p1, v3, v4}, Ljava/lang/StringBuilder;->append(J)Ljava/lang/StringBuilder;
+    invoke-virtual {v8, v5, v6}, Ljava/lang/StringBuilder;->append(J)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v8}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v8
 
-    const-string p2, "JobScheduler.Quota"
+    const-string v9, "JobScheduler.Quota"
 
-    invoke-static {p2, p1}, Landroid/util/Slog;->wtf(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v9, v8}, Landroid/util/Slog;->wtf(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 918
-    :cond_5a
-    return-wide v3
+    :cond_60
+    return-wide v5
 .end method
 
 .method private getEffectiveStandbyBucket(Lcom/android/server/job/controllers/JobStatus;)I
     .registers 3
+    .param p1, "jobStatus"  # Lcom/android/server/job/controllers/JobStatus;
 
     .line 745
     iget-boolean v0, p1, Lcom/android/server/job/controllers/JobStatus;->uidActive:Z
@@ -1081,20 +1158,24 @@
     :cond_f
     invoke-virtual {p1}, Lcom/android/server/job/controllers/JobStatus;->getStandbyBucket()I
 
-    move-result p1
+    move-result v0
 
-    return p1
+    return v0
 
     .line 748
     :cond_14
     :goto_14
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    return p1
+    return v0
 .end method
 
 .method private getExecutionStatsLocked(ILjava/lang/String;IZ)Lcom/android/server/job/controllers/QuotaController$ExecutionStats;
-    .registers 13
+    .registers 16
+    .param p1, "userId"  # I
+    .param p2, "packageName"  # Ljava/lang/String;
+    .param p3, "standbyBucket"  # I
+    .param p4, "refreshStatsIfOld"  # Z
 
     .line 933
     const/4 v0, 0x4
@@ -1102,18 +1183,18 @@
     if-ne p3, v0, :cond_10
 
     .line 934
-    const-string p1, "JobScheduler.Quota"
+    const-string v0, "JobScheduler.Quota"
 
-    const-string p2, "getExecutionStatsLocked called for a NEVER app."
+    const-string v1, "getExecutionStatsLocked called for a NEVER app."
 
-    invoke-static {p1, p2}, Landroid/util/Slog;->wtf(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v0, v1}, Landroid/util/Slog;->wtf(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 935
-    new-instance p1, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;
+    new-instance v0, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;
 
-    invoke-direct {p1}, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;-><init>()V
+    invoke-direct {v0}, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;-><init>()V
 
-    return-object p1
+    return-object v0
 
     .line 937
     :cond_10
@@ -1126,14 +1207,15 @@
     check-cast v0, [Lcom/android/server/job/controllers/QuotaController$ExecutionStats;
 
     .line 938
+    .local v0, "appStats":[Lcom/android/server/job/controllers/QuotaController$ExecutionStats;
     if-nez v0, :cond_24
 
     .line 939
-    iget-object v0, p0, Lcom/android/server/job/controllers/QuotaController;->mBucketPeriodsMs:[J
+    iget-object v1, p0, Lcom/android/server/job/controllers/QuotaController;->mBucketPeriodsMs:[J
 
-    array-length v0, v0
+    array-length v1, v1
 
-    new-array v0, v0, [Lcom/android/server/job/controllers/QuotaController$ExecutionStats;
+    new-array v0, v1, [Lcom/android/server/job/controllers/QuotaController$ExecutionStats;
 
     .line 940
     iget-object v1, p0, Lcom/android/server/job/controllers/QuotaController;->mExecutionStatsCache:Lcom/android/server/job/controllers/QuotaController$UserPackageMap;
@@ -1145,101 +1227,115 @@
     aget-object v1, v0, p3
 
     .line 943
-    if-nez v1, :cond_2f
+    .local v1, "stats":Lcom/android/server/job/controllers/QuotaController$ExecutionStats;
+    if-nez v1, :cond_30
 
     .line 944
-    new-instance v1, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;
+    new-instance v2, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;
 
-    invoke-direct {v1}, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;-><init>()V
+    invoke-direct {v2}, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;-><init>()V
+
+    move-object v1, v2
 
     .line 945
     aput-object v1, v0, p3
 
     .line 947
-    :cond_2f
-    if-eqz p4, :cond_70
+    :cond_30
+    if-eqz p4, :cond_71
 
     .line 948
-    iget-object p4, p0, Lcom/android/server/job/controllers/QuotaController;->mBucketPeriodsMs:[J
+    iget-object v2, p0, Lcom/android/server/job/controllers/QuotaController;->mBucketPeriodsMs:[J
 
-    aget-wide v2, p4, p3
+    aget-wide v2, v2, p3
 
     .line 949
-    iget-object p4, p0, Lcom/android/server/job/controllers/QuotaController;->mMaxBucketJobCounts:[I
+    .local v2, "bucketWindowSizeMs":J
+    iget-object v4, p0, Lcom/android/server/job/controllers/QuotaController;->mMaxBucketJobCounts:[I
 
-    aget p4, p4, p3
+    aget v4, v4, p3
 
     .line 950
-    iget-object v0, p0, Lcom/android/server/job/controllers/QuotaController;->mMaxBucketSessionCounts:[I
+    .local v4, "jobCountLimit":I
+    iget-object v5, p0, Lcom/android/server/job/controllers/QuotaController;->mMaxBucketSessionCounts:[I
 
-    aget p3, v0, p3
+    aget v5, v5, p3
 
     .line 951
-    iget-object v0, p0, Lcom/android/server/job/controllers/QuotaController;->mPkgTimers:Lcom/android/server/job/controllers/QuotaController$UserPackageMap;
+    .local v5, "sessionCountLimit":I
+    iget-object v6, p0, Lcom/android/server/job/controllers/QuotaController;->mPkgTimers:Lcom/android/server/job/controllers/QuotaController$UserPackageMap;
 
-    invoke-virtual {v0, p1, p2}, Lcom/android/server/job/controllers/QuotaController$UserPackageMap;->get(ILjava/lang/String;)Ljava/lang/Object;
+    invoke-virtual {v6, p1, p2}, Lcom/android/server/job/controllers/QuotaController$UserPackageMap;->get(ILjava/lang/String;)Ljava/lang/Object;
 
-    move-result-object v0
+    move-result-object v6
 
-    check-cast v0, Lcom/android/server/job/controllers/QuotaController$Timer;
+    check-cast v6, Lcom/android/server/job/controllers/QuotaController$Timer;
 
     .line 952
-    if-eqz v0, :cond_4d
+    .local v6, "timer":Lcom/android/server/job/controllers/QuotaController$Timer;
+    if-eqz v6, :cond_4e
 
-    invoke-virtual {v0}, Lcom/android/server/job/controllers/QuotaController$Timer;->isActive()Z
+    invoke-virtual {v6}, Lcom/android/server/job/controllers/QuotaController$Timer;->isActive()Z
 
-    move-result v0
+    move-result v7
 
-    if-nez v0, :cond_67
+    if-nez v7, :cond_68
 
-    :cond_4d
-    iget-wide v4, v1, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->expirationTimeElapsed:J
+    :cond_4e
+    iget-wide v7, v1, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->expirationTimeElapsed:J
 
-    sget-object v0, Lcom/android/server/job/JobSchedulerService;->sElapsedRealtimeClock:Ljava/time/Clock;
+    sget-object v9, Lcom/android/server/job/JobSchedulerService;->sElapsedRealtimeClock:Ljava/time/Clock;
 
     .line 953
-    invoke-virtual {v0}, Ljava/time/Clock;->millis()J
+    invoke-virtual {v9}, Ljava/time/Clock;->millis()J
 
-    move-result-wide v6
+    move-result-wide v9
 
-    cmp-long v0, v4, v6
+    cmp-long v7, v7, v9
 
-    if-lez v0, :cond_67
+    if-lez v7, :cond_68
 
-    iget-wide v4, v1, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->windowSizeMs:J
+    iget-wide v7, v1, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->windowSizeMs:J
 
-    cmp-long v0, v4, v2
+    cmp-long v7, v7, v2
 
-    if-nez v0, :cond_67
+    if-nez v7, :cond_68
 
-    iget v0, v1, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->jobCountLimit:I
+    iget v7, v1, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->jobCountLimit:I
 
-    if-ne v0, p4, :cond_67
+    if-ne v7, v4, :cond_68
 
-    iget v0, v1, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->sessionCountLimit:I
+    iget v7, v1, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->sessionCountLimit:I
 
-    if-eq v0, p3, :cond_70
+    if-eq v7, v5, :cond_71
 
     .line 958
-    :cond_67
+    :cond_68
     iput-wide v2, v1, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->windowSizeMs:J
 
     .line 959
-    iput p4, v1, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->jobCountLimit:I
+    iput v4, v1, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->jobCountLimit:I
 
     .line 960
-    iput p3, v1, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->sessionCountLimit:I
+    iput v5, v1, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->sessionCountLimit:I
 
     .line 961
     invoke-virtual {p0, p1, p2, v1}, Lcom/android/server/job/controllers/QuotaController;->updateExecutionStatsLocked(ILjava/lang/String;Lcom/android/server/job/controllers/QuotaController$ExecutionStats;)V
 
     .line 965
-    :cond_70
+    .end local v2  # "bucketWindowSizeMs":J
+    .end local v4  # "jobCountLimit":I
+    .end local v5  # "sessionCountLimit":I
+    .end local v6  # "timer":Lcom/android/server/job/controllers/QuotaController$Timer;
+    :cond_71
     return-object v1
 .end method
 
 .method private getRemainingExecutionTimeLocked(ILjava/lang/String;I)J
-    .registers 5
+    .registers 6
+    .param p1, "userId"  # I
+    .param p2, "packageName"  # Ljava/lang/String;
+    .param p3, "standbyBucket"  # I
 
     .line 824
     const/4 v0, 0x4
@@ -1247,9 +1343,9 @@
     if-ne p3, v0, :cond_6
 
     .line 825
-    const-wide/16 p1, 0x0
+    const-wide/16 v0, 0x0
 
-    return-wide p1
+    return-wide v0
 
     .line 827
     :cond_6
@@ -1258,18 +1354,19 @@
     .line 828
     invoke-virtual {p0, p1, p2, p3}, Lcom/android/server/job/controllers/QuotaController;->getExecutionStatsLocked(ILjava/lang/String;I)Lcom/android/server/job/controllers/QuotaController$ExecutionStats;
 
-    move-result-object p1
+    move-result-object v0
 
     .line 827
-    invoke-direct {p0, p1}, Lcom/android/server/job/controllers/QuotaController;->getRemainingExecutionTimeLocked(Lcom/android/server/job/controllers/QuotaController$ExecutionStats;)J
+    invoke-direct {p0, v0}, Lcom/android/server/job/controllers/QuotaController;->getRemainingExecutionTimeLocked(Lcom/android/server/job/controllers/QuotaController$ExecutionStats;)J
 
-    move-result-wide p1
+    move-result-wide v0
 
-    return-wide p1
+    return-wide v0
 .end method
 
 .method private getRemainingExecutionTimeLocked(Lcom/android/server/job/controllers/QuotaController$ExecutionStats;)J
     .registers 8
+    .param p1, "stats"  # Lcom/android/server/job/controllers/QuotaController$ExecutionStats;
 
     .line 832
     iget-wide v0, p0, Lcom/android/server/job/controllers/QuotaController;->mAllowedTimePerPeriodMs:J
@@ -1302,6 +1399,7 @@
     move-result-wide v0
 
     .line 1234
+    .local v0, "nowElapsed":J
     iget-object v2, p0, Lcom/android/server/job/controllers/QuotaController;->mChargeTracker:Lcom/android/server/job/controllers/QuotaController$ChargingTracker;
 
     invoke-virtual {v2}, Lcom/android/server/job/controllers/QuotaController$ChargingTracker;->isCharging()Z
@@ -1309,6 +1407,7 @@
     move-result v2
 
     .line 1235
+    .local v2, "isCharging":Z
     sget-boolean v3, Lcom/android/server/job/controllers/QuotaController;->DEBUG:Z
 
     if-eqz v3, :cond_26
@@ -1351,21 +1450,24 @@
 
 .method private static hashLong(J)I
     .registers 4
+    .param p0, "val"  # J
 
     .line 248
     const/16 v0, 0x20
 
     ushr-long v0, p0, v0
 
-    xor-long/2addr p0, v0
+    xor-long/2addr v0, p0
 
-    long-to-int p0, p0
+    long-to-int v0, v0
 
-    return p0
+    return v0
 .end method
 
 .method private incrementTimingSessionCount(ILjava/lang/String;)V
-    .registers 9
+    .registers 10
+    .param p1, "userId"  # I
+    .param p2, "packageName"  # Ljava/lang/String;
 
     .line 1138
     sget-object v0, Lcom/android/server/job/JobSchedulerService;->sElapsedRealtimeClock:Ljava/time/Clock;
@@ -1375,6 +1477,7 @@
     move-result-wide v0
 
     .line 1139
+    .local v0, "now":J
     iget-object v2, p0, Lcom/android/server/job/controllers/QuotaController;->mExecutionStatsCache:Lcom/android/server/job/controllers/QuotaController$UserPackageMap;
 
     invoke-virtual {v2, p1, p2}, Lcom/android/server/job/controllers/QuotaController$UserPackageMap;->get(ILjava/lang/String;)Ljava/lang/Object;
@@ -1384,14 +1487,15 @@
     check-cast v2, [Lcom/android/server/job/controllers/QuotaController$ExecutionStats;
 
     .line 1140
+    .local v2, "appStats":[Lcom/android/server/job/controllers/QuotaController$ExecutionStats;
     if-nez v2, :cond_1a
 
     .line 1141
-    iget-object v2, p0, Lcom/android/server/job/controllers/QuotaController;->mBucketPeriodsMs:[J
+    iget-object v3, p0, Lcom/android/server/job/controllers/QuotaController;->mBucketPeriodsMs:[J
 
-    array-length v2, v2
+    array-length v3, v3
 
-    new-array v2, v2, [Lcom/android/server/job/controllers/QuotaController$ExecutionStats;
+    new-array v2, v3, [Lcom/android/server/job/controllers/QuotaController$ExecutionStats;
 
     .line 1142
     iget-object v3, p0, Lcom/android/server/job/controllers/QuotaController;->mExecutionStatsCache:Lcom/android/server/job/controllers/QuotaController$UserPackageMap;
@@ -1400,80 +1504,88 @@
 
     .line 1144
     :cond_1a
-    const/4 p1, 0x0
+    const/4 v3, 0x0
 
-    move p2, p1
+    .local v3, "i":I
+    :goto_1b
+    array-length v4, v2
 
-    :goto_1c
-    array-length v3, v2
-
-    if-ge p2, v3, :cond_40
+    if-ge v3, v4, :cond_41
 
     .line 1145
-    aget-object v3, v2, p2
+    aget-object v4, v2, v3
 
     .line 1146
-    if-nez v3, :cond_2a
+    .local v4, "stats":Lcom/android/server/job/controllers/QuotaController$ExecutionStats;
+    if-nez v4, :cond_2a
 
     .line 1147
-    new-instance v3, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;
+    new-instance v5, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;
 
-    invoke-direct {v3}, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;-><init>()V
+    invoke-direct {v5}, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;-><init>()V
+
+    move-object v4, v5
 
     .line 1148
-    aput-object v3, v2, p2
+    aput-object v4, v2, v3
 
     .line 1150
     :cond_2a
-    iget-wide v4, v3, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->sessionRateLimitExpirationTimeElapsed:J
+    iget-wide v5, v4, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->sessionRateLimitExpirationTimeElapsed:J
 
-    cmp-long v4, v4, v0
+    cmp-long v5, v5, v0
 
-    if-gtz v4, :cond_37
+    if-gtz v5, :cond_38
 
     .line 1151
-    iget-wide v4, p0, Lcom/android/server/job/controllers/QuotaController;->mRateLimitingWindowMs:J
+    iget-wide v5, p0, Lcom/android/server/job/controllers/QuotaController;->mRateLimitingWindowMs:J
 
-    add-long/2addr v4, v0
+    add-long/2addr v5, v0
 
-    iput-wide v4, v3, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->sessionRateLimitExpirationTimeElapsed:J
+    iput-wide v5, v4, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->sessionRateLimitExpirationTimeElapsed:J
 
     .line 1152
-    iput p1, v3, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->sessionCountInRateLimitingWindow:I
+    const/4 v5, 0x0
+
+    iput v5, v4, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->sessionCountInRateLimitingWindow:I
 
     .line 1154
-    :cond_37
-    iget v4, v3, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->sessionCountInRateLimitingWindow:I
+    :cond_38
+    iget v5, v4, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->sessionCountInRateLimitingWindow:I
 
-    add-int/lit8 v4, v4, 0x1
+    add-int/lit8 v5, v5, 0x1
 
-    iput v4, v3, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->sessionCountInRateLimitingWindow:I
+    iput v5, v4, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->sessionCountInRateLimitingWindow:I
 
     .line 1144
-    add-int/lit8 p2, p2, 0x1
+    .end local v4  # "stats":Lcom/android/server/job/controllers/QuotaController$ExecutionStats;
+    add-int/lit8 v3, v3, 0x1
 
-    goto :goto_1c
+    goto :goto_1b
 
     .line 1156
-    :cond_40
+    .end local v3  # "i":I
+    :cond_41
     return-void
 .end method
 
 .method private isTopStartedJobLocked(Lcom/android/server/job/controllers/JobStatus;)Z
     .registers 3
+    .param p1, "jobStatus"  # Lcom/android/server/job/controllers/JobStatus;
 
     .line 737
     iget-object v0, p0, Lcom/android/server/job/controllers/QuotaController;->mTopStartedJobs:Landroid/util/ArraySet;
 
     invoke-virtual {v0, p1}, Landroid/util/ArraySet;->contains(Ljava/lang/Object;)Z
 
-    move-result p1
+    move-result v0
 
-    return p1
+    return v0
 .end method
 
 .method private isUidInForeground(I)Z
     .registers 4
+    .param p1, "uid"  # I
 
     .line 727
     invoke-static {p1}, Landroid/os/UserHandle;->isCore(I)Z
@@ -1483,9 +1595,9 @@
     if-eqz v0, :cond_8
 
     .line 728
-    const/4 p1, 0x1
+    const/4 v0, 0x1
 
-    return p1
+    return v0
 
     .line 730
     :cond_8
@@ -1499,25 +1611,27 @@
 
     invoke-virtual {v1, p1}, Landroid/util/SparseBooleanArray;->get(I)Z
 
-    move-result p1
+    move-result v1
 
     monitor-exit v0
 
-    return p1
+    return v1
 
     .line 732
     :catchall_13
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_15
     .catchall {:try_start_b .. :try_end_15} :catchall_13
 
-    throw p1
+    throw v1
 .end method
 
 .method private isUnderJobCountQuotaLocked(Lcom/android/server/job/controllers/QuotaController$ExecutionStats;I)Z
-    .registers 7
+    .registers 10
+    .param p1, "stats"  # Lcom/android/server/job/controllers/QuotaController$ExecutionStats;
+    .param p2, "standbyBucket"  # I
 
     .line 786
     sget-object v0, Lcom/android/server/job/JobSchedulerService;->sElapsedRealtimeClock:Ljava/time/Clock;
@@ -1527,53 +1641,57 @@
     move-result-wide v0
 
     .line 787
+    .local v0, "now":J
     iget-wide v2, p1, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->jobRateLimitExpirationTimeElapsed:J
 
-    cmp-long v0, v2, v0
+    cmp-long v2, v2, v0
 
-    const/4 v1, 0x0
+    const/4 v3, 0x0
 
-    const/4 v2, 0x1
+    const/4 v4, 0x1
 
-    if-lez v0, :cond_17
+    if-lez v2, :cond_17
 
-    iget v0, p1, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->jobCountInRateLimitingWindow:I
+    iget v2, p1, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->jobCountInRateLimitingWindow:I
 
-    iget v3, p0, Lcom/android/server/job/controllers/QuotaController;->mMaxJobCountPerRateLimitingWindow:I
+    iget v5, p0, Lcom/android/server/job/controllers/QuotaController;->mMaxJobCountPerRateLimitingWindow:I
 
-    if-ge v0, v3, :cond_15
+    if-ge v2, v5, :cond_15
 
     goto :goto_17
 
     :cond_15
-    move v0, v1
+    move v2, v3
 
     goto :goto_18
 
     :cond_17
     :goto_17
-    move v0, v2
+    move v2, v4
 
     .line 790
+    .local v2, "isUnderAllowedTimeQuota":Z
     :goto_18
-    if-eqz v0, :cond_23
+    if-eqz v2, :cond_23
 
-    iget p1, p1, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->bgJobCountInWindow:I
+    iget v5, p1, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->bgJobCountInWindow:I
 
-    iget-object v0, p0, Lcom/android/server/job/controllers/QuotaController;->mMaxBucketJobCounts:[I
+    iget-object v6, p0, Lcom/android/server/job/controllers/QuotaController;->mMaxBucketJobCounts:[I
 
-    aget p2, v0, p2
+    aget v6, v6, p2
 
-    if-ge p1, p2, :cond_23
+    if-ge v5, v6, :cond_23
 
-    move v1, v2
+    move v3, v4
 
     :cond_23
-    return v1
+    return v3
 .end method
 
 .method private isUnderSessionCountQuotaLocked(Lcom/android/server/job/controllers/QuotaController$ExecutionStats;I)Z
-    .registers 7
+    .registers 10
+    .param p1, "stats"  # Lcom/android/server/job/controllers/QuotaController$ExecutionStats;
+    .param p2, "standbyBucket"  # I
 
     .line 796
     sget-object v0, Lcom/android/server/job/JobSchedulerService;->sElapsedRealtimeClock:Ljava/time/Clock;
@@ -1583,53 +1701,58 @@
     move-result-wide v0
 
     .line 797
+    .local v0, "now":J
     iget-wide v2, p1, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->sessionRateLimitExpirationTimeElapsed:J
 
-    cmp-long v0, v2, v0
+    cmp-long v2, v2, v0
 
-    const/4 v1, 0x0
+    const/4 v3, 0x0
 
-    const/4 v2, 0x1
+    const/4 v4, 0x1
 
-    if-lez v0, :cond_17
+    if-lez v2, :cond_17
 
-    iget v0, p1, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->sessionCountInRateLimitingWindow:I
+    iget v2, p1, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->sessionCountInRateLimitingWindow:I
 
-    iget v3, p0, Lcom/android/server/job/controllers/QuotaController;->mMaxSessionCountPerRateLimitingWindow:I
+    iget v5, p0, Lcom/android/server/job/controllers/QuotaController;->mMaxSessionCountPerRateLimitingWindow:I
 
-    if-ge v0, v3, :cond_15
+    if-ge v2, v5, :cond_15
 
     goto :goto_17
 
     :cond_15
-    move v0, v1
+    move v2, v3
 
     goto :goto_18
 
     :cond_17
     :goto_17
-    move v0, v2
+    move v2, v4
 
     .line 799
+    .local v2, "isUnderAllowedTimeQuota":Z
     :goto_18
-    if-eqz v0, :cond_23
+    if-eqz v2, :cond_23
 
-    iget p1, p1, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->sessionCountInWindow:I
+    iget v5, p1, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->sessionCountInWindow:I
 
-    iget-object v0, p0, Lcom/android/server/job/controllers/QuotaController;->mMaxBucketSessionCounts:[I
+    iget-object v6, p0, Lcom/android/server/job/controllers/QuotaController;->mMaxBucketSessionCounts:[I
 
-    aget p2, v0, p2
+    aget v6, v6, p2
 
-    if-ge p1, p2, :cond_23
+    if-ge v5, v6, :cond_23
 
-    move v1, v2
+    move v3, v4
 
     :cond_23
-    return v1
+    return v3
 .end method
 
 .method static synthetic lambda$handleNewChargingStateLocked$2(JZLcom/android/server/job/controllers/QuotaController$Timer;)V
     .registers 4
+    .param p0, "nowElapsed"  # J
+    .param p2, "isCharging"  # Z
+    .param p3, "t"  # Lcom/android/server/job/controllers/QuotaController$Timer;
 
     .line 1239
     invoke-virtual {p3, p0, p1, p2}, Lcom/android/server/job/controllers/QuotaController$Timer;->onStateChangedLocked(JZ)V
@@ -1639,6 +1762,8 @@
 
 .method static synthetic lambda$invalidateAllExecutionStatsLocked$1(J[Lcom/android/server/job/controllers/QuotaController$ExecutionStats;)V
     .registers 5
+    .param p0, "nowElapsed"  # J
+    .param p2, "appStats"  # [Lcom/android/server/job/controllers/QuotaController$ExecutionStats;
 
     .line 1089
     if-eqz p2, :cond_f
@@ -1646,6 +1771,7 @@
     .line 1090
     const/4 v0, 0x0
 
+    .local v0, "i":I
     :goto_3
     array-length v1, p2
 
@@ -1655,18 +1781,21 @@
     aget-object v1, p2, v0
 
     .line 1092
+    .local v1, "stats":Lcom/android/server/job/controllers/QuotaController$ExecutionStats;
     if-eqz v1, :cond_c
 
     .line 1093
     iput-wide p0, v1, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->expirationTimeElapsed:J
 
     .line 1090
+    .end local v1  # "stats":Lcom/android/server/job/controllers/QuotaController$ExecutionStats;
     :cond_c
     add-int/lit8 v0, v0, 0x1
 
     goto :goto_3
 
     .line 1097
+    .end local v0  # "i":I
     :cond_f
     return-void
 .end method
@@ -1675,88 +1804,91 @@
     .registers 7
 
     .line 1245
-    nop
-
-    .line 1246
     const/4 v0, 0x0
 
-    move v1, v0
+    .line 1246
+    .local v0, "changed":Z
+    const/4 v1, 0x0
 
-    move v2, v1
+    .local v1, "u":I
+    :goto_2
+    iget-object v2, p0, Lcom/android/server/job/controllers/QuotaController;->mTrackedJobs:Lcom/android/server/job/controllers/QuotaController$UserPackageMap;
 
-    :goto_4
-    iget-object v3, p0, Lcom/android/server/job/controllers/QuotaController;->mTrackedJobs:Lcom/android/server/job/controllers/QuotaController$UserPackageMap;
+    invoke-virtual {v2}, Lcom/android/server/job/controllers/QuotaController$UserPackageMap;->numUsers()I
 
-    invoke-virtual {v3}, Lcom/android/server/job/controllers/QuotaController$UserPackageMap;->numUsers()I
+    move-result v2
 
-    move-result v3
-
-    if-ge v1, v3, :cond_2e
+    if-ge v1, v2, :cond_2a
 
     .line 1247
-    iget-object v3, p0, Lcom/android/server/job/controllers/QuotaController;->mTrackedJobs:Lcom/android/server/job/controllers/QuotaController$UserPackageMap;
+    iget-object v2, p0, Lcom/android/server/job/controllers/QuotaController;->mTrackedJobs:Lcom/android/server/job/controllers/QuotaController$UserPackageMap;
 
-    invoke-virtual {v3, v1}, Lcom/android/server/job/controllers/QuotaController$UserPackageMap;->keyAt(I)I
+    invoke-virtual {v2, v1}, Lcom/android/server/job/controllers/QuotaController$UserPackageMap;->keyAt(I)I
 
-    move-result v3
+    move-result v2
 
     .line 1248
-    move v4, v2
+    .local v2, "userId":I
+    const/4 v3, 0x0
 
-    move v2, v0
+    .local v3, "p":I
+    :goto_11
+    iget-object v4, p0, Lcom/android/server/job/controllers/QuotaController;->mTrackedJobs:Lcom/android/server/job/controllers/QuotaController$UserPackageMap;
 
-    :goto_14
-    iget-object v5, p0, Lcom/android/server/job/controllers/QuotaController;->mTrackedJobs:Lcom/android/server/job/controllers/QuotaController$UserPackageMap;
+    invoke-virtual {v4, v2}, Lcom/android/server/job/controllers/QuotaController$UserPackageMap;->numPackagesForUser(I)I
 
-    invoke-virtual {v5, v3}, Lcom/android/server/job/controllers/QuotaController$UserPackageMap;->numPackagesForUser(I)I
+    move-result v4
 
-    move-result v5
-
-    if-ge v2, v5, :cond_2a
+    if-ge v3, v4, :cond_27
 
     .line 1249
-    iget-object v5, p0, Lcom/android/server/job/controllers/QuotaController;->mTrackedJobs:Lcom/android/server/job/controllers/QuotaController$UserPackageMap;
+    iget-object v4, p0, Lcom/android/server/job/controllers/QuotaController;->mTrackedJobs:Lcom/android/server/job/controllers/QuotaController$UserPackageMap;
 
-    invoke-virtual {v5, v1, v2}, Lcom/android/server/job/controllers/QuotaController$UserPackageMap;->keyAt(II)Ljava/lang/String;
+    invoke-virtual {v4, v1, v3}, Lcom/android/server/job/controllers/QuotaController$UserPackageMap;->keyAt(II)Ljava/lang/String;
 
-    move-result-object v5
+    move-result-object v4
 
     .line 1250
-    invoke-direct {p0, v3, v5}, Lcom/android/server/job/controllers/QuotaController;->maybeUpdateConstraintForPkgLocked(ILjava/lang/String;)Z
+    .local v4, "packageName":Ljava/lang/String;
+    invoke-direct {p0, v2, v4}, Lcom/android/server/job/controllers/QuotaController;->maybeUpdateConstraintForPkgLocked(ILjava/lang/String;)Z
 
     move-result v5
 
-    or-int/2addr v4, v5
+    or-int/2addr v0, v5
 
     .line 1248
-    add-int/lit8 v2, v2, 0x1
+    .end local v4  # "packageName":Ljava/lang/String;
+    add-int/lit8 v3, v3, 0x1
 
-    goto :goto_14
+    goto :goto_11
 
     .line 1246
-    :cond_2a
+    .end local v2  # "userId":I
+    .end local v3  # "p":I
+    :cond_27
     add-int/lit8 v1, v1, 0x1
 
-    move v2, v4
-
-    goto :goto_4
+    goto :goto_2
 
     .line 1253
-    :cond_2e
-    if-eqz v2, :cond_35
+    .end local v1  # "u":I
+    :cond_2a
+    if-eqz v0, :cond_31
 
     .line 1254
-    iget-object v0, p0, Lcom/android/server/job/controllers/QuotaController;->mStateChangedListener:Lcom/android/server/job/StateChangedListener;
+    iget-object v1, p0, Lcom/android/server/job/controllers/QuotaController;->mStateChangedListener:Lcom/android/server/job/StateChangedListener;
 
-    invoke-interface {v0}, Lcom/android/server/job/StateChangedListener;->onControllerStateChanged()V
+    invoke-interface {v1}, Lcom/android/server/job/StateChangedListener;->onControllerStateChanged()V
 
     .line 1256
-    :cond_35
+    :cond_31
     return-void
 .end method
 
 .method private maybeUpdateConstraintForPkgLocked(ILjava/lang/String;)Z
     .registers 11
+    .param p1, "userId"  # I
+    .param p2, "packageName"  # Ljava/lang/String;
 
     .line 1265
     iget-object v0, p0, Lcom/android/server/job/controllers/QuotaController;->mTrackedJobs:Lcom/android/server/job/controllers/QuotaController$UserPackageMap;
@@ -1768,6 +1900,7 @@
     check-cast v0, Landroid/util/ArraySet;
 
     .line 1266
+    .local v0, "jobs":Landroid/util/ArraySet;, "Landroid/util/ArraySet<Lcom/android/server/job/controllers/JobStatus;>;"
     const/4 v1, 0x0
 
     if-eqz v0, :cond_76
@@ -1784,23 +1917,26 @@
     :cond_12
     invoke-virtual {v0, v1}, Landroid/util/ArraySet;->valueAt(I)Ljava/lang/Object;
 
-    move-result-object v2
+    move-result-object v1
 
-    check-cast v2, Lcom/android/server/job/controllers/JobStatus;
+    check-cast v1, Lcom/android/server/job/controllers/JobStatus;
 
-    invoke-virtual {v2}, Lcom/android/server/job/controllers/JobStatus;->getStandbyBucket()I
+    invoke-virtual {v1}, Lcom/android/server/job/controllers/JobStatus;->getStandbyBucket()I
+
+    move-result v1
+
+    .line 1272
+    .local v1, "realStandbyBucket":I
+    invoke-virtual {p0, p1, p2, v1}, Lcom/android/server/job/controllers/QuotaController;->isWithinQuotaLocked(ILjava/lang/String;I)Z
 
     move-result v2
 
-    .line 1272
-    invoke-virtual {p0, p1, p2, v2}, Lcom/android/server/job/controllers/QuotaController;->isWithinQuotaLocked(ILjava/lang/String;I)Z
-
-    move-result v3
-
     .line 1273
-    nop
+    .local v2, "realInQuota":Z
+    const/4 v3, 0x0
 
     .line 1274
+    .local v3, "changed":Z
     invoke-virtual {v0}, Landroid/util/ArraySet;->size()I
 
     move-result v4
@@ -1809,6 +1945,7 @@
 
     sub-int/2addr v4, v5
 
+    .local v4, "i":I
     :goto_27
     if-ltz v4, :cond_55
 
@@ -1820,6 +1957,7 @@
     check-cast v6, Lcom/android/server/job/controllers/JobStatus;
 
     .line 1276
+    .local v6, "js":Lcom/android/server/job/controllers/JobStatus;
     invoke-direct {p0, v6}, Lcom/android/server/job/controllers/QuotaController;->isTopStartedJobLocked(Lcom/android/server/job/controllers/JobStatus;)Z
 
     move-result v7
@@ -1829,29 +1967,29 @@
     .line 1279
     invoke-virtual {v6, v5}, Lcom/android/server/job/controllers/JobStatus;->setQuotaConstraintSatisfied(Z)Z
 
-    move-result v6
+    move-result v7
 
-    or-int/2addr v1, v6
+    or-int/2addr v3, v7
 
     goto :goto_52
 
     .line 1280
     :cond_3b
-    if-eqz v2, :cond_49
+    if-eqz v1, :cond_49
 
     .line 1281
     invoke-direct {p0, v6}, Lcom/android/server/job/controllers/QuotaController;->getEffectiveStandbyBucket(Lcom/android/server/job/controllers/JobStatus;)I
 
     move-result v7
 
-    if-ne v2, v7, :cond_49
+    if-ne v1, v7, :cond_49
 
     .line 1285
-    invoke-direct {p0, v6, v3}, Lcom/android/server/job/controllers/QuotaController;->setConstraintSatisfied(Lcom/android/server/job/controllers/JobStatus;Z)Z
+    invoke-direct {p0, v6, v2}, Lcom/android/server/job/controllers/QuotaController;->setConstraintSatisfied(Lcom/android/server/job/controllers/JobStatus;Z)Z
 
-    move-result v6
+    move-result v7
 
-    or-int/2addr v1, v6
+    or-int/2addr v3, v7
 
     goto :goto_52
 
@@ -1863,60 +2001,67 @@
 
     invoke-direct {p0, v6, v7}, Lcom/android/server/job/controllers/QuotaController;->setConstraintSatisfied(Lcom/android/server/job/controllers/JobStatus;Z)Z
 
-    move-result v6
+    move-result v7
 
-    or-int/2addr v1, v6
+    or-int/2addr v3, v7
 
     .line 1274
+    .end local v6  # "js":Lcom/android/server/job/controllers/JobStatus;
     :goto_52
     add-int/lit8 v4, v4, -0x1
 
     goto :goto_27
 
     .line 1291
+    .end local v4  # "i":I
     :cond_55
-    if-nez v3, :cond_5b
+    if-nez v2, :cond_5b
 
     .line 1295
-    invoke-virtual {p0, p1, p2, v2}, Lcom/android/server/job/controllers/QuotaController;->maybeScheduleStartAlarmLocked(ILjava/lang/String;I)V
+    invoke-virtual {p0, p1, p2, v1}, Lcom/android/server/job/controllers/QuotaController;->maybeScheduleStartAlarmLocked(ILjava/lang/String;I)V
 
     goto :goto_75
 
     .line 1297
     :cond_5b
-    iget-object v0, p0, Lcom/android/server/job/controllers/QuotaController;->mInQuotaAlarmListeners:Lcom/android/server/job/controllers/QuotaController$UserPackageMap;
+    iget-object v4, p0, Lcom/android/server/job/controllers/QuotaController;->mInQuotaAlarmListeners:Lcom/android/server/job/controllers/QuotaController$UserPackageMap;
 
-    invoke-virtual {v0, p1, p2}, Lcom/android/server/job/controllers/QuotaController$UserPackageMap;->get(ILjava/lang/String;)Ljava/lang/Object;
+    invoke-virtual {v4, p1, p2}, Lcom/android/server/job/controllers/QuotaController$UserPackageMap;->get(ILjava/lang/String;)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v4
 
-    check-cast p1, Lcom/android/server/job/controllers/QuotaController$QcAlarmListener;
+    check-cast v4, Lcom/android/server/job/controllers/QuotaController$QcAlarmListener;
 
     .line 1298
-    if-eqz p1, :cond_75
+    .local v4, "alarmListener":Lcom/android/server/job/controllers/QuotaController$QcAlarmListener;
+    if-eqz v4, :cond_75
 
-    invoke-virtual {p1}, Lcom/android/server/job/controllers/QuotaController$QcAlarmListener;->isWaiting()Z
+    invoke-virtual {v4}, Lcom/android/server/job/controllers/QuotaController$QcAlarmListener;->isWaiting()Z
 
-    move-result p2
+    move-result v5
 
-    if-eqz p2, :cond_75
+    if-eqz v5, :cond_75
 
     .line 1299
-    iget-object p2, p0, Lcom/android/server/job/controllers/QuotaController;->mAlarmManager:Landroid/app/AlarmManager;
+    iget-object v5, p0, Lcom/android/server/job/controllers/QuotaController;->mAlarmManager:Landroid/app/AlarmManager;
 
-    invoke-virtual {p2, p1}, Landroid/app/AlarmManager;->cancel(Landroid/app/AlarmManager$OnAlarmListener;)V
+    invoke-virtual {v5, v4}, Landroid/app/AlarmManager;->cancel(Landroid/app/AlarmManager$OnAlarmListener;)V
 
     .line 1301
-    const-wide/16 v2, 0x0
+    const-wide/16 v5, 0x0
 
-    invoke-virtual {p1, v2, v3}, Lcom/android/server/job/controllers/QuotaController$QcAlarmListener;->setTriggerTime(J)V
+    invoke-virtual {v4, v5, v6}, Lcom/android/server/job/controllers/QuotaController$QcAlarmListener;->setTriggerTime(J)V
 
     .line 1304
+    .end local v4  # "alarmListener":Lcom/android/server/job/controllers/QuotaController$QcAlarmListener;
     :cond_75
     :goto_75
-    return v1
+    return v3
 
     .line 1267
+    .end local v1  # "realStandbyBucket":I
+    .end local v2  # "realInQuota":Z
+    .end local v3  # "changed":Z
     :cond_76
     :goto_76
     return v1
@@ -1924,6 +2069,7 @@
 
 .method private maybeUpdateConstraintForUidLocked(I)Z
     .registers 4
+    .param p1, "uid"  # I
 
     .line 1349
     iget-object v0, p0, Lcom/android/server/job/controllers/QuotaController;->mService:Lcom/android/server/job/JobSchedulerService;
@@ -1937,26 +2083,29 @@
     invoke-virtual {v0, p1, v1}, Lcom/android/server/job/JobStore;->forEachJobForSourceUid(ILjava/util/function/Consumer;)V
 
     .line 1351
-    iget-object p1, p0, Lcom/android/server/job/controllers/QuotaController;->mUpdateUidConstraints:Lcom/android/server/job/controllers/QuotaController$UidConstraintUpdater;
-
-    invoke-virtual {p1}, Lcom/android/server/job/controllers/QuotaController$UidConstraintUpdater;->postProcess()V
-
-    .line 1352
-    iget-object p1, p0, Lcom/android/server/job/controllers/QuotaController;->mUpdateUidConstraints:Lcom/android/server/job/controllers/QuotaController$UidConstraintUpdater;
-
-    iget-boolean p1, p1, Lcom/android/server/job/controllers/QuotaController$UidConstraintUpdater;->wasJobChanged:Z
-
-    .line 1353
     iget-object v0, p0, Lcom/android/server/job/controllers/QuotaController;->mUpdateUidConstraints:Lcom/android/server/job/controllers/QuotaController$UidConstraintUpdater;
 
-    invoke-virtual {v0}, Lcom/android/server/job/controllers/QuotaController$UidConstraintUpdater;->reset()V
+    invoke-virtual {v0}, Lcom/android/server/job/controllers/QuotaController$UidConstraintUpdater;->postProcess()V
+
+    .line 1352
+    iget-object v0, p0, Lcom/android/server/job/controllers/QuotaController;->mUpdateUidConstraints:Lcom/android/server/job/controllers/QuotaController$UidConstraintUpdater;
+
+    iget-boolean v0, v0, Lcom/android/server/job/controllers/QuotaController$UidConstraintUpdater;->wasJobChanged:Z
+
+    .line 1353
+    .local v0, "changed":Z
+    iget-object v1, p0, Lcom/android/server/job/controllers/QuotaController;->mUpdateUidConstraints:Lcom/android/server/job/controllers/QuotaController$UidConstraintUpdater;
+
+    invoke-virtual {v1}, Lcom/android/server/job/controllers/QuotaController$UidConstraintUpdater;->reset()V
 
     .line 1354
-    return p1
+    return v0
 .end method
 
 .method private setConstraintSatisfied(Lcom/android/server/job/controllers/JobStatus;Z)Z
     .registers 7
+    .param p1, "jobStatus"  # Lcom/android/server/job/controllers/JobStatus;
+    .param p2, "isWithinQuota"  # Z
 
     .line 1438
     if-nez p2, :cond_15
@@ -1984,13 +2133,15 @@
     :cond_15
     invoke-virtual {p1, p2}, Lcom/android/server/job/controllers/JobStatus;->setQuotaConstraintSatisfied(Z)Z
 
-    move-result p1
+    move-result v0
 
-    return p1
+    return v0
 .end method
 
 .method private static string(ILjava/lang/String;)Ljava/lang/String;
     .registers 4
+    .param p0, "userId"  # I
+    .param p1, "packageName"  # Ljava/lang/String;
 
     .line 205
     new-instance v0, Ljava/lang/StringBuilder;
@@ -2003,17 +2154,17 @@
 
     invoke-virtual {v0, p0}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    const-string p0, ">"
+    const-string v1, ">"
 
-    invoke-virtual {v0, p0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v0
 
-    return-object p0
+    return-object v0
 .end method
 
 
@@ -2036,6 +2187,7 @@
 
 .method public dumpConstants(Landroid/util/proto/ProtoOutputStream;)V
     .registers 3
+    .param p1, "proto"  # Landroid/util/proto/ProtoOutputStream;
 
     .line 2812
     iget-object v0, p0, Lcom/android/server/job/controllers/QuotaController;->mQcConstants:Lcom/android/server/job/controllers/QuotaController$QcConstants;
@@ -2048,6 +2200,7 @@
 
 .method public dumpConstants(Lcom/android/internal/util/IndentingPrintWriter;)V
     .registers 3
+    .param p1, "pw"  # Lcom/android/internal/util/IndentingPrintWriter;
 
     .line 2807
     iget-object v0, p0, Lcom/android/server/job/controllers/QuotaController;->mQcConstants:Lcom/android/server/job/controllers/QuotaController$QcConstants;
@@ -2059,7 +2212,9 @@
 .end method
 
 .method public dumpControllerStateLocked(Landroid/util/proto/ProtoOutputStream;JLjava/util/function/Predicate;)V
-    .registers 26
+    .registers 27
+    .param p1, "proto"  # Landroid/util/proto/ProtoOutputStream;
+    .param p2, "fieldId"  # J
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(",
@@ -2072,6 +2227,7 @@
     .end annotation
 
     .line 2671
+    .local p4, "predicate":Ljava/util/function/Predicate;, "Ljava/util/function/Predicate<Lcom/android/server/job/controllers/JobStatus;>;"
     move-object/from16 v0, p0
 
     move-object/from16 v1, p1
@@ -2083,6 +2239,7 @@
     move-result-wide v3
 
     .line 2672
+    .local v3, "token":J
     const-wide v5, 0x10b00000009L
 
     invoke-virtual {v1, v5, v6}, Landroid/util/proto/ProtoOutputStream;->start(J)J
@@ -2090,6 +2247,7 @@
     move-result-wide v5
 
     .line 2674
+    .local v5, "mToken":J
     iget-object v7, v0, Lcom/android/server/job/controllers/QuotaController;->mChargeTracker:Lcom/android/server/job/controllers/QuotaController$ChargingTracker;
 
     invoke-virtual {v7}, Lcom/android/server/job/controllers/QuotaController$ChargingTracker;->isCharging()Z
@@ -2121,193 +2279,220 @@
     invoke-virtual {v1, v12, v13, v10, v11}, Landroid/util/proto/ProtoOutputStream;->write(JJ)V
 
     .line 2679
-    const/4 v10, 0x0
+    const/4 v7, 0x0
 
+    .local v7, "i":I
     :goto_3a
-    iget-object v11, v0, Lcom/android/server/job/controllers/QuotaController;->mForegroundUids:Landroid/util/SparseBooleanArray;
+    iget-object v10, v0, Lcom/android/server/job/controllers/QuotaController;->mForegroundUids:Landroid/util/SparseBooleanArray;
 
-    invoke-virtual {v11}, Landroid/util/SparseBooleanArray;->size()I
+    invoke-virtual {v10}, Landroid/util/SparseBooleanArray;->size()I
 
-    move-result v11
+    move-result v10
 
-    if-ge v10, v11, :cond_53
+    if-ge v7, v10, :cond_53
 
     .line 2680
-    const-wide v14, 0x20500000003L
+    const-wide v10, 0x20500000003L
 
-    iget-object v11, v0, Lcom/android/server/job/controllers/QuotaController;->mForegroundUids:Landroid/util/SparseBooleanArray;
+    iget-object v14, v0, Lcom/android/server/job/controllers/QuotaController;->mForegroundUids:Landroid/util/SparseBooleanArray;
 
     .line 2681
-    invoke-virtual {v11, v10}, Landroid/util/SparseBooleanArray;->keyAt(I)I
+    invoke-virtual {v14, v7}, Landroid/util/SparseBooleanArray;->keyAt(I)I
 
-    move-result v11
+    move-result v14
 
     .line 2680
-    invoke-virtual {v1, v14, v15, v11}, Landroid/util/proto/ProtoOutputStream;->write(JI)V
+    invoke-virtual {v1, v10, v11, v14}, Landroid/util/proto/ProtoOutputStream;->write(JI)V
 
     .line 2679
-    add-int/lit8 v10, v10, 0x1
+    add-int/lit8 v7, v7, 0x1
 
     goto :goto_3a
 
     .line 2684
+    .end local v7  # "i":I
     :cond_53
-    iget-object v10, v0, Lcom/android/server/job/controllers/QuotaController;->mTrackedJobs:Lcom/android/server/job/controllers/QuotaController$UserPackageMap;
+    iget-object v7, v0, Lcom/android/server/job/controllers/QuotaController;->mTrackedJobs:Lcom/android/server/job/controllers/QuotaController$UserPackageMap;
 
-    new-instance v11, Lcom/android/server/job/controllers/-$$Lambda$QuotaController$URLEdatPa0Sor76K2xt12wlVxx4;
+    new-instance v10, Lcom/android/server/job/controllers/-$$Lambda$QuotaController$URLEdatPa0Sor76K2xt12wlVxx4;
 
-    invoke-direct {v11, v0, v2, v1}, Lcom/android/server/job/controllers/-$$Lambda$QuotaController$URLEdatPa0Sor76K2xt12wlVxx4;-><init>(Lcom/android/server/job/controllers/QuotaController;Ljava/util/function/Predicate;Landroid/util/proto/ProtoOutputStream;)V
+    invoke-direct {v10, v0, v2, v1}, Lcom/android/server/job/controllers/-$$Lambda$QuotaController$URLEdatPa0Sor76K2xt12wlVxx4;-><init>(Lcom/android/server/job/controllers/QuotaController;Ljava/util/function/Predicate;Landroid/util/proto/ProtoOutputStream;)V
 
-    invoke-virtual {v10, v11}, Lcom/android/server/job/controllers/QuotaController$UserPackageMap;->forEach(Ljava/util/function/Consumer;)V
+    invoke-virtual {v7, v10}, Lcom/android/server/job/controllers/QuotaController$UserPackageMap;->forEach(Ljava/util/function/Consumer;)V
 
     .line 2709
-    const/4 v10, 0x0
+    const/4 v7, 0x0
 
+    .local v7, "u":I
     :goto_5e
-    iget-object v11, v0, Lcom/android/server/job/controllers/QuotaController;->mPkgTimers:Lcom/android/server/job/controllers/QuotaController$UserPackageMap;
+    iget-object v10, v0, Lcom/android/server/job/controllers/QuotaController;->mPkgTimers:Lcom/android/server/job/controllers/QuotaController$UserPackageMap;
 
-    invoke-virtual {v11}, Lcom/android/server/job/controllers/QuotaController$UserPackageMap;->numUsers()I
+    invoke-virtual {v10}, Lcom/android/server/job/controllers/QuotaController$UserPackageMap;->numUsers()I
 
-    move-result v11
+    move-result v10
 
-    if-ge v10, v11, :cond_1e8
+    if-ge v7, v10, :cond_1fb
 
     .line 2710
-    iget-object v11, v0, Lcom/android/server/job/controllers/QuotaController;->mPkgTimers:Lcom/android/server/job/controllers/QuotaController$UserPackageMap;
+    iget-object v10, v0, Lcom/android/server/job/controllers/QuotaController;->mPkgTimers:Lcom/android/server/job/controllers/QuotaController$UserPackageMap;
 
-    invoke-virtual {v11, v10}, Lcom/android/server/job/controllers/QuotaController$UserPackageMap;->keyAt(I)I
+    invoke-virtual {v10, v7}, Lcom/android/server/job/controllers/QuotaController$UserPackageMap;->keyAt(I)I
 
-    move-result v11
+    move-result v10
 
     .line 2711
-    const/4 v14, 0x0
+    .local v10, "userId":I
+    const/4 v11, 0x0
 
+    .local v11, "p":I
     :goto_6d
-    iget-object v15, v0, Lcom/android/server/job/controllers/QuotaController;->mPkgTimers:Lcom/android/server/job/controllers/QuotaController$UserPackageMap;
+    iget-object v14, v0, Lcom/android/server/job/controllers/QuotaController;->mPkgTimers:Lcom/android/server/job/controllers/QuotaController$UserPackageMap;
 
-    invoke-virtual {v15, v11}, Lcom/android/server/job/controllers/QuotaController$UserPackageMap;->numPackagesForUser(I)I
+    invoke-virtual {v14, v10}, Lcom/android/server/job/controllers/QuotaController$UserPackageMap;->numPackagesForUser(I)I
 
-    move-result v15
+    move-result v14
 
-    if-ge v14, v15, :cond_1d8
+    if-ge v11, v14, :cond_1e5
 
     .line 2712
+    iget-object v14, v0, Lcom/android/server/job/controllers/QuotaController;->mPkgTimers:Lcom/android/server/job/controllers/QuotaController$UserPackageMap;
+
+    invoke-virtual {v14, v7, v11}, Lcom/android/server/job/controllers/QuotaController$UserPackageMap;->keyAt(II)Ljava/lang/String;
+
+    move-result-object v14
+
+    .line 2713
+    .local v14, "pkgName":Ljava/lang/String;
+    const-wide v8, 0x20b00000005L
+
+    invoke-virtual {v1, v8, v9}, Landroid/util/proto/ProtoOutputStream;->start(J)J
+
+    move-result-wide v8
+
+    .line 2715
+    .local v8, "psToken":J
     iget-object v15, v0, Lcom/android/server/job/controllers/QuotaController;->mPkgTimers:Lcom/android/server/job/controllers/QuotaController$UserPackageMap;
 
-    invoke-virtual {v15, v10, v14}, Lcom/android/server/job/controllers/QuotaController$UserPackageMap;->keyAt(II)Ljava/lang/String;
+    invoke-virtual {v15, v7, v11}, Lcom/android/server/job/controllers/QuotaController$UserPackageMap;->valueAt(II)Ljava/lang/Object;
 
     move-result-object v15
 
-    .line 2713
-    const-wide v7, 0x20b00000005L
-
-    invoke-virtual {v1, v7, v8}, Landroid/util/proto/ProtoOutputStream;->start(J)J
-
-    move-result-wide v7
-
-    .line 2715
-    iget-object v9, v0, Lcom/android/server/job/controllers/QuotaController;->mPkgTimers:Lcom/android/server/job/controllers/QuotaController$UserPackageMap;
-
-    invoke-virtual {v9, v10, v14}, Lcom/android/server/job/controllers/QuotaController$UserPackageMap;->valueAt(II)Ljava/lang/Object;
-
-    move-result-object v9
-
-    check-cast v9, Lcom/android/server/job/controllers/QuotaController$Timer;
+    check-cast v15, Lcom/android/server/job/controllers/QuotaController$Timer;
 
     const-wide v12, 0x10b00000002L
 
-    invoke-virtual {v9, v1, v12, v13, v2}, Lcom/android/server/job/controllers/QuotaController$Timer;->dump(Landroid/util/proto/ProtoOutputStream;JLjava/util/function/Predicate;)V
+    invoke-virtual {v15, v1, v12, v13, v2}, Lcom/android/server/job/controllers/QuotaController$Timer;->dump(Landroid/util/proto/ProtoOutputStream;JLjava/util/function/Predicate;)V
 
     .line 2718
-    iget-object v9, v0, Lcom/android/server/job/controllers/QuotaController;->mTimingSessions:Lcom/android/server/job/controllers/QuotaController$UserPackageMap;
+    iget-object v12, v0, Lcom/android/server/job/controllers/QuotaController;->mTimingSessions:Lcom/android/server/job/controllers/QuotaController$UserPackageMap;
 
-    invoke-virtual {v9, v11, v15}, Lcom/android/server/job/controllers/QuotaController$UserPackageMap;->get(ILjava/lang/String;)Ljava/lang/Object;
+    invoke-virtual {v12, v10, v14}, Lcom/android/server/job/controllers/QuotaController$UserPackageMap;->get(ILjava/lang/String;)Ljava/lang/Object;
 
-    move-result-object v9
+    move-result-object v12
 
-    check-cast v9, Ljava/util/List;
+    check-cast v12, Ljava/util/List;
 
     .line 2719
-    if-eqz v9, :cond_c0
+    .local v12, "sessions":Ljava/util/List;, "Ljava/util/List<Lcom/android/server/job/controllers/QuotaController$TimingSession;>;"
+    if-eqz v12, :cond_c0
 
     .line 2720
-    invoke-interface {v9}, Ljava/util/List;->size()I
+    invoke-interface {v12}, Ljava/util/List;->size()I
 
-    move-result v12
+    move-result v13
 
-    add-int/lit8 v12, v12, -0x1
+    add-int/lit8 v13, v13, -0x1
 
+    .local v13, "j":I
     :goto_a4
-    if-ltz v12, :cond_bd
+    if-ltz v13, :cond_bd
 
     .line 2721
-    invoke-interface {v9, v12}, Ljava/util/List;->get(I)Ljava/lang/Object;
+    invoke-interface {v12, v13}, Ljava/util/List;->get(I)Ljava/lang/Object;
 
-    move-result-object v13
+    move-result-object v15
 
-    check-cast v13, Lcom/android/server/job/controllers/QuotaController$TimingSession;
+    check-cast v15, Lcom/android/server/job/controllers/QuotaController$TimingSession;
 
     .line 2722
-    move-wide/from16 v16, v3
+    .local v15, "session":Lcom/android/server/job/controllers/QuotaController$TimingSession;
+    move-wide/from16 v17, v3
 
+    .end local v3  # "token":J
+    .local v17, "token":J
     const-wide v2, 0x20b00000003L
 
-    invoke-virtual {v13, v1, v2, v3}, Lcom/android/server/job/controllers/QuotaController$TimingSession;->dump(Landroid/util/proto/ProtoOutputStream;J)V
+    invoke-virtual {v15, v1, v2, v3}, Lcom/android/server/job/controllers/QuotaController$TimingSession;->dump(Landroid/util/proto/ProtoOutputStream;J)V
 
     .line 2720
-    add-int/lit8 v12, v12, -0x1
+    .end local v15  # "session":Lcom/android/server/job/controllers/QuotaController$TimingSession;
+    add-int/lit8 v13, v13, -0x1
 
     move-object/from16 v2, p4
 
-    move-wide/from16 v3, v16
+    move-wide/from16 v3, v17
 
     goto :goto_a4
 
+    .end local v17  # "token":J
+    .restart local v3  # "token":J
     :cond_bd
-    move-wide/from16 v16, v3
+    move-wide/from16 v17, v3
 
+    .end local v3  # "token":J
+    .restart local v17  # "token":J
     goto :goto_c2
 
     .line 2719
+    .end local v13  # "j":I
+    .end local v17  # "token":J
+    .restart local v3  # "token":J
     :cond_c0
-    move-wide/from16 v16, v3
+    move-wide/from16 v17, v3
 
     .line 2727
+    .end local v3  # "token":J
+    .restart local v17  # "token":J
     :goto_c2
     iget-object v2, v0, Lcom/android/server/job/controllers/QuotaController;->mExecutionStatsCache:Lcom/android/server/job/controllers/QuotaController$UserPackageMap;
 
-    invoke-virtual {v2, v11, v15}, Lcom/android/server/job/controllers/QuotaController$UserPackageMap;->get(ILjava/lang/String;)Ljava/lang/Object;
+    invoke-virtual {v2, v10, v14}, Lcom/android/server/job/controllers/QuotaController$UserPackageMap;->get(ILjava/lang/String;)Ljava/lang/Object;
 
     move-result-object v2
 
     check-cast v2, [Lcom/android/server/job/controllers/QuotaController$ExecutionStats;
 
     .line 2728
-    if-eqz v2, :cond_18b
+    .local v2, "stats":[Lcom/android/server/job/controllers/QuotaController$ExecutionStats;
+    if-eqz v2, :cond_193
 
     .line 2729
-    const/4 v9, 0x0
+    const/4 v13, 0x0
 
+    .local v13, "bucketIndex":I
     :goto_cd
-    array-length v12, v2
+    array-length v15, v2
 
-    if-ge v9, v12, :cond_186
+    if-ge v13, v15, :cond_18c
 
     .line 2730
-    aget-object v12, v2, v9
+    aget-object v15, v2, v13
 
     .line 2731
-    if-nez v12, :cond_da
+    .local v15, "es":Lcom/android/server/job/controllers/QuotaController$ExecutionStats;
+    if-nez v15, :cond_dc
 
     .line 2732
-    move-wide/from16 v18, v5
+    move-wide/from16 v19, v5
 
-    move/from16 v20, v14
+    move/from16 v16, v11
 
-    goto/16 :goto_17e
+    move-object/from16 v21, v12
+
+    goto/16 :goto_182
 
     .line 2734
-    :cond_da
+    :cond_dc
     const-wide v3, 0x20b00000004L
 
     invoke-virtual {v1, v3, v4}, Landroid/util/proto/ProtoOutputStream;->start(J)J
@@ -2315,249 +2500,345 @@
     move-result-wide v3
 
     .line 2736
-    move-wide/from16 v18, v5
+    .local v3, "esToken":J
+    move-wide/from16 v19, v5
 
+    .end local v5  # "mToken":J
+    .local v19, "mToken":J
     const-wide v5, 0x10e00000001L
 
-    invoke-virtual {v1, v5, v6, v9}, Landroid/util/proto/ProtoOutputStream;->write(JI)V
+    invoke-virtual {v1, v5, v6, v13}, Landroid/util/proto/ProtoOutputStream;->write(JI)V
 
     .line 2739
-    iget-wide v5, v12, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->expirationTimeElapsed:J
+    iget-wide v5, v15, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->expirationTimeElapsed:J
 
-    move/from16 v20, v14
+    move/from16 v16, v11
 
-    const-wide v13, 0x10300000002L
+    move-object/from16 v21, v12
 
-    invoke-virtual {v1, v13, v14, v5, v6}, Landroid/util/proto/ProtoOutputStream;->write(JJ)V
+    const-wide v11, 0x10300000002L
+
+    .end local v11  # "p":I
+    .end local v12  # "sessions":Ljava/util/List;, "Ljava/util/List<Lcom/android/server/job/controllers/QuotaController$TimingSession;>;"
+    .local v16, "p":I
+    .local v21, "sessions":Ljava/util/List;, "Ljava/util/List<Lcom/android/server/job/controllers/QuotaController$TimingSession;>;"
+    invoke-virtual {v1, v11, v12, v5, v6}, Landroid/util/proto/ProtoOutputStream;->write(JJ)V
 
     .line 2742
     const-wide v5, 0x10300000003L
 
-    iget-wide v13, v12, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->windowSizeMs:J
+    iget-wide v11, v15, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->windowSizeMs:J
 
-    invoke-virtual {v1, v5, v6, v13, v14}, Landroid/util/proto/ProtoOutputStream;->write(JJ)V
+    invoke-virtual {v1, v5, v6, v11, v12}, Landroid/util/proto/ProtoOutputStream;->write(JJ)V
 
     .line 2745
     const-wide v5, 0x1050000000eL
 
-    iget v13, v12, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->jobCountLimit:I
+    iget v11, v15, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->jobCountLimit:I
 
-    invoke-virtual {v1, v5, v6, v13}, Landroid/util/proto/ProtoOutputStream;->write(JI)V
+    invoke-virtual {v1, v5, v6, v11}, Landroid/util/proto/ProtoOutputStream;->write(JI)V
 
     .line 2748
     const-wide v5, 0x1050000000fL
 
-    iget v13, v12, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->sessionCountLimit:I
+    iget v11, v15, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->sessionCountLimit:I
 
-    invoke-virtual {v1, v5, v6, v13}, Landroid/util/proto/ProtoOutputStream;->write(JI)V
+    invoke-virtual {v1, v5, v6, v11}, Landroid/util/proto/ProtoOutputStream;->write(JI)V
 
     .line 2751
     const-wide v5, 0x10300000004L
 
-    iget-wide v13, v12, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->executionTimeInWindowMs:J
+    iget-wide v11, v15, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->executionTimeInWindowMs:J
 
-    invoke-virtual {v1, v5, v6, v13, v14}, Landroid/util/proto/ProtoOutputStream;->write(JJ)V
+    invoke-virtual {v1, v5, v6, v11, v12}, Landroid/util/proto/ProtoOutputStream;->write(JJ)V
 
     .line 2754
     const-wide v5, 0x10500000005L
 
-    iget v13, v12, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->bgJobCountInWindow:I
+    iget v11, v15, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->bgJobCountInWindow:I
 
-    invoke-virtual {v1, v5, v6, v13}, Landroid/util/proto/ProtoOutputStream;->write(JI)V
+    invoke-virtual {v1, v5, v6, v11}, Landroid/util/proto/ProtoOutputStream;->write(JI)V
 
     .line 2757
-    iget-wide v5, v12, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->executionTimeInMaxPeriodMs:J
+    iget-wide v5, v15, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->executionTimeInMaxPeriodMs:J
 
-    const-wide v13, 0x10300000006L
+    const-wide v11, 0x10300000006L
 
-    invoke-virtual {v1, v13, v14, v5, v6}, Landroid/util/proto/ProtoOutputStream;->write(JJ)V
+    invoke-virtual {v1, v11, v12, v5, v6}, Landroid/util/proto/ProtoOutputStream;->write(JJ)V
 
     .line 2760
     const-wide v5, 0x10500000007L
 
-    iget v13, v12, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->bgJobCountInMaxPeriod:I
+    iget v11, v15, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->bgJobCountInMaxPeriod:I
 
-    invoke-virtual {v1, v5, v6, v13}, Landroid/util/proto/ProtoOutputStream;->write(JI)V
+    invoke-virtual {v1, v5, v6, v11}, Landroid/util/proto/ProtoOutputStream;->write(JI)V
 
     .line 2763
     const-wide v5, 0x1050000000bL
 
-    iget v13, v12, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->sessionCountInWindow:I
+    iget v11, v15, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->sessionCountInWindow:I
 
-    invoke-virtual {v1, v5, v6, v13}, Landroid/util/proto/ProtoOutputStream;->write(JI)V
+    invoke-virtual {v1, v5, v6, v11}, Landroid/util/proto/ProtoOutputStream;->write(JI)V
 
     .line 2766
     const-wide v5, 0x10300000008L
 
-    iget-wide v13, v12, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->inQuotaTimeElapsed:J
+    iget-wide v11, v15, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->inQuotaTimeElapsed:J
 
-    invoke-virtual {v1, v5, v6, v13, v14}, Landroid/util/proto/ProtoOutputStream;->write(JJ)V
+    invoke-virtual {v1, v5, v6, v11, v12}, Landroid/util/proto/ProtoOutputStream;->write(JJ)V
 
     .line 2769
     const-wide v5, 0x10300000009L
 
-    iget-wide v13, v12, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->jobRateLimitExpirationTimeElapsed:J
+    iget-wide v11, v15, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->jobRateLimitExpirationTimeElapsed:J
 
-    invoke-virtual {v1, v5, v6, v13, v14}, Landroid/util/proto/ProtoOutputStream;->write(JJ)V
+    invoke-virtual {v1, v5, v6, v11, v12}, Landroid/util/proto/ProtoOutputStream;->write(JJ)V
 
     .line 2772
     const-wide v5, 0x1050000000aL
 
-    iget v13, v12, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->jobCountInRateLimitingWindow:I
+    iget v11, v15, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->jobCountInRateLimitingWindow:I
 
-    invoke-virtual {v1, v5, v6, v13}, Landroid/util/proto/ProtoOutputStream;->write(JI)V
+    invoke-virtual {v1, v5, v6, v11}, Landroid/util/proto/ProtoOutputStream;->write(JI)V
 
     .line 2775
     const-wide v5, 0x1030000000cL
 
-    iget-wide v13, v12, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->sessionRateLimitExpirationTimeElapsed:J
+    iget-wide v11, v15, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->sessionRateLimitExpirationTimeElapsed:J
 
-    invoke-virtual {v1, v5, v6, v13, v14}, Landroid/util/proto/ProtoOutputStream;->write(JJ)V
+    invoke-virtual {v1, v5, v6, v11, v12}, Landroid/util/proto/ProtoOutputStream;->write(JJ)V
 
     .line 2778
     const-wide v5, 0x1050000000dL
 
-    iget v12, v12, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->sessionCountInRateLimitingWindow:I
+    iget v11, v15, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->sessionCountInRateLimitingWindow:I
 
-    invoke-virtual {v1, v5, v6, v12}, Landroid/util/proto/ProtoOutputStream;->write(JI)V
+    invoke-virtual {v1, v5, v6, v11}, Landroid/util/proto/ProtoOutputStream;->write(JI)V
 
     .line 2781
     invoke-virtual {v1, v3, v4}, Landroid/util/proto/ProtoOutputStream;->end(J)V
 
     .line 2729
-    :goto_17e
-    add-int/lit8 v9, v9, 0x1
+    .end local v3  # "esToken":J
+    .end local v15  # "es":Lcom/android/server/job/controllers/QuotaController$ExecutionStats;
+    :goto_182
+    add-int/lit8 v13, v13, 0x1
 
-    move-wide/from16 v5, v18
+    move/from16 v11, v16
 
-    move/from16 v14, v20
+    move-wide/from16 v5, v19
+
+    move-object/from16 v12, v21
 
     goto/16 :goto_cd
 
-    :cond_186
-    move-wide/from16 v18, v5
+    .end local v16  # "p":I
+    .end local v19  # "mToken":J
+    .end local v21  # "sessions":Ljava/util/List;, "Ljava/util/List<Lcom/android/server/job/controllers/QuotaController$TimingSession;>;"
+    .restart local v5  # "mToken":J
+    .restart local v11  # "p":I
+    .restart local v12  # "sessions":Ljava/util/List;, "Ljava/util/List<Lcom/android/server/job/controllers/QuotaController$TimingSession;>;"
+    :cond_18c
+    move-wide/from16 v19, v5
 
-    move/from16 v20, v14
+    move/from16 v16, v11
 
-    goto :goto_18f
+    move-object/from16 v21, v12
+
+    .end local v5  # "mToken":J
+    .end local v11  # "p":I
+    .end local v12  # "sessions":Ljava/util/List;, "Ljava/util/List<Lcom/android/server/job/controllers/QuotaController$TimingSession;>;"
+    .restart local v16  # "p":I
+    .restart local v19  # "mToken":J
+    .restart local v21  # "sessions":Ljava/util/List;, "Ljava/util/List<Lcom/android/server/job/controllers/QuotaController$TimingSession;>;"
+    goto :goto_199
 
     .line 2728
-    :cond_18b
-    move-wide/from16 v18, v5
+    .end local v13  # "bucketIndex":I
+    .end local v16  # "p":I
+    .end local v19  # "mToken":J
+    .end local v21  # "sessions":Ljava/util/List;, "Ljava/util/List<Lcom/android/server/job/controllers/QuotaController$TimingSession;>;"
+    .restart local v5  # "mToken":J
+    .restart local v11  # "p":I
+    .restart local v12  # "sessions":Ljava/util/List;, "Ljava/util/List<Lcom/android/server/job/controllers/QuotaController$TimingSession;>;"
+    :cond_193
+    move-wide/from16 v19, v5
 
-    move/from16 v20, v14
+    move/from16 v16, v11
+
+    move-object/from16 v21, v12
 
     .line 2785
-    :goto_18f
-    iget-object v2, v0, Lcom/android/server/job/controllers/QuotaController;->mInQuotaAlarmListeners:Lcom/android/server/job/controllers/QuotaController$UserPackageMap;
+    .end local v5  # "mToken":J
+    .end local v11  # "p":I
+    .end local v12  # "sessions":Ljava/util/List;, "Ljava/util/List<Lcom/android/server/job/controllers/QuotaController$TimingSession;>;"
+    .restart local v16  # "p":I
+    .restart local v19  # "mToken":J
+    .restart local v21  # "sessions":Ljava/util/List;, "Ljava/util/List<Lcom/android/server/job/controllers/QuotaController$TimingSession;>;"
+    :goto_199
+    iget-object v3, v0, Lcom/android/server/job/controllers/QuotaController;->mInQuotaAlarmListeners:Lcom/android/server/job/controllers/QuotaController$UserPackageMap;
 
-    invoke-virtual {v2, v11, v15}, Lcom/android/server/job/controllers/QuotaController$UserPackageMap;->get(ILjava/lang/String;)Ljava/lang/Object;
+    invoke-virtual {v3, v10, v14}, Lcom/android/server/job/controllers/QuotaController$UserPackageMap;->get(ILjava/lang/String;)Ljava/lang/Object;
 
-    move-result-object v2
+    move-result-object v3
 
-    check-cast v2, Lcom/android/server/job/controllers/QuotaController$QcAlarmListener;
+    check-cast v3, Lcom/android/server/job/controllers/QuotaController$QcAlarmListener;
 
     .line 2786
-    if-eqz v2, :cond_1c0
+    .local v3, "alarmListener":Lcom/android/server/job/controllers/QuotaController$QcAlarmListener;
+    if-eqz v3, :cond_1cc
 
     .line 2787
-    const-wide v3, 0x10b00000005L
+    const-wide v4, 0x10b00000005L
 
-    invoke-virtual {v1, v3, v4}, Landroid/util/proto/ProtoOutputStream;->start(J)J
+    invoke-virtual {v1, v4, v5}, Landroid/util/proto/ProtoOutputStream;->start(J)J
 
-    move-result-wide v3
+    move-result-wide v4
 
     .line 2789
+    .local v4, "alToken":J
     nop
 
     .line 2790
-    invoke-virtual {v2}, Lcom/android/server/job/controllers/QuotaController$QcAlarmListener;->isWaiting()Z
+    invoke-virtual {v3}, Lcom/android/server/job/controllers/QuotaController$QcAlarmListener;->isWaiting()Z
 
-    move-result v5
+    move-result v6
 
     .line 2789
-    const-wide v12, 0x10800000001L
+    const-wide v11, 0x10800000001L
 
-    invoke-virtual {v1, v12, v13, v5}, Landroid/util/proto/ProtoOutputStream;->write(JZ)V
+    invoke-virtual {v1, v11, v12, v6}, Landroid/util/proto/ProtoOutputStream;->write(JZ)V
 
     .line 2791
     nop
 
     .line 2793
-    invoke-virtual {v2}, Lcom/android/server/job/controllers/QuotaController$QcAlarmListener;->getTriggerTimeElapsed()J
+    invoke-virtual {v3}, Lcom/android/server/job/controllers/QuotaController$QcAlarmListener;->getTriggerTimeElapsed()J
 
-    move-result-wide v5
+    move-result-wide v11
 
     .line 2791
-    const-wide v14, 0x10300000002L
+    move-object v6, v2
 
-    invoke-virtual {v1, v14, v15, v5, v6}, Landroid/util/proto/ProtoOutputStream;->write(JJ)V
+    move-object v13, v3
+
+    const-wide v2, 0x10300000002L
+
+    .end local v2  # "stats":[Lcom/android/server/job/controllers/QuotaController$ExecutionStats;
+    .end local v3  # "alarmListener":Lcom/android/server/job/controllers/QuotaController$QcAlarmListener;
+    .local v6, "stats":[Lcom/android/server/job/controllers/QuotaController$ExecutionStats;
+    .local v13, "alarmListener":Lcom/android/server/job/controllers/QuotaController$QcAlarmListener;
+    invoke-virtual {v1, v2, v3, v11, v12}, Landroid/util/proto/ProtoOutputStream;->write(JJ)V
 
     .line 2794
-    invoke-virtual {v1, v3, v4}, Landroid/util/proto/ProtoOutputStream;->end(J)V
+    invoke-virtual {v1, v4, v5}, Landroid/util/proto/ProtoOutputStream;->end(J)V
 
-    goto :goto_1c5
+    goto :goto_1ce
 
     .line 2786
-    :cond_1c0
-    const-wide v12, 0x10800000001L
+    .end local v4  # "alToken":J
+    .end local v6  # "stats":[Lcom/android/server/job/controllers/QuotaController$ExecutionStats;
+    .end local v13  # "alarmListener":Lcom/android/server/job/controllers/QuotaController$QcAlarmListener;
+    .restart local v2  # "stats":[Lcom/android/server/job/controllers/QuotaController$ExecutionStats;
+    .restart local v3  # "alarmListener":Lcom/android/server/job/controllers/QuotaController$QcAlarmListener;
+    :cond_1cc
+    move-object v6, v2
+
+    move-object v13, v3
 
     .line 2797
-    :goto_1c5
-    invoke-virtual {v1, v7, v8}, Landroid/util/proto/ProtoOutputStream;->end(J)V
+    .end local v2  # "stats":[Lcom/android/server/job/controllers/QuotaController$ExecutionStats;
+    .end local v3  # "alarmListener":Lcom/android/server/job/controllers/QuotaController$QcAlarmListener;
+    .restart local v6  # "stats":[Lcom/android/server/job/controllers/QuotaController$ExecutionStats;
+    .restart local v13  # "alarmListener":Lcom/android/server/job/controllers/QuotaController$QcAlarmListener;
+    :goto_1ce
+    invoke-virtual {v1, v8, v9}, Landroid/util/proto/ProtoOutputStream;->end(J)V
 
     .line 2711
-    add-int/lit8 v14, v20, 0x1
+    .end local v6  # "stats":[Lcom/android/server/job/controllers/QuotaController$ExecutionStats;
+    .end local v8  # "psToken":J
+    .end local v13  # "alarmListener":Lcom/android/server/job/controllers/QuotaController$QcAlarmListener;
+    .end local v14  # "pkgName":Ljava/lang/String;
+    .end local v21  # "sessions":Ljava/util/List;, "Ljava/util/List<Lcom/android/server/job/controllers/QuotaController$TimingSession;>;"
+    add-int/lit8 v11, v16, 0x1
 
     move-object/from16 v2, p4
 
-    move-wide v8, v12
+    move-wide/from16 v3, v17
 
-    move-wide/from16 v3, v16
+    move-wide/from16 v5, v19
 
-    move-wide/from16 v5, v18
+    const-wide v8, 0x10800000001L
 
     const-wide v12, 0x10300000006L
 
+    .end local v16  # "p":I
+    .restart local v11  # "p":I
     goto/16 :goto_6d
 
+    .end local v17  # "token":J
+    .end local v19  # "mToken":J
+    .local v3, "token":J
+    .restart local v5  # "mToken":J
+    :cond_1e5
+    move-wide/from16 v17, v3
+
+    move-wide/from16 v19, v5
+
+    move/from16 v16, v11
+
     .line 2709
-    :cond_1d8
-    move-wide/from16 v16, v3
-
-    move-wide/from16 v18, v5
-
-    move-wide v12, v8
-
-    add-int/lit8 v10, v10, 0x1
+    .end local v3  # "token":J
+    .end local v5  # "mToken":J
+    .end local v10  # "userId":I
+    .end local v11  # "p":I
+    .restart local v17  # "token":J
+    .restart local v19  # "mToken":J
+    add-int/lit8 v7, v7, 0x1
 
     move-object/from16 v2, p4
+
+    const-wide v8, 0x10800000001L
 
     const-wide v12, 0x10300000006L
 
     goto/16 :goto_5e
 
+    .end local v17  # "token":J
+    .end local v19  # "mToken":J
+    .restart local v3  # "token":J
+    .restart local v5  # "mToken":J
+    :cond_1fb
+    move-wide/from16 v17, v3
+
+    move-wide/from16 v19, v5
+
     .line 2801
-    :cond_1e8
-    move-wide/from16 v16, v3
+    .end local v3  # "token":J
+    .end local v5  # "mToken":J
+    .end local v7  # "u":I
+    .restart local v17  # "token":J
+    .restart local v19  # "mToken":J
+    move-wide/from16 v2, v19
 
-    move-wide/from16 v18, v5
-
-    move-wide/from16 v2, v18
-
+    .end local v19  # "mToken":J
+    .local v2, "mToken":J
     invoke-virtual {v1, v2, v3}, Landroid/util/proto/ProtoOutputStream;->end(J)V
 
     .line 2802
-    move-wide/from16 v2, v16
+    move-wide/from16 v4, v17
 
-    invoke-virtual {v1, v2, v3}, Landroid/util/proto/ProtoOutputStream;->end(J)V
+    .end local v17  # "token":J
+    .local v4, "token":J
+    invoke-virtual {v1, v4, v5}, Landroid/util/proto/ProtoOutputStream;->end(J)V
 
     .line 2803
     return-void
 .end method
 
 .method public dumpControllerStateLocked(Lcom/android/internal/util/IndentingPrintWriter;Ljava/util/function/Predicate;)V
-    .registers 11
+    .registers 12
+    .param p1, "pw"  # Lcom/android/internal/util/IndentingPrintWriter;
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(",
@@ -2569,6 +2850,7 @@
     .end annotation
 
     .line 2549
+    .local p2, "predicate":Ljava/util/function/Predicate;, "Ljava/util/function/Predicate<Lcom/android/server/job/controllers/JobStatus;>;"
     new-instance v0, Ljava/lang/StringBuilder;
 
     invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
@@ -2683,128 +2965,135 @@
     .line 2561
     const/4 v0, 0x0
 
-    move v1, v0
+    .local v0, "i":I
+    :goto_7d
+    iget-object v1, p0, Lcom/android/server/job/controllers/QuotaController;->mUidToPackageCache:Landroid/util/SparseSetArray;
 
-    :goto_7e
-    iget-object v2, p0, Lcom/android/server/job/controllers/QuotaController;->mUidToPackageCache:Landroid/util/SparseSetArray;
+    invoke-virtual {v1}, Landroid/util/SparseSetArray;->size()I
 
-    invoke-virtual {v2}, Landroid/util/SparseSetArray;->size()I
+    move-result v1
 
-    move-result v2
+    const-string v2, ": "
 
-    const-string v3, ": "
-
-    if-ge v1, v2, :cond_a0
+    if-ge v0, v1, :cond_9f
 
     .line 2562
-    iget-object v2, p0, Lcom/android/server/job/controllers/QuotaController;->mUidToPackageCache:Landroid/util/SparseSetArray;
+    iget-object v1, p0, Lcom/android/server/job/controllers/QuotaController;->mUidToPackageCache:Landroid/util/SparseSetArray;
 
-    invoke-virtual {v2, v1}, Landroid/util/SparseSetArray;->keyAt(I)I
+    invoke-virtual {v1, v0}, Landroid/util/SparseSetArray;->keyAt(I)I
 
-    move-result v2
+    move-result v1
 
     .line 2563
-    invoke-virtual {p1, v2}, Lcom/android/internal/util/IndentingPrintWriter;->print(I)V
+    .local v1, "uid":I
+    invoke-virtual {p1, v1}, Lcom/android/internal/util/IndentingPrintWriter;->print(I)V
 
     .line 2564
-    invoke-virtual {p1, v3}, Lcom/android/internal/util/IndentingPrintWriter;->print(Ljava/lang/String;)V
+    invoke-virtual {p1, v2}, Lcom/android/internal/util/IndentingPrintWriter;->print(Ljava/lang/String;)V
 
     .line 2565
-    iget-object v3, p0, Lcom/android/server/job/controllers/QuotaController;->mUidToPackageCache:Landroid/util/SparseSetArray;
+    iget-object v2, p0, Lcom/android/server/job/controllers/QuotaController;->mUidToPackageCache:Landroid/util/SparseSetArray;
 
-    invoke-virtual {v3, v2}, Landroid/util/SparseSetArray;->get(I)Landroid/util/ArraySet;
+    invoke-virtual {v2, v1}, Landroid/util/SparseSetArray;->get(I)Landroid/util/ArraySet;
 
     move-result-object v2
 
     invoke-virtual {p1, v2}, Lcom/android/internal/util/IndentingPrintWriter;->println(Ljava/lang/Object;)V
 
     .line 2561
-    add-int/lit8 v1, v1, 0x1
+    .end local v1  # "uid":I
+    add-int/lit8 v0, v0, 0x1
 
-    goto :goto_7e
+    goto :goto_7d
 
     .line 2567
-    :cond_a0
+    .end local v0  # "i":I
+    :cond_9f
     invoke-virtual {p1}, Lcom/android/internal/util/IndentingPrintWriter;->decreaseIndent()Lcom/android/internal/util/IndentingPrintWriter;
 
     .line 2568
     invoke-virtual {p1}, Lcom/android/internal/util/IndentingPrintWriter;->println()V
 
     .line 2570
-    iget-object v1, p0, Lcom/android/server/job/controllers/QuotaController;->mTrackedJobs:Lcom/android/server/job/controllers/QuotaController$UserPackageMap;
+    iget-object v0, p0, Lcom/android/server/job/controllers/QuotaController;->mTrackedJobs:Lcom/android/server/job/controllers/QuotaController$UserPackageMap;
 
-    new-instance v2, Lcom/android/server/job/controllers/-$$Lambda$QuotaController$LrhE3MR6b_HLbgtFW6XDyRkYhjc;
+    new-instance v1, Lcom/android/server/job/controllers/-$$Lambda$QuotaController$LrhE3MR6b_HLbgtFW6XDyRkYhjc;
 
-    invoke-direct {v2, p0, p2, p1}, Lcom/android/server/job/controllers/-$$Lambda$QuotaController$LrhE3MR6b_HLbgtFW6XDyRkYhjc;-><init>(Lcom/android/server/job/controllers/QuotaController;Ljava/util/function/Predicate;Lcom/android/internal/util/IndentingPrintWriter;)V
+    invoke-direct {v1, p0, p2, p1}, Lcom/android/server/job/controllers/-$$Lambda$QuotaController$LrhE3MR6b_HLbgtFW6XDyRkYhjc;-><init>(Lcom/android/server/job/controllers/QuotaController;Ljava/util/function/Predicate;Lcom/android/internal/util/IndentingPrintWriter;)V
 
-    invoke-virtual {v1, v2}, Lcom/android/server/job/controllers/QuotaController$UserPackageMap;->forEach(Ljava/util/function/Consumer;)V
+    invoke-virtual {v0, v1}, Lcom/android/server/job/controllers/QuotaController$UserPackageMap;->forEach(Ljava/util/function/Consumer;)V
 
     .line 2601
     invoke-virtual {p1}, Lcom/android/internal/util/IndentingPrintWriter;->println()V
 
     .line 2602
-    move v1, v0
+    const/4 v0, 0x0
 
-    :goto_b4
-    iget-object v2, p0, Lcom/android/server/job/controllers/QuotaController;->mPkgTimers:Lcom/android/server/job/controllers/QuotaController$UserPackageMap;
+    .local v0, "u":I
+    :goto_b3
+    iget-object v1, p0, Lcom/android/server/job/controllers/QuotaController;->mPkgTimers:Lcom/android/server/job/controllers/QuotaController$UserPackageMap;
 
-    invoke-virtual {v2}, Lcom/android/server/job/controllers/QuotaController$UserPackageMap;->numUsers()I
+    invoke-virtual {v1}, Lcom/android/server/job/controllers/QuotaController$UserPackageMap;->numUsers()I
 
-    move-result v2
+    move-result v1
 
-    if-ge v1, v2, :cond_117
+    if-ge v0, v1, :cond_116
 
     .line 2603
-    iget-object v2, p0, Lcom/android/server/job/controllers/QuotaController;->mPkgTimers:Lcom/android/server/job/controllers/QuotaController$UserPackageMap;
+    iget-object v1, p0, Lcom/android/server/job/controllers/QuotaController;->mPkgTimers:Lcom/android/server/job/controllers/QuotaController$UserPackageMap;
 
-    invoke-virtual {v2, v1}, Lcom/android/server/job/controllers/QuotaController$UserPackageMap;->keyAt(I)I
+    invoke-virtual {v1, v0}, Lcom/android/server/job/controllers/QuotaController$UserPackageMap;->keyAt(I)I
 
-    move-result v2
+    move-result v1
 
     .line 2604
-    move v4, v0
+    .local v1, "userId":I
+    const/4 v3, 0x0
 
-    :goto_c3
-    iget-object v5, p0, Lcom/android/server/job/controllers/QuotaController;->mPkgTimers:Lcom/android/server/job/controllers/QuotaController$UserPackageMap;
+    .local v3, "p":I
+    :goto_c2
+    iget-object v4, p0, Lcom/android/server/job/controllers/QuotaController;->mPkgTimers:Lcom/android/server/job/controllers/QuotaController$UserPackageMap;
 
-    invoke-virtual {v5, v2}, Lcom/android/server/job/controllers/QuotaController$UserPackageMap;->numPackagesForUser(I)I
+    invoke-virtual {v4, v1}, Lcom/android/server/job/controllers/QuotaController$UserPackageMap;->numPackagesForUser(I)I
 
-    move-result v5
+    move-result v4
 
-    if-ge v4, v5, :cond_114
+    if-ge v3, v4, :cond_113
 
     .line 2605
+    iget-object v4, p0, Lcom/android/server/job/controllers/QuotaController;->mPkgTimers:Lcom/android/server/job/controllers/QuotaController$UserPackageMap;
+
+    invoke-virtual {v4, v0, v3}, Lcom/android/server/job/controllers/QuotaController$UserPackageMap;->keyAt(II)Ljava/lang/String;
+
+    move-result-object v4
+
+    .line 2606
+    .local v4, "pkgName":Ljava/lang/String;
     iget-object v5, p0, Lcom/android/server/job/controllers/QuotaController;->mPkgTimers:Lcom/android/server/job/controllers/QuotaController$UserPackageMap;
 
-    invoke-virtual {v5, v1, v4}, Lcom/android/server/job/controllers/QuotaController$UserPackageMap;->keyAt(II)Ljava/lang/String;
+    invoke-virtual {v5, v0, v3}, Lcom/android/server/job/controllers/QuotaController$UserPackageMap;->valueAt(II)Ljava/lang/Object;
 
     move-result-object v5
 
-    .line 2606
-    iget-object v6, p0, Lcom/android/server/job/controllers/QuotaController;->mPkgTimers:Lcom/android/server/job/controllers/QuotaController$UserPackageMap;
+    check-cast v5, Lcom/android/server/job/controllers/QuotaController$Timer;
 
-    invoke-virtual {v6, v1, v4}, Lcom/android/server/job/controllers/QuotaController$UserPackageMap;->valueAt(II)Ljava/lang/Object;
-
-    move-result-object v6
-
-    check-cast v6, Lcom/android/server/job/controllers/QuotaController$Timer;
-
-    invoke-virtual {v6, p1, p2}, Lcom/android/server/job/controllers/QuotaController$Timer;->dump(Lcom/android/internal/util/IndentingPrintWriter;Ljava/util/function/Predicate;)V
+    invoke-virtual {v5, p1, p2}, Lcom/android/server/job/controllers/QuotaController$Timer;->dump(Lcom/android/internal/util/IndentingPrintWriter;Ljava/util/function/Predicate;)V
 
     .line 2607
     invoke-virtual {p1}, Lcom/android/internal/util/IndentingPrintWriter;->println()V
 
     .line 2608
-    iget-object v6, p0, Lcom/android/server/job/controllers/QuotaController;->mTimingSessions:Lcom/android/server/job/controllers/QuotaController$UserPackageMap;
+    iget-object v5, p0, Lcom/android/server/job/controllers/QuotaController;->mTimingSessions:Lcom/android/server/job/controllers/QuotaController$UserPackageMap;
 
-    invoke-virtual {v6, v2, v5}, Lcom/android/server/job/controllers/QuotaController$UserPackageMap;->get(ILjava/lang/String;)Ljava/lang/Object;
+    invoke-virtual {v5, v1, v4}, Lcom/android/server/job/controllers/QuotaController$UserPackageMap;->get(ILjava/lang/String;)Ljava/lang/Object;
 
     move-result-object v5
 
     check-cast v5, Ljava/util/List;
 
     .line 2609
-    if-eqz v5, :cond_111
+    .local v5, "sessions":Ljava/util/List;, "Ljava/util/List<Lcom/android/server/job/controllers/QuotaController$TimingSession;>;"
+    if-eqz v5, :cond_110
 
     .line 2610
     invoke-virtual {p1}, Lcom/android/internal/util/IndentingPrintWriter;->increaseIndent()Lcom/android/internal/util/IndentingPrintWriter;
@@ -2824,8 +3113,9 @@
 
     add-int/lit8 v6, v6, -0x1
 
-    :goto_fa
-    if-ltz v6, :cond_108
+    .local v6, "j":I
+    :goto_f9
+    if-ltz v6, :cond_107
 
     .line 2614
     invoke-interface {v5, v6}, Ljava/util/List;->get(I)Ljava/lang/Object;
@@ -2835,15 +3125,18 @@
     check-cast v7, Lcom/android/server/job/controllers/QuotaController$TimingSession;
 
     .line 2615
+    .local v7, "session":Lcom/android/server/job/controllers/QuotaController$TimingSession;
     invoke-virtual {v7, p1}, Lcom/android/server/job/controllers/QuotaController$TimingSession;->dump(Lcom/android/internal/util/IndentingPrintWriter;)V
 
     .line 2613
+    .end local v7  # "session":Lcom/android/server/job/controllers/QuotaController$TimingSession;
     add-int/lit8 v6, v6, -0x1
 
-    goto :goto_fa
+    goto :goto_f9
 
     .line 2617
-    :cond_108
+    .end local v6  # "j":I
+    :cond_107
     invoke-virtual {p1}, Lcom/android/internal/util/IndentingPrintWriter;->decreaseIndent()Lcom/android/internal/util/IndentingPrintWriter;
 
     .line 2618
@@ -2853,239 +3146,268 @@
     invoke-virtual {p1}, Lcom/android/internal/util/IndentingPrintWriter;->println()V
 
     .line 2604
-    :cond_111
-    add-int/lit8 v4, v4, 0x1
+    .end local v4  # "pkgName":Ljava/lang/String;
+    .end local v5  # "sessions":Ljava/util/List;, "Ljava/util/List<Lcom/android/server/job/controllers/QuotaController$TimingSession;>;"
+    :cond_110
+    add-int/lit8 v3, v3, 0x1
 
-    goto :goto_c3
+    goto :goto_c2
 
     .line 2602
-    :cond_114
-    add-int/lit8 v1, v1, 0x1
+    .end local v1  # "userId":I
+    .end local v3  # "p":I
+    :cond_113
+    add-int/lit8 v0, v0, 0x1
 
-    goto :goto_b4
+    goto :goto_b3
 
     .line 2624
-    :cond_117
-    const-string p2, "Cached execution stats:"
+    .end local v0  # "u":I
+    :cond_116
+    const-string v0, "Cached execution stats:"
 
-    invoke-virtual {p1, p2}, Lcom/android/internal/util/IndentingPrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {p1, v0}, Lcom/android/internal/util/IndentingPrintWriter;->println(Ljava/lang/String;)V
 
     .line 2625
     invoke-virtual {p1}, Lcom/android/internal/util/IndentingPrintWriter;->increaseIndent()Lcom/android/internal/util/IndentingPrintWriter;
 
     .line 2626
-    move p2, v0
+    const/4 v0, 0x0
 
-    :goto_120
+    .restart local v0  # "u":I
+    :goto_11f
     iget-object v1, p0, Lcom/android/server/job/controllers/QuotaController;->mExecutionStatsCache:Lcom/android/server/job/controllers/QuotaController$UserPackageMap;
 
     invoke-virtual {v1}, Lcom/android/server/job/controllers/QuotaController$UserPackageMap;->numUsers()I
 
     move-result v1
 
-    if-ge p2, v1, :cond_170
+    if-ge v0, v1, :cond_16f
 
     .line 2627
     iget-object v1, p0, Lcom/android/server/job/controllers/QuotaController;->mExecutionStatsCache:Lcom/android/server/job/controllers/QuotaController$UserPackageMap;
 
-    invoke-virtual {v1, p2}, Lcom/android/server/job/controllers/QuotaController$UserPackageMap;->keyAt(I)I
+    invoke-virtual {v1, v0}, Lcom/android/server/job/controllers/QuotaController$UserPackageMap;->keyAt(I)I
 
     move-result v1
 
     .line 2628
-    move v2, v0
+    .restart local v1  # "userId":I
+    const/4 v3, 0x0
 
-    :goto_12f
+    .restart local v3  # "p":I
+    :goto_12e
     iget-object v4, p0, Lcom/android/server/job/controllers/QuotaController;->mExecutionStatsCache:Lcom/android/server/job/controllers/QuotaController$UserPackageMap;
 
     invoke-virtual {v4, v1}, Lcom/android/server/job/controllers/QuotaController$UserPackageMap;->numPackagesForUser(I)I
 
     move-result v4
 
-    if-ge v2, v4, :cond_16d
+    if-ge v3, v4, :cond_16c
 
     .line 2629
     iget-object v4, p0, Lcom/android/server/job/controllers/QuotaController;->mExecutionStatsCache:Lcom/android/server/job/controllers/QuotaController$UserPackageMap;
 
-    invoke-virtual {v4, p2, v2}, Lcom/android/server/job/controllers/QuotaController$UserPackageMap;->keyAt(II)Ljava/lang/String;
+    invoke-virtual {v4, v0, v3}, Lcom/android/server/job/controllers/QuotaController$UserPackageMap;->keyAt(II)Ljava/lang/String;
 
     move-result-object v4
 
     .line 2630
+    .restart local v4  # "pkgName":Ljava/lang/String;
     iget-object v5, p0, Lcom/android/server/job/controllers/QuotaController;->mExecutionStatsCache:Lcom/android/server/job/controllers/QuotaController$UserPackageMap;
 
-    invoke-virtual {v5, p2, v2}, Lcom/android/server/job/controllers/QuotaController$UserPackageMap;->valueAt(II)Ljava/lang/Object;
+    invoke-virtual {v5, v0, v3}, Lcom/android/server/job/controllers/QuotaController$UserPackageMap;->valueAt(II)Ljava/lang/Object;
 
     move-result-object v5
 
     check-cast v5, [Lcom/android/server/job/controllers/QuotaController$ExecutionStats;
 
     .line 2632
+    .local v5, "stats":[Lcom/android/server/job/controllers/QuotaController$ExecutionStats;
     invoke-static {v1, v4}, Lcom/android/server/job/controllers/QuotaController;->string(ILjava/lang/String;)Ljava/lang/String;
 
-    move-result-object v4
+    move-result-object v6
 
-    invoke-virtual {p1, v4}, Lcom/android/internal/util/IndentingPrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {p1, v6}, Lcom/android/internal/util/IndentingPrintWriter;->println(Ljava/lang/String;)V
 
     .line 2633
     invoke-virtual {p1}, Lcom/android/internal/util/IndentingPrintWriter;->increaseIndent()Lcom/android/internal/util/IndentingPrintWriter;
 
     .line 2634
-    move v4, v0
+    const/4 v6, 0x0
 
-    :goto_150
-    array-length v6, v5
+    .local v6, "i":I
+    :goto_14f
+    array-length v7, v5
 
-    if-ge v4, v6, :cond_167
+    if-ge v6, v7, :cond_166
 
     .line 2635
-    aget-object v6, v5, v4
+    aget-object v7, v5, v6
 
     .line 2636
-    if-eqz v6, :cond_164
+    .local v7, "executionStats":Lcom/android/server/job/controllers/QuotaController$ExecutionStats;
+    if-eqz v7, :cond_163
 
     .line 2637
-    invoke-static {v4}, Lcom/android/server/job/controllers/JobStatus;->bucketName(I)Ljava/lang/String;
+    invoke-static {v6}, Lcom/android/server/job/controllers/JobStatus;->bucketName(I)Ljava/lang/String;
 
-    move-result-object v7
+    move-result-object v8
 
-    invoke-virtual {p1, v7}, Lcom/android/internal/util/IndentingPrintWriter;->print(Ljava/lang/String;)V
+    invoke-virtual {p1, v8}, Lcom/android/internal/util/IndentingPrintWriter;->print(Ljava/lang/String;)V
 
     .line 2638
-    invoke-virtual {p1, v3}, Lcom/android/internal/util/IndentingPrintWriter;->print(Ljava/lang/String;)V
+    invoke-virtual {p1, v2}, Lcom/android/internal/util/IndentingPrintWriter;->print(Ljava/lang/String;)V
 
     .line 2639
-    invoke-virtual {p1, v6}, Lcom/android/internal/util/IndentingPrintWriter;->println(Ljava/lang/Object;)V
+    invoke-virtual {p1, v7}, Lcom/android/internal/util/IndentingPrintWriter;->println(Ljava/lang/Object;)V
 
     .line 2634
-    :cond_164
-    add-int/lit8 v4, v4, 0x1
+    .end local v7  # "executionStats":Lcom/android/server/job/controllers/QuotaController$ExecutionStats;
+    :cond_163
+    add-int/lit8 v6, v6, 0x1
 
-    goto :goto_150
+    goto :goto_14f
 
     .line 2642
-    :cond_167
+    .end local v6  # "i":I
+    :cond_166
     invoke-virtual {p1}, Lcom/android/internal/util/IndentingPrintWriter;->decreaseIndent()Lcom/android/internal/util/IndentingPrintWriter;
 
     .line 2628
-    add-int/lit8 v2, v2, 0x1
+    .end local v4  # "pkgName":Ljava/lang/String;
+    .end local v5  # "stats":[Lcom/android/server/job/controllers/QuotaController$ExecutionStats;
+    add-int/lit8 v3, v3, 0x1
 
-    goto :goto_12f
+    goto :goto_12e
 
     .line 2626
-    :cond_16d
-    add-int/lit8 p2, p2, 0x1
+    .end local v1  # "userId":I
+    .end local v3  # "p":I
+    :cond_16c
+    add-int/lit8 v0, v0, 0x1
 
-    goto :goto_120
+    goto :goto_11f
 
     .line 2645
-    :cond_170
+    .end local v0  # "u":I
+    :cond_16f
     invoke-virtual {p1}, Lcom/android/internal/util/IndentingPrintWriter;->decreaseIndent()Lcom/android/internal/util/IndentingPrintWriter;
 
     .line 2647
     invoke-virtual {p1}, Lcom/android/internal/util/IndentingPrintWriter;->println()V
 
     .line 2648
-    const-string p2, "In quota alarms:"
+    const-string v0, "In quota alarms:"
 
-    invoke-virtual {p1, p2}, Lcom/android/internal/util/IndentingPrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {p1, v0}, Lcom/android/internal/util/IndentingPrintWriter;->println(Ljava/lang/String;)V
 
     .line 2649
     invoke-virtual {p1}, Lcom/android/internal/util/IndentingPrintWriter;->increaseIndent()Lcom/android/internal/util/IndentingPrintWriter;
 
     .line 2650
-    move p2, v0
+    const/4 v0, 0x0
 
-    :goto_17f
+    .restart local v0  # "u":I
+    :goto_17e
     iget-object v1, p0, Lcom/android/server/job/controllers/QuotaController;->mInQuotaAlarmListeners:Lcom/android/server/job/controllers/QuotaController$UserPackageMap;
 
     invoke-virtual {v1}, Lcom/android/server/job/controllers/QuotaController$UserPackageMap;->numUsers()I
 
     move-result v1
 
-    if-ge p2, v1, :cond_1c7
+    if-ge v0, v1, :cond_1c6
 
     .line 2651
     iget-object v1, p0, Lcom/android/server/job/controllers/QuotaController;->mInQuotaAlarmListeners:Lcom/android/server/job/controllers/QuotaController$UserPackageMap;
 
-    invoke-virtual {v1, p2}, Lcom/android/server/job/controllers/QuotaController$UserPackageMap;->keyAt(I)I
+    invoke-virtual {v1, v0}, Lcom/android/server/job/controllers/QuotaController$UserPackageMap;->keyAt(I)I
 
     move-result v1
 
     .line 2652
-    move v2, v0
+    .restart local v1  # "userId":I
+    const/4 v3, 0x0
 
-    :goto_18e
+    .restart local v3  # "p":I
+    :goto_18d
     iget-object v4, p0, Lcom/android/server/job/controllers/QuotaController;->mInQuotaAlarmListeners:Lcom/android/server/job/controllers/QuotaController$UserPackageMap;
 
     invoke-virtual {v4, v1}, Lcom/android/server/job/controllers/QuotaController$UserPackageMap;->numPackagesForUser(I)I
 
     move-result v4
 
-    if-ge v2, v4, :cond_1c4
+    if-ge v3, v4, :cond_1c3
 
     .line 2653
     iget-object v4, p0, Lcom/android/server/job/controllers/QuotaController;->mInQuotaAlarmListeners:Lcom/android/server/job/controllers/QuotaController$UserPackageMap;
 
-    invoke-virtual {v4, p2, v2}, Lcom/android/server/job/controllers/QuotaController$UserPackageMap;->keyAt(II)Ljava/lang/String;
+    invoke-virtual {v4, v0, v3}, Lcom/android/server/job/controllers/QuotaController$UserPackageMap;->keyAt(II)Ljava/lang/String;
 
     move-result-object v4
 
     .line 2654
+    .restart local v4  # "pkgName":Ljava/lang/String;
     iget-object v5, p0, Lcom/android/server/job/controllers/QuotaController;->mInQuotaAlarmListeners:Lcom/android/server/job/controllers/QuotaController$UserPackageMap;
 
-    invoke-virtual {v5, p2, v2}, Lcom/android/server/job/controllers/QuotaController$UserPackageMap;->valueAt(II)Ljava/lang/Object;
+    invoke-virtual {v5, v0, v3}, Lcom/android/server/job/controllers/QuotaController$UserPackageMap;->valueAt(II)Ljava/lang/Object;
 
     move-result-object v5
 
     check-cast v5, Lcom/android/server/job/controllers/QuotaController$QcAlarmListener;
 
     .line 2656
+    .local v5, "alarmListener":Lcom/android/server/job/controllers/QuotaController$QcAlarmListener;
     invoke-static {v1, v4}, Lcom/android/server/job/controllers/QuotaController;->string(ILjava/lang/String;)Ljava/lang/String;
 
-    move-result-object v4
+    move-result-object v6
 
-    invoke-virtual {p1, v4}, Lcom/android/internal/util/IndentingPrintWriter;->print(Ljava/lang/String;)V
+    invoke-virtual {p1, v6}, Lcom/android/internal/util/IndentingPrintWriter;->print(Ljava/lang/String;)V
 
     .line 2657
-    invoke-virtual {p1, v3}, Lcom/android/internal/util/IndentingPrintWriter;->print(Ljava/lang/String;)V
+    invoke-virtual {p1, v2}, Lcom/android/internal/util/IndentingPrintWriter;->print(Ljava/lang/String;)V
 
     .line 2658
     invoke-virtual {v5}, Lcom/android/server/job/controllers/QuotaController$QcAlarmListener;->isWaiting()Z
 
-    move-result v4
+    move-result v6
 
-    if-eqz v4, :cond_1bc
+    if-eqz v6, :cond_1bb
 
     .line 2659
     invoke-virtual {v5}, Lcom/android/server/job/controllers/QuotaController$QcAlarmListener;->getTriggerTimeElapsed()J
 
-    move-result-wide v4
+    move-result-wide v6
 
-    invoke-virtual {p1, v4, v5}, Lcom/android/internal/util/IndentingPrintWriter;->println(J)V
+    invoke-virtual {p1, v6, v7}, Lcom/android/internal/util/IndentingPrintWriter;->println(J)V
 
-    goto :goto_1c1
+    goto :goto_1c0
 
     .line 2661
-    :cond_1bc
-    const-string v4, "NOT WAITING"
+    :cond_1bb
+    const-string v6, "NOT WAITING"
 
-    invoke-virtual {p1, v4}, Lcom/android/internal/util/IndentingPrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {p1, v6}, Lcom/android/internal/util/IndentingPrintWriter;->println(Ljava/lang/String;)V
 
     .line 2652
-    :goto_1c1
-    add-int/lit8 v2, v2, 0x1
+    .end local v4  # "pkgName":Ljava/lang/String;
+    .end local v5  # "alarmListener":Lcom/android/server/job/controllers/QuotaController$QcAlarmListener;
+    :goto_1c0
+    add-int/lit8 v3, v3, 0x1
 
-    goto :goto_18e
+    goto :goto_18d
 
     .line 2650
-    :cond_1c4
-    add-int/lit8 p2, p2, 0x1
+    .end local v1  # "userId":I
+    .end local v3  # "p":I
+    :cond_1c3
+    add-int/lit8 v0, v0, 0x1
 
-    goto :goto_17f
+    goto :goto_17e
 
     .line 2665
-    :cond_1c7
+    .end local v0  # "u":I
+    :cond_1c6
     invoke-virtual {p1}, Lcom/android/internal/util/IndentingPrintWriter;->decreaseIndent()Lcom/android/internal/util/IndentingPrintWriter;
 
     .line 2666
@@ -3138,6 +3460,9 @@
 
 .method getExecutionStatsLocked(ILjava/lang/String;I)Lcom/android/server/job/controllers/QuotaController$ExecutionStats;
     .registers 5
+    .param p1, "userId"  # I
+    .param p2, "packageName"  # Ljava/lang/String;
+    .param p3, "standbyBucket"  # I
     .annotation build Lcom/android/internal/annotations/VisibleForTesting;
     .end annotation
 
@@ -3146,9 +3471,9 @@
 
     invoke-direct {p0, p1, p2, p3, v0}, Lcom/android/server/job/controllers/QuotaController;->getExecutionStatsLocked(ILjava/lang/String;IZ)Lcom/android/server/job/controllers/QuotaController$ExecutionStats;
 
-    move-result-object p1
+    move-result-object v0
 
-    return-object p1
+    return-object v0
 .end method
 
 .method getForegroundUids()Landroid/util/SparseBooleanArray;
@@ -3240,7 +3565,9 @@
 .end method
 
 .method getRemainingExecutionTimeLocked(ILjava/lang/String;)J
-    .registers 5
+    .registers 6
+    .param p1, "userId"  # I
+    .param p2, "packageName"  # Ljava/lang/String;
     .annotation build Lcom/android/internal/annotations/VisibleForTesting;
     .end annotation
 
@@ -3258,15 +3585,17 @@
     move-result v0
 
     .line 814
+    .local v0, "standbyBucket":I
     invoke-direct {p0, p1, p2, v0}, Lcom/android/server/job/controllers/QuotaController;->getRemainingExecutionTimeLocked(ILjava/lang/String;I)J
 
-    move-result-wide p1
+    move-result-wide v1
 
-    return-wide p1
+    return-wide v1
 .end method
 
 .method getRemainingExecutionTimeLocked(Lcom/android/server/job/controllers/JobStatus;)J
-    .registers 4
+    .registers 5
+    .param p1, "jobStatus"  # Lcom/android/server/job/controllers/JobStatus;
     .annotation build Lcom/android/internal/annotations/VisibleForTesting;
     .end annotation
 
@@ -3283,10 +3612,10 @@
     .line 807
     invoke-direct {p0, p1}, Lcom/android/server/job/controllers/QuotaController;->getEffectiveStandbyBucket(Lcom/android/server/job/controllers/JobStatus;)I
 
-    move-result p1
+    move-result v2
 
     .line 805
-    invoke-direct {p0, v0, v1, p1}, Lcom/android/server/job/controllers/QuotaController;->getRemainingExecutionTimeLocked(ILjava/lang/String;I)J
+    invoke-direct {p0, v0, v1, v2}, Lcom/android/server/job/controllers/QuotaController;->getRemainingExecutionTimeLocked(ILjava/lang/String;I)J
 
     move-result-wide v0
 
@@ -3294,138 +3623,171 @@
 .end method
 
 .method getTimeUntilQuotaConsumedLocked(ILjava/lang/String;)J
-    .registers 15
+    .registers 25
+    .param p1, "userId"  # I
+    .param p2, "packageName"  # Ljava/lang/String;
     .annotation build Lcom/android/internal/annotations/VisibleForTesting;
     .end annotation
 
     .line 844
+    move-object/from16 v6, p0
+
+    move/from16 v7, p1
+
+    move-object/from16 v8, p2
+
     sget-object v0, Lcom/android/server/job/JobSchedulerService;->sElapsedRealtimeClock:Ljava/time/Clock;
 
     invoke-virtual {v0}, Ljava/time/Clock;->millis()J
 
-    move-result-wide v0
+    move-result-wide v9
 
     .line 845
-    invoke-static {p2, p1, v0, v1}, Lcom/android/server/job/JobSchedulerService;->standbyBucketForPackage(Ljava/lang/String;IJ)I
+    .local v9, "nowElapsed":J
+    invoke-static {v8, v7, v9, v10}, Lcom/android/server/job/JobSchedulerService;->standbyBucketForPackage(Ljava/lang/String;IJ)I
 
-    move-result v2
+    move-result v11
 
     .line 847
-    const/4 v3, 0x4
+    .local v11, "standbyBucket":I
+    const/4 v0, 0x4
 
-    if-ne v2, v3, :cond_10
+    if-ne v11, v0, :cond_16
 
     .line 848
-    const-wide/16 p1, 0x0
+    const-wide/16 v0, 0x0
 
-    return-wide p1
+    return-wide v0
 
     .line 850
-    :cond_10
-    iget-object v3, p0, Lcom/android/server/job/controllers/QuotaController;->mTimingSessions:Lcom/android/server/job/controllers/QuotaController$UserPackageMap;
+    :cond_16
+    iget-object v0, v6, Lcom/android/server/job/controllers/QuotaController;->mTimingSessions:Lcom/android/server/job/controllers/QuotaController$UserPackageMap;
 
-    invoke-virtual {v3, p1, p2}, Lcom/android/server/job/controllers/QuotaController$UserPackageMap;->get(ILjava/lang/String;)Ljava/lang/Object;
+    invoke-virtual {v0, v7, v8}, Lcom/android/server/job/controllers/QuotaController$UserPackageMap;->get(ILjava/lang/String;)Ljava/lang/Object;
 
-    move-result-object v3
+    move-result-object v0
 
-    check-cast v3, Ljava/util/List;
+    move-object v12, v0
+
+    check-cast v12, Ljava/util/List;
 
     .line 851
-    if-eqz v3, :cond_5a
+    .local v12, "sessions":Ljava/util/List;, "Ljava/util/List<Lcom/android/server/job/controllers/QuotaController$TimingSession;>;"
+    if-eqz v12, :cond_6e
 
-    invoke-interface {v3}, Ljava/util/List;->size()I
+    invoke-interface {v12}, Ljava/util/List;->size()I
 
-    move-result v4
+    move-result v0
 
-    if-nez v4, :cond_21
+    if-nez v0, :cond_28
 
-    goto :goto_5a
+    goto :goto_6e
 
     .line 855
-    :cond_21
-    invoke-virtual {p0, p1, p2, v2}, Lcom/android/server/job/controllers/QuotaController;->getExecutionStatsLocked(ILjava/lang/String;I)Lcom/android/server/job/controllers/QuotaController$ExecutionStats;
+    :cond_28
+    invoke-virtual {v6, v7, v8, v11}, Lcom/android/server/job/controllers/QuotaController;->getExecutionStatsLocked(ILjava/lang/String;I)Lcom/android/server/job/controllers/QuotaController$ExecutionStats;
 
-    move-result-object p1
+    move-result-object v13
 
     .line 856
-    iget-wide v4, p1, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->windowSizeMs:J
+    .local v13, "stats":Lcom/android/server/job/controllers/QuotaController$ExecutionStats;
+    iget-wide v0, v13, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->windowSizeMs:J
 
-    sub-long v10, v0, v4
+    sub-long v14, v9, v0
 
     .line 857
-    const-wide/32 v4, 0x5265c00
+    .local v14, "startWindowElapsed":J
+    const-wide/32 v0, 0x5265c00
 
-    sub-long v6, v0, v4
+    sub-long v16, v9, v0
 
     .line 858
-    iget-wide v0, p0, Lcom/android/server/job/controllers/QuotaController;->mAllowedTimePerPeriodMs:J
+    .local v16, "startMaxElapsed":J
+    iget-wide v0, v6, Lcom/android/server/job/controllers/QuotaController;->mAllowedTimePerPeriodMs:J
 
-    iget-wide v4, p1, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->executionTimeInWindowMs:J
+    iget-wide v2, v13, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->executionTimeInWindowMs:J
 
-    sub-long/2addr v0, v4
+    sub-long v18, v0, v2
 
     .line 859
-    iget-wide v4, p0, Lcom/android/server/job/controllers/QuotaController;->mMaxExecutionTimeMs:J
+    .local v18, "allowedTimeRemainingMs":J
+    iget-wide v0, v6, Lcom/android/server/job/controllers/QuotaController;->mMaxExecutionTimeMs:J
 
-    iget-wide v8, p1, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->executionTimeInMaxPeriodMs:J
+    iget-wide v2, v13, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->executionTimeInMaxPeriodMs:J
 
-    sub-long v8, v4, v8
+    sub-long v20, v0, v2
 
     .line 864
-    iget-wide p1, p1, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->windowSizeMs:J
+    .local v20, "maxExecutionTimeRemainingMs":J
+    iget-wide v0, v13, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->windowSizeMs:J
 
-    iget-wide v4, p0, Lcom/android/server/job/controllers/QuotaController;->mAllowedTimePerPeriodMs:J
+    iget-wide v2, v6, Lcom/android/server/job/controllers/QuotaController;->mAllowedTimePerPeriodMs:J
 
-    cmp-long p1, p1, v4
+    cmp-long v0, v0, v2
 
-    if-nez p1, :cond_48
+    if-nez v0, :cond_55
 
     .line 865
-    move-object v4, p0
+    move-object/from16 v0, p0
 
-    move-object v5, v3
+    move-object v1, v12
 
-    invoke-direct/range {v4 .. v9}, Lcom/android/server/job/controllers/QuotaController;->calculateTimeUntilQuotaConsumedLocked(Ljava/util/List;JJ)J
+    move-wide/from16 v2, v16
 
-    move-result-wide p1
+    move-wide/from16 v4, v20
 
-    return-wide p1
+    invoke-direct/range {v0 .. v5}, Lcom/android/server/job/controllers/QuotaController;->calculateTimeUntilQuotaConsumedLocked(Ljava/util/List;JJ)J
+
+    move-result-wide v0
+
+    return-wide v0
 
     .line 873
-    :cond_48
+    :cond_55
     nop
 
     .line 874
-    move-object v4, p0
+    move-object/from16 v0, p0
 
-    move-object v5, v3
+    move-object v1, v12
 
-    invoke-direct/range {v4 .. v9}, Lcom/android/server/job/controllers/QuotaController;->calculateTimeUntilQuotaConsumedLocked(Ljava/util/List;JJ)J
+    move-wide/from16 v2, v16
 
-    move-result-wide p1
+    move-wide/from16 v4, v20
+
+    invoke-direct/range {v0 .. v5}, Lcom/android/server/job/controllers/QuotaController;->calculateTimeUntilQuotaConsumedLocked(Ljava/util/List;JJ)J
+
+    move-result-wide v4
 
     .line 876
-    move-wide v6, v10
+    move-wide v2, v14
 
-    move-wide v8, v0
+    move-wide v7, v4
 
-    invoke-direct/range {v4 .. v9}, Lcom/android/server/job/controllers/QuotaController;->calculateTimeUntilQuotaConsumedLocked(Ljava/util/List;JJ)J
+    move-wide/from16 v4, v18
+
+    invoke-direct/range {v0 .. v5}, Lcom/android/server/job/controllers/QuotaController;->calculateTimeUntilQuotaConsumedLocked(Ljava/util/List;JJ)J
 
     move-result-wide v0
 
     .line 873
-    invoke-static {p1, p2, v0, v1}, Ljava/lang/Math;->min(JJ)J
+    invoke-static {v7, v8, v0, v1}, Ljava/lang/Math;->min(JJ)J
 
-    move-result-wide p1
+    move-result-wide v0
 
-    return-wide p1
+    return-wide v0
 
     .line 852
-    :cond_5a
-    :goto_5a
-    iget-wide p1, p0, Lcom/android/server/job/controllers/QuotaController;->mAllowedTimePerPeriodMs:J
+    .end local v13  # "stats":Lcom/android/server/job/controllers/QuotaController$ExecutionStats;
+    .end local v14  # "startWindowElapsed":J
+    .end local v16  # "startMaxElapsed":J
+    .end local v18  # "allowedTimeRemainingMs":J
+    .end local v20  # "maxExecutionTimeRemainingMs":J
+    :cond_6e
+    :goto_6e
+    iget-wide v0, v6, Lcom/android/server/job/controllers/QuotaController;->mAllowedTimePerPeriodMs:J
 
-    return-wide p1
+    return-wide v0
 .end method
 
 .method getTimingSessionCoalescingDurationMs()J
@@ -3441,6 +3803,8 @@
 
 .method getTimingSessions(ILjava/lang/String;)Ljava/util/List;
     .registers 4
+    .param p1, "userId"  # I
+    .param p2, "packageName"  # Ljava/lang/String;
     .annotation build Lcom/android/internal/annotations/VisibleForTesting;
     .end annotation
 
@@ -3460,15 +3824,18 @@
 
     invoke-virtual {v0, p1, p2}, Lcom/android/server/job/controllers/QuotaController$UserPackageMap;->get(ILjava/lang/String;)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v0
 
-    check-cast p1, Ljava/util/List;
+    check-cast v0, Ljava/util/List;
 
-    return-object p1
+    return-object v0
 .end method
 
 .method incrementJobCount(ILjava/lang/String;I)V
-    .registers 10
+    .registers 11
+    .param p1, "userId"  # I
+    .param p2, "packageName"  # Ljava/lang/String;
+    .param p3, "count"  # I
     .annotation build Lcom/android/internal/annotations/VisibleForTesting;
     .end annotation
 
@@ -3480,6 +3847,7 @@
     move-result-wide v0
 
     .line 1118
+    .local v0, "now":J
     iget-object v2, p0, Lcom/android/server/job/controllers/QuotaController;->mExecutionStatsCache:Lcom/android/server/job/controllers/QuotaController$UserPackageMap;
 
     invoke-virtual {v2, p1, p2}, Lcom/android/server/job/controllers/QuotaController$UserPackageMap;->get(ILjava/lang/String;)Ljava/lang/Object;
@@ -3489,14 +3857,15 @@
     check-cast v2, [Lcom/android/server/job/controllers/QuotaController$ExecutionStats;
 
     .line 1119
+    .local v2, "appStats":[Lcom/android/server/job/controllers/QuotaController$ExecutionStats;
     if-nez v2, :cond_1a
 
     .line 1120
-    iget-object v2, p0, Lcom/android/server/job/controllers/QuotaController;->mBucketPeriodsMs:[J
+    iget-object v3, p0, Lcom/android/server/job/controllers/QuotaController;->mBucketPeriodsMs:[J
 
-    array-length v2, v2
+    array-length v3, v3
 
-    new-array v2, v2, [Lcom/android/server/job/controllers/QuotaController$ExecutionStats;
+    new-array v2, v3, [Lcom/android/server/job/controllers/QuotaController$ExecutionStats;
 
     .line 1121
     iget-object v3, p0, Lcom/android/server/job/controllers/QuotaController;->mExecutionStatsCache:Lcom/android/server/job/controllers/QuotaController$UserPackageMap;
@@ -3505,62 +3874,68 @@
 
     .line 1123
     :cond_1a
-    const/4 p1, 0x0
+    const/4 v3, 0x0
 
-    move p2, p1
+    .local v3, "i":I
+    :goto_1b
+    array-length v4, v2
 
-    :goto_1c
-    array-length v3, v2
-
-    if-ge p2, v3, :cond_3f
+    if-ge v3, v4, :cond_40
 
     .line 1124
-    aget-object v3, v2, p2
+    aget-object v4, v2, v3
 
     .line 1125
-    if-nez v3, :cond_2a
+    .local v4, "stats":Lcom/android/server/job/controllers/QuotaController$ExecutionStats;
+    if-nez v4, :cond_2a
 
     .line 1126
-    new-instance v3, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;
+    new-instance v5, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;
 
-    invoke-direct {v3}, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;-><init>()V
+    invoke-direct {v5}, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;-><init>()V
+
+    move-object v4, v5
 
     .line 1127
-    aput-object v3, v2, p2
+    aput-object v4, v2, v3
 
     .line 1129
     :cond_2a
-    iget-wide v4, v3, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->jobRateLimitExpirationTimeElapsed:J
+    iget-wide v5, v4, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->jobRateLimitExpirationTimeElapsed:J
 
-    cmp-long v4, v4, v0
+    cmp-long v5, v5, v0
 
-    if-gtz v4, :cond_37
+    if-gtz v5, :cond_38
 
     .line 1130
-    iget-wide v4, p0, Lcom/android/server/job/controllers/QuotaController;->mRateLimitingWindowMs:J
+    iget-wide v5, p0, Lcom/android/server/job/controllers/QuotaController;->mRateLimitingWindowMs:J
 
-    add-long/2addr v4, v0
+    add-long/2addr v5, v0
 
-    iput-wide v4, v3, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->jobRateLimitExpirationTimeElapsed:J
+    iput-wide v5, v4, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->jobRateLimitExpirationTimeElapsed:J
 
     .line 1131
-    iput p1, v3, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->jobCountInRateLimitingWindow:I
+    const/4 v5, 0x0
+
+    iput v5, v4, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->jobCountInRateLimitingWindow:I
 
     .line 1133
-    :cond_37
-    iget v4, v3, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->jobCountInRateLimitingWindow:I
+    :cond_38
+    iget v5, v4, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->jobCountInRateLimitingWindow:I
 
-    add-int/2addr v4, p3
+    add-int/2addr v5, p3
 
-    iput v4, v3, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->jobCountInRateLimitingWindow:I
+    iput v5, v4, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->jobCountInRateLimitingWindow:I
 
     .line 1123
-    add-int/lit8 p2, p2, 0x1
+    .end local v4  # "stats":Lcom/android/server/job/controllers/QuotaController$ExecutionStats;
+    add-int/lit8 v3, v3, 0x1
 
-    goto :goto_1c
+    goto :goto_1b
 
     .line 1135
-    :cond_3f
+    .end local v3  # "i":I
+    :cond_40
     return-void
 .end method
 
@@ -3577,6 +3952,7 @@
     move-result-wide v0
 
     .line 1088
+    .local v0, "nowElapsed":J
     iget-object v2, p0, Lcom/android/server/job/controllers/QuotaController;->mExecutionStatsCache:Lcom/android/server/job/controllers/QuotaController$UserPackageMap;
 
     new-instance v3, Lcom/android/server/job/controllers/-$$Lambda$QuotaController$_TfEfRX3HfrCL4MPpYyPFNwGLtM;
@@ -3590,7 +3966,9 @@
 .end method
 
 .method invalidateAllExecutionStatsLocked(ILjava/lang/String;)V
-    .registers 6
+    .registers 8
+    .param p1, "userId"  # I
+    .param p2, "packageName"  # Ljava/lang/String;
     .annotation build Lcom/android/internal/annotations/VisibleForTesting;
     .end annotation
 
@@ -3599,50 +3977,60 @@
 
     invoke-virtual {v0, p1, p2}, Lcom/android/server/job/controllers/QuotaController$UserPackageMap;->get(ILjava/lang/String;)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v0
 
-    check-cast p1, [Lcom/android/server/job/controllers/QuotaController$ExecutionStats;
+    check-cast v0, [Lcom/android/server/job/controllers/QuotaController$ExecutionStats;
 
     .line 1104
-    if-eqz p1, :cond_1d
+    .local v0, "appStats":[Lcom/android/server/job/controllers/QuotaController$ExecutionStats;
+    if-eqz v0, :cond_1d
 
     .line 1105
-    sget-object p2, Lcom/android/server/job/JobSchedulerService;->sElapsedRealtimeClock:Ljava/time/Clock;
+    sget-object v1, Lcom/android/server/job/JobSchedulerService;->sElapsedRealtimeClock:Ljava/time/Clock;
 
-    invoke-virtual {p2}, Ljava/time/Clock;->millis()J
+    invoke-virtual {v1}, Ljava/time/Clock;->millis()J
 
-    move-result-wide v0
+    move-result-wide v1
 
     .line 1106
-    const/4 p2, 0x0
+    .local v1, "nowElapsed":J
+    const/4 v3, 0x0
 
+    .local v3, "i":I
     :goto_11
-    array-length v2, p1
+    array-length v4, v0
 
-    if-ge p2, v2, :cond_1d
+    if-ge v3, v4, :cond_1d
 
     .line 1107
-    aget-object v2, p1, p2
+    aget-object v4, v0, v3
 
     .line 1108
-    if-eqz v2, :cond_1a
+    .local v4, "stats":Lcom/android/server/job/controllers/QuotaController$ExecutionStats;
+    if-eqz v4, :cond_1a
 
     .line 1109
-    iput-wide v0, v2, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->expirationTimeElapsed:J
+    iput-wide v1, v4, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->expirationTimeElapsed:J
 
     .line 1106
+    .end local v4  # "stats":Lcom/android/server/job/controllers/QuotaController$ExecutionStats;
     :cond_1a
-    add-int/lit8 p2, p2, 0x1
+    add-int/lit8 v3, v3, 0x1
 
     goto :goto_11
 
     .line 1113
+    .end local v1  # "nowElapsed":J
+    .end local v3  # "i":I
     :cond_1d
     return-void
 .end method
 
 .method isWithinQuotaLocked(ILjava/lang/String;I)Z
     .registers 11
+    .param p1, "userId"  # I
+    .param p2, "packageName"  # Ljava/lang/String;
+    .param p3, "standbyBucket"  # I
     .annotation build Lcom/android/internal/annotations/VisibleForTesting;
     .end annotation
 
@@ -3685,32 +4073,33 @@
     :cond_18
     invoke-virtual {p0, p1, p2, p3}, Lcom/android/server/job/controllers/QuotaController;->getExecutionStatsLocked(ILjava/lang/String;I)Lcom/android/server/job/controllers/QuotaController$ExecutionStats;
 
-    move-result-object p1
+    move-result-object v1
 
     .line 779
-    invoke-direct {p0, p1}, Lcom/android/server/job/controllers/QuotaController;->getRemainingExecutionTimeLocked(Lcom/android/server/job/controllers/QuotaController$ExecutionStats;)J
+    .local v1, "stats":Lcom/android/server/job/controllers/QuotaController$ExecutionStats;
+    invoke-direct {p0, v1}, Lcom/android/server/job/controllers/QuotaController;->getRemainingExecutionTimeLocked(Lcom/android/server/job/controllers/QuotaController$ExecutionStats;)J
 
     move-result-wide v3
 
     const-wide/16 v5, 0x0
 
-    cmp-long p2, v3, v5
+    cmp-long v3, v3, v5
 
-    if-lez p2, :cond_34
+    if-lez v3, :cond_34
 
     .line 780
-    invoke-direct {p0, p1, p3}, Lcom/android/server/job/controllers/QuotaController;->isUnderJobCountQuotaLocked(Lcom/android/server/job/controllers/QuotaController$ExecutionStats;I)Z
+    invoke-direct {p0, v1, p3}, Lcom/android/server/job/controllers/QuotaController;->isUnderJobCountQuotaLocked(Lcom/android/server/job/controllers/QuotaController$ExecutionStats;I)Z
 
-    move-result p2
+    move-result v3
 
-    if-eqz p2, :cond_34
+    if-eqz v3, :cond_34
 
     .line 781
-    invoke-direct {p0, p1, p3}, Lcom/android/server/job/controllers/QuotaController;->isUnderSessionCountQuotaLocked(Lcom/android/server/job/controllers/QuotaController$ExecutionStats;I)Z
+    invoke-direct {p0, v1, p3}, Lcom/android/server/job/controllers/QuotaController;->isUnderSessionCountQuotaLocked(Lcom/android/server/job/controllers/QuotaController$ExecutionStats;I)Z
 
-    move-result p1
+    move-result v3
 
-    if-eqz p1, :cond_34
+    if-eqz v3, :cond_34
 
     move v0, v2
 
@@ -3724,13 +4113,15 @@
     return v0
 
     .line 775
+    .end local v1  # "stats":Lcom/android/server/job/controllers/QuotaController$ExecutionStats;
     :cond_36
     :goto_36
     return v2
 .end method
 
 .method isWithinQuotaLocked(Lcom/android/server/job/controllers/JobStatus;)Z
-    .registers 4
+    .registers 5
+    .param p1, "jobStatus"  # Lcom/android/server/job/controllers/JobStatus;
     .annotation build Lcom/android/internal/annotations/VisibleForTesting;
     .end annotation
 
@@ -3740,6 +4131,7 @@
     move-result v0
 
     .line 760
+    .local v0, "standbyBucket":I
     invoke-direct {p0, p1}, Lcom/android/server/job/controllers/QuotaController;->isTopStartedJobLocked(Lcom/android/server/job/controllers/JobStatus;)Z
 
     move-result v1
@@ -3764,37 +4156,41 @@
 
     invoke-virtual {p1}, Lcom/android/server/job/controllers/JobStatus;->getSourcePackageName()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v2
 
     .line 762
-    invoke-virtual {p0, v1, p1, v0}, Lcom/android/server/job/controllers/QuotaController;->isWithinQuotaLocked(ILjava/lang/String;I)Z
+    invoke-virtual {p0, v1, v2, v0}, Lcom/android/server/job/controllers/QuotaController;->isWithinQuotaLocked(ILjava/lang/String;I)Z
 
-    move-result p1
+    move-result v1
 
-    if-eqz p1, :cond_23
+    if-eqz v1, :cond_23
 
     goto :goto_25
 
     :cond_23
-    const/4 p1, 0x0
+    const/4 v1, 0x0
 
     goto :goto_26
 
     :cond_25
     :goto_25
-    const/4 p1, 0x1
+    const/4 v1, 0x1
 
     .line 760
     :goto_26
-    return p1
+    return v1
 .end method
 
 .method public synthetic lambda$dumpControllerStateLocked$3$QuotaController(Ljava/util/function/Predicate;Lcom/android/internal/util/IndentingPrintWriter;Landroid/util/ArraySet;)V
     .registers 8
+    .param p1, "predicate"  # Ljava/util/function/Predicate;
+    .param p2, "pw"  # Lcom/android/internal/util/IndentingPrintWriter;
+    .param p3, "jobs"  # Landroid/util/ArraySet;
 
     .line 2571
     const/4 v0, 0x0
 
+    .local v0, "j":I
     :goto_1
     invoke-virtual {p3}, Landroid/util/ArraySet;->size()I
 
@@ -3810,6 +4206,7 @@
     check-cast v1, Lcom/android/server/job/controllers/JobStatus;
 
     .line 2573
+    .local v1, "js":Lcom/android/server/job/controllers/JobStatus;
     invoke-interface {p1, v1}, Ljava/util/function/Predicate;->test(Ljava/lang/Object;)Z
 
     move-result v2
@@ -3906,14 +4303,14 @@
     .line 2594
     invoke-virtual {p0, v1}, Lcom/android/server/job/controllers/QuotaController;->getRemainingExecutionTimeLocked(Lcom/android/server/job/controllers/JobStatus;)J
 
-    move-result-wide v1
+    move-result-wide v2
 
-    invoke-virtual {p2, v1, v2}, Lcom/android/internal/util/IndentingPrintWriter;->print(J)V
+    invoke-virtual {p2, v2, v3}, Lcom/android/internal/util/IndentingPrintWriter;->print(J)V
 
     .line 2595
-    const-string/jumbo v1, "ms remaining in quota"
+    const-string/jumbo v2, "ms remaining in quota"
 
-    invoke-virtual {p2, v1}, Lcom/android/internal/util/IndentingPrintWriter;->print(Ljava/lang/String;)V
+    invoke-virtual {p2, v2}, Lcom/android/internal/util/IndentingPrintWriter;->print(Ljava/lang/String;)V
 
     .line 2596
     invoke-virtual {p2}, Lcom/android/internal/util/IndentingPrintWriter;->decreaseIndent()Lcom/android/internal/util/IndentingPrintWriter;
@@ -3922,22 +4319,28 @@
     invoke-virtual {p2}, Lcom/android/internal/util/IndentingPrintWriter;->println()V
 
     .line 2571
+    .end local v1  # "js":Lcom/android/server/job/controllers/JobStatus;
     :goto_76
     add-int/lit8 v0, v0, 0x1
 
     goto :goto_1
 
     .line 2599
+    .end local v0  # "j":I
     :cond_79
     return-void
 .end method
 
 .method public synthetic lambda$dumpControllerStateLocked$4$QuotaController(Ljava/util/function/Predicate;Landroid/util/proto/ProtoOutputStream;Landroid/util/ArraySet;)V
     .registers 12
+    .param p1, "predicate"  # Ljava/util/function/Predicate;
+    .param p2, "proto"  # Landroid/util/proto/ProtoOutputStream;
+    .param p3, "jobs"  # Landroid/util/ArraySet;
 
     .line 2685
     const/4 v0, 0x0
 
+    .local v0, "j":I
     :goto_1
     invoke-virtual {p3}, Landroid/util/ArraySet;->size()I
 
@@ -3953,6 +4356,7 @@
     check-cast v1, Lcom/android/server/job/controllers/JobStatus;
 
     .line 2687
+    .local v1, "js":Lcom/android/server/job/controllers/JobStatus;
     invoke-interface {p1, v1}, Ljava/util/function/Predicate;->test(Ljava/lang/Object;)Z
 
     move-result v2
@@ -3971,6 +4375,7 @@
     move-result-wide v2
 
     .line 2692
+    .local v2, "jsToken":J
     const-wide v4, 0x10b00000001L
 
     invoke-virtual {v1, p2, v4, v5}, Lcom/android/server/job/controllers/JobStatus;->writeToShortProto(Landroid/util/proto/ProtoOutputStream;J)V
@@ -4038,12 +4443,15 @@
     invoke-virtual {p2, v2, v3}, Landroid/util/proto/ProtoOutputStream;->end(J)V
 
     .line 2685
+    .end local v1  # "js":Lcom/android/server/job/controllers/JobStatus;
+    .end local v2  # "jsToken":J
     :goto_68
     add-int/lit8 v0, v0, 0x1
 
     goto :goto_1
 
     .line 2707
+    .end local v0  # "j":I
     :cond_6b
     return-void
 .end method
@@ -4078,7 +4486,7 @@
 .end method
 
 .method maybeScheduleCleanupAlarmLocked()V
-    .registers 12
+    .registers 14
     .annotation build Lcom/android/internal/annotations/VisibleForTesting;
     .end annotation
 
@@ -4166,6 +4574,7 @@
     iget-wide v2, v0, Lcom/android/server/job/controllers/QuotaController$EarliestEndTimeFunctor;->earliestEndElapsed:J
 
     .line 1208
+    .local v2, "earliestEndElapsed":J
     const-wide v4, 0x7fffffffffffffffL
 
     cmp-long v0, v2, v4
@@ -4190,64 +4599,59 @@
     :cond_63
     const-wide/32 v4, 0x5265c00
 
-    add-long/2addr v2, v4
+    add-long/2addr v4, v2
 
     .line 1219
-    iget-wide v4, p0, Lcom/android/server/job/controllers/QuotaController;->mNextCleanupTimeElapsed:J
+    .local v4, "nextCleanupElapsed":J
+    iget-wide v6, p0, Lcom/android/server/job/controllers/QuotaController;->mNextCleanupTimeElapsed:J
 
-    sub-long v4, v2, v4
+    sub-long v6, v4, v6
 
-    const-wide/32 v6, 0x927c0
+    const-wide/32 v8, 0x927c0
 
-    cmp-long v0, v4, v6
+    cmp-long v0, v6, v8
 
-    if-gtz v0, :cond_75
+    if-gtz v0, :cond_73
 
     .line 1222
-    add-long/2addr v2, v6
-
-    move-wide v6, v2
-
-    goto :goto_76
-
-    .line 1219
-    :cond_75
-    move-wide v6, v2
+    add-long/2addr v4, v8
 
     .line 1224
-    :goto_76
-    iput-wide v6, p0, Lcom/android/server/job/controllers/QuotaController;->mNextCleanupTimeElapsed:J
+    :cond_73
+    iput-wide v4, p0, Lcom/android/server/job/controllers/QuotaController;->mNextCleanupTimeElapsed:J
 
     .line 1225
-    iget-object v4, p0, Lcom/android/server/job/controllers/QuotaController;->mAlarmManager:Landroid/app/AlarmManager;
+    iget-object v6, p0, Lcom/android/server/job/controllers/QuotaController;->mAlarmManager:Landroid/app/AlarmManager;
 
-    const/4 v5, 0x3
+    const/4 v7, 0x3
 
-    iget-object v9, p0, Lcom/android/server/job/controllers/QuotaController;->mSessionCleanupAlarmListener:Landroid/app/AlarmManager$OnAlarmListener;
+    iget-object v11, p0, Lcom/android/server/job/controllers/QuotaController;->mSessionCleanupAlarmListener:Landroid/app/AlarmManager$OnAlarmListener;
 
-    iget-object v10, p0, Lcom/android/server/job/controllers/QuotaController;->mHandler:Landroid/os/Handler;
+    iget-object v12, p0, Lcom/android/server/job/controllers/QuotaController;->mHandler:Landroid/os/Handler;
 
-    const-string v8, "*job.cleanup*"
+    const-string v10, "*job.cleanup*"
 
-    invoke-virtual/range {v4 .. v10}, Landroid/app/AlarmManager;->set(IJLjava/lang/String;Landroid/app/AlarmManager$OnAlarmListener;Landroid/os/Handler;)V
+    move-wide v8, v4
+
+    invoke-virtual/range {v6 .. v12}, Landroid/app/AlarmManager;->set(IJLjava/lang/String;Landroid/app/AlarmManager$OnAlarmListener;Landroid/os/Handler;)V
 
     .line 1227
     sget-boolean v0, Lcom/android/server/job/controllers/QuotaController;->DEBUG:Z
 
-    if-eqz v0, :cond_9e
+    if-eqz v0, :cond_9c
 
     .line 1228
     new-instance v0, Ljava/lang/StringBuilder;
 
     invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v2, "Scheduled next cleanup for "
+    const-string v6, "Scheduled next cleanup for "
 
-    invoke-virtual {v0, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    iget-wide v2, p0, Lcom/android/server/job/controllers/QuotaController;->mNextCleanupTimeElapsed:J
+    iget-wide v6, p0, Lcom/android/server/job/controllers/QuotaController;->mNextCleanupTimeElapsed:J
 
-    invoke-virtual {v0, v2, v3}, Ljava/lang/StringBuilder;->append(J)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v6, v7}, Ljava/lang/StringBuilder;->append(J)Ljava/lang/StringBuilder;
 
     invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
@@ -4256,12 +4660,15 @@
     invoke-static {v1, v0}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 1230
-    :cond_9e
+    :cond_9c
     return-void
 .end method
 
 .method maybeScheduleStartAlarmLocked(ILjava/lang/String;I)V
-    .registers 22
+    .registers 24
+    .param p1, "userId"  # I
+    .param p2, "packageName"  # Ljava/lang/String;
+    .param p3, "standbyBucket"  # I
     .annotation build Lcom/android/internal/annotations/VisibleForTesting;
     .end annotation
 
@@ -4288,21 +4695,25 @@
     move-result-object v4
 
     .line 1369
+    .local v4, "pkgString":Ljava/lang/String;
     invoke-virtual/range {p0 .. p3}, Lcom/android/server/job/controllers/QuotaController;->getExecutionStatsLocked(ILjava/lang/String;I)Lcom/android/server/job/controllers/QuotaController$ExecutionStats;
 
     move-result-object v5
 
     .line 1370
+    .local v5, "stats":Lcom/android/server/job/controllers/QuotaController$ExecutionStats;
     invoke-direct {v0, v5, v3}, Lcom/android/server/job/controllers/QuotaController;->isUnderJobCountQuotaLocked(Lcom/android/server/job/controllers/QuotaController$ExecutionStats;I)Z
 
     move-result v6
 
     .line 1371
+    .local v6, "isUnderJobCountQuota":Z
     invoke-direct {v0, v5, v3}, Lcom/android/server/job/controllers/QuotaController;->isUnderSessionCountQuotaLocked(Lcom/android/server/job/controllers/QuotaController$ExecutionStats;I)Z
 
     move-result v7
 
     .line 1374
+    .local v7, "isUnderTimingSessionCountQuota":Z
     iget-object v8, v0, Lcom/android/server/job/controllers/QuotaController;->mInQuotaAlarmListeners:Lcom/android/server/job/controllers/QuotaController$UserPackageMap;
 
     invoke-virtual {v8, v1, v2}, Lcom/android/server/job/controllers/QuotaController$UserPackageMap;->get(ILjava/lang/String;)Ljava/lang/Object;
@@ -4312,6 +4723,7 @@
     check-cast v8, Lcom/android/server/job/controllers/QuotaController$QcAlarmListener;
 
     .line 1375
+    .local v8, "alarmListener":Lcom/android/server/job/controllers/QuotaController$QcAlarmListener;
     iget-wide v9, v5, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->executionTimeInWindowMs:J
 
     iget-wide v11, v0, Lcom/android/server/job/controllers/QuotaController;->mAllowedTimePerPeriodMs:J
@@ -4320,7 +4732,7 @@
 
     const-string v10, "JobScheduler.Quota"
 
-    if-gez v9, :cond_7c
+    if-gez v9, :cond_7d
 
     iget-wide v11, v5, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->executionTimeInMaxPeriodMs:J
 
@@ -4328,299 +4740,332 @@
 
     cmp-long v9, v11, v13
 
-    if-gez v9, :cond_7c
+    if-gez v9, :cond_7d
 
-    if-eqz v6, :cond_7c
+    if-eqz v6, :cond_7d
 
-    if-eqz v7, :cond_7c
+    if-eqz v7, :cond_7d
 
     .line 1380
-    sget-boolean v5, Lcom/android/server/job/controllers/QuotaController;->DEBUG:Z
+    sget-boolean v9, Lcom/android/server/job/controllers/QuotaController;->DEBUG:Z
 
-    if-eqz v5, :cond_64
+    if-eqz v9, :cond_65
 
     .line 1381
-    new-instance v5, Ljava/lang/StringBuilder;
+    new-instance v9, Ljava/lang/StringBuilder;
 
-    invoke-direct {v5}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v9}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v6, "maybeScheduleStartAlarmLocked called for "
+    const-string/jumbo v11, "maybeScheduleStartAlarmLocked called for "
 
-    invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v9, v11}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v5, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v9, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string v4, " even though it already has "
+    const-string v11, " even though it already has "
 
-    invoke-virtual {v5, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v9, v11}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     .line 1383
     invoke-direct/range {p0 .. p3}, Lcom/android/server/job/controllers/QuotaController;->getRemainingExecutionTimeLocked(ILjava/lang/String;I)J
 
-    move-result-wide v3
+    move-result-wide v11
 
-    invoke-virtual {v5, v3, v4}, Ljava/lang/StringBuilder;->append(J)Ljava/lang/StringBuilder;
+    invoke-virtual {v9, v11, v12}, Ljava/lang/StringBuilder;->append(J)Ljava/lang/StringBuilder;
 
-    const-string/jumbo v3, "ms in its quota."
+    const-string/jumbo v11, "ms in its quota."
 
-    invoke-virtual {v5, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v9, v11}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v5}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v9}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v3
+    move-result-object v9
 
     .line 1381
-    invoke-static {v10, v3}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v10, v9}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 1386
-    :cond_64
-    if-eqz v8, :cond_70
+    :cond_65
+    if-eqz v8, :cond_71
 
     .line 1388
-    iget-object v3, v0, Lcom/android/server/job/controllers/QuotaController;->mAlarmManager:Landroid/app/AlarmManager;
+    iget-object v9, v0, Lcom/android/server/job/controllers/QuotaController;->mAlarmManager:Landroid/app/AlarmManager;
 
-    invoke-virtual {v3, v8}, Landroid/app/AlarmManager;->cancel(Landroid/app/AlarmManager$OnAlarmListener;)V
+    invoke-virtual {v9, v8}, Landroid/app/AlarmManager;->cancel(Landroid/app/AlarmManager$OnAlarmListener;)V
 
     .line 1390
-    const-wide/16 v3, 0x0
+    const-wide/16 v9, 0x0
 
-    invoke-virtual {v8, v3, v4}, Lcom/android/server/job/controllers/QuotaController$QcAlarmListener;->setTriggerTime(J)V
+    invoke-virtual {v8, v9, v10}, Lcom/android/server/job/controllers/QuotaController$QcAlarmListener;->setTriggerTime(J)V
 
     .line 1392
-    :cond_70
-    iget-object v0, v0, Lcom/android/server/job/controllers/QuotaController;->mHandler:Landroid/os/Handler;
+    :cond_71
+    iget-object v9, v0, Lcom/android/server/job/controllers/QuotaController;->mHandler:Landroid/os/Handler;
 
-    const/4 v3, 0x2
+    const/4 v10, 0x2
 
-    const/4 v4, 0x0
+    const/4 v11, 0x0
 
-    invoke-virtual {v0, v3, v1, v4, v2}, Landroid/os/Handler;->obtainMessage(IIILjava/lang/Object;)Landroid/os/Message;
+    invoke-virtual {v9, v10, v1, v11, v2}, Landroid/os/Handler;->obtainMessage(IIILjava/lang/Object;)Landroid/os/Message;
 
-    move-result-object v0
+    move-result-object v9
 
-    invoke-virtual {v0}, Landroid/os/Message;->sendToTarget()V
+    invoke-virtual {v9}, Landroid/os/Message;->sendToTarget()V
 
     .line 1393
     return-void
 
     .line 1396
-    :cond_7c
-    if-nez v8, :cond_88
+    :cond_7d
+    if-nez v8, :cond_8a
 
     .line 1397
-    new-instance v8, Lcom/android/server/job/controllers/QuotaController$QcAlarmListener;
+    new-instance v9, Lcom/android/server/job/controllers/QuotaController$QcAlarmListener;
 
-    invoke-direct {v8, v0, v1, v2}, Lcom/android/server/job/controllers/QuotaController$QcAlarmListener;-><init>(Lcom/android/server/job/controllers/QuotaController;ILjava/lang/String;)V
+    invoke-direct {v9, v0, v1, v2}, Lcom/android/server/job/controllers/QuotaController$QcAlarmListener;-><init>(Lcom/android/server/job/controllers/QuotaController;ILjava/lang/String;)V
+
+    move-object v8, v9
 
     .line 1398
-    iget-object v3, v0, Lcom/android/server/job/controllers/QuotaController;->mInQuotaAlarmListeners:Lcom/android/server/job/controllers/QuotaController$UserPackageMap;
+    iget-object v9, v0, Lcom/android/server/job/controllers/QuotaController;->mInQuotaAlarmListeners:Lcom/android/server/job/controllers/QuotaController$UserPackageMap;
 
-    invoke-virtual {v3, v1, v2, v8}, Lcom/android/server/job/controllers/QuotaController$UserPackageMap;->add(ILjava/lang/String;Ljava/lang/Object;)V
+    invoke-virtual {v9, v1, v2, v8}, Lcom/android/server/job/controllers/QuotaController$UserPackageMap;->add(ILjava/lang/String;Ljava/lang/Object;)V
 
     .line 1402
-    :cond_88
-    iget-wide v1, v5, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->inQuotaTimeElapsed:J
+    :cond_8a
+    iget-wide v11, v5, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->inQuotaTimeElapsed:J
 
     .line 1403
-    if-nez v6, :cond_98
+    .local v11, "inQuotaTimeElapsed":J
+    if-nez v6, :cond_9a
 
-    iget v3, v5, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->bgJobCountInWindow:I
+    iget v9, v5, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->bgJobCountInWindow:I
 
-    iget v6, v5, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->jobCountLimit:I
+    iget v13, v5, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->jobCountLimit:I
 
-    if-ge v3, v6, :cond_98
+    if-ge v9, v13, :cond_9a
 
     .line 1405
-    iget-wide v11, v5, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->jobRateLimitExpirationTimeElapsed:J
+    iget-wide v13, v5, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->jobRateLimitExpirationTimeElapsed:J
 
-    invoke-static {v1, v2, v11, v12}, Ljava/lang/Math;->max(JJ)J
+    invoke-static {v11, v12, v13, v14}, Ljava/lang/Math;->max(JJ)J
 
-    move-result-wide v1
+    move-result-wide v11
 
     .line 1408
-    :cond_98
-    if-nez v7, :cond_a6
+    :cond_9a
+    if-nez v7, :cond_aa
 
-    iget v3, v5, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->sessionCountInWindow:I
+    iget v9, v5, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->sessionCountInWindow:I
 
-    iget v6, v5, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->sessionCountLimit:I
+    iget v13, v5, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->sessionCountLimit:I
 
-    if-ge v3, v6, :cond_a6
+    if-ge v9, v13, :cond_aa
 
     .line 1411
-    iget-wide v5, v5, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->sessionRateLimitExpirationTimeElapsed:J
+    iget-wide v13, v5, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->sessionRateLimitExpirationTimeElapsed:J
 
-    invoke-static {v1, v2, v5, v6}, Ljava/lang/Math;->max(JJ)J
+    invoke-static {v11, v12, v13, v14}, Ljava/lang/Math;->max(JJ)J
 
-    move-result-wide v1
+    move-result-wide v11
+
+    move-wide v13, v11
+
+    goto :goto_ab
 
     .line 1421
-    :cond_a6
+    :cond_aa
+    move-wide v13, v11
+
+    .end local v11  # "inQuotaTimeElapsed":J
+    .local v13, "inQuotaTimeElapsed":J
+    :goto_ab
     invoke-virtual {v8}, Lcom/android/server/job/controllers/QuotaController$QcAlarmListener;->isWaiting()Z
 
-    move-result v3
+    move-result v9
 
-    if-eqz v3, :cond_da
+    if-eqz v9, :cond_e2
 
     .line 1422
     invoke-virtual {v8}, Lcom/android/server/job/controllers/QuotaController$QcAlarmListener;->getTriggerTimeElapsed()J
 
-    move-result-wide v5
+    move-result-wide v11
 
-    const-wide/32 v11, 0x2bf20
+    const-wide/32 v15, 0x2bf20
 
-    sub-long/2addr v5, v11
+    sub-long/2addr v11, v15
 
-    cmp-long v3, v1, v5
+    cmp-long v9, v13, v11
 
-    if-ltz v3, :cond_da
+    if-ltz v9, :cond_e2
 
     .line 1423
     invoke-virtual {v8}, Lcom/android/server/job/controllers/QuotaController$QcAlarmListener;->getTriggerTimeElapsed()J
 
-    move-result-wide v5
+    move-result-wide v11
 
-    cmp-long v3, v5, v1
+    cmp-long v9, v11, v13
 
-    if-gez v3, :cond_c1
+    if-gez v9, :cond_c6
 
-    goto :goto_da
+    goto :goto_e2
 
     .line 1432
-    :cond_c1
-    sget-boolean v0, Lcom/android/server/job/controllers/QuotaController;->DEBUG:Z
+    :cond_c6
+    sget-boolean v9, Lcom/android/server/job/controllers/QuotaController;->DEBUG:Z
 
-    if-eqz v0, :cond_104
+    if-eqz v9, :cond_e0
 
     .line 1433
-    new-instance v0, Ljava/lang/StringBuilder;
+    new-instance v9, Ljava/lang/StringBuilder;
 
-    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v9}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v1, "No need to schedule start alarm for "
+    const-string v11, "No need to schedule start alarm for "
 
-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v9, v11}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v9, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v9}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v9
 
-    invoke-static {v10, v0}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v10, v9}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
 
-    goto :goto_104
+    move-wide v11, v13
+
+    goto :goto_10f
+
+    .line 1432
+    :cond_e0
+    move-wide v11, v13
+
+    goto :goto_10f
 
     .line 1424
-    :cond_da
-    :goto_da
-    sget-boolean v3, Lcom/android/server/job/controllers/QuotaController;->DEBUG:Z
+    :cond_e2
+    :goto_e2
+    sget-boolean v9, Lcom/android/server/job/controllers/QuotaController;->DEBUG:Z
 
-    if-eqz v3, :cond_f2
+    if-eqz v9, :cond_fa
 
     .line 1425
-    new-instance v3, Ljava/lang/StringBuilder;
+    new-instance v9, Ljava/lang/StringBuilder;
 
-    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v9}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v5, "Scheduling start alarm for "
+    const-string v11, "Scheduling start alarm for "
 
-    invoke-virtual {v3, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v9, v11}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v9, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v9}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v3
+    move-result-object v9
 
-    invoke-static {v10, v3}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v10, v9}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 1429
-    :cond_f2
+    :cond_fa
     iget-object v11, v0, Lcom/android/server/job/controllers/QuotaController;->mAlarmManager:Landroid/app/AlarmManager;
 
     const/4 v12, 0x3
 
-    iget-object v0, v0, Lcom/android/server/job/controllers/QuotaController;->mHandler:Landroid/os/Handler;
+    iget-object v9, v0, Lcom/android/server/job/controllers/QuotaController;->mHandler:Landroid/os/Handler;
 
     const-string v15, "*job.quota_check*"
 
-    move-wide v13, v1
+    move-wide/from16 v18, v13
 
+    .end local v13  # "inQuotaTimeElapsed":J
+    .local v18, "inQuotaTimeElapsed":J
     move-object/from16 v16, v8
 
-    move-object/from16 v17, v0
+    move-object/from16 v17, v9
 
     invoke-virtual/range {v11 .. v17}, Landroid/app/AlarmManager;->set(IJLjava/lang/String;Landroid/app/AlarmManager$OnAlarmListener;Landroid/os/Handler;)V
 
     .line 1431
-    invoke-virtual {v8, v1, v2}, Lcom/android/server/job/controllers/QuotaController$QcAlarmListener;->setTriggerTime(J)V
+    move-wide/from16 v11, v18
+
+    .end local v18  # "inQuotaTimeElapsed":J
+    .restart local v11  # "inQuotaTimeElapsed":J
+    invoke-virtual {v8, v11, v12}, Lcom/android/server/job/controllers/QuotaController$QcAlarmListener;->setTriggerTime(J)V
 
     .line 1435
-    :cond_104
-    :goto_104
+    :goto_10f
     return-void
 .end method
 
 .method public maybeStartTrackingJobLocked(Lcom/android/server/job/controllers/JobStatus;Lcom/android/server/job/controllers/JobStatus;)V
-    .registers 6
+    .registers 8
+    .param p1, "jobStatus"  # Lcom/android/server/job/controllers/JobStatus;
+    .param p2, "lastJob"  # Lcom/android/server/job/controllers/JobStatus;
 
     .line 607
     invoke-virtual {p1}, Lcom/android/server/job/controllers/JobStatus;->getSourceUserId()I
 
-    move-result p2
+    move-result v0
 
     .line 608
+    .local v0, "userId":I
     invoke-virtual {p1}, Lcom/android/server/job/controllers/JobStatus;->getSourcePackageName()Ljava/lang/String;
-
-    move-result-object v0
-
-    .line 611
-    iget-object v1, p0, Lcom/android/server/job/controllers/QuotaController;->mTrackedJobs:Lcom/android/server/job/controllers/QuotaController$UserPackageMap;
-
-    invoke-virtual {v1, p2, v0}, Lcom/android/server/job/controllers/QuotaController$UserPackageMap;->get(ILjava/lang/String;)Ljava/lang/Object;
 
     move-result-object v1
 
-    check-cast v1, Landroid/util/ArraySet;
-
-    .line 612
-    if-nez v1, :cond_1c
-
-    .line 613
-    new-instance v1, Landroid/util/ArraySet;
-
-    invoke-direct {v1}, Landroid/util/ArraySet;-><init>()V
-
-    .line 614
+    .line 611
+    .local v1, "pkgName":Ljava/lang/String;
     iget-object v2, p0, Lcom/android/server/job/controllers/QuotaController;->mTrackedJobs:Lcom/android/server/job/controllers/QuotaController$UserPackageMap;
 
-    invoke-virtual {v2, p2, v0, v1}, Lcom/android/server/job/controllers/QuotaController$UserPackageMap;->add(ILjava/lang/String;Ljava/lang/Object;)V
+    invoke-virtual {v2, v0, v1}, Lcom/android/server/job/controllers/QuotaController$UserPackageMap;->get(ILjava/lang/String;)Ljava/lang/Object;
+
+    move-result-object v2
+
+    check-cast v2, Landroid/util/ArraySet;
+
+    .line 612
+    .local v2, "jobs":Landroid/util/ArraySet;, "Landroid/util/ArraySet<Lcom/android/server/job/controllers/JobStatus;>;"
+    if-nez v2, :cond_1d
+
+    .line 613
+    new-instance v3, Landroid/util/ArraySet;
+
+    invoke-direct {v3}, Landroid/util/ArraySet;-><init>()V
+
+    move-object v2, v3
+
+    .line 614
+    iget-object v3, p0, Lcom/android/server/job/controllers/QuotaController;->mTrackedJobs:Lcom/android/server/job/controllers/QuotaController$UserPackageMap;
+
+    invoke-virtual {v3, v0, v1, v2}, Lcom/android/server/job/controllers/QuotaController$UserPackageMap;->add(ILjava/lang/String;Ljava/lang/Object;)V
 
     .line 616
-    :cond_1c
-    invoke-virtual {v1, p1}, Landroid/util/ArraySet;->add(Ljava/lang/Object;)Z
+    :cond_1d
+    invoke-virtual {v2, p1}, Landroid/util/ArraySet;->add(Ljava/lang/Object;)Z
 
     .line 617
-    const/16 v1, 0x40
+    const/16 v3, 0x40
 
-    invoke-virtual {p1, v1}, Lcom/android/server/job/controllers/JobStatus;->setTrackingController(I)V
+    invoke-virtual {p1, v3}, Lcom/android/server/job/controllers/JobStatus;->setTrackingController(I)V
 
     .line 618
-    iget-boolean v1, p0, Lcom/android/server/job/controllers/QuotaController;->mShouldThrottle:Z
+    iget-boolean v3, p0, Lcom/android/server/job/controllers/QuotaController;->mShouldThrottle:Z
 
-    if-eqz v1, :cond_3a
+    if-eqz v3, :cond_3b
 
     .line 619
     invoke-virtual {p0, p1}, Lcom/android/server/job/controllers/QuotaController;->isWithinQuotaLocked(Lcom/android/server/job/controllers/JobStatus;)Z
 
-    move-result v1
+    move-result v3
 
     .line 620
-    invoke-direct {p0, p1, v1}, Lcom/android/server/job/controllers/QuotaController;->setConstraintSatisfied(Lcom/android/server/job/controllers/JobStatus;Z)Z
+    .local v3, "isWithinQuota":Z
+    invoke-direct {p0, p1, v3}, Lcom/android/server/job/controllers/QuotaController;->setConstraintSatisfied(Lcom/android/server/job/controllers/JobStatus;Z)Z
 
     .line 621
-    if-nez v1, :cond_39
+    if-nez v3, :cond_3a
 
     .line 622
     nop
@@ -4628,102 +5073,112 @@
     .line 623
     invoke-direct {p0, p1}, Lcom/android/server/job/controllers/QuotaController;->getEffectiveStandbyBucket(Lcom/android/server/job/controllers/JobStatus;)I
 
-    move-result p1
+    move-result v4
 
     .line 622
-    invoke-virtual {p0, p2, v0, p1}, Lcom/android/server/job/controllers/QuotaController;->maybeScheduleStartAlarmLocked(ILjava/lang/String;I)V
+    invoke-virtual {p0, v0, v1, v4}, Lcom/android/server/job/controllers/QuotaController;->maybeScheduleStartAlarmLocked(ILjava/lang/String;I)V
 
     .line 625
-    :cond_39
-    goto :goto_3e
+    .end local v3  # "isWithinQuota":Z
+    :cond_3a
+    goto :goto_3f
 
     .line 627
-    :cond_3a
-    const/4 p2, 0x1
+    :cond_3b
+    const/4 v3, 0x1
 
-    invoke-virtual {p1, p2}, Lcom/android/server/job/controllers/JobStatus;->setQuotaConstraintSatisfied(Z)Z
+    invoke-virtual {p1, v3}, Lcom/android/server/job/controllers/JobStatus;->setQuotaConstraintSatisfied(Z)Z
 
     .line 629
-    :goto_3e
+    :goto_3f
     return-void
 .end method
 
 .method public maybeStopTrackingJobLocked(Lcom/android/server/job/controllers/JobStatus;Lcom/android/server/job/controllers/JobStatus;Z)V
-    .registers 5
+    .registers 8
+    .param p1, "jobStatus"  # Lcom/android/server/job/controllers/JobStatus;
+    .param p2, "incomingJob"  # Lcom/android/server/job/controllers/JobStatus;
+    .param p3, "forUpdate"  # Z
 
     .line 660
-    const/16 p2, 0x40
+    const/16 v0, 0x40
 
-    invoke-virtual {p1, p2}, Lcom/android/server/job/controllers/JobStatus;->clearTrackingController(I)Z
+    invoke-virtual {p1, v0}, Lcom/android/server/job/controllers/JobStatus;->clearTrackingController(I)Z
 
-    move-result p2
+    move-result v0
 
-    if-eqz p2, :cond_37
+    if-eqz v0, :cond_37
 
     .line 661
-    iget-object p2, p0, Lcom/android/server/job/controllers/QuotaController;->mPkgTimers:Lcom/android/server/job/controllers/QuotaController$UserPackageMap;
+    iget-object v0, p0, Lcom/android/server/job/controllers/QuotaController;->mPkgTimers:Lcom/android/server/job/controllers/QuotaController$UserPackageMap;
 
     invoke-virtual {p1}, Lcom/android/server/job/controllers/JobStatus;->getSourceUserId()I
 
-    move-result p3
+    move-result v1
 
     .line 662
     invoke-virtual {p1}, Lcom/android/server/job/controllers/JobStatus;->getSourcePackageName()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v2
 
     .line 661
-    invoke-virtual {p2, p3, v0}, Lcom/android/server/job/controllers/QuotaController$UserPackageMap;->get(ILjava/lang/String;)Ljava/lang/Object;
+    invoke-virtual {v0, v1, v2}, Lcom/android/server/job/controllers/QuotaController$UserPackageMap;->get(ILjava/lang/String;)Ljava/lang/Object;
 
-    move-result-object p2
+    move-result-object v0
 
-    check-cast p2, Lcom/android/server/job/controllers/QuotaController$Timer;
+    check-cast v0, Lcom/android/server/job/controllers/QuotaController$Timer;
 
     .line 663
-    if-eqz p2, :cond_1d
+    .local v0, "timer":Lcom/android/server/job/controllers/QuotaController$Timer;
+    if-eqz v0, :cond_1d
 
     .line 664
-    invoke-virtual {p2, p1}, Lcom/android/server/job/controllers/QuotaController$Timer;->stopTrackingJob(Lcom/android/server/job/controllers/JobStatus;)V
+    invoke-virtual {v0, p1}, Lcom/android/server/job/controllers/QuotaController$Timer;->stopTrackingJob(Lcom/android/server/job/controllers/JobStatus;)V
 
     .line 666
     :cond_1d
-    iget-object p2, p0, Lcom/android/server/job/controllers/QuotaController;->mTrackedJobs:Lcom/android/server/job/controllers/QuotaController$UserPackageMap;
+    iget-object v1, p0, Lcom/android/server/job/controllers/QuotaController;->mTrackedJobs:Lcom/android/server/job/controllers/QuotaController$UserPackageMap;
 
     invoke-virtual {p1}, Lcom/android/server/job/controllers/JobStatus;->getSourceUserId()I
 
-    move-result p3
+    move-result v2
 
     .line 667
     invoke-virtual {p1}, Lcom/android/server/job/controllers/JobStatus;->getSourcePackageName()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v3
 
     .line 666
-    invoke-virtual {p2, p3, v0}, Lcom/android/server/job/controllers/QuotaController$UserPackageMap;->get(ILjava/lang/String;)Ljava/lang/Object;
+    invoke-virtual {v1, v2, v3}, Lcom/android/server/job/controllers/QuotaController$UserPackageMap;->get(ILjava/lang/String;)Ljava/lang/Object;
 
-    move-result-object p2
+    move-result-object v1
 
-    check-cast p2, Landroid/util/ArraySet;
+    check-cast v1, Landroid/util/ArraySet;
 
     .line 668
-    if-eqz p2, :cond_32
+    .local v1, "jobs":Landroid/util/ArraySet;, "Landroid/util/ArraySet<Lcom/android/server/job/controllers/JobStatus;>;"
+    if-eqz v1, :cond_32
 
     .line 669
-    invoke-virtual {p2, p1}, Landroid/util/ArraySet;->remove(Ljava/lang/Object;)Z
+    invoke-virtual {v1, p1}, Landroid/util/ArraySet;->remove(Ljava/lang/Object;)Z
 
     .line 671
     :cond_32
-    iget-object p2, p0, Lcom/android/server/job/controllers/QuotaController;->mTopStartedJobs:Landroid/util/ArraySet;
+    iget-object v2, p0, Lcom/android/server/job/controllers/QuotaController;->mTopStartedJobs:Landroid/util/ArraySet;
 
-    invoke-virtual {p2, p1}, Landroid/util/ArraySet;->remove(Ljava/lang/Object;)Z
+    invoke-virtual {v2, p1}, Landroid/util/ArraySet;->remove(Ljava/lang/Object;)Z
 
     .line 673
+    .end local v0  # "timer":Lcom/android/server/job/controllers/QuotaController$Timer;
+    .end local v1  # "jobs":Landroid/util/ArraySet;, "Landroid/util/ArraySet<Lcom/android/server/job/controllers/JobStatus;>;"
     :cond_37
     return-void
 .end method
 
 .method public onAppRemovedLocked(Ljava/lang/String;I)V
     .registers 7
+    .param p1, "packageName"  # Ljava/lang/String;
+    .param p2, "uid"  # I
 
     .line 691
     const-string v0, "JobScheduler.Quota"
@@ -4731,9 +5186,9 @@
     if-nez p1, :cond_a
 
     .line 692
-    const-string p1, "Told app removed but given null package name."
+    const-string v1, "Told app removed but given null package name."
 
-    invoke-static {v0, p1}, Landroid/util/Slog;->wtf(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v0, v1}, Landroid/util/Slog;->wtf(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 693
     return-void
@@ -4745,6 +5200,7 @@
     move-result v1
 
     .line 696
+    .local v1, "userId":I
     iget-object v2, p0, Lcom/android/server/job/controllers/QuotaController;->mTrackedJobs:Lcom/android/server/job/controllers/QuotaController$UserPackageMap;
 
     invoke-virtual {v2, v1, p1}, Lcom/android/server/job/controllers/QuotaController$UserPackageMap;->delete(ILjava/lang/String;)V
@@ -4759,6 +5215,7 @@
     check-cast v2, Lcom/android/server/job/controllers/QuotaController$Timer;
 
     .line 698
+    .local v2, "timer":Lcom/android/server/job/controllers/QuotaController$Timer;
     if-eqz v2, :cond_31
 
     .line 699
@@ -4798,33 +5255,34 @@
     check-cast v0, Lcom/android/server/job/controllers/QuotaController$QcAlarmListener;
 
     .line 707
+    .local v0, "alarmListener":Lcom/android/server/job/controllers/QuotaController$QcAlarmListener;
     if-eqz v0, :cond_4a
 
     .line 708
-    iget-object v2, p0, Lcom/android/server/job/controllers/QuotaController;->mAlarmManager:Landroid/app/AlarmManager;
+    iget-object v3, p0, Lcom/android/server/job/controllers/QuotaController;->mAlarmManager:Landroid/app/AlarmManager;
 
-    invoke-virtual {v2, v0}, Landroid/app/AlarmManager;->cancel(Landroid/app/AlarmManager$OnAlarmListener;)V
+    invoke-virtual {v3, v0}, Landroid/app/AlarmManager;->cancel(Landroid/app/AlarmManager$OnAlarmListener;)V
 
     .line 709
-    iget-object v0, p0, Lcom/android/server/job/controllers/QuotaController;->mInQuotaAlarmListeners:Lcom/android/server/job/controllers/QuotaController$UserPackageMap;
+    iget-object v3, p0, Lcom/android/server/job/controllers/QuotaController;->mInQuotaAlarmListeners:Lcom/android/server/job/controllers/QuotaController$UserPackageMap;
 
-    invoke-virtual {v0, v1, p1}, Lcom/android/server/job/controllers/QuotaController$UserPackageMap;->delete(ILjava/lang/String;)V
+    invoke-virtual {v3, v1, p1}, Lcom/android/server/job/controllers/QuotaController$UserPackageMap;->delete(ILjava/lang/String;)V
 
     .line 711
     :cond_4a
-    iget-object v0, p0, Lcom/android/server/job/controllers/QuotaController;->mExecutionStatsCache:Lcom/android/server/job/controllers/QuotaController$UserPackageMap;
+    iget-object v3, p0, Lcom/android/server/job/controllers/QuotaController;->mExecutionStatsCache:Lcom/android/server/job/controllers/QuotaController$UserPackageMap;
 
-    invoke-virtual {v0, v1, p1}, Lcom/android/server/job/controllers/QuotaController$UserPackageMap;->delete(ILjava/lang/String;)V
+    invoke-virtual {v3, v1, p1}, Lcom/android/server/job/controllers/QuotaController$UserPackageMap;->delete(ILjava/lang/String;)V
 
     .line 712
-    iget-object p1, p0, Lcom/android/server/job/controllers/QuotaController;->mForegroundUids:Landroid/util/SparseBooleanArray;
+    iget-object v3, p0, Lcom/android/server/job/controllers/QuotaController;->mForegroundUids:Landroid/util/SparseBooleanArray;
 
-    invoke-virtual {p1, p2}, Landroid/util/SparseBooleanArray;->delete(I)V
+    invoke-virtual {v3, p2}, Landroid/util/SparseBooleanArray;->delete(I)V
 
     .line 713
-    iget-object p1, p0, Lcom/android/server/job/controllers/QuotaController;->mUidToPackageCache:Landroid/util/SparseSetArray;
+    iget-object v3, p0, Lcom/android/server/job/controllers/QuotaController;->mUidToPackageCache:Landroid/util/SparseSetArray;
 
-    invoke-virtual {p1, p2}, Landroid/util/SparseSetArray;->remove(I)V
+    invoke-virtual {v3, p2}, Landroid/util/SparseSetArray;->remove(I)V
 
     .line 714
     return-void
@@ -4887,6 +5345,7 @@
 
 .method public onUserRemovedLocked(I)V
     .registers 3
+    .param p1, "userId"  # I
 
     .line 718
     iget-object v0, p0, Lcom/android/server/job/controllers/QuotaController;->mTrackedJobs:Lcom/android/server/job/controllers/QuotaController$UserPackageMap;
@@ -4914,16 +5373,17 @@
     invoke-virtual {v0, p1}, Lcom/android/server/job/controllers/QuotaController$UserPackageMap;->delete(I)V
 
     .line 723
-    iget-object p1, p0, Lcom/android/server/job/controllers/QuotaController;->mUidToPackageCache:Landroid/util/SparseSetArray;
+    iget-object v0, p0, Lcom/android/server/job/controllers/QuotaController;->mUidToPackageCache:Landroid/util/SparseSetArray;
 
-    invoke-virtual {p1}, Landroid/util/SparseSetArray;->clear()V
+    invoke-virtual {v0}, Landroid/util/SparseSetArray;->clear()V
 
     .line 724
     return-void
 .end method
 
 .method public prepareForExecutionLocked(Lcom/android/server/job/controllers/JobStatus;)V
-    .registers 6
+    .registers 7
+    .param p1, "jobStatus"  # Lcom/android/server/job/controllers/JobStatus;
 
     .line 633
     sget-boolean v0, Lcom/android/server/job/controllers/QuotaController;->DEBUG:Z
@@ -4960,6 +5420,7 @@
     move-result v0
 
     .line 638
+    .local v0, "uid":I
     iget-object v2, p0, Lcom/android/server/job/controllers/QuotaController;->mActivityManagerInternal:Landroid/app/ActivityManagerInternal;
 
     invoke-virtual {v2, v0}, Landroid/app/ActivityManagerInternal;->getUidProcessState(I)I
@@ -4971,36 +5432,36 @@
     if-gt v2, v3, :cond_4d
 
     .line 639
-    sget-boolean v0, Lcom/android/server/job/controllers/QuotaController;->DEBUG:Z
+    sget-boolean v2, Lcom/android/server/job/controllers/QuotaController;->DEBUG:Z
 
-    if-eqz v0, :cond_47
+    if-eqz v2, :cond_47
 
     .line 640
-    new-instance v0, Ljava/lang/StringBuilder;
+    new-instance v2, Ljava/lang/StringBuilder;
 
-    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
 
     invoke-virtual {p1}, Lcom/android/server/job/controllers/JobStatus;->toShortString()Ljava/lang/String;
 
+    move-result-object v3
+
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    const-string v3, " is top started job"
+
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
     move-result-object v2
 
-    invoke-virtual {v0, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    const-string v2, " is top started job"
-
-    invoke-virtual {v0, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
-
-    move-result-object v0
-
-    invoke-static {v1, v0}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v2}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 642
     :cond_47
-    iget-object v0, p0, Lcom/android/server/job/controllers/QuotaController;->mTopStartedJobs:Landroid/util/ArraySet;
+    iget-object v1, p0, Lcom/android/server/job/controllers/QuotaController;->mTopStartedJobs:Landroid/util/ArraySet;
 
-    invoke-virtual {v0, p1}, Landroid/util/ArraySet;->add(Ljava/lang/Object;)Z
+    invoke-virtual {v1, p1}, Landroid/util/ArraySet;->add(Ljava/lang/Object;)Z
 
     .line 644
     return-void
@@ -5012,11 +5473,13 @@
     move-result v1
 
     .line 648
+    .local v1, "userId":I
     invoke-virtual {p1}, Lcom/android/server/job/controllers/JobStatus;->getSourcePackageName()Ljava/lang/String;
 
     move-result-object v2
 
     .line 649
+    .local v2, "packageName":Ljava/lang/String;
     iget-object v3, p0, Lcom/android/server/job/controllers/QuotaController;->mPkgTimers:Lcom/android/server/job/controllers/QuotaController$UserPackageMap;
 
     invoke-virtual {v3, v1, v2}, Lcom/android/server/job/controllers/QuotaController$UserPackageMap;->get(ILjava/lang/String;)Ljava/lang/Object;
@@ -5026,20 +5489,23 @@
     check-cast v3, Lcom/android/server/job/controllers/QuotaController$Timer;
 
     .line 650
-    if-nez v3, :cond_69
+    .local v3, "timer":Lcom/android/server/job/controllers/QuotaController$Timer;
+    if-nez v3, :cond_6a
 
     .line 651
-    new-instance v3, Lcom/android/server/job/controllers/QuotaController$Timer;
+    new-instance v4, Lcom/android/server/job/controllers/QuotaController$Timer;
 
-    invoke-direct {v3, p0, v0, v1, v2}, Lcom/android/server/job/controllers/QuotaController$Timer;-><init>(Lcom/android/server/job/controllers/QuotaController;IILjava/lang/String;)V
+    invoke-direct {v4, p0, v0, v1, v2}, Lcom/android/server/job/controllers/QuotaController$Timer;-><init>(Lcom/android/server/job/controllers/QuotaController;IILjava/lang/String;)V
+
+    move-object v3, v4
 
     .line 652
-    iget-object v0, p0, Lcom/android/server/job/controllers/QuotaController;->mPkgTimers:Lcom/android/server/job/controllers/QuotaController$UserPackageMap;
+    iget-object v4, p0, Lcom/android/server/job/controllers/QuotaController;->mPkgTimers:Lcom/android/server/job/controllers/QuotaController$UserPackageMap;
 
-    invoke-virtual {v0, v1, v2, v3}, Lcom/android/server/job/controllers/QuotaController$UserPackageMap;->add(ILjava/lang/String;Ljava/lang/Object;)V
+    invoke-virtual {v4, v1, v2, v3}, Lcom/android/server/job/controllers/QuotaController$UserPackageMap;->add(ILjava/lang/String;Ljava/lang/Object;)V
 
     .line 654
-    :cond_69
+    :cond_6a
     invoke-virtual {v3, p1}, Lcom/android/server/job/controllers/QuotaController$Timer;->startTrackingJobLocked(Lcom/android/server/job/controllers/JobStatus;)V
 
     .line 655
@@ -5048,6 +5514,9 @@
 
 .method saveTimingSession(ILjava/lang/String;Lcom/android/server/job/controllers/QuotaController$TimingSession;)V
     .registers 7
+    .param p1, "userId"  # I
+    .param p2, "packageName"  # Ljava/lang/String;
+    .param p3, "session"  # Lcom/android/server/job/controllers/QuotaController$TimingSession;
     .annotation build Lcom/android/internal/annotations/VisibleForTesting;
     .end annotation
 
@@ -5067,12 +5536,15 @@
     check-cast v1, Ljava/util/List;
 
     .line 1163
-    if-nez v1, :cond_17
+    .local v1, "sessions":Ljava/util/List;, "Ljava/util/List<Lcom/android/server/job/controllers/QuotaController$TimingSession;>;"
+    if-nez v1, :cond_18
 
     .line 1164
-    new-instance v1, Ljava/util/ArrayList;
+    new-instance v2, Ljava/util/ArrayList;
 
-    invoke-direct {v1}, Ljava/util/ArrayList;-><init>()V
+    invoke-direct {v2}, Ljava/util/ArrayList;-><init>()V
+
+    move-object v1, v2
 
     .line 1165
     iget-object v2, p0, Lcom/android/server/job/controllers/QuotaController;->mTimingSessions:Lcom/android/server/job/controllers/QuotaController$UserPackageMap;
@@ -5080,7 +5552,7 @@
     invoke-virtual {v2, p1, p2, v1}, Lcom/android/server/job/controllers/QuotaController$UserPackageMap;->add(ILjava/lang/String;Ljava/lang/Object;)V
 
     .line 1167
-    :cond_17
+    :cond_18
     invoke-interface {v1, p3}, Ljava/util/List;->add(Ljava/lang/Object;)Z
 
     .line 1169
@@ -5090,24 +5562,28 @@
     invoke-virtual {p0}, Lcom/android/server/job/controllers/QuotaController;->maybeScheduleCleanupAlarmLocked()V
 
     .line 1172
+    .end local v1  # "sessions":Ljava/util/List;, "Ljava/util/List<Lcom/android/server/job/controllers/QuotaController$TimingSession;>;"
     monitor-exit v0
 
     .line 1173
     return-void
 
     .line 1172
-    :catchall_22
-    move-exception p1
+    :catchall_23
+    move-exception v1
 
     monitor-exit v0
-    :try_end_24
-    .catchall {:try_start_3 .. :try_end_24} :catchall_22
+    :try_end_25
+    .catchall {:try_start_3 .. :try_end_25} :catchall_23
 
-    throw p1
+    throw v1
 .end method
 
 .method updateExecutionStatsLocked(ILjava/lang/String;Lcom/android/server/job/controllers/QuotaController$ExecutionStats;)V
-    .registers 25
+    .registers 34
+    .param p1, "userId"  # I
+    .param p2, "packageName"  # Ljava/lang/String;
+    .param p3, "stats"  # Lcom/android/server/job/controllers/QuotaController$ExecutionStats;
     .annotation build Lcom/android/internal/annotations/VisibleForTesting;
     .end annotation
 
@@ -5142,304 +5618,356 @@
     iput-wide v4, v3, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->inQuotaTimeElapsed:J
 
     .line 978
-    iget-object v7, v0, Lcom/android/server/job/controllers/QuotaController;->mPkgTimers:Lcom/android/server/job/controllers/QuotaController$UserPackageMap;
+    iget-object v4, v0, Lcom/android/server/job/controllers/QuotaController;->mPkgTimers:Lcom/android/server/job/controllers/QuotaController$UserPackageMap;
 
-    invoke-virtual {v7, v1, v2}, Lcom/android/server/job/controllers/QuotaController$UserPackageMap;->get(ILjava/lang/String;)Ljava/lang/Object;
+    invoke-virtual {v4, v1, v2}, Lcom/android/server/job/controllers/QuotaController$UserPackageMap;->get(ILjava/lang/String;)Ljava/lang/Object;
 
-    move-result-object v7
+    move-result-object v4
 
-    check-cast v7, Lcom/android/server/job/controllers/QuotaController$Timer;
+    check-cast v4, Lcom/android/server/job/controllers/QuotaController$Timer;
 
     .line 979
-    sget-object v8, Lcom/android/server/job/JobSchedulerService;->sElapsedRealtimeClock:Ljava/time/Clock;
+    .local v4, "timer":Lcom/android/server/job/controllers/QuotaController$Timer;
+    sget-object v5, Lcom/android/server/job/JobSchedulerService;->sElapsedRealtimeClock:Ljava/time/Clock;
 
-    invoke-virtual {v8}, Ljava/time/Clock;->millis()J
+    invoke-virtual {v5}, Ljava/time/Clock;->millis()J
 
-    move-result-wide v8
+    move-result-wide v5
 
     .line 980
-    const-wide/32 v10, 0x5265c00
+    .local v5, "nowElapsed":J
+    const-wide/32 v7, 0x5265c00
 
-    add-long v12, v8, v10
+    add-long v9, v5, v7
 
-    iput-wide v12, v3, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->expirationTimeElapsed:J
+    iput-wide v9, v3, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->expirationTimeElapsed:J
 
     .line 981
-    if-eqz v7, :cond_73
+    if-eqz v4, :cond_73
 
-    invoke-virtual {v7}, Lcom/android/server/job/controllers/QuotaController$Timer;->isActive()Z
+    invoke-virtual {v4}, Lcom/android/server/job/controllers/QuotaController$Timer;->isActive()Z
 
-    move-result v12
+    move-result v9
 
-    if-eqz v12, :cond_73
+    if-eqz v9, :cond_73
 
     .line 982
     nop
 
     .line 983
-    invoke-virtual {v7, v8, v9}, Lcom/android/server/job/controllers/QuotaController$Timer;->getCurrentDuration(J)J
+    invoke-virtual {v4, v5, v6}, Lcom/android/server/job/controllers/QuotaController$Timer;->getCurrentDuration(J)J
 
-    move-result-wide v12
+    move-result-wide v9
 
-    iput-wide v12, v3, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->executionTimeInMaxPeriodMs:J
+    iput-wide v9, v3, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->executionTimeInMaxPeriodMs:J
 
-    iput-wide v12, v3, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->executionTimeInWindowMs:J
+    iput-wide v9, v3, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->executionTimeInWindowMs:J
 
     .line 984
-    invoke-virtual {v7}, Lcom/android/server/job/controllers/QuotaController$Timer;->getBgJobCount()I
+    invoke-virtual {v4}, Lcom/android/server/job/controllers/QuotaController$Timer;->getBgJobCount()I
 
-    move-result v7
+    move-result v9
 
-    iput v7, v3, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->bgJobCountInMaxPeriod:I
+    iput v9, v3, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->bgJobCountInMaxPeriod:I
 
-    iput v7, v3, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->bgJobCountInWindow:I
+    iput v9, v3, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->bgJobCountInWindow:I
 
     .line 987
-    iput-wide v8, v3, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->expirationTimeElapsed:J
+    iput-wide v5, v3, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->expirationTimeElapsed:J
 
     .line 988
-    iget-wide v12, v3, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->executionTimeInWindowMs:J
+    iget-wide v9, v3, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->executionTimeInWindowMs:J
 
-    iget-wide v14, v0, Lcom/android/server/job/controllers/QuotaController;->mAllowedTimeIntoQuotaMs:J
+    iget-wide v11, v0, Lcom/android/server/job/controllers/QuotaController;->mAllowedTimeIntoQuotaMs:J
 
-    cmp-long v7, v12, v14
+    cmp-long v9, v9, v11
 
-    if-ltz v7, :cond_5e
+    if-ltz v9, :cond_5e
 
     .line 989
-    iget-wide v12, v3, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->inQuotaTimeElapsed:J
+    iget-wide v9, v3, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->inQuotaTimeElapsed:J
+
+    iget-wide v11, v0, Lcom/android/server/job/controllers/QuotaController;->mAllowedTimeIntoQuotaMs:J
+
+    sub-long v11, v5, v11
+
+    iget-wide v13, v3, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->windowSizeMs:J
+
+    add-long/2addr v11, v13
+
+    invoke-static {v9, v10, v11, v12}, Ljava/lang/Math;->max(JJ)J
+
+    move-result-wide v9
+
+    iput-wide v9, v3, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->inQuotaTimeElapsed:J
+
+    .line 992
+    :cond_5e
+    iget-wide v9, v3, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->executionTimeInMaxPeriodMs:J
+
+    iget-wide v11, v0, Lcom/android/server/job/controllers/QuotaController;->mMaxExecutionTimeIntoQuotaMs:J
+
+    cmp-long v9, v9, v11
+
+    if-ltz v9, :cond_73
+
+    .line 993
+    iget-wide v9, v3, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->inQuotaTimeElapsed:J
+
+    iget-wide v11, v0, Lcom/android/server/job/controllers/QuotaController;->mMaxExecutionTimeIntoQuotaMs:J
+
+    sub-long v11, v5, v11
+
+    add-long/2addr v11, v7
+
+    invoke-static {v9, v10, v11, v12}, Ljava/lang/Math;->max(JJ)J
+
+    move-result-wide v9
+
+    iput-wide v9, v3, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->inQuotaTimeElapsed:J
+
+    .line 998
+    :cond_73
+    iget-object v9, v0, Lcom/android/server/job/controllers/QuotaController;->mTimingSessions:Lcom/android/server/job/controllers/QuotaController$UserPackageMap;
+
+    invoke-virtual {v9, v1, v2}, Lcom/android/server/job/controllers/QuotaController$UserPackageMap;->get(ILjava/lang/String;)Ljava/lang/Object;
+
+    move-result-object v9
+
+    check-cast v9, Ljava/util/List;
+
+    .line 999
+    .local v9, "sessions":Ljava/util/List;, "Ljava/util/List<Lcom/android/server/job/controllers/QuotaController$TimingSession;>;"
+    if-eqz v9, :cond_1e1
+
+    invoke-interface {v9}, Ljava/util/List;->size()I
+
+    move-result v10
+
+    if-nez v10, :cond_89
+
+    move-object/from16 v17, v4
+
+    move-wide/from16 v20, v5
+
+    goto/16 :goto_1e5
+
+    .line 1003
+    :cond_89
+    iget-wide v10, v3, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->windowSizeMs:J
+
+    sub-long v10, v5, v10
+
+    .line 1004
+    .local v10, "startWindowElapsed":J
+    sub-long v12, v5, v7
+
+    .line 1005
+    .local v12, "startMaxElapsed":J
+    const/4 v14, 0x0
+
+    .line 1008
+    .local v14, "sessionCountInWindow":I
+    const-wide v15, 0x7fffffffffffffffL
+
+    .line 1011
+    .local v15, "emptyTimeMs":J
+    invoke-interface {v9}, Ljava/util/List;->size()I
+
+    move-result v17
+
+    add-int/lit8 v7, v17, -0x1
+
+    .line 1012
+    .local v7, "loopStart":I
+    move v8, v7
+
+    move-wide/from16 v28, v15
+
+    move/from16 v16, v14
+
+    move-wide/from16 v14, v28
+
+    .end local v15  # "emptyTimeMs":J
+    .local v8, "i":I
+    .local v14, "emptyTimeMs":J
+    .local v16, "sessionCountInWindow":I
+    :goto_a2
+    if-ltz v8, :cond_1d0
+
+    .line 1013
+    invoke-interface {v9, v8}, Ljava/util/List;->get(I)Ljava/lang/Object;
+
+    move-result-object v17
+
+    move-object/from16 v1, v17
+
+    check-cast v1, Lcom/android/server/job/controllers/QuotaController$TimingSession;
+
+    .line 1016
+    .local v1, "session":Lcom/android/server/job/controllers/QuotaController$TimingSession;
+    move-object/from16 v17, v4
+
+    move-wide/from16 v20, v5
+
+    .end local v4  # "timer":Lcom/android/server/job/controllers/QuotaController$Timer;
+    .end local v5  # "nowElapsed":J
+    .local v17, "timer":Lcom/android/server/job/controllers/QuotaController$Timer;
+    .local v20, "nowElapsed":J
+    iget-wide v4, v1, Lcom/android/server/job/controllers/QuotaController$TimingSession;->endTimeElapsed:J
+
+    cmp-long v4, v10, v4
+
+    if-gez v4, :cond_143
+
+    .line 1018
+    iget-wide v4, v1, Lcom/android/server/job/controllers/QuotaController$TimingSession;->startTimeElapsed:J
+
+    cmp-long v4, v10, v4
+
+    if-gez v4, :cond_cb
+
+    .line 1019
+    iget-wide v4, v1, Lcom/android/server/job/controllers/QuotaController$TimingSession;->startTimeElapsed:J
+
+    .line 1020
+    .local v4, "start":J
+    move-wide/from16 v22, v4
+
+    .end local v4  # "start":J
+    .local v22, "start":J
+    iget-wide v4, v1, Lcom/android/server/job/controllers/QuotaController$TimingSession;->startTimeElapsed:J
+
+    sub-long/2addr v4, v10
+
+    .line 1021
+    invoke-static {v14, v15, v4, v5}, Ljava/lang/Math;->min(JJ)J
+
+    move-result-wide v4
+
+    move-wide v14, v4
+
+    move-wide/from16 v4, v22
+
+    .end local v14  # "emptyTimeMs":J
+    .local v4, "emptyTimeMs":J
+    goto :goto_ce
+
+    .line 1025
+    .end local v4  # "emptyTimeMs":J
+    .end local v22  # "start":J
+    .restart local v14  # "emptyTimeMs":J
+    :cond_cb
+    move-wide v4, v10
+
+    .line 1026
+    .local v4, "start":J
+    const-wide/16 v14, 0x0
+
+    .line 1029
+    :goto_ce
+    move-wide/from16 v22, v10
+
+    .end local v10  # "startWindowElapsed":J
+    .local v22, "startWindowElapsed":J
+    iget-wide v10, v3, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->executionTimeInWindowMs:J
+
+    move-wide/from16 v24, v14
+
+    .end local v14  # "emptyTimeMs":J
+    .local v24, "emptyTimeMs":J
+    iget-wide v14, v1, Lcom/android/server/job/controllers/QuotaController$TimingSession;->endTimeElapsed:J
+
+    sub-long/2addr v14, v4
+
+    add-long/2addr v10, v14
+
+    iput-wide v10, v3, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->executionTimeInWindowMs:J
+
+    .line 1030
+    iget v6, v3, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->bgJobCountInWindow:I
+
+    iget v10, v1, Lcom/android/server/job/controllers/QuotaController$TimingSession;->bgJobCount:I
+
+    add-int/2addr v6, v10
+
+    iput v6, v3, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->bgJobCountInWindow:I
+
+    .line 1031
+    iget-wide v10, v3, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->executionTimeInWindowMs:J
 
     iget-wide v14, v0, Lcom/android/server/job/controllers/QuotaController;->mAllowedTimeIntoQuotaMs:J
 
-    sub-long v14, v8, v14
+    cmp-long v6, v10, v14
+
+    if-ltz v6, :cond_fd
+
+    .line 1032
+    iget-wide v10, v3, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->inQuotaTimeElapsed:J
+
+    iget-wide v14, v3, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->executionTimeInWindowMs:J
+
+    add-long/2addr v14, v4
+
+    move-wide/from16 v26, v4
+
+    .end local v4  # "start":J
+    .local v26, "start":J
+    iget-wide v4, v0, Lcom/android/server/job/controllers/QuotaController;->mAllowedTimeIntoQuotaMs:J
+
+    sub-long/2addr v14, v4
 
     iget-wide v4, v3, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->windowSizeMs:J
 
     add-long/2addr v14, v4
 
-    invoke-static {v12, v13, v14, v15}, Ljava/lang/Math;->max(JJ)J
+    invoke-static {v10, v11, v14, v15}, Ljava/lang/Math;->max(JJ)J
 
     move-result-wide v4
 
     iput-wide v4, v3, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->inQuotaTimeElapsed:J
 
-    .line 992
-    :cond_5e
-    iget-wide v4, v3, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->executionTimeInMaxPeriodMs:J
-
-    iget-wide v12, v0, Lcom/android/server/job/controllers/QuotaController;->mMaxExecutionTimeIntoQuotaMs:J
-
-    cmp-long v4, v4, v12
-
-    if-ltz v4, :cond_73
-
-    .line 993
-    iget-wide v4, v3, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->inQuotaTimeElapsed:J
-
-    iget-wide v12, v0, Lcom/android/server/job/controllers/QuotaController;->mMaxExecutionTimeIntoQuotaMs:J
-
-    sub-long v12, v8, v12
-
-    add-long/2addr v12, v10
-
-    invoke-static {v4, v5, v12, v13}, Ljava/lang/Math;->max(JJ)J
-
-    move-result-wide v4
-
-    iput-wide v4, v3, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->inQuotaTimeElapsed:J
-
-    .line 998
-    :cond_73
-    iget-object v4, v0, Lcom/android/server/job/controllers/QuotaController;->mTimingSessions:Lcom/android/server/job/controllers/QuotaController$UserPackageMap;
-
-    invoke-virtual {v4, v1, v2}, Lcom/android/server/job/controllers/QuotaController$UserPackageMap;->get(ILjava/lang/String;)Ljava/lang/Object;
-
-    move-result-object v1
-
-    check-cast v1, Ljava/util/List;
-
-    .line 999
-    if-eqz v1, :cond_1c4
-
-    invoke-interface {v1}, Ljava/util/List;->size()I
-
-    move-result v2
-
-    if-nez v2, :cond_85
-
-    goto/16 :goto_1c4
-
-    .line 1003
-    :cond_85
-    iget-wide v4, v3, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->windowSizeMs:J
-
-    sub-long v4, v8, v4
-
-    .line 1004
-    sub-long v12, v8, v10
-
-    .line 1005
-    nop
-
-    .line 1008
-    const-wide v14, 0x7fffffffffffffffL
-
-    .line 1011
-    invoke-interface {v1}, Ljava/util/List;->size()I
-
-    move-result v2
-
-    add-int/lit8 v2, v2, -0x1
-
-    .line 1012
-    move v7, v6
-
-    move v6, v2
-
-    :goto_99
-    if-ltz v6, :cond_1bb
-
-    .line 1013
-    invoke-interface {v1, v6}, Ljava/util/List;->get(I)Ljava/lang/Object;
-
-    move-result-object v16
-
-    move-object/from16 v10, v16
-
-    check-cast v10, Lcom/android/server/job/controllers/QuotaController$TimingSession;
-
-    .line 1016
-    move-wide/from16 v17, v8
-
-    iget-wide v8, v10, Lcom/android/server/job/controllers/QuotaController$TimingSession;->endTimeElapsed:J
-
-    cmp-long v8, v4, v8
-
-    if-gez v8, :cond_132
-
-    .line 1018
-    iget-wide v8, v10, Lcom/android/server/job/controllers/QuotaController$TimingSession;->startTimeElapsed:J
-
-    cmp-long v8, v4, v8
-
-    if-gez v8, :cond_c0
-
-    .line 1019
-    iget-wide v8, v10, Lcom/android/server/job/controllers/QuotaController$TimingSession;->startTimeElapsed:J
-
-    .line 1020
-    move-wide/from16 p1, v8
-
-    iget-wide v8, v10, Lcom/android/server/job/controllers/QuotaController$TimingSession;->startTimeElapsed:J
-
-    sub-long/2addr v8, v4
-
-    .line 1021
-    invoke-static {v14, v15, v8, v9}, Ljava/lang/Math;->min(JJ)J
-
-    move-result-wide v8
-
-    move-wide v14, v8
-
-    move-wide/from16 v8, p1
-
-    goto :goto_c4
-
-    .line 1025
-    :cond_c0
-    nop
-
-    .line 1026
-    move-wide v8, v4
-
-    const-wide/16 v14, 0x0
-
-    .line 1029
-    :goto_c4
-    move-wide/from16 p1, v4
-
-    iget-wide v4, v3, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->executionTimeInWindowMs:J
-
-    move-wide/from16 v19, v14
-
-    iget-wide v14, v10, Lcom/android/server/job/controllers/QuotaController$TimingSession;->endTimeElapsed:J
-
-    sub-long/2addr v14, v8
-
-    add-long/2addr v4, v14
-
-    iput-wide v4, v3, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->executionTimeInWindowMs:J
-
-    .line 1030
-    iget v4, v3, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->bgJobCountInWindow:I
-
-    iget v5, v10, Lcom/android/server/job/controllers/QuotaController$TimingSession;->bgJobCount:I
-
-    add-int/2addr v4, v5
-
-    iput v4, v3, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->bgJobCountInWindow:I
+    goto :goto_ff
 
     .line 1031
-    iget-wide v4, v3, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->executionTimeInWindowMs:J
-
-    iget-wide v14, v0, Lcom/android/server/job/controllers/QuotaController;->mAllowedTimeIntoQuotaMs:J
-
-    cmp-long v4, v4, v14
-
-    if-ltz v4, :cond_f0
-
-    .line 1032
-    iget-wide v4, v3, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->inQuotaTimeElapsed:J
-
-    iget-wide v14, v3, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->executionTimeInWindowMs:J
-
-    add-long/2addr v8, v14
-
-    iget-wide v14, v0, Lcom/android/server/job/controllers/QuotaController;->mAllowedTimeIntoQuotaMs:J
-
-    sub-long/2addr v8, v14
-
-    iget-wide v14, v3, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->windowSizeMs:J
-
-    add-long/2addr v8, v14
-
-    invoke-static {v4, v5, v8, v9}, Ljava/lang/Math;->max(JJ)J
-
-    move-result-wide v4
-
-    iput-wide v4, v3, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->inQuotaTimeElapsed:J
+    .end local v26  # "start":J
+    .restart local v4  # "start":J
+    :cond_fd
+    move-wide/from16 v26, v4
 
     .line 1036
-    :cond_f0
+    .end local v4  # "start":J
+    .restart local v26  # "start":J
+    :goto_ff
     iget v4, v3, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->bgJobCountInWindow:I
 
     iget v5, v3, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->jobCountLimit:I
 
-    if-lt v4, v5, :cond_103
+    if-lt v4, v5, :cond_112
 
     .line 1037
     iget-wide v4, v3, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->inQuotaTimeElapsed:J
 
-    iget-wide v8, v10, Lcom/android/server/job/controllers/QuotaController$TimingSession;->endTimeElapsed:J
+    iget-wide v10, v1, Lcom/android/server/job/controllers/QuotaController$TimingSession;->endTimeElapsed:J
 
     iget-wide v14, v3, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->windowSizeMs:J
 
-    add-long/2addr v8, v14
+    add-long/2addr v10, v14
 
-    invoke-static {v4, v5, v8, v9}, Ljava/lang/Math;->max(JJ)J
+    invoke-static {v4, v5, v10, v11}, Ljava/lang/Math;->max(JJ)J
 
     move-result-wide v4
 
     iput-wide v4, v3, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->inQuotaTimeElapsed:J
 
     .line 1040
-    :cond_103
-    if-eq v6, v2, :cond_11c
+    :cond_112
+    if-eq v8, v7, :cond_12b
 
-    add-int/lit8 v4, v6, 0x1
+    add-int/lit8 v4, v8, 0x1
 
     .line 1041
-    invoke-interface {v1, v4}, Ljava/util/List;->get(I)Ljava/lang/Object;
+    invoke-interface {v9, v4}, Ljava/util/List;->get(I)Ljava/lang/Object;
 
     move-result-object v4
 
@@ -5447,248 +5975,328 @@
 
     iget-wide v4, v4, Lcom/android/server/job/controllers/QuotaController$TimingSession;->startTimeElapsed:J
 
-    iget-wide v8, v10, Lcom/android/server/job/controllers/QuotaController$TimingSession;->endTimeElapsed:J
+    iget-wide v10, v1, Lcom/android/server/job/controllers/QuotaController$TimingSession;->endTimeElapsed:J
 
-    sub-long/2addr v4, v8
+    sub-long/2addr v4, v10
 
-    iget-wide v8, v0, Lcom/android/server/job/controllers/QuotaController;->mTimingSessionCoalescingDurationMs:J
+    iget-wide v10, v0, Lcom/android/server/job/controllers/QuotaController;->mTimingSessionCoalescingDurationMs:J
 
-    cmp-long v4, v4, v8
+    cmp-long v4, v4, v10
 
-    if-lez v4, :cond_119
+    if-lez v4, :cond_128
 
-    goto :goto_11c
+    goto :goto_12b
 
-    :cond_119
-    move-wide/from16 v14, v19
+    :cond_128
+    move-wide/from16 v14, v24
 
-    goto :goto_134
+    goto :goto_145
 
     .line 1044
-    :cond_11c
-    :goto_11c
-    add-int/lit8 v7, v7, 0x1
+    :cond_12b
+    :goto_12b
+    add-int/lit8 v4, v16, 0x1
 
     .line 1046
-    iget v4, v3, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->sessionCountLimit:I
+    .end local v16  # "sessionCountInWindow":I
+    .local v4, "sessionCountInWindow":I
+    iget v5, v3, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->sessionCountLimit:I
 
-    if-lt v7, v4, :cond_12f
+    if-lt v4, v5, :cond_13e
 
     .line 1047
-    iget-wide v4, v3, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->inQuotaTimeElapsed:J
+    iget-wide v5, v3, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->inQuotaTimeElapsed:J
 
-    iget-wide v8, v10, Lcom/android/server/job/controllers/QuotaController$TimingSession;->endTimeElapsed:J
+    iget-wide v10, v1, Lcom/android/server/job/controllers/QuotaController$TimingSession;->endTimeElapsed:J
 
     iget-wide v14, v3, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->windowSizeMs:J
 
-    add-long/2addr v8, v14
+    add-long/2addr v10, v14
 
-    invoke-static {v4, v5, v8, v9}, Ljava/lang/Math;->max(JJ)J
+    invoke-static {v5, v6, v10, v11}, Ljava/lang/Math;->max(JJ)J
 
-    move-result-wide v4
+    move-result-wide v5
 
-    iput-wide v4, v3, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->inQuotaTimeElapsed:J
+    iput-wide v5, v3, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->inQuotaTimeElapsed:J
 
     .line 1054
-    :cond_12f
-    move-wide/from16 v14, v19
+    .end local v26  # "start":J
+    :cond_13e
+    move/from16 v16, v4
 
-    goto :goto_134
+    move-wide/from16 v14, v24
+
+    goto :goto_145
 
     .line 1016
-    :cond_132
-    move-wide/from16 p1, v4
+    .end local v4  # "sessionCountInWindow":I
+    .end local v22  # "startWindowElapsed":J
+    .end local v24  # "emptyTimeMs":J
+    .restart local v10  # "startWindowElapsed":J
+    .restart local v14  # "emptyTimeMs":J
+    .restart local v16  # "sessionCountInWindow":I
+    :cond_143
+    move-wide/from16 v22, v10
 
     .line 1054
-    :goto_134
-    iget-wide v4, v10, Lcom/android/server/job/controllers/QuotaController$TimingSession;->startTimeElapsed:J
+    .end local v10  # "startWindowElapsed":J
+    .restart local v22  # "startWindowElapsed":J
+    :goto_145
+    iget-wide v4, v1, Lcom/android/server/job/controllers/QuotaController$TimingSession;->startTimeElapsed:J
 
     cmp-long v4, v12, v4
 
-    if-gez v4, :cond_176
+    if-gez v4, :cond_186
 
     .line 1055
     iget-wide v4, v3, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->executionTimeInMaxPeriodMs:J
 
-    iget-wide v8, v10, Lcom/android/server/job/controllers/QuotaController$TimingSession;->endTimeElapsed:J
+    iget-wide v10, v1, Lcom/android/server/job/controllers/QuotaController$TimingSession;->endTimeElapsed:J
 
-    move-object v11, v1
+    move/from16 v24, v7
 
-    move/from16 v16, v2
+    .end local v7  # "loopStart":I
+    .local v24, "loopStart":I
+    iget-wide v6, v1, Lcom/android/server/job/controllers/QuotaController$TimingSession;->startTimeElapsed:J
 
-    iget-wide v1, v10, Lcom/android/server/job/controllers/QuotaController$TimingSession;->startTimeElapsed:J
+    sub-long/2addr v10, v6
 
-    sub-long/2addr v8, v1
-
-    add-long/2addr v4, v8
+    add-long/2addr v4, v10
 
     iput-wide v4, v3, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->executionTimeInMaxPeriodMs:J
 
     .line 1057
-    iget v1, v3, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->bgJobCountInMaxPeriod:I
+    iget v4, v3, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->bgJobCountInMaxPeriod:I
 
-    iget v2, v10, Lcom/android/server/job/controllers/QuotaController$TimingSession;->bgJobCount:I
+    iget v5, v1, Lcom/android/server/job/controllers/QuotaController$TimingSession;->bgJobCount:I
 
-    add-int/2addr v1, v2
+    add-int/2addr v4, v5
 
-    iput v1, v3, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->bgJobCountInMaxPeriod:I
+    iput v4, v3, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->bgJobCountInMaxPeriod:I
 
     .line 1058
-    iget-wide v1, v10, Lcom/android/server/job/controllers/QuotaController$TimingSession;->startTimeElapsed:J
+    iget-wide v4, v1, Lcom/android/server/job/controllers/QuotaController$TimingSession;->startTimeElapsed:J
 
-    sub-long/2addr v1, v12
+    sub-long/2addr v4, v12
 
-    invoke-static {v14, v15, v1, v2}, Ljava/lang/Math;->min(JJ)J
+    invoke-static {v14, v15, v4, v5}, Ljava/lang/Math;->min(JJ)J
 
     move-result-wide v4
 
     .line 1059
-    iget-wide v1, v3, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->executionTimeInMaxPeriodMs:J
+    .end local v14  # "emptyTimeMs":J
+    .local v4, "emptyTimeMs":J
+    iget-wide v6, v3, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->executionTimeInMaxPeriodMs:J
 
-    iget-wide v8, v0, Lcom/android/server/job/controllers/QuotaController;->mMaxExecutionTimeIntoQuotaMs:J
+    iget-wide v10, v0, Lcom/android/server/job/controllers/QuotaController;->mMaxExecutionTimeIntoQuotaMs:J
 
-    cmp-long v1, v1, v8
+    cmp-long v6, v6, v10
 
-    if-ltz v1, :cond_171
+    if-ltz v6, :cond_181
 
     .line 1060
-    iget-wide v1, v3, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->inQuotaTimeElapsed:J
+    iget-wide v6, v3, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->inQuotaTimeElapsed:J
 
-    iget-wide v8, v10, Lcom/android/server/job/controllers/QuotaController$TimingSession;->startTimeElapsed:J
+    iget-wide v10, v1, Lcom/android/server/job/controllers/QuotaController$TimingSession;->startTimeElapsed:J
 
     iget-wide v14, v3, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->executionTimeInMaxPeriodMs:J
 
-    add-long/2addr v8, v14
+    add-long/2addr v10, v14
 
     iget-wide v14, v0, Lcom/android/server/job/controllers/QuotaController;->mMaxExecutionTimeIntoQuotaMs:J
 
-    sub-long/2addr v8, v14
+    sub-long/2addr v10, v14
 
     const-wide/32 v14, 0x5265c00
 
-    add-long/2addr v8, v14
+    add-long/2addr v10, v14
 
-    invoke-static {v1, v2, v8, v9}, Ljava/lang/Math;->max(JJ)J
+    invoke-static {v6, v7, v10, v11}, Ljava/lang/Math;->max(JJ)J
 
-    move-result-wide v1
+    move-result-wide v6
 
-    iput-wide v1, v3, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->inQuotaTimeElapsed:J
+    iput-wide v6, v3, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->inQuotaTimeElapsed:J
 
     .line 1012
-    :cond_171
+    .end local v1  # "session":Lcom/android/server/job/controllers/QuotaController$TimingSession;
+    :cond_181
     move-wide v14, v4
 
-    const-wide/32 v8, 0x5265c00
+    const-wide/32 v18, 0x5265c00
 
-    goto :goto_1af
+    goto :goto_1bf
 
     .line 1064
-    :cond_176
-    move-object v11, v1
+    .end local v4  # "emptyTimeMs":J
+    .end local v24  # "loopStart":I
+    .restart local v1  # "session":Lcom/android/server/job/controllers/QuotaController$TimingSession;
+    .restart local v7  # "loopStart":I
+    .restart local v14  # "emptyTimeMs":J
+    :cond_186
+    move/from16 v24, v7
 
-    move/from16 v16, v2
+    .end local v7  # "loopStart":I
+    .restart local v24  # "loopStart":I
+    iget-wide v4, v1, Lcom/android/server/job/controllers/QuotaController$TimingSession;->endTimeElapsed:J
 
-    iget-wide v1, v10, Lcom/android/server/job/controllers/QuotaController$TimingSession;->endTimeElapsed:J
+    cmp-long v4, v12, v4
 
-    cmp-long v1, v12, v1
-
-    if-gez v1, :cond_1bd
+    if-gez v4, :cond_1cd
 
     .line 1067
-    iget-wide v1, v3, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->executionTimeInMaxPeriodMs:J
-
-    iget-wide v4, v10, Lcom/android/server/job/controllers/QuotaController$TimingSession;->endTimeElapsed:J
-
-    sub-long/2addr v4, v12
-
-    add-long/2addr v1, v4
-
-    iput-wide v1, v3, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->executionTimeInMaxPeriodMs:J
-
-    .line 1068
-    iget v1, v3, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->bgJobCountInMaxPeriod:I
-
-    iget v2, v10, Lcom/android/server/job/controllers/QuotaController$TimingSession;->bgJobCount:I
-
-    add-int/2addr v1, v2
-
-    iput v1, v3, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->bgJobCountInMaxPeriod:I
-
-    .line 1069
-    nop
-
-    .line 1070
-    iget-wide v1, v3, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->executionTimeInMaxPeriodMs:J
-
-    iget-wide v4, v0, Lcom/android/server/job/controllers/QuotaController;->mMaxExecutionTimeIntoQuotaMs:J
-
-    cmp-long v1, v1, v4
-
-    if-ltz v1, :cond_1aa
-
-    .line 1071
-    iget-wide v1, v3, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->inQuotaTimeElapsed:J
-
     iget-wide v4, v3, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->executionTimeInMaxPeriodMs:J
 
-    add-long/2addr v4, v12
+    iget-wide v6, v1, Lcom/android/server/job/controllers/QuotaController$TimingSession;->endTimeElapsed:J
 
-    iget-wide v8, v0, Lcom/android/server/job/controllers/QuotaController;->mMaxExecutionTimeIntoQuotaMs:J
+    sub-long/2addr v6, v12
 
-    sub-long/2addr v4, v8
+    add-long/2addr v4, v6
 
-    const-wide/32 v8, 0x5265c00
+    iput-wide v4, v3, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->executionTimeInMaxPeriodMs:J
 
-    add-long/2addr v4, v8
+    .line 1068
+    iget v4, v3, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->bgJobCountInMaxPeriod:I
 
-    invoke-static {v1, v2, v4, v5}, Ljava/lang/Math;->max(JJ)J
+    iget v5, v1, Lcom/android/server/job/controllers/QuotaController$TimingSession;->bgJobCount:I
 
-    move-result-wide v1
+    add-int/2addr v4, v5
 
-    iput-wide v1, v3, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->inQuotaTimeElapsed:J
+    iput v4, v3, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->bgJobCountInMaxPeriod:I
 
-    goto :goto_1ad
+    .line 1069
+    const-wide/16 v4, 0x0
 
     .line 1070
-    :cond_1aa
-    const-wide/32 v8, 0x5265c00
+    .end local v14  # "emptyTimeMs":J
+    .restart local v4  # "emptyTimeMs":J
+    iget-wide v6, v3, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->executionTimeInMaxPeriodMs:J
+
+    iget-wide v10, v0, Lcom/android/server/job/controllers/QuotaController;->mMaxExecutionTimeIntoQuotaMs:J
+
+    cmp-long v6, v6, v10
+
+    if-ltz v6, :cond_1bb
+
+    .line 1071
+    iget-wide v6, v3, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->inQuotaTimeElapsed:J
+
+    iget-wide v10, v3, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->executionTimeInMaxPeriodMs:J
+
+    add-long/2addr v10, v12
+
+    iget-wide v14, v0, Lcom/android/server/job/controllers/QuotaController;->mMaxExecutionTimeIntoQuotaMs:J
+
+    sub-long/2addr v10, v14
+
+    const-wide/32 v18, 0x5265c00
+
+    add-long v10, v10, v18
+
+    invoke-static {v6, v7, v10, v11}, Ljava/lang/Math;->max(JJ)J
+
+    move-result-wide v6
+
+    iput-wide v6, v3, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->inQuotaTimeElapsed:J
+
+    goto :goto_1be
+
+    .line 1070
+    :cond_1bb
+    const-wide/32 v18, 0x5265c00
 
     .line 1012
-    :goto_1ad
-    const-wide/16 v14, 0x0
+    .end local v1  # "session":Lcom/android/server/job/controllers/QuotaController$TimingSession;
+    :goto_1be
+    move-wide v14, v4
 
-    :goto_1af
-    add-int/lit8 v6, v6, -0x1
+    .end local v4  # "emptyTimeMs":J
+    .restart local v14  # "emptyTimeMs":J
+    :goto_1bf
+    add-int/lit8 v8, v8, -0x1
 
-    move-wide/from16 v4, p1
+    move/from16 v1, p1
 
-    move-object v1, v11
+    move-object/from16 v4, v17
 
-    move/from16 v2, v16
+    move-wide/from16 v5, v20
 
-    move-wide v10, v8
+    move-wide/from16 v10, v22
 
-    move-wide/from16 v8, v17
+    move/from16 v7, v24
 
-    goto/16 :goto_99
+    goto/16 :goto_a2
 
-    :cond_1bb
-    move-wide/from16 v17, v8
+    .line 1064
+    .restart local v1  # "session":Lcom/android/server/job/controllers/QuotaController$TimingSession;
+    :cond_1cd
+    move/from16 v1, v16
+
+    goto :goto_1da
+
+    .line 1012
+    .end local v1  # "session":Lcom/android/server/job/controllers/QuotaController$TimingSession;
+    .end local v17  # "timer":Lcom/android/server/job/controllers/QuotaController$Timer;
+    .end local v20  # "nowElapsed":J
+    .end local v22  # "startWindowElapsed":J
+    .end local v24  # "loopStart":I
+    .local v4, "timer":Lcom/android/server/job/controllers/QuotaController$Timer;
+    .restart local v5  # "nowElapsed":J
+    .restart local v7  # "loopStart":I
+    .restart local v10  # "startWindowElapsed":J
+    :cond_1d0
+    move-object/from16 v17, v4
+
+    move-wide/from16 v20, v5
+
+    move/from16 v24, v7
+
+    move-wide/from16 v22, v10
+
+    .end local v4  # "timer":Lcom/android/server/job/controllers/QuotaController$Timer;
+    .end local v5  # "nowElapsed":J
+    .end local v7  # "loopStart":I
+    .end local v10  # "startWindowElapsed":J
+    .restart local v17  # "timer":Lcom/android/server/job/controllers/QuotaController$Timer;
+    .restart local v20  # "nowElapsed":J
+    .restart local v22  # "startWindowElapsed":J
+    .restart local v24  # "loopStart":I
+    move/from16 v1, v16
 
     .line 1080
-    :cond_1bd
-    add-long v8, v17, v14
+    .end local v8  # "i":I
+    .end local v16  # "sessionCountInWindow":I
+    .local v1, "sessionCountInWindow":I
+    :goto_1da
+    add-long v5, v20, v14
 
-    iput-wide v8, v3, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->expirationTimeElapsed:J
+    iput-wide v5, v3, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->expirationTimeElapsed:J
 
     .line 1081
-    iput v7, v3, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->sessionCountInWindow:I
+    iput v1, v3, Lcom/android/server/job/controllers/QuotaController$ExecutionStats;->sessionCountInWindow:I
 
     .line 1082
     return-void
 
+    .line 999
+    .end local v1  # "sessionCountInWindow":I
+    .end local v12  # "startMaxElapsed":J
+    .end local v14  # "emptyTimeMs":J
+    .end local v17  # "timer":Lcom/android/server/job/controllers/QuotaController$Timer;
+    .end local v20  # "nowElapsed":J
+    .end local v22  # "startWindowElapsed":J
+    .end local v24  # "loopStart":I
+    .restart local v4  # "timer":Lcom/android/server/job/controllers/QuotaController$Timer;
+    .restart local v5  # "nowElapsed":J
+    :cond_1e1
+    move-object/from16 v17, v4
+
+    move-wide/from16 v20, v5
+
     .line 1000
-    :cond_1c4
-    :goto_1c4
+    .end local v4  # "timer":Lcom/android/server/job/controllers/QuotaController$Timer;
+    .end local v5  # "nowElapsed":J
+    .restart local v17  # "timer":Lcom/android/server/job/controllers/QuotaController$Timer;
+    .restart local v20  # "nowElapsed":J
+    :goto_1e5
     return-void
 .end method

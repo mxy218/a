@@ -44,6 +44,14 @@
     .end annotation
 .end method
 
+.method public abstract notifyPortalLoginTimeout()V
+    .annotation system Ldalvik/annotation/Throws;
+        value = {
+            Landroid/os/RemoteException;
+        }
+    .end annotation
+.end method
+
 .method public abstract notifyPrivateDnsConfigResolved(Landroid/net/PrivateDnsConfigParcel;)V
     .annotation system Ldalvik/annotation/Throws;
         value = {

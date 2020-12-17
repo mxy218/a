@@ -27,6 +27,7 @@
 # direct methods
 .method public constructor <init>(Landroid/content/Context;)V
     .registers 5
+    .param p1, "context"  # Landroid/content/Context;
 
     .line 54
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -63,6 +64,7 @@
     check-cast v0, Landroid/os/PowerManager;
 
     .line 59
+    .local v0, "powerManager":Landroid/os/PowerManager;
     nop
 
     .line 60
@@ -72,47 +74,47 @@
 
     invoke-virtual {v0, v1, v2}, Landroid/os/PowerManager;->newWakeLock(ILjava/lang/String;)Landroid/os/PowerManager$WakeLock;
 
-    move-result-object v0
+    move-result-object v1
 
     .line 59
-    invoke-static {v0}, Ljava/util/Objects;->requireNonNull(Ljava/lang/Object;)Ljava/lang/Object;
+    invoke-static {v1}, Ljava/util/Objects;->requireNonNull(Ljava/lang/Object;)Ljava/lang/Object;
 
-    move-result-object v0
+    move-result-object v1
 
-    check-cast v0, Landroid/os/PowerManager$WakeLock;
+    check-cast v1, Landroid/os/PowerManager$WakeLock;
 
-    iput-object v0, p0, Lcom/android/server/timedetector/TimeDetectorStrategyCallbackImpl;->mWakeLock:Landroid/os/PowerManager$WakeLock;
+    iput-object v1, p0, Lcom/android/server/timedetector/TimeDetectorStrategyCallbackImpl;->mWakeLock:Landroid/os/PowerManager$WakeLock;
 
     .line 62
-    const-class v0, Landroid/app/AlarmManager;
+    const-class v1, Landroid/app/AlarmManager;
 
-    invoke-virtual {p1, v0}, Landroid/content/Context;->getSystemService(Ljava/lang/Class;)Ljava/lang/Object;
+    invoke-virtual {p1, v1}, Landroid/content/Context;->getSystemService(Ljava/lang/Class;)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v1
 
-    check-cast p1, Landroid/app/AlarmManager;
+    check-cast v1, Landroid/app/AlarmManager;
 
-    invoke-static {p1}, Ljava/util/Objects;->requireNonNull(Ljava/lang/Object;)Ljava/lang/Object;
+    invoke-static {v1}, Ljava/util/Objects;->requireNonNull(Ljava/lang/Object;)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v1
 
-    check-cast p1, Landroid/app/AlarmManager;
+    check-cast v1, Landroid/app/AlarmManager;
 
-    iput-object p1, p0, Lcom/android/server/timedetector/TimeDetectorStrategyCallbackImpl;->mAlarmManager:Landroid/app/AlarmManager;
+    iput-object v1, p0, Lcom/android/server/timedetector/TimeDetectorStrategyCallbackImpl;->mAlarmManager:Landroid/app/AlarmManager;
 
     .line 64
     nop
 
     .line 65
-    const-string/jumbo p1, "ro.sys.time_detector_update_diff"
+    const-string/jumbo v1, "ro.sys.time_detector_update_diff"
 
-    const/16 v0, 0x7d0
+    const/16 v2, 0x7d0
 
-    invoke-static {p1, v0}, Landroid/os/SystemProperties;->getInt(Ljava/lang/String;I)I
+    invoke-static {v1, v2}, Landroid/os/SystemProperties;->getInt(Ljava/lang/String;I)I
 
-    move-result p1
+    move-result v1
 
-    iput p1, p0, Lcom/android/server/timedetector/TimeDetectorStrategyCallbackImpl;->mSystemClockUpdateThresholdMillis:I
+    iput v1, p0, Lcom/android/server/timedetector/TimeDetectorStrategyCallbackImpl;->mSystemClockUpdateThresholdMillis:I
 
     .line 67
     return-void
@@ -255,6 +257,7 @@
     move-exception v1
 
     .line 79
+    .local v1, "snfe":Landroid/provider/Settings$SettingNotFoundException;
     return v0
 .end method
 
@@ -275,6 +278,7 @@
 
 .method public sendStickyBroadcast(Landroid/content/Intent;)V
     .registers 4
+    .param p1, "intent"  # Landroid/content/Intent;
 
     .line 117
     iget-object v0, p0, Lcom/android/server/timedetector/TimeDetectorStrategyCallbackImpl;->mContext:Landroid/content/Context;
@@ -289,6 +293,7 @@
 
 .method public setSystemClock(J)V
     .registers 4
+    .param p1, "newTimeMillis"  # J
 
     .line 105
     invoke-direct {p0}, Lcom/android/server/timedetector/TimeDetectorStrategyCallbackImpl;->checkWakeLockHeld()V

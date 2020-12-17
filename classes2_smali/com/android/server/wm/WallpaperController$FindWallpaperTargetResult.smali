@@ -52,6 +52,7 @@
 
 .method synthetic constructor <init>(Lcom/android/server/wm/WallpaperController$1;)V
     .registers 2
+    .param p1, "x0"  # Lcom/android/server/wm/WallpaperController$1;
 
     .line 783
     invoke-direct {p0}, Lcom/android/server/wm/WallpaperController$FindWallpaperTargetResult;-><init>()V
@@ -86,6 +87,7 @@
 
 .method setTopWallpaper(Lcom/android/server/wm/WindowState;)V
     .registers 2
+    .param p1, "win"  # Lcom/android/server/wm/WindowState;
 
     .line 790
     iput-object p1, p0, Lcom/android/server/wm/WallpaperController$FindWallpaperTargetResult;->topWallpaper:Lcom/android/server/wm/WindowState;
@@ -96,6 +98,7 @@
 
 .method setUseTopWallpaperAsTarget(Z)V
     .registers 2
+    .param p1, "topWallpaperAsTarget"  # Z
 
     .line 798
     iput-boolean p1, p0, Lcom/android/server/wm/WallpaperController$FindWallpaperTargetResult;->useTopWallpaperAsTarget:Z
@@ -106,6 +109,7 @@
 
 .method setWallpaperTarget(Lcom/android/server/wm/WindowState;)V
     .registers 2
+    .param p1, "win"  # Lcom/android/server/wm/WindowState;
 
     .line 794
     iput-object p1, p0, Lcom/android/server/wm/WallpaperController$FindWallpaperTargetResult;->wallpaperTarget:Lcom/android/server/wm/WindowState;

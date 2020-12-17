@@ -48,6 +48,8 @@
 # direct methods
 .method private constructor <init>(Landroid/content/Context;Lcom/android/internal/os/LooperStats;)V
     .registers 4
+    .param p1, "context"  # Landroid/content/Context;
+    .param p2, "stats"  # Lcom/android/internal/os/LooperStats;
 
     .line 68
     invoke-direct {p0}, Landroid/os/Binder;-><init>()V
@@ -72,6 +74,9 @@
 
 .method synthetic constructor <init>(Landroid/content/Context;Lcom/android/internal/os/LooperStats;Lcom/android/server/LooperStatsService$1;)V
     .registers 4
+    .param p1, "x0"  # Landroid/content/Context;
+    .param p2, "x1"  # Lcom/android/internal/os/LooperStats;
+    .param p3, "x2"  # Lcom/android/server/LooperStatsService$1;
 
     .line 49
     invoke-direct {p0, p1, p2}, Lcom/android/server/LooperStatsService;-><init>(Landroid/content/Context;Lcom/android/internal/os/LooperStats;)V
@@ -81,6 +86,7 @@
 
 .method static synthetic access$200(Lcom/android/server/LooperStatsService;)V
     .registers 1
+    .param p0, "x0"  # Lcom/android/server/LooperStatsService;
 
     .line 49
     invoke-direct {p0}, Lcom/android/server/LooperStatsService;->initFromSettings()V
@@ -90,6 +96,8 @@
 
 .method static synthetic access$300(Lcom/android/server/LooperStatsService;Z)V
     .registers 2
+    .param p0, "x0"  # Lcom/android/server/LooperStatsService;
+    .param p1, "x1"  # Z
 
     .line 49
     invoke-direct {p0, p1}, Lcom/android/server/LooperStatsService;->setEnabled(Z)V
@@ -98,16 +106,19 @@
 .end method
 
 .method static synthetic access$400(Lcom/android/server/LooperStatsService;)Lcom/android/internal/os/LooperStats;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/LooperStatsService;
 
     .line 49
-    iget-object p0, p0, Lcom/android/server/LooperStatsService;->mStats:Lcom/android/internal/os/LooperStats;
+    iget-object v0, p0, Lcom/android/server/LooperStatsService;->mStats:Lcom/android/internal/os/LooperStats;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$500(Lcom/android/server/LooperStatsService;I)V
     .registers 2
+    .param p0, "x0"  # Lcom/android/server/LooperStatsService;
+    .param p1, "x1"  # I
 
     .line 49
     invoke-direct {p0, p1}, Lcom/android/server/LooperStatsService;->setSamplingInterval(I)V
@@ -126,6 +137,7 @@
     invoke-direct {v0, v1}, Landroid/util/KeyValueListParser;-><init>(C)V
 
     .line 77
+    .local v0, "parser":Landroid/util/KeyValueListParser;
     :try_start_7
     iget-object v1, p0, Lcom/android/server/LooperStatsService;->mContext:Landroid/content/Context;
 
@@ -133,24 +145,25 @@
 
     move-result-object v1
 
-    const-string v2, "looper_stats"
+    const-string/jumbo v2, "looper_stats"
 
     invoke-static {v1, v2}, Landroid/provider/Settings$Global;->getString(Landroid/content/ContentResolver;Ljava/lang/String;)Ljava/lang/String;
 
     move-result-object v1
 
     invoke-virtual {v0, v1}, Landroid/util/KeyValueListParser;->setString(Ljava/lang/String;)V
-    :try_end_16
-    .catch Ljava/lang/IllegalArgumentException; {:try_start_7 .. :try_end_16} :catch_17
+    :try_end_17
+    .catch Ljava/lang/IllegalArgumentException; {:try_start_7 .. :try_end_17} :catch_18
 
     .line 81
-    goto :goto_1f
+    goto :goto_20
 
     .line 79
-    :catch_17
+    :catch_18
     move-exception v1
 
     .line 80
+    .local v1, "e":Ljava/lang/IllegalArgumentException;
     const-string v2, "LooperStatsService"
 
     const-string v3, "Bad looper_stats settings"
@@ -158,7 +171,8 @@
     invoke-static {v2, v3, v1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
     .line 83
-    :goto_1f
+    .end local v1  # "e":Ljava/lang/IllegalArgumentException;
+    :goto_20
     const/16 v1, 0x3e8
 
     .line 84
@@ -192,63 +206,68 @@
 
     invoke-virtual {v0, v2, v1}, Landroid/util/KeyValueListParser;->getBoolean(Ljava/lang/String;Z)Z
 
-    move-result v0
+    move-result v1
 
     .line 89
-    const-string v1, "debug.sys.looper_stats_enabled"
+    const-string v2, "debug.sys.looper_stats_enabled"
 
-    invoke-static {v1, v0}, Landroid/os/SystemProperties;->getBoolean(Ljava/lang/String;Z)Z
+    invoke-static {v2, v1}, Landroid/os/SystemProperties;->getBoolean(Ljava/lang/String;Z)Z
 
-    move-result v0
+    move-result v1
 
-    invoke-direct {p0, v0}, Lcom/android/server/LooperStatsService;->setEnabled(Z)V
+    invoke-direct {p0, v1}, Lcom/android/server/LooperStatsService;->setEnabled(Z)V
 
     .line 92
     return-void
 .end method
 
 .method static synthetic lambda$dump$0(Lcom/android/internal/os/LooperStats$ExportedEntry;)Ljava/lang/Integer;
-    .registers 1
+    .registers 2
+    .param p0, "entry"  # Lcom/android/internal/os/LooperStats$ExportedEntry;
 
     .line 110
-    iget p0, p0, Lcom/android/internal/os/LooperStats$ExportedEntry;->workSourceUid:I
+    iget v0, p0, Lcom/android/internal/os/LooperStats$ExportedEntry;->workSourceUid:I
 
-    invoke-static {p0}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
+    invoke-static {v0}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
 
-    move-result-object p0
+    move-result-object v0
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic lambda$dump$1(Lcom/android/internal/os/LooperStats$ExportedEntry;)Ljava/lang/String;
-    .registers 1
+    .registers 2
+    .param p0, "entry"  # Lcom/android/internal/os/LooperStats$ExportedEntry;
 
     .line 111
-    iget-object p0, p0, Lcom/android/internal/os/LooperStats$ExportedEntry;->threadName:Ljava/lang/String;
+    iget-object v0, p0, Lcom/android/internal/os/LooperStats$ExportedEntry;->threadName:Ljava/lang/String;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic lambda$dump$2(Lcom/android/internal/os/LooperStats$ExportedEntry;)Ljava/lang/String;
-    .registers 1
+    .registers 2
+    .param p0, "entry"  # Lcom/android/internal/os/LooperStats$ExportedEntry;
 
     .line 112
-    iget-object p0, p0, Lcom/android/internal/os/LooperStats$ExportedEntry;->handlerClassName:Ljava/lang/String;
+    iget-object v0, p0, Lcom/android/internal/os/LooperStats$ExportedEntry;->handlerClassName:Ljava/lang/String;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic lambda$dump$3(Lcom/android/internal/os/LooperStats$ExportedEntry;)Ljava/lang/String;
-    .registers 1
+    .registers 2
+    .param p0, "entry"  # Lcom/android/internal/os/LooperStats$ExportedEntry;
 
     .line 113
-    iget-object p0, p0, Lcom/android/internal/os/LooperStats$ExportedEntry;->messageName:Ljava/lang/String;
+    iget-object v0, p0, Lcom/android/internal/os/LooperStats$ExportedEntry;->messageName:Ljava/lang/String;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method private setEnabled(Z)V
     .registers 3
+    .param p1, "enabled"  # Z
 
     .line 156
     iget-boolean v0, p0, Lcom/android/server/LooperStatsService;->mEnabled:Z
@@ -271,15 +290,15 @@
     .line 160
     if-eqz p1, :cond_15
 
-    iget-object p1, p0, Lcom/android/server/LooperStatsService;->mStats:Lcom/android/internal/os/LooperStats;
+    iget-object v0, p0, Lcom/android/server/LooperStatsService;->mStats:Lcom/android/internal/os/LooperStats;
 
     goto :goto_16
 
     :cond_15
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
     :goto_16
-    invoke-static {p1}, Landroid/os/Looper;->setObserver(Landroid/os/Looper$Observer;)V
+    invoke-static {v0}, Landroid/os/Looper;->setObserver(Landroid/os/Looper$Observer;)V
 
     .line 162
     :cond_19
@@ -288,6 +307,7 @@
 
 .method private setSamplingInterval(I)V
     .registers 4
+    .param p1, "samplingInterval"  # I
 
     .line 172
     if-lez p1, :cond_8
@@ -313,11 +333,11 @@
 
     invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    const-string v0, "LooperStatsService"
+    const-string v1, "LooperStatsService"
 
-    invoke-static {v0, p1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v0}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 178
     :goto_1e
@@ -326,6 +346,7 @@
 
 .method private setTrackScreenInteractive(Z)V
     .registers 3
+    .param p1, "enabled"  # Z
 
     .line 165
     iget-boolean v0, p0, Lcom/android/server/LooperStatsService;->mTrackScreenInteractive:Z
@@ -336,9 +357,9 @@
     iput-boolean p1, p0, Lcom/android/server/LooperStatsService;->mTrackScreenInteractive:Z
 
     .line 167
-    iget-object p1, p0, Lcom/android/server/LooperStatsService;->mStats:Lcom/android/internal/os/LooperStats;
+    iget-object v0, p0, Lcom/android/server/LooperStatsService;->mStats:Lcom/android/internal/os/LooperStats;
 
-    invoke-virtual {p1}, Lcom/android/internal/os/LooperStats;->reset()V
+    invoke-virtual {v0}, Lcom/android/internal/os/LooperStats;->reset()V
 
     .line 169
     :cond_b
@@ -348,7 +369,10 @@
 
 # virtual methods
 .method protected dump(Ljava/io/FileDescriptor;Ljava/io/PrintWriter;[Ljava/lang/String;)V
-    .registers 23
+    .registers 24
+    .param p1, "fd"  # Ljava/io/FileDescriptor;
+    .param p2, "pw"  # Ljava/io/PrintWriter;
+    .param p3, "args"  # [Ljava/lang/String;
 
     .line 102
     move-object/from16 v0, p0
@@ -374,6 +398,7 @@
     move-result-object v2
 
     .line 104
+    .local v2, "packageMap":Lcom/android/internal/os/AppIdToPackageMap;
     const-string v3, "Start time: "
 
     invoke-virtual {v1, v3}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
@@ -408,295 +433,305 @@
     invoke-virtual {v1, v3, v4}, Ljava/io/PrintWriter;->println(J)V
 
     .line 108
-    iget-object v0, v0, Lcom/android/server/LooperStatsService;->mStats:Lcom/android/internal/os/LooperStats;
+    iget-object v3, v0, Lcom/android/server/LooperStatsService;->mStats:Lcom/android/internal/os/LooperStats;
 
-    invoke-virtual {v0}, Lcom/android/internal/os/LooperStats;->getEntries()Ljava/util/List;
+    invoke-virtual {v3}, Lcom/android/internal/os/LooperStats;->getEntries()Ljava/util/List;
 
-    move-result-object v0
+    move-result-object v3
 
     .line 109
-    sget-object v3, Lcom/android/server/-$$Lambda$LooperStatsService$Byo6QAxZpVXDCMtjrcYJc6YLAks;->INSTANCE:Lcom/android/server/-$$Lambda$LooperStatsService$Byo6QAxZpVXDCMtjrcYJc6YLAks;
+    .local v3, "entries":Ljava/util/List;, "Ljava/util/List<Lcom/android/internal/os/LooperStats$ExportedEntry;>;"
+    sget-object v4, Lcom/android/server/-$$Lambda$LooperStatsService$Byo6QAxZpVXDCMtjrcYJc6YLAks;->INSTANCE:Lcom/android/server/-$$Lambda$LooperStatsService$Byo6QAxZpVXDCMtjrcYJc6YLAks;
 
     .line 110
-    invoke-static {v3}, Ljava/util/Comparator;->comparing(Ljava/util/function/Function;)Ljava/util/Comparator;
+    invoke-static {v4}, Ljava/util/Comparator;->comparing(Ljava/util/function/Function;)Ljava/util/Comparator;
 
-    move-result-object v3
+    move-result-object v4
 
-    sget-object v4, Lcom/android/server/-$$Lambda$LooperStatsService$Vzysuo2tO86qjfcWeh1Rdb47NQQ;->INSTANCE:Lcom/android/server/-$$Lambda$LooperStatsService$Vzysuo2tO86qjfcWeh1Rdb47NQQ;
+    sget-object v5, Lcom/android/server/-$$Lambda$LooperStatsService$Vzysuo2tO86qjfcWeh1Rdb47NQQ;->INSTANCE:Lcom/android/server/-$$Lambda$LooperStatsService$Vzysuo2tO86qjfcWeh1Rdb47NQQ;
 
     .line 111
-    invoke-interface {v3, v4}, Ljava/util/Comparator;->thenComparing(Ljava/util/function/Function;)Ljava/util/Comparator;
+    invoke-interface {v4, v5}, Ljava/util/Comparator;->thenComparing(Ljava/util/function/Function;)Ljava/util/Comparator;
 
-    move-result-object v3
+    move-result-object v4
 
-    sget-object v4, Lcom/android/server/-$$Lambda$LooperStatsService$XjYmSR91xdWG1Xgt-Gj9GBZZbjk;->INSTANCE:Lcom/android/server/-$$Lambda$LooperStatsService$XjYmSR91xdWG1Xgt-Gj9GBZZbjk;
+    sget-object v5, Lcom/android/server/-$$Lambda$LooperStatsService$XjYmSR91xdWG1Xgt-Gj9GBZZbjk;->INSTANCE:Lcom/android/server/-$$Lambda$LooperStatsService$XjYmSR91xdWG1Xgt-Gj9GBZZbjk;
 
     .line 112
-    invoke-interface {v3, v4}, Ljava/util/Comparator;->thenComparing(Ljava/util/function/Function;)Ljava/util/Comparator;
+    invoke-interface {v4, v5}, Ljava/util/Comparator;->thenComparing(Ljava/util/function/Function;)Ljava/util/Comparator;
 
-    move-result-object v3
+    move-result-object v4
 
-    sget-object v4, Lcom/android/server/-$$Lambda$LooperStatsService$XtFJEDeyYRT79ZkVP96XkHribxg;->INSTANCE:Lcom/android/server/-$$Lambda$LooperStatsService$XtFJEDeyYRT79ZkVP96XkHribxg;
+    sget-object v5, Lcom/android/server/-$$Lambda$LooperStatsService$XtFJEDeyYRT79ZkVP96XkHribxg;->INSTANCE:Lcom/android/server/-$$Lambda$LooperStatsService$XtFJEDeyYRT79ZkVP96XkHribxg;
 
     .line 113
-    invoke-interface {v3, v4}, Ljava/util/Comparator;->thenComparing(Ljava/util/function/Function;)Ljava/util/Comparator;
+    invoke-interface {v4, v5}, Ljava/util/Comparator;->thenComparing(Ljava/util/function/Function;)Ljava/util/Comparator;
 
-    move-result-object v3
+    move-result-object v4
 
     .line 109
-    invoke-interface {v0, v3}, Ljava/util/List;->sort(Ljava/util/Comparator;)V
+    invoke-interface {v3, v4}, Ljava/util/List;->sort(Ljava/util/Comparator;)V
 
     .line 114
-    const-string/jumbo v4, "work_source_uid"
+    const-string/jumbo v5, "work_source_uid"
 
-    const-string/jumbo v5, "thread_name"
+    const-string/jumbo v6, "thread_name"
 
-    const-string v6, "handler_class"
+    const-string v7, "handler_class"
 
-    const-string v7, "message_name"
+    const-string/jumbo v8, "message_name"
 
-    const-string v8, "is_interactive"
+    const-string/jumbo v9, "is_interactive"
 
-    const-string v9, "message_count"
+    const-string/jumbo v10, "message_count"
 
-    const-string/jumbo v10, "recorded_message_count"
+    const-string/jumbo v11, "recorded_message_count"
 
-    const-string/jumbo v11, "total_latency_micros"
+    const-string/jumbo v12, "total_latency_micros"
 
-    const-string v12, "max_latency_micros"
+    const-string/jumbo v13, "max_latency_micros"
 
-    const-string/jumbo v13, "total_cpu_micros"
+    const-string/jumbo v14, "total_cpu_micros"
 
-    const-string v14, "max_cpu_micros"
+    const-string/jumbo v15, "max_cpu_micros"
 
-    const-string/jumbo v15, "recorded_delay_message_count"
+    const-string/jumbo v16, "recorded_delay_message_count"
 
-    const-string/jumbo v16, "total_delay_millis"
+    const-string/jumbo v17, "total_delay_millis"
 
-    const-string v17, "max_delay_millis"
+    const-string/jumbo v18, "max_delay_millis"
 
-    const-string v18, "exception_count"
+    const-string v19, "exception_count"
 
-    filled-new-array/range {v4 .. v18}, [Ljava/lang/String;
+    filled-new-array/range {v5 .. v19}, [Ljava/lang/String;
 
-    move-result-object v3
+    move-result-object v4
 
-    invoke-static {v3}, Ljava/util/Arrays;->asList([Ljava/lang/Object;)Ljava/util/List;
+    invoke-static {v4}, Ljava/util/Arrays;->asList([Ljava/lang/Object;)Ljava/util/List;
 
-    move-result-object v3
+    move-result-object v4
 
-    const-string v4, ","
+    const-string v5, ","
 
-    invoke-static {v4, v3}, Ljava/lang/String;->join(Ljava/lang/CharSequence;Ljava/lang/Iterable;)Ljava/lang/String;
+    invoke-static {v5, v4}, Ljava/lang/String;->join(Ljava/lang/CharSequence;Ljava/lang/Iterable;)Ljava/lang/String;
 
-    move-result-object v3
+    move-result-object v4
 
     .line 130
-    invoke-virtual {v1, v3}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    .local v4, "header":Ljava/lang/String;
+    invoke-virtual {v1, v4}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
     .line 131
-    invoke-interface {v0}, Ljava/util/List;->iterator()Ljava/util/Iterator;
+    invoke-interface {v3}, Ljava/util/List;->iterator()Ljava/util/Iterator;
 
-    move-result-object v0
+    move-result-object v5
 
-    :goto_91
-    invoke-interface {v0}, Ljava/util/Iterator;->hasNext()Z
+    :goto_97
+    invoke-interface {v5}, Ljava/util/Iterator;->hasNext()Z
 
-    move-result v3
+    move-result v6
 
-    if-eqz v3, :cond_135
+    if-eqz v6, :cond_13b
 
-    invoke-interface {v0}, Ljava/util/Iterator;->next()Ljava/lang/Object;
+    invoke-interface {v5}, Ljava/util/Iterator;->next()Ljava/lang/Object;
 
-    move-result-object v3
+    move-result-object v6
 
-    check-cast v3, Lcom/android/internal/os/LooperStats$ExportedEntry;
+    check-cast v6, Lcom/android/internal/os/LooperStats$ExportedEntry;
 
     .line 132
-    iget-object v4, v3, Lcom/android/internal/os/LooperStats$ExportedEntry;->messageName:Ljava/lang/String;
+    .local v6, "entry":Lcom/android/internal/os/LooperStats$ExportedEntry;
+    iget-object v7, v6, Lcom/android/internal/os/LooperStats$ExportedEntry;->messageName:Ljava/lang/String;
 
-    const-string v5, "__DEBUG_"
+    const-string v8, "__DEBUG_"
 
-    invoke-virtual {v4, v5}, Ljava/lang/String;->startsWith(Ljava/lang/String;)Z
+    invoke-virtual {v7, v8}, Ljava/lang/String;->startsWith(Ljava/lang/String;)Z
 
-    move-result v4
+    move-result v7
 
-    if-eqz v4, :cond_a8
+    if-eqz v7, :cond_ae
 
     .line 134
-    goto :goto_91
+    goto :goto_97
 
     .line 136
-    :cond_a8
-    const/16 v4, 0xf
+    :cond_ae
+    const/16 v7, 0xf
 
-    new-array v4, v4, [Ljava/lang/Object;
+    new-array v7, v7, [Ljava/lang/Object;
 
-    const/4 v5, 0x0
+    const/4 v8, 0x0
 
-    iget v6, v3, Lcom/android/internal/os/LooperStats$ExportedEntry;->workSourceUid:I
+    iget v9, v6, Lcom/android/internal/os/LooperStats$ExportedEntry;->workSourceUid:I
 
     .line 137
-    invoke-virtual {v2, v6}, Lcom/android/internal/os/AppIdToPackageMap;->mapUid(I)Ljava/lang/String;
+    invoke-virtual {v2, v9}, Lcom/android/internal/os/AppIdToPackageMap;->mapUid(I)Ljava/lang/String;
 
-    move-result-object v6
+    move-result-object v9
 
-    aput-object v6, v4, v5
+    aput-object v9, v7, v8
 
-    const/4 v5, 0x1
+    const/4 v8, 0x1
 
-    iget-object v6, v3, Lcom/android/internal/os/LooperStats$ExportedEntry;->threadName:Ljava/lang/String;
+    iget-object v9, v6, Lcom/android/internal/os/LooperStats$ExportedEntry;->threadName:Ljava/lang/String;
 
-    aput-object v6, v4, v5
+    aput-object v9, v7, v8
 
-    const/4 v5, 0x2
+    const/4 v8, 0x2
 
-    iget-object v6, v3, Lcom/android/internal/os/LooperStats$ExportedEntry;->handlerClassName:Ljava/lang/String;
+    iget-object v9, v6, Lcom/android/internal/os/LooperStats$ExportedEntry;->handlerClassName:Ljava/lang/String;
 
-    aput-object v6, v4, v5
+    aput-object v9, v7, v8
 
-    const/4 v5, 0x3
+    const/4 v8, 0x3
 
-    iget-object v6, v3, Lcom/android/internal/os/LooperStats$ExportedEntry;->messageName:Ljava/lang/String;
+    iget-object v9, v6, Lcom/android/internal/os/LooperStats$ExportedEntry;->messageName:Ljava/lang/String;
 
-    aput-object v6, v4, v5
+    aput-object v9, v7, v8
 
-    const/4 v5, 0x4
+    const/4 v8, 0x4
 
-    iget-boolean v6, v3, Lcom/android/internal/os/LooperStats$ExportedEntry;->isInteractive:Z
+    iget-boolean v9, v6, Lcom/android/internal/os/LooperStats$ExportedEntry;->isInteractive:Z
 
     .line 141
-    invoke-static {v6}, Ljava/lang/Boolean;->valueOf(Z)Ljava/lang/Boolean;
+    invoke-static {v9}, Ljava/lang/Boolean;->valueOf(Z)Ljava/lang/Boolean;
 
-    move-result-object v6
+    move-result-object v9
 
-    aput-object v6, v4, v5
+    aput-object v9, v7, v8
 
-    const/4 v5, 0x5
+    const/4 v8, 0x5
 
-    iget-wide v6, v3, Lcom/android/internal/os/LooperStats$ExportedEntry;->messageCount:J
+    iget-wide v9, v6, Lcom/android/internal/os/LooperStats$ExportedEntry;->messageCount:J
 
     .line 142
-    invoke-static {v6, v7}, Ljava/lang/Long;->valueOf(J)Ljava/lang/Long;
+    invoke-static {v9, v10}, Ljava/lang/Long;->valueOf(J)Ljava/lang/Long;
 
-    move-result-object v6
+    move-result-object v9
 
-    aput-object v6, v4, v5
+    aput-object v9, v7, v8
 
-    const/4 v5, 0x6
+    const/4 v8, 0x6
 
-    iget-wide v6, v3, Lcom/android/internal/os/LooperStats$ExportedEntry;->recordedMessageCount:J
+    iget-wide v9, v6, Lcom/android/internal/os/LooperStats$ExportedEntry;->recordedMessageCount:J
 
     .line 143
-    invoke-static {v6, v7}, Ljava/lang/Long;->valueOf(J)Ljava/lang/Long;
+    invoke-static {v9, v10}, Ljava/lang/Long;->valueOf(J)Ljava/lang/Long;
 
-    move-result-object v6
+    move-result-object v9
 
-    aput-object v6, v4, v5
+    aput-object v9, v7, v8
 
-    const/4 v5, 0x7
+    const/4 v8, 0x7
 
-    iget-wide v6, v3, Lcom/android/internal/os/LooperStats$ExportedEntry;->totalLatencyMicros:J
+    iget-wide v9, v6, Lcom/android/internal/os/LooperStats$ExportedEntry;->totalLatencyMicros:J
 
     .line 144
-    invoke-static {v6, v7}, Ljava/lang/Long;->valueOf(J)Ljava/lang/Long;
+    invoke-static {v9, v10}, Ljava/lang/Long;->valueOf(J)Ljava/lang/Long;
 
-    move-result-object v6
+    move-result-object v9
 
-    aput-object v6, v4, v5
+    aput-object v9, v7, v8
 
-    const/16 v5, 0x8
+    const/16 v8, 0x8
 
-    iget-wide v6, v3, Lcom/android/internal/os/LooperStats$ExportedEntry;->maxLatencyMicros:J
+    iget-wide v9, v6, Lcom/android/internal/os/LooperStats$ExportedEntry;->maxLatencyMicros:J
 
     .line 145
-    invoke-static {v6, v7}, Ljava/lang/Long;->valueOf(J)Ljava/lang/Long;
+    invoke-static {v9, v10}, Ljava/lang/Long;->valueOf(J)Ljava/lang/Long;
 
-    move-result-object v6
+    move-result-object v9
 
-    aput-object v6, v4, v5
+    aput-object v9, v7, v8
 
-    const/16 v5, 0x9
+    const/16 v8, 0x9
 
-    iget-wide v6, v3, Lcom/android/internal/os/LooperStats$ExportedEntry;->cpuUsageMicros:J
+    iget-wide v9, v6, Lcom/android/internal/os/LooperStats$ExportedEntry;->cpuUsageMicros:J
 
     .line 146
-    invoke-static {v6, v7}, Ljava/lang/Long;->valueOf(J)Ljava/lang/Long;
+    invoke-static {v9, v10}, Ljava/lang/Long;->valueOf(J)Ljava/lang/Long;
 
-    move-result-object v6
+    move-result-object v9
 
-    aput-object v6, v4, v5
+    aput-object v9, v7, v8
 
-    const/16 v5, 0xa
+    const/16 v8, 0xa
 
-    iget-wide v6, v3, Lcom/android/internal/os/LooperStats$ExportedEntry;->maxCpuUsageMicros:J
+    iget-wide v9, v6, Lcom/android/internal/os/LooperStats$ExportedEntry;->maxCpuUsageMicros:J
 
     .line 147
-    invoke-static {v6, v7}, Ljava/lang/Long;->valueOf(J)Ljava/lang/Long;
+    invoke-static {v9, v10}, Ljava/lang/Long;->valueOf(J)Ljava/lang/Long;
 
-    move-result-object v6
+    move-result-object v9
 
-    aput-object v6, v4, v5
+    aput-object v9, v7, v8
 
-    const/16 v5, 0xb
+    const/16 v8, 0xb
 
-    iget-wide v6, v3, Lcom/android/internal/os/LooperStats$ExportedEntry;->recordedDelayMessageCount:J
+    iget-wide v9, v6, Lcom/android/internal/os/LooperStats$ExportedEntry;->recordedDelayMessageCount:J
 
     .line 148
-    invoke-static {v6, v7}, Ljava/lang/Long;->valueOf(J)Ljava/lang/Long;
+    invoke-static {v9, v10}, Ljava/lang/Long;->valueOf(J)Ljava/lang/Long;
 
-    move-result-object v6
+    move-result-object v9
 
-    aput-object v6, v4, v5
+    aput-object v9, v7, v8
 
-    const/16 v5, 0xc
+    const/16 v8, 0xc
 
-    iget-wide v6, v3, Lcom/android/internal/os/LooperStats$ExportedEntry;->delayMillis:J
+    iget-wide v9, v6, Lcom/android/internal/os/LooperStats$ExportedEntry;->delayMillis:J
 
     .line 149
-    invoke-static {v6, v7}, Ljava/lang/Long;->valueOf(J)Ljava/lang/Long;
+    invoke-static {v9, v10}, Ljava/lang/Long;->valueOf(J)Ljava/lang/Long;
 
-    move-result-object v6
+    move-result-object v9
 
-    aput-object v6, v4, v5
+    aput-object v9, v7, v8
 
-    const/16 v5, 0xd
+    const/16 v8, 0xd
 
-    iget-wide v6, v3, Lcom/android/internal/os/LooperStats$ExportedEntry;->maxDelayMillis:J
+    iget-wide v9, v6, Lcom/android/internal/os/LooperStats$ExportedEntry;->maxDelayMillis:J
 
     .line 150
-    invoke-static {v6, v7}, Ljava/lang/Long;->valueOf(J)Ljava/lang/Long;
+    invoke-static {v9, v10}, Ljava/lang/Long;->valueOf(J)Ljava/lang/Long;
 
-    move-result-object v6
+    move-result-object v9
 
-    aput-object v6, v4, v5
+    aput-object v9, v7, v8
 
-    const/16 v5, 0xe
+    const/16 v8, 0xe
 
-    iget-wide v6, v3, Lcom/android/internal/os/LooperStats$ExportedEntry;->exceptionCount:J
+    iget-wide v9, v6, Lcom/android/internal/os/LooperStats$ExportedEntry;->exceptionCount:J
 
     .line 151
-    invoke-static {v6, v7}, Ljava/lang/Long;->valueOf(J)Ljava/lang/Long;
+    invoke-static {v9, v10}, Ljava/lang/Long;->valueOf(J)Ljava/lang/Long;
 
-    move-result-object v3
+    move-result-object v9
 
-    aput-object v3, v4, v5
+    aput-object v9, v7, v8
 
     .line 136
-    const-string v3, "%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s\n"
+    const-string v8, "%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s\n"
 
-    invoke-virtual {v1, v3, v4}, Ljava/io/PrintWriter;->printf(Ljava/lang/String;[Ljava/lang/Object;)Ljava/io/PrintWriter;
+    invoke-virtual {v1, v8, v7}, Ljava/io/PrintWriter;->printf(Ljava/lang/String;[Ljava/lang/Object;)Ljava/io/PrintWriter;
 
     .line 152
-    goto/16 :goto_91
+    .end local v6  # "entry":Lcom/android/internal/os/LooperStats$ExportedEntry;
+    goto/16 :goto_97
 
     .line 153
-    :cond_135
+    :cond_13b
     return-void
 .end method
 
 .method public onShellCommand(Ljava/io/FileDescriptor;Ljava/io/FileDescriptor;Ljava/io/FileDescriptor;[Ljava/lang/String;Landroid/os/ShellCallback;Landroid/os/ResultReceiver;)V
     .registers 15
+    .param p1, "in"  # Ljava/io/FileDescriptor;
+    .param p2, "out"  # Ljava/io/FileDescriptor;
+    .param p3, "err"  # Ljava/io/FileDescriptor;
+    .param p4, "args"  # [Ljava/lang/String;
+    .param p5, "callback"  # Landroid/os/ShellCallback;
+    .param p6, "resultReceiver"  # Landroid/os/ResultReceiver;
 
     .line 97
     new-instance v0, Lcom/android/server/LooperStatsService$LooperShellCommand;

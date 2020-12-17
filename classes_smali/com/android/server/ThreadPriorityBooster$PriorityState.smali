@@ -46,6 +46,7 @@
 
 .method synthetic constructor <init>(Lcom/android/server/ThreadPriorityBooster$1;)V
     .registers 2
+    .param p1, "x0"  # Lcom/android/server/ThreadPriorityBooster$1;
 
     .line 87
     invoke-direct {p0}, Lcom/android/server/ThreadPriorityBooster$PriorityState;-><init>()V

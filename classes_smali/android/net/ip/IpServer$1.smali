@@ -21,8 +21,9 @@
 # direct methods
 .method constructor <init>(Landroid/net/ip/IpServer;)V
     .registers 3
+    .param p1, "this$0"  # Landroid/net/ip/IpServer;
 
-    .line 359
+    .line 370
     iput-object p1, p0, Landroid/net/ip/IpServer$1;->this$0:Landroid/net/ip/IpServer;
 
     const/4 v0, 0x0
@@ -36,13 +37,14 @@
 # virtual methods
 .method public callback(I)V
     .registers 5
+    .param p1, "statusCode"  # I
 
-    .line 362
+    .line 373
     const/4 v0, 0x1
 
     if-eq p1, v0, :cond_24
 
-    .line 363
+    .line 374
     iget-object v0, p0, Landroid/net/ip/IpServer$1;->this$0:Landroid/net/ip/IpServer;
 
     invoke-static {v0}, Landroid/net/ip/IpServer;->access$300(Landroid/net/ip/IpServer;)Landroid/net/util/SharedLog;
@@ -61,18 +63,18 @@
 
     invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v1
 
-    invoke-virtual {v0, p1}, Landroid/net/util/SharedLog;->e(Ljava/lang/String;)V
+    invoke-virtual {v0, v1}, Landroid/net/util/SharedLog;->e(Ljava/lang/String;)V
 
-    .line 364
-    iget-object p1, p0, Landroid/net/ip/IpServer$1;->this$0:Landroid/net/ip/IpServer;
+    .line 375
+    iget-object v0, p0, Landroid/net/ip/IpServer$1;->this$0:Landroid/net/ip/IpServer;
 
-    const/16 v0, 0xc
+    const/16 v1, 0xc
 
-    invoke-static {p1, v0}, Landroid/net/ip/IpServer;->access$002(Landroid/net/ip/IpServer;I)I
+    invoke-static {v0, v1}, Landroid/net/ip/IpServer;->access$002(Landroid/net/ip/IpServer;I)I
 
-    .line 367
+    .line 378
     :cond_24
     return-void
 .end method

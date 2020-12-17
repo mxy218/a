@@ -19,6 +19,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/backup/encryption/chunking/SingleStreamDiffScriptWriter;)V
     .registers 2
+    .param p1, "writer"  # Lcom/android/server/backup/encryption/chunking/SingleStreamDiffScriptWriter;
     .annotation build Lcom/android/internal/annotations/VisibleForTesting;
     .end annotation
 
@@ -34,6 +35,7 @@
 
 .method public static newInstance(Ljava/io/OutputStream;)Lcom/android/server/backup/encryption/chunking/DiffScriptBackupWriter;
     .registers 3
+    .param p0, "outputStream"  # Ljava/io/OutputStream;
 
     .line 40
     new-instance v0, Lcom/android/server/backup/encryption/chunking/SingleStreamDiffScriptWriter;
@@ -43,11 +45,12 @@
     invoke-direct {v0, p0, v1}, Lcom/android/server/backup/encryption/chunking/SingleStreamDiffScriptWriter;-><init>(Ljava/io/OutputStream;I)V
 
     .line 43
-    new-instance p0, Lcom/android/server/backup/encryption/chunking/DiffScriptBackupWriter;
+    .local v0, "writer":Lcom/android/server/backup/encryption/chunking/SingleStreamDiffScriptWriter;
+    new-instance v1, Lcom/android/server/backup/encryption/chunking/DiffScriptBackupWriter;
 
-    invoke-direct {p0, v0}, Lcom/android/server/backup/encryption/chunking/DiffScriptBackupWriter;-><init>(Lcom/android/server/backup/encryption/chunking/SingleStreamDiffScriptWriter;)V
+    invoke-direct {v1, v0}, Lcom/android/server/backup/encryption/chunking/DiffScriptBackupWriter;-><init>(Lcom/android/server/backup/encryption/chunking/SingleStreamDiffScriptWriter;)V
 
-    return-object p0
+    return-object v1
 .end method
 
 
@@ -80,6 +83,7 @@
 
 .method public writeBytes([B)V
     .registers 6
+    .param p1, "bytes"  # [B
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Ljava/io/IOException;
@@ -97,11 +101,13 @@
     aget-byte v2, p1, v1
 
     .line 54
+    .local v2, "b":B
     iget-object v3, p0, Lcom/android/server/backup/encryption/chunking/DiffScriptBackupWriter;->mWriter:Lcom/android/server/backup/encryption/chunking/SingleStreamDiffScriptWriter;
 
     invoke-virtual {v3, v2}, Lcom/android/server/backup/encryption/chunking/SingleStreamDiffScriptWriter;->writeByte(B)V
 
     .line 53
+    .end local v2  # "b":B
     add-int/lit8 v1, v1, 0x1
 
     goto :goto_2
@@ -110,9 +116,9 @@
     :cond_e
     iget-wide v0, p0, Lcom/android/server/backup/encryption/chunking/DiffScriptBackupWriter;->mBytesWritten:J
 
-    array-length p1, p1
+    array-length v2, p1
 
-    int-to-long v2, p1
+    int-to-long v2, v2
 
     add-long/2addr v0, v2
 
@@ -123,7 +129,9 @@
 .end method
 
 .method public writeChunk(JI)V
-    .registers 6
+    .registers 8
+    .param p1, "start"  # J
+    .param p3, "length"  # I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Ljava/io/IOException;
@@ -136,13 +144,13 @@
     invoke-virtual {v0, p1, p2, p3}, Lcom/android/server/backup/encryption/chunking/SingleStreamDiffScriptWriter;->writeChunk(JI)V
 
     .line 63
-    iget-wide p1, p0, Lcom/android/server/backup/encryption/chunking/DiffScriptBackupWriter;->mBytesWritten:J
+    iget-wide v0, p0, Lcom/android/server/backup/encryption/chunking/DiffScriptBackupWriter;->mBytesWritten:J
 
-    int-to-long v0, p3
+    int-to-long v2, p3
 
-    add-long/2addr p1, v0
+    add-long/2addr v0, v2
 
-    iput-wide p1, p0, Lcom/android/server/backup/encryption/chunking/DiffScriptBackupWriter;->mBytesWritten:J
+    iput-wide v0, p0, Lcom/android/server/backup/encryption/chunking/DiffScriptBackupWriter;->mBytesWritten:J
 
     .line 64
     return-void

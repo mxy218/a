@@ -49,6 +49,7 @@
 # virtual methods
 .method public accept(Lcom/android/server/job/controllers/JobStatus;)V
     .registers 6
+    .param p1, "job"  # Lcom/android/server/job/controllers/JobStatus;
 
     .line 2614
     invoke-virtual {p1}, Lcom/android/server/job/controllers/JobStatus;->getWhenStandbyDeferred()J
@@ -57,16 +58,16 @@
 
     const-wide/16 v2, 0x0
 
-    cmp-long p1, v0, v2
+    cmp-long v0, v0, v2
 
-    if-lez p1, :cond_10
+    if-lez v0, :cond_10
 
     .line 2615
-    iget p1, p0, Lcom/android/server/job/JobSchedulerService$DeferredJobCounter;->mDeferred:I
+    iget v0, p0, Lcom/android/server/job/JobSchedulerService$DeferredJobCounter;->mDeferred:I
 
-    add-int/lit8 p1, p1, 0x1
+    add-int/lit8 v0, v0, 0x1
 
-    iput p1, p0, Lcom/android/server/job/JobSchedulerService$DeferredJobCounter;->mDeferred:I
+    iput v0, p0, Lcom/android/server/job/JobSchedulerService$DeferredJobCounter;->mDeferred:I
 
     .line 2617
     :cond_10

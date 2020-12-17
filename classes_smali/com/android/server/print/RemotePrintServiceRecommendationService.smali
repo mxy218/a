@@ -48,7 +48,10 @@
 
 # direct methods
 .method constructor <init>(Landroid/content/Context;Landroid/os/UserHandle;Lcom/android/server/print/RemotePrintServiceRecommendationService$RemotePrintServiceRecommendationServiceCallbacks;)V
-    .registers 7
+    .registers 9
+    .param p1, "context"  # Landroid/content/Context;
+    .param p2, "userHandle"  # Landroid/os/UserHandle;
+    .param p3, "callbacks"  # Lcom/android/server/print/RemotePrintServiceRecommendationService$RemotePrintServiceRecommendationServiceCallbacks;
 
     .line 134
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -64,121 +67,149 @@
     iput-object p1, p0, Lcom/android/server/print/RemotePrintServiceRecommendationService;->mContext:Landroid/content/Context;
 
     .line 136
-    new-instance p1, Lcom/android/server/print/RemotePrintServiceRecommendationService$Connection;
+    new-instance v0, Lcom/android/server/print/RemotePrintServiceRecommendationService$Connection;
 
-    invoke-direct {p1, p0, p3}, Lcom/android/server/print/RemotePrintServiceRecommendationService$Connection;-><init>(Lcom/android/server/print/RemotePrintServiceRecommendationService;Lcom/android/server/print/RemotePrintServiceRecommendationService$RemotePrintServiceRecommendationServiceCallbacks;)V
+    invoke-direct {v0, p0, p3}, Lcom/android/server/print/RemotePrintServiceRecommendationService$Connection;-><init>(Lcom/android/server/print/RemotePrintServiceRecommendationService;Lcom/android/server/print/RemotePrintServiceRecommendationService$RemotePrintServiceRecommendationServiceCallbacks;)V
 
-    iput-object p1, p0, Lcom/android/server/print/RemotePrintServiceRecommendationService;->mConnection:Lcom/android/server/print/RemotePrintServiceRecommendationService$Connection;
+    iput-object v0, p0, Lcom/android/server/print/RemotePrintServiceRecommendationService;->mConnection:Lcom/android/server/print/RemotePrintServiceRecommendationService$Connection;
 
     .line 139
     :try_start_13
     invoke-direct {p0, p2}, Lcom/android/server/print/RemotePrintServiceRecommendationService;->getServiceIntent(Landroid/os/UserHandle;)Landroid/content/Intent;
 
-    move-result-object p1
+    move-result-object v0
 
     .line 141
-    iget-object p3, p0, Lcom/android/server/print/RemotePrintServiceRecommendationService;->mLock:Ljava/lang/Object;
+    .local v0, "serviceIntent":Landroid/content/Intent;
+    iget-object v1, p0, Lcom/android/server/print/RemotePrintServiceRecommendationService;->mLock:Ljava/lang/Object;
 
-    monitor-enter p3
+    monitor-enter v1
     :try_end_1a
     .catch Ljava/lang/Exception; {:try_start_13 .. :try_end_1a} :catch_47
 
     .line 142
     :try_start_1a
-    iget-object v0, p0, Lcom/android/server/print/RemotePrintServiceRecommendationService;->mContext:Landroid/content/Context;
+    iget-object v2, p0, Lcom/android/server/print/RemotePrintServiceRecommendationService;->mContext:Landroid/content/Context;
 
-    iget-object v1, p0, Lcom/android/server/print/RemotePrintServiceRecommendationService;->mConnection:Lcom/android/server/print/RemotePrintServiceRecommendationService$Connection;
+    iget-object v3, p0, Lcom/android/server/print/RemotePrintServiceRecommendationService;->mConnection:Lcom/android/server/print/RemotePrintServiceRecommendationService$Connection;
 
-    const v2, 0x4000001
+    const v4, 0x4000001
 
-    invoke-virtual {v0, p1, v1, v2, p2}, Landroid/content/Context;->bindServiceAsUser(Landroid/content/Intent;Landroid/content/ServiceConnection;ILandroid/os/UserHandle;)Z
+    invoke-virtual {v2, v0, v3, v4, p2}, Landroid/content/Context;->bindServiceAsUser(Landroid/content/Intent;Landroid/content/ServiceConnection;ILandroid/os/UserHandle;)Z
 
-    move-result p2
+    move-result v2
 
-    iput-boolean p2, p0, Lcom/android/server/print/RemotePrintServiceRecommendationService;->mIsBound:Z
+    iput-boolean v2, p0, Lcom/android/server/print/RemotePrintServiceRecommendationService;->mIsBound:Z
 
     .line 145
-    iget-boolean p2, p0, Lcom/android/server/print/RemotePrintServiceRecommendationService;->mIsBound:Z
+    iget-boolean v2, p0, Lcom/android/server/print/RemotePrintServiceRecommendationService;->mIsBound:Z
 
-    if-eqz p2, :cond_2d
+    if-eqz v2, :cond_2d
 
     .line 148
-    monitor-exit p3
+    monitor-exit v1
 
     .line 151
+    .end local v0  # "serviceIntent":Landroid/content/Intent;
     goto :goto_4f
 
     .line 146
+    .restart local v0  # "serviceIntent":Landroid/content/Intent;
     :cond_2d
-    new-instance p2, Ljava/lang/Exception;
+    new-instance v2, Ljava/lang/Exception;
 
-    new-instance v0, Ljava/lang/StringBuilder;
+    new-instance v3, Ljava/lang/StringBuilder;
 
-    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v1, "Failed to bind to service "
+    const-string v4, "Failed to bind to service "
 
-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v3
 
-    invoke-direct {p2, p1}, Ljava/lang/Exception;-><init>(Ljava/lang/String;)V
+    invoke-direct {v2, v3}, Ljava/lang/Exception;-><init>(Ljava/lang/String;)V
 
-    throw p2
+    .end local v0  # "serviceIntent":Landroid/content/Intent;
+    .end local p0  # "this":Lcom/android/server/print/RemotePrintServiceRecommendationService;
+    .end local p1  # "context":Landroid/content/Context;
+    .end local p2  # "userHandle":Landroid/os/UserHandle;
+    .end local p3  # "callbacks":Lcom/android/server/print/RemotePrintServiceRecommendationService$RemotePrintServiceRecommendationServiceCallbacks;
+    throw v2
 
     .line 148
+    .restart local v0  # "serviceIntent":Landroid/content/Intent;
+    .restart local p0  # "this":Lcom/android/server/print/RemotePrintServiceRecommendationService;
+    .restart local p1  # "context":Landroid/content/Context;
+    .restart local p2  # "userHandle":Landroid/os/UserHandle;
+    .restart local p3  # "callbacks":Lcom/android/server/print/RemotePrintServiceRecommendationService$RemotePrintServiceRecommendationServiceCallbacks;
     :catchall_44
-    move-exception p1
+    move-exception v2
 
-    monitor-exit p3
+    monitor-exit v1
     :try_end_46
     .catchall {:try_start_1a .. :try_end_46} :catchall_44
 
+    .end local p0  # "this":Lcom/android/server/print/RemotePrintServiceRecommendationService;
+    .end local p1  # "context":Landroid/content/Context;
+    .end local p2  # "userHandle":Landroid/os/UserHandle;
+    .end local p3  # "callbacks":Lcom/android/server/print/RemotePrintServiceRecommendationService$RemotePrintServiceRecommendationServiceCallbacks;
     :try_start_46
-    throw p1
+    throw v2
     :try_end_47
     .catch Ljava/lang/Exception; {:try_start_46 .. :try_end_47} :catch_47
 
     .line 149
+    .end local v0  # "serviceIntent":Landroid/content/Intent;
+    .restart local p0  # "this":Lcom/android/server/print/RemotePrintServiceRecommendationService;
+    .restart local p1  # "context":Landroid/content/Context;
+    .restart local p2  # "userHandle":Landroid/os/UserHandle;
+    .restart local p3  # "callbacks":Lcom/android/server/print/RemotePrintServiceRecommendationService$RemotePrintServiceRecommendationServiceCallbacks;
     :catch_47
-    move-exception p1
+    move-exception v0
 
     .line 150
-    const-string p2, "RemotePrintServiceRecS"
+    .local v0, "e":Ljava/lang/Exception;
+    const-string v1, "RemotePrintServiceRecS"
 
-    const-string p3, "Could not connect to print service recommendation service"
+    const-string v2, "Could not connect to print service recommendation service"
 
-    invoke-static {p2, p3, p1}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    invoke-static {v1, v2, v0}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
     .line 152
+    .end local v0  # "e":Ljava/lang/Exception;
     :goto_4f
     return-void
 .end method
 
 .method static synthetic access$000(Lcom/android/server/print/RemotePrintServiceRecommendationService;)Ljava/lang/Object;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/print/RemotePrintServiceRecommendationService;
 
     .line 46
-    iget-object p0, p0, Lcom/android/server/print/RemotePrintServiceRecommendationService;->mLock:Ljava/lang/Object;
+    iget-object v0, p0, Lcom/android/server/print/RemotePrintServiceRecommendationService;->mLock:Ljava/lang/Object;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$100(Lcom/android/server/print/RemotePrintServiceRecommendationService;)Landroid/printservice/recommendation/IRecommendationService;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/print/RemotePrintServiceRecommendationService;
 
     .line 46
-    iget-object p0, p0, Lcom/android/server/print/RemotePrintServiceRecommendationService;->mService:Landroid/printservice/recommendation/IRecommendationService;
+    iget-object v0, p0, Lcom/android/server/print/RemotePrintServiceRecommendationService;->mService:Landroid/printservice/recommendation/IRecommendationService;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$102(Lcom/android/server/print/RemotePrintServiceRecommendationService;Landroid/printservice/recommendation/IRecommendationService;)Landroid/printservice/recommendation/IRecommendationService;
     .registers 2
+    .param p0, "x0"  # Lcom/android/server/print/RemotePrintServiceRecommendationService;
+    .param p1, "x1"  # Landroid/printservice/recommendation/IRecommendationService;
 
     .line 46
     iput-object p1, p0, Lcom/android/server/print/RemotePrintServiceRecommendationService;->mService:Landroid/printservice/recommendation/IRecommendationService;
@@ -187,16 +218,18 @@
 .end method
 
 .method static synthetic access$200(Lcom/android/server/print/RemotePrintServiceRecommendationService;)Z
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/print/RemotePrintServiceRecommendationService;
 
     .line 46
-    iget-boolean p0, p0, Lcom/android/server/print/RemotePrintServiceRecommendationService;->mIsBound:Z
+    iget-boolean v0, p0, Lcom/android/server/print/RemotePrintServiceRecommendationService;->mIsBound:Z
 
-    return p0
+    return v0
 .end method
 
 .method private getServiceIntent(Landroid/os/UserHandle;)Landroid/content/Intent;
-    .registers 7
+    .registers 10
+    .param p1, "userHandle"  # Landroid/os/UserHandle;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Ljava/lang/Exception;
@@ -219,173 +252,182 @@
     .line 88
     invoke-virtual {p1}, Landroid/os/UserHandle;->getIdentifier()I
 
-    move-result p1
+    move-result v2
 
     .line 85
-    const v2, 0x10000084
+    const v3, 0x10000084
 
-    invoke-virtual {v0, v1, v2, p1}, Landroid/content/pm/PackageManager;->queryIntentServicesAsUser(Landroid/content/Intent;II)Ljava/util/List;
+    invoke-virtual {v0, v1, v3, v2}, Landroid/content/pm/PackageManager;->queryIntentServicesAsUser(Landroid/content/Intent;II)Ljava/util/List;
 
-    move-result-object p1
+    move-result-object v0
 
     .line 90
-    invoke-interface {p1}, Ljava/util/List;->size()I
+    .local v0, "installedServices":Ljava/util/List;, "Ljava/util/List<Landroid/content/pm/ResolveInfo;>;"
+    invoke-interface {v0}, Ljava/util/List;->size()I
 
-    move-result v0
+    move-result v1
 
-    const/4 v1, 0x1
+    const/4 v2, 0x1
 
-    if-ne v0, v1, :cond_90
+    if-ne v1, v2, :cond_90
 
     .line 94
-    const/4 v0, 0x0
+    const/4 v1, 0x0
 
-    invoke-interface {p1, v0}, Ljava/util/List;->get(I)Ljava/lang/Object;
-
-    move-result-object p1
-
-    check-cast p1, Landroid/content/pm/ResolveInfo;
-
-    .line 96
-    new-instance v2, Landroid/content/ComponentName;
-
-    iget-object v3, p1, Landroid/content/pm/ResolveInfo;->serviceInfo:Landroid/content/pm/ServiceInfo;
-
-    iget-object v3, v3, Landroid/content/pm/ServiceInfo;->packageName:Ljava/lang/String;
-
-    iget-object v4, p1, Landroid/content/pm/ResolveInfo;->serviceInfo:Landroid/content/pm/ServiceInfo;
-
-    iget-object v4, v4, Landroid/content/pm/ServiceInfo;->name:Ljava/lang/String;
-
-    invoke-direct {v2, v3, v4}, Landroid/content/ComponentName;-><init>(Ljava/lang/String;Ljava/lang/String;)V
-
-    .line 100
-    iget-object v3, p0, Lcom/android/server/print/RemotePrintServiceRecommendationService;->mContext:Landroid/content/Context;
-
-    invoke-virtual {v3}, Landroid/content/Context;->getPackageManager()Landroid/content/pm/PackageManager;
+    invoke-interface {v0, v1}, Ljava/util/List;->get(I)Ljava/lang/Object;
 
     move-result-object v3
 
-    iget-object v4, p1, Landroid/content/pm/ResolveInfo;->serviceInfo:Landroid/content/pm/ServiceInfo;
+    check-cast v3, Landroid/content/pm/ResolveInfo;
 
-    iget-object v4, v4, Landroid/content/pm/ServiceInfo;->packageName:Ljava/lang/String;
+    .line 96
+    .local v3, "installedService":Landroid/content/pm/ResolveInfo;
+    new-instance v4, Landroid/content/ComponentName;
+
+    iget-object v5, v3, Landroid/content/pm/ResolveInfo;->serviceInfo:Landroid/content/pm/ServiceInfo;
+
+    iget-object v5, v5, Landroid/content/pm/ServiceInfo;->packageName:Ljava/lang/String;
+
+    iget-object v6, v3, Landroid/content/pm/ResolveInfo;->serviceInfo:Landroid/content/pm/ServiceInfo;
+
+    iget-object v6, v6, Landroid/content/pm/ServiceInfo;->name:Ljava/lang/String;
+
+    invoke-direct {v4, v5, v6}, Landroid/content/ComponentName;-><init>(Ljava/lang/String;Ljava/lang/String;)V
+
+    .line 100
+    .local v4, "serviceName":Landroid/content/ComponentName;
+    iget-object v5, p0, Lcom/android/server/print/RemotePrintServiceRecommendationService;->mContext:Landroid/content/Context;
+
+    invoke-virtual {v5}, Landroid/content/Context;->getPackageManager()Landroid/content/pm/PackageManager;
+
+    move-result-object v5
+
+    iget-object v6, v3, Landroid/content/pm/ResolveInfo;->serviceInfo:Landroid/content/pm/ServiceInfo;
+
+    iget-object v6, v6, Landroid/content/pm/ServiceInfo;->packageName:Ljava/lang/String;
 
     .line 101
-    invoke-virtual {v3, v4, v0}, Landroid/content/pm/PackageManager;->getApplicationInfo(Ljava/lang/String;I)Landroid/content/pm/ApplicationInfo;
+    invoke-virtual {v5, v6, v1}, Landroid/content/pm/PackageManager;->getApplicationInfo(Ljava/lang/String;I)Landroid/content/pm/ApplicationInfo;
 
-    move-result-object v0
+    move-result-object v1
 
     .line 103
-    if-eqz v0, :cond_88
+    .local v1, "appInfo":Landroid/content/pm/ApplicationInfo;
+    if-eqz v1, :cond_88
 
     .line 107
-    iget v0, v0, Landroid/content/pm/ApplicationInfo;->flags:I
+    iget v5, v1, Landroid/content/pm/ApplicationInfo;->flags:I
 
-    and-int/2addr v0, v1
+    and-int/2addr v2, v5
 
-    if-eqz v0, :cond_80
+    if-eqz v2, :cond_80
 
     .line 111
-    iget-object p1, p1, Landroid/content/pm/ResolveInfo;->serviceInfo:Landroid/content/pm/ServiceInfo;
+    iget-object v2, v3, Landroid/content/pm/ResolveInfo;->serviceInfo:Landroid/content/pm/ServiceInfo;
 
-    iget-object p1, p1, Landroid/content/pm/ServiceInfo;->permission:Ljava/lang/String;
+    iget-object v2, v2, Landroid/content/pm/ServiceInfo;->permission:Ljava/lang/String;
 
-    const-string v0, "android.permission.BIND_PRINT_RECOMMENDATION_SERVICE"
+    const-string v5, "android.permission.BIND_PRINT_RECOMMENDATION_SERVICE"
 
-    invoke-virtual {v0, p1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v5, v2}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result p1
+    move-result v2
 
-    if-eqz p1, :cond_5d
+    if-eqz v2, :cond_5d
 
     .line 118
-    new-instance p1, Landroid/content/Intent;
+    new-instance v2, Landroid/content/Intent;
 
-    invoke-direct {p1}, Landroid/content/Intent;-><init>()V
+    invoke-direct {v2}, Landroid/content/Intent;-><init>()V
 
     .line 119
-    invoke-virtual {p1, v2}, Landroid/content/Intent;->setComponent(Landroid/content/ComponentName;)Landroid/content/Intent;
+    .local v2, "serviceIntent":Landroid/content/Intent;
+    invoke-virtual {v2, v4}, Landroid/content/Intent;->setComponent(Landroid/content/ComponentName;)Landroid/content/Intent;
 
     .line 121
-    return-object p1
+    return-object v2
 
     .line 113
+    .end local v2  # "serviceIntent":Landroid/content/Intent;
     :cond_5d
-    new-instance p1, Ljava/lang/Exception;
+    new-instance v2, Ljava/lang/Exception;
 
-    new-instance v1, Ljava/lang/StringBuilder;
+    new-instance v6, Ljava/lang/StringBuilder;
 
-    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v6}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v3, "Service "
+    const-string v7, "Service "
 
-    invoke-virtual {v1, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v6, v7}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v2}, Landroid/content/ComponentName;->flattenToShortString()Ljava/lang/String;
+    invoke-virtual {v4}, Landroid/content/ComponentName;->flattenToShortString()Ljava/lang/String;
 
-    move-result-object v2
+    move-result-object v7
 
-    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v6, v7}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string v2, " does not require permission "
+    const-string v7, " does not require permission "
 
-    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v6, v7}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v1, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v6, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v6}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v5
 
-    invoke-direct {p1, v0}, Ljava/lang/Exception;-><init>(Ljava/lang/String;)V
+    invoke-direct {v2, v5}, Ljava/lang/Exception;-><init>(Ljava/lang/String;)V
 
-    throw p1
+    throw v2
 
     .line 108
     :cond_80
-    new-instance p1, Ljava/lang/Exception;
+    new-instance v2, Ljava/lang/Exception;
 
-    const-string v0, "Service is not part of the system"
+    const-string v5, "Service is not part of the system"
 
-    invoke-direct {p1, v0}, Ljava/lang/Exception;-><init>(Ljava/lang/String;)V
+    invoke-direct {v2, v5}, Ljava/lang/Exception;-><init>(Ljava/lang/String;)V
 
-    throw p1
+    throw v2
 
     .line 104
     :cond_88
-    new-instance p1, Ljava/lang/Exception;
+    new-instance v2, Ljava/lang/Exception;
 
-    const-string v0, "Cannot read appInfo for service"
+    const-string v5, "Cannot read appInfo for service"
 
-    invoke-direct {p1, v0}, Ljava/lang/Exception;-><init>(Ljava/lang/String;)V
+    invoke-direct {v2, v5}, Ljava/lang/Exception;-><init>(Ljava/lang/String;)V
 
-    throw p1
+    throw v2
 
     .line 91
+    .end local v1  # "appInfo":Landroid/content/pm/ApplicationInfo;
+    .end local v3  # "installedService":Landroid/content/pm/ResolveInfo;
+    .end local v4  # "serviceName":Landroid/content/ComponentName;
     :cond_90
-    new-instance v0, Ljava/lang/Exception;
+    new-instance v1, Ljava/lang/Exception;
 
-    new-instance v1, Ljava/lang/StringBuilder;
+    new-instance v2, Ljava/lang/StringBuilder;
 
-    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
 
-    invoke-interface {p1}, Ljava/util/List;->size()I
+    invoke-interface {v0}, Ljava/util/List;->size()I
 
-    move-result p1
+    move-result v3
 
-    invoke-virtual {v1, p1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    const-string p1, " instead of exactly one service found"
+    const-string v3, " instead of exactly one service found"
 
-    invoke-virtual {v1, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v2
 
-    invoke-direct {v0, p1}, Ljava/lang/Exception;-><init>(Ljava/lang/String;)V
+    invoke-direct {v1, v2}, Ljava/lang/Exception;-><init>(Ljava/lang/String;)V
 
-    throw v0
+    throw v1
 .end method
 
 
@@ -425,6 +467,7 @@
     move-exception v2
 
     .line 164
+    .local v2, "e":Landroid/os/RemoteException;
     :try_start_f
     const-string v3, "RemotePrintServiceRecS"
 
@@ -433,6 +476,7 @@
     invoke-static {v3, v4, v2}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
     .line 167
+    .end local v2  # "e":Landroid/os/RemoteException;
     :goto_16
     iput-object v1, p0, Lcom/android/server/print/RemotePrintServiceRecommendationService;->mService:Landroid/printservice/recommendation/IRecommendationService;
 

@@ -14,6 +14,9 @@
 # direct methods
 .method public constructor <init>(IILjava/lang/String;)V
     .registers 4
+    .param p1, "uid"  # I
+    .param p2, "pid"  # I
+    .param p3, "packageName"  # Ljava/lang/String;
 
     .line 27
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V

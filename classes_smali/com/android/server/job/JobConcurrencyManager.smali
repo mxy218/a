@@ -78,6 +78,7 @@
 
 .method constructor <init>(Lcom/android/server/job/JobSchedulerService;)V
     .registers 5
+    .param p1, "service"  # Lcom/android/server/job/JobSchedulerService;
 
     .line 106
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -153,16 +154,16 @@
     .line 110
     invoke-virtual {p1}, Lcom/android/server/job/JobSchedulerService;->getContext()Landroid/content/Context;
 
-    move-result-object p1
+    move-result-object v0
 
-    iput-object p1, p0, Lcom/android/server/job/JobConcurrencyManager;->mContext:Landroid/content/Context;
+    iput-object v0, p0, Lcom/android/server/job/JobConcurrencyManager;->mContext:Landroid/content/Context;
 
     .line 112
     invoke-static {}, Lcom/android/internal/os/BackgroundThread;->getHandler()Landroid/os/Handler;
 
-    move-result-object p1
+    move-result-object v0
 
-    iput-object p1, p0, Lcom/android/server/job/JobConcurrencyManager;->mHandler:Landroid/os/Handler;
+    iput-object v0, p0, Lcom/android/server/job/JobConcurrencyManager;->mHandler:Landroid/os/Handler;
 
     .line 113
     return-void
@@ -170,6 +171,8 @@
 
 .method static synthetic access$000(Lcom/android/server/job/JobConcurrencyManager;Z)V
     .registers 2
+    .param p0, "x0"  # Lcom/android/server/job/JobConcurrencyManager;
+    .param p1, "x1"  # Z
 
     .line 50
     invoke-direct {p0, p1}, Lcom/android/server/job/JobConcurrencyManager;->onInteractiveStateChanged(Z)V
@@ -187,7 +190,7 @@
 .end method
 
 .method private assignJobsToContextsInternalLocked()V
-    .registers 20
+    .registers 23
     .annotation build Lcom/android/internal/annotations/GuardedBy;
         value = {
             "mLock"
@@ -217,33 +220,40 @@
     iget-object v1, v1, Lcom/android/server/job/JobSchedulerService;->mJobPackageTracker:Lcom/android/server/job/JobPackageTracker;
 
     .line 279
+    .local v1, "tracker":Lcom/android/server/job/JobPackageTracker;
     iget-object v3, v0, Lcom/android/server/job/JobConcurrencyManager;->mService:Lcom/android/server/job/JobSchedulerService;
 
     iget-object v3, v3, Lcom/android/server/job/JobSchedulerService;->mPendingJobs:Ljava/util/ArrayList;
 
     .line 280
+    .local v3, "pendingJobs":Ljava/util/List;, "Ljava/util/List<Lcom/android/server/job/controllers/JobStatus;>;"
     iget-object v4, v0, Lcom/android/server/job/JobConcurrencyManager;->mService:Lcom/android/server/job/JobSchedulerService;
 
     iget-object v4, v4, Lcom/android/server/job/JobSchedulerService;->mActiveServices:Ljava/util/List;
 
     .line 281
+    .local v4, "activeServices":Ljava/util/List;, "Ljava/util/List<Lcom/android/server/job/JobServiceContext;>;"
     iget-object v5, v0, Lcom/android/server/job/JobConcurrencyManager;->mService:Lcom/android/server/job/JobSchedulerService;
 
     iget-object v5, v5, Lcom/android/server/job/JobSchedulerService;->mControllers:Ljava/util/List;
 
     .line 283
+    .local v5, "controllers":Ljava/util/List;, "Ljava/util/List<Lcom/android/server/job/controllers/StateController;>;"
     invoke-direct/range {p0 .. p0}, Lcom/android/server/job/JobConcurrencyManager;->updateMaxCountsLocked()V
 
     .line 286
     iget-object v6, v0, Lcom/android/server/job/JobConcurrencyManager;->mRecycledAssignContextIdToJobMap:[Lcom/android/server/job/controllers/JobStatus;
 
     .line 287
+    .local v6, "contextIdToJobMap":[Lcom/android/server/job/controllers/JobStatus;
     iget-object v7, v0, Lcom/android/server/job/JobConcurrencyManager;->mRecycledSlotChanged:[Z
 
     .line 288
+    .local v7, "slotChanged":[Z
     iget-object v8, v0, Lcom/android/server/job/JobConcurrencyManager;->mRecycledPreferredUidForContext:[I
 
     .line 292
+    .local v8, "preferredUidForContext":[I
     iget-object v9, v0, Lcom/android/server/job/JobConcurrencyManager;->mJobCountTracker:Lcom/android/server/job/JobConcurrencyManager$JobCountTracker;
 
     iget-object v10, v0, Lcom/android/server/job/JobConcurrencyManager;->mMaxJobCounts:Lcom/android/server/job/JobSchedulerService$MaxJobCounts;
@@ -273,31 +283,34 @@
     .line 297
     const/4 v9, 0x0
 
-    move v10, v9
+    .local v9, "i":I
+    :goto_40
+    const/4 v10, 0x0
 
-    :goto_41
     const/16 v11, 0x10
 
-    if-ge v10, v11, :cond_6b
+    if-ge v9, v11, :cond_6b
 
     .line 298
     iget-object v11, v0, Lcom/android/server/job/JobConcurrencyManager;->mService:Lcom/android/server/job/JobSchedulerService;
 
     iget-object v11, v11, Lcom/android/server/job/JobSchedulerService;->mActiveServices:Ljava/util/List;
 
-    invoke-interface {v11, v10}, Ljava/util/List;->get(I)Ljava/lang/Object;
+    invoke-interface {v11, v9}, Ljava/util/List;->get(I)Ljava/lang/Object;
 
     move-result-object v11
 
     check-cast v11, Lcom/android/server/job/JobServiceContext;
 
     .line 299
+    .local v11, "js":Lcom/android/server/job/JobServiceContext;
     invoke-virtual {v11}, Lcom/android/server/job/JobServiceContext;->getRunningJobLocked()Lcom/android/server/job/controllers/JobStatus;
 
     move-result-object v12
 
     .line 301
-    aput-object v12, v6, v10
+    .local v12, "status":Lcom/android/server/job/controllers/JobStatus;
+    aput-object v12, v6, v9
 
     if-eqz v12, :cond_60
 
@@ -306,45 +319,49 @@
 
     invoke-direct {v0, v12}, Lcom/android/server/job/JobConcurrencyManager;->isFgJob(Lcom/android/server/job/controllers/JobStatus;)Z
 
-    move-result v12
+    move-result v14
 
-    invoke-virtual {v13, v12}, Lcom/android/server/job/JobConcurrencyManager$JobCountTracker;->incrementRunningJobCount(Z)V
+    invoke-virtual {v13, v14}, Lcom/android/server/job/JobConcurrencyManager$JobCountTracker;->incrementRunningJobCount(Z)V
 
     .line 305
     :cond_60
-    aput-boolean v9, v7, v10
+    aput-boolean v10, v7, v9
 
     .line 306
     invoke-virtual {v11}, Lcom/android/server/job/JobServiceContext;->getPreferredUid()I
 
-    move-result v11
+    move-result v10
 
-    aput v11, v8, v10
+    aput v10, v8, v9
 
     .line 297
-    add-int/lit8 v10, v10, 0x1
+    .end local v11  # "js":Lcom/android/server/job/JobServiceContext;
+    .end local v12  # "status":Lcom/android/server/job/controllers/JobStatus;
+    add-int/lit8 v9, v9, 0x1
 
-    goto :goto_41
+    goto :goto_40
 
     .line 308
+    .end local v9  # "i":I
     :cond_6b
-    sget-boolean v10, Lcom/android/server/job/JobConcurrencyManager;->DEBUG:Z
+    sget-boolean v9, Lcom/android/server/job/JobConcurrencyManager;->DEBUG:Z
 
-    if-eqz v10, :cond_79
+    if-eqz v9, :cond_79
 
     .line 309
-    const-string/jumbo v10, "running jobs initial"
+    const-string/jumbo v9, "running jobs initial"
 
-    invoke-static {v6, v10}, Lcom/android/server/job/JobConcurrencyManager;->printContextIdToJobMap([Lcom/android/server/job/controllers/JobStatus;Ljava/lang/String;)Ljava/lang/String;
+    invoke-static {v6, v9}, Lcom/android/server/job/JobConcurrencyManager;->printContextIdToJobMap([Lcom/android/server/job/controllers/JobStatus;Ljava/lang/String;)Ljava/lang/String;
 
-    move-result-object v10
+    move-result-object v9
 
-    invoke-static {v2, v10}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v2, v9}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 313
     :cond_79
-    move v10, v9
+    const/4 v9, 0x0
 
+    .restart local v9  # "i":I
     :goto_7a
     invoke-interface {v3}, Ljava/util/List;->size()I
 
@@ -352,21 +369,23 @@
 
     const/4 v13, -0x1
 
-    if-ge v10, v12, :cond_a2
+    if-ge v9, v12, :cond_a3
 
     .line 314
-    invoke-interface {v3, v10}, Ljava/util/List;->get(I)Ljava/lang/Object;
+    invoke-interface {v3, v9}, Ljava/util/List;->get(I)Ljava/lang/Object;
 
     move-result-object v12
 
     check-cast v12, Lcom/android/server/job/controllers/JobStatus;
 
     .line 317
+    .local v12, "pending":Lcom/android/server/job/controllers/JobStatus;
     invoke-static {v12, v6}, Lcom/android/server/job/JobConcurrencyManager;->findJobContextIdFromMap(Lcom/android/server/job/controllers/JobStatus;[Lcom/android/server/job/controllers/JobStatus;)I
 
     move-result v14
 
     .line 318
+    .local v14, "jobRunningContext":I
     if-eq v14, v13, :cond_8e
 
     .line 319
@@ -381,165 +400,218 @@
     move-result v13
 
     .line 323
+    .local v13, "priority":I
     iput v13, v12, Lcom/android/server/job/controllers/JobStatus;->lastEvaluatedPriority:I
 
     .line 325
-    iget-object v13, v0, Lcom/android/server/job/JobConcurrencyManager;->mJobCountTracker:Lcom/android/server/job/JobConcurrencyManager$JobCountTracker;
+    iget-object v15, v0, Lcom/android/server/job/JobConcurrencyManager;->mJobCountTracker:Lcom/android/server/job/JobConcurrencyManager$JobCountTracker;
 
     invoke-direct {v0, v12}, Lcom/android/server/job/JobConcurrencyManager;->isFgJob(Lcom/android/server/job/controllers/JobStatus;)Z
 
-    move-result v12
+    move-result v10
 
-    invoke-virtual {v13, v12}, Lcom/android/server/job/JobConcurrencyManager$JobCountTracker;->incrementPendingJobCount(Z)V
+    invoke-virtual {v15, v10}, Lcom/android/server/job/JobConcurrencyManager$JobCountTracker;->incrementPendingJobCount(Z)V
 
     .line 313
+    .end local v12  # "pending":Lcom/android/server/job/controllers/JobStatus;
+    .end local v13  # "priority":I
+    .end local v14  # "jobRunningContext":I
     :goto_9f
-    add-int/lit8 v10, v10, 0x1
+    add-int/lit8 v9, v9, 0x1
+
+    const/4 v10, 0x0
 
     goto :goto_7a
 
     .line 328
-    :cond_a2
-    iget-object v10, v0, Lcom/android/server/job/JobConcurrencyManager;->mJobCountTracker:Lcom/android/server/job/JobConcurrencyManager$JobCountTracker;
+    .end local v9  # "i":I
+    :cond_a3
+    iget-object v9, v0, Lcom/android/server/job/JobConcurrencyManager;->mJobCountTracker:Lcom/android/server/job/JobConcurrencyManager$JobCountTracker;
 
-    invoke-virtual {v10}, Lcom/android/server/job/JobConcurrencyManager$JobCountTracker;->onCountDone()V
+    invoke-virtual {v9}, Lcom/android/server/job/JobConcurrencyManager$JobCountTracker;->onCountDone()V
 
     .line 330
-    move v10, v9
+    const/4 v9, 0x0
 
-    :goto_a8
+    .restart local v9  # "i":I
+    :goto_a9
     invoke-interface {v3}, Ljava/util/List;->size()I
+
+    move-result v10
+
+    if-ge v9, v10, :cond_162
+
+    .line 331
+    invoke-interface {v3, v9}, Ljava/util/List;->get(I)Ljava/lang/Object;
+
+    move-result-object v10
+
+    check-cast v10, Lcom/android/server/job/controllers/JobStatus;
+
+    .line 334
+    .local v10, "nextPending":Lcom/android/server/job/controllers/JobStatus;
+    invoke-static {v10, v6}, Lcom/android/server/job/JobConcurrencyManager;->findJobContextIdFromMap(Lcom/android/server/job/controllers/JobStatus;[Lcom/android/server/job/controllers/JobStatus;)I
 
     move-result v12
 
-    if-ge v10, v12, :cond_13b
-
-    .line 331
-    invoke-interface {v3, v10}, Ljava/util/List;->get(I)Ljava/lang/Object;
-
-    move-result-object v12
-
-    check-cast v12, Lcom/android/server/job/controllers/JobStatus;
-
-    .line 334
-    invoke-static {v12, v6}, Lcom/android/server/job/JobConcurrencyManager;->findJobContextIdFromMap(Lcom/android/server/job/controllers/JobStatus;[Lcom/android/server/job/controllers/JobStatus;)I
-
-    move-result v15
-
     .line 335
-    if-eq v15, v13, :cond_bf
+    .local v12, "jobRunningContext":I
+    if-eq v12, v13, :cond_c0
 
     .line 336
-    move-object/from16 v18, v8
+    move-object/from16 v20, v8
 
-    move v11, v13
+    move v12, v13
 
-    goto/16 :goto_131
+    goto/16 :goto_159
 
     .line 339
-    :cond_bf
-    invoke-direct {v0, v12}, Lcom/android/server/job/JobConcurrencyManager;->isFgJob(Lcom/android/server/job/controllers/JobStatus;)Z
+    :cond_c0
+    invoke-direct {v0, v10}, Lcom/android/server/job/JobConcurrencyManager;->isFgJob(Lcom/android/server/job/controllers/JobStatus;)Z
 
-    move-result v15
+    move-result v14
 
     .line 344
-    const v16, 0x7fffffff
+    .local v14, "isPendingFg":Z
+    const v15, 0x7fffffff
 
     .line 345
-    nop
+    .local v15, "minPriorityForPreemption":I
+    const/16 v16, -0x1
 
     .line 346
-    nop
+    .local v16, "selectedContextId":I
+    const/16 v17, 0x0
 
     .line 347
-    move/from16 v17, v13
+    .local v17, "startingJob":Z
+    const/16 v18, 0x0
 
-    move/from16 v14, v16
+    move/from16 v19, v15
 
-    :goto_cc
-    if-ge v9, v11, :cond_11d
+    move/from16 v15, v18
+
+    .local v15, "j":I
+    .local v19, "minPriorityForPreemption":I
+    :goto_d1
+    const/16 v18, 0x1
+
+    if-ge v15, v11, :cond_143
 
     .line 348
-    aget-object v11, v6, v9
+    aget-object v11, v6, v15
 
     .line 349
-    aget v13, v8, v9
+    .local v11, "job":Lcom/android/server/job/controllers/JobStatus;
+    aget v13, v8, v15
 
     .line 350
-    if-nez v11, :cond_f4
+    .local v13, "preferredUid":I
+    if-nez v11, :cond_109
 
     .line 351
-    invoke-virtual {v12}, Lcom/android/server/job/controllers/JobStatus;->getUid()I
+    move-object/from16 v20, v8
 
-    move-result v11
-
-    if-eq v13, v11, :cond_e0
-
-    const/4 v11, -0x1
-
-    if-ne v13, v11, :cond_de
-
-    goto :goto_e0
-
-    :cond_de
-    const/4 v11, 0x0
-
-    goto :goto_e1
-
-    :cond_e0
-    :goto_e0
-    const/4 v11, 0x1
-
-    .line 354
-    :goto_e1
-    if-eqz v11, :cond_f1
-
-    iget-object v11, v0, Lcom/android/server/job/JobConcurrencyManager;->mJobCountTracker:Lcom/android/server/job/JobConcurrencyManager$JobCountTracker;
-
-    invoke-virtual {v11, v15}, Lcom/android/server/job/JobConcurrencyManager$JobCountTracker;->canJobStart(Z)Z
-
-    move-result v11
-
-    if-eqz v11, :cond_f1
-
-    .line 357
-    nop
-
-    .line 358
-    nop
-
-    .line 359
-    move-object/from16 v18, v8
-
-    const/4 v8, 0x1
-
-    goto :goto_122
-
-    .line 354
-    :cond_f1
-    move-object/from16 v18, v8
-
-    goto :goto_115
-
-    .line 366
-    :cond_f4
-    invoke-virtual {v11}, Lcom/android/server/job/controllers/JobStatus;->getUid()I
-
-    move-result v13
-
-    move-object/from16 v18, v8
-
-    invoke-virtual {v12}, Lcom/android/server/job/controllers/JobStatus;->getUid()I
+    .end local v8  # "preferredUidForContext":[I
+    .local v20, "preferredUidForContext":[I
+    invoke-virtual {v10}, Lcom/android/server/job/controllers/JobStatus;->getUid()I
 
     move-result v8
 
-    if-eq v13, v8, :cond_101
+    if-eq v13, v8, :cond_e9
+
+    const/4 v8, -0x1
+
+    if-ne v13, v8, :cond_e7
+
+    goto :goto_e9
+
+    :cond_e7
+    const/4 v8, 0x0
+
+    goto :goto_eb
+
+    :cond_e9
+    :goto_e9
+    move/from16 v8, v18
+
+    .line 354
+    .local v8, "preferredUidOkay":Z
+    :goto_eb
+    if-eqz v8, :cond_102
+
+    move/from16 v21, v8
+
+    .end local v8  # "preferredUidOkay":Z
+    .local v21, "preferredUidOkay":Z
+    iget-object v8, v0, Lcom/android/server/job/JobConcurrencyManager;->mJobCountTracker:Lcom/android/server/job/JobConcurrencyManager$JobCountTracker;
+
+    invoke-virtual {v8, v14}, Lcom/android/server/job/JobConcurrencyManager$JobCountTracker;->canJobStart(Z)Z
+
+    move-result v8
+
+    if-eqz v8, :cond_104
+
+    .line 357
+    move/from16 v16, v15
+
+    .line 358
+    const/16 v17, 0x1
+
+    .line 359
+    move/from16 v21, v12
+
+    move/from16 v11, v16
+
+    move/from16 v8, v19
+
+    goto :goto_14b
+
+    .line 354
+    .end local v21  # "preferredUidOkay":Z
+    .restart local v8  # "preferredUidOkay":Z
+    :cond_102
+    move/from16 v21, v8
+
+    .end local v8  # "preferredUidOkay":Z
+    .restart local v21  # "preferredUidOkay":Z
+    :cond_104
+    move/from16 v21, v12
+
+    move/from16 v8, v19
+
+    goto :goto_137
+
+    .line 366
+    .end local v20  # "preferredUidForContext":[I
+    .end local v21  # "preferredUidOkay":Z
+    .local v8, "preferredUidForContext":[I
+    :cond_109
+    move-object/from16 v20, v8
+
+    .end local v8  # "preferredUidForContext":[I
+    .restart local v20  # "preferredUidForContext":[I
+    invoke-virtual {v11}, Lcom/android/server/job/controllers/JobStatus;->getUid()I
+
+    move-result v8
+
+    move/from16 v21, v12
+
+    .end local v12  # "jobRunningContext":I
+    .local v21, "jobRunningContext":I
+    invoke-virtual {v10}, Lcom/android/server/job/controllers/JobStatus;->getUid()I
+
+    move-result v12
+
+    if-eq v8, v12, :cond_11a
 
     .line 367
-    goto :goto_115
+    move/from16 v8, v19
+
+    goto :goto_137
 
     .line 370
-    :cond_101
+    :cond_11a
     iget-object v8, v0, Lcom/android/server/job/JobConcurrencyManager;->mService:Lcom/android/server/job/JobSchedulerService;
 
     invoke-virtual {v8, v11}, Lcom/android/server/job/JobSchedulerService;->evaluateJobPriorityLocked(Lcom/android/server/job/controllers/JobStatus;)I
@@ -547,92 +619,141 @@
     move-result v8
 
     .line 371
-    iget v11, v12, Lcom/android/server/job/controllers/JobStatus;->lastEvaluatedPriority:I
+    .local v8, "jobPriority":I
+    iget v12, v10, Lcom/android/server/job/controllers/JobStatus;->lastEvaluatedPriority:I
 
-    if-lt v8, v11, :cond_10c
+    if-lt v8, v12, :cond_127
 
     .line 372
-    goto :goto_115
+    move/from16 v8, v19
+
+    goto :goto_137
 
     .line 376
-    :cond_10c
-    iget v8, v12, Lcom/android/server/job/controllers/JobStatus;->lastEvaluatedPriority:I
+    :cond_127
+    iget v12, v10, Lcom/android/server/job/controllers/JobStatus;->lastEvaluatedPriority:I
 
-    if-le v14, v8, :cond_115
+    move/from16 v18, v8
+
+    move/from16 v8, v19
+
+    .end local v19  # "minPriorityForPreemption":I
+    .local v8, "minPriorityForPreemption":I
+    .local v18, "jobPriority":I
+    if-le v8, v12, :cond_137
 
     .line 377
-    iget v8, v12, Lcom/android/server/job/controllers/JobStatus;->lastEvaluatedPriority:I
+    iget v8, v10, Lcom/android/server/job/controllers/JobStatus;->lastEvaluatedPriority:I
 
     .line 378
-    move v14, v8
+    move v12, v15
 
-    move/from16 v17, v9
+    move/from16 v19, v8
+
+    move/from16 v16, v12
+
+    .end local v16  # "selectedContextId":I
+    .local v12, "selectedContextId":I
+    goto :goto_139
 
     .line 347
-    :cond_115
-    :goto_115
-    add-int/lit8 v9, v9, 0x1
+    .end local v8  # "minPriorityForPreemption":I
+    .end local v11  # "job":Lcom/android/server/job/controllers/JobStatus;
+    .end local v12  # "selectedContextId":I
+    .end local v13  # "preferredUid":I
+    .end local v18  # "jobPriority":I
+    .restart local v16  # "selectedContextId":I
+    .restart local v19  # "minPriorityForPreemption":I
+    :cond_137
+    :goto_137
+    move/from16 v19, v8
 
-    move-object/from16 v8, v18
+    :goto_139
+    add-int/lit8 v15, v15, 0x1
+
+    move-object/from16 v8, v20
+
+    move/from16 v12, v21
 
     const/16 v11, 0x10
 
     const/4 v13, -0x1
 
-    goto :goto_cc
+    goto :goto_d1
 
-    :cond_11d
-    move-object/from16 v18, v8
+    .end local v20  # "preferredUidForContext":[I
+    .end local v21  # "jobRunningContext":I
+    .local v8, "preferredUidForContext":[I
+    .local v12, "jobRunningContext":I
+    :cond_143
+    move-object/from16 v20, v8
 
-    move/from16 v9, v17
+    move/from16 v21, v12
 
-    const/4 v8, 0x0
+    move/from16 v8, v19
+
+    .end local v12  # "jobRunningContext":I
+    .end local v19  # "minPriorityForPreemption":I
+    .local v8, "minPriorityForPreemption":I
+    .restart local v20  # "preferredUidForContext":[I
+    .restart local v21  # "jobRunningContext":I
+    move/from16 v11, v16
 
     .line 383
-    :goto_122
-    const/4 v11, -0x1
+    .end local v15  # "j":I
+    .end local v16  # "selectedContextId":I
+    .local v11, "selectedContextId":I
+    :goto_14b
+    const/4 v12, -0x1
 
-    if-eq v9, v11, :cond_12a
+    if-eq v11, v12, :cond_152
 
     .line 384
-    aput-object v12, v6, v9
+    aput-object v10, v6, v11
 
     .line 385
-    const/4 v12, 0x1
-
-    aput-boolean v12, v7, v9
+    aput-boolean v18, v7, v11
 
     .line 387
-    :cond_12a
-    if-eqz v8, :cond_131
+    :cond_152
+    if-eqz v17, :cond_159
 
     .line 389
-    iget-object v8, v0, Lcom/android/server/job/JobConcurrencyManager;->mJobCountTracker:Lcom/android/server/job/JobConcurrencyManager$JobCountTracker;
+    iget-object v13, v0, Lcom/android/server/job/JobConcurrencyManager;->mJobCountTracker:Lcom/android/server/job/JobConcurrencyManager$JobCountTracker;
 
-    invoke-virtual {v8, v15}, Lcom/android/server/job/JobConcurrencyManager$JobCountTracker;->onStartingNewJob(Z)V
+    invoke-virtual {v13, v14}, Lcom/android/server/job/JobConcurrencyManager$JobCountTracker;->onStartingNewJob(Z)V
 
     .line 330
-    :cond_131
-    :goto_131
-    add-int/lit8 v10, v10, 0x1
+    .end local v8  # "minPriorityForPreemption":I
+    .end local v10  # "nextPending":Lcom/android/server/job/controllers/JobStatus;
+    .end local v11  # "selectedContextId":I
+    .end local v14  # "isPendingFg":Z
+    .end local v17  # "startingJob":Z
+    .end local v21  # "jobRunningContext":I
+    :cond_159
+    :goto_159
+    add-int/lit8 v9, v9, 0x1
 
-    move v13, v11
+    move v13, v12
 
-    move-object/from16 v8, v18
-
-    const/4 v9, 0x0
+    move-object/from16 v8, v20
 
     const/16 v11, 0x10
 
-    goto/16 :goto_a8
+    goto/16 :goto_a9
+
+    .end local v20  # "preferredUidForContext":[I
+    .local v8, "preferredUidForContext":[I
+    :cond_162
+    move-object/from16 v20, v8
 
     .line 392
-    :cond_13b
-    const/4 v12, 0x1
-
+    .end local v8  # "preferredUidForContext":[I
+    .end local v9  # "i":I
+    .restart local v20  # "preferredUidForContext":[I
     sget-boolean v8, Lcom/android/server/job/JobConcurrencyManager;->DEBUG:Z
 
-    if-eqz v8, :cond_14a
+    if-eqz v8, :cond_172
 
     .line 393
     const-string/jumbo v8, "running jobs final"
@@ -644,7 +765,7 @@
     invoke-static {v2, v8}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 396
-    :cond_14a
+    :cond_172
     iget-object v8, v0, Lcom/android/server/job/JobConcurrencyManager;->mJobCountTracker:Lcom/android/server/job/JobConcurrencyManager$JobCountTracker;
 
     invoke-virtual {v8}, Lcom/android/server/job/JobConcurrencyManager$JobCountTracker;->logStatus()V
@@ -656,227 +777,238 @@
 
     move-result v8
 
-    iget-object v0, v0, Lcom/android/server/job/JobConcurrencyManager;->mJobCountTracker:Lcom/android/server/job/JobConcurrencyManager$JobCountTracker;
+    iget-object v9, v0, Lcom/android/server/job/JobConcurrencyManager;->mJobCountTracker:Lcom/android/server/job/JobConcurrencyManager$JobCountTracker;
 
     .line 399
-    invoke-virtual {v0}, Lcom/android/server/job/JobConcurrencyManager$JobCountTracker;->getFgRunningJobCountToNote()I
+    invoke-virtual {v9}, Lcom/android/server/job/JobConcurrencyManager$JobCountTracker;->getFgRunningJobCountToNote()I
 
-    move-result v0
+    move-result v9
 
     .line 398
-    invoke-virtual {v1, v8, v0}, Lcom/android/server/job/JobPackageTracker;->noteConcurrency(II)V
+    invoke-virtual {v1, v8, v9}, Lcom/android/server/job/JobPackageTracker;->noteConcurrency(II)V
 
     .line 401
-    const/4 v0, 0x0
+    const/4 v8, 0x0
 
-    :goto_15f
-    const/16 v8, 0x10
+    .local v8, "i":I
+    :goto_187
+    const/16 v9, 0x10
 
-    if-ge v0, v8, :cond_210
+    if-ge v8, v9, :cond_237
 
     .line 402
-    nop
-
-    .line 403
-    aget-boolean v9, v7, v0
-
-    if-eqz v9, :cond_200
-
-    .line 404
-    invoke-interface {v4, v0}, Ljava/util/List;->get(I)Ljava/lang/Object;
-
-    move-result-object v9
-
-    check-cast v9, Lcom/android/server/job/JobServiceContext;
-
-    invoke-virtual {v9}, Lcom/android/server/job/JobServiceContext;->getRunningJobLocked()Lcom/android/server/job/controllers/JobStatus;
-
-    move-result-object v9
-
-    .line 405
-    if-eqz v9, :cond_1a2
-
-    .line 406
-    sget-boolean v9, Lcom/android/server/job/JobConcurrencyManager;->DEBUG:Z
-
-    if-eqz v9, :cond_197
-
-    .line 407
-    new-instance v9, Ljava/lang/StringBuilder;
-
-    invoke-direct {v9}, Ljava/lang/StringBuilder;-><init>()V
-
-    const-string/jumbo v10, "preempting job: "
-
-    invoke-virtual {v9, v10}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    .line 408
-    invoke-interface {v4, v0}, Ljava/util/List;->get(I)Ljava/lang/Object;
-
-    move-result-object v10
-
-    check-cast v10, Lcom/android/server/job/JobServiceContext;
-
-    invoke-virtual {v10}, Lcom/android/server/job/JobServiceContext;->getRunningJobLocked()Lcom/android/server/job/controllers/JobStatus;
-
-    move-result-object v10
-
-    invoke-virtual {v9, v10}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v9}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
-
-    move-result-object v9
-
-    .line 407
-    invoke-static {v2, v9}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
-
-    .line 411
-    :cond_197
-    invoke-interface {v4, v0}, Ljava/util/List;->get(I)Ljava/lang/Object;
-
-    move-result-object v9
-
-    check-cast v9, Lcom/android/server/job/JobServiceContext;
-
-    invoke-virtual {v9}, Lcom/android/server/job/JobServiceContext;->preemptExecutingJobLocked()V
-
-    .line 412
-    move v9, v12
-
-    goto :goto_201
-
-    .line 414
-    :cond_1a2
-    aget-object v9, v6, v0
-
-    .line 415
-    sget-boolean v10, Lcom/android/server/job/JobConcurrencyManager;->DEBUG:Z
-
-    if-eqz v10, :cond_1c4
-
-    .line 416
-    new-instance v10, Ljava/lang/StringBuilder;
-
-    invoke-direct {v10}, Ljava/lang/StringBuilder;-><init>()V
-
-    const-string v11, "About to run job on context "
-
-    invoke-virtual {v10, v11}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v10, v0}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
-
-    const-string v11, ", job: "
-
-    invoke-virtual {v10, v11}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v10, v9}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v10}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
-
-    move-result-object v10
-
-    invoke-static {v2, v10}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
-
-    .line 419
-    :cond_1c4
     const/4 v10, 0x0
 
-    :goto_1c5
-    invoke-interface {v5}, Ljava/util/List;->size()I
+    .line 403
+    .local v10, "preservePreferredUid":Z
+    aget-boolean v11, v7, v8
 
-    move-result v11
+    if-eqz v11, :cond_228
 
-    if-ge v10, v11, :cond_1d7
-
-    .line 420
-    invoke-interface {v5, v10}, Ljava/util/List;->get(I)Ljava/lang/Object;
+    .line 404
+    invoke-interface {v4, v8}, Ljava/util/List;->get(I)Ljava/lang/Object;
 
     move-result-object v11
 
-    check-cast v11, Lcom/android/server/job/controllers/StateController;
+    check-cast v11, Lcom/android/server/job/JobServiceContext;
 
-    invoke-virtual {v11, v9}, Lcom/android/server/job/controllers/StateController;->prepareForExecutionLocked(Lcom/android/server/job/controllers/JobStatus;)V
+    invoke-virtual {v11}, Lcom/android/server/job/JobServiceContext;->getRunningJobLocked()Lcom/android/server/job/controllers/JobStatus;
+
+    move-result-object v11
+
+    .line 405
+    .local v11, "js":Lcom/android/server/job/controllers/JobStatus;
+    if-eqz v11, :cond_1ca
+
+    .line 406
+    sget-boolean v12, Lcom/android/server/job/JobConcurrencyManager;->DEBUG:Z
+
+    if-eqz v12, :cond_1bf
+
+    .line 407
+    new-instance v12, Ljava/lang/StringBuilder;
+
+    invoke-direct {v12}, Ljava/lang/StringBuilder;-><init>()V
+
+    const-string/jumbo v13, "preempting job: "
+
+    invoke-virtual {v12, v13}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    .line 408
+    invoke-interface {v4, v8}, Ljava/util/List;->get(I)Ljava/lang/Object;
+
+    move-result-object v13
+
+    check-cast v13, Lcom/android/server/job/JobServiceContext;
+
+    invoke-virtual {v13}, Lcom/android/server/job/JobServiceContext;->getRunningJobLocked()Lcom/android/server/job/controllers/JobStatus;
+
+    move-result-object v13
+
+    invoke-virtual {v12, v13}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v12}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v12
+
+    .line 407
+    invoke-static {v2, v12}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
+
+    .line 411
+    :cond_1bf
+    invoke-interface {v4, v8}, Ljava/util/List;->get(I)Ljava/lang/Object;
+
+    move-result-object v12
+
+    check-cast v12, Lcom/android/server/job/JobServiceContext;
+
+    invoke-virtual {v12}, Lcom/android/server/job/JobServiceContext;->preemptExecutingJobLocked()V
+
+    .line 412
+    const/4 v10, 0x1
+
+    goto :goto_228
+
+    .line 414
+    :cond_1ca
+    aget-object v12, v6, v8
+
+    .line 415
+    .local v12, "pendingJob":Lcom/android/server/job/controllers/JobStatus;
+    sget-boolean v13, Lcom/android/server/job/JobConcurrencyManager;->DEBUG:Z
+
+    if-eqz v13, :cond_1ec
+
+    .line 416
+    new-instance v13, Ljava/lang/StringBuilder;
+
+    invoke-direct {v13}, Ljava/lang/StringBuilder;-><init>()V
+
+    const-string v14, "About to run job on context "
+
+    invoke-virtual {v13, v14}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v13, v8}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+
+    const-string v14, ", job: "
+
+    invoke-virtual {v13, v14}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v13, v12}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v13}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v13
+
+    invoke-static {v2, v13}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 419
-    add-int/lit8 v10, v10, 0x1
+    :cond_1ec
+    const/4 v13, 0x0
 
-    goto :goto_1c5
+    .local v13, "ic":I
+    :goto_1ed
+    invoke-interface {v5}, Ljava/util/List;->size()I
+
+    move-result v14
+
+    if-ge v13, v14, :cond_1ff
+
+    .line 420
+    invoke-interface {v5, v13}, Ljava/util/List;->get(I)Ljava/lang/Object;
+
+    move-result-object v14
+
+    check-cast v14, Lcom/android/server/job/controllers/StateController;
+
+    invoke-virtual {v14, v12}, Lcom/android/server/job/controllers/StateController;->prepareForExecutionLocked(Lcom/android/server/job/controllers/JobStatus;)V
+
+    .line 419
+    add-int/lit8 v13, v13, 0x1
+
+    goto :goto_1ed
 
     .line 422
-    :cond_1d7
-    invoke-interface {v4, v0}, Ljava/util/List;->get(I)Ljava/lang/Object;
+    .end local v13  # "ic":I
+    :cond_1ff
+    invoke-interface {v4, v8}, Ljava/util/List;->get(I)Ljava/lang/Object;
 
-    move-result-object v10
+    move-result-object v13
 
-    check-cast v10, Lcom/android/server/job/JobServiceContext;
+    check-cast v13, Lcom/android/server/job/JobServiceContext;
 
-    invoke-virtual {v10, v9}, Lcom/android/server/job/JobServiceContext;->executeRunnableJob(Lcom/android/server/job/controllers/JobStatus;)Z
+    invoke-virtual {v13, v12}, Lcom/android/server/job/JobServiceContext;->executeRunnableJob(Lcom/android/server/job/controllers/JobStatus;)Z
 
-    move-result v10
+    move-result v13
 
-    if-nez v10, :cond_1f7
+    if-nez v13, :cond_21f
 
     .line 423
-    new-instance v10, Ljava/lang/StringBuilder;
+    new-instance v13, Ljava/lang/StringBuilder;
 
-    invoke-direct {v10}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v13}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v11, "Error executing "
+    const-string v14, "Error executing "
 
-    invoke-virtual {v10, v11}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v13, v14}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v10, v9}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    invoke-virtual {v13, v12}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v10}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v13}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v10
+    move-result-object v13
 
-    invoke-static {v2, v10}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v2, v13}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 425
-    :cond_1f7
-    invoke-interface {v3, v9}, Ljava/util/List;->remove(Ljava/lang/Object;)Z
+    :cond_21f
+    invoke-interface {v3, v12}, Ljava/util/List;->remove(Ljava/lang/Object;)Z
 
-    move-result v10
+    move-result v13
 
-    if-eqz v10, :cond_200
+    if-eqz v13, :cond_228
 
     .line 426
-    invoke-virtual {v1, v9}, Lcom/android/server/job/JobPackageTracker;->noteNonpending(Lcom/android/server/job/controllers/JobStatus;)V
+    invoke-virtual {v1, v12}, Lcom/android/server/job/JobPackageTracker;->noteNonpending(Lcom/android/server/job/controllers/JobStatus;)V
 
     .line 430
-    :cond_200
-    const/4 v9, 0x0
-
-    :goto_201
-    if-nez v9, :cond_20c
+    .end local v11  # "js":Lcom/android/server/job/controllers/JobStatus;
+    .end local v12  # "pendingJob":Lcom/android/server/job/controllers/JobStatus;
+    :cond_228
+    :goto_228
+    if-nez v10, :cond_233
 
     .line 431
-    invoke-interface {v4, v0}, Ljava/util/List;->get(I)Ljava/lang/Object;
+    invoke-interface {v4, v8}, Ljava/util/List;->get(I)Ljava/lang/Object;
 
-    move-result-object v9
+    move-result-object v11
 
-    check-cast v9, Lcom/android/server/job/JobServiceContext;
+    check-cast v11, Lcom/android/server/job/JobServiceContext;
 
-    invoke-virtual {v9}, Lcom/android/server/job/JobServiceContext;->clearPreferredUid()V
+    invoke-virtual {v11}, Lcom/android/server/job/JobServiceContext;->clearPreferredUid()V
 
     .line 401
-    :cond_20c
-    add-int/lit8 v0, v0, 0x1
+    .end local v10  # "preservePreferredUid":Z
+    :cond_233
+    add-int/lit8 v8, v8, 0x1
 
-    goto/16 :goto_15f
+    goto/16 :goto_187
 
     .line 434
-    :cond_210
+    .end local v8  # "i":I
+    :cond_237
     return-void
 .end method
 
 .method private static findJobContextIdFromMap(Lcom/android/server/job/controllers/JobStatus;[Lcom/android/server/job/controllers/JobStatus;)I
     .registers 6
+    .param p0, "jobStatus"  # Lcom/android/server/job/controllers/JobStatus;
+    .param p1, "map"  # [Lcom/android/server/job/controllers/JobStatus;
 
     .line 437
     const/4 v0, 0x0
 
+    .local v0, "i":I
     :goto_1
     array-length v1, p1
 
@@ -913,31 +1045,33 @@
     goto :goto_1
 
     .line 442
+    .end local v0  # "i":I
     :cond_1c
-    const/4 p0, -0x1
+    const/4 v0, -0x1
 
-    return p0
+    return v0
 .end method
 
 .method private isFgJob(Lcom/android/server/job/controllers/JobStatus;)Z
-    .registers 3
+    .registers 4
+    .param p1, "job"  # Lcom/android/server/job/controllers/JobStatus;
 
     .line 208
-    iget p1, p1, Lcom/android/server/job/controllers/JobStatus;->lastEvaluatedPriority:I
+    iget v0, p1, Lcom/android/server/job/controllers/JobStatus;->lastEvaluatedPriority:I
 
-    const/16 v0, 0x28
+    const/16 v1, 0x28
 
-    if-lt p1, v0, :cond_8
+    if-lt v0, v1, :cond_8
 
-    const/4 p1, 0x1
+    const/4 v0, 0x1
 
     goto :goto_9
 
     :cond_8
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
     :goto_9
-    return p1
+    return v0
 .end method
 
 .method public static synthetic lambda$5dmb0pQscXPwEG6SBnhs7aCwpSs(Lcom/android/server/job/JobConcurrencyManager;)V
@@ -949,7 +1083,8 @@
 .end method
 
 .method private onInteractiveStateChanged(Z)V
-    .registers 6
+    .registers 9
+    .param p1, "interactive"  # Z
 
     .line 143
     iget-object v0, p0, Lcom/android/server/job/JobConcurrencyManager;->mLock:Ljava/lang/Object;
@@ -1004,22 +1139,23 @@
     move-result-wide v1
 
     .line 153
+    .local v1, "nowRealtime":J
     if-eqz p1, :cond_3a
 
     .line 154
     iput-wide v1, p0, Lcom/android/server/job/JobConcurrencyManager;->mLastScreenOnRealtime:J
 
     .line 155
-    const/4 p1, 0x1
+    const/4 v3, 0x1
 
-    iput-boolean p1, p0, Lcom/android/server/job/JobConcurrencyManager;->mEffectiveInteractiveState:Z
+    iput-boolean v3, p0, Lcom/android/server/job/JobConcurrencyManager;->mEffectiveInteractiveState:Z
 
     .line 157
-    iget-object p1, p0, Lcom/android/server/job/JobConcurrencyManager;->mHandler:Landroid/os/Handler;
+    iget-object v3, p0, Lcom/android/server/job/JobConcurrencyManager;->mHandler:Landroid/os/Handler;
 
-    iget-object v1, p0, Lcom/android/server/job/JobConcurrencyManager;->mRampUpForScreenOff:Ljava/lang/Runnable;
+    iget-object v4, p0, Lcom/android/server/job/JobConcurrencyManager;->mRampUpForScreenOff:Ljava/lang/Runnable;
 
-    invoke-virtual {p1, v1}, Landroid/os/Handler;->removeCallbacks(Ljava/lang/Runnable;)V
+    invoke-virtual {v3, v4}, Landroid/os/Handler;->removeCallbacks(Ljava/lang/Runnable;)V
 
     goto :goto_4c
 
@@ -1028,25 +1164,26 @@
     iput-wide v1, p0, Lcom/android/server/job/JobConcurrencyManager;->mLastScreenOffRealtime:J
 
     .line 168
-    iget-object p1, p0, Lcom/android/server/job/JobConcurrencyManager;->mHandler:Landroid/os/Handler;
+    iget-object v3, p0, Lcom/android/server/job/JobConcurrencyManager;->mHandler:Landroid/os/Handler;
 
-    iget-object v1, p0, Lcom/android/server/job/JobConcurrencyManager;->mRampUpForScreenOff:Ljava/lang/Runnable;
+    iget-object v4, p0, Lcom/android/server/job/JobConcurrencyManager;->mRampUpForScreenOff:Ljava/lang/Runnable;
 
-    iget-object v2, p0, Lcom/android/server/job/JobConcurrencyManager;->mConstants:Lcom/android/server/job/JobSchedulerService$Constants;
+    iget-object v5, p0, Lcom/android/server/job/JobConcurrencyManager;->mConstants:Lcom/android/server/job/JobSchedulerService$Constants;
 
-    iget-object v2, v2, Lcom/android/server/job/JobSchedulerService$Constants;->SCREEN_OFF_JOB_CONCURRENCY_INCREASE_DELAY_MS:Landroid/util/KeyValueListParser$IntValue;
+    iget-object v5, v5, Lcom/android/server/job/JobSchedulerService$Constants;->SCREEN_OFF_JOB_CONCURRENCY_INCREASE_DELAY_MS:Landroid/util/KeyValueListParser$IntValue;
 
     .line 169
-    invoke-virtual {v2}, Landroid/util/KeyValueListParser$IntValue;->getValue()I
+    invoke-virtual {v5}, Landroid/util/KeyValueListParser$IntValue;->getValue()I
 
-    move-result v2
+    move-result v5
 
-    int-to-long v2, v2
+    int-to-long v5, v5
 
     .line 168
-    invoke-virtual {p1, v1, v2, v3}, Landroid/os/Handler;->postDelayed(Ljava/lang/Runnable;J)Z
+    invoke-virtual {v3, v4, v5, v6}, Landroid/os/Handler;->postDelayed(Ljava/lang/Runnable;J)Z
 
     .line 171
+    .end local v1  # "nowRealtime":J
     :goto_4c
     monitor-exit v0
 
@@ -1055,17 +1192,19 @@
 
     .line 171
     :catchall_4e
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_50
     .catchall {:try_start_3 .. :try_end_50} :catchall_4e
 
-    throw p1
+    throw v1
 .end method
 
 .method private static printContextIdToJobMap([Lcom/android/server/job/controllers/JobStatus;Ljava/lang/String;)Ljava/lang/String;
-    .registers 5
+    .registers 6
+    .param p0, "map"  # [Lcom/android/server/job/controllers/JobStatus;
+    .param p1, "initial"  # Ljava/lang/String;
 
     .line 461
     new-instance v0, Ljava/lang/StringBuilder;
@@ -1076,84 +1215,87 @@
 
     invoke-virtual {v1, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string p1, ": "
+    const-string v2, ": "
 
-    invoke-virtual {v1, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v1
 
-    invoke-direct {v0, p1}, Ljava/lang/StringBuilder;-><init>(Ljava/lang/String;)V
+    invoke-direct {v0, v1}, Ljava/lang/StringBuilder;-><init>(Ljava/lang/String;)V
 
     .line 462
-    const/4 p1, 0x0
+    .local v0, "s":Ljava/lang/StringBuilder;
+    const/4 v1, 0x0
 
+    .local v1, "i":I
     :goto_17
-    array-length v1, p0
+    array-length v2, p0
 
-    if-ge p1, v1, :cond_45
+    if-ge v1, v2, :cond_45
 
     .line 463
-    const-string v1, "("
+    const-string v2, "("
 
-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     .line 464
-    aget-object v1, p0, p1
+    aget-object v2, p0, v1
 
-    const/4 v2, -0x1
+    const/4 v3, -0x1
 
-    if-nez v1, :cond_26
+    if-nez v2, :cond_26
 
-    move v1, v2
+    move v2, v3
 
     goto :goto_2c
 
     :cond_26
-    aget-object v1, p0, p1
+    aget-object v2, p0, v1
 
-    invoke-virtual {v1}, Lcom/android/server/job/controllers/JobStatus;->getJobId()I
+    invoke-virtual {v2}, Lcom/android/server/job/controllers/JobStatus;->getJobId()I
 
-    move-result v1
+    move-result v2
 
     :goto_2c
-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v2}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
     .line 465
-    aget-object v1, p0, p1
+    aget-object v2, p0, v1
 
-    if-nez v1, :cond_34
+    if-nez v2, :cond_34
 
     goto :goto_3a
 
     :cond_34
-    aget-object v1, p0, p1
+    aget-object v2, p0, v1
 
-    invoke-virtual {v1}, Lcom/android/server/job/controllers/JobStatus;->getUid()I
+    invoke-virtual {v2}, Lcom/android/server/job/controllers/JobStatus;->getUid()I
 
-    move-result v2
+    move-result v3
 
     :goto_3a
-    invoke-virtual {v0, v2}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v3}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
     .line 466
-    const-string v1, ")"
+    const-string v2, ")"
 
-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     .line 462
-    add-int/lit8 p1, p1, 0x1
+    add-int/lit8 v1, v1, 0x1
 
     goto :goto_17
 
     .line 468
+    .end local v1  # "i":I
     :cond_45
     invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v1
 
-    return-object p0
+    return-object v1
 .end method
 
 .method private printPendingQueueLocked()Ljava/lang/String;
@@ -1172,6 +1314,7 @@
     invoke-direct {v0, v1}, Ljava/lang/StringBuilder;-><init>(Ljava/lang/String;)V
 
     .line 448
+    .local v0, "s":Ljava/lang/StringBuilder;
     iget-object v1, p0, Lcom/android/server/job/JobConcurrencyManager;->mService:Lcom/android/server/job/JobSchedulerService;
 
     iget-object v1, v1, Lcom/android/server/job/JobSchedulerService;->mPendingJobs:Ljava/util/ArrayList;
@@ -1181,6 +1324,7 @@
     move-result-object v1
 
     .line 449
+    .local v1, "it":Ljava/util/Iterator;, "Ljava/util/Iterator<Lcom/android/server/job/controllers/JobStatus;>;"
     :goto_f
     invoke-interface {v1}, Ljava/util/Iterator;->hasNext()Z
 
@@ -1196,6 +1340,7 @@
     check-cast v2, Lcom/android/server/job/controllers/JobStatus;
 
     .line 451
+    .local v2, "js":Lcom/android/server/job/controllers/JobStatus;
     const-string v3, "("
 
     invoke-virtual {v0, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
@@ -1219,25 +1364,26 @@
     .line 454
     invoke-virtual {v2}, Lcom/android/server/job/controllers/JobStatus;->getUid()I
 
-    move-result v2
+    move-result v3
 
-    invoke-virtual {v0, v2}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v3}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
     .line 455
-    const-string v2, ") "
+    const-string v3, ") "
 
-    invoke-virtual {v0, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     .line 456
+    .end local v2  # "js":Lcom/android/server/job/controllers/JobStatus;
     goto :goto_f
 
     .line 457
     :cond_3d
     invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v2
 
-    return-object v0
+    return-object v2
 .end method
 
 .method private rampUpForScreenOff()V
@@ -1283,6 +1429,7 @@
     move-result-wide v1
 
     .line 191
+    .local v1, "now":J
     iget-wide v3, p0, Lcom/android/server/job/JobConcurrencyManager;->mLastScreenOffRealtime:J
 
     iget-object v5, p0, Lcom/android/server/job/JobConcurrencyManager;->mConstants:Lcom/android/server/job/JobSchedulerService$Constants;
@@ -1298,9 +1445,9 @@
 
     add-long/2addr v3, v5
 
-    cmp-long v1, v3, v1
+    cmp-long v3, v3, v1
 
-    if-lez v1, :cond_2b
+    if-lez v3, :cond_2b
 
     .line 194
     monitor-exit v0
@@ -1309,29 +1456,30 @@
 
     .line 197
     :cond_2b
-    const/4 v1, 0x0
+    const/4 v3, 0x0
 
-    iput-boolean v1, p0, Lcom/android/server/job/JobConcurrencyManager;->mEffectiveInteractiveState:Z
+    iput-boolean v3, p0, Lcom/android/server/job/JobConcurrencyManager;->mEffectiveInteractiveState:Z
 
     .line 199
-    sget-boolean v1, Lcom/android/server/job/JobConcurrencyManager;->DEBUG:Z
+    sget-boolean v3, Lcom/android/server/job/JobConcurrencyManager;->DEBUG:Z
 
-    if-eqz v1, :cond_39
+    if-eqz v3, :cond_39
 
     .line 200
-    const-string v1, "JobScheduler"
+    const-string v3, "JobScheduler"
 
-    const-string v2, "Ramping up concurrency"
+    const-string v4, "Ramping up concurrency"
 
-    invoke-static {v1, v2}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v3, v4}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 203
     :cond_39
-    iget-object v1, p0, Lcom/android/server/job/JobConcurrencyManager;->mService:Lcom/android/server/job/JobSchedulerService;
+    iget-object v3, p0, Lcom/android/server/job/JobConcurrencyManager;->mService:Lcom/android/server/job/JobSchedulerService;
 
-    invoke-virtual {v1}, Lcom/android/server/job/JobSchedulerService;->maybeRunPendingJobsLocked()V
+    invoke-virtual {v3}, Lcom/android/server/job/JobSchedulerService;->maybeRunPendingJobsLocked()V
 
     .line 204
+    .end local v1  # "now":J
     monitor-exit v0
 
     .line 205
@@ -1364,6 +1512,7 @@
     move-result-wide v0
 
     .line 216
+    .local v0, "nowUptime":J
     iget-wide v2, p0, Lcom/android/server/job/JobConcurrencyManager;->mNextSystemStateRefreshTime:J
 
     cmp-long v2, v0, v2
@@ -1382,28 +1531,29 @@
     move-result-wide v2
 
     .line 221
+    .local v2, "start":J
     const-wide/16 v4, 0x3e8
 
-    add-long/2addr v0, v4
+    add-long/2addr v4, v0
 
-    iput-wide v0, p0, Lcom/android/server/job/JobConcurrencyManager;->mNextSystemStateRefreshTime:J
+    iput-wide v4, p0, Lcom/android/server/job/JobConcurrencyManager;->mNextSystemStateRefreshTime:J
 
     .line 223
-    const/4 v0, 0x0
+    const/4 v4, 0x0
 
-    iput v0, p0, Lcom/android/server/job/JobConcurrencyManager;->mLastMemoryTrimLevel:I
+    iput v4, p0, Lcom/android/server/job/JobConcurrencyManager;->mLastMemoryTrimLevel:I
 
     .line 225
     :try_start_1b
     invoke-static {}, Landroid/app/ActivityManager;->getService()Landroid/app/IActivityManager;
 
-    move-result-object v0
+    move-result-object v4
 
-    invoke-interface {v0}, Landroid/app/IActivityManager;->getMemoryTrimLevel()I
+    invoke-interface {v4}, Landroid/app/IActivityManager;->getMemoryTrimLevel()I
 
-    move-result v0
+    move-result v4
 
-    iput v0, p0, Lcom/android/server/job/JobConcurrencyManager;->mLastMemoryTrimLevel:I
+    iput v4, p0, Lcom/android/server/job/JobConcurrencyManager;->mLastMemoryTrimLevel:I
     :try_end_25
     .catch Landroid/os/RemoteException; {:try_start_1b .. :try_end_25} :catch_26
 
@@ -1412,15 +1562,15 @@
 
     .line 226
     :catch_26
-    move-exception v0
+    move-exception v4
 
     .line 229
     :goto_27
-    iget-object v0, p0, Lcom/android/server/job/JobConcurrencyManager;->mStatLogger:Lcom/android/internal/util/StatLogger;
+    iget-object v4, p0, Lcom/android/server/job/JobConcurrencyManager;->mStatLogger:Lcom/android/internal/util/StatLogger;
 
-    const/4 v1, 0x1
+    const/4 v5, 0x1
 
-    invoke-virtual {v0, v1, v2, v3}, Lcom/android/internal/util/StatLogger;->logDurationStat(IJ)J
+    invoke-virtual {v4, v5, v2, v3}, Lcom/android/internal/util/StatLogger;->logDurationStat(IJ)J
 
     .line 230
     return-void
@@ -1455,58 +1605,61 @@
 
     iget-object v0, v0, Lcom/android/server/job/JobSchedulerService$Constants;->MAX_JOB_COUNTS_SCREEN_OFF:Lcom/android/server/job/JobSchedulerService$MaxJobCountsPerMemoryTrimLevel;
 
-    .line 241
     :goto_10
+    nop
+
+    .line 241
+    .local v0, "jobCounts":Lcom/android/server/job/JobSchedulerService$MaxJobCountsPerMemoryTrimLevel;
     iget v1, p0, Lcom/android/server/job/JobConcurrencyManager;->mLastMemoryTrimLevel:I
 
     const/4 v2, 0x1
 
-    if-eq v1, v2, :cond_2a
+    if-eq v1, v2, :cond_2b
 
     const/4 v2, 0x2
 
-    if-eq v1, v2, :cond_25
+    if-eq v1, v2, :cond_26
 
     const/4 v2, 0x3
 
-    if-eq v1, v2, :cond_20
+    if-eq v1, v2, :cond_21
 
     .line 252
-    iget-object v0, v0, Lcom/android/server/job/JobSchedulerService$MaxJobCountsPerMemoryTrimLevel;->normal:Lcom/android/server/job/JobSchedulerService$MaxJobCounts;
+    iget-object v1, v0, Lcom/android/server/job/JobSchedulerService$MaxJobCountsPerMemoryTrimLevel;->normal:Lcom/android/server/job/JobSchedulerService$MaxJobCounts;
 
-    iput-object v0, p0, Lcom/android/server/job/JobConcurrencyManager;->mMaxJobCounts:Lcom/android/server/job/JobSchedulerService$MaxJobCounts;
+    iput-object v1, p0, Lcom/android/server/job/JobConcurrencyManager;->mMaxJobCounts:Lcom/android/server/job/JobSchedulerService$MaxJobCounts;
 
-    goto :goto_2f
+    goto :goto_30
 
     .line 249
-    :cond_20
-    iget-object v0, v0, Lcom/android/server/job/JobSchedulerService$MaxJobCountsPerMemoryTrimLevel;->critical:Lcom/android/server/job/JobSchedulerService$MaxJobCounts;
+    :cond_21
+    iget-object v1, v0, Lcom/android/server/job/JobSchedulerService$MaxJobCountsPerMemoryTrimLevel;->critical:Lcom/android/server/job/JobSchedulerService$MaxJobCounts;
 
-    iput-object v0, p0, Lcom/android/server/job/JobConcurrencyManager;->mMaxJobCounts:Lcom/android/server/job/JobSchedulerService$MaxJobCounts;
+    iput-object v1, p0, Lcom/android/server/job/JobConcurrencyManager;->mMaxJobCounts:Lcom/android/server/job/JobSchedulerService$MaxJobCounts;
 
     .line 250
-    goto :goto_2f
+    goto :goto_30
 
     .line 246
-    :cond_25
-    iget-object v0, v0, Lcom/android/server/job/JobSchedulerService$MaxJobCountsPerMemoryTrimLevel;->low:Lcom/android/server/job/JobSchedulerService$MaxJobCounts;
+    :cond_26
+    iget-object v1, v0, Lcom/android/server/job/JobSchedulerService$MaxJobCountsPerMemoryTrimLevel;->low:Lcom/android/server/job/JobSchedulerService$MaxJobCounts;
 
-    iput-object v0, p0, Lcom/android/server/job/JobConcurrencyManager;->mMaxJobCounts:Lcom/android/server/job/JobSchedulerService$MaxJobCounts;
+    iput-object v1, p0, Lcom/android/server/job/JobConcurrencyManager;->mMaxJobCounts:Lcom/android/server/job/JobSchedulerService$MaxJobCounts;
 
     .line 247
-    goto :goto_2f
+    goto :goto_30
 
     .line 243
-    :cond_2a
-    iget-object v0, v0, Lcom/android/server/job/JobSchedulerService$MaxJobCountsPerMemoryTrimLevel;->moderate:Lcom/android/server/job/JobSchedulerService$MaxJobCounts;
+    :cond_2b
+    iget-object v1, v0, Lcom/android/server/job/JobSchedulerService$MaxJobCountsPerMemoryTrimLevel;->moderate:Lcom/android/server/job/JobSchedulerService$MaxJobCounts;
 
-    iput-object v0, p0, Lcom/android/server/job/JobConcurrencyManager;->mMaxJobCounts:Lcom/android/server/job/JobSchedulerService$MaxJobCounts;
+    iput-object v1, p0, Lcom/android/server/job/JobConcurrencyManager;->mMaxJobCounts:Lcom/android/server/job/JobSchedulerService$MaxJobCounts;
 
     .line 244
     nop
 
     .line 255
-    :goto_2f
+    :goto_30
     return-void
 .end method
 
@@ -1528,6 +1681,7 @@
     move-result-wide v0
 
     .line 267
+    .local v0, "start":J
     invoke-direct {p0}, Lcom/android/server/job/JobConcurrencyManager;->assignJobsToContextsInternalLocked()V
 
     .line 269
@@ -1542,7 +1696,10 @@
 .end method
 
 .method public dumpLocked(Lcom/android/internal/util/IndentingPrintWriter;JJ)V
-    .registers 9
+    .registers 10
+    .param p1, "pw"  # Lcom/android/internal/util/IndentingPrintWriter;
+    .param p2, "now"  # J
+    .param p4, "nowRealtime"  # J
 
     .line 473
     const-string v0, "Concurrency:"
@@ -1561,7 +1718,7 @@
     .line 478
     iget-boolean v0, p0, Lcom/android/server/job/JobConcurrencyManager;->mCurrentInteractiveState:Z
     :try_end_f
-    .catchall {:try_start_8 .. :try_end_f} :catchall_76
+    .catchall {:try_start_8 .. :try_end_f} :catchall_79
 
     const-string v1, "ON"
 
@@ -1607,11 +1764,11 @@
     invoke-virtual {p1, v0}, Lcom/android/internal/util/IndentingPrintWriter;->print(Ljava/lang/String;)V
 
     .line 484
-    sub-long p4, p2, p4
+    sub-long v0, p2, p4
 
-    iget-wide v0, p0, Lcom/android/server/job/JobConcurrencyManager;->mLastScreenOnRealtime:J
+    iget-wide v2, p0, Lcom/android/server/job/JobConcurrencyManager;->mLastScreenOnRealtime:J
 
-    add-long/2addr v0, p4
+    add-long/2addr v0, v2
 
     invoke-static {p1, v0, v1, p2, p3}, Landroid/util/TimeUtils;->dumpTimeWithDelta(Ljava/io/PrintWriter;JJ)V
 
@@ -1624,11 +1781,13 @@
     invoke-virtual {p1, v0}, Lcom/android/internal/util/IndentingPrintWriter;->print(Ljava/lang/String;)V
 
     .line 488
-    iget-wide v0, p0, Lcom/android/server/job/JobConcurrencyManager;->mLastScreenOffRealtime:J
+    sub-long v0, p2, p4
 
-    add-long/2addr p4, v0
+    iget-wide v2, p0, Lcom/android/server/job/JobConcurrencyManager;->mLastScreenOffRealtime:J
 
-    invoke-static {p1, p4, p5, p2, p3}, Landroid/util/TimeUtils;->dumpTimeWithDelta(Ljava/io/PrintWriter;JJ)V
+    add-long/2addr v0, v2
+
+    invoke-static {p1, v0, v1, p2, p3}, Landroid/util/TimeUtils;->dumpTimeWithDelta(Ljava/io/PrintWriter;JJ)V
 
     .line 489
     invoke-virtual {p1}, Lcom/android/internal/util/IndentingPrintWriter;->println()V
@@ -1637,42 +1796,42 @@
     invoke-virtual {p1}, Lcom/android/internal/util/IndentingPrintWriter;->println()V
 
     .line 493
-    const-string p2, "Current max jobs:"
+    const-string v0, "Current max jobs:"
 
-    invoke-virtual {p1, p2}, Lcom/android/internal/util/IndentingPrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {p1, v0}, Lcom/android/internal/util/IndentingPrintWriter;->println(Ljava/lang/String;)V
 
     .line 494
-    const-string p2, "  "
+    const-string v0, "  "
 
-    invoke-virtual {p1, p2}, Lcom/android/internal/util/IndentingPrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {p1, v0}, Lcom/android/internal/util/IndentingPrintWriter;->println(Ljava/lang/String;)V
 
     .line 495
-    iget-object p2, p0, Lcom/android/server/job/JobConcurrencyManager;->mJobCountTracker:Lcom/android/server/job/JobConcurrencyManager$JobCountTracker;
+    iget-object v0, p0, Lcom/android/server/job/JobConcurrencyManager;->mJobCountTracker:Lcom/android/server/job/JobConcurrencyManager$JobCountTracker;
 
-    invoke-virtual {p1, p2}, Lcom/android/internal/util/IndentingPrintWriter;->println(Ljava/lang/Object;)V
+    invoke-virtual {p1, v0}, Lcom/android/internal/util/IndentingPrintWriter;->println(Ljava/lang/Object;)V
 
     .line 497
     invoke-virtual {p1}, Lcom/android/internal/util/IndentingPrintWriter;->println()V
 
     .line 499
-    const-string p2, "mLastMemoryTrimLevel: "
+    const-string/jumbo v0, "mLastMemoryTrimLevel: "
 
-    invoke-virtual {p1, p2}, Lcom/android/internal/util/IndentingPrintWriter;->print(Ljava/lang/String;)V
+    invoke-virtual {p1, v0}, Lcom/android/internal/util/IndentingPrintWriter;->print(Ljava/lang/String;)V
 
     .line 500
-    iget p2, p0, Lcom/android/server/job/JobConcurrencyManager;->mLastMemoryTrimLevel:I
+    iget v0, p0, Lcom/android/server/job/JobConcurrencyManager;->mLastMemoryTrimLevel:I
 
-    invoke-virtual {p1, p2}, Lcom/android/internal/util/IndentingPrintWriter;->print(I)V
+    invoke-virtual {p1, v0}, Lcom/android/internal/util/IndentingPrintWriter;->print(I)V
 
     .line 501
     invoke-virtual {p1}, Lcom/android/internal/util/IndentingPrintWriter;->println()V
 
     .line 503
-    iget-object p2, p0, Lcom/android/server/job/JobConcurrencyManager;->mStatLogger:Lcom/android/internal/util/StatLogger;
+    iget-object v0, p0, Lcom/android/server/job/JobConcurrencyManager;->mStatLogger:Lcom/android/internal/util/StatLogger;
 
-    invoke-virtual {p2, p1}, Lcom/android/internal/util/StatLogger;->dump(Lcom/android/internal/util/IndentingPrintWriter;)V
-    :try_end_71
-    .catchall {:try_start_18 .. :try_end_71} :catchall_76
+    invoke-virtual {v0, p1}, Lcom/android/internal/util/StatLogger;->dump(Lcom/android/internal/util/IndentingPrintWriter;)V
+    :try_end_74
+    .catchall {:try_start_18 .. :try_end_74} :catchall_79
 
     .line 505
     invoke-virtual {p1}, Lcom/android/internal/util/IndentingPrintWriter;->decreaseIndent()Lcom/android/internal/util/IndentingPrintWriter;
@@ -1684,70 +1843,75 @@
     return-void
 
     .line 505
-    :catchall_76
-    move-exception p2
+    :catchall_79
+    move-exception v0
 
     invoke-virtual {p1}, Lcom/android/internal/util/IndentingPrintWriter;->decreaseIndent()Lcom/android/internal/util/IndentingPrintWriter;
 
-    throw p2
+    throw v0
 .end method
 
 .method public dumpProtoLocked(Landroid/util/proto/ProtoOutputStream;JJJ)V
-    .registers 10
+    .registers 14
+    .param p1, "proto"  # Landroid/util/proto/ProtoOutputStream;
+    .param p2, "tag"  # J
+    .param p4, "now"  # J
+    .param p6, "nowRealtime"  # J
 
     .line 510
     invoke-virtual {p1, p2, p3}, Landroid/util/proto/ProtoOutputStream;->start(J)J
 
-    move-result-wide p2
+    move-result-wide v0
 
     .line 512
-    iget-boolean p4, p0, Lcom/android/server/job/JobConcurrencyManager;->mCurrentInteractiveState:Z
+    .local v0, "token":J
+    iget-boolean v2, p0, Lcom/android/server/job/JobConcurrencyManager;->mCurrentInteractiveState:Z
 
-    const-wide v0, 0x10800000001L
+    const-wide v3, 0x10800000001L
 
-    invoke-virtual {p1, v0, v1, p4}, Landroid/util/proto/ProtoOutputStream;->write(JZ)V
+    invoke-virtual {p1, v3, v4, v2}, Landroid/util/proto/ProtoOutputStream;->write(JZ)V
 
     .line 514
-    iget-boolean p4, p0, Lcom/android/server/job/JobConcurrencyManager;->mEffectiveInteractiveState:Z
+    iget-boolean v2, p0, Lcom/android/server/job/JobConcurrencyManager;->mEffectiveInteractiveState:Z
 
-    const-wide v0, 0x10800000002L
+    const-wide v3, 0x10800000002L
 
-    invoke-virtual {p1, v0, v1, p4}, Landroid/util/proto/ProtoOutputStream;->write(JZ)V
+    invoke-virtual {p1, v3, v4, v2}, Landroid/util/proto/ProtoOutputStream;->write(JZ)V
 
     .line 517
-    iget-wide p4, p0, Lcom/android/server/job/JobConcurrencyManager;->mLastScreenOnRealtime:J
+    iget-wide v2, p0, Lcom/android/server/job/JobConcurrencyManager;->mLastScreenOnRealtime:J
 
-    sub-long p4, p6, p4
+    sub-long v2, p6, v2
 
-    const-wide v0, 0x10300000003L
+    const-wide v4, 0x10300000003L
 
-    invoke-virtual {p1, v0, v1, p4, p5}, Landroid/util/proto/ProtoOutputStream;->write(JJ)V
+    invoke-virtual {p1, v4, v5, v2, v3}, Landroid/util/proto/ProtoOutputStream;->write(JJ)V
 
     .line 519
-    iget-wide p4, p0, Lcom/android/server/job/JobConcurrencyManager;->mLastScreenOffRealtime:J
+    iget-wide v2, p0, Lcom/android/server/job/JobConcurrencyManager;->mLastScreenOffRealtime:J
 
-    sub-long/2addr p6, p4
+    sub-long v2, p6, v2
 
-    const-wide p4, 0x10300000004L
+    const-wide v4, 0x10300000004L
 
-    invoke-virtual {p1, p4, p5, p6, p7}, Landroid/util/proto/ProtoOutputStream;->write(JJ)V
+    invoke-virtual {p1, v4, v5, v2, v3}, Landroid/util/proto/ProtoOutputStream;->write(JJ)V
 
     .line 522
-    iget-object p4, p0, Lcom/android/server/job/JobConcurrencyManager;->mJobCountTracker:Lcom/android/server/job/JobConcurrencyManager$JobCountTracker;
+    iget-object v2, p0, Lcom/android/server/job/JobConcurrencyManager;->mJobCountTracker:Lcom/android/server/job/JobConcurrencyManager$JobCountTracker;
 
-    const-wide p5, 0x10b00000005L
+    const-wide v3, 0x10b00000005L
 
-    invoke-virtual {p4, p1, p5, p6}, Lcom/android/server/job/JobConcurrencyManager$JobCountTracker;->dumpProto(Landroid/util/proto/ProtoOutputStream;J)V
+    invoke-virtual {v2, p1, v3, v4}, Lcom/android/server/job/JobConcurrencyManager$JobCountTracker;->dumpProto(Landroid/util/proto/ProtoOutputStream;J)V
 
     .line 524
-    iget p4, p0, Lcom/android/server/job/JobConcurrencyManager;->mLastMemoryTrimLevel:I
+    iget v2, p0, Lcom/android/server/job/JobConcurrencyManager;->mLastMemoryTrimLevel:I
 
-    const-wide p5, 0x10500000006L
+    const-wide v3, 0x10500000006L
 
-    invoke-virtual {p1, p5, p6, p4}, Landroid/util/proto/ProtoOutputStream;->write(JI)V
+    invoke-virtual {p1, v3, v4, v2}, Landroid/util/proto/ProtoOutputStream;->write(JI)V
 
     .line 527
-    invoke-virtual {p1, p2, p3}, Landroid/util/proto/ProtoOutputStream;->end(J)V
+    invoke-virtual {p1, v0, v1}, Landroid/util/proto/ProtoOutputStream;->end(J)V
 
     .line 528
     return-void
@@ -1777,6 +1941,7 @@
     invoke-direct {v0, v1}, Landroid/content/IntentFilter;-><init>(Ljava/lang/String;)V
 
     .line 119
+    .local v0, "filter":Landroid/content/IntentFilter;
     const-string v1, "android.intent.action.SCREEN_OFF"
 
     invoke-virtual {v0, v1}, Landroid/content/IntentFilter;->addAction(Ljava/lang/String;)V
@@ -1789,13 +1954,13 @@
     invoke-virtual {v1, v2, v0}, Landroid/content/Context;->registerReceiver(Landroid/content/BroadcastReceiver;Landroid/content/IntentFilter;)Landroid/content/Intent;
 
     .line 122
-    iget-object v0, p0, Lcom/android/server/job/JobConcurrencyManager;->mPowerManager:Landroid/os/PowerManager;
+    iget-object v1, p0, Lcom/android/server/job/JobConcurrencyManager;->mPowerManager:Landroid/os/PowerManager;
 
-    invoke-virtual {v0}, Landroid/os/PowerManager;->isInteractive()Z
+    invoke-virtual {v1}, Landroid/os/PowerManager;->isInteractive()Z
 
-    move-result v0
+    move-result v1
 
-    invoke-direct {p0, v0}, Lcom/android/server/job/JobConcurrencyManager;->onInteractiveStateChanged(Z)V
+    invoke-direct {p0, v1}, Lcom/android/server/job/JobConcurrencyManager;->onInteractiveStateChanged(Z)V
 
     .line 123
     return-void

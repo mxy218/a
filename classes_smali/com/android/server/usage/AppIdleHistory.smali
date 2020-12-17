@@ -77,6 +77,8 @@
 # direct methods
 .method constructor <init>(Ljava/io/File;J)V
     .registers 5
+    .param p1, "storageDir"  # Ljava/io/File;
+    .param p2, "elapsedRealtime"  # J
 
     .line 141
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -105,31 +107,38 @@
 .end method
 
 .method private getLongValue(Lorg/xmlpull/v1/XmlPullParser;Ljava/lang/String;J)J
-    .registers 6
+    .registers 8
+    .param p1, "parser"  # Lorg/xmlpull/v1/XmlPullParser;
+    .param p2, "attrName"  # Ljava/lang/String;
+    .param p3, "defValue"  # J
 
     .line 588
     const/4 v0, 0x0
 
     invoke-interface {p1, v0, p2}, Lorg/xmlpull/v1/XmlPullParser;->getAttributeValue(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
     .line 589
-    if-nez p1, :cond_8
+    .local v0, "value":Ljava/lang/String;
+    if-nez v0, :cond_8
 
     return-wide p3
 
     .line 590
     :cond_8
-    invoke-static {p1}, Ljava/lang/Long;->parseLong(Ljava/lang/String;)J
+    invoke-static {v0}, Ljava/lang/Long;->parseLong(Ljava/lang/String;)J
 
-    move-result-wide p1
+    move-result-wide v1
 
-    return-wide p1
+    return-wide v1
 .end method
 
 .method private getPackageHistory(Landroid/util/ArrayMap;Ljava/lang/String;JZ)Lcom/android/server/usage/AppIdleHistory$AppUsageHistory;
     .registers 9
+    .param p2, "packageName"  # Ljava/lang/String;
+    .param p3, "elapsedRealtime"  # J
+    .param p5, "create"  # Z
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(",
@@ -144,6 +153,7 @@
     .end annotation
 
     .line 300
+    .local p1, "userHistory":Landroid/util/ArrayMap;, "Landroid/util/ArrayMap<Ljava/lang/String;Lcom/android/server/usage/AppIdleHistory$AppUsageHistory;>;"
     invoke-virtual {p1, p2}, Landroid/util/ArrayMap;->get(Ljava/lang/Object;)Ljava/lang/Object;
 
     move-result-object v0
@@ -151,14 +161,17 @@
     check-cast v0, Lcom/android/server/usage/AppIdleHistory$AppUsageHistory;
 
     .line 301
-    if-nez v0, :cond_35
+    .local v0, "appUsageHistory":Lcom/android/server/usage/AppIdleHistory$AppUsageHistory;
+    if-nez v0, :cond_36
 
-    if-eqz p5, :cond_35
+    if-eqz p5, :cond_36
 
     .line 302
-    new-instance v0, Lcom/android/server/usage/AppIdleHistory$AppUsageHistory;
+    new-instance v1, Lcom/android/server/usage/AppIdleHistory$AppUsageHistory;
 
-    invoke-direct {v0}, Lcom/android/server/usage/AppIdleHistory$AppUsageHistory;-><init>()V
+    invoke-direct {v1}, Lcom/android/server/usage/AppIdleHistory$AppUsageHistory;-><init>()V
+
+    move-object v0, v1
 
     .line 303
     invoke-virtual {p0, p3, p4}, Lcom/android/server/usage/AppIdleHistory;->getElapsedTime(J)J
@@ -170,49 +183,50 @@
     .line 304
     invoke-virtual {p0, p3, p4}, Lcom/android/server/usage/AppIdleHistory;->getScreenOnTime(J)J
 
-    move-result-wide p3
+    move-result-wide v1
 
-    iput-wide p3, v0, Lcom/android/server/usage/AppIdleHistory$AppUsageHistory;->lastUsedScreenTime:J
+    iput-wide v1, v0, Lcom/android/server/usage/AppIdleHistory$AppUsageHistory;->lastUsedScreenTime:J
 
     .line 305
-    const-wide/16 p3, 0x0
+    const-wide/16 v1, 0x0
 
-    invoke-virtual {p0, p3, p4}, Lcom/android/server/usage/AppIdleHistory;->getElapsedTime(J)J
+    invoke-virtual {p0, v1, v2}, Lcom/android/server/usage/AppIdleHistory;->getElapsedTime(J)J
 
-    move-result-wide p3
+    move-result-wide v1
 
-    iput-wide p3, v0, Lcom/android/server/usage/AppIdleHistory$AppUsageHistory;->lastPredictedTime:J
+    iput-wide v1, v0, Lcom/android/server/usage/AppIdleHistory$AppUsageHistory;->lastPredictedTime:J
 
     .line 306
-    const/16 p3, 0x32
+    const/16 v1, 0x32
 
-    iput p3, v0, Lcom/android/server/usage/AppIdleHistory$AppUsageHistory;->currentBucket:I
+    iput v1, v0, Lcom/android/server/usage/AppIdleHistory$AppUsageHistory;->currentBucket:I
 
     .line 307
-    const/16 p3, 0x100
+    const/16 v1, 0x100
 
-    iput p3, v0, Lcom/android/server/usage/AppIdleHistory$AppUsageHistory;->bucketingReason:I
+    iput v1, v0, Lcom/android/server/usage/AppIdleHistory$AppUsageHistory;->bucketingReason:I
 
     .line 308
-    const/4 p3, -0x1
+    const/4 v1, -0x1
 
-    iput p3, v0, Lcom/android/server/usage/AppIdleHistory$AppUsageHistory;->lastInformedBucket:I
+    iput v1, v0, Lcom/android/server/usage/AppIdleHistory$AppUsageHistory;->lastInformedBucket:I
 
     .line 309
-    const-wide/high16 p3, -0x8000000000000000L
+    const-wide/high16 v1, -0x8000000000000000L
 
-    iput-wide p3, v0, Lcom/android/server/usage/AppIdleHistory$AppUsageHistory;->lastJobRunTime:J
+    iput-wide v1, v0, Lcom/android/server/usage/AppIdleHistory$AppUsageHistory;->lastJobRunTime:J
 
     .line 310
     invoke-virtual {p1, p2, v0}, Landroid/util/ArrayMap;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
 
     .line 312
-    :cond_35
+    :cond_36
     return-object v0
 .end method
 
 .method private getUserHistory(I)Landroid/util/ArrayMap;
     .registers 4
+    .param p1, "userId"  # I
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(I)",
@@ -233,12 +247,15 @@
     check-cast v0, Landroid/util/ArrayMap;
 
     .line 290
-    if-nez v0, :cond_17
+    .local v0, "userHistory":Landroid/util/ArrayMap;, "Landroid/util/ArrayMap<Ljava/lang/String;Lcom/android/server/usage/AppIdleHistory$AppUsageHistory;>;"
+    if-nez v0, :cond_18
 
     .line 291
-    new-instance v0, Landroid/util/ArrayMap;
+    new-instance v1, Landroid/util/ArrayMap;
 
-    invoke-direct {v0}, Landroid/util/ArrayMap;-><init>()V
+    invoke-direct {v1}, Landroid/util/ArrayMap;-><init>()V
+
+    move-object v0, v1
 
     .line 292
     iget-object v1, p0, Lcom/android/server/usage/AppIdleHistory;->mIdleHistory:Landroid/util/SparseArray;
@@ -249,12 +266,13 @@
     invoke-direct {p0, p1, v0}, Lcom/android/server/usage/AppIdleHistory;->readAppIdleTimes(ILandroid/util/ArrayMap;)V
 
     .line 295
-    :cond_17
+    :cond_18
     return-object v0
 .end method
 
 .method private readAppIdleTimes(ILandroid/util/ArrayMap;)V
-    .registers 19
+    .registers 21
+    .param p1, "userId"  # I
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(I",
@@ -266,6 +284,7 @@
     .end annotation
 
     .line 522
+    .local p2, "userHistory":Landroid/util/ArrayMap;, "Landroid/util/ArrayMap<Ljava/lang/String;Lcom/android/server/usage/AppIdleHistory$AppUsageHistory;>;"
     move-object/from16 v1, p0
 
     move/from16 v2, p1
@@ -274,9 +293,10 @@
 
     const-string v4, "AppIdleHistory"
 
-    .line 524
     const/4 v5, 0x0
 
+    .line 524
+    .local v5, "fis":Ljava/io/FileInputStream;
     :try_start_9
     new-instance v0, Landroid/util/AtomicFile;
 
@@ -286,49 +306,55 @@
 
     invoke-direct {v0, v6}, Landroid/util/AtomicFile;-><init>(Ljava/io/File;)V
 
-    .line 525
-    invoke-virtual {v0}, Landroid/util/AtomicFile;->openRead()Ljava/io/FileInputStream;
+    move-object v6, v0
 
-    move-result-object v6
-    :try_end_16
-    .catch Ljava/io/IOException; {:try_start_9 .. :try_end_16} :catch_fe
-    .catch Lorg/xmlpull/v1/XmlPullParserException; {:try_start_9 .. :try_end_16} :catch_fe
-    .catchall {:try_start_9 .. :try_end_16} :catchall_fb
+    .line 525
+    .local v6, "appIdleFile":Landroid/util/AtomicFile;
+    invoke-virtual {v6}, Landroid/util/AtomicFile;->openRead()Ljava/io/FileInputStream;
+
+    move-result-object v0
+
+    move-object v5, v0
 
     .line 526
-    :try_start_16
     invoke-static {}, Landroid/util/Xml;->newPullParser()Lorg/xmlpull/v1/XmlPullParser;
 
-    move-result-object v7
+    move-result-object v0
+
+    move-object v7, v0
 
     .line 527
+    .local v7, "parser":Lorg/xmlpull/v1/XmlPullParser;
     sget-object v0, Ljava/nio/charset/StandardCharsets;->UTF_8:Ljava/nio/charset/Charset;
 
     invoke-virtual {v0}, Ljava/nio/charset/Charset;->name()Ljava/lang/String;
 
     move-result-object v0
 
-    invoke-interface {v7, v6, v0}, Lorg/xmlpull/v1/XmlPullParser;->setInput(Ljava/io/InputStream;Ljava/lang/String;)V
+    invoke-interface {v7, v5, v0}, Lorg/xmlpull/v1/XmlPullParser;->setInput(Ljava/io/InputStream;Ljava/lang/String;)V
 
     .line 530
-    :goto_23
+    :goto_26
     invoke-interface {v7}, Lorg/xmlpull/v1/XmlPullParser;->next()I
 
     move-result v0
 
-    const/4 v8, 0x1
+    move v8, v0
 
-    const/4 v9, 0x2
+    .local v8, "type":I
+    const/4 v9, 0x1
 
-    if-eq v0, v9, :cond_2e
+    const/4 v10, 0x2
 
-    if-eq v0, v8, :cond_2e
+    if-eq v0, v10, :cond_32
 
-    goto :goto_23
+    if-eq v8, v9, :cond_32
+
+    goto :goto_26
 
     .line 535
-    :cond_2e
-    if-eq v0, v9, :cond_46
+    :cond_32
+    if-eq v8, v10, :cond_4a
 
     .line 536
     new-instance v0, Ljava/lang/StringBuilder;
@@ -344,320 +370,383 @@
     move-result-object v0
 
     invoke-static {v4, v0}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
-    :try_end_42
-    .catch Ljava/io/IOException; {:try_start_16 .. :try_end_42} :catch_f8
-    .catch Lorg/xmlpull/v1/XmlPullParserException; {:try_start_16 .. :try_end_42} :catch_f8
-    .catchall {:try_start_16 .. :try_end_42} :catchall_f6
+    :try_end_46
+    .catch Ljava/io/IOException; {:try_start_9 .. :try_end_46} :catch_111
+    .catch Lorg/xmlpull/v1/XmlPullParserException; {:try_start_9 .. :try_end_46} :catch_111
+    .catchall {:try_start_9 .. :try_end_46} :catchall_10d
 
     .line 583
-    invoke-static {v6}, Llibcore/io/IoUtils;->closeQuietly(Ljava/lang/AutoCloseable;)V
+    invoke-static {v5}, Llibcore/io/IoUtils;->closeQuietly(Ljava/lang/AutoCloseable;)V
 
     .line 537
     return-void
 
     .line 539
-    :cond_46
-    :try_start_46
+    :cond_4a
+    :try_start_4a
     invoke-interface {v7}, Lorg/xmlpull/v1/XmlPullParser;->getName()Ljava/lang/String;
 
     move-result-object v0
 
-    const-string/jumbo v10, "packages"
+    const-string/jumbo v11, "packages"
 
-    invoke-virtual {v0, v10}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v0, v11}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
     move-result v0
-    :try_end_51
-    .catch Ljava/io/IOException; {:try_start_46 .. :try_end_51} :catch_f8
-    .catch Lorg/xmlpull/v1/XmlPullParserException; {:try_start_46 .. :try_end_51} :catch_f8
-    .catchall {:try_start_46 .. :try_end_51} :catchall_f6
+    :try_end_55
+    .catch Ljava/io/IOException; {:try_start_4a .. :try_end_55} :catch_111
+    .catch Lorg/xmlpull/v1/XmlPullParserException; {:try_start_4a .. :try_end_55} :catch_111
+    .catchall {:try_start_4a .. :try_end_55} :catchall_10d
 
-    if-nez v0, :cond_57
+    if-nez v0, :cond_5b
 
     .line 583
-    invoke-static {v6}, Llibcore/io/IoUtils;->closeQuietly(Ljava/lang/AutoCloseable;)V
+    invoke-static {v5}, Llibcore/io/IoUtils;->closeQuietly(Ljava/lang/AutoCloseable;)V
 
     .line 540
     return-void
 
     .line 542
-    :cond_57
-    :goto_57
-    :try_start_57
+    :cond_5b
+    :goto_5b
+    :try_start_5b
     invoke-interface {v7}, Lorg/xmlpull/v1/XmlPullParser;->next()I
 
     move-result v0
 
-    if-eq v0, v8, :cond_f2
+    move v8, v0
+
+    if-eq v0, v9, :cond_10a
 
     .line 543
-    if-ne v0, v9, :cond_ec
+    if-ne v8, v10, :cond_104
 
     .line 544
     invoke-interface {v7}, Lorg/xmlpull/v1/XmlPullParser;->getName()Ljava/lang/String;
 
     move-result-object v0
 
-    .line 545
-    const-string/jumbo v10, "package"
+    move-object v11, v0
 
-    invoke-virtual {v0, v10}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    .line 545
+    .local v11, "name":Ljava/lang/String;
+    const-string/jumbo v0, "package"
+
+    invoke-virtual {v11, v0}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
     move-result v0
 
-    if-eqz v0, :cond_e6
+    if-eqz v0, :cond_100
 
     .line 546
     const-string/jumbo v0, "name"
 
-    invoke-interface {v7, v5, v0}, Lorg/xmlpull/v1/XmlPullParser;->getAttributeValue(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+    const/4 v12, 0x0
 
-    move-result-object v10
+    invoke-interface {v7, v12, v0}, Lorg/xmlpull/v1/XmlPullParser;->getAttributeValue(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+
+    move-result-object v0
+
+    move-object v13, v0
 
     .line 547
-    new-instance v11, Lcom/android/server/usage/AppIdleHistory$AppUsageHistory;
+    .local v13, "packageName":Ljava/lang/String;
+    new-instance v0, Lcom/android/server/usage/AppIdleHistory$AppUsageHistory;
 
-    invoke-direct {v11}, Lcom/android/server/usage/AppIdleHistory$AppUsageHistory;-><init>()V
+    invoke-direct {v0}, Lcom/android/server/usage/AppIdleHistory$AppUsageHistory;-><init>()V
+
+    move-object v14, v0
 
     .line 548
+    .local v14, "appUsageHistory":Lcom/android/server/usage/AppIdleHistory$AppUsageHistory;
     const-string v0, "elapsedIdleTime"
 
     .line 549
-    invoke-interface {v7, v5, v0}, Lorg/xmlpull/v1/XmlPullParser;->getAttributeValue(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+    invoke-interface {v7, v12, v0}, Lorg/xmlpull/v1/XmlPullParser;->getAttributeValue(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
 
     move-result-object v0
 
     invoke-static {v0}, Ljava/lang/Long;->parseLong(Ljava/lang/String;)J
 
-    move-result-wide v12
+    move-result-wide v9
 
-    iput-wide v12, v11, Lcom/android/server/usage/AppIdleHistory$AppUsageHistory;->lastUsedElapsedTime:J
+    iput-wide v9, v14, Lcom/android/server/usage/AppIdleHistory$AppUsageHistory;->lastUsedElapsedTime:J
 
     .line 550
     const-string/jumbo v0, "screenIdleTime"
 
     .line 551
-    invoke-interface {v7, v5, v0}, Lorg/xmlpull/v1/XmlPullParser;->getAttributeValue(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+    invoke-interface {v7, v12, v0}, Lorg/xmlpull/v1/XmlPullParser;->getAttributeValue(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
 
     move-result-object v0
 
     invoke-static {v0}, Ljava/lang/Long;->parseLong(Ljava/lang/String;)J
 
-    move-result-wide v12
+    move-result-wide v9
 
-    iput-wide v12, v11, Lcom/android/server/usage/AppIdleHistory$AppUsageHistory;->lastUsedScreenTime:J
+    iput-wide v9, v14, Lcom/android/server/usage/AppIdleHistory$AppUsageHistory;->lastUsedScreenTime:J
 
     .line 552
-    const-string v0, "lastPredictedTime"
+    const-string/jumbo v0, "lastPredictedTime"
 
-    const-wide/16 v12, 0x0
+    const-wide/16 v9, 0x0
 
-    invoke-direct {v1, v7, v0, v12, v13}, Lcom/android/server/usage/AppIdleHistory;->getLongValue(Lorg/xmlpull/v1/XmlPullParser;Ljava/lang/String;J)J
+    move-object/from16 v16, v13
 
-    move-result-wide v14
+    .end local v13  # "packageName":Ljava/lang/String;
+    .local v16, "packageName":Ljava/lang/String;
+    invoke-direct {v1, v7, v0, v9, v10}, Lcom/android/server/usage/AppIdleHistory;->getLongValue(Lorg/xmlpull/v1/XmlPullParser;Ljava/lang/String;J)J
 
-    iput-wide v14, v11, Lcom/android/server/usage/AppIdleHistory$AppUsageHistory;->lastPredictedTime:J
+    move-result-wide v12
+
+    iput-wide v12, v14, Lcom/android/server/usage/AppIdleHistory$AppUsageHistory;->lastPredictedTime:J
 
     .line 554
     const-string v0, "appLimitBucket"
 
-    invoke-interface {v7, v5, v0}, Lorg/xmlpull/v1/XmlPullParser;->getAttributeValue(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+    const/4 v12, 0x0
+
+    invoke-interface {v7, v12, v0}, Lorg/xmlpull/v1/XmlPullParser;->getAttributeValue(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
 
     move-result-object v0
 
+    move-object v12, v0
+
     .line 556
-    if-nez v0, :cond_a6
+    .local v12, "currentBucketString":Ljava/lang/String;
+    if-nez v12, :cond_b4
 
     .line 557
     const/16 v0, 0xa
 
-    goto :goto_aa
+    goto :goto_b8
 
     .line 558
-    :cond_a6
-    invoke-static {v0}, Ljava/lang/Integer;->parseInt(Ljava/lang/String;)I
+    :cond_b4
+    invoke-static {v12}, Ljava/lang/Integer;->parseInt(Ljava/lang/String;)I
 
     move-result v0
 
-    :goto_aa
-    iput v0, v11, Lcom/android/server/usage/AppIdleHistory$AppUsageHistory;->currentBucket:I
+    :goto_b8
+    iput v0, v14, Lcom/android/server/usage/AppIdleHistory$AppUsageHistory;->currentBucket:I
 
     .line 559
     const-string v0, "bucketReason"
 
     .line 560
-    invoke-interface {v7, v5, v0}, Lorg/xmlpull/v1/XmlPullParser;->getAttributeValue(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+    const/4 v13, 0x0
+
+    invoke-interface {v7, v13, v0}, Lorg/xmlpull/v1/XmlPullParser;->getAttributeValue(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
 
     move-result-object v0
 
+    move-object v13, v0
+
     .line 561
-    const-string v14, "lastJobRunTime"
+    .local v13, "bucketingReason":Ljava/lang/String;
+    const-string/jumbo v0, "lastJobRunTime"
 
-    const-wide/high16 v8, -0x8000000000000000L
+    const-wide/high16 v9, -0x8000000000000000L
 
-    invoke-direct {v1, v7, v14, v8, v9}, Lcom/android/server/usage/AppIdleHistory;->getLongValue(Lorg/xmlpull/v1/XmlPullParser;Ljava/lang/String;J)J
+    invoke-direct {v1, v7, v0, v9, v10}, Lcom/android/server/usage/AppIdleHistory;->getLongValue(Lorg/xmlpull/v1/XmlPullParser;Ljava/lang/String;J)J
 
-    move-result-wide v8
+    move-result-wide v9
 
-    iput-wide v8, v11, Lcom/android/server/usage/AppIdleHistory$AppUsageHistory;->lastJobRunTime:J
+    iput-wide v9, v14, Lcom/android/server/usage/AppIdleHistory$AppUsageHistory;->lastJobRunTime:J
 
     .line 563
-    const-string v8, "activeTimeoutTime"
+    const-string v0, "activeTimeoutTime"
 
-    invoke-direct {v1, v7, v8, v12, v13}, Lcom/android/server/usage/AppIdleHistory;->getLongValue(Lorg/xmlpull/v1/XmlPullParser;Ljava/lang/String;J)J
+    move-object v15, v11
 
-    move-result-wide v8
+    move-object/from16 v17, v12
 
-    iput-wide v8, v11, Lcom/android/server/usage/AppIdleHistory$AppUsageHistory;->bucketActiveTimeoutTime:J
+    const-wide/16 v9, 0x0
+
+    .end local v11  # "name":Ljava/lang/String;
+    .end local v12  # "currentBucketString":Ljava/lang/String;
+    .local v15, "name":Ljava/lang/String;
+    .local v17, "currentBucketString":Ljava/lang/String;
+    invoke-direct {v1, v7, v0, v9, v10}, Lcom/android/server/usage/AppIdleHistory;->getLongValue(Lorg/xmlpull/v1/XmlPullParser;Ljava/lang/String;J)J
+
+    move-result-wide v11
+
+    iput-wide v11, v14, Lcom/android/server/usage/AppIdleHistory$AppUsageHistory;->bucketActiveTimeoutTime:J
 
     .line 565
-    const-string/jumbo v8, "workingSetTimeoutTime"
+    const-string/jumbo v0, "workingSetTimeoutTime"
 
-    invoke-direct {v1, v7, v8, v12, v13}, Lcom/android/server/usage/AppIdleHistory;->getLongValue(Lorg/xmlpull/v1/XmlPullParser;Ljava/lang/String;J)J
+    invoke-direct {v1, v7, v0, v9, v10}, Lcom/android/server/usage/AppIdleHistory;->getLongValue(Lorg/xmlpull/v1/XmlPullParser;Ljava/lang/String;J)J
 
-    move-result-wide v8
+    move-result-wide v9
 
-    iput-wide v8, v11, Lcom/android/server/usage/AppIdleHistory$AppUsageHistory;->bucketWorkingSetTimeoutTime:J
+    iput-wide v9, v14, Lcom/android/server/usage/AppIdleHistory$AppUsageHistory;->bucketWorkingSetTimeoutTime:J
 
     .line 567
-    const/16 v8, 0x100
+    const/16 v0, 0x100
 
-    iput v8, v11, Lcom/android/server/usage/AppIdleHistory$AppUsageHistory;->bucketingReason:I
-    :try_end_d1
-    .catch Ljava/io/IOException; {:try_start_57 .. :try_end_d1} :catch_f8
-    .catch Lorg/xmlpull/v1/XmlPullParserException; {:try_start_57 .. :try_end_d1} :catch_f8
-    .catchall {:try_start_57 .. :try_end_d1} :catchall_f6
+    iput v0, v14, Lcom/android/server/usage/AppIdleHistory$AppUsageHistory;->bucketingReason:I
+    :try_end_e7
+    .catch Ljava/io/IOException; {:try_start_5b .. :try_end_e7} :catch_111
+    .catch Lorg/xmlpull/v1/XmlPullParserException; {:try_start_5b .. :try_end_e7} :catch_111
+    .catchall {:try_start_5b .. :try_end_e7} :catchall_10d
 
     .line 568
-    if-eqz v0, :cond_dd
+    if-eqz v13, :cond_f3
 
     .line 570
-    const/16 v8, 0x10
+    const/16 v0, 0x10
 
     .line 571
-    :try_start_d5
-    invoke-static {v0, v8}, Ljava/lang/Integer;->parseInt(Ljava/lang/String;I)I
+    :try_start_eb
+    invoke-static {v13, v0}, Ljava/lang/Integer;->parseInt(Ljava/lang/String;I)I
 
     move-result v0
 
-    iput v0, v11, Lcom/android/server/usage/AppIdleHistory$AppUsageHistory;->bucketingReason:I
-    :try_end_db
-    .catch Ljava/lang/NumberFormatException; {:try_start_d5 .. :try_end_db} :catch_dc
-    .catch Ljava/io/IOException; {:try_start_d5 .. :try_end_db} :catch_f8
-    .catch Lorg/xmlpull/v1/XmlPullParserException; {:try_start_d5 .. :try_end_db} :catch_f8
-    .catchall {:try_start_d5 .. :try_end_db} :catchall_f6
+    iput v0, v14, Lcom/android/server/usage/AppIdleHistory$AppUsageHistory;->bucketingReason:I
+    :try_end_f1
+    .catch Ljava/lang/NumberFormatException; {:try_start_eb .. :try_end_f1} :catch_f2
+    .catch Ljava/io/IOException; {:try_start_eb .. :try_end_f1} :catch_111
+    .catch Lorg/xmlpull/v1/XmlPullParserException; {:try_start_eb .. :try_end_f1} :catch_111
+    .catchall {:try_start_eb .. :try_end_f1} :catchall_10d
 
     .line 573
-    goto :goto_dd
+    goto :goto_f3
 
     .line 572
-    :catch_dc
+    :catch_f2
     move-exception v0
 
     .line 575
-    :cond_dd
-    :goto_dd
+    :cond_f3
+    :goto_f3
     const/4 v0, -0x1
 
-    :try_start_de
-    iput v0, v11, Lcom/android/server/usage/AppIdleHistory$AppUsageHistory;->lastInformedBucket:I
+    :try_start_f4
+    iput v0, v14, Lcom/android/server/usage/AppIdleHistory$AppUsageHistory;->lastInformedBucket:I
+    :try_end_f6
+    .catch Ljava/io/IOException; {:try_start_f4 .. :try_end_f6} :catch_111
+    .catch Lorg/xmlpull/v1/XmlPullParserException; {:try_start_f4 .. :try_end_f6} :catch_111
+    .catchall {:try_start_f4 .. :try_end_f6} :catchall_10d
 
     .line 576
-    move-object/from16 v8, p2
+    move-object/from16 v9, p2
 
-    invoke-virtual {v8, v10, v11}, Landroid/util/ArrayMap;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
-    :try_end_e5
-    .catch Ljava/io/IOException; {:try_start_de .. :try_end_e5} :catch_f8
-    .catch Lorg/xmlpull/v1/XmlPullParserException; {:try_start_de .. :try_end_e5} :catch_f8
-    .catchall {:try_start_de .. :try_end_e5} :catchall_f6
+    move-object/from16 v10, v16
 
-    goto :goto_e8
+    .end local v16  # "packageName":Ljava/lang/String;
+    .local v10, "packageName":Ljava/lang/String;
+    :try_start_fa
+    invoke-virtual {v9, v10, v14}, Landroid/util/ArrayMap;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+    :try_end_fd
+    .catch Ljava/io/IOException; {:try_start_fa .. :try_end_fd} :catch_fe
+    .catch Lorg/xmlpull/v1/XmlPullParserException; {:try_start_fa .. :try_end_fd} :catch_fe
+    .catchall {:try_start_fa .. :try_end_fd} :catchall_12c
 
-    .line 545
-    :cond_e6
-    move-object/from16 v8, p2
-
-    .line 578
-    :goto_e8
-    const/4 v8, 0x1
-
-    const/4 v9, 0x2
-
-    goto/16 :goto_57
-
-    .line 543
-    :cond_ec
-    move-object/from16 v8, p2
-
-    const/4 v8, 0x1
-
-    const/4 v9, 0x2
-
-    goto/16 :goto_57
-
-    .line 583
-    :cond_f2
-    invoke-static {v6}, Llibcore/io/IoUtils;->closeQuietly(Ljava/lang/AutoCloseable;)V
-
-    goto :goto_114
-
-    :catchall_f6
-    move-exception v0
-
-    goto :goto_116
+    goto :goto_103
 
     .line 580
-    :catch_f8
-    move-exception v0
-
-    move-object v5, v6
-
-    goto :goto_ff
-
-    .line 583
-    :catchall_fb
-    move-exception v0
-
-    move-object v6, v5
-
-    goto :goto_116
-
-    .line 580
+    .end local v6  # "appIdleFile":Landroid/util/AtomicFile;
+    .end local v7  # "parser":Lorg/xmlpull/v1/XmlPullParser;
+    .end local v8  # "type":I
+    .end local v10  # "packageName":Ljava/lang/String;
+    .end local v13  # "bucketingReason":Ljava/lang/String;
+    .end local v14  # "appUsageHistory":Lcom/android/server/usage/AppIdleHistory$AppUsageHistory;
+    .end local v15  # "name":Ljava/lang/String;
+    .end local v17  # "currentBucketString":Ljava/lang/String;
     :catch_fe
     move-exception v0
 
-    .line 581
-    :goto_ff
-    :try_start_ff
-    new-instance v1, Ljava/lang/StringBuilder;
+    goto :goto_114
 
-    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
+    .line 545
+    .restart local v6  # "appIdleFile":Landroid/util/AtomicFile;
+    .restart local v7  # "parser":Lorg/xmlpull/v1/XmlPullParser;
+    .restart local v8  # "type":I
+    .restart local v11  # "name":Ljava/lang/String;
+    :cond_100
+    move-object/from16 v9, p2
 
-    invoke-virtual {v1, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    move-object v15, v11
 
-    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    .line 578
+    .end local v11  # "name":Ljava/lang/String;
+    :goto_103
+    goto :goto_106
 
-    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    .line 543
+    :cond_104
+    move-object/from16 v9, p2
 
-    move-result-object v1
+    .line 542
+    :goto_106
+    const/4 v9, 0x1
 
-    invoke-static {v4, v1, v0}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
-    :try_end_111
-    .catchall {:try_start_ff .. :try_end_111} :catchall_fb
+    const/4 v10, 0x2
+
+    goto/16 :goto_5b
+
+    :cond_10a
+    move-object/from16 v9, p2
 
     .line 583
+    .end local v6  # "appIdleFile":Landroid/util/AtomicFile;
+    .end local v7  # "parser":Lorg/xmlpull/v1/XmlPullParser;
+    .end local v8  # "type":I
+    goto :goto_127
+
+    :catchall_10d
+    move-exception v0
+
+    move-object/from16 v9, p2
+
+    goto :goto_12d
+
+    .line 580
+    :catch_111
+    move-exception v0
+
+    move-object/from16 v9, p2
+
+    .line 581
+    .local v0, "e":Ljava/lang/Exception;
+    :goto_114
+    :try_start_114
+    new-instance v6, Ljava/lang/StringBuilder;
+
+    invoke-direct {v6}, Ljava/lang/StringBuilder;-><init>()V
+
+    invoke-virtual {v6, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v6, v2}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v6}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v3
+
+    invoke-static {v4, v3}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
+    :try_end_126
+    .catchall {:try_start_114 .. :try_end_126} :catchall_12c
+
+    .line 583
+    nop
+
+    .end local v0  # "e":Ljava/lang/Exception;
+    :goto_127
     invoke-static {v5}, Llibcore/io/IoUtils;->closeQuietly(Ljava/lang/AutoCloseable;)V
 
     .line 584
-    :goto_114
     nop
 
     .line 585
     return-void
 
     .line 583
-    :goto_116
-    invoke-static {v6}, Llibcore/io/IoUtils;->closeQuietly(Ljava/lang/AutoCloseable;)V
+    :catchall_12c
+    move-exception v0
+
+    :goto_12d
+    invoke-static {v5}, Llibcore/io/IoUtils;->closeQuietly(Ljava/lang/AutoCloseable;)V
 
     throw v0
 .end method
@@ -671,6 +760,7 @@
     move-result-object v0
 
     .line 179
+    .local v0, "screenOnTimeFile":Ljava/io/File;
     invoke-virtual {v0}, Ljava/io/File;->exists()Z
 
     move-result v1
@@ -688,11 +778,12 @@
     invoke-direct {v1, v2}, Ljava/io/BufferedReader;-><init>(Ljava/io/Reader;)V
 
     .line 182
+    .local v1, "reader":Ljava/io/BufferedReader;
     invoke-virtual {v1}, Ljava/io/BufferedReader;->readLine()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v2
 
-    invoke-static {v0}, Ljava/lang/Long;->parseLong(Ljava/lang/String;)J
+    invoke-static {v2}, Ljava/lang/Long;->parseLong(Ljava/lang/String;)J
 
     move-result-wide v2
 
@@ -701,9 +792,9 @@
     .line 183
     invoke-virtual {v1}, Ljava/io/BufferedReader;->readLine()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v2
 
-    invoke-static {v0}, Ljava/lang/Long;->parseLong(Ljava/lang/String;)J
+    invoke-static {v2}, Ljava/lang/Long;->parseLong(Ljava/lang/String;)J
 
     move-result-wide v2
 
@@ -715,11 +806,12 @@
     .catch Ljava/io/IOException; {:try_start_a .. :try_end_2b} :catch_2c
     .catch Ljava/lang/NumberFormatException; {:try_start_a .. :try_end_2b} :catch_2c
 
+    .end local v1  # "reader":Ljava/io/BufferedReader;
     goto :goto_2d
 
     .line 185
     :catch_2c
-    move-exception v0
+    move-exception v1
 
     .line 186
     :goto_2d
@@ -749,18 +841,19 @@
     invoke-direct {v1, v2}, Landroid/util/AtomicFile;-><init>(Ljava/io/File;)V
 
     .line 194
-    nop
+    .local v1, "screenOnTimeFile":Landroid/util/AtomicFile;
+    const/4 v2, 0x0
 
     .line 196
+    .local v2, "fos":Ljava/io/FileOutputStream;
     :try_start_c
     invoke-virtual {v1}, Landroid/util/AtomicFile;->startWrite()Ljava/io/FileOutputStream;
 
-    move-result-object v2
-    :try_end_10
-    .catch Ljava/io/IOException; {:try_start_c .. :try_end_10} :catch_3e
+    move-result-object v3
+
+    move-object v2, v3
 
     .line 197
-    :try_start_10
     new-instance v3, Ljava/lang/StringBuilder;
 
     invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
@@ -799,44 +892,41 @@
 
     .line 199
     invoke-virtual {v1, v2}, Landroid/util/AtomicFile;->finishWrite(Ljava/io/FileOutputStream;)V
-    :try_end_3b
-    .catch Ljava/io/IOException; {:try_start_10 .. :try_end_3b} :catch_3c
+    :try_end_3c
+    .catch Ljava/io/IOException; {:try_start_c .. :try_end_3c} :catch_3d
 
     .line 202
-    goto :goto_43
+    goto :goto_41
 
     .line 200
-    :catch_3c
+    :catch_3d
     move-exception v0
-
-    goto :goto_40
-
-    :catch_3e
-    move-exception v0
-
-    const/4 v2, 0x0
 
     .line 201
-    :goto_40
+    .local v0, "ioe":Ljava/io/IOException;
     invoke-virtual {v1, v2}, Landroid/util/AtomicFile;->failWrite(Ljava/io/FileOutputStream;)V
 
     .line 203
-    :goto_43
+    .end local v0  # "ioe":Ljava/io/IOException;
+    :goto_41
     return-void
 .end method
 
 
 # virtual methods
 .method public clearUsage(Ljava/lang/String;I)V
-    .registers 3
+    .registers 4
+    .param p1, "packageName"  # Ljava/lang/String;
+    .param p2, "userId"  # I
 
     .line 454
     invoke-direct {p0, p2}, Lcom/android/server/usage/AppIdleHistory;->getUserHistory(I)Landroid/util/ArrayMap;
 
-    move-result-object p2
+    move-result-object v0
 
     .line 455
-    invoke-virtual {p2, p1}, Landroid/util/ArrayMap;->remove(Ljava/lang/Object;)Ljava/lang/Object;
+    .local v0, "userHistory":Landroid/util/ArrayMap;, "Landroid/util/ArrayMap<Ljava/lang/String;Lcom/android/server/usage/AppIdleHistory$AppUsageHistory;>;"
+    invoke-virtual {v0, p1}, Landroid/util/ArrayMap;->remove(Ljava/lang/Object;)Ljava/lang/Object;
 
     .line 456
     return-void
@@ -844,8 +934,11 @@
 
 .method public dump(Lcom/android/internal/util/IndentingPrintWriter;ILjava/lang/String;)V
     .registers 20
+    .param p1, "idpw"  # Lcom/android/internal/util/IndentingPrintWriter;
+    .param p2, "userId"  # I
+    .param p3, "pkg"  # Ljava/lang/String;
 
-    .line 654
+    .line 649
     move-object/from16 v0, p0
 
     move-object/from16 v1, p1
@@ -858,10 +951,10 @@
 
     invoke-virtual {v1, v4}, Lcom/android/internal/util/IndentingPrintWriter;->println(Ljava/lang/String;)V
 
-    .line 655
+    .line 650
     invoke-virtual/range {p1 .. p1}, Lcom/android/internal/util/IndentingPrintWriter;->increaseIndent()Lcom/android/internal/util/IndentingPrintWriter;
 
-    .line 656
+    .line 651
     iget-object v4, v0, Lcom/android/server/usage/AppIdleHistory;->mIdleHistory:Landroid/util/SparseArray;
 
     invoke-virtual {v4, v2}, Landroid/util/SparseArray;->get(I)Ljava/lang/Object;
@@ -870,53 +963,61 @@
 
     check-cast v4, Landroid/util/ArrayMap;
 
-    .line 657
+    .line 652
+    .local v4, "userHistory":Landroid/util/ArrayMap;, "Landroid/util/ArrayMap<Ljava/lang/String;Lcom/android/server/usage/AppIdleHistory$AppUsageHistory;>;"
     invoke-static {}, Landroid/os/SystemClock;->elapsedRealtime()J
 
     move-result-wide v5
 
-    .line 658
+    .line 653
+    .local v5, "elapsedRealtime":J
     invoke-virtual {v0, v5, v6}, Lcom/android/server/usage/AppIdleHistory;->getElapsedTime(J)J
 
     move-result-wide v7
 
-    .line 659
+    .line 654
+    .local v7, "totalElapsedTime":J
     invoke-virtual {v0, v5, v6}, Lcom/android/server/usage/AppIdleHistory;->getScreenOnTime(J)J
 
     move-result-wide v9
 
-    .line 660
+    .line 655
+    .local v9, "screenOnTime":J
     if-nez v4, :cond_27
 
     return-void
 
-    .line 661
+    .line 656
     :cond_27
     invoke-virtual {v4}, Landroid/util/ArrayMap;->size()I
 
     move-result v11
 
-    .line 662
+    .line 657
+    .local v11, "P":I
     const/4 v12, 0x0
 
+    .local v12, "p":I
     :goto_2c
     if-ge v12, v11, :cond_104
 
-    .line 663
+    .line 658
     invoke-virtual {v4, v12}, Landroid/util/ArrayMap;->keyAt(I)Ljava/lang/Object;
 
     move-result-object v13
 
     check-cast v13, Ljava/lang/String;
 
-    .line 664
+    .line 659
+    .local v13, "packageName":Ljava/lang/String;
     invoke-virtual {v4, v12}, Landroid/util/ArrayMap;->valueAt(I)Ljava/lang/Object;
 
     move-result-object v14
 
     check-cast v14, Lcom/android/server/usage/AppIdleHistory$AppUsageHistory;
 
-    .line 665
+    .line 660
+    .local v14, "appUsageHistory":Lcom/android/server/usage/AppIdleHistory$AppUsageHistory;
     if-eqz v3, :cond_45
 
     invoke-virtual {v3, v13}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
@@ -925,12 +1026,12 @@
 
     if-nez v15, :cond_45
 
-    .line 666
+    .line 661
     move-object v15, v4
 
     goto/16 :goto_fd
 
-    .line 668
+    .line 663
     :cond_45
     new-instance v15, Ljava/lang/StringBuilder;
 
@@ -948,7 +1049,7 @@
 
     invoke-virtual {v1, v3}, Lcom/android/internal/util/IndentingPrintWriter;->print(Ljava/lang/String;)V
 
-    .line 669
+    .line 664
     new-instance v3, Ljava/lang/StringBuilder;
 
     invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
@@ -965,7 +1066,7 @@
 
     invoke-virtual {v1, v3}, Lcom/android/internal/util/IndentingPrintWriter;->print(Ljava/lang/String;)V
 
-    .line 670
+    .line 665
     new-instance v3, Ljava/lang/StringBuilder;
 
     invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
@@ -984,7 +1085,7 @@
 
     iget v15, v14, Lcom/android/server/usage/AppIdleHistory$AppUsageHistory;->bucketingReason:I
 
-    .line 672
+    .line 667
     invoke-static {v15}, Landroid/app/usage/UsageStatsManager;->reasonToString(I)Ljava/lang/String;
 
     move-result-object v15
@@ -995,84 +1096,86 @@
 
     move-result-object v3
 
-    .line 670
+    .line 665
     invoke-virtual {v1, v3}, Lcom/android/internal/util/IndentingPrintWriter;->print(Ljava/lang/String;)V
 
-    .line 673
+    .line 668
     const-string v3, " used="
 
     invoke-virtual {v1, v3}, Lcom/android/internal/util/IndentingPrintWriter;->print(Ljava/lang/String;)V
 
-    .line 674
+    .line 669
     move-object v15, v4
 
+    .end local v4  # "userHistory":Landroid/util/ArrayMap;, "Landroid/util/ArrayMap<Ljava/lang/String;Lcom/android/server/usage/AppIdleHistory$AppUsageHistory;>;"
+    .local v15, "userHistory":Landroid/util/ArrayMap;, "Landroid/util/ArrayMap<Ljava/lang/String;Lcom/android/server/usage/AppIdleHistory$AppUsageHistory;>;"
     iget-wide v3, v14, Lcom/android/server/usage/AppIdleHistory$AppUsageHistory;->lastUsedElapsedTime:J
 
     sub-long v3, v7, v3
 
     invoke-static {v3, v4, v1}, Landroid/util/TimeUtils;->formatDuration(JLjava/io/PrintWriter;)V
 
-    .line 675
+    .line 670
     const-string v3, " usedScr="
 
     invoke-virtual {v1, v3}, Lcom/android/internal/util/IndentingPrintWriter;->print(Ljava/lang/String;)V
 
-    .line 676
+    .line 671
     iget-wide v3, v14, Lcom/android/server/usage/AppIdleHistory$AppUsageHistory;->lastUsedScreenTime:J
 
     sub-long v3, v9, v3
 
     invoke-static {v3, v4, v1}, Landroid/util/TimeUtils;->formatDuration(JLjava/io/PrintWriter;)V
 
-    .line 677
+    .line 672
     const-string v3, " lastPred="
 
     invoke-virtual {v1, v3}, Lcom/android/internal/util/IndentingPrintWriter;->print(Ljava/lang/String;)V
 
-    .line 678
+    .line 673
     iget-wide v3, v14, Lcom/android/server/usage/AppIdleHistory$AppUsageHistory;->lastPredictedTime:J
 
     sub-long v3, v7, v3
 
     invoke-static {v3, v4, v1}, Landroid/util/TimeUtils;->formatDuration(JLjava/io/PrintWriter;)V
 
-    .line 679
+    .line 674
     const-string v3, " activeLeft="
 
     invoke-virtual {v1, v3}, Lcom/android/internal/util/IndentingPrintWriter;->print(Ljava/lang/String;)V
 
-    .line 680
+    .line 675
     iget-wide v3, v14, Lcom/android/server/usage/AppIdleHistory$AppUsageHistory;->bucketActiveTimeoutTime:J
 
     sub-long/2addr v3, v7
 
     invoke-static {v3, v4, v1}, Landroid/util/TimeUtils;->formatDuration(JLjava/io/PrintWriter;)V
 
-    .line 682
+    .line 677
     const-string v3, " wsLeft="
 
     invoke-virtual {v1, v3}, Lcom/android/internal/util/IndentingPrintWriter;->print(Ljava/lang/String;)V
 
-    .line 683
+    .line 678
     iget-wide v3, v14, Lcom/android/server/usage/AppIdleHistory$AppUsageHistory;->bucketWorkingSetTimeoutTime:J
 
     sub-long/2addr v3, v7
 
     invoke-static {v3, v4, v1}, Landroid/util/TimeUtils;->formatDuration(JLjava/io/PrintWriter;)V
 
-    .line 685
+    .line 680
     const-string v3, " lastJob="
 
     invoke-virtual {v1, v3}, Lcom/android/internal/util/IndentingPrintWriter;->print(Ljava/lang/String;)V
 
-    .line 686
+    .line 681
     iget-wide v3, v14, Lcom/android/server/usage/AppIdleHistory$AppUsageHistory;->lastJobRunTime:J
 
     sub-long v3, v7, v3
 
     invoke-static {v3, v4, v1}, Landroid/util/TimeUtils;->formatDuration(JLjava/io/PrintWriter;)V
 
-    .line 687
+    .line 682
     new-instance v3, Ljava/lang/StringBuilder;
 
     invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
@@ -1103,10 +1206,12 @@
 
     invoke-virtual {v1, v3}, Lcom/android/internal/util/IndentingPrintWriter;->print(Ljava/lang/String;)V
 
-    .line 688
+    .line 683
     invoke-virtual/range {p1 .. p1}, Lcom/android/internal/util/IndentingPrintWriter;->println()V
 
-    .line 662
+    .line 657
+    .end local v13  # "packageName":Ljava/lang/String;
+    .end local v14  # "appUsageHistory":Lcom/android/server/usage/AppIdleHistory$AppUsageHistory;
     :goto_fd
     add-int/lit8 v12, v12, 0x1
 
@@ -1116,56 +1221,63 @@
 
     goto/16 :goto_2c
 
-    .line 690
+    .line 685
+    .end local v12  # "p":I
+    .end local v15  # "userHistory":Landroid/util/ArrayMap;, "Landroid/util/ArrayMap<Ljava/lang/String;Lcom/android/server/usage/AppIdleHistory$AppUsageHistory;>;"
+    .restart local v4  # "userHistory":Landroid/util/ArrayMap;, "Landroid/util/ArrayMap<Ljava/lang/String;Lcom/android/server/usage/AppIdleHistory$AppUsageHistory;>;"
     :cond_104
     invoke-virtual/range {p1 .. p1}, Lcom/android/internal/util/IndentingPrintWriter;->println()V
 
-    .line 691
-    const-string/jumbo v2, "totalElapsedTime="
+    .line 686
+    const-string/jumbo v3, "totalElapsedTime="
 
-    invoke-virtual {v1, v2}, Lcom/android/internal/util/IndentingPrintWriter;->print(Ljava/lang/String;)V
+    invoke-virtual {v1, v3}, Lcom/android/internal/util/IndentingPrintWriter;->print(Ljava/lang/String;)V
 
-    .line 692
+    .line 687
     invoke-virtual {v0, v5, v6}, Lcom/android/server/usage/AppIdleHistory;->getElapsedTime(J)J
 
-    move-result-wide v2
+    move-result-wide v3
 
-    invoke-static {v2, v3, v1}, Landroid/util/TimeUtils;->formatDuration(JLjava/io/PrintWriter;)V
+    invoke-static {v3, v4, v1}, Landroid/util/TimeUtils;->formatDuration(JLjava/io/PrintWriter;)V
 
-    .line 693
+    .line 688
     invoke-virtual/range {p1 .. p1}, Lcom/android/internal/util/IndentingPrintWriter;->println()V
 
-    .line 694
-    const-string/jumbo v2, "totalScreenOnTime="
+    .line 689
+    const-string/jumbo v3, "totalScreenOnTime="
 
-    invoke-virtual {v1, v2}, Lcom/android/internal/util/IndentingPrintWriter;->print(Ljava/lang/String;)V
+    invoke-virtual {v1, v3}, Lcom/android/internal/util/IndentingPrintWriter;->print(Ljava/lang/String;)V
 
-    .line 695
+    .line 690
     invoke-virtual {v0, v5, v6}, Lcom/android/server/usage/AppIdleHistory;->getScreenOnTime(J)J
 
-    move-result-wide v2
+    move-result-wide v3
 
-    invoke-static {v2, v3, v1}, Landroid/util/TimeUtils;->formatDuration(JLjava/io/PrintWriter;)V
+    invoke-static {v3, v4, v1}, Landroid/util/TimeUtils;->formatDuration(JLjava/io/PrintWriter;)V
 
-    .line 696
+    .line 691
     invoke-virtual/range {p1 .. p1}, Lcom/android/internal/util/IndentingPrintWriter;->println()V
 
-    .line 697
+    .line 692
     invoke-virtual/range {p1 .. p1}, Lcom/android/internal/util/IndentingPrintWriter;->decreaseIndent()Lcom/android/internal/util/IndentingPrintWriter;
 
-    .line 698
+    .line 693
     return-void
 .end method
 
 .method public getAppStandbyBucket(Ljava/lang/String;IJ)I
-    .registers 11
+    .registers 12
+    .param p1, "packageName"  # Ljava/lang/String;
+    .param p2, "userId"  # I
+    .param p3, "elapsedRealtime"  # J
 
     .line 409
     invoke-direct {p0, p2}, Lcom/android/server/usage/AppIdleHistory;->getUserHistory(I)Landroid/util/ArrayMap;
 
-    move-result-object v1
+    move-result-object v6
 
     .line 410
+    .local v6, "userHistory":Landroid/util/ArrayMap;, "Landroid/util/ArrayMap<Ljava/lang/String;Lcom/android/server/usage/AppIdleHistory$AppUsageHistory;>;"
     nop
 
     .line 411
@@ -1173,30 +1285,35 @@
 
     move-object v0, p0
 
+    move-object v1, v6
+
     move-object v2, p1
 
     move-wide v3, p3
 
     invoke-direct/range {v0 .. v5}, Lcom/android/server/usage/AppIdleHistory;->getPackageHistory(Landroid/util/ArrayMap;Ljava/lang/String;JZ)Lcom/android/server/usage/AppIdleHistory$AppUsageHistory;
 
-    move-result-object p1
+    move-result-object v0
 
     .line 412
-    if-nez p1, :cond_12
+    .local v0, "appUsageHistory":Lcom/android/server/usage/AppIdleHistory$AppUsageHistory;
+    if-nez v0, :cond_13
 
-    const/16 p1, 0x32
+    const/16 v1, 0x32
 
-    goto :goto_14
+    goto :goto_15
 
-    :cond_12
-    iget p1, p1, Lcom/android/server/usage/AppIdleHistory$AppUsageHistory;->currentBucket:I
+    :cond_13
+    iget v1, v0, Lcom/android/server/usage/AppIdleHistory$AppUsageHistory;->currentBucket:I
 
-    :goto_14
-    return p1
+    :goto_15
+    return v1
 .end method
 
 .method public getAppStandbyBuckets(IZ)Ljava/util/ArrayList;
-    .registers 9
+    .registers 10
+    .param p1, "userId"  # I
+    .param p2, "appIdleEnabled"  # Z
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(IZ)",
@@ -1209,74 +1326,83 @@
     .line 416
     invoke-direct {p0, p1}, Lcom/android/server/usage/AppIdleHistory;->getUserHistory(I)Landroid/util/ArrayMap;
 
-    move-result-object p1
+    move-result-object v0
 
     .line 417
-    invoke-virtual {p1}, Landroid/util/ArrayMap;->size()I
+    .local v0, "userHistory":Landroid/util/ArrayMap;, "Landroid/util/ArrayMap<Ljava/lang/String;Lcom/android/server/usage/AppIdleHistory$AppUsageHistory;>;"
+    invoke-virtual {v0}, Landroid/util/ArrayMap;->size()I
 
-    move-result v0
+    move-result v1
 
     .line 418
-    new-instance v1, Ljava/util/ArrayList;
+    .local v1, "size":I
+    new-instance v2, Ljava/util/ArrayList;
 
-    invoke-direct {v1, v0}, Ljava/util/ArrayList;-><init>(I)V
+    invoke-direct {v2, v1}, Ljava/util/ArrayList;-><init>(I)V
 
     .line 419
-    const/4 v2, 0x0
+    .local v2, "buckets":Ljava/util/ArrayList;, "Ljava/util/ArrayList<Landroid/app/usage/AppStandbyInfo;>;"
+    const/4 v3, 0x0
 
+    .local v3, "i":I
     :goto_e
-    if-ge v2, v0, :cond_2e
+    if-ge v3, v1, :cond_2e
 
     .line 420
-    new-instance v3, Landroid/app/usage/AppStandbyInfo;
+    new-instance v4, Landroid/app/usage/AppStandbyInfo;
 
-    invoke-virtual {p1, v2}, Landroid/util/ArrayMap;->keyAt(I)Ljava/lang/Object;
+    invoke-virtual {v0, v3}, Landroid/util/ArrayMap;->keyAt(I)Ljava/lang/Object;
 
-    move-result-object v4
+    move-result-object v5
 
-    check-cast v4, Ljava/lang/String;
+    check-cast v5, Ljava/lang/String;
 
     .line 421
     if-eqz p2, :cond_23
 
-    invoke-virtual {p1, v2}, Landroid/util/ArrayMap;->valueAt(I)Ljava/lang/Object;
+    invoke-virtual {v0, v3}, Landroid/util/ArrayMap;->valueAt(I)Ljava/lang/Object;
 
-    move-result-object v5
+    move-result-object v6
 
-    check-cast v5, Lcom/android/server/usage/AppIdleHistory$AppUsageHistory;
+    check-cast v6, Lcom/android/server/usage/AppIdleHistory$AppUsageHistory;
 
-    iget v5, v5, Lcom/android/server/usage/AppIdleHistory$AppUsageHistory;->currentBucket:I
+    iget v6, v6, Lcom/android/server/usage/AppIdleHistory$AppUsageHistory;->currentBucket:I
 
     goto :goto_25
 
     :cond_23
-    const/16 v5, 0xa
+    const/16 v6, 0xa
 
     :goto_25
-    invoke-direct {v3, v4, v5}, Landroid/app/usage/AppStandbyInfo;-><init>(Ljava/lang/String;I)V
+    invoke-direct {v4, v5, v6}, Landroid/app/usage/AppStandbyInfo;-><init>(Ljava/lang/String;I)V
 
     .line 420
-    invoke-virtual {v1, v3}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
+    invoke-virtual {v2, v4}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
 
     .line 419
-    add-int/lit8 v2, v2, 0x1
+    add-int/lit8 v3, v3, 0x1
 
     goto :goto_e
 
     .line 423
+    .end local v3  # "i":I
     :cond_2e
-    return-object v1
+    return-object v2
 .end method
 
 .method public getAppStandbyReason(Ljava/lang/String;IJ)I
-    .registers 11
+    .registers 12
+    .param p1, "packageName"  # Ljava/lang/String;
+    .param p2, "userId"  # I
+    .param p3, "elapsedRealtime"  # J
 
     .line 427
     invoke-direct {p0, p2}, Lcom/android/server/usage/AppIdleHistory;->getUserHistory(I)Landroid/util/ArrayMap;
 
-    move-result-object v1
+    move-result-object v6
 
     .line 428
+    .local v6, "userHistory":Landroid/util/ArrayMap;, "Landroid/util/ArrayMap<Ljava/lang/String;Lcom/android/server/usage/AppIdleHistory$AppUsageHistory;>;"
     nop
 
     .line 429
@@ -1284,37 +1410,44 @@
 
     move-object v0, p0
 
+    move-object v1, v6
+
     move-object v2, p1
 
     move-wide v3, p3
 
     invoke-direct/range {v0 .. v5}, Lcom/android/server/usage/AppIdleHistory;->getPackageHistory(Landroid/util/ArrayMap;Ljava/lang/String;JZ)Lcom/android/server/usage/AppIdleHistory$AppUsageHistory;
 
-    move-result-object p1
+    move-result-object v0
 
     .line 430
-    if-eqz p1, :cond_12
+    .local v0, "appUsageHistory":Lcom/android/server/usage/AppIdleHistory$AppUsageHistory;
+    if-eqz v0, :cond_13
 
-    iget p1, p1, Lcom/android/server/usage/AppIdleHistory$AppUsageHistory;->bucketingReason:I
+    iget v1, v0, Lcom/android/server/usage/AppIdleHistory$AppUsageHistory;->bucketingReason:I
 
-    goto :goto_13
+    goto :goto_14
 
-    :cond_12
-    const/4 p1, 0x0
+    :cond_13
+    const/4 v1, 0x0
 
-    :goto_13
-    return p1
+    :goto_14
+    return v1
 .end method
 
 .method public getAppUsageHistory(Ljava/lang/String;IJ)Lcom/android/server/usage/AppIdleHistory$AppUsageHistory;
-    .registers 11
+    .registers 12
+    .param p1, "packageName"  # Ljava/lang/String;
+    .param p2, "userId"  # I
+    .param p3, "elapsedRealtime"  # J
 
     .line 328
     invoke-direct {p0, p2}, Lcom/android/server/usage/AppIdleHistory;->getUserHistory(I)Landroid/util/ArrayMap;
 
-    move-result-object v1
+    move-result-object v6
 
     .line 329
+    .local v6, "userHistory":Landroid/util/ArrayMap;, "Landroid/util/ArrayMap<Ljava/lang/String;Lcom/android/server/usage/AppIdleHistory$AppUsageHistory;>;"
     nop
 
     .line 330
@@ -1322,53 +1455,59 @@
 
     move-object v0, p0
 
+    move-object v1, v6
+
     move-object v2, p1
 
     move-wide v3, p3
 
     invoke-direct/range {v0 .. v5}, Lcom/android/server/usage/AppIdleHistory;->getPackageHistory(Landroid/util/ArrayMap;Ljava/lang/String;JZ)Lcom/android/server/usage/AppIdleHistory$AppUsageHistory;
 
-    move-result-object p1
+    move-result-object v0
 
     .line 331
-    return-object p1
+    .local v0, "appUsageHistory":Lcom/android/server/usage/AppIdleHistory$AppUsageHistory;
+    return-object v0
 .end method
 
 .method public getElapsedTime(J)J
-    .registers 5
+    .registers 7
+    .param p1, "elapsedRealtime"  # J
 
     .line 434
     iget-wide v0, p0, Lcom/android/server/usage/AppIdleHistory;->mElapsedSnapshot:J
 
-    sub-long/2addr p1, v0
+    sub-long v0, p1, v0
 
-    iget-wide v0, p0, Lcom/android/server/usage/AppIdleHistory;->mElapsedDuration:J
+    iget-wide v2, p0, Lcom/android/server/usage/AppIdleHistory;->mElapsedDuration:J
 
-    add-long/2addr p1, v0
+    add-long/2addr v0, v2
 
-    return-wide p1
+    return-wide v0
 .end method
 
 .method public getScreenOnTime(J)J
     .registers 7
+    .param p1, "elapsedRealtime"  # J
 
     .line 165
     iget-wide v0, p0, Lcom/android/server/usage/AppIdleHistory;->mScreenOnDuration:J
 
     .line 166
+    .local v0, "screenOnTime":J
     iget-boolean v2, p0, Lcom/android/server/usage/AppIdleHistory;->mScreenOn:Z
 
-    if-eqz v2, :cond_a
+    if-eqz v2, :cond_b
 
     .line 167
     iget-wide v2, p0, Lcom/android/server/usage/AppIdleHistory;->mScreenOnSnapshot:J
 
-    sub-long/2addr p1, v2
+    sub-long v2, p1, v2
 
-    add-long/2addr v0, p1
+    add-long/2addr v0, v2
 
     .line 169
-    :cond_a
+    :cond_b
     return-wide v0
 .end method
 
@@ -1390,17 +1529,25 @@
 .end method
 
 .method getThresholdIndex(Ljava/lang/String;IJ[J[J)I
-    .registers 13
+    .registers 16
+    .param p1, "packageName"  # Ljava/lang/String;
+    .param p2, "userId"  # I
+    .param p3, "elapsedRealtime"  # J
+    .param p5, "screenTimeThresholds"  # [J
+    .param p6, "elapsedTimeThresholds"  # [J
 
     .line 482
     invoke-direct {p0, p2}, Lcom/android/server/usage/AppIdleHistory;->getUserHistory(I)Landroid/util/ArrayMap;
 
-    move-result-object v1
+    move-result-object v6
 
     .line 483
+    .local v6, "userHistory":Landroid/util/ArrayMap;, "Landroid/util/ArrayMap<Ljava/lang/String;Lcom/android/server/usage/AppIdleHistory$AppUsageHistory;>;"
     const/4 v5, 0x0
 
     move-object v0, p0
+
+    move-object v1, v6
 
     move-object v2, p1
 
@@ -1408,82 +1555,91 @@
 
     invoke-direct/range {v0 .. v5}, Lcom/android/server/usage/AppIdleHistory;->getPackageHistory(Landroid/util/ArrayMap;Ljava/lang/String;JZ)Lcom/android/server/usage/AppIdleHistory$AppUsageHistory;
 
-    move-result-object p1
+    move-result-object v0
 
     .line 486
-    if-nez p1, :cond_12
+    .local v0, "appUsageHistory":Lcom/android/server/usage/AppIdleHistory$AppUsageHistory;
+    if-nez v0, :cond_13
 
-    array-length p1, p5
+    array-length v1, p5
 
-    add-int/lit8 p1, p1, -0x1
+    add-int/lit8 v1, v1, -0x1
 
-    return p1
+    return v1
 
     .line 488
-    :cond_12
+    :cond_13
     invoke-virtual {p0, p3, p4}, Lcom/android/server/usage/AppIdleHistory;->getScreenOnTime(J)J
 
-    move-result-wide v0
+    move-result-wide v1
 
-    iget-wide v2, p1, Lcom/android/server/usage/AppIdleHistory$AppUsageHistory;->lastUsedScreenTime:J
+    iget-wide v3, v0, Lcom/android/server/usage/AppIdleHistory$AppUsageHistory;->lastUsedScreenTime:J
 
-    sub-long/2addr v0, v2
+    sub-long/2addr v1, v3
 
     .line 489
+    .local v1, "screenOnDelta":J
     invoke-virtual {p0, p3, p4}, Lcom/android/server/usage/AppIdleHistory;->getElapsedTime(J)J
 
-    move-result-wide p2
+    move-result-wide v3
 
-    iget-wide v2, p1, Lcom/android/server/usage/AppIdleHistory$AppUsageHistory;->lastUsedElapsedTime:J
+    iget-wide v7, v0, Lcom/android/server/usage/AppIdleHistory$AppUsageHistory;->lastUsedElapsedTime:J
 
-    sub-long/2addr p2, v2
+    sub-long/2addr v3, v7
 
     .line 496
-    array-length p1, p5
+    .local v3, "elapsedDelta":J
+    array-length v5, p5
 
-    add-int/lit8 p1, p1, -0x1
+    add-int/lit8 v5, v5, -0x1
 
-    :goto_23
-    if-ltz p1, :cond_35
+    .local v5, "i":I
+    :goto_24
+    if-ltz v5, :cond_36
 
     .line 497
-    aget-wide v2, p5, p1
+    aget-wide v7, p5, v5
 
-    cmp-long p4, v0, v2
+    cmp-long v7, v1, v7
 
-    if-ltz p4, :cond_32
+    if-ltz v7, :cond_33
 
-    aget-wide v2, p6, p1
+    aget-wide v7, p6, v5
 
-    cmp-long p4, p2, v2
+    cmp-long v7, v3, v7
 
-    if-ltz p4, :cond_32
+    if-ltz v7, :cond_33
 
     .line 499
-    return p1
+    return v5
 
     .line 496
-    :cond_32
-    add-int/lit8 p1, p1, -0x1
+    :cond_33
+    add-int/lit8 v5, v5, -0x1
 
-    goto :goto_23
+    goto :goto_24
 
     .line 502
-    :cond_35
-    const/4 p1, 0x0
+    .end local v5  # "i":I
+    :cond_36
+    const/4 v5, 0x0
 
-    return p1
+    return v5
 .end method
 
 .method public getTimeSinceLastJobRun(Ljava/lang/String;IJ)J
-    .registers 11
+    .registers 12
+    .param p1, "packageName"  # Ljava/lang/String;
+    .param p2, "userId"  # I
+    .param p3, "elapsedRealtime"  # J
 
     .line 398
     invoke-direct {p0, p2}, Lcom/android/server/usage/AppIdleHistory;->getUserHistory(I)Landroid/util/ArrayMap;
 
-    move-result-object v1
+    move-result-object v6
 
     .line 399
+    .local v6, "userHistory":Landroid/util/ArrayMap;, "Landroid/util/ArrayMap<Ljava/lang/String;Lcom/android/server/usage/AppIdleHistory$AppUsageHistory;>;"
     nop
 
     .line 400
@@ -1491,49 +1647,53 @@
 
     move-object v0, p0
 
+    move-object v1, v6
+
     move-object v2, p1
 
     move-wide v3, p3
 
     invoke-direct/range {v0 .. v5}, Lcom/android/server/usage/AppIdleHistory;->getPackageHistory(Landroid/util/ArrayMap;Ljava/lang/String;JZ)Lcom/android/server/usage/AppIdleHistory$AppUsageHistory;
 
-    move-result-object p1
+    move-result-object v0
 
     .line 402
-    if-eqz p1, :cond_20
+    .local v0, "appUsageHistory":Lcom/android/server/usage/AppIdleHistory$AppUsageHistory;
+    if-eqz v0, :cond_21
 
-    iget-wide v0, p1, Lcom/android/server/usage/AppIdleHistory$AppUsageHistory;->lastJobRunTime:J
+    iget-wide v1, v0, Lcom/android/server/usage/AppIdleHistory$AppUsageHistory;->lastJobRunTime:J
 
-    const-wide/high16 v2, -0x8000000000000000L
+    const-wide/high16 v3, -0x8000000000000000L
 
-    cmp-long p2, v0, v2
+    cmp-long v1, v1, v3
 
-    if-nez p2, :cond_18
+    if-nez v1, :cond_19
 
-    goto :goto_20
+    goto :goto_21
 
     .line 405
-    :cond_18
+    :cond_19
     invoke-virtual {p0, p3, p4}, Lcom/android/server/usage/AppIdleHistory;->getElapsedTime(J)J
 
-    move-result-wide p2
+    move-result-wide v1
 
-    iget-wide v0, p1, Lcom/android/server/usage/AppIdleHistory$AppUsageHistory;->lastJobRunTime:J
+    iget-wide v3, v0, Lcom/android/server/usage/AppIdleHistory$AppUsageHistory;->lastJobRunTime:J
 
-    sub-long/2addr p2, v0
+    sub-long/2addr v1, v3
 
-    return-wide p2
+    return-wide v1
 
     .line 403
-    :cond_20
-    :goto_20
-    const-wide p1, 0x7fffffffffffffffL
+    :cond_21
+    :goto_21
+    const-wide v1, 0x7fffffffffffffffL
 
-    return-wide p1
+    return-wide v1
 .end method
 
 .method getUserFile(I)Ljava/io/File;
     .registers 7
+    .param p1, "userId"  # I
     .annotation build Lcom/android/internal/annotations/VisibleForTesting;
     .end annotation
 
@@ -1553,27 +1713,31 @@
     .line 508
     invoke-static {p1}, Ljava/lang/Integer;->toString(I)Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v3
 
-    invoke-direct {v1, v2, p1}, Ljava/io/File;-><init>(Ljava/io/File;Ljava/lang/String;)V
+    invoke-direct {v1, v2, v3}, Ljava/io/File;-><init>(Ljava/io/File;Ljava/lang/String;)V
 
-    const-string p1, "app_idle_stats.xml"
+    const-string v2, "app_idle_stats.xml"
 
-    invoke-direct {v0, v1, p1}, Ljava/io/File;-><init>(Ljava/io/File;Ljava/lang/String;)V
+    invoke-direct {v0, v1, v2}, Ljava/io/File;-><init>(Ljava/io/File;Ljava/lang/String;)V
 
     .line 507
     return-object v0
 .end method
 
 .method public isIdle(Ljava/lang/String;IJ)Z
-    .registers 11
+    .registers 12
+    .param p1, "packageName"  # Ljava/lang/String;
+    .param p2, "userId"  # I
+    .param p3, "elapsedRealtime"  # J
 
     .line 320
     invoke-direct {p0, p2}, Lcom/android/server/usage/AppIdleHistory;->getUserHistory(I)Landroid/util/ArrayMap;
 
-    move-result-object v1
+    move-result-object v6
 
     .line 321
+    .local v6, "userHistory":Landroid/util/ArrayMap;, "Landroid/util/ArrayMap<Ljava/lang/String;Lcom/android/server/usage/AppIdleHistory$AppUsageHistory;>;"
     nop
 
     .line 322
@@ -1581,34 +1745,38 @@
 
     move-object v0, p0
 
+    move-object v1, v6
+
     move-object v2, p1
 
     move-wide v3, p3
 
     invoke-direct/range {v0 .. v5}, Lcom/android/server/usage/AppIdleHistory;->getPackageHistory(Landroid/util/ArrayMap;Ljava/lang/String;JZ)Lcom/android/server/usage/AppIdleHistory$AppUsageHistory;
 
-    move-result-object p1
+    move-result-object v0
 
     .line 323
-    iget p1, p1, Lcom/android/server/usage/AppIdleHistory$AppUsageHistory;->currentBucket:I
+    .local v0, "appUsageHistory":Lcom/android/server/usage/AppIdleHistory$AppUsageHistory;
+    iget v1, v0, Lcom/android/server/usage/AppIdleHistory$AppUsageHistory;->currentBucket:I
 
-    const/16 p2, 0x28
+    const/16 v2, 0x28
 
-    if-lt p1, p2, :cond_15
+    if-lt v1, v2, :cond_16
 
-    const/4 p1, 0x1
+    const/4 v1, 0x1
 
-    goto :goto_16
+    goto :goto_17
 
-    :cond_15
-    const/4 p1, 0x0
+    :cond_16
+    const/4 v1, 0x0
 
-    :goto_16
-    return p1
+    :goto_17
+    return v1
 .end method
 
 .method public onUserRemoved(I)V
     .registers 3
+    .param p1, "userId"  # I
 
     .line 316
     iget-object v0, p0, Lcom/android/server/usage/AppIdleHistory;->mIdleHistory:Landroid/util/SparseArray;
@@ -1620,154 +1788,174 @@
 .end method
 
 .method public reportUsage(Lcom/android/server/usage/AppIdleHistory$AppUsageHistory;Ljava/lang/String;IIJJ)Lcom/android/server/usage/AppIdleHistory$AppUsageHistory;
-    .registers 13
+    .registers 14
+    .param p1, "appUsageHistory"  # Lcom/android/server/usage/AppIdleHistory$AppUsageHistory;
+    .param p2, "packageName"  # Ljava/lang/String;
+    .param p3, "newBucket"  # I
+    .param p4, "usageReason"  # I
+    .param p5, "elapsedRealtime"  # J
+    .param p7, "timeout"  # J
 
     .line 233
-    cmp-long p2, p7, p5
+    cmp-long v0, p7, p5
 
-    if-lez p2, :cond_3b
+    if-lez v0, :cond_3c
 
     .line 235
     iget-wide v0, p0, Lcom/android/server/usage/AppIdleHistory;->mElapsedDuration:J
 
     iget-wide v2, p0, Lcom/android/server/usage/AppIdleHistory;->mElapsedSnapshot:J
 
-    sub-long/2addr p7, v2
+    sub-long v2, p7, v2
 
-    add-long/2addr v0, p7
+    add-long/2addr v0, v2
 
     .line 236
-    const/16 p2, 0xa
+    .local v0, "timeoutTime":J
+    const/16 v2, 0xa
 
-    if-ne p3, p2, :cond_17
+    if-ne p3, v2, :cond_18
 
     .line 237
-    iget-wide p7, p1, Lcom/android/server/usage/AppIdleHistory$AppUsageHistory;->bucketActiveTimeoutTime:J
+    iget-wide v2, p1, Lcom/android/server/usage/AppIdleHistory$AppUsageHistory;->bucketActiveTimeoutTime:J
 
-    invoke-static {v0, v1, p7, p8}, Ljava/lang/Math;->max(JJ)J
+    invoke-static {v0, v1, v2, v3}, Ljava/lang/Math;->max(JJ)J
 
-    move-result-wide p7
+    move-result-wide v2
 
-    iput-wide p7, p1, Lcom/android/server/usage/AppIdleHistory$AppUsageHistory;->bucketActiveTimeoutTime:J
+    iput-wide v2, p1, Lcom/android/server/usage/AppIdleHistory$AppUsageHistory;->bucketActiveTimeoutTime:J
 
-    goto :goto_3b
+    goto :goto_3c
 
     .line 239
-    :cond_17
-    const/16 p2, 0x14
+    :cond_18
+    const/16 v2, 0x14
 
-    if-ne p3, p2, :cond_24
+    if-ne p3, v2, :cond_25
 
     .line 240
-    iget-wide p7, p1, Lcom/android/server/usage/AppIdleHistory$AppUsageHistory;->bucketWorkingSetTimeoutTime:J
+    iget-wide v2, p1, Lcom/android/server/usage/AppIdleHistory$AppUsageHistory;->bucketWorkingSetTimeoutTime:J
 
-    invoke-static {v0, v1, p7, p8}, Ljava/lang/Math;->max(JJ)J
+    invoke-static {v0, v1, v2, v3}, Ljava/lang/Math;->max(JJ)J
 
-    move-result-wide p7
+    move-result-wide v2
 
-    iput-wide p7, p1, Lcom/android/server/usage/AppIdleHistory$AppUsageHistory;->bucketWorkingSetTimeoutTime:J
+    iput-wide v2, p1, Lcom/android/server/usage/AppIdleHistory$AppUsageHistory;->bucketWorkingSetTimeoutTime:J
 
-    goto :goto_3b
+    goto :goto_3c
 
     .line 243
-    :cond_24
-    new-instance p1, Ljava/lang/IllegalArgumentException;
+    :cond_25
+    new-instance v2, Ljava/lang/IllegalArgumentException;
 
-    new-instance p2, Ljava/lang/StringBuilder;
+    new-instance v3, Ljava/lang/StringBuilder;
 
-    invoke-direct {p2}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string p4, "Cannot set a timeout on bucket="
+    const-string v4, "Cannot set a timeout on bucket="
 
-    invoke-virtual {p2, p4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p2, p3}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, p3}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p2
+    move-result-object v3
 
-    invoke-direct {p1, p2}, Ljava/lang/IllegalArgumentException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v2, v3}, Ljava/lang/IllegalArgumentException;-><init>(Ljava/lang/String;)V
 
-    throw p1
+    throw v2
 
     .line 248
-    :cond_3b
-    :goto_3b
-    const-wide/16 p7, 0x0
+    .end local v0  # "timeoutTime":J
+    :cond_3c
+    :goto_3c
+    const-wide/16 v0, 0x0
 
-    cmp-long p2, p5, p7
+    cmp-long v0, p5, v0
 
-    if-eqz p2, :cond_50
+    if-eqz v0, :cond_51
 
     .line 249
-    iget-wide p7, p0, Lcom/android/server/usage/AppIdleHistory;->mElapsedDuration:J
+    iget-wide v0, p0, Lcom/android/server/usage/AppIdleHistory;->mElapsedDuration:J
 
-    iget-wide v0, p0, Lcom/android/server/usage/AppIdleHistory;->mElapsedSnapshot:J
+    iget-wide v2, p0, Lcom/android/server/usage/AppIdleHistory;->mElapsedSnapshot:J
 
-    sub-long v0, p5, v0
+    sub-long v2, p5, v2
 
-    add-long/2addr p7, v0
+    add-long/2addr v0, v2
 
-    iput-wide p7, p1, Lcom/android/server/usage/AppIdleHistory$AppUsageHistory;->lastUsedElapsedTime:J
+    iput-wide v0, p1, Lcom/android/server/usage/AppIdleHistory$AppUsageHistory;->lastUsedElapsedTime:J
 
     .line 251
     invoke-virtual {p0, p5, p6}, Lcom/android/server/usage/AppIdleHistory;->getScreenOnTime(J)J
 
-    move-result-wide p5
+    move-result-wide v0
 
-    iput-wide p5, p1, Lcom/android/server/usage/AppIdleHistory$AppUsageHistory;->lastUsedScreenTime:J
+    iput-wide v0, p1, Lcom/android/server/usage/AppIdleHistory$AppUsageHistory;->lastUsedScreenTime:J
 
     .line 254
-    :cond_50
-    iget p2, p1, Lcom/android/server/usage/AppIdleHistory$AppUsageHistory;->currentBucket:I
+    :cond_51
+    iget v0, p1, Lcom/android/server/usage/AppIdleHistory$AppUsageHistory;->currentBucket:I
 
-    if-le p2, p3, :cond_56
+    if-le v0, p3, :cond_57
 
     .line 255
     iput p3, p1, Lcom/android/server/usage/AppIdleHistory$AppUsageHistory;->currentBucket:I
 
     .line 262
-    :cond_56
-    or-int/lit16 p2, p4, 0x300
+    :cond_57
+    or-int/lit16 v0, p4, 0x300
 
-    iput p2, p1, Lcom/android/server/usage/AppIdleHistory$AppUsageHistory;->bucketingReason:I
+    iput v0, p1, Lcom/android/server/usage/AppIdleHistory$AppUsageHistory;->bucketingReason:I
 
     .line 264
     return-object p1
 .end method
 
 .method public reportUsage(Ljava/lang/String;IIIJJ)Lcom/android/server/usage/AppIdleHistory$AppUsageHistory;
-    .registers 18
+    .registers 22
+    .param p1, "packageName"  # Ljava/lang/String;
+    .param p2, "userId"  # I
+    .param p3, "newBucket"  # I
+    .param p4, "usageReason"  # I
+    .param p5, "nowElapsed"  # J
+    .param p7, "timeout"  # J
 
     .line 283
-    move-object v6, p0
+    move-object v9, p0
 
-    move v0, p2
+    move v10, p2
 
     invoke-direct {p0, p2}, Lcom/android/server/usage/AppIdleHistory;->getUserHistory(I)Landroid/util/ArrayMap;
 
-    move-result-object v1
+    move-result-object v11
 
     .line 284
+    .local v11, "userHistory":Landroid/util/ArrayMap;, "Landroid/util/ArrayMap<Ljava/lang/String;Lcom/android/server/usage/AppIdleHistory$AppUsageHistory;>;"
     const/4 v5, 0x1
 
     move-object v0, p0
 
+    move-object v1, v11
+
     move-object v2, p1
 
-    move-wide v3, p5
+    move-wide/from16 v3, p5
 
     invoke-direct/range {v0 .. v5}, Lcom/android/server/usage/AppIdleHistory;->getPackageHistory(Landroid/util/ArrayMap;Ljava/lang/String;JZ)Lcom/android/server/usage/AppIdleHistory$AppUsageHistory;
 
-    move-result-object v1
+    move-result-object v12
 
     .line 285
-    move v3, p3
+    .local v12, "history":Lcom/android/server/usage/AppIdleHistory$AppUsageHistory;
+    move-object v1, v12
 
-    move v4, p4
+    move/from16 v3, p3
 
-    move-wide v5, p5
+    move/from16 v4, p4
+
+    move-wide/from16 v5, p5
 
     move-wide/from16 v7, p7
 
@@ -1780,6 +1968,11 @@
 
 .method public setAppStandbyBucket(Ljava/lang/String;IJII)V
     .registers 15
+    .param p1, "packageName"  # Ljava/lang/String;
+    .param p2, "userId"  # I
+    .param p3, "elapsedRealtime"  # J
+    .param p5, "bucket"  # I
+    .param p6, "reason"  # I
 
     .line 336
     const/4 v7, 0x0
@@ -1803,14 +1996,21 @@
 .end method
 
 .method public setAppStandbyBucket(Ljava/lang/String;IJIIZ)V
-    .registers 14
+    .registers 15
+    .param p1, "packageName"  # Ljava/lang/String;
+    .param p2, "userId"  # I
+    .param p3, "elapsedRealtime"  # J
+    .param p5, "bucket"  # I
+    .param p6, "reason"  # I
+    .param p7, "resetTimeout"  # Z
 
     .line 341
     invoke-direct {p0, p2}, Lcom/android/server/usage/AppIdleHistory;->getUserHistory(I)Landroid/util/ArrayMap;
 
-    move-result-object v1
+    move-result-object v6
 
     .line 342
+    .local v6, "userHistory":Landroid/util/ArrayMap;, "Landroid/util/ArrayMap<Ljava/lang/String;Lcom/android/server/usage/AppIdleHistory$AppUsageHistory;>;"
     nop
 
     .line 343
@@ -1818,67 +2018,78 @@
 
     move-object v0, p0
 
+    move-object v1, v6
+
     move-object v2, p1
 
     move-wide v3, p3
 
     invoke-direct/range {v0 .. v5}, Lcom/android/server/usage/AppIdleHistory;->getPackageHistory(Landroid/util/ArrayMap;Ljava/lang/String;JZ)Lcom/android/server/usage/AppIdleHistory$AppUsageHistory;
 
-    move-result-object p1
+    move-result-object v0
 
     .line 344
-    iput p5, p1, Lcom/android/server/usage/AppIdleHistory$AppUsageHistory;->currentBucket:I
+    .local v0, "appUsageHistory":Lcom/android/server/usage/AppIdleHistory$AppUsageHistory;
+    iput p5, v0, Lcom/android/server/usage/AppIdleHistory$AppUsageHistory;->currentBucket:I
 
     .line 345
-    iput p6, p1, Lcom/android/server/usage/AppIdleHistory$AppUsageHistory;->bucketingReason:I
+    iput p6, v0, Lcom/android/server/usage/AppIdleHistory$AppUsageHistory;->bucketingReason:I
 
     .line 347
     invoke-virtual {p0, p3, p4}, Lcom/android/server/usage/AppIdleHistory;->getElapsedTime(J)J
 
-    move-result-wide p2
+    move-result-wide v1
 
     .line 349
-    const p4, 0xff00
+    .local v1, "elapsed":J
+    const v3, 0xff00
 
-    and-int/2addr p4, p6
+    and-int/2addr v3, p6
 
-    const/16 p6, 0x500
+    const/16 v4, 0x500
 
-    if-ne p4, p6, :cond_21
+    if-ne v3, v4, :cond_22
 
     .line 350
-    iput-wide p2, p1, Lcom/android/server/usage/AppIdleHistory$AppUsageHistory;->lastPredictedTime:J
+    iput-wide v1, v0, Lcom/android/server/usage/AppIdleHistory$AppUsageHistory;->lastPredictedTime:J
 
     .line 351
-    iput p5, p1, Lcom/android/server/usage/AppIdleHistory$AppUsageHistory;->lastPredictedBucket:I
+    iput p5, v0, Lcom/android/server/usage/AppIdleHistory$AppUsageHistory;->lastPredictedBucket:I
 
     .line 353
-    :cond_21
-    if-eqz p7, :cond_27
+    :cond_22
+    if-eqz p7, :cond_28
 
     .line 354
-    iput-wide p2, p1, Lcom/android/server/usage/AppIdleHistory$AppUsageHistory;->bucketActiveTimeoutTime:J
+    iput-wide v1, v0, Lcom/android/server/usage/AppIdleHistory$AppUsageHistory;->bucketActiveTimeoutTime:J
 
     .line 355
-    iput-wide p2, p1, Lcom/android/server/usage/AppIdleHistory$AppUsageHistory;->bucketWorkingSetTimeoutTime:J
+    iput-wide v1, v0, Lcom/android/server/usage/AppIdleHistory$AppUsageHistory;->bucketWorkingSetTimeoutTime:J
 
     .line 361
-    :cond_27
+    :cond_28
     return-void
 .end method
 
 .method public setIdle(Ljava/lang/String;IZJ)I
-    .registers 12
+    .registers 13
+    .param p1, "packageName"  # Ljava/lang/String;
+    .param p2, "userId"  # I
+    .param p3, "idle"  # Z
+    .param p4, "elapsedRealtime"  # J
 
     .line 439
     invoke-direct {p0, p2}, Lcom/android/server/usage/AppIdleHistory;->getUserHistory(I)Landroid/util/ArrayMap;
 
-    move-result-object v1
+    move-result-object v6
 
     .line 440
+    .local v6, "userHistory":Landroid/util/ArrayMap;, "Landroid/util/ArrayMap<Ljava/lang/String;Lcom/android/server/usage/AppIdleHistory$AppUsageHistory;>;"
     const/4 v5, 0x1
 
     move-object v0, p0
+
+    move-object v1, v6
 
     move-object v2, p1
 
@@ -1886,50 +2097,55 @@
 
     invoke-direct/range {v0 .. v5}, Lcom/android/server/usage/AppIdleHistory;->getPackageHistory(Landroid/util/ArrayMap;Ljava/lang/String;JZ)Lcom/android/server/usage/AppIdleHistory$AppUsageHistory;
 
-    move-result-object p1
+    move-result-object v0
 
     .line 442
-    if-eqz p3, :cond_17
+    .local v0, "appUsageHistory":Lcom/android/server/usage/AppIdleHistory$AppUsageHistory;
+    if-eqz p3, :cond_18
 
     .line 443
-    const/16 p2, 0x28
+    const/16 v1, 0x28
 
-    iput p2, p1, Lcom/android/server/usage/AppIdleHistory$AppUsageHistory;->currentBucket:I
+    iput v1, v0, Lcom/android/server/usage/AppIdleHistory$AppUsageHistory;->currentBucket:I
 
     .line 444
-    const/16 p2, 0x400
+    const/16 v1, 0x400
 
-    iput p2, p1, Lcom/android/server/usage/AppIdleHistory$AppUsageHistory;->bucketingReason:I
+    iput v1, v0, Lcom/android/server/usage/AppIdleHistory$AppUsageHistory;->bucketingReason:I
 
-    goto :goto_1f
+    goto :goto_20
 
     .line 446
-    :cond_17
-    const/16 p2, 0xa
+    :cond_18
+    const/16 v1, 0xa
 
-    iput p2, p1, Lcom/android/server/usage/AppIdleHistory$AppUsageHistory;->currentBucket:I
+    iput v1, v0, Lcom/android/server/usage/AppIdleHistory$AppUsageHistory;->currentBucket:I
 
     .line 448
-    const/16 p2, 0x303
+    const/16 v1, 0x303
 
-    iput p2, p1, Lcom/android/server/usage/AppIdleHistory$AppUsageHistory;->bucketingReason:I
+    iput v1, v0, Lcom/android/server/usage/AppIdleHistory$AppUsageHistory;->bucketingReason:I
 
     .line 450
-    :goto_1f
-    iget p1, p1, Lcom/android/server/usage/AppIdleHistory$AppUsageHistory;->currentBucket:I
+    :goto_20
+    iget v1, v0, Lcom/android/server/usage/AppIdleHistory$AppUsageHistory;->currentBucket:I
 
-    return p1
+    return v1
 .end method
 
 .method public setLastJobRunTime(Ljava/lang/String;IJ)V
-    .registers 11
+    .registers 12
+    .param p1, "packageName"  # Ljava/lang/String;
+    .param p2, "userId"  # I
+    .param p3, "elapsedRealtime"  # J
 
     .line 382
     invoke-direct {p0, p2}, Lcom/android/server/usage/AppIdleHistory;->getUserHistory(I)Landroid/util/ArrayMap;
 
-    move-result-object v1
+    move-result-object v6
 
     .line 383
+    .local v6, "userHistory":Landroid/util/ArrayMap;, "Landroid/util/ArrayMap<Ljava/lang/String;Lcom/android/server/usage/AppIdleHistory$AppUsageHistory;>;"
     nop
 
     .line 384
@@ -1937,37 +2153,47 @@
 
     move-object v0, p0
 
+    move-object v1, v6
+
     move-object v2, p1
 
     move-wide v3, p3
 
     invoke-direct/range {v0 .. v5}, Lcom/android/server/usage/AppIdleHistory;->getPackageHistory(Landroid/util/ArrayMap;Ljava/lang/String;JZ)Lcom/android/server/usage/AppIdleHistory$AppUsageHistory;
 
-    move-result-object p1
+    move-result-object v0
 
     .line 385
+    .local v0, "appUsageHistory":Lcom/android/server/usage/AppIdleHistory$AppUsageHistory;
     invoke-virtual {p0, p3, p4}, Lcom/android/server/usage/AppIdleHistory;->getElapsedTime(J)J
 
-    move-result-wide p2
+    move-result-wide v1
 
-    iput-wide p2, p1, Lcom/android/server/usage/AppIdleHistory$AppUsageHistory;->lastJobRunTime:J
+    iput-wide v1, v0, Lcom/android/server/usage/AppIdleHistory$AppUsageHistory;->lastJobRunTime:J
 
     .line 386
     return-void
 .end method
 
 .method shouldInformListeners(Ljava/lang/String;IJI)Z
-    .registers 12
+    .registers 13
+    .param p1, "packageName"  # Ljava/lang/String;
+    .param p2, "userId"  # I
+    .param p3, "elapsedRealtime"  # J
+    .param p5, "bucket"  # I
 
     .line 460
     invoke-direct {p0, p2}, Lcom/android/server/usage/AppIdleHistory;->getUserHistory(I)Landroid/util/ArrayMap;
 
-    move-result-object v1
+    move-result-object v6
 
     .line 461
+    .local v6, "userHistory":Landroid/util/ArrayMap;, "Landroid/util/ArrayMap<Ljava/lang/String;Lcom/android/server/usage/AppIdleHistory$AppUsageHistory;>;"
     const/4 v5, 0x1
 
     move-object v0, p0
+
+    move-object v1, v6
 
     move-object v2, p1
 
@@ -1975,30 +2201,33 @@
 
     invoke-direct/range {v0 .. v5}, Lcom/android/server/usage/AppIdleHistory;->getPackageHistory(Landroid/util/ArrayMap;Ljava/lang/String;JZ)Lcom/android/server/usage/AppIdleHistory$AppUsageHistory;
 
-    move-result-object p1
+    move-result-object v0
 
     .line 463
-    iget p2, p1, Lcom/android/server/usage/AppIdleHistory$AppUsageHistory;->lastInformedBucket:I
+    .local v0, "appUsageHistory":Lcom/android/server/usage/AppIdleHistory$AppUsageHistory;
+    iget v1, v0, Lcom/android/server/usage/AppIdleHistory$AppUsageHistory;->lastInformedBucket:I
 
-    if-eq p2, p5, :cond_14
+    if-eq v1, p5, :cond_15
 
     .line 464
-    iput p5, p1, Lcom/android/server/usage/AppIdleHistory$AppUsageHistory;->lastInformedBucket:I
+    iput p5, v0, Lcom/android/server/usage/AppIdleHistory$AppUsageHistory;->lastInformedBucket:I
 
     .line 465
-    const/4 p1, 0x1
+    const/4 v1, 0x1
 
-    return p1
+    return v1
 
     .line 467
-    :cond_14
-    const/4 p1, 0x0
+    :cond_15
+    const/4 v1, 0x0
 
-    return p1
+    return v1
 .end method
 
 .method public updateDisplay(ZJ)V
     .registers 8
+    .param p1, "screenOn"  # Z
+    .param p2, "elapsedRealtime"  # J
 
     .line 149
     iget-boolean v0, p0, Lcom/android/server/usage/AppIdleHistory;->mScreenOn:Z
@@ -2012,9 +2241,9 @@
     iput-boolean p1, p0, Lcom/android/server/usage/AppIdleHistory;->mScreenOn:Z
 
     .line 152
-    iget-boolean p1, p0, Lcom/android/server/usage/AppIdleHistory;->mScreenOn:Z
+    iget-boolean v0, p0, Lcom/android/server/usage/AppIdleHistory;->mScreenOn:Z
 
-    if-eqz p1, :cond_e
+    if-eqz v0, :cond_e
 
     .line 153
     iput-wide p2, p0, Lcom/android/server/usage/AppIdleHistory;->mScreenOnSnapshot:J
@@ -2054,6 +2283,9 @@
 
 .method public updateLastPrediction(Lcom/android/server/usage/AppIdleHistory$AppUsageHistory;JI)V
     .registers 5
+    .param p1, "app"  # Lcom/android/server/usage/AppIdleHistory$AppUsageHistory;
+    .param p2, "elapsedTimeAdjusted"  # J
+    .param p4, "bucket"  # I
 
     .line 370
     iput-wide p2, p1, Lcom/android/server/usage/AppIdleHistory$AppUsageHistory;->lastPredictedTime:J
@@ -2066,18 +2298,19 @@
 .end method
 
 .method public userFileExists(I)Z
-    .registers 2
+    .registers 3
+    .param p1, "userId"  # I
 
     .line 518
     invoke-virtual {p0, p1}, Lcom/android/server/usage/AppIdleHistory;->getUserFile(I)Ljava/io/File;
 
-    move-result-object p1
+    move-result-object v0
 
-    invoke-virtual {p1}, Ljava/io/File;->exists()Z
+    invoke-virtual {v0}, Ljava/io/File;->exists()Z
 
-    move-result p1
+    move-result v0
 
-    return p1
+    return v0
 .end method
 
 .method public writeAppIdleDurations()V
@@ -2089,6 +2322,7 @@
     move-result-wide v0
 
     .line 211
+    .local v0, "elapsedRealtime":J
     iget-wide v2, p0, Lcom/android/server/usage/AppIdleHistory;->mElapsedDuration:J
 
     iget-wide v4, p0, Lcom/android/server/usage/AppIdleHistory;->mElapsedSnapshot:J
@@ -2111,15 +2345,17 @@
 
 .method public writeAppIdleTimes(I)V
     .registers 18
+    .param p1, "userId"  # I
 
     .line 594
     const-string/jumbo v0, "package"
 
     const-string/jumbo v1, "packages"
 
-    const-string v2, "AppIdleHistory"
+    const/4 v2, 0x0
 
     .line 595
+    .local v2, "fos":Ljava/io/FileOutputStream;
     new-instance v3, Landroid/util/AtomicFile;
 
     invoke-virtual/range {p0 .. p1}, Lcom/android/server/usage/AppIdleHistory;->getUserFile(I)Ljava/io/File;
@@ -2129,51 +2365,53 @@
     invoke-direct {v3, v4}, Landroid/util/AtomicFile;-><init>(Ljava/io/File;)V
 
     .line 597
-    const/4 v4, 0x0
-
-    :try_start_12
+    .local v3, "appIdleFile":Landroid/util/AtomicFile;
+    :try_start_10
     invoke-virtual {v3}, Landroid/util/AtomicFile;->startWrite()Ljava/io/FileOutputStream;
 
-    move-result-object v5
-    :try_end_16
-    .catch Ljava/lang/Exception; {:try_start_12 .. :try_end_16} :catch_e5
+    move-result-object v4
+
+    move-object v2, v4
 
     .line 598
-    :try_start_16
-    new-instance v6, Ljava/io/BufferedOutputStream;
+    new-instance v4, Ljava/io/BufferedOutputStream;
 
-    invoke-direct {v6, v5}, Ljava/io/BufferedOutputStream;-><init>(Ljava/io/OutputStream;)V
+    invoke-direct {v4, v2}, Ljava/io/BufferedOutputStream;-><init>(Ljava/io/OutputStream;)V
 
     .line 600
-    new-instance v7, Lcom/android/internal/util/FastXmlSerializer;
+    .local v4, "bos":Ljava/io/BufferedOutputStream;
+    new-instance v5, Lcom/android/internal/util/FastXmlSerializer;
 
-    invoke-direct {v7}, Lcom/android/internal/util/FastXmlSerializer;-><init>()V
+    invoke-direct {v5}, Lcom/android/internal/util/FastXmlSerializer;-><init>()V
 
     .line 601
-    sget-object v8, Ljava/nio/charset/StandardCharsets;->UTF_8:Ljava/nio/charset/Charset;
+    .local v5, "xml":Lcom/android/internal/util/FastXmlSerializer;
+    sget-object v6, Ljava/nio/charset/StandardCharsets;->UTF_8:Ljava/nio/charset/Charset;
 
-    invoke-virtual {v8}, Ljava/nio/charset/Charset;->name()Ljava/lang/String;
+    invoke-virtual {v6}, Ljava/nio/charset/Charset;->name()Ljava/lang/String;
 
-    move-result-object v8
+    move-result-object v6
 
-    invoke-virtual {v7, v6, v8}, Lcom/android/internal/util/FastXmlSerializer;->setOutput(Ljava/io/OutputStream;Ljava/lang/String;)V
+    invoke-virtual {v5, v4, v6}, Lcom/android/internal/util/FastXmlSerializer;->setOutput(Ljava/io/OutputStream;Ljava/lang/String;)V
 
     .line 602
     const/4 v6, 0x1
 
     invoke-static {v6}, Ljava/lang/Boolean;->valueOf(Z)Ljava/lang/Boolean;
 
-    move-result-object v8
+    move-result-object v7
 
-    invoke-virtual {v7, v4, v8}, Lcom/android/internal/util/FastXmlSerializer;->startDocument(Ljava/lang/String;Ljava/lang/Boolean;)V
+    const/4 v8, 0x0
+
+    invoke-virtual {v5, v8, v7}, Lcom/android/internal/util/FastXmlSerializer;->startDocument(Ljava/lang/String;Ljava/lang/Boolean;)V
 
     .line 603
-    const-string v8, "http://xmlpull.org/v1/doc/features.html#indent-output"
+    const-string v7, "http://xmlpull.org/v1/doc/features.html#indent-output"
 
-    invoke-virtual {v7, v8, v6}, Lcom/android/internal/util/FastXmlSerializer;->setFeature(Ljava/lang/String;Z)V
+    invoke-virtual {v5, v7, v6}, Lcom/android/internal/util/FastXmlSerializer;->setFeature(Ljava/lang/String;Z)V
 
     .line 605
-    invoke-virtual {v7, v4, v1}, Lcom/android/internal/util/FastXmlSerializer;->startTag(Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
+    invoke-virtual {v5, v8, v1}, Lcom/android/internal/util/FastXmlSerializer;->startTag(Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
 
     .line 607
     invoke-direct/range {p0 .. p1}, Lcom/android/server/usage/AppIdleHistory;->getUserHistory(I)Landroid/util/ArrayMap;
@@ -2181,15 +2419,18 @@
     move-result-object v6
 
     .line 608
+    .local v6, "userHistory":Landroid/util/ArrayMap;, "Landroid/util/ArrayMap<Ljava/lang/String;Lcom/android/server/usage/AppIdleHistory$AppUsageHistory;>;"
     invoke-virtual {v6}, Landroid/util/ArrayMap;->size()I
 
-    move-result v8
+    move-result v7
 
     .line 609
+    .local v7, "N":I
     const/4 v9, 0x0
 
+    .local v9, "i":I
     :goto_42
-    if-ge v9, v8, :cond_d9
+    if-ge v9, v7, :cond_d5
 
     .line 610
     invoke-virtual {v6, v9}, Landroid/util/ArrayMap;->keyAt(I)Ljava/lang/Object;
@@ -2198,218 +2439,216 @@
 
     check-cast v10, Ljava/lang/String;
 
-    .line 612
-    if-nez v10, :cond_53
-
-    .line 613
-    const-string v10, "Skipping App Idle write for unexpected null package"
-
-    invoke-static {v2, v10}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
-
-    .line 614
-    goto/16 :goto_d5
-
-    .line 616
-    :cond_53
+    .line 611
+    .local v10, "packageName":Ljava/lang/String;
     invoke-virtual {v6, v9}, Landroid/util/ArrayMap;->valueAt(I)Ljava/lang/Object;
 
     move-result-object v11
 
     check-cast v11, Lcom/android/server/usage/AppIdleHistory$AppUsageHistory;
 
-    .line 617
-    invoke-virtual {v7, v4, v0}, Lcom/android/internal/util/FastXmlSerializer;->startTag(Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
+    .line 612
+    .local v11, "history":Lcom/android/server/usage/AppIdleHistory$AppUsageHistory;
+    invoke-virtual {v5, v8, v0}, Lcom/android/internal/util/FastXmlSerializer;->startTag(Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
 
-    .line 618
+    .line 613
     const-string/jumbo v12, "name"
 
-    invoke-virtual {v7, v4, v12, v10}, Lcom/android/internal/util/FastXmlSerializer;->attribute(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
+    invoke-virtual {v5, v8, v12, v10}, Lcom/android/internal/util/FastXmlSerializer;->attribute(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
+
+    .line 614
+    const-string v12, "elapsedIdleTime"
+
+    iget-wide v13, v11, Lcom/android/server/usage/AppIdleHistory$AppUsageHistory;->lastUsedElapsedTime:J
+
+    .line 615
+    invoke-static {v13, v14}, Ljava/lang/Long;->toString(J)Ljava/lang/String;
+
+    move-result-object v13
+
+    .line 614
+    invoke-virtual {v5, v8, v12, v13}, Lcom/android/internal/util/FastXmlSerializer;->attribute(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
+
+    .line 616
+    const-string/jumbo v12, "screenIdleTime"
+
+    iget-wide v13, v11, Lcom/android/server/usage/AppIdleHistory$AppUsageHistory;->lastUsedScreenTime:J
+
+    .line 617
+    invoke-static {v13, v14}, Ljava/lang/Long;->toString(J)Ljava/lang/String;
+
+    move-result-object v13
+
+    .line 616
+    invoke-virtual {v5, v8, v12, v13}, Lcom/android/internal/util/FastXmlSerializer;->attribute(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
+
+    .line 618
+    const-string/jumbo v12, "lastPredictedTime"
+
+    iget-wide v13, v11, Lcom/android/server/usage/AppIdleHistory$AppUsageHistory;->lastPredictedTime:J
 
     .line 619
-    const-string v10, "elapsedIdleTime"
+    invoke-static {v13, v14}, Ljava/lang/Long;->toString(J)Ljava/lang/String;
 
-    iget-wide v12, v11, Lcom/android/server/usage/AppIdleHistory$AppUsageHistory;->lastUsedElapsedTime:J
+    move-result-object v13
+
+    .line 618
+    invoke-virtual {v5, v8, v12, v13}, Lcom/android/internal/util/FastXmlSerializer;->attribute(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
 
     .line 620
-    invoke-static {v12, v13}, Ljava/lang/Long;->toString(J)Ljava/lang/String;
+    const-string v12, "appLimitBucket"
 
-    move-result-object v12
-
-    .line 619
-    invoke-virtual {v7, v4, v10, v12}, Lcom/android/internal/util/FastXmlSerializer;->attribute(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
+    iget v13, v11, Lcom/android/server/usage/AppIdleHistory$AppUsageHistory;->currentBucket:I
 
     .line 621
-    const-string/jumbo v10, "screenIdleTime"
+    invoke-static {v13}, Ljava/lang/Integer;->toString(I)Ljava/lang/String;
 
-    iget-wide v12, v11, Lcom/android/server/usage/AppIdleHistory$AppUsageHistory;->lastUsedScreenTime:J
+    move-result-object v13
+
+    .line 620
+    invoke-virtual {v5, v8, v12, v13}, Lcom/android/internal/util/FastXmlSerializer;->attribute(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
 
     .line 622
-    invoke-static {v12, v13}, Ljava/lang/Long;->toString(J)Ljava/lang/String;
+    const-string v12, "bucketReason"
 
-    move-result-object v12
-
-    .line 621
-    invoke-virtual {v7, v4, v10, v12}, Lcom/android/internal/util/FastXmlSerializer;->attribute(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
+    iget v13, v11, Lcom/android/server/usage/AppIdleHistory$AppUsageHistory;->bucketingReason:I
 
     .line 623
-    const-string v10, "lastPredictedTime"
+    invoke-static {v13}, Ljava/lang/Integer;->toHexString(I)Ljava/lang/String;
 
-    iget-wide v12, v11, Lcom/android/server/usage/AppIdleHistory$AppUsageHistory;->lastPredictedTime:J
+    move-result-object v13
+
+    .line 622
+    invoke-virtual {v5, v8, v12, v13}, Lcom/android/internal/util/FastXmlSerializer;->attribute(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
 
     .line 624
-    invoke-static {v12, v13}, Ljava/lang/Long;->toString(J)Ljava/lang/String;
-
-    move-result-object v12
-
-    .line 623
-    invoke-virtual {v7, v4, v10, v12}, Lcom/android/internal/util/FastXmlSerializer;->attribute(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
-
-    .line 625
-    const-string v10, "appLimitBucket"
-
-    iget v12, v11, Lcom/android/server/usage/AppIdleHistory$AppUsageHistory;->currentBucket:I
-
-    .line 626
-    invoke-static {v12}, Ljava/lang/Integer;->toString(I)Ljava/lang/String;
-
-    move-result-object v12
-
-    .line 625
-    invoke-virtual {v7, v4, v10, v12}, Lcom/android/internal/util/FastXmlSerializer;->attribute(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
-
-    .line 627
-    const-string v10, "bucketReason"
-
-    iget v12, v11, Lcom/android/server/usage/AppIdleHistory$AppUsageHistory;->bucketingReason:I
-
-    .line 628
-    invoke-static {v12}, Ljava/lang/Integer;->toHexString(I)Ljava/lang/String;
-
-    move-result-object v12
-
-    .line 627
-    invoke-virtual {v7, v4, v10, v12}, Lcom/android/internal/util/FastXmlSerializer;->attribute(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
-
-    .line 629
     iget-wide v12, v11, Lcom/android/server/usage/AppIdleHistory$AppUsageHistory;->bucketActiveTimeoutTime:J
 
     const-wide/16 v14, 0x0
 
-    cmp-long v10, v12, v14
+    cmp-long v12, v12, v14
 
-    if-lez v10, :cond_ad
+    if-lez v12, :cond_a5
 
-    .line 630
-    const-string v10, "activeTimeoutTime"
+    .line 625
+    const-string v12, "activeTimeoutTime"
 
-    iget-wide v12, v11, Lcom/android/server/usage/AppIdleHistory$AppUsageHistory;->bucketActiveTimeoutTime:J
+    iget-wide v14, v11, Lcom/android/server/usage/AppIdleHistory$AppUsageHistory;->bucketActiveTimeoutTime:J
 
-    invoke-static {v12, v13}, Ljava/lang/Long;->toString(J)Ljava/lang/String;
+    invoke-static {v14, v15}, Ljava/lang/Long;->toString(J)Ljava/lang/String;
 
-    move-result-object v12
+    move-result-object v13
 
-    invoke-virtual {v7, v4, v10, v12}, Lcom/android/internal/util/FastXmlSerializer;->attribute(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
+    invoke-virtual {v5, v8, v12, v13}, Lcom/android/internal/util/FastXmlSerializer;->attribute(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
 
-    .line 633
-    :cond_ad
+    .line 628
+    :cond_a5
     iget-wide v12, v11, Lcom/android/server/usage/AppIdleHistory$AppUsageHistory;->bucketWorkingSetTimeoutTime:J
 
-    cmp-long v10, v12, v14
+    const-wide/16 v14, 0x0
 
-    if-lez v10, :cond_bf
+    cmp-long v12, v12, v14
 
-    .line 634
-    const-string/jumbo v10, "workingSetTimeoutTime"
+    if-lez v12, :cond_b9
 
-    iget-wide v12, v11, Lcom/android/server/usage/AppIdleHistory$AppUsageHistory;->bucketWorkingSetTimeoutTime:J
+    .line 629
+    const-string/jumbo v12, "workingSetTimeoutTime"
 
-    invoke-static {v12, v13}, Ljava/lang/Long;->toString(J)Ljava/lang/String;
+    iget-wide v13, v11, Lcom/android/server/usage/AppIdleHistory$AppUsageHistory;->bucketWorkingSetTimeoutTime:J
 
-    move-result-object v12
+    invoke-static {v13, v14}, Ljava/lang/Long;->toString(J)Ljava/lang/String;
 
-    invoke-virtual {v7, v4, v10, v12}, Lcom/android/internal/util/FastXmlSerializer;->attribute(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
+    move-result-object v13
 
-    .line 637
-    :cond_bf
+    invoke-virtual {v5, v8, v12, v13}, Lcom/android/internal/util/FastXmlSerializer;->attribute(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
+
+    .line 632
+    :cond_b9
     iget-wide v12, v11, Lcom/android/server/usage/AppIdleHistory$AppUsageHistory;->lastJobRunTime:J
 
     const-wide/high16 v14, -0x8000000000000000L
 
-    cmp-long v10, v12, v14
+    cmp-long v12, v12, v14
 
-    if-eqz v10, :cond_d2
+    if-eqz v12, :cond_cd
 
-    .line 638
-    const-string v10, "lastJobRunTime"
+    .line 633
+    const-string/jumbo v12, "lastJobRunTime"
 
-    iget-wide v11, v11, Lcom/android/server/usage/AppIdleHistory$AppUsageHistory;->lastJobRunTime:J
+    iget-wide v13, v11, Lcom/android/server/usage/AppIdleHistory$AppUsageHistory;->lastJobRunTime:J
 
-    invoke-static {v11, v12}, Ljava/lang/Long;->toString(J)Ljava/lang/String;
+    invoke-static {v13, v14}, Ljava/lang/Long;->toString(J)Ljava/lang/String;
 
-    move-result-object v11
+    move-result-object v13
 
-    invoke-virtual {v7, v4, v10, v11}, Lcom/android/internal/util/FastXmlSerializer;->attribute(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
+    invoke-virtual {v5, v8, v12, v13}, Lcom/android/internal/util/FastXmlSerializer;->attribute(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
 
-    .line 641
-    :cond_d2
-    invoke-virtual {v7, v4, v0}, Lcom/android/internal/util/FastXmlSerializer;->endTag(Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
+    .line 636
+    :cond_cd
+    invoke-virtual {v5, v8, v0}, Lcom/android/internal/util/FastXmlSerializer;->endTag(Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
 
     .line 609
-    :goto_d5
+    nop
+
+    .end local v10  # "packageName":Ljava/lang/String;
+    .end local v11  # "history":Lcom/android/server/usage/AppIdleHistory$AppUsageHistory;
     add-int/lit8 v9, v9, 0x1
 
     goto/16 :goto_42
 
-    .line 644
-    :cond_d9
-    invoke-virtual {v7, v4, v1}, Lcom/android/internal/util/FastXmlSerializer;->endTag(Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
+    .line 639
+    .end local v9  # "i":I
+    :cond_d5
+    invoke-virtual {v5, v8, v1}, Lcom/android/internal/util/FastXmlSerializer;->endTag(Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
+
+    .line 640
+    invoke-virtual {v5}, Lcom/android/internal/util/FastXmlSerializer;->endDocument()V
+
+    .line 641
+    invoke-virtual {v3, v2}, Landroid/util/AtomicFile;->finishWrite(Ljava/io/FileOutputStream;)V
+    :try_end_de
+    .catch Ljava/lang/Exception; {:try_start_10 .. :try_end_de} :catch_e1
 
     .line 645
-    invoke-virtual {v7}, Lcom/android/internal/util/FastXmlSerializer;->endDocument()V
+    .end local v4  # "bos":Ljava/io/BufferedOutputStream;
+    .end local v5  # "xml":Lcom/android/internal/util/FastXmlSerializer;
+    .end local v6  # "userHistory":Landroid/util/ArrayMap;, "Landroid/util/ArrayMap<Ljava/lang/String;Lcom/android/server/usage/AppIdleHistory$AppUsageHistory;>;"
+    .end local v7  # "N":I
+    move/from16 v4, p1
 
-    .line 646
-    invoke-virtual {v3, v5}, Landroid/util/AtomicFile;->finishWrite(Ljava/io/FileOutputStream;)V
-    :try_end_e2
-    .catch Ljava/lang/Exception; {:try_start_16 .. :try_end_e2} :catch_e3
+    goto :goto_fd
 
-    .line 650
-    goto :goto_100
-
-    .line 647
-    :catch_e3
+    .line 642
+    :catch_e1
     move-exception v0
 
-    goto :goto_e7
+    .line 643
+    .local v0, "e":Ljava/lang/Exception;
+    invoke-virtual {v3, v2}, Landroid/util/AtomicFile;->failWrite(Ljava/io/FileOutputStream;)V
 
-    :catch_e5
-    move-exception v0
-
-    move-object v5, v4
-
-    .line 648
-    :goto_e7
-    invoke-virtual {v3, v5}, Landroid/util/AtomicFile;->failWrite(Ljava/io/FileOutputStream;)V
-
-    .line 649
+    .line 644
     new-instance v1, Ljava/lang/StringBuilder;
 
     invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v3, "Error writing app idle file for user "
+    const-string v4, "Error writing app idle file for user "
 
-    invoke-virtual {v1, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    move/from16 v3, p1
+    move/from16 v4, p1
 
-    invoke-virtual {v1, v3}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v4}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
     invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
     move-result-object v1
 
-    invoke-static {v2, v1, v0}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    const-string v5, "AppIdleHistory"
 
-    .line 651
-    :goto_100
+    invoke-static {v5, v1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
+
+    .line 646
+    .end local v0  # "e":Ljava/lang/Exception;
+    :goto_fd
     return-void
 .end method

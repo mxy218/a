@@ -46,6 +46,11 @@
 # direct methods
 .method constructor <init>(Ljava/time/Clock;Lcom/android/server/timezone/ConfigHelper;Lcom/android/server/timezone/PackageManagerHelper;Lcom/android/server/timezone/PackageStatusStorage;Lcom/android/server/timezone/PackageTrackerIntentHelper;)V
     .registers 7
+    .param p1, "elapsedRealtimeClock"  # Ljava/time/Clock;
+    .param p2, "configHelper"  # Lcom/android/server/timezone/ConfigHelper;
+    .param p3, "packageManagerHelper"  # Lcom/android/server/timezone/PackageManagerHelper;
+    .param p4, "packageStatusStorage"  # Lcom/android/server/timezone/PackageStatusStorage;
+    .param p5, "intentHelper"  # Lcom/android/server/timezone/PackageTrackerIntentHelper;
 
     .line 112
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -75,47 +80,53 @@
 .end method
 
 .method static create(Landroid/content/Context;)Lcom/android/server/timezone/PackageTracker;
-    .registers 8
+    .registers 10
+    .param p0, "context"  # Landroid/content/Context;
 
     .line 98
     invoke-static {}, Landroid/os/SystemClock;->elapsedRealtimeClock()Ljava/time/Clock;
 
-    move-result-object v1
+    move-result-object v6
 
     .line 99
-    new-instance v3, Lcom/android/server/timezone/PackageTrackerHelperImpl;
+    .local v6, "elapsedRealtimeClock":Ljava/time/Clock;
+    new-instance v2, Lcom/android/server/timezone/PackageTrackerHelperImpl;
 
-    invoke-direct {v3, p0}, Lcom/android/server/timezone/PackageTrackerHelperImpl;-><init>(Landroid/content/Context;)V
+    invoke-direct {v2, p0}, Lcom/android/server/timezone/PackageTrackerHelperImpl;-><init>(Landroid/content/Context;)V
 
     .line 100
+    .local v2, "helperImpl":Lcom/android/server/timezone/PackageTrackerHelperImpl;
     invoke-static {}, Landroid/os/Environment;->getDataSystemDirectory()Ljava/io/File;
 
     move-result-object v0
 
-    const-string/jumbo v2, "timezone"
+    const-string/jumbo v1, "timezone"
 
-    invoke-static {v0, v2}, Landroid/os/FileUtils;->createDir(Ljava/io/File;Ljava/lang/String;)Ljava/io/File;
+    invoke-static {v0, v1}, Landroid/os/FileUtils;->createDir(Ljava/io/File;Ljava/lang/String;)Ljava/io/File;
 
-    move-result-object v0
+    move-result-object v7
 
     .line 101
-    new-instance v6, Lcom/android/server/timezone/PackageTracker;
+    .local v7, "storageDir":Ljava/io/File;
+    new-instance v8, Lcom/android/server/timezone/PackageTracker;
 
     new-instance v4, Lcom/android/server/timezone/PackageStatusStorage;
 
-    invoke-direct {v4, v0}, Lcom/android/server/timezone/PackageStatusStorage;-><init>(Ljava/io/File;)V
+    invoke-direct {v4, v7}, Lcom/android/server/timezone/PackageStatusStorage;-><init>(Ljava/io/File;)V
 
     new-instance v5, Lcom/android/server/timezone/PackageTrackerIntentHelperImpl;
 
     invoke-direct {v5, p0}, Lcom/android/server/timezone/PackageTrackerIntentHelperImpl;-><init>(Landroid/content/Context;)V
 
-    move-object v0, v6
+    move-object v0, v8
 
-    move-object v2, v3
+    move-object v1, v6
+
+    move-object v3, v2
 
     invoke-direct/range {v0 .. v5}, Lcom/android/server/timezone/PackageTracker;-><init>(Ljava/time/Clock;Lcom/android/server/timezone/ConfigHelper;Lcom/android/server/timezone/PackageManagerHelper;Lcom/android/server/timezone/PackageStatusStorage;Lcom/android/server/timezone/PackageTrackerIntentHelper;)V
 
-    return-object v6
+    return-object v8
 .end method
 
 .method private isCheckInProgress()Z
@@ -182,6 +193,8 @@
 
 .method private static logAndThrowRuntimeException(Ljava/lang/String;Ljava/lang/Throwable;)Ljava/lang/RuntimeException;
     .registers 3
+    .param p0, "message"  # Ljava/lang/String;
+    .param p1, "cause"  # Ljava/lang/Throwable;
 
     .line 522
     const-string/jumbo v0, "timezone.PackageTracker"
@@ -211,6 +224,7 @@
     move-result-wide v0
 
     .line 462
+    .local v0, "updatePackageVersion":J
     iget-object v2, p0, Lcom/android/server/timezone/PackageTracker;->mPackageManagerHelper:Lcom/android/server/timezone/PackageManagerHelper;
 
     iget-object v3, p0, Lcom/android/server/timezone/PackageTracker;->mDataAppPackageName:Ljava/lang/String;
@@ -223,6 +237,7 @@
     .catch Landroid/content/pm/PackageManager$NameNotFoundException; {:try_start_0 .. :try_end_10} :catch_17
 
     .line 468
+    .local v2, "dataPackageVersion":J
     nop
 
     .line 469
@@ -233,20 +248,23 @@
     return-object v4
 
     .line 464
+    .end local v0  # "updatePackageVersion":J
+    .end local v2  # "dataPackageVersion":J
     :catch_17
     move-exception v0
 
     .line 465
+    .local v0, "e":Landroid/content/pm/PackageManager$NameNotFoundException;
     const-string/jumbo v1, "timezone.PackageTracker"
 
-    const-string v2, "lookupInstalledPackageVersions: Unable to resolve installed package versions"
+    const-string/jumbo v2, "lookupInstalledPackageVersions: Unable to resolve installed package versions"
 
     invoke-static {v1, v2, v0}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
     .line 467
-    const/4 v0, 0x0
+    const/4 v1, 0x0
 
-    return-object v0
+    return-object v1
 .end method
 
 .method private setCheckComplete()V
@@ -307,7 +325,7 @@
 
     const/4 v1, 0x0
 
-    if-ltz v0, :cond_e9
+    if-ltz v0, :cond_ea
 
     .line 179
     iget v0, p0, Lcom/android/server/timezone/PackageTracker;->mCheckTimeAllowedMillis:I
@@ -424,15 +442,18 @@
 
     move-result-object v0
 
+    .end local p0  # "this":Lcom/android/server/timezone/PackageTracker;
     throw v0
     :try_end_86
     .catch Landroid/content/pm/PackageManager$NameNotFoundException; {:try_start_6d .. :try_end_86} :catch_86
 
     .line 202
+    .restart local p0  # "this":Lcom/android/server/timezone/PackageTracker;
     :catch_86
     move-exception v0
 
     .line 203
+    .local v0, "e":Landroid/content/pm/PackageManager$NameNotFoundException;
     new-instance v1, Ljava/lang/StringBuilder;
 
     invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
@@ -451,11 +472,12 @@
 
     invoke-static {v1, v0}, Lcom/android/server/timezone/PackageTracker;->logAndThrowRuntimeException(Ljava/lang/String;Ljava/lang/Throwable;)Ljava/lang/RuntimeException;
 
-    move-result-object v0
+    move-result-object v1
 
-    throw v0
+    throw v1
 
     .line 187
+    .end local v0  # "e":Landroid/content/pm/PackageManager$NameNotFoundException;
     :cond_9f
     :try_start_9f
     new-instance v0, Ljava/lang/StringBuilder;
@@ -478,15 +500,18 @@
 
     move-result-object v0
 
+    .end local p0  # "this":Lcom/android/server/timezone/PackageTracker;
     throw v0
     :try_end_b8
     .catch Landroid/content/pm/PackageManager$NameNotFoundException; {:try_start_9f .. :try_end_b8} :catch_b8
 
     .line 190
+    .restart local p0  # "this":Lcom/android/server/timezone/PackageTracker;
     :catch_b8
     move-exception v0
 
     .line 191
+    .restart local v0  # "e":Landroid/content/pm/PackageManager$NameNotFoundException;
     new-instance v1, Ljava/lang/StringBuilder;
 
     invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
@@ -505,17 +530,18 @@
 
     invoke-static {v1, v0}, Lcom/android/server/timezone/PackageTracker;->logAndThrowRuntimeException(Ljava/lang/String;Ljava/lang/Throwable;)Ljava/lang/RuntimeException;
 
-    move-result-object v0
+    move-result-object v1
 
-    throw v0
+    throw v1
 
     .line 180
+    .end local v0  # "e":Landroid/content/pm/PackageManager$NameNotFoundException;
     :cond_d1
     new-instance v0, Ljava/lang/StringBuilder;
 
     invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v2, "mCheckTimeAllowedMillis="
+    const-string/jumbo v2, "mCheckTimeAllowedMillis="
 
     invoke-virtual {v0, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
@@ -534,12 +560,12 @@
     throw v0
 
     .line 177
-    :cond_e9
+    :cond_ea
     new-instance v0, Ljava/lang/StringBuilder;
 
     invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v2, "mFailedRetryCount="
+    const-string/jumbo v2, "mFailedRetryCount="
 
     invoke-virtual {v0, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
@@ -559,33 +585,35 @@
 .end method
 
 .method private static throwRuntimeExceptionIfNullOrEmpty(Ljava/lang/String;Ljava/lang/String;)V
-    .registers 2
+    .registers 3
+    .param p0, "value"  # Ljava/lang/String;
+    .param p1, "message"  # Ljava/lang/String;
 
     .line 516
     if-eqz p0, :cond_d
 
     invoke-virtual {p0}, Ljava/lang/String;->trim()Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v0
 
-    invoke-virtual {p0}, Ljava/lang/String;->isEmpty()Z
+    invoke-virtual {v0}, Ljava/lang/String;->isEmpty()Z
 
-    move-result p0
+    move-result v0
 
-    if-nez p0, :cond_d
+    if-nez v0, :cond_d
 
     .line 519
     return-void
 
     .line 517
     :cond_d
-    const/4 p0, 0x0
+    const/4 v0, 0x0
 
-    invoke-static {p1, p0}, Lcom/android/server/timezone/PackageTracker;->logAndThrowRuntimeException(Ljava/lang/String;Ljava/lang/Throwable;)Ljava/lang/RuntimeException;
+    invoke-static {p1, v0}, Lcom/android/server/timezone/PackageTracker;->logAndThrowRuntimeException(Ljava/lang/String;Ljava/lang/Throwable;)Ljava/lang/RuntimeException;
 
-    move-result-object p0
+    move-result-object v0
 
-    throw p0
+    throw v0
 .end method
 
 .method private validateDataAppManifest()Z
@@ -728,6 +756,7 @@
     move-exception v0
 
     .line 509
+    .local v0, "e":Landroid/content/pm/PackageManager$NameNotFoundException;
     new-instance v4, Ljava/lang/StringBuilder;
 
     invoke-direct {v4}, Ljava/lang/StringBuilder;-><init>()V
@@ -756,6 +785,7 @@
 # virtual methods
 .method public dump(Ljava/io/PrintWriter;)V
     .registers 4
+    .param p1, "fout"  # Ljava/io/PrintWriter;
 
     .line 527
     new-instance v0, Ljava/lang/StringBuilder;
@@ -800,7 +830,9 @@
 .end method
 
 .method protected declared-synchronized recordCheckResult(Lcom/android/server/timezone/CheckToken;Z)V
-    .registers 6
+    .registers 7
+    .param p1, "checkToken"  # Lcom/android/server/timezone/CheckToken;
+    .param p2, "success"  # Z
     .annotation build Lcom/android/internal/annotations/VisibleForTesting;
         visibility = .enum Lcom/android/internal/annotations/VisibleForTesting$Visibility;->PACKAGE:Lcom/android/internal/annotations/VisibleForTesting$Visibility;
     .end annotation
@@ -842,43 +874,44 @@
     if-nez p1, :cond_31
 
     .line 357
-    const-string/jumbo p1, "timezone.PackageTracker"
+    const-string/jumbo v0, "timezone.PackageTracker"
 
-    const-string/jumbo p2, "recordCheckResult: Tracking is disabled and no token has been provided. Resetting tracking state."
+    const-string/jumbo v1, "recordCheckResult: Tracking is disabled and no token has been provided. Resetting tracking state."
 
-    invoke-static {p1, p2}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v0, v1}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
 
     goto :goto_4e
 
     .line 363
+    .end local p0  # "this":Lcom/android/server/timezone/PackageTracker;
     :cond_31
-    const-string/jumbo p2, "timezone.PackageTracker"
+    const-string/jumbo v0, "timezone.PackageTracker"
 
-    new-instance v0, Ljava/lang/StringBuilder;
+    new-instance v1, Ljava/lang/StringBuilder;
 
-    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string/jumbo v1, "recordCheckResult: Tracking is disabled and a token "
+    const-string/jumbo v2, "recordCheckResult: Tracking is disabled and a token "
 
-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
-    const-string p1, " has been unexpectedly provided. Resetting tracking state."
+    const-string v2, " has been unexpectedly provided. Resetting tracking state."
 
-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v1
 
-    invoke-static {p2, p1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v0, v1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 366
     :goto_4e
-    iget-object p1, p0, Lcom/android/server/timezone/PackageTracker;->mPackageStatusStorage:Lcom/android/server/timezone/PackageStatusStorage;
+    iget-object v0, p0, Lcom/android/server/timezone/PackageTracker;->mPackageStatusStorage:Lcom/android/server/timezone/PackageStatusStorage;
 
-    invoke-virtual {p1}, Lcom/android/server/timezone/PackageStatusStorage;->resetCheckState()V
+    invoke-virtual {v0}, Lcom/android/server/timezone/PackageStatusStorage;->resetCheckState()V
     :try_end_53
     .catchall {:try_start_1 .. :try_end_53} :catchall_ca
 
@@ -895,25 +928,25 @@
 
     .line 389
     :try_start_58
-    const-string/jumbo p1, "timezone.PackageTracker"
+    const-string/jumbo v1, "timezone.PackageTracker"
 
-    const-string/jumbo p2, "recordCheckResult: Unexpectedly missing checkToken, resetting storage state."
+    const-string/jumbo v2, "recordCheckResult: Unexpectedly missing checkToken, resetting storage state."
 
-    invoke-static {p1, p2}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v2}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 391
-    iget-object p1, p0, Lcom/android/server/timezone/PackageTracker;->mPackageStatusStorage:Lcom/android/server/timezone/PackageStatusStorage;
+    iget-object v1, p0, Lcom/android/server/timezone/PackageTracker;->mPackageStatusStorage:Lcom/android/server/timezone/PackageStatusStorage;
 
-    invoke-virtual {p1}, Lcom/android/server/timezone/PackageStatusStorage;->resetCheckState()V
+    invoke-virtual {v1}, Lcom/android/server/timezone/PackageStatusStorage;->resetCheckState()V
 
     .line 395
-    iget-object p1, p0, Lcom/android/server/timezone/PackageTracker;->mIntentHelper:Lcom/android/server/timezone/PackageTrackerIntentHelper;
+    iget-object v1, p0, Lcom/android/server/timezone/PackageTracker;->mIntentHelper:Lcom/android/server/timezone/PackageTrackerIntentHelper;
 
-    iget p2, p0, Lcom/android/server/timezone/PackageTracker;->mDelayBeforeReliabilityCheckMillis:I
+    iget v2, p0, Lcom/android/server/timezone/PackageTracker;->mDelayBeforeReliabilityCheckMillis:I
 
-    int-to-long v1, p2
+    int-to-long v2, v2
 
-    invoke-interface {p1, v1, v2}, Lcom/android/server/timezone/PackageTrackerIntentHelper;->scheduleReliabilityTrigger(J)V
+    invoke-interface {v1, v2, v3}, Lcom/android/server/timezone/PackageTrackerIntentHelper;->scheduleReliabilityTrigger(J)V
 
     .line 396
     iput v0, p0, Lcom/android/server/timezone/PackageTracker;->mCheckFailureCount:I
@@ -930,6 +963,7 @@
     move-result v1
 
     .line 402
+    .local v1, "recordedCheckCompleteSuccessfully":Z
     if-eqz v1, :cond_95
 
     .line 405
@@ -939,9 +973,9 @@
     if-eqz p2, :cond_86
 
     .line 410
-    iget-object p1, p0, Lcom/android/server/timezone/PackageTracker;->mIntentHelper:Lcom/android/server/timezone/PackageTrackerIntentHelper;
+    iget-object v2, p0, Lcom/android/server/timezone/PackageTracker;->mIntentHelper:Lcom/android/server/timezone/PackageTrackerIntentHelper;
 
-    invoke-interface {p1}, Lcom/android/server/timezone/PackageTrackerIntentHelper;->unscheduleReliabilityTrigger()V
+    invoke-interface {v2}, Lcom/android/server/timezone/PackageTrackerIntentHelper;->unscheduleReliabilityTrigger()V
 
     .line 411
     iput v0, p0, Lcom/android/server/timezone/PackageTracker;->mCheckFailureCount:I
@@ -950,20 +984,20 @@
 
     .line 414
     :cond_86
-    iget-object p1, p0, Lcom/android/server/timezone/PackageTracker;->mIntentHelper:Lcom/android/server/timezone/PackageTrackerIntentHelper;
+    iget-object v0, p0, Lcom/android/server/timezone/PackageTracker;->mIntentHelper:Lcom/android/server/timezone/PackageTrackerIntentHelper;
 
-    iget p2, p0, Lcom/android/server/timezone/PackageTracker;->mDelayBeforeReliabilityCheckMillis:I
+    iget v2, p0, Lcom/android/server/timezone/PackageTracker;->mDelayBeforeReliabilityCheckMillis:I
 
-    int-to-long v0, p2
+    int-to-long v2, v2
 
-    invoke-interface {p1, v0, v1}, Lcom/android/server/timezone/PackageTrackerIntentHelper;->scheduleReliabilityTrigger(J)V
+    invoke-interface {v0, v2, v3}, Lcom/android/server/timezone/PackageTrackerIntentHelper;->scheduleReliabilityTrigger(J)V
 
     .line 415
-    iget p1, p0, Lcom/android/server/timezone/PackageTracker;->mCheckFailureCount:I
+    iget v0, p0, Lcom/android/server/timezone/PackageTracker;->mCheckFailureCount:I
 
-    add-int/lit8 p1, p1, 0x1
+    add-int/lit8 v0, v0, 0x1
 
-    iput p1, p0, Lcom/android/server/timezone/PackageTracker;->mCheckFailureCount:I
+    iput v0, p0, Lcom/android/server/timezone/PackageTracker;->mCheckFailureCount:I
 
     goto :goto_c8
 
@@ -971,57 +1005,60 @@
     :cond_95
     const-string/jumbo v0, "timezone.PackageTracker"
 
-    new-instance v1, Ljava/lang/StringBuilder;
+    new-instance v2, Ljava/lang/StringBuilder;
 
-    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string/jumbo v2, "recordCheckResult: could not update token="
+    const-string/jumbo v3, "recordCheckResult: could not update token="
 
-    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v1, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
-    const-string p1, " with success="
+    const-string v3, " with success="
 
-    invoke-virtual {v1, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v1, p2}, Ljava/lang/StringBuilder;->append(Z)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, p2}, Ljava/lang/StringBuilder;->append(Z)Ljava/lang/StringBuilder;
 
-    const-string p1, ". Optimistic lock failure"
+    const-string v3, ". Optimistic lock failure"
 
-    invoke-virtual {v1, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v2
 
-    invoke-static {v0, p1}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v0, v2}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 424
-    iget-object p1, p0, Lcom/android/server/timezone/PackageTracker;->mIntentHelper:Lcom/android/server/timezone/PackageTrackerIntentHelper;
+    iget-object v0, p0, Lcom/android/server/timezone/PackageTracker;->mIntentHelper:Lcom/android/server/timezone/PackageTrackerIntentHelper;
 
-    iget p2, p0, Lcom/android/server/timezone/PackageTracker;->mDelayBeforeReliabilityCheckMillis:I
+    iget v2, p0, Lcom/android/server/timezone/PackageTracker;->mDelayBeforeReliabilityCheckMillis:I
 
-    int-to-long v0, p2
+    int-to-long v2, v2
 
-    invoke-interface {p1, v0, v1}, Lcom/android/server/timezone/PackageTrackerIntentHelper;->scheduleReliabilityTrigger(J)V
+    invoke-interface {v0, v2, v3}, Lcom/android/server/timezone/PackageTrackerIntentHelper;->scheduleReliabilityTrigger(J)V
 
     .line 425
-    iget p1, p0, Lcom/android/server/timezone/PackageTracker;->mCheckFailureCount:I
+    iget v0, p0, Lcom/android/server/timezone/PackageTracker;->mCheckFailureCount:I
 
-    add-int/lit8 p1, p1, 0x1
+    add-int/lit8 v0, v0, 0x1
 
-    iput p1, p0, Lcom/android/server/timezone/PackageTracker;->mCheckFailureCount:I
+    iput v0, p0, Lcom/android/server/timezone/PackageTracker;->mCheckFailureCount:I
     :try_end_c8
     .catchall {:try_start_58 .. :try_end_c8} :catchall_ca
 
     .line 428
+    .end local v1  # "recordedCheckCompleteSuccessfully":Z
     :goto_c8
     monitor-exit p0
 
     return-void
 
     .line 342
+    .end local p1  # "checkToken":Lcom/android/server/timezone/CheckToken;
+    .end local p2  # "success":Z
     :catchall_ca
     move-exception p1
 
@@ -1070,6 +1107,7 @@
     return v1
 
     .line 128
+    .end local p0  # "this":Lcom/android/server/timezone/PackageTracker;
     :cond_18
     :try_start_18
     iget-object v0, p0, Lcom/android/server/timezone/PackageTracker;->mConfigHelper:Lcom/android/server/timezone/ConfigHelper;
@@ -1181,6 +1219,7 @@
     move-exception v0
 
     .line 147
+    .local v0, "e":Ljava/io/IOException;
     :try_start_6b
     const-string/jumbo v2, "timezone.PackageTracker"
 
@@ -1196,6 +1235,7 @@
     return v1
 
     .line 121
+    .end local v0  # "e":Ljava/io/IOException;
     :catchall_75
     move-exception v0
 
@@ -1302,7 +1342,8 @@
 .end method
 
 .method public declared-synchronized triggerUpdateIfNeeded(Z)V
-    .registers 6
+    .registers 10
+    .param p1, "packageChanged"  # Z
 
     monitor-enter p0
 
@@ -1318,11 +1359,13 @@
     move-result v0
 
     .line 226
+    .local v0, "updaterAppManifestValid":Z
     invoke-direct {p0}, Lcom/android/server/timezone/PackageTracker;->validateDataAppManifest()Z
 
     move-result v1
 
     .line 227
+    .local v1, "dataAppManifestValid":Z
     if-eqz v0, :cond_12e
 
     if-nez v1, :cond_13
@@ -1334,49 +1377,50 @@
     if-nez p1, :cond_6f
 
     .line 248
-    iget-boolean p1, p0, Lcom/android/server/timezone/PackageTracker;->mCheckTriggered:Z
+    iget-boolean v2, p0, Lcom/android/server/timezone/PackageTracker;->mCheckTriggered:Z
 
-    if-nez p1, :cond_23
+    if-nez v2, :cond_23
 
     .line 250
-    const-string/jumbo p1, "timezone.PackageTracker"
+    const-string/jumbo v2, "timezone.PackageTracker"
 
-    const-string/jumbo v0, "triggerUpdateIfNeeded: First reliability trigger."
+    const-string/jumbo v3, "triggerUpdateIfNeeded: First reliability trigger."
 
-    invoke-static {p1, v0}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v2, v3}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
 
     goto :goto_6f
 
     .line 251
+    .end local p0  # "this":Lcom/android/server/timezone/PackageTracker;
     :cond_23
     invoke-direct {p0}, Lcom/android/server/timezone/PackageTracker;->isCheckInProgress()Z
 
-    move-result p1
+    move-result v2
 
-    if-eqz p1, :cond_42
+    if-eqz v2, :cond_42
 
     .line 253
     invoke-direct {p0}, Lcom/android/server/timezone/PackageTracker;->isCheckResponseOverdue()Z
 
-    move-result p1
+    move-result v2
 
-    if-nez p1, :cond_6f
+    if-nez v2, :cond_6f
 
     .line 255
-    const-string/jumbo p1, "timezone.PackageTracker"
+    const-string/jumbo v2, "timezone.PackageTracker"
 
-    const-string/jumbo v0, "triggerUpdateIfNeeded: checkComplete call is not yet overdue. Not triggering."
+    const-string/jumbo v3, "triggerUpdateIfNeeded: checkComplete call is not yet overdue. Not triggering."
 
-    invoke-static {p1, v0}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v2, v3}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 259
-    iget-object p1, p0, Lcom/android/server/timezone/PackageTracker;->mIntentHelper:Lcom/android/server/timezone/PackageTrackerIntentHelper;
+    iget-object v2, p0, Lcom/android/server/timezone/PackageTracker;->mIntentHelper:Lcom/android/server/timezone/PackageTrackerIntentHelper;
 
-    iget v0, p0, Lcom/android/server/timezone/PackageTracker;->mDelayBeforeReliabilityCheckMillis:I
+    iget v3, p0, Lcom/android/server/timezone/PackageTracker;->mDelayBeforeReliabilityCheckMillis:I
 
-    int-to-long v0, v0
+    int-to-long v3, v3
 
-    invoke-interface {p1, v0, v1}, Lcom/android/server/timezone/PackageTrackerIntentHelper;->scheduleReliabilityTrigger(J)V
+    invoke-interface {v2, v3, v4}, Lcom/android/server/timezone/PackageTrackerIntentHelper;->scheduleReliabilityTrigger(J)V
     :try_end_40
     .catchall {:try_start_1 .. :try_end_40} :catchall_15c
 
@@ -1388,27 +1432,27 @@
     .line 262
     :cond_42
     :try_start_42
-    iget p1, p0, Lcom/android/server/timezone/PackageTracker;->mCheckFailureCount:I
+    iget v2, p0, Lcom/android/server/timezone/PackageTracker;->mCheckFailureCount:I
 
-    int-to-long v0, p1
+    int-to-long v2, v2
 
-    iget-wide v2, p0, Lcom/android/server/timezone/PackageTracker;->mFailedCheckRetryCount:J
+    iget-wide v4, p0, Lcom/android/server/timezone/PackageTracker;->mFailedCheckRetryCount:J
 
-    cmp-long p1, v0, v2
+    cmp-long v2, v2, v4
 
-    if-lez p1, :cond_5b
+    if-lez v2, :cond_5b
 
     .line 265
-    const-string/jumbo p1, "timezone.PackageTracker"
+    const-string/jumbo v2, "timezone.PackageTracker"
 
-    const-string/jumbo v0, "triggerUpdateIfNeeded: number of allowed consecutive check failures exceeded. Stopping reliability triggers until next reboot or package update."
+    const-string/jumbo v3, "triggerUpdateIfNeeded: number of allowed consecutive check failures exceeded. Stopping reliability triggers until next reboot or package update."
 
-    invoke-static {p1, v0}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v2, v3}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 268
-    iget-object p1, p0, Lcom/android/server/timezone/PackageTracker;->mIntentHelper:Lcom/android/server/timezone/PackageTrackerIntentHelper;
+    iget-object v2, p0, Lcom/android/server/timezone/PackageTracker;->mIntentHelper:Lcom/android/server/timezone/PackageTrackerIntentHelper;
 
-    invoke-interface {p1}, Lcom/android/server/timezone/PackageTrackerIntentHelper;->unscheduleReliabilityTrigger()V
+    invoke-interface {v2}, Lcom/android/server/timezone/PackageTrackerIntentHelper;->unscheduleReliabilityTrigger()V
     :try_end_59
     .catchall {:try_start_42 .. :try_end_59} :catchall_15c
 
@@ -1420,21 +1464,21 @@
     .line 270
     :cond_5b
     :try_start_5b
-    iget p1, p0, Lcom/android/server/timezone/PackageTracker;->mCheckFailureCount:I
+    iget v2, p0, Lcom/android/server/timezone/PackageTracker;->mCheckFailureCount:I
 
-    if-nez p1, :cond_6f
+    if-nez v2, :cond_6f
 
     .line 272
-    const-string/jumbo p1, "timezone.PackageTracker"
+    const-string/jumbo v2, "timezone.PackageTracker"
 
-    const-string/jumbo v0, "triggerUpdateIfNeeded: No reliability check required. Last check was successful."
+    const-string/jumbo v3, "triggerUpdateIfNeeded: No reliability check required. Last check was successful."
 
-    invoke-static {p1, v0}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v2, v3}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 274
-    iget-object p1, p0, Lcom/android/server/timezone/PackageTracker;->mIntentHelper:Lcom/android/server/timezone/PackageTrackerIntentHelper;
+    iget-object v2, p0, Lcom/android/server/timezone/PackageTracker;->mIntentHelper:Lcom/android/server/timezone/PackageTrackerIntentHelper;
 
-    invoke-interface {p1}, Lcom/android/server/timezone/PackageTrackerIntentHelper;->unscheduleReliabilityTrigger()V
+    invoke-interface {v2}, Lcom/android/server/timezone/PackageTrackerIntentHelper;->unscheduleReliabilityTrigger()V
     :try_end_6d
     .catchall {:try_start_5b .. :try_end_6d} :catchall_15c
 
@@ -1449,22 +1493,23 @@
     :try_start_6f
     invoke-direct {p0}, Lcom/android/server/timezone/PackageTracker;->lookupInstalledPackageVersions()Lcom/android/server/timezone/PackageVersions;
 
-    move-result-object p1
+    move-result-object v2
 
     .line 281
-    if-nez p1, :cond_85
+    .local v2, "currentInstalledVersions":Lcom/android/server/timezone/PackageVersions;
+    if-nez v2, :cond_85
 
     .line 283
-    const-string/jumbo p1, "timezone.PackageTracker"
+    const-string/jumbo v3, "timezone.PackageTracker"
 
-    const-string/jumbo v0, "triggerUpdateIfNeeded: currentInstalledVersions was null"
+    const-string/jumbo v4, "triggerUpdateIfNeeded: currentInstalledVersions was null"
 
-    invoke-static {p1, v0}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v3, v4}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 284
-    iget-object p1, p0, Lcom/android/server/timezone/PackageTracker;->mIntentHelper:Lcom/android/server/timezone/PackageTrackerIntentHelper;
+    iget-object v3, p0, Lcom/android/server/timezone/PackageTracker;->mIntentHelper:Lcom/android/server/timezone/PackageTrackerIntentHelper;
 
-    invoke-interface {p1}, Lcom/android/server/timezone/PackageTrackerIntentHelper;->unscheduleReliabilityTrigger()V
+    invoke-interface {v3}, Lcom/android/server/timezone/PackageTrackerIntentHelper;->unscheduleReliabilityTrigger()V
     :try_end_83
     .catchall {:try_start_6f .. :try_end_83} :catchall_15c
 
@@ -1476,113 +1521,114 @@
     .line 290
     :cond_85
     :try_start_85
-    iget-object v0, p0, Lcom/android/server/timezone/PackageTracker;->mPackageStatusStorage:Lcom/android/server/timezone/PackageStatusStorage;
+    iget-object v3, p0, Lcom/android/server/timezone/PackageTracker;->mPackageStatusStorage:Lcom/android/server/timezone/PackageStatusStorage;
 
-    invoke-virtual {v0}, Lcom/android/server/timezone/PackageStatusStorage;->getPackageStatus()Lcom/android/server/timezone/PackageStatus;
+    invoke-virtual {v3}, Lcom/android/server/timezone/PackageStatusStorage;->getPackageStatus()Lcom/android/server/timezone/PackageStatus;
 
-    move-result-object v0
+    move-result-object v3
 
     .line 291
-    if-nez v0, :cond_97
+    .local v3, "packageStatus":Lcom/android/server/timezone/PackageStatus;
+    if-nez v3, :cond_97
 
     .line 294
-    const-string/jumbo v0, "timezone.PackageTracker"
+    const-string/jumbo v4, "timezone.PackageTracker"
 
-    const-string/jumbo v1, "triggerUpdateIfNeeded: No package status data found. Data check needed."
+    const-string/jumbo v5, "triggerUpdateIfNeeded: No package status data found. Data check needed."
 
-    invoke-static {v0, v1}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v4, v5}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
 
     goto :goto_fe
 
     .line 295
     :cond_97
-    iget-object v1, v0, Lcom/android/server/timezone/PackageStatus;->mVersions:Lcom/android/server/timezone/PackageVersions;
+    iget-object v4, v3, Lcom/android/server/timezone/PackageStatus;->mVersions:Lcom/android/server/timezone/PackageVersions;
 
-    invoke-virtual {v1, p1}, Lcom/android/server/timezone/PackageVersions;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v4, v2}, Lcom/android/server/timezone/PackageVersions;->equals(Ljava/lang/Object;)Z
 
-    move-result v1
+    move-result v4
 
-    if-nez v1, :cond_c7
+    if-nez v4, :cond_c7
 
     .line 298
-    const-string/jumbo v1, "timezone.PackageTracker"
+    const-string/jumbo v4, "timezone.PackageTracker"
 
-    new-instance v2, Ljava/lang/StringBuilder;
+    new-instance v5, Ljava/lang/StringBuilder;
 
-    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v5}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string/jumbo v3, "triggerUpdateIfNeeded: Stored package versions="
+    const-string/jumbo v6, "triggerUpdateIfNeeded: Stored package versions="
 
-    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    iget-object v0, v0, Lcom/android/server/timezone/PackageStatus;->mVersions:Lcom/android/server/timezone/PackageVersions;
+    iget-object v6, v3, Lcom/android/server/timezone/PackageStatus;->mVersions:Lcom/android/server/timezone/PackageVersions;
 
-    invoke-virtual {v2, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
-    const-string v0, ", do not match current package versions="
+    const-string v6, ", do not match current package versions="
 
-    invoke-virtual {v2, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v2, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    invoke-virtual {v5, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
-    const-string v0, ". Triggering check."
+    const-string v6, ". Triggering check."
 
-    invoke-virtual {v2, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v5}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v5
 
-    invoke-static {v1, v0}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v4, v5}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
 
     goto :goto_fe
 
     .line 302
     :cond_c7
-    const-string/jumbo v1, "timezone.PackageTracker"
+    const-string/jumbo v4, "timezone.PackageTracker"
 
-    new-instance v2, Ljava/lang/StringBuilder;
+    new-instance v5, Ljava/lang/StringBuilder;
 
-    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v5}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string/jumbo v3, "triggerUpdateIfNeeded: Stored package versions match currently installed versions, currentInstalledVersions="
+    const-string/jumbo v6, "triggerUpdateIfNeeded: Stored package versions match currently installed versions, currentInstalledVersions="
 
-    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v2, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    invoke-virtual {v5, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
-    const-string v3, ", packageStatus.mCheckStatus="
+    const-string v6, ", packageStatus.mCheckStatus="
 
-    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    iget v3, v0, Lcom/android/server/timezone/PackageStatus;->mCheckStatus:I
+    iget v6, v3, Lcom/android/server/timezone/PackageStatus;->mCheckStatus:I
 
-    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v5}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v2
+    move-result-object v5
 
-    invoke-static {v1, v2}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v4, v5}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 305
-    iget v0, v0, Lcom/android/server/timezone/PackageStatus;->mCheckStatus:I
+    iget v4, v3, Lcom/android/server/timezone/PackageStatus;->mCheckStatus:I
 
-    const/4 v1, 0x2
+    const/4 v5, 0x2
 
-    if-ne v0, v1, :cond_fe
+    if-ne v4, v5, :cond_fe
 
     .line 308
-    const-string/jumbo p1, "timezone.PackageTracker"
+    const-string/jumbo v4, "timezone.PackageTracker"
 
-    const-string/jumbo v0, "triggerUpdateIfNeeded: Prior check succeeded. No need to trigger."
+    const-string/jumbo v5, "triggerUpdateIfNeeded: Prior check succeeded. No need to trigger."
 
-    invoke-static {p1, v0}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v4, v5}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 309
-    iget-object p1, p0, Lcom/android/server/timezone/PackageTracker;->mIntentHelper:Lcom/android/server/timezone/PackageTrackerIntentHelper;
+    iget-object v4, p0, Lcom/android/server/timezone/PackageTracker;->mIntentHelper:Lcom/android/server/timezone/PackageTrackerIntentHelper;
 
-    invoke-interface {p1}, Lcom/android/server/timezone/PackageTrackerIntentHelper;->unscheduleReliabilityTrigger()V
+    invoke-interface {v4}, Lcom/android/server/timezone/PackageTrackerIntentHelper;->unscheduleReliabilityTrigger()V
     :try_end_fc
     .catchall {:try_start_85 .. :try_end_fc} :catchall_15c
 
@@ -1595,31 +1641,32 @@
     :cond_fe
     :goto_fe
     :try_start_fe
-    iget-object v0, p0, Lcom/android/server/timezone/PackageTracker;->mPackageStatusStorage:Lcom/android/server/timezone/PackageStatusStorage;
+    iget-object v4, p0, Lcom/android/server/timezone/PackageTracker;->mPackageStatusStorage:Lcom/android/server/timezone/PackageStatusStorage;
 
     .line 316
-    invoke-virtual {v0, p1}, Lcom/android/server/timezone/PackageStatusStorage;->generateCheckToken(Lcom/android/server/timezone/PackageVersions;)Lcom/android/server/timezone/CheckToken;
+    invoke-virtual {v4, v2}, Lcom/android/server/timezone/PackageStatusStorage;->generateCheckToken(Lcom/android/server/timezone/PackageVersions;)Lcom/android/server/timezone/CheckToken;
 
-    move-result-object p1
+    move-result-object v4
 
     .line 317
-    if-nez p1, :cond_119
+    .local v4, "checkToken":Lcom/android/server/timezone/CheckToken;
+    if-nez v4, :cond_119
 
     .line 318
-    const-string/jumbo p1, "timezone.PackageTracker"
+    const-string/jumbo v5, "timezone.PackageTracker"
 
-    const-string/jumbo v0, "triggerUpdateIfNeeded: Unable to generate check token. Not sending check request."
+    const-string/jumbo v6, "triggerUpdateIfNeeded: Unable to generate check token. Not sending check request."
 
-    invoke-static {p1, v0}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v5, v6}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 321
-    iget-object p1, p0, Lcom/android/server/timezone/PackageTracker;->mIntentHelper:Lcom/android/server/timezone/PackageTrackerIntentHelper;
+    iget-object v5, p0, Lcom/android/server/timezone/PackageTracker;->mIntentHelper:Lcom/android/server/timezone/PackageTrackerIntentHelper;
 
-    iget v0, p0, Lcom/android/server/timezone/PackageTracker;->mDelayBeforeReliabilityCheckMillis:I
+    iget v6, p0, Lcom/android/server/timezone/PackageTracker;->mDelayBeforeReliabilityCheckMillis:I
 
-    int-to-long v0, v0
+    int-to-long v6, v6
 
-    invoke-interface {p1, v0, v1}, Lcom/android/server/timezone/PackageTrackerIntentHelper;->scheduleReliabilityTrigger(J)V
+    invoke-interface {v5, v6, v7}, Lcom/android/server/timezone/PackageTrackerIntentHelper;->scheduleReliabilityTrigger(J)V
     :try_end_117
     .catchall {:try_start_fe .. :try_end_117} :catchall_15c
 
@@ -1631,26 +1678,26 @@
     .line 326
     :cond_119
     :try_start_119
-    iget-object v0, p0, Lcom/android/server/timezone/PackageTracker;->mIntentHelper:Lcom/android/server/timezone/PackageTrackerIntentHelper;
+    iget-object v5, p0, Lcom/android/server/timezone/PackageTracker;->mIntentHelper:Lcom/android/server/timezone/PackageTrackerIntentHelper;
 
-    invoke-interface {v0, p1}, Lcom/android/server/timezone/PackageTrackerIntentHelper;->sendTriggerUpdateCheck(Lcom/android/server/timezone/CheckToken;)V
+    invoke-interface {v5, v4}, Lcom/android/server/timezone/PackageTrackerIntentHelper;->sendTriggerUpdateCheck(Lcom/android/server/timezone/CheckToken;)V
 
     .line 327
-    const/4 p1, 0x1
+    const/4 v5, 0x1
 
-    iput-boolean p1, p0, Lcom/android/server/timezone/PackageTracker;->mCheckTriggered:Z
+    iput-boolean v5, p0, Lcom/android/server/timezone/PackageTracker;->mCheckTriggered:Z
 
     .line 330
     invoke-direct {p0}, Lcom/android/server/timezone/PackageTracker;->setCheckInProgress()V
 
     .line 334
-    iget-object p1, p0, Lcom/android/server/timezone/PackageTracker;->mIntentHelper:Lcom/android/server/timezone/PackageTrackerIntentHelper;
+    iget-object v5, p0, Lcom/android/server/timezone/PackageTracker;->mIntentHelper:Lcom/android/server/timezone/PackageTrackerIntentHelper;
 
-    iget v0, p0, Lcom/android/server/timezone/PackageTracker;->mDelayBeforeReliabilityCheckMillis:I
+    iget v6, p0, Lcom/android/server/timezone/PackageTracker;->mDelayBeforeReliabilityCheckMillis:I
 
-    int-to-long v0, v0
+    int-to-long v6, v6
 
-    invoke-interface {p1, v0, v1}, Lcom/android/server/timezone/PackageTrackerIntentHelper;->scheduleReliabilityTrigger(J)V
+    invoke-interface {v5, v6, v7}, Lcom/android/server/timezone/PackageTrackerIntentHelper;->scheduleReliabilityTrigger(J)V
     :try_end_12c
     .catchall {:try_start_119 .. :try_end_12c} :catchall_15c
 
@@ -1660,37 +1707,40 @@
     return-void
 
     .line 228
+    .end local v2  # "currentInstalledVersions":Lcom/android/server/timezone/PackageVersions;
+    .end local v3  # "packageStatus":Lcom/android/server/timezone/PackageStatus;
+    .end local v4  # "checkToken":Lcom/android/server/timezone/CheckToken;
     :cond_12e
     :goto_12e
     :try_start_12e
-    const-string/jumbo p1, "timezone.PackageTracker"
+    const-string/jumbo v2, "timezone.PackageTracker"
 
-    new-instance v2, Ljava/lang/StringBuilder;
+    new-instance v3, Ljava/lang/StringBuilder;
 
-    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v3, "No update triggered due to invalid application manifest entries. updaterApp="
+    const-string v4, "No update triggered due to invalid application manifest entries. updaterApp="
 
-    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v2, v0}, Ljava/lang/StringBuilder;->append(Z)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v0}, Ljava/lang/StringBuilder;->append(Z)Ljava/lang/StringBuilder;
 
-    const-string v0, ", dataApp="
+    const-string v4, ", dataApp="
 
-    invoke-virtual {v2, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v2, v1}, Ljava/lang/StringBuilder;->append(Z)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v1}, Ljava/lang/StringBuilder;->append(Z)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v3
 
-    invoke-static {p1, v0}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v2, v3}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 233
-    iget-object p1, p0, Lcom/android/server/timezone/PackageTracker;->mIntentHelper:Lcom/android/server/timezone/PackageTrackerIntentHelper;
+    iget-object v2, p0, Lcom/android/server/timezone/PackageTracker;->mIntentHelper:Lcom/android/server/timezone/PackageTrackerIntentHelper;
 
-    invoke-interface {p1}, Lcom/android/server/timezone/PackageTrackerIntentHelper;->unscheduleReliabilityTrigger()V
+    invoke-interface {v2}, Lcom/android/server/timezone/PackageTrackerIntentHelper;->unscheduleReliabilityTrigger()V
     :try_end_152
     .catchall {:try_start_12e .. :try_end_152} :catchall_15c
 
@@ -1700,19 +1750,22 @@
     return-void
 
     .line 218
+    .end local v0  # "updaterAppManifestValid":Z
+    .end local v1  # "dataAppManifestValid":Z
     :cond_154
     :try_start_154
-    new-instance p1, Ljava/lang/IllegalStateException;
+    new-instance v0, Ljava/lang/IllegalStateException;
 
-    const-string v0, "Unexpected call. Tracking is disabled."
+    const-string v1, "Unexpected call. Tracking is disabled."
 
-    invoke-direct {p1, v0}, Ljava/lang/IllegalStateException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v0, v1}, Ljava/lang/IllegalStateException;-><init>(Ljava/lang/String;)V
 
-    throw p1
+    throw v0
     :try_end_15c
     .catchall {:try_start_154 .. :try_end_15c} :catchall_15c
 
     .line 216
+    .end local p1  # "packageChanged":Z
     :catchall_15c
     move-exception p1
 

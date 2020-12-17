@@ -36,7 +36,8 @@
 .end method
 
 .method public constructor <init>(Landroid/content/Context;)V
-    .registers 3
+    .registers 4
+    .param p1, "context"  # Landroid/content/Context;
 
     .line 45
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -52,17 +53,18 @@
 
     .line 46
     :cond_8
-    new-instance p1, Ljava/lang/IllegalArgumentException;
+    new-instance v0, Ljava/lang/IllegalArgumentException;
 
-    const-string v0, "missing context"
+    const-string/jumbo v1, "missing context"
 
-    invoke-direct {p1, v0}, Ljava/lang/IllegalArgumentException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v0, v1}, Ljava/lang/IllegalArgumentException;-><init>(Ljava/lang/String;)V
 
-    throw p1
+    throw v0
 .end method
 
 .method private ignoringRemoteException(Landroid/net/IpMemoryStoreClient$ThrowingRunnable;)V
     .registers 3
+    .param p1, "r"  # Landroid/net/IpMemoryStoreClient$ThrowingRunnable;
 
     .line 59
     const-string v0, "Failed to execute remote procedure call"
@@ -74,7 +76,9 @@
 .end method
 
 .method private ignoringRemoteException(Ljava/lang/String;Landroid/net/IpMemoryStoreClient$ThrowingRunnable;)V
-    .registers 4
+    .registers 5
+    .param p1, "message"  # Ljava/lang/String;
+    .param p2, "r"  # Landroid/net/IpMemoryStoreClient$ThrowingRunnable;
 
     .line 64
     :try_start_0
@@ -87,20 +91,23 @@
 
     .line 65
     :catch_4
-    move-exception p2
+    move-exception v0
 
     .line 66
-    sget-object v0, Landroid/net/IpMemoryStoreClient;->TAG:Ljava/lang/String;
+    .local v0, "e":Landroid/os/RemoteException;
+    sget-object v1, Landroid/net/IpMemoryStoreClient;->TAG:Ljava/lang/String;
 
-    invoke-static {v0, p1, p2}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    invoke-static {v1, p1, v0}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
     .line 68
+    .end local v0  # "e":Landroid/os/RemoteException;
     :goto_a
     return-void
 .end method
 
 .method static synthetic lambda$factoryReset$18(Landroid/net/IIpMemoryStore;)V
     .registers 1
+    .param p0, "service"  # Landroid/net/IIpMemoryStore;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -114,7 +121,10 @@
 .end method
 
 .method static synthetic lambda$findL2Key$6(Landroid/net/IIpMemoryStore;Landroid/net/ipmemorystore/NetworkAttributes;Landroid/net/ipmemorystore/OnL2KeyResponseListener;)V
-    .registers 3
+    .registers 5
+    .param p0, "service"  # Landroid/net/IIpMemoryStore;
+    .param p1, "attributes"  # Landroid/net/ipmemorystore/NetworkAttributes;
+    .param p2, "listener"  # Landroid/net/ipmemorystore/OnL2KeyResponseListener;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -124,21 +134,22 @@
     .line 141
     invoke-virtual {p1}, Landroid/net/ipmemorystore/NetworkAttributes;->toParcelable()Landroid/net/ipmemorystore/NetworkAttributesParcelable;
 
-    move-result-object p1
+    move-result-object v0
 
     .line 142
     invoke-static {p2}, Landroid/net/ipmemorystore/OnL2KeyResponseListener;->toAIDL(Landroid/net/ipmemorystore/OnL2KeyResponseListener;)Landroid/net/ipmemorystore/IOnL2KeyResponseListener;
 
-    move-result-object p2
+    move-result-object v1
 
     .line 141
-    invoke-interface {p0, p1, p2}, Landroid/net/IIpMemoryStore;->findL2Key(Landroid/net/ipmemorystore/NetworkAttributesParcelable;Landroid/net/ipmemorystore/IOnL2KeyResponseListener;)V
+    invoke-interface {p0, v0, v1}, Landroid/net/IIpMemoryStore;->findL2Key(Landroid/net/ipmemorystore/NetworkAttributesParcelable;Landroid/net/ipmemorystore/IOnL2KeyResponseListener;)V
 
     return-void
 .end method
 
 .method static synthetic lambda$findL2Key$8(Landroid/net/ipmemorystore/OnL2KeyResponseListener;)V
     .registers 3
+    .param p0, "listener"  # Landroid/net/ipmemorystore/OnL2KeyResponseListener;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -161,6 +172,7 @@
 
 .method static synthetic lambda$isSameNetwork$11(Landroid/net/ipmemorystore/OnSameL3NetworkResponseListener;)V
     .registers 3
+    .param p0, "listener"  # Landroid/net/ipmemorystore/OnSameL3NetworkResponseListener;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -182,7 +194,11 @@
 .end method
 
 .method static synthetic lambda$isSameNetwork$9(Landroid/net/IIpMemoryStore;Ljava/lang/String;Ljava/lang/String;Landroid/net/ipmemorystore/OnSameL3NetworkResponseListener;)V
-    .registers 4
+    .registers 5
+    .param p0, "service"  # Landroid/net/IIpMemoryStore;
+    .param p1, "l2Key1"  # Ljava/lang/String;
+    .param p2, "l2Key2"  # Ljava/lang/String;
+    .param p3, "listener"  # Landroid/net/ipmemorystore/OnSameL3NetworkResponseListener;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -195,16 +211,21 @@
     .line 163
     invoke-static {p3}, Landroid/net/ipmemorystore/OnSameL3NetworkResponseListener;->toAIDL(Landroid/net/ipmemorystore/OnSameL3NetworkResponseListener;)Landroid/net/ipmemorystore/IOnSameL3NetworkResponseListener;
 
-    move-result-object p3
+    move-result-object v0
 
     .line 162
-    invoke-interface {p0, p1, p2, p3}, Landroid/net/IIpMemoryStore;->isSameNetwork(Ljava/lang/String;Ljava/lang/String;Landroid/net/ipmemorystore/IOnSameL3NetworkResponseListener;)V
+    invoke-interface {p0, p1, p2, v0}, Landroid/net/IIpMemoryStore;->isSameNetwork(Ljava/lang/String;Ljava/lang/String;Landroid/net/ipmemorystore/IOnSameL3NetworkResponseListener;)V
 
     return-void
 .end method
 
 .method static synthetic lambda$retrieveBlob$15(Landroid/net/IIpMemoryStore;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Landroid/net/ipmemorystore/OnBlobRetrievedListener;)V
-    .registers 5
+    .registers 6
+    .param p0, "service"  # Landroid/net/IIpMemoryStore;
+    .param p1, "l2Key"  # Ljava/lang/String;
+    .param p2, "clientId"  # Ljava/lang/String;
+    .param p3, "name"  # Ljava/lang/String;
+    .param p4, "listener"  # Landroid/net/ipmemorystore/OnBlobRetrievedListener;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -217,16 +238,17 @@
     .line 208
     invoke-static {p4}, Landroid/net/ipmemorystore/OnBlobRetrievedListener;->toAIDL(Landroid/net/ipmemorystore/OnBlobRetrievedListener;)Landroid/net/ipmemorystore/IOnBlobRetrievedListener;
 
-    move-result-object p4
+    move-result-object v0
 
     .line 207
-    invoke-interface {p0, p1, p2, p3, p4}, Landroid/net/IIpMemoryStore;->retrieveBlob(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Landroid/net/ipmemorystore/IOnBlobRetrievedListener;)V
+    invoke-interface {p0, p1, p2, p3, v0}, Landroid/net/IIpMemoryStore;->retrieveBlob(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Landroid/net/ipmemorystore/IOnBlobRetrievedListener;)V
 
     return-void
 .end method
 
 .method static synthetic lambda$retrieveBlob$17(Landroid/net/ipmemorystore/OnBlobRetrievedListener;)V
     .registers 3
+    .param p0, "listener"  # Landroid/net/ipmemorystore/OnBlobRetrievedListener;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -248,7 +270,10 @@
 .end method
 
 .method static synthetic lambda$retrieveNetworkAttributes$12(Landroid/net/IIpMemoryStore;Ljava/lang/String;Landroid/net/ipmemorystore/OnNetworkAttributesRetrievedListener;)V
-    .registers 3
+    .registers 4
+    .param p0, "service"  # Landroid/net/IIpMemoryStore;
+    .param p1, "l2Key"  # Ljava/lang/String;
+    .param p2, "listener"  # Landroid/net/ipmemorystore/OnNetworkAttributesRetrievedListener;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -261,16 +286,17 @@
     .line 184
     invoke-static {p2}, Landroid/net/ipmemorystore/OnNetworkAttributesRetrievedListener;->toAIDL(Landroid/net/ipmemorystore/OnNetworkAttributesRetrievedListener;)Landroid/net/ipmemorystore/IOnNetworkAttributesRetrievedListener;
 
-    move-result-object p2
+    move-result-object v0
 
     .line 183
-    invoke-interface {p0, p1, p2}, Landroid/net/IIpMemoryStore;->retrieveNetworkAttributes(Ljava/lang/String;Landroid/net/ipmemorystore/IOnNetworkAttributesRetrievedListener;)V
+    invoke-interface {p0, p1, v0}, Landroid/net/IIpMemoryStore;->retrieveNetworkAttributes(Ljava/lang/String;Landroid/net/ipmemorystore/IOnNetworkAttributesRetrievedListener;)V
 
     return-void
 .end method
 
 .method static synthetic lambda$retrieveNetworkAttributes$14(Landroid/net/ipmemorystore/OnNetworkAttributesRetrievedListener;)V
     .registers 3
+    .param p0, "listener"  # Landroid/net/ipmemorystore/OnNetworkAttributesRetrievedListener;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -293,6 +319,12 @@
 
 .method static synthetic lambda$storeBlob$3(Landroid/net/IIpMemoryStore;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Landroid/net/ipmemorystore/Blob;Landroid/net/ipmemorystore/OnStatusListener;)V
     .registers 12
+    .param p0, "service"  # Landroid/net/IIpMemoryStore;
+    .param p1, "l2Key"  # Ljava/lang/String;
+    .param p2, "clientId"  # Ljava/lang/String;
+    .param p3, "name"  # Ljava/lang/String;
+    .param p4, "data"  # Landroid/net/ipmemorystore/Blob;
+    .param p5, "listener"  # Landroid/net/ipmemorystore/OnStatusListener;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -325,6 +357,7 @@
 
 .method static synthetic lambda$storeBlob$5(Landroid/net/ipmemorystore/OnStatusListener;)V
     .registers 3
+    .param p0, "listener"  # Landroid/net/ipmemorystore/OnStatusListener;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -344,7 +377,11 @@
 .end method
 
 .method static synthetic lambda$storeNetworkAttributes$0(Landroid/net/IIpMemoryStore;Ljava/lang/String;Landroid/net/ipmemorystore/NetworkAttributes;Landroid/net/ipmemorystore/OnStatusListener;)V
-    .registers 4
+    .registers 6
+    .param p0, "service"  # Landroid/net/IIpMemoryStore;
+    .param p1, "l2Key"  # Ljava/lang/String;
+    .param p2, "attributes"  # Landroid/net/ipmemorystore/NetworkAttributes;
+    .param p3, "listener"  # Landroid/net/ipmemorystore/OnStatusListener;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -354,21 +391,22 @@
     .line 91
     invoke-virtual {p2}, Landroid/net/ipmemorystore/NetworkAttributes;->toParcelable()Landroid/net/ipmemorystore/NetworkAttributesParcelable;
 
-    move-result-object p2
+    move-result-object v0
 
     .line 92
     invoke-static {p3}, Landroid/net/ipmemorystore/OnStatusListener;->toAIDL(Landroid/net/ipmemorystore/OnStatusListener;)Landroid/net/ipmemorystore/IOnStatusListener;
 
-    move-result-object p3
+    move-result-object v1
 
     .line 91
-    invoke-interface {p0, p1, p2, p3}, Landroid/net/IIpMemoryStore;->storeNetworkAttributes(Ljava/lang/String;Landroid/net/ipmemorystore/NetworkAttributesParcelable;Landroid/net/ipmemorystore/IOnStatusListener;)V
+    invoke-interface {p0, p1, v0, v1}, Landroid/net/IIpMemoryStore;->storeNetworkAttributes(Ljava/lang/String;Landroid/net/ipmemorystore/NetworkAttributesParcelable;Landroid/net/ipmemorystore/IOnStatusListener;)V
 
     return-void
 .end method
 
 .method static synthetic lambda$storeNetworkAttributes$2(Landroid/net/ipmemorystore/OnStatusListener;)V
     .registers 3
+    .param p0, "listener"  # Landroid/net/ipmemorystore/OnStatusListener;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -410,6 +448,7 @@
     move-exception v0
 
     .line 224
+    .local v0, "m":Ljava/util/concurrent/ExecutionException;
     sget-object v1, Landroid/net/IpMemoryStoreClient;->TAG:Ljava/lang/String;
 
     const-string v2, "Error executing factory reset"
@@ -417,12 +456,15 @@
     invoke-static {v1, v2, v0}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
     .line 226
+    .end local v0  # "m":Ljava/util/concurrent/ExecutionException;
     :goto_11
     return-void
 .end method
 
 .method public findL2Key(Landroid/net/ipmemorystore/NetworkAttributes;Landroid/net/ipmemorystore/OnL2KeyResponseListener;)V
-    .registers 4
+    .registers 6
+    .param p1, "attributes"  # Landroid/net/ipmemorystore/NetworkAttributes;
+    .param p2, "listener"  # Landroid/net/ipmemorystore/OnL2KeyResponseListener;
 
     .line 140
     :try_start_0
@@ -439,24 +481,29 @@
 
     .line 143
     :catch_9
-    move-exception p1
+    move-exception v0
 
     .line 144
-    new-instance p1, Landroid/net/-$$Lambda$IpMemoryStoreClient$xx1upXTRGTVc0003KEhaxwIwwN8;
+    .local v0, "m":Ljava/util/concurrent/ExecutionException;
+    new-instance v1, Landroid/net/-$$Lambda$IpMemoryStoreClient$xx1upXTRGTVc0003KEhaxwIwwN8;
 
-    invoke-direct {p1, p2}, Landroid/net/-$$Lambda$IpMemoryStoreClient$xx1upXTRGTVc0003KEhaxwIwwN8;-><init>(Landroid/net/ipmemorystore/OnL2KeyResponseListener;)V
+    invoke-direct {v1, p2}, Landroid/net/-$$Lambda$IpMemoryStoreClient$xx1upXTRGTVc0003KEhaxwIwwN8;-><init>(Landroid/net/ipmemorystore/OnL2KeyResponseListener;)V
 
-    const-string p2, "Error finding L2 Key"
+    const-string v2, "Error finding L2 Key"
 
-    invoke-direct {p0, p2, p1}, Landroid/net/IpMemoryStoreClient;->ignoringRemoteException(Ljava/lang/String;Landroid/net/IpMemoryStoreClient$ThrowingRunnable;)V
+    invoke-direct {p0, v2, v1}, Landroid/net/IpMemoryStoreClient;->ignoringRemoteException(Ljava/lang/String;Landroid/net/IpMemoryStoreClient$ThrowingRunnable;)V
 
     .line 147
+    .end local v0  # "m":Ljava/util/concurrent/ExecutionException;
     :goto_14
     return-void
 .end method
 
 .method public isSameNetwork(Ljava/lang/String;Ljava/lang/String;Landroid/net/ipmemorystore/OnSameL3NetworkResponseListener;)V
-    .registers 5
+    .registers 7
+    .param p1, "l2Key1"  # Ljava/lang/String;
+    .param p2, "l2Key2"  # Ljava/lang/String;
+    .param p3, "listener"  # Landroid/net/ipmemorystore/OnSameL3NetworkResponseListener;
 
     .line 161
     :try_start_0
@@ -473,24 +520,27 @@
 
     .line 164
     :catch_9
-    move-exception p1
+    move-exception v0
 
     .line 165
-    new-instance p1, Landroid/net/-$$Lambda$IpMemoryStoreClient$V28n1xp79cKTZf0npS-vzf7FUo8;
+    .local v0, "m":Ljava/util/concurrent/ExecutionException;
+    new-instance v1, Landroid/net/-$$Lambda$IpMemoryStoreClient$V28n1xp79cKTZf0npS-vzf7FUo8;
 
-    invoke-direct {p1, p3}, Landroid/net/-$$Lambda$IpMemoryStoreClient$V28n1xp79cKTZf0npS-vzf7FUo8;-><init>(Landroid/net/ipmemorystore/OnSameL3NetworkResponseListener;)V
+    invoke-direct {v1, p3}, Landroid/net/-$$Lambda$IpMemoryStoreClient$V28n1xp79cKTZf0npS-vzf7FUo8;-><init>(Landroid/net/ipmemorystore/OnSameL3NetworkResponseListener;)V
 
-    const-string p2, "Error checking for network sameness"
+    const-string v2, "Error checking for network sameness"
 
-    invoke-direct {p0, p2, p1}, Landroid/net/IpMemoryStoreClient;->ignoringRemoteException(Ljava/lang/String;Landroid/net/IpMemoryStoreClient$ThrowingRunnable;)V
+    invoke-direct {p0, v2, v1}, Landroid/net/IpMemoryStoreClient;->ignoringRemoteException(Ljava/lang/String;Landroid/net/IpMemoryStoreClient$ThrowingRunnable;)V
 
     .line 168
+    .end local v0  # "m":Ljava/util/concurrent/ExecutionException;
     :goto_14
     return-void
 .end method
 
 .method public synthetic lambda$factoryReset$19$IpMemoryStoreClient(Landroid/net/IIpMemoryStore;)V
     .registers 3
+    .param p1, "service"  # Landroid/net/IIpMemoryStore;
 
     .line 221
     new-instance v0, Landroid/net/-$$Lambda$IpMemoryStoreClient$y9CML5-H8l7LhlZfPXBMWllilSs;
@@ -504,6 +554,9 @@
 
 .method public synthetic lambda$findL2Key$7$IpMemoryStoreClient(Landroid/net/ipmemorystore/NetworkAttributes;Landroid/net/ipmemorystore/OnL2KeyResponseListener;Landroid/net/IIpMemoryStore;)V
     .registers 5
+    .param p1, "attributes"  # Landroid/net/ipmemorystore/NetworkAttributes;
+    .param p2, "listener"  # Landroid/net/ipmemorystore/OnL2KeyResponseListener;
+    .param p3, "service"  # Landroid/net/IIpMemoryStore;
 
     .line 140
     new-instance v0, Landroid/net/-$$Lambda$IpMemoryStoreClient$2bQLFhsJeYf5bkZg0-91OSOTEJY;
@@ -517,6 +570,10 @@
 
 .method public synthetic lambda$isSameNetwork$10$IpMemoryStoreClient(Ljava/lang/String;Ljava/lang/String;Landroid/net/ipmemorystore/OnSameL3NetworkResponseListener;Landroid/net/IIpMemoryStore;)V
     .registers 6
+    .param p1, "l2Key1"  # Ljava/lang/String;
+    .param p2, "l2Key2"  # Ljava/lang/String;
+    .param p3, "listener"  # Landroid/net/ipmemorystore/OnSameL3NetworkResponseListener;
+    .param p4, "service"  # Landroid/net/IIpMemoryStore;
 
     .line 161
     new-instance v0, Landroid/net/-$$Lambda$IpMemoryStoreClient$A2hOjZriLOXFq3Aij0wHaYZQOSc;
@@ -530,6 +587,11 @@
 
 .method public synthetic lambda$retrieveBlob$16$IpMemoryStoreClient(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Landroid/net/ipmemorystore/OnBlobRetrievedListener;Landroid/net/IIpMemoryStore;)V
     .registers 13
+    .param p1, "l2Key"  # Ljava/lang/String;
+    .param p2, "clientId"  # Ljava/lang/String;
+    .param p3, "name"  # Ljava/lang/String;
+    .param p4, "listener"  # Landroid/net/ipmemorystore/OnBlobRetrievedListener;
+    .param p5, "service"  # Landroid/net/IIpMemoryStore;
 
     .line 206
     new-instance v6, Landroid/net/-$$Lambda$IpMemoryStoreClient$284VFgqq7BBkkwVNFLIrF3c59Es;
@@ -555,6 +617,9 @@
 
 .method public synthetic lambda$retrieveNetworkAttributes$13$IpMemoryStoreClient(Ljava/lang/String;Landroid/net/ipmemorystore/OnNetworkAttributesRetrievedListener;Landroid/net/IIpMemoryStore;)V
     .registers 5
+    .param p1, "l2Key"  # Ljava/lang/String;
+    .param p2, "listener"  # Landroid/net/ipmemorystore/OnNetworkAttributesRetrievedListener;
+    .param p3, "service"  # Landroid/net/IIpMemoryStore;
 
     .line 182
     new-instance v0, Landroid/net/-$$Lambda$IpMemoryStoreClient$Uc0QFR5a_MhzwuvUoWpz73NAAEs;
@@ -568,6 +633,12 @@
 
 .method public synthetic lambda$storeBlob$4$IpMemoryStoreClient(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Landroid/net/ipmemorystore/Blob;Landroid/net/ipmemorystore/OnStatusListener;Landroid/net/IIpMemoryStore;)V
     .registers 15
+    .param p1, "l2Key"  # Ljava/lang/String;
+    .param p2, "clientId"  # Ljava/lang/String;
+    .param p3, "name"  # Ljava/lang/String;
+    .param p4, "data"  # Landroid/net/ipmemorystore/Blob;
+    .param p5, "listener"  # Landroid/net/ipmemorystore/OnStatusListener;
+    .param p6, "service"  # Landroid/net/IIpMemoryStore;
 
     .line 114
     new-instance v7, Landroid/net/-$$Lambda$IpMemoryStoreClient$4eqT-tDGA25PNMyU_1yqQCF2gOo;
@@ -595,6 +666,10 @@
 
 .method public synthetic lambda$storeNetworkAttributes$1$IpMemoryStoreClient(Ljava/lang/String;Landroid/net/ipmemorystore/NetworkAttributes;Landroid/net/ipmemorystore/OnStatusListener;Landroid/net/IIpMemoryStore;)V
     .registers 6
+    .param p1, "l2Key"  # Ljava/lang/String;
+    .param p2, "attributes"  # Landroid/net/ipmemorystore/NetworkAttributes;
+    .param p3, "listener"  # Landroid/net/ipmemorystore/OnStatusListener;
+    .param p4, "service"  # Landroid/net/IIpMemoryStore;
 
     .line 90
     new-instance v0, Landroid/net/-$$Lambda$IpMemoryStoreClient$4LLLcxcDI48Nnc_rkm7mdSQsa2U;
@@ -608,6 +683,10 @@
 
 .method public retrieveBlob(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Landroid/net/ipmemorystore/OnBlobRetrievedListener;)V
     .registers 12
+    .param p1, "l2Key"  # Ljava/lang/String;
+    .param p2, "clientId"  # Ljava/lang/String;
+    .param p3, "name"  # Ljava/lang/String;
+    .param p4, "listener"  # Landroid/net/ipmemorystore/OnBlobRetrievedListener;
 
     .line 206
     :try_start_0
@@ -636,24 +715,28 @@
 
     .line 209
     :catch_f
-    move-exception p1
+    move-exception v0
 
     .line 210
-    new-instance p1, Landroid/net/-$$Lambda$IpMemoryStoreClient$hPxh-gsDi3P-N7OFwwZBxGXYZTs;
+    .local v0, "m":Ljava/util/concurrent/ExecutionException;
+    new-instance v1, Landroid/net/-$$Lambda$IpMemoryStoreClient$hPxh-gsDi3P-N7OFwwZBxGXYZTs;
 
-    invoke-direct {p1, p4}, Landroid/net/-$$Lambda$IpMemoryStoreClient$hPxh-gsDi3P-N7OFwwZBxGXYZTs;-><init>(Landroid/net/ipmemorystore/OnBlobRetrievedListener;)V
+    invoke-direct {v1, p4}, Landroid/net/-$$Lambda$IpMemoryStoreClient$hPxh-gsDi3P-N7OFwwZBxGXYZTs;-><init>(Landroid/net/ipmemorystore/OnBlobRetrievedListener;)V
 
-    const-string p2, "Error retrieving blob"
+    const-string v2, "Error retrieving blob"
 
-    invoke-direct {p0, p2, p1}, Landroid/net/IpMemoryStoreClient;->ignoringRemoteException(Ljava/lang/String;Landroid/net/IpMemoryStoreClient$ThrowingRunnable;)V
+    invoke-direct {p0, v2, v1}, Landroid/net/IpMemoryStoreClient;->ignoringRemoteException(Ljava/lang/String;Landroid/net/IpMemoryStoreClient$ThrowingRunnable;)V
 
     .line 214
+    .end local v0  # "m":Ljava/util/concurrent/ExecutionException;
     :goto_1a
     return-void
 .end method
 
 .method public retrieveNetworkAttributes(Ljava/lang/String;Landroid/net/ipmemorystore/OnNetworkAttributesRetrievedListener;)V
-    .registers 4
+    .registers 6
+    .param p1, "l2Key"  # Ljava/lang/String;
+    .param p2, "listener"  # Landroid/net/ipmemorystore/OnNetworkAttributesRetrievedListener;
 
     .line 182
     :try_start_0
@@ -670,18 +753,20 @@
 
     .line 185
     :catch_9
-    move-exception p1
+    move-exception v0
 
     .line 186
-    new-instance p1, Landroid/net/-$$Lambda$IpMemoryStoreClient$JTvBo0T3ntOmEDS60qZyBJUlJio;
+    .local v0, "m":Ljava/util/concurrent/ExecutionException;
+    new-instance v1, Landroid/net/-$$Lambda$IpMemoryStoreClient$JTvBo0T3ntOmEDS60qZyBJUlJio;
 
-    invoke-direct {p1, p2}, Landroid/net/-$$Lambda$IpMemoryStoreClient$JTvBo0T3ntOmEDS60qZyBJUlJio;-><init>(Landroid/net/ipmemorystore/OnNetworkAttributesRetrievedListener;)V
+    invoke-direct {v1, p2}, Landroid/net/-$$Lambda$IpMemoryStoreClient$JTvBo0T3ntOmEDS60qZyBJUlJio;-><init>(Landroid/net/ipmemorystore/OnNetworkAttributesRetrievedListener;)V
 
-    const-string p2, "Error retrieving network attributes"
+    const-string v2, "Error retrieving network attributes"
 
-    invoke-direct {p0, p2, p1}, Landroid/net/IpMemoryStoreClient;->ignoringRemoteException(Ljava/lang/String;Landroid/net/IpMemoryStoreClient$ThrowingRunnable;)V
+    invoke-direct {p0, v2, v1}, Landroid/net/IpMemoryStoreClient;->ignoringRemoteException(Ljava/lang/String;Landroid/net/IpMemoryStoreClient$ThrowingRunnable;)V
 
     .line 190
+    .end local v0  # "m":Ljava/util/concurrent/ExecutionException;
     :goto_14
     return-void
 .end method
@@ -705,6 +790,11 @@
 
 .method public storeBlob(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Landroid/net/ipmemorystore/Blob;Landroid/net/ipmemorystore/OnStatusListener;)V
     .registers 14
+    .param p1, "l2Key"  # Ljava/lang/String;
+    .param p2, "clientId"  # Ljava/lang/String;
+    .param p3, "name"  # Ljava/lang/String;
+    .param p4, "data"  # Landroid/net/ipmemorystore/Blob;
+    .param p5, "listener"  # Landroid/net/ipmemorystore/OnStatusListener;
 
     .line 114
     :try_start_0
@@ -735,24 +825,29 @@
 
     .line 117
     :catch_10
-    move-exception p1
+    move-exception v0
 
     .line 118
-    new-instance p1, Landroid/net/-$$Lambda$IpMemoryStoreClient$Rs7okZ0ViR35WkNSGbyhqEXxJxc;
+    .local v0, "m":Ljava/util/concurrent/ExecutionException;
+    new-instance v1, Landroid/net/-$$Lambda$IpMemoryStoreClient$Rs7okZ0ViR35WkNSGbyhqEXxJxc;
 
-    invoke-direct {p1, p5}, Landroid/net/-$$Lambda$IpMemoryStoreClient$Rs7okZ0ViR35WkNSGbyhqEXxJxc;-><init>(Landroid/net/ipmemorystore/OnStatusListener;)V
+    invoke-direct {v1, p5}, Landroid/net/-$$Lambda$IpMemoryStoreClient$Rs7okZ0ViR35WkNSGbyhqEXxJxc;-><init>(Landroid/net/ipmemorystore/OnStatusListener;)V
 
-    const-string p2, "Error storing blob"
+    const-string v2, "Error storing blob"
 
-    invoke-direct {p0, p2, p1}, Landroid/net/IpMemoryStoreClient;->ignoringRemoteException(Ljava/lang/String;Landroid/net/IpMemoryStoreClient$ThrowingRunnable;)V
+    invoke-direct {p0, v2, v1}, Landroid/net/IpMemoryStoreClient;->ignoringRemoteException(Ljava/lang/String;Landroid/net/IpMemoryStoreClient$ThrowingRunnable;)V
 
     .line 121
+    .end local v0  # "m":Ljava/util/concurrent/ExecutionException;
     :goto_1b
     return-void
 .end method
 
 .method public storeNetworkAttributes(Ljava/lang/String;Landroid/net/ipmemorystore/NetworkAttributes;Landroid/net/ipmemorystore/OnStatusListener;)V
-    .registers 5
+    .registers 7
+    .param p1, "l2Key"  # Ljava/lang/String;
+    .param p2, "attributes"  # Landroid/net/ipmemorystore/NetworkAttributes;
+    .param p3, "listener"  # Landroid/net/ipmemorystore/OnStatusListener;
 
     .line 90
     :try_start_0
@@ -769,18 +864,20 @@
 
     .line 93
     :catch_9
-    move-exception p1
+    move-exception v0
 
     .line 94
-    new-instance p1, Landroid/net/-$$Lambda$IpMemoryStoreClient$FjB7dm6lAwZ6pH1lqvrhxtLFOm8;
+    .local v0, "m":Ljava/util/concurrent/ExecutionException;
+    new-instance v1, Landroid/net/-$$Lambda$IpMemoryStoreClient$FjB7dm6lAwZ6pH1lqvrhxtLFOm8;
 
-    invoke-direct {p1, p3}, Landroid/net/-$$Lambda$IpMemoryStoreClient$FjB7dm6lAwZ6pH1lqvrhxtLFOm8;-><init>(Landroid/net/ipmemorystore/OnStatusListener;)V
+    invoke-direct {v1, p3}, Landroid/net/-$$Lambda$IpMemoryStoreClient$FjB7dm6lAwZ6pH1lqvrhxtLFOm8;-><init>(Landroid/net/ipmemorystore/OnStatusListener;)V
 
-    const-string p2, "Error storing network attributes"
+    const-string v2, "Error storing network attributes"
 
-    invoke-direct {p0, p2, p1}, Landroid/net/IpMemoryStoreClient;->ignoringRemoteException(Ljava/lang/String;Landroid/net/IpMemoryStoreClient$ThrowingRunnable;)V
+    invoke-direct {p0, v2, v1}, Landroid/net/IpMemoryStoreClient;->ignoringRemoteException(Ljava/lang/String;Landroid/net/IpMemoryStoreClient$ThrowingRunnable;)V
 
     .line 97
+    .end local v0  # "m":Ljava/util/concurrent/ExecutionException;
     :goto_14
     return-void
 .end method

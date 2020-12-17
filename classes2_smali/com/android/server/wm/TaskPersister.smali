@@ -16,7 +16,7 @@
 
 
 # static fields
-.field static final DEBUG:Z = false
+.field static final DEBUG:Z = true
 
 .field private static final IMAGES_DIRNAME:Ljava/lang/String; = "recent_images"
 
@@ -70,98 +70,105 @@
 # direct methods
 .method constructor <init>(Ljava/io/File;)V
     .registers 3
+    .param p1, "workingDir"  # Ljava/io/File;
     .annotation build Lcom/android/internal/annotations/VisibleForTesting;
     .end annotation
 
-    .line 112
+    .line 115
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
-    .line 77
+    .line 80
     new-instance v0, Landroid/util/SparseArray;
 
     invoke-direct {v0}, Landroid/util/SparseArray;-><init>()V
 
     iput-object v0, p0, Lcom/android/server/wm/TaskPersister;->mTaskIdsInFile:Landroid/util/SparseArray;
 
-    .line 80
+    .line 83
     new-instance v0, Ljava/lang/Object;
 
     invoke-direct {v0}, Ljava/lang/Object;-><init>()V
 
     iput-object v0, p0, Lcom/android/server/wm/TaskPersister;->mIoLock:Ljava/lang/Object;
 
-    .line 83
+    .line 86
     new-instance v0, Landroid/util/ArraySet;
 
     invoke-direct {v0}, Landroid/util/ArraySet;-><init>()V
 
     iput-object v0, p0, Lcom/android/server/wm/TaskPersister;->mTmpTaskIds:Landroid/util/ArraySet;
 
-    .line 113
+    .line 116
     iput-object p1, p0, Lcom/android/server/wm/TaskPersister;->mTaskIdsDir:Ljava/io/File;
 
-    .line 114
-    const/4 p1, 0x0
-
-    iput-object p1, p0, Lcom/android/server/wm/TaskPersister;->mStackSupervisor:Lcom/android/server/wm/ActivityStackSupervisor;
-
-    .line 115
-    iput-object p1, p0, Lcom/android/server/wm/TaskPersister;->mService:Lcom/android/server/wm/ActivityTaskManagerService;
-
-    .line 116
-    iput-object p1, p0, Lcom/android/server/wm/TaskPersister;->mRecentTasks:Lcom/android/server/wm/RecentTasks;
-
     .line 117
-    new-instance p1, Lcom/android/server/wm/PersisterQueue;
+    const/4 v0, 0x0
 
-    invoke-direct {p1}, Lcom/android/server/wm/PersisterQueue;-><init>()V
-
-    iput-object p1, p0, Lcom/android/server/wm/TaskPersister;->mPersisterQueue:Lcom/android/server/wm/PersisterQueue;
+    iput-object v0, p0, Lcom/android/server/wm/TaskPersister;->mStackSupervisor:Lcom/android/server/wm/ActivityStackSupervisor;
 
     .line 118
-    iget-object p1, p0, Lcom/android/server/wm/TaskPersister;->mPersisterQueue:Lcom/android/server/wm/PersisterQueue;
-
-    invoke-virtual {p1, p0}, Lcom/android/server/wm/PersisterQueue;->addListener(Lcom/android/server/wm/PersisterQueue$Listener;)V
+    iput-object v0, p0, Lcom/android/server/wm/TaskPersister;->mService:Lcom/android/server/wm/ActivityTaskManagerService;
 
     .line 119
+    iput-object v0, p0, Lcom/android/server/wm/TaskPersister;->mRecentTasks:Lcom/android/server/wm/RecentTasks;
+
+    .line 120
+    new-instance v0, Lcom/android/server/wm/PersisterQueue;
+
+    invoke-direct {v0}, Lcom/android/server/wm/PersisterQueue;-><init>()V
+
+    iput-object v0, p0, Lcom/android/server/wm/TaskPersister;->mPersisterQueue:Lcom/android/server/wm/PersisterQueue;
+
+    .line 121
+    iget-object v0, p0, Lcom/android/server/wm/TaskPersister;->mPersisterQueue:Lcom/android/server/wm/PersisterQueue;
+
+    invoke-virtual {v0, p0}, Lcom/android/server/wm/PersisterQueue;->addListener(Lcom/android/server/wm/PersisterQueue$Listener;)V
+
+    .line 122
     return-void
 .end method
 
 .method constructor <init>(Ljava/io/File;Lcom/android/server/wm/ActivityStackSupervisor;Lcom/android/server/wm/ActivityTaskManagerService;Lcom/android/server/wm/RecentTasks;Lcom/android/server/wm/PersisterQueue;)V
-    .registers 10
+    .registers 11
+    .param p1, "systemDir"  # Ljava/io/File;
+    .param p2, "stackSupervisor"  # Lcom/android/server/wm/ActivityStackSupervisor;
+    .param p3, "service"  # Lcom/android/server/wm/ActivityTaskManagerService;
+    .param p4, "recentTasks"  # Lcom/android/server/wm/RecentTasks;
+    .param p5, "persisterQueue"  # Lcom/android/server/wm/PersisterQueue;
 
-    .line 87
+    .line 90
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
-    .line 77
+    .line 80
     new-instance v0, Landroid/util/SparseArray;
 
     invoke-direct {v0}, Landroid/util/SparseArray;-><init>()V
 
     iput-object v0, p0, Lcom/android/server/wm/TaskPersister;->mTaskIdsInFile:Landroid/util/SparseArray;
 
-    .line 80
+    .line 83
     new-instance v0, Ljava/lang/Object;
 
     invoke-direct {v0}, Ljava/lang/Object;-><init>()V
 
     iput-object v0, p0, Lcom/android/server/wm/TaskPersister;->mIoLock:Ljava/lang/Object;
 
-    .line 83
+    .line 86
     new-instance v0, Landroid/util/ArraySet;
 
     invoke-direct {v0}, Landroid/util/ArraySet;-><init>()V
 
     iput-object v0, p0, Lcom/android/server/wm/TaskPersister;->mTmpTaskIds:Landroid/util/ArraySet;
 
-    .line 89
+    .line 92
     new-instance v0, Ljava/io/File;
 
     const-string v1, "recent_images"
 
     invoke-direct {v0, p1, v1}, Ljava/io/File;-><init>(Ljava/io/File;Ljava/lang/String;)V
 
-    .line 90
+    .line 93
+    .local v0, "legacyImagesDir":Ljava/io/File;
     invoke-virtual {v0}, Ljava/io/File;->exists()Z
 
     move-result v1
@@ -170,7 +177,7 @@
 
     if-eqz v1, :cond_47
 
-    .line 91
+    .line 94
     invoke-static {v0}, Landroid/os/FileUtils;->deleteContents(Ljava/io/File;)Z
 
     move-result v1
@@ -183,7 +190,7 @@
 
     if-nez v1, :cond_47
 
-    .line 92
+    .line 95
     :cond_33
     new-instance v1, Ljava/lang/StringBuilder;
 
@@ -197,162 +204,169 @@
 
     invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v1
 
-    invoke-static {v2, v0}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
-
-    .line 96
-    :cond_47
-    new-instance v0, Ljava/io/File;
-
-    const-string v1, "recent_tasks"
-
-    invoke-direct {v0, p1, v1}, Ljava/io/File;-><init>(Ljava/io/File;Ljava/lang/String;)V
-
-    .line 97
-    invoke-virtual {v0}, Ljava/io/File;->exists()Z
-
-    move-result p1
-
-    if-eqz p1, :cond_74
-
-    .line 98
-    invoke-static {v0}, Landroid/os/FileUtils;->deleteContents(Ljava/io/File;)Z
-
-    move-result p1
-
-    if-eqz p1, :cond_60
-
-    invoke-virtual {v0}, Ljava/io/File;->delete()Z
-
-    move-result p1
-
-    if-nez p1, :cond_74
+    invoke-static {v2, v1}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 99
+    :cond_47
+    new-instance v1, Ljava/io/File;
+
+    const-string v3, "recent_tasks"
+
+    invoke-direct {v1, p1, v3}, Ljava/io/File;-><init>(Ljava/io/File;Ljava/lang/String;)V
+
+    .line 100
+    .local v1, "legacyTasksDir":Ljava/io/File;
+    invoke-virtual {v1}, Ljava/io/File;->exists()Z
+
+    move-result v3
+
+    if-eqz v3, :cond_74
+
+    .line 101
+    invoke-static {v1}, Landroid/os/FileUtils;->deleteContents(Ljava/io/File;)Z
+
+    move-result v3
+
+    if-eqz v3, :cond_60
+
+    invoke-virtual {v1}, Ljava/io/File;->delete()Z
+
+    move-result v3
+
+    if-nez v3, :cond_74
+
+    .line 102
     :cond_60
-    new-instance p1, Ljava/lang/StringBuilder;
+    new-instance v3, Ljava/lang/StringBuilder;
 
-    invoke-direct {p1}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v1, "Failure deleting legacy tasks directory: "
+    const-string v4, "Failure deleting legacy tasks directory: "
 
-    invoke-virtual {p1, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p1, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v3
 
-    invoke-static {v2, p1}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v2, v3}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 103
+    .line 106
     :cond_74
-    new-instance p1, Ljava/io/File;
+    new-instance v2, Ljava/io/File;
 
     invoke-static {}, Landroid/os/Environment;->getDataDirectory()Ljava/io/File;
 
-    move-result-object v0
+    move-result-object v3
 
-    const-string v1, "system_de"
+    const-string v4, "system_de"
 
-    invoke-direct {p1, v0, v1}, Ljava/io/File;-><init>(Ljava/io/File;Ljava/lang/String;)V
+    invoke-direct {v2, v3, v4}, Ljava/io/File;-><init>(Ljava/io/File;Ljava/lang/String;)V
 
-    iput-object p1, p0, Lcom/android/server/wm/TaskPersister;->mTaskIdsDir:Ljava/io/File;
-
-    .line 104
-    iput-object p2, p0, Lcom/android/server/wm/TaskPersister;->mStackSupervisor:Lcom/android/server/wm/ActivityStackSupervisor;
-
-    .line 105
-    iput-object p3, p0, Lcom/android/server/wm/TaskPersister;->mService:Lcom/android/server/wm/ActivityTaskManagerService;
-
-    .line 106
-    iput-object p4, p0, Lcom/android/server/wm/TaskPersister;->mRecentTasks:Lcom/android/server/wm/RecentTasks;
+    iput-object v2, p0, Lcom/android/server/wm/TaskPersister;->mTaskIdsDir:Ljava/io/File;
 
     .line 107
-    iput-object p5, p0, Lcom/android/server/wm/TaskPersister;->mPersisterQueue:Lcom/android/server/wm/PersisterQueue;
+    iput-object p2, p0, Lcom/android/server/wm/TaskPersister;->mStackSupervisor:Lcom/android/server/wm/ActivityStackSupervisor;
 
     .line 108
-    iget-object p1, p0, Lcom/android/server/wm/TaskPersister;->mPersisterQueue:Lcom/android/server/wm/PersisterQueue;
-
-    invoke-virtual {p1, p0}, Lcom/android/server/wm/PersisterQueue;->addListener(Lcom/android/server/wm/PersisterQueue$Listener;)V
+    iput-object p3, p0, Lcom/android/server/wm/TaskPersister;->mService:Lcom/android/server/wm/ActivityTaskManagerService;
 
     .line 109
+    iput-object p4, p0, Lcom/android/server/wm/TaskPersister;->mRecentTasks:Lcom/android/server/wm/RecentTasks;
+
+    .line 110
+    iput-object p5, p0, Lcom/android/server/wm/TaskPersister;->mPersisterQueue:Lcom/android/server/wm/PersisterQueue;
+
+    .line 111
+    iget-object v2, p0, Lcom/android/server/wm/TaskPersister;->mPersisterQueue:Lcom/android/server/wm/PersisterQueue;
+
+    invoke-virtual {v2, p0}, Lcom/android/server/wm/PersisterQueue;->addListener(Lcom/android/server/wm/PersisterQueue$Listener;)V
+
+    .line 112
     return-void
 .end method
 
 .method static synthetic access$000(I)Ljava/io/File;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # I
 
     .line 62
     invoke-static {p0}, Lcom/android/server/wm/TaskPersister;->getUserTasksDir(I)Ljava/io/File;
 
-    move-result-object p0
+    move-result-object v0
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$100(Ljava/lang/String;)Z
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Ljava/lang/String;
 
     .line 62
     invoke-static {p0}, Lcom/android/server/wm/TaskPersister;->createParentDirectory(Ljava/lang/String;)Z
 
-    move-result p0
+    move-result v0
 
-    return p0
+    return v0
 .end method
 
 .method private static createParentDirectory(Ljava/lang/String;)Z
-    .registers 2
+    .registers 3
+    .param p0, "filePath"  # Ljava/lang/String;
 
-    .line 504
+    .line 507
     new-instance v0, Ljava/io/File;
 
     invoke-direct {v0, p0}, Ljava/io/File;-><init>(Ljava/lang/String;)V
 
     invoke-virtual {v0}, Ljava/io/File;->getParentFile()Ljava/io/File;
 
-    move-result-object p0
+    move-result-object v0
 
-    .line 505
-    invoke-virtual {p0}, Ljava/io/File;->exists()Z
+    .line 508
+    .local v0, "parentDir":Ljava/io/File;
+    invoke-virtual {v0}, Ljava/io/File;->exists()Z
 
-    move-result v0
+    move-result v1
 
-    if-nez v0, :cond_18
+    if-nez v1, :cond_18
 
-    invoke-virtual {p0}, Ljava/io/File;->mkdirs()Z
+    invoke-virtual {v0}, Ljava/io/File;->mkdirs()Z
 
-    move-result p0
+    move-result v1
 
-    if-eqz p0, :cond_16
+    if-eqz v1, :cond_16
 
     goto :goto_18
 
     :cond_16
-    const/4 p0, 0x0
+    const/4 v1, 0x0
 
     goto :goto_19
 
     :cond_18
     :goto_18
-    const/4 p0, 0x1
+    const/4 v1, 0x1
 
     :goto_19
-    return p0
+    return v1
 .end method
 
 .method private fileToString(Ljava/io/File;)Ljava/lang/String;
     .registers 7
+    .param p1, "file"  # Ljava/io/File;
 
-    .line 243
+    .line 246
     invoke-static {}, Ljava/lang/System;->lineSeparator()Ljava/lang/String;
 
     move-result-object v0
 
-    .line 245
+    .line 248
+    .local v0, "newline":Ljava/lang/String;
     :try_start_4
     new-instance v1, Ljava/io/BufferedReader;
 
@@ -362,7 +376,8 @@
 
     invoke-direct {v1, v2}, Ljava/io/BufferedReader;-><init>(Ljava/io/Reader;)V
 
-    .line 246
+    .line 249
+    .local v1, "reader":Ljava/io/BufferedReader;
     new-instance v2, Ljava/lang/StringBuffer;
 
     invoke-virtual {p1}, Ljava/io/File;->length()J
@@ -375,24 +390,28 @@
 
     invoke-direct {v2, v3}, Ljava/lang/StringBuffer;-><init>(I)V
 
-    .line 248
+    .line 251
+    .local v2, "sb":Ljava/lang/StringBuffer;
     :goto_1a
     invoke-virtual {v1}, Ljava/io/BufferedReader;->readLine()Ljava/lang/String;
 
     move-result-object v3
 
-    if-eqz v3, :cond_33
+    move-object v4, v3
 
-    .line 249
-    new-instance v4, Ljava/lang/StringBuilder;
+    .local v4, "line":Ljava/lang/String;
+    if-eqz v3, :cond_34
 
-    invoke-direct {v4}, Ljava/lang/StringBuilder;-><init>()V
+    .line 252
+    new-instance v3, Ljava/lang/StringBuilder;
 
-    invoke-virtual {v4, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
 
-    invoke-virtual {v4, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v4}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v3, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
     move-result-object v3
 
@@ -400,235 +419,252 @@
 
     goto :goto_1a
 
-    .line 251
-    :cond_33
+    .line 254
+    :cond_34
     invoke-virtual {v1}, Ljava/io/BufferedReader;->close()V
 
-    .line 252
+    .line 255
     invoke-virtual {v2}, Ljava/lang/StringBuffer;->toString()Ljava/lang/String;
 
-    move-result-object p1
-    :try_end_3a
-    .catch Ljava/io/IOException; {:try_start_4 .. :try_end_3a} :catch_3b
+    move-result-object v3
+    :try_end_3b
+    .catch Ljava/io/IOException; {:try_start_4 .. :try_end_3b} :catch_3c
 
-    return-object p1
+    return-object v3
 
-    .line 253
-    :catch_3b
-    move-exception v0
+    .line 256
+    .end local v1  # "reader":Ljava/io/BufferedReader;
+    .end local v2  # "sb":Ljava/lang/StringBuffer;
+    .end local v4  # "line":Ljava/lang/String;
+    :catch_3c
+    move-exception v1
 
-    .line 254
-    new-instance v0, Ljava/lang/StringBuilder;
+    .line 257
+    .local v1, "ioe":Ljava/io/IOException;
+    new-instance v2, Ljava/lang/StringBuilder;
 
-    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v1, "Couldn\'t read file "
+    const-string v3, "Couldn\'t read file "
 
-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {p1}, Ljava/io/File;->getName()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v3
 
-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v2
 
-    const-string v0, "TaskPersister"
+    const-string v3, "TaskPersister"
 
-    invoke-static {v0, p1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v3, v2}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 255
-    const/4 p1, 0x0
+    .line 258
+    const/4 v2, 0x0
 
-    return-object p1
+    return-object v2
 .end method
 
 .method private getImageFromWriteQueue(Ljava/lang/String;)Landroid/graphics/Bitmap;
-    .registers 4
+    .registers 5
+    .param p1, "filePath"  # Ljava/lang/String;
 
-    .line 237
+    .line 240
     iget-object v0, p0, Lcom/android/server/wm/TaskPersister;->mPersisterQueue:Lcom/android/server/wm/PersisterQueue;
 
     new-instance v1, Lcom/android/server/wm/-$$Lambda$TaskPersister$mW0HULrR8EtZ9La-pL9kLTnHSzk;
 
     invoke-direct {v1, p1}, Lcom/android/server/wm/-$$Lambda$TaskPersister$mW0HULrR8EtZ9La-pL9kLTnHSzk;-><init>(Ljava/lang/String;)V
 
-    const-class p1, Lcom/android/server/wm/TaskPersister$ImageWriteQueueItem;
+    const-class v2, Lcom/android/server/wm/TaskPersister$ImageWriteQueueItem;
 
-    invoke-virtual {v0, v1, p1}, Lcom/android/server/wm/PersisterQueue;->findLastItem(Ljava/util/function/Predicate;Ljava/lang/Class;)Lcom/android/server/wm/PersisterQueue$WriteQueueItem;
+    invoke-virtual {v0, v1, v2}, Lcom/android/server/wm/PersisterQueue;->findLastItem(Ljava/util/function/Predicate;Ljava/lang/Class;)Lcom/android/server/wm/PersisterQueue$WriteQueueItem;
 
-    move-result-object p1
+    move-result-object v0
 
-    check-cast p1, Lcom/android/server/wm/TaskPersister$ImageWriteQueueItem;
+    check-cast v0, Lcom/android/server/wm/TaskPersister$ImageWriteQueueItem;
 
-    .line 239
-    if-eqz p1, :cond_14
+    .line 242
+    .local v0, "item":Lcom/android/server/wm/TaskPersister$ImageWriteQueueItem;
+    if-eqz v0, :cond_14
 
-    iget-object p1, p1, Lcom/android/server/wm/TaskPersister$ImageWriteQueueItem;->mImage:Landroid/graphics/Bitmap;
+    iget-object v1, v0, Lcom/android/server/wm/TaskPersister$ImageWriteQueueItem;->mImage:Landroid/graphics/Bitmap;
 
     goto :goto_15
 
     :cond_14
-    const/4 p1, 0x0
+    const/4 v1, 0x0
 
     :goto_15
-    return-object p1
+    return-object v1
 .end method
 
 .method static getUserImagesDir(I)Ljava/io/File;
-    .registers 3
+    .registers 4
+    .param p0, "userId"  # I
 
-    .line 500
+    .line 503
     new-instance v0, Ljava/io/File;
 
     invoke-static {p0}, Landroid/os/Environment;->getDataSystemCeDirectory(I)Ljava/io/File;
 
-    move-result-object p0
+    move-result-object v1
 
-    const-string v1, "recent_images"
+    const-string v2, "recent_images"
 
-    invoke-direct {v0, p0, v1}, Ljava/io/File;-><init>(Ljava/io/File;Ljava/lang/String;)V
+    invoke-direct {v0, v1, v2}, Ljava/io/File;-><init>(Ljava/io/File;Ljava/lang/String;)V
 
     return-object v0
 .end method
 
 .method private getUserPersistedTaskIdsFile(I)Ljava/io/File;
-    .registers 4
+    .registers 5
+    .param p1, "userId"  # I
 
-    .line 488
+    .line 491
     new-instance v0, Ljava/io/File;
 
     iget-object v1, p0, Lcom/android/server/wm/TaskPersister;->mTaskIdsDir:Ljava/io/File;
 
     invoke-static {p1}, Ljava/lang/String;->valueOf(I)Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v2
 
-    invoke-direct {v0, v1, p1}, Ljava/io/File;-><init>(Ljava/io/File;Ljava/lang/String;)V
+    invoke-direct {v0, v1, v2}, Ljava/io/File;-><init>(Ljava/io/File;Ljava/lang/String;)V
 
-    .line 489
+    .line 492
+    .local v0, "userTaskIdsDir":Ljava/io/File;
     invoke-virtual {v0}, Ljava/io/File;->exists()Z
 
-    move-result p1
+    move-result v1
 
-    if-nez p1, :cond_2d
+    if-nez v1, :cond_2d
 
     invoke-virtual {v0}, Ljava/io/File;->mkdirs()Z
 
-    move-result p1
+    move-result v1
 
-    if-nez p1, :cond_2d
+    if-nez v1, :cond_2d
 
-    .line 490
-    new-instance p1, Ljava/lang/StringBuilder;
+    .line 493
+    new-instance v1, Ljava/lang/StringBuilder;
 
-    invoke-direct {p1}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v1, "Error while creating user directory: "
+    const-string v2, "Error while creating user directory: "
 
-    invoke-virtual {p1, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p1, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v1
 
-    const-string v1, "TaskPersister"
+    const-string v2, "TaskPersister"
 
-    invoke-static {v1, p1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v2, v1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 492
+    .line 495
     :cond_2d
-    new-instance p1, Ljava/io/File;
+    new-instance v1, Ljava/io/File;
 
-    const-string v1, "persisted_taskIds.txt"
+    const-string v2, "persisted_taskIds.txt"
 
-    invoke-direct {p1, v0, v1}, Ljava/io/File;-><init>(Ljava/io/File;Ljava/lang/String;)V
+    invoke-direct {v1, v0, v2}, Ljava/io/File;-><init>(Ljava/io/File;Ljava/lang/String;)V
 
-    return-object p1
+    return-object v1
 .end method
 
 .method private static getUserTasksDir(I)Ljava/io/File;
-    .registers 3
+    .registers 4
+    .param p0, "userId"  # I
 
-    .line 496
+    .line 499
     new-instance v0, Ljava/io/File;
 
     invoke-static {p0}, Landroid/os/Environment;->getDataSystemCeDirectory(I)Ljava/io/File;
 
-    move-result-object p0
+    move-result-object v1
 
-    const-string v1, "recent_tasks"
+    const-string v2, "recent_tasks"
 
-    invoke-direct {v0, p0, v1}, Ljava/io/File;-><init>(Ljava/io/File;Ljava/lang/String;)V
+    invoke-direct {v0, v1, v2}, Ljava/io/File;-><init>(Ljava/io/File;Ljava/lang/String;)V
 
     return-object v0
 .end method
 
 .method static synthetic lambda$getImageFromWriteQueue$2(Ljava/lang/String;Lcom/android/server/wm/TaskPersister$ImageWriteQueueItem;)Z
-    .registers 2
+    .registers 3
+    .param p0, "filePath"  # Ljava/lang/String;
+    .param p1, "queueItem"  # Lcom/android/server/wm/TaskPersister$ImageWriteQueueItem;
 
-    .line 238
-    iget-object p1, p1, Lcom/android/server/wm/TaskPersister$ImageWriteQueueItem;->mFilePath:Ljava/lang/String;
+    .line 241
+    iget-object v0, p1, Lcom/android/server/wm/TaskPersister$ImageWriteQueueItem;->mFilePath:Ljava/lang/String;
 
-    invoke-virtual {p1, p0}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v0, p0}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result p0
+    move-result v0
 
-    return p0
+    return v0
 .end method
 
 .method static synthetic lambda$removeThumbnails$0(Lcom/android/server/wm/TaskRecord;Lcom/android/server/wm/TaskPersister$ImageWriteQueueItem;)Z
-    .registers 3
+    .registers 5
+    .param p0, "task"  # Lcom/android/server/wm/TaskRecord;
+    .param p1, "item"  # Lcom/android/server/wm/TaskPersister$ImageWriteQueueItem;
 
-    .line 124
+    .line 127
     new-instance v0, Ljava/io/File;
 
-    iget-object p1, p1, Lcom/android/server/wm/TaskPersister$ImageWriteQueueItem;->mFilePath:Ljava/lang/String;
+    iget-object v1, p1, Lcom/android/server/wm/TaskPersister$ImageWriteQueueItem;->mFilePath:Ljava/lang/String;
 
-    invoke-direct {v0, p1}, Ljava/io/File;-><init>(Ljava/lang/String;)V
+    invoke-direct {v0, v1}, Ljava/io/File;-><init>(Ljava/lang/String;)V
 
-    .line 125
+    .line 128
+    .local v0, "file":Ljava/io/File;
     invoke-virtual {v0}, Ljava/io/File;->getName()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v1
 
-    iget p0, p0, Lcom/android/server/wm/TaskRecord;->taskId:I
+    iget v2, p0, Lcom/android/server/wm/TaskRecord;->taskId:I
 
-    invoke-static {p0}, Ljava/lang/Integer;->toString(I)Ljava/lang/String;
+    invoke-static {v2}, Ljava/lang/Integer;->toString(I)Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v2
 
-    invoke-virtual {p1, p0}, Ljava/lang/String;->startsWith(Ljava/lang/String;)Z
+    invoke-virtual {v1, v2}, Ljava/lang/String;->startsWith(Ljava/lang/String;)Z
 
-    move-result p0
+    move-result v1
 
-    return p0
+    return v1
 .end method
 
 .method static synthetic lambda$wakeup$1(Lcom/android/server/wm/TaskRecord;Lcom/android/server/wm/TaskPersister$TaskWriteQueueItem;)Z
-    .registers 2
+    .registers 3
+    .param p0, "task"  # Lcom/android/server/wm/TaskRecord;
+    .param p1, "queueItem"  # Lcom/android/server/wm/TaskPersister$TaskWriteQueueItem;
 
-    .line 192
+    .line 195
     invoke-static {p1}, Lcom/android/server/wm/TaskPersister$TaskWriteQueueItem;->access$200(Lcom/android/server/wm/TaskPersister$TaskWriteQueueItem;)Lcom/android/server/wm/TaskRecord;
 
-    move-result-object p1
+    move-result-object v0
 
-    if-ne p0, p1, :cond_8
+    if-ne p0, v0, :cond_8
 
-    const/4 p0, 0x1
+    const/4 v0, 0x1
 
     goto :goto_9
 
     :cond_8
-    const/4 p0, 0x0
+    const/4 v0, 0x0
 
     :goto_9
-    return p0
+    return v0
 .end method
 
 .method private removeObsoleteFiles(Landroid/util/ArraySet;)V
@@ -642,7 +678,8 @@
         }
     .end annotation
 
-    .line 471
+    .line 474
+    .local p1, "persistentTaskIds":Landroid/util/ArraySet;, "Landroid/util/ArraySet<Ljava/lang/Integer;>;"
     iget-object v0, p0, Lcom/android/server/wm/TaskPersister;->mService:Lcom/android/server/wm/ActivityTaskManagerService;
 
     iget-object v0, v0, Lcom/android/server/wm/ActivityTaskManagerService;->mGlobalLock:Lcom/android/server/wm/WindowManagerGlobalLock;
@@ -652,21 +689,22 @@
     :try_start_5
     invoke-static {}, Lcom/android/server/wm/WindowManagerService;->boostPriorityForLockedSection()V
 
-    .line 474
+    .line 477
     iget-object v1, p0, Lcom/android/server/wm/TaskPersister;->mRecentTasks:Lcom/android/server/wm/RecentTasks;
 
     invoke-virtual {v1}, Lcom/android/server/wm/RecentTasks;->usersWithRecentsLoadedLocked()[I
 
     move-result-object v1
 
-    .line 475
+    .line 478
+    .local v1, "candidateUserIds":[I
     monitor-exit v0
     :try_end_f
     .catchall {:try_start_5 .. :try_end_f} :catchall_32
 
     invoke-static {}, Lcom/android/server/wm/WindowManagerService;->resetPriorityAfterLockedSection()V
 
-    .line 476
+    .line 479
     array-length v0, v1
 
     const/4 v2, 0x0
@@ -676,7 +714,8 @@
 
     aget v3, v1, v2
 
-    .line 477
+    .line 480
+    .local v3, "userId":I
     invoke-static {v3}, Lcom/android/server/wm/TaskPersister;->getUserImagesDir(I)Ljava/io/File;
 
     move-result-object v4
@@ -687,29 +726,31 @@
 
     invoke-static {p1, v4}, Lcom/android/server/wm/TaskPersister;->removeObsoleteFiles(Landroid/util/ArraySet;[Ljava/io/File;)V
 
-    .line 478
+    .line 481
     invoke-static {v3}, Lcom/android/server/wm/TaskPersister;->getUserTasksDir(I)Ljava/io/File;
 
-    move-result-object v3
+    move-result-object v4
 
-    invoke-virtual {v3}, Ljava/io/File;->listFiles()[Ljava/io/File;
+    invoke-virtual {v4}, Ljava/io/File;->listFiles()[Ljava/io/File;
 
-    move-result-object v3
+    move-result-object v4
 
-    invoke-static {p1, v3}, Lcom/android/server/wm/TaskPersister;->removeObsoleteFiles(Landroid/util/ArraySet;[Ljava/io/File;)V
+    invoke-static {p1, v4}, Lcom/android/server/wm/TaskPersister;->removeObsoleteFiles(Landroid/util/ArraySet;[Ljava/io/File;)V
 
-    .line 476
+    .line 479
+    .end local v3  # "userId":I
     add-int/lit8 v2, v2, 0x1
 
     goto :goto_14
 
-    .line 480
+    .line 483
     :cond_31
     return-void
 
-    .line 475
+    .line 478
+    .end local v1  # "candidateUserIds":[I
     :catchall_32
-    move-exception p1
+    move-exception v1
 
     :try_start_33
     monitor-exit v0
@@ -718,11 +759,12 @@
 
     invoke-static {}, Lcom/android/server/wm/WindowManagerService;->resetPriorityAfterLockedSection()V
 
-    throw p1
+    throw v1
 .end method
 
 .method private static removeObsoleteFiles(Landroid/util/ArraySet;[Ljava/io/File;)V
-    .registers 8
+    .registers 10
+    .param p1, "files"  # [Ljava/io/File;
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(",
@@ -734,150 +776,246 @@
         }
     .end annotation
 
-    .line 422
-    const-string v0, "TaskPersister"
-
-    if-nez p1, :cond_a
-
     .line 423
-    const-string p0, "File error accessing recents directory (directory doesn\'t exist?)."
+    .local p0, "persistentTaskIds":Landroid/util/ArraySet;, "Landroid/util/ArraySet<Ljava/lang/Integer;>;"
+    new-instance v0, Ljava/lang/StringBuilder;
 
-    invoke-static {v0, p0}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
 
-    .line 424
-    return-void
+    const-string v1, "removeObsoleteFiles: persistentTaskIds="
+
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v0, p0}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+
+    const-string v1, " files="
+
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v0
+
+    const-string v1, "TaskPersister"
+
+    invoke-static {v1, v0}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
+
+    .line 425
+    if-nez p1, :cond_26
 
     .line 426
-    :cond_a
-    const/4 v1, 0x0
+    const-string v0, "File error accessing recents directory (directory doesn\'t exist?)."
 
-    move v2, v1
-
-    :goto_c
-    array-length v3, p1
-
-    if-ge v2, v3, :cond_53
+    invoke-static {v1, v0}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 427
-    aget-object v3, p1, v2
-
-    .line 428
-    invoke-virtual {v3}, Ljava/io/File;->getName()Ljava/lang/String;
-
-    move-result-object v4
+    return-void
 
     .line 429
-    const/16 v5, 0x5f
+    :cond_26
+    const/4 v0, 0x0
 
-    invoke-virtual {v4, v5}, Ljava/lang/String;->indexOf(I)I
+    .local v0, "fileNdx":I
+    :goto_27
+    array-length v2, p1
 
-    move-result v5
+    if-ge v0, v2, :cond_9b
 
     .line 430
-    if-lez v5, :cond_50
+    aget-object v2, p1, v0
+
+    .line 431
+    .local v2, "file":Ljava/io/File;
+    invoke-virtual {v2}, Ljava/io/File;->getName()Ljava/lang/String;
+
+    move-result-object v3
+
+    .line 432
+    .local v3, "filename":Ljava/lang/String;
+    const/16 v4, 0x5f
+
+    invoke-virtual {v3, v4}, Ljava/lang/String;->indexOf(I)I
+
+    move-result v4
 
     .line 433
-    :try_start_1d
-    invoke-virtual {v4, v1, v5}, Ljava/lang/String;->substring(II)Ljava/lang/String;
-
-    move-result-object v4
-
-    invoke-static {v4}, Ljava/lang/Integer;->parseInt(Ljava/lang/String;)I
-
-    move-result v4
-    :try_end_25
-    .catch Ljava/lang/Exception; {:try_start_1d .. :try_end_25} :catch_34
-
-    .line 439
-    nop
-
-    .line 440
-    invoke-static {v4}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
-
-    move-result-object v4
-
-    invoke-virtual {p0, v4}, Landroid/util/ArraySet;->contains(Ljava/lang/Object;)Z
-
-    move-result v4
-
-    if-nez v4, :cond_50
-
-    .line 442
-    invoke-virtual {v3}, Ljava/io/File;->delete()Z
-
-    goto :goto_50
-
-    .line 435
-    :catch_34
-    move-exception v4
+    .local v4, "taskIdEnd":I
+    if-lez v4, :cond_98
 
     .line 436
-    new-instance v4, Ljava/lang/StringBuilder;
+    const/4 v5, 0x0
 
-    invoke-direct {v4}, Ljava/lang/StringBuilder;-><init>()V
-
-    const-string v5, "removeObsoleteFiles: Can\'t parse file="
-
-    invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v3}, Ljava/io/File;->getName()Ljava/lang/String;
+    :try_start_39
+    invoke-virtual {v3, v5, v4}, Ljava/lang/String;->substring(II)Ljava/lang/String;
 
     move-result-object v5
 
-    invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-static {v5}, Ljava/lang/Integer;->parseInt(Ljava/lang/String;)I
 
-    invoke-virtual {v4}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
-
-    move-result-object v4
-
-    invoke-static {v0, v4}, Landroid/util/Slog;->wtf(Ljava/lang/String;Ljava/lang/String;)I
+    move-result v5
 
     .line 437
-    invoke-virtual {v3}, Ljava/io/File;->delete()Z
+    .local v5, "taskId":I
+    new-instance v6, Ljava/lang/StringBuilder;
 
-    .line 426
-    :cond_50
-    :goto_50
-    add-int/lit8 v2, v2, 0x1
+    invoke-direct {v6}, Ljava/lang/StringBuilder;-><init>()V
 
-    goto :goto_c
+    const-string v7, "removeObsoleteFiles: Found taskId="
 
-    .line 446
-    :cond_53
+    invoke-virtual {v6, v7}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v6, v5}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v6}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v6
+
+    invoke-static {v1, v6}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
+    :try_end_55
+    .catch Ljava/lang/Exception; {:try_start_39 .. :try_end_55} :catch_7c
+
+    .line 442
+    nop
+
+    .line 443
+    invoke-static {v5}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
+
+    move-result-object v6
+
+    invoke-virtual {p0, v6}, Landroid/util/ArraySet;->contains(Ljava/lang/Object;)Z
+
+    move-result v6
+
+    if-nez v6, :cond_98
+
+    .line 444
+    new-instance v6, Ljava/lang/StringBuilder;
+
+    invoke-direct {v6}, Ljava/lang/StringBuilder;-><init>()V
+
+    const-string v7, "removeObsoleteFiles: deleting file="
+
+    invoke-virtual {v6, v7}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v2}, Ljava/io/File;->getName()Ljava/lang/String;
+
+    move-result-object v7
+
+    invoke-virtual {v6, v7}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v6}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v6
+
+    invoke-static {v1, v6}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
+
+    .line 445
+    invoke-virtual {v2}, Ljava/io/File;->delete()Z
+
+    goto :goto_98
+
+    .line 438
+    .end local v5  # "taskId":I
+    :catch_7c
+    move-exception v5
+
+    .line 439
+    .local v5, "e":Ljava/lang/Exception;
+    new-instance v6, Ljava/lang/StringBuilder;
+
+    invoke-direct {v6}, Ljava/lang/StringBuilder;-><init>()V
+
+    const-string v7, "removeObsoleteFiles: Can\'t parse file="
+
+    invoke-virtual {v6, v7}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v2}, Ljava/io/File;->getName()Ljava/lang/String;
+
+    move-result-object v7
+
+    invoke-virtual {v6, v7}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v6}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v6
+
+    invoke-static {v1, v6}, Landroid/util/Slog;->wtf(Ljava/lang/String;Ljava/lang/String;)I
+
+    .line 440
+    invoke-virtual {v2}, Ljava/io/File;->delete()Z
+
+    .line 429
+    .end local v2  # "file":Ljava/io/File;
+    .end local v3  # "filename":Ljava/lang/String;
+    .end local v4  # "taskIdEnd":I
+    .end local v5  # "e":Ljava/lang/Exception;
+    :cond_98
+    :goto_98
+    add-int/lit8 v0, v0, 0x1
+
+    goto :goto_27
+
+    .line 449
+    .end local v0  # "fileNdx":I
+    :cond_9b
     return-void
 .end method
 
 .method private removeThumbnails(Lcom/android/server/wm/TaskRecord;)V
-    .registers 4
+    .registers 5
+    .param p1, "task"  # Lcom/android/server/wm/TaskRecord;
 
-    .line 122
+    .line 125
     iget-object v0, p0, Lcom/android/server/wm/TaskPersister;->mPersisterQueue:Lcom/android/server/wm/PersisterQueue;
 
     new-instance v1, Lcom/android/server/wm/-$$Lambda$TaskPersister$8TcnoL7JFvpj8NzBRg91ns5JOBw;
 
     invoke-direct {v1, p1}, Lcom/android/server/wm/-$$Lambda$TaskPersister$8TcnoL7JFvpj8NzBRg91ns5JOBw;-><init>(Lcom/android/server/wm/TaskRecord;)V
 
-    const-class p1, Lcom/android/server/wm/TaskPersister$ImageWriteQueueItem;
+    const-class v2, Lcom/android/server/wm/TaskPersister$ImageWriteQueueItem;
 
-    invoke-virtual {v0, v1, p1}, Lcom/android/server/wm/PersisterQueue;->removeItems(Ljava/util/function/Predicate;Ljava/lang/Class;)V
+    invoke-virtual {v0, v1, v2}, Lcom/android/server/wm/PersisterQueue;->removeItems(Ljava/util/function/Predicate;Ljava/lang/Class;)V
 
-    .line 128
+    .line 131
     return-void
 .end method
 
 .method static restoreImage(Ljava/lang/String;)Landroid/graphics/Bitmap;
-    .registers 1
+    .registers 3
+    .param p0, "filename"  # Ljava/lang/String;
 
-    .line 484
+    .line 486
+    new-instance v0, Ljava/lang/StringBuilder;
+
+    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
+
+    const-string v1, "restoreImage: restoring "
+
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v0, p0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v0
+
+    const-string v1, "TaskPersister"
+
+    invoke-static {v1, v0}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
+
+    .line 487
     invoke-static {p0}, Landroid/graphics/BitmapFactory;->decodeFile(Ljava/lang/String;)Landroid/graphics/Bitmap;
 
-    move-result-object p0
+    move-result-object v0
 
-    return-object p0
+    return-object v0
 .end method
 
 .method private taskIdToTask(ILjava/util/ArrayList;)Lcom/android/server/wm/TaskRecord;
     .registers 7
+    .param p1, "taskId"  # I
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(I",
@@ -888,15 +1026,16 @@
         }
     .end annotation
 
-    .line 260
+    .line 263
+    .local p2, "tasks":Ljava/util/ArrayList;, "Ljava/util/ArrayList<Lcom/android/server/wm/TaskRecord;>;"
     const/4 v0, 0x0
 
     if-gez p1, :cond_4
 
-    .line 261
+    .line 264
     return-object v0
 
-    .line 263
+    .line 266
     :cond_4
     invoke-virtual {p2}, Ljava/util/ArrayList;->size()I
 
@@ -904,63 +1043,68 @@
 
     add-int/lit8 v1, v1, -0x1
 
+    .local v1, "taskNdx":I
     :goto_a
     if-ltz v1, :cond_1a
 
-    .line 264
+    .line 267
     invoke-virtual {p2, v1}, Ljava/util/ArrayList;->get(I)Ljava/lang/Object;
 
     move-result-object v2
 
     check-cast v2, Lcom/android/server/wm/TaskRecord;
 
-    .line 265
+    .line 268
+    .local v2, "task":Lcom/android/server/wm/TaskRecord;
     iget v3, v2, Lcom/android/server/wm/TaskRecord;->taskId:I
 
     if-ne v3, p1, :cond_17
 
-    .line 266
+    .line 269
     return-object v2
 
-    .line 263
+    .line 266
+    .end local v2  # "task":Lcom/android/server/wm/TaskRecord;
     :cond_17
     add-int/lit8 v1, v1, -0x1
 
     goto :goto_a
 
-    .line 269
+    .line 272
+    .end local v1  # "taskNdx":I
     :cond_1a
-    new-instance p2, Ljava/lang/StringBuilder;
+    new-instance v1, Ljava/lang/StringBuilder;
 
-    invoke-direct {p2}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v1, "Restore affiliation error looking for taskId="
+    const-string v2, "Restore affiliation error looking for taskId="
 
-    invoke-virtual {p2, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p2, p1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, p1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v1
 
-    const-string p2, "TaskPersister"
+    const-string v2, "TaskPersister"
 
-    invoke-static {p2, p1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v2, v1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 270
+    .line 273
     return-object v0
 .end method
 
 .method private writeTaskIdsFiles()V
-    .registers 10
+    .registers 11
 
-    .line 449
+    .line 452
     new-instance v0, Landroid/util/SparseArray;
 
     invoke-direct {v0}, Landroid/util/SparseArray;-><init>()V
 
-    .line 450
+    .line 453
+    .local v0, "changedTaskIdsPerUser":Landroid/util/SparseArray;, "Landroid/util/SparseArray<Landroid/util/SparseBooleanArray;>;"
     iget-object v1, p0, Lcom/android/server/wm/TaskPersister;->mService:Lcom/android/server/wm/ActivityTaskManagerService;
 
     iget-object v1, v1, Lcom/android/server/wm/ActivityTaskManagerService;->mGlobalLock:Lcom/android/server/wm/WindowManagerGlobalLock;
@@ -970,7 +1114,7 @@
     :try_start_a
     invoke-static {}, Lcom/android/server/wm/WindowManagerService;->boostPriorityForLockedSection()V
 
-    .line 451
+    .line 454
     iget-object v2, p0, Lcom/android/server/wm/TaskPersister;->mRecentTasks:Lcom/android/server/wm/RecentTasks;
 
     invoke-virtual {v2}, Lcom/android/server/wm/RecentTasks;->usersWithRecentsLoadedLocked()[I
@@ -981,115 +1125,123 @@
 
     const/4 v4, 0x0
 
-    move v5, v4
+    :goto_15
+    if-ge v4, v3, :cond_3f
 
-    :goto_16
-    if-ge v5, v3, :cond_40
+    aget v5, v2, v4
 
-    aget v6, v2, v5
+    .line 455
+    .local v5, "userId":I
+    iget-object v6, p0, Lcom/android/server/wm/TaskPersister;->mRecentTasks:Lcom/android/server/wm/RecentTasks;
 
-    .line 452
-    iget-object v7, p0, Lcom/android/server/wm/TaskPersister;->mRecentTasks:Lcom/android/server/wm/RecentTasks;
+    invoke-virtual {v6, v5}, Lcom/android/server/wm/RecentTasks;->getTaskIdsForUser(I)Landroid/util/SparseBooleanArray;
 
-    invoke-virtual {v7, v6}, Lcom/android/server/wm/RecentTasks;->getTaskIdsForUser(I)Landroid/util/SparseBooleanArray;
+    move-result-object v6
+
+    .line 456
+    .local v6, "taskIdsToSave":Landroid/util/SparseBooleanArray;
+    iget-object v7, p0, Lcom/android/server/wm/TaskPersister;->mTaskIdsInFile:Landroid/util/SparseArray;
+
+    invoke-virtual {v7, v5}, Landroid/util/SparseArray;->get(I)Ljava/lang/Object;
 
     move-result-object v7
 
-    .line 453
-    iget-object v8, p0, Lcom/android/server/wm/TaskPersister;->mTaskIdsInFile:Landroid/util/SparseArray;
+    check-cast v7, Landroid/util/SparseBooleanArray;
 
-    invoke-virtual {v8, v6}, Landroid/util/SparseArray;->get(I)Ljava/lang/Object;
+    .line 457
+    .local v7, "persistedIdsInFile":Landroid/util/SparseBooleanArray;
+    if-eqz v7, :cond_30
 
-    move-result-object v8
-
-    check-cast v8, Landroid/util/SparseBooleanArray;
-
-    .line 454
-    if-eqz v8, :cond_31
-
-    invoke-virtual {v8, v7}, Landroid/util/SparseBooleanArray;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v7, v6}, Landroid/util/SparseBooleanArray;->equals(Ljava/lang/Object;)Z
 
     move-result v8
 
-    if-eqz v8, :cond_31
-
-    .line 455
-    goto :goto_3d
-
-    .line 457
-    :cond_31
-    invoke-virtual {v7}, Landroid/util/SparseBooleanArray;->clone()Landroid/util/SparseBooleanArray;
-
-    move-result-object v7
+    if-eqz v8, :cond_30
 
     .line 458
-    iget-object v8, p0, Lcom/android/server/wm/TaskPersister;->mTaskIdsInFile:Landroid/util/SparseArray;
+    goto :goto_3c
 
-    invoke-virtual {v8, v6, v7}, Landroid/util/SparseArray;->put(ILjava/lang/Object;)V
+    .line 460
+    :cond_30
+    invoke-virtual {v6}, Landroid/util/SparseBooleanArray;->clone()Landroid/util/SparseBooleanArray;
 
-    .line 459
-    invoke-virtual {v0, v6, v7}, Landroid/util/SparseArray;->put(ILjava/lang/Object;)V
+    move-result-object v8
 
-    .line 451
-    :goto_3d
-    add-int/lit8 v5, v5, 0x1
+    .line 461
+    .local v8, "taskIdsToSaveCopy":Landroid/util/SparseBooleanArray;
+    iget-object v9, p0, Lcom/android/server/wm/TaskPersister;->mTaskIdsInFile:Landroid/util/SparseArray;
 
-    goto :goto_16
+    invoke-virtual {v9, v5, v8}, Landroid/util/SparseArray;->put(ILjava/lang/Object;)V
 
     .line 462
-    :cond_40
+    invoke-virtual {v0, v5, v8}, Landroid/util/SparseArray;->put(ILjava/lang/Object;)V
+
+    .line 454
+    .end local v5  # "userId":I
+    .end local v6  # "taskIdsToSave":Landroid/util/SparseBooleanArray;
+    .end local v7  # "persistedIdsInFile":Landroid/util/SparseBooleanArray;
+    .end local v8  # "taskIdsToSaveCopy":Landroid/util/SparseBooleanArray;
+    :goto_3c
+    add-int/lit8 v4, v4, 0x1
+
+    goto :goto_15
+
+    .line 465
+    :cond_3f
     monitor-exit v1
-    :try_end_41
-    .catchall {:try_start_a .. :try_end_41} :catchall_5c
+    :try_end_40
+    .catchall {:try_start_a .. :try_end_40} :catchall_5b
 
     invoke-static {}, Lcom/android/server/wm/WindowManagerService;->resetPriorityAfterLockedSection()V
 
-    .line 463
-    nop
+    .line 466
+    const/4 v1, 0x0
 
-    :goto_45
+    .local v1, "i":I
+    :goto_44
     invoke-virtual {v0}, Landroid/util/SparseArray;->size()I
-
-    move-result v1
-
-    if-ge v4, v1, :cond_5b
-
-    .line 464
-    invoke-virtual {v0, v4}, Landroid/util/SparseArray;->valueAt(I)Ljava/lang/Object;
-
-    move-result-object v1
-
-    check-cast v1, Landroid/util/SparseBooleanArray;
-
-    .line 465
-    invoke-virtual {v0, v4}, Landroid/util/SparseArray;->keyAt(I)I
 
     move-result v2
 
-    .line 464
-    invoke-virtual {p0, v1, v2}, Lcom/android/server/wm/TaskPersister;->writePersistedTaskIdsForUser(Landroid/util/SparseBooleanArray;I)V
-
-    .line 463
-    add-int/lit8 v4, v4, 0x1
-
-    goto :goto_45
+    if-ge v1, v2, :cond_5a
 
     .line 467
-    :cond_5b
+    invoke-virtual {v0, v1}, Landroid/util/SparseArray;->valueAt(I)Ljava/lang/Object;
+
+    move-result-object v2
+
+    check-cast v2, Landroid/util/SparseBooleanArray;
+
+    .line 468
+    invoke-virtual {v0, v1}, Landroid/util/SparseArray;->keyAt(I)I
+
+    move-result v3
+
+    .line 467
+    invoke-virtual {p0, v2, v3}, Lcom/android/server/wm/TaskPersister;->writePersistedTaskIdsForUser(Landroid/util/SparseBooleanArray;I)V
+
+    .line 466
+    add-int/lit8 v1, v1, 0x1
+
+    goto :goto_44
+
+    .line 470
+    .end local v1  # "i":I
+    :cond_5a
     return-void
 
-    .line 462
-    :catchall_5c
-    move-exception v0
+    .line 465
+    :catchall_5b
+    move-exception v2
 
-    :try_start_5d
+    :try_start_5c
     monitor-exit v1
-    :try_end_5e
-    .catchall {:try_start_5d .. :try_end_5e} :catchall_5c
+    :try_end_5d
+    .catchall {:try_start_5c .. :try_end_5d} :catchall_5b
 
     invoke-static {}, Lcom/android/server/wm/WindowManagerService;->resetPriorityAfterLockedSection()V
 
-    throw v0
+    throw v2
 .end method
 
 
@@ -1097,42 +1249,45 @@
 .method flush()V
     .registers 2
 
-    .line 215
+    .line 218
     iget-object v0, p0, Lcom/android/server/wm/TaskPersister;->mPersisterQueue:Lcom/android/server/wm/PersisterQueue;
 
     invoke-virtual {v0}, Lcom/android/server/wm/PersisterQueue;->flush()V
 
-    .line 216
+    .line 219
     return-void
 .end method
 
 .method getTaskDescriptionIcon(Ljava/lang/String;)Landroid/graphics/Bitmap;
-    .registers 3
+    .registers 4
+    .param p1, "filePath"  # Ljava/lang/String;
 
-    .line 229
+    .line 232
     invoke-direct {p0, p1}, Lcom/android/server/wm/TaskPersister;->getImageFromWriteQueue(Ljava/lang/String;)Landroid/graphics/Bitmap;
 
     move-result-object v0
 
-    .line 230
+    .line 233
+    .local v0, "icon":Landroid/graphics/Bitmap;
     if-eqz v0, :cond_7
 
-    .line 231
+    .line 234
     return-object v0
 
-    .line 233
+    .line 236
     :cond_7
     invoke-static {p1}, Lcom/android/server/wm/TaskPersister;->restoreImage(Ljava/lang/String;)Landroid/graphics/Bitmap;
 
-    move-result-object p1
+    move-result-object v1
 
-    return-object p1
+    return-object v1
 .end method
 
 .method loadPersistedTaskIdsForUser(I)Landroid/util/SparseBooleanArray;
-    .registers 11
+    .registers 12
+    .param p1, "userId"  # I
 
-    .line 132
+    .line 135
     iget-object v0, p0, Lcom/android/server/wm/TaskPersister;->mTaskIdsInFile:Landroid/util/SparseArray;
 
     invoke-virtual {v0, p1}, Landroid/util/SparseArray;->get(I)Ljava/lang/Object;
@@ -1141,36 +1296,38 @@
 
     if-eqz v0, :cond_15
 
-    .line 133
+    .line 136
     iget-object v0, p0, Lcom/android/server/wm/TaskPersister;->mTaskIdsInFile:Landroid/util/SparseArray;
 
     invoke-virtual {v0, p1}, Landroid/util/SparseArray;->get(I)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v0
 
-    check-cast p1, Landroid/util/SparseBooleanArray;
+    check-cast v0, Landroid/util/SparseBooleanArray;
 
-    invoke-virtual {p1}, Landroid/util/SparseBooleanArray;->clone()Landroid/util/SparseBooleanArray;
+    invoke-virtual {v0}, Landroid/util/SparseBooleanArray;->clone()Landroid/util/SparseBooleanArray;
 
-    move-result-object p1
+    move-result-object v0
 
-    return-object p1
+    return-object v0
 
-    .line 135
+    .line 138
     :cond_15
     new-instance v0, Landroid/util/SparseBooleanArray;
 
     invoke-direct {v0}, Landroid/util/SparseBooleanArray;-><init>()V
 
-    .line 136
+    .line 139
+    .local v0, "persistedTaskIds":Landroid/util/SparseBooleanArray;
     iget-object v1, p0, Lcom/android/server/wm/TaskPersister;->mIoLock:Ljava/lang/Object;
 
     monitor-enter v1
 
-    .line 137
+    .line 140
     const/4 v2, 0x0
 
-    .line 140
+    .line 143
+    .local v2, "reader":Ljava/io/BufferedReader;
     :try_start_1e
     new-instance v3, Ljava/io/BufferedReader;
 
@@ -1183,98 +1340,83 @@
     invoke-direct {v4, v5}, Ljava/io/FileReader;-><init>(Ljava/io/File;)V
 
     invoke-direct {v3, v4}, Ljava/io/BufferedReader;-><init>(Ljava/io/Reader;)V
-    :try_end_2c
-    .catch Ljava/io/FileNotFoundException; {:try_start_1e .. :try_end_2c} :catch_74
-    .catch Ljava/lang/Exception; {:try_start_1e .. :try_end_2c} :catch_54
-    .catchall {:try_start_1e .. :try_end_2c} :catchall_51
 
-    .line 141
-    :cond_2c
-    :try_start_2c
-    invoke-virtual {v3}, Ljava/io/BufferedReader;->readLine()Ljava/lang/String;
-
-    move-result-object v2
-
-    if-eqz v2, :cond_49
-
-    .line 142
-    const-string v4, "\\s+"
-
-    invoke-virtual {v2, v4}, Ljava/lang/String;->split(Ljava/lang/String;)[Ljava/lang/String;
-
-    move-result-object v2
-
-    array-length v4, v2
-
-    const/4 v5, 0x0
-
-    :goto_3a
-    if-ge v5, v4, :cond_2c
-
-    aget-object v6, v2, v5
-
-    .line 143
-    invoke-static {v6}, Ljava/lang/Integer;->parseInt(Ljava/lang/String;)I
-
-    move-result v6
+    move-object v2, v3
 
     .line 144
-    const/4 v7, 0x1
+    :cond_2d
+    invoke-virtual {v2}, Ljava/io/BufferedReader;->readLine()Ljava/lang/String;
 
-    invoke-virtual {v0, v6, v7}, Landroid/util/SparseBooleanArray;->put(IZ)V
-    :try_end_46
-    .catch Ljava/io/FileNotFoundException; {:try_start_2c .. :try_end_46} :catch_4f
-    .catch Ljava/lang/Exception; {:try_start_2c .. :try_end_46} :catch_4d
-    .catchall {:try_start_2c .. :try_end_46} :catchall_6f
+    move-result-object v3
 
-    .line 142
-    add-int/lit8 v5, v5, 0x1
+    move-object v4, v3
 
-    goto :goto_3a
+    .local v4, "line":Ljava/lang/String;
+    if-eqz v3, :cond_4b
 
-    .line 152
-    :cond_49
-    :goto_49
-    :try_start_49
-    invoke-static {v3}, Llibcore/io/IoUtils;->closeQuietly(Ljava/lang/AutoCloseable;)V
-    :try_end_4c
-    .catchall {:try_start_49 .. :try_end_4c} :catchall_85
+    .line 145
+    const-string v3, "\\s+"
 
-    goto :goto_79
+    invoke-virtual {v4, v3}, Ljava/lang/String;->split(Ljava/lang/String;)[Ljava/lang/String;
 
-    .line 149
-    :catch_4d
-    move-exception v2
+    move-result-object v3
 
-    goto :goto_58
+    array-length v5, v3
+
+    const/4 v6, 0x0
+
+    :goto_3c
+    if-ge v6, v5, :cond_2d
+
+    aget-object v7, v3, v6
+
+    .line 146
+    .local v7, "taskIdString":Ljava/lang/String;
+    invoke-static {v7}, Ljava/lang/Integer;->parseInt(Ljava/lang/String;)I
+
+    move-result v8
 
     .line 147
-    :catch_4f
-    move-exception v2
+    .local v8, "id":I
+    const/4 v9, 0x1
 
+    invoke-virtual {v0, v8, v9}, Landroid/util/SparseBooleanArray;->put(IZ)V
+    :try_end_48
+    .catch Ljava/io/FileNotFoundException; {:try_start_1e .. :try_end_48} :catch_71
+    .catch Ljava/lang/Exception; {:try_start_1e .. :try_end_48} :catch_51
+    .catchall {:try_start_1e .. :try_end_48} :catchall_4f
+
+    .line 145
+    .end local v7  # "taskIdString":Ljava/lang/String;
+    .end local v8  # "id":I
+    add-int/lit8 v6, v6, 0x1
+
+    goto :goto_3c
+
+    .line 155
+    :cond_4b
+    :try_start_4b
+    invoke-static {v2}, Llibcore/io/IoUtils;->closeQuietly(Ljava/lang/AutoCloseable;)V
+    :try_end_4e
+    .catchall {:try_start_4b .. :try_end_4e} :catchall_81
+
+    .line 156
     goto :goto_76
 
-    .line 152
-    :catchall_51
-    move-exception p1
-
-    move-object v3, v2
-
-    goto :goto_70
-
-    .line 149
-    :catch_54
+    .line 155
+    .end local v4  # "line":Ljava/lang/String;
+    :catchall_4f
     move-exception v3
 
-    move-object v8, v3
+    goto :goto_6d
 
-    move-object v3, v2
+    .line 152
+    :catch_51
+    move-exception v3
 
-    move-object v2, v8
-
-    .line 150
-    :goto_58
-    :try_start_58
+    .line 153
+    .local v3, "e":Ljava/lang/Exception;
+    :try_start_52
     const-string v4, "TaskPersister"
 
     new-instance v5, Ljava/lang/StringBuilder;
@@ -1291,148 +1433,186 @@
 
     move-result-object v5
 
-    invoke-static {v4, v5, v2}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
-    :try_end_6e
-    .catchall {:try_start_58 .. :try_end_6e} :catchall_6f
-
-    goto :goto_49
-
-    .line 152
-    :catchall_6f
-    move-exception p1
-
-    :goto_70
-    :try_start_70
-    invoke-static {v3}, Llibcore/io/IoUtils;->closeQuietly(Ljava/lang/AutoCloseable;)V
-
-    throw p1
-
-    .line 147
-    :catch_74
-    move-exception v3
-
-    move-object v3, v2
-
-    .line 152
-    :goto_76
-    invoke-static {v3}, Llibcore/io/IoUtils;->closeQuietly(Ljava/lang/AutoCloseable;)V
-
-    .line 153
-    :goto_79
-    nop
-
-    .line 154
-    monitor-exit v1
-    :try_end_7b
-    .catchall {:try_start_70 .. :try_end_7b} :catchall_85
+    invoke-static {v4, v5, v3}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    :try_end_68
+    .catchall {:try_start_52 .. :try_end_68} :catchall_4f
 
     .line 155
+    nop
+
+    .end local v3  # "e":Ljava/lang/Exception;
+    :try_start_69
+    invoke-static {v2}, Llibcore/io/IoUtils;->closeQuietly(Ljava/lang/AutoCloseable;)V
+
+    goto :goto_75
+
+    :goto_6d
+    invoke-static {v2}, Llibcore/io/IoUtils;->closeQuietly(Ljava/lang/AutoCloseable;)V
+
+    .end local v0  # "persistedTaskIds":Landroid/util/SparseBooleanArray;
+    .end local p0  # "this":Lcom/android/server/wm/TaskPersister;
+    .end local p1  # "userId":I
+    throw v3
+
+    .line 150
+    .restart local v0  # "persistedTaskIds":Landroid/util/SparseBooleanArray;
+    .restart local p0  # "this":Lcom/android/server/wm/TaskPersister;
+    .restart local p1  # "userId":I
+    :catch_71
+    move-exception v3
+
+    .line 155
+    invoke-static {v2}, Llibcore/io/IoUtils;->closeQuietly(Ljava/lang/AutoCloseable;)V
+
+    .line 156
+    :goto_75
+    nop
+
+    .line 157
+    .end local v2  # "reader":Ljava/io/BufferedReader;
+    :goto_76
+    monitor-exit v1
+    :try_end_77
+    .catchall {:try_start_69 .. :try_end_77} :catchall_81
+
+    .line 158
     iget-object v1, p0, Lcom/android/server/wm/TaskPersister;->mTaskIdsInFile:Landroid/util/SparseArray;
 
     invoke-virtual {v1, p1, v0}, Landroid/util/SparseArray;->put(ILjava/lang/Object;)V
 
-    .line 156
+    .line 159
     invoke-virtual {v0}, Landroid/util/SparseBooleanArray;->clone()Landroid/util/SparseBooleanArray;
 
-    move-result-object p1
+    move-result-object v1
 
-    return-object p1
+    return-object v1
 
-    .line 154
-    :catchall_85
-    move-exception p1
+    .line 157
+    :catchall_81
+    move-exception v2
 
-    :try_start_86
+    :try_start_82
     monitor-exit v1
-    :try_end_87
-    .catchall {:try_start_86 .. :try_end_87} :catchall_85
+    :try_end_83
+    .catchall {:try_start_82 .. :try_end_83} :catchall_81
 
-    throw p1
+    throw v2
 .end method
 
 .method public onPreProcessItem(Z)V
-    .registers 5
-
-    .line 405
-    if-eqz p1, :cond_35
-
-    .line 407
-    iget-object p1, p0, Lcom/android/server/wm/TaskPersister;->mTmpTaskIds:Landroid/util/ArraySet;
-
-    invoke-virtual {p1}, Landroid/util/ArraySet;->clear()V
+    .registers 6
+    .param p1, "queueEmpty"  # Z
 
     .line 408
-    iget-object p1, p0, Lcom/android/server/wm/TaskPersister;->mService:Lcom/android/server/wm/ActivityTaskManagerService;
+    if-eqz p1, :cond_54
 
-    iget-object p1, p1, Lcom/android/server/wm/ActivityTaskManagerService;->mGlobalLock:Lcom/android/server/wm/WindowManagerGlobalLock;
+    .line 409
+    const-string v0, "TaskPersister"
 
-    monitor-enter p1
+    const-string v1, "Looking for obsolete files."
 
-    :try_start_c
-    invoke-static {}, Lcom/android/server/wm/WindowManagerService;->boostPriorityForLockedSection()V
+    invoke-static {v0, v1}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 410
-    iget-object v0, p0, Lcom/android/server/wm/TaskPersister;->mRecentTasks:Lcom/android/server/wm/RecentTasks;
+    iget-object v0, p0, Lcom/android/server/wm/TaskPersister;->mTmpTaskIds:Landroid/util/ArraySet;
 
-    iget-object v1, p0, Lcom/android/server/wm/TaskPersister;->mTmpTaskIds:Landroid/util/ArraySet;
-
-    invoke-virtual {v0, v1}, Lcom/android/server/wm/RecentTasks;->getPersistableTaskIds(Landroid/util/ArraySet;)V
+    invoke-virtual {v0}, Landroid/util/ArraySet;->clear()V
 
     .line 411
     iget-object v0, p0, Lcom/android/server/wm/TaskPersister;->mService:Lcom/android/server/wm/ActivityTaskManagerService;
 
-    iget-object v0, v0, Lcom/android/server/wm/ActivityTaskManagerService;->mWindowManager:Lcom/android/server/wm/WindowManagerService;
+    iget-object v0, v0, Lcom/android/server/wm/ActivityTaskManagerService;->mGlobalLock:Lcom/android/server/wm/WindowManagerGlobalLock;
 
-    iget-object v1, p0, Lcom/android/server/wm/TaskPersister;->mTmpTaskIds:Landroid/util/ArraySet;
+    monitor-enter v0
 
-    iget-object v2, p0, Lcom/android/server/wm/TaskPersister;->mRecentTasks:Lcom/android/server/wm/RecentTasks;
+    :try_start_13
+    invoke-static {}, Lcom/android/server/wm/WindowManagerService;->boostPriorityForLockedSection()V
 
     .line 412
-    invoke-virtual {v2}, Lcom/android/server/wm/RecentTasks;->usersWithRecentsLoadedLocked()[I
+    const-string v1, "TaskPersister"
+
+    new-instance v2, Ljava/lang/StringBuilder;
+
+    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
+
+    const-string v3, "mRecents="
+
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    iget-object v3, p0, Lcom/android/server/wm/TaskPersister;->mRecentTasks:Lcom/android/server/wm/RecentTasks;
+
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
     move-result-object v2
 
-    .line 411
-    invoke-virtual {v0, v1, v2}, Lcom/android/server/wm/WindowManagerService;->removeObsoleteTaskFiles(Landroid/util/ArraySet;[I)V
+    invoke-static {v1, v2}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 413
-    monitor-exit p1
-    :try_end_26
-    .catchall {:try_start_c .. :try_end_26} :catchall_2f
+    iget-object v1, p0, Lcom/android/server/wm/TaskPersister;->mRecentTasks:Lcom/android/server/wm/RecentTasks;
 
-    invoke-static {}, Lcom/android/server/wm/WindowManagerService;->resetPriorityAfterLockedSection()V
+    iget-object v2, p0, Lcom/android/server/wm/TaskPersister;->mTmpTaskIds:Landroid/util/ArraySet;
+
+    invoke-virtual {v1, v2}, Lcom/android/server/wm/RecentTasks;->getPersistableTaskIds(Landroid/util/ArraySet;)V
 
     .line 414
-    iget-object p1, p0, Lcom/android/server/wm/TaskPersister;->mTmpTaskIds:Landroid/util/ArraySet;
+    iget-object v1, p0, Lcom/android/server/wm/TaskPersister;->mService:Lcom/android/server/wm/ActivityTaskManagerService;
 
-    invoke-direct {p0, p1}, Lcom/android/server/wm/TaskPersister;->removeObsoleteFiles(Landroid/util/ArraySet;)V
+    iget-object v1, v1, Lcom/android/server/wm/ActivityTaskManagerService;->mWindowManager:Lcom/android/server/wm/WindowManagerService;
 
-    goto :goto_35
+    iget-object v2, p0, Lcom/android/server/wm/TaskPersister;->mTmpTaskIds:Landroid/util/ArraySet;
 
-    .line 413
-    :catchall_2f
-    move-exception v0
+    iget-object v3, p0, Lcom/android/server/wm/TaskPersister;->mRecentTasks:Lcom/android/server/wm/RecentTasks;
 
-    :try_start_30
-    monitor-exit p1
-    :try_end_31
-    .catchall {:try_start_30 .. :try_end_31} :catchall_2f
+    .line 415
+    invoke-virtual {v3}, Lcom/android/server/wm/RecentTasks;->usersWithRecentsLoadedLocked()[I
+
+    move-result-object v3
+
+    .line 414
+    invoke-virtual {v1, v2, v3}, Lcom/android/server/wm/WindowManagerService;->removeObsoleteTaskFiles(Landroid/util/ArraySet;[I)V
+
+    .line 416
+    monitor-exit v0
+    :try_end_45
+    .catchall {:try_start_13 .. :try_end_45} :catchall_4e
 
     invoke-static {}, Lcom/android/server/wm/WindowManagerService;->resetPriorityAfterLockedSection()V
 
-    throw v0
+    .line 417
+    iget-object v0, p0, Lcom/android/server/wm/TaskPersister;->mTmpTaskIds:Landroid/util/ArraySet;
+
+    invoke-direct {p0, v0}, Lcom/android/server/wm/TaskPersister;->removeObsoleteFiles(Landroid/util/ArraySet;)V
+
+    goto :goto_54
 
     .line 416
-    :cond_35
-    :goto_35
+    :catchall_4e
+    move-exception v1
+
+    :try_start_4f
+    monitor-exit v0
+    :try_end_50
+    .catchall {:try_start_4f .. :try_end_50} :catchall_4e
+
+    invoke-static {}, Lcom/android/server/wm/WindowManagerService;->resetPriorityAfterLockedSection()V
+
+    throw v1
+
+    .line 419
+    :cond_54
+    :goto_54
     invoke-direct {p0}, Lcom/android/server/wm/TaskPersister;->writeTaskIdsFiles()V
 
-    .line 417
+    .line 420
     return-void
 .end method
 
 .method restoreTasksForUserLocked(ILandroid/util/SparseBooleanArray;)Ljava/util/List;
-    .registers 19
+    .registers 22
+    .param p1, "userId"  # I
+    .param p2, "preaddedTasks"  # Landroid/util/SparseBooleanArray;
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(I",
@@ -1444,72 +1624,113 @@
         }
     .end annotation
 
-    .line 274
+    .line 277
     move-object/from16 v1, p0
 
     move/from16 v2, p1
 
-    new-instance v3, Ljava/util/ArrayList;
+    const-string v3, "Deleting file="
 
-    invoke-direct {v3}, Ljava/util/ArrayList;-><init>()V
+    new-instance v0, Ljava/util/ArrayList;
 
-    .line 275
-    new-instance v4, Landroid/util/ArraySet;
+    invoke-direct {v0}, Ljava/util/ArrayList;-><init>()V
 
-    invoke-direct {v4}, Landroid/util/ArraySet;-><init>()V
+    move-object v4, v0
 
-    .line 277
+    .line 278
+    .local v4, "tasks":Ljava/util/ArrayList;, "Ljava/util/ArrayList<Lcom/android/server/wm/TaskRecord;>;"
+    new-instance v0, Landroid/util/ArraySet;
+
+    invoke-direct {v0}, Landroid/util/ArraySet;-><init>()V
+
+    move-object v5, v0
+
+    .line 280
+    .local v5, "recoveredTaskIds":Landroid/util/ArraySet;, "Landroid/util/ArraySet<Ljava/lang/Integer;>;"
     invoke-static/range {p1 .. p1}, Lcom/android/server/wm/TaskPersister;->getUserTasksDir(I)Ljava/io/File;
-
-    move-result-object v5
-
-    .line 279
-    invoke-virtual {v5}, Ljava/io/File;->listFiles()[Ljava/io/File;
 
     move-result-object v6
 
-    .line 280
-    const-string v7, "TaskPersister"
+    .line 282
+    .local v6, "userTasksDir":Ljava/io/File;
+    invoke-virtual {v6}, Ljava/io/File;->listFiles()[Ljava/io/File;
 
-    if-nez v6, :cond_2f
+    move-result-object v7
 
-    .line 281
+    .line 283
+    .local v7, "recentFiles":[Ljava/io/File;
+    const-string v8, "TaskPersister"
+
+    if-nez v7, :cond_33
+
+    .line 284
     new-instance v0, Ljava/lang/StringBuilder;
 
     invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v1, "restoreTasksForUserLocked: Unable to list files from "
+    const-string v3, "restoreTasksForUserLocked: Unable to list files from "
 
-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
     move-result-object v0
 
-    invoke-static {v7, v0}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
-
-    .line 282
-    return-object v3
+    invoke-static {v8, v0}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 285
-    :cond_2f
-    const/4 v8, 0x0
+    return-object v4
 
-    move v9, v8
+    .line 288
+    :cond_33
+    const/4 v0, 0x0
 
-    :goto_31
-    array-length v0, v6
+    move v9, v0
+
+    .local v9, "taskNdx":I
+    :goto_35
+    array-length v0, v7
 
     const/4 v10, 0x1
 
-    if-ge v9, v0, :cond_1b6
+    if-ge v9, v0, :cond_2aa
 
-    .line 286
-    aget-object v11, v6, v9
+    .line 289
+    aget-object v11, v7, v9
+
+    .line 291
+    .local v11, "taskFile":Ljava/io/File;
+    new-instance v0, Ljava/lang/StringBuilder;
+
+    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
+
+    const-string v12, "restoreTasksForUserLocked: userId="
+
+    invoke-virtual {v0, v12}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v0, v2}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+
+    const-string v12, ", taskFile="
+
+    invoke-virtual {v0, v12}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     .line 292
+    invoke-virtual {v11}, Ljava/io/File;->getName()Ljava/lang/String;
+
+    move-result-object v12
+
+    invoke-virtual {v0, v12}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v0
+
+    .line 291
+    invoke-static {v8, v0}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
+
+    .line 295
     invoke-virtual {v11}, Ljava/io/File;->getName()Ljava/lang/String;
 
     move-result-object v0
@@ -1520,21 +1741,23 @@
 
     move-result v0
 
-    if-nez v0, :cond_47
-
-    .line 293
-    move-object/from16 v12, p2
-
-    goto/16 :goto_1b1
+    if-nez v0, :cond_6d
 
     .line 296
-    :cond_47
-    :try_start_47
+    move-object/from16 v16, v7
+
+    move/from16 v17, v9
+
+    goto/16 :goto_2a4
+
+    .line 299
+    :cond_6d
+    :try_start_6d
     invoke-virtual {v11}, Ljava/io/File;->getName()Ljava/lang/String;
 
     move-result-object v0
 
-    .line 298
+    .line 301
     invoke-virtual {v11}, Ljava/io/File;->getName()Ljava/lang/String;
 
     move-result-object v13
@@ -1549,533 +1772,907 @@
 
     sub-int/2addr v13, v12
 
-    .line 296
-    invoke-virtual {v0, v8, v13}, Ljava/lang/String;->substring(II)Ljava/lang/String;
+    .line 299
+    const/4 v12, 0x0
+
+    invoke-virtual {v0, v12, v13}, Ljava/lang/String;->substring(II)Ljava/lang/String;
 
     move-result-object v0
 
     invoke-static {v0}, Ljava/lang/Integer;->parseInt(Ljava/lang/String;)I
 
     move-result v0
-    :try_end_60
-    .catch Ljava/lang/NumberFormatException; {:try_start_47 .. :try_end_60} :catch_1a8
 
-    .line 299
-    move-object/from16 v12, p2
+    .line 302
+    .local v0, "taskId":I
+    move-object/from16 v13, p2
 
-    :try_start_62
-    invoke-virtual {v12, v0, v8}, Landroid/util/SparseBooleanArray;->get(IZ)Z
+    invoke-virtual {v13, v0, v12}, Landroid/util/SparseBooleanArray;->get(IZ)Z
 
-    move-result v13
+    move-result v12
+    :try_end_8d
+    .catch Ljava/lang/NumberFormatException; {:try_start_6d .. :try_end_8d} :catch_299
 
-    if-eqz v13, :cond_83
+    if-eqz v12, :cond_b5
 
-    .line 300
+    .line 303
+    :try_start_8f
     new-instance v10, Ljava/lang/StringBuilder;
 
     invoke-direct {v10}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v11, "Task #"
+    const-string v12, "Task #"
 
-    invoke-virtual {v10, v11}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v10, v12}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v10, v0}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    const-string v0, " has already been created so we don\'t restore again"
+    const-string v12, " has already been created so we don\'t restore again"
 
-    invoke-virtual {v10, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v10, v12}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v10}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v10
 
-    invoke-static {v7, v0}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
-    :try_end_81
-    .catch Ljava/lang/NumberFormatException; {:try_start_62 .. :try_end_81} :catch_1a6
+    invoke-static {v8, v10}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    :try_end_a8
+    .catch Ljava/lang/NumberFormatException; {:try_start_8f .. :try_end_a8} :catch_ae
 
-    .line 302
-    goto/16 :goto_1b1
+    .line 305
+    move-object/from16 v16, v7
+
+    move/from16 v17, v9
+
+    goto/16 :goto_2a4
 
     .line 307
-    :cond_83
-    nop
+    .end local v0  # "taskId":I
+    :catch_ae
+    move-exception v0
 
-    .line 309
-    const/4 v13, 0x0
+    move-object/from16 v16, v7
+
+    move/from16 v17, v9
+
+    goto/16 :goto_29e
 
     .line 310
+    :cond_b5
     nop
 
     .line 312
-    :try_start_86
-    new-instance v14, Ljava/io/BufferedReader;
-
-    new-instance v0, Ljava/io/FileReader;
-
-    invoke-direct {v0, v11}, Ljava/io/FileReader;-><init>(Ljava/io/File;)V
-
-    invoke-direct {v14, v0}, Ljava/io/BufferedReader;-><init>(Ljava/io/Reader;)V
-    :try_end_90
-    .catch Ljava/lang/Exception; {:try_start_86 .. :try_end_90} :catch_166
-    .catchall {:try_start_86 .. :try_end_90} :catchall_163
+    const/4 v12, 0x0
 
     .line 313
-    :try_start_90
+    .local v12, "reader":Ljava/io/BufferedReader;
+    const/4 v14, 0x0
+
+    .line 315
+    .local v14, "deleteFile":Z
+    :try_start_b8
+    new-instance v0, Ljava/io/BufferedReader;
+
+    new-instance v15, Ljava/io/FileReader;
+
+    invoke-direct {v15, v11}, Ljava/io/FileReader;-><init>(Ljava/io/File;)V
+
+    invoke-direct {v0, v15}, Ljava/io/BufferedReader;-><init>(Ljava/io/Reader;)V
+
+    move-object v12, v0
+
+    .line 316
     invoke-static {}, Landroid/util/Xml;->newPullParser()Lorg/xmlpull/v1/XmlPullParser;
 
     move-result-object v0
 
-    .line 314
-    invoke-interface {v0, v14}, Lorg/xmlpull/v1/XmlPullParser;->setInput(Ljava/io/Reader;)V
-
     .line 317
-    :goto_97
+    .local v0, "in":Lorg/xmlpull/v1/XmlPullParser;
+    invoke-interface {v0, v12}, Lorg/xmlpull/v1/XmlPullParser;->setInput(Ljava/io/Reader;)V
+
+    .line 320
+    :goto_ca
     invoke-interface {v0}, Lorg/xmlpull/v1/XmlPullParser;->next()I
 
-    move-result v13
+    move-result v15
 
-    if-eq v13, v10, :cond_15a
+    move/from16 v16, v15
+
+    .local v16, "event":I
+    if-eq v15, v10, :cond_1ef
 
     const/4 v15, 0x3
 
-    if-eq v13, v15, :cond_15a
+    move/from16 v10, v16
 
-    .line 319
+    .end local v16  # "event":I
+    .local v10, "event":I
+    if-eq v10, v15, :cond_1e8
+
+    .line 322
     invoke-interface {v0}, Lorg/xmlpull/v1/XmlPullParser;->getName()Ljava/lang/String;
 
     move-result-object v15
-
-    .line 320
-    const/4 v8, 0x2
-
-    if-ne v13, v8, :cond_153
-
-    .line 322
-    const-string v8, "task"
-
-    invoke-virtual {v8, v15}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
-
-    move-result v8
-
-    if-eqz v8, :cond_137
+    :try_end_db
+    .catch Ljava/lang/Exception; {:try_start_b8 .. :try_end_db} :catch_223
+    .catchall {:try_start_b8 .. :try_end_db} :catchall_21d
 
     .line 323
-    iget-object v8, v1, Lcom/android/server/wm/TaskPersister;->mStackSupervisor:Lcom/android/server/wm/ActivityStackSupervisor;
+    .local v15, "name":Ljava/lang/String;
+    move-object/from16 v16, v7
 
-    invoke-static {v0, v8}, Lcom/android/server/wm/TaskRecord;->restoreFromXml(Lorg/xmlpull/v1/XmlPullParser;Lcom/android/server/wm/ActivityStackSupervisor;)Lcom/android/server/wm/TaskRecord;
+    .end local v7  # "recentFiles":[Ljava/io/File;
+    .local v16, "recentFiles":[Ljava/io/File;
+    const/4 v7, 0x2
 
-    move-result-object v8
+    if-ne v10, v7, :cond_1cd
+
+    .line 324
+    :try_start_e0
+    new-instance v7, Ljava/lang/StringBuilder;
+
+    invoke-direct {v7}, Ljava/lang/StringBuilder;-><init>()V
+
+    const-string v13, "restoreTasksForUserLocked: START_TAG name="
+
+    invoke-virtual {v7, v13}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v7, v15}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v7}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v7
+
+    invoke-static {v8, v7}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
+
+    .line 325
+    const-string v7, "task"
+
+    invoke-virtual {v7, v15}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+
+    move-result v7
+
+    if-eqz v7, :cond_1a3
 
     .line 326
-    if-eqz v8, :cond_116
+    iget-object v7, v1, Lcom/android/server/wm/TaskPersister;->mStackSupervisor:Lcom/android/server/wm/ActivityStackSupervisor;
 
-    .line 332
-    iget v13, v8, Lcom/android/server/wm/TaskRecord;->taskId:I
+    invoke-static {v0, v7}, Lcom/android/server/wm/TaskRecord;->restoreFromXml(Lorg/xmlpull/v1/XmlPullParser;Lcom/android/server/wm/ActivityStackSupervisor;)Lcom/android/server/wm/TaskRecord;
 
-    .line 333
-    iget-object v15, v1, Lcom/android/server/wm/TaskPersister;->mService:Lcom/android/server/wm/ActivityTaskManagerService;
+    move-result-object v7
 
-    iget-object v15, v15, Lcom/android/server/wm/ActivityTaskManagerService;->mRootActivityContainer:Lcom/android/server/wm/RootActivityContainer;
-
-    invoke-virtual {v15, v13, v10}, Lcom/android/server/wm/RootActivityContainer;->anyTaskForId(II)Lcom/android/server/wm/TaskRecord;
-
-    move-result-object v15
-
-    if-eqz v15, :cond_dd
-
-    .line 336
-    new-instance v8, Ljava/lang/StringBuilder;
-
-    invoke-direct {v8}, Ljava/lang/StringBuilder;-><init>()V
-
-    const-string v15, "Existing task with taskId "
-
-    invoke-virtual {v8, v15}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v8, v13}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
-
-    const-string v13, "found"
-
-    invoke-virtual {v8, v13}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v8}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
-
-    move-result-object v8
-
-    invoke-static {v7, v8}, Landroid/util/Slog;->wtf(Ljava/lang/String;Ljava/lang/String;)I
-
-    goto :goto_115
-
-    .line 337
-    :cond_dd
-    iget v15, v8, Lcom/android/server/wm/TaskRecord;->userId:I
-
-    if-eq v2, v15, :cond_104
-
-    .line 339
+    .line 327
+    .local v7, "task":Lcom/android/server/wm/TaskRecord;
     new-instance v13, Ljava/lang/StringBuilder;
 
     invoke-direct {v13}, Ljava/lang/StringBuilder;-><init>()V
+    :try_end_107
+    .catch Ljava/lang/Exception; {:try_start_e0 .. :try_end_107} :catch_1c9
+    .catchall {:try_start_e0 .. :try_end_107} :catchall_1c4
 
-    const-string v15, "Task with userId "
+    move/from16 v17, v9
 
-    invoke-virtual {v13, v15}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    .end local v9  # "taskNdx":I
+    .local v17, "taskNdx":I
+    :try_start_109
+    const-string v9, "restoreTasksForUserLocked: restored task="
 
-    iget v8, v8, Lcom/android/server/wm/TaskRecord;->userId:I
+    invoke-virtual {v13, v9}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v13, v8}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
-
-    const-string v8, " found in "
-
-    invoke-virtual {v13, v8}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    .line 340
-    invoke-virtual {v5}, Ljava/io/File;->getAbsolutePath()Ljava/lang/String;
-
-    move-result-object v8
-
-    invoke-virtual {v13, v8}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v13, v7}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v13}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v8
+    move-result-object v9
 
-    .line 339
-    invoke-static {v7, v8}, Landroid/util/Slog;->wtf(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v8, v9}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
 
-    goto :goto_115
+    .line 329
+    if-eqz v7, :cond_17d
 
-    .line 343
-    :cond_104
-    iget-object v15, v1, Lcom/android/server/wm/TaskPersister;->mStackSupervisor:Lcom/android/server/wm/ActivityStackSupervisor;
+    .line 335
+    iget v9, v7, Lcom/android/server/wm/TaskRecord;->taskId:I
 
-    invoke-virtual {v15, v13, v2}, Lcom/android/server/wm/ActivityStackSupervisor;->setNextTaskIdForUserLocked(II)V
+    .line 336
+    .local v9, "taskId":I
+    iget-object v13, v1, Lcom/android/server/wm/TaskPersister;->mService:Lcom/android/server/wm/ActivityTaskManagerService;
 
-    .line 344
-    iput-boolean v10, v8, Lcom/android/server/wm/TaskRecord;->isPersistable:Z
+    iget-object v13, v13, Lcom/android/server/wm/ActivityTaskManagerService;->mRootActivityContainer:Lcom/android/server/wm/RootActivityContainer;
+    :try_end_120
+    .catch Ljava/lang/Exception; {:try_start_109 .. :try_end_120} :catch_1a0
+    .catchall {:try_start_109 .. :try_end_120} :catchall_279
 
-    .line 345
-    invoke-virtual {v3, v8}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
+    move-object/from16 v18, v3
 
-    .line 346
-    invoke-static {v13}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
+    const/4 v3, 0x1
 
-    move-result-object v8
-
-    invoke-virtual {v4, v8}, Landroid/util/ArraySet;->add(Ljava/lang/Object;)Z
-
-    .line 348
-    :goto_115
-    goto :goto_136
-
-    .line 349
-    :cond_116
-    new-instance v8, Ljava/lang/StringBuilder;
-
-    invoke-direct {v8}, Ljava/lang/StringBuilder;-><init>()V
-
-    const-string v13, "restoreTasksForUserLocked: Unable to restore taskFile="
-
-    invoke-virtual {v8, v13}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v8, v11}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
-
-    const-string v13, ": "
-
-    invoke-virtual {v8, v13}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    .line 350
-    invoke-direct {v1, v11}, Lcom/android/server/wm/TaskPersister;->fileToString(Ljava/io/File;)Ljava/lang/String;
+    :try_start_123
+    invoke-virtual {v13, v9, v3}, Lcom/android/server/wm/RootActivityContainer;->anyTaskForId(II)Lcom/android/server/wm/TaskRecord;
 
     move-result-object v13
 
-    invoke-virtual {v8, v13}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    if-eqz v13, :cond_143
 
-    invoke-virtual {v8}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    .line 339
+    new-instance v3, Ljava/lang/StringBuilder;
 
-    move-result-object v8
+    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
+
+    const-string v13, "Existing task with taskId "
+
+    invoke-virtual {v3, v13}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v3, v9}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+
+    const-string v13, "found"
+
+    invoke-virtual {v3, v13}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v3
+
+    invoke-static {v8, v3}, Landroid/util/Slog;->wtf(Ljava/lang/String;Ljava/lang/String;)I
+
+    goto :goto_17c
+
+    .line 340
+    :cond_143
+    iget v3, v7, Lcom/android/server/wm/TaskRecord;->userId:I
+
+    if-eq v2, v3, :cond_16a
+
+    .line 342
+    new-instance v3, Ljava/lang/StringBuilder;
+
+    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
+
+    const-string v13, "Task with userId "
+
+    invoke-virtual {v3, v13}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    iget v13, v7, Lcom/android/server/wm/TaskRecord;->userId:I
+
+    invoke-virtual {v3, v13}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+
+    const-string v13, " found in "
+
+    invoke-virtual {v3, v13}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    .line 343
+    invoke-virtual {v6}, Ljava/io/File;->getAbsolutePath()Ljava/lang/String;
+
+    move-result-object v13
+
+    invoke-virtual {v3, v13}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v3
+
+    .line 342
+    invoke-static {v8, v3}, Landroid/util/Slog;->wtf(Ljava/lang/String;Ljava/lang/String;)I
+
+    goto :goto_17c
+
+    .line 346
+    :cond_16a
+    iget-object v3, v1, Lcom/android/server/wm/TaskPersister;->mStackSupervisor:Lcom/android/server/wm/ActivityStackSupervisor;
+
+    invoke-virtual {v3, v9, v2}, Lcom/android/server/wm/ActivityStackSupervisor;->setNextTaskIdForUserLocked(II)V
+
+    .line 347
+    const/4 v3, 0x1
+
+    iput-boolean v3, v7, Lcom/android/server/wm/TaskRecord;->isPersistable:Z
+
+    .line 348
+    invoke-virtual {v4, v7}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
 
     .line 349
-    invoke-static {v7, v8}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v9}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
+
+    move-result-object v3
+
+    invoke-virtual {v5, v3}, Landroid/util/ArraySet;->add(Ljava/lang/Object;)Z
+
+    .line 351
+    .end local v9  # "taskId":I
+    :goto_17c
+    goto :goto_19f
 
     .line 352
-    :goto_136
-    goto :goto_153
+    :cond_17d
+    move-object/from16 v18, v3
+
+    new-instance v3, Ljava/lang/StringBuilder;
+
+    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
+
+    const-string v9, "restoreTasksForUserLocked: Unable to restore taskFile="
+
+    invoke-virtual {v3, v9}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v3, v11}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+
+    const-string v9, ": "
+
+    invoke-virtual {v3, v9}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     .line 353
-    :cond_137
-    new-instance v8, Ljava/lang/StringBuilder;
+    invoke-direct {v1, v11}, Lcom/android/server/wm/TaskPersister;->fileToString(Ljava/io/File;)Ljava/lang/String;
 
-    invoke-direct {v8}, Ljava/lang/StringBuilder;-><init>()V
+    move-result-object v9
 
-    const-string v10, "restoreTasksForUserLocked: Unknown xml event="
+    invoke-virtual {v3, v9}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v8, v10}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    invoke-virtual {v8, v13}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    move-result-object v3
 
-    const-string v10, " name="
+    .line 352
+    invoke-static {v8, v3}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
 
-    invoke-virtual {v8, v10}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    .line 355
+    .end local v7  # "task":Lcom/android/server/wm/TaskRecord;
+    :goto_19f
+    goto :goto_1d1
 
-    invoke-virtual {v8, v15}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    .line 362
+    .end local v0  # "in":Lorg/xmlpull/v1/XmlPullParser;
+    .end local v10  # "event":I
+    .end local v15  # "name":Ljava/lang/String;
+    :catch_1a0
+    move-exception v0
 
-    invoke-virtual {v8}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    goto/16 :goto_228
 
-    move-result-object v8
+    .line 356
+    .end local v17  # "taskNdx":I
+    .restart local v0  # "in":Lorg/xmlpull/v1/XmlPullParser;
+    .local v9, "taskNdx":I
+    .restart local v10  # "event":I
+    .restart local v15  # "name":Ljava/lang/String;
+    :cond_1a3
+    move-object/from16 v18, v3
 
-    invoke-static {v7, v8}, Landroid/util/Slog;->wtf(Ljava/lang/String;Ljava/lang/String;)I
+    move/from16 v17, v9
 
-    .line 357
-    :cond_153
-    :goto_153
+    .end local v9  # "taskNdx":I
+    .restart local v17  # "taskNdx":I
+    new-instance v3, Ljava/lang/StringBuilder;
+
+    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
+
+    const-string v7, "restoreTasksForUserLocked: Unknown xml event="
+
+    invoke-virtual {v3, v7}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v3, v10}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+
+    const-string v7, " name="
+
+    invoke-virtual {v3, v7}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v3, v15}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v3
+
+    invoke-static {v8, v3}, Landroid/util/Slog;->wtf(Ljava/lang/String;Ljava/lang/String;)I
+
+    goto :goto_1d1
+
+    .line 367
+    .end local v0  # "in":Lorg/xmlpull/v1/XmlPullParser;
+    .end local v10  # "event":I
+    .end local v15  # "name":Ljava/lang/String;
+    .end local v17  # "taskNdx":I
+    .restart local v9  # "taskNdx":I
+    :catchall_1c4
+    move-exception v0
+
+    move/from16 v17, v9
+
+    .end local v9  # "taskNdx":I
+    .restart local v17  # "taskNdx":I
+    goto/16 :goto_27a
+
+    .line 362
+    .end local v17  # "taskNdx":I
+    .restart local v9  # "taskNdx":I
+    :catch_1c9
+    move-exception v0
+
+    move/from16 v17, v9
+
+    .end local v9  # "taskNdx":I
+    .restart local v17  # "taskNdx":I
+    goto :goto_228
+
+    .line 323
+    .end local v17  # "taskNdx":I
+    .restart local v0  # "in":Lorg/xmlpull/v1/XmlPullParser;
+    .restart local v9  # "taskNdx":I
+    .restart local v10  # "event":I
+    .restart local v15  # "name":Ljava/lang/String;
+    :cond_1cd
+    move-object/from16 v18, v3
+
+    move/from16 v17, v9
+
+    .line 360
+    .end local v9  # "taskNdx":I
+    .restart local v17  # "taskNdx":I
+    :goto_1d1
     invoke-static {v0}, Lcom/android/internal/util/XmlUtils;->skipCurrentTag(Lorg/xmlpull/v1/XmlPullParser;)V
-    :try_end_156
-    .catch Ljava/lang/Exception; {:try_start_90 .. :try_end_156} :catch_160
-    .catchall {:try_start_90 .. :try_end_156} :catchall_15e
+    :try_end_1d4
+    .catch Ljava/lang/Exception; {:try_start_123 .. :try_end_1d4} :catch_1e4
+    .catchall {:try_start_123 .. :try_end_1d4} :catchall_1df
 
-    .line 358
-    const/4 v8, 0x0
+    .line 361
+    .end local v15  # "name":Ljava/lang/String;
+    move-object/from16 v13, p2
+
+    move-object/from16 v7, v16
+
+    move/from16 v9, v17
+
+    move-object/from16 v3, v18
 
     const/4 v10, 0x1
 
-    goto/16 :goto_97
+    goto/16 :goto_ca
 
-    .line 364
-    :cond_15a
-    invoke-static {v14}, Llibcore/io/IoUtils;->closeQuietly(Ljava/lang/AutoCloseable;)V
-
-    .line 365
-    goto :goto_1b1
-
-    .line 364
-    :catchall_15e
+    .line 367
+    .end local v0  # "in":Lorg/xmlpull/v1/XmlPullParser;
+    .end local v10  # "event":I
+    :catchall_1df
     move-exception v0
 
-    goto :goto_1a1
+    move-object/from16 v3, v18
 
-    .line 359
-    :catch_160
+    goto/16 :goto_27a
+
+    .line 362
+    :catch_1e4
     move-exception v0
 
-    move-object v13, v14
+    move-object/from16 v3, v18
 
-    goto :goto_167
+    goto :goto_228
 
-    .line 364
-    :catchall_163
-    move-exception v0
+    .line 320
+    .end local v16  # "recentFiles":[Ljava/io/File;
+    .end local v17  # "taskNdx":I
+    .restart local v0  # "in":Lorg/xmlpull/v1/XmlPullParser;
+    .local v7, "recentFiles":[Ljava/io/File;
+    .restart local v9  # "taskNdx":I
+    .restart local v10  # "event":I
+    :cond_1e8
+    move-object/from16 v18, v3
 
-    move-object v14, v13
+    move-object/from16 v16, v7
 
-    goto :goto_1a1
+    move/from16 v17, v9
 
-    .line 359
-    :catch_166
-    move-exception v0
+    .end local v7  # "recentFiles":[Ljava/io/File;
+    .end local v9  # "taskNdx":I
+    .restart local v16  # "recentFiles":[Ljava/io/File;
+    .restart local v17  # "taskNdx":I
+    goto :goto_1f7
 
-    .line 360
-    :goto_167
-    :try_start_167
-    new-instance v8, Ljava/lang/StringBuilder;
+    .end local v10  # "event":I
+    .end local v17  # "taskNdx":I
+    .restart local v7  # "recentFiles":[Ljava/io/File;
+    .restart local v9  # "taskNdx":I
+    .local v16, "event":I
+    :cond_1ef
+    move-object/from16 v18, v3
 
-    invoke-direct {v8}, Ljava/lang/StringBuilder;-><init>()V
+    move/from16 v17, v9
 
-    const-string v10, "Unable to parse "
+    move/from16 v10, v16
 
-    invoke-virtual {v8, v10}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    move-object/from16 v16, v7
 
-    invoke-virtual {v8, v11}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    .line 367
+    .end local v0  # "in":Lorg/xmlpull/v1/XmlPullParser;
+    .end local v7  # "recentFiles":[Ljava/io/File;
+    .end local v9  # "taskNdx":I
+    .local v16, "recentFiles":[Ljava/io/File;
+    .restart local v17  # "taskNdx":I
+    :goto_1f7
+    invoke-static {v12}, Llibcore/io/IoUtils;->closeQuietly(Ljava/lang/AutoCloseable;)V
 
-    const-string v10, ". Error "
+    .line 368
+    if-eqz v14, :cond_219
 
-    invoke-virtual {v8, v10}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v8}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
-
-    move-result-object v8
-
-    invoke-static {v7, v8, v0}, Landroid/util/Slog;->wtf(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
-
-    .line 361
+    .line 369
     new-instance v0, Ljava/lang/StringBuilder;
 
     invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v8, "Failing file: "
+    move-object/from16 v3, v18
 
-    invoke-virtual {v0, v8}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-direct {v1, v11}, Lcom/android/server/wm/TaskPersister;->fileToString(Ljava/io/File;)Ljava/lang/String;
+    invoke-virtual {v11}, Ljava/io/File;->getName()Ljava/lang/String;
 
-    move-result-object v8
+    move-result-object v7
 
-    invoke-virtual {v0, v8}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v7}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
     move-result-object v0
 
-    invoke-static {v7, v0}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
-    :try_end_198
-    .catchall {:try_start_167 .. :try_end_198} :catchall_163
+    invoke-static {v8, v0}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 362
-    nop
-
-    .line 364
-    invoke-static {v13}, Llibcore/io/IoUtils;->closeQuietly(Ljava/lang/AutoCloseable;)V
-
-    .line 365
-    nop
-
-    .line 367
+    .line 370
     invoke-virtual {v11}, Ljava/io/File;->delete()Z
 
-    goto :goto_1b1
+    goto/16 :goto_2a4
 
-    .line 364
-    :goto_1a1
-    invoke-static {v14}, Llibcore/io/IoUtils;->closeQuietly(Ljava/lang/AutoCloseable;)V
+    .line 368
+    :cond_219
+    move-object/from16 v3, v18
 
-    .line 365
-    nop
+    goto/16 :goto_2a4
 
     .line 367
+    .end local v16  # "recentFiles":[Ljava/io/File;
+    .end local v17  # "taskNdx":I
+    .restart local v7  # "recentFiles":[Ljava/io/File;
+    .restart local v9  # "taskNdx":I
+    :catchall_21d
+    move-exception v0
+
+    move-object/from16 v16, v7
+
+    move/from16 v17, v9
+
+    .end local v7  # "recentFiles":[Ljava/io/File;
+    .end local v9  # "taskNdx":I
+    .restart local v16  # "recentFiles":[Ljava/io/File;
+    .restart local v17  # "taskNdx":I
+    goto :goto_27a
+
+    .line 362
+    .end local v16  # "recentFiles":[Ljava/io/File;
+    .end local v17  # "taskNdx":I
+    .restart local v7  # "recentFiles":[Ljava/io/File;
+    .restart local v9  # "taskNdx":I
+    :catch_223
+    move-exception v0
+
+    move-object/from16 v16, v7
+
+    move/from16 v17, v9
+
+    .line 363
+    .end local v7  # "recentFiles":[Ljava/io/File;
+    .end local v9  # "taskNdx":I
+    .local v0, "e":Ljava/lang/Exception;
+    .restart local v16  # "recentFiles":[Ljava/io/File;
+    .restart local v17  # "taskNdx":I
+    :goto_228
+    :try_start_228
+    new-instance v7, Ljava/lang/StringBuilder;
+
+    invoke-direct {v7}, Ljava/lang/StringBuilder;-><init>()V
+
+    const-string v9, "Unable to parse "
+
+    invoke-virtual {v7, v9}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v7, v11}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+
+    const-string v9, ". Error "
+
+    invoke-virtual {v7, v9}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v7}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v7
+
+    invoke-static {v8, v7, v0}, Landroid/util/Slog;->wtf(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+
+    .line 364
+    new-instance v7, Ljava/lang/StringBuilder;
+
+    invoke-direct {v7}, Ljava/lang/StringBuilder;-><init>()V
+
+    const-string v9, "Failing file: "
+
+    invoke-virtual {v7, v9}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-direct {v1, v11}, Lcom/android/server/wm/TaskPersister;->fileToString(Ljava/io/File;)Ljava/lang/String;
+
+    move-result-object v9
+
+    invoke-virtual {v7, v9}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v7}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v7
+
+    invoke-static {v8, v7}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
+    :try_end_259
+    .catchall {:try_start_228 .. :try_end_259} :catchall_279
+
+    .line 365
+    const/4 v0, 0x1
+
+    .line 367
+    .end local v14  # "deleteFile":Z
+    .local v0, "deleteFile":Z
+    invoke-static {v12}, Llibcore/io/IoUtils;->closeQuietly(Ljava/lang/AutoCloseable;)V
+
+    .line 368
+    if-eqz v0, :cond_2a4
+
+    .line 369
+    new-instance v7, Ljava/lang/StringBuilder;
+
+    invoke-direct {v7}, Ljava/lang/StringBuilder;-><init>()V
+
+    invoke-virtual {v7, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v11}, Ljava/io/File;->getName()Ljava/lang/String;
+
+    move-result-object v9
+
+    invoke-virtual {v7, v9}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v7}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v7
+
+    invoke-static {v8, v7}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
+
+    .line 370
+    invoke-virtual {v11}, Ljava/io/File;->delete()Z
+
+    goto :goto_2a4
+
+    .line 367
+    .end local v0  # "deleteFile":Z
+    .restart local v14  # "deleteFile":Z
+    :catchall_279
+    move-exception v0
+
+    :goto_27a
+    invoke-static {v12}, Llibcore/io/IoUtils;->closeQuietly(Ljava/lang/AutoCloseable;)V
+
+    .line 368
+    if-eqz v14, :cond_298
+
+    .line 369
+    new-instance v7, Ljava/lang/StringBuilder;
+
+    invoke-direct {v7}, Ljava/lang/StringBuilder;-><init>()V
+
+    invoke-virtual {v7, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v11}, Ljava/io/File;->getName()Ljava/lang/String;
+
+    move-result-object v3
+
+    invoke-virtual {v7, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v7}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v3
+
+    invoke-static {v8, v3}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
+
+    .line 370
+    invoke-virtual {v11}, Ljava/io/File;->delete()Z
+
+    :cond_298
     throw v0
 
-    .line 304
-    :catch_1a6
+    .line 307
+    .end local v12  # "reader":Ljava/io/BufferedReader;
+    .end local v14  # "deleteFile":Z
+    .end local v16  # "recentFiles":[Ljava/io/File;
+    .end local v17  # "taskNdx":I
+    .restart local v7  # "recentFiles":[Ljava/io/File;
+    .restart local v9  # "taskNdx":I
+    :catch_299
     move-exception v0
 
-    goto :goto_1ab
+    move-object/from16 v16, v7
 
-    :catch_1a8
-    move-exception v0
+    move/from16 v17, v9
 
-    move-object/from16 v12, p2
+    .line 308
+    .end local v7  # "recentFiles":[Ljava/io/File;
+    .end local v9  # "taskNdx":I
+    .local v0, "e":Ljava/lang/NumberFormatException;
+    .restart local v16  # "recentFiles":[Ljava/io/File;
+    .restart local v17  # "taskNdx":I
+    :goto_29e
+    const-string v7, "Unexpected task file name"
 
-    .line 305
-    :goto_1ab
-    const-string v8, "Unexpected task file name"
+    invoke-static {v8, v7, v0}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
-    invoke-static {v7, v8, v0}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
-
-    .line 306
+    .line 309
     nop
 
-    .line 285
-    :goto_1b1
-    add-int/lit8 v9, v9, 0x1
+    .line 288
+    .end local v0  # "e":Ljava/lang/NumberFormatException;
+    .end local v11  # "taskFile":Ljava/io/File;
+    :cond_2a4
+    :goto_2a4
+    add-int/lit8 v9, v17, 0x1
 
-    const/4 v8, 0x0
+    move-object/from16 v7, v16
 
-    goto/16 :goto_31
+    .end local v17  # "taskNdx":I
+    .restart local v9  # "taskNdx":I
+    goto/16 :goto_35
 
-    .line 373
-    :cond_1b6
-    invoke-virtual {v5}, Ljava/io/File;->listFiles()[Ljava/io/File;
+    .end local v16  # "recentFiles":[Ljava/io/File;
+    .restart local v7  # "recentFiles":[Ljava/io/File;
+    :cond_2aa
+    move-object/from16 v16, v7
 
-    move-result-object v0
+    move/from16 v17, v9
 
-    invoke-static {v4, v0}, Lcom/android/server/wm/TaskPersister;->removeObsoleteFiles(Landroid/util/ArraySet;[Ljava/io/File;)V
-
-    .line 377
-    invoke-virtual {v3}, Ljava/util/ArrayList;->size()I
+    .line 380
+    .end local v7  # "recentFiles":[Ljava/io/File;
+    .end local v9  # "taskNdx":I
+    .restart local v16  # "recentFiles":[Ljava/io/File;
+    invoke-virtual {v4}, Ljava/util/ArrayList;->size()I
 
     move-result v0
 
-    const/4 v2, 0x1
+    const/4 v3, 0x1
 
-    sub-int/2addr v0, v2
+    sub-int/2addr v0, v3
 
-    :goto_1c3
-    if-ltz v0, :cond_1e0
+    .local v0, "taskNdx":I
+    :goto_2b4
+    if-ltz v0, :cond_2d1
 
-    .line 378
-    invoke-virtual {v3, v0}, Ljava/util/ArrayList;->get(I)Ljava/lang/Object;
+    .line 381
+    invoke-virtual {v4, v0}, Ljava/util/ArrayList;->get(I)Ljava/lang/Object;
 
-    move-result-object v2
+    move-result-object v3
 
-    check-cast v2, Lcom/android/server/wm/TaskRecord;
+    check-cast v3, Lcom/android/server/wm/TaskRecord;
 
-    .line 379
-    iget v4, v2, Lcom/android/server/wm/TaskRecord;->mPrevAffiliateTaskId:I
+    .line 382
+    .local v3, "task":Lcom/android/server/wm/TaskRecord;
+    iget v7, v3, Lcom/android/server/wm/TaskRecord;->mPrevAffiliateTaskId:I
 
-    invoke-direct {v1, v4, v3}, Lcom/android/server/wm/TaskPersister;->taskIdToTask(ILjava/util/ArrayList;)Lcom/android/server/wm/TaskRecord;
+    invoke-direct {v1, v7, v4}, Lcom/android/server/wm/TaskPersister;->taskIdToTask(ILjava/util/ArrayList;)Lcom/android/server/wm/TaskRecord;
 
-    move-result-object v4
+    move-result-object v7
 
-    invoke-virtual {v2, v4}, Lcom/android/server/wm/TaskRecord;->setPrevAffiliate(Lcom/android/server/wm/TaskRecord;)V
-
-    .line 380
-    iget v4, v2, Lcom/android/server/wm/TaskRecord;->mNextAffiliateTaskId:I
-
-    invoke-direct {v1, v4, v3}, Lcom/android/server/wm/TaskPersister;->taskIdToTask(ILjava/util/ArrayList;)Lcom/android/server/wm/TaskRecord;
-
-    move-result-object v4
-
-    invoke-virtual {v2, v4}, Lcom/android/server/wm/TaskRecord;->setNextAffiliate(Lcom/android/server/wm/TaskRecord;)V
-
-    .line 377
-    add-int/lit8 v0, v0, -0x1
-
-    goto :goto_1c3
+    invoke-virtual {v3, v7}, Lcom/android/server/wm/TaskRecord;->setPrevAffiliate(Lcom/android/server/wm/TaskRecord;)V
 
     .line 383
-    :cond_1e0
+    iget v7, v3, Lcom/android/server/wm/TaskRecord;->mNextAffiliateTaskId:I
+
+    invoke-direct {v1, v7, v4}, Lcom/android/server/wm/TaskPersister;->taskIdToTask(ILjava/util/ArrayList;)Lcom/android/server/wm/TaskRecord;
+
+    move-result-object v7
+
+    invoke-virtual {v3, v7}, Lcom/android/server/wm/TaskRecord;->setNextAffiliate(Lcom/android/server/wm/TaskRecord;)V
+
+    .line 380
+    .end local v3  # "task":Lcom/android/server/wm/TaskRecord;
+    add-int/lit8 v0, v0, -0x1
+
+    goto :goto_2b4
+
+    .line 386
+    .end local v0  # "taskNdx":I
+    :cond_2d1
     new-instance v0, Lcom/android/server/wm/TaskPersister$1;
 
     invoke-direct {v0, v1}, Lcom/android/server/wm/TaskPersister$1;-><init>(Lcom/android/server/wm/TaskPersister;)V
 
-    invoke-static {v3, v0}, Ljava/util/Collections;->sort(Ljava/util/List;Ljava/util/Comparator;)V
+    invoke-static {v4, v0}, Ljava/util/Collections;->sort(Ljava/util/List;Ljava/util/Comparator;)V
 
-    .line 396
-    return-object v3
+    .line 399
+    return-object v4
 .end method
 
 .method saveImage(Landroid/graphics/Bitmap;Ljava/lang/String;)V
-    .registers 5
+    .registers 6
+    .param p1, "image"  # Landroid/graphics/Bitmap;
+    .param p2, "filePath"  # Ljava/lang/String;
 
-    .line 219
+    .line 222
     iget-object v0, p0, Lcom/android/server/wm/TaskPersister;->mPersisterQueue:Lcom/android/server/wm/PersisterQueue;
 
     new-instance v1, Lcom/android/server/wm/TaskPersister$ImageWriteQueueItem;
 
     invoke-direct {v1, p2, p1}, Lcom/android/server/wm/TaskPersister$ImageWriteQueueItem;-><init>(Ljava/lang/String;Landroid/graphics/Bitmap;)V
 
-    const/4 p1, 0x0
+    const/4 v2, 0x0
 
-    invoke-virtual {v0, v1, p1}, Lcom/android/server/wm/PersisterQueue;->updateLastOrAddItem(Lcom/android/server/wm/PersisterQueue$WriteQueueItem;Z)V
+    invoke-virtual {v0, v1, v2}, Lcom/android/server/wm/PersisterQueue;->updateLastOrAddItem(Lcom/android/server/wm/PersisterQueue$WriteQueueItem;Z)V
 
     .line 225
+    new-instance v0, Ljava/lang/StringBuilder;
+
+    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
+
+    const-string v1, "saveImage: filePath="
+
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v0, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    const-string v1, " now="
+
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    .line 226
+    invoke-static {}, Landroid/os/SystemClock;->uptimeMillis()J
+
+    move-result-wide v1
+
+    invoke-virtual {v0, v1, v2}, Ljava/lang/StringBuilder;->append(J)Ljava/lang/StringBuilder;
+
+    const-string v1, " Callers="
+
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    const/4 v1, 0x4
+
+    invoke-static {v1}, Landroid/os/Debug;->getCallers(I)Ljava/lang/String;
+
+    move-result-object v1
+
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v0
+
+    .line 225
+    const-string v1, "TaskPersister"
+
+    invoke-static {v1, v0}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
+
+    .line 228
     return-void
 .end method
 
 .method unloadUserDataFromMemory(I)V
     .registers 3
+    .param p1, "userId"  # I
 
-    .line 185
+    .line 188
     iget-object v0, p0, Lcom/android/server/wm/TaskPersister;->mTaskIdsInFile:Landroid/util/SparseArray;
 
     invoke-virtual {v0, p1}, Landroid/util/SparseArray;->delete(I)V
 
-    .line 186
+    .line 189
     return-void
 .end method
 
 .method wakeup(Lcom/android/server/wm/TaskRecord;Z)V
-    .registers 7
+    .registers 8
+    .param p1, "task"  # Lcom/android/server/wm/TaskRecord;
+    .param p2, "flush"  # Z
 
-    .line 189
+    .line 192
     iget-object v0, p0, Lcom/android/server/wm/TaskPersister;->mPersisterQueue:Lcom/android/server/wm/PersisterQueue;
 
     monitor-enter v0
 
-    .line 190
+    .line 193
     if-eqz p1, :cond_30
 
-    .line 191
+    .line 194
     :try_start_5
     iget-object v1, p0, Lcom/android/server/wm/TaskPersister;->mPersisterQueue:Lcom/android/server/wm/PersisterQueue;
 
@@ -2091,99 +2688,144 @@
 
     check-cast v1, Lcom/android/server/wm/TaskPersister$TaskWriteQueueItem;
 
-    .line 193
+    .line 196
+    .local v1, "item":Lcom/android/server/wm/TaskPersister$TaskWriteQueueItem;
     if-eqz v1, :cond_1d
 
     iget-boolean v2, p1, Lcom/android/server/wm/TaskRecord;->inRecents:Z
 
     if-nez v2, :cond_1d
 
-    .line 194
+    .line 197
     invoke-direct {p0, p1}, Lcom/android/server/wm/TaskPersister;->removeThumbnails(Lcom/android/server/wm/TaskRecord;)V
 
-    .line 197
+    .line 200
     :cond_1d
     if-nez v1, :cond_2f
 
-    iget-boolean v1, p1, Lcom/android/server/wm/TaskRecord;->isPersistable:Z
+    iget-boolean v2, p1, Lcom/android/server/wm/TaskRecord;->isPersistable:Z
 
-    if-eqz v1, :cond_2f
+    if-eqz v2, :cond_2f
 
-    .line 198
-    iget-object v1, p0, Lcom/android/server/wm/TaskPersister;->mPersisterQueue:Lcom/android/server/wm/PersisterQueue;
+    .line 201
+    iget-object v2, p0, Lcom/android/server/wm/TaskPersister;->mPersisterQueue:Lcom/android/server/wm/PersisterQueue;
 
-    new-instance v2, Lcom/android/server/wm/TaskPersister$TaskWriteQueueItem;
+    new-instance v3, Lcom/android/server/wm/TaskPersister$TaskWriteQueueItem;
 
-    iget-object v3, p0, Lcom/android/server/wm/TaskPersister;->mService:Lcom/android/server/wm/ActivityTaskManagerService;
+    iget-object v4, p0, Lcom/android/server/wm/TaskPersister;->mService:Lcom/android/server/wm/ActivityTaskManagerService;
 
-    invoke-direct {v2, p1, v3}, Lcom/android/server/wm/TaskPersister$TaskWriteQueueItem;-><init>(Lcom/android/server/wm/TaskRecord;Lcom/android/server/wm/ActivityTaskManagerService;)V
+    invoke-direct {v3, p1, v4}, Lcom/android/server/wm/TaskPersister$TaskWriteQueueItem;-><init>(Lcom/android/server/wm/TaskRecord;Lcom/android/server/wm/ActivityTaskManagerService;)V
 
-    invoke-virtual {v1, v2, p2}, Lcom/android/server/wm/PersisterQueue;->addItem(Lcom/android/server/wm/PersisterQueue$WriteQueueItem;Z)V
+    invoke-virtual {v2, v3, p2}, Lcom/android/server/wm/PersisterQueue;->addItem(Lcom/android/server/wm/PersisterQueue$WriteQueueItem;Z)V
 
-    .line 200
+    .line 203
+    .end local v1  # "item":Lcom/android/server/wm/TaskPersister$TaskWriteQueueItem;
     :cond_2f
     goto :goto_37
 
-    .line 203
+    .line 206
     :cond_30
-    iget-object p1, p0, Lcom/android/server/wm/TaskPersister;->mPersisterQueue:Lcom/android/server/wm/PersisterQueue;
+    iget-object v1, p0, Lcom/android/server/wm/TaskPersister;->mPersisterQueue:Lcom/android/server/wm/PersisterQueue;
 
-    sget-object v1, Lcom/android/server/wm/PersisterQueue;->EMPTY_ITEM:Lcom/android/server/wm/PersisterQueue$WriteQueueItem;
+    sget-object v2, Lcom/android/server/wm/PersisterQueue;->EMPTY_ITEM:Lcom/android/server/wm/PersisterQueue$WriteQueueItem;
 
-    invoke-virtual {p1, v1, p2}, Lcom/android/server/wm/PersisterQueue;->addItem(Lcom/android/server/wm/PersisterQueue$WriteQueueItem;Z)V
+    invoke-virtual {v1, v2, p2}, Lcom/android/server/wm/PersisterQueue;->addItem(Lcom/android/server/wm/PersisterQueue$WriteQueueItem;Z)V
 
     .line 209
     :goto_37
-    monitor-exit v0
-    :try_end_38
-    .catchall {:try_start_5 .. :try_end_38} :catchall_3e
+    const-string v1, "TaskPersister"
 
-    .line 211
-    iget-object p1, p0, Lcom/android/server/wm/TaskPersister;->mPersisterQueue:Lcom/android/server/wm/PersisterQueue;
+    new-instance v2, Ljava/lang/StringBuilder;
 
-    invoke-virtual {p1}, Lcom/android/server/wm/PersisterQueue;->yieldIfQueueTooDeep()V
+    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
 
-    .line 212
-    return-void
+    const-string v3, "wakeup: task="
+
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v2, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+
+    const-string v3, " flush="
+
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v2, p2}, Ljava/lang/StringBuilder;->append(Z)Ljava/lang/StringBuilder;
+
+    const-string v3, " Callers="
+
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    const/4 v3, 0x4
+
+    .line 210
+    invoke-static {v3}, Landroid/os/Debug;->getCallers(I)Ljava/lang/String;
+
+    move-result-object v3
+
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v2
 
     .line 209
-    :catchall_3e
-    move-exception p1
+    invoke-static {v1, v2}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
 
-    :try_start_3f
+    .line 212
     monitor-exit v0
-    :try_end_40
-    .catchall {:try_start_3f .. :try_end_40} :catchall_3e
+    :try_end_63
+    .catchall {:try_start_5 .. :try_end_63} :catchall_69
 
-    throw p1
+    .line 214
+    iget-object v0, p0, Lcom/android/server/wm/TaskPersister;->mPersisterQueue:Lcom/android/server/wm/PersisterQueue;
+
+    invoke-virtual {v0}, Lcom/android/server/wm/PersisterQueue;->yieldIfQueueTooDeep()V
+
+    .line 215
+    return-void
+
+    .line 212
+    :catchall_69
+    move-exception v1
+
+    :try_start_6a
+    monitor-exit v0
+    :try_end_6b
+    .catchall {:try_start_6a .. :try_end_6b} :catchall_69
+
+    throw v1
 .end method
 
 .method writePersistedTaskIdsForUser(Landroid/util/SparseBooleanArray;I)V
-    .registers 8
+    .registers 10
+    .param p1, "taskIds"  # Landroid/util/SparseBooleanArray;
+    .param p2, "userId"  # I
     .annotation build Lcom/android/internal/annotations/VisibleForTesting;
     .end annotation
 
-    .line 162
+    .line 165
     if-gez p2, :cond_3
 
-    .line 163
+    .line 166
     return-void
 
-    .line 165
+    .line 168
     :cond_3
     invoke-direct {p0, p2}, Lcom/android/server/wm/TaskPersister;->getUserPersistedTaskIdsFile(I)Ljava/io/File;
 
     move-result-object v0
 
-    .line 166
+    .line 169
+    .local v0, "persistedTaskIdsFile":Ljava/io/File;
     iget-object v1, p0, Lcom/android/server/wm/TaskPersister;->mIoLock:Ljava/lang/Object;
 
     monitor-enter v1
 
-    .line 167
+    .line 170
     const/4 v2, 0x0
 
-    .line 169
+    .line 172
+    .local v2, "writer":Ljava/io/BufferedWriter;
     :try_start_b
     new-instance v3, Ljava/io/BufferedWriter;
 
@@ -2192,137 +2834,135 @@
     invoke-direct {v4, v0}, Ljava/io/FileWriter;-><init>(Ljava/io/File;)V
 
     invoke-direct {v3, v4}, Ljava/io/BufferedWriter;-><init>(Ljava/io/Writer;)V
-    :try_end_15
-    .catch Ljava/lang/Exception; {:try_start_b .. :try_end_15} :catch_3f
-    .catchall {:try_start_b .. :try_end_15} :catchall_3d
 
-    .line 170
-    const/4 v0, 0x0
-
-    :goto_16
-    :try_start_16
-    invoke-virtual {p1}, Landroid/util/SparseBooleanArray;->size()I
-
-    move-result v2
-
-    if-ge v0, v2, :cond_33
-
-    .line 171
-    invoke-virtual {p1, v0}, Landroid/util/SparseBooleanArray;->valueAt(I)Z
-
-    move-result v2
-
-    if-eqz v2, :cond_30
-
-    .line 172
-    invoke-virtual {p1, v0}, Landroid/util/SparseBooleanArray;->keyAt(I)I
-
-    move-result v2
-
-    invoke-static {v2}, Ljava/lang/String;->valueOf(I)Ljava/lang/String;
-
-    move-result-object v2
-
-    invoke-virtual {v3, v2}, Ljava/io/BufferedWriter;->write(Ljava/lang/String;)V
+    move-object v2, v3
 
     .line 173
-    invoke-virtual {v3}, Ljava/io/BufferedWriter;->newLine()V
-    :try_end_30
-    .catch Ljava/lang/Exception; {:try_start_16 .. :try_end_30} :catch_3a
-    .catchall {:try_start_16 .. :try_end_30} :catchall_37
+    const/4 v3, 0x0
 
-    .line 170
-    :cond_30
-    add-int/lit8 v0, v0, 0x1
+    .local v3, "i":I
+    :goto_17
+    invoke-virtual {p1}, Landroid/util/SparseBooleanArray;->size()I
 
-    goto :goto_16
+    move-result v4
 
-    .line 179
-    :cond_33
-    :try_start_33
-    invoke-static {v3}, Llibcore/io/IoUtils;->closeQuietly(Ljava/lang/AutoCloseable;)V
-    :try_end_36
-    .catchall {:try_start_33 .. :try_end_36} :catchall_60
+    if-ge v3, v4, :cond_34
 
-    .line 180
-    :goto_36
-    goto :goto_5a
+    .line 174
+    invoke-virtual {p1, v3}, Landroid/util/SparseBooleanArray;->valueAt(I)Z
 
-    .line 179
-    :catchall_37
-    move-exception p1
+    move-result v4
 
-    move-object v2, v3
+    if-eqz v4, :cond_31
 
-    goto :goto_5c
+    .line 175
+    invoke-virtual {p1, v3}, Landroid/util/SparseBooleanArray;->keyAt(I)I
+
+    move-result v4
+
+    invoke-static {v4}, Ljava/lang/String;->valueOf(I)Ljava/lang/String;
+
+    move-result-object v4
+
+    invoke-virtual {v2, v4}, Ljava/io/BufferedWriter;->write(Ljava/lang/String;)V
 
     .line 176
-    :catch_3a
-    move-exception p1
+    invoke-virtual {v2}, Ljava/io/BufferedWriter;->newLine()V
+    :try_end_31
+    .catch Ljava/lang/Exception; {:try_start_b .. :try_end_31} :catch_3a
+    .catchall {:try_start_b .. :try_end_31} :catchall_38
 
-    move-object v2, v3
+    .line 173
+    :cond_31
+    add-int/lit8 v3, v3, 0x1
 
-    goto :goto_40
-
-    .line 179
-    :catchall_3d
-    move-exception p1
-
-    goto :goto_5c
-
-    .line 176
-    :catch_3f
-    move-exception p1
-
-    .line 177
-    :goto_40
-    :try_start_40
-    const-string v0, "TaskPersister"
-
-    new-instance v3, Ljava/lang/StringBuilder;
-
-    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
-
-    const-string v4, "Error while writing taskIds file for user "
-
-    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v3, p2}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
-
-    move-result-object p2
-
-    invoke-static {v0, p2, p1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
-    :try_end_56
-    .catchall {:try_start_40 .. :try_end_56} :catchall_3d
-
-    .line 179
-    :try_start_56
-    invoke-static {v2}, Llibcore/io/IoUtils;->closeQuietly(Ljava/lang/AutoCloseable;)V
-
-    goto :goto_36
-
-    .line 181
-    :goto_5a
-    monitor-exit v1
+    goto :goto_17
 
     .line 182
-    return-void
+    .end local v3  # "i":I
+    :cond_34
+    :try_start_34
+    invoke-static {v2}, Llibcore/io/IoUtils;->closeQuietly(Ljava/lang/AutoCloseable;)V
+    :try_end_37
+    .catchall {:try_start_34 .. :try_end_37} :catchall_5c
+
+    .line 183
+    :goto_37
+    goto :goto_56
+
+    .line 182
+    :catchall_38
+    move-exception v3
+
+    goto :goto_58
 
     .line 179
-    :goto_5c
+    :catch_3a
+    move-exception v3
+
+    .line 180
+    .local v3, "e":Ljava/lang/Exception;
+    :try_start_3b
+    const-string v4, "TaskPersister"
+
+    new-instance v5, Ljava/lang/StringBuilder;
+
+    invoke-direct {v5}, Ljava/lang/StringBuilder;-><init>()V
+
+    const-string v6, "Error while writing taskIds file for user "
+
+    invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v5, p2}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v5}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v5
+
+    invoke-static {v4, v5, v3}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    :try_end_51
+    .catchall {:try_start_3b .. :try_end_51} :catchall_38
+
+    .line 182
+    nop
+
+    .end local v3  # "e":Ljava/lang/Exception;
+    :try_start_52
     invoke-static {v2}, Llibcore/io/IoUtils;->closeQuietly(Ljava/lang/AutoCloseable;)V
 
-    throw p1
+    goto :goto_37
 
-    .line 181
-    :catchall_60
-    move-exception p1
+    .line 184
+    .end local v2  # "writer":Ljava/io/BufferedWriter;
+    :goto_56
+    monitor-exit v1
+
+    .line 185
+    return-void
+
+    .line 182
+    .restart local v2  # "writer":Ljava/io/BufferedWriter;
+    :goto_58
+    invoke-static {v2}, Llibcore/io/IoUtils;->closeQuietly(Ljava/lang/AutoCloseable;)V
+
+    .end local v0  # "persistedTaskIdsFile":Ljava/io/File;
+    .end local p0  # "this":Lcom/android/server/wm/TaskPersister;
+    .end local p1  # "taskIds":Landroid/util/SparseBooleanArray;
+    .end local p2  # "userId":I
+    throw v3
+
+    .line 184
+    .end local v2  # "writer":Ljava/io/BufferedWriter;
+    .restart local v0  # "persistedTaskIdsFile":Ljava/io/File;
+    .restart local p0  # "this":Lcom/android/server/wm/TaskPersister;
+    .restart local p1  # "taskIds":Landroid/util/SparseBooleanArray;
+    .restart local p2  # "userId":I
+    :catchall_5c
+    move-exception v2
 
     monitor-exit v1
-    :try_end_62
-    .catchall {:try_start_56 .. :try_end_62} :catchall_60
+    :try_end_5e
+    .catchall {:try_start_52 .. :try_end_5e} :catchall_5c
 
-    throw p1
+    throw v2
 .end method

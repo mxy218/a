@@ -33,7 +33,9 @@
 
 # direct methods
 .method public constructor <init>(IILjava/util/Map;)V
-    .registers 4
+    .registers 5
+    .param p1, "minSdk"  # I
+    .param p2, "maxSdk"  # I
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(II",
@@ -45,6 +47,7 @@
     .end annotation
 
     .line 73
+    .local p3, "values":Ljava/util/Map;, "Ljava/util/Map<Ljava/lang/String;Ljava/lang/String;>;"
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
     .line 74
@@ -56,9 +59,9 @@
     .line 76
     invoke-static {p3}, Ljava/util/Collections;->unmodifiableMap(Ljava/util/Map;)Ljava/util/Map;
 
-    move-result-object p1
+    move-result-object v0
 
-    iput-object p1, p0, Lcom/android/server/signedconfig/SignedConfig$PerSdkConfig;->values:Ljava/util/Map;
+    iput-object v0, p0, Lcom/android/server/signedconfig/SignedConfig$PerSdkConfig;->values:Ljava/util/Map;
 
     .line 77
     return-void

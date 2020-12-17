@@ -29,7 +29,9 @@
 
 # direct methods
 .method constructor <init>(Lcom/android/server/os/BugreportManagerServiceImpl;Landroid/os/IDumpstateListener;Landroid/os/IDumpstate;)V
-    .registers 4
+    .registers 6
+    .param p2, "listener"  # Landroid/os/IDumpstateListener;
+    .param p3, "ds"  # Landroid/os/IDumpstate;
 
     .line 254
     iput-object p1, p0, Lcom/android/server/os/BugreportManagerServiceImpl$DumpstateListener;->this$0:Lcom/android/server/os/BugreportManagerServiceImpl;
@@ -49,13 +51,13 @@
 
     .line 258
     :try_start_c
-    iget-object p2, p0, Lcom/android/server/os/BugreportManagerServiceImpl$DumpstateListener;->mDs:Landroid/os/IDumpstate;
+    iget-object v0, p0, Lcom/android/server/os/BugreportManagerServiceImpl$DumpstateListener;->mDs:Landroid/os/IDumpstate;
 
-    invoke-interface {p2}, Landroid/os/IDumpstate;->asBinder()Landroid/os/IBinder;
+    invoke-interface {v0}, Landroid/os/IDumpstate;->asBinder()Landroid/os/IBinder;
 
-    move-result-object p2
+    move-result-object v0
 
-    invoke-interface {p2, p0, p1}, Landroid/os/IBinder;->linkToDeath(Landroid/os/IBinder$DeathRecipient;I)V
+    invoke-interface {v0, p0, p1}, Landroid/os/IBinder;->linkToDeath(Landroid/os/IBinder$DeathRecipient;I)V
     :try_end_15
     .catch Landroid/os/RemoteException; {:try_start_c .. :try_end_15} :catch_16
 
@@ -67,13 +69,15 @@
     move-exception p1
 
     .line 260
-    const-string p2, "BugreportManagerService"
+    .local p1, "e":Landroid/os/RemoteException;
+    const-string v0, "BugreportManagerService"
 
-    const-string p3, "Unable to register Death Recipient for IDumpstate"
+    const-string v1, "Unable to register Death Recipient for IDumpstate"
 
-    invoke-static {p2, p3, p1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    invoke-static {v0, v1, p1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
     .line 262
+    .end local p1  # "e":Landroid/os/RemoteException;
     :goto_1e
     return-void
 .end method
@@ -161,6 +165,7 @@
 
 .method public onError(I)V
     .registers 4
+    .param p1, "errorCode"  # I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -197,14 +202,14 @@
 
     .line 273
     :catchall_11
-    move-exception p1
+    move-exception v1
 
     :try_start_12
     monitor-exit v0
     :try_end_13
     .catchall {:try_start_12 .. :try_end_13} :catchall_11
 
-    throw p1
+    throw v1
 .end method
 
 .method public onFinished()V
@@ -257,6 +262,7 @@
 
 .method public onMaxProgressUpdated(I)V
     .registers 2
+    .param p1, "maxProgress"  # I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -269,6 +275,7 @@
 
 .method public onProgress(I)V
     .registers 3
+    .param p1, "progress"  # I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -286,6 +293,7 @@
 
 .method public onProgressUpdated(I)V
     .registers 2
+    .param p1, "progress"  # I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -298,6 +306,10 @@
 
 .method public onSectionComplete(Ljava/lang/String;III)V
     .registers 5
+    .param p1, "title"  # Ljava/lang/String;
+    .param p2, "status"  # I
+    .param p3, "size"  # I
+    .param p4, "durationMs"  # I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;

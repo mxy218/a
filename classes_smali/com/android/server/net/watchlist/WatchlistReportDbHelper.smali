@@ -54,6 +54,7 @@
 
 .method private constructor <init>(Landroid/content/Context;)V
     .registers 5
+    .param p1, "context"  # Landroid/content/Context;
 
     .line 101
     invoke-static {}, Lcom/android/server/net/watchlist/WatchlistReportDbHelper;->getSystemWatchlistDbFile()Ljava/io/File;
@@ -81,6 +82,7 @@
 
 .method public static declared-synchronized getInstance(Landroid/content/Context;)Lcom/android/server/net/watchlist/WatchlistReportDbHelper;
     .registers 3
+    .param p0, "context"  # Landroid/content/Context;
 
     const-class v0, Lcom/android/server/net/watchlist/WatchlistReportDbHelper;
 
@@ -93,13 +95,13 @@
     if-eqz v1, :cond_b
 
     .line 108
-    sget-object p0, Lcom/android/server/net/watchlist/WatchlistReportDbHelper;->sInstance:Lcom/android/server/net/watchlist/WatchlistReportDbHelper;
+    sget-object v1, Lcom/android/server/net/watchlist/WatchlistReportDbHelper;->sInstance:Lcom/android/server/net/watchlist/WatchlistReportDbHelper;
     :try_end_9
     .catchall {:try_start_3 .. :try_end_9} :catchall_16
 
     monitor-exit v0
 
-    return-object p0
+    return-object v1
 
     .line 110
     :cond_b
@@ -111,15 +113,16 @@
     sput-object v1, Lcom/android/server/net/watchlist/WatchlistReportDbHelper;->sInstance:Lcom/android/server/net/watchlist/WatchlistReportDbHelper;
 
     .line 111
-    sget-object p0, Lcom/android/server/net/watchlist/WatchlistReportDbHelper;->sInstance:Lcom/android/server/net/watchlist/WatchlistReportDbHelper;
+    sget-object v1, Lcom/android/server/net/watchlist/WatchlistReportDbHelper;->sInstance:Lcom/android/server/net/watchlist/WatchlistReportDbHelper;
     :try_end_14
     .catchall {:try_start_b .. :try_end_14} :catchall_16
 
     monitor-exit v0
 
-    return-object p0
+    return-object v1
 
     .line 106
+    .end local p0  # "context":Landroid/content/Context;
     :catchall_16
     move-exception p0
 
@@ -148,7 +151,8 @@
 
 # virtual methods
 .method public cleanup(J)Z
-    .registers 6
+    .registers 7
+    .param p1, "untilTimestamp"  # J
 
     .line 189
     invoke-virtual {p0}, Lcom/android/server/net/watchlist/WatchlistReportDbHelper;->getWritableDatabase()Landroid/database/sqlite/SQLiteDatabase;
@@ -156,6 +160,7 @@
     move-result-object v0
 
     .line 190
+    .local v0, "db":Landroid/database/sqlite/SQLiteDatabase;
     new-instance v1, Ljava/lang/StringBuilder;
 
     invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
@@ -168,186 +173,209 @@
 
     invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v1
 
     .line 191
-    const-string/jumbo p2, "records"
+    .local v1, "clause":Ljava/lang/String;
+    const-string/jumbo v2, "records"
 
-    const/4 v1, 0x0
+    const/4 v3, 0x0
 
-    invoke-virtual {v0, p2, p1, v1}, Landroid/database/sqlite/SQLiteDatabase;->delete(Ljava/lang/String;Ljava/lang/String;[Ljava/lang/String;)I
+    invoke-virtual {v0, v2, v1, v3}, Landroid/database/sqlite/SQLiteDatabase;->delete(Ljava/lang/String;Ljava/lang/String;[Ljava/lang/String;)I
 
-    move-result p1
+    move-result v2
 
-    if-eqz p1, :cond_22
+    if-eqz v2, :cond_22
 
-    const/4 p1, 0x1
+    const/4 v2, 0x1
 
     goto :goto_23
 
     :cond_22
-    const/4 p1, 0x0
+    const/4 v2, 0x0
 
     :goto_23
-    return p1
+    return v2
 .end method
 
 .method public getAggregatedRecords(J)Lcom/android/server/net/watchlist/WatchlistReportDbHelper$AggregatedResult;
-    .registers 15
+    .registers 18
+    .param p1, "untilTimestamp"  # J
+
+    .line 149
+    const-string/jumbo v1, "timestamp < ?"
 
     .line 151
+    .local v1, "selectStatement":Ljava/lang/String;
     invoke-virtual {p0}, Lcom/android/server/net/watchlist/WatchlistReportDbHelper;->getReadableDatabase()Landroid/database/sqlite/SQLiteDatabase;
 
-    move-result-object v0
+    move-result-object v12
 
     .line 152
-    nop
+    .local v12, "db":Landroid/database/sqlite/SQLiteDatabase;
+    const/4 v13, 0x0
 
     .line 154
-    const/4 v1, 0x1
+    .local v13, "c":Landroid/database/Cursor;
+    const/4 v3, 0x1
 
-    const/4 v10, 0x0
+    :try_start_9
+    const-string/jumbo v4, "records"
 
-    :try_start_7
-    const-string/jumbo v2, "records"
+    sget-object v5, Lcom/android/server/net/watchlist/WatchlistReportDbHelper;->DIGEST_DOMAIN_PROJECTION:[Ljava/lang/String;
 
-    sget-object v3, Lcom/android/server/net/watchlist/WatchlistReportDbHelper;->DIGEST_DOMAIN_PROJECTION:[Ljava/lang/String;
+    const-string/jumbo v6, "timestamp < ?"
 
-    const-string/jumbo v4, "timestamp < ?"
+    const/4 v0, 0x1
 
-    const/4 v11, 0x1
-
-    new-array v5, v11, [Ljava/lang/String;
+    new-array v7, v0, [Ljava/lang/String;
 
     .line 156
-    invoke-static {p1, p2}, Ljava/lang/Long;->toString(J)Ljava/lang/String;
+    invoke-static/range {p1 .. p2}, Ljava/lang/Long;->toString(J)Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v2
 
-    const/4 p2, 0x0
+    const/4 v14, 0x0
 
-    aput-object p1, v5, p2
-
-    const/4 v6, 0x0
-
-    const/4 v7, 0x0
+    aput-object v2, v7, v14
 
     const/4 v8, 0x0
 
     const/4 v9, 0x0
 
-    .line 154
-    invoke-virtual/range {v0 .. v9}, Landroid/database/sqlite/SQLiteDatabase;->query(ZLjava/lang/String;[Ljava/lang/String;Ljava/lang/String;[Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Landroid/database/Cursor;
+    const/4 v10, 0x0
 
-    move-result-object p1
-    :try_end_21
-    .catchall {:try_start_7 .. :try_end_21} :catchall_5b
+    const/4 v11, 0x0
+
+    .line 154
+    move-object v2, v12
+
+    invoke-virtual/range {v2 .. v11}, Landroid/database/sqlite/SQLiteDatabase;->query(ZLjava/lang/String;[Ljava/lang/String;Ljava/lang/String;[Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Landroid/database/Cursor;
+
+    move-result-object v2
+    :try_end_24
+    .catchall {:try_start_9 .. :try_end_24} :catchall_61
+
+    move-object v13, v2
 
     .line 158
-    if-nez p1, :cond_2a
+    const/4 v2, 0x0
+
+    if-nez v13, :cond_2f
 
     .line 159
     nop
 
     .line 177
-    if-eqz p1, :cond_29
+    if-eqz v13, :cond_2e
 
     .line 178
-    invoke-interface {p1}, Landroid/database/Cursor;->close()V
+    invoke-interface {v13}, Landroid/database/Cursor;->close()V
 
     .line 159
-    :cond_29
-    return-object v10
+    :cond_2e
+    return-object v2
 
     .line 161
-    :cond_2a
-    :try_start_2a
-    new-instance v0, Ljava/util/HashSet;
+    :cond_2f
+    :try_start_2f
+    new-instance v3, Ljava/util/HashSet;
 
-    invoke-direct {v0}, Ljava/util/HashSet;-><init>()V
+    invoke-direct {v3}, Ljava/util/HashSet;-><init>()V
 
     .line 162
-    new-instance v1, Ljava/util/HashMap;
+    .local v3, "appDigestList":Ljava/util/HashSet;, "Ljava/util/HashSet<Ljava/lang/String;>;"
+    new-instance v4, Ljava/util/HashMap;
 
-    invoke-direct {v1}, Ljava/util/HashMap;-><init>()V
+    invoke-direct {v4}, Ljava/util/HashMap;-><init>()V
 
     .line 163
+    .local v4, "appDigestCNCList":Ljava/util/HashMap;, "Ljava/util/HashMap<Ljava/lang/String;Ljava/lang/String;>;"
     nop
 
     .line 164
-    :goto_35
-    invoke-interface {p1}, Landroid/database/Cursor;->moveToNext()Z
+    .local v2, "cncDomainVisited":Ljava/lang/String;
+    :goto_3a
+    invoke-interface {v13}, Landroid/database/Cursor;->moveToNext()Z
 
-    move-result v2
+    move-result v5
 
-    if-eqz v2, :cond_4f
+    if-eqz v5, :cond_57
 
     .line 166
-    invoke-interface {p1, p2}, Landroid/database/Cursor;->getBlob(I)[B
+    invoke-interface {v13, v14}, Landroid/database/Cursor;->getBlob(I)[B
 
-    move-result-object v2
+    move-result-object v5
 
-    invoke-static {v2}, Lcom/android/internal/util/HexDump;->toHexString([B)Ljava/lang/String;
+    invoke-static {v5}, Lcom/android/internal/util/HexDump;->toHexString([B)Ljava/lang/String;
 
-    move-result-object v2
+    move-result-object v5
 
     .line 167
-    invoke-interface {p1, v11}, Landroid/database/Cursor;->getString(I)Ljava/lang/String;
+    .local v5, "digestHexStr":Ljava/lang/String;
+    invoke-interface {v13, v0}, Landroid/database/Cursor;->getString(I)Ljava/lang/String;
 
-    move-result-object v3
+    move-result-object v6
 
     .line 169
-    invoke-virtual {v0, v2}, Ljava/util/HashSet;->add(Ljava/lang/Object;)Z
+    .local v6, "cncDomain":Ljava/lang/String;
+    invoke-virtual {v3, v5}, Ljava/util/HashSet;->add(Ljava/lang/Object;)Z
 
     .line 170
-    nop
+    if-eqz v2, :cond_52
+
+    .line 171
+    move-object v2, v6
 
     .line 173
-    invoke-virtual {v1, v2, v3}, Ljava/util/HashMap;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+    :cond_52
+    invoke-virtual {v4, v5, v6}, Ljava/util/HashMap;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
 
     .line 174
-    goto :goto_35
+    nop
+
+    .end local v5  # "digestHexStr":Ljava/lang/String;
+    .end local v6  # "cncDomain":Ljava/lang/String;
+    goto :goto_3a
 
     .line 175
-    :cond_4f
-    new-instance p2, Lcom/android/server/net/watchlist/WatchlistReportDbHelper$AggregatedResult;
+    :cond_57
+    new-instance v0, Lcom/android/server/net/watchlist/WatchlistReportDbHelper$AggregatedResult;
 
-    invoke-direct {p2, v0, v10, v1}, Lcom/android/server/net/watchlist/WatchlistReportDbHelper$AggregatedResult;-><init>(Ljava/util/Set;Ljava/lang/String;Ljava/util/HashMap;)V
-    :try_end_54
-    .catchall {:try_start_2a .. :try_end_54} :catchall_59
+    invoke-direct {v0, v3, v2, v4}, Lcom/android/server/net/watchlist/WatchlistReportDbHelper$AggregatedResult;-><init>(Ljava/util/Set;Ljava/lang/String;Ljava/util/HashMap;)V
+    :try_end_5c
+    .catchall {:try_start_2f .. :try_end_5c} :catchall_61
 
     .line 177
     nop
 
     .line 178
-    invoke-interface {p1}, Landroid/database/Cursor;->close()V
+    invoke-interface {v13}, Landroid/database/Cursor;->close()V
 
     .line 175
-    return-object p2
+    return-object v0
 
     .line 177
-    :catchall_59
-    move-exception p2
+    .end local v2  # "cncDomainVisited":Ljava/lang/String;
+    .end local v3  # "appDigestList":Ljava/util/HashSet;, "Ljava/util/HashSet<Ljava/lang/String;>;"
+    .end local v4  # "appDigestCNCList":Ljava/util/HashMap;, "Ljava/util/HashMap<Ljava/lang/String;Ljava/lang/String;>;"
+    :catchall_61
+    move-exception v0
 
-    goto :goto_5d
-
-    :catchall_5b
-    move-exception p2
-
-    move-object p1, v10
-
-    :goto_5d
-    if-eqz p1, :cond_62
+    if-eqz v13, :cond_67
 
     .line 178
-    invoke-interface {p1}, Landroid/database/Cursor;->close()V
+    invoke-interface {v13}, Landroid/database/Cursor;->close()V
 
-    :cond_62
-    throw p2
+    :cond_67
+    throw v0
 .end method
 
 .method public insertNewRecord([BLjava/lang/String;J)Z
-    .registers 8
+    .registers 11
+    .param p1, "appDigest"  # [B
+    .param p2, "cncDomain"  # Ljava/lang/String;
+    .param p3, "timestamp"  # J
 
     .line 135
     invoke-virtual {p0}, Lcom/android/server/net/watchlist/WatchlistReportDbHelper;->getWritableDatabase()Landroid/database/sqlite/SQLiteDatabase;
@@ -355,57 +383,60 @@
     move-result-object v0
 
     .line 136
+    .local v0, "db":Landroid/database/sqlite/SQLiteDatabase;
     new-instance v1, Landroid/content/ContentValues;
 
     invoke-direct {v1}, Landroid/content/ContentValues;-><init>()V
 
     .line 137
+    .local v1, "values":Landroid/content/ContentValues;
     const-string v2, "app_digest"
 
     invoke-virtual {v1, v2, p1}, Landroid/content/ContentValues;->put(Ljava/lang/String;[B)V
 
     .line 138
-    const-string p1, "cnc_domain"
+    const-string v2, "cnc_domain"
 
-    invoke-virtual {v1, p1, p2}, Landroid/content/ContentValues;->put(Ljava/lang/String;Ljava/lang/String;)V
+    invoke-virtual {v1, v2, p2}, Landroid/content/ContentValues;->put(Ljava/lang/String;Ljava/lang/String;)V
 
     .line 139
     invoke-static {p3, p4}, Ljava/lang/Long;->valueOf(J)Ljava/lang/Long;
 
-    move-result-object p1
+    move-result-object v2
 
-    const-string/jumbo p2, "timestamp"
+    const-string/jumbo v3, "timestamp"
 
-    invoke-virtual {v1, p2, p1}, Landroid/content/ContentValues;->put(Ljava/lang/String;Ljava/lang/Long;)V
+    invoke-virtual {v1, v3, v2}, Landroid/content/ContentValues;->put(Ljava/lang/String;Ljava/lang/Long;)V
 
     .line 140
-    const-string/jumbo p1, "records"
+    const-string/jumbo v2, "records"
 
-    const/4 p2, 0x0
+    const/4 v3, 0x0
 
-    invoke-virtual {v0, p1, p2, v1}, Landroid/database/sqlite/SQLiteDatabase;->insert(Ljava/lang/String;Ljava/lang/String;Landroid/content/ContentValues;)J
+    invoke-virtual {v0, v2, v3, v1}, Landroid/database/sqlite/SQLiteDatabase;->insert(Ljava/lang/String;Ljava/lang/String;Landroid/content/ContentValues;)J
 
-    move-result-wide p1
+    move-result-wide v2
 
-    const-wide/16 p3, -0x1
+    const-wide/16 v4, -0x1
 
-    cmp-long p1, p1, p3
+    cmp-long v2, v2, v4
 
-    if-eqz p1, :cond_2d
+    if-eqz v2, :cond_2d
 
-    const/4 p1, 0x1
+    const/4 v2, 0x1
 
     goto :goto_2e
 
     :cond_2d
-    const/4 p1, 0x0
+    const/4 v2, 0x0
 
     :goto_2e
-    return p1
+    return v2
 .end method
 
 .method public onCreate(Landroid/database/sqlite/SQLiteDatabase;)V
     .registers 3
+    .param p1, "db"  # Landroid/database/sqlite/SQLiteDatabase;
 
     .line 116
     const-string v0, "CREATE TABLE records(app_digest BLOB,cnc_domain TEXT,timestamp INTEGER DEFAULT 0 )"
@@ -417,12 +448,15 @@
 .end method
 
 .method public onUpgrade(Landroid/database/sqlite/SQLiteDatabase;II)V
-    .registers 4
+    .registers 5
+    .param p1, "db"  # Landroid/database/sqlite/SQLiteDatabase;
+    .param p2, "oldVersion"  # I
+    .param p3, "newVersion"  # I
 
     .line 122
-    const-string p2, "DROP TABLE IF EXISTS records"
+    const-string v0, "DROP TABLE IF EXISTS records"
 
-    invoke-virtual {p1, p2}, Landroid/database/sqlite/SQLiteDatabase;->execSQL(Ljava/lang/String;)V
+    invoke-virtual {p1, v0}, Landroid/database/sqlite/SQLiteDatabase;->execSQL(Ljava/lang/String;)V
 
     .line 123
     invoke-virtual {p0, p1}, Lcom/android/server/net/watchlist/WatchlistReportDbHelper;->onCreate(Landroid/database/sqlite/SQLiteDatabase;)V

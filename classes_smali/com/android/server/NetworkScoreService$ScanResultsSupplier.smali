@@ -34,6 +34,7 @@
 # direct methods
 .method constructor <init>(Landroid/content/Context;)V
     .registers 2
+    .param p1, "context"  # Landroid/content/Context;
 
     .line 608
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -59,7 +60,7 @@
 .end method
 
 .method public get()Ljava/util/List;
-    .registers 3
+    .registers 4
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "()",
@@ -81,27 +82,28 @@
     check-cast v0, Landroid/net/wifi/WifiScanner;
 
     .line 615
+    .local v0, "wifiScanner":Landroid/net/wifi/WifiScanner;
     if-eqz v0, :cond_11
 
     .line 616
     invoke-virtual {v0}, Landroid/net/wifi/WifiScanner;->getSingleScanResults()Ljava/util/List;
 
-    move-result-object v0
+    move-result-object v1
 
-    return-object v0
+    return-object v1
 
     .line 618
     :cond_11
-    const-string v0, "NetworkScoreService"
+    const-string v1, "NetworkScoreService"
 
-    const-string v1, "WifiScanner is null, failed to return scan results."
+    const-string v2, "WifiScanner is null, failed to return scan results."
 
-    invoke-static {v0, v1}, Landroid/util/Log;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v2}, Landroid/util/Log;->w(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 619
     invoke-static {}, Ljava/util/Collections;->emptyList()Ljava/util/List;
 
-    move-result-object v0
+    move-result-object v1
 
-    return-object v0
+    return-object v1
 .end method

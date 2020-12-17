@@ -27,6 +27,8 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/connectivity/tethering/EntitlementManager;Landroid/os/Handler;IZLandroid/os/ResultReceiver;)V
     .registers 6
+    .param p1, "this$0"  # Lcom/android/server/connectivity/tethering/EntitlementManager;
+    .param p2, "x0"  # Landroid/os/Handler;
 
     .line 596
     iput-object p1, p0, Lcom/android/server/connectivity/tethering/EntitlementManager$2;->this$0:Lcom/android/server/connectivity/tethering/EntitlementManager;
@@ -45,53 +47,56 @@
 
 # virtual methods
 .method protected onReceiveResult(ILandroid/os/Bundle;)V
-    .registers 4
+    .registers 6
+    .param p1, "resultCode"  # I
+    .param p2, "resultData"  # Landroid/os/Bundle;
 
     .line 599
-    iget-object p2, p0, Lcom/android/server/connectivity/tethering/EntitlementManager$2;->this$0:Lcom/android/server/connectivity/tethering/EntitlementManager;
+    iget-object v0, p0, Lcom/android/server/connectivity/tethering/EntitlementManager$2;->this$0:Lcom/android/server/connectivity/tethering/EntitlementManager;
 
-    iget v0, p0, Lcom/android/server/connectivity/tethering/EntitlementManager$2;->val$type:I
+    iget v1, p0, Lcom/android/server/connectivity/tethering/EntitlementManager$2;->val$type:I
 
-    invoke-static {p2, v0, p1}, Lcom/android/server/connectivity/tethering/EntitlementManager;->access$800(Lcom/android/server/connectivity/tethering/EntitlementManager;II)I
+    invoke-static {v0, v1, p1}, Lcom/android/server/connectivity/tethering/EntitlementManager;->access$800(Lcom/android/server/connectivity/tethering/EntitlementManager;II)I
 
-    move-result p1
+    move-result v0
 
     .line 600
-    iget-object p2, p0, Lcom/android/server/connectivity/tethering/EntitlementManager$2;->this$0:Lcom/android/server/connectivity/tethering/EntitlementManager;
+    .local v0, "updatedCacheValue":I
+    iget-object v1, p0, Lcom/android/server/connectivity/tethering/EntitlementManager$2;->this$0:Lcom/android/server/connectivity/tethering/EntitlementManager;
 
-    iget v0, p0, Lcom/android/server/connectivity/tethering/EntitlementManager$2;->val$type:I
+    iget v2, p0, Lcom/android/server/connectivity/tethering/EntitlementManager$2;->val$type:I
 
-    invoke-virtual {p2, v0, p1}, Lcom/android/server/connectivity/tethering/EntitlementManager;->addDownstreamMapping(II)V
+    invoke-virtual {v1, v2, v0}, Lcom/android/server/connectivity/tethering/EntitlementManager;->addDownstreamMapping(II)V
 
     .line 601
-    const/16 p2, 0xb
+    const/16 v1, 0xb
 
-    if-ne p1, p2, :cond_22
+    if-ne v0, v1, :cond_22
 
-    iget-boolean p2, p0, Lcom/android/server/connectivity/tethering/EntitlementManager$2;->val$notifyFail:Z
+    iget-boolean v1, p0, Lcom/android/server/connectivity/tethering/EntitlementManager$2;->val$notifyFail:Z
 
-    if-eqz p2, :cond_22
+    if-eqz v1, :cond_22
 
     .line 602
-    iget-object p2, p0, Lcom/android/server/connectivity/tethering/EntitlementManager$2;->this$0:Lcom/android/server/connectivity/tethering/EntitlementManager;
+    iget-object v1, p0, Lcom/android/server/connectivity/tethering/EntitlementManager$2;->this$0:Lcom/android/server/connectivity/tethering/EntitlementManager;
 
-    invoke-static {p2}, Lcom/android/server/connectivity/tethering/EntitlementManager;->access$900(Lcom/android/server/connectivity/tethering/EntitlementManager;)Lcom/android/server/connectivity/tethering/EntitlementManager$OnUiEntitlementFailedListener;
+    invoke-static {v1}, Lcom/android/server/connectivity/tethering/EntitlementManager;->access$900(Lcom/android/server/connectivity/tethering/EntitlementManager;)Lcom/android/server/connectivity/tethering/EntitlementManager$OnUiEntitlementFailedListener;
 
-    move-result-object p2
+    move-result-object v1
 
-    iget v0, p0, Lcom/android/server/connectivity/tethering/EntitlementManager$2;->val$type:I
+    iget v2, p0, Lcom/android/server/connectivity/tethering/EntitlementManager$2;->val$type:I
 
-    invoke-interface {p2, v0}, Lcom/android/server/connectivity/tethering/EntitlementManager$OnUiEntitlementFailedListener;->onUiEntitlementFailed(I)V
+    invoke-interface {v1, v2}, Lcom/android/server/connectivity/tethering/EntitlementManager$OnUiEntitlementFailedListener;->onUiEntitlementFailed(I)V
 
     .line 604
     :cond_22
-    iget-object p2, p0, Lcom/android/server/connectivity/tethering/EntitlementManager$2;->val$receiver:Landroid/os/ResultReceiver;
+    iget-object v1, p0, Lcom/android/server/connectivity/tethering/EntitlementManager$2;->val$receiver:Landroid/os/ResultReceiver;
 
-    if-eqz p2, :cond_2a
+    if-eqz v1, :cond_2a
 
-    const/4 v0, 0x0
+    const/4 v2, 0x0
 
-    invoke-virtual {p2, p1, v0}, Landroid/os/ResultReceiver;->send(ILandroid/os/Bundle;)V
+    invoke-virtual {v1, v0, v2}, Landroid/os/ResultReceiver;->send(ILandroid/os/Bundle;)V
 
     .line 605
     :cond_2a

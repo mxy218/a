@@ -25,16 +25,28 @@
 
 .field final synthetic val$dropboxTag:Ljava/lang/String;
 
+.field final synthetic val$fEventType:Ljava/lang/String;
+
+.field final synthetic val$fPackageName:Ljava/lang/String;
+
+.field final synthetic val$fProcessName:Ljava/lang/String;
+
 .field final synthetic val$report:Ljava/lang/String;
 
 .field final synthetic val$sb:Ljava/lang/StringBuilder;
 
+.field final synthetic val$shouldReport:Z
+
+.field final synthetic val$subject:Ljava/lang/String;
+
 
 # direct methods
-.method constructor <init>(Lcom/android/server/am/ActivityManagerService;Ljava/lang/String;Ljava/lang/String;Ljava/lang/StringBuilder;Ljava/lang/String;Ljava/io/File;Landroid/app/ApplicationErrorReport$CrashInfo;Landroid/os/DropBoxManager;)V
-    .registers 9
+.method constructor <init>(Lcom/android/server/am/ActivityManagerService;Ljava/lang/String;Ljava/lang/String;Ljava/lang/StringBuilder;Ljava/lang/String;Ljava/io/File;Landroid/app/ApplicationErrorReport$CrashInfo;ZLandroid/os/DropBoxManager;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V
+    .registers 14
+    .param p1, "this$0"  # Lcom/android/server/am/ActivityManagerService;
+    .param p2, "x0"  # Ljava/lang/String;
 
-    .line 9586
+    .line 10216
     iput-object p1, p0, Lcom/android/server/am/ActivityManagerService$21;->this$0:Lcom/android/server/am/ActivityManagerService;
 
     iput-object p3, p0, Lcom/android/server/am/ActivityManagerService$21;->val$report:Ljava/lang/String;
@@ -47,7 +59,17 @@
 
     iput-object p7, p0, Lcom/android/server/am/ActivityManagerService$21;->val$crashInfo:Landroid/app/ApplicationErrorReport$CrashInfo;
 
-    iput-object p8, p0, Lcom/android/server/am/ActivityManagerService$21;->val$dbox:Landroid/os/DropBoxManager;
+    iput-boolean p8, p0, Lcom/android/server/am/ActivityManagerService$21;->val$shouldReport:Z
+
+    iput-object p9, p0, Lcom/android/server/am/ActivityManagerService$21;->val$dbox:Landroid/os/DropBoxManager;
+
+    iput-object p10, p0, Lcom/android/server/am/ActivityManagerService$21;->val$fEventType:Ljava/lang/String;
+
+    iput-object p11, p0, Lcom/android/server/am/ActivityManagerService$21;->val$fPackageName:Ljava/lang/String;
+
+    iput-object p12, p0, Lcom/android/server/am/ActivityManagerService$21;->val$fProcessName:Ljava/lang/String;
+
+    iput-object p13, p0, Lcom/android/server/am/ActivityManagerService$21;->val$subject:Ljava/lang/String;
 
     invoke-direct {p0, p2}, Ljava/lang/Thread;-><init>(Ljava/lang/String;)V
 
@@ -57,55 +79,55 @@
 
 # virtual methods
 .method public run()V
-    .registers 11
+    .registers 16
 
-    .line 9589
-    const-string v0, "-b"
+    .line 10219
+    iget-object v0, p0, Lcom/android/server/am/ActivityManagerService$21;->val$report:Ljava/lang/String;
 
-    iget-object v1, p0, Lcom/android/server/am/ActivityManagerService$21;->val$report:Ljava/lang/String;
+    if-eqz v0, :cond_9
 
-    if-eqz v1, :cond_b
+    .line 10220
+    iget-object v1, p0, Lcom/android/server/am/ActivityManagerService$21;->val$sb:Ljava/lang/StringBuilder;
 
-    .line 9590
-    iget-object v2, p0, Lcom/android/server/am/ActivityManagerService$21;->val$sb:Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v2, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    .line 10223
+    :cond_9
+    new-instance v0, Ljava/lang/StringBuilder;
 
-    .line 9593
-    :cond_b
-    new-instance v1, Ljava/lang/StringBuilder;
+    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
 
-    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
+    const-string/jumbo v1, "logcat_for_"
 
-    const-string v2, "logcat_for_"
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    iget-object v1, p0, Lcom/android/server/am/ActivityManagerService$21;->val$dropboxTag:Ljava/lang/String;
 
-    iget-object v2, p0, Lcom/android/server/am/ActivityManagerService$21;->val$dropboxTag:Ljava/lang/String;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    move-result-object v0
+
+    .line 10224
+    .local v0, "setting":Ljava/lang/String;
+    iget-object v1, p0, Lcom/android/server/am/ActivityManagerService$21;->this$0:Lcom/android/server/am/ActivityManagerService;
+
+    iget-object v1, v1, Lcom/android/server/am/ActivityManagerService;->mContext:Landroid/content/Context;
+
+    invoke-virtual {v1}, Landroid/content/Context;->getContentResolver()Landroid/content/ContentResolver;
 
     move-result-object v1
 
-    .line 9594
-    iget-object v2, p0, Lcom/android/server/am/ActivityManagerService$21;->this$0:Lcom/android/server/am/ActivityManagerService;
+    const/4 v2, 0x0
 
-    iget-object v2, v2, Lcom/android/server/am/ActivityManagerService;->mContext:Landroid/content/Context;
-
-    invoke-virtual {v2}, Landroid/content/Context;->getContentResolver()Landroid/content/ContentResolver;
-
-    move-result-object v2
-
-    const/4 v3, 0x0
-
-    invoke-static {v2, v1, v3}, Landroid/provider/Settings$Global;->getInt(Landroid/content/ContentResolver;Ljava/lang/String;I)I
+    invoke-static {v1, v0, v2}, Landroid/provider/Settings$Global;->getInt(Landroid/content/ContentResolver;Ljava/lang/String;I)I
 
     move-result v1
 
-    .line 9595
-    const/high16 v2, 0x30000
+    .line 10225
+    .local v1, "lines":I
+    const/high16 v3, 0x30000
 
     iget-object v4, p0, Lcom/android/server/am/ActivityManagerService$21;->val$sb:Ljava/lang/StringBuilder;
 
@@ -113,372 +135,603 @@
 
     move-result v4
 
-    sub-int/2addr v2, v4
+    sub-int/2addr v3, v4
 
     mul-int/lit8 v4, v1, 0x64
 
-    sub-int/2addr v2, v4
+    sub-int/2addr v3, v4
 
-    .line 9598
+    .line 10228
+    .local v3, "maxDataFileSize":I
     iget-object v4, p0, Lcom/android/server/am/ActivityManagerService$21;->val$dataFile:Ljava/io/File;
 
-    const-string v5, "ActivityManager"
+    if-eqz v4, :cond_61
 
-    if-eqz v4, :cond_62
+    if-lez v3, :cond_61
 
-    if-lez v2, :cond_62
+    .line 10230
+    :try_start_3c
+    iget-object v5, p0, Lcom/android/server/am/ActivityManagerService$21;->val$sb:Ljava/lang/StringBuilder;
 
-    .line 9600
-    :try_start_3f
-    iget-object v6, p0, Lcom/android/server/am/ActivityManagerService$21;->val$sb:Ljava/lang/StringBuilder;
+    const-string v6, "\n\n[[TRUNCATED]]"
 
-    const-string v7, "\n\n[[TRUNCATED]]"
-
-    invoke-static {v4, v2, v7}, Landroid/os/FileUtils;->readTextFile(Ljava/io/File;ILjava/lang/String;)Ljava/lang/String;
-
-    move-result-object v2
-
-    invoke-virtual {v6, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-    :try_end_4a
-    .catch Ljava/io/IOException; {:try_start_3f .. :try_end_4a} :catch_4b
-
-    .line 9604
-    goto :goto_62
-
-    .line 9602
-    :catch_4b
-    move-exception v2
-
-    .line 9603
-    new-instance v4, Ljava/lang/StringBuilder;
-
-    invoke-direct {v4}, Ljava/lang/StringBuilder;-><init>()V
-
-    const-string v6, "Error reading "
-
-    invoke-virtual {v4, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    iget-object v6, p0, Lcom/android/server/am/ActivityManagerService$21;->val$dataFile:Ljava/io/File;
-
-    invoke-virtual {v4, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v4}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-static {v4, v3, v6}, Landroid/os/FileUtils;->readTextFile(Ljava/io/File;ILjava/lang/String;)Ljava/lang/String;
 
     move-result-object v4
 
-    invoke-static {v5, v4, v2}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    invoke-virtual {v5, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    :try_end_47
+    .catch Ljava/io/IOException; {:try_start_3c .. :try_end_47} :catch_48
 
-    .line 9606
-    :cond_62
-    :goto_62
-    iget-object v2, p0, Lcom/android/server/am/ActivityManagerService$21;->val$crashInfo:Landroid/app/ApplicationErrorReport$CrashInfo;
+    .line 10234
+    goto :goto_61
 
-    if-eqz v2, :cond_73
+    .line 10232
+    :catch_48
+    move-exception v4
 
-    iget-object v2, v2, Landroid/app/ApplicationErrorReport$CrashInfo;->stackTrace:Ljava/lang/String;
+    .line 10233
+    .local v4, "e":Ljava/io/IOException;
+    new-instance v5, Ljava/lang/StringBuilder;
 
-    if-eqz v2, :cond_73
+    invoke-direct {v5}, Ljava/lang/StringBuilder;-><init>()V
 
-    .line 9607
-    iget-object v2, p0, Lcom/android/server/am/ActivityManagerService$21;->val$sb:Ljava/lang/StringBuilder;
+    const-string v6, "Error reading "
 
+    invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    iget-object v6, p0, Lcom/android/server/am/ActivityManagerService$21;->val$dataFile:Ljava/io/File;
+
+    invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v5}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v5
+
+    const-string v6, "ActivityManager"
+
+    invoke-static {v6, v5, v4}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+
+    .line 10236
+    .end local v4  # "e":Ljava/io/IOException;
+    :cond_61
+    :goto_61
     iget-object v4, p0, Lcom/android/server/am/ActivityManagerService$21;->val$crashInfo:Landroid/app/ApplicationErrorReport$CrashInfo;
+
+    if-eqz v4, :cond_72
 
     iget-object v4, v4, Landroid/app/ApplicationErrorReport$CrashInfo;->stackTrace:Ljava/lang/String;
 
-    invoke-virtual {v2, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    if-eqz v4, :cond_72
 
-    .line 9610
-    :cond_73
-    if-lez v1, :cond_134
+    .line 10237
+    iget-object v4, p0, Lcom/android/server/am/ActivityManagerService$21;->val$sb:Ljava/lang/StringBuilder;
 
-    .line 9611
-    iget-object v2, p0, Lcom/android/server/am/ActivityManagerService$21;->val$sb:Ljava/lang/StringBuilder;
+    iget-object v5, p0, Lcom/android/server/am/ActivityManagerService$21;->val$crashInfo:Landroid/app/ApplicationErrorReport$CrashInfo;
 
-    const-string v4, "\n"
+    iget-object v5, v5, Landroid/app/ApplicationErrorReport$CrashInfo;->stackTrace:Ljava/lang/String;
 
-    invoke-virtual {v2, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    .line 9614
-    const/4 v2, 0x0
+    .line 10240
+    :cond_72
+    const/4 v4, 0x1
 
-    .line 9616
+    if-lez v1, :cond_13b
+
+    .line 10241
+    iget-object v5, p0, Lcom/android/server/am/ActivityManagerService$21;->val$sb:Ljava/lang/StringBuilder;
+
+    const-string v6, "\n"
+
+    invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    .line 10244
+    const/4 v5, 0x0
+
+    .line 10246
+    .local v5, "input":Ljava/io/InputStreamReader;
     :try_start_7d
-    new-instance v4, Ljava/lang/ProcessBuilder;
+    new-instance v6, Ljava/lang/ProcessBuilder;
 
-    const/16 v6, 0x11
+    const/16 v7, 0x11
 
-    new-array v6, v6, [Ljava/lang/String;
+    new-array v7, v7, [Ljava/lang/String;
 
-    const-string v7, "/system/bin/timeout"
+    const-string v8, "/system/bin/timeout"
 
-    aput-object v7, v6, v3
+    aput-object v8, v7, v2
 
-    const-string v7, "-k"
+    const-string v8, "-k"
 
-    const/4 v8, 0x1
+    aput-object v8, v7, v4
 
-    aput-object v7, v6, v8
-
-    const/4 v7, 0x2
+    const/4 v8, 0x2
 
     const-string v9, "15s"
 
-    aput-object v9, v6, v7
+    aput-object v9, v7, v8
 
-    const/4 v7, 0x3
+    const/4 v8, 0x3
 
     const-string v9, "10s"
 
-    aput-object v9, v6, v7
+    aput-object v9, v7, v8
 
-    const/4 v7, 0x4
+    const/4 v8, 0x4
 
     const-string v9, "/system/bin/logcat"
 
-    aput-object v9, v6, v7
+    aput-object v9, v7, v8
 
-    const/4 v7, 0x5
+    const/4 v8, 0x5
 
     const-string v9, "-v"
 
-    aput-object v9, v6, v7
+    aput-object v9, v7, v8
 
-    const/4 v7, 0x6
+    const/4 v8, 0x6
 
     const-string/jumbo v9, "threadtime"
 
-    aput-object v9, v6, v7
+    aput-object v9, v7, v8
 
-    const/4 v7, 0x7
+    const/4 v8, 0x7
 
-    aput-object v0, v6, v7
+    const-string v9, "-b"
 
-    const/16 v7, 0x8
+    aput-object v9, v7, v8
+
+    const/16 v8, 0x8
 
     const-string v9, "events"
 
-    aput-object v9, v6, v7
+    aput-object v9, v7, v8
 
-    const/16 v7, 0x9
+    const/16 v8, 0x9
 
-    aput-object v0, v6, v7
+    const-string v9, "-b"
 
-    const/16 v7, 0xa
+    aput-object v9, v7, v8
+
+    const/16 v8, 0xa
 
     const-string/jumbo v9, "system"
 
-    aput-object v9, v6, v7
+    aput-object v9, v7, v8
 
-    const/16 v7, 0xb
+    const/16 v8, 0xb
 
-    aput-object v0, v6, v7
+    const-string v9, "-b"
 
-    const/16 v7, 0xc
+    aput-object v9, v7, v8
 
-    const-string v9, "main"
+    const/16 v8, 0xc
 
-    aput-object v9, v6, v7
+    const-string/jumbo v9, "main"
 
-    const/16 v7, 0xd
+    aput-object v9, v7, v8
 
-    aput-object v0, v6, v7
+    const/16 v8, 0xd
 
-    const/16 v0, 0xe
+    const-string v9, "-b"
 
-    const-string v7, "crash"
+    aput-object v9, v7, v8
 
-    aput-object v7, v6, v0
+    const/16 v8, 0xe
 
-    const/16 v0, 0xf
+    const-string v9, "crash"
 
-    const-string v7, "-t"
+    aput-object v9, v7, v8
 
-    aput-object v7, v6, v0
+    const/16 v8, 0xf
 
-    const/16 v0, 0x10
+    const-string v9, "-t"
 
-    .line 9619
+    aput-object v9, v7, v8
+
+    const/16 v8, 0x10
+
+    .line 10249
     invoke-static {v1}, Ljava/lang/String;->valueOf(I)Ljava/lang/String;
 
-    move-result-object v1
+    move-result-object v9
 
-    aput-object v1, v6, v0
+    aput-object v9, v7, v8
 
-    invoke-direct {v4, v6}, Ljava/lang/ProcessBuilder;-><init>([Ljava/lang/String;)V
+    invoke-direct {v6, v7}, Ljava/lang/ProcessBuilder;-><init>([Ljava/lang/String;)V
 
-    .line 9620
-    invoke-virtual {v4, v8}, Ljava/lang/ProcessBuilder;->redirectErrorStream(Z)Ljava/lang/ProcessBuilder;
+    .line 10250
+    invoke-virtual {v6, v4}, Ljava/lang/ProcessBuilder;->redirectErrorStream(Z)Ljava/lang/ProcessBuilder;
 
-    move-result-object v0
+    move-result-object v6
 
-    invoke-virtual {v0}, Ljava/lang/ProcessBuilder;->start()Ljava/lang/Process;
+    invoke-virtual {v6}, Ljava/lang/ProcessBuilder;->start()Ljava/lang/Process;
 
-    move-result-object v0
-    :try_end_e7
-    .catch Ljava/io/IOException; {:try_start_7d .. :try_end_e7} :catch_120
-    .catchall {:try_start_7d .. :try_end_e7} :catchall_11e
+    move-result-object v6
+    :try_end_ef
+    .catch Ljava/io/IOException; {:try_start_7d .. :try_end_ef} :catch_124
+    .catchall {:try_start_7d .. :try_end_ef} :catchall_122
 
-    .line 9622
-    :try_start_e7
-    invoke-virtual {v0}, Ljava/lang/Process;->getOutputStream()Ljava/io/OutputStream;
+    .line 10252
+    .local v6, "logcat":Ljava/lang/Process;
+    :try_start_ef
+    invoke-virtual {v6}, Ljava/lang/Process;->getOutputStream()Ljava/io/OutputStream;
 
-    move-result-object v1
+    move-result-object v7
 
-    invoke-virtual {v1}, Ljava/io/OutputStream;->close()V
-    :try_end_ee
-    .catch Ljava/io/IOException; {:try_start_e7 .. :try_end_ee} :catch_ef
-    .catchall {:try_start_e7 .. :try_end_ee} :catchall_11e
+    invoke-virtual {v7}, Ljava/io/OutputStream;->close()V
+    :try_end_f6
+    .catch Ljava/io/IOException; {:try_start_ef .. :try_end_f6} :catch_f7
+    .catchall {:try_start_ef .. :try_end_f6} :catchall_122
 
-    goto :goto_f0
+    goto :goto_f8
 
-    :catch_ef
-    move-exception v1
+    :catch_f7
+    move-exception v7
 
-    .line 9623
-    :goto_f0
-    :try_start_f0
-    invoke-virtual {v0}, Ljava/lang/Process;->getErrorStream()Ljava/io/InputStream;
+    .line 10253
+    :goto_f8
+    :try_start_f8
+    invoke-virtual {v6}, Ljava/lang/Process;->getErrorStream()Ljava/io/InputStream;
 
-    move-result-object v1
+    move-result-object v7
 
-    invoke-virtual {v1}, Ljava/io/InputStream;->close()V
-    :try_end_f7
-    .catch Ljava/io/IOException; {:try_start_f0 .. :try_end_f7} :catch_f8
-    .catchall {:try_start_f0 .. :try_end_f7} :catchall_11e
+    invoke-virtual {v7}, Ljava/io/InputStream;->close()V
+    :try_end_ff
+    .catch Ljava/io/IOException; {:try_start_f8 .. :try_end_ff} :catch_100
+    .catchall {:try_start_f8 .. :try_end_ff} :catchall_122
 
-    goto :goto_f9
+    goto :goto_101
 
-    :catch_f8
-    move-exception v1
+    :catch_100
+    move-exception v7
 
-    .line 9624
-    :goto_f9
-    :try_start_f9
-    new-instance v1, Ljava/io/InputStreamReader;
+    .line 10254
+    :goto_101
+    :try_start_101
+    new-instance v7, Ljava/io/InputStreamReader;
 
-    invoke-virtual {v0}, Ljava/lang/Process;->getInputStream()Ljava/io/InputStream;
+    invoke-virtual {v6}, Ljava/lang/Process;->getInputStream()Ljava/io/InputStream;
 
-    move-result-object v0
+    move-result-object v8
 
-    invoke-direct {v1, v0}, Ljava/io/InputStreamReader;-><init>(Ljava/io/InputStream;)V
-    :try_end_102
-    .catch Ljava/io/IOException; {:try_start_f9 .. :try_end_102} :catch_120
-    .catchall {:try_start_f9 .. :try_end_102} :catchall_11e
+    invoke-direct {v7, v8}, Ljava/io/InputStreamReader;-><init>(Ljava/io/InputStream;)V
 
-    .line 9627
-    const/16 v0, 0x2000
+    move-object v5, v7
 
-    :try_start_104
-    new-array v0, v0, [C
+    .line 10257
+    const/16 v7, 0x2000
 
-    .line 9628
-    :goto_106
-    invoke-virtual {v1, v0}, Ljava/io/InputStreamReader;->read([C)I
+    new-array v7, v7, [C
 
-    move-result v2
+    .line 10258
+    .local v7, "buf":[C
+    :goto_10f
+    invoke-virtual {v5, v7}, Ljava/io/InputStreamReader;->read([C)I
 
-    if-lez v2, :cond_112
+    move-result v8
 
-    iget-object v4, p0, Lcom/android/server/am/ActivityManagerService$21;->val$sb:Ljava/lang/StringBuilder;
+    move v9, v8
 
-    invoke-virtual {v4, v0, v3, v2}, Ljava/lang/StringBuilder;->append([CII)Ljava/lang/StringBuilder;
-    :try_end_111
-    .catch Ljava/io/IOException; {:try_start_104 .. :try_end_111} :catch_11b
-    .catchall {:try_start_104 .. :try_end_111} :catchall_118
+    .local v9, "num":I
+    if-lez v8, :cond_11c
 
-    goto :goto_106
+    iget-object v8, p0, Lcom/android/server/am/ActivityManagerService$21;->val$sb:Ljava/lang/StringBuilder;
 
-    .line 9632
-    :cond_112
-    :try_start_112
-    invoke-virtual {v1}, Ljava/io/InputStreamReader;->close()V
-    :try_end_115
-    .catch Ljava/io/IOException; {:try_start_112 .. :try_end_115} :catch_116
+    invoke-virtual {v8, v7, v2, v9}, Ljava/lang/StringBuilder;->append([CII)Ljava/lang/StringBuilder;
+    :try_end_11b
+    .catch Ljava/io/IOException; {:try_start_101 .. :try_end_11b} :catch_124
+    .catchall {:try_start_101 .. :try_end_11b} :catchall_122
 
-    goto :goto_134
+    goto :goto_10f
 
-    :catch_116
-    move-exception v0
+    .line 10262
+    .end local v6  # "logcat":Ljava/lang/Process;
+    .end local v7  # "buf":[C
+    .end local v9  # "num":I
+    :cond_11c
+    :try_start_11c
+    invoke-virtual {v5}, Ljava/io/InputStreamReader;->close()V
+    :try_end_11f
+    .catch Ljava/io/IOException; {:try_start_11c .. :try_end_11f} :catch_120
 
-    goto :goto_134
+    goto :goto_13b
 
-    :catchall_118
-    move-exception v0
-
-    move-object v2, v1
-
-    goto :goto_12c
-
-    .line 9629
-    :catch_11b
-    move-exception v0
-
-    move-object v2, v1
-
-    goto :goto_121
-
-    .line 9632
-    :catchall_11e
-    move-exception v0
-
-    goto :goto_12c
-
-    .line 9629
     :catch_120
-    move-exception v0
+    move-exception v6
 
-    .line 9630
-    :goto_121
-    :try_start_121
-    const-string v1, "Error running logcat"
+    goto :goto_13b
 
-    invoke-static {v5, v1, v0}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
-    :try_end_126
-    .catchall {:try_start_121 .. :try_end_126} :catchall_11e
-
-    .line 9632
-    if-eqz v2, :cond_134
-
-    :try_start_128
-    invoke-virtual {v2}, Ljava/io/InputStreamReader;->close()V
-    :try_end_12b
-    .catch Ljava/io/IOException; {:try_start_128 .. :try_end_12b} :catch_116
-
-    goto :goto_134
-
-    :goto_12c
-    if-eqz v2, :cond_133
-
-    :try_start_12e
-    invoke-virtual {v2}, Ljava/io/InputStreamReader;->close()V
-    :try_end_131
-    .catch Ljava/io/IOException; {:try_start_12e .. :try_end_131} :catch_132
+    :catchall_122
+    move-exception v2
 
     goto :goto_133
 
-    :catch_132
-    move-exception v1
+    .line 10259
+    :catch_124
+    move-exception v6
 
-    :cond_133
+    .line 10260
+    .local v6, "e":Ljava/io/IOException;
+    :try_start_125
+    const-string v7, "ActivityManager"
+
+    const-string v8, "Error running logcat"
+
+    invoke-static {v7, v8, v6}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    :try_end_12c
+    .catchall {:try_start_125 .. :try_end_12c} :catchall_122
+
+    .line 10262
+    nop
+
+    .end local v6  # "e":Ljava/io/IOException;
+    if-eqz v5, :cond_13b
+
+    :try_start_12f
+    invoke-virtual {v5}, Ljava/io/InputStreamReader;->close()V
+    :try_end_132
+    .catch Ljava/io/IOException; {:try_start_12f .. :try_end_132} :catch_120
+
+    goto :goto_13b
+
     :goto_133
-    throw v0
+    if-eqz v5, :cond_13a
 
-    .line 9636
-    :cond_134
-    :goto_134
-    iget-object v0, p0, Lcom/android/server/am/ActivityManagerService$21;->val$dbox:Landroid/os/DropBoxManager;
+    :try_start_135
+    invoke-virtual {v5}, Ljava/io/InputStreamReader;->close()V
+    :try_end_138
+    .catch Ljava/io/IOException; {:try_start_135 .. :try_end_138} :catch_139
 
-    iget-object v1, p0, Lcom/android/server/am/ActivityManagerService$21;->val$dropboxTag:Ljava/lang/String;
+    goto :goto_13a
 
-    iget-object v2, p0, Lcom/android/server/am/ActivityManagerService$21;->val$sb:Ljava/lang/StringBuilder;
+    :catch_139
+    move-exception v4
 
-    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    :cond_13a
+    :goto_13a
+    throw v2
+
+    .line 10268
+    .end local v5  # "input":Ljava/io/InputStreamReader;
+    :cond_13b
+    :goto_13b
+    iget-boolean v5, p0, Lcom/android/server/am/ActivityManagerService$21;->val$shouldReport:Z
+
+    if-eqz v5, :cond_1ea
+
+    invoke-static {}, Lmeizu/os/DeviceStateManager;->isCtsRunningStatic()Z
+
+    move-result v5
+
+    if-nez v5, :cond_1ea
+
+    .line 10269
+    invoke-static {}, Ljava/util/UUID;->randomUUID()Ljava/util/UUID;
+
+    move-result-object v5
+
+    invoke-virtual {v5}, Ljava/util/UUID;->toString()Ljava/lang/String;
+
+    move-result-object v5
+
+    .line 10270
+    .local v5, "uuid":Ljava/lang/String;
+    iget-object v6, p0, Lcom/android/server/am/ActivityManagerService$21;->val$dbox:Landroid/os/DropBoxManager;
+
+    new-instance v7, Ljava/lang/StringBuilder;
+
+    invoke-direct {v7}, Ljava/lang/StringBuilder;-><init>()V
+
+    iget-object v8, p0, Lcom/android/server/am/ActivityManagerService$21;->val$dropboxTag:Ljava/lang/String;
+
+    invoke-virtual {v7, v8}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v7, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v7}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v7
+
+    iget-object v8, p0, Lcom/android/server/am/ActivityManagerService$21;->val$sb:Ljava/lang/StringBuilder;
+
+    invoke-virtual {v8}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v8
+
+    invoke-virtual {v6, v7, v8}, Landroid/os/DropBoxManager;->addText(Ljava/lang/String;Ljava/lang/String;)V
+
+    .line 10271
+    sget-object v6, Lcom/android/server/am/ActivityManagerService;->mErrorListenerLock:Ljava/lang/Object;
+
+    monitor-enter v6
+
+    .line 10273
+    :try_start_16c
+    iget-object v7, p0, Lcom/android/server/am/ActivityManagerService$21;->this$0:Lcom/android/server/am/ActivityManagerService;
+
+    iget-object v7, v7, Lcom/android/server/am/ActivityManagerService;->mIApplicationErrorListener:Landroid/app/IApplicationErrorListener;
+    :try_end_170
+    .catch Landroid/os/DeadObjectException; {:try_start_16c .. :try_end_170} :catch_1c9
+    .catch Ljava/lang/Exception; {:try_start_16c .. :try_end_170} :catch_1b1
+    .catchall {:try_start_16c .. :try_end_170} :catchall_1af
+
+    if-nez v7, :cond_174
+
+    .line 10274
+    :try_start_172
+    monitor-exit v6
+    :try_end_173
+    .catchall {:try_start_172 .. :try_end_173} :catchall_1af
+
+    return-void
+
+    .line 10276
+    :cond_174
+    :try_start_174
+    iget-object v7, p0, Lcom/android/server/am/ActivityManagerService$21;->this$0:Lcom/android/server/am/ActivityManagerService;
+
+    iget-object v8, v7, Lcom/android/server/am/ActivityManagerService;->mIApplicationErrorListener:Landroid/app/IApplicationErrorListener;
+
+    iget-object v9, p0, Lcom/android/server/am/ActivityManagerService$21;->val$fEventType:Ljava/lang/String;
+
+    iget-object v10, p0, Lcom/android/server/am/ActivityManagerService$21;->val$fPackageName:Ljava/lang/String;
+
+    iget-object v11, p0, Lcom/android/server/am/ActivityManagerService$21;->val$fProcessName:Ljava/lang/String;
+
+    iget-object v12, p0, Lcom/android/server/am/ActivityManagerService$21;->val$subject:Ljava/lang/String;
+
+    new-instance v7, Ljava/lang/StringBuilder;
+
+    invoke-direct {v7}, Ljava/lang/StringBuilder;-><init>()V
+
+    iget-object v13, p0, Lcom/android/server/am/ActivityManagerService$21;->val$dropboxTag:Ljava/lang/String;
+
+    invoke-virtual {v7, v13}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    const-string v13, "-"
+
+    invoke-virtual {v7, v13}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v7, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v7}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v13
+
+    iget-object v14, p0, Lcom/android/server/am/ActivityManagerService$21;->val$crashInfo:Landroid/app/ApplicationErrorReport$CrashInfo;
+
+    invoke-interface/range {v8 .. v14}, Landroid/app/IApplicationErrorListener;->onError(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Landroid/app/ApplicationErrorReport$CrashInfo;)V
+
+    .line 10279
+    const-string v7, "ActivityManager"
+
+    const-string v8, "ErrReport: call onError() END ! mIApplicationErrorListener=%s"
+
+    new-array v4, v4, [Ljava/lang/Object;
+
+    iget-object v9, p0, Lcom/android/server/am/ActivityManagerService$21;->this$0:Lcom/android/server/am/ActivityManagerService;
+
+    iget-object v9, v9, Lcom/android/server/am/ActivityManagerService;->mIApplicationErrorListener:Landroid/app/IApplicationErrorListener;
+
+    aput-object v9, v4, v2
+
+    invoke-static {v8, v4}, Ljava/lang/String;->format(Ljava/lang/String;[Ljava/lang/Object;)Ljava/lang/String;
 
     move-result-object v2
 
-    invoke-virtual {v0, v1, v2}, Landroid/os/DropBoxManager;->addText(Ljava/lang/String;Ljava/lang/String;)V
+    invoke-static {v7, v2}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
+    :try_end_1ae
+    .catch Landroid/os/DeadObjectException; {:try_start_174 .. :try_end_1ae} :catch_1c9
+    .catch Ljava/lang/Exception; {:try_start_174 .. :try_end_1ae} :catch_1b1
+    .catchall {:try_start_174 .. :try_end_1ae} :catchall_1af
 
-    .line 9637
+    goto :goto_1e5
+
+    .line 10286
+    :catchall_1af
+    move-exception v2
+
+    goto :goto_1e8
+
+    .line 10283
+    :catch_1b1
+    move-exception v2
+
+    .line 10284
+    .local v2, "e":Ljava/lang/Exception;
+    :try_start_1b2
+    const-string v4, "ActivityManager"
+
+    new-instance v7, Ljava/lang/StringBuilder;
+
+    invoke-direct {v7}, Ljava/lang/StringBuilder;-><init>()V
+
+    const-string v8, "ApplicationErrorListener.onError() E :"
+
+    invoke-virtual {v7, v8}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v7, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v7}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v7
+
+    invoke-static {v4, v7, v2}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+
+    goto :goto_1e6
+
+    .line 10280
+    .end local v2  # "e":Ljava/lang/Exception;
+    :catch_1c9
+    move-exception v2
+
+    .line 10281
+    .local v2, "e":Landroid/os/DeadObjectException;
+    const-string v4, "ActivityManager"
+
+    new-instance v7, Ljava/lang/StringBuilder;
+
+    invoke-direct {v7}, Ljava/lang/StringBuilder;-><init>()V
+
+    const-string v8, "ApplicationErrorListener.onError() E :"
+
+    invoke-virtual {v7, v8}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v7, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v7}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v7
+
+    invoke-static {v4, v7, v2}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+
+    .line 10282
+    iget-object v4, p0, Lcom/android/server/am/ActivityManagerService$21;->this$0:Lcom/android/server/am/ActivityManagerService;
+
+    const/4 v7, 0x0
+
+    iput-object v7, v4, Lcom/android/server/am/ActivityManagerService;->mIApplicationErrorListener:Landroid/app/IApplicationErrorListener;
+
+    .line 10285
+    .end local v2  # "e":Landroid/os/DeadObjectException;
+    :goto_1e5
+    nop
+
+    .line 10286
+    :goto_1e6
+    monitor-exit v6
+
+    .line 10287
+    .end local v5  # "uuid":Ljava/lang/String;
+    goto :goto_1f7
+
+    .line 10286
+    .restart local v5  # "uuid":Ljava/lang/String;
+    :goto_1e8
+    monitor-exit v6
+    :try_end_1e9
+    .catchall {:try_start_1b2 .. :try_end_1e9} :catchall_1af
+
+    throw v2
+
+    .line 10288
+    .end local v5  # "uuid":Ljava/lang/String;
+    :cond_1ea
+    iget-object v2, p0, Lcom/android/server/am/ActivityManagerService$21;->val$dbox:Landroid/os/DropBoxManager;
+
+    iget-object v4, p0, Lcom/android/server/am/ActivityManagerService$21;->val$dropboxTag:Ljava/lang/String;
+
+    iget-object v5, p0, Lcom/android/server/am/ActivityManagerService$21;->val$sb:Ljava/lang/StringBuilder;
+
+    invoke-virtual {v5}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v5
+
+    invoke-virtual {v2, v4, v5}, Landroid/os/DropBoxManager;->addText(Ljava/lang/String;Ljava/lang/String;)V
+
+    .line 10291
+    :goto_1f7
     return-void
 .end method

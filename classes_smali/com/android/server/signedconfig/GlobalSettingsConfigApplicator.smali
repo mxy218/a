@@ -173,7 +173,10 @@
 .end method
 
 .method constructor <init>(Landroid/content/Context;Ljava/lang/String;Lcom/android/server/signedconfig/SignedConfigEvent;)V
-    .registers 4
+    .registers 6
+    .param p1, "context"  # Landroid/content/Context;
+    .param p2, "sourcePackage"  # Ljava/lang/String;
+    .param p3, "event"  # Lcom/android/server/signedconfig/SignedConfigEvent;
 
     .line 73
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -188,20 +191,22 @@
     iput-object p3, p0, Lcom/android/server/signedconfig/GlobalSettingsConfigApplicator;->mEvent:Lcom/android/server/signedconfig/SignedConfigEvent;
 
     .line 77
-    new-instance p1, Lcom/android/server/signedconfig/SignatureVerifier;
+    new-instance v0, Lcom/android/server/signedconfig/SignatureVerifier;
 
-    iget-object p2, p0, Lcom/android/server/signedconfig/GlobalSettingsConfigApplicator;->mEvent:Lcom/android/server/signedconfig/SignedConfigEvent;
+    iget-object v1, p0, Lcom/android/server/signedconfig/GlobalSettingsConfigApplicator;->mEvent:Lcom/android/server/signedconfig/SignedConfigEvent;
 
-    invoke-direct {p1, p2}, Lcom/android/server/signedconfig/SignatureVerifier;-><init>(Lcom/android/server/signedconfig/SignedConfigEvent;)V
+    invoke-direct {v0, v1}, Lcom/android/server/signedconfig/SignatureVerifier;-><init>(Lcom/android/server/signedconfig/SignedConfigEvent;)V
 
-    iput-object p1, p0, Lcom/android/server/signedconfig/GlobalSettingsConfigApplicator;->mVerifier:Lcom/android/server/signedconfig/SignatureVerifier;
+    iput-object v0, p0, Lcom/android/server/signedconfig/GlobalSettingsConfigApplicator;->mVerifier:Lcom/android/server/signedconfig/SignatureVerifier;
 
     .line 78
     return-void
 .end method
 
 .method private checkSignature(Ljava/lang/String;Ljava/lang/String;)Z
-    .registers 4
+    .registers 6
+    .param p1, "data"  # Ljava/lang/String;
+    .param p2, "signature"  # Ljava/lang/String;
 
     .line 82
     :try_start_0
@@ -209,34 +214,35 @@
 
     invoke-virtual {v0, p1, p2}, Lcom/android/server/signedconfig/SignatureVerifier;->verifySignature(Ljava/lang/String;Ljava/lang/String;)Z
 
-    move-result p1
+    move-result v0
     :try_end_6
     .catch Ljava/security/GeneralSecurityException; {:try_start_0 .. :try_end_6} :catch_7
 
-    return p1
+    return v0
 
     .line 83
     :catch_7
-    move-exception p1
+    move-exception v0
 
     .line 84
-    const-string p2, "SignedConfig"
+    .local v0, "e":Ljava/security/GeneralSecurityException;
+    const-string v1, "SignedConfig"
 
-    const-string v0, "Failed to verify signature"
+    const-string v2, "Failed to verify signature"
 
-    invoke-static {p2, v0, p1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    invoke-static {v1, v2, v0}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
     .line 85
-    iget-object p1, p0, Lcom/android/server/signedconfig/GlobalSettingsConfigApplicator;->mEvent:Lcom/android/server/signedconfig/SignedConfigEvent;
+    iget-object v1, p0, Lcom/android/server/signedconfig/GlobalSettingsConfigApplicator;->mEvent:Lcom/android/server/signedconfig/SignedConfigEvent;
 
-    const/4 p2, 0x4
+    const/4 v2, 0x4
 
-    iput p2, p1, Lcom/android/server/signedconfig/SignedConfigEvent;->status:I
+    iput v2, v1, Lcom/android/server/signedconfig/SignedConfigEvent;->status:I
 
     .line 86
-    const/4 p1, 0x0
+    const/4 v1, 0x0
 
-    return p1
+    return v1
 .end method
 
 .method private getCurrentConfigVersion()I
@@ -262,6 +268,7 @@
 
 .method private static varargs makeMap([Ljava/lang/Object;)Ljava/util/Map;
     .registers 6
+    .param p0, "keyValuePairs"  # [Ljava/lang/Object;
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "<K:",
@@ -281,7 +288,7 @@
 
     rem-int/lit8 v0, v0, 0x2
 
-    if-nez v0, :cond_23
+    if-nez v0, :cond_25
 
     .line 59
     array-length v0, p0
@@ -289,26 +296,31 @@
     div-int/lit8 v0, v0, 0x2
 
     .line 60
+    .local v0, "len":I
     new-instance v1, Landroid/util/ArrayMap;
 
     invoke-direct {v1, v0}, Landroid/util/ArrayMap;-><init>(I)V
 
     .line 61
+    .local v1, "m":Landroid/util/ArrayMap;, "Landroid/util/ArrayMap<TK;TV;>;"
     const/4 v2, 0x0
 
+    .local v2, "i":I
     :goto_e
-    if-ge v2, v0, :cond_1e
+    if-ge v2, v0, :cond_20
 
     .line 62
     mul-int/lit8 v3, v2, 0x2
 
-    aget-object v4, p0, v3
-
-    add-int/lit8 v3, v3, 0x1
-
     aget-object v3, p0, v3
 
-    invoke-virtual {v1, v4, v3}, Landroid/util/ArrayMap;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+    mul-int/lit8 v4, v2, 0x2
+
+    add-int/lit8 v4, v4, 0x1
+
+    aget-object v4, p0, v4
+
+    invoke-virtual {v1, v3, v4}, Landroid/util/ArrayMap;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
 
     .line 61
     add-int/lit8 v2, v2, 0x1
@@ -316,24 +328,28 @@
     goto :goto_e
 
     .line 64
-    :cond_1e
+    .end local v2  # "i":I
+    :cond_20
     invoke-static {v1}, Ljava/util/Collections;->unmodifiableMap(Ljava/util/Map;)Ljava/util/Map;
 
-    move-result-object p0
+    move-result-object v2
 
-    return-object p0
+    return-object v2
 
     .line 57
-    :cond_23
-    new-instance p0, Ljava/lang/IllegalArgumentException;
+    .end local v0  # "len":I
+    .end local v1  # "m":Landroid/util/ArrayMap;, "Landroid/util/ArrayMap<TK;TV;>;"
+    :cond_25
+    new-instance v0, Ljava/lang/IllegalArgumentException;
 
-    invoke-direct {p0}, Ljava/lang/IllegalArgumentException;-><init>()V
+    invoke-direct {v0}, Ljava/lang/IllegalArgumentException;-><init>()V
 
-    throw p0
+    throw v0
 .end method
 
 .method private updateCurrentConfig(ILjava/util/Map;)V
-    .registers 6
+    .registers 8
+    .param p1, "version"  # I
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(I",
@@ -345,68 +361,71 @@
     .end annotation
 
     .line 96
+    .local p2, "values":Ljava/util/Map;, "Ljava/util/Map<Ljava/lang/String;Ljava/lang/String;>;"
     invoke-interface {p2}, Ljava/util/Map;->entrySet()Ljava/util/Set;
-
-    move-result-object p2
-
-    invoke-interface {p2}, Ljava/util/Set;->iterator()Ljava/util/Iterator;
-
-    move-result-object p2
-
-    :goto_8
-    invoke-interface {p2}, Ljava/util/Iterator;->hasNext()Z
-
-    move-result v0
-
-    if-eqz v0, :cond_2a
-
-    invoke-interface {p2}, Ljava/util/Iterator;->next()Ljava/lang/Object;
 
     move-result-object v0
 
-    check-cast v0, Ljava/util/Map$Entry;
+    invoke-interface {v0}, Ljava/util/Set;->iterator()Ljava/util/Iterator;
 
-    .line 97
-    iget-object v1, p0, Lcom/android/server/signedconfig/GlobalSettingsConfigApplicator;->mContext:Landroid/content/Context;
+    move-result-object v0
 
-    .line 98
-    invoke-virtual {v1}, Landroid/content/Context;->getContentResolver()Landroid/content/ContentResolver;
+    :goto_8
+    invoke-interface {v0}, Ljava/util/Iterator;->hasNext()Z
+
+    move-result v1
+
+    if-eqz v1, :cond_2a
+
+    invoke-interface {v0}, Ljava/util/Iterator;->next()Ljava/lang/Object;
 
     move-result-object v1
 
-    .line 99
-    invoke-interface {v0}, Ljava/util/Map$Entry;->getKey()Ljava/lang/Object;
+    check-cast v1, Ljava/util/Map$Entry;
+
+    .line 97
+    .local v1, "e":Ljava/util/Map$Entry;, "Ljava/util/Map$Entry<Ljava/lang/String;Ljava/lang/String;>;"
+    iget-object v2, p0, Lcom/android/server/signedconfig/GlobalSettingsConfigApplicator;->mContext:Landroid/content/Context;
+
+    .line 98
+    invoke-virtual {v2}, Landroid/content/Context;->getContentResolver()Landroid/content/ContentResolver;
 
     move-result-object v2
 
-    check-cast v2, Ljava/lang/String;
+    .line 99
+    invoke-interface {v1}, Ljava/util/Map$Entry;->getKey()Ljava/lang/Object;
+
+    move-result-object v3
+
+    check-cast v3, Ljava/lang/String;
 
     .line 100
-    invoke-interface {v0}, Ljava/util/Map$Entry;->getValue()Ljava/lang/Object;
+    invoke-interface {v1}, Ljava/util/Map$Entry;->getValue()Ljava/lang/Object;
 
-    move-result-object v0
+    move-result-object v4
 
-    check-cast v0, Ljava/lang/String;
+    check-cast v4, Ljava/lang/String;
 
     .line 97
-    invoke-static {v1, v2, v0}, Landroid/provider/Settings$Global;->putString(Landroid/content/ContentResolver;Ljava/lang/String;Ljava/lang/String;)Z
+    invoke-static {v2, v3, v4}, Landroid/provider/Settings$Global;->putString(Landroid/content/ContentResolver;Ljava/lang/String;Ljava/lang/String;)Z
 
     .line 101
+    .end local v1  # "e":Ljava/util/Map$Entry;, "Ljava/util/Map$Entry<Ljava/lang/String;Ljava/lang/String;>;"
     goto :goto_8
 
     .line 102
     :cond_2a
-    iget-object p2, p0, Lcom/android/server/signedconfig/GlobalSettingsConfigApplicator;->mContext:Landroid/content/Context;
+    iget-object v0, p0, Lcom/android/server/signedconfig/GlobalSettingsConfigApplicator;->mContext:Landroid/content/Context;
 
     .line 103
-    invoke-virtual {p2}, Landroid/content/Context;->getContentResolver()Landroid/content/ContentResolver;
+    invoke-virtual {v0}, Landroid/content/Context;->getContentResolver()Landroid/content/ContentResolver;
 
-    move-result-object p2
+    move-result-object v0
 
     .line 102
-    const-string/jumbo v0, "signed_config_version"
+    const-string/jumbo v1, "signed_config_version"
 
-    invoke-static {p2, v0, p1}, Landroid/provider/Settings$Global;->putInt(Landroid/content/ContentResolver;Ljava/lang/String;I)Z
+    invoke-static {v0, v1, p1}, Landroid/provider/Settings$Global;->putInt(Landroid/content/ContentResolver;Ljava/lang/String;I)Z
 
     .line 104
     return-void
@@ -415,39 +434,41 @@
 
 # virtual methods
 .method applyConfig(Ljava/lang/String;Ljava/lang/String;)V
-    .registers 6
+    .registers 9
+    .param p1, "configStr"  # Ljava/lang/String;
+    .param p2, "signature"  # Ljava/lang/String;
 
     .line 108
     invoke-direct {p0, p1, p2}, Lcom/android/server/signedconfig/GlobalSettingsConfigApplicator;->checkSignature(Ljava/lang/String;Ljava/lang/String;)Z
 
-    move-result p2
+    move-result v0
 
-    const-string v0, "SignedConfig"
+    const-string v1, "SignedConfig"
 
-    if-nez p2, :cond_24
+    if-nez v0, :cond_24
 
     .line 109
-    new-instance p1, Ljava/lang/StringBuilder;
+    new-instance v0, Ljava/lang/StringBuilder;
 
-    invoke-direct {p1}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string p2, "Signature check on global settings in package "
+    const-string v2, "Signature check on global settings in package "
 
-    invoke-virtual {p1, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    iget-object p2, p0, Lcom/android/server/signedconfig/GlobalSettingsConfigApplicator;->mSourcePackage:Ljava/lang/String;
+    iget-object v2, p0, Lcom/android/server/signedconfig/GlobalSettingsConfigApplicator;->mSourcePackage:Ljava/lang/String;
 
-    invoke-virtual {p1, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string p2, " failed; ignoring"
+    const-string v2, " failed; ignoring"
 
-    invoke-virtual {p1, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    invoke-static {v0, p1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v0}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 111
     return-void
@@ -455,20 +476,21 @@
     .line 115
     :cond_24
     :try_start_24
-    sget-object p2, Lcom/android/server/signedconfig/GlobalSettingsConfigApplicator;->ALLOWED_KEYS:Ljava/util/Set;
+    sget-object v0, Lcom/android/server/signedconfig/GlobalSettingsConfigApplicator;->ALLOWED_KEYS:Ljava/util/Set;
 
-    sget-object v1, Lcom/android/server/signedconfig/GlobalSettingsConfigApplicator;->KEY_VALUE_MAPPERS:Ljava/util/Map;
+    sget-object v2, Lcom/android/server/signedconfig/GlobalSettingsConfigApplicator;->KEY_VALUE_MAPPERS:Ljava/util/Map;
 
-    invoke-static {p1, p2, v1}, Lcom/android/server/signedconfig/SignedConfig;->parse(Ljava/lang/String;Ljava/util/Set;Ljava/util/Map;)Lcom/android/server/signedconfig/SignedConfig;
+    invoke-static {p1, v0, v2}, Lcom/android/server/signedconfig/SignedConfig;->parse(Ljava/lang/String;Ljava/util/Set;Ljava/util/Map;)Lcom/android/server/signedconfig/SignedConfig;
 
-    move-result-object p1
+    move-result-object v0
 
     .line 116
-    iget-object p2, p0, Lcom/android/server/signedconfig/GlobalSettingsConfigApplicator;->mEvent:Lcom/android/server/signedconfig/SignedConfigEvent;
+    .local v0, "config":Lcom/android/server/signedconfig/SignedConfig;
+    iget-object v2, p0, Lcom/android/server/signedconfig/GlobalSettingsConfigApplicator;->mEvent:Lcom/android/server/signedconfig/SignedConfigEvent;
 
-    iget v1, p1, Lcom/android/server/signedconfig/SignedConfig;->version:I
+    iget v3, v0, Lcom/android/server/signedconfig/SignedConfig;->version:I
 
-    iput v1, p2, Lcom/android/server/signedconfig/SignedConfigEvent;->version:I
+    iput v3, v2, Lcom/android/server/signedconfig/SignedConfigEvent;->version:I
     :try_end_32
     .catch Lcom/android/server/signedconfig/InvalidConfigException; {:try_start_24 .. :try_end_32} :catch_c8
 
@@ -478,182 +500,188 @@
     .line 122
     invoke-direct {p0}, Lcom/android/server/signedconfig/GlobalSettingsConfigApplicator;->getCurrentConfigVersion()I
 
-    move-result p2
+    move-result v2
 
     .line 123
-    iget v1, p1, Lcom/android/server/signedconfig/SignedConfig;->version:I
+    .local v2, "currentVersion":I
+    iget v3, v0, Lcom/android/server/signedconfig/SignedConfig;->version:I
 
-    if-lt p2, v1, :cond_69
+    if-lt v2, v3, :cond_69
 
     .line 124
-    new-instance v1, Ljava/lang/StringBuilder;
+    new-instance v3, Ljava/lang/StringBuilder;
 
-    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v2, "Global settings from package "
+    const-string v4, "Global settings from package "
 
-    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    iget-object v2, p0, Lcom/android/server/signedconfig/GlobalSettingsConfigApplicator;->mSourcePackage:Ljava/lang/String;
+    iget-object v4, p0, Lcom/android/server/signedconfig/GlobalSettingsConfigApplicator;->mSourcePackage:Ljava/lang/String;
 
-    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string v2, " is older than existing: "
+    const-string v4, " is older than existing: "
 
-    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    iget p1, p1, Lcom/android/server/signedconfig/SignedConfig;->version:I
+    iget v4, v0, Lcom/android/server/signedconfig/SignedConfig;->version:I
 
-    invoke-virtual {v1, p1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    const-string p1, "<="
+    const-string v4, "<="
 
-    invoke-virtual {v1, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v1, p2}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v2}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v3
 
-    invoke-static {v0, p1}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v3}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 126
-    iget-object p1, p0, Lcom/android/server/signedconfig/GlobalSettingsConfigApplicator;->mEvent:Lcom/android/server/signedconfig/SignedConfigEvent;
+    iget-object v1, p0, Lcom/android/server/signedconfig/GlobalSettingsConfigApplicator;->mEvent:Lcom/android/server/signedconfig/SignedConfigEvent;
 
-    const/4 p2, 0x6
+    const/4 v3, 0x6
 
-    iput p2, p1, Lcom/android/server/signedconfig/SignedConfigEvent;->status:I
+    iput v3, v1, Lcom/android/server/signedconfig/SignedConfigEvent;->status:I
 
     .line 127
     return-void
 
     .line 130
     :cond_69
-    new-instance v1, Ljava/lang/StringBuilder;
+    new-instance v3, Ljava/lang/StringBuilder;
 
-    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v2, "Got new global settings from package "
+    const-string v4, "Got new global settings from package "
 
-    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    iget-object v2, p0, Lcom/android/server/signedconfig/GlobalSettingsConfigApplicator;->mSourcePackage:Ljava/lang/String;
+    iget-object v4, p0, Lcom/android/server/signedconfig/GlobalSettingsConfigApplicator;->mSourcePackage:Ljava/lang/String;
 
-    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string v2, ": version "
+    const-string v4, ": version "
 
-    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    iget v2, p1, Lcom/android/server/signedconfig/SignedConfig;->version:I
+    iget v4, v0, Lcom/android/server/signedconfig/SignedConfig;->version:I
 
-    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    const-string v2, " replacing existing version "
+    const-string v4, " replacing existing version "
 
-    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v1, p2}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v2}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p2
+    move-result-object v3
 
-    invoke-static {v0, p2}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v3}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 132
-    sget p2, Landroid/os/Build$VERSION;->SDK_INT:I
+    sget v3, Landroid/os/Build$VERSION;->SDK_INT:I
 
     .line 133
-    invoke-virtual {p1, p2}, Lcom/android/server/signedconfig/SignedConfig;->getMatchingConfig(I)Lcom/android/server/signedconfig/SignedConfig$PerSdkConfig;
+    invoke-virtual {v0, v3}, Lcom/android/server/signedconfig/SignedConfig;->getMatchingConfig(I)Lcom/android/server/signedconfig/SignedConfig$PerSdkConfig;
 
-    move-result-object p2
+    move-result-object v3
 
     .line 134
-    if-nez p2, :cond_a5
+    .local v3, "matchedConfig":Lcom/android/server/signedconfig/SignedConfig$PerSdkConfig;
+    if-nez v3, :cond_a5
 
     .line 135
-    const-string p1, "Settings is not applicable to current SDK version; ignoring"
+    const-string v4, "Settings is not applicable to current SDK version; ignoring"
 
-    invoke-static {v0, p1}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v4}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 136
-    iget-object p1, p0, Lcom/android/server/signedconfig/GlobalSettingsConfigApplicator;->mEvent:Lcom/android/server/signedconfig/SignedConfigEvent;
+    iget-object v1, p0, Lcom/android/server/signedconfig/GlobalSettingsConfigApplicator;->mEvent:Lcom/android/server/signedconfig/SignedConfigEvent;
 
-    const/16 p2, 0x8
+    const/16 v4, 0x8
 
-    iput p2, p1, Lcom/android/server/signedconfig/SignedConfigEvent;->status:I
+    iput v4, v1, Lcom/android/server/signedconfig/SignedConfigEvent;->status:I
 
     .line 137
     return-void
 
     .line 140
     :cond_a5
-    new-instance v1, Ljava/lang/StringBuilder;
+    new-instance v4, Ljava/lang/StringBuilder;
 
-    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v4}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v2, "Updating global settings to version "
+    const-string v5, "Updating global settings to version "
 
-    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    iget v2, p1, Lcom/android/server/signedconfig/SignedConfig;->version:I
+    iget v5, v0, Lcom/android/server/signedconfig/SignedConfig;->version:I
 
-    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v4}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v1
+    move-result-object v4
 
-    invoke-static {v0, v1}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v4}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 141
-    iget p1, p1, Lcom/android/server/signedconfig/SignedConfig;->version:I
+    iget v1, v0, Lcom/android/server/signedconfig/SignedConfig;->version:I
 
-    iget-object p2, p2, Lcom/android/server/signedconfig/SignedConfig$PerSdkConfig;->values:Ljava/util/Map;
+    iget-object v4, v3, Lcom/android/server/signedconfig/SignedConfig$PerSdkConfig;->values:Ljava/util/Map;
 
-    invoke-direct {p0, p1, p2}, Lcom/android/server/signedconfig/GlobalSettingsConfigApplicator;->updateCurrentConfig(ILjava/util/Map;)V
+    invoke-direct {p0, v1, v4}, Lcom/android/server/signedconfig/GlobalSettingsConfigApplicator;->updateCurrentConfig(ILjava/util/Map;)V
 
     .line 142
-    iget-object p1, p0, Lcom/android/server/signedconfig/GlobalSettingsConfigApplicator;->mEvent:Lcom/android/server/signedconfig/SignedConfigEvent;
+    iget-object v1, p0, Lcom/android/server/signedconfig/GlobalSettingsConfigApplicator;->mEvent:Lcom/android/server/signedconfig/SignedConfigEvent;
 
-    const/4 p2, 0x1
+    const/4 v4, 0x1
 
-    iput p2, p1, Lcom/android/server/signedconfig/SignedConfigEvent;->status:I
+    iput v4, v1, Lcom/android/server/signedconfig/SignedConfigEvent;->status:I
 
     .line 143
     return-void
 
     .line 117
+    .end local v0  # "config":Lcom/android/server/signedconfig/SignedConfig;
+    .end local v2  # "currentVersion":I
+    .end local v3  # "matchedConfig":Lcom/android/server/signedconfig/SignedConfig$PerSdkConfig;
     :catch_c8
-    move-exception p1
+    move-exception v0
 
     .line 118
-    new-instance p2, Ljava/lang/StringBuilder;
+    .local v0, "e":Lcom/android/server/signedconfig/InvalidConfigException;
+    new-instance v2, Ljava/lang/StringBuilder;
 
-    invoke-direct {p2}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v1, "Failed to parse global settings from package "
+    const-string v3, "Failed to parse global settings from package "
 
-    invoke-virtual {p2, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    iget-object v1, p0, Lcom/android/server/signedconfig/GlobalSettingsConfigApplicator;->mSourcePackage:Ljava/lang/String;
+    iget-object v3, p0, Lcom/android/server/signedconfig/GlobalSettingsConfigApplicator;->mSourcePackage:Ljava/lang/String;
 
-    invoke-virtual {p2, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p2
+    move-result-object v2
 
-    invoke-static {v0, p2, p1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    invoke-static {v1, v2, v0}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
     .line 119
-    iget-object p1, p0, Lcom/android/server/signedconfig/GlobalSettingsConfigApplicator;->mEvent:Lcom/android/server/signedconfig/SignedConfigEvent;
+    iget-object v1, p0, Lcom/android/server/signedconfig/GlobalSettingsConfigApplicator;->mEvent:Lcom/android/server/signedconfig/SignedConfigEvent;
 
-    const/4 p2, 0x5
+    const/4 v2, 0x5
 
-    iput p2, p1, Lcom/android/server/signedconfig/SignedConfigEvent;->status:I
+    iput v2, v1, Lcom/android/server/signedconfig/SignedConfigEvent;->status:I
 
     .line 120
     return-void

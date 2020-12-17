@@ -74,7 +74,8 @@
 
 # direct methods
 .method public constructor <init>(Landroid/os/UserHandle;)V
-    .registers 3
+    .registers 4
+    .param p1, "handle"  # Landroid/os/UserHandle;
 
     .line 75
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -116,9 +117,9 @@
 
     invoke-virtual {p1}, Landroid/os/UserHandle;->getIdentifier()I
 
-    move-result p1
+    move-result v1
 
-    invoke-direct {v0, p1}, Lcom/android/internal/util/ProgressReporter;-><init>(I)V
+    invoke-direct {v0, v1}, Lcom/android/internal/util/ProgressReporter;-><init>(I)V
 
     iput-object v0, p0, Lcom/android/server/am/UserState;->mUnlockProgress:Lcom/android/internal/util/ProgressReporter;
 
@@ -128,6 +129,7 @@
 
 .method public static stateToProtoEnum(I)I
     .registers 2
+    .param p0, "state"  # I
 
     .line 124
     if-eqz p0, :cond_17
@@ -177,13 +179,14 @@
 
     .line 125
     :cond_17
-    const/4 p0, 0x0
+    const/4 v0, 0x0
 
-    return p0
+    return v0
 .end method
 
 .method public static stateToString(I)Ljava/lang/String;
     .registers 2
+    .param p0, "state"  # I
 
     .line 112
     if-eqz p0, :cond_25
@@ -211,76 +214,78 @@
     .line 119
     invoke-static {p0}, Ljava/lang/Integer;->toString(I)Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v0
 
-    return-object p0
+    return-object v0
 
     .line 118
     :cond_16
-    const-string p0, "SHUTDOWN"
+    const-string v0, "SHUTDOWN"
 
-    return-object p0
+    return-object v0
 
     .line 117
     :cond_19
-    const-string p0, "STOPPING"
+    const-string v0, "STOPPING"
 
-    return-object p0
+    return-object v0
 
     .line 116
     :cond_1c
-    const-string p0, "RUNNING_UNLOCKED"
+    const-string v0, "RUNNING_UNLOCKED"
 
-    return-object p0
+    return-object v0
 
     .line 115
     :cond_1f
-    const-string p0, "RUNNING_UNLOCKING"
+    const-string v0, "RUNNING_UNLOCKING"
 
-    return-object p0
+    return-object v0
 
     .line 114
     :cond_22
-    const-string p0, "RUNNING_LOCKED"
+    const-string v0, "RUNNING_LOCKED"
 
-    return-object p0
+    return-object v0
 
     .line 113
     :cond_25
-    const-string p0, "BOOTING"
+    const-string v0, "BOOTING"
 
-    return-object p0
+    return-object v0
 .end method
 
 
 # virtual methods
 .method dump(Ljava/lang/String;Ljava/io/PrintWriter;)V
-    .registers 3
+    .registers 4
+    .param p1, "prefix"  # Ljava/lang/String;
+    .param p2, "pw"  # Ljava/io/PrintWriter;
 
     .line 136
     invoke-virtual {p2, p1}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
     .line 137
-    const-string/jumbo p1, "state="
+    const-string/jumbo v0, "state="
 
-    invoke-virtual {p2, p1}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
+    invoke-virtual {p2, v0}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
-    iget p1, p0, Lcom/android/server/am/UserState;->state:I
+    iget v0, p0, Lcom/android/server/am/UserState;->state:I
 
-    invoke-static {p1}, Lcom/android/server/am/UserState;->stateToString(I)Ljava/lang/String;
+    invoke-static {v0}, Lcom/android/server/am/UserState;->stateToString(I)Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    invoke-virtual {p2, p1}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
+    invoke-virtual {p2, v0}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
     .line 138
-    iget-boolean p1, p0, Lcom/android/server/am/UserState;->switching:Z
+    iget-boolean v0, p0, Lcom/android/server/am/UserState;->switching:Z
 
-    if-eqz p1, :cond_1b
+    if-eqz v0, :cond_1b
 
-    const-string p1, " SWITCHING"
+    const-string v0, " SWITCHING"
 
-    invoke-virtual {p2, p1}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
+    invoke-virtual {p2, v0}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
     .line 139
     :cond_1b
@@ -292,6 +297,7 @@
 
 .method public setState(I)V
     .registers 8
+    .param p1, "newState"  # I
 
     .line 92
     iget v0, p0, Lcom/android/server/am/UserState;->state:I
@@ -310,6 +316,7 @@
     move-result v0
 
     .line 96
+    .local v0, "userId":I
     iget v1, p0, Lcom/android/server/am/UserState;->state:I
 
     const-string v2, " "
@@ -420,9 +427,9 @@
     invoke-static {v0, p1}, Lcom/android/server/am/EventLogTags;->writeAmUserStateChanged(II)V
 
     .line 107
-    iget v0, p0, Lcom/android/server/am/UserState;->state:I
+    iget v1, p0, Lcom/android/server/am/UserState;->state:I
 
-    iput v0, p0, Lcom/android/server/am/UserState;->lastState:I
+    iput v1, p0, Lcom/android/server/am/UserState;->lastState:I
 
     .line 108
     iput p1, p0, Lcom/android/server/am/UserState;->state:I
@@ -432,7 +439,9 @@
 .end method
 
 .method public setState(II)Z
-    .registers 4
+    .registers 5
+    .param p1, "oldState"  # I
+    .param p2, "newState"  # I
 
     .line 81
     iget v0, p0, Lcom/android/server/am/UserState;->state:I
@@ -443,94 +452,97 @@
     invoke-virtual {p0, p2}, Lcom/android/server/am/UserState;->setState(I)V
 
     .line 83
-    const/4 p1, 0x1
+    const/4 v0, 0x1
 
-    return p1
+    return v0
 
     .line 85
     :cond_9
-    new-instance p2, Ljava/lang/StringBuilder;
+    new-instance v0, Ljava/lang/StringBuilder;
 
-    invoke-direct {p2}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v0, "Expected user "
+    const-string v1, "Expected user "
 
-    invoke-virtual {p2, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    iget-object v0, p0, Lcom/android/server/am/UserState;->mHandle:Landroid/os/UserHandle;
+    iget-object v1, p0, Lcom/android/server/am/UserState;->mHandle:Landroid/os/UserHandle;
 
-    invoke-virtual {v0}, Landroid/os/UserHandle;->getIdentifier()I
+    invoke-virtual {v1}, Landroid/os/UserHandle;->getIdentifier()I
 
-    move-result v0
+    move-result v1
 
-    invoke-virtual {p2, v0}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    const-string v0, " in state "
+    const-string v1, " in state "
 
-    invoke-virtual {p2, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     .line 86
     invoke-static {p1}, Lcom/android/server/am/UserState;->stateToString(I)Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v1
 
-    invoke-virtual {p2, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string p1, " but was in state "
+    const-string v1, " but was in state "
 
-    invoke-virtual {p2, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    iget p1, p0, Lcom/android/server/am/UserState;->state:I
+    iget v1, p0, Lcom/android/server/am/UserState;->state:I
 
-    invoke-static {p1}, Lcom/android/server/am/UserState;->stateToString(I)Ljava/lang/String;
+    invoke-static {v1}, Lcom/android/server/am/UserState;->stateToString(I)Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v1
 
-    invoke-virtual {p2, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
     .line 85
-    const-string p2, "ActivityManager"
+    const-string v1, "ActivityManager"
 
-    invoke-static {p2, p1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v0}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 87
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    return p1
+    return v0
 .end method
 
 .method writeToProto(Landroid/util/proto/ProtoOutputStream;J)V
-    .registers 7
+    .registers 9
+    .param p1, "proto"  # Landroid/util/proto/ProtoOutputStream;
+    .param p2, "fieldId"  # J
 
     .line 143
     invoke-virtual {p1, p2, p3}, Landroid/util/proto/ProtoOutputStream;->start(J)J
 
-    move-result-wide p2
+    move-result-wide v0
 
     .line 144
-    iget v0, p0, Lcom/android/server/am/UserState;->state:I
+    .local v0, "token":J
+    iget v2, p0, Lcom/android/server/am/UserState;->state:I
 
-    invoke-static {v0}, Lcom/android/server/am/UserState;->stateToProtoEnum(I)I
+    invoke-static {v2}, Lcom/android/server/am/UserState;->stateToProtoEnum(I)I
 
-    move-result v0
+    move-result v2
 
-    const-wide v1, 0x10e00000001L
+    const-wide v3, 0x10e00000001L
 
-    invoke-virtual {p1, v1, v2, v0}, Landroid/util/proto/ProtoOutputStream;->write(JI)V
+    invoke-virtual {p1, v3, v4, v2}, Landroid/util/proto/ProtoOutputStream;->write(JI)V
 
     .line 145
-    iget-boolean v0, p0, Lcom/android/server/am/UserState;->switching:Z
+    iget-boolean v2, p0, Lcom/android/server/am/UserState;->switching:Z
 
-    const-wide v1, 0x10800000002L
+    const-wide v3, 0x10800000002L
 
-    invoke-virtual {p1, v1, v2, v0}, Landroid/util/proto/ProtoOutputStream;->write(JZ)V
+    invoke-virtual {p1, v3, v4, v2}, Landroid/util/proto/ProtoOutputStream;->write(JZ)V
 
     .line 146
-    invoke-virtual {p1, p2, p3}, Landroid/util/proto/ProtoOutputStream;->end(J)V
+    invoke-virtual {p1, v0, v1}, Landroid/util/proto/ProtoOutputStream;->end(J)V
 
     .line 147
     return-void

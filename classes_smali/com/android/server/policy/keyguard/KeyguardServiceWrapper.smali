@@ -17,6 +17,9 @@
 # direct methods
 .method public constructor <init>(Landroid/content/Context;Lcom/android/internal/policy/IKeyguardService;Lcom/android/server/policy/keyguard/KeyguardStateMonitor$StateCallback;)V
     .registers 5
+    .param p1, "context"  # Landroid/content/Context;
+    .param p2, "service"  # Lcom/android/internal/policy/IKeyguardService;
+    .param p3, "callback"  # Lcom/android/server/policy/keyguard/KeyguardStateMonitor$StateCallback;
 
     .line 44
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -43,7 +46,8 @@
 
 # virtual methods
 .method public addStateMonitorCallback(Lcom/android/internal/policy/IKeyguardStateCallback;)V
-    .registers 4
+    .registers 5
+    .param p1, "callback"  # Lcom/android/internal/policy/IKeyguardStateCallback;
 
     .line 70
     :try_start_0
@@ -58,16 +62,18 @@
 
     .line 71
     :catch_6
-    move-exception p1
+    move-exception v0
 
     .line 72
-    iget-object v0, p0, Lcom/android/server/policy/keyguard/KeyguardServiceWrapper;->TAG:Ljava/lang/String;
+    .local v0, "e":Landroid/os/RemoteException;
+    iget-object v1, p0, Lcom/android/server/policy/keyguard/KeyguardServiceWrapper;->TAG:Ljava/lang/String;
 
-    const-string v1, "Remote Exception"
+    const-string v2, "Remote Exception"
 
-    invoke-static {v0, v1, p1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    invoke-static {v1, v2, v0}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
     .line 74
+    .end local v0  # "e":Landroid/os/RemoteException;
     :goto_e
     return-void
 .end method
@@ -86,7 +92,9 @@
 .end method
 
 .method public dismiss(Lcom/android/internal/policy/IKeyguardDismissCallback;Ljava/lang/CharSequence;)V
-    .registers 4
+    .registers 6
+    .param p1, "callback"  # Lcom/android/internal/policy/IKeyguardDismissCallback;
+    .param p2, "message"  # Ljava/lang/CharSequence;
 
     .line 79
     :try_start_0
@@ -101,22 +109,25 @@
 
     .line 80
     :catch_6
-    move-exception p1
+    move-exception v0
 
     .line 81
-    iget-object p2, p0, Lcom/android/server/policy/keyguard/KeyguardServiceWrapper;->TAG:Ljava/lang/String;
+    .local v0, "e":Landroid/os/RemoteException;
+    iget-object v1, p0, Lcom/android/server/policy/keyguard/KeyguardServiceWrapper;->TAG:Ljava/lang/String;
 
-    const-string v0, "Remote Exception"
+    const-string v2, "Remote Exception"
 
-    invoke-static {p2, v0, p1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    invoke-static {v1, v2, v0}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
     .line 83
+    .end local v0  # "e":Landroid/os/RemoteException;
     :goto_e
     return-void
 .end method
 
 .method public doKeyguardTimeout(Landroid/os/Bundle;)V
-    .registers 4
+    .registers 5
+    .param p1, "options"  # Landroid/os/Bundle;
 
     .line 196
     :try_start_0
@@ -131,22 +142,26 @@
 
     .line 197
     :catch_6
-    move-exception p1
+    move-exception v0
 
     .line 198
-    iget-object v0, p0, Lcom/android/server/policy/keyguard/KeyguardServiceWrapper;->TAG:Ljava/lang/String;
+    .local v0, "e":Landroid/os/RemoteException;
+    iget-object v1, p0, Lcom/android/server/policy/keyguard/KeyguardServiceWrapper;->TAG:Ljava/lang/String;
 
-    const-string v1, "Remote Exception"
+    const-string v2, "Remote Exception"
 
-    invoke-static {v0, v1, p1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    invoke-static {v1, v2, v0}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
     .line 200
+    .end local v0  # "e":Landroid/os/RemoteException;
     :goto_e
     return-void
 .end method
 
 .method public dump(Ljava/lang/String;Ljava/io/PrintWriter;)V
     .registers 4
+    .param p1, "prefix"  # Ljava/lang/String;
+    .param p2, "pw"  # Ljava/io/PrintWriter;
 
     .line 274
     iget-object v0, p0, Lcom/android/server/policy/keyguard/KeyguardServiceWrapper;->mKeyguardStateMonitor:Lcom/android/server/policy/keyguard/KeyguardStateMonitor;
@@ -185,15 +200,16 @@
 
 .method public isSecure(I)Z
     .registers 3
+    .param p1, "userId"  # I
 
     .line 266
     iget-object v0, p0, Lcom/android/server/policy/keyguard/KeyguardServiceWrapper;->mKeyguardStateMonitor:Lcom/android/server/policy/keyguard/KeyguardStateMonitor;
 
     invoke-virtual {v0, p1}, Lcom/android/server/policy/keyguard/KeyguardStateMonitor;->isSecure(I)Z
 
-    move-result p1
+    move-result v0
 
-    return p1
+    return v0
 .end method
 
 .method public isShowing()Z
@@ -241,6 +257,7 @@
     move-exception v0
 
     .line 226
+    .local v0, "e":Landroid/os/RemoteException;
     iget-object v1, p0, Lcom/android/server/policy/keyguard/KeyguardServiceWrapper;->TAG:Ljava/lang/String;
 
     const-string v2, "Remote Exception"
@@ -248,6 +265,7 @@
     invoke-static {v1, v2, v0}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
     .line 228
+    .end local v0  # "e":Landroid/os/RemoteException;
     :goto_e
     return-void
 .end method
@@ -271,6 +289,7 @@
     move-exception v0
 
     .line 90
+    .local v0, "e":Landroid/os/RemoteException;
     iget-object v1, p0, Lcom/android/server/policy/keyguard/KeyguardServiceWrapper;->TAG:Ljava/lang/String;
 
     const-string v2, "Remote Exception"
@@ -278,6 +297,7 @@
     invoke-static {v1, v2, v0}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
     .line 92
+    .end local v0  # "e":Landroid/os/RemoteException;
     :goto_e
     return-void
 .end method
@@ -301,6 +321,7 @@
     move-exception v0
 
     .line 99
+    .local v0, "e":Landroid/os/RemoteException;
     iget-object v1, p0, Lcom/android/server/policy/keyguard/KeyguardServiceWrapper;->TAG:Ljava/lang/String;
 
     const-string v2, "Remote Exception"
@@ -308,12 +329,15 @@
     invoke-static {v1, v2, v0}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
     .line 101
+    .end local v0  # "e":Landroid/os/RemoteException;
     :goto_e
     return-void
 .end method
 
 .method public onFinishedGoingToSleep(IZ)V
-    .registers 4
+    .registers 6
+    .param p1, "reason"  # I
+    .param p2, "cameraGestureTriggered"  # Z
 
     .line 115
     :try_start_0
@@ -328,16 +352,18 @@
 
     .line 116
     :catch_6
-    move-exception p1
+    move-exception v0
 
     .line 117
-    iget-object p2, p0, Lcom/android/server/policy/keyguard/KeyguardServiceWrapper;->TAG:Ljava/lang/String;
+    .local v0, "e":Landroid/os/RemoteException;
+    iget-object v1, p0, Lcom/android/server/policy/keyguard/KeyguardServiceWrapper;->TAG:Ljava/lang/String;
 
-    const-string v0, "Remote Exception"
+    const-string v2, "Remote Exception"
 
-    invoke-static {p2, v0, p1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    invoke-static {v1, v2, v0}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
     .line 119
+    .end local v0  # "e":Landroid/os/RemoteException;
     :goto_e
     return-void
 .end method
@@ -361,6 +387,7 @@
     move-exception v0
 
     .line 135
+    .local v0, "e":Landroid/os/RemoteException;
     iget-object v1, p0, Lcom/android/server/policy/keyguard/KeyguardServiceWrapper;->TAG:Ljava/lang/String;
 
     const-string v2, "Remote Exception"
@@ -368,6 +395,7 @@
     invoke-static {v1, v2, v0}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
     .line 137
+    .end local v0  # "e":Landroid/os/RemoteException;
     :goto_e
     return-void
 .end method
@@ -391,6 +419,7 @@
     move-exception v0
 
     .line 171
+    .local v0, "e":Landroid/os/RemoteException;
     iget-object v1, p0, Lcom/android/server/policy/keyguard/KeyguardServiceWrapper;->TAG:Ljava/lang/String;
 
     const-string v2, "Remote Exception"
@@ -398,6 +427,7 @@
     invoke-static {v1, v2, v0}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
     .line 173
+    .end local v0  # "e":Landroid/os/RemoteException;
     :goto_e
     return-void
 .end method
@@ -421,6 +451,7 @@
     move-exception v0
 
     .line 153
+    .local v0, "e":Landroid/os/RemoteException;
     iget-object v1, p0, Lcom/android/server/policy/keyguard/KeyguardServiceWrapper;->TAG:Ljava/lang/String;
 
     const-string v2, "Remote Exception"
@@ -428,6 +459,7 @@
     invoke-static {v1, v2, v0}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
     .line 155
+    .end local v0  # "e":Landroid/os/RemoteException;
     :goto_e
     return-void
 .end method
@@ -451,6 +483,7 @@
     move-exception v0
 
     .line 162
+    .local v0, "e":Landroid/os/RemoteException;
     iget-object v1, p0, Lcom/android/server/policy/keyguard/KeyguardServiceWrapper;->TAG:Ljava/lang/String;
 
     const-string v2, "Remote Exception"
@@ -458,12 +491,14 @@
     invoke-static {v1, v2, v0}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
     .line 164
+    .end local v0  # "e":Landroid/os/RemoteException;
     :goto_e
     return-void
 .end method
 
 .method public onScreenTurningOn(Lcom/android/internal/policy/IKeyguardDrawnCallback;)V
-    .registers 4
+    .registers 5
+    .param p1, "callback"  # Lcom/android/internal/policy/IKeyguardDrawnCallback;
 
     .line 142
     :try_start_0
@@ -478,16 +513,18 @@
 
     .line 143
     :catch_6
-    move-exception p1
+    move-exception v0
 
     .line 144
-    iget-object v0, p0, Lcom/android/server/policy/keyguard/KeyguardServiceWrapper;->TAG:Ljava/lang/String;
+    .local v0, "e":Landroid/os/RemoteException;
+    iget-object v1, p0, Lcom/android/server/policy/keyguard/KeyguardServiceWrapper;->TAG:Ljava/lang/String;
 
-    const-string v1, "Remote Exception"
+    const-string v2, "Remote Exception"
 
-    invoke-static {v0, v1, p1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    invoke-static {v1, v2, v0}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
     .line 146
+    .end local v0  # "e":Landroid/os/RemoteException;
     :goto_e
     return-void
 .end method
@@ -511,6 +548,7 @@
     move-exception v0
 
     .line 244
+    .local v0, "e":Landroid/os/RemoteException;
     iget-object v1, p0, Lcom/android/server/policy/keyguard/KeyguardServiceWrapper;->TAG:Ljava/lang/String;
 
     const-string v2, "Remote Exception"
@@ -518,12 +556,14 @@
     invoke-static {v1, v2, v0}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
     .line 246
+    .end local v0  # "e":Landroid/os/RemoteException;
     :goto_e
     return-void
 .end method
 
 .method public onStartedGoingToSleep(I)V
-    .registers 4
+    .registers 5
+    .param p1, "reason"  # I
 
     .line 106
     :try_start_0
@@ -538,16 +578,18 @@
 
     .line 107
     :catch_6
-    move-exception p1
+    move-exception v0
 
     .line 108
-    iget-object v0, p0, Lcom/android/server/policy/keyguard/KeyguardServiceWrapper;->TAG:Ljava/lang/String;
+    .local v0, "e":Landroid/os/RemoteException;
+    iget-object v1, p0, Lcom/android/server/policy/keyguard/KeyguardServiceWrapper;->TAG:Ljava/lang/String;
 
-    const-string v1, "Remote Exception"
+    const-string v2, "Remote Exception"
 
-    invoke-static {v0, v1, p1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    invoke-static {v1, v2, v0}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
     .line 110
+    .end local v0  # "e":Landroid/os/RemoteException;
     :goto_e
     return-void
 .end method
@@ -571,6 +613,7 @@
     move-exception v0
 
     .line 126
+    .local v0, "e":Landroid/os/RemoteException;
     iget-object v1, p0, Lcom/android/server/policy/keyguard/KeyguardServiceWrapper;->TAG:Ljava/lang/String;
 
     const-string v2, "Remote Exception"
@@ -578,6 +621,7 @@
     invoke-static {v1, v2, v0}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
     .line 128
+    .end local v0  # "e":Landroid/os/RemoteException;
     :goto_e
     return-void
 .end method
@@ -601,6 +645,7 @@
     move-exception v0
 
     .line 189
+    .local v0, "e":Landroid/os/RemoteException;
     iget-object v1, p0, Lcom/android/server/policy/keyguard/KeyguardServiceWrapper;->TAG:Ljava/lang/String;
 
     const-string v2, "Remote Exception"
@@ -608,12 +653,14 @@
     invoke-static {v1, v2, v0}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
     .line 191
+    .end local v0  # "e":Landroid/os/RemoteException;
     :goto_e
     return-void
 .end method
 
 .method public setCurrentUser(I)V
-    .registers 4
+    .registers 5
+    .param p1, "userId"  # I
 
     .line 213
     iget-object v0, p0, Lcom/android/server/policy/keyguard/KeyguardServiceWrapper;->mKeyguardStateMonitor:Lcom/android/server/policy/keyguard/KeyguardStateMonitor;
@@ -633,22 +680,25 @@
 
     .line 216
     :catch_b
-    move-exception p1
+    move-exception v0
 
     .line 217
-    iget-object v0, p0, Lcom/android/server/policy/keyguard/KeyguardServiceWrapper;->TAG:Ljava/lang/String;
+    .local v0, "e":Landroid/os/RemoteException;
+    iget-object v1, p0, Lcom/android/server/policy/keyguard/KeyguardServiceWrapper;->TAG:Ljava/lang/String;
 
-    const-string v1, "Remote Exception"
+    const-string v2, "Remote Exception"
 
-    invoke-static {v0, v1, p1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    invoke-static {v1, v2, v0}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
     .line 219
+    .end local v0  # "e":Landroid/os/RemoteException;
     :goto_13
     return-void
 .end method
 
 .method public setKeyguardEnabled(Z)V
-    .registers 4
+    .registers 5
+    .param p1, "enabled"  # Z
 
     .line 178
     :try_start_0
@@ -663,22 +713,26 @@
 
     .line 179
     :catch_6
-    move-exception p1
+    move-exception v0
 
     .line 180
-    iget-object v0, p0, Lcom/android/server/policy/keyguard/KeyguardServiceWrapper;->TAG:Ljava/lang/String;
+    .local v0, "e":Landroid/os/RemoteException;
+    iget-object v1, p0, Lcom/android/server/policy/keyguard/KeyguardServiceWrapper;->TAG:Ljava/lang/String;
 
-    const-string v1, "Remote Exception"
+    const-string v2, "Remote Exception"
 
-    invoke-static {v0, v1, p1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    invoke-static {v1, v2, v0}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
     .line 182
+    .end local v0  # "e":Landroid/os/RemoteException;
     :goto_e
     return-void
 .end method
 
 .method public setOccluded(ZZ)V
-    .registers 4
+    .registers 6
+    .param p1, "isOccluded"  # Z
+    .param p2, "animate"  # Z
 
     .line 61
     :try_start_0
@@ -693,22 +747,25 @@
 
     .line 62
     :catch_6
-    move-exception p1
+    move-exception v0
 
     .line 63
-    iget-object p2, p0, Lcom/android/server/policy/keyguard/KeyguardServiceWrapper;->TAG:Ljava/lang/String;
+    .local v0, "e":Landroid/os/RemoteException;
+    iget-object v1, p0, Lcom/android/server/policy/keyguard/KeyguardServiceWrapper;->TAG:Ljava/lang/String;
 
-    const-string v0, "Remote Exception"
+    const-string v2, "Remote Exception"
 
-    invoke-static {p2, v0, p1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    invoke-static {v1, v2, v0}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
     .line 65
+    .end local v0  # "e":Landroid/os/RemoteException;
     :goto_e
     return-void
 .end method
 
 .method public setSwitchingUser(Z)V
-    .registers 4
+    .registers 5
+    .param p1, "switching"  # Z
 
     .line 205
     :try_start_0
@@ -723,22 +780,26 @@
 
     .line 206
     :catch_6
-    move-exception p1
+    move-exception v0
 
     .line 207
-    iget-object v0, p0, Lcom/android/server/policy/keyguard/KeyguardServiceWrapper;->TAG:Ljava/lang/String;
+    .local v0, "e":Landroid/os/RemoteException;
+    iget-object v1, p0, Lcom/android/server/policy/keyguard/KeyguardServiceWrapper;->TAG:Ljava/lang/String;
 
-    const-string v1, "Remote Exception"
+    const-string v2, "Remote Exception"
 
-    invoke-static {v0, v1, p1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    invoke-static {v1, v2, v0}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
     .line 209
+    .end local v0  # "e":Landroid/os/RemoteException;
     :goto_e
     return-void
 .end method
 
 .method public startKeyguardExitAnimation(JJ)V
-    .registers 6
+    .registers 8
+    .param p1, "startTime"  # J
+    .param p3, "fadeoutDuration"  # J
 
     .line 233
     :try_start_0
@@ -753,22 +814,25 @@
 
     .line 234
     :catch_6
-    move-exception p1
+    move-exception v0
 
     .line 235
-    iget-object p2, p0, Lcom/android/server/policy/keyguard/KeyguardServiceWrapper;->TAG:Ljava/lang/String;
+    .local v0, "e":Landroid/os/RemoteException;
+    iget-object v1, p0, Lcom/android/server/policy/keyguard/KeyguardServiceWrapper;->TAG:Ljava/lang/String;
 
-    const-string p3, "Remote Exception"
+    const-string v2, "Remote Exception"
 
-    invoke-static {p2, p3, p1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    invoke-static {v1, v2, v0}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
     .line 237
+    .end local v0  # "e":Landroid/os/RemoteException;
     :goto_e
     return-void
 .end method
 
 .method public verifyUnlock(Lcom/android/internal/policy/IKeyguardExitCallback;)V
-    .registers 4
+    .registers 5
+    .param p1, "callback"  # Lcom/android/internal/policy/IKeyguardExitCallback;
 
     .line 52
     :try_start_0
@@ -783,16 +847,18 @@
 
     .line 53
     :catch_6
-    move-exception p1
+    move-exception v0
 
     .line 54
-    iget-object v0, p0, Lcom/android/server/policy/keyguard/KeyguardServiceWrapper;->TAG:Ljava/lang/String;
+    .local v0, "e":Landroid/os/RemoteException;
+    iget-object v1, p0, Lcom/android/server/policy/keyguard/KeyguardServiceWrapper;->TAG:Ljava/lang/String;
 
-    const-string v1, "Remote Exception"
+    const-string v2, "Remote Exception"
 
-    invoke-static {v0, v1, p1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    invoke-static {v1, v2, v0}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
     .line 56
+    .end local v0  # "e":Landroid/os/RemoteException;
     :goto_e
     return-void
 .end method

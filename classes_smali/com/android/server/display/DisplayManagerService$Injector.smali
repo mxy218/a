@@ -21,7 +21,7 @@
 .method constructor <init>()V
     .registers 1
 
-    .line 1592
+    .line 1615
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
     return-void
@@ -32,7 +32,7 @@
 .method getDefaultDisplayDelayTimeout()J
     .registers 3
 
-    .line 1599
+    .line 1622
     const-wide/16 v0, 0x2710
 
     return-wide v0
@@ -40,8 +40,12 @@
 
 .method getVirtualDisplayAdapter(Lcom/android/server/display/DisplayManagerService$SyncRoot;Landroid/content/Context;Landroid/os/Handler;Lcom/android/server/display/DisplayAdapter$Listener;)Lcom/android/server/display/VirtualDisplayAdapter;
     .registers 6
+    .param p1, "syncRoot"  # Lcom/android/server/display/DisplayManagerService$SyncRoot;
+    .param p2, "context"  # Landroid/content/Context;
+    .param p3, "handler"  # Landroid/os/Handler;
+    .param p4, "displayAdapterListener"  # Lcom/android/server/display/DisplayAdapter$Listener;
 
-    .line 1595
+    .line 1618
     new-instance v0, Lcom/android/server/display/VirtualDisplayAdapter;
 
     invoke-direct {v0, p1, p2, p3, p4}, Lcom/android/server/display/VirtualDisplayAdapter;-><init>(Lcom/android/server/display/DisplayManagerService$SyncRoot;Landroid/content/Context;Landroid/os/Handler;Lcom/android/server/display/DisplayAdapter$Listener;)V

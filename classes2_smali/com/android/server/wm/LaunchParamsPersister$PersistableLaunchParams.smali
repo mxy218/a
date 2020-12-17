@@ -53,6 +53,8 @@
 
 .method synthetic constructor <init>(Lcom/android/server/wm/LaunchParamsPersister;Lcom/android/server/wm/LaunchParamsPersister$1;)V
     .registers 3
+    .param p1, "x0"  # Lcom/android/server/wm/LaunchParamsPersister;
+    .param p2, "x1"  # Lcom/android/server/wm/LaunchParamsPersister$1;
 
     .line 407
     invoke-direct {p0, p1}, Lcom/android/server/wm/LaunchParamsPersister$PersistableLaunchParams;-><init>(Lcom/android/server/wm/LaunchParamsPersister;)V
@@ -63,149 +65,155 @@
 
 # virtual methods
 .method restoreFromXml(Lorg/xmlpull/v1/XmlPullParser;)V
-    .registers 11
+    .registers 10
+    .param p1, "parser"  # Lorg/xmlpull/v1/XmlPullParser;
 
     .line 429
     const/4 v0, 0x0
 
-    move v1, v0
-
-    :goto_2
+    .local v0, "i":I
+    :goto_1
     invoke-interface {p1}, Lorg/xmlpull/v1/XmlPullParser;->getAttributeCount()I
 
-    move-result v2
+    move-result v1
 
-    if-ge v1, v2, :cond_64
+    if-ge v0, v1, :cond_63
 
     .line 430
-    invoke-interface {p1, v1}, Lorg/xmlpull/v1/XmlPullParser;->getAttributeValue(I)Ljava/lang/String;
+    invoke-interface {p1, v0}, Lorg/xmlpull/v1/XmlPullParser;->getAttributeValue(I)Ljava/lang/String;
+
+    move-result-object v1
+
+    .line 431
+    .local v1, "attrValue":Ljava/lang/String;
+    invoke-interface {p1, v0}, Lorg/xmlpull/v1/XmlPullParser;->getAttributeName(I)Ljava/lang/String;
 
     move-result-object v2
 
-    .line 431
-    invoke-interface {p1, v1}, Lorg/xmlpull/v1/XmlPullParser;->getAttributeName(I)Ljava/lang/String;
+    const/4 v3, -0x1
 
-    move-result-object v3
+    invoke-virtual {v2}, Ljava/lang/String;->hashCode()I
 
-    const/4 v4, -0x1
+    move-result v4
 
-    invoke-virtual {v3}, Ljava/lang/String;->hashCode()I
+    const v5, -0x595e6ef4
 
-    move-result v5
+    const/4 v6, 0x2
 
-    const v6, -0x595e6ef4
+    const/4 v7, 0x1
 
-    const/4 v7, 0x2
+    if-eq v4, v5, :cond_3a
 
-    const/4 v8, 0x1
+    const v5, -0x5272094b
 
-    if-eq v5, v6, :cond_3b
+    if-eq v4, v5, :cond_30
 
-    const v6, -0x5272094b
+    const v5, 0x2ca2e3d0
 
-    if-eq v5, v6, :cond_31
+    if-eq v4, v5, :cond_26
 
-    const v6, 0x2ca2e3d0
-
-    if-eq v5, v6, :cond_27
+    :cond_25
+    goto :goto_43
 
     :cond_26
-    goto :goto_44
+    const-string v4, "windowing_mode"
 
-    :cond_27
-    const-string v5, "windowing_mode"
+    invoke-virtual {v2, v4}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    invoke-virtual {v3, v5}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    move-result v2
 
-    move-result v3
+    if-eqz v2, :cond_25
 
-    if-eqz v3, :cond_26
+    move v3, v7
 
-    move v4, v8
+    goto :goto_43
 
-    goto :goto_44
+    :cond_30
+    const-string v4, "bounds"
 
-    :cond_31
-    const-string v5, "bounds"
+    invoke-virtual {v2, v4}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    invoke-virtual {v3, v5}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    move-result v2
 
-    move-result v3
+    if-eqz v2, :cond_25
 
-    if-eqz v3, :cond_26
+    move v3, v6
 
-    move v4, v7
+    goto :goto_43
 
-    goto :goto_44
+    :cond_3a
+    const-string v4, "display_unique_id"
 
-    :cond_3b
-    const-string v5, "display_unique_id"
+    invoke-virtual {v2, v4}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    invoke-virtual {v3, v5}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    move-result v2
 
-    move-result v3
+    if-eqz v2, :cond_25
 
-    if-eqz v3, :cond_26
+    const/4 v3, 0x0
 
-    move v4, v0
+    :goto_43
+    if-eqz v3, :cond_5d
 
-    :goto_44
-    if-eqz v4, :cond_5e
+    if-eq v3, v7, :cond_56
 
-    if-eq v4, v8, :cond_57
+    if-eq v3, v6, :cond_4a
 
-    if-eq v4, v7, :cond_4b
-
-    goto :goto_61
+    goto :goto_60
 
     .line 439
-    :cond_4b
-    invoke-static {v2}, Landroid/graphics/Rect;->unflattenFromString(Ljava/lang/String;)Landroid/graphics/Rect;
+    :cond_4a
+    invoke-static {v1}, Landroid/graphics/Rect;->unflattenFromString(Ljava/lang/String;)Landroid/graphics/Rect;
 
     move-result-object v2
 
     .line 440
-    if-eqz v2, :cond_61
+    .local v2, "bounds":Landroid/graphics/Rect;
+    if-eqz v2, :cond_60
 
     .line 441
     iget-object v3, p0, Lcom/android/server/wm/LaunchParamsPersister$PersistableLaunchParams;->mBounds:Landroid/graphics/Rect;
 
     invoke-virtual {v3, v2}, Landroid/graphics/Rect;->set(Landroid/graphics/Rect;)V
 
-    goto :goto_61
+    goto :goto_60
 
     .line 436
-    :cond_57
-    invoke-static {v2}, Ljava/lang/Integer;->parseInt(Ljava/lang/String;)I
+    .end local v2  # "bounds":Landroid/graphics/Rect;
+    :cond_56
+    invoke-static {v1}, Ljava/lang/Integer;->parseInt(Ljava/lang/String;)I
 
     move-result v2
 
     iput v2, p0, Lcom/android/server/wm/LaunchParamsPersister$PersistableLaunchParams;->mWindowingMode:I
 
     .line 437
-    goto :goto_61
+    goto :goto_60
 
     .line 433
-    :cond_5e
-    iput-object v2, p0, Lcom/android/server/wm/LaunchParamsPersister$PersistableLaunchParams;->mDisplayUniqueId:Ljava/lang/String;
+    :cond_5d
+    iput-object v1, p0, Lcom/android/server/wm/LaunchParamsPersister$PersistableLaunchParams;->mDisplayUniqueId:Ljava/lang/String;
 
     .line 434
     nop
 
     .line 429
-    :cond_61
-    :goto_61
-    add-int/lit8 v1, v1, 0x1
+    .end local v1  # "attrValue":Ljava/lang/String;
+    :cond_60
+    :goto_60
+    add-int/lit8 v0, v0, 0x1
 
-    goto :goto_2
+    goto :goto_1
 
     .line 447
-    :cond_64
+    .end local v0  # "i":I
+    :cond_63
     return-void
 .end method
 
 .method saveToXml(Lorg/xmlpull/v1/XmlSerializer;)V
     .registers 5
+    .param p1, "serializer"  # Lorg/xmlpull/v1/XmlSerializer;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Ljava/io/IOException;
@@ -260,6 +268,7 @@
     invoke-direct {v0, v1}, Ljava/lang/StringBuilder;-><init>(Ljava/lang/String;)V
 
     .line 452
+    .local v0, "builder":Ljava/lang/StringBuilder;
     new-instance v1, Ljava/lang/StringBuilder;
 
     invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
@@ -324,7 +333,7 @@
     .line 456
     invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v1
 
-    return-object v0
+    return-object v1
 .end method

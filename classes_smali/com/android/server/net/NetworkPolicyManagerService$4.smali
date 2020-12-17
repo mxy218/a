@@ -21,8 +21,9 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/net/NetworkPolicyManagerService;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/net/NetworkPolicyManagerService;
 
-    .line 921
+    .line 994
     iput-object p1, p0, Lcom/android/server/net/NetworkPolicyManagerService$4;->this$0:Lcom/android/server/net/NetworkPolicyManagerService;
 
     invoke-direct {p0}, Landroid/app/IUidObserver$Stub;-><init>()V
@@ -34,70 +35,80 @@
 # virtual methods
 .method public onUidActive(I)V
     .registers 2
+    .param p1, "uid"  # I
 
-    .line 932
+    .line 1005
     return-void
 .end method
 
 .method public onUidCachedChanged(IZ)V
     .registers 3
+    .param p1, "uid"  # I
+    .param p2, "cached"  # Z
 
-    .line 938
+    .line 1011
     return-void
 .end method
 
 .method public onUidGone(IZ)V
-    .registers 5
+    .registers 6
+    .param p1, "uid"  # I
+    .param p2, "disabled"  # Z
 
-    .line 928
-    iget-object p2, p0, Lcom/android/server/net/NetworkPolicyManagerService$4;->this$0:Lcom/android/server/net/NetworkPolicyManagerService;
+    .line 1001
+    iget-object v0, p0, Lcom/android/server/net/NetworkPolicyManagerService$4;->this$0:Lcom/android/server/net/NetworkPolicyManagerService;
 
-    iget-object p2, p2, Lcom/android/server/net/NetworkPolicyManagerService;->mUidEventHandler:Landroid/os/Handler;
+    iget-object v0, v0, Lcom/android/server/net/NetworkPolicyManagerService;->mUidEventHandler:Landroid/os/Handler;
 
-    const/16 v0, 0x65
+    const/16 v1, 0x65
 
-    const/4 v1, 0x0
+    const/4 v2, 0x0
 
-    invoke-virtual {p2, v0, p1, v1}, Landroid/os/Handler;->obtainMessage(III)Landroid/os/Message;
+    invoke-virtual {v0, v1, p1, v2}, Landroid/os/Handler;->obtainMessage(III)Landroid/os/Message;
 
-    move-result-object p1
+    move-result-object v0
 
-    invoke-virtual {p1}, Landroid/os/Message;->sendToTarget()V
+    invoke-virtual {v0}, Landroid/os/Message;->sendToTarget()V
 
-    .line 929
+    .line 1002
     return-void
 .end method
 
 .method public onUidIdle(IZ)V
     .registers 3
+    .param p1, "uid"  # I
+    .param p2, "disabled"  # Z
 
-    .line 935
+    .line 1008
     return-void
 .end method
 
 .method public onUidStateChanged(IIJ)V
-    .registers 6
+    .registers 8
+    .param p1, "uid"  # I
+    .param p2, "procState"  # I
+    .param p3, "procStateSeq"  # J
 
-    .line 923
+    .line 996
     iget-object v0, p0, Lcom/android/server/net/NetworkPolicyManagerService$4;->this$0:Lcom/android/server/net/NetworkPolicyManagerService;
 
     iget-object v0, v0, Lcom/android/server/net/NetworkPolicyManagerService;->mUidEventHandler:Landroid/os/Handler;
 
-    .line 924
+    .line 997
     invoke-static {p3, p4}, Ljava/lang/Long;->valueOf(J)Ljava/lang/Long;
 
-    move-result-object p3
+    move-result-object v1
 
-    .line 923
-    const/16 p4, 0x64
+    .line 996
+    const/16 v2, 0x64
 
-    invoke-virtual {v0, p4, p1, p2, p3}, Landroid/os/Handler;->obtainMessage(IIILjava/lang/Object;)Landroid/os/Message;
+    invoke-virtual {v0, v2, p1, p2, v1}, Landroid/os/Handler;->obtainMessage(IIILjava/lang/Object;)Landroid/os/Message;
 
-    move-result-object p1
+    move-result-object v0
 
-    .line 924
-    invoke-virtual {p1}, Landroid/os/Message;->sendToTarget()V
+    .line 997
+    invoke-virtual {v0}, Landroid/os/Message;->sendToTarget()V
 
-    .line 925
+    .line 998
     return-void
 .end method

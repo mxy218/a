@@ -12,6 +12,8 @@
 # direct methods
 .method constructor <init>(JJ)V
     .registers 8
+    .param p1, "start"  # J
+    .param p3, "end"  # J
 
     .line 27
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -64,6 +66,7 @@
 # virtual methods
 .method public equals(Ljava/lang/Object;)Z
     .registers 9
+    .param p1, "o"  # Ljava/lang/Object;
 
     .line 57
     const/4 v0, 0x1
@@ -86,36 +89,40 @@
 
     .line 64
     :cond_a
-    check-cast p1, Lcom/android/server/backup/encryption/chunking/ByteRange;
+    move-object v1, p1
+
+    check-cast v1, Lcom/android/server/backup/encryption/chunking/ByteRange;
 
     .line 65
+    .local v1, "byteRange":Lcom/android/server/backup/encryption/chunking/ByteRange;
     iget-wide v3, p0, Lcom/android/server/backup/encryption/chunking/ByteRange;->mEnd:J
 
-    iget-wide v5, p1, Lcom/android/server/backup/encryption/chunking/ByteRange;->mEnd:J
+    iget-wide v5, v1, Lcom/android/server/backup/encryption/chunking/ByteRange;->mEnd:J
 
-    cmp-long v1, v3, v5
+    cmp-long v3, v3, v5
 
-    if-nez v1, :cond_1d
+    if-nez v3, :cond_1e
 
     iget-wide v3, p0, Lcom/android/server/backup/encryption/chunking/ByteRange;->mStart:J
 
-    iget-wide v5, p1, Lcom/android/server/backup/encryption/chunking/ByteRange;->mStart:J
+    iget-wide v5, v1, Lcom/android/server/backup/encryption/chunking/ByteRange;->mStart:J
 
-    cmp-long p1, v3, v5
+    cmp-long v3, v3, v5
 
-    if-nez p1, :cond_1d
+    if-nez v3, :cond_1e
 
-    goto :goto_1e
+    goto :goto_1f
 
-    :cond_1d
+    :cond_1e
     move v0, v2
 
-    :goto_1e
+    :goto_1f
     return v0
 .end method
 
 .method extend(J)Lcom/android/server/backup/encryption/chunking/ByteRange;
     .registers 8
+    .param p1, "length"  # J
 
     .line 51
     const-wide/16 v0, 0x0
@@ -189,38 +196,43 @@
     .registers 8
 
     .line 70
-    nop
+    const/16 v0, 0x11
 
     .line 71
-    iget-wide v0, p0, Lcom/android/server/backup/encryption/chunking/ByteRange;->mStart:J
+    .local v0, "result":I
+    mul-int/lit8 v1, v0, 0x1f
 
-    const/16 v2, 0x20
+    iget-wide v2, p0, Lcom/android/server/backup/encryption/chunking/ByteRange;->mStart:J
 
-    ushr-long v3, v0, v2
+    const/16 v4, 0x20
 
-    xor-long/2addr v0, v3
+    ushr-long v5, v2, v4
 
-    long-to-int v0, v0
+    xor-long/2addr v2, v5
 
-    const/16 v1, 0x20f
+    long-to-int v2, v2
 
-    add-int/2addr v1, v0
+    add-int/2addr v1, v2
 
     .line 72
-    mul-int/lit8 v1, v1, 0x1f
+    .end local v0  # "result":I
+    .local v1, "result":I
+    mul-int/lit8 v0, v1, 0x1f
 
-    iget-wide v3, p0, Lcom/android/server/backup/encryption/chunking/ByteRange;->mEnd:J
+    iget-wide v2, p0, Lcom/android/server/backup/encryption/chunking/ByteRange;->mEnd:J
 
-    ushr-long v5, v3, v2
+    ushr-long v4, v2, v4
 
-    xor-long v2, v3, v5
+    xor-long/2addr v2, v4
 
-    long-to-int v0, v2
+    long-to-int v2, v2
 
-    add-int/2addr v1, v0
+    add-int/2addr v0, v2
 
     .line 73
-    return v1
+    .end local v1  # "result":I
+    .restart local v0  # "result":I
+    return v0
 .end method
 
 .method public toString()Ljava/lang/String;

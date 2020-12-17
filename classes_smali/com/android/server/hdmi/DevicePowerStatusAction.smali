@@ -25,17 +25,20 @@
 
 # direct methods
 .method private constructor <init>(Lcom/android/server/hdmi/HdmiCecLocalDevice;ILandroid/hardware/hdmi/IHdmiControlCallback;)V
-    .registers 4
+    .registers 5
+    .param p1, "localDevice"  # Lcom/android/server/hdmi/HdmiCecLocalDevice;
+    .param p2, "targetAddress"  # I
+    .param p3, "callback"  # Landroid/hardware/hdmi/IHdmiControlCallback;
 
     .line 56
     invoke-direct {p0, p1}, Lcom/android/server/hdmi/HdmiCecFeatureAction;-><init>(Lcom/android/server/hdmi/HdmiCecLocalDevice;)V
 
     .line 43
-    new-instance p1, Ljava/util/ArrayList;
+    new-instance v0, Ljava/util/ArrayList;
 
-    invoke-direct {p1}, Ljava/util/ArrayList;-><init>()V
+    invoke-direct {v0}, Ljava/util/ArrayList;-><init>()V
 
-    iput-object p1, p0, Lcom/android/server/hdmi/DevicePowerStatusAction;->mCallbacks:Ljava/util/List;
+    iput-object v0, p0, Lcom/android/server/hdmi/DevicePowerStatusAction;->mCallbacks:Ljava/util/List;
 
     .line 57
     iput p2, p0, Lcom/android/server/hdmi/DevicePowerStatusAction;->mTargetAddress:I
@@ -48,7 +51,10 @@
 .end method
 
 .method static create(Lcom/android/server/hdmi/HdmiCecLocalDevice;ILandroid/hardware/hdmi/IHdmiControlCallback;)Lcom/android/server/hdmi/DevicePowerStatusAction;
-    .registers 4
+    .registers 5
+    .param p0, "source"  # Lcom/android/server/hdmi/HdmiCecLocalDevice;
+    .param p1, "targetAddress"  # I
+    .param p2, "callback"  # Landroid/hardware/hdmi/IHdmiControlCallback;
 
     .line 47
     if-eqz p0, :cond_b
@@ -68,20 +74,21 @@
     .line 48
     :cond_b
     :goto_b
-    const-string p0, "DevicePowerStatusAction"
+    const-string v0, "DevicePowerStatusAction"
 
-    const-string p1, "Wrong arguments"
+    const-string v1, "Wrong arguments"
 
-    invoke-static {p0, p1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v0, v1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 49
-    const/4 p0, 0x0
+    const/4 v0, 0x0
 
-    return-object p0
+    return-object v0
 .end method
 
 .method private invokeCallback(I)V
-    .registers 4
+    .registers 5
+    .param p1, "result"  # I
 
     .line 107
     :try_start_0
@@ -105,11 +112,13 @@
     check-cast v1, Landroid/hardware/hdmi/IHdmiControlCallback;
 
     .line 108
+    .local v1, "callback":Landroid/hardware/hdmi/IHdmiControlCallback;
     invoke-interface {v1, p1}, Landroid/hardware/hdmi/IHdmiControlCallback;->onComplete(I)V
     :try_end_15
     .catch Landroid/os/RemoteException; {:try_start_0 .. :try_end_15} :catch_17
 
     .line 109
+    .end local v1  # "callback":Landroid/hardware/hdmi/IHdmiControlCallback;
     goto :goto_6
 
     .line 112
@@ -118,28 +127,30 @@
 
     .line 110
     :catch_17
-    move-exception p1
+    move-exception v0
 
     .line 111
-    new-instance v0, Ljava/lang/StringBuilder;
+    .local v0, "e":Landroid/os/RemoteException;
+    new-instance v1, Ljava/lang/StringBuilder;
 
-    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v1, "Callback failed:"
+    const-string v2, "Callback failed:"
 
-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v1
 
-    const-string v0, "DevicePowerStatusAction"
+    const-string v2, "DevicePowerStatusAction"
 
-    invoke-static {v0, p1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v2, v1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 113
+    .end local v0  # "e":Landroid/os/RemoteException;
     :goto_2e
     return-void
 .end method
@@ -168,6 +179,7 @@
 # virtual methods
 .method public addCallback(Landroid/hardware/hdmi/IHdmiControlCallback;)V
     .registers 3
+    .param p1, "callback"  # Landroid/hardware/hdmi/IHdmiControlCallback;
 
     .line 102
     iget-object v0, p0, Lcom/android/server/hdmi/DevicePowerStatusAction;->mCallbacks:Ljava/util/List;
@@ -180,6 +192,7 @@
 
 .method handleTimerEvent(I)V
     .registers 3
+    .param p1, "state"  # I
 
     .line 91
     iget v0, p0, Lcom/android/server/hdmi/DevicePowerStatusAction;->mState:I
@@ -196,9 +209,9 @@
     if-ne p1, v0, :cond_f
 
     .line 96
-    const/4 p1, -0x1
+    const/4 v0, -0x1
 
-    invoke-direct {p0, p1}, Lcom/android/server/hdmi/DevicePowerStatusAction;->invokeCallback(I)V
+    invoke-direct {p0, v0}, Lcom/android/server/hdmi/DevicePowerStatusAction;->invokeCallback(I)V
 
     .line 97
     invoke-virtual {p0}, Lcom/android/server/hdmi/DevicePowerStatusAction;->finish()V
@@ -210,6 +223,7 @@
 
 .method processCommand(Lcom/android/server/hdmi/HdmiCecMessage;)Z
     .registers 6
+    .param p1, "cmd"  # Lcom/android/server/hdmi/HdmiCecMessage;
 
     .line 76
     iget v0, p0, Lcom/android/server/hdmi/DevicePowerStatusAction;->mState:I
@@ -244,12 +258,13 @@
     .line 81
     invoke-virtual {p1}, Lcom/android/server/hdmi/HdmiCecMessage;->getParams()[B
 
-    move-result-object p1
+    move-result-object v0
 
-    aget-byte p1, p1, v2
+    aget-byte v0, v0, v2
 
     .line 82
-    invoke-direct {p0, p1}, Lcom/android/server/hdmi/DevicePowerStatusAction;->invokeCallback(I)V
+    .local v0, "status":I
+    invoke-direct {p0, v0}, Lcom/android/server/hdmi/DevicePowerStatusAction;->invokeCallback(I)V
 
     .line 83
     invoke-virtual {p0}, Lcom/android/server/hdmi/DevicePowerStatusAction;->finish()V
@@ -258,6 +273,7 @@
     return v1
 
     .line 86
+    .end local v0  # "status":I
     :cond_24
     return v2
 

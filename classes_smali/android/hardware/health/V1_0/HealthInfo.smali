@@ -56,6 +56,7 @@
 
 .method public static final readVectorFromParcel(Landroid/os/HwParcel;)Ljava/util/ArrayList;
     .registers 13
+    .param p0, "parcel"  # Landroid/os/HwParcel;
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(",
@@ -73,6 +74,7 @@
     invoke-direct {v0}, Ljava/util/ArrayList;-><init>()V
 
     .line 199
+    .local v0, "_hidl_vec":Ljava/util/ArrayList;, "Ljava/util/ArrayList<Landroid/hardware/health/V1_0/HealthInfo;>;"
     const-wide/16 v1, 0x10
 
     invoke-virtual {p0, v1, v2}, Landroid/os/HwParcel;->readBuffer(J)Landroid/os/HwBlob;
@@ -80,6 +82,7 @@
     move-result-object v1
 
     .line 202
+    .local v1, "_hidl_blob":Landroid/os/HwBlob;
     const-wide/16 v2, 0x8
 
     invoke-virtual {v1, v2, v3}, Landroid/os/HwBlob;->getInt32(J)I
@@ -87,6 +90,7 @@
     move-result v2
 
     .line 203
+    .local v2, "_hidl_vec_size":I
     mul-int/lit8 v3, v2, 0x48
 
     int-to-long v5, v3
@@ -105,44 +109,52 @@
 
     invoke-virtual/range {v4 .. v11}, Landroid/os/HwParcel;->readEmbeddedBuffer(JJJZ)Landroid/os/HwBlob;
 
-    move-result-object v1
+    move-result-object v3
 
     .line 207
+    .local v3, "childBlob":Landroid/os/HwBlob;
     invoke-virtual {v0}, Ljava/util/ArrayList;->clear()V
 
     .line 208
-    const/4 v3, 0x0
+    const/4 v4, 0x0
 
+    .local v4, "_hidl_index_0":I
     :goto_24
-    if-ge v3, v2, :cond_37
+    if-ge v4, v2, :cond_37
 
     .line 209
-    new-instance v4, Landroid/hardware/health/V1_0/HealthInfo;
+    new-instance v5, Landroid/hardware/health/V1_0/HealthInfo;
 
-    invoke-direct {v4}, Landroid/hardware/health/V1_0/HealthInfo;-><init>()V
+    invoke-direct {v5}, Landroid/hardware/health/V1_0/HealthInfo;-><init>()V
 
     .line 210
-    mul-int/lit8 v5, v3, 0x48
+    .local v5, "_hidl_vec_element":Landroid/hardware/health/V1_0/HealthInfo;
+    mul-int/lit8 v6, v4, 0x48
 
-    int-to-long v5, v5
+    int-to-long v6, v6
 
-    invoke-virtual {v4, p0, v1, v5, v6}, Landroid/hardware/health/V1_0/HealthInfo;->readEmbeddedFromParcel(Landroid/os/HwParcel;Landroid/os/HwBlob;J)V
+    invoke-virtual {v5, p0, v3, v6, v7}, Landroid/hardware/health/V1_0/HealthInfo;->readEmbeddedFromParcel(Landroid/os/HwParcel;Landroid/os/HwBlob;J)V
 
     .line 211
-    invoke-virtual {v0, v4}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
+    invoke-virtual {v0, v5}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
 
     .line 208
-    add-int/lit8 v3, v3, 0x1
+    .end local v5  # "_hidl_vec_element":Landroid/hardware/health/V1_0/HealthInfo;
+    add-int/lit8 v4, v4, 0x1
 
     goto :goto_24
 
     .line 215
+    .end local v2  # "_hidl_vec_size":I
+    .end local v3  # "childBlob":Landroid/os/HwBlob;
+    .end local v4  # "_hidl_index_0":I
     :cond_37
     return-object v0
 .end method
 
 .method public static final writeVectorToParcel(Landroid/os/HwParcel;Ljava/util/ArrayList;)V
     .registers 9
+    .param p0, "parcel"  # Landroid/os/HwParcel;
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(",
@@ -154,6 +166,7 @@
     .end annotation
 
     .line 252
+    .local p1, "_hidl_vec":Ljava/util/ArrayList;, "Ljava/util/ArrayList<Landroid/hardware/health/V1_0/HealthInfo;>;"
     new-instance v0, Landroid/os/HwBlob;
 
     const/16 v1, 0x10
@@ -161,60 +174,67 @@
     invoke-direct {v0, v1}, Landroid/os/HwBlob;-><init>(I)V
 
     .line 254
+    .local v0, "_hidl_blob":Landroid/os/HwBlob;
     invoke-virtual {p1}, Ljava/util/ArrayList;->size()I
 
     move-result v1
 
     .line 255
+    .local v1, "_hidl_vec_size":I
     const-wide/16 v2, 0x8
 
     invoke-virtual {v0, v2, v3, v1}, Landroid/os/HwBlob;->putInt32(JI)V
 
     .line 256
-    const/4 v2, 0x0
+    const-wide/16 v2, 0xc
 
-    const-wide/16 v3, 0xc
+    const/4 v4, 0x0
 
-    invoke-virtual {v0, v3, v4, v2}, Landroid/os/HwBlob;->putBool(JZ)V
+    invoke-virtual {v0, v2, v3, v4}, Landroid/os/HwBlob;->putBool(JZ)V
 
     .line 257
-    new-instance v3, Landroid/os/HwBlob;
+    new-instance v2, Landroid/os/HwBlob;
 
-    mul-int/lit8 v4, v1, 0x48
+    mul-int/lit8 v3, v1, 0x48
 
-    invoke-direct {v3, v4}, Landroid/os/HwBlob;-><init>(I)V
+    invoke-direct {v2, v3}, Landroid/os/HwBlob;-><init>(I)V
 
     .line 258
-    nop
+    .local v2, "childBlob":Landroid/os/HwBlob;
+    const/4 v3, 0x0
 
+    .local v3, "_hidl_index_0":I
     :goto_1e
-    if-ge v2, v1, :cond_2f
+    if-ge v3, v1, :cond_2f
 
     .line 259
-    invoke-virtual {p1, v2}, Ljava/util/ArrayList;->get(I)Ljava/lang/Object;
+    invoke-virtual {p1, v3}, Ljava/util/ArrayList;->get(I)Ljava/lang/Object;
 
     move-result-object v4
 
     check-cast v4, Landroid/hardware/health/V1_0/HealthInfo;
 
-    mul-int/lit8 v5, v2, 0x48
+    mul-int/lit8 v5, v3, 0x48
 
     int-to-long v5, v5
 
-    invoke-virtual {v4, v3, v5, v6}, Landroid/hardware/health/V1_0/HealthInfo;->writeEmbeddedToBlob(Landroid/os/HwBlob;J)V
+    invoke-virtual {v4, v2, v5, v6}, Landroid/hardware/health/V1_0/HealthInfo;->writeEmbeddedToBlob(Landroid/os/HwBlob;J)V
 
     .line 258
-    add-int/lit8 v2, v2, 0x1
+    add-int/lit8 v3, v3, 0x1
 
     goto :goto_1e
 
     .line 261
+    .end local v3  # "_hidl_index_0":I
     :cond_2f
-    const-wide/16 v1, 0x0
+    const-wide/16 v3, 0x0
 
-    invoke-virtual {v0, v1, v2, v3}, Landroid/os/HwBlob;->putBlob(JLandroid/os/HwBlob;)V
+    invoke-virtual {v0, v3, v4, v2}, Landroid/os/HwBlob;->putBlob(JLandroid/os/HwBlob;)V
 
     .line 264
+    .end local v1  # "_hidl_vec_size":I
+    .end local v2  # "childBlob":Landroid/os/HwBlob;
     invoke-virtual {p0, v0}, Landroid/os/HwParcel;->writeBuffer(Landroid/os/HwBlob;)V
 
     .line 265
@@ -224,7 +244,8 @@
 
 # virtual methods
 .method public final equals(Ljava/lang/Object;)Z
-    .registers 6
+    .registers 7
+    .param p1, "otherObject"  # Ljava/lang/Object;
 
     .line 70
     const/4 v0, 0x1
@@ -258,189 +279,192 @@
 
     .line 79
     :cond_11
-    check-cast p1, Landroid/hardware/health/V1_0/HealthInfo;
+    move-object v2, p1
+
+    check-cast v2, Landroid/hardware/health/V1_0/HealthInfo;
 
     .line 80
-    iget-boolean v2, p0, Landroid/hardware/health/V1_0/HealthInfo;->chargerAcOnline:Z
+    .local v2, "other":Landroid/hardware/health/V1_0/HealthInfo;
+    iget-boolean v3, p0, Landroid/hardware/health/V1_0/HealthInfo;->chargerAcOnline:Z
 
-    iget-boolean v3, p1, Landroid/hardware/health/V1_0/HealthInfo;->chargerAcOnline:Z
+    iget-boolean v4, v2, Landroid/hardware/health/V1_0/HealthInfo;->chargerAcOnline:Z
 
-    if-eq v2, v3, :cond_1a
+    if-eq v3, v4, :cond_1b
 
     .line 81
     return v1
 
     .line 83
-    :cond_1a
-    iget-boolean v2, p0, Landroid/hardware/health/V1_0/HealthInfo;->chargerUsbOnline:Z
+    :cond_1b
+    iget-boolean v3, p0, Landroid/hardware/health/V1_0/HealthInfo;->chargerUsbOnline:Z
 
-    iget-boolean v3, p1, Landroid/hardware/health/V1_0/HealthInfo;->chargerUsbOnline:Z
+    iget-boolean v4, v2, Landroid/hardware/health/V1_0/HealthInfo;->chargerUsbOnline:Z
 
-    if-eq v2, v3, :cond_21
+    if-eq v3, v4, :cond_22
 
     .line 84
     return v1
 
     .line 86
-    :cond_21
-    iget-boolean v2, p0, Landroid/hardware/health/V1_0/HealthInfo;->chargerWirelessOnline:Z
+    :cond_22
+    iget-boolean v3, p0, Landroid/hardware/health/V1_0/HealthInfo;->chargerWirelessOnline:Z
 
-    iget-boolean v3, p1, Landroid/hardware/health/V1_0/HealthInfo;->chargerWirelessOnline:Z
+    iget-boolean v4, v2, Landroid/hardware/health/V1_0/HealthInfo;->chargerWirelessOnline:Z
 
-    if-eq v2, v3, :cond_28
+    if-eq v3, v4, :cond_29
 
     .line 87
     return v1
 
     .line 89
-    :cond_28
-    iget v2, p0, Landroid/hardware/health/V1_0/HealthInfo;->maxChargingCurrent:I
+    :cond_29
+    iget v3, p0, Landroid/hardware/health/V1_0/HealthInfo;->maxChargingCurrent:I
 
-    iget v3, p1, Landroid/hardware/health/V1_0/HealthInfo;->maxChargingCurrent:I
+    iget v4, v2, Landroid/hardware/health/V1_0/HealthInfo;->maxChargingCurrent:I
 
-    if-eq v2, v3, :cond_2f
+    if-eq v3, v4, :cond_30
 
     .line 90
     return v1
 
     .line 92
-    :cond_2f
-    iget v2, p0, Landroid/hardware/health/V1_0/HealthInfo;->maxChargingVoltage:I
+    :cond_30
+    iget v3, p0, Landroid/hardware/health/V1_0/HealthInfo;->maxChargingVoltage:I
 
-    iget v3, p1, Landroid/hardware/health/V1_0/HealthInfo;->maxChargingVoltage:I
+    iget v4, v2, Landroid/hardware/health/V1_0/HealthInfo;->maxChargingVoltage:I
 
-    if-eq v2, v3, :cond_36
+    if-eq v3, v4, :cond_37
 
     .line 93
     return v1
 
     .line 95
-    :cond_36
-    iget v2, p0, Landroid/hardware/health/V1_0/HealthInfo;->batteryStatus:I
+    :cond_37
+    iget v3, p0, Landroid/hardware/health/V1_0/HealthInfo;->batteryStatus:I
 
-    iget v3, p1, Landroid/hardware/health/V1_0/HealthInfo;->batteryStatus:I
+    iget v4, v2, Landroid/hardware/health/V1_0/HealthInfo;->batteryStatus:I
 
-    if-eq v2, v3, :cond_3d
+    if-eq v3, v4, :cond_3e
 
     .line 96
     return v1
 
     .line 98
-    :cond_3d
-    iget v2, p0, Landroid/hardware/health/V1_0/HealthInfo;->batteryHealth:I
+    :cond_3e
+    iget v3, p0, Landroid/hardware/health/V1_0/HealthInfo;->batteryHealth:I
 
-    iget v3, p1, Landroid/hardware/health/V1_0/HealthInfo;->batteryHealth:I
+    iget v4, v2, Landroid/hardware/health/V1_0/HealthInfo;->batteryHealth:I
 
-    if-eq v2, v3, :cond_44
+    if-eq v3, v4, :cond_45
 
     .line 99
     return v1
 
     .line 101
-    :cond_44
-    iget-boolean v2, p0, Landroid/hardware/health/V1_0/HealthInfo;->batteryPresent:Z
+    :cond_45
+    iget-boolean v3, p0, Landroid/hardware/health/V1_0/HealthInfo;->batteryPresent:Z
 
-    iget-boolean v3, p1, Landroid/hardware/health/V1_0/HealthInfo;->batteryPresent:Z
+    iget-boolean v4, v2, Landroid/hardware/health/V1_0/HealthInfo;->batteryPresent:Z
 
-    if-eq v2, v3, :cond_4b
+    if-eq v3, v4, :cond_4c
 
     .line 102
     return v1
 
     .line 104
-    :cond_4b
-    iget v2, p0, Landroid/hardware/health/V1_0/HealthInfo;->batteryLevel:I
+    :cond_4c
+    iget v3, p0, Landroid/hardware/health/V1_0/HealthInfo;->batteryLevel:I
 
-    iget v3, p1, Landroid/hardware/health/V1_0/HealthInfo;->batteryLevel:I
+    iget v4, v2, Landroid/hardware/health/V1_0/HealthInfo;->batteryLevel:I
 
-    if-eq v2, v3, :cond_52
+    if-eq v3, v4, :cond_53
 
     .line 105
     return v1
 
     .line 107
-    :cond_52
-    iget v2, p0, Landroid/hardware/health/V1_0/HealthInfo;->batteryVoltage:I
+    :cond_53
+    iget v3, p0, Landroid/hardware/health/V1_0/HealthInfo;->batteryVoltage:I
 
-    iget v3, p1, Landroid/hardware/health/V1_0/HealthInfo;->batteryVoltage:I
+    iget v4, v2, Landroid/hardware/health/V1_0/HealthInfo;->batteryVoltage:I
 
-    if-eq v2, v3, :cond_59
+    if-eq v3, v4, :cond_5a
 
     .line 108
     return v1
 
     .line 110
-    :cond_59
-    iget v2, p0, Landroid/hardware/health/V1_0/HealthInfo;->batteryTemperature:I
+    :cond_5a
+    iget v3, p0, Landroid/hardware/health/V1_0/HealthInfo;->batteryTemperature:I
 
-    iget v3, p1, Landroid/hardware/health/V1_0/HealthInfo;->batteryTemperature:I
+    iget v4, v2, Landroid/hardware/health/V1_0/HealthInfo;->batteryTemperature:I
 
-    if-eq v2, v3, :cond_60
+    if-eq v3, v4, :cond_61
 
     .line 111
     return v1
 
     .line 113
-    :cond_60
-    iget v2, p0, Landroid/hardware/health/V1_0/HealthInfo;->batteryCurrent:I
+    :cond_61
+    iget v3, p0, Landroid/hardware/health/V1_0/HealthInfo;->batteryCurrent:I
 
-    iget v3, p1, Landroid/hardware/health/V1_0/HealthInfo;->batteryCurrent:I
+    iget v4, v2, Landroid/hardware/health/V1_0/HealthInfo;->batteryCurrent:I
 
-    if-eq v2, v3, :cond_67
+    if-eq v3, v4, :cond_68
 
     .line 114
     return v1
 
     .line 116
-    :cond_67
-    iget v2, p0, Landroid/hardware/health/V1_0/HealthInfo;->batteryCycleCount:I
+    :cond_68
+    iget v3, p0, Landroid/hardware/health/V1_0/HealthInfo;->batteryCycleCount:I
 
-    iget v3, p1, Landroid/hardware/health/V1_0/HealthInfo;->batteryCycleCount:I
+    iget v4, v2, Landroid/hardware/health/V1_0/HealthInfo;->batteryCycleCount:I
 
-    if-eq v2, v3, :cond_6e
+    if-eq v3, v4, :cond_6f
 
     .line 117
     return v1
 
     .line 119
-    :cond_6e
-    iget v2, p0, Landroid/hardware/health/V1_0/HealthInfo;->batteryFullCharge:I
+    :cond_6f
+    iget v3, p0, Landroid/hardware/health/V1_0/HealthInfo;->batteryFullCharge:I
 
-    iget v3, p1, Landroid/hardware/health/V1_0/HealthInfo;->batteryFullCharge:I
+    iget v4, v2, Landroid/hardware/health/V1_0/HealthInfo;->batteryFullCharge:I
 
-    if-eq v2, v3, :cond_75
+    if-eq v3, v4, :cond_76
 
     .line 120
     return v1
 
     .line 122
-    :cond_75
-    iget v2, p0, Landroid/hardware/health/V1_0/HealthInfo;->batteryChargeCounter:I
+    :cond_76
+    iget v3, p0, Landroid/hardware/health/V1_0/HealthInfo;->batteryChargeCounter:I
 
-    iget v3, p1, Landroid/hardware/health/V1_0/HealthInfo;->batteryChargeCounter:I
+    iget v4, v2, Landroid/hardware/health/V1_0/HealthInfo;->batteryChargeCounter:I
 
-    if-eq v2, v3, :cond_7c
+    if-eq v3, v4, :cond_7d
 
     .line 123
     return v1
 
     .line 125
-    :cond_7c
-    iget-object v2, p0, Landroid/hardware/health/V1_0/HealthInfo;->batteryTechnology:Ljava/lang/String;
+    :cond_7d
+    iget-object v3, p0, Landroid/hardware/health/V1_0/HealthInfo;->batteryTechnology:Ljava/lang/String;
 
-    iget-object p1, p1, Landroid/hardware/health/V1_0/HealthInfo;->batteryTechnology:Ljava/lang/String;
+    iget-object v4, v2, Landroid/hardware/health/V1_0/HealthInfo;->batteryTechnology:Ljava/lang/String;
 
-    invoke-static {v2, p1}, Landroid/os/HidlSupport;->deepEquals(Ljava/lang/Object;Ljava/lang/Object;)Z
+    invoke-static {v3, v4}, Landroid/os/HidlSupport;->deepEquals(Ljava/lang/Object;Ljava/lang/Object;)Z
 
-    move-result p1
+    move-result v3
 
-    if-nez p1, :cond_87
+    if-nez v3, :cond_88
 
     .line 126
     return v1
 
     .line 128
-    :cond_87
+    :cond_88
     return v0
 .end method
 
@@ -761,211 +785,220 @@
 .end method
 
 .method public final readEmbeddedFromParcel(Landroid/os/HwParcel;Landroid/os/HwBlob;J)V
-    .registers 16
+    .registers 20
+    .param p1, "parcel"  # Landroid/os/HwParcel;
+    .param p2, "_hidl_blob"  # Landroid/os/HwBlob;
+    .param p3, "_hidl_offset"  # J
 
     .line 220
-    const-wide/16 v0, 0x0
+    move-object v0, p0
 
-    add-long v2, p3, v0
+    move-object/from16 v1, p2
 
-    invoke-virtual {p2, v2, v3}, Landroid/os/HwBlob;->getBool(J)Z
+    const-wide/16 v2, 0x0
 
-    move-result v2
+    add-long v4, p3, v2
 
-    iput-boolean v2, p0, Landroid/hardware/health/V1_0/HealthInfo;->chargerAcOnline:Z
+    invoke-virtual {v1, v4, v5}, Landroid/os/HwBlob;->getBool(J)Z
+
+    move-result v4
+
+    iput-boolean v4, v0, Landroid/hardware/health/V1_0/HealthInfo;->chargerAcOnline:Z
 
     .line 221
-    const-wide/16 v2, 0x1
+    const-wide/16 v4, 0x1
 
-    add-long/2addr v2, p3
+    add-long v4, p3, v4
 
-    invoke-virtual {p2, v2, v3}, Landroid/os/HwBlob;->getBool(J)Z
+    invoke-virtual {v1, v4, v5}, Landroid/os/HwBlob;->getBool(J)Z
 
-    move-result v2
+    move-result v4
 
-    iput-boolean v2, p0, Landroid/hardware/health/V1_0/HealthInfo;->chargerUsbOnline:Z
+    iput-boolean v4, v0, Landroid/hardware/health/V1_0/HealthInfo;->chargerUsbOnline:Z
 
     .line 222
-    const-wide/16 v2, 0x2
+    const-wide/16 v4, 0x2
 
-    add-long/2addr v2, p3
+    add-long v4, p3, v4
 
-    invoke-virtual {p2, v2, v3}, Landroid/os/HwBlob;->getBool(J)Z
+    invoke-virtual {v1, v4, v5}, Landroid/os/HwBlob;->getBool(J)Z
 
-    move-result v2
+    move-result v4
 
-    iput-boolean v2, p0, Landroid/hardware/health/V1_0/HealthInfo;->chargerWirelessOnline:Z
+    iput-boolean v4, v0, Landroid/hardware/health/V1_0/HealthInfo;->chargerWirelessOnline:Z
 
     .line 223
-    const-wide/16 v2, 0x4
+    const-wide/16 v4, 0x4
 
-    add-long/2addr v2, p3
+    add-long v4, p3, v4
 
-    invoke-virtual {p2, v2, v3}, Landroid/os/HwBlob;->getInt32(J)I
+    invoke-virtual {v1, v4, v5}, Landroid/os/HwBlob;->getInt32(J)I
 
-    move-result v2
+    move-result v4
 
-    iput v2, p0, Landroid/hardware/health/V1_0/HealthInfo;->maxChargingCurrent:I
+    iput v4, v0, Landroid/hardware/health/V1_0/HealthInfo;->maxChargingCurrent:I
 
     .line 224
-    const-wide/16 v2, 0x8
+    const-wide/16 v4, 0x8
 
-    add-long/2addr v2, p3
+    add-long v4, p3, v4
 
-    invoke-virtual {p2, v2, v3}, Landroid/os/HwBlob;->getInt32(J)I
+    invoke-virtual {v1, v4, v5}, Landroid/os/HwBlob;->getInt32(J)I
 
-    move-result v2
+    move-result v4
 
-    iput v2, p0, Landroid/hardware/health/V1_0/HealthInfo;->maxChargingVoltage:I
+    iput v4, v0, Landroid/hardware/health/V1_0/HealthInfo;->maxChargingVoltage:I
 
     .line 225
-    const-wide/16 v2, 0xc
+    const-wide/16 v4, 0xc
 
-    add-long/2addr v2, p3
+    add-long v4, p3, v4
 
-    invoke-virtual {p2, v2, v3}, Landroid/os/HwBlob;->getInt32(J)I
+    invoke-virtual {v1, v4, v5}, Landroid/os/HwBlob;->getInt32(J)I
 
-    move-result v2
+    move-result v4
 
-    iput v2, p0, Landroid/hardware/health/V1_0/HealthInfo;->batteryStatus:I
+    iput v4, v0, Landroid/hardware/health/V1_0/HealthInfo;->batteryStatus:I
 
     .line 226
-    const-wide/16 v2, 0x10
+    const-wide/16 v4, 0x10
 
-    add-long/2addr v2, p3
+    add-long v4, p3, v4
 
-    invoke-virtual {p2, v2, v3}, Landroid/os/HwBlob;->getInt32(J)I
+    invoke-virtual {v1, v4, v5}, Landroid/os/HwBlob;->getInt32(J)I
 
-    move-result v2
+    move-result v4
 
-    iput v2, p0, Landroid/hardware/health/V1_0/HealthInfo;->batteryHealth:I
+    iput v4, v0, Landroid/hardware/health/V1_0/HealthInfo;->batteryHealth:I
 
     .line 227
-    const-wide/16 v2, 0x14
+    const-wide/16 v4, 0x14
 
-    add-long/2addr v2, p3
+    add-long v4, p3, v4
 
-    invoke-virtual {p2, v2, v3}, Landroid/os/HwBlob;->getBool(J)Z
+    invoke-virtual {v1, v4, v5}, Landroid/os/HwBlob;->getBool(J)Z
 
-    move-result v2
+    move-result v4
 
-    iput-boolean v2, p0, Landroid/hardware/health/V1_0/HealthInfo;->batteryPresent:Z
+    iput-boolean v4, v0, Landroid/hardware/health/V1_0/HealthInfo;->batteryPresent:Z
 
     .line 228
-    const-wide/16 v2, 0x18
+    const-wide/16 v4, 0x18
 
-    add-long/2addr v2, p3
+    add-long v4, p3, v4
 
-    invoke-virtual {p2, v2, v3}, Landroid/os/HwBlob;->getInt32(J)I
+    invoke-virtual {v1, v4, v5}, Landroid/os/HwBlob;->getInt32(J)I
 
-    move-result v2
+    move-result v4
 
-    iput v2, p0, Landroid/hardware/health/V1_0/HealthInfo;->batteryLevel:I
+    iput v4, v0, Landroid/hardware/health/V1_0/HealthInfo;->batteryLevel:I
 
     .line 229
-    const-wide/16 v2, 0x1c
+    const-wide/16 v4, 0x1c
 
-    add-long/2addr v2, p3
+    add-long v4, p3, v4
 
-    invoke-virtual {p2, v2, v3}, Landroid/os/HwBlob;->getInt32(J)I
+    invoke-virtual {v1, v4, v5}, Landroid/os/HwBlob;->getInt32(J)I
 
-    move-result v2
+    move-result v4
 
-    iput v2, p0, Landroid/hardware/health/V1_0/HealthInfo;->batteryVoltage:I
+    iput v4, v0, Landroid/hardware/health/V1_0/HealthInfo;->batteryVoltage:I
 
     .line 230
-    const-wide/16 v2, 0x20
+    const-wide/16 v4, 0x20
 
-    add-long/2addr v2, p3
+    add-long v4, p3, v4
 
-    invoke-virtual {p2, v2, v3}, Landroid/os/HwBlob;->getInt32(J)I
+    invoke-virtual {v1, v4, v5}, Landroid/os/HwBlob;->getInt32(J)I
 
-    move-result v2
+    move-result v4
 
-    iput v2, p0, Landroid/hardware/health/V1_0/HealthInfo;->batteryTemperature:I
+    iput v4, v0, Landroid/hardware/health/V1_0/HealthInfo;->batteryTemperature:I
 
     .line 231
-    const-wide/16 v2, 0x24
+    const-wide/16 v4, 0x24
 
-    add-long/2addr v2, p3
+    add-long v4, p3, v4
 
-    invoke-virtual {p2, v2, v3}, Landroid/os/HwBlob;->getInt32(J)I
+    invoke-virtual {v1, v4, v5}, Landroid/os/HwBlob;->getInt32(J)I
 
-    move-result v2
+    move-result v4
 
-    iput v2, p0, Landroid/hardware/health/V1_0/HealthInfo;->batteryCurrent:I
+    iput v4, v0, Landroid/hardware/health/V1_0/HealthInfo;->batteryCurrent:I
 
     .line 232
-    const-wide/16 v2, 0x28
+    const-wide/16 v4, 0x28
 
-    add-long/2addr v2, p3
+    add-long v4, p3, v4
 
-    invoke-virtual {p2, v2, v3}, Landroid/os/HwBlob;->getInt32(J)I
+    invoke-virtual {v1, v4, v5}, Landroid/os/HwBlob;->getInt32(J)I
 
-    move-result v2
+    move-result v4
 
-    iput v2, p0, Landroid/hardware/health/V1_0/HealthInfo;->batteryCycleCount:I
+    iput v4, v0, Landroid/hardware/health/V1_0/HealthInfo;->batteryCycleCount:I
 
     .line 233
-    const-wide/16 v2, 0x2c
+    const-wide/16 v4, 0x2c
 
-    add-long/2addr v2, p3
+    add-long v4, p3, v4
 
-    invoke-virtual {p2, v2, v3}, Landroid/os/HwBlob;->getInt32(J)I
+    invoke-virtual {v1, v4, v5}, Landroid/os/HwBlob;->getInt32(J)I
 
-    move-result v2
+    move-result v4
 
-    iput v2, p0, Landroid/hardware/health/V1_0/HealthInfo;->batteryFullCharge:I
+    iput v4, v0, Landroid/hardware/health/V1_0/HealthInfo;->batteryFullCharge:I
 
     .line 234
-    const-wide/16 v2, 0x30
+    const-wide/16 v4, 0x30
 
-    add-long/2addr v2, p3
+    add-long v4, p3, v4
 
-    invoke-virtual {p2, v2, v3}, Landroid/os/HwBlob;->getInt32(J)I
+    invoke-virtual {v1, v4, v5}, Landroid/os/HwBlob;->getInt32(J)I
 
-    move-result v2
+    move-result v4
 
-    iput v2, p0, Landroid/hardware/health/V1_0/HealthInfo;->batteryChargeCounter:I
+    iput v4, v0, Landroid/hardware/health/V1_0/HealthInfo;->batteryChargeCounter:I
 
     .line 235
-    const-wide/16 v2, 0x38
+    const-wide/16 v4, 0x38
 
-    add-long/2addr p3, v2
+    add-long v6, p3, v4
 
-    invoke-virtual {p2, p3, p4}, Landroid/os/HwBlob;->getString(J)Ljava/lang/String;
+    invoke-virtual {v1, v6, v7}, Landroid/os/HwBlob;->getString(J)Ljava/lang/String;
 
-    move-result-object v2
+    move-result-object v6
 
-    iput-object v2, p0, Landroid/hardware/health/V1_0/HealthInfo;->batteryTechnology:Ljava/lang/String;
+    iput-object v6, v0, Landroid/hardware/health/V1_0/HealthInfo;->batteryTechnology:Ljava/lang/String;
 
     .line 237
-    iget-object v2, p0, Landroid/hardware/health/V1_0/HealthInfo;->batteryTechnology:Ljava/lang/String;
+    iget-object v6, v0, Landroid/hardware/health/V1_0/HealthInfo;->batteryTechnology:Ljava/lang/String;
 
     .line 238
-    invoke-virtual {v2}, Ljava/lang/String;->getBytes()[B
+    invoke-virtual {v6}, Ljava/lang/String;->getBytes()[B
 
-    move-result-object v2
+    move-result-object v6
 
-    array-length v2, v2
+    array-length v6, v6
 
-    add-int/lit8 v2, v2, 0x1
+    add-int/lit8 v6, v6, 0x1
 
-    int-to-long v4, v2
+    int-to-long v8, v6
 
     .line 239
-    invoke-virtual {p2}, Landroid/os/HwBlob;->handle()J
+    invoke-virtual/range {p2 .. p2}, Landroid/os/HwBlob;->handle()J
 
-    move-result-wide v6
+    move-result-wide v10
 
-    add-long v8, p3, v0
+    add-long v4, p3, v4
+
+    add-long v12, v4, v2
 
     .line 237
-    const/4 v10, 0x0
+    const/4 v14, 0x0
 
-    move-object v3, p1
+    move-object/from16 v7, p1
 
-    invoke-virtual/range {v3 .. v10}, Landroid/os/HwParcel;->readEmbeddedBuffer(JJJZ)Landroid/os/HwBlob;
+    invoke-virtual/range {v7 .. v14}, Landroid/os/HwParcel;->readEmbeddedBuffer(JJJZ)Landroid/os/HwBlob;
 
     .line 242
     return-void
@@ -973,6 +1006,7 @@
 
 .method public final readFromParcel(Landroid/os/HwParcel;)V
     .registers 5
+    .param p1, "parcel"  # Landroid/os/HwParcel;
 
     .line 193
     const-wide/16 v0, 0x48
@@ -982,6 +1016,7 @@
     move-result-object v0
 
     .line 194
+    .local v0, "blob":Landroid/os/HwBlob;
     const-wide/16 v1, 0x0
 
     invoke-virtual {p0, p1, v0, v1, v2}, Landroid/hardware/health/V1_0/HealthInfo;->readEmbeddedFromParcel(Landroid/os/HwParcel;Landroid/os/HwBlob;J)V
@@ -999,6 +1034,7 @@
     invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
 
     .line 155
+    .local v0, "builder":Ljava/lang/StringBuilder;
     const-string/jumbo v1, "{"
 
     invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
@@ -1179,13 +1215,15 @@
     .line 189
     invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v1
 
-    return-object v0
+    return-object v1
 .end method
 
 .method public final writeEmbeddedToBlob(Landroid/os/HwBlob;J)V
     .registers 7
+    .param p1, "_hidl_blob"  # Landroid/os/HwBlob;
+    .param p2, "_hidl_offset"  # J
 
     .line 269
     const-wide/16 v0, 0x0
@@ -1325,11 +1363,11 @@
     .line 284
     const-wide/16 v0, 0x38
 
-    add-long/2addr p2, v0
+    add-long/2addr v0, p2
 
-    iget-object v0, p0, Landroid/hardware/health/V1_0/HealthInfo;->batteryTechnology:Ljava/lang/String;
+    iget-object v2, p0, Landroid/hardware/health/V1_0/HealthInfo;->batteryTechnology:Ljava/lang/String;
 
-    invoke-virtual {p1, p2, p3, v0}, Landroid/os/HwBlob;->putString(JLjava/lang/String;)V
+    invoke-virtual {p1, v0, v1, v2}, Landroid/os/HwBlob;->putString(JLjava/lang/String;)V
 
     .line 285
     return-void
@@ -1337,6 +1375,7 @@
 
 .method public final writeToParcel(Landroid/os/HwParcel;)V
     .registers 5
+    .param p1, "parcel"  # Landroid/os/HwParcel;
 
     .line 245
     new-instance v0, Landroid/os/HwBlob;
@@ -1346,6 +1385,7 @@
     invoke-direct {v0, v1}, Landroid/os/HwBlob;-><init>(I)V
 
     .line 246
+    .local v0, "_hidl_blob":Landroid/os/HwBlob;
     const-wide/16 v1, 0x0
 
     invoke-virtual {p0, v0, v1, v2}, Landroid/hardware/health/V1_0/HealthInfo;->writeEmbeddedToBlob(Landroid/os/HwBlob;J)V

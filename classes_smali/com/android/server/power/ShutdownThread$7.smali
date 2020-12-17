@@ -25,8 +25,9 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/power/ShutdownThread;Landroid/os/RecoverySystem$ProgressListener;[Z)V
     .registers 4
+    .param p1, "this$0"  # Lcom/android/server/power/ShutdownThread;
 
-    .line 764
+    .line 852
     iput-object p1, p0, Lcom/android/server/power/ShutdownThread$7;->this$0:Lcom/android/server/power/ShutdownThread;
 
     iput-object p2, p0, Lcom/android/server/power/ShutdownThread$7;->val$progressListener:Landroid/os/RecoverySystem$ProgressListener;
@@ -41,9 +42,9 @@
 
 # virtual methods
 .method public run()V
-    .registers 5
+    .registers 7
 
-    .line 767
+    .line 855
     iget-object v0, p0, Lcom/android/server/power/ShutdownThread$7;->this$0:Lcom/android/server/power/ShutdownThread;
 
     invoke-static {v0}, Lcom/android/server/power/ShutdownThread;->access$1000(Lcom/android/server/power/ShutdownThread;)Landroid/content/Context;
@@ -58,60 +59,66 @@
 
     check-cast v0, Landroid/os/RecoverySystem;
 
-    .line 769
-    nop
+    .line 857
+    .local v0, "rs":Landroid/os/RecoverySystem;
+    const/4 v1, 0x0
 
-    .line 771
-    const/4 v0, 0x0
-
-    :try_start_11
-    sget-object v1, Landroid/os/RecoverySystem;->UNCRYPT_PACKAGE_FILE:Ljava/io/File;
-
+    .line 859
+    .local v1, "filename":Ljava/lang/String;
     const/4 v2, 0x0
 
-    invoke-static {v1, v0, v2}, Landroid/os/FileUtils;->readTextFile(Ljava/io/File;ILjava/lang/String;)Ljava/lang/String;
+    :try_start_11
+    sget-object v3, Landroid/os/RecoverySystem;->UNCRYPT_PACKAGE_FILE:Ljava/io/File;
 
-    move-result-object v1
+    const/4 v4, 0x0
 
-    .line 772
-    iget-object v2, p0, Lcom/android/server/power/ShutdownThread$7;->this$0:Lcom/android/server/power/ShutdownThread;
+    invoke-static {v3, v2, v4}, Landroid/os/FileUtils;->readTextFile(Ljava/io/File;ILjava/lang/String;)Ljava/lang/String;
 
-    invoke-static {v2}, Lcom/android/server/power/ShutdownThread;->access$1000(Lcom/android/server/power/ShutdownThread;)Landroid/content/Context;
+    move-result-object v3
 
-    move-result-object v2
+    move-object v1, v3
 
-    new-instance v3, Ljava/io/File;
+    .line 860
+    iget-object v3, p0, Lcom/android/server/power/ShutdownThread$7;->this$0:Lcom/android/server/power/ShutdownThread;
 
-    invoke-direct {v3, v1}, Ljava/io/File;-><init>(Ljava/lang/String;)V
+    invoke-static {v3}, Lcom/android/server/power/ShutdownThread;->access$1000(Lcom/android/server/power/ShutdownThread;)Landroid/content/Context;
 
-    iget-object v1, p0, Lcom/android/server/power/ShutdownThread$7;->val$progressListener:Landroid/os/RecoverySystem$ProgressListener;
+    move-result-object v3
 
-    invoke-static {v2, v3, v1}, Landroid/os/RecoverySystem;->processPackage(Landroid/content/Context;Ljava/io/File;Landroid/os/RecoverySystem$ProgressListener;)V
-    :try_end_28
-    .catch Ljava/io/IOException; {:try_start_11 .. :try_end_28} :catch_29
+    new-instance v4, Ljava/io/File;
 
-    .line 775
-    goto :goto_31
+    invoke-direct {v4, v1}, Ljava/io/File;-><init>(Ljava/lang/String;)V
 
-    .line 773
-    :catch_29
-    move-exception v1
+    iget-object v5, p0, Lcom/android/server/power/ShutdownThread$7;->val$progressListener:Landroid/os/RecoverySystem$ProgressListener;
 
-    .line 774
-    const-string v2, "ShutdownThread"
+    invoke-static {v3, v4, v5}, Landroid/os/RecoverySystem;->processPackage(Landroid/content/Context;Ljava/io/File;Landroid/os/RecoverySystem$ProgressListener;)V
+    :try_end_29
+    .catch Ljava/io/IOException; {:try_start_11 .. :try_end_29} :catch_2a
 
-    const-string v3, "Error uncrypting file"
+    .line 863
+    goto :goto_32
 
-    invoke-static {v2, v3, v1}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    .line 861
+    :catch_2a
+    move-exception v3
 
-    .line 776
-    :goto_31
-    iget-object v1, p0, Lcom/android/server/power/ShutdownThread$7;->val$done:[Z
+    .line 862
+    .local v3, "e":Ljava/io/IOException;
+    const-string v4, "ShutdownThread"
 
-    const/4 v2, 0x1
+    const-string v5, "Error uncrypting file"
 
-    aput-boolean v2, v1, v0
+    invoke-static {v4, v5, v3}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
-    .line 777
+    .line 864
+    .end local v3  # "e":Ljava/io/IOException;
+    :goto_32
+    iget-object v3, p0, Lcom/android/server/power/ShutdownThread$7;->val$done:[Z
+
+    const/4 v4, 0x1
+
+    aput-boolean v4, v3, v2
+
+    .line 865
     return-void
 .end method

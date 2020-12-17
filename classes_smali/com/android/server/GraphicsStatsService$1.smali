@@ -24,6 +24,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/GraphicsStatsService;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/GraphicsStatsService;
 
     .line 110
     iput-object p1, p0, Lcom/android/server/GraphicsStatsService$1;->this$0:Lcom/android/server/GraphicsStatsService;
@@ -36,7 +37,8 @@
 
 # virtual methods
 .method public handleMessage(Landroid/os/Message;)Z
-    .registers 4
+    .registers 5
+    .param p1, "msg"  # Landroid/os/Message;
 
     .line 113
     iget v0, p1, Landroid/os/Message;->what:I
@@ -45,17 +47,17 @@
 
     if-eq v0, v1, :cond_f
 
-    const/4 p1, 0x2
+    const/4 v2, 0x2
 
-    if-eq v0, p1, :cond_9
+    if-eq v0, v2, :cond_9
 
     goto :goto_19
 
     .line 118
     :cond_9
-    iget-object p1, p0, Lcom/android/server/GraphicsStatsService$1;->this$0:Lcom/android/server/GraphicsStatsService;
+    iget-object v0, p0, Lcom/android/server/GraphicsStatsService$1;->this$0:Lcom/android/server/GraphicsStatsService;
 
-    invoke-static {p1}, Lcom/android/server/GraphicsStatsService;->access$100(Lcom/android/server/GraphicsStatsService;)V
+    invoke-static {v0}, Lcom/android/server/GraphicsStatsService;->access$100(Lcom/android/server/GraphicsStatsService;)V
 
     goto :goto_19
 
@@ -63,11 +65,11 @@
     :cond_f
     iget-object v0, p0, Lcom/android/server/GraphicsStatsService$1;->this$0:Lcom/android/server/GraphicsStatsService;
 
-    iget-object p1, p1, Landroid/os/Message;->obj:Ljava/lang/Object;
+    iget-object v2, p1, Landroid/os/Message;->obj:Ljava/lang/Object;
 
-    check-cast p1, Lcom/android/server/GraphicsStatsService$HistoricalBuffer;
+    check-cast v2, Lcom/android/server/GraphicsStatsService$HistoricalBuffer;
 
-    invoke-static {v0, p1}, Lcom/android/server/GraphicsStatsService;->access$000(Lcom/android/server/GraphicsStatsService;Lcom/android/server/GraphicsStatsService$HistoricalBuffer;)V
+    invoke-static {v0, v2}, Lcom/android/server/GraphicsStatsService;->access$000(Lcom/android/server/GraphicsStatsService;Lcom/android/server/GraphicsStatsService$HistoricalBuffer;)V
 
     .line 116
     nop

@@ -30,7 +30,7 @@
 .method constructor <init>()V
     .registers 1
 
-    .line 846
+    .line 897
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
     return-void
@@ -39,44 +39,50 @@
 
 # virtual methods
 .method public compare(Lcom/android/server/AlarmManagerService$Batch;Lcom/android/server/AlarmManagerService$Batch;)I
-    .registers 5
+    .registers 8
+    .param p1, "b1"  # Lcom/android/server/AlarmManagerService$Batch;
+    .param p2, "b2"  # Lcom/android/server/AlarmManagerService$Batch;
 
-    .line 848
+    .line 899
     iget-wide v0, p1, Lcom/android/server/AlarmManagerService$Batch;->start:J
 
-    .line 849
-    iget-wide p1, p2, Lcom/android/server/AlarmManagerService$Batch;->start:J
+    .line 900
+    .local v0, "when1":J
+    iget-wide v2, p2, Lcom/android/server/AlarmManagerService$Batch;->start:J
 
-    .line 850
-    cmp-long p1, v0, p1
+    .line 901
+    .local v2, "when2":J
+    cmp-long v4, v0, v2
 
-    if-lez p1, :cond_a
+    if-lez v4, :cond_a
 
-    .line 851
-    const/4 p1, 0x1
+    .line 902
+    const/4 v4, 0x1
 
-    return p1
+    return v4
 
-    .line 853
+    .line 904
     :cond_a
-    if-gez p1, :cond_e
+    cmp-long v4, v0, v2
 
-    .line 854
-    const/4 p1, -0x1
+    if-gez v4, :cond_10
 
-    return p1
+    .line 905
+    const/4 v4, -0x1
 
-    .line 856
-    :cond_e
-    const/4 p1, 0x0
+    return v4
 
-    return p1
+    .line 907
+    :cond_10
+    const/4 v4, 0x0
+
+    return v4
 .end method
 
 .method public bridge synthetic compare(Ljava/lang/Object;Ljava/lang/Object;)I
     .registers 3
 
-    .line 846
+    .line 897
     check-cast p1, Lcom/android/server/AlarmManagerService$Batch;
 
     check-cast p2, Lcom/android/server/AlarmManagerService$Batch;

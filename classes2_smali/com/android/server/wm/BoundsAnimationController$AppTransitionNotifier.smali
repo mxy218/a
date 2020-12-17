@@ -35,6 +35,8 @@
 
 .method synthetic constructor <init>(Lcom/android/server/wm/BoundsAnimationController;Lcom/android/server/wm/BoundsAnimationController$1;)V
     .registers 3
+    .param p1, "x0"  # Lcom/android/server/wm/BoundsAnimationController;
+    .param p2, "x1"  # Lcom/android/server/wm/BoundsAnimationController$1;
 
     .line 86
     invoke-direct {p0, p1}, Lcom/android/server/wm/BoundsAnimationController$AppTransitionNotifier;-><init>(Lcom/android/server/wm/BoundsAnimationController;)V
@@ -48,7 +50,7 @@
     .line 100
     iget-object v0, p0, Lcom/android/server/wm/BoundsAnimationController$AppTransitionNotifier;->this$0:Lcom/android/server/wm/BoundsAnimationController;
 
-    invoke-static {v0}, Lcom/android/server/wm/BoundsAnimationController;->access$000(Lcom/android/server/wm/BoundsAnimationController;)Z
+    invoke-static {v0}, Lcom/android/server/wm/BoundsAnimationController;->access$100(Lcom/android/server/wm/BoundsAnimationController;)Z
 
     move-result v0
 
@@ -57,7 +59,7 @@
     .line 101
     iget-object v0, p0, Lcom/android/server/wm/BoundsAnimationController$AppTransitionNotifier;->this$0:Lcom/android/server/wm/BoundsAnimationController;
 
-    invoke-static {v0}, Lcom/android/server/wm/BoundsAnimationController;->access$100(Lcom/android/server/wm/BoundsAnimationController;)Landroid/os/Handler;
+    invoke-static {v0}, Lcom/android/server/wm/BoundsAnimationController;->access$200(Lcom/android/server/wm/BoundsAnimationController;)Landroid/os/Handler;
 
     move-result-object v0
 
@@ -66,7 +68,7 @@
     .line 105
     iget-object v0, p0, Lcom/android/server/wm/BoundsAnimationController$AppTransitionNotifier;->this$0:Lcom/android/server/wm/BoundsAnimationController;
 
-    invoke-static {v0}, Lcom/android/server/wm/BoundsAnimationController;->access$100(Lcom/android/server/wm/BoundsAnimationController;)Landroid/os/Handler;
+    invoke-static {v0}, Lcom/android/server/wm/BoundsAnimationController;->access$200(Lcom/android/server/wm/BoundsAnimationController;)Landroid/os/Handler;
 
     move-result-object v0
 
@@ -80,9 +82,43 @@
 
 # virtual methods
 .method public onAppTransitionCancelledLocked()V
-    .registers 1
+    .registers 3
+
+    .line 90
+    invoke-static {}, Lcom/android/server/wm/BoundsAnimationController;->access$000()Z
+
+    move-result v0
+
+    if-eqz v0, :cond_22
+
+    new-instance v0, Ljava/lang/StringBuilder;
+
+    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
+
+    const-string v1, "onAppTransitionCancelledLocked: mFinishAnimationAfterTransition="
+
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    iget-object v1, p0, Lcom/android/server/wm/BoundsAnimationController$AppTransitionNotifier;->this$0:Lcom/android/server/wm/BoundsAnimationController;
+
+    .line 91
+    invoke-static {v1}, Lcom/android/server/wm/BoundsAnimationController;->access$100(Lcom/android/server/wm/BoundsAnimationController;)Z
+
+    move-result v1
+
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Z)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v0
+
+    .line 90
+    const-string v1, "WindowManager"
+
+    invoke-static {v1, v0}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 92
+    :cond_22
     invoke-direct {p0}, Lcom/android/server/wm/BoundsAnimationController$AppTransitionNotifier;->animationFinished()V
 
     .line 93
@@ -90,9 +126,44 @@
 .end method
 
 .method public onAppTransitionFinishedLocked(Landroid/os/IBinder;)V
-    .registers 2
+    .registers 4
+    .param p1, "token"  # Landroid/os/IBinder;
+
+    .line 95
+    invoke-static {}, Lcom/android/server/wm/BoundsAnimationController;->access$000()Z
+
+    move-result v0
+
+    if-eqz v0, :cond_22
+
+    new-instance v0, Ljava/lang/StringBuilder;
+
+    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
+
+    const-string v1, "onAppTransitionFinishedLocked: mFinishAnimationAfterTransition="
+
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    iget-object v1, p0, Lcom/android/server/wm/BoundsAnimationController$AppTransitionNotifier;->this$0:Lcom/android/server/wm/BoundsAnimationController;
+
+    .line 96
+    invoke-static {v1}, Lcom/android/server/wm/BoundsAnimationController;->access$100(Lcom/android/server/wm/BoundsAnimationController;)Z
+
+    move-result v1
+
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Z)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v0
+
+    .line 95
+    const-string v1, "WindowManager"
+
+    invoke-static {v1, v0}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 97
+    :cond_22
     invoke-direct {p0}, Lcom/android/server/wm/BoundsAnimationController$AppTransitionNotifier;->animationFinished()V
 
     .line 98
@@ -105,10 +176,11 @@
     .line 111
     const/4 v0, 0x0
 
+    .local v0, "i":I
     :goto_1
     iget-object v1, p0, Lcom/android/server/wm/BoundsAnimationController$AppTransitionNotifier;->this$0:Lcom/android/server/wm/BoundsAnimationController;
 
-    invoke-static {v1}, Lcom/android/server/wm/BoundsAnimationController;->access$200(Lcom/android/server/wm/BoundsAnimationController;)Landroid/util/ArrayMap;
+    invoke-static {v1}, Lcom/android/server/wm/BoundsAnimationController;->access$300(Lcom/android/server/wm/BoundsAnimationController;)Landroid/util/ArrayMap;
 
     move-result-object v1
 
@@ -121,7 +193,7 @@
     .line 112
     iget-object v1, p0, Lcom/android/server/wm/BoundsAnimationController$AppTransitionNotifier;->this$0:Lcom/android/server/wm/BoundsAnimationController;
 
-    invoke-static {v1}, Lcom/android/server/wm/BoundsAnimationController;->access$200(Lcom/android/server/wm/BoundsAnimationController;)Landroid/util/ArrayMap;
+    invoke-static {v1}, Lcom/android/server/wm/BoundsAnimationController;->access$300(Lcom/android/server/wm/BoundsAnimationController;)Landroid/util/ArrayMap;
 
     move-result-object v1
 
@@ -132,16 +204,19 @@
     check-cast v1, Lcom/android/server/wm/BoundsAnimationController$BoundsAnimator;
 
     .line 113
+    .local v1, "b":Lcom/android/server/wm/BoundsAnimationController$BoundsAnimator;
     const/4 v2, 0x0
 
     invoke-virtual {v1, v2}, Lcom/android/server/wm/BoundsAnimationController$BoundsAnimator;->onAnimationEnd(Landroid/animation/Animator;)V
 
     .line 111
+    .end local v1  # "b":Lcom/android/server/wm/BoundsAnimationController$BoundsAnimator;
     add-int/lit8 v0, v0, 0x1
 
     goto :goto_1
 
     .line 115
+    .end local v0  # "i":I
     :cond_20
     return-void
 .end method

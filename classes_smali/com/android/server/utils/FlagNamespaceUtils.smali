@@ -50,7 +50,8 @@
 .end method
 
 .method public static addToKnownResetNamespaces(Ljava/lang/String;)V
-    .registers 4
+    .registers 5
+    .param p0, "namespace"  # Ljava/lang/String;
 
     .line 94
     invoke-static {}, Lcom/android/server/utils/FlagNamespaceUtils;->incrementAndRetrieveResetNamespacesFlagCounter()I
@@ -58,6 +59,7 @@
     move-result v0
 
     .line 95
+    .local v0, "nextFlagCounter":I
     new-instance v1, Ljava/lang/StringBuilder;
 
     invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
@@ -70,20 +72,20 @@
 
     invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v1
 
-    const-string/jumbo v1, "rescue_party_namespace"
+    const-string/jumbo v2, "rescue_party_namespace"
 
-    const/4 v2, 0x1
+    const/4 v3, 0x1
 
-    invoke-static {v1, v0, p0, v2}, Landroid/provider/DeviceConfig;->setProperty(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Z)Z
+    invoke-static {v2, v1, p0, v3}, Landroid/provider/DeviceConfig;->setProperty(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Z)Z
 
     .line 98
     return-void
 .end method
 
 .method public static addToKnownResetNamespaces(Ljava/util/List;)V
-    .registers 2
+    .registers 3
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(",
@@ -94,6 +96,7 @@
     .end annotation
 
     .line 79
+    .local p0, "namespacesList":Ljava/util/List;, "Ljava/util/List<Ljava/lang/String;>;"
     if-nez p0, :cond_3
 
     .line 80
@@ -103,25 +106,27 @@
     :cond_3
     invoke-interface {p0}, Ljava/util/List;->iterator()Ljava/util/Iterator;
 
-    move-result-object p0
-
-    :goto_7
-    invoke-interface {p0}, Ljava/util/Iterator;->hasNext()Z
-
-    move-result v0
-
-    if-eqz v0, :cond_17
-
-    invoke-interface {p0}, Ljava/util/Iterator;->next()Ljava/lang/Object;
-
     move-result-object v0
 
-    check-cast v0, Ljava/lang/String;
+    :goto_7
+    invoke-interface {v0}, Ljava/util/Iterator;->hasNext()Z
+
+    move-result v1
+
+    if-eqz v1, :cond_17
+
+    invoke-interface {v0}, Ljava/util/Iterator;->next()Ljava/lang/Object;
+
+    move-result-object v1
+
+    check-cast v1, Ljava/lang/String;
 
     .line 83
-    invoke-static {v0}, Lcom/android/server/utils/FlagNamespaceUtils;->addToKnownResetNamespaces(Ljava/lang/String;)V
+    .local v1, "namespace":Ljava/lang/String;
+    invoke-static {v1}, Lcom/android/server/utils/FlagNamespaceUtils;->addToKnownResetNamespaces(Ljava/lang/String;)V
 
     .line 84
+    .end local v1  # "namespace":Ljava/lang/String;
     goto :goto_7
 
     .line 85
@@ -130,7 +135,7 @@
 .end method
 
 .method private static getAllKnownDeviceConfigNamespacesList()Ljava/util/List;
-    .registers 2
+    .registers 3
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "()",
@@ -150,15 +155,17 @@
     move-result-object v1
 
     .line 132
+    .local v1, "namespacesStr":Ljava/lang/String;
     invoke-static {v1}, Lcom/android/server/utils/FlagNamespaceUtils;->toStringList(Ljava/lang/String;)Ljava/util/List;
 
-    move-result-object v1
+    move-result-object v2
 
     .line 133
-    invoke-interface {v1, v0}, Ljava/util/List;->remove(Ljava/lang/Object;)Z
+    .local v2, "namespacesList":Ljava/util/List;, "Ljava/util/List<Ljava/lang/String;>;"
+    invoke-interface {v2, v0}, Ljava/util/List;->remove(Ljava/lang/Object;)Z
 
     .line 134
-    return-object v1
+    return-object v2
 .end method
 
 .method private static incrementAndRetrieveResetNamespacesFlagCounter()I
@@ -192,6 +199,7 @@
 
 .method public static resetDeviceConfig(I)V
     .registers 2
+    .param p0, "resetMode"  # I
 
     .line 104
     invoke-static {}, Lcom/android/server/utils/FlagNamespaceUtils;->getAllKnownDeviceConfigNamespacesList()Ljava/util/List;
@@ -206,6 +214,7 @@
 
 .method public static resetDeviceConfig(ILjava/util/List;)V
     .registers 4
+    .param p0, "resetMode"  # I
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(I",
@@ -216,6 +225,7 @@
     .end annotation
 
     .line 111
+    .local p1, "namespacesList":Ljava/util/List;, "Ljava/util/List<Ljava/lang/String;>;"
     invoke-interface {p1}, Ljava/util/List;->iterator()Ljava/util/Iterator;
 
     move-result-object v0
@@ -234,9 +244,11 @@
     check-cast v1, Ljava/lang/String;
 
     .line 112
+    .local v1, "namespace":Ljava/lang/String;
     invoke-static {p0, v1}, Landroid/provider/DeviceConfig;->resetToDefaults(ILjava/lang/String;)V
 
     .line 113
+    .end local v1  # "namespace":Ljava/lang/String;
     goto :goto_4
 
     .line 114
@@ -263,6 +275,7 @@
 
 .method private static toStringList(Ljava/lang/String;)Ljava/util/List;
     .registers 2
+    .param p0, "serialized"  # Ljava/lang/String;
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(",
@@ -291,20 +304,20 @@
 
     invoke-virtual {p0, v0}, Ljava/lang/String;->split(Ljava/lang/String;)[Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v0
 
-    invoke-static {p0}, Ljava/util/Arrays;->asList([Ljava/lang/Object;)Ljava/util/List;
+    invoke-static {v0}, Ljava/util/Arrays;->asList([Ljava/lang/Object;)Ljava/util/List;
 
-    move-result-object p0
+    move-result-object v0
 
-    return-object p0
+    return-object v0
 
     .line 139
     :cond_14
     :goto_14
-    new-instance p0, Ljava/util/ArrayList;
+    new-instance v0, Ljava/util/ArrayList;
 
-    invoke-direct {p0}, Ljava/util/ArrayList;-><init>()V
+    invoke-direct {v0}, Ljava/util/ArrayList;-><init>()V
 
-    return-object p0
+    return-object v0
 .end method

@@ -20,6 +20,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/am/ActivityManagerService;)V
     .registers 3
+    .param p1, "service"  # Lcom/android/server/am/ActivityManagerService;
 
     .line 29
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -42,34 +43,38 @@
 # virtual methods
 .method get(I)Lcom/android/server/am/ActivityManagerService$PendingTempWhitelist;
     .registers 3
+    .param p1, "uid"  # I
 
     .line 45
     iget-object v0, p0, Lcom/android/server/am/PendingTempWhitelists;->mPendingTempWhitelist:Landroid/util/SparseArray;
 
     invoke-virtual {v0, p1}, Landroid/util/SparseArray;->get(I)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v0
 
-    check-cast p1, Lcom/android/server/am/ActivityManagerService$PendingTempWhitelist;
+    check-cast v0, Lcom/android/server/am/ActivityManagerService$PendingTempWhitelist;
 
-    return-object p1
+    return-object v0
 .end method
 
 .method indexOfKey(I)I
     .registers 3
+    .param p1, "key"  # I
 
     .line 57
     iget-object v0, p0, Lcom/android/server/am/PendingTempWhitelists;->mPendingTempWhitelist:Landroid/util/SparseArray;
 
     invoke-virtual {v0, p1}, Landroid/util/SparseArray;->indexOfKey(I)I
 
-    move-result p1
+    move-result v0
 
-    return p1
+    return v0
 .end method
 
 .method put(ILcom/android/server/am/ActivityManagerService$PendingTempWhitelist;)V
-    .registers 4
+    .registers 5
+    .param p1, "uid"  # I
+    .param p2, "value"  # Lcom/android/server/am/ActivityManagerService$PendingTempWhitelist;
 
     .line 34
     iget-object v0, p0, Lcom/android/server/am/PendingTempWhitelists;->mPendingTempWhitelist:Landroid/util/SparseArray;
@@ -81,9 +86,9 @@
 
     iget-object v0, v0, Lcom/android/server/am/ActivityManagerService;->mAtmInternal:Lcom/android/server/wm/ActivityTaskManagerInternal;
 
-    iget-object p2, p2, Lcom/android/server/am/ActivityManagerService$PendingTempWhitelist;->tag:Ljava/lang/String;
+    iget-object v1, p2, Lcom/android/server/am/ActivityManagerService$PendingTempWhitelist;->tag:Ljava/lang/String;
 
-    invoke-virtual {v0, p1, p2}, Lcom/android/server/wm/ActivityTaskManagerInternal;->onUidAddedToPendingTempWhitelist(ILjava/lang/String;)V
+    invoke-virtual {v0, p1, v1}, Lcom/android/server/wm/ActivityTaskManagerInternal;->onUidAddedToPendingTempWhitelist(ILjava/lang/String;)V
 
     .line 36
     return-void
@@ -91,6 +96,7 @@
 
 .method removeAt(I)V
     .registers 4
+    .param p1, "index"  # I
 
     .line 39
     iget-object v0, p0, Lcom/android/server/am/PendingTempWhitelists;->mPendingTempWhitelist:Landroid/util/SparseArray;
@@ -100,16 +106,17 @@
     move-result v0
 
     .line 40
+    .local v0, "uid":I
     iget-object v1, p0, Lcom/android/server/am/PendingTempWhitelists;->mPendingTempWhitelist:Landroid/util/SparseArray;
 
     invoke-virtual {v1, p1}, Landroid/util/SparseArray;->removeAt(I)V
 
     .line 41
-    iget-object p1, p0, Lcom/android/server/am/PendingTempWhitelists;->mService:Lcom/android/server/am/ActivityManagerService;
+    iget-object v1, p0, Lcom/android/server/am/PendingTempWhitelists;->mService:Lcom/android/server/am/ActivityManagerService;
 
-    iget-object p1, p1, Lcom/android/server/am/ActivityManagerService;->mAtmInternal:Lcom/android/server/wm/ActivityTaskManagerInternal;
+    iget-object v1, v1, Lcom/android/server/am/ActivityManagerService;->mAtmInternal:Lcom/android/server/wm/ActivityTaskManagerInternal;
 
-    invoke-virtual {p1, v0}, Lcom/android/server/wm/ActivityTaskManagerInternal;->onUidRemovedFromPendingTempWhitelist(I)V
+    invoke-virtual {v1, v0}, Lcom/android/server/wm/ActivityTaskManagerInternal;->onUidRemovedFromPendingTempWhitelist(I)V
 
     .line 42
     return-void
@@ -130,15 +137,16 @@
 
 .method valueAt(I)Lcom/android/server/am/ActivityManagerService$PendingTempWhitelist;
     .registers 3
+    .param p1, "index"  # I
 
     .line 53
     iget-object v0, p0, Lcom/android/server/am/PendingTempWhitelists;->mPendingTempWhitelist:Landroid/util/SparseArray;
 
     invoke-virtual {v0, p1}, Landroid/util/SparseArray;->valueAt(I)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v0
 
-    check-cast p1, Lcom/android/server/am/ActivityManagerService$PendingTempWhitelist;
+    check-cast v0, Lcom/android/server/am/ActivityManagerService$PendingTempWhitelist;
 
-    return-object p1
+    return-object v0
 .end method

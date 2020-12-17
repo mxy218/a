@@ -19,6 +19,7 @@
 # direct methods
 .method public constructor <init>(Lcom/android/server/pm/Installer;)V
     .registers 2
+    .param p1, "installer"  # Lcom/android/server/pm/Installer;
 
     .line 50
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -31,7 +32,8 @@
 .end method
 
 .method private static computePendingBackups(ILjava/util/Map;Ljava/util/List;)Ljava/util/List;
-    .registers 9
+    .registers 12
+    .param p0, "userId"  # I
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(I",
@@ -49,92 +51,103 @@
     .end annotation
 
     .line 167
+    .local p1, "pendingBackupPackages":Ljava/util/Map;, "Ljava/util/Map<Ljava/lang/String;Landroid/content/rollback/PackageRollbackInfo;>;"
+    .local p2, "rollbacks":Ljava/util/List;, "Ljava/util/List<Lcom/android/server/rollback/RollbackData;>;"
     new-instance v0, Ljava/util/ArrayList;
 
     invoke-direct {v0}, Ljava/util/ArrayList;-><init>()V
 
     .line 169
+    .local v0, "rd":Ljava/util/List;, "Ljava/util/List<Lcom/android/server/rollback/RollbackData;>;"
     invoke-interface {p2}, Ljava/util/List;->iterator()Ljava/util/Iterator;
-
-    move-result-object p2
-
-    :goto_9
-    invoke-interface {p2}, Ljava/util/Iterator;->hasNext()Z
-
-    move-result v1
-
-    if-eqz v1, :cond_4a
-
-    invoke-interface {p2}, Ljava/util/Iterator;->next()Ljava/lang/Object;
 
     move-result-object v1
 
-    check-cast v1, Lcom/android/server/rollback/RollbackData;
+    :goto_9
+    invoke-interface {v1}, Ljava/util/Iterator;->hasNext()Z
+
+    move-result v2
+
+    if-eqz v2, :cond_4a
+
+    invoke-interface {v1}, Ljava/util/Iterator;->next()Ljava/lang/Object;
+
+    move-result-object v2
+
+    check-cast v2, Lcom/android/server/rollback/RollbackData;
 
     .line 170
-    iget-object v2, v1, Lcom/android/server/rollback/RollbackData;->info:Landroid/content/rollback/RollbackInfo;
+    .local v2, "data":Lcom/android/server/rollback/RollbackData;
+    iget-object v3, v2, Lcom/android/server/rollback/RollbackData;->info:Landroid/content/rollback/RollbackInfo;
 
-    invoke-virtual {v2}, Landroid/content/rollback/RollbackInfo;->getPackages()Ljava/util/List;
-
-    move-result-object v2
-
-    invoke-interface {v2}, Ljava/util/List;->iterator()Ljava/util/Iterator;
-
-    move-result-object v2
-
-    :goto_1f
-    invoke-interface {v2}, Ljava/util/Iterator;->hasNext()Z
-
-    move-result v3
-
-    if-eqz v3, :cond_49
-
-    invoke-interface {v2}, Ljava/util/Iterator;->next()Ljava/lang/Object;
+    invoke-virtual {v3}, Landroid/content/rollback/RollbackInfo;->getPackages()Ljava/util/List;
 
     move-result-object v3
 
-    check-cast v3, Landroid/content/rollback/PackageRollbackInfo;
+    invoke-interface {v3}, Ljava/util/List;->iterator()Ljava/util/Iterator;
 
-    .line 171
-    invoke-virtual {v3}, Landroid/content/rollback/PackageRollbackInfo;->getPendingBackups()Landroid/util/IntArray;
+    move-result-object v3
 
-    move-result-object v4
-
-    .line 172
-    if-eqz v4, :cond_48
-
-    .line 173
-    invoke-virtual {v4, p0}, Landroid/util/IntArray;->indexOf(I)I
+    :goto_1f
+    invoke-interface {v3}, Ljava/util/Iterator;->hasNext()Z
 
     move-result v4
 
-    .line 174
-    const/4 v5, -0x1
+    if-eqz v4, :cond_49
 
-    if-eq v4, v5, :cond_48
-
-    .line 175
-    invoke-virtual {v3}, Landroid/content/rollback/PackageRollbackInfo;->getPackageName()Ljava/lang/String;
+    invoke-interface {v3}, Ljava/util/Iterator;->next()Ljava/lang/Object;
 
     move-result-object v4
 
-    invoke-interface {p1, v4, v3}, Ljava/util/Map;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+    check-cast v4, Landroid/content/rollback/PackageRollbackInfo;
+
+    .line 171
+    .local v4, "info":Landroid/content/rollback/PackageRollbackInfo;
+    invoke-virtual {v4}, Landroid/content/rollback/PackageRollbackInfo;->getPendingBackups()Landroid/util/IntArray;
+
+    move-result-object v5
+
+    .line 172
+    .local v5, "pendingBackupUsers":Landroid/util/IntArray;
+    if-eqz v5, :cond_48
+
+    .line 173
+    invoke-virtual {v5, p0}, Landroid/util/IntArray;->indexOf(I)I
+
+    move-result v6
+
+    .line 174
+    .local v6, "idx":I
+    const/4 v7, -0x1
+
+    if-eq v6, v7, :cond_48
+
+    .line 175
+    invoke-virtual {v4}, Landroid/content/rollback/PackageRollbackInfo;->getPackageName()Ljava/lang/String;
+
+    move-result-object v8
+
+    invoke-interface {p1, v8, v4}, Ljava/util/Map;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
 
     .line 176
-    invoke-interface {v0, v1}, Ljava/util/List;->indexOf(Ljava/lang/Object;)I
+    invoke-interface {v0, v2}, Ljava/util/List;->indexOf(Ljava/lang/Object;)I
 
-    move-result v3
+    move-result v8
 
-    if-ne v3, v5, :cond_48
+    if-ne v8, v7, :cond_48
 
     .line 177
-    invoke-interface {v0, v1}, Ljava/util/List;->add(Ljava/lang/Object;)Z
+    invoke-interface {v0, v2}, Ljava/util/List;->add(Ljava/lang/Object;)Z
 
     .line 181
+    .end local v4  # "info":Landroid/content/rollback/PackageRollbackInfo;
+    .end local v5  # "pendingBackupUsers":Landroid/util/IntArray;
+    .end local v6  # "idx":I
     :cond_48
     goto :goto_1f
 
     .line 182
+    .end local v2  # "data":Lcom/android/server/rollback/RollbackData;
     :cond_49
     goto :goto_9
 
@@ -144,7 +157,8 @@
 .end method
 
 .method private static computePendingRestores(ILjava/util/Map;Ljava/util/List;)Ljava/util/List;
-    .registers 8
+    .registers 11
+    .param p0, "userId"  # I
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(I",
@@ -162,84 +176,93 @@
     .end annotation
 
     .line 197
+    .local p1, "pendingRestorePackages":Ljava/util/Map;, "Ljava/util/Map<Ljava/lang/String;Landroid/content/rollback/PackageRollbackInfo;>;"
+    .local p2, "rollbacks":Ljava/util/List;, "Ljava/util/List<Lcom/android/server/rollback/RollbackData;>;"
     new-instance v0, Ljava/util/ArrayList;
 
     invoke-direct {v0}, Ljava/util/ArrayList;-><init>()V
 
     .line 199
+    .local v0, "rd":Ljava/util/List;, "Ljava/util/List<Lcom/android/server/rollback/RollbackData;>;"
     invoke-interface {p2}, Ljava/util/List;->iterator()Ljava/util/Iterator;
-
-    move-result-object p2
-
-    :goto_9
-    invoke-interface {p2}, Ljava/util/Iterator;->hasNext()Z
-
-    move-result v1
-
-    if-eqz v1, :cond_44
-
-    invoke-interface {p2}, Ljava/util/Iterator;->next()Ljava/lang/Object;
 
     move-result-object v1
 
-    check-cast v1, Lcom/android/server/rollback/RollbackData;
+    :goto_9
+    invoke-interface {v1}, Ljava/util/Iterator;->hasNext()Z
+
+    move-result v2
+
+    if-eqz v2, :cond_44
+
+    invoke-interface {v1}, Ljava/util/Iterator;->next()Ljava/lang/Object;
+
+    move-result-object v2
+
+    check-cast v2, Lcom/android/server/rollback/RollbackData;
 
     .line 200
-    iget-object v2, v1, Lcom/android/server/rollback/RollbackData;->info:Landroid/content/rollback/RollbackInfo;
+    .local v2, "data":Lcom/android/server/rollback/RollbackData;
+    iget-object v3, v2, Lcom/android/server/rollback/RollbackData;->info:Landroid/content/rollback/RollbackInfo;
 
-    invoke-virtual {v2}, Landroid/content/rollback/RollbackInfo;->getPackages()Ljava/util/List;
-
-    move-result-object v2
-
-    invoke-interface {v2}, Ljava/util/List;->iterator()Ljava/util/Iterator;
-
-    move-result-object v2
-
-    :goto_1f
-    invoke-interface {v2}, Ljava/util/Iterator;->hasNext()Z
-
-    move-result v3
-
-    if-eqz v3, :cond_43
-
-    invoke-interface {v2}, Ljava/util/Iterator;->next()Ljava/lang/Object;
+    invoke-virtual {v3}, Landroid/content/rollback/RollbackInfo;->getPackages()Ljava/util/List;
 
     move-result-object v3
 
-    check-cast v3, Landroid/content/rollback/PackageRollbackInfo;
+    invoke-interface {v3}, Ljava/util/List;->iterator()Ljava/util/Iterator;
+
+    move-result-object v3
+
+    :goto_1f
+    invoke-interface {v3}, Ljava/util/Iterator;->hasNext()Z
+
+    move-result v4
+
+    if-eqz v4, :cond_43
+
+    invoke-interface {v3}, Ljava/util/Iterator;->next()Ljava/lang/Object;
+
+    move-result-object v4
+
+    check-cast v4, Landroid/content/rollback/PackageRollbackInfo;
 
     .line 201
-    invoke-virtual {v3, p0}, Landroid/content/rollback/PackageRollbackInfo;->getRestoreInfo(I)Landroid/content/rollback/PackageRollbackInfo$RestoreInfo;
+    .local v4, "info":Landroid/content/rollback/PackageRollbackInfo;
+    invoke-virtual {v4, p0}, Landroid/content/rollback/PackageRollbackInfo;->getRestoreInfo(I)Landroid/content/rollback/PackageRollbackInfo$RestoreInfo;
 
-    move-result-object v4
+    move-result-object v5
 
     .line 202
-    if-eqz v4, :cond_42
+    .local v5, "ri":Landroid/content/rollback/PackageRollbackInfo$RestoreInfo;
+    if-eqz v5, :cond_42
 
     .line 203
-    invoke-virtual {v3}, Landroid/content/rollback/PackageRollbackInfo;->getPackageName()Ljava/lang/String;
+    invoke-virtual {v4}, Landroid/content/rollback/PackageRollbackInfo;->getPackageName()Ljava/lang/String;
 
-    move-result-object v4
+    move-result-object v6
 
-    invoke-interface {p1, v4, v3}, Ljava/util/Map;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+    invoke-interface {p1, v6, v4}, Ljava/util/Map;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
 
     .line 204
-    invoke-interface {v0, v1}, Ljava/util/List;->indexOf(Ljava/lang/Object;)I
+    invoke-interface {v0, v2}, Ljava/util/List;->indexOf(Ljava/lang/Object;)I
 
-    move-result v3
+    move-result v6
 
-    const/4 v4, -0x1
+    const/4 v7, -0x1
 
-    if-ne v3, v4, :cond_42
+    if-ne v6, v7, :cond_42
 
     .line 205
-    invoke-interface {v0, v1}, Ljava/util/List;->add(Ljava/lang/Object;)Z
+    invoke-interface {v0, v2}, Ljava/util/List;->add(Ljava/lang/Object;)Z
 
     .line 208
+    .end local v4  # "info":Landroid/content/rollback/PackageRollbackInfo;
+    .end local v5  # "ri":Landroid/content/rollback/PackageRollbackInfo$RestoreInfo;
     :cond_42
     goto :goto_1f
 
     .line 209
+    .end local v2  # "data":Lcom/android/server/rollback/RollbackData;
     :cond_43
     goto :goto_9
 
@@ -251,7 +274,8 @@
 
 # virtual methods
 .method public commitPendingBackupAndRestoreForUser(ILjava/util/List;)Ljava/util/Set;
-    .registers 20
+    .registers 25
+    .param p1, "userId"  # I
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(I",
@@ -265,133 +289,148 @@
     .end annotation
 
     .line 224
+    .local p2, "rollbacks":Ljava/util/List;, "Ljava/util/List<Lcom/android/server/rollback/RollbackData;>;"
     move-object/from16 v1, p0
 
     move/from16 v9, p1
 
-    move-object/from16 v0, p2
+    move-object/from16 v10, p2
 
-    new-instance v2, Ljava/util/HashMap;
+    new-instance v0, Ljava/util/HashMap;
 
-    invoke-direct {v2}, Ljava/util/HashMap;-><init>()V
+    invoke-direct {v0}, Ljava/util/HashMap;-><init>()V
+
+    move-object v11, v0
 
     .line 225
-    invoke-static {v9, v2, v0}, Lcom/android/server/rollback/AppDataRollbackHelper;->computePendingBackups(ILjava/util/Map;Ljava/util/List;)Ljava/util/List;
+    .local v11, "pendingBackupPackages":Ljava/util/Map;, "Ljava/util/Map<Ljava/lang/String;Landroid/content/rollback/PackageRollbackInfo;>;"
+    invoke-static {v9, v11, v10}, Lcom/android/server/rollback/AppDataRollbackHelper;->computePendingBackups(ILjava/util/Map;Ljava/util/List;)Ljava/util/List;
 
-    move-result-object v10
+    move-result-object v12
 
     .line 228
-    new-instance v3, Ljava/util/HashMap;
+    .local v12, "pendingBackups":Ljava/util/List;, "Ljava/util/List<Lcom/android/server/rollback/RollbackData;>;"
+    new-instance v0, Ljava/util/HashMap;
 
-    invoke-direct {v3}, Ljava/util/HashMap;-><init>()V
+    invoke-direct {v0}, Ljava/util/HashMap;-><init>()V
+
+    move-object v13, v0
 
     .line 229
-    invoke-static {v9, v3, v0}, Lcom/android/server/rollback/AppDataRollbackHelper;->computePendingRestores(ILjava/util/Map;Ljava/util/List;)Ljava/util/List;
+    .local v13, "pendingRestorePackages":Ljava/util/Map;, "Ljava/util/Map<Ljava/lang/String;Landroid/content/rollback/PackageRollbackInfo;>;"
+    invoke-static {v9, v13, v10}, Lcom/android/server/rollback/AppDataRollbackHelper;->computePendingRestores(ILjava/util/Map;Ljava/util/List;)Ljava/util/List;
 
-    move-result-object v11
+    move-result-object v14
 
     .line 234
+    .local v14, "pendingRestores":Ljava/util/List;, "Ljava/util/List<Lcom/android/server/rollback/RollbackData;>;"
     nop
 
     .line 235
-    invoke-interface {v2}, Ljava/util/Map;->entrySet()Ljava/util/Set;
+    invoke-interface {v11}, Ljava/util/Map;->entrySet()Ljava/util/Set;
 
     move-result-object v0
 
     invoke-interface {v0}, Ljava/util/Set;->iterator()Ljava/util/Iterator;
 
-    move-result-object v0
+    move-result-object v15
 
     .line 236
-    :goto_21
-    invoke-interface {v0}, Ljava/util/Iterator;->hasNext()Z
-
-    move-result v4
-
-    if-eqz v4, :cond_51
-
-    .line 237
-    invoke-interface {v0}, Ljava/util/Iterator;->next()Ljava/lang/Object;
-
-    move-result-object v4
-
-    check-cast v4, Ljava/util/Map$Entry;
-
-    invoke-interface {v4}, Ljava/util/Map$Entry;->getValue()Ljava/lang/Object;
-
-    move-result-object v4
-
-    check-cast v4, Landroid/content/rollback/PackageRollbackInfo;
-
-    .line 238
-    nop
-
-    .line 239
-    invoke-virtual {v4}, Landroid/content/rollback/PackageRollbackInfo;->getPackageName()Ljava/lang/String;
-
-    move-result-object v5
-
-    invoke-interface {v3, v5}, Ljava/util/Map;->get(Ljava/lang/Object;)Ljava/lang/Object;
-
-    move-result-object v5
-
-    check-cast v5, Landroid/content/rollback/PackageRollbackInfo;
-
-    .line 240
-    if-eqz v5, :cond_50
-
-    .line 241
-    invoke-virtual {v4, v9}, Landroid/content/rollback/PackageRollbackInfo;->removePendingBackup(I)V
-
-    .line 242
-    invoke-virtual {v4, v9}, Landroid/content/rollback/PackageRollbackInfo;->removePendingRestoreInfo(I)V
-
-    .line 243
-    invoke-interface {v0}, Ljava/util/Iterator;->remove()V
-
-    .line 244
-    invoke-virtual {v4}, Landroid/content/rollback/PackageRollbackInfo;->getPackageName()Ljava/lang/String;
-
-    move-result-object v4
-
-    invoke-interface {v3, v4}, Ljava/util/Map;->remove(Ljava/lang/Object;)Ljava/lang/Object;
-
-    .line 246
-    :cond_50
-    goto :goto_21
-
-    .line 248
-    :cond_51
-    invoke-interface {v2}, Ljava/util/Map;->isEmpty()Z
+    .local v15, "iter":Ljava/util/Iterator;, "Ljava/util/Iterator<Ljava/util/Map$Entry<Ljava/lang/String;Landroid/content/rollback/PackageRollbackInfo;>;>;"
+    :goto_23
+    invoke-interface {v15}, Ljava/util/Iterator;->hasNext()Z
 
     move-result v0
 
-    const-string v12, "RollbackManager"
+    if-eqz v0, :cond_53
 
-    if-nez v0, :cond_c7
+    .line 237
+    invoke-interface {v15}, Ljava/util/Iterator;->next()Ljava/lang/Object;
 
-    .line 249
-    invoke-interface {v10}, Ljava/util/List;->iterator()Ljava/util/Iterator;
+    move-result-object v0
+
+    check-cast v0, Ljava/util/Map$Entry;
+
+    invoke-interface {v0}, Ljava/util/Map$Entry;->getValue()Ljava/lang/Object;
+
+    move-result-object v0
+
+    check-cast v0, Landroid/content/rollback/PackageRollbackInfo;
+
+    .line 238
+    .local v0, "backupPackage":Landroid/content/rollback/PackageRollbackInfo;
+    nop
+
+    .line 239
+    invoke-virtual {v0}, Landroid/content/rollback/PackageRollbackInfo;->getPackageName()Ljava/lang/String;
 
     move-result-object v2
 
-    :goto_5d
+    invoke-interface {v13, v2}, Ljava/util/Map;->get(Ljava/lang/Object;)Ljava/lang/Object;
+
+    move-result-object v2
+
+    check-cast v2, Landroid/content/rollback/PackageRollbackInfo;
+
+    .line 240
+    .local v2, "restorePackage":Landroid/content/rollback/PackageRollbackInfo;
+    if-eqz v2, :cond_52
+
+    .line 241
+    invoke-virtual {v0, v9}, Landroid/content/rollback/PackageRollbackInfo;->removePendingBackup(I)V
+
+    .line 242
+    invoke-virtual {v0, v9}, Landroid/content/rollback/PackageRollbackInfo;->removePendingRestoreInfo(I)V
+
+    .line 243
+    invoke-interface {v15}, Ljava/util/Iterator;->remove()V
+
+    .line 244
+    invoke-virtual {v0}, Landroid/content/rollback/PackageRollbackInfo;->getPackageName()Ljava/lang/String;
+
+    move-result-object v3
+
+    invoke-interface {v13, v3}, Ljava/util/Map;->remove(Ljava/lang/Object;)Ljava/lang/Object;
+
+    .line 246
+    .end local v0  # "backupPackage":Landroid/content/rollback/PackageRollbackInfo;
+    .end local v2  # "restorePackage":Landroid/content/rollback/PackageRollbackInfo;
+    :cond_52
+    goto :goto_23
+
+    .line 248
+    :cond_53
+    invoke-interface {v11}, Ljava/util/Map;->isEmpty()Z
+
+    move-result v0
+
+    const-string v8, "RollbackManager"
+
+    if-nez v0, :cond_ef
+
+    .line 249
+    invoke-interface {v12}, Ljava/util/List;->iterator()Ljava/util/Iterator;
+
+    move-result-object v2
+
+    :goto_5f
     invoke-interface {v2}, Ljava/util/Iterator;->hasNext()Z
 
     move-result v0
 
-    if-eqz v0, :cond_c7
+    if-eqz v0, :cond_ef
 
     invoke-interface {v2}, Ljava/util/Iterator;->next()Ljava/lang/Object;
 
     move-result-object v0
 
-    move-object v4, v0
+    move-object v3, v0
 
-    check-cast v4, Lcom/android/server/rollback/RollbackData;
+    check-cast v3, Lcom/android/server/rollback/RollbackData;
 
     .line 250
-    iget-object v0, v4, Lcom/android/server/rollback/RollbackData;->info:Landroid/content/rollback/RollbackInfo;
+    .local v3, "data":Lcom/android/server/rollback/RollbackData;
+    iget-object v0, v3, Lcom/android/server/rollback/RollbackData;->info:Landroid/content/rollback/RollbackInfo;
 
     invoke-virtual {v0}, Landroid/content/rollback/RollbackInfo;->getPackages()Ljava/util/List;
 
@@ -399,16 +438,244 @@
 
     invoke-interface {v0}, Ljava/util/List;->iterator()Ljava/util/Iterator;
 
-    move-result-object v5
+    move-result-object v4
 
-    :goto_74
-    invoke-interface {v5}, Ljava/util/Iterator;->hasNext()Z
+    :goto_76
+    invoke-interface {v4}, Ljava/util/Iterator;->hasNext()Z
 
     move-result v0
 
-    if-eqz v0, :cond_c6
+    if-eqz v0, :cond_e9
 
-    invoke-interface {v5}, Ljava/util/Iterator;->next()Ljava/lang/Object;
+    invoke-interface {v4}, Ljava/util/Iterator;->next()Ljava/lang/Object;
+
+    move-result-object v0
+
+    move-object v5, v0
+
+    check-cast v5, Landroid/content/rollback/PackageRollbackInfo;
+
+    .line 251
+    .local v5, "info":Landroid/content/rollback/PackageRollbackInfo;
+    invoke-virtual {v5}, Landroid/content/rollback/PackageRollbackInfo;->getPendingBackups()Landroid/util/IntArray;
+
+    move-result-object v6
+
+    .line 252
+    .local v6, "pendingBackupUsers":Landroid/util/IntArray;
+    invoke-virtual {v6, v9}, Landroid/util/IntArray;->indexOf(I)I
+
+    move-result v7
+
+    .line 253
+    .local v7, "idx":I
+    const/4 v0, -0x1
+
+    if-eq v7, v0, :cond_dc
+
+    .line 255
+    :try_start_8e
+    iget-object v0, v1, Lcom/android/server/rollback/AppDataRollbackHelper;->mInstaller:Lcom/android/server/pm/Installer;
+    :try_end_90
+    .catch Lcom/android/server/pm/Installer$InstallerException; {:try_start_8e .. :try_end_90} :catch_b4
+
+    move-object/from16 v16, v2
+
+    :try_start_92
+    invoke-virtual {v5}, Landroid/content/rollback/PackageRollbackInfo;->getPackageName()Ljava/lang/String;
+
+    move-result-object v2
+    :try_end_96
+    .catch Lcom/android/server/pm/Installer$InstallerException; {:try_start_92 .. :try_end_96} :catch_b2
+
+    move-object/from16 v17, v4
+
+    :try_start_98
+    iget-object v4, v3, Lcom/android/server/rollback/RollbackData;->info:Landroid/content/rollback/RollbackInfo;
+
+    .line 256
+    invoke-virtual {v4}, Landroid/content/rollback/RollbackInfo;->getRollbackId()I
+
+    move-result v4
+    :try_end_9e
+    .catch Lcom/android/server/pm/Installer$InstallerException; {:try_start_98 .. :try_end_9e} :catch_ae
+
+    move-object/from16 v18, v3
+
+    .end local v3  # "data":Lcom/android/server/rollback/RollbackData;
+    .local v18, "data":Lcom/android/server/rollback/RollbackData;
+    const/4 v3, 0x2
+
+    .line 255
+    :try_start_a1
+    invoke-virtual {v0, v2, v9, v4, v3}, Lcom/android/server/pm/Installer;->snapshotAppData(Ljava/lang/String;III)J
+
+    move-result-wide v2
+
+    .line 257
+    .local v2, "ceSnapshotInode":J
+    invoke-virtual {v5, v9, v2, v3}, Landroid/content/rollback/PackageRollbackInfo;->putCeSnapshotInode(IJ)V
+
+    .line 258
+    invoke-virtual {v6, v7}, Landroid/util/IntArray;->remove(I)V
+    :try_end_ab
+    .catch Lcom/android/server/pm/Installer$InstallerException; {:try_start_a1 .. :try_end_ab} :catch_ac
+
+    .line 263
+    .end local v2  # "ceSnapshotInode":J
+    goto :goto_e2
+
+    .line 259
+    :catch_ac
+    move-exception v0
+
+    goto :goto_bb
+
+    .end local v18  # "data":Lcom/android/server/rollback/RollbackData;
+    .restart local v3  # "data":Lcom/android/server/rollback/RollbackData;
+    :catch_ae
+    move-exception v0
+
+    move-object/from16 v18, v3
+
+    goto :goto_bb
+
+    :catch_b2
+    move-exception v0
+
+    goto :goto_b7
+
+    :catch_b4
+    move-exception v0
+
+    move-object/from16 v16, v2
+
+    :goto_b7
+    move-object/from16 v18, v3
+
+    move-object/from16 v17, v4
+
+    .line 260
+    .end local v3  # "data":Lcom/android/server/rollback/RollbackData;
+    .local v0, "ie":Lcom/android/server/pm/Installer$InstallerException;
+    .restart local v18  # "data":Lcom/android/server/rollback/RollbackData;
+    :goto_bb
+    new-instance v2, Ljava/lang/StringBuilder;
+
+    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
+
+    const-string v3, "Unable to create app data snapshot for: "
+
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    .line 262
+    invoke-virtual {v5}, Landroid/content/rollback/PackageRollbackInfo;->getPackageName()Ljava/lang/String;
+
+    move-result-object v3
+
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    const-string v3, ", userId: "
+
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v2, v9}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v2
+
+    .line 260
+    invoke-static {v8, v2, v0}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+
+    goto :goto_e2
+
+    .line 253
+    .end local v0  # "ie":Lcom/android/server/pm/Installer$InstallerException;
+    .end local v18  # "data":Lcom/android/server/rollback/RollbackData;
+    .restart local v3  # "data":Lcom/android/server/rollback/RollbackData;
+    :cond_dc
+    move-object/from16 v16, v2
+
+    move-object/from16 v18, v3
+
+    move-object/from16 v17, v4
+
+    .line 265
+    .end local v3  # "data":Lcom/android/server/rollback/RollbackData;
+    .end local v5  # "info":Landroid/content/rollback/PackageRollbackInfo;
+    .end local v6  # "pendingBackupUsers":Landroid/util/IntArray;
+    .end local v7  # "idx":I
+    .restart local v18  # "data":Lcom/android/server/rollback/RollbackData;
+    :goto_e2
+    move-object/from16 v2, v16
+
+    move-object/from16 v4, v17
+
+    move-object/from16 v3, v18
+
+    goto :goto_76
+
+    .line 250
+    .end local v18  # "data":Lcom/android/server/rollback/RollbackData;
+    .restart local v3  # "data":Lcom/android/server/rollback/RollbackData;
+    :cond_e9
+    move-object/from16 v16, v2
+
+    move-object/from16 v18, v3
+
+    .line 266
+    .end local v3  # "data":Lcom/android/server/rollback/RollbackData;
+    goto/16 :goto_5f
+
+    .line 269
+    :cond_ef
+    invoke-interface {v13}, Ljava/util/Map;->isEmpty()Z
+
+    move-result v0
+
+    if-nez v0, :cond_186
+
+    .line 270
+    invoke-interface {v14}, Ljava/util/List;->iterator()Ljava/util/Iterator;
+
+    move-result-object v16
+
+    :goto_f9
+    invoke-interface/range {v16 .. v16}, Ljava/util/Iterator;->hasNext()Z
+
+    move-result v0
+
+    if-eqz v0, :cond_186
+
+    invoke-interface/range {v16 .. v16}, Ljava/util/Iterator;->next()Ljava/lang/Object;
+
+    move-result-object v0
+
+    move-object v7, v0
+
+    check-cast v7, Lcom/android/server/rollback/RollbackData;
+
+    .line 271
+    .local v7, "data":Lcom/android/server/rollback/RollbackData;
+    iget-object v0, v7, Lcom/android/server/rollback/RollbackData;->info:Landroid/content/rollback/RollbackInfo;
+
+    invoke-virtual {v0}, Landroid/content/rollback/RollbackInfo;->getPackages()Ljava/util/List;
+
+    move-result-object v0
+
+    invoke-interface {v0}, Ljava/util/List;->iterator()Ljava/util/Iterator;
+
+    move-result-object v17
+
+    :goto_110
+    invoke-interface/range {v17 .. v17}, Ljava/util/Iterator;->hasNext()Z
+
+    move-result v0
+
+    if-eqz v0, :cond_17f
+
+    invoke-interface/range {v17 .. v17}, Ljava/util/Iterator;->next()Ljava/lang/Object;
 
     move-result-object v0
 
@@ -416,363 +683,320 @@
 
     check-cast v6, Landroid/content/rollback/PackageRollbackInfo;
 
-    .line 251
-    invoke-virtual {v6}, Landroid/content/rollback/PackageRollbackInfo;->getPendingBackups()Landroid/util/IntArray;
-
-    move-result-object v0
-
-    .line 252
-    invoke-virtual {v0, v9}, Landroid/util/IntArray;->indexOf(I)I
-
-    move-result v7
-
-    .line 253
-    const/4 v8, -0x1
-
-    if-eq v7, v8, :cond_c5
-
-    .line 255
-    :try_start_8c
-    iget-object v8, v1, Lcom/android/server/rollback/AppDataRollbackHelper;->mInstaller:Lcom/android/server/pm/Installer;
-
-    invoke-virtual {v6}, Landroid/content/rollback/PackageRollbackInfo;->getPackageName()Ljava/lang/String;
-
-    move-result-object v13
-
-    iget-object v14, v4, Lcom/android/server/rollback/RollbackData;->info:Landroid/content/rollback/RollbackInfo;
-
-    .line 256
-    invoke-virtual {v14}, Landroid/content/rollback/RollbackInfo;->getRollbackId()I
-
-    move-result v14
-
-    const/4 v15, 0x2
-
-    .line 255
-    invoke-virtual {v8, v13, v9, v14, v15}, Lcom/android/server/pm/Installer;->snapshotAppData(Ljava/lang/String;III)J
-
-    move-result-wide v13
-
-    .line 257
-    invoke-virtual {v6, v9, v13, v14}, Landroid/content/rollback/PackageRollbackInfo;->putCeSnapshotInode(IJ)V
-
-    .line 258
-    invoke-virtual {v0, v7}, Landroid/util/IntArray;->remove(I)V
-    :try_end_a3
-    .catch Lcom/android/server/pm/Installer$InstallerException; {:try_start_8c .. :try_end_a3} :catch_a4
-
-    .line 263
-    goto :goto_c5
-
-    .line 259
-    :catch_a4
-    move-exception v0
-
-    .line 260
-    new-instance v7, Ljava/lang/StringBuilder;
-
-    invoke-direct {v7}, Ljava/lang/StringBuilder;-><init>()V
-
-    const-string v8, "Unable to create app data snapshot for: "
-
-    invoke-virtual {v7, v8}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    .line 262
-    invoke-virtual {v6}, Landroid/content/rollback/PackageRollbackInfo;->getPackageName()Ljava/lang/String;
-
-    move-result-object v6
-
-    invoke-virtual {v7, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    const-string v6, ", userId: "
-
-    invoke-virtual {v7, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v7, v9}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v7}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
-
-    move-result-object v6
-
-    .line 260
-    invoke-static {v12, v6, v0}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
-
-    .line 265
-    :cond_c5
-    :goto_c5
-    goto :goto_74
-
-    .line 266
-    :cond_c6
-    goto :goto_5d
-
-    .line 269
-    :cond_c7
-    invoke-interface {v3}, Ljava/util/Map;->isEmpty()Z
-
-    move-result v0
-
-    if-nez v0, :cond_13b
-
-    .line 270
-    invoke-interface {v11}, Ljava/util/List;->iterator()Ljava/util/Iterator;
-
-    move-result-object v13
-
-    :goto_d1
-    invoke-interface {v13}, Ljava/util/Iterator;->hasNext()Z
-
-    move-result v0
-
-    if-eqz v0, :cond_13b
-
-    invoke-interface {v13}, Ljava/util/Iterator;->next()Ljava/lang/Object;
-
-    move-result-object v0
-
-    move-object v14, v0
-
-    check-cast v14, Lcom/android/server/rollback/RollbackData;
-
-    .line 271
-    iget-object v0, v14, Lcom/android/server/rollback/RollbackData;->info:Landroid/content/rollback/RollbackInfo;
-
-    invoke-virtual {v0}, Landroid/content/rollback/RollbackInfo;->getPackages()Ljava/util/List;
-
-    move-result-object v0
-
-    invoke-interface {v0}, Ljava/util/List;->iterator()Ljava/util/Iterator;
-
-    move-result-object v15
-
-    :goto_e8
-    invoke-interface {v15}, Ljava/util/Iterator;->hasNext()Z
-
-    move-result v0
-
-    if-eqz v0, :cond_138
-
-    invoke-interface {v15}, Ljava/util/Iterator;->next()Ljava/lang/Object;
-
-    move-result-object v0
-
-    move-object v8, v0
-
-    check-cast v8, Landroid/content/rollback/PackageRollbackInfo;
-
     .line 272
-    invoke-virtual {v8, v9}, Landroid/content/rollback/PackageRollbackInfo;->getRestoreInfo(I)Landroid/content/rollback/PackageRollbackInfo$RestoreInfo;
+    .local v6, "info":Landroid/content/rollback/PackageRollbackInfo;
+    invoke-virtual {v6, v9}, Landroid/content/rollback/PackageRollbackInfo;->getRestoreInfo(I)Landroid/content/rollback/PackageRollbackInfo$RestoreInfo;
 
-    move-result-object v0
+    move-result-object v5
 
     .line 273
-    if-eqz v0, :cond_135
+    .local v5, "ri":Landroid/content/rollback/PackageRollbackInfo$RestoreInfo;
+    if-eqz v5, :cond_174
 
     .line 275
-    :try_start_fb
+    :try_start_123
     iget-object v2, v1, Lcom/android/server/rollback/AppDataRollbackHelper;->mInstaller:Lcom/android/server/pm/Installer;
 
-    invoke-virtual {v8}, Landroid/content/rollback/PackageRollbackInfo;->getPackageName()Ljava/lang/String;
+    invoke-virtual {v6}, Landroid/content/rollback/PackageRollbackInfo;->getPackageName()Ljava/lang/String;
 
     move-result-object v3
 
-    iget v4, v0, Landroid/content/rollback/PackageRollbackInfo$RestoreInfo;->appId:I
+    iget v4, v5, Landroid/content/rollback/PackageRollbackInfo$RestoreInfo;->appId:I
 
-    iget-object v5, v0, Landroid/content/rollback/PackageRollbackInfo$RestoreInfo;->seInfo:Ljava/lang/String;
+    iget-object v0, v5, Landroid/content/rollback/PackageRollbackInfo$RestoreInfo;->seInfo:Ljava/lang/String;
 
-    iget-object v6, v14, Lcom/android/server/rollback/RollbackData;->info:Landroid/content/rollback/RollbackInfo;
+    iget-object v1, v7, Lcom/android/server/rollback/RollbackData;->info:Landroid/content/rollback/RollbackInfo;
 
     .line 276
-    invoke-virtual {v6}, Landroid/content/rollback/RollbackInfo;->getRollbackId()I
+    invoke-virtual {v1}, Landroid/content/rollback/RollbackInfo;->getRollbackId()I
 
-    move-result v7
-    :try_end_10b
-    .catch Lcom/android/server/pm/Installer$InstallerException; {:try_start_fb .. :try_end_10b} :catch_11b
+    move-result v1
+    :try_end_133
+    .catch Lcom/android/server/pm/Installer$InstallerException; {:try_start_123 .. :try_end_133} :catch_155
 
-    const/16 v16, 0x2
+    const/16 v18, 0x2
 
     .line 275
+    move-object/from16 v19, v5
+
+    .end local v5  # "ri":Landroid/content/rollback/PackageRollbackInfo$RestoreInfo;
+    .local v19, "ri":Landroid/content/rollback/PackageRollbackInfo$RestoreInfo;
+    move-object v5, v0
+
+    move-object/from16 v20, v6
+
+    .end local v6  # "info":Landroid/content/rollback/PackageRollbackInfo;
+    .local v20, "info":Landroid/content/rollback/PackageRollbackInfo;
     move/from16 v6, p1
 
+    move-object/from16 v21, v7
+
+    .end local v7  # "data":Lcom/android/server/rollback/RollbackData;
+    .local v21, "data":Lcom/android/server/rollback/RollbackData;
+    move v7, v1
+
     move-object v1, v8
 
-    move/from16 v8, v16
+    move/from16 v8, v18
 
-    :try_start_112
+    :try_start_142
     invoke-virtual/range {v2 .. v8}, Lcom/android/server/pm/Installer;->restoreAppDataSnapshot(Ljava/lang/String;ILjava/lang/String;III)Z
+    :try_end_145
+    .catch Lcom/android/server/pm/Installer$InstallerException; {:try_start_142 .. :try_end_145} :catch_14f
 
     .line 278
-    invoke-virtual {v1, v0}, Landroid/content/rollback/PackageRollbackInfo;->removeRestoreInfo(Landroid/content/rollback/PackageRollbackInfo$RestoreInfo;)V
-    :try_end_118
-    .catch Lcom/android/server/pm/Installer$InstallerException; {:try_start_112 .. :try_end_118} :catch_119
+    move-object/from16 v3, v19
+
+    move-object/from16 v2, v20
+
+    .end local v19  # "ri":Landroid/content/rollback/PackageRollbackInfo$RestoreInfo;
+    .end local v20  # "info":Landroid/content/rollback/PackageRollbackInfo;
+    .local v2, "info":Landroid/content/rollback/PackageRollbackInfo;
+    .local v3, "ri":Landroid/content/rollback/PackageRollbackInfo$RestoreInfo;
+    :try_start_149
+    invoke-virtual {v2, v3}, Landroid/content/rollback/PackageRollbackInfo;->removeRestoreInfo(Landroid/content/rollback/PackageRollbackInfo$RestoreInfo;)V
+    :try_end_14c
+    .catch Lcom/android/server/pm/Installer$InstallerException; {:try_start_149 .. :try_end_14c} :catch_14d
 
     .line 282
-    goto :goto_135
+    goto :goto_179
 
     .line 279
-    :catch_119
+    :catch_14d
     move-exception v0
 
-    goto :goto_11d
+    goto :goto_15b
 
-    :catch_11b
+    .end local v2  # "info":Landroid/content/rollback/PackageRollbackInfo;
+    .end local v3  # "ri":Landroid/content/rollback/PackageRollbackInfo$RestoreInfo;
+    .restart local v19  # "ri":Landroid/content/rollback/PackageRollbackInfo$RestoreInfo;
+    .restart local v20  # "info":Landroid/content/rollback/PackageRollbackInfo;
+    :catch_14f
     move-exception v0
+
+    move-object/from16 v3, v19
+
+    move-object/from16 v2, v20
+
+    .end local v19  # "ri":Landroid/content/rollback/PackageRollbackInfo$RestoreInfo;
+    .end local v20  # "info":Landroid/content/rollback/PackageRollbackInfo;
+    .restart local v2  # "info":Landroid/content/rollback/PackageRollbackInfo;
+    .restart local v3  # "ri":Landroid/content/rollback/PackageRollbackInfo$RestoreInfo;
+    goto :goto_15b
+
+    .end local v2  # "info":Landroid/content/rollback/PackageRollbackInfo;
+    .end local v3  # "ri":Landroid/content/rollback/PackageRollbackInfo$RestoreInfo;
+    .end local v21  # "data":Lcom/android/server/rollback/RollbackData;
+    .restart local v5  # "ri":Landroid/content/rollback/PackageRollbackInfo$RestoreInfo;
+    .restart local v6  # "info":Landroid/content/rollback/PackageRollbackInfo;
+    .restart local v7  # "data":Lcom/android/server/rollback/RollbackData;
+    :catch_155
+    move-exception v0
+
+    move-object v3, v5
+
+    move-object v2, v6
+
+    move-object/from16 v21, v7
 
     move-object v1, v8
 
     .line 280
-    :goto_11d
-    new-instance v2, Ljava/lang/StringBuilder;
+    .end local v5  # "ri":Landroid/content/rollback/PackageRollbackInfo$RestoreInfo;
+    .end local v6  # "info":Landroid/content/rollback/PackageRollbackInfo;
+    .end local v7  # "data":Lcom/android/server/rollback/RollbackData;
+    .restart local v0  # "ie":Lcom/android/server/pm/Installer$InstallerException;
+    .restart local v2  # "info":Landroid/content/rollback/PackageRollbackInfo;
+    .restart local v3  # "ri":Landroid/content/rollback/PackageRollbackInfo$RestoreInfo;
+    .restart local v21  # "data":Lcom/android/server/rollback/RollbackData;
+    :goto_15b
+    new-instance v4, Ljava/lang/StringBuilder;
 
-    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v4}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v3, "Unable to restore app data snapshot for: "
+    const-string v5, "Unable to restore app data snapshot for: "
 
-    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     .line 281
-    invoke-virtual {v1}, Landroid/content/rollback/PackageRollbackInfo;->getPackageName()Ljava/lang/String;
+    invoke-virtual {v2}, Landroid/content/rollback/PackageRollbackInfo;->getPackageName()Ljava/lang/String;
 
-    move-result-object v1
+    move-result-object v5
 
-    invoke-virtual {v2, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v4}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v1
+    move-result-object v4
 
     .line 280
-    invoke-static {v12, v1, v0}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    invoke-static {v1, v4, v0}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+
+    goto :goto_179
+
+    .line 273
+    .end local v0  # "ie":Lcom/android/server/pm/Installer$InstallerException;
+    .end local v2  # "info":Landroid/content/rollback/PackageRollbackInfo;
+    .end local v3  # "ri":Landroid/content/rollback/PackageRollbackInfo$RestoreInfo;
+    .end local v21  # "data":Lcom/android/server/rollback/RollbackData;
+    .restart local v5  # "ri":Landroid/content/rollback/PackageRollbackInfo$RestoreInfo;
+    .restart local v6  # "info":Landroid/content/rollback/PackageRollbackInfo;
+    .restart local v7  # "data":Lcom/android/server/rollback/RollbackData;
+    :cond_174
+    move-object v3, v5
+
+    move-object v2, v6
+
+    move-object/from16 v21, v7
+
+    move-object v1, v8
 
     .line 284
-    :cond_135
-    :goto_135
+    .end local v5  # "ri":Landroid/content/rollback/PackageRollbackInfo$RestoreInfo;
+    .end local v6  # "info":Landroid/content/rollback/PackageRollbackInfo;
+    .end local v7  # "data":Lcom/android/server/rollback/RollbackData;
+    .restart local v21  # "data":Lcom/android/server/rollback/RollbackData;
+    :goto_179
+    move-object v8, v1
+
+    move-object/from16 v7, v21
+
     move-object/from16 v1, p0
 
-    goto :goto_e8
+    goto :goto_110
+
+    .line 271
+    .end local v21  # "data":Lcom/android/server/rollback/RollbackData;
+    .restart local v7  # "data":Lcom/android/server/rollback/RollbackData;
+    :cond_17f
+    move-object/from16 v21, v7
+
+    move-object v1, v8
 
     .line 285
-    :cond_138
+    .end local v7  # "data":Lcom/android/server/rollback/RollbackData;
     move-object/from16 v1, p0
 
-    goto :goto_d1
+    goto/16 :goto_f9
 
     .line 288
-    :cond_13b
+    :cond_186
     new-instance v0, Ljava/util/HashSet;
 
-    invoke-direct {v0, v10}, Ljava/util/HashSet;-><init>(Ljava/util/Collection;)V
+    invoke-direct {v0, v12}, Ljava/util/HashSet;-><init>(Ljava/util/Collection;)V
 
     .line 289
-    invoke-interface {v0, v11}, Ljava/util/Set;->addAll(Ljava/util/Collection;)Z
+    .local v0, "changed":Ljava/util/Set;, "Ljava/util/Set<Lcom/android/server/rollback/RollbackData;>;"
+    invoke-interface {v0, v14}, Ljava/util/Set;->addAll(Ljava/util/Collection;)Z
 
     .line 290
     return-object v0
 .end method
 
 .method public destroyAppDataSnapshot(ILandroid/content/rollback/PackageRollbackInfo;I)V
-    .registers 13
+    .registers 15
+    .param p1, "rollbackId"  # I
+    .param p2, "packageRollbackInfo"  # Landroid/content/rollback/PackageRollbackInfo;
+    .param p3, "user"  # I
 
     .line 138
-    nop
+    const/4 v0, 0x1
 
     .line 139
+    .local v0, "storageFlags":I
     invoke-virtual {p2}, Landroid/content/rollback/PackageRollbackInfo;->getCeSnapshotInodes()Landroid/util/SparseLongArray;
 
-    move-result-object v0
+    move-result-object v1
 
     .line 140
-    invoke-virtual {v0, p3}, Landroid/util/SparseLongArray;->get(I)J
+    .local v1, "ceSnapshotInodes":Landroid/util/SparseLongArray;
+    invoke-virtual {v1, p3}, Landroid/util/SparseLongArray;->get(I)J
 
-    move-result-wide v4
+    move-result-wide v9
 
     .line 141
-    const-wide/16 v1, 0x0
+    .local v9, "ceSnapshotInode":J
+    const-wide/16 v2, 0x0
 
-    cmp-long v1, v4, v1
+    cmp-long v2, v9, v2
 
-    if-lez v1, :cond_12
+    if-lez v2, :cond_11
 
     .line 142
-    const/4 v1, 0x3
-
-    move v8, v1
-
-    goto :goto_14
-
-    .line 141
-    :cond_12
-    const/4 v1, 0x1
-
-    move v8, v1
+    or-int/lit8 v0, v0, 0x2
 
     .line 145
-    :goto_14
-    :try_start_14
-    iget-object v1, p0, Lcom/android/server/rollback/AppDataRollbackHelper;->mInstaller:Lcom/android/server/pm/Installer;
+    :cond_11
+    :try_start_11
+    iget-object v2, p0, Lcom/android/server/rollback/AppDataRollbackHelper;->mInstaller:Lcom/android/server/pm/Installer;
 
     invoke-virtual {p2}, Landroid/content/rollback/PackageRollbackInfo;->getPackageName()Ljava/lang/String;
 
-    move-result-object v2
+    move-result-object v3
 
-    move v3, p3
+    move v4, p3
 
-    move v6, p1
+    move-wide v5, v9
 
-    move v7, v8
+    move v7, p1
 
-    invoke-virtual/range {v1 .. v7}, Lcom/android/server/pm/Installer;->destroyAppDataSnapshot(Ljava/lang/String;IJII)Z
+    move v8, v0
+
+    invoke-virtual/range {v2 .. v8}, Lcom/android/server/pm/Installer;->destroyAppDataSnapshot(Ljava/lang/String;IJII)Z
 
     .line 147
-    and-int/lit8 p1, v8, 0x2
+    and-int/lit8 v2, v0, 0x2
 
-    if-eqz p1, :cond_27
+    if-eqz v2, :cond_25
 
     .line 148
-    invoke-virtual {v0, p3}, Landroid/util/SparseLongArray;->delete(I)V
-    :try_end_27
-    .catch Lcom/android/server/pm/Installer$InstallerException; {:try_start_14 .. :try_end_27} :catch_28
+    invoke-virtual {v1, p3}, Landroid/util/SparseLongArray;->delete(I)V
+    :try_end_25
+    .catch Lcom/android/server/pm/Installer$InstallerException; {:try_start_11 .. :try_end_25} :catch_26
 
     .line 153
-    :cond_27
-    goto :goto_43
+    :cond_25
+    goto :goto_41
 
     .line 150
-    :catch_28
-    move-exception p1
+    :catch_26
+    move-exception v2
 
     .line 151
-    new-instance p3, Ljava/lang/StringBuilder;
+    .local v2, "ie":Lcom/android/server/pm/Installer$InstallerException;
+    new-instance v3, Ljava/lang/StringBuilder;
 
-    invoke-direct {p3}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v0, "Unable to delete app data snapshot for "
+    const-string v4, "Unable to delete app data snapshot for "
 
-    invoke-virtual {p3, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     .line 152
     invoke-virtual {p2}, Landroid/content/rollback/PackageRollbackInfo;->getPackageName()Ljava/lang/String;
 
-    move-result-object p2
+    move-result-object v4
 
-    invoke-virtual {p3, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p2
+    move-result-object v3
 
     .line 151
-    const-string p3, "RollbackManager"
+    const-string v4, "RollbackManager"
 
-    invoke-static {p3, p2, p1}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    invoke-static {v4, v3, v2}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
     .line 154
-    :goto_43
+    .end local v2  # "ie":Lcom/android/server/pm/Installer$InstallerException;
+    :goto_41
     return-void
 .end method
 
 .method public isUserCredentialLocked(I)Z
     .registers 3
+    .param p1, "userId"  # I
     .annotation build Lcom/android/internal/annotations/VisibleForTesting;
     .end annotation
 
@@ -786,156 +1010,195 @@
     .line 299
     invoke-static {p1}, Landroid/os/storage/StorageManager;->isUserKeyUnlocked(I)Z
 
-    move-result p1
+    move-result v0
 
-    if-nez p1, :cond_e
+    if-nez v0, :cond_e
 
-    const/4 p1, 0x1
+    const/4 v0, 0x1
 
     goto :goto_f
 
     :cond_e
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
     .line 298
     :goto_f
-    return p1
+    return v0
 .end method
 
 .method public restoreAppData(ILandroid/content/rollback/PackageRollbackInfo;IILjava/lang/String;)Z
-    .registers 16
+    .registers 22
+    .param p1, "rollbackId"  # I
+    .param p2, "packageRollbackInfo"  # Landroid/content/rollback/PackageRollbackInfo;
+    .param p3, "userId"  # I
+    .param p4, "appId"  # I
+    .param p5, "seInfo"  # Ljava/lang/String;
 
     .line 95
-    nop
+    move-object/from16 v1, p0
+
+    move/from16 v9, p3
+
+    const/4 v0, 0x1
 
     .line 97
-    invoke-virtual {p2}, Landroid/content/rollback/PackageRollbackInfo;->getPendingBackups()Landroid/util/IntArray;
+    .local v0, "storageFlags":I
+    invoke-virtual/range {p2 .. p2}, Landroid/content/rollback/PackageRollbackInfo;->getPendingBackups()Landroid/util/IntArray;
 
-    move-result-object v0
+    move-result-object v10
 
     .line 98
-    invoke-virtual {p2}, Landroid/content/rollback/PackageRollbackInfo;->getPendingRestores()Ljava/util/ArrayList;
+    .local v10, "pendingBackups":Landroid/util/IntArray;
+    invoke-virtual/range {p2 .. p2}, Landroid/content/rollback/PackageRollbackInfo;->getPendingRestores()Ljava/util/ArrayList;
 
-    move-result-object v1
+    move-result-object v11
 
     .line 99
-    nop
+    .local v11, "pendingRestores":Ljava/util/List;, "Ljava/util/List<Landroid/content/rollback/PackageRollbackInfo$RestoreInfo;>;"
+    const/4 v2, 0x0
 
     .line 104
-    const/4 v2, 0x1
+    .local v2, "changedRollbackData":Z
+    if-eqz v10, :cond_26
 
-    if-eqz v0, :cond_1d
-
-    invoke-virtual {v0, p3}, Landroid/util/IntArray;->indexOf(I)I
+    invoke-virtual {v10, v9}, Landroid/util/IntArray;->indexOf(I)I
 
     move-result v3
 
     const/4 v4, -0x1
 
-    if-eq v3, v4, :cond_1d
+    if-eq v3, v4, :cond_26
 
     .line 105
-    invoke-virtual {v0, p3}, Landroid/util/IntArray;->indexOf(I)I
+    invoke-virtual {v10, v9}, Landroid/util/IntArray;->indexOf(I)I
 
-    move-result v1
+    move-result v3
 
-    invoke-virtual {v0, v1}, Landroid/util/IntArray;->remove(I)V
+    invoke-virtual {v10, v3}, Landroid/util/IntArray;->remove(I)V
 
     .line 106
-    move v9, v2
+    const/4 v2, 0x1
 
-    goto :goto_31
+    move/from16 v12, p4
+
+    move-object/from16 v13, p5
+
+    move v14, v0
+
+    move v15, v2
+
+    goto :goto_44
 
     .line 110
-    :cond_1d
-    invoke-virtual {p0, p3}, Lcom/android/server/rollback/AppDataRollbackHelper;->isUserCredentialLocked(I)Z
+    :cond_26
+    invoke-virtual {v1, v9}, Lcom/android/server/rollback/AppDataRollbackHelper;->isUserCredentialLocked(I)Z
 
-    move-result v0
+    move-result v3
 
-    if-eqz v0, :cond_2d
+    if-eqz v3, :cond_3c
 
     .line 113
-    new-instance v0, Landroid/content/rollback/PackageRollbackInfo$RestoreInfo;
+    new-instance v3, Landroid/content/rollback/PackageRollbackInfo$RestoreInfo;
 
-    invoke-direct {v0, p3, p4, p5}, Landroid/content/rollback/PackageRollbackInfo$RestoreInfo;-><init>(IILjava/lang/String;)V
+    move/from16 v12, p4
 
-    invoke-interface {v1, v0}, Ljava/util/List;->add(Ljava/lang/Object;)Z
+    move-object/from16 v13, p5
+
+    invoke-direct {v3, v9, v12, v13}, Landroid/content/rollback/PackageRollbackInfo$RestoreInfo;-><init>(IILjava/lang/String;)V
+
+    invoke-interface {v11, v3}, Ljava/util/List;->add(Ljava/lang/Object;)Z
 
     .line 114
-    move v9, v2
+    const/4 v2, 0x1
 
-    goto :goto_31
+    move v14, v0
+
+    move v15, v2
+
+    goto :goto_44
 
     .line 117
-    :cond_2d
-    const/4 v2, 0x3
+    :cond_3c
+    move/from16 v12, p4
 
-    const/4 v0, 0x0
+    move-object/from16 v13, p5
 
-    move v9, v2
+    or-int/lit8 v0, v0, 0x2
 
-    move v2, v0
+    move v14, v0
+
+    move v15, v2
 
     .line 122
-    :goto_31
-    :try_start_31
-    iget-object v3, p0, Lcom/android/server/rollback/AppDataRollbackHelper;->mInstaller:Lcom/android/server/pm/Installer;
+    .end local v0  # "storageFlags":I
+    .end local v2  # "changedRollbackData":Z
+    .local v14, "storageFlags":I
+    .local v15, "changedRollbackData":Z
+    :goto_44
+    :try_start_44
+    iget-object v2, v1, Lcom/android/server/rollback/AppDataRollbackHelper;->mInstaller:Lcom/android/server/pm/Installer;
 
-    invoke-virtual {p2}, Landroid/content/rollback/PackageRollbackInfo;->getPackageName()Ljava/lang/String;
+    invoke-virtual/range {p2 .. p2}, Landroid/content/rollback/PackageRollbackInfo;->getPackageName()Ljava/lang/String;
 
-    move-result-object v4
+    move-result-object v3
 
-    move v5, p4
+    move/from16 v4, p4
 
-    move-object v6, p5
+    move-object/from16 v5, p5
 
-    move v7, p3
+    move/from16 v6, p3
 
-    move v8, p1
+    move/from16 v7, p1
 
-    invoke-virtual/range {v3 .. v9}, Lcom/android/server/pm/Installer;->restoreAppDataSnapshot(Ljava/lang/String;ILjava/lang/String;III)Z
-    :try_end_3e
-    .catch Lcom/android/server/pm/Installer$InstallerException; {:try_start_31 .. :try_end_3e} :catch_3f
+    move v8, v14
+
+    invoke-virtual/range {v2 .. v8}, Lcom/android/server/pm/Installer;->restoreAppDataSnapshot(Ljava/lang/String;ILjava/lang/String;III)Z
+    :try_end_56
+    .catch Lcom/android/server/pm/Installer$InstallerException; {:try_start_44 .. :try_end_56} :catch_57
 
     .line 127
-    goto :goto_5a
+    goto :goto_72
 
     .line 124
-    :catch_3f
-    move-exception p1
+    :catch_57
+    move-exception v0
 
     .line 125
-    new-instance p3, Ljava/lang/StringBuilder;
+    .local v0, "ie":Lcom/android/server/pm/Installer$InstallerException;
+    new-instance v2, Ljava/lang/StringBuilder;
 
-    invoke-direct {p3}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string p4, "Unable to restore app data snapshot: "
+    const-string v3, "Unable to restore app data snapshot: "
 
-    invoke-virtual {p3, p4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     .line 126
-    invoke-virtual {p2}, Landroid/content/rollback/PackageRollbackInfo;->getPackageName()Ljava/lang/String;
+    invoke-virtual/range {p2 .. p2}, Landroid/content/rollback/PackageRollbackInfo;->getPackageName()Ljava/lang/String;
 
-    move-result-object p2
+    move-result-object v3
 
-    invoke-virtual {p3, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p2
+    move-result-object v2
 
     .line 125
-    const-string p3, "RollbackManager"
+    const-string v3, "RollbackManager"
 
-    invoke-static {p3, p2, p1}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    invoke-static {v3, v2, v0}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
     .line 129
-    :goto_5a
-    return v2
+    .end local v0  # "ie":Lcom/android/server/pm/Installer$InstallerException;
+    :goto_72
+    return v15
 .end method
 
 .method public snapshotAppData(ILandroid/content/rollback/PackageRollbackInfo;)V
-    .registers 11
+    .registers 12
+    .param p1, "snapshotId"  # I
+    .param p2, "packageRollbackInfo"  # Landroid/content/rollback/PackageRollbackInfo;
 
     .line 59
     invoke-virtual {p2}, Landroid/content/rollback/PackageRollbackInfo;->getInstalledUsers()Landroid/util/IntArray;
@@ -947,23 +1210,25 @@
     move-result-object v0
 
     .line 60
+    .local v0, "installedUsers":[I
     array-length v1, v0
 
     const/4 v2, 0x0
 
     :goto_a
-    if-ge v2, v1, :cond_6c
+    if-ge v2, v1, :cond_6b
 
     aget v3, v0, v2
 
     .line 62
+    .local v3, "user":I
     invoke-virtual {p0, v3}, Lcom/android/server/rollback/AppDataRollbackHelper;->isUserCredentialLocked(I)Z
 
     move-result v4
 
     const-string v5, "RollbackManager"
 
-    if-eqz v4, :cond_35
+    if-eqz v4, :cond_34
 
     .line 65
     new-instance v4, Ljava/lang/StringBuilder;
@@ -987,22 +1252,23 @@
     invoke-static {v5, v4}, Landroid/util/Log;->v(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 66
-    nop
-
-    .line 67
-    invoke-virtual {p2, v3}, Landroid/content/rollback/PackageRollbackInfo;->addPendingBackup(I)V
-
     const/4 v4, 0x1
 
-    goto :goto_36
+    .line 67
+    .local v4, "storageFlags":I
+    invoke-virtual {p2, v3}, Landroid/content/rollback/PackageRollbackInfo;->addPendingBackup(I)V
+
+    goto :goto_35
 
     .line 69
-    :cond_35
+    .end local v4  # "storageFlags":I
+    :cond_34
     const/4 v4, 0x3
 
     .line 73
-    :goto_36
-    :try_start_36
+    .restart local v4  # "storageFlags":I
+    :goto_35
+    :try_start_35
     iget-object v6, p0, Lcom/android/server/rollback/AppDataRollbackHelper;->mInstaller:Lcom/android/server/pm/Installer;
 
     .line 74
@@ -1016,59 +1282,65 @@
     move-result-wide v6
 
     .line 75
-    and-int/lit8 v4, v4, 0x2
+    .local v6, "ceSnapshotInode":J
+    and-int/lit8 v8, v4, 0x2
 
-    if-eqz v4, :cond_47
+    if-eqz v8, :cond_46
 
     .line 76
     invoke-virtual {p2, v3, v6, v7}, Landroid/content/rollback/PackageRollbackInfo;->putCeSnapshotInode(IJ)V
-    :try_end_47
-    .catch Lcom/android/server/pm/Installer$InstallerException; {:try_start_36 .. :try_end_47} :catch_48
+    :try_end_46
+    .catch Lcom/android/server/pm/Installer$InstallerException; {:try_start_35 .. :try_end_46} :catch_47
 
     .line 81
-    :cond_47
-    goto :goto_69
+    .end local v6  # "ceSnapshotInode":J
+    :cond_46
+    goto :goto_68
 
     .line 78
-    :catch_48
-    move-exception v4
+    :catch_47
+    move-exception v6
 
     .line 79
-    new-instance v6, Ljava/lang/StringBuilder;
+    .local v6, "ie":Lcom/android/server/pm/Installer$InstallerException;
+    new-instance v7, Ljava/lang/StringBuilder;
 
-    invoke-direct {v6}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v7}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v7, "Unable to create app data snapshot for: "
+    const-string v8, "Unable to create app data snapshot for: "
 
-    invoke-virtual {v6, v7}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v7, v8}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     .line 80
     invoke-virtual {p2}, Landroid/content/rollback/PackageRollbackInfo;->getPackageName()Ljava/lang/String;
 
+    move-result-object v8
+
+    invoke-virtual {v7, v8}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    const-string v8, ", userId: "
+
+    invoke-virtual {v7, v8}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v7, v3}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v7}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
     move-result-object v7
 
-    invoke-virtual {v6, v7}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    const-string v7, ", userId: "
-
-    invoke-virtual {v6, v7}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v6, v3}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v6}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
-
-    move-result-object v3
-
     .line 79
-    invoke-static {v5, v3, v4}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    invoke-static {v5, v7, v6}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
     .line 60
-    :goto_69
+    .end local v3  # "user":I
+    .end local v4  # "storageFlags":I
+    .end local v6  # "ie":Lcom/android/server/pm/Installer$InstallerException;
+    :goto_68
     add-int/lit8 v2, v2, 0x1
 
     goto :goto_a
 
     .line 83
-    :cond_6c
+    :cond_6b
     return-void
 .end method

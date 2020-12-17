@@ -28,6 +28,11 @@
 # virtual methods
 .method public onNatTimeoutUpdate(ILjava/lang/String;ILjava/lang/String;I)V
     .registers 6
+    .param p1, "proto"  # I
+    .param p2, "srcAddr"  # Ljava/lang/String;
+    .param p3, "srcPort"  # I
+    .param p4, "dstAddr"  # Ljava/lang/String;
+    .param p5, "dstPort"  # I
 
     .line 67
     return-void

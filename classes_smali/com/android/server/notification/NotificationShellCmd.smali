@@ -4,17 +4,17 @@
 
 
 # static fields
-.field public static final CHANNEL_ID:Ljava/lang/String; = "shell_cmd"
+.field public static final CHANNEL_ID:Ljava/lang/String; = "shellcmd"
 
 .field public static final CHANNEL_IMP:I = 0x3
 
 .field public static final CHANNEL_NAME:Ljava/lang/String; = "Shell command"
 
-.field public static final NOTIFICATION_ID:I = 0x7e4
+.field public static final NOTIFICATION_ID:I = 0x472
+
+.field public static final NOTIFICATION_PACKAGE:Ljava/lang/String; = "com.android.shell"
 
 .field private static final NOTIFY_USAGE:Ljava/lang/String; = "usage: cmd notification post [flags] <tag> <text>\n\nflags:\n  -h|--help\n  -v|--verbose\n  -t|--title <text>\n  -i|--icon <iconspec>\n  -I|--large-icon <iconspec>\n  -S|--style <style> [styleargs]\n  -c|--content-intent <intentspec>\n\nstyles: (default none)\n  bigtext\n  bigpicture --picture <iconspec>\n  inbox --line <text> --line <text> ...\n  messaging --conversation <title> --message <who>:<text> ...\n  media\n\nan <iconspec> is one of\n  file:///data/local/tmp/<img.png>\n  content://<provider>/<path>\n  @[<package>:]drawable/<img>\n  data:base64,<B64DATA==>\n\nan <intentspec> is (broadcast|service|activity) <args>\n  <args> are as described in `am start`"
-
-.field private static final TAG:Ljava/lang/String; = "NotifShellCmd"
 
 .field private static final USAGE:Ljava/lang/String; = "usage: cmd notification SUBCMD [args]\n\nSUBCMDs:\n  allow_listener COMPONENT [user_id (current user if not specified)]\n  disallow_listener COMPONENT [user_id (current user if not specified)]\n  allow_assistant COMPONENT [user_id (current user if not specified)]\n  remove_assistant COMPONENT [user_id (current user if not specified)]\n  allow_dnd PACKAGE [user_id (current user if not specified)]\n  disallow_dnd PACKAGE [user_id (current user if not specified)]\n  suspend_package PACKAGE\n  unsuspend_package PACKAGE\n  reset_assistant_user_set [user_id (current user if not specified)]\n  get_approved_assistant [user_id (current user if not specified)]\n  post [--help | flags] TAG TEXT"
 
@@ -24,45 +24,32 @@
 
 .field private final mDirectService:Lcom/android/server/notification/NotificationManagerService;
 
-.field private final mPm:Landroid/content/pm/PackageManager;
-
 
 # direct methods
 .method public constructor <init>(Lcom/android/server/notification/NotificationManagerService;)V
-    .registers 2
+    .registers 3
+    .param p1, "service"  # Lcom/android/server/notification/NotificationManagerService;
 
-    .line 108
+    .line 101
     invoke-direct {p0}, Landroid/os/ShellCommand;-><init>()V
 
-    .line 109
+    .line 102
     iput-object p1, p0, Lcom/android/server/notification/NotificationShellCmd;->mDirectService:Lcom/android/server/notification/NotificationManagerService;
 
-    .line 110
+    .line 103
     invoke-virtual {p1}, Lcom/android/server/notification/NotificationManagerService;->getBinderService()Landroid/app/INotificationManager;
 
-    move-result-object p1
+    move-result-object v0
 
-    iput-object p1, p0, Lcom/android/server/notification/NotificationShellCmd;->mBinderService:Landroid/app/INotificationManager;
+    iput-object v0, p0, Lcom/android/server/notification/NotificationShellCmd;->mBinderService:Landroid/app/INotificationManager;
 
-    .line 111
-    iget-object p1, p0, Lcom/android/server/notification/NotificationShellCmd;->mDirectService:Lcom/android/server/notification/NotificationManagerService;
-
-    invoke-virtual {p1}, Lcom/android/server/notification/NotificationManagerService;->getContext()Landroid/content/Context;
-
-    move-result-object p1
-
-    invoke-virtual {p1}, Landroid/content/Context;->getPackageManager()Landroid/content/pm/PackageManager;
-
-    move-result-object p1
-
-    iput-object p1, p0, Lcom/android/server/notification/NotificationShellCmd;->mPm:Landroid/content/pm/PackageManager;
-
-    .line 112
+    .line 104
     return-void
 .end method
 
-.method private doNotify(Ljava/io/PrintWriter;Ljava/lang/String;I)I
-    .registers 26
+.method private doNotify(Ljava/io/PrintWriter;)I
+    .registers 33
+    .param p1, "pw"  # Ljava/io/PrintWriter;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;,
@@ -70,604 +57,654 @@
         }
     .end annotation
 
-    .line 322
+    .line 291
     move-object/from16 v1, p0
 
     move-object/from16 v2, p1
-
-    move-object/from16 v10, p2
 
     iget-object v0, v1, Lcom/android/server/notification/NotificationShellCmd;->mDirectService:Lcom/android/server/notification/NotificationManagerService;
 
     invoke-virtual {v0}, Lcom/android/server/notification/NotificationManagerService;->getContext()Landroid/content/Context;
 
-    move-result-object v11
+    move-result-object v9
 
-    .line 323
-    invoke-virtual {v11}, Landroid/content/Context;->getResources()Landroid/content/res/Resources;
+    .line 292
+    .local v9, "context":Landroid/content/Context;
+    invoke-virtual {v9}, Landroid/content/Context;->getResources()Landroid/content/res/Resources;
 
-    move-result-object v0
+    move-result-object v10
 
-    .line 324
-    new-instance v9, Landroid/app/Notification$Builder;
+    .line 293
+    .local v10, "res":Landroid/content/res/Resources;
+    new-instance v0, Landroid/app/Notification$Builder;
 
-    const-string/jumbo v3, "shell_cmd"
+    const-string/jumbo v3, "shellcmd"
 
-    invoke-direct {v9, v11, v3}, Landroid/app/Notification$Builder;-><init>(Landroid/content/Context;Ljava/lang/String;)V
+    invoke-direct {v0, v9, v3}, Landroid/app/Notification$Builder;-><init>(Landroid/content/Context;Ljava/lang/String;)V
 
-    .line 327
-    nop
+    move-object v11, v0
 
-    .line 328
-    nop
+    .line 296
+    .local v11, "builder":Landroid/app/Notification$Builder;
+    const/4 v0, 0x0
 
-    .line 329
-    nop
+    .line 297
+    .local v0, "verbose":Z
+    const/4 v3, 0x0
 
-    .line 330
-    nop
+    .line 298
+    .local v3, "bigPictureStyle":Landroid/app/Notification$BigPictureStyle;
+    const/4 v4, 0x0
 
-    .line 331
-    nop
+    .line 299
+    .local v4, "bigTextStyle":Landroid/app/Notification$BigTextStyle;
+    const/4 v5, 0x0
 
-    .line 332
-    nop
-
-    .line 334
+    .line 300
+    .local v5, "inboxStyle":Landroid/app/Notification$InboxStyle;
     const/4 v6, 0x0
 
+    .line 301
+    .local v6, "mediaStyle":Landroid/app/Notification$MediaStyle;
     const/4 v7, 0x0
 
+    .line 303
+    .local v7, "messagingStyle":Landroid/app/Notification$MessagingStyle;
     const/4 v8, 0x0
 
-    const/4 v14, 0x0
+    move v13, v0
 
-    const/4 v15, 0x0
+    move-object v14, v3
 
-    const/16 v16, 0x0
+    move-object v15, v4
 
-    .line 335
+    move-object/from16 v16, v6
+
+    move-object v12, v8
+
+    move-object v8, v5
+
+    .line 304
+    .end local v0  # "verbose":Z
+    .end local v3  # "bigPictureStyle":Landroid/app/Notification$BigPictureStyle;
+    .end local v4  # "bigTextStyle":Landroid/app/Notification$BigTextStyle;
+    .end local v5  # "inboxStyle":Landroid/app/Notification$InboxStyle;
+    .end local v6  # "mediaStyle":Landroid/app/Notification$MediaStyle;
+    .local v8, "inboxStyle":Landroid/app/Notification$InboxStyle;
+    .local v12, "smallIcon":Landroid/graphics/drawable/Icon;
+    .local v13, "verbose":Z
+    .local v14, "bigPictureStyle":Landroid/app/Notification$BigPictureStyle;
+    .local v15, "bigTextStyle":Landroid/app/Notification$BigTextStyle;
+    .local v16, "mediaStyle":Landroid/app/Notification$MediaStyle;
     :goto_25
     invoke-virtual/range {p0 .. p0}, Lcom/android/server/notification/NotificationShellCmd;->getNextOption()Ljava/lang/String;
 
-    move-result-object v3
+    move-result-object v0
 
-    const-string/jumbo v4, "usage: cmd notification post [flags] <tag> <text>\n\nflags:\n  -h|--help\n  -v|--verbose\n  -t|--title <text>\n  -i|--icon <iconspec>\n  -I|--large-icon <iconspec>\n  -S|--style <style> [styleargs]\n  -c|--content-intent <intentspec>\n\nstyles: (default none)\n  bigtext\n  bigpicture --picture <iconspec>\n  inbox --line <text> --line <text> ...\n  messaging --conversation <title> --message <who>:<text> ...\n  media\n\nan <iconspec> is one of\n  file:///data/local/tmp/<img.png>\n  content://<provider>/<path>\n  @[<package>:]drawable/<img>\n  data:base64,<B64DATA==>\n\nan <intentspec> is (broadcast|service|activity) <args>\n  <args> are as described in `am start`"
+    move-object v6, v0
 
-    const/16 v17, -0x1
+    .local v6, "opt":Ljava/lang/String;
+    const-string/jumbo v3, "usage: cmd notification post [flags] <tag> <text>\n\nflags:\n  -h|--help\n  -v|--verbose\n  -t|--title <text>\n  -i|--icon <iconspec>\n  -I|--large-icon <iconspec>\n  -S|--style <style> [styleargs]\n  -c|--content-intent <intentspec>\n\nstyles: (default none)\n  bigtext\n  bigpicture --picture <iconspec>\n  inbox --line <text> --line <text> ...\n  messaging --conversation <title> --message <who>:<text> ...\n  media\n\nan <iconspec> is one of\n  file:///data/local/tmp/<img.png>\n  content://<provider>/<path>\n  @[<package>:]drawable/<img>\n  data:base64,<B64DATA==>\n\nan <intentspec> is (broadcast|service|activity) <args>\n  <args> are as described in `am start`"
 
-    if-eqz v3, :cond_47c
+    if-eqz v0, :cond_4ab
 
-    .line 336
-    nop
+    .line 305
+    const/4 v0, 0x0
 
-    .line 337
-    invoke-virtual {v3}, Ljava/lang/String;->hashCode()I
+    .line 306
+    .local v0, "large":Z
+    invoke-virtual {v6}, Ljava/lang/String;->hashCode()I
 
-    move-result v18
+    move-result v17
 
-    const/4 v12, 0x2
+    const/4 v5, 0x2
 
-    const/4 v5, 0x1
+    sparse-switch v17, :sswitch_data_584
 
-    sparse-switch v18, :sswitch_data_52c
-
-    :cond_3a
+    :cond_38
     goto/16 :goto_194
 
-    :sswitch_3c
-    const-string v13, "large-icon"
+    :sswitch_3a
+    const-string/jumbo v4, "large-icon"
 
-    invoke-virtual {v3, v13}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v6, v4}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result v3
+    move-result v4
 
-    if-eqz v3, :cond_3a
+    if-eqz v4, :cond_38
 
-    const/16 v13, 0x9
+    const/16 v4, 0x9
 
-    goto/16 :goto_196
+    goto/16 :goto_195
 
-    :sswitch_48
-    const-string v13, "--verbose"
+    :sswitch_47
+    const-string v4, "--verbose"
 
-    invoke-virtual {v3, v13}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v6, v4}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result v3
+    move-result v4
 
-    if-eqz v3, :cond_3a
+    if-eqz v4, :cond_38
 
-    move v13, v5
+    const/4 v4, 0x1
 
-    goto/16 :goto_196
+    goto/16 :goto_195
 
-    :sswitch_53
-    const-string v13, "--line"
+    :sswitch_52
+    const-string v4, "--line"
 
-    invoke-virtual {v3, v13}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v6, v4}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result v3
+    move-result v4
 
-    if-eqz v3, :cond_3a
+    if-eqz v4, :cond_38
 
-    const/16 v13, 0x18
+    const/16 v4, 0x18
 
-    goto/16 :goto_196
+    goto/16 :goto_195
 
-    :sswitch_5f
-    const-string v13, "--icon"
+    :sswitch_5e
+    const-string v4, "--icon"
 
-    invoke-virtual {v3, v13}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v6, v4}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result v3
+    move-result v4
 
-    if-eqz v3, :cond_3a
+    if-eqz v4, :cond_38
 
-    const/16 v13, 0xb
+    const/16 v4, 0xb
 
-    goto/16 :goto_196
+    goto/16 :goto_195
 
-    :sswitch_6b
-    const-string v13, "--help"
+    :sswitch_6a
+    const-string v4, "--help"
 
-    invoke-virtual {v3, v13}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v6, v4}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result v3
+    move-result v4
 
-    if-eqz v3, :cond_3a
+    if-eqz v4, :cond_38
 
-    const/16 v13, 0x1c
+    const/16 v4, 0x1c
 
-    goto/16 :goto_196
+    goto/16 :goto_195
 
-    :sswitch_77
-    const-string v13, "--bigtext"
+    :sswitch_76
+    const-string v4, "--bigtext"
 
-    invoke-virtual {v3, v13}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v6, v4}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result v3
+    move-result v4
 
-    if-eqz v3, :cond_3a
+    if-eqz v4, :cond_38
 
-    const/16 v13, 0x15
+    const/16 v4, 0x15
 
-    goto/16 :goto_196
+    goto/16 :goto_195
 
-    :sswitch_83
-    const-string v13, "--bigText"
+    :sswitch_82
+    const-string v4, "--bigText"
 
-    invoke-virtual {v3, v13}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v6, v4}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result v3
+    move-result v4
 
-    if-eqz v3, :cond_3a
+    if-eqz v4, :cond_38
 
-    const/16 v13, 0x14
+    const/16 v4, 0x14
 
-    goto/16 :goto_196
+    goto/16 :goto_195
 
-    :sswitch_8f
-    const-string v13, "--largeicon"
+    :sswitch_8e
+    const-string v4, "--largeicon"
 
-    invoke-virtual {v3, v13}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v6, v4}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result v3
+    move-result v4
 
-    if-eqz v3, :cond_3a
+    if-eqz v4, :cond_38
 
-    const/4 v13, 0x7
+    const/4 v4, 0x7
 
-    goto/16 :goto_196
+    goto/16 :goto_195
 
-    :sswitch_9a
-    const-string v13, "--intent"
+    :sswitch_99
+    const-string v4, "--intent"
 
-    invoke-virtual {v3, v13}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v6, v4}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result v3
+    move-result v4
 
-    if-eqz v3, :cond_3a
+    if-eqz v4, :cond_38
 
-    const/16 v13, 0x10
+    const/16 v4, 0x10
 
-    goto/16 :goto_196
+    goto/16 :goto_195
 
-    :sswitch_a6
-    const-string v13, "--picture"
+    :sswitch_a5
+    const-string v4, "--picture"
 
-    invoke-virtual {v3, v13}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v6, v4}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result v3
+    move-result v4
 
-    if-eqz v3, :cond_3a
+    if-eqz v4, :cond_38
 
-    const/16 v13, 0x17
+    const/16 v4, 0x17
 
-    goto/16 :goto_196
+    goto/16 :goto_195
 
-    :sswitch_b2
-    const-string v13, "largeicon"
+    :sswitch_b1
+    const-string/jumbo v4, "largeicon"
 
-    invoke-virtual {v3, v13}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v6, v4}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result v3
+    move-result v4
 
-    if-eqz v3, :cond_3a
+    if-eqz v4, :cond_38
 
-    const/16 v13, 0x8
+    const/16 v4, 0x8
 
-    goto/16 :goto_196
+    goto/16 :goto_195
 
     :sswitch_be
-    const-string v13, "--content-intent"
+    const-string v4, "--content-intent"
 
-    invoke-virtual {v3, v13}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v6, v4}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result v3
+    move-result v4
 
-    if-eqz v3, :cond_3a
+    if-eqz v4, :cond_38
 
-    const/16 v13, 0xe
+    const/16 v4, 0xe
 
-    goto/16 :goto_196
+    goto/16 :goto_195
 
     :sswitch_ca
-    const-string v13, "--big-text"
+    const-string v4, "--big-text"
 
-    invoke-virtual {v3, v13}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v6, v4}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result v3
+    move-result v4
 
-    if-eqz v3, :cond_3a
+    if-eqz v4, :cond_38
 
-    const/16 v13, 0x16
+    const/16 v4, 0x16
 
-    goto/16 :goto_196
+    goto/16 :goto_195
 
     :sswitch_d6
-    const-string/jumbo v13, "title"
+    const-string/jumbo v4, "title"
 
-    invoke-virtual {v3, v13}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v6, v4}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result v3
+    move-result v4
 
-    if-eqz v3, :cond_3a
+    if-eqz v4, :cond_38
 
-    const/4 v13, 0x4
+    const/4 v4, 0x4
 
-    goto/16 :goto_196
+    goto/16 :goto_195
 
     :sswitch_e2
-    const-string v13, "--wtf"
+    const-string v4, "--wtf"
 
-    invoke-virtual {v3, v13}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v6, v4}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result v3
+    move-result v4
 
-    if-eqz v3, :cond_3a
+    if-eqz v4, :cond_38
 
-    const/16 v13, 0x1d
+    const/16 v4, 0x1d
 
-    goto/16 :goto_196
+    goto/16 :goto_195
 
     :sswitch_ee
-    const-string v13, "icon"
+    const-string v4, "icon"
 
-    invoke-virtual {v3, v13}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v6, v4}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result v3
+    move-result v4
 
-    if-eqz v3, :cond_3a
+    if-eqz v4, :cond_38
 
-    const/16 v13, 0xc
+    const/16 v4, 0xc
 
-    goto/16 :goto_196
+    goto/16 :goto_195
 
     :sswitch_fa
-    const-string v13, "-v"
+    const-string v4, "-v"
 
-    invoke-virtual {v3, v13}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v6, v4}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result v3
+    move-result v4
 
-    if-eqz v3, :cond_3a
+    if-eqz v4, :cond_38
 
-    const/4 v13, 0x0
+    const/4 v4, 0x0
 
-    goto/16 :goto_196
+    goto/16 :goto_195
 
     :sswitch_105
-    const-string v13, "-t"
+    const-string v4, "-t"
 
-    invoke-virtual {v3, v13}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v6, v4}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result v3
+    move-result v4
 
-    if-eqz v3, :cond_3a
+    if-eqz v4, :cond_38
 
-    move v13, v12
+    move v4, v5
 
-    goto/16 :goto_196
+    goto/16 :goto_195
 
     :sswitch_110
-    const-string v13, "-i"
+    const-string v4, "-i"
 
-    invoke-virtual {v3, v13}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v6, v4}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result v3
+    move-result v4
 
-    if-eqz v3, :cond_3a
+    if-eqz v4, :cond_38
 
-    const/16 v13, 0xa
+    const/16 v4, 0xa
 
-    goto/16 :goto_196
+    goto/16 :goto_195
 
     :sswitch_11c
-    const-string v13, "-h"
+    const-string v4, "-h"
 
-    invoke-virtual {v3, v13}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v6, v4}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result v3
+    move-result v4
 
-    if-eqz v3, :cond_3a
+    if-eqz v4, :cond_38
 
-    const/16 v13, 0x1b
+    const/16 v4, 0x1b
 
-    goto/16 :goto_196
+    goto/16 :goto_195
 
     :sswitch_128
-    const-string v13, "-c"
+    const-string v4, "-c"
 
-    invoke-virtual {v3, v13}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v6, v4}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result v3
+    move-result v4
 
-    if-eqz v3, :cond_3a
+    if-eqz v4, :cond_38
 
-    const/16 v13, 0xd
+    const/16 v4, 0xd
 
-    goto/16 :goto_196
+    goto :goto_195
 
-    :sswitch_134
-    const-string v13, "-S"
+    :sswitch_133
+    const-string v4, "-S"
 
-    invoke-virtual {v3, v13}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v6, v4}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result v3
+    move-result v4
 
-    if-eqz v3, :cond_3a
+    if-eqz v4, :cond_38
 
-    const/16 v13, 0x12
+    const/16 v4, 0x12
 
-    goto :goto_196
+    goto :goto_195
 
-    :sswitch_13f
-    const-string v13, "-I"
+    :sswitch_13e
+    const-string v4, "-I"
 
-    invoke-virtual {v3, v13}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v6, v4}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result v3
+    move-result v4
 
-    if-eqz v3, :cond_3a
+    if-eqz v4, :cond_38
 
-    const/4 v13, 0x5
+    const/4 v4, 0x5
 
-    goto :goto_196
+    goto :goto_195
 
-    :sswitch_149
-    const-string v13, "--large-icon"
+    :sswitch_148
+    const-string v4, "--large-icon"
 
-    invoke-virtual {v3, v13}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v6, v4}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result v3
+    move-result v4
 
-    if-eqz v3, :cond_3a
+    if-eqz v4, :cond_38
 
-    const/4 v13, 0x6
+    const/4 v4, 0x6
 
-    goto :goto_196
+    goto :goto_195
 
-    :sswitch_153
-    const-string v13, "--conversation"
+    :sswitch_152
+    const-string v4, "--conversation"
 
-    invoke-virtual {v3, v13}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v6, v4}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result v3
+    move-result v4
 
-    if-eqz v3, :cond_3a
+    if-eqz v4, :cond_38
 
-    const/16 v13, 0x1a
+    const/16 v4, 0x1a
 
-    goto :goto_196
+    goto :goto_195
 
-    :sswitch_15e
-    const-string v13, "intent"
+    :sswitch_15d
+    const-string/jumbo v4, "intent"
 
-    invoke-virtual {v3, v13}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v6, v4}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result v3
+    move-result v4
 
-    if-eqz v3, :cond_3a
+    if-eqz v4, :cond_38
 
-    const/16 v13, 0x11
+    const/16 v4, 0x11
 
-    goto :goto_196
+    goto :goto_195
 
     :sswitch_169
-    const-string v13, "content-intent"
+    const-string v4, "content-intent"
 
-    invoke-virtual {v3, v13}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v6, v4}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result v3
+    move-result v4
 
-    if-eqz v3, :cond_3a
+    if-eqz v4, :cond_38
 
-    const/16 v13, 0xf
+    const/16 v4, 0xf
 
-    goto :goto_196
+    goto :goto_195
 
     :sswitch_174
-    const-string v13, "--title"
+    const-string v4, "--title"
 
-    invoke-virtual {v3, v13}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v6, v4}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result v3
+    move-result v4
 
-    if-eqz v3, :cond_3a
+    if-eqz v4, :cond_38
 
-    const/4 v13, 0x3
+    const/4 v4, 0x3
 
-    goto :goto_196
+    goto :goto_195
 
     :sswitch_17e
-    const-string v13, "--style"
+    const-string v4, "--style"
 
-    invoke-virtual {v3, v13}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v6, v4}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result v3
+    move-result v4
 
-    if-eqz v3, :cond_3a
+    if-eqz v4, :cond_38
 
-    const/16 v13, 0x13
+    const/16 v4, 0x13
 
-    goto :goto_196
+    goto :goto_195
 
     :sswitch_189
-    const-string v13, "--message"
+    const-string v4, "--message"
 
-    invoke-virtual {v3, v13}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v6, v4}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result v3
+    move-result v4
 
-    if-eqz v3, :cond_3a
+    if-eqz v4, :cond_38
 
-    const/16 v13, 0x19
+    const/16 v4, 0x19
 
-    goto :goto_196
+    goto :goto_195
 
     :goto_194
-    move/from16 v13, v17
+    const/4 v4, -0x1
 
-    :goto_196
-    packed-switch v13, :pswitch_data_5a6
+    :goto_195
+    packed-switch v4, :pswitch_data_5fe
 
-    .line 494
-    invoke-virtual {v2, v4}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    .line 463
+    invoke-virtual {v2, v3}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
-    .line 495
-    const/4 v1, 0x0
+    .line 464
+    const/4 v3, 0x0
 
-    return v1
+    return v3
 
-    .line 484
-    :pswitch_19e  #0x1a
-    if-eqz v6, :cond_1af
+    .line 453
+    :pswitch_19d  #0x1a
+    if-eqz v7, :cond_1ae
 
-    .line 488
+    .line 457
     invoke-virtual/range {p0 .. p0}, Lcom/android/server/notification/NotificationShellCmd;->getNextArgRequired()Ljava/lang/String;
 
     move-result-object v3
 
-    invoke-virtual {v6, v3}, Landroid/app/Notification$MessagingStyle;->setConversationTitle(Ljava/lang/CharSequence;)Landroid/app/Notification$MessagingStyle;
+    invoke-virtual {v7, v3}, Landroid/app/Notification$MessagingStyle;->setConversationTitle(Ljava/lang/CharSequence;)Landroid/app/Notification$MessagingStyle;
 
-    .line 489
-    move-object v12, v6
+    .line 458
+    move-object/from16 v20, v6
 
-    move-object v13, v7
+    move-object/from16 v17, v7
 
-    move-object/from16 v20, v8
+    move-object/from16 v19, v8
 
-    const/16 v19, 0x0
+    goto/16 :goto_49a
 
-    goto/16 :goto_46c
+    .line 454
+    :cond_1ae
+    new-instance v3, Ljava/lang/IllegalArgumentException;
 
-    .line 485
-    :cond_1af
-    new-instance v0, Ljava/lang/IllegalArgumentException;
+    const-string v4, "--conversation requires --style messaging"
 
-    const-string v1, "--conversation requires --style messaging"
+    invoke-direct {v3, v4}, Ljava/lang/IllegalArgumentException;-><init>(Ljava/lang/String;)V
 
-    invoke-direct {v0, v1}, Ljava/lang/IllegalArgumentException;-><init>(Ljava/lang/String;)V
+    throw v3
 
-    throw v0
+    .line 435
+    :pswitch_1b6  #0x19
+    if-eqz v7, :cond_219
 
-    .line 466
-    :pswitch_1b7  #0x19
-    if-eqz v6, :cond_20d
-
-    .line 470
+    .line 439
     invoke-virtual/range {p0 .. p0}, Lcom/android/server/notification/NotificationShellCmd;->getNextArgRequired()Ljava/lang/String;
 
     move-result-object v3
 
-    .line 471
+    .line 440
+    .local v3, "arg":Ljava/lang/String;
     const-string v4, ":"
 
-    invoke-virtual {v3, v4, v12}, Ljava/lang/String;->split(Ljava/lang/String;I)[Ljava/lang/String;
+    invoke-virtual {v3, v4, v5}, Ljava/lang/String;->split(Ljava/lang/String;I)[Ljava/lang/String;
 
-    move-result-object v3
+    move-result-object v4
 
-    .line 472
-    array-length v4, v3
+    .line 441
+    .local v4, "parts":[Ljava/lang/String;
+    array-length v5, v4
 
-    if-le v4, v5, :cond_1db
+    move/from16 v23, v0
 
-    .line 473
-    aget-object v4, v3, v5
+    const/4 v0, 0x1
 
+    .end local v0  # "large":Z
+    .local v23, "large":Z
+    if-le v5, v0, :cond_1e1
+
+    .line 442
+    aget-object v0, v4, v0
+
+    move-object/from16 v24, v6
+
+    .end local v6  # "opt":Ljava/lang/String;
+    .local v24, "opt":Ljava/lang/String;
     invoke-static {}, Ljava/lang/System;->currentTimeMillis()J
 
-    move-result-wide v12
+    move-result-wide v5
 
-    const/16 v17, 0x0
+    move-object/from16 v19, v3
 
-    aget-object v3, v3, v17
+    const/16 v18, 0x0
 
-    invoke-virtual {v6, v4, v12, v13, v3}, Landroid/app/Notification$MessagingStyle;->addMessage(Ljava/lang/CharSequence;JLjava/lang/CharSequence;)Landroid/app/Notification$MessagingStyle;
+    .end local v3  # "arg":Ljava/lang/String;
+    .local v19, "arg":Ljava/lang/String;
+    aget-object v3, v4, v18
 
-    move-object v12, v6
+    invoke-virtual {v7, v0, v5, v6, v3}, Landroid/app/Notification$MessagingStyle;->addMessage(Ljava/lang/CharSequence;JLjava/lang/CharSequence;)Landroid/app/Notification$MessagingStyle;
 
-    move-object v13, v7
+    move-object/from16 v17, v7
 
-    move-object/from16 v20, v8
+    move-object/from16 v19, v8
 
-    const/16 v19, 0x0
+    move-object/from16 v20, v24
 
-    goto/16 :goto_46c
+    goto/16 :goto_49a
 
-    .line 476
-    :cond_1db
-    const/16 v17, 0x0
+    .line 445
+    .end local v19  # "arg":Ljava/lang/String;
+    .end local v24  # "opt":Ljava/lang/String;
+    .restart local v3  # "arg":Ljava/lang/String;
+    .restart local v6  # "opt":Ljava/lang/String;
+    :cond_1e1
+    move-object/from16 v19, v3
 
-    aget-object v3, v3, v17
+    move-object/from16 v24, v6
 
-    move-object v13, v6
+    const/16 v18, 0x0
+
+    .end local v3  # "arg":Ljava/lang/String;
+    .end local v6  # "opt":Ljava/lang/String;
+    .restart local v19  # "arg":Ljava/lang/String;
+    .restart local v24  # "opt":Ljava/lang/String;
+    aget-object v0, v4, v18
 
     invoke-static {}, Ljava/lang/System;->currentTimeMillis()J
 
     move-result-wide v5
 
-    new-array v4, v12, [Ljava/lang/String;
+    move-object/from16 v20, v4
 
-    .line 478
-    invoke-virtual {v13}, Landroid/app/Notification$MessagingStyle;->getUserDisplayName()Ljava/lang/CharSequence;
+    const/4 v3, 0x2
 
-    move-result-object v18
+    .end local v4  # "parts":[Ljava/lang/String;
+    .local v20, "parts":[Ljava/lang/String;
+    new-array v4, v3, [Ljava/lang/String;
 
-    invoke-interface/range {v18 .. v18}, Ljava/lang/CharSequence;->toString()Ljava/lang/String;
+    .line 447
+    invoke-virtual {v7}, Landroid/app/Notification$MessagingStyle;->getUserDisplayName()Ljava/lang/CharSequence;
 
-    move-result-object v18
+    move-result-object v21
+
+    invoke-interface/range {v21 .. v21}, Ljava/lang/CharSequence;->toString()Ljava/lang/String;
+
+    move-result-object v21
+
+    aput-object v21, v4, v18
+
+    const-string v18, "Them"
+
+    const/16 v17, 0x1
 
     aput-object v18, v4, v17
 
-    const-string v17, "Them"
-
-    const/16 v20, 0x1
-
-    aput-object v17, v4, v20
-
-    .line 480
-    invoke-virtual {v13}, Landroid/app/Notification$MessagingStyle;->getMessages()Ljava/util/List;
+    .line 449
+    invoke-virtual {v7}, Landroid/app/Notification$MessagingStyle;->getMessages()Ljava/util/List;
 
     move-result-object v17
 
@@ -677,449 +714,529 @@
 
     rem-int/lit8 v17, v17, 0x2
 
-    aget-object v4, v4, v17
-
-    .line 476
-    invoke-virtual {v13, v3, v5, v6, v4}, Landroid/app/Notification$MessagingStyle;->addMessage(Ljava/lang/CharSequence;JLjava/lang/CharSequence;)Landroid/app/Notification$MessagingStyle;
-
-    .line 482
-    move-object/from16 v20, v8
-
-    move-object v12, v13
-
-    const/16 v19, 0x0
-
-    move-object v13, v7
-
-    goto/16 :goto_46c
-
-    .line 467
-    :cond_20d
-    new-instance v0, Ljava/lang/IllegalArgumentException;
-
-    const-string v1, "--message requires --style messaging"
-
-    invoke-direct {v0, v1}, Ljava/lang/IllegalArgumentException;-><init>(Ljava/lang/String;)V
-
-    throw v0
-
-    .line 460
-    :pswitch_215  #0x18
-    move-object v13, v6
-
-    if-eqz v7, :cond_227
-
-    .line 463
-    invoke-virtual/range {p0 .. p0}, Lcom/android/server/notification/NotificationShellCmd;->getNextArgRequired()Ljava/lang/String;
-
-    move-result-object v3
-
-    invoke-virtual {v7, v3}, Landroid/app/Notification$InboxStyle;->addLine(Ljava/lang/CharSequence;)Landroid/app/Notification$InboxStyle;
-
-    .line 464
-    move-object/from16 v20, v8
-
-    move-object v12, v13
-
-    const/16 v19, 0x0
-
-    move-object v13, v7
-
-    goto/16 :goto_46c
-
-    .line 461
-    :cond_227
-    new-instance v0, Ljava/lang/IllegalArgumentException;
-
-    const-string v1, "--line requires --style inbox"
-
-    invoke-direct {v0, v1}, Ljava/lang/IllegalArgumentException;-><init>(Ljava/lang/String;)V
-
-    throw v0
-
-    .line 444
-    :pswitch_22f  #0x17
-    move-object v13, v6
-
-    if-eqz v15, :cond_284
-
-    .line 447
-    invoke-virtual/range {p0 .. p0}, Lcom/android/server/notification/NotificationShellCmd;->getNextArgRequired()Ljava/lang/String;
-
-    move-result-object v3
-
-    .line 448
-    invoke-virtual {v1, v0, v3}, Lcom/android/server/notification/NotificationShellCmd;->parseIcon(Landroid/content/res/Resources;Ljava/lang/String;)Landroid/graphics/drawable/Icon;
-
-    move-result-object v4
-
-    .line 449
-    if-eqz v4, :cond_26d
-
-    .line 452
-    invoke-virtual {v4, v11}, Landroid/graphics/drawable/Icon;->loadDrawable(Landroid/content/Context;)Landroid/graphics/drawable/Drawable;
-
-    move-result-object v4
-
-    .line 453
-    instance-of v5, v4, Landroid/graphics/drawable/BitmapDrawable;
-
-    if-eqz v5, :cond_255
-
-    .line 454
-    check-cast v4, Landroid/graphics/drawable/BitmapDrawable;
-
-    invoke-virtual {v4}, Landroid/graphics/drawable/BitmapDrawable;->getBitmap()Landroid/graphics/Bitmap;
-
-    move-result-object v3
-
-    invoke-virtual {v15, v3}, Landroid/app/Notification$BigPictureStyle;->bigPicture(Landroid/graphics/Bitmap;)Landroid/app/Notification$BigPictureStyle;
-
-    move-object/from16 v20, v8
-
-    move-object v12, v13
-
-    const/16 v19, 0x0
-
-    move-object v13, v7
-
-    goto/16 :goto_46c
-
-    .line 456
-    :cond_255
-    new-instance v0, Ljava/lang/IllegalArgumentException;
-
-    new-instance v1, Ljava/lang/StringBuilder;
-
-    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
-
-    const-string/jumbo v2, "not a bitmap: "
-
-    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v1, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
-
-    move-result-object v1
-
-    invoke-direct {v0, v1}, Ljava/lang/IllegalArgumentException;-><init>(Ljava/lang/String;)V
-
-    throw v0
-
-    .line 450
-    :cond_26d
-    new-instance v0, Ljava/lang/IllegalArgumentException;
-
-    new-instance v1, Ljava/lang/StringBuilder;
-
-    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
-
-    const-string v2, "bad picture spec: "
-
-    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v1, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
-
-    move-result-object v1
-
-    invoke-direct {v0, v1}, Ljava/lang/IllegalArgumentException;-><init>(Ljava/lang/String;)V
-
-    throw v0
+    aget-object v3, v4, v17
 
     .line 445
+    invoke-virtual {v7, v0, v5, v6, v3}, Landroid/app/Notification$MessagingStyle;->addMessage(Ljava/lang/CharSequence;JLjava/lang/CharSequence;)Landroid/app/Notification$MessagingStyle;
+
+    .line 451
+    move-object/from16 v17, v7
+
+    move-object/from16 v19, v8
+
+    move-object/from16 v20, v24
+
+    goto/16 :goto_49a
+
+    .line 436
+    .end local v19  # "arg":Ljava/lang/String;
+    .end local v20  # "parts":[Ljava/lang/String;
+    .end local v23  # "large":Z
+    .end local v24  # "opt":Ljava/lang/String;
+    .restart local v0  # "large":Z
+    .restart local v6  # "opt":Ljava/lang/String;
+    :cond_219
+    move/from16 v23, v0
+
+    .end local v0  # "large":Z
+    .restart local v23  # "large":Z
+    new-instance v0, Ljava/lang/IllegalArgumentException;
+
+    const-string v3, "--message requires --style messaging"
+
+    invoke-direct {v0, v3}, Ljava/lang/IllegalArgumentException;-><init>(Ljava/lang/String;)V
+
+    throw v0
+
+    .line 429
+    .end local v23  # "large":Z
+    .restart local v0  # "large":Z
+    :pswitch_223  #0x18
+    move/from16 v23, v0
+
+    move-object/from16 v24, v6
+
+    .end local v0  # "large":Z
+    .end local v6  # "opt":Ljava/lang/String;
+    .restart local v23  # "large":Z
+    .restart local v24  # "opt":Ljava/lang/String;
+    if-eqz v8, :cond_238
+
+    .line 432
+    invoke-virtual/range {p0 .. p0}, Lcom/android/server/notification/NotificationShellCmd;->getNextArgRequired()Ljava/lang/String;
+
+    move-result-object v0
+
+    invoke-virtual {v8, v0}, Landroid/app/Notification$InboxStyle;->addLine(Ljava/lang/CharSequence;)Landroid/app/Notification$InboxStyle;
+
+    .line 433
+    move-object/from16 v17, v7
+
+    move-object/from16 v19, v8
+
+    move-object/from16 v20, v24
+
+    goto/16 :goto_49a
+
+    .line 430
+    :cond_238
+    new-instance v0, Ljava/lang/IllegalArgumentException;
+
+    const-string v3, "--line requires --style inbox"
+
+    invoke-direct {v0, v3}, Ljava/lang/IllegalArgumentException;-><init>(Ljava/lang/String;)V
+
+    throw v0
+
+    .line 413
+    .end local v23  # "large":Z
+    .end local v24  # "opt":Ljava/lang/String;
+    .restart local v0  # "large":Z
+    .restart local v6  # "opt":Ljava/lang/String;
+    :pswitch_240  #0x17
+    move/from16 v23, v0
+
+    move-object/from16 v24, v6
+
+    .end local v0  # "large":Z
+    .end local v6  # "opt":Ljava/lang/String;
+    .restart local v23  # "large":Z
+    .restart local v24  # "opt":Ljava/lang/String;
+    if-eqz v14, :cond_29d
+
+    .line 416
+    invoke-virtual/range {p0 .. p0}, Lcom/android/server/notification/NotificationShellCmd;->getNextArgRequired()Ljava/lang/String;
+
+    move-result-object v0
+
+    .line 417
+    .local v0, "pictureSpec":Ljava/lang/String;
+    invoke-virtual {v1, v10, v0}, Lcom/android/server/notification/NotificationShellCmd;->parseIcon(Landroid/content/res/Resources;Ljava/lang/String;)Landroid/graphics/drawable/Icon;
+
+    move-result-object v3
+
+    .line 418
+    .local v3, "pictureAsIcon":Landroid/graphics/drawable/Icon;
+    if-eqz v3, :cond_284
+
+    .line 421
+    invoke-virtual {v3, v9}, Landroid/graphics/drawable/Icon;->loadDrawable(Landroid/content/Context;)Landroid/graphics/drawable/Drawable;
+
+    move-result-object v4
+
+    .line 422
+    .local v4, "d":Landroid/graphics/drawable/Drawable;
+    instance-of v5, v4, Landroid/graphics/drawable/BitmapDrawable;
+
+    if-eqz v5, :cond_26a
+
+    .line 423
+    move-object v5, v4
+
+    check-cast v5, Landroid/graphics/drawable/BitmapDrawable;
+
+    invoke-virtual {v5}, Landroid/graphics/drawable/BitmapDrawable;->getBitmap()Landroid/graphics/Bitmap;
+
+    move-result-object v5
+
+    invoke-virtual {v14, v5}, Landroid/app/Notification$BigPictureStyle;->bigPicture(Landroid/graphics/Bitmap;)Landroid/app/Notification$BigPictureStyle;
+
+    move-object/from16 v17, v7
+
+    move-object/from16 v19, v8
+
+    move-object/from16 v20, v24
+
+    goto/16 :goto_49a
+
+    .line 425
+    :cond_26a
+    new-instance v5, Ljava/lang/IllegalArgumentException;
+
+    new-instance v6, Ljava/lang/StringBuilder;
+
+    invoke-direct {v6}, Ljava/lang/StringBuilder;-><init>()V
+
+    move-object/from16 v17, v3
+
+    .end local v3  # "pictureAsIcon":Landroid/graphics/drawable/Icon;
+    .local v17, "pictureAsIcon":Landroid/graphics/drawable/Icon;
+    const-string/jumbo v3, "not a bitmap: "
+
+    invoke-virtual {v6, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v6, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v6}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v3
+
+    invoke-direct {v5, v3}, Ljava/lang/IllegalArgumentException;-><init>(Ljava/lang/String;)V
+
+    throw v5
+
+    .line 419
+    .end local v4  # "d":Landroid/graphics/drawable/Drawable;
+    .end local v17  # "pictureAsIcon":Landroid/graphics/drawable/Icon;
+    .restart local v3  # "pictureAsIcon":Landroid/graphics/drawable/Icon;
     :cond_284
+    move-object/from16 v17, v3
+
+    .end local v3  # "pictureAsIcon":Landroid/graphics/drawable/Icon;
+    .restart local v17  # "pictureAsIcon":Landroid/graphics/drawable/Icon;
+    new-instance v3, Ljava/lang/IllegalArgumentException;
+
+    new-instance v4, Ljava/lang/StringBuilder;
+
+    invoke-direct {v4}, Ljava/lang/StringBuilder;-><init>()V
+
+    const-string v5, "bad picture spec: "
+
+    invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v4, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v4}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v4
+
+    invoke-direct {v3, v4}, Ljava/lang/IllegalArgumentException;-><init>(Ljava/lang/String;)V
+
+    throw v3
+
+    .line 414
+    .end local v0  # "pictureSpec":Ljava/lang/String;
+    .end local v17  # "pictureAsIcon":Landroid/graphics/drawable/Icon;
+    :cond_29d
     new-instance v0, Ljava/lang/IllegalArgumentException;
 
-    const-string v1, "--picture requires --style bigpicture"
+    const-string v3, "--picture requires --style bigpicture"
 
-    invoke-direct {v0, v1}, Ljava/lang/IllegalArgumentException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v0, v3}, Ljava/lang/IllegalArgumentException;-><init>(Ljava/lang/String;)V
 
     throw v0
 
-    .line 438
-    :pswitch_28c  #0x14, 0x15, 0x16
-    move-object v13, v6
+    .line 407
+    .end local v23  # "large":Z
+    .end local v24  # "opt":Ljava/lang/String;
+    .local v0, "large":Z
+    .restart local v6  # "opt":Ljava/lang/String;
+    :pswitch_2a5  #0x14, 0x15, 0x16
+    move/from16 v23, v0
 
-    if-eqz v8, :cond_29e
+    move-object/from16 v24, v6
 
-    .line 441
+    .end local v0  # "large":Z
+    .end local v6  # "opt":Ljava/lang/String;
+    .restart local v23  # "large":Z
+    .restart local v24  # "opt":Ljava/lang/String;
+    if-eqz v15, :cond_2ba
+
+    .line 410
     invoke-virtual/range {p0 .. p0}, Lcom/android/server/notification/NotificationShellCmd;->getNextArgRequired()Ljava/lang/String;
 
-    move-result-object v3
+    move-result-object v0
 
-    invoke-virtual {v8, v3}, Landroid/app/Notification$BigTextStyle;->bigText(Ljava/lang/CharSequence;)Landroid/app/Notification$BigTextStyle;
+    invoke-virtual {v15, v0}, Landroid/app/Notification$BigTextStyle;->bigText(Ljava/lang/CharSequence;)Landroid/app/Notification$BigTextStyle;
 
-    .line 442
-    move-object/from16 v20, v8
+    .line 411
+    move-object/from16 v17, v7
 
-    move-object v12, v13
+    move-object/from16 v19, v8
 
-    const/16 v19, 0x0
+    move-object/from16 v20, v24
 
-    move-object v13, v7
+    goto/16 :goto_49a
 
-    goto/16 :goto_46c
-
-    .line 439
-    :cond_29e
+    .line 408
+    :cond_2ba
     new-instance v0, Ljava/lang/IllegalArgumentException;
 
-    const-string v1, "--bigtext requires --style bigtext"
+    const-string v3, "--bigtext requires --style bigtext"
 
-    invoke-direct {v0, v1}, Ljava/lang/IllegalArgumentException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v0, v3}, Ljava/lang/IllegalArgumentException;-><init>(Ljava/lang/String;)V
 
     throw v0
 
-    .line 404
-    :pswitch_2a6  #0x12, 0x13
-    move-object v13, v6
+    .line 373
+    .end local v23  # "large":Z
+    .end local v24  # "opt":Ljava/lang/String;
+    .restart local v0  # "large":Z
+    .restart local v6  # "opt":Ljava/lang/String;
+    :pswitch_2c2  #0x12, 0x13
+    move/from16 v23, v0
 
+    move-object/from16 v24, v6
+
+    .end local v0  # "large":Z
+    .end local v6  # "opt":Ljava/lang/String;
+    .restart local v23  # "large":Z
+    .restart local v24  # "opt":Ljava/lang/String;
     invoke-virtual/range {p0 .. p0}, Lcom/android/server/notification/NotificationShellCmd;->getNextArgRequired()Ljava/lang/String;
 
-    move-result-object v3
+    move-result-object v0
 
-    invoke-virtual {v3}, Ljava/lang/String;->toLowerCase()Ljava/lang/String;
+    invoke-virtual {v0}, Ljava/lang/String;->toLowerCase()Ljava/lang/String;
 
-    move-result-object v3
+    move-result-object v0
 
-    .line 405
-    invoke-virtual {v3}, Ljava/lang/String;->hashCode()I
+    .line 374
+    .local v0, "styleSpec":Ljava/lang/String;
+    invoke-virtual {v0}, Ljava/lang/String;->hashCode()I
 
-    move-result v4
+    move-result v3
 
-    sparse-switch v4, :sswitch_data_5e0
+    sparse-switch v3, :sswitch_data_638
 
-    :cond_2b6
-    goto :goto_2e9
+    :cond_2d5
+    goto :goto_30b
 
-    :sswitch_2b7
-    const-string v4, "media"
+    :sswitch_2d6
+    const-string/jumbo v3, "media"
 
-    invoke-virtual {v3, v4}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v0, v3}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result v4
+    move-result v3
 
-    if-eqz v4, :cond_2b6
+    if-eqz v3, :cond_2d5
 
-    const/4 v4, 0x4
+    const/4 v3, 0x4
 
-    goto :goto_2eb
+    goto :goto_30c
 
-    :sswitch_2c1
-    const-string v4, "inbox"
+    :sswitch_2e1
+    const-string/jumbo v3, "inbox"
 
-    invoke-virtual {v3, v4}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v0, v3}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result v4
+    move-result v3
 
-    if-eqz v4, :cond_2b6
+    if-eqz v3, :cond_2d5
 
-    move v4, v12
+    const/4 v3, 0x2
 
-    goto :goto_2eb
+    goto :goto_30c
 
-    :sswitch_2cb
-    const-string v4, "bigpicture"
+    :sswitch_2ec
+    const-string v3, "bigpicture"
 
-    invoke-virtual {v3, v4}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v0, v3}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result v4
+    move-result v3
 
-    if-eqz v4, :cond_2b6
+    if-eqz v3, :cond_2d5
+
+    const/4 v3, 0x1
+
+    goto :goto_30c
+
+    :sswitch_2f6
+    const-string v3, "bigtext"
+
+    invoke-virtual {v0, v3}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+
+    move-result v3
+
+    if-eqz v3, :cond_2d5
+
+    const/4 v3, 0x0
+
+    goto :goto_30c
+
+    :sswitch_300
+    const-string/jumbo v3, "messaging"
+
+    invoke-virtual {v0, v3}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+
+    move-result v3
+
+    if-eqz v3, :cond_2d5
+
+    const/4 v3, 0x3
+
+    goto :goto_30c
+
+    :goto_30b
+    const/4 v3, -0x1
+
+    :goto_30c
+    if-eqz v3, :cond_37d
 
     const/4 v4, 0x1
 
-    goto :goto_2eb
+    if-eq v3, v4, :cond_373
 
-    :sswitch_2d5
-    const-string v4, "bigtext"
+    const/4 v4, 0x2
 
-    invoke-virtual {v3, v4}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
-
-    move-result v4
-
-    if-eqz v4, :cond_2b6
-
-    const/4 v4, 0x0
-
-    goto :goto_2eb
-
-    :sswitch_2df
-    const-string v4, "messaging"
-
-    invoke-virtual {v3, v4}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
-
-    move-result v4
-
-    if-eqz v4, :cond_2b6
+    if-eq v3, v4, :cond_369
 
     const/4 v4, 0x3
 
-    goto :goto_2eb
+    if-eq v3, v4, :cond_33d
 
-    :goto_2e9
-    move/from16 v4, v17
+    const/4 v4, 0x4
 
-    :goto_2eb
-    if-eqz v4, :cond_359
+    if-ne v3, v4, :cond_325
 
-    const/4 v5, 0x1
-
-    if-eq v4, v5, :cond_350
-
-    if-eq v4, v12, :cond_347
-
-    const/4 v5, 0x3
-
-    if-eq v4, v5, :cond_319
-
-    const/4 v5, 0x4
-
-    if-ne v4, v5, :cond_301
-
-    .line 429
+    .line 398
     new-instance v3, Landroid/app/Notification$MediaStyle;
 
     invoke-direct {v3}, Landroid/app/Notification$MediaStyle;-><init>()V
 
-    .line 430
-    invoke-virtual {v9, v3}, Landroid/app/Notification$Builder;->setStyle(Landroid/app/Notification$Style;)Landroid/app/Notification$Builder;
+    .line 399
+    .end local v16  # "mediaStyle":Landroid/app/Notification$MediaStyle;
+    .local v3, "mediaStyle":Landroid/app/Notification$MediaStyle;
+    invoke-virtual {v11, v3}, Landroid/app/Notification$Builder;->setStyle(Landroid/app/Notification$Style;)Landroid/app/Notification$Builder;
 
-    .line 431
-    goto :goto_362
+    .line 400
+    move-object/from16 v16, v3
 
-    .line 433
-    :cond_301
-    new-instance v0, Ljava/lang/IllegalArgumentException;
+    goto :goto_387
 
-    new-instance v1, Ljava/lang/StringBuilder;
+    .line 402
+    .end local v3  # "mediaStyle":Landroid/app/Notification$MediaStyle;
+    .restart local v16  # "mediaStyle":Landroid/app/Notification$MediaStyle;
+    :cond_325
+    new-instance v3, Ljava/lang/IllegalArgumentException;
 
-    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
+    new-instance v4, Ljava/lang/StringBuilder;
 
-    const-string/jumbo v2, "unrecognized notification style: "
+    invoke-direct {v4}, Ljava/lang/StringBuilder;-><init>()V
 
-    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    const-string/jumbo v5, "unrecognized notification style: "
 
-    invoke-virtual {v1, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v4, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    move-result-object v1
+    invoke-virtual {v4}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    invoke-direct {v0, v1}, Ljava/lang/IllegalArgumentException;-><init>(Ljava/lang/String;)V
+    move-result-object v4
 
-    throw v0
+    invoke-direct {v3, v4}, Ljava/lang/IllegalArgumentException;-><init>(Ljava/lang/String;)V
 
-    .line 419
-    :cond_319
-    nop
+    throw v3
 
-    .line 420
+    .line 388
+    :cond_33d
+    const-string v3, "You"
+
+    .line 389
+    .local v3, "name":Ljava/lang/String;
     invoke-virtual/range {p0 .. p0}, Lcom/android/server/notification/NotificationShellCmd;->peekNextArg()Ljava/lang/String;
 
-    move-result-object v3
+    move-result-object v4
 
-    const-string v4, "--user"
+    const-string v5, "--user"
 
-    invoke-virtual {v4, v3}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v5, v4}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result v3
+    move-result v4
 
-    if-eqz v3, :cond_32e
+    if-eqz v4, :cond_352
 
-    .line 421
+    .line 390
     invoke-virtual/range {p0 .. p0}, Lcom/android/server/notification/NotificationShellCmd;->getNextArg()Ljava/lang/String;
 
-    .line 422
+    .line 391
     invoke-virtual/range {p0 .. p0}, Lcom/android/server/notification/NotificationShellCmd;->getNextArgRequired()Ljava/lang/String;
 
     move-result-object v3
 
-    goto :goto_330
+    .line 393
+    :cond_352
+    new-instance v4, Landroid/app/Notification$MessagingStyle;
 
-    .line 420
-    :cond_32e
-    const-string v3, "You"
+    new-instance v5, Landroid/app/Person$Builder;
 
-    .line 424
-    :goto_330
-    new-instance v6, Landroid/app/Notification$MessagingStyle;
+    invoke-direct {v5}, Landroid/app/Person$Builder;-><init>()V
 
-    new-instance v4, Landroid/app/Person$Builder;
+    .line 394
+    invoke-virtual {v5, v3}, Landroid/app/Person$Builder;->setName(Ljava/lang/CharSequence;)Landroid/app/Person$Builder;
 
-    invoke-direct {v4}, Landroid/app/Person$Builder;-><init>()V
+    move-result-object v5
 
-    .line 425
-    invoke-virtual {v4, v3}, Landroid/app/Person$Builder;->setName(Ljava/lang/CharSequence;)Landroid/app/Person$Builder;
+    invoke-virtual {v5}, Landroid/app/Person$Builder;->build()Landroid/app/Person;
 
-    move-result-object v3
+    move-result-object v5
 
-    invoke-virtual {v3}, Landroid/app/Person$Builder;->build()Landroid/app/Person;
+    invoke-direct {v4, v5}, Landroid/app/Notification$MessagingStyle;-><init>(Landroid/app/Person;)V
 
-    move-result-object v3
+    move-object v7, v4
 
-    invoke-direct {v6, v3}, Landroid/app/Notification$MessagingStyle;-><init>(Landroid/app/Person;)V
+    .line 395
+    invoke-virtual {v11, v7}, Landroid/app/Notification$Builder;->setStyle(Landroid/app/Notification$Style;)Landroid/app/Notification$Builder;
 
-    .line 426
-    invoke-virtual {v9, v6}, Landroid/app/Notification$Builder;->setStyle(Landroid/app/Notification$Style;)Landroid/app/Notification$Builder;
+    .line 396
+    goto :goto_387
 
-    .line 427
-    move-object v13, v6
+    .line 384
+    .end local v3  # "name":Ljava/lang/String;
+    :cond_369
+    new-instance v3, Landroid/app/Notification$InboxStyle;
 
-    goto :goto_362
+    invoke-direct {v3}, Landroid/app/Notification$InboxStyle;-><init>()V
 
-    .line 415
-    :cond_347
-    new-instance v7, Landroid/app/Notification$InboxStyle;
+    move-object v8, v3
 
-    invoke-direct {v7}, Landroid/app/Notification$InboxStyle;-><init>()V
+    .line 385
+    invoke-virtual {v11, v8}, Landroid/app/Notification$Builder;->setStyle(Landroid/app/Notification$Style;)Landroid/app/Notification$Builder;
 
-    .line 416
-    invoke-virtual {v9, v7}, Landroid/app/Notification$Builder;->setStyle(Landroid/app/Notification$Style;)Landroid/app/Notification$Builder;
+    .line 386
+    goto :goto_387
 
-    .line 417
-    goto :goto_362
+    .line 380
+    :cond_373
+    new-instance v3, Landroid/app/Notification$BigPictureStyle;
 
-    .line 411
-    :cond_350
-    new-instance v15, Landroid/app/Notification$BigPictureStyle;
+    invoke-direct {v3}, Landroid/app/Notification$BigPictureStyle;-><init>()V
 
-    invoke-direct {v15}, Landroid/app/Notification$BigPictureStyle;-><init>()V
+    move-object v14, v3
 
-    .line 412
-    invoke-virtual {v9, v15}, Landroid/app/Notification$Builder;->setStyle(Landroid/app/Notification$Style;)Landroid/app/Notification$Builder;
+    .line 381
+    invoke-virtual {v11, v14}, Landroid/app/Notification$Builder;->setStyle(Landroid/app/Notification$Style;)Landroid/app/Notification$Builder;
 
-    .line 413
-    goto :goto_362
-
-    .line 407
-    :cond_359
-    new-instance v8, Landroid/app/Notification$BigTextStyle;
-
-    invoke-direct {v8}, Landroid/app/Notification$BigTextStyle;-><init>()V
-
-    .line 408
-    invoke-virtual {v9, v8}, Landroid/app/Notification$Builder;->setStyle(Landroid/app/Notification$Style;)Landroid/app/Notification$Builder;
-
-    .line 409
-    nop
-
-    .line 436
-    :goto_362
-    move-object v6, v13
-
-    const/16 v19, 0x0
-
-    goto/16 :goto_47a
-
-    .line 375
-    :pswitch_367  #0xd, 0xe, 0xf, 0x10, 0x11
-    move-object v13, v6
+    .line 382
+    goto :goto_387
 
     .line 376
+    :cond_37d
+    new-instance v3, Landroid/app/Notification$BigTextStyle;
+
+    invoke-direct {v3}, Landroid/app/Notification$BigTextStyle;-><init>()V
+
+    move-object v15, v3
+
+    .line 377
+    invoke-virtual {v11, v15}, Landroid/app/Notification$Builder;->setStyle(Landroid/app/Notification$Style;)Landroid/app/Notification$Builder;
+
+    .line 378
+    nop
+
+    .line 405
+    :goto_387
+    move-object/from16 v20, v24
+
+    goto/16 :goto_4a9
+
+    .line 344
+    .end local v23  # "large":Z
+    .end local v24  # "opt":Ljava/lang/String;
+    .local v0, "large":Z
+    .restart local v6  # "opt":Ljava/lang/String;
+    :pswitch_38b  #0xd, 0xe, 0xf, 0x10, 0x11
+    move/from16 v23, v0
+
+    move-object/from16 v24, v6
+
+    .end local v0  # "large":Z
+    .end local v6  # "opt":Ljava/lang/String;
+    .restart local v23  # "large":Z
+    .restart local v24  # "opt":Ljava/lang/String;
+    const/4 v0, 0x0
+
+    .line 345
+    .local v0, "intentKind":Ljava/lang/String;
     invoke-virtual/range {p0 .. p0}, Lcom/android/server/notification/NotificationShellCmd;->peekNextArg()Ljava/lang/String;
 
     move-result-object v3
@@ -1132,189 +1249,214 @@
 
     const-string/jumbo v6, "service"
 
-    const-string v12, "broadcast"
+    move-object/from16 v19, v0
 
-    if-eq v4, v5, :cond_395
+    .end local v0  # "intentKind":Ljava/lang/String;
+    .local v19, "intentKind":Ljava/lang/String;
+    const-string v0, "broadcast"
+
+    if-eq v4, v5, :cond_3bf
 
     const v5, -0x607e173f
 
-    if-eq v4, v5, :cond_38d
+    if-eq v4, v5, :cond_3b7
 
     const v5, 0x7643c6b5
 
-    if-eq v4, v5, :cond_385
+    if-eq v4, v5, :cond_3af
 
-    :cond_384
-    goto :goto_39f
+    :cond_3ae
+    goto :goto_3c9
 
-    :cond_385
+    :cond_3af
     invoke-virtual {v3, v6}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
     move-result v3
 
-    if-eqz v3, :cond_384
+    if-eqz v3, :cond_3ae
 
     const/4 v3, 0x1
 
-    goto :goto_3a1
+    goto :goto_3ca
 
-    :cond_38d
-    invoke-virtual {v3, v12}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    :cond_3b7
+    invoke-virtual {v3, v0}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
     move-result v3
 
-    if-eqz v3, :cond_384
+    if-eqz v3, :cond_3ae
 
     const/4 v3, 0x0
 
-    goto :goto_3a1
+    goto :goto_3ca
 
-    :cond_395
+    :cond_3bf
     const-string v4, "activity"
 
     invoke-virtual {v3, v4}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
     move-result v3
 
-    if-eqz v3, :cond_384
+    if-eqz v3, :cond_3ae
 
     const/4 v3, 0x2
 
-    goto :goto_3a1
+    goto :goto_3ca
 
-    :goto_39f
-    move/from16 v3, v17
+    :goto_3c9
+    const/4 v3, -0x1
 
-    :goto_3a1
-    if-eqz v3, :cond_3ab
+    :goto_3ca
+    if-eqz v3, :cond_3d5
 
     const/4 v4, 0x1
 
-    if-eq v3, v4, :cond_3ab
+    if-eq v3, v4, :cond_3d5
 
     const/4 v4, 0x2
 
-    if-eq v3, v4, :cond_3ab
+    if-eq v3, v4, :cond_3d5
 
-    const/4 v3, 0x0
+    move-object/from16 v5, v19
 
-    goto :goto_3af
+    goto :goto_3da
 
-    .line 380
-    :cond_3ab
+    .line 349
+    :cond_3d5
     invoke-virtual/range {p0 .. p0}, Lcom/android/server/notification/NotificationShellCmd;->getNextArg()Ljava/lang/String;
 
     move-result-object v3
 
-    .line 382
-    :goto_3af
-    const/4 v5, 0x0
+    move-object v5, v3
 
-    invoke-static {v1, v5}, Landroid/content/Intent;->parseCommandArgs(Landroid/os/ShellCommand;Landroid/content/Intent$CommandOptionHandler;)Landroid/content/Intent;
+    .line 351
+    .end local v19  # "intentKind":Ljava/lang/String;
+    .local v5, "intentKind":Ljava/lang/String;
+    :goto_3da
+    const/4 v3, 0x0
+
+    invoke-static {v1, v3}, Landroid/content/Intent;->parseCommandArgs(Landroid/os/ShellCommand;Landroid/content/Intent$CommandOptionHandler;)Landroid/content/Intent;
 
     move-result-object v4
 
-    .line 383
+    .line 352
+    .local v4, "intent":Landroid/content/Intent;
     invoke-virtual {v4}, Landroid/content/Intent;->getData()Landroid/net/Uri;
 
-    move-result-object v17
+    move-result-object v3
 
-    if-nez v17, :cond_3dc
+    if-nez v3, :cond_407
 
-    .line 385
-    new-instance v5, Ljava/lang/StringBuilder;
+    .line 354
+    new-instance v3, Ljava/lang/StringBuilder;
 
-    invoke-direct {v5}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
 
-    move-object/from16 v20, v7
+    move-object/from16 v17, v7
 
+    .end local v7  # "messagingStyle":Landroid/app/Notification$MessagingStyle;
+    .local v17, "messagingStyle":Landroid/app/Notification$MessagingStyle;
     const-string/jumbo v7, "xyz:"
 
-    invoke-virtual {v5, v7}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v7}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    move-object/from16 v21, v8
+    move-object/from16 v19, v8
 
+    .end local v8  # "inboxStyle":Landroid/app/Notification$InboxStyle;
+    .local v19, "inboxStyle":Landroid/app/Notification$InboxStyle;
     invoke-static {}, Ljava/lang/System;->currentTimeMillis()J
 
     move-result-wide v7
 
-    invoke-virtual {v5, v7, v8}, Ljava/lang/StringBuilder;->append(J)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v7, v8}, Ljava/lang/StringBuilder;->append(J)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v5}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
-
-    move-result-object v5
-
-    invoke-static {v5}, Landroid/net/Uri;->parse(Ljava/lang/String;)Landroid/net/Uri;
-
-    move-result-object v5
-
-    invoke-virtual {v4, v5}, Landroid/content/Intent;->setData(Landroid/net/Uri;)Landroid/content/Intent;
-
-    goto :goto_3e0
-
-    .line 383
-    :cond_3dc
-    move-object/from16 v20, v7
-
-    move-object/from16 v21, v8
-
-    .line 388
-    :goto_3e0
-    invoke-virtual {v12, v3}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
-
-    move-result v5
-
-    const/high16 v7, 0x8000000
-
-    if-eqz v5, :cond_3f7
-
-    .line 389
-    sget-object v3, Landroid/os/UserHandle;->CURRENT:Landroid/os/UserHandle;
-
-    const/4 v5, 0x0
-
-    invoke-static {v11, v5, v4, v7, v3}, Landroid/app/PendingIntent;->getBroadcastAsUser(Landroid/content/Context;ILandroid/content/Intent;ILandroid/os/UserHandle;)Landroid/app/PendingIntent;
+    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
     move-result-object v3
 
-    move-object v12, v13
-
-    move-object/from16 v13, v20
-
-    move-object/from16 v20, v21
-
-    const/16 v19, 0x0
-
-    goto :goto_41f
-
-    .line 392
-    :cond_3f7
-    const/4 v5, 0x0
-
-    invoke-virtual {v6, v3}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
-
-    move-result v3
-
-    if-eqz v3, :cond_40a
-
-    .line 393
-    invoke-static {v11, v5, v4, v7}, Landroid/app/PendingIntent;->getService(Landroid/content/Context;ILandroid/content/Intent;I)Landroid/app/PendingIntent;
+    invoke-static {v3}, Landroid/net/Uri;->parse(Ljava/lang/String;)Landroid/net/Uri;
 
     move-result-object v3
 
-    move-object v12, v13
+    invoke-virtual {v4, v3}, Landroid/content/Intent;->setData(Landroid/net/Uri;)Landroid/content/Intent;
 
-    move-object/from16 v13, v20
+    goto :goto_40b
 
-    move-object/from16 v20, v21
+    .line 352
+    .end local v17  # "messagingStyle":Landroid/app/Notification$MessagingStyle;
+    .end local v19  # "inboxStyle":Landroid/app/Notification$InboxStyle;
+    .restart local v7  # "messagingStyle":Landroid/app/Notification$MessagingStyle;
+    .restart local v8  # "inboxStyle":Landroid/app/Notification$InboxStyle;
+    :cond_407
+    move-object/from16 v17, v7
 
-    const/16 v19, 0x0
+    move-object/from16 v19, v8
 
-    goto :goto_41f
+    .line 357
+    .end local v7  # "messagingStyle":Landroid/app/Notification$MessagingStyle;
+    .end local v8  # "inboxStyle":Landroid/app/Notification$InboxStyle;
+    .restart local v17  # "messagingStyle":Landroid/app/Notification$MessagingStyle;
+    .restart local v19  # "inboxStyle":Landroid/app/Notification$InboxStyle;
+    :goto_40b
+    invoke-virtual {v0, v5}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    .line 396
-    :cond_40a
-    const/4 v5, 0x0
+    move-result v0
+
+    const/high16 v3, 0x8000000
+
+    if-eqz v0, :cond_421
+
+    .line 358
+    sget-object v0, Landroid/os/UserHandle;->CURRENT:Landroid/os/UserHandle;
+
+    const/4 v7, 0x0
+
+    invoke-static {v9, v7, v4, v3, v0}, Landroid/app/PendingIntent;->getBroadcastAsUser(Landroid/content/Context;ILandroid/content/Intent;ILandroid/os/UserHandle;)Landroid/app/PendingIntent;
+
+    move-result-object v0
+
+    move-object v3, v0
+
+    move-object/from16 v18, v4
+
+    move-object v0, v5
+
+    move-object/from16 v20, v24
+
+    .local v0, "pi":Landroid/app/PendingIntent;
+    goto :goto_446
+
+    .line 361
+    .end local v0  # "pi":Landroid/app/PendingIntent;
+    :cond_421
+    const/4 v7, 0x0
+
+    invoke-virtual {v6, v5}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+
+    move-result v0
+
+    if-eqz v0, :cond_433
+
+    .line 362
+    invoke-static {v9, v7, v4, v3}, Landroid/app/PendingIntent;->getService(Landroid/content/Context;ILandroid/content/Intent;I)Landroid/app/PendingIntent;
+
+    move-result-object v0
+
+    move-object v3, v0
+
+    move-object/from16 v18, v4
+
+    move-object v0, v5
+
+    move-object/from16 v20, v24
+
+    .restart local v0  # "pi":Landroid/app/PendingIntent;
+    goto :goto_446
+
+    .line 365
+    .end local v0  # "pi":Landroid/app/PendingIntent;
+    :cond_433
+    const/4 v0, 0x0
 
     const/high16 v6, 0x8000000
 
@@ -1322,225 +1464,324 @@
 
     sget-object v8, Landroid/os/UserHandle;->CURRENT:Landroid/os/UserHandle;
 
-    move-object v3, v11
+    move-object v3, v9
 
-    move-object v12, v4
+    move-object/from16 v18, v4
 
-    move v4, v5
+    .end local v4  # "intent":Landroid/content/Intent;
+    .local v18, "intent":Landroid/content/Intent;
+    move v4, v0
 
-    const/16 v19, 0x0
+    move-object v0, v5
 
-    move-object v5, v12
+    .end local v5  # "intentKind":Ljava/lang/String;
+    .local v0, "intentKind":Ljava/lang/String;
+    move-object/from16 v5, v18
 
-    move-object v12, v13
+    move-object/from16 v20, v24
 
-    move-object/from16 v13, v20
-
-    move-object/from16 v20, v21
-
+    .end local v24  # "opt":Ljava/lang/String;
+    .local v20, "opt":Ljava/lang/String;
     invoke-static/range {v3 .. v8}, Landroid/app/PendingIntent;->getActivityAsUser(Landroid/content/Context;ILandroid/content/Intent;ILandroid/os/Bundle;Landroid/os/UserHandle;)Landroid/app/PendingIntent;
 
     move-result-object v3
 
-    .line 400
-    :goto_41f
-    invoke-virtual {v9, v3}, Landroid/app/Notification$Builder;->setContentIntent(Landroid/app/PendingIntent;)Landroid/app/Notification$Builder;
+    .line 369
+    .local v3, "pi":Landroid/app/PendingIntent;
+    :goto_446
+    invoke-virtual {v11, v3}, Landroid/app/Notification$Builder;->setContentIntent(Landroid/app/PendingIntent;)Landroid/app/Notification$Builder;
 
-    .line 401
-    goto :goto_46c
+    .line 370
+    goto :goto_49a
 
-    .line 337
-    :pswitch_423  #0xa, 0xb, 0xc
-    move-object v12, v6
+    .line 306
+    .end local v3  # "pi":Landroid/app/PendingIntent;
+    .end local v17  # "messagingStyle":Landroid/app/Notification$MessagingStyle;
+    .end local v18  # "intent":Landroid/content/Intent;
+    .end local v19  # "inboxStyle":Landroid/app/Notification$InboxStyle;
+    .end local v20  # "opt":Ljava/lang/String;
+    .end local v23  # "large":Z
+    .local v0, "large":Z
+    .restart local v6  # "opt":Ljava/lang/String;
+    .restart local v7  # "messagingStyle":Landroid/app/Notification$MessagingStyle;
+    .restart local v8  # "inboxStyle":Landroid/app/Notification$InboxStyle;
+    :pswitch_44a  #0xa, 0xb, 0xc
+    move/from16 v23, v0
 
-    move-object v13, v7
+    move-object/from16 v20, v6
 
-    move-object/from16 v20, v8
+    move-object/from16 v17, v7
 
-    const/16 v19, 0x0
+    move-object/from16 v19, v8
 
-    const/4 v4, 0x0
+    .end local v0  # "large":Z
+    .end local v6  # "opt":Ljava/lang/String;
+    .end local v7  # "messagingStyle":Landroid/app/Notification$MessagingStyle;
+    .end local v8  # "inboxStyle":Landroid/app/Notification$InboxStyle;
+    .restart local v17  # "messagingStyle":Landroid/app/Notification$MessagingStyle;
+    .restart local v19  # "inboxStyle":Landroid/app/Notification$InboxStyle;
+    .restart local v20  # "opt":Ljava/lang/String;
+    .restart local v23  # "large":Z
+    goto :goto_45c
 
-    goto :goto_432
+    .line 321
+    .end local v17  # "messagingStyle":Landroid/app/Notification$MessagingStyle;
+    .end local v19  # "inboxStyle":Landroid/app/Notification$InboxStyle;
+    .end local v20  # "opt":Ljava/lang/String;
+    .end local v23  # "large":Z
+    .restart local v0  # "large":Z
+    .restart local v6  # "opt":Ljava/lang/String;
+    .restart local v7  # "messagingStyle":Landroid/app/Notification$MessagingStyle;
+    .restart local v8  # "inboxStyle":Landroid/app/Notification$InboxStyle;
+    :pswitch_453  #0x5, 0x6, 0x7, 0x8, 0x9
+    move/from16 v23, v0
 
-    .line 352
-    :pswitch_42b  #0x5, 0x6, 0x7, 0x8, 0x9
-    move v4, v5
+    move-object/from16 v20, v6
 
-    move-object v12, v6
+    move-object/from16 v17, v7
 
-    move-object v13, v7
+    move-object/from16 v19, v8
 
-    move-object/from16 v20, v8
+    .end local v0  # "large":Z
+    .end local v6  # "opt":Ljava/lang/String;
+    .end local v7  # "messagingStyle":Landroid/app/Notification$MessagingStyle;
+    .end local v8  # "inboxStyle":Landroid/app/Notification$InboxStyle;
+    .restart local v17  # "messagingStyle":Landroid/app/Notification$MessagingStyle;
+    .restart local v19  # "inboxStyle":Landroid/app/Notification$InboxStyle;
+    .restart local v20  # "opt":Ljava/lang/String;
+    .restart local v23  # "large":Z
+    const/4 v0, 0x1
 
-    const/16 v19, 0x0
-
-    .line 357
-    :goto_432
+    .line 326
+    .end local v23  # "large":Z
+    .restart local v0  # "large":Z
+    :goto_45c
     invoke-virtual/range {p0 .. p0}, Lcom/android/server/notification/NotificationShellCmd;->getNextArgRequired()Ljava/lang/String;
 
     move-result-object v3
 
-    .line 358
-    invoke-virtual {v1, v0, v3}, Lcom/android/server/notification/NotificationShellCmd;->parseIcon(Landroid/content/res/Resources;Ljava/lang/String;)Landroid/graphics/drawable/Icon;
+    .line 327
+    .local v3, "iconSpec":Ljava/lang/String;
+    invoke-virtual {v1, v10, v3}, Lcom/android/server/notification/NotificationShellCmd;->parseIcon(Landroid/content/res/Resources;Ljava/lang/String;)Landroid/graphics/drawable/Icon;
+
+    move-result-object v4
+
+    .line 328
+    .local v4, "icon":Landroid/graphics/drawable/Icon;
+    if-nez v4, :cond_47c
+
+    .line 329
+    new-instance v5, Ljava/lang/StringBuilder;
+
+    invoke-direct {v5}, Ljava/lang/StringBuilder;-><init>()V
+
+    const-string v6, "error: invalid icon: "
+
+    invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v5, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v5}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
     move-result-object v5
 
-    .line 359
-    if-nez v5, :cond_451
+    invoke-virtual {v2, v5}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
-    .line 360
-    new-instance v0, Ljava/lang/StringBuilder;
+    .line 330
+    const/4 v5, -0x1
 
-    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
+    return v5
 
-    const-string v1, "error: invalid icon: "
-
-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v0, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
-
-    move-result-object v0
-
-    invoke-virtual {v2, v0}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
-
-    .line 361
-    return v17
-
-    .line 363
-    :cond_451
-    if-eqz v4, :cond_457
-
-    .line 364
-    invoke-virtual {v9, v5}, Landroid/app/Notification$Builder;->setLargeIcon(Landroid/graphics/drawable/Icon;)Landroid/app/Notification$Builder;
-
-    .line 365
-    goto :goto_46c
-
-    .line 367
-    :cond_457
-    nop
-
-    .line 369
-    move-object v14, v5
-
-    move-object v6, v12
-
-    move-object v7, v13
-
-    move-object/from16 v8, v20
-
-    goto :goto_47a
-
-    .line 345
-    :pswitch_45e  #0x2, 0x3, 0x4
-    move-object v12, v6
-
-    move-object v13, v7
-
-    move-object/from16 v20, v8
-
-    const/16 v19, 0x0
-
-    invoke-virtual/range {p0 .. p0}, Lcom/android/server/notification/NotificationShellCmd;->getNextArgRequired()Ljava/lang/String;
-
-    move-result-object v3
-
-    invoke-virtual {v9, v3}, Landroid/app/Notification$Builder;->setContentTitle(Ljava/lang/CharSequence;)Landroid/app/Notification$Builder;
-
-    .line 346
-    nop
-
-    .line 497
-    :goto_46c
-    move-object v6, v12
-
-    move-object v7, v13
-
-    move-object/from16 v8, v20
-
-    goto :goto_47a
-
-    .line 340
-    :pswitch_471  #0x0, 0x1
-    move v4, v5
-
-    move-object v12, v6
-
-    move-object v13, v7
-
-    move-object/from16 v20, v8
-
-    const/16 v19, 0x0
-
-    .line 341
-    move/from16 v16, v4
-
-    .line 497
-    :goto_47a
-    goto/16 :goto_25
-
-    .line 499
+    .line 332
     :cond_47c
-    const/4 v5, 0x3
+    if-eqz v0, :cond_483
 
-    invoke-virtual/range {p0 .. p0}, Lcom/android/server/notification/NotificationShellCmd;->getNextArg()Ljava/lang/String;
+    .line 333
+    invoke-virtual {v11, v4}, Landroid/app/Notification$Builder;->setLargeIcon(Landroid/graphics/drawable/Icon;)Landroid/app/Notification$Builder;
 
-    move-result-object v12
-
-    .line 500
-    invoke-virtual/range {p0 .. p0}, Lcom/android/server/notification/NotificationShellCmd;->getNextArg()Ljava/lang/String;
-
-    move-result-object v0
-
-    .line 501
-    if-eqz v12, :cond_528
-
-    if-nez v0, :cond_48b
-
-    goto/16 :goto_528
-
-    .line 506
-    :cond_48b
-    invoke-virtual {v9, v0}, Landroid/app/Notification$Builder;->setContentText(Ljava/lang/CharSequence;)Landroid/app/Notification$Builder;
-
-    .line 508
-    if-nez v14, :cond_497
-
-    .line 510
-    const v0, 0x1080077
-
-    invoke-virtual {v9, v0}, Landroid/app/Notification$Builder;->setSmallIcon(I)Landroid/app/Notification$Builder;
+    .line 334
+    const/4 v0, 0x0
 
     goto :goto_49a
 
-    .line 512
-    :cond_497
-    invoke-virtual {v9, v14}, Landroid/app/Notification$Builder;->setSmallIcon(Landroid/graphics/drawable/Icon;)Landroid/app/Notification$Builder;
+    .line 336
+    :cond_483
+    move-object v5, v4
 
-    .line 515
+    .line 338
+    .end local v12  # "smallIcon":Landroid/graphics/drawable/Icon;
+    .local v5, "smallIcon":Landroid/graphics/drawable/Icon;
+    move-object v12, v5
+
+    move-object/from16 v7, v17
+
+    move-object/from16 v8, v19
+
+    goto :goto_4a9
+
+    .line 314
+    .end local v3  # "iconSpec":Ljava/lang/String;
+    .end local v4  # "icon":Landroid/graphics/drawable/Icon;
+    .end local v5  # "smallIcon":Landroid/graphics/drawable/Icon;
+    .end local v17  # "messagingStyle":Landroid/app/Notification$MessagingStyle;
+    .end local v19  # "inboxStyle":Landroid/app/Notification$InboxStyle;
+    .end local v20  # "opt":Ljava/lang/String;
+    .restart local v6  # "opt":Ljava/lang/String;
+    .restart local v7  # "messagingStyle":Landroid/app/Notification$MessagingStyle;
+    .restart local v8  # "inboxStyle":Landroid/app/Notification$InboxStyle;
+    .restart local v12  # "smallIcon":Landroid/graphics/drawable/Icon;
+    :pswitch_48a  #0x2, 0x3, 0x4
+    move/from16 v23, v0
+
+    move-object/from16 v20, v6
+
+    move-object/from16 v17, v7
+
+    move-object/from16 v19, v8
+
+    .end local v0  # "large":Z
+    .end local v6  # "opt":Ljava/lang/String;
+    .end local v7  # "messagingStyle":Landroid/app/Notification$MessagingStyle;
+    .end local v8  # "inboxStyle":Landroid/app/Notification$InboxStyle;
+    .restart local v17  # "messagingStyle":Landroid/app/Notification$MessagingStyle;
+    .restart local v19  # "inboxStyle":Landroid/app/Notification$InboxStyle;
+    .restart local v20  # "opt":Ljava/lang/String;
+    .restart local v23  # "large":Z
+    invoke-virtual/range {p0 .. p0}, Lcom/android/server/notification/NotificationShellCmd;->getNextArgRequired()Ljava/lang/String;
+
+    move-result-object v0
+
+    invoke-virtual {v11, v0}, Landroid/app/Notification$Builder;->setContentTitle(Ljava/lang/CharSequence;)Landroid/app/Notification$Builder;
+
+    .line 315
+    nop
+
+    .line 466
+    .end local v23  # "large":Z
     :goto_49a
-    move/from16 v13, p3
+    move-object/from16 v7, v17
 
-    invoke-virtual {v1, v10, v13}, Lcom/android/server/notification/NotificationShellCmd;->ensureChannel(Ljava/lang/String;I)V
+    move-object/from16 v8, v19
 
-    .line 517
-    invoke-virtual {v9}, Landroid/app/Notification$Builder;->build()Landroid/app/Notification;
+    goto :goto_4a9
 
-    move-result-object v8
+    .line 309
+    .end local v17  # "messagingStyle":Landroid/app/Notification$MessagingStyle;
+    .end local v19  # "inboxStyle":Landroid/app/Notification$InboxStyle;
+    .end local v20  # "opt":Ljava/lang/String;
+    .restart local v0  # "large":Z
+    .restart local v6  # "opt":Ljava/lang/String;
+    .restart local v7  # "messagingStyle":Landroid/app/Notification$MessagingStyle;
+    .restart local v8  # "inboxStyle":Landroid/app/Notification$InboxStyle;
+    :pswitch_49f  #0x0, 0x1
+    move/from16 v23, v0
 
-    .line 518
+    move-object/from16 v20, v6
+
+    move-object/from16 v17, v7
+
+    move-object/from16 v19, v8
+
+    .end local v0  # "large":Z
+    .end local v6  # "opt":Ljava/lang/String;
+    .end local v7  # "messagingStyle":Landroid/app/Notification$MessagingStyle;
+    .end local v8  # "inboxStyle":Landroid/app/Notification$InboxStyle;
+    .restart local v17  # "messagingStyle":Landroid/app/Notification$MessagingStyle;
+    .restart local v19  # "inboxStyle":Landroid/app/Notification$InboxStyle;
+    .restart local v20  # "opt":Ljava/lang/String;
+    .restart local v23  # "large":Z
+    const/4 v0, 0x1
+
+    .line 310
+    .end local v13  # "verbose":Z
+    .local v0, "verbose":Z
+    move v13, v0
+
+    .line 466
+    .end local v0  # "verbose":Z
+    .end local v17  # "messagingStyle":Landroid/app/Notification$MessagingStyle;
+    .end local v19  # "inboxStyle":Landroid/app/Notification$InboxStyle;
+    .end local v23  # "large":Z
+    .restart local v7  # "messagingStyle":Landroid/app/Notification$MessagingStyle;
+    .restart local v8  # "inboxStyle":Landroid/app/Notification$InboxStyle;
+    .restart local v13  # "verbose":Z
+    :goto_4a9
+    goto/16 :goto_25
+
+    .line 468
+    .end local v20  # "opt":Ljava/lang/String;
+    .restart local v6  # "opt":Ljava/lang/String;
+    :cond_4ab
+    move-object/from16 v20, v6
+
+    move-object/from16 v17, v7
+
+    move-object/from16 v19, v8
+
+    .end local v6  # "opt":Ljava/lang/String;
+    .end local v7  # "messagingStyle":Landroid/app/Notification$MessagingStyle;
+    .end local v8  # "inboxStyle":Landroid/app/Notification$InboxStyle;
+    .restart local v17  # "messagingStyle":Landroid/app/Notification$MessagingStyle;
+    .restart local v19  # "inboxStyle":Landroid/app/Notification$InboxStyle;
+    .restart local v20  # "opt":Ljava/lang/String;
+    invoke-virtual/range {p0 .. p0}, Lcom/android/server/notification/NotificationShellCmd;->getNextArg()Ljava/lang/String;
+
+    move-result-object v4
+
+    .line 469
+    .local v4, "tag":Ljava/lang/String;
+    invoke-virtual/range {p0 .. p0}, Lcom/android/server/notification/NotificationShellCmd;->getNextArg()Ljava/lang/String;
+
+    move-result-object v5
+
+    .line 470
+    .local v5, "text":Ljava/lang/String;
+    if-eqz v4, :cond_57c
+
+    if-nez v5, :cond_4c1
+
+    move-object/from16 v22, v5
+
+    goto/16 :goto_57e
+
+    .line 475
+    :cond_4c1
+    invoke-virtual {v11, v5}, Landroid/app/Notification$Builder;->setContentText(Ljava/lang/CharSequence;)Landroid/app/Notification$Builder;
+
+    .line 477
+    if-nez v12, :cond_4cd
+
+    .line 479
+    const v0, 0x1080077
+
+    invoke-virtual {v11, v0}, Landroid/app/Notification$Builder;->setSmallIcon(I)Landroid/app/Notification$Builder;
+
+    goto :goto_4d0
+
+    .line 481
+    :cond_4cd
+    invoke-virtual {v11, v12}, Landroid/app/Notification$Builder;->setSmallIcon(Landroid/graphics/drawable/Icon;)Landroid/app/Notification$Builder;
+
+    .line 484
+    :goto_4d0
+    invoke-virtual/range {p0 .. p0}, Lcom/android/server/notification/NotificationShellCmd;->ensureChannel()V
+
+    .line 486
+    invoke-virtual {v11}, Landroid/app/Notification$Builder;->build()Landroid/app/Notification;
+
+    move-result-object v3
+
+    .line 487
+    .local v3, "n":Landroid/app/Notification;
     new-instance v0, Ljava/lang/StringBuilder;
 
     invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string/jumbo v3, "posting:\n  "
+    const-string/jumbo v6, "posting:\n  "
 
-    invoke-virtual {v0, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0, v8}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
@@ -1548,172 +1789,248 @@
 
     invoke-virtual {v2, v0}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
-    .line 519
+    .line 488
     new-instance v0, Ljava/lang/StringBuilder;
 
     invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string/jumbo v3, "posting: "
+    const-string/jumbo v6, "posting: "
 
-    invoke-virtual {v0, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0, v8}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
     move-result-object v0
 
-    const-string v3, "NotificationManager"
+    const-string v6, "NotificationManager"
 
-    invoke-static {v3, v0}, Landroid/util/Slog;->v(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v6, v0}, Landroid/util/Slog;->v(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 521
-    iget-object v3, v1, Lcom/android/server/notification/NotificationShellCmd;->mBinderService:Landroid/app/INotificationManager;
+    .line 490
+    invoke-static {}, Landroid/os/UserHandle;->getCallingUserId()I
 
-    const/16 v7, 0x7e4
+    move-result v6
 
-    .line 522
-    invoke-static/range {p3 .. p3}, Landroid/os/UserHandle;->getUserId(I)I
+    .line 491
+    .local v6, "userId":I
+    invoke-static {}, Landroid/os/Binder;->clearCallingIdentity()J
 
-    move-result v9
+    move-result-wide v7
 
-    .line 521
-    move-object/from16 v4, p2
+    .line 493
+    .local v7, "token":J
+    :try_start_50b
+    iget-object v0, v1, Lcom/android/server/notification/NotificationShellCmd;->mBinderService:Landroid/app/INotificationManager;
 
-    move v0, v5
+    const-string v25, "com.android.shell"
 
-    move-object/from16 v5, p2
+    const-string v26, "android"
 
-    move-object v6, v12
+    const/16 v28, 0x472
 
-    invoke-interface/range {v3 .. v9}, Landroid/app/INotificationManager;->enqueueNotificationWithTag(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;ILandroid/app/Notification;I)V
+    move-object/from16 v24, v0
 
-    .line 524
-    if-eqz v16, :cond_526
+    move-object/from16 v27, v4
 
-    .line 525
-    iget-object v3, v1, Lcom/android/server/notification/NotificationShellCmd;->mDirectService:Lcom/android/server/notification/NotificationManagerService;
+    move-object/from16 v29, v3
 
-    .line 526
-    invoke-static/range {p3 .. p3}, Landroid/os/UserHandle;->getUserId(I)I
+    move/from16 v30, v6
 
-    move-result v4
+    invoke-interface/range {v24 .. v30}, Landroid/app/INotificationManager;->enqueueNotificationWithTag(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;ILandroid/app/Notification;I)V
+    :try_end_51e
+    .catchall {:try_start_50b .. :try_end_51e} :catchall_573
 
-    .line 525
-    const/16 v5, 0x7e4
+    .line 498
+    invoke-static {v7, v8}, Landroid/os/Binder;->restoreCallingIdentity(J)V
 
-    invoke-virtual {v3, v10, v12, v5, v4}, Lcom/android/server/notification/NotificationManagerService;->findNotificationLocked(Ljava/lang/String;Ljava/lang/String;II)Lcom/android/server/notification/NotificationRecord;
-
-    move-result-object v3
-
-    .line 527
+    .line 499
     nop
 
-    :goto_4ef
-    add-int/lit8 v4, v0, -0x1
+    .line 501
+    if-eqz v13, :cond_56d
 
-    if-lez v0, :cond_50f
+    .line 502
+    iget-object v0, v1, Lcom/android/server/notification/NotificationShellCmd;->mDirectService:Lcom/android/server/notification/NotificationManagerService;
 
-    .line 528
-    if-eqz v3, :cond_4f6
+    move-object/from16 v18, v3
 
-    goto :goto_50f
+    .end local v3  # "n":Landroid/app/Notification;
+    .local v18, "n":Landroid/app/Notification;
+    const/16 v3, 0x472
 
-    .line 530
-    :cond_4f6
-    :try_start_4f6
+    move-object/from16 v22, v5
+
+    .end local v5  # "text":Ljava/lang/String;
+    .local v22, "text":Ljava/lang/String;
+    const-string v5, "com.android.shell"
+
+    invoke-virtual {v0, v5, v4, v3, v6}, Lcom/android/server/notification/NotificationManagerService;->findNotificationLocked(Ljava/lang/String;Ljava/lang/String;II)Lcom/android/server/notification/NotificationRecord;
+
+    move-result-object v0
+
+    .line 504
+    .local v0, "nr":Lcom/android/server/notification/NotificationRecord;
+    const/16 v23, 0x3
+
+    move-object v3, v0
+
+    .end local v0  # "nr":Lcom/android/server/notification/NotificationRecord;
+    .local v3, "nr":Lcom/android/server/notification/NotificationRecord;
+    .local v23, "tries":I
+    :goto_535
+    add-int/lit8 v25, v23, -0x1
+
+    .end local v23  # "tries":I
+    .local v25, "tries":I
+    if-lez v23, :cond_556
+
+    .line 505
+    if-eqz v3, :cond_53c
+
+    goto :goto_556
+
+    .line 507
+    :cond_53c
+    :try_start_53c
     const-string/jumbo v0, "waiting for notification to post..."
 
     invoke-virtual {v2, v0}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
-    .line 531
-    const-wide/16 v6, 0x1f4
+    .line 508
+    const-wide/16 v26, 0x1f4
 
-    invoke-static {v6, v7}, Ljava/lang/Thread;->sleep(J)V
-    :try_end_501
-    .catch Ljava/lang/InterruptedException; {:try_start_4f6 .. :try_end_501} :catch_502
+    invoke-static/range {v26 .. v27}, Ljava/lang/Thread;->sleep(J)V
+    :try_end_547
+    .catch Ljava/lang/InterruptedException; {:try_start_53c .. :try_end_547} :catch_548
 
-    .line 533
-    goto :goto_503
+    .line 510
+    goto :goto_549
 
-    .line 532
-    :catch_502
+    .line 509
+    :catch_548
     move-exception v0
 
-    .line 534
-    :goto_503
+    .line 511
+    :goto_549
     iget-object v0, v1, Lcom/android/server/notification/NotificationShellCmd;->mDirectService:Lcom/android/server/notification/NotificationManagerService;
 
-    .line 535
-    invoke-static/range {p3 .. p3}, Landroid/os/UserHandle;->getUserId(I)I
+    const/16 v1, 0x472
 
-    move-result v3
-
-    .line 534
-    invoke-virtual {v0, v10, v12, v5, v3}, Lcom/android/server/notification/NotificationManagerService;->findNotificationLocked(Ljava/lang/String;Ljava/lang/String;II)Lcom/android/server/notification/NotificationRecord;
+    invoke-virtual {v0, v5, v4, v1, v6}, Lcom/android/server/notification/NotificationManagerService;->findNotificationLocked(Ljava/lang/String;Ljava/lang/String;II)Lcom/android/server/notification/NotificationRecord;
 
     move-result-object v3
 
-    move v0, v4
+    move-object/from16 v1, p0
 
-    goto :goto_4ef
+    move/from16 v23, v25
 
-    .line 537
-    :cond_50f
-    :goto_50f
-    if-nez v3, :cond_519
+    goto :goto_535
 
-    .line 538
+    .line 514
+    .end local v25  # "tries":I
+    :cond_556
+    :goto_556
+    if-nez v3, :cond_560
+
+    .line 515
     const-string/jumbo v0, "warning: couldn\'t find notification after enqueueing"
 
     invoke-virtual {v2, v0}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
     const/4 v1, 0x0
 
-    goto :goto_527
+    goto :goto_572
 
-    .line 540
-    :cond_519
+    .line 517
+    :cond_560
     const-string/jumbo v0, "posted: "
 
     invoke-virtual {v2, v0}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
-    .line 541
+    .line 518
     const-string v0, "  "
 
     const/4 v1, 0x0
 
-    invoke-virtual {v3, v2, v0, v11, v1}, Lcom/android/server/notification/NotificationRecord;->dump(Ljava/io/PrintWriter;Ljava/lang/String;Landroid/content/Context;Z)V
+    invoke-virtual {v3, v2, v0, v9, v1}, Lcom/android/server/notification/NotificationRecord;->dump(Ljava/io/PrintWriter;Ljava/lang/String;Landroid/content/Context;Z)V
 
-    goto :goto_527
+    goto :goto_572
 
-    .line 524
-    :cond_526
+    .line 501
+    .end local v18  # "n":Landroid/app/Notification;
+    .end local v22  # "text":Ljava/lang/String;
+    .local v3, "n":Landroid/app/Notification;
+    .restart local v5  # "text":Ljava/lang/String;
+    :cond_56d
+    move-object/from16 v18, v3
+
+    move-object/from16 v22, v5
+
     const/4 v1, 0x0
 
-    .line 545
-    :goto_527
+    .line 522
+    .end local v3  # "n":Landroid/app/Notification;
+    .end local v5  # "text":Ljava/lang/String;
+    .restart local v18  # "n":Landroid/app/Notification;
+    .restart local v22  # "text":Ljava/lang/String;
+    :goto_572
     return v1
 
-    .line 502
-    :cond_528
-    :goto_528
-    invoke-virtual {v2, v4}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    .line 498
+    .end local v18  # "n":Landroid/app/Notification;
+    .end local v22  # "text":Ljava/lang/String;
+    .restart local v3  # "n":Landroid/app/Notification;
+    .restart local v5  # "text":Ljava/lang/String;
+    :catchall_573
+    move-exception v0
 
-    .line 503
-    return v17
+    move-object/from16 v18, v3
 
-    :sswitch_data_52c
+    move-object/from16 v22, v5
+
+    .end local v3  # "n":Landroid/app/Notification;
+    .end local v5  # "text":Ljava/lang/String;
+    .restart local v18  # "n":Landroid/app/Notification;
+    .restart local v22  # "text":Ljava/lang/String;
+    invoke-static {v7, v8}, Landroid/os/Binder;->restoreCallingIdentity(J)V
+
+    throw v0
+
+    .line 470
+    .end local v6  # "userId":I
+    .end local v7  # "token":J
+    .end local v18  # "n":Landroid/app/Notification;
+    .end local v22  # "text":Ljava/lang/String;
+    .restart local v5  # "text":Ljava/lang/String;
+    :cond_57c
+    move-object/from16 v22, v5
+
+    .line 471
+    .end local v5  # "text":Ljava/lang/String;
+    .restart local v22  # "text":Ljava/lang/String;
+    :goto_57e
+    invoke-virtual {v2, v3}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+
+    .line 472
+    const/4 v0, -0x1
+
+    return v0
+
+    nop
+
+    :sswitch_data_584
     .sparse-switch
         -0x74789999 -> :sswitch_189
         -0x603263ef -> :sswitch_17e
         -0x60295f48 -> :sswitch_174
         -0x4821dd90 -> :sswitch_169
-        -0x468ec964 -> :sswitch_15e
-        -0x32dd8ddd -> :sswitch_153
-        -0x2bc1295 -> :sswitch_149
-        0x5bc -> :sswitch_13f
-        0x5c6 -> :sswitch_134
+        -0x468ec964 -> :sswitch_15d
+        -0x32dd8ddd -> :sswitch_152
+        -0x2bc1295 -> :sswitch_148
+        0x5bc -> :sswitch_13e
+        0x5c6 -> :sswitch_133
         0x5d6 -> :sswitch_128
         0x5db -> :sswitch_11c
         0x5dc -> :sswitch_110
@@ -1724,1126 +2041,992 @@
         0x6942258 -> :sswitch_d6
         0x2a056f7a -> :sswitch_ca
         0x2a13d010 -> :sswitch_be
-        0x2d3ae234 -> :sswitch_b2
-        0x302cc35e -> :sswitch_a6
-        0x487e843c -> :sswitch_9a
-        0x4a573094 -> :sswitch_8f
-        0x4bbf1cad -> :sswitch_83
-        0x4bcda88d -> :sswitch_77
-        0x4f7504e1 -> :sswitch_6b
-        0x4f757219 -> :sswitch_5f
-        0x4f76e594 -> :sswitch_53
-        0x6789dfe2 -> :sswitch_48
-        0x76d66fcb -> :sswitch_3c
+        0x2d3ae234 -> :sswitch_b1
+        0x302cc35e -> :sswitch_a5
+        0x487e843c -> :sswitch_99
+        0x4a573094 -> :sswitch_8e
+        0x4bbf1cad -> :sswitch_82
+        0x4bcda88d -> :sswitch_76
+        0x4f7504e1 -> :sswitch_6a
+        0x4f757219 -> :sswitch_5e
+        0x4f76e594 -> :sswitch_52
+        0x6789dfe2 -> :sswitch_47
+        0x76d66fcb -> :sswitch_3a
     .end sparse-switch
 
-    :pswitch_data_5a6
+    :pswitch_data_5fe
     .packed-switch 0x0
-        :pswitch_471  #00000000
-        :pswitch_471  #00000001
-        :pswitch_45e  #00000002
-        :pswitch_45e  #00000003
-        :pswitch_45e  #00000004
-        :pswitch_42b  #00000005
-        :pswitch_42b  #00000006
-        :pswitch_42b  #00000007
-        :pswitch_42b  #00000008
-        :pswitch_42b  #00000009
-        :pswitch_423  #0000000a
-        :pswitch_423  #0000000b
-        :pswitch_423  #0000000c
-        :pswitch_367  #0000000d
-        :pswitch_367  #0000000e
-        :pswitch_367  #0000000f
-        :pswitch_367  #00000010
-        :pswitch_367  #00000011
-        :pswitch_2a6  #00000012
-        :pswitch_2a6  #00000013
-        :pswitch_28c  #00000014
-        :pswitch_28c  #00000015
-        :pswitch_28c  #00000016
-        :pswitch_22f  #00000017
-        :pswitch_215  #00000018
-        :pswitch_1b7  #00000019
-        :pswitch_19e  #0000001a
+        :pswitch_49f  #00000000
+        :pswitch_49f  #00000001
+        :pswitch_48a  #00000002
+        :pswitch_48a  #00000003
+        :pswitch_48a  #00000004
+        :pswitch_453  #00000005
+        :pswitch_453  #00000006
+        :pswitch_453  #00000007
+        :pswitch_453  #00000008
+        :pswitch_453  #00000009
+        :pswitch_44a  #0000000a
+        :pswitch_44a  #0000000b
+        :pswitch_44a  #0000000c
+        :pswitch_38b  #0000000d
+        :pswitch_38b  #0000000e
+        :pswitch_38b  #0000000f
+        :pswitch_38b  #00000010
+        :pswitch_38b  #00000011
+        :pswitch_2c2  #00000012
+        :pswitch_2c2  #00000013
+        :pswitch_2a5  #00000014
+        :pswitch_2a5  #00000015
+        :pswitch_2a5  #00000016
+        :pswitch_240  #00000017
+        :pswitch_223  #00000018
+        :pswitch_1b6  #00000019
+        :pswitch_19d  #0000001a
     .end packed-switch
 
-    :sswitch_data_5e0
+    :sswitch_data_638
     .sparse-switch
-        -0x55d4c8fc -> :sswitch_2df
-        -0x6cebdd3 -> :sswitch_2d5
-        -0x2a7c002 -> :sswitch_2cb
-        0x5fb2286 -> :sswitch_2c1
-        0x62f6fe4 -> :sswitch_2b7
+        -0x55d4c8fc -> :sswitch_300
+        -0x6cebdd3 -> :sswitch_2f6
+        -0x2a7c002 -> :sswitch_2ec
+        0x5fb2286 -> :sswitch_2e1
+        0x62f6fe4 -> :sswitch_2d6
     .end sparse-switch
 .end method
 
 
 # virtual methods
-.method ensureChannel(Ljava/lang/String;I)V
-    .registers 7
+.method ensureChannel()V
+    .registers 13
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
         }
     .end annotation
 
-    .line 285
-    new-instance v0, Landroid/app/NotificationChannel;
+    .line 242
+    const-string v0, "NotificationService"
 
-    const-string/jumbo v1, "shell_cmd"
+    const-string/jumbo v1, "shellcmd"
 
-    const-string v2, "Shell command"
+    const-string v2, "com.android.shell"
 
-    const/4 v3, 0x3
+    invoke-static {}, Landroid/os/Binder;->getCallingUid()I
 
-    invoke-direct {v0, v1, v2, v3}, Landroid/app/NotificationChannel;-><init>(Ljava/lang/String;Ljava/lang/CharSequence;I)V
+    move-result v3
 
-    .line 287
-    iget-object v2, p0, Lcom/android/server/notification/NotificationShellCmd;->mBinderService:Landroid/app/INotificationManager;
+    .line 243
+    .local v3, "uid":I
+    invoke-static {}, Landroid/os/UserHandle;->getCallingUserId()I
 
-    new-instance v3, Landroid/content/pm/ParceledListSlice;
+    move-result v4
 
-    .line 288
-    invoke-static {v0}, Ljava/util/Collections;->singletonList(Ljava/lang/Object;)Ljava/util/List;
+    .line 244
+    .local v4, "userid":I
+    invoke-static {}, Landroid/os/Binder;->clearCallingIdentity()J
 
-    move-result-object v0
+    move-result-wide v5
 
-    invoke-direct {v3, v0}, Landroid/content/pm/ParceledListSlice;-><init>(Ljava/util/List;)V
+    .line 246
+    .local v5, "token":J
+    :try_start_13
+    iget-object v7, p0, Lcom/android/server/notification/NotificationShellCmd;->mBinderService:Landroid/app/INotificationManager;
 
-    .line 287
-    invoke-interface {v2, p1, v3}, Landroid/app/INotificationManager;->createNotificationChannels(Ljava/lang/String;Landroid/content/pm/ParceledListSlice;)V
+    const/4 v8, 0x0
 
-    .line 289
-    new-instance v0, Ljava/lang/StringBuilder;
+    invoke-interface {v7, v2, v3, v1, v8}, Landroid/app/INotificationManager;->getNotificationChannelForPackage(Ljava/lang/String;ILjava/lang/String;Z)Landroid/app/NotificationChannel;
 
-    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
+    move-result-object v7
 
-    const-string v2, "created channel: "
+    if-nez v7, :cond_70
 
-    invoke-virtual {v0, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    .line 248
+    new-instance v7, Landroid/app/NotificationChannel;
 
-    iget-object v2, p0, Lcom/android/server/notification/NotificationShellCmd;->mBinderService:Landroid/app/INotificationManager;
+    const-string v9, "Shell command"
 
-    .line 291
-    invoke-static {p2}, Landroid/os/UserHandle;->getUserId(I)I
+    const/4 v10, 0x3
 
-    move-result p2
+    invoke-direct {v7, v1, v9, v10}, Landroid/app/NotificationChannel;-><init>(Ljava/lang/String;Ljava/lang/CharSequence;I)V
 
-    .line 290
-    invoke-interface {v2, p1, p2, p1, v1}, Landroid/app/INotificationManager;->getNotificationChannel(Ljava/lang/String;ILjava/lang/String;Ljava/lang/String;)Landroid/app/NotificationChannel;
+    .line 250
+    .local v7, "chan":Landroid/app/NotificationChannel;
+    new-instance v9, Ljava/lang/StringBuilder;
 
-    move-result-object p1
+    invoke-direct {v9}, Ljava/lang/StringBuilder;-><init>()V
 
-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    const-string v10, "creating shell channel for user "
 
-    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v9, v10}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    move-result-object p1
+    invoke-virtual {v9, v4}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    .line 289
-    const-string p2, "NotificationService"
+    const-string v10, " uid "
 
-    invoke-static {p2, p1}, Landroid/util/Slog;->v(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-virtual {v9, v10}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    .line 292
+    invoke-virtual {v9, v3}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+
+    const-string v10, ": "
+
+    invoke-virtual {v9, v10}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v9, v7}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v9}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v9
+
+    invoke-static {v0, v9}, Landroid/util/Slog;->v(Ljava/lang/String;Ljava/lang/String;)I
+
+    .line 252
+    iget-object v9, p0, Lcom/android/server/notification/NotificationShellCmd;->mBinderService:Landroid/app/INotificationManager;
+
+    new-instance v10, Landroid/content/pm/ParceledListSlice;
+
+    .line 254
+    invoke-static {v7}, Ljava/util/Collections;->singletonList(Ljava/lang/Object;)Ljava/util/List;
+
+    move-result-object v11
+
+    invoke-direct {v10, v11}, Landroid/content/pm/ParceledListSlice;-><init>(Ljava/util/List;)V
+
+    .line 252
+    invoke-interface {v9, v2, v3, v10}, Landroid/app/INotificationManager;->createNotificationChannelsForPackage(Ljava/lang/String;ILandroid/content/pm/ParceledListSlice;)V
+
+    .line 255
+    new-instance v9, Ljava/lang/StringBuilder;
+
+    invoke-direct {v9}, Ljava/lang/StringBuilder;-><init>()V
+
+    const-string v10, "created channel: "
+
+    invoke-virtual {v9, v10}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    iget-object v10, p0, Lcom/android/server/notification/NotificationShellCmd;->mBinderService:Landroid/app/INotificationManager;
+
+    .line 256
+    invoke-interface {v10, v2, v3, v1, v8}, Landroid/app/INotificationManager;->getNotificationChannelForPackage(Ljava/lang/String;ILjava/lang/String;Z)Landroid/app/NotificationChannel;
+
+    move-result-object v1
+
+    invoke-virtual {v9, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v9}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v1
+
+    .line 255
+    invoke-static {v0, v1}, Landroid/util/Slog;->v(Ljava/lang/String;Ljava/lang/String;)I
+    :try_end_70
+    .catchall {:try_start_13 .. :try_end_70} :catchall_75
+
+    .line 260
+    .end local v7  # "chan":Landroid/app/NotificationChannel;
+    :cond_70
+    invoke-static {v5, v6}, Landroid/os/Binder;->restoreCallingIdentity(J)V
+
+    .line 261
+    nop
+
+    .line 262
     return-void
+
+    .line 260
+    :catchall_75
+    move-exception v0
+
+    invoke-static {v5, v6}, Landroid/os/Binder;->restoreCallingIdentity(J)V
+
+    throw v0
 .end method
 
 .method public onCommand(Ljava/lang/String;)I
-    .registers 15
+    .registers 9
+    .param p1, "cmd"  # Ljava/lang/String;
 
-    .line 116
+    .line 108
     if-nez p1, :cond_7
 
-    .line 117
+    .line 109
     invoke-virtual {p0, p1}, Lcom/android/server/notification/NotificationShellCmd;->handleDefaultCommands(Ljava/lang/String;)I
 
-    move-result p1
+    move-result v0
 
-    return p1
+    return v0
 
-    .line 119
+    .line 111
     :cond_7
-    const/4 v0, 0x0
+    invoke-virtual {p0}, Lcom/android/server/notification/NotificationShellCmd;->getOutPrintWriter()Ljava/io/PrintWriter;
 
-    .line 120
-    invoke-static {}, Landroid/os/Binder;->getCallingUid()I
+    move-result-object v0
+
+    .line 113
+    .local v0, "pw":Ljava/io/PrintWriter;
+    const/16 v1, 0x2d
+
+    const/16 v2, 0x5f
+
+    const/4 v3, 0x0
+
+    :try_start_10
+    invoke-virtual {p1, v1, v2}, Ljava/lang/String;->replace(CC)Ljava/lang/String;
+
+    move-result-object v1
+
+    invoke-virtual {v1}, Ljava/lang/String;->hashCode()I
+
+    move-result v2
+
+    const/4 v4, 0x1
+
+    const/4 v5, -0x1
+
+    sparse-switch v2, :sswitch_data_232
+
+    :cond_1d
+    goto/16 :goto_af
+
+    :sswitch_1f
+    const-string v2, "allow_assistant"
+
+    invoke-virtual {v1, v2}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
     move-result v1
 
-    .line 121
-    invoke-static {}, Landroid/os/Binder;->clearCallingIdentity()J
+    if-eqz v1, :cond_1d
 
-    move-result-wide v2
+    const/4 v1, 0x4
 
-    .line 123
-    const/4 v4, 0x0
+    goto/16 :goto_b0
 
-    :try_start_11
-    iget-object v5, p0, Lcom/android/server/notification/NotificationShellCmd;->mPm:Landroid/content/pm/PackageManager;
+    :sswitch_2a
+    const-string v2, "distract_package"
 
-    invoke-virtual {v5, v1}, Landroid/content/pm/PackageManager;->getPackagesForUid(I)[Ljava/lang/String;
+    invoke-virtual {v1, v2}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result-object v5
+    move-result v1
 
-    .line 124
-    if-eqz v5, :cond_1e
+    if-eqz v1, :cond_1d
 
-    array-length v6, v5
+    const/16 v1, 0x8
 
-    if-lez v6, :cond_1e
+    goto/16 :goto_b0
 
-    .line 125
-    aget-object v0, v5, v4
-    :try_end_1e
-    .catch Ljava/lang/Exception; {:try_start_11 .. :try_end_1e} :catch_25
-    .catchall {:try_start_11 .. :try_end_1e} :catchall_22
+    :sswitch_36
+    const-string v2, "disallow_listener"
 
-    .line 130
-    :cond_1e
-    :goto_1e
-    invoke-static {v2, v3}, Landroid/os/Binder;->restoreCallingIdentity(J)V
+    invoke-virtual {v1, v2}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    .line 131
-    goto :goto_2e
+    move-result v1
 
-    .line 130
-    :catchall_22
-    move-exception p1
+    if-eqz v1, :cond_1d
 
-    goto/16 :goto_2cf
+    const/4 v1, 0x3
 
-    .line 127
-    :catch_25
-    move-exception v5
+    goto/16 :goto_b0
 
-    .line 128
-    :try_start_26
-    const-string v6, "NotifShellCmd"
+    :sswitch_41
+    const-string/jumbo v2, "reset_assistant_user_set"
 
-    const-string v7, "failed to get caller pkg"
+    invoke-virtual {v1, v2}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    invoke-static {v6, v7, v5}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
-    :try_end_2d
-    .catchall {:try_start_26 .. :try_end_2d} :catchall_22
+    move-result v1
 
-    goto :goto_1e
+    if-eqz v1, :cond_1d
 
-    .line 132
-    :goto_2e
-    invoke-virtual {p0}, Lcom/android/server/notification/NotificationShellCmd;->getOutPrintWriter()Ljava/io/PrintWriter;
+    const/16 v1, 0x9
+
+    goto/16 :goto_b0
+
+    :sswitch_4e
+    const-string/jumbo v2, "suspend_package"
+
+    invoke-virtual {v1, v2}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+
+    move-result v1
+
+    if-eqz v1, :cond_1d
+
+    const/4 v1, 0x6
+
+    goto :goto_b0
+
+    :sswitch_59
+    const-string v2, "allow_dnd"
+
+    invoke-virtual {v1, v2}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+
+    move-result v1
+
+    if-eqz v1, :cond_1d
+
+    move v1, v3
+
+    goto :goto_b0
+
+    :sswitch_63
+    const-string/jumbo v2, "post"
+
+    invoke-virtual {v1, v2}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+
+    move-result v1
+
+    if-eqz v1, :cond_1d
+
+    const/16 v1, 0xb
+
+    goto :goto_b0
+
+    :sswitch_6f
+    const-string v2, "get_approved_assistant"
+
+    invoke-virtual {v1, v2}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+
+    move-result v1
+
+    if-eqz v1, :cond_1d
+
+    const/16 v1, 0xa
+
+    goto :goto_b0
+
+    :sswitch_7a
+    const-string v2, "disallow_dnd"
+
+    invoke-virtual {v1, v2}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+
+    move-result v1
+
+    if-eqz v1, :cond_1d
+
+    move v1, v4
+
+    goto :goto_b0
+
+    :sswitch_84
+    const-string v2, "allow_listener"
+
+    invoke-virtual {v1, v2}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+
+    move-result v1
+
+    if-eqz v1, :cond_1d
+
+    const/4 v1, 0x2
+
+    goto :goto_b0
+
+    :sswitch_8e
+    const-string/jumbo v2, "unsuspend_package"
+
+    invoke-virtual {v1, v2}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+
+    move-result v1
+
+    if-eqz v1, :cond_1d
+
+    const/4 v1, 0x7
+
+    goto :goto_b0
+
+    :sswitch_99
+    const-string/jumbo v2, "notify"
+
+    invoke-virtual {v1, v2}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+
+    move-result v1
+
+    if-eqz v1, :cond_1d
+
+    const/16 v1, 0xc
+
+    goto :goto_b0
+
+    :sswitch_a5
+    const-string v2, "disallow_assistant"
+
+    invoke-virtual {v1, v2}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+
+    move-result v1
+    :try_end_ab
+    .catch Ljava/lang/Exception; {:try_start_10 .. :try_end_ab} :catch_211
+
+    if-eqz v1, :cond_1d
+
+    const/4 v1, 0x5
+
+    goto :goto_b0
+
+    :goto_af
+    move v1, v5
+
+    :goto_b0
+    const-string v2, "Invalid assistant - must be a ComponentName"
+
+    const-string v6, "Invalid listener - must be a ComponentName"
+
+    packed-switch v1, :pswitch_data_268
+
+    .line 232
+    :try_start_b7
+    invoke-virtual {p0, p1}, Lcom/android/server/notification/NotificationShellCmd;->handleDefaultCommands(Ljava/lang/String;)I
+
+    move-result v1
+
+    goto/16 :goto_210
+
+    .line 229
+    :pswitch_bd  #0xb, 0xc
+    invoke-direct {p0, v0}, Lcom/android/server/notification/NotificationShellCmd;->doNotify(Ljava/io/PrintWriter;)I
+
+    .line 230
+    goto/16 :goto_20f
+
+    .line 215
+    :pswitch_c2  #0xa
+    invoke-static {}, Landroid/app/ActivityManager;->getCurrentUser()I
+
+    move-result v1
+
+    .line 216
+    .local v1, "userId":I
+    invoke-virtual {p0}, Lcom/android/server/notification/NotificationShellCmd;->peekNextArg()Ljava/lang/String;
 
     move-result-object v2
 
-    .line 134
-    const/16 v3, 0x2d
+    if-eqz v2, :cond_d5
 
-    const/16 v5, 0x5f
-
-    :try_start_36
-    invoke-virtual {p1, v3, v5}, Ljava/lang/String;->replace(CC)Ljava/lang/String;
-
-    move-result-object v3
-
-    invoke-virtual {v3}, Ljava/lang/String;->hashCode()I
-
-    move-result v5
-
-    const/4 v6, 0x5
-
-    const/4 v7, 0x4
-
-    const/4 v8, 0x2
-
-    const/4 v9, 0x3
-
-    const/4 v10, -0x1
-
-    const/4 v11, 0x1
-
-    sparse-switch v5, :sswitch_data_2d4
-
-    :cond_47
-    goto/16 :goto_e6
-
-    :sswitch_49
-    const-string v5, "allow_assistant"
-
-    invoke-virtual {v3, v5}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
-
-    move-result v3
-
-    if-eqz v3, :cond_47
-
-    move v3, v6
-
-    goto/16 :goto_e7
-
-    :sswitch_54
-    const-string/jumbo v5, "set_dnd"
-
-    invoke-virtual {v3, v5}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
-
-    move-result v3
-
-    if-eqz v3, :cond_47
-
-    move v3, v4
-
-    goto/16 :goto_e7
-
-    :sswitch_60
-    const-string v5, "distract_package"
-
-    invoke-virtual {v3, v5}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
-
-    move-result v3
-
-    if-eqz v3, :cond_47
-
-    const/16 v3, 0x9
-
-    goto/16 :goto_e7
-
-    :sswitch_6c
-    const-string v5, "disallow_listener"
-
-    invoke-virtual {v3, v5}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
-
-    move-result v3
-
-    if-eqz v3, :cond_47
-
-    move v3, v7
-
-    goto/16 :goto_e7
-
-    :sswitch_77
-    const-string/jumbo v5, "reset_assistant_user_set"
-
-    invoke-virtual {v3, v5}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
-
-    move-result v3
-
-    if-eqz v3, :cond_47
-
-    const/16 v3, 0xa
-
-    goto/16 :goto_e7
-
-    :sswitch_84
-    const-string/jumbo v5, "suspend_package"
-
-    invoke-virtual {v3, v5}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
-
-    move-result v3
-
-    if-eqz v3, :cond_47
-
-    const/4 v3, 0x7
-
-    goto :goto_e7
-
-    :sswitch_8f
-    const-string v5, "allow_dnd"
-
-    invoke-virtual {v3, v5}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
-
-    move-result v3
-
-    if-eqz v3, :cond_47
-
-    move v3, v11
-
-    goto :goto_e7
-
-    :sswitch_99
-    const-string/jumbo v5, "post"
-
-    invoke-virtual {v3, v5}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
-
-    move-result v3
-
-    if-eqz v3, :cond_47
-
-    const/16 v3, 0xc
-
-    goto :goto_e7
-
-    :sswitch_a5
-    const-string v5, "get_approved_assistant"
-
-    invoke-virtual {v3, v5}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
-
-    move-result v3
-
-    if-eqz v3, :cond_47
-
-    const/16 v3, 0xb
-
-    goto :goto_e7
-
-    :sswitch_b0
-    const-string v5, "disallow_dnd"
-
-    invoke-virtual {v3, v5}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
-
-    move-result v3
-
-    if-eqz v3, :cond_47
-
-    move v3, v8
-
-    goto :goto_e7
-
-    :sswitch_ba
-    const-string v5, "allow_listener"
-
-    invoke-virtual {v3, v5}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
-
-    move-result v3
-
-    if-eqz v3, :cond_47
-
-    move v3, v9
-
-    goto :goto_e7
-
-    :sswitch_c4
-    const-string/jumbo v5, "unsuspend_package"
-
-    invoke-virtual {v3, v5}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
-
-    move-result v3
-
-    if-eqz v3, :cond_47
-
-    const/16 v3, 0x8
-
-    goto :goto_e7
-
-    :sswitch_d0
-    const-string/jumbo v5, "notify"
-
-    invoke-virtual {v3, v5}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
-
-    move-result v3
-
-    if-eqz v3, :cond_47
-
-    const/16 v3, 0xd
-
-    goto :goto_e7
-
-    :sswitch_dc
-    const-string v5, "disallow_assistant"
-
-    invoke-virtual {v3, v5}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
-
-    move-result v3
-    :try_end_e2
-    .catch Ljava/lang/Exception; {:try_start_36 .. :try_end_e2} :catch_2ae
-
-    if-eqz v3, :cond_47
-
-    const/4 v3, 0x6
-
-    goto :goto_e7
-
-    :goto_e6
-    move v3, v10
-
-    :goto_e7
-    const-string v5, "Invalid assistant - must be a ComponentName"
-
-    const-string v12, "Invalid listener - must be a ComponentName"
-
-    packed-switch v3, :pswitch_data_30e
-
-    .line 275
-    :try_start_ee
-    invoke-virtual {p0, p1}, Lcom/android/server/notification/NotificationShellCmd;->handleDefaultCommands(Ljava/lang/String;)I
-
-    move-result p1
-
-    goto/16 :goto_2ad
-
-    .line 272
-    :pswitch_f4  #0xc, 0xd
-    invoke-direct {p0, v2, v0, v1}, Lcom/android/server/notification/NotificationShellCmd;->doNotify(Ljava/io/PrintWriter;Ljava/lang/String;I)I
-
-    .line 273
-    goto/16 :goto_2ac
-
-    .line 258
-    :pswitch_f9  #0xb
-    invoke-static {}, Landroid/app/ActivityManager;->getCurrentUser()I
-
-    move-result p1
-
-    .line 259
-    invoke-virtual {p0}, Lcom/android/server/notification/NotificationShellCmd;->peekNextArg()Ljava/lang/String;
-
-    move-result-object v0
-
-    if-eqz v0, :cond_10b
-
-    .line 260
+    .line 217
     invoke-virtual {p0}, Lcom/android/server/notification/NotificationShellCmd;->getNextArgRequired()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v2
 
-    invoke-static {p1}, Ljava/lang/Integer;->parseInt(Ljava/lang/String;)I
+    invoke-static {v2}, Ljava/lang/Integer;->parseInt(Ljava/lang/String;)I
 
-    move-result p1
+    move-result v2
 
-    .line 262
-    :cond_10b
-    iget-object v0, p0, Lcom/android/server/notification/NotificationShellCmd;->mDirectService:Lcom/android/server/notification/NotificationManagerService;
-
-    invoke-virtual {v0, p1}, Lcom/android/server/notification/NotificationManagerService;->getApprovedAssistant(I)Landroid/content/ComponentName;
-
-    move-result-object p1
-
-    .line 263
-    if-nez p1, :cond_11b
-
-    .line 264
-    const-string/jumbo p1, "null"
-
-    invoke-virtual {v2, p1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
-
-    goto/16 :goto_2ac
-
-    .line 266
-    :cond_11b
-    invoke-virtual {p1}, Landroid/content/ComponentName;->flattenToString()Ljava/lang/String;
-
-    move-result-object p1
-
-    invoke-virtual {v2, p1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
-
-    .line 268
-    goto/16 :goto_2ac
-
-    .line 250
-    :pswitch_124  #0xa
-    invoke-static {}, Landroid/app/ActivityManager;->getCurrentUser()I
-
-    move-result p1
-
-    .line 251
-    invoke-virtual {p0}, Lcom/android/server/notification/NotificationShellCmd;->peekNextArg()Ljava/lang/String;
-
-    move-result-object v0
-
-    if-eqz v0, :cond_136
-
-    .line 252
-    invoke-virtual {p0}, Lcom/android/server/notification/NotificationShellCmd;->getNextArgRequired()Ljava/lang/String;
-
-    move-result-object p1
-
-    invoke-static {p1}, Ljava/lang/Integer;->parseInt(Ljava/lang/String;)I
-
-    move-result p1
-
-    .line 254
-    :cond_136
-    iget-object v0, p0, Lcom/android/server/notification/NotificationShellCmd;->mDirectService:Lcom/android/server/notification/NotificationManagerService;
-
-    invoke-virtual {v0, p1}, Lcom/android/server/notification/NotificationManagerService;->resetAssistantUserSet(I)V
-
-    .line 255
-    goto/16 :goto_2ac
-
-    .line 244
-    :pswitch_13d  #0x9
-    iget-object p1, p0, Lcom/android/server/notification/NotificationShellCmd;->mDirectService:Lcom/android/server/notification/NotificationManagerService;
-
-    .line 245
-    invoke-virtual {p0}, Lcom/android/server/notification/NotificationShellCmd;->getNextArgRequired()Ljava/lang/String;
-
-    move-result-object v0
-
-    invoke-static {v0}, Ljava/lang/Integer;->parseInt(Ljava/lang/String;)I
-
-    move-result v0
-
-    .line 246
-    invoke-virtual {p0}, Lcom/android/server/notification/NotificationShellCmd;->getNextArgRequired()Ljava/lang/String;
-
-    move-result-object v1
-
-    const-string v3, ","
-
-    invoke-virtual {v1, v3}, Ljava/lang/String;->split(Ljava/lang/String;)[Ljava/lang/String;
-
-    move-result-object v1
-
-    .line 244
-    invoke-virtual {p1, v0, v1}, Lcom/android/server/notification/NotificationManagerService;->simulatePackageDistractionBroadcast(I[Ljava/lang/String;)V
-
-    .line 247
-    goto/16 :goto_2ac
-
-    .line 237
-    :pswitch_156  #0x8
-    iget-object p1, p0, Lcom/android/server/notification/NotificationShellCmd;->mDirectService:Lcom/android/server/notification/NotificationManagerService;
-
-    invoke-virtual {p0}, Lcom/android/server/notification/NotificationShellCmd;->getNextArgRequired()Ljava/lang/String;
-
-    move-result-object v0
-
-    invoke-virtual {p1, v4, v0}, Lcom/android/server/notification/NotificationManagerService;->simulatePackageSuspendBroadcast(ZLjava/lang/String;)V
-
-    .line 239
-    goto/16 :goto_2ac
-
-    .line 232
-    :pswitch_161  #0x7
-    iget-object p1, p0, Lcom/android/server/notification/NotificationShellCmd;->mDirectService:Lcom/android/server/notification/NotificationManagerService;
-
-    invoke-virtual {p0}, Lcom/android/server/notification/NotificationShellCmd;->getNextArgRequired()Ljava/lang/String;
-
-    move-result-object v0
-
-    invoke-virtual {p1, v11, v0}, Lcom/android/server/notification/NotificationManagerService;->simulatePackageSuspendBroadcast(ZLjava/lang/String;)V
-
-    .line 234
-    goto/16 :goto_2ac
-
-    .line 218
-    :pswitch_16c  #0x6
-    invoke-virtual {p0}, Lcom/android/server/notification/NotificationShellCmd;->getNextArgRequired()Ljava/lang/String;
-
-    move-result-object p1
-
-    invoke-static {p1}, Landroid/content/ComponentName;->unflattenFromString(Ljava/lang/String;)Landroid/content/ComponentName;
-
-    move-result-object p1
+    move v1, v2
 
     .line 219
-    if-nez p1, :cond_17a
+    :cond_d5
+    iget-object v2, p0, Lcom/android/server/notification/NotificationShellCmd;->mDirectService:Lcom/android/server/notification/NotificationManagerService;
+
+    invoke-virtual {v2, v1}, Lcom/android/server/notification/NotificationManagerService;->getApprovedAssistant(I)Landroid/content/ComponentName;
+
+    move-result-object v2
 
     .line 220
-    invoke-virtual {v2, v5}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    .local v2, "approvedAssistant":Landroid/content/ComponentName;
+    if-nez v2, :cond_e5
 
     .line 221
-    return v10
+    const-string/jumbo v4, "null"
+
+    invoke-virtual {v0, v4}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+
+    goto/16 :goto_20f
 
     .line 223
-    :cond_17a
-    invoke-static {}, Landroid/app/ActivityManager;->getCurrentUser()I
+    :cond_e5
+    invoke-virtual {v2}, Landroid/content/ComponentName;->flattenToString()Ljava/lang/String;
 
-    move-result v0
+    move-result-object v4
 
-    .line 224
-    invoke-virtual {p0}, Lcom/android/server/notification/NotificationShellCmd;->peekNextArg()Ljava/lang/String;
-
-    move-result-object v1
-
-    if-eqz v1, :cond_18c
+    invoke-virtual {v0, v4}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
     .line 225
-    invoke-virtual {p0}, Lcom/android/server/notification/NotificationShellCmd;->getNextArgRequired()Ljava/lang/String;
-
-    move-result-object v0
-
-    invoke-static {v0}, Ljava/lang/Integer;->parseInt(Ljava/lang/String;)I
-
-    move-result v0
-
-    .line 227
-    :cond_18c
-    iget-object v1, p0, Lcom/android/server/notification/NotificationShellCmd;->mBinderService:Landroid/app/INotificationManager;
-
-    invoke-interface {v1, p1, v0, v4}, Landroid/app/INotificationManager;->setNotificationAssistantAccessGrantedForUser(Landroid/content/ComponentName;IZ)V
-
-    .line 229
-    goto/16 :goto_2ac
-
-    .line 205
-    :pswitch_193  #0x5
-    invoke-virtual {p0}, Lcom/android/server/notification/NotificationShellCmd;->getNextArgRequired()Ljava/lang/String;
-
-    move-result-object p1
-
-    invoke-static {p1}, Landroid/content/ComponentName;->unflattenFromString(Ljava/lang/String;)Landroid/content/ComponentName;
-
-    move-result-object p1
-
-    .line 206
-    if-nez p1, :cond_1a1
+    goto/16 :goto_20f
 
     .line 207
-    invoke-virtual {v2, v5}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
-
-    .line 208
-    return v10
-
-    .line 210
-    :cond_1a1
+    .end local v1  # "userId":I
+    .end local v2  # "approvedAssistant":Landroid/content/ComponentName;
+    :pswitch_ee  #0x9
     invoke-static {}, Landroid/app/ActivityManager;->getCurrentUser()I
-
-    move-result v0
-
-    .line 211
-    invoke-virtual {p0}, Lcom/android/server/notification/NotificationShellCmd;->peekNextArg()Ljava/lang/String;
-
-    move-result-object v1
-
-    if-eqz v1, :cond_1b3
-
-    .line 212
-    invoke-virtual {p0}, Lcom/android/server/notification/NotificationShellCmd;->getNextArgRequired()Ljava/lang/String;
-
-    move-result-object v0
-
-    invoke-static {v0}, Ljava/lang/Integer;->parseInt(Ljava/lang/String;)I
-
-    move-result v0
-
-    .line 214
-    :cond_1b3
-    iget-object v1, p0, Lcom/android/server/notification/NotificationShellCmd;->mBinderService:Landroid/app/INotificationManager;
-
-    invoke-interface {v1, p1, v0, v11}, Landroid/app/INotificationManager;->setNotificationAssistantAccessGrantedForUser(Landroid/content/ComponentName;IZ)V
-
-    .line 216
-    goto/16 :goto_2ac
-
-    .line 192
-    :pswitch_1ba  #0x4
-    invoke-virtual {p0}, Lcom/android/server/notification/NotificationShellCmd;->getNextArgRequired()Ljava/lang/String;
-
-    move-result-object p1
-
-    invoke-static {p1}, Landroid/content/ComponentName;->unflattenFromString(Ljava/lang/String;)Landroid/content/ComponentName;
-
-    move-result-object p1
-
-    .line 193
-    if-nez p1, :cond_1c8
-
-    .line 194
-    invoke-virtual {v2, v12}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
-
-    .line 195
-    return v10
-
-    .line 197
-    :cond_1c8
-    invoke-static {}, Landroid/app/ActivityManager;->getCurrentUser()I
-
-    move-result v0
-
-    .line 198
-    invoke-virtual {p0}, Lcom/android/server/notification/NotificationShellCmd;->peekNextArg()Ljava/lang/String;
-
-    move-result-object v1
-
-    if-eqz v1, :cond_1da
-
-    .line 199
-    invoke-virtual {p0}, Lcom/android/server/notification/NotificationShellCmd;->getNextArgRequired()Ljava/lang/String;
-
-    move-result-object v0
-
-    invoke-static {v0}, Ljava/lang/Integer;->parseInt(Ljava/lang/String;)I
-
-    move-result v0
-
-    .line 201
-    :cond_1da
-    iget-object v1, p0, Lcom/android/server/notification/NotificationShellCmd;->mBinderService:Landroid/app/INotificationManager;
-
-    invoke-interface {v1, p1, v0, v4}, Landroid/app/INotificationManager;->setNotificationListenerAccessGrantedForUser(Landroid/content/ComponentName;IZ)V
-
-    .line 203
-    goto/16 :goto_2ac
-
-    .line 179
-    :pswitch_1e1  #0x3
-    invoke-virtual {p0}, Lcom/android/server/notification/NotificationShellCmd;->getNextArgRequired()Ljava/lang/String;
-
-    move-result-object p1
-
-    invoke-static {p1}, Landroid/content/ComponentName;->unflattenFromString(Ljava/lang/String;)Landroid/content/ComponentName;
-
-    move-result-object p1
-
-    .line 180
-    if-nez p1, :cond_1ef
-
-    .line 181
-    invoke-virtual {v2, v12}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
-
-    .line 182
-    return v10
-
-    .line 184
-    :cond_1ef
-    invoke-static {}, Landroid/app/ActivityManager;->getCurrentUser()I
-
-    move-result v0
-
-    .line 185
-    invoke-virtual {p0}, Lcom/android/server/notification/NotificationShellCmd;->peekNextArg()Ljava/lang/String;
-
-    move-result-object v1
-
-    if-eqz v1, :cond_201
-
-    .line 186
-    invoke-virtual {p0}, Lcom/android/server/notification/NotificationShellCmd;->getNextArgRequired()Ljava/lang/String;
-
-    move-result-object v0
-
-    invoke-static {v0}, Ljava/lang/Integer;->parseInt(Ljava/lang/String;)I
-
-    move-result v0
-
-    .line 188
-    :cond_201
-    iget-object v1, p0, Lcom/android/server/notification/NotificationShellCmd;->mBinderService:Landroid/app/INotificationManager;
-
-    invoke-interface {v1, p1, v0, v11}, Landroid/app/INotificationManager;->setNotificationListenerAccessGrantedForUser(Landroid/content/ComponentName;IZ)V
-
-    .line 190
-    goto/16 :goto_2ac
-
-    .line 169
-    :pswitch_208  #0x2
-    invoke-virtual {p0}, Lcom/android/server/notification/NotificationShellCmd;->getNextArgRequired()Ljava/lang/String;
-
-    move-result-object p1
-
-    .line 170
-    invoke-static {}, Landroid/app/ActivityManager;->getCurrentUser()I
-
-    move-result v0
-
-    .line 171
-    invoke-virtual {p0}, Lcom/android/server/notification/NotificationShellCmd;->peekNextArg()Ljava/lang/String;
-
-    move-result-object v1
-
-    if-eqz v1, :cond_21e
-
-    .line 172
-    invoke-virtual {p0}, Lcom/android/server/notification/NotificationShellCmd;->getNextArgRequired()Ljava/lang/String;
-
-    move-result-object v0
-
-    invoke-static {v0}, Ljava/lang/Integer;->parseInt(Ljava/lang/String;)I
-
-    move-result v0
-
-    .line 174
-    :cond_21e
-    iget-object v1, p0, Lcom/android/server/notification/NotificationShellCmd;->mBinderService:Landroid/app/INotificationManager;
-
-    invoke-interface {v1, p1, v0, v4}, Landroid/app/INotificationManager;->setNotificationPolicyAccessGrantedForUser(Ljava/lang/String;IZ)V
-
-    .line 177
-    goto/16 :goto_2ac
-
-    .line 158
-    :pswitch_225  #0x1
-    invoke-virtual {p0}, Lcom/android/server/notification/NotificationShellCmd;->getNextArgRequired()Ljava/lang/String;
-
-    move-result-object p1
-
-    .line 159
-    invoke-static {}, Landroid/app/ActivityManager;->getCurrentUser()I
-
-    move-result v0
-
-    .line 160
-    invoke-virtual {p0}, Lcom/android/server/notification/NotificationShellCmd;->peekNextArg()Ljava/lang/String;
-
-    move-result-object v1
-
-    if-eqz v1, :cond_23b
-
-    .line 161
-    invoke-virtual {p0}, Lcom/android/server/notification/NotificationShellCmd;->getNextArgRequired()Ljava/lang/String;
-
-    move-result-object v0
-
-    invoke-static {v0}, Ljava/lang/Integer;->parseInt(Ljava/lang/String;)I
-
-    move-result v0
-
-    .line 163
-    :cond_23b
-    iget-object v1, p0, Lcom/android/server/notification/NotificationShellCmd;->mBinderService:Landroid/app/INotificationManager;
-
-    invoke-interface {v1, p1, v0, v11}, Landroid/app/INotificationManager;->setNotificationPolicyAccessGrantedForUser(Ljava/lang/String;IZ)V
-
-    .line 166
-    goto/16 :goto_2ac
-
-    .line 136
-    :pswitch_242  #0x0
-    invoke-virtual {p0}, Lcom/android/server/notification/NotificationShellCmd;->getNextArgRequired()Ljava/lang/String;
-
-    move-result-object p1
-
-    .line 137
-    nop
-
-    .line 138
-    invoke-virtual {p1}, Ljava/lang/String;->hashCode()I
 
     move-result v1
 
-    sparse-switch v1, :sswitch_data_32e
+    .line 208
+    .restart local v1  # "userId":I
+    invoke-virtual {p0}, Lcom/android/server/notification/NotificationShellCmd;->peekNextArg()Ljava/lang/String;
 
-    :cond_24e
-    goto :goto_28e
+    move-result-object v2
 
-    :sswitch_24f
-    const-string/jumbo v1, "none"
+    if-eqz v2, :cond_101
 
-    invoke-virtual {p1, v1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    .line 209
+    invoke-virtual {p0}, Lcom/android/server/notification/NotificationShellCmd;->getNextArgRequired()Ljava/lang/String;
 
-    move-result p1
+    move-result-object v2
 
-    if-eqz p1, :cond_24e
+    invoke-static {v2}, Ljava/lang/Integer;->parseInt(Ljava/lang/String;)I
 
-    move v10, v4
+    move-result v2
 
-    goto :goto_28e
+    move v1, v2
 
-    :sswitch_25a
-    const-string/jumbo v1, "off"
+    .line 211
+    :cond_101
+    iget-object v2, p0, Lcom/android/server/notification/NotificationShellCmd;->mDirectService:Lcom/android/server/notification/NotificationManagerService;
 
-    invoke-virtual {p1, v1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v2, v1}, Lcom/android/server/notification/NotificationManagerService;->resetAssistantUserSet(I)V
 
-    move-result p1
+    .line 212
+    goto/16 :goto_20f
 
-    if-eqz p1, :cond_24e
+    .line 201
+    .end local v1  # "userId":I
+    :pswitch_108  #0x8
+    iget-object v1, p0, Lcom/android/server/notification/NotificationShellCmd;->mDirectService:Lcom/android/server/notification/NotificationManagerService;
 
-    move v10, v6
+    .line 202
+    invoke-virtual {p0}, Lcom/android/server/notification/NotificationShellCmd;->getNextArgRequired()Ljava/lang/String;
 
-    goto :goto_28e
+    move-result-object v2
 
-    :sswitch_265
-    const-string v1, "all"
+    invoke-static {v2}, Ljava/lang/Integer;->parseInt(Ljava/lang/String;)I
 
-    invoke-virtual {p1, v1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    move-result v2
 
-    move-result p1
+    .line 203
+    invoke-virtual {p0}, Lcom/android/server/notification/NotificationShellCmd;->getNextArgRequired()Ljava/lang/String;
 
-    if-eqz p1, :cond_24e
+    move-result-object v4
 
-    move v10, v7
+    const-string v5, ","
 
-    goto :goto_28e
+    invoke-virtual {v4, v5}, Ljava/lang/String;->split(Ljava/lang/String;)[Ljava/lang/String;
 
-    :sswitch_26f
-    const-string/jumbo v1, "on"
+    move-result-object v4
 
-    invoke-virtual {p1, v1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    .line 201
+    invoke-virtual {v1, v2, v4}, Lcom/android/server/notification/NotificationManagerService;->simulatePackageDistractionBroadcast(I[Ljava/lang/String;)V
 
-    move-result p1
+    .line 204
+    goto/16 :goto_20f
 
-    if-eqz p1, :cond_24e
+    .line 194
+    :pswitch_121  #0x7
+    iget-object v1, p0, Lcom/android/server/notification/NotificationShellCmd;->mDirectService:Lcom/android/server/notification/NotificationManagerService;
 
-    move v10, v11
+    invoke-virtual {p0}, Lcom/android/server/notification/NotificationShellCmd;->getNextArgRequired()Ljava/lang/String;
 
-    goto :goto_28e
+    move-result-object v2
 
-    :sswitch_27a
-    const-string/jumbo v1, "priority"
+    invoke-virtual {v1, v3, v2}, Lcom/android/server/notification/NotificationManagerService;->simulatePackageSuspendBroadcast(ZLjava/lang/String;)V
 
-    invoke-virtual {p1, v1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    .line 196
+    goto/16 :goto_20f
 
-    move-result p1
+    .line 189
+    :pswitch_12c  #0x6
+    iget-object v1, p0, Lcom/android/server/notification/NotificationShellCmd;->mDirectService:Lcom/android/server/notification/NotificationManagerService;
 
-    if-eqz p1, :cond_24e
+    invoke-virtual {p0}, Lcom/android/server/notification/NotificationShellCmd;->getNextArgRequired()Ljava/lang/String;
 
-    move v10, v8
+    move-result-object v2
 
-    goto :goto_28e
+    invoke-virtual {v1, v4, v2}, Lcom/android/server/notification/NotificationManagerService;->simulatePackageSuspendBroadcast(ZLjava/lang/String;)V
 
-    :sswitch_285
-    const-string v1, "alarms"
+    .line 191
+    goto/16 :goto_20f
 
-    invoke-virtual {p1, v1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
-
-    move-result p1
-
-    if-eqz p1, :cond_24e
-
-    move v10, v9
-
-    :goto_28e
-    if-eqz v10, :cond_2a3
-
-    if-eq v10, v11, :cond_2a3
-
-    if-eq v10, v8, :cond_2a0
-
-    if-eq v10, v9, :cond_29e
-
-    if-eq v10, v7, :cond_29c
-
-    if-eq v10, v6, :cond_29c
-
-    move v7, v4
-
-    goto :goto_2a5
-
-    .line 151
-    :cond_29c
-    move v7, v11
-
-    goto :goto_2a5
-
-    .line 147
-    :cond_29e
-    nop
-
-    .line 148
-    goto :goto_2a5
-
-    .line 144
-    :cond_2a0
-    nop
-
-    .line 145
-    move v7, v8
-
-    goto :goto_2a5
-
-    .line 141
-    :cond_2a3
-    nop
-
-    .line 142
-    move v7, v9
-
-    .line 153
-    :goto_2a5
-    nop
-
-    .line 154
-    iget-object p1, p0, Lcom/android/server/notification/NotificationShellCmd;->mBinderService:Landroid/app/INotificationManager;
-
-    invoke-interface {p1, v0, v7}, Landroid/app/INotificationManager;->setInterruptionFilter(Ljava/lang/String;I)V
-    :try_end_2ab
-    .catch Ljava/lang/Exception; {:try_start_ee .. :try_end_2ab} :catch_2ae
-
-    .line 156
-    nop
-
-    .line 280
-    :goto_2ac
-    goto :goto_2ce
-
-    .line 275
-    :goto_2ad
-    return p1
-
-    .line 277
-    :catch_2ae
-    move-exception p1
-
-    .line 278
-    new-instance v0, Ljava/lang/StringBuilder;
-
-    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
-
-    const-string v1, "Error occurred. Check logcat for details. "
-
-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {p1}, Ljava/lang/Exception;->getMessage()Ljava/lang/String;
+    .line 175
+    :pswitch_137  #0x5
+    invoke-virtual {p0}, Lcom/android/server/notification/NotificationShellCmd;->getNextArgRequired()Ljava/lang/String;
 
     move-result-object v1
 
-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-static {v1}, Landroid/content/ComponentName;->unflattenFromString(Ljava/lang/String;)Landroid/content/ComponentName;
 
-    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    move-result-object v1
 
-    move-result-object v0
+    .line 176
+    .local v1, "cn":Landroid/content/ComponentName;
+    if-nez v1, :cond_145
 
-    invoke-virtual {v2, v0}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    .line 177
+    invoke-virtual {v0, v2}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
-    .line 279
-    const-string v0, "NotificationService"
+    .line 178
+    return v5
 
-    const-string v1, "Error running shell command"
+    .line 180
+    :cond_145
+    invoke-static {}, Landroid/app/ActivityManager;->getCurrentUser()I
 
-    invoke-static {v0, v1, p1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    move-result v2
 
-    .line 281
-    :goto_2ce
-    return v4
+    .line 181
+    .local v2, "userId":I
+    invoke-virtual {p0}, Lcom/android/server/notification/NotificationShellCmd;->peekNextArg()Ljava/lang/String;
 
-    .line 130
-    :goto_2cf
-    invoke-static {v2, v3}, Landroid/os/Binder;->restoreCallingIdentity(J)V
+    move-result-object v4
 
-    throw p1
+    if-eqz v4, :cond_158
 
+    .line 182
+    invoke-virtual {p0}, Lcom/android/server/notification/NotificationShellCmd;->getNextArgRequired()Ljava/lang/String;
+
+    move-result-object v4
+
+    invoke-static {v4}, Ljava/lang/Integer;->parseInt(Ljava/lang/String;)I
+
+    move-result v4
+
+    move v2, v4
+
+    .line 184
+    :cond_158
+    iget-object v4, p0, Lcom/android/server/notification/NotificationShellCmd;->mBinderService:Landroid/app/INotificationManager;
+
+    invoke-interface {v4, v1, v2, v3}, Landroid/app/INotificationManager;->setNotificationAssistantAccessGrantedForUser(Landroid/content/ComponentName;IZ)V
+
+    .line 186
+    .end local v1  # "cn":Landroid/content/ComponentName;
+    .end local v2  # "userId":I
+    goto/16 :goto_20f
+
+    .line 162
+    :pswitch_15f  #0x4
+    invoke-virtual {p0}, Lcom/android/server/notification/NotificationShellCmd;->getNextArgRequired()Ljava/lang/String;
+
+    move-result-object v1
+
+    invoke-static {v1}, Landroid/content/ComponentName;->unflattenFromString(Ljava/lang/String;)Landroid/content/ComponentName;
+
+    move-result-object v1
+
+    .line 163
+    .restart local v1  # "cn":Landroid/content/ComponentName;
+    if-nez v1, :cond_16d
+
+    .line 164
+    invoke-virtual {v0, v2}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+
+    .line 165
+    return v5
+
+    .line 167
+    :cond_16d
+    invoke-static {}, Landroid/app/ActivityManager;->getCurrentUser()I
+
+    move-result v2
+
+    .line 168
+    .restart local v2  # "userId":I
+    invoke-virtual {p0}, Lcom/android/server/notification/NotificationShellCmd;->peekNextArg()Ljava/lang/String;
+
+    move-result-object v5
+
+    if-eqz v5, :cond_180
+
+    .line 169
+    invoke-virtual {p0}, Lcom/android/server/notification/NotificationShellCmd;->getNextArgRequired()Ljava/lang/String;
+
+    move-result-object v5
+
+    invoke-static {v5}, Ljava/lang/Integer;->parseInt(Ljava/lang/String;)I
+
+    move-result v5
+
+    move v2, v5
+
+    .line 171
+    :cond_180
+    iget-object v5, p0, Lcom/android/server/notification/NotificationShellCmd;->mBinderService:Landroid/app/INotificationManager;
+
+    invoke-interface {v5, v1, v2, v4}, Landroid/app/INotificationManager;->setNotificationAssistantAccessGrantedForUser(Landroid/content/ComponentName;IZ)V
+
+    .line 173
+    .end local v1  # "cn":Landroid/content/ComponentName;
+    .end local v2  # "userId":I
+    goto/16 :goto_20f
+
+    .line 149
+    :pswitch_187  #0x3
+    invoke-virtual {p0}, Lcom/android/server/notification/NotificationShellCmd;->getNextArgRequired()Ljava/lang/String;
+
+    move-result-object v1
+
+    invoke-static {v1}, Landroid/content/ComponentName;->unflattenFromString(Ljava/lang/String;)Landroid/content/ComponentName;
+
+    move-result-object v1
+
+    .line 150
+    .restart local v1  # "cn":Landroid/content/ComponentName;
+    if-nez v1, :cond_195
+
+    .line 151
+    invoke-virtual {v0, v6}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+
+    .line 152
+    return v5
+
+    .line 154
+    :cond_195
+    invoke-static {}, Landroid/app/ActivityManager;->getCurrentUser()I
+
+    move-result v2
+
+    .line 155
+    .restart local v2  # "userId":I
+    invoke-virtual {p0}, Lcom/android/server/notification/NotificationShellCmd;->peekNextArg()Ljava/lang/String;
+
+    move-result-object v4
+
+    if-eqz v4, :cond_1a8
+
+    .line 156
+    invoke-virtual {p0}, Lcom/android/server/notification/NotificationShellCmd;->getNextArgRequired()Ljava/lang/String;
+
+    move-result-object v4
+
+    invoke-static {v4}, Ljava/lang/Integer;->parseInt(Ljava/lang/String;)I
+
+    move-result v4
+
+    move v2, v4
+
+    .line 158
+    :cond_1a8
+    iget-object v4, p0, Lcom/android/server/notification/NotificationShellCmd;->mBinderService:Landroid/app/INotificationManager;
+
+    invoke-interface {v4, v1, v2, v3}, Landroid/app/INotificationManager;->setNotificationListenerAccessGrantedForUser(Landroid/content/ComponentName;IZ)V
+
+    .line 160
+    .end local v1  # "cn":Landroid/content/ComponentName;
+    .end local v2  # "userId":I
+    goto :goto_20f
+
+    .line 136
+    :pswitch_1ae  #0x2
+    invoke-virtual {p0}, Lcom/android/server/notification/NotificationShellCmd;->getNextArgRequired()Ljava/lang/String;
+
+    move-result-object v1
+
+    invoke-static {v1}, Landroid/content/ComponentName;->unflattenFromString(Ljava/lang/String;)Landroid/content/ComponentName;
+
+    move-result-object v1
+
+    .line 137
+    .restart local v1  # "cn":Landroid/content/ComponentName;
+    if-nez v1, :cond_1bc
+
+    .line 138
+    invoke-virtual {v0, v6}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+
+    .line 139
+    return v5
+
+    .line 141
+    :cond_1bc
+    invoke-static {}, Landroid/app/ActivityManager;->getCurrentUser()I
+
+    move-result v2
+
+    .line 142
+    .restart local v2  # "userId":I
+    invoke-virtual {p0}, Lcom/android/server/notification/NotificationShellCmd;->peekNextArg()Ljava/lang/String;
+
+    move-result-object v5
+
+    if-eqz v5, :cond_1cf
+
+    .line 143
+    invoke-virtual {p0}, Lcom/android/server/notification/NotificationShellCmd;->getNextArgRequired()Ljava/lang/String;
+
+    move-result-object v5
+
+    invoke-static {v5}, Ljava/lang/Integer;->parseInt(Ljava/lang/String;)I
+
+    move-result v5
+
+    move v2, v5
+
+    .line 145
+    :cond_1cf
+    iget-object v5, p0, Lcom/android/server/notification/NotificationShellCmd;->mBinderService:Landroid/app/INotificationManager;
+
+    invoke-interface {v5, v1, v2, v4}, Landroid/app/INotificationManager;->setNotificationListenerAccessGrantedForUser(Landroid/content/ComponentName;IZ)V
+
+    .line 147
+    .end local v1  # "cn":Landroid/content/ComponentName;
+    .end local v2  # "userId":I
+    goto :goto_20f
+
+    .line 126
+    :pswitch_1d5  #0x1
+    invoke-virtual {p0}, Lcom/android/server/notification/NotificationShellCmd;->getNextArgRequired()Ljava/lang/String;
+
+    move-result-object v1
+
+    .line 127
+    .local v1, "packageName":Ljava/lang/String;
+    invoke-static {}, Landroid/app/ActivityManager;->getCurrentUser()I
+
+    move-result v2
+
+    .line 128
+    .restart local v2  # "userId":I
+    invoke-virtual {p0}, Lcom/android/server/notification/NotificationShellCmd;->peekNextArg()Ljava/lang/String;
+
+    move-result-object v4
+
+    if-eqz v4, :cond_1ec
+
+    .line 129
+    invoke-virtual {p0}, Lcom/android/server/notification/NotificationShellCmd;->getNextArgRequired()Ljava/lang/String;
+
+    move-result-object v4
+
+    invoke-static {v4}, Ljava/lang/Integer;->parseInt(Ljava/lang/String;)I
+
+    move-result v4
+
+    move v2, v4
+
+    .line 131
+    :cond_1ec
+    iget-object v4, p0, Lcom/android/server/notification/NotificationShellCmd;->mBinderService:Landroid/app/INotificationManager;
+
+    invoke-interface {v4, v1, v2, v3}, Landroid/app/INotificationManager;->setNotificationPolicyAccessGrantedForUser(Ljava/lang/String;IZ)V
+
+    .line 134
+    .end local v1  # "packageName":Ljava/lang/String;
+    .end local v2  # "userId":I
+    goto :goto_20f
+
+    .line 115
+    :pswitch_1f2  #0x0
+    invoke-virtual {p0}, Lcom/android/server/notification/NotificationShellCmd;->getNextArgRequired()Ljava/lang/String;
+
+    move-result-object v1
+
+    .line 116
+    .restart local v1  # "packageName":Ljava/lang/String;
+    invoke-static {}, Landroid/app/ActivityManager;->getCurrentUser()I
+
+    move-result v2
+
+    .line 117
+    .restart local v2  # "userId":I
+    invoke-virtual {p0}, Lcom/android/server/notification/NotificationShellCmd;->peekNextArg()Ljava/lang/String;
+
+    move-result-object v5
+
+    if-eqz v5, :cond_209
+
+    .line 118
+    invoke-virtual {p0}, Lcom/android/server/notification/NotificationShellCmd;->getNextArgRequired()Ljava/lang/String;
+
+    move-result-object v5
+
+    invoke-static {v5}, Ljava/lang/Integer;->parseInt(Ljava/lang/String;)I
+
+    move-result v5
+
+    move v2, v5
+
+    .line 120
+    :cond_209
+    iget-object v5, p0, Lcom/android/server/notification/NotificationShellCmd;->mBinderService:Landroid/app/INotificationManager;
+
+    invoke-interface {v5, v1, v2, v4}, Landroid/app/INotificationManager;->setNotificationPolicyAccessGrantedForUser(Ljava/lang/String;IZ)V
+    :try_end_20e
+    .catch Ljava/lang/Exception; {:try_start_b7 .. :try_end_20e} :catch_211
+
+    .line 123
+    .end local v1  # "packageName":Ljava/lang/String;
+    .end local v2  # "userId":I
     nop
 
-    :sswitch_data_2d4
+    .line 237
+    :goto_20f
+    goto :goto_231
+
+    .line 232
+    :goto_210
+    return v1
+
+    .line 234
+    :catch_211
+    move-exception v1
+
+    .line 235
+    .local v1, "e":Ljava/lang/Exception;
+    new-instance v2, Ljava/lang/StringBuilder;
+
+    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
+
+    const-string v4, "Error occurred. Check logcat for details. "
+
+    invoke-virtual {v2, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v1}, Ljava/lang/Exception;->getMessage()Ljava/lang/String;
+
+    move-result-object v4
+
+    invoke-virtual {v2, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v2
+
+    invoke-virtual {v0, v2}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+
+    .line 236
+    const-string v2, "NotificationService"
+
+    const-string v4, "Error running shell command"
+
+    invoke-static {v2, v4, v1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+
+    .line 238
+    .end local v1  # "e":Ljava/lang/Exception;
+    :goto_231
+    return v3
+
+    :sswitch_data_232
     .sparse-switch
-        -0x4f05a8e6 -> :sswitch_dc
-        -0x3df868b7 -> :sswitch_d0
-        -0x1e34b476 -> :sswitch_c4
-        -0x19cf0b16 -> :sswitch_ba
-        -0x199eb9aa -> :sswitch_b0
-        -0x18b58921 -> :sswitch_a5
-        0x3498a0 -> :sswitch_99
-        0x16318b24 -> :sswitch_8f
-        0x177b7f43 -> :sswitch_84
-        0x28bd431f -> :sswitch_77
-        0x4af068f8 -> :sswitch_6c
-        0x5d9b0a8d -> :sswitch_60
-        0x76556fbd -> :sswitch_54
-        0x7dcb4968 -> :sswitch_49
+        -0x4f05a8e6 -> :sswitch_a5
+        -0x3df868b7 -> :sswitch_99
+        -0x1e34b476 -> :sswitch_8e
+        -0x19cf0b16 -> :sswitch_84
+        -0x199eb9aa -> :sswitch_7a
+        -0x18b58921 -> :sswitch_6f
+        0x3498a0 -> :sswitch_63
+        0x16318b24 -> :sswitch_59
+        0x177b7f43 -> :sswitch_4e
+        0x28bd431f -> :sswitch_41
+        0x4af068f8 -> :sswitch_36
+        0x5d9b0a8d -> :sswitch_2a
+        0x7dcb4968 -> :sswitch_1f
     .end sparse-switch
 
-    :pswitch_data_30e
+    :pswitch_data_268
     .packed-switch 0x0
-        :pswitch_242  #00000000
-        :pswitch_225  #00000001
-        :pswitch_208  #00000002
-        :pswitch_1e1  #00000003
-        :pswitch_1ba  #00000004
-        :pswitch_193  #00000005
-        :pswitch_16c  #00000006
-        :pswitch_161  #00000007
-        :pswitch_156  #00000008
-        :pswitch_13d  #00000009
-        :pswitch_124  #0000000a
-        :pswitch_f9  #0000000b
-        :pswitch_f4  #0000000c
-        :pswitch_f4  #0000000d
+        :pswitch_1f2  #00000000
+        :pswitch_1d5  #00000001
+        :pswitch_1ae  #00000002
+        :pswitch_187  #00000003
+        :pswitch_15f  #00000004
+        :pswitch_137  #00000005
+        :pswitch_12c  #00000006
+        :pswitch_121  #00000007
+        :pswitch_108  #00000008
+        :pswitch_ee  #00000009
+        :pswitch_c2  #0000000a
+        :pswitch_bd  #0000000b
+        :pswitch_bd  #0000000c
     .end packed-switch
-
-    :sswitch_data_32e
-    .sparse-switch
-        -0x545a2fbe -> :sswitch_285
-        -0x4577865c -> :sswitch_27a
-        0xddf -> :sswitch_26f
-        0x179a1 -> :sswitch_265
-        0x1ad6f -> :sswitch_25a
-        0x33af38 -> :sswitch_24f
-    .end sparse-switch
 .end method
 
 .method public onHelp()V
     .registers 3
 
-    .line 550
+    .line 527
     invoke-virtual {p0}, Lcom/android/server/notification/NotificationShellCmd;->getOutPrintWriter()Ljava/io/PrintWriter;
 
     move-result-object v0
@@ -2852,19 +3035,21 @@
 
     invoke-virtual {v0, v1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
-    .line 551
+    .line 528
     return-void
 .end method
 
 .method parseIcon(Landroid/content/res/Resources;Ljava/lang/String;)Landroid/graphics/drawable/Icon;
-    .registers 6
+    .registers 7
+    .param p1, "res"  # Landroid/content/res/Resources;
+    .param p2, "encoded"  # Ljava/lang/String;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Ljava/lang/IllegalArgumentException;
         }
     .end annotation
 
-    .line 295
+    .line 265
     invoke-static {p2}, Landroid/text/TextUtils;->isEmpty(Ljava/lang/CharSequence;)Z
 
     move-result v0
@@ -2875,7 +3060,7 @@
 
     return-object v1
 
-    .line 296
+    .line 266
     :cond_8
     const-string v0, "/"
 
@@ -2885,7 +3070,7 @@
 
     if-eqz v0, :cond_21
 
-    .line 297
+    .line 267
     new-instance v0, Ljava/lang/StringBuilder;
 
     invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
@@ -2900,7 +3085,7 @@
 
     move-result-object p2
 
-    .line 299
+    .line 269
     :cond_21
     const-string v0, "http:"
 
@@ -2908,36 +3093,36 @@
 
     move-result v0
 
-    if-nez v0, :cond_86
+    if-nez v0, :cond_87
 
-    .line 300
+    .line 270
     const-string v0, "https:"
 
     invoke-virtual {p2, v0}, Ljava/lang/String;->startsWith(Ljava/lang/String;)Z
 
     move-result v0
 
-    if-nez v0, :cond_86
+    if-nez v0, :cond_87
 
-    .line 301
+    .line 271
     const-string v0, "content:"
 
     invoke-virtual {p2, v0}, Ljava/lang/String;->startsWith(Ljava/lang/String;)Z
 
     move-result v0
 
-    if-nez v0, :cond_86
+    if-nez v0, :cond_87
 
-    .line 302
+    .line 272
     const-string v0, "file:"
 
     invoke-virtual {p2, v0}, Ljava/lang/String;->startsWith(Ljava/lang/String;)Z
 
     move-result v0
 
-    if-nez v0, :cond_86
+    if-nez v0, :cond_87
 
-    .line 303
+    .line 273
     const-string v0, "android.resource:"
 
     invoke-virtual {p2, v0}, Ljava/lang/String;->startsWith(Ljava/lang/String;)Z
@@ -2946,9 +3131,9 @@
 
     if-eqz v0, :cond_4a
 
-    goto :goto_86
+    goto :goto_87
 
-    .line 306
+    .line 276
     :cond_4a
     const-string v0, "@"
 
@@ -2958,88 +3143,98 @@
 
     const/4 v2, 0x1
 
+    if-eqz v0, :cond_67
+
+    .line 277
+    invoke-virtual {p2, v2}, Ljava/lang/String;->substring(I)Ljava/lang/String;
+
+    move-result-object v0
+
+    const-string v2, "drawable"
+
+    const-string v3, "android"
+
+    invoke-virtual {p1, v0, v2, v3}, Landroid/content/res/Resources;->getIdentifier(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)I
+
+    move-result v0
+
+    .line 279
+    .local v0, "resid":I
     if-eqz v0, :cond_66
 
-    .line 307
-    invoke-virtual {p2, v2}, Ljava/lang/String;->substring(I)Ljava/lang/String;
+    .line 280
+    invoke-static {p1, v0}, Landroid/graphics/drawable/Icon;->createWithResource(Landroid/content/res/Resources;I)Landroid/graphics/drawable/Icon;
+
+    move-result-object v1
+
+    return-object v1
+
+    .line 279
+    .end local v0  # "resid":I
+    :cond_66
+    goto :goto_85
+
+    .line 282
+    :cond_67
+    const-string v0, "data:"
+
+    invoke-virtual {p2, v0}, Ljava/lang/String;->startsWith(Ljava/lang/String;)Z
+
+    move-result v0
+
+    if-eqz v0, :cond_85
+
+    .line 283
+    const/16 v0, 0x2c
+
+    invoke-virtual {p2, v0}, Ljava/lang/String;->indexOf(I)I
+
+    move-result v0
+
+    add-int/2addr v0, v2
+
+    invoke-virtual {p2, v0}, Ljava/lang/String;->substring(I)Ljava/lang/String;
 
     move-result-object p2
 
-    const-string v0, "drawable"
+    .line 284
+    const/4 v0, 0x0
 
-    const-string v2, "android"
+    invoke-static {p2, v0}, Landroid/util/Base64;->decode(Ljava/lang/String;I)[B
 
-    invoke-virtual {p1, p2, v0, v2}, Landroid/content/res/Resources;->getIdentifier(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)I
+    move-result-object v1
 
-    move-result p2
+    .line 285
+    .local v1, "bits":[B
+    array-length v2, v1
 
-    .line 309
-    if-eqz p2, :cond_84
+    invoke-static {v1, v0, v2}, Landroid/graphics/drawable/Icon;->createWithData([BII)Landroid/graphics/drawable/Icon;
 
-    .line 310
-    invoke-static {p1, p2}, Landroid/graphics/drawable/Icon;->createWithResource(Landroid/content/res/Resources;I)Landroid/graphics/drawable/Icon;
+    move-result-object v0
 
-    move-result-object p1
+    return-object v0
 
-    return-object p1
-
-    .line 312
-    :cond_66
-    const-string p1, "data:"
-
-    invoke-virtual {p2, p1}, Ljava/lang/String;->startsWith(Ljava/lang/String;)Z
-
-    move-result p1
-
-    if-eqz p1, :cond_84
-
-    .line 313
-    const/16 p1, 0x2c
-
-    invoke-virtual {p2, p1}, Ljava/lang/String;->indexOf(I)I
-
-    move-result p1
-
-    add-int/2addr p1, v2
-
-    invoke-virtual {p2, p1}, Ljava/lang/String;->substring(I)Ljava/lang/String;
-
-    move-result-object p1
-
-    .line 314
-    const/4 p2, 0x0
-
-    invoke-static {p1, p2}, Landroid/util/Base64;->decode(Ljava/lang/String;I)[B
-
-    move-result-object p1
-
-    .line 315
-    array-length v0, p1
-
-    invoke-static {p1, p2, v0}, Landroid/graphics/drawable/Icon;->createWithData([BII)Landroid/graphics/drawable/Icon;
-
-    move-result-object p1
-
-    return-object p1
-
-    .line 312
-    :cond_84
+    .line 282
+    .end local v1  # "bits":[B
+    :cond_85
+    :goto_85
     nop
 
-    .line 317
+    .line 287
     return-object v1
 
-    .line 304
-    :cond_86
-    :goto_86
+    .line 274
+    :cond_87
+    :goto_87
     invoke-static {p2}, Landroid/net/Uri;->parse(Ljava/lang/String;)Landroid/net/Uri;
 
-    move-result-object p1
+    move-result-object v0
 
-    .line 305
-    invoke-static {p1}, Landroid/graphics/drawable/Icon;->createWithContentUri(Landroid/net/Uri;)Landroid/graphics/drawable/Icon;
+    .line 275
+    .local v0, "asUri":Landroid/net/Uri;
+    invoke-static {v0}, Landroid/graphics/drawable/Icon;->createWithContentUri(Landroid/net/Uri;)Landroid/graphics/drawable/Icon;
 
-    move-result-object p1
+    move-result-object v1
 
-    return-object p1
+    return-object v1
 .end method

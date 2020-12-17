@@ -41,7 +41,7 @@
 .method constructor <init>()V
     .registers 1
 
-    .line 262
+    .line 254
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
     return-void
@@ -52,30 +52,30 @@
 .method clearSeedAccountData()V
     .registers 2
 
-    .line 294
+    .line 286
     const/4 v0, 0x0
 
     iput-object v0, p0, Lcom/android/server/pm/UserManagerService$UserData;->seedAccountName:Ljava/lang/String;
 
-    .line 295
+    .line 287
     iput-object v0, p0, Lcom/android/server/pm/UserManagerService$UserData;->seedAccountType:Ljava/lang/String;
 
-    .line 296
+    .line 288
     iput-object v0, p0, Lcom/android/server/pm/UserManagerService$UserData;->seedAccountOptions:Landroid/os/PersistableBundle;
 
-    .line 297
+    .line 289
     const/4 v0, 0x0
 
     iput-boolean v0, p0, Lcom/android/server/pm/UserManagerService$UserData;->persistSeedData:Z
 
-    .line 298
+    .line 290
     return-void
 .end method
 
 .method getLastRequestQuietModeEnabledMillis()J
     .registers 3
 
-    .line 290
+    .line 282
     iget-wide v0, p0, Lcom/android/server/pm/UserManagerService$UserData;->mLastRequestQuietModeEnabledMillis:J
 
     return-wide v0
@@ -83,10 +83,11 @@
 
 .method setLastRequestQuietModeEnabledMillis(J)V
     .registers 3
+    .param p1, "millis"  # J
 
-    .line 286
+    .line 278
     iput-wide p1, p0, Lcom/android/server/pm/UserManagerService$UserData;->mLastRequestQuietModeEnabledMillis:J
 
-    .line 287
+    .line 279
     return-void
 .end method

@@ -51,7 +51,8 @@
 
 # direct methods
 .method private constructor <init>(Landroid/content/Context;)V
-    .registers 5
+    .registers 7
+    .param p1, "context"  # Landroid/content/Context;
 
     .line 196
     invoke-direct {p0}, Landroid/debug/IAdbManager$Stub;-><init>()V
@@ -95,6 +96,7 @@
     move-result v0
 
     .line 201
+    .local v0, "secureAdbEnabled":Z
     const-string/jumbo v1, "vold.decrypt"
 
     invoke-static {v1}, Landroid/os/SystemProperties;->get(Ljava/lang/String;)Ljava/lang/String;
@@ -108,43 +110,44 @@
     move-result v1
 
     .line 202
+    .local v1, "dataEncrypted":Z
     if-eqz v0, :cond_3d
 
     if-nez v1, :cond_3d
 
     .line 203
-    new-instance v0, Lcom/android/server/adb/AdbDebuggingManager;
+    new-instance v2, Lcom/android/server/adb/AdbDebuggingManager;
 
-    invoke-direct {v0, p1}, Lcom/android/server/adb/AdbDebuggingManager;-><init>(Landroid/content/Context;)V
+    invoke-direct {v2, p1}, Lcom/android/server/adb/AdbDebuggingManager;-><init>(Landroid/content/Context;)V
 
-    iput-object v0, p0, Lcom/android/server/adb/AdbService;->mDebuggingManager:Lcom/android/server/adb/AdbDebuggingManager;
+    iput-object v2, p0, Lcom/android/server/adb/AdbService;->mDebuggingManager:Lcom/android/server/adb/AdbDebuggingManager;
 
     .line 206
     :cond_3d
-    new-instance p1, Lcom/android/server/adb/AdbService$AdbHandler;
+    new-instance v2, Lcom/android/server/adb/AdbService$AdbHandler;
 
     invoke-static {}, Lcom/android/server/FgThread;->get()Lcom/android/server/FgThread;
 
-    move-result-object v0
+    move-result-object v3
 
-    invoke-virtual {v0}, Lcom/android/server/FgThread;->getLooper()Landroid/os/Looper;
+    invoke-virtual {v3}, Lcom/android/server/FgThread;->getLooper()Landroid/os/Looper;
 
-    move-result-object v0
+    move-result-object v3
 
-    invoke-direct {p1, p0, v0}, Lcom/android/server/adb/AdbService$AdbHandler;-><init>(Lcom/android/server/adb/AdbService;Landroid/os/Looper;)V
+    invoke-direct {v2, p0, v3}, Lcom/android/server/adb/AdbService$AdbHandler;-><init>(Lcom/android/server/adb/AdbService;Landroid/os/Looper;)V
 
-    iput-object p1, p0, Lcom/android/server/adb/AdbService;->mHandler:Lcom/android/server/adb/AdbService$AdbHandler;
+    iput-object v2, p0, Lcom/android/server/adb/AdbService;->mHandler:Lcom/android/server/adb/AdbService$AdbHandler;
 
     .line 208
-    const-class p1, Landroid/debug/AdbManagerInternal;
+    const-class v2, Landroid/debug/AdbManagerInternal;
 
-    new-instance v0, Lcom/android/server/adb/AdbService$AdbManagerInternalImpl;
+    new-instance v3, Lcom/android/server/adb/AdbService$AdbManagerInternalImpl;
 
-    const/4 v1, 0x0
+    const/4 v4, 0x0
 
-    invoke-direct {v0, p0, v1}, Lcom/android/server/adb/AdbService$AdbManagerInternalImpl;-><init>(Lcom/android/server/adb/AdbService;Lcom/android/server/adb/AdbService$1;)V
+    invoke-direct {v3, p0, v4}, Lcom/android/server/adb/AdbService$AdbManagerInternalImpl;-><init>(Lcom/android/server/adb/AdbService;Lcom/android/server/adb/AdbService$1;)V
 
-    invoke-static {p1, v0}, Lcom/android/server/LocalServices;->addService(Ljava/lang/Class;Ljava/lang/Object;)V
+    invoke-static {v2, v3}, Lcom/android/server/LocalServices;->addService(Ljava/lang/Class;Ljava/lang/Object;)V
 
     .line 209
     return-void
@@ -152,6 +155,8 @@
 
 .method synthetic constructor <init>(Landroid/content/Context;Lcom/android/server/adb/AdbService$1;)V
     .registers 3
+    .param p1, "x0"  # Landroid/content/Context;
+    .param p2, "x1"  # Lcom/android/server/adb/AdbService$1;
 
     .line 57
     invoke-direct {p0, p1}, Lcom/android/server/adb/AdbService;-><init>(Landroid/content/Context;)V
@@ -160,25 +165,29 @@
 .end method
 
 .method static synthetic access$100(Lcom/android/server/adb/AdbService;)Landroid/util/ArrayMap;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/adb/AdbService;
 
     .line 57
-    iget-object p0, p0, Lcom/android/server/adb/AdbService;->mTransports:Landroid/util/ArrayMap;
+    iget-object v0, p0, Lcom/android/server/adb/AdbService;->mTransports:Landroid/util/ArrayMap;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$200(Lcom/android/server/adb/AdbService;)Z
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/adb/AdbService;
 
     .line 57
-    iget-boolean p0, p0, Lcom/android/server/adb/AdbService;->mAdbEnabled:Z
+    iget-boolean v0, p0, Lcom/android/server/adb/AdbService;->mAdbEnabled:Z
 
-    return p0
+    return v0
 .end method
 
 .method static synthetic access$202(Lcom/android/server/adb/AdbService;Z)Z
     .registers 2
+    .param p0, "x0"  # Lcom/android/server/adb/AdbService;
+    .param p1, "x1"  # Z
 
     .line 57
     iput-boolean p1, p0, Lcom/android/server/adb/AdbService;->mAdbEnabled:Z
@@ -187,25 +196,29 @@
 .end method
 
 .method static synthetic access$300(Lcom/android/server/adb/AdbService;)Lcom/android/server/adb/AdbDebuggingManager;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/adb/AdbService;
 
     .line 57
-    iget-object p0, p0, Lcom/android/server/adb/AdbService;->mDebuggingManager:Lcom/android/server/adb/AdbDebuggingManager;
+    iget-object v0, p0, Lcom/android/server/adb/AdbService;->mDebuggingManager:Lcom/android/server/adb/AdbDebuggingManager;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$400(Lcom/android/server/adb/AdbService;)Landroid/content/ContentResolver;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/adb/AdbService;
 
     .line 57
-    iget-object p0, p0, Lcom/android/server/adb/AdbService;->mContentResolver:Landroid/content/ContentResolver;
+    iget-object v0, p0, Lcom/android/server/adb/AdbService;->mContentResolver:Landroid/content/ContentResolver;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$500(Lcom/android/server/adb/AdbService;Z)V
     .registers 2
+    .param p0, "x0"  # Lcom/android/server/adb/AdbService;
+    .param p1, "x1"  # Z
 
     .line 57
     invoke-direct {p0, p1}, Lcom/android/server/adb/AdbService;->setAdbEnabled(Z)V
@@ -214,16 +227,18 @@
 .end method
 
 .method static synthetic access$600(Lcom/android/server/adb/AdbService;)Lcom/android/server/adb/AdbService$AdbHandler;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/adb/AdbService;
 
     .line 57
-    iget-object p0, p0, Lcom/android/server/adb/AdbService;->mHandler:Lcom/android/server/adb/AdbService$AdbHandler;
+    iget-object v0, p0, Lcom/android/server/adb/AdbService;->mHandler:Lcom/android/server/adb/AdbService$AdbHandler;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method private setAdbEnabled(Z)V
-    .registers 6
+    .registers 7
+    .param p1, "enable"  # Z
 
     .line 266
     iget-boolean v0, p0, Lcom/android/server/adb/AdbService;->mAdbEnabled:Z
@@ -262,6 +277,7 @@
     check-cast v1, Landroid/debug/IAdbTransport;
 
     .line 273
+    .local v1, "transport":Landroid/debug/IAdbTransport;
     :try_start_1d
     invoke-interface {v1, p1}, Landroid/debug/IAdbTransport;->onAdbEnabled(Z)V
     :try_end_20
@@ -275,29 +291,32 @@
     move-exception v2
 
     .line 275
-    new-instance v2, Ljava/lang/StringBuilder;
+    .local v2, "e":Landroid/os/RemoteException;
+    new-instance v3, Ljava/lang/StringBuilder;
 
-    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v3, "Unable to send onAdbEnabled to transport "
+    const-string v4, "Unable to send onAdbEnabled to transport "
 
-    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v1}, Ljava/lang/Object;->toString()Ljava/lang/String;
 
-    move-result-object v1
+    move-result-object v4
 
-    invoke-virtual {v2, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v1
+    move-result-object v3
 
-    const-string v2, "AdbService"
+    const-string v4, "AdbService"
 
-    invoke-static {v2, v1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v4, v3}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 277
+    .end local v1  # "transport":Landroid/debug/IAdbTransport;
+    .end local v2  # "e":Landroid/os/RemoteException;
     :goto_3c
     goto :goto_11
 
@@ -319,6 +338,8 @@
 # virtual methods
 .method public allowDebugging(ZLjava/lang/String;)V
     .registers 6
+    .param p1, "alwaysAllow"  # Z
+    .param p2, "publicKey"  # Ljava/lang/String;
 
     .line 238
     iget-object v0, p0, Lcom/android/server/adb/AdbService;->mContext:Landroid/content/Context;
@@ -416,7 +437,10 @@
 .end method
 
 .method public dump(Ljava/io/FileDescriptor;Ljava/io/PrintWriter;[Ljava/lang/String;)V
-    .registers 9
+    .registers 14
+    .param p1, "fd"  # Ljava/io/FileDescriptor;
+    .param p2, "writer"  # Ljava/io/PrintWriter;
+    .param p3, "args"  # [Ljava/lang/String;
 
     .line 286
     iget-object v0, p0, Lcom/android/server/adb/AdbService;->mContext:Landroid/content/Context;
@@ -440,124 +464,136 @@
     invoke-direct {v0, p2, v1}, Lcom/android/internal/util/IndentingPrintWriter;-><init>(Ljava/io/Writer;Ljava/lang/String;)V
 
     .line 289
+    .local v0, "pw":Lcom/android/internal/util/IndentingPrintWriter;
     invoke-static {}, Landroid/os/Binder;->clearCallingIdentity()J
 
     move-result-wide v2
 
     .line 291
+    .local v2, "ident":J
     :try_start_16
-    new-instance p2, Landroid/util/ArraySet;
+    new-instance v4, Landroid/util/ArraySet;
 
-    invoke-direct {p2}, Landroid/util/ArraySet;-><init>()V
+    invoke-direct {v4}, Landroid/util/ArraySet;-><init>()V
 
     .line 292
-    invoke-static {p2, p3}, Ljava/util/Collections;->addAll(Ljava/util/Collection;[Ljava/lang/Object;)Z
+    .local v4, "argsSet":Landroid/util/ArraySet;, "Landroid/util/ArraySet<Ljava/lang/String;>;"
+    invoke-static {v4, p3}, Ljava/util/Collections;->addAll(Ljava/util/Collection;[Ljava/lang/Object;)Z
 
     .line 294
-    const/4 p3, 0x0
+    const/4 v5, 0x0
 
     .line 295
-    const-string v4, "--proto"
+    .local v5, "dumpAsProto":Z
+    const-string v6, "--proto"
 
-    invoke-virtual {p2, v4}, Landroid/util/ArraySet;->contains(Ljava/lang/Object;)Z
+    invoke-virtual {v4, v6}, Landroid/util/ArraySet;->contains(Ljava/lang/Object;)Z
 
-    move-result v4
+    move-result v6
 
-    if-eqz v4, :cond_28
+    if-eqz v6, :cond_28
 
     .line 296
-    const/4 p3, 0x1
+    const/4 v5, 0x1
 
     .line 299
     :cond_28
-    invoke-virtual {p2}, Landroid/util/ArraySet;->size()I
+    invoke-virtual {v4}, Landroid/util/ArraySet;->size()I
 
-    move-result v4
+    move-result v6
 
-    if-eqz v4, :cond_44
+    if-eqz v6, :cond_44
 
-    const-string v4, "-a"
+    const-string v6, "-a"
 
-    invoke-virtual {p2, v4}, Landroid/util/ArraySet;->contains(Ljava/lang/Object;)Z
+    invoke-virtual {v4, v6}, Landroid/util/ArraySet;->contains(Ljava/lang/Object;)Z
 
-    move-result p2
+    move-result v6
 
-    if-nez p2, :cond_44
+    if-nez v6, :cond_44
 
-    if-eqz p3, :cond_39
+    if-eqz v5, :cond_39
 
     goto :goto_44
 
     .line 316
     :cond_39
-    const-string p1, "Dump current ADB state"
+    const-string v1, "Dump current ADB state"
 
-    invoke-virtual {v0, p1}, Lcom/android/internal/util/IndentingPrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {v0, v1}, Lcom/android/internal/util/IndentingPrintWriter;->println(Ljava/lang/String;)V
 
     .line 317
-    const-string p1, "  No commands available"
+    const-string v1, "  No commands available"
 
-    invoke-virtual {v0, p1}, Lcom/android/internal/util/IndentingPrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {v0, v1}, Lcom/android/internal/util/IndentingPrintWriter;->println(Ljava/lang/String;)V
 
-    goto :goto_74
+    goto :goto_75
 
     .line 301
     :cond_44
     :goto_44
-    if-eqz p3, :cond_51
+    if-eqz v5, :cond_51
 
     .line 302
-    new-instance p2, Lcom/android/internal/util/dump/DualDumpOutputStream;
+    new-instance v1, Lcom/android/internal/util/dump/DualDumpOutputStream;
 
-    new-instance p3, Landroid/util/proto/ProtoOutputStream;
+    new-instance v6, Landroid/util/proto/ProtoOutputStream;
 
-    invoke-direct {p3, p1}, Landroid/util/proto/ProtoOutputStream;-><init>(Ljava/io/FileDescriptor;)V
+    invoke-direct {v6, p1}, Landroid/util/proto/ProtoOutputStream;-><init>(Ljava/io/FileDescriptor;)V
 
-    invoke-direct {p2, p3}, Lcom/android/internal/util/dump/DualDumpOutputStream;-><init>(Landroid/util/proto/ProtoOutputStream;)V
+    invoke-direct {v1, v6}, Lcom/android/internal/util/dump/DualDumpOutputStream;-><init>(Landroid/util/proto/ProtoOutputStream;)V
 
-    goto :goto_60
+    .local v1, "dump":Lcom/android/internal/util/dump/DualDumpOutputStream;
+    goto :goto_61
 
     .line 304
+    .end local v1  # "dump":Lcom/android/internal/util/dump/DualDumpOutputStream;
     :cond_51
-    const-string p1, "ADB MANAGER STATE (dumpsys adb):"
+    const-string v6, "ADB MANAGER STATE (dumpsys adb):"
 
-    invoke-virtual {v0, p1}, Lcom/android/internal/util/IndentingPrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {v0, v6}, Lcom/android/internal/util/IndentingPrintWriter;->println(Ljava/lang/String;)V
 
     .line 306
-    new-instance p2, Lcom/android/internal/util/dump/DualDumpOutputStream;
+    new-instance v6, Lcom/android/internal/util/dump/DualDumpOutputStream;
 
-    new-instance p1, Lcom/android/internal/util/IndentingPrintWriter;
+    new-instance v7, Lcom/android/internal/util/IndentingPrintWriter;
 
-    invoke-direct {p1, v0, v1}, Lcom/android/internal/util/IndentingPrintWriter;-><init>(Ljava/io/Writer;Ljava/lang/String;)V
+    invoke-direct {v7, v0, v1}, Lcom/android/internal/util/IndentingPrintWriter;-><init>(Ljava/io/Writer;Ljava/lang/String;)V
 
-    invoke-direct {p2, p1}, Lcom/android/internal/util/dump/DualDumpOutputStream;-><init>(Lcom/android/internal/util/IndentingPrintWriter;)V
+    invoke-direct {v6, v7}, Lcom/android/internal/util/dump/DualDumpOutputStream;-><init>(Lcom/android/internal/util/IndentingPrintWriter;)V
+
+    move-object v1, v6
 
     .line 309
-    :goto_60
-    iget-object p1, p0, Lcom/android/server/adb/AdbService;->mDebuggingManager:Lcom/android/server/adb/AdbDebuggingManager;
+    .restart local v1  # "dump":Lcom/android/internal/util/dump/DualDumpOutputStream;
+    :goto_61
+    iget-object v6, p0, Lcom/android/server/adb/AdbService;->mDebuggingManager:Lcom/android/server/adb/AdbDebuggingManager;
 
-    if-eqz p1, :cond_70
+    if-eqz v6, :cond_71
 
     .line 310
-    iget-object p1, p0, Lcom/android/server/adb/AdbService;->mDebuggingManager:Lcom/android/server/adb/AdbDebuggingManager;
+    iget-object v6, p0, Lcom/android/server/adb/AdbService;->mDebuggingManager:Lcom/android/server/adb/AdbDebuggingManager;
 
-    const-string p3, "debugging_manager"
+    const-string v7, "debugging_manager"
 
-    const-wide v0, 0x10b00000001L
+    const-wide v8, 0x10b00000001L
 
-    invoke-virtual {p1, p2, p3, v0, v1}, Lcom/android/server/adb/AdbDebuggingManager;->dump(Lcom/android/internal/util/dump/DualDumpOutputStream;Ljava/lang/String;J)V
+    invoke-virtual {v6, v1, v7, v8, v9}, Lcom/android/server/adb/AdbDebuggingManager;->dump(Lcom/android/internal/util/dump/DualDumpOutputStream;Ljava/lang/String;J)V
 
     .line 314
-    :cond_70
-    invoke-virtual {p2}, Lcom/android/internal/util/dump/DualDumpOutputStream;->flush()V
-    :try_end_73
-    .catchall {:try_start_16 .. :try_end_73} :catchall_79
+    :cond_71
+    invoke-virtual {v1}, Lcom/android/internal/util/dump/DualDumpOutputStream;->flush()V
+    :try_end_74
+    .catchall {:try_start_16 .. :try_end_74} :catchall_7a
 
     .line 315
+    .end local v1  # "dump":Lcom/android/internal/util/dump/DualDumpOutputStream;
     nop
 
     .line 320
-    :goto_74
+    .end local v4  # "argsSet":Landroid/util/ArraySet;, "Landroid/util/ArraySet<Ljava/lang/String;>;"
+    .end local v5  # "dumpAsProto":Z
+    :goto_75
     invoke-static {v2, v3}, Landroid/os/Binder;->restoreCallingIdentity(J)V
 
     .line 321
@@ -567,12 +603,12 @@
     return-void
 
     .line 320
-    :catchall_79
-    move-exception p1
+    :catchall_7a
+    move-exception v1
 
     invoke-static {v2, v3}, Landroid/os/Binder;->restoreCallingIdentity(J)V
 
-    throw p1
+    throw v1
 .end method
 
 .method public systemReady()V
@@ -610,13 +646,15 @@
     move-exception v0
 
     .line 224
-    const-string v0, "AdbService"
+    .local v0, "e":Ljava/lang/SecurityException;
+    const-string v1, "AdbService"
 
-    const-string v1, "ADB_ENABLED is restricted."
+    const-string v2, "ADB_ENABLED is restricted."
 
-    invoke-static {v0, v1}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v2}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 226
+    .end local v0  # "e":Ljava/lang/SecurityException;
     :goto_17
     return-void
 .end method

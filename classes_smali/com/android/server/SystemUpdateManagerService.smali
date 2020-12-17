@@ -37,7 +37,8 @@
 
 # direct methods
 .method public constructor <init>(Landroid/content/Context;)V
-    .registers 5
+    .registers 6
+    .param p1, "context"  # Landroid/content/Context;
 
     .line 77
     invoke-direct {p0}, Landroid/os/ISystemUpdateManager$Stub;-><init>()V
@@ -63,46 +64,46 @@
     iput-object p1, p0, Lcom/android/server/SystemUpdateManagerService;->mContext:Landroid/content/Context;
 
     .line 79
-    new-instance p1, Landroid/util/AtomicFile;
+    new-instance v0, Landroid/util/AtomicFile;
 
-    new-instance v0, Ljava/io/File;
+    new-instance v1, Ljava/io/File;
 
     invoke-static {}, Landroid/os/Environment;->getDataSystemDirectory()Ljava/io/File;
 
-    move-result-object v1
+    move-result-object v2
 
-    const-string/jumbo v2, "system-update-info.xml"
+    const-string/jumbo v3, "system-update-info.xml"
 
-    invoke-direct {v0, v1, v2}, Ljava/io/File;-><init>(Ljava/io/File;Ljava/lang/String;)V
+    invoke-direct {v1, v2, v3}, Ljava/io/File;-><init>(Ljava/io/File;Ljava/lang/String;)V
 
-    invoke-direct {p1, v0}, Landroid/util/AtomicFile;-><init>(Ljava/io/File;)V
+    invoke-direct {v0, v1}, Landroid/util/AtomicFile;-><init>(Ljava/io/File;)V
 
-    iput-object p1, p0, Lcom/android/server/SystemUpdateManagerService;->mFile:Landroid/util/AtomicFile;
+    iput-object v0, p0, Lcom/android/server/SystemUpdateManagerService;->mFile:Landroid/util/AtomicFile;
 
     .line 82
-    iget-object p1, p0, Lcom/android/server/SystemUpdateManagerService;->mLock:Ljava/lang/Object;
+    iget-object v0, p0, Lcom/android/server/SystemUpdateManagerService;->mLock:Ljava/lang/Object;
 
-    monitor-enter p1
+    monitor-enter v0
 
     .line 83
     :try_start_28
     invoke-direct {p0}, Lcom/android/server/SystemUpdateManagerService;->loadSystemUpdateInfoLocked()Landroid/os/Bundle;
 
     .line 84
-    monitor-exit p1
+    monitor-exit v0
 
     .line 85
     return-void
 
     .line 84
     :catchall_2d
-    move-exception v0
+    move-exception v1
 
-    monitor-exit p1
+    monitor-exit v0
     :try_end_2f
     .catchall {:try_start_28 .. :try_end_2f} :catchall_2d
 
-    throw v0
+    throw v1
 .end method
 
 .method private getBootCount()I
@@ -127,14 +128,15 @@
 .end method
 
 .method private loadSystemUpdateInfoLocked()Landroid/os/Bundle;
-    .registers 6
+    .registers 9
 
     .line 131
     const-string v0, "SystemUpdateManagerService"
 
-    .line 132
     const/4 v1, 0x0
 
+    .line 132
+    .local v1, "loadedBundle":Landroid/os/PersistableBundle;
     :try_start_3
     iget-object v2, p0, Lcom/android/server/SystemUpdateManagerService;->mFile:Landroid/util/AtomicFile;
 
@@ -142,17 +144,19 @@
 
     move-result-object v2
     :try_end_9
-    .catch Ljava/io/FileNotFoundException; {:try_start_3 .. :try_end_9} :catch_3c
-    .catch Lorg/xmlpull/v1/XmlPullParserException; {:try_start_3 .. :try_end_9} :catch_35
-    .catch Ljava/io/IOException; {:try_start_3 .. :try_end_9} :catch_2e
+    .catch Ljava/io/FileNotFoundException; {:try_start_3 .. :try_end_9} :catch_3d
+    .catch Lorg/xmlpull/v1/XmlPullParserException; {:try_start_3 .. :try_end_9} :catch_36
+    .catch Ljava/io/IOException; {:try_start_3 .. :try_end_9} :catch_2f
 
     .line 133
+    .local v2, "fis":Ljava/io/FileInputStream;
     :try_start_9
     invoke-static {}, Landroid/util/Xml;->newPullParser()Lorg/xmlpull/v1/XmlPullParser;
 
     move-result-object v3
 
     .line 134
+    .local v3, "parser":Lorg/xmlpull/v1/XmlPullParser;
     sget-object v4, Ljava/nio/charset/StandardCharsets;->UTF_8:Ljava/nio/charset/Charset;
 
     invoke-virtual {v4}, Ljava/nio/charset/Charset;->name()Ljava/lang/String;
@@ -164,115 +168,135 @@
     .line 135
     invoke-direct {p0, v3}, Lcom/android/server/SystemUpdateManagerService;->readInfoFileLocked(Lorg/xmlpull/v1/XmlPullParser;)Landroid/os/PersistableBundle;
 
-    move-result-object v1
+    move-result-object v4
     :try_end_1a
-    .catchall {:try_start_9 .. :try_end_1a} :catchall_20
+    .catchall {:try_start_9 .. :try_end_1a} :catchall_21
+
+    move-object v1, v4
 
     .line 136
-    if-eqz v2, :cond_57
+    .end local v3  # "parser":Lorg/xmlpull/v1/XmlPullParser;
+    if-eqz v2, :cond_58
 
-    :try_start_1c
+    :try_start_1d
     invoke-virtual {v2}, Ljava/io/FileInputStream;->close()V
-    :try_end_1f
-    .catch Ljava/io/FileNotFoundException; {:try_start_1c .. :try_end_1f} :catch_3c
-    .catch Lorg/xmlpull/v1/XmlPullParserException; {:try_start_1c .. :try_end_1f} :catch_35
-    .catch Ljava/io/IOException; {:try_start_1c .. :try_end_1f} :catch_2e
+    :try_end_20
+    .catch Ljava/io/FileNotFoundException; {:try_start_1d .. :try_end_20} :catch_3d
+    .catch Lorg/xmlpull/v1/XmlPullParserException; {:try_start_1d .. :try_end_20} :catch_36
+    .catch Ljava/io/IOException; {:try_start_1d .. :try_end_20} :catch_2f
 
-    goto :goto_57
+    goto :goto_58
 
     .line 132
-    :catchall_20
+    :catchall_21
     move-exception v3
 
-    :try_start_21
+    .end local v1  # "loadedBundle":Landroid/os/PersistableBundle;
+    .end local v2  # "fis":Ljava/io/FileInputStream;
+    .end local p0  # "this":Lcom/android/server/SystemUpdateManagerService;
+    :try_start_22
     throw v3
-    :try_end_22
-    .catchall {:try_start_21 .. :try_end_22} :catchall_22
+    :try_end_23
+    .catchall {:try_start_22 .. :try_end_23} :catchall_23
 
     .line 136
-    :catchall_22
+    .restart local v1  # "loadedBundle":Landroid/os/PersistableBundle;
+    .restart local v2  # "fis":Ljava/io/FileInputStream;
+    .restart local p0  # "this":Lcom/android/server/SystemUpdateManagerService;
+    :catchall_23
     move-exception v4
 
-    if-eqz v2, :cond_2d
+    if-eqz v2, :cond_2e
 
-    :try_start_25
+    :try_start_26
     invoke-virtual {v2}, Ljava/io/FileInputStream;->close()V
-    :try_end_28
-    .catchall {:try_start_25 .. :try_end_28} :catchall_29
+    :try_end_29
+    .catchall {:try_start_26 .. :try_end_29} :catchall_2a
 
-    goto :goto_2d
+    goto :goto_2e
 
-    :catchall_29
-    move-exception v2
+    :catchall_2a
+    move-exception v5
 
-    :try_start_2a
-    invoke-virtual {v3, v2}, Ljava/lang/Throwable;->addSuppressed(Ljava/lang/Throwable;)V
+    :try_start_2b
+    invoke-virtual {v3, v5}, Ljava/lang/Throwable;->addSuppressed(Ljava/lang/Throwable;)V
 
-    :cond_2d
-    :goto_2d
+    .end local v1  # "loadedBundle":Landroid/os/PersistableBundle;
+    .end local p0  # "this":Lcom/android/server/SystemUpdateManagerService;
+    :cond_2e
+    :goto_2e
     throw v4
-    :try_end_2e
-    .catch Ljava/io/FileNotFoundException; {:try_start_2a .. :try_end_2e} :catch_3c
-    .catch Lorg/xmlpull/v1/XmlPullParserException; {:try_start_2a .. :try_end_2e} :catch_35
-    .catch Ljava/io/IOException; {:try_start_2a .. :try_end_2e} :catch_2e
+    :try_end_2f
+    .catch Ljava/io/FileNotFoundException; {:try_start_2b .. :try_end_2f} :catch_3d
+    .catch Lorg/xmlpull/v1/XmlPullParserException; {:try_start_2b .. :try_end_2f} :catch_36
+    .catch Ljava/io/IOException; {:try_start_2b .. :try_end_2f} :catch_2f
 
     .line 140
-    :catch_2e
+    .end local v2  # "fis":Ljava/io/FileInputStream;
+    .restart local v1  # "loadedBundle":Landroid/os/PersistableBundle;
+    .restart local p0  # "this":Lcom/android/server/SystemUpdateManagerService;
+    :catch_2f
     move-exception v2
 
     .line 141
+    .local v2, "e":Ljava/io/IOException;
     const-string v3, "Failed to read the info file:"
 
     invoke-static {v0, v3, v2}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
-    goto :goto_58
+    goto :goto_59
 
     .line 138
-    :catch_35
+    .end local v2  # "e":Ljava/io/IOException;
+    :catch_36
     move-exception v2
 
     .line 139
+    .local v2, "e":Lorg/xmlpull/v1/XmlPullParserException;
     const-string v3, "Failed to parse the info file:"
 
     invoke-static {v0, v3, v2}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
-    goto :goto_57
+    .end local v2  # "e":Lorg/xmlpull/v1/XmlPullParserException;
+    goto :goto_58
 
     .line 136
-    :catch_3c
+    :catch_3d
     move-exception v2
 
     .line 137
-    new-instance v2, Ljava/lang/StringBuilder;
+    .local v2, "e":Ljava/io/FileNotFoundException;
+    new-instance v3, Ljava/lang/StringBuilder;
 
-    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v3, "No existing info file "
+    const-string v4, "No existing info file "
 
-    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    iget-object v3, p0, Lcom/android/server/SystemUpdateManagerService;->mFile:Landroid/util/AtomicFile;
+    iget-object v4, p0, Lcom/android/server/SystemUpdateManagerService;->mFile:Landroid/util/AtomicFile;
 
-    invoke-virtual {v3}, Landroid/util/AtomicFile;->getBaseFile()Ljava/io/File;
+    invoke-virtual {v4}, Landroid/util/AtomicFile;->getBaseFile()Ljava/io/File;
+
+    move-result-object v4
+
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
     move-result-object v3
 
-    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
-
-    move-result-object v2
-
-    invoke-static {v0, v2}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v0, v3}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 142
-    :cond_57
-    :goto_57
+    .end local v2  # "e":Ljava/io/FileNotFoundException;
+    :cond_58
+    :goto_58
     nop
 
     .line 145
-    :goto_58
-    if-nez v1, :cond_5f
+    :goto_59
+    if-nez v1, :cond_60
 
     .line 146
     invoke-direct {p0}, Lcom/android/server/SystemUpdateManagerService;->removeInfoFileAndGetDefaultInfoBundleLocked()Landroid/os/Bundle;
@@ -282,7 +306,7 @@
     return-object v0
 
     .line 149
-    :cond_5f
+    :cond_60
     const/4 v2, -0x1
 
     const-string/jumbo v3, "version"
@@ -292,12 +316,13 @@
     move-result v3
 
     .line 150
-    if-ne v3, v2, :cond_73
+    .local v3, "version":I
+    if-ne v3, v2, :cond_74
 
     .line 151
-    const-string v1, "Invalid info file (invalid version). Ignored"
+    const-string v2, "Invalid info file (invalid version). Ignored"
 
-    invoke-static {v0, v1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v0, v2}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 152
     invoke-direct {p0}, Lcom/android/server/SystemUpdateManagerService;->removeInfoFileAndGetDefaultInfoBundleLocked()Landroid/os/Bundle;
@@ -307,20 +332,21 @@
     return-object v0
 
     .line 155
-    :cond_73
-    const-string/jumbo v3, "uid"
+    :cond_74
+    const-string/jumbo v4, "uid"
 
-    invoke-virtual {v1, v3, v2}, Landroid/os/PersistableBundle;->getInt(Ljava/lang/String;I)I
+    invoke-virtual {v1, v4, v2}, Landroid/os/PersistableBundle;->getInt(Ljava/lang/String;I)I
 
-    move-result v3
+    move-result v4
 
     .line 156
-    if-ne v3, v2, :cond_86
+    .local v4, "lastUid":I
+    if-ne v4, v2, :cond_87
 
     .line 157
-    const-string v1, "Invalid info file (invalid UID). Ignored"
+    const-string v2, "Invalid info file (invalid UID). Ignored"
 
-    invoke-static {v0, v1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v0, v2}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 158
     invoke-direct {p0}, Lcom/android/server/SystemUpdateManagerService;->removeInfoFileAndGetDefaultInfoBundleLocked()Landroid/os/Bundle;
@@ -330,39 +356,41 @@
     return-object v0
 
     .line 161
-    :cond_86
-    const-string v4, "boot-count"
+    :cond_87
+    const-string v5, "boot-count"
 
-    invoke-virtual {v1, v4, v2}, Landroid/os/PersistableBundle;->getInt(Ljava/lang/String;I)I
+    invoke-virtual {v1, v5, v2}, Landroid/os/PersistableBundle;->getInt(Ljava/lang/String;I)I
 
-    move-result v4
+    move-result v5
 
     .line 162
-    if-eq v4, v2, :cond_c5
+    .local v5, "lastBootCount":I
+    if-eq v5, v2, :cond_c7
 
     invoke-direct {p0}, Lcom/android/server/SystemUpdateManagerService;->getBootCount()I
 
     move-result v2
 
-    if-eq v4, v2, :cond_95
+    if-eq v5, v2, :cond_96
 
-    goto :goto_c5
+    goto :goto_c7
 
     .line 167
-    :cond_95
-    const-string v2, "info-bundle"
+    :cond_96
+    const-string/jumbo v2, "info-bundle"
 
     invoke-virtual {v1, v2}, Landroid/os/PersistableBundle;->getPersistableBundle(Ljava/lang/String;)Landroid/os/PersistableBundle;
 
-    move-result-object v1
+    move-result-object v2
 
     .line 168
-    if-nez v1, :cond_a7
+    .local v2, "infoBundle":Landroid/os/PersistableBundle;
+    if-nez v2, :cond_a9
 
     .line 169
-    const-string v1, "Invalid info file (missing info). Ignored"
+    const-string v6, "Invalid info file (missing info). Ignored"
 
-    invoke-static {v0, v1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v0, v6}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 170
     invoke-direct {p0}, Lcom/android/server/SystemUpdateManagerService;->removeInfoFileAndGetDefaultInfoBundleLocked()Landroid/os/Bundle;
@@ -372,22 +400,23 @@
     return-object v0
 
     .line 173
-    :cond_a7
-    const/4 v2, 0x0
+    :cond_a9
+    const/4 v6, 0x0
 
-    const-string/jumbo v4, "status"
+    const-string/jumbo v7, "status"
 
-    invoke-virtual {v1, v4, v2}, Landroid/os/PersistableBundle;->getInt(Ljava/lang/String;I)I
+    invoke-virtual {v2, v7, v6}, Landroid/os/PersistableBundle;->getInt(Ljava/lang/String;I)I
 
-    move-result v2
+    move-result v6
 
     .line 174
-    if-nez v2, :cond_bb
+    .local v6, "lastStatus":I
+    if-nez v6, :cond_bd
 
     .line 175
-    const-string v1, "Invalid info file (invalid status). Ignored"
+    const-string v7, "Invalid info file (invalid status). Ignored"
 
-    invoke-static {v0, v1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v0, v7}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 176
     invoke-direct {p0}, Lcom/android/server/SystemUpdateManagerService;->removeInfoFileAndGetDefaultInfoBundleLocked()Landroid/os/Bundle;
@@ -397,25 +426,27 @@
     return-object v0
 
     .line 180
-    :cond_bb
-    iput v2, p0, Lcom/android/server/SystemUpdateManagerService;->mLastStatus:I
+    :cond_bd
+    iput v6, p0, Lcom/android/server/SystemUpdateManagerService;->mLastStatus:I
 
     .line 181
-    iput v3, p0, Lcom/android/server/SystemUpdateManagerService;->mLastUid:I
+    iput v4, p0, Lcom/android/server/SystemUpdateManagerService;->mLastUid:I
 
     .line 182
     new-instance v0, Landroid/os/Bundle;
 
-    invoke-direct {v0, v1}, Landroid/os/Bundle;-><init>(Landroid/os/PersistableBundle;)V
+    invoke-direct {v0, v2}, Landroid/os/Bundle;-><init>(Landroid/os/PersistableBundle;)V
 
     return-object v0
 
     .line 163
-    :cond_c5
-    :goto_c5
-    const-string v1, "Outdated info file. Ignored"
+    .end local v2  # "infoBundle":Landroid/os/PersistableBundle;
+    .end local v6  # "lastStatus":I
+    :cond_c7
+    :goto_c7
+    const-string v2, "Outdated info file. Ignored"
 
-    invoke-static {v0, v1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v0, v2}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 164
     invoke-direct {p0}, Lcom/android/server/SystemUpdateManagerService;->removeInfoFileAndGetDefaultInfoBundleLocked()Landroid/os/Bundle;
@@ -426,7 +457,8 @@
 .end method
 
 .method private readInfoFileLocked(Lorg/xmlpull/v1/XmlPullParser;)Landroid/os/PersistableBundle;
-    .registers 4
+    .registers 5
+    .param p1, "parser"  # Lorg/xmlpull/v1/XmlPullParser;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Lorg/xmlpull/v1/XmlPullParserException;,
@@ -440,22 +472,25 @@
 
     move-result v0
 
-    const/4 v1, 0x1
+    move v1, v0
 
-    if-eq v0, v1, :cond_1b
+    .local v1, "type":I
+    const/4 v2, 0x1
+
+    if-eq v0, v2, :cond_1d
 
     .line 207
-    const/4 v1, 0x2
+    const/4 v0, 0x2
 
-    if-ne v0, v1, :cond_0
+    if-ne v1, v0, :cond_0
 
     invoke-interface {p1}, Lorg/xmlpull/v1/XmlPullParser;->getName()Ljava/lang/String;
 
     move-result-object v0
 
-    const-string v1, "info"
+    const-string/jumbo v2, "info"
 
-    invoke-virtual {v1, v0}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v2, v0}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
     move-result v0
 
@@ -464,15 +499,15 @@
     .line 208
     invoke-static {p1}, Landroid/os/PersistableBundle;->restoreFromXml(Lorg/xmlpull/v1/XmlPullParser;)Landroid/os/PersistableBundle;
 
-    move-result-object p1
+    move-result-object v0
 
-    return-object p1
+    return-object v0
 
     .line 211
-    :cond_1b
-    const/4 p1, 0x0
+    :cond_1d
+    const/4 v0, 0x0
 
-    return-object p1
+    return-object v0
 .end method
 
 .method private removeInfoFileAndGetDefaultInfoBundleLocked()Landroid/os/Bundle;
@@ -516,6 +551,7 @@
     invoke-direct {v1}, Landroid/os/Bundle;-><init>()V
 
     .line 248
+    .local v1, "infoBundle":Landroid/os/Bundle;
     const-string/jumbo v2, "status"
 
     invoke-virtual {v1, v2, v0}, Landroid/os/Bundle;->putInt(Ljava/lang/String;I)V
@@ -526,6 +562,8 @@
 
 .method private saveSystemUpdateInfoLocked(Landroid/os/PersistableBundle;I)V
     .registers 6
+    .param p1, "infoBundle"  # Landroid/os/PersistableBundle;
+    .param p2, "uid"  # I
 
     .line 188
     new-instance v0, Landroid/os/PersistableBundle;
@@ -533,7 +571,8 @@
     invoke-direct {v0}, Landroid/os/PersistableBundle;-><init>()V
 
     .line 189
-    const-string v1, "info-bundle"
+    .local v0, "outBundle":Landroid/os/PersistableBundle;
+    const-string/jumbo v1, "info-bundle"
 
     invoke-virtual {v0, v1, p1}, Landroid/os/PersistableBundle;->putPersistableBundle(Ljava/lang/String;Landroid/os/PersistableBundle;)V
 
@@ -561,125 +600,123 @@
     .line 195
     invoke-direct {p0, v0}, Lcom/android/server/SystemUpdateManagerService;->writeInfoFileLocked(Landroid/os/PersistableBundle;)Z
 
-    move-result v0
+    move-result v1
 
-    if-eqz v0, :cond_31
+    if-eqz v1, :cond_32
 
     .line 196
     iput p2, p0, Lcom/android/server/SystemUpdateManagerService;->mLastUid:I
 
     .line 197
-    const-string/jumbo p2, "status"
+    const-string/jumbo v1, "status"
 
-    invoke-virtual {p1, p2}, Landroid/os/PersistableBundle;->getInt(Ljava/lang/String;)I
+    invoke-virtual {p1, v1}, Landroid/os/PersistableBundle;->getInt(Ljava/lang/String;)I
 
-    move-result p1
+    move-result v1
 
-    iput p1, p0, Lcom/android/server/SystemUpdateManagerService;->mLastStatus:I
+    iput v1, p0, Lcom/android/server/SystemUpdateManagerService;->mLastStatus:I
 
     .line 199
-    :cond_31
+    :cond_32
     return-void
 .end method
 
 .method private writeInfoFileLocked(Landroid/os/PersistableBundle;)Z
     .registers 8
+    .param p1, "outBundle"  # Landroid/os/PersistableBundle;
 
     .line 215
-    const-string v0, "info"
+    const-string/jumbo v0, "info"
 
-    .line 217
     const/4 v1, 0x0
 
-    :try_start_3
+    .line 217
+    .local v1, "fos":Ljava/io/FileOutputStream;
+    :try_start_4
     iget-object v2, p0, Lcom/android/server/SystemUpdateManagerService;->mFile:Landroid/util/AtomicFile;
 
     invoke-virtual {v2}, Landroid/util/AtomicFile;->startWrite()Ljava/io/FileOutputStream;
 
     move-result-object v2
-    :try_end_9
-    .catch Ljava/io/IOException; {:try_start_3 .. :try_end_9} :catch_33
-    .catch Lorg/xmlpull/v1/XmlPullParserException; {:try_start_3 .. :try_end_9} :catch_33
+
+    move-object v1, v2
 
     .line 219
-    :try_start_9
-    new-instance v3, Lcom/android/internal/util/FastXmlSerializer;
+    new-instance v2, Lcom/android/internal/util/FastXmlSerializer;
 
-    invoke-direct {v3}, Lcom/android/internal/util/FastXmlSerializer;-><init>()V
+    invoke-direct {v2}, Lcom/android/internal/util/FastXmlSerializer;-><init>()V
 
     .line 220
-    sget-object v4, Ljava/nio/charset/StandardCharsets;->UTF_8:Ljava/nio/charset/Charset;
+    .local v2, "out":Lorg/xmlpull/v1/XmlSerializer;
+    sget-object v3, Ljava/nio/charset/StandardCharsets;->UTF_8:Ljava/nio/charset/Charset;
 
-    invoke-virtual {v4}, Ljava/nio/charset/Charset;->name()Ljava/lang/String;
+    invoke-virtual {v3}, Ljava/nio/charset/Charset;->name()Ljava/lang/String;
+
+    move-result-object v3
+
+    invoke-interface {v2, v1, v3}, Lorg/xmlpull/v1/XmlSerializer;->setOutput(Ljava/io/OutputStream;Ljava/lang/String;)V
+
+    .line 221
+    const/4 v3, 0x1
+
+    invoke-static {v3}, Ljava/lang/Boolean;->valueOf(Z)Ljava/lang/Boolean;
 
     move-result-object v4
 
-    invoke-interface {v3, v2, v4}, Lorg/xmlpull/v1/XmlSerializer;->setOutput(Ljava/io/OutputStream;Ljava/lang/String;)V
+    const/4 v5, 0x0
 
-    .line 221
-    const/4 v4, 0x1
-
-    invoke-static {v4}, Ljava/lang/Boolean;->valueOf(Z)Ljava/lang/Boolean;
-
-    move-result-object v5
-
-    invoke-interface {v3, v1, v5}, Lorg/xmlpull/v1/XmlSerializer;->startDocument(Ljava/lang/String;Ljava/lang/Boolean;)V
+    invoke-interface {v2, v5, v4}, Lorg/xmlpull/v1/XmlSerializer;->startDocument(Ljava/lang/String;Ljava/lang/Boolean;)V
 
     .line 223
-    invoke-interface {v3, v1, v0}, Lorg/xmlpull/v1/XmlSerializer;->startTag(Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
+    invoke-interface {v2, v5, v0}, Lorg/xmlpull/v1/XmlSerializer;->startTag(Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
 
     .line 224
-    invoke-virtual {p1, v3}, Landroid/os/PersistableBundle;->saveToXml(Lorg/xmlpull/v1/XmlSerializer;)V
+    invoke-virtual {p1, v2}, Landroid/os/PersistableBundle;->saveToXml(Lorg/xmlpull/v1/XmlSerializer;)V
 
     .line 225
-    invoke-interface {v3, v1, v0}, Lorg/xmlpull/v1/XmlSerializer;->endTag(Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
+    invoke-interface {v2, v5, v0}, Lorg/xmlpull/v1/XmlSerializer;->endTag(Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
 
     .line 227
-    invoke-interface {v3}, Lorg/xmlpull/v1/XmlSerializer;->endDocument()V
+    invoke-interface {v2}, Lorg/xmlpull/v1/XmlSerializer;->endDocument()V
 
     .line 228
-    iget-object p1, p0, Lcom/android/server/SystemUpdateManagerService;->mFile:Landroid/util/AtomicFile;
+    iget-object v0, p0, Lcom/android/server/SystemUpdateManagerService;->mFile:Landroid/util/AtomicFile;
 
-    invoke-virtual {p1, v2}, Landroid/util/AtomicFile;->finishWrite(Ljava/io/FileOutputStream;)V
-    :try_end_30
-    .catch Ljava/io/IOException; {:try_start_9 .. :try_end_30} :catch_31
-    .catch Lorg/xmlpull/v1/XmlPullParserException; {:try_start_9 .. :try_end_30} :catch_31
+    invoke-virtual {v0, v1}, Landroid/util/AtomicFile;->finishWrite(Ljava/io/FileOutputStream;)V
+    :try_end_33
+    .catch Ljava/io/IOException; {:try_start_4 .. :try_end_33} :catch_34
+    .catch Lorg/xmlpull/v1/XmlPullParserException; {:try_start_4 .. :try_end_33} :catch_34
 
     .line 229
-    return v4
+    return v3
 
     .line 230
-    :catch_31
-    move-exception p1
-
-    goto :goto_35
-
-    :catch_33
-    move-exception p1
-
-    move-object v2, v1
+    .end local v2  # "out":Lorg/xmlpull/v1/XmlSerializer;
+    :catch_34
+    move-exception v0
 
     .line 231
-    :goto_35
-    const-string v0, "SystemUpdateManagerService"
+    .local v0, "e":Ljava/lang/Exception;
+    const-string v2, "SystemUpdateManagerService"
 
-    const-string v1, "Failed to save the info file:"
+    const-string v3, "Failed to save the info file:"
 
-    invoke-static {v0, v1, p1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    invoke-static {v2, v3, v0}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
     .line 232
-    if-eqz v2, :cond_43
+    if-eqz v1, :cond_43
 
     .line 233
-    iget-object p1, p0, Lcom/android/server/SystemUpdateManagerService;->mFile:Landroid/util/AtomicFile;
+    iget-object v2, p0, Lcom/android/server/SystemUpdateManagerService;->mFile:Landroid/util/AtomicFile;
 
-    invoke-virtual {p1, v2}, Landroid/util/AtomicFile;->failWrite(Ljava/io/FileOutputStream;)V
+    invoke-virtual {v2, v1}, Landroid/util/AtomicFile;->failWrite(Ljava/io/FileOutputStream;)V
 
     .line 236
+    .end local v0  # "e":Ljava/lang/Exception;
     :cond_43
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    return p1
+    return v0
 .end method
 
 
@@ -753,6 +790,7 @@
 
 .method public updateSystemUpdateInfo(Landroid/os/PersistableBundle;)V
     .registers 6
+    .param p1, "infoBundle"  # Landroid/os/PersistableBundle;
 
     .line 89
     iget-object v0, p0, Lcom/android/server/SystemUpdateManagerService;->mContext:Landroid/content/Context;
@@ -773,14 +811,15 @@
     move-result v0
 
     .line 92
+    .local v0, "status":I
     if-nez v0, :cond_1b
 
     .line 93
-    const-string p1, "SystemUpdateManagerService"
+    const-string v1, "SystemUpdateManagerService"
 
-    const-string v0, "Invalid status info. Ignored"
+    const-string v2, "Invalid status info. Ignored"
 
-    invoke-static {p1, v0}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v2}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 94
     return-void
@@ -792,6 +831,7 @@
     move-result v1
 
     .line 104
+    .local v1, "uid":I
     iget v2, p0, Lcom/android/server/SystemUpdateManagerService;->mLastUid:I
 
     const/4 v3, -0x1
@@ -808,27 +848,27 @@
 
     .line 109
     :cond_2a
-    const-string p1, "SystemUpdateManagerService"
+    const-string v2, "SystemUpdateManagerService"
 
-    const-string v0, "Inactive updater reporting IDLE status. Ignored"
+    const-string v3, "Inactive updater reporting IDLE status. Ignored"
 
-    invoke-static {p1, v0}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v2, v3}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
 
     goto :goto_39
 
     .line 105
     :cond_32
     :goto_32
-    iget-object v0, p0, Lcom/android/server/SystemUpdateManagerService;->mLock:Ljava/lang/Object;
+    iget-object v2, p0, Lcom/android/server/SystemUpdateManagerService;->mLock:Ljava/lang/Object;
 
-    monitor-enter v0
+    monitor-enter v2
 
     .line 106
     :try_start_35
     invoke-direct {p0, p1, v1}, Lcom/android/server/SystemUpdateManagerService;->saveSystemUpdateInfoLocked(Landroid/os/PersistableBundle;I)V
 
     .line 107
-    monitor-exit v0
+    monitor-exit v2
 
     .line 111
     :goto_39
@@ -836,11 +876,11 @@
 
     .line 107
     :catchall_3a
-    move-exception p1
+    move-exception v3
 
-    monitor-exit v0
+    monitor-exit v2
     :try_end_3c
     .catchall {:try_start_35 .. :try_end_3c} :catchall_3a
 
-    throw p1
+    throw v3
 .end method

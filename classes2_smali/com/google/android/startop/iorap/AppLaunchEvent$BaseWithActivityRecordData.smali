@@ -20,7 +20,9 @@
 
 # direct methods
 .method protected constructor <init>(J[B)V
-    .registers 4
+    .registers 5
+    .param p1, "sequenceId"  # J
+    .param p3, "snapshot"  # [B
 
     .line 148
     invoke-direct {p0, p1, p2}, Lcom/google/android/startop/iorap/AppLaunchEvent;-><init>(J)V
@@ -29,16 +31,17 @@
     iput-object p3, p0, Lcom/google/android/startop/iorap/AppLaunchEvent$BaseWithActivityRecordData;->activityRecordSnapshot:[B
 
     .line 151
-    const-string p1, "snapshot"
+    const-string v0, "snapshot"
 
-    invoke-static {p3, p1}, Ljava/util/Objects;->requireNonNull(Ljava/lang/Object;Ljava/lang/String;)Ljava/lang/Object;
+    invoke-static {p3, v0}, Ljava/util/Objects;->requireNonNull(Ljava/lang/Object;Ljava/lang/String;)Ljava/lang/Object;
 
     .line 152
     return-void
 .end method
 
 .method constructor <init>(Landroid/os/Parcel;)V
-    .registers 2
+    .registers 3
+    .param p1, "p"  # Landroid/os/Parcel;
 
     .line 176
     invoke-direct {p0, p1}, Lcom/google/android/startop/iorap/AppLaunchEvent;-><init>(Landroid/os/Parcel;)V
@@ -46,9 +49,9 @@
     .line 177
     invoke-static {p1}, Lcom/google/android/startop/iorap/AppLaunchEvent$ActivityRecordProtoParcelable;->create(Landroid/os/Parcel;)[B
 
-    move-result-object p1
+    move-result-object v0
 
-    iput-object p1, p0, Lcom/google/android/startop/iorap/AppLaunchEvent$BaseWithActivityRecordData;->activityRecordSnapshot:[B
+    iput-object v0, p0, Lcom/google/android/startop/iorap/AppLaunchEvent$BaseWithActivityRecordData;->activityRecordSnapshot:[B
 
     .line 178
     return-void
@@ -58,6 +61,7 @@
 # virtual methods
 .method public equals(Ljava/lang/Object;)Z
     .registers 5
+    .param p1, "other"  # Ljava/lang/Object;
 
     .line 156
     instance-of v0, p1, Lcom/google/android/startop/iorap/AppLaunchEvent$BaseWithActivityRecordData;
@@ -84,9 +88,9 @@
     .line 159
     invoke-super {p0, p1}, Lcom/google/android/startop/iorap/AppLaunchEvent;->equals(Ljava/lang/Object;)Z
 
-    move-result p1
+    move-result v0
 
-    if-eqz p1, :cond_1a
+    if-eqz v0, :cond_1a
 
     const/4 v1, 0x1
 
@@ -133,6 +137,8 @@
 
 .method protected writeToParcelImpl(Landroid/os/Parcel;I)V
     .registers 4
+    .param p1, "p"  # Landroid/os/Parcel;
+    .param p2, "flags"  # I
 
     .line 171
     invoke-super {p0, p1, p2}, Lcom/google/android/startop/iorap/AppLaunchEvent;->writeToParcelImpl(Landroid/os/Parcel;I)V

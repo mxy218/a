@@ -10,6 +10,7 @@
 # direct methods
 .method constructor <init>([B)V
     .registers 2
+    .param p1, "keyBytes"  # [B
 
     .line 39
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -33,6 +34,7 @@
     move-result-object v0
 
     .line 46
+    .local v0, "m":Ljavax/crypto/Mac;
     new-instance v1, Ljavax/crypto/spec/SecretKeySpec;
 
     iget-object v2, p0, Lcom/android/server/locksettings/SP800Derive;->mKeyBytes:[B
@@ -52,10 +54,12 @@
     return-object v0
 
     .line 48
+    .end local v0  # "m":Ljavax/crypto/Mac;
     :catch_15
     move-exception v0
 
     .line 49
+    .local v0, "e":Ljava/security/GeneralSecurityException;
     new-instance v1, Ljava/lang/RuntimeException;
 
     invoke-direct {v1, v0}, Ljava/lang/RuntimeException;-><init>(Ljava/lang/Throwable;)V
@@ -65,6 +69,8 @@
 
 .method private static update32(Ljavax/crypto/Mac;I)V
     .registers 3
+    .param p0, "m"  # Ljavax/crypto/Mac;
+    .param p1, "v"  # I
 
     .line 54
     const/4 v0, 0x4
@@ -75,13 +81,13 @@
 
     invoke-virtual {v0, p1}, Ljava/nio/ByteBuffer;->putInt(I)Ljava/nio/ByteBuffer;
 
-    move-result-object p1
+    move-result-object v0
 
-    invoke-virtual {p1}, Ljava/nio/ByteBuffer;->array()[B
+    invoke-virtual {v0}, Ljava/nio/ByteBuffer;->array()[B
 
-    move-result-object p1
+    move-result-object v0
 
-    invoke-virtual {p0, p1}, Ljavax/crypto/Mac;->update([B)V
+    invoke-virtual {p0, v0}, Ljavax/crypto/Mac;->update([B)V
 
     .line 55
     return-void
@@ -91,6 +97,7 @@
 # virtual methods
 .method public fixedInput([B)[B
     .registers 4
+    .param p1, "fixedInput"  # [B
 
     .line 61
     invoke-direct {p0}, Lcom/android/server/locksettings/SP800Derive;->getMac()Ljavax/crypto/Mac;
@@ -98,6 +105,7 @@
     move-result-object v0
 
     .line 62
+    .local v0, "m":Ljavax/crypto/Mac;
     const/4 v1, 0x1
 
     invoke-static {v0, v1}, Lcom/android/server/locksettings/SP800Derive;->update32(Ljavax/crypto/Mac;I)V
@@ -108,13 +116,15 @@
     .line 64
     invoke-virtual {v0}, Ljavax/crypto/Mac;->doFinal()[B
 
-    move-result-object p1
+    move-result-object v1
 
-    return-object p1
+    return-object v1
 .end method
 
 .method public withContext([B[B)[B
     .registers 5
+    .param p1, "label"  # [B
+    .param p2, "context"  # [B
 
     .line 72
     invoke-direct {p0}, Lcom/android/server/locksettings/SP800Derive;->getMac()Ljavax/crypto/Mac;
@@ -122,6 +132,7 @@
     move-result-object v0
 
     .line 74
+    .local v0, "m":Ljavax/crypto/Mac;
     const/4 v1, 0x1
 
     invoke-static {v0, v1}, Lcom/android/server/locksettings/SP800Derive;->update32(Ljavax/crypto/Mac;I)V
@@ -130,29 +141,29 @@
     invoke-virtual {v0, p1}, Ljavax/crypto/Mac;->update([B)V
 
     .line 76
-    const/4 p1, 0x0
+    const/4 v1, 0x0
 
-    invoke-virtual {v0, p1}, Ljavax/crypto/Mac;->update(B)V
+    invoke-virtual {v0, v1}, Ljavax/crypto/Mac;->update(B)V
 
     .line 77
     invoke-virtual {v0, p2}, Ljavax/crypto/Mac;->update([B)V
 
     .line 78
-    array-length p1, p2
+    array-length v1, p2
 
-    mul-int/lit8 p1, p1, 0x8
+    mul-int/lit8 v1, v1, 0x8
 
-    invoke-static {v0, p1}, Lcom/android/server/locksettings/SP800Derive;->update32(Ljavax/crypto/Mac;I)V
+    invoke-static {v0, v1}, Lcom/android/server/locksettings/SP800Derive;->update32(Ljavax/crypto/Mac;I)V
 
     .line 79
-    const/16 p1, 0x100
+    const/16 v1, 0x100
 
-    invoke-static {v0, p1}, Lcom/android/server/locksettings/SP800Derive;->update32(Ljavax/crypto/Mac;I)V
+    invoke-static {v0, v1}, Lcom/android/server/locksettings/SP800Derive;->update32(Ljavax/crypto/Mac;I)V
 
     .line 80
     invoke-virtual {v0}, Ljavax/crypto/Mac;->doFinal()[B
 
-    move-result-object p1
+    move-result-object v1
 
-    return-object p1
+    return-object v1
 .end method

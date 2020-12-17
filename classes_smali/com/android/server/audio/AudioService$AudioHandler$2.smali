@@ -24,8 +24,9 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/audio/AudioService$AudioHandler;)V
     .registers 2
+    .param p1, "this$1"  # Lcom/android/server/audio/AudioService$AudioHandler;
 
-    .line 5403
+    .line 6292
     iput-object p1, p0, Lcom/android/server/audio/AudioService$AudioHandler$2;->this$1:Lcom/android/server/audio/AudioService$AudioHandler;
 
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -36,15 +37,18 @@
 
 # virtual methods
 .method public onError(Landroid/media/MediaPlayer;II)Z
-    .registers 4
+    .registers 5
+    .param p1, "mp"  # Landroid/media/MediaPlayer;
+    .param p2, "what"  # I
+    .param p3, "extra"  # I
 
-    .line 5405
-    iget-object p2, p0, Lcom/android/server/audio/AudioService$AudioHandler$2;->this$1:Lcom/android/server/audio/AudioService$AudioHandler;
+    .line 6294
+    iget-object v0, p0, Lcom/android/server/audio/AudioService$AudioHandler$2;->this$1:Lcom/android/server/audio/AudioService$AudioHandler;
 
-    invoke-static {p2, p1}, Lcom/android/server/audio/AudioService$AudioHandler;->access$4600(Lcom/android/server/audio/AudioService$AudioHandler;Landroid/media/MediaPlayer;)V
+    invoke-static {v0, p1}, Lcom/android/server/audio/AudioService$AudioHandler;->access$5400(Lcom/android/server/audio/AudioService$AudioHandler;Landroid/media/MediaPlayer;)V
 
-    .line 5406
-    const/4 p1, 0x1
+    .line 6295
+    const/4 v0, 0x1
 
-    return p1
+    return v0
 .end method

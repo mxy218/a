@@ -28,17 +28,17 @@
 .method public constructor <init>()V
     .registers 2
 
-    .line 249
+    .line 254
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
-    .line 250
+    .line 255
     new-instance v0, Landroid/os/Bundle;
 
     invoke-direct {v0}, Landroid/os/Bundle;-><init>()V
 
     iput-object v0, p0, Lcom/android/server/location/GnssLocationProvider$LocationExtras;->mBundle:Landroid/os/Bundle;
 
-    .line 251
+    .line 256
     return-void
 .end method
 
@@ -47,10 +47,10 @@
 .method public getBundle()Landroid/os/Bundle;
     .registers 3
 
-    .line 278
+    .line 283
     monitor-enter p0
 
-    .line 279
+    .line 284
     :try_start_1
     new-instance v0, Landroid/os/Bundle;
 
@@ -62,7 +62,7 @@
 
     return-object v0
 
-    .line 280
+    .line 285
     :catchall_a
     move-exception v0
 
@@ -76,66 +76,70 @@
 .method public reset()V
     .registers 2
 
-    .line 263
+    .line 268
     const/4 v0, 0x0
 
     invoke-virtual {p0, v0, v0, v0}, Lcom/android/server/location/GnssLocationProvider$LocationExtras;->set(III)V
 
-    .line 264
+    .line 269
     return-void
 .end method
 
 .method public set(III)V
-    .registers 4
+    .registers 5
+    .param p1, "svCount"  # I
+    .param p2, "meanCn0"  # I
+    .param p3, "maxCn0"  # I
 
-    .line 254
+    .line 259
     monitor-enter p0
 
-    .line 255
+    .line 260
     :try_start_1
     iput p1, p0, Lcom/android/server/location/GnssLocationProvider$LocationExtras;->mSvCount:I
 
-    .line 256
+    .line 261
     iput p2, p0, Lcom/android/server/location/GnssLocationProvider$LocationExtras;->mMeanCn0:I
 
-    .line 257
+    .line 262
     iput p3, p0, Lcom/android/server/location/GnssLocationProvider$LocationExtras;->mMaxCn0:I
 
-    .line 258
+    .line 263
     monitor-exit p0
     :try_end_8
     .catchall {:try_start_1 .. :try_end_8} :catchall_e
 
-    .line 259
-    iget-object p1, p0, Lcom/android/server/location/GnssLocationProvider$LocationExtras;->mBundle:Landroid/os/Bundle;
+    .line 264
+    iget-object v0, p0, Lcom/android/server/location/GnssLocationProvider$LocationExtras;->mBundle:Landroid/os/Bundle;
 
-    invoke-virtual {p0, p1}, Lcom/android/server/location/GnssLocationProvider$LocationExtras;->setBundle(Landroid/os/Bundle;)V
+    invoke-virtual {p0, v0}, Lcom/android/server/location/GnssLocationProvider$LocationExtras;->setBundle(Landroid/os/Bundle;)V
 
-    .line 260
+    .line 265
     return-void
 
-    .line 258
+    .line 263
     :catchall_e
-    move-exception p1
+    move-exception v0
 
     :try_start_f
     monitor-exit p0
     :try_end_10
     .catchall {:try_start_f .. :try_end_10} :catchall_e
 
-    throw p1
+    throw v0
 .end method
 
 .method public setBundle(Landroid/os/Bundle;)V
     .registers 4
+    .param p1, "extras"  # Landroid/os/Bundle;
 
-    .line 268
-    if-eqz p1, :cond_1e
+    .line 273
+    if-eqz p1, :cond_20
 
-    .line 269
+    .line 274
     monitor-enter p0
 
-    .line 270
+    .line 275
     :try_start_3
     const-string/jumbo v0, "satellites"
 
@@ -143,36 +147,36 @@
 
     invoke-virtual {p1, v0, v1}, Landroid/os/Bundle;->putInt(Ljava/lang/String;I)V
 
-    .line 271
-    const-string v0, "meanCn0"
+    .line 276
+    const-string/jumbo v0, "meanCn0"
 
     iget v1, p0, Lcom/android/server/location/GnssLocationProvider$LocationExtras;->mMeanCn0:I
 
     invoke-virtual {p1, v0, v1}, Landroid/os/Bundle;->putInt(Ljava/lang/String;I)V
 
-    .line 272
-    const-string v0, "maxCn0"
+    .line 277
+    const-string/jumbo v0, "maxCn0"
 
     iget v1, p0, Lcom/android/server/location/GnssLocationProvider$LocationExtras;->mMaxCn0:I
 
     invoke-virtual {p1, v0, v1}, Landroid/os/Bundle;->putInt(Ljava/lang/String;I)V
 
-    .line 273
+    .line 278
     monitor-exit p0
 
-    goto :goto_1e
+    goto :goto_20
 
-    :catchall_1b
-    move-exception p1
+    :catchall_1d
+    move-exception v0
 
     monitor-exit p0
-    :try_end_1d
-    .catchall {:try_start_3 .. :try_end_1d} :catchall_1b
+    :try_end_1f
+    .catchall {:try_start_3 .. :try_end_1f} :catchall_1d
 
-    throw p1
+    throw v0
 
-    .line 275
-    :cond_1e
-    :goto_1e
+    .line 280
+    :cond_20
+    :goto_20
     return-void
 .end method

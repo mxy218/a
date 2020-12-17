@@ -42,7 +42,9 @@
 .end method
 
 .method public onSameL3NetworkResponse(Landroid/net/ipmemorystore/StatusParcelable;Landroid/net/ipmemorystore/SameL3NetworkResponseParcelable;)V
-    .registers 5
+    .registers 6
+    .param p1, "statusParcelable"  # Landroid/net/ipmemorystore/StatusParcelable;
+    .param p2, "sameL3NetworkResponseParcelable"  # Landroid/net/ipmemorystore/SameL3NetworkResponseParcelable;
 
     .line 40
     iget-object v0, p0, Landroid/net/ipmemorystore/OnSameL3NetworkResponseListener$1;->val$listener:Landroid/net/ipmemorystore/OnSameL3NetworkResponseListener;
@@ -54,11 +56,11 @@
 
     invoke-direct {v1, p1}, Landroid/net/ipmemorystore/Status;-><init>(Landroid/net/ipmemorystore/StatusParcelable;)V
 
-    new-instance p1, Landroid/net/ipmemorystore/SameL3NetworkResponse;
+    new-instance v2, Landroid/net/ipmemorystore/SameL3NetworkResponse;
 
-    invoke-direct {p1, p2}, Landroid/net/ipmemorystore/SameL3NetworkResponse;-><init>(Landroid/net/ipmemorystore/SameL3NetworkResponseParcelable;)V
+    invoke-direct {v2, p2}, Landroid/net/ipmemorystore/SameL3NetworkResponse;-><init>(Landroid/net/ipmemorystore/SameL3NetworkResponseParcelable;)V
 
-    invoke-interface {v0, v1, p1}, Landroid/net/ipmemorystore/OnSameL3NetworkResponseListener;->onSameL3NetworkResponse(Landroid/net/ipmemorystore/Status;Landroid/net/ipmemorystore/SameL3NetworkResponse;)V
+    invoke-interface {v0, v1, v2}, Landroid/net/ipmemorystore/OnSameL3NetworkResponseListener;->onSameL3NetworkResponse(Landroid/net/ipmemorystore/Status;Landroid/net/ipmemorystore/SameL3NetworkResponse;)V
 
     .line 45
     :cond_11

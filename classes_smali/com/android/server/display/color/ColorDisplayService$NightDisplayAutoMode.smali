@@ -22,7 +22,7 @@
 .method private constructor <init>(Lcom/android/server/display/color/ColorDisplayService;)V
     .registers 2
 
-    .line 937
+    .line 881
     iput-object p1, p0, Lcom/android/server/display/color/ColorDisplayService$NightDisplayAutoMode;->this$0:Lcom/android/server/display/color/ColorDisplayService;
 
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -32,8 +32,10 @@
 
 .method synthetic constructor <init>(Lcom/android/server/display/color/ColorDisplayService;Lcom/android/server/display/color/ColorDisplayService$1;)V
     .registers 3
+    .param p1, "x0"  # Lcom/android/server/display/color/ColorDisplayService;
+    .param p2, "x1"  # Lcom/android/server/display/color/ColorDisplayService$1;
 
-    .line 937
+    .line 881
     invoke-direct {p0, p1}, Lcom/android/server/display/color/ColorDisplayService$NightDisplayAutoMode;-><init>(Lcom/android/server/display/color/ColorDisplayService;)V
 
     return-void
@@ -46,15 +48,17 @@
 
 .method public onCustomEndTimeChanged(Ljava/time/LocalTime;)V
     .registers 2
+    .param p1, "endTime"  # Ljava/time/LocalTime;
 
-    .line 949
+    .line 893
     return-void
 .end method
 
 .method public onCustomStartTimeChanged(Ljava/time/LocalTime;)V
     .registers 2
+    .param p1, "startTime"  # Ljava/time/LocalTime;
 
-    .line 946
+    .line 890
     return-void
 .end method
 

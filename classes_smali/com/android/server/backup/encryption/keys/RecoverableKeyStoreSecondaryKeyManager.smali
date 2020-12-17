@@ -28,6 +28,8 @@
 # direct methods
 .method public constructor <init>(Landroid/security/keystore/recovery/RecoveryController;Ljava/security/SecureRandom;)V
     .registers 3
+    .param p1, "recoveryController"  # Landroid/security/keystore/recovery/RecoveryController;
+    .param p2, "secureRandom"  # Ljava/security/SecureRandom;
     .annotation build Lcom/android/internal/annotations/VisibleForTesting;
     .end annotation
 
@@ -53,6 +55,7 @@
     new-array v0, v0, [B
 
     .line 110
+    .local v0, "id":[B
     iget-object v1, p0, Lcom/android/server/backup/encryption/keys/RecoverableKeyStoreSecondaryKeyManager;->mSecureRandom:Ljava/security/SecureRandom;
 
     invoke-virtual {v1, v0}, Ljava/security/SecureRandom;->nextBytes([B)V
@@ -68,19 +71,20 @@
 
     invoke-static {v0}, Landroid/util/ByteStringUtils;->toHexString([B)Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v2
 
-    invoke-virtual {v1, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v1
 
-    return-object v0
+    return-object v1
 .end method
 
 .method public static getInstance(Landroid/content/Context;)Lcom/android/server/backup/encryption/keys/RecoverableKeyStoreSecondaryKeyManager;
-    .registers 3
+    .registers 4
+    .param p0, "context"  # Landroid/content/Context;
 
     .line 47
     new-instance v0, Lcom/android/server/backup/encryption/keys/RecoverableKeyStoreSecondaryKeyManager;
@@ -88,13 +92,13 @@
     .line 48
     invoke-static {p0}, Landroid/security/keystore/recovery/RecoveryController;->getInstance(Landroid/content/Context;)Landroid/security/keystore/recovery/RecoveryController;
 
-    move-result-object p0
+    move-result-object v1
 
-    new-instance v1, Ljava/security/SecureRandom;
+    new-instance v2, Ljava/security/SecureRandom;
 
-    invoke-direct {v1}, Ljava/security/SecureRandom;-><init>()V
+    invoke-direct {v2}, Ljava/security/SecureRandom;-><init>()V
 
-    invoke-direct {v0, p0, v1}, Lcom/android/server/backup/encryption/keys/RecoverableKeyStoreSecondaryKeyManager;-><init>(Landroid/security/keystore/recovery/RecoveryController;Ljava/security/SecureRandom;)V
+    invoke-direct {v0, v1, v2}, Lcom/android/server/backup/encryption/keys/RecoverableKeyStoreSecondaryKeyManager;-><init>(Landroid/security/keystore/recovery/RecoveryController;Ljava/security/SecureRandom;)V
 
     .line 47
     return-object v0
@@ -102,6 +106,8 @@
 
 .method static synthetic lambda$get$0(Ljava/lang/String;Ljavax/crypto/SecretKey;)Lcom/android/server/backup/encryption/keys/RecoverableKeyStoreSecondaryKey;
     .registers 3
+    .param p0, "alias"  # Ljava/lang/String;
+    .param p1, "key"  # Ljavax/crypto/SecretKey;
 
     .line 101
     new-instance v0, Lcom/android/server/backup/encryption/keys/RecoverableKeyStoreSecondaryKey;
@@ -114,7 +120,7 @@
 
 # virtual methods
 .method public generate()Lcom/android/server/backup/encryption/keys/RecoverableKeyStoreSecondaryKey;
-    .registers 5
+    .registers 6
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/security/keystore/recovery/InternalRecoveryServiceException;,
@@ -129,6 +135,7 @@
     move-result-object v0
 
     .line 72
+    .local v0, "alias":Ljava/lang/String;
     iget-object v1, p0, Lcom/android/server/backup/encryption/keys/RecoverableKeyStoreSecondaryKeyManager;->mRecoveryController:Landroid/security/keystore/recovery/RecoveryController;
 
     invoke-virtual {v1, v0}, Landroid/security/keystore/recovery/RecoveryController;->generateKey(Ljava/lang/String;)Ljava/security/Key;
@@ -143,6 +150,7 @@
     check-cast v1, Ljavax/crypto/SecretKey;
 
     .line 74
+    .local v1, "key":Ljavax/crypto/SecretKey;
     if-eqz v1, :cond_19
 
     .line 80
@@ -154,30 +162,31 @@
 
     .line 75
     :cond_19
-    new-instance v1, Landroid/security/keystore/recovery/InternalRecoveryServiceException;
+    new-instance v2, Landroid/security/keystore/recovery/InternalRecoveryServiceException;
 
-    const/4 v2, 0x1
+    const/4 v3, 0x1
 
-    new-array v2, v2, [Ljava/lang/Object;
+    new-array v3, v3, [Ljava/lang/Object;
 
-    const/4 v3, 0x0
+    const/4 v4, 0x0
 
-    aput-object v0, v2, v3
+    aput-object v0, v3, v4
 
     .line 76
-    const-string v0, "Generated key %s but could not get it back immediately afterwards."
+    const-string v4, "Generated key %s but could not get it back immediately afterwards."
 
-    invoke-static {v0, v2}, Ljava/lang/String;->format(Ljava/lang/String;[Ljava/lang/Object;)Ljava/lang/String;
+    invoke-static {v4, v3}, Ljava/lang/String;->format(Ljava/lang/String;[Ljava/lang/Object;)Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v3
 
-    invoke-direct {v1, v0}, Landroid/security/keystore/recovery/InternalRecoveryServiceException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v2, v3}, Landroid/security/keystore/recovery/InternalRecoveryServiceException;-><init>(Ljava/lang/String;)V
 
-    throw v1
+    throw v2
 .end method
 
 .method public get(Ljava/lang/String;)Ljava/util/Optional;
-    .registers 4
+    .registers 5
+    .param p1, "alias"  # Ljava/lang/String;
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(",
@@ -206,25 +215,27 @@
     check-cast v0, Ljavax/crypto/SecretKey;
 
     .line 100
+    .local v0, "secretKey":Ljavax/crypto/SecretKey;
     invoke-static {v0}, Ljava/util/Optional;->ofNullable(Ljava/lang/Object;)Ljava/util/Optional;
 
-    move-result-object v0
+    move-result-object v1
 
-    new-instance v1, Lcom/android/server/backup/encryption/keys/-$$Lambda$RecoverableKeyStoreSecondaryKeyManager$e3XnfsZLX7gDR6_HV8RXEgR851s;
+    new-instance v2, Lcom/android/server/backup/encryption/keys/-$$Lambda$RecoverableKeyStoreSecondaryKeyManager$e3XnfsZLX7gDR6_HV8RXEgR851s;
 
-    invoke-direct {v1, p1}, Lcom/android/server/backup/encryption/keys/-$$Lambda$RecoverableKeyStoreSecondaryKeyManager$e3XnfsZLX7gDR6_HV8RXEgR851s;-><init>(Ljava/lang/String;)V
+    invoke-direct {v2, p1}, Lcom/android/server/backup/encryption/keys/-$$Lambda$RecoverableKeyStoreSecondaryKeyManager$e3XnfsZLX7gDR6_HV8RXEgR851s;-><init>(Ljava/lang/String;)V
 
     .line 101
-    invoke-virtual {v0, v1}, Ljava/util/Optional;->map(Ljava/util/function/Function;)Ljava/util/Optional;
+    invoke-virtual {v1, v2}, Ljava/util/Optional;->map(Ljava/util/function/Function;)Ljava/util/Optional;
 
-    move-result-object p1
+    move-result-object v1
 
     .line 100
-    return-object p1
+    return-object v1
 .end method
 
 .method public remove(Ljava/lang/String;)V
     .registers 3
+    .param p1, "alias"  # Ljava/lang/String;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/security/keystore/recovery/InternalRecoveryServiceException;

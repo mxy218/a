@@ -50,8 +50,6 @@
     .end annotation
 .end field
 
-.field private final mHandler:Landroid/os/Handler;
-
 .field private final mLock:Ljava/lang/Object;
 
 .field private mProgramInfo:Landroid/hardware/radio/RadioManager$ProgramInfo;
@@ -70,289 +68,265 @@
 # direct methods
 .method private constructor <init>(Landroid/hardware/broadcastradio/V2_0/IBroadcastRadio;Landroid/hardware/radio/RadioManager$ModuleProperties;)V
     .registers 4
+    .param p1, "service"  # Landroid/hardware/broadcastradio/V2_0/IBroadcastRadio;
+    .param p2, "properties"  # Landroid/hardware/radio/RadioManager$ModuleProperties;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
         }
     .end annotation
 
-    .line 125
+    .line 113
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
-    .line 60
+    .line 57
     new-instance v0, Ljava/lang/Object;
 
     invoke-direct {v0}, Ljava/lang/Object;-><init>()V
 
     iput-object v0, p0, Lcom/android/server/broadcastradio/hal2/RadioModule;->mLock:Ljava/lang/Object;
 
-    .line 67
+    .line 63
     const/4 v0, 0x0
 
     iput-object v0, p0, Lcom/android/server/broadcastradio/hal2/RadioModule;->mAntennaConnected:Ljava/lang/Boolean;
 
-    .line 70
+    .line 66
     iput-object v0, p0, Lcom/android/server/broadcastradio/hal2/RadioModule;->mProgramInfo:Landroid/hardware/radio/RadioManager$ProgramInfo;
 
-    .line 74
+    .line 70
     new-instance v0, Lcom/android/server/broadcastradio/hal2/RadioModule$1;
 
     invoke-direct {v0, p0}, Lcom/android/server/broadcastradio/hal2/RadioModule$1;-><init>(Lcom/android/server/broadcastradio/hal2/RadioModule;)V
 
     iput-object v0, p0, Lcom/android/server/broadcastradio/hal2/RadioModule;->mHalTunerCallback:Landroid/hardware/broadcastradio/V2_0/ITunerCallback;
 
-    .line 121
+    .line 109
     new-instance v0, Ljava/util/HashSet;
 
     invoke-direct {v0}, Ljava/util/HashSet;-><init>()V
 
     iput-object v0, p0, Lcom/android/server/broadcastradio/hal2/RadioModule;->mAidlTunerSessions:Ljava/util/Set;
 
-    .line 126
+    .line 114
     invoke-static {p2}, Ljava/util/Objects;->requireNonNull(Ljava/lang/Object;)Ljava/lang/Object;
 
-    move-result-object p2
+    move-result-object v0
 
-    check-cast p2, Landroid/hardware/radio/RadioManager$ModuleProperties;
+    check-cast v0, Landroid/hardware/radio/RadioManager$ModuleProperties;
 
-    iput-object p2, p0, Lcom/android/server/broadcastradio/hal2/RadioModule;->mProperties:Landroid/hardware/radio/RadioManager$ModuleProperties;
+    iput-object v0, p0, Lcom/android/server/broadcastradio/hal2/RadioModule;->mProperties:Landroid/hardware/radio/RadioManager$ModuleProperties;
 
-    .line 127
+    .line 115
     invoke-static {p1}, Ljava/util/Objects;->requireNonNull(Ljava/lang/Object;)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v0
 
-    check-cast p1, Landroid/hardware/broadcastradio/V2_0/IBroadcastRadio;
+    check-cast v0, Landroid/hardware/broadcastradio/V2_0/IBroadcastRadio;
 
-    iput-object p1, p0, Lcom/android/server/broadcastradio/hal2/RadioModule;->mService:Landroid/hardware/broadcastradio/V2_0/IBroadcastRadio;
+    iput-object v0, p0, Lcom/android/server/broadcastradio/hal2/RadioModule;->mService:Landroid/hardware/broadcastradio/V2_0/IBroadcastRadio;
 
-    .line 128
-    new-instance p1, Landroid/os/Handler;
-
-    invoke-static {}, Landroid/os/Looper;->getMainLooper()Landroid/os/Looper;
-
-    move-result-object p2
-
-    invoke-direct {p1, p2}, Landroid/os/Handler;-><init>(Landroid/os/Looper;)V
-
-    iput-object p1, p0, Lcom/android/server/broadcastradio/hal2/RadioModule;->mHandler:Landroid/os/Handler;
-
-    .line 129
+    .line 116
     return-void
 .end method
 
-.method static synthetic access$000(Lcom/android/server/broadcastradio/hal2/RadioModule;Ljava/lang/Runnable;)V
+.method static synthetic access$000(Lcom/android/server/broadcastradio/hal2/RadioModule;)Ljava/lang/Object;
     .registers 2
+    .param p0, "x0"  # Lcom/android/server/broadcastradio/hal2/RadioModule;
 
-    .line 54
-    invoke-direct {p0, p1}, Lcom/android/server/broadcastradio/hal2/RadioModule;->lockAndFireLater(Ljava/lang/Runnable;)V
+    .line 51
+    iget-object v0, p0, Lcom/android/server/broadcastradio/hal2/RadioModule;->mLock:Ljava/lang/Object;
 
-    return-void
+    return-object v0
 .end method
 
-.method static synthetic access$100(Lcom/android/server/broadcastradio/hal2/RadioModule;Lcom/android/server/broadcastradio/hal2/RadioModule$AidlCallbackRunnable;)V
+.method static synthetic access$102(Lcom/android/server/broadcastradio/hal2/RadioModule;Landroid/hardware/radio/RadioManager$ProgramInfo;)Landroid/hardware/radio/RadioManager$ProgramInfo;
     .registers 2
+    .param p0, "x0"  # Lcom/android/server/broadcastradio/hal2/RadioModule;
+    .param p1, "x1"  # Landroid/hardware/radio/RadioManager$ProgramInfo;
 
-    .line 54
+    .line 51
+    iput-object p1, p0, Lcom/android/server/broadcastradio/hal2/RadioModule;->mProgramInfo:Landroid/hardware/radio/RadioManager$ProgramInfo;
+
+    return-object p1
+.end method
+
+.method static synthetic access$200(Lcom/android/server/broadcastradio/hal2/RadioModule;Lcom/android/server/broadcastradio/hal2/RadioModule$AidlCallbackRunnable;)V
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/broadcastradio/hal2/RadioModule;
+    .param p1, "x1"  # Lcom/android/server/broadcastradio/hal2/RadioModule$AidlCallbackRunnable;
+
+    .line 51
     invoke-direct {p0, p1}, Lcom/android/server/broadcastradio/hal2/RadioModule;->fanoutAidlCallbackLocked(Lcom/android/server/broadcastradio/hal2/RadioModule$AidlCallbackRunnable;)V
 
     return-void
 .end method
 
-.method static synthetic access$202(Lcom/android/server/broadcastradio/hal2/RadioModule;Ljava/lang/Boolean;)Ljava/lang/Boolean;
+.method static synthetic access$302(Lcom/android/server/broadcastradio/hal2/RadioModule;Ljava/lang/Boolean;)Ljava/lang/Boolean;
     .registers 2
+    .param p0, "x0"  # Lcom/android/server/broadcastradio/hal2/RadioModule;
+    .param p1, "x1"  # Ljava/lang/Boolean;
 
-    .line 54
+    .line 51
     iput-object p1, p0, Lcom/android/server/broadcastradio/hal2/RadioModule;->mAntennaConnected:Ljava/lang/Boolean;
-
-    return-object p1
-.end method
-
-.method static synthetic access$300(Lcom/android/server/broadcastradio/hal2/RadioModule;)Landroid/hardware/radio/RadioManager$ProgramInfo;
-    .registers 1
-
-    .line 54
-    iget-object p0, p0, Lcom/android/server/broadcastradio/hal2/RadioModule;->mProgramInfo:Landroid/hardware/radio/RadioManager$ProgramInfo;
-
-    return-object p0
-.end method
-
-.method static synthetic access$302(Lcom/android/server/broadcastradio/hal2/RadioModule;Landroid/hardware/radio/RadioManager$ProgramInfo;)Landroid/hardware/radio/RadioManager$ProgramInfo;
-    .registers 2
-
-    .line 54
-    iput-object p1, p0, Lcom/android/server/broadcastradio/hal2/RadioModule;->mProgramInfo:Landroid/hardware/radio/RadioManager$ProgramInfo;
 
     return-object p1
 .end method
 
 .method private fanoutAidlCallbackLocked(Lcom/android/server/broadcastradio/hal2/RadioModule$AidlCallbackRunnable;)V
     .registers 7
+    .param p1, "runnable"  # Lcom/android/server/broadcastradio/hal2/RadioModule$AidlCallbackRunnable;
 
-    .line 236
+    .line 216
     const-string v0, "BcRadio2Srv.module"
 
-    .line 237
     iget-object v1, p0, Lcom/android/server/broadcastradio/hal2/RadioModule;->mAidlTunerSessions:Ljava/util/Set;
 
     invoke-interface {v1}, Ljava/util/Set;->iterator()Ljava/util/Iterator;
 
     move-result-object v1
 
-    const/4 v2, 0x0
-
-    :goto_9
+    :goto_8
     invoke-interface {v1}, Ljava/util/Iterator;->hasNext()Z
 
-    move-result v3
+    move-result v2
 
-    if-eqz v3, :cond_34
+    if-eqz v2, :cond_2e
 
     invoke-interface {v1}, Ljava/util/Iterator;->next()Ljava/lang/Object;
 
-    move-result-object v3
+    move-result-object v2
 
-    check-cast v3, Lcom/android/server/broadcastradio/hal2/TunerSession;
+    check-cast v2, Lcom/android/server/broadcastradio/hal2/TunerSession;
 
-    .line 239
-    :try_start_15
-    iget-object v4, v3, Lcom/android/server/broadcastradio/hal2/TunerSession;->mCallback:Landroid/hardware/radio/ITunerCallback;
+    .line 218
+    .local v2, "tunerSession":Lcom/android/server/broadcastradio/hal2/TunerSession;
+    :try_start_14
+    iget-object v3, v2, Lcom/android/server/broadcastradio/hal2/TunerSession;->mCallback:Landroid/hardware/radio/ITunerCallback;
 
-    invoke-interface {p1, v4}, Lcom/android/server/broadcastradio/hal2/RadioModule$AidlCallbackRunnable;->run(Landroid/hardware/radio/ITunerCallback;)V
-    :try_end_1a
-    .catch Landroid/os/DeadObjectException; {:try_start_15 .. :try_end_1a} :catch_22
-    .catch Landroid/os/RemoteException; {:try_start_15 .. :try_end_1a} :catch_1b
+    invoke-interface {p1, v3}, Lcom/android/server/broadcastradio/hal2/RadioModule$AidlCallbackRunnable;->run(Landroid/hardware/radio/ITunerCallback;)V
+    :try_end_19
+    .catch Landroid/os/DeadObjectException; {:try_start_14 .. :try_end_19} :catch_21
+    .catch Landroid/os/RemoteException; {:try_start_14 .. :try_end_19} :catch_1a
 
-    goto :goto_32
+    goto :goto_2c
 
-    .line 247
-    :catch_1b
+    .line 224
+    :catch_1a
     move-exception v3
 
-    .line 248
+    .line 225
+    .local v3, "ex":Landroid/os/RemoteException;
     const-string v4, "Failed to invoke ITunerCallback: "
 
     invoke-static {v0, v4, v3}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
-    goto :goto_33
+    goto :goto_2d
 
-    .line 240
-    :catch_22
-    move-exception v4
+    .line 219
+    .end local v3  # "ex":Landroid/os/RemoteException;
+    :catch_21
+    move-exception v3
 
-    .line 242
+    .line 222
+    .local v3, "ex":Landroid/os/DeadObjectException;
     const-string v4, "Removing dead TunerSession"
 
     invoke-static {v0, v4}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 243
-    if-nez v2, :cond_2f
+    .line 223
+    iget-object v4, p0, Lcom/android/server/broadcastradio/hal2/RadioModule;->mAidlTunerSessions:Ljava/util/Set;
 
-    .line 244
-    new-instance v2, Ljava/util/ArrayList;
+    invoke-interface {v4, v2}, Ljava/util/Set;->remove(Ljava/lang/Object;)Z
 
-    invoke-direct {v2}, Ljava/util/ArrayList;-><init>()V
-
-    .line 246
-    :cond_2f
-    invoke-interface {v2, v3}, Ljava/util/List;->add(Ljava/lang/Object;)Z
-
-    .line 249
-    :goto_32
+    .line 226
+    .end local v3  # "ex":Landroid/os/DeadObjectException;
+    :goto_2c
     nop
 
-    .line 250
-    :goto_33
-    goto :goto_9
+    .line 227
+    .end local v2  # "tunerSession":Lcom/android/server/broadcastradio/hal2/TunerSession;
+    :goto_2d
+    goto :goto_8
 
-    .line 251
-    :cond_34
-    if-eqz v2, :cond_3b
-
-    .line 252
-    iget-object p1, p0, Lcom/android/server/broadcastradio/hal2/RadioModule;->mAidlTunerSessions:Ljava/util/Set;
-
-    invoke-interface {p1, v2}, Ljava/util/Set;->removeAll(Ljava/util/Collection;)Z
-
-    .line 254
-    :cond_3b
+    .line 228
+    :cond_2e
     return-void
 .end method
 
-.method static synthetic lambda$addAnnouncementListener$5(Landroid/util/MutableInt;Lcom/android/server/broadcastradio/hal2/Mutable;ILandroid/hardware/broadcastradio/V2_0/ICloseHandle;)V
+.method static synthetic lambda$addAnnouncementListener$3(Landroid/util/MutableInt;Lcom/android/server/broadcastradio/hal2/Mutable;ILandroid/hardware/broadcastradio/V2_0/ICloseHandle;)V
     .registers 4
+    .param p0, "halResult"  # Landroid/util/MutableInt;
+    .param p1, "hwCloseHandle"  # Lcom/android/server/broadcastradio/hal2/Mutable;
+    .param p2, "result"  # I
+    .param p3, "closeHnd"  # Landroid/hardware/broadcastradio/V2_0/ICloseHandle;
 
-    .line 275
+    .line 249
     iput p2, p0, Landroid/util/MutableInt;->value:I
 
-    .line 276
+    .line 250
     iput-object p3, p1, Lcom/android/server/broadcastradio/hal2/Mutable;->value:Ljava/lang/Object;
 
-    .line 277
+    .line 251
     return-void
 .end method
 
 .method static synthetic lambda$openSession$2(Lcom/android/server/broadcastradio/hal2/Mutable;ILandroid/hardware/broadcastradio/V2_0/ITunerSession;)V
     .registers 4
+    .param p0, "hwSession"  # Lcom/android/server/broadcastradio/hal2/Mutable;
+    .param p1, "result"  # I
+    .param p2, "session"  # Landroid/hardware/broadcastradio/V2_0/ITunerSession;
 
-    .line 166
+    .line 153
     const-string/jumbo v0, "openSession"
 
     invoke-static {v0, p1}, Lcom/android/server/broadcastradio/hal2/Convert;->throwOnError(Ljava/lang/String;I)V
 
-    .line 167
+    .line 154
     iput-object p2, p0, Lcom/android/server/broadcastradio/hal2/Mutable;->value:Ljava/lang/Object;
 
-    .line 168
+    .line 155
     return-void
 .end method
 
 .method static synthetic lambda$tryLoadingModule$0(Lcom/android/server/broadcastradio/hal2/Mutable;ILandroid/hardware/broadcastradio/V2_0/AmFmRegionConfig;)V
     .registers 3
+    .param p0, "amfmConfig"  # Lcom/android/server/broadcastradio/hal2/Mutable;
+    .param p1, "result"  # I
+    .param p2, "config"  # Landroid/hardware/broadcastradio/V2_0/AmFmRegionConfig;
 
-    .line 138
+    .line 125
     if-nez p1, :cond_4
 
     iput-object p2, p0, Lcom/android/server/broadcastradio/hal2/Mutable;->value:Ljava/lang/Object;
 
-    .line 139
+    .line 126
     :cond_4
     return-void
 .end method
 
 .method static synthetic lambda$tryLoadingModule$1(Lcom/android/server/broadcastradio/hal2/Mutable;ILjava/util/ArrayList;)V
     .registers 3
+    .param p0, "dabConfig"  # Lcom/android/server/broadcastradio/hal2/Mutable;
+    .param p1, "result"  # I
+    .param p2, "config"  # Ljava/util/ArrayList;
 
-    .line 143
+    .line 130
     if-nez p1, :cond_4
 
     iput-object p2, p0, Lcom/android/server/broadcastradio/hal2/Mutable;->value:Ljava/lang/Object;
 
-    .line 144
+    .line 131
     :cond_4
     return-void
 .end method
 
-.method private lockAndFireLater(Ljava/lang/Runnable;)V
-    .registers 4
-
-    .line 219
-    iget-object v0, p0, Lcom/android/server/broadcastradio/hal2/RadioModule;->mHandler:Landroid/os/Handler;
-
-    new-instance v1, Lcom/android/server/broadcastradio/hal2/-$$Lambda$RadioModule$tYabuulPwbVXcGUDicZUG2Lh3f8;
-
-    invoke-direct {v1, p0, p1}, Lcom/android/server/broadcastradio/hal2/-$$Lambda$RadioModule$tYabuulPwbVXcGUDicZUG2Lh3f8;-><init>(Lcom/android/server/broadcastradio/hal2/RadioModule;Ljava/lang/Runnable;)V
-
-    invoke-virtual {v0, v1}, Landroid/os/Handler;->post(Ljava/lang/Runnable;)Z
-
-    .line 224
-    return-void
-.end method
-
 .method public static tryLoadingModule(ILjava/lang/String;)Lcom/android/server/broadcastradio/hal2/RadioModule;
-    .registers 7
+    .registers 9
+    .param p0, "idx"  # I
+    .param p1, "fqName"  # Ljava/lang/String;
 
-    .line 133
+    .line 120
     const/4 v0, 0x0
 
     :try_start_1
@@ -360,18 +334,20 @@
 
     move-result-object v1
 
-    .line 134
+    .line 121
+    .local v1, "service":Landroid/hardware/broadcastradio/V2_0/IBroadcastRadio;
     if-nez v1, :cond_8
 
     return-object v0
 
-    .line 136
+    .line 123
     :cond_8
     new-instance v2, Lcom/android/server/broadcastradio/hal2/Mutable;
 
     invoke-direct {v2}, Lcom/android/server/broadcastradio/hal2/Mutable;-><init>()V
 
-    .line 137
+    .line 124
+    .local v2, "amfmConfig":Lcom/android/server/broadcastradio/hal2/Mutable;, "Lcom/android/server/broadcastradio/hal2/Mutable<Landroid/hardware/broadcastradio/V2_0/AmFmRegionConfig;>;"
     const/4 v3, 0x0
 
     new-instance v4, Lcom/android/server/broadcastradio/hal2/-$$Lambda$RadioModule$Ps8Vj3Q777LToAxaWE_cyahZ1Is;
@@ -380,91 +356,101 @@
 
     invoke-interface {v1, v3, v4}, Landroid/hardware/broadcastradio/V2_0/IBroadcastRadio;->getAmFmRegionConfig(ZLandroid/hardware/broadcastradio/V2_0/IBroadcastRadio$getAmFmRegionConfigCallback;)V
 
-    .line 141
+    .line 128
     new-instance v3, Lcom/android/server/broadcastradio/hal2/Mutable;
 
     invoke-direct {v3}, Lcom/android/server/broadcastradio/hal2/Mutable;-><init>()V
 
-    .line 142
+    .line 129
+    .local v3, "dabConfig":Lcom/android/server/broadcastradio/hal2/Mutable;, "Lcom/android/server/broadcastradio/hal2/Mutable<Ljava/util/List<Landroid/hardware/broadcastradio/V2_0/DabTableEntry;>;>;"
     new-instance v4, Lcom/android/server/broadcastradio/hal2/-$$Lambda$RadioModule$8XDiZOu4emnvYISlRsAgvceyPhA;
 
     invoke-direct {v4, v3}, Lcom/android/server/broadcastradio/hal2/-$$Lambda$RadioModule$8XDiZOu4emnvYISlRsAgvceyPhA;-><init>(Lcom/android/server/broadcastradio/hal2/Mutable;)V
 
     invoke-interface {v1, v4}, Landroid/hardware/broadcastradio/V2_0/IBroadcastRadio;->getDabRegionConfig(Landroid/hardware/broadcastradio/V2_0/IBroadcastRadio$getDabRegionConfigCallback;)V
 
-    .line 146
+    .line 133
     nop
 
-    .line 147
+    .line 134
     invoke-interface {v1}, Landroid/hardware/broadcastradio/V2_0/IBroadcastRadio;->getProperties()Landroid/hardware/broadcastradio/V2_0/Properties;
 
     move-result-object v4
 
-    iget-object v2, v2, Lcom/android/server/broadcastradio/hal2/Mutable;->value:Ljava/lang/Object;
+    iget-object v5, v2, Lcom/android/server/broadcastradio/hal2/Mutable;->value:Ljava/lang/Object;
 
-    check-cast v2, Landroid/hardware/broadcastradio/V2_0/AmFmRegionConfig;
+    check-cast v5, Landroid/hardware/broadcastradio/V2_0/AmFmRegionConfig;
 
-    iget-object v3, v3, Lcom/android/server/broadcastradio/hal2/Mutable;->value:Ljava/lang/Object;
+    iget-object v6, v3, Lcom/android/server/broadcastradio/hal2/Mutable;->value:Ljava/lang/Object;
 
-    check-cast v3, Ljava/util/List;
+    check-cast v6, Ljava/util/List;
 
-    .line 146
-    invoke-static {p0, p1, v4, v2, v3}, Lcom/android/server/broadcastradio/hal2/Convert;->propertiesFromHal(ILjava/lang/String;Landroid/hardware/broadcastradio/V2_0/Properties;Landroid/hardware/broadcastradio/V2_0/AmFmRegionConfig;Ljava/util/List;)Landroid/hardware/radio/RadioManager$ModuleProperties;
+    .line 133
+    invoke-static {p0, p1, v4, v5, v6}, Lcom/android/server/broadcastradio/hal2/Convert;->propertiesFromHal(ILjava/lang/String;Landroid/hardware/broadcastradio/V2_0/Properties;Landroid/hardware/broadcastradio/V2_0/AmFmRegionConfig;Ljava/util/List;)Landroid/hardware/radio/RadioManager$ModuleProperties;
 
-    move-result-object p0
+    move-result-object v4
 
-    .line 149
-    new-instance v2, Lcom/android/server/broadcastradio/hal2/RadioModule;
+    .line 136
+    .local v4, "prop":Landroid/hardware/radio/RadioManager$ModuleProperties;
+    new-instance v5, Lcom/android/server/broadcastradio/hal2/RadioModule;
 
-    invoke-direct {v2, v1, p0}, Lcom/android/server/broadcastradio/hal2/RadioModule;-><init>(Landroid/hardware/broadcastradio/V2_0/IBroadcastRadio;Landroid/hardware/radio/RadioManager$ModuleProperties;)V
+    invoke-direct {v5, v1, v4}, Lcom/android/server/broadcastradio/hal2/RadioModule;-><init>(Landroid/hardware/broadcastradio/V2_0/IBroadcastRadio;Landroid/hardware/radio/RadioManager$ModuleProperties;)V
     :try_end_39
     .catch Landroid/os/RemoteException; {:try_start_1 .. :try_end_39} :catch_3a
 
-    return-object v2
+    return-object v5
 
-    .line 150
+    .line 137
+    .end local v1  # "service":Landroid/hardware/broadcastradio/V2_0/IBroadcastRadio;
+    .end local v2  # "amfmConfig":Lcom/android/server/broadcastradio/hal2/Mutable;, "Lcom/android/server/broadcastradio/hal2/Mutable<Landroid/hardware/broadcastradio/V2_0/AmFmRegionConfig;>;"
+    .end local v3  # "dabConfig":Lcom/android/server/broadcastradio/hal2/Mutable;, "Lcom/android/server/broadcastradio/hal2/Mutable<Ljava/util/List<Landroid/hardware/broadcastradio/V2_0/DabTableEntry;>;>;"
+    .end local v4  # "prop":Landroid/hardware/radio/RadioManager$ModuleProperties;
     :catch_3a
-    move-exception p0
+    move-exception v1
 
-    .line 151
-    new-instance v1, Ljava/lang/StringBuilder;
+    .line 138
+    .local v1, "ex":Landroid/os/RemoteException;
+    new-instance v2, Ljava/lang/StringBuilder;
 
-    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v2, "failed to load module "
+    const-string v3, "failed to load module "
 
-    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v1, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v2
 
-    const-string v1, "BcRadio2Srv.module"
+    const-string v3, "BcRadio2Srv.module"
 
-    invoke-static {v1, p1, p0}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    invoke-static {v3, v2, v1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
-    .line 152
+    .line 139
     return-object v0
 .end method
 
 
 # virtual methods
 .method public addAnnouncementListener([ILandroid/hardware/radio/IAnnouncementListener;)Landroid/hardware/radio/ICloseHandle;
-    .registers 8
+    .registers 10
+    .param p1, "enabledTypes"  # [I
+    .param p2, "listener"  # Landroid/hardware/radio/IAnnouncementListener;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
         }
     .end annotation
 
-    .line 258
+    .line 232
     new-instance v0, Ljava/util/ArrayList;
 
     invoke-direct {v0}, Ljava/util/ArrayList;-><init>()V
 
-    .line 259
+    .line 233
+    .local v0, "enabledList":Ljava/util/ArrayList;, "Ljava/util/ArrayList<Ljava/lang/Byte;>;"
     array-length v1, p1
 
     const/4 v2, 0x0
@@ -474,93 +460,99 @@
 
     aget v3, p1, v2
 
-    .line 260
-    int-to-byte v3, v3
+    .line 234
+    .local v3, "type":I
+    int-to-byte v4, v3
 
-    invoke-static {v3}, Ljava/lang/Byte;->valueOf(B)Ljava/lang/Byte;
+    invoke-static {v4}, Ljava/lang/Byte;->valueOf(B)Ljava/lang/Byte;
 
-    move-result-object v3
+    move-result-object v4
 
-    invoke-virtual {v0, v3}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
+    invoke-virtual {v0, v4}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
 
-    .line 259
+    .line 233
+    .end local v3  # "type":I
     add-int/lit8 v2, v2, 0x1
 
     goto :goto_7
 
-    .line 263
+    .line 237
     :cond_16
-    new-instance p1, Landroid/util/MutableInt;
+    new-instance v1, Landroid/util/MutableInt;
 
-    const/4 v1, 0x1
+    const/4 v2, 0x1
 
-    invoke-direct {p1, v1}, Landroid/util/MutableInt;-><init>(I)V
+    invoke-direct {v1, v2}, Landroid/util/MutableInt;-><init>(I)V
 
-    .line 264
-    new-instance v1, Lcom/android/server/broadcastradio/hal2/Mutable;
+    .line 238
+    .local v1, "halResult":Landroid/util/MutableInt;
+    new-instance v2, Lcom/android/server/broadcastradio/hal2/Mutable;
 
-    invoke-direct {v1}, Lcom/android/server/broadcastradio/hal2/Mutable;-><init>()V
+    invoke-direct {v2}, Lcom/android/server/broadcastradio/hal2/Mutable;-><init>()V
 
-    .line 265
-    new-instance v2, Lcom/android/server/broadcastradio/hal2/RadioModule$2;
+    .line 239
+    .local v2, "hwCloseHandle":Lcom/android/server/broadcastradio/hal2/Mutable;, "Lcom/android/server/broadcastradio/hal2/Mutable<Landroid/hardware/broadcastradio/V2_0/ICloseHandle;>;"
+    new-instance v3, Lcom/android/server/broadcastradio/hal2/RadioModule$2;
 
-    invoke-direct {v2, p0, p2}, Lcom/android/server/broadcastradio/hal2/RadioModule$2;-><init>(Lcom/android/server/broadcastradio/hal2/RadioModule;Landroid/hardware/radio/IAnnouncementListener;)V
+    invoke-direct {v3, p0, p2}, Lcom/android/server/broadcastradio/hal2/RadioModule$2;-><init>(Lcom/android/server/broadcastradio/hal2/RadioModule;Landroid/hardware/radio/IAnnouncementListener;)V
 
-    .line 273
-    iget-object p2, p0, Lcom/android/server/broadcastradio/hal2/RadioModule;->mService:Landroid/hardware/broadcastradio/V2_0/IBroadcastRadio;
+    .line 247
+    .local v3, "hwListener":Landroid/hardware/broadcastradio/V2_0/IAnnouncementListener;
+    iget-object v4, p0, Lcom/android/server/broadcastradio/hal2/RadioModule;->mService:Landroid/hardware/broadcastradio/V2_0/IBroadcastRadio;
 
-    monitor-enter p2
+    monitor-enter v4
 
-    .line 274
+    .line 248
     :try_start_29
-    iget-object v3, p0, Lcom/android/server/broadcastradio/hal2/RadioModule;->mService:Landroid/hardware/broadcastradio/V2_0/IBroadcastRadio;
+    iget-object v5, p0, Lcom/android/server/broadcastradio/hal2/RadioModule;->mService:Landroid/hardware/broadcastradio/V2_0/IBroadcastRadio;
 
-    new-instance v4, Lcom/android/server/broadcastradio/hal2/-$$Lambda$RadioModule$QlTfH9411GzmESnxSlsnKbLa8hw;
+    new-instance v6, Lcom/android/server/broadcastradio/hal2/-$$Lambda$RadioModule$yXMJGeC9UEM7jTA1nM5DH22CG8U;
 
-    invoke-direct {v4, p1, v1}, Lcom/android/server/broadcastradio/hal2/-$$Lambda$RadioModule$QlTfH9411GzmESnxSlsnKbLa8hw;-><init>(Landroid/util/MutableInt;Lcom/android/server/broadcastradio/hal2/Mutable;)V
+    invoke-direct {v6, v1, v2}, Lcom/android/server/broadcastradio/hal2/-$$Lambda$RadioModule$yXMJGeC9UEM7jTA1nM5DH22CG8U;-><init>(Landroid/util/MutableInt;Lcom/android/server/broadcastradio/hal2/Mutable;)V
 
-    invoke-interface {v3, v0, v2, v4}, Landroid/hardware/broadcastradio/V2_0/IBroadcastRadio;->registerAnnouncementListener(Ljava/util/ArrayList;Landroid/hardware/broadcastradio/V2_0/IAnnouncementListener;Landroid/hardware/broadcastradio/V2_0/IBroadcastRadio$registerAnnouncementListenerCallback;)V
+    invoke-interface {v5, v0, v3, v6}, Landroid/hardware/broadcastradio/V2_0/IBroadcastRadio;->registerAnnouncementListener(Ljava/util/ArrayList;Landroid/hardware/broadcastradio/V2_0/IAnnouncementListener;Landroid/hardware/broadcastradio/V2_0/IBroadcastRadio$registerAnnouncementListenerCallback;)V
 
-    .line 278
-    monitor-exit p2
+    .line 252
+    monitor-exit v4
     :try_end_34
     .catchall {:try_start_29 .. :try_end_34} :catchall_41
 
-    .line 279
-    iget p1, p1, Landroid/util/MutableInt;->value:I
+    .line 253
+    iget v4, v1, Landroid/util/MutableInt;->value:I
 
-    const-string p2, "addAnnouncementListener"
+    const-string v5, "addAnnouncementListener"
 
-    invoke-static {p2, p1}, Lcom/android/server/broadcastradio/hal2/Convert;->throwOnError(Ljava/lang/String;I)V
+    invoke-static {v5, v4}, Lcom/android/server/broadcastradio/hal2/Convert;->throwOnError(Ljava/lang/String;I)V
 
-    .line 281
-    new-instance p1, Lcom/android/server/broadcastradio/hal2/RadioModule$3;
+    .line 255
+    new-instance v4, Lcom/android/server/broadcastradio/hal2/RadioModule$3;
 
-    invoke-direct {p1, p0, v1}, Lcom/android/server/broadcastradio/hal2/RadioModule$3;-><init>(Lcom/android/server/broadcastradio/hal2/RadioModule;Lcom/android/server/broadcastradio/hal2/Mutable;)V
+    invoke-direct {v4, p0, v2}, Lcom/android/server/broadcastradio/hal2/RadioModule$3;-><init>(Lcom/android/server/broadcastradio/hal2/RadioModule;Lcom/android/server/broadcastradio/hal2/Mutable;)V
 
-    return-object p1
+    return-object v4
 
-    .line 278
+    .line 252
     :catchall_41
-    move-exception p1
+    move-exception v5
 
     :try_start_42
-    monitor-exit p2
+    monitor-exit v4
     :try_end_43
     .catchall {:try_start_42 .. :try_end_43} :catchall_41
 
-    throw p1
+    throw v5
 .end method
 
 .method public closeSessions(Ljava/lang/Integer;)V
     .registers 6
+    .param p1, "error"  # Ljava/lang/Integer;
 
-    .line 192
+    .line 179
     iget-object v0, p0, Lcom/android/server/broadcastradio/hal2/RadioModule;->mLock:Ljava/lang/Object;
 
     monitor-enter v0
 
-    .line 193
+    .line 180
     :try_start_3
     iget-object v1, p0, Lcom/android/server/broadcastradio/hal2/RadioModule;->mAidlTunerSessions:Ljava/util/Set;
 
@@ -570,22 +562,23 @@
 
     new-array v1, v1, [Lcom/android/server/broadcastradio/hal2/TunerSession;
 
-    .line 194
+    .line 181
+    .local v1, "tunerSessions":[Lcom/android/server/broadcastradio/hal2/TunerSession;
     iget-object v2, p0, Lcom/android/server/broadcastradio/hal2/RadioModule;->mAidlTunerSessions:Ljava/util/Set;
 
     invoke-interface {v2, v1}, Ljava/util/Set;->toArray([Ljava/lang/Object;)[Ljava/lang/Object;
 
-    .line 195
+    .line 182
     iget-object v2, p0, Lcom/android/server/broadcastradio/hal2/RadioModule;->mAidlTunerSessions:Ljava/util/Set;
 
     invoke-interface {v2}, Ljava/util/Set;->clear()V
 
-    .line 196
+    .line 183
     monitor-exit v0
     :try_end_16
     .catchall {:try_start_3 .. :try_end_16} :catchall_23
 
-    .line 197
+    .line 184
     array-length v0, v1
 
     const/4 v2, 0x0
@@ -595,325 +588,319 @@
 
     aget-object v3, v1, v2
 
-    .line 198
+    .line 185
+    .local v3, "tunerSession":Lcom/android/server/broadcastradio/hal2/TunerSession;
     invoke-virtual {v3, p1}, Lcom/android/server/broadcastradio/hal2/TunerSession;->close(Ljava/lang/Integer;)V
 
-    .line 197
+    .line 184
+    .end local v3  # "tunerSession":Lcom/android/server/broadcastradio/hal2/TunerSession;
     add-int/lit8 v2, v2, 0x1
 
     goto :goto_18
 
-    .line 200
+    .line 187
     :cond_22
     return-void
 
-    .line 196
+    .line 183
+    .end local v1  # "tunerSessions":[Lcom/android/server/broadcastradio/hal2/TunerSession;
     :catchall_23
-    move-exception p1
+    move-exception v1
 
     :try_start_24
     monitor-exit v0
     :try_end_25
     .catchall {:try_start_24 .. :try_end_25} :catchall_23
 
-    throw p1
+    throw v1
 .end method
 
 .method fanoutAidlCallback(Lcom/android/server/broadcastradio/hal2/RadioModule$AidlCallbackRunnable;)V
-    .registers 3
+    .registers 4
+    .param p1, "runnable"  # Lcom/android/server/broadcastradio/hal2/RadioModule$AidlCallbackRunnable;
 
-    .line 232
-    new-instance v0, Lcom/android/server/broadcastradio/hal2/-$$Lambda$RadioModule$tiXDbuKN6VpLu_LpIYLaGBekDJU;
+    .line 210
+    iget-object v0, p0, Lcom/android/server/broadcastradio/hal2/RadioModule;->mLock:Ljava/lang/Object;
 
-    invoke-direct {v0, p0, p1}, Lcom/android/server/broadcastradio/hal2/-$$Lambda$RadioModule$tiXDbuKN6VpLu_LpIYLaGBekDJU;-><init>(Lcom/android/server/broadcastradio/hal2/RadioModule;Lcom/android/server/broadcastradio/hal2/RadioModule$AidlCallbackRunnable;)V
+    monitor-enter v0
 
-    invoke-direct {p0, v0}, Lcom/android/server/broadcastradio/hal2/RadioModule;->lockAndFireLater(Ljava/lang/Runnable;)V
+    .line 211
+    :try_start_3
+    invoke-direct {p0, p1}, Lcom/android/server/broadcastradio/hal2/RadioModule;->fanoutAidlCallbackLocked(Lcom/android/server/broadcastradio/hal2/RadioModule$AidlCallbackRunnable;)V
 
-    .line 233
+    .line 212
+    monitor-exit v0
+
+    .line 213
     return-void
+
+    .line 212
+    :catchall_8
+    move-exception v1
+
+    monitor-exit v0
+    :try_end_a
+    .catchall {:try_start_3 .. :try_end_a} :catchall_8
+
+    throw v1
 .end method
 
 .method getImage(I)Landroid/graphics/Bitmap;
-    .registers 7
+    .registers 8
+    .param p1, "id"  # I
 
-    .line 293
+    .line 267
     if-eqz p1, :cond_3c
 
-    .line 296
+    .line 270
     iget-object v0, p0, Lcom/android/server/broadcastradio/hal2/RadioModule;->mService:Landroid/hardware/broadcastradio/V2_0/IBroadcastRadio;
 
     monitor-enter v0
 
-    .line 297
+    .line 271
     :try_start_5
-    new-instance v1, Lcom/android/server/broadcastradio/hal2/-$$Lambda$RadioModule$7jNXPMuvH-DQ1rLv9_WZ2s1UiPQ;
+    new-instance v1, Lcom/android/server/broadcastradio/hal2/-$$Lambda$RadioModule$WfmM4W7QS3OnfFwUksITHnpM74g;
 
-    invoke-direct {v1, p0, p1}, Lcom/android/server/broadcastradio/hal2/-$$Lambda$RadioModule$7jNXPMuvH-DQ1rLv9_WZ2s1UiPQ;-><init>(Lcom/android/server/broadcastradio/hal2/RadioModule;I)V
+    invoke-direct {v1, p0, p1}, Lcom/android/server/broadcastradio/hal2/-$$Lambda$RadioModule$WfmM4W7QS3OnfFwUksITHnpM74g;-><init>(Lcom/android/server/broadcastradio/hal2/RadioModule;I)V
 
     invoke-static {v1}, Lcom/android/server/broadcastradio/hal2/Utils;->maybeRethrow(Lcom/android/server/broadcastradio/hal2/Utils$FuncThrowingRemoteException;)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v1
 
-    check-cast p1, Ljava/util/List;
+    check-cast v1, Ljava/util/List;
 
-    .line 298
-    invoke-interface {p1}, Ljava/util/List;->size()I
+    .line 272
+    .local v1, "rawList":Ljava/util/List;, "Ljava/util/List<Ljava/lang/Byte;>;"
+    invoke-interface {v1}, Ljava/util/List;->size()I
 
-    move-result v1
+    move-result v2
 
-    new-array v1, v1, [B
+    new-array v2, v2, [B
 
-    .line 299
-    const/4 v2, 0x0
+    .line 273
+    .local v2, "rawImage":[B
+    const/4 v3, 0x0
 
-    move v3, v2
+    move v4, v3
 
+    .local v4, "i":I
     :goto_18
-    invoke-interface {p1}, Ljava/util/List;->size()I
+    invoke-interface {v1}, Ljava/util/List;->size()I
 
-    move-result v4
+    move-result v5
 
-    if-ge v3, v4, :cond_2d
+    if-ge v4, v5, :cond_2d
 
-    .line 300
-    invoke-interface {p1, v3}, Ljava/util/List;->get(I)Ljava/lang/Object;
+    .line 274
+    invoke-interface {v1, v4}, Ljava/util/List;->get(I)Ljava/lang/Object;
 
-    move-result-object v4
+    move-result-object v5
 
-    check-cast v4, Ljava/lang/Byte;
+    check-cast v5, Ljava/lang/Byte;
 
-    invoke-virtual {v4}, Ljava/lang/Byte;->byteValue()B
+    invoke-virtual {v5}, Ljava/lang/Byte;->byteValue()B
 
-    move-result v4
+    move-result v5
 
-    aput-byte v4, v1, v3
+    aput-byte v5, v2, v4
 
-    .line 299
-    add-int/lit8 v3, v3, 0x1
+    .line 273
+    add-int/lit8 v4, v4, 0x1
 
     goto :goto_18
 
-    .line 302
+    .line 276
+    .end local v1  # "rawList":Ljava/util/List;, "Ljava/util/List<Ljava/lang/Byte;>;"
+    .end local v4  # "i":I
     :cond_2d
     monitor-exit v0
     :try_end_2e
     .catchall {:try_start_5 .. :try_end_2e} :catchall_39
 
-    .line 304
-    array-length p1, v1
+    .line 278
+    array-length v0, v2
 
-    if-nez p1, :cond_33
+    if-nez v0, :cond_33
 
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    return-object p1
+    return-object v0
 
-    .line 306
+    .line 280
     :cond_33
-    array-length p1, v1
+    array-length v0, v2
 
-    invoke-static {v1, v2, p1}, Landroid/graphics/BitmapFactory;->decodeByteArray([BII)Landroid/graphics/Bitmap;
+    invoke-static {v2, v3, v0}, Landroid/graphics/BitmapFactory;->decodeByteArray([BII)Landroid/graphics/Bitmap;
 
-    move-result-object p1
+    move-result-object v0
 
-    return-object p1
+    return-object v0
 
-    .line 302
+    .line 276
+    .end local v2  # "rawImage":[B
     :catchall_39
-    move-exception p1
+    move-exception v1
 
     :try_start_3a
     monitor-exit v0
     :try_end_3b
     .catchall {:try_start_3a .. :try_end_3b} :catchall_39
 
-    throw p1
+    throw v1
 
-    .line 293
+    .line 267
     :cond_3c
-    new-instance p1, Ljava/lang/IllegalArgumentException;
+    new-instance v0, Ljava/lang/IllegalArgumentException;
 
-    const-string v0, "Image ID is missing"
+    const-string v1, "Image ID is missing"
 
-    invoke-direct {p1, v0}, Ljava/lang/IllegalArgumentException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v0, v1}, Ljava/lang/IllegalArgumentException;-><init>(Ljava/lang/String;)V
 
-    throw p1
+    throw v0
 .end method
 
 .method public getService()Landroid/hardware/broadcastradio/V2_0/IBroadcastRadio;
     .registers 2
 
-    .line 157
+    .line 144
     iget-object v0, p0, Lcom/android/server/broadcastradio/hal2/RadioModule;->mService:Landroid/hardware/broadcastradio/V2_0/IBroadcastRadio;
 
     return-object v0
 .end method
 
-.method public synthetic lambda$fanoutAidlCallback$4$RadioModule(Lcom/android/server/broadcastradio/hal2/RadioModule$AidlCallbackRunnable;)V
-    .registers 2
-
-    .line 232
-    invoke-direct {p0, p1}, Lcom/android/server/broadcastradio/hal2/RadioModule;->fanoutAidlCallbackLocked(Lcom/android/server/broadcastradio/hal2/RadioModule$AidlCallbackRunnable;)V
-
-    return-void
-.end method
-
-.method public synthetic lambda$getImage$6$RadioModule(I)Ljava/util/ArrayList;
+.method public synthetic lambda$getImage$4$RadioModule(I)Ljava/util/ArrayList;
     .registers 3
+    .param p1, "id"  # I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
         }
     .end annotation
 
-    .line 297
+    .line 271
     iget-object v0, p0, Lcom/android/server/broadcastradio/hal2/RadioModule;->mService:Landroid/hardware/broadcastradio/V2_0/IBroadcastRadio;
 
     invoke-interface {v0, p1}, Landroid/hardware/broadcastradio/V2_0/IBroadcastRadio;->getImage(I)Ljava/util/ArrayList;
 
-    move-result-object p1
+    move-result-object v0
 
-    return-object p1
-.end method
-
-.method public synthetic lambda$lockAndFireLater$3$RadioModule(Ljava/lang/Runnable;)V
-    .registers 3
-
-    .line 220
-    iget-object v0, p0, Lcom/android/server/broadcastradio/hal2/RadioModule;->mLock:Ljava/lang/Object;
-
-    monitor-enter v0
-
-    .line 221
-    :try_start_3
-    invoke-interface {p1}, Ljava/lang/Runnable;->run()V
-
-    .line 222
-    monitor-exit v0
-
-    .line 223
-    return-void
-
-    .line 222
-    :catchall_8
-    move-exception p1
-
-    monitor-exit v0
-    :try_end_a
-    .catchall {:try_start_3 .. :try_end_a} :catchall_8
-
-    throw p1
+    return-object v0
 .end method
 
 .method onTunerSessionClosed(Lcom/android/server/broadcastradio/hal2/TunerSession;)V
-    .registers 5
+    .registers 6
+    .param p1, "tunerSession"  # Lcom/android/server/broadcastradio/hal2/TunerSession;
 
-    .line 203
+    .line 190
     iget-object v0, p0, Lcom/android/server/broadcastradio/hal2/RadioModule;->mLock:Ljava/lang/Object;
 
     monitor-enter v0
 
-    .line 204
+    .line 191
     :try_start_3
     iget-object v1, p0, Lcom/android/server/broadcastradio/hal2/RadioModule;->mAidlTunerSessions:Ljava/util/Set;
 
     invoke-interface {v1, p1}, Ljava/util/Set;->remove(Ljava/lang/Object;)Z
 
-    .line 205
-    iget-object p1, p0, Lcom/android/server/broadcastradio/hal2/RadioModule;->mAidlTunerSessions:Ljava/util/Set;
+    .line 192
+    iget-object v1, p0, Lcom/android/server/broadcastradio/hal2/RadioModule;->mAidlTunerSessions:Ljava/util/Set;
 
-    invoke-interface {p1}, Ljava/util/Set;->isEmpty()Z
+    invoke-interface {v1}, Ljava/util/Set;->isEmpty()Z
 
-    move-result p1
+    move-result v1
 
-    if-eqz p1, :cond_2c
+    if-eqz v1, :cond_2d
 
-    iget-object p1, p0, Lcom/android/server/broadcastradio/hal2/RadioModule;->mHalTunerSession:Landroid/hardware/broadcastradio/V2_0/ITunerSession;
+    iget-object v1, p0, Lcom/android/server/broadcastradio/hal2/RadioModule;->mHalTunerSession:Landroid/hardware/broadcastradio/V2_0/ITunerSession;
 
-    if-eqz p1, :cond_2c
+    if-eqz v1, :cond_2d
 
-    .line 206
-    const-string p1, "BcRadio2Srv.module"
-
-    const-string v1, "closing HAL tuner session"
-
-    invoke-static {p1, v1}, Landroid/util/Slog;->v(Ljava/lang/String;Ljava/lang/String;)I
-    :try_end_1b
-    .catchall {:try_start_3 .. :try_end_1b} :catchall_2e
-
-    .line 208
-    :try_start_1b
-    iget-object p1, p0, Lcom/android/server/broadcastradio/hal2/RadioModule;->mHalTunerSession:Landroid/hardware/broadcastradio/V2_0/ITunerSession;
-
-    invoke-interface {p1}, Landroid/hardware/broadcastradio/V2_0/ITunerSession;->close()V
-    :try_end_20
-    .catch Landroid/os/RemoteException; {:try_start_1b .. :try_end_20} :catch_21
-    .catchall {:try_start_1b .. :try_end_20} :catchall_2e
-
-    .line 211
-    goto :goto_29
-
-    .line 209
-    :catch_21
-    move-exception p1
-
-    .line 210
-    :try_start_22
+    .line 193
     const-string v1, "BcRadio2Srv.module"
 
-    const-string v2, "mHalTunerSession.close() failed: "
+    const-string v2, "closing HAL tuner session"
 
-    invoke-static {v1, v2, p1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    invoke-static {v1, v2}, Landroid/util/Slog;->v(Ljava/lang/String;Ljava/lang/String;)I
+    :try_end_1b
+    .catchall {:try_start_3 .. :try_end_1b} :catchall_2f
 
-    .line 212
-    :goto_29
-    const/4 p1, 0x0
+    .line 195
+    :try_start_1b
+    iget-object v1, p0, Lcom/android/server/broadcastradio/hal2/RadioModule;->mHalTunerSession:Landroid/hardware/broadcastradio/V2_0/ITunerSession;
 
-    iput-object p1, p0, Lcom/android/server/broadcastradio/hal2/RadioModule;->mHalTunerSession:Landroid/hardware/broadcastradio/V2_0/ITunerSession;
+    invoke-interface {v1}, Landroid/hardware/broadcastradio/V2_0/ITunerSession;->close()V
+    :try_end_20
+    .catch Landroid/os/RemoteException; {:try_start_1b .. :try_end_20} :catch_21
+    .catchall {:try_start_1b .. :try_end_20} :catchall_2f
 
-    .line 214
-    :cond_2c
+    .line 198
+    goto :goto_2a
+
+    .line 196
+    :catch_21
+    move-exception v1
+
+    .line 197
+    .local v1, "ex":Landroid/os/RemoteException;
+    :try_start_22
+    const-string v2, "BcRadio2Srv.module"
+
+    const-string/jumbo v3, "mHalTunerSession.close() failed: "
+
+    invoke-static {v2, v3, v1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+
+    .line 199
+    .end local v1  # "ex":Landroid/os/RemoteException;
+    :goto_2a
+    const/4 v1, 0x0
+
+    iput-object v1, p0, Lcom/android/server/broadcastradio/hal2/RadioModule;->mHalTunerSession:Landroid/hardware/broadcastradio/V2_0/ITunerSession;
+
+    .line 201
+    :cond_2d
     monitor-exit v0
 
-    .line 215
+    .line 202
     return-void
 
-    .line 214
-    :catchall_2e
-    move-exception p1
+    .line 201
+    :catchall_2f
+    move-exception v1
 
     monitor-exit v0
-    :try_end_30
-    .catchall {:try_start_22 .. :try_end_30} :catchall_2e
+    :try_end_31
+    .catchall {:try_start_22 .. :try_end_31} :catchall_2f
 
-    throw p1
+    throw v1
 .end method
 
 .method public openSession(Landroid/hardware/radio/ITunerCallback;)Lcom/android/server/broadcastradio/hal2/TunerSession;
     .registers 7
+    .param p1, "userCb"  # Landroid/hardware/radio/ITunerCallback;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
         }
     .end annotation
 
-    .line 162
+    .line 149
     iget-object v0, p0, Lcom/android/server/broadcastradio/hal2/RadioModule;->mLock:Ljava/lang/Object;
 
     monitor-enter v0
 
-    .line 163
+    .line 150
     :try_start_3
     iget-object v1, p0, Lcom/android/server/broadcastradio/hal2/RadioModule;->mHalTunerSession:Landroid/hardware/broadcastradio/V2_0/ITunerSession;
 
     if-nez v1, :cond_24
 
-    .line 164
+    .line 151
     new-instance v1, Lcom/android/server/broadcastradio/hal2/Mutable;
 
     invoke-direct {v1}, Lcom/android/server/broadcastradio/hal2/Mutable;-><init>()V
 
-    .line 165
+    .line 152
+    .local v1, "hwSession":Lcom/android/server/broadcastradio/hal2/Mutable;, "Lcom/android/server/broadcastradio/hal2/Mutable<Landroid/hardware/broadcastradio/V2_0/ITunerSession;>;"
     iget-object v2, p0, Lcom/android/server/broadcastradio/hal2/RadioModule;->mService:Landroid/hardware/broadcastradio/V2_0/IBroadcastRadio;
 
     iget-object v3, p0, Lcom/android/server/broadcastradio/hal2/RadioModule;->mHalTunerCallback:Landroid/hardware/broadcastradio/V2_0/ITunerCallback;
@@ -924,20 +911,21 @@
 
     invoke-interface {v2, v3, v4}, Landroid/hardware/broadcastradio/V2_0/IBroadcastRadio;->openSession(Landroid/hardware/broadcastradio/V2_0/ITunerCallback;Landroid/hardware/broadcastradio/V2_0/IBroadcastRadio$openSessionCallback;)V
 
-    .line 169
-    iget-object v1, v1, Lcom/android/server/broadcastradio/hal2/Mutable;->value:Ljava/lang/Object;
+    .line 156
+    iget-object v2, v1, Lcom/android/server/broadcastradio/hal2/Mutable;->value:Ljava/lang/Object;
 
-    check-cast v1, Landroid/hardware/broadcastradio/V2_0/ITunerSession;
+    check-cast v2, Landroid/hardware/broadcastradio/V2_0/ITunerSession;
 
-    invoke-static {v1}, Ljava/util/Objects;->requireNonNull(Ljava/lang/Object;)Ljava/lang/Object;
+    invoke-static {v2}, Ljava/util/Objects;->requireNonNull(Ljava/lang/Object;)Ljava/lang/Object;
 
-    move-result-object v1
+    move-result-object v2
 
-    check-cast v1, Landroid/hardware/broadcastradio/V2_0/ITunerSession;
+    check-cast v2, Landroid/hardware/broadcastradio/V2_0/ITunerSession;
 
-    iput-object v1, p0, Lcom/android/server/broadcastradio/hal2/RadioModule;->mHalTunerSession:Landroid/hardware/broadcastradio/V2_0/ITunerSession;
+    iput-object v2, p0, Lcom/android/server/broadcastradio/hal2/RadioModule;->mHalTunerSession:Landroid/hardware/broadcastradio/V2_0/ITunerSession;
 
-    .line 171
+    .line 158
+    .end local v1  # "hwSession":Lcom/android/server/broadcastradio/hal2/Mutable;, "Lcom/android/server/broadcastradio/hal2/Mutable<Landroid/hardware/broadcastradio/V2_0/ITunerSession;>;"
     :cond_24
     new-instance v1, Lcom/android/server/broadcastradio/hal2/TunerSession;
 
@@ -945,17 +933,18 @@
 
     invoke-direct {v1, p0, v2, p1}, Lcom/android/server/broadcastradio/hal2/TunerSession;-><init>(Lcom/android/server/broadcastradio/hal2/RadioModule;Landroid/hardware/broadcastradio/V2_0/ITunerSession;Landroid/hardware/radio/ITunerCallback;)V
 
-    .line 172
+    .line 159
+    .local v1, "tunerSession":Lcom/android/server/broadcastradio/hal2/TunerSession;
     iget-object v2, p0, Lcom/android/server/broadcastradio/hal2/RadioModule;->mAidlTunerSessions:Ljava/util/Set;
 
     invoke-interface {v2, v1}, Ljava/util/Set;->add(Ljava/lang/Object;)Z
 
-    .line 176
+    .line 163
     iget-object v2, p0, Lcom/android/server/broadcastradio/hal2/RadioModule;->mAntennaConnected:Ljava/lang/Boolean;
 
     if-eqz v2, :cond_3d
 
-    .line 177
+    .line 164
     iget-object v2, p0, Lcom/android/server/broadcastradio/hal2/RadioModule;->mAntennaConnected:Ljava/lang/Boolean;
 
     invoke-virtual {v2}, Ljava/lang/Boolean;->booleanValue()Z
@@ -964,30 +953,31 @@
 
     invoke-interface {p1, v2}, Landroid/hardware/radio/ITunerCallback;->onAntennaState(Z)V
 
-    .line 179
+    .line 166
     :cond_3d
     iget-object v2, p0, Lcom/android/server/broadcastradio/hal2/RadioModule;->mProgramInfo:Landroid/hardware/radio/RadioManager$ProgramInfo;
 
     if-eqz v2, :cond_46
 
-    .line 180
+    .line 167
     iget-object v2, p0, Lcom/android/server/broadcastradio/hal2/RadioModule;->mProgramInfo:Landroid/hardware/radio/RadioManager$ProgramInfo;
 
     invoke-interface {p1, v2}, Landroid/hardware/radio/ITunerCallback;->onCurrentProgramInfoChanged(Landroid/hardware/radio/RadioManager$ProgramInfo;)V
 
-    .line 183
+    .line 170
     :cond_46
     monitor-exit v0
 
     return-object v1
 
-    .line 184
+    .line 171
+    .end local v1  # "tunerSession":Lcom/android/server/broadcastradio/hal2/TunerSession;
     :catchall_48
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_4a
     .catchall {:try_start_3 .. :try_end_4a} :catchall_48
 
-    throw p1
+    throw v1
 .end method

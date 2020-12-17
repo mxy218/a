@@ -26,6 +26,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/accounts/AccountManagerService$1;Ljava/lang/String;)V
     .registers 3
+    .param p1, "this$1"  # Lcom/android/server/accounts/AccountManagerService$1;
 
     .line 304
     iput-object p1, p0, Lcom/android/server/accounts/AccountManagerService$1$1;->this$1:Lcom/android/server/accounts/AccountManagerService$1;

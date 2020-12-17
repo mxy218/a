@@ -55,14 +55,15 @@
 
 .method public static asInterface(Landroid/os/IBinder;)Landroid/net/INetworkStackConnector;
     .registers 3
+    .param p0, "obj"  # Landroid/os/IBinder;
 
     .line 53
     if-nez p0, :cond_4
 
     .line 54
-    const/4 p0, 0x0
+    const/4 v0, 0x0
 
-    return-object p0
+    return-object v0
 
     .line 56
     :cond_4
@@ -73,24 +74,27 @@
     move-result-object v0
 
     .line 57
-    if-eqz v0, :cond_13
+    .local v0, "iin":Landroid/os/IInterface;
+    if-eqz v0, :cond_14
 
     instance-of v1, v0, Landroid/net/INetworkStackConnector;
 
-    if-eqz v1, :cond_13
+    if-eqz v1, :cond_14
 
     .line 58
-    check-cast v0, Landroid/net/INetworkStackConnector;
+    move-object v1, v0
 
-    return-object v0
+    check-cast v1, Landroid/net/INetworkStackConnector;
+
+    return-object v1
 
     .line 60
-    :cond_13
-    new-instance v0, Landroid/net/INetworkStackConnector$Stub$Proxy;
+    :cond_14
+    new-instance v1, Landroid/net/INetworkStackConnector$Stub$Proxy;
 
-    invoke-direct {v0, p0}, Landroid/net/INetworkStackConnector$Stub$Proxy;-><init>(Landroid/os/IBinder;)V
+    invoke-direct {v1, p0}, Landroid/net/INetworkStackConnector$Stub$Proxy;-><init>(Landroid/os/IBinder;)V
 
-    return-object v0
+    return-object v1
 .end method
 
 .method public static getDefaultImpl()Landroid/net/INetworkStackConnector;
@@ -104,6 +108,7 @@
 
 .method public static setDefaultImpl(Landroid/net/INetworkStackConnector;)Z
     .registers 2
+    .param p0, "impl"  # Landroid/net/INetworkStackConnector;
 
     .line 263
     sget-object v0, Landroid/net/INetworkStackConnector$Stub$Proxy;->sDefaultImpl:Landroid/net/INetworkStackConnector;
@@ -116,15 +121,15 @@
     sput-object p0, Landroid/net/INetworkStackConnector$Stub$Proxy;->sDefaultImpl:Landroid/net/INetworkStackConnector;
 
     .line 265
-    const/4 p0, 0x1
+    const/4 v0, 0x1
 
-    return p0
+    return v0
 
     .line 267
     :cond_a
-    const/4 p0, 0x0
+    const/4 v0, 0x0
 
-    return p0
+    return v0
 .end method
 
 
@@ -137,7 +142,11 @@
 .end method
 
 .method public onTransact(ILandroid/os/Parcel;Landroid/os/Parcel;I)Z
-    .registers 9
+    .registers 10
+    .param p1, "code"  # I
+    .param p2, "data"  # Landroid/os/Parcel;
+    .param p3, "reply"  # Landroid/os/Parcel;
+    .param p4, "flags"  # I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -145,54 +154,51 @@
     .end annotation
 
     .line 68
-    nop
+    const-string v0, "android.net.INetworkStackConnector"
 
     .line 69
-    const/4 v0, 0x0
-
+    .local v0, "descriptor":Ljava/lang/String;
     const/4 v1, 0x1
 
-    const-string v2, "android.net.INetworkStackConnector"
+    if-eq p1, v1, :cond_74
 
-    if-eq p1, v1, :cond_77
+    const/4 v2, 0x2
 
-    const/4 v3, 0x2
+    if-eq p1, v2, :cond_51
 
-    if-eq p1, v3, :cond_53
+    const/4 v2, 0x3
 
-    const/4 v0, 0x3
+    if-eq p1, v2, :cond_3e
 
-    if-eq p1, v0, :cond_40
+    const/4 v2, 0x4
 
-    const/4 v0, 0x4
+    if-eq p1, v2, :cond_2f
 
-    if-eq p1, v0, :cond_31
+    const v2, 0xffffff
 
-    const v0, 0xffffff
+    if-eq p1, v2, :cond_21
 
-    if-eq p1, v0, :cond_23
+    const v2, 0x5f4e5446
 
-    const v0, 0x5f4e5446
-
-    if-eq p1, v0, :cond_1f
+    if-eq p1, v2, :cond_1d
 
     .line 137
     invoke-super {p0, p1, p2, p3, p4}, Landroid/os/Binder;->onTransact(ILandroid/os/Parcel;Landroid/os/Parcel;I)Z
 
-    move-result p1
+    move-result v1
 
-    return p1
+    return v1
 
     .line 73
-    :cond_1f
-    invoke-virtual {p3, v2}, Landroid/os/Parcel;->writeString(Ljava/lang/String;)V
+    :cond_1d
+    invoke-virtual {p3, v0}, Landroid/os/Parcel;->writeString(Ljava/lang/String;)V
 
     .line 74
     return v1
 
     .line 130
-    :cond_23
-    invoke-virtual {p2, v2}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
+    :cond_21
+    invoke-virtual {p2, v0}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
 
     .line 131
     invoke-virtual {p3}, Landroid/os/Parcel;->writeNoException()V
@@ -200,150 +206,165 @@
     .line 132
     invoke-virtual {p0}, Landroid/net/INetworkStackConnector$Stub;->getInterfaceVersion()I
 
-    move-result p1
+    move-result v2
 
-    invoke-virtual {p3, p1}, Landroid/os/Parcel;->writeInt(I)V
+    invoke-virtual {p3, v2}, Landroid/os/Parcel;->writeInt(I)V
 
     .line 133
     return v1
 
     .line 122
-    :cond_31
-    invoke-virtual {p2, v2}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
+    :cond_2f
+    invoke-virtual {p2, v0}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
 
     .line 124
     invoke-virtual {p2}, Landroid/os/Parcel;->readStrongBinder()Landroid/os/IBinder;
 
-    move-result-object p1
+    move-result-object v2
 
-    invoke-static {p1}, Landroid/net/IIpMemoryStoreCallbacks$Stub;->asInterface(Landroid/os/IBinder;)Landroid/net/IIpMemoryStoreCallbacks;
+    invoke-static {v2}, Landroid/net/IIpMemoryStoreCallbacks$Stub;->asInterface(Landroid/os/IBinder;)Landroid/net/IIpMemoryStoreCallbacks;
 
-    move-result-object p1
+    move-result-object v2
 
     .line 125
-    invoke-virtual {p0, p1}, Landroid/net/INetworkStackConnector$Stub;->fetchIpMemoryStore(Landroid/net/IIpMemoryStoreCallbacks;)V
+    .local v2, "_arg0":Landroid/net/IIpMemoryStoreCallbacks;
+    invoke-virtual {p0, v2}, Landroid/net/INetworkStackConnector$Stub;->fetchIpMemoryStore(Landroid/net/IIpMemoryStoreCallbacks;)V
 
     .line 126
     return v1
 
     .line 112
-    :cond_40
-    invoke-virtual {p2, v2}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
+    .end local v2  # "_arg0":Landroid/net/IIpMemoryStoreCallbacks;
+    :cond_3e
+    invoke-virtual {p2, v0}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
 
     .line 114
     invoke-virtual {p2}, Landroid/os/Parcel;->readString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v2
 
     .line 116
+    .local v2, "_arg0":Ljava/lang/String;
     invoke-virtual {p2}, Landroid/os/Parcel;->readStrongBinder()Landroid/os/IBinder;
 
-    move-result-object p2
+    move-result-object v3
 
-    invoke-static {p2}, Landroid/net/ip/IIpClientCallbacks$Stub;->asInterface(Landroid/os/IBinder;)Landroid/net/ip/IIpClientCallbacks;
+    invoke-static {v3}, Landroid/net/ip/IIpClientCallbacks$Stub;->asInterface(Landroid/os/IBinder;)Landroid/net/ip/IIpClientCallbacks;
 
-    move-result-object p2
+    move-result-object v3
 
     .line 117
-    invoke-virtual {p0, p1, p2}, Landroid/net/INetworkStackConnector$Stub;->makeIpClient(Ljava/lang/String;Landroid/net/ip/IIpClientCallbacks;)V
+    .local v3, "_arg1":Landroid/net/ip/IIpClientCallbacks;
+    invoke-virtual {p0, v2, v3}, Landroid/net/INetworkStackConnector$Stub;->makeIpClient(Ljava/lang/String;Landroid/net/ip/IIpClientCallbacks;)V
 
     .line 118
     return v1
 
     .line 95
-    :cond_53
-    invoke-virtual {p2, v2}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
+    .end local v2  # "_arg0":Ljava/lang/String;
+    .end local v3  # "_arg1":Landroid/net/ip/IIpClientCallbacks;
+    :cond_51
+    invoke-virtual {p2, v0}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
 
     .line 97
     invoke-virtual {p2}, Landroid/os/Parcel;->readInt()I
 
-    move-result p1
+    move-result v2
 
-    if-eqz p1, :cond_66
+    if-eqz v2, :cond_63
 
     .line 98
-    sget-object p1, Landroid/net/Network;->CREATOR:Landroid/os/Parcelable$Creator;
+    sget-object v2, Landroid/net/Network;->CREATOR:Landroid/os/Parcelable$Creator;
 
-    invoke-interface {p1, p2}, Landroid/os/Parcelable$Creator;->createFromParcel(Landroid/os/Parcel;)Ljava/lang/Object;
+    invoke-interface {v2, p2}, Landroid/os/Parcelable$Creator;->createFromParcel(Landroid/os/Parcel;)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v2
 
-    move-object v0, p1
+    check-cast v2, Landroid/net/Network;
 
-    check-cast v0, Landroid/net/Network;
-
-    goto :goto_67
+    .local v2, "_arg0":Landroid/net/Network;
+    goto :goto_64
 
     .line 101
-    :cond_66
-    nop
+    .end local v2  # "_arg0":Landroid/net/Network;
+    :cond_63
+    const/4 v2, 0x0
 
     .line 104
-    :goto_67
+    .restart local v2  # "_arg0":Landroid/net/Network;
+    :goto_64
     invoke-virtual {p2}, Landroid/os/Parcel;->readString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v3
 
     .line 106
+    .local v3, "_arg1":Ljava/lang/String;
     invoke-virtual {p2}, Landroid/os/Parcel;->readStrongBinder()Landroid/os/IBinder;
 
-    move-result-object p2
+    move-result-object v4
 
-    invoke-static {p2}, Landroid/net/INetworkMonitorCallbacks$Stub;->asInterface(Landroid/os/IBinder;)Landroid/net/INetworkMonitorCallbacks;
+    invoke-static {v4}, Landroid/net/INetworkMonitorCallbacks$Stub;->asInterface(Landroid/os/IBinder;)Landroid/net/INetworkMonitorCallbacks;
 
-    move-result-object p2
+    move-result-object v4
 
     .line 107
-    invoke-virtual {p0, v0, p1, p2}, Landroid/net/INetworkStackConnector$Stub;->makeNetworkMonitor(Landroid/net/Network;Ljava/lang/String;Landroid/net/INetworkMonitorCallbacks;)V
+    .local v4, "_arg2":Landroid/net/INetworkMonitorCallbacks;
+    invoke-virtual {p0, v2, v3, v4}, Landroid/net/INetworkStackConnector$Stub;->makeNetworkMonitor(Landroid/net/Network;Ljava/lang/String;Landroid/net/INetworkMonitorCallbacks;)V
 
     .line 108
     return v1
 
     .line 78
-    :cond_77
-    invoke-virtual {p2, v2}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
+    .end local v2  # "_arg0":Landroid/net/Network;
+    .end local v3  # "_arg1":Ljava/lang/String;
+    .end local v4  # "_arg2":Landroid/net/INetworkMonitorCallbacks;
+    :cond_74
+    invoke-virtual {p2, v0}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
 
     .line 80
     invoke-virtual {p2}, Landroid/os/Parcel;->readString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v2
 
     .line 82
+    .local v2, "_arg0":Ljava/lang/String;
     invoke-virtual {p2}, Landroid/os/Parcel;->readInt()I
 
-    move-result p3
+    move-result v3
 
-    if-eqz p3, :cond_8e
+    if-eqz v3, :cond_8a
 
     .line 83
-    sget-object p3, Landroid/net/dhcp/DhcpServingParamsParcel;->CREATOR:Landroid/os/Parcelable$Creator;
+    sget-object v3, Landroid/net/dhcp/DhcpServingParamsParcel;->CREATOR:Landroid/os/Parcelable$Creator;
 
-    invoke-interface {p3, p2}, Landroid/os/Parcelable$Creator;->createFromParcel(Landroid/os/Parcel;)Ljava/lang/Object;
+    invoke-interface {v3, p2}, Landroid/os/Parcelable$Creator;->createFromParcel(Landroid/os/Parcel;)Ljava/lang/Object;
 
-    move-result-object p3
+    move-result-object v3
 
-    move-object v0, p3
+    check-cast v3, Landroid/net/dhcp/DhcpServingParamsParcel;
 
-    check-cast v0, Landroid/net/dhcp/DhcpServingParamsParcel;
-
-    goto :goto_8f
+    .local v3, "_arg1":Landroid/net/dhcp/DhcpServingParamsParcel;
+    goto :goto_8b
 
     .line 86
-    :cond_8e
-    nop
+    .end local v3  # "_arg1":Landroid/net/dhcp/DhcpServingParamsParcel;
+    :cond_8a
+    const/4 v3, 0x0
 
     .line 89
-    :goto_8f
+    .restart local v3  # "_arg1":Landroid/net/dhcp/DhcpServingParamsParcel;
+    :goto_8b
     invoke-virtual {p2}, Landroid/os/Parcel;->readStrongBinder()Landroid/os/IBinder;
 
-    move-result-object p2
+    move-result-object v4
 
-    invoke-static {p2}, Landroid/net/dhcp/IDhcpServerCallbacks$Stub;->asInterface(Landroid/os/IBinder;)Landroid/net/dhcp/IDhcpServerCallbacks;
+    invoke-static {v4}, Landroid/net/dhcp/IDhcpServerCallbacks$Stub;->asInterface(Landroid/os/IBinder;)Landroid/net/dhcp/IDhcpServerCallbacks;
 
-    move-result-object p2
+    move-result-object v4
 
     .line 90
-    invoke-virtual {p0, p1, v0, p2}, Landroid/net/INetworkStackConnector$Stub;->makeDhcpServer(Ljava/lang/String;Landroid/net/dhcp/DhcpServingParamsParcel;Landroid/net/dhcp/IDhcpServerCallbacks;)V
+    .local v4, "_arg2":Landroid/net/dhcp/IDhcpServerCallbacks;
+    invoke-virtual {p0, v2, v3, v4}, Landroid/net/INetworkStackConnector$Stub;->makeDhcpServer(Ljava/lang/String;Landroid/net/dhcp/DhcpServingParamsParcel;Landroid/net/dhcp/IDhcpServerCallbacks;)V
 
     .line 91
     return v1

@@ -25,6 +25,8 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/content/SyncManager;Lcom/android/server/content/SyncManager$ActiveSyncContext;Landroid/content/SyncResult;)V
     .registers 4
+    .param p2, "syncContext"  # Lcom/android/server/content/SyncManager$ActiveSyncContext;
+    .param p3, "syncResult"  # Landroid/content/SyncResult;
 
     .line 1317
     iput-object p1, p0, Lcom/android/server/content/SyncManager$SyncFinishedOrCancelledMessagePayload;->this$0:Lcom/android/server/content/SyncManager;

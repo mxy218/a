@@ -35,6 +35,8 @@
 
 .method synthetic constructor <init>(Lcom/android/server/accessibility/TouchExplorer;Lcom/android/server/accessibility/TouchExplorer$1;)V
     .registers 3
+    .param p1, "x0"  # Lcom/android/server/accessibility/TouchExplorer;
+    .param p2, "x1"  # Lcom/android/server/accessibility/TouchExplorer$1;
 
     .line 1141
     invoke-direct {p0, p1}, Lcom/android/server/accessibility/TouchExplorer$ExitGestureDetectionModeDelayed;-><init>(Lcom/android/server/accessibility/TouchExplorer;)V

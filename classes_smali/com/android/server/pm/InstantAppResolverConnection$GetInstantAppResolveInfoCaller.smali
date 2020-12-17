@@ -51,6 +51,9 @@
 
 .method static synthetic access$700(Lcom/android/server/pm/InstantAppResolverConnection$GetInstantAppResolveInfoCaller;Ljava/lang/Object;I)V
     .registers 3
+    .param p0, "x0"  # Lcom/android/server/pm/InstantAppResolverConnection$GetInstantAppResolveInfoCaller;
+    .param p1, "x1"  # Ljava/lang/Object;
+    .param p2, "x2"  # I
 
     .line 336
     invoke-virtual {p0, p1, p2}, Lcom/android/server/pm/InstantAppResolverConnection$GetInstantAppResolveInfoCaller;->onRemoteMethodResult(Ljava/lang/Object;I)V
@@ -62,6 +65,11 @@
 # virtual methods
 .method public getInstantAppResolveInfoList(Landroid/app/IInstantAppResolver;Landroid/content/Intent;[IILjava/lang/String;)Ljava/util/List;
     .registers 14
+    .param p1, "target"  # Landroid/app/IInstantAppResolver;
+    .param p2, "sanitizedIntent"  # Landroid/content/Intent;
+    .param p3, "hashPrefix"  # [I
+    .param p4, "userId"  # I
+    .param p5, "token"  # Ljava/lang/String;
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(",
@@ -89,6 +97,7 @@
     move-result v7
 
     .line 359
+    .local v7, "sequence":I
     iget-object v6, p0, Lcom/android/server/pm/InstantAppResolverConnection$GetInstantAppResolveInfoCaller;->mCallback:Landroid/os/IRemoteCallback;
 
     move-object v0, p1
@@ -108,9 +117,9 @@
     .line 361
     invoke-virtual {p0, v7}, Lcom/android/server/pm/InstantAppResolverConnection$GetInstantAppResolveInfoCaller;->getResultTimed(I)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v0
 
-    check-cast p1, Ljava/util/List;
+    check-cast v0, Ljava/util/List;
 
-    return-object p1
+    return-object v0
 .end method

@@ -35,6 +35,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/content/ContentService;Landroid/util/SparseIntArray;)V
     .registers 3
+    .param p1, "this$0"  # Lcom/android/server/content/ContentService;
 
     .line 229
     iput-object p1, p0, Lcom/android/server/content/ContentService$2;->this$0:Lcom/android/server/content/ContentService;
@@ -49,52 +50,56 @@
 
 # virtual methods
 .method public compare(Ljava/lang/Integer;Ljava/lang/Integer;)I
-    .registers 4
+    .registers 6
+    .param p1, "lhs"  # Ljava/lang/Integer;
+    .param p2, "rhs"  # Ljava/lang/Integer;
 
     .line 232
     iget-object v0, p0, Lcom/android/server/content/ContentService$2;->val$pidCounts:Landroid/util/SparseIntArray;
 
     invoke-virtual {p1}, Ljava/lang/Integer;->intValue()I
 
-    move-result p1
+    move-result v1
 
-    invoke-virtual {v0, p1}, Landroid/util/SparseIntArray;->get(I)I
+    invoke-virtual {v0, v1}, Landroid/util/SparseIntArray;->get(I)I
 
-    move-result p1
+    move-result v0
 
     .line 233
-    iget-object v0, p0, Lcom/android/server/content/ContentService$2;->val$pidCounts:Landroid/util/SparseIntArray;
+    .local v0, "lc":I
+    iget-object v1, p0, Lcom/android/server/content/ContentService$2;->val$pidCounts:Landroid/util/SparseIntArray;
 
     invoke-virtual {p2}, Ljava/lang/Integer;->intValue()I
 
-    move-result p2
+    move-result v2
 
-    invoke-virtual {v0, p2}, Landroid/util/SparseIntArray;->get(I)I
+    invoke-virtual {v1, v2}, Landroid/util/SparseIntArray;->get(I)I
 
-    move-result p2
+    move-result v1
 
     .line 234
-    if-ge p1, p2, :cond_18
+    .local v1, "rc":I
+    if-ge v0, v1, :cond_18
 
     .line 235
-    const/4 p1, 0x1
+    const/4 v2, 0x1
 
-    return p1
+    return v2
 
     .line 236
     :cond_18
-    if-le p1, p2, :cond_1c
+    if-le v0, v1, :cond_1c
 
     .line 237
-    const/4 p1, -0x1
+    const/4 v2, -0x1
 
-    return p1
+    return v2
 
     .line 239
     :cond_1c
-    const/4 p1, 0x0
+    const/4 v2, 0x0
 
-    return p1
+    return v2
 .end method
 
 .method public bridge synthetic compare(Ljava/lang/Object;Ljava/lang/Object;)I

@@ -24,6 +24,7 @@
 # direct methods
 .method public constructor <init>(Landroid/app/ActivityOptions;)V
     .registers 3
+    .param p1, "options"  # Landroid/app/ActivityOptions;
 
     .line 78
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -76,6 +77,7 @@
 
 .method static abort(Lcom/android/server/wm/SafeActivityOptions;)V
     .registers 1
+    .param p0, "options"  # Lcom/android/server/wm/SafeActivityOptions;
 
     .line 167
     if-eqz p0, :cond_5
@@ -89,319 +91,350 @@
 .end method
 
 .method private checkPermissions(Landroid/content/Intent;Landroid/content/pm/ActivityInfo;Lcom/android/server/wm/WindowProcessController;Lcom/android/server/wm/ActivityStackSupervisor;Landroid/app/ActivityOptions;II)V
-    .registers 15
+    .registers 23
+    .param p1, "intent"  # Landroid/content/Intent;
+    .param p2, "aInfo"  # Landroid/content/pm/ActivityInfo;
+    .param p3, "callerApp"  # Lcom/android/server/wm/WindowProcessController;
+    .param p4, "supervisor"  # Lcom/android/server/wm/ActivityStackSupervisor;
+    .param p5, "options"  # Landroid/app/ActivityOptions;
+    .param p6, "callingPid"  # I
+    .param p7, "callingUid"  # I
 
     .line 196
-    invoke-virtual {p5}, Landroid/app/ActivityOptions;->getLaunchTaskId()I
+    move-object/from16 v0, p2
 
-    move-result v0
+    move-object/from16 v1, p3
 
-    const/4 v1, -0x1
+    move-object/from16 v2, p4
 
-    const-string v2, "ActivityTaskManager"
+    move/from16 v3, p6
 
-    const-string v3, ", uid="
+    move/from16 v4, p7
 
-    const-string v4, " (pid="
+    invoke-virtual/range {p5 .. p5}, Landroid/app/ActivityOptions;->getLaunchTaskId()I
 
-    const-string v5, " from "
+    move-result v5
 
-    const-string v6, "Permission Denial: starting "
+    const/4 v6, -0x1
 
-    if-eq v0, v1, :cond_5c
+    const-string v7, "ActivityTaskManager"
 
-    iget-object v0, p4, Lcom/android/server/wm/ActivityStackSupervisor;->mRecentTasks:Lcom/android/server/wm/RecentTasks;
+    const-string v8, ", uid="
+
+    const-string v9, " (pid="
+
+    const-string v10, " from "
+
+    const-string v11, "Permission Denial: starting "
+
+    if-eq v5, v6, :cond_66
+
+    iget-object v5, v2, Lcom/android/server/wm/ActivityStackSupervisor;->mRecentTasks:Lcom/android/server/wm/RecentTasks;
 
     .line 197
-    invoke-virtual {v0, p7}, Lcom/android/server/wm/RecentTasks;->isCallerRecents(I)Z
+    invoke-virtual {v5, v4}, Lcom/android/server/wm/RecentTasks;->isCallerRecents(I)Z
 
-    move-result v0
+    move-result v5
 
-    if-nez v0, :cond_5c
+    if-nez v5, :cond_66
 
     .line 198
-    const-string v0, "android.permission.START_TASKS_FROM_RECENTS"
+    const-string v5, "android.permission.START_TASKS_FROM_RECENTS"
 
-    invoke-static {v0, p6, p7}, Lcom/android/server/wm/ActivityTaskManagerService;->checkPermission(Ljava/lang/String;II)I
+    invoke-static {v5, v3, v4}, Lcom/android/server/wm/ActivityTaskManagerService;->checkPermission(Ljava/lang/String;II)I
 
-    move-result v0
+    move-result v5
 
     .line 200
-    if-eq v0, v1, :cond_22
+    .local v5, "startInTaskPerm":I
+    if-eq v5, v6, :cond_2c
 
-    goto :goto_5c
+    goto :goto_66
 
     .line 201
-    :cond_22
-    new-instance p2, Ljava/lang/StringBuilder;
+    :cond_2c
+    new-instance v6, Ljava/lang/StringBuilder;
 
-    invoke-direct {p2}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v6}, Ljava/lang/StringBuilder;-><init>()V
 
-    invoke-virtual {p2, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v6, v11}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-direct {p0, p1}, Lcom/android/server/wm/SafeActivityOptions;->getIntentString(Landroid/content/Intent;)Ljava/lang/String;
+    invoke-direct/range {p0 .. p1}, Lcom/android/server/wm/SafeActivityOptions;->getIntentString(Landroid/content/Intent;)Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v11
 
-    invoke-virtual {p2, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v6, v11}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p2, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v6, v10}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p2, p3}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    invoke-virtual {v6, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p2, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v6, v9}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p2, p6}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v6, v3}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v6, v8}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p2, p7}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v6, v4}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    const-string p1, ") with launchTaskId="
+    const-string v8, ") with launchTaskId="
 
-    invoke-virtual {p2, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v6, v8}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     .line 204
-    invoke-virtual {p5}, Landroid/app/ActivityOptions;->getLaunchTaskId()I
+    invoke-virtual/range {p5 .. p5}, Landroid/app/ActivityOptions;->getLaunchTaskId()I
 
-    move-result p1
+    move-result v8
 
-    invoke-virtual {p2, p1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v6, v8}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v6}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v6
 
     .line 205
-    invoke-static {v2, p1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    .local v6, "msg":Ljava/lang/String;
+    invoke-static {v7, v6}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 206
-    new-instance p2, Ljava/lang/SecurityException;
+    new-instance v7, Ljava/lang/SecurityException;
 
-    invoke-direct {p2, p1}, Ljava/lang/SecurityException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v7, v6}, Ljava/lang/SecurityException;-><init>(Ljava/lang/String;)V
 
-    throw p2
+    throw v7
 
     .line 211
-    :cond_5c
-    :goto_5c
-    invoke-virtual {p5}, Landroid/app/ActivityOptions;->getLaunchDisplayId()I
+    .end local v5  # "startInTaskPerm":I
+    .end local v6  # "msg":Ljava/lang/String;
+    :cond_66
+    :goto_66
+    invoke-virtual/range {p5 .. p5}, Landroid/app/ActivityOptions;->getLaunchDisplayId()I
 
-    move-result v0
+    move-result v5
 
     .line 212
-    if-eqz p2, :cond_a1
+    .local v5, "launchDisplayId":I
+    if-eqz v0, :cond_ab
 
-    if-eq v0, v1, :cond_a1
+    if-eq v5, v6, :cond_ab
 
     .line 213
-    invoke-virtual {p4, p6, p7, v0, p2}, Lcom/android/server/wm/ActivityStackSupervisor;->isCallerAllowedToLaunchOnDisplay(IIILandroid/content/pm/ActivityInfo;)Z
+    invoke-virtual {v2, v3, v4, v5, v0}, Lcom/android/server/wm/ActivityStackSupervisor;->isCallerAllowedToLaunchOnDisplay(IIILandroid/content/pm/ActivityInfo;)Z
 
-    move-result v1
+    move-result v6
 
-    if-eqz v1, :cond_6b
+    if-eqz v6, :cond_75
 
-    goto :goto_a1
+    goto :goto_ab
 
     .line 215
-    :cond_6b
-    new-instance p2, Ljava/lang/StringBuilder;
+    :cond_75
+    new-instance v6, Ljava/lang/StringBuilder;
 
-    invoke-direct {p2}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v6}, Ljava/lang/StringBuilder;-><init>()V
 
-    invoke-virtual {p2, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v6, v11}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-direct {p0, p1}, Lcom/android/server/wm/SafeActivityOptions;->getIntentString(Landroid/content/Intent;)Ljava/lang/String;
+    invoke-direct/range {p0 .. p1}, Lcom/android/server/wm/SafeActivityOptions;->getIntentString(Landroid/content/Intent;)Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v11
 
-    invoke-virtual {p2, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v6, v11}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p2, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v6, v10}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p2, p3}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    invoke-virtual {v6, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p2, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v6, v9}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p2, p6}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v6, v3}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v6, v8}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p2, p7}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v6, v4}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    const-string p1, ") with launchDisplayId="
+    const-string v8, ") with launchDisplayId="
 
-    invoke-virtual {p2, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v6, v8}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p2, v0}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v6, v5}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v6}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v6
 
     .line 219
-    invoke-static {v2, p1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    .restart local v6  # "msg":Ljava/lang/String;
+    invoke-static {v7, v6}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 220
-    new-instance p2, Ljava/lang/SecurityException;
+    new-instance v7, Ljava/lang/SecurityException;
 
-    invoke-direct {p2, p1}, Ljava/lang/SecurityException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v7, v6}, Ljava/lang/SecurityException;-><init>(Ljava/lang/String;)V
 
-    throw p2
+    throw v7
 
     .line 223
-    :cond_a1
-    :goto_a1
-    invoke-virtual {p5}, Landroid/app/ActivityOptions;->getLockTaskMode()Z
+    .end local v6  # "msg":Ljava/lang/String;
+    :cond_ab
+    :goto_ab
+    invoke-virtual/range {p5 .. p5}, Landroid/app/ActivityOptions;->getLockTaskMode()Z
 
-    move-result v0
+    move-result v6
 
     .line 224
-    if-eqz p2, :cond_ef
+    .local v6, "lockTaskMode":Z
+    if-eqz v0, :cond_f9
 
-    if-eqz v0, :cond_ef
+    if-eqz v6, :cond_f9
 
-    iget-object v0, p4, Lcom/android/server/wm/ActivityStackSupervisor;->mService:Lcom/android/server/wm/ActivityTaskManagerService;
+    iget-object v12, v2, Lcom/android/server/wm/ActivityStackSupervisor;->mService:Lcom/android/server/wm/ActivityTaskManagerService;
 
     .line 225
-    invoke-virtual {v0}, Lcom/android/server/wm/ActivityTaskManagerService;->getLockTaskController()Lcom/android/server/wm/LockTaskController;
+    invoke-virtual {v12}, Lcom/android/server/wm/ActivityTaskManagerService;->getLockTaskController()Lcom/android/server/wm/LockTaskController;
 
-    move-result-object v0
+    move-result-object v12
 
     .line 226
-    invoke-static {p7}, Landroid/os/UserHandle;->getUserId(I)I
+    invoke-static/range {p7 .. p7}, Landroid/os/UserHandle;->getUserId(I)I
 
-    move-result v1
+    move-result v13
 
-    iget-object p2, p2, Landroid/content/pm/ActivityInfo;->packageName:Ljava/lang/String;
+    iget-object v14, v0, Landroid/content/pm/ActivityInfo;->packageName:Ljava/lang/String;
 
     .line 225
-    invoke-virtual {v0, v1, p2}, Lcom/android/server/wm/LockTaskController;->isPackageWhitelisted(ILjava/lang/String;)Z
+    invoke-virtual {v12, v13, v14}, Lcom/android/server/wm/LockTaskController;->isPackageWhitelisted(ILjava/lang/String;)Z
 
-    move-result p2
+    move-result v12
 
-    if-eqz p2, :cond_bc
+    if-eqz v12, :cond_c6
 
-    goto :goto_ef
+    goto :goto_f9
 
     .line 227
-    :cond_bc
-    new-instance p2, Ljava/lang/StringBuilder;
+    :cond_c6
+    new-instance v12, Ljava/lang/StringBuilder;
 
-    invoke-direct {p2}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v12}, Ljava/lang/StringBuilder;-><init>()V
 
-    invoke-virtual {p2, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v12, v11}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-direct {p0, p1}, Lcom/android/server/wm/SafeActivityOptions;->getIntentString(Landroid/content/Intent;)Ljava/lang/String;
+    invoke-direct/range {p0 .. p1}, Lcom/android/server/wm/SafeActivityOptions;->getIntentString(Landroid/content/Intent;)Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v11
 
-    invoke-virtual {p2, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v12, v11}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p2, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v12, v10}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p2, p3}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    invoke-virtual {v12, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p2, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v12, v9}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p2, p6}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v12, v3}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v12, v8}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p2, p7}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v12, v4}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    const-string p1, ") with lockTaskMode=true"
+    const-string v8, ") with lockTaskMode=true"
 
-    invoke-virtual {p2, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v12, v8}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v12}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v8
 
     .line 230
-    invoke-static {v2, p1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    .local v8, "msg":Ljava/lang/String;
+    invoke-static {v7, v8}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 231
-    new-instance p2, Ljava/lang/SecurityException;
+    new-instance v7, Ljava/lang/SecurityException;
 
-    invoke-direct {p2, p1}, Ljava/lang/SecurityException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v7, v8}, Ljava/lang/SecurityException;-><init>(Ljava/lang/String;)V
 
-    throw p2
+    throw v7
 
     .line 235
-    :cond_ef
-    :goto_ef
-    invoke-virtual {p5}, Landroid/app/ActivityOptions;->getRemoteAnimationAdapter()Landroid/view/RemoteAnimationAdapter;
+    .end local v8  # "msg":Ljava/lang/String;
+    :cond_f9
+    :goto_f9
+    invoke-virtual/range {p5 .. p5}, Landroid/app/ActivityOptions;->getRemoteAnimationAdapter()Landroid/view/RemoteAnimationAdapter;
 
-    move-result-object p2
+    move-result-object v12
 
     .line 236
-    if-eqz p2, :cond_133
+    .local v12, "adapter":Landroid/view/RemoteAnimationAdapter;
+    if-eqz v12, :cond_13d
 
-    iget-object p2, p4, Lcom/android/server/wm/ActivityStackSupervisor;->mService:Lcom/android/server/wm/ActivityTaskManagerService;
+    iget-object v13, v2, Lcom/android/server/wm/ActivityStackSupervisor;->mService:Lcom/android/server/wm/ActivityTaskManagerService;
 
-    const-string p2, "android.permission.CONTROL_REMOTE_APP_TRANSITION_ANIMATIONS"
+    const-string v13, "android.permission.CONTROL_REMOTE_APP_TRANSITION_ANIMATIONS"
 
-    invoke-static {p2, p6, p7}, Lcom/android/server/wm/ActivityTaskManagerService;->checkPermission(Ljava/lang/String;II)I
+    invoke-static {v13, v3, v4}, Lcom/android/server/wm/ActivityTaskManagerService;->checkPermission(Ljava/lang/String;II)I
 
-    move-result p2
+    move-result v13
 
-    if-nez p2, :cond_100
+    if-nez v13, :cond_10a
 
-    goto :goto_133
+    goto :goto_13d
 
     .line 239
-    :cond_100
-    new-instance p2, Ljava/lang/StringBuilder;
+    :cond_10a
+    new-instance v13, Ljava/lang/StringBuilder;
 
-    invoke-direct {p2}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v13}, Ljava/lang/StringBuilder;-><init>()V
 
-    invoke-virtual {p2, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v13, v11}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-direct {p0, p1}, Lcom/android/server/wm/SafeActivityOptions;->getIntentString(Landroid/content/Intent;)Ljava/lang/String;
+    invoke-direct/range {p0 .. p1}, Lcom/android/server/wm/SafeActivityOptions;->getIntentString(Landroid/content/Intent;)Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v11
 
-    invoke-virtual {p2, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v13, v11}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p2, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v13, v10}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p2, p3}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    invoke-virtual {v13, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p2, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v13, v9}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p2, p6}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v13, v3}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v13, v8}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p2, p7}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v13, v4}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    const-string p1, ") with remoteAnimationAdapter"
+    const-string v8, ") with remoteAnimationAdapter"
 
-    invoke-virtual {p2, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v13, v8}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v13}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v8
 
     .line 242
-    invoke-static {v2, p1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    .restart local v8  # "msg":Ljava/lang/String;
+    invoke-static {v7, v8}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 243
-    new-instance p2, Ljava/lang/SecurityException;
+    new-instance v7, Ljava/lang/SecurityException;
 
-    invoke-direct {p2, p1}, Ljava/lang/SecurityException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v7, v8}, Ljava/lang/SecurityException;-><init>(Ljava/lang/String;)V
 
-    throw p2
+    throw v7
 
     .line 245
-    :cond_133
-    :goto_133
+    .end local v8  # "msg":Ljava/lang/String;
+    :cond_13d
+    :goto_13d
     return-void
 .end method
 
 .method public static fromBundle(Landroid/os/Bundle;)Lcom/android/server/wm/SafeActivityOptions;
-    .registers 2
+    .registers 3
+    .param p0, "bOptions"  # Landroid/os/Bundle;
 
     .line 66
     if-eqz p0, :cond_c
@@ -411,9 +444,9 @@
 
     invoke-static {p0}, Landroid/app/ActivityOptions;->fromBundle(Landroid/os/Bundle;)Landroid/app/ActivityOptions;
 
-    move-result-object p0
+    move-result-object v1
 
-    invoke-direct {v0, p0}, Lcom/android/server/wm/SafeActivityOptions;-><init>(Landroid/app/ActivityOptions;)V
+    invoke-direct {v0, v1}, Lcom/android/server/wm/SafeActivityOptions;-><init>(Landroid/app/ActivityOptions;)V
 
     goto :goto_d
 
@@ -427,34 +460,39 @@
 .end method
 
 .method private getIntentString(Landroid/content/Intent;)Ljava/lang/String;
-    .registers 2
+    .registers 3
+    .param p1, "intent"  # Landroid/content/Intent;
 
     .line 248
     if-eqz p1, :cond_7
 
     invoke-virtual {p1}, Landroid/content/Intent;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
     goto :goto_9
 
     :cond_7
-    const-string p1, "(no intent)"
+    const-string v0, "(no intent)"
 
     :goto_9
-    return-object p1
+    return-object v0
 .end method
 
 .method private setCallingPidUidForRemoteAnimationAdapter(Landroid/app/ActivityOptions;II)V
-    .registers 5
+    .registers 7
+    .param p1, "options"  # Landroid/app/ActivityOptions;
+    .param p2, "callingPid"  # I
+    .param p3, "callingUid"  # I
 
     .line 139
     invoke-virtual {p1}, Landroid/app/ActivityOptions;->getRemoteAnimationAdapter()Landroid/view/RemoteAnimationAdapter;
 
-    move-result-object p1
+    move-result-object v0
 
     .line 140
-    if-nez p1, :cond_7
+    .local v0, "adapter":Landroid/view/RemoteAnimationAdapter;
+    if-nez v0, :cond_7
 
     .line 141
     return-void
@@ -463,23 +501,23 @@
     :cond_7
     invoke-static {}, Landroid/os/Process;->myPid()I
 
-    move-result v0
+    move-result v1
 
-    if-ne p2, v0, :cond_15
+    if-ne p2, v1, :cond_15
 
     .line 144
-    const-string p1, "ActivityTaskManager"
+    const-string v1, "ActivityTaskManager"
 
-    const-string p2, "Safe activity options constructed after clearing calling id"
+    const-string v2, "Safe activity options constructed after clearing calling id"
 
-    invoke-static {p1, p2}, Landroid/util/Slog;->wtf(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v2}, Landroid/util/Slog;->wtf(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 145
     return-void
 
     .line 147
     :cond_15
-    invoke-virtual {p1, p2, p3}, Landroid/view/RemoteAnimationAdapter;->setCallingPidUid(II)V
+    invoke-virtual {v0, p2, p3}, Landroid/view/RemoteAnimationAdapter;->setCallingPidUid(II)V
 
     .line 148
     return-void
@@ -489,6 +527,10 @@
 # virtual methods
 .method getOptions(Landroid/content/Intent;Landroid/content/pm/ActivityInfo;Lcom/android/server/wm/WindowProcessController;Lcom/android/server/wm/ActivityStackSupervisor;)Landroid/app/ActivityOptions;
     .registers 16
+    .param p1, "intent"  # Landroid/content/Intent;
+    .param p2, "aInfo"  # Landroid/content/pm/ActivityInfo;
+    .param p3, "callerApp"  # Lcom/android/server/wm/WindowProcessController;
+    .param p4, "supervisor"  # Lcom/android/server/wm/ActivityStackSupervisor;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Ljava/lang/SecurityException;
@@ -550,29 +592,30 @@
     invoke-direct/range {v3 .. v10}, Lcom/android/server/wm/SafeActivityOptions;->checkPermissions(Landroid/content/Intent;Landroid/content/pm/ActivityInfo;Lcom/android/server/wm/WindowProcessController;Lcom/android/server/wm/ActivityStackSupervisor;Landroid/app/ActivityOptions;II)V
 
     .line 131
-    iget-object p1, p0, Lcom/android/server/wm/SafeActivityOptions;->mCallerOptions:Landroid/app/ActivityOptions;
+    iget-object v0, p0, Lcom/android/server/wm/SafeActivityOptions;->mCallerOptions:Landroid/app/ActivityOptions;
 
-    iget p2, p0, Lcom/android/server/wm/SafeActivityOptions;->mRealCallingPid:I
+    iget v1, p0, Lcom/android/server/wm/SafeActivityOptions;->mRealCallingPid:I
 
-    iget p3, p0, Lcom/android/server/wm/SafeActivityOptions;->mRealCallingUid:I
+    iget v2, p0, Lcom/android/server/wm/SafeActivityOptions;->mRealCallingUid:I
 
-    invoke-direct {p0, p1, p2, p3}, Lcom/android/server/wm/SafeActivityOptions;->setCallingPidUidForRemoteAnimationAdapter(Landroid/app/ActivityOptions;II)V
+    invoke-direct {p0, v0, v1, v2}, Lcom/android/server/wm/SafeActivityOptions;->setCallingPidUidForRemoteAnimationAdapter(Landroid/app/ActivityOptions;II)V
 
     .line 134
     :cond_32
-    iget-object p1, p0, Lcom/android/server/wm/SafeActivityOptions;->mOriginalOptions:Landroid/app/ActivityOptions;
+    iget-object v0, p0, Lcom/android/server/wm/SafeActivityOptions;->mOriginalOptions:Landroid/app/ActivityOptions;
 
-    iget-object p2, p0, Lcom/android/server/wm/SafeActivityOptions;->mCallerOptions:Landroid/app/ActivityOptions;
+    iget-object v1, p0, Lcom/android/server/wm/SafeActivityOptions;->mCallerOptions:Landroid/app/ActivityOptions;
 
-    invoke-virtual {p0, p1, p2}, Lcom/android/server/wm/SafeActivityOptions;->mergeActivityOptions(Landroid/app/ActivityOptions;Landroid/app/ActivityOptions;)Landroid/app/ActivityOptions;
+    invoke-virtual {p0, v0, v1}, Lcom/android/server/wm/SafeActivityOptions;->mergeActivityOptions(Landroid/app/ActivityOptions;Landroid/app/ActivityOptions;)Landroid/app/ActivityOptions;
 
-    move-result-object p1
+    move-result-object v0
 
-    return-object p1
+    return-object v0
 .end method
 
 .method getOptions(Lcom/android/server/wm/ActivityRecord;)Landroid/app/ActivityOptions;
-    .registers 5
+    .registers 6
+    .param p1, "r"  # Lcom/android/server/wm/ActivityRecord;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Ljava/lang/SecurityException;
@@ -586,17 +629,18 @@
 
     iget-object v2, p1, Lcom/android/server/wm/ActivityRecord;->app:Lcom/android/server/wm/WindowProcessController;
 
-    iget-object p1, p1, Lcom/android/server/wm/ActivityRecord;->mStackSupervisor:Lcom/android/server/wm/ActivityStackSupervisor;
+    iget-object v3, p1, Lcom/android/server/wm/ActivityRecord;->mStackSupervisor:Lcom/android/server/wm/ActivityStackSupervisor;
 
-    invoke-virtual {p0, v0, v1, v2, p1}, Lcom/android/server/wm/SafeActivityOptions;->getOptions(Landroid/content/Intent;Landroid/content/pm/ActivityInfo;Lcom/android/server/wm/WindowProcessController;Lcom/android/server/wm/ActivityStackSupervisor;)Landroid/app/ActivityOptions;
+    invoke-virtual {p0, v0, v1, v2, v3}, Lcom/android/server/wm/SafeActivityOptions;->getOptions(Landroid/content/Intent;Landroid/content/pm/ActivityInfo;Lcom/android/server/wm/WindowProcessController;Lcom/android/server/wm/ActivityStackSupervisor;)Landroid/app/ActivityOptions;
 
-    move-result-object p1
+    move-result-object v0
 
-    return-object p1
+    return-object v0
 .end method
 
 .method getOptions(Lcom/android/server/wm/ActivityStackSupervisor;)Landroid/app/ActivityOptions;
     .registers 3
+    .param p1, "supervisor"  # Lcom/android/server/wm/ActivityStackSupervisor;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Ljava/lang/SecurityException;
@@ -608,13 +652,15 @@
 
     invoke-virtual {p0, v0, v0, v0, p1}, Lcom/android/server/wm/SafeActivityOptions;->getOptions(Landroid/content/Intent;Landroid/content/pm/ActivityInfo;Lcom/android/server/wm/WindowProcessController;Lcom/android/server/wm/ActivityStackSupervisor;)Landroid/app/ActivityOptions;
 
-    move-result-object p1
+    move-result-object v0
 
-    return-object p1
+    return-object v0
 .end method
 
 .method mergeActivityOptions(Landroid/app/ActivityOptions;Landroid/app/ActivityOptions;)Landroid/app/ActivityOptions;
-    .registers 3
+    .registers 6
+    .param p1, "options1"  # Landroid/app/ActivityOptions;
+    .param p2, "options2"  # Landroid/app/ActivityOptions;
     .annotation build Lcom/android/internal/annotations/VisibleForTesting;
     .end annotation
 
@@ -635,22 +681,24 @@
     :cond_6
     invoke-virtual {p1}, Landroid/app/ActivityOptions;->toBundle()Landroid/os/Bundle;
 
-    move-result-object p1
+    move-result-object v0
 
     .line 186
+    .local v0, "b1":Landroid/os/Bundle;
     invoke-virtual {p2}, Landroid/app/ActivityOptions;->toBundle()Landroid/os/Bundle;
 
-    move-result-object p2
+    move-result-object v1
 
     .line 187
-    invoke-virtual {p1, p2}, Landroid/os/Bundle;->putAll(Landroid/os/Bundle;)V
+    .local v1, "b2":Landroid/os/Bundle;
+    invoke-virtual {v0, v1}, Landroid/os/Bundle;->putAll(Landroid/os/Bundle;)V
 
     .line 188
-    invoke-static {p1}, Landroid/app/ActivityOptions;->fromBundle(Landroid/os/Bundle;)Landroid/app/ActivityOptions;
+    invoke-static {v0}, Landroid/app/ActivityOptions;->fromBundle(Landroid/os/Bundle;)Landroid/app/ActivityOptions;
 
-    move-result-object p1
+    move-result-object v2
 
-    return-object p1
+    return-object v2
 .end method
 
 .method popAppVerificationBundle()Landroid/os/Bundle;
@@ -676,6 +724,7 @@
 
 .method public setCallerOptions(Landroid/app/ActivityOptions;)V
     .registers 3
+    .param p1, "options"  # Landroid/app/ActivityOptions;
 
     .line 90
     invoke-static {}, Landroid/os/Binder;->getCallingPid()I

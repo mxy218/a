@@ -37,12 +37,14 @@
 # direct methods
 .method public constructor <init>(ILandroid/database/Cursor;)V
     .registers 4
+    .param p1, "version"  # I
+    .param p2, "c"  # Landroid/database/Cursor;
 
     .line 339
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
     .line 340
-    const-string v0, "model_uuid"
+    const-string/jumbo v0, "model_uuid"
 
     invoke-interface {p2, v0}, Landroid/database/Cursor;->getColumnIndex(Ljava/lang/String;)I
 
@@ -57,120 +59,120 @@
     .line 341
     const/4 v0, 0x5
 
-    if-lt p1, v0, :cond_20
+    if-lt p1, v0, :cond_21
 
     .line 342
-    const-string/jumbo p1, "vendor_uuid"
+    const-string/jumbo v0, "vendor_uuid"
 
-    invoke-interface {p2, p1}, Landroid/database/Cursor;->getColumnIndex(Ljava/lang/String;)I
+    invoke-interface {p2, v0}, Landroid/database/Cursor;->getColumnIndex(Ljava/lang/String;)I
 
-    move-result p1
+    move-result v0
 
-    invoke-interface {p2, p1}, Landroid/database/Cursor;->getString(I)Ljava/lang/String;
+    invoke-interface {p2, v0}, Landroid/database/Cursor;->getString(I)Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    iput-object p1, p0, Lcom/android/server/voiceinteraction/DatabaseHelper$SoundModelRecord;->vendorUuid:Ljava/lang/String;
+    iput-object v0, p0, Lcom/android/server/voiceinteraction/DatabaseHelper$SoundModelRecord;->vendorUuid:Ljava/lang/String;
 
-    goto :goto_23
+    goto :goto_24
 
     .line 344
-    :cond_20
-    const/4 p1, 0x0
+    :cond_21
+    const/4 v0, 0x0
 
-    iput-object p1, p0, Lcom/android/server/voiceinteraction/DatabaseHelper$SoundModelRecord;->vendorUuid:Ljava/lang/String;
+    iput-object v0, p0, Lcom/android/server/voiceinteraction/DatabaseHelper$SoundModelRecord;->vendorUuid:Ljava/lang/String;
 
     .line 346
-    :goto_23
-    const-string p1, "keyphrase_id"
+    :goto_24
+    const-string/jumbo v0, "keyphrase_id"
 
-    invoke-interface {p2, p1}, Landroid/database/Cursor;->getColumnIndex(Ljava/lang/String;)I
+    invoke-interface {p2, v0}, Landroid/database/Cursor;->getColumnIndex(Ljava/lang/String;)I
 
-    move-result p1
+    move-result v0
 
-    invoke-interface {p2, p1}, Landroid/database/Cursor;->getInt(I)I
+    invoke-interface {p2, v0}, Landroid/database/Cursor;->getInt(I)I
 
-    move-result p1
+    move-result v0
 
-    iput p1, p0, Lcom/android/server/voiceinteraction/DatabaseHelper$SoundModelRecord;->keyphraseId:I
+    iput v0, p0, Lcom/android/server/voiceinteraction/DatabaseHelper$SoundModelRecord;->keyphraseId:I
 
     .line 347
-    const-string/jumbo p1, "type"
+    const-string/jumbo v0, "type"
 
-    invoke-interface {p2, p1}, Landroid/database/Cursor;->getColumnIndex(Ljava/lang/String;)I
+    invoke-interface {p2, v0}, Landroid/database/Cursor;->getColumnIndex(Ljava/lang/String;)I
 
-    move-result p1
+    move-result v0
 
-    invoke-interface {p2, p1}, Landroid/database/Cursor;->getInt(I)I
+    invoke-interface {p2, v0}, Landroid/database/Cursor;->getInt(I)I
 
-    move-result p1
+    move-result v0
 
-    iput p1, p0, Lcom/android/server/voiceinteraction/DatabaseHelper$SoundModelRecord;->type:I
+    iput v0, p0, Lcom/android/server/voiceinteraction/DatabaseHelper$SoundModelRecord;->type:I
 
     .line 348
-    const-string p1, "data"
+    const-string v0, "data"
 
-    invoke-interface {p2, p1}, Landroid/database/Cursor;->getColumnIndex(Ljava/lang/String;)I
+    invoke-interface {p2, v0}, Landroid/database/Cursor;->getColumnIndex(Ljava/lang/String;)I
 
-    move-result p1
+    move-result v0
 
-    invoke-interface {p2, p1}, Landroid/database/Cursor;->getBlob(I)[B
+    invoke-interface {p2, v0}, Landroid/database/Cursor;->getBlob(I)[B
 
-    move-result-object p1
+    move-result-object v0
 
-    iput-object p1, p0, Lcom/android/server/voiceinteraction/DatabaseHelper$SoundModelRecord;->data:[B
+    iput-object v0, p0, Lcom/android/server/voiceinteraction/DatabaseHelper$SoundModelRecord;->data:[B
 
     .line 349
-    const-string/jumbo p1, "recognition_modes"
+    const-string/jumbo v0, "recognition_modes"
 
-    invoke-interface {p2, p1}, Landroid/database/Cursor;->getColumnIndex(Ljava/lang/String;)I
+    invoke-interface {p2, v0}, Landroid/database/Cursor;->getColumnIndex(Ljava/lang/String;)I
 
-    move-result p1
+    move-result v0
 
-    invoke-interface {p2, p1}, Landroid/database/Cursor;->getInt(I)I
+    invoke-interface {p2, v0}, Landroid/database/Cursor;->getInt(I)I
 
-    move-result p1
+    move-result v0
 
-    iput p1, p0, Lcom/android/server/voiceinteraction/DatabaseHelper$SoundModelRecord;->recognitionModes:I
+    iput v0, p0, Lcom/android/server/voiceinteraction/DatabaseHelper$SoundModelRecord;->recognitionModes:I
 
     .line 350
-    const-string p1, "locale"
+    const-string/jumbo v0, "locale"
 
-    invoke-interface {p2, p1}, Landroid/database/Cursor;->getColumnIndex(Ljava/lang/String;)I
+    invoke-interface {p2, v0}, Landroid/database/Cursor;->getColumnIndex(Ljava/lang/String;)I
 
-    move-result p1
+    move-result v0
 
-    invoke-interface {p2, p1}, Landroid/database/Cursor;->getString(I)Ljava/lang/String;
+    invoke-interface {p2, v0}, Landroid/database/Cursor;->getString(I)Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    iput-object p1, p0, Lcom/android/server/voiceinteraction/DatabaseHelper$SoundModelRecord;->locale:Ljava/lang/String;
+    iput-object v0, p0, Lcom/android/server/voiceinteraction/DatabaseHelper$SoundModelRecord;->locale:Ljava/lang/String;
 
     .line 351
-    const-string p1, "hint_text"
+    const-string v0, "hint_text"
 
-    invoke-interface {p2, p1}, Landroid/database/Cursor;->getColumnIndex(Ljava/lang/String;)I
+    invoke-interface {p2, v0}, Landroid/database/Cursor;->getColumnIndex(Ljava/lang/String;)I
 
-    move-result p1
+    move-result v0
 
-    invoke-interface {p2, p1}, Landroid/database/Cursor;->getString(I)Ljava/lang/String;
+    invoke-interface {p2, v0}, Landroid/database/Cursor;->getString(I)Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    iput-object p1, p0, Lcom/android/server/voiceinteraction/DatabaseHelper$SoundModelRecord;->hintText:Ljava/lang/String;
+    iput-object v0, p0, Lcom/android/server/voiceinteraction/DatabaseHelper$SoundModelRecord;->hintText:Ljava/lang/String;
 
     .line 352
-    const-string/jumbo p1, "users"
+    const-string/jumbo v0, "users"
 
-    invoke-interface {p2, p1}, Landroid/database/Cursor;->getColumnIndex(Ljava/lang/String;)I
+    invoke-interface {p2, v0}, Landroid/database/Cursor;->getColumnIndex(Ljava/lang/String;)I
 
-    move-result p1
+    move-result v0
 
-    invoke-interface {p2, p1}, Landroid/database/Cursor;->getString(I)Ljava/lang/String;
+    invoke-interface {p2, v0}, Landroid/database/Cursor;->getString(I)Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    iput-object p1, p0, Lcom/android/server/voiceinteraction/DatabaseHelper$SoundModelRecord;->users:Ljava/lang/String;
+    iput-object v0, p0, Lcom/android/server/voiceinteraction/DatabaseHelper$SoundModelRecord;->users:Ljava/lang/String;
 
     .line 353
     return-void
@@ -178,6 +180,7 @@
 
 .method private V6PrimaryKeyMatches(Lcom/android/server/voiceinteraction/DatabaseHelper$SoundModelRecord;)Z
     .registers 4
+    .param p1, "record"  # Lcom/android/server/voiceinteraction/DatabaseHelper$SoundModelRecord;
 
     .line 356
     iget v0, p0, Lcom/android/server/voiceinteraction/DatabaseHelper$SoundModelRecord;->keyphraseId:I
@@ -198,29 +201,31 @@
 
     iget-object v0, p0, Lcom/android/server/voiceinteraction/DatabaseHelper$SoundModelRecord;->users:Ljava/lang/String;
 
-    iget-object p1, p1, Lcom/android/server/voiceinteraction/DatabaseHelper$SoundModelRecord;->users:Ljava/lang/String;
+    iget-object v1, p1, Lcom/android/server/voiceinteraction/DatabaseHelper$SoundModelRecord;->users:Ljava/lang/String;
 
     .line 357
-    invoke-static {v0, p1}, Lcom/android/server/voiceinteraction/DatabaseHelper$SoundModelRecord;->stringComparisonHelper(Ljava/lang/String;Ljava/lang/String;)Z
+    invoke-static {v0, v1}, Lcom/android/server/voiceinteraction/DatabaseHelper$SoundModelRecord;->stringComparisonHelper(Ljava/lang/String;Ljava/lang/String;)Z
 
-    move-result p1
+    move-result v0
 
-    if-eqz p1, :cond_1c
+    if-eqz v0, :cond_1c
 
-    const/4 p1, 0x1
+    const/4 v0, 0x1
 
     goto :goto_1d
 
     :cond_1c
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
     .line 356
     :goto_1d
-    return p1
+    return v0
 .end method
 
 .method private static stringComparisonHelper(Ljava/lang/String;Ljava/lang/String;)Z
-    .registers 2
+    .registers 3
+    .param p0, "a"  # Ljava/lang/String;
+    .param p1, "b"  # Ljava/lang/String;
 
     .line 410
     if-eqz p0, :cond_7
@@ -228,29 +233,29 @@
     .line 411
     invoke-virtual {p0, p1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result p0
+    move-result v0
 
-    return p0
+    return v0
 
     .line 413
     :cond_7
     if-ne p0, p1, :cond_b
 
-    const/4 p0, 0x1
+    const/4 v0, 0x1
 
     goto :goto_c
 
     :cond_b
-    const/4 p0, 0x0
+    const/4 v0, 0x0
 
     :goto_c
-    return p0
+    return v0
 .end method
 
 
 # virtual methods
 .method public ifViolatesV6PrimaryKeyIsFirstOfAnyDuplicates(Ljava/util/List;)Z
-    .registers 6
+    .registers 7
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(",
@@ -261,6 +266,7 @@
     .end annotation
 
     .line 370
+    .local p1, "records":Ljava/util/List;, "Ljava/util/List<Lcom/android/server/voiceinteraction/DatabaseHelper$SoundModelRecord;>;"
     invoke-interface {p1}, Ljava/util/List;->iterator()Ljava/util/Iterator;
 
     move-result-object v0
@@ -281,6 +287,7 @@
     check-cast v1, Lcom/android/server/voiceinteraction/DatabaseHelper$SoundModelRecord;
 
     .line 371
+    .local v1, "record":Lcom/android/server/voiceinteraction/DatabaseHelper$SoundModelRecord;
     if-ne p0, v1, :cond_14
 
     .line 372
@@ -296,18 +303,19 @@
 
     iget-object v3, p0, Lcom/android/server/voiceinteraction/DatabaseHelper$SoundModelRecord;->data:[B
 
-    iget-object v1, v1, Lcom/android/server/voiceinteraction/DatabaseHelper$SoundModelRecord;->data:[B
+    iget-object v4, v1, Lcom/android/server/voiceinteraction/DatabaseHelper$SoundModelRecord;->data:[B
 
-    invoke-static {v3, v1}, Ljava/util/Arrays;->equals([B[B)Z
+    invoke-static {v3, v4}, Ljava/util/Arrays;->equals([B[B)Z
 
-    move-result v1
+    move-result v3
 
-    if-nez v1, :cond_25
+    if-nez v3, :cond_25
 
     .line 377
     return v2
 
     .line 379
+    .end local v1  # "record":Lcom/android/server/voiceinteraction/DatabaseHelper$SoundModelRecord;
     :cond_25
     goto :goto_4
 
@@ -315,52 +323,53 @@
     :cond_26
     invoke-interface {p1}, Ljava/util/List;->iterator()Ljava/util/Iterator;
 
-    move-result-object p1
-
-    :goto_2a
-    invoke-interface {p1}, Ljava/util/Iterator;->hasNext()Z
-
-    move-result v0
-
-    const/4 v1, 0x1
-
-    if-eqz v0, :cond_43
-
-    invoke-interface {p1}, Ljava/util/Iterator;->next()Ljava/lang/Object;
-
     move-result-object v0
 
-    check-cast v0, Lcom/android/server/voiceinteraction/DatabaseHelper$SoundModelRecord;
+    :goto_2a
+    invoke-interface {v0}, Ljava/util/Iterator;->hasNext()Z
+
+    move-result v1
+
+    const/4 v3, 0x1
+
+    if-eqz v1, :cond_42
+
+    invoke-interface {v0}, Ljava/util/Iterator;->next()Ljava/lang/Object;
+
+    move-result-object v1
+
+    check-cast v1, Lcom/android/server/voiceinteraction/DatabaseHelper$SoundModelRecord;
 
     .line 383
-    invoke-direct {p0, v0}, Lcom/android/server/voiceinteraction/DatabaseHelper$SoundModelRecord;->V6PrimaryKeyMatches(Lcom/android/server/voiceinteraction/DatabaseHelper$SoundModelRecord;)Z
+    .restart local v1  # "record":Lcom/android/server/voiceinteraction/DatabaseHelper$SoundModelRecord;
+    invoke-direct {p0, v1}, Lcom/android/server/voiceinteraction/DatabaseHelper$SoundModelRecord;->V6PrimaryKeyMatches(Lcom/android/server/voiceinteraction/DatabaseHelper$SoundModelRecord;)Z
 
-    move-result v3
+    move-result v4
 
-    if-eqz v3, :cond_42
+    if-eqz v4, :cond_41
 
     .line 384
-    if-ne p0, v0, :cond_40
+    if-ne p0, v1, :cond_40
 
-    goto :goto_41
+    move v2, v3
 
     :cond_40
-    move v1, v2
-
-    :goto_41
-    return v1
+    return v2
 
     .line 386
-    :cond_42
+    .end local v1  # "record":Lcom/android/server/voiceinteraction/DatabaseHelper$SoundModelRecord;
+    :cond_41
     goto :goto_2a
 
     .line 387
-    :cond_43
-    return v1
+    :cond_42
+    return v3
 .end method
 
 .method public writeToDatabase(ILandroid/database/sqlite/SQLiteDatabase;)J
-    .registers 6
+    .registers 7
+    .param p1, "version"  # I
+    .param p2, "db"  # Landroid/database/sqlite/SQLiteDatabase;
 
     .line 391
     new-instance v0, Landroid/content/ContentValues;
@@ -368,94 +377,95 @@
     invoke-direct {v0}, Landroid/content/ContentValues;-><init>()V
 
     .line 392
+    .local v0, "values":Landroid/content/ContentValues;
     iget-object v1, p0, Lcom/android/server/voiceinteraction/DatabaseHelper$SoundModelRecord;->modelUuid:Ljava/lang/String;
 
-    const-string v2, "model_uuid"
+    const-string/jumbo v2, "model_uuid"
 
     invoke-virtual {v0, v2, v1}, Landroid/content/ContentValues;->put(Ljava/lang/String;Ljava/lang/String;)V
 
     .line 393
     const/4 v1, 0x5
 
-    if-lt p1, v1, :cond_17
+    if-lt p1, v1, :cond_18
 
     .line 394
-    iget-object p1, p0, Lcom/android/server/voiceinteraction/DatabaseHelper$SoundModelRecord;->vendorUuid:Ljava/lang/String;
+    iget-object v2, p0, Lcom/android/server/voiceinteraction/DatabaseHelper$SoundModelRecord;->vendorUuid:Ljava/lang/String;
 
-    const-string/jumbo v2, "vendor_uuid"
+    const-string/jumbo v3, "vendor_uuid"
 
-    invoke-virtual {v0, v2, p1}, Landroid/content/ContentValues;->put(Ljava/lang/String;Ljava/lang/String;)V
+    invoke-virtual {v0, v3, v2}, Landroid/content/ContentValues;->put(Ljava/lang/String;Ljava/lang/String;)V
 
     .line 396
-    :cond_17
-    iget p1, p0, Lcom/android/server/voiceinteraction/DatabaseHelper$SoundModelRecord;->keyphraseId:I
+    :cond_18
+    iget v2, p0, Lcom/android/server/voiceinteraction/DatabaseHelper$SoundModelRecord;->keyphraseId:I
 
-    invoke-static {p1}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
+    invoke-static {v2}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
 
-    move-result-object p1
+    move-result-object v2
 
-    const-string v2, "keyphrase_id"
+    const-string/jumbo v3, "keyphrase_id"
 
-    invoke-virtual {v0, v2, p1}, Landroid/content/ContentValues;->put(Ljava/lang/String;Ljava/lang/Integer;)V
+    invoke-virtual {v0, v3, v2}, Landroid/content/ContentValues;->put(Ljava/lang/String;Ljava/lang/Integer;)V
 
     .line 397
-    iget p1, p0, Lcom/android/server/voiceinteraction/DatabaseHelper$SoundModelRecord;->type:I
+    iget v2, p0, Lcom/android/server/voiceinteraction/DatabaseHelper$SoundModelRecord;->type:I
 
-    invoke-static {p1}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
+    invoke-static {v2}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
 
-    move-result-object p1
+    move-result-object v2
 
-    const-string/jumbo v2, "type"
+    const-string/jumbo v3, "type"
 
-    invoke-virtual {v0, v2, p1}, Landroid/content/ContentValues;->put(Ljava/lang/String;Ljava/lang/Integer;)V
+    invoke-virtual {v0, v3, v2}, Landroid/content/ContentValues;->put(Ljava/lang/String;Ljava/lang/Integer;)V
 
     .line 398
-    iget-object p1, p0, Lcom/android/server/voiceinteraction/DatabaseHelper$SoundModelRecord;->data:[B
+    iget-object v2, p0, Lcom/android/server/voiceinteraction/DatabaseHelper$SoundModelRecord;->data:[B
 
-    const-string v2, "data"
+    const-string v3, "data"
 
-    invoke-virtual {v0, v2, p1}, Landroid/content/ContentValues;->put(Ljava/lang/String;[B)V
+    invoke-virtual {v0, v3, v2}, Landroid/content/ContentValues;->put(Ljava/lang/String;[B)V
 
     .line 399
-    iget p1, p0, Lcom/android/server/voiceinteraction/DatabaseHelper$SoundModelRecord;->recognitionModes:I
+    iget v2, p0, Lcom/android/server/voiceinteraction/DatabaseHelper$SoundModelRecord;->recognitionModes:I
 
-    invoke-static {p1}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
+    invoke-static {v2}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
 
-    move-result-object p1
+    move-result-object v2
 
-    const-string/jumbo v2, "recognition_modes"
+    const-string/jumbo v3, "recognition_modes"
 
-    invoke-virtual {v0, v2, p1}, Landroid/content/ContentValues;->put(Ljava/lang/String;Ljava/lang/Integer;)V
+    invoke-virtual {v0, v3, v2}, Landroid/content/ContentValues;->put(Ljava/lang/String;Ljava/lang/Integer;)V
 
     .line 400
-    iget-object p1, p0, Lcom/android/server/voiceinteraction/DatabaseHelper$SoundModelRecord;->locale:Ljava/lang/String;
+    iget-object v2, p0, Lcom/android/server/voiceinteraction/DatabaseHelper$SoundModelRecord;->locale:Ljava/lang/String;
 
-    const-string v2, "locale"
+    const-string/jumbo v3, "locale"
 
-    invoke-virtual {v0, v2, p1}, Landroid/content/ContentValues;->put(Ljava/lang/String;Ljava/lang/String;)V
+    invoke-virtual {v0, v3, v2}, Landroid/content/ContentValues;->put(Ljava/lang/String;Ljava/lang/String;)V
 
     .line 401
-    iget-object p1, p0, Lcom/android/server/voiceinteraction/DatabaseHelper$SoundModelRecord;->hintText:Ljava/lang/String;
+    iget-object v2, p0, Lcom/android/server/voiceinteraction/DatabaseHelper$SoundModelRecord;->hintText:Ljava/lang/String;
 
-    const-string v2, "hint_text"
+    const-string v3, "hint_text"
 
-    invoke-virtual {v0, v2, p1}, Landroid/content/ContentValues;->put(Ljava/lang/String;Ljava/lang/String;)V
+    invoke-virtual {v0, v3, v2}, Landroid/content/ContentValues;->put(Ljava/lang/String;Ljava/lang/String;)V
 
     .line 402
-    iget-object p1, p0, Lcom/android/server/voiceinteraction/DatabaseHelper$SoundModelRecord;->users:Ljava/lang/String;
+    iget-object v2, p0, Lcom/android/server/voiceinteraction/DatabaseHelper$SoundModelRecord;->users:Ljava/lang/String;
 
-    const-string/jumbo v2, "users"
+    const-string/jumbo v3, "users"
 
-    invoke-virtual {v0, v2, p1}, Landroid/content/ContentValues;->put(Ljava/lang/String;Ljava/lang/String;)V
+    invoke-virtual {v0, v3, v2}, Landroid/content/ContentValues;->put(Ljava/lang/String;Ljava/lang/String;)V
 
     .line 404
-    const/4 p1, 0x0
+    const/4 v2, 0x0
 
-    const-string/jumbo v2, "sound_model"
+    const-string/jumbo v3, "sound_model"
 
-    invoke-virtual {p2, v2, p1, v0, v1}, Landroid/database/sqlite/SQLiteDatabase;->insertWithOnConflict(Ljava/lang/String;Ljava/lang/String;Landroid/content/ContentValues;I)J
+    invoke-virtual {p2, v3, v2, v0, v1}, Landroid/database/sqlite/SQLiteDatabase;->insertWithOnConflict(Ljava/lang/String;Ljava/lang/String;Landroid/content/ContentValues;I)J
 
-    move-result-wide p1
+    move-result-wide v1
 
-    return-wide p1
+    return-wide v1
 .end method

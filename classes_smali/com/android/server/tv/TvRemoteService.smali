@@ -64,6 +64,7 @@
 # direct methods
 .method public constructor <init>(Landroid/content/Context;)V
     .registers 4
+    .param p1, "context"  # Landroid/content/Context;
 
     .line 65
     invoke-direct {p0, p1}, Lcom/android/server/SystemService;-><init>(Landroid/content/Context;)V
@@ -110,34 +111,39 @@
     .line 67
     invoke-static {}, Lcom/android/server/Watchdog;->getInstance()Lcom/android/server/Watchdog;
 
-    move-result-object p1
+    move-result-object v0
 
-    invoke-virtual {p1, p0}, Lcom/android/server/Watchdog;->addMonitor(Lcom/android/server/Watchdog$Monitor;)V
+    invoke-virtual {v0, p0}, Lcom/android/server/Watchdog;->addMonitor(Lcom/android/server/Watchdog$Monitor;)V
 
     .line 68
     return-void
 .end method
 
 .method static synthetic access$000(Lcom/android/server/tv/TvRemoteService;)Ljava/util/Map;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/tv/TvRemoteService;
 
     .line 41
-    iget-object p0, p0, Lcom/android/server/tv/TvRemoteService;->mProviderMap:Ljava/util/Map;
+    iget-object v0, p0, Lcom/android/server/tv/TvRemoteService;->mProviderMap:Ljava/util/Map;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$100(Lcom/android/server/tv/TvRemoteService;)Ljava/lang/Object;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/tv/TvRemoteService;
 
     .line 41
-    iget-object p0, p0, Lcom/android/server/tv/TvRemoteService;->mLock:Ljava/lang/Object;
+    iget-object v0, p0, Lcom/android/server/tv/TvRemoteService;->mLock:Ljava/lang/Object;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$1000(Lcom/android/server/tv/TvRemoteService;Landroid/os/IBinder;I)V
     .registers 3
+    .param p0, "x0"  # Lcom/android/server/tv/TvRemoteService;
+    .param p1, "x1"  # Landroid/os/IBinder;
+    .param p2, "x2"  # I
 
     .line 41
     invoke-direct {p0, p1, p2}, Lcom/android/server/tv/TvRemoteService;->sendPointerUpInternalLocked(Landroid/os/IBinder;I)V
@@ -147,6 +153,8 @@
 
 .method static synthetic access$1100(Lcom/android/server/tv/TvRemoteService;Landroid/os/IBinder;)V
     .registers 2
+    .param p0, "x0"  # Lcom/android/server/tv/TvRemoteService;
+    .param p1, "x1"  # Landroid/os/IBinder;
 
     .line 41
     invoke-direct {p0, p1}, Lcom/android/server/tv/TvRemoteService;->sendPointerSyncInternalLocked(Landroid/os/IBinder;)V
@@ -155,16 +163,24 @@
 .end method
 
 .method static synthetic access$200(Lcom/android/server/tv/TvRemoteService;)Ljava/util/ArrayList;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/tv/TvRemoteService;
 
     .line 41
-    iget-object p0, p0, Lcom/android/server/tv/TvRemoteService;->mProviderList:Ljava/util/ArrayList;
+    iget-object v0, p0, Lcom/android/server/tv/TvRemoteService;->mProviderList:Ljava/util/ArrayList;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$300(Lcom/android/server/tv/TvRemoteService;Lcom/android/server/tv/TvRemoteProviderProxy;Landroid/os/IBinder;Ljava/lang/String;III)V
     .registers 7
+    .param p0, "x0"  # Lcom/android/server/tv/TvRemoteService;
+    .param p1, "x1"  # Lcom/android/server/tv/TvRemoteProviderProxy;
+    .param p2, "x2"  # Landroid/os/IBinder;
+    .param p3, "x3"  # Ljava/lang/String;
+    .param p4, "x4"  # I
+    .param p5, "x5"  # I
+    .param p6, "x6"  # I
 
     .line 41
     invoke-direct/range {p0 .. p6}, Lcom/android/server/tv/TvRemoteService;->openInputBridgeInternalLocked(Lcom/android/server/tv/TvRemoteProviderProxy;Landroid/os/IBinder;Ljava/lang/String;III)V
@@ -174,6 +190,8 @@
 
 .method static synthetic access$400(Lcom/android/server/tv/TvRemoteService;Landroid/os/IBinder;)V
     .registers 2
+    .param p0, "x0"  # Lcom/android/server/tv/TvRemoteService;
+    .param p1, "x1"  # Landroid/os/IBinder;
 
     .line 41
     invoke-direct {p0, p1}, Lcom/android/server/tv/TvRemoteService;->closeInputBridgeInternalLocked(Landroid/os/IBinder;)V
@@ -183,6 +201,8 @@
 
 .method static synthetic access$500(Lcom/android/server/tv/TvRemoteService;Landroid/os/IBinder;)V
     .registers 2
+    .param p0, "x0"  # Lcom/android/server/tv/TvRemoteService;
+    .param p1, "x1"  # Landroid/os/IBinder;
 
     .line 41
     invoke-direct {p0, p1}, Lcom/android/server/tv/TvRemoteService;->clearInputBridgeInternalLocked(Landroid/os/IBinder;)V
@@ -192,6 +212,9 @@
 
 .method static synthetic access$600(Lcom/android/server/tv/TvRemoteService;Landroid/os/IBinder;J)V
     .registers 4
+    .param p0, "x0"  # Lcom/android/server/tv/TvRemoteService;
+    .param p1, "x1"  # Landroid/os/IBinder;
+    .param p2, "x2"  # J
 
     .line 41
     invoke-direct {p0, p1, p2, p3}, Lcom/android/server/tv/TvRemoteService;->sendTimeStampInternalLocked(Landroid/os/IBinder;J)V
@@ -201,6 +224,9 @@
 
 .method static synthetic access$700(Lcom/android/server/tv/TvRemoteService;Landroid/os/IBinder;I)V
     .registers 3
+    .param p0, "x0"  # Lcom/android/server/tv/TvRemoteService;
+    .param p1, "x1"  # Landroid/os/IBinder;
+    .param p2, "x2"  # I
 
     .line 41
     invoke-direct {p0, p1, p2}, Lcom/android/server/tv/TvRemoteService;->sendKeyDownInternalLocked(Landroid/os/IBinder;I)V
@@ -210,6 +236,9 @@
 
 .method static synthetic access$800(Lcom/android/server/tv/TvRemoteService;Landroid/os/IBinder;I)V
     .registers 3
+    .param p0, "x0"  # Lcom/android/server/tv/TvRemoteService;
+    .param p1, "x1"  # Landroid/os/IBinder;
+    .param p2, "x2"  # I
 
     .line 41
     invoke-direct {p0, p1, p2}, Lcom/android/server/tv/TvRemoteService;->sendKeyUpInternalLocked(Landroid/os/IBinder;I)V
@@ -219,6 +248,11 @@
 
 .method static synthetic access$900(Lcom/android/server/tv/TvRemoteService;Landroid/os/IBinder;III)V
     .registers 5
+    .param p0, "x0"  # Lcom/android/server/tv/TvRemoteService;
+    .param p1, "x1"  # Landroid/os/IBinder;
+    .param p2, "x2"  # I
+    .param p3, "x3"  # I
+    .param p4, "x4"  # I
 
     .line 41
     invoke-direct {p0, p1, p2, p3, p4}, Lcom/android/server/tv/TvRemoteService;->sendPointerDownInternalLocked(Landroid/os/IBinder;III)V
@@ -228,6 +262,7 @@
 
 .method private clearInputBridgeInternalLocked(Landroid/os/IBinder;)V
     .registers 3
+    .param p1, "token"  # Landroid/os/IBinder;
 
     .line 144
     iget-object v0, p0, Lcom/android/server/tv/TvRemoteService;->mBridgeMap:Ljava/util/Map;
@@ -239,6 +274,7 @@
     check-cast v0, Lcom/android/server/tv/UinputBridge;
 
     .line 145
+    .local v0, "inputBridge":Lcom/android/server/tv/UinputBridge;
     if-eqz v0, :cond_d
 
     .line 146
@@ -250,7 +286,8 @@
 .end method
 
 .method private closeInputBridgeInternalLocked(Landroid/os/IBinder;)V
-    .registers 3
+    .registers 4
+    .param p1, "token"  # Landroid/os/IBinder;
 
     .line 130
     iget-object v0, p0, Lcom/android/server/tv/TvRemoteService;->mBridgeMap:Ljava/util/Map;
@@ -262,6 +299,7 @@
     check-cast v0, Lcom/android/server/tv/UinputBridge;
 
     .line 131
+    .local v0, "inputBridge":Lcom/android/server/tv/UinputBridge;
     if-eqz v0, :cond_d
 
     .line 132
@@ -269,9 +307,9 @@
 
     .line 135
     :cond_d
-    iget-object v0, p0, Lcom/android/server/tv/TvRemoteService;->mBridgeMap:Ljava/util/Map;
+    iget-object v1, p0, Lcom/android/server/tv/TvRemoteService;->mBridgeMap:Ljava/util/Map;
 
-    invoke-interface {v0, p1}, Ljava/util/Map;->remove(Ljava/lang/Object;)Ljava/lang/Object;
+    invoke-interface {v1, p1}, Ljava/util/Map;->remove(Ljava/lang/Object;)Ljava/lang/Object;
 
     .line 136
     return-void
@@ -279,6 +317,7 @@
 
 .method private informInputBridgeConnected(Landroid/os/IBinder;)V
     .registers 5
+    .param p1, "token"  # Landroid/os/IBinder;
 
     .line 90
     iget-object v0, p0, Lcom/android/server/tv/TvRemoteService;->mHandler:Lcom/android/server/tv/TvRemoteService$UserHandler;
@@ -289,9 +328,9 @@
 
     invoke-virtual {v0, v2, v1, v1, p1}, Lcom/android/server/tv/TvRemoteService$UserHandler;->obtainMessage(IIILjava/lang/Object;)Landroid/os/Message;
 
-    move-result-object p1
+    move-result-object v0
 
-    invoke-virtual {p1}, Landroid/os/Message;->sendToTarget()V
+    invoke-virtual {v0}, Landroid/os/Message;->sendToTarget()V
 
     .line 91
     return-void
@@ -299,6 +338,12 @@
 
 .method private openInputBridgeInternalLocked(Lcom/android/server/tv/TvRemoteProviderProxy;Landroid/os/IBinder;Ljava/lang/String;III)V
     .registers 14
+    .param p1, "provider"  # Lcom/android/server/tv/TvRemoteProviderProxy;
+    .param p2, "token"  # Landroid/os/IBinder;
+    .param p3, "name"  # Ljava/lang/String;
+    .param p4, "width"  # I
+    .param p5, "height"  # I
+    .param p6, "maxPointers"  # I
 
     .line 104
     :try_start_0
@@ -318,31 +363,32 @@
 
     .line 111
     :cond_c
-    new-instance v6, Lcom/android/server/tv/UinputBridge;
+    new-instance v0, Lcom/android/server/tv/UinputBridge;
 
-    move-object v0, v6
+    move-object v1, v0
 
-    move-object v1, p2
+    move-object v2, p2
 
-    move-object v2, p3
+    move-object v3, p3
 
-    move v3, p4
+    move v4, p4
 
-    move v4, p5
+    move v5, p5
 
-    move v5, p6
+    move v6, p6
 
-    invoke-direct/range {v0 .. v5}, Lcom/android/server/tv/UinputBridge;-><init>(Landroid/os/IBinder;Ljava/lang/String;III)V
+    invoke-direct/range {v1 .. v6}, Lcom/android/server/tv/UinputBridge;-><init>(Landroid/os/IBinder;Ljava/lang/String;III)V
 
     .line 113
-    iget-object p4, p0, Lcom/android/server/tv/TvRemoteService;->mBridgeMap:Ljava/util/Map;
+    .local v0, "inputBridge":Lcom/android/server/tv/UinputBridge;
+    iget-object v1, p0, Lcom/android/server/tv/TvRemoteService;->mBridgeMap:Ljava/util/Map;
 
-    invoke-interface {p4, p2, v6}, Ljava/util/Map;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+    invoke-interface {v1, p2, v0}, Ljava/util/Map;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
 
     .line 114
-    iget-object p4, p0, Lcom/android/server/tv/TvRemoteService;->mProviderMap:Ljava/util/Map;
+    iget-object v1, p0, Lcom/android/server/tv/TvRemoteService;->mProviderMap:Ljava/util/Map;
 
-    invoke-interface {p4, p2, p1}, Ljava/util/Map;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+    invoke-interface {v1, p2, p1}, Ljava/util/Map;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
 
     .line 117
     invoke-direct {p0, p2}, Lcom/android/server/tv/TvRemoteService;->informInputBridgeConnected(Landroid/os/IBinder;)V
@@ -350,38 +396,43 @@
     .catch Ljava/io/IOException; {:try_start_0 .. :try_end_24} :catch_25
 
     .line 121
+    .end local v0  # "inputBridge":Lcom/android/server/tv/UinputBridge;
     goto :goto_3c
 
     .line 119
     :catch_25
-    move-exception p1
+    move-exception v0
 
     .line 120
-    new-instance p1, Ljava/lang/StringBuilder;
+    .local v0, "ioe":Ljava/io/IOException;
+    new-instance v1, Ljava/lang/StringBuilder;
 
-    invoke-direct {p1}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string p2, "Cannot create device for "
+    const-string v2, "Cannot create device for "
 
-    invoke-virtual {p1, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p1, p3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, p3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v1
 
-    const-string p2, "TvRemoteService"
+    const-string v2, "TvRemoteService"
 
-    invoke-static {p2, p1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v2, v1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 122
+    .end local v0  # "ioe":Ljava/io/IOException;
     :goto_3c
     return-void
 .end method
 
 .method private sendKeyDownInternalLocked(Landroid/os/IBinder;I)V
     .registers 4
+    .param p1, "token"  # Landroid/os/IBinder;
+    .param p2, "keyCode"  # I
 
     .line 162
     iget-object v0, p0, Lcom/android/server/tv/TvRemoteService;->mBridgeMap:Ljava/util/Map;
@@ -393,6 +444,7 @@
     check-cast v0, Lcom/android/server/tv/UinputBridge;
 
     .line 163
+    .local v0, "inputBridge":Lcom/android/server/tv/UinputBridge;
     if-eqz v0, :cond_d
 
     .line 164
@@ -405,6 +457,8 @@
 
 .method private sendKeyUpInternalLocked(Landroid/os/IBinder;I)V
     .registers 4
+    .param p1, "token"  # Landroid/os/IBinder;
+    .param p2, "keyCode"  # I
 
     .line 173
     iget-object v0, p0, Lcom/android/server/tv/TvRemoteService;->mBridgeMap:Ljava/util/Map;
@@ -416,6 +470,7 @@
     check-cast v0, Lcom/android/server/tv/UinputBridge;
 
     .line 174
+    .local v0, "inputBridge":Lcom/android/server/tv/UinputBridge;
     if-eqz v0, :cond_d
 
     .line 175
@@ -428,6 +483,10 @@
 
 .method private sendPointerDownInternalLocked(Landroid/os/IBinder;III)V
     .registers 6
+    .param p1, "token"  # Landroid/os/IBinder;
+    .param p2, "pointerId"  # I
+    .param p3, "x"  # I
+    .param p4, "y"  # I
 
     .line 185
     iget-object v0, p0, Lcom/android/server/tv/TvRemoteService;->mBridgeMap:Ljava/util/Map;
@@ -439,6 +498,7 @@
     check-cast v0, Lcom/android/server/tv/UinputBridge;
 
     .line 186
+    .local v0, "inputBridge":Lcom/android/server/tv/UinputBridge;
     if-eqz v0, :cond_d
 
     .line 187
@@ -451,6 +511,7 @@
 
 .method private sendPointerSyncInternalLocked(Landroid/os/IBinder;)V
     .registers 3
+    .param p1, "token"  # Landroid/os/IBinder;
 
     .line 208
     iget-object v0, p0, Lcom/android/server/tv/TvRemoteService;->mBridgeMap:Ljava/util/Map;
@@ -462,6 +523,7 @@
     check-cast v0, Lcom/android/server/tv/UinputBridge;
 
     .line 209
+    .local v0, "inputBridge":Lcom/android/server/tv/UinputBridge;
     if-eqz v0, :cond_d
 
     .line 210
@@ -474,6 +536,8 @@
 
 .method private sendPointerUpInternalLocked(Landroid/os/IBinder;I)V
     .registers 4
+    .param p1, "token"  # Landroid/os/IBinder;
+    .param p2, "pointerId"  # I
 
     .line 197
     iget-object v0, p0, Lcom/android/server/tv/TvRemoteService;->mBridgeMap:Ljava/util/Map;
@@ -485,6 +549,7 @@
     check-cast v0, Lcom/android/server/tv/UinputBridge;
 
     .line 198
+    .local v0, "inputBridge":Lcom/android/server/tv/UinputBridge;
     if-eqz v0, :cond_d
 
     .line 199
@@ -497,6 +562,8 @@
 
 .method private sendTimeStampInternalLocked(Landroid/os/IBinder;J)V
     .registers 5
+    .param p1, "token"  # Landroid/os/IBinder;
+    .param p2, "timestamp"  # J
 
     .line 151
     iget-object v0, p0, Lcom/android/server/tv/TvRemoteService;->mBridgeMap:Ljava/util/Map;
@@ -508,6 +575,7 @@
     check-cast v0, Lcom/android/server/tv/UinputBridge;
 
     .line 152
+    .local v0, "inputBridge":Lcom/android/server/tv/UinputBridge;
     if-eqz v0, :cond_d
 
     .line 153
@@ -546,7 +614,8 @@
 .end method
 
 .method public onBootPhase(I)V
-    .registers 3
+    .registers 4
+    .param p1, "phase"  # I
 
     .line 82
     const/16 v0, 0x258
@@ -554,11 +623,11 @@
     if-ne p1, v0, :cond_a
 
     .line 84
-    iget-object p1, p0, Lcom/android/server/tv/TvRemoteService;->mHandler:Lcom/android/server/tv/TvRemoteService$UserHandler;
+    iget-object v0, p0, Lcom/android/server/tv/TvRemoteService;->mHandler:Lcom/android/server/tv/TvRemoteService$UserHandler;
 
-    const/4 v0, 0x1
+    const/4 v1, 0x1
 
-    invoke-virtual {p1, v0}, Lcom/android/server/tv/TvRemoteService$UserHandler;->sendEmptyMessage(I)Z
+    invoke-virtual {v0, v1}, Lcom/android/server/tv/TvRemoteService$UserHandler;->sendEmptyMessage(I)Z
 
     .line 86
     :cond_a

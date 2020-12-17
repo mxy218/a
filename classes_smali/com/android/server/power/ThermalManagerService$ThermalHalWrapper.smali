@@ -37,7 +37,7 @@
 .method static constructor <clinit>()V
     .registers 1
 
-    .line 592
+    .line 588
     const-class v0, Lcom/android/server/power/ThermalManagerService$ThermalHalWrapper;
 
     invoke-virtual {v0}, Ljava/lang/Class;->getSimpleName()Ljava/lang/String;
@@ -52,10 +52,10 @@
 .method constructor <init>()V
     .registers 2
 
-    .line 591
+    .line 587
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
-    .line 595
+    .line 591
     new-instance v0, Ljava/lang/Object;
 
     invoke-direct {v0}, Ljava/lang/Object;-><init>()V
@@ -98,34 +98,37 @@
 .method protected resendCurrentTemperatures()V
     .registers 7
 
-    .line 624
+    .line 620
     iget-object v0, p0, Lcom/android/server/power/ThermalManagerService$ThermalHalWrapper;->mHalLock:Ljava/lang/Object;
 
     monitor-enter v0
 
-    .line 625
+    .line 621
     const/4 v1, 0x0
 
     :try_start_4
     invoke-virtual {p0, v1, v1}, Lcom/android/server/power/ThermalManagerService$ThermalHalWrapper;->getCurrentTemperatures(ZI)Ljava/util/List;
 
-    move-result-object v2
+    move-result-object v1
 
-    .line 626
-    invoke-interface {v2}, Ljava/util/List;->size()I
+    .line 622
+    .local v1, "temperatures":Ljava/util/List;, "Ljava/util/List<Landroid/os/Temperature;>;"
+    invoke-interface {v1}, Ljava/util/List;->size()I
 
-    move-result v3
+    move-result v2
 
-    .line 627
-    nop
+    .line 623
+    .local v2, "count":I
+    const/4 v3, 0x0
 
+    .local v3, "i":I
     :goto_d
-    if-ge v1, v3, :cond_1d
+    if-ge v3, v2, :cond_1d
 
-    .line 628
+    .line 624
     iget-object v4, p0, Lcom/android/server/power/ThermalManagerService$ThermalHalWrapper;->mCallback:Lcom/android/server/power/ThermalManagerService$ThermalHalWrapper$TemperatureChangedCallback;
 
-    invoke-interface {v2, v1}, Ljava/util/List;->get(I)Ljava/lang/Object;
+    invoke-interface {v1, v3}, Ljava/util/List;->get(I)Ljava/lang/Object;
 
     move-result-object v5
 
@@ -133,19 +136,22 @@
 
     invoke-interface {v4, v5}, Lcom/android/server/power/ThermalManagerService$ThermalHalWrapper$TemperatureChangedCallback;->onValues(Landroid/os/Temperature;)V
 
-    .line 627
-    add-int/lit8 v1, v1, 0x1
+    .line 623
+    add-int/lit8 v3, v3, 0x1
 
     goto :goto_d
 
-    .line 630
+    .line 626
+    .end local v1  # "temperatures":Ljava/util/List;, "Ljava/util/List<Landroid/os/Temperature;>;"
+    .end local v2  # "count":I
+    .end local v3  # "i":I
     :cond_1d
     monitor-exit v0
 
-    .line 631
+    .line 627
     return-void
 
-    .line 630
+    .line 626
     :catchall_1f
     move-exception v1
 
@@ -158,12 +164,13 @@
 
 .method protected setCallback(Lcom/android/server/power/ThermalManagerService$ThermalHalWrapper$TemperatureChangedCallback;)V
     .registers 2
+    .param p1, "cb"  # Lcom/android/server/power/ThermalManagerService$ThermalHalWrapper$TemperatureChangedCallback;
     .annotation build Lcom/android/internal/annotations/VisibleForTesting;
     .end annotation
 
-    .line 610
+    .line 606
     iput-object p1, p0, Lcom/android/server/power/ThermalManagerService$ThermalHalWrapper;->mCallback:Lcom/android/server/power/ThermalManagerService$ThermalHalWrapper$TemperatureChangedCallback;
 
-    .line 611
+    .line 607
     return-void
 .end method

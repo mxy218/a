@@ -33,6 +33,7 @@
 # direct methods
 .method private constructor <init>(I)V
     .registers 4
+    .param p1, "logicalAddress"  # I
 
     .line 84
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -72,6 +73,8 @@
 
 .method synthetic constructor <init>(ILcom/android/server/hdmi/DeviceDiscoveryAction$1;)V
     .registers 3
+    .param p1, "x0"  # I
+    .param p2, "x1"  # Lcom/android/server/hdmi/DeviceDiscoveryAction$1;
 
     .line 74
     invoke-direct {p0, p1}, Lcom/android/server/hdmi/DeviceDiscoveryAction$DeviceInfo;-><init>(I)V
@@ -81,6 +84,8 @@
 
 .method static synthetic access$1002(Lcom/android/server/hdmi/DeviceDiscoveryAction$DeviceInfo;Ljava/lang/String;)Ljava/lang/String;
     .registers 2
+    .param p0, "x0"  # Lcom/android/server/hdmi/DeviceDiscoveryAction$DeviceInfo;
+    .param p1, "x1"  # Ljava/lang/String;
 
     .line 74
     iput-object p1, p0, Lcom/android/server/hdmi/DeviceDiscoveryAction$DeviceInfo;->mDisplayName:Ljava/lang/String;
@@ -90,6 +95,8 @@
 
 .method static synthetic access$1102(Lcom/android/server/hdmi/DeviceDiscoveryAction$DeviceInfo;I)I
     .registers 2
+    .param p0, "x0"  # Lcom/android/server/hdmi/DeviceDiscoveryAction$DeviceInfo;
+    .param p1, "x1"  # I
 
     .line 74
     iput p1, p0, Lcom/android/server/hdmi/DeviceDiscoveryAction$DeviceInfo;->mVendorId:I
@@ -99,6 +106,8 @@
 
 .method static synthetic access$1202(Lcom/android/server/hdmi/DeviceDiscoveryAction$DeviceInfo;I)I
     .registers 2
+    .param p0, "x0"  # Lcom/android/server/hdmi/DeviceDiscoveryAction$DeviceInfo;
+    .param p1, "x1"  # I
 
     .line 74
     iput p1, p0, Lcom/android/server/hdmi/DeviceDiscoveryAction$DeviceInfo;->mPowerStatus:I
@@ -107,36 +116,41 @@
 .end method
 
 .method static synthetic access$1300(Lcom/android/server/hdmi/DeviceDiscoveryAction$DeviceInfo;)Landroid/hardware/hdmi/HdmiDeviceInfo;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/hdmi/DeviceDiscoveryAction$DeviceInfo;
 
     .line 74
     invoke-direct {p0}, Lcom/android/server/hdmi/DeviceDiscoveryAction$DeviceInfo;->toHdmiDeviceInfo()Landroid/hardware/hdmi/HdmiDeviceInfo;
 
-    move-result-object p0
+    move-result-object v0
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$600(Lcom/android/server/hdmi/DeviceDiscoveryAction$DeviceInfo;)I
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/hdmi/DeviceDiscoveryAction$DeviceInfo;
 
     .line 74
-    iget p0, p0, Lcom/android/server/hdmi/DeviceDiscoveryAction$DeviceInfo;->mLogicalAddress:I
+    iget v0, p0, Lcom/android/server/hdmi/DeviceDiscoveryAction$DeviceInfo;->mLogicalAddress:I
 
-    return p0
+    return v0
 .end method
 
 .method static synthetic access$700(Lcom/android/server/hdmi/DeviceDiscoveryAction$DeviceInfo;)I
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/hdmi/DeviceDiscoveryAction$DeviceInfo;
 
     .line 74
-    iget p0, p0, Lcom/android/server/hdmi/DeviceDiscoveryAction$DeviceInfo;->mPhysicalAddress:I
+    iget v0, p0, Lcom/android/server/hdmi/DeviceDiscoveryAction$DeviceInfo;->mPhysicalAddress:I
 
-    return p0
+    return v0
 .end method
 
 .method static synthetic access$702(Lcom/android/server/hdmi/DeviceDiscoveryAction$DeviceInfo;I)I
     .registers 2
+    .param p0, "x0"  # Lcom/android/server/hdmi/DeviceDiscoveryAction$DeviceInfo;
+    .param p1, "x1"  # I
 
     .line 74
     iput p1, p0, Lcom/android/server/hdmi/DeviceDiscoveryAction$DeviceInfo;->mPhysicalAddress:I
@@ -146,6 +160,8 @@
 
 .method static synthetic access$802(Lcom/android/server/hdmi/DeviceDiscoveryAction$DeviceInfo;I)I
     .registers 2
+    .param p0, "x0"  # Lcom/android/server/hdmi/DeviceDiscoveryAction$DeviceInfo;
+    .param p1, "x1"  # I
 
     .line 74
     iput p1, p0, Lcom/android/server/hdmi/DeviceDiscoveryAction$DeviceInfo;->mPortId:I
@@ -154,16 +170,19 @@
 .end method
 
 .method static synthetic access$900(Lcom/android/server/hdmi/DeviceDiscoveryAction$DeviceInfo;)I
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/hdmi/DeviceDiscoveryAction$DeviceInfo;
 
     .line 74
-    iget p0, p0, Lcom/android/server/hdmi/DeviceDiscoveryAction$DeviceInfo;->mDeviceType:I
+    iget v0, p0, Lcom/android/server/hdmi/DeviceDiscoveryAction$DeviceInfo;->mDeviceType:I
 
-    return p0
+    return v0
 .end method
 
 .method static synthetic access$902(Lcom/android/server/hdmi/DeviceDiscoveryAction$DeviceInfo;I)I
     .registers 2
+    .param p0, "x0"  # Lcom/android/server/hdmi/DeviceDiscoveryAction$DeviceInfo;
+    .param p1, "x1"  # I
 
     .line 74
     iput p1, p0, Lcom/android/server/hdmi/DeviceDiscoveryAction$DeviceInfo;->mDeviceType:I

@@ -32,19 +32,20 @@
 
 # direct methods
 .method constructor <init>(Lcom/android/server/media/MediaRouterService;)V
-    .registers 2
+    .registers 3
+    .param p1, "this$0"  # Lcom/android/server/media/MediaRouterService;
 
-    .line 783
+    .line 786
     iput-object p1, p0, Lcom/android/server/media/MediaRouterService$ClientGroup;->this$0:Lcom/android/server/media/MediaRouterService;
 
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
-    .line 785
-    new-instance p1, Ljava/util/ArrayList;
+    .line 788
+    new-instance v0, Ljava/util/ArrayList;
 
-    invoke-direct {p1}, Ljava/util/ArrayList;-><init>()V
+    invoke-direct {v0}, Ljava/util/ArrayList;-><init>()V
 
-    iput-object p1, p0, Lcom/android/server/media/MediaRouterService$ClientGroup;->mClientRecords:Ljava/util/List;
+    iput-object v0, p0, Lcom/android/server/media/MediaRouterService$ClientGroup;->mClientRecords:Ljava/util/List;
 
     return-void
 .end method

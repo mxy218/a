@@ -10,6 +10,8 @@
 
 .field private static final TAG:Ljava/lang/String;
 
+.field private static fstInterfaceName:Ljava/lang/String;
+
 
 # instance fields
 .field private final DEFAULT_IPV4_DNS:[Ljava/lang/String;
@@ -53,7 +55,7 @@
 .method static constructor <clinit>()V
     .registers 17
 
-    .line 65
+    .line 68
     const-class v0, Lcom/android/server/connectivity/tethering/TetheringConfiguration;
 
     invoke-virtual {v0}, Ljava/lang/Class;->getSimpleName()Ljava/lang/String;
@@ -62,14 +64,14 @@
 
     sput-object v0, Lcom/android/server/connectivity/tethering/TetheringConfiguration;->TAG:Ljava/lang/String;
 
-    .line 67
+    .line 70
     const/4 v0, 0x0
 
     new-array v0, v0, [Ljava/lang/String;
 
     sput-object v0, Lcom/android/server/connectivity/tethering/TetheringConfiguration;->EMPTY_STRING_ARRAY:[Ljava/lang/String;
 
-    .line 75
+    .line 78
     const-string v1, "192.168.42.2"
 
     const-string v2, "192.168.42.254"
@@ -108,16 +110,24 @@
 
     sput-object v0, Lcom/android/server/connectivity/tethering/TetheringConfiguration;->LEGACY_DHCP_DEFAULT_RANGE:[Ljava/lang/String;
 
+    .line 102
+    const-string v0, "bond0"
+
+    sput-object v0, Lcom/android/server/connectivity/tethering/TetheringConfiguration;->fstInterfaceName:Ljava/lang/String;
+
     return-void
 .end method
 
 .method public constructor <init>(Landroid/content/Context;Landroid/net/util/SharedLog;I)V
-    .registers 6
+    .registers 9
+    .param p1, "ctx"  # Landroid/content/Context;
+    .param p2, "log"  # Landroid/net/util/SharedLog;
+    .param p3, "id"  # I
 
-    .line 100
+    .line 104
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
-    .line 82
+    .line 85
     const-string v0, "8.8.4.4"
 
     const-string v1, "8.8.8.8"
@@ -128,140 +138,165 @@
 
     iput-object v0, p0, Lcom/android/server/connectivity/tethering/TetheringConfiguration;->DEFAULT_IPV4_DNS:[Ljava/lang/String;
 
-    .line 101
+    .line 105
     const-string v0, "config"
 
     invoke-virtual {p2, v0}, Landroid/net/util/SharedLog;->forSubComponent(Ljava/lang/String;)Landroid/net/util/SharedLog;
 
-    move-result-object p2
+    move-result-object v0
 
-    .line 103
+    .line 107
+    .local v0, "configLog":Landroid/net/util/SharedLog;
     iput p3, p0, Lcom/android/server/connectivity/tethering/TetheringConfiguration;->subId:I
 
-    .line 104
-    iget p3, p0, Lcom/android/server/connectivity/tethering/TetheringConfiguration;->subId:I
+    .line 108
+    iget v1, p0, Lcom/android/server/connectivity/tethering/TetheringConfiguration;->subId:I
 
-    invoke-direct {p0, p1, p3}, Lcom/android/server/connectivity/tethering/TetheringConfiguration;->getResources(Landroid/content/Context;I)Landroid/content/res/Resources;
+    invoke-direct {p0, p1, v1}, Lcom/android/server/connectivity/tethering/TetheringConfiguration;->getResources(Landroid/content/Context;I)Landroid/content/res/Resources;
 
-    move-result-object p3
-
-    .line 106
-    const v0, 0x1070074
-
-    invoke-static {p3, v0}, Lcom/android/server/connectivity/tethering/TetheringConfiguration;->getResourceStringArray(Landroid/content/res/Resources;I)[Ljava/lang/String;
-
-    move-result-object v0
-
-    iput-object v0, p0, Lcom/android/server/connectivity/tethering/TetheringConfiguration;->tetherableUsbRegexs:[Ljava/lang/String;
+    move-result-object v1
 
     .line 110
-    const v0, 0x1070075
+    .local v1, "res":Landroid/content/res/Resources;
+    const v2, 0x1070069
 
-    invoke-static {p3, v0}, Lcom/android/server/connectivity/tethering/TetheringConfiguration;->getResourceStringArray(Landroid/content/res/Resources;I)[Ljava/lang/String;
+    invoke-static {v1, v2}, Lcom/android/server/connectivity/tethering/TetheringConfiguration;->getResourceStringArray(Landroid/content/res/Resources;I)[Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v2
 
-    iput-object v0, p0, Lcom/android/server/connectivity/tethering/TetheringConfiguration;->tetherableWifiRegexs:[Ljava/lang/String;
+    iput-object v2, p0, Lcom/android/server/connectivity/tethering/TetheringConfiguration;->tetherableUsbRegexs:[Ljava/lang/String;
 
-    .line 111
-    const v0, 0x1070071
+    .line 114
+    const/4 v2, 0x0
 
-    invoke-static {p3, v0}, Lcom/android/server/connectivity/tethering/TetheringConfiguration;->getResourceStringArray(Landroid/content/res/Resources;I)[Ljava/lang/String;
+    const-string/jumbo v3, "persist.vendor.fst.softap.en"
 
-    move-result-object v0
+    invoke-static {v3, v2}, Landroid/os/SystemProperties;->getInt(Ljava/lang/String;I)I
 
-    iput-object v0, p0, Lcom/android/server/connectivity/tethering/TetheringConfiguration;->tetherableBluetoothRegexs:[Ljava/lang/String;
+    move-result v3
 
-    .line 113
-    iget v0, p0, Lcom/android/server/connectivity/tethering/TetheringConfiguration;->subId:I
+    const/4 v4, 0x1
 
-    invoke-static {p1, v0}, Lcom/android/server/connectivity/tethering/TetheringConfiguration;->checkDunRequired(Landroid/content/Context;I)Z
-
-    move-result v0
-
-    iput-boolean v0, p0, Lcom/android/server/connectivity/tethering/TetheringConfiguration;->isDunRequired:Z
+    if-ne v3, v4, :cond_38
 
     .line 115
-    const v0, 0x11100e6
+    new-array v3, v4, [Ljava/lang/String;
 
-    invoke-static {p3, v0}, Lcom/android/server/connectivity/tethering/TetheringConfiguration;->getResourceBoolean(Landroid/content/res/Resources;I)Z
+    sget-object v4, Lcom/android/server/connectivity/tethering/TetheringConfiguration;->fstInterfaceName:Ljava/lang/String;
 
-    move-result v0
+    aput-object v4, v3, v2
 
-    iput-boolean v0, p0, Lcom/android/server/connectivity/tethering/TetheringConfiguration;->chooseUpstreamAutomatically:Z
+    iput-object v3, p0, Lcom/android/server/connectivity/tethering/TetheringConfiguration;->tetherableWifiRegexs:[Ljava/lang/String;
 
-    .line 116
-    iget-boolean v0, p0, Lcom/android/server/connectivity/tethering/TetheringConfiguration;->isDunRequired:Z
+    goto :goto_41
 
-    invoke-static {p3, v0}, Lcom/android/server/connectivity/tethering/TetheringConfiguration;->getUpstreamIfaceTypes(Landroid/content/res/Resources;Z)Ljava/util/Collection;
+    .line 117
+    :cond_38
+    const v3, 0x107006a
 
-    move-result-object v0
+    invoke-static {v1, v3}, Lcom/android/server/connectivity/tethering/TetheringConfiguration;->getResourceStringArray(Landroid/content/res/Resources;I)[Ljava/lang/String;
 
-    iput-object v0, p0, Lcom/android/server/connectivity/tethering/TetheringConfiguration;->preferredUpstreamIfaceTypes:Ljava/util/Collection;
+    move-result-object v3
 
-    .line 118
-    invoke-static {p3}, Lcom/android/server/connectivity/tethering/TetheringConfiguration;->getLegacyDhcpRanges(Landroid/content/res/Resources;)[Ljava/lang/String;
-
-    move-result-object v0
-
-    iput-object v0, p0, Lcom/android/server/connectivity/tethering/TetheringConfiguration;->legacyDhcpRanges:[Ljava/lang/String;
+    iput-object v3, p0, Lcom/android/server/connectivity/tethering/TetheringConfiguration;->tetherableWifiRegexs:[Ljava/lang/String;
 
     .line 119
-    iget-object v0, p0, Lcom/android/server/connectivity/tethering/TetheringConfiguration;->DEFAULT_IPV4_DNS:[Ljava/lang/String;
+    :goto_41
+    const v3, 0x1070066
 
-    invoke-static {v0}, Lcom/android/server/connectivity/tethering/TetheringConfiguration;->copy([Ljava/lang/String;)[Ljava/lang/String;
+    invoke-static {v1, v3}, Lcom/android/server/connectivity/tethering/TetheringConfiguration;->getResourceStringArray(Landroid/content/res/Resources;I)[Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v3
 
-    iput-object v0, p0, Lcom/android/server/connectivity/tethering/TetheringConfiguration;->defaultIPv4DNS:[Ljava/lang/String;
+    iput-object v3, p0, Lcom/android/server/connectivity/tethering/TetheringConfiguration;->tetherableBluetoothRegexs:[Ljava/lang/String;
 
-    .line 120
-    invoke-static {p1}, Lcom/android/server/connectivity/tethering/TetheringConfiguration;->getEnableLegacyDhcpServer(Landroid/content/Context;)Z
+    .line 121
+    invoke-static {p1}, Lcom/android/server/connectivity/tethering/TetheringConfiguration;->checkDunRequired(Landroid/content/Context;)Z
 
-    move-result p1
+    move-result v3
 
-    iput-boolean p1, p0, Lcom/android/server/connectivity/tethering/TetheringConfiguration;->enableLegacyDhcpServer:Z
-
-    .line 122
-    const p1, 0x1070053
-
-    invoke-static {p3, p1}, Lcom/android/server/connectivity/tethering/TetheringConfiguration;->getResourceStringArray(Landroid/content/res/Resources;I)[Ljava/lang/String;
-
-    move-result-object p1
-
-    iput-object p1, p0, Lcom/android/server/connectivity/tethering/TetheringConfiguration;->provisioningApp:[Ljava/lang/String;
+    iput-boolean v3, p0, Lcom/android/server/connectivity/tethering/TetheringConfiguration;->isDunRequired:Z
 
     .line 123
-    invoke-static {p3}, Lcom/android/server/connectivity/tethering/TetheringConfiguration;->getProvisioningAppNoUi(Landroid/content/res/Resources;)Ljava/lang/String;
+    const v3, 0x11100e1
 
-    move-result-object p1
+    invoke-static {v1, v3}, Lcom/android/server/connectivity/tethering/TetheringConfiguration;->getResourceBoolean(Landroid/content/res/Resources;I)Z
 
-    iput-object p1, p0, Lcom/android/server/connectivity/tethering/TetheringConfiguration;->provisioningAppNoUi:Ljava/lang/String;
+    move-result v3
+
+    iput-boolean v3, p0, Lcom/android/server/connectivity/tethering/TetheringConfiguration;->chooseUpstreamAutomatically:Z
 
     .line 124
-    const p1, 0x10e007e
+    iget-boolean v3, p0, Lcom/android/server/connectivity/tethering/TetheringConfiguration;->isDunRequired:Z
 
-    const/4 v0, 0x0
+    invoke-static {v1, v3}, Lcom/android/server/connectivity/tethering/TetheringConfiguration;->getUpstreamIfaceTypes(Landroid/content/res/Resources;Z)Ljava/util/Collection;
 
-    invoke-static {p3, p1, v0}, Lcom/android/server/connectivity/tethering/TetheringConfiguration;->getResourceInteger(Landroid/content/res/Resources;II)I
+    move-result-object v3
 
-    move-result p1
+    iput-object v3, p0, Lcom/android/server/connectivity/tethering/TetheringConfiguration;->preferredUpstreamIfaceTypes:Ljava/util/Collection;
 
-    iput p1, p0, Lcom/android/server/connectivity/tethering/TetheringConfiguration;->provisioningCheckPeriod:I
+    .line 126
+    invoke-static {v1}, Lcom/android/server/connectivity/tethering/TetheringConfiguration;->getLegacyDhcpRanges(Landroid/content/res/Resources;)[Ljava/lang/String;
+
+    move-result-object v3
+
+    iput-object v3, p0, Lcom/android/server/connectivity/tethering/TetheringConfiguration;->legacyDhcpRanges:[Ljava/lang/String;
+
+    .line 127
+    iget-object v3, p0, Lcom/android/server/connectivity/tethering/TetheringConfiguration;->DEFAULT_IPV4_DNS:[Ljava/lang/String;
+
+    invoke-static {v3}, Lcom/android/server/connectivity/tethering/TetheringConfiguration;->copy([Ljava/lang/String;)[Ljava/lang/String;
+
+    move-result-object v3
+
+    iput-object v3, p0, Lcom/android/server/connectivity/tethering/TetheringConfiguration;->defaultIPv4DNS:[Ljava/lang/String;
 
     .line 128
+    invoke-static {p1}, Lcom/android/server/connectivity/tethering/TetheringConfiguration;->getEnableLegacyDhcpServer(Landroid/content/Context;)Z
+
+    move-result v3
+
+    iput-boolean v3, p0, Lcom/android/server/connectivity/tethering/TetheringConfiguration;->enableLegacyDhcpServer:Z
+
+    .line 130
+    const v3, 0x1070048
+
+    invoke-static {v1, v3}, Lcom/android/server/connectivity/tethering/TetheringConfiguration;->getResourceStringArray(Landroid/content/res/Resources;I)[Ljava/lang/String;
+
+    move-result-object v3
+
+    iput-object v3, p0, Lcom/android/server/connectivity/tethering/TetheringConfiguration;->provisioningApp:[Ljava/lang/String;
+
+    .line 131
+    invoke-static {v1}, Lcom/android/server/connectivity/tethering/TetheringConfiguration;->getProvisioningAppNoUi(Landroid/content/res/Resources;)Ljava/lang/String;
+
+    move-result-object v3
+
+    iput-object v3, p0, Lcom/android/server/connectivity/tethering/TetheringConfiguration;->provisioningAppNoUi:Ljava/lang/String;
+
+    .line 132
+    const v3, 0x10e007c
+
+    invoke-static {v1, v3, v2}, Lcom/android/server/connectivity/tethering/TetheringConfiguration;->getResourceInteger(Landroid/content/res/Resources;II)I
+
+    move-result v2
+
+    iput v2, p0, Lcom/android/server/connectivity/tethering/TetheringConfiguration;->provisioningCheckPeriod:I
+
+    .line 136
     invoke-virtual {p0}, Lcom/android/server/connectivity/tethering/TetheringConfiguration;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v2
 
-    invoke-virtual {p2, p1}, Landroid/net/util/SharedLog;->log(Ljava/lang/String;)V
+    invoke-virtual {v0, v2}, Landroid/net/util/SharedLog;->log(Ljava/lang/String;)V
 
-    .line 129
+    .line 137
     return-void
 .end method
 
 .method private static appendIfNotPresent(Ljava/util/ArrayList;I)V
     .registers 3
+    .param p1, "value"  # I
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(",
@@ -271,7 +306,8 @@
         }
     .end annotation
 
-    .line 353
+    .line 370
+    .local p0, "list":Ljava/util/ArrayList;, "Ljava/util/ArrayList<Ljava/lang/Integer;>;"
     invoke-static {p1}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
 
     move-result-object v0
@@ -284,29 +320,51 @@
 
     return-void
 
-    .line 354
+    .line 371
     :cond_b
     invoke-static {p1}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
 
-    move-result-object p1
+    move-result-object v0
 
-    invoke-virtual {p0, p1}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
+    invoke-virtual {p0, v0}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
 
-    .line 355
+    .line 372
     return-void
 .end method
 
-.method public static checkDunRequired(Landroid/content/Context;I)Z
-    .registers 2
+.method public static checkDunRequired(Landroid/content/Context;)Z
+    .registers 3
+    .param p0, "ctx"  # Landroid/content/Context;
 
-    .line 230
-    const/4 p0, 0x0
+    .line 246
+    const-string/jumbo v0, "phone"
 
-    return p0
+    invoke-virtual {p0, v0}, Landroid/content/Context;->getSystemService(Ljava/lang/String;)Ljava/lang/Object;
+
+    move-result-object v0
+
+    check-cast v0, Landroid/telephony/TelephonyManager;
+
+    .line 247
+    .local v0, "tm":Landroid/telephony/TelephonyManager;
+    if-eqz v0, :cond_10
+
+    invoke-virtual {v0}, Landroid/telephony/TelephonyManager;->getTetherApnRequired()Z
+
+    move-result v1
+
+    goto :goto_11
+
+    :cond_10
+    const/4 v1, 0x0
+
+    :goto_11
+    return v1
 .end method
 
 .method private static varargs containsOneOf(Ljava/util/ArrayList;[Ljava/lang/Integer;)Z
-    .registers 6
+    .registers 7
+    .param p1, "values"  # [Ljava/lang/Integer;
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(",
@@ -318,7 +376,8 @@
         }
     .end annotation
 
-    .line 358
+    .line 375
+    .local p0, "list":Ljava/util/ArrayList;, "Ljava/util/ArrayList<Ljava/lang/Integer;>;"
     array-length v0, p1
 
     const/4 v1, 0x0
@@ -330,297 +389,341 @@
 
     aget-object v3, p1, v2
 
-    .line 359
+    .line 376
+    .local v3, "value":Ljava/lang/Integer;
     invoke-virtual {p0, v3}, Ljava/util/ArrayList;->contains(Ljava/lang/Object;)Z
 
-    move-result v3
+    move-result v4
 
-    if-eqz v3, :cond_f
+    if-eqz v4, :cond_f
 
-    const/4 p0, 0x1
+    const/4 v0, 0x1
 
-    return p0
+    return v0
 
-    .line 358
+    .line 375
+    .end local v3  # "value":Ljava/lang/Integer;
     :cond_f
     add-int/lit8 v2, v2, 0x1
 
     goto :goto_3
 
-    .line 361
+    .line 378
     :cond_12
     return v1
 .end method
 
 .method private static copy([Ljava/lang/String;)[Ljava/lang/String;
     .registers 2
+    .param p0, "strarray"  # [Ljava/lang/String;
 
-    .line 344
+    .line 361
     array-length v0, p0
 
     invoke-static {p0, v0}, Ljava/util/Arrays;->copyOf([Ljava/lang/Object;I)[Ljava/lang/Object;
 
-    move-result-object p0
+    move-result-object v0
 
-    check-cast p0, [Ljava/lang/String;
+    check-cast v0, [Ljava/lang/String;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method private static dumpStringArray(Ljava/io/PrintWriter;Ljava/lang/String;[Ljava/lang/String;)V
-    .registers 6
+    .registers 7
+    .param p0, "pw"  # Ljava/io/PrintWriter;
+    .param p1, "label"  # Ljava/lang/String;
+    .param p2, "values"  # [Ljava/lang/String;
 
-    .line 192
+    .line 208
     invoke-virtual {p0, p1}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
-    .line 193
-    const-string p1, ": "
+    .line 209
+    const-string v0, ": "
 
-    invoke-virtual {p0, p1}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
+    invoke-virtual {p0, v0}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
-    .line 195
+    .line 211
     if-eqz p2, :cond_29
 
-    .line 196
-    new-instance p1, Ljava/util/StringJoiner;
+    .line 212
+    new-instance v0, Ljava/util/StringJoiner;
 
-    const-string v0, ", "
+    const-string v1, ", "
 
-    const-string v1, "["
+    const-string v2, "["
 
-    const-string v2, "]"
+    const-string v3, "]"
 
-    invoke-direct {p1, v0, v1, v2}, Ljava/util/StringJoiner;-><init>(Ljava/lang/CharSequence;Ljava/lang/CharSequence;Ljava/lang/CharSequence;)V
+    invoke-direct {v0, v1, v2, v3}, Ljava/util/StringJoiner;-><init>(Ljava/lang/CharSequence;Ljava/lang/CharSequence;Ljava/lang/CharSequence;)V
 
-    .line 197
-    array-length v0, p2
+    .line 213
+    .local v0, "sj":Ljava/util/StringJoiner;
+    array-length v1, p2
 
-    const/4 v1, 0x0
+    const/4 v2, 0x0
 
     :goto_17
-    if-ge v1, v0, :cond_21
+    if-ge v2, v1, :cond_21
 
-    aget-object v2, p2, v1
+    aget-object v3, p2, v2
 
-    invoke-virtual {p1, v2}, Ljava/util/StringJoiner;->add(Ljava/lang/CharSequence;)Ljava/util/StringJoiner;
+    .local v3, "value":Ljava/lang/String;
+    invoke-virtual {v0, v3}, Ljava/util/StringJoiner;->add(Ljava/lang/CharSequence;)Ljava/util/StringJoiner;
 
-    add-int/lit8 v1, v1, 0x1
+    .end local v3  # "value":Ljava/lang/String;
+    add-int/lit8 v2, v2, 0x1
 
     goto :goto_17
 
-    .line 198
+    .line 214
     :cond_21
-    invoke-virtual {p1}, Ljava/util/StringJoiner;->toString()Ljava/lang/String;
+    invoke-virtual {v0}, Ljava/util/StringJoiner;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v1
 
-    invoke-virtual {p0, p1}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
+    invoke-virtual {p0, v1}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
-    .line 199
+    .line 215
+    .end local v0  # "sj":Ljava/util/StringJoiner;
     goto :goto_2f
 
-    .line 200
+    .line 216
     :cond_29
-    const-string/jumbo p1, "null"
+    const-string/jumbo v0, "null"
 
-    invoke-virtual {p0, p1}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
+    invoke-virtual {p0, v0}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
-    .line 203
+    .line 219
     :goto_2f
     invoke-virtual {p0}, Ljava/io/PrintWriter;->println()V
 
-    .line 204
+    .line 220
     return-void
 .end method
 
 .method private static getEnableLegacyDhcpServer(Landroid/content/Context;)Z
-    .registers 3
+    .registers 4
+    .param p0, "ctx"  # Landroid/content/Context;
 
-    .line 325
+    .line 342
     invoke-virtual {p0}, Landroid/content/Context;->getContentResolver()Landroid/content/ContentResolver;
 
-    move-result-object p0
+    move-result-object v0
 
-    .line 326
-    const/4 v0, 0x0
+    .line 343
+    .local v0, "cr":Landroid/content/ContentResolver;
+    const/4 v1, 0x0
 
-    const-string/jumbo v1, "tether_enable_legacy_dhcp_server"
+    const-string/jumbo v2, "tether_enable_legacy_dhcp_server"
 
-    invoke-static {p0, v1, v0}, Landroid/provider/Settings$Global;->getInt(Landroid/content/ContentResolver;Ljava/lang/String;I)I
+    invoke-static {v0, v2, v1}, Landroid/provider/Settings$Global;->getInt(Landroid/content/ContentResolver;Ljava/lang/String;I)I
 
-    move-result p0
+    move-result v2
 
-    .line 327
-    if-eqz p0, :cond_f
+    .line 344
+    .local v2, "intVal":I
+    if-eqz v2, :cond_f
 
-    const/4 v0, 0x1
+    const/4 v1, 0x1
 
     :cond_f
-    return v0
+    return v1
+.end method
+
+.method public static getFstInterfaceName()Ljava/lang/String;
+    .registers 1
+
+    .line 144
+    sget-object v0, Lcom/android/server/connectivity/tethering/TetheringConfiguration;->fstInterfaceName:Ljava/lang/String;
+
+    return-object v0
 .end method
 
 .method private static getLegacyDhcpRanges(Landroid/content/res/Resources;)[Ljava/lang/String;
-    .registers 2
+    .registers 3
+    .param p0, "res"  # Landroid/content/res/Resources;
 
-    .line 284
-    const v0, 0x1070072
+    .line 301
+    const v0, 0x1070067
 
     invoke-static {p0, v0}, Lcom/android/server/connectivity/tethering/TetheringConfiguration;->getResourceStringArray(Landroid/content/res/Resources;I)[Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v0
 
-    .line 285
-    array-length v0, p0
+    .line 302
+    .local v0, "fromResource":[Ljava/lang/String;
+    array-length v1, v0
 
-    if-lez v0, :cond_10
+    if-lez v1, :cond_10
 
-    array-length v0, p0
+    array-length v1, v0
 
-    rem-int/lit8 v0, v0, 0x2
+    rem-int/lit8 v1, v1, 0x2
 
-    if-nez v0, :cond_10
+    if-nez v1, :cond_10
 
-    .line 286
-    return-object p0
+    .line 303
+    return-object v0
 
-    .line 288
+    .line 305
     :cond_10
-    sget-object p0, Lcom/android/server/connectivity/tethering/TetheringConfiguration;->LEGACY_DHCP_DEFAULT_RANGE:[Ljava/lang/String;
+    sget-object v1, Lcom/android/server/connectivity/tethering/TetheringConfiguration;->LEGACY_DHCP_DEFAULT_RANGE:[Ljava/lang/String;
 
-    invoke-static {p0}, Lcom/android/server/connectivity/tethering/TetheringConfiguration;->copy([Ljava/lang/String;)[Ljava/lang/String;
+    invoke-static {v1}, Lcom/android/server/connectivity/tethering/TetheringConfiguration;->copy([Ljava/lang/String;)[Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v1
 
-    return-object p0
+    return-object v1
 .end method
 
 .method private static getProvisioningAppNoUi(Landroid/content/res/Resources;)Ljava/lang/String;
-    .registers 2
+    .registers 3
+    .param p0, "res"  # Landroid/content/res/Resources;
 
-    .line 293
-    const v0, 0x1040193
+    .line 310
+    const v0, 0x104018d
 
     :try_start_3
     invoke-virtual {p0, v0}, Landroid/content/res/Resources;->getString(I)Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v0
     :try_end_7
     .catch Landroid/content/res/Resources$NotFoundException; {:try_start_3 .. :try_end_7} :catch_8
 
-    return-object p0
+    return-object v0
 
-    .line 294
+    .line 311
     :catch_8
-    move-exception p0
+    move-exception v0
 
-    .line 295
-    const-string p0, ""
+    .line 312
+    .local v0, "e":Landroid/content/res/Resources$NotFoundException;
+    const-string v1, ""
 
-    return-object p0
+    return-object v1
 .end method
 
 .method private static getResourceBoolean(Landroid/content/res/Resources;I)Z
-    .registers 2
-
-    .line 301
-    :try_start_0
-    invoke-virtual {p0, p1}, Landroid/content/res/Resources;->getBoolean(I)Z
-
-    move-result p0
-    :try_end_4
-    .catch Landroid/content/res/Resources$NotFoundException; {:try_start_0 .. :try_end_4} :catch_5
-
-    return p0
-
-    .line 302
-    :catch_5
-    move-exception p0
-
-    .line 303
-    const/4 p0, 0x0
-
-    return p0
-.end method
-
-.method private static getResourceInteger(Landroid/content/res/Resources;II)I
-    .registers 3
+    .registers 4
+    .param p0, "res"  # Landroid/content/res/Resources;
+    .param p1, "resId"  # I
 
     .line 318
     :try_start_0
-    invoke-virtual {p0, p1}, Landroid/content/res/Resources;->getInteger(I)I
+    invoke-virtual {p0, p1}, Landroid/content/res/Resources;->getBoolean(I)Z
 
-    move-result p0
+    move-result v0
     :try_end_4
     .catch Landroid/content/res/Resources$NotFoundException; {:try_start_0 .. :try_end_4} :catch_5
 
-    return p0
+    return v0
 
     .line 319
     :catch_5
-    move-exception p0
+    move-exception v0
 
     .line 320
+    .local v0, "e404":Landroid/content/res/Resources$NotFoundException;
+    const/4 v1, 0x0
+
+    return v1
+.end method
+
+.method private static getResourceInteger(Landroid/content/res/Resources;II)I
+    .registers 4
+    .param p0, "res"  # Landroid/content/res/Resources;
+    .param p1, "resId"  # I
+    .param p2, "defaultValue"  # I
+
+    .line 335
+    :try_start_0
+    invoke-virtual {p0, p1}, Landroid/content/res/Resources;->getInteger(I)I
+
+    move-result v0
+    :try_end_4
+    .catch Landroid/content/res/Resources$NotFoundException; {:try_start_0 .. :try_end_4} :catch_5
+
+    return v0
+
+    .line 336
+    :catch_5
+    move-exception v0
+
+    .line 337
+    .local v0, "e404":Landroid/content/res/Resources$NotFoundException;
     return p2
 .end method
 
 .method private static getResourceStringArray(Landroid/content/res/Resources;I)[Ljava/lang/String;
-    .registers 2
+    .registers 4
+    .param p0, "res"  # Landroid/content/res/Resources;
+    .param p1, "resId"  # I
 
-    .line 309
+    .line 326
     :try_start_0
     invoke-virtual {p0, p1}, Landroid/content/res/Resources;->getStringArray(I)[Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v0
 
-    .line 310
-    if-eqz p0, :cond_7
+    .line 327
+    .local v0, "strArray":[Ljava/lang/String;
+    if-eqz v0, :cond_8
 
-    goto :goto_9
+    move-object v1, v0
 
-    :cond_7
-    sget-object p0, Lcom/android/server/connectivity/tethering/TetheringConfiguration;->EMPTY_STRING_ARRAY:[Ljava/lang/String;
-    :try_end_9
-    .catch Landroid/content/res/Resources$NotFoundException; {:try_start_0 .. :try_end_9} :catch_a
+    goto :goto_a
 
-    :goto_9
-    return-object p0
+    :cond_8
+    sget-object v1, Lcom/android/server/connectivity/tethering/TetheringConfiguration;->EMPTY_STRING_ARRAY:[Ljava/lang/String;
+    :try_end_a
+    .catch Landroid/content/res/Resources$NotFoundException; {:try_start_0 .. :try_end_a} :catch_b
 
-    .line 311
-    :catch_a
-    move-exception p0
+    :goto_a
+    return-object v1
 
-    .line 312
-    sget-object p0, Lcom/android/server/connectivity/tethering/TetheringConfiguration;->EMPTY_STRING_ARRAY:[Ljava/lang/String;
+    .line 328
+    .end local v0  # "strArray":[Ljava/lang/String;
+    :catch_b
+    move-exception v0
 
-    return-object p0
+    .line 329
+    .local v0, "e404":Landroid/content/res/Resources$NotFoundException;
+    sget-object v1, Lcom/android/server/connectivity/tethering/TetheringConfiguration;->EMPTY_STRING_ARRAY:[Ljava/lang/String;
+
+    return-object v1
 .end method
 
 .method private getResources(Landroid/content/Context;I)Landroid/content/res/Resources;
     .registers 4
+    .param p1, "ctx"  # Landroid/content/Context;
+    .param p2, "subId"  # I
 
-    .line 331
+    .line 348
     const/4 v0, -0x1
 
     if-eq p2, v0, :cond_8
 
-    .line 332
+    .line 349
     invoke-virtual {p0, p1, p2}, Lcom/android/server/connectivity/tethering/TetheringConfiguration;->getResourcesForSubIdWrapper(Landroid/content/Context;I)Landroid/content/res/Resources;
 
-    move-result-object p1
+    move-result-object v0
 
-    return-object p1
+    return-object v0
 
-    .line 334
+    .line 351
     :cond_8
     invoke-virtual {p1}, Landroid/content/Context;->getResources()Landroid/content/res/Resources;
 
-    move-result-object p1
+    move-result-object v0
 
-    return-object p1
+    return-object v0
 .end method
 
 .method private static getUpstreamIfaceTypes(Landroid/content/res/Resources;Z)Ljava/util/Collection;
-    .registers 10
+    .registers 11
+    .param p0, "res"  # Landroid/content/res/Resources;
+    .param p1, "dunRequired"  # Z
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(",
@@ -632,139 +735,144 @@
         }
     .end annotation
 
-    .line 234
-    const v0, 0x1070073
+    .line 251
+    const v0, 0x1070068
 
     invoke-virtual {p0, v0}, Landroid/content/res/Resources;->getIntArray(I)[I
 
-    move-result-object p0
+    move-result-object v0
 
-    .line 235
-    new-instance v0, Ljava/util/ArrayList;
+    .line 252
+    .local v0, "ifaceTypes":[I
+    new-instance v1, Ljava/util/ArrayList;
 
-    array-length v1, p0
+    array-length v2, v0
 
-    invoke-direct {v0, v1}, Ljava/util/ArrayList;-><init>(I)V
+    invoke-direct {v1, v2}, Ljava/util/ArrayList;-><init>(I)V
 
-    .line 236
-    array-length v1, p0
+    .line 253
+    .local v1, "upstreamIfaceTypes":Ljava/util/ArrayList;, "Ljava/util/ArrayList<Ljava/lang/Integer;>;"
+    array-length v2, v0
 
-    const/4 v2, 0x0
+    const/4 v3, 0x0
 
-    invoke-static {v2}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
+    invoke-static {v3}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
 
-    move-result-object v3
+    move-result-object v4
 
-    move v4, v2
+    move v5, v3
 
     :goto_14
-    const/4 v5, 0x4
+    const/4 v6, 0x4
 
-    const/4 v6, 0x5
+    const/4 v7, 0x5
 
-    if-ge v4, v1, :cond_31
+    if-ge v5, v2, :cond_31
 
-    aget v7, p0, v4
+    aget v8, v0, v5
 
-    .line 237
-    if-eqz v7, :cond_24
+    .line 254
+    .local v8, "i":I
+    if-eqz v8, :cond_24
 
-    if-eq v7, v5, :cond_21
+    if-eq v8, v6, :cond_21
 
-    if-eq v7, v6, :cond_24
+    if-eq v8, v7, :cond_24
 
     goto :goto_27
 
-    .line 243
+    .line 260
     :cond_21
     if-nez p1, :cond_27
 
     goto :goto_2e
 
-    .line 240
+    .line 257
     :cond_24
     if-eqz p1, :cond_27
 
     goto :goto_2e
 
-    .line 246
+    .line 263
     :cond_27
     :goto_27
-    invoke-static {v7}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
+    invoke-static {v8}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
 
-    move-result-object v5
+    move-result-object v6
 
-    invoke-virtual {v0, v5}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
+    invoke-virtual {v1, v6}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
 
-    .line 236
+    .line 253
+    .end local v8  # "i":I
     :goto_2e
-    add-int/lit8 v4, v4, 0x1
+    add-int/lit8 v5, v5, 0x1
 
     goto :goto_14
 
-    .line 253
+    .line 270
     :cond_31
     if-eqz p1, :cond_37
 
-    .line 254
-    invoke-static {v0, v5}, Lcom/android/server/connectivity/tethering/TetheringConfiguration;->appendIfNotPresent(Ljava/util/ArrayList;I)V
+    .line 271
+    invoke-static {v1, v6}, Lcom/android/server/connectivity/tethering/TetheringConfiguration;->appendIfNotPresent(Ljava/util/ArrayList;I)V
 
     goto :goto_53
 
-    .line 263
+    .line 280
     :cond_37
-    const/4 p0, 0x2
+    const/4 v2, 0x2
 
-    new-array p0, p0, [Ljava/lang/Integer;
+    new-array v2, v2, [Ljava/lang/Integer;
 
-    aput-object v3, p0, v2
+    aput-object v4, v2, v3
 
-    invoke-static {v6}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
+    invoke-static {v7}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
 
-    move-result-object p1
+    move-result-object v3
 
-    const/4 v1, 0x1
+    const/4 v5, 0x1
 
-    aput-object p1, p0, v1
+    aput-object v3, v2, v5
 
-    invoke-static {v0, p0}, Lcom/android/server/connectivity/tethering/TetheringConfiguration;->containsOneOf(Ljava/util/ArrayList;[Ljava/lang/Integer;)Z
+    invoke-static {v1, v2}, Lcom/android/server/connectivity/tethering/TetheringConfiguration;->containsOneOf(Ljava/util/ArrayList;[Ljava/lang/Integer;)Z
 
-    move-result p0
+    move-result v2
 
-    if-nez p0, :cond_53
+    if-nez v2, :cond_53
 
-    .line 264
-    invoke-virtual {v0, v3}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
+    .line 281
+    invoke-virtual {v1, v4}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
 
-    .line 265
-    invoke-static {v6}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
+    .line 282
+    invoke-static {v7}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
 
-    move-result-object p0
+    move-result-object v2
 
-    invoke-virtual {v0, p0}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
+    invoke-virtual {v1, v2}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
 
-    .line 271
+    .line 288
     :cond_53
     :goto_53
-    const/16 p0, 0x9
+    const/16 v2, 0x9
 
-    invoke-static {v0, p0}, Lcom/android/server/connectivity/tethering/TetheringConfiguration;->prependIfNotPresent(Ljava/util/ArrayList;I)V
+    invoke-static {v1, v2}, Lcom/android/server/connectivity/tethering/TetheringConfiguration;->prependIfNotPresent(Ljava/util/ArrayList;I)V
 
-    .line 273
-    return-object v0
+    .line 290
+    return-object v1
 .end method
 
 .method private static makeString([Ljava/lang/String;)Ljava/lang/String;
     .registers 5
+    .param p0, "strings"  # [Ljava/lang/String;
 
-    .line 207
+    .line 223
     if-nez p0, :cond_6
 
-    const-string/jumbo p0, "null"
+    const-string/jumbo v0, "null"
 
-    return-object p0
+    return-object v0
 
-    .line 208
+    .line 224
     :cond_6
     new-instance v0, Ljava/util/StringJoiner;
 
@@ -776,7 +884,8 @@
 
     invoke-direct {v0, v1, v2, v3}, Ljava/util/StringJoiner;-><init>(Ljava/lang/CharSequence;Ljava/lang/CharSequence;Ljava/lang/CharSequence;)V
 
-    .line 209
+    .line 225
+    .local v0, "sj":Ljava/util/StringJoiner;
     array-length v1, p0
 
     const/4 v2, 0x0
@@ -786,25 +895,29 @@
 
     aget-object v3, p0, v2
 
+    .local v3, "s":Ljava/lang/String;
     invoke-virtual {v0, v3}, Ljava/util/StringJoiner;->add(Ljava/lang/CharSequence;)Ljava/util/StringJoiner;
 
+    .end local v3  # "s":Ljava/lang/String;
     add-int/lit8 v2, v2, 0x1
 
     goto :goto_13
 
-    .line 210
+    .line 226
     :cond_1d
     invoke-virtual {v0}, Ljava/util/StringJoiner;->toString()Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v1
 
-    return-object p0
+    return-object v1
 .end method
 
 .method private static matchesDownstreamRegexs(Ljava/lang/String;[Ljava/lang/String;)Z
-    .registers 6
+    .registers 7
+    .param p0, "iface"  # Ljava/lang/String;
+    .param p1, "regexs"  # [Ljava/lang/String;
 
-    .line 277
+    .line 294
     array-length v0, p1
 
     const/4 v1, 0x0
@@ -816,30 +929,32 @@
 
     aget-object v3, p1, v2
 
-    .line 278
+    .line 295
+    .local v3, "regex":Ljava/lang/String;
     invoke-virtual {p0, v3}, Ljava/lang/String;->matches(Ljava/lang/String;)Z
 
-    move-result v3
+    move-result v4
 
-    if-eqz v3, :cond_f
+    if-eqz v4, :cond_f
 
-    const/4 p0, 0x1
+    const/4 v0, 0x1
 
-    return p0
+    return v0
 
-    .line 277
+    .line 294
+    .end local v3  # "regex":Ljava/lang/String;
     :cond_f
     add-int/lit8 v2, v2, 0x1
 
     goto :goto_3
 
-    .line 280
+    .line 297
     :cond_12
     return v1
 .end method
 
 .method private static preferredUpstreamNames(Ljava/util/Collection;)[Ljava/lang/String;
-    .registers 4
+    .registers 6
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(",
@@ -850,68 +965,73 @@
         }
     .end annotation
 
-    .line 214
-    nop
-
-    .line 216
-    if-eqz p0, :cond_27
-
-    .line 217
-    invoke-interface {p0}, Ljava/util/Collection;->size()I
-
-    move-result v0
-
-    new-array v0, v0, [Ljava/lang/String;
-
-    .line 218
-    const/4 v1, 0x0
-
-    .line 219
-    invoke-interface {p0}, Ljava/util/Collection;->iterator()Ljava/util/Iterator;
-
-    move-result-object p0
-
-    :goto_e
-    invoke-interface {p0}, Ljava/util/Iterator;->hasNext()Z
-
-    move-result v2
-
-    if-eqz v2, :cond_28
-
-    invoke-interface {p0}, Ljava/util/Iterator;->next()Ljava/lang/Object;
-
-    move-result-object v2
-
-    check-cast v2, Ljava/lang/Integer;
-
-    .line 220
-    invoke-virtual {v2}, Ljava/lang/Integer;->intValue()I
-
-    move-result v2
-
-    invoke-static {v2}, Landroid/net/ConnectivityManager;->getNetworkTypeName(I)Ljava/lang/String;
-
-    move-result-object v2
-
-    aput-object v2, v0, v1
-
-    .line 221
-    add-int/lit8 v1, v1, 0x1
-
-    .line 222
-    goto :goto_e
-
-    .line 216
-    :cond_27
+    .line 230
+    .local p0, "upstreamTypes":Ljava/util/Collection;, "Ljava/util/Collection<Ljava/lang/Integer;>;"
     const/4 v0, 0x0
 
-    .line 225
+    .line 232
+    .local v0, "upstreamNames":[Ljava/lang/String;
+    if-eqz p0, :cond_28
+
+    .line 233
+    invoke-interface {p0}, Ljava/util/Collection;->size()I
+
+    move-result v1
+
+    new-array v0, v1, [Ljava/lang/String;
+
+    .line 234
+    const/4 v1, 0x0
+
+    .line 235
+    .local v1, "i":I
+    invoke-interface {p0}, Ljava/util/Collection;->iterator()Ljava/util/Iterator;
+
+    move-result-object v2
+
+    :goto_e
+    invoke-interface {v2}, Ljava/util/Iterator;->hasNext()Z
+
+    move-result v3
+
+    if-eqz v3, :cond_28
+
+    invoke-interface {v2}, Ljava/util/Iterator;->next()Ljava/lang/Object;
+
+    move-result-object v3
+
+    check-cast v3, Ljava/lang/Integer;
+
+    .line 236
+    .local v3, "netType":Ljava/lang/Integer;
+    invoke-virtual {v3}, Ljava/lang/Integer;->intValue()I
+
+    move-result v4
+
+    invoke-static {v4}, Landroid/net/ConnectivityManager;->getNetworkTypeName(I)Ljava/lang/String;
+
+    move-result-object v4
+
+    aput-object v4, v0, v1
+
+    .line 237
+    nop
+
+    .end local v3  # "netType":Ljava/lang/Integer;
+    add-int/lit8 v1, v1, 0x1
+
+    .line 238
+    goto :goto_e
+
+    .line 241
+    .end local v1  # "i":I
     :cond_28
     return-object v0
 .end method
 
 .method private static prependIfNotPresent(Ljava/util/ArrayList;I)V
-    .registers 3
+    .registers 4
+    .param p1, "value"  # I
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(",
@@ -921,7 +1041,8 @@
         }
     .end annotation
 
-    .line 348
+    .line 365
+    .local p0, "list":Ljava/util/ArrayList;, "Ljava/util/ArrayList<Ljava/lang/Integer;>;"
     invoke-static {p1}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
 
     move-result-object v0
@@ -934,17 +1055,28 @@
 
     return-void
 
-    .line 349
+    .line 366
     :cond_b
     const/4 v0, 0x0
 
     invoke-static {p1}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
 
-    move-result-object p1
+    move-result-object v1
 
-    invoke-virtual {p0, v0, p1}, Ljava/util/ArrayList;->add(ILjava/lang/Object;)V
+    invoke-virtual {p0, v0, v1}, Ljava/util/ArrayList;->add(ILjava/lang/Object;)V
 
-    .line 350
+    .line 367
+    return-void
+.end method
+
+.method public static setFstInterfaceName(Ljava/lang/String;)V
+    .registers 1
+    .param p0, "name"  # Ljava/lang/String;
+
+    .line 140
+    sput-object p0, Lcom/android/server/connectivity/tethering/TetheringConfiguration;->fstInterfaceName:Ljava/lang/String;
+
+    .line 141
     return-void
 .end method
 
@@ -952,133 +1084,136 @@
 # virtual methods
 .method public dump(Ljava/io/PrintWriter;)V
     .registers 4
+    .param p1, "pw"  # Ljava/io/PrintWriter;
 
-    .line 148
+    .line 164
     const-string/jumbo v0, "subId: "
 
     invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
-    .line 149
+    .line 165
     iget v0, p0, Lcom/android/server/connectivity/tethering/TetheringConfiguration;->subId:I
 
     invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->println(I)V
 
-    .line 151
+    .line 167
     iget-object v0, p0, Lcom/android/server/connectivity/tethering/TetheringConfiguration;->tetherableUsbRegexs:[Ljava/lang/String;
 
     const-string/jumbo v1, "tetherableUsbRegexs"
 
     invoke-static {p1, v1, v0}, Lcom/android/server/connectivity/tethering/TetheringConfiguration;->dumpStringArray(Ljava/io/PrintWriter;Ljava/lang/String;[Ljava/lang/String;)V
 
-    .line 152
+    .line 168
     iget-object v0, p0, Lcom/android/server/connectivity/tethering/TetheringConfiguration;->tetherableWifiRegexs:[Ljava/lang/String;
 
     const-string/jumbo v1, "tetherableWifiRegexs"
 
     invoke-static {p1, v1, v0}, Lcom/android/server/connectivity/tethering/TetheringConfiguration;->dumpStringArray(Ljava/io/PrintWriter;Ljava/lang/String;[Ljava/lang/String;)V
 
-    .line 153
+    .line 169
     iget-object v0, p0, Lcom/android/server/connectivity/tethering/TetheringConfiguration;->tetherableBluetoothRegexs:[Ljava/lang/String;
 
     const-string/jumbo v1, "tetherableBluetoothRegexs"
 
     invoke-static {p1, v1, v0}, Lcom/android/server/connectivity/tethering/TetheringConfiguration;->dumpStringArray(Ljava/io/PrintWriter;Ljava/lang/String;[Ljava/lang/String;)V
 
-    .line 155
-    const-string v0, "isDunRequired: "
+    .line 171
+    const-string/jumbo v0, "isDunRequired: "
 
     invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
-    .line 156
+    .line 172
     iget-boolean v0, p0, Lcom/android/server/connectivity/tethering/TetheringConfiguration;->isDunRequired:Z
 
     invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->println(Z)V
 
-    .line 158
+    .line 174
     const-string v0, "chooseUpstreamAutomatically: "
 
     invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
-    .line 159
+    .line 175
     iget-boolean v0, p0, Lcom/android/server/connectivity/tethering/TetheringConfiguration;->chooseUpstreamAutomatically:Z
 
     invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->println(Z)V
 
-    .line 160
+    .line 176
     iget-object v0, p0, Lcom/android/server/connectivity/tethering/TetheringConfiguration;->preferredUpstreamIfaceTypes:Ljava/util/Collection;
 
-    .line 161
+    .line 177
     invoke-static {v0}, Lcom/android/server/connectivity/tethering/TetheringConfiguration;->preferredUpstreamNames(Ljava/util/Collection;)[Ljava/lang/String;
 
     move-result-object v0
 
-    .line 160
+    .line 176
     const-string/jumbo v1, "preferredUpstreamIfaceTypes"
 
     invoke-static {p1, v1, v0}, Lcom/android/server/connectivity/tethering/TetheringConfiguration;->dumpStringArray(Ljava/io/PrintWriter;Ljava/lang/String;[Ljava/lang/String;)V
 
-    .line 163
+    .line 179
     iget-object v0, p0, Lcom/android/server/connectivity/tethering/TetheringConfiguration;->legacyDhcpRanges:[Ljava/lang/String;
 
-    const-string v1, "legacyDhcpRanges"
+    const-string/jumbo v1, "legacyDhcpRanges"
 
     invoke-static {p1, v1, v0}, Lcom/android/server/connectivity/tethering/TetheringConfiguration;->dumpStringArray(Ljava/io/PrintWriter;Ljava/lang/String;[Ljava/lang/String;)V
 
-    .line 164
+    .line 180
     iget-object v0, p0, Lcom/android/server/connectivity/tethering/TetheringConfiguration;->defaultIPv4DNS:[Ljava/lang/String;
 
     const-string v1, "defaultIPv4DNS"
 
     invoke-static {p1, v1, v0}, Lcom/android/server/connectivity/tethering/TetheringConfiguration;->dumpStringArray(Ljava/io/PrintWriter;Ljava/lang/String;[Ljava/lang/String;)V
 
-    .line 166
+    .line 182
     iget-object v0, p0, Lcom/android/server/connectivity/tethering/TetheringConfiguration;->provisioningApp:[Ljava/lang/String;
 
     const-string/jumbo v1, "provisioningApp"
 
     invoke-static {p1, v1, v0}, Lcom/android/server/connectivity/tethering/TetheringConfiguration;->dumpStringArray(Ljava/io/PrintWriter;Ljava/lang/String;[Ljava/lang/String;)V
 
-    .line 167
+    .line 183
     const-string/jumbo v0, "provisioningAppNoUi: "
 
     invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
-    .line 168
+    .line 184
     iget-object v0, p0, Lcom/android/server/connectivity/tethering/TetheringConfiguration;->provisioningAppNoUi:Ljava/lang/String;
 
     invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
-    .line 170
+    .line 186
     const-string v0, "enableLegacyDhcpServer: "
 
     invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
-    .line 171
+    .line 187
     iget-boolean v0, p0, Lcom/android/server/connectivity/tethering/TetheringConfiguration;->enableLegacyDhcpServer:Z
 
     invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->println(Z)V
 
-    .line 172
+    .line 188
     return-void
 .end method
 
 .method protected getResourcesForSubIdWrapper(Landroid/content/Context;I)Landroid/content/res/Resources;
-    .registers 3
+    .registers 4
+    .param p1, "ctx"  # Landroid/content/Context;
+    .param p2, "subId"  # I
     .annotation build Lcom/android/internal/annotations/VisibleForTesting;
     .end annotation
 
-    .line 340
+    .line 357
     invoke-static {p1, p2}, Landroid/telephony/SubscriptionManager;->getResourcesForSubId(Landroid/content/Context;I)Landroid/content/res/Resources;
 
-    move-result-object p1
+    move-result-object v0
 
-    return-object p1
+    return-object v0
 .end method
 
 .method public hasMobileHotspotProvisionApp()Z
     .registers 2
 
-    .line 144
+    .line 160
     iget-object v0, p0, Lcom/android/server/connectivity/tethering/TetheringConfiguration;->provisioningAppNoUi:Ljava/lang/String;
 
     invoke-static {v0}, Landroid/text/TextUtils;->isEmpty(Ljava/lang/CharSequence;)Z
@@ -1092,54 +1227,58 @@
 
 .method public isBluetooth(Ljava/lang/String;)Z
     .registers 3
+    .param p1, "iface"  # Ljava/lang/String;
 
-    .line 140
+    .line 156
     iget-object v0, p0, Lcom/android/server/connectivity/tethering/TetheringConfiguration;->tetherableBluetoothRegexs:[Ljava/lang/String;
 
     invoke-static {p1, v0}, Lcom/android/server/connectivity/tethering/TetheringConfiguration;->matchesDownstreamRegexs(Ljava/lang/String;[Ljava/lang/String;)Z
 
-    move-result p1
+    move-result v0
 
-    return p1
+    return v0
 .end method
 
 .method public isUsb(Ljava/lang/String;)Z
     .registers 3
+    .param p1, "iface"  # Ljava/lang/String;
 
-    .line 132
+    .line 148
     iget-object v0, p0, Lcom/android/server/connectivity/tethering/TetheringConfiguration;->tetherableUsbRegexs:[Ljava/lang/String;
 
     invoke-static {p1, v0}, Lcom/android/server/connectivity/tethering/TetheringConfiguration;->matchesDownstreamRegexs(Ljava/lang/String;[Ljava/lang/String;)Z
 
-    move-result p1
+    move-result v0
 
-    return p1
+    return v0
 .end method
 
 .method public isWifi(Ljava/lang/String;)Z
     .registers 3
+    .param p1, "iface"  # Ljava/lang/String;
 
-    .line 136
+    .line 152
     iget-object v0, p0, Lcom/android/server/connectivity/tethering/TetheringConfiguration;->tetherableWifiRegexs:[Ljava/lang/String;
 
     invoke-static {p1, v0}, Lcom/android/server/connectivity/tethering/TetheringConfiguration;->matchesDownstreamRegexs(Ljava/lang/String;[Ljava/lang/String;)Z
 
-    move-result p1
+    move-result v0
 
-    return p1
+    return v0
 .end method
 
 .method public toString()Ljava/lang/String;
     .registers 6
 
-    .line 175
+    .line 191
     new-instance v0, Ljava/util/StringJoiner;
 
     const-string v1, " "
 
     invoke-direct {v0, v1}, Ljava/util/StringJoiner;-><init>(Ljava/lang/CharSequence;)V
 
-    .line 176
+    .line 192
+    .local v0, "sj":Ljava/util/StringJoiner;
     const/4 v1, 0x1
 
     new-array v2, v1, [Ljava/lang/Object;
@@ -1162,7 +1301,7 @@
 
     invoke-virtual {v0, v2}, Ljava/util/StringJoiner;->add(Ljava/lang/CharSequence;)Ljava/util/StringJoiner;
 
-    .line 177
+    .line 193
     new-array v2, v1, [Ljava/lang/Object;
 
     iget-object v3, p0, Lcom/android/server/connectivity/tethering/TetheringConfiguration;->tetherableUsbRegexs:[Ljava/lang/String;
@@ -1181,7 +1320,7 @@
 
     invoke-virtual {v0, v2}, Ljava/util/StringJoiner;->add(Ljava/lang/CharSequence;)Ljava/util/StringJoiner;
 
-    .line 178
+    .line 194
     new-array v2, v1, [Ljava/lang/Object;
 
     iget-object v3, p0, Lcom/android/server/connectivity/tethering/TetheringConfiguration;->tetherableWifiRegexs:[Ljava/lang/String;
@@ -1200,19 +1339,19 @@
 
     invoke-virtual {v0, v2}, Ljava/util/StringJoiner;->add(Ljava/lang/CharSequence;)Ljava/util/StringJoiner;
 
-    .line 179
+    .line 195
     new-array v2, v1, [Ljava/lang/Object;
 
     iget-object v3, p0, Lcom/android/server/connectivity/tethering/TetheringConfiguration;->tetherableBluetoothRegexs:[Ljava/lang/String;
 
-    .line 180
+    .line 196
     invoke-static {v3}, Lcom/android/server/connectivity/tethering/TetheringConfiguration;->makeString([Ljava/lang/String;)Ljava/lang/String;
 
     move-result-object v3
 
     aput-object v3, v2, v4
 
-    .line 179
+    .line 195
     const-string/jumbo v3, "tetherableBluetoothRegexs:%s"
 
     invoke-static {v3, v2}, Ljava/lang/String;->format(Ljava/lang/String;[Ljava/lang/Object;)Ljava/lang/String;
@@ -1221,7 +1360,7 @@
 
     invoke-virtual {v0, v2}, Ljava/util/StringJoiner;->add(Ljava/lang/CharSequence;)Ljava/util/StringJoiner;
 
-    .line 181
+    .line 197
     new-array v2, v1, [Ljava/lang/Object;
 
     iget-boolean v3, p0, Lcom/android/server/connectivity/tethering/TetheringConfiguration;->isDunRequired:Z
@@ -1232,7 +1371,7 @@
 
     aput-object v3, v2, v4
 
-    const-string v3, "isDunRequired:%s"
+    const-string/jumbo v3, "isDunRequired:%s"
 
     invoke-static {v3, v2}, Ljava/lang/String;->format(Ljava/lang/String;[Ljava/lang/Object;)Ljava/lang/String;
 
@@ -1240,7 +1379,7 @@
 
     invoke-virtual {v0, v2}, Ljava/util/StringJoiner;->add(Ljava/lang/CharSequence;)Ljava/util/StringJoiner;
 
-    .line 182
+    .line 198
     new-array v2, v1, [Ljava/lang/Object;
 
     iget-boolean v3, p0, Lcom/android/server/connectivity/tethering/TetheringConfiguration;->chooseUpstreamAutomatically:Z
@@ -1259,12 +1398,12 @@
 
     invoke-virtual {v0, v2}, Ljava/util/StringJoiner;->add(Ljava/lang/CharSequence;)Ljava/util/StringJoiner;
 
-    .line 183
+    .line 199
     new-array v2, v1, [Ljava/lang/Object;
 
     iget-object v3, p0, Lcom/android/server/connectivity/tethering/TetheringConfiguration;->preferredUpstreamIfaceTypes:Ljava/util/Collection;
 
-    .line 184
+    .line 200
     invoke-static {v3}, Lcom/android/server/connectivity/tethering/TetheringConfiguration;->preferredUpstreamNames(Ljava/util/Collection;)[Ljava/lang/String;
 
     move-result-object v3
@@ -1275,7 +1414,7 @@
 
     aput-object v3, v2, v4
 
-    .line 183
+    .line 199
     const-string/jumbo v3, "preferredUpstreamIfaceTypes:%s"
 
     invoke-static {v3, v2}, Ljava/lang/String;->format(Ljava/lang/String;[Ljava/lang/Object;)Ljava/lang/String;
@@ -1284,7 +1423,7 @@
 
     invoke-virtual {v0, v2}, Ljava/util/StringJoiner;->add(Ljava/lang/CharSequence;)Ljava/util/StringJoiner;
 
-    .line 185
+    .line 201
     new-array v2, v1, [Ljava/lang/Object;
 
     iget-object v3, p0, Lcom/android/server/connectivity/tethering/TetheringConfiguration;->provisioningApp:[Ljava/lang/String;
@@ -1303,7 +1442,7 @@
 
     invoke-virtual {v0, v2}, Ljava/util/StringJoiner;->add(Ljava/lang/CharSequence;)Ljava/util/StringJoiner;
 
-    .line 186
+    .line 202
     new-array v2, v1, [Ljava/lang/Object;
 
     iget-object v3, p0, Lcom/android/server/connectivity/tethering/TetheringConfiguration;->provisioningAppNoUi:Ljava/lang/String;
@@ -1318,7 +1457,7 @@
 
     invoke-virtual {v0, v2}, Ljava/util/StringJoiner;->add(Ljava/lang/CharSequence;)Ljava/util/StringJoiner;
 
-    .line 187
+    .line 203
     new-array v2, v1, [Ljava/lang/Object;
 
     iget-boolean v3, p0, Lcom/android/server/connectivity/tethering/TetheringConfiguration;->enableLegacyDhcpServer:Z
@@ -1337,20 +1476,20 @@
 
     invoke-virtual {v0, v2}, Ljava/util/StringJoiner;->add(Ljava/lang/CharSequence;)Ljava/util/StringJoiner;
 
-    .line 188
+    .line 204
     new-array v1, v1, [Ljava/lang/Object;
 
     invoke-virtual {v0}, Ljava/util/StringJoiner;->toString()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v2
 
-    aput-object v0, v1, v4
+    aput-object v2, v1, v4
 
-    const-string v0, "TetheringConfiguration{%s}"
+    const-string v2, "TetheringConfiguration{%s}"
 
-    invoke-static {v0, v1}, Ljava/lang/String;->format(Ljava/lang/String;[Ljava/lang/Object;)Ljava/lang/String;
+    invoke-static {v2, v1}, Ljava/lang/String;->format(Ljava/lang/String;[Ljava/lang/Object;)Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v1
 
-    return-object v0
+    return-object v1
 .end method

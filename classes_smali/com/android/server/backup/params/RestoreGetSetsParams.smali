@@ -18,6 +18,11 @@
 # direct methods
 .method public constructor <init>(Lcom/android/server/backup/transport/TransportClient;Lcom/android/server/backup/restore/ActiveRestoreSession;Landroid/app/backup/IRestoreObserver;Landroid/app/backup/IBackupManagerMonitor;Lcom/android/server/backup/internal/OnTaskFinishedListener;)V
     .registers 6
+    .param p1, "_transportClient"  # Lcom/android/server/backup/transport/TransportClient;
+    .param p2, "_session"  # Lcom/android/server/backup/restore/ActiveRestoreSession;
+    .param p3, "_observer"  # Landroid/app/backup/IRestoreObserver;
+    .param p4, "_monitor"  # Landroid/app/backup/IBackupManagerMonitor;
+    .param p5, "_listener"  # Lcom/android/server/backup/internal/OnTaskFinishedListener;
 
     .line 36
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V

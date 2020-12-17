@@ -49,6 +49,10 @@
 
 .method public onBlobRetrieved(Landroid/net/ipmemorystore/StatusParcelable;Ljava/lang/String;Ljava/lang/String;Landroid/net/ipmemorystore/Blob;)V
     .registers 5
+    .param p1, "status"  # Landroid/net/ipmemorystore/StatusParcelable;
+    .param p2, "l2Key"  # Ljava/lang/String;
+    .param p3, "name"  # Ljava/lang/String;
+    .param p4, "data"  # Landroid/net/ipmemorystore/Blob;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;

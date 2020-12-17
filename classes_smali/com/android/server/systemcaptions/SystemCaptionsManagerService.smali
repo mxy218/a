@@ -17,17 +17,18 @@
 # direct methods
 .method public constructor <init>(Landroid/content/Context;)V
     .registers 5
+    .param p1, "context"  # Landroid/content/Context;
 
     .line 32
     new-instance v0, Lcom/android/server/infra/FrameworkResourcesServiceNameResolver;
 
-    const v1, 0x1040165
+    const v1, 0x104015f
 
     invoke-direct {v0, p1, v1}, Lcom/android/server/infra/FrameworkResourcesServiceNameResolver;-><init>(Landroid/content/Context;I)V
 
     const/4 v1, 0x0
 
-    const/4 v2, 0x4
+    const/4 v2, 0x2
 
     invoke-direct {p0, p1, v0, v1, v2}, Lcom/android/server/infra/AbstractMasterSystemService;-><init>(Landroid/content/Context;Lcom/android/server/infra/ServiceNameResolver;Ljava/lang/String;I)V
 
@@ -50,6 +51,8 @@
 
 .method protected newServiceLocked(IZ)Lcom/android/server/systemcaptions/SystemCaptionsManagerPerUserService;
     .registers 5
+    .param p1, "resolvedUserId"  # I
+    .param p2, "disabled"  # Z
 
     .line 48
     new-instance v0, Lcom/android/server/systemcaptions/SystemCaptionsManagerPerUserService;
@@ -59,6 +62,7 @@
     invoke-direct {v0, p0, v1, p2, p1}, Lcom/android/server/systemcaptions/SystemCaptionsManagerPerUserService;-><init>(Lcom/android/server/systemcaptions/SystemCaptionsManagerService;Ljava/lang/Object;ZI)V
 
     .line 50
+    .local v0, "perUserService":Lcom/android/server/systemcaptions/SystemCaptionsManagerPerUserService;
     invoke-virtual {v0}, Lcom/android/server/systemcaptions/SystemCaptionsManagerPerUserService;->initializeLocked()V
 
     .line 51
@@ -77,32 +81,34 @@
 .end method
 
 .method protected onServiceRemoved(Lcom/android/server/systemcaptions/SystemCaptionsManagerPerUserService;I)V
-    .registers 3
+    .registers 5
+    .param p1, "service"  # Lcom/android/server/systemcaptions/SystemCaptionsManagerPerUserService;
+    .param p2, "userId"  # I
 
     .line 57
-    iget-object p2, p0, Lcom/android/server/systemcaptions/SystemCaptionsManagerService;->mLock:Ljava/lang/Object;
+    iget-object v0, p0, Lcom/android/server/systemcaptions/SystemCaptionsManagerService;->mLock:Ljava/lang/Object;
 
-    monitor-enter p2
+    monitor-enter v0
 
     .line 58
     :try_start_3
     invoke-virtual {p1}, Lcom/android/server/systemcaptions/SystemCaptionsManagerPerUserService;->destroyLocked()V
 
     .line 59
-    monitor-exit p2
+    monitor-exit v0
 
     .line 60
     return-void
 
     .line 59
     :catchall_8
-    move-exception p1
+    move-exception v1
 
-    monitor-exit p2
+    monitor-exit v0
     :try_end_a
     .catchall {:try_start_3 .. :try_end_a} :catchall_8
 
-    throw p1
+    throw v1
 .end method
 
 .method public onStart()V

@@ -17,6 +17,7 @@
 # direct methods
 .method constructor <init>(Ljava/lang/String;)V
     .registers 2
+    .param p1, "tag"  # Ljava/lang/String;
 
     .line 63
     invoke-direct {p0, p1}, Lcom/android/server/firewall/FilterFactory;-><init>(Ljava/lang/String;)V
@@ -27,7 +28,8 @@
 
 # virtual methods
 .method public newFilter(Lorg/xmlpull/v1/XmlPullParser;)Lcom/android/server/firewall/Filter;
-    .registers 5
+    .registers 6
+    .param p1, "parser"  # Lorg/xmlpull/v1/XmlPullParser;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Ljava/io/IOException;,
@@ -45,22 +47,23 @@
     move-result-object v1
 
     .line 69
+    .local v1, "packageName":Ljava/lang/String;
     if-eqz v1, :cond_10
 
     .line 74
-    new-instance p1, Lcom/android/server/firewall/SenderPackageFilter;
+    new-instance v0, Lcom/android/server/firewall/SenderPackageFilter;
 
-    invoke-direct {p1, v1}, Lcom/android/server/firewall/SenderPackageFilter;-><init>(Ljava/lang/String;)V
+    invoke-direct {v0, v1}, Lcom/android/server/firewall/SenderPackageFilter;-><init>(Ljava/lang/String;)V
 
-    return-object p1
+    return-object v0
 
     .line 70
     :cond_10
-    new-instance v1, Lorg/xmlpull/v1/XmlPullParserException;
+    new-instance v2, Lorg/xmlpull/v1/XmlPullParserException;
 
-    const-string v2, "A package name must be specified."
+    const-string v3, "A package name must be specified."
 
-    invoke-direct {v1, v2, p1, v0}, Lorg/xmlpull/v1/XmlPullParserException;-><init>(Ljava/lang/String;Lorg/xmlpull/v1/XmlPullParser;Ljava/lang/Throwable;)V
+    invoke-direct {v2, v3, p1, v0}, Lorg/xmlpull/v1/XmlPullParserException;-><init>(Ljava/lang/String;Lorg/xmlpull/v1/XmlPullParser;Ljava/lang/Throwable;)V
 
-    throw v1
+    throw v2
 .end method

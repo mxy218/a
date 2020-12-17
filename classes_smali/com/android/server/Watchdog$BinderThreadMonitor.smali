@@ -21,7 +21,7 @@
 .method private constructor <init>()V
     .registers 1
 
-    .line 281
+    .line 308
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
     return-void
@@ -29,8 +29,9 @@
 
 .method synthetic constructor <init>(Lcom/android/server/Watchdog$1;)V
     .registers 2
+    .param p1, "x0"  # Lcom/android/server/Watchdog$1;
 
-    .line 281
+    .line 308
     invoke-direct {p0}, Lcom/android/server/Watchdog$BinderThreadMonitor;-><init>()V
 
     return-void
@@ -41,9 +42,9 @@
 .method public monitor()V
     .registers 1
 
-    .line 284
+    .line 311
     invoke-static {}, Landroid/os/Binder;->blockUntilThreadAvailable()V
 
-    .line 285
+    .line 312
     return-void
 .end method

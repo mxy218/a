@@ -27,7 +27,8 @@
 
 # virtual methods
 .method public getEnabledInputMethodListAsUser(I)Ljava/util/List;
-    .registers 2
+    .registers 3
+    .param p1, "userId"  # I
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(I)",
@@ -40,13 +41,14 @@
     .line 79
     invoke-static {}, Ljava/util/Collections;->emptyList()Ljava/util/List;
 
-    move-result-object p1
+    move-result-object v0
 
-    return-object p1
+    return-object v0
 .end method
 
 .method public getInputMethodListAsUser(I)Ljava/util/List;
-    .registers 2
+    .registers 3
+    .param p1, "userId"  # I
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(I)",
@@ -59,9 +61,9 @@
     .line 74
     invoke-static {}, Ljava/util/Collections;->emptyList()Ljava/util/List;
 
-    move-result-object p1
+    move-result-object v0
 
-    return-object p1
+    return-object v0
 .end method
 
 .method public hideCurrentInputMethod()V
@@ -73,6 +75,7 @@
 
 .method public setInteractive(Z)V
     .registers 2
+    .param p1, "interactive"  # Z
 
     .line 66
     return-void

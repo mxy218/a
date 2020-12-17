@@ -26,8 +26,9 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/BatteryService;Landroid/content/Intent;)V
     .registers 3
+    .param p1, "this$0"  # Lcom/android/server/BatteryService;
 
-    .line 632
+    .line 865
     iput-object p1, p0, Lcom/android/server/BatteryService$9;->this$0:Lcom/android/server/BatteryService;
 
     iput-object p2, p0, Lcom/android/server/BatteryService$9;->val$statusIntent:Landroid/content/Intent;
@@ -42,10 +43,10 @@
 .method public run()V
     .registers 4
 
-    .line 635
+    .line 868
     iget-object v0, p0, Lcom/android/server/BatteryService$9;->this$0:Lcom/android/server/BatteryService;
 
-    invoke-static {v0}, Lcom/android/server/BatteryService;->access$900(Lcom/android/server/BatteryService;)Landroid/content/Context;
+    invoke-static {v0}, Lcom/android/server/BatteryService;->access$1000(Lcom/android/server/BatteryService;)Landroid/content/Context;
 
     move-result-object v0
 
@@ -55,6 +56,6 @@
 
     invoke-virtual {v0, v1, v2}, Landroid/content/Context;->sendBroadcastAsUser(Landroid/content/Intent;Landroid/os/UserHandle;)V
 
-    .line 636
+    .line 869
     return-void
 .end method

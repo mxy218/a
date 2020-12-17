@@ -22,7 +22,7 @@
 .method private constructor <init>(Lcom/android/server/biometrics/fingerprint/FingerprintService;)V
     .registers 2
 
-    .line 121
+    .line 130
     iput-object p1, p0, Lcom/android/server/biometrics/fingerprint/FingerprintService$LockoutReceiver;->this$0:Lcom/android/server/biometrics/fingerprint/FingerprintService;
 
     invoke-direct {p0}, Landroid/content/BroadcastReceiver;-><init>()V
@@ -32,8 +32,10 @@
 
 .method synthetic constructor <init>(Lcom/android/server/biometrics/fingerprint/FingerprintService;Lcom/android/server/biometrics/fingerprint/FingerprintService$1;)V
     .registers 3
+    .param p1, "x0"  # Lcom/android/server/biometrics/fingerprint/FingerprintService;
+    .param p2, "x1"  # Lcom/android/server/biometrics/fingerprint/FingerprintService$1;
 
-    .line 121
+    .line 130
     invoke-direct {p0, p1}, Lcom/android/server/biometrics/fingerprint/FingerprintService$LockoutReceiver;-><init>(Lcom/android/server/biometrics/fingerprint/FingerprintService;)V
 
     return-void
@@ -42,67 +44,71 @@
 
 # virtual methods
 .method public onReceive(Landroid/content/Context;Landroid/content/Intent;)V
-    .registers 5
+    .registers 6
+    .param p1, "context"  # Landroid/content/Context;
+    .param p2, "intent"  # Landroid/content/Intent;
 
-    .line 124
-    iget-object p1, p0, Lcom/android/server/biometrics/fingerprint/FingerprintService$LockoutReceiver;->this$0:Lcom/android/server/biometrics/fingerprint/FingerprintService;
+    .line 133
+    iget-object v0, p0, Lcom/android/server/biometrics/fingerprint/FingerprintService$LockoutReceiver;->this$0:Lcom/android/server/biometrics/fingerprint/FingerprintService;
 
-    invoke-virtual {p1}, Lcom/android/server/biometrics/fingerprint/FingerprintService;->getTag()Ljava/lang/String;
+    invoke-virtual {v0}, Lcom/android/server/biometrics/fingerprint/FingerprintService;->getTag()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    new-instance v0, Ljava/lang/StringBuilder;
+    new-instance v1, Ljava/lang/StringBuilder;
 
-    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v1, "Resetting lockout: "
+    const-string v2, "Resetting lockout: "
 
-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {p2}, Landroid/content/Intent;->getAction()Ljava/lang/String;
+
+    move-result-object v2
+
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v1
+
+    invoke-static {v0, v1}, Landroid/util/Slog;->v(Ljava/lang/String;Ljava/lang/String;)I
+
+    .line 134
+    iget-object v0, p0, Lcom/android/server/biometrics/fingerprint/FingerprintService$LockoutReceiver;->this$0:Lcom/android/server/biometrics/fingerprint/FingerprintService;
+
+    invoke-virtual {v0}, Lcom/android/server/biometrics/fingerprint/FingerprintService;->getLockoutResetIntent()Ljava/lang/String;
+
+    move-result-object v0
 
     invoke-virtual {p2}, Landroid/content/Intent;->getAction()Ljava/lang/String;
 
     move-result-object v1
 
-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    move-result v0
 
-    move-result-object v0
+    if-eqz v0, :cond_3b
 
-    invoke-static {p1, v0}, Landroid/util/Slog;->v(Ljava/lang/String;Ljava/lang/String;)I
+    .line 135
+    const/4 v0, 0x0
 
-    .line 125
-    iget-object p1, p0, Lcom/android/server/biometrics/fingerprint/FingerprintService$LockoutReceiver;->this$0:Lcom/android/server/biometrics/fingerprint/FingerprintService;
+    const-string/jumbo v1, "lockout_reset_user"
 
-    invoke-virtual {p1}, Lcom/android/server/biometrics/fingerprint/FingerprintService;->getLockoutResetIntent()Ljava/lang/String;
+    invoke-virtual {p2, v1, v0}, Landroid/content/Intent;->getIntExtra(Ljava/lang/String;I)I
 
-    move-result-object p1
+    move-result v1
 
-    invoke-virtual {p2}, Landroid/content/Intent;->getAction()Ljava/lang/String;
+    .line 136
+    .local v1, "user":I
+    iget-object v2, p0, Lcom/android/server/biometrics/fingerprint/FingerprintService$LockoutReceiver;->this$0:Lcom/android/server/biometrics/fingerprint/FingerprintService;
 
-    move-result-object v0
+    invoke-static {v2, v0, v1}, Lcom/android/server/biometrics/fingerprint/FingerprintService;->access$000(Lcom/android/server/biometrics/fingerprint/FingerprintService;ZI)V
 
-    invoke-virtual {p1, v0}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
-
-    move-result p1
-
-    if-eqz p1, :cond_3a
-
-    .line 126
-    const/4 p1, 0x0
-
-    const-string v0, "lockout_reset_user"
-
-    invoke-virtual {p2, v0, p1}, Landroid/content/Intent;->getIntExtra(Ljava/lang/String;I)I
-
-    move-result p2
-
-    .line 127
-    iget-object v0, p0, Lcom/android/server/biometrics/fingerprint/FingerprintService$LockoutReceiver;->this$0:Lcom/android/server/biometrics/fingerprint/FingerprintService;
-
-    invoke-static {v0, p1, p2}, Lcom/android/server/biometrics/fingerprint/FingerprintService;->access$000(Lcom/android/server/biometrics/fingerprint/FingerprintService;ZI)V
-
-    .line 129
-    :cond_3a
+    .line 138
+    .end local v1  # "user":I
+    :cond_3b
     return-void
 .end method

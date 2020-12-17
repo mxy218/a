@@ -63,6 +63,8 @@
 
 .method private constructor <init>(IJ)V
     .registers 4
+    .param p1, "type"  # I
+    .param p2, "value"  # J
 
     .line 48
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -79,6 +81,7 @@
 
 .method public static of(J)Lcom/android/server/backup/remote/RemoteResult;
     .registers 4
+    .param p0, "value"  # J
 
     .line 42
     new-instance v0, Lcom/android/server/backup/remote/RemoteResult;
@@ -152,6 +155,7 @@
 # virtual methods
 .method public equals(Ljava/lang/Object;)Z
     .registers 9
+    .param p1, "o"  # Ljava/lang/Object;
 
     .line 89
     const/4 v0, 0x1
@@ -174,29 +178,32 @@
 
     .line 95
     :cond_a
-    check-cast p1, Lcom/android/server/backup/remote/RemoteResult;
+    move-object v1, p1
+
+    check-cast v1, Lcom/android/server/backup/remote/RemoteResult;
 
     .line 96
-    iget v1, p0, Lcom/android/server/backup/remote/RemoteResult;->mType:I
+    .local v1, "that":Lcom/android/server/backup/remote/RemoteResult;
+    iget v3, p0, Lcom/android/server/backup/remote/RemoteResult;->mType:I
 
-    iget v3, p1, Lcom/android/server/backup/remote/RemoteResult;->mType:I
+    iget v4, v1, Lcom/android/server/backup/remote/RemoteResult;->mType:I
 
-    if-ne v1, v3, :cond_1b
+    if-ne v3, v4, :cond_1c
 
     iget-wide v3, p0, Lcom/android/server/backup/remote/RemoteResult;->mValue:J
 
-    iget-wide v5, p1, Lcom/android/server/backup/remote/RemoteResult;->mValue:J
+    iget-wide v5, v1, Lcom/android/server/backup/remote/RemoteResult;->mValue:J
 
-    cmp-long p1, v3, v5
+    cmp-long v3, v3, v5
 
-    if-nez p1, :cond_1b
+    if-nez v3, :cond_1c
 
-    goto :goto_1c
+    goto :goto_1d
 
-    :cond_1b
+    :cond_1c
     move v0, v2
 
-    :goto_1c
+    :goto_1d
     return v0
 .end method
 

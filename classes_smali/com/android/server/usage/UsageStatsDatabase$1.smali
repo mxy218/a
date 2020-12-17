@@ -24,6 +24,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/usage/UsageStatsDatabase;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/usage/UsageStatsDatabase;
 
     .line 262
     iput-object p1, p0, Lcom/android/server/usage/UsageStatsDatabase$1;->this$0:Lcom/android/server/usage/UsageStatsDatabase;
@@ -36,16 +37,18 @@
 
 # virtual methods
 .method public accept(Ljava/io/File;Ljava/lang/String;)Z
-    .registers 3
+    .registers 4
+    .param p1, "dir"  # Ljava/io/File;
+    .param p2, "name"  # Ljava/lang/String;
 
     .line 265
-    const-string p1, ".bak"
+    const-string v0, ".bak"
 
-    invoke-virtual {p2, p1}, Ljava/lang/String;->endsWith(Ljava/lang/String;)Z
+    invoke-virtual {p2, v0}, Ljava/lang/String;->endsWith(Ljava/lang/String;)Z
 
-    move-result p1
+    move-result v0
 
-    xor-int/lit8 p1, p1, 0x1
+    xor-int/lit8 v0, v0, 0x1
 
-    return p1
+    return v0
 .end method

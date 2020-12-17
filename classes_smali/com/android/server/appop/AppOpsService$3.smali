@@ -24,8 +24,9 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/appop/AppOpsService;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/appop/AppOpsService;
 
-    .line 830
+    .line 835
     iput-object p1, p0, Lcom/android/server/appop/AppOpsService$3;->this$0:Lcom/android/server/appop/AppOpsService;
 
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -37,35 +38,38 @@
 # virtual methods
 .method public getPackageTrustedToInstallApps(Ljava/lang/String;I)I
     .registers 5
+    .param p1, "packageName"  # Ljava/lang/String;
+    .param p2, "uid"  # I
 
-    .line 833
+    .line 838
     iget-object v0, p0, Lcom/android/server/appop/AppOpsService$3;->this$0:Lcom/android/server/appop/AppOpsService;
 
     const/16 v1, 0x42
 
     invoke-virtual {v0, v1, p2, p1}, Lcom/android/server/appop/AppOpsService;->checkOperation(IILjava/lang/String;)I
 
-    move-result p1
+    move-result v0
 
-    .line 835
-    if-eqz p1, :cond_10
+    .line 840
+    .local v0, "appOpMode":I
+    if-eqz v0, :cond_10
 
-    const/4 p2, 0x2
+    const/4 v1, 0x2
 
-    if-eq p1, p2, :cond_e
+    if-eq v0, v1, :cond_e
 
-    .line 841
-    return p2
+    .line 846
+    return v1
 
-    .line 839
+    .line 844
     :cond_e
-    const/4 p1, 0x1
+    const/4 v1, 0x1
 
-    return p1
+    return v1
 
-    .line 837
+    .line 842
     :cond_10
-    const/4 p1, 0x0
+    const/4 v1, 0x0
 
-    return p1
+    return v1
 .end method

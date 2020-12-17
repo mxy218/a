@@ -30,6 +30,8 @@
 # direct methods
 .method constructor <init>(ILandroid/os/IBinder;)V
     .registers 3
+    .param p1, "riid"  # I
+    .param p2, "recorderToken"  # Landroid/os/IBinder;
 
     .line 504
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -83,6 +85,7 @@
     move-exception v1
 
     .line 518
+    .local v1, "e":Landroid/os/RemoteException;
     const-string v2, "AudioService.RecordingActivityMonitor"
 
     const-string v3, "Could not link to recorder death"

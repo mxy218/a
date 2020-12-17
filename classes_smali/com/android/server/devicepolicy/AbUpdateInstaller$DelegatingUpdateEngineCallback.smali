@@ -23,6 +23,8 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/devicepolicy/UpdateInstaller;Landroid/os/UpdateEngine;)V
     .registers 3
+    .param p1, "updateInstaller"  # Lcom/android/server/devicepolicy/UpdateInstaller;
+    .param p2, "updateEngine"  # Landroid/os/UpdateEngine;
 
     .line 264
     invoke-direct {p0}, Landroid/os/UpdateEngineCallback;-><init>()V
@@ -41,6 +43,7 @@
 # virtual methods
 .method public onPayloadApplicationComplete(I)V
     .registers 8
+    .param p1, "errorCode"  # I
 
     .line 276
     iget-object v0, p0, Lcom/android/server/devicepolicy/AbUpdateInstaller$DelegatingUpdateEngineCallback;->mUpdateEngine:Landroid/os/UpdateEngine;
@@ -51,9 +54,9 @@
     if-nez p1, :cond_d
 
     .line 278
-    iget-object p1, p0, Lcom/android/server/devicepolicy/AbUpdateInstaller$DelegatingUpdateEngineCallback;->mUpdateInstaller:Lcom/android/server/devicepolicy/UpdateInstaller;
+    iget-object v0, p0, Lcom/android/server/devicepolicy/AbUpdateInstaller$DelegatingUpdateEngineCallback;->mUpdateInstaller:Lcom/android/server/devicepolicy/UpdateInstaller;
 
-    invoke-virtual {p1}, Lcom/android/server/devicepolicy/UpdateInstaller;->notifyCallbackOnSuccess()V
+    invoke-virtual {v0}, Lcom/android/server/devicepolicy/UpdateInstaller;->notifyCallbackOnSuccess()V
 
     goto :goto_48
 
@@ -109,16 +112,16 @@
 
     invoke-virtual {v4}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v4
 
-    invoke-interface {v2, v3, p1}, Ljava/util/Map;->getOrDefault(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+    invoke-interface {v2, v3, v4}, Ljava/util/Map;->getOrDefault(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v2
 
-    check-cast p1, Ljava/lang/String;
+    check-cast v2, Ljava/lang/String;
 
     .line 280
-    invoke-virtual {v0, v1, p1}, Lcom/android/server/devicepolicy/UpdateInstaller;->notifyCallbackOnError(ILjava/lang/String;)V
+    invoke-virtual {v0, v1, v2}, Lcom/android/server/devicepolicy/UpdateInstaller;->notifyCallbackOnError(ILjava/lang/String;)V
 
     .line 285
     :goto_48
@@ -127,6 +130,8 @@
 
 .method public onStatusUpdate(IF)V
     .registers 3
+    .param p1, "statusCode"  # I
+    .param p2, "percentage"  # F
 
     .line 271
     return-void

@@ -21,8 +21,9 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/camera/CameraServiceProxy;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/camera/CameraServiceProxy;
 
-    .line 168
+    .line 153
     iput-object p1, p0, Lcom/android/server/camera/CameraServiceProxy$1;->this$0:Lcom/android/server/camera/CameraServiceProxy;
 
     invoke-direct {p0}, Landroid/content/BroadcastReceiver;-><init>()V
@@ -33,170 +34,173 @@
 
 # virtual methods
 .method public onReceive(Landroid/content/Context;Landroid/content/Intent;)V
-    .registers 8
+    .registers 10
+    .param p1, "context"  # Landroid/content/Context;
+    .param p2, "intent"  # Landroid/content/Intent;
 
-    .line 171
+    .line 156
     invoke-virtual {p2}, Landroid/content/Intent;->getAction()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    .line 172
-    if-nez p1, :cond_7
+    .line 157
+    .local v0, "action":Ljava/lang/String;
+    if-nez v0, :cond_7
 
     return-void
 
-    .line 174
+    .line 159
     :cond_7
-    const/4 p2, -0x1
+    const/4 v1, -0x1
 
-    invoke-virtual {p1}, Ljava/lang/String;->hashCode()I
+    invoke-virtual {v0}, Ljava/lang/String;->hashCode()I
 
-    move-result v0
+    move-result v2
 
-    const/4 v1, 0x4
+    const/4 v3, 0x4
 
-    const/4 v2, 0x3
+    const/4 v4, 0x3
 
-    const/4 v3, 0x2
+    const/4 v5, 0x2
 
-    const/4 v4, 0x1
+    const/4 v6, 0x1
 
-    sparse-switch v0, :sswitch_data_72
+    sparse-switch v2, :sswitch_data_72
 
     :cond_13
     goto :goto_45
 
     :sswitch_14
-    const-string v0, "android.intent.action.USER_ADDED"
+    const-string v2, "android.intent.action.USER_ADDED"
 
-    invoke-virtual {p1, v0}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v0, v2}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result p1
+    move-result v2
 
-    if-eqz p1, :cond_13
+    if-eqz v2, :cond_13
 
-    const/4 p2, 0x0
+    const/4 v1, 0x0
 
     goto :goto_45
 
     :sswitch_1e
-    const-string v0, "android.intent.action.MANAGED_PROFILE_REMOVED"
+    const-string v2, "android.intent.action.MANAGED_PROFILE_REMOVED"
 
-    invoke-virtual {p1, v0}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v0, v2}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result p1
+    move-result v2
 
-    if-eqz p1, :cond_13
+    if-eqz v2, :cond_13
 
-    move p2, v1
+    move v1, v3
 
     goto :goto_45
 
     :sswitch_28
-    const-string v0, "android.intent.action.USER_INFO_CHANGED"
+    const-string v2, "android.intent.action.USER_INFO_CHANGED"
 
-    invoke-virtual {p1, v0}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v0, v2}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result p1
+    move-result v2
 
-    if-eqz p1, :cond_13
+    if-eqz v2, :cond_13
 
-    move p2, v3
+    move v1, v5
 
     goto :goto_45
 
     :sswitch_32
-    const-string v0, "android.intent.action.MANAGED_PROFILE_ADDED"
+    const-string v2, "android.intent.action.MANAGED_PROFILE_ADDED"
 
-    invoke-virtual {p1, v0}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v0, v2}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result p1
+    move-result v2
 
-    if-eqz p1, :cond_13
+    if-eqz v2, :cond_13
 
-    move p2, v2
+    move v1, v4
 
     goto :goto_45
 
     :sswitch_3c
-    const-string v0, "android.intent.action.USER_REMOVED"
+    const-string v2, "android.intent.action.USER_REMOVED"
 
-    invoke-virtual {p1, v0}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v0, v2}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result p1
+    move-result v2
 
-    if-eqz p1, :cond_13
+    if-eqz v2, :cond_13
 
-    move p2, v4
+    move v1, v6
 
     :goto_45
-    if-eqz p2, :cond_50
+    if-eqz v1, :cond_50
 
-    if-eq p2, v4, :cond_50
+    if-eq v1, v6, :cond_50
 
-    if-eq p2, v3, :cond_50
+    if-eq v1, v5, :cond_50
 
-    if-eq p2, v2, :cond_50
+    if-eq v1, v4, :cond_50
 
-    if-eq p2, v1, :cond_50
+    if-eq v1, v3, :cond_50
 
     goto :goto_6e
 
-    .line 180
+    .line 165
     :cond_50
-    iget-object p1, p0, Lcom/android/server/camera/CameraServiceProxy$1;->this$0:Lcom/android/server/camera/CameraServiceProxy;
+    iget-object v1, p0, Lcom/android/server/camera/CameraServiceProxy$1;->this$0:Lcom/android/server/camera/CameraServiceProxy;
 
-    invoke-static {p1}, Lcom/android/server/camera/CameraServiceProxy;->access$000(Lcom/android/server/camera/CameraServiceProxy;)Ljava/lang/Object;
+    invoke-static {v1}, Lcom/android/server/camera/CameraServiceProxy;->access$000(Lcom/android/server/camera/CameraServiceProxy;)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v1
 
-    monitor-enter p1
+    monitor-enter v1
 
-    .line 182
+    .line 167
     :try_start_57
-    iget-object p2, p0, Lcom/android/server/camera/CameraServiceProxy$1;->this$0:Lcom/android/server/camera/CameraServiceProxy;
+    iget-object v2, p0, Lcom/android/server/camera/CameraServiceProxy$1;->this$0:Lcom/android/server/camera/CameraServiceProxy;
 
-    invoke-static {p2}, Lcom/android/server/camera/CameraServiceProxy;->access$100(Lcom/android/server/camera/CameraServiceProxy;)Ljava/util/Set;
+    invoke-static {v2}, Lcom/android/server/camera/CameraServiceProxy;->access$100(Lcom/android/server/camera/CameraServiceProxy;)Ljava/util/Set;
 
-    move-result-object p2
+    move-result-object v2
 
-    if-nez p2, :cond_61
+    if-nez v2, :cond_61
 
-    monitor-exit p1
+    monitor-exit v1
 
     return-void
 
-    .line 183
+    .line 168
     :cond_61
-    iget-object p2, p0, Lcom/android/server/camera/CameraServiceProxy$1;->this$0:Lcom/android/server/camera/CameraServiceProxy;
+    iget-object v2, p0, Lcom/android/server/camera/CameraServiceProxy$1;->this$0:Lcom/android/server/camera/CameraServiceProxy;
 
-    iget-object v0, p0, Lcom/android/server/camera/CameraServiceProxy$1;->this$0:Lcom/android/server/camera/CameraServiceProxy;
+    iget-object v3, p0, Lcom/android/server/camera/CameraServiceProxy$1;->this$0:Lcom/android/server/camera/CameraServiceProxy;
 
-    invoke-static {v0}, Lcom/android/server/camera/CameraServiceProxy;->access$200(Lcom/android/server/camera/CameraServiceProxy;)I
+    invoke-static {v3}, Lcom/android/server/camera/CameraServiceProxy;->access$200(Lcom/android/server/camera/CameraServiceProxy;)I
 
-    move-result v0
+    move-result v3
 
-    invoke-static {p2, v0}, Lcom/android/server/camera/CameraServiceProxy;->access$300(Lcom/android/server/camera/CameraServiceProxy;I)V
+    invoke-static {v2, v3}, Lcom/android/server/camera/CameraServiceProxy;->access$300(Lcom/android/server/camera/CameraServiceProxy;I)V
 
-    .line 184
-    monitor-exit p1
+    .line 169
+    monitor-exit v1
 
-    .line 185
+    .line 170
     nop
 
-    .line 190
+    .line 175
     :goto_6e
     return-void
 
-    .line 184
+    .line 169
     :catchall_6f
-    move-exception p2
+    move-exception v2
 
-    monitor-exit p1
+    monitor-exit v1
     :try_end_71
     .catchall {:try_start_57 .. :try_end_71} :catchall_6f
 
-    throw p2
+    throw v2
 
     :sswitch_data_72
     .sparse-switch

@@ -16,6 +16,7 @@
 # direct methods
 .method constructor <init>(Landroid/content/Context;)V
     .registers 5
+    .param p1, "context"  # Landroid/content/Context;
 
     .line 53
     const-string v0, "backupencryption.db"
@@ -55,6 +56,7 @@
     move-exception v0
 
     .line 99
+    .local v0, "e":Landroid/database/sqlite/SQLiteException;
     new-instance v1, Lcom/android/server/backup/encryption/storage/EncryptionDbException;
 
     invoke-direct {v1, v0}, Lcom/android/server/backup/encryption/storage/EncryptionDbException;-><init>(Ljava/lang/Throwable;)V
@@ -85,6 +87,7 @@
     move-exception v0
 
     .line 87
+    .local v0, "e":Landroid/database/sqlite/SQLiteException;
     new-instance v1, Lcom/android/server/backup/encryption/storage/EncryptionDbException;
 
     invoke-direct {v1, v0}, Lcom/android/server/backup/encryption/storage/EncryptionDbException;-><init>(Ljava/lang/Throwable;)V
@@ -94,6 +97,7 @@
 
 .method public onCreate(Landroid/database/sqlite/SQLiteDatabase;)V
     .registers 3
+    .param p1, "db"  # Landroid/database/sqlite/SQLiteDatabase;
 
     .line 64
     const-string v0, "CREATE TABLE tertiary_keys ( _id INTEGER PRIMARY KEY,secondary_key_alias TEXT,package_name TEXT,wrapped_key_bytes BLOB,UNIQUE(secondary_key_alias,package_name))"
@@ -105,12 +109,15 @@
 .end method
 
 .method public onDowngrade(Landroid/database/sqlite/SQLiteDatabase;II)V
-    .registers 4
+    .registers 5
+    .param p1, "db"  # Landroid/database/sqlite/SQLiteDatabase;
+    .param p2, "oldVersion"  # I
+    .param p3, "newVersion"  # I
 
     .line 75
-    const-string p2, "DROP TABLE IF EXISTS tertiary_keys"
+    const-string v0, "DROP TABLE IF EXISTS tertiary_keys"
 
-    invoke-virtual {p1, p2}, Landroid/database/sqlite/SQLiteDatabase;->execSQL(Ljava/lang/String;)V
+    invoke-virtual {p1, v0}, Landroid/database/sqlite/SQLiteDatabase;->execSQL(Ljava/lang/String;)V
 
     .line 76
     invoke-virtual {p0, p1}, Lcom/android/server/backup/encryption/storage/BackupEncryptionDbHelper;->onCreate(Landroid/database/sqlite/SQLiteDatabase;)V
@@ -120,12 +127,15 @@
 .end method
 
 .method public onUpgrade(Landroid/database/sqlite/SQLiteDatabase;II)V
-    .registers 4
+    .registers 5
+    .param p1, "db"  # Landroid/database/sqlite/SQLiteDatabase;
+    .param p2, "oldVersion"  # I
+    .param p3, "newVersion"  # I
 
     .line 69
-    const-string p2, "DROP TABLE IF EXISTS tertiary_keys"
+    const-string v0, "DROP TABLE IF EXISTS tertiary_keys"
 
-    invoke-virtual {p1, p2}, Landroid/database/sqlite/SQLiteDatabase;->execSQL(Ljava/lang/String;)V
+    invoke-virtual {p1, v0}, Landroid/database/sqlite/SQLiteDatabase;->execSQL(Ljava/lang/String;)V
 
     .line 70
     invoke-virtual {p0, p1}, Lcom/android/server/backup/encryption/storage/BackupEncryptionDbHelper;->onCreate(Landroid/database/sqlite/SQLiteDatabase;)V
@@ -148,6 +158,7 @@
     move-result-object v0
 
     .line 58
+    .local v0, "db":Landroid/database/sqlite/SQLiteDatabase;
     const-string v1, "DROP TABLE IF EXISTS tertiary_keys"
 
     invoke-virtual {v0, v1}, Landroid/database/sqlite/SQLiteDatabase;->execSQL(Ljava/lang/String;)V

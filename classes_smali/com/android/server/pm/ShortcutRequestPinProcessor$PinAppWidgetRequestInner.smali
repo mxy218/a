@@ -23,6 +23,11 @@
 # direct methods
 .method private constructor <init>(Lcom/android/server/pm/ShortcutRequestPinProcessor;Landroid/content/IntentSender;ILandroid/appwidget/AppWidgetProviderInfo;Landroid/os/Bundle;)V
     .registers 7
+    .param p1, "processor"  # Lcom/android/server/pm/ShortcutRequestPinProcessor;
+    .param p2, "resultIntent"  # Landroid/content/IntentSender;
+    .param p3, "launcherUid"  # I
+    .param p4, "appWidgetProviderInfo"  # Landroid/appwidget/AppWidgetProviderInfo;
+    .param p5, "extras"  # Landroid/os/Bundle;
 
     .line 152
     const/4 v0, 0x0
@@ -41,6 +46,12 @@
 
 .method synthetic constructor <init>(Lcom/android/server/pm/ShortcutRequestPinProcessor;Landroid/content/IntentSender;ILandroid/appwidget/AppWidgetProviderInfo;Landroid/os/Bundle;Lcom/android/server/pm/ShortcutRequestPinProcessor$1;)V
     .registers 7
+    .param p1, "x0"  # Lcom/android/server/pm/ShortcutRequestPinProcessor;
+    .param p2, "x1"  # Landroid/content/IntentSender;
+    .param p3, "x2"  # I
+    .param p4, "x3"  # Landroid/appwidget/AppWidgetProviderInfo;
+    .param p5, "x4"  # Landroid/os/Bundle;
+    .param p6, "x5"  # Lcom/android/server/pm/ShortcutRequestPinProcessor$1;
 
     .line 145
     invoke-direct/range {p0 .. p5}, Lcom/android/server/pm/ShortcutRequestPinProcessor$PinAppWidgetRequestInner;-><init>(Lcom/android/server/pm/ShortcutRequestPinProcessor;Landroid/content/IntentSender;ILandroid/appwidget/AppWidgetProviderInfo;Landroid/os/Bundle;)V

@@ -25,6 +25,8 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/am/SettingsToPropertiesMapper;Landroid/os/Handler;Ljava/lang/String;Ljava/lang/String;)V
     .registers 5
+    .param p1, "this$0"  # Lcom/android/server/am/SettingsToPropertiesMapper;
+    .param p2, "x0"  # Landroid/os/Handler;
 
     .line 120
     iput-object p1, p0, Lcom/android/server/am/SettingsToPropertiesMapper$1;->this$0:Lcom/android/server/am/SettingsToPropertiesMapper;
@@ -41,16 +43,17 @@
 
 # virtual methods
 .method public onChange(Z)V
-    .registers 4
+    .registers 5
+    .param p1, "selfChange"  # Z
 
     .line 123
-    iget-object p1, p0, Lcom/android/server/am/SettingsToPropertiesMapper$1;->this$0:Lcom/android/server/am/SettingsToPropertiesMapper;
+    iget-object v0, p0, Lcom/android/server/am/SettingsToPropertiesMapper$1;->this$0:Lcom/android/server/am/SettingsToPropertiesMapper;
 
-    iget-object v0, p0, Lcom/android/server/am/SettingsToPropertiesMapper$1;->val$globalSetting:Ljava/lang/String;
+    iget-object v1, p0, Lcom/android/server/am/SettingsToPropertiesMapper$1;->val$globalSetting:Ljava/lang/String;
 
-    iget-object v1, p0, Lcom/android/server/am/SettingsToPropertiesMapper$1;->val$propName:Ljava/lang/String;
+    iget-object v2, p0, Lcom/android/server/am/SettingsToPropertiesMapper$1;->val$propName:Ljava/lang/String;
 
-    invoke-virtual {p1, v0, v1}, Lcom/android/server/am/SettingsToPropertiesMapper;->updatePropertyFromSetting(Ljava/lang/String;Ljava/lang/String;)V
+    invoke-virtual {v0, v1, v2}, Lcom/android/server/am/SettingsToPropertiesMapper;->updatePropertyFromSetting(Ljava/lang/String;Ljava/lang/String;)V
 
     .line 124
     return-void

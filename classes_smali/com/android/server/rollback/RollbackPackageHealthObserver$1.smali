@@ -27,8 +27,9 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/rollback/RollbackPackageHealthObserver;Landroid/content/rollback/RollbackManager;ILandroid/content/pm/VersionedPackage;)V
     .registers 5
+    .param p1, "this$0"  # Lcom/android/server/rollback/RollbackPackageHealthObserver;
 
-    .line 296
+    .line 275
     iput-object p1, p0, Lcom/android/server/rollback/RollbackPackageHealthObserver$1;->this$0:Lcom/android/server/rollback/RollbackPackageHealthObserver;
 
     iput-object p2, p0, Lcom/android/server/rollback/RollbackPackageHealthObserver$1;->val$rollbackManager:Landroid/content/rollback/RollbackManager;
@@ -45,19 +46,21 @@
 
 # virtual methods
 .method public onReceive(Landroid/content/Context;Landroid/content/Intent;)V
-    .registers 5
+    .registers 7
+    .param p1, "context"  # Landroid/content/Context;
+    .param p2, "intent"  # Landroid/content/Intent;
 
-    .line 299
-    iget-object p1, p0, Lcom/android/server/rollback/RollbackPackageHealthObserver$1;->this$0:Lcom/android/server/rollback/RollbackPackageHealthObserver;
+    .line 278
+    iget-object v0, p0, Lcom/android/server/rollback/RollbackPackageHealthObserver$1;->this$0:Lcom/android/server/rollback/RollbackPackageHealthObserver;
 
-    iget-object p2, p0, Lcom/android/server/rollback/RollbackPackageHealthObserver$1;->val$rollbackManager:Landroid/content/rollback/RollbackManager;
+    iget-object v1, p0, Lcom/android/server/rollback/RollbackPackageHealthObserver$1;->val$rollbackManager:Landroid/content/rollback/RollbackManager;
 
-    iget v0, p0, Lcom/android/server/rollback/RollbackPackageHealthObserver$1;->val$rollbackId:I
+    iget v2, p0, Lcom/android/server/rollback/RollbackPackageHealthObserver$1;->val$rollbackId:I
 
-    iget-object v1, p0, Lcom/android/server/rollback/RollbackPackageHealthObserver$1;->val$moduleMetadataPackage:Landroid/content/pm/VersionedPackage;
+    iget-object v3, p0, Lcom/android/server/rollback/RollbackPackageHealthObserver$1;->val$moduleMetadataPackage:Landroid/content/pm/VersionedPackage;
 
-    invoke-static {p1, p2, v0, p0, v1}, Lcom/android/server/rollback/RollbackPackageHealthObserver;->access$000(Lcom/android/server/rollback/RollbackPackageHealthObserver;Landroid/content/rollback/RollbackManager;ILandroid/content/BroadcastReceiver;Landroid/content/pm/VersionedPackage;)V
+    invoke-static {v0, v1, v2, p0, v3}, Lcom/android/server/rollback/RollbackPackageHealthObserver;->access$000(Lcom/android/server/rollback/RollbackPackageHealthObserver;Landroid/content/rollback/RollbackManager;ILandroid/content/BroadcastReceiver;Landroid/content/pm/VersionedPackage;)V
 
-    .line 301
+    .line 280
     return-void
 .end method

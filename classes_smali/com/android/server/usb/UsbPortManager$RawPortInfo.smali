@@ -72,7 +72,9 @@
 .end method
 
 .method constructor <init>(Ljava/lang/String;I)V
-    .registers 3
+    .registers 4
+    .param p1, "portId"  # Ljava/lang/String;
+    .param p2, "supportedModes"  # I
 
     .line 1269
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -84,21 +86,21 @@
     iput p2, p0, Lcom/android/server/usb/UsbPortManager$RawPortInfo;->supportedModes:I
 
     .line 1272
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    iput p1, p0, Lcom/android/server/usb/UsbPortManager$RawPortInfo;->supportedContaminantProtectionModes:I
+    iput v0, p0, Lcom/android/server/usb/UsbPortManager$RawPortInfo;->supportedContaminantProtectionModes:I
 
     .line 1273
-    iput-boolean p1, p0, Lcom/android/server/usb/UsbPortManager$RawPortInfo;->supportsEnableContaminantPresenceProtection:Z
+    iput-boolean v0, p0, Lcom/android/server/usb/UsbPortManager$RawPortInfo;->supportsEnableContaminantPresenceProtection:Z
 
     .line 1274
-    iput p1, p0, Lcom/android/server/usb/UsbPortManager$RawPortInfo;->contaminantProtectionStatus:I
+    iput v0, p0, Lcom/android/server/usb/UsbPortManager$RawPortInfo;->contaminantProtectionStatus:I
 
     .line 1275
-    iput-boolean p1, p0, Lcom/android/server/usb/UsbPortManager$RawPortInfo;->supportsEnableContaminantPresenceDetection:Z
+    iput-boolean v0, p0, Lcom/android/server/usb/UsbPortManager$RawPortInfo;->supportsEnableContaminantPresenceDetection:Z
 
     .line 1276
-    iput p1, p0, Lcom/android/server/usb/UsbPortManager$RawPortInfo;->contaminantDetectionStatus:I
+    iput v0, p0, Lcom/android/server/usb/UsbPortManager$RawPortInfo;->contaminantDetectionStatus:I
 
     .line 1277
     return-void
@@ -106,6 +108,19 @@
 
 .method constructor <init>(Ljava/lang/String;IIIZIZIZZIZI)V
     .registers 14
+    .param p1, "portId"  # Ljava/lang/String;
+    .param p2, "supportedModes"  # I
+    .param p3, "supportedContaminantProtectionModes"  # I
+    .param p4, "currentMode"  # I
+    .param p5, "canChangeMode"  # Z
+    .param p6, "currentPowerRole"  # I
+    .param p7, "canChangePowerRole"  # Z
+    .param p8, "currentDataRole"  # I
+    .param p9, "canChangeDataRole"  # Z
+    .param p10, "supportsEnableContaminantPresenceProtection"  # Z
+    .param p11, "contaminantProtectionStatus"  # I
+    .param p12, "supportsEnableContaminantPresenceDetection"  # Z
+    .param p13, "contaminantDetectionStatus"  # I
 
     .line 1286
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -165,78 +180,80 @@
 .end method
 
 .method public writeToParcel(Landroid/os/Parcel;I)V
-    .registers 3
+    .registers 4
+    .param p1, "dest"  # Landroid/os/Parcel;
+    .param p2, "flags"  # I
 
     .line 1312
-    iget-object p2, p0, Lcom/android/server/usb/UsbPortManager$RawPortInfo;->portId:Ljava/lang/String;
+    iget-object v0, p0, Lcom/android/server/usb/UsbPortManager$RawPortInfo;->portId:Ljava/lang/String;
 
-    invoke-virtual {p1, p2}, Landroid/os/Parcel;->writeString(Ljava/lang/String;)V
+    invoke-virtual {p1, v0}, Landroid/os/Parcel;->writeString(Ljava/lang/String;)V
 
     .line 1313
-    iget p2, p0, Lcom/android/server/usb/UsbPortManager$RawPortInfo;->supportedModes:I
+    iget v0, p0, Lcom/android/server/usb/UsbPortManager$RawPortInfo;->supportedModes:I
 
-    invoke-virtual {p1, p2}, Landroid/os/Parcel;->writeInt(I)V
+    invoke-virtual {p1, v0}, Landroid/os/Parcel;->writeInt(I)V
 
     .line 1314
-    iget p2, p0, Lcom/android/server/usb/UsbPortManager$RawPortInfo;->supportedContaminantProtectionModes:I
+    iget v0, p0, Lcom/android/server/usb/UsbPortManager$RawPortInfo;->supportedContaminantProtectionModes:I
 
-    invoke-virtual {p1, p2}, Landroid/os/Parcel;->writeInt(I)V
+    invoke-virtual {p1, v0}, Landroid/os/Parcel;->writeInt(I)V
 
     .line 1315
-    iget p2, p0, Lcom/android/server/usb/UsbPortManager$RawPortInfo;->currentMode:I
+    iget v0, p0, Lcom/android/server/usb/UsbPortManager$RawPortInfo;->currentMode:I
 
-    invoke-virtual {p1, p2}, Landroid/os/Parcel;->writeInt(I)V
+    invoke-virtual {p1, v0}, Landroid/os/Parcel;->writeInt(I)V
 
     .line 1316
-    iget-boolean p2, p0, Lcom/android/server/usb/UsbPortManager$RawPortInfo;->canChangeMode:Z
+    iget-boolean v0, p0, Lcom/android/server/usb/UsbPortManager$RawPortInfo;->canChangeMode:Z
 
-    int-to-byte p2, p2
+    int-to-byte v0, v0
 
-    invoke-virtual {p1, p2}, Landroid/os/Parcel;->writeByte(B)V
+    invoke-virtual {p1, v0}, Landroid/os/Parcel;->writeByte(B)V
 
     .line 1317
-    iget p2, p0, Lcom/android/server/usb/UsbPortManager$RawPortInfo;->currentPowerRole:I
+    iget v0, p0, Lcom/android/server/usb/UsbPortManager$RawPortInfo;->currentPowerRole:I
 
-    invoke-virtual {p1, p2}, Landroid/os/Parcel;->writeInt(I)V
+    invoke-virtual {p1, v0}, Landroid/os/Parcel;->writeInt(I)V
 
     .line 1318
-    iget-boolean p2, p0, Lcom/android/server/usb/UsbPortManager$RawPortInfo;->canChangePowerRole:Z
+    iget-boolean v0, p0, Lcom/android/server/usb/UsbPortManager$RawPortInfo;->canChangePowerRole:Z
 
-    int-to-byte p2, p2
+    int-to-byte v0, v0
 
-    invoke-virtual {p1, p2}, Landroid/os/Parcel;->writeByte(B)V
+    invoke-virtual {p1, v0}, Landroid/os/Parcel;->writeByte(B)V
 
     .line 1319
-    iget p2, p0, Lcom/android/server/usb/UsbPortManager$RawPortInfo;->currentDataRole:I
+    iget v0, p0, Lcom/android/server/usb/UsbPortManager$RawPortInfo;->currentDataRole:I
 
-    invoke-virtual {p1, p2}, Landroid/os/Parcel;->writeInt(I)V
+    invoke-virtual {p1, v0}, Landroid/os/Parcel;->writeInt(I)V
 
     .line 1320
-    iget-boolean p2, p0, Lcom/android/server/usb/UsbPortManager$RawPortInfo;->canChangeDataRole:Z
+    iget-boolean v0, p0, Lcom/android/server/usb/UsbPortManager$RawPortInfo;->canChangeDataRole:Z
 
-    int-to-byte p2, p2
+    int-to-byte v0, v0
 
-    invoke-virtual {p1, p2}, Landroid/os/Parcel;->writeByte(B)V
+    invoke-virtual {p1, v0}, Landroid/os/Parcel;->writeByte(B)V
 
     .line 1321
-    iget-boolean p2, p0, Lcom/android/server/usb/UsbPortManager$RawPortInfo;->supportsEnableContaminantPresenceProtection:Z
+    iget-boolean v0, p0, Lcom/android/server/usb/UsbPortManager$RawPortInfo;->supportsEnableContaminantPresenceProtection:Z
 
-    invoke-virtual {p1, p2}, Landroid/os/Parcel;->writeBoolean(Z)V
+    invoke-virtual {p1, v0}, Landroid/os/Parcel;->writeBoolean(Z)V
 
     .line 1322
-    iget p2, p0, Lcom/android/server/usb/UsbPortManager$RawPortInfo;->contaminantProtectionStatus:I
+    iget v0, p0, Lcom/android/server/usb/UsbPortManager$RawPortInfo;->contaminantProtectionStatus:I
 
-    invoke-virtual {p1, p2}, Landroid/os/Parcel;->writeInt(I)V
+    invoke-virtual {p1, v0}, Landroid/os/Parcel;->writeInt(I)V
 
     .line 1323
-    iget-boolean p2, p0, Lcom/android/server/usb/UsbPortManager$RawPortInfo;->supportsEnableContaminantPresenceDetection:Z
+    iget-boolean v0, p0, Lcom/android/server/usb/UsbPortManager$RawPortInfo;->supportsEnableContaminantPresenceDetection:Z
 
-    invoke-virtual {p1, p2}, Landroid/os/Parcel;->writeBoolean(Z)V
+    invoke-virtual {p1, v0}, Landroid/os/Parcel;->writeBoolean(Z)V
 
     .line 1324
-    iget p2, p0, Lcom/android/server/usb/UsbPortManager$RawPortInfo;->contaminantDetectionStatus:I
+    iget v0, p0, Lcom/android/server/usb/UsbPortManager$RawPortInfo;->contaminantDetectionStatus:I
 
-    invoke-virtual {p1, p2}, Landroid/os/Parcel;->writeInt(I)V
+    invoke-virtual {p1, v0}, Landroid/os/Parcel;->writeInt(I)V
 
     .line 1325
     return-void

@@ -26,6 +26,9 @@
 
 .method static synthetic access$1000(Lcom/android/server/AppStateTracker$Listener;Lcom/android/server/AppStateTracker;I)V
     .registers 3
+    .param p0, "x0"  # Lcom/android/server/AppStateTracker$Listener;
+    .param p1, "x1"  # Lcom/android/server/AppStateTracker;
+    .param p2, "x2"  # I
 
     .line 257
     invoke-direct {p0, p1, p2}, Lcom/android/server/AppStateTracker$Listener;->onUidActiveStateChanged(Lcom/android/server/AppStateTracker;I)V
@@ -35,6 +38,9 @@
 
 .method static synthetic access$1100(Lcom/android/server/AppStateTracker$Listener;Lcom/android/server/AppStateTracker;I)V
     .registers 3
+    .param p0, "x0"  # Lcom/android/server/AppStateTracker$Listener;
+    .param p1, "x1"  # Lcom/android/server/AppStateTracker;
+    .param p2, "x2"  # I
 
     .line 257
     invoke-direct {p0, p1, p2}, Lcom/android/server/AppStateTracker$Listener;->onUidForegroundStateChanged(Lcom/android/server/AppStateTracker;I)V
@@ -44,6 +50,10 @@
 
 .method static synthetic access$1200(Lcom/android/server/AppStateTracker$Listener;Lcom/android/server/AppStateTracker;ILjava/lang/String;)V
     .registers 4
+    .param p0, "x0"  # Lcom/android/server/AppStateTracker$Listener;
+    .param p1, "x1"  # Lcom/android/server/AppStateTracker;
+    .param p2, "x2"  # I
+    .param p3, "x3"  # Ljava/lang/String;
 
     .line 257
     invoke-direct {p0, p1, p2, p3}, Lcom/android/server/AppStateTracker$Listener;->onRunAnyAppOpsChanged(Lcom/android/server/AppStateTracker;ILjava/lang/String;)V
@@ -53,6 +63,8 @@
 
 .method static synthetic access$1300(Lcom/android/server/AppStateTracker$Listener;Lcom/android/server/AppStateTracker;)V
     .registers 2
+    .param p0, "x0"  # Lcom/android/server/AppStateTracker$Listener;
+    .param p1, "x1"  # Lcom/android/server/AppStateTracker;
 
     .line 257
     invoke-direct {p0, p1}, Lcom/android/server/AppStateTracker$Listener;->onPowerSaveUnwhitelisted(Lcom/android/server/AppStateTracker;)V
@@ -62,6 +74,8 @@
 
 .method static synthetic access$1400(Lcom/android/server/AppStateTracker$Listener;Lcom/android/server/AppStateTracker;)V
     .registers 2
+    .param p0, "x0"  # Lcom/android/server/AppStateTracker$Listener;
+    .param p1, "x1"  # Lcom/android/server/AppStateTracker;
 
     .line 257
     invoke-direct {p0, p1}, Lcom/android/server/AppStateTracker$Listener;->onPowerSaveWhitelistedChanged(Lcom/android/server/AppStateTracker;)V
@@ -71,6 +85,8 @@
 
 .method static synthetic access$1500(Lcom/android/server/AppStateTracker$Listener;Lcom/android/server/AppStateTracker;)V
     .registers 2
+    .param p0, "x0"  # Lcom/android/server/AppStateTracker$Listener;
+    .param p1, "x1"  # Lcom/android/server/AppStateTracker;
 
     .line 257
     invoke-direct {p0, p1}, Lcom/android/server/AppStateTracker$Listener;->onTempPowerSaveWhitelistChanged(Lcom/android/server/AppStateTracker;)V
@@ -80,6 +96,8 @@
 
 .method static synthetic access$1600(Lcom/android/server/AppStateTracker$Listener;Lcom/android/server/AppStateTracker;)V
     .registers 2
+    .param p0, "x0"  # Lcom/android/server/AppStateTracker$Listener;
+    .param p1, "x1"  # Lcom/android/server/AppStateTracker;
 
     .line 257
     invoke-direct {p0, p1}, Lcom/android/server/AppStateTracker$Listener;->onExemptChanged(Lcom/android/server/AppStateTracker;)V
@@ -89,6 +107,8 @@
 
 .method static synthetic access$1700(Lcom/android/server/AppStateTracker$Listener;Lcom/android/server/AppStateTracker;)V
     .registers 2
+    .param p0, "x0"  # Lcom/android/server/AppStateTracker$Listener;
+    .param p1, "x1"  # Lcom/android/server/AppStateTracker;
 
     .line 257
     invoke-direct {p0, p1}, Lcom/android/server/AppStateTracker$Listener;->onForceAllAppsStandbyChanged(Lcom/android/server/AppStateTracker;)V
@@ -98,6 +118,7 @@
 
 .method private onExemptChanged(Lcom/android/server/AppStateTracker;)V
     .registers 2
+    .param p1, "sender"  # Lcom/android/server/AppStateTracker;
 
     .line 333
     invoke-virtual {p0}, Lcom/android/server/AppStateTracker$Listener;->updateAllJobs()V
@@ -110,7 +131,8 @@
 .end method
 
 .method private onForceAllAppsStandbyChanged(Lcom/android/server/AppStateTracker;)V
-    .registers 2
+    .registers 3
+    .param p1, "sender"  # Lcom/android/server/AppStateTracker;
 
     .line 341
     invoke-virtual {p0}, Lcom/android/server/AppStateTracker$Listener;->updateAllJobs()V
@@ -118,9 +140,9 @@
     .line 343
     invoke-virtual {p1}, Lcom/android/server/AppStateTracker;->isForceAllAppsStandbyEnabled()Z
 
-    move-result p1
+    move-result v0
 
-    if-nez p1, :cond_c
+    if-nez v0, :cond_c
 
     .line 344
     invoke-virtual {p0}, Lcom/android/server/AppStateTracker$Listener;->unblockAllUnrestrictedAlarms()V
@@ -132,6 +154,7 @@
 
 .method private onPowerSaveUnwhitelisted(Lcom/android/server/AppStateTracker;)V
     .registers 2
+    .param p1, "sender"  # Lcom/android/server/AppStateTracker;
 
     .line 303
     invoke-virtual {p0}, Lcom/android/server/AppStateTracker$Listener;->updateAllJobs()V
@@ -145,6 +168,7 @@
 
 .method private onPowerSaveWhitelistedChanged(Lcom/android/server/AppStateTracker;)V
     .registers 2
+    .param p1, "sender"  # Lcom/android/server/AppStateTracker;
 
     .line 312
     invoke-virtual {p0}, Lcom/android/server/AppStateTracker$Listener;->updateAllJobs()V
@@ -154,7 +178,10 @@
 .end method
 
 .method private onRunAnyAppOpsChanged(Lcom/android/server/AppStateTracker;ILjava/lang/String;)V
-    .registers 5
+    .registers 6
+    .param p1, "sender"  # Lcom/android/server/AppStateTracker;
+    .param p2, "uid"  # I
+    .param p3, "packageName"  # Ljava/lang/String;
 
     .line 263
     invoke-virtual {p1, p2}, Lcom/android/server/AppStateTracker;->isUidActive(I)Z
@@ -195,38 +222,38 @@
     :goto_1c
     invoke-virtual {p1, p2, p3}, Lcom/android/server/AppStateTracker;->isRunAnyInBackgroundAppOpsAllowed(ILjava/lang/String;)Z
 
-    move-result p1
+    move-result v0
 
-    if-nez p1, :cond_48
+    if-nez v0, :cond_48
 
     .line 273
-    new-instance p1, Ljava/lang/StringBuilder;
+    new-instance v0, Ljava/lang/StringBuilder;
 
-    invoke-direct {p1}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v0, "Package "
+    const-string v1, "Package "
 
-    invoke-virtual {p1, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p1, p3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, p3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string v0, "/"
+    const-string v1, "/"
 
-    invoke-virtual {p1, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p1, p2}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, p2}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    const-string v0, " toggled into fg service restriction"
+    const-string v1, " toggled into fg service restriction"
 
-    invoke-virtual {p1, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    const-string v0, "AppStateTracker"
+    const-string v1, "AppStateTracker"
 
-    invoke-static {v0, p1}, Landroid/util/Slog;->v(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v0}, Landroid/util/Slog;->v(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 275
     invoke-virtual {p0, p2, p3}, Lcom/android/server/AppStateTracker$Listener;->stopForegroundServicesForUidPackage(ILjava/lang/String;)V
@@ -238,6 +265,7 @@
 
 .method private onTempPowerSaveWhitelistChanged(Lcom/android/server/AppStateTracker;)V
     .registers 2
+    .param p1, "sender"  # Lcom/android/server/AppStateTracker;
 
     .line 323
     invoke-virtual {p0}, Lcom/android/server/AppStateTracker$Listener;->updateAllJobs()V
@@ -247,18 +275,21 @@
 .end method
 
 .method private onUidActiveStateChanged(Lcom/android/server/AppStateTracker;I)V
-    .registers 3
+    .registers 4
+    .param p1, "sender"  # Lcom/android/server/AppStateTracker;
+    .param p2, "uid"  # I
 
     .line 290
     invoke-virtual {p1, p2}, Lcom/android/server/AppStateTracker;->isUidActive(I)Z
 
-    move-result p1
+    move-result v0
 
     .line 292
-    invoke-virtual {p0, p2, p1}, Lcom/android/server/AppStateTracker$Listener;->updateJobsForUid(IZ)V
+    .local v0, "isActive":Z
+    invoke-virtual {p0, p2, v0}, Lcom/android/server/AppStateTracker$Listener;->updateJobsForUid(IZ)V
 
     .line 294
-    if-eqz p1, :cond_c
+    if-eqz v0, :cond_c
 
     .line 295
     invoke-virtual {p0, p2}, Lcom/android/server/AppStateTracker$Listener;->unblockAlarmsForUid(I)V
@@ -269,14 +300,16 @@
 .end method
 
 .method private onUidForegroundStateChanged(Lcom/android/server/AppStateTracker;I)V
-    .registers 3
+    .registers 4
+    .param p1, "sender"  # Lcom/android/server/AppStateTracker;
+    .param p2, "uid"  # I
 
     .line 283
     invoke-virtual {p1, p2}, Lcom/android/server/AppStateTracker;->isUidInForeground(I)Z
 
-    move-result p1
+    move-result v0
 
-    invoke-virtual {p0, p2, p1}, Lcom/android/server/AppStateTracker$Listener;->onUidForeground(IZ)V
+    invoke-virtual {p0, p2, v0}, Lcom/android/server/AppStateTracker$Listener;->onUidForeground(IZ)V
 
     .line 284
     return-void
@@ -286,6 +319,8 @@
 # virtual methods
 .method public onUidForeground(IZ)V
     .registers 3
+    .param p1, "uid"  # I
+    .param p2, "foreground"  # Z
 
     .line 401
     return-void
@@ -293,6 +328,8 @@
 
 .method public stopForegroundServicesForUidPackage(ILjava/lang/String;)V
     .registers 3
+    .param p1, "uid"  # I
+    .param p2, "packageName"  # Ljava/lang/String;
 
     .line 374
     return-void
@@ -300,6 +337,7 @@
 
 .method public unblockAlarmsForUid(I)V
     .registers 2
+    .param p1, "uid"  # I
 
     .line 387
     return-void
@@ -307,6 +345,8 @@
 
 .method public unblockAlarmsForUidPackage(ILjava/lang/String;)V
     .registers 3
+    .param p1, "uid"  # I
+    .param p2, "packageName"  # Ljava/lang/String;
 
     .line 393
     return-void
@@ -328,6 +368,8 @@
 
 .method public updateJobsForUid(IZ)V
     .registers 3
+    .param p1, "uid"  # I
+    .param p2, "isNowActive"  # Z
 
     .line 360
     return-void
@@ -335,6 +377,9 @@
 
 .method public updateJobsForUidPackage(ILjava/lang/String;Z)V
     .registers 4
+    .param p1, "uid"  # I
+    .param p2, "packageName"  # Ljava/lang/String;
+    .param p3, "isNowActive"  # Z
 
     .line 367
     return-void

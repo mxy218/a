@@ -23,6 +23,7 @@
 
 .method static checkPermissions(Landroid/content/Context;)V
     .registers 3
+    .param p0, "context"  # Landroid/content/Context;
 
     .line 203
     const-string v0, "android.permission.LOCATION_HARDWARE"
@@ -36,7 +37,8 @@
 .end method
 
 .method static copyToByteArrayList([BLjava/util/ArrayList;)V
-    .registers 5
+    .registers 6
+    .param p0, "inputArray"  # [B
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "([B",
@@ -47,6 +49,7 @@
     .end annotation
 
     .line 73
+    .local p1, "outputArray":Ljava/util/ArrayList;, "Ljava/util/ArrayList<Ljava/lang/Byte;>;"
     invoke-virtual {p1}, Ljava/util/ArrayList;->clear()V
 
     .line 74
@@ -65,13 +68,15 @@
     aget-byte v2, p0, v1
 
     .line 76
+    .local v2, "element":B
     invoke-static {v2}, Ljava/lang/Byte;->valueOf(B)Ljava/lang/Byte;
 
-    move-result-object v2
+    move-result-object v3
 
-    invoke-virtual {p1, v2}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
+    invoke-virtual {p1, v3}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
 
     .line 75
+    .end local v2  # "element":B
     add-int/lit8 v1, v1, 0x1
 
     goto :goto_9
@@ -82,7 +87,7 @@
 .end method
 
 .method static createContextHubInfoMap(Ljava/util/List;)Ljava/util/HashMap;
-    .registers 5
+    .registers 6
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(",
@@ -97,42 +102,46 @@
     .end annotation
 
     .line 57
+    .local p0, "hubList":Ljava/util/List;, "Ljava/util/List<Landroid/hardware/contexthub/V1_0/ContextHub;>;"
     new-instance v0, Ljava/util/HashMap;
 
     invoke-direct {v0}, Ljava/util/HashMap;-><init>()V
 
     .line 58
+    .local v0, "contextHubIdToInfoMap":Ljava/util/HashMap;, "Ljava/util/HashMap<Ljava/lang/Integer;Landroid/hardware/location/ContextHubInfo;>;"
     invoke-interface {p0}, Ljava/util/List;->iterator()Ljava/util/Iterator;
-
-    move-result-object p0
-
-    :goto_9
-    invoke-interface {p0}, Ljava/util/Iterator;->hasNext()Z
-
-    move-result v1
-
-    if-eqz v1, :cond_24
-
-    invoke-interface {p0}, Ljava/util/Iterator;->next()Ljava/lang/Object;
 
     move-result-object v1
 
-    check-cast v1, Landroid/hardware/contexthub/V1_0/ContextHub;
+    :goto_9
+    invoke-interface {v1}, Ljava/util/Iterator;->hasNext()Z
 
-    .line 59
-    iget v2, v1, Landroid/hardware/contexthub/V1_0/ContextHub;->hubId:I
+    move-result v2
 
-    invoke-static {v2}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
+    if-eqz v2, :cond_24
+
+    invoke-interface {v1}, Ljava/util/Iterator;->next()Ljava/lang/Object;
 
     move-result-object v2
 
-    new-instance v3, Landroid/hardware/location/ContextHubInfo;
+    check-cast v2, Landroid/hardware/contexthub/V1_0/ContextHub;
 
-    invoke-direct {v3, v1}, Landroid/hardware/location/ContextHubInfo;-><init>(Landroid/hardware/contexthub/V1_0/ContextHub;)V
+    .line 59
+    .local v2, "contextHub":Landroid/hardware/contexthub/V1_0/ContextHub;
+    iget v3, v2, Landroid/hardware/contexthub/V1_0/ContextHub;->hubId:I
 
-    invoke-virtual {v0, v2, v3}, Ljava/util/HashMap;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+    invoke-static {v3}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
+
+    move-result-object v3
+
+    new-instance v4, Landroid/hardware/location/ContextHubInfo;
+
+    invoke-direct {v4, v2}, Landroid/hardware/location/ContextHubInfo;-><init>(Landroid/hardware/contexthub/V1_0/ContextHub;)V
+
+    invoke-virtual {v0, v3, v4}, Ljava/util/HashMap;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
 
     .line 60
+    .end local v2  # "contextHub":Landroid/hardware/contexthub/V1_0/ContextHub;
     goto :goto_9
 
     .line 62
@@ -142,6 +151,8 @@
 
 .method static createHidlContextHubMessage(SLandroid/hardware/location/NanoAppMessage;)Landroid/hardware/contexthub/V1_0/ContextHubMsg;
     .registers 5
+    .param p0, "hostEndPoint"  # S
+    .param p1, "message"  # Landroid/hardware/location/NanoAppMessage;
 
     .line 171
     new-instance v0, Landroid/hardware/contexthub/V1_0/ContextHubMsg;
@@ -149,6 +160,7 @@
     invoke-direct {v0}, Landroid/hardware/contexthub/V1_0/ContextHubMsg;-><init>()V
 
     .line 173
+    .local v0, "hidlMessage":Landroid/hardware/contexthub/V1_0/ContextHubMsg;
     invoke-virtual {p1}, Landroid/hardware/location/NanoAppMessage;->getNanoAppId()J
 
     move-result-wide v1
@@ -161,18 +173,18 @@
     .line 175
     invoke-virtual {p1}, Landroid/hardware/location/NanoAppMessage;->getMessageType()I
 
-    move-result p0
+    move-result v1
 
-    iput p0, v0, Landroid/hardware/contexthub/V1_0/ContextHubMsg;->msgType:I
+    iput v1, v0, Landroid/hardware/contexthub/V1_0/ContextHubMsg;->msgType:I
 
     .line 176
     invoke-virtual {p1}, Landroid/hardware/location/NanoAppMessage;->getMessageBody()[B
 
-    move-result-object p0
+    move-result-object v1
 
-    iget-object p1, v0, Landroid/hardware/contexthub/V1_0/ContextHubMsg;->msg:Ljava/util/ArrayList;
+    iget-object v2, v0, Landroid/hardware/contexthub/V1_0/ContextHubMsg;->msg:Ljava/util/ArrayList;
 
-    invoke-static {p0, p1}, Lcom/android/server/location/ContextHubServiceUtil;->copyToByteArrayList([BLjava/util/ArrayList;)V
+    invoke-static {v1, v2}, Lcom/android/server/location/ContextHubServiceUtil;->copyToByteArrayList([BLjava/util/ArrayList;)V
 
     .line 178
     return-object v0
@@ -180,6 +192,7 @@
 
 .method static createHidlNanoAppBinary(Landroid/hardware/location/NanoAppBinary;)Landroid/hardware/contexthub/V1_0/NanoAppBinary;
     .registers 5
+    .param p0, "nanoAppBinary"  # Landroid/hardware/location/NanoAppBinary;
 
     .line 122
     const-string v0, "ContextHubServiceUtil"
@@ -189,6 +202,7 @@
     invoke-direct {v1}, Landroid/hardware/contexthub/V1_0/NanoAppBinary;-><init>()V
 
     .line 125
+    .local v1, "hidlNanoAppBinary":Landroid/hardware/contexthub/V1_0/NanoAppBinary;
     invoke-virtual {p0}, Landroid/hardware/location/NanoAppBinary;->getNanoAppId()J
 
     move-result-wide v2
@@ -227,11 +241,11 @@
     :try_start_25
     invoke-virtual {p0}, Landroid/hardware/location/NanoAppBinary;->getBinaryNoHeader()[B
 
-    move-result-object p0
+    move-result-object v2
 
-    iget-object v2, v1, Landroid/hardware/contexthub/V1_0/NanoAppBinary;->customBinary:Ljava/util/ArrayList;
+    iget-object v3, v1, Landroid/hardware/contexthub/V1_0/NanoAppBinary;->customBinary:Ljava/util/ArrayList;
 
-    invoke-static {p0, v2}, Lcom/android/server/location/ContextHubServiceUtil;->copyToByteArrayList([BLjava/util/ArrayList;)V
+    invoke-static {v2, v3}, Lcom/android/server/location/ContextHubServiceUtil;->copyToByteArrayList([BLjava/util/ArrayList;)V
     :try_end_2e
     .catch Ljava/lang/IndexOutOfBoundsException; {:try_start_25 .. :try_end_2e} :catch_36
     .catch Ljava/lang/NullPointerException; {:try_start_25 .. :try_end_2e} :catch_2f
@@ -240,27 +254,31 @@
 
     .line 137
     :catch_2f
-    move-exception p0
+    move-exception v2
 
     .line 138
-    const-string p0, "NanoApp binary was null"
+    .local v2, "e":Ljava/lang/NullPointerException;
+    const-string v3, "NanoApp binary was null"
 
-    invoke-static {v0, p0}, Landroid/util/Log;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v0, v3}, Landroid/util/Log;->w(Ljava/lang/String;Ljava/lang/String;)I
 
     goto :goto_3f
 
     .line 135
+    .end local v2  # "e":Ljava/lang/NullPointerException;
     :catch_36
-    move-exception p0
+    move-exception v2
 
     .line 136
-    invoke-virtual {p0}, Ljava/lang/IndexOutOfBoundsException;->getMessage()Ljava/lang/String;
+    .local v2, "e":Ljava/lang/IndexOutOfBoundsException;
+    invoke-virtual {v2}, Ljava/lang/IndexOutOfBoundsException;->getMessage()Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v3
 
-    invoke-static {v0, p0}, Landroid/util/Log;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v0, v3}, Landroid/util/Log;->w(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 139
+    .end local v2  # "e":Ljava/lang/IndexOutOfBoundsException;
     :goto_3e
     nop
 
@@ -270,7 +288,8 @@
 .end method
 
 .method static createNanoAppMessage(Landroid/hardware/contexthub/V1_0/ContextHubMsg;)Landroid/hardware/location/NanoAppMessage;
-    .registers 6
+    .registers 7
+    .param p0, "message"  # Landroid/hardware/contexthub/V1_0/ContextHubMsg;
 
     .line 189
     iget-object v0, p0, Landroid/hardware/contexthub/V1_0/ContextHubMsg;->msg:Ljava/util/ArrayList;
@@ -280,33 +299,34 @@
     move-result-object v0
 
     .line 191
+    .local v0, "messageArray":[B
     iget-wide v1, p0, Landroid/hardware/contexthub/V1_0/ContextHubMsg;->appName:J
 
     iget v3, p0, Landroid/hardware/contexthub/V1_0/ContextHubMsg;->msgType:I
 
-    iget-short p0, p0, Landroid/hardware/contexthub/V1_0/ContextHubMsg;->hostEndPoint:S
+    iget-short v4, p0, Landroid/hardware/contexthub/V1_0/ContextHubMsg;->hostEndPoint:S
 
-    const/4 v4, -0x1
+    const/4 v5, -0x1
 
-    if-ne p0, v4, :cond_11
+    if-ne v4, v5, :cond_11
 
-    const/4 p0, 0x1
+    const/4 v4, 0x1
 
     goto :goto_12
 
     :cond_11
-    const/4 p0, 0x0
+    const/4 v4, 0x0
 
     :goto_12
-    invoke-static {v1, v2, v3, v0, p0}, Landroid/hardware/location/NanoAppMessage;->createMessageFromNanoApp(JI[BZ)Landroid/hardware/location/NanoAppMessage;
+    invoke-static {v1, v2, v3, v0, v4}, Landroid/hardware/location/NanoAppMessage;->createMessageFromNanoApp(JI[BZ)Landroid/hardware/location/NanoAppMessage;
 
-    move-result-object p0
+    move-result-object v1
 
-    return-object p0
+    return-object v1
 .end method
 
 .method static createNanoAppStateList(Ljava/util/List;)Ljava/util/List;
-    .registers 7
+    .registers 9
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(",
@@ -320,42 +340,46 @@
     .end annotation
 
     .line 153
+    .local p0, "nanoAppInfoList":Ljava/util/List;, "Ljava/util/List<Landroid/hardware/contexthub/V1_0/HubAppInfo;>;"
     new-instance v0, Ljava/util/ArrayList;
 
     invoke-direct {v0}, Ljava/util/ArrayList;-><init>()V
 
     .line 154
+    .local v0, "nanoAppStateList":Ljava/util/ArrayList;, "Ljava/util/ArrayList<Landroid/hardware/location/NanoAppState;>;"
     invoke-interface {p0}, Ljava/util/List;->iterator()Ljava/util/Iterator;
-
-    move-result-object p0
-
-    :goto_9
-    invoke-interface {p0}, Ljava/util/Iterator;->hasNext()Z
-
-    move-result v1
-
-    if-eqz v1, :cond_24
-
-    invoke-interface {p0}, Ljava/util/Iterator;->next()Ljava/lang/Object;
 
     move-result-object v1
 
-    check-cast v1, Landroid/hardware/contexthub/V1_0/HubAppInfo;
+    :goto_9
+    invoke-interface {v1}, Ljava/util/Iterator;->hasNext()Z
+
+    move-result v2
+
+    if-eqz v2, :cond_24
+
+    invoke-interface {v1}, Ljava/util/Iterator;->next()Ljava/lang/Object;
+
+    move-result-object v2
+
+    check-cast v2, Landroid/hardware/contexthub/V1_0/HubAppInfo;
 
     .line 155
-    new-instance v2, Landroid/hardware/location/NanoAppState;
+    .local v2, "appInfo":Landroid/hardware/contexthub/V1_0/HubAppInfo;
+    new-instance v3, Landroid/hardware/location/NanoAppState;
 
-    iget-wide v3, v1, Landroid/hardware/contexthub/V1_0/HubAppInfo;->appId:J
+    iget-wide v4, v2, Landroid/hardware/contexthub/V1_0/HubAppInfo;->appId:J
 
-    iget v5, v1, Landroid/hardware/contexthub/V1_0/HubAppInfo;->version:I
+    iget v6, v2, Landroid/hardware/contexthub/V1_0/HubAppInfo;->version:I
 
-    iget-boolean v1, v1, Landroid/hardware/contexthub/V1_0/HubAppInfo;->enabled:Z
+    iget-boolean v7, v2, Landroid/hardware/contexthub/V1_0/HubAppInfo;->enabled:Z
 
-    invoke-direct {v2, v3, v4, v5, v1}, Landroid/hardware/location/NanoAppState;-><init>(JIZ)V
+    invoke-direct {v3, v4, v5, v6, v7}, Landroid/hardware/location/NanoAppState;-><init>(JIZ)V
 
-    invoke-virtual {v0, v2}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
+    invoke-virtual {v0, v3}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
 
     .line 157
+    .end local v2  # "appInfo":Landroid/hardware/contexthub/V1_0/HubAppInfo;
     goto :goto_9
 
     .line 159
@@ -375,6 +399,7 @@
     .end annotation
 
     .line 88
+    .local p0, "array":Ljava/util/ArrayList;, "Ljava/util/ArrayList<Ljava/lang/Byte;>;"
     invoke-virtual {p0}, Ljava/util/ArrayList;->size()I
 
     move-result v0
@@ -382,8 +407,10 @@
     new-array v0, v0, [B
 
     .line 89
+    .local v0, "primitiveArray":[B
     const/4 v1, 0x0
 
+    .local v1, "i":I
     :goto_7
     invoke-virtual {p0}, Ljava/util/ArrayList;->size()I
 
@@ -410,12 +437,13 @@
     goto :goto_7
 
     .line 93
+    .end local v1  # "i":I
     :cond_1c
     return-object v0
 .end method
 
 .method static createPrimitiveIntArray(Ljava/util/Collection;)[I
-    .registers 5
+    .registers 6
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(",
@@ -426,6 +454,7 @@
     .end annotation
 
     .line 102
+    .local p0, "collection":Ljava/util/Collection;, "Ljava/util/Collection<Ljava/lang/Integer;>;"
     invoke-interface {p0}, Ljava/util/Collection;->size()I
 
     move-result v0
@@ -433,49 +462,56 @@
     new-array v0, v0, [I
 
     .line 104
-    nop
-
-    .line 105
-    invoke-interface {p0}, Ljava/util/Collection;->iterator()Ljava/util/Iterator;
-
-    move-result-object p0
-
+    .local v0, "primitiveArray":[I
     const/4 v1, 0x0
 
-    :goto_c
-    invoke-interface {p0}, Ljava/util/Iterator;->hasNext()Z
-
-    move-result v2
-
-    if-eqz v2, :cond_22
-
-    invoke-interface {p0}, Ljava/util/Iterator;->next()Ljava/lang/Object;
+    .line 105
+    .local v1, "i":I
+    invoke-interface {p0}, Ljava/util/Collection;->iterator()Ljava/util/Iterator;
 
     move-result-object v2
 
-    check-cast v2, Ljava/lang/Integer;
+    :goto_b
+    invoke-interface {v2}, Ljava/util/Iterator;->hasNext()Z
 
-    invoke-virtual {v2}, Ljava/lang/Integer;->intValue()I
+    move-result v3
 
-    move-result v2
+    if-eqz v3, :cond_21
+
+    invoke-interface {v2}, Ljava/util/Iterator;->next()Ljava/lang/Object;
+
+    move-result-object v3
+
+    check-cast v3, Ljava/lang/Integer;
+
+    invoke-virtual {v3}, Ljava/lang/Integer;->intValue()I
+
+    move-result v3
 
     .line 106
-    add-int/lit8 v3, v1, 0x1
+    .local v3, "contextHubId":I
+    add-int/lit8 v4, v1, 0x1
 
-    aput v2, v0, v1
+    .end local v1  # "i":I
+    .local v4, "i":I
+    aput v3, v0, v1
 
     .line 107
-    move v1, v3
+    .end local v3  # "contextHubId":I
+    move v1, v4
 
-    goto :goto_c
+    goto :goto_b
 
     .line 109
-    :cond_22
+    .end local v4  # "i":I
+    .restart local v1  # "i":I
+    :cond_21
     return-object v0
 .end method
 
 .method static toTransactionResult(I)I
     .registers 2
+    .param p0, "halResult"  # I
 
     .line 216
     if-eqz p0, :cond_11
@@ -493,9 +529,9 @@
     if-eq p0, v0, :cond_d
 
     .line 228
-    const/4 p0, 0x1
+    const/4 v0, 0x1
 
-    return p0
+    return v0
 
     .line 222
     :cond_d
@@ -507,13 +543,13 @@
 
     .line 224
     :cond_f
-    const/4 p0, 0x4
+    const/4 v0, 0x4
 
-    return p0
+    return v0
 
     .line 218
     :cond_11
-    const/4 p0, 0x0
+    const/4 v0, 0x0
 
-    return p0
+    return v0
 .end method

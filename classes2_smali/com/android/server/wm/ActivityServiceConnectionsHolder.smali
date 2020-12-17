@@ -32,8 +32,11 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/wm/ActivityTaskManagerService;Lcom/android/server/wm/ActivityRecord;)V
     .registers 3
+    .param p1, "service"  # Lcom/android/server/wm/ActivityTaskManagerService;
+    .param p2, "activity"  # Lcom/android/server/wm/ActivityRecord;
 
     .line 49
+    .local p0, "this":Lcom/android/server/wm/ActivityServiceConnectionsHolder;, "Lcom/android/server/wm/ActivityServiceConnectionsHolder<TT;>;"
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
     .line 50
@@ -57,6 +60,8 @@
     .end annotation
 
     .line 56
+    .local p0, "this":Lcom/android/server/wm/ActivityServiceConnectionsHolder;, "Lcom/android/server/wm/ActivityServiceConnectionsHolder<TT;>;"
+    .local p1, "c":Ljava/lang/Object;, "TT;"
     iget-object v0, p0, Lcom/android/server/wm/ActivityServiceConnectionsHolder;->mService:Lcom/android/server/wm/ActivityTaskManagerService;
 
     iget-object v0, v0, Lcom/android/server/wm/ActivityTaskManagerService;->mGlobalLock:Lcom/android/server/wm/WindowManagerGlobalLock;
@@ -96,7 +101,7 @@
 
     .line 61
     :catchall_1d
-    move-exception p1
+    move-exception v1
 
     :try_start_1e
     monitor-exit v0
@@ -105,13 +110,14 @@
 
     invoke-static {}, Lcom/android/server/wm/WindowManagerService;->resetPriorityAfterLockedSection()V
 
-    throw p1
+    throw v1
 .end method
 
 .method disconnectActivityFromServices()V
     .registers 4
 
     .line 101
+    .local p0, "this":Lcom/android/server/wm/ActivityServiceConnectionsHolder;, "Lcom/android/server/wm/ActivityServiceConnectionsHolder<TT;>;"
     iget-object v0, p0, Lcom/android/server/wm/ActivityServiceConnectionsHolder;->mConnections:Ljava/util/HashSet;
 
     if-eqz v0, :cond_1d
@@ -129,6 +135,7 @@
     iget-object v0, p0, Lcom/android/server/wm/ActivityServiceConnectionsHolder;->mConnections:Ljava/util/HashSet;
 
     .line 109
+    .local v0, "disc":Ljava/lang/Object;
     const/4 v1, 0x0
 
     iput-object v1, p0, Lcom/android/server/wm/ActivityServiceConnectionsHolder;->mConnections:Ljava/util/HashSet;
@@ -148,15 +155,19 @@
     return-void
 
     .line 102
+    .end local v0  # "disc":Ljava/lang/Object;
     :cond_1d
     :goto_1d
     return-void
 .end method
 
 .method public dump(Ljava/io/PrintWriter;Ljava/lang/String;)V
-    .registers 5
+    .registers 6
+    .param p1, "pw"  # Ljava/io/PrintWriter;
+    .param p2, "prefix"  # Ljava/lang/String;
 
     .line 114
+    .local p0, "this":Lcom/android/server/wm/ActivityServiceConnectionsHolder;, "Lcom/android/server/wm/ActivityServiceConnectionsHolder<TT;>;"
     iget-object v0, p0, Lcom/android/server/wm/ActivityServiceConnectionsHolder;->mService:Lcom/android/server/wm/ActivityTaskManagerService;
 
     iget-object v0, v0, Lcom/android/server/wm/ActivityTaskManagerService;->mGlobalLock:Lcom/android/server/wm/WindowManagerGlobalLock;
@@ -173,19 +184,19 @@
 
     invoke-virtual {v1, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string p2, "activity="
+    const-string v2, "activity="
 
-    invoke-virtual {v1, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    iget-object p2, p0, Lcom/android/server/wm/ActivityServiceConnectionsHolder;->mActivity:Lcom/android/server/wm/ActivityRecord;
+    iget-object v2, p0, Lcom/android/server/wm/ActivityServiceConnectionsHolder;->mActivity:Lcom/android/server/wm/ActivityRecord;
 
-    invoke-virtual {v1, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p2
+    move-result-object v1
 
-    invoke-virtual {p1, p2}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {p1, v1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
     .line 116
     monitor-exit v0
@@ -199,7 +210,7 @@
 
     .line 116
     :catchall_26
-    move-exception p1
+    move-exception v1
 
     :try_start_27
     monitor-exit v0
@@ -208,7 +219,7 @@
 
     invoke-static {}, Lcom/android/server/wm/WindowManagerService;->resetPriorityAfterLockedSection()V
 
-    throw p1
+    throw v1
 .end method
 
 .method public forEachConnection(Ljava/util/function/Consumer;)V
@@ -222,6 +233,8 @@
     .end annotation
 
     .line 87
+    .local p0, "this":Lcom/android/server/wm/ActivityServiceConnectionsHolder;, "Lcom/android/server/wm/ActivityServiceConnectionsHolder<TT;>;"
+    .local p1, "consumer":Ljava/util/function/Consumer;, "Ljava/util/function/Consumer<TT;>;"
     iget-object v0, p0, Lcom/android/server/wm/ActivityServiceConnectionsHolder;->mService:Lcom/android/server/wm/ActivityTaskManagerService;
 
     iget-object v0, v0, Lcom/android/server/wm/ActivityTaskManagerService;->mGlobalLock:Lcom/android/server/wm/WindowManagerGlobalLock;
@@ -255,6 +268,7 @@
     move-result-object v1
 
     .line 92
+    .local v1, "it":Ljava/util/Iterator;, "Ljava/util/Iterator<TT;>;"
     :goto_1b
     invoke-interface {v1}, Ljava/util/Iterator;->hasNext()Z
 
@@ -268,12 +282,15 @@
     move-result-object v2
 
     .line 94
+    .local v2, "c":Ljava/lang/Object;, "TT;"
     invoke-interface {p1, v2}, Ljava/util/function/Consumer;->accept(Ljava/lang/Object;)V
 
     .line 95
+    .end local v2  # "c":Ljava/lang/Object;, "TT;"
     goto :goto_1b
 
     .line 96
+    .end local v1  # "it":Ljava/util/Iterator;, "Ljava/util/Iterator<TT;>;"
     :cond_29
     monitor-exit v0
     :try_end_2a
@@ -298,7 +315,7 @@
 
     .line 96
     :catchall_33
-    move-exception p1
+    move-exception v1
 
     :try_start_34
     monitor-exit v0
@@ -307,13 +324,14 @@
 
     invoke-static {}, Lcom/android/server/wm/WindowManagerService;->resetPriorityAfterLockedSection()V
 
-    throw p1
+    throw v1
 .end method
 
 .method public getActivityPid()I
     .registers 3
 
     .line 81
+    .local p0, "this":Lcom/android/server/wm/ActivityServiceConnectionsHolder;, "Lcom/android/server/wm/ActivityServiceConnectionsHolder<TT;>;"
     iget-object v0, p0, Lcom/android/server/wm/ActivityServiceConnectionsHolder;->mService:Lcom/android/server/wm/ActivityTaskManagerService;
 
     iget-object v0, v0, Lcom/android/server/wm/ActivityTaskManagerService;->mGlobalLock:Lcom/android/server/wm/WindowManagerGlobalLock;
@@ -372,6 +390,7 @@
     .registers 5
 
     .line 75
+    .local p0, "this":Lcom/android/server/wm/ActivityServiceConnectionsHolder;, "Lcom/android/server/wm/ActivityServiceConnectionsHolder<TT;>;"
     iget-object v0, p0, Lcom/android/server/wm/ActivityServiceConnectionsHolder;->mService:Lcom/android/server/wm/ActivityTaskManagerService;
 
     iget-object v0, v0, Lcom/android/server/wm/ActivityTaskManagerService;->mGlobalLock:Lcom/android/server/wm/WindowManagerGlobalLock;
@@ -436,8 +455,10 @@
 
 .method public synthetic lambda$disconnectActivityFromServices$0$ActivityServiceConnectionsHolder(Ljava/lang/Object;)V
     .registers 3
+    .param p1, "disc"  # Ljava/lang/Object;
 
     .line 110
+    .local p0, "this":Lcom/android/server/wm/ActivityServiceConnectionsHolder;, "Lcom/android/server/wm/ActivityServiceConnectionsHolder<TT;>;"
     iget-object v0, p0, Lcom/android/server/wm/ActivityServiceConnectionsHolder;->mService:Lcom/android/server/wm/ActivityTaskManagerService;
 
     iget-object v0, v0, Lcom/android/server/wm/ActivityTaskManagerService;->mAmInternal:Landroid/app/ActivityManagerInternal;
@@ -456,6 +477,8 @@
     .end annotation
 
     .line 66
+    .local p0, "this":Lcom/android/server/wm/ActivityServiceConnectionsHolder;, "Lcom/android/server/wm/ActivityServiceConnectionsHolder<TT;>;"
+    .local p1, "c":Ljava/lang/Object;, "TT;"
     iget-object v0, p0, Lcom/android/server/wm/ActivityServiceConnectionsHolder;->mService:Lcom/android/server/wm/ActivityTaskManagerService;
 
     iget-object v0, v0, Lcom/android/server/wm/ActivityTaskManagerService;->mGlobalLock:Lcom/android/server/wm/WindowManagerGlobalLock;
@@ -498,7 +521,7 @@
 
     .line 71
     :catchall_1b
-    move-exception p1
+    move-exception v1
 
     :try_start_1c
     monitor-exit v0
@@ -507,5 +530,5 @@
 
     invoke-static {}, Lcom/android/server/wm/WindowManagerService;->resetPriorityAfterLockedSection()V
 
-    throw p1
+    throw v1
 .end method

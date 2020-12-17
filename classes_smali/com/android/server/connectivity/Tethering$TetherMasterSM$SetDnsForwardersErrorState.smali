@@ -21,8 +21,9 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/connectivity/Tethering$TetherMasterSM;)V
     .registers 2
+    .param p1, "this$1"  # Lcom/android/server/connectivity/Tethering$TetherMasterSM;
 
-    .line 1601
+    .line 1641
     iput-object p1, p0, Lcom/android/server/connectivity/Tethering$TetherMasterSM$SetDnsForwardersErrorState;->this$1:Lcom/android/server/connectivity/Tethering$TetherMasterSM;
 
     invoke-direct {p0, p1}, Lcom/android/server/connectivity/Tethering$TetherMasterSM$ErrorState;-><init>(Lcom/android/server/connectivity/Tethering$TetherMasterSM;)V
@@ -35,8 +36,8 @@
 .method public enter()V
     .registers 3
 
-    .line 1604
-    invoke-static {}, Lcom/android/server/connectivity/Tethering;->access$2600()Ljava/lang/String;
+    .line 1644
+    invoke-static {}, Lcom/android/server/connectivity/Tethering;->access$500()Ljava/lang/String;
 
     move-result-object v0
 
@@ -44,18 +45,18 @@
 
     invoke-static {v0, v1}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 1605
+    .line 1645
     const v0, 0x5006f
 
     invoke-virtual {p0, v0}, Lcom/android/server/connectivity/Tethering$TetherMasterSM$SetDnsForwardersErrorState;->notify(I)V
 
-    .line 1607
+    .line 1647
     :try_start_f
     iget-object v0, p0, Lcom/android/server/connectivity/Tethering$TetherMasterSM$SetDnsForwardersErrorState;->this$1:Lcom/android/server/connectivity/Tethering$TetherMasterSM;
 
     iget-object v0, v0, Lcom/android/server/connectivity/Tethering$TetherMasterSM;->this$0:Lcom/android/server/connectivity/Tethering;
 
-    invoke-static {v0}, Lcom/android/server/connectivity/Tethering;->access$1700(Lcom/android/server/connectivity/Tethering;)Landroid/os/INetworkManagementService;
+    invoke-static {v0}, Lcom/android/server/connectivity/Tethering;->access$1900(Lcom/android/server/connectivity/Tethering;)Landroid/os/INetworkManagementService;
 
     move-result-object v0
 
@@ -65,20 +66,20 @@
 
     goto :goto_1c
 
-    .line 1608
+    .line 1648
     :catch_1b
     move-exception v0
 
     :goto_1c
     nop
 
-    .line 1610
+    .line 1650
     :try_start_1d
     iget-object v0, p0, Lcom/android/server/connectivity/Tethering$TetherMasterSM$SetDnsForwardersErrorState;->this$1:Lcom/android/server/connectivity/Tethering$TetherMasterSM;
 
     iget-object v0, v0, Lcom/android/server/connectivity/Tethering$TetherMasterSM;->this$0:Lcom/android/server/connectivity/Tethering;
 
-    invoke-static {v0}, Lcom/android/server/connectivity/Tethering;->access$1700(Lcom/android/server/connectivity/Tethering;)Landroid/os/INetworkManagementService;
+    invoke-static {v0}, Lcom/android/server/connectivity/Tethering;->access$1900(Lcom/android/server/connectivity/Tethering;)Landroid/os/INetworkManagementService;
 
     move-result-object v0
 
@@ -90,13 +91,13 @@
 
     goto :goto_2b
 
-    .line 1611
+    .line 1651
     :catch_2a
     move-exception v0
 
     :goto_2b
     nop
 
-    .line 1612
+    .line 1652
     return-void
 .end method

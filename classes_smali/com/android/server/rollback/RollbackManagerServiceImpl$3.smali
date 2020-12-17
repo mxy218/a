@@ -21,8 +21,9 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/rollback/RollbackManagerServiceImpl;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/rollback/RollbackManagerServiceImpl;
 
-    .line 236
+    .line 235
     iput-object p1, p0, Lcom/android/server/rollback/RollbackManagerServiceImpl$3;->this$0:Lcom/android/server/rollback/RollbackManagerServiceImpl;
 
     invoke-direct {p0}, Landroid/content/BroadcastReceiver;-><init>()V
@@ -33,47 +34,51 @@
 
 # virtual methods
 .method public onReceive(Landroid/content/Context;Landroid/content/Intent;)V
-    .registers 4
+    .registers 6
+    .param p1, "context"  # Landroid/content/Context;
+    .param p2, "intent"  # Landroid/content/Intent;
 
-    .line 239
+    .line 238
     invoke-virtual {p2}, Landroid/content/Intent;->getAction()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    const-string v0, "android.intent.action.USER_ADDED"
+    const-string v1, "android.intent.action.USER_ADDED"
 
-    invoke-virtual {v0, p1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v1, v0}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result p1
+    move-result v0
 
-    if-eqz p1, :cond_1f
+    if-eqz v0, :cond_1f
+
+    .line 239
+    const/4 v0, -0x1
+
+    const-string v1, "android.intent.extra.user_handle"
+
+    invoke-virtual {p2, v1, v0}, Landroid/content/Intent;->getIntExtra(Ljava/lang/String;I)I
+
+    move-result v1
 
     .line 240
-    const/4 p1, -0x1
-
-    const-string v0, "android.intent.extra.user_handle"
-
-    invoke-virtual {p2, v0, p1}, Landroid/content/Intent;->getIntExtra(Ljava/lang/String;I)I
-
-    move-result p2
+    .local v1, "newUserId":I
+    if-ne v1, v0, :cond_16
 
     .line 241
-    if-ne p2, p1, :cond_16
-
-    .line 242
     return-void
 
-    .line 244
+    .line 243
     :cond_16
-    iget-object p1, p0, Lcom/android/server/rollback/RollbackManagerServiceImpl$3;->this$0:Lcom/android/server/rollback/RollbackManagerServiceImpl;
+    iget-object v0, p0, Lcom/android/server/rollback/RollbackManagerServiceImpl$3;->this$0:Lcom/android/server/rollback/RollbackManagerServiceImpl;
 
-    invoke-static {p2}, Landroid/os/UserHandle;->of(I)Landroid/os/UserHandle;
+    invoke-static {v1}, Landroid/os/UserHandle;->of(I)Landroid/os/UserHandle;
 
-    move-result-object p2
+    move-result-object v2
 
-    invoke-static {p1, p2}, Lcom/android/server/rollback/RollbackManagerServiceImpl;->access$500(Lcom/android/server/rollback/RollbackManagerServiceImpl;Landroid/os/UserHandle;)V
+    invoke-static {v0, v2}, Lcom/android/server/rollback/RollbackManagerServiceImpl;->access$500(Lcom/android/server/rollback/RollbackManagerServiceImpl;Landroid/os/UserHandle;)V
 
-    .line 246
+    .line 245
+    .end local v1  # "newUserId":I
     :cond_1f
     return-void
 .end method

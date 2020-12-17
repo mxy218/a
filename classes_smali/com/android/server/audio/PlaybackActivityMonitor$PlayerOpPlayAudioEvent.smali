@@ -25,20 +25,23 @@
 # direct methods
 .method constructor <init>(IZI)V
     .registers 4
+    .param p1, "piid"  # I
+    .param p2, "hasOp"  # Z
+    .param p3, "uid"  # I
 
-    .line 872
+    .line 790
     invoke-direct {p0}, Lcom/android/server/audio/AudioEventLogger$Event;-><init>()V
 
-    .line 873
+    .line 791
     iput p1, p0, Lcom/android/server/audio/PlaybackActivityMonitor$PlayerOpPlayAudioEvent;->mPlayerIId:I
 
-    .line 874
+    .line 792
     iput-boolean p2, p0, Lcom/android/server/audio/PlaybackActivityMonitor$PlayerOpPlayAudioEvent;->mHasOp:Z
 
-    .line 875
+    .line 793
     iput p3, p0, Lcom/android/server/audio/PlaybackActivityMonitor$PlayerOpPlayAudioEvent;->mUid:I
 
-    .line 876
+    .line 794
     return-void
 .end method
 
@@ -47,7 +50,7 @@
 .method public eventToString()Ljava/lang/String;
     .registers 3
 
-    .line 880
+    .line 798
     new-instance v0, Ljava/lang/StringBuilder;
 
     const-string/jumbo v1, "player piid:"
@@ -58,7 +61,7 @@
 
     invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    .line 881
+    .line 799
     const-string v1, " has OP_PLAY_AUDIO:"
 
     invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
@@ -67,7 +70,7 @@
 
     invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Z)Ljava/lang/StringBuilder;
 
-    .line 882
+    .line 800
     const-string v1, " in uid:"
 
     invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
@@ -80,6 +83,6 @@
 
     move-result-object v0
 
-    .line 880
+    .line 798
     return-object v0
 .end method

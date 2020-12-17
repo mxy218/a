@@ -53,73 +53,82 @@
 
 # direct methods
 .method public constructor <init>(Landroid/view/SurfaceSession;Ljava/lang/String;IIIILcom/android/server/wm/WindowStateAnimator;II)V
-    .registers 13
+    .registers 16
+    .param p1, "s"  # Landroid/view/SurfaceSession;
+    .param p2, "name"  # Ljava/lang/String;
+    .param p3, "w"  # I
+    .param p4, "h"  # I
+    .param p5, "format"  # I
+    .param p6, "flags"  # I
+    .param p7, "animator"  # Lcom/android/server/wm/WindowStateAnimator;
+    .param p8, "windowType"  # I
+    .param p9, "ownerUid"  # I
 
     .line 88
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
     .line 54
-    const/4 p1, 0x0
-
-    iput-boolean p1, p0, Lcom/android/server/wm/WindowSurfaceController;->mSurfaceShown:Z
-
-    .line 55
     const/4 v0, 0x0
 
-    iput v0, p0, Lcom/android/server/wm/WindowSurfaceController;->mSurfaceX:F
+    iput-boolean v0, p0, Lcom/android/server/wm/WindowSurfaceController;->mSurfaceShown:Z
+
+    .line 55
+    const/4 v1, 0x0
+
+    iput v1, p0, Lcom/android/server/wm/WindowSurfaceController;->mSurfaceX:F
 
     .line 56
-    iput v0, p0, Lcom/android/server/wm/WindowSurfaceController;->mSurfaceY:F
+    iput v1, p0, Lcom/android/server/wm/WindowSurfaceController;->mSurfaceY:F
 
     .line 57
-    iput p1, p0, Lcom/android/server/wm/WindowSurfaceController;->mSurfaceW:I
+    iput v0, p0, Lcom/android/server/wm/WindowSurfaceController;->mSurfaceW:I
 
     .line 58
-    iput p1, p0, Lcom/android/server/wm/WindowSurfaceController;->mSurfaceH:I
+    iput v0, p0, Lcom/android/server/wm/WindowSurfaceController;->mSurfaceH:I
 
     .line 59
-    new-instance v1, Landroid/graphics/Rect;
+    new-instance v2, Landroid/graphics/Rect;
 
-    const/4 v2, -0x1
+    const/4 v3, -0x1
 
-    invoke-direct {v1, p1, p1, v2, v2}, Landroid/graphics/Rect;-><init>(IIII)V
+    invoke-direct {v2, v0, v0, v3, v3}, Landroid/graphics/Rect;-><init>(IIII)V
 
-    iput-object v1, p0, Lcom/android/server/wm/WindowSurfaceController;->mSurfaceCrop:Landroid/graphics/Rect;
+    iput-object v2, p0, Lcom/android/server/wm/WindowSurfaceController;->mSurfaceCrop:Landroid/graphics/Rect;
 
     .line 62
-    const/high16 v1, 0x3f800000  # 1.0f
+    const/high16 v2, 0x3f800000  # 1.0f
 
-    iput v1, p0, Lcom/android/server/wm/WindowSurfaceController;->mLastDsdx:F
+    iput v2, p0, Lcom/android/server/wm/WindowSurfaceController;->mLastDsdx:F
 
     .line 63
-    iput v0, p0, Lcom/android/server/wm/WindowSurfaceController;->mLastDtdx:F
+    iput v1, p0, Lcom/android/server/wm/WindowSurfaceController;->mLastDtdx:F
 
     .line 64
-    iput v0, p0, Lcom/android/server/wm/WindowSurfaceController;->mLastDsdy:F
+    iput v1, p0, Lcom/android/server/wm/WindowSurfaceController;->mLastDsdy:F
 
     .line 65
-    iput v1, p0, Lcom/android/server/wm/WindowSurfaceController;->mLastDtdy:F
+    iput v2, p0, Lcom/android/server/wm/WindowSurfaceController;->mLastDtdy:F
 
     .line 67
-    iput v0, p0, Lcom/android/server/wm/WindowSurfaceController;->mSurfaceAlpha:F
+    iput v1, p0, Lcom/android/server/wm/WindowSurfaceController;->mSurfaceAlpha:F
 
     .line 69
-    iput p1, p0, Lcom/android/server/wm/WindowSurfaceController;->mSurfaceLayer:I
+    iput v0, p0, Lcom/android/server/wm/WindowSurfaceController;->mSurfaceLayer:I
 
     .line 74
-    iput-boolean p1, p0, Lcom/android/server/wm/WindowSurfaceController;->mHiddenForCrop:Z
+    iput-boolean v0, p0, Lcom/android/server/wm/WindowSurfaceController;->mHiddenForCrop:Z
 
     .line 77
-    const/4 p1, 0x1
+    const/4 v0, 0x1
 
-    iput-boolean p1, p0, Lcom/android/server/wm/WindowSurfaceController;->mHiddenForOtherReasons:Z
+    iput-boolean v0, p0, Lcom/android/server/wm/WindowSurfaceController;->mHiddenForOtherReasons:Z
 
     .line 85
-    new-instance v0, Landroid/view/SurfaceControl$Transaction;
+    new-instance v1, Landroid/view/SurfaceControl$Transaction;
 
-    invoke-direct {v0}, Landroid/view/SurfaceControl$Transaction;-><init>()V
+    invoke-direct {v1}, Landroid/view/SurfaceControl$Transaction;-><init>()V
 
-    iput-object v0, p0, Lcom/android/server/wm/WindowSurfaceController;->mTmpTransaction:Landroid/view/SurfaceControl$Transaction;
+    iput-object v1, p0, Lcom/android/server/wm/WindowSurfaceController;->mTmpTransaction:Landroid/view/SurfaceControl$Transaction;
 
     .line 89
     iput-object p7, p0, Lcom/android/server/wm/WindowSurfaceController;->mAnimator:Lcom/android/server/wm/WindowStateAnimator;
@@ -134,90 +143,93 @@
     iput-object p2, p0, Lcom/android/server/wm/WindowSurfaceController;->title:Ljava/lang/String;
 
     .line 96
-    iget-object v0, p7, Lcom/android/server/wm/WindowStateAnimator;->mService:Lcom/android/server/wm/WindowManagerService;
+    iget-object v1, p7, Lcom/android/server/wm/WindowStateAnimator;->mService:Lcom/android/server/wm/WindowManagerService;
 
-    iput-object v0, p0, Lcom/android/server/wm/WindowSurfaceController;->mService:Lcom/android/server/wm/WindowManagerService;
+    iput-object v1, p0, Lcom/android/server/wm/WindowSurfaceController;->mService:Lcom/android/server/wm/WindowManagerService;
 
     .line 97
-    iget-object p7, p7, Lcom/android/server/wm/WindowStateAnimator;->mWin:Lcom/android/server/wm/WindowState;
+    iget-object v1, p7, Lcom/android/server/wm/WindowStateAnimator;->mWin:Lcom/android/server/wm/WindowState;
 
     .line 98
+    .local v1, "win":Lcom/android/server/wm/WindowState;
     iput p8, p0, Lcom/android/server/wm/WindowSurfaceController;->mWindowType:I
 
     .line 99
-    iget-object v0, p7, Lcom/android/server/wm/WindowState;->mSession:Lcom/android/server/wm/Session;
+    iget-object v2, v1, Lcom/android/server/wm/WindowState;->mSession:Lcom/android/server/wm/Session;
 
-    iput-object v0, p0, Lcom/android/server/wm/WindowSurfaceController;->mWindowSession:Lcom/android/server/wm/Session;
+    iput-object v2, p0, Lcom/android/server/wm/WindowSurfaceController;->mWindowSession:Lcom/android/server/wm/Session;
 
     .line 101
-    const-wide/16 v0, 0x20
+    const-wide/16 v2, 0x20
 
-    const-string v2, "new SurfaceControl"
+    const-string v4, "new SurfaceControl"
 
-    invoke-static {v0, v1, v2}, Landroid/os/Trace;->traceBegin(JLjava/lang/String;)V
+    invoke-static {v2, v3, v4}, Landroid/os/Trace;->traceBegin(JLjava/lang/String;)V
 
     .line 102
-    invoke-virtual {p7}, Lcom/android/server/wm/WindowState;->makeSurface()Landroid/view/SurfaceControl$Builder;
+    invoke-virtual {v1}, Lcom/android/server/wm/WindowState;->makeSurface()Landroid/view/SurfaceControl$Builder;
 
-    move-result-object v2
+    move-result-object v4
 
     .line 103
-    invoke-virtual {p7}, Lcom/android/server/wm/WindowState;->getSurfaceControl()Landroid/view/SurfaceControl;
+    invoke-virtual {v1}, Lcom/android/server/wm/WindowState;->getSurfaceControl()Landroid/view/SurfaceControl;
 
-    move-result-object p7
+    move-result-object v5
 
-    invoke-virtual {v2, p7}, Landroid/view/SurfaceControl$Builder;->setParent(Landroid/view/SurfaceControl;)Landroid/view/SurfaceControl$Builder;
+    invoke-virtual {v4, v5}, Landroid/view/SurfaceControl$Builder;->setParent(Landroid/view/SurfaceControl;)Landroid/view/SurfaceControl$Builder;
 
-    move-result-object p7
+    move-result-object v4
 
     .line 104
-    invoke-virtual {p7, p2}, Landroid/view/SurfaceControl$Builder;->setName(Ljava/lang/String;)Landroid/view/SurfaceControl$Builder;
+    invoke-virtual {v4, p2}, Landroid/view/SurfaceControl$Builder;->setName(Ljava/lang/String;)Landroid/view/SurfaceControl$Builder;
 
-    move-result-object p2
+    move-result-object v4
 
     .line 105
-    invoke-virtual {p2, p3, p4}, Landroid/view/SurfaceControl$Builder;->setBufferSize(II)Landroid/view/SurfaceControl$Builder;
+    invoke-virtual {v4, p3, p4}, Landroid/view/SurfaceControl$Builder;->setBufferSize(II)Landroid/view/SurfaceControl$Builder;
 
-    move-result-object p2
+    move-result-object v4
 
     .line 106
-    invoke-virtual {p2, p5}, Landroid/view/SurfaceControl$Builder;->setFormat(I)Landroid/view/SurfaceControl$Builder;
+    invoke-virtual {v4, p5}, Landroid/view/SurfaceControl$Builder;->setFormat(I)Landroid/view/SurfaceControl$Builder;
 
-    move-result-object p2
+    move-result-object v4
 
     .line 107
-    invoke-virtual {p2, p6}, Landroid/view/SurfaceControl$Builder;->setFlags(I)Landroid/view/SurfaceControl$Builder;
+    invoke-virtual {v4, p6}, Landroid/view/SurfaceControl$Builder;->setFlags(I)Landroid/view/SurfaceControl$Builder;
 
-    move-result-object p2
+    move-result-object v4
 
     .line 108
-    const/4 p3, 0x2
+    const/4 v5, 0x2
 
-    invoke-virtual {p2, p3, p8}, Landroid/view/SurfaceControl$Builder;->setMetadata(II)Landroid/view/SurfaceControl$Builder;
+    invoke-virtual {v4, v5, p8}, Landroid/view/SurfaceControl$Builder;->setMetadata(II)Landroid/view/SurfaceControl$Builder;
 
-    move-result-object p2
+    move-result-object v4
 
     .line 109
-    invoke-virtual {p2, p1, p9}, Landroid/view/SurfaceControl$Builder;->setMetadata(II)Landroid/view/SurfaceControl$Builder;
+    invoke-virtual {v4, v0, p9}, Landroid/view/SurfaceControl$Builder;->setMetadata(II)Landroid/view/SurfaceControl$Builder;
 
-    move-result-object p1
+    move-result-object v0
 
     .line 110
-    invoke-virtual {p1}, Landroid/view/SurfaceControl$Builder;->build()Landroid/view/SurfaceControl;
+    .local v0, "b":Landroid/view/SurfaceControl$Builder;
+    invoke-virtual {v0}, Landroid/view/SurfaceControl$Builder;->build()Landroid/view/SurfaceControl;
 
-    move-result-object p1
+    move-result-object v4
 
-    iput-object p1, p0, Lcom/android/server/wm/WindowSurfaceController;->mSurfaceControl:Landroid/view/SurfaceControl;
+    iput-object v4, p0, Lcom/android/server/wm/WindowSurfaceController;->mSurfaceControl:Landroid/view/SurfaceControl;
 
     .line 111
-    invoke-static {v0, v1}, Landroid/os/Trace;->traceEnd(J)V
+    invoke-static {v2, v3}, Landroid/os/Trace;->traceEnd(J)V
 
     .line 112
     return-void
 .end method
 
 .method private hideSurface(Landroid/view/SurfaceControl$Transaction;)V
-    .registers 3
+    .registers 5
+    .param p1, "transaction"  # Landroid/view/SurfaceControl$Transaction;
 
     .line 148
     iget-object v0, p0, Lcom/android/server/wm/WindowSurfaceController;->mSurfaceControl:Landroid/view/SurfaceControl;
@@ -238,42 +250,63 @@
     iget-object v0, p0, Lcom/android/server/wm/WindowSurfaceController;->mSurfaceControl:Landroid/view/SurfaceControl;
 
     invoke-virtual {p1, v0}, Landroid/view/SurfaceControl$Transaction;->hide(Landroid/view/SurfaceControl;)Landroid/view/SurfaceControl$Transaction;
-    :try_end_e
-    .catch Ljava/lang/RuntimeException; {:try_start_9 .. :try_end_e} :catch_f
 
     .line 156
-    goto :goto_26
+    iget-object v0, p0, Lcom/android/server/wm/WindowSurfaceController;->mAnimator:Lcom/android/server/wm/WindowStateAnimator;
 
-    .line 154
-    :catch_f
-    move-exception p1
+    iget-object v0, v0, Lcom/android/server/wm/WindowStateAnimator;->mSession:Lcom/android/server/wm/Session;
 
-    .line 155
-    new-instance p1, Ljava/lang/StringBuilder;
+    iget v0, v0, Lcom/android/server/wm/Session;->mPid:I
 
-    invoke-direct {p1}, Ljava/lang/StringBuilder;-><init>()V
+    iget-object v1, p0, Lcom/android/server/wm/WindowSurfaceController;->mAnimator:Lcom/android/server/wm/WindowStateAnimator;
 
-    const-string v0, "Exception hiding surface in "
+    iget-object v1, v1, Lcom/android/server/wm/WindowStateAnimator;->mWin:Lcom/android/server/wm/WindowState;
 
-    invoke-virtual {p1, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-static {v1}, Ljava/lang/System;->identityHashCode(Ljava/lang/Object;)I
 
-    invoke-virtual {p1, p0}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    move-result v1
 
-    invoke-virtual {p1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-static {v0, v1}, Lcom/android/server/wm/WmsInjector;->hideWindow(II)V
+    :try_end_1f
+    .catch Ljava/lang/RuntimeException; {:try_start_9 .. :try_end_1f} :catch_20
 
-    move-result-object p1
+    .line 160
+    goto :goto_37
 
-    const-string v0, "WindowManager"
+    .line 158
+    :catch_20
+    move-exception v0
 
-    invoke-static {v0, p1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    .line 159
+    .local v0, "e":Ljava/lang/RuntimeException;
+    new-instance v1, Ljava/lang/StringBuilder;
 
-    .line 157
-    :goto_26
+    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
+
+    const-string v2, "Exception hiding surface in "
+
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v1, p0}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v1
+
+    const-string v2, "WindowManager"
+
+    invoke-static {v2, v1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+
+    .line 161
+    .end local v0  # "e":Ljava/lang/RuntimeException;
+    :goto_37
     return-void
 .end method
 
 .method private logSurface(Ljava/lang/String;Ljava/lang/RuntimeException;)V
     .registers 5
+    .param p1, "msg"  # Ljava/lang/String;
+    .param p2, "where"  # Ljava/lang/RuntimeException;
 
     .line 115
     new-instance v0, Ljava/lang/StringBuilder;
@@ -286,31 +319,32 @@
 
     invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string p1, ": "
+    const-string v1, ": "
 
-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    iget-object p1, p0, Lcom/android/server/wm/WindowSurfaceController;->title:Ljava/lang/String;
+    iget-object v1, p0, Lcom/android/server/wm/WindowSurfaceController;->title:Ljava/lang/String;
 
-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
     .line 116
-    const-string v0, "WindowManager"
+    .local v0, "str":Ljava/lang/String;
+    const-string v1, "WindowManager"
 
     if-eqz p2, :cond_23
 
     .line 117
-    invoke-static {v0, p1, p2}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    invoke-static {v1, v0, p2}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
     goto :goto_26
 
     .line 119
     :cond_23
-    invoke-static {v0, p1}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v0}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 121
     :goto_26
@@ -320,27 +354,45 @@
 .method private showSurface()Z
     .registers 5
 
-    .line 443
+    .line 451
     const/4 v0, 0x1
 
     :try_start_1
     invoke-virtual {p0, v0}, Lcom/android/server/wm/WindowSurfaceController;->setShown(Z)V
 
-    .line 444
+    .line 452
     iget-object v1, p0, Lcom/android/server/wm/WindowSurfaceController;->mSurfaceControl:Landroid/view/SurfaceControl;
 
     invoke-virtual {v1}, Landroid/view/SurfaceControl;->show()V
-    :try_end_9
-    .catch Ljava/lang/RuntimeException; {:try_start_1 .. :try_end_9} :catch_a
 
-    .line 445
+    .line 455
+    iget-object v1, p0, Lcom/android/server/wm/WindowSurfaceController;->mAnimator:Lcom/android/server/wm/WindowStateAnimator;
+
+    iget-object v1, v1, Lcom/android/server/wm/WindowStateAnimator;->mSession:Lcom/android/server/wm/Session;
+
+    iget v1, v1, Lcom/android/server/wm/Session;->mPid:I
+
+    iget-object v2, p0, Lcom/android/server/wm/WindowSurfaceController;->mAnimator:Lcom/android/server/wm/WindowStateAnimator;
+
+    iget-object v2, v2, Lcom/android/server/wm/WindowStateAnimator;->mWin:Lcom/android/server/wm/WindowState;
+
+    invoke-static {v2}, Ljava/lang/System;->identityHashCode(Ljava/lang/Object;)I
+
+    move-result v2
+
+    invoke-static {v1, v2}, Lcom/android/server/wm/WmsInjector;->showWindow(II)V
+    :try_end_1a
+    .catch Ljava/lang/RuntimeException; {:try_start_1 .. :try_end_1a} :catch_1b
+
+    .line 457
     return v0
 
-    .line 446
-    :catch_a
+    .line 458
+    :catch_1b
     move-exception v1
 
-    .line 447
+    .line 459
+    .local v1, "e":Ljava/lang/RuntimeException;
     new-instance v2, Ljava/lang/StringBuilder;
 
     invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
@@ -367,14 +419,15 @@
 
     invoke-static {v3, v2, v1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
-    .line 450
+    .line 462
+    .end local v1  # "e":Ljava/lang/RuntimeException;
     iget-object v1, p0, Lcom/android/server/wm/WindowSurfaceController;->mAnimator:Lcom/android/server/wm/WindowStateAnimator;
 
     const-string v2, "show"
 
     invoke-virtual {v1, v2, v0}, Lcom/android/server/wm/WindowStateAnimator;->reclaimSomeSurfaceMemory(Ljava/lang/String;Z)V
 
-    .line 452
+    .line 464
     const/4 v0, 0x0
 
     return v0
@@ -383,7 +436,7 @@
 .method private updateVisibility()Z
     .registers 2
 
-    .line 426
+    .line 434
     iget-boolean v0, p0, Lcom/android/server/wm/WindowSurfaceController;->mHiddenForCrop:Z
 
     if-nez v0, :cond_14
@@ -394,43 +447,43 @@
 
     goto :goto_14
 
-    .line 433
+    .line 441
     :cond_9
     iget-boolean v0, p0, Lcom/android/server/wm/WindowSurfaceController;->mSurfaceShown:Z
 
     if-nez v0, :cond_12
 
-    .line 434
+    .line 442
     invoke-direct {p0}, Lcom/android/server/wm/WindowSurfaceController;->showSurface()Z
 
     move-result v0
 
     return v0
 
-    .line 436
+    .line 444
     :cond_12
     const/4 v0, 0x1
 
     return v0
 
-    .line 427
+    .line 435
     :cond_14
     :goto_14
     iget-boolean v0, p0, Lcom/android/server/wm/WindowSurfaceController;->mSurfaceShown:Z
 
     if-eqz v0, :cond_22
 
-    .line 428
+    .line 436
     iget-object v0, p0, Lcom/android/server/wm/WindowSurfaceController;->mTmpTransaction:Landroid/view/SurfaceControl$Transaction;
 
     invoke-direct {p0, v0}, Lcom/android/server/wm/WindowSurfaceController;->hideSurface(Landroid/view/SurfaceControl$Transaction;)V
 
-    .line 429
+    .line 437
     iget-object v0, p0, Lcom/android/server/wm/WindowSurfaceController;->mTmpTransaction:Landroid/view/SurfaceControl$Transaction;
 
     invoke-static {v0}, Landroid/view/SurfaceControl;->mergeToGlobalTransaction(Landroid/view/SurfaceControl$Transaction;)V
 
-    .line 431
+    .line 439
     :cond_22
     const/4 v0, 0x0
 
@@ -440,10 +493,23 @@
 
 # virtual methods
 .method clearCropInTransaction(Z)V
-    .registers 5
+    .registers 6
+    .param p1, "recoveringMemory"  # Z
 
-    .line 204
-    :try_start_0
+    .line 209
+    sget-boolean v0, Lcom/android/server/wm/WindowManagerDebugConfig;->SHOW_TRANSACTIONS:Z
+
+    if-eqz v0, :cond_a
+
+    const/4 v0, 0x0
+
+    const-string v1, "CLEAR CROP"
+
+    invoke-direct {p0, v1, v0}, Lcom/android/server/wm/WindowSurfaceController;->logSurface(Ljava/lang/String;Ljava/lang/RuntimeException;)V
+
+    .line 212
+    :cond_a
+    :try_start_a
     new-instance v0, Landroid/graphics/Rect;
 
     const/4 v1, -0x1
@@ -452,39 +518,42 @@
 
     invoke-direct {v0, v2, v2, v1, v1}, Landroid/graphics/Rect;-><init>(IIII)V
 
-    .line 205
+    .line 213
+    .local v0, "clipRect":Landroid/graphics/Rect;
     iget-object v1, p0, Lcom/android/server/wm/WindowSurfaceController;->mSurfaceCrop:Landroid/graphics/Rect;
 
     invoke-virtual {v1, v0}, Landroid/graphics/Rect;->equals(Ljava/lang/Object;)Z
 
     move-result v1
 
-    if-eqz v1, :cond_10
+    if-eqz v1, :cond_1a
 
-    .line 206
+    .line 214
     return-void
 
-    .line 208
-    :cond_10
+    .line 216
+    :cond_1a
     iget-object v1, p0, Lcom/android/server/wm/WindowSurfaceController;->mSurfaceControl:Landroid/view/SurfaceControl;
 
     invoke-virtual {v1, v0}, Landroid/view/SurfaceControl;->setWindowCrop(Landroid/graphics/Rect;)V
 
-    .line 209
+    .line 217
     iget-object v1, p0, Lcom/android/server/wm/WindowSurfaceController;->mSurfaceCrop:Landroid/graphics/Rect;
 
     invoke-virtual {v1, v0}, Landroid/graphics/Rect;->set(Landroid/graphics/Rect;)V
-    :try_end_1a
-    .catch Ljava/lang/RuntimeException; {:try_start_0 .. :try_end_1a} :catch_1b
+    :try_end_24
+    .catch Ljava/lang/RuntimeException; {:try_start_a .. :try_end_24} :catch_25
 
-    .line 215
-    goto :goto_3c
+    .line 223
+    .end local v0  # "clipRect":Landroid/graphics/Rect;
+    goto :goto_46
 
-    .line 210
-    :catch_1b
+    .line 218
+    :catch_25
     move-exception v0
 
-    .line 211
+    .line 219
+    .local v0, "e":Ljava/lang/RuntimeException;
     new-instance v1, Ljava/lang/StringBuilder;
 
     invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
@@ -503,38 +572,39 @@
 
     invoke-static {v2, v1, v0}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
-    .line 212
-    if-nez p1, :cond_3c
+    .line 220
+    if-nez p1, :cond_46
 
-    .line 213
-    iget-object p1, p0, Lcom/android/server/wm/WindowSurfaceController;->mAnimator:Lcom/android/server/wm/WindowStateAnimator;
+    .line 221
+    iget-object v1, p0, Lcom/android/server/wm/WindowSurfaceController;->mAnimator:Lcom/android/server/wm/WindowStateAnimator;
 
-    const/4 v0, 0x1
+    const/4 v2, 0x1
 
-    const-string v1, "crop"
+    const-string v3, "crop"
 
-    invoke-virtual {p1, v1, v0}, Lcom/android/server/wm/WindowStateAnimator;->reclaimSomeSurfaceMemory(Ljava/lang/String;Z)V
+    invoke-virtual {v1, v3, v2}, Lcom/android/server/wm/WindowStateAnimator;->reclaimSomeSurfaceMemory(Ljava/lang/String;Z)V
 
-    .line 216
-    :cond_3c
-    :goto_3c
+    .line 224
+    .end local v0  # "e":Ljava/lang/RuntimeException;
+    :cond_46
+    :goto_46
     return-void
 .end method
 
 .method clearWindowContentFrameStats()Z
     .registers 2
 
-    .line 468
+    .line 480
     iget-object v0, p0, Lcom/android/server/wm/WindowSurfaceController;->mSurfaceControl:Landroid/view/SurfaceControl;
 
     if-nez v0, :cond_6
 
-    .line 469
+    .line 481
     const/4 v0, 0x0
 
     return v0
 
-    .line 471
+    .line 483
     :cond_6
     invoke-virtual {v0}, Landroid/view/SurfaceControl;->clearContentFrameStats()Z
 
@@ -545,13 +615,15 @@
 
 .method deferTransactionUntil(Landroid/os/IBinder;J)V
     .registers 5
+    .param p1, "handle"  # Landroid/os/IBinder;
+    .param p2, "frame"  # J
 
-    .line 457
+    .line 469
     iget-object v0, p0, Lcom/android/server/wm/WindowSurfaceController;->mSurfaceControl:Landroid/view/SurfaceControl;
 
     invoke-virtual {v0, p1, p2, p3}, Landroid/view/SurfaceControl;->deferTransactionUntil(Landroid/os/IBinder;J)V
 
-    .line 458
+    .line 470
     return-void
 .end method
 
@@ -559,54 +631,108 @@
     .registers 7
 
     .line 164
-    const/4 v0, 0x0
+    sget-boolean v0, Lcom/android/server/wm/WindowManagerDebugConfig;->SHOW_TRANSACTIONS:Z
 
-    const/4 v1, 0x0
+    const-string v1, "WindowManager"
 
-    :try_start_2
-    iget-object v2, p0, Lcom/android/server/wm/WindowSurfaceController;->mSurfaceControl:Landroid/view/SurfaceControl;
+    if-nez v0, :cond_a
 
-    if-eqz v2, :cond_11
+    sget-boolean v0, Lcom/android/server/wm/WindowManagerDebugConfig;->SHOW_SURFACE_ALLOC:Z
+
+    if-eqz v0, :cond_2c
 
     .line 165
-    iget-object v2, p0, Lcom/android/server/wm/WindowSurfaceController;->mTmpTransaction:Landroid/view/SurfaceControl$Transaction;
+    :cond_a
+    new-instance v0, Ljava/lang/StringBuilder;
 
-    iget-object v3, p0, Lcom/android/server/wm/WindowSurfaceController;->mSurfaceControl:Landroid/view/SurfaceControl;
+    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
 
-    invoke-virtual {v2, v3}, Landroid/view/SurfaceControl$Transaction;->remove(Landroid/view/SurfaceControl;)Landroid/view/SurfaceControl$Transaction;
+    const-string v2, "Destroying surface "
+
+    invoke-virtual {v0, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v0, p0}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+
+    const-string v2, " called by "
+
+    invoke-virtual {v0, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    const/16 v2, 0x8
+
+    invoke-static {v2}, Landroid/os/Debug;->getCallers(I)Ljava/lang/String;
 
     move-result-object v2
 
-    invoke-virtual {v2}, Landroid/view/SurfaceControl$Transaction;->apply()V
-    :try_end_11
-    .catch Ljava/lang/RuntimeException; {:try_start_2 .. :try_end_11} :catch_19
-    .catchall {:try_start_2 .. :try_end_11} :catchall_17
+    invoke-virtual {v0, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    .line 170
-    :cond_11
-    :goto_11
-    invoke-virtual {p0, v1}, Lcom/android/server/wm/WindowSurfaceController;->setShown(Z)V
+    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    .line 171
-    iput-object v0, p0, Lcom/android/server/wm/WindowSurfaceController;->mSurfaceControl:Landroid/view/SurfaceControl;
+    move-result-object v0
 
-    .line 172
-    goto :goto_31
-
-    .line 170
-    :catchall_17
-    move-exception v2
-
-    goto :goto_32
-
-    .line 167
-    :catch_19
-    move-exception v2
+    invoke-static {v1, v0}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 168
-    :try_start_1a
-    const-string v3, "WindowManager"
+    :cond_2c
+    const/4 v0, 0x0
 
+    const/4 v2, 0x0
+
+    :try_start_2e
+    iget-object v3, p0, Lcom/android/server/wm/WindowSurfaceController;->mSurfaceControl:Landroid/view/SurfaceControl;
+
+    if-eqz v3, :cond_37
+
+    .line 169
+    iget-object v3, p0, Lcom/android/server/wm/WindowSurfaceController;->mSurfaceControl:Landroid/view/SurfaceControl;
+
+    invoke-virtual {v3}, Landroid/view/SurfaceControl;->remove()V
+
+    .line 173
+    :cond_37
+    iget-object v3, p0, Lcom/android/server/wm/WindowSurfaceController;->mAnimator:Lcom/android/server/wm/WindowStateAnimator;
+
+    iget-object v3, v3, Lcom/android/server/wm/WindowStateAnimator;->mSession:Lcom/android/server/wm/Session;
+
+    iget v3, v3, Lcom/android/server/wm/Session;->mPid:I
+
+    iget-object v4, p0, Lcom/android/server/wm/WindowSurfaceController;->mAnimator:Lcom/android/server/wm/WindowStateAnimator;
+
+    iget-object v4, v4, Lcom/android/server/wm/WindowStateAnimator;->mWin:Lcom/android/server/wm/WindowState;
+
+    invoke-static {v4}, Ljava/lang/System;->identityHashCode(Ljava/lang/Object;)I
+
+    move-result v4
+
+    invoke-static {v3, v4}, Lcom/android/server/wm/WmsInjector;->destoryWindow(II)V
+    :try_end_48
+    .catch Ljava/lang/RuntimeException; {:try_start_2e .. :try_end_48} :catch_51
+    .catchall {:try_start_2e .. :try_end_48} :catchall_4f
+
+    .line 178
+    nop
+
+    :goto_49
+    invoke-virtual {p0, v2}, Lcom/android/server/wm/WindowSurfaceController;->setShown(Z)V
+
+    .line 179
+    iput-object v0, p0, Lcom/android/server/wm/WindowSurfaceController;->mSurfaceControl:Landroid/view/SurfaceControl;
+
+    .line 180
+    goto :goto_68
+
+    .line 178
+    :catchall_4f
+    move-exception v1
+
+    goto :goto_69
+
+    .line 175
+    :catch_51
+    move-exception v3
+
+    .line 176
+    .local v3, "e":Ljava/lang/RuntimeException;
+    :try_start_52
     new-instance v4, Ljava/lang/StringBuilder;
 
     invoke-direct {v4}, Ljava/lang/StringBuilder;-><init>()V
@@ -621,213 +747,235 @@
 
     move-result-object v4
 
-    invoke-static {v3, v4, v2}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
-    :try_end_30
-    .catchall {:try_start_1a .. :try_end_30} :catchall_17
+    invoke-static {v1, v4, v3}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    :try_end_66
+    .catchall {:try_start_52 .. :try_end_66} :catchall_4f
 
-    goto :goto_11
+    .line 178
+    nop
 
-    .line 173
-    :goto_31
+    .end local v3  # "e":Ljava/lang/RuntimeException;
+    goto :goto_49
+
+    .line 181
+    :goto_68
     return-void
 
-    .line 170
-    :goto_32
-    invoke-virtual {p0, v1}, Lcom/android/server/wm/WindowSurfaceController;->setShown(Z)V
+    .line 178
+    :goto_69
+    invoke-virtual {p0, v2}, Lcom/android/server/wm/WindowSurfaceController;->setShown(Z)V
 
-    .line 171
+    .line 179
     iput-object v0, p0, Lcom/android/server/wm/WindowSurfaceController;->mSurfaceControl:Landroid/view/SurfaceControl;
 
-    throw v2
+    throw v1
 .end method
 
 .method detachChildren()V
-    .registers 2
+    .registers 3
+
+    .line 131
+    sget-boolean v0, Lcom/android/server/wm/WindowManagerDebugConfig;->SHOW_TRANSACTIONS:Z
+
+    if-eqz v0, :cond_b
+
+    const-string v0, "WindowManager"
+
+    const-string v1, "SEVER CHILDREN"
+
+    invoke-static {v0, v1}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 132
+    :cond_b
     iget-object v0, p0, Lcom/android/server/wm/WindowSurfaceController;->mSurfaceControl:Landroid/view/SurfaceControl;
 
-    if-eqz v0, :cond_7
+    if-eqz v0, :cond_12
 
     .line 133
     invoke-virtual {v0}, Landroid/view/SurfaceControl;->detachChildren()V
 
     .line 135
-    :cond_7
+    :cond_12
     return-void
 .end method
 
 .method public dump(Ljava/io/PrintWriter;Ljava/lang/String;Z)V
-    .registers 4
+    .registers 6
+    .param p1, "pw"  # Ljava/io/PrintWriter;
+    .param p2, "prefix"  # Ljava/lang/String;
+    .param p3, "dumpAll"  # Z
 
-    .line 541
+    .line 551
     if-eqz p3, :cond_f
 
-    .line 542
+    .line 552
     invoke-virtual {p1, p2}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
-    const-string p3, "mSurface="
+    const-string v0, "mSurface="
 
-    invoke-virtual {p1, p3}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
+    invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
-    iget-object p3, p0, Lcom/android/server/wm/WindowSurfaceController;->mSurfaceControl:Landroid/view/SurfaceControl;
+    iget-object v0, p0, Lcom/android/server/wm/WindowSurfaceController;->mSurfaceControl:Landroid/view/SurfaceControl;
 
-    invoke-virtual {p1, p3}, Ljava/io/PrintWriter;->println(Ljava/lang/Object;)V
+    invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->println(Ljava/lang/Object;)V
 
-    .line 544
+    .line 554
     :cond_f
     invoke-virtual {p1, p2}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
-    const-string p2, "Surface: shown="
+    const-string v0, "Surface: shown="
 
-    invoke-virtual {p1, p2}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
+    invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
-    iget-boolean p2, p0, Lcom/android/server/wm/WindowSurfaceController;->mSurfaceShown:Z
+    iget-boolean v0, p0, Lcom/android/server/wm/WindowSurfaceController;->mSurfaceShown:Z
 
-    invoke-virtual {p1, p2}, Ljava/io/PrintWriter;->print(Z)V
+    invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->print(Z)V
 
-    .line 545
-    const-string p2, " layer="
+    .line 555
+    const-string v0, " layer="
 
-    invoke-virtual {p1, p2}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
+    invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
-    iget p2, p0, Lcom/android/server/wm/WindowSurfaceController;->mSurfaceLayer:I
+    iget v0, p0, Lcom/android/server/wm/WindowSurfaceController;->mSurfaceLayer:I
 
-    invoke-virtual {p1, p2}, Ljava/io/PrintWriter;->print(I)V
+    invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->print(I)V
 
-    .line 546
-    const-string p2, " alpha="
+    .line 556
+    const-string v0, " alpha="
 
-    invoke-virtual {p1, p2}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
+    invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
-    iget p2, p0, Lcom/android/server/wm/WindowSurfaceController;->mSurfaceAlpha:F
+    iget v0, p0, Lcom/android/server/wm/WindowSurfaceController;->mSurfaceAlpha:F
 
-    invoke-virtual {p1, p2}, Ljava/io/PrintWriter;->print(F)V
+    invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->print(F)V
 
-    .line 547
-    const-string p2, " rect=("
+    .line 557
+    const-string v0, " rect=("
 
-    invoke-virtual {p1, p2}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
+    invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
-    iget p2, p0, Lcom/android/server/wm/WindowSurfaceController;->mSurfaceX:F
+    iget v0, p0, Lcom/android/server/wm/WindowSurfaceController;->mSurfaceX:F
 
-    invoke-virtual {p1, p2}, Ljava/io/PrintWriter;->print(F)V
+    invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->print(F)V
 
-    .line 548
-    const-string p2, ","
+    .line 558
+    const-string v0, ","
 
-    invoke-virtual {p1, p2}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
+    invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
-    iget p2, p0, Lcom/android/server/wm/WindowSurfaceController;->mSurfaceY:F
+    iget v0, p0, Lcom/android/server/wm/WindowSurfaceController;->mSurfaceY:F
 
-    invoke-virtual {p1, p2}, Ljava/io/PrintWriter;->print(F)V
+    invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->print(F)V
 
-    .line 549
-    const-string p2, ") "
+    .line 559
+    const-string v0, ") "
 
-    invoke-virtual {p1, p2}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
+    invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
-    iget p2, p0, Lcom/android/server/wm/WindowSurfaceController;->mSurfaceW:I
+    iget v0, p0, Lcom/android/server/wm/WindowSurfaceController;->mSurfaceW:I
 
-    invoke-virtual {p1, p2}, Ljava/io/PrintWriter;->print(I)V
+    invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->print(I)V
 
-    .line 550
-    const-string p2, " x "
+    .line 560
+    const-string v0, " x "
 
-    invoke-virtual {p1, p2}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
+    invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
-    iget p2, p0, Lcom/android/server/wm/WindowSurfaceController;->mSurfaceH:I
+    iget v0, p0, Lcom/android/server/wm/WindowSurfaceController;->mSurfaceH:I
 
-    invoke-virtual {p1, p2}, Ljava/io/PrintWriter;->print(I)V
+    invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->print(I)V
 
-    .line 551
-    const-string p2, " transform=("
+    .line 561
+    const-string v0, " transform=("
 
-    invoke-virtual {p1, p2}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
+    invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
-    iget p2, p0, Lcom/android/server/wm/WindowSurfaceController;->mLastDsdx:F
+    iget v0, p0, Lcom/android/server/wm/WindowSurfaceController;->mLastDsdx:F
 
-    invoke-virtual {p1, p2}, Ljava/io/PrintWriter;->print(F)V
+    invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->print(F)V
 
-    const-string p2, ", "
+    const-string v0, ", "
 
-    invoke-virtual {p1, p2}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
+    invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
-    .line 552
-    iget p3, p0, Lcom/android/server/wm/WindowSurfaceController;->mLastDtdx:F
+    .line 562
+    iget v1, p0, Lcom/android/server/wm/WindowSurfaceController;->mLastDtdx:F
 
-    invoke-virtual {p1, p3}, Ljava/io/PrintWriter;->print(F)V
+    invoke-virtual {p1, v1}, Ljava/io/PrintWriter;->print(F)V
 
-    invoke-virtual {p1, p2}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
+    invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
-    iget p3, p0, Lcom/android/server/wm/WindowSurfaceController;->mLastDsdy:F
+    iget v1, p0, Lcom/android/server/wm/WindowSurfaceController;->mLastDsdy:F
 
-    invoke-virtual {p1, p3}, Ljava/io/PrintWriter;->print(F)V
+    invoke-virtual {p1, v1}, Ljava/io/PrintWriter;->print(F)V
 
-    .line 553
-    invoke-virtual {p1, p2}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
+    .line 563
+    invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
-    iget p2, p0, Lcom/android/server/wm/WindowSurfaceController;->mLastDtdy:F
+    iget v0, p0, Lcom/android/server/wm/WindowSurfaceController;->mLastDtdy:F
 
-    invoke-virtual {p1, p2}, Ljava/io/PrintWriter;->print(F)V
+    invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->print(F)V
 
-    const-string p2, ")"
+    const-string v0, ")"
 
-    invoke-virtual {p1, p2}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
-    .line 554
+    .line 564
     return-void
 .end method
 
 .method forceScaleableInTransaction(Z)V
-    .registers 3
+    .registers 4
+    .param p1, "force"  # Z
 
-    .line 463
+    .line 475
     if-eqz p1, :cond_4
 
-    const/4 p1, 0x1
+    const/4 v0, 0x1
 
     goto :goto_5
 
     :cond_4
-    const/4 p1, -0x1
+    const/4 v0, -0x1
 
-    .line 464
+    .line 476
+    .local v0, "scalingMode":I
     :goto_5
-    iget-object v0, p0, Lcom/android/server/wm/WindowSurfaceController;->mSurfaceControl:Landroid/view/SurfaceControl;
+    iget-object v1, p0, Lcom/android/server/wm/WindowSurfaceController;->mSurfaceControl:Landroid/view/SurfaceControl;
 
-    invoke-virtual {v0, p1}, Landroid/view/SurfaceControl;->setOverrideScalingMode(I)V
+    invoke-virtual {v1, v0}, Landroid/view/SurfaceControl;->setOverrideScalingMode(I)V
 
-    .line 465
+    .line 477
     return-void
 .end method
 
 .method getContainerRect(Landroid/graphics/Rect;)V
     .registers 3
+    .param p1, "rect"  # Landroid/graphics/Rect;
 
-    .line 413
+    .line 421
     iget-object v0, p0, Lcom/android/server/wm/WindowSurfaceController;->mAnimator:Lcom/android/server/wm/WindowStateAnimator;
 
     invoke-virtual {v0, p1}, Lcom/android/server/wm/WindowStateAnimator;->getContainerRect(Landroid/graphics/Rect;)V
 
-    .line 414
+    .line 422
     return-void
 .end method
 
 .method getHandle()Landroid/os/IBinder;
     .registers 2
 
-    .line 487
+    .line 499
     iget-object v0, p0, Lcom/android/server/wm/WindowSurfaceController;->mSurfaceControl:Landroid/view/SurfaceControl;
 
     if-nez v0, :cond_6
 
-    .line 488
+    .line 500
     const/4 v0, 0x0
 
     return-object v0
 
-    .line 490
+    .line 502
     :cond_6
     invoke-virtual {v0}, Landroid/view/SurfaceControl;->getHandle()Landroid/os/IBinder;
 
@@ -839,7 +987,7 @@
 .method getHeight()I
     .registers 2
 
-    .line 530
+    .line 540
     iget v0, p0, Lcom/android/server/wm/WindowSurfaceController;->mSurfaceH:I
 
     return v0
@@ -848,7 +996,7 @@
 .method getLayer()I
     .registers 2
 
-    .line 498
+    .line 510
     iget v0, p0, Lcom/android/server/wm/WindowSurfaceController;->mSurfaceLayer:I
 
     return v0
@@ -857,7 +1005,7 @@
 .method getShown()Z
     .registers 2
 
-    .line 502
+    .line 514
     iget-boolean v0, p0, Lcom/android/server/wm/WindowSurfaceController;->mSurfaceShown:Z
 
     return v0
@@ -865,20 +1013,21 @@
 
 .method getSurfaceControl(Landroid/view/SurfaceControl;)V
     .registers 3
+    .param p1, "outSurfaceControl"  # Landroid/view/SurfaceControl;
 
-    .line 494
+    .line 506
     iget-object v0, p0, Lcom/android/server/wm/WindowSurfaceController;->mSurfaceControl:Landroid/view/SurfaceControl;
 
     invoke-virtual {p1, v0}, Landroid/view/SurfaceControl;->copyFrom(Landroid/view/SurfaceControl;)V
 
-    .line 495
+    .line 507
     return-void
 .end method
 
 .method getWidth()I
     .registers 2
 
-    .line 526
+    .line 536
     iget v0, p0, Lcom/android/server/wm/WindowSurfaceController;->mSurfaceW:I
 
     return v0
@@ -886,30 +1035,31 @@
 
 .method getWindowContentFrameStats(Landroid/view/WindowContentFrameStats;)Z
     .registers 3
+    .param p1, "outStats"  # Landroid/view/WindowContentFrameStats;
 
-    .line 475
+    .line 487
     iget-object v0, p0, Lcom/android/server/wm/WindowSurfaceController;->mSurfaceControl:Landroid/view/SurfaceControl;
 
     if-nez v0, :cond_6
 
-    .line 476
-    const/4 p1, 0x0
+    .line 488
+    const/4 v0, 0x0
 
-    return p1
+    return v0
 
-    .line 478
+    .line 490
     :cond_6
     invoke-virtual {v0, p1}, Landroid/view/SurfaceControl;->getContentFrameStats(Landroid/view/WindowContentFrameStats;)Z
 
-    move-result p1
+    move-result v0
 
-    return p1
+    return v0
 .end method
 
 .method getX()F
     .registers 2
 
-    .line 518
+    .line 528
     iget v0, p0, Lcom/android/server/wm/WindowSurfaceController;->mSurfaceX:F
 
     return v0
@@ -918,7 +1068,7 @@
 .method getY()F
     .registers 2
 
-    .line 522
+    .line 532
     iget v0, p0, Lcom/android/server/wm/WindowSurfaceController;->mSurfaceY:F
 
     return v0
@@ -927,7 +1077,7 @@
 .method hasSurface()Z
     .registers 2
 
-    .line 483
+    .line 495
     iget-object v0, p0, Lcom/android/server/wm/WindowSurfaceController;->mSurfaceControl:Landroid/view/SurfaceControl;
 
     if-eqz v0, :cond_6
@@ -944,112 +1094,150 @@
 .end method
 
 .method hide(Landroid/view/SurfaceControl$Transaction;Ljava/lang/String;)V
-    .registers 3
+    .registers 5
+    .param p1, "transaction"  # Landroid/view/SurfaceControl$Transaction;
+    .param p2, "reason"  # Ljava/lang/String;
+
+    .line 138
+    sget-boolean v0, Lcom/android/server/wm/WindowManagerDebugConfig;->SHOW_TRANSACTIONS:Z
+
+    if-eqz v0, :cond_1e
+
+    new-instance v0, Ljava/lang/StringBuilder;
+
+    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
+
+    const-string v1, "HIDE ( "
+
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v0, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    const-string v1, " )"
+
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v0
+
+    const/4 v1, 0x0
+
+    invoke-direct {p0, v0, v1}, Lcom/android/server/wm/WindowSurfaceController;->logSurface(Ljava/lang/String;Ljava/lang/RuntimeException;)V
 
     .line 139
-    const/4 p2, 0x1
+    :cond_1e
+    const/4 v0, 0x1
 
-    iput-boolean p2, p0, Lcom/android/server/wm/WindowSurfaceController;->mHiddenForOtherReasons:Z
+    iput-boolean v0, p0, Lcom/android/server/wm/WindowSurfaceController;->mHiddenForOtherReasons:Z
 
     .line 141
-    iget-object p2, p0, Lcom/android/server/wm/WindowSurfaceController;->mAnimator:Lcom/android/server/wm/WindowStateAnimator;
+    iget-object v0, p0, Lcom/android/server/wm/WindowSurfaceController;->mAnimator:Lcom/android/server/wm/WindowStateAnimator;
 
-    invoke-virtual {p2}, Lcom/android/server/wm/WindowStateAnimator;->destroyPreservedSurfaceLocked()V
+    invoke-virtual {v0}, Lcom/android/server/wm/WindowStateAnimator;->destroyPreservedSurfaceLocked()V
 
     .line 142
-    iget-boolean p2, p0, Lcom/android/server/wm/WindowSurfaceController;->mSurfaceShown:Z
+    iget-boolean v0, p0, Lcom/android/server/wm/WindowSurfaceController;->mSurfaceShown:Z
 
-    if-eqz p2, :cond_f
+    if-eqz v0, :cond_2d
 
     .line 143
     invoke-direct {p0, p1}, Lcom/android/server/wm/WindowSurfaceController;->hideSurface(Landroid/view/SurfaceControl$Transaction;)V
 
     .line 145
-    :cond_f
+    :cond_2d
     return-void
 .end method
 
 .method prepareToShowInTransaction(FFFFFZ)Z
-    .registers 9
+    .registers 11
+    .param p1, "alpha"  # F
+    .param p2, "dsdx"  # F
+    .param p3, "dtdx"  # F
+    .param p4, "dsdy"  # F
+    .param p5, "dtdy"  # F
+    .param p6, "recoveringMemory"  # Z
 
-    .line 319
+    .line 327
     iget-object v0, p0, Lcom/android/server/wm/WindowSurfaceController;->mSurfaceControl:Landroid/view/SurfaceControl;
 
     const/4 v1, 0x1
 
     if-eqz v0, :cond_3c
 
-    .line 321
+    .line 329
     :try_start_5
     iput p1, p0, Lcom/android/server/wm/WindowSurfaceController;->mSurfaceAlpha:F
 
-    .line 322
+    .line 330
     invoke-virtual {v0, p1}, Landroid/view/SurfaceControl;->setAlpha(F)V
 
-    .line 323
+    .line 331
     iput p2, p0, Lcom/android/server/wm/WindowSurfaceController;->mLastDsdx:F
 
-    .line 324
+    .line 332
     iput p3, p0, Lcom/android/server/wm/WindowSurfaceController;->mLastDtdx:F
 
-    .line 325
+    .line 333
     iput p4, p0, Lcom/android/server/wm/WindowSurfaceController;->mLastDsdy:F
 
-    .line 326
+    .line 334
     iput p5, p0, Lcom/android/server/wm/WindowSurfaceController;->mLastDtdy:F
 
-    .line 327
-    iget-object p1, p0, Lcom/android/server/wm/WindowSurfaceController;->mSurfaceControl:Landroid/view/SurfaceControl;
+    .line 335
+    iget-object v0, p0, Lcom/android/server/wm/WindowSurfaceController;->mSurfaceControl:Landroid/view/SurfaceControl;
 
-    invoke-virtual {p1, p2, p3, p4, p5}, Landroid/view/SurfaceControl;->setMatrix(FFFF)V
+    invoke-virtual {v0, p2, p3, p4, p5}, Landroid/view/SurfaceControl;->setMatrix(FFFF)V
     :try_end_17
     .catch Ljava/lang/RuntimeException; {:try_start_5 .. :try_end_17} :catch_18
 
-    .line 335
+    .line 343
     goto :goto_3c
 
-    .line 329
+    .line 337
     :catch_18
-    move-exception p1
+    move-exception v0
 
-    .line 330
-    new-instance p2, Ljava/lang/StringBuilder;
+    .line 338
+    .local v0, "e":Ljava/lang/RuntimeException;
+    new-instance v2, Ljava/lang/StringBuilder;
 
-    invoke-direct {p2}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string p3, "Error updating surface in "
+    const-string v3, "Error updating surface in "
 
-    invoke-virtual {p2, p3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    iget-object p3, p0, Lcom/android/server/wm/WindowSurfaceController;->title:Ljava/lang/String;
+    iget-object v3, p0, Lcom/android/server/wm/WindowSurfaceController;->title:Ljava/lang/String;
 
-    invoke-virtual {p2, p3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p2
+    move-result-object v2
 
-    const-string p3, "WindowManager"
+    const-string v3, "WindowManager"
 
-    invoke-static {p3, p2, p1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    invoke-static {v3, v2, v0}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
-    .line 331
+    .line 339
     if-nez p6, :cond_3a
 
-    .line 332
-    iget-object p1, p0, Lcom/android/server/wm/WindowSurfaceController;->mAnimator:Lcom/android/server/wm/WindowStateAnimator;
+    .line 340
+    iget-object v2, p0, Lcom/android/server/wm/WindowSurfaceController;->mAnimator:Lcom/android/server/wm/WindowStateAnimator;
 
-    const-string p2, "update"
+    const-string v3, "update"
 
-    invoke-virtual {p1, p2, v1}, Lcom/android/server/wm/WindowStateAnimator;->reclaimSomeSurfaceMemory(Ljava/lang/String;Z)V
+    invoke-virtual {v2, v3, v1}, Lcom/android/server/wm/WindowStateAnimator;->reclaimSomeSurfaceMemory(Ljava/lang/String;Z)V
 
-    .line 334
+    .line 342
     :cond_3a
-    const/4 p1, 0x0
+    const/4 v1, 0x0
 
-    return p1
+    return v1
 
-    .line 337
+    .line 345
+    .end local v0  # "e":Ljava/lang/RuntimeException;
     :cond_3c
     :goto_3c
     return v1
@@ -1057,260 +1245,414 @@
 
 .method reparentChildrenInTransaction(Lcom/android/server/wm/WindowSurfaceController;)V
     .registers 4
+    .param p1, "other"  # Lcom/android/server/wm/WindowSurfaceController;
+
+    .line 124
+    sget-boolean v0, Lcom/android/server/wm/WindowManagerDebugConfig;->SHOW_TRANSACTIONS:Z
+
+    if-eqz v0, :cond_22
+
+    new-instance v0, Ljava/lang/StringBuilder;
+
+    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
+
+    const-string v1, "REPARENT from: "
+
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v0, p0}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+
+    const-string v1, " to: "
+
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v0
+
+    const-string v1, "WindowManager"
+
+    invoke-static {v1, v0}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 125
+    :cond_22
     iget-object v0, p0, Lcom/android/server/wm/WindowSurfaceController;->mSurfaceControl:Landroid/view/SurfaceControl;
 
-    if-eqz v0, :cond_f
+    if-eqz v0, :cond_31
 
     iget-object v1, p1, Lcom/android/server/wm/WindowSurfaceController;->mSurfaceControl:Landroid/view/SurfaceControl;
 
-    if-eqz v1, :cond_f
+    if-eqz v1, :cond_31
 
     .line 126
     invoke-virtual {p1}, Lcom/android/server/wm/WindowSurfaceController;->getHandle()Landroid/os/IBinder;
 
-    move-result-object p1
+    move-result-object v1
 
-    invoke-virtual {v0, p1}, Landroid/view/SurfaceControl;->reparentChildren(Landroid/os/IBinder;)V
+    invoke-virtual {v0, v1}, Landroid/view/SurfaceControl;->reparentChildren(Landroid/os/IBinder;)V
 
     .line 128
-    :cond_f
+    :cond_31
     return-void
 .end method
 
 .method setBufferSizeInTransaction(IIZ)Z
-    .registers 9
-
-    .line 291
-    iget v0, p0, Lcom/android/server/wm/WindowSurfaceController;->mSurfaceW:I
-
-    const/4 v1, 0x0
-
-    const/4 v2, 0x1
-
-    if-ne v0, p1, :cond_d
-
-    iget v0, p0, Lcom/android/server/wm/WindowSurfaceController;->mSurfaceH:I
-
-    if-eq v0, p2, :cond_b
-
-    goto :goto_d
-
-    :cond_b
-    move v0, v1
-
-    goto :goto_e
-
-    :cond_d
-    :goto_d
-    move v0, v2
-
-    .line 292
-    :goto_e
-    if-eqz v0, :cond_53
-
-    .line 293
-    iput p1, p0, Lcom/android/server/wm/WindowSurfaceController;->mSurfaceW:I
-
-    .line 294
-    iput p2, p0, Lcom/android/server/wm/WindowSurfaceController;->mSurfaceH:I
+    .registers 11
+    .param p1, "width"  # I
+    .param p2, "height"  # I
+    .param p3, "recoveringMemory"  # Z
 
     .line 299
-    :try_start_14
-    iget-object v0, p0, Lcom/android/server/wm/WindowSurfaceController;->mSurfaceControl:Landroid/view/SurfaceControl;
+    const-string v0, "x"
 
-    invoke-virtual {v0, p1, p2}, Landroid/view/SurfaceControl;->setBufferSize(II)V
-    :try_end_19
-    .catch Ljava/lang/RuntimeException; {:try_start_14 .. :try_end_19} :catch_1b
+    iget v1, p0, Lcom/android/server/wm/WindowSurfaceController;->mSurfaceW:I
 
-    .line 310
-    nop
+    const/4 v2, 0x0
 
-    .line 311
-    return v2
+    const/4 v3, 0x1
+
+    if-ne v1, p1, :cond_f
+
+    iget v1, p0, Lcom/android/server/wm/WindowSurfaceController;->mSurfaceH:I
+
+    if-eq v1, p2, :cond_d
+
+    goto :goto_f
+
+    :cond_d
+    move v1, v2
+
+    goto :goto_10
+
+    :cond_f
+    :goto_f
+    move v1, v3
 
     .line 300
-    :catch_1b
-    move-exception v0
+    .local v1, "surfaceResized":Z
+    :goto_10
+    if-eqz v1, :cond_72
 
-    .line 304
-    new-instance v3, Ljava/lang/StringBuilder;
+    .line 301
+    iput p1, p0, Lcom/android/server/wm/WindowSurfaceController;->mSurfaceW:I
 
-    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
+    .line 302
+    iput p2, p0, Lcom/android/server/wm/WindowSurfaceController;->mSurfaceH:I
 
-    const-string v4, "Error resizing surface of "
+    .line 305
+    :try_start_16
+    sget-boolean v4, Lcom/android/server/wm/WindowManagerDebugConfig;->SHOW_TRANSACTIONS:Z
 
-    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    if-eqz v4, :cond_35
 
-    iget-object v4, p0, Lcom/android/server/wm/WindowSurfaceController;->title:Ljava/lang/String;
+    new-instance v4, Ljava/lang/StringBuilder;
 
-    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-direct {v4}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v4, " size=("
+    const-string v5, "SIZE "
 
-    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v3, p1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v4, p1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    const-string p1, "x"
+    invoke-virtual {v4, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v3, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v4, p2}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v3, p2}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v4}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    const-string p1, ")"
+    move-result-object v4
 
-    invoke-virtual {v3, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    const/4 v5, 0x0
 
-    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
-
-    move-result-object p1
-
-    const-string p2, "WindowManager"
-
-    invoke-static {p2, p1, v0}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
-
-    .line 306
-    if-nez p3, :cond_52
+    invoke-direct {p0, v4, v5}, Lcom/android/server/wm/WindowSurfaceController;->logSurface(Ljava/lang/String;Ljava/lang/RuntimeException;)V
 
     .line 307
-    iget-object p1, p0, Lcom/android/server/wm/WindowSurfaceController;->mAnimator:Lcom/android/server/wm/WindowStateAnimator;
+    :cond_35
+    iget-object v4, p0, Lcom/android/server/wm/WindowSurfaceController;->mSurfaceControl:Landroid/view/SurfaceControl;
 
-    const-string p2, "size"
+    invoke-virtual {v4, p1, p2}, Landroid/view/SurfaceControl;->setBufferSize(II)V
+    :try_end_3a
+    .catch Ljava/lang/RuntimeException; {:try_start_16 .. :try_end_3a} :catch_3c
 
-    invoke-virtual {p1, p2, v2}, Lcom/android/server/wm/WindowStateAnimator;->reclaimSomeSurfaceMemory(Ljava/lang/String;Z)V
+    .line 318
+    nop
 
-    .line 309
-    :cond_52
-    return v1
+    .line 319
+    return v3
 
-    .line 313
-    :cond_53
-    return v1
+    .line 308
+    :catch_3c
+    move-exception v4
+
+    .line 312
+    .local v4, "e":Ljava/lang/RuntimeException;
+    new-instance v5, Ljava/lang/StringBuilder;
+
+    invoke-direct {v5}, Ljava/lang/StringBuilder;-><init>()V
+
+    const-string v6, "Error resizing surface of "
+
+    invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    iget-object v6, p0, Lcom/android/server/wm/WindowSurfaceController;->title:Ljava/lang/String;
+
+    invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    const-string v6, " size=("
+
+    invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v5, p1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v5, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v5, p2}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+
+    const-string v0, ")"
+
+    invoke-virtual {v5, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v5}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v0
+
+    const-string v5, "WindowManager"
+
+    invoke-static {v5, v0, v4}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+
+    .line 314
+    if-nez p3, :cond_71
+
+    .line 315
+    iget-object v0, p0, Lcom/android/server/wm/WindowSurfaceController;->mAnimator:Lcom/android/server/wm/WindowStateAnimator;
+
+    const-string v5, "size"
+
+    invoke-virtual {v0, v5, v3}, Lcom/android/server/wm/WindowStateAnimator;->reclaimSomeSurfaceMemory(Ljava/lang/String;Z)V
+
+    .line 317
+    :cond_71
+    return v2
+
+    .line 321
+    .end local v4  # "e":Ljava/lang/RuntimeException;
+    :cond_72
+    return v2
 .end method
 
 .method setColorSpaceAgnostic(Z)V
-    .registers 4
+    .registers 7
+    .param p1, "agnostic"  # Z
 
-    .line 395
-    const-string v0, "setColorSpaceAgnostic"
+    .line 399
+    const-string v0, "<<< CLOSE TRANSACTION setColorSpaceAgnosticLocked"
 
-    iget-object v1, p0, Lcom/android/server/wm/WindowSurfaceController;->mSurfaceControl:Landroid/view/SurfaceControl;
+    const-string v1, "setColorSpaceAgnostic"
 
-    if-nez v1, :cond_7
+    sget-boolean v2, Lcom/android/server/wm/WindowManagerDebugConfig;->SHOW_TRANSACTIONS:Z
 
-    .line 396
-    return-void
+    if-eqz v2, :cond_1d
 
-    .line 401
-    :cond_7
-    iget-object v1, p0, Lcom/android/server/wm/WindowSurfaceController;->mService:Lcom/android/server/wm/WindowManagerService;
+    .line 400
+    new-instance v2, Ljava/lang/StringBuilder;
 
-    invoke-virtual {v1}, Lcom/android/server/wm/WindowManagerService;->openSurfaceTransaction()V
+    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
+
+    const-string v3, "isColorSpaceAgnostic="
+
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v2, p1}, Ljava/lang/StringBuilder;->append(Z)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v2
+
+    const/4 v3, 0x0
+
+    invoke-direct {p0, v2, v3}, Lcom/android/server/wm/WindowSurfaceController;->logSurface(Ljava/lang/String;Ljava/lang/RuntimeException;)V
 
     .line 403
-    :try_start_c
-    iget-object v1, p0, Lcom/android/server/wm/WindowSurfaceController;->mSurfaceControl:Landroid/view/SurfaceControl;
+    :cond_1d
+    iget-object v2, p0, Lcom/android/server/wm/WindowSurfaceController;->mSurfaceControl:Landroid/view/SurfaceControl;
 
-    invoke-virtual {v1, p1}, Landroid/view/SurfaceControl;->setColorSpaceAgnostic(Z)V
-    :try_end_11
-    .catchall {:try_start_c .. :try_end_11} :catchall_18
+    if-nez v2, :cond_22
 
-    .line 405
-    iget-object p1, p0, Lcom/android/server/wm/WindowSurfaceController;->mService:Lcom/android/server/wm/WindowManagerService;
-
-    invoke-virtual {p1, v0}, Lcom/android/server/wm/WindowManagerService;->closeSurfaceTransaction(Ljava/lang/String;)V
-
-    .line 409
-    nop
-
-    .line 410
+    .line 404
     return-void
 
-    .line 405
-    :catchall_18
-    move-exception p1
+    .line 406
+    :cond_22
+    sget-boolean v2, Lcom/android/server/wm/WindowManagerDebugConfig;->SHOW_LIGHT_TRANSACTIONS:Z
 
-    iget-object v1, p0, Lcom/android/server/wm/WindowSurfaceController;->mService:Lcom/android/server/wm/WindowManagerService;
+    const-string v3, "WindowManager"
 
-    invoke-virtual {v1, v0}, Lcom/android/server/wm/WindowManagerService;->closeSurfaceTransaction(Ljava/lang/String;)V
+    if-eqz v2, :cond_2d
 
-    throw p1
+    .line 407
+    const-string v2, ">>> OPEN TRANSACTION setColorSpaceAgnosticLocked"
+
+    invoke-static {v3, v2}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
+
+    .line 409
+    :cond_2d
+    iget-object v2, p0, Lcom/android/server/wm/WindowSurfaceController;->mService:Lcom/android/server/wm/WindowManagerService;
+
+    invoke-virtual {v2}, Lcom/android/server/wm/WindowManagerService;->openSurfaceTransaction()V
+
+    .line 411
+    :try_start_32
+    iget-object v2, p0, Lcom/android/server/wm/WindowSurfaceController;->mSurfaceControl:Landroid/view/SurfaceControl;
+
+    invoke-virtual {v2, p1}, Landroid/view/SurfaceControl;->setColorSpaceAgnostic(Z)V
+    :try_end_37
+    .catchall {:try_start_32 .. :try_end_37} :catchall_44
+
+    .line 413
+    iget-object v2, p0, Lcom/android/server/wm/WindowSurfaceController;->mService:Lcom/android/server/wm/WindowManagerService;
+
+    invoke-virtual {v2, v1}, Lcom/android/server/wm/WindowManagerService;->closeSurfaceTransaction(Ljava/lang/String;)V
+
+    .line 414
+    sget-boolean v1, Lcom/android/server/wm/WindowManagerDebugConfig;->SHOW_LIGHT_TRANSACTIONS:Z
+
+    if-eqz v1, :cond_43
+
+    .line 415
+    invoke-static {v3, v0}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
+
+    .line 418
+    :cond_43
+    return-void
+
+    .line 413
+    :catchall_44
+    move-exception v2
+
+    iget-object v4, p0, Lcom/android/server/wm/WindowSurfaceController;->mService:Lcom/android/server/wm/WindowManagerService;
+
+    invoke-virtual {v4, v1}, Lcom/android/server/wm/WindowManagerService;->closeSurfaceTransaction(Ljava/lang/String;)V
+
+    .line 414
+    sget-boolean v1, Lcom/android/server/wm/WindowManagerDebugConfig;->SHOW_LIGHT_TRANSACTIONS:Z
+
+    if-eqz v1, :cond_51
+
+    .line 415
+    invoke-static {v3, v0}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
+
+    :cond_51
+    throw v2
 .end method
 
 .method setCropInTransaction(Landroid/graphics/Rect;Z)V
     .registers 7
+    .param p1, "clipRect"  # Landroid/graphics/Rect;
+    .param p2, "recoveringMemory"  # Z
 
-    .line 179
+    .line 184
+    sget-boolean v0, Lcom/android/server/wm/WindowManagerDebugConfig;->SHOW_TRANSACTIONS:Z
+
+    if-eqz v0, :cond_1d
+
+    new-instance v0, Ljava/lang/StringBuilder;
+
+    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
+
+    const-string v1, "CROP "
+
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    .line 185
+    invoke-virtual {p1}, Landroid/graphics/Rect;->toShortString()Ljava/lang/String;
+
+    move-result-object v1
+
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v0
+
+    const/4 v1, 0x0
+
+    .line 184
+    invoke-direct {p0, v0, v1}, Lcom/android/server/wm/WindowSurfaceController;->logSurface(Ljava/lang/String;Ljava/lang/RuntimeException;)V
+
+    .line 187
+    :cond_1d
     const/4 v0, 0x1
 
-    :try_start_1
+    :try_start_1e
     invoke-virtual {p1}, Landroid/graphics/Rect;->width()I
 
     move-result v1
 
-    if-lez v1, :cond_26
+    if-lez v1, :cond_43
 
     invoke-virtual {p1}, Landroid/graphics/Rect;->height()I
 
     move-result v1
 
-    if-lez v1, :cond_26
+    if-lez v1, :cond_43
 
-    .line 180
+    .line 188
     iget-object v1, p0, Lcom/android/server/wm/WindowSurfaceController;->mSurfaceCrop:Landroid/graphics/Rect;
 
     invoke-virtual {p1, v1}, Landroid/graphics/Rect;->equals(Ljava/lang/Object;)Z
 
     move-result v1
 
-    if-nez v1, :cond_1f
+    if-nez v1, :cond_3c
 
-    .line 181
+    .line 189
     iget-object v1, p0, Lcom/android/server/wm/WindowSurfaceController;->mSurfaceControl:Landroid/view/SurfaceControl;
 
     invoke-virtual {v1, p1}, Landroid/view/SurfaceControl;->setWindowCrop(Landroid/graphics/Rect;)V
 
-    .line 182
+    .line 190
     iget-object v1, p0, Lcom/android/server/wm/WindowSurfaceController;->mSurfaceCrop:Landroid/graphics/Rect;
 
     invoke-virtual {v1, p1}, Landroid/graphics/Rect;->set(Landroid/graphics/Rect;)V
 
-    .line 184
-    :cond_1f
+    .line 192
+    :cond_3c
     const/4 v1, 0x0
 
     iput-boolean v1, p0, Lcom/android/server/wm/WindowSurfaceController;->mHiddenForCrop:Z
 
-    .line 185
+    .line 193
     invoke-direct {p0}, Lcom/android/server/wm/WindowSurfaceController;->updateVisibility()Z
 
-    goto :goto_30
+    goto :goto_4d
 
-    .line 187
-    :cond_26
+    .line 195
+    :cond_43
     iput-boolean v0, p0, Lcom/android/server/wm/WindowSurfaceController;->mHiddenForCrop:Z
 
-    .line 188
+    .line 196
     iget-object v1, p0, Lcom/android/server/wm/WindowSurfaceController;->mAnimator:Lcom/android/server/wm/WindowStateAnimator;
 
     invoke-virtual {v1}, Lcom/android/server/wm/WindowStateAnimator;->destroyPreservedSurfaceLocked()V
 
-    .line 189
-    invoke-direct {p0}, Lcom/android/server/wm/WindowSurfaceController;->updateVisibility()Z
-    :try_end_30
-    .catch Ljava/lang/RuntimeException; {:try_start_1 .. :try_end_30} :catch_31
-
     .line 197
-    :goto_30
-    goto :goto_5d
+    invoke-direct {p0}, Lcom/android/server/wm/WindowSurfaceController;->updateVisibility()Z
+    :try_end_4d
+    .catch Ljava/lang/RuntimeException; {:try_start_1e .. :try_end_4d} :catch_4e
 
-    .line 191
-    :catch_31
+    .line 205
+    :goto_4d
+    goto :goto_7a
+
+    .line 199
+    :catch_4e
     move-exception v1
 
-    .line 192
+    .line 200
+    .local v1, "e":Ljava/lang/RuntimeException;
     new-instance v2, Ljava/lang/StringBuilder;
 
     invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
@@ -1325,215 +1667,292 @@
 
     invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    .line 193
+    .line 201
     invoke-virtual {p1}, Landroid/graphics/Rect;->toShortString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v3
 
-    invoke-virtual {v2, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v2
 
-    .line 192
-    const-string v2, "WindowManager"
+    .line 200
+    const-string v3, "WindowManager"
 
-    invoke-static {v2, p1, v1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    invoke-static {v3, v2, v1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
-    .line 194
-    if-nez p2, :cond_5d
+    .line 202
+    if-nez p2, :cond_7a
 
-    .line 195
-    iget-object p1, p0, Lcom/android/server/wm/WindowSurfaceController;->mAnimator:Lcom/android/server/wm/WindowStateAnimator;
+    .line 203
+    iget-object v2, p0, Lcom/android/server/wm/WindowSurfaceController;->mAnimator:Lcom/android/server/wm/WindowStateAnimator;
 
-    const-string p2, "crop"
+    const-string v3, "crop"
 
-    invoke-virtual {p1, p2, v0}, Lcom/android/server/wm/WindowStateAnimator;->reclaimSomeSurfaceMemory(Ljava/lang/String;Z)V
+    invoke-virtual {v2, v3, v0}, Lcom/android/server/wm/WindowStateAnimator;->reclaimSomeSurfaceMemory(Ljava/lang/String;Z)V
 
-    .line 198
-    :cond_5d
-    :goto_5d
+    .line 206
+    .end local v1  # "e":Ljava/lang/RuntimeException;
+    :cond_7a
+    :goto_7a
     return-void
 .end method
 
 .method setGeometryAppliesWithResizeInTransaction(Z)V
-    .registers 2
+    .registers 3
+    .param p1, "recoveringMemory"  # Z
 
-    .line 249
-    iget-object p1, p0, Lcom/android/server/wm/WindowSurfaceController;->mSurfaceControl:Landroid/view/SurfaceControl;
+    .line 257
+    iget-object v0, p0, Lcom/android/server/wm/WindowSurfaceController;->mSurfaceControl:Landroid/view/SurfaceControl;
 
-    invoke-virtual {p1}, Landroid/view/SurfaceControl;->setGeometryAppliesWithResize()V
+    invoke-virtual {v0}, Landroid/view/SurfaceControl;->setGeometryAppliesWithResize()V
 
-    .line 250
+    .line 258
     return-void
 .end method
 
 .method setMatrix(Landroid/view/SurfaceControl$Transaction;FFFFZ)V
-    .registers 15
-
-    .line 259
-    iget v0, p0, Lcom/android/server/wm/WindowSurfaceController;->mLastDsdx:F
-
-    cmpl-float v0, v0, p2
-
-    const/4 v1, 0x1
-
-    if-nez v0, :cond_1c
-
-    iget v0, p0, Lcom/android/server/wm/WindowSurfaceController;->mLastDtdx:F
-
-    cmpl-float v0, v0, p3
-
-    if-nez v0, :cond_1c
-
-    iget v0, p0, Lcom/android/server/wm/WindowSurfaceController;->mLastDtdy:F
-
-    cmpl-float v0, v0, p4
-
-    if-nez v0, :cond_1c
-
-    iget v0, p0, Lcom/android/server/wm/WindowSurfaceController;->mLastDsdy:F
-
-    cmpl-float v0, v0, p5
-
-    if-eqz v0, :cond_1a
-
-    goto :goto_1c
-
-    :cond_1a
-    const/4 v0, 0x0
-
-    goto :goto_1d
-
-    :cond_1c
-    :goto_1c
-    move v0, v1
-
-    .line 261
-    :goto_1d
-    if-nez v0, :cond_20
-
-    .line 262
-    return-void
-
-    .line 265
-    :cond_20
-    iput p2, p0, Lcom/android/server/wm/WindowSurfaceController;->mLastDsdx:F
-
-    .line 266
-    iput p3, p0, Lcom/android/server/wm/WindowSurfaceController;->mLastDtdx:F
+    .registers 23
+    .param p1, "t"  # Landroid/view/SurfaceControl$Transaction;
+    .param p2, "dsdx"  # F
+    .param p3, "dtdx"  # F
+    .param p4, "dtdy"  # F
+    .param p5, "dsdy"  # F
+    .param p6, "recoveringMemory"  # Z
 
     .line 267
-    iput p4, p0, Lcom/android/server/wm/WindowSurfaceController;->mLastDtdy:F
+    move-object/from16 v1, p0
 
-    .line 268
-    iput p5, p0, Lcom/android/server/wm/WindowSurfaceController;->mLastDsdy:F
+    move/from16 v8, p2
+
+    move/from16 v9, p3
+
+    move/from16 v10, p4
+
+    move/from16 v11, p5
+
+    const-string v12, "]"
+
+    const-string v13, ","
+
+    iget v0, v1, Lcom/android/server/wm/WindowSurfaceController;->mLastDsdx:F
+
+    cmpl-float v0, v0, v8
+
+    if-nez v0, :cond_29
+
+    iget v0, v1, Lcom/android/server/wm/WindowSurfaceController;->mLastDtdx:F
+
+    cmpl-float v0, v0, v9
+
+    if-nez v0, :cond_29
+
+    iget v0, v1, Lcom/android/server/wm/WindowSurfaceController;->mLastDtdy:F
+
+    cmpl-float v0, v0, v10
+
+    if-nez v0, :cond_29
+
+    iget v0, v1, Lcom/android/server/wm/WindowSurfaceController;->mLastDsdy:F
+
+    cmpl-float v0, v0, v11
+
+    if-eqz v0, :cond_27
+
+    goto :goto_29
+
+    :cond_27
+    const/4 v0, 0x0
+
+    goto :goto_2a
+
+    :cond_29
+    :goto_29
+    const/4 v0, 0x1
+
+    :goto_2a
+    move v15, v0
+
+    .line 269
+    .local v15, "matrixChanged":Z
+    if-nez v15, :cond_2e
+
+    .line 270
+    return-void
 
     .line 273
-    if-nez p1, :cond_30
+    :cond_2e
+    iput v8, v1, Lcom/android/server/wm/WindowSurfaceController;->mLastDsdx:F
 
     .line 274
-    :try_start_2a
-    iget-object p1, p0, Lcom/android/server/wm/WindowSurfaceController;->mSurfaceControl:Landroid/view/SurfaceControl;
+    iput v9, v1, Lcom/android/server/wm/WindowSurfaceController;->mLastDtdx:F
 
-    invoke-virtual {p1, p2, p3, p4, p5}, Landroid/view/SurfaceControl;->setMatrix(FFFF)V
-
-    goto :goto_3a
+    .line 275
+    iput v10, v1, Lcom/android/server/wm/WindowSurfaceController;->mLastDtdy:F
 
     .line 276
-    :cond_30
-    iget-object v3, p0, Lcom/android/server/wm/WindowSurfaceController;->mSurfaceControl:Landroid/view/SurfaceControl;
+    iput v11, v1, Lcom/android/server/wm/WindowSurfaceController;->mLastDsdy:F
 
-    move-object v2, p1
+    .line 279
+    const/4 v7, 0x0
 
-    move v4, p2
+    :try_start_37
+    sget-boolean v0, Lcom/android/server/wm/WindowManagerDebugConfig;->SHOW_TRANSACTIONS:Z
 
-    move v5, p3
+    if-eqz v0, :cond_64
 
-    move v6, p4
+    new-instance v0, Ljava/lang/StringBuilder;
 
-    move v7, p5
+    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
 
-    invoke-virtual/range {v2 .. v7}, Landroid/view/SurfaceControl$Transaction;->setMatrix(Landroid/view/SurfaceControl;FFFF)Landroid/view/SurfaceControl$Transaction;
-    :try_end_3a
-    .catch Ljava/lang/RuntimeException; {:try_start_2a .. :try_end_3a} :catch_3b
+    const-string v2, "MATRIX ["
 
-    .line 287
-    :goto_3a
-    goto :goto_7f
+    invoke-virtual {v0, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    .line 278
-    :catch_3b
-    move-exception p1
+    invoke-virtual {v0, v8}, Ljava/lang/StringBuilder;->append(F)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v0, v13}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v0, v9}, Ljava/lang/StringBuilder;->append(F)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v0, v13}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v0, v10}, Ljava/lang/StringBuilder;->append(F)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v0, v13}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v0, v11}, Ljava/lang/StringBuilder;->append(F)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v0, v12}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v0
+
+    invoke-direct {v1, v0, v7}, Lcom/android/server/wm/WindowSurfaceController;->logSurface(Ljava/lang/String;Ljava/lang/RuntimeException;)V
+
+    .line 281
+    :cond_64
+    if-nez p1, :cond_6c
 
     .line 282
-    new-instance p1, Ljava/lang/StringBuilder;
+    iget-object v0, v1, Lcom/android/server/wm/WindowSurfaceController;->mSurfaceControl:Landroid/view/SurfaceControl;
 
-    invoke-direct {p1}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-virtual {v0, v8, v9, v10, v11}, Landroid/view/SurfaceControl;->setMatrix(FFFF)V
 
-    const-string v0, "Error setting matrix on surface surface"
-
-    invoke-virtual {p1, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    iget-object v0, p0, Lcom/android/server/wm/WindowSurfaceController;->title:Ljava/lang/String;
-
-    invoke-virtual {p1, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    const-string v0, " MATRIX ["
-
-    invoke-virtual {p1, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {p1, p2}, Ljava/lang/StringBuilder;->append(F)Ljava/lang/StringBuilder;
-
-    const-string p2, ","
-
-    invoke-virtual {p1, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {p1, p3}, Ljava/lang/StringBuilder;->append(F)Ljava/lang/StringBuilder;
-
-    invoke-virtual {p1, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {p1, p4}, Ljava/lang/StringBuilder;->append(F)Ljava/lang/StringBuilder;
-
-    invoke-virtual {p1, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {p1, p5}, Ljava/lang/StringBuilder;->append(F)Ljava/lang/StringBuilder;
-
-    const-string p2, "]"
-
-    invoke-virtual {p1, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {p1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
-
-    move-result-object p1
-
-    const/4 p2, 0x0
-
-    const-string p3, "WindowManager"
-
-    invoke-static {p3, p1, p2}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    goto :goto_7c
 
     .line 284
-    if-nez p6, :cond_7f
+    :cond_6c
+    iget-object v3, v1, Lcom/android/server/wm/WindowSurfaceController;->mSurfaceControl:Landroid/view/SurfaceControl;
+    :try_end_6e
+    .catch Ljava/lang/RuntimeException; {:try_start_37 .. :try_end_6e} :catch_7f
 
-    .line 285
-    iget-object p1, p0, Lcom/android/server/wm/WindowSurfaceController;->mAnimator:Lcom/android/server/wm/WindowStateAnimator;
+    move-object/from16 v2, p1
 
-    const-string p2, "matrix"
+    move/from16 v4, p2
 
-    invoke-virtual {p1, p2, v1}, Lcom/android/server/wm/WindowStateAnimator;->reclaimSomeSurfaceMemory(Ljava/lang/String;Z)V
+    move/from16 v5, p3
 
-    .line 288
-    :cond_7f
-    :goto_7f
+    move/from16 v6, p4
+
+    move-object v14, v7
+
+    move/from16 v7, p5
+
+    :try_start_79
+    invoke-virtual/range {v2 .. v7}, Landroid/view/SurfaceControl$Transaction;->setMatrix(Landroid/view/SurfaceControl;FFFF)Landroid/view/SurfaceControl$Transaction;
+    :try_end_7c
+    .catch Ljava/lang/RuntimeException; {:try_start_79 .. :try_end_7c} :catch_7d
+
+    .line 295
+    :goto_7c
+    goto :goto_c0
+
+    .line 286
+    :catch_7d
+    move-exception v0
+
+    goto :goto_81
+
+    :catch_7f
+    move-exception v0
+
+    move-object v14, v7
+
+    .line 290
+    .local v0, "e":Ljava/lang/RuntimeException;
+    :goto_81
+    new-instance v2, Ljava/lang/StringBuilder;
+
+    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
+
+    const-string v3, "Error setting matrix on surface surface"
+
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    iget-object v3, v1, Lcom/android/server/wm/WindowSurfaceController;->title:Ljava/lang/String;
+
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    const-string v3, " MATRIX ["
+
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v2, v8}, Ljava/lang/StringBuilder;->append(F)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v2, v13}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v2, v9}, Ljava/lang/StringBuilder;->append(F)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v2, v13}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v2, v10}, Ljava/lang/StringBuilder;->append(F)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v2, v13}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v2, v11}, Ljava/lang/StringBuilder;->append(F)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v2, v12}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v2
+
+    const-string v3, "WindowManager"
+
+    invoke-static {v3, v2, v14}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+
+    .line 292
+    if-nez p6, :cond_c0
+
+    .line 293
+    iget-object v2, v1, Lcom/android/server/wm/WindowSurfaceController;->mAnimator:Lcom/android/server/wm/WindowStateAnimator;
+
+    const-string v3, "matrix"
+
+    const/4 v4, 0x1
+
+    invoke-virtual {v2, v3, v4}, Lcom/android/server/wm/WindowStateAnimator;->reclaimSomeSurfaceMemory(Ljava/lang/String;Z)V
+
+    .line 296
+    .end local v0  # "e":Ljava/lang/RuntimeException;
+    :cond_c0
+    :goto_c0
     return-void
 .end method
 
 .method setMatrixInTransaction(FFFFZ)V
     .registers 13
+    .param p1, "dsdx"  # F
+    .param p2, "dtdx"  # F
+    .param p3, "dtdy"  # F
+    .param p4, "dsdy"  # F
+    .param p5, "recoveringMemory"  # Z
 
-    .line 254
+    .line 262
     const/4 v1, 0x0
 
     const/4 v6, 0x0
@@ -1550,244 +1969,389 @@
 
     invoke-virtual/range {v0 .. v6}, Lcom/android/server/wm/WindowSurfaceController;->setMatrix(Landroid/view/SurfaceControl$Transaction;FFFFZ)V
 
-    .line 255
+    .line 263
     return-void
 .end method
 
 .method setOpaque(Z)V
-    .registers 4
+    .registers 7
+    .param p1, "isOpaque"  # Z
 
-    .line 360
-    const-string v0, "setOpaqueLocked"
+    .line 365
+    const-string v0, "<<< CLOSE TRANSACTION setOpaqueLocked"
 
-    iget-object v1, p0, Lcom/android/server/wm/WindowSurfaceController;->mSurfaceControl:Landroid/view/SurfaceControl;
+    const-string v1, "setOpaqueLocked"
 
-    if-nez v1, :cond_7
+    sget-boolean v2, Lcom/android/server/wm/WindowManagerDebugConfig;->SHOW_TRANSACTIONS:Z
 
-    .line 361
-    return-void
+    if-eqz v2, :cond_1d
 
-    .line 364
-    :cond_7
-    iget-object v1, p0, Lcom/android/server/wm/WindowSurfaceController;->mService:Lcom/android/server/wm/WindowManagerService;
+    new-instance v2, Ljava/lang/StringBuilder;
 
-    invoke-virtual {v1}, Lcom/android/server/wm/WindowManagerService;->openSurfaceTransaction()V
+    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
 
-    .line 366
-    :try_start_c
-    iget-object v1, p0, Lcom/android/server/wm/WindowSurfaceController;->mSurfaceControl:Landroid/view/SurfaceControl;
+    const-string v3, "isOpaque="
 
-    invoke-virtual {v1, p1}, Landroid/view/SurfaceControl;->setOpaque(Z)V
-    :try_end_11
-    .catchall {:try_start_c .. :try_end_11} :catchall_18
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v2, p1}, Ljava/lang/StringBuilder;->append(Z)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v2
+
+    const/4 v3, 0x0
+
+    invoke-direct {p0, v2, v3}, Lcom/android/server/wm/WindowSurfaceController;->logSurface(Ljava/lang/String;Ljava/lang/RuntimeException;)V
 
     .line 368
-    iget-object p1, p0, Lcom/android/server/wm/WindowSurfaceController;->mService:Lcom/android/server/wm/WindowManagerService;
+    :cond_1d
+    iget-object v2, p0, Lcom/android/server/wm/WindowSurfaceController;->mSurfaceControl:Landroid/view/SurfaceControl;
 
-    invoke-virtual {p1, v0}, Lcom/android/server/wm/WindowManagerService;->closeSurfaceTransaction(Ljava/lang/String;)V
+    if-nez v2, :cond_22
 
-    .line 370
-    nop
+    .line 369
+    return-void
 
     .line 371
+    :cond_22
+    sget-boolean v2, Lcom/android/server/wm/WindowManagerDebugConfig;->SHOW_LIGHT_TRANSACTIONS:Z
+
+    const-string v3, "WindowManager"
+
+    if-eqz v2, :cond_2d
+
+    const-string v2, ">>> OPEN TRANSACTION setOpaqueLocked"
+
+    invoke-static {v3, v2}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
+
+    .line 372
+    :cond_2d
+    iget-object v2, p0, Lcom/android/server/wm/WindowSurfaceController;->mService:Lcom/android/server/wm/WindowManagerService;
+
+    invoke-virtual {v2}, Lcom/android/server/wm/WindowManagerService;->openSurfaceTransaction()V
+
+    .line 374
+    :try_start_32
+    iget-object v2, p0, Lcom/android/server/wm/WindowSurfaceController;->mSurfaceControl:Landroid/view/SurfaceControl;
+
+    invoke-virtual {v2, p1}, Landroid/view/SurfaceControl;->setOpaque(Z)V
+    :try_end_37
+    .catchall {:try_start_32 .. :try_end_37} :catchall_44
+
+    .line 376
+    iget-object v2, p0, Lcom/android/server/wm/WindowSurfaceController;->mService:Lcom/android/server/wm/WindowManagerService;
+
+    invoke-virtual {v2, v1}, Lcom/android/server/wm/WindowManagerService;->closeSurfaceTransaction(Ljava/lang/String;)V
+
+    .line 377
+    sget-boolean v1, Lcom/android/server/wm/WindowManagerDebugConfig;->SHOW_LIGHT_TRANSACTIONS:Z
+
+    if-eqz v1, :cond_43
+
+    invoke-static {v3, v0}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
+
+    .line 379
+    :cond_43
     return-void
 
-    .line 368
-    :catchall_18
-    move-exception p1
+    .line 376
+    :catchall_44
+    move-exception v2
 
-    iget-object v1, p0, Lcom/android/server/wm/WindowSurfaceController;->mService:Lcom/android/server/wm/WindowManagerService;
+    iget-object v4, p0, Lcom/android/server/wm/WindowSurfaceController;->mService:Lcom/android/server/wm/WindowManagerService;
 
-    invoke-virtual {v1, v0}, Lcom/android/server/wm/WindowManagerService;->closeSurfaceTransaction(Ljava/lang/String;)V
+    invoke-virtual {v4, v1}, Lcom/android/server/wm/WindowManagerService;->closeSurfaceTransaction(Ljava/lang/String;)V
 
-    throw p1
+    .line 377
+    sget-boolean v1, Lcom/android/server/wm/WindowManagerDebugConfig;->SHOW_LIGHT_TRANSACTIONS:Z
+
+    if-eqz v1, :cond_51
+
+    invoke-static {v3, v0}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
+
+    :cond_51
+    throw v2
 .end method
 
 .method setPosition(Landroid/view/SurfaceControl$Transaction;FFZ)V
-    .registers 8
+    .registers 12
+    .param p1, "t"  # Landroid/view/SurfaceControl$Transaction;
+    .param p2, "left"  # F
+    .param p3, "top"  # F
+    .param p4, "recoveringMemory"  # Z
 
-    .line 224
-    iget v0, p0, Lcom/android/server/wm/WindowSurfaceController;->mSurfaceX:F
+    .line 232
+    const-string v0, ")"
 
-    cmpl-float v0, v0, p2
+    const-string v1, ","
 
-    const/4 v1, 0x1
+    iget v2, p0, Lcom/android/server/wm/WindowSurfaceController;->mSurfaceX:F
 
-    if-nez v0, :cond_10
+    cmpl-float v2, v2, p2
 
-    iget v0, p0, Lcom/android/server/wm/WindowSurfaceController;->mSurfaceY:F
+    const/4 v3, 0x1
 
-    cmpl-float v0, v0, p3
+    if-nez v2, :cond_14
 
-    if-eqz v0, :cond_e
+    iget v2, p0, Lcom/android/server/wm/WindowSurfaceController;->mSurfaceY:F
 
-    goto :goto_10
+    cmpl-float v2, v2, p3
 
-    :cond_e
-    const/4 v0, 0x0
+    if-eqz v2, :cond_12
 
-    goto :goto_11
+    goto :goto_14
 
-    :cond_10
-    :goto_10
-    move v0, v1
+    :cond_12
+    const/4 v2, 0x0
 
-    .line 225
-    :goto_11
-    if-eqz v0, :cond_5a
+    goto :goto_15
 
-    .line 226
-    iput p2, p0, Lcom/android/server/wm/WindowSurfaceController;->mSurfaceX:F
-
-    .line 227
-    iput p3, p0, Lcom/android/server/wm/WindowSurfaceController;->mSurfaceY:F
+    :cond_14
+    :goto_14
+    move v2, v3
 
     .line 233
-    if-nez p1, :cond_1f
+    .local v2, "surfaceMoved":Z
+    :goto_15
+    if-eqz v2, :cond_7c
 
     .line 234
-    :try_start_19
-    iget-object p1, p0, Lcom/android/server/wm/WindowSurfaceController;->mSurfaceControl:Landroid/view/SurfaceControl;
+    iput p2, p0, Lcom/android/server/wm/WindowSurfaceController;->mSurfaceX:F
 
-    invoke-virtual {p1, p2, p3}, Landroid/view/SurfaceControl;->setPosition(FF)V
-
-    goto :goto_24
-
-    .line 236
-    :cond_1f
-    iget-object v0, p0, Lcom/android/server/wm/WindowSurfaceController;->mSurfaceControl:Landroid/view/SurfaceControl;
-
-    invoke-virtual {p1, v0, p2, p3}, Landroid/view/SurfaceControl$Transaction;->setPosition(Landroid/view/SurfaceControl;FF)Landroid/view/SurfaceControl$Transaction;
-    :try_end_24
-    .catch Ljava/lang/RuntimeException; {:try_start_19 .. :try_end_24} :catch_25
-
-    .line 244
-    :goto_24
-    goto :goto_5a
+    .line 235
+    iput p3, p0, Lcom/android/server/wm/WindowSurfaceController;->mSurfaceY:F
 
     .line 238
-    :catch_25
-    move-exception p1
+    :try_start_1b
+    sget-boolean v4, Lcom/android/server/wm/WindowManagerDebugConfig;->SHOW_TRANSACTIONS:Z
 
-    .line 239
-    new-instance v0, Ljava/lang/StringBuilder;
+    if-eqz v4, :cond_3d
 
-    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
+    new-instance v4, Ljava/lang/StringBuilder;
 
-    const-string v2, "Error positioning surface of "
+    invoke-direct {v4}, Ljava/lang/StringBuilder;-><init>()V
 
-    invoke-virtual {v0, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    const-string v5, "POS (setPositionInTransaction) @ ("
 
-    invoke-virtual {v0, p0}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string v2, " pos=("
+    invoke-virtual {v4, p2}, Ljava/lang/StringBuilder;->append(F)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v4, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0, p2}, Ljava/lang/StringBuilder;->append(F)Ljava/lang/StringBuilder;
+    invoke-virtual {v4, p3}, Ljava/lang/StringBuilder;->append(F)Ljava/lang/StringBuilder;
 
-    const-string p2, ","
+    invoke-virtual {v4, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v4}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    invoke-virtual {v0, p3}, Ljava/lang/StringBuilder;->append(F)Ljava/lang/StringBuilder;
+    move-result-object v4
 
-    const-string p2, ")"
+    const/4 v5, 0x0
 
-    invoke-virtual {v0, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
-
-    move-result-object p2
-
-    const-string p3, "WindowManager"
-
-    invoke-static {p3, p2, p1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    invoke-direct {p0, v4, v5}, Lcom/android/server/wm/WindowSurfaceController;->logSurface(Ljava/lang/String;Ljava/lang/RuntimeException;)V
 
     .line 241
-    if-nez p4, :cond_5a
+    :cond_3d
+    if-nez p1, :cond_45
 
     .line 242
-    iget-object p1, p0, Lcom/android/server/wm/WindowSurfaceController;->mAnimator:Lcom/android/server/wm/WindowStateAnimator;
+    iget-object v4, p0, Lcom/android/server/wm/WindowSurfaceController;->mSurfaceControl:Landroid/view/SurfaceControl;
 
-    const-string p2, "position"
+    invoke-virtual {v4, p2, p3}, Landroid/view/SurfaceControl;->setPosition(FF)V
 
-    invoke-virtual {p1, p2, v1}, Lcom/android/server/wm/WindowStateAnimator;->reclaimSomeSurfaceMemory(Ljava/lang/String;Z)V
+    goto :goto_4a
+
+    .line 244
+    :cond_45
+    iget-object v4, p0, Lcom/android/server/wm/WindowSurfaceController;->mSurfaceControl:Landroid/view/SurfaceControl;
+
+    invoke-virtual {p1, v4, p2, p3}, Landroid/view/SurfaceControl$Transaction;->setPosition(Landroid/view/SurfaceControl;FF)Landroid/view/SurfaceControl$Transaction;
+    :try_end_4a
+    .catch Ljava/lang/RuntimeException; {:try_start_1b .. :try_end_4a} :catch_4b
+
+    .line 252
+    :goto_4a
+    goto :goto_7c
 
     .line 246
-    :cond_5a
-    :goto_5a
+    :catch_4b
+    move-exception v4
+
+    .line 247
+    .local v4, "e":Ljava/lang/RuntimeException;
+    new-instance v5, Ljava/lang/StringBuilder;
+
+    invoke-direct {v5}, Ljava/lang/StringBuilder;-><init>()V
+
+    const-string v6, "Error positioning surface of "
+
+    invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v5, p0}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+
+    const-string v6, " pos=("
+
+    invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v5, p2}, Ljava/lang/StringBuilder;->append(F)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v5, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v5, p3}, Ljava/lang/StringBuilder;->append(F)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v5, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v5}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v0
+
+    const-string v1, "WindowManager"
+
+    invoke-static {v1, v0, v4}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+
+    .line 249
+    if-nez p4, :cond_7c
+
+    .line 250
+    iget-object v0, p0, Lcom/android/server/wm/WindowSurfaceController;->mAnimator:Lcom/android/server/wm/WindowStateAnimator;
+
+    const-string v1, "position"
+
+    invoke-virtual {v0, v1, v3}, Lcom/android/server/wm/WindowStateAnimator;->reclaimSomeSurfaceMemory(Ljava/lang/String;Z)V
+
+    .line 254
+    .end local v4  # "e":Ljava/lang/RuntimeException;
+    :cond_7c
+    :goto_7c
     return-void
 .end method
 
 .method setPositionInTransaction(FFZ)V
     .registers 5
+    .param p1, "left"  # F
+    .param p2, "top"  # F
+    .param p3, "recoveringMemory"  # Z
 
-    .line 219
+    .line 227
     const/4 v0, 0x0
 
     invoke-virtual {p0, v0, p1, p2, p3}, Lcom/android/server/wm/WindowSurfaceController;->setPosition(Landroid/view/SurfaceControl$Transaction;FFZ)V
 
-    .line 220
+    .line 228
     return-void
 .end method
 
 .method setSecure(Z)V
-    .registers 4
+    .registers 7
+    .param p1, "isSecure"  # Z
 
-    .line 377
-    const-string v0, "setSecure"
+    .line 382
+    const-string v0, "<<< CLOSE TRANSACTION setSecureLocked"
 
-    iget-object v1, p0, Lcom/android/server/wm/WindowSurfaceController;->mSurfaceControl:Landroid/view/SurfaceControl;
+    const-string v1, "setSecure"
 
-    if-nez v1, :cond_7
+    sget-boolean v2, Lcom/android/server/wm/WindowManagerDebugConfig;->SHOW_TRANSACTIONS:Z
 
-    .line 378
-    return-void
+    if-eqz v2, :cond_1d
 
-    .line 381
-    :cond_7
-    iget-object v1, p0, Lcom/android/server/wm/WindowSurfaceController;->mService:Lcom/android/server/wm/WindowManagerService;
+    new-instance v2, Ljava/lang/StringBuilder;
 
-    invoke-virtual {v1}, Lcom/android/server/wm/WindowManagerService;->openSurfaceTransaction()V
+    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
 
-    .line 383
-    :try_start_c
-    iget-object v1, p0, Lcom/android/server/wm/WindowSurfaceController;->mSurfaceControl:Landroid/view/SurfaceControl;
+    const-string v3, "isSecure="
 
-    invoke-virtual {v1, p1}, Landroid/view/SurfaceControl;->setSecure(Z)V
-    :try_end_11
-    .catchall {:try_start_c .. :try_end_11} :catchall_18
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v2, p1}, Ljava/lang/StringBuilder;->append(Z)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v2
+
+    const/4 v3, 0x0
+
+    invoke-direct {p0, v2, v3}, Lcom/android/server/wm/WindowSurfaceController;->logSurface(Ljava/lang/String;Ljava/lang/RuntimeException;)V
 
     .line 385
-    iget-object p1, p0, Lcom/android/server/wm/WindowSurfaceController;->mService:Lcom/android/server/wm/WindowManagerService;
+    :cond_1d
+    iget-object v2, p0, Lcom/android/server/wm/WindowSurfaceController;->mSurfaceControl:Landroid/view/SurfaceControl;
 
-    invoke-virtual {p1, v0}, Lcom/android/server/wm/WindowManagerService;->closeSurfaceTransaction(Ljava/lang/String;)V
+    if-nez v2, :cond_22
 
-    .line 387
-    nop
+    .line 386
+    return-void
 
     .line 388
+    :cond_22
+    sget-boolean v2, Lcom/android/server/wm/WindowManagerDebugConfig;->SHOW_LIGHT_TRANSACTIONS:Z
+
+    const-string v3, "WindowManager"
+
+    if-eqz v2, :cond_2d
+
+    const-string v2, ">>> OPEN TRANSACTION setSecureLocked"
+
+    invoke-static {v3, v2}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
+
+    .line 389
+    :cond_2d
+    iget-object v2, p0, Lcom/android/server/wm/WindowSurfaceController;->mService:Lcom/android/server/wm/WindowManagerService;
+
+    invoke-virtual {v2}, Lcom/android/server/wm/WindowManagerService;->openSurfaceTransaction()V
+
+    .line 391
+    :try_start_32
+    iget-object v2, p0, Lcom/android/server/wm/WindowSurfaceController;->mSurfaceControl:Landroid/view/SurfaceControl;
+
+    invoke-virtual {v2, p1}, Landroid/view/SurfaceControl;->setSecure(Z)V
+    :try_end_37
+    .catchall {:try_start_32 .. :try_end_37} :catchall_44
+
+    .line 393
+    iget-object v2, p0, Lcom/android/server/wm/WindowSurfaceController;->mService:Lcom/android/server/wm/WindowManagerService;
+
+    invoke-virtual {v2, v1}, Lcom/android/server/wm/WindowManagerService;->closeSurfaceTransaction(Ljava/lang/String;)V
+
+    .line 394
+    sget-boolean v1, Lcom/android/server/wm/WindowManagerDebugConfig;->SHOW_LIGHT_TRANSACTIONS:Z
+
+    if-eqz v1, :cond_43
+
+    invoke-static {v3, v0}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
+
+    .line 396
+    :cond_43
     return-void
 
-    .line 385
-    :catchall_18
-    move-exception p1
+    .line 393
+    :catchall_44
+    move-exception v2
 
-    iget-object v1, p0, Lcom/android/server/wm/WindowSurfaceController;->mService:Lcom/android/server/wm/WindowManagerService;
+    iget-object v4, p0, Lcom/android/server/wm/WindowSurfaceController;->mService:Lcom/android/server/wm/WindowManagerService;
 
-    invoke-virtual {v1, v0}, Lcom/android/server/wm/WindowManagerService;->closeSurfaceTransaction(Ljava/lang/String;)V
+    invoke-virtual {v4, v1}, Lcom/android/server/wm/WindowManagerService;->closeSurfaceTransaction(Ljava/lang/String;)V
 
-    throw p1
+    .line 394
+    sget-boolean v1, Lcom/android/server/wm/WindowManagerDebugConfig;->SHOW_LIGHT_TRANSACTIONS:Z
+
+    if-eqz v1, :cond_51
+
+    invoke-static {v3, v0}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
+
+    :cond_51
+    throw v2
 .end method
 
 .method setShown(Z)V
-    .registers 4
+    .registers 5
+    .param p1, "surfaceShown"  # Z
 
-    .line 506
+    .line 518
     iput-boolean p1, p0, Lcom/android/server/wm/WindowSurfaceController;->mSurfaceShown:Z
 
-    .line 508
+    .line 520
     iget-object v0, p0, Lcom/android/server/wm/WindowSurfaceController;->mService:Lcom/android/server/wm/WindowManagerService;
 
     iget-object v1, p0, Lcom/android/server/wm/WindowSurfaceController;->mAnimator:Lcom/android/server/wm/WindowStateAnimator;
@@ -1796,95 +2360,154 @@
 
     invoke-virtual {v0, v1, p1}, Lcom/android/server/wm/WindowManagerService;->updateNonSystemOverlayWindowsVisibilityIfNeeded(Lcom/android/server/wm/WindowState;Z)V
 
-    .line 510
-    iget-object v0, p0, Lcom/android/server/wm/WindowSurfaceController;->mAnimator:Lcom/android/server/wm/WindowStateAnimator;
+    .line 522
+    iget-object v0, p0, Lcom/android/server/wm/WindowSurfaceController;->mWindowSession:Lcom/android/server/wm/Session;
 
-    iget-object v0, v0, Lcom/android/server/wm/WindowStateAnimator;->mWin:Lcom/android/server/wm/WindowState;
+    if-eqz v0, :cond_16
 
-    invoke-virtual {v0, p1}, Lcom/android/server/wm/WindowState;->onSurfaceShownChanged(Z)V
+    .line 523
+    iget-boolean v1, p0, Lcom/android/server/wm/WindowSurfaceController;->mSurfaceShown:Z
 
-    .line 512
-    iget-object p1, p0, Lcom/android/server/wm/WindowSurfaceController;->mWindowSession:Lcom/android/server/wm/Session;
+    iget v2, p0, Lcom/android/server/wm/WindowSurfaceController;->mWindowType:I
 
-    if-eqz p1, :cond_1d
+    invoke-virtual {v0, p0, v1, v2}, Lcom/android/server/wm/Session;->onWindowSurfaceVisibilityChanged(Lcom/android/server/wm/WindowSurfaceController;ZI)V
 
-    .line 513
-    iget-boolean v0, p0, Lcom/android/server/wm/WindowSurfaceController;->mSurfaceShown:Z
-
-    iget v1, p0, Lcom/android/server/wm/WindowSurfaceController;->mWindowType:I
-
-    invoke-virtual {p1, p0, v0, v1}, Lcom/android/server/wm/Session;->onWindowSurfaceVisibilityChanged(Lcom/android/server/wm/WindowSurfaceController;ZI)V
-
-    .line 515
-    :cond_1d
+    .line 525
+    :cond_16
     return-void
 .end method
 
 .method setTransparentRegionHint(Landroid/graphics/Region;)V
-    .registers 4
+    .registers 7
+    .param p1, "region"  # Landroid/graphics/Region;
 
-    .line 341
-    const-string v0, "setTransparentRegion"
+    .line 349
+    const-string v0, "<<< CLOSE TRANSACTION setTransparentRegion"
 
-    iget-object v1, p0, Lcom/android/server/wm/WindowSurfaceController;->mSurfaceControl:Landroid/view/SurfaceControl;
+    const-string v1, "setTransparentRegion"
 
-    if-nez v1, :cond_e
+    iget-object v2, p0, Lcom/android/server/wm/WindowSurfaceController;->mSurfaceControl:Landroid/view/SurfaceControl;
 
-    .line 342
-    const-string p1, "WindowManager"
+    const-string v3, "WindowManager"
 
+    if-nez v2, :cond_10
+
+    .line 350
     const-string v0, "setTransparentRegionHint: null mSurface after mHasSurface true"
 
-    invoke-static {p1, v0}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v3, v0}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 343
+    .line 351
     return-void
-
-    .line 346
-    :cond_e
-    iget-object v1, p0, Lcom/android/server/wm/WindowSurfaceController;->mService:Lcom/android/server/wm/WindowManagerService;
-
-    invoke-virtual {v1}, Lcom/android/server/wm/WindowManagerService;->openSurfaceTransaction()V
-
-    .line 348
-    :try_start_13
-    iget-object v1, p0, Lcom/android/server/wm/WindowSurfaceController;->mSurfaceControl:Landroid/view/SurfaceControl;
-
-    invoke-virtual {v1, p1}, Landroid/view/SurfaceControl;->setTransparentRegionHint(Landroid/graphics/Region;)V
-    :try_end_18
-    .catchall {:try_start_13 .. :try_end_18} :catchall_1f
-
-    .line 350
-    iget-object p1, p0, Lcom/android/server/wm/WindowSurfaceController;->mService:Lcom/android/server/wm/WindowManagerService;
-
-    invoke-virtual {p1, v0}, Lcom/android/server/wm/WindowManagerService;->closeSurfaceTransaction(Ljava/lang/String;)V
 
     .line 353
-    nop
+    :cond_10
+    sget-boolean v2, Lcom/android/server/wm/WindowManagerDebugConfig;->SHOW_LIGHT_TRANSACTIONS:Z
+
+    if-eqz v2, :cond_19
+
+    const-string v2, ">>> OPEN TRANSACTION setTransparentRegion"
+
+    invoke-static {v3, v2}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 354
+    :cond_19
+    iget-object v2, p0, Lcom/android/server/wm/WindowSurfaceController;->mService:Lcom/android/server/wm/WindowManagerService;
+
+    invoke-virtual {v2}, Lcom/android/server/wm/WindowManagerService;->openSurfaceTransaction()V
+
+    .line 356
+    :try_start_1e
+    iget-object v2, p0, Lcom/android/server/wm/WindowSurfaceController;->mSurfaceControl:Landroid/view/SurfaceControl;
+
+    invoke-virtual {v2, p1}, Landroid/view/SurfaceControl;->setTransparentRegionHint(Landroid/graphics/Region;)V
+    :try_end_23
+    .catchall {:try_start_1e .. :try_end_23} :catchall_30
+
+    .line 358
+    iget-object v2, p0, Lcom/android/server/wm/WindowSurfaceController;->mService:Lcom/android/server/wm/WindowManagerService;
+
+    invoke-virtual {v2, v1}, Lcom/android/server/wm/WindowManagerService;->closeSurfaceTransaction(Ljava/lang/String;)V
+
+    .line 359
+    sget-boolean v1, Lcom/android/server/wm/WindowManagerDebugConfig;->SHOW_LIGHT_TRANSACTIONS:Z
+
+    if-eqz v1, :cond_2f
+
+    invoke-static {v3, v0}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
+
+    .line 362
+    :cond_2f
     return-void
 
-    .line 350
-    :catchall_1f
-    move-exception p1
+    .line 358
+    :catchall_30
+    move-exception v2
 
-    iget-object v1, p0, Lcom/android/server/wm/WindowSurfaceController;->mService:Lcom/android/server/wm/WindowManagerService;
+    iget-object v4, p0, Lcom/android/server/wm/WindowSurfaceController;->mService:Lcom/android/server/wm/WindowManagerService;
 
-    invoke-virtual {v1, v0}, Lcom/android/server/wm/WindowManagerService;->closeSurfaceTransaction(Ljava/lang/String;)V
+    invoke-virtual {v4, v1}, Lcom/android/server/wm/WindowManagerService;->closeSurfaceTransaction(Ljava/lang/String;)V
 
-    throw p1
+    .line 359
+    sget-boolean v1, Lcom/android/server/wm/WindowManagerDebugConfig;->SHOW_LIGHT_TRANSACTIONS:Z
+
+    if-eqz v1, :cond_3d
+
+    invoke-static {v3, v0}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
+
+    :cond_3d
+    throw v2
 .end method
 
 .method showRobustlyInTransaction()Z
-    .registers 2
+    .registers 3
 
-    .line 421
+    .line 425
+    sget-boolean v0, Lcom/android/server/wm/WindowManagerDebugConfig;->SHOW_TRANSACTIONS:Z
+
+    if-eqz v0, :cond_a
+
+    const/4 v0, 0x0
+
+    const-string v1, "SHOW (performLayout)"
+
+    invoke-direct {p0, v1, v0}, Lcom/android/server/wm/WindowSurfaceController;->logSurface(Ljava/lang/String;Ljava/lang/RuntimeException;)V
+
+    .line 427
+    :cond_a
+    sget-boolean v0, Lcom/android/server/wm/WindowManagerDebugConfig;->DEBUG_VISIBILITY:Z
+
+    if-eqz v0, :cond_29
+
+    new-instance v0, Ljava/lang/StringBuilder;
+
+    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
+
+    const-string v1, "Showing "
+
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v0, p0}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+
+    const-string v1, " during relayout"
+
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v0
+
+    const-string v1, "WindowManager"
+
+    invoke-static {v1, v0}, Landroid/util/Slog;->v(Ljava/lang/String;Ljava/lang/String;)I
+
+    .line 429
+    :cond_29
     const/4 v0, 0x0
 
     iput-boolean v0, p0, Lcom/android/server/wm/WindowSurfaceController;->mHiddenForOtherReasons:Z
 
-    .line 422
+    .line 430
     invoke-direct {p0}, Lcom/android/server/wm/WindowSurfaceController;->updateVisibility()Z
 
     move-result v0
@@ -1895,7 +2518,7 @@
 .method public toString()Ljava/lang/String;
     .registers 2
 
-    .line 558
+    .line 568
     iget-object v0, p0, Lcom/android/server/wm/WindowSurfaceController;->mSurfaceControl:Landroid/view/SurfaceControl;
 
     invoke-virtual {v0}, Landroid/view/SurfaceControl;->toString()Ljava/lang/String;
@@ -1906,30 +2529,33 @@
 .end method
 
 .method writeToProto(Landroid/util/proto/ProtoOutputStream;J)V
-    .registers 7
+    .registers 9
+    .param p1, "proto"  # Landroid/util/proto/ProtoOutputStream;
+    .param p2, "fieldId"  # J
 
-    .line 534
+    .line 544
     invoke-virtual {p1, p2, p3}, Landroid/util/proto/ProtoOutputStream;->start(J)J
 
-    move-result-wide p2
+    move-result-wide v0
 
-    .line 535
-    iget-boolean v0, p0, Lcom/android/server/wm/WindowSurfaceController;->mSurfaceShown:Z
+    .line 545
+    .local v0, "token":J
+    iget-boolean v2, p0, Lcom/android/server/wm/WindowSurfaceController;->mSurfaceShown:Z
 
-    const-wide v1, 0x10800000001L
+    const-wide v3, 0x10800000001L
 
-    invoke-virtual {p1, v1, v2, v0}, Landroid/util/proto/ProtoOutputStream;->write(JZ)V
+    invoke-virtual {p1, v3, v4, v2}, Landroid/util/proto/ProtoOutputStream;->write(JZ)V
 
-    .line 536
-    iget v0, p0, Lcom/android/server/wm/WindowSurfaceController;->mSurfaceLayer:I
+    .line 546
+    iget v2, p0, Lcom/android/server/wm/WindowSurfaceController;->mSurfaceLayer:I
 
-    const-wide v1, 0x10500000002L
+    const-wide v3, 0x10500000002L
 
-    invoke-virtual {p1, v1, v2, v0}, Landroid/util/proto/ProtoOutputStream;->write(JI)V
+    invoke-virtual {p1, v3, v4, v2}, Landroid/util/proto/ProtoOutputStream;->write(JI)V
 
-    .line 537
-    invoke-virtual {p1, p2, p3}, Landroid/util/proto/ProtoOutputStream;->end(J)V
+    .line 547
+    invoke-virtual {p1, v0, v1}, Landroid/util/proto/ProtoOutputStream;->end(J)V
 
-    .line 538
+    .line 548
     return-void
 .end method

@@ -26,18 +26,18 @@
 .method public constructor <init>(Lcom/android/server/am/ActivityManagerService;)V
     .registers 5
 
-    .line 1078
+    .line 1156
     iput-object p1, p0, Lcom/android/server/am/ActivityManagerService$DevelopmentSettingsObserver;->this$0:Lcom/android/server/am/ActivityManagerService;
 
-    .line 1079
+    .line 1157
     iget-object v0, p1, Lcom/android/server/am/ActivityManagerService;->mHandler:Lcom/android/server/am/ActivityManagerService$MainHandler;
 
     invoke-direct {p0, v0}, Landroid/database/ContentObserver;-><init>(Landroid/os/Handler;)V
 
-    .line 1072
+    .line 1150
     nop
 
-    .line 1073
+    .line 1151
     const-string v0, "development_settings_enabled"
 
     invoke-static {v0}, Landroid/provider/Settings$Global;->getUriFor(Ljava/lang/String;)Landroid/net/Uri;
@@ -46,7 +46,7 @@
 
     iput-object v0, p0, Lcom/android/server/am/ActivityManagerService$DevelopmentSettingsObserver;->mUri:Landroid/net/Uri;
 
-    .line 1075
+    .line 1153
     new-instance v0, Landroid/content/ComponentName;
 
     const-string v1, "com.android.shell"
@@ -57,7 +57,7 @@
 
     iput-object v0, p0, Lcom/android/server/am/ActivityManagerService$DevelopmentSettingsObserver;->mBugreportStorageProvider:Landroid/content/ComponentName;
 
-    .line 1080
+    .line 1158
     iget-object p1, p1, Lcom/android/server/am/ActivityManagerService;->mContext:Landroid/content/Context;
 
     invoke-virtual {p1}, Landroid/content/Context;->getContentResolver()Landroid/content/ContentResolver;
@@ -72,10 +72,10 @@
 
     invoke-virtual {p1, v0, v1, p0, v2}, Landroid/content/ContentResolver;->registerContentObserver(Landroid/net/Uri;ZLandroid/database/ContentObserver;I)V
 
-    .line 1083
+    .line 1161
     invoke-virtual {p0}, Lcom/android/server/am/ActivityManagerService$DevelopmentSettingsObserver;->onChange()V
 
-    .line 1084
+    .line 1162
     return-void
 .end method
 
@@ -84,7 +84,7 @@
 .method public onChange()V
     .registers 6
 
-    .line 1094
+    .line 1172
     iget-object v0, p0, Lcom/android/server/am/ActivityManagerService$DevelopmentSettingsObserver;->this$0:Lcom/android/server/am/ActivityManagerService;
 
     iget-object v0, v0, Lcom/android/server/am/ActivityManagerService;->mContext:Landroid/content/Context;
@@ -93,10 +93,10 @@
 
     move-result-object v0
 
-    .line 1095
+    .line 1173
     sget-boolean v1, Landroid/os/Build;->IS_ENG:Z
 
-    .line 1094
+    .line 1172
     const-string v2, "development_settings_enabled"
 
     invoke-static {v0, v2, v1}, Landroid/provider/Settings$Global;->getInt(Landroid/content/ContentResolver;Ljava/lang/String;I)I
@@ -116,7 +116,8 @@
     :cond_16
     move v0, v2
 
-    .line 1096
+    .line 1174
+    .local v0, "enabled":Z
     :goto_17
     iget-object v3, p0, Lcom/android/server/am/ActivityManagerService$DevelopmentSettingsObserver;->this$0:Lcom/android/server/am/ActivityManagerService;
 
@@ -128,41 +129,44 @@
 
     iget-object v4, p0, Lcom/android/server/am/ActivityManagerService$DevelopmentSettingsObserver;->mBugreportStorageProvider:Landroid/content/ComponentName;
 
-    .line 1097
+    .line 1175
     if-eqz v0, :cond_24
 
     goto :goto_25
 
-    .line 1098
+    .line 1176
     :cond_24
     move v1, v2
 
     :goto_25
     nop
 
-    .line 1096
+    .line 1174
     invoke-virtual {v3, v4, v1, v2}, Landroid/content/pm/PackageManager;->setComponentEnabledSetting(Landroid/content/ComponentName;II)V
 
-    .line 1100
+    .line 1178
     return-void
 .end method
 
 .method public onChange(ZLandroid/net/Uri;I)V
-    .registers 4
+    .registers 5
+    .param p1, "selfChange"  # Z
+    .param p2, "uri"  # Landroid/net/Uri;
+    .param p3, "userId"  # I
 
-    .line 1088
-    iget-object p1, p0, Lcom/android/server/am/ActivityManagerService$DevelopmentSettingsObserver;->mUri:Landroid/net/Uri;
+    .line 1166
+    iget-object v0, p0, Lcom/android/server/am/ActivityManagerService$DevelopmentSettingsObserver;->mUri:Landroid/net/Uri;
 
-    invoke-virtual {p1, p2}, Landroid/net/Uri;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v0, p2}, Landroid/net/Uri;->equals(Ljava/lang/Object;)Z
 
-    move-result p1
+    move-result v0
 
-    if-eqz p1, :cond_b
+    if-eqz v0, :cond_b
 
-    .line 1089
+    .line 1167
     invoke-virtual {p0}, Lcom/android/server/am/ActivityManagerService$DevelopmentSettingsObserver;->onChange()V
 
-    .line 1091
+    .line 1169
     :cond_b
     return-void
 .end method

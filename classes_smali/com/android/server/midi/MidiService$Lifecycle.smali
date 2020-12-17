@@ -21,6 +21,7 @@
 # direct methods
 .method public constructor <init>(Landroid/content/Context;)V
     .registers 2
+    .param p1, "context"  # Landroid/content/Context;
 
     .line 68
     invoke-direct {p0, p1}, Lcom/android/server/SystemService;-><init>(Landroid/content/Context;)V
@@ -48,7 +49,7 @@
     .line 74
     iget-object v0, p0, Lcom/android/server/midi/MidiService$Lifecycle;->mMidiService:Lcom/android/server/midi/MidiService;
 
-    const-string v1, "midi"
+    const-string/jumbo v1, "midi"
 
     invoke-virtual {p0, v1, v0}, Lcom/android/server/midi/MidiService$Lifecycle;->publishBinderService(Ljava/lang/String;Landroid/os/IBinder;)V
 
@@ -57,15 +58,16 @@
 .end method
 
 .method public onUnlockUser(I)V
-    .registers 2
+    .registers 3
+    .param p1, "userHandle"  # I
 
     .line 79
     if-nez p1, :cond_7
 
     .line 80
-    iget-object p1, p0, Lcom/android/server/midi/MidiService$Lifecycle;->mMidiService:Lcom/android/server/midi/MidiService;
+    iget-object v0, p0, Lcom/android/server/midi/MidiService$Lifecycle;->mMidiService:Lcom/android/server/midi/MidiService;
 
-    invoke-static {p1}, Lcom/android/server/midi/MidiService;->access$000(Lcom/android/server/midi/MidiService;)V
+    invoke-static {v0}, Lcom/android/server/midi/MidiService;->access$000(Lcom/android/server/midi/MidiService;)V
 
     .line 82
     :cond_7

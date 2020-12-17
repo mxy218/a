@@ -21,6 +21,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/wm/ImmersiveModeConfirmation$ClingWindowView;)V
     .registers 2
+    .param p1, "this$1"  # Lcom/android/server/wm/ImmersiveModeConfirmation$ClingWindowView;
 
     .line 253
     iput-object p1, p0, Lcom/android/server/wm/ImmersiveModeConfirmation$ClingWindowView$3;->this$1:Lcom/android/server/wm/ImmersiveModeConfirmation$ClingWindowView;
@@ -33,29 +34,31 @@
 
 # virtual methods
 .method public onReceive(Landroid/content/Context;Landroid/content/Intent;)V
-    .registers 3
+    .registers 5
+    .param p1, "context"  # Landroid/content/Context;
+    .param p2, "intent"  # Landroid/content/Intent;
 
     .line 256
     invoke-virtual {p2}, Landroid/content/Intent;->getAction()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    const-string p2, "android.intent.action.CONFIGURATION_CHANGED"
+    const-string v1, "android.intent.action.CONFIGURATION_CHANGED"
 
-    invoke-virtual {p1, p2}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v0, v1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result p1
+    move-result v0
 
-    if-eqz p1, :cond_15
+    if-eqz v0, :cond_15
 
     .line 257
-    iget-object p1, p0, Lcom/android/server/wm/ImmersiveModeConfirmation$ClingWindowView$3;->this$1:Lcom/android/server/wm/ImmersiveModeConfirmation$ClingWindowView;
+    iget-object v0, p0, Lcom/android/server/wm/ImmersiveModeConfirmation$ClingWindowView$3;->this$1:Lcom/android/server/wm/ImmersiveModeConfirmation$ClingWindowView;
 
-    invoke-static {p1}, Lcom/android/server/wm/ImmersiveModeConfirmation$ClingWindowView;->access$200(Lcom/android/server/wm/ImmersiveModeConfirmation$ClingWindowView;)Ljava/lang/Runnable;
+    invoke-static {v0}, Lcom/android/server/wm/ImmersiveModeConfirmation$ClingWindowView;->access$200(Lcom/android/server/wm/ImmersiveModeConfirmation$ClingWindowView;)Ljava/lang/Runnable;
 
-    move-result-object p2
+    move-result-object v1
 
-    invoke-virtual {p1, p2}, Lcom/android/server/wm/ImmersiveModeConfirmation$ClingWindowView;->post(Ljava/lang/Runnable;)Z
+    invoke-virtual {v0, v1}, Lcom/android/server/wm/ImmersiveModeConfirmation$ClingWindowView;->post(Ljava/lang/Runnable;)Z
 
     .line 259
     :cond_15

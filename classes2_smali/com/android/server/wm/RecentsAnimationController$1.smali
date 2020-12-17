@@ -21,6 +21,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/wm/RecentsAnimationController;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/wm/RecentsAnimationController;
 
     .line 142
     iput-object p1, p0, Lcom/android/server/wm/RecentsAnimationController$1;->this$0:Lcom/android/server/wm/RecentsAnimationController;
@@ -91,6 +92,7 @@
 # virtual methods
 .method public onAppTransitionCancelledLocked(I)V
     .registers 2
+    .param p1, "transit"  # I
 
     .line 152
     invoke-direct {p0}, Lcom/android/server/wm/RecentsAnimationController$1;->continueDeferredCancel()V
@@ -100,13 +102,17 @@
 .end method
 
 .method public onAppTransitionStartingLocked(IJJJ)I
-    .registers 8
+    .registers 9
+    .param p1, "transit"  # I
+    .param p2, "duration"  # J
+    .param p4, "statusBarAnimationStartTime"  # J
+    .param p6, "statusBarAnimationDuration"  # J
 
     .line 146
     invoke-direct {p0}, Lcom/android/server/wm/RecentsAnimationController$1;->continueDeferredCancel()V
 
     .line 147
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    return p1
+    return v0
 .end method

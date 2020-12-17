@@ -27,6 +27,8 @@
 # direct methods
 .method constructor <init>(ILcom/android/server/audio/RecordingActivityMonitor$RecorderDeathHandler;)V
     .registers 3
+    .param p1, "riid"  # I
+    .param p2, "handler"  # Lcom/android/server/audio/RecordingActivityMonitor$RecorderDeathHandler;
 
     .line 58
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -43,6 +45,7 @@
 
 .method constructor <init>(Landroid/media/AudioRecordingConfiguration;)V
     .registers 3
+    .param p1, "config"  # Landroid/media/AudioRecordingConfiguration;
 
     .line 63
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -68,6 +71,7 @@
 # virtual methods
 .method dump(Ljava/io/PrintWriter;)V
     .registers 4
+    .param p1, "pw"  # Ljava/io/PrintWriter;
 
     .line 104
     new-instance v0, Ljava/lang/StringBuilder;
@@ -200,6 +204,7 @@
 
 .method setActive(Z)Z
     .registers 4
+    .param p1, "active"  # Z
 
     .line 91
     iget-boolean v0, p0, Lcom/android/server/audio/RecordingActivityMonitor$RecordingState;->mIsActive:Z
@@ -215,9 +220,9 @@
     iput-boolean p1, p0, Lcom/android/server/audio/RecordingActivityMonitor$RecordingState;->mIsActive:Z
 
     .line 93
-    iget-object p1, p0, Lcom/android/server/audio/RecordingActivityMonitor$RecordingState;->mConfig:Landroid/media/AudioRecordingConfiguration;
+    iget-object v0, p0, Lcom/android/server/audio/RecordingActivityMonitor$RecordingState;->mConfig:Landroid/media/AudioRecordingConfiguration;
 
-    if-eqz p1, :cond_d
+    if-eqz v0, :cond_d
 
     const/4 v1, 0x1
 
@@ -227,6 +232,7 @@
 
 .method setConfig(Landroid/media/AudioRecordingConfiguration;)Z
     .registers 3
+    .param p1, "config"  # Landroid/media/AudioRecordingConfiguration;
 
     .line 98
     iget-object v0, p0, Lcom/android/server/audio/RecordingActivityMonitor$RecordingState;->mConfig:Landroid/media/AudioRecordingConfiguration;
@@ -237,16 +243,16 @@
 
     if-eqz v0, :cond_a
 
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    return p1
+    return v0
 
     .line 99
     :cond_a
     iput-object p1, p0, Lcom/android/server/audio/RecordingActivityMonitor$RecordingState;->mConfig:Landroid/media/AudioRecordingConfiguration;
 
     .line 100
-    iget-boolean p1, p0, Lcom/android/server/audio/RecordingActivityMonitor$RecordingState;->mIsActive:Z
+    iget-boolean v0, p0, Lcom/android/server/audio/RecordingActivityMonitor$RecordingState;->mIsActive:Z
 
-    return p1
+    return v0
 .end method

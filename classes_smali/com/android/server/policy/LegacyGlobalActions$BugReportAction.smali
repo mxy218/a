@@ -29,9 +29,9 @@
     iput-object p1, p0, Lcom/android/server/policy/LegacyGlobalActions$BugReportAction;->this$0:Lcom/android/server/policy/LegacyGlobalActions;
 
     .line 353
-    const p1, 0x10803b5
+    const p1, 0x10803b3
 
-    const v0, 0x104010c
+    const v0, 0x1040108
 
     invoke-direct {p0, p1, v0}, Lcom/android/internal/globalactions/SinglePressAction;-><init>(II)V
 
@@ -67,7 +67,7 @@
 
     aput-object v2, v1, v3
 
-    const v2, 0x104010b
+    const v2, 0x1040107
 
     invoke-virtual {v0, v2, v1}, Landroid/content/Context;->getString(I[Ljava/lang/Object;)Ljava/lang/String;
 

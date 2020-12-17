@@ -21,6 +21,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/display/whitebalance/DisplayWhiteBalanceSettings;Landroid/os/Looper;)V
     .registers 4
+    .param p2, "looper"  # Landroid/os/Looper;
 
     .line 178
     iput-object p1, p0, Lcom/android/server/display/whitebalance/DisplayWhiteBalanceSettings$DisplayWhiteBalanceSettingsHandler;->this$0:Lcom/android/server/display/whitebalance/DisplayWhiteBalanceSettings;
@@ -39,7 +40,8 @@
 
 # virtual methods
 .method public handleMessage(Landroid/os/Message;)V
-    .registers 4
+    .registers 5
+    .param p1, "msg"  # Landroid/os/Message;
 
     .line 184
     iget v0, p1, Landroid/os/Message;->what:I
@@ -54,9 +56,9 @@
     :cond_6
     iget-object v0, p0, Lcom/android/server/display/whitebalance/DisplayWhiteBalanceSettings$DisplayWhiteBalanceSettingsHandler;->this$0:Lcom/android/server/display/whitebalance/DisplayWhiteBalanceSettings;
 
-    iget p1, p1, Landroid/os/Message;->arg1:I
+    iget v2, p1, Landroid/os/Message;->arg1:I
 
-    if-eqz p1, :cond_d
+    if-eqz v2, :cond_d
 
     goto :goto_e
 
@@ -67,17 +69,17 @@
     invoke-static {v0, v1}, Lcom/android/server/display/whitebalance/DisplayWhiteBalanceSettings;->access$000(Lcom/android/server/display/whitebalance/DisplayWhiteBalanceSettings;Z)V
 
     .line 187
-    iget-object p1, p0, Lcom/android/server/display/whitebalance/DisplayWhiteBalanceSettings$DisplayWhiteBalanceSettingsHandler;->this$0:Lcom/android/server/display/whitebalance/DisplayWhiteBalanceSettings;
+    iget-object v0, p0, Lcom/android/server/display/whitebalance/DisplayWhiteBalanceSettings$DisplayWhiteBalanceSettingsHandler;->this$0:Lcom/android/server/display/whitebalance/DisplayWhiteBalanceSettings;
 
-    invoke-static {p1}, Lcom/android/server/display/whitebalance/DisplayWhiteBalanceSettings;->access$100(Lcom/android/server/display/whitebalance/DisplayWhiteBalanceSettings;)Lcom/android/server/display/color/ColorDisplayService$ColorDisplayServiceInternal;
+    invoke-static {v0}, Lcom/android/server/display/whitebalance/DisplayWhiteBalanceSettings;->access$100(Lcom/android/server/display/whitebalance/DisplayWhiteBalanceSettings;)Lcom/android/server/display/color/ColorDisplayService$ColorDisplayServiceInternal;
 
-    move-result-object v0
+    move-result-object v1
 
-    invoke-virtual {v0}, Lcom/android/server/display/color/ColorDisplayService$ColorDisplayServiceInternal;->isDisplayWhiteBalanceEnabled()Z
+    invoke-virtual {v1}, Lcom/android/server/display/color/ColorDisplayService$ColorDisplayServiceInternal;->isDisplayWhiteBalanceEnabled()Z
 
-    move-result v0
+    move-result v1
 
-    invoke-static {p1, v0}, Lcom/android/server/display/whitebalance/DisplayWhiteBalanceSettings;->access$200(Lcom/android/server/display/whitebalance/DisplayWhiteBalanceSettings;Z)V
+    invoke-static {v0, v1}, Lcom/android/server/display/whitebalance/DisplayWhiteBalanceSettings;->access$200(Lcom/android/server/display/whitebalance/DisplayWhiteBalanceSettings;Z)V
 
     .line 190
     :goto_1e

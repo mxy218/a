@@ -14,7 +14,12 @@
 .end method
 
 .method public static monitorEvent(Landroid/app/backup/IBackupManagerMonitor;ILandroid/content/pm/PackageInfo;ILandroid/os/Bundle;)Landroid/app/backup/IBackupManagerMonitor;
-    .registers 7
+    .registers 9
+    .param p0, "monitor"  # Landroid/app/backup/IBackupManagerMonitor;
+    .param p1, "id"  # I
+    .param p2, "pkg"  # Landroid/content/pm/PackageInfo;
+    .param p3, "category"  # I
+    .param p4, "extras"  # Landroid/os/Bundle;
 
     .line 55
     if-eqz p0, :cond_3b
@@ -26,42 +31,43 @@
     invoke-direct {v0}, Landroid/os/Bundle;-><init>()V
 
     .line 58
+    .local v0, "bundle":Landroid/os/Bundle;
     const-string v1, "android.app.backup.extra.LOG_EVENT_ID"
 
     invoke-virtual {v0, v1, p1}, Landroid/os/Bundle;->putInt(Ljava/lang/String;I)V
 
     .line 59
-    const-string p1, "android.app.backup.extra.LOG_EVENT_CATEGORY"
+    const-string v1, "android.app.backup.extra.LOG_EVENT_CATEGORY"
 
-    invoke-virtual {v0, p1, p3}, Landroid/os/Bundle;->putInt(Ljava/lang/String;I)V
+    invoke-virtual {v0, v1, p3}, Landroid/os/Bundle;->putInt(Ljava/lang/String;I)V
 
     .line 60
     if-eqz p2, :cond_2a
 
     .line 61
-    const-string p1, "android.app.backup.extra.LOG_EVENT_PACKAGE_NAME"
+    const-string v1, "android.app.backup.extra.LOG_EVENT_PACKAGE_NAME"
 
-    iget-object p3, p2, Landroid/content/pm/PackageInfo;->packageName:Ljava/lang/String;
+    iget-object v2, p2, Landroid/content/pm/PackageInfo;->packageName:Ljava/lang/String;
 
-    invoke-virtual {v0, p1, p3}, Landroid/os/Bundle;->putString(Ljava/lang/String;Ljava/lang/String;)V
+    invoke-virtual {v0, v1, v2}, Landroid/os/Bundle;->putString(Ljava/lang/String;Ljava/lang/String;)V
 
     .line 63
-    const-string p1, "android.app.backup.extra.LOG_EVENT_PACKAGE_VERSION"
+    const-string v1, "android.app.backup.extra.LOG_EVENT_PACKAGE_VERSION"
 
-    iget p3, p2, Landroid/content/pm/PackageInfo;->versionCode:I
+    iget v2, p2, Landroid/content/pm/PackageInfo;->versionCode:I
 
-    invoke-virtual {v0, p1, p3}, Landroid/os/Bundle;->putInt(Ljava/lang/String;I)V
+    invoke-virtual {v0, v1, v2}, Landroid/os/Bundle;->putInt(Ljava/lang/String;I)V
 
     .line 65
-    const-string p1, "android.app.backup.extra.LOG_EVENT_PACKAGE_FULL_VERSION"
+    const-string v1, "android.app.backup.extra.LOG_EVENT_PACKAGE_FULL_VERSION"
 
     .line 66
     invoke-virtual {p2}, Landroid/content/pm/PackageInfo;->getLongVersionCode()J
 
-    move-result-wide p2
+    move-result-wide v2
 
     .line 65
-    invoke-virtual {v0, p1, p2, p3}, Landroid/os/Bundle;->putLong(Ljava/lang/String;J)V
+    invoke-virtual {v0, v1, v2, v3}, Landroid/os/Bundle;->putLong(Ljava/lang/String;J)V
 
     .line 68
     :cond_2a
@@ -80,36 +86,44 @@
     return-object p0
 
     .line 73
+    .end local v0  # "bundle":Landroid/os/Bundle;
     :catch_33
-    move-exception p0
+    move-exception v0
 
     .line 75
-    const-string p0, "BackupManagerService"
+    .local v0, "e":Landroid/os/RemoteException;
+    const-string v1, "BackupManagerService"
 
-    const-string p1, "backup manager monitor went away"
+    const-string v2, "backup manager monitor went away"
 
-    invoke-static {p0, p1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v2}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 79
+    .end local v0  # "e":Landroid/os/RemoteException;
     :cond_3b
-    const/4 p0, 0x0
+    const/4 v0, 0x0
 
-    return-object p0
+    return-object v0
 .end method
 
 .method public static putMonitoringExtra(Landroid/os/Bundle;Ljava/lang/String;J)Landroid/os/Bundle;
-    .registers 4
+    .registers 5
+    .param p0, "extras"  # Landroid/os/Bundle;
+    .param p1, "key"  # Ljava/lang/String;
+    .param p2, "value"  # J
 
     .line 109
-    if-nez p0, :cond_7
+    if-nez p0, :cond_8
 
     .line 110
-    new-instance p0, Landroid/os/Bundle;
+    new-instance v0, Landroid/os/Bundle;
 
-    invoke-direct {p0}, Landroid/os/Bundle;-><init>()V
+    invoke-direct {v0}, Landroid/os/Bundle;-><init>()V
+
+    move-object p0, v0
 
     .line 112
-    :cond_7
+    :cond_8
     invoke-virtual {p0, p1, p2, p3}, Landroid/os/Bundle;->putLong(Ljava/lang/String;J)V
 
     .line 113
@@ -117,18 +131,23 @@
 .end method
 
 .method public static putMonitoringExtra(Landroid/os/Bundle;Ljava/lang/String;Ljava/lang/String;)Landroid/os/Bundle;
-    .registers 3
+    .registers 4
+    .param p0, "extras"  # Landroid/os/Bundle;
+    .param p1, "key"  # Ljava/lang/String;
+    .param p2, "value"  # Ljava/lang/String;
 
     .line 92
-    if-nez p0, :cond_7
+    if-nez p0, :cond_8
 
     .line 93
-    new-instance p0, Landroid/os/Bundle;
+    new-instance v0, Landroid/os/Bundle;
 
-    invoke-direct {p0}, Landroid/os/Bundle;-><init>()V
+    invoke-direct {v0}, Landroid/os/Bundle;-><init>()V
+
+    move-object p0, v0
 
     .line 95
-    :cond_7
+    :cond_8
     invoke-virtual {p0, p1, p2}, Landroid/os/Bundle;->putString(Ljava/lang/String;Ljava/lang/String;)V
 
     .line 96
@@ -136,18 +155,23 @@
 .end method
 
 .method public static putMonitoringExtra(Landroid/os/Bundle;Ljava/lang/String;Z)Landroid/os/Bundle;
-    .registers 3
+    .registers 4
+    .param p0, "extras"  # Landroid/os/Bundle;
+    .param p1, "key"  # Ljava/lang/String;
+    .param p2, "value"  # Z
 
     .line 126
-    if-nez p0, :cond_7
+    if-nez p0, :cond_8
 
     .line 127
-    new-instance p0, Landroid/os/Bundle;
+    new-instance v0, Landroid/os/Bundle;
 
-    invoke-direct {p0}, Landroid/os/Bundle;-><init>()V
+    invoke-direct {v0}, Landroid/os/Bundle;-><init>()V
+
+    move-object p0, v0
 
     .line 129
-    :cond_7
+    :cond_8
     invoke-virtual {p0, p1, p2}, Landroid/os/Bundle;->putBoolean(Ljava/lang/String;Z)V
 
     .line 130

@@ -12,6 +12,7 @@
 # direct methods
 .method public constructor <init>(Ljava/lang/String;)V
     .registers 2
+    .param p1, "detailMessage"  # Ljava/lang/String;
 
     .line 30
     invoke-direct {p0, p1}, Ljava/lang/Exception;-><init>(Ljava/lang/String;)V
@@ -22,6 +23,8 @@
 
 .method public constructor <init>(Ljava/lang/String;Lcom/android/server/NativeDaemonEvent;)V
     .registers 5
+    .param p1, "cmd"  # Ljava/lang/String;
+    .param p2, "event"  # Lcom/android/server/NativeDaemonEvent;
 
     .line 38
     new-instance v0, Ljava/lang/StringBuilder;
@@ -62,6 +65,8 @@
 
 .method public constructor <init>(Ljava/lang/String;Ljava/lang/Throwable;)V
     .registers 3
+    .param p1, "detailMessage"  # Ljava/lang/String;
+    .param p2, "throwable"  # Ljava/lang/Throwable;
 
     .line 34
     invoke-direct {p0, p1, p2}, Ljava/lang/Exception;-><init>(Ljava/lang/String;Ljava/lang/Throwable;)V

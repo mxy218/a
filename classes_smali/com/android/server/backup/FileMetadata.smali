@@ -48,6 +48,7 @@
     invoke-direct {v0, v1}, Ljava/lang/StringBuilder;-><init>(I)V
 
     .line 64
+    .local v0, "b":Ljava/lang/StringBuilder;
     iget v1, p0, Lcom/android/server/backup/FileMetadata;->type:I
 
     const/16 v2, 0x2d
@@ -285,6 +286,7 @@
     invoke-direct {v1, v2, v3}, Ljava/util/Date;-><init>(J)V
 
     .line 77
+    .local v1, "stamp":Ljava/util/Date;
     new-instance v2, Ljava/text/SimpleDateFormat;
 
     const-string v3, "MMM dd HH:mm:ss "
@@ -293,41 +295,41 @@
 
     invoke-virtual {v2, v1}, Ljava/text/SimpleDateFormat;->format(Ljava/util/Date;)Ljava/lang/String;
 
-    move-result-object v1
-
-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    .line 79
-    iget-object v1, p0, Lcom/android/server/backup/FileMetadata;->packageName:Ljava/lang/String;
-
-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    .line 80
-    const-string v1, " :: "
-
-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    .line 81
-    iget-object v2, p0, Lcom/android/server/backup/FileMetadata;->domain:Ljava/lang/String;
+    move-result-object v2
 
     invoke-virtual {v0, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
+    .line 79
+    iget-object v2, p0, Lcom/android/server/backup/FileMetadata;->packageName:Ljava/lang/String;
+
+    invoke-virtual {v0, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    .line 80
+    const-string v2, " :: "
+
+    invoke-virtual {v0, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    .line 81
+    iget-object v3, p0, Lcom/android/server/backup/FileMetadata;->domain:Ljava/lang/String;
+
+    invoke-virtual {v0, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
     .line 82
-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     .line 83
-    iget-object v1, p0, Lcom/android/server/backup/FileMetadata;->path:Ljava/lang/String;
+    iget-object v2, p0, Lcom/android/server/backup/FileMetadata;->path:Ljava/lang/String;
 
-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     .line 85
     invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v2
 
-    const-string v1, "BackupManagerService"
+    const-string v3, "BackupManagerService"
 
-    invoke-static {v1, v0}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v3, v2}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 86
     return-void
@@ -344,6 +346,7 @@
     invoke-direct {v0, v1}, Ljava/lang/StringBuilder;-><init>(I)V
 
     .line 46
+    .local v0, "sb":Ljava/lang/StringBuilder;
     const-string v1, "FileMetadata{"
 
     invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
@@ -397,7 +400,7 @@
     .line 57
     invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v1
 
-    return-object v0
+    return-object v1
 .end method

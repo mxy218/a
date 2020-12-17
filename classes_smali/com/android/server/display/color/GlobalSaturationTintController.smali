@@ -51,78 +51,80 @@
 .end method
 
 .method public isAvailable(Landroid/content/Context;)Z
-    .registers 2
+    .registers 3
+    .param p1, "context"  # Landroid/content/Context;
 
     .line 79
     invoke-static {p1}, Landroid/hardware/display/ColorDisplayManager;->isColorTransformAccelerated(Landroid/content/Context;)Z
 
-    move-result p1
+    move-result v0
 
-    return p1
+    return v0
 .end method
 
 .method public setMatrix(I)V
-    .registers 8
+    .registers 10
+    .param p1, "saturationLevel"  # I
 
     .line 44
     const/16 v0, 0x64
 
-    const/4 v1, 0x0
-
-    if-gez p1, :cond_7
+    if-gez p1, :cond_6
 
     .line 45
-    move p1, v1
+    const/4 p1, 0x0
 
     goto :goto_a
 
     .line 46
-    :cond_7
+    :cond_6
     if-le p1, v0, :cond_a
 
     .line 47
-    move p1, v0
+    const/16 p1, 0x64
 
     .line 49
     :cond_a
     :goto_a
-    new-instance v2, Ljava/lang/StringBuilder;
+    new-instance v1, Ljava/lang/StringBuilder;
 
-    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v3, "Setting saturation level: "
+    const-string v2, "Setting saturation level: "
 
-    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v2, p1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, p1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v2
+    move-result-object v1
 
-    const-string v3, "ColorDisplayService"
+    const-string v2, "ColorDisplayService"
 
-    invoke-static {v3, v2}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v2, v1}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 51
-    if-ne p1, v0, :cond_2f
+    const/4 v1, 0x0
+
+    if-ne p1, v0, :cond_30
 
     .line 52
     invoke-static {v1}, Ljava/lang/Boolean;->valueOf(Z)Ljava/lang/Boolean;
 
-    move-result-object p1
+    move-result-object v0
 
-    invoke-virtual {p0, p1}, Lcom/android/server/display/color/GlobalSaturationTintController;->setActivated(Ljava/lang/Boolean;)V
+    invoke-virtual {p0, v0}, Lcom/android/server/display/color/GlobalSaturationTintController;->setActivated(Ljava/lang/Boolean;)V
 
     .line 53
-    iget-object p1, p0, Lcom/android/server/display/color/GlobalSaturationTintController;->mMatrixGlobalSaturation:[F
+    iget-object v0, p0, Lcom/android/server/display/color/GlobalSaturationTintController;->mMatrixGlobalSaturation:[F
 
-    invoke-static {p1, v1}, Landroid/opengl/Matrix;->setIdentityM([FI)V
+    invoke-static {v0, v1}, Landroid/opengl/Matrix;->setIdentityM([FI)V
 
-    goto :goto_87
+    goto :goto_88
 
     .line 55
-    :cond_2f
+    :cond_30
     const/4 v0, 0x1
 
     invoke-static {v0}, Ljava/lang/Boolean;->valueOf(Z)Ljava/lang/Boolean;
@@ -132,114 +134,122 @@
     invoke-virtual {p0, v2}, Lcom/android/server/display/color/GlobalSaturationTintController;->setActivated(Ljava/lang/Boolean;)V
 
     .line 56
-    int-to-float p1, p1
+    int-to-float v2, p1
 
-    const v2, 0x3c23d70a  # 0.01f
+    const v3, 0x3c23d70a  # 0.01f
 
-    mul-float/2addr p1, v2
+    mul-float/2addr v2, v3
 
     .line 57
-    const/high16 v2, 0x3f800000  # 1.0f
+    .local v2, "saturation":F
+    const/high16 v3, 0x3f800000  # 1.0f
 
-    sub-float/2addr v2, p1
+    sub-float/2addr v3, v2
 
     .line 58
-    const/4 v3, 0x3
+    .local v3, "desaturation":F
+    const/4 v4, 0x3
 
-    new-array v3, v3, [F
+    new-array v4, v4, [F
 
-    const v4, 0x3e6c8b44  # 0.231f
+    const v5, 0x3e6c8b44  # 0.231f
 
-    mul-float/2addr v4, v2
+    mul-float/2addr v5, v3
 
-    aput v4, v3, v1
+    aput v5, v4, v1
 
-    const v4, 0x3f370a3d  # 0.715f
+    const v5, 0x3f370a3d  # 0.715f
 
-    mul-float/2addr v4, v2
+    mul-float/2addr v5, v3
 
-    aput v4, v3, v0
+    aput v5, v4, v0
 
-    const v4, 0x3d9374bc  # 0.072f
+    const v5, 0x3d9374bc  # 0.072f
 
-    mul-float/2addr v2, v4
+    mul-float/2addr v5, v3
 
-    const/4 v4, 0x2
+    const/4 v6, 0x2
 
-    aput v2, v3, v4
+    aput v5, v4, v6
 
     .line 60
-    iget-object v2, p0, Lcom/android/server/display/color/GlobalSaturationTintController;->mMatrixGlobalSaturation:[F
+    .local v4, "luminance":[F
+    iget-object v5, p0, Lcom/android/server/display/color/GlobalSaturationTintController;->mMatrixGlobalSaturation:[F
 
-    aget v5, v3, v1
+    aget v7, v4, v1
 
-    add-float/2addr v5, p1
+    add-float/2addr v7, v2
 
-    aput v5, v2, v1
+    aput v7, v5, v1
 
     .line 61
-    aget v5, v3, v1
+    aget v7, v4, v1
 
-    aput v5, v2, v0
+    aput v7, v5, v0
 
     .line 62
-    aget v1, v3, v1
+    aget v1, v4, v1
 
-    aput v1, v2, v4
+    aput v1, v5, v6
 
     .line 63
     const/4 v1, 0x4
 
-    aget v5, v3, v0
+    aget v7, v4, v0
 
-    aput v5, v2, v1
+    aput v7, v5, v1
 
     .line 64
     const/4 v1, 0x5
 
-    aget v5, v3, v0
+    aget v7, v4, v0
 
-    add-float/2addr v5, p1
+    add-float/2addr v7, v2
 
-    aput v5, v2, v1
+    aput v7, v5, v1
 
     .line 65
     const/4 v1, 0x6
 
-    aget v0, v3, v0
+    aget v0, v4, v0
 
-    aput v0, v2, v1
+    aput v0, v5, v1
 
     .line 66
     const/16 v0, 0x8
 
-    aget v1, v3, v4
+    aget v1, v4, v6
 
-    aput v1, v2, v0
+    aput v1, v5, v0
 
     .line 67
     const/16 v0, 0x9
 
-    aget v1, v3, v4
+    aget v1, v4, v6
 
-    aput v1, v2, v0
+    aput v1, v5, v0
 
     .line 68
     const/16 v0, 0xa
 
-    aget v1, v3, v4
+    aget v1, v4, v6
 
-    add-float/2addr v1, p1
+    add-float/2addr v1, v2
 
-    aput v1, v2, v0
+    aput v1, v5, v0
 
     .line 70
-    :goto_87
+    .end local v2  # "saturation":F
+    .end local v3  # "desaturation":F
+    .end local v4  # "luminance":[F
+    :goto_88
     return-void
 .end method
 
 .method public setUp(Landroid/content/Context;Z)V
     .registers 3
+    .param p1, "context"  # Landroid/content/Context;
+    .param p2, "needsLinear"  # Z
 
     .line 35
     return-void

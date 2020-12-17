@@ -27,6 +27,7 @@
 # direct methods
 .method public constructor <init>(Lcom/android/server/tv/TvRemoteService;Lcom/android/server/tv/TvRemoteService;)V
     .registers 3
+    .param p2, "service"  # Lcom/android/server/tv/TvRemoteService;
 
     .line 258
     iput-object p1, p0, Lcom/android/server/tv/TvRemoteService$UserProvider;->this$0:Lcom/android/server/tv/TvRemoteService;
@@ -44,6 +45,7 @@
 # virtual methods
 .method public addProvider(Lcom/android/server/tv/TvRemoteProviderProxy;)V
     .registers 6
+    .param p1, "provider"  # Lcom/android/server/tv/TvRemoteProviderProxy;
 
     .line 371
     iget-object v0, p0, Lcom/android/server/tv/TvRemoteService$UserProvider;->this$0:Lcom/android/server/tv/TvRemoteService;
@@ -80,15 +82,15 @@
 
     invoke-virtual {p1}, Ljava/lang/Object;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v3
 
-    invoke-virtual {v2, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v2
 
-    invoke-static {v1, p1}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v2}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 375
     monitor-exit v0
@@ -98,17 +100,19 @@
 
     .line 375
     :catchall_30
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_32
     .catchall {:try_start_7 .. :try_end_32} :catchall_30
 
-    throw p1
+    throw v1
 .end method
 
 .method public clearInputBridge(Lcom/android/server/tv/TvRemoteProviderProxy;Landroid/os/IBinder;)V
     .registers 5
+    .param p1, "provider"  # Lcom/android/server/tv/TvRemoteProviderProxy;
+    .param p2, "token"  # Landroid/os/IBinder;
 
     .line 293
     iget-object v0, p0, Lcom/android/server/tv/TvRemoteService$UserProvider;->this$0:Lcom/android/server/tv/TvRemoteService;
@@ -129,14 +133,14 @@
 
     invoke-virtual {v1, p1}, Ljava/util/ArrayList;->contains(Ljava/lang/Object;)Z
 
-    move-result p1
+    move-result v1
 
-    if-eqz p1, :cond_18
+    if-eqz v1, :cond_18
 
     .line 295
-    iget-object p1, p0, Lcom/android/server/tv/TvRemoteService$UserProvider;->mService:Lcom/android/server/tv/TvRemoteService;
+    iget-object v1, p0, Lcom/android/server/tv/TvRemoteService$UserProvider;->mService:Lcom/android/server/tv/TvRemoteService;
 
-    invoke-static {p1, p2}, Lcom/android/server/tv/TvRemoteService;->access$500(Lcom/android/server/tv/TvRemoteService;Landroid/os/IBinder;)V
+    invoke-static {v1, p2}, Lcom/android/server/tv/TvRemoteService;->access$500(Lcom/android/server/tv/TvRemoteService;Landroid/os/IBinder;)V
 
     .line 297
     :cond_18
@@ -147,17 +151,19 @@
 
     .line 297
     :catchall_1a
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_1c
     .catchall {:try_start_7 .. :try_end_1c} :catchall_1a
 
-    throw p1
+    throw v1
 .end method
 
 .method public closeInputBridge(Lcom/android/server/tv/TvRemoteProviderProxy;Landroid/os/IBinder;)V
     .registers 5
+    .param p1, "provider"  # Lcom/android/server/tv/TvRemoteProviderProxy;
+    .param p2, "token"  # Landroid/os/IBinder;
 
     .line 282
     iget-object v0, p0, Lcom/android/server/tv/TvRemoteService$UserProvider;->this$0:Lcom/android/server/tv/TvRemoteService;
@@ -178,23 +184,23 @@
 
     invoke-virtual {v1, p1}, Ljava/util/ArrayList;->contains(Ljava/lang/Object;)Z
 
-    move-result p1
+    move-result v1
 
-    if-eqz p1, :cond_21
+    if-eqz v1, :cond_21
 
     .line 284
-    iget-object p1, p0, Lcom/android/server/tv/TvRemoteService$UserProvider;->mService:Lcom/android/server/tv/TvRemoteService;
+    iget-object v1, p0, Lcom/android/server/tv/TvRemoteService$UserProvider;->mService:Lcom/android/server/tv/TvRemoteService;
 
-    invoke-static {p1, p2}, Lcom/android/server/tv/TvRemoteService;->access$400(Lcom/android/server/tv/TvRemoteService;Landroid/os/IBinder;)V
+    invoke-static {v1, p2}, Lcom/android/server/tv/TvRemoteService;->access$400(Lcom/android/server/tv/TvRemoteService;Landroid/os/IBinder;)V
 
     .line 285
-    iget-object p1, p0, Lcom/android/server/tv/TvRemoteService$UserProvider;->this$0:Lcom/android/server/tv/TvRemoteService;
+    iget-object v1, p0, Lcom/android/server/tv/TvRemoteService$UserProvider;->this$0:Lcom/android/server/tv/TvRemoteService;
 
-    invoke-static {p1}, Lcom/android/server/tv/TvRemoteService;->access$000(Lcom/android/server/tv/TvRemoteService;)Ljava/util/Map;
+    invoke-static {v1}, Lcom/android/server/tv/TvRemoteService;->access$000(Lcom/android/server/tv/TvRemoteService;)Ljava/util/Map;
 
-    move-result-object p1
+    move-result-object v1
 
-    invoke-interface {p1, p2}, Ljava/util/Map;->remove(Ljava/lang/Object;)Ljava/lang/Object;
+    invoke-interface {v1, p2}, Ljava/util/Map;->remove(Ljava/lang/Object;)Ljava/lang/Object;
 
     .line 287
     :cond_21
@@ -205,17 +211,23 @@
 
     .line 287
     :catchall_23
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_25
     .catchall {:try_start_7 .. :try_end_25} :catchall_23
 
-    throw p1
+    throw v1
 .end method
 
 .method public openInputBridge(Lcom/android/server/tv/TvRemoteProviderProxy;Landroid/os/IBinder;Ljava/lang/String;III)V
     .registers 16
+    .param p1, "provider"  # Lcom/android/server/tv/TvRemoteProviderProxy;
+    .param p2, "token"  # Landroid/os/IBinder;
+    .param p3, "name"  # Ljava/lang/String;
+    .param p4, "width"  # I
+    .param p5, "height"  # I
+    .param p6, "maxPointers"  # I
 
     .line 271
     iget-object v0, p0, Lcom/android/server/tv/TvRemoteService$UserProvider;->this$0:Lcom/android/server/tv/TvRemoteService;
@@ -266,17 +278,18 @@
 
     .line 276
     :catchall_20
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_22
     .catchall {:try_start_7 .. :try_end_22} :catchall_20
 
-    throw p1
+    throw v1
 .end method
 
 .method public removeProvider(Lcom/android/server/tv/TvRemoteProviderProxy;)V
     .registers 6
+    .param p1, "provider"  # Lcom/android/server/tv/TvRemoteProviderProxy;
 
     .line 381
     iget-object v0, p0, Lcom/android/server/tv/TvRemoteService$UserProvider;->this$0:Lcom/android/server/tv/TvRemoteService;
@@ -316,9 +329,9 @@
 
     invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v2
 
-    invoke-static {v1, p1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v2}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 385
     :cond_29
@@ -329,17 +342,20 @@
 
     .line 385
     :catchall_2b
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_2d
     .catchall {:try_start_7 .. :try_end_2d} :catchall_2b
 
-    throw p1
+    throw v1
 .end method
 
 .method public sendKeyDown(Lcom/android/server/tv/TvRemoteProviderProxy;Landroid/os/IBinder;I)V
     .registers 6
+    .param p1, "provider"  # Lcom/android/server/tv/TvRemoteProviderProxy;
+    .param p2, "token"  # Landroid/os/IBinder;
+    .param p3, "keyCode"  # I
 
     .line 314
     iget-object v0, p0, Lcom/android/server/tv/TvRemoteService$UserProvider;->this$0:Lcom/android/server/tv/TvRemoteService;
@@ -360,14 +376,14 @@
 
     invoke-virtual {v1, p1}, Ljava/util/ArrayList;->contains(Ljava/lang/Object;)Z
 
-    move-result p1
+    move-result v1
 
-    if-eqz p1, :cond_18
+    if-eqz v1, :cond_18
 
     .line 316
-    iget-object p1, p0, Lcom/android/server/tv/TvRemoteService$UserProvider;->mService:Lcom/android/server/tv/TvRemoteService;
+    iget-object v1, p0, Lcom/android/server/tv/TvRemoteService$UserProvider;->mService:Lcom/android/server/tv/TvRemoteService;
 
-    invoke-static {p1, p2, p3}, Lcom/android/server/tv/TvRemoteService;->access$700(Lcom/android/server/tv/TvRemoteService;Landroid/os/IBinder;I)V
+    invoke-static {v1, p2, p3}, Lcom/android/server/tv/TvRemoteService;->access$700(Lcom/android/server/tv/TvRemoteService;Landroid/os/IBinder;I)V
 
     .line 318
     :cond_18
@@ -378,17 +394,20 @@
 
     .line 318
     :catchall_1a
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_1c
     .catchall {:try_start_7 .. :try_end_1c} :catchall_1a
 
-    throw p1
+    throw v1
 .end method
 
 .method public sendKeyUp(Lcom/android/server/tv/TvRemoteProviderProxy;Landroid/os/IBinder;I)V
     .registers 6
+    .param p1, "provider"  # Lcom/android/server/tv/TvRemoteProviderProxy;
+    .param p2, "token"  # Landroid/os/IBinder;
+    .param p3, "keyCode"  # I
 
     .line 326
     iget-object v0, p0, Lcom/android/server/tv/TvRemoteService$UserProvider;->this$0:Lcom/android/server/tv/TvRemoteService;
@@ -409,14 +428,14 @@
 
     invoke-virtual {v1, p1}, Ljava/util/ArrayList;->contains(Ljava/lang/Object;)Z
 
-    move-result p1
+    move-result v1
 
-    if-eqz p1, :cond_18
+    if-eqz v1, :cond_18
 
     .line 328
-    iget-object p1, p0, Lcom/android/server/tv/TvRemoteService$UserProvider;->mService:Lcom/android/server/tv/TvRemoteService;
+    iget-object v1, p0, Lcom/android/server/tv/TvRemoteService$UserProvider;->mService:Lcom/android/server/tv/TvRemoteService;
 
-    invoke-static {p1, p2, p3}, Lcom/android/server/tv/TvRemoteService;->access$800(Lcom/android/server/tv/TvRemoteService;Landroid/os/IBinder;I)V
+    invoke-static {v1, p2, p3}, Lcom/android/server/tv/TvRemoteService;->access$800(Lcom/android/server/tv/TvRemoteService;Landroid/os/IBinder;I)V
 
     .line 330
     :cond_18
@@ -427,17 +446,22 @@
 
     .line 330
     :catchall_1a
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_1c
     .catchall {:try_start_7 .. :try_end_1c} :catchall_1a
 
-    throw p1
+    throw v1
 .end method
 
 .method public sendPointerDown(Lcom/android/server/tv/TvRemoteProviderProxy;Landroid/os/IBinder;III)V
     .registers 8
+    .param p1, "provider"  # Lcom/android/server/tv/TvRemoteProviderProxy;
+    .param p2, "token"  # Landroid/os/IBinder;
+    .param p3, "pointerId"  # I
+    .param p4, "x"  # I
+    .param p5, "y"  # I
 
     .line 339
     iget-object v0, p0, Lcom/android/server/tv/TvRemoteService$UserProvider;->this$0:Lcom/android/server/tv/TvRemoteService;
@@ -458,14 +482,14 @@
 
     invoke-virtual {v1, p1}, Ljava/util/ArrayList;->contains(Ljava/lang/Object;)Z
 
-    move-result p1
+    move-result v1
 
-    if-eqz p1, :cond_18
+    if-eqz v1, :cond_18
 
     .line 341
-    iget-object p1, p0, Lcom/android/server/tv/TvRemoteService$UserProvider;->mService:Lcom/android/server/tv/TvRemoteService;
+    iget-object v1, p0, Lcom/android/server/tv/TvRemoteService$UserProvider;->mService:Lcom/android/server/tv/TvRemoteService;
 
-    invoke-static {p1, p2, p3, p4, p5}, Lcom/android/server/tv/TvRemoteService;->access$900(Lcom/android/server/tv/TvRemoteService;Landroid/os/IBinder;III)V
+    invoke-static {v1, p2, p3, p4, p5}, Lcom/android/server/tv/TvRemoteService;->access$900(Lcom/android/server/tv/TvRemoteService;Landroid/os/IBinder;III)V
 
     .line 343
     :cond_18
@@ -476,17 +500,19 @@
 
     .line 343
     :catchall_1a
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_1c
     .catchall {:try_start_7 .. :try_end_1c} :catchall_1a
 
-    throw p1
+    throw v1
 .end method
 
 .method public sendPointerSync(Lcom/android/server/tv/TvRemoteProviderProxy;Landroid/os/IBinder;)V
     .registers 5
+    .param p1, "provider"  # Lcom/android/server/tv/TvRemoteProviderProxy;
+    .param p2, "token"  # Landroid/os/IBinder;
 
     .line 361
     iget-object v0, p0, Lcom/android/server/tv/TvRemoteService$UserProvider;->this$0:Lcom/android/server/tv/TvRemoteService;
@@ -507,14 +533,14 @@
 
     invoke-virtual {v1, p1}, Ljava/util/ArrayList;->contains(Ljava/lang/Object;)Z
 
-    move-result p1
+    move-result v1
 
-    if-eqz p1, :cond_18
+    if-eqz v1, :cond_18
 
     .line 363
-    iget-object p1, p0, Lcom/android/server/tv/TvRemoteService$UserProvider;->mService:Lcom/android/server/tv/TvRemoteService;
+    iget-object v1, p0, Lcom/android/server/tv/TvRemoteService$UserProvider;->mService:Lcom/android/server/tv/TvRemoteService;
 
-    invoke-static {p1, p2}, Lcom/android/server/tv/TvRemoteService;->access$1100(Lcom/android/server/tv/TvRemoteService;Landroid/os/IBinder;)V
+    invoke-static {v1, p2}, Lcom/android/server/tv/TvRemoteService;->access$1100(Lcom/android/server/tv/TvRemoteService;Landroid/os/IBinder;)V
 
     .line 365
     :cond_18
@@ -525,17 +551,20 @@
 
     .line 365
     :catchall_1a
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_1c
     .catchall {:try_start_7 .. :try_end_1c} :catchall_1a
 
-    throw p1
+    throw v1
 .end method
 
 .method public sendPointerUp(Lcom/android/server/tv/TvRemoteProviderProxy;Landroid/os/IBinder;I)V
     .registers 6
+    .param p1, "provider"  # Lcom/android/server/tv/TvRemoteProviderProxy;
+    .param p2, "token"  # Landroid/os/IBinder;
+    .param p3, "pointerId"  # I
 
     .line 351
     iget-object v0, p0, Lcom/android/server/tv/TvRemoteService$UserProvider;->this$0:Lcom/android/server/tv/TvRemoteService;
@@ -556,14 +585,14 @@
 
     invoke-virtual {v1, p1}, Ljava/util/ArrayList;->contains(Ljava/lang/Object;)Z
 
-    move-result p1
+    move-result v1
 
-    if-eqz p1, :cond_18
+    if-eqz v1, :cond_18
 
     .line 353
-    iget-object p1, p0, Lcom/android/server/tv/TvRemoteService$UserProvider;->mService:Lcom/android/server/tv/TvRemoteService;
+    iget-object v1, p0, Lcom/android/server/tv/TvRemoteService$UserProvider;->mService:Lcom/android/server/tv/TvRemoteService;
 
-    invoke-static {p1, p2, p3}, Lcom/android/server/tv/TvRemoteService;->access$1000(Lcom/android/server/tv/TvRemoteService;Landroid/os/IBinder;I)V
+    invoke-static {v1, p2, p3}, Lcom/android/server/tv/TvRemoteService;->access$1000(Lcom/android/server/tv/TvRemoteService;Landroid/os/IBinder;I)V
 
     .line 355
     :cond_18
@@ -574,17 +603,20 @@
 
     .line 355
     :catchall_1a
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_1c
     .catchall {:try_start_7 .. :try_end_1c} :catchall_1a
 
-    throw p1
+    throw v1
 .end method
 
 .method public sendTimeStamp(Lcom/android/server/tv/TvRemoteProviderProxy;Landroid/os/IBinder;J)V
     .registers 7
+    .param p1, "provider"  # Lcom/android/server/tv/TvRemoteProviderProxy;
+    .param p2, "token"  # Landroid/os/IBinder;
+    .param p3, "timestamp"  # J
 
     .line 302
     iget-object v0, p0, Lcom/android/server/tv/TvRemoteService$UserProvider;->this$0:Lcom/android/server/tv/TvRemoteService;
@@ -605,14 +637,14 @@
 
     invoke-virtual {v1, p1}, Ljava/util/ArrayList;->contains(Ljava/lang/Object;)Z
 
-    move-result p1
+    move-result v1
 
-    if-eqz p1, :cond_18
+    if-eqz v1, :cond_18
 
     .line 304
-    iget-object p1, p0, Lcom/android/server/tv/TvRemoteService$UserProvider;->mService:Lcom/android/server/tv/TvRemoteService;
+    iget-object v1, p0, Lcom/android/server/tv/TvRemoteService$UserProvider;->mService:Lcom/android/server/tv/TvRemoteService;
 
-    invoke-static {p1, p2, p3, p4}, Lcom/android/server/tv/TvRemoteService;->access$600(Lcom/android/server/tv/TvRemoteService;Landroid/os/IBinder;J)V
+    invoke-static {v1, p2, p3, p4}, Lcom/android/server/tv/TvRemoteService;->access$600(Lcom/android/server/tv/TvRemoteService;Landroid/os/IBinder;J)V
 
     .line 306
     :cond_18
@@ -623,11 +655,11 @@
 
     .line 306
     :catchall_1a
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_1c
     .catchall {:try_start_7 .. :try_end_1c} :catchall_1a
 
-    throw p1
+    throw v1
 .end method

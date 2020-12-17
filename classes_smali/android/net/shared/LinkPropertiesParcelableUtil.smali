@@ -15,6 +15,7 @@
 
 .method public static toStableParcelable(Landroid/net/LinkProperties;)Landroid/net/LinkProperties;
     .registers 1
+    .param p0, "lp"  # Landroid/net/LinkProperties;
     .annotation runtime Ljava/lang/Deprecated;
     .end annotation
 
@@ -24,6 +25,7 @@
 
 .method public static toStableParcelable(Landroid/net/ProxyInfo;)Landroid/net/ProxyInfo;
     .registers 1
+    .param p0, "info"  # Landroid/net/ProxyInfo;
     .annotation runtime Ljava/lang/Deprecated;
     .end annotation
 

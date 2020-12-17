@@ -23,6 +23,7 @@
 # direct methods
 .method public constructor <init>(Lcom/android/server/job/JobSchedulerService;Landroid/os/Handler;)V
     .registers 3
+    .param p2, "handler"  # Landroid/os/Handler;
 
     .line 280
     iput-object p1, p0, Lcom/android/server/job/JobSchedulerService$ConstantsObserver;->this$0:Lcom/android/server/job/JobSchedulerService;
@@ -52,7 +53,7 @@
 
     iget-object v2, p0, Lcom/android/server/job/JobSchedulerService$ConstantsObserver;->mResolver:Landroid/content/ContentResolver;
 
-    const-string v3, "job_scheduler_constants"
+    const-string/jumbo v3, "job_scheduler_constants"
 
     invoke-static {v2, v3}, Landroid/provider/Settings$Global;->getString(Landroid/content/ContentResolver;Ljava/lang/String;)Ljava/lang/String;
 
@@ -63,7 +64,8 @@
     .line 301
     const/4 v1, 0x0
 
-    :goto_15
+    .local v1, "controller":I
+    :goto_16
     iget-object v2, p0, Lcom/android/server/job/JobSchedulerService$ConstantsObserver;->this$0:Lcom/android/server/job/JobSchedulerService;
 
     iget-object v2, v2, Lcom/android/server/job/JobSchedulerService;->mControllers:Ljava/util/List;
@@ -72,7 +74,7 @@
 
     move-result v2
 
-    if-ge v1, v2, :cond_2f
+    if-ge v1, v2, :cond_30
 
     .line 302
     iget-object v2, p0, Lcom/android/server/job/JobSchedulerService$ConstantsObserver;->this$0:Lcom/android/server/job/JobSchedulerService;
@@ -86,32 +88,36 @@
     check-cast v2, Lcom/android/server/job/controllers/StateController;
 
     .line 303
+    .local v2, "sc":Lcom/android/server/job/controllers/StateController;
     invoke-virtual {v2}, Lcom/android/server/job/controllers/StateController;->onConstantsUpdatedLocked()V
-    :try_end_2c
-    .catch Ljava/lang/IllegalArgumentException; {:try_start_5 .. :try_end_2c} :catch_32
-    .catchall {:try_start_5 .. :try_end_2c} :catchall_30
+    :try_end_2d
+    .catch Ljava/lang/IllegalArgumentException; {:try_start_5 .. :try_end_2d} :catch_33
+    .catchall {:try_start_5 .. :try_end_2d} :catchall_31
 
     .line 301
+    .end local v2  # "sc":Lcom/android/server/job/controllers/StateController;
     add-int/lit8 v1, v1, 0x1
 
-    goto :goto_15
+    goto :goto_16
 
     .line 309
-    :cond_2f
-    goto :goto_3a
+    .end local v1  # "controller":I
+    :cond_30
+    goto :goto_3b
 
     .line 310
-    :catchall_30
+    :catchall_31
     move-exception v1
 
-    goto :goto_49
+    goto :goto_4a
 
     .line 305
-    :catch_32
+    :catch_33
     move-exception v1
 
     .line 308
-    :try_start_33
+    .local v1, "e":Ljava/lang/IllegalArgumentException;
+    :try_start_34
     const-string v2, "JobScheduler"
 
     const-string v3, "Bad jobscheduler settings"
@@ -119,10 +125,11 @@
     invoke-static {v2, v3, v1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
     .line 310
-    :goto_3a
+    .end local v1  # "e":Ljava/lang/IllegalArgumentException;
+    :goto_3b
     monitor-exit v0
-    :try_end_3b
-    .catchall {:try_start_33 .. :try_end_3b} :catchall_30
+    :try_end_3c
+    .catchall {:try_start_34 .. :try_end_3c} :catchall_31
 
     .line 312
     iget-object v0, p0, Lcom/android/server/job/JobSchedulerService$ConstantsObserver;->this$0:Lcom/android/server/job/JobSchedulerService;
@@ -131,7 +138,7 @@
 
     iget-boolean v0, v0, Lcom/android/server/job/JobSchedulerService$Constants;->USE_HEARTBEATS:Z
 
-    if-eqz v0, :cond_48
+    if-eqz v0, :cond_49
 
     .line 314
     iget-object v0, p0, Lcom/android/server/job/JobSchedulerService$ConstantsObserver;->this$0:Lcom/android/server/job/JobSchedulerService;
@@ -139,15 +146,15 @@
     invoke-virtual {v0}, Lcom/android/server/job/JobSchedulerService;->setNextHeartbeatAlarm()V
 
     .line 316
-    :cond_48
+    :cond_49
     return-void
 
     .line 310
-    :goto_49
-    :try_start_49
+    :goto_4a
+    :try_start_4a
     monitor-exit v0
-    :try_end_4a
-    .catchall {:try_start_49 .. :try_end_4a} :catchall_30
+    :try_end_4b
+    .catchall {:try_start_4a .. :try_end_4b} :catchall_31
 
     throw v1
 .end method
@@ -156,6 +163,8 @@
 # virtual methods
 .method public onChange(ZLandroid/net/Uri;)V
     .registers 3
+    .param p1, "selfChange"  # Z
+    .param p2, "uri"  # Landroid/net/Uri;
 
     .line 293
     invoke-direct {p0}, Lcom/android/server/job/JobSchedulerService$ConstantsObserver;->updateConstants()V
@@ -165,23 +174,24 @@
 .end method
 
 .method public start(Landroid/content/ContentResolver;)V
-    .registers 4
+    .registers 5
+    .param p1, "resolver"  # Landroid/content/ContentResolver;
 
     .line 285
     iput-object p1, p0, Lcom/android/server/job/JobSchedulerService$ConstantsObserver;->mResolver:Landroid/content/ContentResolver;
 
     .line 286
-    iget-object p1, p0, Lcom/android/server/job/JobSchedulerService$ConstantsObserver;->mResolver:Landroid/content/ContentResolver;
+    iget-object v0, p0, Lcom/android/server/job/JobSchedulerService$ConstantsObserver;->mResolver:Landroid/content/ContentResolver;
 
-    const-string v0, "job_scheduler_constants"
+    const-string/jumbo v1, "job_scheduler_constants"
 
-    invoke-static {v0}, Landroid/provider/Settings$Global;->getUriFor(Ljava/lang/String;)Landroid/net/Uri;
+    invoke-static {v1}, Landroid/provider/Settings$Global;->getUriFor(Ljava/lang/String;)Landroid/net/Uri;
 
-    move-result-object v0
+    move-result-object v1
 
-    const/4 v1, 0x0
+    const/4 v2, 0x0
 
-    invoke-virtual {p1, v0, v1, p0}, Landroid/content/ContentResolver;->registerContentObserver(Landroid/net/Uri;ZLandroid/database/ContentObserver;)V
+    invoke-virtual {v0, v1, v2, p0}, Landroid/content/ContentResolver;->registerContentObserver(Landroid/net/Uri;ZLandroid/database/ContentObserver;)V
 
     .line 288
     invoke-direct {p0}, Lcom/android/server/job/JobSchedulerService$ConstantsObserver;->updateConstants()V

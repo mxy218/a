@@ -23,6 +23,10 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/policy/LegacyGlobalActions;ILandroid/graphics/drawable/Drawable;Ljava/lang/CharSequence;Landroid/content/pm/UserInfo;)V
     .registers 6
+    .param p1, "this$0"  # Lcom/android/server/policy/LegacyGlobalActions;
+    .param p2, "x0"  # I
+    .param p3, "x1"  # Landroid/graphics/drawable/Drawable;
+    .param p4, "x2"  # Ljava/lang/CharSequence;
 
     .line 557
     iput-object p1, p0, Lcom/android/server/policy/LegacyGlobalActions$8;->this$0:Lcom/android/server/policy/LegacyGlobalActions;
@@ -61,6 +65,7 @@
     move-exception v0
 
     .line 563
+    .local v0, "re":Landroid/os/RemoteException;
     new-instance v1, Ljava/lang/StringBuilder;
 
     invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
@@ -73,13 +78,14 @@
 
     invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v1
 
-    const-string v1, "LegacyGlobalActions"
+    const-string v2, "LegacyGlobalActions"
 
-    invoke-static {v1, v0}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v2, v1}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 565
+    .end local v0  # "re":Landroid/os/RemoteException;
     :goto_23
     return-void
 .end method

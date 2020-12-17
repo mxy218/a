@@ -22,10 +22,10 @@
 .method constructor <init>()V
     .registers 2
 
-    .line 1772
+    .line 1818
     invoke-direct {p0}, Landroid/app/IStopUserCallback$Stub;-><init>()V
 
-    .line 1773
+    .line 1819
     const/4 v0, 0x0
 
     iput-boolean v0, p0, Lcom/android/server/am/ActivityManagerShellCommand$StopUserCallback;->mFinished:Z
@@ -36,27 +36,30 @@
 
 # virtual methods
 .method public declared-synchronized userStopAborted(I)V
-    .registers 2
+    .registers 3
+    .param p1, "userId"  # I
 
     monitor-enter p0
 
-    .line 1791
-    const/4 p1, 0x1
+    .line 1837
+    const/4 v0, 0x1
 
     :try_start_2
-    iput-boolean p1, p0, Lcom/android/server/am/ActivityManagerShellCommand$StopUserCallback;->mFinished:Z
+    iput-boolean v0, p0, Lcom/android/server/am/ActivityManagerShellCommand$StopUserCallback;->mFinished:Z
 
-    .line 1792
+    .line 1838
     invoke-virtual {p0}, Ljava/lang/Object;->notifyAll()V
     :try_end_7
     .catchall {:try_start_2 .. :try_end_7} :catchall_9
 
-    .line 1793
+    .line 1839
     monitor-exit p0
 
     return-void
 
-    .line 1790
+    .line 1836
+    .end local p0  # "this":Lcom/android/server/am/ActivityManagerShellCommand$StopUserCallback;
+    .end local p1  # "userId":I
     :catchall_9
     move-exception p1
 
@@ -66,27 +69,30 @@
 .end method
 
 .method public declared-synchronized userStopped(I)V
-    .registers 2
+    .registers 3
+    .param p1, "userId"  # I
 
     monitor-enter p0
 
-    .line 1785
-    const/4 p1, 0x1
+    .line 1831
+    const/4 v0, 0x1
 
     :try_start_2
-    iput-boolean p1, p0, Lcom/android/server/am/ActivityManagerShellCommand$StopUserCallback;->mFinished:Z
+    iput-boolean v0, p0, Lcom/android/server/am/ActivityManagerShellCommand$StopUserCallback;->mFinished:Z
 
-    .line 1786
+    .line 1832
     invoke-virtual {p0}, Ljava/lang/Object;->notifyAll()V
     :try_end_7
     .catchall {:try_start_2 .. :try_end_7} :catchall_9
 
-    .line 1787
+    .line 1833
     monitor-exit p0
 
     return-void
 
-    .line 1784
+    .line 1830
+    .end local p0  # "this":Lcom/android/server/am/ActivityManagerShellCommand$StopUserCallback;
+    .end local p1  # "userId":I
     :catchall_9
     move-exception p1
 
@@ -100,7 +106,7 @@
 
     monitor-enter p0
 
-    .line 1777
+    .line 1823
     :goto_1
     :try_start_1
     iget-boolean v0, p0, Lcom/android/server/am/ActivityManagerShellCommand$StopUserCallback;->mFinished:Z
@@ -114,26 +120,28 @@
 
     goto :goto_1
 
-    .line 1780
+    .line 1826
+    .end local p0  # "this":Lcom/android/server/am/ActivityManagerShellCommand$StopUserCallback;
     :cond_9
     nop
 
-    .line 1781
+    .line 1827
     monitor-exit p0
 
     return-void
 
-    .line 1776
+    .line 1822
     :catchall_c
     move-exception v0
 
     goto :goto_15
 
-    .line 1778
+    .line 1824
     :catch_e
     move-exception v0
 
-    .line 1779
+    .line 1825
+    .local v0, "e":Ljava/lang/InterruptedException;
     :try_start_f
     new-instance v1, Ljava/lang/IllegalStateException;
 
@@ -143,7 +151,8 @@
     :try_end_15
     .catchall {:try_start_f .. :try_end_15} :catchall_c
 
-    .line 1776
+    .line 1822
+    .end local v0  # "e":Ljava/lang/InterruptedException;
     :goto_15
     monitor-exit p0
 

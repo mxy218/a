@@ -1,11 +1,14 @@
 .class Lcom/android/server/connectivity/Tethering$1;
-.super Landroid/telephony/PhoneStateListener;
+.super Ljava/lang/Object;
 .source "Tethering.java"
+
+# interfaces
+.implements Landroid/bluetooth/BluetoothProfile$ServiceListener;
 
 
 # annotations
 .annotation system Ldalvik/annotation/EnclosingMethod;
-    value = Lcom/android/server/connectivity/Tethering;-><init>(Landroid/content/Context;Landroid/os/INetworkManagementService;Landroid/net/INetworkStatsService;Landroid/net/INetworkPolicyManager;Landroid/os/Looper;Lcom/android/server/connectivity/MockableSystemProperties;Lcom/android/server/connectivity/tethering/TetheringDependencies;)V
+    value = Lcom/android/server/connectivity/Tethering;->setBluetoothTethering(ZLandroid/os/ResultReceiver;)V
 .end annotation
 
 .annotation system Ldalvik/annotation/InnerClass;
@@ -17,130 +20,96 @@
 # instance fields
 .field final synthetic this$0:Lcom/android/server/connectivity/Tethering;
 
+.field final synthetic val$adapter:Landroid/bluetooth/BluetoothAdapter;
+
+.field final synthetic val$enable:Z
+
+.field final synthetic val$receiver:Landroid/os/ResultReceiver;
+
 
 # direct methods
-.method constructor <init>(Lcom/android/server/connectivity/Tethering;Landroid/os/Looper;)V
-    .registers 3
+.method constructor <init>(Lcom/android/server/connectivity/Tethering;ZLandroid/os/ResultReceiver;Landroid/bluetooth/BluetoothAdapter;)V
+    .registers 5
+    .param p1, "this$0"  # Lcom/android/server/connectivity/Tethering;
 
-    .line 259
+    .line 474
     iput-object p1, p0, Lcom/android/server/connectivity/Tethering$1;->this$0:Lcom/android/server/connectivity/Tethering;
 
-    invoke-direct {p0, p2}, Landroid/telephony/PhoneStateListener;-><init>(Landroid/os/Looper;)V
+    iput-boolean p2, p0, Lcom/android/server/connectivity/Tethering$1;->val$enable:Z
+
+    iput-object p3, p0, Lcom/android/server/connectivity/Tethering$1;->val$receiver:Landroid/os/ResultReceiver;
+
+    iput-object p4, p0, Lcom/android/server/connectivity/Tethering$1;->val$adapter:Landroid/bluetooth/BluetoothAdapter;
+
+    invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
     return-void
 .end method
 
 
 # virtual methods
-.method public onActiveDataSubscriptionIdChanged(I)V
-    .registers 5
+.method public onServiceConnected(ILandroid/bluetooth/BluetoothProfile;)V
+    .registers 7
+    .param p1, "profile"  # I
+    .param p2, "proxy"  # Landroid/bluetooth/BluetoothProfile;
 
-    .line 262
-    iget-object v0, p0, Lcom/android/server/connectivity/Tethering$1;->this$0:Lcom/android/server/connectivity/Tethering;
+    .line 480
+    move-object v0, p2
 
-    invoke-static {v0}, Lcom/android/server/connectivity/Tethering;->access$100(Lcom/android/server/connectivity/Tethering;)Landroid/net/util/SharedLog;
+    check-cast v0, Landroid/bluetooth/BluetoothPan;
 
-    move-result-object v0
+    iget-boolean v1, p0, Lcom/android/server/connectivity/Tethering$1;->val$enable:Z
 
-    new-instance v1, Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Landroid/bluetooth/BluetoothPan;->setBluetoothTethering(Z)V
 
-    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
+    .line 483
+    move-object v0, p2
 
-    const-string v2, "OBSERVED active data subscription change, from "
+    check-cast v0, Landroid/bluetooth/BluetoothPan;
 
-    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    iget-object v2, p0, Lcom/android/server/connectivity/Tethering$1;->this$0:Lcom/android/server/connectivity/Tethering;
-
-    invoke-static {v2}, Lcom/android/server/connectivity/Tethering;->access$000(Lcom/android/server/connectivity/Tethering;)I
-
-    move-result v2
-
-    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
-
-    const-string v2, " to "
-
-    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v1, p1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
-
-    move-result-object v1
-
-    invoke-virtual {v0, v1}, Landroid/net/util/SharedLog;->log(Ljava/lang/String;)V
-
-    .line 264
-    iget-object v0, p0, Lcom/android/server/connectivity/Tethering$1;->this$0:Lcom/android/server/connectivity/Tethering;
-
-    invoke-static {v0}, Lcom/android/server/connectivity/Tethering;->access$000(Lcom/android/server/connectivity/Tethering;)I
+    invoke-virtual {v0}, Landroid/bluetooth/BluetoothPan;->isTetheringOn()Z
 
     move-result v0
 
-    if-ne p1, v0, :cond_31
+    iget-boolean v1, p0, Lcom/android/server/connectivity/Tethering$1;->val$enable:Z
 
+    const/4 v2, 0x5
+
+    if-ne v0, v1, :cond_16
+
+    .line 484
+    const/4 v0, 0x0
+
+    goto :goto_17
+
+    .line 485
+    :cond_16
+    move v0, v2
+
+    :goto_17
+    nop
+
+    .line 486
+    .local v0, "result":I
+    iget-object v1, p0, Lcom/android/server/connectivity/Tethering$1;->this$0:Lcom/android/server/connectivity/Tethering;
+
+    iget-object v3, p0, Lcom/android/server/connectivity/Tethering$1;->val$receiver:Landroid/os/ResultReceiver;
+
+    invoke-static {v1, v3, v0}, Lcom/android/server/connectivity/Tethering;->access$100(Lcom/android/server/connectivity/Tethering;Landroid/os/ResultReceiver;I)V
+
+    .line 487
+    iget-object v1, p0, Lcom/android/server/connectivity/Tethering$1;->val$adapter:Landroid/bluetooth/BluetoothAdapter;
+
+    invoke-virtual {v1, v2, p2}, Landroid/bluetooth/BluetoothAdapter;->closeProfileProxy(ILandroid/bluetooth/BluetoothProfile;)V
+
+    .line 488
     return-void
+.end method
 
-    .line 266
-    :cond_31
-    iget-object v0, p0, Lcom/android/server/connectivity/Tethering$1;->this$0:Lcom/android/server/connectivity/Tethering;
+.method public onServiceDisconnected(I)V
+    .registers 2
+    .param p1, "profile"  # I
 
-    invoke-static {v0, p1}, Lcom/android/server/connectivity/Tethering;->access$002(Lcom/android/server/connectivity/Tethering;I)I
-
-    .line 267
-    iget-object p1, p0, Lcom/android/server/connectivity/Tethering$1;->this$0:Lcom/android/server/connectivity/Tethering;
-
-    invoke-static {p1}, Lcom/android/server/connectivity/Tethering;->access$200(Lcom/android/server/connectivity/Tethering;)V
-
-    .line 271
-    iget-object p1, p0, Lcom/android/server/connectivity/Tethering$1;->this$0:Lcom/android/server/connectivity/Tethering;
-
-    invoke-static {p1}, Lcom/android/server/connectivity/Tethering;->access$400(Lcom/android/server/connectivity/Tethering;)Lcom/android/server/connectivity/tethering/EntitlementManager;
-
-    move-result-object p1
-
-    iget-object v0, p0, Lcom/android/server/connectivity/Tethering$1;->this$0:Lcom/android/server/connectivity/Tethering;
-
-    invoke-static {v0}, Lcom/android/server/connectivity/Tethering;->access$300(Lcom/android/server/connectivity/Tethering;)Lcom/android/server/connectivity/tethering/TetheringConfiguration;
-
-    move-result-object v0
-
-    invoke-virtual {p1, v0}, Lcom/android/server/connectivity/tethering/EntitlementManager;->getCarrierConfig(Lcom/android/server/connectivity/tethering/TetheringConfiguration;)Landroid/os/PersistableBundle;
-
-    move-result-object p1
-
-    if-eqz p1, :cond_5d
-
-    .line 272
-    iget-object p1, p0, Lcom/android/server/connectivity/Tethering$1;->this$0:Lcom/android/server/connectivity/Tethering;
-
-    invoke-static {p1}, Lcom/android/server/connectivity/Tethering;->access$400(Lcom/android/server/connectivity/Tethering;)Lcom/android/server/connectivity/tethering/EntitlementManager;
-
-    move-result-object p1
-
-    iget-object v0, p0, Lcom/android/server/connectivity/Tethering$1;->this$0:Lcom/android/server/connectivity/Tethering;
-
-    invoke-static {v0}, Lcom/android/server/connectivity/Tethering;->access$300(Lcom/android/server/connectivity/Tethering;)Lcom/android/server/connectivity/tethering/TetheringConfiguration;
-
-    move-result-object v0
-
-    invoke-virtual {p1, v0}, Lcom/android/server/connectivity/tethering/EntitlementManager;->reevaluateSimCardProvisioning(Lcom/android/server/connectivity/tethering/TetheringConfiguration;)V
-
-    goto :goto_68
-
-    .line 274
-    :cond_5d
-    iget-object p1, p0, Lcom/android/server/connectivity/Tethering$1;->this$0:Lcom/android/server/connectivity/Tethering;
-
-    invoke-static {p1}, Lcom/android/server/connectivity/Tethering;->access$100(Lcom/android/server/connectivity/Tethering;)Landroid/net/util/SharedLog;
-
-    move-result-object p1
-
-    const-string v0, "IGNORED reevaluate provisioning due to no carrier config loaded"
-
-    invoke-virtual {p1, v0}, Landroid/net/util/SharedLog;->log(Ljava/lang/String;)V
-
-    .line 276
-    :goto_68
+    .line 476
     return-void
 .end method

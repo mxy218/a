@@ -21,8 +21,9 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/am/UserSwitchingDialog;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/am/UserSwitchingDialog;
 
-    .line 161
+    .line 154
     iput-object p1, p0, Lcom/android/server/am/UserSwitchingDialog$1;->this$0:Lcom/android/server/am/UserSwitchingDialog;
 
     invoke-direct {p0}, Landroid/os/Handler;-><init>()V
@@ -33,31 +34,25 @@
 
 # virtual methods
 .method public handleMessage(Landroid/os/Message;)V
-    .registers 3
+    .registers 4
+    .param p1, "msg"  # Landroid/os/Message;
 
-    .line 164
-    iget p1, p1, Landroid/os/Message;->what:I
+    .line 157
+    iget v0, p1, Landroid/os/Message;->what:I
 
-    const/4 v0, 0x1
+    const/4 v1, 0x1
 
-    if-eq p1, v0, :cond_6
+    if-eq v0, v1, :cond_6
 
-    goto :goto_13
+    goto :goto_b
 
-    .line 166
+    .line 159
     :cond_6
-    const-string p1, "ActivityManagerUserSwitchingDialog"
+    iget-object v0, p0, Lcom/android/server/am/UserSwitchingDialog$1;->this$0:Lcom/android/server/am/UserSwitchingDialog;
 
-    const-string/jumbo v0, "user switch window not shown in 3000 ms"
+    invoke-virtual {v0}, Lcom/android/server/am/UserSwitchingDialog;->startUser()V
 
-    invoke-static {p1, v0}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
-
-    .line 168
-    iget-object p1, p0, Lcom/android/server/am/UserSwitchingDialog$1;->this$0:Lcom/android/server/am/UserSwitchingDialog;
-
-    invoke-virtual {p1}, Lcom/android/server/am/UserSwitchingDialog;->startUser()V
-
-    .line 171
-    :goto_13
+    .line 162
+    :goto_b
     return-void
 .end method

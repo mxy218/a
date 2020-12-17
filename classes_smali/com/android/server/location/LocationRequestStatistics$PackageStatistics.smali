@@ -81,6 +81,7 @@
 
 .method synthetic constructor <init>(Lcom/android/server/location/LocationRequestStatistics$1;)V
     .registers 2
+    .param p1, "x0"  # Lcom/android/server/location/LocationRequestStatistics$1;
 
     .line 105
     invoke-direct {p0}, Lcom/android/server/location/LocationRequestStatistics$PackageStatistics;-><init>()V
@@ -90,6 +91,8 @@
 
 .method static synthetic access$100(Lcom/android/server/location/LocationRequestStatistics$PackageStatistics;J)V
     .registers 3
+    .param p0, "x0"  # Lcom/android/server/location/LocationRequestStatistics$PackageStatistics;
+    .param p1, "x1"  # J
 
     .line 105
     invoke-direct {p0, p1, p2}, Lcom/android/server/location/LocationRequestStatistics$PackageStatistics;->startRequesting(J)V
@@ -99,6 +102,8 @@
 
 .method static synthetic access$200(Lcom/android/server/location/LocationRequestStatistics$PackageStatistics;Z)V
     .registers 2
+    .param p0, "x0"  # Lcom/android/server/location/LocationRequestStatistics$PackageStatistics;
+    .param p1, "x1"  # Z
 
     .line 105
     invoke-direct {p0, p1}, Lcom/android/server/location/LocationRequestStatistics$PackageStatistics;->updateForeground(Z)V
@@ -108,6 +113,7 @@
 
 .method static synthetic access$300(Lcom/android/server/location/LocationRequestStatistics$PackageStatistics;)V
     .registers 1
+    .param p0, "x0"  # Lcom/android/server/location/LocationRequestStatistics$PackageStatistics;
 
     .line 105
     invoke-direct {p0}, Lcom/android/server/location/LocationRequestStatistics$PackageStatistics;->stopRequesting()V
@@ -117,6 +123,7 @@
 
 .method private startRequesting(J)V
     .registers 5
+    .param p1, "intervalMs"  # J
 
     .line 141
     iget v0, p0, Lcom/android/server/location/LocationRequestStatistics$PackageStatistics;->mNumActiveRequests:I
@@ -154,11 +161,11 @@
 
     .line 153
     :cond_1a
-    iget p1, p0, Lcom/android/server/location/LocationRequestStatistics$PackageStatistics;->mNumActiveRequests:I
+    iget v0, p0, Lcom/android/server/location/LocationRequestStatistics$PackageStatistics;->mNumActiveRequests:I
 
-    add-int/lit8 p1, p1, 0x1
+    add-int/lit8 v0, v0, 0x1
 
-    iput p1, p0, Lcom/android/server/location/LocationRequestStatistics$PackageStatistics;->mNumActiveRequests:I
+    iput v0, p0, Lcom/android/server/location/LocationRequestStatistics$PackageStatistics;->mNumActiveRequests:I
 
     .line 154
     return-void
@@ -208,6 +215,7 @@
     sub-long/2addr v0, v2
 
     .line 176
+    .local v0, "lastDurationMs":J
     iget-wide v2, p0, Lcom/android/server/location/LocationRequestStatistics$PackageStatistics;->mTotalDurationMs:J
 
     add-long/2addr v2, v0
@@ -215,17 +223,19 @@
     iput-wide v2, p0, Lcom/android/server/location/LocationRequestStatistics$PackageStatistics;->mTotalDurationMs:J
 
     .line 177
-    const/4 v0, 0x0
+    const/4 v2, 0x0
 
-    invoke-direct {p0, v0}, Lcom/android/server/location/LocationRequestStatistics$PackageStatistics;->updateForeground(Z)V
+    invoke-direct {p0, v2}, Lcom/android/server/location/LocationRequestStatistics$PackageStatistics;->updateForeground(Z)V
 
     .line 179
+    .end local v0  # "lastDurationMs":J
     :cond_28
     return-void
 .end method
 
 .method private updateForeground(Z)V
     .registers 10
+    .param p1, "isForeground"  # Z
 
     .line 157
     invoke-static {}, Landroid/os/SystemClock;->elapsedRealtime()J
@@ -233,6 +243,7 @@
     move-result-wide v0
 
     .line 159
+    .local v0, "nowElapsedTimeMs":J
     iget-wide v2, p0, Lcom/android/server/location/LocationRequestStatistics$PackageStatistics;->mLastForegroundElapsedTimeMs:J
 
     const-wide/16 v4, 0x0
@@ -254,13 +265,10 @@
     :cond_13
     if-eqz p1, :cond_16
 
-    goto :goto_17
+    move-wide v4, v0
 
     :cond_16
-    move-wide v0, v4
-
-    :goto_17
-    iput-wide v0, p0, Lcom/android/server/location/LocationRequestStatistics$PackageStatistics;->mLastForegroundElapsedTimeMs:J
+    iput-wide v4, p0, Lcom/android/server/location/LocationRequestStatistics$PackageStatistics;->mLastForegroundElapsedTimeMs:J
 
     .line 163
     return-void
@@ -275,6 +283,7 @@
     iget-wide v0, p0, Lcom/android/server/location/LocationRequestStatistics$PackageStatistics;->mTotalDurationMs:J
 
     .line 186
+    .local v0, "currentDurationMs":J
     iget v2, p0, Lcom/android/server/location/LocationRequestStatistics$PackageStatistics;->mNumActiveRequests:I
 
     if-lez v2, :cond_f
@@ -314,6 +323,7 @@
     iget-wide v0, p0, Lcom/android/server/location/LocationRequestStatistics$PackageStatistics;->mForegroundDurationMs:J
 
     .line 198
+    .local v0, "currentDurationMs":J
     iget-wide v2, p0, Lcom/android/server/location/LocationRequestStatistics$PackageStatistics;->mLastForegroundElapsedTimeMs:J
 
     const-wide/16 v4, 0x0
@@ -408,6 +418,7 @@
     invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
 
     .line 243
+    .local v0, "s":Ljava/lang/StringBuilder;
     iget-wide v1, p0, Lcom/android/server/location/LocationRequestStatistics$PackageStatistics;->mFastestIntervalMs:J
 
     iget-wide v3, p0, Lcom/android/server/location/LocationRequestStatistics$PackageStatistics;->mSlowestIntervalMs:J
@@ -558,7 +569,7 @@
     :goto_8c
     invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v1
 
-    return-object v0
+    return-object v1
 .end method

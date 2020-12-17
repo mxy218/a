@@ -57,6 +57,7 @@
 # direct methods
 .method public constructor <init>(Lcom/android/server/job/JobSchedulerService;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/job/JobSchedulerService;
 
     .line 2032
     iput-object p1, p0, Lcom/android/server/job/JobSchedulerService$MaybeReadyJobQueueFunctor;->this$0:Lcom/android/server/job/JobSchedulerService;
@@ -109,6 +110,7 @@
 # virtual methods
 .method public accept(Lcom/android/server/job/controllers/JobStatus;)V
     .registers 5
+    .param p1, "job"  # Lcom/android/server/job/controllers/JobStatus;
 
     .line 2039
     iget-object v0, p0, Lcom/android/server/job/JobSchedulerService$MaybeReadyJobQueueFunctor;->this$0:Lcom/android/server/job/JobSchedulerService;
@@ -374,7 +376,7 @@
 
     const-string v1, "JobScheduler"
 
-    if-gtz v0, :cond_5d
+    if-gtz v0, :cond_5e
 
     iget v0, p0, Lcom/android/server/job/JobSchedulerService$MaybeReadyJobQueueFunctor;->idleCount:I
 
@@ -384,7 +386,7 @@
 
     iget v2, v2, Lcom/android/server/job/JobSchedulerService$Constants;->MIN_IDLE_COUNT:I
 
-    if-ge v0, v2, :cond_5d
+    if-ge v0, v2, :cond_5e
 
     iget v0, p0, Lcom/android/server/job/JobSchedulerService$MaybeReadyJobQueueFunctor;->connectivityCount:I
 
@@ -394,7 +396,7 @@
 
     iget v2, v2, Lcom/android/server/job/JobSchedulerService$Constants;->MIN_CONNECTIVITY_COUNT:I
 
-    if-ge v0, v2, :cond_5d
+    if-ge v0, v2, :cond_5e
 
     iget v0, p0, Lcom/android/server/job/JobSchedulerService$MaybeReadyJobQueueFunctor;->chargingCount:I
 
@@ -404,7 +406,7 @@
 
     iget v2, v2, Lcom/android/server/job/JobSchedulerService$Constants;->MIN_CHARGING_COUNT:I
 
-    if-ge v0, v2, :cond_5d
+    if-ge v0, v2, :cond_5e
 
     iget v0, p0, Lcom/android/server/job/JobSchedulerService$MaybeReadyJobQueueFunctor;->batteryNotLowCount:I
 
@@ -414,7 +416,7 @@
 
     iget v2, v2, Lcom/android/server/job/JobSchedulerService$Constants;->MIN_BATTERY_NOT_LOW_COUNT:I
 
-    if-ge v0, v2, :cond_5d
+    if-ge v0, v2, :cond_5e
 
     iget v0, p0, Lcom/android/server/job/JobSchedulerService$MaybeReadyJobQueueFunctor;->storageNotLowCount:I
 
@@ -424,7 +426,7 @@
 
     iget v2, v2, Lcom/android/server/job/JobSchedulerService$Constants;->MIN_STORAGE_NOT_LOW_COUNT:I
 
-    if-ge v0, v2, :cond_5d
+    if-ge v0, v2, :cond_5e
 
     iget v0, p0, Lcom/android/server/job/JobSchedulerService$MaybeReadyJobQueueFunctor;->contentCount:I
 
@@ -434,7 +436,7 @@
 
     iget v2, v2, Lcom/android/server/job/JobSchedulerService$Constants;->MIN_CONTENT_COUNT:I
 
-    if-ge v0, v2, :cond_5d
+    if-ge v0, v2, :cond_5e
 
     iget-object v0, p0, Lcom/android/server/job/JobSchedulerService$MaybeReadyJobQueueFunctor;->runnableJobs:Ljava/util/List;
 
@@ -453,35 +455,35 @@
 
     if-lt v0, v2, :cond_53
 
-    goto :goto_5d
+    goto :goto_5e
 
     .line 2099
     :cond_53
     sget-boolean v0, Lcom/android/server/job/JobSchedulerService;->DEBUG:Z
 
-    if-eqz v0, :cond_8a
+    if-eqz v0, :cond_8c
 
     .line 2100
-    const-string v0, "maybeQueueReadyJobsForExecutionLocked: Not running anything."
+    const-string/jumbo v0, "maybeQueueReadyJobsForExecutionLocked: Not running anything."
 
     invoke-static {v1, v0}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
 
-    goto :goto_8a
+    goto :goto_8c
 
     .line 2090
-    :cond_5d
-    :goto_5d
+    :cond_5e
+    :goto_5e
     sget-boolean v0, Lcom/android/server/job/JobSchedulerService;->DEBUG:Z
 
-    if-eqz v0, :cond_66
+    if-eqz v0, :cond_68
 
     .line 2091
-    const-string v0, "maybeQueueReadyJobsForExecutionLocked: Running jobs."
+    const-string/jumbo v0, "maybeQueueReadyJobsForExecutionLocked: Running jobs."
 
     invoke-static {v1, v0}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 2093
-    :cond_66
+    :cond_68
     iget-object v0, p0, Lcom/android/server/job/JobSchedulerService$MaybeReadyJobQueueFunctor;->this$0:Lcom/android/server/job/JobSchedulerService;
 
     iget-object v1, p0, Lcom/android/server/job/JobSchedulerService$MaybeReadyJobQueueFunctor;->runnableJobs:Ljava/util/List;
@@ -508,7 +510,7 @@
 
     const/4 v1, 0x1
 
-    if-le v0, v1, :cond_8a
+    if-le v0, v1, :cond_8c
 
     .line 2096
     iget-object v0, p0, Lcom/android/server/job/JobSchedulerService$MaybeReadyJobQueueFunctor;->this$0:Lcom/android/server/job/JobSchedulerService;
@@ -520,8 +522,8 @@
     invoke-virtual {v0, v1}, Ljava/util/ArrayList;->sort(Ljava/util/Comparator;)V
 
     .line 2105
-    :cond_8a
-    :goto_8a
+    :cond_8c
+    :goto_8c
     invoke-direct {p0}, Lcom/android/server/job/JobSchedulerService$MaybeReadyJobQueueFunctor;->reset()V
 
     .line 2106

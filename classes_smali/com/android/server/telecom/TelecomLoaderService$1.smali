@@ -21,6 +21,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/telecom/TelecomLoaderService;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/telecom/TelecomLoaderService;
 
     .line 228
     iput-object p1, p0, Lcom/android/server/telecom/TelecomLoaderService$1;->this$0:Lcom/android/server/telecom/TelecomLoaderService;
@@ -33,50 +34,54 @@
 
 # virtual methods
 .method public onReceive(Landroid/content/Context;Landroid/content/Intent;)V
-    .registers 7
+    .registers 9
+    .param p1, "context"  # Landroid/content/Context;
+    .param p2, "intent"  # Landroid/content/Intent;
 
     .line 231
     invoke-virtual {p2}, Landroid/content/Intent;->getAction()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    const-string p2, "android.telephony.action.CARRIER_CONFIG_CHANGED"
+    const-string v1, "android.telephony.action.CARRIER_CONFIG_CHANGED"
 
-    invoke-virtual {p1, p2}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v0, v1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result p1
+    move-result v0
 
-    if-eqz p1, :cond_26
+    if-eqz v0, :cond_26
 
     .line 232
     invoke-static {}, Lcom/android/server/pm/UserManagerService;->getInstance()Lcom/android/server/pm/UserManagerService;
 
-    move-result-object p1
+    move-result-object v0
 
-    invoke-virtual {p1}, Lcom/android/server/pm/UserManagerService;->getUserIds()[I
+    invoke-virtual {v0}, Lcom/android/server/pm/UserManagerService;->getUserIds()[I
 
-    move-result-object p1
+    move-result-object v0
 
-    array-length p2, p1
+    array-length v1, v0
 
-    const/4 v0, 0x0
+    const/4 v2, 0x0
 
     :goto_16
-    if-ge v0, p2, :cond_26
+    if-ge v2, v1, :cond_26
 
-    aget v1, p1, v0
+    aget v3, v0, v2
 
     .line 233
-    iget-object v2, p0, Lcom/android/server/telecom/TelecomLoaderService$1;->this$0:Lcom/android/server/telecom/TelecomLoaderService;
+    .local v3, "userId":I
+    iget-object v4, p0, Lcom/android/server/telecom/TelecomLoaderService$1;->this$0:Lcom/android/server/telecom/TelecomLoaderService;
 
-    invoke-static {v2}, Lcom/android/server/telecom/TelecomLoaderService;->access$400(Lcom/android/server/telecom/TelecomLoaderService;)Lcom/android/server/pm/permission/DefaultPermissionGrantPolicy;
+    invoke-static {v4}, Lcom/android/server/telecom/TelecomLoaderService;->access$400(Lcom/android/server/telecom/TelecomLoaderService;)Lcom/android/server/pm/permission/DefaultPermissionGrantPolicy;
 
-    move-result-object v3
+    move-result-object v5
 
-    invoke-static {v2, v3, v1}, Lcom/android/server/telecom/TelecomLoaderService;->access$600(Lcom/android/server/telecom/TelecomLoaderService;Lcom/android/server/pm/permission/DefaultPermissionGrantPolicy;I)V
+    invoke-static {v4, v5, v3}, Lcom/android/server/telecom/TelecomLoaderService;->access$600(Lcom/android/server/telecom/TelecomLoaderService;Lcom/android/server/pm/permission/DefaultPermissionGrantPolicy;I)V
 
     .line 232
-    add-int/lit8 v0, v0, 0x1
+    .end local v3  # "userId":I
+    add-int/lit8 v2, v2, 0x1
 
     goto :goto_16
 

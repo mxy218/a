@@ -33,7 +33,9 @@
 
 # direct methods
 .method private constructor <init>(Landroid/content/Context;Lcom/android/server/backup/transport/TransportClient;)V
-    .registers 3
+    .registers 4
+    .param p1, "context"  # Landroid/content/Context;
+    .param p2, "transportClient"  # Lcom/android/server/backup/transport/TransportClient;
 
     .line 653
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -42,11 +44,11 @@
     iput-object p1, p0, Lcom/android/server/backup/transport/TransportClient$TransportConnection;->mContext:Landroid/content/Context;
 
     .line 655
-    new-instance p1, Ljava/lang/ref/WeakReference;
+    new-instance v0, Ljava/lang/ref/WeakReference;
 
-    invoke-direct {p1, p2}, Ljava/lang/ref/WeakReference;-><init>(Ljava/lang/Object;)V
+    invoke-direct {v0, p2}, Ljava/lang/ref/WeakReference;-><init>(Ljava/lang/Object;)V
 
-    iput-object p1, p0, Lcom/android/server/backup/transport/TransportClient$TransportConnection;->mTransportClientRef:Ljava/lang/ref/WeakReference;
+    iput-object v0, p0, Lcom/android/server/backup/transport/TransportClient$TransportConnection;->mTransportClientRef:Ljava/lang/ref/WeakReference;
 
     .line 656
     return-void
@@ -54,6 +56,9 @@
 
 .method synthetic constructor <init>(Landroid/content/Context;Lcom/android/server/backup/transport/TransportClient;Lcom/android/server/backup/transport/TransportClient$1;)V
     .registers 4
+    .param p1, "x0"  # Landroid/content/Context;
+    .param p2, "x1"  # Lcom/android/server/backup/transport/TransportClient;
+    .param p3, "x2"  # Lcom/android/server/backup/transport/TransportClient$1;
 
     .line 649
     invoke-direct {p0, p1, p2}, Lcom/android/server/backup/transport/TransportClient$TransportConnection;-><init>(Landroid/content/Context;Lcom/android/server/backup/transport/TransportClient;)V
@@ -62,7 +67,8 @@
 .end method
 
 .method private referenceLost(Ljava/lang/String;)V
-    .registers 4
+    .registers 5
+    .param p1, "caller"  # Ljava/lang/String;
 
     .line 690
     iget-object v0, p0, Lcom/android/server/backup/transport/TransportClient$TransportConnection;->mContext:Landroid/content/Context;
@@ -76,19 +82,19 @@
 
     invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string p1, " called but TransportClient reference has been GC\'ed"
+    const-string v1, " called but TransportClient reference has been GC\'ed"
 
-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    const/4 v0, 0x4
+    const/4 v1, 0x4
 
-    const-string v1, "TransportClient"
+    const-string v2, "TransportClient"
 
-    invoke-static {v0, v1, p1}, Lcom/android/server/backup/transport/TransportUtils;->log(ILjava/lang/String;Ljava/lang/String;)V
+    invoke-static {v1, v2, v0}, Lcom/android/server/backup/transport/TransportUtils;->log(ILjava/lang/String;Ljava/lang/String;)V
 
     .line 695
     return-void
@@ -97,93 +103,100 @@
 
 # virtual methods
 .method public onBindingDied(Landroid/content/ComponentName;)V
-    .registers 2
+    .registers 4
+    .param p1, "transportComponent"  # Landroid/content/ComponentName;
 
     .line 680
-    iget-object p1, p0, Lcom/android/server/backup/transport/TransportClient$TransportConnection;->mTransportClientRef:Ljava/lang/ref/WeakReference;
+    iget-object v0, p0, Lcom/android/server/backup/transport/TransportClient$TransportConnection;->mTransportClientRef:Ljava/lang/ref/WeakReference;
 
-    invoke-virtual {p1}, Ljava/lang/ref/WeakReference;->get()Ljava/lang/Object;
+    invoke-virtual {v0}, Ljava/lang/ref/WeakReference;->get()Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v0
 
-    check-cast p1, Lcom/android/server/backup/transport/TransportClient;
+    check-cast v0, Lcom/android/server/backup/transport/TransportClient;
 
     .line 681
-    if-nez p1, :cond_10
+    .local v0, "transportClient":Lcom/android/server/backup/transport/TransportClient;
+    if-nez v0, :cond_10
 
     .line 682
-    const-string p1, "TransportConnection.onBindingDied()"
+    const-string v1, "TransportConnection.onBindingDied()"
 
-    invoke-direct {p0, p1}, Lcom/android/server/backup/transport/TransportClient$TransportConnection;->referenceLost(Ljava/lang/String;)V
+    invoke-direct {p0, v1}, Lcom/android/server/backup/transport/TransportClient$TransportConnection;->referenceLost(Ljava/lang/String;)V
 
     .line 683
     return-void
 
     .line 685
     :cond_10
-    invoke-static {p1}, Lcom/android/server/backup/transport/TransportClient;->access$300(Lcom/android/server/backup/transport/TransportClient;)V
+    invoke-static {v0}, Lcom/android/server/backup/transport/TransportClient;->access$300(Lcom/android/server/backup/transport/TransportClient;)V
 
     .line 686
     return-void
 .end method
 
 .method public onServiceConnected(Landroid/content/ComponentName;Landroid/os/IBinder;)V
-    .registers 3
+    .registers 5
+    .param p1, "transportComponent"  # Landroid/content/ComponentName;
+    .param p2, "binder"  # Landroid/os/IBinder;
 
     .line 660
-    iget-object p1, p0, Lcom/android/server/backup/transport/TransportClient$TransportConnection;->mTransportClientRef:Ljava/lang/ref/WeakReference;
+    iget-object v0, p0, Lcom/android/server/backup/transport/TransportClient$TransportConnection;->mTransportClientRef:Ljava/lang/ref/WeakReference;
 
-    invoke-virtual {p1}, Ljava/lang/ref/WeakReference;->get()Ljava/lang/Object;
+    invoke-virtual {v0}, Ljava/lang/ref/WeakReference;->get()Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v0
 
-    check-cast p1, Lcom/android/server/backup/transport/TransportClient;
+    check-cast v0, Lcom/android/server/backup/transport/TransportClient;
 
     .line 661
-    if-nez p1, :cond_10
+    .local v0, "transportClient":Lcom/android/server/backup/transport/TransportClient;
+    if-nez v0, :cond_10
 
     .line 662
-    const-string p1, "TransportConnection.onServiceConnected()"
+    const-string v1, "TransportConnection.onServiceConnected()"
 
-    invoke-direct {p0, p1}, Lcom/android/server/backup/transport/TransportClient$TransportConnection;->referenceLost(Ljava/lang/String;)V
+    invoke-direct {p0, v1}, Lcom/android/server/backup/transport/TransportClient$TransportConnection;->referenceLost(Ljava/lang/String;)V
 
     .line 663
     return-void
 
     .line 665
     :cond_10
-    invoke-static {p1, p2}, Lcom/android/server/backup/transport/TransportClient;->access$100(Lcom/android/server/backup/transport/TransportClient;Landroid/os/IBinder;)V
+    invoke-static {v0, p2}, Lcom/android/server/backup/transport/TransportClient;->access$100(Lcom/android/server/backup/transport/TransportClient;Landroid/os/IBinder;)V
 
     .line 666
     return-void
 .end method
 
 .method public onServiceDisconnected(Landroid/content/ComponentName;)V
-    .registers 2
+    .registers 4
+    .param p1, "transportComponent"  # Landroid/content/ComponentName;
 
     .line 670
-    iget-object p1, p0, Lcom/android/server/backup/transport/TransportClient$TransportConnection;->mTransportClientRef:Ljava/lang/ref/WeakReference;
+    iget-object v0, p0, Lcom/android/server/backup/transport/TransportClient$TransportConnection;->mTransportClientRef:Ljava/lang/ref/WeakReference;
 
-    invoke-virtual {p1}, Ljava/lang/ref/WeakReference;->get()Ljava/lang/Object;
+    invoke-virtual {v0}, Ljava/lang/ref/WeakReference;->get()Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v0
 
-    check-cast p1, Lcom/android/server/backup/transport/TransportClient;
+    check-cast v0, Lcom/android/server/backup/transport/TransportClient;
 
     .line 671
-    if-nez p1, :cond_10
+    .local v0, "transportClient":Lcom/android/server/backup/transport/TransportClient;
+    if-nez v0, :cond_10
 
     .line 672
-    const-string p1, "TransportConnection.onServiceDisconnected()"
+    const-string v1, "TransportConnection.onServiceDisconnected()"
 
-    invoke-direct {p0, p1}, Lcom/android/server/backup/transport/TransportClient$TransportConnection;->referenceLost(Ljava/lang/String;)V
+    invoke-direct {p0, v1}, Lcom/android/server/backup/transport/TransportClient$TransportConnection;->referenceLost(Ljava/lang/String;)V
 
     .line 673
     return-void
 
     .line 675
     :cond_10
-    invoke-static {p1}, Lcom/android/server/backup/transport/TransportClient;->access$200(Lcom/android/server/backup/transport/TransportClient;)V
+    invoke-static {v0}, Lcom/android/server/backup/transport/TransportClient;->access$200(Lcom/android/server/backup/transport/TransportClient;)V
 
     .line 676
     return-void

@@ -29,8 +29,9 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/accounts/AccountManagerService;Landroid/accounts/Account;ILjava/lang/String;Landroid/os/RemoteCallback;)V
     .registers 6
+    .param p1, "this$0"  # Lcom/android/server/accounts/AccountManagerService;
 
-    .line 4052
+    .line 4033
     iput-object p1, p0, Lcom/android/server/accounts/AccountManagerService$18;->this$0:Lcom/android/server/accounts/AccountManagerService;
 
     iput-object p2, p0, Lcom/android/server/accounts/AccountManagerService$18;->val$account:Landroid/accounts/Account;
@@ -48,13 +49,14 @@
 
 .method private handleAuthenticatorResponse(Z)V
     .registers 6
+    .param p1, "accessGranted"  # Z
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
         }
     .end annotation
 
-    .line 4069
+    .line 4050
     iget-object v0, p0, Lcom/android/server/accounts/AccountManagerService$18;->this$0:Lcom/android/server/accounts/AccountManagerService;
 
     iget-object v1, p0, Lcom/android/server/accounts/AccountManagerService$18;->val$account:Landroid/accounts/Account;
@@ -71,35 +73,37 @@
 
     iget v3, p0, Lcom/android/server/accounts/AccountManagerService$18;->val$uid:I
 
-    .line 4071
+    .line 4052
     invoke-static {v3}, Landroid/os/UserHandle;->getUserHandleForUid(I)Landroid/os/UserHandle;
 
     move-result-object v3
 
-    .line 4069
+    .line 4050
     invoke-static {v0, v1, v2, v3}, Lcom/android/server/accounts/AccountManagerService;->access$2600(Lcom/android/server/accounts/AccountManagerService;Lcom/android/server/accounts/AccountManagerService$NotificationId;Ljava/lang/String;Landroid/os/UserHandle;)V
 
-    .line 4072
+    .line 4053
     iget-object v0, p0, Lcom/android/server/accounts/AccountManagerService$18;->val$callback:Landroid/os/RemoteCallback;
 
     if-eqz v0, :cond_2a
 
-    .line 4073
+    .line 4054
     new-instance v0, Landroid/os/Bundle;
 
     invoke-direct {v0}, Landroid/os/Bundle;-><init>()V
 
-    .line 4074
+    .line 4055
+    .local v0, "result":Landroid/os/Bundle;
     const-string v1, "booleanResult"
 
     invoke-virtual {v0, v1, p1}, Landroid/os/Bundle;->putBoolean(Ljava/lang/String;Z)V
 
-    .line 4075
-    iget-object p1, p0, Lcom/android/server/accounts/AccountManagerService$18;->val$callback:Landroid/os/RemoteCallback;
+    .line 4056
+    iget-object v1, p0, Lcom/android/server/accounts/AccountManagerService$18;->val$callback:Landroid/os/RemoteCallback;
 
-    invoke-virtual {p1, v0}, Landroid/os/RemoteCallback;->sendResult(Landroid/os/Bundle;)V
+    invoke-virtual {v1, v0}, Landroid/os/RemoteCallback;->sendResult(Landroid/os/Bundle;)V
 
-    .line 4077
+    .line 4058
+    .end local v0  # "result":Landroid/os/Bundle;
     :cond_2a
     return-void
 .end method
@@ -107,42 +111,45 @@
 
 # virtual methods
 .method public onError(ILjava/lang/String;)V
-    .registers 3
+    .registers 4
+    .param p1, "errorCode"  # I
+    .param p2, "errorMessage"  # Ljava/lang/String;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
         }
     .end annotation
 
-    .line 4065
-    const/4 p1, 0x0
+    .line 4046
+    const/4 v0, 0x0
 
-    invoke-direct {p0, p1}, Lcom/android/server/accounts/AccountManagerService$18;->handleAuthenticatorResponse(Z)V
+    invoke-direct {p0, v0}, Lcom/android/server/accounts/AccountManagerService$18;->handleAuthenticatorResponse(Z)V
 
-    .line 4066
+    .line 4047
     return-void
 .end method
 
 .method public onRequestContinued()V
     .registers 1
 
-    .line 4061
+    .line 4042
     return-void
 .end method
 
 .method public onResult(Landroid/os/Bundle;)V
-    .registers 2
+    .registers 3
+    .param p1, "value"  # Landroid/os/Bundle;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
         }
     .end annotation
 
-    .line 4055
-    const/4 p1, 0x1
+    .line 4036
+    const/4 v0, 0x1
 
-    invoke-direct {p0, p1}, Lcom/android/server/accounts/AccountManagerService$18;->handleAuthenticatorResponse(Z)V
+    invoke-direct {p0, v0}, Lcom/android/server/accounts/AccountManagerService$18;->handleAuthenticatorResponse(Z)V
 
-    .line 4056
+    .line 4037
     return-void
 .end method

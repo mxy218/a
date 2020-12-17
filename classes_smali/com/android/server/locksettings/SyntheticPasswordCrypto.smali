@@ -41,7 +41,11 @@
 .end method
 
 .method public static createBlob(Ljava/lang/String;[B[BJ)[B
-    .registers 11
+    .registers 12
+    .param p0, "keyAlias"  # Ljava/lang/String;
+    .param p1, "data"  # [B
+    .param p2, "applicationId"  # [B
+    .param p3, "sid"  # J
 
     .line 158
     :try_start_0
@@ -52,6 +56,7 @@
     move-result-object v0
 
     .line 159
+    .local v0, "keyGenerator":Ljavax/crypto/KeyGenerator;
     const/16 v1, 0x100
 
     new-instance v2, Ljava/security/SecureRandom;
@@ -63,103 +68,107 @@
     .line 160
     invoke-virtual {v0}, Ljavax/crypto/KeyGenerator;->generateKey()Ljavax/crypto/SecretKey;
 
-    move-result-object v0
-
-    .line 161
-    const-string v1, "AndroidKeyStore"
-
-    invoke-static {v1}, Ljava/security/KeyStore;->getInstance(Ljava/lang/String;)Ljava/security/KeyStore;
-
     move-result-object v1
 
-    .line 162
-    const/4 v2, 0x0
+    .line 161
+    .local v1, "secretKey":Ljavax/crypto/SecretKey;
+    const-string v2, "AndroidKeyStore"
 
-    invoke-virtual {v1, v2}, Ljava/security/KeyStore;->load(Ljava/security/KeyStore$LoadStoreParameter;)V
+    invoke-static {v2}, Ljava/security/KeyStore;->getInstance(Ljava/lang/String;)Ljava/security/KeyStore;
+
+    move-result-object v2
+
+    .line 162
+    .local v2, "keyStore":Ljava/security/KeyStore;
+    const/4 v3, 0x0
+
+    invoke-virtual {v2, v3}, Ljava/security/KeyStore;->load(Ljava/security/KeyStore$LoadStoreParameter;)V
 
     .line 163
-    new-instance v2, Landroid/security/keystore/KeyProtection$Builder;
+    new-instance v3, Landroid/security/keystore/KeyProtection$Builder;
 
-    const/4 v3, 0x2
+    const/4 v4, 0x2
 
-    invoke-direct {v2, v3}, Landroid/security/keystore/KeyProtection$Builder;-><init>(I)V
+    invoke-direct {v3, v4}, Landroid/security/keystore/KeyProtection$Builder;-><init>(I)V
 
-    const-string v3, "GCM"
+    const-string v4, "GCM"
 
-    filled-new-array {v3}, [Ljava/lang/String;
+    filled-new-array {v4}, [Ljava/lang/String;
 
-    move-result-object v3
+    move-result-object v4
 
     .line 164
-    invoke-virtual {v2, v3}, Landroid/security/keystore/KeyProtection$Builder;->setBlockModes([Ljava/lang/String;)Landroid/security/keystore/KeyProtection$Builder;
-
-    move-result-object v2
-
-    const-string v3, "NoPadding"
-
-    filled-new-array {v3}, [Ljava/lang/String;
+    invoke-virtual {v3, v4}, Landroid/security/keystore/KeyProtection$Builder;->setBlockModes([Ljava/lang/String;)Landroid/security/keystore/KeyProtection$Builder;
 
     move-result-object v3
+
+    const-string v4, "NoPadding"
+
+    filled-new-array {v4}, [Ljava/lang/String;
+
+    move-result-object v4
 
     .line 165
-    invoke-virtual {v2, v3}, Landroid/security/keystore/KeyProtection$Builder;->setEncryptionPaddings([Ljava/lang/String;)Landroid/security/keystore/KeyProtection$Builder;
-
-    move-result-object v2
-
-    .line 166
-    const/4 v3, 0x1
-
-    invoke-virtual {v2, v3}, Landroid/security/keystore/KeyProtection$Builder;->setCriticalToDeviceEncryption(Z)Landroid/security/keystore/KeyProtection$Builder;
-
-    move-result-object v2
-
-    .line 167
-    const-wide/16 v4, 0x0
-
-    cmp-long v4, p3, v4
-
-    if-eqz v4, :cond_50
-
-    .line 168
-    invoke-virtual {v2, v3}, Landroid/security/keystore/KeyProtection$Builder;->setUserAuthenticationRequired(Z)Landroid/security/keystore/KeyProtection$Builder;
+    invoke-virtual {v3, v4}, Landroid/security/keystore/KeyProtection$Builder;->setEncryptionPaddings([Ljava/lang/String;)Landroid/security/keystore/KeyProtection$Builder;
 
     move-result-object v3
 
+    .line 166
+    const/4 v4, 0x1
+
+    invoke-virtual {v3, v4}, Landroid/security/keystore/KeyProtection$Builder;->setCriticalToDeviceEncryption(Z)Landroid/security/keystore/KeyProtection$Builder;
+
+    move-result-object v3
+
+    .line 167
+    .local v3, "builder":Landroid/security/keystore/KeyProtection$Builder;
+    const-wide/16 v5, 0x0
+
+    cmp-long v5, p3, v5
+
+    if-eqz v5, :cond_50
+
+    .line 168
+    invoke-virtual {v3, v4}, Landroid/security/keystore/KeyProtection$Builder;->setUserAuthenticationRequired(Z)Landroid/security/keystore/KeyProtection$Builder;
+
+    move-result-object v4
+
     .line 169
-    invoke-virtual {v3, p3, p4}, Landroid/security/keystore/KeyProtection$Builder;->setBoundToSpecificSecureUserId(J)Landroid/security/keystore/KeyProtection$Builder;
+    invoke-virtual {v4, p3, p4}, Landroid/security/keystore/KeyProtection$Builder;->setBoundToSpecificSecureUserId(J)Landroid/security/keystore/KeyProtection$Builder;
 
-    move-result-object p3
+    move-result-object v4
 
-    const/16 p4, 0xf
+    const/16 v5, 0xf
 
     .line 170
-    invoke-virtual {p3, p4}, Landroid/security/keystore/KeyProtection$Builder;->setUserAuthenticationValidityDurationSeconds(I)Landroid/security/keystore/KeyProtection$Builder;
+    invoke-virtual {v4, v5}, Landroid/security/keystore/KeyProtection$Builder;->setUserAuthenticationValidityDurationSeconds(I)Landroid/security/keystore/KeyProtection$Builder;
 
     .line 173
     :cond_50
-    new-instance p3, Ljava/security/KeyStore$SecretKeyEntry;
+    new-instance v4, Ljava/security/KeyStore$SecretKeyEntry;
 
-    invoke-direct {p3, v0}, Ljava/security/KeyStore$SecretKeyEntry;-><init>(Ljavax/crypto/SecretKey;)V
+    invoke-direct {v4, v1}, Ljava/security/KeyStore$SecretKeyEntry;-><init>(Ljavax/crypto/SecretKey;)V
 
     .line 175
-    invoke-virtual {v2}, Landroid/security/keystore/KeyProtection$Builder;->build()Landroid/security/keystore/KeyProtection;
+    invoke-virtual {v3}, Landroid/security/keystore/KeyProtection$Builder;->build()Landroid/security/keystore/KeyProtection;
 
-    move-result-object p4
+    move-result-object v5
 
     .line 173
-    invoke-virtual {v1, p0, p3, p4}, Ljava/security/KeyStore;->setEntry(Ljava/lang/String;Ljava/security/KeyStore$Entry;Ljava/security/KeyStore$ProtectionParameter;)V
+    invoke-virtual {v2, p0, v4, v5}, Ljava/security/KeyStore;->setEntry(Ljava/lang/String;Ljava/security/KeyStore$Entry;Ljava/security/KeyStore$ProtectionParameter;)V
 
     .line 176
-    sget-object p0, Lcom/android/server/locksettings/SyntheticPasswordCrypto;->APPLICATION_ID_PERSONALIZATION:[B
+    sget-object v4, Lcom/android/server/locksettings/SyntheticPasswordCrypto;->APPLICATION_ID_PERSONALIZATION:[B
 
-    invoke-static {p2, p0, p1}, Lcom/android/server/locksettings/SyntheticPasswordCrypto;->encrypt([B[B[B)[B
+    invoke-static {p2, v4, p1}, Lcom/android/server/locksettings/SyntheticPasswordCrypto;->encrypt([B[B[B)[B
 
-    move-result-object p0
+    move-result-object v4
 
     .line 177
-    invoke-static {v0, p0}, Lcom/android/server/locksettings/SyntheticPasswordCrypto;->encrypt(Ljavax/crypto/SecretKey;[B)[B
+    .local v4, "intermediate":[B
+    invoke-static {v1, v4}, Lcom/android/server/locksettings/SyntheticPasswordCrypto;->encrypt(Ljavax/crypto/SecretKey;[B)[B
 
-    move-result-object p0
+    move-result-object v5
     :try_end_66
     .catch Ljava/security/cert/CertificateException; {:try_start_0 .. :try_end_66} :catch_67
     .catch Ljava/io/IOException; {:try_start_0 .. :try_end_66} :catch_67
@@ -171,27 +180,35 @@
     .catch Ljava/security/InvalidKeyException; {:try_start_0 .. :try_end_66} :catch_67
     .catch Ljava/security/spec/InvalidParameterSpecException; {:try_start_0 .. :try_end_66} :catch_67
 
-    return-object p0
+    return-object v5
 
     .line 178
+    .end local v0  # "keyGenerator":Ljavax/crypto/KeyGenerator;
+    .end local v1  # "secretKey":Ljavax/crypto/SecretKey;
+    .end local v2  # "keyStore":Ljava/security/KeyStore;
+    .end local v3  # "builder":Landroid/security/keystore/KeyProtection$Builder;
+    .end local v4  # "intermediate":[B
     :catch_67
-    move-exception p0
+    move-exception v0
 
     .line 183
-    invoke-virtual {p0}, Ljava/lang/Exception;->printStackTrace()V
+    .local v0, "e":Ljava/lang/Exception;
+    invoke-virtual {v0}, Ljava/lang/Exception;->printStackTrace()V
 
     .line 184
-    new-instance p1, Ljava/lang/RuntimeException;
+    new-instance v1, Ljava/lang/RuntimeException;
 
-    const-string p2, "Failed to encrypt blob"
+    const-string v2, "Failed to encrypt blob"
 
-    invoke-direct {p1, p2, p0}, Ljava/lang/RuntimeException;-><init>(Ljava/lang/String;Ljava/lang/Throwable;)V
+    invoke-direct {v1, v2, v0}, Ljava/lang/RuntimeException;-><init>(Ljava/lang/String;Ljava/lang/Throwable;)V
 
-    throw p1
+    throw v1
 .end method
 
 .method private static decrypt(Ljavax/crypto/SecretKey;[B)[B
-    .registers 7
+    .registers 8
+    .param p0, "key"  # Ljavax/crypto/SecretKey;
+    .param p1, "blob"  # [B
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Ljava/security/NoSuchAlgorithmException;,
@@ -207,9 +224,9 @@
     if-nez p1, :cond_4
 
     .line 59
-    const/4 p0, 0x0
+    const/4 v0, 0x0
 
-    return-object p0
+    return-object v0
 
     .line 61
     :cond_4
@@ -222,40 +239,46 @@
     move-result-object v0
 
     .line 62
+    .local v0, "iv":[B
     array-length v2, p1
 
     invoke-static {p1, v1, v2}, Ljava/util/Arrays;->copyOfRange([BII)[B
 
-    move-result-object p1
-
-    .line 63
-    const-string v1, "AES/GCM/NoPadding"
-
-    invoke-static {v1}, Ljavax/crypto/Cipher;->getInstance(Ljava/lang/String;)Ljavax/crypto/Cipher;
-
     move-result-object v1
 
+    .line 63
+    .local v1, "ciphertext":[B
+    const-string v2, "AES/GCM/NoPadding"
+
+    invoke-static {v2}, Ljavax/crypto/Cipher;->getInstance(Ljava/lang/String;)Ljavax/crypto/Cipher;
+
+    move-result-object v2
+
     .line 65
-    const/4 v2, 0x2
+    .local v2, "cipher":Ljavax/crypto/Cipher;
+    const/4 v3, 0x2
 
-    new-instance v3, Ljavax/crypto/spec/GCMParameterSpec;
+    new-instance v4, Ljavax/crypto/spec/GCMParameterSpec;
 
-    const/16 v4, 0x80
+    const/16 v5, 0x80
 
-    invoke-direct {v3, v4, v0}, Ljavax/crypto/spec/GCMParameterSpec;-><init>(I[B)V
+    invoke-direct {v4, v5, v0}, Ljavax/crypto/spec/GCMParameterSpec;-><init>(I[B)V
 
-    invoke-virtual {v1, v2, p0, v3}, Ljavax/crypto/Cipher;->init(ILjava/security/Key;Ljava/security/spec/AlgorithmParameterSpec;)V
+    invoke-virtual {v2, v3, p0, v4}, Ljavax/crypto/Cipher;->init(ILjava/security/Key;Ljava/security/spec/AlgorithmParameterSpec;)V
 
     .line 66
-    invoke-virtual {v1, p1}, Ljavax/crypto/Cipher;->doFinal([B)[B
+    invoke-virtual {v2, v1}, Ljavax/crypto/Cipher;->doFinal([B)[B
 
-    move-result-object p0
+    move-result-object v3
 
-    return-object p0
+    return-object v3
 .end method
 
 .method public static decrypt([B[B[B)[B
-    .registers 5
+    .registers 7
+    .param p0, "keyBytes"  # [B
+    .param p1, "personalisation"  # [B
+    .param p2, "ciphertext"  # [B
 
     .line 111
     const/4 v0, 0x1
@@ -268,26 +291,28 @@
 
     invoke-static {p1, v0}, Lcom/android/server/locksettings/SyntheticPasswordCrypto;->personalisedHash([B[[B)[B
 
-    move-result-object p0
+    move-result-object v0
 
     .line 112
-    new-instance p1, Ljavax/crypto/spec/SecretKeySpec;
+    .local v0, "keyHash":[B
+    new-instance v1, Ljavax/crypto/spec/SecretKeySpec;
 
-    const/16 v0, 0x20
+    const/16 v2, 0x20
 
-    invoke-static {p0, v0}, Ljava/util/Arrays;->copyOf([BI)[B
+    invoke-static {v0, v2}, Ljava/util/Arrays;->copyOf([BI)[B
 
-    move-result-object p0
+    move-result-object v2
 
-    const-string v0, "AES"
+    const-string v3, "AES"
 
-    invoke-direct {p1, p0, v0}, Ljavax/crypto/spec/SecretKeySpec;-><init>([BLjava/lang/String;)V
+    invoke-direct {v1, v2, v3}, Ljavax/crypto/spec/SecretKeySpec;-><init>([BLjava/lang/String;)V
 
     .line 115
+    .local v1, "key":Ljavax/crypto/spec/SecretKeySpec;
     :try_start_17
-    invoke-static {p1, p2}, Lcom/android/server/locksettings/SyntheticPasswordCrypto;->decrypt(Ljavax/crypto/SecretKey;[B)[B
+    invoke-static {v1, p2}, Lcom/android/server/locksettings/SyntheticPasswordCrypto;->decrypt(Ljavax/crypto/SecretKey;[B)[B
 
-    move-result-object p0
+    move-result-object v2
     :try_end_1b
     .catch Ljava/security/InvalidKeyException; {:try_start_17 .. :try_end_1b} :catch_1c
     .catch Ljava/security/NoSuchAlgorithmException; {:try_start_17 .. :try_end_1b} :catch_1c
@@ -296,23 +321,27 @@
     .catch Ljavax/crypto/BadPaddingException; {:try_start_17 .. :try_end_1b} :catch_1c
     .catch Ljava/security/InvalidAlgorithmParameterException; {:try_start_17 .. :try_end_1b} :catch_1c
 
-    return-object p0
+    return-object v2
 
     .line 116
     :catch_1c
-    move-exception p0
+    move-exception v2
 
     .line 119
-    invoke-virtual {p0}, Ljava/security/GeneralSecurityException;->printStackTrace()V
+    .local v2, "e":Ljava/security/GeneralSecurityException;
+    invoke-virtual {v2}, Ljava/security/GeneralSecurityException;->printStackTrace()V
 
     .line 120
-    const/4 p0, 0x0
+    const/4 v3, 0x0
 
-    return-object p0
+    return-object v3
 .end method
 
 .method public static decryptBlob(Ljava/lang/String;[B[B)[B
-    .registers 5
+    .registers 7
+    .param p0, "keyAlias"  # Ljava/lang/String;
+    .param p1, "blob"  # [B
+    .param p2, "applicationId"  # [B
 
     .line 140
     :try_start_0
@@ -323,6 +352,7 @@
     move-result-object v0
 
     .line 141
+    .local v0, "keyStore":Ljava/security/KeyStore;
     const/4 v1, 0x0
 
     invoke-virtual {v0, v1}, Ljava/security/KeyStore;->load(Ljava/security/KeyStore$LoadStoreParameter;)V
@@ -330,21 +360,23 @@
     .line 143
     invoke-virtual {v0, p0, v1}, Ljava/security/KeyStore;->getKey(Ljava/lang/String;[C)Ljava/security/Key;
 
-    move-result-object p0
+    move-result-object v1
 
-    check-cast p0, Ljavax/crypto/SecretKey;
+    check-cast v1, Ljavax/crypto/SecretKey;
 
     .line 144
-    invoke-static {p0, p1}, Lcom/android/server/locksettings/SyntheticPasswordCrypto;->decrypt(Ljavax/crypto/SecretKey;[B)[B
+    .local v1, "decryptionKey":Ljavax/crypto/SecretKey;
+    invoke-static {v1, p1}, Lcom/android/server/locksettings/SyntheticPasswordCrypto;->decrypt(Ljavax/crypto/SecretKey;[B)[B
 
-    move-result-object p0
+    move-result-object v2
 
     .line 145
-    sget-object p1, Lcom/android/server/locksettings/SyntheticPasswordCrypto;->APPLICATION_ID_PERSONALIZATION:[B
+    .local v2, "intermediate":[B
+    sget-object v3, Lcom/android/server/locksettings/SyntheticPasswordCrypto;->APPLICATION_ID_PERSONALIZATION:[B
 
-    invoke-static {p2, p1, p0}, Lcom/android/server/locksettings/SyntheticPasswordCrypto;->decrypt([B[B[B)[B
+    invoke-static {p2, v3, v2}, Lcom/android/server/locksettings/SyntheticPasswordCrypto;->decrypt([B[B[B)[B
 
-    move-result-object p0
+    move-result-object v3
     :try_end_1a
     .catch Ljava/security/cert/CertificateException; {:try_start_0 .. :try_end_1a} :catch_1b
     .catch Ljava/io/IOException; {:try_start_0 .. :try_end_1a} :catch_1b
@@ -357,27 +389,34 @@
     .catch Ljava/security/UnrecoverableKeyException; {:try_start_0 .. :try_end_1a} :catch_1b
     .catch Ljava/security/InvalidAlgorithmParameterException; {:try_start_0 .. :try_end_1a} :catch_1b
 
-    return-object p0
+    return-object v3
 
     .line 146
+    .end local v0  # "keyStore":Ljava/security/KeyStore;
+    .end local v1  # "decryptionKey":Ljavax/crypto/SecretKey;
+    .end local v2  # "intermediate":[B
     :catch_1b
-    move-exception p0
+    move-exception v0
 
     .line 151
-    invoke-virtual {p0}, Ljava/lang/Exception;->printStackTrace()V
+    .local v0, "e":Ljava/lang/Exception;
+    invoke-virtual {v0}, Ljava/lang/Exception;->printStackTrace()V
 
     .line 152
-    new-instance p1, Ljava/lang/RuntimeException;
+    new-instance v1, Ljava/lang/RuntimeException;
 
-    const-string p2, "Failed to decrypt blob"
+    const-string v2, "Failed to decrypt blob"
 
-    invoke-direct {p1, p2, p0}, Ljava/lang/RuntimeException;-><init>(Ljava/lang/String;Ljava/lang/Throwable;)V
+    invoke-direct {v1, v2, v0}, Ljava/lang/RuntimeException;-><init>(Ljava/lang/String;Ljava/lang/Throwable;)V
 
-    throw p1
+    throw v1
 .end method
 
 .method public static decryptBlobV1(Ljava/lang/String;[B[B)[B
-    .registers 5
+    .registers 7
+    .param p0, "keyAlias"  # Ljava/lang/String;
+    .param p1, "blob"  # [B
+    .param p2, "applicationId"  # [B
 
     .line 126
     :try_start_0
@@ -388,6 +427,7 @@
     move-result-object v0
 
     .line 127
+    .local v0, "keyStore":Ljava/security/KeyStore;
     const/4 v1, 0x0
 
     invoke-virtual {v0, v1}, Ljava/security/KeyStore;->load(Ljava/security/KeyStore$LoadStoreParameter;)V
@@ -395,45 +435,52 @@
     .line 129
     invoke-virtual {v0, p0, v1}, Ljava/security/KeyStore;->getKey(Ljava/lang/String;[C)Ljava/security/Key;
 
-    move-result-object p0
+    move-result-object v1
 
-    check-cast p0, Ljavax/crypto/SecretKey;
+    check-cast v1, Ljavax/crypto/SecretKey;
 
     .line 130
-    sget-object v0, Lcom/android/server/locksettings/SyntheticPasswordCrypto;->APPLICATION_ID_PERSONALIZATION:[B
+    .local v1, "decryptionKey":Ljavax/crypto/SecretKey;
+    sget-object v2, Lcom/android/server/locksettings/SyntheticPasswordCrypto;->APPLICATION_ID_PERSONALIZATION:[B
 
-    invoke-static {p2, v0, p1}, Lcom/android/server/locksettings/SyntheticPasswordCrypto;->decrypt([B[B[B)[B
+    invoke-static {p2, v2, p1}, Lcom/android/server/locksettings/SyntheticPasswordCrypto;->decrypt([B[B[B)[B
 
-    move-result-object p1
+    move-result-object v2
 
     .line 131
-    invoke-static {p0, p1}, Lcom/android/server/locksettings/SyntheticPasswordCrypto;->decrypt(Ljavax/crypto/SecretKey;[B)[B
+    .local v2, "intermediate":[B
+    invoke-static {v1, v2}, Lcom/android/server/locksettings/SyntheticPasswordCrypto;->decrypt(Ljavax/crypto/SecretKey;[B)[B
 
-    move-result-object p0
+    move-result-object v3
     :try_end_1a
     .catch Ljava/lang/Exception; {:try_start_0 .. :try_end_1a} :catch_1b
 
-    return-object p0
+    return-object v3
 
     .line 132
+    .end local v0  # "keyStore":Ljava/security/KeyStore;
+    .end local v1  # "decryptionKey":Ljavax/crypto/SecretKey;
+    .end local v2  # "intermediate":[B
     :catch_1b
-    move-exception p0
+    move-exception v0
 
     .line 133
-    invoke-virtual {p0}, Ljava/lang/Exception;->printStackTrace()V
+    .local v0, "e":Ljava/lang/Exception;
+    invoke-virtual {v0}, Ljava/lang/Exception;->printStackTrace()V
 
     .line 134
-    new-instance p1, Ljava/lang/RuntimeException;
+    new-instance v1, Ljava/lang/RuntimeException;
 
-    const-string p2, "Failed to decrypt blob"
+    const-string v2, "Failed to decrypt blob"
 
-    invoke-direct {p1, p2, p0}, Ljava/lang/RuntimeException;-><init>(Ljava/lang/String;Ljava/lang/Throwable;)V
+    invoke-direct {v1, v2, v0}, Ljava/lang/RuntimeException;-><init>(Ljava/lang/String;Ljava/lang/Throwable;)V
 
-    throw p1
+    throw v1
 .end method
 
 .method public static destroyBlobKey(Ljava/lang/String;)V
     .registers 3
+    .param p0, "keyAlias"  # Ljava/lang/String;
 
     .line 191
     :try_start_0
@@ -444,6 +491,7 @@
     move-result-object v0
 
     .line 192
+    .local v0, "keyStore":Ljava/security/KeyStore;
     const/4 v1, 0x0
 
     invoke-virtual {v0, v1}, Ljava/security/KeyStore;->load(Ljava/security/KeyStore$LoadStoreParameter;)V
@@ -460,19 +508,24 @@
     goto :goto_12
 
     .line 194
+    .end local v0  # "keyStore":Ljava/security/KeyStore;
     :catch_e
-    move-exception p0
+    move-exception v0
 
     .line 196
-    invoke-virtual {p0}, Ljava/lang/Exception;->printStackTrace()V
+    .local v0, "e":Ljava/lang/Exception;
+    invoke-virtual {v0}, Ljava/lang/Exception;->printStackTrace()V
 
     .line 198
+    .end local v0  # "e":Ljava/lang/Exception;
     :goto_12
     return-void
 .end method
 
 .method private static encrypt(Ljavax/crypto/SecretKey;[B)[B
-    .registers 5
+    .registers 9
+    .param p0, "key"  # Ljavax/crypto/SecretKey;
+    .param p1, "blob"  # [B
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Ljava/io/IOException;,
@@ -489,9 +542,9 @@
     if-nez p1, :cond_4
 
     .line 74
-    const/4 p0, 0x0
+    const/4 v0, 0x0
 
-    return-object p0
+    return-object v0
 
     .line 76
     :cond_4
@@ -502,6 +555,7 @@
     move-result-object v0
 
     .line 79
+    .local v0, "cipher":Ljavax/crypto/Cipher;
     const/4 v1, 0x1
 
     invoke-virtual {v0, v1, p0}, Ljavax/crypto/Cipher;->init(ILjava/security/Key;)V
@@ -509,113 +563,122 @@
     .line 80
     invoke-virtual {v0, p1}, Ljavax/crypto/Cipher;->doFinal([B)[B
 
-    move-result-object p0
+    move-result-object v1
 
     .line 81
+    .local v1, "ciphertext":[B
     invoke-virtual {v0}, Ljavax/crypto/Cipher;->getIV()[B
 
-    move-result-object p1
+    move-result-object v2
 
     .line 82
-    array-length v1, p1
+    .local v2, "iv":[B
+    array-length v3, v2
 
-    const/16 v2, 0xc
+    const/16 v4, 0xc
 
-    if-ne v1, v2, :cond_5a
+    if-ne v3, v4, :cond_5a
 
     .line 85
     invoke-virtual {v0}, Ljavax/crypto/Cipher;->getParameters()Ljava/security/AlgorithmParameters;
 
-    move-result-object v0
+    move-result-object v3
 
-    const-class v1, Ljavax/crypto/spec/GCMParameterSpec;
+    const-class v4, Ljavax/crypto/spec/GCMParameterSpec;
 
-    invoke-virtual {v0, v1}, Ljava/security/AlgorithmParameters;->getParameterSpec(Ljava/lang/Class;)Ljava/security/spec/AlgorithmParameterSpec;
+    invoke-virtual {v3, v4}, Ljava/security/AlgorithmParameters;->getParameterSpec(Ljava/lang/Class;)Ljava/security/spec/AlgorithmParameterSpec;
 
-    move-result-object v0
+    move-result-object v3
 
-    check-cast v0, Ljavax/crypto/spec/GCMParameterSpec;
+    check-cast v3, Ljavax/crypto/spec/GCMParameterSpec;
 
     .line 87
-    invoke-virtual {v0}, Ljavax/crypto/spec/GCMParameterSpec;->getTLen()I
+    .local v3, "spec":Ljavax/crypto/spec/GCMParameterSpec;
+    invoke-virtual {v3}, Ljavax/crypto/spec/GCMParameterSpec;->getTLen()I
 
-    move-result v1
+    move-result v4
 
-    const/16 v2, 0x80
+    const/16 v5, 0x80
 
-    if-ne v1, v2, :cond_3f
+    if-ne v4, v5, :cond_3f
 
     .line 90
-    new-instance v0, Ljava/io/ByteArrayOutputStream;
+    new-instance v4, Ljava/io/ByteArrayOutputStream;
 
-    invoke-direct {v0}, Ljava/io/ByteArrayOutputStream;-><init>()V
+    invoke-direct {v4}, Ljava/io/ByteArrayOutputStream;-><init>()V
 
     .line 91
-    invoke-virtual {v0, p1}, Ljava/io/ByteArrayOutputStream;->write([B)V
+    .local v4, "outputStream":Ljava/io/ByteArrayOutputStream;
+    invoke-virtual {v4, v2}, Ljava/io/ByteArrayOutputStream;->write([B)V
 
     .line 92
-    invoke-virtual {v0, p0}, Ljava/io/ByteArrayOutputStream;->write([B)V
+    invoke-virtual {v4, v1}, Ljava/io/ByteArrayOutputStream;->write([B)V
 
     .line 93
-    invoke-virtual {v0}, Ljava/io/ByteArrayOutputStream;->toByteArray()[B
+    invoke-virtual {v4}, Ljava/io/ByteArrayOutputStream;->toByteArray()[B
 
-    move-result-object p0
+    move-result-object v5
 
-    return-object p0
+    return-object v5
 
     .line 88
+    .end local v4  # "outputStream":Ljava/io/ByteArrayOutputStream;
     :cond_3f
-    new-instance p0, Ljava/lang/RuntimeException;
+    new-instance v4, Ljava/lang/RuntimeException;
 
-    new-instance p1, Ljava/lang/StringBuilder;
+    new-instance v5, Ljava/lang/StringBuilder;
 
-    invoke-direct {p1}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v5}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v1, "Invalid tag length: "
+    const-string v6, "Invalid tag length: "
 
-    invoke-virtual {p1, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0}, Ljavax/crypto/spec/GCMParameterSpec;->getTLen()I
+    invoke-virtual {v3}, Ljavax/crypto/spec/GCMParameterSpec;->getTLen()I
 
-    move-result v0
+    move-result v6
 
-    invoke-virtual {p1, v0}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v5}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v5
 
-    invoke-direct {p0, p1}, Ljava/lang/RuntimeException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v4, v5}, Ljava/lang/RuntimeException;-><init>(Ljava/lang/String;)V
 
-    throw p0
+    throw v4
 
     .line 83
+    .end local v3  # "spec":Ljavax/crypto/spec/GCMParameterSpec;
     :cond_5a
-    new-instance p0, Ljava/lang/RuntimeException;
+    new-instance v3, Ljava/lang/RuntimeException;
 
-    new-instance v0, Ljava/lang/StringBuilder;
+    new-instance v4, Ljava/lang/StringBuilder;
 
-    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v4}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v1, "Invalid iv length: "
+    const-string v5, "Invalid iv length: "
 
-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    array-length p1, p1
+    array-length v5, v2
 
-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v4}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v4
 
-    invoke-direct {p0, p1}, Ljava/lang/RuntimeException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v3, v4}, Ljava/lang/RuntimeException;-><init>(Ljava/lang/String;)V
 
-    throw p0
+    throw v3
 .end method
 
 .method public static encrypt([B[B[B)[B
-    .registers 5
+    .registers 7
+    .param p0, "keyBytes"  # [B
+    .param p1, "personalisation"  # [B
+    .param p2, "message"  # [B
 
     .line 97
     const/4 v0, 0x1
@@ -628,26 +691,28 @@
 
     invoke-static {p1, v0}, Lcom/android/server/locksettings/SyntheticPasswordCrypto;->personalisedHash([B[[B)[B
 
-    move-result-object p0
+    move-result-object v0
 
     .line 98
-    new-instance p1, Ljavax/crypto/spec/SecretKeySpec;
+    .local v0, "keyHash":[B
+    new-instance v1, Ljavax/crypto/spec/SecretKeySpec;
 
-    const/16 v0, 0x20
+    const/16 v2, 0x20
 
-    invoke-static {p0, v0}, Ljava/util/Arrays;->copyOf([BI)[B
+    invoke-static {v0, v2}, Ljava/util/Arrays;->copyOf([BI)[B
 
-    move-result-object p0
+    move-result-object v2
 
-    const-string v0, "AES"
+    const-string v3, "AES"
 
-    invoke-direct {p1, p0, v0}, Ljavax/crypto/spec/SecretKeySpec;-><init>([BLjava/lang/String;)V
+    invoke-direct {v1, v2, v3}, Ljavax/crypto/spec/SecretKeySpec;-><init>([BLjava/lang/String;)V
 
     .line 101
+    .local v1, "key":Ljavax/crypto/spec/SecretKeySpec;
     :try_start_17
-    invoke-static {p1, p2}, Lcom/android/server/locksettings/SyntheticPasswordCrypto;->encrypt(Ljavax/crypto/SecretKey;[B)[B
+    invoke-static {v1, p2}, Lcom/android/server/locksettings/SyntheticPasswordCrypto;->encrypt(Ljavax/crypto/SecretKey;[B)[B
 
-    move-result-object p0
+    move-result-object v2
     :try_end_1b
     .catch Ljava/security/InvalidKeyException; {:try_start_17 .. :try_end_1b} :catch_1c
     .catch Ljava/security/NoSuchAlgorithmException; {:try_start_17 .. :try_end_1b} :catch_1c
@@ -657,95 +722,114 @@
     .catch Ljava/io/IOException; {:try_start_17 .. :try_end_1b} :catch_1c
     .catch Ljava/security/spec/InvalidParameterSpecException; {:try_start_17 .. :try_end_1b} :catch_1c
 
-    return-object p0
+    return-object v2
 
     .line 102
     :catch_1c
-    move-exception p0
+    move-exception v2
 
     .line 105
-    invoke-virtual {p0}, Ljava/lang/Exception;->printStackTrace()V
+    .local v2, "e":Ljava/lang/Exception;
+    invoke-virtual {v2}, Ljava/lang/Exception;->printStackTrace()V
 
     .line 106
-    const/4 p0, 0x0
+    const/4 v3, 0x0
 
-    return-object p0
+    return-object v3
 .end method
 
 .method protected static varargs personalisedHash([B[[B)[B
-    .registers 5
+    .registers 7
+    .param p0, "personalisation"  # [B
+    .param p1, "message"  # [[B
+
+    .line 202
+    const/16 v0, 0x80
 
     .line 203
-    :try_start_0
-    const-string v0, "SHA-512"
+    .local v0, "PADDING_LENGTH":I
+    :try_start_2
+    const-string v1, "SHA-512"
 
-    invoke-static {v0}, Ljava/security/MessageDigest;->getInstance(Ljava/lang/String;)Ljava/security/MessageDigest;
+    invoke-static {v1}, Ljava/security/MessageDigest;->getInstance(Ljava/lang/String;)Ljava/security/MessageDigest;
 
-    move-result-object v0
+    move-result-object v1
 
     .line 204
-    array-length v1, p0
+    .local v1, "digest":Ljava/security/MessageDigest;
+    array-length v2, p0
 
-    const/16 v2, 0x80
+    const/16 v3, 0x80
 
-    if-gt v1, v2, :cond_23
+    if-gt v2, v3, :cond_26
 
     .line 209
-    invoke-static {p0, v2}, Ljava/util/Arrays;->copyOf([BI)[B
+    invoke-static {p0, v3}, Ljava/util/Arrays;->copyOf([BI)[B
 
-    move-result-object p0
+    move-result-object v2
+
+    move-object p0, v2
 
     .line 210
-    invoke-virtual {v0, p0}, Ljava/security/MessageDigest;->update([B)V
+    invoke-virtual {v1, p0}, Ljava/security/MessageDigest;->update([B)V
 
     .line 211
-    array-length p0, p1
+    array-length v2, p1
 
-    const/4 v1, 0x0
+    const/4 v3, 0x0
 
-    :goto_14
-    if-ge v1, p0, :cond_1e
+    :goto_17
+    if-ge v3, v2, :cond_21
 
-    aget-object v2, p1, v1
+    aget-object v4, p1, v3
 
     .line 212
-    invoke-virtual {v0, v2}, Ljava/security/MessageDigest;->update([B)V
+    .local v4, "data":[B
+    invoke-virtual {v1, v4}, Ljava/security/MessageDigest;->update([B)V
 
     .line 211
-    add-int/lit8 v1, v1, 0x1
+    .end local v4  # "data":[B
+    add-int/lit8 v3, v3, 0x1
 
-    goto :goto_14
+    goto :goto_17
 
     .line 214
-    :cond_1e
-    invoke-virtual {v0}, Ljava/security/MessageDigest;->digest()[B
+    :cond_21
+    invoke-virtual {v1}, Ljava/security/MessageDigest;->digest()[B
 
-    move-result-object p0
+    move-result-object v2
 
-    return-object p0
+    return-object v2
 
     .line 205
-    :cond_23
-    new-instance p0, Ljava/lang/RuntimeException;
+    :cond_26
+    new-instance v2, Ljava/lang/RuntimeException;
 
-    const-string p1, "Personalisation too long"
+    const-string v3, "Personalisation too long"
 
-    invoke-direct {p0, p1}, Ljava/lang/RuntimeException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v2, v3}, Ljava/lang/RuntimeException;-><init>(Ljava/lang/String;)V
 
-    throw p0
-    :try_end_2b
-    .catch Ljava/security/NoSuchAlgorithmException; {:try_start_0 .. :try_end_2b} :catch_2b
+    .end local p0  # "personalisation":[B
+    .end local p1  # "message":[[B
+    throw v2
+    :try_end_2e
+    .catch Ljava/security/NoSuchAlgorithmException; {:try_start_2 .. :try_end_2e} :catch_2e
 
     .line 215
-    :catch_2b
-    move-exception p0
+    .end local v0  # "PADDING_LENGTH":I
+    .end local v1  # "digest":Ljava/security/MessageDigest;
+    .restart local p0  # "personalisation":[B
+    .restart local p1  # "message":[[B
+    :catch_2e
+    move-exception v0
 
     .line 216
-    new-instance p1, Ljava/lang/RuntimeException;
+    .local v0, "e":Ljava/security/NoSuchAlgorithmException;
+    new-instance v1, Ljava/lang/RuntimeException;
 
-    const-string v0, "NoSuchAlgorithmException for SHA-512"
+    const-string v2, "NoSuchAlgorithmException for SHA-512"
 
-    invoke-direct {p1, v0, p0}, Ljava/lang/RuntimeException;-><init>(Ljava/lang/String;Ljava/lang/Throwable;)V
+    invoke-direct {v1, v2, v0}, Ljava/lang/RuntimeException;-><init>(Ljava/lang/String;Ljava/lang/Throwable;)V
 
-    throw p1
+    throw v1
 .end method

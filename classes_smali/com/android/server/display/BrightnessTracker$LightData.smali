@@ -24,7 +24,7 @@
 .method private constructor <init>()V
     .registers 1
 
-    .line 838
+    .line 835
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
     return-void
@@ -32,8 +32,9 @@
 
 .method synthetic constructor <init>(Lcom/android/server/display/BrightnessTracker$1;)V
     .registers 2
+    .param p1, "x0"  # Lcom/android/server/display/BrightnessTracker$1;
 
-    .line 838
+    .line 835
     invoke-direct {p0}, Lcom/android/server/display/BrightnessTracker$LightData;-><init>()V
 
     return-void

@@ -31,6 +31,8 @@
 # virtual methods
 .method public addKeepalivePacketFilter(ILandroid/net/TcpKeepalivePacketDataParcelable;)V
     .registers 3
+    .param p1, "slot"  # I
+    .param p2, "pkt"  # Landroid/net/TcpKeepalivePacketDataParcelable;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -43,6 +45,8 @@
 
 .method public addNattKeepalivePacketFilter(ILandroid/net/NattKeepalivePacketDataParcelable;)V
     .registers 3
+    .param p1, "slot"  # I
+    .param p2, "pkt"  # Landroid/net/NattKeepalivePacketDataParcelable;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -97,6 +101,7 @@
 
 .method public readPacketFilterComplete([B)V
     .registers 2
+    .param p1, "data"  # [B
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -109,6 +114,7 @@
 
 .method public removeKeepalivePacketFilter(I)V
     .registers 2
+    .param p1, "slot"  # I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -121,6 +127,7 @@
 
 .method public setHttpProxy(Landroid/net/ProxyInfo;)V
     .registers 2
+    .param p1, "proxyInfo"  # Landroid/net/ProxyInfo;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -133,6 +140,8 @@
 
 .method public setL2KeyAndGroupHint(Ljava/lang/String;Ljava/lang/String;)V
     .registers 3
+    .param p1, "l2Key"  # Ljava/lang/String;
+    .param p2, "groupHint"  # Ljava/lang/String;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -145,6 +154,7 @@
 
 .method public setMulticastFilter(Z)V
     .registers 2
+    .param p1, "enabled"  # Z
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -157,6 +167,7 @@
 
 .method public setTcpBufferSizes(Ljava/lang/String;)V
     .registers 2
+    .param p1, "tcpBufferSizes"  # Ljava/lang/String;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -181,6 +192,7 @@
 
 .method public startProvisioning(Landroid/net/ProvisioningConfigurationParcelable;)V
     .registers 2
+    .param p1, "req"  # Landroid/net/ProvisioningConfigurationParcelable;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;

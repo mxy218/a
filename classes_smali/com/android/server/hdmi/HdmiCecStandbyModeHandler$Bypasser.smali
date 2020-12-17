@@ -29,6 +29,7 @@
 
 .method synthetic constructor <init>(Lcom/android/server/hdmi/HdmiCecStandbyModeHandler$1;)V
     .registers 2
+    .param p1, "x0"  # Lcom/android/server/hdmi/HdmiCecStandbyModeHandler$1;
 
     .line 37
     invoke-direct {p0}, Lcom/android/server/hdmi/HdmiCecStandbyModeHandler$Bypasser;-><init>()V
@@ -39,10 +40,11 @@
 
 # virtual methods
 .method public handle(Lcom/android/server/hdmi/HdmiCecMessage;)Z
-    .registers 2
+    .registers 3
+    .param p1, "message"  # Lcom/android/server/hdmi/HdmiCecMessage;
 
     .line 40
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    return p1
+    return v0
 .end method

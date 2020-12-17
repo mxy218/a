@@ -20,18 +20,20 @@
 .end method
 
 .method private static getBaseDir(I)Ljava/io/File;
-    .registers 1
+    .registers 2
+    .param p0, "userId"  # I
 
     .line 31
     invoke-static {p0}, Landroid/os/Environment;->getDataSystemCeDirectory(I)Ljava/io/File;
 
-    move-result-object p0
+    move-result-object v0
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static getBaseStateDir(I)Ljava/io/File;
-    .registers 3
+    .registers 4
+    .param p0, "userId"  # I
 
     .line 35
     const-string v0, "backup"
@@ -43,27 +45,28 @@
 
     invoke-static {p0}, Lcom/android/server/backup/UserBackupManagerFiles;->getBaseDir(I)Ljava/io/File;
 
-    move-result-object p0
+    move-result-object v2
 
-    invoke-direct {v1, p0, v0}, Ljava/io/File;-><init>(Ljava/io/File;Ljava/lang/String;)V
+    invoke-direct {v1, v2, v0}, Ljava/io/File;-><init>(Ljava/io/File;Ljava/lang/String;)V
 
     return-object v1
 
     .line 40
     :cond_e
-    new-instance p0, Ljava/io/File;
+    new-instance v1, Ljava/io/File;
 
     invoke-static {}, Landroid/os/Environment;->getDataDirectory()Ljava/io/File;
 
-    move-result-object v1
+    move-result-object v2
 
-    invoke-direct {p0, v1, v0}, Ljava/io/File;-><init>(Ljava/io/File;Ljava/lang/String;)V
+    invoke-direct {v1, v2, v0}, Ljava/io/File;-><init>(Ljava/io/File;Ljava/lang/String;)V
 
-    return-object p0
+    return-object v1
 .end method
 
 .method static getDataDir(I)Ljava/io/File;
-    .registers 3
+    .registers 4
+    .param p0, "userId"  # I
 
     .line 44
     const-string v0, "backup_stage"
@@ -75,27 +78,28 @@
 
     invoke-static {p0}, Lcom/android/server/backup/UserBackupManagerFiles;->getBaseDir(I)Ljava/io/File;
 
-    move-result-object p0
+    move-result-object v2
 
-    invoke-direct {v1, p0, v0}, Ljava/io/File;-><init>(Ljava/io/File;Ljava/lang/String;)V
+    invoke-direct {v1, v2, v0}, Ljava/io/File;-><init>(Ljava/io/File;Ljava/lang/String;)V
 
     return-object v1
 
     .line 49
     :cond_e
-    new-instance p0, Ljava/io/File;
+    new-instance v1, Ljava/io/File;
 
     invoke-static {}, Landroid/os/Environment;->getDownloadCacheDirectory()Ljava/io/File;
 
-    move-result-object v1
+    move-result-object v2
 
-    invoke-direct {p0, v1, v0}, Ljava/io/File;-><init>(Ljava/io/File;Ljava/lang/String;)V
+    invoke-direct {v1, v2, v0}, Ljava/io/File;-><init>(Ljava/io/File;Ljava/lang/String;)V
 
-    return-object p0
+    return-object v1
 .end method
 
 .method static getStateDirInSystemDir(I)Ljava/io/File;
     .registers 5
+    .param p0, "userId"  # I
 
     .line 54
     new-instance v0, Ljava/io/File;
@@ -118,24 +122,26 @@
 
     invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v2
 
-    invoke-direct {v0, v1, p0}, Ljava/io/File;-><init>(Ljava/io/File;Ljava/lang/String;)V
+    invoke-direct {v0, v1, v2}, Ljava/io/File;-><init>(Ljava/io/File;Ljava/lang/String;)V
 
     return-object v0
 .end method
 
 .method static getStateFileInSystemDir(Ljava/lang/String;I)Ljava/io/File;
-    .registers 3
+    .registers 4
+    .param p0, "filename"  # Ljava/lang/String;
+    .param p1, "userId"  # I
 
     .line 59
     new-instance v0, Ljava/io/File;
 
     invoke-static {p1}, Lcom/android/server/backup/UserBackupManagerFiles;->getStateDirInSystemDir(I)Ljava/io/File;
 
-    move-result-object p1
+    move-result-object v1
 
-    invoke-direct {v0, p1, p0}, Ljava/io/File;-><init>(Ljava/io/File;Ljava/lang/String;)V
+    invoke-direct {v0, v1, p0}, Ljava/io/File;-><init>(Ljava/io/File;Ljava/lang/String;)V
 
     return-object v0
 .end method

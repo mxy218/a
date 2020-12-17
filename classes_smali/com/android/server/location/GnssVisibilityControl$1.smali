@@ -21,6 +21,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/location/GnssVisibilityControl;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/location/GnssVisibilityControl;
 
     .line 164
     iput-object p1, p0, Lcom/android/server/location/GnssVisibilityControl$1;->this$0:Lcom/android/server/location/GnssVisibilityControl;
@@ -33,96 +34,99 @@
 
 # virtual methods
 .method public onReceive(Landroid/content/Context;Landroid/content/Intent;)V
-    .registers 8
+    .registers 9
+    .param p1, "context"  # Landroid/content/Context;
+    .param p2, "intent"  # Landroid/content/Intent;
 
     .line 167
     invoke-virtual {p2}, Landroid/content/Intent;->getAction()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
     .line 168
-    if-nez p1, :cond_7
+    .local v0, "action":Ljava/lang/String;
+    if-nez v0, :cond_7
 
     .line 169
     return-void
 
     .line 172
     :cond_7
-    const/4 v0, -0x1
+    const/4 v1, -0x1
 
-    invoke-virtual {p1}, Ljava/lang/String;->hashCode()I
+    invoke-virtual {v0}, Ljava/lang/String;->hashCode()I
 
-    move-result v1
+    move-result v2
 
-    const/4 v2, 0x3
+    const/4 v3, 0x3
 
-    const/4 v3, 0x2
+    const/4 v4, 0x2
 
-    const/4 v4, 0x1
+    const/4 v5, 0x1
 
-    sparse-switch v1, :sswitch_data_52
+    sparse-switch v2, :sswitch_data_52
 
     :cond_12
     goto :goto_3a
 
     :sswitch_13
-    const-string v1, "android.intent.action.PACKAGE_ADDED"
+    const-string v2, "android.intent.action.PACKAGE_ADDED"
 
-    invoke-virtual {p1, v1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v0, v2}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result v1
+    move-result v2
 
-    if-eqz v1, :cond_12
+    if-eqz v2, :cond_12
 
-    const/4 v0, 0x0
+    const/4 v1, 0x0
 
     goto :goto_3a
 
     :sswitch_1d
-    const-string v1, "android.intent.action.PACKAGE_REMOVED"
+    const-string v2, "android.intent.action.PACKAGE_REMOVED"
 
-    invoke-virtual {p1, v1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v0, v2}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result v1
+    move-result v2
 
-    if-eqz v1, :cond_12
+    if-eqz v2, :cond_12
 
-    move v0, v4
+    move v1, v5
 
     goto :goto_3a
 
     :sswitch_27
-    const-string v1, "android.intent.action.PACKAGE_CHANGED"
+    const-string v2, "android.intent.action.PACKAGE_CHANGED"
 
-    invoke-virtual {p1, v1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v0, v2}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result v1
+    move-result v2
 
-    if-eqz v1, :cond_12
+    if-eqz v2, :cond_12
 
-    move v0, v2
+    move v1, v3
 
     goto :goto_3a
 
     :sswitch_31
-    const-string v1, "android.intent.action.PACKAGE_REPLACED"
+    const-string v2, "android.intent.action.PACKAGE_REPLACED"
 
-    invoke-virtual {p1, v1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v0, v2}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result v1
+    move-result v2
 
-    if-eqz v1, :cond_12
+    if-eqz v2, :cond_12
 
-    move v0, v3
+    move v1, v4
 
     :goto_3a
-    if-eqz v0, :cond_43
+    if-eqz v1, :cond_43
 
-    if-eq v0, v4, :cond_43
+    if-eq v1, v5, :cond_43
 
-    if-eq v0, v3, :cond_43
+    if-eq v1, v4, :cond_43
 
-    if-eq v0, v2, :cond_43
+    if-eq v1, v3, :cond_43
 
     goto :goto_50
 
@@ -130,18 +134,20 @@
     :cond_43
     invoke-virtual {p2}, Landroid/content/Intent;->getData()Landroid/net/Uri;
 
-    move-result-object p2
+    move-result-object v1
 
-    invoke-virtual {p2}, Landroid/net/Uri;->getEncodedSchemeSpecificPart()Ljava/lang/String;
+    invoke-virtual {v1}, Landroid/net/Uri;->getEncodedSchemeSpecificPart()Ljava/lang/String;
 
-    move-result-object p2
+    move-result-object v1
 
     .line 178
-    iget-object v0, p0, Lcom/android/server/location/GnssVisibilityControl$1;->this$0:Lcom/android/server/location/GnssVisibilityControl;
+    .local v1, "pkgName":Ljava/lang/String;
+    iget-object v2, p0, Lcom/android/server/location/GnssVisibilityControl$1;->this$0:Lcom/android/server/location/GnssVisibilityControl;
 
-    invoke-static {v0, p2, p1}, Lcom/android/server/location/GnssVisibilityControl;->access$000(Lcom/android/server/location/GnssVisibilityControl;Ljava/lang/String;Ljava/lang/String;)V
+    invoke-static {v2, v1, v0}, Lcom/android/server/location/GnssVisibilityControl;->access$000(Lcom/android/server/location/GnssVisibilityControl;Ljava/lang/String;Ljava/lang/String;)V
 
     .line 181
+    .end local v1  # "pkgName":Ljava/lang/String;
     :goto_50
     return-void
 

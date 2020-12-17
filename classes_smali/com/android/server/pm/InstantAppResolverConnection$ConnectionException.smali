@@ -29,6 +29,7 @@
 # direct methods
 .method public constructor <init>(I)V
     .registers 2
+    .param p1, "_failure"  # I
 
     .line 300
     invoke-direct {p0}, Ljava/lang/Exception;-><init>()V

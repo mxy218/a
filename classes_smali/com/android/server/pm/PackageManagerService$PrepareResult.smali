@@ -50,101 +50,134 @@
 
 # direct methods
 .method private constructor <init>(ILjava/lang/String;Ljava/lang/String;Landroid/os/UserHandle;ZIILandroid/content/pm/PackageParser$Package;Landroid/content/pm/PackageParser$Package;ZZLjava/lang/String;Lcom/android/server/pm/PackageManagerService$PackageFreezer;Lcom/android/server/pm/PackageSetting;Lcom/android/server/pm/PackageSetting;[Lcom/android/server/pm/PackageSetting;)V
-    .registers 19
+    .registers 33
+    .param p1, "installReason"  # I
+    .param p2, "volumeUuid"  # Ljava/lang/String;
+    .param p3, "installerPackageName"  # Ljava/lang/String;
+    .param p4, "user"  # Landroid/os/UserHandle;
+    .param p5, "replace"  # Z
+    .param p6, "scanFlags"  # I
+    .param p7, "parseFlags"  # I
+    .param p8, "existingPackage"  # Landroid/content/pm/PackageParser$Package;
+    .param p9, "packageToScan"  # Landroid/content/pm/PackageParser$Package;
+    .param p10, "clearCodeCache"  # Z
+    .param p11, "system"  # Z
+    .param p12, "renamedPackage"  # Ljava/lang/String;
+    .param p13, "freezer"  # Lcom/android/server/pm/PackageManagerService$PackageFreezer;
+    .param p14, "originalPs"  # Lcom/android/server/pm/PackageSetting;
+    .param p15, "disabledPs"  # Lcom/android/server/pm/PackageSetting;
+    .param p16, "childPackageSettings"  # [Lcom/android/server/pm/PackageSetting;
 
-    .line 17323
-    move-object v0, p0
+    .line 17900
+    move-object/from16 v0, p0
 
-    invoke-direct {p0}, Ljava/lang/Object;-><init>()V
+    invoke-direct/range {p0 .. p0}, Ljava/lang/Object;-><init>()V
 
-    .line 17324
-    move v1, p1
+    .line 17901
+    move/from16 v1, p1
 
     iput v1, v0, Lcom/android/server/pm/PackageManagerService$PrepareResult;->installReason:I
 
-    .line 17325
-    move-object v1, p2
+    .line 17902
+    move-object/from16 v2, p2
 
-    iput-object v1, v0, Lcom/android/server/pm/PackageManagerService$PrepareResult;->volumeUuid:Ljava/lang/String;
+    iput-object v2, v0, Lcom/android/server/pm/PackageManagerService$PrepareResult;->volumeUuid:Ljava/lang/String;
 
-    .line 17326
-    move-object v1, p3
+    .line 17903
+    move-object/from16 v3, p3
 
-    iput-object v1, v0, Lcom/android/server/pm/PackageManagerService$PrepareResult;->installerPackageName:Ljava/lang/String;
+    iput-object v3, v0, Lcom/android/server/pm/PackageManagerService$PrepareResult;->installerPackageName:Ljava/lang/String;
 
-    .line 17327
-    move-object v1, p4
+    .line 17904
+    move-object/from16 v4, p4
 
-    iput-object v1, v0, Lcom/android/server/pm/PackageManagerService$PrepareResult;->user:Landroid/os/UserHandle;
+    iput-object v4, v0, Lcom/android/server/pm/PackageManagerService$PrepareResult;->user:Landroid/os/UserHandle;
 
-    .line 17328
-    move v1, p5
+    .line 17905
+    move/from16 v5, p5
 
-    iput-boolean v1, v0, Lcom/android/server/pm/PackageManagerService$PrepareResult;->replace:Z
+    iput-boolean v5, v0, Lcom/android/server/pm/PackageManagerService$PrepareResult;->replace:Z
 
-    .line 17329
-    move v1, p6
+    .line 17906
+    move/from16 v6, p6
 
-    iput v1, v0, Lcom/android/server/pm/PackageManagerService$PrepareResult;->scanFlags:I
+    iput v6, v0, Lcom/android/server/pm/PackageManagerService$PrepareResult;->scanFlags:I
 
-    .line 17330
-    move v1, p7
+    .line 17907
+    move/from16 v7, p7
 
-    iput v1, v0, Lcom/android/server/pm/PackageManagerService$PrepareResult;->parseFlags:I
+    iput v7, v0, Lcom/android/server/pm/PackageManagerService$PrepareResult;->parseFlags:I
 
-    .line 17331
-    move-object v1, p8
+    .line 17908
+    move-object/from16 v8, p8
 
-    iput-object v1, v0, Lcom/android/server/pm/PackageManagerService$PrepareResult;->existingPackage:Landroid/content/pm/PackageParser$Package;
+    iput-object v8, v0, Lcom/android/server/pm/PackageManagerService$PrepareResult;->existingPackage:Landroid/content/pm/PackageParser$Package;
 
-    .line 17332
-    move-object v1, p9
+    .line 17909
+    move-object/from16 v9, p9
 
-    iput-object v1, v0, Lcom/android/server/pm/PackageManagerService$PrepareResult;->packageToScan:Landroid/content/pm/PackageParser$Package;
+    iput-object v9, v0, Lcom/android/server/pm/PackageManagerService$PrepareResult;->packageToScan:Landroid/content/pm/PackageParser$Package;
 
-    .line 17333
-    move v1, p10
+    .line 17910
+    move/from16 v10, p10
 
-    iput-boolean v1, v0, Lcom/android/server/pm/PackageManagerService$PrepareResult;->clearCodeCache:Z
+    iput-boolean v10, v0, Lcom/android/server/pm/PackageManagerService$PrepareResult;->clearCodeCache:Z
 
-    .line 17334
-    move v1, p11
+    .line 17911
+    move/from16 v11, p11
 
-    iput-boolean v1, v0, Lcom/android/server/pm/PackageManagerService$PrepareResult;->system:Z
+    iput-boolean v11, v0, Lcom/android/server/pm/PackageManagerService$PrepareResult;->system:Z
 
-    .line 17335
-    move-object v1, p12
+    .line 17912
+    move-object/from16 v12, p12
 
-    iput-object v1, v0, Lcom/android/server/pm/PackageManagerService$PrepareResult;->renamedPackage:Ljava/lang/String;
+    iput-object v12, v0, Lcom/android/server/pm/PackageManagerService$PrepareResult;->renamedPackage:Ljava/lang/String;
 
-    .line 17336
-    move-object v1, p13
+    .line 17913
+    move-object/from16 v13, p13
 
-    iput-object v1, v0, Lcom/android/server/pm/PackageManagerService$PrepareResult;->freezer:Lcom/android/server/pm/PackageManagerService$PackageFreezer;
+    iput-object v13, v0, Lcom/android/server/pm/PackageManagerService$PrepareResult;->freezer:Lcom/android/server/pm/PackageManagerService$PackageFreezer;
 
-    .line 17337
-    move-object/from16 v1, p14
+    .line 17914
+    move-object/from16 v14, p14
 
-    iput-object v1, v0, Lcom/android/server/pm/PackageManagerService$PrepareResult;->originalPs:Lcom/android/server/pm/PackageSetting;
+    iput-object v14, v0, Lcom/android/server/pm/PackageManagerService$PrepareResult;->originalPs:Lcom/android/server/pm/PackageSetting;
 
-    .line 17338
-    move-object/from16 v1, p15
+    .line 17915
+    move-object/from16 v15, p15
 
-    iput-object v1, v0, Lcom/android/server/pm/PackageManagerService$PrepareResult;->disabledPs:Lcom/android/server/pm/PackageSetting;
+    iput-object v15, v0, Lcom/android/server/pm/PackageManagerService$PrepareResult;->disabledPs:Lcom/android/server/pm/PackageSetting;
 
-    .line 17339
+    .line 17916
     move-object/from16 v1, p16
 
     iput-object v1, v0, Lcom/android/server/pm/PackageManagerService$PrepareResult;->childPackageSettings:[Lcom/android/server/pm/PackageSetting;
 
-    .line 17340
+    .line 17917
     return-void
 .end method
 
 .method synthetic constructor <init>(ILjava/lang/String;Ljava/lang/String;Landroid/os/UserHandle;ZIILandroid/content/pm/PackageParser$Package;Landroid/content/pm/PackageParser$Package;ZZLjava/lang/String;Lcom/android/server/pm/PackageManagerService$PackageFreezer;Lcom/android/server/pm/PackageSetting;Lcom/android/server/pm/PackageSetting;[Lcom/android/server/pm/PackageSetting;Lcom/android/server/pm/PackageManagerService$1;)V
     .registers 18
+    .param p1, "x0"  # I
+    .param p2, "x1"  # Ljava/lang/String;
+    .param p3, "x2"  # Ljava/lang/String;
+    .param p4, "x3"  # Landroid/os/UserHandle;
+    .param p5, "x4"  # Z
+    .param p6, "x5"  # I
+    .param p7, "x6"  # I
+    .param p8, "x7"  # Landroid/content/pm/PackageParser$Package;
+    .param p9, "x8"  # Landroid/content/pm/PackageParser$Package;
+    .param p10, "x9"  # Z
+    .param p11, "x10"  # Z
+    .param p12, "x11"  # Ljava/lang/String;
+    .param p13, "x12"  # Lcom/android/server/pm/PackageManagerService$PackageFreezer;
+    .param p14, "x13"  # Lcom/android/server/pm/PackageSetting;
+    .param p15, "x14"  # Lcom/android/server/pm/PackageSetting;
+    .param p16, "x15"  # [Lcom/android/server/pm/PackageSetting;
+    .param p17, "x16"  # Lcom/android/server/pm/PackageManagerService$1;
 
-    .line 17297
+    .line 17874
     invoke-direct/range {p0 .. p16}, Lcom/android/server/pm/PackageManagerService$PrepareResult;-><init>(ILjava/lang/String;Ljava/lang/String;Landroid/os/UserHandle;ZIILandroid/content/pm/PackageParser$Package;Landroid/content/pm/PackageParser$Package;ZZLjava/lang/String;Lcom/android/server/pm/PackageManagerService$PackageFreezer;Lcom/android/server/pm/PackageSetting;Lcom/android/server/pm/PackageSetting;[Lcom/android/server/pm/PackageSetting;)V
 
     return-void

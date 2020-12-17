@@ -23,16 +23,17 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/connectivity/tethering/UpstreamNetworkMonitor;I)V
     .registers 3
+    .param p2, "callbackType"  # I
 
-    .line 429
+    .line 407
     iput-object p1, p0, Lcom/android/server/connectivity/tethering/UpstreamNetworkMonitor$UpstreamNetworkCallback;->this$0:Lcom/android/server/connectivity/tethering/UpstreamNetworkMonitor;
 
     invoke-direct {p0}, Landroid/net/ConnectivityManager$NetworkCallback;-><init>()V
 
-    .line 430
+    .line 408
     iput p2, p0, Lcom/android/server/connectivity/tethering/UpstreamNetworkMonitor$UpstreamNetworkCallback;->mCallbackType:I
 
-    .line 431
+    .line 409
     return-void
 .end method
 
@@ -40,77 +41,84 @@
 # virtual methods
 .method public onAvailable(Landroid/net/Network;)V
     .registers 3
+    .param p1, "network"  # Landroid/net/Network;
 
-    .line 435
+    .line 413
     iget-object v0, p0, Lcom/android/server/connectivity/tethering/UpstreamNetworkMonitor$UpstreamNetworkCallback;->this$0:Lcom/android/server/connectivity/tethering/UpstreamNetworkMonitor;
 
     invoke-static {v0, p1}, Lcom/android/server/connectivity/tethering/UpstreamNetworkMonitor;->access$000(Lcom/android/server/connectivity/tethering/UpstreamNetworkMonitor;Landroid/net/Network;)V
 
-    .line 436
+    .line 414
     return-void
 .end method
 
 .method public onCapabilitiesChanged(Landroid/net/Network;Landroid/net/NetworkCapabilities;)V
     .registers 5
+    .param p1, "network"  # Landroid/net/Network;
+    .param p2, "newNc"  # Landroid/net/NetworkCapabilities;
 
-    .line 440
+    .line 418
     iget v0, p0, Lcom/android/server/connectivity/tethering/UpstreamNetworkMonitor$UpstreamNetworkCallback;->mCallbackType:I
 
     const/4 v1, 0x2
 
     if-ne v0, v1, :cond_25
 
-    .line 441
+    .line 419
     iget-object v0, p0, Lcom/android/server/connectivity/tethering/UpstreamNetworkMonitor$UpstreamNetworkCallback;->this$0:Lcom/android/server/connectivity/tethering/UpstreamNetworkMonitor;
 
     invoke-static {v0, p1}, Lcom/android/server/connectivity/tethering/UpstreamNetworkMonitor;->access$102(Lcom/android/server/connectivity/tethering/UpstreamNetworkMonitor;Landroid/net/Network;)Landroid/net/Network;
 
-    .line 442
+    .line 420
     invoke-static {p2}, Lcom/android/server/connectivity/tethering/UpstreamNetworkMonitor;->access$200(Landroid/net/NetworkCapabilities;)Z
 
-    move-result p1
+    move-result v0
 
-    .line 443
-    iget-object p2, p0, Lcom/android/server/connectivity/tethering/UpstreamNetworkMonitor$UpstreamNetworkCallback;->this$0:Lcom/android/server/connectivity/tethering/UpstreamNetworkMonitor;
+    .line 421
+    .local v0, "newIsCellular":Z
+    iget-object v1, p0, Lcom/android/server/connectivity/tethering/UpstreamNetworkMonitor$UpstreamNetworkCallback;->this$0:Lcom/android/server/connectivity/tethering/UpstreamNetworkMonitor;
 
-    invoke-static {p2}, Lcom/android/server/connectivity/tethering/UpstreamNetworkMonitor;->access$300(Lcom/android/server/connectivity/tethering/UpstreamNetworkMonitor;)Z
+    invoke-static {v1}, Lcom/android/server/connectivity/tethering/UpstreamNetworkMonitor;->access$300(Lcom/android/server/connectivity/tethering/UpstreamNetworkMonitor;)Z
 
-    move-result p2
+    move-result v1
 
-    if-eq p2, p1, :cond_24
+    if-eq v1, v0, :cond_24
 
-    .line 444
-    iget-object p2, p0, Lcom/android/server/connectivity/tethering/UpstreamNetworkMonitor$UpstreamNetworkCallback;->this$0:Lcom/android/server/connectivity/tethering/UpstreamNetworkMonitor;
+    .line 422
+    iget-object v1, p0, Lcom/android/server/connectivity/tethering/UpstreamNetworkMonitor$UpstreamNetworkCallback;->this$0:Lcom/android/server/connectivity/tethering/UpstreamNetworkMonitor;
 
-    invoke-static {p2, p1}, Lcom/android/server/connectivity/tethering/UpstreamNetworkMonitor;->access$302(Lcom/android/server/connectivity/tethering/UpstreamNetworkMonitor;Z)Z
+    invoke-static {v1, v0}, Lcom/android/server/connectivity/tethering/UpstreamNetworkMonitor;->access$302(Lcom/android/server/connectivity/tethering/UpstreamNetworkMonitor;Z)Z
 
-    .line 445
-    iget-object p2, p0, Lcom/android/server/connectivity/tethering/UpstreamNetworkMonitor$UpstreamNetworkCallback;->this$0:Lcom/android/server/connectivity/tethering/UpstreamNetworkMonitor;
+    .line 423
+    iget-object v1, p0, Lcom/android/server/connectivity/tethering/UpstreamNetworkMonitor$UpstreamNetworkCallback;->this$0:Lcom/android/server/connectivity/tethering/UpstreamNetworkMonitor;
 
-    invoke-static {p2}, Lcom/android/server/connectivity/tethering/UpstreamNetworkMonitor;->access$400(Lcom/android/server/connectivity/tethering/UpstreamNetworkMonitor;)Lcom/android/server/connectivity/tethering/EntitlementManager;
+    invoke-static {v1}, Lcom/android/server/connectivity/tethering/UpstreamNetworkMonitor;->access$400(Lcom/android/server/connectivity/tethering/UpstreamNetworkMonitor;)Lcom/android/server/connectivity/tethering/EntitlementManager;
 
-    move-result-object p2
+    move-result-object v1
 
-    invoke-virtual {p2, p1}, Lcom/android/server/connectivity/tethering/EntitlementManager;->notifyUpstream(Z)V
+    invoke-virtual {v1, v0}, Lcom/android/server/connectivity/tethering/EntitlementManager;->notifyUpstream(Z)V
 
-    .line 447
+    .line 425
     :cond_24
     return-void
 
-    .line 450
+    .line 428
+    .end local v0  # "newIsCellular":Z
     :cond_25
     iget-object v0, p0, Lcom/android/server/connectivity/tethering/UpstreamNetworkMonitor$UpstreamNetworkCallback;->this$0:Lcom/android/server/connectivity/tethering/UpstreamNetworkMonitor;
 
     invoke-static {v0, p1, p2}, Lcom/android/server/connectivity/tethering/UpstreamNetworkMonitor;->access$500(Lcom/android/server/connectivity/tethering/UpstreamNetworkMonitor;Landroid/net/Network;Landroid/net/NetworkCapabilities;)V
 
-    .line 451
+    .line 429
     return-void
 .end method
 
 .method public onLinkPropertiesChanged(Landroid/net/Network;Landroid/net/LinkProperties;)V
     .registers 5
+    .param p1, "network"  # Landroid/net/Network;
+    .param p2, "newLp"  # Landroid/net/LinkProperties;
 
-    .line 455
+    .line 433
     iget v0, p0, Lcom/android/server/connectivity/tethering/UpstreamNetworkMonitor$UpstreamNetworkCallback;->mCallbackType:I
 
     const/4 v1, 0x2
@@ -119,124 +127,127 @@
 
     return-void
 
-    .line 457
+    .line 435
     :cond_6
     iget-object v0, p0, Lcom/android/server/connectivity/tethering/UpstreamNetworkMonitor$UpstreamNetworkCallback;->this$0:Lcom/android/server/connectivity/tethering/UpstreamNetworkMonitor;
 
     invoke-static {v0, p1, p2}, Lcom/android/server/connectivity/tethering/UpstreamNetworkMonitor;->access$600(Lcom/android/server/connectivity/tethering/UpstreamNetworkMonitor;Landroid/net/Network;Landroid/net/LinkProperties;)V
 
-    .line 461
-    iget p1, p0, Lcom/android/server/connectivity/tethering/UpstreamNetworkMonitor$UpstreamNetworkCallback;->mCallbackType:I
+    .line 439
+    iget v0, p0, Lcom/android/server/connectivity/tethering/UpstreamNetworkMonitor$UpstreamNetworkCallback;->mCallbackType:I
 
-    const/4 p2, 0x1
+    const/4 v1, 0x1
 
-    if-ne p1, p2, :cond_15
+    if-ne v0, v1, :cond_15
 
-    .line 462
-    iget-object p1, p0, Lcom/android/server/connectivity/tethering/UpstreamNetworkMonitor$UpstreamNetworkCallback;->this$0:Lcom/android/server/connectivity/tethering/UpstreamNetworkMonitor;
+    .line 440
+    iget-object v0, p0, Lcom/android/server/connectivity/tethering/UpstreamNetworkMonitor$UpstreamNetworkCallback;->this$0:Lcom/android/server/connectivity/tethering/UpstreamNetworkMonitor;
 
-    invoke-static {p1}, Lcom/android/server/connectivity/tethering/UpstreamNetworkMonitor;->access$700(Lcom/android/server/connectivity/tethering/UpstreamNetworkMonitor;)V
+    invoke-static {v0}, Lcom/android/server/connectivity/tethering/UpstreamNetworkMonitor;->access$700(Lcom/android/server/connectivity/tethering/UpstreamNetworkMonitor;)V
 
-    .line 464
+    .line 442
     :cond_15
     return-void
 .end method
 
 .method public onLost(Landroid/net/Network;)V
     .registers 4
+    .param p1, "network"  # Landroid/net/Network;
 
-    .line 482
+    .line 460
     iget v0, p0, Lcom/android/server/connectivity/tethering/UpstreamNetworkMonitor$UpstreamNetworkCallback;->mCallbackType:I
 
     const/4 v1, 0x2
 
     if-ne v0, v1, :cond_1b
 
-    .line 483
-    iget-object p1, p0, Lcom/android/server/connectivity/tethering/UpstreamNetworkMonitor$UpstreamNetworkCallback;->this$0:Lcom/android/server/connectivity/tethering/UpstreamNetworkMonitor;
+    .line 461
+    iget-object v0, p0, Lcom/android/server/connectivity/tethering/UpstreamNetworkMonitor$UpstreamNetworkCallback;->this$0:Lcom/android/server/connectivity/tethering/UpstreamNetworkMonitor;
 
-    const/4 v0, 0x0
+    const/4 v1, 0x0
 
-    invoke-static {p1, v0}, Lcom/android/server/connectivity/tethering/UpstreamNetworkMonitor;->access$102(Lcom/android/server/connectivity/tethering/UpstreamNetworkMonitor;Landroid/net/Network;)Landroid/net/Network;
+    invoke-static {v0, v1}, Lcom/android/server/connectivity/tethering/UpstreamNetworkMonitor;->access$102(Lcom/android/server/connectivity/tethering/UpstreamNetworkMonitor;Landroid/net/Network;)Landroid/net/Network;
 
-    .line 484
-    iget-object p1, p0, Lcom/android/server/connectivity/tethering/UpstreamNetworkMonitor$UpstreamNetworkCallback;->this$0:Lcom/android/server/connectivity/tethering/UpstreamNetworkMonitor;
+    .line 462
+    iget-object v0, p0, Lcom/android/server/connectivity/tethering/UpstreamNetworkMonitor$UpstreamNetworkCallback;->this$0:Lcom/android/server/connectivity/tethering/UpstreamNetworkMonitor;
 
-    const/4 v0, 0x0
+    const/4 v1, 0x0
 
-    invoke-static {p1, v0}, Lcom/android/server/connectivity/tethering/UpstreamNetworkMonitor;->access$302(Lcom/android/server/connectivity/tethering/UpstreamNetworkMonitor;Z)Z
+    invoke-static {v0, v1}, Lcom/android/server/connectivity/tethering/UpstreamNetworkMonitor;->access$302(Lcom/android/server/connectivity/tethering/UpstreamNetworkMonitor;Z)Z
 
-    .line 485
-    iget-object p1, p0, Lcom/android/server/connectivity/tethering/UpstreamNetworkMonitor$UpstreamNetworkCallback;->this$0:Lcom/android/server/connectivity/tethering/UpstreamNetworkMonitor;
+    .line 463
+    iget-object v0, p0, Lcom/android/server/connectivity/tethering/UpstreamNetworkMonitor$UpstreamNetworkCallback;->this$0:Lcom/android/server/connectivity/tethering/UpstreamNetworkMonitor;
 
-    invoke-static {p1}, Lcom/android/server/connectivity/tethering/UpstreamNetworkMonitor;->access$400(Lcom/android/server/connectivity/tethering/UpstreamNetworkMonitor;)Lcom/android/server/connectivity/tethering/EntitlementManager;
+    invoke-static {v0}, Lcom/android/server/connectivity/tethering/UpstreamNetworkMonitor;->access$400(Lcom/android/server/connectivity/tethering/UpstreamNetworkMonitor;)Lcom/android/server/connectivity/tethering/EntitlementManager;
 
-    move-result-object p1
+    move-result-object v0
 
-    invoke-virtual {p1, v0}, Lcom/android/server/connectivity/tethering/EntitlementManager;->notifyUpstream(Z)V
+    invoke-virtual {v0, v1}, Lcom/android/server/connectivity/tethering/EntitlementManager;->notifyUpstream(Z)V
 
-    .line 486
+    .line 464
     return-void
 
-    .line 489
+    .line 467
     :cond_1b
     iget-object v0, p0, Lcom/android/server/connectivity/tethering/UpstreamNetworkMonitor$UpstreamNetworkCallback;->this$0:Lcom/android/server/connectivity/tethering/UpstreamNetworkMonitor;
 
     invoke-static {v0, p1}, Lcom/android/server/connectivity/tethering/UpstreamNetworkMonitor;->access$1000(Lcom/android/server/connectivity/tethering/UpstreamNetworkMonitor;Landroid/net/Network;)V
 
-    .line 493
-    iget p1, p0, Lcom/android/server/connectivity/tethering/UpstreamNetworkMonitor$UpstreamNetworkCallback;->mCallbackType:I
+    .line 471
+    iget v0, p0, Lcom/android/server/connectivity/tethering/UpstreamNetworkMonitor$UpstreamNetworkCallback;->mCallbackType:I
 
-    const/4 v0, 0x1
+    const/4 v1, 0x1
 
-    if-ne p1, v0, :cond_2a
+    if-ne v0, v1, :cond_2a
 
-    .line 494
-    iget-object p1, p0, Lcom/android/server/connectivity/tethering/UpstreamNetworkMonitor$UpstreamNetworkCallback;->this$0:Lcom/android/server/connectivity/tethering/UpstreamNetworkMonitor;
+    .line 472
+    iget-object v0, p0, Lcom/android/server/connectivity/tethering/UpstreamNetworkMonitor$UpstreamNetworkCallback;->this$0:Lcom/android/server/connectivity/tethering/UpstreamNetworkMonitor;
 
-    invoke-static {p1}, Lcom/android/server/connectivity/tethering/UpstreamNetworkMonitor;->access$700(Lcom/android/server/connectivity/tethering/UpstreamNetworkMonitor;)V
+    invoke-static {v0}, Lcom/android/server/connectivity/tethering/UpstreamNetworkMonitor;->access$700(Lcom/android/server/connectivity/tethering/UpstreamNetworkMonitor;)V
 
-    .line 496
+    .line 474
     :cond_2a
     return-void
 .end method
 
 .method public onNetworkResumed(Landroid/net/Network;)V
     .registers 4
+    .param p1, "network"  # Landroid/net/Network;
 
-    .line 475
+    .line 453
     iget v0, p0, Lcom/android/server/connectivity/tethering/UpstreamNetworkMonitor$UpstreamNetworkCallback;->mCallbackType:I
 
     const/4 v1, 0x1
 
     if-ne v0, v1, :cond_a
 
-    .line 476
+    .line 454
     iget-object v0, p0, Lcom/android/server/connectivity/tethering/UpstreamNetworkMonitor$UpstreamNetworkCallback;->this$0:Lcom/android/server/connectivity/tethering/UpstreamNetworkMonitor;
 
     invoke-static {v0, p1}, Lcom/android/server/connectivity/tethering/UpstreamNetworkMonitor;->access$900(Lcom/android/server/connectivity/tethering/UpstreamNetworkMonitor;Landroid/net/Network;)V
 
-    .line 478
+    .line 456
     :cond_a
     return-void
 .end method
 
 .method public onNetworkSuspended(Landroid/net/Network;)V
     .registers 4
+    .param p1, "network"  # Landroid/net/Network;
 
-    .line 468
+    .line 446
     iget v0, p0, Lcom/android/server/connectivity/tethering/UpstreamNetworkMonitor$UpstreamNetworkCallback;->mCallbackType:I
 
     const/4 v1, 0x1
 
     if-ne v0, v1, :cond_a
 
-    .line 469
+    .line 447
     iget-object v0, p0, Lcom/android/server/connectivity/tethering/UpstreamNetworkMonitor$UpstreamNetworkCallback;->this$0:Lcom/android/server/connectivity/tethering/UpstreamNetworkMonitor;
 
     invoke-static {v0, p1}, Lcom/android/server/connectivity/tethering/UpstreamNetworkMonitor;->access$800(Lcom/android/server/connectivity/tethering/UpstreamNetworkMonitor;Landroid/net/Network;)V
 
-    .line 471
+    .line 449
     :cond_a
     return-void
 .end method

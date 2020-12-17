@@ -28,8 +28,9 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/am/BroadcastQueue;Landroid/content/Intent;I)V
     .registers 4
+    .param p1, "this$0"  # Lcom/android/server/am/BroadcastQueue;
 
-    .line 882
+    .line 968
     iput-object p1, p0, Lcom/android/server/am/BroadcastQueue$1;->this$0:Lcom/android/server/am/BroadcastQueue;
 
     iput-object p2, p0, Lcom/android/server/am/BroadcastQueue$1;->val$intent:Landroid/content/Intent;
@@ -46,7 +47,7 @@
 .method public run()V
     .registers 5
 
-    .line 885
+    .line 971
     iget-object v0, p0, Lcom/android/server/am/BroadcastQueue$1;->this$0:Lcom/android/server/am/BroadcastQueue;
 
     iget-object v0, v0, Lcom/android/server/am/BroadcastQueue;->mService:Lcom/android/server/am/ActivityManagerService;
@@ -63,6 +64,6 @@
 
     invoke-virtual {v0, v1, v2}, Landroid/content/Context;->startActivityAsUser(Landroid/content/Intent;Landroid/os/UserHandle;)V
 
-    .line 886
+    .line 972
     return-void
 .end method

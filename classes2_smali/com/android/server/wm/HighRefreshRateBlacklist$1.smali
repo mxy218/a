@@ -3,12 +3,12 @@
 .source "HighRefreshRateBlacklist.java"
 
 # interfaces
-.implements Lcom/android/server/wm/HighRefreshRateBlacklist$DeviceConfigInterface;
+.implements Lcom/android/server/wm/HighRefreshRateBlacklist$SystemPropertyGetter;
 
 
 # annotations
 .annotation system Ldalvik/annotation/EnclosingMethod;
-    value = Lcom/android/server/wm/HighRefreshRateBlacklist;->create(Landroid/content/res/Resources;)Lcom/android/server/wm/HighRefreshRateBlacklist;
+    value = Lcom/android/server/wm/HighRefreshRateBlacklist;->create()Lcom/android/server/wm/HighRefreshRateBlacklist;
 .end annotation
 
 .annotation system Ldalvik/annotation/InnerClass;
@@ -21,7 +21,7 @@
 .method constructor <init>()V
     .registers 1
 
-    .line 45
+    .line 38
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
     return-void
@@ -29,23 +29,27 @@
 
 
 # virtual methods
-.method public addOnPropertyChangedListener(Ljava/lang/String;Ljava/util/concurrent/Executor;Landroid/provider/DeviceConfig$OnPropertyChangedListener;)V
-    .registers 4
+.method public get(Ljava/lang/String;)Ljava/lang/String;
+    .registers 3
+    .param p1, "key"  # Ljava/lang/String;
 
-    .line 53
-    invoke-static {p1, p2, p3}, Landroid/provider/DeviceConfig;->addOnPropertyChangedListener(Ljava/lang/String;Ljava/util/concurrent/Executor;Landroid/provider/DeviceConfig$OnPropertyChangedListener;)V
+    .line 46
+    invoke-static {p1}, Landroid/os/SystemProperties;->get(Ljava/lang/String;)Ljava/lang/String;
 
-    .line 54
-    return-void
+    move-result-object v0
+
+    return-object v0
 .end method
 
-.method public getProperty(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
-    .registers 3
+.method public getInt(Ljava/lang/String;I)I
+    .registers 4
+    .param p1, "key"  # Ljava/lang/String;
+    .param p2, "def"  # I
 
-    .line 48
-    invoke-static {p1, p2}, Landroid/provider/DeviceConfig;->getProperty(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+    .line 41
+    invoke-static {p1, p2}, Landroid/os/SystemProperties;->getInt(Ljava/lang/String;I)I
 
-    move-result-object p1
+    move-result v0
 
-    return-object p1
+    return v0
 .end method

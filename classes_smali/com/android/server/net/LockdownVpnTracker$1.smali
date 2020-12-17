@@ -21,8 +21,9 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/net/LockdownVpnTracker;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/net/LockdownVpnTracker;
 
-    .line 105
+    .line 109
     iput-object p1, p0, Lcom/android/server/net/LockdownVpnTracker$1;->this$0:Lcom/android/server/net/LockdownVpnTracker;
 
     invoke-direct {p0}, Landroid/content/BroadcastReceiver;-><init>()V
@@ -33,13 +34,15 @@
 
 # virtual methods
 .method public onReceive(Landroid/content/Context;Landroid/content/Intent;)V
-    .registers 3
+    .registers 4
+    .param p1, "context"  # Landroid/content/Context;
+    .param p2, "intent"  # Landroid/content/Intent;
 
-    .line 108
-    iget-object p1, p0, Lcom/android/server/net/LockdownVpnTracker$1;->this$0:Lcom/android/server/net/LockdownVpnTracker;
+    .line 112
+    iget-object v0, p0, Lcom/android/server/net/LockdownVpnTracker$1;->this$0:Lcom/android/server/net/LockdownVpnTracker;
 
-    invoke-virtual {p1}, Lcom/android/server/net/LockdownVpnTracker;->reset()V
+    invoke-virtual {v0}, Lcom/android/server/net/LockdownVpnTracker;->reset()V
 
-    .line 109
+    .line 113
     return-void
 .end method

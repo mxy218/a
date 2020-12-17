@@ -52,6 +52,8 @@
 
 .method public findL2Key(Landroid/net/ipmemorystore/NetworkAttributesParcelable;Landroid/net/ipmemorystore/IOnL2KeyResponseListener;)V
     .registers 3
+    .param p1, "attributes"  # Landroid/net/ipmemorystore/NetworkAttributesParcelable;
+    .param p2, "listener"  # Landroid/net/ipmemorystore/IOnL2KeyResponseListener;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -73,6 +75,9 @@
 
 .method public isSameNetwork(Ljava/lang/String;Ljava/lang/String;Landroid/net/ipmemorystore/IOnSameL3NetworkResponseListener;)V
     .registers 4
+    .param p1, "l2Key1"  # Ljava/lang/String;
+    .param p2, "l2Key2"  # Ljava/lang/String;
+    .param p3, "listener"  # Landroid/net/ipmemorystore/IOnSameL3NetworkResponseListener;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -85,6 +90,10 @@
 
 .method public retrieveBlob(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Landroid/net/ipmemorystore/IOnBlobRetrievedListener;)V
     .registers 5
+    .param p1, "l2Key"  # Ljava/lang/String;
+    .param p2, "clientId"  # Ljava/lang/String;
+    .param p3, "name"  # Ljava/lang/String;
+    .param p4, "listener"  # Landroid/net/ipmemorystore/IOnBlobRetrievedListener;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -97,6 +106,8 @@
 
 .method public retrieveNetworkAttributes(Ljava/lang/String;Landroid/net/ipmemorystore/IOnNetworkAttributesRetrievedListener;)V
     .registers 3
+    .param p1, "l2Key"  # Ljava/lang/String;
+    .param p2, "listener"  # Landroid/net/ipmemorystore/IOnNetworkAttributesRetrievedListener;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -109,6 +120,11 @@
 
 .method public storeBlob(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Landroid/net/ipmemorystore/Blob;Landroid/net/ipmemorystore/IOnStatusListener;)V
     .registers 6
+    .param p1, "l2Key"  # Ljava/lang/String;
+    .param p2, "clientId"  # Ljava/lang/String;
+    .param p3, "name"  # Ljava/lang/String;
+    .param p4, "data"  # Landroid/net/ipmemorystore/Blob;
+    .param p5, "listener"  # Landroid/net/ipmemorystore/IOnStatusListener;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -121,6 +137,9 @@
 
 .method public storeNetworkAttributes(Ljava/lang/String;Landroid/net/ipmemorystore/NetworkAttributesParcelable;Landroid/net/ipmemorystore/IOnStatusListener;)V
     .registers 4
+    .param p1, "l2Key"  # Ljava/lang/String;
+    .param p2, "attributes"  # Landroid/net/ipmemorystore/NetworkAttributesParcelable;
+    .param p3, "listener"  # Landroid/net/ipmemorystore/IOnStatusListener;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;

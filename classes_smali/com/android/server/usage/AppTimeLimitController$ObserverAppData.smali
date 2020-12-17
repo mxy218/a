@@ -53,6 +53,7 @@
 # direct methods
 .method private constructor <init>(Lcom/android/server/usage/AppTimeLimitController;I)V
     .registers 3
+    .param p2, "uid"  # I
 
     .line 172
     iput-object p1, p0, Lcom/android/server/usage/AppTimeLimitController$ObserverAppData;->this$0:Lcom/android/server/usage/AppTimeLimitController;
@@ -89,6 +90,9 @@
 
 .method synthetic constructor <init>(Lcom/android/server/usage/AppTimeLimitController;ILcom/android/server/usage/AppTimeLimitController$1;)V
     .registers 4
+    .param p1, "x0"  # Lcom/android/server/usage/AppTimeLimitController;
+    .param p2, "x1"  # I
+    .param p3, "x2"  # Lcom/android/server/usage/AppTimeLimitController$1;
 
     .line 159
     invoke-direct {p0, p1, p2}, Lcom/android/server/usage/AppTimeLimitController$ObserverAppData;-><init>(Lcom/android/server/usage/AppTimeLimitController;I)V
@@ -99,7 +103,8 @@
 
 # virtual methods
 .method dump(Ljava/io/PrintWriter;)V
-    .registers 6
+    .registers 7
+    .param p1, "pw"  # Ljava/io/PrintWriter;
     .annotation build Lcom/android/internal/annotations/GuardedBy;
         value = {
             "mLock"
@@ -129,50 +134,53 @@
     move-result v0
 
     .line 197
+    .local v0, "nAppUsageGroups":I
     const/4 v1, 0x0
 
-    move v2, v1
-
-    :goto_17
-    if-ge v2, v0, :cond_2a
+    .local v1, "i":I
+    :goto_16
+    if-ge v1, v0, :cond_29
 
     .line 198
-    iget-object v3, p0, Lcom/android/server/usage/AppTimeLimitController$ObserverAppData;->appUsageGroups:Landroid/util/SparseArray;
+    iget-object v2, p0, Lcom/android/server/usage/AppTimeLimitController$ObserverAppData;->appUsageGroups:Landroid/util/SparseArray;
 
-    invoke-virtual {v3, v2}, Landroid/util/SparseArray;->valueAt(I)Ljava/lang/Object;
+    invoke-virtual {v2, v1}, Landroid/util/SparseArray;->valueAt(I)Ljava/lang/Object;
 
-    move-result-object v3
+    move-result-object v2
 
-    check-cast v3, Lcom/android/server/usage/AppTimeLimitController$AppUsageGroup;
+    check-cast v2, Lcom/android/server/usage/AppTimeLimitController$AppUsageGroup;
 
-    invoke-virtual {v3, p1}, Lcom/android/server/usage/AppTimeLimitController$AppUsageGroup;->dump(Ljava/io/PrintWriter;)V
+    invoke-virtual {v2, p1}, Lcom/android/server/usage/AppTimeLimitController$AppUsageGroup;->dump(Ljava/io/PrintWriter;)V
 
     .line 199
     invoke-virtual {p1}, Ljava/io/PrintWriter;->println()V
 
     .line 197
-    add-int/lit8 v2, v2, 0x1
+    add-int/lit8 v1, v1, 0x1
 
-    goto :goto_17
+    goto :goto_16
 
     .line 201
-    :cond_2a
-    const-string v0, "    Session Usage Groups:"
+    .end local v1  # "i":I
+    :cond_29
+    const-string v1, "    Session Usage Groups:"
 
-    invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {p1, v1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
     .line 202
-    iget-object v0, p0, Lcom/android/server/usage/AppTimeLimitController$ObserverAppData;->sessionUsageGroups:Landroid/util/SparseArray;
+    iget-object v1, p0, Lcom/android/server/usage/AppTimeLimitController$ObserverAppData;->sessionUsageGroups:Landroid/util/SparseArray;
 
-    invoke-virtual {v0}, Landroid/util/SparseArray;->size()I
+    invoke-virtual {v1}, Landroid/util/SparseArray;->size()I
 
-    move-result v0
+    move-result v1
 
     .line 203
-    move v2, v1
+    .local v1, "nSessionUsageGroups":I
+    const/4 v2, 0x0
 
-    :goto_36
-    if-ge v2, v0, :cond_49
+    .local v2, "i":I
+    :goto_35
+    if-ge v2, v1, :cond_48
 
     .line 204
     iget-object v3, p0, Lcom/android/server/usage/AppTimeLimitController$ObserverAppData;->sessionUsageGroups:Landroid/util/SparseArray;
@@ -191,53 +199,58 @@
     .line 203
     add-int/lit8 v2, v2, 0x1
 
-    goto :goto_36
+    goto :goto_35
 
     .line 207
-    :cond_49
-    const-string v0, "    App Usage Limit Groups:"
+    .end local v2  # "i":I
+    :cond_48
+    const-string v2, "    App Usage Limit Groups:"
 
-    invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {p1, v2}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
     .line 208
-    iget-object v0, p0, Lcom/android/server/usage/AppTimeLimitController$ObserverAppData;->appUsageLimitGroups:Landroid/util/SparseArray;
-
-    invoke-virtual {v0}, Landroid/util/SparseArray;->size()I
-
-    move-result v0
-
-    .line 209
-    nop
-
-    :goto_55
-    if-ge v1, v0, :cond_68
-
-    .line 210
     iget-object v2, p0, Lcom/android/server/usage/AppTimeLimitController$ObserverAppData;->appUsageLimitGroups:Landroid/util/SparseArray;
 
-    invoke-virtual {v2, v1}, Landroid/util/SparseArray;->valueAt(I)Ljava/lang/Object;
+    invoke-virtual {v2}, Landroid/util/SparseArray;->size()I
 
-    move-result-object v2
+    move-result v2
 
-    check-cast v2, Lcom/android/server/usage/AppTimeLimitController$AppUsageLimitGroup;
+    .line 209
+    .local v2, "nAppUsageLimitGroups":I
+    const/4 v3, 0x0
 
-    invoke-virtual {v2, p1}, Lcom/android/server/usage/AppTimeLimitController$AppUsageLimitGroup;->dump(Ljava/io/PrintWriter;)V
+    .local v3, "i":I
+    :goto_54
+    if-ge v3, v2, :cond_67
+
+    .line 210
+    iget-object v4, p0, Lcom/android/server/usage/AppTimeLimitController$ObserverAppData;->appUsageLimitGroups:Landroid/util/SparseArray;
+
+    invoke-virtual {v4, v3}, Landroid/util/SparseArray;->valueAt(I)Ljava/lang/Object;
+
+    move-result-object v4
+
+    check-cast v4, Lcom/android/server/usage/AppTimeLimitController$AppUsageLimitGroup;
+
+    invoke-virtual {v4, p1}, Lcom/android/server/usage/AppTimeLimitController$AppUsageLimitGroup;->dump(Ljava/io/PrintWriter;)V
 
     .line 211
     invoke-virtual {p1}, Ljava/io/PrintWriter;->println()V
 
     .line 209
-    add-int/lit8 v1, v1, 0x1
+    add-int/lit8 v3, v3, 0x1
 
-    goto :goto_55
+    goto :goto_54
 
     .line 213
-    :cond_68
+    .end local v3  # "i":I
+    :cond_67
     return-void
 .end method
 
 .method removeAppUsageGroup(I)V
     .registers 3
+    .param p1, "observerId"  # I
     .annotation build Lcom/android/internal/annotations/GuardedBy;
         value = {
             "mLock"
@@ -255,6 +268,7 @@
 
 .method removeAppUsageLimitGroup(I)V
     .registers 3
+    .param p1, "observerId"  # I
     .annotation build Lcom/android/internal/annotations/GuardedBy;
         value = {
             "mLock"
@@ -272,6 +286,7 @@
 
 .method removeSessionUsageGroup(I)V
     .registers 3
+    .param p1, "observerId"  # I
     .annotation build Lcom/android/internal/annotations/GuardedBy;
         value = {
             "mLock"

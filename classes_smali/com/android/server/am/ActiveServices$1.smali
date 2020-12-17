@@ -24,8 +24,9 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/am/ActiveServices;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/am/ActiveServices;
 
-    .line 180
+    .line 217
     iput-object p1, p0, Lcom/android/server/am/ActiveServices$1;->this$0:Lcom/android/server/am/ActiveServices;
 
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -38,7 +39,7 @@
 .method public run()V
     .registers 4
 
-    .line 182
+    .line 219
     iget-object v0, p0, Lcom/android/server/am/ActiveServices$1;->this$0:Lcom/android/server/am/ActiveServices;
 
     iget-object v0, v0, Lcom/android/server/am/ActiveServices;->mAm:Lcom/android/server/am/ActivityManagerService;
@@ -48,24 +49,24 @@
     :try_start_5
     invoke-static {}, Lcom/android/server/am/ActivityManagerService;->boostPriorityForLockedSection()V
 
-    .line 183
+    .line 220
     iget-object v1, p0, Lcom/android/server/am/ActiveServices$1;->this$0:Lcom/android/server/am/ActiveServices;
 
     const/4 v2, 0x0
 
     iput-object v2, v1, Lcom/android/server/am/ActiveServices;->mLastAnrDump:Ljava/lang/String;
 
-    .line 184
+    .line 221
     monitor-exit v0
     :try_end_e
     .catchall {:try_start_5 .. :try_end_e} :catchall_12
 
     invoke-static {}, Lcom/android/server/am/ActivityManagerService;->resetPriorityAfterLockedSection()V
 
-    .line 185
+    .line 222
     return-void
 
-    .line 184
+    .line 221
     :catchall_12
     move-exception v1
 

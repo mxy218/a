@@ -30,6 +30,9 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/timezone/RulesManagerService;Landroid/os/ParcelFileDescriptor;Lcom/android/server/timezone/CheckToken;Landroid/app/timezone/ICallback;)V
     .registers 5
+    .param p2, "distroParcelFileDescriptor"  # Landroid/os/ParcelFileDescriptor;
+    .param p3, "checkToken"  # Lcom/android/server/timezone/CheckToken;
+    .param p4, "callback"  # Landroid/app/timezone/ICallback;
 
     .line 263
     iput-object p1, p0, Lcom/android/server/timezone/RulesManagerService$InstallRunnable;->this$0:Lcom/android/server/timezone/RulesManagerService;
@@ -51,6 +54,7 @@
 
 .method private mapInstallerResultToApiCode(I)I
     .registers 5
+    .param p1, "installerResult"  # I
 
     .line 315
     if-eqz p1, :cond_14
@@ -76,9 +80,9 @@
 
     .line 325
     :cond_f
-    const/4 p1, 0x5
+    const/4 v0, 0x5
 
-    return p1
+    return v0
 
     .line 321
     :cond_11
@@ -94,25 +98,26 @@
 
     .line 317
     :cond_14
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    return p1
+    return v0
 .end method
 
 .method private sendInstallNotificationIntentIfRequired(I)V
-    .registers 2
+    .registers 3
+    .param p1, "installerResult"  # I
 
     .line 309
     if-nez p1, :cond_b
 
     .line 310
-    iget-object p1, p0, Lcom/android/server/timezone/RulesManagerService$InstallRunnable;->this$0:Lcom/android/server/timezone/RulesManagerService;
+    iget-object v0, p0, Lcom/android/server/timezone/RulesManagerService$InstallRunnable;->this$0:Lcom/android/server/timezone/RulesManagerService;
 
-    invoke-static {p1}, Lcom/android/server/timezone/RulesManagerService;->access$600(Lcom/android/server/timezone/RulesManagerService;)Lcom/android/server/timezone/RulesManagerIntentHelper;
+    invoke-static {v0}, Lcom/android/server/timezone/RulesManagerService;->access$600(Lcom/android/server/timezone/RulesManagerService;)Lcom/android/server/timezone/RulesManagerIntentHelper;
 
-    move-result-object p1
+    move-result-object v0
 
-    invoke-interface {p1}, Lcom/android/server/timezone/RulesManagerIntentHelper;->sendTimeZoneOperationStaged()V
+    invoke-interface {v0}, Lcom/android/server/timezone/RulesManagerIntentHelper;->sendTimeZoneOperationStaged()V
 
     .line 312
     :cond_b
@@ -122,7 +127,7 @@
 
 # virtual methods
 .method public run()V
-    .registers 7
+    .registers 11
 
     .line 271
     iget-object v0, p0, Lcom/android/server/timezone/RulesManagerService$InstallRunnable;->mCheckToken:Lcom/android/server/timezone/CheckToken;
@@ -134,82 +139,186 @@
     invoke-static {v0}, Lcom/android/server/EventLogTags;->writeTimezoneInstallStarted(Ljava/lang/String;)V
 
     .line 273
-    nop
+    const/4 v0, 0x0
 
     .line 276
-    const/4 v0, 0x1
-
+    .local v0, "success":Z
     const/4 v1, 0x0
 
-    :try_start_c
+    :try_start_b
     iget-object v2, p0, Lcom/android/server/timezone/RulesManagerService$InstallRunnable;->mDistroParcelFileDescriptor:Landroid/os/ParcelFileDescriptor;
-    :try_end_e
-    .catch Ljava/lang/Exception; {:try_start_c .. :try_end_e} :catch_64
-    .catchall {:try_start_c .. :try_end_e} :catchall_61
+    :try_end_d
+    .catch Ljava/lang/Exception; {:try_start_b .. :try_end_d} :catch_52
+    .catchall {:try_start_b .. :try_end_d} :catchall_50
+
+    .line 279
+    .local v2, "pfd":Landroid/os/ParcelFileDescriptor;
+    const/4 v3, 0x0
 
     .line 280
+    .local v3, "isFdOwner":Z
     :try_start_e
-    new-instance v3, Ljava/io/FileInputStream;
+    new-instance v4, Ljava/io/FileInputStream;
 
     invoke-virtual {v2}, Landroid/os/ParcelFileDescriptor;->getFileDescriptor()Ljava/io/FileDescriptor;
 
-    move-result-object v4
+    move-result-object v5
 
-    invoke-direct {v3, v4, v1}, Ljava/io/FileInputStream;-><init>(Ljava/io/FileDescriptor;Z)V
+    invoke-direct {v4, v5, v1}, Ljava/io/FileInputStream;-><init>(Ljava/io/FileDescriptor;Z)V
 
     .line 282
-    new-instance v4, Lcom/android/timezone/distro/TimeZoneDistro;
+    .local v4, "is":Ljava/io/InputStream;
+    new-instance v5, Lcom/android/timezone/distro/TimeZoneDistro;
 
-    invoke-direct {v4, v3}, Lcom/android/timezone/distro/TimeZoneDistro;-><init>(Ljava/io/InputStream;)V
+    invoke-direct {v5, v4}, Lcom/android/timezone/distro/TimeZoneDistro;-><init>(Ljava/io/InputStream;)V
 
     .line 283
-    iget-object v3, p0, Lcom/android/server/timezone/RulesManagerService$InstallRunnable;->this$0:Lcom/android/server/timezone/RulesManagerService;
+    .local v5, "distro":Lcom/android/timezone/distro/TimeZoneDistro;
+    iget-object v6, p0, Lcom/android/server/timezone/RulesManagerService$InstallRunnable;->this$0:Lcom/android/server/timezone/RulesManagerService;
 
-    invoke-static {v3}, Lcom/android/server/timezone/RulesManagerService;->access$200(Lcom/android/server/timezone/RulesManagerService;)Lcom/android/timezone/distro/installer/TimeZoneDistroInstaller;
+    invoke-static {v6}, Lcom/android/server/timezone/RulesManagerService;->access$200(Lcom/android/server/timezone/RulesManagerService;)Lcom/android/timezone/distro/installer/TimeZoneDistroInstaller;
 
-    move-result-object v3
+    move-result-object v6
 
-    invoke-virtual {v3, v4}, Lcom/android/timezone/distro/installer/TimeZoneDistroInstaller;->stageInstallWithErrorCode(Lcom/android/timezone/distro/TimeZoneDistro;)I
+    invoke-virtual {v6, v5}, Lcom/android/timezone/distro/installer/TimeZoneDistroInstaller;->stageInstallWithErrorCode(Lcom/android/timezone/distro/TimeZoneDistro;)I
 
-    move-result v3
+    move-result v6
 
     .line 286
-    invoke-direct {p0, v3}, Lcom/android/server/timezone/RulesManagerService$InstallRunnable;->sendInstallNotificationIntentIfRequired(I)V
+    .local v6, "installerResult":I
+    invoke-direct {p0, v6}, Lcom/android/server/timezone/RulesManagerService$InstallRunnable;->sendInstallNotificationIntentIfRequired(I)V
 
     .line 288
-    invoke-direct {p0, v3}, Lcom/android/server/timezone/RulesManagerService$InstallRunnable;->mapInstallerResultToApiCode(I)I
+    invoke-direct {p0, v6}, Lcom/android/server/timezone/RulesManagerService$InstallRunnable;->mapInstallerResultToApiCode(I)I
 
-    move-result v3
+    move-result v7
 
     .line 289
-    iget-object v4, p0, Lcom/android/server/timezone/RulesManagerService$InstallRunnable;->mCheckToken:Lcom/android/server/timezone/CheckToken;
+    .local v7, "resultCode":I
+    iget-object v8, p0, Lcom/android/server/timezone/RulesManagerService$InstallRunnable;->mCheckToken:Lcom/android/server/timezone/CheckToken;
 
-    invoke-static {v4}, Lcom/android/server/timezone/RulesManagerService;->access$100(Ljava/lang/Object;)Ljava/lang/String;
+    invoke-static {v8}, Lcom/android/server/timezone/RulesManagerService;->access$100(Ljava/lang/Object;)Ljava/lang/String;
 
-    move-result-object v4
+    move-result-object v8
 
-    invoke-static {v4, v3}, Lcom/android/server/EventLogTags;->writeTimezoneInstallComplete(Ljava/lang/String;I)V
+    invoke-static {v8, v7}, Lcom/android/server/EventLogTags;->writeTimezoneInstallComplete(Ljava/lang/String;I)V
 
     .line 290
-    iget-object v4, p0, Lcom/android/server/timezone/RulesManagerService$InstallRunnable;->this$0:Lcom/android/server/timezone/RulesManagerService;
+    iget-object v8, p0, Lcom/android/server/timezone/RulesManagerService$InstallRunnable;->this$0:Lcom/android/server/timezone/RulesManagerService;
 
-    iget-object v5, p0, Lcom/android/server/timezone/RulesManagerService$InstallRunnable;->mCallback:Landroid/app/timezone/ICallback;
+    iget-object v9, p0, Lcom/android/server/timezone/RulesManagerService$InstallRunnable;->mCallback:Landroid/app/timezone/ICallback;
 
-    invoke-static {v4, v5, v3}, Lcom/android/server/timezone/RulesManagerService;->access$300(Lcom/android/server/timezone/RulesManagerService;Landroid/app/timezone/ICallback;I)V
+    invoke-static {v8, v9, v7}, Lcom/android/server/timezone/RulesManagerService;->access$300(Lcom/android/server/timezone/RulesManagerService;Landroid/app/timezone/ICallback;I)V
     :try_end_3d
-    .catchall {:try_start_e .. :try_end_3d} :catchall_53
+    .catchall {:try_start_e .. :try_end_3d} :catchall_42
 
     .line 294
-    nop
+    const/4 v0, 0x1
 
     .line 295
+    .end local v3  # "isFdOwner":Z
+    .end local v4  # "is":Ljava/io/InputStream;
+    .end local v5  # "distro":Lcom/android/timezone/distro/TimeZoneDistro;
+    .end local v6  # "installerResult":I
+    .end local v7  # "resultCode":I
     :try_start_3e
     invoke-virtual {v2}, Landroid/os/ParcelFileDescriptor;->close()V
     :try_end_41
-    .catch Ljava/lang/Exception; {:try_start_3e .. :try_end_41} :catch_50
-    .catchall {:try_start_3e .. :try_end_41} :catchall_4d
+    .catch Ljava/lang/Exception; {:try_start_3e .. :try_end_41} :catch_52
+    .catchall {:try_start_3e .. :try_end_41} :catchall_50
+
+    goto :goto_6c
+
+    .line 276
+    :catchall_42
+    move-exception v3
+
+    .end local v0  # "success":Z
+    .end local v2  # "pfd":Landroid/os/ParcelFileDescriptor;
+    .end local p0  # "this":Lcom/android/server/timezone/RulesManagerService$InstallRunnable;
+    :try_start_43
+    throw v3
+    :try_end_44
+    .catchall {:try_start_43 .. :try_end_44} :catchall_44
+
+    .line 295
+    .restart local v0  # "success":Z
+    .restart local v2  # "pfd":Landroid/os/ParcelFileDescriptor;
+    .restart local p0  # "this":Lcom/android/server/timezone/RulesManagerService$InstallRunnable;
+    :catchall_44
+    move-exception v4
+
+    if-eqz v2, :cond_4f
+
+    :try_start_47
+    invoke-virtual {v2}, Landroid/os/ParcelFileDescriptor;->close()V
+    :try_end_4a
+    .catchall {:try_start_47 .. :try_end_4a} :catchall_4b
+
+    goto :goto_4f
+
+    :catchall_4b
+    move-exception v5
+
+    :try_start_4c
+    invoke-virtual {v3, v5}, Ljava/lang/Throwable;->addSuppressed(Ljava/lang/Throwable;)V
+
+    .end local v0  # "success":Z
+    .end local p0  # "this":Lcom/android/server/timezone/RulesManagerService$InstallRunnable;
+    :cond_4f
+    :goto_4f
+    throw v4
+    :try_end_50
+    .catch Ljava/lang/Exception; {:try_start_4c .. :try_end_50} :catch_52
+    .catchall {:try_start_4c .. :try_end_50} :catchall_50
 
     .line 302
+    .end local v2  # "pfd":Landroid/os/ParcelFileDescriptor;
+    .restart local v0  # "success":Z
+    .restart local p0  # "this":Lcom/android/server/timezone/RulesManagerService$InstallRunnable;
+    :catchall_50
+    move-exception v2
+
+    goto :goto_82
+
+    .line 295
+    :catch_52
+    move-exception v2
+
+    .line 296
+    .local v2, "e":Ljava/lang/Exception;
+    :try_start_53
+    const-string/jumbo v3, "timezone.RulesManagerService"
+
+    const-string v4, "Failed to install distro."
+
+    invoke-static {v3, v4, v2}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+
+    .line 297
+    iget-object v3, p0, Lcom/android/server/timezone/RulesManagerService$InstallRunnable;->mCheckToken:Lcom/android/server/timezone/CheckToken;
+
+    .line 298
+    invoke-static {v3}, Lcom/android/server/timezone/RulesManagerService;->access$100(Ljava/lang/Object;)Ljava/lang/String;
+
+    move-result-object v3
+
+    .line 297
+    const/4 v4, 0x1
+
+    invoke-static {v3, v4}, Lcom/android/server/EventLogTags;->writeTimezoneInstallComplete(Ljava/lang/String;I)V
+
+    .line 299
+    iget-object v3, p0, Lcom/android/server/timezone/RulesManagerService$InstallRunnable;->this$0:Lcom/android/server/timezone/RulesManagerService;
+
+    iget-object v5, p0, Lcom/android/server/timezone/RulesManagerService$InstallRunnable;->mCallback:Landroid/app/timezone/ICallback;
+
+    invoke-static {v3, v5, v4}, Lcom/android/server/timezone/RulesManagerService;->access$300(Lcom/android/server/timezone/RulesManagerService;Landroid/app/timezone/ICallback;I)V
+    :try_end_6c
+    .catchall {:try_start_53 .. :try_end_6c} :catchall_50
+
+    .line 302
+    .end local v2  # "e":Ljava/lang/Exception;
+    :goto_6c
     iget-object v2, p0, Lcom/android/server/timezone/RulesManagerService$InstallRunnable;->this$0:Lcom/android/server/timezone/RulesManagerService;
 
     invoke-static {v2}, Lcom/android/server/timezone/RulesManagerService;->access$400(Lcom/android/server/timezone/RulesManagerService;)Lcom/android/server/timezone/PackageTracker;
@@ -220,121 +329,14 @@
 
     invoke-virtual {v2, v3, v0}, Lcom/android/server/timezone/PackageTracker;->recordCheckResult(Lcom/android/server/timezone/CheckToken;Z)V
 
-    goto :goto_89
+    .line 304
+    iget-object v2, p0, Lcom/android/server/timezone/RulesManagerService$InstallRunnable;->this$0:Lcom/android/server/timezone/RulesManagerService;
 
-    :catchall_4d
-    move-exception v2
-
-    move v3, v0
-
-    goto :goto_95
-
-    .line 295
-    :catch_50
-    move-exception v2
-
-    move v3, v0
-
-    goto :goto_66
-
-    .line 276
-    :catchall_53
-    move-exception v3
-
-    :try_start_54
-    throw v3
-    :try_end_55
-    .catchall {:try_start_54 .. :try_end_55} :catchall_55
-
-    .line 295
-    :catchall_55
-    move-exception v4
-
-    if-eqz v2, :cond_60
-
-    :try_start_58
-    invoke-virtual {v2}, Landroid/os/ParcelFileDescriptor;->close()V
-    :try_end_5b
-    .catchall {:try_start_58 .. :try_end_5b} :catchall_5c
-
-    goto :goto_60
-
-    :catchall_5c
-    move-exception v2
-
-    :try_start_5d
-    invoke-virtual {v3, v2}, Ljava/lang/Throwable;->addSuppressed(Ljava/lang/Throwable;)V
-
-    :cond_60
-    :goto_60
-    throw v4
-    :try_end_61
-    .catch Ljava/lang/Exception; {:try_start_5d .. :try_end_61} :catch_64
-    .catchall {:try_start_5d .. :try_end_61} :catchall_61
-
-    .line 302
-    :catchall_61
-    move-exception v2
-
-    move v3, v1
-
-    goto :goto_95
-
-    .line 295
-    :catch_64
-    move-exception v2
-
-    move v3, v1
-
-    .line 296
-    :goto_66
-    :try_start_66
-    const-string/jumbo v4, "timezone.RulesManagerService"
-
-    const-string v5, "Failed to install distro."
-
-    invoke-static {v4, v5, v2}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
-
-    .line 297
-    iget-object v2, p0, Lcom/android/server/timezone/RulesManagerService$InstallRunnable;->mCheckToken:Lcom/android/server/timezone/CheckToken;
-
-    .line 298
-    invoke-static {v2}, Lcom/android/server/timezone/RulesManagerService;->access$100(Ljava/lang/Object;)Ljava/lang/String;
+    invoke-static {v2}, Lcom/android/server/timezone/RulesManagerService;->access$500(Lcom/android/server/timezone/RulesManagerService;)Ljava/util/concurrent/atomic/AtomicBoolean;
 
     move-result-object v2
 
-    .line 297
-    invoke-static {v2, v0}, Lcom/android/server/EventLogTags;->writeTimezoneInstallComplete(Ljava/lang/String;I)V
-
-    .line 299
-    iget-object v2, p0, Lcom/android/server/timezone/RulesManagerService$InstallRunnable;->this$0:Lcom/android/server/timezone/RulesManagerService;
-
-    iget-object v4, p0, Lcom/android/server/timezone/RulesManagerService$InstallRunnable;->mCallback:Landroid/app/timezone/ICallback;
-
-    invoke-static {v2, v4, v0}, Lcom/android/server/timezone/RulesManagerService;->access$300(Lcom/android/server/timezone/RulesManagerService;Landroid/app/timezone/ICallback;I)V
-    :try_end_7e
-    .catchall {:try_start_66 .. :try_end_7e} :catchall_94
-
-    .line 302
-    iget-object v0, p0, Lcom/android/server/timezone/RulesManagerService$InstallRunnable;->this$0:Lcom/android/server/timezone/RulesManagerService;
-
-    invoke-static {v0}, Lcom/android/server/timezone/RulesManagerService;->access$400(Lcom/android/server/timezone/RulesManagerService;)Lcom/android/server/timezone/PackageTracker;
-
-    move-result-object v0
-
-    iget-object v2, p0, Lcom/android/server/timezone/RulesManagerService$InstallRunnable;->mCheckToken:Lcom/android/server/timezone/CheckToken;
-
-    invoke-virtual {v0, v2, v3}, Lcom/android/server/timezone/PackageTracker;->recordCheckResult(Lcom/android/server/timezone/CheckToken;Z)V
-
-    .line 304
-    :goto_89
-    iget-object v0, p0, Lcom/android/server/timezone/RulesManagerService$InstallRunnable;->this$0:Lcom/android/server/timezone/RulesManagerService;
-
-    invoke-static {v0}, Lcom/android/server/timezone/RulesManagerService;->access$500(Lcom/android/server/timezone/RulesManagerService;)Ljava/util/concurrent/atomic/AtomicBoolean;
-
-    move-result-object v0
-
-    invoke-virtual {v0, v1}, Ljava/util/concurrent/atomic/AtomicBoolean;->set(Z)V
+    invoke-virtual {v2, v1}, Ljava/util/concurrent/atomic/AtomicBoolean;->set(Z)V
 
     .line 305
     nop
@@ -343,28 +345,25 @@
     return-void
 
     .line 302
-    :catchall_94
-    move-exception v2
+    :goto_82
+    iget-object v3, p0, Lcom/android/server/timezone/RulesManagerService$InstallRunnable;->this$0:Lcom/android/server/timezone/RulesManagerService;
 
-    :goto_95
-    iget-object v0, p0, Lcom/android/server/timezone/RulesManagerService$InstallRunnable;->this$0:Lcom/android/server/timezone/RulesManagerService;
+    invoke-static {v3}, Lcom/android/server/timezone/RulesManagerService;->access$400(Lcom/android/server/timezone/RulesManagerService;)Lcom/android/server/timezone/PackageTracker;
 
-    invoke-static {v0}, Lcom/android/server/timezone/RulesManagerService;->access$400(Lcom/android/server/timezone/RulesManagerService;)Lcom/android/server/timezone/PackageTracker;
-
-    move-result-object v0
+    move-result-object v3
 
     iget-object v4, p0, Lcom/android/server/timezone/RulesManagerService$InstallRunnable;->mCheckToken:Lcom/android/server/timezone/CheckToken;
 
-    invoke-virtual {v0, v4, v3}, Lcom/android/server/timezone/PackageTracker;->recordCheckResult(Lcom/android/server/timezone/CheckToken;Z)V
+    invoke-virtual {v3, v4, v0}, Lcom/android/server/timezone/PackageTracker;->recordCheckResult(Lcom/android/server/timezone/CheckToken;Z)V
 
     .line 304
-    iget-object v0, p0, Lcom/android/server/timezone/RulesManagerService$InstallRunnable;->this$0:Lcom/android/server/timezone/RulesManagerService;
+    iget-object v3, p0, Lcom/android/server/timezone/RulesManagerService$InstallRunnable;->this$0:Lcom/android/server/timezone/RulesManagerService;
 
-    invoke-static {v0}, Lcom/android/server/timezone/RulesManagerService;->access$500(Lcom/android/server/timezone/RulesManagerService;)Ljava/util/concurrent/atomic/AtomicBoolean;
+    invoke-static {v3}, Lcom/android/server/timezone/RulesManagerService;->access$500(Lcom/android/server/timezone/RulesManagerService;)Ljava/util/concurrent/atomic/AtomicBoolean;
 
-    move-result-object v0
+    move-result-object v3
 
-    invoke-virtual {v0, v1}, Ljava/util/concurrent/atomic/AtomicBoolean;->set(Z)V
+    invoke-virtual {v3, v1}, Ljava/util/concurrent/atomic/AtomicBoolean;->set(Z)V
 
     throw v2
 .end method

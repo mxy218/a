@@ -24,8 +24,9 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/dreams/DreamManagerService;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/dreams/DreamManagerService;
 
-    .line 676
+    .line 680
     iput-object p1, p0, Lcom/android/server/dreams/DreamManagerService$6;->this$0:Lcom/android/server/dreams/DreamManagerService;
 
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -38,7 +39,7 @@
 .method public run()V
     .registers 6
 
-    .line 680
+    .line 684
     iget-object v0, p0, Lcom/android/server/dreams/DreamManagerService$6;->this$0:Lcom/android/server/dreams/DreamManagerService;
 
     invoke-static {v0}, Lcom/android/server/dreams/DreamManagerService;->access$300(Lcom/android/server/dreams/DreamManagerService;)Ljava/lang/Object;
@@ -47,7 +48,7 @@
 
     monitor-enter v0
 
-    .line 681
+    .line 685
     :try_start_7
     iget-object v1, p0, Lcom/android/server/dreams/DreamManagerService$6;->this$0:Lcom/android/server/dreams/DreamManagerService;
 
@@ -67,7 +68,7 @@
 
     iget-object v1, p0, Lcom/android/server/dreams/DreamManagerService$6;->this$0:Lcom/android/server/dreams/DreamManagerService;
 
-    .line 682
+    .line 686
     invoke-static {v1}, Lcom/android/server/dreams/DreamManagerService;->access$2400(Lcom/android/server/dreams/DreamManagerService;)Landroid/content/ComponentName;
 
     move-result-object v1
@@ -84,7 +85,7 @@
 
     if-nez v1, :cond_38
 
-    .line 684
+    .line 688
     iget-object v1, p0, Lcom/android/server/dreams/DreamManagerService$6;->this$0:Lcom/android/server/dreams/DreamManagerService;
 
     invoke-static {v1}, Lcom/android/server/dreams/DreamManagerService;->access$2700(Lcom/android/server/dreams/DreamManagerService;)Landroid/os/PowerManager;
@@ -99,14 +100,14 @@
 
     invoke-virtual {v1, v2, v3, v4}, Landroid/os/PowerManager;->wakeUp(JLjava/lang/String;)V
 
-    .line 687
+    .line 691
     :cond_38
     monitor-exit v0
 
-    .line 688
+    .line 692
     return-void
 
-    .line 687
+    .line 691
     :catchall_3a
     move-exception v1
 

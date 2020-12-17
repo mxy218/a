@@ -23,6 +23,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/autofill/RemoteAugmentedAutofillService$PendingAutofillRequest;Lcom/android/server/autofill/RemoteAugmentedAutofillService;)V
     .registers 3
+    .param p1, "this$0"  # Lcom/android/server/autofill/RemoteAugmentedAutofillService$PendingAutofillRequest;
 
     .line 244
     iput-object p1, p0, Lcom/android/server/autofill/RemoteAugmentedAutofillService$PendingAutofillRequest$2;->this$0:Lcom/android/server/autofill/RemoteAugmentedAutofillService$PendingAutofillRequest;
@@ -37,7 +38,9 @@
 
 # virtual methods
 .method public send(ILandroid/os/Bundle;)V
-    .registers 13
+    .registers 14
+    .param p1, "resultCode"  # I
+    .param p2, "resultData"  # Landroid/os/Bundle;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -48,68 +51,69 @@
     nop
 
     .line 249
-    const-string p1, "android.view.autofill.extra.AUGMENTED_AUTOFILL_CLIENT"
+    const-string v0, "android.view.autofill.extra.AUGMENTED_AUTOFILL_CLIENT"
 
-    invoke-virtual {p2, p1}, Landroid/os/Bundle;->getBinder(Ljava/lang/String;)Landroid/os/IBinder;
+    invoke-virtual {p2, v0}, Landroid/os/Bundle;->getBinder(Ljava/lang/String;)Landroid/os/IBinder;
 
-    move-result-object v2
+    move-result-object v0
 
     .line 250
-    iget-object p1, p0, Lcom/android/server/autofill/RemoteAugmentedAutofillService$PendingAutofillRequest$2;->val$remoteService:Lcom/android/server/autofill/RemoteAugmentedAutofillService;
+    .local v0, "realClient":Landroid/os/IBinder;
+    iget-object v1, p0, Lcom/android/server/autofill/RemoteAugmentedAutofillService$PendingAutofillRequest$2;->val$remoteService:Lcom/android/server/autofill/RemoteAugmentedAutofillService;
 
-    invoke-static {p1}, Lcom/android/server/autofill/RemoteAugmentedAutofillService;->access$1500(Lcom/android/server/autofill/RemoteAugmentedAutofillService;)Landroid/os/IInterface;
+    invoke-static {v1}, Lcom/android/server/autofill/RemoteAugmentedAutofillService;->access$1500(Lcom/android/server/autofill/RemoteAugmentedAutofillService;)Landroid/os/IInterface;
 
-    move-result-object p1
+    move-result-object v1
 
-    move-object v0, p1
+    check-cast v1, Landroid/service/autofill/augmented/IAugmentedAutofillService;
 
-    check-cast v0, Landroid/service/autofill/augmented/IAugmentedAutofillService;
+    iget-object v2, p0, Lcom/android/server/autofill/RemoteAugmentedAutofillService$PendingAutofillRequest$2;->this$0:Lcom/android/server/autofill/RemoteAugmentedAutofillService$PendingAutofillRequest;
 
-    iget-object p1, p0, Lcom/android/server/autofill/RemoteAugmentedAutofillService$PendingAutofillRequest$2;->this$0:Lcom/android/server/autofill/RemoteAugmentedAutofillService$PendingAutofillRequest;
+    invoke-static {v2}, Lcom/android/server/autofill/RemoteAugmentedAutofillService$PendingAutofillRequest;->access$800(Lcom/android/server/autofill/RemoteAugmentedAutofillService$PendingAutofillRequest;)I
 
-    invoke-static {p1}, Lcom/android/server/autofill/RemoteAugmentedAutofillService$PendingAutofillRequest;->access$800(Lcom/android/server/autofill/RemoteAugmentedAutofillService$PendingAutofillRequest;)I
+    move-result v2
 
-    move-result v1
+    iget-object v3, p0, Lcom/android/server/autofill/RemoteAugmentedAutofillService$PendingAutofillRequest$2;->this$0:Lcom/android/server/autofill/RemoteAugmentedAutofillService$PendingAutofillRequest;
 
-    iget-object p1, p0, Lcom/android/server/autofill/RemoteAugmentedAutofillService$PendingAutofillRequest$2;->this$0:Lcom/android/server/autofill/RemoteAugmentedAutofillService$PendingAutofillRequest;
+    invoke-static {v3}, Lcom/android/server/autofill/RemoteAugmentedAutofillService$PendingAutofillRequest;->access$900(Lcom/android/server/autofill/RemoteAugmentedAutofillService$PendingAutofillRequest;)I
 
-    invoke-static {p1}, Lcom/android/server/autofill/RemoteAugmentedAutofillService$PendingAutofillRequest;->access$900(Lcom/android/server/autofill/RemoteAugmentedAutofillService$PendingAutofillRequest;)I
+    move-result v4
 
-    move-result v3
-
-    iget-object p1, p0, Lcom/android/server/autofill/RemoteAugmentedAutofillService$PendingAutofillRequest$2;->this$0:Lcom/android/server/autofill/RemoteAugmentedAutofillService$PendingAutofillRequest;
+    iget-object v3, p0, Lcom/android/server/autofill/RemoteAugmentedAutofillService$PendingAutofillRequest$2;->this$0:Lcom/android/server/autofill/RemoteAugmentedAutofillService$PendingAutofillRequest;
 
     .line 251
-    invoke-static {p1}, Lcom/android/server/autofill/RemoteAugmentedAutofillService$PendingAutofillRequest;->access$1000(Lcom/android/server/autofill/RemoteAugmentedAutofillService$PendingAutofillRequest;)Landroid/content/ComponentName;
-
-    move-result-object v4
-
-    iget-object p1, p0, Lcom/android/server/autofill/RemoteAugmentedAutofillService$PendingAutofillRequest$2;->this$0:Lcom/android/server/autofill/RemoteAugmentedAutofillService$PendingAutofillRequest;
-
-    invoke-static {p1}, Lcom/android/server/autofill/RemoteAugmentedAutofillService$PendingAutofillRequest;->access$1100(Lcom/android/server/autofill/RemoteAugmentedAutofillService$PendingAutofillRequest;)Landroid/view/autofill/AutofillId;
+    invoke-static {v3}, Lcom/android/server/autofill/RemoteAugmentedAutofillService$PendingAutofillRequest;->access$1000(Lcom/android/server/autofill/RemoteAugmentedAutofillService$PendingAutofillRequest;)Landroid/content/ComponentName;
 
     move-result-object v5
 
-    iget-object p1, p0, Lcom/android/server/autofill/RemoteAugmentedAutofillService$PendingAutofillRequest$2;->this$0:Lcom/android/server/autofill/RemoteAugmentedAutofillService$PendingAutofillRequest;
+    iget-object v3, p0, Lcom/android/server/autofill/RemoteAugmentedAutofillService$PendingAutofillRequest$2;->this$0:Lcom/android/server/autofill/RemoteAugmentedAutofillService$PendingAutofillRequest;
 
-    invoke-static {p1}, Lcom/android/server/autofill/RemoteAugmentedAutofillService$PendingAutofillRequest;->access$1200(Lcom/android/server/autofill/RemoteAugmentedAutofillService$PendingAutofillRequest;)Landroid/view/autofill/AutofillValue;
+    invoke-static {v3}, Lcom/android/server/autofill/RemoteAugmentedAutofillService$PendingAutofillRequest;->access$1100(Lcom/android/server/autofill/RemoteAugmentedAutofillService$PendingAutofillRequest;)Landroid/view/autofill/AutofillId;
 
     move-result-object v6
 
-    iget-object p1, p0, Lcom/android/server/autofill/RemoteAugmentedAutofillService$PendingAutofillRequest$2;->this$0:Lcom/android/server/autofill/RemoteAugmentedAutofillService$PendingAutofillRequest;
+    iget-object v3, p0, Lcom/android/server/autofill/RemoteAugmentedAutofillService$PendingAutofillRequest$2;->this$0:Lcom/android/server/autofill/RemoteAugmentedAutofillService$PendingAutofillRequest;
 
-    invoke-static {p1}, Lcom/android/server/autofill/RemoteAugmentedAutofillService$PendingAutofillRequest;->access$1300(Lcom/android/server/autofill/RemoteAugmentedAutofillService$PendingAutofillRequest;)J
+    invoke-static {v3}, Lcom/android/server/autofill/RemoteAugmentedAutofillService$PendingAutofillRequest;->access$1200(Lcom/android/server/autofill/RemoteAugmentedAutofillService$PendingAutofillRequest;)Landroid/view/autofill/AutofillValue;
 
-    move-result-wide v7
+    move-result-object v7
 
-    iget-object p1, p0, Lcom/android/server/autofill/RemoteAugmentedAutofillService$PendingAutofillRequest$2;->this$0:Lcom/android/server/autofill/RemoteAugmentedAutofillService$PendingAutofillRequest;
+    iget-object v3, p0, Lcom/android/server/autofill/RemoteAugmentedAutofillService$PendingAutofillRequest$2;->this$0:Lcom/android/server/autofill/RemoteAugmentedAutofillService$PendingAutofillRequest;
 
-    invoke-static {p1}, Lcom/android/server/autofill/RemoteAugmentedAutofillService$PendingAutofillRequest;->access$1400(Lcom/android/server/autofill/RemoteAugmentedAutofillService$PendingAutofillRequest;)Landroid/service/autofill/augmented/IFillCallback;
+    invoke-static {v3}, Lcom/android/server/autofill/RemoteAugmentedAutofillService$PendingAutofillRequest;->access$1300(Lcom/android/server/autofill/RemoteAugmentedAutofillService$PendingAutofillRequest;)J
 
-    move-result-object v9
+    move-result-wide v8
+
+    iget-object v3, p0, Lcom/android/server/autofill/RemoteAugmentedAutofillService$PendingAutofillRequest$2;->this$0:Lcom/android/server/autofill/RemoteAugmentedAutofillService$PendingAutofillRequest;
+
+    invoke-static {v3}, Lcom/android/server/autofill/RemoteAugmentedAutofillService$PendingAutofillRequest;->access$1400(Lcom/android/server/autofill/RemoteAugmentedAutofillService$PendingAutofillRequest;)Landroid/service/autofill/augmented/IFillCallback;
+
+    move-result-object v10
 
     .line 250
-    invoke-interface/range {v0 .. v9}, Landroid/service/autofill/augmented/IAugmentedAutofillService;->onFillRequest(ILandroid/os/IBinder;ILandroid/content/ComponentName;Landroid/view/autofill/AutofillId;Landroid/view/autofill/AutofillValue;JLandroid/service/autofill/augmented/IFillCallback;)V
+    move-object v3, v0
+
+    invoke-interface/range {v1 .. v10}, Landroid/service/autofill/augmented/IAugmentedAutofillService;->onFillRequest(ILandroid/os/IBinder;ILandroid/content/ComponentName;Landroid/view/autofill/AutofillId;Landroid/view/autofill/AutofillValue;JLandroid/service/autofill/augmented/IFillCallback;)V
 
     .line 252
     return-void

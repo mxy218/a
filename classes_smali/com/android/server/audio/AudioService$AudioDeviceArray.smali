@@ -23,16 +23,18 @@
 # direct methods
 .method constructor <init>([I[Ljava/lang/String;)V
     .registers 3
+    .param p1, "types"  # [I
+    .param p2, "addresses"  # [Ljava/lang/String;
 
-    .line 7393
+    .line 8423
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
-    .line 7394
+    .line 8424
     iput-object p1, p0, Lcom/android/server/audio/AudioService$AudioDeviceArray;->mDeviceTypes:[I
 
-    .line 7395
+    .line 8425
     iput-object p2, p0, Lcom/android/server/audio/AudioService$AudioDeviceArray;->mDeviceAddresses:[Ljava/lang/String;
 
-    .line 7396
+    .line 8426
     return-void
 .end method

@@ -22,7 +22,9 @@
 
 # direct methods
 .method private constructor <init>(Lcom/android/server/wm/Task;Landroid/view/SurfaceControl$ScreenshotGraphicBuffer;)V
-    .registers 6
+    .registers 7
+    .param p1, "task"  # Lcom/android/server/wm/Task;
+    .param p2, "screenshotBuffer"  # Landroid/view/SurfaceControl$ScreenshotGraphicBuffer;
 
     .line 55
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -41,100 +43,140 @@
     move-result-object v0
 
     .line 58
+    .local v0, "buffer":Landroid/graphics/GraphicBuffer;
     :goto_b
     iput-object p1, p0, Lcom/android/server/wm/TaskScreenshotAnimatable;->mTask:Lcom/android/server/wm/Task;
 
     .line 59
-    const/4 p1, 0x1
+    const/4 v1, 0x1
 
     if-eqz v0, :cond_15
 
     invoke-virtual {v0}, Landroid/graphics/GraphicBuffer;->getWidth()I
 
-    move-result v1
+    move-result v2
 
     goto :goto_16
 
     :cond_15
-    move v1, p1
+    move v2, v1
 
     :goto_16
-    iput v1, p0, Lcom/android/server/wm/TaskScreenshotAnimatable;->mWidth:I
+    iput v2, p0, Lcom/android/server/wm/TaskScreenshotAnimatable;->mWidth:I
 
     .line 60
     if-eqz v0, :cond_1e
 
     invoke-virtual {v0}, Landroid/graphics/GraphicBuffer;->getHeight()I
 
-    move-result p1
+    move-result v1
 
     :cond_1e
-    iput p1, p0, Lcom/android/server/wm/TaskScreenshotAnimatable;->mHeight:I
+    iput v1, p0, Lcom/android/server/wm/TaskScreenshotAnimatable;->mHeight:I
 
-    .line 65
-    new-instance p1, Landroid/view/SurfaceControl$Builder;
+    .line 61
+    sget-boolean v1, Lcom/android/server/wm/WindowManagerDebugConfig;->DEBUG_RECENTS_ANIMATIONS:Z
 
-    new-instance v1, Landroid/view/SurfaceSession;
+    if-eqz v1, :cond_4e
 
-    invoke-direct {v1}, Landroid/view/SurfaceSession;-><init>()V
+    .line 62
+    new-instance v1, Ljava/lang/StringBuilder;
 
-    invoke-direct {p1, v1}, Landroid/view/SurfaceControl$Builder;-><init>(Landroid/view/SurfaceSession;)V
+    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
 
-    .line 66
-    const-string v1, "RecentTaskScreenshotSurface"
+    const-string v2, "Creating TaskScreenshotAnimatable: task: "
 
-    invoke-virtual {p1, v1}, Landroid/view/SurfaceControl$Builder;->setName(Ljava/lang/String;)Landroid/view/SurfaceControl$Builder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    move-result-object p1
+    invoke-virtual {v1, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
-    iget v1, p0, Lcom/android/server/wm/TaskScreenshotAnimatable;->mWidth:I
+    const-string v2, "width: "
+
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    iget v2, p0, Lcom/android/server/wm/TaskScreenshotAnimatable;->mWidth:I
+
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+
+    const-string v2, "height: "
+
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     iget v2, p0, Lcom/android/server/wm/TaskScreenshotAnimatable;->mHeight:I
 
-    .line 67
-    invoke-virtual {p1, v1, v2}, Landroid/view/SurfaceControl$Builder;->setBufferSize(II)Landroid/view/SurfaceControl$Builder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    move-result-object p1
+    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v1
+
+    const-string v2, "TaskScreenshotAnim"
+
+    invoke-static {v2, v1}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
+
+    .line 65
+    :cond_4e
+    new-instance v1, Landroid/view/SurfaceControl$Builder;
+
+    new-instance v2, Landroid/view/SurfaceSession;
+
+    invoke-direct {v2}, Landroid/view/SurfaceSession;-><init>()V
+
+    invoke-direct {v1, v2}, Landroid/view/SurfaceControl$Builder;-><init>(Landroid/view/SurfaceSession;)V
+
+    .line 66
+    const-string v2, "RecentTaskScreenshotSurface"
+
+    invoke-virtual {v1, v2}, Landroid/view/SurfaceControl$Builder;->setName(Ljava/lang/String;)Landroid/view/SurfaceControl$Builder;
+
+    move-result-object v1
+
+    iget v2, p0, Lcom/android/server/wm/TaskScreenshotAnimatable;->mWidth:I
+
+    iget v3, p0, Lcom/android/server/wm/TaskScreenshotAnimatable;->mHeight:I
+
+    .line 67
+    invoke-virtual {v1, v2, v3}, Landroid/view/SurfaceControl$Builder;->setBufferSize(II)Landroid/view/SurfaceControl$Builder;
+
+    move-result-object v1
 
     .line 68
-    invoke-virtual {p1}, Landroid/view/SurfaceControl$Builder;->build()Landroid/view/SurfaceControl;
+    invoke-virtual {v1}, Landroid/view/SurfaceControl$Builder;->build()Landroid/view/SurfaceControl;
 
-    move-result-object p1
+    move-result-object v1
 
-    iput-object p1, p0, Lcom/android/server/wm/TaskScreenshotAnimatable;->mSurfaceControl:Landroid/view/SurfaceControl;
+    iput-object v1, p0, Lcom/android/server/wm/TaskScreenshotAnimatable;->mSurfaceControl:Landroid/view/SurfaceControl;
 
     .line 69
-    if-eqz v0, :cond_54
+    if-eqz v0, :cond_7e
 
     .line 70
-    new-instance p1, Landroid/view/Surface;
+    new-instance v1, Landroid/view/Surface;
 
-    invoke-direct {p1}, Landroid/view/Surface;-><init>()V
+    invoke-direct {v1}, Landroid/view/Surface;-><init>()V
 
     .line 71
-    iget-object v1, p0, Lcom/android/server/wm/TaskScreenshotAnimatable;->mSurfaceControl:Landroid/view/SurfaceControl;
+    .local v1, "surface":Landroid/view/Surface;
+    iget-object v2, p0, Lcom/android/server/wm/TaskScreenshotAnimatable;->mSurfaceControl:Landroid/view/SurfaceControl;
 
-    invoke-virtual {p1, v1}, Landroid/view/Surface;->copyFrom(Landroid/view/SurfaceControl;)V
+    invoke-virtual {v1, v2}, Landroid/view/Surface;->copyFrom(Landroid/view/SurfaceControl;)V
 
     .line 72
-    invoke-virtual {p2}, Landroid/view/SurfaceControl$ScreenshotGraphicBuffer;->getColorSpace()Landroid/graphics/ColorSpace;
-
-    move-result-object p2
-
-    invoke-virtual {p1, v0, p2}, Landroid/view/Surface;->attachAndQueueBufferWithColorSpace(Landroid/graphics/GraphicBuffer;Landroid/graphics/ColorSpace;)V
+    invoke-virtual {v1, v0}, Landroid/view/Surface;->attachAndQueueBuffer(Landroid/graphics/GraphicBuffer;)V
 
     .line 73
-    invoke-virtual {p1}, Landroid/view/Surface;->release()V
+    invoke-virtual {v1}, Landroid/view/Surface;->release()V
 
     .line 75
-    :cond_54
+    .end local v1  # "surface":Landroid/view/Surface;
+    :cond_7e
     invoke-virtual {p0}, Lcom/android/server/wm/TaskScreenshotAnimatable;->getPendingTransaction()Landroid/view/SurfaceControl$Transaction;
 
-    move-result-object p1
+    move-result-object v1
 
-    iget-object p2, p0, Lcom/android/server/wm/TaskScreenshotAnimatable;->mSurfaceControl:Landroid/view/SurfaceControl;
+    iget-object v2, p0, Lcom/android/server/wm/TaskScreenshotAnimatable;->mSurfaceControl:Landroid/view/SurfaceControl;
 
-    invoke-virtual {p1, p2}, Landroid/view/SurfaceControl$Transaction;->show(Landroid/view/SurfaceControl;)Landroid/view/SurfaceControl$Transaction;
+    invoke-virtual {v1, v2}, Landroid/view/SurfaceControl$Transaction;->show(Landroid/view/SurfaceControl;)Landroid/view/SurfaceControl$Transaction;
 
     .line 76
     return-void
@@ -142,6 +184,7 @@
 
 .method public static create(Lcom/android/server/wm/Task;)Lcom/android/server/wm/TaskScreenshotAnimatable;
     .registers 3
+    .param p0, "task"  # Lcom/android/server/wm/Task;
 
     .line 41
     new-instance v0, Lcom/android/server/wm/TaskScreenshotAnimatable;
@@ -156,15 +199,16 @@
 .end method
 
 .method private static getBufferFromTask(Lcom/android/server/wm/Task;)Landroid/view/SurfaceControl$ScreenshotGraphicBuffer;
-    .registers 3
+    .registers 4
+    .param p0, "task"  # Lcom/android/server/wm/Task;
 
     .line 45
     if-nez p0, :cond_4
 
     .line 46
-    const/4 p0, 0x0
+    const/4 v0, 0x0
 
-    return-object p0
+    return-object v0
 
     .line 48
     :cond_4
@@ -173,6 +217,7 @@
     move-result-object v0
 
     .line 49
+    .local v0, "tmpRect":Landroid/graphics/Rect;
     const/4 v1, 0x0
 
     invoke-virtual {v0, v1, v1}, Landroid/graphics/Rect;->offset(II)V
@@ -183,20 +228,20 @@
     .line 51
     invoke-virtual {p0}, Lcom/android/server/wm/Task;->getSurfaceControl()Landroid/view/SurfaceControl;
 
-    move-result-object p0
+    move-result-object v1
 
-    invoke-virtual {p0}, Landroid/view/SurfaceControl;->getHandle()Landroid/os/IBinder;
+    invoke-virtual {v1}, Landroid/view/SurfaceControl;->getHandle()Landroid/os/IBinder;
 
-    move-result-object p0
+    move-result-object v1
 
-    const/high16 v1, 0x3f800000  # 1.0f
+    const/high16 v2, 0x3f800000  # 1.0f
 
     .line 50
-    invoke-static {p0, v0, v1}, Landroid/view/SurfaceControl;->captureLayers(Landroid/os/IBinder;Landroid/graphics/Rect;F)Landroid/view/SurfaceControl$ScreenshotGraphicBuffer;
+    invoke-static {v1, v0, v2}, Landroid/view/SurfaceControl;->captureLayers(Landroid/os/IBinder;Landroid/graphics/Rect;F)Landroid/view/SurfaceControl$ScreenshotGraphicBuffer;
 
-    move-result-object p0
+    move-result-object v1
 
-    return-object p0
+    return-object v1
 .end method
 
 
@@ -292,6 +337,8 @@
 
 .method public onAnimationLeashCreated(Landroid/view/SurfaceControl$Transaction;Landroid/view/SurfaceControl;)V
     .registers 4
+    .param p1, "t"  # Landroid/view/SurfaceControl$Transaction;
+    .param p2, "leash"  # Landroid/view/SurfaceControl;
 
     .line 90
     const/4 v0, 0x1
@@ -304,6 +351,7 @@
 
 .method public onAnimationLeashLost(Landroid/view/SurfaceControl$Transaction;)V
     .registers 3
+    .param p1, "t"  # Landroid/view/SurfaceControl$Transaction;
 
     .line 95
     iget-object v0, p0, Lcom/android/server/wm/TaskScreenshotAnimatable;->mSurfaceControl:Landroid/view/SurfaceControl;
@@ -314,9 +362,9 @@
     invoke-virtual {p1, v0}, Landroid/view/SurfaceControl$Transaction;->remove(Landroid/view/SurfaceControl;)Landroid/view/SurfaceControl$Transaction;
 
     .line 97
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    iput-object p1, p0, Lcom/android/server/wm/TaskScreenshotAnimatable;->mSurfaceControl:Landroid/view/SurfaceControl;
+    iput-object v0, p0, Lcom/android/server/wm/TaskScreenshotAnimatable;->mSurfaceControl:Landroid/view/SurfaceControl;
 
     .line 99
     :cond_a

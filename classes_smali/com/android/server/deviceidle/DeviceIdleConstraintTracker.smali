@@ -16,6 +16,8 @@
 # direct methods
 .method public constructor <init>(Ljava/lang/String;I)V
     .registers 4
+    .param p1, "name"  # Ljava/lang/String;
+    .param p2, "minState"  # I
 
     .line 53
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V

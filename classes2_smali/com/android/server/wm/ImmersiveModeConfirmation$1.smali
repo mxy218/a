@@ -24,6 +24,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/wm/ImmersiveModeConfirmation;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/wm/ImmersiveModeConfirmation;
 
     .line 369
     iput-object p1, p0, Lcom/android/server/wm/ImmersiveModeConfirmation$1;->this$0:Lcom/android/server/wm/ImmersiveModeConfirmation;

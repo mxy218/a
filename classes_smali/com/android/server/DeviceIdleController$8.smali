@@ -24,8 +24,9 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/DeviceIdleController;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/DeviceIdleController;
 
-    .line 826
+    .line 735
     iput-object p1, p0, Lcom/android/server/DeviceIdleController$8;->this$0:Lcom/android/server/DeviceIdleController;
 
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -37,52 +38,58 @@
 # virtual methods
 .method public onLocationChanged(Landroid/location/Location;)V
     .registers 4
+    .param p1, "location"  # Landroid/location/Location;
 
-    .line 829
+    .line 738
     iget-object v0, p0, Lcom/android/server/DeviceIdleController$8;->this$0:Lcom/android/server/DeviceIdleController;
 
     monitor-enter v0
 
-    .line 830
+    .line 739
     :try_start_3
     iget-object v1, p0, Lcom/android/server/DeviceIdleController$8;->this$0:Lcom/android/server/DeviceIdleController;
 
     invoke-virtual {v1, p1}, Lcom/android/server/DeviceIdleController;->receivedGpsLocationLocked(Landroid/location/Location;)V
 
-    .line 831
+    .line 740
     monitor-exit v0
 
-    .line 832
+    .line 741
     return-void
 
-    .line 831
+    .line 740
     :catchall_a
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_c
     .catchall {:try_start_3 .. :try_end_c} :catchall_a
 
-    throw p1
+    throw v1
 .end method
 
 .method public onProviderDisabled(Ljava/lang/String;)V
     .registers 2
+    .param p1, "provider"  # Ljava/lang/String;
 
-    .line 844
+    .line 753
     return-void
 .end method
 
 .method public onProviderEnabled(Ljava/lang/String;)V
     .registers 2
+    .param p1, "provider"  # Ljava/lang/String;
 
-    .line 840
+    .line 749
     return-void
 .end method
 
 .method public onStatusChanged(Ljava/lang/String;ILandroid/os/Bundle;)V
     .registers 4
+    .param p1, "provider"  # Ljava/lang/String;
+    .param p2, "status"  # I
+    .param p3, "extras"  # Landroid/os/Bundle;
 
-    .line 836
+    .line 745
     return-void
 .end method

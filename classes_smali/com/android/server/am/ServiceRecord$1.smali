@@ -36,8 +36,9 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/am/ServiceRecord;Landroid/app/Notification;Ljava/lang/String;IIILcom/android/server/am/ServiceRecord;)V
     .registers 8
+    .param p1, "this$0"  # Lcom/android/server/am/ServiceRecord;
 
-    .line 802
+    .line 813
     iput-object p1, p0, Lcom/android/server/am/ServiceRecord$1;->this$0:Lcom/android/server/am/ServiceRecord;
 
     iput-object p2, p0, Lcom/android/server/am/ServiceRecord$1;->val$_foregroundNoti:Landroid/app/Notification;
@@ -60,482 +61,624 @@
 
 # virtual methods
 .method public run()V
-    .registers 15
+    .registers 20
 
-    .line 804
-    const-string v0, "ActivityManager"
+    .line 815
+    move-object/from16 v1, p0
 
-    const-class v1, Lcom/android/server/notification/NotificationManagerInternal;
+    const-string v2, "ActivityManager"
 
-    invoke-static {v1}, Lcom/android/server/LocalServices;->getService(Ljava/lang/Class;)Ljava/lang/Object;
+    const-class v0, Lcom/android/server/notification/NotificationManagerInternal;
 
-    move-result-object v1
+    invoke-static {v0}, Lcom/android/server/LocalServices;->getService(Ljava/lang/Class;)Ljava/lang/Object;
 
-    move-object v2, v1
+    move-result-object v0
 
-    check-cast v2, Lcom/android/server/notification/NotificationManagerInternal;
+    move-object v12, v0
 
-    .line 806
-    if-nez v2, :cond_e
+    check-cast v12, Lcom/android/server/notification/NotificationManagerInternal;
 
-    .line 807
+    .line 817
+    .local v12, "nm":Lcom/android/server/notification/NotificationManagerInternal;
+    if-nez v12, :cond_10
+
+    .line 818
     return-void
 
-    .line 809
-    :cond_e
-    iget-object v1, p0, Lcom/android/server/am/ServiceRecord$1;->val$_foregroundNoti:Landroid/app/Notification;
-
-    .line 811
-    :try_start_10
-    invoke-virtual {v1}, Landroid/app/Notification;->getSmallIcon()Landroid/graphics/drawable/Icon;
-
-    move-result-object v3
-
-    const/4 v4, 0x0
-
-    if-nez v3, :cond_f7
-
-    .line 816
-    new-instance v3, Ljava/lang/StringBuilder;
-
-    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
-
-    const-string v5, "Attempted to start a foreground service ("
-
-    invoke-virtual {v3, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    iget-object v5, p0, Lcom/android/server/am/ServiceRecord$1;->this$0:Lcom/android/server/am/ServiceRecord;
-
-    iget-object v5, v5, Lcom/android/server/am/ServiceRecord;->shortInstanceName:Ljava/lang/String;
-
-    invoke-virtual {v3, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    const-string v5, ") with a broken notification (no icon: "
-
-    invoke-virtual {v3, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v3, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
-
-    const-string v5, ")"
-
-    invoke-virtual {v3, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
-
-    move-result-object v3
-
-    invoke-static {v0, v3}, Landroid/util/Slog;->v(Ljava/lang/String;Ljava/lang/String;)I
+    .line 820
+    :cond_10
+    iget-object v3, v1, Lcom/android/server/am/ServiceRecord$1;->val$_foregroundNoti:Landroid/app/Notification;
 
     .line 822
-    iget-object v3, p0, Lcom/android/server/am/ServiceRecord$1;->this$0:Lcom/android/server/am/ServiceRecord;
+    .local v3, "localForegroundNoti":Landroid/app/Notification;
+    :try_start_12
+    invoke-virtual {v3}, Landroid/app/Notification;->getSmallIcon()Landroid/graphics/drawable/Icon;
 
-    iget-object v3, v3, Lcom/android/server/am/ServiceRecord;->appInfo:Landroid/content/pm/ApplicationInfo;
+    move-result-object v0
 
-    iget-object v5, p0, Lcom/android/server/am/ServiceRecord$1;->this$0:Lcom/android/server/am/ServiceRecord;
+    const/high16 v4, 0x10000000
 
-    iget-object v5, v5, Lcom/android/server/am/ServiceRecord;->ams:Lcom/android/server/am/ActivityManagerService;
+    const/4 v5, 0x0
 
-    iget-object v5, v5, Lcom/android/server/am/ActivityManagerService;->mContext:Landroid/content/Context;
-
-    .line 823
-    invoke-virtual {v5}, Landroid/content/Context;->getPackageManager()Landroid/content/pm/PackageManager;
-
-    move-result-object v5
-
-    .line 822
-    invoke-virtual {v3, v5}, Landroid/content/pm/ApplicationInfo;->loadLabel(Landroid/content/pm/PackageManager;)Ljava/lang/CharSequence;
-
-    move-result-object v3
-
-    .line 824
-    if-nez v3, :cond_56
-
-    .line 825
-    iget-object v3, p0, Lcom/android/server/am/ServiceRecord$1;->this$0:Lcom/android/server/am/ServiceRecord;
-
-    iget-object v3, v3, Lcom/android/server/am/ServiceRecord;->appInfo:Landroid/content/pm/ApplicationInfo;
-
-    iget-object v3, v3, Landroid/content/pm/ApplicationInfo;->packageName:Ljava/lang/String;
-    :try_end_56
-    .catch Ljava/lang/RuntimeException; {:try_start_10 .. :try_end_56} :catch_17c
+    if-nez v0, :cond_10a
 
     .line 827
-    :cond_56
-    nop
+    new-instance v0, Ljava/lang/StringBuilder;
 
-    .line 829
-    :try_start_57
-    iget-object v5, p0, Lcom/android/server/am/ServiceRecord$1;->this$0:Lcom/android/server/am/ServiceRecord;
+    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
 
-    iget-object v5, v5, Lcom/android/server/am/ServiceRecord;->ams:Lcom/android/server/am/ActivityManagerService;
+    const-string v6, "Attempted to start a foreground service ("
 
-    iget-object v5, v5, Lcom/android/server/am/ActivityManagerService;->mContext:Landroid/content/Context;
+    invoke-virtual {v0, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    iget-object v6, p0, Lcom/android/server/am/ServiceRecord$1;->this$0:Lcom/android/server/am/ServiceRecord;
+    iget-object v6, v1, Lcom/android/server/am/ServiceRecord$1;->this$0:Lcom/android/server/am/ServiceRecord;
+
+    iget-object v6, v6, Lcom/android/server/am/ServiceRecord;->shortInstanceName:Ljava/lang/String;
+
+    invoke-virtual {v0, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    const-string v6, ") with a broken notification (no icon: "
+
+    invoke-virtual {v0, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v0, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+
+    const-string v6, ")"
+
+    invoke-virtual {v0, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v0
+
+    invoke-static {v2, v0}, Landroid/util/Slog;->v(Ljava/lang/String;Ljava/lang/String;)I
+
+    .line 833
+    iget-object v0, v1, Lcom/android/server/am/ServiceRecord$1;->this$0:Lcom/android/server/am/ServiceRecord;
+
+    iget-object v0, v0, Lcom/android/server/am/ServiceRecord;->appInfo:Landroid/content/pm/ApplicationInfo;
+
+    iget-object v6, v1, Lcom/android/server/am/ServiceRecord$1;->this$0:Lcom/android/server/am/ServiceRecord;
+
+    iget-object v6, v6, Lcom/android/server/am/ServiceRecord;->ams:Lcom/android/server/am/ActivityManagerService;
+
+    iget-object v6, v6, Lcom/android/server/am/ActivityManagerService;->mContext:Landroid/content/Context;
+
+    .line 834
+    invoke-virtual {v6}, Landroid/content/Context;->getPackageManager()Landroid/content/pm/PackageManager;
+
+    move-result-object v6
+
+    .line 833
+    invoke-virtual {v0, v6}, Landroid/content/pm/ApplicationInfo;->loadLabel(Landroid/content/pm/PackageManager;)Ljava/lang/CharSequence;
+
+    move-result-object v0
+
+    .line 835
+    .local v0, "appName":Ljava/lang/CharSequence;
+    if-nez v0, :cond_5c
+
+    .line 836
+    iget-object v6, v1, Lcom/android/server/am/ServiceRecord$1;->this$0:Lcom/android/server/am/ServiceRecord;
 
     iget-object v6, v6, Lcom/android/server/am/ServiceRecord;->appInfo:Landroid/content/pm/ApplicationInfo;
 
     iget-object v6, v6, Landroid/content/pm/ApplicationInfo;->packageName:Ljava/lang/String;
+    :try_end_5a
+    .catch Ljava/lang/RuntimeException; {:try_start_12 .. :try_end_5a} :catch_1c5
 
-    new-instance v7, Landroid/os/UserHandle;
+    move-object v0, v6
 
-    iget-object v8, p0, Lcom/android/server/am/ServiceRecord$1;->this$0:Lcom/android/server/am/ServiceRecord;
+    goto :goto_5d
 
-    iget v8, v8, Lcom/android/server/am/ServiceRecord;->userId:I
+    .line 835
+    :cond_5c
+    move-object v6, v0
 
-    invoke-direct {v7, v8}, Landroid/os/UserHandle;-><init>(I)V
+    .line 838
+    .end local v0  # "appName":Ljava/lang/CharSequence;
+    .local v6, "appName":Ljava/lang/CharSequence;
+    :goto_5d
+    const/4 v7, 0x0
 
-    invoke-virtual {v5, v6, v4, v7}, Landroid/content/Context;->createPackageContextAsUser(Ljava/lang/String;ILandroid/os/UserHandle;)Landroid/content/Context;
+    .line 840
+    .local v7, "ctx":Landroid/content/Context;
+    :try_start_5e
+    iget-object v0, v1, Lcom/android/server/am/ServiceRecord$1;->this$0:Lcom/android/server/am/ServiceRecord;
 
-    move-result-object v5
+    iget-object v0, v0, Lcom/android/server/am/ServiceRecord;->ams:Lcom/android/server/am/ActivityManagerService;
 
-    .line 832
-    new-instance v6, Landroid/app/Notification$Builder;
+    iget-object v0, v0, Lcom/android/server/am/ActivityManagerService;->mContext:Landroid/content/Context;
 
-    .line 833
-    invoke-virtual {v1}, Landroid/app/Notification;->getChannelId()Ljava/lang/String;
-
-    move-result-object v7
-
-    invoke-direct {v6, v5, v7}, Landroid/app/Notification$Builder;-><init>(Landroid/content/Context;Ljava/lang/String;)V
-
-    .line 836
-    iget-object v5, p0, Lcom/android/server/am/ServiceRecord$1;->this$0:Lcom/android/server/am/ServiceRecord;
-
-    iget-object v5, v5, Lcom/android/server/am/ServiceRecord;->appInfo:Landroid/content/pm/ApplicationInfo;
-
-    iget v5, v5, Landroid/content/pm/ApplicationInfo;->icon:I
-
-    invoke-virtual {v6, v5}, Landroid/app/Notification$Builder;->setSmallIcon(I)Landroid/app/Notification$Builder;
-
-    .line 839
-    const/16 v5, 0x40
-
-    const/4 v7, 0x1
-
-    invoke-virtual {v6, v5, v7}, Landroid/app/Notification$Builder;->setFlag(IZ)Landroid/app/Notification$Builder;
-
-    .line 841
-    new-instance v10, Landroid/content/Intent;
-
-    const-string v5, "android.settings.APPLICATION_DETAILS_SETTINGS"
-
-    invoke-direct {v10, v5}, Landroid/content/Intent;-><init>(Ljava/lang/String;)V
-
-    .line 843
-    const-string/jumbo v5, "package"
-
-    iget-object v8, p0, Lcom/android/server/am/ServiceRecord$1;->this$0:Lcom/android/server/am/ServiceRecord;
+    iget-object v8, v1, Lcom/android/server/am/ServiceRecord$1;->this$0:Lcom/android/server/am/ServiceRecord;
 
     iget-object v8, v8, Lcom/android/server/am/ServiceRecord;->appInfo:Landroid/content/pm/ApplicationInfo;
 
     iget-object v8, v8, Landroid/content/pm/ApplicationInfo;->packageName:Ljava/lang/String;
 
-    const/4 v9, 0x0
+    new-instance v9, Landroid/os/UserHandle;
 
-    invoke-static {v5, v8, v9}, Landroid/net/Uri;->fromParts(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Landroid/net/Uri;
+    iget-object v10, v1, Lcom/android/server/am/ServiceRecord$1;->this$0:Lcom/android/server/am/ServiceRecord;
 
-    move-result-object v5
+    iget v10, v10, Lcom/android/server/am/ServiceRecord;->userId:I
 
-    invoke-virtual {v10, v5}, Landroid/content/Intent;->setData(Landroid/net/Uri;)Landroid/content/Intent;
+    invoke-direct {v9, v10}, Landroid/os/UserHandle;-><init>(I)V
 
-    .line 845
-    iget-object v5, p0, Lcom/android/server/am/ServiceRecord$1;->this$0:Lcom/android/server/am/ServiceRecord;
+    invoke-virtual {v0, v8, v5, v9}, Landroid/content/Context;->createPackageContextAsUser(Ljava/lang/String;ILandroid/os/UserHandle;)Landroid/content/Context;
 
-    iget-object v5, v5, Lcom/android/server/am/ServiceRecord;->ams:Lcom/android/server/am/ActivityManagerService;
+    move-result-object v0
 
-    iget-object v8, v5, Lcom/android/server/am/ActivityManagerService;->mContext:Landroid/content/Context;
+    move-object v7, v0
 
-    const/4 v9, 0x0
+    .line 843
+    new-instance v0, Landroid/app/Notification$Builder;
 
-    const/high16 v11, 0x8000000
-
-    const/4 v12, 0x0
-
-    iget-object v5, p0, Lcom/android/server/am/ServiceRecord$1;->this$0:Lcom/android/server/am/ServiceRecord;
-
-    iget v5, v5, Lcom/android/server/am/ServiceRecord;->userId:I
-
-    .line 847
-    invoke-static {v5}, Landroid/os/UserHandle;->of(I)Landroid/os/UserHandle;
-
-    move-result-object v13
-
-    .line 845
-    invoke-static/range {v8 .. v13}, Landroid/app/PendingIntent;->getActivityAsUser(Landroid/content/Context;ILandroid/content/Intent;ILandroid/os/Bundle;Landroid/os/UserHandle;)Landroid/app/PendingIntent;
-
-    move-result-object v5
-
-    .line 848
-    iget-object v8, p0, Lcom/android/server/am/ServiceRecord$1;->this$0:Lcom/android/server/am/ServiceRecord;
-
-    iget-object v8, v8, Lcom/android/server/am/ServiceRecord;->ams:Lcom/android/server/am/ActivityManagerService;
-
-    iget-object v8, v8, Lcom/android/server/am/ActivityManagerService;->mContext:Landroid/content/Context;
-
-    const v9, 0x106001c
-
-    invoke-virtual {v8, v9}, Landroid/content/Context;->getColor(I)I
-
-    move-result v8
-
-    invoke-virtual {v6, v8}, Landroid/app/Notification$Builder;->setColor(I)Landroid/app/Notification$Builder;
-
-    .line 851
-    iget-object v8, p0, Lcom/android/server/am/ServiceRecord$1;->this$0:Lcom/android/server/am/ServiceRecord;
-
-    iget-object v8, v8, Lcom/android/server/am/ServiceRecord;->ams:Lcom/android/server/am/ActivityManagerService;
-
-    iget-object v8, v8, Lcom/android/server/am/ActivityManagerService;->mContext:Landroid/content/Context;
-
-    const v9, 0x104009c
-
-    new-array v10, v7, [Ljava/lang/Object;
-
-    aput-object v3, v10, v4
-
-    .line 852
-    invoke-virtual {v8, v9, v10}, Landroid/content/Context;->getString(I[Ljava/lang/Object;)Ljava/lang/String;
+    .line 844
+    invoke-virtual {v3}, Landroid/app/Notification;->getChannelId()Ljava/lang/String;
 
     move-result-object v8
 
-    .line 851
-    invoke-virtual {v6, v8}, Landroid/app/Notification$Builder;->setContentTitle(Ljava/lang/CharSequence;)Landroid/app/Notification$Builder;
+    invoke-direct {v0, v7, v8}, Landroid/app/Notification$Builder;-><init>(Landroid/content/Context;Ljava/lang/String;)V
+
+    .line 847
+    .local v0, "notiBuilder":Landroid/app/Notification$Builder;
+    iget-object v8, v1, Lcom/android/server/am/ServiceRecord$1;->this$0:Lcom/android/server/am/ServiceRecord;
+
+    iget-object v8, v8, Lcom/android/server/am/ServiceRecord;->appInfo:Landroid/content/pm/ApplicationInfo;
+
+    iget v8, v8, Landroid/content/pm/ApplicationInfo;->icon:I
+
+    invoke-virtual {v0, v8}, Landroid/app/Notification$Builder;->setSmallIcon(I)Landroid/app/Notification$Builder;
+
+    .line 850
+    const/16 v8, 0x40
+
+    const/4 v9, 0x1
+
+    invoke-virtual {v0, v8, v9}, Landroid/app/Notification$Builder;->setFlag(IZ)Landroid/app/Notification$Builder;
+
+    .line 852
+    new-instance v8, Landroid/content/Intent;
+
+    const-string v10, "android.settings.APPLICATION_DETAILS_SETTINGS"
+
+    invoke-direct {v8, v10}, Landroid/content/Intent;-><init>(Ljava/lang/String;)V
+
+    .line 854
+    .local v8, "runningIntent":Landroid/content/Intent;
+    const-string/jumbo v10, "package"
+
+    iget-object v11, v1, Lcom/android/server/am/ServiceRecord$1;->this$0:Lcom/android/server/am/ServiceRecord;
+
+    iget-object v11, v11, Lcom/android/server/am/ServiceRecord;->appInfo:Landroid/content/pm/ApplicationInfo;
+
+    iget-object v11, v11, Landroid/content/pm/ApplicationInfo;->packageName:Ljava/lang/String;
+
+    const/4 v13, 0x0
+
+    invoke-static {v10, v11, v13}, Landroid/net/Uri;->fromParts(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Landroid/net/Uri;
+
+    move-result-object v10
+
+    invoke-virtual {v8, v10}, Landroid/content/Intent;->setData(Landroid/net/Uri;)Landroid/content/Intent;
 
     .line 856
-    iget-object v8, p0, Lcom/android/server/am/ServiceRecord$1;->this$0:Lcom/android/server/am/ServiceRecord;
+    iget-object v10, v1, Lcom/android/server/am/ServiceRecord$1;->this$0:Lcom/android/server/am/ServiceRecord;
 
-    iget-object v8, v8, Lcom/android/server/am/ServiceRecord;->ams:Lcom/android/server/am/ActivityManagerService;
+    iget-object v10, v10, Lcom/android/server/am/ServiceRecord;->ams:Lcom/android/server/am/ActivityManagerService;
 
-    iget-object v8, v8, Lcom/android/server/am/ActivityManagerService;->mContext:Landroid/content/Context;
+    iget-object v13, v10, Lcom/android/server/am/ActivityManagerService;->mContext:Landroid/content/Context;
 
-    const v9, 0x104009b
+    const/4 v14, 0x0
 
-    new-array v7, v7, [Ljava/lang/Object;
+    const/high16 v16, 0x8000000
 
-    aput-object v3, v7, v4
+    const/16 v17, 0x0
 
-    .line 857
-    invoke-virtual {v8, v9, v7}, Landroid/content/Context;->getString(I[Ljava/lang/Object;)Ljava/lang/String;
+    iget-object v10, v1, Lcom/android/server/am/ServiceRecord$1;->this$0:Lcom/android/server/am/ServiceRecord;
 
-    move-result-object v3
+    iget v10, v10, Lcom/android/server/am/ServiceRecord;->userId:I
+
+    .line 858
+    invoke-static {v10}, Landroid/os/UserHandle;->of(I)Landroid/os/UserHandle;
+
+    move-result-object v18
 
     .line 856
-    invoke-virtual {v6, v3}, Landroid/app/Notification$Builder;->setContentText(Ljava/lang/CharSequence;)Landroid/app/Notification$Builder;
+    move-object v15, v8
 
-    .line 861
-    invoke-virtual {v6, v5}, Landroid/app/Notification$Builder;->setContentIntent(Landroid/app/PendingIntent;)Landroid/app/Notification$Builder;
+    invoke-static/range {v13 .. v18}, Landroid/app/PendingIntent;->getActivityAsUser(Landroid/content/Context;ILandroid/content/Intent;ILandroid/os/Bundle;Landroid/os/UserHandle;)Landroid/app/PendingIntent;
+
+    move-result-object v10
+
+    .line 859
+    .local v10, "pi":Landroid/app/PendingIntent;
+    iget-object v11, v1, Lcom/android/server/am/ServiceRecord$1;->this$0:Lcom/android/server/am/ServiceRecord;
+
+    iget-object v11, v11, Lcom/android/server/am/ServiceRecord;->ams:Lcom/android/server/am/ActivityManagerService;
+
+    iget-object v11, v11, Lcom/android/server/am/ActivityManagerService;->mContext:Landroid/content/Context;
+
+    const v13, 0x106001c
+
+    invoke-virtual {v11, v13}, Landroid/content/Context;->getColor(I)I
+
+    move-result v11
+
+    invoke-virtual {v0, v11}, Landroid/app/Notification$Builder;->setColor(I)Landroid/app/Notification$Builder;
+
+    .line 862
+    iget-object v11, v1, Lcom/android/server/am/ServiceRecord$1;->this$0:Lcom/android/server/am/ServiceRecord;
+
+    iget-object v11, v11, Lcom/android/server/am/ServiceRecord;->ams:Lcom/android/server/am/ActivityManagerService;
+
+    iget-object v11, v11, Lcom/android/server/am/ActivityManagerService;->mContext:Landroid/content/Context;
+
+    const v13, 0x1040099
+
+    new-array v14, v9, [Ljava/lang/Object;
+
+    aput-object v6, v14, v5
 
     .line 863
-    invoke-virtual {v6}, Landroid/app/Notification$Builder;->build()Landroid/app/Notification;
+    invoke-virtual {v11, v13, v14}, Landroid/content/Context;->getString(I[Ljava/lang/Object;)Ljava/lang/String;
 
-    move-result-object v1
-    :try_end_f5
-    .catch Landroid/content/pm/PackageManager$NameNotFoundException; {:try_start_57 .. :try_end_f5} :catch_f6
-    .catch Ljava/lang/RuntimeException; {:try_start_57 .. :try_end_f5} :catch_17c
+    move-result-object v11
 
-    .line 865
-    goto :goto_f7
-
-    .line 864
-    :catch_f6
-    move-exception v3
+    .line 862
+    invoke-virtual {v0, v11}, Landroid/app/Notification$Builder;->setContentTitle(Ljava/lang/CharSequence;)Landroid/app/Notification$Builder;
 
     .line 867
-    :cond_f7
-    :goto_f7
-    :try_start_f7
-    iget-object v3, p0, Lcom/android/server/am/ServiceRecord$1;->val$localPackageName:Ljava/lang/String;
+    iget-object v11, v1, Lcom/android/server/am/ServiceRecord$1;->this$0:Lcom/android/server/am/ServiceRecord;
 
-    iget v5, p0, Lcom/android/server/am/ServiceRecord$1;->val$appUid:I
+    iget-object v11, v11, Lcom/android/server/am/ServiceRecord;->ams:Lcom/android/server/am/ActivityManagerService;
+
+    iget-object v11, v11, Lcom/android/server/am/ActivityManagerService;->mContext:Landroid/content/Context;
+
+    const v13, 0x1040098
+
+    new-array v9, v9, [Ljava/lang/Object;
+
+    aput-object v6, v9, v5
 
     .line 868
-    invoke-virtual {v1}, Landroid/app/Notification;->getChannelId()Ljava/lang/String;
+    invoke-virtual {v11, v13, v9}, Landroid/content/Context;->getString(I[Ljava/lang/Object;)Ljava/lang/String;
+
+    move-result-object v9
+
+    .line 867
+    invoke-virtual {v0, v9}, Landroid/app/Notification$Builder;->setContentText(Ljava/lang/CharSequence;)Landroid/app/Notification$Builder;
+
+    .line 872
+    invoke-virtual {v0, v10}, Landroid/app/Notification$Builder;->setContentIntent(Landroid/app/PendingIntent;)Landroid/app/Notification$Builder;
+
+    .line 874
+    invoke-virtual {v0}, Landroid/app/Notification$Builder;->build()Landroid/app/Notification;
+
+    move-result-object v9
+
+    move-object v3, v9
+
+    .line 877
+    iget v9, v3, Landroid/app/Notification;->flags:I
+
+    or-int/2addr v9, v4
+
+    iput v9, v3, Landroid/app/Notification;->flags:I
+    :try_end_105
+    .catch Landroid/content/pm/PackageManager$NameNotFoundException; {:try_start_5e .. :try_end_105} :catch_107
+    .catch Ljava/lang/RuntimeException; {:try_start_5e .. :try_end_105} :catch_1c5
+
+    .line 880
+    .end local v0  # "notiBuilder":Landroid/app/Notification$Builder;
+    .end local v8  # "runningIntent":Landroid/content/Intent;
+    .end local v10  # "pi":Landroid/app/PendingIntent;
+    move-object v13, v3
+
+    goto :goto_10b
+
+    .line 879
+    :catch_107
+    move-exception v0
+
+    move-object v13, v3
+
+    goto :goto_10b
+
+    .line 822
+    .end local v6  # "appName":Ljava/lang/CharSequence;
+    .end local v7  # "ctx":Landroid/content/Context;
+    :cond_10a
+    move-object v13, v3
+
+    .line 882
+    .end local v3  # "localForegroundNoti":Landroid/app/Notification;
+    .local v13, "localForegroundNoti":Landroid/app/Notification;
+    :goto_10b
+    :try_start_10b
+    iget-object v0, v1, Lcom/android/server/am/ServiceRecord$1;->val$localPackageName:Ljava/lang/String;
+
+    iget v3, v1, Lcom/android/server/am/ServiceRecord$1;->val$appUid:I
+
+    .line 883
+    invoke-virtual {v13}, Landroid/app/Notification;->getChannelId()Ljava/lang/String;
 
     move-result-object v6
 
-    .line 867
-    invoke-interface {v2, v3, v5, v6}, Lcom/android/server/notification/NotificationManagerInternal;->getNotificationChannel(Ljava/lang/String;ILjava/lang/String;)Landroid/app/NotificationChannel;
+    .line 882
+    invoke-interface {v12, v0, v3, v6}, Lcom/android/server/notification/NotificationManagerInternal;->getNotificationChannel(Ljava/lang/String;ILjava/lang/String;)Landroid/app/NotificationChannel;
 
-    move-result-object v3
-    :try_end_103
-    .catch Ljava/lang/RuntimeException; {:try_start_f7 .. :try_end_103} :catch_17c
+    move-result-object v0
+    :try_end_117
+    .catch Ljava/lang/RuntimeException; {:try_start_10b .. :try_end_117} :catch_1c3
 
-    if-nez v3, :cond_143
+    if-nez v0, :cond_159
 
-    .line 869
-    nop
-
-    .line 871
+    .line 884
     const/16 v3, 0x1b
 
-    :try_start_108
-    iget-object v5, p0, Lcom/android/server/am/ServiceRecord$1;->this$0:Lcom/android/server/am/ServiceRecord;
+    .line 886
+    .local v3, "targetSdkVersion":I
+    :try_start_11b
+    iget-object v0, v1, Lcom/android/server/am/ServiceRecord$1;->this$0:Lcom/android/server/am/ServiceRecord;
 
-    iget-object v5, v5, Lcom/android/server/am/ServiceRecord;->ams:Lcom/android/server/am/ActivityManagerService;
+    iget-object v0, v0, Lcom/android/server/am/ServiceRecord;->ams:Lcom/android/server/am/ActivityManagerService;
 
-    iget-object v5, v5, Lcom/android/server/am/ActivityManagerService;->mContext:Landroid/content/Context;
+    iget-object v0, v0, Lcom/android/server/am/ActivityManagerService;->mContext:Landroid/content/Context;
 
-    .line 872
-    invoke-virtual {v5}, Landroid/content/Context;->getPackageManager()Landroid/content/pm/PackageManager;
+    .line 887
+    invoke-virtual {v0}, Landroid/content/Context;->getPackageManager()Landroid/content/pm/PackageManager;
 
-    move-result-object v5
+    move-result-object v0
 
-    iget-object v6, p0, Lcom/android/server/am/ServiceRecord$1;->this$0:Lcom/android/server/am/ServiceRecord;
+    iget-object v6, v1, Lcom/android/server/am/ServiceRecord$1;->this$0:Lcom/android/server/am/ServiceRecord;
 
     iget-object v6, v6, Lcom/android/server/am/ServiceRecord;->appInfo:Landroid/content/pm/ApplicationInfo;
 
     iget-object v6, v6, Landroid/content/pm/ApplicationInfo;->packageName:Ljava/lang/String;
 
-    iget-object v7, p0, Lcom/android/server/am/ServiceRecord$1;->this$0:Lcom/android/server/am/ServiceRecord;
+    iget-object v7, v1, Lcom/android/server/am/ServiceRecord$1;->this$0:Lcom/android/server/am/ServiceRecord;
 
     iget v7, v7, Lcom/android/server/am/ServiceRecord;->userId:I
 
-    invoke-virtual {v5, v6, v4, v7}, Landroid/content/pm/PackageManager;->getApplicationInfoAsUser(Ljava/lang/String;II)Landroid/content/pm/ApplicationInfo;
+    invoke-virtual {v0, v6, v5, v7}, Landroid/content/pm/PackageManager;->getApplicationInfoAsUser(Ljava/lang/String;II)Landroid/content/pm/ApplicationInfo;
+
+    move-result-object v0
+
+    .line 889
+    .local v0, "applicationInfo":Landroid/content/pm/ApplicationInfo;
+    iget v5, v0, Landroid/content/pm/ApplicationInfo;->targetSdkVersion:I
+    :try_end_135
+    .catch Landroid/content/pm/PackageManager$NameNotFoundException; {:try_start_11b .. :try_end_135} :catch_137
+    .catch Ljava/lang/RuntimeException; {:try_start_11b .. :try_end_135} :catch_1c3
+
+    move v3, v5
+
+    .line 891
+    .end local v0  # "applicationInfo":Landroid/content/pm/ApplicationInfo;
+    goto :goto_138
+
+    .line 890
+    :catch_137
+    move-exception v0
+
+    .line 892
+    :goto_138
+    const/16 v0, 0x1b
+
+    if-ge v3, v0, :cond_13d
+
+    goto :goto_159
+
+    .line 893
+    :cond_13d
+    :try_start_13d
+    new-instance v0, Ljava/lang/RuntimeException;
+
+    new-instance v4, Ljava/lang/StringBuilder;
+
+    invoke-direct {v4}, Ljava/lang/StringBuilder;-><init>()V
+
+    const-string/jumbo v5, "invalid channel for service notification: "
+
+    invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    iget-object v5, v1, Lcom/android/server/am/ServiceRecord$1;->this$0:Lcom/android/server/am/ServiceRecord;
+
+    iget-object v5, v5, Lcom/android/server/am/ServiceRecord;->foregroundNoti:Landroid/app/Notification;
+
+    invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v4}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
     move-result-object v4
 
-    .line 874
-    iget v4, v4, Landroid/content/pm/ApplicationInfo;->targetSdkVersion:I
-    :try_end_122
-    .catch Landroid/content/pm/PackageManager$NameNotFoundException; {:try_start_108 .. :try_end_122} :catch_123
-    .catch Ljava/lang/RuntimeException; {:try_start_108 .. :try_end_122} :catch_17c
+    invoke-direct {v0, v4}, Ljava/lang/RuntimeException;-><init>(Ljava/lang/String;)V
 
-    .line 876
-    goto :goto_125
+    .end local v12  # "nm":Lcom/android/server/notification/NotificationManagerInternal;
+    .end local v13  # "localForegroundNoti":Landroid/app/Notification;
+    .end local p0  # "this":Lcom/android/server/am/ServiceRecord$1;
+    throw v0
 
-    .line 875
-    :catch_123
-    move-exception v4
+    .line 898
+    .end local v3  # "targetSdkVersion":I
+    .restart local v12  # "nm":Lcom/android/server/notification/NotificationManagerInternal;
+    .restart local v13  # "localForegroundNoti":Landroid/app/Notification;
+    .restart local p0  # "this":Lcom/android/server/am/ServiceRecord$1;
+    :cond_159
+    :goto_159
+    invoke-virtual {v13}, Landroid/app/Notification;->getSmallIcon()Landroid/graphics/drawable/Icon;
 
-    move v4, v3
+    move-result-object v0
 
-    .line 877
-    :goto_125
-    if-ge v4, v3, :cond_128
+    if-eqz v0, :cond_1a7
 
-    goto :goto_143
+    .line 908
+    iget-object v0, v13, Landroid/app/Notification;->contentView:Landroid/widget/RemoteViews;
 
-    .line 878
-    :cond_128
-    :try_start_128
-    new-instance v1, Ljava/lang/RuntimeException;
+    if-eqz v0, :cond_18e
 
-    new-instance v2, Ljava/lang/StringBuilder;
+    iget-object v0, v13, Landroid/app/Notification;->contentView:Landroid/widget/RemoteViews;
 
-    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-virtual {v0}, Landroid/widget/RemoteViews;->getLayoutId()I
 
-    const-string v3, "invalid channel for service notification: "
+    move-result v0
 
-    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    const v3, 0x109009e
 
-    iget-object v3, p0, Lcom/android/server/am/ServiceRecord$1;->this$0:Lcom/android/server/am/ServiceRecord;
+    if-ne v0, v3, :cond_18e
 
-    iget-object v3, v3, Lcom/android/server/am/ServiceRecord;->foregroundNoti:Landroid/app/Notification;
+    .line 909
+    iget-object v0, v13, Landroid/app/Notification;->extras:Landroid/os/Bundle;
 
-    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    const-string v3, "android.title"
 
-    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v0, v3}, Landroid/os/Bundle;->getCharSequence(Ljava/lang/String;)Ljava/lang/CharSequence;
 
-    move-result-object v2
+    move-result-object v0
 
-    invoke-direct {v1, v2}, Ljava/lang/RuntimeException;-><init>(Ljava/lang/String;)V
+    .line 910
+    .local v0, "title":Ljava/lang/CharSequence;
+    iget-object v3, v13, Landroid/app/Notification;->extras:Landroid/os/Bundle;
 
-    throw v1
+    const-string v5, "android.text"
 
-    .line 883
-    :cond_143
-    :goto_143
-    invoke-virtual {v1}, Landroid/app/Notification;->getSmallIcon()Landroid/graphics/drawable/Icon;
+    invoke-virtual {v3, v5}, Landroid/os/Bundle;->getCharSequence(Ljava/lang/String;)Ljava/lang/CharSequence;
 
     move-result-object v3
 
-    if-eqz v3, :cond_161
+    .line 911
+    .local v3, "text":Ljava/lang/CharSequence;
+    invoke-virtual {v13}, Landroid/app/Notification;->getSmallIcon()Landroid/graphics/drawable/Icon;
 
-    .line 891
-    iget-object v3, p0, Lcom/android/server/am/ServiceRecord$1;->val$localPackageName:Ljava/lang/String;
+    move-result-object v5
 
-    iget-object v4, p0, Lcom/android/server/am/ServiceRecord$1;->val$localPackageName:Ljava/lang/String;
+    if-eqz v5, :cond_18d
 
-    iget v5, p0, Lcom/android/server/am/ServiceRecord$1;->val$appUid:I
+    if-nez v0, :cond_18d
 
-    iget v6, p0, Lcom/android/server/am/ServiceRecord$1;->val$appPid:I
+    if-nez v3, :cond_18d
 
-    const/4 v7, 0x0
+    .line 912
+    iget v5, v13, Landroid/app/Notification;->flags:I
 
-    iget v8, p0, Lcom/android/server/am/ServiceRecord$1;->val$localForegroundId:I
+    or-int/2addr v4, v5
 
-    iget-object v9, p0, Lcom/android/server/am/ServiceRecord$1;->this$0:Lcom/android/server/am/ServiceRecord;
+    iput v4, v13, Landroid/app/Notification;->flags:I
 
-    iget v10, v9, Lcom/android/server/am/ServiceRecord;->userId:I
+    .line 914
+    :cond_18d
+    return-void
 
-    move-object v9, v1
+    .line 918
+    .end local v0  # "title":Ljava/lang/CharSequence;
+    .end local v3  # "text":Ljava/lang/CharSequence;
+    :cond_18e
+    iget-object v4, v1, Lcom/android/server/am/ServiceRecord$1;->val$localPackageName:Ljava/lang/String;
 
-    invoke-interface/range {v2 .. v10}, Lcom/android/server/notification/NotificationManagerInternal;->enqueueNotification(Ljava/lang/String;Ljava/lang/String;IILjava/lang/String;ILandroid/app/Notification;I)V
+    iget-object v5, v1, Lcom/android/server/am/ServiceRecord$1;->val$localPackageName:Ljava/lang/String;
 
-    .line 895
-    iget-object v2, p0, Lcom/android/server/am/ServiceRecord$1;->this$0:Lcom/android/server/am/ServiceRecord;
+    iget v6, v1, Lcom/android/server/am/ServiceRecord$1;->val$appUid:I
 
-    iput-object v1, v2, Lcom/android/server/am/ServiceRecord;->foregroundNoti:Landroid/app/Notification;
+    iget v7, v1, Lcom/android/server/am/ServiceRecord$1;->val$appPid:I
 
-    .line 902
-    goto :goto_193
+    const/4 v8, 0x0
 
-    .line 888
-    :cond_161
-    new-instance v1, Ljava/lang/RuntimeException;
+    iget v9, v1, Lcom/android/server/am/ServiceRecord$1;->val$localForegroundId:I
 
-    new-instance v2, Ljava/lang/StringBuilder;
+    iget-object v0, v1, Lcom/android/server/am/ServiceRecord$1;->this$0:Lcom/android/server/am/ServiceRecord;
 
-    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
+    iget v11, v0, Lcom/android/server/am/ServiceRecord;->userId:I
 
-    const-string v3, "invalid service notification: "
+    move-object v3, v12
 
-    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    move-object v10, v13
 
-    iget-object v3, p0, Lcom/android/server/am/ServiceRecord$1;->this$0:Lcom/android/server/am/ServiceRecord;
+    invoke-interface/range {v3 .. v11}, Lcom/android/server/notification/NotificationManagerInternal;->enqueueNotification(Ljava/lang/String;Ljava/lang/String;IILjava/lang/String;ILandroid/app/Notification;I)V
 
-    iget-object v3, v3, Lcom/android/server/am/ServiceRecord;->foregroundNoti:Landroid/app/Notification;
+    .line 922
+    iget-object v0, v1, Lcom/android/server/am/ServiceRecord$1;->this$0:Lcom/android/server/am/ServiceRecord;
 
-    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    iput-object v13, v0, Lcom/android/server/am/ServiceRecord;->foregroundNoti:Landroid/app/Notification;
 
-    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
-
-    move-result-object v2
-
-    invoke-direct {v1, v2}, Ljava/lang/RuntimeException;-><init>(Ljava/lang/String;)V
-
-    throw v1
-    :try_end_17c
-    .catch Ljava/lang/RuntimeException; {:try_start_128 .. :try_end_17c} :catch_17c
-
-    .line 896
-    :catch_17c
-    move-exception v1
-
-    .line 897
-    const-string v2, "Error showing notification for service"
-
-    invoke-static {v0, v2, v1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
-
-    .line 900
-    iget-object v0, p0, Lcom/android/server/am/ServiceRecord$1;->this$0:Lcom/android/server/am/ServiceRecord;
-
-    iget-object v0, v0, Lcom/android/server/am/ServiceRecord;->ams:Lcom/android/server/am/ActivityManagerService;
-
-    iget-object v0, v0, Lcom/android/server/am/ActivityManagerService;->mServices:Lcom/android/server/am/ActiveServices;
-
-    iget-object v1, p0, Lcom/android/server/am/ServiceRecord$1;->val$record:Lcom/android/server/am/ServiceRecord;
-
-    iget v2, p0, Lcom/android/server/am/ServiceRecord$1;->val$appUid:I
-
-    iget v3, p0, Lcom/android/server/am/ServiceRecord$1;->val$appPid:I
-
-    iget-object v4, p0, Lcom/android/server/am/ServiceRecord$1;->val$localPackageName:Ljava/lang/String;
-
-    invoke-virtual {v0, v1, v2, v3, v4}, Lcom/android/server/am/ActiveServices;->killMisbehavingService(Lcom/android/server/am/ServiceRecord;IILjava/lang/String;)V
+    .line 929
+    goto :goto_1dd
 
     .line 903
-    :goto_193
+    :cond_1a7
+    new-instance v0, Ljava/lang/RuntimeException;
+
+    new-instance v3, Ljava/lang/StringBuilder;
+
+    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
+
+    const-string/jumbo v4, "invalid service notification: "
+
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    iget-object v4, v1, Lcom/android/server/am/ServiceRecord$1;->this$0:Lcom/android/server/am/ServiceRecord;
+
+    iget-object v4, v4, Lcom/android/server/am/ServiceRecord;->foregroundNoti:Landroid/app/Notification;
+
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v3
+
+    invoke-direct {v0, v3}, Ljava/lang/RuntimeException;-><init>(Ljava/lang/String;)V
+
+    .end local v12  # "nm":Lcom/android/server/notification/NotificationManagerInternal;
+    .end local v13  # "localForegroundNoti":Landroid/app/Notification;
+    .end local p0  # "this":Lcom/android/server/am/ServiceRecord$1;
+    throw v0
+    :try_end_1c3
+    .catch Ljava/lang/RuntimeException; {:try_start_13d .. :try_end_1c3} :catch_1c3
+
+    .line 923
+    .restart local v12  # "nm":Lcom/android/server/notification/NotificationManagerInternal;
+    .restart local v13  # "localForegroundNoti":Landroid/app/Notification;
+    .restart local p0  # "this":Lcom/android/server/am/ServiceRecord$1;
+    :catch_1c3
+    move-exception v0
+
+    goto :goto_1c7
+
+    .end local v13  # "localForegroundNoti":Landroid/app/Notification;
+    .local v3, "localForegroundNoti":Landroid/app/Notification;
+    :catch_1c5
+    move-exception v0
+
+    move-object v13, v3
+
+    .line 924
+    .end local v3  # "localForegroundNoti":Landroid/app/Notification;
+    .local v0, "e":Ljava/lang/RuntimeException;
+    .restart local v13  # "localForegroundNoti":Landroid/app/Notification;
+    :goto_1c7
+    const-string v3, "Error showing notification for service"
+
+    invoke-static {v2, v3, v0}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+
+    .line 927
+    iget-object v2, v1, Lcom/android/server/am/ServiceRecord$1;->this$0:Lcom/android/server/am/ServiceRecord;
+
+    iget-object v2, v2, Lcom/android/server/am/ServiceRecord;->ams:Lcom/android/server/am/ActivityManagerService;
+
+    iget-object v2, v2, Lcom/android/server/am/ActivityManagerService;->mServices:Lcom/android/server/am/ActiveServices;
+
+    iget-object v3, v1, Lcom/android/server/am/ServiceRecord$1;->val$record:Lcom/android/server/am/ServiceRecord;
+
+    iget v4, v1, Lcom/android/server/am/ServiceRecord$1;->val$appUid:I
+
+    iget v5, v1, Lcom/android/server/am/ServiceRecord$1;->val$appPid:I
+
+    iget-object v6, v1, Lcom/android/server/am/ServiceRecord$1;->val$localPackageName:Ljava/lang/String;
+
+    invoke-virtual {v2, v3, v4, v5, v6}, Lcom/android/server/am/ActiveServices;->killMisbehavingService(Lcom/android/server/am/ServiceRecord;IILjava/lang/String;)V
+
+    .line 930
+    .end local v0  # "e":Ljava/lang/RuntimeException;
+    :goto_1dd
     return-void
 .end method

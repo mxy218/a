@@ -21,6 +21,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/content/SyncManager;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/content/SyncManager;
 
     .line 322
     iput-object p1, p0, Lcom/android/server/content/SyncManager$2;->this$0:Lcom/android/server/content/SyncManager;
@@ -33,23 +34,26 @@
 
 # virtual methods
 .method public onReceive(Landroid/content/Context;Landroid/content/Intent;)V
-    .registers 4
+    .registers 6
+    .param p1, "context"  # Landroid/content/Context;
+    .param p2, "intent"  # Landroid/content/Intent;
 
     .line 325
-    new-instance p1, Lcom/android/server/content/SyncStorageEngine$EndPoint;
+    new-instance v0, Lcom/android/server/content/SyncStorageEngine$EndPoint;
 
     invoke-virtual {p0}, Lcom/android/server/content/SyncManager$2;->getSendingUserId()I
 
-    move-result p2
+    move-result v1
 
-    const/4 v0, 0x0
+    const/4 v2, 0x0
 
-    invoke-direct {p1, v0, v0, p2}, Lcom/android/server/content/SyncStorageEngine$EndPoint;-><init>(Landroid/accounts/Account;Ljava/lang/String;I)V
+    invoke-direct {v0, v2, v2, v1}, Lcom/android/server/content/SyncStorageEngine$EndPoint;-><init>(Landroid/accounts/Account;Ljava/lang/String;I)V
 
     .line 326
-    iget-object p2, p0, Lcom/android/server/content/SyncManager$2;->this$0:Lcom/android/server/content/SyncManager;
+    .local v0, "target":Lcom/android/server/content/SyncStorageEngine$EndPoint;
+    iget-object v1, p0, Lcom/android/server/content/SyncManager$2;->this$0:Lcom/android/server/content/SyncManager;
 
-    invoke-static {p2, p1}, Lcom/android/server/content/SyncManager;->access$200(Lcom/android/server/content/SyncManager;Lcom/android/server/content/SyncStorageEngine$EndPoint;)V
+    invoke-static {v1, v0}, Lcom/android/server/content/SyncManager;->access$200(Lcom/android/server/content/SyncManager;Lcom/android/server/content/SyncStorageEngine$EndPoint;)V
 
     .line 327
     return-void

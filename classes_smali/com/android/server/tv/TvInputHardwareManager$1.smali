@@ -21,6 +21,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/tv/TvInputHardwareManager;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/tv/TvInputHardwareManager;
 
     .line 102
     iput-object p1, p0, Lcom/android/server/tv/TvInputHardwareManager$1;->this$0:Lcom/android/server/tv/TvInputHardwareManager;
@@ -34,6 +35,8 @@
 # virtual methods
 .method public onReceive(Landroid/content/Context;Landroid/content/Intent;)V
     .registers 4
+    .param p1, "context"  # Landroid/content/Context;
+    .param p2, "intent"  # Landroid/content/Intent;
 
     .line 105
     iget-object v0, p0, Lcom/android/server/tv/TvInputHardwareManager$1;->this$0:Lcom/android/server/tv/TvInputHardwareManager;

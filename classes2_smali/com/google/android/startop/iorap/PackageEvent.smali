@@ -54,6 +54,9 @@
 
 .method private constructor <init>(ILandroid/net/Uri;Ljava/lang/String;)V
     .registers 4
+    .param p1, "type"  # I
+    .param p2, "packageUri"  # Landroid/net/Uri;
+    .param p3, "packageName"  # Ljava/lang/String;
 
     .line 64
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -76,6 +79,7 @@
 
 .method private constructor <init>(Landroid/os/Parcel;)V
     .registers 3
+    .param p1, "in"  # Landroid/os/Parcel;
 
     .line 107
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -101,9 +105,9 @@
     .line 110
     invoke-virtual {p1}, Landroid/os/Parcel;->readString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    iput-object p1, p0, Lcom/google/android/startop/iorap/PackageEvent;->packageName:Ljava/lang/String;
+    iput-object v0, p0, Lcom/google/android/startop/iorap/PackageEvent;->packageName:Ljava/lang/String;
 
     .line 112
     invoke-direct {p0}, Lcom/google/android/startop/iorap/PackageEvent;->checkConstructorArguments()V
@@ -114,6 +118,8 @@
 
 .method synthetic constructor <init>(Landroid/os/Parcel;Lcom/google/android/startop/iorap/PackageEvent$1;)V
     .registers 3
+    .param p1, "x0"  # Landroid/os/Parcel;
+    .param p2, "x1"  # Lcom/google/android/startop/iorap/PackageEvent$1;
 
     .line 39
     invoke-direct {p0, p1}, Lcom/google/android/startop/iorap/PackageEvent;-><init>(Landroid/os/Parcel;)V
@@ -151,6 +157,8 @@
 
 .method public static createReplaced(Landroid/net/Uri;Ljava/lang/String;)Lcom/google/android/startop/iorap/PackageEvent;
     .registers 4
+    .param p0, "packageUri"  # Landroid/net/Uri;
+    .param p1, "packageName"  # Ljava/lang/String;
 
     .line 61
     new-instance v0, Lcom/google/android/startop/iorap/PackageEvent;
@@ -164,6 +172,7 @@
 
 .method private equals(Lcom/google/android/startop/iorap/PackageEvent;)Z
     .registers 4
+    .param p1, "other"  # Lcom/google/android/startop/iorap/PackageEvent;
 
     .line 89
     iget v0, p0, Lcom/google/android/startop/iorap/PackageEvent;->type:I
@@ -185,25 +194,25 @@
 
     iget-object v0, p0, Lcom/google/android/startop/iorap/PackageEvent;->packageName:Ljava/lang/String;
 
-    iget-object p1, p1, Lcom/google/android/startop/iorap/PackageEvent;->packageName:Ljava/lang/String;
+    iget-object v1, p1, Lcom/google/android/startop/iorap/PackageEvent;->packageName:Ljava/lang/String;
 
     .line 91
-    invoke-static {v0, p1}, Ljava/util/Objects;->equals(Ljava/lang/Object;Ljava/lang/Object;)Z
+    invoke-static {v0, v1}, Ljava/util/Objects;->equals(Ljava/lang/Object;Ljava/lang/Object;)Z
 
-    move-result p1
+    move-result v0
 
-    if-eqz p1, :cond_1c
+    if-eqz v0, :cond_1c
 
-    const/4 p1, 0x1
+    const/4 v0, 0x1
 
     goto :goto_1d
 
     :cond_1c
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
     .line 89
     :goto_1d
-    return p1
+    return v0
 .end method
 
 
@@ -219,35 +228,38 @@
 
 .method public equals(Ljava/lang/Object;)Z
     .registers 3
+    .param p1, "other"  # Ljava/lang/Object;
 
     .line 80
     if-ne p0, p1, :cond_4
 
     .line 81
-    const/4 p1, 0x1
+    const/4 v0, 0x1
 
-    return p1
+    return v0
 
     .line 82
     :cond_4
     instance-of v0, p1, Lcom/google/android/startop/iorap/PackageEvent;
 
-    if-eqz v0, :cond_f
+    if-eqz v0, :cond_10
 
     .line 83
-    check-cast p1, Lcom/google/android/startop/iorap/PackageEvent;
+    move-object v0, p1
 
-    invoke-direct {p0, p1}, Lcom/google/android/startop/iorap/PackageEvent;->equals(Lcom/google/android/startop/iorap/PackageEvent;)Z
+    check-cast v0, Lcom/google/android/startop/iorap/PackageEvent;
 
-    move-result p1
+    invoke-direct {p0, v0}, Lcom/google/android/startop/iorap/PackageEvent;->equals(Lcom/google/android/startop/iorap/PackageEvent;)Z
 
-    return p1
+    move-result v0
+
+    return v0
 
     .line 85
-    :cond_f
-    const/4 p1, 0x0
+    :cond_10
+    const/4 v0, 0x0
 
-    return p1
+    return v0
 .end method
 
 .method public toString()Ljava/lang/String;
@@ -281,6 +293,8 @@
 
 .method public writeToParcel(Landroid/os/Parcel;I)V
     .registers 4
+    .param p1, "out"  # Landroid/os/Parcel;
+    .param p2, "flags"  # I
 
     .line 102
     iget v0, p0, Lcom/google/android/startop/iorap/PackageEvent;->type:I
@@ -293,9 +307,9 @@
     invoke-virtual {v0, p1, p2}, Landroid/net/Uri;->writeToParcel(Landroid/os/Parcel;I)V
 
     .line 104
-    iget-object p2, p0, Lcom/google/android/startop/iorap/PackageEvent;->packageName:Ljava/lang/String;
+    iget-object v0, p0, Lcom/google/android/startop/iorap/PackageEvent;->packageName:Ljava/lang/String;
 
-    invoke-virtual {p1, p2}, Landroid/os/Parcel;->writeString(Ljava/lang/String;)V
+    invoke-virtual {p1, v0}, Landroid/os/Parcel;->writeString(Ljava/lang/String;)V
 
     .line 105
     return-void

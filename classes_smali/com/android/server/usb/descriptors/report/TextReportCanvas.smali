@@ -18,6 +18,8 @@
 # direct methods
 .method public constructor <init>(Lcom/android/server/usb/descriptors/UsbDescriptorParser;Ljava/lang/StringBuilder;)V
     .registers 3
+    .param p1, "parser"  # Lcom/android/server/usb/descriptors/UsbDescriptorParser;
+    .param p2, "stringBuilder"  # Ljava/lang/StringBuilder;
 
     .line 38
     invoke-direct {p0, p1}, Lcom/android/server/usb/descriptors/report/ReportCanvas;-><init>(Lcom/android/server/usb/descriptors/UsbDescriptorParser;)V
@@ -35,6 +37,7 @@
     .line 44
     const/4 v0, 0x0
 
+    .local v0, "space":I
     :goto_1
     iget v1, p0, Lcom/android/server/usb/descriptors/report/TextReportCanvas;->mListIndent:I
 
@@ -53,6 +56,7 @@
     goto :goto_1
 
     .line 47
+    .end local v0  # "space":I
     :cond_f
     return-void
 .end method
@@ -60,14 +64,15 @@
 
 # virtual methods
 .method public closeHeader(I)V
-    .registers 3
+    .registers 4
+    .param p1, "level"  # I
 
     .line 62
-    iget-object p1, p0, Lcom/android/server/usb/descriptors/report/TextReportCanvas;->mStringBuilder:Ljava/lang/StringBuilder;
+    iget-object v0, p0, Lcom/android/server/usb/descriptors/report/TextReportCanvas;->mStringBuilder:Ljava/lang/StringBuilder;
 
-    const-string v0, "]\n"
+    const-string v1, "]\n"
 
-    invoke-virtual {p1, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     .line 63
     return-void
@@ -116,17 +121,18 @@
 .end method
 
 .method public openHeader(I)V
-    .registers 3
+    .registers 4
+    .param p1, "level"  # I
 
     .line 56
     invoke-direct {p0}, Lcom/android/server/usb/descriptors/report/TextReportCanvas;->writeListIndent()V
 
     .line 57
-    iget-object p1, p0, Lcom/android/server/usb/descriptors/report/TextReportCanvas;->mStringBuilder:Ljava/lang/StringBuilder;
+    iget-object v0, p0, Lcom/android/server/usb/descriptors/report/TextReportCanvas;->mStringBuilder:Ljava/lang/StringBuilder;
 
-    const-string v0, "["
+    const-string v1, "["
 
-    invoke-virtual {p1, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     .line 58
     return-void
@@ -165,6 +171,7 @@
 
 .method public openParagraph(Z)V
     .registers 2
+    .param p1, "emphasis"  # Z
 
     .line 67
     invoke-direct {p0}, Lcom/android/server/usb/descriptors/report/TextReportCanvas;->writeListIndent()V
@@ -175,6 +182,7 @@
 
 .method public write(Ljava/lang/String;)V
     .registers 3
+    .param p1, "text"  # Ljava/lang/String;
 
     .line 51
     iget-object v0, p0, Lcom/android/server/usb/descriptors/report/TextReportCanvas;->mStringBuilder:Ljava/lang/StringBuilder;
@@ -186,7 +194,9 @@
 .end method
 
 .method public writeParagraph(Ljava/lang/String;Z)V
-    .registers 5
+    .registers 6
+    .param p1, "text"  # Ljava/lang/String;
+    .param p2, "inRed"  # Z
 
     .line 77
     invoke-virtual {p0, p2}, Lcom/android/server/usb/descriptors/report/TextReportCanvas;->openParagraph(Z)V
@@ -195,33 +205,33 @@
     if-eqz p2, :cond_1f
 
     .line 79
-    iget-object p2, p0, Lcom/android/server/usb/descriptors/report/TextReportCanvas;->mStringBuilder:Ljava/lang/StringBuilder;
+    iget-object v0, p0, Lcom/android/server/usb/descriptors/report/TextReportCanvas;->mStringBuilder:Ljava/lang/StringBuilder;
 
-    new-instance v0, Ljava/lang/StringBuilder;
+    new-instance v1, Ljava/lang/StringBuilder;
 
-    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v1, "*"
+    const-string v2, "*"
+
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v1, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v1
 
     invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
-
-    move-result-object p1
-
-    invoke-virtual {p2, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     goto :goto_24
 
     .line 81
     :cond_1f
-    iget-object p2, p0, Lcom/android/server/usb/descriptors/report/TextReportCanvas;->mStringBuilder:Ljava/lang/StringBuilder;
+    iget-object v0, p0, Lcom/android/server/usb/descriptors/report/TextReportCanvas;->mStringBuilder:Ljava/lang/StringBuilder;
 
-    invoke-virtual {p2, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     .line 83
     :goto_24

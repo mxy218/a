@@ -25,6 +25,15 @@
 # direct methods
 .method public constructor <init>(Lcom/android/server/usage/AppTimeLimitController;Lcom/android/server/usage/AppTimeLimitController$UserData;Lcom/android/server/usage/AppTimeLimitController$ObserverAppData;I[Ljava/lang/String;JLandroid/app/PendingIntent;JLandroid/app/PendingIntent;)V
     .registers 12
+    .param p1, "this$0"  # Lcom/android/server/usage/AppTimeLimitController;
+    .param p2, "user"  # Lcom/android/server/usage/AppTimeLimitController$UserData;
+    .param p3, "observerApp"  # Lcom/android/server/usage/AppTimeLimitController$ObserverAppData;
+    .param p4, "observerId"  # I
+    .param p5, "observed"  # [Ljava/lang/String;
+    .param p6, "timeLimitMs"  # J
+    .param p8, "limitReachedCallback"  # Landroid/app/PendingIntent;
+    .param p9, "newSessionThresholdMs"  # J
+    .param p11, "sessionEndCallback"  # Landroid/app/PendingIntent;
 
     .line 443
     iput-object p1, p0, Lcom/android/server/usage/AppTimeLimitController$SessionUsageGroup;->this$0:Lcom/android/server/usage/AppTimeLimitController;
@@ -46,6 +55,7 @@
 # virtual methods
 .method dump(Ljava/io/PrintWriter;)V
     .registers 4
+    .param p1, "pw"  # Ljava/io/PrintWriter;
     .annotation build Lcom/android/internal/annotations/GuardedBy;
         value = {
             "mLock"
@@ -81,6 +91,8 @@
 
 .method public noteUsageStart(JJ)V
     .registers 9
+    .param p1, "startTimeMs"  # J
+    .param p3, "currentTimeMs"  # J
     .annotation build Lcom/android/internal/annotations/GuardedBy;
         value = {
             "mLock"
@@ -123,7 +135,8 @@
 .end method
 
 .method public noteUsageStop(J)V
-    .registers 5
+    .registers 7
+    .param p1, "stopTimeMs"  # J
     .annotation build Lcom/android/internal/annotations/GuardedBy;
         value = {
             "mLock"
@@ -134,25 +147,25 @@
     invoke-super {p0, p1, p2}, Lcom/android/server/usage/AppTimeLimitController$UsageGroup;->noteUsageStop(J)V
 
     .line 478
-    iget p1, p0, Lcom/android/server/usage/AppTimeLimitController$SessionUsageGroup;->mActives:I
+    iget v0, p0, Lcom/android/server/usage/AppTimeLimitController$SessionUsageGroup;->mActives:I
 
-    if-nez p1, :cond_16
+    if-nez v0, :cond_16
 
     .line 479
-    iget-wide p1, p0, Lcom/android/server/usage/AppTimeLimitController$SessionUsageGroup;->mUsageTimeMs:J
+    iget-wide v0, p0, Lcom/android/server/usage/AppTimeLimitController$SessionUsageGroup;->mUsageTimeMs:J
 
-    iget-wide v0, p0, Lcom/android/server/usage/AppTimeLimitController$SessionUsageGroup;->mTimeLimitMs:J
+    iget-wide v2, p0, Lcom/android/server/usage/AppTimeLimitController$SessionUsageGroup;->mTimeLimitMs:J
 
-    cmp-long p1, p1, v0
+    cmp-long v0, v0, v2
 
-    if-ltz p1, :cond_16
+    if-ltz v0, :cond_16
 
     .line 482
-    iget-object p1, p0, Lcom/android/server/usage/AppTimeLimitController$SessionUsageGroup;->this$0:Lcom/android/server/usage/AppTimeLimitController;
+    iget-object v0, p0, Lcom/android/server/usage/AppTimeLimitController$SessionUsageGroup;->this$0:Lcom/android/server/usage/AppTimeLimitController;
 
-    iget-wide v0, p0, Lcom/android/server/usage/AppTimeLimitController$SessionUsageGroup;->mNewSessionThresholdMs:J
+    iget-wide v1, p0, Lcom/android/server/usage/AppTimeLimitController$SessionUsageGroup;->mNewSessionThresholdMs:J
 
-    invoke-static {p1, p0, v0, v1}, Lcom/android/server/usage/AppTimeLimitController;->access$700(Lcom/android/server/usage/AppTimeLimitController;Lcom/android/server/usage/AppTimeLimitController$SessionUsageGroup;J)V
+    invoke-static {v0, p0, v1, v2}, Lcom/android/server/usage/AppTimeLimitController;->access$700(Lcom/android/server/usage/AppTimeLimitController;Lcom/android/server/usage/AppTimeLimitController$SessionUsageGroup;J)V
 
     .line 487
     :cond_16
@@ -177,6 +190,7 @@
     check-cast v0, Lcom/android/server/usage/AppTimeLimitController$UserData;
 
     .line 492
+    .local v0, "user":Lcom/android/server/usage/AppTimeLimitController$UserData;
     if-nez v0, :cond_b
 
     return-void
@@ -238,6 +252,7 @@
     check-cast v0, Lcom/android/server/usage/AppTimeLimitController$ObserverAppData;
 
     .line 454
+    .local v0, "observerApp":Lcom/android/server/usage/AppTimeLimitController$ObserverAppData;
     if-eqz v0, :cond_12
 
     .line 455
@@ -247,9 +262,9 @@
 
     .line 458
     :cond_12
-    const/4 v0, 0x0
+    const/4 v1, 0x0
 
-    iput-object v0, p0, Lcom/android/server/usage/AppTimeLimitController$SessionUsageGroup;->mSessionEndCallback:Landroid/app/PendingIntent;
+    iput-object v1, p0, Lcom/android/server/usage/AppTimeLimitController$SessionUsageGroup;->mSessionEndCallback:Landroid/app/PendingIntent;
 
     .line 459
     return-void

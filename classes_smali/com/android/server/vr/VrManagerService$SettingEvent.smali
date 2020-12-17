@@ -26,6 +26,7 @@
 # direct methods
 .method constructor <init>(Ljava/lang/String;)V
     .registers 4
+    .param p1, "what"  # Ljava/lang/String;
 
     .line 354
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -48,6 +49,7 @@
 # virtual methods
 .method public toLogString(Ljava/text/SimpleDateFormat;)Ljava/lang/String;
     .registers 6
+    .param p1, "dateFormat"  # Ljava/text/SimpleDateFormat;
 
     .line 361
     new-instance v0, Ljava/lang/StringBuilder;
@@ -62,21 +64,21 @@
 
     invoke-virtual {p1, v1}, Ljava/text/SimpleDateFormat;->format(Ljava/util/Date;)Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v1
 
-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string p1, "   "
+    const-string v1, "   "
 
-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    iget-object p1, p0, Lcom/android/server/vr/VrManagerService$SettingEvent;->what:Ljava/lang/String;
+    iget-object v1, p0, Lcom/android/server/vr/VrManagerService$SettingEvent;->what:Ljava/lang/String;
 
-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    return-object p1
+    return-object v0
 .end method

@@ -12,6 +12,8 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/wm/WindowManagerService;Landroid/app/ActivityManager$TaskSnapshot;)V
     .registers 3
+    .param p1, "service"  # Lcom/android/server/wm/WindowManagerService;
+    .param p2, "snapshot"  # Landroid/app/ActivityManager$TaskSnapshot;
 
     .line 32
     invoke-direct {p0, p1}, Lcom/android/server/wm/StartingData;-><init>(Lcom/android/server/wm/WindowManagerService;)V
@@ -30,6 +32,7 @@
 # virtual methods
 .method createStartingSurface(Lcom/android/server/wm/AppWindowToken;)Lcom/android/server/policy/WindowManagerPolicy$StartingSurface;
     .registers 4
+    .param p1, "atoken"  # Lcom/android/server/wm/AppWindowToken;
 
     .line 39
     iget-object v0, p0, Lcom/android/server/wm/SnapshotStartingData;->mService:Lcom/android/server/wm/WindowManagerService;
@@ -40,7 +43,7 @@
 
     invoke-virtual {v0, p1, v1}, Lcom/android/server/wm/TaskSnapshotController;->createStartingSurface(Lcom/android/server/wm/AppWindowToken;Landroid/app/ActivityManager$TaskSnapshot;)Lcom/android/server/policy/WindowManagerPolicy$StartingSurface;
 
-    move-result-object p1
+    move-result-object v0
 
-    return-object p1
+    return-object v0
 .end method

@@ -58,6 +58,8 @@
 
 .method public constructor <init>(ILcom/google/android/startop/iorap/ActivityInfo;)V
     .registers 3
+    .param p1, "type"  # I
+    .param p2, "activityInfo"  # Lcom/google/android/startop/iorap/ActivityInfo;
 
     .line 79
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -77,6 +79,7 @@
 
 .method private constructor <init>(Landroid/os/Parcel;)V
     .registers 3
+    .param p1, "in"  # Landroid/os/Parcel;
 
     .line 117
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -93,11 +96,11 @@
 
     invoke-interface {v0, p1}, Landroid/os/Parcelable$Creator;->createFromParcel(Landroid/os/Parcel;)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v0
 
-    check-cast p1, Lcom/google/android/startop/iorap/ActivityInfo;
+    check-cast v0, Lcom/google/android/startop/iorap/ActivityInfo;
 
-    iput-object p1, p0, Lcom/google/android/startop/iorap/ActivityHintEvent;->activityInfo:Lcom/google/android/startop/iorap/ActivityInfo;
+    iput-object v0, p0, Lcom/google/android/startop/iorap/ActivityHintEvent;->activityInfo:Lcom/google/android/startop/iorap/ActivityInfo;
 
     .line 120
     invoke-direct {p0}, Lcom/google/android/startop/iorap/ActivityHintEvent;->checkConstructorArguments()V
@@ -108,6 +111,8 @@
 
 .method synthetic constructor <init>(Landroid/os/Parcel;Lcom/google/android/startop/iorap/ActivityHintEvent$1;)V
     .registers 3
+    .param p1, "x0"  # Landroid/os/Parcel;
+    .param p2, "x1"  # Lcom/google/android/startop/iorap/ActivityHintEvent$1;
 
     .line 58
     invoke-direct {p0, p1}, Lcom/google/android/startop/iorap/ActivityHintEvent;-><init>(Landroid/os/Parcel;)V
@@ -138,6 +143,7 @@
 
 .method private equals(Lcom/google/android/startop/iorap/ActivityHintEvent;)Z
     .registers 4
+    .param p1, "other"  # Lcom/google/android/startop/iorap/ActivityHintEvent;
 
     .line 106
     iget v0, p0, Lcom/google/android/startop/iorap/ActivityHintEvent;->type:I
@@ -148,25 +154,25 @@
 
     iget-object v0, p0, Lcom/google/android/startop/iorap/ActivityHintEvent;->activityInfo:Lcom/google/android/startop/iorap/ActivityInfo;
 
-    iget-object p1, p1, Lcom/google/android/startop/iorap/ActivityHintEvent;->activityInfo:Lcom/google/android/startop/iorap/ActivityInfo;
+    iget-object v1, p1, Lcom/google/android/startop/iorap/ActivityHintEvent;->activityInfo:Lcom/google/android/startop/iorap/ActivityInfo;
 
     .line 107
-    invoke-static {v0, p1}, Ljava/util/Objects;->equals(Ljava/lang/Object;Ljava/lang/Object;)Z
+    invoke-static {v0, v1}, Ljava/util/Objects;->equals(Ljava/lang/Object;Ljava/lang/Object;)Z
 
-    move-result p1
+    move-result v0
 
-    if-eqz p1, :cond_12
+    if-eqz v0, :cond_12
 
-    const/4 p1, 0x1
+    const/4 v0, 0x1
 
     goto :goto_13
 
     :cond_12
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
     .line 106
     :goto_13
-    return p1
+    return v0
 .end method
 
 
@@ -182,35 +188,38 @@
 
 .method public equals(Ljava/lang/Object;)Z
     .registers 3
+    .param p1, "other"  # Ljava/lang/Object;
 
     .line 97
     if-ne p0, p1, :cond_4
 
     .line 98
-    const/4 p1, 0x1
+    const/4 v0, 0x1
 
-    return p1
+    return v0
 
     .line 99
     :cond_4
     instance-of v0, p1, Lcom/google/android/startop/iorap/ActivityHintEvent;
 
-    if-eqz v0, :cond_f
+    if-eqz v0, :cond_10
 
     .line 100
-    check-cast p1, Lcom/google/android/startop/iorap/ActivityHintEvent;
+    move-object v0, p1
 
-    invoke-direct {p0, p1}, Lcom/google/android/startop/iorap/ActivityHintEvent;->equals(Lcom/google/android/startop/iorap/ActivityHintEvent;)Z
+    check-cast v0, Lcom/google/android/startop/iorap/ActivityHintEvent;
 
-    move-result p1
+    invoke-direct {p0, v0}, Lcom/google/android/startop/iorap/ActivityHintEvent;->equals(Lcom/google/android/startop/iorap/ActivityHintEvent;)Z
 
-    return p1
+    move-result v0
+
+    return v0
 
     .line 102
-    :cond_f
-    const/4 p1, 0x0
+    :cond_10
+    const/4 v0, 0x0
 
-    return p1
+    return v0
 .end method
 
 .method public toString()Ljava/lang/String;
@@ -248,6 +257,8 @@
 
 .method public writeToParcel(Landroid/os/Parcel;I)V
     .registers 4
+    .param p1, "out"  # Landroid/os/Parcel;
+    .param p2, "flags"  # I
 
     .line 113
     iget v0, p0, Lcom/google/android/startop/iorap/ActivityHintEvent;->type:I

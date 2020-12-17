@@ -20,14 +20,15 @@
 
 # direct methods
 .method constructor <init>(Lcom/android/server/print/RemotePrintSpooler$ClearCustomPrinterIconCacheCaller;)V
-    .registers 2
+    .registers 3
+    .param p1, "this$0"  # Lcom/android/server/print/RemotePrintSpooler$ClearCustomPrinterIconCacheCaller;
 
     .line 831
     iput-object p1, p0, Lcom/android/server/print/RemotePrintSpooler$ClearCustomPrinterIconCacheCaller$1;->this$0:Lcom/android/server/print/RemotePrintSpooler$ClearCustomPrinterIconCacheCaller;
 
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    invoke-direct {p0, p1}, Lcom/android/server/print/RemotePrintSpooler$BasePrintSpoolerServiceCallbacks;-><init>(Lcom/android/server/print/RemotePrintSpooler$1;)V
+    invoke-direct {p0, v0}, Lcom/android/server/print/RemotePrintSpooler$BasePrintSpoolerServiceCallbacks;-><init>(Lcom/android/server/print/RemotePrintSpooler$1;)V
 
     return-void
 .end method
@@ -36,6 +37,7 @@
 # virtual methods
 .method public customPrinterIconCacheCleared(I)V
     .registers 4
+    .param p1, "sequence"  # I
 
     .line 834
     iget-object v0, p0, Lcom/android/server/print/RemotePrintSpooler$ClearCustomPrinterIconCacheCaller$1;->this$0:Lcom/android/server/print/RemotePrintSpooler$ClearCustomPrinterIconCacheCaller;

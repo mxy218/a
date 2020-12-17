@@ -23,6 +23,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/usb/descriptors/UsbDescriptorParser;Ljava/lang/String;)V
     .registers 3
+    .param p2, "message"  # Ljava/lang/String;
 
     .line 95
     iput-object p1, p0, Lcom/android/server/usb/descriptors/UsbDescriptorParser$UsbDescriptorsStreamFormatException;->this$0:Lcom/android/server/usb/descriptors/UsbDescriptorParser;

@@ -15,7 +15,7 @@
 
 
 # virtual methods
-.method public abstract execute(Landroid/content/pm/VersionedPackage;I)Z
+.method public abstract execute(Landroid/content/pm/VersionedPackage;)Z
 .end method
 
 .method public abstract getName()Ljava/lang/String;

@@ -28,6 +28,11 @@
 # direct methods
 .method constructor <init>(Landroid/net/Uri;ILjava/lang/String;II)V
     .registers 7
+    .param p1, "contentUri"  # Landroid/net/Uri;
+    .param p2, "sourceUid"  # I
+    .param p3, "targetPackage"  # Ljava/lang/String;
+    .param p4, "sourceUserId"  # I
+    .param p5, "targetUserId"  # I
 
     .line 52
     invoke-direct {p0}, Lcom/android/internal/inputmethod/IInputContentUriToken$Stub;-><init>()V
@@ -65,6 +70,7 @@
 
 .method private doTakeLocked(Landroid/os/IBinder;)V
     .registers 12
+    .param p1, "permissionOwner"  # Landroid/os/IBinder;
 
     .line 76
     invoke-static {}, Landroid/os/Binder;->clearCallingIdentity()J
@@ -72,6 +78,7 @@
     move-result-wide v0
 
     .line 79
+    .local v0, "origId":J
     :try_start_4
     invoke-static {}, Landroid/app/UriGrantsManager;->getService()Landroid/app/IUriGrantsManager;
 
@@ -101,21 +108,23 @@
 
     .line 86
     :catchall_18
-    move-exception p1
+    move-exception v2
 
     goto :goto_23
 
     .line 82
     :catch_1a
-    move-exception p1
+    move-exception v2
 
     .line 83
+    .local v2, "e":Landroid/os/RemoteException;
     :try_start_1b
-    invoke-virtual {p1}, Landroid/os/RemoteException;->rethrowFromSystemServer()Ljava/lang/RuntimeException;
+    invoke-virtual {v2}, Landroid/os/RemoteException;->rethrowFromSystemServer()Ljava/lang/RuntimeException;
     :try_end_1e
     .catchall {:try_start_1b .. :try_end_1e} :catchall_18
 
     .line 86
+    .end local v2  # "e":Landroid/os/RemoteException;
     :goto_1e
     invoke-static {v0, v1}, Landroid/os/Binder;->restoreCallingIdentity(J)V
 
@@ -129,7 +138,7 @@
     :goto_23
     invoke-static {v0, v1}, Landroid/os/Binder;->restoreCallingIdentity(J)V
 
-    throw p1
+    throw v2
 .end method
 
 
@@ -232,9 +241,11 @@
 
     iput-object v1, p0, Lcom/android/server/inputmethod/InputContentUriTokenHandler;->mPermissionOwnerToken:Landroid/os/IBinder;
 
+    .end local p0  # "this":Lcom/android/server/inputmethod/InputContentUriTokenHandler;
     throw v2
 
     .line 103
+    .restart local p0  # "this":Lcom/android/server/inputmethod/InputContentUriTokenHandler;
     :catchall_25
     move-exception v1
 

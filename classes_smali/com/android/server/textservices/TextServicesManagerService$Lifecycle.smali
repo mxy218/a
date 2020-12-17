@@ -21,6 +21,7 @@
 # direct methods
 .method public constructor <init>(Landroid/content/Context;)V
     .registers 3
+    .param p1, "context"  # Landroid/content/Context;
 
     .line 277
     invoke-direct {p0, p1}, Lcom/android/server/SystemService;-><init>(Landroid/content/Context;)V
@@ -37,12 +38,13 @@
 .end method
 
 .method static synthetic access$800(Lcom/android/server/textservices/TextServicesManagerService$Lifecycle;)Lcom/android/server/textservices/TextServicesManagerService;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/textservices/TextServicesManagerService$Lifecycle;
 
     .line 273
-    iget-object p0, p0, Lcom/android/server/textservices/TextServicesManagerService$Lifecycle;->mService:Lcom/android/server/textservices/TextServicesManagerService;
+    iget-object v0, p0, Lcom/android/server/textservices/TextServicesManagerService$Lifecycle;->mService:Lcom/android/server/textservices/TextServicesManagerService;
 
-    return-object p0
+    return-object v0
 .end method
 
 
@@ -72,6 +74,7 @@
 
 .method public onStopUser(I)V
     .registers 3
+    .param p1, "userHandle"  # I
 
     .line 299
     iget-object v0, p0, Lcom/android/server/textservices/TextServicesManagerService$Lifecycle;->mService:Lcom/android/server/textservices/TextServicesManagerService;
@@ -84,6 +87,7 @@
 
 .method public onUnlockUser(I)V
     .registers 3
+    .param p1, "userHandle"  # I
 
     .line 309
     iget-object v0, p0, Lcom/android/server/textservices/TextServicesManagerService$Lifecycle;->mService:Lcom/android/server/textservices/TextServicesManagerService;

@@ -21,8 +21,9 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/power/ThermalManagerService;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/power/ThermalManagerService;
 
-    .line 524
+    .line 520
     iput-object p1, p0, Lcom/android/server/power/ThermalManagerService$ThermalShellCommand;->this$0:Lcom/android/server/power/ThermalManagerService;
 
     invoke-direct {p0}, Landroid/os/ShellCommand;-><init>()V
@@ -33,12 +34,13 @@
 .method private runOverrideStatus()I
     .registers 8
 
-    .line 551
+    .line 547
     invoke-static {}, Landroid/os/Binder;->clearCallingIdentity()J
 
     move-result-wide v0
 
-    .line 553
+    .line 549
+    .local v0, "token":J
     :try_start_4
     invoke-virtual {p0}, Lcom/android/server/power/ThermalManagerService$ThermalShellCommand;->getOutPrintWriter()Ljava/io/PrintWriter;
 
@@ -46,7 +48,8 @@
     :try_end_8
     .catchall {:try_start_4 .. :try_end_8} :catchall_6a
 
-    .line 556
+    .line 552
+    .local v2, "pw":Ljava/io/PrintWriter;
     const/4 v3, -0x1
 
     :try_start_9
@@ -61,10 +64,11 @@
     .catch Ljava/lang/RuntimeException; {:try_start_9 .. :try_end_11} :catch_4c
     .catchall {:try_start_9 .. :try_end_11} :catchall_6a
 
-    .line 560
+    .line 556
+    .local v4, "status":I
     nop
 
-    .line 561
+    .line 557
     :try_start_12
     invoke-static {v4}, Landroid/os/Temperature;->isValidStatus(I)Z
 
@@ -72,7 +76,7 @@
 
     if-nez v5, :cond_31
 
-    .line 562
+    .line 558
     new-instance v5, Ljava/lang/StringBuilder;
 
     invoke-direct {v5}, Ljava/lang/StringBuilder;-><init>()V
@@ -85,78 +89,84 @@
 
     invoke-virtual {v5}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v4
+    move-result-object v5
 
-    invoke-virtual {v2, v4}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {v2, v5}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
     :try_end_2c
     .catchall {:try_start_12 .. :try_end_2c} :catchall_6a
 
-    .line 563
+    .line 559
     nop
 
-    .line 571
+    .line 567
     invoke-static {v0, v1}, Landroid/os/Binder;->restoreCallingIdentity(J)V
 
-    .line 563
+    .line 559
     return v3
 
-    .line 565
+    .line 561
     :cond_31
     :try_start_31
-    iget-object v2, p0, Lcom/android/server/power/ThermalManagerService$ThermalShellCommand;->this$0:Lcom/android/server/power/ThermalManagerService;
+    iget-object v3, p0, Lcom/android/server/power/ThermalManagerService$ThermalShellCommand;->this$0:Lcom/android/server/power/ThermalManagerService;
 
-    invoke-static {v2}, Lcom/android/server/power/ThermalManagerService;->access$000(Lcom/android/server/power/ThermalManagerService;)Ljava/lang/Object;
+    invoke-static {v3}, Lcom/android/server/power/ThermalManagerService;->access$000(Lcom/android/server/power/ThermalManagerService;)Ljava/lang/Object;
 
-    move-result-object v2
+    move-result-object v3
 
-    monitor-enter v2
+    monitor-enter v3
     :try_end_38
     .catchall {:try_start_31 .. :try_end_38} :catchall_6a
 
-    .line 566
+    .line 562
     :try_start_38
-    iget-object v3, p0, Lcom/android/server/power/ThermalManagerService$ThermalShellCommand;->this$0:Lcom/android/server/power/ThermalManagerService;
+    iget-object v5, p0, Lcom/android/server/power/ThermalManagerService$ThermalShellCommand;->this$0:Lcom/android/server/power/ThermalManagerService;
 
-    const/4 v5, 0x1
+    const/4 v6, 0x1
 
-    invoke-static {v3, v5}, Lcom/android/server/power/ThermalManagerService;->access$902(Lcom/android/server/power/ThermalManagerService;Z)Z
+    invoke-static {v5, v6}, Lcom/android/server/power/ThermalManagerService;->access$902(Lcom/android/server/power/ThermalManagerService;Z)Z
 
-    .line 567
-    iget-object v3, p0, Lcom/android/server/power/ThermalManagerService$ThermalShellCommand;->this$0:Lcom/android/server/power/ThermalManagerService;
+    .line 563
+    iget-object v5, p0, Lcom/android/server/power/ThermalManagerService$ThermalShellCommand;->this$0:Lcom/android/server/power/ThermalManagerService;
 
-    invoke-static {v3, v4}, Lcom/android/server/power/ThermalManagerService;->access$1200(Lcom/android/server/power/ThermalManagerService;I)V
+    invoke-static {v5, v4}, Lcom/android/server/power/ThermalManagerService;->access$1200(Lcom/android/server/power/ThermalManagerService;I)V
 
-    .line 568
-    monitor-exit v2
+    .line 564
+    monitor-exit v3
     :try_end_44
     .catchall {:try_start_38 .. :try_end_44} :catchall_49
 
-    .line 569
-    const/4 v2, 0x0
+    .line 565
+    const/4 v3, 0x0
 
-    .line 571
+    .line 567
     invoke-static {v0, v1}, Landroid/os/Binder;->restoreCallingIdentity(J)V
 
-    .line 569
-    return v2
+    .line 565
+    return v3
 
-    .line 568
+    .line 564
     :catchall_49
-    move-exception v3
+    move-exception v5
 
     :try_start_4a
-    monitor-exit v2
+    monitor-exit v3
     :try_end_4b
     .catchall {:try_start_4a .. :try_end_4b} :catchall_49
 
+    .end local v0  # "token":J
+    .end local p0  # "this":Lcom/android/server/power/ThermalManagerService$ThermalShellCommand;
     :try_start_4b
-    throw v3
+    throw v5
 
-    .line 557
+    .line 553
+    .end local v4  # "status":I
+    .restart local v0  # "token":J
+    .restart local p0  # "this":Lcom/android/server/power/ThermalManagerService$ThermalShellCommand;
     :catch_4c
     move-exception v4
 
-    .line 558
+    .line 554
+    .local v4, "ex":Ljava/lang/RuntimeException;
     new-instance v5, Ljava/lang/StringBuilder;
 
     invoke-direct {v5}, Ljava/lang/StringBuilder;-><init>()V
@@ -167,28 +177,30 @@
 
     invoke-virtual {v4}, Ljava/lang/RuntimeException;->toString()Ljava/lang/String;
 
-    move-result-object v4
+    move-result-object v6
 
-    invoke-virtual {v5, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v5}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v4
+    move-result-object v5
 
-    invoke-virtual {v2, v4}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {v2, v5}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
     :try_end_65
     .catchall {:try_start_4b .. :try_end_65} :catchall_6a
 
-    .line 559
+    .line 555
     nop
 
-    .line 571
+    .line 567
     invoke-static {v0, v1}, Landroid/os/Binder;->restoreCallingIdentity(J)V
 
-    .line 559
+    .line 555
     return v3
 
-    .line 571
+    .line 567
+    .end local v2  # "pw":Ljava/io/PrintWriter;
+    .end local v4  # "ex":Ljava/lang/RuntimeException;
     :catchall_6a
     move-exception v2
 
@@ -200,12 +212,13 @@
 .method private runReset()I
     .registers 6
 
-    .line 538
+    .line 534
     invoke-static {}, Landroid/os/Binder;->clearCallingIdentity()J
 
     move-result-wide v0
 
-    .line 540
+    .line 536
+    .local v0, "token":J
     :try_start_4
     iget-object v2, p0, Lcom/android/server/power/ThermalManagerService$ThermalShellCommand;->this$0:Lcom/android/server/power/ThermalManagerService;
 
@@ -217,7 +230,7 @@
     :try_end_b
     .catchall {:try_start_4 .. :try_end_b} :catchall_1e
 
-    .line 541
+    .line 537
     :try_start_b
     iget-object v3, p0, Lcom/android/server/power/ThermalManagerService$ThermalShellCommand;->this$0:Lcom/android/server/power/ThermalManagerService;
 
@@ -225,23 +238,23 @@
 
     invoke-static {v3, v4}, Lcom/android/server/power/ThermalManagerService;->access$902(Lcom/android/server/power/ThermalManagerService;Z)Z
 
-    .line 542
+    .line 538
     iget-object v3, p0, Lcom/android/server/power/ThermalManagerService$ThermalShellCommand;->this$0:Lcom/android/server/power/ThermalManagerService;
 
     invoke-static {v3}, Lcom/android/server/power/ThermalManagerService;->access$1100(Lcom/android/server/power/ThermalManagerService;)V
 
-    .line 543
+    .line 539
     monitor-exit v2
     :try_end_17
     .catchall {:try_start_b .. :try_end_17} :catchall_1b
 
-    .line 546
+    .line 542
     invoke-static {v0, v1}, Landroid/os/Binder;->restoreCallingIdentity(J)V
 
-    .line 543
+    .line 539
     return v4
 
-    .line 544
+    .line 540
     :catchall_1b
     move-exception v3
 
@@ -250,12 +263,16 @@
     :try_end_1d
     .catchall {:try_start_1c .. :try_end_1d} :catchall_1b
 
+    .end local v0  # "token":J
+    .end local p0  # "this":Lcom/android/server/power/ThermalManagerService$ThermalShellCommand;
     :try_start_1d
     throw v3
     :try_end_1e
     .catchall {:try_start_1d .. :try_end_1e} :catchall_1e
 
-    .line 546
+    .line 542
+    .restart local v0  # "token":J
+    .restart local p0  # "this":Lcom/android/server/power/ThermalManagerService$ThermalShellCommand;
     :catchall_1e
     move-exception v2
 
@@ -268,8 +285,9 @@
 # virtual methods
 .method public onCommand(Ljava/lang/String;)I
     .registers 7
+    .param p1, "cmd"  # Ljava/lang/String;
 
-    .line 527
+    .line 523
     if-eqz p1, :cond_4
 
     move-object v0, p1
@@ -328,86 +346,87 @@
 
     if-eq v1, v4, :cond_35
 
-    .line 533
+    .line 529
     invoke-virtual {p0, p1}, Lcom/android/server/power/ThermalManagerService$ThermalShellCommand;->handleDefaultCommands(Ljava/lang/String;)I
 
-    move-result p1
+    move-result v0
 
-    return p1
+    return v0
 
-    .line 531
+    .line 527
     :cond_35
     invoke-direct {p0}, Lcom/android/server/power/ThermalManagerService$ThermalShellCommand;->runReset()I
 
-    move-result p1
+    move-result v0
 
-    return p1
+    return v0
 
-    .line 529
+    .line 525
     :cond_3a
     invoke-direct {p0}, Lcom/android/server/power/ThermalManagerService$ThermalShellCommand;->runOverrideStatus()I
 
-    move-result p1
+    move-result v0
 
-    return p1
+    return v0
 .end method
 
 .method public onHelp()V
     .registers 3
 
-    .line 577
+    .line 573
     invoke-virtual {p0}, Lcom/android/server/power/ThermalManagerService$ThermalShellCommand;->getOutPrintWriter()Ljava/io/PrintWriter;
 
     move-result-object v0
 
-    .line 578
+    .line 574
+    .local v0, "pw":Ljava/io/PrintWriter;
     const-string v1, "Thermal service (thermalservice) commands:"
 
     invoke-virtual {v0, v1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
-    .line 579
+    .line 575
     const-string v1, "  help"
 
     invoke-virtual {v0, v1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
-    .line 580
+    .line 576
     const-string v1, "    Print this help text."
 
     invoke-virtual {v0, v1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
-    .line 581
+    .line 577
     const-string v1, ""
 
     invoke-virtual {v0, v1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
-    .line 582
+    .line 578
     const-string v1, "  override-status STATUS"
 
     invoke-virtual {v0, v1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
-    .line 583
+    .line 579
     const-string v1, "    sets and locks the thermal status of the device to STATUS."
 
     invoke-virtual {v0, v1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
-    .line 584
+    .line 580
     const-string v1, "    status code is defined in android.os.Temperature."
 
     invoke-virtual {v0, v1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
-    .line 585
+    .line 581
     const-string v1, "  reset"
 
     invoke-virtual {v0, v1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
-    .line 586
+    .line 582
     const-string v1, "    unlocks the thermal status of the device."
 
     invoke-virtual {v0, v1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
-    .line 587
+    .line 583
     invoke-virtual {v0}, Ljava/io/PrintWriter;->println()V
 
-    .line 588
+    .line 584
     return-void
 .end method

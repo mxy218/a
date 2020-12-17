@@ -100,7 +100,8 @@
 
 # direct methods
 .method protected constructor <init>(Lcom/android/server/hdmi/HdmiControlService;)V
-    .registers 4
+    .registers 5
+    .param p1, "service"  # Lcom/android/server/hdmi/HdmiControlService;
 
     .line 114
     const/4 v0, 0x5
@@ -108,48 +109,48 @@
     invoke-direct {p0, p1, v0}, Lcom/android/server/hdmi/HdmiCecLocalDeviceSource;-><init>(Lcom/android/server/hdmi/HdmiControlService;I)V
 
     .line 85
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    iput-object p1, p0, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->mTvSystemAudioModeSupport:Ljava/lang/Boolean;
+    iput-object v0, p0, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->mTvSystemAudioModeSupport:Ljava/lang/Boolean;
 
     .line 89
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    iput-boolean p1, p0, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->mArcEstablished:Z
+    iput-boolean v0, p0, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->mArcEstablished:Z
 
     .line 93
     nop
 
     .line 94
-    const-string/jumbo v0, "ro.hdmi.property_sytem_audio_device_arc_port"
+    const-string/jumbo v1, "ro.hdmi.property_sytem_audio_device_arc_port"
 
-    const-string v1, "0"
+    const-string v2, "0"
 
-    invoke-static {v0, v1}, Landroid/os/SystemProperties;->get(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+    invoke-static {v1, v2}, Landroid/os/SystemProperties;->get(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v1
 
-    const-string/jumbo v1, "tvinput"
+    const-string/jumbo v2, "tvinput"
 
-    invoke-virtual {v0, v1}, Ljava/lang/String;->contains(Ljava/lang/CharSequence;)Z
+    invoke-virtual {v1, v2}, Ljava/lang/String;->contains(Ljava/lang/CharSequence;)Z
 
-    move-result v0
+    move-result v1
 
-    iput-boolean v0, p0, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->mArcIntentUsed:Z
+    iput-boolean v1, p0, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->mArcIntentUsed:Z
 
     .line 98
-    new-instance v0, Ljava/util/HashMap;
+    new-instance v1, Ljava/util/HashMap;
 
-    invoke-direct {v0}, Ljava/util/HashMap;-><init>()V
+    invoke-direct {v1}, Ljava/util/HashMap;-><init>()V
 
-    iput-object v0, p0, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->mPortIdToTvInputs:Ljava/util/HashMap;
+    iput-object v1, p0, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->mPortIdToTvInputs:Ljava/util/HashMap;
 
     .line 102
-    new-instance v0, Ljava/util/HashMap;
+    new-instance v1, Ljava/util/HashMap;
 
-    invoke-direct {v0}, Ljava/util/HashMap;-><init>()V
+    invoke-direct {v1}, Ljava/util/HashMap;-><init>()V
 
-    iput-object v0, p0, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->mTvInputsToDeviceInfo:Ljava/util/HashMap;
+    iput-object v1, p0, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->mTvInputsToDeviceInfo:Ljava/util/HashMap;
 
     .line 106
     nop
@@ -157,49 +158,49 @@
     .line 107
     invoke-static {}, Ljava/util/Collections;->emptyList()Ljava/util/List;
 
-    move-result-object v0
+    move-result-object v1
 
-    iput-object v0, p0, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->mSafeAllDeviceInfos:Ljava/util/List;
+    iput-object v1, p0, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->mSafeAllDeviceInfos:Ljava/util/List;
 
     .line 111
-    new-instance v0, Landroid/util/SparseArray;
+    new-instance v1, Landroid/util/SparseArray;
 
-    invoke-direct {v0}, Landroid/util/SparseArray;-><init>()V
+    invoke-direct {v1}, Landroid/util/SparseArray;-><init>()V
 
-    iput-object v0, p0, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->mDeviceInfos:Landroid/util/SparseArray;
+    iput-object v1, p0, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->mDeviceInfos:Landroid/util/SparseArray;
 
     .line 123
-    new-instance v0, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem$1;
+    new-instance v1, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem$1;
 
-    invoke-direct {v0, p0}, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem$1;-><init>(Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;)V
+    invoke-direct {v1, p0}, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem$1;-><init>(Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;)V
 
-    iput-object v0, p0, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->mTvInputCallback:Landroid/media/tv/TvInputManager$TvInputCallback;
+    iput-object v1, p0, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->mTvInputCallback:Landroid/media/tv/TvInputManager$TvInputCallback;
 
     .line 115
-    iget-object v0, p0, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->mService:Lcom/android/server/hdmi/HdmiControlService;
+    iget-object v1, p0, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->mService:Lcom/android/server/hdmi/HdmiControlService;
 
     .line 116
-    const-string v1, "hdmi_cec_switch_enabled"
+    const-string v2, "hdmi_cec_switch_enabled"
 
-    invoke-virtual {v0, v1, p1}, Lcom/android/server/hdmi/HdmiControlService;->readBooleanSetting(Ljava/lang/String;Z)Z
+    invoke-virtual {v1, v2, v0}, Lcom/android/server/hdmi/HdmiControlService;->readBooleanSetting(Ljava/lang/String;Z)Z
 
-    move-result p1
+    move-result v0
 
-    iput-boolean p1, p0, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->mRoutingControlFeatureEnabled:Z
+    iput-boolean v0, p0, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->mRoutingControlFeatureEnabled:Z
 
     .line 117
-    iget-object p1, p0, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->mService:Lcom/android/server/hdmi/HdmiControlService;
+    iget-object v0, p0, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->mService:Lcom/android/server/hdmi/HdmiControlService;
 
     .line 118
-    const-string v0, "hdmi_system_audio_control_enabled"
+    const-string v1, "hdmi_system_audio_control_enabled"
 
-    const/4 v1, 0x1
+    const/4 v2, 0x1
 
-    invoke-virtual {p1, v0, v1}, Lcom/android/server/hdmi/HdmiControlService;->readBooleanSetting(Ljava/lang/String;Z)Z
+    invoke-virtual {v0, v1, v2}, Lcom/android/server/hdmi/HdmiControlService;->readBooleanSetting(Ljava/lang/String;Z)Z
 
-    move-result p1
+    move-result v0
 
-    iput-boolean p1, p0, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->mSystemAudioControlFeatureEnabled:Z
+    iput-boolean v0, p0, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->mSystemAudioControlFeatureEnabled:Z
 
     .line 119
     return-void
@@ -207,6 +208,8 @@
 
 .method static synthetic access$000(Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;Ljava/lang/String;)V
     .registers 2
+    .param p0, "x0"  # Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;
+    .param p1, "x1"  # Ljava/lang/String;
 
     .line 69
     invoke-direct {p0, p1}, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->addOrUpdateTvInput(Ljava/lang/String;)V
@@ -216,6 +219,8 @@
 
 .method static synthetic access$100(Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;Ljava/lang/String;)V
     .registers 2
+    .param p0, "x0"  # Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;
+    .param p1, "x1"  # Ljava/lang/String;
 
     .line 69
     invoke-direct {p0, p1}, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->removeTvInput(Ljava/lang/String;)V
@@ -225,6 +230,8 @@
 
 .method static synthetic access$200(Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;Z)V
     .registers 2
+    .param p0, "x0"  # Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;
+    .param p1, "x1"  # Z
 
     .line 69
     invoke-direct {p0, p1}, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->setSystemAudioMode(Z)V
@@ -233,7 +240,8 @@
 .end method
 
 .method private addOrUpdateTvInput(Ljava/lang/String;)V
-    .registers 6
+    .registers 7
+    .param p1, "inputId"  # Ljava/lang/String;
     .annotation runtime Lcom/android/server/hdmi/HdmiAnnotations$ServiceThreadOnly;
     .end annotation
 
@@ -258,6 +266,7 @@
     move-result-object v1
 
     .line 145
+    .local v1, "tvInfo":Landroid/media/tv/TvInputInfo;
     if-nez v1, :cond_14
 
     .line 146
@@ -269,10 +278,11 @@
     :cond_14
     invoke-virtual {v1}, Landroid/media/tv/TvInputInfo;->getHdmiDeviceInfo()Landroid/hardware/hdmi/HdmiDeviceInfo;
 
-    move-result-object v1
+    move-result-object v2
 
     .line 149
-    if-nez v1, :cond_1c
+    .local v2, "info":Landroid/hardware/hdmi/HdmiDeviceInfo;
+    if-nez v2, :cond_1c
 
     .line 150
     monitor-exit v0
@@ -281,38 +291,42 @@
 
     .line 152
     :cond_1c
-    iget-object v2, p0, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->mPortIdToTvInputs:Ljava/util/HashMap;
+    iget-object v3, p0, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->mPortIdToTvInputs:Ljava/util/HashMap;
 
-    invoke-virtual {v1}, Landroid/hardware/hdmi/HdmiDeviceInfo;->getPortId()I
+    invoke-virtual {v2}, Landroid/hardware/hdmi/HdmiDeviceInfo;->getPortId()I
 
-    move-result v3
+    move-result v4
 
-    invoke-static {v3}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
+    invoke-static {v4}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
 
-    move-result-object v3
+    move-result-object v4
 
-    invoke-virtual {v2, v3, p1}, Ljava/util/HashMap;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+    invoke-virtual {v3, v4, p1}, Ljava/util/HashMap;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
 
     .line 153
-    iget-object v2, p0, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->mTvInputsToDeviceInfo:Ljava/util/HashMap;
+    iget-object v3, p0, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->mTvInputsToDeviceInfo:Ljava/util/HashMap;
 
-    invoke-virtual {v2, p1, v1}, Ljava/util/HashMap;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+    invoke-virtual {v3, p1, v2}, Ljava/util/HashMap;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
 
     .line 154
+    nop
+
+    .end local v1  # "tvInfo":Landroid/media/tv/TvInputInfo;
+    .end local v2  # "info":Landroid/hardware/hdmi/HdmiDeviceInfo;
     monitor-exit v0
 
     .line 155
     return-void
 
     .line 154
-    :catchall_30
-    move-exception p1
+    :catchall_31
+    move-exception v1
 
     monitor-exit v0
-    :try_end_32
-    .catchall {:try_start_6 .. :try_end_32} :catchall_30
+    :try_end_33
+    .catchall {:try_start_6 .. :try_end_33} :catchall_31
 
-    throw p1
+    throw v1
 .end method
 
 .method private clearDeviceInfoList()V
@@ -348,6 +362,7 @@
     check-cast v1, Landroid/hardware/hdmi/HdmiDeviceInfo;
 
     .line 1271
+    .local v1, "info":Landroid/hardware/hdmi/HdmiDeviceInfo;
     invoke-virtual {v1}, Landroid/hardware/hdmi/HdmiDeviceInfo;->getPhysicalAddress()I
 
     move-result v2
@@ -370,6 +385,7 @@
     invoke-direct {p0, v1, v2}, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->invokeDeviceEventListener(Landroid/hardware/hdmi/HdmiDeviceInfo;I)V
 
     .line 1275
+    .end local v1  # "info":Landroid/hardware/hdmi/HdmiDeviceInfo;
     goto :goto_d
 
     .line 1276
@@ -387,6 +403,7 @@
 
 .method private enableAudioReturnChannel(Z)V
     .registers 5
+    .param p1, "enabled"  # Z
     .annotation runtime Lcom/android/server/hdmi/HdmiAnnotations$ServiceThreadOnly;
     .end annotation
 
@@ -413,16 +430,17 @@
 .end method
 
 .method private getLpcmShortAudioDescriptor(Landroid/media/AudioDeviceInfo;)[B
-    .registers 2
+    .registers 3
+    .param p1, "deviceInfo"  # Landroid/media/AudioDeviceInfo;
 
     .line 715
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    return-object p1
+    return-object v0
 .end method
 
 .method private getShortAudioDescriptorBytes(Ljava/util/ArrayList;)[B
-    .registers 7
+    .registers 8
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(",
@@ -432,6 +450,7 @@
     .end annotation
 
     .line 669
+    .local p1, "sads":Ljava/util/ArrayList;, "Ljava/util/ArrayList<[B>;"
     invoke-virtual {p1}, Ljava/util/ArrayList;->size()I
 
     move-result v0
@@ -443,46 +462,52 @@
     new-array v0, v0, [B
 
     .line 670
-    nop
-
-    .line 671
-    invoke-virtual {p1}, Ljava/util/ArrayList;->iterator()Ljava/util/Iterator;
-
-    move-result-object p1
-
+    .local v0, "bytes":[B
     const/4 v2, 0x0
 
-    move v3, v2
+    .line 671
+    .local v2, "index":I
+    invoke-virtual {p1}, Ljava/util/ArrayList;->iterator()Ljava/util/Iterator;
 
-    :goto_f
-    invoke-interface {p1}, Ljava/util/Iterator;->hasNext()Z
+    move-result-object v3
+
+    :goto_d
+    invoke-interface {v3}, Ljava/util/Iterator;->hasNext()Z
 
     move-result v4
 
-    if-eqz v4, :cond_20
+    if-eqz v4, :cond_21
 
-    invoke-interface {p1}, Ljava/util/Iterator;->next()Ljava/lang/Object;
+    invoke-interface {v3}, Ljava/util/Iterator;->next()Ljava/lang/Object;
 
     move-result-object v4
 
     check-cast v4, [B
 
     .line 672
-    invoke-static {v4, v2, v0, v3, v1}, Ljava/lang/System;->arraycopy(Ljava/lang/Object;ILjava/lang/Object;II)V
+    .local v4, "sad":[B
+    const/4 v5, 0x0
+
+    invoke-static {v4, v5, v0, v2, v1}, Ljava/lang/System;->arraycopy(Ljava/lang/Object;ILjava/lang/Object;II)V
 
     .line 673
-    add-int/2addr v3, v1
+    nop
+
+    .end local v4  # "sad":[B
+    add-int/lit8 v2, v2, 0x3
 
     .line 674
-    goto :goto_f
+    goto :goto_d
 
     .line 675
-    :cond_20
+    :cond_21
     return-object v0
 .end method
 
 .method private getSupportedShortAudioDescriptor(Landroid/media/AudioDeviceInfo;I)[B
     .registers 5
+    .param p1, "deviceInfo"  # Landroid/media/AudioDeviceInfo;
+    .param p2, "audioFormatCode"  # I
 
     .line 685
     const/4 v0, 0x0
@@ -500,9 +525,9 @@
     :cond_7
     invoke-direct {p0, p1}, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->getLpcmShortAudioDescriptor(Landroid/media/AudioDeviceInfo;)[B
 
-    move-result-object p1
+    move-result-object v0
 
-    return-object p1
+    return-object v0
 
     .line 687
     :cond_c
@@ -510,7 +535,9 @@
 .end method
 
 .method private getSupportedShortAudioDescriptors(Landroid/media/AudioDeviceInfo;[I)[B
-    .registers 11
+    .registers 12
+    .param p1, "deviceInfo"  # Landroid/media/AudioDeviceInfo;
+    .param p2, "audioFormatCodes"  # [I
 
     .line 618
     new-instance v0, Ljava/util/ArrayList;
@@ -520,6 +547,7 @@
     invoke-direct {v0, v1}, Ljava/util/ArrayList;-><init>(I)V
 
     .line 619
+    .local v0, "sads":Ljava/util/ArrayList;, "Ljava/util/ArrayList<[B>;"
     array-length v1, p2
 
     const/4 v2, 0x0
@@ -532,11 +560,13 @@
     aget v4, p2, v3
 
     .line 620
+    .local v4, "audioFormatCode":I
     invoke-direct {p0, p1, v4}, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->getSupportedShortAudioDescriptor(Landroid/media/AudioDeviceInfo;I)[B
 
     move-result-object v5
 
     .line 621
+    .local v5, "sad":[B
     if-eqz v5, :cond_31
 
     .line 622
@@ -557,29 +587,31 @@
 
     new-array v6, v6, [Ljava/lang/Object;
 
-    array-length v5, v5
+    array-length v7, v5
 
     .line 628
-    invoke-static {v5}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
+    invoke-static {v7}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
 
-    move-result-object v5
+    move-result-object v7
 
-    aput-object v5, v6, v2
+    aput-object v7, v6, v2
 
     invoke-static {v4}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
 
-    move-result-object v4
+    move-result-object v7
 
-    const/4 v5, 0x1
+    const/4 v8, 0x1
 
-    aput-object v4, v6, v5
+    aput-object v7, v6, v8
 
     .line 626
-    const-string v4, "Dropping Short Audio Descriptor with length %d for requested codec %x"
+    const-string v7, "Dropping Short Audio Descriptor with length %d for requested codec %x"
 
-    invoke-static {v4, v6}, Lcom/android/server/hdmi/HdmiLogger;->warning(Ljava/lang/String;[Ljava/lang/Object;)V
+    invoke-static {v7, v6}, Lcom/android/server/hdmi/HdmiLogger;->warning(Ljava/lang/String;[Ljava/lang/Object;)V
 
     .line 619
+    .end local v4  # "audioFormatCode":I
+    .end local v5  # "sad":[B
     :cond_31
     :goto_31
     add-int/lit8 v3, v3, 0x1
@@ -590,13 +622,14 @@
     :cond_34
     invoke-direct {p0, v0}, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->getShortAudioDescriptorBytes(Ljava/util/ArrayList;)[B
 
-    move-result-object p1
+    move-result-object v1
 
-    return-object p1
+    return-object v1
 .end method
 
 .method private getSupportedShortAudioDescriptorsFromConfig(Ljava/util/List;[I)[B
-    .registers 8
+    .registers 10
+    .param p2, "audioFormatCodes"  # [I
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(",
@@ -607,76 +640,78 @@
     .end annotation
 
     .line 637
-    nop
+    .local p1, "deviceConfig":Ljava/util/List;, "Ljava/util/List<Lcom/android/server/hdmi/HdmiUtils$DeviceConfig;>;"
+    const/4 v0, 0x0
 
     .line 638
+    .local v0, "deviceConfigToUse":Lcom/android/server/hdmi/HdmiUtils$DeviceConfig;
     invoke-interface {p1}, Ljava/util/List;->iterator()Ljava/util/Iterator;
 
-    move-result-object p1
+    move-result-object v1
 
     :goto_5
-    invoke-interface {p1}, Ljava/util/Iterator;->hasNext()Z
+    invoke-interface {v1}, Ljava/util/Iterator;->hasNext()Z
 
-    move-result v0
+    move-result v2
 
-    if-eqz v0, :cond_1e
+    if-eqz v2, :cond_1e
 
-    invoke-interface {p1}, Ljava/util/Iterator;->next()Ljava/lang/Object;
+    invoke-interface {v1}, Ljava/util/Iterator;->next()Ljava/lang/Object;
 
-    move-result-object v0
+    move-result-object v2
 
-    check-cast v0, Lcom/android/server/hdmi/HdmiUtils$DeviceConfig;
+    check-cast v2, Lcom/android/server/hdmi/HdmiUtils$DeviceConfig;
 
     .line 640
-    iget-object v1, v0, Lcom/android/server/hdmi/HdmiUtils$DeviceConfig;->name:Ljava/lang/String;
+    .local v2, "device":Lcom/android/server/hdmi/HdmiUtils$DeviceConfig;
+    iget-object v3, v2, Lcom/android/server/hdmi/HdmiUtils$DeviceConfig;->name:Ljava/lang/String;
 
-    const-string v2, "VX_AUDIO_DEVICE_IN_HDMI_ARC"
+    const-string v4, "VX_AUDIO_DEVICE_IN_HDMI_ARC"
 
-    invoke-virtual {v1, v2}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v3, v4}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result v1
+    move-result v3
 
-    if-eqz v1, :cond_1d
+    if-eqz v3, :cond_1d
 
     .line 641
-    nop
+    move-object v0, v2
 
     .line 642
-    goto :goto_1f
+    goto :goto_1e
 
     .line 644
+    .end local v2  # "device":Lcom/android/server/hdmi/HdmiUtils$DeviceConfig;
     :cond_1d
     goto :goto_5
 
-    .line 638
-    :cond_1e
-    const/4 v0, 0x0
-
     .line 645
-    :goto_1f
-    const/4 p1, 0x0
-
-    if-nez v0, :cond_2d
+    :cond_1e
+    :goto_1e
+    if-nez v0, :cond_2c
 
     .line 647
-    const-string p2, "HdmiCecLocalDeviceAudioSystem"
+    const-string v1, "HdmiCecLocalDeviceAudioSystem"
 
-    const-string/jumbo v0, "sadConfig.xml does not have required device info for VX_AUDIO_DEVICE_IN_HDMI_ARC"
+    const-string/jumbo v2, "sadConfig.xml does not have required device info for VX_AUDIO_DEVICE_IN_HDMI_ARC"
 
-    invoke-static {p2, v0}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v2}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 649
-    new-array p1, p1, [B
+    const/4 v1, 0x0
 
-    return-object p1
+    new-array v1, v1, [B
+
+    return-object v1
 
     .line 651
-    :cond_2d
+    :cond_2c
     new-instance v1, Ljava/util/HashMap;
 
     invoke-direct {v1}, Ljava/util/HashMap;-><init>()V
 
     .line 652
+    .local v1, "map":Ljava/util/HashMap;, "Ljava/util/HashMap<Ljava/lang/Integer;[B>;"
     new-instance v2, Ljava/util/ArrayList;
 
     array-length v3, p2
@@ -684,103 +719,110 @@
     invoke-direct {v2, v3}, Ljava/util/ArrayList;-><init>(I)V
 
     .line 653
-    iget-object v0, v0, Lcom/android/server/hdmi/HdmiUtils$DeviceConfig;->supportedCodecs:Ljava/util/List;
+    .local v2, "sads":Ljava/util/ArrayList;, "Ljava/util/ArrayList<[B>;"
+    iget-object v3, v0, Lcom/android/server/hdmi/HdmiUtils$DeviceConfig;->supportedCodecs:Ljava/util/List;
 
-    invoke-interface {v0}, Ljava/util/List;->iterator()Ljava/util/Iterator;
-
-    move-result-object v0
-
-    :goto_3e
-    invoke-interface {v0}, Ljava/util/Iterator;->hasNext()Z
-
-    move-result v3
-
-    if-eqz v3, :cond_56
-
-    invoke-interface {v0}, Ljava/util/Iterator;->next()Ljava/lang/Object;
+    invoke-interface {v3}, Ljava/util/List;->iterator()Ljava/util/Iterator;
 
     move-result-object v3
 
-    check-cast v3, Lcom/android/server/hdmi/HdmiUtils$CodecSad;
+    :goto_3d
+    invoke-interface {v3}, Ljava/util/Iterator;->hasNext()Z
+
+    move-result v4
+
+    if-eqz v4, :cond_55
+
+    invoke-interface {v3}, Ljava/util/Iterator;->next()Ljava/lang/Object;
+
+    move-result-object v4
+
+    check-cast v4, Lcom/android/server/hdmi/HdmiUtils$CodecSad;
 
     .line 654
-    iget v4, v3, Lcom/android/server/hdmi/HdmiUtils$CodecSad;->audioCodec:I
+    .local v4, "codecSad":Lcom/android/server/hdmi/HdmiUtils$CodecSad;
+    iget v5, v4, Lcom/android/server/hdmi/HdmiUtils$CodecSad;->audioCodec:I
+
+    invoke-static {v5}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
+
+    move-result-object v5
+
+    iget-object v6, v4, Lcom/android/server/hdmi/HdmiUtils$CodecSad;->sad:[B
+
+    invoke-virtual {v1, v5, v6}, Ljava/util/HashMap;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+
+    .line 655
+    .end local v4  # "codecSad":Lcom/android/server/hdmi/HdmiUtils$CodecSad;
+    goto :goto_3d
+
+    .line 656
+    :cond_55
+    const/4 v3, 0x0
+
+    .local v3, "i":I
+    :goto_56
+    array-length v4, p2
+
+    if-ge v3, v4, :cond_7d
+
+    .line 657
+    aget v4, p2, v3
 
     invoke-static {v4}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
 
     move-result-object v4
 
-    iget-object v3, v3, Lcom/android/server/hdmi/HdmiUtils$CodecSad;->sad:[B
+    invoke-virtual {v1, v4}, Ljava/util/HashMap;->containsKey(Ljava/lang/Object;)Z
 
-    invoke-virtual {v1, v4, v3}, Ljava/util/HashMap;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+    move-result v4
 
-    .line 655
-    goto :goto_3e
-
-    .line 656
-    :cond_56
-    nop
-
-    :goto_57
-    array-length v0, p2
-
-    if-ge p1, v0, :cond_7e
-
-    .line 657
-    aget v0, p2, p1
-
-    invoke-static {v0}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
-
-    move-result-object v0
-
-    invoke-virtual {v1, v0}, Ljava/util/HashMap;->containsKey(Ljava/lang/Object;)Z
-
-    move-result v0
-
-    if-eqz v0, :cond_7b
+    if-eqz v4, :cond_7a
 
     .line 658
-    aget v0, p2, p1
+    aget v4, p2, v3
 
-    invoke-static {v0}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
+    invoke-static {v4}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
 
-    move-result-object v0
+    move-result-object v4
 
-    invoke-virtual {v1, v0}, Ljava/util/HashMap;->get(Ljava/lang/Object;)Ljava/lang/Object;
+    invoke-virtual {v1, v4}, Ljava/util/HashMap;->get(Ljava/lang/Object;)Ljava/lang/Object;
 
-    move-result-object v0
+    move-result-object v4
 
-    check-cast v0, [B
+    check-cast v4, [B
 
     .line 659
-    if-eqz v0, :cond_7b
+    .local v4, "sad":[B
+    if-eqz v4, :cond_7a
 
-    array-length v3, v0
+    array-length v5, v4
 
-    const/4 v4, 0x3
+    const/4 v6, 0x3
 
-    if-ne v3, v4, :cond_7b
+    if-ne v5, v6, :cond_7a
 
     .line 660
-    invoke-virtual {v2, v0}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
+    invoke-virtual {v2, v4}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
 
     .line 656
-    :cond_7b
-    add-int/lit8 p1, p1, 0x1
+    .end local v4  # "sad":[B
+    :cond_7a
+    add-int/lit8 v3, v3, 0x1
 
-    goto :goto_57
+    goto :goto_56
 
     .line 664
-    :cond_7e
+    .end local v3  # "i":I
+    :cond_7d
     invoke-direct {p0, v2}, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->getShortAudioDescriptorBytes(Ljava/util/ArrayList;)[B
 
-    move-result-object p1
+    move-result-object v3
 
-    return-object p1
+    return-object v3
 .end method
 
 .method private getSystemAudioDeviceInfo()Landroid/media/AudioDeviceInfo;
-    .registers 11
+    .registers 12
 
     .line 720
     iget-object v0, p0, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->mService:Lcom/android/server/hdmi/HdmiControlService;
@@ -798,6 +840,7 @@
     check-cast v0, Landroid/media/AudioManager;
 
     .line 721
+    .local v0, "audioManager":Landroid/media/AudioManager;
     const/4 v1, 0x0
 
     const/4 v2, 0x0
@@ -805,11 +848,11 @@
     if-nez v0, :cond_1a
 
     .line 722
-    new-array v0, v2, [Ljava/lang/Object;
+    new-array v2, v2, [Ljava/lang/Object;
 
-    const-string v2, "Error getting system audio device because AudioManager not available."
+    const-string v3, "Error getting system audio device because AudioManager not available."
 
-    invoke-static {v2, v0}, Lcom/android/server/hdmi/HdmiLogger;->error(Ljava/lang/String;[Ljava/lang/Object;)V
+    invoke-static {v3, v2}, Lcom/android/server/hdmi/HdmiLogger;->error(Ljava/lang/String;[Ljava/lang/Object;)V
 
     .line 724
     return-object v1
@@ -820,105 +863,108 @@
 
     invoke-virtual {v0, v3}, Landroid/media/AudioManager;->getDevices(I)[Landroid/media/AudioDeviceInfo;
 
-    move-result-object v0
+    move-result-object v4
 
     .line 727
-    new-array v4, v3, [Ljava/lang/Object;
+    .local v4, "devices":[Landroid/media/AudioDeviceInfo;
+    new-array v5, v3, [Ljava/lang/Object;
 
-    array-length v5, v0
+    array-length v6, v4
 
-    invoke-static {v5}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
+    invoke-static {v6}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
 
-    move-result-object v5
+    move-result-object v6
 
-    aput-object v5, v4, v2
+    aput-object v6, v5, v2
 
-    const-string v5, "Found %d audio input devices"
+    const-string v6, "Found %d audio input devices"
 
-    invoke-static {v5, v4}, Lcom/android/server/hdmi/HdmiLogger;->debug(Ljava/lang/String;[Ljava/lang/Object;)V
+    invoke-static {v6, v5}, Lcom/android/server/hdmi/HdmiLogger;->debug(Ljava/lang/String;[Ljava/lang/Object;)V
 
     .line 728
-    array-length v4, v0
+    array-length v5, v4
 
-    move v5, v2
+    move v6, v2
 
     :goto_2f
-    if-ge v5, v4, :cond_74
+    if-ge v6, v5, :cond_74
 
-    aget-object v6, v0, v5
+    aget-object v7, v4, v6
 
     .line 729
-    const/4 v7, 0x2
+    .local v7, "device":Landroid/media/AudioDeviceInfo;
+    const/4 v8, 0x2
 
-    new-array v7, v7, [Ljava/lang/Object;
+    new-array v8, v8, [Ljava/lang/Object;
 
-    invoke-virtual {v6}, Landroid/media/AudioDeviceInfo;->getProductName()Ljava/lang/CharSequence;
-
-    move-result-object v8
-
-    aput-object v8, v7, v2
-
-    invoke-virtual {v6}, Landroid/media/AudioDeviceInfo;->getPort()Landroid/media/AudioDevicePort;
-
-    move-result-object v8
-
-    aput-object v8, v7, v3
-
-    const-string v8, "%s at port %s"
-
-    invoke-static {v8, v7}, Lcom/android/server/hdmi/HdmiLogger;->debug(Ljava/lang/String;[Ljava/lang/Object;)V
-
-    .line 730
-    new-array v7, v3, [Ljava/lang/Object;
-
-    .line 731
-    invoke-virtual {v6}, Landroid/media/AudioDeviceInfo;->getEncodings()[I
-
-    move-result-object v8
-
-    invoke-static {v8}, Ljava/util/Arrays;->stream([I)Ljava/util/stream/IntStream;
-
-    move-result-object v8
-
-    sget-object v9, Lcom/android/server/hdmi/-$$Lambda$Q3K33XXIADNcvSncyQ2-wHWHi4c;->INSTANCE:Lcom/android/server/hdmi/-$$Lambda$Q3K33XXIADNcvSncyQ2-wHWHi4c;
-
-    invoke-interface {v8, v9}, Ljava/util/stream/IntStream;->mapToObj(Ljava/util/function/IntFunction;)Ljava/util/stream/Stream;
-
-    move-result-object v8
-
-    .line 733
-    const-string v9, ", "
-
-    invoke-static {v9}, Ljava/util/stream/Collectors;->joining(Ljava/lang/CharSequence;)Ljava/util/stream/Collector;
+    invoke-virtual {v7}, Landroid/media/AudioDeviceInfo;->getProductName()Ljava/lang/CharSequence;
 
     move-result-object v9
 
-    invoke-interface {v8, v9}, Ljava/util/stream/Stream;->collect(Ljava/util/stream/Collector;)Ljava/lang/Object;
+    aput-object v9, v8, v2
 
-    move-result-object v8
+    invoke-virtual {v7}, Landroid/media/AudioDeviceInfo;->getPort()Landroid/media/AudioDevicePort;
 
-    aput-object v8, v7, v2
+    move-result-object v9
+
+    aput-object v9, v8, v3
+
+    const-string v9, "%s at port %s"
+
+    invoke-static {v9, v8}, Lcom/android/server/hdmi/HdmiLogger;->debug(Ljava/lang/String;[Ljava/lang/Object;)V
 
     .line 730
-    const-string v8, "Supported encodings are %s"
+    new-array v8, v3, [Ljava/lang/Object;
 
-    invoke-static {v8, v7}, Lcom/android/server/hdmi/HdmiLogger;->debug(Ljava/lang/String;[Ljava/lang/Object;)V
+    .line 731
+    invoke-virtual {v7}, Landroid/media/AudioDeviceInfo;->getEncodings()[I
+
+    move-result-object v9
+
+    invoke-static {v9}, Ljava/util/Arrays;->stream([I)Ljava/util/stream/IntStream;
+
+    move-result-object v9
+
+    sget-object v10, Lcom/android/server/hdmi/-$$Lambda$Q3K33XXIADNcvSncyQ2-wHWHi4c;->INSTANCE:Lcom/android/server/hdmi/-$$Lambda$Q3K33XXIADNcvSncyQ2-wHWHi4c;
+
+    invoke-interface {v9, v10}, Ljava/util/stream/IntStream;->mapToObj(Ljava/util/function/IntFunction;)Ljava/util/stream/Stream;
+
+    move-result-object v9
+
+    .line 733
+    const-string v10, ", "
+
+    invoke-static {v10}, Ljava/util/stream/Collectors;->joining(Ljava/lang/CharSequence;)Ljava/util/stream/Collector;
+
+    move-result-object v10
+
+    invoke-interface {v9, v10}, Ljava/util/stream/Stream;->collect(Ljava/util/stream/Collector;)Ljava/lang/Object;
+
+    move-result-object v9
+
+    aput-object v9, v8, v2
+
+    .line 730
+    const-string v9, "Supported encodings are %s"
+
+    invoke-static {v9, v8}, Lcom/android/server/hdmi/HdmiLogger;->debug(Ljava/lang/String;[Ljava/lang/Object;)V
 
     .line 735
-    invoke-virtual {v6}, Landroid/media/AudioDeviceInfo;->getType()I
+    invoke-virtual {v7}, Landroid/media/AudioDeviceInfo;->getType()I
 
-    move-result v7
+    move-result v8
 
-    const/16 v8, 0xa
+    const/16 v9, 0xa
 
-    if-ne v7, v8, :cond_71
+    if-ne v8, v9, :cond_71
 
     .line 736
-    return-object v6
+    return-object v7
 
     .line 728
+    .end local v7  # "device":Landroid/media/AudioDeviceInfo;
     :cond_71
-    add-int/lit8 v5, v5, 0x1
+    add-int/lit8 v6, v6, 0x1
 
     goto :goto_2f
 
@@ -928,7 +974,8 @@
 .end method
 
 .method private handleRoutingChangeAndInformationForSwitch(Lcom/android/server/hdmi/HdmiCecMessage;)V
-    .registers 5
+    .registers 6
+    .param p1, "message"  # Lcom/android/server/hdmi/HdmiCecMessage;
 
     .line 1207
     invoke-virtual {p0}, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->getRoutingPort()I
@@ -956,81 +1003,82 @@
     .line 1210
     invoke-virtual {p1}, Lcom/android/server/hdmi/HdmiCecMessage;->getSource()I
 
-    move-result p1
-
-    iget-object v1, p0, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->mService:Lcom/android/server/hdmi/HdmiControlService;
-
-    invoke-virtual {v1}, Lcom/android/server/hdmi/HdmiControlService;->getPhysicalAddress()I
-
     move-result v1
 
+    iget-object v2, p0, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->mService:Lcom/android/server/hdmi/HdmiControlService;
+
+    invoke-virtual {v2}, Lcom/android/server/hdmi/HdmiControlService;->getPhysicalAddress()I
+
+    move-result v2
+
     .line 1209
-    invoke-virtual {v0, p1, v1}, Lcom/android/server/hdmi/HdmiControlService;->setAndBroadcastActiveSourceFromOneDeviceType(II)V
+    invoke-virtual {v0, v1, v2}, Lcom/android/server/hdmi/HdmiControlService;->setAndBroadcastActiveSourceFromOneDeviceType(II)V
 
     .line 1211
     return-void
 
     .line 1214
     :cond_22
-    iget-object p1, p0, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->mService:Lcom/android/server/hdmi/HdmiControlService;
+    iget-object v0, p0, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->mService:Lcom/android/server/hdmi/HdmiControlService;
 
     invoke-virtual {p0}, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->getRoutingPort()I
 
+    move-result v2
+
+    invoke-virtual {v0, v2}, Lcom/android/server/hdmi/HdmiControlService;->portIdToPath(I)I
+
     move-result v0
-
-    invoke-virtual {p1, v0}, Lcom/android/server/hdmi/HdmiControlService;->portIdToPath(I)I
-
-    move-result p1
 
     .line 1216
-    iget-object v0, p0, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->mService:Lcom/android/server/hdmi/HdmiControlService;
+    .local v0, "routingInformationPath":I
+    iget-object v2, p0, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->mService:Lcom/android/server/hdmi/HdmiControlService;
 
-    invoke-virtual {v0}, Lcom/android/server/hdmi/HdmiControlService;->getPhysicalAddress()I
+    invoke-virtual {v2}, Lcom/android/server/hdmi/HdmiControlService;->getPhysicalAddress()I
 
-    move-result v0
+    move-result v2
 
-    if-ne p1, v0, :cond_4b
+    if-ne v0, v2, :cond_4b
 
     .line 1217
-    new-instance v0, Ljava/lang/StringBuilder;
+    new-instance v2, Ljava/lang/StringBuilder;
 
-    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v2, "Current device can\'t assign valid physical addressto devices under it any more. It\'s physical address is "
+    const-string v3, "Current device can\'t assign valid physical addressto devices under it any more. It\'s physical address is "
 
-    invoke-virtual {v0, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v0}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v2
 
-    new-array v0, v1, [Ljava/lang/Object;
+    new-array v1, v1, [Ljava/lang/Object;
 
-    invoke-static {p1, v0}, Lcom/android/server/hdmi/HdmiLogger;->debug(Ljava/lang/String;[Ljava/lang/Object;)V
+    invoke-static {v2, v1}, Lcom/android/server/hdmi/HdmiLogger;->debug(Ljava/lang/String;[Ljava/lang/Object;)V
 
     .line 1221
     return-void
 
     .line 1224
     :cond_4b
-    iget-object v0, p0, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->mService:Lcom/android/server/hdmi/HdmiControlService;
+    iget-object v1, p0, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->mService:Lcom/android/server/hdmi/HdmiControlService;
 
-    iget v1, p0, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->mAddress:I
+    iget v2, p0, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->mAddress:I
 
-    invoke-static {v1, p1}, Lcom/android/server/hdmi/HdmiCecMessageBuilder;->buildRoutingInformation(II)Lcom/android/server/hdmi/HdmiCecMessage;
+    invoke-static {v2, v0}, Lcom/android/server/hdmi/HdmiCecMessageBuilder;->buildRoutingInformation(II)Lcom/android/server/hdmi/HdmiCecMessage;
 
-    move-result-object p1
+    move-result-object v2
 
-    invoke-virtual {v0, p1}, Lcom/android/server/hdmi/HdmiControlService;->sendCecCommand(Lcom/android/server/hdmi/HdmiCecMessage;)V
+    invoke-virtual {v1, v2}, Lcom/android/server/hdmi/HdmiControlService;->sendCecCommand(Lcom/android/server/hdmi/HdmiCecMessage;)V
 
     .line 1226
     invoke-virtual {p0}, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->getRoutingPort()I
 
-    move-result p1
+    move-result v1
 
-    invoke-virtual {p0, p1}, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->routeToInputFromPortId(I)V
+    invoke-virtual {p0, v1}, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->routeToInputFromPortId(I)V
 
     .line 1227
     return-void
@@ -1050,6 +1098,8 @@
 
 .method private invokeDeviceEventListener(Landroid/hardware/hdmi/HdmiDeviceInfo;I)V
     .registers 4
+    .param p1, "info"  # Landroid/hardware/hdmi/HdmiDeviceInfo;
+    .param p2, "status"  # I
 
     .line 295
     iget-object v0, p0, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->mService:Lcom/android/server/hdmi/HdmiControlService;
@@ -1100,6 +1150,7 @@
     invoke-direct {v0, p0, v1}, Lcom/android/server/hdmi/DeviceDiscoveryAction;-><init>(Lcom/android/server/hdmi/HdmiCecLocalDevice;Lcom/android/server/hdmi/DeviceDiscoveryAction$DeviceDiscoveryCallback;)V
 
     .line 1263
+    .local v0, "action":Lcom/android/server/hdmi/DeviceDiscoveryAction;
     invoke-virtual {p0, v0}, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->addAndStartAction(Lcom/android/server/hdmi/HdmiCecFeatureAction;)V
 
     .line 1264
@@ -1108,6 +1159,7 @@
 
 .method private notifyArcStatusToAudioService(Z)V
     .registers 5
+    .param p1, "enabled"  # Z
 
     .line 832
     iget-object v0, p0, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->mService:Lcom/android/server/hdmi/HdmiControlService;
@@ -1128,7 +1180,8 @@
 .end method
 
 .method private parseAudioFormatCodes([B)[I
-    .registers 7
+    .registers 6
+    .param p1, "params"  # [B
 
     .line 744
     array-length v0, p1
@@ -1136,50 +1189,56 @@
     new-array v0, v0, [I
 
     .line 745
+    .local v0, "audioFormatCodes":[I
     const/4 v1, 0x0
 
-    move v2, v1
+    .local v1, "i":I
+    :goto_4
+    array-length v2, p1
 
-    :goto_5
-    array-length v3, p1
-
-    if-ge v2, v3, :cond_19
+    if-ge v1, v2, :cond_19
 
     .line 746
-    aget-byte v3, p1, v2
+    aget-byte v2, p1, v1
 
     .line 747
+    .local v2, "val":B
     nop
 
     .line 748
-    const/4 v4, 0x1
+    const/4 v3, 0x1
 
-    if-lt v3, v4, :cond_13
+    if-lt v2, v3, :cond_13
 
-    const/16 v4, 0xf
+    const/16 v3, 0xf
 
-    if-gt v3, v4, :cond_13
+    if-gt v2, v3, :cond_13
+
+    move v3, v2
 
     goto :goto_14
 
     :cond_13
-    move v3, v1
+    const/4 v3, 0x0
 
     :goto_14
-    aput v3, v0, v2
+    aput v3, v0, v1
 
     .line 745
-    add-int/lit8 v2, v2, 0x1
+    .end local v2  # "val":B
+    add-int/lit8 v1, v1, 0x1
 
-    goto :goto_5
+    goto :goto_4
 
     .line 750
+    .end local v1  # "i":I
     :cond_19
     return-object v0
 .end method
 
 .method private removeDeviceInfo(I)Landroid/hardware/hdmi/HdmiDeviceInfo;
     .registers 4
+    .param p1, "id"  # I
     .annotation runtime Lcom/android/server/hdmi/HdmiAnnotations$ServiceThreadOnly;
     .end annotation
 
@@ -1196,6 +1255,7 @@
     check-cast v0, Landroid/hardware/hdmi/HdmiDeviceInfo;
 
     .line 256
+    .local v0, "deviceInfo":Landroid/hardware/hdmi/HdmiDeviceInfo;
     if-eqz v0, :cond_12
 
     .line 257
@@ -1212,7 +1272,8 @@
 .end method
 
 .method private removeTvInput(Ljava/lang/String;)V
-    .registers 5
+    .registers 6
+    .param p1, "inputId"  # Ljava/lang/String;
     .annotation runtime Lcom/android/server/hdmi/HdmiAnnotations$ServiceThreadOnly;
     .end annotation
 
@@ -1254,38 +1315,43 @@
     move-result v1
 
     .line 165
+    .local v1, "portId":I
     iget-object v2, p0, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->mPortIdToTvInputs:Ljava/util/HashMap;
 
     invoke-static {v1}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
 
-    move-result-object v1
+    move-result-object v3
 
-    invoke-virtual {v2, v1}, Ljava/util/HashMap;->remove(Ljava/lang/Object;)Ljava/lang/Object;
+    invoke-virtual {v2, v3}, Ljava/util/HashMap;->remove(Ljava/lang/Object;)Ljava/lang/Object;
 
     .line 166
-    iget-object v1, p0, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->mTvInputsToDeviceInfo:Ljava/util/HashMap;
+    iget-object v2, p0, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->mTvInputsToDeviceInfo:Ljava/util/HashMap;
 
-    invoke-virtual {v1, p1}, Ljava/util/HashMap;->remove(Ljava/lang/Object;)Ljava/lang/Object;
+    invoke-virtual {v2, p1}, Ljava/util/HashMap;->remove(Ljava/lang/Object;)Ljava/lang/Object;
 
     .line 167
+    nop
+
+    .end local v1  # "portId":I
     monitor-exit v0
 
     .line 168
     return-void
 
     .line 167
-    :catchall_2c
-    move-exception p1
+    :catchall_2d
+    move-exception v1
 
     monitor-exit v0
-    :try_end_2e
-    .catchall {:try_start_6 .. :try_end_2e} :catchall_2c
+    :try_end_2f
+    .catchall {:try_start_6 .. :try_end_2f} :catchall_2d
 
-    throw p1
+    throw v1
 .end method
 
 .method private setSystemAudioMode(Z)V
-    .registers 7
+    .registers 10
+    .param p1, "newSystemAudioMode"  # Z
 
     .line 888
     invoke-virtual {p0}, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->getActiveSource()Lcom/android/server/hdmi/HdmiCecLocalDevice$ActiveSource;
@@ -1295,148 +1361,151 @@
     iget v0, v0, Lcom/android/server/hdmi/HdmiCecLocalDevice$ActiveSource;->physicalAddress:I
 
     .line 889
+    .local v0, "targetPhysicalAddress":I
     iget-object v1, p0, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->mService:Lcom/android/server/hdmi/HdmiControlService;
 
     invoke-virtual {v1, v0}, Lcom/android/server/hdmi/HdmiControlService;->pathToPortId(I)I
 
-    move-result v0
+    move-result v1
 
     .line 890
+    .local v1, "port":I
     if-eqz p1, :cond_13
 
-    if-ltz v0, :cond_13
+    if-ltz v1, :cond_13
 
     .line 891
     invoke-virtual {p0}, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->switchToAudioInput()V
 
     .line 895
     :cond_13
-    iget-object v0, p0, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->mService:Lcom/android/server/hdmi/HdmiControlService;
+    iget-object v2, p0, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->mService:Lcom/android/server/hdmi/HdmiControlService;
 
     .line 896
-    invoke-virtual {v0}, Lcom/android/server/hdmi/HdmiControlService;->getAudioManager()Landroid/media/AudioManager;
+    invoke-virtual {v2}, Lcom/android/server/hdmi/HdmiControlService;->getAudioManager()Landroid/media/AudioManager;
 
-    move-result-object v0
+    move-result-object v2
 
-    const/4 v1, 0x3
+    const/4 v3, 0x3
 
-    invoke-virtual {v0, v1}, Landroid/media/AudioManager;->isStreamMute(I)Z
+    invoke-virtual {v2, v3}, Landroid/media/AudioManager;->isStreamMute(I)Z
 
-    move-result v0
+    move-result v2
 
     .line 897
-    const/4 v2, 0x1
+    .local v2, "currentMuteStatus":Z
+    const/4 v4, 0x1
 
-    if-ne v0, p1, :cond_3f
+    if-ne v2, p1, :cond_3f
 
     .line 898
-    iget-object v0, p0, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->mService:Lcom/android/server/hdmi/HdmiControlService;
+    iget-object v5, p0, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->mService:Lcom/android/server/hdmi/HdmiControlService;
 
-    const-string/jumbo v3, "ro.hdmi.property_system_audio_mode_muting_enable"
+    const-string/jumbo v6, "ro.hdmi.property_system_audio_mode_muting_enable"
 
-    invoke-virtual {v0, v3, v2}, Lcom/android/server/hdmi/HdmiControlService;->readBooleanSystemProperty(Ljava/lang/String;Z)Z
+    invoke-virtual {v5, v6, v4}, Lcom/android/server/hdmi/HdmiControlService;->readBooleanSystemProperty(Ljava/lang/String;Z)Z
 
-    move-result v0
+    move-result v5
 
-    if-nez v0, :cond_2e
+    if-nez v5, :cond_2e
 
     if-eqz p1, :cond_3f
 
     .line 901
     :cond_2e
-    iget-object v0, p0, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->mService:Lcom/android/server/hdmi/HdmiControlService;
+    iget-object v5, p0, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->mService:Lcom/android/server/hdmi/HdmiControlService;
 
-    invoke-virtual {v0}, Lcom/android/server/hdmi/HdmiControlService;->getAudioManager()Landroid/media/AudioManager;
+    invoke-virtual {v5}, Lcom/android/server/hdmi/HdmiControlService;->getAudioManager()Landroid/media/AudioManager;
 
-    move-result-object v0
+    move-result-object v5
 
     .line 904
     if-eqz p1, :cond_39
 
     .line 905
-    const/16 v3, 0x64
+    const/16 v6, 0x64
 
     goto :goto_3b
 
     .line 906
     :cond_39
-    const/16 v3, -0x64
+    const/16 v6, -0x64
 
     :goto_3b
-    const/4 v4, 0x0
+    const/4 v7, 0x0
 
     .line 902
-    invoke-virtual {v0, v1, v3, v4}, Landroid/media/AudioManager;->adjustStreamVolume(III)V
+    invoke-virtual {v5, v3, v6, v7}, Landroid/media/AudioManager;->adjustStreamVolume(III)V
 
     .line 910
     :cond_3f
     invoke-direct {p0, p1}, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->updateAudioManagerForSystemAudio(Z)V
 
     .line 911
-    iget-object v0, p0, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->mLock:Ljava/lang/Object;
+    iget-object v3, p0, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->mLock:Ljava/lang/Object;
 
-    monitor-enter v0
+    monitor-enter v3
 
     .line 912
     :try_start_45
     invoke-virtual {p0}, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->isSystemAudioActivated()Z
 
-    move-result v1
+    move-result v5
 
-    if-eq v1, p1, :cond_55
+    if-eq v5, p1, :cond_55
 
     .line 913
-    iget-object v1, p0, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->mService:Lcom/android/server/hdmi/HdmiControlService;
+    iget-object v5, p0, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->mService:Lcom/android/server/hdmi/HdmiControlService;
 
-    invoke-virtual {v1, p1}, Lcom/android/server/hdmi/HdmiControlService;->setSystemAudioActivated(Z)V
+    invoke-virtual {v5, p1}, Lcom/android/server/hdmi/HdmiControlService;->setSystemAudioActivated(Z)V
 
     .line 914
-    iget-object v1, p0, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->mService:Lcom/android/server/hdmi/HdmiControlService;
+    iget-object v5, p0, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->mService:Lcom/android/server/hdmi/HdmiControlService;
 
-    invoke-virtual {v1, p1}, Lcom/android/server/hdmi/HdmiControlService;->announceSystemAudioModeChange(Z)V
+    invoke-virtual {v5, p1}, Lcom/android/server/hdmi/HdmiControlService;->announceSystemAudioModeChange(Z)V
 
     .line 916
     :cond_55
-    monitor-exit v0
+    monitor-exit v3
     :try_end_56
     .catchall {:try_start_45 .. :try_end_56} :catchall_91
 
     .line 920
-    const-string/jumbo v0, "persist.sys.hdmi.property_arc_support"
+    const-string/jumbo v3, "persist.sys.hdmi.property_arc_support"
 
-    invoke-static {v0, v2}, Landroid/os/SystemProperties;->getBoolean(Ljava/lang/String;Z)Z
+    invoke-static {v3, v4}, Landroid/os/SystemProperties;->getBoolean(Ljava/lang/String;Z)Z
 
-    move-result v0
+    move-result v3
 
-    if-eqz v0, :cond_90
+    if-eqz v3, :cond_90
 
     .line 921
     invoke-virtual {p0}, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->isDirectConnectToTv()Z
 
-    move-result v0
+    move-result v3
 
-    if-eqz v0, :cond_90
+    if-eqz v3, :cond_90
 
     .line 922
     if-eqz p1, :cond_7b
 
     invoke-virtual {p0}, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->isArcEnabled()Z
 
-    move-result v0
+    move-result v3
 
-    if-nez v0, :cond_7b
+    if-nez v3, :cond_7b
 
     .line 923
-    const-class p1, Lcom/android/server/hdmi/ArcInitiationActionFromAvr;
+    const-class v3, Lcom/android/server/hdmi/ArcInitiationActionFromAvr;
 
-    invoke-virtual {p0, p1}, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->removeAction(Ljava/lang/Class;)V
+    invoke-virtual {p0, v3}, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->removeAction(Ljava/lang/Class;)V
 
     .line 924
-    new-instance p1, Lcom/android/server/hdmi/ArcInitiationActionFromAvr;
+    new-instance v3, Lcom/android/server/hdmi/ArcInitiationActionFromAvr;
 
-    invoke-direct {p1, p0}, Lcom/android/server/hdmi/ArcInitiationActionFromAvr;-><init>(Lcom/android/server/hdmi/HdmiCecLocalDevice;)V
+    invoke-direct {v3, p0}, Lcom/android/server/hdmi/ArcInitiationActionFromAvr;-><init>(Lcom/android/server/hdmi/HdmiCecLocalDevice;)V
 
-    invoke-virtual {p0, p1}, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->addAndStartAction(Lcom/android/server/hdmi/HdmiCecFeatureAction;)V
+    invoke-virtual {p0, v3}, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->addAndStartAction(Lcom/android/server/hdmi/HdmiCecFeatureAction;)V
 
     goto :goto_90
 
@@ -1446,21 +1515,21 @@
 
     invoke-virtual {p0}, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->isArcEnabled()Z
 
-    move-result p1
+    move-result v3
 
-    if-eqz p1, :cond_90
+    if-eqz v3, :cond_90
 
     .line 926
-    const-class p1, Lcom/android/server/hdmi/ArcTerminationActionFromAvr;
+    const-class v3, Lcom/android/server/hdmi/ArcTerminationActionFromAvr;
 
-    invoke-virtual {p0, p1}, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->removeAction(Ljava/lang/Class;)V
+    invoke-virtual {p0, v3}, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->removeAction(Ljava/lang/Class;)V
 
     .line 927
-    new-instance p1, Lcom/android/server/hdmi/ArcTerminationActionFromAvr;
+    new-instance v3, Lcom/android/server/hdmi/ArcTerminationActionFromAvr;
 
-    invoke-direct {p1, p0}, Lcom/android/server/hdmi/ArcTerminationActionFromAvr;-><init>(Lcom/android/server/hdmi/HdmiCecLocalDevice;)V
+    invoke-direct {v3, p0}, Lcom/android/server/hdmi/ArcTerminationActionFromAvr;-><init>(Lcom/android/server/hdmi/HdmiCecLocalDevice;)V
 
-    invoke-virtual {p0, p1}, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->addAndStartAction(Lcom/android/server/hdmi/HdmiCecFeatureAction;)V
+    invoke-virtual {p0, v3}, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->addAndStartAction(Lcom/android/server/hdmi/HdmiCecFeatureAction;)V
 
     .line 930
     :cond_90
@@ -1469,14 +1538,14 @@
 
     .line 916
     :catchall_91
-    move-exception p1
+    move-exception v4
 
     :try_start_92
-    monitor-exit v0
+    monitor-exit v3
     :try_end_93
     .catchall {:try_start_92 .. :try_end_93} :catchall_91
 
-    throw p1
+    throw v4
 .end method
 
 .method private switchToHomeTvInput()V
@@ -1505,6 +1574,7 @@
     move-result-object v0
 
     .line 1173
+    .local v0, "activityIntent":Landroid/content/Intent;
     iget-object v1, p0, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->mService:Lcom/android/server/hdmi/HdmiControlService;
 
     invoke-virtual {v1}, Lcom/android/server/hdmi/HdmiControlService;->getContext()Landroid/content/Context;
@@ -1516,6 +1586,7 @@
     .catch Landroid/content/ActivityNotFoundException; {:try_start_0 .. :try_end_1c} :catch_1d
 
     .line 1176
+    .end local v0  # "activityIntent":Landroid/content/Intent;
     goto :goto_25
 
     .line 1174
@@ -1523,6 +1594,7 @@
     move-exception v0
 
     .line 1175
+    .local v0, "e":Landroid/content/ActivityNotFoundException;
     const-string v1, "HdmiCecLocalDeviceAudioSystem"
 
     const-string v2, "Can\'t find activity to switch to HOME"
@@ -1530,12 +1602,14 @@
     invoke-static {v1, v2, v0}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
     .line 1177
+    .end local v0  # "e":Landroid/content/ActivityNotFoundException;
     :goto_25
     return-void
 .end method
 
 .method private switchToTvInput(Ljava/lang/String;)V
     .registers 6
+    .param p1, "uri"  # Ljava/lang/String;
 
     .line 1156
     :try_start_0
@@ -1576,6 +1650,7 @@
     move-exception v0
 
     .line 1160
+    .local v0, "e":Landroid/content/ActivityNotFoundException;
     new-instance v1, Ljava/lang/StringBuilder;
 
     invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
@@ -1588,19 +1663,21 @@
 
     invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v1
 
-    const-string v1, "HdmiCecLocalDeviceAudioSystem"
+    const-string v2, "HdmiCecLocalDeviceAudioSystem"
 
-    invoke-static {v1, p1, v0}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    invoke-static {v2, v1, v0}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
     .line 1162
+    .end local v0  # "e":Landroid/content/ActivityNotFoundException;
     :goto_32
     return-void
 .end method
 
 .method private updateAudioManagerForSystemAudio(Z)V
-    .registers 5
+    .registers 6
+    .param p1, "on"  # Z
 
     .line 942
     iget-object v0, p0, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->mService:Lcom/android/server/hdmi/HdmiControlService;
@@ -1614,36 +1691,37 @@
     move-result v0
 
     .line 943
+    .local v0, "device":I
     const/4 v1, 0x2
 
     new-array v1, v1, [Ljava/lang/Object;
 
     invoke-static {p1}, Ljava/lang/Boolean;->valueOf(Z)Ljava/lang/Boolean;
 
-    move-result-object p1
+    move-result-object v2
 
-    const/4 v2, 0x0
+    const/4 v3, 0x0
 
-    aput-object p1, v1, v2
+    aput-object v2, v1, v3
 
     invoke-static {v0}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
 
-    move-result-object p1
+    move-result-object v2
 
-    const/4 v0, 0x1
+    const/4 v3, 0x1
 
-    aput-object p1, v1, v0
+    aput-object v2, v1, v3
 
-    const-string p1, "[A]UpdateSystemAudio mode[on=%b] output=[%X]"
+    const-string v2, "[A]UpdateSystemAudio mode[on=%b] output=[%X]"
 
-    invoke-static {p1, v1}, Lcom/android/server/hdmi/HdmiLogger;->debug(Ljava/lang/String;[Ljava/lang/Object;)V
+    invoke-static {v2, v1}, Lcom/android/server/hdmi/HdmiLogger;->debug(Ljava/lang/String;[Ljava/lang/Object;)V
 
     .line 944
     return-void
 .end method
 
 .method private updateSafeDeviceInfoList()V
-    .registers 3
+    .registers 4
     .annotation runtime Lcom/android/server/hdmi/HdmiAnnotations$ServiceThreadOnly;
     .end annotation
 
@@ -1658,6 +1736,7 @@
     move-result-object v0
 
     .line 280
+    .local v0, "copiedDevices":Ljava/util/List;, "Ljava/util/List<Landroid/hardware/hdmi/HdmiDeviceInfo;>;"
     iget-object v1, p0, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->mLock:Ljava/lang/Object;
 
     monitor-enter v1
@@ -1674,19 +1753,20 @@
 
     .line 282
     :catchall_10
-    move-exception v0
+    move-exception v2
 
     monitor-exit v1
     :try_end_12
     .catchall {:try_start_c .. :try_end_12} :catchall_10
 
-    throw v0
+    throw v2
 .end method
 
 
 # virtual methods
 .method final addCecDevice(Landroid/hardware/hdmi/HdmiDeviceInfo;)V
     .registers 5
+    .param p1, "info"  # Landroid/hardware/hdmi/HdmiDeviceInfo;
     .annotation runtime Lcom/android/server/hdmi/HdmiAnnotations$ServiceThreadOnly;
     .end annotation
 
@@ -1699,6 +1779,7 @@
     move-result-object v0
 
     .line 180
+    .local v0, "old":Landroid/hardware/hdmi/HdmiDeviceInfo;
     invoke-virtual {p1}, Landroid/hardware/hdmi/HdmiDeviceInfo;->getPhysicalAddress()I
 
     move-result v1
@@ -1749,6 +1830,7 @@
 
 .method protected addDeviceInfo(Landroid/hardware/hdmi/HdmiDeviceInfo;)Landroid/hardware/hdmi/HdmiDeviceInfo;
     .registers 5
+    .param p1, "deviceInfo"  # Landroid/hardware/hdmi/HdmiDeviceInfo;
     .annotation build Lcom/android/internal/annotations/VisibleForTesting;
     .end annotation
 
@@ -1768,6 +1850,7 @@
     move-result-object v0
 
     .line 237
+    .local v0, "oldDeviceInfo":Landroid/hardware/hdmi/HdmiDeviceInfo;
     if-eqz v0, :cond_14
 
     .line 238
@@ -1796,6 +1879,7 @@
 
 .method protected checkSupportAndSetSystemAudioMode(Z)Z
     .registers 5
+    .param p1, "newSystemAudioMode"  # Z
 
     .line 862
     invoke-virtual {p0}, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->isSystemAudioControlFeatureEnabled()Z
@@ -1818,28 +1902,28 @@
     .line 865
     if-eqz p1, :cond_17
 
-    const-string/jumbo p1, "on"
+    const-string/jumbo v2, "on"
 
     goto :goto_1a
 
     :cond_17
-    const-string/jumbo p1, "off"
+    const-string/jumbo v2, "off"
 
     :goto_1a
-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string/jumbo p1, "system audio mode because the System Audio Control feature is disabled."
+    const-string/jumbo v2, "system audio mode because the System Audio Control feature is disabled."
 
-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    new-array v0, v1, [Ljava/lang/Object;
+    new-array v2, v1, [Ljava/lang/Object;
 
     .line 863
-    invoke-static {p1, v0}, Lcom/android/server/hdmi/HdmiLogger;->debug(Ljava/lang/String;[Ljava/lang/Object;)V
+    invoke-static {v0, v2}, Lcom/android/server/hdmi/HdmiLogger;->debug(Ljava/lang/String;[Ljava/lang/Object;)V
 
     .line 868
     return v1
@@ -1891,7 +1975,9 @@
 .end method
 
 .method protected disableDevice(ZLcom/android/server/hdmi/HdmiCecLocalDevice$PendingActionClearedCallback;)V
-    .registers 3
+    .registers 5
+    .param p1, "initiatedByCec"  # Z
+    .param p2, "callback"  # Lcom/android/server/hdmi/HdmiCecLocalDevice$PendingActionClearedCallback;
     .annotation runtime Lcom/android/server/hdmi/HdmiAnnotations$ServiceThreadOnly;
     .end annotation
 
@@ -1902,18 +1988,20 @@
     invoke-virtual {p0}, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->assertRunOnServiceThread()V
 
     .line 324
-    iget-object p1, p0, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->mService:Lcom/android/server/hdmi/HdmiControlService;
+    iget-object v0, p0, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->mService:Lcom/android/server/hdmi/HdmiControlService;
 
-    iget-object p2, p0, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->mTvInputCallback:Landroid/media/tv/TvInputManager$TvInputCallback;
+    iget-object v1, p0, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->mTvInputCallback:Landroid/media/tv/TvInputManager$TvInputCallback;
 
-    invoke-virtual {p1, p2}, Lcom/android/server/hdmi/HdmiControlService;->unregisterTvInputCallback(Landroid/media/tv/TvInputManager$TvInputCallback;)V
+    invoke-virtual {v0, v1}, Lcom/android/server/hdmi/HdmiControlService;->unregisterTvInputCallback(Landroid/media/tv/TvInputManager$TvInputCallback;)V
 
     .line 326
     return-void
 .end method
 
 .method doManualPortSwitching(ILandroid/hardware/hdmi/IHdmiControlCallback;)V
-    .registers 4
+    .registers 7
+    .param p1, "portId"  # I
+    .param p2, "callback"  # Landroid/hardware/hdmi/IHdmiControlCallback;
     .annotation runtime Lcom/android/server/hdmi/HdmiAnnotations$ServiceThreadOnly;
     .end annotation
 
@@ -1930,9 +2018,9 @@
     if-nez v0, :cond_10
 
     .line 973
-    const/4 p1, 0x3
+    const/4 v0, 0x3
 
-    invoke-virtual {p0, p2, p1}, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->invokeCallback(Landroid/hardware/hdmi/IHdmiControlCallback;I)V
+    invoke-virtual {p0, p2, v0}, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->invokeCallback(Landroid/hardware/hdmi/IHdmiControlCallback;I)V
 
     .line 974
     return-void
@@ -1946,9 +2034,9 @@
     if-ne p1, v0, :cond_1b
 
     .line 977
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    invoke-virtual {p0, p2, p1}, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->invokeCallback(Landroid/hardware/hdmi/IHdmiControlCallback;I)V
+    invoke-virtual {p0, p2, v0}, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->invokeCallback(Landroid/hardware/hdmi/IHdmiControlCallback;I)V
 
     .line 978
     return-void
@@ -1970,9 +2058,9 @@
     invoke-virtual {p0, p1}, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->setLocalActivePort(I)V
 
     .line 983
-    const/4 p1, 0x6
+    const/4 v0, 0x6
 
-    invoke-virtual {p0, p2, p1}, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->invokeCallback(Landroid/hardware/hdmi/IHdmiControlCallback;I)V
+    invoke-virtual {p0, p2, v0}, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->invokeCallback(Landroid/hardware/hdmi/IHdmiControlCallback;I)V
 
     .line 984
     return-void
@@ -1981,20 +2069,20 @@
     :cond_2e
     invoke-virtual {p0}, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->getRoutingPort()I
 
-    move-result p2
+    move-result v0
 
-    if-eqz p2, :cond_3f
+    if-eqz v0, :cond_3f
 
     .line 987
-    iget-object p2, p0, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->mService:Lcom/android/server/hdmi/HdmiControlService;
+    iget-object v0, p0, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->mService:Lcom/android/server/hdmi/HdmiControlService;
 
     invoke-virtual {p0}, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->getRoutingPort()I
 
+    move-result v1
+
+    invoke-virtual {v0, v1}, Lcom/android/server/hdmi/HdmiControlService;->portIdToPath(I)I
+
     move-result v0
-
-    invoke-virtual {p2, v0}, Lcom/android/server/hdmi/HdmiControlService;->portIdToPath(I)I
-
-    move-result p2
 
     goto :goto_47
 
@@ -2002,45 +2090,50 @@
     :cond_3f
     invoke-virtual {p0}, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->getDeviceInfo()Landroid/hardware/hdmi/HdmiDeviceInfo;
 
-    move-result-object p2
+    move-result-object v0
 
-    invoke-virtual {p2}, Landroid/hardware/hdmi/HdmiDeviceInfo;->getPhysicalAddress()I
-
-    move-result p2
-
-    .line 989
-    :goto_47
-    iget-object v0, p0, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->mService:Lcom/android/server/hdmi/HdmiControlService;
-
-    invoke-virtual {v0, p1}, Lcom/android/server/hdmi/HdmiControlService;->portIdToPath(I)I
+    invoke-virtual {v0}, Landroid/hardware/hdmi/HdmiDeviceInfo;->getPhysicalAddress()I
 
     move-result v0
 
+    :goto_47
+    nop
+
+    .line 989
+    .local v0, "oldPath":I
+    iget-object v1, p0, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->mService:Lcom/android/server/hdmi/HdmiControlService;
+
+    invoke-virtual {v1, p1}, Lcom/android/server/hdmi/HdmiControlService;->portIdToPath(I)I
+
+    move-result v1
+
     .line 990
-    if-ne p2, v0, :cond_50
+    .local v1, "newPath":I
+    if-ne v0, v1, :cond_51
 
     .line 991
     return-void
 
     .line 993
-    :cond_50
+    :cond_51
     invoke-virtual {p0, p1}, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->setRoutingPort(I)V
 
     .line 994
     invoke-virtual {p0, p1}, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->setLocalActivePort(I)V
 
     .line 995
-    iget p1, p0, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->mAddress:I
+    iget v2, p0, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->mAddress:I
 
     .line 996
-    invoke-static {p1, p2, v0}, Lcom/android/server/hdmi/HdmiCecMessageBuilder;->buildRoutingChange(III)Lcom/android/server/hdmi/HdmiCecMessage;
+    invoke-static {v2, v0, v1}, Lcom/android/server/hdmi/HdmiCecMessageBuilder;->buildRoutingChange(III)Lcom/android/server/hdmi/HdmiCecMessage;
 
-    move-result-object p1
+    move-result-object v2
 
     .line 997
-    iget-object p2, p0, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->mService:Lcom/android/server/hdmi/HdmiControlService;
+    .local v2, "routingChange":Lcom/android/server/hdmi/HdmiCecMessage;
+    iget-object v3, p0, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->mService:Lcom/android/server/hdmi/HdmiControlService;
 
-    invoke-virtual {p2, p1}, Lcom/android/server/hdmi/HdmiControlService;->sendCecCommand(Lcom/android/server/hdmi/HdmiCecMessage;)V
+    invoke-virtual {v3, v2}, Lcom/android/server/hdmi/HdmiControlService;->sendCecCommand(Lcom/android/server/hdmi/HdmiCecMessage;)V
 
     .line 998
     return-void
@@ -2048,6 +2141,7 @@
 
 .method protected dump(Lcom/android/internal/util/IndentingPrintWriter;)V
     .registers 4
+    .param p1, "pw"  # Lcom/android/internal/util/IndentingPrintWriter;
 
     .line 1282
     const-string v0, "HdmiCecLocalDeviceAudioSystem:"
@@ -2062,7 +2156,7 @@
 
     invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v1, "isRoutingFeatureEnabled "
+    const-string/jumbo v1, "isRoutingFeatureEnabled "
 
     invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
@@ -2083,7 +2177,7 @@
 
     invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v1, "mSystemAudioControlFeatureEnabled: "
+    const-string/jumbo v1, "mSystemAudioControlFeatureEnabled: "
 
     invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
@@ -2102,7 +2196,7 @@
 
     invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v1, "mTvSystemAudioModeSupport: "
+    const-string/jumbo v1, "mTvSystemAudioModeSupport: "
 
     invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
@@ -2121,7 +2215,7 @@
 
     invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v1, "mArcEstablished: "
+    const-string/jumbo v1, "mArcEstablished: "
 
     invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
@@ -2140,7 +2234,7 @@
 
     invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v1, "mArcIntentUsed: "
+    const-string/jumbo v1, "mArcIntentUsed: "
 
     invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
@@ -2159,7 +2253,7 @@
 
     invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v1, "mRoutingPort: "
+    const-string/jumbo v1, "mRoutingPort: "
 
     invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
@@ -2180,7 +2274,7 @@
 
     invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v1, "mLocalActivePort: "
+    const-string/jumbo v1, "mLocalActivePort: "
 
     invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
@@ -2199,21 +2293,21 @@
     .line 1291
     iget-object v0, p0, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->mPortIdToTvInputs:Ljava/util/HashMap;
 
-    const-string v1, "mPortIdToTvInputs:"
+    const-string/jumbo v1, "mPortIdToTvInputs:"
 
     invoke-static {p1, v1, v0}, Lcom/android/server/hdmi/HdmiUtils;->dumpMap(Lcom/android/internal/util/IndentingPrintWriter;Ljava/lang/String;Ljava/util/Map;)V
 
     .line 1292
     iget-object v0, p0, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->mTvInputsToDeviceInfo:Ljava/util/HashMap;
 
-    const-string v1, "mTvInputsToDeviceInfo:"
+    const-string/jumbo v1, "mTvInputsToDeviceInfo:"
 
     invoke-static {p1, v1, v0}, Lcom/android/server/hdmi/HdmiUtils;->dumpMap(Lcom/android/internal/util/IndentingPrintWriter;Ljava/lang/String;Ljava/util/Map;)V
 
     .line 1293
     iget-object v0, p0, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->mDeviceInfos:Landroid/util/SparseArray;
 
-    const-string v1, "mDeviceInfos:"
+    const-string/jumbo v1, "mDeviceInfos:"
 
     invoke-static {p1, v1, v0}, Lcom/android/server/hdmi/HdmiUtils;->dumpSparseArray(Lcom/android/internal/util/IndentingPrintWriter;Ljava/lang/String;Landroid/util/SparseArray;)V
 
@@ -2258,7 +2352,8 @@
 .end method
 
 .method getCecDeviceInfo(I)Landroid/hardware/hdmi/HdmiDeviceInfo;
-    .registers 3
+    .registers 4
+    .param p1, "logicalAddress"  # I
     .annotation runtime Lcom/android/server/hdmi/HdmiAnnotations$ServiceThreadOnly;
     .end annotation
 
@@ -2270,15 +2365,15 @@
 
     invoke-static {p1}, Landroid/hardware/hdmi/HdmiDeviceInfo;->idForCecDevice(I)I
 
-    move-result p1
+    move-result v1
 
-    invoke-virtual {v0, p1}, Landroid/util/SparseArray;->get(I)Ljava/lang/Object;
+    invoke-virtual {v0, v1}, Landroid/util/SparseArray;->get(I)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v0
 
-    check-cast p1, Landroid/hardware/hdmi/HdmiDeviceInfo;
+    check-cast v0, Landroid/hardware/hdmi/HdmiDeviceInfo;
 
-    return-object p1
+    return-object v0
 .end method
 
 .method protected getPreferredAddress()I
@@ -2324,6 +2419,7 @@
     invoke-direct {v0}, Ljava/util/ArrayList;-><init>()V
 
     .line 288
+    .local v0, "infoList":Ljava/util/ArrayList;, "Ljava/util/ArrayList<Landroid/hardware/hdmi/HdmiDeviceInfo;>;"
     iget-object v1, p0, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->mSafeAllDeviceInfos:Ljava/util/List;
 
     invoke-interface {v1}, Ljava/util/List;->iterator()Ljava/util/Iterator;
@@ -2344,9 +2440,11 @@
     check-cast v2, Landroid/hardware/hdmi/HdmiDeviceInfo;
 
     .line 289
+    .local v2, "info":Landroid/hardware/hdmi/HdmiDeviceInfo;
     invoke-virtual {v0, v2}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
 
     .line 290
+    .end local v2  # "info":Landroid/hardware/hdmi/HdmiDeviceInfo;
     goto :goto_b
 
     .line 291
@@ -2356,6 +2454,7 @@
 
 .method protected handleGiveAudioStatus(Lcom/android/server/hdmi/HdmiCecMessage;)Z
     .registers 4
+    .param p1, "message"  # Lcom/android/server/hdmi/HdmiCecMessage;
     .annotation runtime Lcom/android/server/hdmi/HdmiAnnotations$ServiceThreadOnly;
     .end annotation
 
@@ -2372,9 +2471,9 @@
     .line 506
     invoke-virtual {p1}, Lcom/android/server/hdmi/HdmiCecMessage;->getSource()I
 
-    move-result p1
+    move-result v0
 
-    invoke-virtual {p0, p1}, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->reportAudioStatus(I)V
+    invoke-virtual {p0, v0}, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->reportAudioStatus(I)V
 
     goto :goto_17
 
@@ -2388,13 +2487,14 @@
 
     .line 510
     :goto_17
-    const/4 p1, 0x1
+    const/4 v0, 0x1
 
-    return p1
+    return v0
 .end method
 
 .method protected handleGiveSystemAudioModeStatus(Lcom/android/server/hdmi/HdmiCecMessage;)Z
     .registers 6
+    .param p1, "message"  # Lcom/android/server/hdmi/HdmiCecMessage;
     .annotation runtime Lcom/android/server/hdmi/HdmiAnnotations$ServiceThreadOnly;
     .end annotation
 
@@ -2407,54 +2507,56 @@
     move-result v0
 
     .line 522
-    const/4 v1, 0x1
-
-    if-nez v0, :cond_19
+    .local v0, "isSystemAudioModeOnOrTurningOn":Z
+    if-nez v0, :cond_18
 
     .line 523
     invoke-virtual {p1}, Lcom/android/server/hdmi/HdmiCecMessage;->getSource()I
 
-    move-result v2
+    move-result v1
 
-    if-nez v2, :cond_19
+    if-nez v1, :cond_18
 
-    const-class v2, Lcom/android/server/hdmi/SystemAudioInitiationActionFromAvr;
+    const-class v1, Lcom/android/server/hdmi/SystemAudioInitiationActionFromAvr;
 
     .line 524
-    invoke-virtual {p0, v2}, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->hasAction(Ljava/lang/Class;)Z
+    invoke-virtual {p0, v1}, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->hasAction(Ljava/lang/Class;)Z
 
-    move-result v2
+    move-result v1
 
-    if-eqz v2, :cond_19
+    if-eqz v1, :cond_18
 
     .line 525
-    move v0, v1
+    const/4 v0, 0x1
 
     .line 527
-    :cond_19
-    iget-object v2, p0, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->mService:Lcom/android/server/hdmi/HdmiControlService;
+    :cond_18
+    iget-object v1, p0, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->mService:Lcom/android/server/hdmi/HdmiControlService;
 
-    iget v3, p0, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->mAddress:I
+    iget v2, p0, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->mAddress:I
 
     .line 529
     invoke-virtual {p1}, Lcom/android/server/hdmi/HdmiCecMessage;->getSource()I
 
-    move-result p1
+    move-result v3
 
     .line 528
-    invoke-static {v3, p1, v0}, Lcom/android/server/hdmi/HdmiCecMessageBuilder;->buildReportSystemAudioMode(IIZ)Lcom/android/server/hdmi/HdmiCecMessage;
+    invoke-static {v2, v3, v0}, Lcom/android/server/hdmi/HdmiCecMessageBuilder;->buildReportSystemAudioMode(IIZ)Lcom/android/server/hdmi/HdmiCecMessage;
 
-    move-result-object p1
+    move-result-object v2
 
     .line 527
-    invoke-virtual {v2, p1}, Lcom/android/server/hdmi/HdmiControlService;->sendCecCommand(Lcom/android/server/hdmi/HdmiCecMessage;)V
+    invoke-virtual {v1, v2}, Lcom/android/server/hdmi/HdmiControlService;->sendCecCommand(Lcom/android/server/hdmi/HdmiCecMessage;)V
 
     .line 530
+    const/4 v1, 0x1
+
     return v1
 .end method
 
 .method protected handleInitiateArc(Lcom/android/server/hdmi/HdmiCecMessage;)Z
-    .registers 3
+    .registers 4
+    .param p1, "message"  # Lcom/android/server/hdmi/HdmiCecMessage;
     .annotation runtime Lcom/android/server/hdmi/HdmiAnnotations$ServiceThreadOnly;
     .end annotation
 
@@ -2462,22 +2564,23 @@
     invoke-virtual {p0}, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->assertRunOnServiceThread()V
 
     .line 479
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    new-array p1, p1, [Ljava/lang/Object;
+    new-array v0, v0, [Ljava/lang/Object;
 
-    const-string v0, "HdmiCecLocalDeviceAudioSystemStub handleInitiateArc"
+    const-string v1, "HdmiCecLocalDeviceAudioSystemStub handleInitiateArc"
 
-    invoke-static {v0, p1}, Lcom/android/server/hdmi/HdmiLogger;->debug(Ljava/lang/String;[Ljava/lang/Object;)V
+    invoke-static {v1, v0}, Lcom/android/server/hdmi/HdmiLogger;->debug(Ljava/lang/String;[Ljava/lang/Object;)V
 
     .line 480
-    const/4 p1, 0x1
+    const/4 v0, 0x1
 
-    return p1
+    return v0
 .end method
 
 .method protected handleReportArcInitiate(Lcom/android/server/hdmi/HdmiCecMessage;)Z
-    .registers 3
+    .registers 4
+    .param p1, "message"  # Lcom/android/server/hdmi/HdmiCecMessage;
     .annotation runtime Lcom/android/server/hdmi/HdmiAnnotations$ServiceThreadOnly;
     .end annotation
 
@@ -2485,22 +2588,23 @@
     invoke-virtual {p0}, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->assertRunOnServiceThread()V
 
     .line 488
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    new-array p1, p1, [Ljava/lang/Object;
+    new-array v0, v0, [Ljava/lang/Object;
 
-    const-string v0, "HdmiCecLocalDeviceAudioSystemStub handleReportArcInitiate"
+    const-string v1, "HdmiCecLocalDeviceAudioSystemStub handleReportArcInitiate"
 
-    invoke-static {v0, p1}, Lcom/android/server/hdmi/HdmiLogger;->debug(Ljava/lang/String;[Ljava/lang/Object;)V
+    invoke-static {v1, v0}, Lcom/android/server/hdmi/HdmiLogger;->debug(Ljava/lang/String;[Ljava/lang/Object;)V
 
     .line 489
-    const/4 p1, 0x1
+    const/4 v0, 0x1
 
-    return p1
+    return v0
 .end method
 
 .method protected handleReportArcTermination(Lcom/android/server/hdmi/HdmiCecMessage;)Z
-    .registers 3
+    .registers 4
+    .param p1, "message"  # Lcom/android/server/hdmi/HdmiCecMessage;
     .annotation runtime Lcom/android/server/hdmi/HdmiAnnotations$ServiceThreadOnly;
     .end annotation
 
@@ -2508,22 +2612,23 @@
     invoke-virtual {p0}, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->assertRunOnServiceThread()V
 
     .line 497
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    new-array p1, p1, [Ljava/lang/Object;
+    new-array v0, v0, [Ljava/lang/Object;
 
-    const-string v0, "HdmiCecLocalDeviceAudioSystemStub handleReportArcTermination"
+    const-string v1, "HdmiCecLocalDeviceAudioSystemStub handleReportArcTermination"
 
-    invoke-static {v0, p1}, Lcom/android/server/hdmi/HdmiLogger;->debug(Ljava/lang/String;[Ljava/lang/Object;)V
+    invoke-static {v1, v0}, Lcom/android/server/hdmi/HdmiLogger;->debug(Ljava/lang/String;[Ljava/lang/Object;)V
 
     .line 498
-    const/4 p1, 0x1
+    const/4 v0, 0x1
 
-    return p1
+    return v0
 .end method
 
 .method protected handleReportPhysicalAddress(Lcom/android/server/hdmi/HdmiCecMessage;)Z
-    .registers 11
+    .registers 15
+    .param p1, "message"  # Lcom/android/server/hdmi/HdmiCecMessage;
     .annotation runtime Lcom/android/server/hdmi/HdmiAnnotations$ServiceThreadOnly;
     .end annotation
 
@@ -2537,23 +2642,26 @@
 
     invoke-static {v0}, Lcom/android/server/hdmi/HdmiUtils;->twoBytesToInt([B)I
 
-    move-result v3
-
-    .line 407
-    invoke-virtual {p1}, Lcom/android/server/hdmi/HdmiCecMessage;->getSource()I
-
     move-result v0
 
+    .line 407
+    .local v0, "path":I
+    invoke-virtual {p1}, Lcom/android/server/hdmi/HdmiCecMessage;->getSource()I
+
+    move-result v8
+
     .line 408
+    .local v8, "address":I
     invoke-virtual {p1}, Lcom/android/server/hdmi/HdmiCecMessage;->getParams()[B
 
     move-result-object v1
 
     const/4 v2, 0x2
 
-    aget-byte v5, v1, v2
+    aget-byte v9, v1, v2
 
     .line 411
+    .local v9, "type":I
     const-class v1, Lcom/android/server/hdmi/DeviceDiscoveryAction;
 
     invoke-virtual {p0, v1}, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->hasAction(Ljava/lang/Class;)Z
@@ -2562,103 +2670,109 @@
 
     const-string v2, "HdmiCecLocalDeviceAudioSystem"
 
-    const/4 v8, 0x1
+    const/4 v10, 0x1
 
     if-eqz v1, :cond_36
 
     .line 412
-    new-instance v0, Ljava/lang/StringBuilder;
+    new-instance v1, Ljava/lang/StringBuilder;
 
-    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v1, "Ignored while Device Discovery Action is in progress: "
+    const-string v3, "Ignored while Device Discovery Action is in progress: "
 
-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v1
 
-    invoke-static {v2, p1}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v2, v1}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 413
-    return v8
+    return v10
 
     .line 419
     :cond_36
-    invoke-virtual {p0, v0}, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->getCecDeviceInfo(I)Landroid/hardware/hdmi/HdmiDeviceInfo;
+    invoke-virtual {p0, v8}, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->getCecDeviceInfo(I)Landroid/hardware/hdmi/HdmiDeviceInfo;
 
-    move-result-object p1
+    move-result-object v11
 
     .line 420
-    if-eqz p1, :cond_49
+    .local v11, "oldDevice":Landroid/hardware/hdmi/HdmiDeviceInfo;
+    if-eqz v11, :cond_49
 
-    invoke-virtual {p1}, Landroid/hardware/hdmi/HdmiDeviceInfo;->getPhysicalAddress()I
+    invoke-virtual {v11}, Landroid/hardware/hdmi/HdmiDeviceInfo;->getPhysicalAddress()I
 
-    move-result p1
+    move-result v1
 
-    if-eq p1, v3, :cond_43
+    if-eq v1, v0, :cond_43
 
     goto :goto_49
 
     .line 431
     :cond_43
-    const-string p1, "Device info exists. Not updating on Physical Address."
+    const-string v1, "Device info exists. Not updating on Physical Address."
 
-    invoke-static {v2, p1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v2, v1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 432
-    return v8
+    return v10
 
     .line 421
     :cond_49
     :goto_49
-    new-instance p1, Landroid/hardware/hdmi/HdmiDeviceInfo;
+    new-instance v12, Landroid/hardware/hdmi/HdmiDeviceInfo;
 
     iget-object v1, p0, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->mService:Lcom/android/server/hdmi/HdmiControlService;
 
     .line 422
-    invoke-virtual {v1, v3}, Lcom/android/server/hdmi/HdmiControlService;->pathToPortId(I)I
+    invoke-virtual {v1, v0}, Lcom/android/server/hdmi/HdmiControlService;->pathToPortId(I)I
 
     move-result v4
 
     const v6, 0xffffff
 
     .line 423
-    invoke-static {v0}, Lcom/android/server/hdmi/HdmiUtils;->getDefaultDeviceName(I)Ljava/lang/String;
+    invoke-static {v8}, Lcom/android/server/hdmi/HdmiUtils;->getDefaultDeviceName(I)Ljava/lang/String;
 
     move-result-object v7
 
-    move-object v1, p1
+    move-object v1, v12
 
-    move v2, v0
+    move v2, v8
+
+    move v3, v0
+
+    move v5, v9
 
     invoke-direct/range {v1 .. v7}, Landroid/hardware/hdmi/HdmiDeviceInfo;-><init>(IIIIILjava/lang/String;)V
 
     .line 421
-    invoke-virtual {p0, p1}, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->addCecDevice(Landroid/hardware/hdmi/HdmiDeviceInfo;)V
+    invoke-virtual {p0, v12}, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->addCecDevice(Landroid/hardware/hdmi/HdmiDeviceInfo;)V
 
     .line 426
-    iget-object p1, p0, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->mService:Lcom/android/server/hdmi/HdmiControlService;
+    iget-object v1, p0, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->mService:Lcom/android/server/hdmi/HdmiControlService;
 
-    iget v1, p0, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->mAddress:I
+    iget v2, p0, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->mAddress:I
 
     .line 427
-    invoke-static {v1, v0}, Lcom/android/server/hdmi/HdmiCecMessageBuilder;->buildGiveOsdNameCommand(II)Lcom/android/server/hdmi/HdmiCecMessage;
+    invoke-static {v2, v8}, Lcom/android/server/hdmi/HdmiCecMessageBuilder;->buildGiveOsdNameCommand(II)Lcom/android/server/hdmi/HdmiCecMessage;
 
-    move-result-object v0
+    move-result-object v2
 
     .line 426
-    invoke-virtual {p1, v0}, Lcom/android/server/hdmi/HdmiControlService;->sendCecCommand(Lcom/android/server/hdmi/HdmiCecMessage;)V
+    invoke-virtual {v1, v2}, Lcom/android/server/hdmi/HdmiControlService;->sendCecCommand(Lcom/android/server/hdmi/HdmiCecMessage;)V
 
     .line 428
-    return v8
+    return v10
 .end method
 
 .method protected handleReportPowerStatus(Lcom/android/server/hdmi/HdmiCecMessage;)Z
     .registers 4
+    .param p1, "command"  # Lcom/android/server/hdmi/HdmiCecMessage;
 
     .line 437
     invoke-virtual {p1}, Lcom/android/server/hdmi/HdmiCecMessage;->getParams()[B
@@ -2672,20 +2786,22 @@
     and-int/lit16 v0, v0, 0xff
 
     .line 438
+    .local v0, "newStatus":I
     invoke-virtual {p1}, Lcom/android/server/hdmi/HdmiCecMessage;->getSource()I
 
-    move-result p1
+    move-result v1
 
-    invoke-virtual {p0, p1, v0}, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->updateDevicePowerStatus(II)V
+    invoke-virtual {p0, v1, v0}, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->updateDevicePowerStatus(II)V
 
     .line 439
-    const/4 p1, 0x1
+    const/4 v1, 0x1
 
-    return p1
+    return v1
 .end method
 
 .method protected handleRequestArcInitiate(Lcom/android/server/hdmi/HdmiCecMessage;)Z
     .registers 5
+    .param p1, "message"  # Lcom/android/server/hdmi/HdmiCecMessage;
     .annotation runtime Lcom/android/server/hdmi/HdmiAnnotations$ServiceThreadOnly;
     .end annotation
 
@@ -2743,11 +2859,11 @@
 
     .line 544
     :cond_2e
-    new-instance p1, Lcom/android/server/hdmi/ArcInitiationActionFromAvr;
+    new-instance v0, Lcom/android/server/hdmi/ArcInitiationActionFromAvr;
 
-    invoke-direct {p1, p0}, Lcom/android/server/hdmi/ArcInitiationActionFromAvr;-><init>(Lcom/android/server/hdmi/HdmiCecLocalDevice;)V
+    invoke-direct {v0, p0}, Lcom/android/server/hdmi/ArcInitiationActionFromAvr;-><init>(Lcom/android/server/hdmi/HdmiCecLocalDevice;)V
 
-    invoke-virtual {p0, p1}, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->addAndStartAction(Lcom/android/server/hdmi/HdmiCecFeatureAction;)V
+    invoke-virtual {p0, v0}, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->addAndStartAction(Lcom/android/server/hdmi/HdmiCecFeatureAction;)V
 
     .line 546
     :goto_36
@@ -2756,6 +2872,7 @@
 
 .method protected handleRequestArcTermination(Lcom/android/server/hdmi/HdmiCecMessage;)Z
     .registers 5
+    .param p1, "message"  # Lcom/android/server/hdmi/HdmiCecMessage;
     .annotation runtime Lcom/android/server/hdmi/HdmiAnnotations$ServiceThreadOnly;
     .end annotation
 
@@ -2806,16 +2923,16 @@
 
     .line 559
     :cond_27
-    const-class p1, Lcom/android/server/hdmi/ArcTerminationActionFromAvr;
+    const-class v1, Lcom/android/server/hdmi/ArcTerminationActionFromAvr;
 
-    invoke-virtual {p0, p1}, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->removeAction(Ljava/lang/Class;)V
+    invoke-virtual {p0, v1}, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->removeAction(Ljava/lang/Class;)V
 
     .line 560
-    new-instance p1, Lcom/android/server/hdmi/ArcTerminationActionFromAvr;
+    new-instance v1, Lcom/android/server/hdmi/ArcTerminationActionFromAvr;
 
-    invoke-direct {p1, p0}, Lcom/android/server/hdmi/ArcTerminationActionFromAvr;-><init>(Lcom/android/server/hdmi/HdmiCecLocalDevice;)V
+    invoke-direct {v1, p0}, Lcom/android/server/hdmi/ArcTerminationActionFromAvr;-><init>(Lcom/android/server/hdmi/HdmiCecLocalDevice;)V
 
-    invoke-virtual {p0, p1}, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->addAndStartAction(Lcom/android/server/hdmi/HdmiCecFeatureAction;)V
+    invoke-virtual {p0, v1}, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->addAndStartAction(Lcom/android/server/hdmi/HdmiCecFeatureAction;)V
 
     .line 562
     :goto_34
@@ -2823,7 +2940,8 @@
 .end method
 
 .method protected handleRequestShortAudioDescriptor(Lcom/android/server/hdmi/HdmiCecMessage;)Z
-    .registers 9
+    .registers 10
+    .param p1, "message"  # Lcom/android/server/hdmi/HdmiCecMessage;
     .annotation runtime Lcom/android/server/hdmi/HdmiAnnotations$ServiceThreadOnly;
     .end annotation
 
@@ -2881,6 +2999,7 @@
     const/4 v1, 0x0
 
     .line 579
+    .local v1, "config":Ljava/util/List;, "Ljava/util/List<Lcom/android/server/hdmi/HdmiUtils$DeviceConfig;>;"
     new-instance v3, Ljava/io/File;
 
     const-string v4, "/vendor/etc/sadConfig.xml"
@@ -2888,11 +3007,12 @@
     invoke-direct {v3, v4}, Ljava/io/File;-><init>(Ljava/lang/String;)V
 
     .line 580
+    .local v3, "file":Ljava/io/File;
     invoke-virtual {v3}, Ljava/io/File;->exists()Z
 
     move-result v4
 
-    if-eqz v4, :cond_6d
+    if-eqz v4, :cond_6e
 
     .line 582
     :try_start_35
@@ -2901,23 +3021,28 @@
     invoke-direct {v4, v3}, Ljava/io/FileInputStream;-><init>(Ljava/io/File;)V
 
     .line 583
+    .local v4, "in":Ljava/io/InputStream;
     invoke-static {v4}, Lcom/android/server/hdmi/HdmiUtils$ShortAudioDescriptorXmlParser;->parse(Ljava/io/InputStream;)Ljava/util/List;
 
-    move-result-object v1
+    move-result-object v5
+
+    move-object v1, v5
 
     .line 584
     invoke-virtual {v4}, Ljava/io/InputStream;->close()V
-    :try_end_41
-    .catch Ljava/io/IOException; {:try_start_35 .. :try_end_41} :catch_58
-    .catch Lorg/xmlpull/v1/XmlPullParserException; {:try_start_35 .. :try_end_41} :catch_42
+    :try_end_42
+    .catch Ljava/io/IOException; {:try_start_35 .. :try_end_42} :catch_59
+    .catch Lorg/xmlpull/v1/XmlPullParserException; {:try_start_35 .. :try_end_42} :catch_43
 
-    goto :goto_6d
+    .end local v4  # "in":Ljava/io/InputStream;
+    goto :goto_6e
 
     .line 587
-    :catch_42
+    :catch_43
     move-exception v4
 
     .line 588
+    .local v4, "e":Lorg/xmlpull/v1/XmlPullParserException;
     new-instance v5, Ljava/lang/StringBuilder;
 
     invoke-direct {v5}, Ljava/lang/StringBuilder;-><init>()V
@@ -2930,17 +3055,19 @@
 
     invoke-virtual {v5}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v3
+    move-result-object v5
 
-    invoke-static {v0, v3, v4}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    invoke-static {v0, v5, v4}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
-    goto :goto_6d
+    goto :goto_6e
 
     .line 585
-    :catch_58
+    .end local v4  # "e":Lorg/xmlpull/v1/XmlPullParserException;
+    :catch_59
     move-exception v4
 
     .line 586
+    .local v4, "e":Ljava/io/IOException;
     new-instance v5, Ljava/lang/StringBuilder;
 
     invoke-direct {v5}, Ljava/lang/StringBuilder;-><init>()V
@@ -2953,13 +3080,14 @@
 
     invoke-virtual {v5}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v3
+    move-result-object v5
 
-    invoke-static {v0, v3, v4}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    invoke-static {v0, v5, v4}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
     .line 592
-    :cond_6d
-    :goto_6d
+    .end local v4  # "e":Ljava/io/IOException;
+    :cond_6e
+    :goto_6e
     invoke-virtual {p1}, Lcom/android/server/hdmi/HdmiCecMessage;->getParams()[B
 
     move-result-object v0
@@ -2969,110 +3097,118 @@
     move-result-object v0
 
     .line 594
-    if-eqz v1, :cond_82
+    .local v0, "audioFormatCodes":[I
+    if-eqz v1, :cond_83
 
     invoke-interface {v1}, Ljava/util/List;->size()I
 
-    move-result v3
+    move-result v4
 
-    if-lez v3, :cond_82
+    if-lez v4, :cond_83
 
     .line 595
     invoke-direct {p0, v1, v0}, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->getSupportedShortAudioDescriptorsFromConfig(Ljava/util/List;[I)[B
 
-    move-result-object v0
+    move-result-object v4
 
-    goto :goto_93
+    .local v4, "sadBytes":[B
+    goto :goto_94
 
     .line 597
-    :cond_82
+    .end local v4  # "sadBytes":[B
+    :cond_83
     invoke-direct {p0}, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->getSystemAudioDeviceInfo()Landroid/media/AudioDeviceInfo;
 
-    move-result-object v1
+    move-result-object v4
 
     .line 598
-    if-nez v1, :cond_8f
+    .local v4, "deviceInfo":Landroid/media/AudioDeviceInfo;
+    if-nez v4, :cond_90
 
     .line 599
-    iget-object v0, p0, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->mService:Lcom/android/server/hdmi/HdmiControlService;
+    iget-object v5, p0, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->mService:Lcom/android/server/hdmi/HdmiControlService;
 
-    const/4 v1, 0x5
+    const/4 v6, 0x5
 
-    invoke-virtual {v0, p1, v1}, Lcom/android/server/hdmi/HdmiControlService;->maySendFeatureAbortCommand(Lcom/android/server/hdmi/HdmiCecMessage;I)V
+    invoke-virtual {v5, p1, v6}, Lcom/android/server/hdmi/HdmiControlService;->maySendFeatureAbortCommand(Lcom/android/server/hdmi/HdmiCecMessage;I)V
 
     .line 600
     return v2
 
     .line 603
-    :cond_8f
-    invoke-direct {p0, v1, v0}, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->getSupportedShortAudioDescriptors(Landroid/media/AudioDeviceInfo;[I)[B
+    :cond_90
+    invoke-direct {p0, v4, v0}, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->getSupportedShortAudioDescriptors(Landroid/media/AudioDeviceInfo;[I)[B
 
-    move-result-object v0
+    move-result-object v4
 
     .line 606
-    :goto_93
-    array-length v1, v0
+    .local v4, "sadBytes":[B
+    :goto_94
+    array-length v5, v4
 
-    if-nez v1, :cond_9d
+    if-nez v5, :cond_9e
 
     .line 607
-    iget-object v0, p0, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->mService:Lcom/android/server/hdmi/HdmiControlService;
+    iget-object v5, p0, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->mService:Lcom/android/server/hdmi/HdmiControlService;
 
-    const/4 v1, 0x3
+    const/4 v6, 0x3
 
-    invoke-virtual {v0, p1, v1}, Lcom/android/server/hdmi/HdmiControlService;->maySendFeatureAbortCommand(Lcom/android/server/hdmi/HdmiCecMessage;I)V
+    invoke-virtual {v5, p1, v6}, Lcom/android/server/hdmi/HdmiControlService;->maySendFeatureAbortCommand(Lcom/android/server/hdmi/HdmiCecMessage;I)V
 
-    goto :goto_ac
+    goto :goto_ad
 
     .line 609
-    :cond_9d
-    iget-object v1, p0, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->mService:Lcom/android/server/hdmi/HdmiControlService;
+    :cond_9e
+    iget-object v5, p0, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->mService:Lcom/android/server/hdmi/HdmiControlService;
 
-    iget v3, p0, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->mAddress:I
+    iget v6, p0, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->mAddress:I
 
     .line 611
     invoke-virtual {p1}, Lcom/android/server/hdmi/HdmiCecMessage;->getSource()I
 
-    move-result p1
+    move-result v7
 
     .line 610
-    invoke-static {v3, p1, v0}, Lcom/android/server/hdmi/HdmiCecMessageBuilder;->buildReportShortAudioDescriptor(II[B)Lcom/android/server/hdmi/HdmiCecMessage;
+    invoke-static {v6, v7, v4}, Lcom/android/server/hdmi/HdmiCecMessageBuilder;->buildReportShortAudioDescriptor(II[B)Lcom/android/server/hdmi/HdmiCecMessage;
 
-    move-result-object p1
+    move-result-object v6
 
     .line 609
-    invoke-virtual {v1, p1}, Lcom/android/server/hdmi/HdmiControlService;->sendCecCommand(Lcom/android/server/hdmi/HdmiCecMessage;)V
+    invoke-virtual {v5, v6}, Lcom/android/server/hdmi/HdmiControlService;->sendCecCommand(Lcom/android/server/hdmi/HdmiCecMessage;)V
 
     .line 613
-    :goto_ac
+    :goto_ad
     return v2
 .end method
 
 .method protected handleRoutingChangeAndInformation(ILcom/android/server/hdmi/HdmiCecMessage;)V
-    .registers 4
+    .registers 5
+    .param p1, "physicalAddress"  # I
+    .param p2, "message"  # Lcom/android/server/hdmi/HdmiCecMessage;
 
     .line 1181
     iget-object v0, p0, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->mService:Lcom/android/server/hdmi/HdmiControlService;
 
     invoke-virtual {v0, p1}, Lcom/android/server/hdmi/HdmiControlService;->pathToPortId(I)I
 
-    move-result p1
+    move-result v0
 
     .line 1183
-    if-lez p1, :cond_9
+    .local v0, "port":I
+    if-lez v0, :cond_9
 
     .line 1184
     return-void
 
     .line 1188
     :cond_9
-    if-gez p1, :cond_15
+    if-gez v0, :cond_15
 
     invoke-virtual {p0}, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->isSystemAudioActivated()Z
 
-    move-result v0
+    move-result v1
 
-    if-eqz v0, :cond_15
+    if-eqz v1, :cond_15
 
     .line 1189
     invoke-direct {p0}, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->handleRoutingChangeAndInformationForSystemAudio()V
@@ -3082,7 +3218,7 @@
 
     .line 1194
     :cond_15
-    if-nez p1, :cond_1a
+    if-nez v0, :cond_1a
 
     .line 1195
     invoke-direct {p0, p2}, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->handleRoutingChangeAndInformationForSwitch(Lcom/android/server/hdmi/HdmiCecMessage;)V
@@ -3093,7 +3229,8 @@
 .end method
 
 .method protected handleSetOsdName(Lcom/android/server/hdmi/HdmiCecMessage;)Z
-    .registers 12
+    .registers 16
+    .param p1, "message"  # Lcom/android/server/hdmi/HdmiCecMessage;
     .annotation runtime Lcom/android/server/hdmi/HdmiAnnotations$ServiceThreadOnly;
     .end annotation
 
@@ -3103,178 +3240,186 @@
     move-result v0
 
     .line 447
+    .local v0, "source":I
     invoke-virtual {p0, v0}, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->getCecDeviceInfo(I)Landroid/hardware/hdmi/HdmiDeviceInfo;
 
-    move-result-object v0
+    move-result-object v1
 
     .line 449
-    const/4 v1, 0x1
+    .local v1, "deviceInfo":Landroid/hardware/hdmi/HdmiDeviceInfo;
+    const/4 v2, 0x1
 
-    const-string v2, "HdmiCecLocalDeviceAudioSystem"
+    const-string v3, "HdmiCecLocalDeviceAudioSystem"
 
-    if-nez v0, :cond_22
+    if-nez v1, :cond_22
 
     .line 450
-    new-instance v0, Ljava/lang/StringBuilder;
+    new-instance v4, Ljava/lang/StringBuilder;
 
-    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v4}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v3, "No source device info for <Set Osd Name>."
+    const-string v5, "No source device info for <Set Osd Name>."
 
-    invoke-virtual {v0, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    invoke-virtual {v4, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v4}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v4
 
-    invoke-static {v2, p1}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v3, v4}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 451
-    return v1
+    return v2
 
     .line 454
     :cond_22
     :try_start_22
-    new-instance v9, Ljava/lang/String;
+    new-instance v4, Ljava/lang/String;
 
     invoke-virtual {p1}, Lcom/android/server/hdmi/HdmiCecMessage;->getParams()[B
 
-    move-result-object v3
+    move-result-object v5
 
-    const-string v4, "US-ASCII"
+    const-string v6, "US-ASCII"
 
-    invoke-direct {v9, v3, v4}, Ljava/lang/String;-><init>([BLjava/lang/String;)V
+    invoke-direct {v4, v5, v6}, Ljava/lang/String;-><init>([BLjava/lang/String;)V
     :try_end_2d
-    .catch Ljava/io/UnsupportedEncodingException; {:try_start_22 .. :try_end_2d} :catch_8b
+    .catch Ljava/io/UnsupportedEncodingException; {:try_start_22 .. :try_end_2d} :catch_8c
 
     .line 458
+    .local v4, "osdName":Ljava/lang/String;
     nop
 
     .line 460
-    invoke-virtual {v0}, Landroid/hardware/hdmi/HdmiDeviceInfo;->getDisplayName()Ljava/lang/String;
+    invoke-virtual {v1}, Landroid/hardware/hdmi/HdmiDeviceInfo;->getDisplayName()Ljava/lang/String;
 
-    move-result-object v3
+    move-result-object v5
 
-    invoke-virtual {v3, v9}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
-
-    move-result v3
-
-    if-eqz v3, :cond_4d
-
-    .line 461
-    new-instance v0, Ljava/lang/StringBuilder;
-
-    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
-
-    const-string v3, "Ignore incoming <Set Osd Name> having same osd name:"
-
-    invoke-virtual {v0, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
-
-    move-result-object p1
-
-    invoke-static {v2, p1}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
-
-    .line 462
-    return v1
-
-    .line 465
-    :cond_4d
-    new-instance p1, Ljava/lang/StringBuilder;
-
-    invoke-direct {p1}, Ljava/lang/StringBuilder;-><init>()V
-
-    const-string v3, "Updating device OSD name from "
-
-    invoke-virtual {p1, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    .line 466
-    invoke-virtual {v0}, Landroid/hardware/hdmi/HdmiDeviceInfo;->getDisplayName()Ljava/lang/String;
-
-    move-result-object v3
-
-    invoke-virtual {p1, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    const-string v3, " to "
-
-    invoke-virtual {p1, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {p1, v9}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {p1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
-
-    move-result-object p1
-
-    .line 465
-    invoke-static {v2, p1}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
-
-    .line 468
-    new-instance p1, Landroid/hardware/hdmi/HdmiDeviceInfo;
-
-    invoke-virtual {v0}, Landroid/hardware/hdmi/HdmiDeviceInfo;->getLogicalAddress()I
-
-    move-result v4
-
-    .line 469
-    invoke-virtual {v0}, Landroid/hardware/hdmi/HdmiDeviceInfo;->getPhysicalAddress()I
+    invoke-virtual {v5, v4}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
     move-result v5
 
-    invoke-virtual {v0}, Landroid/hardware/hdmi/HdmiDeviceInfo;->getPortId()I
+    if-eqz v5, :cond_4d
 
-    move-result v6
+    .line 461
+    new-instance v5, Ljava/lang/StringBuilder;
 
-    .line 470
-    invoke-virtual {v0}, Landroid/hardware/hdmi/HdmiDeviceInfo;->getDeviceType()I
+    invoke-direct {v5}, Ljava/lang/StringBuilder;-><init>()V
 
-    move-result v7
+    const-string v6, "Ignore incoming <Set Osd Name> having same osd name:"
 
-    invoke-virtual {v0}, Landroid/hardware/hdmi/HdmiDeviceInfo;->getVendorId()I
+    invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v5, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v5}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v5
+
+    invoke-static {v3, v5}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
+
+    .line 462
+    return v2
+
+    .line 465
+    :cond_4d
+    new-instance v5, Ljava/lang/StringBuilder;
+
+    invoke-direct {v5}, Ljava/lang/StringBuilder;-><init>()V
+
+    const-string v6, "Updating device OSD name from "
+
+    invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    .line 466
+    invoke-virtual {v1}, Landroid/hardware/hdmi/HdmiDeviceInfo;->getDisplayName()Ljava/lang/String;
+
+    move-result-object v6
+
+    invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    const-string v6, " to "
+
+    invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v5, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v5}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v5
+
+    .line 465
+    invoke-static {v3, v5}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
+
+    .line 468
+    new-instance v3, Landroid/hardware/hdmi/HdmiDeviceInfo;
+
+    invoke-virtual {v1}, Landroid/hardware/hdmi/HdmiDeviceInfo;->getLogicalAddress()I
 
     move-result v8
 
-    move-object v3, p1
+    .line 469
+    invoke-virtual {v1}, Landroid/hardware/hdmi/HdmiDeviceInfo;->getPhysicalAddress()I
 
-    invoke-direct/range {v3 .. v9}, Landroid/hardware/hdmi/HdmiDeviceInfo;-><init>(IIIIILjava/lang/String;)V
+    move-result v9
+
+    invoke-virtual {v1}, Landroid/hardware/hdmi/HdmiDeviceInfo;->getPortId()I
+
+    move-result v10
+
+    .line 470
+    invoke-virtual {v1}, Landroid/hardware/hdmi/HdmiDeviceInfo;->getDeviceType()I
+
+    move-result v11
+
+    invoke-virtual {v1}, Landroid/hardware/hdmi/HdmiDeviceInfo;->getVendorId()I
+
+    move-result v12
+
+    move-object v7, v3
+
+    move-object v13, v4
+
+    invoke-direct/range {v7 .. v13}, Landroid/hardware/hdmi/HdmiDeviceInfo;-><init>(IIIIILjava/lang/String;)V
 
     .line 468
-    invoke-virtual {p0, p1}, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->updateCecDevice(Landroid/hardware/hdmi/HdmiDeviceInfo;)V
+    invoke-virtual {p0, v3}, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->updateCecDevice(Landroid/hardware/hdmi/HdmiDeviceInfo;)V
 
     .line 471
-    return v1
+    return v2
 
     .line 455
-    :catch_8b
-    move-exception v0
+    .end local v4  # "osdName":Ljava/lang/String;
+    :catch_8c
+    move-exception v4
 
     .line 456
-    new-instance v3, Ljava/lang/StringBuilder;
+    .local v4, "e":Ljava/io/UnsupportedEncodingException;
+    new-instance v5, Ljava/lang/StringBuilder;
 
-    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v5}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v4, "Invalid <Set Osd Name> request:"
+    const-string v6, "Invalid <Set Osd Name> request:"
 
-    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v3, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    invoke-virtual {v5, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v5}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v5
 
-    invoke-static {v2, p1, v0}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    invoke-static {v3, v5, v4}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
     .line 457
-    return v1
+    return v2
 .end method
 
 .method protected handleSetSystemAudioMode(Lcom/android/server/hdmi/HdmiCecMessage;)Z
     .registers 4
+    .param p1, "message"  # Lcom/android/server/hdmi/HdmiCecMessage;
     .annotation runtime Lcom/android/server/hdmi/HdmiAnnotations$ServiceThreadOnly;
     .end annotation
 
@@ -3305,13 +3450,14 @@
 
     .line 793
     :cond_14
-    const/4 p1, 0x1
+    const/4 v0, 0x1
 
-    return p1
+    return v0
 .end method
 
 .method handleSystemAudioModeOnFromNonTvDevice(Lcom/android/server/hdmi/HdmiCecMessage;)V
-    .registers 5
+    .registers 6
+    .param p1, "message"  # Lcom/android/server/hdmi/HdmiCecMessage;
 
     .line 1052
     invoke-virtual {p0}, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->isSystemAudioControlFeatureEnabled()Z
@@ -3363,24 +3509,24 @@
     if-eq v0, v1, :cond_3b
 
     .line 1066
-    const/4 p1, 0x1
+    const/4 v0, 0x1
 
-    invoke-direct {p0, p1}, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->setSystemAudioMode(Z)V
+    invoke-direct {p0, v0}, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->setSystemAudioMode(Z)V
 
     .line 1067
-    iget-object v0, p0, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->mService:Lcom/android/server/hdmi/HdmiControlService;
+    iget-object v1, p0, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->mService:Lcom/android/server/hdmi/HdmiControlService;
 
-    iget v1, p0, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->mAddress:I
+    iget v2, p0, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->mAddress:I
 
-    const/16 v2, 0xf
+    const/16 v3, 0xf
 
     .line 1068
-    invoke-static {v1, v2, p1}, Lcom/android/server/hdmi/HdmiCecMessageBuilder;->buildSetSystemAudioMode(IIZ)Lcom/android/server/hdmi/HdmiCecMessage;
+    invoke-static {v2, v3, v0}, Lcom/android/server/hdmi/HdmiCecMessageBuilder;->buildSetSystemAudioMode(IIZ)Lcom/android/server/hdmi/HdmiCecMessage;
 
-    move-result-object p1
+    move-result-object v0
 
     .line 1067
-    invoke-virtual {v0, p1}, Lcom/android/server/hdmi/HdmiControlService;->sendCecCommand(Lcom/android/server/hdmi/HdmiCecMessage;)V
+    invoke-virtual {v1, v0}, Lcom/android/server/hdmi/HdmiControlService;->sendCecCommand(Lcom/android/server/hdmi/HdmiCecMessage;)V
 
     .line 1070
     return-void
@@ -3398,7 +3544,8 @@
 .end method
 
 .method protected handleSystemAudioModeRequest(Lcom/android/server/hdmi/HdmiCecMessage;)Z
-    .registers 6
+    .registers 7
+    .param p1, "message"  # Lcom/android/server/hdmi/HdmiCecMessage;
     .annotation runtime Lcom/android/server/hdmi/HdmiAnnotations$ServiceThreadOnly;
     .end annotation
 
@@ -3424,6 +3571,7 @@
     const/4 v0, 0x0
 
     .line 761
+    .local v0, "systemAudioStatusOn":Z
     :goto_e
     invoke-virtual {p1}, Lcom/android/server/hdmi/HdmiCecMessage;->getSource()I
 
@@ -3453,30 +3601,30 @@
     if-nez v2, :cond_2a
 
     .line 775
-    iget-object v0, p0, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->mService:Lcom/android/server/hdmi/HdmiControlService;
+    iget-object v2, p0, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->mService:Lcom/android/server/hdmi/HdmiControlService;
 
-    const/4 v2, 0x4
+    const/4 v3, 0x4
 
-    invoke-virtual {v0, p1, v2}, Lcom/android/server/hdmi/HdmiControlService;->maySendFeatureAbortCommand(Lcom/android/server/hdmi/HdmiCecMessage;I)V
+    invoke-virtual {v2, p1, v3}, Lcom/android/server/hdmi/HdmiControlService;->maySendFeatureAbortCommand(Lcom/android/server/hdmi/HdmiCecMessage;I)V
 
     .line 776
     return v1
 
     .line 779
     :cond_2a
-    iget-object p1, p0, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->mService:Lcom/android/server/hdmi/HdmiControlService;
+    iget-object v2, p0, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->mService:Lcom/android/server/hdmi/HdmiControlService;
 
-    iget v2, p0, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->mAddress:I
+    iget v3, p0, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->mAddress:I
 
-    const/16 v3, 0xf
+    const/16 v4, 0xf
 
     .line 780
-    invoke-static {v2, v3, v0}, Lcom/android/server/hdmi/HdmiCecMessageBuilder;->buildSetSystemAudioMode(IIZ)Lcom/android/server/hdmi/HdmiCecMessage;
+    invoke-static {v3, v4, v0}, Lcom/android/server/hdmi/HdmiCecMessageBuilder;->buildSetSystemAudioMode(IIZ)Lcom/android/server/hdmi/HdmiCecMessage;
 
-    move-result-object v0
+    move-result-object v3
 
     .line 779
-    invoke-virtual {p1, v0}, Lcom/android/server/hdmi/HdmiControlService;->sendCecCommand(Lcom/android/server/hdmi/HdmiCecMessage;)V
+    invoke-virtual {v2, v3}, Lcom/android/server/hdmi/HdmiControlService;->sendCecCommand(Lcom/android/server/hdmi/HdmiCecMessage;)V
 
     .line 782
     return v1
@@ -3484,6 +3632,7 @@
 
 .method protected handleSystemAudioModeStatus(Lcom/android/server/hdmi/HdmiCecMessage;)Z
     .registers 4
+    .param p1, "message"  # Lcom/android/server/hdmi/HdmiCecMessage;
     .annotation runtime Lcom/android/server/hdmi/HdmiAnnotations$ServiceThreadOnly;
     .end annotation
 
@@ -3514,9 +3663,9 @@
 
     .line 804
     :cond_14
-    const/4 p1, 0x1
+    const/4 v0, 0x1
 
-    return p1
+    return v0
 .end method
 
 .method protected isArcEnabled()Z
@@ -3559,21 +3708,22 @@
     move-result v0
 
     .line 938
+    .local v0, "myPhysicalAddress":I
     const v1, 0xf000
 
     and-int/2addr v1, v0
 
     if-ne v1, v0, :cond_e
 
-    const/4 v0, 0x1
+    const/4 v1, 0x1
 
     goto :goto_f
 
     :cond_e
-    const/4 v0, 0x0
+    const/4 v1, 0x0
 
     :goto_f
-    return v0
+    return v1
 .end method
 
 .method protected isSystemAudioActivated()Z
@@ -3617,7 +3767,9 @@
 .end method
 
 .method protected onAddressAllocated(II)V
-    .registers 5
+    .registers 7
+    .param p1, "logicalAddress"  # I
+    .param p2, "reason"  # I
     .annotation runtime Lcom/android/server/hdmi/HdmiAnnotations$ServiceThreadOnly;
     .end annotation
 
@@ -3625,104 +3777,106 @@
     invoke-virtual {p0}, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->assertRunOnServiceThread()V
 
     .line 346
-    iget-object p1, p0, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->mService:Lcom/android/server/hdmi/HdmiControlService;
+    iget-object v0, p0, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->mService:Lcom/android/server/hdmi/HdmiControlService;
 
     if-nez p2, :cond_1c
 
     .line 347
-    iget-object p1, p0, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->mService:Lcom/android/server/hdmi/HdmiControlService;
+    iget-object v0, p0, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->mService:Lcom/android/server/hdmi/HdmiControlService;
 
-    iget-object p2, p0, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->mService:Lcom/android/server/hdmi/HdmiControlService;
+    iget-object v1, p0, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->mService:Lcom/android/server/hdmi/HdmiControlService;
 
-    invoke-virtual {p2}, Lcom/android/server/hdmi/HdmiControlService;->getPhysicalAddress()I
+    invoke-virtual {v1}, Lcom/android/server/hdmi/HdmiControlService;->getPhysicalAddress()I
 
-    move-result p2
+    move-result v1
 
     .line 348
     invoke-virtual {p0}, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->getDeviceInfo()Landroid/hardware/hdmi/HdmiDeviceInfo;
 
-    move-result-object v0
+    move-result-object v2
 
-    invoke-virtual {v0}, Landroid/hardware/hdmi/HdmiDeviceInfo;->getDeviceType()I
+    invoke-virtual {v2}, Landroid/hardware/hdmi/HdmiDeviceInfo;->getDeviceType()I
 
-    move-result v0
+    move-result v2
 
-    const/16 v1, 0xf
+    const/16 v3, 0xf
 
     .line 347
-    invoke-virtual {p1, p2, v0, v1}, Lcom/android/server/hdmi/HdmiControlService;->setAndBroadcastActiveSource(III)V
+    invoke-virtual {v0, v1, v2, v3}, Lcom/android/server/hdmi/HdmiControlService;->setAndBroadcastActiveSource(III)V
 
     .line 350
     :cond_1c
-    iget-object p1, p0, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->mService:Lcom/android/server/hdmi/HdmiControlService;
-
-    iget p2, p0, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->mAddress:I
-
     iget-object v0, p0, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->mService:Lcom/android/server/hdmi/HdmiControlService;
+
+    iget v1, p0, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->mAddress:I
+
+    iget-object v2, p0, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->mService:Lcom/android/server/hdmi/HdmiControlService;
 
     .line 352
-    invoke-virtual {v0}, Lcom/android/server/hdmi/HdmiControlService;->getPhysicalAddress()I
+    invoke-virtual {v2}, Lcom/android/server/hdmi/HdmiControlService;->getPhysicalAddress()I
 
-    move-result v0
+    move-result v2
 
-    iget v1, p0, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->mDeviceType:I
+    iget v3, p0, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->mDeviceType:I
 
     .line 351
-    invoke-static {p2, v0, v1}, Lcom/android/server/hdmi/HdmiCecMessageBuilder;->buildReportPhysicalAddressCommand(III)Lcom/android/server/hdmi/HdmiCecMessage;
+    invoke-static {v1, v2, v3}, Lcom/android/server/hdmi/HdmiCecMessageBuilder;->buildReportPhysicalAddressCommand(III)Lcom/android/server/hdmi/HdmiCecMessage;
 
-    move-result-object p2
+    move-result-object v1
 
     .line 350
-    invoke-virtual {p1, p2}, Lcom/android/server/hdmi/HdmiControlService;->sendCecCommand(Lcom/android/server/hdmi/HdmiCecMessage;)V
+    invoke-virtual {v0, v1}, Lcom/android/server/hdmi/HdmiControlService;->sendCecCommand(Lcom/android/server/hdmi/HdmiCecMessage;)V
 
     .line 353
-    iget-object p1, p0, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->mService:Lcom/android/server/hdmi/HdmiControlService;
-
-    iget p2, p0, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->mAddress:I
-
     iget-object v0, p0, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->mService:Lcom/android/server/hdmi/HdmiControlService;
 
+    iget v1, p0, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->mAddress:I
+
+    iget-object v2, p0, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->mService:Lcom/android/server/hdmi/HdmiControlService;
+
     .line 354
-    invoke-virtual {v0}, Lcom/android/server/hdmi/HdmiControlService;->getVendorId()I
+    invoke-virtual {v2}, Lcom/android/server/hdmi/HdmiControlService;->getVendorId()I
+
+    move-result v2
+
+    invoke-static {v1, v2}, Lcom/android/server/hdmi/HdmiCecMessageBuilder;->buildDeviceVendorIdCommand(II)Lcom/android/server/hdmi/HdmiCecMessage;
+
+    move-result-object v1
+
+    .line 353
+    invoke-virtual {v0, v1}, Lcom/android/server/hdmi/HdmiControlService;->sendCecCommand(Lcom/android/server/hdmi/HdmiCecMessage;)V
+
+    .line 355
+    iget-object v0, p0, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->mService:Lcom/android/server/hdmi/HdmiControlService;
+
+    iget-object v1, p0, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->mTvInputCallback:Landroid/media/tv/TvInputManager$TvInputCallback;
+
+    invoke-virtual {v0, v1}, Lcom/android/server/hdmi/HdmiControlService;->registerTvInputCallback(Landroid/media/tv/TvInputManager$TvInputCallback;)V
+
+    .line 356
+    const/4 v0, 0x0
+
+    .line 357
+    const-string/jumbo v1, "persist.sys.hdmi.system_audio_control_on_power_on"
+
+    invoke-static {v1, v0}, Landroid/os/SystemProperties;->getInt(Ljava/lang/String;I)I
 
     move-result v0
 
-    invoke-static {p2, v0}, Lcom/android/server/hdmi/HdmiCecMessageBuilder;->buildDeviceVendorIdCommand(II)Lcom/android/server/hdmi/HdmiCecMessage;
-
-    move-result-object p2
-
-    .line 353
-    invoke-virtual {p1, p2}, Lcom/android/server/hdmi/HdmiControlService;->sendCecCommand(Lcom/android/server/hdmi/HdmiCecMessage;)V
-
-    .line 355
-    iget-object p1, p0, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->mService:Lcom/android/server/hdmi/HdmiControlService;
-
-    iget-object p2, p0, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->mTvInputCallback:Landroid/media/tv/TvInputManager$TvInputCallback;
-
-    invoke-virtual {p1, p2}, Lcom/android/server/hdmi/HdmiControlService;->registerTvInputCallback(Landroid/media/tv/TvInputManager$TvInputCallback;)V
-
-    .line 356
-    const/4 p1, 0x0
-
-    .line 357
-    const-string/jumbo p2, "persist.sys.hdmi.system_audio_control_on_power_on"
-
-    invoke-static {p2, p1}, Landroid/os/SystemProperties;->getInt(Ljava/lang/String;I)I
-
-    move-result p1
-
     .line 360
-    const/4 p2, 0x1
+    .local v0, "systemAudioControlOnPowerOnProp":I
+    const/4 v1, 0x1
 
     .line 361
-    const-string/jumbo v0, "persist.sys.hdmi.last_system_audio_control"
+    const-string/jumbo v2, "persist.sys.hdmi.last_system_audio_control"
 
-    invoke-static {v0, p2}, Landroid/os/SystemProperties;->getBoolean(Ljava/lang/String;Z)Z
+    invoke-static {v2, v1}, Landroid/os/SystemProperties;->getBoolean(Ljava/lang/String;Z)Z
 
-    move-result p2
+    move-result v1
 
     .line 362
-    invoke-virtual {p0, p1, p2}, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->systemAudioControlOnPowerOn(IZ)V
+    .local v1, "lastSystemAudioControlStatus":Z
+    invoke-virtual {p0, v0, v1}, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->systemAudioControlOnPowerOn(IZ)V
 
     .line 363
     invoke-direct {p0}, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->clearDeviceInfoList()V
@@ -3738,7 +3892,9 @@
 .end method
 
 .method onHotplug(IZ)V
-    .registers 5
+    .registers 6
+    .param p1, "portId"  # I
+    .param p2, "connected"  # Z
     .annotation runtime Lcom/android/server/hdmi/HdmiAnnotations$ServiceThreadOnly;
     .end annotation
 
@@ -3770,9 +3926,9 @@
     if-ne v0, v1, :cond_1d
 
     .line 306
-    iget-object p1, p0, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->mCecMessageCache:Lcom/android/server/hdmi/HdmiCecMessageCache;
+    iget-object v0, p0, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->mCecMessageCache:Lcom/android/server/hdmi/HdmiCecMessageCache;
 
-    invoke-virtual {p1}, Lcom/android/server/hdmi/HdmiCecMessageCache;->flushAll()V
+    invoke-virtual {v0}, Lcom/android/server/hdmi/HdmiCecMessageCache;->flushAll()V
 
     goto :goto_49
 
@@ -3780,62 +3936,68 @@
     :cond_1d
     if-nez p2, :cond_49
 
-    iget-object p2, p0, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->mPortIdToTvInputs:Ljava/util/HashMap;
+    iget-object v0, p0, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->mPortIdToTvInputs:Ljava/util/HashMap;
 
     invoke-static {p1}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
+
+    move-result-object v1
+
+    invoke-virtual {v0, v1}, Ljava/util/HashMap;->get(Ljava/lang/Object;)Ljava/lang/Object;
 
     move-result-object v0
 
-    invoke-virtual {p2, v0}, Ljava/util/HashMap;->get(Ljava/lang/Object;)Ljava/lang/Object;
-
-    move-result-object p2
-
-    if-eqz p2, :cond_49
+    if-eqz v0, :cond_49
 
     .line 308
-    iget-object p2, p0, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->mPortIdToTvInputs:Ljava/util/HashMap;
+    iget-object v0, p0, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->mPortIdToTvInputs:Ljava/util/HashMap;
 
     invoke-static {p1}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
 
-    move-result-object p1
+    move-result-object v1
 
-    invoke-virtual {p2, p1}, Ljava/util/HashMap;->get(Ljava/lang/Object;)Ljava/lang/Object;
+    invoke-virtual {v0, v1}, Ljava/util/HashMap;->get(Ljava/lang/Object;)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v0
 
-    check-cast p1, Ljava/lang/String;
+    check-cast v0, Ljava/lang/String;
 
     .line 309
-    iget-object p2, p0, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->mTvInputsToDeviceInfo:Ljava/util/HashMap;
+    .local v0, "tvInputId":Ljava/lang/String;
+    iget-object v1, p0, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->mTvInputsToDeviceInfo:Ljava/util/HashMap;
 
-    invoke-virtual {p2, p1}, Ljava/util/HashMap;->get(Ljava/lang/Object;)Ljava/lang/Object;
+    invoke-virtual {v1, v0}, Ljava/util/HashMap;->get(Ljava/lang/Object;)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v1
 
-    check-cast p1, Landroid/hardware/hdmi/HdmiDeviceInfo;
+    check-cast v1, Landroid/hardware/hdmi/HdmiDeviceInfo;
 
     .line 310
-    if-nez p1, :cond_42
+    .local v1, "info":Landroid/hardware/hdmi/HdmiDeviceInfo;
+    if-nez v1, :cond_42
 
     .line 311
     return-void
 
     .line 315
     :cond_42
-    invoke-virtual {p1}, Landroid/hardware/hdmi/HdmiDeviceInfo;->getLogicalAddress()I
+    invoke-virtual {v1}, Landroid/hardware/hdmi/HdmiDeviceInfo;->getLogicalAddress()I
 
-    move-result p1
+    move-result v2
 
-    invoke-virtual {p0, p1}, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->removeCecDevice(I)V
+    invoke-virtual {p0, v2}, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->removeCecDevice(I)V
 
     .line 317
+    .end local v0  # "tvInputId":Ljava/lang/String;
+    .end local v1  # "info":Landroid/hardware/hdmi/HdmiDeviceInfo;
     :cond_49
     :goto_49
     return-void
 .end method
 
 .method protected onStandby(ZI)V
-    .registers 5
+    .registers 7
+    .param p1, "initiatedByCec"  # Z
+    .param p2, "standbyAction"  # I
     .annotation runtime Lcom/android/server/hdmi/HdmiAnnotations$ServiceThreadOnly;
     .end annotation
 
@@ -3843,41 +4005,41 @@
     invoke-virtual {p0}, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->assertRunOnServiceThread()V
 
     .line 332
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    iput-object p1, p0, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->mTvSystemAudioModeSupport:Ljava/lang/Boolean;
+    iput-object v0, p0, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->mTvSystemAudioModeSupport:Ljava/lang/Boolean;
 
     .line 334
-    iget-object p1, p0, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->mLock:Ljava/lang/Object;
+    iget-object v0, p0, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->mLock:Ljava/lang/Object;
 
-    monitor-enter p1
+    monitor-enter v0
 
     .line 335
     :try_start_9
-    iget-object p2, p0, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->mService:Lcom/android/server/hdmi/HdmiControlService;
+    iget-object v1, p0, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->mService:Lcom/android/server/hdmi/HdmiControlService;
 
-    const-string/jumbo v0, "persist.sys.hdmi.last_system_audio_control"
+    const-string/jumbo v2, "persist.sys.hdmi.last_system_audio_control"
 
     .line 337
     invoke-virtual {p0}, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->isSystemAudioActivated()Z
 
-    move-result v1
+    move-result v3
 
-    if-eqz v1, :cond_18
+    if-eqz v3, :cond_18
 
-    const-string/jumbo v1, "true"
+    const-string/jumbo v3, "true"
 
     goto :goto_1a
 
     :cond_18
-    const-string v1, "false"
+    const-string v3, "false"
 
     .line 335
     :goto_1a
-    invoke-virtual {p2, v0, v1}, Lcom/android/server/hdmi/HdmiControlService;->writeStringSystemProperty(Ljava/lang/String;Ljava/lang/String;)V
+    invoke-virtual {v1, v2, v3}, Lcom/android/server/hdmi/HdmiControlService;->writeStringSystemProperty(Ljava/lang/String;Ljava/lang/String;)V
 
     .line 338
-    monitor-exit p1
+    monitor-exit v0
     :try_end_1e
     .catchall {:try_start_9 .. :try_end_1e} :catchall_22
 
@@ -3889,18 +4051,19 @@
 
     .line 338
     :catchall_22
-    move-exception p2
+    move-exception v1
 
     :try_start_23
-    monitor-exit p1
+    monitor-exit v0
     :try_end_24
     .catchall {:try_start_23 .. :try_end_24} :catchall_22
 
-    throw p2
+    throw v1
 .end method
 
 .method onSystemAduioControlFeatureSupportChanged(Z)V
-    .registers 2
+    .registers 3
+    .param p1, "enabled"  # Z
 
     .line 947
     invoke-virtual {p0, p1}, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->setSystemAudioControlFeatureEnabled(Z)V
@@ -3909,11 +4072,11 @@
     if-eqz p1, :cond_d
 
     .line 949
-    new-instance p1, Lcom/android/server/hdmi/SystemAudioInitiationActionFromAvr;
+    new-instance v0, Lcom/android/server/hdmi/SystemAudioInitiationActionFromAvr;
 
-    invoke-direct {p1, p0}, Lcom/android/server/hdmi/SystemAudioInitiationActionFromAvr;-><init>(Lcom/android/server/hdmi/HdmiCecLocalDevice;)V
+    invoke-direct {v0, p0}, Lcom/android/server/hdmi/SystemAudioInitiationActionFromAvr;-><init>(Lcom/android/server/hdmi/HdmiCecLocalDevice;)V
 
-    invoke-virtual {p0, p1}, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->addAndStartAction(Lcom/android/server/hdmi/HdmiCecFeatureAction;)V
+    invoke-virtual {p0, v0}, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->addAndStartAction(Lcom/android/server/hdmi/HdmiCecFeatureAction;)V
 
     .line 951
     :cond_d
@@ -3922,6 +4085,7 @@
 
 .method queryTvSystemAudioModeSupport(Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem$TvSystemAudioModeSupportedCallback;)V
     .registers 3
+    .param p1, "callback"  # Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem$TvSystemAudioModeSupportedCallback;
 
     .line 1041
     iget-object v0, p0, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->mTvSystemAudioModeSupport:Ljava/lang/Boolean;
@@ -3952,6 +4116,7 @@
 
 .method final removeCecDevice(I)V
     .registers 4
+    .param p1, "address"  # I
     .annotation runtime Lcom/android/server/hdmi/HdmiAnnotations$ServiceThreadOnly;
     .end annotation
 
@@ -3968,21 +4133,23 @@
     move-result-object v0
 
     .line 203
+    .local v0, "info":Landroid/hardware/hdmi/HdmiDeviceInfo;
     iget-object v1, p0, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->mCecMessageCache:Lcom/android/server/hdmi/HdmiCecMessageCache;
 
     invoke-virtual {v1, p1}, Lcom/android/server/hdmi/HdmiCecMessageCache;->flushMessagesFrom(I)V
 
     .line 204
-    const/4 p1, 0x2
+    const/4 v1, 0x2
 
-    invoke-direct {p0, v0, p1}, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->invokeDeviceEventListener(Landroid/hardware/hdmi/HdmiDeviceInfo;I)V
+    invoke-direct {p0, v0, v1}, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->invokeDeviceEventListener(Landroid/hardware/hdmi/HdmiDeviceInfo;I)V
 
     .line 205
     return-void
 .end method
 
 .method reportAudioStatus(I)V
-    .registers 10
+    .registers 11
+    .param p1, "source"  # I
 
     .line 837
     invoke-virtual {p0}, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->assertRunOnServiceThread()V
@@ -4001,6 +4168,7 @@
     move-result v0
 
     .line 840
+    .local v0, "volume":I
     iget-object v2, p0, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->mService:Lcom/android/server/hdmi/HdmiControlService;
 
     invoke-virtual {v2}, Lcom/android/server/hdmi/HdmiControlService;->getAudioManager()Landroid/media/AudioManager;
@@ -4012,6 +4180,7 @@
     move-result v2
 
     .line 841
+    .local v2, "mute":Z
     iget-object v3, p0, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->mService:Lcom/android/server/hdmi/HdmiControlService;
 
     invoke-virtual {v3}, Lcom/android/server/hdmi/HdmiControlService;->getAudioManager()Landroid/media/AudioManager;
@@ -4023,6 +4192,7 @@
     move-result v3
 
     .line 842
+    .local v3, "maxVolume":I
     iget-object v4, p0, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->mService:Lcom/android/server/hdmi/HdmiControlService;
 
     invoke-virtual {v4}, Lcom/android/server/hdmi/HdmiControlService;->getAudioManager()Landroid/media/AudioManager;
@@ -4034,70 +4204,73 @@
     move-result v4
 
     .line 843
+    .local v4, "minVolume":I
     invoke-static {v0, v3}, Lcom/android/server/hdmi/VolumeControlAction;->scaleToCecVolume(II)I
 
     move-result v5
 
     .line 844
+    .local v5, "scaledVolume":I
     const/4 v6, 0x4
 
     new-array v6, v6, [Ljava/lang/Object;
 
     invoke-static {v0}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
 
-    move-result-object v0
+    move-result-object v7
 
-    const/4 v7, 0x0
+    const/4 v8, 0x0
 
-    aput-object v0, v6, v7
+    aput-object v7, v6, v8
 
     .line 845
     invoke-static {v4}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
 
-    move-result-object v0
+    move-result-object v7
 
-    const/4 v4, 0x1
+    const/4 v8, 0x1
 
-    aput-object v0, v6, v4
+    aput-object v7, v6, v8
 
     invoke-static {v3}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
 
-    move-result-object v0
+    move-result-object v7
 
-    const/4 v3, 0x2
+    const/4 v8, 0x2
 
-    aput-object v0, v6, v3
+    aput-object v7, v6, v8
 
     invoke-static {v5}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
 
-    move-result-object v0
+    move-result-object v7
 
-    aput-object v0, v6, v1
+    aput-object v7, v6, v1
 
     .line 844
-    const-string v0, "Reporting volume %d (%d-%d) as CEC volume %d"
+    const-string v1, "Reporting volume %d (%d-%d) as CEC volume %d"
 
-    invoke-static {v0, v6}, Lcom/android/server/hdmi/HdmiLogger;->debug(Ljava/lang/String;[Ljava/lang/Object;)V
+    invoke-static {v1, v6}, Lcom/android/server/hdmi/HdmiLogger;->debug(Ljava/lang/String;[Ljava/lang/Object;)V
 
     .line 847
-    iget-object v0, p0, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->mService:Lcom/android/server/hdmi/HdmiControlService;
+    iget-object v1, p0, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->mService:Lcom/android/server/hdmi/HdmiControlService;
 
-    iget v1, p0, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->mAddress:I
+    iget v6, p0, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->mAddress:I
 
     .line 848
-    invoke-static {v1, p1, v5, v2}, Lcom/android/server/hdmi/HdmiCecMessageBuilder;->buildReportAudioStatus(IIIZ)Lcom/android/server/hdmi/HdmiCecMessage;
+    invoke-static {v6, p1, v5, v2}, Lcom/android/server/hdmi/HdmiCecMessageBuilder;->buildReportAudioStatus(IIIZ)Lcom/android/server/hdmi/HdmiCecMessage;
 
-    move-result-object p1
+    move-result-object v6
 
     .line 847
-    invoke-virtual {v0, p1}, Lcom/android/server/hdmi/HdmiControlService;->sendCecCommand(Lcom/android/server/hdmi/HdmiCecMessage;)V
+    invoke-virtual {v1, v6}, Lcom/android/server/hdmi/HdmiControlService;->sendCecCommand(Lcom/android/server/hdmi/HdmiCecMessage;)V
 
     .line 850
     return-void
 .end method
 
 .method protected routeToInputFromPortId(I)V
-    .registers 3
+    .registers 4
+    .param p1, "portId"  # I
 
     .line 1115
     invoke-virtual {p0}, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->isRoutingControlFeatureEnabled()Z
@@ -4107,13 +4280,13 @@
     if-nez v0, :cond_f
 
     .line 1116
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    new-array p1, p1, [Ljava/lang/Object;
+    new-array v0, v0, [Ljava/lang/Object;
 
-    const-string v0, "Routing Control Feature is not enabled."
+    const-string v1, "Routing Control Feature is not enabled."
 
-    invoke-static {v0, p1}, Lcom/android/server/hdmi/HdmiLogger;->debug(Ljava/lang/String;[Ljava/lang/Object;)V
+    invoke-static {v1, v0}, Lcom/android/server/hdmi/HdmiLogger;->debug(Ljava/lang/String;[Ljava/lang/Object;)V
 
     .line 1117
     return-void
@@ -4134,6 +4307,7 @@
 
 .method protected routeToTvInputFromPortId(I)V
     .registers 5
+    .param p1, "portId"  # I
 
     .line 1127
     const/4 v0, 0x0
@@ -4204,12 +4378,14 @@
     check-cast v1, Ljava/lang/String;
 
     .line 1141
+    .local v1, "uri":Ljava/lang/String;
     if-eqz v1, :cond_45
 
     .line 1142
     invoke-direct {p0, v1}, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->switchToTvInput(Ljava/lang/String;)V
 
     .line 1149
+    .end local v1  # "uri":Ljava/lang/String;
     :goto_3e
     invoke-virtual {p0, p1}, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->setLocalActivePort(I)V
 
@@ -4220,24 +4396,26 @@
     return-void
 
     .line 1144
+    .restart local v1  # "uri":Ljava/lang/String;
     :cond_45
-    new-array p1, v0, [Ljava/lang/Object;
+    new-array v0, v0, [Ljava/lang/Object;
 
-    const-string v0, "Port number does not match any Tv Input."
+    const-string v2, "Port number does not match any Tv Input."
 
-    invoke-static {v0, p1}, Lcom/android/server/hdmi/HdmiLogger;->debug(Ljava/lang/String;[Ljava/lang/Object;)V
+    invoke-static {v2, v0}, Lcom/android/server/hdmi/HdmiLogger;->debug(Ljava/lang/String;[Ljava/lang/Object;)V
 
     .line 1145
     return-void
 
     .line 1128
+    .end local v1  # "uri":Ljava/lang/String;
     :cond_4d
     :goto_4d
-    new-array p1, v0, [Ljava/lang/Object;
+    new-array v0, v0, [Ljava/lang/Object;
 
-    const-string v0, "Invalid port number for Tv Input switching."
+    const-string v1, "Invalid port number for Tv Input switching."
 
-    invoke-static {v0, p1}, Lcom/android/server/hdmi/HdmiLogger;->debug(Ljava/lang/String;[Ljava/lang/Object;)V
+    invoke-static {v1, v0}, Lcom/android/server/hdmi/HdmiLogger;->debug(Ljava/lang/String;[Ljava/lang/Object;)V
 
     .line 1129
     return-void
@@ -4245,6 +4423,7 @@
 
 .method setArcStatus(Z)V
     .registers 5
+    .param p1, "enabled"  # Z
     .annotation runtime Lcom/android/server/hdmi/HdmiAnnotations$ServiceThreadOnly;
     .end annotation
 
@@ -4292,7 +4471,8 @@
 .end method
 
 .method protected setPreferredAddress(I)V
-    .registers 4
+    .registers 5
+    .param p1, "addr"  # I
     .annotation runtime Lcom/android/server/hdmi/HdmiAnnotations$ServiceThreadOnly;
     .end annotation
 
@@ -4305,19 +4485,20 @@
     .line 399
     invoke-static {p1}, Ljava/lang/String;->valueOf(I)Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v1
 
     .line 398
-    const-string/jumbo v1, "persist.sys.hdmi.addr.audiosystem"
+    const-string/jumbo v2, "persist.sys.hdmi.addr.audiosystem"
 
-    invoke-virtual {v0, v1, p1}, Lcom/android/server/hdmi/HdmiControlService;->writeStringSystemProperty(Ljava/lang/String;Ljava/lang/String;)V
+    invoke-virtual {v0, v2, v1}, Lcom/android/server/hdmi/HdmiControlService;->writeStringSystemProperty(Ljava/lang/String;Ljava/lang/String;)V
 
     .line 400
     return-void
 .end method
 
 .method setRoutingControlFeatureEnables(Z)V
-    .registers 3
+    .registers 4
+    .param p1, "enabled"  # Z
     .annotation runtime Lcom/android/server/hdmi/HdmiAnnotations$ServiceThreadOnly;
     .end annotation
 
@@ -4341,17 +4522,18 @@
 
     .line 966
     :catchall_a
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_c
     .catchall {:try_start_6 .. :try_end_c} :catchall_a
 
-    throw p1
+    throw v1
 .end method
 
 .method setSystemAudioControlFeatureEnabled(Z)V
-    .registers 3
+    .registers 4
+    .param p1, "enabled"  # Z
     .annotation runtime Lcom/android/server/hdmi/HdmiAnnotations$ServiceThreadOnly;
     .end annotation
 
@@ -4375,65 +4557,68 @@
 
     .line 958
     :catchall_a
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_c
     .catchall {:try_start_6 .. :try_end_c} :catchall_a
 
-    throw p1
+    throw v1
 .end method
 
 .method setTvSystemAudioModeSupport(Z)V
-    .registers 2
+    .registers 3
+    .param p1, "supported"  # Z
 
     .line 1089
     invoke-static {p1}, Ljava/lang/Boolean;->valueOf(Z)Ljava/lang/Boolean;
 
-    move-result-object p1
+    move-result-object v0
 
-    iput-object p1, p0, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->mTvSystemAudioModeSupport:Ljava/lang/Boolean;
+    iput-object v0, p0, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->mTvSystemAudioModeSupport:Ljava/lang/Boolean;
 
     .line 1090
     return-void
 .end method
 
 .method protected switchInputOnReceivingNewActivePath(I)V
-    .registers 3
+    .registers 4
+    .param p1, "physicalAddress"  # I
 
     .line 1101
     iget-object v0, p0, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->mService:Lcom/android/server/hdmi/HdmiControlService;
 
     invoke-virtual {v0, p1}, Lcom/android/server/hdmi/HdmiControlService;->pathToPortId(I)I
 
-    move-result p1
-
-    .line 1102
-    invoke-virtual {p0}, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->isSystemAudioActivated()Z
-
     move-result v0
 
-    if-eqz v0, :cond_14
+    .line 1102
+    .local v0, "port":I
+    invoke-virtual {p0}, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->isSystemAudioActivated()Z
 
-    if-gez p1, :cond_14
+    move-result v1
+
+    if-eqz v1, :cond_14
+
+    if-gez v0, :cond_14
 
     .line 1106
-    const/16 p1, 0x11
+    const/16 v1, 0x11
 
-    invoke-virtual {p0, p1}, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->routeToInputFromPortId(I)V
+    invoke-virtual {p0, v1}, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->routeToInputFromPortId(I)V
 
     goto :goto_1d
 
     .line 1107
     :cond_14
-    iget-boolean v0, p0, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->mIsSwitchDevice:Z
+    iget-boolean v1, p0, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->mIsSwitchDevice:Z
 
-    if-eqz v0, :cond_1d
+    if-eqz v1, :cond_1d
 
-    if-ltz p1, :cond_1d
+    if-ltz v0, :cond_1d
 
     .line 1110
-    invoke-virtual {p0, p1}, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->routeToInputFromPortId(I)V
+    invoke-virtual {p0, v0}, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->routeToInputFromPortId(I)V
 
     .line 1112
     :cond_1d
@@ -4450,6 +4635,8 @@
 
 .method protected systemAudioControlOnPowerOn(IZ)V
     .registers 4
+    .param p1, "systemAudioOnPowerOnProp"  # I
+    .param p2, "lastSystemAudioControlStatus"  # Z
     .annotation build Lcom/android/internal/annotations/VisibleForTesting;
     .end annotation
 
@@ -4465,17 +4652,17 @@
     .line 381
     invoke-virtual {p0}, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->isSystemAudioControlFeatureEnabled()Z
 
-    move-result p1
+    move-result v0
 
-    if-eqz p1, :cond_15
+    if-eqz v0, :cond_15
 
     .line 382
     :cond_d
-    new-instance p1, Lcom/android/server/hdmi/SystemAudioInitiationActionFromAvr;
+    new-instance v0, Lcom/android/server/hdmi/SystemAudioInitiationActionFromAvr;
 
-    invoke-direct {p1, p0}, Lcom/android/server/hdmi/SystemAudioInitiationActionFromAvr;-><init>(Lcom/android/server/hdmi/HdmiCecLocalDevice;)V
+    invoke-direct {v0, p0}, Lcom/android/server/hdmi/SystemAudioInitiationActionFromAvr;-><init>(Lcom/android/server/hdmi/HdmiCecLocalDevice;)V
 
-    invoke-virtual {p0, p1}, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->addAndStartAction(Lcom/android/server/hdmi/HdmiCecFeatureAction;)V
+    invoke-virtual {p0, v0}, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->addAndStartAction(Lcom/android/server/hdmi/HdmiCecFeatureAction;)V
 
     .line 384
     :cond_15
@@ -4531,7 +4718,8 @@
 .end method
 
 .method final updateCecDevice(Landroid/hardware/hdmi/HdmiDeviceInfo;)V
-    .registers 3
+    .registers 4
+    .param p1, "info"  # Landroid/hardware/hdmi/HdmiDeviceInfo;
     .annotation runtime Lcom/android/server/hdmi/HdmiAnnotations$ServiceThreadOnly;
     .end annotation
 
@@ -4544,12 +4732,13 @@
     move-result-object v0
 
     .line 217
+    .local v0, "old":Landroid/hardware/hdmi/HdmiDeviceInfo;
     if-nez v0, :cond_e
 
     .line 218
-    const/4 v0, 0x1
+    const/4 v1, 0x1
 
-    invoke-direct {p0, p1, v0}, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->invokeDeviceEventListener(Landroid/hardware/hdmi/HdmiDeviceInfo;I)V
+    invoke-direct {p0, p1, v1}, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->invokeDeviceEventListener(Landroid/hardware/hdmi/HdmiDeviceInfo;I)V
 
     goto :goto_18
 
@@ -4557,14 +4746,14 @@
     :cond_e
     invoke-virtual {v0, p1}, Landroid/hardware/hdmi/HdmiDeviceInfo;->equals(Ljava/lang/Object;)Z
 
-    move-result v0
+    move-result v1
 
-    if-nez v0, :cond_18
+    if-nez v1, :cond_18
 
     .line 220
-    const/4 v0, 0x3
+    const/4 v1, 0x3
 
-    invoke-direct {p0, p1, v0}, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->invokeDeviceEventListener(Landroid/hardware/hdmi/HdmiDeviceInfo;I)V
+    invoke-direct {p0, p1, v1}, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->invokeDeviceEventListener(Landroid/hardware/hdmi/HdmiDeviceInfo;I)V
 
     .line 222
     :cond_18
@@ -4573,7 +4762,9 @@
 .end method
 
 .method protected updateDevicePowerStatus(II)V
-    .registers 4
+    .registers 6
+    .param p1, "logicalAddress"  # I
+    .param p2, "newPowerStatus"  # I
 
     .line 1230
     invoke-virtual {p0, p1}, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->getCecDeviceInfo(I)Landroid/hardware/hdmi/HdmiDeviceInfo;
@@ -4581,26 +4772,27 @@
     move-result-object v0
 
     .line 1231
+    .local v0, "info":Landroid/hardware/hdmi/HdmiDeviceInfo;
     if-nez v0, :cond_1d
 
     .line 1232
-    new-instance p2, Ljava/lang/StringBuilder;
+    new-instance v1, Ljava/lang/StringBuilder;
 
-    invoke-direct {p2}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v0, "Can not update power status of non-existing device:"
+    const-string v2, "Can not update power status of non-existing device:"
 
-    invoke-virtual {p2, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p2, p1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, p1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v1
 
-    const-string p2, "HdmiCecLocalDeviceAudioSystem"
+    const-string v2, "HdmiCecLocalDeviceAudioSystem"
 
-    invoke-static {p2, p1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v2, v1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 1233
     return-void
@@ -4609,9 +4801,9 @@
     :cond_1d
     invoke-virtual {v0}, Landroid/hardware/hdmi/HdmiDeviceInfo;->getDevicePowerStatus()I
 
-    move-result p1
+    move-result v1
 
-    if-ne p1, p2, :cond_24
+    if-ne v1, p2, :cond_24
 
     .line 1237
     return-void
@@ -4620,15 +4812,16 @@
     :cond_24
     invoke-static {v0, p2}, Lcom/android/server/hdmi/HdmiUtils;->cloneHdmiDeviceInfo(Landroid/hardware/hdmi/HdmiDeviceInfo;I)Landroid/hardware/hdmi/HdmiDeviceInfo;
 
-    move-result-object p1
+    move-result-object v1
 
     .line 1242
-    invoke-virtual {p0, p1}, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->addDeviceInfo(Landroid/hardware/hdmi/HdmiDeviceInfo;)Landroid/hardware/hdmi/HdmiDeviceInfo;
+    .local v1, "newInfo":Landroid/hardware/hdmi/HdmiDeviceInfo;
+    invoke-virtual {p0, v1}, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->addDeviceInfo(Landroid/hardware/hdmi/HdmiDeviceInfo;)Landroid/hardware/hdmi/HdmiDeviceInfo;
 
     .line 1244
-    const/4 p2, 0x3
+    const/4 v2, 0x3
 
-    invoke-direct {p0, p1, p2}, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->invokeDeviceEventListener(Landroid/hardware/hdmi/HdmiDeviceInfo;I)V
+    invoke-direct {p0, v1, v2}, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->invokeDeviceEventListener(Landroid/hardware/hdmi/HdmiDeviceInfo;I)V
 
     .line 1245
     return-void

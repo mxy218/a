@@ -26,6 +26,7 @@
 # direct methods
 .method constructor <init>(Landroid/hardware/broadcastradio/V2_0/IBroadcastRadio$Stub;Landroid/os/HwParcel;)V
     .registers 3
+    .param p1, "this$0"  # Landroid/hardware/broadcastradio/V2_0/IBroadcastRadio$Stub;
 
     .line 675
     iput-object p1, p0, Landroid/hardware/broadcastradio/V2_0/IBroadcastRadio$Stub$1;->this$0:Landroid/hardware/broadcastradio/V2_0/IBroadcastRadio$Stub;
@@ -41,6 +42,8 @@
 # virtual methods
 .method public onValues(ILandroid/hardware/broadcastradio/V2_0/AmFmRegionConfig;)V
     .registers 5
+    .param p1, "result"  # I
+    .param p2, "config"  # Landroid/hardware/broadcastradio/V2_0/AmFmRegionConfig;
 
     .line 678
     iget-object v0, p0, Landroid/hardware/broadcastradio/V2_0/IBroadcastRadio$Stub$1;->val$_hidl_reply:Landroid/os/HwParcel;
@@ -55,14 +58,14 @@
     invoke-virtual {v0, p1}, Landroid/os/HwParcel;->writeInt32(I)V
 
     .line 680
-    iget-object p1, p0, Landroid/hardware/broadcastradio/V2_0/IBroadcastRadio$Stub$1;->val$_hidl_reply:Landroid/os/HwParcel;
+    iget-object v0, p0, Landroid/hardware/broadcastradio/V2_0/IBroadcastRadio$Stub$1;->val$_hidl_reply:Landroid/os/HwParcel;
 
-    invoke-virtual {p2, p1}, Landroid/hardware/broadcastradio/V2_0/AmFmRegionConfig;->writeToParcel(Landroid/os/HwParcel;)V
+    invoke-virtual {p2, v0}, Landroid/hardware/broadcastradio/V2_0/AmFmRegionConfig;->writeToParcel(Landroid/os/HwParcel;)V
 
     .line 681
-    iget-object p1, p0, Landroid/hardware/broadcastradio/V2_0/IBroadcastRadio$Stub$1;->val$_hidl_reply:Landroid/os/HwParcel;
+    iget-object v0, p0, Landroid/hardware/broadcastradio/V2_0/IBroadcastRadio$Stub$1;->val$_hidl_reply:Landroid/os/HwParcel;
 
-    invoke-virtual {p1}, Landroid/os/HwParcel;->send()V
+    invoke-virtual {v0}, Landroid/os/HwParcel;->send()V
 
     .line 682
     return-void

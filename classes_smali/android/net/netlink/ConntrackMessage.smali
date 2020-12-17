@@ -62,7 +62,13 @@
 .end method
 
 .method public static newIPv4TimeoutUpdateRequest(ILjava/net/Inet4Address;ILjava/net/Inet4Address;II)[B
-    .registers 13
+    .registers 16
+    .param p0, "proto"  # I
+    .param p1, "src"  # Ljava/net/Inet4Address;
+    .param p2, "sport"  # I
+    .param p3, "dst"  # Ljava/net/Inet4Address;
+    .param p4, "dport"  # I
+    .param p5, "timeoutSec"  # I
 
     .line 69
     new-instance v0, Landroid/net/netlink/StructNlAttr;
@@ -81,9 +87,9 @@
 
     invoke-direct {v5, v6, p1}, Landroid/net/netlink/StructNlAttr;-><init>(SLjava/net/InetAddress;)V
 
-    const/4 p1, 0x0
+    const/4 v7, 0x0
 
-    aput-object v5, v4, p1
+    aput-object v5, v4, v7
 
     new-instance v5, Landroid/net/netlink/StructNlAttr;
 
@@ -93,133 +99,140 @@
 
     invoke-direct {v3, v6, v4}, Landroid/net/netlink/StructNlAttr;-><init>(S[Landroid/net/netlink/StructNlAttr;)V
 
-    aput-object v3, v2, p1
+    aput-object v3, v2, v7
 
-    new-instance p3, Landroid/net/netlink/StructNlAttr;
+    new-instance v3, Landroid/net/netlink/StructNlAttr;
 
-    const/4 v3, 0x3
+    const/4 v4, 0x3
 
-    new-array v4, v3, [Landroid/net/netlink/StructNlAttr;
+    new-array v5, v4, [Landroid/net/netlink/StructNlAttr;
 
-    new-instance v5, Landroid/net/netlink/StructNlAttr;
+    new-instance v8, Landroid/net/netlink/StructNlAttr;
 
-    int-to-byte p0, p0
+    int-to-byte v9, p0
 
-    invoke-direct {v5, v6, p0}, Landroid/net/netlink/StructNlAttr;-><init>(SB)V
+    invoke-direct {v8, v6, v9}, Landroid/net/netlink/StructNlAttr;-><init>(SB)V
 
-    aput-object v5, v4, p1
+    aput-object v8, v5, v7
 
-    new-instance p0, Landroid/net/netlink/StructNlAttr;
+    new-instance v7, Landroid/net/netlink/StructNlAttr;
 
-    int-to-short p1, p2
+    int-to-short v8, p2
 
-    sget-object p2, Ljava/nio/ByteOrder;->BIG_ENDIAN:Ljava/nio/ByteOrder;
+    sget-object v9, Ljava/nio/ByteOrder;->BIG_ENDIAN:Ljava/nio/ByteOrder;
 
-    invoke-direct {p0, v1, p1, p2}, Landroid/net/netlink/StructNlAttr;-><init>(SSLjava/nio/ByteOrder;)V
+    invoke-direct {v7, v1, v8, v9}, Landroid/net/netlink/StructNlAttr;-><init>(SSLjava/nio/ByteOrder;)V
 
-    aput-object p0, v4, v6
+    aput-object v7, v5, v6
 
-    new-instance p0, Landroid/net/netlink/StructNlAttr;
+    new-instance v7, Landroid/net/netlink/StructNlAttr;
 
-    int-to-short p1, p4
+    int-to-short v8, p4
 
-    sget-object p2, Ljava/nio/ByteOrder;->BIG_ENDIAN:Ljava/nio/ByteOrder;
+    sget-object v9, Ljava/nio/ByteOrder;->BIG_ENDIAN:Ljava/nio/ByteOrder;
 
-    invoke-direct {p0, v3, p1, p2}, Landroid/net/netlink/StructNlAttr;-><init>(SSLjava/nio/ByteOrder;)V
+    invoke-direct {v7, v4, v8, v9}, Landroid/net/netlink/StructNlAttr;-><init>(SSLjava/nio/ByteOrder;)V
 
-    aput-object p0, v4, v1
+    aput-object v7, v5, v1
 
-    invoke-direct {p3, v1, v4}, Landroid/net/netlink/StructNlAttr;-><init>(S[Landroid/net/netlink/StructNlAttr;)V
+    invoke-direct {v3, v1, v5}, Landroid/net/netlink/StructNlAttr;-><init>(S[Landroid/net/netlink/StructNlAttr;)V
 
-    aput-object p3, v2, v6
+    aput-object v3, v2, v6
 
     invoke-direct {v0, v6, v2}, Landroid/net/netlink/StructNlAttr;-><init>(S[Landroid/net/netlink/StructNlAttr;)V
 
     .line 78
-    new-instance p0, Landroid/net/netlink/StructNlAttr;
+    .local v0, "ctaTupleOrig":Landroid/net/netlink/StructNlAttr;
+    new-instance v1, Landroid/net/netlink/StructNlAttr;
 
-    sget-object p1, Ljava/nio/ByteOrder;->BIG_ENDIAN:Ljava/nio/ByteOrder;
+    sget-object v2, Ljava/nio/ByteOrder;->BIG_ENDIAN:Ljava/nio/ByteOrder;
 
-    const/4 p2, 0x7
+    const/4 v3, 0x7
 
-    invoke-direct {p0, p2, p5, p1}, Landroid/net/netlink/StructNlAttr;-><init>(SILjava/nio/ByteOrder;)V
+    invoke-direct {v1, v3, p5, v2}, Landroid/net/netlink/StructNlAttr;-><init>(SILjava/nio/ByteOrder;)V
 
     .line 80
+    .local v1, "ctaTimeout":Landroid/net/netlink/StructNlAttr;
     invoke-virtual {v0}, Landroid/net/netlink/StructNlAttr;->getAlignedLength()I
 
-    move-result p1
+    move-result v2
 
-    invoke-virtual {p0}, Landroid/net/netlink/StructNlAttr;->getAlignedLength()I
+    invoke-virtual {v1}, Landroid/net/netlink/StructNlAttr;->getAlignedLength()I
 
-    move-result p2
+    move-result v3
 
-    add-int/2addr p1, p2
+    add-int/2addr v2, v3
 
     .line 81
-    add-int/lit8 p1, p1, 0x14
+    .local v2, "payloadLength":I
+    add-int/lit8 v3, v2, 0x14
 
-    new-array p1, p1, [B
+    new-array v3, v3, [B
 
     .line 82
-    invoke-static {p1}, Ljava/nio/ByteBuffer;->wrap([B)Ljava/nio/ByteBuffer;
+    .local v3, "bytes":[B
+    invoke-static {v3}, Ljava/nio/ByteBuffer;->wrap([B)Ljava/nio/ByteBuffer;
 
-    move-result-object p2
+    move-result-object v4
 
     .line 83
+    .local v4, "byteBuffer":Ljava/nio/ByteBuffer;
     invoke-static {}, Ljava/nio/ByteOrder;->nativeOrder()Ljava/nio/ByteOrder;
 
-    move-result-object p3
+    move-result-object v5
 
-    invoke-virtual {p2, p3}, Ljava/nio/ByteBuffer;->order(Ljava/nio/ByteOrder;)Ljava/nio/ByteBuffer;
+    invoke-virtual {v4, v5}, Ljava/nio/ByteBuffer;->order(Ljava/nio/ByteOrder;)Ljava/nio/ByteBuffer;
 
     .line 85
-    new-instance p3, Landroid/net/netlink/ConntrackMessage;
+    new-instance v5, Landroid/net/netlink/ConntrackMessage;
 
-    invoke-direct {p3}, Landroid/net/netlink/ConntrackMessage;-><init>()V
+    invoke-direct {v5}, Landroid/net/netlink/ConntrackMessage;-><init>()V
 
     .line 86
-    iget-object p4, p3, Landroid/net/netlink/ConntrackMessage;->mHeader:Landroid/net/netlink/StructNlMsgHdr;
+    .local v5, "ctmsg":Landroid/net/netlink/ConntrackMessage;
+    iget-object v7, v5, Landroid/net/netlink/ConntrackMessage;->mHeader:Landroid/net/netlink/StructNlMsgHdr;
 
-    array-length p5, p1
+    array-length v8, v3
 
-    iput p5, p4, Landroid/net/netlink/StructNlMsgHdr;->nlmsg_len:I
+    iput v8, v7, Landroid/net/netlink/StructNlMsgHdr;->nlmsg_len:I
 
     .line 87
-    iget-object p4, p3, Landroid/net/netlink/ConntrackMessage;->mHeader:Landroid/net/netlink/StructNlMsgHdr;
+    iget-object v7, v5, Landroid/net/netlink/ConntrackMessage;->mHeader:Landroid/net/netlink/StructNlMsgHdr;
 
-    const/16 p5, 0x100
+    const/16 v8, 0x100
 
-    iput-short p5, p4, Landroid/net/netlink/StructNlMsgHdr;->nlmsg_type:S
+    iput-short v8, v7, Landroid/net/netlink/StructNlMsgHdr;->nlmsg_type:S
 
     .line 88
-    iget-object p4, p3, Landroid/net/netlink/ConntrackMessage;->mHeader:Landroid/net/netlink/StructNlMsgHdr;
+    iget-object v7, v5, Landroid/net/netlink/ConntrackMessage;->mHeader:Landroid/net/netlink/StructNlMsgHdr;
 
-    const/16 p5, 0x105
+    const/16 v8, 0x105
 
-    iput-short p5, p4, Landroid/net/netlink/StructNlMsgHdr;->nlmsg_flags:S
+    iput-short v8, v7, Landroid/net/netlink/StructNlMsgHdr;->nlmsg_flags:S
 
     .line 89
-    iget-object p4, p3, Landroid/net/netlink/ConntrackMessage;->mHeader:Landroid/net/netlink/StructNlMsgHdr;
+    iget-object v7, v5, Landroid/net/netlink/ConntrackMessage;->mHeader:Landroid/net/netlink/StructNlMsgHdr;
 
-    iput v6, p4, Landroid/net/netlink/StructNlMsgHdr;->nlmsg_seq:I
+    iput v6, v7, Landroid/net/netlink/StructNlMsgHdr;->nlmsg_seq:I
 
     .line 90
-    invoke-virtual {p3, p2}, Landroid/net/netlink/ConntrackMessage;->pack(Ljava/nio/ByteBuffer;)V
+    invoke-virtual {v5, v4}, Landroid/net/netlink/ConntrackMessage;->pack(Ljava/nio/ByteBuffer;)V
 
     .line 92
-    invoke-virtual {v0, p2}, Landroid/net/netlink/StructNlAttr;->pack(Ljava/nio/ByteBuffer;)V
+    invoke-virtual {v0, v4}, Landroid/net/netlink/StructNlAttr;->pack(Ljava/nio/ByteBuffer;)V
 
     .line 93
-    invoke-virtual {p0, p2}, Landroid/net/netlink/StructNlAttr;->pack(Ljava/nio/ByteBuffer;)V
+    invoke-virtual {v1, v4}, Landroid/net/netlink/StructNlAttr;->pack(Ljava/nio/ByteBuffer;)V
 
     .line 95
-    return-object p1
+    return-object v3
 .end method
 
 
 # virtual methods
 .method public pack(Ljava/nio/ByteBuffer;)V
     .registers 3
+    .param p1, "byteBuffer"  # Ljava/nio/ByteBuffer;
 
     .line 106
     iget-object v0, p0, Landroid/net/netlink/ConntrackMessage;->mHeader:Landroid/net/netlink/StructNlMsgHdr;

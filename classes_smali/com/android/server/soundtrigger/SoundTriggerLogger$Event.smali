@@ -62,6 +62,7 @@
 
 .method public printLog(Ljava/lang/String;)Lcom/android/server/soundtrigger/SoundTriggerLogger$Event;
     .registers 3
+    .param p1, "tag"  # Ljava/lang/String;
 
     .line 73
     invoke-virtual {p0}, Lcom/android/server/soundtrigger/SoundTriggerLogger$Event;->eventToString()Ljava/lang/String;

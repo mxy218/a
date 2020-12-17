@@ -80,6 +80,8 @@
 
 .method public constructor <init>(Landroid/content/Context;Landroid/os/Handler;)V
     .registers 4
+    .param p1, "ctx"  # Landroid/content/Context;
+    .param p2, "handler"  # Landroid/os/Handler;
 
     .line 130
     new-instance v0, Lcom/android/server/connectivity/MultipathPolicyTracker$Dependencies;
@@ -93,7 +95,10 @@
 .end method
 
 .method public constructor <init>(Landroid/content/Context;Landroid/os/Handler;Lcom/android/server/connectivity/MultipathPolicyTracker$Dependencies;)V
-    .registers 5
+    .registers 6
+    .param p1, "ctx"  # Landroid/content/Context;
+    .param p2, "handler"  # Landroid/os/Handler;
+    .param p3, "deps"  # Lcom/android/server/connectivity/MultipathPolicyTracker$Dependencies;
 
     .line 133
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -114,73 +119,77 @@
     .line 136
     invoke-virtual {p3}, Lcom/android/server/connectivity/MultipathPolicyTracker$Dependencies;->getClock()Ljava/time/Clock;
 
-    move-result-object p1
+    move-result-object v0
 
-    iput-object p1, p0, Lcom/android/server/connectivity/MultipathPolicyTracker;->mClock:Ljava/time/Clock;
+    iput-object v0, p0, Lcom/android/server/connectivity/MultipathPolicyTracker;->mClock:Ljava/time/Clock;
 
     .line 137
     iput-object p3, p0, Lcom/android/server/connectivity/MultipathPolicyTracker;->mDeps:Lcom/android/server/connectivity/MultipathPolicyTracker$Dependencies;
 
     .line 138
-    iget-object p1, p0, Lcom/android/server/connectivity/MultipathPolicyTracker;->mContext:Landroid/content/Context;
+    iget-object v0, p0, Lcom/android/server/connectivity/MultipathPolicyTracker;->mContext:Landroid/content/Context;
 
-    invoke-virtual {p1}, Landroid/content/Context;->getContentResolver()Landroid/content/ContentResolver;
+    invoke-virtual {v0}, Landroid/content/Context;->getContentResolver()Landroid/content/ContentResolver;
 
-    move-result-object p1
+    move-result-object v0
 
-    iput-object p1, p0, Lcom/android/server/connectivity/MultipathPolicyTracker;->mResolver:Landroid/content/ContentResolver;
+    iput-object v0, p0, Lcom/android/server/connectivity/MultipathPolicyTracker;->mResolver:Landroid/content/ContentResolver;
 
     .line 139
-    new-instance p1, Lcom/android/server/connectivity/MultipathPolicyTracker$SettingsObserver;
+    new-instance v0, Lcom/android/server/connectivity/MultipathPolicyTracker$SettingsObserver;
 
-    iget-object p2, p0, Lcom/android/server/connectivity/MultipathPolicyTracker;->mHandler:Landroid/os/Handler;
+    iget-object v1, p0, Lcom/android/server/connectivity/MultipathPolicyTracker;->mHandler:Landroid/os/Handler;
 
-    invoke-direct {p1, p0, p2}, Lcom/android/server/connectivity/MultipathPolicyTracker$SettingsObserver;-><init>(Lcom/android/server/connectivity/MultipathPolicyTracker;Landroid/os/Handler;)V
+    invoke-direct {v0, p0, v1}, Lcom/android/server/connectivity/MultipathPolicyTracker$SettingsObserver;-><init>(Lcom/android/server/connectivity/MultipathPolicyTracker;Landroid/os/Handler;)V
 
-    iput-object p1, p0, Lcom/android/server/connectivity/MultipathPolicyTracker;->mSettingsObserver:Landroid/database/ContentObserver;
+    iput-object v0, p0, Lcom/android/server/connectivity/MultipathPolicyTracker;->mSettingsObserver:Landroid/database/ContentObserver;
 
     .line 140
-    new-instance p1, Lcom/android/server/connectivity/MultipathPolicyTracker$ConfigChangeReceiver;
+    new-instance v0, Lcom/android/server/connectivity/MultipathPolicyTracker$ConfigChangeReceiver;
 
-    const/4 p2, 0x0
+    const/4 v1, 0x0
 
-    invoke-direct {p1, p0, p2}, Lcom/android/server/connectivity/MultipathPolicyTracker$ConfigChangeReceiver;-><init>(Lcom/android/server/connectivity/MultipathPolicyTracker;Lcom/android/server/connectivity/MultipathPolicyTracker$1;)V
+    invoke-direct {v0, p0, v1}, Lcom/android/server/connectivity/MultipathPolicyTracker$ConfigChangeReceiver;-><init>(Lcom/android/server/connectivity/MultipathPolicyTracker;Lcom/android/server/connectivity/MultipathPolicyTracker$1;)V
 
-    iput-object p1, p0, Lcom/android/server/connectivity/MultipathPolicyTracker;->mConfigChangeReceiver:Lcom/android/server/connectivity/MultipathPolicyTracker$ConfigChangeReceiver;
+    iput-object v0, p0, Lcom/android/server/connectivity/MultipathPolicyTracker;->mConfigChangeReceiver:Lcom/android/server/connectivity/MultipathPolicyTracker$ConfigChangeReceiver;
 
     .line 143
     return-void
 .end method
 
 .method static synthetic access$100(Lcom/android/server/connectivity/MultipathPolicyTracker;)Landroid/content/Context;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/connectivity/MultipathPolicyTracker;
 
     .line 93
-    iget-object p0, p0, Lcom/android/server/connectivity/MultipathPolicyTracker;->mContext:Landroid/content/Context;
+    iget-object v0, p0, Lcom/android/server/connectivity/MultipathPolicyTracker;->mContext:Landroid/content/Context;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$1000(Lcom/android/server/connectivity/MultipathPolicyTracker;)Landroid/app/usage/NetworkStatsManager;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/connectivity/MultipathPolicyTracker;
 
     .line 93
-    iget-object p0, p0, Lcom/android/server/connectivity/MultipathPolicyTracker;->mStatsManager:Landroid/app/usage/NetworkStatsManager;
+    iget-object v0, p0, Lcom/android/server/connectivity/MultipathPolicyTracker;->mStatsManager:Landroid/app/usage/NetworkStatsManager;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$1100(Lcom/android/server/connectivity/MultipathPolicyTracker;)Ljava/util/concurrent/ConcurrentHashMap;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/connectivity/MultipathPolicyTracker;
 
     .line 93
-    iget-object p0, p0, Lcom/android/server/connectivity/MultipathPolicyTracker;->mMultipathTrackers:Ljava/util/concurrent/ConcurrentHashMap;
+    iget-object v0, p0, Lcom/android/server/connectivity/MultipathPolicyTracker;->mMultipathTrackers:Ljava/util/concurrent/ConcurrentHashMap;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$1200(Lcom/android/server/connectivity/MultipathPolicyTracker;)V
     .registers 1
+    .param p0, "x0"  # Lcom/android/server/connectivity/MultipathPolicyTracker;
 
     .line 93
     invoke-direct {p0}, Lcom/android/server/connectivity/MultipathPolicyTracker;->updateAllMultipathBudgets()V
@@ -189,12 +198,13 @@
 .end method
 
 .method static synthetic access$300(Lcom/android/server/connectivity/MultipathPolicyTracker;)Ljava/time/Clock;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/connectivity/MultipathPolicyTracker;
 
     .line 93
-    iget-object p0, p0, Lcom/android/server/connectivity/MultipathPolicyTracker;->mClock:Ljava/time/Clock;
+    iget-object v0, p0, Lcom/android/server/connectivity/MultipathPolicyTracker;->mClock:Ljava/time/Clock;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$400()Ljava/lang/String;
@@ -207,38 +217,44 @@
 .end method
 
 .method static synthetic access$500(Lcom/android/server/connectivity/MultipathPolicyTracker;)Landroid/net/NetworkPolicyManager;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/connectivity/MultipathPolicyTracker;
 
     .line 93
-    iget-object p0, p0, Lcom/android/server/connectivity/MultipathPolicyTracker;->mNPM:Landroid/net/NetworkPolicyManager;
+    iget-object v0, p0, Lcom/android/server/connectivity/MultipathPolicyTracker;->mNPM:Landroid/net/NetworkPolicyManager;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$600(Landroid/net/NetworkPolicy;J)J
-    .registers 3
+    .registers 5
+    .param p0, "x0"  # Landroid/net/NetworkPolicy;
+    .param p1, "x1"  # J
 
     .line 93
     invoke-static {p0, p1, p2}, Lcom/android/server/connectivity/MultipathPolicyTracker;->getActiveWarning(Landroid/net/NetworkPolicy;J)J
 
-    move-result-wide p0
+    move-result-wide v0
 
-    return-wide p0
+    return-wide v0
 .end method
 
 .method static synthetic access$700(Landroid/net/NetworkPolicy;J)J
-    .registers 3
+    .registers 5
+    .param p0, "x0"  # Landroid/net/NetworkPolicy;
+    .param p1, "x1"  # J
 
     .line 93
     invoke-static {p0, p1, p2}, Lcom/android/server/connectivity/MultipathPolicyTracker;->getActiveLimit(Landroid/net/NetworkPolicy;J)J
 
-    move-result-wide p0
+    move-result-wide v0
 
-    return-wide p0
+    return-wide v0
 .end method
 
 .method static synthetic access$800(Lcom/android/server/connectivity/MultipathPolicyTracker;)J
     .registers 3
+    .param p0, "x0"  # Lcom/android/server/connectivity/MultipathPolicyTracker;
 
     .line 93
     invoke-direct {p0}, Lcom/android/server/connectivity/MultipathPolicyTracker;->getDefaultDailyMultipathQuotaBytes()J
@@ -249,64 +265,69 @@
 .end method
 
 .method static synthetic access$900(Lcom/android/server/connectivity/MultipathPolicyTracker;)Landroid/os/Handler;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/connectivity/MultipathPolicyTracker;
 
     .line 93
-    iget-object p0, p0, Lcom/android/server/connectivity/MultipathPolicyTracker;->mHandler:Landroid/os/Handler;
+    iget-object v0, p0, Lcom/android/server/connectivity/MultipathPolicyTracker;->mHandler:Landroid/os/Handler;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method private static getActiveLimit(Landroid/net/NetworkPolicy;J)J
     .registers 5
+    .param p0, "policy"  # Landroid/net/NetworkPolicy;
+    .param p1, "cycleStart"  # J
 
     .line 418
     iget-wide v0, p0, Landroid/net/NetworkPolicy;->lastLimitSnooze:J
 
-    cmp-long p1, v0, p1
+    cmp-long v0, v0, p1
 
-    if-gez p1, :cond_9
+    if-gez v0, :cond_9
 
     .line 419
-    iget-wide p0, p0, Landroid/net/NetworkPolicy;->limitBytes:J
+    iget-wide v0, p0, Landroid/net/NetworkPolicy;->limitBytes:J
 
     goto :goto_b
 
     .line 420
     :cond_9
-    const-wide/16 p0, -0x1
+    const-wide/16 v0, -0x1
 
     .line 418
     :goto_b
-    return-wide p0
+    return-wide v0
 .end method
 
 .method private static getActiveWarning(Landroid/net/NetworkPolicy;J)J
     .registers 5
+    .param p0, "policy"  # Landroid/net/NetworkPolicy;
+    .param p1, "cycleStart"  # J
 
     .line 412
     iget-wide v0, p0, Landroid/net/NetworkPolicy;->lastWarningSnooze:J
 
-    cmp-long p1, v0, p1
+    cmp-long v0, v0, p1
 
-    if-gez p1, :cond_9
+    if-gez v0, :cond_9
 
     .line 413
-    iget-wide p0, p0, Landroid/net/NetworkPolicy;->warningBytes:J
+    iget-wide v0, p0, Landroid/net/NetworkPolicy;->warningBytes:J
 
     goto :goto_b
 
     .line 414
     :cond_9
-    const-wide/16 p0, -0x1
+    const-wide/16 v0, -0x1
 
     .line 412
     :goto_b
-    return-wide p0
+    return-wide v0
 .end method
 
 .method private getDefaultDailyMultipathQuotaBytes()J
-    .registers 3
+    .registers 4
 
     .line 429
     iget-object v0, p0, Lcom/android/server/connectivity/MultipathPolicyTracker;->mContext:Landroid/content/Context;
@@ -322,39 +343,40 @@
     move-result-object v0
 
     .line 431
+    .local v0, "setting":Ljava/lang/String;
     if-eqz v0, :cond_15
 
     .line 433
     :try_start_f
     invoke-static {v0}, Ljava/lang/Long;->parseLong(Ljava/lang/String;)J
 
-    move-result-wide v0
+    move-result-wide v1
     :try_end_13
     .catch Ljava/lang/NumberFormatException; {:try_start_f .. :try_end_13} :catch_14
 
-    return-wide v0
+    return-wide v1
 
     .line 434
     :catch_14
-    move-exception v0
+    move-exception v1
 
     .line 439
     :cond_15
-    iget-object v0, p0, Lcom/android/server/connectivity/MultipathPolicyTracker;->mContext:Landroid/content/Context;
+    iget-object v1, p0, Lcom/android/server/connectivity/MultipathPolicyTracker;->mContext:Landroid/content/Context;
 
-    invoke-virtual {v0}, Landroid/content/Context;->getResources()Landroid/content/res/Resources;
+    invoke-virtual {v1}, Landroid/content/Context;->getResources()Landroid/content/res/Resources;
 
-    move-result-object v0
+    move-result-object v1
 
-    const v1, 0x10e0085
+    const v2, 0x10e0083
 
-    invoke-virtual {v0, v1}, Landroid/content/res/Resources;->getInteger(I)I
+    invoke-virtual {v1, v2}, Landroid/content/res/Resources;->getInteger(I)I
 
-    move-result v0
+    move-result v1
 
-    int-to-long v0, v0
+    int-to-long v1, v1
 
-    return-wide v0
+    return-wide v1
 .end method
 
 .method private maybeUnregisterTrackMobileCallback()V
@@ -429,6 +451,7 @@
     move-result-object v0
 
     .line 452
+    .local v0, "request":Landroid/net/NetworkRequest;
     new-instance v1, Lcom/android/server/connectivity/MultipathPolicyTracker$1;
 
     invoke-direct {v1, p0}, Lcom/android/server/connectivity/MultipathPolicyTracker$1;-><init>(Lcom/android/server/connectivity/MultipathPolicyTracker;)V
@@ -490,9 +513,11 @@
     check-cast v1, Lcom/android/server/connectivity/MultipathPolicyTracker$MultipathTracker;
 
     .line 489
+    .local v1, "t":Lcom/android/server/connectivity/MultipathPolicyTracker$MultipathTracker;
     invoke-virtual {v1}, Lcom/android/server/connectivity/MultipathPolicyTracker$MultipathTracker;->updateMultipathBudget()V
 
     .line 490
+    .end local v1  # "t":Lcom/android/server/connectivity/MultipathPolicyTracker$MultipathTracker;
     goto :goto_a
 
     .line 491
@@ -503,7 +528,8 @@
 
 # virtual methods
 .method public dump(Lcom/android/internal/util/IndentingPrintWriter;)V
-    .registers 8
+    .registers 9
+    .param p1, "pw"  # Lcom/android/internal/util/IndentingPrintWriter;
 
     .line 546
     const-string v0, "MultipathPolicyTracker:"
@@ -538,6 +564,7 @@
     check-cast v1, Lcom/android/server/connectivity/MultipathPolicyTracker$MultipathTracker;
 
     .line 549
+    .local v1, "t":Lcom/android/server/connectivity/MultipathPolicyTracker$MultipathTracker;
     const/4 v2, 0x4
 
     new-array v2, v2, [Ljava/lang/Object;
@@ -580,27 +607,28 @@
     .line 552
     invoke-virtual {v1}, Lcom/android/server/connectivity/MultipathPolicyTracker$MultipathTracker;->getMultipathPreference()I
 
-    move-result v1
+    move-result v5
 
     .line 551
-    const-string v5, "MULTIPATH_PREFERENCE_"
+    const-string v6, "MULTIPATH_PREFERENCE_"
 
-    invoke-static {v4, v5, v1}, Landroid/util/DebugUtils;->flagsToString(Ljava/lang/Class;Ljava/lang/String;I)Ljava/lang/String;
+    invoke-static {v4, v6, v5}, Landroid/util/DebugUtils;->flagsToString(Ljava/lang/Class;Ljava/lang/String;I)Ljava/lang/String;
 
-    move-result-object v1
+    move-result-object v4
 
-    aput-object v1, v2, v3
+    aput-object v4, v2, v3
 
     .line 549
-    const-string v1, "Network %s: quota %d, budget %d. Preference: %s"
+    const-string v3, "Network %s: quota %d, budget %d. Preference: %s"
 
-    invoke-static {v1, v2}, Ljava/lang/String;->format(Ljava/lang/String;[Ljava/lang/Object;)Ljava/lang/String;
+    invoke-static {v3, v2}, Ljava/lang/String;->format(Ljava/lang/String;[Ljava/lang/Object;)Ljava/lang/String;
 
-    move-result-object v1
+    move-result-object v2
 
-    invoke-virtual {p1, v1}, Lcom/android/internal/util/IndentingPrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {p1, v2}, Lcom/android/internal/util/IndentingPrintWriter;->println(Ljava/lang/String;)V
 
     .line 553
+    .end local v1  # "t":Lcom/android/server/connectivity/MultipathPolicyTracker$MultipathTracker;
     goto :goto_12
 
     .line 554
@@ -613,6 +641,7 @@
 
 .method public getMultipathPreference(Landroid/net/Network;)Ljava/lang/Integer;
     .registers 4
+    .param p1, "network"  # Landroid/net/Network;
 
     .line 175
     const/4 v0, 0x0
@@ -628,23 +657,24 @@
 
     invoke-virtual {v1, p1}, Ljava/util/concurrent/ConcurrentHashMap;->get(Ljava/lang/Object;)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v1
 
-    check-cast p1, Lcom/android/server/connectivity/MultipathPolicyTracker$MultipathTracker;
+    check-cast v1, Lcom/android/server/connectivity/MultipathPolicyTracker$MultipathTracker;
 
     .line 179
-    if-eqz p1, :cond_17
+    .local v1, "t":Lcom/android/server/connectivity/MultipathPolicyTracker$MultipathTracker;
+    if-eqz v1, :cond_17
 
     .line 180
-    invoke-virtual {p1}, Lcom/android/server/connectivity/MultipathPolicyTracker$MultipathTracker;->getMultipathPreference()I
+    invoke-virtual {v1}, Lcom/android/server/connectivity/MultipathPolicyTracker$MultipathTracker;->getMultipathPreference()I
 
-    move-result p1
+    move-result v0
 
-    invoke-static {p1}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
+    invoke-static {v0}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
 
-    move-result-object p1
+    move-result-object v0
 
-    return-object p1
+    return-object v0
 
     .line 182
     :cond_17
@@ -685,9 +715,11 @@
     check-cast v1, Lcom/android/server/connectivity/MultipathPolicyTracker$MultipathTracker;
 
     .line 166
+    .local v1, "t":Lcom/android/server/connectivity/MultipathPolicyTracker$MultipathTracker;
     invoke-virtual {v1}, Lcom/android/server/connectivity/MultipathPolicyTracker$MultipathTracker;->shutdown()V
 
     .line 167
+    .end local v1  # "t":Lcom/android/server/connectivity/MultipathPolicyTracker$MultipathTracker;
     goto :goto_10
 
     .line 168
@@ -715,7 +747,7 @@
 .end method
 
 .method public start()V
-    .registers 11
+    .registers 9
 
     .line 146
     iget-object v0, p0, Lcom/android/server/connectivity/MultipathPolicyTracker;->mContext:Landroid/content/Context;
@@ -773,6 +805,7 @@
     move-result-object v0
 
     .line 154
+    .local v0, "defaultSettingUri":Landroid/net/Uri;
     iget-object v1, p0, Lcom/android/server/connectivity/MultipathPolicyTracker;->mResolver:Landroid/content/ContentResolver;
 
     iget-object v2, p0, Lcom/android/server/connectivity/MultipathPolicyTracker;->mSettingsObserver:Landroid/database/ContentObserver;
@@ -782,27 +815,30 @@
     invoke-virtual {v1, v0, v3, v2}, Landroid/content/ContentResolver;->registerContentObserver(Landroid/net/Uri;ZLandroid/database/ContentObserver;)V
 
     .line 156
-    new-instance v7, Landroid/content/IntentFilter;
+    new-instance v1, Landroid/content/IntentFilter;
 
-    invoke-direct {v7}, Landroid/content/IntentFilter;-><init>()V
+    invoke-direct {v1}, Landroid/content/IntentFilter;-><init>()V
 
     .line 157
-    const-string v0, "android.intent.action.CONFIGURATION_CHANGED"
+    .local v1, "intentFilter":Landroid/content/IntentFilter;
+    const-string v2, "android.intent.action.CONFIGURATION_CHANGED"
 
-    invoke-virtual {v7, v0}, Landroid/content/IntentFilter;->addAction(Ljava/lang/String;)V
+    invoke-virtual {v1, v2}, Landroid/content/IntentFilter;->addAction(Ljava/lang/String;)V
 
     .line 158
-    iget-object v4, p0, Lcom/android/server/connectivity/MultipathPolicyTracker;->mContext:Landroid/content/Context;
+    iget-object v2, p0, Lcom/android/server/connectivity/MultipathPolicyTracker;->mContext:Landroid/content/Context;
 
-    iget-object v5, p0, Lcom/android/server/connectivity/MultipathPolicyTracker;->mConfigChangeReceiver:Lcom/android/server/connectivity/MultipathPolicyTracker$ConfigChangeReceiver;
+    iget-object v3, p0, Lcom/android/server/connectivity/MultipathPolicyTracker;->mConfigChangeReceiver:Lcom/android/server/connectivity/MultipathPolicyTracker$ConfigChangeReceiver;
 
-    sget-object v6, Landroid/os/UserHandle;->ALL:Landroid/os/UserHandle;
+    sget-object v4, Landroid/os/UserHandle;->ALL:Landroid/os/UserHandle;
 
-    iget-object v9, p0, Lcom/android/server/connectivity/MultipathPolicyTracker;->mHandler:Landroid/os/Handler;
+    iget-object v7, p0, Lcom/android/server/connectivity/MultipathPolicyTracker;->mHandler:Landroid/os/Handler;
 
-    const/4 v8, 0x0
+    const/4 v6, 0x0
 
-    invoke-virtual/range {v4 .. v9}, Landroid/content/Context;->registerReceiverAsUser(Landroid/content/BroadcastReceiver;Landroid/os/UserHandle;Landroid/content/IntentFilter;Ljava/lang/String;Landroid/os/Handler;)Landroid/content/Intent;
+    move-object v5, v1
+
+    invoke-virtual/range {v2 .. v7}, Landroid/content/Context;->registerReceiverAsUser(Landroid/content/BroadcastReceiver;Landroid/os/UserHandle;Landroid/content/IntentFilter;Ljava/lang/String;Landroid/os/Handler;)Landroid/content/Intent;
 
     .line 160
     return-void

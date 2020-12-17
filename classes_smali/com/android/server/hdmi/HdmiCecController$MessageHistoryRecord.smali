@@ -27,6 +27,8 @@
 # direct methods
 .method public constructor <init>(Lcom/android/server/hdmi/HdmiCecController;ZLcom/android/server/hdmi/HdmiCecMessage;)V
     .registers 6
+    .param p2, "isReceived"  # Z
+    .param p3, "message"  # Lcom/android/server/hdmi/HdmiCecMessage;
 
     .line 798
     iput-object p1, p0, Lcom/android/server/hdmi/HdmiCecController$MessageHistoryRecord;->this$0:Lcom/android/server/hdmi/HdmiCecController;
@@ -54,6 +56,8 @@
 # virtual methods
 .method dump(Lcom/android/internal/util/IndentingPrintWriter;Ljava/text/SimpleDateFormat;)V
     .registers 6
+    .param p1, "pw"  # Lcom/android/internal/util/IndentingPrintWriter;
+    .param p2, "sdf"  # Ljava/text/SimpleDateFormat;
 
     .line 805
     iget-boolean v0, p0, Lcom/android/server/hdmi/HdmiCecController$MessageHistoryRecord;->mIsReceived:Z
@@ -84,19 +88,19 @@
 
     invoke-virtual {p2, v0}, Ljava/text/SimpleDateFormat;->format(Ljava/util/Date;)Ljava/lang/String;
 
-    move-result-object p2
+    move-result-object v0
 
-    invoke-virtual {p1, p2}, Lcom/android/internal/util/IndentingPrintWriter;->print(Ljava/lang/String;)V
+    invoke-virtual {p1, v0}, Lcom/android/internal/util/IndentingPrintWriter;->print(Ljava/lang/String;)V
 
     .line 808
-    const-string p2, " message="
+    const-string v0, " message="
 
-    invoke-virtual {p1, p2}, Lcom/android/internal/util/IndentingPrintWriter;->print(Ljava/lang/String;)V
+    invoke-virtual {p1, v0}, Lcom/android/internal/util/IndentingPrintWriter;->print(Ljava/lang/String;)V
 
     .line 809
-    iget-object p2, p0, Lcom/android/server/hdmi/HdmiCecController$MessageHistoryRecord;->mMessage:Lcom/android/server/hdmi/HdmiCecMessage;
+    iget-object v0, p0, Lcom/android/server/hdmi/HdmiCecController$MessageHistoryRecord;->mMessage:Lcom/android/server/hdmi/HdmiCecMessage;
 
-    invoke-virtual {p1, p2}, Lcom/android/internal/util/IndentingPrintWriter;->println(Ljava/lang/Object;)V
+    invoke-virtual {p1, v0}, Lcom/android/internal/util/IndentingPrintWriter;->println(Ljava/lang/Object;)V
 
     .line 810
     return-void

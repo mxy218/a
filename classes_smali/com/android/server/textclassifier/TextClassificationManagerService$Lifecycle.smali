@@ -21,6 +21,7 @@
 # direct methods
 .method public constructor <init>(Landroid/content/Context;)V
     .registers 4
+    .param p1, "context"  # Landroid/content/Context;
 
     .line 75
     invoke-direct {p0, p1}, Lcom/android/server/SystemService;-><init>(Landroid/content/Context;)V
@@ -40,6 +41,7 @@
 
 .method private processAnyPendingWork(I)V
     .registers 4
+    .param p1, "userId"  # I
 
     .line 102
     iget-object v0, p0, Lcom/android/server/textclassifier/TextClassificationManagerService$Lifecycle;->mManagerService:Lcom/android/server/textclassifier/TextClassificationManagerService;
@@ -56,9 +58,9 @@
 
     invoke-static {v1, p1}, Lcom/android/server/textclassifier/TextClassificationManagerService;->access$200(Lcom/android/server/textclassifier/TextClassificationManagerService;I)Lcom/android/server/textclassifier/TextClassificationManagerService$UserState;
 
-    move-result-object p1
+    move-result-object v1
 
-    invoke-static {p1}, Lcom/android/server/textclassifier/TextClassificationManagerService$UserState;->access$300(Lcom/android/server/textclassifier/TextClassificationManagerService$UserState;)Z
+    invoke-static {v1}, Lcom/android/server/textclassifier/TextClassificationManagerService$UserState;->access$300(Lcom/android/server/textclassifier/TextClassificationManagerService$UserState;)Z
 
     .line 104
     monitor-exit v0
@@ -68,13 +70,13 @@
 
     .line 104
     :catchall_12
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_14
     .catchall {:try_start_7 .. :try_end_14} :catchall_12
 
-    throw p1
+    throw v1
 .end method
 
 
@@ -100,6 +102,7 @@
     move-exception v0
 
     .line 86
+    .local v0, "t":Ljava/lang/Throwable;
     const-string v1, "TextClassificationManagerService"
 
     const-string v2, "Could not start the TextClassificationManagerService."
@@ -107,12 +110,14 @@
     invoke-static {v1, v2, v0}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
     .line 88
+    .end local v0  # "t":Ljava/lang/Throwable;
     :goto_11
     return-void
 .end method
 
 .method public onStartUser(I)V
     .registers 2
+    .param p1, "userId"  # I
 
     .line 92
     invoke-direct {p0, p1}, Lcom/android/server/textclassifier/TextClassificationManagerService$Lifecycle;->processAnyPendingWork(I)V
@@ -122,7 +127,8 @@
 .end method
 
 .method public onStopUser(I)V
-    .registers 4
+    .registers 5
+    .param p1, "userId"  # I
 
     .line 109
     iget-object v0, p0, Lcom/android/server/textclassifier/TextClassificationManagerService$Lifecycle;->mManagerService:Lcom/android/server/textclassifier/TextClassificationManagerService;
@@ -142,21 +148,23 @@
     move-result-object v1
 
     .line 111
+    .local v1, "userState":Lcom/android/server/textclassifier/TextClassificationManagerService$UserState;
     if-eqz v1, :cond_1b
 
     .line 112
-    iget-object v1, v1, Lcom/android/server/textclassifier/TextClassificationManagerService$UserState;->mConnection:Lcom/android/server/textclassifier/TextClassificationManagerService$UserState$TextClassifierServiceConnection;
+    iget-object v2, v1, Lcom/android/server/textclassifier/TextClassificationManagerService$UserState;->mConnection:Lcom/android/server/textclassifier/TextClassificationManagerService$UserState$TextClassifierServiceConnection;
 
-    invoke-virtual {v1}, Lcom/android/server/textclassifier/TextClassificationManagerService$UserState$TextClassifierServiceConnection;->cleanupService()V
+    invoke-virtual {v2}, Lcom/android/server/textclassifier/TextClassificationManagerService$UserState$TextClassifierServiceConnection;->cleanupService()V
 
     .line 113
-    iget-object v1, p0, Lcom/android/server/textclassifier/TextClassificationManagerService$Lifecycle;->mManagerService:Lcom/android/server/textclassifier/TextClassificationManagerService;
+    iget-object v2, p0, Lcom/android/server/textclassifier/TextClassificationManagerService$Lifecycle;->mManagerService:Lcom/android/server/textclassifier/TextClassificationManagerService;
 
-    iget-object v1, v1, Lcom/android/server/textclassifier/TextClassificationManagerService;->mUserStates:Landroid/util/SparseArray;
+    iget-object v2, v2, Lcom/android/server/textclassifier/TextClassificationManagerService;->mUserStates:Landroid/util/SparseArray;
 
-    invoke-virtual {v1, p1}, Landroid/util/SparseArray;->remove(I)V
+    invoke-virtual {v2, p1}, Landroid/util/SparseArray;->remove(I)V
 
     .line 115
+    .end local v1  # "userState":Lcom/android/server/textclassifier/TextClassificationManagerService$UserState;
     :cond_1b
     monitor-exit v0
 
@@ -165,17 +173,18 @@
 
     .line 115
     :catchall_1d
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_1f
     .catchall {:try_start_7 .. :try_end_1f} :catchall_1d
 
-    throw p1
+    throw v1
 .end method
 
 .method public onUnlockUser(I)V
     .registers 2
+    .param p1, "userId"  # I
 
     .line 98
     invoke-direct {p0, p1}, Lcom/android/server/textclassifier/TextClassificationManagerService$Lifecycle;->processAnyPendingWork(I)V

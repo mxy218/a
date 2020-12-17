@@ -25,6 +25,7 @@
     .registers 1
 
     .line 33
+    .local p0, "this":Lcom/android/server/ExtconStateObserver;, "Lcom/android/server/ExtconStateObserver<TS;>;"
     invoke-direct {p0}, Lcom/android/server/ExtconUEventObserver;-><init>()V
 
     return-void
@@ -34,8 +35,11 @@
 # virtual methods
 .method public onUEvent(Lcom/android/server/ExtconUEventObserver$ExtconInfo;Landroid/os/UEventObserver$UEvent;)V
     .registers 5
+    .param p1, "extconInfo"  # Lcom/android/server/ExtconUEventObserver$ExtconInfo;
+    .param p2, "event"  # Landroid/os/UEventObserver$UEvent;
 
     .line 55
+    .local p0, "this":Lcom/android/server/ExtconStateObserver;, "Lcom/android/server/ExtconStateObserver<TS;>;"
     const-string v0, "NAME"
 
     invoke-virtual {p2, v0}, Landroid/os/UEventObserver$UEvent;->get(Ljava/lang/String;)Ljava/lang/String;
@@ -43,21 +47,23 @@
     move-result-object v0
 
     .line 56
+    .local v0, "name":Ljava/lang/String;
     const-string v1, "STATE"
 
     invoke-virtual {p2, v1}, Landroid/os/UEventObserver$UEvent;->get(Ljava/lang/String;)Ljava/lang/String;
 
-    move-result-object p2
+    move-result-object v1
 
-    invoke-virtual {p0, p1, p2}, Lcom/android/server/ExtconStateObserver;->parseState(Lcom/android/server/ExtconUEventObserver$ExtconInfo;Ljava/lang/String;)Ljava/lang/Object;
+    invoke-virtual {p0, p1, v1}, Lcom/android/server/ExtconStateObserver;->parseState(Lcom/android/server/ExtconUEventObserver$ExtconInfo;Ljava/lang/String;)Ljava/lang/Object;
 
-    move-result-object p2
+    move-result-object v1
 
     .line 57
-    if-eqz p2, :cond_15
+    .local v1, "state":Ljava/lang/Object;, "TS;"
+    if-eqz v1, :cond_15
 
     .line 58
-    invoke-virtual {p0, p1, v0, p2}, Lcom/android/server/ExtconStateObserver;->updateState(Lcom/android/server/ExtconUEventObserver$ExtconInfo;Ljava/lang/String;Ljava/lang/Object;)V
+    invoke-virtual {p0, p1, v0, v1}, Lcom/android/server/ExtconStateObserver;->updateState(Lcom/android/server/ExtconUEventObserver$ExtconInfo;Ljava/lang/String;Ljava/lang/Object;)V
 
     .line 60
     :cond_15
@@ -76,7 +82,8 @@
 .end method
 
 .method public parseStateFromFile(Lcom/android/server/ExtconUEventObserver$ExtconInfo;)Ljava/lang/Object;
-    .registers 5
+    .registers 6
+    .param p1, "extconInfo"  # Lcom/android/server/ExtconUEventObserver$ExtconInfo;
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(",
@@ -92,34 +99,36 @@
     .end annotation
 
     .line 46
+    .local p0, "this":Lcom/android/server/ExtconStateObserver;, "Lcom/android/server/ExtconStateObserver<TS;>;"
     invoke-virtual {p1}, Lcom/android/server/ExtconUEventObserver$ExtconInfo;->getStatePath()Ljava/lang/String;
 
     move-result-object v0
 
     .line 47
+    .local v0, "statePath":Ljava/lang/String;
     new-instance v1, Ljava/io/File;
 
     invoke-direct {v1, v0}, Ljava/io/File;-><init>(Ljava/lang/String;)V
 
     .line 49
-    const/4 v0, 0x0
-
     const/4 v2, 0x0
 
-    invoke-static {v1, v0, v2}, Landroid/os/FileUtils;->readTextFile(Ljava/io/File;ILjava/lang/String;)Ljava/lang/String;
+    const/4 v3, 0x0
 
-    move-result-object v0
+    invoke-static {v1, v2, v3}, Landroid/os/FileUtils;->readTextFile(Ljava/io/File;ILjava/lang/String;)Ljava/lang/String;
 
-    invoke-virtual {v0}, Ljava/lang/String;->trim()Ljava/lang/String;
+    move-result-object v1
 
-    move-result-object v0
+    invoke-virtual {v1}, Ljava/lang/String;->trim()Ljava/lang/String;
+
+    move-result-object v1
 
     .line 47
-    invoke-virtual {p0, p1, v0}, Lcom/android/server/ExtconStateObserver;->parseState(Lcom/android/server/ExtconUEventObserver$ExtconInfo;Ljava/lang/String;)Ljava/lang/Object;
+    invoke-virtual {p0, p1, v1}, Lcom/android/server/ExtconStateObserver;->parseState(Lcom/android/server/ExtconUEventObserver$ExtconInfo;Ljava/lang/String;)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v1
 
-    return-object p1
+    return-object v1
 .end method
 
 .method public abstract updateState(Lcom/android/server/ExtconUEventObserver$ExtconInfo;Ljava/lang/String;Ljava/lang/Object;)V

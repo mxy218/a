@@ -21,8 +21,9 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/TelephonyRegistry;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/TelephonyRegistry;
 
-    .line 274
+    .line 288
     iput-object p1, p0, Lcom/android/server/TelephonyRegistry$1;->this$0:Lcom/android/server/TelephonyRegistry;
 
     invoke-direct {p0}, Landroid/os/Handler;-><init>()V
@@ -33,138 +34,242 @@
 
 # virtual methods
 .method public handleMessage(Landroid/os/Message;)V
-    .registers 8
+    .registers 9
+    .param p1, "msg"  # Landroid/os/Message;
 
-    .line 277
+    .line 291
     iget v0, p1, Landroid/os/Message;->what:I
 
     const/4 v1, 0x1
 
-    if-eq v0, v1, :cond_80
+    if-eq v0, v1, :cond_be
 
     const/4 v1, 0x2
 
     if-eq v0, v1, :cond_a
 
-    goto/16 :goto_9a
+    goto/16 :goto_f4
 
-    .line 288
+    .line 302
     :cond_a
     iget v0, p1, Landroid/os/Message;->arg1:I
 
-    .line 289
-    iget-object p1, p1, Landroid/os/Message;->obj:Ljava/lang/Object;
+    .line 303
+    .local v0, "newDefaultPhoneId":I
+    iget-object v1, p1, Landroid/os/Message;->obj:Ljava/lang/Object;
 
-    check-cast p1, Ljava/lang/Integer;
+    check-cast v1, Ljava/lang/Integer;
 
-    invoke-virtual {p1}, Ljava/lang/Integer;->intValue()I
+    invoke-virtual {v1}, Ljava/lang/Integer;->intValue()I
 
-    move-result p1
+    move-result v1
 
-    .line 299
-    iget-object v1, p0, Lcom/android/server/TelephonyRegistry$1;->this$0:Lcom/android/server/TelephonyRegistry;
+    .line 304
+    .local v1, "newDefaultSubId":I
+    invoke-static {}, Lcom/android/server/TelephonyRegistry;->access$000()Z
 
-    invoke-static {v1}, Lcom/android/server/TelephonyRegistry;->access$100(Lcom/android/server/TelephonyRegistry;)Ljava/util/ArrayList;
+    move-result v2
 
-    move-result-object v1
+    if-eqz v2, :cond_52
 
-    monitor-enter v1
+    .line 305
+    new-instance v2, Ljava/lang/StringBuilder;
 
-    .line 300
-    :try_start_1b
-    iget-object v2, p0, Lcom/android/server/TelephonyRegistry$1;->this$0:Lcom/android/server/TelephonyRegistry;
+    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
 
-    invoke-static {v2}, Lcom/android/server/TelephonyRegistry;->access$100(Lcom/android/server/TelephonyRegistry;)Ljava/util/ArrayList;
+    const-string v3, "MSG_UPDATE_DEFAULT_SUB:current mDefaultSubId="
 
-    move-result-object v2
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v2}, Ljava/util/ArrayList;->iterator()Ljava/util/Iterator;
+    iget-object v3, p0, Lcom/android/server/TelephonyRegistry$1;->this$0:Lcom/android/server/TelephonyRegistry;
 
-    move-result-object v2
-
-    :goto_25
-    invoke-interface {v2}, Ljava/util/Iterator;->hasNext()Z
+    invoke-static {v3}, Lcom/android/server/TelephonyRegistry;->access$300(Lcom/android/server/TelephonyRegistry;)I
 
     move-result v3
 
-    if-eqz v3, :cond_3e
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    invoke-interface {v2}, Ljava/util/Iterator;->next()Ljava/lang/Object;
+    const-string v3, " current mDefaultPhoneId="
+
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    iget-object v3, p0, Lcom/android/server/TelephonyRegistry$1;->this$0:Lcom/android/server/TelephonyRegistry;
+
+    .line 306
+    invoke-static {v3}, Lcom/android/server/TelephonyRegistry;->access$400(Lcom/android/server/TelephonyRegistry;)I
+
+    move-result v3
+
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+
+    const-string v3, " newDefaultSubId= "
+
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v2, v1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+
+    const-string v3, " newDefaultPhoneId="
+
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v2, v0}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v2
+
+    .line 305
+    invoke-static {v2}, Lcom/android/server/TelephonyRegistry;->access$100(Ljava/lang/String;)V
+
+    .line 313
+    :cond_52
+    iget-object v2, p0, Lcom/android/server/TelephonyRegistry$1;->this$0:Lcom/android/server/TelephonyRegistry;
+
+    invoke-static {v2}, Lcom/android/server/TelephonyRegistry;->access$500(Lcom/android/server/TelephonyRegistry;)Ljava/util/ArrayList;
+
+    move-result-object v2
+
+    monitor-enter v2
+
+    .line 314
+    :try_start_59
+    iget-object v3, p0, Lcom/android/server/TelephonyRegistry$1;->this$0:Lcom/android/server/TelephonyRegistry;
+
+    invoke-static {v3}, Lcom/android/server/TelephonyRegistry;->access$500(Lcom/android/server/TelephonyRegistry;)Ljava/util/ArrayList;
 
     move-result-object v3
 
-    check-cast v3, Lcom/android/server/TelephonyRegistry$Record;
+    invoke-virtual {v3}, Ljava/util/ArrayList;->iterator()Ljava/util/Iterator;
 
-    .line 301
-    iget v4, v3, Lcom/android/server/TelephonyRegistry$Record;->subId:I
+    move-result-object v3
 
-    const v5, 0x7fffffff
+    :goto_63
+    invoke-interface {v3}, Ljava/util/Iterator;->hasNext()Z
 
-    if-ne v4, v5, :cond_3d
+    move-result v4
 
-    .line 302
-    iget-object v4, p0, Lcom/android/server/TelephonyRegistry$1;->this$0:Lcom/android/server/TelephonyRegistry;
+    if-eqz v4, :cond_7c
 
-    invoke-static {v4, v3, v0}, Lcom/android/server/TelephonyRegistry;->access$200(Lcom/android/server/TelephonyRegistry;Lcom/android/server/TelephonyRegistry$Record;I)V
+    invoke-interface {v3}, Ljava/util/Iterator;->next()Ljava/lang/Object;
 
-    .line 304
-    :cond_3d
-    goto :goto_25
+    move-result-object v4
 
-    .line 305
-    :cond_3e
+    check-cast v4, Lcom/android/server/TelephonyRegistry$Record;
+
+    .line 315
+    .local v4, "r":Lcom/android/server/TelephonyRegistry$Record;
+    iget v5, v4, Lcom/android/server/TelephonyRegistry$Record;->subId:I
+
+    const v6, 0x7fffffff
+
+    if-ne v5, v6, :cond_7b
+
+    .line 316
+    iget-object v5, p0, Lcom/android/server/TelephonyRegistry$1;->this$0:Lcom/android/server/TelephonyRegistry;
+
+    invoke-static {v5, v4, v0}, Lcom/android/server/TelephonyRegistry;->access$600(Lcom/android/server/TelephonyRegistry;Lcom/android/server/TelephonyRegistry$Record;I)V
+
+    .line 318
+    .end local v4  # "r":Lcom/android/server/TelephonyRegistry$Record;
+    :cond_7b
+    goto :goto_63
+
+    .line 319
+    :cond_7c
+    iget-object v3, p0, Lcom/android/server/TelephonyRegistry$1;->this$0:Lcom/android/server/TelephonyRegistry;
+
+    invoke-static {v3}, Lcom/android/server/TelephonyRegistry;->access$700(Lcom/android/server/TelephonyRegistry;)V
+
+    .line 320
+    monitor-exit v2
+    :try_end_82
+    .catchall {:try_start_59 .. :try_end_82} :catchall_bb
+
+    .line 321
     iget-object v2, p0, Lcom/android/server/TelephonyRegistry$1;->this$0:Lcom/android/server/TelephonyRegistry;
 
-    invoke-static {v2}, Lcom/android/server/TelephonyRegistry;->access$300(Lcom/android/server/TelephonyRegistry;)V
+    invoke-static {v2, v1}, Lcom/android/server/TelephonyRegistry;->access$302(Lcom/android/server/TelephonyRegistry;I)I
 
-    .line 306
-    monitor-exit v1
-    :try_end_44
-    .catchall {:try_start_1b .. :try_end_44} :catchall_7d
+    .line 322
+    iget-object v2, p0, Lcom/android/server/TelephonyRegistry$1;->this$0:Lcom/android/server/TelephonyRegistry;
 
-    .line 307
-    iget-object v1, p0, Lcom/android/server/TelephonyRegistry$1;->this$0:Lcom/android/server/TelephonyRegistry;
+    invoke-static {v2, v0}, Lcom/android/server/TelephonyRegistry;->access$402(Lcom/android/server/TelephonyRegistry;I)I
 
-    invoke-static {v1, p1}, Lcom/android/server/TelephonyRegistry;->access$402(Lcom/android/server/TelephonyRegistry;I)I
+    .line 323
+    iget-object v2, p0, Lcom/android/server/TelephonyRegistry$1;->this$0:Lcom/android/server/TelephonyRegistry;
 
-    .line 308
-    iget-object p1, p0, Lcom/android/server/TelephonyRegistry$1;->this$0:Lcom/android/server/TelephonyRegistry;
+    invoke-static {v2}, Lcom/android/server/TelephonyRegistry;->access$800(Lcom/android/server/TelephonyRegistry;)Landroid/util/LocalLog;
 
-    invoke-static {p1, v0}, Lcom/android/server/TelephonyRegistry;->access$502(Lcom/android/server/TelephonyRegistry;I)I
+    move-result-object v2
 
-    .line 309
-    iget-object p1, p0, Lcom/android/server/TelephonyRegistry$1;->this$0:Lcom/android/server/TelephonyRegistry;
+    new-instance v3, Ljava/lang/StringBuilder;
 
-    invoke-static {p1}, Lcom/android/server/TelephonyRegistry;->access$600(Lcom/android/server/TelephonyRegistry;)Landroid/util/LocalLog;
+    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
 
-    move-result-object p1
+    const-string v4, "Default subscription updated: mDefaultPhoneId="
+
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    iget-object v4, p0, Lcom/android/server/TelephonyRegistry$1;->this$0:Lcom/android/server/TelephonyRegistry;
+
+    .line 324
+    invoke-static {v4}, Lcom/android/server/TelephonyRegistry;->access$400(Lcom/android/server/TelephonyRegistry;)I
+
+    move-result v4
+
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+
+    const-string v4, ", mDefaultSubId"
+
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    iget-object v4, p0, Lcom/android/server/TelephonyRegistry$1;->this$0:Lcom/android/server/TelephonyRegistry;
+
+    invoke-static {v4}, Lcom/android/server/TelephonyRegistry;->access$300(Lcom/android/server/TelephonyRegistry;)I
+
+    move-result v4
+
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v3
+
+    .line 323
+    invoke-virtual {v2, v3}, Landroid/util/LocalLog;->log(Ljava/lang/String;)V
+
+    goto :goto_f4
+
+    .line 320
+    :catchall_bb
+    move-exception v3
+
+    :try_start_bc
+    monitor-exit v2
+    :try_end_bd
+    .catchall {:try_start_bc .. :try_end_bd} :catchall_bb
+
+    throw v3
+
+    .line 293
+    .end local v0  # "newDefaultPhoneId":I
+    .end local v1  # "newDefaultSubId":I
+    :cond_be
+    invoke-static {}, Lcom/android/server/TelephonyRegistry;->access$000()Z
+
+    move-result v0
+
+    if-eqz v0, :cond_da
 
     new-instance v0, Ljava/lang/StringBuilder;
 
     invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v1, "Default subscription updated: mDefaultPhoneId="
+    const-string v1, "MSG_USER_SWITCHED userId="
 
     invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    iget-object v1, p0, Lcom/android/server/TelephonyRegistry$1;->this$0:Lcom/android/server/TelephonyRegistry;
-
-    .line 310
-    invoke-static {v1}, Lcom/android/server/TelephonyRegistry;->access$500(Lcom/android/server/TelephonyRegistry;)I
-
-    move-result v1
-
-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
-
-    const-string v1, ", mDefaultSubId"
-
-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    iget-object v1, p0, Lcom/android/server/TelephonyRegistry$1;->this$0:Lcom/android/server/TelephonyRegistry;
-
-    invoke-static {v1}, Lcom/android/server/TelephonyRegistry;->access$400(Lcom/android/server/TelephonyRegistry;)I
-
-    move-result v1
+    iget v1, p1, Landroid/os/Message;->arg1:I
 
     invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
@@ -172,61 +277,51 @@
 
     move-result-object v0
 
-    .line 309
-    invoke-virtual {p1, v0}, Landroid/util/LocalLog;->log(Ljava/lang/String;)V
+    invoke-static {v0}, Lcom/android/server/TelephonyRegistry;->access$100(Ljava/lang/String;)V
 
-    goto :goto_9a
-
-    .line 306
-    :catchall_7d
-    move-exception p1
-
-    :try_start_7e
-    monitor-exit v1
-    :try_end_7f
-    .catchall {:try_start_7e .. :try_end_7f} :catchall_7d
-
-    throw p1
-
-    .line 280
-    :cond_80
+    .line 294
+    :cond_da
     invoke-static {}, Landroid/telephony/TelephonyManager;->getDefault()Landroid/telephony/TelephonyManager;
 
-    move-result-object p1
+    move-result-object v0
 
-    invoke-virtual {p1}, Landroid/telephony/TelephonyManager;->getPhoneCount()I
+    invoke-virtual {v0}, Landroid/telephony/TelephonyManager;->getPhoneCount()I
 
-    move-result p1
+    move-result v0
 
-    .line 281
-    const/4 v0, 0x0
+    .line 295
+    .local v0, "numPhones":I
+    const/4 v1, 0x0
 
-    :goto_89
-    if-ge v0, p1, :cond_99
+    .local v1, "sub":I
+    :goto_e3
+    if-ge v1, v0, :cond_f3
 
-    .line 282
-    iget-object v1, p0, Lcom/android/server/TelephonyRegistry$1;->this$0:Lcom/android/server/TelephonyRegistry;
+    .line 296
+    iget-object v2, p0, Lcom/android/server/TelephonyRegistry$1;->this$0:Lcom/android/server/TelephonyRegistry;
 
-    .line 283
-    invoke-static {v1}, Lcom/android/server/TelephonyRegistry;->access$000(Lcom/android/server/TelephonyRegistry;)[Landroid/os/Bundle;
+    .line 297
+    invoke-static {v2}, Lcom/android/server/TelephonyRegistry;->access$200(Lcom/android/server/TelephonyRegistry;)[Landroid/os/Bundle;
 
-    move-result-object v2
+    move-result-object v3
 
-    aget-object v2, v2, v0
+    aget-object v3, v3, v1
 
-    .line 282
-    invoke-virtual {v1, v0, v2}, Lcom/android/server/TelephonyRegistry;->notifyCellLocationForSubscriber(ILandroid/os/Bundle;)V
+    .line 296
+    invoke-virtual {v2, v1, v3}, Lcom/android/server/TelephonyRegistry;->notifyCellLocationForSubscriber(ILandroid/os/Bundle;)V
 
-    .line 281
-    add-int/lit8 v0, v0, 0x1
+    .line 295
+    add-int/lit8 v1, v1, 0x1
 
-    goto :goto_89
+    goto :goto_e3
 
-    .line 285
-    :cond_99
+    .line 299
+    .end local v1  # "sub":I
+    :cond_f3
     nop
 
-    .line 313
-    :goto_9a
+    .line 327
+    .end local v0  # "numPhones":I
+    :goto_f4
     return-void
 .end method

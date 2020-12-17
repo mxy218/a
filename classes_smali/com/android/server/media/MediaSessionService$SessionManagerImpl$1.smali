@@ -26,8 +26,9 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/media/MediaSessionService$SessionManagerImpl;Lcom/android/server/media/MediaSessionService$FullUserRecord;)V
     .registers 3
+    .param p1, "this$1"  # Lcom/android/server/media/MediaSessionService$SessionManagerImpl;
 
-    .line 1333
+    .line 1343
     iput-object p1, p0, Lcom/android/server/media/MediaSessionService$SessionManagerImpl$1;->this$1:Lcom/android/server/media/MediaSessionService$SessionManagerImpl;
 
     iput-object p2, p0, Lcom/android/server/media/MediaSessionService$SessionManagerImpl$1;->val$user:Lcom/android/server/media/MediaSessionService$FullUserRecord;
@@ -42,7 +43,7 @@
 .method public binderDied()V
     .registers 4
 
-    .line 1336
+    .line 1346
     iget-object v0, p0, Lcom/android/server/media/MediaSessionService$SessionManagerImpl$1;->this$1:Lcom/android/server/media/MediaSessionService$SessionManagerImpl;
 
     iget-object v0, v0, Lcom/android/server/media/MediaSessionService$SessionManagerImpl;->this$0:Lcom/android/server/media/MediaSessionService;
@@ -53,7 +54,7 @@
 
     monitor-enter v0
 
-    .line 1337
+    .line 1347
     :try_start_9
     iget-object v1, p0, Lcom/android/server/media/MediaSessionService$SessionManagerImpl$1;->val$user:Lcom/android/server/media/MediaSessionService$FullUserRecord;
 
@@ -61,13 +62,13 @@
 
     invoke-static {v1, v2}, Lcom/android/server/media/MediaSessionService$FullUserRecord;->access$3002(Lcom/android/server/media/MediaSessionService$FullUserRecord;Landroid/media/session/ICallback;)Landroid/media/session/ICallback;
 
-    .line 1338
+    .line 1348
     monitor-exit v0
 
-    .line 1339
+    .line 1349
     return-void
 
-    .line 1338
+    .line 1348
     :catchall_11
     move-exception v1
 

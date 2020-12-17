@@ -14,6 +14,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/hdmi/HdmiCecLocalDevice;)V
     .registers 2
+    .param p1, "source"  # Lcom/android/server/hdmi/HdmiCecLocalDevice;
 
     .line 33
     invoke-direct {p0, p1}, Lcom/android/server/hdmi/HdmiCecFeatureAction;-><init>(Lcom/android/server/hdmi/HdmiCecLocalDevice;)V
@@ -44,7 +45,8 @@
 
 # virtual methods
 .method handleTimerEvent(I)V
-    .registers 3
+    .registers 4
+    .param p1, "state"  # I
 
     .line 64
     iget v0, p0, Lcom/android/server/hdmi/ArcTerminationActionFromAvr;->mState:I
@@ -56,11 +58,11 @@
 
     .line 68
     :cond_5
-    iget p1, p0, Lcom/android/server/hdmi/ArcTerminationActionFromAvr;->mState:I
+    iget v0, p0, Lcom/android/server/hdmi/ArcTerminationActionFromAvr;->mState:I
 
-    const/4 v0, 0x1
+    const/4 v1, 0x1
 
-    if-eq p1, v0, :cond_b
+    if-eq v0, v1, :cond_b
 
     goto :goto_e
 
@@ -74,19 +76,20 @@
 .end method
 
 .method public synthetic lambda$sendTerminateArc$0$ArcTerminationActionFromAvr(I)V
-    .registers 3
+    .registers 4
+    .param p1, "result"  # I
 
     .line 78
     if-eqz p1, :cond_d
 
     .line 79
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    new-array p1, p1, [Ljava/lang/Object;
+    new-array v0, v0, [Ljava/lang/Object;
 
-    const-string v0, "Terminate ARC was not successfully sent."
+    const-string v1, "Terminate ARC was not successfully sent."
 
-    invoke-static {v0, p1}, Lcom/android/server/hdmi/HdmiLogger;->debug(Ljava/lang/String;[Ljava/lang/Object;)V
+    invoke-static {v1, v0}, Lcom/android/server/hdmi/HdmiLogger;->debug(Ljava/lang/String;[Ljava/lang/Object;)V
 
     .line 80
     invoke-virtual {p0}, Lcom/android/server/hdmi/ArcTerminationActionFromAvr;->finish()V
@@ -97,7 +100,8 @@
 .end method
 
 .method processCommand(Lcom/android/server/hdmi/HdmiCecMessage;)Z
-    .registers 5
+    .registers 6
+    .param p1, "cmd"  # Lcom/android/server/hdmi/HdmiCecMessage;
 
     .line 46
     iget v0, p0, Lcom/android/server/hdmi/ArcTerminationActionFromAvr;->mState:I
@@ -115,55 +119,55 @@
     :cond_7
     invoke-virtual {p1}, Lcom/android/server/hdmi/HdmiCecMessage;->getOpcode()I
 
-    move-result p1
+    move-result v0
 
-    const/16 v0, 0xc2
+    const/16 v3, 0xc2
 
-    if-eq p1, v0, :cond_10
+    if-eq v0, v3, :cond_10
 
     .line 59
     return v2
 
     .line 51
     :cond_10
-    const/4 p1, 0x2
+    const/4 v0, 0x2
 
-    iput p1, p0, Lcom/android/server/hdmi/ArcTerminationActionFromAvr;->mState:I
+    iput v0, p0, Lcom/android/server/hdmi/ArcTerminationActionFromAvr;->mState:I
 
     .line 52
     invoke-virtual {p0}, Lcom/android/server/hdmi/ArcTerminationActionFromAvr;->audioSystem()Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;
 
-    move-result-object p1
+    move-result-object v0
 
-    invoke-virtual {p1, v2}, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->setArcStatus(Z)V
+    invoke-virtual {v0, v2}, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->setArcStatus(Z)V
 
     .line 53
     invoke-virtual {p0}, Lcom/android/server/hdmi/ArcTerminationActionFromAvr;->audioSystem()Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;
 
-    move-result-object p1
+    move-result-object v0
 
-    invoke-virtual {p1}, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->getLocalActivePort()I
+    invoke-virtual {v0}, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->getLocalActivePort()I
 
-    move-result p1
+    move-result v0
 
-    const/16 v0, 0x11
+    const/16 v2, 0x11
 
-    if-ne p1, v0, :cond_35
+    if-ne v0, v2, :cond_35
 
     .line 54
     invoke-virtual {p0}, Lcom/android/server/hdmi/ArcTerminationActionFromAvr;->audioSystem()Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;
 
-    move-result-object p1
+    move-result-object v0
 
     invoke-virtual {p0}, Lcom/android/server/hdmi/ArcTerminationActionFromAvr;->audioSystem()Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;
 
-    move-result-object v0
+    move-result-object v2
 
-    invoke-virtual {v0}, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->getRoutingPort()I
+    invoke-virtual {v2}, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->getRoutingPort()I
 
-    move-result v0
+    move-result v2
 
-    invoke-virtual {p1, v0}, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->routeToInputFromPortId(I)V
+    invoke-virtual {v0, v2}, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->routeToInputFromPortId(I)V
 
     .line 56
     :cond_35

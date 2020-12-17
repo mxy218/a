@@ -21,6 +21,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/LooperStatsService;)V
     .registers 3
+    .param p1, "service"  # Lcom/android/server/LooperStatsService;
 
     .line 217
     invoke-static {}, Lcom/android/internal/os/BackgroundThread;->getHandler()Landroid/os/Handler;
@@ -39,12 +40,15 @@
 
 # virtual methods
 .method public onChange(ZLandroid/net/Uri;I)V
-    .registers 4
+    .registers 5
+    .param p1, "selfChange"  # Z
+    .param p2, "uri"  # Landroid/net/Uri;
+    .param p3, "userId"  # I
 
     .line 223
-    iget-object p1, p0, Lcom/android/server/LooperStatsService$SettingsObserver;->mService:Lcom/android/server/LooperStatsService;
+    iget-object v0, p0, Lcom/android/server/LooperStatsService$SettingsObserver;->mService:Lcom/android/server/LooperStatsService;
 
-    invoke-static {p1}, Lcom/android/server/LooperStatsService;->access$200(Lcom/android/server/LooperStatsService;)V
+    invoke-static {v0}, Lcom/android/server/LooperStatsService;->access$200(Lcom/android/server/LooperStatsService;)V
 
     .line 224
     return-void

@@ -37,7 +37,12 @@
 
 # direct methods
 .method constructor <init>(Lcom/android/internal/util/FunctionalUtils$ThrowingRunnable;Lcom/android/internal/util/FunctionalUtils$ThrowingRunnable;Landroid/os/IBinder;Lcom/android/server/textclassifier/TextClassificationManagerService;Lcom/android/server/textclassifier/TextClassificationManagerService$UserState;)V
-    .registers 7
+    .registers 8
+    .param p1, "request"  # Lcom/android/internal/util/FunctionalUtils$ThrowingRunnable;
+    .param p2, "onServiceFailure"  # Lcom/android/internal/util/FunctionalUtils$ThrowingRunnable;
+    .param p3, "binder"  # Landroid/os/IBinder;
+    .param p4, "service"  # Lcom/android/server/textclassifier/TextClassificationManagerService;
+    .param p5, "owningUser"  # Lcom/android/server/textclassifier/TextClassificationManagerService$UserState;
 
     .line 401
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -48,29 +53,29 @@
     .line 403
     invoke-static {p1}, Lcom/android/internal/util/Preconditions;->checkNotNull(Ljava/lang/Object;)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v0
 
-    check-cast p1, Lcom/android/internal/util/FunctionalUtils$ThrowingRunnable;
+    check-cast v0, Lcom/android/internal/util/FunctionalUtils$ThrowingRunnable;
 
-    const-string v0, "handling pending request"
+    const-string v1, "handling pending request"
 
-    invoke-static {p1, v0}, Lcom/android/server/textclassifier/TextClassificationManagerService;->access$700(Lcom/android/internal/util/FunctionalUtils$ThrowingRunnable;Ljava/lang/String;)Ljava/lang/Runnable;
+    invoke-static {v0, v1}, Lcom/android/server/textclassifier/TextClassificationManagerService;->access$700(Lcom/android/internal/util/FunctionalUtils$ThrowingRunnable;Ljava/lang/String;)Ljava/lang/Runnable;
 
-    move-result-object p1
+    move-result-object v0
 
-    iput-object p1, p0, Lcom/android/server/textclassifier/TextClassificationManagerService$PendingRequest;->mRequest:Ljava/lang/Runnable;
+    iput-object v0, p0, Lcom/android/server/textclassifier/TextClassificationManagerService$PendingRequest;->mRequest:Ljava/lang/Runnable;
 
     .line 404
     nop
 
     .line 405
-    const-string/jumbo p1, "notifying callback of service failure"
+    const-string/jumbo v0, "notifying callback of service failure"
 
-    invoke-static {p2, p1}, Lcom/android/server/textclassifier/TextClassificationManagerService;->access$700(Lcom/android/internal/util/FunctionalUtils$ThrowingRunnable;Ljava/lang/String;)Ljava/lang/Runnable;
+    invoke-static {p2, v0}, Lcom/android/server/textclassifier/TextClassificationManagerService;->access$700(Lcom/android/internal/util/FunctionalUtils$ThrowingRunnable;Ljava/lang/String;)Ljava/lang/Runnable;
 
-    move-result-object p1
+    move-result-object v0
 
-    iput-object p1, p0, Lcom/android/server/textclassifier/TextClassificationManagerService$PendingRequest;->mOnServiceFailure:Ljava/lang/Runnable;
+    iput-object v0, p0, Lcom/android/server/textclassifier/TextClassificationManagerService$PendingRequest;->mOnServiceFailure:Ljava/lang/Runnable;
 
     .line 406
     iput-object p3, p0, Lcom/android/server/textclassifier/TextClassificationManagerService$PendingRequest;->mBinder:Landroid/os/IBinder;
@@ -82,15 +87,15 @@
     iput-object p5, p0, Lcom/android/server/textclassifier/TextClassificationManagerService$PendingRequest;->mOwningUser:Lcom/android/server/textclassifier/TextClassificationManagerService$UserState;
 
     .line 409
-    iget-object p1, p0, Lcom/android/server/textclassifier/TextClassificationManagerService$PendingRequest;->mBinder:Landroid/os/IBinder;
+    iget-object v0, p0, Lcom/android/server/textclassifier/TextClassificationManagerService$PendingRequest;->mBinder:Landroid/os/IBinder;
 
-    if-eqz p1, :cond_2f
+    if-eqz v0, :cond_2f
 
     .line 411
-    const/4 p2, 0x0
+    const/4 v1, 0x0
 
     :try_start_27
-    invoke-interface {p1, p0, p2}, Landroid/os/IBinder;->linkToDeath(Landroid/os/IBinder$DeathRecipient;I)V
+    invoke-interface {v0, p0, v1}, Landroid/os/IBinder;->linkToDeath(Landroid/os/IBinder$DeathRecipient;I)V
     :try_end_2a
     .catch Landroid/os/RemoteException; {:try_start_27 .. :try_end_2a} :catch_2b
 
@@ -99,42 +104,47 @@
 
     .line 412
     :catch_2b
-    move-exception p1
+    move-exception v0
 
     .line 413
-    invoke-virtual {p1}, Landroid/os/RemoteException;->printStackTrace()V
+    .local v0, "e":Landroid/os/RemoteException;
+    invoke-virtual {v0}, Landroid/os/RemoteException;->printStackTrace()V
 
     .line 416
+    .end local v0  # "e":Landroid/os/RemoteException;
     :cond_2f
     :goto_2f
     return-void
 .end method
 
 .method static synthetic access$1000(Lcom/android/server/textclassifier/TextClassificationManagerService$PendingRequest;)Ljava/lang/Runnable;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/textclassifier/TextClassificationManagerService$PendingRequest;
 
     .line 380
-    iget-object p0, p0, Lcom/android/server/textclassifier/TextClassificationManagerService$PendingRequest;->mOnServiceFailure:Ljava/lang/Runnable;
+    iget-object v0, p0, Lcom/android/server/textclassifier/TextClassificationManagerService$PendingRequest;->mOnServiceFailure:Ljava/lang/Runnable;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$1100(Lcom/android/server/textclassifier/TextClassificationManagerService$PendingRequest;)Landroid/os/IBinder;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/textclassifier/TextClassificationManagerService$PendingRequest;
 
     .line 380
-    iget-object p0, p0, Lcom/android/server/textclassifier/TextClassificationManagerService$PendingRequest;->mBinder:Landroid/os/IBinder;
+    iget-object v0, p0, Lcom/android/server/textclassifier/TextClassificationManagerService$PendingRequest;->mBinder:Landroid/os/IBinder;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$900(Lcom/android/server/textclassifier/TextClassificationManagerService$PendingRequest;)Ljava/lang/Runnable;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/textclassifier/TextClassificationManagerService$PendingRequest;
 
     .line 380
-    iget-object p0, p0, Lcom/android/server/textclassifier/TextClassificationManagerService$PendingRequest;->mRequest:Ljava/lang/Runnable;
+    iget-object v0, p0, Lcom/android/server/textclassifier/TextClassificationManagerService$PendingRequest;->mRequest:Ljava/lang/Runnable;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method private removeLocked()V

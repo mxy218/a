@@ -92,7 +92,10 @@
 .end method
 
 .method private constructor <init>(Landroid/content/Context;Ljava/lang/Object;Ljava/io/File;)V
-    .registers 6
+    .registers 10
+    .param p1, "context"  # Landroid/content/Context;
+    .param p2, "lock"  # Ljava/lang/Object;
+    .param p3, "dataDir"  # Ljava/io/File;
 
     .line 138
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -122,92 +125,94 @@
     iput-object p2, p0, Lcom/android/server/job/JobStore;->mLock:Ljava/lang/Object;
 
     .line 140
-    new-instance p2, Ljava/lang/Object;
+    new-instance v0, Ljava/lang/Object;
 
-    invoke-direct {p2}, Ljava/lang/Object;-><init>()V
+    invoke-direct {v0}, Ljava/lang/Object;-><init>()V
 
-    iput-object p2, p0, Lcom/android/server/job/JobStore;->mWriteScheduleLock:Ljava/lang/Object;
+    iput-object v0, p0, Lcom/android/server/job/JobStore;->mWriteScheduleLock:Ljava/lang/Object;
 
     .line 141
     iput-object p1, p0, Lcom/android/server/job/JobStore;->mContext:Landroid/content/Context;
 
     .line 143
-    new-instance p1, Ljava/io/File;
+    new-instance v0, Ljava/io/File;
 
-    const-string/jumbo p2, "system"
+    const-string/jumbo v1, "system"
 
-    invoke-direct {p1, p3, p2}, Ljava/io/File;-><init>(Ljava/io/File;Ljava/lang/String;)V
+    invoke-direct {v0, p3, v1}, Ljava/io/File;-><init>(Ljava/io/File;Ljava/lang/String;)V
 
     .line 144
-    new-instance p2, Ljava/io/File;
+    .local v0, "systemDir":Ljava/io/File;
+    new-instance v1, Ljava/io/File;
 
-    const-string p3, "job"
+    const-string/jumbo v2, "job"
 
-    invoke-direct {p2, p1, p3}, Ljava/io/File;-><init>(Ljava/io/File;Ljava/lang/String;)V
+    invoke-direct {v1, v0, v2}, Ljava/io/File;-><init>(Ljava/io/File;Ljava/lang/String;)V
 
     .line 145
-    invoke-virtual {p2}, Ljava/io/File;->mkdirs()Z
+    .local v1, "jobDir":Ljava/io/File;
+    invoke-virtual {v1}, Ljava/io/File;->mkdirs()Z
 
     .line 146
-    new-instance p1, Landroid/util/AtomicFile;
+    new-instance v2, Landroid/util/AtomicFile;
 
-    new-instance p3, Ljava/io/File;
+    new-instance v3, Ljava/io/File;
 
-    const-string v0, "jobs.xml"
+    const-string/jumbo v4, "jobs.xml"
 
-    invoke-direct {p3, p2, v0}, Ljava/io/File;-><init>(Ljava/io/File;Ljava/lang/String;)V
+    invoke-direct {v3, v1, v4}, Ljava/io/File;-><init>(Ljava/io/File;Ljava/lang/String;)V
 
-    const-string p2, "jobs"
+    const-string/jumbo v4, "jobs"
 
-    invoke-direct {p1, p3, p2}, Landroid/util/AtomicFile;-><init>(Ljava/io/File;Ljava/lang/String;)V
+    invoke-direct {v2, v3, v4}, Landroid/util/AtomicFile;-><init>(Ljava/io/File;Ljava/lang/String;)V
 
-    iput-object p1, p0, Lcom/android/server/job/JobStore;->mJobsFile:Landroid/util/AtomicFile;
+    iput-object v2, p0, Lcom/android/server/job/JobStore;->mJobsFile:Landroid/util/AtomicFile;
 
     .line 148
-    new-instance p1, Lcom/android/server/job/JobStore$JobSet;
+    new-instance v2, Lcom/android/server/job/JobStore$JobSet;
 
-    invoke-direct {p1}, Lcom/android/server/job/JobStore$JobSet;-><init>()V
+    invoke-direct {v2}, Lcom/android/server/job/JobStore$JobSet;-><init>()V
 
-    iput-object p1, p0, Lcom/android/server/job/JobStore;->mJobSet:Lcom/android/server/job/JobStore$JobSet;
+    iput-object v2, p0, Lcom/android/server/job/JobStore;->mJobSet:Lcom/android/server/job/JobStore$JobSet;
 
     .line 161
-    iget-object p1, p0, Lcom/android/server/job/JobStore;->mJobsFile:Landroid/util/AtomicFile;
+    iget-object v2, p0, Lcom/android/server/job/JobStore;->mJobsFile:Landroid/util/AtomicFile;
 
-    invoke-virtual {p1}, Landroid/util/AtomicFile;->getLastModifiedTime()J
+    invoke-virtual {v2}, Landroid/util/AtomicFile;->getLastModifiedTime()J
 
-    move-result-wide p1
+    move-result-wide v2
 
-    iput-wide p1, p0, Lcom/android/server/job/JobStore;->mXmlTimestamp:J
+    iput-wide v2, p0, Lcom/android/server/job/JobStore;->mXmlTimestamp:J
 
     .line 162
-    sget-object p1, Lcom/android/server/job/JobSchedulerService;->sSystemClock:Ljava/time/Clock;
+    sget-object v2, Lcom/android/server/job/JobSchedulerService;->sSystemClock:Ljava/time/Clock;
 
-    invoke-virtual {p1}, Ljava/time/Clock;->millis()J
+    invoke-virtual {v2}, Ljava/time/Clock;->millis()J
 
-    move-result-wide p1
+    move-result-wide v2
 
-    iget-wide v0, p0, Lcom/android/server/job/JobStore;->mXmlTimestamp:J
+    iget-wide v4, p0, Lcom/android/server/job/JobStore;->mXmlTimestamp:J
 
-    cmp-long p1, p1, v0
+    cmp-long v2, v2, v4
 
-    if-lez p1, :cond_61
+    if-lez v2, :cond_64
 
-    const/4 p1, 0x1
+    const/4 v2, 0x1
 
-    goto :goto_62
+    goto :goto_65
 
-    :cond_61
-    const/4 p1, 0x0
+    :cond_64
+    const/4 v2, 0x0
 
-    :goto_62
-    iput-boolean p1, p0, Lcom/android/server/job/JobStore;->mRtcGood:Z
+    :goto_65
+    iput-boolean v2, p0, Lcom/android/server/job/JobStore;->mRtcGood:Z
 
     .line 164
-    iget-object p1, p0, Lcom/android/server/job/JobStore;->mJobSet:Lcom/android/server/job/JobStore$JobSet;
+    iget-object v2, p0, Lcom/android/server/job/JobStore;->mJobSet:Lcom/android/server/job/JobStore$JobSet;
 
-    iget-boolean p2, p0, Lcom/android/server/job/JobStore;->mRtcGood:Z
+    iget-boolean v3, p0, Lcom/android/server/job/JobStore;->mRtcGood:Z
 
-    invoke-virtual {p0, p1, p2}, Lcom/android/server/job/JobStore;->readJobMapFromDisk(Lcom/android/server/job/JobStore$JobSet;Z)V
+    invoke-virtual {p0, v2, v3}, Lcom/android/server/job/JobStore;->readJobMapFromDisk(Lcom/android/server/job/JobStore$JobSet;Z)V
 
     .line 165
     return-void
@@ -215,6 +220,8 @@
 
 .method static synthetic access$002(Lcom/android/server/job/JobStore;Z)Z
     .registers 2
+    .param p0, "x0"  # Lcom/android/server/job/JobStore;
+    .param p1, "x1"  # Z
 
     .line 84
     iput-boolean p1, p0, Lcom/android/server/job/JobStore;->mWriteScheduled:Z
@@ -233,6 +240,8 @@
 
 .method static synthetic access$202(Lcom/android/server/job/JobStore;Z)Z
     .registers 2
+    .param p0, "x0"  # Lcom/android/server/job/JobStore;
+    .param p1, "x1"  # Z
 
     .line 84
     iput-boolean p1, p0, Lcom/android/server/job/JobStore;->mWriteInProgress:Z
@@ -241,47 +250,53 @@
 .end method
 
 .method static synthetic access$300(Lcom/android/server/job/controllers/JobStatus;)Z
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/job/controllers/JobStatus;
 
     .line 84
     invoke-static {p0}, Lcom/android/server/job/JobStore;->isSyncJob(Lcom/android/server/job/controllers/JobStatus;)Z
 
-    move-result p0
+    move-result v0
 
-    return p0
+    return v0
 .end method
 
 .method static synthetic access$400(Lcom/android/server/job/JobStore;)Landroid/util/AtomicFile;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/job/JobStore;
 
     .line 84
-    iget-object p0, p0, Lcom/android/server/job/JobStore;->mJobsFile:Landroid/util/AtomicFile;
+    iget-object v0, p0, Lcom/android/server/job/JobStore;->mJobsFile:Landroid/util/AtomicFile;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$500(Lcom/android/server/job/JobStore;)Lcom/android/server/job/JobSchedulerInternal$JobStorePersistStats;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/job/JobStore;
 
     .line 84
-    iget-object p0, p0, Lcom/android/server/job/JobStore;->mPersistInfo:Lcom/android/server/job/JobSchedulerInternal$JobStorePersistStats;
+    iget-object v0, p0, Lcom/android/server/job/JobStore;->mPersistInfo:Lcom/android/server/job/JobSchedulerInternal$JobStorePersistStats;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$600(Landroid/util/Pair;J)Landroid/util/Pair;
-    .registers 3
+    .registers 4
+    .param p0, "x0"  # Landroid/util/Pair;
+    .param p1, "x1"  # J
 
     .line 84
     invoke-static {p0, p1, p2}, Lcom/android/server/job/JobStore;->convertRtcBoundsToElapsed(Landroid/util/Pair;J)Landroid/util/Pair;
 
-    move-result-object p0
+    move-result-object v0
 
-    return-object p0
+    return-object v0
 .end method
 
 .method private static convertRtcBoundsToElapsed(Landroid/util/Pair;J)Landroid/util/Pair;
     .registers 13
+    .param p1, "nowElapsed"  # J
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(",
@@ -297,6 +312,7 @@
     .end annotation
 
     .line 612
+    .local p0, "rtcTimes":Landroid/util/Pair;, "Landroid/util/Pair<Ljava/lang/Long;Ljava/lang/Long;>;"
     sget-object v0, Lcom/android/server/job/JobSchedulerService;->sSystemClock:Ljava/time/Clock;
 
     invoke-virtual {v0}, Ljava/time/Clock;->millis()J
@@ -304,6 +320,7 @@
     move-result-wide v0
 
     .line 613
+    .local v0, "nowWallclock":J
     iget-object v2, p0, Landroid/util/Pair;->first:Ljava/lang/Object;
 
     check-cast v2, Ljava/lang/Long;
@@ -341,8 +358,11 @@
     :cond_23
     move-wide v2, v4
 
-    .line 616
     :goto_24
+    nop
+
+    .line 616
+    .local v2, "earliest":J
     iget-object v6, p0, Landroid/util/Pair;->second:Ljava/lang/Object;
 
     check-cast v6, Ljava/lang/Long;
@@ -355,14 +375,14 @@
 
     cmp-long v6, v6, v8
 
-    if-gez v6, :cond_45
+    if-gez v6, :cond_46
 
     .line 617
-    iget-object p0, p0, Landroid/util/Pair;->second:Ljava/lang/Object;
+    iget-object v6, p0, Landroid/util/Pair;->second:Ljava/lang/Object;
 
-    check-cast p0, Ljava/lang/Long;
+    check-cast v6, Ljava/lang/Long;
 
-    invoke-virtual {p0}, Ljava/lang/Long;->longValue()J
+    invoke-virtual {v6}, Ljava/lang/Long;->longValue()J
 
     move-result-wide v6
 
@@ -370,35 +390,39 @@
 
     invoke-static {v6, v7, v4, v5}, Ljava/lang/Math;->max(JJ)J
 
-    move-result-wide v0
+    move-result-wide v4
 
-    add-long v8, p1, v0
+    add-long v8, p1, v4
 
-    goto :goto_46
+    goto :goto_47
 
     .line 618
-    :cond_45
+    :cond_46
     nop
 
+    :goto_47
+    move-wide v4, v8
+
     .line 619
-    :goto_46
+    .local v4, "latest":J
     invoke-static {v2, v3}, Ljava/lang/Long;->valueOf(J)Ljava/lang/Long;
 
-    move-result-object p0
+    move-result-object v6
 
-    invoke-static {v8, v9}, Ljava/lang/Long;->valueOf(J)Ljava/lang/Long;
+    invoke-static {v4, v5}, Ljava/lang/Long;->valueOf(J)Ljava/lang/Long;
 
-    move-result-object p1
+    move-result-object v7
 
-    invoke-static {p0, p1}, Landroid/util/Pair;->create(Ljava/lang/Object;Ljava/lang/Object;)Landroid/util/Pair;
+    invoke-static {v6, v7}, Landroid/util/Pair;->create(Ljava/lang/Object;Ljava/lang/Object;)Landroid/util/Pair;
 
-    move-result-object p0
+    move-result-object v6
 
-    return-object p0
+    return-object v6
 .end method
 
 .method static initAndGet(Lcom/android/server/job/JobSchedulerService;)Lcom/android/server/job/JobStore;
-    .registers 5
+    .registers 6
+    .param p0, "jobManagerService"  # Lcom/android/server/job/JobSchedulerService;
 
     .line 116
     sget-object v0, Lcom/android/server/job/JobStore;->sSingletonLock:Ljava/lang/Object;
@@ -421,37 +445,39 @@
     .line 119
     invoke-virtual {p0}, Lcom/android/server/job/JobSchedulerService;->getLock()Ljava/lang/Object;
 
-    move-result-object p0
+    move-result-object v3
 
     invoke-static {}, Landroid/os/Environment;->getDataDirectory()Ljava/io/File;
 
-    move-result-object v3
+    move-result-object v4
 
-    invoke-direct {v1, v2, p0, v3}, Lcom/android/server/job/JobStore;-><init>(Landroid/content/Context;Ljava/lang/Object;Ljava/io/File;)V
+    invoke-direct {v1, v2, v3, v4}, Lcom/android/server/job/JobStore;-><init>(Landroid/content/Context;Ljava/lang/Object;Ljava/io/File;)V
 
     sput-object v1, Lcom/android/server/job/JobStore;->sSingleton:Lcom/android/server/job/JobStore;
 
     .line 121
     :cond_1a
-    sget-object p0, Lcom/android/server/job/JobStore;->sSingleton:Lcom/android/server/job/JobStore;
+    sget-object v1, Lcom/android/server/job/JobStore;->sSingleton:Lcom/android/server/job/JobStore;
 
     monitor-exit v0
 
-    return-object p0
+    return-object v1
 
     .line 122
     :catchall_1e
-    move-exception p0
+    move-exception v1
 
     monitor-exit v0
     :try_end_20
     .catchall {:try_start_3 .. :try_end_20} :catchall_1e
 
-    throw p0
+    throw v1
 .end method
 
 .method public static initAndGetForTesting(Landroid/content/Context;Ljava/io/File;)Lcom/android/server/job/JobStore;
     .registers 4
+    .param p0, "context"  # Landroid/content/Context;
+    .param p1, "dataDir"  # Ljava/io/File;
     .annotation build Lcom/android/internal/annotations/VisibleForTesting;
     .end annotation
 
@@ -465,6 +491,7 @@
     invoke-direct {v0, p0, v1, p1}, Lcom/android/server/job/JobStore;-><init>(Landroid/content/Context;Ljava/lang/Object;Ljava/io/File;)V
 
     .line 131
+    .local v0, "jobStoreUnderTest":Lcom/android/server/job/JobStore;
     invoke-virtual {v0}, Lcom/android/server/job/JobStore;->clear()V
 
     .line 132
@@ -472,7 +499,8 @@
 .end method
 
 .method private static isSyncJob(Lcom/android/server/job/controllers/JobStatus;)Z
-    .registers 2
+    .registers 3
+    .param p0, "status"  # Lcom/android/server/job/controllers/JobStatus;
 
     .line 623
     const-class v0, Lcom/android/server/content/SyncJobService;
@@ -484,22 +512,27 @@
     .line 624
     invoke-virtual {p0}, Lcom/android/server/job/controllers/JobStatus;->getServiceComponent()Landroid/content/ComponentName;
 
-    move-result-object p0
+    move-result-object v1
 
-    invoke-virtual {p0}, Landroid/content/ComponentName;->getClassName()Ljava/lang/String;
+    invoke-virtual {v1}, Landroid/content/ComponentName;->getClassName()Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v1
 
-    invoke-virtual {v0, p0}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v0, v1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result p0
+    move-result v0
 
     .line 623
-    return p0
+    return v0
 .end method
 
 .method static synthetic lambda$getRtcCorrectedJobsLocked$0(JLandroid/app/IActivityManager;Ljava/util/ArrayList;Ljava/util/ArrayList;Lcom/android/server/job/controllers/JobStatus;)V
-    .registers 21
+    .registers 24
+    .param p0, "elapsedNow"  # J
+    .param p2, "am"  # Landroid/app/IActivityManager;
+    .param p3, "toAdd"  # Ljava/util/ArrayList;
+    .param p4, "toRemove"  # Ljava/util/ArrayList;
+    .param p5, "job"  # Lcom/android/server/job/controllers/JobStatus;
 
     .line 188
     invoke-virtual/range {p5 .. p5}, Lcom/android/server/job/controllers/JobStatus;->getPersistedUtcTimes()Landroid/util/Pair;
@@ -507,74 +540,89 @@
     move-result-object v0
 
     .line 189
-    if-eqz v0, :cond_3e
+    .local v0, "utcTimes":Landroid/util/Pair;, "Landroid/util/Pair<Ljava/lang/Long;Ljava/lang/Long;>;"
+    if-eqz v0, :cond_41
 
     .line 190
     nop
 
     .line 191
-    move-wide v1, p0
+    move-wide/from16 v1, p0
 
     invoke-static {v0, v1, v2}, Lcom/android/server/job/JobStore;->convertRtcBoundsToElapsed(Landroid/util/Pair;J)Landroid/util/Pair;
 
-    move-result-object v0
+    move-result-object v3
 
     .line 192
-    new-instance v14, Lcom/android/server/job/controllers/JobStatus;
+    .local v3, "elapsedRuntimes":Landroid/util/Pair;, "Landroid/util/Pair<Ljava/lang/Long;Ljava/lang/Long;>;"
+    new-instance v17, Lcom/android/server/job/controllers/JobStatus;
 
     invoke-virtual/range {p5 .. p5}, Lcom/android/server/job/controllers/JobStatus;->getBaseHeartbeat()J
 
-    move-result-wide v3
+    move-result-wide v6
 
-    iget-object v1, v0, Landroid/util/Pair;->first:Ljava/lang/Object;
+    iget-object v4, v3, Landroid/util/Pair;->first:Ljava/lang/Object;
 
-    check-cast v1, Ljava/lang/Long;
+    check-cast v4, Ljava/lang/Long;
 
     .line 193
-    invoke-virtual {v1}, Ljava/lang/Long;->longValue()J
+    invoke-virtual {v4}, Ljava/lang/Long;->longValue()J
 
-    move-result-wide v5
+    move-result-wide v8
 
-    iget-object v0, v0, Landroid/util/Pair;->second:Ljava/lang/Object;
+    iget-object v4, v3, Landroid/util/Pair;->second:Ljava/lang/Object;
 
-    check-cast v0, Ljava/lang/Long;
+    check-cast v4, Ljava/lang/Long;
 
-    invoke-virtual {v0}, Ljava/lang/Long;->longValue()J
+    invoke-virtual {v4}, Ljava/lang/Long;->longValue()J
 
-    move-result-wide v7
+    move-result-wide v10
 
-    const/4 v9, 0x0
+    const/4 v12, 0x0
 
     .line 194
     invoke-virtual/range {p5 .. p5}, Lcom/android/server/job/controllers/JobStatus;->getLastSuccessfulRunTime()J
 
-    move-result-wide v10
+    move-result-wide v13
 
     invoke-virtual/range {p5 .. p5}, Lcom/android/server/job/controllers/JobStatus;->getLastFailedRunTime()J
 
-    move-result-wide v12
+    move-result-wide v15
 
-    move-object v1, v14
+    move-object/from16 v4, v17
 
-    move-object/from16 v2, p5
+    move-object/from16 v5, p5
 
-    invoke-direct/range {v1 .. v13}, Lcom/android/server/job/controllers/JobStatus;-><init>(Lcom/android/server/job/controllers/JobStatus;JJJIJJ)V
+    invoke-direct/range {v4 .. v16}, Lcom/android/server/job/controllers/JobStatus;-><init>(Lcom/android/server/job/controllers/JobStatus;JJJIJJ)V
 
     .line 195
-    move-object/from16 v0, p2
+    .local v4, "newJob":Lcom/android/server/job/controllers/JobStatus;
+    move-object/from16 v5, p2
 
-    invoke-virtual {v14, v0}, Lcom/android/server/job/controllers/JobStatus;->prepareLocked(Landroid/app/IActivityManager;)V
+    invoke-virtual {v4, v5}, Lcom/android/server/job/controllers/JobStatus;->prepareLocked(Landroid/app/IActivityManager;)V
 
     .line 196
-    move-object/from16 v0, p3
+    move-object/from16 v6, p3
 
-    invoke-virtual {v0, v14}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
+    invoke-virtual {v6, v4}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
 
     .line 197
     invoke-virtual/range {p4 .. p5}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
 
+    goto :goto_47
+
+    .line 189
+    .end local v3  # "elapsedRuntimes":Landroid/util/Pair;, "Landroid/util/Pair<Ljava/lang/Long;Ljava/lang/Long;>;"
+    .end local v4  # "newJob":Lcom/android/server/job/controllers/JobStatus;
+    :cond_41
+    move-wide/from16 v1, p0
+
+    move-object/from16 v5, p2
+
+    move-object/from16 v6, p3
+
     .line 199
-    :cond_3e
+    :goto_47
     return-void
 .end method
 
@@ -643,6 +691,7 @@
 # virtual methods
 .method public add(Lcom/android/server/job/controllers/JobStatus;)Z
     .registers 5
+    .param p1, "jobStatus"  # Lcom/android/server/job/controllers/JobStatus;
 
     .line 209
     iget-object v0, p0, Lcom/android/server/job/JobStore;->mJobSet:Lcom/android/server/job/JobStore$JobSet;
@@ -652,6 +701,7 @@
     move-result v0
 
     .line 210
+    .local v0, "replaced":Z
     iget-object v1, p0, Lcom/android/server/job/JobStore;->mJobSet:Lcom/android/server/job/JobStore$JobSet;
 
     invoke-virtual {v1, p1}, Lcom/android/server/job/JobStore$JobSet;->add(Lcom/android/server/job/controllers/JobStatus;)Z
@@ -685,11 +735,11 @@
 
     invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v1
 
-    const-string v1, "JobStore"
+    const-string v2, "JobStore"
 
-    invoke-static {v1, p1}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v2, v1}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 217
     :cond_2e
@@ -715,53 +765,57 @@
 
 .method public clockNowValidToInflate(J)Z
     .registers 5
+    .param p1, "now"  # J
 
     .line 172
     iget-wide v0, p0, Lcom/android/server/job/JobStore;->mXmlTimestamp:J
 
-    cmp-long p1, p1, v0
+    cmp-long v0, p1, v0
 
-    if-ltz p1, :cond_8
+    if-ltz v0, :cond_8
 
-    const/4 p1, 0x1
+    const/4 v0, 0x1
 
     goto :goto_9
 
     :cond_8
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
     :goto_9
-    return p1
+    return v0
 .end method
 
 .method containsJob(Lcom/android/server/job/controllers/JobStatus;)Z
     .registers 3
+    .param p1, "jobStatus"  # Lcom/android/server/job/controllers/JobStatus;
 
     .line 221
     iget-object v0, p0, Lcom/android/server/job/JobStore;->mJobSet:Lcom/android/server/job/JobStore$JobSet;
 
     invoke-virtual {v0, p1}, Lcom/android/server/job/JobStore$JobSet;->contains(Lcom/android/server/job/controllers/JobStatus;)Z
 
-    move-result p1
+    move-result v0
 
-    return p1
+    return v0
 .end method
 
 .method public countJobsForUid(I)I
     .registers 3
+    .param p1, "uid"  # I
 
     .line 233
     iget-object v0, p0, Lcom/android/server/job/JobStore;->mJobSet:Lcom/android/server/job/JobStore$JobSet;
 
     invoke-virtual {v0, p1}, Lcom/android/server/job/JobStore$JobSet;->countJobsForUid(I)I
 
-    move-result p1
+    move-result v0
 
-    return p1
+    return v0
 .end method
 
 .method public forEachJob(ILjava/util/function/Consumer;)V
     .registers 4
+    .param p1, "uid"  # I
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(I",
@@ -772,6 +826,7 @@
     .end annotation
 
     .line 310
+    .local p2, "functor":Ljava/util/function/Consumer;, "Ljava/util/function/Consumer<Lcom/android/server/job/controllers/JobStatus;>;"
     iget-object v0, p0, Lcom/android/server/job/JobStore;->mJobSet:Lcom/android/server/job/JobStore$JobSet;
 
     invoke-virtual {v0, p1, p2}, Lcom/android/server/job/JobStore$JobSet;->forEachJob(ILjava/util/function/Consumer;)V
@@ -792,6 +847,7 @@
     .end annotation
 
     .line 301
+    .local p1, "functor":Ljava/util/function/Consumer;, "Ljava/util/function/Consumer<Lcom/android/server/job/controllers/JobStatus;>;"
     iget-object v0, p0, Lcom/android/server/job/JobStore;->mJobSet:Lcom/android/server/job/JobStore$JobSet;
 
     const/4 v1, 0x0
@@ -817,6 +873,8 @@
     .end annotation
 
     .line 306
+    .local p1, "filterPredicate":Ljava/util/function/Predicate;, "Ljava/util/function/Predicate<Lcom/android/server/job/controllers/JobStatus;>;"
+    .local p2, "functor":Ljava/util/function/Consumer;, "Ljava/util/function/Consumer<Lcom/android/server/job/controllers/JobStatus;>;"
     iget-object v0, p0, Lcom/android/server/job/JobStore;->mJobSet:Lcom/android/server/job/JobStore$JobSet;
 
     invoke-virtual {v0, p1, p2}, Lcom/android/server/job/JobStore$JobSet;->forEachJob(Ljava/util/function/Predicate;Ljava/util/function/Consumer;)V
@@ -827,6 +885,7 @@
 
 .method public forEachJobForSourceUid(ILjava/util/function/Consumer;)V
     .registers 4
+    .param p1, "sourceUid"  # I
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(I",
@@ -837,6 +896,7 @@
     .end annotation
 
     .line 314
+    .local p2, "functor":Ljava/util/function/Consumer;, "Ljava/util/function/Consumer<Lcom/android/server/job/controllers/JobStatus;>;"
     iget-object v0, p0, Lcom/android/server/job/JobStore;->mJobSet:Lcom/android/server/job/JobStore$JobSet;
 
     invoke-virtual {v0, p1, p2}, Lcom/android/server/job/JobStore$JobSet;->forEachJobForSourceUid(ILjava/util/function/Consumer;)V
@@ -847,19 +907,22 @@
 
 .method public getJobByUidAndJobId(II)Lcom/android/server/job/controllers/JobStatus;
     .registers 4
+    .param p1, "uid"  # I
+    .param p2, "jobId"  # I
 
     .line 291
     iget-object v0, p0, Lcom/android/server/job/JobStore;->mJobSet:Lcom/android/server/job/JobStore$JobSet;
 
     invoke-virtual {v0, p1, p2}, Lcom/android/server/job/JobStore$JobSet;->get(II)Lcom/android/server/job/controllers/JobStatus;
 
-    move-result-object p1
+    move-result-object v0
 
-    return-object p1
+    return-object v0
 .end method
 
 .method public getJobsByUid(I)Ljava/util/List;
     .registers 3
+    .param p1, "uid"  # I
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(I)",
@@ -874,13 +937,14 @@
 
     invoke-virtual {v0, p1}, Lcom/android/server/job/JobStore$JobSet;->getJobsByUid(I)Ljava/util/List;
 
-    move-result-object p1
+    move-result-object v0
 
-    return-object p1
+    return-object v0
 .end method
 
 .method public getJobsByUser(I)Ljava/util/List;
     .registers 3
+    .param p1, "userHandle"  # I
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(I)",
@@ -895,9 +959,9 @@
 
     invoke-virtual {v0, p1}, Lcom/android/server/job/JobStore$JobSet;->getJobsByUser(I)Ljava/util/List;
 
-    move-result-object p1
+    move-result-object v0
 
-    return-object p1
+    return-object v0
 .end method
 
 .method public getPersistStats()Lcom/android/server/job/JobSchedulerInternal$JobStorePersistStats;
@@ -910,7 +974,7 @@
 .end method
 
 .method public getRtcCorrectedJobsLocked(Ljava/util/ArrayList;Ljava/util/ArrayList;)V
-    .registers 10
+    .registers 13
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(",
@@ -924,21 +988,29 @@
     .end annotation
 
     .line 182
+    .local p1, "toAdd":Ljava/util/ArrayList;, "Ljava/util/ArrayList<Lcom/android/server/job/controllers/JobStatus;>;"
+    .local p2, "toRemove":Ljava/util/ArrayList;, "Ljava/util/ArrayList<Lcom/android/server/job/controllers/JobStatus;>;"
     sget-object v0, Lcom/android/server/job/JobSchedulerService;->sElapsedRealtimeClock:Ljava/time/Clock;
 
     invoke-virtual {v0}, Ljava/time/Clock;->millis()J
 
-    move-result-wide v2
+    move-result-wide v7
 
     .line 183
+    .local v7, "elapsedNow":J
     invoke-static {}, Landroid/app/ActivityManager;->getService()Landroid/app/IActivityManager;
 
-    move-result-object v4
+    move-result-object v0
 
     .line 187
-    new-instance v0, Lcom/android/server/job/-$$Lambda$JobStore$aR-nUP_cO7r3CFj_LAjeNjVBP-4;
+    .local v0, "am":Landroid/app/IActivityManager;
+    new-instance v9, Lcom/android/server/job/-$$Lambda$JobStore$aR-nUP_cO7r3CFj_LAjeNjVBP-4;
 
-    move-object v1, v0
+    move-object v1, v9
+
+    move-wide v2, v7
+
+    move-object v4, v0
 
     move-object v5, p1
 
@@ -946,7 +1018,7 @@
 
     invoke-direct/range {v1 .. v6}, Lcom/android/server/job/-$$Lambda$JobStore$aR-nUP_cO7r3CFj_LAjeNjVBP-4;-><init>(JLandroid/app/IActivityManager;Ljava/util/ArrayList;Ljava/util/ArrayList;)V
 
-    invoke-virtual {p0, v0}, Lcom/android/server/job/JobStore;->forEachJob(Ljava/util/function/Consumer;)V
+    invoke-virtual {p0, v9}, Lcom/android/server/job/JobStore;->forEachJob(Ljava/util/function/Consumer;)V
 
     .line 200
     return-void
@@ -963,6 +1035,8 @@
 
 .method public readJobMapFromDisk(Lcom/android/server/job/JobStore$JobSet;Z)V
     .registers 4
+    .param p1, "jobSet"  # Lcom/android/server/job/JobStore$JobSet;
+    .param p2, "rtcGood"  # Z
     .annotation build Lcom/android/internal/annotations/VisibleForTesting;
     .end annotation
 
@@ -978,7 +1052,9 @@
 .end method
 
 .method public remove(Lcom/android/server/job/controllers/JobStatus;Z)Z
-    .registers 4
+    .registers 6
+    .param p1, "jobStatus"  # Lcom/android/server/job/controllers/JobStatus;
+    .param p2, "writeBack"  # Z
 
     .line 242
     iget-object v0, p0, Lcom/android/server/job/JobStore;->mJobSet:Lcom/android/server/job/JobStore$JobSet;
@@ -988,37 +1064,38 @@
     move-result v0
 
     .line 243
+    .local v0, "removed":Z
     if-nez v0, :cond_24
 
     .line 244
-    sget-boolean p2, Lcom/android/server/job/JobStore;->DEBUG:Z
+    sget-boolean v1, Lcom/android/server/job/JobStore;->DEBUG:Z
 
-    if-eqz p2, :cond_22
+    if-eqz v1, :cond_22
 
     .line 245
-    new-instance p2, Ljava/lang/StringBuilder;
+    new-instance v1, Ljava/lang/StringBuilder;
 
-    invoke-direct {p2}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v0, "Couldn\'t remove job: didn\'t exist: "
+    const-string v2, "Couldn\'t remove job: didn\'t exist: "
 
-    invoke-virtual {p2, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p2, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v1
 
-    const-string p2, "JobStore"
+    const-string v2, "JobStore"
 
-    invoke-static {p2, p1}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v2, v1}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 247
     :cond_22
-    const/4 p1, 0x0
+    const/4 v1, 0x0
 
-    return p1
+    return v1
 
     .line 249
     :cond_24
@@ -1026,9 +1103,9 @@
 
     invoke-virtual {p1}, Lcom/android/server/job/controllers/JobStatus;->isPersisted()Z
 
-    move-result p1
+    move-result v1
 
-    if-eqz p1, :cond_2f
+    if-eqz v1, :cond_2f
 
     .line 250
     invoke-direct {p0}, Lcom/android/server/job/JobStore;->maybeWriteStatusToDiskAsync()V
@@ -1040,6 +1117,7 @@
 
 .method public removeJobsOfNonUsers([I)V
     .registers 3
+    .param p1, "whitelist"  # [I
 
     .line 260
     iget-object v0, p0, Lcom/android/server/job/JobStore;->mJobSet:Lcom/android/server/job/JobStore$JobSet;
@@ -1064,7 +1142,8 @@
 .end method
 
 .method public waitForWriteToCompleteForTesting(J)Z
-    .registers 11
+    .registers 13
+    .param p1, "maxWaitMillis"  # J
     .annotation build Lcom/android/internal/annotations/VisibleForTesting;
     .end annotation
 
@@ -1074,9 +1153,11 @@
     move-result-wide v0
 
     .line 356
+    .local v0, "start":J
     add-long v2, v0, p1
 
     .line 357
+    .local v2, "end":J
     iget-object v4, p0, Lcom/android/server/job/JobStore;->mWriteScheduleLock:Ljava/lang/Object;
 
     monitor-enter v4
@@ -1086,7 +1167,7 @@
     :try_start_9
     iget-boolean v5, p0, Lcom/android/server/job/JobStore;->mWriteInProgress:Z
 
-    if-eqz v5, :cond_22
+    if-eqz v5, :cond_23
 
     .line 359
     invoke-static {}, Landroid/os/SystemClock;->uptimeMillis()J
@@ -1094,60 +1175,64 @@
     move-result-wide v5
 
     .line 360
+    .local v5, "now":J
     cmp-long v7, v5, v2
 
     if-ltz v7, :cond_18
 
     .line 362
-    const/4 p1, 0x0
+    const/4 v7, 0x0
 
     monitor-exit v4
     :try_end_17
-    .catchall {:try_start_9 .. :try_end_17} :catchall_25
+    .catchall {:try_start_9 .. :try_end_17} :catchall_26
 
-    return p1
+    return v7
 
     .line 365
     :cond_18
     :try_start_18
     iget-object v7, p0, Lcom/android/server/job/JobStore;->mWriteScheduleLock:Ljava/lang/Object;
 
-    sub-long/2addr v5, v0
+    sub-long v8, v5, v0
 
-    add-long/2addr v5, p1
+    add-long/2addr v8, p1
 
-    invoke-virtual {v7, v5, v6}, Ljava/lang/Object;->wait(J)V
-    :try_end_1f
-    .catch Ljava/lang/InterruptedException; {:try_start_18 .. :try_end_1f} :catch_21
-    .catchall {:try_start_18 .. :try_end_1f} :catchall_25
+    invoke-virtual {v7, v8, v9}, Ljava/lang/Object;->wait(J)V
+    :try_end_20
+    .catch Ljava/lang/InterruptedException; {:try_start_18 .. :try_end_20} :catch_22
+    .catchall {:try_start_18 .. :try_end_20} :catchall_26
 
     .line 369
     nop
 
     .line 370
+    .end local v5  # "now":J
     goto :goto_9
 
     .line 366
-    :catch_21
-    move-exception p1
+    .restart local v5  # "now":J
+    :catch_22
+    move-exception v7
 
     .line 371
-    :cond_22
-    :try_start_22
+    .end local v5  # "now":J
+    :cond_23
+    :try_start_23
     monitor-exit v4
 
     .line 372
-    const/4 p1, 0x1
+    const/4 v4, 0x1
 
-    return p1
+    return v4
 
     .line 371
-    :catchall_25
-    move-exception p1
+    :catchall_26
+    move-exception v5
 
     monitor-exit v4
-    :try_end_27
-    .catchall {:try_start_22 .. :try_end_27} :catchall_25
+    :try_end_28
+    .catchall {:try_start_23 .. :try_end_28} :catchall_26
 
-    throw p1
+    throw v5
 .end method

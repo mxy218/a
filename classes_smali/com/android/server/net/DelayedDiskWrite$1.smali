@@ -30,6 +30,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/net/DelayedDiskWrite;Ljava/lang/String;Lcom/android/server/net/DelayedDiskWrite$Writer;Z)V
     .registers 5
+    .param p1, "this$0"  # Lcom/android/server/net/DelayedDiskWrite;
 
     .line 58
     iput-object p1, p0, Lcom/android/server/net/DelayedDiskWrite$1;->this$0:Lcom/android/server/net/DelayedDiskWrite;

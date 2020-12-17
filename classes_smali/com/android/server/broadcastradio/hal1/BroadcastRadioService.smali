@@ -122,6 +122,10 @@
 
 .method public openTuner(ILandroid/hardware/radio/RadioManager$BandConfig;ZLandroid/hardware/radio/ITunerCallback;)Landroid/hardware/radio/ITuner;
     .registers 13
+    .param p1, "moduleId"  # I
+    .param p2, "bandConfig"  # Landroid/hardware/radio/RadioManager$BandConfig;
+    .param p3, "withAudio"  # Z
+    .param p4, "callback"  # Landroid/hardware/radio/ITunerCallback;
 
     .line 62
     iget-object v0, p0, Lcom/android/server/broadcastradio/hal1/BroadcastRadioService;->mLock:Ljava/lang/Object;
@@ -144,19 +148,19 @@
 
     invoke-direct/range {v1 .. v7}, Lcom/android/server/broadcastradio/hal1/BroadcastRadioService;->nativeOpenTuner(JILandroid/hardware/radio/RadioManager$BandConfig;ZLandroid/hardware/radio/ITunerCallback;)Lcom/android/server/broadcastradio/hal1/Tuner;
 
-    move-result-object p1
+    move-result-object v1
 
     monitor-exit v0
 
-    return-object p1
+    return-object v1
 
     .line 64
     :catchall_10
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_12
     .catchall {:try_start_3 .. :try_end_12} :catchall_10
 
-    throw p1
+    throw v1
 .end method

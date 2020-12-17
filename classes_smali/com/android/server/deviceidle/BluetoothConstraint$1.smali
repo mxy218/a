@@ -21,6 +21,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/deviceidle/BluetoothConstraint;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/deviceidle/BluetoothConstraint;
 
     .line 123
     iput-object p1, p0, Lcom/android/server/deviceidle/BluetoothConstraint$1;->this$0:Lcom/android/server/deviceidle/BluetoothConstraint;
@@ -33,39 +34,41 @@
 
 # virtual methods
 .method public onReceive(Landroid/content/Context;Landroid/content/Intent;)V
-    .registers 3
+    .registers 5
+    .param p1, "context"  # Landroid/content/Context;
+    .param p2, "intent"  # Landroid/content/Intent;
 
     .line 126
     invoke-virtual {p2}, Landroid/content/Intent;->getAction()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    const-string p2, "android.bluetooth.device.action.ACL_CONNECTED"
+    const-string v1, "android.bluetooth.device.action.ACL_CONNECTED"
 
-    invoke-virtual {p2, p1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v1, v0}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result p1
+    move-result v0
 
-    if-eqz p1, :cond_18
+    if-eqz v0, :cond_18
 
     .line 127
-    iget-object p1, p0, Lcom/android/server/deviceidle/BluetoothConstraint$1;->this$0:Lcom/android/server/deviceidle/BluetoothConstraint;
+    iget-object v0, p0, Lcom/android/server/deviceidle/BluetoothConstraint$1;->this$0:Lcom/android/server/deviceidle/BluetoothConstraint;
 
-    invoke-static {p1}, Lcom/android/server/deviceidle/BluetoothConstraint;->access$000(Lcom/android/server/deviceidle/BluetoothConstraint;)Lcom/android/server/DeviceIdleController$LocalService;
+    invoke-static {v0}, Lcom/android/server/deviceidle/BluetoothConstraint;->access$000(Lcom/android/server/deviceidle/BluetoothConstraint;)Lcom/android/server/DeviceIdleController$LocalService;
 
-    move-result-object p1
+    move-result-object v0
 
-    const-string p2, "bluetooth"
+    const-string v1, "bluetooth"
 
-    invoke-virtual {p1, p2}, Lcom/android/server/DeviceIdleController$LocalService;->exitIdle(Ljava/lang/String;)V
+    invoke-virtual {v0, v1}, Lcom/android/server/DeviceIdleController$LocalService;->exitIdle(Ljava/lang/String;)V
 
     goto :goto_1d
 
     .line 129
     :cond_18
-    iget-object p1, p0, Lcom/android/server/deviceidle/BluetoothConstraint$1;->this$0:Lcom/android/server/deviceidle/BluetoothConstraint;
+    iget-object v0, p0, Lcom/android/server/deviceidle/BluetoothConstraint$1;->this$0:Lcom/android/server/deviceidle/BluetoothConstraint;
 
-    invoke-static {p1}, Lcom/android/server/deviceidle/BluetoothConstraint;->access$100(Lcom/android/server/deviceidle/BluetoothConstraint;)V
+    invoke-static {v0}, Lcom/android/server/deviceidle/BluetoothConstraint;->access$100(Lcom/android/server/deviceidle/BluetoothConstraint;)V
 
     .line 131
     :goto_1d

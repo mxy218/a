@@ -51,22 +51,24 @@
 .end method
 
 .method private static hasCapability(II)Z
-    .registers 2
+    .registers 3
+    .param p0, "halCapabilities"  # I
+    .param p1, "capability"  # I
 
     .line 122
-    and-int/2addr p0, p1
+    and-int v0, p0, p1
 
-    if-eqz p0, :cond_5
+    if-eqz v0, :cond_6
 
-    const/4 p0, 0x1
+    const/4 v0, 0x1
 
-    goto :goto_6
+    goto :goto_7
 
-    :cond_5
-    const/4 p0, 0x0
+    :cond_6
+    const/4 v0, 0x0
 
-    :goto_6
-    return p0
+    :goto_7
+    return v0
 .end method
 
 
@@ -98,37 +100,35 @@
 
 .method setSubHalMeasurementCorrectionsCapabilities(I)V
     .registers 8
+    .param p1, "measurementCorrectionsCapabilities"  # I
 
     .line 96
-    nop
-
-    .line 97
-    const/4 v0, 0x1
-
-    invoke-static {p1, v0}, Lcom/android/server/location/GnssCapabilitiesProvider;->hasCapability(II)Z
-
-    move-result v0
-
-    if-eqz v0, :cond_b
-
-    .line 99
-    const-wide/16 v0, 0x60
-
-    goto :goto_d
-
-    .line 97
-    :cond_b
     const-wide/16 v0, 0x20
 
+    .line 97
+    .local v0, "gnssCapabilities":J
+    const/4 v2, 0x1
+
+    invoke-static {p1, v2}, Lcom/android/server/location/GnssCapabilitiesProvider;->hasCapability(II)Z
+
+    move-result v2
+
+    if-eqz v2, :cond_c
+
+    .line 99
+    const-wide/16 v2, 0x40
+
+    or-long/2addr v0, v2
+
     .line 101
-    :goto_d
+    :cond_c
     const/4 v2, 0x2
 
     invoke-static {p1, v2}, Lcom/android/server/location/GnssCapabilitiesProvider;->hasCapability(II)Z
 
     move-result v2
 
-    if-eqz v2, :cond_17
+    if-eqz v2, :cond_16
 
     .line 103
     const-wide/16 v2, 0x80
@@ -136,14 +136,14 @@
     or-long/2addr v0, v2
 
     .line 105
-    :cond_17
+    :cond_16
     const/4 v2, 0x4
 
     invoke-static {p1, v2}, Lcom/android/server/location/GnssCapabilitiesProvider;->hasCapability(II)Z
 
-    move-result p1
+    move-result v2
 
-    if-eqz p1, :cond_21
+    if-eqz v2, :cond_20
 
     .line 107
     const-wide/16 v2, 0x100
@@ -151,11 +151,11 @@
     or-long/2addr v0, v2
 
     .line 110
-    :cond_21
+    :cond_20
     monitor-enter p0
 
     .line 111
-    :try_start_22
+    :try_start_21
     iget-wide v2, p0, Lcom/android/server/location/GnssCapabilitiesProvider;->mGnssCapabilities:J
 
     const-wide/16 v4, -0x1e1
@@ -167,105 +167,103 @@
     .line 112
     iget-wide v2, p0, Lcom/android/server/location/GnssCapabilitiesProvider;->mGnssCapabilities:J
 
-    or-long/2addr v0, v2
+    or-long/2addr v2, v0
 
-    iput-wide v0, p0, Lcom/android/server/location/GnssCapabilitiesProvider;->mGnssCapabilities:J
+    iput-wide v2, p0, Lcom/android/server/location/GnssCapabilitiesProvider;->mGnssCapabilities:J
 
     .line 113
-    sget-boolean p1, Lcom/android/server/location/GnssCapabilitiesProvider;->DEBUG:Z
+    sget-boolean v2, Lcom/android/server/location/GnssCapabilitiesProvider;->DEBUG:Z
 
-    if-eqz p1, :cond_5d
+    if-eqz v2, :cond_5c
 
     .line 114
-    const-string p1, "GnssCapabilitiesProvider"
+    const-string v2, "GnssCapabilitiesProvider"
 
-    new-instance v0, Ljava/lang/StringBuilder;
+    new-instance v3, Ljava/lang/StringBuilder;
 
-    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string/jumbo v1, "setSubHalMeasurementCorrectionsCapabilities, mGnssCapabilities=0x"
+    const-string/jumbo v4, "setSubHalMeasurementCorrectionsCapabilities, mGnssCapabilities=0x"
 
-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    iget-wide v1, p0, Lcom/android/server/location/GnssCapabilitiesProvider;->mGnssCapabilities:J
+    iget-wide v4, p0, Lcom/android/server/location/GnssCapabilitiesProvider;->mGnssCapabilities:J
 
     .line 115
-    invoke-static {v1, v2}, Ljava/lang/Long;->toHexString(J)Ljava/lang/String;
+    invoke-static {v4, v5}, Ljava/lang/Long;->toHexString(J)Ljava/lang/String;
 
-    move-result-object v1
+    move-result-object v4
 
-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string v1, ", "
+    const-string v4, ", "
 
-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    iget-wide v1, p0, Lcom/android/server/location/GnssCapabilitiesProvider;->mGnssCapabilities:J
+    iget-wide v4, p0, Lcom/android/server/location/GnssCapabilitiesProvider;->mGnssCapabilities:J
 
-    invoke-static {v1, v2}, Landroid/location/GnssCapabilities;->of(J)Landroid/location/GnssCapabilities;
+    invoke-static {v4, v5}, Landroid/location/GnssCapabilities;->of(J)Landroid/location/GnssCapabilities;
 
-    move-result-object v1
+    move-result-object v4
 
-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v3
 
     .line 114
-    invoke-static {p1, v0}, Landroid/util/Log;->d(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v2, v3}, Landroid/util/Log;->d(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 118
-    :cond_5d
+    :cond_5c
     monitor-exit p0
 
     .line 119
     return-void
 
     .line 118
-    :catchall_5f
-    move-exception p1
+    :catchall_5e
+    move-exception v2
 
     monitor-exit p0
-    :try_end_61
-    .catchall {:try_start_22 .. :try_end_61} :catchall_5f
+    :try_end_60
+    .catchall {:try_start_21 .. :try_end_60} :catchall_5e
 
-    throw p1
+    throw v2
 .end method
 
 .method setTopHalCapabilities(I)V
     .registers 8
+    .param p1, "topHalCapabilities"  # I
 
     .line 62
-    nop
-
-    .line 63
-    const/16 v0, 0x100
-
-    invoke-static {p1, v0}, Lcom/android/server/location/GnssCapabilitiesProvider;->hasCapability(II)Z
-
-    move-result v0
-
-    if-eqz v0, :cond_c
-
-    .line 65
-    const-wide/16 v0, 0x1
-
-    goto :goto_e
-
-    .line 63
-    :cond_c
     const-wide/16 v0, 0x0
 
+    .line 63
+    .local v0, "gnssCapabilities":J
+    const/16 v2, 0x100
+
+    invoke-static {p1, v2}, Lcom/android/server/location/GnssCapabilitiesProvider;->hasCapability(II)Z
+
+    move-result v2
+
+    if-eqz v2, :cond_d
+
+    .line 65
+    const-wide/16 v2, 0x1
+
+    or-long/2addr v0, v2
+
     .line 67
-    :goto_e
+    :cond_d
     const/16 v2, 0x200
 
     invoke-static {p1, v2}, Lcom/android/server/location/GnssCapabilitiesProvider;->hasCapability(II)Z
 
     move-result v2
 
-    if-eqz v2, :cond_19
+    if-eqz v2, :cond_18
 
     .line 69
     const-wide/16 v2, 0x2
@@ -273,14 +271,14 @@
     or-long/2addr v0, v2
 
     .line 71
-    :cond_19
+    :cond_18
     const/16 v2, 0x20
 
     invoke-static {p1, v2}, Lcom/android/server/location/GnssCapabilitiesProvider;->hasCapability(II)Z
 
     move-result v2
 
-    if-eqz v2, :cond_24
+    if-eqz v2, :cond_23
 
     .line 72
     const-wide/16 v2, 0x4
@@ -288,14 +286,14 @@
     or-long/2addr v0, v2
 
     .line 74
-    :cond_24
+    :cond_23
     const/16 v2, 0x40
 
     invoke-static {p1, v2}, Lcom/android/server/location/GnssCapabilitiesProvider;->hasCapability(II)Z
 
     move-result v2
 
-    if-eqz v2, :cond_2f
+    if-eqz v2, :cond_2e
 
     .line 75
     const-wide/16 v2, 0x8
@@ -303,14 +301,14 @@
     or-long/2addr v0, v2
 
     .line 77
-    :cond_2f
+    :cond_2e
     const/16 v2, 0x80
 
     invoke-static {p1, v2}, Lcom/android/server/location/GnssCapabilitiesProvider;->hasCapability(II)Z
 
-    move-result p1
+    move-result v2
 
-    if-eqz p1, :cond_3a
+    if-eqz v2, :cond_39
 
     .line 78
     const-wide/16 v2, 0x10
@@ -318,11 +316,11 @@
     or-long/2addr v0, v2
 
     .line 81
-    :cond_3a
+    :cond_39
     monitor-enter p0
 
     .line 82
-    :try_start_3b
+    :try_start_3a
     iget-wide v2, p0, Lcom/android/server/location/GnssCapabilitiesProvider;->mGnssCapabilities:J
 
     const-wide/16 v4, -0x20
@@ -334,68 +332,68 @@
     .line 83
     iget-wide v2, p0, Lcom/android/server/location/GnssCapabilitiesProvider;->mGnssCapabilities:J
 
-    or-long/2addr v0, v2
+    or-long/2addr v2, v0
 
-    iput-wide v0, p0, Lcom/android/server/location/GnssCapabilitiesProvider;->mGnssCapabilities:J
+    iput-wide v2, p0, Lcom/android/server/location/GnssCapabilitiesProvider;->mGnssCapabilities:J
 
     .line 84
-    sget-boolean p1, Lcom/android/server/location/GnssCapabilitiesProvider;->DEBUG:Z
+    sget-boolean v2, Lcom/android/server/location/GnssCapabilitiesProvider;->DEBUG:Z
 
-    if-eqz p1, :cond_76
+    if-eqz v2, :cond_75
 
     .line 85
-    const-string p1, "GnssCapabilitiesProvider"
+    const-string v2, "GnssCapabilitiesProvider"
 
-    new-instance v0, Ljava/lang/StringBuilder;
+    new-instance v3, Ljava/lang/StringBuilder;
 
-    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string/jumbo v1, "setTopHalCapabilities, mGnssCapabilities=0x"
+    const-string/jumbo v4, "setTopHalCapabilities, mGnssCapabilities=0x"
 
-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    iget-wide v1, p0, Lcom/android/server/location/GnssCapabilitiesProvider;->mGnssCapabilities:J
+    iget-wide v4, p0, Lcom/android/server/location/GnssCapabilitiesProvider;->mGnssCapabilities:J
 
-    invoke-static {v1, v2}, Ljava/lang/Long;->toHexString(J)Ljava/lang/String;
+    invoke-static {v4, v5}, Ljava/lang/Long;->toHexString(J)Ljava/lang/String;
 
-    move-result-object v1
+    move-result-object v4
 
-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string v1, ", "
+    const-string v4, ", "
 
-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    iget-wide v1, p0, Lcom/android/server/location/GnssCapabilitiesProvider;->mGnssCapabilities:J
+    iget-wide v4, p0, Lcom/android/server/location/GnssCapabilitiesProvider;->mGnssCapabilities:J
 
     .line 86
-    invoke-static {v1, v2}, Landroid/location/GnssCapabilities;->of(J)Landroid/location/GnssCapabilities;
+    invoke-static {v4, v5}, Landroid/location/GnssCapabilities;->of(J)Landroid/location/GnssCapabilities;
 
-    move-result-object v1
+    move-result-object v4
 
-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v3
 
     .line 85
-    invoke-static {p1, v0}, Landroid/util/Log;->d(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v2, v3}, Landroid/util/Log;->d(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 88
-    :cond_76
+    :cond_75
     monitor-exit p0
 
     .line 89
     return-void
 
     .line 88
-    :catchall_78
-    move-exception p1
+    :catchall_77
+    move-exception v2
 
     monitor-exit p0
-    :try_end_7a
-    .catchall {:try_start_3b .. :try_end_7a} :catchall_78
+    :try_end_79
+    .catchall {:try_start_3a .. :try_end_79} :catchall_77
 
-    throw p1
+    throw v2
 .end method

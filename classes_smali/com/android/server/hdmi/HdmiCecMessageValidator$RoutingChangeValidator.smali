@@ -35,6 +35,8 @@
 
 .method synthetic constructor <init>(Lcom/android/server/hdmi/HdmiCecMessageValidator;Lcom/android/server/hdmi/HdmiCecMessageValidator$1;)V
     .registers 3
+    .param p1, "x0"  # Lcom/android/server/hdmi/HdmiCecMessageValidator;
+    .param p2, "x1"  # Lcom/android/server/hdmi/HdmiCecMessageValidator$1;
 
     .line 327
     invoke-direct {p0, p1}, Lcom/android/server/hdmi/HdmiCecMessageValidator$RoutingChangeValidator;-><init>(Lcom/android/server/hdmi/HdmiCecMessageValidator;)V
@@ -46,6 +48,7 @@
 # virtual methods
 .method public isValid([B)I
     .registers 5
+    .param p1, "params"  # [B
 
     .line 330
     array-length v0, p1
@@ -76,9 +79,9 @@
 
     invoke-static {v0, p1, v2}, Lcom/android/server/hdmi/HdmiCecMessageValidator;->access$400(Lcom/android/server/hdmi/HdmiCecMessageValidator;[BI)Z
 
-    move-result p1
+    move-result v0
 
-    if-eqz p1, :cond_18
+    if-eqz v0, :cond_18
 
     const/4 v1, 0x1
 
@@ -86,7 +89,7 @@
     :cond_18
     invoke-static {v1}, Lcom/android/server/hdmi/HdmiCecMessageValidator;->access$500(Z)I
 
-    move-result p1
+    move-result v0
 
-    return p1
+    return v0
 .end method

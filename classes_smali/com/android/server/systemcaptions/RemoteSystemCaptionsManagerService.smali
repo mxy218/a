@@ -77,6 +77,10 @@
 
 .method constructor <init>(Landroid/content/Context;Landroid/content/ComponentName;IZ)V
     .registers 7
+    .param p1, "context"  # Landroid/content/Context;
+    .param p2, "componentName"  # Landroid/content/ComponentName;
+    .param p3, "userId"  # I
+    .param p4, "verbose"  # Z
 
     .line 61
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -118,49 +122,51 @@
     iput-boolean p4, p0, Lcom/android/server/systemcaptions/RemoteSystemCaptionsManagerService;->mVerbose:Z
 
     .line 66
-    new-instance p1, Landroid/content/Intent;
+    new-instance v0, Landroid/content/Intent;
 
-    const-string p3, "android.service.systemcaptions.SystemCaptionsManagerService"
+    const-string v1, "android.service.systemcaptions.SystemCaptionsManagerService"
 
-    invoke-direct {p1, p3}, Landroid/content/Intent;-><init>(Ljava/lang/String;)V
+    invoke-direct {v0, v1}, Landroid/content/Intent;-><init>(Ljava/lang/String;)V
 
-    invoke-virtual {p1, p2}, Landroid/content/Intent;->setComponent(Landroid/content/ComponentName;)Landroid/content/Intent;
+    invoke-virtual {v0, p2}, Landroid/content/Intent;->setComponent(Landroid/content/ComponentName;)Landroid/content/Intent;
 
-    move-result-object p1
+    move-result-object v0
 
-    iput-object p1, p0, Lcom/android/server/systemcaptions/RemoteSystemCaptionsManagerService;->mIntent:Landroid/content/Intent;
+    iput-object v0, p0, Lcom/android/server/systemcaptions/RemoteSystemCaptionsManagerService;->mIntent:Landroid/content/Intent;
 
     .line 67
-    new-instance p1, Landroid/os/Handler;
+    new-instance v0, Landroid/os/Handler;
 
     invoke-static {}, Landroid/os/Looper;->getMainLooper()Landroid/os/Looper;
 
-    move-result-object p2
+    move-result-object v1
 
-    invoke-direct {p1, p2}, Landroid/os/Handler;-><init>(Landroid/os/Looper;)V
+    invoke-direct {v0, v1}, Landroid/os/Handler;-><init>(Landroid/os/Looper;)V
 
-    iput-object p1, p0, Lcom/android/server/systemcaptions/RemoteSystemCaptionsManagerService;->mHandler:Landroid/os/Handler;
+    iput-object v0, p0, Lcom/android/server/systemcaptions/RemoteSystemCaptionsManagerService;->mHandler:Landroid/os/Handler;
 
     .line 68
     return-void
 .end method
 
 .method static synthetic access$100(Lcom/android/server/systemcaptions/RemoteSystemCaptionsManagerService;)Ljava/lang/Object;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/systemcaptions/RemoteSystemCaptionsManagerService;
 
     .line 33
-    iget-object p0, p0, Lcom/android/server/systemcaptions/RemoteSystemCaptionsManagerService;->mLock:Ljava/lang/Object;
+    iget-object v0, p0, Lcom/android/server/systemcaptions/RemoteSystemCaptionsManagerService;->mLock:Ljava/lang/Object;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$200(Lcom/android/server/systemcaptions/RemoteSystemCaptionsManagerService;)Z
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/systemcaptions/RemoteSystemCaptionsManagerService;
 
     .line 33
-    iget-boolean p0, p0, Lcom/android/server/systemcaptions/RemoteSystemCaptionsManagerService;->mVerbose:Z
+    iget-boolean v0, p0, Lcom/android/server/systemcaptions/RemoteSystemCaptionsManagerService;->mVerbose:Z
 
-    return p0
+    return v0
 .end method
 
 .method static synthetic access$300()Ljava/lang/String;
@@ -173,25 +179,29 @@
 .end method
 
 .method static synthetic access$400(Lcom/android/server/systemcaptions/RemoteSystemCaptionsManagerService;)Z
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/systemcaptions/RemoteSystemCaptionsManagerService;
 
     .line 33
-    iget-boolean p0, p0, Lcom/android/server/systemcaptions/RemoteSystemCaptionsManagerService;->mDestroyed:Z
+    iget-boolean v0, p0, Lcom/android/server/systemcaptions/RemoteSystemCaptionsManagerService;->mDestroyed:Z
 
-    return p0
+    return v0
 .end method
 
 .method static synthetic access$500(Lcom/android/server/systemcaptions/RemoteSystemCaptionsManagerService;)Z
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/systemcaptions/RemoteSystemCaptionsManagerService;
 
     .line 33
-    iget-boolean p0, p0, Lcom/android/server/systemcaptions/RemoteSystemCaptionsManagerService;->mBinding:Z
+    iget-boolean v0, p0, Lcom/android/server/systemcaptions/RemoteSystemCaptionsManagerService;->mBinding:Z
 
-    return p0
+    return v0
 .end method
 
 .method static synthetic access$502(Lcom/android/server/systemcaptions/RemoteSystemCaptionsManagerService;Z)Z
     .registers 2
+    .param p0, "x0"  # Lcom/android/server/systemcaptions/RemoteSystemCaptionsManagerService;
+    .param p1, "x1"  # Z
 
     .line 33
     iput-boolean p1, p0, Lcom/android/server/systemcaptions/RemoteSystemCaptionsManagerService;->mBinding:Z
@@ -201,6 +211,8 @@
 
 .method static synthetic access$602(Lcom/android/server/systemcaptions/RemoteSystemCaptionsManagerService;Landroid/os/IBinder;)Landroid/os/IBinder;
     .registers 2
+    .param p0, "x0"  # Lcom/android/server/systemcaptions/RemoteSystemCaptionsManagerService;
+    .param p1, "x1"  # Landroid/os/IBinder;
 
     .line 33
     iput-object p1, p0, Lcom/android/server/systemcaptions/RemoteSystemCaptionsManagerService;->mService:Landroid/os/IBinder;
@@ -220,13 +232,13 @@
     :try_start_3
     iget-object v1, p0, Lcom/android/server/systemcaptions/RemoteSystemCaptionsManagerService;->mService:Landroid/os/IBinder;
 
-    if-nez v1, :cond_5d
+    if-nez v1, :cond_5b
 
     iget-boolean v1, p0, Lcom/android/server/systemcaptions/RemoteSystemCaptionsManagerService;->mBinding:Z
 
     if-eqz v1, :cond_c
 
-    goto :goto_5d
+    goto :goto_5b
 
     .line 106
     :cond_c
@@ -251,6 +263,7 @@
     const v1, 0x4000001
 
     .line 112
+    .local v1, "flags":I
     iget-object v2, p0, Lcom/android/server/systemcaptions/RemoteSystemCaptionsManagerService;->mContext:Landroid/content/Context;
 
     iget-object v3, p0, Lcom/android/server/systemcaptions/RemoteSystemCaptionsManagerService;->mIntent:Landroid/content/Intent;
@@ -265,73 +278,76 @@
 
     invoke-direct {v7, v5}, Landroid/os/UserHandle;-><init>(I)V
 
-    const v5, 0x4000001
+    move v5, v1
 
     invoke-virtual/range {v2 .. v7}, Landroid/content/Context;->bindServiceAsUser(Landroid/content/Intent;Landroid/content/ServiceConnection;ILandroid/os/Handler;Landroid/os/UserHandle;)Z
 
     move-result v2
 
     .line 114
-    if-nez v2, :cond_5b
+    .local v2, "willBind":Z
+    if-nez v2, :cond_59
 
     .line 115
-    sget-object v2, Lcom/android/server/systemcaptions/RemoteSystemCaptionsManagerService;->TAG:Ljava/lang/String;
+    sget-object v3, Lcom/android/server/systemcaptions/RemoteSystemCaptionsManagerService;->TAG:Ljava/lang/String;
 
-    new-instance v3, Ljava/lang/StringBuilder;
+    new-instance v4, Ljava/lang/StringBuilder;
 
-    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v4}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v4, "Could not bind to "
+    const-string v5, "Could not bind to "
 
-    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    iget-object v4, p0, Lcom/android/server/systemcaptions/RemoteSystemCaptionsManagerService;->mIntent:Landroid/content/Intent;
+    iget-object v5, p0, Lcom/android/server/systemcaptions/RemoteSystemCaptionsManagerService;->mIntent:Landroid/content/Intent;
 
-    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
-    const-string v4, " with flags "
+    const-string v5, " with flags "
 
-    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v3, v1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v4, v1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v4}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v1
+    move-result-object v4
 
-    invoke-static {v2, v1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v3, v4}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 116
-    const/4 v1, 0x0
+    const/4 v3, 0x0
 
-    iput-boolean v1, p0, Lcom/android/server/systemcaptions/RemoteSystemCaptionsManagerService;->mBinding:Z
+    iput-boolean v3, p0, Lcom/android/server/systemcaptions/RemoteSystemCaptionsManagerService;->mBinding:Z
 
     .line 117
-    const/4 v1, 0x0
+    const/4 v3, 0x0
 
-    iput-object v1, p0, Lcom/android/server/systemcaptions/RemoteSystemCaptionsManagerService;->mService:Landroid/os/IBinder;
+    iput-object v3, p0, Lcom/android/server/systemcaptions/RemoteSystemCaptionsManagerService;->mService:Landroid/os/IBinder;
 
     .line 119
-    :cond_5b
+    .end local v1  # "flags":I
+    .end local v2  # "willBind":Z
+    :cond_59
     monitor-exit v0
 
     .line 120
     return-void
 
     .line 103
-    :cond_5d
-    :goto_5d
+    :cond_5b
+    :goto_5b
     monitor-exit v0
 
     return-void
 
     .line 119
-    :catchall_5f
+    :catchall_5d
     move-exception v1
 
     monitor-exit v0
-    :try_end_61
-    .catchall {:try_start_3 .. :try_end_61} :catchall_5f
+    :try_end_5f
+    .catchall {:try_start_3 .. :try_end_5f} :catchall_5d
 
     throw v1
 .end method
@@ -470,17 +486,17 @@
     .line 71
     iget-boolean v0, p0, Lcom/android/server/systemcaptions/RemoteSystemCaptionsManagerService;->mVerbose:Z
 
-    if-eqz v0, :cond_b
+    if-eqz v0, :cond_c
 
     .line 72
     sget-object v0, Lcom/android/server/systemcaptions/RemoteSystemCaptionsManagerService;->TAG:Ljava/lang/String;
 
-    const-string v1, "initialize()"
+    const-string/jumbo v1, "initialize()"
 
     invoke-static {v0, v1}, Landroid/util/Slog;->v(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 74
-    :cond_b
+    :cond_c
     invoke-direct {p0}, Lcom/android/server/systemcaptions/RemoteSystemCaptionsManagerService;->ensureBound()V
 
     .line 75

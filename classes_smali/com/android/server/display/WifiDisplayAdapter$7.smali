@@ -24,8 +24,9 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/display/WifiDisplayAdapter;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/display/WifiDisplayAdapter;
 
-    .line 228
+    .line 249
     iput-object p1, p0, Lcom/android/server/display/WifiDisplayAdapter$7;->this$0:Lcom/android/server/display/WifiDisplayAdapter;
 
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -38,7 +39,7 @@
 .method public run()V
     .registers 2
 
-    .line 231
+    .line 252
     iget-object v0, p0, Lcom/android/server/display/WifiDisplayAdapter$7;->this$0:Lcom/android/server/display/WifiDisplayAdapter;
 
     invoke-static {v0}, Lcom/android/server/display/WifiDisplayAdapter;->access$000(Lcom/android/server/display/WifiDisplayAdapter;)Lcom/android/server/display/WifiDisplayController;
@@ -47,7 +48,7 @@
 
     if-eqz v0, :cond_11
 
-    .line 232
+    .line 253
     iget-object v0, p0, Lcom/android/server/display/WifiDisplayAdapter$7;->this$0:Lcom/android/server/display/WifiDisplayAdapter;
 
     invoke-static {v0}, Lcom/android/server/display/WifiDisplayAdapter;->access$000(Lcom/android/server/display/WifiDisplayAdapter;)Lcom/android/server/display/WifiDisplayController;
@@ -56,7 +57,7 @@
 
     invoke-virtual {v0}, Lcom/android/server/display/WifiDisplayController;->requestDisconnect()V
 
-    .line 234
+    .line 255
     :cond_11
     return-void
 .end method

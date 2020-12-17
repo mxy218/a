@@ -17,21 +17,17 @@
 # static fields
 .field public static final INVALID_SIZE:I = -0x1
 
-.field public static final MAX_PRIORITY:I = 0x5
+.field public static final MAX_PRIORITY:I = 0x3
 
 .field public static final MIN_PRIORITY:I = 0x0
 
-.field public static final PRIORITY_APP_REQUEST_REFRESH_RATE:I = 0x2
+.field public static final PRIORITY_APP_REQUEST_REFRESH_RATE:I = 0x1
 
-.field public static final PRIORITY_APP_REQUEST_SIZE:I = 0x3
+.field public static final PRIORITY_APP_REQUEST_SIZE:I = 0x2
 
-.field public static final PRIORITY_LOW_BRIGHTNESS:I = 0x0
+.field public static final PRIORITY_LOW_POWER_MODE:I = 0x3
 
-.field public static final PRIORITY_LOW_POWER_MODE:I = 0x5
-
-.field public static final PRIORITY_USER_SETTING_MIN_REFRESH_RATE:I = 0x1
-
-.field public static final PRIORITY_USER_SETTING_PEAK_REFRESH_RATE:I = 0x4
+.field public static final PRIORITY_USER_SETTING:I
 
 
 # instance fields
@@ -47,30 +43,36 @@
 # direct methods
 .method private constructor <init>(IIFF)V
     .registers 5
+    .param p1, "width"  # I
+    .param p2, "height"  # I
+    .param p3, "minRefreshRate"  # F
+    .param p4, "maxRefreshRate"  # F
 
-    .line 520
+    .line 450
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
-    .line 521
+    .line 451
     iput p1, p0, Lcom/android/server/display/DisplayModeDirector$Vote;->width:I
 
-    .line 522
+    .line 452
     iput p2, p0, Lcom/android/server/display/DisplayModeDirector$Vote;->height:I
 
-    .line 523
+    .line 453
     iput p3, p0, Lcom/android/server/display/DisplayModeDirector$Vote;->minRefreshRate:F
 
-    .line 524
+    .line 454
     iput p4, p0, Lcom/android/server/display/DisplayModeDirector$Vote;->maxRefreshRate:F
 
-    .line 525
+    .line 455
     return-void
 .end method
 
 .method public static forRefreshRates(FF)Lcom/android/server/display/DisplayModeDirector$Vote;
     .registers 4
+    .param p0, "minRefreshRate"  # F
+    .param p1, "maxRefreshRate"  # F
 
-    .line 512
+    .line 442
     new-instance v0, Lcom/android/server/display/DisplayModeDirector$Vote;
 
     const/4 v1, -0x1
@@ -82,8 +84,10 @@
 
 .method public static forSize(II)Lcom/android/server/display/DisplayModeDirector$Vote;
     .registers 5
+    .param p0, "width"  # I
+    .param p1, "height"  # I
 
-    .line 516
+    .line 446
     new-instance v0, Lcom/android/server/display/DisplayModeDirector$Vote;
 
     const/4 v1, 0x0
@@ -97,72 +101,53 @@
 
 .method public static priorityToString(I)Ljava/lang/String;
     .registers 2
+    .param p0, "priority"  # I
 
-    .line 528
-    if-eqz p0, :cond_25
+    .line 458
+    if-eqz p0, :cond_19
 
     const/4 v0, 0x1
 
-    if-eq p0, v0, :cond_22
+    if-eq p0, v0, :cond_16
 
     const/4 v0, 0x2
 
-    if-eq p0, v0, :cond_1f
+    if-eq p0, v0, :cond_13
 
     const/4 v0, 0x3
 
-    if-eq p0, v0, :cond_1c
+    if-eq p0, v0, :cond_10
 
-    const/4 v0, 0x4
-
-    if-eq p0, v0, :cond_19
-
-    const/4 v0, 0x5
-
-    if-eq p0, v0, :cond_16
-
-    .line 542
+    .line 468
     invoke-static {p0}, Ljava/lang/Integer;->toString(I)Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v0
 
-    return-object p0
+    return-object v0
 
-    .line 540
+    .line 466
+    :cond_10
+    const-string v0, "PRIORITY_LOW_POWER_MODE"
+
+    return-object v0
+
+    .line 464
+    :cond_13
+    const-string v0, "PRIORITY_APP_REQUEST_SIZE"
+
+    return-object v0
+
+    .line 462
     :cond_16
-    const-string p0, "PRIORITY_LOW_POWER_MODE"
+    const-string v0, "PRIORITY_APP_REQUEST_REFRESH_RATE"
 
-    return-object p0
+    return-object v0
 
-    .line 538
+    .line 460
     :cond_19
-    const-string p0, "PRIORITY_USER_SETTING_PEAK_REFRESH_RATE"
+    const-string v0, "PRIORITY_USER_SETTING"
 
-    return-object p0
-
-    .line 536
-    :cond_1c
-    const-string p0, "PRIORITY_APP_REQUEST_SIZE"
-
-    return-object p0
-
-    .line 534
-    :cond_1f
-    const-string p0, "PRIORITY_APP_REQUEST_REFRESH_RATE"
-
-    return-object p0
-
-    .line 532
-    :cond_22
-    const-string p0, "PRIORITY_USER_SETTING_MIN_REFRESH_RATE"
-
-    return-object p0
-
-    .line 530
-    :cond_25
-    const-string p0, "PRIORITY_LOW_BRIGHTNESS"
-
-    return-object p0
+    return-object v0
 .end method
 
 
@@ -170,7 +155,7 @@
 .method public toString()Ljava/lang/String;
     .registers 3
 
-    .line 548
+    .line 474
     new-instance v0, Ljava/lang/StringBuilder;
 
     invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V

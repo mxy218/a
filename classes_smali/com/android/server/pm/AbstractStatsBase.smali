@@ -15,7 +15,7 @@
 
 
 # static fields
-.field private static final WRITE_INTERVAL_MS:I = 0x1b7740
+.field private static final WRITE_INTERVAL_MS:I
 
 
 # instance fields
@@ -33,10 +33,36 @@
 
 
 # direct methods
+.method static constructor <clinit>()V
+    .registers 1
+
+    .line 42
+    sget-boolean v0, Lcom/android/server/pm/PackageManagerService;->DEBUG_DEXOPT:Z
+
+    if-eqz v0, :cond_6
+
+    const/4 v0, 0x0
+
+    goto :goto_9
+
+    :cond_6
+    const v0, 0x1b7740
+
+    :goto_9
+    sput v0, Lcom/android/server/pm/AbstractStatsBase;->WRITE_INTERVAL_MS:I
+
+    .line 41
+    return-void
+.end method
+
 .method protected constructor <init>(Ljava/lang/String;Ljava/lang/String;Z)V
     .registers 7
+    .param p1, "fileName"  # Ljava/lang/String;
+    .param p2, "threadName"  # Ljava/lang/String;
+    .param p3, "lock"  # Z
 
     .line 50
+    .local p0, "this":Lcom/android/server/pm/AbstractStatsBase;, "Lcom/android/server/pm/AbstractStatsBase<TT;>;"
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
     .line 43
@@ -79,6 +105,8 @@
 
 .method static synthetic access$000(Lcom/android/server/pm/AbstractStatsBase;Ljava/lang/Object;)V
     .registers 2
+    .param p0, "x0"  # Lcom/android/server/pm/AbstractStatsBase;
+    .param p1, "x1"  # Ljava/lang/Object;
 
     .line 39
     invoke-direct {p0, p1}, Lcom/android/server/pm/AbstractStatsBase;->writeImpl(Ljava/lang/Object;)V
@@ -87,21 +115,23 @@
 .end method
 
 .method static synthetic access$100(Lcom/android/server/pm/AbstractStatsBase;)Ljava/util/concurrent/atomic/AtomicLong;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/pm/AbstractStatsBase;
 
     .line 39
-    iget-object p0, p0, Lcom/android/server/pm/AbstractStatsBase;->mLastTimeWritten:Ljava/util/concurrent/atomic/AtomicLong;
+    iget-object v0, p0, Lcom/android/server/pm/AbstractStatsBase;->mLastTimeWritten:Ljava/util/concurrent/atomic/AtomicLong;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$200(Lcom/android/server/pm/AbstractStatsBase;)Ljava/util/concurrent/atomic/AtomicBoolean;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/pm/AbstractStatsBase;
 
     .line 39
-    iget-object p0, p0, Lcom/android/server/pm/AbstractStatsBase;->mBackgroundWriteRunning:Ljava/util/concurrent/atomic/AtomicBoolean;
+    iget-object v0, p0, Lcom/android/server/pm/AbstractStatsBase;->mBackgroundWriteRunning:Ljava/util/concurrent/atomic/AtomicBoolean;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method private writeImpl(Ljava/lang/Object;)V
@@ -113,6 +143,8 @@
     .end annotation
 
     .line 93
+    .local p0, "this":Lcom/android/server/pm/AbstractStatsBase;, "Lcom/android/server/pm/AbstractStatsBase<TT;>;"
+    .local p1, "data":Ljava/lang/Object;, "TT;"
     iget-boolean v0, p0, Lcom/android/server/pm/AbstractStatsBase;->mLock:Z
 
     if-eqz v0, :cond_14
@@ -154,10 +186,14 @@
     :try_end_10
     .catchall {:try_start_f .. :try_end_10} :catchall_e
 
+    .end local p0  # "this":Lcom/android/server/pm/AbstractStatsBase;, "Lcom/android/server/pm/AbstractStatsBase<TT;>;"
+    .end local p1  # "data":Ljava/lang/Object;, "TT;"
     :try_start_10
     throw v1
 
     .line 98
+    .restart local p0  # "this":Lcom/android/server/pm/AbstractStatsBase;, "Lcom/android/server/pm/AbstractStatsBase<TT;>;"
+    .restart local p1  # "data":Ljava/lang/Object;, "TT;"
     :catchall_11
     move-exception v0
 
@@ -186,26 +222,28 @@
 
     .line 102
     :catchall_1c
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_1e
     .catchall {:try_start_17 .. :try_end_1e} :catchall_1c
 
-    throw p1
+    throw v1
 .end method
 
 
 # virtual methods
 .method protected getFile()Landroid/util/AtomicFile;
-    .registers 4
+    .registers 5
 
     .line 57
+    .local p0, "this":Lcom/android/server/pm/AbstractStatsBase;, "Lcom/android/server/pm/AbstractStatsBase<TT;>;"
     invoke-static {}, Landroid/os/Environment;->getDataDirectory()Ljava/io/File;
 
     move-result-object v0
 
     .line 58
+    .local v0, "dataDir":Ljava/io/File;
     new-instance v1, Ljava/io/File;
 
     const-string/jumbo v2, "system"
@@ -213,18 +251,20 @@
     invoke-direct {v1, v0, v2}, Ljava/io/File;-><init>(Ljava/io/File;Ljava/lang/String;)V
 
     .line 59
-    new-instance v0, Ljava/io/File;
+    .local v1, "systemDir":Ljava/io/File;
+    new-instance v2, Ljava/io/File;
 
-    iget-object v2, p0, Lcom/android/server/pm/AbstractStatsBase;->mFileName:Ljava/lang/String;
+    iget-object v3, p0, Lcom/android/server/pm/AbstractStatsBase;->mFileName:Ljava/lang/String;
 
-    invoke-direct {v0, v1, v2}, Ljava/io/File;-><init>(Ljava/io/File;Ljava/lang/String;)V
+    invoke-direct {v2, v1, v3}, Ljava/io/File;-><init>(Ljava/io/File;Ljava/lang/String;)V
 
     .line 60
-    new-instance v1, Landroid/util/AtomicFile;
+    .local v2, "fname":Ljava/io/File;
+    new-instance v3, Landroid/util/AtomicFile;
 
-    invoke-direct {v1, v0}, Landroid/util/AtomicFile;-><init>(Ljava/io/File;)V
+    invoke-direct {v3, v2}, Landroid/util/AtomicFile;-><init>(Ljava/io/File;)V
 
-    return-object v1
+    return-object v3
 .end method
 
 .method protected maybeWriteAsync(Ljava/lang/Object;)Z
@@ -236,6 +276,8 @@
     .end annotation
 
     .line 69
+    .local p0, "this":Lcom/android/server/pm/AbstractStatsBase;, "Lcom/android/server/pm/AbstractStatsBase<TT;>;"
+    .local p1, "data":Ljava/lang/Object;, "TT;"
     invoke-static {}, Landroid/os/SystemClock;->elapsedRealtime()J
 
     move-result-wide v0
@@ -248,19 +290,25 @@
 
     sub-long/2addr v0, v2
 
-    const-wide/32 v2, 0x1b7740
+    sget v2, Lcom/android/server/pm/AbstractStatsBase;->WRITE_INTERVAL_MS:I
+
+    int-to-long v2, v2
 
     cmp-long v0, v0, v2
 
     const/4 v1, 0x0
 
-    if-gez v0, :cond_14
+    if-gez v0, :cond_18
+
+    sget-boolean v0, Lcom/android/server/pm/PackageManagerService;->DEBUG_DEXOPT:Z
+
+    if-nez v0, :cond_18
 
     .line 71
     return v1
 
     .line 74
-    :cond_14
+    :cond_18
     iget-object v0, p0, Lcom/android/server/pm/AbstractStatsBase;->mBackgroundWriteRunning:Ljava/util/concurrent/atomic/AtomicBoolean;
 
     const/4 v2, 0x1
@@ -269,7 +317,7 @@
 
     move-result v0
 
-    if-eqz v0, :cond_28
+    if-eqz v0, :cond_2c
 
     .line 75
     new-instance v0, Lcom/android/server/pm/AbstractStatsBase$1;
@@ -285,12 +333,12 @@
     return v2
 
     .line 89
-    :cond_28
+    :cond_2c
     return v1
 .end method
 
 .method protected read(Ljava/lang/Object;)V
-    .registers 4
+    .registers 5
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(TT;)V"
@@ -298,6 +346,8 @@
     .end annotation
 
     .line 109
+    .local p0, "this":Lcom/android/server/pm/AbstractStatsBase;, "Lcom/android/server/pm/AbstractStatsBase<TT;>;"
+    .local p1, "data":Ljava/lang/Object;, "TT;"
     iget-boolean v0, p0, Lcom/android/server/pm/AbstractStatsBase;->mLock:Z
 
     if-eqz v0, :cond_14
@@ -339,10 +389,14 @@
     :try_end_10
     .catchall {:try_start_f .. :try_end_10} :catchall_e
 
+    .end local p0  # "this":Lcom/android/server/pm/AbstractStatsBase;, "Lcom/android/server/pm/AbstractStatsBase<TT;>;"
+    .end local p1  # "data":Ljava/lang/Object;, "TT;"
     :try_start_10
     throw v1
 
     .line 114
+    .restart local p0  # "this":Lcom/android/server/pm/AbstractStatsBase;, "Lcom/android/server/pm/AbstractStatsBase<TT;>;"
+    .restart local p1  # "data":Ljava/lang/Object;, "TT;"
     :catchall_11
     move-exception v0
 
@@ -369,27 +423,27 @@
 
     .line 122
     :goto_1b
-    iget-object p1, p0, Lcom/android/server/pm/AbstractStatsBase;->mLastTimeWritten:Ljava/util/concurrent/atomic/AtomicLong;
+    iget-object v0, p0, Lcom/android/server/pm/AbstractStatsBase;->mLastTimeWritten:Ljava/util/concurrent/atomic/AtomicLong;
 
     invoke-static {}, Landroid/os/SystemClock;->elapsedRealtime()J
 
-    move-result-wide v0
+    move-result-wide v1
 
-    invoke-virtual {p1, v0, v1}, Ljava/util/concurrent/atomic/AtomicLong;->set(J)V
+    invoke-virtual {v0, v1, v2}, Ljava/util/concurrent/atomic/AtomicLong;->set(J)V
 
     .line 123
     return-void
 
     .line 118
     :catchall_25
-    move-exception p1
+    move-exception v1
 
     :try_start_26
     monitor-exit v0
     :try_end_27
     .catchall {:try_start_26 .. :try_end_27} :catchall_25
 
-    throw p1
+    throw v1
 .end method
 
 .method protected abstract readInternal(Ljava/lang/Object;)V
@@ -409,7 +463,7 @@
 .end method
 
 .method protected writeNow(Ljava/lang/Object;)V
-    .registers 4
+    .registers 5
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(TT;)V"
@@ -417,16 +471,18 @@
     .end annotation
 
     .line 64
+    .local p0, "this":Lcom/android/server/pm/AbstractStatsBase;, "Lcom/android/server/pm/AbstractStatsBase<TT;>;"
+    .local p1, "data":Ljava/lang/Object;, "TT;"
     invoke-direct {p0, p1}, Lcom/android/server/pm/AbstractStatsBase;->writeImpl(Ljava/lang/Object;)V
 
     .line 65
-    iget-object p1, p0, Lcom/android/server/pm/AbstractStatsBase;->mLastTimeWritten:Ljava/util/concurrent/atomic/AtomicLong;
+    iget-object v0, p0, Lcom/android/server/pm/AbstractStatsBase;->mLastTimeWritten:Ljava/util/concurrent/atomic/AtomicLong;
 
     invoke-static {}, Landroid/os/SystemClock;->elapsedRealtime()J
 
-    move-result-wide v0
+    move-result-wide v1
 
-    invoke-virtual {p1, v0, v1}, Ljava/util/concurrent/atomic/AtomicLong;->set(J)V
+    invoke-virtual {v0, v1, v2}, Ljava/util/concurrent/atomic/AtomicLong;->set(J)V
 
     .line 66
     return-void

@@ -23,8 +23,9 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/am/UserController;I)V
     .registers 3
+    .param p1, "this$0"  # Lcom/android/server/am/UserController;
 
-    .line 600
+    .line 581
     iput-object p1, p0, Lcom/android/server/am/UserController$2;->this$0:Lcom/android/server/am/UserController;
 
     iput p2, p0, Lcom/android/server/am/UserController$2;->val$userId:I
@@ -37,41 +38,48 @@
 
 # virtual methods
 .method public performReceive(Landroid/content/Intent;ILjava/lang/String;Landroid/os/Bundle;ZZI)V
-    .registers 8
+    .registers 10
+    .param p1, "intent"  # Landroid/content/Intent;
+    .param p2, "resultCode"  # I
+    .param p3, "data"  # Ljava/lang/String;
+    .param p4, "extras"  # Landroid/os/Bundle;
+    .param p5, "ordered"  # Z
+    .param p6, "sticky"  # Z
+    .param p7, "sendingUser"  # I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
         }
     .end annotation
 
-    .line 605
-    new-instance p1, Ljava/lang/StringBuilder;
+    .line 586
+    new-instance v0, Ljava/lang/StringBuilder;
 
-    invoke-direct {p1}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string p2, "Finished processing BOOT_COMPLETED for u"
+    const-string v1, "Finished processing BOOT_COMPLETED for u"
 
-    invoke-virtual {p1, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    iget p2, p0, Lcom/android/server/am/UserController$2;->val$userId:I
+    iget v1, p0, Lcom/android/server/am/UserController$2;->val$userId:I
 
-    invoke-virtual {p1, p2}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    const-string p2, "ActivityManager"
+    const-string v1, "ActivityManager"
 
-    invoke-static {p2, p1}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v0}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 607
-    iget-object p1, p0, Lcom/android/server/am/UserController$2;->this$0:Lcom/android/server/am/UserController;
+    .line 588
+    iget-object v0, p0, Lcom/android/server/am/UserController$2;->this$0:Lcom/android/server/am/UserController;
 
-    const/4 p2, 0x1
+    const/4 v1, 0x1
 
-    iput-boolean p2, p1, Lcom/android/server/am/UserController;->mBootCompleted:Z
+    iput-boolean v1, v0, Lcom/android/server/am/UserController;->mBootCompleted:Z
 
-    .line 608
+    .line 589
     return-void
 .end method

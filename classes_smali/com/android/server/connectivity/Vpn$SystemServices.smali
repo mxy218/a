@@ -24,14 +24,15 @@
 # direct methods
 .method public constructor <init>(Landroid/content/Context;)V
     .registers 2
+    .param p1, "context"  # Landroid/content/Context;
 
-    .line 1647
+    .line 1803
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
-    .line 1648
+    .line 1804
     iput-object p1, p0, Lcom/android/server/connectivity/Vpn$SystemServices;->mContext:Landroid/content/Context;
 
-    .line 1649
+    .line 1805
     return-void
 .end method
 
@@ -39,8 +40,11 @@
 # virtual methods
 .method public pendingIntentGetActivityAsUser(Landroid/content/Intent;ILandroid/os/UserHandle;)Landroid/app/PendingIntent;
     .registers 10
+    .param p1, "intent"  # Landroid/content/Intent;
+    .param p2, "flags"  # I
+    .param p3, "user"  # Landroid/os/UserHandle;
 
-    .line 1656
+    .line 1812
     iget-object v0, p0, Lcom/android/server/connectivity/Vpn$SystemServices;->mContext:Landroid/content/Context;
 
     const/4 v1, 0x0
@@ -55,15 +59,18 @@
 
     invoke-static/range {v0 .. v5}, Landroid/app/PendingIntent;->getActivityAsUser(Landroid/content/Context;ILandroid/content/Intent;ILandroid/os/Bundle;Landroid/os/UserHandle;)Landroid/app/PendingIntent;
 
-    move-result-object p1
+    move-result-object v0
 
-    return-object p1
+    return-object v0
 .end method
 
 .method public settingsSecureGetIntForUser(Ljava/lang/String;II)I
     .registers 5
+    .param p1, "key"  # Ljava/lang/String;
+    .param p2, "def"  # I
+    .param p3, "userId"  # I
 
-    .line 1685
+    .line 1841
     iget-object v0, p0, Lcom/android/server/connectivity/Vpn$SystemServices;->mContext:Landroid/content/Context;
 
     invoke-virtual {v0}, Landroid/content/Context;->getContentResolver()Landroid/content/ContentResolver;
@@ -72,15 +79,17 @@
 
     invoke-static {v0, p1, p2, p3}, Landroid/provider/Settings$Secure;->getIntForUser(Landroid/content/ContentResolver;Ljava/lang/String;II)I
 
-    move-result p1
+    move-result v0
 
-    return p1
+    return v0
 .end method
 
 .method public settingsSecureGetStringForUser(Ljava/lang/String;I)Ljava/lang/String;
     .registers 4
+    .param p1, "key"  # Ljava/lang/String;
+    .param p2, "userId"  # I
 
-    .line 1678
+    .line 1834
     iget-object v0, p0, Lcom/android/server/connectivity/Vpn$SystemServices;->mContext:Landroid/content/Context;
 
     invoke-virtual {v0}, Landroid/content/Context;->getContentResolver()Landroid/content/ContentResolver;
@@ -89,15 +98,18 @@
 
     invoke-static {v0, p1, p2}, Landroid/provider/Settings$Secure;->getStringForUser(Landroid/content/ContentResolver;Ljava/lang/String;I)Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    return-object p1
+    return-object v0
 .end method
 
 .method public settingsSecurePutIntForUser(Ljava/lang/String;II)V
     .registers 5
+    .param p1, "key"  # Ljava/lang/String;
+    .param p2, "value"  # I
+    .param p3, "userId"  # I
 
-    .line 1671
+    .line 1827
     iget-object v0, p0, Lcom/android/server/connectivity/Vpn$SystemServices;->mContext:Landroid/content/Context;
 
     invoke-virtual {v0}, Landroid/content/Context;->getContentResolver()Landroid/content/ContentResolver;
@@ -106,14 +118,17 @@
 
     invoke-static {v0, p1, p2, p3}, Landroid/provider/Settings$Secure;->putIntForUser(Landroid/content/ContentResolver;Ljava/lang/String;II)Z
 
-    .line 1672
+    .line 1828
     return-void
 .end method
 
 .method public settingsSecurePutStringForUser(Ljava/lang/String;Ljava/lang/String;I)V
     .registers 5
+    .param p1, "key"  # Ljava/lang/String;
+    .param p2, "value"  # Ljava/lang/String;
+    .param p3, "userId"  # I
 
-    .line 1664
+    .line 1820
     iget-object v0, p0, Lcom/android/server/connectivity/Vpn$SystemServices;->mContext:Landroid/content/Context;
 
     invoke-virtual {v0}, Landroid/content/Context;->getContentResolver()Landroid/content/ContentResolver;
@@ -122,6 +137,6 @@
 
     invoke-static {v0, p1, p2, p3}, Landroid/provider/Settings$Secure;->putStringForUser(Landroid/content/ContentResolver;Ljava/lang/String;Ljava/lang/String;I)Z
 
-    .line 1665
+    .line 1821
     return-void
 .end method

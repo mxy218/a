@@ -29,6 +29,7 @@
 # direct methods
 .method public constructor <init>(Lcom/android/server/tv/TvRemoteProviderProxy$Connection;)V
     .registers 3
+    .param p1, "connection"  # Lcom/android/server/tv/TvRemoteProviderProxy$Connection;
 
     .line 564
     invoke-direct {p0}, Landroid/media/tv/ITvRemoteServiceInput$Stub;-><init>()V
@@ -48,6 +49,7 @@
 # virtual methods
 .method public clearInputBridge(Landroid/os/IBinder;)V
     .registers 3
+    .param p1, "token"  # Landroid/os/IBinder;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -64,6 +66,7 @@
     check-cast v0, Lcom/android/server/tv/TvRemoteProviderProxy$Connection;
 
     .line 593
+    .local v0, "connection":Lcom/android/server/tv/TvRemoteProviderProxy$Connection;
     if-eqz v0, :cond_d
 
     .line 594
@@ -76,6 +79,7 @@
 
 .method public closeInputBridge(Landroid/os/IBinder;)V
     .registers 3
+    .param p1, "token"  # Landroid/os/IBinder;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -92,6 +96,7 @@
     check-cast v0, Lcom/android/server/tv/TvRemoteProviderProxy$Connection;
 
     .line 585
+    .local v0, "connection":Lcom/android/server/tv/TvRemoteProviderProxy$Connection;
     if-eqz v0, :cond_d
 
     .line 586
@@ -116,6 +121,11 @@
 
 .method public openInputBridge(Landroid/os/IBinder;Ljava/lang/String;III)V
     .registers 13
+    .param p1, "token"  # Landroid/os/IBinder;
+    .param p2, "name"  # Ljava/lang/String;
+    .param p3, "width"  # I
+    .param p4, "height"  # I
+    .param p5, "maxPointers"  # I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -129,14 +139,15 @@
 
     move-result-object v0
 
-    move-object v1, v0
-
-    check-cast v1, Lcom/android/server/tv/TvRemoteProviderProxy$Connection;
+    check-cast v0, Lcom/android/server/tv/TvRemoteProviderProxy$Connection;
 
     .line 577
-    if-eqz v1, :cond_13
+    .local v0, "connection":Lcom/android/server/tv/TvRemoteProviderProxy$Connection;
+    if-eqz v0, :cond_13
 
     .line 578
+    move-object v1, v0
+
     move-object v2, p1
 
     move-object v3, p2
@@ -156,6 +167,8 @@
 
 .method public sendKeyDown(Landroid/os/IBinder;I)V
     .registers 4
+    .param p1, "token"  # Landroid/os/IBinder;
+    .param p2, "keyCode"  # I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -172,6 +185,7 @@
     check-cast v0, Lcom/android/server/tv/TvRemoteProviderProxy$Connection;
 
     .line 609
+    .local v0, "connection":Lcom/android/server/tv/TvRemoteProviderProxy$Connection;
     if-eqz v0, :cond_d
 
     .line 610
@@ -184,6 +198,8 @@
 
 .method public sendKeyUp(Landroid/os/IBinder;I)V
     .registers 4
+    .param p1, "token"  # Landroid/os/IBinder;
+    .param p2, "keyCode"  # I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -200,6 +216,7 @@
     check-cast v0, Lcom/android/server/tv/TvRemoteProviderProxy$Connection;
 
     .line 617
+    .local v0, "connection":Lcom/android/server/tv/TvRemoteProviderProxy$Connection;
     if-eqz v0, :cond_d
 
     .line 618
@@ -212,6 +229,10 @@
 
 .method public sendPointerDown(Landroid/os/IBinder;III)V
     .registers 6
+    .param p1, "token"  # Landroid/os/IBinder;
+    .param p2, "pointerId"  # I
+    .param p3, "x"  # I
+    .param p4, "y"  # I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -228,6 +249,7 @@
     check-cast v0, Lcom/android/server/tv/TvRemoteProviderProxy$Connection;
 
     .line 626
+    .local v0, "connection":Lcom/android/server/tv/TvRemoteProviderProxy$Connection;
     if-eqz v0, :cond_d
 
     .line 627
@@ -240,6 +262,7 @@
 
 .method public sendPointerSync(Landroid/os/IBinder;)V
     .registers 3
+    .param p1, "token"  # Landroid/os/IBinder;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -256,6 +279,7 @@
     check-cast v0, Lcom/android/server/tv/TvRemoteProviderProxy$Connection;
 
     .line 642
+    .local v0, "connection":Lcom/android/server/tv/TvRemoteProviderProxy$Connection;
     if-eqz v0, :cond_d
 
     .line 643
@@ -268,6 +292,8 @@
 
 .method public sendPointerUp(Landroid/os/IBinder;I)V
     .registers 4
+    .param p1, "token"  # Landroid/os/IBinder;
+    .param p2, "pointerId"  # I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -284,6 +310,7 @@
     check-cast v0, Lcom/android/server/tv/TvRemoteProviderProxy$Connection;
 
     .line 634
+    .local v0, "connection":Lcom/android/server/tv/TvRemoteProviderProxy$Connection;
     if-eqz v0, :cond_d
 
     .line 635
@@ -296,6 +323,8 @@
 
 .method public sendTimestamp(Landroid/os/IBinder;J)V
     .registers 5
+    .param p1, "token"  # Landroid/os/IBinder;
+    .param p2, "timestamp"  # J
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -312,6 +341,7 @@
     check-cast v0, Lcom/android/server/tv/TvRemoteProviderProxy$Connection;
 
     .line 601
+    .local v0, "connection":Lcom/android/server/tv/TvRemoteProviderProxy$Connection;
     if-eqz v0, :cond_d
 
     .line 602

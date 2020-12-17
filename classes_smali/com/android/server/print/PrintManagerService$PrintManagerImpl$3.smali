@@ -26,6 +26,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/print/PrintManagerService$PrintManagerImpl;I)V
     .registers 3
+    .param p1, "this$1"  # Lcom/android/server/print/PrintManagerService$PrintManagerImpl;
 
     .line 986
     iput-object p1, p0, Lcom/android/server/print/PrintManagerService$PrintManagerImpl$3;->this$1:Lcom/android/server/print/PrintManagerService$PrintManagerImpl;
@@ -84,6 +85,7 @@
     move-result-object v1
 
     .line 995
+    .local v1, "userState":Lcom/android/server/print/UserState;
     invoke-virtual {v1}, Lcom/android/server/print/UserState;->updateIfNeededLocked()V
 
     .line 996
@@ -98,6 +100,7 @@
     return-void
 
     .line 996
+    .end local v1  # "userState":Lcom/android/server/print/UserState;
     :catchall_28
     move-exception v1
 

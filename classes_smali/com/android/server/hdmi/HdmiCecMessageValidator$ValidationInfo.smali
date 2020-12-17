@@ -23,6 +23,8 @@
 # direct methods
 .method public constructor <init>(Lcom/android/server/hdmi/HdmiCecMessageValidator$ParameterValidator;I)V
     .registers 3
+    .param p1, "validator"  # Lcom/android/server/hdmi/HdmiCecMessageValidator$ParameterValidator;
+    .param p2, "type"  # I
 
     .line 57
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V

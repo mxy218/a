@@ -43,6 +43,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/job/JobSchedulerService;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/job/JobSchedulerService;
 
     .line 1987
     iput-object p1, p0, Lcom/android/server/job/JobSchedulerService$ReadyJobQueueFunctor;->this$0:Lcom/android/server/job/JobSchedulerService;
@@ -56,6 +57,7 @@
 # virtual methods
 .method public accept(Lcom/android/server/job/controllers/JobStatus;)V
     .registers 4
+    .param p1, "job"  # Lcom/android/server/job/controllers/JobStatus;
 
     .line 1992
     iget-object v0, p0, Lcom/android/server/job/JobSchedulerService$ReadyJobQueueFunctor;->this$0:Lcom/android/server/job/JobSchedulerService;

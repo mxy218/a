@@ -31,7 +31,12 @@
 
 # direct methods
 .method public constructor <init>(Landroid/content/Context;Lcom/android/server/accessibility/AccessibilityManagerService;Lcom/android/server/wm/WindowManagerInternal;Landroid/os/Handler;J)V
-    .registers 7
+    .registers 8
+    .param p1, "context"  # Landroid/content/Context;
+    .param p2, "ams"  # Lcom/android/server/accessibility/AccessibilityManagerService;
+    .param p3, "windowManager"  # Lcom/android/server/wm/WindowManagerInternal;
+    .param p4, "handler"  # Landroid/os/Handler;
+    .param p5, "animationDuration"  # J
 
     .line 1319
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -51,9 +56,9 @@
     .line 1324
     invoke-static {p5, p6}, Ljava/lang/Long;->valueOf(J)Ljava/lang/Long;
 
-    move-result-object p1
+    move-result-object v0
 
-    iput-object p1, p0, Lcom/android/server/accessibility/MagnificationController$ControllerContext;->mAnimationDuration:Ljava/lang/Long;
+    iput-object v0, p0, Lcom/android/server/accessibility/MagnificationController$ControllerContext;->mAnimationDuration:Ljava/lang/Long;
 
     .line 1325
     return-void
@@ -103,6 +108,7 @@
 
 .method public getMagnificationScale(I)F
     .registers 5
+    .param p1, "userId"  # I
 
     .line 1381
     iget-object v0, p0, Lcom/android/server/accessibility/MagnificationController$ControllerContext;->mContext:Landroid/content/Context;
@@ -117,9 +123,9 @@
 
     invoke-static {v0, v1, v2, p1}, Landroid/provider/Settings$Secure;->getFloatForUser(Landroid/content/ContentResolver;Ljava/lang/String;FI)F
 
-    move-result p1
+    move-result v0
 
-    return p1
+    return v0
 .end method
 
 .method public getWindowManager()Lcom/android/server/wm/WindowManagerInternal;
@@ -144,6 +150,8 @@
 
 .method public putMagnificationScale(FI)V
     .registers 5
+    .param p1, "value"  # F
+    .param p2, "userId"  # I
 
     .line 1373
     iget-object v0, p0, Lcom/android/server/accessibility/MagnificationController$ControllerContext;->mContext:Landroid/content/Context;

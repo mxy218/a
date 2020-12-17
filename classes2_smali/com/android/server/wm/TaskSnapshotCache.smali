@@ -42,6 +42,8 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/wm/WindowManagerService;Lcom/android/server/wm/TaskSnapshotLoader;)V
     .registers 4
+    .param p1, "service"  # Lcom/android/server/wm/WindowManagerService;
+    .param p2, "loader"  # Lcom/android/server/wm/TaskSnapshotLoader;
 
     .line 40
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -71,7 +73,8 @@
 .end method
 
 .method private removeRunningEntry(I)V
-    .registers 4
+    .registers 5
+    .param p1, "taskId"  # I
 
     .line 112
     iget-object v0, p0, Lcom/android/server/wm/TaskSnapshotCache;->mRunningCache:Landroid/util/ArrayMap;
@@ -87,23 +90,24 @@
     check-cast v0, Lcom/android/server/wm/TaskSnapshotCache$CacheEntry;
 
     .line 113
+    .local v0, "entry":Lcom/android/server/wm/TaskSnapshotCache$CacheEntry;
     if-eqz v0, :cond_1e
 
     .line 114
     iget-object v1, p0, Lcom/android/server/wm/TaskSnapshotCache;->mAppTaskMap:Landroid/util/ArrayMap;
 
-    iget-object v0, v0, Lcom/android/server/wm/TaskSnapshotCache$CacheEntry;->topApp:Lcom/android/server/wm/AppWindowToken;
+    iget-object v2, v0, Lcom/android/server/wm/TaskSnapshotCache$CacheEntry;->topApp:Lcom/android/server/wm/AppWindowToken;
 
-    invoke-virtual {v1, v0}, Landroid/util/ArrayMap;->remove(Ljava/lang/Object;)Ljava/lang/Object;
+    invoke-virtual {v1, v2}, Landroid/util/ArrayMap;->remove(Ljava/lang/Object;)Ljava/lang/Object;
 
     .line 115
-    iget-object v0, p0, Lcom/android/server/wm/TaskSnapshotCache;->mRunningCache:Landroid/util/ArrayMap;
+    iget-object v1, p0, Lcom/android/server/wm/TaskSnapshotCache;->mRunningCache:Landroid/util/ArrayMap;
 
     invoke-static {p1}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
 
-    move-result-object p1
+    move-result-object v2
 
-    invoke-virtual {v0, p1}, Landroid/util/ArrayMap;->remove(Ljava/lang/Object;)Ljava/lang/Object;
+    invoke-virtual {v1, v2}, Landroid/util/ArrayMap;->remove(Ljava/lang/Object;)Ljava/lang/Object;
 
     .line 117
     :cond_1e
@@ -111,32 +115,38 @@
 .end method
 
 .method private tryRestoreFromDisk(IIZ)Landroid/app/ActivityManager$TaskSnapshot;
-    .registers 5
+    .registers 6
+    .param p1, "taskId"  # I
+    .param p2, "userId"  # I
+    .param p3, "reducedResolution"  # Z
 
     .line 80
     iget-object v0, p0, Lcom/android/server/wm/TaskSnapshotCache;->mLoader:Lcom/android/server/wm/TaskSnapshotLoader;
 
     invoke-virtual {v0, p1, p2, p3}, Lcom/android/server/wm/TaskSnapshotLoader;->loadTask(IIZ)Landroid/app/ActivityManager$TaskSnapshot;
 
-    move-result-object p1
+    move-result-object v0
 
     .line 81
-    if-nez p1, :cond_a
+    .local v0, "snapshot":Landroid/app/ActivityManager$TaskSnapshot;
+    if-nez v0, :cond_a
 
     .line 82
-    const/4 p1, 0x0
+    const/4 v1, 0x0
 
-    return-object p1
+    return-object v1
 
     .line 84
     :cond_a
-    return-object p1
+    return-object v0
 .end method
 
 
 # virtual methods
 .method dump(Ljava/io/PrintWriter;Ljava/lang/String;)V
-    .registers 8
+    .registers 9
+    .param p1, "pw"  # Ljava/io/PrintWriter;
+    .param p2, "prefix"  # Ljava/lang/String;
 
     .line 120
     new-instance v0, Ljava/lang/StringBuilder;
@@ -154,6 +164,7 @@
     move-result-object v0
 
     .line 121
+    .local v0, "doublePrefix":Ljava/lang/String;
     new-instance v2, Ljava/lang/StringBuilder;
 
     invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
@@ -167,122 +178,131 @@
     move-result-object v1
 
     .line 122
+    .local v1, "triplePrefix":Ljava/lang/String;
     new-instance v2, Ljava/lang/StringBuilder;
 
     invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
 
     invoke-virtual {v2, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string p2, "SnapshotCache"
+    const-string v3, "SnapshotCache"
 
-    invoke-virtual {v2, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
-
-    move-result-object p2
-
-    invoke-virtual {p1, p2}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
-
-    .line 123
-    iget-object p2, p0, Lcom/android/server/wm/TaskSnapshotCache;->mRunningCache:Landroid/util/ArrayMap;
-
-    invoke-virtual {p2}, Landroid/util/ArrayMap;->size()I
-
-    move-result p2
-
-    add-int/lit8 p2, p2, -0x1
-
-    :goto_3c
-    if-ltz p2, :cond_98
-
-    .line 124
-    iget-object v2, p0, Lcom/android/server/wm/TaskSnapshotCache;->mRunningCache:Landroid/util/ArrayMap;
-
-    invoke-virtual {v2, p2}, Landroid/util/ArrayMap;->valueAt(I)Ljava/lang/Object;
-
-    move-result-object v2
-
-    check-cast v2, Lcom/android/server/wm/TaskSnapshotCache$CacheEntry;
-
-    .line 125
-    new-instance v3, Ljava/lang/StringBuilder;
-
-    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
-
-    invoke-virtual {v3, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    const-string v4, "Entry taskId="
-
-    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    iget-object v4, p0, Lcom/android/server/wm/TaskSnapshotCache;->mRunningCache:Landroid/util/ArrayMap;
-
-    invoke-virtual {v4, p2}, Landroid/util/ArrayMap;->keyAt(I)Ljava/lang/Object;
-
-    move-result-object v4
-
-    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
-
-    move-result-object v3
-
-    invoke-virtual {p1, v3}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
-
-    .line 126
-    new-instance v3, Ljava/lang/StringBuilder;
-
-    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
-
-    invoke-virtual {v3, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    const-string v4, "topApp="
-
-    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    iget-object v4, v2, Lcom/android/server/wm/TaskSnapshotCache$CacheEntry;->topApp:Lcom/android/server/wm/AppWindowToken;
-
-    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
-
-    move-result-object v3
-
-    invoke-virtual {p1, v3}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
-
-    .line 127
-    new-instance v3, Ljava/lang/StringBuilder;
-
-    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
-
-    invoke-virtual {v3, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    const-string v4, "snapshot="
-
-    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    iget-object v2, v2, Lcom/android/server/wm/TaskSnapshotCache$CacheEntry;->snapshot:Landroid/app/ActivityManager$TaskSnapshot;
-
-    invoke-virtual {v3, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
     move-result-object v2
 
     invoke-virtual {p1, v2}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
     .line 123
-    add-int/lit8 p2, p2, -0x1
+    iget-object v2, p0, Lcom/android/server/wm/TaskSnapshotCache;->mRunningCache:Landroid/util/ArrayMap;
+
+    invoke-virtual {v2}, Landroid/util/ArrayMap;->size()I
+
+    move-result v2
+
+    add-int/lit8 v2, v2, -0x1
+
+    .local v2, "i":I
+    :goto_3c
+    if-ltz v2, :cond_98
+
+    .line 124
+    iget-object v3, p0, Lcom/android/server/wm/TaskSnapshotCache;->mRunningCache:Landroid/util/ArrayMap;
+
+    invoke-virtual {v3, v2}, Landroid/util/ArrayMap;->valueAt(I)Ljava/lang/Object;
+
+    move-result-object v3
+
+    check-cast v3, Lcom/android/server/wm/TaskSnapshotCache$CacheEntry;
+
+    .line 125
+    .local v3, "entry":Lcom/android/server/wm/TaskSnapshotCache$CacheEntry;
+    new-instance v4, Ljava/lang/StringBuilder;
+
+    invoke-direct {v4}, Ljava/lang/StringBuilder;-><init>()V
+
+    invoke-virtual {v4, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    const-string v5, "Entry taskId="
+
+    invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    iget-object v5, p0, Lcom/android/server/wm/TaskSnapshotCache;->mRunningCache:Landroid/util/ArrayMap;
+
+    invoke-virtual {v5, v2}, Landroid/util/ArrayMap;->keyAt(I)Ljava/lang/Object;
+
+    move-result-object v5
+
+    invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v4}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v4
+
+    invoke-virtual {p1, v4}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+
+    .line 126
+    new-instance v4, Ljava/lang/StringBuilder;
+
+    invoke-direct {v4}, Ljava/lang/StringBuilder;-><init>()V
+
+    invoke-virtual {v4, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    const-string v5, "topApp="
+
+    invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    iget-object v5, v3, Lcom/android/server/wm/TaskSnapshotCache$CacheEntry;->topApp:Lcom/android/server/wm/AppWindowToken;
+
+    invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v4}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v4
+
+    invoke-virtual {p1, v4}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+
+    .line 127
+    new-instance v4, Ljava/lang/StringBuilder;
+
+    invoke-direct {v4}, Ljava/lang/StringBuilder;-><init>()V
+
+    invoke-virtual {v4, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    const-string v5, "snapshot="
+
+    invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    iget-object v5, v3, Lcom/android/server/wm/TaskSnapshotCache$CacheEntry;->snapshot:Landroid/app/ActivityManager$TaskSnapshot;
+
+    invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v4}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v4
+
+    invoke-virtual {p1, v4}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+
+    .line 123
+    .end local v3  # "entry":Lcom/android/server/wm/TaskSnapshotCache$CacheEntry;
+    add-int/lit8 v2, v2, -0x1
 
     goto :goto_3c
 
     .line 129
+    .end local v2  # "i":I
     :cond_98
     return-void
 .end method
 
 .method getSnapshot(IIZZ)Landroid/app/ActivityManager$TaskSnapshot;
     .registers 8
+    .param p1, "taskId"  # I
+    .param p2, "userId"  # I
+    .param p3, "restoreFromDisk"  # Z
+    .param p4, "reducedResolution"  # Z
 
     .line 61
     iget-object v0, p0, Lcom/android/server/wm/TaskSnapshotCache;->mService:Lcom/android/server/wm/WindowManagerService;
@@ -308,10 +328,11 @@
     check-cast v1, Lcom/android/server/wm/TaskSnapshotCache$CacheEntry;
 
     .line 64
+    .local v1, "entry":Lcom/android/server/wm/TaskSnapshotCache$CacheEntry;
     if-eqz v1, :cond_1d
 
     .line 65
-    iget-object p1, v1, Lcom/android/server/wm/TaskSnapshotCache$CacheEntry;->snapshot:Landroid/app/ActivityManager$TaskSnapshot;
+    iget-object v2, v1, Lcom/android/server/wm/TaskSnapshotCache$CacheEntry;->snapshot:Landroid/app/ActivityManager$TaskSnapshot;
 
     monitor-exit v0
     :try_end_19
@@ -319,9 +340,10 @@
 
     invoke-static {}, Lcom/android/server/wm/WindowManagerService;->resetPriorityAfterLockedSection()V
 
-    return-object p1
+    return-object v2
 
     .line 67
+    .end local v1  # "entry":Lcom/android/server/wm/TaskSnapshotCache$CacheEntry;
     :cond_1d
     :try_start_1d
     monitor-exit v0
@@ -334,21 +356,21 @@
     if-nez p3, :cond_25
 
     .line 71
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    return-object p1
+    return-object v0
 
     .line 73
     :cond_25
     invoke-direct {p0, p1, p2, p4}, Lcom/android/server/wm/TaskSnapshotCache;->tryRestoreFromDisk(IIZ)Landroid/app/ActivityManager$TaskSnapshot;
 
-    move-result-object p1
+    move-result-object v0
 
-    return-object p1
+    return-object v0
 
     .line 67
     :catchall_2a
-    move-exception p1
+    move-exception v1
 
     :try_start_2b
     monitor-exit v0
@@ -357,30 +379,32 @@
 
     invoke-static {}, Lcom/android/server/wm/WindowManagerService;->resetPriorityAfterLockedSection()V
 
-    throw p1
+    throw v1
 .end method
 
 .method onAppDied(Lcom/android/server/wm/AppWindowToken;)V
-    .registers 3
+    .registers 4
+    .param p1, "wtoken"  # Lcom/android/server/wm/AppWindowToken;
 
     .line 101
     iget-object v0, p0, Lcom/android/server/wm/TaskSnapshotCache;->mAppTaskMap:Landroid/util/ArrayMap;
 
     invoke-virtual {v0, p1}, Landroid/util/ArrayMap;->get(Ljava/lang/Object;)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v0
 
-    check-cast p1, Ljava/lang/Integer;
+    check-cast v0, Ljava/lang/Integer;
 
     .line 102
-    if-eqz p1, :cond_11
+    .local v0, "taskId":Ljava/lang/Integer;
+    if-eqz v0, :cond_11
 
     .line 103
-    invoke-virtual {p1}, Ljava/lang/Integer;->intValue()I
+    invoke-virtual {v0}, Ljava/lang/Integer;->intValue()I
 
-    move-result p1
+    move-result v1
 
-    invoke-direct {p0, p1}, Lcom/android/server/wm/TaskSnapshotCache;->removeRunningEntry(I)V
+    invoke-direct {p0, v1}, Lcom/android/server/wm/TaskSnapshotCache;->removeRunningEntry(I)V
 
     .line 105
     :cond_11
@@ -388,26 +412,28 @@
 .end method
 
 .method onAppRemoved(Lcom/android/server/wm/AppWindowToken;)V
-    .registers 3
+    .registers 4
+    .param p1, "wtoken"  # Lcom/android/server/wm/AppWindowToken;
 
     .line 91
     iget-object v0, p0, Lcom/android/server/wm/TaskSnapshotCache;->mAppTaskMap:Landroid/util/ArrayMap;
 
     invoke-virtual {v0, p1}, Landroid/util/ArrayMap;->get(Ljava/lang/Object;)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v0
 
-    check-cast p1, Ljava/lang/Integer;
+    check-cast v0, Ljava/lang/Integer;
 
     .line 92
-    if-eqz p1, :cond_11
+    .local v0, "taskId":Ljava/lang/Integer;
+    if-eqz v0, :cond_11
 
     .line 93
-    invoke-virtual {p1}, Ljava/lang/Integer;->intValue()I
+    invoke-virtual {v0}, Ljava/lang/Integer;->intValue()I
 
-    move-result p1
+    move-result v1
 
-    invoke-direct {p0, p1}, Lcom/android/server/wm/TaskSnapshotCache;->removeRunningEntry(I)V
+    invoke-direct {p0, v1}, Lcom/android/server/wm/TaskSnapshotCache;->removeRunningEntry(I)V
 
     .line 95
     :cond_11
@@ -416,6 +442,7 @@
 
 .method onTaskRemoved(I)V
     .registers 2
+    .param p1, "taskId"  # I
 
     .line 108
     invoke-direct {p0, p1}, Lcom/android/server/wm/TaskSnapshotCache;->removeRunningEntry(I)V
@@ -425,7 +452,9 @@
 .end method
 
 .method putSnapshot(Lcom/android/server/wm/Task;Landroid/app/ActivityManager$TaskSnapshot;)V
-    .registers 6
+    .registers 9
+    .param p1, "task"  # Lcom/android/server/wm/Task;
+    .param p2, "snapshot"  # Landroid/app/ActivityManager$TaskSnapshot;
 
     .line 46
     iget-object v0, p0, Lcom/android/server/wm/TaskSnapshotCache;->mRunningCache:Landroid/util/ArrayMap;
@@ -443,54 +472,56 @@
     check-cast v0, Lcom/android/server/wm/TaskSnapshotCache$CacheEntry;
 
     .line 47
+    .local v0, "entry":Lcom/android/server/wm/TaskSnapshotCache$CacheEntry;
     if-eqz v0, :cond_17
 
     .line 48
     iget-object v1, p0, Lcom/android/server/wm/TaskSnapshotCache;->mAppTaskMap:Landroid/util/ArrayMap;
 
-    iget-object v0, v0, Lcom/android/server/wm/TaskSnapshotCache$CacheEntry;->topApp:Lcom/android/server/wm/AppWindowToken;
+    iget-object v2, v0, Lcom/android/server/wm/TaskSnapshotCache$CacheEntry;->topApp:Lcom/android/server/wm/AppWindowToken;
 
-    invoke-virtual {v1, v0}, Landroid/util/ArrayMap;->remove(Ljava/lang/Object;)Ljava/lang/Object;
+    invoke-virtual {v1, v2}, Landroid/util/ArrayMap;->remove(Ljava/lang/Object;)Ljava/lang/Object;
 
     .line 50
     :cond_17
     invoke-virtual {p1}, Lcom/android/server/wm/Task;->getTopChild()Lcom/android/server/wm/WindowContainer;
 
-    move-result-object v0
-
-    check-cast v0, Lcom/android/server/wm/AppWindowToken;
-
-    .line 51
-    iget-object v1, p0, Lcom/android/server/wm/TaskSnapshotCache;->mAppTaskMap:Landroid/util/ArrayMap;
-
-    iget v2, p1, Lcom/android/server/wm/Task;->mTaskId:I
-
-    invoke-static {v2}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
-
-    move-result-object v2
-
-    invoke-virtual {v1, v0, v2}, Landroid/util/ArrayMap;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
-
-    .line 52
-    iget-object v0, p0, Lcom/android/server/wm/TaskSnapshotCache;->mRunningCache:Landroid/util/ArrayMap;
-
-    iget v1, p1, Lcom/android/server/wm/Task;->mTaskId:I
-
-    invoke-static {v1}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
-
     move-result-object v1
 
-    new-instance v2, Lcom/android/server/wm/TaskSnapshotCache$CacheEntry;
+    check-cast v1, Lcom/android/server/wm/AppWindowToken;
+
+    .line 51
+    .local v1, "top":Lcom/android/server/wm/AppWindowToken;
+    iget-object v2, p0, Lcom/android/server/wm/TaskSnapshotCache;->mAppTaskMap:Landroid/util/ArrayMap;
+
+    iget v3, p1, Lcom/android/server/wm/Task;->mTaskId:I
+
+    invoke-static {v3}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
+
+    move-result-object v3
+
+    invoke-virtual {v2, v1, v3}, Landroid/util/ArrayMap;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+
+    .line 52
+    iget-object v2, p0, Lcom/android/server/wm/TaskSnapshotCache;->mRunningCache:Landroid/util/ArrayMap;
+
+    iget v3, p1, Lcom/android/server/wm/Task;->mTaskId:I
+
+    invoke-static {v3}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
+
+    move-result-object v3
+
+    new-instance v4, Lcom/android/server/wm/TaskSnapshotCache$CacheEntry;
 
     invoke-virtual {p1}, Lcom/android/server/wm/Task;->getTopChild()Lcom/android/server/wm/WindowContainer;
 
-    move-result-object p1
+    move-result-object v5
 
-    check-cast p1, Lcom/android/server/wm/AppWindowToken;
+    check-cast v5, Lcom/android/server/wm/AppWindowToken;
 
-    invoke-direct {v2, p2, p1}, Lcom/android/server/wm/TaskSnapshotCache$CacheEntry;-><init>(Landroid/app/ActivityManager$TaskSnapshot;Lcom/android/server/wm/AppWindowToken;)V
+    invoke-direct {v4, p2, v5}, Lcom/android/server/wm/TaskSnapshotCache$CacheEntry;-><init>(Landroid/app/ActivityManager$TaskSnapshot;Lcom/android/server/wm/AppWindowToken;)V
 
-    invoke-virtual {v0, v1, v2}, Landroid/util/ArrayMap;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+    invoke-virtual {v2, v3, v4}, Landroid/util/ArrayMap;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
 
     .line 53
     return-void

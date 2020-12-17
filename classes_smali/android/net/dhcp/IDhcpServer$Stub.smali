@@ -53,14 +53,15 @@
 
 .method public static asInterface(Landroid/os/IBinder;)Landroid/net/dhcp/IDhcpServer;
     .registers 3
+    .param p0, "obj"  # Landroid/os/IBinder;
 
     .line 50
     if-nez p0, :cond_4
 
     .line 51
-    const/4 p0, 0x0
+    const/4 v0, 0x0
 
-    return-object p0
+    return-object v0
 
     .line 53
     :cond_4
@@ -71,24 +72,27 @@
     move-result-object v0
 
     .line 54
-    if-eqz v0, :cond_13
+    .local v0, "iin":Landroid/os/IInterface;
+    if-eqz v0, :cond_14
 
     instance-of v1, v0, Landroid/net/dhcp/IDhcpServer;
 
-    if-eqz v1, :cond_13
+    if-eqz v1, :cond_14
 
     .line 55
-    check-cast v0, Landroid/net/dhcp/IDhcpServer;
+    move-object v1, v0
 
-    return-object v0
+    check-cast v1, Landroid/net/dhcp/IDhcpServer;
+
+    return-object v1
 
     .line 57
-    :cond_13
-    new-instance v0, Landroid/net/dhcp/IDhcpServer$Stub$Proxy;
+    :cond_14
+    new-instance v1, Landroid/net/dhcp/IDhcpServer$Stub$Proxy;
 
-    invoke-direct {v0, p0}, Landroid/net/dhcp/IDhcpServer$Stub$Proxy;-><init>(Landroid/os/IBinder;)V
+    invoke-direct {v1, p0}, Landroid/net/dhcp/IDhcpServer$Stub$Proxy;-><init>(Landroid/os/IBinder;)V
 
-    return-object v0
+    return-object v1
 .end method
 
 .method public static getDefaultImpl()Landroid/net/dhcp/IDhcpServer;
@@ -102,6 +106,7 @@
 
 .method public static setDefaultImpl(Landroid/net/dhcp/IDhcpServer;)Z
     .registers 2
+    .param p0, "impl"  # Landroid/net/dhcp/IDhcpServer;
 
     .line 212
     sget-object v0, Landroid/net/dhcp/IDhcpServer$Stub$Proxy;->sDefaultImpl:Landroid/net/dhcp/IDhcpServer;
@@ -114,15 +119,15 @@
     sput-object p0, Landroid/net/dhcp/IDhcpServer$Stub$Proxy;->sDefaultImpl:Landroid/net/dhcp/IDhcpServer;
 
     .line 214
-    const/4 p0, 0x1
+    const/4 v0, 0x1
 
-    return p0
+    return v0
 
     .line 216
     :cond_a
-    const/4 p0, 0x0
+    const/4 v0, 0x0
 
-    return p0
+    return v0
 .end method
 
 
@@ -135,7 +140,11 @@
 .end method
 
 .method public onTransact(ILandroid/os/Parcel;Landroid/os/Parcel;I)Z
-    .registers 8
+    .registers 9
+    .param p1, "code"  # I
+    .param p2, "data"  # Landroid/os/Parcel;
+    .param p3, "reply"  # Landroid/os/Parcel;
+    .param p4, "flags"  # I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -143,48 +152,47 @@
     .end annotation
 
     .line 65
-    nop
+    const-string v0, "android.net.dhcp.IDhcpServer"
 
     .line 66
-    const/4 v0, 0x1
+    .local v0, "descriptor":Ljava/lang/String;
+    const/4 v1, 0x1
 
-    const-string v1, "android.net.dhcp.IDhcpServer"
-
-    if-eq p1, v0, :cond_5b
+    if-eq p1, v1, :cond_5a
 
     const/4 v2, 0x2
 
-    if-eq p1, v2, :cond_3c
+    if-eq p1, v2, :cond_3b
 
     const/4 v2, 0x3
 
-    if-eq p1, v2, :cond_2d
+    if-eq p1, v2, :cond_2c
 
     const v2, 0xffffff
 
-    if-eq p1, v2, :cond_1f
+    if-eq p1, v2, :cond_1e
 
     const v2, 0x5f4e5446
 
-    if-eq p1, v2, :cond_1b
+    if-eq p1, v2, :cond_1a
 
     .line 113
     invoke-super {p0, p1, p2, p3, p4}, Landroid/os/Binder;->onTransact(ILandroid/os/Parcel;Landroid/os/Parcel;I)Z
 
-    move-result p1
+    move-result v1
 
-    return p1
+    return v1
 
     .line 70
-    :cond_1b
-    invoke-virtual {p3, v1}, Landroid/os/Parcel;->writeString(Ljava/lang/String;)V
+    :cond_1a
+    invoke-virtual {p3, v0}, Landroid/os/Parcel;->writeString(Ljava/lang/String;)V
 
     .line 71
-    return v0
+    return v1
 
     .line 106
-    :cond_1f
-    invoke-virtual {p2, v1}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
+    :cond_1e
+    invoke-virtual {p2, v0}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
 
     .line 107
     invoke-virtual {p3}, Landroid/os/Parcel;->writeNoException()V
@@ -192,90 +200,99 @@
     .line 108
     invoke-virtual {p0}, Landroid/net/dhcp/IDhcpServer$Stub;->getInterfaceVersion()I
 
-    move-result p1
+    move-result v2
 
-    invoke-virtual {p3, p1}, Landroid/os/Parcel;->writeInt(I)V
+    invoke-virtual {p3, v2}, Landroid/os/Parcel;->writeInt(I)V
 
     .line 109
-    return v0
+    return v1
 
     .line 98
-    :cond_2d
-    invoke-virtual {p2, v1}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
+    :cond_2c
+    invoke-virtual {p2, v0}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
 
     .line 100
     invoke-virtual {p2}, Landroid/os/Parcel;->readStrongBinder()Landroid/os/IBinder;
 
-    move-result-object p1
+    move-result-object v2
 
-    invoke-static {p1}, Landroid/net/INetworkStackStatusCallback$Stub;->asInterface(Landroid/os/IBinder;)Landroid/net/INetworkStackStatusCallback;
+    invoke-static {v2}, Landroid/net/INetworkStackStatusCallback$Stub;->asInterface(Landroid/os/IBinder;)Landroid/net/INetworkStackStatusCallback;
 
-    move-result-object p1
+    move-result-object v2
 
     .line 101
-    invoke-virtual {p0, p1}, Landroid/net/dhcp/IDhcpServer$Stub;->stop(Landroid/net/INetworkStackStatusCallback;)V
+    .local v2, "_arg0":Landroid/net/INetworkStackStatusCallback;
+    invoke-virtual {p0, v2}, Landroid/net/dhcp/IDhcpServer$Stub;->stop(Landroid/net/INetworkStackStatusCallback;)V
 
     .line 102
-    return v0
+    return v1
 
     .line 83
-    :cond_3c
-    invoke-virtual {p2, v1}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
+    .end local v2  # "_arg0":Landroid/net/INetworkStackStatusCallback;
+    :cond_3b
+    invoke-virtual {p2, v0}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
 
     .line 85
     invoke-virtual {p2}, Landroid/os/Parcel;->readInt()I
 
-    move-result p1
+    move-result v2
 
-    if-eqz p1, :cond_4e
+    if-eqz v2, :cond_4d
 
     .line 86
-    sget-object p1, Landroid/net/dhcp/DhcpServingParamsParcel;->CREATOR:Landroid/os/Parcelable$Creator;
+    sget-object v2, Landroid/net/dhcp/DhcpServingParamsParcel;->CREATOR:Landroid/os/Parcelable$Creator;
 
-    invoke-interface {p1, p2}, Landroid/os/Parcelable$Creator;->createFromParcel(Landroid/os/Parcel;)Ljava/lang/Object;
+    invoke-interface {v2, p2}, Landroid/os/Parcelable$Creator;->createFromParcel(Landroid/os/Parcel;)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v2
 
-    check-cast p1, Landroid/net/dhcp/DhcpServingParamsParcel;
+    check-cast v2, Landroid/net/dhcp/DhcpServingParamsParcel;
 
-    goto :goto_4f
+    .local v2, "_arg0":Landroid/net/dhcp/DhcpServingParamsParcel;
+    goto :goto_4e
 
     .line 89
-    :cond_4e
-    const/4 p1, 0x0
+    .end local v2  # "_arg0":Landroid/net/dhcp/DhcpServingParamsParcel;
+    :cond_4d
+    const/4 v2, 0x0
 
     .line 92
-    :goto_4f
+    .restart local v2  # "_arg0":Landroid/net/dhcp/DhcpServingParamsParcel;
+    :goto_4e
     invoke-virtual {p2}, Landroid/os/Parcel;->readStrongBinder()Landroid/os/IBinder;
 
-    move-result-object p2
+    move-result-object v3
 
-    invoke-static {p2}, Landroid/net/INetworkStackStatusCallback$Stub;->asInterface(Landroid/os/IBinder;)Landroid/net/INetworkStackStatusCallback;
+    invoke-static {v3}, Landroid/net/INetworkStackStatusCallback$Stub;->asInterface(Landroid/os/IBinder;)Landroid/net/INetworkStackStatusCallback;
 
-    move-result-object p2
+    move-result-object v3
 
     .line 93
-    invoke-virtual {p0, p1, p2}, Landroid/net/dhcp/IDhcpServer$Stub;->updateParams(Landroid/net/dhcp/DhcpServingParamsParcel;Landroid/net/INetworkStackStatusCallback;)V
+    .local v3, "_arg1":Landroid/net/INetworkStackStatusCallback;
+    invoke-virtual {p0, v2, v3}, Landroid/net/dhcp/IDhcpServer$Stub;->updateParams(Landroid/net/dhcp/DhcpServingParamsParcel;Landroid/net/INetworkStackStatusCallback;)V
 
     .line 94
-    return v0
+    return v1
 
     .line 75
-    :cond_5b
-    invoke-virtual {p2, v1}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
+    .end local v2  # "_arg0":Landroid/net/dhcp/DhcpServingParamsParcel;
+    .end local v3  # "_arg1":Landroid/net/INetworkStackStatusCallback;
+    :cond_5a
+    invoke-virtual {p2, v0}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
 
     .line 77
     invoke-virtual {p2}, Landroid/os/Parcel;->readStrongBinder()Landroid/os/IBinder;
 
-    move-result-object p1
+    move-result-object v2
 
-    invoke-static {p1}, Landroid/net/INetworkStackStatusCallback$Stub;->asInterface(Landroid/os/IBinder;)Landroid/net/INetworkStackStatusCallback;
+    invoke-static {v2}, Landroid/net/INetworkStackStatusCallback$Stub;->asInterface(Landroid/os/IBinder;)Landroid/net/INetworkStackStatusCallback;
 
-    move-result-object p1
+    move-result-object v2
 
     .line 78
-    invoke-virtual {p0, p1}, Landroid/net/dhcp/IDhcpServer$Stub;->start(Landroid/net/INetworkStackStatusCallback;)V
+    .local v2, "_arg0":Landroid/net/INetworkStackStatusCallback;
+    invoke-virtual {p0, v2}, Landroid/net/dhcp/IDhcpServer$Stub;->start(Landroid/net/INetworkStackStatusCallback;)V
 
     .line 79
-    return v0
+    return v1
 .end method

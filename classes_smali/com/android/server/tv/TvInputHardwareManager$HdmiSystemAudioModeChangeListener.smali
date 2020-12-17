@@ -32,6 +32,8 @@
 
 .method synthetic constructor <init>(Lcom/android/server/tv/TvInputHardwareManager;Lcom/android/server/tv/TvInputHardwareManager$1;)V
     .registers 3
+    .param p1, "x0"  # Lcom/android/server/tv/TvInputHardwareManager;
+    .param p2, "x1"  # Lcom/android/server/tv/TvInputHardwareManager$1;
 
     .line 1272
     invoke-direct {p0, p1}, Lcom/android/server/tv/TvInputHardwareManager$HdmiSystemAudioModeChangeListener;-><init>(Lcom/android/server/tv/TvInputHardwareManager;)V
@@ -42,7 +44,8 @@
 
 # virtual methods
 .method public onStatusChanged(Z)V
-    .registers 4
+    .registers 5
+    .param p1, "enabled"  # Z
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -50,74 +53,78 @@
     .end annotation
 
     .line 1276
-    iget-object p1, p0, Lcom/android/server/tv/TvInputHardwareManager$HdmiSystemAudioModeChangeListener;->this$0:Lcom/android/server/tv/TvInputHardwareManager;
+    iget-object v0, p0, Lcom/android/server/tv/TvInputHardwareManager$HdmiSystemAudioModeChangeListener;->this$0:Lcom/android/server/tv/TvInputHardwareManager;
 
-    invoke-static {p1}, Lcom/android/server/tv/TvInputHardwareManager;->access$1000(Lcom/android/server/tv/TvInputHardwareManager;)Ljava/lang/Object;
+    invoke-static {v0}, Lcom/android/server/tv/TvInputHardwareManager;->access$1000(Lcom/android/server/tv/TvInputHardwareManager;)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v0
 
-    monitor-enter p1
+    monitor-enter v0
 
     .line 1277
-    const/4 v0, 0x0
+    const/4 v1, 0x0
 
+    .local v1, "i":I
     :goto_8
     :try_start_8
-    iget-object v1, p0, Lcom/android/server/tv/TvInputHardwareManager$HdmiSystemAudioModeChangeListener;->this$0:Lcom/android/server/tv/TvInputHardwareManager;
+    iget-object v2, p0, Lcom/android/server/tv/TvInputHardwareManager$HdmiSystemAudioModeChangeListener;->this$0:Lcom/android/server/tv/TvInputHardwareManager;
 
-    invoke-static {v1}, Lcom/android/server/tv/TvInputHardwareManager;->access$2900(Lcom/android/server/tv/TvInputHardwareManager;)Landroid/util/SparseArray;
+    invoke-static {v2}, Lcom/android/server/tv/TvInputHardwareManager;->access$2900(Lcom/android/server/tv/TvInputHardwareManager;)Landroid/util/SparseArray;
 
-    move-result-object v1
+    move-result-object v2
 
-    invoke-virtual {v1}, Landroid/util/SparseArray;->size()I
+    invoke-virtual {v2}, Landroid/util/SparseArray;->size()I
 
-    move-result v1
+    move-result v2
 
-    if-ge v0, v1, :cond_2c
+    if-ge v1, v2, :cond_2c
 
     .line 1278
-    iget-object v1, p0, Lcom/android/server/tv/TvInputHardwareManager$HdmiSystemAudioModeChangeListener;->this$0:Lcom/android/server/tv/TvInputHardwareManager;
+    iget-object v2, p0, Lcom/android/server/tv/TvInputHardwareManager$HdmiSystemAudioModeChangeListener;->this$0:Lcom/android/server/tv/TvInputHardwareManager;
 
-    invoke-static {v1}, Lcom/android/server/tv/TvInputHardwareManager;->access$2900(Lcom/android/server/tv/TvInputHardwareManager;)Landroid/util/SparseArray;
+    invoke-static {v2}, Lcom/android/server/tv/TvInputHardwareManager;->access$2900(Lcom/android/server/tv/TvInputHardwareManager;)Landroid/util/SparseArray;
 
-    move-result-object v1
+    move-result-object v2
 
-    invoke-virtual {v1, v0}, Landroid/util/SparseArray;->valueAt(I)Ljava/lang/Object;
+    invoke-virtual {v2, v1}, Landroid/util/SparseArray;->valueAt(I)Ljava/lang/Object;
 
-    move-result-object v1
+    move-result-object v2
 
-    check-cast v1, Lcom/android/server/tv/TvInputHardwareManager$Connection;
+    check-cast v2, Lcom/android/server/tv/TvInputHardwareManager$Connection;
 
-    invoke-virtual {v1}, Lcom/android/server/tv/TvInputHardwareManager$Connection;->getHardwareImplLocked()Lcom/android/server/tv/TvInputHardwareManager$TvInputHardwareImpl;
+    invoke-virtual {v2}, Lcom/android/server/tv/TvInputHardwareManager$Connection;->getHardwareImplLocked()Lcom/android/server/tv/TvInputHardwareManager$TvInputHardwareImpl;
 
-    move-result-object v1
+    move-result-object v2
 
     .line 1279
-    if-eqz v1, :cond_29
+    .local v2, "impl":Lcom/android/server/tv/TvInputHardwareManager$TvInputHardwareImpl;
+    if-eqz v2, :cond_29
 
     .line 1280
-    invoke-static {v1}, Lcom/android/server/tv/TvInputHardwareManager$TvInputHardwareImpl;->access$3000(Lcom/android/server/tv/TvInputHardwareManager$TvInputHardwareImpl;)V
+    invoke-static {v2}, Lcom/android/server/tv/TvInputHardwareManager$TvInputHardwareImpl;->access$3000(Lcom/android/server/tv/TvInputHardwareManager$TvInputHardwareImpl;)V
 
     .line 1277
+    .end local v2  # "impl":Lcom/android/server/tv/TvInputHardwareManager$TvInputHardwareImpl;
     :cond_29
-    add-int/lit8 v0, v0, 0x1
+    add-int/lit8 v1, v1, 0x1
 
     goto :goto_8
 
     .line 1283
+    .end local v1  # "i":I
     :cond_2c
-    monitor-exit p1
+    monitor-exit v0
 
     .line 1284
     return-void
 
     .line 1283
     :catchall_2e
-    move-exception v0
+    move-exception v1
 
-    monitor-exit p1
+    monitor-exit v0
     :try_end_30
     .catchall {:try_start_8 .. :try_end_30} :catchall_2e
 
-    throw v0
+    throw v1
 .end method

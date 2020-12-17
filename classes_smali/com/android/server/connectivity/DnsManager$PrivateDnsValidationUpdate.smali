@@ -27,22 +27,26 @@
 # direct methods
 .method public constructor <init>(ILjava/net/InetAddress;Ljava/lang/String;Z)V
     .registers 5
+    .param p1, "netId"  # I
+    .param p2, "ipAddress"  # Ljava/net/InetAddress;
+    .param p3, "hostname"  # Ljava/lang/String;
+    .param p4, "validated"  # Z
 
-    .line 152
+    .line 166
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
-    .line 153
+    .line 167
     iput p1, p0, Lcom/android/server/connectivity/DnsManager$PrivateDnsValidationUpdate;->netId:I
 
-    .line 154
+    .line 168
     iput-object p2, p0, Lcom/android/server/connectivity/DnsManager$PrivateDnsValidationUpdate;->ipAddress:Ljava/net/InetAddress;
 
-    .line 155
+    .line 169
     iput-object p3, p0, Lcom/android/server/connectivity/DnsManager$PrivateDnsValidationUpdate;->hostname:Ljava/lang/String;
 
-    .line 156
+    .line 170
     iput-boolean p4, p0, Lcom/android/server/connectivity/DnsManager$PrivateDnsValidationUpdate;->validated:Z
 
-    .line 157
+    .line 171
     return-void
 .end method

@@ -38,6 +38,9 @@
 # direct methods
 .method constructor <init>(ILjava/io/File;I)V
     .registers 13
+    .param p1, "rollbackId"  # I
+    .param p2, "backupDir"  # Ljava/io/File;
+    .param p3, "stagedSessionId"  # I
 
     .line 111
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -97,9 +100,9 @@
     .line 120
     invoke-static {}, Ljava/time/Instant;->now()Ljava/time/Instant;
 
-    move-result-object p1
+    move-result-object v0
 
-    iput-object p1, p0, Lcom/android/server/rollback/RollbackData;->timestamp:Ljava/time/Instant;
+    iput-object v0, p0, Lcom/android/server/rollback/RollbackData;->timestamp:Ljava/time/Instant;
 
     .line 121
     return-void
@@ -107,6 +110,13 @@
 
 .method constructor <init>(Landroid/content/rollback/RollbackInfo;Ljava/io/File;Ljava/time/Instant;IIIZ)V
     .registers 9
+    .param p1, "info"  # Landroid/content/rollback/RollbackInfo;
+    .param p2, "backupDir"  # Ljava/io/File;
+    .param p3, "timestamp"  # Ljava/time/Instant;
+    .param p4, "stagedSessionId"  # I
+    .param p5, "state"  # I
+    .param p6, "apkSessionId"  # I
+    .param p7, "restoreUserDataInProgress"  # Z
 
     .line 127
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -148,6 +158,7 @@
 
 .method static rollbackStateFromString(Ljava/lang/String;)I
     .registers 6
+    .param p0, "state"  # Ljava/lang/String;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Ljava/text/ParseException;
@@ -230,9 +241,9 @@
     if-ne v0, v2, :cond_3e
 
     .line 158
-    const/4 p0, 0x3
+    const/4 v0, 0x3
 
-    return p0
+    return v0
 
     .line 160
     :cond_3e
@@ -250,9 +261,9 @@
 
     invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v1
 
-    invoke-direct {v0, p0, v3}, Ljava/text/ParseException;-><init>(Ljava/lang/String;I)V
+    invoke-direct {v0, v1, v3}, Ljava/text/ParseException;-><init>(Ljava/lang/String;I)V
 
     throw v0
 
@@ -267,6 +278,7 @@
 
 .method static rollbackStateToString(I)Ljava/lang/String;
     .registers 4
+    .param p0, "state"  # I
 
     .line 145
     if-eqz p0, :cond_25
@@ -280,9 +292,9 @@
     if-ne p0, v0, :cond_b
 
     .line 148
-    const-string p0, "committed"
+    const-string v0, "committed"
 
-    return-object p0
+    return-object v0
 
     .line 150
     :cond_b
@@ -300,23 +312,23 @@
 
     invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v1
 
-    invoke-direct {v0, p0}, Ljava/lang/AssertionError;-><init>(Ljava/lang/Object;)V
+    invoke-direct {v0, v1}, Ljava/lang/AssertionError;-><init>(Ljava/lang/Object;)V
 
     throw v0
 
     .line 147
     :cond_22
-    const-string p0, "available"
+    const-string v0, "available"
 
-    return-object p0
+    return-object v0
 
     .line 146
     :cond_25
-    const-string p0, "enabling"
+    const-string v0, "enabling"
 
-    return-object p0
+    return-object v0
 .end method
 
 

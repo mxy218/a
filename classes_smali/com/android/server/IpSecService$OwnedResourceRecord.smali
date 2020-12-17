@@ -29,7 +29,8 @@
 
 # direct methods
 .method constructor <init>(Lcom/android/server/IpSecService;I)V
-    .registers 3
+    .registers 4
+    .param p2, "resourceId"  # I
 
     .line 490
     iput-object p1, p0, Lcom/android/server/IpSecService$OwnedResourceRecord;->this$0:Lcom/android/server/IpSecService;
@@ -73,9 +74,9 @@
     :cond_1e
     new-instance p1, Ljava/lang/IllegalArgumentException;
 
-    const-string p2, "Resource ID must not be INVALID_RESOURCE_ID"
+    const-string v0, "Resource ID must not be INVALID_RESOURCE_ID"
 
-    invoke-direct {p1, p2}, Ljava/lang/IllegalArgumentException;-><init>(Ljava/lang/String;)V
+    invoke-direct {p1, v0}, Ljava/lang/IllegalArgumentException;-><init>(Ljava/lang/String;)V
 
     throw p1
 .end method

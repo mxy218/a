@@ -25,7 +25,7 @@
 .method private constructor <init>(Lcom/android/server/locksettings/LockSettingsService;)V
     .registers 2
 
-    .line 2427
+    .line 2386
     iput-object p1, p0, Lcom/android/server/locksettings/LockSettingsService$GateKeeperDiedRecipient;->this$0:Lcom/android/server/locksettings/LockSettingsService;
 
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -35,8 +35,10 @@
 
 .method synthetic constructor <init>(Lcom/android/server/locksettings/LockSettingsService;Lcom/android/server/locksettings/LockSettingsService$1;)V
     .registers 3
+    .param p1, "x0"  # Lcom/android/server/locksettings/LockSettingsService;
+    .param p2, "x1"  # Lcom/android/server/locksettings/LockSettingsService$1;
 
-    .line 2427
+    .line 2386
     invoke-direct {p0, p1}, Lcom/android/server/locksettings/LockSettingsService$GateKeeperDiedRecipient;-><init>(Lcom/android/server/locksettings/LockSettingsService;)V
 
     return-void
@@ -47,7 +49,7 @@
 .method public binderDied()V
     .registers 3
 
-    .line 2430
+    .line 2389
     iget-object v0, p0, Lcom/android/server/locksettings/LockSettingsService$GateKeeperDiedRecipient;->this$0:Lcom/android/server/locksettings/LockSettingsService;
 
     iget-object v0, v0, Lcom/android/server/locksettings/LockSettingsService;->mGateKeeperService:Landroid/service/gatekeeper/IGateKeeperService;
@@ -60,13 +62,13 @@
 
     invoke-interface {v0, p0, v1}, Landroid/os/IBinder;->unlinkToDeath(Landroid/os/IBinder$DeathRecipient;I)Z
 
-    .line 2431
+    .line 2390
     iget-object v0, p0, Lcom/android/server/locksettings/LockSettingsService$GateKeeperDiedRecipient;->this$0:Lcom/android/server/locksettings/LockSettingsService;
 
     const/4 v1, 0x0
 
     iput-object v1, v0, Lcom/android/server/locksettings/LockSettingsService;->mGateKeeperService:Landroid/service/gatekeeper/IGateKeeperService;
 
-    .line 2432
+    .line 2391
     return-void
 .end method

@@ -26,8 +26,9 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/display/WifiDisplayController;Landroid/net/wifi/p2p/WifiP2pDevice;)V
     .registers 3
+    .param p1, "this$0"  # Lcom/android/server/display/WifiDisplayController;
 
-    .line 621
+    .line 738
     iput-object p1, p0, Lcom/android/server/display/WifiDisplayController$11;->this$0:Lcom/android/server/display/WifiDisplayController;
 
     iput-object p2, p0, Lcom/android/server/display/WifiDisplayController$11;->val$oldDevice:Landroid/net/wifi/p2p/WifiP2pDevice;
@@ -40,10 +41,10 @@
 .method private next()V
     .registers 3
 
-    .line 636
+    .line 753
     iget-object v0, p0, Lcom/android/server/display/WifiDisplayController$11;->this$0:Lcom/android/server/display/WifiDisplayController;
 
-    invoke-static {v0}, Lcom/android/server/display/WifiDisplayController;->access$1100(Lcom/android/server/display/WifiDisplayController;)Landroid/net/wifi/p2p/WifiP2pDevice;
+    invoke-static {v0}, Lcom/android/server/display/WifiDisplayController;->access$1200(Lcom/android/server/display/WifiDisplayController;)Landroid/net/wifi/p2p/WifiP2pDevice;
 
     move-result-object v0
 
@@ -51,19 +52,19 @@
 
     if-ne v0, v1, :cond_15
 
-    .line 637
+    .line 754
     iget-object v0, p0, Lcom/android/server/display/WifiDisplayController$11;->this$0:Lcom/android/server/display/WifiDisplayController;
 
     const/4 v1, 0x0
 
-    invoke-static {v0, v1}, Lcom/android/server/display/WifiDisplayController;->access$1102(Lcom/android/server/display/WifiDisplayController;Landroid/net/wifi/p2p/WifiP2pDevice;)Landroid/net/wifi/p2p/WifiP2pDevice;
+    invoke-static {v0, v1}, Lcom/android/server/display/WifiDisplayController;->access$1202(Lcom/android/server/display/WifiDisplayController;Landroid/net/wifi/p2p/WifiP2pDevice;)Landroid/net/wifi/p2p/WifiP2pDevice;
 
-    .line 638
+    .line 755
     iget-object v0, p0, Lcom/android/server/display/WifiDisplayController$11;->this$0:Lcom/android/server/display/WifiDisplayController;
 
-    invoke-static {v0}, Lcom/android/server/display/WifiDisplayController;->access$1200(Lcom/android/server/display/WifiDisplayController;)V
+    invoke-static {v0}, Lcom/android/server/display/WifiDisplayController;->access$1300(Lcom/android/server/display/WifiDisplayController;)V
 
-    .line 640
+    .line 757
     :cond_15
     return-void
 .end method
@@ -72,8 +73,9 @@
 # virtual methods
 .method public onFailure(I)V
     .registers 4
+    .param p1, "reason"  # I
 
-    .line 630
+    .line 747
     new-instance v0, Ljava/lang/StringBuilder;
 
     invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
@@ -96,23 +98,23 @@
 
     invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    const-string v0, "WifiDisplayController"
+    const-string v1, "WifiDisplayController"
 
-    invoke-static {v0, p1}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v0}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 632
+    .line 749
     invoke-direct {p0}, Lcom/android/server/display/WifiDisplayController$11;->next()V
 
-    .line 633
+    .line 750
     return-void
 .end method
 
 .method public onSuccess()V
     .registers 3
 
-    .line 624
+    .line 741
     new-instance v0, Ljava/lang/StringBuilder;
 
     invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
@@ -135,9 +137,9 @@
 
     invoke-static {v1, v0}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 625
+    .line 742
     invoke-direct {p0}, Lcom/android/server/display/WifiDisplayController$11;->next()V
 
-    .line 626
+    .line 743
     return-void
 .end method

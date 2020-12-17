@@ -29,8 +29,17 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/accounts/AccountManagerService;Lcom/android/server/accounts/AccountManagerService$UserAccounts;Landroid/accounts/IAccountManagerResponse;Ljava/lang/String;ZZLjava/lang/String;ZZLjava/lang/String;[Ljava/lang/String;Landroid/os/Bundle;Ljava/lang/String;)V
     .registers 14
+    .param p1, "this$0"  # Lcom/android/server/accounts/AccountManagerService;
+    .param p2, "accounts"  # Lcom/android/server/accounts/AccountManagerService$UserAccounts;
+    .param p3, "response"  # Landroid/accounts/IAccountManagerResponse;
+    .param p4, "accountType"  # Ljava/lang/String;
+    .param p5, "expectActivityLaunch"  # Z
+    .param p6, "stripAuthTokenFromResult"  # Z
+    .param p7, "accountName"  # Ljava/lang/String;
+    .param p8, "authDetailsRequired"  # Z
+    .param p9, "updateLastAuthenticatedTime"  # Z
 
-    .line 3195
+    .line 3175
     iput-object p1, p0, Lcom/android/server/accounts/AccountManagerService$9;->this$0:Lcom/android/server/accounts/AccountManagerService;
 
     iput-object p10, p0, Lcom/android/server/accounts/AccountManagerService$9;->val$authTokenType:Ljava/lang/String;
@@ -56,7 +65,7 @@
         }
     .end annotation
 
-    .line 3198
+    .line 3178
     iget-object v0, p0, Lcom/android/server/accounts/AccountManagerService$9;->mAuthenticator:Landroid/accounts/IAccountAuthenticator;
 
     iget-object v2, p0, Lcom/android/server/accounts/AccountManagerService$9;->mAccountType:Ljava/lang/String;
@@ -71,49 +80,50 @@
 
     invoke-interface/range {v0 .. v5}, Landroid/accounts/IAccountAuthenticator;->addAccount(Landroid/accounts/IAccountAuthenticatorResponse;Ljava/lang/String;Ljava/lang/String;[Ljava/lang/String;Landroid/os/Bundle;)V
 
-    .line 3200
+    .line 3180
     return-void
 .end method
 
 .method protected toDebugString(J)Ljava/lang/String;
-    .registers 4
+    .registers 5
+    .param p1, "now"  # J
 
-    .line 3204
+    .line 3184
     new-instance v0, Ljava/lang/StringBuilder;
 
     invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
 
     invoke-super {p0, p1, p2}, Lcom/android/server/accounts/AccountManagerService$Session;->toDebugString(J)Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v1
 
-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string p1, ", addAccount, accountType "
+    const-string v1, ", addAccount, accountType "
 
-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    iget-object p1, p0, Lcom/android/server/accounts/AccountManagerService$9;->val$accountType:Ljava/lang/String;
+    iget-object v1, p0, Lcom/android/server/accounts/AccountManagerService$9;->val$accountType:Ljava/lang/String;
 
-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string p1, ", requiredFeatures "
+    const-string v1, ", requiredFeatures "
 
-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    iget-object p1, p0, Lcom/android/server/accounts/AccountManagerService$9;->val$requiredFeatures:[Ljava/lang/String;
+    iget-object v1, p0, Lcom/android/server/accounts/AccountManagerService$9;->val$requiredFeatures:[Ljava/lang/String;
 
-    .line 3206
-    invoke-static {p1}, Ljava/util/Arrays;->toString([Ljava/lang/Object;)Ljava/lang/String;
+    .line 3186
+    invoke-static {v1}, Ljava/util/Arrays;->toString([Ljava/lang/Object;)Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v1
 
-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    .line 3204
-    return-object p1
+    .line 3184
+    return-object v0
 .end method

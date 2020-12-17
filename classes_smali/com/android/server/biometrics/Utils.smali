@@ -14,7 +14,9 @@
 .end method
 
 .method public static isDebugEnabled(Landroid/content/Context;I)Z
-    .registers 4
+    .registers 5
+    .param p0, "context"  # Landroid/content/Context;
+    .param p1, "targetUserId"  # I
 
     .line 26
     const/4 v0, 0x0
@@ -43,22 +45,22 @@
     :cond_f
     invoke-virtual {p0}, Landroid/content/Context;->getContentResolver()Landroid/content/ContentResolver;
 
-    move-result-object p0
+    move-result-object v1
 
-    const-string v1, "biometric_debug_enabled"
+    const-string v2, "biometric_debug_enabled"
 
-    invoke-static {p0, v1, v0, p1}, Landroid/provider/Settings$Secure;->getIntForUser(Landroid/content/ContentResolver;Ljava/lang/String;II)I
+    invoke-static {v1, v2, v0, p1}, Landroid/provider/Settings$Secure;->getIntForUser(Landroid/content/ContentResolver;Ljava/lang/String;II)I
 
-    move-result p0
+    move-result v1
 
-    if-nez p0, :cond_1c
+    if-nez v1, :cond_1c
 
     .line 37
     return v0
 
     .line 39
     :cond_1c
-    const/4 p0, 0x1
+    const/4 v0, 0x1
 
-    return p0
+    return v0
 .end method

@@ -17,6 +17,7 @@
 # direct methods
 .method constructor <init>(Ljava/lang/String;)V
     .registers 2
+    .param p1, "tag"  # Ljava/lang/String;
 
     .line 39
     invoke-direct {p0, p1}, Lcom/android/server/firewall/FilterFactory;-><init>(Ljava/lang/String;)V
@@ -28,6 +29,7 @@
 # virtual methods
 .method public newFilter(Lorg/xmlpull/v1/XmlPullParser;)Lcom/android/server/firewall/Filter;
     .registers 3
+    .param p1, "parser"  # Lorg/xmlpull/v1/XmlPullParser;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Ljava/io/IOException;,
@@ -42,7 +44,7 @@
 
     invoke-virtual {v0, p1}, Lcom/android/server/firewall/OrFilter;->readFromXml(Lorg/xmlpull/v1/XmlPullParser;)Lcom/android/server/firewall/FilterList;
 
-    move-result-object p1
+    move-result-object v0
 
-    return-object p1
+    return-object v0
 .end method

@@ -21,216 +21,219 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/wm/DisplayPolicy;Landroid/view/InputChannel;Landroid/os/Looper;)V
     .registers 4
+    .param p2, "inputChannel"  # Landroid/view/InputChannel;
+    .param p3, "looper"  # Landroid/os/Looper;
 
-    .line 1417
+    .line 1581
     iput-object p1, p0, Lcom/android/server/wm/DisplayPolicy$HideNavInputEventReceiver;->this$0:Lcom/android/server/wm/DisplayPolicy;
 
-    .line 1418
+    .line 1582
     invoke-direct {p0, p2, p3}, Landroid/view/InputEventReceiver;-><init>(Landroid/view/InputChannel;Landroid/os/Looper;)V
 
-    .line 1419
+    .line 1583
     return-void
 .end method
 
 
 # virtual methods
 .method public onInputEvent(Landroid/view/InputEvent;)V
-    .registers 9
+    .registers 11
+    .param p1, "event"  # Landroid/view/InputEvent;
 
-    .line 1424
+    .line 1588
     const/4 v0, 0x0
 
     :try_start_1
     instance-of v1, p1, Landroid/view/MotionEvent;
 
-    if-eqz v1, :cond_7f
+    if-eqz v1, :cond_7c
 
-    .line 1425
+    .line 1589
     invoke-virtual {p1}, Landroid/view/InputEvent;->getSource()I
 
     move-result v1
 
     and-int/lit8 v1, v1, 0x2
 
-    if-eqz v1, :cond_7f
+    if-eqz v1, :cond_7c
 
-    .line 1426
+    .line 1590
     move-object v1, p1
 
     check-cast v1, Landroid/view/MotionEvent;
 
-    .line 1427
+    .line 1591
+    .local v1, "motionEvent":Landroid/view/MotionEvent;
     invoke-virtual {v1}, Landroid/view/MotionEvent;->getAction()I
-
-    move-result v1
-
-    if-nez v1, :cond_7f
-
-    .line 1429
-    nop
-
-    .line 1430
-    iget-object v1, p0, Lcom/android/server/wm/DisplayPolicy$HideNavInputEventReceiver;->this$0:Lcom/android/server/wm/DisplayPolicy;
-
-    invoke-static {v1}, Lcom/android/server/wm/DisplayPolicy;->access$1000(Lcom/android/server/wm/DisplayPolicy;)Ljava/lang/Object;
-
-    move-result-object v1
-
-    monitor-enter v1
-    :try_end_1e
-    .catchall {:try_start_1 .. :try_end_1e} :catchall_84
-
-    .line 1431
-    :try_start_1e
-    iget-object v2, p0, Lcom/android/server/wm/DisplayPolicy$HideNavInputEventReceiver;->this$0:Lcom/android/server/wm/DisplayPolicy;
-
-    invoke-static {v2}, Lcom/android/server/wm/DisplayPolicy;->access$1700(Lcom/android/server/wm/DisplayPolicy;)Lcom/android/server/policy/WindowManagerPolicy$InputConsumer;
-
-    move-result-object v2
-
-    if-nez v2, :cond_2b
-
-    .line 1432
-    monitor-exit v1
-    :try_end_27
-    .catchall {:try_start_1e .. :try_end_27} :catchall_7c
-
-    .line 1464
-    invoke-virtual {p0, p1, v0}, Lcom/android/server/wm/DisplayPolicy$HideNavInputEventReceiver;->finishInputEvent(Landroid/view/InputEvent;Z)V
-
-    .line 1432
-    return-void
-
-    .line 1439
-    :cond_2b
-    :try_start_2b
-    iget-object v2, p0, Lcom/android/server/wm/DisplayPolicy$HideNavInputEventReceiver;->this$0:Lcom/android/server/wm/DisplayPolicy;
-
-    invoke-static {v2}, Lcom/android/server/wm/DisplayPolicy;->access$1800(Lcom/android/server/wm/DisplayPolicy;)I
 
     move-result v2
 
-    or-int/lit8 v2, v2, 0x2
+    if-nez v2, :cond_7c
 
-    const/4 v3, 0x1
+    .line 1593
+    const/4 v2, 0x0
 
-    or-int/2addr v2, v3
+    .line 1594
+    .local v2, "changed":Z
+    iget-object v3, p0, Lcom/android/server/wm/DisplayPolicy$HideNavInputEventReceiver;->this$0:Lcom/android/server/wm/DisplayPolicy;
 
-    or-int/lit8 v2, v2, 0x4
+    invoke-static {v3}, Lcom/android/server/wm/DisplayPolicy;->access$1100(Lcom/android/server/wm/DisplayPolicy;)Ljava/lang/Object;
 
-    .line 1443
+    move-result-object v3
+
+    monitor-enter v3
+    :try_end_1e
+    .catchall {:try_start_1 .. :try_end_1e} :catchall_81
+
+    .line 1595
+    :try_start_1e
     iget-object v4, p0, Lcom/android/server/wm/DisplayPolicy$HideNavInputEventReceiver;->this$0:Lcom/android/server/wm/DisplayPolicy;
 
-    invoke-static {v4}, Lcom/android/server/wm/DisplayPolicy;->access$1800(Lcom/android/server/wm/DisplayPolicy;)I
+    invoke-static {v4}, Lcom/android/server/wm/DisplayPolicy;->access$2100(Lcom/android/server/wm/DisplayPolicy;)Lcom/android/server/policy/WindowManagerPolicy$InputConsumer;
 
-    move-result v4
+    move-result-object v4
 
-    if-eq v4, v2, :cond_46
+    if-nez v4, :cond_2b
 
-    .line 1444
+    .line 1596
+    monitor-exit v3
+    :try_end_27
+    .catchall {:try_start_1e .. :try_end_27} :catchall_79
+
+    .line 1628
+    invoke-virtual {p0, p1, v0}, Lcom/android/server/wm/DisplayPolicy$HideNavInputEventReceiver;->finishInputEvent(Landroid/view/InputEvent;Z)V
+
+    .line 1596
+    return-void
+
+    .line 1603
+    :cond_2b
+    :try_start_2b
     iget-object v4, p0, Lcom/android/server/wm/DisplayPolicy$HideNavInputEventReceiver;->this$0:Lcom/android/server/wm/DisplayPolicy;
 
-    invoke-static {v4, v2}, Lcom/android/server/wm/DisplayPolicy;->access$1802(Lcom/android/server/wm/DisplayPolicy;I)I
-
-    .line 1445
-    move v2, v3
-
-    goto :goto_47
-
-    .line 1443
-    :cond_46
-    move v2, v0
-
-    .line 1450
-    :goto_47
-    iget-object v4, p0, Lcom/android/server/wm/DisplayPolicy$HideNavInputEventReceiver;->this$0:Lcom/android/server/wm/DisplayPolicy;
-
-    invoke-static {v4}, Lcom/android/server/wm/DisplayPolicy;->access$1600(Lcom/android/server/wm/DisplayPolicy;)I
+    invoke-static {v4}, Lcom/android/server/wm/DisplayPolicy;->access$2200(Lcom/android/server/wm/DisplayPolicy;)I
 
     move-result v4
 
     or-int/lit8 v4, v4, 0x2
 
-    .line 1452
+    or-int/lit8 v4, v4, 0x1
+
+    or-int/lit8 v4, v4, 0x4
+
+    .line 1607
+    .local v4, "newVal":I
     iget-object v5, p0, Lcom/android/server/wm/DisplayPolicy$HideNavInputEventReceiver;->this$0:Lcom/android/server/wm/DisplayPolicy;
 
-    invoke-static {v5}, Lcom/android/server/wm/DisplayPolicy;->access$1600(Lcom/android/server/wm/DisplayPolicy;)I
+    invoke-static {v5}, Lcom/android/server/wm/DisplayPolicy;->access$2200(Lcom/android/server/wm/DisplayPolicy;)I
 
     move-result v5
 
-    if-eq v5, v4, :cond_6f
+    if-eq v5, v4, :cond_45
 
-    .line 1453
-    iget-object v2, p0, Lcom/android/server/wm/DisplayPolicy$HideNavInputEventReceiver;->this$0:Lcom/android/server/wm/DisplayPolicy;
+    .line 1608
+    iget-object v5, p0, Lcom/android/server/wm/DisplayPolicy$HideNavInputEventReceiver;->this$0:Lcom/android/server/wm/DisplayPolicy;
 
-    invoke-static {v2, v4}, Lcom/android/server/wm/DisplayPolicy;->access$1602(Lcom/android/server/wm/DisplayPolicy;I)I
+    invoke-static {v5, v4}, Lcom/android/server/wm/DisplayPolicy;->access$2202(Lcom/android/server/wm/DisplayPolicy;I)I
 
-    .line 1454
-    nop
+    .line 1609
+    const/4 v2, 0x1
 
-    .line 1455
-    iget-object v2, p0, Lcom/android/server/wm/DisplayPolicy$HideNavInputEventReceiver;->this$0:Lcom/android/server/wm/DisplayPolicy;
+    .line 1614
+    :cond_45
+    iget-object v5, p0, Lcom/android/server/wm/DisplayPolicy$HideNavInputEventReceiver;->this$0:Lcom/android/server/wm/DisplayPolicy;
 
-    invoke-static {v2}, Lcom/android/server/wm/DisplayPolicy;->access$1500(Lcom/android/server/wm/DisplayPolicy;)Landroid/os/Handler;
+    invoke-static {v5}, Lcom/android/server/wm/DisplayPolicy;->access$2000(Lcom/android/server/wm/DisplayPolicy;)I
 
-    move-result-object v2
+    move-result v5
 
-    iget-object v4, p0, Lcom/android/server/wm/DisplayPolicy$HideNavInputEventReceiver;->this$0:Lcom/android/server/wm/DisplayPolicy;
+    or-int/lit8 v4, v5, 0x2
 
-    invoke-static {v4}, Lcom/android/server/wm/DisplayPolicy;->access$1900(Lcom/android/server/wm/DisplayPolicy;)Ljava/lang/Runnable;
+    .line 1616
+    iget-object v5, p0, Lcom/android/server/wm/DisplayPolicy$HideNavInputEventReceiver;->this$0:Lcom/android/server/wm/DisplayPolicy;
 
-    move-result-object v4
+    invoke-static {v5}, Lcom/android/server/wm/DisplayPolicy;->access$2000(Lcom/android/server/wm/DisplayPolicy;)I
 
-    const-wide/16 v5, 0x3e8
+    move-result v5
 
-    invoke-virtual {v2, v4, v5, v6}, Landroid/os/Handler;->postDelayed(Ljava/lang/Runnable;J)Z
+    if-eq v5, v4, :cond_6c
 
-    move v2, v3
+    .line 1617
+    iget-object v5, p0, Lcom/android/server/wm/DisplayPolicy$HideNavInputEventReceiver;->this$0:Lcom/android/server/wm/DisplayPolicy;
 
-    .line 1457
-    :cond_6f
-    if-eqz v2, :cond_7a
+    invoke-static {v5, v4}, Lcom/android/server/wm/DisplayPolicy;->access$2002(Lcom/android/server/wm/DisplayPolicy;I)I
 
-    .line 1458
-    iget-object v2, p0, Lcom/android/server/wm/DisplayPolicy$HideNavInputEventReceiver;->this$0:Lcom/android/server/wm/DisplayPolicy;
+    .line 1618
+    const/4 v2, 0x1
 
-    invoke-static {v2}, Lcom/android/server/wm/DisplayPolicy;->access$1100(Lcom/android/server/wm/DisplayPolicy;)Lcom/android/server/wm/DisplayContent;
+    .line 1619
+    iget-object v5, p0, Lcom/android/server/wm/DisplayPolicy$HideNavInputEventReceiver;->this$0:Lcom/android/server/wm/DisplayPolicy;
 
-    move-result-object v2
+    invoke-static {v5}, Lcom/android/server/wm/DisplayPolicy;->access$1900(Lcom/android/server/wm/DisplayPolicy;)Landroid/os/Handler;
 
-    invoke-virtual {v2}, Lcom/android/server/wm/DisplayContent;->reevaluateStatusBarVisibility()V
+    move-result-object v5
 
-    .line 1460
-    :cond_7a
-    monitor-exit v1
+    iget-object v6, p0, Lcom/android/server/wm/DisplayPolicy$HideNavInputEventReceiver;->this$0:Lcom/android/server/wm/DisplayPolicy;
 
-    goto :goto_7f
+    invoke-static {v6}, Lcom/android/server/wm/DisplayPolicy;->access$2300(Lcom/android/server/wm/DisplayPolicy;)Ljava/lang/Runnable;
 
-    :catchall_7c
-    move-exception v2
+    move-result-object v6
 
-    monitor-exit v1
-    :try_end_7e
-    .catchall {:try_start_2b .. :try_end_7e} :catchall_7c
+    const-wide/16 v7, 0x3e8
 
-    :try_start_7e
-    throw v2
-    :try_end_7f
-    .catchall {:try_start_7e .. :try_end_7f} :catchall_84
+    invoke-virtual {v5, v6, v7, v8}, Landroid/os/Handler;->postDelayed(Ljava/lang/Runnable;J)Z
 
-    .line 1464
-    :cond_7f
-    :goto_7f
+    .line 1621
+    :cond_6c
+    if-eqz v2, :cond_77
+
+    .line 1622
+    iget-object v5, p0, Lcom/android/server/wm/DisplayPolicy$HideNavInputEventReceiver;->this$0:Lcom/android/server/wm/DisplayPolicy;
+
+    invoke-static {v5}, Lcom/android/server/wm/DisplayPolicy;->access$900(Lcom/android/server/wm/DisplayPolicy;)Lcom/android/server/wm/DisplayContent;
+
+    move-result-object v5
+
+    invoke-virtual {v5}, Lcom/android/server/wm/DisplayContent;->reevaluateStatusBarVisibility()V
+
+    .line 1624
+    .end local v4  # "newVal":I
+    :cond_77
+    monitor-exit v3
+
+    goto :goto_7c
+
+    :catchall_79
+    move-exception v4
+
+    monitor-exit v3
+    :try_end_7b
+    .catchall {:try_start_2b .. :try_end_7b} :catchall_79
+
+    .end local p0  # "this":Lcom/android/server/wm/DisplayPolicy$HideNavInputEventReceiver;
+    .end local p1  # "event":Landroid/view/InputEvent;
+    :try_start_7b
+    throw v4
+    :try_end_7c
+    .catchall {:try_start_7b .. :try_end_7c} :catchall_81
+
+    .line 1628
+    .end local v1  # "motionEvent":Landroid/view/MotionEvent;
+    .end local v2  # "changed":Z
+    .restart local p0  # "this":Lcom/android/server/wm/DisplayPolicy$HideNavInputEventReceiver;
+    .restart local p1  # "event":Landroid/view/InputEvent;
+    :cond_7c
+    :goto_7c
     invoke-virtual {p0, p1, v0}, Lcom/android/server/wm/DisplayPolicy$HideNavInputEventReceiver;->finishInputEvent(Landroid/view/InputEvent;Z)V
 
-    .line 1465
+    .line 1629
     nop
 
-    .line 1466
+    .line 1630
     return-void
 
-    .line 1464
-    :catchall_84
+    .line 1628
+    :catchall_81
     move-exception v1
 
     invoke-virtual {p0, p1, v0}, Lcom/android/server/wm/DisplayPolicy$HideNavInputEventReceiver;->finishInputEvent(Landroid/view/InputEvent;Z)V

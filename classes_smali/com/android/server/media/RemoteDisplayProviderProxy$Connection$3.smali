@@ -26,6 +26,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/media/RemoteDisplayProviderProxy$Connection;Landroid/media/RemoteDisplayState;)V
     .registers 3
+    .param p1, "this$1"  # Lcom/android/server/media/RemoteDisplayProviderProxy$Connection;
 
     .line 407
     iput-object p1, p0, Lcom/android/server/media/RemoteDisplayProviderProxy$Connection$3;->this$1:Lcom/android/server/media/RemoteDisplayProviderProxy$Connection;

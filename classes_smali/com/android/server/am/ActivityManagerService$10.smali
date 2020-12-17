@@ -21,8 +21,9 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/am/ActivityManagerService;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/am/ActivityManagerService;
 
-    .line 5218
+    .line 5547
     iput-object p1, p0, Lcom/android/server/am/ActivityManagerService$10;->this$0:Lcom/android/server/am/ActivityManagerService;
 
     invoke-direct {p0}, Landroid/content/BroadcastReceiver;-><init>()V
@@ -33,103 +34,131 @@
 
 # virtual methods
 .method public onReceive(Landroid/content/Context;Landroid/content/Intent;)V
-    .registers 15
+    .registers 21
+    .param p1, "context"  # Landroid/content/Context;
+    .param p2, "intent"  # Landroid/content/Intent;
 
-    .line 5221
-    const-string p1, "android.intent.extra.PACKAGES"
+    .line 5550
+    move-object/from16 v1, p0
 
-    invoke-virtual {p2, p1}, Landroid/content/Intent;->getStringArrayExtra(Ljava/lang/String;)[Ljava/lang/String;
+    const-string v0, "android.intent.extra.PACKAGES"
 
-    move-result-object p1
+    move-object/from16 v2, p2
 
-    .line 5222
-    if-eqz p1, :cond_3c
+    invoke-virtual {v2, v0}, Landroid/content/Intent;->getStringArrayExtra(Ljava/lang/String;)[Ljava/lang/String;
 
-    .line 5223
-    array-length p2, p1
+    move-result-object v3
 
-    const/4 v0, 0x0
+    .line 5551
+    .local v3, "pkgs":[Ljava/lang/String;
+    if-eqz v3, :cond_49
 
-    :goto_a
-    if-ge v0, p2, :cond_3c
-
-    aget-object v2, p1, v0
-
-    .line 5224
-    iget-object v11, p0, Lcom/android/server/am/ActivityManagerService$10;->this$0:Lcom/android/server/am/ActivityManagerService;
-
-    monitor-enter v11
-
-    :try_start_11
-    invoke-static {}, Lcom/android/server/am/ActivityManagerService;->boostPriorityForLockedSection()V
-
-    .line 5225
-    iget-object v1, p0, Lcom/android/server/am/ActivityManagerService$10;->this$0:Lcom/android/server/am/ActivityManagerService;
-
-    const/4 v3, -0x1
+    .line 5552
+    array-length v0, v3
 
     const/4 v4, 0x0
 
-    const/4 v5, 0x0
+    :goto_e
+    if-ge v4, v0, :cond_49
 
-    const/4 v6, 0x0
+    aget-object v15, v3, v4
 
-    const/4 v7, 0x0
+    .line 5553
+    .local v15, "pkg":Ljava/lang/String;
+    iget-object v14, v1, Lcom/android/server/am/ActivityManagerService$10;->this$0:Lcom/android/server/am/ActivityManagerService;
+
+    monitor-enter v14
+
+    :try_start_15
+    invoke-static {}, Lcom/android/server/am/ActivityManagerService;->boostPriorityForLockedSection()V
+
+    .line 5554
+    iget-object v5, v1, Lcom/android/server/am/ActivityManagerService$10;->this$0:Lcom/android/server/am/ActivityManagerService;
+
+    const/4 v7, -0x1
 
     const/4 v8, 0x0
 
     const/4 v9, 0x0
 
-    const-string/jumbo v10, "query restart"
+    const/4 v10, 0x0
 
-    invoke-virtual/range {v1 .. v10}, Lcom/android/server/am/ActivityManagerService;->forceStopPackageLocked(Ljava/lang/String;IZZZZZILjava/lang/String;)Z
+    const/4 v11, 0x0
 
-    move-result v1
+    const/4 v12, 0x0
 
-    if-eqz v1, :cond_2f
+    const/4 v13, 0x0
 
-    .line 5227
-    const/4 p1, -0x1
+    const-string/jumbo v16, "query restart"
+    :try_end_24
+    .catchall {:try_start_15 .. :try_end_24} :catchall_3f
 
-    invoke-virtual {p0, p1}, Lcom/android/server/am/ActivityManagerService$10;->setResultCode(I)V
+    move-object v6, v15
 
-    .line 5228
-    monitor-exit v11
-    :try_end_2b
-    .catchall {:try_start_11 .. :try_end_2b} :catchall_36
+    move-object/from16 v17, v14
+
+    move-object/from16 v14, v16
+
+    :try_start_29
+    invoke-virtual/range {v5 .. v14}, Lcom/android/server/am/ActivityManagerService;->forceStopPackageLocked(Ljava/lang/String;IZZZZZILjava/lang/String;)Z
+
+    move-result v5
+
+    if-eqz v5, :cond_38
+
+    .line 5556
+    const/4 v0, -0x1
+
+    invoke-virtual {v1, v0}, Lcom/android/server/am/ActivityManagerService$10;->setResultCode(I)V
+
+    .line 5557
+    monitor-exit v17
+    :try_end_34
+    .catchall {:try_start_29 .. :try_end_34} :catchall_47
 
     invoke-static {}, Lcom/android/server/am/ActivityManagerService;->resetPriorityAfterLockedSection()V
 
     return-void
 
-    .line 5230
-    :cond_2f
-    :try_start_2f
-    monitor-exit v11
-    :try_end_30
-    .catchall {:try_start_2f .. :try_end_30} :catchall_36
+    .line 5559
+    :cond_38
+    :try_start_38
+    monitor-exit v17
+    :try_end_39
+    .catchall {:try_start_38 .. :try_end_39} :catchall_47
 
     invoke-static {}, Lcom/android/server/am/ActivityManagerService;->resetPriorityAfterLockedSection()V
 
-    .line 5223
-    add-int/lit8 v0, v0, 0x1
+    .line 5552
+    .end local v15  # "pkg":Ljava/lang/String;
+    add-int/lit8 v4, v4, 0x1
 
-    goto :goto_a
+    goto :goto_e
 
-    .line 5230
-    :catchall_36
-    move-exception p1
+    .line 5559
+    .restart local v15  # "pkg":Ljava/lang/String;
+    :catchall_3f
+    move-exception v0
 
-    :try_start_37
-    monitor-exit v11
-    :try_end_38
-    .catchall {:try_start_37 .. :try_end_38} :catchall_36
+    move-object/from16 v17, v14
+
+    :goto_42
+    :try_start_42
+    monitor-exit v17
+    :try_end_43
+    .catchall {:try_start_42 .. :try_end_43} :catchall_47
 
     invoke-static {}, Lcom/android/server/am/ActivityManagerService;->resetPriorityAfterLockedSection()V
 
-    throw p1
+    throw v0
 
-    .line 5233
-    :cond_3c
+    :catchall_47
+    move-exception v0
+
+    goto :goto_42
+
+    .line 5562
+    .end local v15  # "pkg":Ljava/lang/String;
+    :cond_49
     return-void
 .end method

@@ -52,6 +52,8 @@
 
 .method synthetic constructor <init>(Lcom/android/server/job/controllers/QuotaController;Lcom/android/server/job/controllers/QuotaController$1;)V
     .registers 3
+    .param p1, "x0"  # Lcom/android/server/job/controllers/QuotaController;
+    .param p2, "x1"  # Lcom/android/server/job/controllers/QuotaController$1;
 
     .line 1175
     invoke-direct {p0, p1}, Lcom/android/server/job/controllers/QuotaController$EarliestEndTimeFunctor;-><init>(Lcom/android/server/job/controllers/QuotaController;)V
@@ -84,6 +86,7 @@
     .end annotation
 
     .line 1180
+    .local p1, "sessions":Ljava/util/List;, "Ljava/util/List<Lcom/android/server/job/controllers/QuotaController$TimingSession;>;"
     if-eqz p1, :cond_19
 
     invoke-interface {p1}, Ljava/util/List;->size()I
@@ -99,11 +102,11 @@
 
     invoke-interface {p1, v2}, Ljava/util/List;->get(I)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v2
 
-    check-cast p1, Lcom/android/server/job/controllers/QuotaController$TimingSession;
+    check-cast v2, Lcom/android/server/job/controllers/QuotaController$TimingSession;
 
-    iget-wide v2, p1, Lcom/android/server/job/controllers/QuotaController$TimingSession;->endTimeElapsed:J
+    iget-wide v2, v2, Lcom/android/server/job/controllers/QuotaController$TimingSession;->endTimeElapsed:J
 
     invoke-static {v0, v1, v2, v3}, Ljava/lang/Math;->min(JJ)J
 

@@ -21,29 +21,32 @@
 # direct methods
 .method public constructor <init>(Lcom/android/server/display/DisplayPowerController;Landroid/os/Handler;)V
     .registers 3
+    .param p2, "handler"  # Landroid/os/Handler;
 
-    .line 1956
+    .line 2154
     iput-object p1, p0, Lcom/android/server/display/DisplayPowerController$SettingsObserver;->this$0:Lcom/android/server/display/DisplayPowerController;
 
-    .line 1957
+    .line 2155
     invoke-direct {p0, p2}, Landroid/database/ContentObserver;-><init>(Landroid/os/Handler;)V
 
-    .line 1958
+    .line 2156
     return-void
 .end method
 
 
 # virtual methods
 .method public onChange(ZLandroid/net/Uri;)V
-    .registers 3
+    .registers 5
+    .param p1, "selfChange"  # Z
+    .param p2, "uri"  # Landroid/net/Uri;
 
-    .line 1962
-    iget-object p1, p0, Lcom/android/server/display/DisplayPowerController$SettingsObserver;->this$0:Lcom/android/server/display/DisplayPowerController;
+    .line 2160
+    iget-object v0, p0, Lcom/android/server/display/DisplayPowerController$SettingsObserver;->this$0:Lcom/android/server/display/DisplayPowerController;
 
-    const/4 p2, 0x0
+    const/4 v1, 0x0
 
-    invoke-static {p1, p2}, Lcom/android/server/display/DisplayPowerController;->access$1800(Lcom/android/server/display/DisplayPowerController;Z)V
+    invoke-static {v0, v1}, Lcom/android/server/display/DisplayPowerController;->access$2300(Lcom/android/server/display/DisplayPowerController;Z)V
 
-    .line 1963
+    .line 2161
     return-void
 .end method

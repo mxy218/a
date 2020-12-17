@@ -16,6 +16,9 @@
 # direct methods
 .method private constructor <init>(Ljava/lang/Exception;ZI)V
     .registers 4
+    .param p1, "cause"  # Ljava/lang/Exception;
+    .param p2, "stateCompromised"  # Z
+    .param p3, "status"  # I
 
     .line 66
     invoke-direct {p0, p1}, Lcom/android/server/backup/keyvalue/BackupException;-><init>(Ljava/lang/Exception;)V
@@ -32,6 +35,8 @@
 
 .method private constructor <init>(ZI)V
     .registers 3
+    .param p1, "stateCompromised"  # Z
+    .param p2, "status"  # I
 
     .line 71
     invoke-direct {p0}, Lcom/android/server/backup/keyvalue/BackupException;-><init>()V
@@ -48,19 +53,22 @@
 
 .method static causedBy(Ljava/lang/Exception;)Lcom/android/server/backup/keyvalue/TaskException;
     .registers 4
+    .param p0, "cause"  # Ljava/lang/Exception;
 
     .line 52
     instance-of v0, p0, Lcom/android/server/backup/keyvalue/TaskException;
 
-    if-eqz v0, :cond_7
+    if-eqz v0, :cond_8
 
     .line 53
-    check-cast p0, Lcom/android/server/backup/keyvalue/TaskException;
+    move-object v0, p0
 
-    return-object p0
+    check-cast v0, Lcom/android/server/backup/keyvalue/TaskException;
+
+    return-object v0
 
     .line 55
-    :cond_7
+    :cond_8
     new-instance v0, Lcom/android/server/backup/keyvalue/TaskException;
 
     const/4 v1, 0x0
@@ -89,6 +97,7 @@
 
 .method static forStatus(I)Lcom/android/server/backup/keyvalue/TaskException;
     .registers 4
+    .param p0, "status"  # I
 
     .line 46
     const/4 v0, 0x0
@@ -131,7 +140,8 @@
 .end method
 
 .method static stateCompromised(Ljava/lang/Exception;)Lcom/android/server/backup/keyvalue/TaskException;
-    .registers 4
+    .registers 5
+    .param p0, "cause"  # Ljava/lang/Exception;
 
     .line 38
     instance-of v0, p0, Lcom/android/server/backup/keyvalue/TaskException;
@@ -146,17 +156,19 @@
     check-cast v0, Lcom/android/server/backup/keyvalue/TaskException;
 
     .line 40
+    .local v0, "exception":Lcom/android/server/backup/keyvalue/TaskException;
     new-instance v2, Lcom/android/server/backup/keyvalue/TaskException;
 
     invoke-virtual {v0}, Lcom/android/server/backup/keyvalue/TaskException;->getStatus()I
 
-    move-result v0
+    move-result v3
 
-    invoke-direct {v2, p0, v1, v0}, Lcom/android/server/backup/keyvalue/TaskException;-><init>(Ljava/lang/Exception;ZI)V
+    invoke-direct {v2, p0, v1, v3}, Lcom/android/server/backup/keyvalue/TaskException;-><init>(Ljava/lang/Exception;ZI)V
 
     return-object v2
 
     .line 42
+    .end local v0  # "exception":Lcom/android/server/backup/keyvalue/TaskException;
     :cond_12
     new-instance v0, Lcom/android/server/backup/keyvalue/TaskException;
 

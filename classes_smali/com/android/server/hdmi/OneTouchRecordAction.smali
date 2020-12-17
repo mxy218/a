@@ -22,6 +22,9 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/hdmi/HdmiCecLocalDevice;I[B)V
     .registers 4
+    .param p1, "source"  # Lcom/android/server/hdmi/HdmiCecLocalDevice;
+    .param p2, "recorderAddress"  # I
+    .param p3, "recordSource"  # [B
 
     .line 47
     invoke-direct {p0, p1}, Lcom/android/server/hdmi/HdmiCecFeatureAction;-><init>(Lcom/android/server/hdmi/HdmiCecLocalDevice;)V
@@ -37,16 +40,18 @@
 .end method
 
 .method static synthetic access$000(Lcom/android/server/hdmi/OneTouchRecordAction;)I
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/hdmi/OneTouchRecordAction;
 
     .line 32
-    iget p0, p0, Lcom/android/server/hdmi/OneTouchRecordAction;->mRecorderAddress:I
+    iget v0, p0, Lcom/android/server/hdmi/OneTouchRecordAction;->mRecorderAddress:I
 
-    return p0
+    return v0
 .end method
 
 .method private handleRecordStatus(Lcom/android/server/hdmi/HdmiCecMessage;)Z
-    .registers 5
+    .registers 6
+    .param p1, "cmd"  # Lcom/android/server/hdmi/HdmiCecMessage;
 
     .line 93
     invoke-virtual {p1}, Lcom/android/server/hdmi/HdmiCecMessage;->getSource()I
@@ -71,6 +76,7 @@
     aget-byte v0, v0, v2
 
     .line 98
+    .local v0, "recordStatus":I
     invoke-virtual {p0}, Lcom/android/server/hdmi/OneTouchRecordAction;->tv()Lcom/android/server/hdmi/HdmiCecLocalDeviceTv;
 
     move-result-object v1
@@ -96,34 +102,34 @@
 
     invoke-virtual {p1}, Lcom/android/server/hdmi/HdmiCecMessage;->getSource()I
 
-    move-result p1
+    move-result v2
 
-    invoke-virtual {v1, p1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
     invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v1
 
-    const-string v1, "OneTouchRecordAction"
+    const-string v2, "OneTouchRecordAction"
 
-    invoke-static {v1, p1}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v2, v1}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 103
-    const/4 p1, 0x2
+    const/4 v1, 0x2
 
-    const/4 v1, 0x1
+    const/4 v2, 0x1
+
+    if-eq v0, v2, :cond_4b
 
     if-eq v0, v1, :cond_4b
 
-    if-eq v0, p1, :cond_4b
+    const/4 v3, 0x3
 
-    const/4 v2, 0x3
+    if-eq v0, v3, :cond_4b
 
-    if-eq v0, v2, :cond_4b
+    const/4 v3, 0x4
 
-    const/4 v2, 0x4
-
-    if-eq v0, v2, :cond_4b
+    if-eq v0, v3, :cond_4b
 
     .line 112
     invoke-virtual {p0}, Lcom/android/server/hdmi/OneTouchRecordAction;->finish()V
@@ -132,19 +138,19 @@
 
     .line 108
     :cond_4b
-    iput p1, p0, Lcom/android/server/hdmi/OneTouchRecordAction;->mState:I
+    iput v1, p0, Lcom/android/server/hdmi/OneTouchRecordAction;->mState:I
 
     .line 109
-    iget-object p1, p0, Lcom/android/server/hdmi/OneTouchRecordAction;->mActionTimer:Lcom/android/server/hdmi/HdmiCecFeatureAction$ActionTimer;
+    iget-object v1, p0, Lcom/android/server/hdmi/OneTouchRecordAction;->mActionTimer:Lcom/android/server/hdmi/HdmiCecFeatureAction$ActionTimer;
 
-    invoke-interface {p1}, Lcom/android/server/hdmi/HdmiCecFeatureAction$ActionTimer;->clearTimerMessage()V
+    invoke-interface {v1}, Lcom/android/server/hdmi/HdmiCecFeatureAction$ActionTimer;->clearTimerMessage()V
 
     .line 110
     nop
 
     .line 115
     :goto_53
-    return v1
+    return v2
 .end method
 
 .method private sendRecordOn()V
@@ -197,7 +203,8 @@
 .end method
 
 .method handleTimerEvent(I)V
-    .registers 4
+    .registers 5
+    .param p1, "state"  # I
 
     .line 120
     iget v0, p0, Lcom/android/server/hdmi/OneTouchRecordAction;->mState:I
@@ -223,17 +230,17 @@
 
     invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    const-string p1, "]"
+    const-string v1, "]"
 
-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    const-string v0, "OneTouchRecordAction"
+    const-string v1, "OneTouchRecordAction"
 
-    invoke-static {v0, p1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v0}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 122
     return-void
@@ -242,13 +249,13 @@
     :cond_2a
     invoke-virtual {p0}, Lcom/android/server/hdmi/OneTouchRecordAction;->tv()Lcom/android/server/hdmi/HdmiCecLocalDeviceTv;
 
-    move-result-object p1
+    move-result-object v0
 
-    iget v0, p0, Lcom/android/server/hdmi/OneTouchRecordAction;->mRecorderAddress:I
+    iget v1, p0, Lcom/android/server/hdmi/OneTouchRecordAction;->mRecorderAddress:I
 
-    const/16 v1, 0x31
+    const/16 v2, 0x31
 
-    invoke-virtual {p1, v0, v1}, Lcom/android/server/hdmi/HdmiCecLocalDeviceTv;->announceOneTouchRecordResult(II)V
+    invoke-virtual {v0, v1, v2}, Lcom/android/server/hdmi/HdmiCecLocalDeviceTv;->announceOneTouchRecordResult(II)V
 
     .line 127
     invoke-virtual {p0}, Lcom/android/server/hdmi/OneTouchRecordAction;->finish()V
@@ -259,6 +266,7 @@
 
 .method processCommand(Lcom/android/server/hdmi/HdmiCecMessage;)Z
     .registers 5
+    .param p1, "cmd"  # Lcom/android/server/hdmi/HdmiCecMessage;
 
     .line 80
     iget v0, p0, Lcom/android/server/hdmi/OneTouchRecordAction;->mState:I
@@ -296,9 +304,9 @@
     :cond_18
     invoke-direct {p0, p1}, Lcom/android/server/hdmi/OneTouchRecordAction;->handleRecordStatus(Lcom/android/server/hdmi/HdmiCecMessage;)Z
 
-    move-result p1
+    move-result v0
 
-    return p1
+    return v0
 
     .line 81
     :cond_1d

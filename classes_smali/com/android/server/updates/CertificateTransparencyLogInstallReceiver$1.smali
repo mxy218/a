@@ -26,6 +26,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/updates/CertificateTransparencyLogInstallReceiver;Ljava/io/File;)V
     .registers 3
+    .param p1, "this$0"  # Lcom/android/server/updates/CertificateTransparencyLogInstallReceiver;
 
     .line 171
     iput-object p1, p0, Lcom/android/server/updates/CertificateTransparencyLogInstallReceiver$1;->this$0:Lcom/android/server/updates/CertificateTransparencyLogInstallReceiver;
@@ -40,7 +41,8 @@
 
 # virtual methods
 .method public accept(Ljava/io/File;)Z
-    .registers 3
+    .registers 4
+    .param p1, "file"  # Ljava/io/File;
 
     .line 174
     iget-object v0, p0, Lcom/android/server/updates/CertificateTransparencyLogInstallReceiver$1;->val$currentTarget:Ljava/io/File;
@@ -49,27 +51,27 @@
 
     move-result v0
 
-    if-nez v0, :cond_16
+    if-nez v0, :cond_17
 
     invoke-virtual {p1}, Ljava/io/File;->getName()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    const-string v0, "logs-"
+    const-string/jumbo v1, "logs-"
 
-    invoke-virtual {p1, v0}, Ljava/lang/String;->startsWith(Ljava/lang/String;)Z
+    invoke-virtual {v0, v1}, Ljava/lang/String;->startsWith(Ljava/lang/String;)Z
 
-    move-result p1
+    move-result v0
 
-    if-eqz p1, :cond_16
+    if-eqz v0, :cond_17
 
-    const/4 p1, 0x1
+    const/4 v0, 0x1
 
-    goto :goto_17
+    goto :goto_18
 
-    :cond_16
-    const/4 p1, 0x0
+    :cond_17
+    const/4 v0, 0x0
 
-    :goto_17
-    return p1
+    :goto_18
+    return v0
 .end method

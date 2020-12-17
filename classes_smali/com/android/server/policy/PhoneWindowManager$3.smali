@@ -21,8 +21,9 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/policy/PhoneWindowManager;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/policy/PhoneWindowManager;
 
-    .line 844
+    .line 764
     iput-object p1, p0, Lcom/android/server/policy/PhoneWindowManager$3;->this$0:Lcom/android/server/policy/PhoneWindowManager;
 
     invoke-direct {p0}, Landroid/os/UEventObserver;-><init>()V
@@ -33,9 +34,10 @@
 
 # virtual methods
 .method public onUEvent(Landroid/os/UEventObserver$UEvent;)V
-    .registers 4
+    .registers 5
+    .param p1, "event"  # Landroid/os/UEventObserver$UEvent;
 
-    .line 847
+    .line 767
     iget-object v0, p0, Lcom/android/server/policy/PhoneWindowManager$3;->this$0:Lcom/android/server/policy/PhoneWindowManager;
 
     iget-object v0, v0, Lcom/android/server/policy/PhoneWindowManager;->mDefaultDisplayPolicy:Lcom/android/server/wm/DisplayPolicy;
@@ -44,16 +46,16 @@
 
     invoke-virtual {p1, v1}, Landroid/os/UEventObserver$UEvent;->get(Ljava/lang/String;)Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v1
 
-    const-string v1, "1"
+    const-string v2, "1"
 
-    invoke-virtual {v1, p1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v2, v1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result p1
+    move-result v1
 
-    invoke-virtual {v0, p1}, Lcom/android/server/wm/DisplayPolicy;->setHdmiPlugged(Z)V
+    invoke-virtual {v0, v1}, Lcom/android/server/wm/DisplayPolicy;->setHdmiPlugged(Z)V
 
-    .line 848
+    .line 768
     return-void
 .end method

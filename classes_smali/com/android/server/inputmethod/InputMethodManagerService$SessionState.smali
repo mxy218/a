@@ -27,23 +27,27 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/inputmethod/InputMethodManagerService$ClientState;Lcom/android/internal/view/IInputMethod;Lcom/android/internal/view/IInputMethodSession;Landroid/view/InputChannel;)V
     .registers 5
+    .param p1, "_client"  # Lcom/android/server/inputmethod/InputMethodManagerService$ClientState;
+    .param p2, "_method"  # Lcom/android/internal/view/IInputMethod;
+    .param p3, "_session"  # Lcom/android/internal/view/IInputMethodSession;
+    .param p4, "_channel"  # Landroid/view/InputChannel;
 
-    .line 384
+    .line 403
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
-    .line 385
+    .line 404
     iput-object p1, p0, Lcom/android/server/inputmethod/InputMethodManagerService$SessionState;->client:Lcom/android/server/inputmethod/InputMethodManagerService$ClientState;
 
-    .line 386
+    .line 405
     iput-object p2, p0, Lcom/android/server/inputmethod/InputMethodManagerService$SessionState;->method:Lcom/android/internal/view/IInputMethod;
 
-    .line 387
+    .line 406
     iput-object p3, p0, Lcom/android/server/inputmethod/InputMethodManagerService$SessionState;->session:Lcom/android/internal/view/IInputMethodSession;
 
-    .line 388
+    .line 407
     iput-object p4, p0, Lcom/android/server/inputmethod/InputMethodManagerService$SessionState;->channel:Landroid/view/InputChannel;
 
-    .line 389
+    .line 408
     return-void
 .end method
 
@@ -52,7 +56,7 @@
 .method public toString()Ljava/lang/String;
     .registers 3
 
-    .line 374
+    .line 393
     new-instance v0, Ljava/lang/StringBuilder;
 
     invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
@@ -83,12 +87,12 @@
 
     iget-object v1, p0, Lcom/android/server/inputmethod/InputMethodManagerService$SessionState;->method:Lcom/android/internal/view/IInputMethod;
 
-    .line 376
+    .line 395
     invoke-static {v1}, Ljava/lang/System;->identityHashCode(Ljava/lang/Object;)I
 
     move-result v1
 
-    .line 375
+    .line 394
     invoke-static {v1}, Ljava/lang/Integer;->toHexString(I)Ljava/lang/String;
 
     move-result-object v1
@@ -101,12 +105,12 @@
 
     iget-object v1, p0, Lcom/android/server/inputmethod/InputMethodManagerService$SessionState;->session:Lcom/android/internal/view/IInputMethodSession;
 
-    .line 378
+    .line 397
     invoke-static {v1}, Ljava/lang/System;->identityHashCode(Ljava/lang/Object;)I
 
     move-result v1
 
-    .line 377
+    .line 396
     invoke-static {v1}, Ljava/lang/Integer;->toHexString(I)Ljava/lang/String;
 
     move-result-object v1
@@ -129,6 +133,6 @@
 
     move-result-object v0
 
-    .line 374
+    .line 393
     return-object v0
 .end method

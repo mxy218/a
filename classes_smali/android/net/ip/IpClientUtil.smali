@@ -27,30 +27,37 @@
 .end method
 
 .method public static dumpIpClient(Landroid/net/ip/IIpClient;Ljava/io/FileDescriptor;Ljava/io/PrintWriter;[Ljava/lang/String;)V
-    .registers 4
+    .registers 5
+    .param p0, "connector"  # Landroid/net/ip/IIpClient;
+    .param p1, "fd"  # Ljava/io/FileDescriptor;
+    .param p2, "pw"  # Ljava/io/PrintWriter;
+    .param p3, "args"  # [Ljava/lang/String;
 
     .line 191
-    const-string p0, "IpClient logs have moved to dumpsys network_stack"
+    const-string v0, "IpClient logs have moved to dumpsys network_stack"
 
-    invoke-virtual {p2, p0}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {p2, v0}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
     .line 192
     return-void
 .end method
 
 .method public static makeIpClient(Landroid/content/Context;Ljava/lang/String;Landroid/net/ip/IpClientCallbacks;)V
-    .registers 4
+    .registers 5
+    .param p0, "context"  # Landroid/content/Context;
+    .param p1, "ifName"  # Ljava/lang/String;
+    .param p2, "callback"  # Landroid/net/ip/IpClientCallbacks;
 
     .line 80
     invoke-static {}, Landroid/net/NetworkStackClient;->getInstance()Landroid/net/NetworkStackClient;
 
-    move-result-object p0
+    move-result-object v0
 
-    new-instance v0, Landroid/net/ip/IpClientUtil$IpClientCallbacksProxy;
+    new-instance v1, Landroid/net/ip/IpClientUtil$IpClientCallbacksProxy;
 
-    invoke-direct {v0, p2}, Landroid/net/ip/IpClientUtil$IpClientCallbacksProxy;-><init>(Landroid/net/ip/IpClientCallbacks;)V
+    invoke-direct {v1, p2}, Landroid/net/ip/IpClientUtil$IpClientCallbacksProxy;-><init>(Landroid/net/ip/IpClientCallbacks;)V
 
-    invoke-virtual {p0, p1, v0}, Landroid/net/NetworkStackClient;->makeIpClient(Ljava/lang/String;Landroid/net/ip/IIpClientCallbacks;)V
+    invoke-virtual {v0, p1, v1}, Landroid/net/NetworkStackClient;->makeIpClient(Ljava/lang/String;Landroid/net/ip/IIpClientCallbacks;)V
 
     .line 81
     return-void

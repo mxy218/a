@@ -17,6 +17,7 @@
 # direct methods
 .method public constructor <init>(Landroid/content/Context;)V
     .registers 2
+    .param p1, "context"  # Landroid/content/Context;
 
     .line 77
     invoke-direct {p0, p1}, Lcom/android/server/SystemService;-><init>(Landroid/content/Context;)V
@@ -40,6 +41,7 @@
     move-result-object v0
 
     .line 83
+    .local v0, "service":Lcom/android/server/timezone/RulesManagerService;
     invoke-virtual {v0}, Lcom/android/server/timezone/RulesManagerService;->start()V
 
     .line 87

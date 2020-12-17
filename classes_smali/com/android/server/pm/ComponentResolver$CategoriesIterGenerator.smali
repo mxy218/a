@@ -35,7 +35,8 @@
 
 # virtual methods
 .method public generate(Landroid/content/pm/PackageParser$ActivityIntentInfo;)Ljava/util/Iterator;
-    .registers 2
+    .registers 3
+    .param p1, "info"  # Landroid/content/pm/PackageParser$ActivityIntentInfo;
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(",
@@ -50,7 +51,7 @@
     .line 1905
     invoke-virtual {p1}, Landroid/content/pm/PackageParser$ActivityIntentInfo;->categoriesIterator()Ljava/util/Iterator;
 
-    move-result-object p1
+    move-result-object v0
 
-    return-object p1
+    return-object v0
 .end method

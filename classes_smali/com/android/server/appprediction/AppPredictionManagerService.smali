@@ -34,7 +34,7 @@
 .method static constructor <clinit>()V
     .registers 1
 
-    .line 57
+    .line 56
     const-class v0, Lcom/android/server/appprediction/AppPredictionManagerService;
 
     invoke-virtual {v0}, Ljava/lang/Class;->getSimpleName()Ljava/lang/String;
@@ -47,81 +47,85 @@
 .end method
 
 .method public constructor <init>(Landroid/content/Context;)V
-    .registers 5
+    .registers 4
+    .param p1, "context"  # Landroid/content/Context;
 
-    .line 64
+    .line 63
     new-instance v0, Lcom/android/server/infra/FrameworkResourcesServiceNameResolver;
 
-    const v1, 0x1040156
+    const v1, 0x1040151
 
     invoke-direct {v0, p1, v1}, Lcom/android/server/infra/FrameworkResourcesServiceNameResolver;-><init>(Landroid/content/Context;I)V
 
     const/4 v1, 0x0
 
-    const/16 v2, 0x11
+    invoke-direct {p0, p1, v0, v1}, Lcom/android/server/infra/AbstractMasterSystemService;-><init>(Landroid/content/Context;Lcom/android/server/infra/ServiceNameResolver;Ljava/lang/String;)V
 
-    invoke-direct {p0, p1, v0, v1, v2}, Lcom/android/server/infra/AbstractMasterSystemService;-><init>(Landroid/content/Context;Lcom/android/server/infra/ServiceNameResolver;Ljava/lang/String;I)V
+    .line 65
+    const-class v0, Lcom/android/server/wm/ActivityTaskManagerInternal;
 
-    .line 67
-    const-class p1, Lcom/android/server/wm/ActivityTaskManagerInternal;
+    invoke-static {v0}, Lcom/android/server/LocalServices;->getService(Ljava/lang/Class;)Ljava/lang/Object;
 
-    invoke-static {p1}, Lcom/android/server/LocalServices;->getService(Ljava/lang/Class;)Ljava/lang/Object;
+    move-result-object v0
 
-    move-result-object p1
+    check-cast v0, Lcom/android/server/wm/ActivityTaskManagerInternal;
 
-    check-cast p1, Lcom/android/server/wm/ActivityTaskManagerInternal;
+    iput-object v0, p0, Lcom/android/server/appprediction/AppPredictionManagerService;->mActivityTaskManagerInternal:Lcom/android/server/wm/ActivityTaskManagerInternal;
 
-    iput-object p1, p0, Lcom/android/server/appprediction/AppPredictionManagerService;->mActivityTaskManagerInternal:Lcom/android/server/wm/ActivityTaskManagerInternal;
-
-    .line 68
+    .line 66
     return-void
 .end method
 
 .method static synthetic access$100(Lcom/android/server/appprediction/AppPredictionManagerService;)Lcom/android/server/infra/ServiceNameResolver;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/appprediction/AppPredictionManagerService;
 
-    .line 54
-    iget-object p0, p0, Lcom/android/server/appprediction/AppPredictionManagerService;->mServiceNameResolver:Lcom/android/server/infra/ServiceNameResolver;
+    .line 53
+    iget-object v0, p0, Lcom/android/server/appprediction/AppPredictionManagerService;->mServiceNameResolver:Lcom/android/server/infra/ServiceNameResolver;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$200(Lcom/android/server/appprediction/AppPredictionManagerService;)Lcom/android/server/wm/ActivityTaskManagerInternal;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/appprediction/AppPredictionManagerService;
 
-    .line 54
-    iget-object p0, p0, Lcom/android/server/appprediction/AppPredictionManagerService;->mActivityTaskManagerInternal:Lcom/android/server/wm/ActivityTaskManagerInternal;
+    .line 53
+    iget-object v0, p0, Lcom/android/server/appprediction/AppPredictionManagerService;->mActivityTaskManagerInternal:Lcom/android/server/wm/ActivityTaskManagerInternal;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$300()Ljava/lang/String;
     .registers 1
 
-    .line 54
+    .line 53
     sget-object v0, Lcom/android/server/appprediction/AppPredictionManagerService;->TAG:Ljava/lang/String;
 
     return-object v0
 .end method
 
 .method static synthetic access$400(Lcom/android/server/appprediction/AppPredictionManagerService;)Ljava/lang/Object;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/appprediction/AppPredictionManagerService;
 
-    .line 54
-    iget-object p0, p0, Lcom/android/server/appprediction/AppPredictionManagerService;->mLock:Ljava/lang/Object;
+    .line 53
+    iget-object v0, p0, Lcom/android/server/appprediction/AppPredictionManagerService;->mLock:Ljava/lang/Object;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$500(Lcom/android/server/appprediction/AppPredictionManagerService;I)Lcom/android/server/infra/AbstractPerUserSystemService;
-    .registers 2
+    .registers 3
+    .param p0, "x0"  # Lcom/android/server/appprediction/AppPredictionManagerService;
+    .param p1, "x1"  # I
 
-    .line 54
+    .line 53
     invoke-virtual {p0, p1}, Lcom/android/server/appprediction/AppPredictionManagerService;->getServiceForUserLocked(I)Lcom/android/server/infra/AbstractPerUserSystemService;
 
-    move-result-object p0
+    move-result-object v0
 
-    return-object p0
+    return-object v0
 .end method
 
 
@@ -129,7 +133,7 @@
 .method protected enforceCallingPermissionForManagement()V
     .registers 4
 
-    .line 82
+    .line 80
     invoke-virtual {p0}, Lcom/android/server/appprediction/AppPredictionManagerService;->getContext()Landroid/content/Context;
 
     move-result-object v0
@@ -140,36 +144,38 @@
 
     invoke-virtual {v0, v2, v1}, Landroid/content/Context;->enforceCallingPermission(Ljava/lang/String;Ljava/lang/String;)V
 
-    .line 83
+    .line 81
     return-void
 .end method
 
 .method protected getMaximumTemporaryServiceDurationMs()I
     .registers 2
 
-    .line 103
+    .line 85
     const v0, 0x1d4c0
 
     return v0
 .end method
 
 .method protected newServiceLocked(IZ)Lcom/android/server/appprediction/AppPredictionPerUserService;
-    .registers 4
+    .registers 5
+    .param p1, "resolvedUserId"  # I
+    .param p2, "disabled"  # Z
 
-    .line 72
-    new-instance p2, Lcom/android/server/appprediction/AppPredictionPerUserService;
+    .line 70
+    new-instance v0, Lcom/android/server/appprediction/AppPredictionPerUserService;
 
-    iget-object v0, p0, Lcom/android/server/appprediction/AppPredictionManagerService;->mLock:Ljava/lang/Object;
+    iget-object v1, p0, Lcom/android/server/appprediction/AppPredictionManagerService;->mLock:Ljava/lang/Object;
 
-    invoke-direct {p2, p0, v0, p1}, Lcom/android/server/appprediction/AppPredictionPerUserService;-><init>(Lcom/android/server/appprediction/AppPredictionManagerService;Ljava/lang/Object;I)V
+    invoke-direct {v0, p0, v1, p1}, Lcom/android/server/appprediction/AppPredictionPerUserService;-><init>(Lcom/android/server/appprediction/AppPredictionManagerService;Ljava/lang/Object;I)V
 
-    return-object p2
+    return-object v0
 .end method
 
 .method protected bridge synthetic newServiceLocked(IZ)Lcom/android/server/infra/AbstractPerUserSystemService;
     .registers 3
 
-    .line 54
+    .line 53
     invoke-virtual {p0, p1, p2}, Lcom/android/server/appprediction/AppPredictionManagerService;->newServiceLocked(IZ)Lcom/android/server/appprediction/AppPredictionPerUserService;
 
     move-result-object p1
@@ -177,52 +183,10 @@
     return-object p1
 .end method
 
-.method protected onServicePackageRestartedLocked(I)V
-    .registers 2
-
-    .line 95
-    invoke-virtual {p0, p1}, Lcom/android/server/appprediction/AppPredictionManagerService;->peekServiceForUserLocked(I)Lcom/android/server/infra/AbstractPerUserSystemService;
-
-    move-result-object p1
-
-    check-cast p1, Lcom/android/server/appprediction/AppPredictionPerUserService;
-
-    .line 96
-    if-eqz p1, :cond_b
-
-    .line 97
-    invoke-virtual {p1}, Lcom/android/server/appprediction/AppPredictionPerUserService;->onPackageRestartedLocked()V
-
-    .line 99
-    :cond_b
-    return-void
-.end method
-
-.method protected onServicePackageUpdatedLocked(I)V
-    .registers 2
-
-    .line 87
-    invoke-virtual {p0, p1}, Lcom/android/server/appprediction/AppPredictionManagerService;->peekServiceForUserLocked(I)Lcom/android/server/infra/AbstractPerUserSystemService;
-
-    move-result-object p1
-
-    check-cast p1, Lcom/android/server/appprediction/AppPredictionPerUserService;
-
-    .line 88
-    if-eqz p1, :cond_b
-
-    .line 89
-    invoke-virtual {p1}, Lcom/android/server/appprediction/AppPredictionPerUserService;->onPackageUpdatedLocked()V
-
-    .line 91
-    :cond_b
-    return-void
-.end method
-
 .method public onStart()V
     .registers 3
 
-    .line 77
+    .line 75
     new-instance v0, Lcom/android/server/appprediction/AppPredictionManagerService$PredictionManagerServiceStub;
 
     const/4 v1, 0x0
@@ -233,6 +197,6 @@
 
     invoke-virtual {p0, v1, v0}, Lcom/android/server/appprediction/AppPredictionManagerService;->publishBinderService(Ljava/lang/String;Landroid/os/IBinder;)V
 
-    .line 78
+    .line 76
     return-void
 .end method

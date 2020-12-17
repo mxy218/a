@@ -67,6 +67,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/wm/DisplayContent;)V
     .registers 3
+    .param p1, "displayContent"  # Lcom/android/server/wm/DisplayContent;
 
     .line 60
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -127,6 +128,8 @@
 
 .method private addToControlMaps(Lcom/android/server/wm/WindowState;I)V
     .registers 5
+    .param p1, "win"  # Lcom/android/server/wm/WindowState;
+    .param p2, "type"  # I
 
     .line 202
     iget-object v0, p0, Lcom/android/server/wm/InsetsStateController;->mWinControlTypeMap:Landroid/util/ArrayMap;
@@ -140,6 +143,7 @@
     check-cast v0, Ljava/util/ArrayList;
 
     .line 204
+    .local v0, "array":Ljava/util/ArrayList;, "Ljava/util/ArrayList<Ljava/lang/Integer;>;"
     invoke-static {p2}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
 
     move-result-object v1
@@ -147,27 +151,29 @@
     invoke-virtual {v0, v1}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
 
     .line 205
-    iget-object v0, p0, Lcom/android/server/wm/InsetsStateController;->mTypeWinControlMap:Landroid/util/SparseArray;
+    iget-object v1, p0, Lcom/android/server/wm/InsetsStateController;->mTypeWinControlMap:Landroid/util/SparseArray;
 
-    invoke-virtual {v0, p2, p1}, Landroid/util/SparseArray;->put(ILjava/lang/Object;)V
+    invoke-virtual {v1, p2, p1}, Landroid/util/SparseArray;->put(ILjava/lang/Object;)V
 
     .line 206
     return-void
 .end method
 
 .method static synthetic lambda$addToControlMaps$2(Lcom/android/server/wm/WindowState;)Ljava/util/ArrayList;
-    .registers 1
+    .registers 2
+    .param p0, "key"  # Lcom/android/server/wm/WindowState;
 
     .line 203
-    new-instance p0, Ljava/util/ArrayList;
+    new-instance v0, Ljava/util/ArrayList;
 
-    invoke-direct {p0}, Ljava/util/ArrayList;-><init>()V
+    invoke-direct {v0}, Ljava/util/ArrayList;-><init>()V
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic lambda$new$0(Lcom/android/server/wm/WindowState;)V
     .registers 2
+    .param p0, "w"  # Lcom/android/server/wm/WindowState;
 
     .line 55
     invoke-virtual {p0}, Lcom/android/server/wm/WindowState;->isVisible()Z
@@ -235,6 +241,8 @@
 
 .method private onControlChanged(ILcom/android/server/wm/WindowState;)V
     .registers 6
+    .param p1, "type"  # I
+    .param p2, "win"  # Lcom/android/server/wm/WindowState;
 
     .line 167
     iget-object v0, p0, Lcom/android/server/wm/InsetsStateController;->mTypeWinControlMap:Landroid/util/SparseArray;
@@ -246,6 +254,7 @@
     check-cast v0, Lcom/android/server/wm/WindowState;
 
     .line 168
+    .local v0, "previous":Lcom/android/server/wm/WindowState;
     if-ne p2, v0, :cond_b
 
     .line 169
@@ -258,6 +267,7 @@
     move-result-object v1
 
     .line 172
+    .local v1, "controller":Lcom/android/server/wm/InsetsSourceProvider;
     if-nez v1, :cond_12
 
     .line 173
@@ -287,9 +297,9 @@
     invoke-direct {p0, v0, p1}, Lcom/android/server/wm/InsetsStateController;->removeFromControlMaps(Lcom/android/server/wm/WindowState;I)V
 
     .line 181
-    iget-object v1, p0, Lcom/android/server/wm/InsetsStateController;->mPendingControlChanged:Landroid/util/ArraySet;
+    iget-object v2, p0, Lcom/android/server/wm/InsetsStateController;->mPendingControlChanged:Landroid/util/ArraySet;
 
-    invoke-virtual {v1, v0}, Landroid/util/ArraySet;->add(Ljava/lang/Object;)Z
+    invoke-virtual {v2, v0}, Landroid/util/ArraySet;->add(Ljava/lang/Object;)Z
 
     .line 183
     :cond_27
@@ -299,9 +309,9 @@
     invoke-direct {p0, p2, p1}, Lcom/android/server/wm/InsetsStateController;->addToControlMaps(Lcom/android/server/wm/WindowState;I)V
 
     .line 185
-    iget-object p1, p0, Lcom/android/server/wm/InsetsStateController;->mPendingControlChanged:Landroid/util/ArraySet;
+    iget-object v2, p0, Lcom/android/server/wm/InsetsStateController;->mPendingControlChanged:Landroid/util/ArraySet;
 
-    invoke-virtual {p1, p2}, Landroid/util/ArraySet;->add(Ljava/lang/Object;)Z
+    invoke-virtual {v2, p2}, Landroid/util/ArraySet;->add(Ljava/lang/Object;)Z
 
     .line 187
     :cond_31
@@ -310,6 +320,8 @@
 
 .method private removeFromControlMaps(Lcom/android/server/wm/WindowState;I)V
     .registers 5
+    .param p1, "win"  # Lcom/android/server/wm/WindowState;
+    .param p2, "type"  # I
 
     .line 190
     iget-object v0, p0, Lcom/android/server/wm/InsetsStateController;->mWinControlTypeMap:Landroid/util/ArrayMap;
@@ -321,6 +333,7 @@
     check-cast v0, Ljava/util/ArrayList;
 
     .line 191
+    .local v0, "array":Ljava/util/ArrayList;, "Ljava/util/ArrayList<Ljava/lang/Integer;>;"
     if-nez v0, :cond_b
 
     .line 192
@@ -337,20 +350,20 @@
     .line 195
     invoke-virtual {v0}, Ljava/util/ArrayList;->isEmpty()Z
 
-    move-result v0
+    move-result v1
 
-    if-eqz v0, :cond_1d
+    if-eqz v1, :cond_1d
 
     .line 196
-    iget-object v0, p0, Lcom/android/server/wm/InsetsStateController;->mWinControlTypeMap:Landroid/util/ArrayMap;
+    iget-object v1, p0, Lcom/android/server/wm/InsetsStateController;->mWinControlTypeMap:Landroid/util/ArrayMap;
 
-    invoke-virtual {v0, p1}, Landroid/util/ArrayMap;->remove(Ljava/lang/Object;)Ljava/lang/Object;
+    invoke-virtual {v1, p1}, Landroid/util/ArrayMap;->remove(Ljava/lang/Object;)Ljava/lang/Object;
 
     .line 198
     :cond_1d
-    iget-object p1, p0, Lcom/android/server/wm/InsetsStateController;->mTypeWinControlMap:Landroid/util/SparseArray;
+    iget-object v1, p0, Lcom/android/server/wm/InsetsStateController;->mTypeWinControlMap:Landroid/util/SparseArray;
 
-    invoke-virtual {p1, p2}, Landroid/util/SparseArray;->remove(I)V
+    invoke-virtual {v1, p2}, Landroid/util/SparseArray;->remove(I)V
 
     .line 199
     return-void
@@ -360,6 +373,8 @@
 # virtual methods
 .method dump(Ljava/lang/String;Ljava/io/PrintWriter;)V
     .registers 7
+    .param p1, "prefix"  # Ljava/lang/String;
+    .param p2, "pw"  # Ljava/io/PrintWriter;
 
     .line 231
     new-instance v0, Ljava/lang/StringBuilder;
@@ -423,6 +438,7 @@
 
     add-int/lit8 v0, v0, -0x1
 
+    .local v0, "i":I
     :goto_46
     if-ltz v0, :cond_84
 
@@ -484,158 +500,171 @@
     goto :goto_46
 
     .line 239
+    .end local v0  # "i":I
     :cond_84
     return-void
 .end method
 
 .method getControlsForDispatch(Lcom/android/server/wm/WindowState;)[Landroid/view/InsetsSourceControl;
-    .registers 7
+    .registers 8
+    .param p1, "target"  # Lcom/android/server/wm/WindowState;
 
     .line 91
     iget-object v0, p0, Lcom/android/server/wm/InsetsStateController;->mWinControlTypeMap:Landroid/util/ArrayMap;
 
     invoke-virtual {v0, p1}, Landroid/util/ArrayMap;->get(Ljava/lang/Object;)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v0
 
-    check-cast p1, Ljava/util/ArrayList;
+    check-cast v0, Ljava/util/ArrayList;
 
     .line 92
-    if-nez p1, :cond_c
+    .local v0, "controlled":Ljava/util/ArrayList;, "Ljava/util/ArrayList<Ljava/lang/Integer;>;"
+    if-nez v0, :cond_c
 
     .line 93
-    const/4 p1, 0x0
+    const/4 v1, 0x0
 
-    return-object p1
+    return-object v1
 
     .line 95
     :cond_c
-    invoke-virtual {p1}, Ljava/util/ArrayList;->size()I
+    invoke-virtual {v0}, Ljava/util/ArrayList;->size()I
 
-    move-result v0
+    move-result v1
 
     .line 96
-    new-array v1, v0, [Landroid/view/InsetsSourceControl;
+    .local v1, "size":I
+    new-array v2, v1, [Landroid/view/InsetsSourceControl;
 
     .line 97
-    const/4 v2, 0x0
+    .local v2, "result":[Landroid/view/InsetsSourceControl;
+    const/4 v3, 0x0
 
+    .local v3, "i":I
     :goto_13
-    if-ge v2, v0, :cond_2a
+    if-ge v3, v1, :cond_2a
 
     .line 98
-    iget-object v3, p0, Lcom/android/server/wm/InsetsStateController;->mControllers:Landroid/util/ArrayMap;
+    iget-object v4, p0, Lcom/android/server/wm/InsetsStateController;->mControllers:Landroid/util/ArrayMap;
 
-    invoke-virtual {p1, v2}, Ljava/util/ArrayList;->get(I)Ljava/lang/Object;
+    invoke-virtual {v0, v3}, Ljava/util/ArrayList;->get(I)Ljava/lang/Object;
+
+    move-result-object v5
+
+    invoke-virtual {v4, v5}, Landroid/util/ArrayMap;->get(Ljava/lang/Object;)Ljava/lang/Object;
 
     move-result-object v4
 
-    invoke-virtual {v3, v4}, Landroid/util/ArrayMap;->get(Ljava/lang/Object;)Ljava/lang/Object;
+    check-cast v4, Lcom/android/server/wm/InsetsSourceProvider;
 
-    move-result-object v3
+    invoke-virtual {v4}, Lcom/android/server/wm/InsetsSourceProvider;->getControl()Landroid/view/InsetsSourceControl;
 
-    check-cast v3, Lcom/android/server/wm/InsetsSourceProvider;
+    move-result-object v4
 
-    invoke-virtual {v3}, Lcom/android/server/wm/InsetsSourceProvider;->getControl()Landroid/view/InsetsSourceControl;
-
-    move-result-object v3
-
-    aput-object v3, v1, v2
+    aput-object v4, v2, v3
 
     .line 97
-    add-int/lit8 v2, v2, 0x1
+    add-int/lit8 v3, v3, 0x1
 
     goto :goto_13
 
     .line 100
+    .end local v3  # "i":I
     :cond_2a
-    return-object v1
+    return-object v2
 .end method
 
 .method getInsetsForDispatch(Lcom/android/server/wm/WindowState;)Landroid/view/InsetsState;
-    .registers 4
+    .registers 6
+    .param p1, "target"  # Lcom/android/server/wm/WindowState;
 
     .line 72
     invoke-virtual {p1}, Lcom/android/server/wm/WindowState;->getInsetProvider()Lcom/android/server/wm/InsetsSourceProvider;
 
-    move-result-object p1
+    move-result-object v0
 
     .line 73
-    if-nez p1, :cond_9
+    .local v0, "provider":Lcom/android/server/wm/InsetsSourceProvider;
+    if-nez v0, :cond_9
 
     .line 74
-    iget-object p1, p0, Lcom/android/server/wm/InsetsStateController;->mState:Landroid/view/InsetsState;
+    iget-object v1, p0, Lcom/android/server/wm/InsetsStateController;->mState:Landroid/view/InsetsState;
 
-    return-object p1
+    return-object v1
 
     .line 77
     :cond_9
-    new-instance v0, Landroid/view/InsetsState;
+    new-instance v1, Landroid/view/InsetsState;
 
-    invoke-direct {v0}, Landroid/view/InsetsState;-><init>()V
+    invoke-direct {v1}, Landroid/view/InsetsState;-><init>()V
 
     .line 78
-    iget-object v1, p0, Lcom/android/server/wm/InsetsStateController;->mState:Landroid/view/InsetsState;
+    .local v1, "state":Landroid/view/InsetsState;
+    iget-object v2, p0, Lcom/android/server/wm/InsetsStateController;->mState:Landroid/view/InsetsState;
 
-    invoke-virtual {v0, v1}, Landroid/view/InsetsState;->set(Landroid/view/InsetsState;)V
+    invoke-virtual {v1, v2}, Landroid/view/InsetsState;->set(Landroid/view/InsetsState;)V
 
     .line 79
-    invoke-virtual {p1}, Lcom/android/server/wm/InsetsSourceProvider;->getSource()Landroid/view/InsetsSource;
+    invoke-virtual {v0}, Lcom/android/server/wm/InsetsSourceProvider;->getSource()Landroid/view/InsetsSource;
 
-    move-result-object p1
+    move-result-object v2
 
-    invoke-virtual {p1}, Landroid/view/InsetsSource;->getType()I
+    invoke-virtual {v2}, Landroid/view/InsetsSource;->getType()I
 
-    move-result p1
+    move-result v2
 
     .line 80
-    invoke-virtual {v0, p1}, Landroid/view/InsetsState;->removeSource(I)V
+    .local v2, "type":I
+    invoke-virtual {v1, v2}, Landroid/view/InsetsState;->removeSource(I)V
 
     .line 83
-    const/4 v1, 0x1
+    const/4 v3, 0x1
 
-    if-ne p1, v1, :cond_2a
+    if-ne v2, v3, :cond_2a
 
     .line 84
-    const/16 p1, 0xa
+    const/16 v3, 0xa
 
-    invoke-virtual {v0, p1}, Landroid/view/InsetsState;->removeSource(I)V
+    invoke-virtual {v1, v3}, Landroid/view/InsetsState;->removeSource(I)V
 
     .line 85
-    const/4 p1, 0x0
+    const/4 v3, 0x0
 
-    invoke-virtual {v0, p1}, Landroid/view/InsetsState;->removeSource(I)V
+    invoke-virtual {v1, v3}, Landroid/view/InsetsState;->removeSource(I)V
 
     .line 87
     :cond_2a
-    return-object v0
+    return-object v1
 .end method
 
 .method getSourceProvider(I)Lcom/android/server/wm/InsetsSourceProvider;
-    .registers 4
+    .registers 5
+    .param p1, "type"  # I
 
     .line 107
     iget-object v0, p0, Lcom/android/server/wm/InsetsStateController;->mControllers:Landroid/util/ArrayMap;
 
     invoke-static {p1}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
 
-    move-result-object p1
+    move-result-object v1
 
-    new-instance v1, Lcom/android/server/wm/-$$Lambda$InsetsStateController$pXoYGy4X5aPw1QFi0iIWKiTMlDg;
+    new-instance v2, Lcom/android/server/wm/-$$Lambda$InsetsStateController$pXoYGy4X5aPw1QFi0iIWKiTMlDg;
 
-    invoke-direct {v1, p0}, Lcom/android/server/wm/-$$Lambda$InsetsStateController$pXoYGy4X5aPw1QFi0iIWKiTMlDg;-><init>(Lcom/android/server/wm/InsetsStateController;)V
+    invoke-direct {v2, p0}, Lcom/android/server/wm/-$$Lambda$InsetsStateController$pXoYGy4X5aPw1QFi0iIWKiTMlDg;-><init>(Lcom/android/server/wm/InsetsStateController;)V
 
-    invoke-virtual {v0, p1, v1}, Landroid/util/ArrayMap;->computeIfAbsent(Ljava/lang/Object;Ljava/util/function/Function;)Ljava/lang/Object;
+    invoke-virtual {v0, v1, v2}, Landroid/util/ArrayMap;->computeIfAbsent(Ljava/lang/Object;Ljava/util/function/Function;)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v0
 
-    check-cast p1, Lcom/android/server/wm/InsetsSourceProvider;
+    check-cast v0, Lcom/android/server/wm/InsetsSourceProvider;
 
-    return-object p1
+    return-object v0
 .end method
 
 .method public synthetic lambda$getSourceProvider$1$InsetsStateController(Ljava/lang/Integer;)Lcom/android/server/wm/InsetsSourceProvider;
-    .registers 4
+    .registers 5
+    .param p1, "key"  # Ljava/lang/Integer;
 
     .line 108
     new-instance v0, Lcom/android/server/wm/InsetsSourceProvider;
@@ -644,15 +673,15 @@
 
     invoke-virtual {p1}, Ljava/lang/Integer;->intValue()I
 
-    move-result p1
+    move-result v2
 
-    invoke-virtual {v1, p1}, Landroid/view/InsetsState;->getSource(I)Landroid/view/InsetsSource;
+    invoke-virtual {v1, v2}, Landroid/view/InsetsState;->getSource(I)Landroid/view/InsetsSource;
 
-    move-result-object p1
+    move-result-object v1
 
-    iget-object v1, p0, Lcom/android/server/wm/InsetsStateController;->mDisplayContent:Lcom/android/server/wm/DisplayContent;
+    iget-object v2, p0, Lcom/android/server/wm/InsetsStateController;->mDisplayContent:Lcom/android/server/wm/DisplayContent;
 
-    invoke-direct {v0, p1, p0, v1}, Lcom/android/server/wm/InsetsSourceProvider;-><init>(Landroid/view/InsetsSource;Lcom/android/server/wm/InsetsStateController;Lcom/android/server/wm/DisplayContent;)V
+    invoke-direct {v0, v1, p0, v2}, Lcom/android/server/wm/InsetsSourceProvider;-><init>(Landroid/view/InsetsSource;Lcom/android/server/wm/InsetsStateController;Lcom/android/server/wm/DisplayContent;)V
 
     return-object v0
 .end method
@@ -669,6 +698,7 @@
 
     add-int/lit8 v0, v0, -0x1
 
+    .local v0, "i":I
     :goto_8
     if-ltz v0, :cond_18
 
@@ -682,14 +712,17 @@
     check-cast v1, Lcom/android/server/wm/WindowState;
 
     .line 220
+    .local v1, "controllingWin":Lcom/android/server/wm/WindowState;
     invoke-virtual {v1}, Lcom/android/server/wm/WindowState;->notifyInsetsControlChanged()V
 
     .line 218
+    .end local v1  # "controllingWin":Lcom/android/server/wm/WindowState;
     add-int/lit8 v0, v0, -0x1
 
     goto :goto_8
 
     .line 222
+    .end local v0  # "i":I
     :cond_18
     iget-object v0, p0, Lcom/android/server/wm/InsetsStateController;->mPendingControlChanged:Landroid/util/ArraySet;
 
@@ -701,6 +734,7 @@
 
 .method notifyControlChanged(Lcom/android/server/wm/WindowState;)V
     .registers 3
+    .param p1, "target"  # Lcom/android/server/wm/WindowState;
 
     .line 209
     iget-object v0, p0, Lcom/android/server/wm/InsetsStateController;->mPendingControlChanged:Landroid/util/ArraySet;
@@ -715,18 +749,20 @@
 .end method
 
 .method notifyControlRevoked(Lcom/android/server/wm/WindowState;Lcom/android/server/wm/InsetsSourceProvider;)V
-    .registers 3
+    .registers 4
+    .param p1, "previousControllingWin"  # Lcom/android/server/wm/WindowState;
+    .param p2, "provider"  # Lcom/android/server/wm/InsetsSourceProvider;
 
     .line 163
     invoke-virtual {p2}, Lcom/android/server/wm/InsetsSourceProvider;->getSource()Landroid/view/InsetsSource;
 
-    move-result-object p2
+    move-result-object v0
 
-    invoke-virtual {p2}, Landroid/view/InsetsSource;->getType()I
+    invoke-virtual {v0}, Landroid/view/InsetsSource;->getType()I
 
-    move-result p2
+    move-result v0
 
-    invoke-direct {p0, p1, p2}, Lcom/android/server/wm/InsetsStateController;->removeFromControlMaps(Lcom/android/server/wm/WindowState;I)V
+    invoke-direct {p0, p1, v0}, Lcom/android/server/wm/InsetsStateController;->removeFromControlMaps(Lcom/android/server/wm/WindowState;I)V
 
     .line 164
     return-void
@@ -734,6 +770,7 @@
 
 .method onBarControllingWindowChanged(Lcom/android/server/wm/WindowState;)V
     .registers 3
+    .param p1, "controllingWindow"  # Lcom/android/server/wm/WindowState;
 
     .line 156
     const/4 v0, 0x0
@@ -754,6 +791,7 @@
 
 .method onImeTargetChanged(Lcom/android/server/wm/WindowState;)V
     .registers 3
+    .param p1, "imeTarget"  # Lcom/android/server/wm/WindowState;
 
     .line 141
     const/16 v0, 0xa
@@ -769,28 +807,31 @@
 
 .method onInsetsModified(Lcom/android/server/wm/WindowState;Landroid/view/InsetsState;)V
     .registers 8
+    .param p1, "windowState"  # Lcom/android/server/wm/WindowState;
+    .param p2, "state"  # Landroid/view/InsetsState;
 
     .line 126
-    nop
+    const/4 v0, 0x0
 
     .line 127
+    .local v0, "changed":Z
     invoke-virtual {p2}, Landroid/view/InsetsState;->getSourcesCount()I
 
-    move-result v0
+    move-result v1
 
-    add-int/lit8 v0, v0, -0x1
+    add-int/lit8 v1, v1, -0x1
 
-    const/4 v1, 0x0
-
-    :goto_8
-    if-ltz v0, :cond_29
+    .local v1, "i":I
+    :goto_7
+    if-ltz v1, :cond_28
 
     .line 128
-    invoke-virtual {p2, v0}, Landroid/view/InsetsState;->sourceAt(I)Landroid/view/InsetsSource;
+    invoke-virtual {p2, v1}, Landroid/view/InsetsState;->sourceAt(I)Landroid/view/InsetsSource;
 
     move-result-object v2
 
     .line 129
+    .local v2, "source":Landroid/view/InsetsSource;
     iget-object v3, p0, Lcom/android/server/wm/InsetsStateController;->mControllers:Landroid/util/ArrayMap;
 
     invoke-virtual {v2}, Landroid/view/InsetsSource;->getType()I
@@ -808,34 +849,38 @@
     check-cast v3, Lcom/android/server/wm/InsetsSourceProvider;
 
     .line 130
-    if-nez v3, :cond_21
+    .local v3, "provider":Lcom/android/server/wm/InsetsSourceProvider;
+    if-nez v3, :cond_20
 
     .line 131
-    goto :goto_26
+    goto :goto_25
 
     .line 133
-    :cond_21
+    :cond_20
     invoke-virtual {v3, p1, v2}, Lcom/android/server/wm/InsetsSourceProvider;->onInsetsModified(Lcom/android/server/wm/WindowState;Landroid/view/InsetsSource;)Z
 
-    move-result v2
+    move-result v4
 
-    or-int/2addr v1, v2
+    or-int/2addr v0, v4
 
     .line 127
-    :goto_26
-    add-int/lit8 v0, v0, -0x1
+    .end local v2  # "source":Landroid/view/InsetsSource;
+    .end local v3  # "provider":Lcom/android/server/wm/InsetsSourceProvider;
+    :goto_25
+    add-int/lit8 v1, v1, -0x1
 
-    goto :goto_8
+    goto :goto_7
 
     .line 135
-    :cond_29
-    if-eqz v1, :cond_2e
+    .end local v1  # "i":I
+    :cond_28
+    if-eqz v0, :cond_2d
 
     .line 136
     invoke-direct {p0}, Lcom/android/server/wm/InsetsStateController;->notifyInsetsChanged()V
 
     .line 138
-    :cond_2e
+    :cond_2d
     return-void
 .end method
 
@@ -864,6 +909,7 @@
 
     sub-int/2addr v0, v1
 
+    .local v0, "i":I
     :goto_13
     if-ltz v0, :cond_23
 
@@ -884,6 +930,7 @@
     goto :goto_13
 
     .line 119
+    .end local v0  # "i":I
     :cond_23
     iget-object v0, p0, Lcom/android/server/wm/InsetsStateController;->mLastState:Landroid/view/InsetsState;
 

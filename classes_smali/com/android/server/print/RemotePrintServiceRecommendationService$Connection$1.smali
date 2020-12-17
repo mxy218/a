@@ -21,6 +21,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/print/RemotePrintServiceRecommendationService$Connection;)V
     .registers 2
+    .param p1, "this$1"  # Lcom/android/server/print/RemotePrintServiceRecommendationService$Connection;
 
     .line 203
     iput-object p1, p0, Lcom/android/server/print/RemotePrintServiceRecommendationService$Connection$1;->this$1:Lcom/android/server/print/RemotePrintServiceRecommendationService$Connection;
@@ -44,6 +45,7 @@
     .end annotation
 
     .line 207
+    .local p1, "recommendations":Ljava/util/List;, "Ljava/util/List<Landroid/printservice/recommendation/RecommendationInfo;>;"
     iget-object v0, p0, Lcom/android/server/print/RemotePrintServiceRecommendationService$Connection$1;->this$1:Lcom/android/server/print/RemotePrintServiceRecommendationService$Connection;
 
     iget-object v0, v0, Lcom/android/server/print/RemotePrintServiceRecommendationService$Connection;->this$0:Lcom/android/server/print/RemotePrintServiceRecommendationService;
@@ -103,11 +105,11 @@
 
     .line 217
     :catchall_30
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_32
     .catchall {:try_start_9 .. :try_end_32} :catchall_30
 
-    throw p1
+    throw v1
 .end method

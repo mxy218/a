@@ -21,6 +21,9 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/policy/LegacyGlobalActions;II)V
     .registers 4
+    .param p1, "this$0"  # Lcom/android/server/policy/LegacyGlobalActions;
+    .param p2, "x0"  # I
+    .param p3, "x1"  # I
 
     .line 462
     iput-object p1, p0, Lcom/android/server/policy/LegacyGlobalActions$5;->this$0:Lcom/android/server/policy/LegacyGlobalActions;
@@ -43,6 +46,7 @@
     invoke-direct {v0, v1}, Landroid/content/Intent;-><init>(Ljava/lang/String;)V
 
     .line 466
+    .local v0, "intent":Landroid/content/Intent;
     const/high16 v1, 0x14000000
 
     invoke-virtual {v0, v1}, Landroid/content/Intent;->addFlags(I)Landroid/content/Intent;

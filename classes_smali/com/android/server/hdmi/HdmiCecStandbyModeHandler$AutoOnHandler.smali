@@ -35,6 +35,8 @@
 
 .method synthetic constructor <init>(Lcom/android/server/hdmi/HdmiCecStandbyModeHandler;Lcom/android/server/hdmi/HdmiCecStandbyModeHandler$1;)V
     .registers 3
+    .param p1, "x0"  # Lcom/android/server/hdmi/HdmiCecStandbyModeHandler;
+    .param p2, "x1"  # Lcom/android/server/hdmi/HdmiCecStandbyModeHandler$1;
 
     .line 56
     invoke-direct {p0, p1}, Lcom/android/server/hdmi/HdmiCecStandbyModeHandler$AutoOnHandler;-><init>(Lcom/android/server/hdmi/HdmiCecStandbyModeHandler;)V
@@ -46,6 +48,7 @@
 # virtual methods
 .method public handle(Lcom/android/server/hdmi/HdmiCecMessage;)Z
     .registers 3
+    .param p1, "message"  # Lcom/android/server/hdmi/HdmiCecMessage;
 
     .line 59
     iget-object v0, p0, Lcom/android/server/hdmi/HdmiCecStandbyModeHandler$AutoOnHandler;->this$0:Lcom/android/server/hdmi/HdmiCecStandbyModeHandler;
@@ -70,13 +73,13 @@
     invoke-interface {v0, p1}, Lcom/android/server/hdmi/HdmiCecStandbyModeHandler$CecMessageHandler;->handle(Lcom/android/server/hdmi/HdmiCecMessage;)Z
 
     .line 61
-    const/4 p1, 0x1
+    const/4 v0, 0x1
 
-    return p1
+    return v0
 
     .line 63
     :cond_17
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    return p1
+    return v0
 .end method

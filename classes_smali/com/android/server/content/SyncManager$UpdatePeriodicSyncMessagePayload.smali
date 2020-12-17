@@ -29,6 +29,10 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/content/SyncManager;Lcom/android/server/content/SyncStorageEngine$EndPoint;JJLandroid/os/Bundle;)V
     .registers 8
+    .param p2, "target"  # Lcom/android/server/content/SyncStorageEngine$EndPoint;
+    .param p3, "pollFrequency"  # J
+    .param p5, "flex"  # J
+    .param p7, "extras"  # Landroid/os/Bundle;
 
     .line 1330
     iput-object p1, p0, Lcom/android/server/content/SyncManager$UpdatePeriodicSyncMessagePayload;->this$0:Lcom/android/server/content/SyncManager;

@@ -21,8 +21,9 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/lights/LightsService;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/lights/LightsService;
 
-    .line 258
+    .line 246
     iput-object p1, p0, Lcom/android/server/lights/LightsService$2;->this$0:Lcom/android/server/lights/LightsService;
 
     invoke-direct {p0}, Landroid/os/Handler;-><init>()V
@@ -33,16 +34,18 @@
 
 # virtual methods
 .method public handleMessage(Landroid/os/Message;)V
-    .registers 2
+    .registers 3
+    .param p1, "msg"  # Landroid/os/Message;
 
-    .line 261
-    iget-object p1, p1, Landroid/os/Message;->obj:Ljava/lang/Object;
+    .line 249
+    iget-object v0, p1, Landroid/os/Message;->obj:Ljava/lang/Object;
 
-    check-cast p1, Lcom/android/server/lights/LightsService$LightImpl;
+    check-cast v0, Lcom/android/server/lights/LightsService$LightImpl;
 
-    .line 262
-    invoke-static {p1}, Lcom/android/server/lights/LightsService$LightImpl;->access$300(Lcom/android/server/lights/LightsService$LightImpl;)V
+    .line 250
+    .local v0, "light":Lcom/android/server/lights/LightsService$LightImpl;
+    invoke-static {v0}, Lcom/android/server/lights/LightsService$LightImpl;->access$300(Lcom/android/server/lights/LightsService$LightImpl;)V
 
-    .line 263
+    .line 251
     return-void
 .end method

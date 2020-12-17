@@ -10,6 +10,7 @@
 # direct methods
 .method constructor <init>(Landroid/content/om/IOverlayManager;)V
     .registers 2
+    .param p1, "iom"  # Landroid/content/om/IOverlayManager;
 
     .line 41
     invoke-direct {p0}, Landroid/os/ShellCommand;-><init>()V
@@ -22,14 +23,16 @@
 .end method
 
 .method private printListOverlay(Ljava/io/PrintWriter;Landroid/content/om/OverlayInfo;)V
-    .registers 6
+    .registers 7
+    .param p1, "out"  # Ljava/io/PrintWriter;
+    .param p2, "oi"  # Landroid/content/om/OverlayInfo;
 
     .line 167
     iget v0, p2, Landroid/content/om/OverlayInfo;->state:I
 
     const/4 v1, 0x2
 
-    if-eq v0, v1, :cond_12
+    if-eq v0, v1, :cond_11
 
     const/4 v2, 0x3
 
@@ -42,45 +45,48 @@
     .line 176
     const-string v0, "---"
 
-    goto :goto_15
+    .local v0, "status":Ljava/lang/String;
+    goto :goto_14
 
     .line 170
+    .end local v0  # "status":Ljava/lang/String;
     :cond_e
-    nop
-
-    .line 171
     const-string v0, "[x]"
 
-    goto :goto_15
+    .line 171
+    .restart local v0  # "status":Ljava/lang/String;
+    goto :goto_14
 
     .line 173
-    :cond_12
-    nop
-
-    .line 174
+    .end local v0  # "status":Ljava/lang/String;
+    :cond_11
     const-string v0, "[ ]"
 
+    .line 174
+    .restart local v0  # "status":Ljava/lang/String;
+    nop
+
     .line 179
-    :goto_15
+    :goto_14
     new-array v1, v1, [Ljava/lang/Object;
 
     const/4 v2, 0x0
 
     aput-object v0, v1, v2
 
-    const/4 v0, 0x1
+    const/4 v2, 0x1
 
-    iget-object p2, p2, Landroid/content/om/OverlayInfo;->packageName:Ljava/lang/String;
+    iget-object v3, p2, Landroid/content/om/OverlayInfo;->packageName:Ljava/lang/String;
 
-    aput-object p2, v1, v0
+    aput-object v3, v1, v2
 
-    const-string p2, "%s %s"
+    const-string v2, "%s %s"
 
-    invoke-static {p2, v1}, Ljava/lang/String;->format(Ljava/lang/String;[Ljava/lang/Object;)Ljava/lang/String;
+    invoke-static {v2, v1}, Ljava/lang/String;->format(Ljava/lang/String;[Ljava/lang/Object;)Ljava/lang/String;
 
-    move-result-object p2
+    move-result-object v1
 
-    invoke-virtual {p1, p2}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {p1, v1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
     .line 180
     return-void
@@ -88,6 +94,7 @@
 
 .method private runEnableDisable(Z)I
     .registers 9
+    .param p1, "enable"  # Z
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -100,19 +107,22 @@
     move-result-object v0
 
     .line 185
+    .local v0, "err":Ljava/io/PrintWriter;
     const/4 v1, 0x0
 
-    move v2, v1
-
     .line 187
-    :goto_6
+    .local v1, "userId":I
+    :goto_5
     invoke-virtual {p0}, Lcom/android/server/om/OverlayManagerShellCommand;->getNextOption()Ljava/lang/String;
 
-    move-result-object v3
+    move-result-object v2
 
+    move-object v3, v2
+
+    .local v3, "opt":Ljava/lang/String;
     const/4 v4, 0x1
 
-    if-eqz v3, :cond_42
+    if-eqz v2, :cond_42
 
     .line 188
     const/4 v2, -0x1
@@ -137,27 +147,27 @@
 
     if-eqz v5, :cond_17
 
-    move v2, v1
+    const/4 v2, 0x0
 
     :goto_21
     if-eqz v2, :cond_38
 
     .line 193
-    new-instance p1, Ljava/lang/StringBuilder;
+    new-instance v2, Ljava/lang/StringBuilder;
 
-    invoke-direct {p1}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v1, "Error: Unknown option: "
+    const-string v5, "Error: Unknown option: "
 
-    invoke-virtual {p1, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p1, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v2
 
-    invoke-virtual {v0, p1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {v0, v2}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
     .line 194
     return v4
@@ -170,34 +180,35 @@
 
     invoke-static {v2}, Landroid/os/UserHandle;->parseUserArg(Ljava/lang/String;)I
 
-    move-result v2
+    move-result v1
 
     .line 191
     nop
 
     .line 194
-    goto :goto_6
+    goto :goto_5
 
     .line 198
     :cond_42
     invoke-virtual {p0}, Lcom/android/server/om/OverlayManagerShellCommand;->getNextArgRequired()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v2
 
     .line 199
-    iget-object v1, p0, Lcom/android/server/om/OverlayManagerShellCommand;->mInterface:Landroid/content/om/IOverlayManager;
+    .local v2, "packageName":Ljava/lang/String;
+    iget-object v5, p0, Lcom/android/server/om/OverlayManagerShellCommand;->mInterface:Landroid/content/om/IOverlayManager;
 
-    invoke-interface {v1, v0, p1, v2}, Landroid/content/om/IOverlayManager;->setEnabled(Ljava/lang/String;ZI)Z
+    invoke-interface {v5, v2, p1, v1}, Landroid/content/om/IOverlayManager;->setEnabled(Ljava/lang/String;ZI)Z
 
-    move-result p1
+    move-result v5
 
-    xor-int/2addr p1, v4
+    xor-int/2addr v4, v5
 
-    return p1
+    return v4
 .end method
 
 .method private runEnableExclusive()I
-    .registers 10
+    .registers 9
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -210,153 +221,154 @@
     move-result-object v0
 
     .line 205
-    nop
-
-    .line 206
+    .local v0, "err":Ljava/io/PrintWriter;
     const/4 v1, 0x0
 
-    move v2, v1
-
-    move v3, v2
+    .line 206
+    .local v1, "userId":I
+    const/4 v2, 0x0
 
     .line 208
-    :goto_8
+    .local v2, "inCategory":Z
+    :goto_6
     invoke-virtual {p0}, Lcom/android/server/om/OverlayManagerShellCommand;->getNextOption()Ljava/lang/String;
 
-    move-result-object v4
+    move-result-object v3
 
+    move-object v4, v3
+
+    .local v4, "opt":Ljava/lang/String;
     const/4 v5, 0x1
 
-    if-eqz v4, :cond_58
+    if-eqz v3, :cond_56
 
     .line 209
-    const/4 v6, -0x1
+    const/4 v3, -0x1
 
     invoke-virtual {v4}, Ljava/lang/String;->hashCode()I
 
-    move-result v7
+    move-result v6
 
-    const v8, 0x3f3229e
+    const v7, 0x3f3229e
 
-    if-eq v7, v8, :cond_29
+    if-eq v6, v7, :cond_28
 
-    const v8, 0x4f7b216b
+    const v7, 0x4f7b216b
 
-    if-eq v7, v8, :cond_1f
+    if-eq v6, v7, :cond_1e
+
+    :cond_1d
+    goto :goto_31
 
     :cond_1e
-    goto :goto_32
+    const-string v6, "--user"
 
-    :cond_1f
-    const-string v7, "--user"
+    invoke-virtual {v4, v6}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    invoke-virtual {v4, v7}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    move-result v6
 
-    move-result v7
+    if-eqz v6, :cond_1d
 
-    if-eqz v7, :cond_1e
+    const/4 v3, 0x0
 
-    move v6, v1
+    goto :goto_31
 
-    goto :goto_32
+    :cond_28
+    const-string v6, "--category"
 
-    :cond_29
-    const-string v7, "--category"
+    invoke-virtual {v4, v6}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    invoke-virtual {v4, v7}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    move-result v6
 
-    move-result v7
+    if-eqz v6, :cond_1d
 
-    if-eqz v7, :cond_1e
+    move v3, v5
 
-    move v6, v5
+    :goto_31
+    if-eqz v3, :cond_4c
 
-    :goto_32
-    if-eqz v6, :cond_4e
-
-    if-eq v6, v5, :cond_4b
+    if-eq v3, v5, :cond_4a
 
     .line 217
-    new-instance v1, Ljava/lang/StringBuilder;
+    new-instance v3, Ljava/lang/StringBuilder;
 
-    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v2, "Error: Unknown option: "
+    const-string v6, "Error: Unknown option: "
 
-    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v1, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v1
+    move-result-object v3
 
-    invoke-virtual {v0, v1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {v0, v3}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
     .line 218
     return v5
 
     .line 214
-    :cond_4b
-    nop
+    :cond_4a
+    const/4 v2, 0x1
 
     .line 215
-    move v2, v5
-
-    goto :goto_57
+    goto :goto_55
 
     .line 211
-    :cond_4e
+    :cond_4c
     invoke-virtual {p0}, Lcom/android/server/om/OverlayManagerShellCommand;->getNextArgRequired()Ljava/lang/String;
 
     move-result-object v3
 
     invoke-static {v3}, Landroid/os/UserHandle;->parseUserArg(Ljava/lang/String;)I
 
-    move-result v3
+    move-result v1
 
     .line 212
     nop
 
     .line 218
-    :goto_57
-    goto :goto_8
+    :goto_55
+    goto :goto_6
 
     .line 221
-    :cond_58
+    :cond_56
     invoke-virtual {p0}, Lcom/android/server/om/OverlayManagerShellCommand;->getNextArgRequired()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v3
 
     .line 222
-    if-eqz v2, :cond_66
+    .local v3, "overlay":Ljava/lang/String;
+    if-eqz v2, :cond_64
 
     .line 223
-    iget-object v1, p0, Lcom/android/server/om/OverlayManagerShellCommand;->mInterface:Landroid/content/om/IOverlayManager;
+    iget-object v6, p0, Lcom/android/server/om/OverlayManagerShellCommand;->mInterface:Landroid/content/om/IOverlayManager;
 
-    invoke-interface {v1, v0, v3}, Landroid/content/om/IOverlayManager;->setEnabledExclusiveInCategory(Ljava/lang/String;I)Z
+    invoke-interface {v6, v3, v1}, Landroid/content/om/IOverlayManager;->setEnabledExclusiveInCategory(Ljava/lang/String;I)Z
 
-    move-result v0
+    move-result v6
 
-    xor-int/2addr v0, v5
+    xor-int/2addr v5, v6
 
-    return v0
+    return v5
 
     .line 225
-    :cond_66
-    iget-object v1, p0, Lcom/android/server/om/OverlayManagerShellCommand;->mInterface:Landroid/content/om/IOverlayManager;
+    :cond_64
+    iget-object v6, p0, Lcom/android/server/om/OverlayManagerShellCommand;->mInterface:Landroid/content/om/IOverlayManager;
 
-    invoke-interface {v1, v0, v5, v3}, Landroid/content/om/IOverlayManager;->setEnabledExclusive(Ljava/lang/String;ZI)Z
+    invoke-interface {v6, v3, v5, v1}, Landroid/content/om/IOverlayManager;->setEnabledExclusive(Ljava/lang/String;ZI)Z
 
-    move-result v0
+    move-result v6
 
-    xor-int/2addr v0, v5
+    xor-int/2addr v5, v6
 
-    return v0
+    return v5
 .end method
 
 .method private runList()I
-    .registers 9
+    .registers 14
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -369,237 +381,261 @@
     move-result-object v0
 
     .line 109
+    .local v0, "out":Ljava/io/PrintWriter;
     invoke-virtual {p0}, Lcom/android/server/om/OverlayManagerShellCommand;->getErrPrintWriter()Ljava/io/PrintWriter;
 
     move-result-object v1
 
     .line 111
+    .local v1, "err":Ljava/io/PrintWriter;
     const/4 v2, 0x0
 
-    move v3, v2
-
     .line 113
-    :goto_a
+    .local v2, "userId":I
+    :goto_9
     invoke-virtual {p0}, Lcom/android/server/om/OverlayManagerShellCommand;->getNextOption()Ljava/lang/String;
 
-    move-result-object v4
+    move-result-object v3
 
-    if-eqz v4, :cond_46
+    move-object v4, v3
+
+    .local v4, "opt":Ljava/lang/String;
+    const/4 v5, 0x0
+
+    if-eqz v3, :cond_47
 
     .line 114
     const/4 v3, -0x1
 
     invoke-virtual {v4}, Ljava/lang/String;->hashCode()I
 
-    move-result v5
+    move-result v6
 
-    const v6, 0x4f7b216b
+    const v7, 0x4f7b216b
 
-    if-eq v5, v6, :cond_1b
-
-    :cond_1a
-    goto :goto_24
+    if-eq v6, v7, :cond_1c
 
     :cond_1b
-    const-string v5, "--user"
+    goto :goto_25
 
-    invoke-virtual {v4, v5}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    :cond_1c
+    const-string v6, "--user"
 
-    move-result v5
+    invoke-virtual {v4, v6}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    if-eqz v5, :cond_1a
+    move-result v6
 
-    move v3, v2
+    if-eqz v6, :cond_1b
 
-    :goto_24
-    if-eqz v3, :cond_3c
+    move v3, v5
+
+    :goto_25
+    if-eqz v3, :cond_3d
 
     .line 119
-    new-instance v0, Ljava/lang/StringBuilder;
+    new-instance v3, Ljava/lang/StringBuilder;
 
-    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v2, "Error: Unknown option: "
+    const-string v5, "Error: Unknown option: "
 
-    invoke-virtual {v0, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v3
 
-    invoke-virtual {v1, v0}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {v1, v3}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
     .line 120
-    const/4 v0, 0x1
+    const/4 v3, 0x1
 
-    return v0
+    return v3
 
     .line 116
-    :cond_3c
+    :cond_3d
     invoke-virtual {p0}, Lcom/android/server/om/OverlayManagerShellCommand;->getNextArgRequired()Ljava/lang/String;
 
     move-result-object v3
 
     invoke-static {v3}, Landroid/os/UserHandle;->parseUserArg(Ljava/lang/String;)I
 
-    move-result v3
+    move-result v2
 
     .line 117
     nop
 
     .line 120
-    goto :goto_a
+    goto :goto_9
 
     .line 124
-    :cond_46
+    :cond_47
     invoke-virtual {p0}, Lcom/android/server/om/OverlayManagerShellCommand;->getNextArg()Ljava/lang/String;
 
-    move-result-object v1
+    move-result-object v3
 
     .line 125
-    if-eqz v1, :cond_7b
+    .local v3, "packageName":Ljava/lang/String;
+    if-eqz v3, :cond_7c
 
     .line 126
-    iget-object v4, p0, Lcom/android/server/om/OverlayManagerShellCommand;->mInterface:Landroid/content/om/IOverlayManager;
+    iget-object v6, p0, Lcom/android/server/om/OverlayManagerShellCommand;->mInterface:Landroid/content/om/IOverlayManager;
 
-    invoke-interface {v4, v1, v3}, Landroid/content/om/IOverlayManager;->getOverlayInfosForTarget(Ljava/lang/String;I)Ljava/util/List;
+    invoke-interface {v6, v3, v2}, Landroid/content/om/IOverlayManager;->getOverlayInfosForTarget(Ljava/lang/String;I)Ljava/util/List;
 
-    move-result-object v4
+    move-result-object v6
 
     .line 130
-    invoke-interface {v4}, Ljava/util/List;->isEmpty()Z
+    .local v6, "overlaysForTarget":Ljava/util/List;, "Ljava/util/List<Landroid/content/om/OverlayInfo;>;"
+    invoke-interface {v6}, Ljava/util/List;->isEmpty()Z
 
-    move-result v5
+    move-result v7
 
-    if-eqz v5, :cond_64
+    if-eqz v7, :cond_65
 
     .line 131
-    iget-object v4, p0, Lcom/android/server/om/OverlayManagerShellCommand;->mInterface:Landroid/content/om/IOverlayManager;
+    iget-object v7, p0, Lcom/android/server/om/OverlayManagerShellCommand;->mInterface:Landroid/content/om/IOverlayManager;
 
-    invoke-interface {v4, v1, v3}, Landroid/content/om/IOverlayManager;->getOverlayInfo(Ljava/lang/String;I)Landroid/content/om/OverlayInfo;
-
-    move-result-object v1
-
-    .line 132
-    if-eqz v1, :cond_63
-
-    .line 133
-    invoke-direct {p0, v0, v1}, Lcom/android/server/om/OverlayManagerShellCommand;->printListOverlay(Ljava/io/PrintWriter;Landroid/content/om/OverlayInfo;)V
-
-    .line 135
-    :cond_63
-    return v2
-
-    .line 138
-    :cond_64
-    invoke-virtual {v0, v1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
-
-    .line 141
-    invoke-interface {v4}, Ljava/util/List;->size()I
-
-    move-result v1
-
-    .line 142
-    move v3, v2
-
-    :goto_6c
-    if-ge v3, v1, :cond_7a
-
-    .line 143
-    invoke-interface {v4, v3}, Ljava/util/List;->get(I)Ljava/lang/Object;
-
-    move-result-object v5
-
-    check-cast v5, Landroid/content/om/OverlayInfo;
-
-    invoke-direct {p0, v0, v5}, Lcom/android/server/om/OverlayManagerShellCommand;->printListOverlay(Ljava/io/PrintWriter;Landroid/content/om/OverlayInfo;)V
-
-    .line 142
-    add-int/lit8 v3, v3, 0x1
-
-    goto :goto_6c
-
-    .line 146
-    :cond_7a
-    return v2
-
-    .line 150
-    :cond_7b
-    iget-object v1, p0, Lcom/android/server/om/OverlayManagerShellCommand;->mInterface:Landroid/content/om/IOverlayManager;
-
-    invoke-interface {v1, v3}, Landroid/content/om/IOverlayManager;->getAllOverlays(I)Ljava/util/Map;
-
-    move-result-object v1
-
-    .line 151
-    invoke-interface {v1}, Ljava/util/Map;->keySet()Ljava/util/Set;
-
-    move-result-object v3
-
-    invoke-interface {v3}, Ljava/util/Set;->iterator()Ljava/util/Iterator;
-
-    move-result-object v3
-
-    :goto_89
-    invoke-interface {v3}, Ljava/util/Iterator;->hasNext()Z
-
-    move-result v4
-
-    if-eqz v4, :cond_b5
-
-    invoke-interface {v3}, Ljava/util/Iterator;->next()Ljava/lang/Object;
-
-    move-result-object v4
-
-    check-cast v4, Ljava/lang/String;
-
-    .line 152
-    invoke-virtual {v0, v4}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
-
-    .line 154
-    invoke-interface {v1, v4}, Ljava/util/Map;->get(Ljava/lang/Object;)Ljava/lang/Object;
-
-    move-result-object v4
-
-    check-cast v4, Ljava/util/List;
-
-    .line 155
-    invoke-interface {v4}, Ljava/util/List;->size()I
-
-    move-result v5
-
-    .line 156
-    move v6, v2
-
-    :goto_a3
-    if-ge v6, v5, :cond_b1
-
-    .line 157
-    invoke-interface {v4, v6}, Ljava/util/List;->get(I)Ljava/lang/Object;
+    invoke-interface {v7, v3, v2}, Landroid/content/om/IOverlayManager;->getOverlayInfo(Ljava/lang/String;I)Landroid/content/om/OverlayInfo;
 
     move-result-object v7
 
-    check-cast v7, Landroid/content/om/OverlayInfo;
+    .line 132
+    .local v7, "info":Landroid/content/om/OverlayInfo;
+    if-eqz v7, :cond_64
 
+    .line 133
     invoke-direct {p0, v0, v7}, Lcom/android/server/om/OverlayManagerShellCommand;->printListOverlay(Ljava/io/PrintWriter;Landroid/content/om/OverlayInfo;)V
 
-    .line 156
-    add-int/lit8 v6, v6, 0x1
+    .line 135
+    :cond_64
+    return v5
 
-    goto :goto_a3
+    .line 138
+    .end local v7  # "info":Landroid/content/om/OverlayInfo;
+    :cond_65
+    invoke-virtual {v0, v3}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+
+    .line 141
+    invoke-interface {v6}, Ljava/util/List;->size()I
+
+    move-result v7
+
+    .line 142
+    .local v7, "n":I
+    const/4 v8, 0x0
+
+    .local v8, "i":I
+    :goto_6d
+    if-ge v8, v7, :cond_7b
+
+    .line 143
+    invoke-interface {v6, v8}, Ljava/util/List;->get(I)Ljava/lang/Object;
+
+    move-result-object v9
+
+    check-cast v9, Landroid/content/om/OverlayInfo;
+
+    invoke-direct {p0, v0, v9}, Lcom/android/server/om/OverlayManagerShellCommand;->printListOverlay(Ljava/io/PrintWriter;Landroid/content/om/OverlayInfo;)V
+
+    .line 142
+    add-int/lit8 v8, v8, 0x1
+
+    goto :goto_6d
+
+    .line 146
+    .end local v8  # "i":I
+    :cond_7b
+    return v5
+
+    .line 150
+    .end local v6  # "overlaysForTarget":Ljava/util/List;, "Ljava/util/List<Landroid/content/om/OverlayInfo;>;"
+    .end local v7  # "n":I
+    :cond_7c
+    iget-object v6, p0, Lcom/android/server/om/OverlayManagerShellCommand;->mInterface:Landroid/content/om/IOverlayManager;
+
+    invoke-interface {v6, v2}, Landroid/content/om/IOverlayManager;->getAllOverlays(I)Ljava/util/Map;
+
+    move-result-object v6
+
+    .line 151
+    .local v6, "allOverlays":Ljava/util/Map;, "Ljava/util/Map<Ljava/lang/String;Ljava/util/List<Landroid/content/om/OverlayInfo;>;>;"
+    invoke-interface {v6}, Ljava/util/Map;->keySet()Ljava/util/Set;
+
+    move-result-object v7
+
+    invoke-interface {v7}, Ljava/util/Set;->iterator()Ljava/util/Iterator;
+
+    move-result-object v7
+
+    :goto_8a
+    invoke-interface {v7}, Ljava/util/Iterator;->hasNext()Z
+
+    move-result v8
+
+    if-eqz v8, :cond_b6
+
+    invoke-interface {v7}, Ljava/util/Iterator;->next()Ljava/lang/Object;
+
+    move-result-object v8
+
+    check-cast v8, Ljava/lang/String;
+
+    .line 152
+    .local v8, "targetPackageName":Ljava/lang/String;
+    invoke-virtual {v0, v8}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+
+    .line 154
+    invoke-interface {v6, v8}, Ljava/util/Map;->get(Ljava/lang/Object;)Ljava/lang/Object;
+
+    move-result-object v9
+
+    check-cast v9, Ljava/util/List;
+
+    .line 155
+    .local v9, "overlaysForTarget":Ljava/util/List;, "Ljava/util/List<Landroid/content/om/OverlayInfo;>;"
+    invoke-interface {v9}, Ljava/util/List;->size()I
+
+    move-result v10
+
+    .line 156
+    .local v10, "n":I
+    const/4 v11, 0x0
+
+    .local v11, "i":I
+    :goto_a4
+    if-ge v11, v10, :cond_b2
+
+    .line 157
+    invoke-interface {v9, v11}, Ljava/util/List;->get(I)Ljava/lang/Object;
+
+    move-result-object v12
+
+    check-cast v12, Landroid/content/om/OverlayInfo;
+
+    invoke-direct {p0, v0, v12}, Lcom/android/server/om/OverlayManagerShellCommand;->printListOverlay(Ljava/io/PrintWriter;Landroid/content/om/OverlayInfo;)V
+
+    .line 156
+    add-int/lit8 v11, v11, 0x1
+
+    goto :goto_a4
 
     .line 159
-    :cond_b1
+    .end local v11  # "i":I
+    :cond_b2
     invoke-virtual {v0}, Ljava/io/PrintWriter;->println()V
 
     .line 160
-    goto :goto_89
+    .end local v8  # "targetPackageName":Ljava/lang/String;
+    .end local v9  # "overlaysForTarget":Ljava/util/List;, "Ljava/util/List<Landroid/content/om/OverlayInfo;>;"
+    .end local v10  # "n":I
+    goto :goto_8a
 
     .line 162
-    :cond_b5
-    return v2
+    :cond_b6
+    return v5
 .end method
 
 .method private runSetPriority()I
@@ -616,19 +652,22 @@
     move-result-object v0
 
     .line 232
+    .local v0, "err":Ljava/io/PrintWriter;
     const/4 v1, 0x0
 
-    move v2, v1
-
     .line 234
-    :goto_6
+    .local v1, "userId":I
+    :goto_5
     invoke-virtual {p0}, Lcom/android/server/om/OverlayManagerShellCommand;->getNextOption()Ljava/lang/String;
 
-    move-result-object v3
+    move-result-object v2
 
+    move-object v3, v2
+
+    .local v3, "opt":Ljava/lang/String;
     const/4 v4, 0x1
 
-    if-eqz v3, :cond_42
+    if-eqz v2, :cond_42
 
     .line 235
     const/4 v2, -0x1
@@ -653,27 +692,27 @@
 
     if-eqz v5, :cond_17
 
-    move v2, v1
+    const/4 v2, 0x0
 
     :goto_21
     if-eqz v2, :cond_38
 
     .line 240
-    new-instance v1, Ljava/lang/StringBuilder;
+    new-instance v2, Ljava/lang/StringBuilder;
 
-    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v2, "Error: Unknown option: "
+    const-string v5, "Error: Unknown option: "
 
-    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v1, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v1
+    move-result-object v2
 
-    invoke-virtual {v0, v1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {v0, v2}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
     .line 241
     return v4
@@ -686,83 +725,86 @@
 
     invoke-static {v2}, Landroid/os/UserHandle;->parseUserArg(Ljava/lang/String;)I
 
-    move-result v2
+    move-result v1
 
     .line 238
     nop
 
     .line 241
-    goto :goto_6
+    goto :goto_5
 
     .line 245
     :cond_42
     invoke-virtual {p0}, Lcom/android/server/om/OverlayManagerShellCommand;->getNextArgRequired()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v2
 
     .line 246
+    .local v2, "packageName":Ljava/lang/String;
     invoke-virtual {p0}, Lcom/android/server/om/OverlayManagerShellCommand;->getNextArgRequired()Ljava/lang/String;
 
-    move-result-object v1
+    move-result-object v5
 
     .line 248
-    const-string v3, "highest"
+    .local v5, "newParentPackageName":Ljava/lang/String;
+    const-string v6, "highest"
 
-    invoke-virtual {v3, v1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v6, v5}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result v3
+    move-result v6
 
-    if-eqz v3, :cond_5a
+    if-eqz v6, :cond_5a
 
     .line 249
-    iget-object v1, p0, Lcom/android/server/om/OverlayManagerShellCommand;->mInterface:Landroid/content/om/IOverlayManager;
+    iget-object v6, p0, Lcom/android/server/om/OverlayManagerShellCommand;->mInterface:Landroid/content/om/IOverlayManager;
 
-    invoke-interface {v1, v0, v2}, Landroid/content/om/IOverlayManager;->setHighestPriority(Ljava/lang/String;I)Z
+    invoke-interface {v6, v2, v1}, Landroid/content/om/IOverlayManager;->setHighestPriority(Ljava/lang/String;I)Z
 
-    move-result v0
+    move-result v6
 
-    xor-int/2addr v0, v4
+    xor-int/2addr v4, v6
 
-    return v0
+    return v4
 
     .line 250
     :cond_5a
-    const-string v3, "lowest"
+    const-string/jumbo v6, "lowest"
 
-    invoke-virtual {v3, v1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v6, v5}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result v3
+    move-result v6
 
-    if-eqz v3, :cond_6a
+    if-eqz v6, :cond_6b
 
     .line 251
-    iget-object v1, p0, Lcom/android/server/om/OverlayManagerShellCommand;->mInterface:Landroid/content/om/IOverlayManager;
+    iget-object v6, p0, Lcom/android/server/om/OverlayManagerShellCommand;->mInterface:Landroid/content/om/IOverlayManager;
 
-    invoke-interface {v1, v0, v2}, Landroid/content/om/IOverlayManager;->setLowestPriority(Ljava/lang/String;I)Z
+    invoke-interface {v6, v2, v1}, Landroid/content/om/IOverlayManager;->setLowestPriority(Ljava/lang/String;I)Z
 
-    move-result v0
+    move-result v6
 
-    xor-int/2addr v0, v4
+    xor-int/2addr v4, v6
 
-    return v0
+    return v4
 
     .line 253
-    :cond_6a
-    iget-object v3, p0, Lcom/android/server/om/OverlayManagerShellCommand;->mInterface:Landroid/content/om/IOverlayManager;
+    :cond_6b
+    iget-object v6, p0, Lcom/android/server/om/OverlayManagerShellCommand;->mInterface:Landroid/content/om/IOverlayManager;
 
-    invoke-interface {v3, v0, v1, v2}, Landroid/content/om/IOverlayManager;->setPriority(Ljava/lang/String;Ljava/lang/String;I)Z
+    invoke-interface {v6, v2, v5, v1}, Landroid/content/om/IOverlayManager;->setPriority(Ljava/lang/String;Ljava/lang/String;I)Z
 
-    move-result v0
+    move-result v6
 
-    xor-int/2addr v0, v4
+    xor-int/2addr v4, v6
 
-    return v0
+    return v4
 .end method
 
 
 # virtual methods
 .method public onCommand(Ljava/lang/String;)I
     .registers 10
+    .param p1, "cmd"  # Ljava/lang/String;
 
     .line 47
     if-nez p1, :cond_7
@@ -770,9 +812,9 @@
     .line 48
     invoke-virtual {p0, p1}, Lcom/android/server/om/OverlayManagerShellCommand;->handleDefaultCommands(Ljava/lang/String;)I
 
-    move-result p1
+    move-result v0
 
-    return p1
+    return v0
 
     .line 50
     :cond_7
@@ -781,6 +823,7 @@
     move-result-object v0
 
     .line 52
+    .local v0, "err":Ljava/io/PrintWriter;
     const/4 v1, -0x1
 
     :try_start_c
@@ -798,10 +841,10 @@
 
     const/4 v7, 0x1
 
-    sparse-switch v2, :sswitch_data_a6
+    sparse-switch v2, :sswitch_data_a8
 
     :cond_18
-    goto :goto_4c
+    goto :goto_4d
 
     :sswitch_19
     const-string v2, "disable"
@@ -814,10 +857,10 @@
 
     move v2, v6
 
-    goto :goto_4d
+    goto :goto_4e
 
     :sswitch_23
-    const-string v2, "list"
+    const-string/jumbo v2, "list"
 
     invoke-virtual {p1, v2}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
@@ -827,9 +870,9 @@
 
     move v2, v3
 
-    goto :goto_4d
+    goto :goto_4e
 
-    :sswitch_2d
+    :sswitch_2e
     const-string v2, "enable-exclusive"
 
     invoke-virtual {p1, v2}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
@@ -840,9 +883,9 @@
 
     move v2, v5
 
-    goto :goto_4d
+    goto :goto_4e
 
-    :sswitch_37
+    :sswitch_38
     const-string v2, "enable"
 
     invoke-virtual {p1, v2}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
@@ -853,9 +896,9 @@
 
     move v2, v7
 
-    goto :goto_4d
+    goto :goto_4e
 
-    :sswitch_41
+    :sswitch_42
     const-string/jumbo v2, "set-priority"
 
     invoke-virtual {p1, v2}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
@@ -866,132 +909,138 @@
 
     move v2, v4
 
-    goto :goto_4d
-
-    :goto_4c
-    move v2, v1
+    goto :goto_4e
 
     :goto_4d
-    if-eqz v2, :cond_70
+    move v2, v1
 
-    if-eq v2, v7, :cond_6b
+    :goto_4e
+    if-eqz v2, :cond_71
 
-    if-eq v2, v6, :cond_66
+    if-eq v2, v7, :cond_6c
 
-    if-eq v2, v5, :cond_61
+    if-eq v2, v6, :cond_67
 
-    if-eq v2, v4, :cond_5c
+    if-eq v2, v5, :cond_62
+
+    if-eq v2, v4, :cond_5d
 
     .line 64
     invoke-virtual {p0, p1}, Lcom/android/server/om/OverlayManagerShellCommand;->handleDefaultCommands(Ljava/lang/String;)I
 
-    move-result p1
+    move-result v1
 
-    return p1
+    return v1
 
     .line 62
-    :cond_5c
+    :cond_5d
     invoke-direct {p0}, Lcom/android/server/om/OverlayManagerShellCommand;->runSetPriority()I
 
-    move-result p1
+    move-result v1
 
-    return p1
+    return v1
 
     .line 60
-    :cond_61
+    :cond_62
     invoke-direct {p0}, Lcom/android/server/om/OverlayManagerShellCommand;->runEnableExclusive()I
 
-    move-result p1
+    move-result v1
 
-    return p1
+    return v1
 
     .line 58
-    :cond_66
+    :cond_67
     invoke-direct {p0, v3}, Lcom/android/server/om/OverlayManagerShellCommand;->runEnableDisable(Z)I
 
-    move-result p1
+    move-result v1
 
-    return p1
+    return v1
 
     .line 56
-    :cond_6b
+    :cond_6c
     invoke-direct {p0, v7}, Lcom/android/server/om/OverlayManagerShellCommand;->runEnableDisable(Z)I
 
-    move-result p1
+    move-result v1
 
-    return p1
+    return v1
 
     .line 54
-    :cond_70
+    :cond_71
     invoke-direct {p0}, Lcom/android/server/om/OverlayManagerShellCommand;->runList()I
 
-    move-result p1
-    :try_end_74
-    .catch Ljava/lang/IllegalArgumentException; {:try_start_c .. :try_end_74} :catch_8b
-    .catch Landroid/os/RemoteException; {:try_start_c .. :try_end_74} :catch_75
+    move-result v1
+    :try_end_75
+    .catch Ljava/lang/IllegalArgumentException; {:try_start_c .. :try_end_75} :catch_8c
+    .catch Landroid/os/RemoteException; {:try_start_c .. :try_end_75} :catch_76
 
-    return p1
+    return v1
 
     .line 68
-    :catch_75
-    move-exception p1
+    :catch_76
+    move-exception v2
 
     .line 69
-    new-instance v2, Ljava/lang/StringBuilder;
+    .local v2, "e":Landroid/os/RemoteException;
+    new-instance v3, Ljava/lang/StringBuilder;
 
-    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v3, "Remote exception: "
+    const-string v4, "Remote exception: "
 
-    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v2, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v3
 
-    invoke-virtual {v0, p1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {v0, v3}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
-    goto :goto_a5
+    goto :goto_a6
 
     .line 66
-    :catch_8b
-    move-exception p1
+    .end local v2  # "e":Landroid/os/RemoteException;
+    :catch_8c
+    move-exception v2
 
     .line 67
-    new-instance v2, Ljava/lang/StringBuilder;
+    .local v2, "e":Ljava/lang/IllegalArgumentException;
+    new-instance v3, Ljava/lang/StringBuilder;
 
-    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v3, "Error: "
+    const-string v4, "Error: "
 
-    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p1}, Ljava/lang/IllegalArgumentException;->getMessage()Ljava/lang/String;
+    invoke-virtual {v2}, Ljava/lang/IllegalArgumentException;->getMessage()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v4
 
-    invoke-virtual {v2, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v3
 
-    invoke-virtual {v0, p1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {v0, v3}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
     .line 70
+    .end local v2  # "e":Ljava/lang/IllegalArgumentException;
     nop
 
     .line 71
-    :goto_a5
+    :goto_a6
     return v1
 
-    :sswitch_data_a6
+    nop
+
+    :sswitch_data_a8
     .sparse-switch
-        -0x5120f151 -> :sswitch_41
-        -0x4d6ada7d -> :sswitch_37
-        -0x2f5d012c -> :sswitch_2d
+        -0x5120f151 -> :sswitch_42
+        -0x4d6ada7d -> :sswitch_38
+        -0x2f5d012c -> :sswitch_2e
         0x32b09e -> :sswitch_23
         0x639e22e8 -> :sswitch_19
     .end sparse-switch
@@ -1006,6 +1055,7 @@
     move-result-object v0
 
     .line 77
+    .local v0, "out":Ljava/io/PrintWriter;
     const-string v1, "Overlay manager (overlay) commands:"
 
     invoke-virtual {v0, v1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V

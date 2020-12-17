@@ -75,7 +75,10 @@
 .end method
 
 .method public constructor <init>(Landroid/content/Context;Lcom/android/server/am/ActivityManagerService;Lcom/android/server/am/AppErrorDialog$Data;)V
-    .registers 8
+    .registers 12
+    .param p1, "context"  # Landroid/content/Context;
+    .param p2, "service"  # Lcom/android/server/am/ActivityManagerService;
+    .param p3, "data"  # Lcom/android/server/am/AppErrorDialog$Data;
 
     .line 62
     invoke-direct {p0, p1}, Lcom/android/server/am/BaseErrorDialog;-><init>(Landroid/content/Context;)V
@@ -100,279 +103,287 @@
     move-result-object v0
 
     .line 65
+    .local v0, "res":Landroid/content/res/Resources;
     iput-object p2, p0, Lcom/android/server/am/AppErrorDialog;->mService:Lcom/android/server/am/ActivityManagerService;
 
     .line 66
-    iget-object p2, p3, Lcom/android/server/am/AppErrorDialog$Data;->proc:Lcom/android/server/am/ProcessRecord;
+    iget-object v1, p3, Lcom/android/server/am/AppErrorDialog$Data;->proc:Lcom/android/server/am/ProcessRecord;
 
-    iput-object p2, p0, Lcom/android/server/am/AppErrorDialog;->mProc:Lcom/android/server/am/ProcessRecord;
+    iput-object v1, p0, Lcom/android/server/am/AppErrorDialog;->mProc:Lcom/android/server/am/ProcessRecord;
 
     .line 67
-    iget-object p2, p3, Lcom/android/server/am/AppErrorDialog$Data;->result:Lcom/android/server/am/AppErrorResult;
+    iget-object v1, p3, Lcom/android/server/am/AppErrorDialog$Data;->result:Lcom/android/server/am/AppErrorResult;
 
-    iput-object p2, p0, Lcom/android/server/am/AppErrorDialog;->mResult:Lcom/android/server/am/AppErrorResult;
+    iput-object v1, p0, Lcom/android/server/am/AppErrorDialog;->mResult:Lcom/android/server/am/AppErrorResult;
 
     .line 68
-    iget p2, p3, Lcom/android/server/am/AppErrorDialog$Data;->taskId:I
+    iget v1, p3, Lcom/android/server/am/AppErrorDialog$Data;->taskId:I
 
-    const/4 v1, 0x0
+    const/4 v2, 0x0
 
-    const/4 v2, 0x1
+    const/4 v3, 0x1
 
-    const/4 v3, -0x1
+    const/4 v4, -0x1
 
-    if-ne p2, v3, :cond_2a
+    if-ne v1, v4, :cond_2a
 
-    iget-boolean p2, p3, Lcom/android/server/am/AppErrorDialog$Data;->isRestartableForService:Z
+    iget-boolean v1, p3, Lcom/android/server/am/AppErrorDialog$Data;->isRestartableForService:Z
 
-    if-eqz p2, :cond_39
+    if-eqz v1, :cond_39
 
     .line 69
     :cond_2a
     invoke-virtual {p1}, Landroid/content/Context;->getContentResolver()Landroid/content/ContentResolver;
 
-    move-result-object p2
+    move-result-object v1
 
-    const-string/jumbo v3, "show_restart_in_crash_dialog"
+    const-string/jumbo v4, "show_restart_in_crash_dialog"
 
-    invoke-static {p2, v3, v1}, Landroid/provider/Settings$Global;->getInt(Landroid/content/ContentResolver;Ljava/lang/String;I)I
+    invoke-static {v1, v4, v2}, Landroid/provider/Settings$Global;->getInt(Landroid/content/ContentResolver;Ljava/lang/String;I)I
 
-    move-result p2
+    move-result v1
 
-    if-eqz p2, :cond_39
+    if-eqz v1, :cond_39
 
-    move p2, v2
+    move v1, v3
 
     goto :goto_3a
 
     :cond_39
-    move p2, v1
+    move v1, v2
 
     :goto_3a
-    iput-boolean p2, p0, Lcom/android/server/am/AppErrorDialog;->mIsRestartable:Z
+    iput-boolean v1, p0, Lcom/android/server/am/AppErrorDialog;->mIsRestartable:Z
 
     .line 71
     invoke-static {}, Landroid/text/BidiFormatter;->getInstance()Landroid/text/BidiFormatter;
 
-    move-result-object p2
+    move-result-object v1
 
     .line 74
-    iget-object v3, p0, Lcom/android/server/am/AppErrorDialog;->mProc:Lcom/android/server/am/ProcessRecord;
+    .local v1, "bidi":Landroid/text/BidiFormatter;
+    iget-object v4, p0, Lcom/android/server/am/AppErrorDialog;->mProc:Lcom/android/server/am/ProcessRecord;
 
-    iget-object v3, v3, Lcom/android/server/am/ProcessRecord;->pkgList:Lcom/android/server/am/ProcessRecord$PackageList;
+    iget-object v4, v4, Lcom/android/server/am/ProcessRecord;->pkgList:Lcom/android/server/am/ProcessRecord$PackageList;
 
-    invoke-virtual {v3}, Lcom/android/server/am/ProcessRecord$PackageList;->size()I
+    invoke-virtual {v4}, Lcom/android/server/am/ProcessRecord$PackageList;->size()I
 
-    move-result v3
+    move-result v4
 
-    if-ne v3, v2, :cond_85
+    if-ne v4, v3, :cond_86
 
     .line 75
     invoke-virtual {p1}, Landroid/content/Context;->getPackageManager()Landroid/content/pm/PackageManager;
 
-    move-result-object p1
+    move-result-object v4
 
-    iget-object v3, p0, Lcom/android/server/am/AppErrorDialog;->mProc:Lcom/android/server/am/ProcessRecord;
+    iget-object v5, p0, Lcom/android/server/am/AppErrorDialog;->mProc:Lcom/android/server/am/ProcessRecord;
 
-    iget-object v3, v3, Lcom/android/server/am/ProcessRecord;->info:Landroid/content/pm/ApplicationInfo;
+    iget-object v5, v5, Lcom/android/server/am/ProcessRecord;->info:Landroid/content/pm/ApplicationInfo;
 
-    invoke-virtual {p1, v3}, Landroid/content/pm/PackageManager;->getApplicationLabel(Landroid/content/pm/ApplicationInfo;)Ljava/lang/CharSequence;
+    invoke-virtual {v4, v5}, Landroid/content/pm/PackageManager;->getApplicationLabel(Landroid/content/pm/ApplicationInfo;)Ljava/lang/CharSequence;
 
-    move-result-object p1
+    move-result-object v4
 
-    if-eqz p1, :cond_85
+    move-object v5, v4
+
+    .local v5, "name":Ljava/lang/CharSequence;
+    if-eqz v4, :cond_86
 
     .line 76
     nop
 
     .line 77
-    iget-boolean p3, p3, Lcom/android/server/am/AppErrorDialog$Data;->repeating:Z
+    iget-boolean v4, p3, Lcom/android/server/am/AppErrorDialog$Data;->repeating:Z
 
-    if-eqz p3, :cond_61
+    if-eqz v4, :cond_62
 
-    const p3, 0x1040072
+    const v4, 0x104006f
 
-    goto :goto_64
+    goto :goto_65
 
     .line 78
-    :cond_61
-    const p3, 0x1040071
+    :cond_62
+    const v4, 0x104006e
 
-    :goto_64
-    const/4 v3, 0x2
+    :goto_65
+    const/4 v6, 0x2
 
-    new-array v3, v3, [Ljava/lang/Object;
+    new-array v6, v6, [Ljava/lang/Object;
 
     .line 79
-    invoke-interface {p1}, Ljava/lang/CharSequence;->toString()Ljava/lang/String;
+    invoke-interface {v5}, Ljava/lang/CharSequence;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v7
 
-    invoke-virtual {p2, p1}, Landroid/text/BidiFormatter;->unicodeWrap(Ljava/lang/String;)Ljava/lang/String;
+    invoke-virtual {v1, v7}, Landroid/text/BidiFormatter;->unicodeWrap(Ljava/lang/String;)Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v7
 
-    aput-object p1, v3, v1
+    aput-object v7, v6, v2
 
-    iget-object p1, p0, Lcom/android/server/am/AppErrorDialog;->mProc:Lcom/android/server/am/ProcessRecord;
+    iget-object v2, p0, Lcom/android/server/am/AppErrorDialog;->mProc:Lcom/android/server/am/ProcessRecord;
 
-    iget-object p1, p1, Lcom/android/server/am/ProcessRecord;->info:Landroid/content/pm/ApplicationInfo;
+    iget-object v2, v2, Lcom/android/server/am/ProcessRecord;->info:Landroid/content/pm/ApplicationInfo;
 
-    iget-object p1, p1, Landroid/content/pm/ApplicationInfo;->processName:Ljava/lang/String;
+    iget-object v2, v2, Landroid/content/pm/ApplicationInfo;->processName:Ljava/lang/String;
 
     .line 80
-    invoke-virtual {p2, p1}, Landroid/text/BidiFormatter;->unicodeWrap(Ljava/lang/String;)Ljava/lang/String;
+    invoke-virtual {v1, v2}, Landroid/text/BidiFormatter;->unicodeWrap(Ljava/lang/String;)Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v2
 
-    aput-object p1, v3, v2
+    aput-object v2, v6, v3
 
     .line 76
-    invoke-virtual {v0, p3, v3}, Landroid/content/res/Resources;->getString(I[Ljava/lang/Object;)Ljava/lang/String;
+    invoke-virtual {v0, v4, v6}, Landroid/content/res/Resources;->getString(I[Ljava/lang/Object;)Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v2
 
-    invoke-virtual {p0, p1}, Lcom/android/server/am/AppErrorDialog;->setTitle(Ljava/lang/CharSequence;)V
+    invoke-virtual {p0, v2}, Lcom/android/server/am/AppErrorDialog;->setTitle(Ljava/lang/CharSequence;)V
 
-    goto :goto_a8
+    goto :goto_a9
 
     .line 82
-    :cond_85
-    iget-object p1, p0, Lcom/android/server/am/AppErrorDialog;->mProc:Lcom/android/server/am/ProcessRecord;
+    .end local v5  # "name":Ljava/lang/CharSequence;
+    :cond_86
+    iget-object v4, p0, Lcom/android/server/am/AppErrorDialog;->mProc:Lcom/android/server/am/ProcessRecord;
 
-    iget-object p1, p1, Lcom/android/server/am/ProcessRecord;->processName:Ljava/lang/String;
+    iget-object v5, v4, Lcom/android/server/am/ProcessRecord;->processName:Ljava/lang/String;
 
     .line 83
+    .restart local v5  # "name":Ljava/lang/CharSequence;
     nop
 
     .line 84
-    iget-boolean p3, p3, Lcom/android/server/am/AppErrorDialog$Data;->repeating:Z
+    iget-boolean v4, p3, Lcom/android/server/am/AppErrorDialog$Data;->repeating:Z
 
-    if-eqz p3, :cond_92
+    if-eqz v4, :cond_93
 
-    const p3, 0x1040077
+    const v4, 0x1040074
 
-    goto :goto_95
+    goto :goto_96
 
     .line 85
-    :cond_92
-    const p3, 0x1040076
+    :cond_93
+    const v4, 0x1040073
 
-    :goto_95
-    new-array v3, v2, [Ljava/lang/Object;
+    :goto_96
+    new-array v6, v3, [Ljava/lang/Object;
 
     .line 86
-    invoke-interface {p1}, Ljava/lang/CharSequence;->toString()Ljava/lang/String;
+    invoke-interface {v5}, Ljava/lang/CharSequence;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v7
 
-    invoke-virtual {p2, p1}, Landroid/text/BidiFormatter;->unicodeWrap(Ljava/lang/String;)Ljava/lang/String;
+    invoke-virtual {v1, v7}, Landroid/text/BidiFormatter;->unicodeWrap(Ljava/lang/String;)Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v7
 
-    aput-object p1, v3, v1
+    aput-object v7, v6, v2
 
     .line 83
-    invoke-virtual {v0, p3, v3}, Landroid/content/res/Resources;->getString(I[Ljava/lang/Object;)Ljava/lang/String;
+    invoke-virtual {v0, v4, v6}, Landroid/content/res/Resources;->getString(I[Ljava/lang/Object;)Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v2
 
-    invoke-virtual {p0, p1}, Lcom/android/server/am/AppErrorDialog;->setTitle(Ljava/lang/CharSequence;)V
+    invoke-virtual {p0, v2}, Lcom/android/server/am/AppErrorDialog;->setTitle(Ljava/lang/CharSequence;)V
 
     .line 89
-    :goto_a8
-    invoke-virtual {p0, v2}, Lcom/android/server/am/AppErrorDialog;->setCancelable(Z)V
+    :goto_a9
+    invoke-virtual {p0, v3}, Lcom/android/server/am/AppErrorDialog;->setCancelable(Z)V
 
     .line 90
-    iget-object p1, p0, Lcom/android/server/am/AppErrorDialog;->mHandler:Landroid/os/Handler;
+    iget-object v2, p0, Lcom/android/server/am/AppErrorDialog;->mHandler:Landroid/os/Handler;
 
-    const/4 p2, 0x7
+    const/4 v3, 0x7
 
-    invoke-virtual {p1, p2}, Landroid/os/Handler;->obtainMessage(I)Landroid/os/Message;
+    invoke-virtual {v2, v3}, Landroid/os/Handler;->obtainMessage(I)Landroid/os/Message;
 
-    move-result-object p1
+    move-result-object v2
 
-    invoke-virtual {p0, p1}, Lcom/android/server/am/AppErrorDialog;->setCancelMessage(Landroid/os/Message;)V
+    invoke-virtual {p0, v2}, Lcom/android/server/am/AppErrorDialog;->setCancelMessage(Landroid/os/Message;)V
 
     .line 92
     invoke-virtual {p0}, Lcom/android/server/am/AppErrorDialog;->getWindow()Landroid/view/Window;
 
-    move-result-object p1
+    move-result-object v2
 
-    invoke-virtual {p1}, Landroid/view/Window;->getAttributes()Landroid/view/WindowManager$LayoutParams;
+    invoke-virtual {v2}, Landroid/view/Window;->getAttributes()Landroid/view/WindowManager$LayoutParams;
 
-    move-result-object p1
+    move-result-object v2
 
     .line 93
-    new-instance p2, Ljava/lang/StringBuilder;
+    .local v2, "attrs":Landroid/view/WindowManager$LayoutParams;
+    new-instance v3, Ljava/lang/StringBuilder;
 
-    invoke-direct {p2}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string p3, "Application Error: "
+    const-string v4, "Application Error: "
 
-    invoke-virtual {p2, p3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    iget-object p3, p0, Lcom/android/server/am/AppErrorDialog;->mProc:Lcom/android/server/am/ProcessRecord;
+    iget-object v4, p0, Lcom/android/server/am/AppErrorDialog;->mProc:Lcom/android/server/am/ProcessRecord;
 
-    iget-object p3, p3, Lcom/android/server/am/ProcessRecord;->info:Landroid/content/pm/ApplicationInfo;
+    iget-object v4, v4, Lcom/android/server/am/ProcessRecord;->info:Landroid/content/pm/ApplicationInfo;
 
-    iget-object p3, p3, Landroid/content/pm/ApplicationInfo;->processName:Ljava/lang/String;
+    iget-object v4, v4, Landroid/content/pm/ApplicationInfo;->processName:Ljava/lang/String;
 
-    invoke-virtual {p2, p3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p2
+    move-result-object v3
 
-    invoke-virtual {p1, p2}, Landroid/view/WindowManager$LayoutParams;->setTitle(Ljava/lang/CharSequence;)V
+    invoke-virtual {v2, v3}, Landroid/view/WindowManager$LayoutParams;->setTitle(Ljava/lang/CharSequence;)V
 
     .line 94
-    iget p2, p1, Landroid/view/WindowManager$LayoutParams;->privateFlags:I
+    iget v3, v2, Landroid/view/WindowManager$LayoutParams;->privateFlags:I
 
-    or-int/lit16 p2, p2, 0x110
+    or-int/lit16 v3, v3, 0x110
 
-    iput p2, p1, Landroid/view/WindowManager$LayoutParams;->privateFlags:I
+    iput v3, v2, Landroid/view/WindowManager$LayoutParams;->privateFlags:I
 
     .line 96
     invoke-virtual {p0}, Lcom/android/server/am/AppErrorDialog;->getWindow()Landroid/view/Window;
 
-    move-result-object p2
+    move-result-object v3
 
-    invoke-virtual {p2, p1}, Landroid/view/Window;->setAttributes(Landroid/view/WindowManager$LayoutParams;)V
+    invoke-virtual {v3, v2}, Landroid/view/Window;->setAttributes(Landroid/view/WindowManager$LayoutParams;)V
 
     .line 97
-    iget-object p1, p0, Lcom/android/server/am/AppErrorDialog;->mProc:Lcom/android/server/am/ProcessRecord;
+    iget-object v3, p0, Lcom/android/server/am/AppErrorDialog;->mProc:Lcom/android/server/am/ProcessRecord;
 
-    invoke-virtual {p1}, Lcom/android/server/am/ProcessRecord;->isPersistent()Z
+    invoke-virtual {v3}, Lcom/android/server/am/ProcessRecord;->isPersistent()Z
 
-    move-result p1
+    move-result v3
 
-    if-eqz p1, :cond_f5
+    if-eqz v3, :cond_f6
 
     .line 98
     invoke-virtual {p0}, Lcom/android/server/am/AppErrorDialog;->getWindow()Landroid/view/Window;
 
-    move-result-object p1
+    move-result-object v3
 
-    const/16 p2, 0x7da
+    const/16 v4, 0x7da
 
-    invoke-virtual {p1, p2}, Landroid/view/Window;->setType(I)V
+    invoke-virtual {v3, v4}, Landroid/view/Window;->setType(I)V
 
     .line 102
-    :cond_f5
-    iget-object p1, p0, Lcom/android/server/am/AppErrorDialog;->mHandler:Landroid/os/Handler;
+    :cond_f6
+    iget-object v3, p0, Lcom/android/server/am/AppErrorDialog;->mHandler:Landroid/os/Handler;
 
-    const/4 p2, 0x6
+    const/4 v4, 0x6
 
     .line 103
-    invoke-virtual {p1, p2}, Landroid/os/Handler;->obtainMessage(I)Landroid/os/Message;
+    invoke-virtual {v3, v4}, Landroid/os/Handler;->obtainMessage(I)Landroid/os/Message;
 
-    move-result-object p2
+    move-result-object v4
 
-    const-wide/32 v0, 0x493e0
+    const-wide/32 v6, 0x493e0
 
     .line 102
-    invoke-virtual {p1, p2, v0, v1}, Landroid/os/Handler;->sendMessageDelayed(Landroid/os/Message;J)Z
+    invoke-virtual {v3, v4, v6, v7}, Landroid/os/Handler;->sendMessageDelayed(Landroid/os/Message;J)Z
 
     .line 105
     return-void
@@ -380,6 +391,8 @@
 
 .method static synthetic access$000(Lcom/android/server/am/AppErrorDialog;I)V
     .registers 2
+    .param p0, "x0"  # Lcom/android/server/am/AppErrorDialog;
+    .param p1, "x1"  # I
 
     .line 38
     invoke-direct {p0, p1}, Lcom/android/server/am/AppErrorDialog;->setResult(I)V
@@ -389,6 +402,7 @@
 
 .method private setResult(I)V
     .registers 5
+    .param p1, "result"  # I
 
     .line 169
     iget-object v0, p0, Lcom/android/server/am/AppErrorDialog;->mService:Lcom/android/server/am/ActivityManagerService;
@@ -430,18 +444,18 @@
     invoke-virtual {v0, p1}, Lcom/android/server/am/AppErrorResult;->set(I)V
 
     .line 177
-    iget-object p1, p0, Lcom/android/server/am/AppErrorDialog;->mHandler:Landroid/os/Handler;
+    iget-object v0, p0, Lcom/android/server/am/AppErrorDialog;->mHandler:Landroid/os/Handler;
 
-    const/4 v0, 0x6
+    const/4 v1, 0x6
 
-    invoke-virtual {p1, v0}, Landroid/os/Handler;->removeMessages(I)V
+    invoke-virtual {v0, v1}, Landroid/os/Handler;->removeMessages(I)V
 
     .line 178
     return-void
 
     .line 173
     :catchall_25
-    move-exception p1
+    move-exception v1
 
     :try_start_26
     monitor-exit v0
@@ -450,7 +464,7 @@
 
     invoke-static {}, Lcom/android/server/am/ActivityManagerService;->resetPriorityAfterLockedSection()V
 
-    throw p1
+    throw v1
 .end method
 
 
@@ -479,88 +493,89 @@
 .end method
 
 .method public onClick(Landroid/view/View;)V
-    .registers 3
+    .registers 4
+    .param p1, "v"  # Landroid/view/View;
 
     .line 182
     invoke-virtual {p1}, Landroid/view/View;->getId()I
 
-    move-result p1
+    move-result v0
 
-    packed-switch p1, :pswitch_data_42
+    packed-switch v0, :pswitch_data_42
 
     goto :goto_40
 
     .line 184
     :pswitch_8  #0x10201a3
-    iget-object p1, p0, Lcom/android/server/am/AppErrorDialog;->mHandler:Landroid/os/Handler;
+    iget-object v0, p0, Lcom/android/server/am/AppErrorDialog;->mHandler:Landroid/os/Handler;
 
-    const/4 v0, 0x3
+    const/4 v1, 0x3
 
-    invoke-virtual {p1, v0}, Landroid/os/Handler;->obtainMessage(I)Landroid/os/Message;
+    invoke-virtual {v0, v1}, Landroid/os/Handler;->obtainMessage(I)Landroid/os/Message;
 
-    move-result-object p1
+    move-result-object v0
 
-    invoke-virtual {p1}, Landroid/os/Message;->sendToTarget()V
+    invoke-virtual {v0}, Landroid/os/Message;->sendToTarget()V
 
     .line 185
     goto :goto_40
 
     .line 187
     :pswitch_13  #0x10201a2
-    iget-object p1, p0, Lcom/android/server/am/AppErrorDialog;->mHandler:Landroid/os/Handler;
+    iget-object v0, p0, Lcom/android/server/am/AppErrorDialog;->mHandler:Landroid/os/Handler;
 
-    const/4 v0, 0x2
+    const/4 v1, 0x2
 
-    invoke-virtual {p1, v0}, Landroid/os/Handler;->obtainMessage(I)Landroid/os/Message;
+    invoke-virtual {v0, v1}, Landroid/os/Handler;->obtainMessage(I)Landroid/os/Message;
 
-    move-result-object p1
+    move-result-object v0
 
-    invoke-virtual {p1}, Landroid/os/Message;->sendToTarget()V
+    invoke-virtual {v0}, Landroid/os/Message;->sendToTarget()V
 
     .line 188
     goto :goto_40
 
     .line 196
     :pswitch_1e  #0x10201a1
-    iget-object p1, p0, Lcom/android/server/am/AppErrorDialog;->mHandler:Landroid/os/Handler;
+    iget-object v0, p0, Lcom/android/server/am/AppErrorDialog;->mHandler:Landroid/os/Handler;
 
-    const/4 v0, 0x5
+    const/4 v1, 0x5
 
-    invoke-virtual {p1, v0}, Landroid/os/Handler;->obtainMessage(I)Landroid/os/Message;
+    invoke-virtual {v0, v1}, Landroid/os/Handler;->obtainMessage(I)Landroid/os/Message;
 
-    move-result-object p1
+    move-result-object v0
 
-    invoke-virtual {p1}, Landroid/os/Message;->sendToTarget()V
+    invoke-virtual {v0}, Landroid/os/Message;->sendToTarget()V
 
     .line 197
     goto :goto_40
 
     .line 190
     :pswitch_29  #0x10201a0
-    iget-object p1, p0, Lcom/android/server/am/AppErrorDialog;->mHandler:Landroid/os/Handler;
+    iget-object v0, p0, Lcom/android/server/am/AppErrorDialog;->mHandler:Landroid/os/Handler;
 
-    const/4 v0, 0x1
+    const/4 v1, 0x1
 
-    invoke-virtual {p1, v0}, Landroid/os/Handler;->obtainMessage(I)Landroid/os/Message;
+    invoke-virtual {v0, v1}, Landroid/os/Handler;->obtainMessage(I)Landroid/os/Message;
 
-    move-result-object p1
+    move-result-object v0
 
-    invoke-virtual {p1}, Landroid/os/Message;->sendToTarget()V
+    invoke-virtual {v0}, Landroid/os/Message;->sendToTarget()V
 
     .line 191
     goto :goto_40
 
     .line 193
     :pswitch_34  #0x102019f
-    iget-object p1, p0, Lcom/android/server/am/AppErrorDialog;->mHandler:Landroid/os/Handler;
+    iget-object v0, p0, Lcom/android/server/am/AppErrorDialog;->mHandler:Landroid/os/Handler;
 
-    const/16 v0, 0x8
+    const/16 v1, 0x8
 
-    invoke-virtual {p1, v0}, Landroid/os/Handler;->obtainMessage(I)Landroid/os/Message;
+    invoke-virtual {v0, v1}, Landroid/os/Handler;->obtainMessage(I)Landroid/os/Message;
 
-    move-result-object p1
+    move-result-object v0
 
-    invoke-virtual {p1}, Landroid/os/Message;->sendToTarget()V
+    invoke-virtual {v0}, Landroid/os/Message;->sendToTarget()V
 
     .line 194
     nop
@@ -582,195 +597,205 @@
 .end method
 
 .method protected onCreate(Landroid/os/Bundle;)V
-    .registers 8
+    .registers 14
+    .param p1, "savedInstanceState"  # Landroid/os/Bundle;
 
     .line 109
     invoke-super {p0, p1}, Lcom/android/server/am/BaseErrorDialog;->onCreate(Landroid/os/Bundle;)V
 
     .line 110
-    const p1, 0x102002b
+    const v0, 0x102002b
 
-    invoke-virtual {p0, p1}, Lcom/android/server/am/AppErrorDialog;->findViewById(I)Landroid/view/View;
-
-    move-result-object p1
-
-    check-cast p1, Landroid/widget/FrameLayout;
-
-    .line 111
-    invoke-virtual {p0}, Lcom/android/server/am/AppErrorDialog;->getContext()Landroid/content/Context;
+    invoke-virtual {p0, v0}, Lcom/android/server/am/AppErrorDialog;->findViewById(I)Landroid/view/View;
 
     move-result-object v0
 
-    .line 112
-    invoke-static {v0}, Landroid/view/LayoutInflater;->from(Landroid/content/Context;)Landroid/view/LayoutInflater;
+    check-cast v0, Landroid/widget/FrameLayout;
+
+    .line 111
+    .local v0, "frame":Landroid/widget/FrameLayout;
+    invoke-virtual {p0}, Lcom/android/server/am/AppErrorDialog;->getContext()Landroid/content/Context;
 
     move-result-object v1
 
-    const/4 v2, 0x1
+    .line 112
+    .local v1, "context":Landroid/content/Context;
+    invoke-static {v1}, Landroid/view/LayoutInflater;->from(Landroid/content/Context;)Landroid/view/LayoutInflater;
 
-    const v3, 0x1090035
+    move-result-object v2
 
-    invoke-virtual {v1, v3, p1, v2}, Landroid/view/LayoutInflater;->inflate(ILandroid/view/ViewGroup;Z)Landroid/view/View;
+    const/4 v3, 0x1
+
+    const v4, 0x1090035
+
+    invoke-virtual {v2, v4, v0, v3}, Landroid/view/LayoutInflater;->inflate(ILandroid/view/ViewGroup;Z)Landroid/view/View;
 
     .line 115
-    iget-object p1, p0, Lcom/android/server/am/AppErrorDialog;->mProc:Lcom/android/server/am/ProcessRecord;
+    iget-object v2, p0, Lcom/android/server/am/AppErrorDialog;->mProc:Lcom/android/server/am/ProcessRecord;
 
-    iget-object p1, p1, Lcom/android/server/am/ProcessRecord;->errorReportReceiver:Landroid/content/ComponentName;
+    iget-object v2, v2, Lcom/android/server/am/ProcessRecord;->errorReportReceiver:Landroid/content/ComponentName;
 
-    const/4 v1, 0x0
+    const/4 v4, 0x0
 
-    if-eqz p1, :cond_24
+    if-eqz v2, :cond_24
 
-    move p1, v2
+    move v2, v3
 
     goto :goto_25
 
     :cond_24
-    move p1, v1
+    move v2, v4
 
     .line 117
+    .local v2, "hasReceiver":Z
     :goto_25
-    const v3, 0x10201a3
+    const v5, 0x10201a3
 
-    invoke-virtual {p0, v3}, Lcom/android/server/am/AppErrorDialog;->findViewById(I)Landroid/view/View;
+    invoke-virtual {p0, v5}, Lcom/android/server/am/AppErrorDialog;->findViewById(I)Landroid/view/View;
 
-    move-result-object v3
+    move-result-object v5
 
-    check-cast v3, Landroid/widget/TextView;
+    check-cast v5, Landroid/widget/TextView;
 
     .line 118
-    invoke-virtual {v3, p0}, Landroid/widget/TextView;->setOnClickListener(Landroid/view/View$OnClickListener;)V
+    .local v5, "restart":Landroid/widget/TextView;
+    invoke-virtual {v5, p0}, Landroid/widget/TextView;->setOnClickListener(Landroid/view/View$OnClickListener;)V
 
     .line 119
-    iget-boolean v4, p0, Lcom/android/server/am/AppErrorDialog;->mIsRestartable:Z
+    iget-boolean v6, p0, Lcom/android/server/am/AppErrorDialog;->mIsRestartable:Z
 
-    const/16 v5, 0x8
+    const/16 v7, 0x8
 
-    if-eqz v4, :cond_39
+    if-eqz v6, :cond_39
 
-    move v4, v1
+    move v6, v4
 
     goto :goto_3a
 
     :cond_39
-    move v4, v5
+    move v6, v7
 
     :goto_3a
-    invoke-virtual {v3, v4}, Landroid/widget/TextView;->setVisibility(I)V
+    invoke-virtual {v5, v6}, Landroid/widget/TextView;->setVisibility(I)V
 
     .line 120
-    const v3, 0x10201a2
+    const v6, 0x10201a2
 
-    invoke-virtual {p0, v3}, Lcom/android/server/am/AppErrorDialog;->findViewById(I)Landroid/view/View;
+    invoke-virtual {p0, v6}, Lcom/android/server/am/AppErrorDialog;->findViewById(I)Landroid/view/View;
 
-    move-result-object v3
+    move-result-object v6
 
-    check-cast v3, Landroid/widget/TextView;
+    check-cast v6, Landroid/widget/TextView;
 
     .line 121
-    invoke-virtual {v3, p0}, Landroid/widget/TextView;->setOnClickListener(Landroid/view/View$OnClickListener;)V
+    .local v6, "report":Landroid/widget/TextView;
+    invoke-virtual {v6, p0}, Landroid/widget/TextView;->setOnClickListener(Landroid/view/View$OnClickListener;)V
 
     .line 122
-    if-eqz p1, :cond_4d
+    if-eqz v2, :cond_4d
 
-    move p1, v1
+    move v8, v4
 
     goto :goto_4e
 
     :cond_4d
-    move p1, v5
+    move v8, v7
 
     :goto_4e
-    invoke-virtual {v3, p1}, Landroid/widget/TextView;->setVisibility(I)V
+    invoke-virtual {v6, v8}, Landroid/widget/TextView;->setVisibility(I)V
 
     .line 123
-    const p1, 0x10201a0
+    const v8, 0x10201a0
 
-    invoke-virtual {p0, p1}, Lcom/android/server/am/AppErrorDialog;->findViewById(I)Landroid/view/View;
+    invoke-virtual {p0, v8}, Lcom/android/server/am/AppErrorDialog;->findViewById(I)Landroid/view/View;
 
-    move-result-object p1
+    move-result-object v8
 
-    check-cast p1, Landroid/widget/TextView;
+    check-cast v8, Landroid/widget/TextView;
 
     .line 124
-    invoke-virtual {p1, p0}, Landroid/widget/TextView;->setOnClickListener(Landroid/view/View$OnClickListener;)V
+    .local v8, "close":Landroid/widget/TextView;
+    invoke-virtual {v8, p0}, Landroid/widget/TextView;->setOnClickListener(Landroid/view/View$OnClickListener;)V
 
     .line 125
-    const p1, 0x102019f
+    const v9, 0x102019f
 
-    invoke-virtual {p0, p1}, Lcom/android/server/am/AppErrorDialog;->findViewById(I)Landroid/view/View;
+    invoke-virtual {p0, v9}, Lcom/android/server/am/AppErrorDialog;->findViewById(I)Landroid/view/View;
 
-    move-result-object p1
+    move-result-object v9
 
-    check-cast p1, Landroid/widget/TextView;
+    check-cast v9, Landroid/widget/TextView;
 
     .line 126
-    invoke-virtual {p1, p0}, Landroid/widget/TextView;->setOnClickListener(Landroid/view/View$OnClickListener;)V
+    .local v9, "appInfo":Landroid/widget/TextView;
+    invoke-virtual {v9, p0}, Landroid/widget/TextView;->setOnClickListener(Landroid/view/View$OnClickListener;)V
 
     .line 128
-    sget-boolean p1, Landroid/os/Build;->IS_USER:Z
+    sget-boolean v10, Landroid/os/Build;->IS_USER:Z
 
-    if-nez p1, :cond_87
+    if-nez v10, :cond_87
 
-    invoke-virtual {v0}, Landroid/content/Context;->getContentResolver()Landroid/content/ContentResolver;
+    invoke-virtual {v1}, Landroid/content/Context;->getContentResolver()Landroid/content/ContentResolver;
 
-    move-result-object p1
+    move-result-object v10
 
-    const-string v3, "development_settings_enabled"
+    const-string v11, "development_settings_enabled"
 
-    invoke-static {p1, v3, v1}, Landroid/provider/Settings$Global;->getInt(Landroid/content/ContentResolver;Ljava/lang/String;I)I
+    invoke-static {v10, v11, v4}, Landroid/provider/Settings$Global;->getInt(Landroid/content/ContentResolver;Ljava/lang/String;I)I
 
-    move-result p1
+    move-result v10
 
-    if-eqz p1, :cond_87
+    if-eqz v10, :cond_87
 
     .line 130
-    invoke-virtual {v0}, Landroid/content/Context;->getContentResolver()Landroid/content/ContentResolver;
+    invoke-virtual {v1}, Landroid/content/Context;->getContentResolver()Landroid/content/ContentResolver;
 
-    move-result-object p1
+    move-result-object v10
 
-    const-string/jumbo v0, "show_mute_in_crash_dialog"
+    const-string/jumbo v11, "show_mute_in_crash_dialog"
 
-    invoke-static {p1, v0, v1}, Landroid/provider/Settings$Global;->getInt(Landroid/content/ContentResolver;Ljava/lang/String;I)I
+    invoke-static {v10, v11, v4}, Landroid/provider/Settings$Global;->getInt(Landroid/content/ContentResolver;Ljava/lang/String;I)I
 
-    move-result p1
+    move-result v10
 
-    if-eqz p1, :cond_87
+    if-eqz v10, :cond_87
 
     goto :goto_88
 
     :cond_87
-    move v2, v1
+    move v3, v4
 
     .line 132
+    .local v3, "showMute":Z
     :goto_88
-    const p1, 0x10201a1
+    const v10, 0x10201a1
 
-    invoke-virtual {p0, p1}, Lcom/android/server/am/AppErrorDialog;->findViewById(I)Landroid/view/View;
+    invoke-virtual {p0, v10}, Lcom/android/server/am/AppErrorDialog;->findViewById(I)Landroid/view/View;
 
-    move-result-object p1
+    move-result-object v10
 
-    check-cast p1, Landroid/widget/TextView;
+    check-cast v10, Landroid/widget/TextView;
 
     .line 133
-    invoke-virtual {p1, p0}, Landroid/widget/TextView;->setOnClickListener(Landroid/view/View$OnClickListener;)V
+    .local v10, "mute":Landroid/widget/TextView;
+    invoke-virtual {v10, p0}, Landroid/widget/TextView;->setOnClickListener(Landroid/view/View$OnClickListener;)V
 
     .line 134
-    if-eqz v2, :cond_97
+    if-eqz v3, :cond_97
 
-    move v5, v1
+    move v7, v4
 
     :cond_97
-    invoke-virtual {p1, v5}, Landroid/widget/TextView;->setVisibility(I)V
+    invoke-virtual {v10, v7}, Landroid/widget/TextView;->setVisibility(I)V
 
     .line 136
-    const p1, 0x1020236
+    const v7, 0x1020235
 
-    invoke-virtual {p0, p1}, Lcom/android/server/am/AppErrorDialog;->findViewById(I)Landroid/view/View;
+    invoke-virtual {p0, v7}, Lcom/android/server/am/AppErrorDialog;->findViewById(I)Landroid/view/View;
 
-    move-result-object p1
+    move-result-object v7
 
-    invoke-virtual {p1, v1}, Landroid/view/View;->setVisibility(I)V
+    invoke-virtual {v7, v4}, Landroid/view/View;->setVisibility(I)V
 
     .line 137
     return-void

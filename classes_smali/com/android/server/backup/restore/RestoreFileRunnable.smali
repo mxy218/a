@@ -20,7 +20,12 @@
 
 # direct methods
 .method constructor <init>(Lcom/android/server/backup/UserBackupManagerService;Landroid/app/IBackupAgent;Lcom/android/server/backup/FileMetadata;Landroid/os/ParcelFileDescriptor;I)V
-    .registers 6
+    .registers 7
+    .param p1, "backupManagerService"  # Lcom/android/server/backup/UserBackupManagerService;
+    .param p2, "agent"  # Landroid/app/IBackupAgent;
+    .param p3, "info"  # Lcom/android/server/backup/FileMetadata;
+    .param p4, "socket"  # Landroid/os/ParcelFileDescriptor;
+    .param p5, "token"  # I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Ljava/io/IOException;
@@ -42,13 +47,13 @@
     .line 51
     invoke-virtual {p4}, Landroid/os/ParcelFileDescriptor;->getFileDescriptor()Ljava/io/FileDescriptor;
 
-    move-result-object p2
+    move-result-object v0
 
-    invoke-static {p2}, Landroid/os/ParcelFileDescriptor;->dup(Ljava/io/FileDescriptor;)Landroid/os/ParcelFileDescriptor;
+    invoke-static {v0}, Landroid/os/ParcelFileDescriptor;->dup(Ljava/io/FileDescriptor;)Landroid/os/ParcelFileDescriptor;
 
-    move-result-object p2
+    move-result-object v0
 
-    iput-object p2, p0, Lcom/android/server/backup/restore/RestoreFileRunnable;->mSocket:Landroid/os/ParcelFileDescriptor;
+    iput-object v0, p0, Lcom/android/server/backup/restore/RestoreFileRunnable;->mSocket:Landroid/os/ParcelFileDescriptor;
 
     .line 52
     iput-object p1, p0, Lcom/android/server/backup/restore/RestoreFileRunnable;->mBackupManagerService:Lcom/android/server/backup/UserBackupManagerService;

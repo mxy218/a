@@ -40,6 +40,7 @@
 # virtual methods
 .method public createFromParcel(Landroid/os/Parcel;)Lcom/google/android/startop/iorap/RequestId;
     .registers 4
+    .param p1, "in"  # Landroid/os/Parcel;
 
     .line 112
     new-instance v0, Lcom/google/android/startop/iorap/RequestId;
@@ -63,12 +64,13 @@
 .end method
 
 .method public newArray(I)[Lcom/google/android/startop/iorap/RequestId;
-    .registers 2
+    .registers 3
+    .param p1, "size"  # I
 
     .line 116
-    new-array p1, p1, [Lcom/google/android/startop/iorap/RequestId;
+    new-array v0, p1, [Lcom/google/android/startop/iorap/RequestId;
 
-    return-object p1
+    return-object v0
 .end method
 
 .method public bridge synthetic newArray(I)[Ljava/lang/Object;

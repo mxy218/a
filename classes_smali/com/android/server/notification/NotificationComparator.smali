@@ -29,9 +29,10 @@
 
 # direct methods
 .method public constructor <init>(Landroid/content/Context;)V
-    .registers 5
+    .registers 6
+    .param p1, "context"  # Landroid/content/Context;
 
-    .line 43
+    .line 44
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
     .line 192
@@ -41,39 +42,41 @@
 
     iput-object v0, p0, Lcom/android/server/notification/NotificationComparator;->mPhoneAppBroadcastReceiver:Landroid/content/BroadcastReceiver;
 
-    .line 44
+    .line 45
     iput-object p1, p0, Lcom/android/server/notification/NotificationComparator;->mContext:Landroid/content/Context;
 
-    .line 45
-    iget-object p1, p0, Lcom/android/server/notification/NotificationComparator;->mContext:Landroid/content/Context;
-
-    iget-object v0, p0, Lcom/android/server/notification/NotificationComparator;->mPhoneAppBroadcastReceiver:Landroid/content/BroadcastReceiver;
-
-    new-instance v1, Landroid/content/IntentFilter;
-
-    const-string v2, "android.telecom.action.DEFAULT_DIALER_CHANGED"
-
-    invoke-direct {v1, v2}, Landroid/content/IntentFilter;-><init>(Ljava/lang/String;)V
-
-    invoke-virtual {p1, v0, v1}, Landroid/content/Context;->registerReceiver(Landroid/content/BroadcastReceiver;Landroid/content/IntentFilter;)Landroid/content/Intent;
-
-    .line 47
-    new-instance p1, Lcom/android/internal/util/NotificationMessagingUtil;
-
+    .line 46
     iget-object v0, p0, Lcom/android/server/notification/NotificationComparator;->mContext:Landroid/content/Context;
 
-    invoke-direct {p1, v0}, Lcom/android/internal/util/NotificationMessagingUtil;-><init>(Landroid/content/Context;)V
+    iget-object v1, p0, Lcom/android/server/notification/NotificationComparator;->mPhoneAppBroadcastReceiver:Landroid/content/BroadcastReceiver;
 
-    iput-object p1, p0, Lcom/android/server/notification/NotificationComparator;->mMessagingUtil:Lcom/android/internal/util/NotificationMessagingUtil;
+    new-instance v2, Landroid/content/IntentFilter;
+
+    const-string v3, "android.telecom.action.DEFAULT_DIALER_CHANGED"
+
+    invoke-direct {v2, v3}, Landroid/content/IntentFilter;-><init>(Ljava/lang/String;)V
+
+    invoke-virtual {v0, v1, v2}, Landroid/content/Context;->registerReceiver(Landroid/content/BroadcastReceiver;Landroid/content/IntentFilter;)Landroid/content/Intent;
 
     .line 48
+    new-instance v0, Lcom/android/internal/util/NotificationMessagingUtil;
+
+    iget-object v1, p0, Lcom/android/server/notification/NotificationComparator;->mContext:Landroid/content/Context;
+
+    invoke-direct {v0, v1}, Lcom/android/internal/util/NotificationMessagingUtil;-><init>(Landroid/content/Context;)V
+
+    iput-object v0, p0, Lcom/android/server/notification/NotificationComparator;->mMessagingUtil:Lcom/android/internal/util/NotificationMessagingUtil;
+
+    .line 49
     return-void
 .end method
 
 .method static synthetic access$002(Lcom/android/server/notification/NotificationComparator;Ljava/lang/String;)Ljava/lang/String;
     .registers 2
+    .param p0, "x0"  # Lcom/android/server/notification/NotificationComparator;
+    .param p1, "x1"  # Ljava/lang/String;
 
-    .line 36
+    .line 37
     iput-object p1, p0, Lcom/android/server/notification/NotificationComparator;->mDefaultPhoneApp:Ljava/lang/String;
 
     return-object p1
@@ -81,6 +84,7 @@
 
 .method private isCall(Lcom/android/server/notification/NotificationRecord;)Z
     .registers 3
+    .param p1, "record"  # Lcom/android/server/notification/NotificationRecord;
 
     .line 179
     const-string v0, "call"
@@ -91,33 +95,34 @@
 
     if-eqz v0, :cond_16
 
-    iget-object p1, p1, Lcom/android/server/notification/NotificationRecord;->sbn:Landroid/service/notification/StatusBarNotification;
+    iget-object v0, p1, Lcom/android/server/notification/NotificationRecord;->sbn:Landroid/service/notification/StatusBarNotification;
 
     .line 180
-    invoke-virtual {p1}, Landroid/service/notification/StatusBarNotification;->getPackageName()Ljava/lang/String;
+    invoke-virtual {v0}, Landroid/service/notification/StatusBarNotification;->getPackageName()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    invoke-direct {p0, p1}, Lcom/android/server/notification/NotificationComparator;->isDefaultPhoneApp(Ljava/lang/String;)Z
+    invoke-direct {p0, v0}, Lcom/android/server/notification/NotificationComparator;->isDefaultPhoneApp(Ljava/lang/String;)Z
 
-    move-result p1
+    move-result v0
 
-    if-eqz p1, :cond_16
+    if-eqz v0, :cond_16
 
-    const/4 p1, 0x1
+    const/4 v0, 0x1
 
     goto :goto_17
 
     :cond_16
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
     .line 179
     :goto_17
-    return p1
+    return v0
 .end method
 
 .method private isDefaultPhoneApp(Ljava/lang/String;)Z
     .registers 4
+    .param p1, "pkg"  # Ljava/lang/String;
 
     .line 184
     iget-object v0, p0, Lcom/android/server/notification/NotificationComparator;->mDefaultPhoneApp:Ljava/lang/String;
@@ -137,33 +142,36 @@
     check-cast v0, Landroid/telecom/TelecomManager;
 
     .line 187
+    .local v0, "telecomm":Landroid/telecom/TelecomManager;
     if-eqz v0, :cond_16
 
     invoke-virtual {v0}, Landroid/telecom/TelecomManager;->getDefaultDialerPackage()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v1
 
     goto :goto_17
 
     :cond_16
-    const/4 v0, 0x0
+    const/4 v1, 0x0
 
     :goto_17
-    iput-object v0, p0, Lcom/android/server/notification/NotificationComparator;->mDefaultPhoneApp:Ljava/lang/String;
+    iput-object v1, p0, Lcom/android/server/notification/NotificationComparator;->mDefaultPhoneApp:Ljava/lang/String;
 
     .line 189
+    .end local v0  # "telecomm":Landroid/telecom/TelecomManager;
     :cond_19
     iget-object v0, p0, Lcom/android/server/notification/NotificationComparator;->mDefaultPhoneApp:Ljava/lang/String;
 
     invoke-static {p1, v0}, Ljava/util/Objects;->equals(Ljava/lang/Object;Ljava/lang/Object;)Z
 
-    move-result p1
+    move-result v0
 
-    return p1
+    return v0
 .end method
 
 .method private isImportantColorized(Lcom/android/server/notification/NotificationRecord;)Z
     .registers 4
+    .param p1, "record"  # Lcom/android/server/notification/NotificationRecord;
 
     .line 137
     invoke-virtual {p1}, Lcom/android/server/notification/NotificationRecord;->getImportance()I
@@ -175,25 +183,26 @@
     if-ge v0, v1, :cond_9
 
     .line 138
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    return p1
+    return v0
 
     .line 140
     :cond_9
     invoke-virtual {p1}, Lcom/android/server/notification/NotificationRecord;->getNotification()Landroid/app/Notification;
 
-    move-result-object p1
+    move-result-object v0
 
-    invoke-virtual {p1}, Landroid/app/Notification;->isColorized()Z
+    invoke-virtual {v0}, Landroid/app/Notification;->isColorized()Z
 
-    move-result p1
+    move-result v0
 
-    return p1
+    return v0
 .end method
 
 .method private isImportantOngoing(Lcom/android/server/notification/NotificationRecord;)Z
     .registers 5
+    .param p1, "record"  # Lcom/android/server/notification/NotificationRecord;
 
     .line 144
     invoke-direct {p0, p1}, Lcom/android/server/notification/NotificationComparator;->isOngoing(Lcom/android/server/notification/NotificationRecord;)Z
@@ -230,9 +239,9 @@
 
     invoke-direct {p0, p1}, Lcom/android/server/notification/NotificationComparator;->isMediaNotification(Lcom/android/server/notification/NotificationRecord;)Z
 
-    move-result p1
+    move-result v0
 
-    if-eqz p1, :cond_1d
+    if-eqz v0, :cond_1d
 
     :cond_1c
     const/4 v1, 0x1
@@ -242,268 +251,327 @@
 .end method
 
 .method private isMediaNotification(Lcom/android/server/notification/NotificationRecord;)Z
-    .registers 2
+    .registers 3
+    .param p1, "record"  # Lcom/android/server/notification/NotificationRecord;
 
     .line 175
     invoke-virtual {p1}, Lcom/android/server/notification/NotificationRecord;->getNotification()Landroid/app/Notification;
 
-    move-result-object p1
+    move-result-object v0
 
-    invoke-virtual {p1}, Landroid/app/Notification;->hasMediaSession()Z
+    invoke-virtual {v0}, Landroid/app/Notification;->hasMediaSession()Z
 
-    move-result p1
+    move-result v0
 
-    return p1
+    return v0
 .end method
 
 .method private isOngoing(Lcom/android/server/notification/NotificationRecord;)Z
-    .registers 2
+    .registers 4
+    .param p1, "record"  # Lcom/android/server/notification/NotificationRecord;
+
+    .line 170
+    const/16 v0, 0x40
 
     .line 171
+    .local v0, "ongoingFlags":I
     invoke-virtual {p1}, Lcom/android/server/notification/NotificationRecord;->getNotification()Landroid/app/Notification;
 
-    move-result-object p1
+    move-result-object v1
 
-    iget p1, p1, Landroid/app/Notification;->flags:I
+    iget v1, v1, Landroid/app/Notification;->flags:I
 
-    and-int/lit8 p1, p1, 0x40
+    and-int/lit8 v1, v1, 0x40
 
-    if-eqz p1, :cond_c
+    if-eqz v1, :cond_e
 
-    const/4 p1, 0x1
+    const/4 v1, 0x1
 
-    goto :goto_d
+    goto :goto_f
 
-    :cond_c
-    const/4 p1, 0x0
+    :cond_e
+    const/4 v1, 0x0
 
-    :goto_d
-    return p1
+    :goto_f
+    return v1
 .end method
 
 
 # virtual methods
 .method public compare(Lcom/android/server/notification/NotificationRecord;Lcom/android/server/notification/NotificationRecord;)I
-    .registers 9
-
-    .line 52
-    invoke-virtual {p1}, Lcom/android/server/notification/NotificationRecord;->getImportance()I
-
-    move-result v0
+    .registers 24
+    .param p1, "left"  # Lcom/android/server/notification/NotificationRecord;
+    .param p2, "right"  # Lcom/android/server/notification/NotificationRecord;
 
     .line 53
-    invoke-virtual {p2}, Lcom/android/server/notification/NotificationRecord;->getImportance()I
+    move-object/from16 v0, p0
 
-    move-result v1
+    move-object/from16 v1, p2
+
+    invoke-virtual/range {p1 .. p1}, Lcom/android/server/notification/NotificationRecord;->getImportance()I
+
+    move-result v2
 
     .line 54
-    const/4 v2, 0x1
+    .local v2, "leftImportance":I
+    invoke-virtual/range {p2 .. p2}, Lcom/android/server/notification/NotificationRecord;->getImportance()I
 
-    const/4 v3, 0x0
-
-    const/4 v4, 0x3
-
-    if-lt v0, v4, :cond_f
-
-    move v5, v2
-
-    goto :goto_10
-
-    :cond_f
-    move v5, v3
+    move-result v3
 
     .line 55
-    :goto_10
-    if-lt v1, v4, :cond_13
+    .local v3, "rightImportance":I
+    const/4 v4, 0x0
+
+    const/4 v5, 0x3
+
+    const/4 v6, 0x1
+
+    if-lt v2, v5, :cond_13
+
+    move v7, v6
 
     goto :goto_14
 
     :cond_13
-    move v2, v3
+    move v7, v4
 
-    .line 57
+    .line 56
+    .local v7, "isLeftHighImportance":Z
     :goto_14
-    if-eq v5, v2, :cond_1d
+    if-lt v3, v5, :cond_17
 
-    .line 59
-    invoke-static {v5, v2}, Ljava/lang/Boolean;->compare(ZZ)I
+    move v4, v6
 
-    move-result p1
+    .line 60
+    .local v4, "isRightHighImportance":Z
+    :cond_17
+    iget-object v5, v0, Lcom/android/server/notification/NotificationComparator;->mContext:Landroid/content/Context;
 
-    mul-int/lit8 p1, p1, -0x1
+    invoke-virtual {v5}, Landroid/content/Context;->getContentResolver()Landroid/content/ContentResolver;
 
-    return p1
+    move-result-object v5
 
-    .line 63
-    :cond_1d
-    invoke-direct {p0, p1}, Lcom/android/server/notification/NotificationComparator;->isImportantColorized(Lcom/android/server/notification/NotificationRecord;)Z
+    const-string/jumbo v8, "new_interruption_model"
 
-    move-result v2
-
-    .line 64
-    invoke-direct {p0, p2}, Lcom/android/server/notification/NotificationComparator;->isImportantColorized(Lcom/android/server/notification/NotificationRecord;)Z
-
-    move-result v3
-
-    .line 66
-    if-eq v2, v3, :cond_2e
-
-    .line 67
-    invoke-static {v2, v3}, Ljava/lang/Boolean;->compare(ZZ)I
-
-    move-result p1
-
-    mul-int/lit8 p1, p1, -0x1
-
-    return p1
-
-    .line 71
-    :cond_2e
-    invoke-direct {p0, p1}, Lcom/android/server/notification/NotificationComparator;->isImportantOngoing(Lcom/android/server/notification/NotificationRecord;)Z
-
-    move-result v2
-
-    .line 72
-    invoke-direct {p0, p2}, Lcom/android/server/notification/NotificationComparator;->isImportantOngoing(Lcom/android/server/notification/NotificationRecord;)Z
-
-    move-result v3
-
-    .line 74
-    if-eq v2, v3, :cond_3f
-
-    .line 76
-    invoke-static {v2, v3}, Ljava/lang/Boolean;->compare(ZZ)I
-
-    move-result p1
-
-    mul-int/lit8 p1, p1, -0x1
-
-    return p1
-
-    .line 79
-    :cond_3f
-    invoke-virtual {p0, p1}, Lcom/android/server/notification/NotificationComparator;->isImportantMessaging(Lcom/android/server/notification/NotificationRecord;)Z
-
-    move-result v2
-
-    .line 80
-    invoke-virtual {p0, p2}, Lcom/android/server/notification/NotificationComparator;->isImportantMessaging(Lcom/android/server/notification/NotificationRecord;)Z
-
-    move-result v3
-
-    .line 81
-    if-eq v2, v3, :cond_50
-
-    .line 82
-    invoke-static {v2, v3}, Ljava/lang/Boolean;->compare(ZZ)I
-
-    move-result p1
-
-    mul-int/lit8 p1, p1, -0x1
-
-    return p1
-
-    .line 86
-    :cond_50
-    invoke-virtual {p0, p1}, Lcom/android/server/notification/NotificationComparator;->isImportantPeople(Lcom/android/server/notification/NotificationRecord;)Z
-
-    move-result v2
-
-    .line 87
-    invoke-virtual {p0, p2}, Lcom/android/server/notification/NotificationComparator;->isImportantPeople(Lcom/android/server/notification/NotificationRecord;)Z
-
-    move-result v3
-
-    .line 88
-    nop
-
-    .line 89
-    invoke-virtual {p1}, Lcom/android/server/notification/NotificationRecord;->getContactAffinity()F
-
-    move-result v4
-
-    invoke-virtual {p2}, Lcom/android/server/notification/NotificationRecord;->getContactAffinity()F
+    invoke-static {v5, v8, v6}, Landroid/provider/Settings$Secure;->getInt(Landroid/content/ContentResolver;Ljava/lang/String;I)I
 
     move-result v5
 
-    invoke-static {v4, v5}, Ljava/lang/Float;->compare(FF)I
+    if-ne v5, v6, :cond_2f
 
-    move-result v4
+    .line 62
+    if-eq v7, v4, :cond_2f
 
-    .line 91
-    if-eqz v2, :cond_6e
+    .line 64
+    invoke-static {v7, v4}, Ljava/lang/Boolean;->compare(ZZ)I
 
-    if-eqz v3, :cond_6e
+    move-result v5
+
+    mul-int/lit8 v5, v5, -0x1
+
+    return v5
+
+    .line 69
+    :cond_2f
+    invoke-direct/range {p0 .. p1}, Lcom/android/server/notification/NotificationComparator;->isImportantColorized(Lcom/android/server/notification/NotificationRecord;)Z
+
+    move-result v5
+
+    .line 70
+    .local v5, "leftImportantColorized":Z
+    invoke-direct {v0, v1}, Lcom/android/server/notification/NotificationComparator;->isImportantColorized(Lcom/android/server/notification/NotificationRecord;)Z
+
+    move-result v6
+
+    .line 72
+    .local v6, "rightImportantColorized":Z
+    if-eq v5, v6, :cond_40
+
+    .line 73
+    invoke-static {v5, v6}, Ljava/lang/Boolean;->compare(ZZ)I
+
+    move-result v8
+
+    mul-int/lit8 v8, v8, -0x1
+
+    return v8
+
+    .line 77
+    :cond_40
+    invoke-direct/range {p0 .. p1}, Lcom/android/server/notification/NotificationComparator;->isImportantOngoing(Lcom/android/server/notification/NotificationRecord;)Z
+
+    move-result v8
+
+    .line 78
+    .local v8, "leftImportantOngoing":Z
+    invoke-direct {v0, v1}, Lcom/android/server/notification/NotificationComparator;->isImportantOngoing(Lcom/android/server/notification/NotificationRecord;)Z
+
+    move-result v9
+
+    .line 80
+    .local v9, "rightImportantOngoing":Z
+    if-eq v8, v9, :cond_51
+
+    .line 82
+    invoke-static {v8, v9}, Ljava/lang/Boolean;->compare(ZZ)I
+
+    move-result v10
+
+    mul-int/lit8 v10, v10, -0x1
+
+    return v10
+
+    .line 85
+    :cond_51
+    invoke-virtual/range {p0 .. p1}, Lcom/android/server/notification/NotificationComparator;->isImportantMessaging(Lcom/android/server/notification/NotificationRecord;)Z
+
+    move-result v10
+
+    .line 86
+    .local v10, "leftMessaging":Z
+    invoke-virtual {v0, v1}, Lcom/android/server/notification/NotificationComparator;->isImportantMessaging(Lcom/android/server/notification/NotificationRecord;)Z
+
+    move-result v11
+
+    .line 87
+    .local v11, "rightMessaging":Z
+    if-eq v10, v11, :cond_62
+
+    .line 88
+    invoke-static {v10, v11}, Ljava/lang/Boolean;->compare(ZZ)I
+
+    move-result v12
+
+    mul-int/lit8 v12, v12, -0x1
+
+    return v12
+
+    .line 92
+    :cond_62
+    invoke-virtual/range {p0 .. p1}, Lcom/android/server/notification/NotificationComparator;->isImportantPeople(Lcom/android/server/notification/NotificationRecord;)Z
+
+    move-result v12
 
     .line 93
-    if-eqz v4, :cond_77
+    .local v12, "leftPeople":Z
+    invoke-virtual {v0, v1}, Lcom/android/server/notification/NotificationComparator;->isImportantPeople(Lcom/android/server/notification/NotificationRecord;)Z
+
+    move-result v13
 
     .line 94
-    mul-int/lit8 v4, v4, -0x1
+    .local v13, "rightPeople":Z
+    nop
 
-    return v4
+    .line 95
+    invoke-virtual/range {p1 .. p1}, Lcom/android/server/notification/NotificationRecord;->getContactAffinity()F
 
-    .line 96
-    :cond_6e
-    if-eq v2, v3, :cond_77
+    move-result v14
 
-    .line 98
-    invoke-static {v2, v3}, Ljava/lang/Boolean;->compare(ZZ)I
+    invoke-virtual/range {p2 .. p2}, Lcom/android/server/notification/NotificationRecord;->getContactAffinity()F
 
-    move-result p1
+    move-result v15
 
-    mul-int/lit8 p1, p1, -0x1
+    invoke-static {v14, v15}, Ljava/lang/Float;->compare(FF)I
 
-    return p1
+    move-result v14
 
-    .line 101
-    :cond_77
-    if-eq v0, v1, :cond_80
+    .line 97
+    .local v14, "contactAffinityComparison":I
+    if-eqz v12, :cond_80
 
-    .line 103
-    invoke-static {v0, v1}, Ljava/lang/Integer;->compare(II)I
+    if-eqz v13, :cond_80
 
-    move-result p1
+    .line 99
+    if-eqz v14, :cond_89
 
-    mul-int/lit8 p1, p1, -0x1
+    .line 100
+    mul-int/lit8 v15, v14, -0x1
 
-    return p1
+    return v15
+
+    .line 102
+    :cond_80
+    if-eq v12, v13, :cond_89
+
+    .line 104
+    invoke-static {v12, v13}, Ljava/lang/Boolean;->compare(ZZ)I
+
+    move-result v15
+
+    mul-int/lit8 v15, v15, -0x1
+
+    return v15
 
     .line 107
-    :cond_80
-    if-eqz v4, :cond_85
+    :cond_89
+    if-eq v2, v3, :cond_92
 
-    .line 108
-    mul-int/lit8 v4, v4, -0x1
+    .line 109
+    invoke-static {v2, v3}, Ljava/lang/Integer;->compare(II)I
 
-    return v4
+    move-result v15
 
-    .line 112
-    :cond_85
-    invoke-virtual {p1}, Lcom/android/server/notification/NotificationRecord;->getPackagePriority()I
+    mul-int/lit8 v15, v15, -0x1
+
+    return v15
+
+    .line 113
+    :cond_92
+    if-eqz v14, :cond_97
+
+    .line 114
+    mul-int/lit8 v15, v14, -0x1
+
+    return v15
+
+    .line 118
+    :cond_97
+    invoke-virtual/range {p1 .. p1}, Lcom/android/server/notification/NotificationRecord;->getPackagePriority()I
+
+    move-result v15
+
+    .line 119
+    .local v15, "leftPackagePriority":I
+    invoke-virtual/range {p2 .. p2}, Lcom/android/server/notification/NotificationRecord;->getPackagePriority()I
 
     move-result v0
 
-    .line 113
-    invoke-virtual {p2}, Lcom/android/server/notification/NotificationRecord;->getPackagePriority()I
+    .line 120
+    .local v0, "rightPackagePriority":I
+    if-eq v15, v0, :cond_a8
 
-    move-result v1
+    .line 122
+    invoke-static {v15, v0}, Ljava/lang/Integer;->compare(II)I
 
-    .line 114
-    if-eq v0, v1, :cond_96
+    move-result v16
 
-    .line 116
-    invoke-static {v0, v1}, Ljava/lang/Integer;->compare(II)I
+    mul-int/lit8 v16, v16, -0x1
 
-    move-result p1
+    return v16
 
-    mul-int/lit8 p1, p1, -0x1
+    .line 125
+    :cond_a8
+    move/from16 v16, v0
 
-    return p1
+    move/from16 v17, v2
 
-    .line 119
-    :cond_96
-    iget-object v0, p1, Lcom/android/server/notification/NotificationRecord;->sbn:Landroid/service/notification/StatusBarNotification;
+    move-object/from16 v0, p1
+
+    .end local v0  # "rightPackagePriority":I
+    .end local v2  # "leftImportance":I
+    .local v16, "rightPackagePriority":I
+    .local v17, "leftImportance":I
+    iget-object v2, v0, Lcom/android/server/notification/NotificationRecord;->sbn:Landroid/service/notification/StatusBarNotification;
+
+    invoke-virtual {v2}, Landroid/service/notification/StatusBarNotification;->getNotification()Landroid/app/Notification;
+
+    move-result-object v2
+
+    iget v2, v2, Landroid/app/Notification;->priority:I
+
+    .line 126
+    .local v2, "leftPriority":I
+    iget-object v0, v1, Lcom/android/server/notification/NotificationRecord;->sbn:Landroid/service/notification/StatusBarNotification;
 
     invoke-virtual {v0}, Landroid/service/notification/StatusBarNotification;->getNotification()Landroid/app/Notification;
 
@@ -511,73 +579,54 @@
 
     iget v0, v0, Landroid/app/Notification;->priority:I
 
-    .line 120
-    iget-object v1, p2, Lcom/android/server/notification/NotificationRecord;->sbn:Landroid/service/notification/StatusBarNotification;
-
-    invoke-virtual {v1}, Landroid/service/notification/StatusBarNotification;->getNotification()Landroid/app/Notification;
-
-    move-result-object v1
-
-    iget v1, v1, Landroid/app/Notification;->priority:I
-
-    .line 121
-    if-eq v0, v1, :cond_af
-
-    .line 123
-    invoke-static {v0, v1}, Ljava/lang/Integer;->compare(II)I
-
-    move-result p1
-
-    mul-int/lit8 p1, p1, -0x1
-
-    return p1
-
-    .line 126
-    :cond_af
-    invoke-virtual {p1}, Lcom/android/server/notification/NotificationRecord;->isInterruptive()Z
-
-    move-result v0
-
     .line 127
-    invoke-virtual {p2}, Lcom/android/server/notification/NotificationRecord;->isInterruptive()Z
-
-    move-result v1
-
-    .line 128
-    if-eq v0, v1, :cond_c0
+    .local v0, "rightPriority":I
+    if-eq v2, v0, :cond_c7
 
     .line 129
-    invoke-static {v0, v1}, Ljava/lang/Boolean;->compare(ZZ)I
+    invoke-static {v2, v0}, Ljava/lang/Integer;->compare(II)I
 
-    move-result p1
+    move-result v18
 
-    mul-int/lit8 p1, p1, -0x1
+    mul-int/lit8 v18, v18, -0x1
 
-    return p1
+    return v18
 
     .line 133
-    :cond_c0
-    invoke-virtual {p1}, Lcom/android/server/notification/NotificationRecord;->getRankingTimeMs()J
+    :cond_c7
+    move/from16 v18, v0
+
+    .end local v0  # "rightPriority":I
+    .local v18, "rightPriority":I
+    invoke-virtual/range {p1 .. p1}, Lcom/android/server/notification/NotificationRecord;->getRankingTimeMs()J
 
     move-result-wide v0
 
-    invoke-virtual {p2}, Lcom/android/server/notification/NotificationRecord;->getRankingTimeMs()J
+    move/from16 v20, v2
 
-    move-result-wide p1
+    move/from16 v19, v3
 
-    invoke-static {v0, v1, p1, p2}, Ljava/lang/Long;->compare(JJ)I
+    .end local v2  # "leftPriority":I
+    .end local v3  # "rightImportance":I
+    .local v19, "rightImportance":I
+    .local v20, "leftPriority":I
+    invoke-virtual/range {p2 .. p2}, Lcom/android/server/notification/NotificationRecord;->getRankingTimeMs()J
 
-    move-result p1
+    move-result-wide v2
 
-    mul-int/lit8 p1, p1, -0x1
+    invoke-static {v0, v1, v2, v3}, Ljava/lang/Long;->compare(JJ)I
 
-    return p1
+    move-result v0
+
+    mul-int/lit8 v0, v0, -0x1
+
+    return v0
 .end method
 
 .method public bridge synthetic compare(Ljava/lang/Object;Ljava/lang/Object;)I
     .registers 3
 
-    .line 36
+    .line 37
     check-cast p1, Lcom/android/server/notification/NotificationRecord;
 
     check-cast p2, Lcom/android/server/notification/NotificationRecord;
@@ -590,7 +639,8 @@
 .end method
 
 .method protected isImportantMessaging(Lcom/android/server/notification/NotificationRecord;)Z
-    .registers 4
+    .registers 5
+    .param p1, "record"  # Lcom/android/server/notification/NotificationRecord;
 
     .line 166
     iget-object v0, p0, Lcom/android/server/notification/NotificationComparator;->mMessagingUtil:Lcom/android/internal/util/NotificationMessagingUtil;
@@ -599,17 +649,18 @@
 
     invoke-virtual {p1}, Lcom/android/server/notification/NotificationRecord;->getImportance()I
 
-    move-result p1
+    move-result v2
 
-    invoke-virtual {v0, v1, p1}, Lcom/android/internal/util/NotificationMessagingUtil;->isImportantMessaging(Landroid/service/notification/StatusBarNotification;I)Z
+    invoke-virtual {v0, v1, v2}, Lcom/android/internal/util/NotificationMessagingUtil;->isImportantMessaging(Landroid/service/notification/StatusBarNotification;I)Z
 
-    move-result p1
+    move-result v0
 
-    return p1
+    return v0
 .end method
 
 .method protected isImportantPeople(Lcom/android/server/notification/NotificationRecord;)Z
     .registers 5
+    .param p1, "record"  # Lcom/android/server/notification/NotificationRecord;
 
     .line 156
     invoke-virtual {p1}, Lcom/android/server/notification/NotificationRecord;->getImportance()I
@@ -629,18 +680,18 @@
     :cond_9
     invoke-virtual {p1}, Lcom/android/server/notification/NotificationRecord;->getContactAffinity()F
 
-    move-result p1
+    move-result v0
 
-    const/4 v0, 0x0
+    const/4 v2, 0x0
 
-    cmpl-float p1, p1, v0
+    cmpl-float v0, v0, v2
 
-    if-lez p1, :cond_14
+    if-lez v0, :cond_14
 
     .line 160
-    const/4 p1, 0x1
+    const/4 v0, 0x1
 
-    return p1
+    return v0
 
     .line 162
     :cond_14

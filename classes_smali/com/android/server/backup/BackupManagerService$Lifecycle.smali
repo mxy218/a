@@ -17,6 +17,7 @@
 # direct methods
 .method public constructor <init>(Landroid/content/Context;)V
     .registers 3
+    .param p1, "context"  # Landroid/content/Context;
 
     .line 884
     invoke-direct {p0, p1}, Lcom/android/server/SystemService;-><init>(Landroid/content/Context;)V
@@ -52,6 +53,7 @@
 
 .method public onStopUser(I)V
     .registers 3
+    .param p1, "userId"  # I
 
     .line 903
     invoke-static {}, Lcom/android/server/backup/BackupManagerService;->access$100()Lcom/android/server/backup/Trampoline;
@@ -66,6 +68,7 @@
 
 .method public onUnlockUser(I)V
     .registers 3
+    .param p1, "userId"  # I
 
     .line 895
     if-nez p1, :cond_9

@@ -30,39 +30,47 @@
 
 # virtual methods
 .method public compare(Ljava/lang/Object;Ljava/lang/Object;)I
-    .registers 3
+    .registers 6
+    .param p1, "o1"  # Ljava/lang/Object;
+    .param p2, "o2"  # Ljava/lang/Object;
 
     .line 830
-    check-cast p1, Landroid/content/IntentFilter;
+    move-object v0, p1
 
-    invoke-virtual {p1}, Landroid/content/IntentFilter;->getPriority()I
+    check-cast v0, Landroid/content/IntentFilter;
 
-    move-result p1
+    invoke-virtual {v0}, Landroid/content/IntentFilter;->getPriority()I
+
+    move-result v0
 
     .line 831
-    check-cast p2, Landroid/content/IntentFilter;
+    .local v0, "q1":I
+    move-object v1, p2
 
-    invoke-virtual {p2}, Landroid/content/IntentFilter;->getPriority()I
+    check-cast v1, Landroid/content/IntentFilter;
 
-    move-result p2
+    invoke-virtual {v1}, Landroid/content/IntentFilter;->getPriority()I
+
+    move-result v1
 
     .line 832
-    if-le p1, p2, :cond_10
+    .local v1, "q2":I
+    if-le v0, v1, :cond_12
 
-    const/4 p1, -0x1
+    const/4 v2, -0x1
 
-    goto :goto_15
+    goto :goto_17
 
-    :cond_10
-    if-ge p1, p2, :cond_14
+    :cond_12
+    if-ge v0, v1, :cond_16
 
-    const/4 p1, 0x1
+    const/4 v2, 0x1
 
-    goto :goto_15
+    goto :goto_17
 
-    :cond_14
-    const/4 p1, 0x0
+    :cond_16
+    const/4 v2, 0x0
 
-    :goto_15
-    return p1
+    :goto_17
+    return v2
 .end method

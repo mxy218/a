@@ -24,8 +24,9 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/backup/UserBackupManagerService;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/backup/UserBackupManagerService;
 
-    .line 2280
+    .line 2224
     iput-object p1, p0, Lcom/android/server/backup/UserBackupManagerService$3;->this$0:Lcom/android/server/backup/UserBackupManagerService;
 
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -38,74 +39,71 @@
 .method public run()V
     .registers 4
 
-    .line 2283
-    nop
+    .line 2227
+    const/4 v0, 0x0
 
-    .line 2284
-    iget-object v0, p0, Lcom/android/server/backup/UserBackupManagerService$3;->this$0:Lcom/android/server/backup/UserBackupManagerService;
+    .line 2228
+    .local v0, "pftbt":Lcom/android/server/backup/fullbackup/PerformFullTransportBackupTask;
+    iget-object v1, p0, Lcom/android/server/backup/UserBackupManagerService$3;->this$0:Lcom/android/server/backup/UserBackupManagerService;
 
-    invoke-static {v0}, Lcom/android/server/backup/UserBackupManagerService;->access$100(Lcom/android/server/backup/UserBackupManagerService;)Ljava/lang/Object;
+    invoke-static {v1}, Lcom/android/server/backup/UserBackupManagerService;->access$000(Lcom/android/server/backup/UserBackupManagerService;)Ljava/lang/Object;
 
-    move-result-object v0
+    move-result-object v1
 
-    monitor-enter v0
+    monitor-enter v1
 
-    .line 2285
+    .line 2229
     :try_start_8
-    iget-object v1, p0, Lcom/android/server/backup/UserBackupManagerService$3;->this$0:Lcom/android/server/backup/UserBackupManagerService;
+    iget-object v2, p0, Lcom/android/server/backup/UserBackupManagerService$3;->this$0:Lcom/android/server/backup/UserBackupManagerService;
 
-    invoke-static {v1}, Lcom/android/server/backup/UserBackupManagerService;->access$1300(Lcom/android/server/backup/UserBackupManagerService;)Lcom/android/server/backup/fullbackup/PerformFullTransportBackupTask;
+    invoke-static {v2}, Lcom/android/server/backup/UserBackupManagerService;->access$1200(Lcom/android/server/backup/UserBackupManagerService;)Lcom/android/server/backup/fullbackup/PerformFullTransportBackupTask;
 
-    move-result-object v1
+    move-result-object v2
 
-    if-eqz v1, :cond_17
+    if-eqz v2, :cond_17
 
-    .line 2286
-    iget-object v1, p0, Lcom/android/server/backup/UserBackupManagerService$3;->this$0:Lcom/android/server/backup/UserBackupManagerService;
+    .line 2230
+    iget-object v2, p0, Lcom/android/server/backup/UserBackupManagerService$3;->this$0:Lcom/android/server/backup/UserBackupManagerService;
 
-    invoke-static {v1}, Lcom/android/server/backup/UserBackupManagerService;->access$1300(Lcom/android/server/backup/UserBackupManagerService;)Lcom/android/server/backup/fullbackup/PerformFullTransportBackupTask;
+    invoke-static {v2}, Lcom/android/server/backup/UserBackupManagerService;->access$1200(Lcom/android/server/backup/UserBackupManagerService;)Lcom/android/server/backup/fullbackup/PerformFullTransportBackupTask;
 
-    move-result-object v1
+    move-result-object v2
 
-    goto :goto_18
+    move-object v0, v2
 
-    .line 2285
+    .line 2232
     :cond_17
-    const/4 v1, 0x0
+    monitor-exit v1
+    :try_end_18
+    .catchall {:try_start_8 .. :try_end_18} :catchall_26
 
-    .line 2288
-    :goto_18
-    monitor-exit v0
-    :try_end_19
-    .catchall {:try_start_8 .. :try_end_19} :catchall_27
+    .line 2233
+    if-eqz v0, :cond_25
 
-    .line 2289
-    if-eqz v1, :cond_26
-
-    .line 2291
-    const-string v0, "BackupManagerService"
+    .line 2235
+    const-string v1, "BackupManagerService"
 
     const-string v2, "Telling running backup to stop"
 
-    invoke-static {v0, v2}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v2}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 2293
-    const/4 v0, 0x1
+    .line 2237
+    const/4 v1, 0x1
 
-    invoke-virtual {v1, v0}, Lcom/android/server/backup/fullbackup/PerformFullTransportBackupTask;->handleCancel(Z)V
+    invoke-virtual {v0, v1}, Lcom/android/server/backup/fullbackup/PerformFullTransportBackupTask;->handleCancel(Z)V
 
-    .line 2295
-    :cond_26
+    .line 2239
+    :cond_25
     return-void
 
-    .line 2288
-    :catchall_27
-    move-exception v1
+    .line 2232
+    :catchall_26
+    move-exception v2
 
-    :try_start_28
-    monitor-exit v0
-    :try_end_29
-    .catchall {:try_start_28 .. :try_end_29} :catchall_27
+    :try_start_27
+    monitor-exit v1
+    :try_end_28
+    .catchall {:try_start_27 .. :try_end_28} :catchall_26
 
-    throw v1
+    throw v2
 .end method

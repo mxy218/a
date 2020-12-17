@@ -43,6 +43,10 @@
 
 .method public onBlobRetrieved(Landroid/net/ipmemorystore/StatusParcelable;Ljava/lang/String;Ljava/lang/String;Landroid/net/ipmemorystore/Blob;)V
     .registers 7
+    .param p1, "statusParcelable"  # Landroid/net/ipmemorystore/StatusParcelable;
+    .param p2, "l2Key"  # Ljava/lang/String;
+    .param p3, "name"  # Ljava/lang/String;
+    .param p4, "blob"  # Landroid/net/ipmemorystore/Blob;
 
     .line 39
     iget-object v0, p0, Landroid/net/ipmemorystore/OnBlobRetrievedListener$1;->val$listener:Landroid/net/ipmemorystore/OnBlobRetrievedListener;

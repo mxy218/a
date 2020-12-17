@@ -37,23 +37,26 @@
 
 # direct methods
 .method public constructor <init>(Lcom/android/server/am/ContentProviderRecord;Landroid/os/IBinder;ILjava/lang/String;)V
-    .registers 5
+    .registers 7
+    .param p2, "token"  # Landroid/os/IBinder;
+    .param p3, "owningUid"  # I
+    .param p4, "owningProcessName"  # Ljava/lang/String;
 
-    .line 275
+    .line 309
     iput-object p1, p0, Lcom/android/server/am/ContentProviderRecord$ExternalProcessHandle;->this$0:Lcom/android/server/am/ContentProviderRecord;
 
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
-    .line 276
+    .line 310
     iput-object p2, p0, Lcom/android/server/am/ContentProviderRecord$ExternalProcessHandle;->mToken:Landroid/os/IBinder;
 
-    .line 277
+    .line 311
     iput p3, p0, Lcom/android/server/am/ContentProviderRecord$ExternalProcessHandle;->mOwningUid:I
 
-    .line 278
+    .line 312
     iput-object p4, p0, Lcom/android/server/am/ContentProviderRecord$ExternalProcessHandle;->mOwningProcessName:Ljava/lang/String;
 
-    .line 280
+    .line 314
     const/4 p1, 0x0
 
     :try_start_c
@@ -61,35 +64,37 @@
     :try_end_f
     .catch Landroid/os/RemoteException; {:try_start_c .. :try_end_f} :catch_10
 
-    .line 283
+    .line 317
     goto :goto_29
 
-    .line 281
+    .line 315
     :catch_10
     move-exception p1
 
-    .line 282
-    new-instance p2, Ljava/lang/StringBuilder;
+    .line 316
+    .local p1, "re":Landroid/os/RemoteException;
+    new-instance v0, Ljava/lang/StringBuilder;
 
-    invoke-direct {p2}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string p3, "Couldn\'t register for death for token: "
+    const-string v1, "Couldn\'t register for death for token: "
 
-    invoke-virtual {p2, p3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    iget-object p3, p0, Lcom/android/server/am/ContentProviderRecord$ExternalProcessHandle;->mToken:Landroid/os/IBinder;
+    iget-object v1, p0, Lcom/android/server/am/ContentProviderRecord$ExternalProcessHandle;->mToken:Landroid/os/IBinder;
 
-    invoke-virtual {p2, p3}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p2
+    move-result-object v0
 
-    const-string p3, "ExternalProcessHanldle"
+    const-string v1, "ExternalProcessHanldle"
 
-    invoke-static {p3, p2, p1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    invoke-static {v1, v0, p1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
-    .line 284
+    .line 318
+    .end local p1  # "re":Landroid/os/RemoteException;
     :goto_29
     return-void
 .end method
@@ -99,7 +104,7 @@
 .method public binderDied()V
     .registers 4
 
-    .line 323
+    .line 357
     iget-object v0, p0, Lcom/android/server/am/ContentProviderRecord$ExternalProcessHandle;->this$0:Lcom/android/server/am/ContentProviderRecord;
 
     iget-object v0, v0, Lcom/android/server/am/ContentProviderRecord;->service:Lcom/android/server/am/ActivityManagerService;
@@ -109,7 +114,7 @@
     :try_start_5
     invoke-static {}, Lcom/android/server/am/ActivityManagerService;->boostPriorityForLockedSection()V
 
-    .line 324
+    .line 358
     iget-object v1, p0, Lcom/android/server/am/ContentProviderRecord$ExternalProcessHandle;->this$0:Lcom/android/server/am/ContentProviderRecord;
 
     invoke-virtual {v1}, Lcom/android/server/am/ContentProviderRecord;->hasExternalProcessHandles()Z
@@ -124,21 +129,21 @@
 
     iget-object v2, p0, Lcom/android/server/am/ContentProviderRecord$ExternalProcessHandle;->mToken:Landroid/os/IBinder;
 
-    .line 325
+    .line 359
     invoke-virtual {v1, v2}, Landroid/util/ArrayMap;->get(Ljava/lang/Object;)Ljava/lang/Object;
 
     move-result-object v1
 
     if-eqz v1, :cond_23
 
-    .line 326
+    .line 360
     iget-object v1, p0, Lcom/android/server/am/ContentProviderRecord$ExternalProcessHandle;->this$0:Lcom/android/server/am/ContentProviderRecord;
 
     iget-object v2, p0, Lcom/android/server/am/ContentProviderRecord$ExternalProcessHandle;->mToken:Landroid/os/IBinder;
 
     invoke-static {v1, v2}, Lcom/android/server/am/ContentProviderRecord;->access$000(Lcom/android/server/am/ContentProviderRecord;Landroid/os/IBinder;)V
 
-    .line 328
+    .line 362
     :cond_23
     monitor-exit v0
     :try_end_24
@@ -146,10 +151,10 @@
 
     invoke-static {}, Lcom/android/server/am/ActivityManagerService;->resetPriorityAfterLockedSection()V
 
-    .line 329
+    .line 363
     return-void
 
-    .line 328
+    .line 362
     :catchall_28
     move-exception v1
 
@@ -164,9 +169,10 @@
 .end method
 
 .method public startAssociationIfNeeded(Lcom/android/server/am/ContentProviderRecord;)V
-    .registers 6
+    .registers 7
+    .param p1, "provider"  # Lcom/android/server/am/ContentProviderRecord;
 
-    .line 293
+    .line 327
     iget-object v0, p0, Lcom/android/server/am/ContentProviderRecord$ExternalProcessHandle;->mAssociation:Lcom/android/internal/app/procstats/AssociationState$SourceState;
 
     if-nez v0, :cond_93
@@ -189,14 +195,14 @@
 
     iget-object v1, p0, Lcom/android/server/am/ContentProviderRecord$ExternalProcessHandle;->mOwningProcessName:Ljava/lang/String;
 
-    .line 296
+    .line 330
     invoke-virtual {v0, v1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
     move-result v0
 
     if-nez v0, :cond_93
 
-    .line 297
+    .line 331
     :cond_1c
     iget-object v0, p1, Lcom/android/server/am/ContentProviderRecord;->proc:Lcom/android/server/am/ProcessRecord;
 
@@ -204,127 +210,129 @@
 
     iget-object v1, p1, Lcom/android/server/am/ContentProviderRecord;->name:Landroid/content/ComponentName;
 
-    .line 298
+    .line 332
     invoke-virtual {v1}, Landroid/content/ComponentName;->getPackageName()Ljava/lang/String;
 
     move-result-object v1
 
-    .line 297
+    .line 331
     invoke-virtual {v0, v1}, Lcom/android/server/am/ProcessRecord$PackageList;->get(Ljava/lang/String;)Lcom/android/internal/app/procstats/ProcessStats$ProcessStateHolder;
 
     move-result-object v0
 
-    .line 299
+    .line 333
+    .local v0, "holder":Lcom/android/internal/app/procstats/ProcessStats$ProcessStateHolder;
     const-string v1, ": proc="
 
     const-string v2, "ActivityManager"
 
     if-nez v0, :cond_53
 
-    .line 300
-    new-instance v0, Ljava/lang/StringBuilder;
+    .line 334
+    new-instance v3, Ljava/lang/StringBuilder;
 
-    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v3, "No package in referenced provider "
+    const-string v4, "No package in referenced provider "
 
-    invoke-virtual {v0, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    iget-object v3, p1, Lcom/android/server/am/ContentProviderRecord;->name:Landroid/content/ComponentName;
+    iget-object v4, p1, Lcom/android/server/am/ContentProviderRecord;->name:Landroid/content/ComponentName;
 
-    .line 301
-    invoke-virtual {v3}, Landroid/content/ComponentName;->toShortString()Ljava/lang/String;
+    .line 335
+    invoke-virtual {v4}, Landroid/content/ComponentName;->toShortString()Ljava/lang/String;
 
-    move-result-object v3
+    move-result-object v4
 
-    invoke-virtual {v0, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    iget-object p1, p1, Lcom/android/server/am/ContentProviderRecord;->proc:Lcom/android/server/am/ProcessRecord;
+    iget-object v1, p1, Lcom/android/server/am/ContentProviderRecord;->proc:Lcom/android/server/am/ProcessRecord;
 
-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v1
 
-    .line 300
-    invoke-static {v2, p1}, Landroid/util/Slog;->wtf(Ljava/lang/String;Ljava/lang/String;)I
+    .line 334
+    invoke-static {v2, v1}, Landroid/util/Slog;->wtf(Ljava/lang/String;Ljava/lang/String;)I
 
     goto :goto_93
 
-    .line 302
+    .line 336
     :cond_53
     iget-object v3, v0, Lcom/android/internal/app/procstats/ProcessStats$ProcessStateHolder;->pkg:Lcom/android/internal/app/procstats/ProcessStats$PackageState;
 
     if-nez v3, :cond_7a
 
-    .line 303
-    new-instance v0, Ljava/lang/StringBuilder;
+    .line 337
+    new-instance v3, Ljava/lang/StringBuilder;
 
-    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v3, "Inactive holder in referenced provider "
+    const-string v4, "Inactive holder in referenced provider "
 
-    invoke-virtual {v0, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    iget-object v3, p1, Lcom/android/server/am/ContentProviderRecord;->name:Landroid/content/ComponentName;
+    iget-object v4, p1, Lcom/android/server/am/ContentProviderRecord;->name:Landroid/content/ComponentName;
 
-    .line 304
-    invoke-virtual {v3}, Landroid/content/ComponentName;->toShortString()Ljava/lang/String;
+    .line 338
+    invoke-virtual {v4}, Landroid/content/ComponentName;->toShortString()Ljava/lang/String;
 
-    move-result-object v3
+    move-result-object v4
 
-    invoke-virtual {v0, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    iget-object p1, p1, Lcom/android/server/am/ContentProviderRecord;->proc:Lcom/android/server/am/ProcessRecord;
+    iget-object v1, p1, Lcom/android/server/am/ContentProviderRecord;->proc:Lcom/android/server/am/ProcessRecord;
 
-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v1
 
-    .line 303
-    invoke-static {v2, p1}, Landroid/util/Slog;->wtf(Ljava/lang/String;Ljava/lang/String;)I
+    .line 337
+    invoke-static {v2, v1}, Landroid/util/Slog;->wtf(Ljava/lang/String;Ljava/lang/String;)I
 
     goto :goto_93
 
-    .line 306
+    .line 340
     :cond_7a
     iget-object v1, v0, Lcom/android/internal/app/procstats/ProcessStats$ProcessStateHolder;->pkg:Lcom/android/internal/app/procstats/ProcessStats$PackageState;
 
-    iget-object v0, v0, Lcom/android/internal/app/procstats/ProcessStats$ProcessStateHolder;->state:Lcom/android/internal/app/procstats/ProcessState;
+    iget-object v2, v0, Lcom/android/internal/app/procstats/ProcessStats$ProcessStateHolder;->state:Lcom/android/internal/app/procstats/ProcessState;
 
-    iget-object p1, p1, Lcom/android/server/am/ContentProviderRecord;->name:Landroid/content/ComponentName;
+    iget-object v3, p1, Lcom/android/server/am/ContentProviderRecord;->name:Landroid/content/ComponentName;
 
-    .line 307
-    invoke-virtual {p1}, Landroid/content/ComponentName;->getClassName()Ljava/lang/String;
+    .line 341
+    invoke-virtual {v3}, Landroid/content/ComponentName;->getClassName()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v3
 
-    .line 306
-    invoke-virtual {v1, v0, p1}, Lcom/android/internal/app/procstats/ProcessStats$PackageState;->getAssociationStateLocked(Lcom/android/internal/app/procstats/ProcessState;Ljava/lang/String;)Lcom/android/internal/app/procstats/AssociationState;
+    .line 340
+    invoke-virtual {v1, v2, v3}, Lcom/android/internal/app/procstats/ProcessStats$PackageState;->getAssociationStateLocked(Lcom/android/internal/app/procstats/ProcessState;Ljava/lang/String;)Lcom/android/internal/app/procstats/AssociationState;
 
-    move-result-object p1
+    move-result-object v1
 
-    iget v0, p0, Lcom/android/server/am/ContentProviderRecord$ExternalProcessHandle;->mOwningUid:I
+    iget v2, p0, Lcom/android/server/am/ContentProviderRecord$ExternalProcessHandle;->mOwningUid:I
 
-    iget-object v1, p0, Lcom/android/server/am/ContentProviderRecord$ExternalProcessHandle;->mOwningProcessName:Ljava/lang/String;
+    iget-object v3, p0, Lcom/android/server/am/ContentProviderRecord$ExternalProcessHandle;->mOwningProcessName:Ljava/lang/String;
 
-    const/4 v2, 0x0
+    const/4 v4, 0x0
 
-    .line 307
-    invoke-virtual {p1, v0, v1, v2}, Lcom/android/internal/app/procstats/AssociationState;->startSource(ILjava/lang/String;Ljava/lang/String;)Lcom/android/internal/app/procstats/AssociationState$SourceState;
+    .line 341
+    invoke-virtual {v1, v2, v3, v4}, Lcom/android/internal/app/procstats/AssociationState;->startSource(ILjava/lang/String;Ljava/lang/String;)Lcom/android/internal/app/procstats/AssociationState$SourceState;
 
-    move-result-object p1
+    move-result-object v1
 
-    iput-object p1, p0, Lcom/android/server/am/ContentProviderRecord$ExternalProcessHandle;->mAssociation:Lcom/android/internal/app/procstats/AssociationState$SourceState;
+    iput-object v1, p0, Lcom/android/server/am/ContentProviderRecord$ExternalProcessHandle;->mAssociation:Lcom/android/internal/app/procstats/AssociationState$SourceState;
 
-    .line 312
+    .line 346
+    .end local v0  # "holder":Lcom/android/internal/app/procstats/ProcessStats$ProcessStateHolder;
     :cond_93
     :goto_93
     return-void
@@ -333,20 +341,20 @@
 .method public stopAssociation()V
     .registers 2
 
-    .line 315
+    .line 349
     iget-object v0, p0, Lcom/android/server/am/ContentProviderRecord$ExternalProcessHandle;->mAssociation:Lcom/android/internal/app/procstats/AssociationState$SourceState;
 
     if-eqz v0, :cond_a
 
-    .line 316
+    .line 350
     invoke-virtual {v0}, Lcom/android/internal/app/procstats/AssociationState$SourceState;->stop()V
 
-    .line 317
+    .line 351
     const/4 v0, 0x0
 
     iput-object v0, p0, Lcom/android/server/am/ContentProviderRecord$ExternalProcessHandle;->mAssociation:Lcom/android/internal/app/procstats/AssociationState$SourceState;
 
-    .line 319
+    .line 353
     :cond_a
     return-void
 .end method
@@ -354,13 +362,13 @@
 .method public unlinkFromOwnDeathLocked()V
     .registers 3
 
-    .line 287
+    .line 321
     iget-object v0, p0, Lcom/android/server/am/ContentProviderRecord$ExternalProcessHandle;->mToken:Landroid/os/IBinder;
 
     const/4 v1, 0x0
 
     invoke-interface {v0, p0, v1}, Landroid/os/IBinder;->unlinkToDeath(Landroid/os/IBinder$DeathRecipient;I)Z
 
-    .line 288
+    .line 322
     return-void
 .end method

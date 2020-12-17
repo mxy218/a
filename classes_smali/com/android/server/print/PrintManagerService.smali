@@ -22,6 +22,7 @@
 # direct methods
 .method public constructor <init>(Landroid/content/Context;)V
     .registers 3
+    .param p1, "context"  # Landroid/content/Context;
 
     .line 93
     invoke-direct {p0, p1}, Lcom/android/server/SystemService;-><init>(Landroid/content/Context;)V
@@ -55,6 +56,7 @@
 
 .method public onStopUser(I)V
     .registers 3
+    .param p1, "userHandle"  # I
 
     .line 109
     iget-object v0, p0, Lcom/android/server/print/PrintManagerService;->mPrintManagerImpl:Lcom/android/server/print/PrintManagerService$PrintManagerImpl;
@@ -67,6 +69,7 @@
 
 .method public onUnlockUser(I)V
     .registers 3
+    .param p1, "userHandle"  # I
 
     .line 104
     iget-object v0, p0, Lcom/android/server/print/PrintManagerService;->mPrintManagerImpl:Lcom/android/server/print/PrintManagerService$PrintManagerImpl;

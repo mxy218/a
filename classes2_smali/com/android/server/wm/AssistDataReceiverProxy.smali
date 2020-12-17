@@ -20,6 +20,8 @@
 # direct methods
 .method public constructor <init>(Landroid/app/IAssistDataReceiver;Ljava/lang/String;)V
     .registers 3
+    .param p1, "receiver"  # Landroid/app/IAssistDataReceiver;
+    .param p2, "callerPackage"  # Ljava/lang/String;
 
     .line 42
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -62,6 +64,7 @@
     move-exception v0
 
     .line 92
+    .local v0, "e":Landroid/os/RemoteException;
     const-string v1, "ActivityTaskManager"
 
     const-string v2, "Could not link to client death"
@@ -69,6 +72,7 @@
     invoke-static {v1, v2, v0}, Landroid/util/Log;->w(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
     .line 94
+    .end local v0  # "e":Landroid/os/RemoteException;
     :goto_13
     return-void
 .end method
@@ -122,16 +126,19 @@
 .end method
 
 .method public onAssistDataReceivedLocked(Landroid/os/Bundle;II)V
-    .registers 4
+    .registers 7
+    .param p1, "data"  # Landroid/os/Bundle;
+    .param p2, "activityIndex"  # I
+    .param p3, "activityCount"  # I
 
     .line 56
-    iget-object p2, p0, Lcom/android/server/wm/AssistDataReceiverProxy;->mReceiver:Landroid/app/IAssistDataReceiver;
+    iget-object v0, p0, Lcom/android/server/wm/AssistDataReceiverProxy;->mReceiver:Landroid/app/IAssistDataReceiver;
 
-    if-eqz p2, :cond_21
+    if-eqz v0, :cond_21
 
     .line 58
     :try_start_4
-    invoke-interface {p2, p1}, Landroid/app/IAssistDataReceiver;->onHandleAssistData(Landroid/os/Bundle;)V
+    invoke-interface {v0, p1}, Landroid/app/IAssistDataReceiver;->onHandleAssistData(Landroid/os/Bundle;)V
     :try_end_7
     .catch Landroid/os/RemoteException; {:try_start_4 .. :try_end_7} :catch_8
 
@@ -140,30 +147,32 @@
 
     .line 59
     :catch_8
-    move-exception p1
+    move-exception v0
 
     .line 60
-    new-instance p2, Ljava/lang/StringBuilder;
+    .local v0, "e":Landroid/os/RemoteException;
+    new-instance v1, Ljava/lang/StringBuilder;
 
-    invoke-direct {p2}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string p3, "Failed to proxy assist data to receiver in package="
+    const-string v2, "Failed to proxy assist data to receiver in package="
 
-    invoke-virtual {p2, p3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    iget-object p3, p0, Lcom/android/server/wm/AssistDataReceiverProxy;->mCallerPackage:Ljava/lang/String;
+    iget-object v2, p0, Lcom/android/server/wm/AssistDataReceiverProxy;->mCallerPackage:Ljava/lang/String;
 
-    invoke-virtual {p2, p3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p2
+    move-result-object v1
 
-    const-string p3, "ActivityTaskManager"
+    const-string v2, "ActivityTaskManager"
 
-    invoke-static {p3, p2, p1}, Landroid/util/Log;->w(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    invoke-static {v2, v1, v0}, Landroid/util/Log;->w(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
     .line 64
+    .end local v0  # "e":Landroid/os/RemoteException;
     :cond_21
     :goto_21
     return-void
@@ -180,7 +189,8 @@
 .end method
 
 .method public onAssistScreenshotReceivedLocked(Landroid/graphics/Bitmap;)V
-    .registers 4
+    .registers 5
+    .param p1, "screenshot"  # Landroid/graphics/Bitmap;
 
     .line 68
     iget-object v0, p0, Lcom/android/server/wm/AssistDataReceiverProxy;->mReceiver:Landroid/app/IAssistDataReceiver;
@@ -198,30 +208,32 @@
 
     .line 71
     :catch_8
-    move-exception p1
+    move-exception v0
 
     .line 72
-    new-instance v0, Ljava/lang/StringBuilder;
+    .local v0, "e":Landroid/os/RemoteException;
+    new-instance v1, Ljava/lang/StringBuilder;
 
-    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v1, "Failed to proxy assist screenshot to receiver in package="
+    const-string v2, "Failed to proxy assist screenshot to receiver in package="
 
-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    iget-object v1, p0, Lcom/android/server/wm/AssistDataReceiverProxy;->mCallerPackage:Ljava/lang/String;
+    iget-object v2, p0, Lcom/android/server/wm/AssistDataReceiverProxy;->mCallerPackage:Ljava/lang/String;
 
-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v1
 
-    const-string v1, "ActivityTaskManager"
+    const-string v2, "ActivityTaskManager"
 
-    invoke-static {v1, v0, p1}, Landroid/util/Log;->w(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    invoke-static {v2, v1, v0}, Landroid/util/Log;->w(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
     .line 76
+    .end local v0  # "e":Landroid/os/RemoteException;
     :cond_21
     :goto_21
     return-void

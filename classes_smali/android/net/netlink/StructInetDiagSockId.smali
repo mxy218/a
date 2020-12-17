@@ -20,6 +20,8 @@
 # direct methods
 .method public constructor <init>(Ljava/net/InetSocketAddress;Ljava/net/InetSocketAddress;)V
     .registers 4
+    .param p1, "loc"  # Ljava/net/InetSocketAddress;
+    .param p2, "rem"  # Ljava/net/InetSocketAddress;
 
     .line 53
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -84,6 +86,7 @@
 # virtual methods
 .method public pack(Ljava/nio/ByteBuffer;)V
     .registers 3
+    .param p1, "byteBuffer"  # Ljava/nio/ByteBuffer;
 
     .line 59
     sget-object v0, Ljava/nio/ByteOrder;->BIG_ENDIAN:Ljava/nio/ByteOrder;

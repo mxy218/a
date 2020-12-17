@@ -45,7 +45,10 @@
 
 # direct methods
 .method private constructor <init>(Lcom/android/server/accessibility/MagnificationController$ControllerContext;Ljava/lang/Object;I)V
-    .registers 5
+    .registers 9
+    .param p1, "ctx"  # Lcom/android/server/accessibility/MagnificationController$ControllerContext;
+    .param p2, "lock"  # Ljava/lang/Object;
+    .param p3, "displayId"  # I
 
     .line 1185
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -93,52 +96,53 @@
     iput p3, p0, Lcom/android/server/accessibility/MagnificationController$SpecAnimationBridge;->mDisplayId:I
 
     .line 1189
-    iget-object p1, p0, Lcom/android/server/accessibility/MagnificationController$SpecAnimationBridge;->mControllerCtx:Lcom/android/server/accessibility/MagnificationController$ControllerContext;
+    iget-object v0, p0, Lcom/android/server/accessibility/MagnificationController$SpecAnimationBridge;->mControllerCtx:Lcom/android/server/accessibility/MagnificationController$ControllerContext;
 
-    invoke-virtual {p1}, Lcom/android/server/accessibility/MagnificationController$ControllerContext;->getAnimationDuration()J
+    invoke-virtual {v0}, Lcom/android/server/accessibility/MagnificationController$ControllerContext;->getAnimationDuration()J
 
-    move-result-wide p1
+    move-result-wide v0
 
     .line 1190
-    iget-object p3, p0, Lcom/android/server/accessibility/MagnificationController$SpecAnimationBridge;->mControllerCtx:Lcom/android/server/accessibility/MagnificationController$ControllerContext;
+    .local v0, "animationDuration":J
+    iget-object v2, p0, Lcom/android/server/accessibility/MagnificationController$SpecAnimationBridge;->mControllerCtx:Lcom/android/server/accessibility/MagnificationController$ControllerContext;
 
-    invoke-virtual {p3}, Lcom/android/server/accessibility/MagnificationController$ControllerContext;->newValueAnimator()Landroid/animation/ValueAnimator;
+    invoke-virtual {v2}, Lcom/android/server/accessibility/MagnificationController$ControllerContext;->newValueAnimator()Landroid/animation/ValueAnimator;
 
-    move-result-object p3
+    move-result-object v2
 
-    iput-object p3, p0, Lcom/android/server/accessibility/MagnificationController$SpecAnimationBridge;->mValueAnimator:Landroid/animation/ValueAnimator;
+    iput-object v2, p0, Lcom/android/server/accessibility/MagnificationController$SpecAnimationBridge;->mValueAnimator:Landroid/animation/ValueAnimator;
 
     .line 1191
-    iget-object p3, p0, Lcom/android/server/accessibility/MagnificationController$SpecAnimationBridge;->mValueAnimator:Landroid/animation/ValueAnimator;
+    iget-object v2, p0, Lcom/android/server/accessibility/MagnificationController$SpecAnimationBridge;->mValueAnimator:Landroid/animation/ValueAnimator;
 
-    invoke-virtual {p3, p1, p2}, Landroid/animation/ValueAnimator;->setDuration(J)Landroid/animation/ValueAnimator;
+    invoke-virtual {v2, v0, v1}, Landroid/animation/ValueAnimator;->setDuration(J)Landroid/animation/ValueAnimator;
 
     .line 1192
-    iget-object p1, p0, Lcom/android/server/accessibility/MagnificationController$SpecAnimationBridge;->mValueAnimator:Landroid/animation/ValueAnimator;
+    iget-object v2, p0, Lcom/android/server/accessibility/MagnificationController$SpecAnimationBridge;->mValueAnimator:Landroid/animation/ValueAnimator;
 
-    new-instance p2, Landroid/view/animation/DecelerateInterpolator;
+    new-instance v3, Landroid/view/animation/DecelerateInterpolator;
 
-    const/high16 p3, 0x40200000  # 2.5f
+    const/high16 v4, 0x40200000  # 2.5f
 
-    invoke-direct {p2, p3}, Landroid/view/animation/DecelerateInterpolator;-><init>(F)V
+    invoke-direct {v3, v4}, Landroid/view/animation/DecelerateInterpolator;-><init>(F)V
 
-    invoke-virtual {p1, p2}, Landroid/animation/ValueAnimator;->setInterpolator(Landroid/animation/TimeInterpolator;)V
+    invoke-virtual {v2, v3}, Landroid/animation/ValueAnimator;->setInterpolator(Landroid/animation/TimeInterpolator;)V
 
     .line 1193
-    iget-object p1, p0, Lcom/android/server/accessibility/MagnificationController$SpecAnimationBridge;->mValueAnimator:Landroid/animation/ValueAnimator;
+    iget-object v2, p0, Lcom/android/server/accessibility/MagnificationController$SpecAnimationBridge;->mValueAnimator:Landroid/animation/ValueAnimator;
 
-    const/4 p2, 0x2
+    const/4 v3, 0x2
 
-    new-array p2, p2, [F
+    new-array v3, v3, [F
 
-    fill-array-data p2, :array_54
+    fill-array-data v3, :array_54
 
-    invoke-virtual {p1, p2}, Landroid/animation/ValueAnimator;->setFloatValues([F)V
+    invoke-virtual {v2, v3}, Landroid/animation/ValueAnimator;->setFloatValues([F)V
 
     .line 1194
-    iget-object p1, p0, Lcom/android/server/accessibility/MagnificationController$SpecAnimationBridge;->mValueAnimator:Landroid/animation/ValueAnimator;
+    iget-object v2, p0, Lcom/android/server/accessibility/MagnificationController$SpecAnimationBridge;->mValueAnimator:Landroid/animation/ValueAnimator;
 
-    invoke-virtual {p1, p0}, Landroid/animation/ValueAnimator;->addUpdateListener(Landroid/animation/ValueAnimator$AnimatorUpdateListener;)V
+    invoke-virtual {v2, p0}, Landroid/animation/ValueAnimator;->addUpdateListener(Landroid/animation/ValueAnimator$AnimatorUpdateListener;)V
 
     .line 1195
     return-void
@@ -152,6 +156,10 @@
 
 .method synthetic constructor <init>(Lcom/android/server/accessibility/MagnificationController$ControllerContext;Ljava/lang/Object;ILcom/android/server/accessibility/MagnificationController$1;)V
     .registers 5
+    .param p1, "x0"  # Lcom/android/server/accessibility/MagnificationController$ControllerContext;
+    .param p2, "x1"  # Ljava/lang/Object;
+    .param p3, "x2"  # I
+    .param p4, "x3"  # Lcom/android/server/accessibility/MagnificationController$1;
 
     .line 1158
     invoke-direct {p0, p1, p2, p3}, Lcom/android/server/accessibility/MagnificationController$SpecAnimationBridge;-><init>(Lcom/android/server/accessibility/MagnificationController$ControllerContext;Ljava/lang/Object;I)V
@@ -160,16 +168,18 @@
 .end method
 
 .method static synthetic access$400(Lcom/android/server/accessibility/MagnificationController$SpecAnimationBridge;)Landroid/view/MagnificationSpec;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/accessibility/MagnificationController$SpecAnimationBridge;
 
     .line 1158
-    iget-object p0, p0, Lcom/android/server/accessibility/MagnificationController$SpecAnimationBridge;->mSentMagnificationSpec:Landroid/view/MagnificationSpec;
+    iget-object v0, p0, Lcom/android/server/accessibility/MagnificationController$SpecAnimationBridge;->mSentMagnificationSpec:Landroid/view/MagnificationSpec;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method private animateMagnificationSpecLocked(Landroid/view/MagnificationSpec;)V
-    .registers 3
+    .registers 4
+    .param p1, "toSpec"  # Landroid/view/MagnificationSpec;
 
     .line 1246
     iget-object v0, p0, Lcom/android/server/accessibility/MagnificationController$SpecAnimationBridge;->mEndMagnificationSpec:Landroid/view/MagnificationSpec;
@@ -177,23 +187,24 @@
     invoke-virtual {v0, p1}, Landroid/view/MagnificationSpec;->setTo(Landroid/view/MagnificationSpec;)V
 
     .line 1247
-    iget-object p1, p0, Lcom/android/server/accessibility/MagnificationController$SpecAnimationBridge;->mStartMagnificationSpec:Landroid/view/MagnificationSpec;
+    iget-object v0, p0, Lcom/android/server/accessibility/MagnificationController$SpecAnimationBridge;->mStartMagnificationSpec:Landroid/view/MagnificationSpec;
 
-    iget-object v0, p0, Lcom/android/server/accessibility/MagnificationController$SpecAnimationBridge;->mSentMagnificationSpec:Landroid/view/MagnificationSpec;
+    iget-object v1, p0, Lcom/android/server/accessibility/MagnificationController$SpecAnimationBridge;->mSentMagnificationSpec:Landroid/view/MagnificationSpec;
 
-    invoke-virtual {p1, v0}, Landroid/view/MagnificationSpec;->setTo(Landroid/view/MagnificationSpec;)V
+    invoke-virtual {v0, v1}, Landroid/view/MagnificationSpec;->setTo(Landroid/view/MagnificationSpec;)V
 
     .line 1248
-    iget-object p1, p0, Lcom/android/server/accessibility/MagnificationController$SpecAnimationBridge;->mValueAnimator:Landroid/animation/ValueAnimator;
+    iget-object v0, p0, Lcom/android/server/accessibility/MagnificationController$SpecAnimationBridge;->mValueAnimator:Landroid/animation/ValueAnimator;
 
-    invoke-virtual {p1}, Landroid/animation/ValueAnimator;->start()V
+    invoke-virtual {v0}, Landroid/animation/ValueAnimator;->start()V
 
     .line 1249
     return-void
 .end method
 
 .method private setMagnificationSpecLocked(Landroid/view/MagnificationSpec;)V
-    .registers 4
+    .registers 5
+    .param p1, "spec"  # Landroid/view/MagnificationSpec;
     .annotation build Lcom/android/internal/annotations/GuardedBy;
         value = {
             "mLock"
@@ -211,17 +222,17 @@
     invoke-virtual {v0, p1}, Landroid/view/MagnificationSpec;->setTo(Landroid/view/MagnificationSpec;)V
 
     .line 1240
-    iget-object p1, p0, Lcom/android/server/accessibility/MagnificationController$SpecAnimationBridge;->mControllerCtx:Lcom/android/server/accessibility/MagnificationController$ControllerContext;
+    iget-object v0, p0, Lcom/android/server/accessibility/MagnificationController$SpecAnimationBridge;->mControllerCtx:Lcom/android/server/accessibility/MagnificationController$ControllerContext;
 
-    invoke-virtual {p1}, Lcom/android/server/accessibility/MagnificationController$ControllerContext;->getWindowManager()Lcom/android/server/wm/WindowManagerInternal;
+    invoke-virtual {v0}, Lcom/android/server/accessibility/MagnificationController$ControllerContext;->getWindowManager()Lcom/android/server/wm/WindowManagerInternal;
 
-    move-result-object p1
+    move-result-object v0
 
-    iget v0, p0, Lcom/android/server/accessibility/MagnificationController$SpecAnimationBridge;->mDisplayId:I
+    iget v1, p0, Lcom/android/server/accessibility/MagnificationController$SpecAnimationBridge;->mDisplayId:I
 
-    iget-object v1, p0, Lcom/android/server/accessibility/MagnificationController$SpecAnimationBridge;->mSentMagnificationSpec:Landroid/view/MagnificationSpec;
+    iget-object v2, p0, Lcom/android/server/accessibility/MagnificationController$SpecAnimationBridge;->mSentMagnificationSpec:Landroid/view/MagnificationSpec;
 
-    invoke-virtual {p1, v0, v1}, Lcom/android/server/wm/WindowManagerInternal;->setMagnificationSpec(ILandroid/view/MagnificationSpec;)V
+    invoke-virtual {v0, v1, v2}, Lcom/android/server/wm/WindowManagerInternal;->setMagnificationSpec(ILandroid/view/MagnificationSpec;)V
 
     .line 1243
     :cond_16
@@ -231,7 +242,8 @@
 
 # virtual methods
 .method public onAnimationUpdate(Landroid/animation/ValueAnimator;)V
-    .registers 7
+    .registers 8
+    .param p1, "animation"  # Landroid/animation/ValueAnimator;
 
     .line 1253
     iget-object v0, p0, Lcom/android/server/accessibility/MagnificationController$SpecAnimationBridge;->mLock:Ljava/lang/Object;
@@ -247,83 +259,85 @@
     .line 1255
     invoke-virtual {p1}, Landroid/animation/ValueAnimator;->getAnimatedFraction()F
 
-    move-result p1
+    move-result v1
 
     .line 1256
-    iget-object v1, p0, Lcom/android/server/accessibility/MagnificationController$SpecAnimationBridge;->mTmpMagnificationSpec:Landroid/view/MagnificationSpec;
+    .local v1, "fract":F
+    iget-object v2, p0, Lcom/android/server/accessibility/MagnificationController$SpecAnimationBridge;->mTmpMagnificationSpec:Landroid/view/MagnificationSpec;
 
-    iget-object v2, p0, Lcom/android/server/accessibility/MagnificationController$SpecAnimationBridge;->mStartMagnificationSpec:Landroid/view/MagnificationSpec;
-
-    iget v2, v2, Landroid/view/MagnificationSpec;->scale:F
-
-    iget-object v3, p0, Lcom/android/server/accessibility/MagnificationController$SpecAnimationBridge;->mEndMagnificationSpec:Landroid/view/MagnificationSpec;
+    iget-object v3, p0, Lcom/android/server/accessibility/MagnificationController$SpecAnimationBridge;->mStartMagnificationSpec:Landroid/view/MagnificationSpec;
 
     iget v3, v3, Landroid/view/MagnificationSpec;->scale:F
 
-    iget-object v4, p0, Lcom/android/server/accessibility/MagnificationController$SpecAnimationBridge;->mStartMagnificationSpec:Landroid/view/MagnificationSpec;
+    iget-object v4, p0, Lcom/android/server/accessibility/MagnificationController$SpecAnimationBridge;->mEndMagnificationSpec:Landroid/view/MagnificationSpec;
 
     iget v4, v4, Landroid/view/MagnificationSpec;->scale:F
 
-    sub-float/2addr v3, v4
+    iget-object v5, p0, Lcom/android/server/accessibility/MagnificationController$SpecAnimationBridge;->mStartMagnificationSpec:Landroid/view/MagnificationSpec;
 
-    mul-float/2addr v3, p1
+    iget v5, v5, Landroid/view/MagnificationSpec;->scale:F
 
-    add-float/2addr v2, v3
+    sub-float/2addr v4, v5
 
-    iput v2, v1, Landroid/view/MagnificationSpec;->scale:F
+    mul-float/2addr v4, v1
+
+    add-float/2addr v3, v4
+
+    iput v3, v2, Landroid/view/MagnificationSpec;->scale:F
 
     .line 1258
-    iget-object v1, p0, Lcom/android/server/accessibility/MagnificationController$SpecAnimationBridge;->mTmpMagnificationSpec:Landroid/view/MagnificationSpec;
+    iget-object v2, p0, Lcom/android/server/accessibility/MagnificationController$SpecAnimationBridge;->mTmpMagnificationSpec:Landroid/view/MagnificationSpec;
 
-    iget-object v2, p0, Lcom/android/server/accessibility/MagnificationController$SpecAnimationBridge;->mStartMagnificationSpec:Landroid/view/MagnificationSpec;
-
-    iget v2, v2, Landroid/view/MagnificationSpec;->offsetX:F
-
-    iget-object v3, p0, Lcom/android/server/accessibility/MagnificationController$SpecAnimationBridge;->mEndMagnificationSpec:Landroid/view/MagnificationSpec;
+    iget-object v3, p0, Lcom/android/server/accessibility/MagnificationController$SpecAnimationBridge;->mStartMagnificationSpec:Landroid/view/MagnificationSpec;
 
     iget v3, v3, Landroid/view/MagnificationSpec;->offsetX:F
 
-    iget-object v4, p0, Lcom/android/server/accessibility/MagnificationController$SpecAnimationBridge;->mStartMagnificationSpec:Landroid/view/MagnificationSpec;
+    iget-object v4, p0, Lcom/android/server/accessibility/MagnificationController$SpecAnimationBridge;->mEndMagnificationSpec:Landroid/view/MagnificationSpec;
 
     iget v4, v4, Landroid/view/MagnificationSpec;->offsetX:F
 
-    sub-float/2addr v3, v4
+    iget-object v5, p0, Lcom/android/server/accessibility/MagnificationController$SpecAnimationBridge;->mStartMagnificationSpec:Landroid/view/MagnificationSpec;
 
-    mul-float/2addr v3, p1
+    iget v5, v5, Landroid/view/MagnificationSpec;->offsetX:F
 
-    add-float/2addr v2, v3
+    sub-float/2addr v4, v5
 
-    iput v2, v1, Landroid/view/MagnificationSpec;->offsetX:F
+    mul-float/2addr v4, v1
+
+    add-float/2addr v3, v4
+
+    iput v3, v2, Landroid/view/MagnificationSpec;->offsetX:F
 
     .line 1261
-    iget-object v1, p0, Lcom/android/server/accessibility/MagnificationController$SpecAnimationBridge;->mTmpMagnificationSpec:Landroid/view/MagnificationSpec;
+    iget-object v2, p0, Lcom/android/server/accessibility/MagnificationController$SpecAnimationBridge;->mTmpMagnificationSpec:Landroid/view/MagnificationSpec;
 
-    iget-object v2, p0, Lcom/android/server/accessibility/MagnificationController$SpecAnimationBridge;->mStartMagnificationSpec:Landroid/view/MagnificationSpec;
-
-    iget v2, v2, Landroid/view/MagnificationSpec;->offsetY:F
-
-    iget-object v3, p0, Lcom/android/server/accessibility/MagnificationController$SpecAnimationBridge;->mEndMagnificationSpec:Landroid/view/MagnificationSpec;
+    iget-object v3, p0, Lcom/android/server/accessibility/MagnificationController$SpecAnimationBridge;->mStartMagnificationSpec:Landroid/view/MagnificationSpec;
 
     iget v3, v3, Landroid/view/MagnificationSpec;->offsetY:F
 
-    iget-object v4, p0, Lcom/android/server/accessibility/MagnificationController$SpecAnimationBridge;->mStartMagnificationSpec:Landroid/view/MagnificationSpec;
+    iget-object v4, p0, Lcom/android/server/accessibility/MagnificationController$SpecAnimationBridge;->mEndMagnificationSpec:Landroid/view/MagnificationSpec;
 
     iget v4, v4, Landroid/view/MagnificationSpec;->offsetY:F
 
-    sub-float/2addr v3, v4
+    iget-object v5, p0, Lcom/android/server/accessibility/MagnificationController$SpecAnimationBridge;->mStartMagnificationSpec:Landroid/view/MagnificationSpec;
 
-    mul-float/2addr v3, p1
+    iget v5, v5, Landroid/view/MagnificationSpec;->offsetY:F
 
-    add-float/2addr v2, v3
+    sub-float/2addr v4, v5
 
-    iput v2, v1, Landroid/view/MagnificationSpec;->offsetY:F
+    mul-float/2addr v4, v1
+
+    add-float/2addr v3, v4
+
+    iput v3, v2, Landroid/view/MagnificationSpec;->offsetY:F
 
     .line 1264
-    iget-object p1, p0, Lcom/android/server/accessibility/MagnificationController$SpecAnimationBridge;->mTmpMagnificationSpec:Landroid/view/MagnificationSpec;
+    iget-object v2, p0, Lcom/android/server/accessibility/MagnificationController$SpecAnimationBridge;->mTmpMagnificationSpec:Landroid/view/MagnificationSpec;
 
-    invoke-direct {p0, p1}, Lcom/android/server/accessibility/MagnificationController$SpecAnimationBridge;->setMagnificationSpecLocked(Landroid/view/MagnificationSpec;)V
+    invoke-direct {p0, v2}, Lcom/android/server/accessibility/MagnificationController$SpecAnimationBridge;->setMagnificationSpecLocked(Landroid/view/MagnificationSpec;)V
 
     .line 1266
+    .end local v1  # "fract":F
     :cond_49
     monitor-exit v0
 
@@ -332,17 +346,18 @@
 
     .line 1266
     :catchall_4b
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_4d
     .catchall {:try_start_3 .. :try_end_4d} :catchall_4b
 
-    throw p1
+    throw v1
 .end method
 
 .method public setEnabled(Z)V
-    .registers 5
+    .registers 6
+    .param p1, "enabled"  # Z
 
     .line 1202
     iget-object v0, p0, Lcom/android/server/accessibility/MagnificationController$SpecAnimationBridge;->mLock:Ljava/lang/Object;
@@ -359,27 +374,27 @@
     iput-boolean p1, p0, Lcom/android/server/accessibility/MagnificationController$SpecAnimationBridge;->mEnabled:Z
 
     .line 1205
-    iget-boolean p1, p0, Lcom/android/server/accessibility/MagnificationController$SpecAnimationBridge;->mEnabled:Z
+    iget-boolean v1, p0, Lcom/android/server/accessibility/MagnificationController$SpecAnimationBridge;->mEnabled:Z
 
-    if-nez p1, :cond_1f
+    if-nez v1, :cond_1f
 
     .line 1206
-    iget-object p1, p0, Lcom/android/server/accessibility/MagnificationController$SpecAnimationBridge;->mSentMagnificationSpec:Landroid/view/MagnificationSpec;
+    iget-object v1, p0, Lcom/android/server/accessibility/MagnificationController$SpecAnimationBridge;->mSentMagnificationSpec:Landroid/view/MagnificationSpec;
 
-    invoke-virtual {p1}, Landroid/view/MagnificationSpec;->clear()V
+    invoke-virtual {v1}, Landroid/view/MagnificationSpec;->clear()V
 
     .line 1207
-    iget-object p1, p0, Lcom/android/server/accessibility/MagnificationController$SpecAnimationBridge;->mControllerCtx:Lcom/android/server/accessibility/MagnificationController$ControllerContext;
+    iget-object v1, p0, Lcom/android/server/accessibility/MagnificationController$SpecAnimationBridge;->mControllerCtx:Lcom/android/server/accessibility/MagnificationController$ControllerContext;
 
-    invoke-virtual {p1}, Lcom/android/server/accessibility/MagnificationController$ControllerContext;->getWindowManager()Lcom/android/server/wm/WindowManagerInternal;
+    invoke-virtual {v1}, Lcom/android/server/accessibility/MagnificationController$ControllerContext;->getWindowManager()Lcom/android/server/wm/WindowManagerInternal;
 
-    move-result-object p1
+    move-result-object v1
 
-    iget v1, p0, Lcom/android/server/accessibility/MagnificationController$SpecAnimationBridge;->mDisplayId:I
+    iget v2, p0, Lcom/android/server/accessibility/MagnificationController$SpecAnimationBridge;->mDisplayId:I
 
-    iget-object v2, p0, Lcom/android/server/accessibility/MagnificationController$SpecAnimationBridge;->mSentMagnificationSpec:Landroid/view/MagnificationSpec;
+    iget-object v3, p0, Lcom/android/server/accessibility/MagnificationController$SpecAnimationBridge;->mSentMagnificationSpec:Landroid/view/MagnificationSpec;
 
-    invoke-virtual {p1, v1, v2}, Lcom/android/server/wm/WindowManagerInternal;->setMagnificationSpec(ILandroid/view/MagnificationSpec;)V
+    invoke-virtual {v1, v2, v3}, Lcom/android/server/wm/WindowManagerInternal;->setMagnificationSpec(ILandroid/view/MagnificationSpec;)V
 
     .line 1211
     :cond_1f
@@ -390,17 +405,19 @@
 
     .line 1211
     :catchall_21
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_23
     .catchall {:try_start_3 .. :try_end_23} :catchall_21
 
-    throw p1
+    throw v1
 .end method
 
 .method public updateSentSpecMainThread(Landroid/view/MagnificationSpec;Z)V
     .registers 5
+    .param p1, "spec"  # Landroid/view/MagnificationSpec;
+    .param p2, "animate"  # Z
 
     .line 1215
     iget-object v0, p0, Lcom/android/server/accessibility/MagnificationController$SpecAnimationBridge;->mValueAnimator:Landroid/animation/ValueAnimator;
@@ -430,9 +447,10 @@
 
     move-result v1
 
-    .line 1222
     xor-int/lit8 v1, v1, 0x1
 
+    .line 1222
+    .local v1, "changed":Z
     if-eqz v1, :cond_23
 
     .line 1223
@@ -448,6 +466,7 @@
     invoke-direct {p0, p1}, Lcom/android/server/accessibility/MagnificationController$SpecAnimationBridge;->setMagnificationSpecLocked(Landroid/view/MagnificationSpec;)V
 
     .line 1229
+    .end local v1  # "changed":Z
     :cond_23
     :goto_23
     monitor-exit v0
@@ -457,11 +476,11 @@
 
     .line 1229
     :catchall_25
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_27
     .catchall {:try_start_10 .. :try_end_27} :catchall_25
 
-    throw p1
+    throw v1
 .end method

@@ -24,6 +24,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/hdmi/SetArcTransmissionStateAction;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/hdmi/SetArcTransmissionStateAction;
 
     .line 81
     iput-object p1, p0, Lcom/android/server/hdmi/SetArcTransmissionStateAction$1;->this$0:Lcom/android/server/hdmi/SetArcTransmissionStateAction;
@@ -36,7 +37,8 @@
 
 # virtual methods
 .method public onSendCompleted(I)V
-    .registers 3
+    .registers 4
+    .param p1, "error"  # I
 
     .line 84
     if-eqz p1, :cond_1f
@@ -57,23 +59,23 @@
 
     .line 95
     :cond_c
-    iget-object p1, p0, Lcom/android/server/hdmi/SetArcTransmissionStateAction$1;->this$0:Lcom/android/server/hdmi/SetArcTransmissionStateAction;
+    iget-object v0, p0, Lcom/android/server/hdmi/SetArcTransmissionStateAction$1;->this$0:Lcom/android/server/hdmi/SetArcTransmissionStateAction;
 
-    const/4 v0, 0x0
+    const/4 v1, 0x0
 
-    invoke-static {p1, v0}, Lcom/android/server/hdmi/SetArcTransmissionStateAction;->access$000(Lcom/android/server/hdmi/SetArcTransmissionStateAction;Z)V
+    invoke-static {v0, v1}, Lcom/android/server/hdmi/SetArcTransmissionStateAction;->access$000(Lcom/android/server/hdmi/SetArcTransmissionStateAction;Z)V
 
     .line 96
-    new-array p1, v0, [Ljava/lang/Object;
+    new-array v0, v1, [Ljava/lang/Object;
 
-    const-string v0, "Failed to send <Report Arc Initiated>."
+    const-string v1, "Failed to send <Report Arc Initiated>."
 
-    invoke-static {v0, p1}, Lcom/android/server/hdmi/HdmiLogger;->debug(Ljava/lang/String;[Ljava/lang/Object;)V
+    invoke-static {v1, v0}, Lcom/android/server/hdmi/HdmiLogger;->debug(Ljava/lang/String;[Ljava/lang/Object;)V
 
     .line 97
-    iget-object p1, p0, Lcom/android/server/hdmi/SetArcTransmissionStateAction$1;->this$0:Lcom/android/server/hdmi/SetArcTransmissionStateAction;
+    iget-object v0, p0, Lcom/android/server/hdmi/SetArcTransmissionStateAction$1;->this$0:Lcom/android/server/hdmi/SetArcTransmissionStateAction;
 
-    invoke-virtual {p1}, Lcom/android/server/hdmi/SetArcTransmissionStateAction;->finish()V
+    invoke-virtual {v0}, Lcom/android/server/hdmi/SetArcTransmissionStateAction;->finish()V
 
     goto :goto_20
 

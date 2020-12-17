@@ -15,6 +15,7 @@
 
 .method constructor <init>(Ljava/lang/Exception;)V
     .registers 2
+    .param p1, "cause"  # Ljava/lang/Exception;
 
     .line 31
     invoke-direct {p0, p1}, Landroid/util/AndroidException;-><init>(Ljava/lang/Exception;)V

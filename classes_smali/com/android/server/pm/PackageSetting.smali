@@ -16,6 +16,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/pm/PackageSetting;)V
     .registers 3
+    .param p1, "orig"  # Lcom/android/server/pm/PackageSetting;
 
     .line 68
     iget-object v0, p1, Lcom/android/server/pm/PackageSetting;->realName:Ljava/lang/String;
@@ -31,6 +32,8 @@
 
 .method constructor <init>(Lcom/android/server/pm/PackageSetting;Ljava/lang/String;)V
     .registers 3
+    .param p1, "orig"  # Lcom/android/server/pm/PackageSetting;
+    .param p2, "realPkgName"  # Ljava/lang/String;
 
     .line 78
     invoke-direct {p0, p1, p2}, Lcom/android/server/pm/PackageSettingBase;-><init>(Lcom/android/server/pm/PackageSettingBase;Ljava/lang/String;)V
@@ -44,6 +47,21 @@
 
 .method constructor <init>(Ljava/lang/String;Ljava/lang/String;Ljava/io/File;Ljava/io/File;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;JIILjava/lang/String;Ljava/util/List;I[Ljava/lang/String;[J)V
     .registers 35
+    .param p1, "name"  # Ljava/lang/String;
+    .param p2, "realName"  # Ljava/lang/String;
+    .param p3, "codePath"  # Ljava/io/File;
+    .param p4, "resourcePath"  # Ljava/io/File;
+    .param p5, "legacyNativeLibraryPathString"  # Ljava/lang/String;
+    .param p6, "primaryCpuAbiString"  # Ljava/lang/String;
+    .param p7, "secondaryCpuAbiString"  # Ljava/lang/String;
+    .param p8, "cpuAbiOverrideString"  # Ljava/lang/String;
+    .param p9, "pVersionCode"  # J
+    .param p11, "pkgFlags"  # I
+    .param p12, "privateFlags"  # I
+    .param p13, "parentPackageName"  # Ljava/lang/String;
+    .param p15, "sharedUserId"  # I
+    .param p16, "usesStaticLibraries"  # [Ljava/lang/String;
+    .param p17, "usesStaticLibrariesVersions"  # [J
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(",
@@ -65,6 +83,7 @@
         }
     .end annotation
 
+    .local p14, "childPackageNames":Ljava/util/List;, "Ljava/util/List<Ljava/lang/String;>;"
     move-object/from16 v0, p0
 
     move-object/from16 v1, p1
@@ -111,6 +130,7 @@
 
 .method private doCopy(Lcom/android/server/pm/PackageSetting;)V
     .registers 3
+    .param p1, "orig"  # Lcom/android/server/pm/PackageSetting;
 
     .line 106
     iget v0, p1, Lcom/android/server/pm/PackageSetting;->appId:I
@@ -128,9 +148,9 @@
     iput-object v0, p0, Lcom/android/server/pm/PackageSetting;->sharedUser:Lcom/android/server/pm/SharedUserSetting;
 
     .line 109
-    iget p1, p1, Lcom/android/server/pm/PackageSetting;->sharedUserId:I
+    iget v0, p1, Lcom/android/server/pm/PackageSetting;->sharedUserId:I
 
-    iput p1, p0, Lcom/android/server/pm/PackageSetting;->sharedUserId:I
+    iput v0, p0, Lcom/android/server/pm/PackageSetting;->sharedUserId:I
 
     .line 110
     return-void
@@ -149,6 +169,7 @@
 
 .method public copyFrom(Lcom/android/server/pm/PackageSetting;)V
     .registers 2
+    .param p1, "orig"  # Lcom/android/server/pm/PackageSetting;
 
     .line 101
     invoke-super {p0, p1}, Lcom/android/server/pm/PackageSettingBase;->copyFrom(Lcom/android/server/pm/PackageSettingBase;)V
@@ -262,26 +283,27 @@
 
 .method public isMatch(I)Z
     .registers 3
+    .param p1, "flags"  # I
 
     .line 173
     const/high16 v0, 0x100000
 
-    and-int/2addr p1, v0
+    and-int/2addr v0, p1
 
-    if-eqz p1, :cond_a
+    if-eqz v0, :cond_a
 
     .line 174
     invoke-virtual {p0}, Lcom/android/server/pm/PackageSetting;->isSystem()Z
 
-    move-result p1
+    move-result v0
 
-    return p1
+    return v0
 
     .line 176
     :cond_a
-    const/4 p1, 0x1
+    const/4 v0, 0x1
 
-    return p1
+    return v0
 .end method
 
 .method public isOdm()Z
@@ -483,6 +505,7 @@
 
 .method public setInstallPermissionsFixed(Z)V
     .registers 2
+    .param p1, "fixed"  # Z
 
     .line 128
     iput-boolean p1, p0, Lcom/android/server/pm/PackageSetting;->installPermissionsFixed:Z
@@ -544,6 +567,7 @@
 
 .method public updateFrom(Lcom/android/server/pm/PackageSetting;)V
     .registers 3
+    .param p1, "other"  # Lcom/android/server/pm/PackageSetting;
 
     .line 215
     invoke-super {p0, p1}, Lcom/android/server/pm/PackageSettingBase;->updateFrom(Lcom/android/server/pm/PackageSettingBase;)Lcom/android/server/pm/PackageSettingBase;
@@ -564,16 +588,18 @@
     iput v0, p0, Lcom/android/server/pm/PackageSetting;->sharedUserId:I
 
     .line 219
-    iget-object p1, p1, Lcom/android/server/pm/PackageSetting;->sharedUser:Lcom/android/server/pm/SharedUserSetting;
+    iget-object v0, p1, Lcom/android/server/pm/PackageSetting;->sharedUser:Lcom/android/server/pm/SharedUserSetting;
 
-    iput-object p1, p0, Lcom/android/server/pm/PackageSetting;->sharedUser:Lcom/android/server/pm/SharedUserSetting;
+    iput-object v0, p0, Lcom/android/server/pm/PackageSetting;->sharedUser:Lcom/android/server/pm/SharedUserSetting;
 
     .line 220
     return-void
 .end method
 
 .method public writeToProto(Landroid/util/proto/ProtoOutputStream;JLjava/util/List;)V
-    .registers 14
+    .registers 19
+    .param p1, "proto"  # Landroid/util/proto/ProtoOutputStream;
+    .param p2, "fieldId"  # J
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(",
@@ -586,154 +612,164 @@
     .end annotation
 
     .line 184
-    invoke-virtual {p1, p2, p3}, Landroid/util/proto/ProtoOutputStream;->start(J)J
+    .local p4, "users":Ljava/util/List;, "Ljava/util/List<Landroid/content/pm/UserInfo;>;"
+    move-object v0, p0
 
-    move-result-wide p2
+    move-object v1, p1
+
+    invoke-virtual/range {p1 .. p3}, Landroid/util/proto/ProtoOutputStream;->start(J)J
+
+    move-result-wide v2
 
     .line 185
-    iget-object p4, p0, Lcom/android/server/pm/PackageSetting;->realName:Ljava/lang/String;
+    .local v2, "packageToken":J
+    iget-object v4, v0, Lcom/android/server/pm/PackageSetting;->realName:Ljava/lang/String;
 
-    if-eqz p4, :cond_b
+    if-eqz v4, :cond_d
 
-    iget-object p4, p0, Lcom/android/server/pm/PackageSetting;->realName:Ljava/lang/String;
+    iget-object v4, v0, Lcom/android/server/pm/PackageSetting;->realName:Ljava/lang/String;
 
-    goto :goto_d
+    goto :goto_f
 
-    :cond_b
-    iget-object p4, p0, Lcom/android/server/pm/PackageSetting;->name:Ljava/lang/String;
+    :cond_d
+    iget-object v4, v0, Lcom/android/server/pm/PackageSetting;->name:Ljava/lang/String;
 
-    :goto_d
-    const-wide v0, 0x10900000001L
+    :goto_f
+    const-wide v5, 0x10900000001L
 
-    invoke-virtual {p1, v0, v1, p4}, Landroid/util/proto/ProtoOutputStream;->write(JLjava/lang/String;)V
+    invoke-virtual {p1, v5, v6, v4}, Landroid/util/proto/ProtoOutputStream;->write(JLjava/lang/String;)V
 
     .line 186
-    iget p4, p0, Lcom/android/server/pm/PackageSetting;->appId:I
+    iget v4, v0, Lcom/android/server/pm/PackageSetting;->appId:I
 
-    const-wide v2, 0x10500000002L
+    const-wide v7, 0x10500000002L
 
-    invoke-virtual {p1, v2, v3, p4}, Landroid/util/proto/ProtoOutputStream;->write(JI)V
+    invoke-virtual {p1, v7, v8, v4}, Landroid/util/proto/ProtoOutputStream;->write(JI)V
 
     .line 187
-    const-wide v4, 0x10500000003L
+    const-wide v9, 0x10500000003L
 
-    iget-wide v6, p0, Lcom/android/server/pm/PackageSetting;->versionCode:J
+    iget-wide v11, v0, Lcom/android/server/pm/PackageSetting;->versionCode:J
 
-    invoke-virtual {p1, v4, v5, v6, v7}, Landroid/util/proto/ProtoOutputStream;->write(JJ)V
+    invoke-virtual {p1, v9, v10, v11, v12}, Landroid/util/proto/ProtoOutputStream;->write(JJ)V
 
     .line 188
-    const-wide v4, 0x10300000005L
+    const-wide v9, 0x10300000005L
 
-    iget-wide v6, p0, Lcom/android/server/pm/PackageSetting;->firstInstallTime:J
+    iget-wide v11, v0, Lcom/android/server/pm/PackageSetting;->firstInstallTime:J
 
-    invoke-virtual {p1, v4, v5, v6, v7}, Landroid/util/proto/ProtoOutputStream;->write(JJ)V
+    invoke-virtual {p1, v9, v10, v11, v12}, Landroid/util/proto/ProtoOutputStream;->write(JJ)V
 
     .line 189
-    const-wide v4, 0x10300000006L
+    const-wide v9, 0x10300000006L
 
-    iget-wide v6, p0, Lcom/android/server/pm/PackageSetting;->lastUpdateTime:J
+    iget-wide v11, v0, Lcom/android/server/pm/PackageSetting;->lastUpdateTime:J
 
-    invoke-virtual {p1, v4, v5, v6, v7}, Landroid/util/proto/ProtoOutputStream;->write(JJ)V
+    invoke-virtual {p1, v9, v10, v11, v12}, Landroid/util/proto/ProtoOutputStream;->write(JJ)V
 
     .line 190
-    const-wide v4, 0x10900000007L
+    const-wide v9, 0x10900000007L
 
-    iget-object p4, p0, Lcom/android/server/pm/PackageSetting;->installerPackageName:Ljava/lang/String;
+    iget-object v4, v0, Lcom/android/server/pm/PackageSetting;->installerPackageName:Ljava/lang/String;
 
-    invoke-virtual {p1, v4, v5, p4}, Landroid/util/proto/ProtoOutputStream;->write(JLjava/lang/String;)V
+    invoke-virtual {p1, v9, v10, v4}, Landroid/util/proto/ProtoOutputStream;->write(JLjava/lang/String;)V
 
     .line 192
-    iget-object p4, p0, Lcom/android/server/pm/PackageSetting;->pkg:Landroid/content/pm/PackageParser$Package;
+    iget-object v4, v0, Lcom/android/server/pm/PackageSetting;->pkg:Landroid/content/pm/PackageParser$Package;
 
-    if-eqz p4, :cond_97
+    if-eqz v4, :cond_99
 
     .line 193
-    const-wide v4, 0x10900000004L
+    const-wide v9, 0x10900000004L
 
-    iget-object p4, p4, Landroid/content/pm/PackageParser$Package;->mVersionName:Ljava/lang/String;
+    iget-object v4, v4, Landroid/content/pm/PackageParser$Package;->mVersionName:Ljava/lang/String;
 
-    invoke-virtual {p1, v4, v5, p4}, Landroid/util/proto/ProtoOutputStream;->write(JLjava/lang/String;)V
+    invoke-virtual {p1, v9, v10, v4}, Landroid/util/proto/ProtoOutputStream;->write(JLjava/lang/String;)V
 
     .line 195
-    const-wide v4, 0x20b00000008L
+    const-wide v9, 0x20b00000008L
 
-    invoke-virtual {p1, v4, v5}, Landroid/util/proto/ProtoOutputStream;->start(J)J
+    invoke-virtual {p1, v9, v10}, Landroid/util/proto/ProtoOutputStream;->start(J)J
 
-    move-result-wide v6
+    move-result-wide v11
 
     .line 196
-    const-string p4, "base"
+    .local v11, "splitToken":J
+    const-string v4, "base"
 
-    invoke-virtual {p1, v0, v1, p4}, Landroid/util/proto/ProtoOutputStream;->write(JLjava/lang/String;)V
+    invoke-virtual {p1, v5, v6, v4}, Landroid/util/proto/ProtoOutputStream;->write(JLjava/lang/String;)V
 
     .line 197
-    iget-object p4, p0, Lcom/android/server/pm/PackageSetting;->pkg:Landroid/content/pm/PackageParser$Package;
+    iget-object v4, v0, Lcom/android/server/pm/PackageSetting;->pkg:Landroid/content/pm/PackageParser$Package;
 
-    iget p4, p4, Landroid/content/pm/PackageParser$Package;->baseRevisionCode:I
+    iget v4, v4, Landroid/content/pm/PackageParser$Package;->baseRevisionCode:I
 
-    invoke-virtual {p1, v2, v3, p4}, Landroid/util/proto/ProtoOutputStream;->write(JI)V
+    invoke-virtual {p1, v7, v8, v4}, Landroid/util/proto/ProtoOutputStream;->write(JI)V
 
     .line 198
-    invoke-virtual {p1, v6, v7}, Landroid/util/proto/ProtoOutputStream;->end(J)V
+    invoke-virtual {p1, v11, v12}, Landroid/util/proto/ProtoOutputStream;->end(J)V
 
     .line 200
-    iget-object p4, p0, Lcom/android/server/pm/PackageSetting;->pkg:Landroid/content/pm/PackageParser$Package;
+    iget-object v4, v0, Lcom/android/server/pm/PackageSetting;->pkg:Landroid/content/pm/PackageParser$Package;
 
-    iget-object p4, p4, Landroid/content/pm/PackageParser$Package;->splitNames:[Ljava/lang/String;
+    iget-object v4, v4, Landroid/content/pm/PackageParser$Package;->splitNames:[Ljava/lang/String;
 
-    if-eqz p4, :cond_97
+    if-eqz v4, :cond_99
 
     .line 201
-    const/4 p4, 0x0
+    const/4 v4, 0x0
 
-    :goto_74
-    iget-object v6, p0, Lcom/android/server/pm/PackageSetting;->pkg:Landroid/content/pm/PackageParser$Package;
+    .local v4, "i":I
+    :goto_76
+    iget-object v13, v0, Lcom/android/server/pm/PackageSetting;->pkg:Landroid/content/pm/PackageParser$Package;
 
-    iget-object v6, v6, Landroid/content/pm/PackageParser$Package;->splitNames:[Ljava/lang/String;
+    iget-object v13, v13, Landroid/content/pm/PackageParser$Package;->splitNames:[Ljava/lang/String;
 
-    array-length v6, v6
+    array-length v13, v13
 
-    if-ge p4, v6, :cond_97
+    if-ge v4, v13, :cond_99
 
     .line 202
-    invoke-virtual {p1, v4, v5}, Landroid/util/proto/ProtoOutputStream;->start(J)J
+    invoke-virtual {p1, v9, v10}, Landroid/util/proto/ProtoOutputStream;->start(J)J
 
-    move-result-wide v6
+    move-result-wide v11
 
     .line 203
-    iget-object v8, p0, Lcom/android/server/pm/PackageSetting;->pkg:Landroid/content/pm/PackageParser$Package;
+    iget-object v13, v0, Lcom/android/server/pm/PackageSetting;->pkg:Landroid/content/pm/PackageParser$Package;
 
-    iget-object v8, v8, Landroid/content/pm/PackageParser$Package;->splitNames:[Ljava/lang/String;
+    iget-object v13, v13, Landroid/content/pm/PackageParser$Package;->splitNames:[Ljava/lang/String;
 
-    aget-object v8, v8, p4
+    aget-object v13, v13, v4
 
-    invoke-virtual {p1, v0, v1, v8}, Landroid/util/proto/ProtoOutputStream;->write(JLjava/lang/String;)V
+    invoke-virtual {p1, v5, v6, v13}, Landroid/util/proto/ProtoOutputStream;->write(JLjava/lang/String;)V
 
     .line 204
-    iget-object v8, p0, Lcom/android/server/pm/PackageSetting;->pkg:Landroid/content/pm/PackageParser$Package;
+    iget-object v13, v0, Lcom/android/server/pm/PackageSetting;->pkg:Landroid/content/pm/PackageParser$Package;
 
-    iget-object v8, v8, Landroid/content/pm/PackageParser$Package;->splitRevisionCodes:[I
+    iget-object v13, v13, Landroid/content/pm/PackageParser$Package;->splitRevisionCodes:[I
 
-    aget v8, v8, p4
+    aget v13, v13, v4
 
-    invoke-virtual {p1, v2, v3, v8}, Landroid/util/proto/ProtoOutputStream;->write(JI)V
+    invoke-virtual {p1, v7, v8, v13}, Landroid/util/proto/ProtoOutputStream;->write(JI)V
 
     .line 205
-    invoke-virtual {p1, v6, v7}, Landroid/util/proto/ProtoOutputStream;->end(J)V
+    invoke-virtual {p1, v11, v12}, Landroid/util/proto/ProtoOutputStream;->end(J)V
 
     .line 201
-    add-int/lit8 p4, p4, 0x1
+    add-int/lit8 v4, v4, 0x1
 
-    goto :goto_74
+    goto :goto_76
 
     .line 209
-    :cond_97
-    const-wide v0, 0x20b00000009L
+    .end local v4  # "i":I
+    .end local v11  # "splitToken":J
+    :cond_99
+    const-wide v4, 0x20b00000009L
 
-    invoke-virtual {p0, p1, v0, v1}, Lcom/android/server/pm/PackageSetting;->writeUsersInfoToProto(Landroid/util/proto/ProtoOutputStream;J)V
+    invoke-virtual {p0, p1, v4, v5}, Lcom/android/server/pm/PackageSetting;->writeUsersInfoToProto(Landroid/util/proto/ProtoOutputStream;J)V
 
     .line 210
-    invoke-virtual {p1, p2, p3}, Landroid/util/proto/ProtoOutputStream;->end(J)V
+    invoke-virtual {p1, v2, v3}, Landroid/util/proto/ProtoOutputStream;->end(J)V
 
     .line 211
     return-void

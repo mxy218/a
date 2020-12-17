@@ -21,8 +21,10 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/StorageManagerService;Landroid/os/Handler;)V
     .registers 3
+    .param p1, "this$0"  # Lcom/android/server/StorageManagerService;
+    .param p2, "x0"  # Landroid/os/Handler;
 
-    .line 792
+    .line 827
     iput-object p1, p0, Lcom/android/server/StorageManagerService$3;->this$0:Lcom/android/server/StorageManagerService;
 
     invoke-direct {p0, p2}, Landroid/database/ContentObserver;-><init>(Landroid/os/Handler;)V
@@ -33,13 +35,14 @@
 
 # virtual methods
 .method public onChange(Z)V
-    .registers 2
+    .registers 3
+    .param p1, "selfChange"  # Z
 
-    .line 795
-    iget-object p1, p0, Lcom/android/server/StorageManagerService$3;->this$0:Lcom/android/server/StorageManagerService;
+    .line 830
+    iget-object v0, p0, Lcom/android/server/StorageManagerService$3;->this$0:Lcom/android/server/StorageManagerService;
 
-    invoke-static {p1}, Lcom/android/server/StorageManagerService;->access$2500(Lcom/android/server/StorageManagerService;)V
+    invoke-static {v0}, Lcom/android/server/StorageManagerService;->access$2500(Lcom/android/server/StorageManagerService;)V
 
-    .line 796
+    .line 831
     return-void
 .end method

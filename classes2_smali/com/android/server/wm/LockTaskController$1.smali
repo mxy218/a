@@ -23,8 +23,9 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/wm/LockTaskController;I)V
     .registers 3
+    .param p1, "this$0"  # Lcom/android/server/wm/LockTaskController;
 
-    .line 767
+    .line 770
     iput-object p1, p0, Lcom/android/server/wm/LockTaskController$1;->this$0:Lcom/android/server/wm/LockTaskController;
 
     iput p2, p0, Lcom/android/server/wm/LockTaskController$1;->val$userId:I
@@ -38,8 +39,9 @@
 # virtual methods
 .method public synthetic lambda$onDismissSucceeded$0$LockTaskController$1(I)V
     .registers 5
+    .param p1, "userId"  # I
 
-    .line 777
+    .line 780
     iget-object v0, p0, Lcom/android/server/wm/LockTaskController$1;->this$0:Lcom/android/server/wm/LockTaskController;
 
     invoke-static {v0}, Lcom/android/server/wm/LockTaskController;->access$200(Lcom/android/server/wm/LockTaskController;)I
@@ -48,7 +50,7 @@
 
     if-ne v0, p1, :cond_1e
 
-    .line 778
+    .line 781
     iget-object v0, p0, Lcom/android/server/wm/LockTaskController$1;->this$0:Lcom/android/server/wm/LockTaskController;
 
     iget-object v0, v0, Lcom/android/server/wm/LockTaskController;->mWindowManager:Lcom/android/server/wm/WindowManagerService;
@@ -63,14 +65,14 @@
 
     invoke-virtual {v0, v1, v2, p1}, Lcom/android/server/wm/WindowManagerService;->disableKeyguard(Landroid/os/IBinder;Ljava/lang/String;I)V
 
-    .line 780
-    iget-object p1, p0, Lcom/android/server/wm/LockTaskController$1;->this$0:Lcom/android/server/wm/LockTaskController;
+    .line 783
+    iget-object v0, p0, Lcom/android/server/wm/LockTaskController$1;->this$0:Lcom/android/server/wm/LockTaskController;
 
-    const/16 v0, -0x2710
+    const/16 v1, -0x2710
 
-    invoke-static {p1, v0}, Lcom/android/server/wm/LockTaskController;->access$202(Lcom/android/server/wm/LockTaskController;I)I
+    invoke-static {v0, v1}, Lcom/android/server/wm/LockTaskController;->access$202(Lcom/android/server/wm/LockTaskController;I)I
 
-    .line 782
+    .line 785
     :cond_1e
     return-void
 .end method
@@ -83,14 +85,14 @@
         }
     .end annotation
 
-    .line 787
+    .line 790
     const-string v0, "ActivityTaskManager"
 
     const-string v1, "setKeyguardState: dismiss cancelled"
 
     invoke-static {v0, v1}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 788
+    .line 791
     return-void
 .end method
 
@@ -102,14 +104,14 @@
         }
     .end annotation
 
-    .line 770
+    .line 773
     const-string v0, "ActivityTaskManager"
 
     const-string v1, "setKeyguardState: failed to dismiss keyguard"
 
     invoke-static {v0, v1}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 771
+    .line 774
     return-void
 .end method
 
@@ -121,7 +123,7 @@
         }
     .end annotation
 
-    .line 775
+    .line 778
     iget-object v0, p0, Lcom/android/server/wm/LockTaskController$1;->this$0:Lcom/android/server/wm/LockTaskController;
 
     invoke-static {v0}, Lcom/android/server/wm/LockTaskController;->access$100(Lcom/android/server/wm/LockTaskController;)Landroid/os/Handler;
@@ -136,6 +138,6 @@
 
     invoke-virtual {v0, v2}, Landroid/os/Handler;->post(Ljava/lang/Runnable;)Z
 
-    .line 783
+    .line 786
     return-void
 .end method

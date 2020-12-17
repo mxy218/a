@@ -36,6 +36,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/hdmi/HdmiCecController;ILjava/lang/Integer;ILjava/util/List;Ljava/util/List;Lcom/android/server/hdmi/HdmiControlService$DevicePollingCallback;)V
     .registers 8
+    .param p1, "this$0"  # Lcom/android/server/hdmi/HdmiCecController;
 
     .line 500
     iput-object p1, p0, Lcom/android/server/hdmi/HdmiCecController$5;->this$0:Lcom/android/server/hdmi/HdmiCecController;

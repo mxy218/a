@@ -21,6 +21,7 @@
 # direct methods
 .method public constructor <init>(Landroid/content/Context;)V
     .registers 2
+    .param p1, "context"  # Landroid/content/Context;
 
     .line 96
     invoke-direct {p0, p1}, Lcom/android/server/SystemService;-><init>(Landroid/content/Context;)V
@@ -33,6 +34,7 @@
 # virtual methods
 .method public onBootPhase(I)V
     .registers 3
+    .param p1, "phase"  # I
 
     .line 109
     iget-object v0, p0, Lcom/android/server/content/ContentService$Lifecycle;->mService:Lcom/android/server/content/ContentService;
@@ -45,6 +47,7 @@
 
 .method public onCleanupUser(I)V
     .registers 4
+    .param p1, "userHandle"  # I
 
     .line 130
     iget-object v0, p0, Lcom/android/server/content/ContentService$Lifecycle;->mService:Lcom/android/server/content/ContentService;
@@ -73,13 +76,13 @@
 
     .line 132
     :catchall_12
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_14
     .catchall {:try_start_7 .. :try_end_14} :catchall_12
 
-    throw p1
+    throw v1
 .end method
 
 .method public onStart()V
@@ -99,24 +102,27 @@
     :cond_8
     const/4 v1, 0x0
 
-    .line 103
     :goto_9
-    new-instance v0, Lcom/android/server/content/ContentService;
+    move v0, v1
+
+    .line 103
+    .local v0, "factoryTest":Z
+    new-instance v1, Lcom/android/server/content/ContentService;
 
     invoke-virtual {p0}, Lcom/android/server/content/ContentService$Lifecycle;->getContext()Landroid/content/Context;
 
     move-result-object v2
 
-    invoke-direct {v0, v2, v1}, Lcom/android/server/content/ContentService;-><init>(Landroid/content/Context;Z)V
+    invoke-direct {v1, v2, v0}, Lcom/android/server/content/ContentService;-><init>(Landroid/content/Context;Z)V
 
-    iput-object v0, p0, Lcom/android/server/content/ContentService$Lifecycle;->mService:Lcom/android/server/content/ContentService;
+    iput-object v1, p0, Lcom/android/server/content/ContentService$Lifecycle;->mService:Lcom/android/server/content/ContentService;
 
     .line 104
-    iget-object v0, p0, Lcom/android/server/content/ContentService$Lifecycle;->mService:Lcom/android/server/content/ContentService;
+    iget-object v1, p0, Lcom/android/server/content/ContentService$Lifecycle;->mService:Lcom/android/server/content/ContentService;
 
-    const-string v1, "content"
+    const-string v2, "content"
 
-    invoke-virtual {p0, v1, v0}, Lcom/android/server/content/ContentService$Lifecycle;->publishBinderService(Ljava/lang/String;Landroid/os/IBinder;)V
+    invoke-virtual {p0, v2, v1}, Lcom/android/server/content/ContentService$Lifecycle;->publishBinderService(Ljava/lang/String;Landroid/os/IBinder;)V
 
     .line 105
     return-void
@@ -124,6 +130,7 @@
 
 .method public onStartUser(I)V
     .registers 3
+    .param p1, "userHandle"  # I
 
     .line 115
     iget-object v0, p0, Lcom/android/server/content/ContentService$Lifecycle;->mService:Lcom/android/server/content/ContentService;
@@ -136,6 +143,7 @@
 
 .method public onStopUser(I)V
     .registers 3
+    .param p1, "userHandle"  # I
 
     .line 125
     iget-object v0, p0, Lcom/android/server/content/ContentService$Lifecycle;->mService:Lcom/android/server/content/ContentService;
@@ -148,6 +156,7 @@
 
 .method public onUnlockUser(I)V
     .registers 3
+    .param p1, "userHandle"  # I
 
     .line 120
     iget-object v0, p0, Lcom/android/server/content/ContentService$Lifecycle;->mService:Lcom/android/server/content/ContentService;

@@ -21,8 +21,9 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/biometrics/face/FaceService;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/biometrics/face/FaceService;
 
-    .line 857
+    .line 699
     iput-object p1, p0, Lcom/android/server/biometrics/face/FaceService$1;->this$0:Lcom/android/server/biometrics/face/FaceService;
 
     invoke-direct {p0}, Landroid/hardware/biometrics/face/V1_0/IBiometricsFaceClientCallback$Stub;-><init>()V
@@ -34,39 +35,50 @@
 # virtual methods
 .method public synthetic lambda$onAcquired$1$FaceService$1(JII)V
     .registers 6
+    .param p1, "deviceId"  # J
+    .param p3, "acquiredInfo"  # I
+    .param p4, "vendorCode"  # I
 
-    .line 885
+    .line 715
     iget-object v0, p0, Lcom/android/server/biometrics/face/FaceService$1;->this$0:Lcom/android/server/biometrics/face/FaceService;
 
-    invoke-static {v0, p1, p2, p3, p4}, Lcom/android/server/biometrics/face/FaceService;->access$10001(Lcom/android/server/biometrics/face/FaceService;JII)V
+    invoke-static {v0, p1, p2, p3, p4}, Lcom/android/server/biometrics/face/FaceService;->access$9101(Lcom/android/server/biometrics/face/FaceService;JII)V
 
-    .line 886
+    .line 716
     return-void
 .end method
 
 .method public synthetic lambda$onAuthenticated$2$FaceService$1(IJLjava/util/ArrayList;)V
     .registers 7
+    .param p1, "faceId"  # I
+    .param p2, "deviceId"  # J
+    .param p4, "token"  # Ljava/util/ArrayList;
 
-    .line 893
+    .line 723
     new-instance v0, Landroid/hardware/face/Face;
 
     const-string v1, ""
 
     invoke-direct {v0, v1, p1, p2, p3}, Landroid/hardware/face/Face;-><init>(Ljava/lang/CharSequence;IJ)V
 
-    .line 894
-    iget-object p1, p0, Lcom/android/server/biometrics/face/FaceService$1;->this$0:Lcom/android/server/biometrics/face/FaceService;
+    .line 724
+    .local v0, "face":Landroid/hardware/face/Face;
+    iget-object v1, p0, Lcom/android/server/biometrics/face/FaceService$1;->this$0:Lcom/android/server/biometrics/face/FaceService;
 
-    invoke-static {p1, v0, p4}, Lcom/android/server/biometrics/face/FaceService;->access$9901(Lcom/android/server/biometrics/face/FaceService;Landroid/hardware/biometrics/BiometricAuthenticator$Identifier;Ljava/util/ArrayList;)V
+    invoke-static {v1, v0, p4}, Lcom/android/server/biometrics/face/FaceService;->access$9001(Lcom/android/server/biometrics/face/FaceService;Landroid/hardware/biometrics/BiometricAuthenticator$Identifier;Ljava/util/ArrayList;)V
 
-    .line 895
+    .line 725
     return-void
 .end method
 
 .method public synthetic lambda$onEnrollResult$0$FaceService$1(IIJI)V
     .registers 9
+    .param p1, "userId"  # I
+    .param p2, "faceId"  # I
+    .param p3, "deviceId"  # J
+    .param p5, "remaining"  # I
 
-    .line 862
+    .line 704
     new-instance v0, Landroid/hardware/face/Face;
 
     iget-object v1, p0, Lcom/android/server/biometrics/face/FaceService$1;->this$0:Lcom/android/server/biometrics/face/FaceService;
@@ -77,7 +89,7 @@
 
     iget-object v2, p0, Lcom/android/server/biometrics/face/FaceService$1;->this$0:Lcom/android/server/biometrics/face/FaceService;
 
-    .line 863
+    .line 705
     invoke-virtual {v2}, Lcom/android/server/biometrics/face/FaceService;->getContext()Landroid/content/Context;
 
     move-result-object v2
@@ -88,113 +100,43 @@
 
     invoke-direct {v0, v1, p2, p3, p4}, Landroid/hardware/face/Face;-><init>(Ljava/lang/CharSequence;IJ)V
 
-    .line 864
-    iget-object p2, p0, Lcom/android/server/biometrics/face/FaceService$1;->this$0:Lcom/android/server/biometrics/face/FaceService;
+    .line 706
+    .local v0, "face":Landroid/hardware/face/Face;
+    iget-object v1, p0, Lcom/android/server/biometrics/face/FaceService$1;->this$0:Lcom/android/server/biometrics/face/FaceService;
 
-    invoke-static {p2, v0, p5}, Lcom/android/server/biometrics/face/FaceService;->access$10101(Lcom/android/server/biometrics/face/FaceService;Landroid/hardware/biometrics/BiometricAuthenticator$Identifier;I)V
+    invoke-static {v1, v0, p5}, Lcom/android/server/biometrics/face/FaceService;->access$9201(Lcom/android/server/biometrics/face/FaceService;Landroid/hardware/biometrics/BiometricAuthenticator$Identifier;I)V
 
-    .line 867
-    iget-object p2, p0, Lcom/android/server/biometrics/face/FaceService$1;->this$0:Lcom/android/server/biometrics/face/FaceService;
-
-    invoke-static {p2}, Lcom/android/server/biometrics/face/FaceService;->access$5500(Lcom/android/server/biometrics/face/FaceService;)Landroid/hardware/biometrics/face/V1_0/IBiometricsFace;
-
-    move-result-object p2
-
-    .line 868
-    if-nez p5, :cond_4f
-
-    if-eqz p2, :cond_4f
-
-    .line 870
-    :try_start_24
-    iget-object p3, p0, Lcom/android/server/biometrics/face/FaceService$1;->this$0:Lcom/android/server/biometrics/face/FaceService;
-
-    invoke-static {p3}, Lcom/android/server/biometrics/face/FaceService;->access$10200(Lcom/android/server/biometrics/face/FaceService;)Ljava/util/Map;
-
-    move-result-object p3
-
-    invoke-static {p1}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
-
-    move-result-object p4
-
-    .line 871
-    iget-object p5, p0, Lcom/android/server/biometrics/face/FaceService$1;->this$0:Lcom/android/server/biometrics/face/FaceService;
-
-    invoke-virtual {p5, p1}, Lcom/android/server/biometrics/face/FaceService;->hasEnrolledBiometrics(I)Z
-
-    move-result p1
-
-    if-eqz p1, :cond_3d
-
-    invoke-interface {p2}, Landroid/hardware/biometrics/face/V1_0/IBiometricsFace;->getAuthenticatorId()Landroid/hardware/biometrics/face/V1_0/OptionalUint64;
-
-    move-result-object p1
-
-    iget-wide p1, p1, Landroid/hardware/biometrics/face/V1_0/OptionalUint64;->value:J
-
-    goto :goto_3f
-
-    .line 872
-    :cond_3d
-    const-wide/16 p1, 0x0
-
-    .line 871
-    :goto_3f
-    invoke-static {p1, p2}, Ljava/lang/Long;->valueOf(J)Ljava/lang/Long;
-
-    move-result-object p1
-
-    .line 870
-    invoke-interface {p3, p4, p1}, Ljava/util/Map;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
-    :try_end_46
-    .catch Landroid/os/RemoteException; {:try_start_24 .. :try_end_46} :catch_47
-
-    .line 875
-    goto :goto_4f
-
-    .line 873
-    :catch_47
-    move-exception p1
-
-    .line 874
-    const-string p2, "FaceService"
-
-    const-string p3, "Unable to get authenticatorId"
-
-    invoke-static {p2, p3, p1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
-
-    .line 877
-    :cond_4f
-    :goto_4f
+    .line 707
     return-void
 .end method
 
 .method public synthetic lambda$onEnumerate$5$FaceService$1(Ljava/util/ArrayList;J)V
     .registers 8
+    .param p1, "faceIds"  # Ljava/util/ArrayList;
+    .param p2, "deviceId"  # J
 
-    .line 939
+    .line 768
     invoke-virtual {p1}, Ljava/util/ArrayList;->isEmpty()Z
 
     move-result v0
 
-    const/4 v1, 0x0
-
     if-nez v0, :cond_2e
 
-    .line 940
-    nop
+    .line 769
+    const/4 v0, 0x0
 
-    :goto_8
+    .local v0, "i":I
+    :goto_7
     invoke-virtual {p1}, Ljava/util/ArrayList;->size()I
 
-    move-result v0
+    move-result v1
 
-    if-ge v1, v0, :cond_34
+    if-ge v0, v1, :cond_2d
 
-    .line 941
-    new-instance v0, Landroid/hardware/face/Face;
+    .line 770
+    new-instance v1, Landroid/hardware/face/Face;
 
-    invoke-virtual {p1, v1}, Ljava/util/ArrayList;->get(I)Ljava/lang/Object;
+    invoke-virtual {p1, v0}, Ljava/util/ArrayList;->get(I)Ljava/lang/Object;
 
     move-result-object v2
 
@@ -206,99 +148,110 @@
 
     const-string v3, ""
 
-    invoke-direct {v0, v3, v2, p2, p3}, Landroid/hardware/face/Face;-><init>(Ljava/lang/CharSequence;IJ)V
+    invoke-direct {v1, v3, v2, p2, p3}, Landroid/hardware/face/Face;-><init>(Ljava/lang/CharSequence;IJ)V
 
-    .line 943
+    .line 772
+    .local v1, "face":Landroid/hardware/face/Face;
     iget-object v2, p0, Lcom/android/server/biometrics/face/FaceService$1;->this$0:Lcom/android/server/biometrics/face/FaceService;
 
     invoke-virtual {p1}, Ljava/util/ArrayList;->size()I
 
     move-result v3
 
-    sub-int/2addr v3, v1
+    sub-int/2addr v3, v0
 
     add-int/lit8 v3, v3, -0x1
 
-    invoke-static {v2, v0, v3}, Lcom/android/server/biometrics/face/FaceService;->access$9201(Lcom/android/server/biometrics/face/FaceService;Landroid/hardware/biometrics/BiometricAuthenticator$Identifier;I)V
+    invoke-static {v2, v1, v3}, Lcom/android/server/biometrics/face/FaceService;->access$8301(Lcom/android/server/biometrics/face/FaceService;Landroid/hardware/biometrics/BiometricAuthenticator$Identifier;I)V
 
-    .line 940
-    add-int/lit8 v1, v1, 0x1
+    .line 769
+    .end local v1  # "face":Landroid/hardware/face/Face;
+    add-int/lit8 v0, v0, 0x1
 
-    goto :goto_8
+    goto :goto_7
 
-    .line 949
+    .end local v0  # "i":I
+    :cond_2d
+    goto :goto_35
+
+    .line 778
     :cond_2e
-    iget-object p1, p0, Lcom/android/server/biometrics/face/FaceService$1;->this$0:Lcom/android/server/biometrics/face/FaceService;
+    iget-object v0, p0, Lcom/android/server/biometrics/face/FaceService$1;->this$0:Lcom/android/server/biometrics/face/FaceService;
 
-    const/4 p2, 0x0
+    const/4 v1, 0x0
 
-    invoke-static {p1, p2, v1}, Lcom/android/server/biometrics/face/FaceService;->access$9301(Lcom/android/server/biometrics/face/FaceService;Landroid/hardware/biometrics/BiometricAuthenticator$Identifier;I)V
+    const/4 v2, 0x0
 
-    .line 951
-    :cond_34
+    invoke-static {v0, v1, v2}, Lcom/android/server/biometrics/face/FaceService;->access$8401(Lcom/android/server/biometrics/face/FaceService;Landroid/hardware/biometrics/BiometricAuthenticator$Identifier;I)V
+
+    .line 780
+    :goto_35
     return-void
 .end method
 
 .method public synthetic lambda$onError$3$FaceService$1(JII)V
-    .registers 6
+    .registers 8
+    .param p1, "deviceId"  # J
+    .param p3, "error"  # I
+    .param p4, "vendorCode"  # I
 
-    .line 902
+    .line 732
     iget-object v0, p0, Lcom/android/server/biometrics/face/FaceService$1;->this$0:Lcom/android/server/biometrics/face/FaceService;
 
-    invoke-static {v0, p1, p2, p3, p4}, Lcom/android/server/biometrics/face/FaceService;->access$9601(Lcom/android/server/biometrics/face/FaceService;JII)V
+    invoke-static {v0, p1, p2, p3, p4}, Lcom/android/server/biometrics/face/FaceService;->access$8701(Lcom/android/server/biometrics/face/FaceService;JII)V
 
-    .line 905
-    const/4 p1, 0x1
+    .line 735
+    const/4 v0, 0x1
 
-    if-ne p3, p1, :cond_29
+    if-ne p3, v0, :cond_29
 
-    .line 907
-    const-string p1, "FaceService"
+    .line 737
+    const-string v0, "FaceService"
 
-    const-string p2, "Got ERROR_HW_UNAVAILABLE; try reconnecting next client."
+    const-string v1, "Got ERROR_HW_UNAVAILABLE; try reconnecting next client."
 
-    invoke-static {p1, p2}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v0, v1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 908
+    .line 738
     monitor-enter p0
 
-    .line 909
+    .line 739
     :try_start_10
-    iget-object p1, p0, Lcom/android/server/biometrics/face/FaceService$1;->this$0:Lcom/android/server/biometrics/face/FaceService;
+    iget-object v0, p0, Lcom/android/server/biometrics/face/FaceService$1;->this$0:Lcom/android/server/biometrics/face/FaceService;
 
-    const/4 p2, 0x0
+    const/4 v1, 0x0
 
-    invoke-static {p1, p2}, Lcom/android/server/biometrics/face/FaceService;->access$7302(Lcom/android/server/biometrics/face/FaceService;Landroid/hardware/biometrics/face/V1_0/IBiometricsFace;)Landroid/hardware/biometrics/face/V1_0/IBiometricsFace;
+    invoke-static {v0, v1}, Lcom/android/server/biometrics/face/FaceService;->access$6902(Lcom/android/server/biometrics/face/FaceService;Landroid/hardware/biometrics/face/V1_0/IBiometricsFace;)Landroid/hardware/biometrics/face/V1_0/IBiometricsFace;
 
-    .line 910
-    iget-object p1, p0, Lcom/android/server/biometrics/face/FaceService$1;->this$0:Lcom/android/server/biometrics/face/FaceService;
+    .line 740
+    iget-object v0, p0, Lcom/android/server/biometrics/face/FaceService$1;->this$0:Lcom/android/server/biometrics/face/FaceService;
 
-    const-wide/16 p2, 0x0
+    const-wide/16 v1, 0x0
 
-    invoke-static {p1, p2, p3}, Lcom/android/server/biometrics/face/FaceService;->access$9702(Lcom/android/server/biometrics/face/FaceService;J)J
+    invoke-static {v0, v1, v2}, Lcom/android/server/biometrics/face/FaceService;->access$8802(Lcom/android/server/biometrics/face/FaceService;J)J
 
-    .line 911
-    iget-object p1, p0, Lcom/android/server/biometrics/face/FaceService$1;->this$0:Lcom/android/server/biometrics/face/FaceService;
+    .line 741
+    iget-object v0, p0, Lcom/android/server/biometrics/face/FaceService$1;->this$0:Lcom/android/server/biometrics/face/FaceService;
 
-    const/16 p2, -0x2710
+    const/16 v1, -0x2710
 
-    invoke-static {p1, p2}, Lcom/android/server/biometrics/face/FaceService;->access$9802(Lcom/android/server/biometrics/face/FaceService;I)I
+    invoke-static {v0, v1}, Lcom/android/server/biometrics/face/FaceService;->access$8902(Lcom/android/server/biometrics/face/FaceService;I)I
 
-    .line 912
+    .line 742
     monitor-exit p0
 
     goto :goto_29
 
     :catchall_26
-    move-exception p1
+    move-exception v0
 
     monitor-exit p0
     :try_end_28
     .catchall {:try_start_10 .. :try_end_28} :catchall_26
 
-    throw p1
+    throw v0
 
-    .line 914
+    .line 744
     :cond_29
     :goto_29
     return-void
@@ -306,146 +259,148 @@
 
 .method public synthetic lambda$onLockoutChanged$6$FaceService$1(J)V
     .registers 5
+    .param p1, "duration"  # J
 
-    .line 966
+    .line 795
     const-wide/16 v0, 0x0
 
-    cmp-long p1, p1, v0
+    cmp-long v0, p1, v0
 
-    if-nez p1, :cond_b
+    if-nez v0, :cond_b
 
-    .line 967
-    iget-object p1, p0, Lcom/android/server/biometrics/face/FaceService$1;->this$0:Lcom/android/server/biometrics/face/FaceService;
+    .line 796
+    iget-object v0, p0, Lcom/android/server/biometrics/face/FaceService$1;->this$0:Lcom/android/server/biometrics/face/FaceService;
 
-    invoke-static {p1}, Lcom/android/server/biometrics/face/FaceService;->access$9100(Lcom/android/server/biometrics/face/FaceService;)V
+    invoke-static {v0}, Lcom/android/server/biometrics/face/FaceService;->access$8200(Lcom/android/server/biometrics/face/FaceService;)V
 
-    .line 969
+    .line 798
     :cond_b
     return-void
 .end method
 
 .method public synthetic lambda$onRemoved$4$FaceService$1(Ljava/util/ArrayList;J)V
-    .registers 10
+    .registers 9
+    .param p1, "faceIds"  # Ljava/util/ArrayList;
+    .param p2, "deviceId"  # J
 
-    .line 920
+    .line 750
     invoke-virtual {p1}, Ljava/util/ArrayList;->isEmpty()Z
 
     move-result v0
 
     const-string v1, ""
 
-    const/4 v2, 0x0
-
     if-nez v0, :cond_2e
 
-    .line 921
-    move v0, v2
+    .line 751
+    const/4 v0, 0x0
 
-    :goto_a
+    .local v0, "i":I
+    :goto_9
     invoke-virtual {p1}, Ljava/util/ArrayList;->size()I
 
-    move-result v3
+    move-result v2
 
-    if-ge v0, v3, :cond_38
+    if-ge v0, v2, :cond_2d
 
-    .line 922
-    new-instance v3, Landroid/hardware/face/Face;
+    .line 752
+    new-instance v2, Landroid/hardware/face/Face;
 
     invoke-virtual {p1, v0}, Ljava/util/ArrayList;->get(I)Ljava/lang/Object;
 
-    move-result-object v4
+    move-result-object v3
 
-    check-cast v4, Ljava/lang/Integer;
+    check-cast v3, Ljava/lang/Integer;
 
-    invoke-virtual {v4}, Ljava/lang/Integer;->intValue()I
+    invoke-virtual {v3}, Ljava/lang/Integer;->intValue()I
 
-    move-result v4
+    move-result v3
 
-    invoke-direct {v3, v1, v4, p2, p3}, Landroid/hardware/face/Face;-><init>(Ljava/lang/CharSequence;IJ)V
+    invoke-direct {v2, v1, v3, p2, p3}, Landroid/hardware/face/Face;-><init>(Ljava/lang/CharSequence;IJ)V
 
-    .line 924
-    iget-object v4, p0, Lcom/android/server/biometrics/face/FaceService$1;->this$0:Lcom/android/server/biometrics/face/FaceService;
+    .line 754
+    .local v2, "face":Landroid/hardware/face/Face;
+    iget-object v3, p0, Lcom/android/server/biometrics/face/FaceService$1;->this$0:Lcom/android/server/biometrics/face/FaceService;
 
     invoke-virtual {p1}, Ljava/util/ArrayList;->size()I
 
-    move-result v5
+    move-result v4
 
-    sub-int/2addr v5, v0
+    sub-int/2addr v4, v0
 
-    add-int/lit8 v5, v5, -0x1
+    add-int/lit8 v4, v4, -0x1
 
-    invoke-static {v4, v3, v5}, Lcom/android/server/biometrics/face/FaceService;->access$9401(Lcom/android/server/biometrics/face/FaceService;Landroid/hardware/biometrics/BiometricAuthenticator$Identifier;I)V
+    invoke-static {v3, v2, v4}, Lcom/android/server/biometrics/face/FaceService;->access$8501(Lcom/android/server/biometrics/face/FaceService;Landroid/hardware/biometrics/BiometricAuthenticator$Identifier;I)V
 
-    .line 921
+    .line 751
+    .end local v2  # "face":Landroid/hardware/face/Face;
     add-int/lit8 v0, v0, 0x1
 
-    goto :goto_a
+    goto :goto_9
 
-    .line 927
+    .end local v0  # "i":I
+    :cond_2d
+    goto :goto_39
+
+    .line 757
     :cond_2e
-    new-instance p1, Landroid/hardware/face/Face;
+    new-instance v0, Landroid/hardware/face/Face;
 
-    invoke-direct {p1, v1, v2, p2, p3}, Landroid/hardware/face/Face;-><init>(Ljava/lang/CharSequence;IJ)V
+    const/4 v2, 0x0
 
-    .line 928
-    iget-object p2, p0, Lcom/android/server/biometrics/face/FaceService$1;->this$0:Lcom/android/server/biometrics/face/FaceService;
+    invoke-direct {v0, v1, v2, p2, p3}, Landroid/hardware/face/Face;-><init>(Ljava/lang/CharSequence;IJ)V
 
-    invoke-static {p2, p1, v2}, Lcom/android/server/biometrics/face/FaceService;->access$9501(Lcom/android/server/biometrics/face/FaceService;Landroid/hardware/biometrics/BiometricAuthenticator$Identifier;I)V
+    .line 758
+    .local v0, "face":Landroid/hardware/face/Face;
+    iget-object v1, p0, Lcom/android/server/biometrics/face/FaceService$1;->this$0:Lcom/android/server/biometrics/face/FaceService;
 
-    .line 930
-    :cond_38
-    iget-object p1, p0, Lcom/android/server/biometrics/face/FaceService$1;->this$0:Lcom/android/server/biometrics/face/FaceService;
+    invoke-static {v1, v0, v2}, Lcom/android/server/biometrics/face/FaceService;->access$8601(Lcom/android/server/biometrics/face/FaceService;Landroid/hardware/biometrics/BiometricAuthenticator$Identifier;I)V
 
-    invoke-virtual {p1}, Lcom/android/server/biometrics/face/FaceService;->getContext()Landroid/content/Context;
-
-    move-result-object p1
-
-    invoke-virtual {p1}, Landroid/content/Context;->getContentResolver()Landroid/content/ContentResolver;
-
-    move-result-object p1
-
-    const/4 p2, -0x2
-
-    const-string p3, "face_unlock_re_enroll"
-
-    invoke-static {p1, p3, v2, p2}, Landroid/provider/Settings$Secure;->putIntForUser(Landroid/content/ContentResolver;Ljava/lang/String;II)Z
-
-    .line 932
+    .line 761
+    .end local v0  # "face":Landroid/hardware/face/Face;
+    :goto_39
     return-void
 .end method
 
 .method public onAcquired(JIII)V
-    .registers 13
+    .registers 14
+    .param p1, "deviceId"  # J
+    .param p3, "userId"  # I
+    .param p4, "acquiredInfo"  # I
+    .param p5, "vendorCode"  # I
 
-    .line 884
-    iget-object p3, p0, Lcom/android/server/biometrics/face/FaceService$1;->this$0:Lcom/android/server/biometrics/face/FaceService;
+    .line 714
+    iget-object v0, p0, Lcom/android/server/biometrics/face/FaceService$1;->this$0:Lcom/android/server/biometrics/face/FaceService;
 
-    invoke-static {p3}, Lcom/android/server/biometrics/face/FaceService;->access$8400(Lcom/android/server/biometrics/face/FaceService;)Lcom/android/server/biometrics/BiometricServiceBase$H;
+    invoke-static {v0}, Lcom/android/server/biometrics/face/FaceService;->access$7500(Lcom/android/server/biometrics/face/FaceService;)Lcom/android/server/biometrics/BiometricServiceBase$H;
 
-    move-result-object p3
+    move-result-object v0
 
-    new-instance v6, Lcom/android/server/biometrics/face/-$$Lambda$FaceService$1$7DzDQwoPfgYi40WuB8Xi0hA3qVQ;
+    new-instance v7, Lcom/android/server/biometrics/face/-$$Lambda$FaceService$1$7DzDQwoPfgYi40WuB8Xi0hA3qVQ;
 
-    move-object v0, v6
+    move-object v1, v7
 
-    move-object v1, p0
+    move-object v2, p0
 
-    move-wide v2, p1
+    move-wide v3, p1
 
-    move v4, p4
+    move v5, p4
 
-    move v5, p5
+    move v6, p5
 
-    invoke-direct/range {v0 .. v5}, Lcom/android/server/biometrics/face/-$$Lambda$FaceService$1$7DzDQwoPfgYi40WuB8Xi0hA3qVQ;-><init>(Lcom/android/server/biometrics/face/FaceService$1;JII)V
+    invoke-direct/range {v1 .. v6}, Lcom/android/server/biometrics/face/-$$Lambda$FaceService$1$7DzDQwoPfgYi40WuB8Xi0hA3qVQ;-><init>(Lcom/android/server/biometrics/face/FaceService$1;JII)V
 
-    invoke-virtual {p3, v6}, Lcom/android/server/biometrics/BiometricServiceBase$H;->post(Ljava/lang/Runnable;)Z
+    invoke-virtual {v0, v7}, Lcom/android/server/biometrics/BiometricServiceBase$H;->post(Ljava/lang/Runnable;)Z
 
-    .line 887
+    .line 717
     return-void
 .end method
 
 .method public onAuthenticated(JIILjava/util/ArrayList;)V
-    .registers 13
+    .registers 14
+    .param p1, "deviceId"  # J
+    .param p3, "faceId"  # I
+    .param p4, "userId"  # I
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(JII",
@@ -455,40 +410,45 @@
         }
     .end annotation
 
-    .line 892
-    iget-object p4, p0, Lcom/android/server/biometrics/face/FaceService$1;->this$0:Lcom/android/server/biometrics/face/FaceService;
+    .line 722
+    .local p5, "token":Ljava/util/ArrayList;, "Ljava/util/ArrayList<Ljava/lang/Byte;>;"
+    iget-object v0, p0, Lcom/android/server/biometrics/face/FaceService$1;->this$0:Lcom/android/server/biometrics/face/FaceService;
 
-    invoke-static {p4}, Lcom/android/server/biometrics/face/FaceService;->access$8500(Lcom/android/server/biometrics/face/FaceService;)Lcom/android/server/biometrics/BiometricServiceBase$H;
+    invoke-static {v0}, Lcom/android/server/biometrics/face/FaceService;->access$7600(Lcom/android/server/biometrics/face/FaceService;)Lcom/android/server/biometrics/BiometricServiceBase$H;
 
-    move-result-object p4
+    move-result-object v0
 
-    new-instance v6, Lcom/android/server/biometrics/face/-$$Lambda$FaceService$1$GcU4ZG1fdDLhKvSxuMwfPargEnI;
+    new-instance v7, Lcom/android/server/biometrics/face/-$$Lambda$FaceService$1$GcU4ZG1fdDLhKvSxuMwfPargEnI;
 
-    move-object v0, v6
+    move-object v1, v7
 
-    move-object v1, p0
+    move-object v2, p0
 
-    move v2, p3
+    move v3, p3
 
-    move-wide v3, p1
+    move-wide v4, p1
 
-    move-object v5, p5
+    move-object v6, p5
 
-    invoke-direct/range {v0 .. v5}, Lcom/android/server/biometrics/face/-$$Lambda$FaceService$1$GcU4ZG1fdDLhKvSxuMwfPargEnI;-><init>(Lcom/android/server/biometrics/face/FaceService$1;IJLjava/util/ArrayList;)V
+    invoke-direct/range {v1 .. v6}, Lcom/android/server/biometrics/face/-$$Lambda$FaceService$1$GcU4ZG1fdDLhKvSxuMwfPargEnI;-><init>(Lcom/android/server/biometrics/face/FaceService$1;IJLjava/util/ArrayList;)V
 
-    invoke-virtual {p4, v6}, Lcom/android/server/biometrics/BiometricServiceBase$H;->post(Ljava/lang/Runnable;)Z
+    invoke-virtual {v0, v7}, Lcom/android/server/biometrics/BiometricServiceBase$H;->post(Ljava/lang/Runnable;)Z
 
-    .line 896
+    .line 726
     return-void
 .end method
 
 .method public onEnrollResult(JIII)V
     .registers 15
+    .param p1, "deviceId"  # J
+    .param p3, "faceId"  # I
+    .param p4, "userId"  # I
+    .param p5, "remaining"  # I
 
-    .line 861
+    .line 703
     iget-object v0, p0, Lcom/android/server/biometrics/face/FaceService$1;->this$0:Lcom/android/server/biometrics/face/FaceService;
 
-    invoke-static {v0}, Lcom/android/server/biometrics/face/FaceService;->access$8300(Lcom/android/server/biometrics/face/FaceService;)Lcom/android/server/biometrics/BiometricServiceBase$H;
+    invoke-static {v0}, Lcom/android/server/biometrics/face/FaceService;->access$7400(Lcom/android/server/biometrics/face/FaceService;)Lcom/android/server/biometrics/BiometricServiceBase$H;
 
     move-result-object v0
 
@@ -510,12 +470,14 @@
 
     invoke-virtual {v0, v8}, Lcom/android/server/biometrics/BiometricServiceBase$H;->post(Ljava/lang/Runnable;)Z
 
-    .line 878
+    .line 708
     return-void
 .end method
 
 .method public onEnumerate(JLjava/util/ArrayList;I)V
-    .registers 6
+    .registers 7
+    .param p1, "deviceId"  # J
+    .param p4, "userId"  # I
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(J",
@@ -531,57 +493,63 @@
         }
     .end annotation
 
-    .line 938
-    iget-object p4, p0, Lcom/android/server/biometrics/face/FaceService$1;->this$0:Lcom/android/server/biometrics/face/FaceService;
+    .line 767
+    .local p3, "faceIds":Ljava/util/ArrayList;, "Ljava/util/ArrayList<Ljava/lang/Integer;>;"
+    iget-object v0, p0, Lcom/android/server/biometrics/face/FaceService$1;->this$0:Lcom/android/server/biometrics/face/FaceService;
 
-    invoke-static {p4}, Lcom/android/server/biometrics/face/FaceService;->access$8800(Lcom/android/server/biometrics/face/FaceService;)Lcom/android/server/biometrics/BiometricServiceBase$H;
+    invoke-static {v0}, Lcom/android/server/biometrics/face/FaceService;->access$7900(Lcom/android/server/biometrics/face/FaceService;)Lcom/android/server/biometrics/BiometricServiceBase$H;
 
-    move-result-object p4
+    move-result-object v0
 
-    new-instance v0, Lcom/android/server/biometrics/face/-$$Lambda$FaceService$1$81olYJI06zsG8LvXV_gD76jaNyg;
+    new-instance v1, Lcom/android/server/biometrics/face/-$$Lambda$FaceService$1$81olYJI06zsG8LvXV_gD76jaNyg;
 
-    invoke-direct {v0, p0, p3, p1, p2}, Lcom/android/server/biometrics/face/-$$Lambda$FaceService$1$81olYJI06zsG8LvXV_gD76jaNyg;-><init>(Lcom/android/server/biometrics/face/FaceService$1;Ljava/util/ArrayList;J)V
+    invoke-direct {v1, p0, p3, p1, p2}, Lcom/android/server/biometrics/face/-$$Lambda$FaceService$1$81olYJI06zsG8LvXV_gD76jaNyg;-><init>(Lcom/android/server/biometrics/face/FaceService$1;Ljava/util/ArrayList;J)V
 
-    invoke-virtual {p4, v0}, Lcom/android/server/biometrics/BiometricServiceBase$H;->post(Ljava/lang/Runnable;)Z
+    invoke-virtual {v0, v1}, Lcom/android/server/biometrics/BiometricServiceBase$H;->post(Ljava/lang/Runnable;)Z
 
-    .line 952
+    .line 781
     return-void
 .end method
 
 .method public onError(JIII)V
-    .registers 13
+    .registers 14
+    .param p1, "deviceId"  # J
+    .param p3, "userId"  # I
+    .param p4, "error"  # I
+    .param p5, "vendorCode"  # I
 
-    .line 901
-    iget-object p3, p0, Lcom/android/server/biometrics/face/FaceService$1;->this$0:Lcom/android/server/biometrics/face/FaceService;
+    .line 731
+    iget-object v0, p0, Lcom/android/server/biometrics/face/FaceService$1;->this$0:Lcom/android/server/biometrics/face/FaceService;
 
-    invoke-static {p3}, Lcom/android/server/biometrics/face/FaceService;->access$8600(Lcom/android/server/biometrics/face/FaceService;)Lcom/android/server/biometrics/BiometricServiceBase$H;
+    invoke-static {v0}, Lcom/android/server/biometrics/face/FaceService;->access$7700(Lcom/android/server/biometrics/face/FaceService;)Lcom/android/server/biometrics/BiometricServiceBase$H;
 
-    move-result-object p3
+    move-result-object v0
 
-    new-instance v6, Lcom/android/server/biometrics/face/-$$Lambda$FaceService$1$s3kBxUsmTmDZC9YLbT5yPR3KOWo;
+    new-instance v7, Lcom/android/server/biometrics/face/-$$Lambda$FaceService$1$s3kBxUsmTmDZC9YLbT5yPR3KOWo;
 
-    move-object v0, v6
+    move-object v1, v7
 
-    move-object v1, p0
+    move-object v2, p0
 
-    move-wide v2, p1
+    move-wide v3, p1
 
-    move v4, p4
+    move v5, p4
 
-    move v5, p5
+    move v6, p5
 
-    invoke-direct/range {v0 .. v5}, Lcom/android/server/biometrics/face/-$$Lambda$FaceService$1$s3kBxUsmTmDZC9YLbT5yPR3KOWo;-><init>(Lcom/android/server/biometrics/face/FaceService$1;JII)V
+    invoke-direct/range {v1 .. v6}, Lcom/android/server/biometrics/face/-$$Lambda$FaceService$1$s3kBxUsmTmDZC9YLbT5yPR3KOWo;-><init>(Lcom/android/server/biometrics/face/FaceService$1;JII)V
 
-    invoke-virtual {p3, v6}, Lcom/android/server/biometrics/BiometricServiceBase$H;->post(Ljava/lang/Runnable;)Z
+    invoke-virtual {v0, v7}, Lcom/android/server/biometrics/BiometricServiceBase$H;->post(Ljava/lang/Runnable;)Z
 
-    .line 915
+    .line 745
     return-void
 .end method
 
 .method public onLockoutChanged(J)V
     .registers 5
+    .param p1, "duration"  # J
 
-    .line 956
+    .line 785
     new-instance v0, Ljava/lang/StringBuilder;
 
     invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
@@ -600,23 +568,23 @@
 
     invoke-static {v1, v0}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 957
+    .line 786
     const-wide/16 v0, 0x0
 
     cmp-long v0, p1, v0
 
     if-nez v0, :cond_24
 
-    .line 958
+    .line 787
     iget-object v0, p0, Lcom/android/server/biometrics/face/FaceService$1;->this$0:Lcom/android/server/biometrics/face/FaceService;
 
     const/4 v1, 0x0
 
-    invoke-static {v0, v1}, Lcom/android/server/biometrics/face/FaceService;->access$8902(Lcom/android/server/biometrics/face/FaceService;I)I
+    invoke-static {v0, v1}, Lcom/android/server/biometrics/face/FaceService;->access$8002(Lcom/android/server/biometrics/face/FaceService;I)I
 
     goto :goto_3a
 
-    .line 959
+    .line 788
     :cond_24
     const-wide v0, 0x7fffffffffffffffL
 
@@ -624,28 +592,28 @@
 
     if-nez v0, :cond_34
 
-    .line 960
+    .line 789
     iget-object v0, p0, Lcom/android/server/biometrics/face/FaceService$1;->this$0:Lcom/android/server/biometrics/face/FaceService;
 
     const/4 v1, 0x2
 
-    invoke-static {v0, v1}, Lcom/android/server/biometrics/face/FaceService;->access$8902(Lcom/android/server/biometrics/face/FaceService;I)I
+    invoke-static {v0, v1}, Lcom/android/server/biometrics/face/FaceService;->access$8002(Lcom/android/server/biometrics/face/FaceService;I)I
 
     goto :goto_3a
 
-    .line 962
+    .line 791
     :cond_34
     iget-object v0, p0, Lcom/android/server/biometrics/face/FaceService$1;->this$0:Lcom/android/server/biometrics/face/FaceService;
 
     const/4 v1, 0x1
 
-    invoke-static {v0, v1}, Lcom/android/server/biometrics/face/FaceService;->access$8902(Lcom/android/server/biometrics/face/FaceService;I)I
+    invoke-static {v0, v1}, Lcom/android/server/biometrics/face/FaceService;->access$8002(Lcom/android/server/biometrics/face/FaceService;I)I
 
-    .line 965
+    .line 794
     :goto_3a
     iget-object v0, p0, Lcom/android/server/biometrics/face/FaceService$1;->this$0:Lcom/android/server/biometrics/face/FaceService;
 
-    invoke-static {v0}, Lcom/android/server/biometrics/face/FaceService;->access$9000(Lcom/android/server/biometrics/face/FaceService;)Lcom/android/server/biometrics/BiometricServiceBase$H;
+    invoke-static {v0}, Lcom/android/server/biometrics/face/FaceService;->access$8100(Lcom/android/server/biometrics/face/FaceService;)Lcom/android/server/biometrics/BiometricServiceBase$H;
 
     move-result-object v0
 
@@ -655,12 +623,14 @@
 
     invoke-virtual {v0, v1}, Lcom/android/server/biometrics/BiometricServiceBase$H;->post(Ljava/lang/Runnable;)Z
 
-    .line 970
+    .line 799
     return-void
 .end method
 
 .method public onRemoved(JLjava/util/ArrayList;I)V
-    .registers 6
+    .registers 7
+    .param p1, "deviceId"  # J
+    .param p4, "userId"  # I
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(J",
@@ -670,19 +640,20 @@
         }
     .end annotation
 
-    .line 919
-    iget-object p4, p0, Lcom/android/server/biometrics/face/FaceService$1;->this$0:Lcom/android/server/biometrics/face/FaceService;
+    .line 749
+    .local p3, "faceIds":Ljava/util/ArrayList;, "Ljava/util/ArrayList<Ljava/lang/Integer;>;"
+    iget-object v0, p0, Lcom/android/server/biometrics/face/FaceService$1;->this$0:Lcom/android/server/biometrics/face/FaceService;
 
-    invoke-static {p4}, Lcom/android/server/biometrics/face/FaceService;->access$8700(Lcom/android/server/biometrics/face/FaceService;)Lcom/android/server/biometrics/BiometricServiceBase$H;
+    invoke-static {v0}, Lcom/android/server/biometrics/face/FaceService;->access$7800(Lcom/android/server/biometrics/face/FaceService;)Lcom/android/server/biometrics/BiometricServiceBase$H;
 
-    move-result-object p4
+    move-result-object v0
 
-    new-instance v0, Lcom/android/server/biometrics/face/-$$Lambda$FaceService$1$jaJb2y4UkoXOtV5wJimfIPNA_PM;
+    new-instance v1, Lcom/android/server/biometrics/face/-$$Lambda$FaceService$1$jaJb2y4UkoXOtV5wJimfIPNA_PM;
 
-    invoke-direct {v0, p0, p3, p1, p2}, Lcom/android/server/biometrics/face/-$$Lambda$FaceService$1$jaJb2y4UkoXOtV5wJimfIPNA_PM;-><init>(Lcom/android/server/biometrics/face/FaceService$1;Ljava/util/ArrayList;J)V
+    invoke-direct {v1, p0, p3, p1, p2}, Lcom/android/server/biometrics/face/-$$Lambda$FaceService$1$jaJb2y4UkoXOtV5wJimfIPNA_PM;-><init>(Lcom/android/server/biometrics/face/FaceService$1;Ljava/util/ArrayList;J)V
 
-    invoke-virtual {p4, v0}, Lcom/android/server/biometrics/BiometricServiceBase$H;->post(Ljava/lang/Runnable;)Z
+    invoke-virtual {v0, v1}, Lcom/android/server/biometrics/BiometricServiceBase$H;->post(Ljava/lang/Runnable;)Z
 
-    .line 933
+    .line 762
     return-void
 .end method

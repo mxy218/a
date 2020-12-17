@@ -30,6 +30,7 @@
 # direct methods
 .method constructor <init>(Landroid/os/IBinder;)V
     .registers 3
+    .param p1, "remote"  # Landroid/os/IBinder;
 
     .line 94
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -87,11 +88,13 @@
     move-result-object v0
 
     .line 127
+    .local v0, "data":Landroid/os/Parcel;
     invoke-static {}, Landroid/os/Parcel;->obtain()Landroid/os/Parcel;
 
     move-result-object v1
 
     .line 129
+    .local v1, "reply":Landroid/os/Parcel;
     :try_start_d
     const-string v2, "android.net.dhcp.IDhcpServerCallbacks"
 
@@ -139,6 +142,8 @@
     throw v2
 
     .line 138
+    .end local v0  # "data":Landroid/os/Parcel;
+    .end local v1  # "reply":Landroid/os/Parcel;
     :cond_33
     :goto_33
     iget v0, p0, Landroid/net/dhcp/IDhcpServerCallbacks$Stub$Proxy;->mCachedVersion:I
@@ -148,6 +153,8 @@
 
 .method public onDhcpServerCreated(ILandroid/net/dhcp/IDhcpServer;)V
     .registers 7
+    .param p1, "statusCode"  # I
+    .param p2, "server"  # Landroid/net/dhcp/IDhcpServer;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -160,6 +167,7 @@
     move-result-object v0
 
     .line 110
+    .local v0, "_data":Landroid/os/Parcel;
     :try_start_4
     const-string v1, "android.net.dhcp.IDhcpServerCallbacks"
 
@@ -195,20 +203,21 @@
     move-result v1
 
     .line 114
+    .local v1, "_status":Z
     if-nez v1, :cond_32
 
     invoke-static {}, Landroid/net/dhcp/IDhcpServerCallbacks$Stub;->getDefaultImpl()Landroid/net/dhcp/IDhcpServerCallbacks;
 
-    move-result-object v1
+    move-result-object v2
 
-    if-eqz v1, :cond_32
+    if-eqz v2, :cond_32
 
     .line 115
     invoke-static {}, Landroid/net/dhcp/IDhcpServerCallbacks$Stub;->getDefaultImpl()Landroid/net/dhcp/IDhcpServerCallbacks;
 
-    move-result-object v1
+    move-result-object v2
 
-    invoke-interface {v1, p1, p2}, Landroid/net/dhcp/IDhcpServerCallbacks;->onDhcpServerCreated(ILandroid/net/dhcp/IDhcpServer;)V
+    invoke-interface {v2, p1, p2}, Landroid/net/dhcp/IDhcpServerCallbacks;->onDhcpServerCreated(ILandroid/net/dhcp/IDhcpServer;)V
     :try_end_2e
     .catchall {:try_start_4 .. :try_end_2e} :catchall_37
 
@@ -219,6 +228,7 @@
     return-void
 
     .line 120
+    .end local v1  # "_status":Z
     :cond_32
     invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
 
@@ -230,9 +240,9 @@
 
     .line 120
     :catchall_37
-    move-exception p1
+    move-exception v1
 
     invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
 
-    throw p1
+    throw v1
 .end method

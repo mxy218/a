@@ -67,6 +67,9 @@
 
 .method public constructor <init>(Landroid/content/Context;Lcom/android/server/tv/TvRemoteProviderWatcher$ProviderMethods;Landroid/os/Handler;)V
     .registers 5
+    .param p1, "context"  # Landroid/content/Context;
+    .param p2, "provider"  # Lcom/android/server/tv/TvRemoteProviderWatcher$ProviderMethods;
+    .param p3, "handler"  # Landroid/os/Handler;
 
     .line 57
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -104,25 +107,25 @@
     .line 61
     invoke-static {}, Landroid/os/UserHandle;->myUserId()I
 
-    move-result p2
+    move-result v0
 
-    iput p2, p0, Lcom/android/server/tv/TvRemoteProviderWatcher;->mUserId:I
+    iput v0, p0, Lcom/android/server/tv/TvRemoteProviderWatcher;->mUserId:I
 
     .line 62
     invoke-virtual {p1}, Landroid/content/Context;->getPackageManager()Landroid/content/pm/PackageManager;
 
-    move-result-object p2
+    move-result-object v0
 
-    iput-object p2, p0, Lcom/android/server/tv/TvRemoteProviderWatcher;->mPackageManager:Landroid/content/pm/PackageManager;
+    iput-object v0, p0, Lcom/android/server/tv/TvRemoteProviderWatcher;->mPackageManager:Landroid/content/pm/PackageManager;
 
     .line 63
-    const p2, 0x10401a3
+    const v0, 0x104019d
 
-    invoke-virtual {p1, p2}, Landroid/content/Context;->getString(I)Ljava/lang/String;
+    invoke-virtual {p1, v0}, Landroid/content/Context;->getString(I)Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    iput-object p1, p0, Lcom/android/server/tv/TvRemoteProviderWatcher;->mUnbundledServicePackage:Ljava/lang/String;
+    iput-object v0, p0, Lcom/android/server/tv/TvRemoteProviderWatcher;->mUnbundledServicePackage:Ljava/lang/String;
 
     .line 65
     return-void
@@ -138,25 +141,28 @@
 .end method
 
 .method static synthetic access$100(Lcom/android/server/tv/TvRemoteProviderWatcher;)Ljava/lang/Runnable;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/tv/TvRemoteProviderWatcher;
 
     .line 42
-    iget-object p0, p0, Lcom/android/server/tv/TvRemoteProviderWatcher;->mScanPackagesRunnable:Ljava/lang/Runnable;
+    iget-object v0, p0, Lcom/android/server/tv/TvRemoteProviderWatcher;->mScanPackagesRunnable:Ljava/lang/Runnable;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$200(Lcom/android/server/tv/TvRemoteProviderWatcher;)Landroid/os/Handler;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/tv/TvRemoteProviderWatcher;
 
     .line 42
-    iget-object p0, p0, Lcom/android/server/tv/TvRemoteProviderWatcher;->mHandler:Landroid/os/Handler;
+    iget-object v0, p0, Lcom/android/server/tv/TvRemoteProviderWatcher;->mHandler:Landroid/os/Handler;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$300(Lcom/android/server/tv/TvRemoteProviderWatcher;)V
     .registers 1
+    .param p0, "x0"  # Lcom/android/server/tv/TvRemoteProviderWatcher;
 
     .line 42
     invoke-direct {p0}, Lcom/android/server/tv/TvRemoteProviderWatcher;->scanPackages()V
@@ -165,7 +171,9 @@
 .end method
 
 .method private findProvider(Ljava/lang/String;Ljava/lang/String;)I
-    .registers 6
+    .registers 7
+    .param p1, "packageName"  # Ljava/lang/String;
+    .param p2, "className"  # Ljava/lang/String;
 
     .line 189
     iget-object v0, p0, Lcom/android/server/tv/TvRemoteProviderWatcher;->mProviderProxies:Ljava/util/ArrayList;
@@ -175,8 +183,10 @@
     move-result v0
 
     .line 190
+    .local v0, "count":I
     const/4 v1, 0x0
 
+    .local v1, "i":I
     :goto_7
     if-ge v1, v0, :cond_1b
 
@@ -190,30 +200,34 @@
     check-cast v2, Lcom/android/server/tv/TvRemoteProviderProxy;
 
     .line 192
+    .local v2, "provider":Lcom/android/server/tv/TvRemoteProviderProxy;
     invoke-virtual {v2, p1, p2}, Lcom/android/server/tv/TvRemoteProviderProxy;->hasComponentName(Ljava/lang/String;Ljava/lang/String;)Z
 
-    move-result v2
+    move-result v3
 
-    if-eqz v2, :cond_18
+    if-eqz v3, :cond_18
 
     .line 193
     return v1
 
     .line 190
+    .end local v2  # "provider":Lcom/android/server/tv/TvRemoteProviderProxy;
     :cond_18
     add-int/lit8 v1, v1, 0x1
 
     goto :goto_7
 
     .line 196
+    .end local v1  # "i":I
     :cond_1b
-    const/4 p1, -0x1
+    const/4 v1, -0x1
 
-    return p1
+    return v1
 .end method
 
 .method private hasNecessaryPermissions(Ljava/lang/String;)Z
     .registers 4
+    .param p1, "packageName"  # Ljava/lang/String;
 
     .line 181
     iget-object v0, p0, Lcom/android/server/tv/TvRemoteProviderWatcher;->mPackageManager:Landroid/content/pm/PackageManager;
@@ -222,24 +236,24 @@
 
     invoke-virtual {v0, v1, p1}, Landroid/content/pm/PackageManager;->checkPermission(Ljava/lang/String;Ljava/lang/String;)I
 
-    move-result p1
+    move-result v0
 
-    if-nez p1, :cond_c
+    if-nez v0, :cond_c
 
     .line 183
-    const/4 p1, 0x1
+    const/4 v0, 0x1
 
-    return p1
+    return v0
 
     .line 185
     :cond_c
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    return p1
+    return v0
 .end method
 
 .method private scanPackages()V
-    .registers 10
+    .registers 13
 
     .line 103
     iget-boolean v0, p0, Lcom/android/server/tv/TvRemoteProviderWatcher;->mRunning:Z
@@ -263,218 +277,243 @@
 
     .line 110
     :cond_11
-    nop
+    const/4 v0, 0x0
 
     .line 111
-    new-instance v0, Landroid/content/Intent;
+    .local v0, "targetIndex":I
+    new-instance v2, Landroid/content/Intent;
 
-    const-string v2, "com.android.media.tv.remoteprovider.TvRemoteProvider"
+    const-string v3, "com.android.media.tv.remoteprovider.TvRemoteProvider"
 
-    invoke-direct {v0, v2}, Landroid/content/Intent;-><init>(Ljava/lang/String;)V
+    invoke-direct {v2, v3}, Landroid/content/Intent;-><init>(Ljava/lang/String;)V
 
     .line 112
-    iget-object v2, p0, Lcom/android/server/tv/TvRemoteProviderWatcher;->mPackageManager:Landroid/content/pm/PackageManager;
-
-    iget v3, p0, Lcom/android/server/tv/TvRemoteProviderWatcher;->mUserId:I
+    .local v2, "intent":Landroid/content/Intent;
+    iget-object v3, p0, Lcom/android/server/tv/TvRemoteProviderWatcher;->mPackageManager:Landroid/content/pm/PackageManager;
 
     const/4 v4, 0x0
 
-    invoke-virtual {v2, v0, v4, v3}, Landroid/content/pm/PackageManager;->queryIntentServicesAsUser(Landroid/content/Intent;II)Ljava/util/List;
+    iget v5, p0, Lcom/android/server/tv/TvRemoteProviderWatcher;->mUserId:I
 
-    move-result-object v0
+    invoke-virtual {v3, v2, v4, v5}, Landroid/content/pm/PackageManager;->queryIntentServicesAsUser(Landroid/content/Intent;II)Ljava/util/List;
 
-    invoke-interface {v0}, Ljava/util/List;->iterator()Ljava/util/Iterator;
+    move-result-object v3
 
-    move-result-object v0
+    invoke-interface {v3}, Ljava/util/List;->iterator()Ljava/util/Iterator;
+
+    move-result-object v3
 
     :goto_26
-    invoke-interface {v0}, Ljava/util/Iterator;->hasNext()Z
+    invoke-interface {v3}, Ljava/util/Iterator;->hasNext()Z
 
-    move-result v2
+    move-result v4
 
-    if-eqz v2, :cond_86
+    if-eqz v4, :cond_86
 
-    invoke-interface {v0}, Ljava/util/Iterator;->next()Ljava/lang/Object;
+    invoke-interface {v3}, Ljava/util/Iterator;->next()Ljava/lang/Object;
 
-    move-result-object v2
+    move-result-object v4
 
-    check-cast v2, Landroid/content/pm/ResolveInfo;
+    check-cast v4, Landroid/content/pm/ResolveInfo;
 
     .line 114
-    iget-object v2, v2, Landroid/content/pm/ResolveInfo;->serviceInfo:Landroid/content/pm/ServiceInfo;
+    .local v4, "resolveInfo":Landroid/content/pm/ResolveInfo;
+    iget-object v5, v4, Landroid/content/pm/ResolveInfo;->serviceInfo:Landroid/content/pm/ServiceInfo;
 
     .line 115
-    if-eqz v2, :cond_85
+    .local v5, "serviceInfo":Landroid/content/pm/ServiceInfo;
+    if-eqz v5, :cond_85
 
-    invoke-direct {p0, v2}, Lcom/android/server/tv/TvRemoteProviderWatcher;->verifyServiceTrusted(Landroid/content/pm/ServiceInfo;)Z
+    invoke-direct {p0, v5}, Lcom/android/server/tv/TvRemoteProviderWatcher;->verifyServiceTrusted(Landroid/content/pm/ServiceInfo;)Z
 
-    move-result v3
+    move-result v6
 
-    if-eqz v3, :cond_85
+    if-eqz v6, :cond_85
 
     .line 116
-    iget-object v3, v2, Landroid/content/pm/ServiceInfo;->packageName:Ljava/lang/String;
+    iget-object v6, v5, Landroid/content/pm/ServiceInfo;->packageName:Ljava/lang/String;
 
-    iget-object v5, v2, Landroid/content/pm/ServiceInfo;->name:Ljava/lang/String;
+    iget-object v7, v5, Landroid/content/pm/ServiceInfo;->name:Ljava/lang/String;
 
-    invoke-direct {p0, v3, v5}, Lcom/android/server/tv/TvRemoteProviderWatcher;->findProvider(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-direct {p0, v6, v7}, Lcom/android/server/tv/TvRemoteProviderWatcher;->findProvider(Ljava/lang/String;Ljava/lang/String;)I
 
-    move-result v3
+    move-result v6
 
     .line 117
-    if-gez v3, :cond_6d
+    .local v6, "sourceIndex":I
+    if-gez v6, :cond_6d
 
     .line 118
-    new-instance v3, Lcom/android/server/tv/TvRemoteProviderProxy;
+    new-instance v7, Lcom/android/server/tv/TvRemoteProviderProxy;
 
-    iget-object v5, p0, Lcom/android/server/tv/TvRemoteProviderWatcher;->mContext:Landroid/content/Context;
+    iget-object v8, p0, Lcom/android/server/tv/TvRemoteProviderWatcher;->mContext:Landroid/content/Context;
 
-    new-instance v6, Landroid/content/ComponentName;
+    new-instance v9, Landroid/content/ComponentName;
 
-    iget-object v7, v2, Landroid/content/pm/ServiceInfo;->packageName:Ljava/lang/String;
+    iget-object v10, v5, Landroid/content/pm/ServiceInfo;->packageName:Ljava/lang/String;
 
-    iget-object v8, v2, Landroid/content/pm/ServiceInfo;->name:Ljava/lang/String;
+    iget-object v11, v5, Landroid/content/pm/ServiceInfo;->name:Ljava/lang/String;
 
-    invoke-direct {v6, v7, v8}, Landroid/content/ComponentName;-><init>(Ljava/lang/String;Ljava/lang/String;)V
+    invoke-direct {v9, v10, v11}, Landroid/content/ComponentName;-><init>(Ljava/lang/String;Ljava/lang/String;)V
 
-    iget v7, p0, Lcom/android/server/tv/TvRemoteProviderWatcher;->mUserId:I
+    iget v10, p0, Lcom/android/server/tv/TvRemoteProviderWatcher;->mUserId:I
 
-    iget-object v2, v2, Landroid/content/pm/ServiceInfo;->applicationInfo:Landroid/content/pm/ApplicationInfo;
+    iget-object v11, v5, Landroid/content/pm/ServiceInfo;->applicationInfo:Landroid/content/pm/ApplicationInfo;
 
-    iget v2, v2, Landroid/content/pm/ApplicationInfo;->uid:I
+    iget v11, v11, Landroid/content/pm/ApplicationInfo;->uid:I
 
-    invoke-direct {v3, v5, v6, v7, v2}, Lcom/android/server/tv/TvRemoteProviderProxy;-><init>(Landroid/content/Context;Landroid/content/ComponentName;II)V
+    invoke-direct {v7, v8, v9, v10, v11}, Lcom/android/server/tv/TvRemoteProviderProxy;-><init>(Landroid/content/Context;Landroid/content/ComponentName;II)V
 
     .line 122
-    invoke-virtual {v3}, Lcom/android/server/tv/TvRemoteProviderProxy;->start()V
+    .local v7, "providerProxy":Lcom/android/server/tv/TvRemoteProviderProxy;
+    invoke-virtual {v7}, Lcom/android/server/tv/TvRemoteProviderProxy;->start()V
 
     .line 123
-    iget-object v2, p0, Lcom/android/server/tv/TvRemoteProviderWatcher;->mProviderProxies:Ljava/util/ArrayList;
+    iget-object v8, p0, Lcom/android/server/tv/TvRemoteProviderWatcher;->mProviderProxies:Ljava/util/ArrayList;
 
-    add-int/lit8 v5, v4, 0x1
+    add-int/lit8 v9, v0, 0x1
 
-    invoke-virtual {v2, v4, v3}, Ljava/util/ArrayList;->add(ILjava/lang/Object;)V
+    .end local v0  # "targetIndex":I
+    .local v9, "targetIndex":I
+    invoke-virtual {v8, v0, v7}, Ljava/util/ArrayList;->add(ILjava/lang/Object;)V
 
     .line 124
-    iget-object v2, p0, Lcom/android/server/tv/TvRemoteProviderWatcher;->mProvider:Lcom/android/server/tv/TvRemoteProviderWatcher$ProviderMethods;
+    iget-object v0, p0, Lcom/android/server/tv/TvRemoteProviderWatcher;->mProvider:Lcom/android/server/tv/TvRemoteProviderWatcher$ProviderMethods;
 
-    invoke-interface {v2, v3}, Lcom/android/server/tv/TvRemoteProviderWatcher$ProviderMethods;->addProvider(Lcom/android/server/tv/TvRemoteProviderProxy;)V
+    invoke-interface {v0, v7}, Lcom/android/server/tv/TvRemoteProviderWatcher$ProviderMethods;->addProvider(Lcom/android/server/tv/TvRemoteProviderProxy;)V
 
     .line 125
-    move v4, v5
+    .end local v7  # "providerProxy":Lcom/android/server/tv/TvRemoteProviderProxy;
+    move v0, v9
 
     goto :goto_85
 
+    .end local v9  # "targetIndex":I
+    .restart local v0  # "targetIndex":I
     :cond_6d
-    if-lt v3, v4, :cond_85
+    if-lt v6, v0, :cond_85
 
     .line 126
-    iget-object v2, p0, Lcom/android/server/tv/TvRemoteProviderWatcher;->mProviderProxies:Ljava/util/ArrayList;
+    iget-object v7, p0, Lcom/android/server/tv/TvRemoteProviderWatcher;->mProviderProxies:Ljava/util/ArrayList;
 
-    invoke-virtual {v2, v3}, Ljava/util/ArrayList;->get(I)Ljava/lang/Object;
+    invoke-virtual {v7, v6}, Ljava/util/ArrayList;->get(I)Ljava/lang/Object;
 
-    move-result-object v2
+    move-result-object v7
 
-    check-cast v2, Lcom/android/server/tv/TvRemoteProviderProxy;
+    check-cast v7, Lcom/android/server/tv/TvRemoteProviderProxy;
 
     .line 127
-    invoke-virtual {v2}, Lcom/android/server/tv/TvRemoteProviderProxy;->start()V
+    .local v7, "provider":Lcom/android/server/tv/TvRemoteProviderProxy;
+    invoke-virtual {v7}, Lcom/android/server/tv/TvRemoteProviderProxy;->start()V
 
     .line 128
-    invoke-virtual {v2}, Lcom/android/server/tv/TvRemoteProviderProxy;->rebindIfDisconnected()V
+    invoke-virtual {v7}, Lcom/android/server/tv/TvRemoteProviderProxy;->rebindIfDisconnected()V
 
     .line 129
-    iget-object v2, p0, Lcom/android/server/tv/TvRemoteProviderWatcher;->mProviderProxies:Ljava/util/ArrayList;
+    iget-object v8, p0, Lcom/android/server/tv/TvRemoteProviderWatcher;->mProviderProxies:Ljava/util/ArrayList;
 
-    add-int/lit8 v5, v4, 0x1
+    add-int/lit8 v9, v0, 0x1
 
-    invoke-static {v2, v3, v4}, Ljava/util/Collections;->swap(Ljava/util/List;II)V
+    .end local v0  # "targetIndex":I
+    .restart local v9  # "targetIndex":I
+    invoke-static {v8, v6, v0}, Ljava/util/Collections;->swap(Ljava/util/List;II)V
 
-    move v4, v5
+    move v0, v9
 
     .line 132
+    .end local v4  # "resolveInfo":Landroid/content/pm/ResolveInfo;
+    .end local v5  # "serviceInfo":Landroid/content/pm/ServiceInfo;
+    .end local v6  # "sourceIndex":I
+    .end local v7  # "provider":Lcom/android/server/tv/TvRemoteProviderProxy;
+    .end local v9  # "targetIndex":I
+    .restart local v0  # "targetIndex":I
     :cond_85
     :goto_85
     goto :goto_26
 
     .line 133
     :cond_86
-    sget-boolean v0, Lcom/android/server/tv/TvRemoteProviderWatcher;->DEBUG:Z
+    sget-boolean v3, Lcom/android/server/tv/TvRemoteProviderWatcher;->DEBUG:Z
 
-    if-eqz v0, :cond_9f
+    if-eqz v3, :cond_9f
 
-    new-instance v0, Ljava/lang/StringBuilder;
+    new-instance v3, Ljava/lang/StringBuilder;
 
-    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string/jumbo v2, "scanPackages() targetIndex "
+    const-string/jumbo v4, "scanPackages() targetIndex "
 
-    invoke-virtual {v0, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0, v4}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v0}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v3
 
-    invoke-static {v1, v0}, Landroid/util/Log;->d(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v3}, Landroid/util/Log;->d(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 135
     :cond_9f
-    iget-object v0, p0, Lcom/android/server/tv/TvRemoteProviderWatcher;->mProviderProxies:Ljava/util/ArrayList;
-
-    invoke-virtual {v0}, Ljava/util/ArrayList;->size()I
-
-    move-result v0
-
-    if-ge v4, v0, :cond_c9
-
-    .line 136
-    iget-object v0, p0, Lcom/android/server/tv/TvRemoteProviderWatcher;->mProviderProxies:Ljava/util/ArrayList;
-
-    invoke-virtual {v0}, Ljava/util/ArrayList;->size()I
-
-    move-result v0
-
-    add-int/lit8 v0, v0, -0x1
-
-    :goto_af
-    if-lt v0, v4, :cond_c9
-
-    .line 137
     iget-object v1, p0, Lcom/android/server/tv/TvRemoteProviderWatcher;->mProviderProxies:Ljava/util/ArrayList;
 
-    invoke-virtual {v1, v0}, Ljava/util/ArrayList;->get(I)Ljava/lang/Object;
+    invoke-virtual {v1}, Ljava/util/ArrayList;->size()I
 
-    move-result-object v1
+    move-result v1
 
-    check-cast v1, Lcom/android/server/tv/TvRemoteProviderProxy;
-
-    .line 138
-    iget-object v2, p0, Lcom/android/server/tv/TvRemoteProviderWatcher;->mProvider:Lcom/android/server/tv/TvRemoteProviderWatcher$ProviderMethods;
-
-    invoke-interface {v2, v1}, Lcom/android/server/tv/TvRemoteProviderWatcher$ProviderMethods;->removeProvider(Lcom/android/server/tv/TvRemoteProviderProxy;)V
-
-    .line 139
-    iget-object v2, p0, Lcom/android/server/tv/TvRemoteProviderWatcher;->mProviderProxies:Ljava/util/ArrayList;
-
-    invoke-virtual {v2, v1}, Ljava/util/ArrayList;->remove(Ljava/lang/Object;)Z
-
-    .line 140
-    invoke-virtual {v1}, Lcom/android/server/tv/TvRemoteProviderProxy;->stop()V
+    if-ge v0, v1, :cond_c9
 
     .line 136
-    add-int/lit8 v0, v0, -0x1
+    iget-object v1, p0, Lcom/android/server/tv/TvRemoteProviderWatcher;->mProviderProxies:Ljava/util/ArrayList;
+
+    invoke-virtual {v1}, Ljava/util/ArrayList;->size()I
+
+    move-result v1
+
+    add-int/lit8 v1, v1, -0x1
+
+    .local v1, "i":I
+    :goto_af
+    if-lt v1, v0, :cond_c9
+
+    .line 137
+    iget-object v3, p0, Lcom/android/server/tv/TvRemoteProviderWatcher;->mProviderProxies:Ljava/util/ArrayList;
+
+    invoke-virtual {v3, v1}, Ljava/util/ArrayList;->get(I)Ljava/lang/Object;
+
+    move-result-object v3
+
+    check-cast v3, Lcom/android/server/tv/TvRemoteProviderProxy;
+
+    .line 138
+    .local v3, "providerProxy":Lcom/android/server/tv/TvRemoteProviderProxy;
+    iget-object v4, p0, Lcom/android/server/tv/TvRemoteProviderWatcher;->mProvider:Lcom/android/server/tv/TvRemoteProviderWatcher$ProviderMethods;
+
+    invoke-interface {v4, v3}, Lcom/android/server/tv/TvRemoteProviderWatcher$ProviderMethods;->removeProvider(Lcom/android/server/tv/TvRemoteProviderProxy;)V
+
+    .line 139
+    iget-object v4, p0, Lcom/android/server/tv/TvRemoteProviderWatcher;->mProviderProxies:Ljava/util/ArrayList;
+
+    invoke-virtual {v4, v3}, Ljava/util/ArrayList;->remove(Ljava/lang/Object;)Z
+
+    .line 140
+    invoke-virtual {v3}, Lcom/android/server/tv/TvRemoteProviderProxy;->stop()V
+
+    .line 136
+    .end local v3  # "providerProxy":Lcom/android/server/tv/TvRemoteProviderProxy;
+    add-int/lit8 v1, v1, -0x1
 
     goto :goto_af
 
     .line 143
+    .end local v1  # "i":I
     :cond_c9
     return-void
 .end method
 
 .method private verifyServiceTrusted(Landroid/content/pm/ServiceInfo;)Z
     .registers 7
+    .param p1, "serviceInfo"  # Landroid/content/pm/ServiceInfo;
 
     .line 146
     iget-object v0, p1, Landroid/content/pm/ServiceInfo;->permission:Ljava/lang/String;
@@ -526,15 +565,15 @@
 
     invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    iget-object p1, p1, Landroid/content/pm/ServiceInfo;->name:Ljava/lang/String;
+    iget-object v1, p1, Landroid/content/pm/ServiceInfo;->name:Ljava/lang/String;
 
-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    invoke-static {v3, p1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v3, v0}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 163
     return v2
@@ -558,24 +597,24 @@
 
     invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    iget-object p1, p1, Landroid/content/pm/ServiceInfo;->packageName:Ljava/lang/String;
+    iget-object v1, p1, Landroid/content/pm/ServiceInfo;->packageName:Ljava/lang/String;
 
-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    invoke-static {v3, p1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v3, v0}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 171
     return v2
 
     .line 175
     :cond_5c
-    const/4 p1, 0x1
+    const/4 v0, 0x1
 
-    return p1
+    return v0
 
     .line 152
     :cond_5e
@@ -594,15 +633,15 @@
 
     invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    iget-object p1, p1, Landroid/content/pm/ServiceInfo;->name:Ljava/lang/String;
+    iget-object v1, p1, Landroid/content/pm/ServiceInfo;->name:Ljava/lang/String;
 
-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    invoke-static {v3, p1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v3, v0}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 155
     return v2
@@ -628,7 +667,7 @@
     :cond_c
     iget-boolean v0, p0, Lcom/android/server/tv/TvRemoteProviderWatcher;->mRunning:Z
 
-    if-nez v0, :cond_4f
+    if-nez v0, :cond_50
 
     .line 70
     const/4 v0, 0x1
@@ -636,39 +675,40 @@
     iput-boolean v0, p0, Lcom/android/server/tv/TvRemoteProviderWatcher;->mRunning:Z
 
     .line 72
-    new-instance v4, Landroid/content/IntentFilter;
+    new-instance v0, Landroid/content/IntentFilter;
 
-    invoke-direct {v4}, Landroid/content/IntentFilter;-><init>()V
+    invoke-direct {v0}, Landroid/content/IntentFilter;-><init>()V
 
     .line 73
-    const-string v0, "android.intent.action.PACKAGE_ADDED"
+    .local v0, "filter":Landroid/content/IntentFilter;
+    const-string v1, "android.intent.action.PACKAGE_ADDED"
 
-    invoke-virtual {v4, v0}, Landroid/content/IntentFilter;->addAction(Ljava/lang/String;)V
+    invoke-virtual {v0, v1}, Landroid/content/IntentFilter;->addAction(Ljava/lang/String;)V
 
     .line 74
-    const-string v0, "android.intent.action.PACKAGE_REMOVED"
+    const-string v1, "android.intent.action.PACKAGE_REMOVED"
 
-    invoke-virtual {v4, v0}, Landroid/content/IntentFilter;->addAction(Ljava/lang/String;)V
+    invoke-virtual {v0, v1}, Landroid/content/IntentFilter;->addAction(Ljava/lang/String;)V
 
     .line 75
-    const-string v0, "android.intent.action.PACKAGE_CHANGED"
+    const-string v1, "android.intent.action.PACKAGE_CHANGED"
 
-    invoke-virtual {v4, v0}, Landroid/content/IntentFilter;->addAction(Ljava/lang/String;)V
+    invoke-virtual {v0, v1}, Landroid/content/IntentFilter;->addAction(Ljava/lang/String;)V
 
     .line 76
-    const-string v0, "android.intent.action.PACKAGE_REPLACED"
+    const-string v1, "android.intent.action.PACKAGE_REPLACED"
 
-    invoke-virtual {v4, v0}, Landroid/content/IntentFilter;->addAction(Ljava/lang/String;)V
+    invoke-virtual {v0, v1}, Landroid/content/IntentFilter;->addAction(Ljava/lang/String;)V
 
     .line 77
-    const-string v0, "android.intent.action.PACKAGE_RESTARTED"
+    const-string v1, "android.intent.action.PACKAGE_RESTARTED"
 
-    invoke-virtual {v4, v0}, Landroid/content/IntentFilter;->addAction(Ljava/lang/String;)V
+    invoke-virtual {v0, v1}, Landroid/content/IntentFilter;->addAction(Ljava/lang/String;)V
 
     .line 78
-    const-string/jumbo v0, "package"
+    const-string/jumbo v1, "package"
 
-    invoke-virtual {v4, v0}, Landroid/content/IntentFilter;->addDataScheme(Ljava/lang/String;)V
+    invoke-virtual {v0, v1}, Landroid/content/IntentFilter;->addDataScheme(Ljava/lang/String;)V
 
     .line 79
     iget-object v1, p0, Lcom/android/server/tv/TvRemoteProviderWatcher;->mContext:Landroid/content/Context;
@@ -677,25 +717,28 @@
 
     new-instance v3, Landroid/os/UserHandle;
 
-    iget v0, p0, Lcom/android/server/tv/TvRemoteProviderWatcher;->mUserId:I
+    iget v4, p0, Lcom/android/server/tv/TvRemoteProviderWatcher;->mUserId:I
 
-    invoke-direct {v3, v0}, Landroid/os/UserHandle;-><init>(I)V
+    invoke-direct {v3, v4}, Landroid/os/UserHandle;-><init>(I)V
 
     const/4 v5, 0x0
 
     iget-object v6, p0, Lcom/android/server/tv/TvRemoteProviderWatcher;->mHandler:Landroid/os/Handler;
 
+    move-object v4, v0
+
     invoke-virtual/range {v1 .. v6}, Landroid/content/Context;->registerReceiverAsUser(Landroid/content/BroadcastReceiver;Landroid/os/UserHandle;Landroid/content/IntentFilter;Ljava/lang/String;Landroid/os/Handler;)Landroid/content/Intent;
 
     .line 84
-    iget-object v0, p0, Lcom/android/server/tv/TvRemoteProviderWatcher;->mHandler:Landroid/os/Handler;
+    iget-object v1, p0, Lcom/android/server/tv/TvRemoteProviderWatcher;->mHandler:Landroid/os/Handler;
 
-    iget-object v1, p0, Lcom/android/server/tv/TvRemoteProviderWatcher;->mScanPackagesRunnable:Ljava/lang/Runnable;
+    iget-object v2, p0, Lcom/android/server/tv/TvRemoteProviderWatcher;->mScanPackagesRunnable:Ljava/lang/Runnable;
 
-    invoke-virtual {v0, v1}, Landroid/os/Handler;->post(Ljava/lang/Runnable;)Z
+    invoke-virtual {v1, v2}, Landroid/os/Handler;->post(Ljava/lang/Runnable;)Z
 
     .line 86
-    :cond_4f
+    .end local v0  # "filter":Landroid/content/IntentFilter;
+    :cond_50
     return-void
 .end method
 
@@ -735,6 +778,7 @@
 
     add-int/lit8 v0, v0, -0x1
 
+    .local v0, "i":I
     :goto_1d
     if-ltz v0, :cond_2d
 
@@ -755,6 +799,7 @@
     goto :goto_1d
 
     .line 100
+    .end local v0  # "i":I
     :cond_2d
     return-void
 .end method

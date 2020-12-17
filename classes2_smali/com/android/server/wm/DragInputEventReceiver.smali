@@ -15,20 +15,23 @@
 
 # direct methods
 .method constructor <init>(Landroid/view/InputChannel;Landroid/os/Looper;Lcom/android/server/wm/DragDropController;)V
-    .registers 4
+    .registers 5
+    .param p1, "inputChannel"  # Landroid/view/InputChannel;
+    .param p2, "looper"  # Landroid/os/Looper;
+    .param p3, "controller"  # Lcom/android/server/wm/DragDropController;
 
     .line 52
     invoke-direct {p0, p1, p2}, Landroid/view/InputEventReceiver;-><init>(Landroid/view/InputChannel;Landroid/os/Looper;)V
 
     .line 45
-    const/4 p1, 0x1
+    const/4 v0, 0x1
 
-    iput-boolean p1, p0, Lcom/android/server/wm/DragInputEventReceiver;->mIsStartEvent:Z
+    iput-boolean v0, p0, Lcom/android/server/wm/DragInputEventReceiver;->mIsStartEvent:Z
 
     .line 48
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    iput-boolean p1, p0, Lcom/android/server/wm/DragInputEventReceiver;->mMuteInput:Z
+    iput-boolean v0, p0, Lcom/android/server/wm/DragInputEventReceiver;->mMuteInput:Z
 
     .line 53
     iput-object p3, p0, Lcom/android/server/wm/DragInputEventReceiver;->mDragDropController:Lcom/android/server/wm/DragDropController;
@@ -40,215 +43,307 @@
 
 # virtual methods
 .method public onInputEvent(Landroid/view/InputEvent;)V
-    .registers 10
+    .registers 13
+    .param p1, "event"  # Landroid/view/InputEvent;
 
     .line 58
-    nop
+    const-string v0, "WindowManager"
+
+    const/4 v1, 0x0
 
     .line 60
-    const/4 v0, 0x0
+    .local v1, "handled":Z
+    :try_start_3
+    instance-of v2, p1, Landroid/view/MotionEvent;
 
-    :try_start_2
-    instance-of v1, p1, Landroid/view/MotionEvent;
-
-    if-eqz v1, :cond_68
+    if-eqz v2, :cond_b6
 
     .line 61
     invoke-virtual {p1}, Landroid/view/InputEvent;->getSource()I
 
-    move-result v1
+    move-result v2
 
-    const/4 v2, 0x2
+    const/4 v3, 0x2
 
-    and-int/2addr v1, v2
+    and-int/2addr v2, v3
 
-    if-eqz v1, :cond_68
+    if-eqz v2, :cond_b6
 
-    iget-boolean v1, p0, Lcom/android/server/wm/DragInputEventReceiver;->mMuteInput:Z
+    iget-boolean v2, p0, Lcom/android/server/wm/DragInputEventReceiver;->mMuteInput:Z
 
-    if-eqz v1, :cond_13
+    if-eqz v2, :cond_15
 
-    goto :goto_68
+    goto/16 :goto_b6
 
     .line 65
-    :cond_13
-    move-object v1, p1
+    :cond_15
+    move-object v2, p1
 
-    check-cast v1, Landroid/view/MotionEvent;
+    check-cast v2, Landroid/view/MotionEvent;
 
     .line 66
-    invoke-virtual {v1}, Landroid/view/MotionEvent;->getRawX()F
-
-    move-result v3
-
-    .line 67
-    invoke-virtual {v1}, Landroid/view/MotionEvent;->getRawY()F
+    .local v2, "motionEvent":Landroid/view/MotionEvent;
+    invoke-virtual {v2}, Landroid/view/MotionEvent;->getRawX()F
 
     move-result v4
 
-    .line 68
-    nop
-
-    .line 69
-    invoke-virtual {v1}, Landroid/view/MotionEvent;->getButtonState()I
+    .line 67
+    .local v4, "newX":F
+    invoke-virtual {v2}, Landroid/view/MotionEvent;->getRawY()F
 
     move-result v5
 
-    and-int/lit8 v5, v5, 0x20
+    .line 68
+    .local v5, "newY":F
+    nop
 
-    const/4 v6, 0x1
+    .line 69
+    invoke-virtual {v2}, Landroid/view/MotionEvent;->getButtonState()I
 
-    if-eqz v5, :cond_2a
+    move-result v6
 
-    move v5, v6
+    and-int/lit8 v6, v6, 0x20
 
-    goto :goto_2b
+    const/4 v7, 0x0
 
-    :cond_2a
-    move v5, v0
+    const/4 v8, 0x1
+
+    if-eqz v6, :cond_2d
+
+    move v6, v8
+
+    goto :goto_2e
+
+    :cond_2d
+    move v6, v7
 
     .line 71
-    :goto_2b
-    iget-boolean v7, p0, Lcom/android/server/wm/DragInputEventReceiver;->mIsStartEvent:Z
+    .local v6, "isStylusButtonDown":Z
+    :goto_2e
+    iget-boolean v9, p0, Lcom/android/server/wm/DragInputEventReceiver;->mIsStartEvent:Z
 
-    if-eqz v7, :cond_33
+    if-eqz v9, :cond_36
 
     .line 74
-    iput-boolean v5, p0, Lcom/android/server/wm/DragInputEventReceiver;->mStylusButtonDownAtStart:Z
+    iput-boolean v6, p0, Lcom/android/server/wm/DragInputEventReceiver;->mStylusButtonDownAtStart:Z
 
     .line 75
-    iput-boolean v0, p0, Lcom/android/server/wm/DragInputEventReceiver;->mIsStartEvent:Z
+    iput-boolean v7, p0, Lcom/android/server/wm/DragInputEventReceiver;->mIsStartEvent:Z
 
     .line 78
-    :cond_33
-    invoke-virtual {v1}, Landroid/view/MotionEvent;->getAction()I
+    :cond_36
+    invoke-virtual {v2}, Landroid/view/MotionEvent;->getAction()I
 
-    move-result v1
-    :try_end_37
-    .catch Ljava/lang/Exception; {:try_start_2 .. :try_end_37} :catch_6e
-    .catchall {:try_start_2 .. :try_end_37} :catchall_6c
+    move-result v9
+    :try_end_3a
+    .catch Ljava/lang/Exception; {:try_start_3 .. :try_end_3a} :catch_bc
+    .catchall {:try_start_3 .. :try_end_3a} :catchall_ba
 
-    if-eqz v1, :cond_64
+    if-eqz v9, :cond_a9
 
-    if-eq v1, v6, :cond_50
+    const-string v10, ","
 
-    if-eq v1, v2, :cond_47
+    if-eq v9, v8, :cond_7c
 
-    const/4 v2, 0x3
+    if-eq v9, v3, :cond_55
 
-    if-eq v1, v2, :cond_44
+    const/4 v3, 0x3
+
+    if-eq v9, v3, :cond_49
 
     .line 110
-    invoke-virtual {p0, p1, v0}, Lcom/android/server/wm/DragInputEventReceiver;->finishInputEvent(Landroid/view/InputEvent;Z)V
+    invoke-virtual {p0, p1, v1}, Lcom/android/server/wm/DragInputEventReceiver;->finishInputEvent(Landroid/view/InputEvent;Z)V
 
     .line 102
     return-void
 
+    .line 98
+    :cond_49
+    :try_start_49
+    sget-boolean v3, Lcom/android/server/wm/WindowManagerDebugConfig;->DEBUG_DRAG:Z
+
+    if-eqz v3, :cond_52
+
+    const-string v3, "Drag cancelled!"
+
+    invoke-static {v0, v3}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
+
     .line 99
-    :cond_44
-    :try_start_44
-    iput-boolean v6, p0, Lcom/android/server/wm/DragInputEventReceiver;->mMuteInput:Z
+    :cond_52
+    iput-boolean v8, p0, Lcom/android/server/wm/DragInputEventReceiver;->mMuteInput:Z
 
     .line 100
-    goto :goto_53
+    goto :goto_9d
 
     .line 83
-    :cond_47
-    iget-boolean v1, p0, Lcom/android/server/wm/DragInputEventReceiver;->mStylusButtonDownAtStart:Z
+    :cond_55
+    iget-boolean v3, p0, Lcom/android/server/wm/DragInputEventReceiver;->mStylusButtonDownAtStart:Z
 
-    if-eqz v1, :cond_53
+    if-eqz v3, :cond_9d
 
-    if-nez v5, :cond_53
+    if-nez v6, :cond_9d
+
+    .line 84
+    sget-boolean v3, Lcom/android/server/wm/WindowManagerDebugConfig;->DEBUG_DRAG:Z
+
+    if-eqz v3, :cond_79
+
+    .line 85
+    new-instance v3, Ljava/lang/StringBuilder;
+
+    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
+
+    const-string v9, "Button no longer pressed; dropping at "
+
+    invoke-virtual {v3, v9}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(F)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v3, v10}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v3, v5}, Ljava/lang/StringBuilder;->append(F)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v3
+
+    invoke-static {v0, v3}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 88
-    iput-boolean v6, p0, Lcom/android/server/wm/DragInputEventReceiver;->mMuteInput:Z
+    :cond_79
+    iput-boolean v8, p0, Lcom/android/server/wm/DragInputEventReceiver;->mMuteInput:Z
 
-    goto :goto_53
+    goto :goto_9d
+
+    .line 92
+    :cond_7c
+    sget-boolean v3, Lcom/android/server/wm/WindowManagerDebugConfig;->DEBUG_DRAG:Z
+
+    if-eqz v3, :cond_9a
+
+    .line 93
+    new-instance v3, Ljava/lang/StringBuilder;
+
+    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
+
+    const-string v9, "Got UP on move channel; dropping at "
+
+    invoke-virtual {v3, v9}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(F)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v3, v10}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v3, v5}, Ljava/lang/StringBuilder;->append(F)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v3
+
+    invoke-static {v0, v3}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 95
-    :cond_50
-    iput-boolean v6, p0, Lcom/android/server/wm/DragInputEventReceiver;->mMuteInput:Z
+    :cond_9a
+    iput-boolean v8, p0, Lcom/android/server/wm/DragInputEventReceiver;->mMuteInput:Z
 
     .line 96
     nop
 
     .line 105
-    :cond_53
-    :goto_53
-    iget-object v1, p0, Lcom/android/server/wm/DragInputEventReceiver;->mDragDropController:Lcom/android/server/wm/DragDropController;
+    :cond_9d
+    :goto_9d
+    iget-object v3, p0, Lcom/android/server/wm/DragInputEventReceiver;->mDragDropController:Lcom/android/server/wm/DragDropController;
 
-    iget-boolean v2, p0, Lcom/android/server/wm/DragInputEventReceiver;->mMuteInput:Z
+    iget-boolean v9, p0, Lcom/android/server/wm/DragInputEventReceiver;->mMuteInput:Z
 
-    if-nez v2, :cond_5b
+    if-nez v9, :cond_a4
 
-    move v2, v6
+    move v7, v8
 
-    goto :goto_5c
-
-    :cond_5b
-    move v2, v0
-
-    :goto_5c
-    invoke-virtual {v1, v2, v3, v4}, Lcom/android/server/wm/DragDropController;->handleMotionEvent(ZFF)V
-    :try_end_5f
-    .catch Ljava/lang/Exception; {:try_start_44 .. :try_end_5f} :catch_6e
-    .catchall {:try_start_44 .. :try_end_5f} :catchall_6c
+    :cond_a4
+    invoke-virtual {v3, v7, v4, v5}, Lcom/android/server/wm/DragDropController;->handleMotionEvent(ZFF)V
 
     .line 106
-    nop
+    const/4 v1, 0x1
 
     .line 110
-    invoke-virtual {p0, p1, v6}, Lcom/android/server/wm/DragInputEventReceiver;->finishInputEvent(Landroid/view/InputEvent;Z)V
+    .end local v2  # "motionEvent":Landroid/view/MotionEvent;
+    .end local v4  # "newX":F
+    .end local v5  # "newY":F
+    .end local v6  # "isStylusButtonDown":Z
+    goto :goto_c3
 
-    goto :goto_79
+    .line 80
+    .restart local v2  # "motionEvent":Landroid/view/MotionEvent;
+    .restart local v4  # "newX":F
+    .restart local v5  # "newY":F
+    .restart local v6  # "isStylusButtonDown":Z
+    :cond_a9
+    sget-boolean v3, Lcom/android/server/wm/WindowManagerDebugConfig;->DEBUG_DRAG:Z
 
-    :cond_64
-    invoke-virtual {p0, p1, v0}, Lcom/android/server/wm/DragInputEventReceiver;->finishInputEvent(Landroid/view/InputEvent;Z)V
+    if-eqz v3, :cond_b2
+
+    const-string v3, "Unexpected ACTION_DOWN in drag layer"
+
+    invoke-static {v0, v3}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    :try_end_b2
+    .catch Ljava/lang/Exception; {:try_start_49 .. :try_end_b2} :catch_bc
+    .catchall {:try_start_49 .. :try_end_b2} :catchall_ba
+
+    .line 110
+    :cond_b2
+    invoke-virtual {p0, p1, v1}, Lcom/android/server/wm/DragInputEventReceiver;->finishInputEvent(Landroid/view/InputEvent;Z)V
 
     .line 81
     return-void
 
     .line 110
-    :cond_68
-    :goto_68
-    invoke-virtual {p0, p1, v0}, Lcom/android/server/wm/DragInputEventReceiver;->finishInputEvent(Landroid/view/InputEvent;Z)V
+    .end local v2  # "motionEvent":Landroid/view/MotionEvent;
+    .end local v4  # "newX":F
+    .end local v5  # "newY":F
+    .end local v6  # "isStylusButtonDown":Z
+    :cond_b6
+    :goto_b6
+    invoke-virtual {p0, p1, v1}, Lcom/android/server/wm/DragInputEventReceiver;->finishInputEvent(Landroid/view/InputEvent;Z)V
 
     .line 63
     return-void
 
     .line 110
-    :catchall_6c
-    move-exception v1
+    :catchall_ba
+    move-exception v0
 
-    goto :goto_7b
+    goto :goto_c8
 
     .line 107
-    :catch_6e
-    move-exception v1
+    :catch_bc
+    move-exception v2
 
     .line 108
-    :try_start_6f
-    const-string v2, "WindowManager"
-
+    .local v2, "e":Ljava/lang/Exception;
+    :try_start_bd
     const-string v3, "Exception caught by drag handleMotion"
 
-    invoke-static {v2, v3, v1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
-    :try_end_76
-    .catchall {:try_start_6f .. :try_end_76} :catchall_6c
+    invoke-static {v0, v3, v2}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    :try_end_c2
+    .catchall {:try_start_bd .. :try_end_c2} :catchall_ba
 
     .line 110
-    invoke-virtual {p0, p1, v0}, Lcom/android/server/wm/DragInputEventReceiver;->finishInputEvent(Landroid/view/InputEvent;Z)V
+    nop
+
+    .end local v2  # "e":Ljava/lang/Exception;
+    :goto_c3
+    invoke-virtual {p0, p1, v1}, Lcom/android/server/wm/DragInputEventReceiver;->finishInputEvent(Landroid/view/InputEvent;Z)V
 
     .line 111
-    :goto_79
     nop
 
     .line 112
     return-void
 
     .line 110
-    :goto_7b
-    invoke-virtual {p0, p1, v0}, Lcom/android/server/wm/DragInputEventReceiver;->finishInputEvent(Landroid/view/InputEvent;Z)V
+    :goto_c8
+    invoke-virtual {p0, p1, v1}, Lcom/android/server/wm/DragInputEventReceiver;->finishInputEvent(Landroid/view/InputEvent;Z)V
 
-    throw v1
+    throw v0
 .end method

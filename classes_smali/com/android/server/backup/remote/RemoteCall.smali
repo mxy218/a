@@ -30,6 +30,7 @@
 # direct methods
 .method public constructor <init>(Lcom/android/server/backup/remote/RemoteCallable;J)V
     .registers 5
+    .param p2, "timeoutMs"  # J
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(",
@@ -40,6 +41,7 @@
     .end annotation
 
     .line 76
+    .local p1, "callable":Lcom/android/server/backup/remote/RemoteCallable;, "Lcom/android/server/backup/remote/RemoteCallable<Landroid/app/backup/IBackupCallback;>;"
     const/4 v0, 0x0
 
     invoke-direct {p0, v0, p1, p2, p3}, Lcom/android/server/backup/remote/RemoteCall;-><init>(ZLcom/android/server/backup/remote/RemoteCallable;J)V
@@ -49,7 +51,9 @@
 .end method
 
 .method public constructor <init>(ZLcom/android/server/backup/remote/RemoteCallable;J)V
-    .registers 5
+    .registers 6
+    .param p1, "cancelled"  # Z
+    .param p3, "timeoutMs"  # J
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(Z",
@@ -60,6 +64,7 @@
     .end annotation
 
     .line 86
+    .local p2, "callable":Lcom/android/server/backup/remote/RemoteCallable;, "Lcom/android/server/backup/remote/RemoteCallable<Landroid/app/backup/IBackupCallback;>;"
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
     .line 87
@@ -69,11 +74,11 @@
     iput-wide p3, p0, Lcom/android/server/backup/remote/RemoteCall;->mTimeoutMs:J
 
     .line 89
-    new-instance p2, Ljava/util/concurrent/CompletableFuture;
+    new-instance v0, Ljava/util/concurrent/CompletableFuture;
 
-    invoke-direct {p2}, Ljava/util/concurrent/CompletableFuture;-><init>()V
+    invoke-direct {v0}, Ljava/util/concurrent/CompletableFuture;-><init>()V
 
-    iput-object p2, p0, Lcom/android/server/backup/remote/RemoteCall;->mFuture:Ljava/util/concurrent/CompletableFuture;
+    iput-object v0, p0, Lcom/android/server/backup/remote/RemoteCall;->mFuture:Ljava/util/concurrent/CompletableFuture;
 
     .line 90
     if-eqz p1, :cond_13
@@ -88,6 +93,7 @@
 
 .method public static execute(Lcom/android/server/backup/remote/RemoteCallable;J)Lcom/android/server/backup/remote/RemoteResult;
     .registers 4
+    .param p1, "timeoutMs"  # J
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(",
@@ -105,15 +111,16 @@
     .end annotation
 
     .line 59
+    .local p0, "callable":Lcom/android/server/backup/remote/RemoteCallable;, "Lcom/android/server/backup/remote/RemoteCallable<Landroid/app/backup/IBackupCallback;>;"
     new-instance v0, Lcom/android/server/backup/remote/RemoteCall;
 
     invoke-direct {v0, p0, p1, p2}, Lcom/android/server/backup/remote/RemoteCall;-><init>(Lcom/android/server/backup/remote/RemoteCallable;J)V
 
     invoke-virtual {v0}, Lcom/android/server/backup/remote/RemoteCall;->call()Lcom/android/server/backup/remote/RemoteResult;
 
-    move-result-object p0
+    move-result-object v0
 
-    return-object p0
+    return-object v0
 .end method
 
 .method public static synthetic lambda$UZaEiTGjS9e2j04YYkGl3Y2ltU4(Lcom/android/server/backup/remote/RemoteCall;)V
@@ -234,22 +241,25 @@
     move-exception v0
 
     .line 131
-    new-instance v0, Ljava/lang/IllegalStateException;
+    .local v0, "e":Ljava/util/concurrent/ExecutionException;
+    new-instance v1, Ljava/lang/IllegalStateException;
 
-    const-string v1, "Future unexpectedly completed with an exception"
+    const-string v2, "Future unexpectedly completed with an exception"
 
-    invoke-direct {v0, v1}, Ljava/lang/IllegalStateException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v1, v2}, Ljava/lang/IllegalStateException;-><init>(Ljava/lang/String;)V
 
-    throw v0
+    throw v1
 
     .line 128
+    .end local v0  # "e":Ljava/util/concurrent/ExecutionException;
     :catch_4f
     move-exception v0
 
     .line 129
-    sget-object v0, Lcom/android/server/backup/remote/RemoteResult;->FAILED_THREAD_INTERRUPTED:Lcom/android/server/backup/remote/RemoteResult;
+    .local v0, "e":Ljava/lang/InterruptedException;
+    sget-object v1, Lcom/android/server/backup/remote/RemoteResult;->FAILED_THREAD_INTERRUPTED:Lcom/android/server/backup/remote/RemoteResult;
 
-    return-object v0
+    return-object v1
 .end method
 
 .method public cancel()V

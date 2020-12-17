@@ -37,6 +37,8 @@
 
 .field static final ANIMATION_LAYER_STANDARD:I = 0x0
 
+.field static final ANIMATION_LAYER_WINDOW_MODE:I = 0x3
+
 .field static final POSITION_BOTTOM:I = -0x80000000
 
 .field static final POSITION_TOP:I = 0x7fffffff
@@ -124,28 +126,30 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/wm/WindowManagerService;)V
     .registers 5
+    .param p1, "wms"  # Lcom/android/server/wm/WindowManagerService;
 
-    .line 140
+    .line 145
+    .local p0, "this":Lcom/android/server/wm/WindowContainer;, "Lcom/android/server/wm/WindowContainer<TE;>;"
     invoke-direct {p0}, Lcom/android/server/wm/ConfigurationContainer;-><init>()V
 
-    .line 97
+    .line 102
     const/4 v0, 0x0
 
     iput-object v0, p0, Lcom/android/server/wm/WindowContainer;->mParent:Lcom/android/server/wm/WindowContainer;
 
-    .line 101
+    .line 106
     new-instance v1, Lcom/android/server/wm/WindowList;
 
     invoke-direct {v1}, Lcom/android/server/wm/WindowList;-><init>()V
 
     iput-object v1, p0, Lcom/android/server/wm/WindowContainer;->mChildren:Lcom/android/server/wm/WindowList;
 
-    .line 104
+    .line 109
     const/4 v1, -0x1
 
     iput v1, p0, Lcom/android/server/wm/WindowContainer;->mOrientation:I
 
-    .line 106
+    .line 111
     new-instance v1, Landroid/util/Pools$SynchronizedPool;
 
     const/4 v2, 0x3
@@ -154,51 +158,51 @@
 
     iput-object v1, p0, Lcom/android/server/wm/WindowContainer;->mConsumerWrapperPool:Landroid/util/Pools$SynchronizedPool;
 
-    .line 116
+    .line 121
     const/4 v1, 0x0
 
     iput v1, p0, Lcom/android/server/wm/WindowContainer;->mLastLayer:I
 
-    .line 117
+    .line 122
     iput-object v0, p0, Lcom/android/server/wm/WindowContainer;->mLastRelativeToLayer:Landroid/view/SurfaceControl;
 
-    .line 128
+    .line 133
     new-instance v0, Landroid/graphics/Point;
 
     invoke-direct {v0}, Landroid/graphics/Point;-><init>()V
 
     iput-object v0, p0, Lcom/android/server/wm/WindowContainer;->mTmpPos:Landroid/graphics/Point;
 
-    .line 129
+    .line 134
     new-instance v0, Landroid/graphics/Point;
 
     invoke-direct {v0}, Landroid/graphics/Point;-><init>()V
 
     iput-object v0, p0, Lcom/android/server/wm/WindowContainer;->mLastSurfacePosition:Landroid/graphics/Point;
 
-    .line 132
+    .line 137
     const/4 v0, 0x1
 
     iput v0, p0, Lcom/android/server/wm/WindowContainer;->mTreeWeight:I
 
-    .line 204
+    .line 209
     new-instance v0, Ljava/util/LinkedList;
 
     invoke-direct {v0}, Ljava/util/LinkedList;-><init>()V
 
     iput-object v0, p0, Lcom/android/server/wm/WindowContainer;->mTmpChain1:Ljava/util/LinkedList;
 
-    .line 205
+    .line 210
     new-instance v0, Ljava/util/LinkedList;
 
     invoke-direct {v0}, Ljava/util/LinkedList;-><init>()V
 
     iput-object v0, p0, Lcom/android/server/wm/WindowContainer;->mTmpChain2:Ljava/util/LinkedList;
 
-    .line 141
+    .line 146
     iput-object p1, p0, Lcom/android/server/wm/WindowContainer;->mWmService:Lcom/android/server/wm/WindowManagerService;
 
-    .line 142
+    .line 147
     iget-object v0, p1, Lcom/android/server/wm/WindowManagerService;->mTransactionFactory:Lcom/android/server/wm/TransactionFactory;
 
     invoke-interface {v0}, Lcom/android/server/wm/TransactionFactory;->make()Landroid/view/SurfaceControl$Transaction;
@@ -207,7 +211,7 @@
 
     iput-object v0, p0, Lcom/android/server/wm/WindowContainer;->mPendingTransaction:Landroid/view/SurfaceControl$Transaction;
 
-    .line 143
+    .line 148
     new-instance v0, Lcom/android/server/wm/SurfaceAnimator;
 
     new-instance v1, Lcom/android/server/wm/-$$Lambda$yVRF8YoeNdTa8GR1wDStVsHu8xM;
@@ -218,17 +222,18 @@
 
     iput-object v0, p0, Lcom/android/server/wm/WindowContainer;->mSurfaceAnimator:Lcom/android/server/wm/SurfaceAnimator;
 
-    .line 144
+    .line 149
     return-void
 .end method
 
 .method static synthetic access$100(Lcom/android/server/wm/WindowContainer;)Landroid/util/Pools$SynchronizedPool;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/wm/WindowContainer;
 
     .line 64
-    iget-object p0, p0, Lcom/android/server/wm/WindowContainer;->mConsumerWrapperPool:Landroid/util/Pools$SynchronizedPool;
+    iget-object v0, p0, Lcom/android/server/wm/WindowContainer;->mConsumerWrapperPool:Landroid/util/Pools$SynchronizedPool;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method private getParents(Ljava/util/LinkedList;)V
@@ -242,100 +247,108 @@
         }
     .end annotation
 
-    .line 978
+    .line 983
+    .local p0, "this":Lcom/android/server/wm/WindowContainer;, "Lcom/android/server/wm/WindowContainer<TE;>;"
+    .local p1, "parents":Ljava/util/LinkedList;, "Ljava/util/LinkedList<Lcom/android/server/wm/WindowContainer;>;"
     invoke-virtual {p1}, Ljava/util/LinkedList;->clear()V
 
-    .line 979
+    .line 984
     move-object v0, p0
 
-    .line 981
+    .line 986
+    .local v0, "current":Lcom/android/server/wm/WindowContainer;
     :goto_4
     invoke-virtual {p1, v0}, Ljava/util/LinkedList;->addLast(Ljava/lang/Object;)V
 
-    .line 982
+    .line 987
     iget-object v0, v0, Lcom/android/server/wm/WindowContainer;->mParent:Lcom/android/server/wm/WindowContainer;
 
-    .line 983
+    .line 988
     if-nez v0, :cond_c
 
-    .line 984
+    .line 989
     return-void
 
-    .line 983
+    .line 988
     :cond_c
     goto :goto_4
 .end method
 
 .method private getPrefixOrderIndex(Lcom/android/server/wm/WindowContainer;)I
-    .registers 5
+    .registers 6
+    .param p1, "child"  # Lcom/android/server/wm/WindowContainer;
 
-    .line 361
-    nop
-
-    .line 362
+    .line 366
+    .local p0, "this":Lcom/android/server/wm/WindowContainer;, "Lcom/android/server/wm/WindowContainer<TE;>;"
     const/4 v0, 0x0
 
-    move v1, v0
+    .line 367
+    .local v0, "order":I
+    const/4 v1, 0x0
 
-    :goto_3
+    .local v1, "i":I
+    :goto_2
     iget-object v2, p0, Lcom/android/server/wm/WindowContainer;->mChildren:Lcom/android/server/wm/WindowList;
 
     invoke-virtual {v2}, Lcom/android/server/wm/WindowList;->size()I
 
     move-result v2
 
-    if-ge v0, v2, :cond_1c
+    if-ge v1, v2, :cond_1b
 
-    .line 363
+    .line 368
     iget-object v2, p0, Lcom/android/server/wm/WindowContainer;->mChildren:Lcom/android/server/wm/WindowList;
 
-    invoke-virtual {v2, v0}, Lcom/android/server/wm/WindowList;->get(I)Ljava/lang/Object;
+    invoke-virtual {v2, v1}, Lcom/android/server/wm/WindowList;->get(I)Ljava/lang/Object;
 
     move-result-object v2
 
     check-cast v2, Lcom/android/server/wm/WindowContainer;
 
-    .line 364
-    if-ne p1, v2, :cond_16
-
-    .line 365
-    goto :goto_1c
-
-    .line 367
-    :cond_16
-    iget v2, v2, Lcom/android/server/wm/WindowContainer;->mTreeWeight:I
-
-    add-int/2addr v1, v2
-
-    .line 362
-    add-int/lit8 v0, v0, 0x1
-
-    goto :goto_3
-
     .line 369
-    :cond_1c
-    :goto_1c
-    iget-object p1, p0, Lcom/android/server/wm/WindowContainer;->mParent:Lcom/android/server/wm/WindowContainer;
-
-    if-eqz p1, :cond_25
+    .local v2, "childI":Lcom/android/server/wm/WindowContainer;
+    if-ne p1, v2, :cond_15
 
     .line 370
-    invoke-direct {p1, p0}, Lcom/android/server/wm/WindowContainer;->getPrefixOrderIndex(Lcom/android/server/wm/WindowContainer;)I
+    goto :goto_1b
 
-    move-result p1
+    .line 372
+    :cond_15
+    iget v3, v2, Lcom/android/server/wm/WindowContainer;->mTreeWeight:I
 
-    add-int/2addr v1, p1
+    add-int/2addr v0, v3
 
-    .line 374
-    :cond_25
+    .line 367
+    .end local v2  # "childI":Lcom/android/server/wm/WindowContainer;
     add-int/lit8 v1, v1, 0x1
 
+    goto :goto_2
+
+    .line 374
+    .end local v1  # "i":I
+    :cond_1b
+    :goto_1b
+    iget-object v1, p0, Lcom/android/server/wm/WindowContainer;->mParent:Lcom/android/server/wm/WindowContainer;
+
+    if-eqz v1, :cond_24
+
     .line 375
-    return v1
+    invoke-direct {v1, p0}, Lcom/android/server/wm/WindowContainer;->getPrefixOrderIndex(Lcom/android/server/wm/WindowContainer;)I
+
+    move-result v1
+
+    add-int/2addr v0, v1
+
+    .line 379
+    :cond_24
+    add-int/lit8 v0, v0, 0x1
+
+    .line 380
+    return v0
 .end method
 
 .method private obtainConsumerWrapper(Ljava/util/function/Consumer;)Lcom/android/server/wm/WindowContainer$ForAllWindowsConsumerWrapper;
-    .registers 4
+    .registers 5
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(",
@@ -347,7 +360,9 @@
         }
     .end annotation
 
-    .line 1154
+    .line 1159
+    .local p0, "this":Lcom/android/server/wm/WindowContainer;, "Lcom/android/server/wm/WindowContainer<TE;>;"
+    .local p1, "consumer":Ljava/util/function/Consumer;, "Ljava/util/function/Consumer<Lcom/android/server/wm/WindowState;>;"
     iget-object v0, p0, Lcom/android/server/wm/WindowContainer;->mConsumerWrapperPool:Landroid/util/Pools$SynchronizedPool;
 
     invoke-virtual {v0}, Landroid/util/Pools$SynchronizedPool;->acquire()Ljava/lang/Object;
@@ -356,28 +371,33 @@
 
     check-cast v0, Lcom/android/server/wm/WindowContainer$ForAllWindowsConsumerWrapper;
 
-    .line 1155
-    if-nez v0, :cond_10
+    .line 1160
+    .local v0, "wrapper":Lcom/android/server/wm/WindowContainer$ForAllWindowsConsumerWrapper;, "Lcom/android/server/wm/WindowContainer<TE;>.ForAllWindowsConsumerWrapper;"
+    if-nez v0, :cond_11
 
-    .line 1156
-    new-instance v0, Lcom/android/server/wm/WindowContainer$ForAllWindowsConsumerWrapper;
+    .line 1161
+    new-instance v1, Lcom/android/server/wm/WindowContainer$ForAllWindowsConsumerWrapper;
 
-    const/4 v1, 0x0
+    const/4 v2, 0x0
 
-    invoke-direct {v0, p0, v1}, Lcom/android/server/wm/WindowContainer$ForAllWindowsConsumerWrapper;-><init>(Lcom/android/server/wm/WindowContainer;Lcom/android/server/wm/WindowContainer$1;)V
+    invoke-direct {v1, p0, v2}, Lcom/android/server/wm/WindowContainer$ForAllWindowsConsumerWrapper;-><init>(Lcom/android/server/wm/WindowContainer;Lcom/android/server/wm/WindowContainer$1;)V
 
-    .line 1158
-    :cond_10
+    move-object v0, v1
+
+    .line 1163
+    :cond_11
     invoke-virtual {v0, p1}, Lcom/android/server/wm/WindowContainer$ForAllWindowsConsumerWrapper;->setConsumer(Ljava/util/function/Consumer;)V
 
-    .line 1159
+    .line 1164
     return-object v0
 .end method
 
 .method private onChildAdded(Lcom/android/server/wm/WindowContainer;)V
     .registers 5
+    .param p1, "child"  # Lcom/android/server/wm/WindowContainer;
 
-    .line 273
+    .line 278
+    .local p0, "this":Lcom/android/server/wm/WindowContainer;, "Lcom/android/server/wm/WindowContainer<TE;>;"
     iget v0, p0, Lcom/android/server/wm/WindowContainer;->mTreeWeight:I
 
     iget v1, p1, Lcom/android/server/wm/WindowContainer;->mTreeWeight:I
@@ -386,16 +406,17 @@
 
     iput v0, p0, Lcom/android/server/wm/WindowContainer;->mTreeWeight:I
 
-    .line 274
+    .line 279
     invoke-virtual {p0}, Lcom/android/server/wm/WindowContainer;->getParent()Lcom/android/server/wm/WindowContainer;
 
     move-result-object v0
 
-    .line 275
+    .line 280
+    .local v0, "parent":Lcom/android/server/wm/WindowContainer;
     :goto_b
     if-eqz v0, :cond_19
 
-    .line 276
+    .line 281
     iget v1, v0, Lcom/android/server/wm/WindowContainer;->mTreeWeight:I
 
     iget v2, p1, Lcom/android/server/wm/WindowContainer;->mTreeWeight:I
@@ -404,25 +425,27 @@
 
     iput v1, v0, Lcom/android/server/wm/WindowContainer;->mTreeWeight:I
 
-    .line 277
+    .line 282
     invoke-virtual {v0}, Lcom/android/server/wm/WindowContainer;->getParent()Lcom/android/server/wm/WindowContainer;
 
     move-result-object v0
 
     goto :goto_b
 
-    .line 279
+    .line 284
     :cond_19
     invoke-virtual {p0}, Lcom/android/server/wm/WindowContainer;->onChildPositionChanged()V
 
-    .line 280
+    .line 285
     return-void
 .end method
 
 .method private onChildRemoved(Lcom/android/server/wm/WindowContainer;)V
     .registers 5
+    .param p1, "child"  # Lcom/android/server/wm/WindowContainer;
 
-    .line 299
+    .line 304
+    .local p0, "this":Lcom/android/server/wm/WindowContainer;, "Lcom/android/server/wm/WindowContainer<TE;>;"
     iget v0, p0, Lcom/android/server/wm/WindowContainer;->mTreeWeight:I
 
     iget v1, p1, Lcom/android/server/wm/WindowContainer;->mTreeWeight:I
@@ -431,16 +454,17 @@
 
     iput v0, p0, Lcom/android/server/wm/WindowContainer;->mTreeWeight:I
 
-    .line 300
+    .line 305
     invoke-virtual {p0}, Lcom/android/server/wm/WindowContainer;->getParent()Lcom/android/server/wm/WindowContainer;
 
     move-result-object v0
 
-    .line 301
+    .line 306
+    .local v0, "parent":Lcom/android/server/wm/WindowContainer;
     :goto_b
     if-eqz v0, :cond_19
 
-    .line 302
+    .line 307
     iget v1, v0, Lcom/android/server/wm/WindowContainer;->mTreeWeight:I
 
     iget v2, p1, Lcom/android/server/wm/WindowContainer;->mTreeWeight:I
@@ -449,18 +473,18 @@
 
     iput v1, v0, Lcom/android/server/wm/WindowContainer;->mTreeWeight:I
 
-    .line 303
+    .line 308
     invoke-virtual {v0}, Lcom/android/server/wm/WindowContainer;->getParent()Lcom/android/server/wm/WindowContainer;
 
     move-result-object v0
 
     goto :goto_b
 
-    .line 305
+    .line 310
     :cond_19
     invoke-virtual {p0}, Lcom/android/server/wm/WindowContainer;->onChildPositionChanged()V
 
-    .line 306
+    .line 311
     return-void
 .end method
 
@@ -468,20 +492,23 @@
 # virtual methods
 .method addChild(Lcom/android/server/wm/WindowContainer;I)V
     .registers 6
+    .param p2, "index"  # I
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(TE;I)V"
         }
     .end annotation
 
-    .line 247
+    .line 252
+    .local p0, "this":Lcom/android/server/wm/WindowContainer;, "Lcom/android/server/wm/WindowContainer<TE;>;"
+    .local p1, "child":Lcom/android/server/wm/WindowContainer;, "TE;"
     invoke-virtual {p1}, Lcom/android/server/wm/WindowContainer;->getParent()Lcom/android/server/wm/WindowContainer;
 
     move-result-object v0
 
     if-nez v0, :cond_57
 
-    .line 253
+    .line 258
     const/high16 v0, -0x80000000
 
     if-gez p2, :cond_c
@@ -491,7 +518,7 @@
     :cond_c
     iget-object v1, p0, Lcom/android/server/wm/WindowContainer;->mChildren:Lcom/android/server/wm/WindowList;
 
-    .line 254
+    .line 259
     invoke-virtual {v1}, Lcom/android/server/wm/WindowList;->size()I
 
     move-result v1
@@ -504,129 +531,129 @@
 
     goto :goto_3f
 
-    .line 255
+    .line 260
     :cond_1a
-    new-instance p1, Ljava/lang/IllegalArgumentException;
+    new-instance v0, Ljava/lang/IllegalArgumentException;
 
-    new-instance v0, Ljava/lang/StringBuilder;
+    new-instance v1, Ljava/lang/StringBuilder;
 
-    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v1, "addChild: invalid position="
+    const-string v2, "addChild: invalid position="
 
-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0, p2}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, p2}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    const-string p2, ", children number="
+    const-string v2, ", children number="
 
-    invoke-virtual {v0, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    iget-object p2, p0, Lcom/android/server/wm/WindowContainer;->mChildren:Lcom/android/server/wm/WindowList;
+    iget-object v2, p0, Lcom/android/server/wm/WindowContainer;->mChildren:Lcom/android/server/wm/WindowList;
 
-    .line 256
-    invoke-virtual {p2}, Lcom/android/server/wm/WindowList;->size()I
+    .line 261
+    invoke-virtual {v2}, Lcom/android/server/wm/WindowList;->size()I
 
-    move-result p2
+    move-result v2
 
-    invoke-virtual {v0, p2}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p2
+    move-result-object v1
 
-    invoke-direct {p1, p2}, Ljava/lang/IllegalArgumentException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v0, v1}, Ljava/lang/IllegalArgumentException;-><init>(Ljava/lang/String;)V
 
-    throw p1
+    throw v0
 
-    .line 259
+    .line 264
     :cond_3f
     :goto_3f
     if-ne p2, v2, :cond_48
 
-    .line 260
-    iget-object p2, p0, Lcom/android/server/wm/WindowContainer;->mChildren:Lcom/android/server/wm/WindowList;
+    .line 265
+    iget-object v0, p0, Lcom/android/server/wm/WindowContainer;->mChildren:Lcom/android/server/wm/WindowList;
 
-    invoke-virtual {p2}, Lcom/android/server/wm/WindowList;->size()I
+    invoke-virtual {v0}, Lcom/android/server/wm/WindowList;->size()I
 
     move-result p2
 
     goto :goto_4b
 
-    .line 261
+    .line 266
     :cond_48
     if-ne p2, v0, :cond_4b
 
-    .line 262
+    .line 267
     const/4 p2, 0x0
 
-    .line 265
+    .line 270
     :cond_4b
     :goto_4b
     iget-object v0, p0, Lcom/android/server/wm/WindowContainer;->mChildren:Lcom/android/server/wm/WindowList;
 
     invoke-virtual {v0, p2, p1}, Lcom/android/server/wm/WindowList;->add(ILjava/lang/Object;)V
 
-    .line 266
+    .line 271
     invoke-direct {p0, p1}, Lcom/android/server/wm/WindowContainer;->onChildAdded(Lcom/android/server/wm/WindowContainer;)V
 
-    .line 269
+    .line 274
     invoke-virtual {p1, p0}, Lcom/android/server/wm/WindowContainer;->setParent(Lcom/android/server/wm/WindowContainer;)V
 
-    .line 270
+    .line 275
     return-void
 
-    .line 248
+    .line 253
     :cond_57
-    new-instance p2, Ljava/lang/IllegalArgumentException;
+    new-instance v0, Ljava/lang/IllegalArgumentException;
 
-    new-instance v0, Ljava/lang/StringBuilder;
+    new-instance v1, Ljava/lang/StringBuilder;
 
-    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v1, "addChild: container="
+    const-string v2, "addChild: container="
 
-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {p1}, Lcom/android/server/wm/WindowContainer;->getName()Ljava/lang/String;
+
+    move-result-object v2
+
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    const-string v2, " is already a child of container="
+
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    .line 254
+    invoke-virtual {p1}, Lcom/android/server/wm/WindowContainer;->getParent()Lcom/android/server/wm/WindowContainer;
+
+    move-result-object v2
+
+    invoke-virtual {v2}, Lcom/android/server/wm/WindowContainer;->getName()Ljava/lang/String;
+
+    move-result-object v2
+
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    const-string v2, " can\'t add to container="
+
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    .line 255
+    invoke-virtual {p0}, Lcom/android/server/wm/WindowContainer;->getName()Ljava/lang/String;
+
+    move-result-object v2
+
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
     move-result-object v1
 
-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-direct {v0, v1}, Ljava/lang/IllegalArgumentException;-><init>(Ljava/lang/String;)V
 
-    const-string v1, " is already a child of container="
-
-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    .line 249
-    invoke-virtual {p1}, Lcom/android/server/wm/WindowContainer;->getParent()Lcom/android/server/wm/WindowContainer;
-
-    move-result-object p1
-
-    invoke-virtual {p1}, Lcom/android/server/wm/WindowContainer;->getName()Ljava/lang/String;
-
-    move-result-object p1
-
-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    const-string p1, " can\'t add to container="
-
-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    .line 250
-    invoke-virtual {p0}, Lcom/android/server/wm/WindowContainer;->getName()Ljava/lang/String;
-
-    move-result-object p1
-
-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
-
-    move-result-object p1
-
-    invoke-direct {p2, p1}, Ljava/lang/IllegalArgumentException;-><init>(Ljava/lang/String;)V
-
-    throw p2
+    throw v0
 .end method
 
 .method protected addChild(Lcom/android/server/wm/WindowContainer;Ljava/util/Comparator;)V
@@ -639,35 +666,39 @@
         }
     .end annotation
 
-    .line 216
+    .line 221
+    .local p0, "this":Lcom/android/server/wm/WindowContainer;, "Lcom/android/server/wm/WindowContainer<TE;>;"
+    .local p1, "child":Lcom/android/server/wm/WindowContainer;, "TE;"
+    .local p2, "comparator":Ljava/util/Comparator;, "Ljava/util/Comparator<TE;>;"
     invoke-virtual {p1}, Lcom/android/server/wm/WindowContainer;->getParent()Lcom/android/server/wm/WindowContainer;
 
     move-result-object v0
 
-    if-nez v0, :cond_3b
+    if-nez v0, :cond_3a
 
-    .line 222
-    nop
-
-    .line 223
+    .line 227
     const/4 v0, -0x1
 
-    if-eqz p2, :cond_26
+    .line 228
+    .local v0, "positionToAdd":I
+    if-eqz p2, :cond_25
 
-    .line 224
+    .line 229
     iget-object v1, p0, Lcom/android/server/wm/WindowContainer;->mChildren:Lcom/android/server/wm/WindowList;
 
     invoke-virtual {v1}, Lcom/android/server/wm/WindowList;->size()I
 
     move-result v1
 
-    .line 225
+    .line 230
+    .local v1, "count":I
     const/4 v2, 0x0
 
-    :goto_11
-    if-ge v2, v1, :cond_26
+    .local v2, "i":I
+    :goto_10
+    if-ge v2, v1, :cond_25
 
-    .line 226
+    .line 231
     iget-object v3, p0, Lcom/android/server/wm/WindowContainer;->mChildren:Lcom/android/server/wm/WindowList;
 
     invoke-virtual {v3, v2}, Lcom/android/server/wm/WindowList;->get(I)Ljava/lang/Object;
@@ -680,114 +711,120 @@
 
     move-result v3
 
-    if-gez v3, :cond_23
+    if-gez v3, :cond_22
 
-    .line 227
-    nop
-
-    .line 228
-    goto :goto_27
-
-    .line 225
-    :cond_23
-    add-int/lit8 v2, v2, 0x1
-
-    goto :goto_11
+    .line 232
+    move v0, v2
 
     .line 233
-    :cond_26
-    move v2, v0
+    goto :goto_25
 
-    :goto_27
-    if-ne v2, v0, :cond_2f
+    .line 230
+    :cond_22
+    add-int/lit8 v2, v2, 0x1
 
-    .line 234
-    iget-object p2, p0, Lcom/android/server/wm/WindowContainer;->mChildren:Lcom/android/server/wm/WindowList;
-
-    invoke-virtual {p2, p1}, Lcom/android/server/wm/WindowList;->add(Ljava/lang/Object;)Z
-
-    goto :goto_34
-
-    .line 236
-    :cond_2f
-    iget-object p2, p0, Lcom/android/server/wm/WindowContainer;->mChildren:Lcom/android/server/wm/WindowList;
-
-    invoke-virtual {p2, v2, p1}, Lcom/android/server/wm/WindowList;->add(ILjava/lang/Object;)V
+    goto :goto_10
 
     .line 238
-    :goto_34
-    invoke-direct {p0, p1}, Lcom/android/server/wm/WindowContainer;->onChildAdded(Lcom/android/server/wm/WindowContainer;)V
+    .end local v1  # "count":I
+    .end local v2  # "i":I
+    :cond_25
+    :goto_25
+    const/4 v1, -0x1
+
+    if-ne v0, v1, :cond_2e
+
+    .line 239
+    iget-object v1, p0, Lcom/android/server/wm/WindowContainer;->mChildren:Lcom/android/server/wm/WindowList;
+
+    invoke-virtual {v1, p1}, Lcom/android/server/wm/WindowList;->add(Ljava/lang/Object;)Z
+
+    goto :goto_33
 
     .line 241
+    :cond_2e
+    iget-object v1, p0, Lcom/android/server/wm/WindowContainer;->mChildren:Lcom/android/server/wm/WindowList;
+
+    invoke-virtual {v1, v0, p1}, Lcom/android/server/wm/WindowList;->add(ILjava/lang/Object;)V
+
+    .line 243
+    :goto_33
+    invoke-direct {p0, p1}, Lcom/android/server/wm/WindowContainer;->onChildAdded(Lcom/android/server/wm/WindowContainer;)V
+
+    .line 246
     invoke-virtual {p1, p0}, Lcom/android/server/wm/WindowContainer;->setParent(Lcom/android/server/wm/WindowContainer;)V
 
-    .line 242
+    .line 247
     return-void
 
-    .line 217
-    :cond_3b
-    new-instance p2, Ljava/lang/IllegalArgumentException;
+    .line 222
+    .end local v0  # "positionToAdd":I
+    :cond_3a
+    new-instance v0, Ljava/lang/IllegalArgumentException;
 
-    new-instance v0, Ljava/lang/StringBuilder;
+    new-instance v1, Ljava/lang/StringBuilder;
 
-    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v1, "addChild: container="
+    const-string v2, "addChild: container="
 
-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {p1}, Lcom/android/server/wm/WindowContainer;->getName()Ljava/lang/String;
+
+    move-result-object v2
+
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    const-string v2, " is already a child of container="
+
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    .line 223
+    invoke-virtual {p1}, Lcom/android/server/wm/WindowContainer;->getParent()Lcom/android/server/wm/WindowContainer;
+
+    move-result-object v2
+
+    invoke-virtual {v2}, Lcom/android/server/wm/WindowContainer;->getName()Ljava/lang/String;
+
+    move-result-object v2
+
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    const-string v2, " can\'t add to container="
+
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    .line 224
+    invoke-virtual {p0}, Lcom/android/server/wm/WindowContainer;->getName()Ljava/lang/String;
+
+    move-result-object v2
+
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
     move-result-object v1
 
-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-direct {v0, v1}, Ljava/lang/IllegalArgumentException;-><init>(Ljava/lang/String;)V
 
-    const-string v1, " is already a child of container="
-
-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    .line 218
-    invoke-virtual {p1}, Lcom/android/server/wm/WindowContainer;->getParent()Lcom/android/server/wm/WindowContainer;
-
-    move-result-object p1
-
-    invoke-virtual {p1}, Lcom/android/server/wm/WindowContainer;->getName()Ljava/lang/String;
-
-    move-result-object p1
-
-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    const-string p1, " can\'t add to container="
-
-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    .line 219
-    invoke-virtual {p0}, Lcom/android/server/wm/WindowContainer;->getName()Ljava/lang/String;
-
-    move-result-object p1
-
-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
-
-    move-result-object p1
-
-    invoke-direct {p2, p1}, Ljava/lang/IllegalArgumentException;-><init>(Ljava/lang/String;)V
-
-    throw p2
+    throw v0
 .end method
 
 .method applyMagnificationSpec(Landroid/view/SurfaceControl$Transaction;Landroid/view/MagnificationSpec;)V
     .registers 10
+    .param p1, "t"  # Landroid/view/SurfaceControl$Transaction;
+    .param p2, "spec"  # Landroid/view/MagnificationSpec;
 
-    .line 1186
+    .line 1191
+    .local p0, "this":Lcom/android/server/wm/WindowContainer;, "Lcom/android/server/wm/WindowContainer<TE;>;"
     invoke-virtual {p0}, Lcom/android/server/wm/WindowContainer;->shouldMagnify()Z
 
     move-result v0
 
     if-eqz v0, :cond_1d
 
-    .line 1187
+    .line 1192
     iget-object v2, p0, Lcom/android/server/wm/WindowContainer;->mSurfaceControl:Landroid/view/SurfaceControl;
 
     iget v3, p2, Landroid/view/MagnificationSpec;->scale:F
@@ -802,23 +839,24 @@
 
     invoke-virtual/range {v1 .. v6}, Landroid/view/SurfaceControl$Transaction;->setMatrix(Landroid/view/SurfaceControl;FFFF)Landroid/view/SurfaceControl$Transaction;
 
-    move-result-object p1
+    move-result-object v0
 
-    iget-object v0, p0, Lcom/android/server/wm/WindowContainer;->mSurfaceControl:Landroid/view/SurfaceControl;
+    iget-object v1, p0, Lcom/android/server/wm/WindowContainer;->mSurfaceControl:Landroid/view/SurfaceControl;
 
-    iget v1, p2, Landroid/view/MagnificationSpec;->offsetX:F
+    iget v2, p2, Landroid/view/MagnificationSpec;->offsetX:F
 
-    iget p2, p2, Landroid/view/MagnificationSpec;->offsetY:F
+    iget v3, p2, Landroid/view/MagnificationSpec;->offsetY:F
 
-    .line 1188
-    invoke-virtual {p1, v0, v1, p2}, Landroid/view/SurfaceControl$Transaction;->setPosition(Landroid/view/SurfaceControl;FF)Landroid/view/SurfaceControl$Transaction;
+    .line 1193
+    invoke-virtual {v0, v1, v2, v3}, Landroid/view/SurfaceControl$Transaction;->setPosition(Landroid/view/SurfaceControl;FF)Landroid/view/SurfaceControl$Transaction;
 
     goto :goto_34
 
-    .line 1190
+    .line 1195
     :cond_1d
     const/4 v0, 0x0
 
+    .local v0, "i":I
     :goto_1e
     iget-object v1, p0, Lcom/android/server/wm/WindowContainer;->mChildren:Lcom/android/server/wm/WindowList;
 
@@ -828,7 +866,7 @@
 
     if-ge v0, v1, :cond_34
 
-    .line 1191
+    .line 1196
     iget-object v1, p0, Lcom/android/server/wm/WindowContainer;->mChildren:Lcom/android/server/wm/WindowList;
 
     invoke-virtual {v1, v0}, Lcom/android/server/wm/WindowList;->get(I)Ljava/lang/Object;
@@ -839,12 +877,13 @@
 
     invoke-virtual {v1, p1, p2}, Lcom/android/server/wm/WindowContainer;->applyMagnificationSpec(Landroid/view/SurfaceControl$Transaction;Landroid/view/MagnificationSpec;)V
 
-    .line 1190
+    .line 1195
     add-int/lit8 v0, v0, 0x1
 
     goto :goto_1e
 
-    .line 1194
+    .line 1199
+    .end local v0  # "i":I
     :cond_34
     :goto_34
     return-void
@@ -853,125 +892,144 @@
 .method assignChildLayers()V
     .registers 2
 
-    .line 1112
+    .line 1117
+    .local p0, "this":Lcom/android/server/wm/WindowContainer;, "Lcom/android/server/wm/WindowContainer<TE;>;"
     invoke-virtual {p0}, Lcom/android/server/wm/WindowContainer;->getPendingTransaction()Landroid/view/SurfaceControl$Transaction;
 
     move-result-object v0
 
     invoke-virtual {p0, v0}, Lcom/android/server/wm/WindowContainer;->assignChildLayers(Landroid/view/SurfaceControl$Transaction;)V
 
-    .line 1113
+    .line 1118
     invoke-virtual {p0}, Lcom/android/server/wm/WindowContainer;->scheduleAnimation()V
 
-    .line 1114
+    .line 1119
     return-void
 .end method
 
 .method assignChildLayers(Landroid/view/SurfaceControl$Transaction;)V
-    .registers 7
-
-    .line 1092
-    nop
-
-    .line 1096
-    const/4 v0, 0x0
-
-    move v1, v0
-
-    move v2, v1
-
-    :goto_4
-    iget-object v3, p0, Lcom/android/server/wm/WindowContainer;->mChildren:Lcom/android/server/wm/WindowList;
-
-    invoke-virtual {v3}, Lcom/android/server/wm/WindowList;->size()I
-
-    move-result v3
-
-    if-ge v1, v3, :cond_26
+    .registers 6
+    .param p1, "t"  # Landroid/view/SurfaceControl$Transaction;
 
     .line 1097
-    iget-object v3, p0, Lcom/android/server/wm/WindowContainer;->mChildren:Lcom/android/server/wm/WindowList;
+    .local p0, "this":Lcom/android/server/wm/WindowContainer;, "Lcom/android/server/wm/WindowContainer<TE;>;"
+    const/4 v0, 0x0
 
-    invoke-virtual {v3, v1}, Lcom/android/server/wm/WindowList;->get(I)Ljava/lang/Object;
+    .line 1101
+    .local v0, "layer":I
+    const/4 v1, 0x0
 
-    move-result-object v3
+    .local v1, "j":I
+    :goto_2
+    iget-object v2, p0, Lcom/android/server/wm/WindowContainer;->mChildren:Lcom/android/server/wm/WindowList;
 
-    check-cast v3, Lcom/android/server/wm/WindowContainer;
+    invoke-virtual {v2}, Lcom/android/server/wm/WindowList;->size()I
 
-    .line 1098
-    invoke-virtual {v3, p1}, Lcom/android/server/wm/WindowContainer;->assignChildLayers(Landroid/view/SurfaceControl$Transaction;)V
+    move-result v2
 
-    .line 1099
-    invoke-virtual {v3}, Lcom/android/server/wm/WindowContainer;->needsZBoost()Z
+    if-ge v1, v2, :cond_24
 
-    move-result v4
+    .line 1102
+    iget-object v2, p0, Lcom/android/server/wm/WindowContainer;->mChildren:Lcom/android/server/wm/WindowList;
 
-    if-nez v4, :cond_23
+    invoke-virtual {v2, v1}, Lcom/android/server/wm/WindowList;->get(I)Ljava/lang/Object;
 
-    .line 1100
-    add-int/lit8 v4, v2, 0x1
+    move-result-object v2
 
-    invoke-virtual {v3, p1, v2}, Lcom/android/server/wm/WindowContainer;->assignLayer(Landroid/view/SurfaceControl$Transaction;I)V
-
-    move v2, v4
-
-    .line 1096
-    :cond_23
-    add-int/lit8 v1, v1, 0x1
-
-    goto :goto_4
+    check-cast v2, Lcom/android/server/wm/WindowContainer;
 
     .line 1103
-    :cond_26
-    nop
-
-    :goto_27
-    iget-object v1, p0, Lcom/android/server/wm/WindowContainer;->mChildren:Lcom/android/server/wm/WindowList;
-
-    invoke-virtual {v1}, Lcom/android/server/wm/WindowList;->size()I
-
-    move-result v1
-
-    if-ge v0, v1, :cond_46
+    .local v2, "wc":Lcom/android/server/wm/WindowContainer;
+    invoke-virtual {v2, p1}, Lcom/android/server/wm/WindowContainer;->assignChildLayers(Landroid/view/SurfaceControl$Transaction;)V
 
     .line 1104
-    iget-object v1, p0, Lcom/android/server/wm/WindowContainer;->mChildren:Lcom/android/server/wm/WindowList;
-
-    invoke-virtual {v1, v0}, Lcom/android/server/wm/WindowList;->get(I)Ljava/lang/Object;
-
-    move-result-object v1
-
-    check-cast v1, Lcom/android/server/wm/WindowContainer;
-
-    .line 1105
-    invoke-virtual {v1}, Lcom/android/server/wm/WindowContainer;->needsZBoost()Z
+    invoke-virtual {v2}, Lcom/android/server/wm/WindowContainer;->needsZBoost()Z
 
     move-result v3
 
-    if-eqz v3, :cond_43
+    if-nez v3, :cond_21
 
-    .line 1106
-    add-int/lit8 v3, v2, 0x1
+    .line 1105
+    add-int/lit8 v3, v0, 0x1
 
-    invoke-virtual {v1, p1, v2}, Lcom/android/server/wm/WindowContainer;->assignLayer(Landroid/view/SurfaceControl$Transaction;I)V
+    .end local v0  # "layer":I
+    .local v3, "layer":I
+    invoke-virtual {v2, p1, v0}, Lcom/android/server/wm/WindowContainer;->assignLayer(Landroid/view/SurfaceControl$Transaction;I)V
 
-    move v2, v3
+    move v0, v3
 
-    .line 1103
-    :cond_43
-    add-int/lit8 v0, v0, 0x1
+    .line 1101
+    .end local v2  # "wc":Lcom/android/server/wm/WindowContainer;
+    .end local v3  # "layer":I
+    .restart local v0  # "layer":I
+    :cond_21
+    add-int/lit8 v1, v1, 0x1
 
-    goto :goto_27
+    goto :goto_2
+
+    .line 1108
+    .end local v1  # "j":I
+    :cond_24
+    const/4 v1, 0x0
+
+    .restart local v1  # "j":I
+    :goto_25
+    iget-object v2, p0, Lcom/android/server/wm/WindowContainer;->mChildren:Lcom/android/server/wm/WindowList;
+
+    invoke-virtual {v2}, Lcom/android/server/wm/WindowList;->size()I
+
+    move-result v2
+
+    if-ge v1, v2, :cond_44
 
     .line 1109
-    :cond_46
+    iget-object v2, p0, Lcom/android/server/wm/WindowContainer;->mChildren:Lcom/android/server/wm/WindowList;
+
+    invoke-virtual {v2, v1}, Lcom/android/server/wm/WindowList;->get(I)Ljava/lang/Object;
+
+    move-result-object v2
+
+    check-cast v2, Lcom/android/server/wm/WindowContainer;
+
+    .line 1110
+    .restart local v2  # "wc":Lcom/android/server/wm/WindowContainer;
+    invoke-virtual {v2}, Lcom/android/server/wm/WindowContainer;->needsZBoost()Z
+
+    move-result v3
+
+    if-eqz v3, :cond_41
+
+    .line 1111
+    add-int/lit8 v3, v0, 0x1
+
+    .end local v0  # "layer":I
+    .restart local v3  # "layer":I
+    invoke-virtual {v2, p1, v0}, Lcom/android/server/wm/WindowContainer;->assignLayer(Landroid/view/SurfaceControl$Transaction;I)V
+
+    move v0, v3
+
+    .line 1108
+    .end local v2  # "wc":Lcom/android/server/wm/WindowContainer;
+    .end local v3  # "layer":I
+    .restart local v0  # "layer":I
+    :cond_41
+    add-int/lit8 v1, v1, 0x1
+
+    goto :goto_25
+
+    .line 1114
+    .end local v1  # "j":I
+    :cond_44
     return-void
 .end method
 
 .method assignLayer(Landroid/view/SurfaceControl$Transaction;I)V
     .registers 5
+    .param p1, "t"  # Landroid/view/SurfaceControl$Transaction;
+    .param p2, "layer"  # I
 
-    .line 1056
+    .line 1061
+    .local p0, "this":Lcom/android/server/wm/WindowContainer;, "Lcom/android/server/wm/WindowContainer<TE;>;"
     iget v0, p0, Lcom/android/server/wm/WindowContainer;->mLastLayer:I
 
     if-ne p2, v0, :cond_b
@@ -991,7 +1049,8 @@
     :goto_b
     const/4 v0, 0x1
 
-    .line 1057
+    .line 1062
+    .local v0, "changed":Z
     :goto_c
     iget-object v1, p0, Lcom/android/server/wm/WindowContainer;->mSurfaceControl:Landroid/view/SurfaceControl;
 
@@ -999,26 +1058,30 @@
 
     if-eqz v0, :cond_1a
 
-    .line 1058
+    .line 1063
     invoke-virtual {p0, p1, p2}, Lcom/android/server/wm/WindowContainer;->setLayer(Landroid/view/SurfaceControl$Transaction;I)V
 
-    .line 1059
+    .line 1064
     iput p2, p0, Lcom/android/server/wm/WindowContainer;->mLastLayer:I
 
-    .line 1060
-    const/4 p1, 0x0
+    .line 1065
+    const/4 v1, 0x0
 
-    iput-object p1, p0, Lcom/android/server/wm/WindowContainer;->mLastRelativeToLayer:Landroid/view/SurfaceControl;
+    iput-object v1, p0, Lcom/android/server/wm/WindowContainer;->mLastRelativeToLayer:Landroid/view/SurfaceControl;
 
-    .line 1062
+    .line 1067
     :cond_1a
     return-void
 .end method
 
 .method assignRelativeLayer(Landroid/view/SurfaceControl$Transaction;Landroid/view/SurfaceControl;I)V
     .registers 6
+    .param p1, "t"  # Landroid/view/SurfaceControl$Transaction;
+    .param p2, "relativeTo"  # Landroid/view/SurfaceControl;
+    .param p3, "layer"  # I
 
-    .line 1065
+    .line 1070
+    .local p0, "this":Lcom/android/server/wm/WindowContainer;, "Lcom/android/server/wm/WindowContainer<TE;>;"
     iget v0, p0, Lcom/android/server/wm/WindowContainer;->mLastLayer:I
 
     if-ne p3, v0, :cond_b
@@ -1038,7 +1101,8 @@
     :goto_b
     const/4 v0, 0x1
 
-    .line 1066
+    .line 1071
+    .local v0, "changed":Z
     :goto_c
     iget-object v1, p0, Lcom/android/server/wm/WindowContainer;->mSurfaceControl:Landroid/view/SurfaceControl;
 
@@ -1046,16 +1110,16 @@
 
     if-eqz v0, :cond_19
 
-    .line 1067
+    .line 1072
     invoke-virtual {p0, p1, p2, p3}, Lcom/android/server/wm/WindowContainer;->setRelativeLayer(Landroid/view/SurfaceControl$Transaction;Landroid/view/SurfaceControl;I)V
 
-    .line 1068
+    .line 1073
     iput p3, p0, Lcom/android/server/wm/WindowContainer;->mLastLayer:I
 
-    .line 1069
+    .line 1074
     iput-object p2, p0, Lcom/android/server/wm/WindowContainer;->mLastRelativeToLayer:Landroid/view/SurfaceControl;
 
-    .line 1071
+    .line 1076
     :cond_19
     return-void
 .end method
@@ -1063,19 +1127,21 @@
 .method cancelAnimation()V
     .registers 2
 
-    .line 1265
+    .line 1270
+    .local p0, "this":Lcom/android/server/wm/WindowContainer;, "Lcom/android/server/wm/WindowContainer<TE;>;"
     iget-object v0, p0, Lcom/android/server/wm/WindowContainer;->mSurfaceAnimator:Lcom/android/server/wm/SurfaceAnimator;
 
     invoke-virtual {v0}, Lcom/android/server/wm/SurfaceAnimator;->cancelAnimation()V
 
-    .line 1266
+    .line 1271
     return-void
 .end method
 
 .method checkAppWindowsReadyToShow()V
     .registers 3
 
-    .line 699
+    .line 704
+    .local p0, "this":Lcom/android/server/wm/WindowContainer;, "Lcom/android/server/wm/WindowContainer<TE;>;"
     iget-object v0, p0, Lcom/android/server/wm/WindowContainer;->mChildren:Lcom/android/server/wm/WindowList;
 
     invoke-virtual {v0}, Lcom/android/server/wm/WindowList;->size()I
@@ -1084,10 +1150,11 @@
 
     add-int/lit8 v0, v0, -0x1
 
+    .local v0, "i":I
     :goto_8
     if-ltz v0, :cond_18
 
-    .line 700
+    .line 705
     iget-object v1, p0, Lcom/android/server/wm/WindowContainer;->mChildren:Lcom/android/server/wm/WindowList;
 
     invoke-virtual {v1, v0}, Lcom/android/server/wm/WindowList;->get(I)Ljava/lang/Object;
@@ -1096,87 +1163,97 @@
 
     check-cast v1, Lcom/android/server/wm/WindowContainer;
 
-    .line 701
+    .line 706
+    .local v1, "wc":Lcom/android/server/wm/WindowContainer;
     invoke-virtual {v1}, Lcom/android/server/wm/WindowContainer;->checkAppWindowsReadyToShow()V
 
-    .line 699
+    .line 704
+    .end local v1  # "wc":Lcom/android/server/wm/WindowContainer;
     add-int/lit8 v0, v0, -0x1
 
     goto :goto_8
 
-    .line 703
+    .line 708
+    .end local v0  # "i":I
     :cond_18
     return-void
 .end method
 
 .method checkCompleteDeferredRemoval()Z
-    .registers 4
+    .registers 5
 
-    .line 687
-    nop
+    .line 692
+    .local p0, "this":Lcom/android/server/wm/WindowContainer;, "Lcom/android/server/wm/WindowContainer<TE;>;"
+    const/4 v0, 0x0
 
-    .line 689
-    iget-object v0, p0, Lcom/android/server/wm/WindowContainer;->mChildren:Lcom/android/server/wm/WindowList;
+    .line 694
+    .local v0, "stillDeferringRemoval":Z
+    iget-object v1, p0, Lcom/android/server/wm/WindowContainer;->mChildren:Lcom/android/server/wm/WindowList;
 
-    invoke-virtual {v0}, Lcom/android/server/wm/WindowList;->size()I
+    invoke-virtual {v1}, Lcom/android/server/wm/WindowList;->size()I
 
-    move-result v0
+    move-result v1
 
-    add-int/lit8 v0, v0, -0x1
+    add-int/lit8 v1, v1, -0x1
 
-    const/4 v1, 0x0
+    .local v1, "i":I
+    :goto_9
+    if-ltz v1, :cond_1b
 
-    :goto_a
-    if-ltz v0, :cond_1c
-
-    .line 690
+    .line 695
     iget-object v2, p0, Lcom/android/server/wm/WindowContainer;->mChildren:Lcom/android/server/wm/WindowList;
 
-    invoke-virtual {v2, v0}, Lcom/android/server/wm/WindowList;->get(I)Ljava/lang/Object;
+    invoke-virtual {v2, v1}, Lcom/android/server/wm/WindowList;->get(I)Ljava/lang/Object;
 
     move-result-object v2
 
     check-cast v2, Lcom/android/server/wm/WindowContainer;
 
-    .line 691
+    .line 696
+    .local v2, "wc":Lcom/android/server/wm/WindowContainer;
     invoke-virtual {v2}, Lcom/android/server/wm/WindowContainer;->checkCompleteDeferredRemoval()Z
 
-    move-result v2
+    move-result v3
 
-    or-int/2addr v1, v2
-
-    .line 689
-    add-int/lit8 v0, v0, -0x1
-
-    goto :goto_a
+    or-int/2addr v0, v3
 
     .line 694
-    :cond_1c
-    return v1
+    .end local v2  # "wc":Lcom/android/server/wm/WindowContainer;
+    add-int/lit8 v1, v1, -0x1
+
+    goto :goto_9
+
+    .line 699
+    .end local v1  # "i":I
+    :cond_1b
+    return v0
 .end method
 
 .method public commitPendingTransaction()V
     .registers 1
 
-    .line 1291
+    .line 1296
+    .local p0, "this":Lcom/android/server/wm/WindowContainer;, "Lcom/android/server/wm/WindowContainer<TE;>;"
     invoke-virtual {p0}, Lcom/android/server/wm/WindowContainer;->scheduleAnimation()V
 
-    .line 1292
+    .line 1297
     return-void
 .end method
 
 .method public compareTo(Lcom/android/server/wm/WindowContainer;)I
-    .registers 9
+    .registers 12
+    .param p1, "other"  # Lcom/android/server/wm/WindowContainer;
 
-    .line 926
+    .line 931
+    .local p0, "this":Lcom/android/server/wm/WindowContainer;, "Lcom/android/server/wm/WindowContainer<TE;>;"
     if-ne p0, p1, :cond_4
 
-    .line 927
-    const/4 p1, 0x0
+    .line 932
+    const/4 v0, 0x0
 
-    return p1
+    return v0
 
-    .line 930
+    .line 935
     :cond_4
     iget-object v0, p0, Lcom/android/server/wm/WindowContainer;->mParent:Lcom/android/server/wm/WindowContainer;
 
@@ -1190,19 +1267,20 @@
 
     if-ne v0, v3, :cond_1d
 
-    .line 931
+    .line 936
     iget-object v0, v0, Lcom/android/server/wm/WindowContainer;->mChildren:Lcom/android/server/wm/WindowList;
 
-    .line 932
+    .line 937
+    .local v0, "list":Lcom/android/server/wm/WindowList;, "Lcom/android/server/wm/WindowList<Lcom/android/server/wm/WindowContainer;>;"
     invoke-virtual {v0, p0}, Lcom/android/server/wm/WindowList;->indexOf(Ljava/lang/Object;)I
 
     move-result v3
 
     invoke-virtual {v0, p1}, Lcom/android/server/wm/WindowList;->indexOf(Ljava/lang/Object;)I
 
-    move-result p1
+    move-result v4
 
-    if-le v3, p1, :cond_1b
+    if-le v3, v4, :cond_1b
 
     goto :goto_1c
 
@@ -1212,56 +1290,28 @@
     :goto_1c
     return v1
 
-    .line 935
+    .line 940
+    .end local v0  # "list":Lcom/android/server/wm/WindowList;, "Lcom/android/server/wm/WindowList<Lcom/android/server/wm/WindowContainer;>;"
     :cond_1d
     iget-object v0, p0, Lcom/android/server/wm/WindowContainer;->mTmpChain1:Ljava/util/LinkedList;
 
-    .line 936
+    .line 941
+    .local v0, "thisParentChain":Ljava/util/LinkedList;, "Ljava/util/LinkedList<Lcom/android/server/wm/WindowContainer;>;"
     iget-object v3, p0, Lcom/android/server/wm/WindowContainer;->mTmpChain2:Ljava/util/LinkedList;
 
-    .line 938
+    .line 943
+    .local v3, "otherParentChain":Ljava/util/LinkedList;, "Ljava/util/LinkedList<Lcom/android/server/wm/WindowContainer;>;"
     :try_start_21
     invoke-direct {p0, v0}, Lcom/android/server/wm/WindowContainer;->getParents(Ljava/util/LinkedList;)V
 
-    .line 939
+    .line 944
     invoke-direct {p1, v3}, Lcom/android/server/wm/WindowContainer;->getParents(Ljava/util/LinkedList;)V
 
-    .line 942
+    .line 947
     const/4 v4, 0x0
 
-    .line 943
-    invoke-virtual {v0}, Ljava/util/LinkedList;->peekLast()Ljava/lang/Object;
-
-    move-result-object v5
-
-    check-cast v5, Lcom/android/server/wm/WindowContainer;
-
-    .line 944
-    invoke-virtual {v3}, Ljava/util/LinkedList;->peekLast()Ljava/lang/Object;
-
-    move-result-object v6
-
-    check-cast v6, Lcom/android/server/wm/WindowContainer;
-
-    .line 945
-    :goto_34
-    if-eqz v5, :cond_50
-
-    if-eqz v6, :cond_50
-
-    if-ne v5, v6, :cond_50
-
-    .line 946
-    invoke-virtual {v0}, Ljava/util/LinkedList;->removeLast()Ljava/lang/Object;
-
-    move-result-object v4
-
-    check-cast v4, Lcom/android/server/wm/WindowContainer;
-
-    .line 947
-    invoke-virtual {v3}, Ljava/util/LinkedList;->removeLast()Ljava/lang/Object;
-
     .line 948
+    .local v4, "commonAncestor":Lcom/android/server/wm/WindowContainer;
     invoke-virtual {v0}, Ljava/util/LinkedList;->peekLast()Ljava/lang/Object;
 
     move-result-object v5
@@ -1269,156 +1319,210 @@
     check-cast v5, Lcom/android/server/wm/WindowContainer;
 
     .line 949
+    .local v5, "thisTop":Lcom/android/server/wm/WindowContainer;
     invoke-virtual {v3}, Ljava/util/LinkedList;->peekLast()Ljava/lang/Object;
 
     move-result-object v6
 
     check-cast v6, Lcom/android/server/wm/WindowContainer;
-    :try_end_4f
-    .catchall {:try_start_21 .. :try_end_4f} :catchall_ae
+
+    .line 950
+    .local v6, "otherTop":Lcom/android/server/wm/WindowContainer;
+    :goto_34
+    if-eqz v5, :cond_53
+
+    if-eqz v6, :cond_53
+
+    if-ne v5, v6, :cond_53
+
+    .line 951
+    invoke-virtual {v0}, Ljava/util/LinkedList;->removeLast()Ljava/lang/Object;
+
+    move-result-object v7
+
+    check-cast v7, Lcom/android/server/wm/WindowContainer;
+
+    move-object v4, v7
+
+    .line 952
+    invoke-virtual {v3}, Ljava/util/LinkedList;->removeLast()Ljava/lang/Object;
+
+    .line 953
+    invoke-virtual {v0}, Ljava/util/LinkedList;->peekLast()Ljava/lang/Object;
+
+    move-result-object v7
+
+    check-cast v7, Lcom/android/server/wm/WindowContainer;
+
+    move-object v5, v7
+
+    .line 954
+    invoke-virtual {v3}, Ljava/util/LinkedList;->peekLast()Ljava/lang/Object;
+
+    move-result-object v7
+
+    check-cast v7, Lcom/android/server/wm/WindowContainer;
+    :try_end_51
+    .catchall {:try_start_21 .. :try_end_51} :catchall_b1
+
+    move-object v6, v7
 
     goto :goto_34
 
-    .line 953
-    :cond_50
-    if-eqz v4, :cond_8f
+    .line 958
+    :cond_53
+    if-eqz v4, :cond_92
 
-    .line 960
-    if-ne v4, p0, :cond_60
+    .line 965
+    if-ne v4, p0, :cond_63
 
-    .line 961
+    .line 966
     nop
 
-    .line 972
-    iget-object p1, p0, Lcom/android/server/wm/WindowContainer;->mTmpChain1:Ljava/util/LinkedList;
+    .line 977
+    iget-object v1, p0, Lcom/android/server/wm/WindowContainer;->mTmpChain1:Ljava/util/LinkedList;
 
-    invoke-virtual {p1}, Ljava/util/LinkedList;->clear()V
+    invoke-virtual {v1}, Ljava/util/LinkedList;->clear()V
 
-    .line 973
-    iget-object p1, p0, Lcom/android/server/wm/WindowContainer;->mTmpChain2:Ljava/util/LinkedList;
+    .line 978
+    iget-object v1, p0, Lcom/android/server/wm/WindowContainer;->mTmpChain2:Ljava/util/LinkedList;
 
-    invoke-virtual {p1}, Ljava/util/LinkedList;->clear()V
+    invoke-virtual {v1}, Ljava/util/LinkedList;->clear()V
 
-    .line 961
+    .line 966
     return v2
 
-    .line 962
-    :cond_60
-    if-ne v4, p1, :cond_6e
-
-    .line 963
-    nop
-
-    .line 972
-    iget-object p1, p0, Lcom/android/server/wm/WindowContainer;->mTmpChain1:Ljava/util/LinkedList;
-
-    invoke-virtual {p1}, Ljava/util/LinkedList;->clear()V
-
-    .line 973
-    iget-object p1, p0, Lcom/android/server/wm/WindowContainer;->mTmpChain2:Ljava/util/LinkedList;
-
-    invoke-virtual {p1}, Ljava/util/LinkedList;->clear()V
-
-    .line 963
-    return v1
+    .line 967
+    :cond_63
+    if-ne v4, p1, :cond_71
 
     .line 968
-    :cond_6e
-    :try_start_6e
-    iget-object p1, v4, Lcom/android/server/wm/WindowContainer;->mChildren:Lcom/android/server/wm/WindowList;
+    nop
 
-    .line 969
+    .line 977
+    iget-object v2, p0, Lcom/android/server/wm/WindowContainer;->mTmpChain1:Ljava/util/LinkedList;
+
+    invoke-virtual {v2}, Ljava/util/LinkedList;->clear()V
+
+    .line 978
+    iget-object v2, p0, Lcom/android/server/wm/WindowContainer;->mTmpChain2:Ljava/util/LinkedList;
+
+    invoke-virtual {v2}, Ljava/util/LinkedList;->clear()V
+
+    .line 968
+    return v1
+
+    .line 973
+    :cond_71
+    :try_start_71
+    iget-object v7, v4, Lcom/android/server/wm/WindowContainer;->mChildren:Lcom/android/server/wm/WindowList;
+
+    .line 974
+    .local v7, "list":Lcom/android/server/wm/WindowList;, "Lcom/android/server/wm/WindowList<Lcom/android/server/wm/WindowContainer;>;"
     invoke-virtual {v0}, Ljava/util/LinkedList;->peekLast()Ljava/lang/Object;
 
-    move-result-object v0
+    move-result-object v8
 
-    invoke-virtual {p1, v0}, Lcom/android/server/wm/WindowList;->indexOf(Ljava/lang/Object;)I
+    invoke-virtual {v7, v8}, Lcom/android/server/wm/WindowList;->indexOf(Ljava/lang/Object;)I
 
-    move-result v0
+    move-result v8
 
     invoke-virtual {v3}, Ljava/util/LinkedList;->peekLast()Ljava/lang/Object;
 
-    move-result-object v3
+    move-result-object v9
 
-    invoke-virtual {p1, v3}, Lcom/android/server/wm/WindowList;->indexOf(Ljava/lang/Object;)I
+    invoke-virtual {v7, v9}, Lcom/android/server/wm/WindowList;->indexOf(Ljava/lang/Object;)I
 
-    move-result p1
-    :try_end_80
-    .catchall {:try_start_6e .. :try_end_80} :catchall_ae
+    move-result v9
+    :try_end_83
+    .catchall {:try_start_71 .. :try_end_83} :catchall_b1
 
-    if-le v0, p1, :cond_83
+    if-le v8, v9, :cond_86
 
-    .line 970
-    goto :goto_84
+    .line 975
+    goto :goto_87
 
-    :cond_83
+    :cond_86
     move v1, v2
 
-    .line 972
-    :goto_84
-    iget-object p1, p0, Lcom/android/server/wm/WindowContainer;->mTmpChain1:Ljava/util/LinkedList;
+    .line 977
+    :goto_87
+    iget-object v2, p0, Lcom/android/server/wm/WindowContainer;->mTmpChain1:Ljava/util/LinkedList;
 
-    invoke-virtual {p1}, Ljava/util/LinkedList;->clear()V
+    invoke-virtual {v2}, Ljava/util/LinkedList;->clear()V
 
-    .line 973
-    iget-object p1, p0, Lcom/android/server/wm/WindowContainer;->mTmpChain2:Ljava/util/LinkedList;
+    .line 978
+    iget-object v2, p0, Lcom/android/server/wm/WindowContainer;->mTmpChain2:Ljava/util/LinkedList;
 
-    invoke-virtual {p1}, Ljava/util/LinkedList;->clear()V
+    invoke-virtual {v2}, Ljava/util/LinkedList;->clear()V
 
-    .line 969
+    .line 974
     return v1
 
-    .line 954
-    :cond_8f
-    :try_start_8f
-    new-instance p1, Ljava/lang/IllegalArgumentException;
+    .line 959
+    .end local v7  # "list":Lcom/android/server/wm/WindowList;, "Lcom/android/server/wm/WindowList<Lcom/android/server/wm/WindowContainer;>;"
+    :cond_92
+    :try_start_92
+    new-instance v1, Ljava/lang/IllegalArgumentException;
 
-    new-instance v1, Ljava/lang/StringBuilder;
+    new-instance v2, Ljava/lang/StringBuilder;
 
-    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v2, "No in the same hierarchy this="
+    const-string v7, "No in the same hierarchy this="
 
-    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v7}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v1, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
-    const-string v0, " other="
+    const-string v7, " other="
 
-    invoke-virtual {v1, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v7}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v1, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v2
 
-    invoke-direct {p1, v0}, Ljava/lang/IllegalArgumentException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v1, v2}, Ljava/lang/IllegalArgumentException;-><init>(Ljava/lang/String;)V
 
-    throw p1
-    :try_end_ae
-    .catchall {:try_start_8f .. :try_end_ae} :catchall_ae
+    .end local v0  # "thisParentChain":Ljava/util/LinkedList;, "Ljava/util/LinkedList<Lcom/android/server/wm/WindowContainer;>;"
+    .end local v3  # "otherParentChain":Ljava/util/LinkedList;, "Ljava/util/LinkedList<Lcom/android/server/wm/WindowContainer;>;"
+    .end local p0  # "this":Lcom/android/server/wm/WindowContainer;, "Lcom/android/server/wm/WindowContainer<TE;>;"
+    .end local p1  # "other":Lcom/android/server/wm/WindowContainer;
+    throw v1
+    :try_end_b1
+    .catchall {:try_start_92 .. :try_end_b1} :catchall_b1
 
-    .line 972
-    :catchall_ae
-    move-exception p1
+    .line 977
+    .end local v4  # "commonAncestor":Lcom/android/server/wm/WindowContainer;
+    .end local v5  # "thisTop":Lcom/android/server/wm/WindowContainer;
+    .end local v6  # "otherTop":Lcom/android/server/wm/WindowContainer;
+    .restart local v0  # "thisParentChain":Ljava/util/LinkedList;, "Ljava/util/LinkedList<Lcom/android/server/wm/WindowContainer;>;"
+    .restart local v3  # "otherParentChain":Ljava/util/LinkedList;, "Ljava/util/LinkedList<Lcom/android/server/wm/WindowContainer;>;"
+    .restart local p0  # "this":Lcom/android/server/wm/WindowContainer;, "Lcom/android/server/wm/WindowContainer<TE;>;"
+    .restart local p1  # "other":Lcom/android/server/wm/WindowContainer;
+    :catchall_b1
+    move-exception v1
 
-    iget-object v0, p0, Lcom/android/server/wm/WindowContainer;->mTmpChain1:Ljava/util/LinkedList;
+    iget-object v2, p0, Lcom/android/server/wm/WindowContainer;->mTmpChain1:Ljava/util/LinkedList;
 
-    invoke-virtual {v0}, Ljava/util/LinkedList;->clear()V
+    invoke-virtual {v2}, Ljava/util/LinkedList;->clear()V
 
-    .line 973
-    iget-object v0, p0, Lcom/android/server/wm/WindowContainer;->mTmpChain2:Ljava/util/LinkedList;
+    .line 978
+    iget-object v2, p0, Lcom/android/server/wm/WindowContainer;->mTmpChain2:Ljava/util/LinkedList;
 
-    invoke-virtual {v0}, Ljava/util/LinkedList;->clear()V
+    invoke-virtual {v2}, Ljava/util/LinkedList;->clear()V
 
-    throw p1
+    throw v1
 .end method
 
 .method public bridge synthetic compareTo(Ljava/lang/Object;)I
     .registers 2
 
     .line 64
+    .local p0, "this":Lcom/android/server/wm/WindowContainer;, "Lcom/android/server/wm/WindowContainer<TE;>;"
     check-cast p1, Lcom/android/server/wm/WindowContainer;
 
     invoke-virtual {p0, p1}, Lcom/android/server/wm/WindowContainer;->compareTo(Lcom/android/server/wm/WindowContainer;)I
@@ -1429,44 +1533,48 @@
 .end method
 
 .method dump(Ljava/io/PrintWriter;Ljava/lang/String;Z)V
-    .registers 5
+    .registers 7
+    .param p1, "pw"  # Ljava/io/PrintWriter;
+    .param p2, "prefix"  # Ljava/lang/String;
+    .param p3, "dumpAll"  # Z
 
-    .line 1353
-    iget-object p3, p0, Lcom/android/server/wm/WindowContainer;->mSurfaceAnimator:Lcom/android/server/wm/SurfaceAnimator;
+    .line 1358
+    .local p0, "this":Lcom/android/server/wm/WindowContainer;, "Lcom/android/server/wm/WindowContainer<TE;>;"
+    iget-object v0, p0, Lcom/android/server/wm/WindowContainer;->mSurfaceAnimator:Lcom/android/server/wm/SurfaceAnimator;
 
-    invoke-virtual {p3}, Lcom/android/server/wm/SurfaceAnimator;->isAnimating()Z
+    invoke-virtual {v0}, Lcom/android/server/wm/SurfaceAnimator;->isAnimating()Z
 
-    move-result p3
+    move-result v0
 
-    if-eqz p3, :cond_26
+    if-eqz v0, :cond_26
 
-    .line 1354
+    .line 1359
     invoke-virtual {p1, p2}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
-    const-string p3, "ContainerAnimator:"
+    const-string v0, "ContainerAnimator:"
 
-    invoke-virtual {p1, p3}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
-    .line 1355
-    iget-object p3, p0, Lcom/android/server/wm/WindowContainer;->mSurfaceAnimator:Lcom/android/server/wm/SurfaceAnimator;
+    .line 1360
+    iget-object v0, p0, Lcom/android/server/wm/WindowContainer;->mSurfaceAnimator:Lcom/android/server/wm/SurfaceAnimator;
 
-    new-instance v0, Ljava/lang/StringBuilder;
+    new-instance v1, Ljava/lang/StringBuilder;
 
-    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
 
-    invoke-virtual {v0, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string p2, "  "
+    const-string v2, "  "
 
-    invoke-virtual {v0, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p2
+    move-result-object v1
 
-    invoke-virtual {p3, p1, p2}, Lcom/android/server/wm/SurfaceAnimator;->dump(Ljava/io/PrintWriter;Ljava/lang/String;)V
+    invoke-virtual {v0, p1, v1}, Lcom/android/server/wm/SurfaceAnimator;->dump(Ljava/io/PrintWriter;Ljava/lang/String;)V
 
-    .line 1357
+    .line 1362
     :cond_26
     return-void
 .end method
@@ -1474,19 +1582,21 @@
 .method endDelayingAnimationStart()V
     .registers 2
 
-    .line 1338
+    .line 1343
+    .local p0, "this":Lcom/android/server/wm/WindowContainer;, "Lcom/android/server/wm/WindowContainer<TE;>;"
     iget-object v0, p0, Lcom/android/server/wm/WindowContainer;->mSurfaceAnimator:Lcom/android/server/wm/SurfaceAnimator;
 
     invoke-virtual {v0}, Lcom/android/server/wm/SurfaceAnimator;->endDelayingAnimationStart()V
 
-    .line 1339
+    .line 1344
     return-void
 .end method
 
 .method fillsParent()Z
     .registers 2
 
-    .line 849
+    .line 854
+    .local p0, "this":Lcom/android/server/wm/WindowContainer;, "Lcom/android/server/wm/WindowContainer<TE;>;"
     const/4 v0, 0x0
 
     return v0
@@ -1503,7 +1613,9 @@
         }
     .end annotation
 
-    .line 893
+    .line 898
+    .local p0, "this":Lcom/android/server/wm/WindowContainer;, "Lcom/android/server/wm/WindowContainer<TE;>;"
+    .local p1, "callback":Ljava/util/function/Consumer;, "Ljava/util/function/Consumer<Lcom/android/server/wm/AppWindowToken;>;"
     iget-object v0, p0, Lcom/android/server/wm/WindowContainer;->mChildren:Lcom/android/server/wm/WindowList;
 
     invoke-virtual {v0}, Lcom/android/server/wm/WindowList;->size()I
@@ -1512,10 +1624,11 @@
 
     add-int/lit8 v0, v0, -0x1
 
+    .local v0, "i":I
     :goto_8
     if-ltz v0, :cond_18
 
-    .line 894
+    .line 899
     iget-object v1, p0, Lcom/android/server/wm/WindowContainer;->mChildren:Lcom/android/server/wm/WindowList;
 
     invoke-virtual {v1, v0}, Lcom/android/server/wm/WindowList;->get(I)Ljava/lang/Object;
@@ -1526,12 +1639,13 @@
 
     invoke-virtual {v1, p1}, Lcom/android/server/wm/WindowContainer;->forAllAppWindows(Ljava/util/function/Consumer;)V
 
-    .line 893
+    .line 898
     add-int/lit8 v0, v0, -0x1
 
     goto :goto_8
 
-    .line 896
+    .line 901
+    .end local v0  # "i":I
     :cond_18
     return-void
 .end method
@@ -1547,7 +1661,9 @@
         }
     .end annotation
 
-    .line 904
+    .line 909
+    .local p0, "this":Lcom/android/server/wm/WindowContainer;, "Lcom/android/server/wm/WindowContainer<TE;>;"
+    .local p1, "callback":Ljava/util/function/Consumer;, "Ljava/util/function/Consumer<Lcom/android/server/wm/Task;>;"
     iget-object v0, p0, Lcom/android/server/wm/WindowContainer;->mChildren:Lcom/android/server/wm/WindowList;
 
     invoke-virtual {v0}, Lcom/android/server/wm/WindowList;->size()I
@@ -1556,10 +1672,11 @@
 
     add-int/lit8 v0, v0, -0x1
 
+    .local v0, "i":I
     :goto_8
     if-ltz v0, :cond_18
 
-    .line 905
+    .line 910
     iget-object v1, p0, Lcom/android/server/wm/WindowContainer;->mChildren:Lcom/android/server/wm/WindowList;
 
     invoke-virtual {v1, v0}, Lcom/android/server/wm/WindowList;->get(I)Ljava/lang/Object;
@@ -1570,18 +1687,20 @@
 
     invoke-virtual {v1, p1}, Lcom/android/server/wm/WindowContainer;->forAllTasks(Ljava/util/function/Consumer;)V
 
-    .line 904
+    .line 909
     add-int/lit8 v0, v0, -0x1
 
     goto :goto_8
 
-    .line 907
+    .line 912
+    .end local v0  # "i":I
     :cond_18
     return-void
 .end method
 
 .method forAllWindows(Ljava/util/function/Consumer;Z)V
-    .registers 3
+    .registers 4
+    .param p2, "traverseTopToBottom"  # Z
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(",
@@ -1591,23 +1710,27 @@
         }
     .end annotation
 
-    .line 887
+    .line 892
+    .local p0, "this":Lcom/android/server/wm/WindowContainer;, "Lcom/android/server/wm/WindowContainer<TE;>;"
+    .local p1, "callback":Ljava/util/function/Consumer;, "Ljava/util/function/Consumer<Lcom/android/server/wm/WindowState;>;"
     invoke-direct {p0, p1}, Lcom/android/server/wm/WindowContainer;->obtainConsumerWrapper(Ljava/util/function/Consumer;)Lcom/android/server/wm/WindowContainer$ForAllWindowsConsumerWrapper;
 
-    move-result-object p1
+    move-result-object v0
 
-    .line 888
-    invoke-virtual {p0, p1, p2}, Lcom/android/server/wm/WindowContainer;->forAllWindows(Lcom/android/internal/util/ToBooleanFunction;Z)Z
+    .line 893
+    .local v0, "wrapper":Lcom/android/server/wm/WindowContainer$ForAllWindowsConsumerWrapper;, "Lcom/android/server/wm/WindowContainer<TE;>.ForAllWindowsConsumerWrapper;"
+    invoke-virtual {p0, v0, p2}, Lcom/android/server/wm/WindowContainer;->forAllWindows(Lcom/android/internal/util/ToBooleanFunction;Z)Z
 
-    .line 889
-    invoke-virtual {p1}, Lcom/android/server/wm/WindowContainer$ForAllWindowsConsumerWrapper;->release()V
+    .line 894
+    invoke-virtual {v0}, Lcom/android/server/wm/WindowContainer$ForAllWindowsConsumerWrapper;->release()V
 
-    .line 890
+    .line 895
     return-void
 .end method
 
 .method forAllWindows(Lcom/android/internal/util/ToBooleanFunction;Z)Z
-    .registers 8
+    .registers 7
+    .param p2, "traverseTopToBottom"  # Z
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(",
@@ -1617,26 +1740,71 @@
         }
     .end annotation
 
-    .line 869
-    const/4 v0, 0x0
-
-    const/4 v1, 0x1
+    .line 874
+    .local p0, "this":Lcom/android/server/wm/WindowContainer;, "Lcom/android/server/wm/WindowContainer<TE;>;"
+    .local p1, "callback":Lcom/android/internal/util/ToBooleanFunction;, "Lcom/android/internal/util/ToBooleanFunction<Lcom/android/server/wm/WindowState;>;"
+    const/4 v0, 0x1
 
     if-eqz p2, :cond_1f
 
-    .line 870
+    .line 875
+    iget-object v1, p0, Lcom/android/server/wm/WindowContainer;->mChildren:Lcom/android/server/wm/WindowList;
+
+    invoke-virtual {v1}, Lcom/android/server/wm/WindowList;->size()I
+
+    move-result v1
+
+    sub-int/2addr v1, v0
+
+    .local v1, "i":I
+    :goto_a
+    if-ltz v1, :cond_1e
+
+    .line 876
     iget-object v2, p0, Lcom/android/server/wm/WindowContainer;->mChildren:Lcom/android/server/wm/WindowList;
 
-    invoke-virtual {v2}, Lcom/android/server/wm/WindowList;->size()I
+    invoke-virtual {v2, v1}, Lcom/android/server/wm/WindowList;->get(I)Ljava/lang/Object;
+
+    move-result-object v2
+
+    check-cast v2, Lcom/android/server/wm/WindowContainer;
+
+    invoke-virtual {v2, p1, p2}, Lcom/android/server/wm/WindowContainer;->forAllWindows(Lcom/android/internal/util/ToBooleanFunction;Z)Z
 
     move-result v2
 
-    sub-int/2addr v2, v1
+    if-eqz v2, :cond_1b
 
-    :goto_b
-    if-ltz v2, :cond_3a
+    .line 877
+    return v0
 
-    .line 871
+    .line 875
+    :cond_1b
+    add-int/lit8 v1, v1, -0x1
+
+    goto :goto_a
+
+    .end local v1  # "i":I
+    :cond_1e
+    goto :goto_3a
+
+    .line 881
+    :cond_1f
+    iget-object v1, p0, Lcom/android/server/wm/WindowContainer;->mChildren:Lcom/android/server/wm/WindowList;
+
+    invoke-virtual {v1}, Lcom/android/server/wm/WindowList;->size()I
+
+    move-result v1
+
+    .line 882
+    .local v1, "count":I
+    const/4 v2, 0x0
+
+    .local v2, "i":I
+    :goto_26
+    if-ge v2, v1, :cond_3a
+
+    .line 883
     iget-object v3, p0, Lcom/android/server/wm/WindowContainer;->mChildren:Lcom/android/server/wm/WindowList;
 
     invoke-virtual {v3, v2}, Lcom/android/server/wm/WindowList;->get(I)Ljava/lang/Object;
@@ -1649,64 +1817,33 @@
 
     move-result v3
 
-    if-eqz v3, :cond_1c
+    if-eqz v3, :cond_37
 
-    .line 872
-    return v1
+    .line 884
+    return v0
 
-    .line 870
-    :cond_1c
-    add-int/lit8 v2, v2, -0x1
-
-    goto :goto_b
-
-    .line 876
-    :cond_1f
-    iget-object v2, p0, Lcom/android/server/wm/WindowContainer;->mChildren:Lcom/android/server/wm/WindowList;
-
-    invoke-virtual {v2}, Lcom/android/server/wm/WindowList;->size()I
-
-    move-result v2
-
-    .line 877
-    move v3, v0
-
-    :goto_26
-    if-ge v3, v2, :cond_3a
-
-    .line 878
-    iget-object v4, p0, Lcom/android/server/wm/WindowContainer;->mChildren:Lcom/android/server/wm/WindowList;
-
-    invoke-virtual {v4, v3}, Lcom/android/server/wm/WindowList;->get(I)Ljava/lang/Object;
-
-    move-result-object v4
-
-    check-cast v4, Lcom/android/server/wm/WindowContainer;
-
-    invoke-virtual {v4, p1, p2}, Lcom/android/server/wm/WindowContainer;->forAllWindows(Lcom/android/internal/util/ToBooleanFunction;Z)Z
-
-    move-result v4
-
-    if-eqz v4, :cond_37
-
-    .line 879
-    return v1
-
-    .line 877
+    .line 882
     :cond_37
-    add-int/lit8 v3, v3, 0x1
+    add-int/lit8 v2, v2, 0x1
 
     goto :goto_26
 
-    .line 883
+    .line 888
+    .end local v1  # "count":I
+    .end local v2  # "i":I
     :cond_3a
+    :goto_3a
+    const/4 v0, 0x0
+
     return v0
 .end method
 
 .method forceWindowsScaleableInTransaction(Z)V
     .registers 4
+    .param p1, "force"  # Z
 
-    .line 571
+    .line 576
+    .local p0, "this":Lcom/android/server/wm/WindowContainer;, "Lcom/android/server/wm/WindowContainer<TE;>;"
     iget-object v0, p0, Lcom/android/server/wm/WindowContainer;->mChildren:Lcom/android/server/wm/WindowList;
 
     invoke-virtual {v0}, Lcom/android/server/wm/WindowList;->size()I
@@ -1715,10 +1852,11 @@
 
     add-int/lit8 v0, v0, -0x1
 
+    .local v0, "i":I
     :goto_8
     if-ltz v0, :cond_18
 
-    .line 572
+    .line 577
     iget-object v1, p0, Lcom/android/server/wm/WindowContainer;->mChildren:Lcom/android/server/wm/WindowList;
 
     invoke-virtual {v1, v0}, Lcom/android/server/wm/WindowList;->get(I)Ljava/lang/Object;
@@ -1727,15 +1865,18 @@
 
     check-cast v1, Lcom/android/server/wm/WindowContainer;
 
-    .line 573
+    .line 578
+    .local v1, "wc":Lcom/android/server/wm/WindowContainer;
     invoke-virtual {v1, p1}, Lcom/android/server/wm/WindowContainer;->forceWindowsScaleableInTransaction(Z)V
 
-    .line 571
+    .line 576
+    .end local v1  # "wc":Lcom/android/server/wm/WindowContainer;
     add-int/lit8 v0, v0, -0x1
 
     goto :goto_8
 
-    .line 575
+    .line 580
+    .end local v0  # "i":I
     :cond_18
     return-void
 .end method
@@ -1743,7 +1884,8 @@
 .method getAnimation()Lcom/android/server/wm/AnimationAdapter;
     .registers 2
 
-    .line 1324
+    .line 1329
+    .local p0, "this":Lcom/android/server/wm/WindowContainer;, "Lcom/android/server/wm/WindowContainer<TE;>;"
     iget-object v0, p0, Lcom/android/server/wm/WindowContainer;->mSurfaceAnimator:Lcom/android/server/wm/SurfaceAnimator;
 
     invoke-virtual {v0}, Lcom/android/server/wm/SurfaceAnimator;->getAnimation()Lcom/android/server/wm/AnimationAdapter;
@@ -1756,7 +1898,8 @@
 .method public getAnimationLeashParent()Landroid/view/SurfaceControl;
     .registers 2
 
-    .line 1275
+    .line 1280
+    .local p0, "this":Lcom/android/server/wm/WindowContainer;, "Lcom/android/server/wm/WindowContainer<TE;>;"
     invoke-virtual {p0}, Lcom/android/server/wm/WindowContainer;->getParentSurfaceControl()Landroid/view/SurfaceControl;
 
     move-result-object v0
@@ -1765,38 +1908,41 @@
 .end method
 
 .method getAppAnimationLayer(I)Landroid/view/SurfaceControl;
-    .registers 3
-    .param p1  # I
+    .registers 4
+    .param p1, "animationLayer"  # I
         .annotation build Lcom/android/server/wm/WindowContainer$AnimationLayer;
         .end annotation
     .end param
 
-    .line 1282
+    .line 1287
+    .local p0, "this":Lcom/android/server/wm/WindowContainer;, "Lcom/android/server/wm/WindowContainer<TE;>;"
     invoke-virtual {p0}, Lcom/android/server/wm/WindowContainer;->getParent()Lcom/android/server/wm/WindowContainer;
 
     move-result-object v0
 
-    .line 1283
+    .line 1288
+    .local v0, "parent":Lcom/android/server/wm/WindowContainer;
     if-eqz v0, :cond_b
 
-    .line 1284
+    .line 1289
     invoke-virtual {v0, p1}, Lcom/android/server/wm/WindowContainer;->getAppAnimationLayer(I)Landroid/view/SurfaceControl;
 
-    move-result-object p1
+    move-result-object v1
 
-    return-object p1
+    return-object v1
 
-    .line 1286
+    .line 1291
     :cond_b
-    const/4 p1, 0x0
+    const/4 v1, 0x0
 
-    return-object p1
+    return-object v1
 .end method
 
 .method protected bridge synthetic getChildAt(I)Lcom/android/server/wm/ConfigurationContainer;
     .registers 2
 
     .line 64
+    .local p0, "this":Lcom/android/server/wm/WindowContainer;, "Lcom/android/server/wm/WindowContainer<TE;>;"
     invoke-virtual {p0, p1}, Lcom/android/server/wm/WindowContainer;->getChildAt(I)Lcom/android/server/wm/WindowContainer;
 
     move-result-object p1
@@ -1806,28 +1952,31 @@
 
 .method protected getChildAt(I)Lcom/android/server/wm/WindowContainer;
     .registers 3
+    .param p1, "index"  # I
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(I)TE;"
         }
     .end annotation
 
-    .line 158
+    .line 163
+    .local p0, "this":Lcom/android/server/wm/WindowContainer;, "Lcom/android/server/wm/WindowContainer<TE;>;"
     iget-object v0, p0, Lcom/android/server/wm/WindowContainer;->mChildren:Lcom/android/server/wm/WindowList;
 
     invoke-virtual {v0, p1}, Lcom/android/server/wm/WindowList;->get(I)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v0
 
-    check-cast p1, Lcom/android/server/wm/WindowContainer;
+    check-cast v0, Lcom/android/server/wm/WindowContainer;
 
-    return-object p1
+    return-object v0
 .end method
 
 .method protected getChildCount()I
     .registers 2
 
-    .line 153
+    .line 158
+    .local p0, "this":Lcom/android/server/wm/WindowContainer;, "Lcom/android/server/wm/WindowContainer<TE;>;"
     iget-object v0, p0, Lcom/android/server/wm/WindowContainer;->mChildren:Lcom/android/server/wm/WindowList;
 
     invoke-virtual {v0}, Lcom/android/server/wm/WindowList;->size()I
@@ -1840,7 +1989,8 @@
 .method getController()Lcom/android/server/wm/WindowContainerController;
     .registers 2
 
-    .line 987
+    .line 992
+    .local p0, "this":Lcom/android/server/wm/WindowContainer;, "Lcom/android/server/wm/WindowContainer<TE;>;"
     iget-object v0, p0, Lcom/android/server/wm/WindowContainer;->mController:Lcom/android/server/wm/WindowContainerController;
 
     return-object v0
@@ -1849,17 +1999,18 @@
 .method getDimmer()Lcom/android/server/wm/Dimmer;
     .registers 2
 
-    .line 1399
+    .line 1404
+    .local p0, "this":Lcom/android/server/wm/WindowContainer;, "Lcom/android/server/wm/WindowContainer<TE;>;"
     iget-object v0, p0, Lcom/android/server/wm/WindowContainer;->mParent:Lcom/android/server/wm/WindowContainer;
 
     if-nez v0, :cond_6
 
-    .line 1400
+    .line 1405
     const/4 v0, 0x0
 
     return-object v0
 
-    .line 1402
+    .line 1407
     :cond_6
     invoke-virtual {v0}, Lcom/android/server/wm/WindowContainer;->getDimmer()Lcom/android/server/wm/Dimmer;
 
@@ -1871,7 +2022,8 @@
 .method getDisplayContent()Lcom/android/server/wm/DisplayContent;
     .registers 2
 
-    .line 527
+    .line 532
+    .local p0, "this":Lcom/android/server/wm/WindowContainer;, "Lcom/android/server/wm/WindowContainer<TE;>;"
     iget-object v0, p0, Lcom/android/server/wm/WindowContainer;->mDisplayContent:Lcom/android/server/wm/DisplayContent;
 
     return-object v0
@@ -1880,7 +2032,8 @@
 .method getDisplayedBounds()Landroid/graphics/Rect;
     .registers 2
 
-    .line 1385
+    .line 1390
+    .local p0, "this":Lcom/android/server/wm/WindowContainer;, "Lcom/android/server/wm/WindowContainer<TE;>;"
     invoke-virtual {p0}, Lcom/android/server/wm/WindowContainer;->getBounds()Landroid/graphics/Rect;
 
     move-result-object v0
@@ -1893,7 +2046,8 @@
     .annotation build Lcom/android/internal/annotations/VisibleForTesting;
     .end annotation
 
-    .line 1375
+    .line 1380
+    .local p0, "this":Lcom/android/server/wm/WindowContainer;, "Lcom/android/server/wm/WindowContainer<TE;>;"
     iget-object v0, p0, Lcom/android/server/wm/WindowContainer;->mLastSurfacePosition:Landroid/graphics/Point;
 
     return-object v0
@@ -1902,7 +2056,8 @@
 .method getOrientation()I
     .registers 2
 
-    .line 782
+    .line 787
+    .local p0, "this":Lcom/android/server/wm/WindowContainer;, "Lcom/android/server/wm/WindowContainer<TE;>;"
     iget v0, p0, Lcom/android/server/wm/WindowContainer;->mOrientation:I
 
     invoke-virtual {p0, v0}, Lcom/android/server/wm/WindowContainer;->getOrientation(I)I
@@ -1914,8 +2069,10 @@
 
 .method getOrientation(I)I
     .registers 8
+    .param p1, "candidate"  # I
 
-    .line 797
+    .line 802
+    .local p0, "this":Lcom/android/server/wm/WindowContainer;, "Lcom/android/server/wm/WindowContainer<TE;>;"
     invoke-virtual {p0}, Lcom/android/server/wm/WindowContainer;->fillsParent()Z
 
     move-result v0
@@ -1924,10 +2081,10 @@
 
     if-nez v0, :cond_8
 
-    .line 799
+    .line 804
     return v1
 
-    .line 806
+    .line 811
     :cond_8
     iget v0, p0, Lcom/android/server/wm/WindowContainer;->mOrientation:I
 
@@ -1937,10 +2094,10 @@
 
     if-eq v0, v2, :cond_10
 
-    .line 808
+    .line 813
     return v0
 
-    .line 811
+    .line 816
     :cond_10
     iget-object v0, p0, Lcom/android/server/wm/WindowContainer;->mChildren:Lcom/android/server/wm/WindowList;
 
@@ -1950,10 +2107,11 @@
 
     add-int/lit8 v0, v0, -0x1
 
+    .local v0, "i":I
     :goto_18
-    if-ltz v0, :cond_41
+    if-ltz v0, :cond_40
 
-    .line 812
+    .line 817
     iget-object v3, p0, Lcom/android/server/wm/WindowContainer;->mChildren:Lcom/android/server/wm/WindowList;
 
     invoke-virtual {v3, v0}, Lcom/android/server/wm/WindowList;->get(I)Ljava/lang/Object;
@@ -1962,12 +2120,13 @@
 
     check-cast v3, Lcom/android/server/wm/WindowContainer;
 
-    .line 816
+    .line 821
+    .local v3, "wc":Lcom/android/server/wm/WindowContainer;
     const/4 v4, 0x3
 
     if-ne p1, v4, :cond_27
 
-    .line 817
+    .line 822
     move v5, v4
 
     goto :goto_28
@@ -1975,56 +2134,62 @@
     :cond_27
     move v5, v1
 
-    .line 816
+    .line 821
     :goto_28
     invoke-virtual {v3, v5}, Lcom/android/server/wm/WindowContainer;->getOrientation(I)I
 
     move-result v5
 
-    .line 818
-    if-ne v5, v4, :cond_31
-
-    .line 822
-    nop
-
     .line 823
-    move p1, v5
-
-    goto :goto_3d
-
-    .line 826
-    :cond_31
-    if-ne v5, v1, :cond_34
+    .local v5, "orientation":I
+    if-ne v5, v4, :cond_30
 
     .line 827
-    goto :goto_3d
+    move p1, v5
 
-    .line 830
-    :cond_34
+    .line 828
+    goto :goto_3c
+
+    .line 831
+    :cond_30
+    if-ne v5, v1, :cond_33
+
+    .line 832
+    goto :goto_3c
+
+    .line 835
+    :cond_33
     invoke-virtual {v3}, Lcom/android/server/wm/WindowContainer;->fillsParent()Z
 
-    move-result v3
+    move-result v4
 
-    if-nez v3, :cond_40
+    if-nez v4, :cond_3f
 
-    if-eq v5, v2, :cond_3d
+    if-eq v5, v2, :cond_3c
 
-    goto :goto_40
+    goto :goto_3f
 
-    .line 811
-    :cond_3d
-    :goto_3d
+    .line 816
+    .end local v3  # "wc":Lcom/android/server/wm/WindowContainer;
+    .end local v5  # "orientation":I
+    :cond_3c
+    :goto_3c
     add-int/lit8 v0, v0, -0x1
 
     goto :goto_18
 
-    .line 833
-    :cond_40
-    :goto_40
+    .line 838
+    .restart local v3  # "wc":Lcom/android/server/wm/WindowContainer;
+    .restart local v5  # "orientation":I
+    :cond_3f
+    :goto_3f
     return v5
 
-    .line 837
-    :cond_41
+    .line 842
+    .end local v0  # "i":I
+    .end local v3  # "wc":Lcom/android/server/wm/WindowContainer;
+    .end local v5  # "orientation":I
+    :cond_40
     return p1
 .end method
 
@@ -2032,6 +2197,7 @@
     .registers 2
 
     .line 64
+    .local p0, "this":Lcom/android/server/wm/WindowContainer;, "Lcom/android/server/wm/WindowContainer<TE;>;"
     invoke-virtual {p0}, Lcom/android/server/wm/WindowContainer;->getParent()Lcom/android/server/wm/WindowContainer;
 
     move-result-object v0
@@ -2042,78 +2208,84 @@
 .method protected final getParent()Lcom/android/server/wm/WindowContainer;
     .registers 2
 
-    .line 148
+    .line 153
+    .local p0, "this":Lcom/android/server/wm/WindowContainer;, "Lcom/android/server/wm/WindowContainer<TE;>;"
     iget-object v0, p0, Lcom/android/server/wm/WindowContainer;->mParent:Lcom/android/server/wm/WindowContainer;
 
     return-object v0
 .end method
 
 .method public getParentSurfaceControl()Landroid/view/SurfaceControl;
-    .registers 2
+    .registers 3
 
-    .line 1025
+    .line 1030
+    .local p0, "this":Lcom/android/server/wm/WindowContainer;, "Lcom/android/server/wm/WindowContainer<TE;>;"
     invoke-virtual {p0}, Lcom/android/server/wm/WindowContainer;->getParent()Lcom/android/server/wm/WindowContainer;
 
     move-result-object v0
 
-    .line 1026
+    .line 1031
+    .local v0, "parent":Lcom/android/server/wm/WindowContainer;
     if-nez v0, :cond_8
 
-    .line 1027
-    const/4 v0, 0x0
+    .line 1032
+    const/4 v1, 0x0
 
-    return-object v0
+    return-object v1
 
-    .line 1029
+    .line 1034
     :cond_8
     invoke-virtual {v0}, Lcom/android/server/wm/WindowContainer;->getSurfaceControl()Landroid/view/SurfaceControl;
 
-    move-result-object v0
+    move-result-object v1
 
-    return-object v0
+    return-object v1
 .end method
 
 .method public getPendingTransaction()Landroid/view/SurfaceControl$Transaction;
-    .registers 2
+    .registers 3
 
-    .line 1234
+    .line 1239
+    .local p0, "this":Lcom/android/server/wm/WindowContainer;, "Lcom/android/server/wm/WindowContainer<TE;>;"
     invoke-virtual {p0}, Lcom/android/server/wm/WindowContainer;->getDisplayContent()Lcom/android/server/wm/DisplayContent;
 
     move-result-object v0
 
-    .line 1235
+    .line 1240
+    .local v0, "displayContent":Lcom/android/server/wm/DisplayContent;
     if-eqz v0, :cond_d
 
     if-eq v0, p0, :cond_d
 
-    .line 1236
+    .line 1241
     invoke-virtual {v0}, Lcom/android/server/wm/DisplayContent;->getPendingTransaction()Landroid/view/SurfaceControl$Transaction;
 
-    move-result-object v0
+    move-result-object v1
 
-    return-object v0
+    return-object v1
 
-    .line 1242
+    .line 1247
     :cond_d
-    iget-object v0, p0, Lcom/android/server/wm/WindowContainer;->mPendingTransaction:Landroid/view/SurfaceControl$Transaction;
+    iget-object v1, p0, Lcom/android/server/wm/WindowContainer;->mPendingTransaction:Landroid/view/SurfaceControl$Transaction;
 
-    return-object v0
+    return-object v1
 .end method
 
 .method getPrefixOrderIndex()I
     .registers 2
 
-    .line 354
+    .line 359
+    .local p0, "this":Lcom/android/server/wm/WindowContainer;, "Lcom/android/server/wm/WindowContainer<TE;>;"
     iget-object v0, p0, Lcom/android/server/wm/WindowContainer;->mParent:Lcom/android/server/wm/WindowContainer;
 
     if-nez v0, :cond_6
 
-    .line 355
+    .line 360
     const/4 v0, 0x0
 
     return v0
 
-    .line 357
+    .line 362
     :cond_6
     invoke-direct {v0, p0}, Lcom/android/server/wm/WindowContainer;->getPrefixOrderIndex(Lcom/android/server/wm/WindowContainer;)I
 
@@ -2123,45 +2295,51 @@
 .end method
 
 .method getRelativeDisplayedPosition(Landroid/graphics/Point;)V
-    .registers 4
+    .registers 7
+    .param p1, "outPos"  # Landroid/graphics/Point;
 
-    .line 1389
+    .line 1394
+    .local p0, "this":Lcom/android/server/wm/WindowContainer;, "Lcom/android/server/wm/WindowContainer<TE;>;"
     invoke-virtual {p0}, Lcom/android/server/wm/WindowContainer;->getDisplayedBounds()Landroid/graphics/Rect;
 
     move-result-object v0
 
-    .line 1390
+    .line 1395
+    .local v0, "dispBounds":Landroid/graphics/Rect;
     iget v1, v0, Landroid/graphics/Rect;->left:I
 
-    iget v0, v0, Landroid/graphics/Rect;->top:I
+    iget v2, v0, Landroid/graphics/Rect;->top:I
 
-    invoke-virtual {p1, v1, v0}, Landroid/graphics/Point;->set(II)V
-
-    .line 1391
-    invoke-virtual {p0}, Lcom/android/server/wm/WindowContainer;->getParent()Lcom/android/server/wm/WindowContainer;
-
-    move-result-object v0
-
-    .line 1392
-    if-eqz v0, :cond_1e
-
-    .line 1393
-    invoke-virtual {v0}, Lcom/android/server/wm/WindowContainer;->getDisplayedBounds()Landroid/graphics/Rect;
-
-    move-result-object v0
-
-    .line 1394
-    iget v1, v0, Landroid/graphics/Rect;->left:I
-
-    neg-int v1, v1
-
-    iget v0, v0, Landroid/graphics/Rect;->top:I
-
-    neg-int v0, v0
-
-    invoke-virtual {p1, v1, v0}, Landroid/graphics/Point;->offset(II)V
+    invoke-virtual {p1, v1, v2}, Landroid/graphics/Point;->set(II)V
 
     .line 1396
+    invoke-virtual {p0}, Lcom/android/server/wm/WindowContainer;->getParent()Lcom/android/server/wm/WindowContainer;
+
+    move-result-object v1
+
+    .line 1397
+    .local v1, "parent":Lcom/android/server/wm/WindowContainer;
+    if-eqz v1, :cond_1e
+
+    .line 1398
+    invoke-virtual {v1}, Lcom/android/server/wm/WindowContainer;->getDisplayedBounds()Landroid/graphics/Rect;
+
+    move-result-object v2
+
+    .line 1399
+    .local v2, "parentBounds":Landroid/graphics/Rect;
+    iget v3, v2, Landroid/graphics/Rect;->left:I
+
+    neg-int v3, v3
+
+    iget v4, v2, Landroid/graphics/Rect;->top:I
+
+    neg-int v4, v4
+
+    invoke-virtual {p1, v3, v4}, Landroid/graphics/Point;->offset(II)V
+
+    .line 1401
+    .end local v2  # "parentBounds":Landroid/graphics/Rect;
     :cond_1e
     return-void
 .end method
@@ -2169,14 +2347,15 @@
 .method getSession()Landroid/view/SurfaceSession;
     .registers 2
 
-    .line 1049
+    .line 1054
+    .local p0, "this":Lcom/android/server/wm/WindowContainer;, "Lcom/android/server/wm/WindowContainer<TE;>;"
     invoke-virtual {p0}, Lcom/android/server/wm/WindowContainer;->getParent()Lcom/android/server/wm/WindowContainer;
 
     move-result-object v0
 
     if-eqz v0, :cond_f
 
-    .line 1050
+    .line 1055
     invoke-virtual {p0}, Lcom/android/server/wm/WindowContainer;->getParent()Lcom/android/server/wm/WindowContainer;
 
     move-result-object v0
@@ -2187,7 +2366,7 @@
 
     return-object v0
 
-    .line 1052
+    .line 1057
     :cond_f
     const/4 v0, 0x0
 
@@ -2197,7 +2376,8 @@
 .method public getSurfaceControl()Landroid/view/SurfaceControl;
     .registers 2
 
-    .line 1229
+    .line 1234
+    .local p0, "this":Lcom/android/server/wm/WindowContainer;, "Lcom/android/server/wm/WindowContainer<TE;>;"
     iget-object v0, p0, Lcom/android/server/wm/WindowContainer;->mSurfaceControl:Landroid/view/SurfaceControl;
 
     return-object v0
@@ -2206,7 +2386,8 @@
 .method public getSurfaceHeight()I
     .registers 2
 
-    .line 1348
+    .line 1353
+    .local p0, "this":Lcom/android/server/wm/WindowContainer;, "Lcom/android/server/wm/WindowContainer<TE;>;"
     iget-object v0, p0, Lcom/android/server/wm/WindowContainer;->mSurfaceControl:Landroid/view/SurfaceControl;
 
     invoke-virtual {v0}, Landroid/view/SurfaceControl;->getHeight()I
@@ -2219,7 +2400,8 @@
 .method public getSurfaceWidth()I
     .registers 2
 
-    .line 1343
+    .line 1348
+    .local p0, "this":Lcom/android/server/wm/WindowContainer;, "Lcom/android/server/wm/WindowContainer<TE;>;"
     iget-object v0, p0, Lcom/android/server/wm/WindowContainer;->mSurfaceControl:Landroid/view/SurfaceControl;
 
     invoke-virtual {v0}, Landroid/view/SurfaceControl;->getWidth()I
@@ -2237,7 +2419,8 @@
         }
     .end annotation
 
-    .line 682
+    .line 687
+    .local p0, "this":Lcom/android/server/wm/WindowContainer;, "Lcom/android/server/wm/WindowContainer<TE;>;"
     iget-object v0, p0, Lcom/android/server/wm/WindowContainer;->mChildren:Lcom/android/server/wm/WindowList;
 
     invoke-virtual {v0}, Lcom/android/server/wm/WindowList;->peekLast()Ljava/lang/Object;
@@ -2261,7 +2444,9 @@
         }
     .end annotation
 
-    .line 910
+    .line 915
+    .local p0, "this":Lcom/android/server/wm/WindowContainer;, "Lcom/android/server/wm/WindowContainer<TE;>;"
+    .local p1, "callback":Ljava/util/function/Predicate;, "Ljava/util/function/Predicate<Lcom/android/server/wm/WindowState;>;"
     iget-object v0, p0, Lcom/android/server/wm/WindowContainer;->mChildren:Lcom/android/server/wm/WindowList;
 
     invoke-virtual {v0}, Lcom/android/server/wm/WindowList;->size()I
@@ -2270,10 +2455,11 @@
 
     add-int/lit8 v0, v0, -0x1
 
+    .local v0, "i":I
     :goto_8
     if-ltz v0, :cond_1c
 
-    .line 911
+    .line 916
     iget-object v1, p0, Lcom/android/server/wm/WindowContainer;->mChildren:Lcom/android/server/wm/WindowList;
 
     invoke-virtual {v1, v0}, Lcom/android/server/wm/WindowList;->get(I)Ljava/lang/Object;
@@ -2286,62 +2472,69 @@
 
     move-result-object v1
 
-    .line 912
+    .line 917
+    .local v1, "w":Lcom/android/server/wm/WindowState;
     if-eqz v1, :cond_19
 
-    .line 913
+    .line 918
     return-object v1
 
-    .line 910
+    .line 915
+    .end local v1  # "w":Lcom/android/server/wm/WindowState;
     :cond_19
     add-int/lit8 v0, v0, -0x1
 
     goto :goto_8
 
-    .line 917
+    .line 922
+    .end local v0  # "i":I
     :cond_1c
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    return-object p1
+    return-object v0
 .end method
 
 .method handlesOrientationChangeFromDescendant()Z
-    .registers 2
+    .registers 3
 
-    .line 741
+    .line 746
+    .local p0, "this":Lcom/android/server/wm/WindowContainer;, "Lcom/android/server/wm/WindowContainer<TE;>;"
     invoke-virtual {p0}, Lcom/android/server/wm/WindowContainer;->getParent()Lcom/android/server/wm/WindowContainer;
 
     move-result-object v0
 
-    .line 742
+    .line 747
+    .local v0, "parent":Lcom/android/server/wm/WindowContainer;
     if-eqz v0, :cond_e
 
     invoke-virtual {v0}, Lcom/android/server/wm/WindowContainer;->handlesOrientationChangeFromDescendant()Z
 
-    move-result v0
+    move-result v1
 
-    if-eqz v0, :cond_e
+    if-eqz v1, :cond_e
 
-    const/4 v0, 0x1
+    const/4 v1, 0x1
 
     goto :goto_f
 
     :cond_e
-    const/4 v0, 0x0
+    const/4 v1, 0x0
 
     :goto_f
-    return v0
+    return v1
 .end method
 
 .method hasChild(Lcom/android/server/wm/WindowContainer;)Z
-    .registers 5
+    .registers 6
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(TE;)Z"
         }
     .end annotation
 
-    .line 394
+    .line 399
+    .local p0, "this":Lcom/android/server/wm/WindowContainer;, "Lcom/android/server/wm/WindowContainer<TE;>;"
+    .local p1, "child":Lcom/android/server/wm/WindowContainer;, "TE;"
     iget-object v0, p0, Lcom/android/server/wm/WindowContainer;->mChildren:Lcom/android/server/wm/WindowList;
 
     invoke-virtual {v0}, Lcom/android/server/wm/WindowList;->size()I
@@ -2352,10 +2545,11 @@
 
     sub-int/2addr v0, v1
 
+    .local v0, "i":I
     :goto_8
     if-ltz v0, :cond_1f
 
-    .line 395
+    .line 400
     iget-object v2, p0, Lcom/android/server/wm/WindowContainer;->mChildren:Lcom/android/server/wm/WindowList;
 
     invoke-virtual {v2, v0}, Lcom/android/server/wm/WindowList;->get(I)Ljava/lang/Object;
@@ -2364,48 +2558,55 @@
 
     check-cast v2, Lcom/android/server/wm/WindowContainer;
 
-    .line 396
+    .line 401
+    .local v2, "current":Lcom/android/server/wm/WindowContainer;, "TE;"
     if-eq v2, p1, :cond_1e
 
     invoke-virtual {v2, p1}, Lcom/android/server/wm/WindowContainer;->hasChild(Lcom/android/server/wm/WindowContainer;)Z
 
-    move-result v2
+    move-result v3
 
-    if-eqz v2, :cond_1b
+    if-eqz v3, :cond_1b
 
     goto :goto_1e
 
-    .line 394
+    .line 399
+    .end local v2  # "current":Lcom/android/server/wm/WindowContainer;, "TE;"
     :cond_1b
     add-int/lit8 v0, v0, -0x1
 
     goto :goto_8
 
-    .line 397
+    .line 402
+    .restart local v2  # "current":Lcom/android/server/wm/WindowContainer;, "TE;"
     :cond_1e
     :goto_1e
     return v1
 
-    .line 400
+    .line 405
+    .end local v0  # "i":I
+    .end local v2  # "current":Lcom/android/server/wm/WindowContainer;, "TE;"
     :cond_1f
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    return p1
+    return v0
 .end method
 
 .method hasCommittedReparentToAnimationLeash()Z
     .registers 2
 
-    .line 1210
+    .line 1215
+    .local p0, "this":Lcom/android/server/wm/WindowContainer;, "Lcom/android/server/wm/WindowContainer<TE;>;"
     iget-boolean v0, p0, Lcom/android/server/wm/WindowContainer;->mCommittedReparentToAnimationLeash:Z
 
     return v0
 .end method
 
 .method hasContentToDisplay()Z
-    .registers 4
+    .registers 5
 
-    .line 641
+    .line 646
+    .local p0, "this":Lcom/android/server/wm/WindowContainer;, "Lcom/android/server/wm/WindowContainer<TE;>;"
     iget-object v0, p0, Lcom/android/server/wm/WindowContainer;->mChildren:Lcom/android/server/wm/WindowList;
 
     invoke-virtual {v0}, Lcom/android/server/wm/WindowList;->size()I
@@ -2416,10 +2617,11 @@
 
     sub-int/2addr v0, v1
 
+    .local v0, "i":I
     :goto_8
     if-ltz v0, :cond_1c
 
-    .line 642
+    .line 647
     iget-object v2, p0, Lcom/android/server/wm/WindowContainer;->mChildren:Lcom/android/server/wm/WindowList;
 
     invoke-virtual {v2, v0}, Lcom/android/server/wm/WindowList;->get(I)Ljava/lang/Object;
@@ -2428,23 +2630,26 @@
 
     check-cast v2, Lcom/android/server/wm/WindowContainer;
 
-    .line 643
+    .line 648
+    .local v2, "wc":Lcom/android/server/wm/WindowContainer;
     invoke-virtual {v2}, Lcom/android/server/wm/WindowContainer;->hasContentToDisplay()Z
 
-    move-result v2
+    move-result v3
 
-    if-eqz v2, :cond_19
+    if-eqz v3, :cond_19
 
-    .line 644
+    .line 649
     return v1
 
-    .line 641
+    .line 646
+    .end local v2  # "wc":Lcom/android/server/wm/WindowContainer;
     :cond_19
     add-int/lit8 v0, v0, -0x1
 
     goto :goto_8
 
-    .line 647
+    .line 652
+    .end local v0  # "i":I
     :cond_1c
     const/4 v0, 0x0
 
@@ -2454,7 +2659,8 @@
 .method isAnimating()Z
     .registers 2
 
-    .line 601
+    .line 606
+    .local p0, "this":Lcom/android/server/wm/WindowContainer;, "Lcom/android/server/wm/WindowContainer<TE;>;"
     invoke-virtual {p0}, Lcom/android/server/wm/WindowContainer;->isSelfAnimating()Z
 
     move-result v0
@@ -2487,9 +2693,10 @@
 .end method
 
 .method isAppAnimating()Z
-    .registers 4
+    .registers 5
 
-    .line 609
+    .line 614
+    .local p0, "this":Lcom/android/server/wm/WindowContainer;, "Lcom/android/server/wm/WindowContainer<TE;>;"
     iget-object v0, p0, Lcom/android/server/wm/WindowContainer;->mChildren:Lcom/android/server/wm/WindowList;
 
     invoke-virtual {v0}, Lcom/android/server/wm/WindowList;->size()I
@@ -2500,10 +2707,11 @@
 
     sub-int/2addr v0, v1
 
+    .local v0, "j":I
     :goto_8
     if-ltz v0, :cond_1c
 
-    .line 610
+    .line 615
     iget-object v2, p0, Lcom/android/server/wm/WindowContainer;->mChildren:Lcom/android/server/wm/WindowList;
 
     invoke-virtual {v2, v0}, Lcom/android/server/wm/WindowList;->get(I)Ljava/lang/Object;
@@ -2512,23 +2720,26 @@
 
     check-cast v2, Lcom/android/server/wm/WindowContainer;
 
-    .line 611
+    .line 616
+    .local v2, "wc":Lcom/android/server/wm/WindowContainer;
     invoke-virtual {v2}, Lcom/android/server/wm/WindowContainer;->isAppAnimating()Z
 
-    move-result v2
+    move-result v3
 
-    if-eqz v2, :cond_19
+    if-eqz v3, :cond_19
 
-    .line 612
+    .line 617
     return v1
 
-    .line 609
+    .line 614
+    .end local v2  # "wc":Lcom/android/server/wm/WindowContainer;
     :cond_19
     add-int/lit8 v0, v0, -0x1
 
     goto :goto_8
 
-    .line 615
+    .line 620
+    .end local v0  # "j":I
     :cond_1c
     const/4 v0, 0x0
 
@@ -2538,7 +2749,8 @@
 .method isOnTop()Z
     .registers 2
 
-    .line 677
+    .line 682
+    .local p0, "this":Lcom/android/server/wm/WindowContainer;, "Lcom/android/server/wm/WindowContainer<TE;>;"
     invoke-virtual {p0}, Lcom/android/server/wm/WindowContainer;->getParent()Lcom/android/server/wm/WindowContainer;
 
     move-result-object v0
@@ -2573,7 +2785,8 @@
 .method isSelfAnimating()Z
     .registers 2
 
-    .line 622
+    .line 627
+    .local p0, "this":Lcom/android/server/wm/WindowContainer;, "Lcom/android/server/wm/WindowContainer<TE;>;"
     iget-object v0, p0, Lcom/android/server/wm/WindowContainer;->mSurfaceAnimator:Lcom/android/server/wm/SurfaceAnimator;
 
     invoke-virtual {v0}, Lcom/android/server/wm/SurfaceAnimator;->isAnimating()Z
@@ -2584,9 +2797,10 @@
 .end method
 
 .method isSelfOrChildAnimating()Z
-    .registers 4
+    .registers 5
 
-    .line 582
+    .line 587
+    .local p0, "this":Lcom/android/server/wm/WindowContainer;, "Lcom/android/server/wm/WindowContainer<TE;>;"
     invoke-virtual {p0}, Lcom/android/server/wm/WindowContainer;->isSelfAnimating()Z
 
     move-result v0
@@ -2595,10 +2809,10 @@
 
     if-eqz v0, :cond_8
 
-    .line 583
+    .line 588
     return v1
 
-    .line 585
+    .line 590
     :cond_8
     iget-object v0, p0, Lcom/android/server/wm/WindowContainer;->mChildren:Lcom/android/server/wm/WindowList;
 
@@ -2608,10 +2822,11 @@
 
     sub-int/2addr v0, v1
 
+    .local v0, "j":I
     :goto_f
     if-ltz v0, :cond_23
 
-    .line 586
+    .line 591
     iget-object v2, p0, Lcom/android/server/wm/WindowContainer;->mChildren:Lcom/android/server/wm/WindowList;
 
     invoke-virtual {v2, v0}, Lcom/android/server/wm/WindowList;->get(I)Ljava/lang/Object;
@@ -2620,23 +2835,26 @@
 
     check-cast v2, Lcom/android/server/wm/WindowContainer;
 
-    .line 587
+    .line 592
+    .local v2, "wc":Lcom/android/server/wm/WindowContainer;
     invoke-virtual {v2}, Lcom/android/server/wm/WindowContainer;->isSelfOrChildAnimating()Z
 
-    move-result v2
+    move-result v3
 
-    if-eqz v2, :cond_20
+    if-eqz v3, :cond_20
 
-    .line 588
+    .line 593
     return v1
 
-    .line 585
+    .line 590
+    .end local v2  # "wc":Lcom/android/server/wm/WindowContainer;
     :cond_20
     add-int/lit8 v0, v0, -0x1
 
     goto :goto_f
 
-    .line 591
+    .line 596
+    .end local v0  # "j":I
     :cond_23
     const/4 v0, 0x0
 
@@ -2644,9 +2862,10 @@
 .end method
 
 .method isVisible()Z
-    .registers 4
+    .registers 5
 
-    .line 664
+    .line 669
+    .local p0, "this":Lcom/android/server/wm/WindowContainer;, "Lcom/android/server/wm/WindowContainer<TE;>;"
     iget-object v0, p0, Lcom/android/server/wm/WindowContainer;->mChildren:Lcom/android/server/wm/WindowList;
 
     invoke-virtual {v0}, Lcom/android/server/wm/WindowList;->size()I
@@ -2657,10 +2876,11 @@
 
     sub-int/2addr v0, v1
 
+    .local v0, "i":I
     :goto_8
     if-ltz v0, :cond_1c
 
-    .line 665
+    .line 670
     iget-object v2, p0, Lcom/android/server/wm/WindowContainer;->mChildren:Lcom/android/server/wm/WindowList;
 
     invoke-virtual {v2, v0}, Lcom/android/server/wm/WindowList;->get(I)Ljava/lang/Object;
@@ -2669,23 +2889,26 @@
 
     check-cast v2, Lcom/android/server/wm/WindowContainer;
 
-    .line 666
+    .line 671
+    .local v2, "wc":Lcom/android/server/wm/WindowContainer;
     invoke-virtual {v2}, Lcom/android/server/wm/WindowContainer;->isVisible()Z
 
-    move-result v2
+    move-result v3
 
-    if-eqz v2, :cond_19
+    if-eqz v3, :cond_19
 
-    .line 667
+    .line 672
     return v1
 
-    .line 664
+    .line 669
+    .end local v2  # "wc":Lcom/android/server/wm/WindowContainer;
     :cond_19
     add-int/lit8 v0, v0, -0x1
 
     goto :goto_8
 
-    .line 670
+    .line 675
+    .end local v0  # "i":I
     :cond_1c
     const/4 v0, 0x0
 
@@ -2695,7 +2918,8 @@
 .method public makeAnimationLeash()Landroid/view/SurfaceControl$Builder;
     .registers 2
 
-    .line 1270
+    .line 1275
+    .local p0, "this":Lcom/android/server/wm/WindowContainer;, "Lcom/android/server/wm/WindowContainer<TE;>;"
     invoke-virtual {p0}, Lcom/android/server/wm/WindowContainer;->makeSurface()Landroid/view/SurfaceControl$Builder;
 
     move-result-object v0
@@ -2704,151 +2928,68 @@
 .end method
 
 .method makeChildSurface(Lcom/android/server/wm/WindowContainer;)Landroid/view/SurfaceControl$Builder;
-    .registers 3
+    .registers 5
+    .param p1, "child"  # Lcom/android/server/wm/WindowContainer;
 
-    .line 1013
+    .line 1018
+    .local p0, "this":Lcom/android/server/wm/WindowContainer;, "Lcom/android/server/wm/WindowContainer<TE;>;"
     invoke-virtual {p0}, Lcom/android/server/wm/WindowContainer;->getParent()Lcom/android/server/wm/WindowContainer;
 
     move-result-object v0
 
-    .line 1016
+    .line 1021
+    .local v0, "p":Lcom/android/server/wm/WindowContainer;
     invoke-virtual {v0, p1}, Lcom/android/server/wm/WindowContainer;->makeChildSurface(Lcom/android/server/wm/WindowContainer;)Landroid/view/SurfaceControl$Builder;
 
-    move-result-object p1
+    move-result-object v1
 
-    iget-object v0, p0, Lcom/android/server/wm/WindowContainer;->mSurfaceControl:Landroid/view/SurfaceControl;
+    iget-object v2, p0, Lcom/android/server/wm/WindowContainer;->mSurfaceControl:Landroid/view/SurfaceControl;
 
-    .line 1017
-    invoke-virtual {p1, v0}, Landroid/view/SurfaceControl$Builder;->setParent(Landroid/view/SurfaceControl;)Landroid/view/SurfaceControl$Builder;
+    .line 1022
+    invoke-virtual {v1, v2}, Landroid/view/SurfaceControl$Builder;->setParent(Landroid/view/SurfaceControl;)Landroid/view/SurfaceControl$Builder;
 
-    move-result-object p1
+    move-result-object v1
 
-    .line 1016
-    return-object p1
+    .line 1021
+    return-object v1
 .end method
 
 .method makeSurface()Landroid/view/SurfaceControl$Builder;
-    .registers 2
+    .registers 3
 
-    .line 1004
+    .line 1009
+    .local p0, "this":Lcom/android/server/wm/WindowContainer;, "Lcom/android/server/wm/WindowContainer<TE;>;"
     invoke-virtual {p0}, Lcom/android/server/wm/WindowContainer;->getParent()Lcom/android/server/wm/WindowContainer;
 
     move-result-object v0
 
-    .line 1005
+    .line 1010
+    .local v0, "p":Lcom/android/server/wm/WindowContainer;
     invoke-virtual {v0, p0}, Lcom/android/server/wm/WindowContainer;->makeChildSurface(Lcom/android/server/wm/WindowContainer;)Landroid/view/SurfaceControl$Builder;
 
-    move-result-object v0
+    move-result-object v1
 
-    return-object v0
+    return-object v1
 .end method
 
 .method needsZBoost()Z
-    .registers 4
-
-    .line 1117
-    const/4 v0, 0x0
-
-    move v1, v0
-
-    :goto_2
-    iget-object v2, p0, Lcom/android/server/wm/WindowContainer;->mChildren:Lcom/android/server/wm/WindowList;
-
-    invoke-virtual {v2}, Lcom/android/server/wm/WindowList;->size()I
-
-    move-result v2
-
-    if-ge v1, v2, :cond_1d
-
-    .line 1118
-    iget-object v2, p0, Lcom/android/server/wm/WindowContainer;->mChildren:Lcom/android/server/wm/WindowList;
-
-    invoke-virtual {v2, v1}, Lcom/android/server/wm/WindowList;->get(I)Ljava/lang/Object;
-
-    move-result-object v2
-
-    check-cast v2, Lcom/android/server/wm/WindowContainer;
-
-    invoke-virtual {v2}, Lcom/android/server/wm/WindowContainer;->needsZBoost()Z
-
-    move-result v2
-
-    if-eqz v2, :cond_1a
-
-    .line 1119
-    const/4 v0, 0x1
-
-    return v0
-
-    .line 1117
-    :cond_1a
-    add-int/lit8 v1, v1, 0x1
-
-    goto :goto_2
+    .registers 3
 
     .line 1122
-    :cond_1d
-    return v0
-.end method
+    .local p0, "this":Lcom/android/server/wm/WindowContainer;, "Lcom/android/server/wm/WindowContainer<TE;>;"
+    const/4 v0, 0x0
 
-.method protected onAnimationFinished()V
-    .registers 2
+    .local v0, "i":I
+    :goto_1
+    iget-object v1, p0, Lcom/android/server/wm/WindowContainer;->mChildren:Lcom/android/server/wm/WindowList;
 
-    .line 1317
-    iget-object v0, p0, Lcom/android/server/wm/WindowContainer;->mWmService:Lcom/android/server/wm/WindowManagerService;
+    invoke-virtual {v1}, Lcom/android/server/wm/WindowList;->size()I
 
-    invoke-virtual {v0}, Lcom/android/server/wm/WindowManagerService;->onAnimationFinished()V
+    move-result v1
 
-    .line 1318
-    return-void
-.end method
+    if-ge v0, v1, :cond_1c
 
-.method public onAnimationLeashCreated(Landroid/view/SurfaceControl$Transaction;Landroid/view/SurfaceControl;)V
-    .registers 3
-
-    .line 1303
-    const/4 p2, -0x1
-
-    iput p2, p0, Lcom/android/server/wm/WindowContainer;->mLastLayer:I
-
-    .line 1304
-    invoke-virtual {p0, p1}, Lcom/android/server/wm/WindowContainer;->reassignLayer(Landroid/view/SurfaceControl$Transaction;)V
-
-    .line 1305
-    return-void
-.end method
-
-.method public onAnimationLeashLost(Landroid/view/SurfaceControl$Transaction;)V
-    .registers 3
-
-    .line 1309
-    const/4 v0, -0x1
-
-    iput v0, p0, Lcom/android/server/wm/WindowContainer;->mLastLayer:I
-
-    .line 1310
-    invoke-virtual {p0, p1}, Lcom/android/server/wm/WindowContainer;->reassignLayer(Landroid/view/SurfaceControl$Transaction;)V
-
-    .line 1311
-    return-void
-.end method
-
-.method onAppTransitionDone()V
-    .registers 3
-
-    .line 706
-    iget-object v0, p0, Lcom/android/server/wm/WindowContainer;->mChildren:Lcom/android/server/wm/WindowList;
-
-    invoke-virtual {v0}, Lcom/android/server/wm/WindowList;->size()I
-
-    move-result v0
-
-    add-int/lit8 v0, v0, -0x1
-
-    :goto_8
-    if-ltz v0, :cond_18
-
-    .line 707
+    .line 1123
     iget-object v1, p0, Lcom/android/server/wm/WindowContainer;->mChildren:Lcom/android/server/wm/WindowList;
 
     invoke-virtual {v1, v0}, Lcom/android/server/wm/WindowList;->get(I)Ljava/lang/Object;
@@ -2857,15 +2998,117 @@
 
     check-cast v1, Lcom/android/server/wm/WindowContainer;
 
-    .line 708
+    invoke-virtual {v1}, Lcom/android/server/wm/WindowContainer;->needsZBoost()Z
+
+    move-result v1
+
+    if-eqz v1, :cond_19
+
+    .line 1124
+    const/4 v1, 0x1
+
+    return v1
+
+    .line 1122
+    :cond_19
+    add-int/lit8 v0, v0, 0x1
+
+    goto :goto_1
+
+    .line 1127
+    .end local v0  # "i":I
+    :cond_1c
+    const/4 v0, 0x0
+
+    return v0
+.end method
+
+.method protected onAnimationFinished()V
+    .registers 2
+
+    .line 1322
+    .local p0, "this":Lcom/android/server/wm/WindowContainer;, "Lcom/android/server/wm/WindowContainer<TE;>;"
+    iget-object v0, p0, Lcom/android/server/wm/WindowContainer;->mWmService:Lcom/android/server/wm/WindowManagerService;
+
+    invoke-virtual {v0}, Lcom/android/server/wm/WindowManagerService;->onAnimationFinished()V
+
+    .line 1323
+    return-void
+.end method
+
+.method public onAnimationLeashCreated(Landroid/view/SurfaceControl$Transaction;Landroid/view/SurfaceControl;)V
+    .registers 4
+    .param p1, "t"  # Landroid/view/SurfaceControl$Transaction;
+    .param p2, "leash"  # Landroid/view/SurfaceControl;
+
+    .line 1308
+    .local p0, "this":Lcom/android/server/wm/WindowContainer;, "Lcom/android/server/wm/WindowContainer<TE;>;"
+    const/4 v0, -0x1
+
+    iput v0, p0, Lcom/android/server/wm/WindowContainer;->mLastLayer:I
+
+    .line 1309
+    invoke-virtual {p0, p1}, Lcom/android/server/wm/WindowContainer;->reassignLayer(Landroid/view/SurfaceControl$Transaction;)V
+
+    .line 1310
+    return-void
+.end method
+
+.method public onAnimationLeashLost(Landroid/view/SurfaceControl$Transaction;)V
+    .registers 3
+    .param p1, "t"  # Landroid/view/SurfaceControl$Transaction;
+
+    .line 1314
+    .local p0, "this":Lcom/android/server/wm/WindowContainer;, "Lcom/android/server/wm/WindowContainer<TE;>;"
+    const/4 v0, -0x1
+
+    iput v0, p0, Lcom/android/server/wm/WindowContainer;->mLastLayer:I
+
+    .line 1315
+    invoke-virtual {p0, p1}, Lcom/android/server/wm/WindowContainer;->reassignLayer(Landroid/view/SurfaceControl$Transaction;)V
+
+    .line 1316
+    return-void
+.end method
+
+.method onAppTransitionDone()V
+    .registers 3
+
+    .line 711
+    .local p0, "this":Lcom/android/server/wm/WindowContainer;, "Lcom/android/server/wm/WindowContainer<TE;>;"
+    iget-object v0, p0, Lcom/android/server/wm/WindowContainer;->mChildren:Lcom/android/server/wm/WindowList;
+
+    invoke-virtual {v0}, Lcom/android/server/wm/WindowList;->size()I
+
+    move-result v0
+
+    add-int/lit8 v0, v0, -0x1
+
+    .local v0, "i":I
+    :goto_8
+    if-ltz v0, :cond_18
+
+    .line 712
+    iget-object v1, p0, Lcom/android/server/wm/WindowContainer;->mChildren:Lcom/android/server/wm/WindowList;
+
+    invoke-virtual {v1, v0}, Lcom/android/server/wm/WindowList;->get(I)Ljava/lang/Object;
+
+    move-result-object v1
+
+    check-cast v1, Lcom/android/server/wm/WindowContainer;
+
+    .line 713
+    .local v1, "wc":Lcom/android/server/wm/WindowContainer;
     invoke-virtual {v1}, Lcom/android/server/wm/WindowContainer;->onAppTransitionDone()V
 
-    .line 706
+    .line 711
+    .end local v1  # "wc":Lcom/android/server/wm/WindowContainer;
     add-int/lit8 v0, v0, -0x1
 
     goto :goto_8
 
-    .line 710
+    .line 715
+    .end local v0  # "i":I
     :cond_18
     return-void
 .end method
@@ -2873,79 +3116,89 @@
 .method onChildPositionChanged()V
     .registers 1
 
-    .line 471
+    .line 476
+    .local p0, "this":Lcom/android/server/wm/WindowContainer;, "Lcom/android/server/wm/WindowContainer<TE;>;"
     return-void
 .end method
 
 .method public onConfigurationChanged(Landroid/content/res/Configuration;)V
     .registers 2
+    .param p1, "newParentConfig"  # Landroid/content/res/Configuration;
 
-    .line 163
+    .line 168
+    .local p0, "this":Lcom/android/server/wm/WindowContainer;, "Lcom/android/server/wm/WindowContainer<TE;>;"
     invoke-super {p0, p1}, Lcom/android/server/wm/ConfigurationContainer;->onConfigurationChanged(Landroid/content/res/Configuration;)V
 
-    .line 164
+    .line 169
     invoke-virtual {p0}, Lcom/android/server/wm/WindowContainer;->updateSurfacePosition()V
 
-    .line 165
+    .line 170
     invoke-virtual {p0}, Lcom/android/server/wm/WindowContainer;->scheduleAnimation()V
 
-    .line 166
+    .line 171
     return-void
 .end method
 
 .method onDescendantOrientationChanged(Landroid/os/IBinder;Lcom/android/server/wm/ConfigurationContainer;)Z
-    .registers 4
+    .registers 5
+    .param p1, "freezeDisplayToken"  # Landroid/os/IBinder;
+    .param p2, "requestingContainer"  # Lcom/android/server/wm/ConfigurationContainer;
 
-    .line 722
+    .line 727
+    .local p0, "this":Lcom/android/server/wm/WindowContainer;, "Lcom/android/server/wm/WindowContainer<TE;>;"
     invoke-virtual {p0}, Lcom/android/server/wm/WindowContainer;->getParent()Lcom/android/server/wm/WindowContainer;
 
     move-result-object v0
 
-    .line 723
+    .line 728
+    .local v0, "parent":Lcom/android/server/wm/WindowContainer;
     if-nez v0, :cond_8
 
-    .line 724
-    const/4 p1, 0x0
+    .line 729
+    const/4 v1, 0x0
 
-    return p1
+    return v1
 
-    .line 726
+    .line 731
     :cond_8
     invoke-virtual {v0, p1, p2}, Lcom/android/server/wm/WindowContainer;->onDescendantOrientationChanged(Landroid/os/IBinder;Lcom/android/server/wm/ConfigurationContainer;)Z
 
-    move-result p1
+    move-result v1
 
-    return p1
+    return v1
 .end method
 
 .method onDescendantOverrideConfigurationChanged()V
     .registers 2
 
-    .line 504
+    .line 509
+    .local p0, "this":Lcom/android/server/wm/WindowContainer;, "Lcom/android/server/wm/WindowContainer<TE;>;"
     iget-object v0, p0, Lcom/android/server/wm/WindowContainer;->mParent:Lcom/android/server/wm/WindowContainer;
 
     if-eqz v0, :cond_7
 
-    .line 505
+    .line 510
     invoke-virtual {v0}, Lcom/android/server/wm/WindowContainer;->onDescendantOverrideConfigurationChanged()V
 
-    .line 507
+    .line 512
     :cond_7
     return-void
 .end method
 
 .method onDisplayChanged(Lcom/android/server/wm/DisplayContent;)V
     .registers 4
+    .param p1, "dc"  # Lcom/android/server/wm/DisplayContent;
 
-    .line 516
+    .line 521
+    .local p0, "this":Lcom/android/server/wm/WindowContainer;, "Lcom/android/server/wm/WindowContainer<TE;>;"
     iput-object p1, p0, Lcom/android/server/wm/WindowContainer;->mDisplayContent:Lcom/android/server/wm/DisplayContent;
 
-    .line 517
+    .line 522
     if-eqz p1, :cond_f
 
     if-eq p1, p0, :cond_f
 
-    .line 518
+    .line 523
     invoke-virtual {p1}, Lcom/android/server/wm/DisplayContent;->getPendingTransaction()Landroid/view/SurfaceControl$Transaction;
 
     move-result-object v0
@@ -2954,7 +3207,7 @@
 
     invoke-virtual {v0, v1}, Landroid/view/SurfaceControl$Transaction;->merge(Landroid/view/SurfaceControl$Transaction;)Landroid/view/SurfaceControl$Transaction;
 
-    .line 520
+    .line 525
     :cond_f
     iget-object v0, p0, Lcom/android/server/wm/WindowContainer;->mChildren:Lcom/android/server/wm/WindowList;
 
@@ -2964,10 +3217,11 @@
 
     add-int/lit8 v0, v0, -0x1
 
+    .local v0, "i":I
     :goto_17
     if-ltz v0, :cond_27
 
-    .line 521
+    .line 526
     iget-object v1, p0, Lcom/android/server/wm/WindowContainer;->mChildren:Lcom/android/server/wm/WindowList;
 
     invoke-virtual {v1, v0}, Lcom/android/server/wm/WindowList;->get(I)Ljava/lang/Object;
@@ -2976,15 +3230,18 @@
 
     check-cast v1, Lcom/android/server/wm/WindowContainer;
 
-    .line 522
+    .line 527
+    .local v1, "child":Lcom/android/server/wm/WindowContainer;
     invoke-virtual {v1, p1}, Lcom/android/server/wm/WindowContainer;->onDisplayChanged(Lcom/android/server/wm/DisplayContent;)V
 
-    .line 520
+    .line 525
+    .end local v1  # "child":Lcom/android/server/wm/WindowContainer;
     add-int/lit8 v0, v0, -0x1
 
     goto :goto_17
 
-    .line 524
+    .line 529
+    .end local v0  # "i":I
     :cond_27
     return-void
 .end method
@@ -2992,7 +3249,8 @@
 .method onMovedByResize()V
     .registers 3
 
-    .line 557
+    .line 562
+    .local p0, "this":Lcom/android/server/wm/WindowContainer;, "Lcom/android/server/wm/WindowContainer<TE;>;"
     iget-object v0, p0, Lcom/android/server/wm/WindowContainer;->mChildren:Lcom/android/server/wm/WindowList;
 
     invoke-virtual {v0}, Lcom/android/server/wm/WindowList;->size()I
@@ -3001,10 +3259,11 @@
 
     add-int/lit8 v0, v0, -0x1
 
+    .local v0, "i":I
     :goto_8
     if-ltz v0, :cond_18
 
-    .line 558
+    .line 563
     iget-object v1, p0, Lcom/android/server/wm/WindowContainer;->mChildren:Lcom/android/server/wm/WindowList;
 
     invoke-virtual {v1, v0}, Lcom/android/server/wm/WindowList;->get(I)Ljava/lang/Object;
@@ -3013,15 +3272,18 @@
 
     check-cast v1, Lcom/android/server/wm/WindowContainer;
 
-    .line 559
+    .line 564
+    .local v1, "wc":Lcom/android/server/wm/WindowContainer;
     invoke-virtual {v1}, Lcom/android/server/wm/WindowContainer;->onMovedByResize()V
 
-    .line 557
+    .line 562
+    .end local v1  # "wc":Lcom/android/server/wm/WindowContainer;
     add-int/lit8 v0, v0, -0x1
 
     goto :goto_8
 
-    .line 561
+    .line 566
+    .end local v0  # "i":I
     :cond_18
     return-void
 .end method
@@ -3029,24 +3291,25 @@
 .method onParentChanged()V
     .registers 3
 
-    .line 179
+    .line 184
+    .local p0, "this":Lcom/android/server/wm/WindowContainer;, "Lcom/android/server/wm/WindowContainer<TE;>;"
     invoke-super {p0}, Lcom/android/server/wm/ConfigurationContainer;->onParentChanged()V
 
-    .line 180
+    .line 185
     iget-object v0, p0, Lcom/android/server/wm/WindowContainer;->mParent:Lcom/android/server/wm/WindowContainer;
 
     if-nez v0, :cond_8
 
-    .line 181
+    .line 186
     return-void
 
-    .line 184
+    .line 189
     :cond_8
     iget-object v0, p0, Lcom/android/server/wm/WindowContainer;->mSurfaceControl:Landroid/view/SurfaceControl;
 
     if-nez v0, :cond_23
 
-    .line 187
+    .line 192
     invoke-virtual {p0}, Lcom/android/server/wm/WindowContainer;->makeSurface()Landroid/view/SurfaceControl$Builder;
 
     move-result-object v0
@@ -3057,7 +3320,7 @@
 
     iput-object v0, p0, Lcom/android/server/wm/WindowContainer;->mSurfaceControl:Landroid/view/SurfaceControl;
 
-    .line 188
+    .line 193
     invoke-virtual {p0}, Lcom/android/server/wm/WindowContainer;->getPendingTransaction()Landroid/view/SurfaceControl$Transaction;
 
     move-result-object v0
@@ -3066,12 +3329,12 @@
 
     invoke-virtual {v0, v1}, Landroid/view/SurfaceControl$Transaction;->show(Landroid/view/SurfaceControl;)Landroid/view/SurfaceControl$Transaction;
 
-    .line 189
+    .line 194
     invoke-virtual {p0}, Lcom/android/server/wm/WindowContainer;->updateSurfacePosition()V
 
     goto :goto_2e
 
-    .line 195
+    .line 200
     :cond_23
     invoke-virtual {p0}, Lcom/android/server/wm/WindowContainer;->getPendingTransaction()Landroid/view/SurfaceControl$Transaction;
 
@@ -3083,100 +3346,105 @@
 
     invoke-virtual {p0, v0, v1}, Lcom/android/server/wm/WindowContainer;->reparentSurfaceControl(Landroid/view/SurfaceControl$Transaction;Landroid/view/SurfaceControl;)V
 
-    .line 199
+    .line 204
     :goto_2e
     iget-object v0, p0, Lcom/android/server/wm/WindowContainer;->mParent:Lcom/android/server/wm/WindowContainer;
 
     invoke-virtual {v0}, Lcom/android/server/wm/WindowContainer;->assignChildLayers()V
 
-    .line 200
+    .line 205
     invoke-virtual {p0}, Lcom/android/server/wm/WindowContainer;->scheduleAnimation()V
 
-    .line 201
+    .line 206
     return-void
 .end method
 
 .method onParentResize()V
     .registers 2
 
-    .line 548
+    .line 553
+    .local p0, "this":Lcom/android/server/wm/WindowContainer;, "Lcom/android/server/wm/WindowContainer<TE;>;"
     invoke-virtual {p0}, Lcom/android/server/wm/WindowContainer;->hasOverrideBounds()Z
 
     move-result v0
 
     if-eqz v0, :cond_7
 
-    .line 549
+    .line 554
     return-void
 
-    .line 553
+    .line 558
     :cond_7
     invoke-virtual {p0}, Lcom/android/server/wm/WindowContainer;->onResize()V
 
-    .line 554
+    .line 559
     return-void
 .end method
 
 .method public onRequestedOverrideConfigurationChanged(Landroid/content/res/Configuration;)V
-    .registers 3
+    .registers 5
+    .param p1, "overrideConfiguration"  # Landroid/content/res/Configuration;
 
-    .line 482
+    .line 487
+    .local p0, "this":Lcom/android/server/wm/WindowContainer;, "Lcom/android/server/wm/WindowContainer<TE;>;"
     iget-object v0, p1, Landroid/content/res/Configuration;->windowConfiguration:Landroid/app/WindowConfiguration;
 
-    .line 483
+    .line 488
     invoke-virtual {v0}, Landroid/app/WindowConfiguration;->getBounds()Landroid/graphics/Rect;
 
     move-result-object v0
 
-    .line 482
+    .line 487
     invoke-virtual {p0, v0}, Lcom/android/server/wm/WindowContainer;->diffRequestedOverrideBounds(Landroid/graphics/Rect;)I
 
     move-result v0
 
-    .line 484
+    .line 489
+    .local v0, "diff":I
     invoke-super {p0, p1}, Lcom/android/server/wm/ConfigurationContainer;->onRequestedOverrideConfigurationChanged(Landroid/content/res/Configuration;)V
 
-    .line 485
-    iget-object p1, p0, Lcom/android/server/wm/WindowContainer;->mParent:Lcom/android/server/wm/WindowContainer;
+    .line 490
+    iget-object v1, p0, Lcom/android/server/wm/WindowContainer;->mParent:Lcom/android/server/wm/WindowContainer;
 
-    if-eqz p1, :cond_14
+    if-eqz v1, :cond_14
 
-    .line 486
-    invoke-virtual {p1}, Lcom/android/server/wm/WindowContainer;->onDescendantOverrideConfigurationChanged()V
+    .line 491
+    invoke-virtual {v1}, Lcom/android/server/wm/WindowContainer;->onDescendantOverrideConfigurationChanged()V
 
-    .line 489
+    .line 494
     :cond_14
     if-nez v0, :cond_17
 
-    .line 490
+    .line 495
     return-void
 
-    .line 493
+    .line 498
     :cond_17
-    const/4 p1, 0x2
+    and-int/lit8 v1, v0, 0x2
 
-    and-int/2addr v0, p1
+    const/4 v2, 0x2
 
-    if-ne v0, p1, :cond_1f
+    if-ne v1, v2, :cond_20
 
-    .line 494
+    .line 499
     invoke-virtual {p0}, Lcom/android/server/wm/WindowContainer;->onResize()V
 
-    goto :goto_22
+    goto :goto_23
 
-    .line 496
-    :cond_1f
+    .line 501
+    :cond_20
     invoke-virtual {p0}, Lcom/android/server/wm/WindowContainer;->onMovedByResize()V
 
-    .line 498
-    :goto_22
+    .line 503
+    :goto_23
     return-void
 .end method
 
 .method onResize()V
     .registers 3
 
-    .line 538
+    .line 543
+    .local p0, "this":Lcom/android/server/wm/WindowContainer;, "Lcom/android/server/wm/WindowContainer<TE;>;"
     iget-object v0, p0, Lcom/android/server/wm/WindowContainer;->mChildren:Lcom/android/server/wm/WindowList;
 
     invoke-virtual {v0}, Lcom/android/server/wm/WindowList;->size()I
@@ -3185,10 +3453,11 @@
 
     add-int/lit8 v0, v0, -0x1
 
+    .local v0, "i":I
     :goto_8
     if-ltz v0, :cond_18
 
-    .line 539
+    .line 544
     iget-object v1, p0, Lcom/android/server/wm/WindowContainer;->mChildren:Lcom/android/server/wm/WindowList;
 
     invoke-virtual {v1, v0}, Lcom/android/server/wm/WindowList;->get(I)Ljava/lang/Object;
@@ -3197,35 +3466,42 @@
 
     check-cast v1, Lcom/android/server/wm/WindowContainer;
 
-    .line 540
+    .line 545
+    .local v1, "wc":Lcom/android/server/wm/WindowContainer;
     invoke-virtual {v1}, Lcom/android/server/wm/WindowContainer;->onParentResize()V
 
-    .line 538
+    .line 543
+    .end local v1  # "wc":Lcom/android/server/wm/WindowContainer;
     add-int/lit8 v0, v0, -0x1
 
     goto :goto_8
 
-    .line 542
+    .line 547
+    .end local v0  # "i":I
     :cond_18
     return-void
 .end method
 
 .method positionChildAt(ILcom/android/server/wm/WindowContainer;Z)V
     .registers 8
+    .param p1, "position"  # I
+    .param p3, "includingParents"  # Z
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(ITE;Z)V"
         }
     .end annotation
 
-    .line 416
+    .line 421
+    .local p0, "this":Lcom/android/server/wm/WindowContainer;, "Lcom/android/server/wm/WindowContainer<TE;>;"
+    .local p2, "child":Lcom/android/server/wm/WindowContainer;, "TE;"
     invoke-virtual {p2}, Lcom/android/server/wm/WindowContainer;->getParent()Lcom/android/server/wm/WindowContainer;
 
     move-result-object v0
 
-    if-ne v0, p0, :cond_aa
+    if-ne v0, p0, :cond_ad
 
-    .line 422
+    .line 427
     const/high16 v0, -0x80000000
 
     if-gez p1, :cond_c
@@ -3235,7 +3511,7 @@
     :cond_c
     iget-object v1, p0, Lcom/android/server/wm/WindowContainer;->mChildren:Lcom/android/server/wm/WindowList;
 
-    .line 423
+    .line 428
     invoke-virtual {v1}, Lcom/android/server/wm/WindowList;->size()I
 
     move-result v1
@@ -3248,42 +3524,42 @@
 
     goto :goto_3f
 
-    .line 424
+    .line 429
     :cond_1a
-    new-instance p2, Ljava/lang/IllegalArgumentException;
+    new-instance v0, Ljava/lang/IllegalArgumentException;
 
-    new-instance p3, Ljava/lang/StringBuilder;
+    new-instance v1, Ljava/lang/StringBuilder;
 
-    invoke-direct {p3}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v0, "positionAt: invalid position="
+    const-string v2, "positionAt: invalid position="
 
-    invoke-virtual {p3, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p3, p1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, p1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    const-string p1, ", children number="
+    const-string v2, ", children number="
 
-    invoke-virtual {p3, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    iget-object p1, p0, Lcom/android/server/wm/WindowContainer;->mChildren:Lcom/android/server/wm/WindowList;
+    iget-object v2, p0, Lcom/android/server/wm/WindowContainer;->mChildren:Lcom/android/server/wm/WindowList;
 
-    .line 425
-    invoke-virtual {p1}, Lcom/android/server/wm/WindowList;->size()I
+    .line 430
+    invoke-virtual {v2}, Lcom/android/server/wm/WindowList;->size()I
 
-    move-result p1
+    move-result v2
 
-    invoke-virtual {p3, p1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v1
 
-    invoke-direct {p2, p1}, Ljava/lang/IllegalArgumentException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v0, v1}, Ljava/lang/IllegalArgumentException;-><init>(Ljava/lang/String;)V
 
-    throw p2
+    throw v0
 
-    .line 428
+    .line 433
     :cond_3f
     :goto_3f
     iget-object v1, p0, Lcom/android/server/wm/WindowContainer;->mChildren:Lcom/android/server/wm/WindowList;
@@ -3296,182 +3572,183 @@
 
     sub-int/2addr v1, v3
 
-    if-lt p1, v1, :cond_4b
-
-    .line 429
-    move p1, v2
-
-    goto :goto_4e
-
-    .line 430
-    :cond_4b
-    if-nez p1, :cond_4e
-
-    .line 431
-    move p1, v0
+    if-lt p1, v1, :cond_4d
 
     .line 434
-    :cond_4e
-    :goto_4e
-    if-eq p1, v0, :cond_85
+    const p1, 0x7fffffff
 
-    if-eq p1, v2, :cond_60
+    goto :goto_51
 
-    .line 462
-    iget-object p3, p0, Lcom/android/server/wm/WindowContainer;->mChildren:Lcom/android/server/wm/WindowList;
-
-    invoke-virtual {p3, p2}, Lcom/android/server/wm/WindowList;->remove(Ljava/lang/Object;)Z
-
-    .line 463
-    iget-object p3, p0, Lcom/android/server/wm/WindowContainer;->mChildren:Lcom/android/server/wm/WindowList;
-
-    invoke-virtual {p3, p1, p2}, Lcom/android/server/wm/WindowList;->add(ILjava/lang/Object;)V
-
-    .line 464
-    invoke-virtual {p0}, Lcom/android/server/wm/WindowContainer;->onChildPositionChanged()V
-
-    goto :goto_a9
+    .line 435
+    :cond_4d
+    if-nez p1, :cond_51
 
     .line 436
-    :cond_60
-    iget-object p1, p0, Lcom/android/server/wm/WindowContainer;->mChildren:Lcom/android/server/wm/WindowList;
-
-    invoke-virtual {p1}, Lcom/android/server/wm/WindowList;->peekLast()Ljava/lang/Object;
-
-    move-result-object p1
-
-    if-eq p1, p2, :cond_75
-
-    .line 437
-    iget-object p1, p0, Lcom/android/server/wm/WindowContainer;->mChildren:Lcom/android/server/wm/WindowList;
-
-    invoke-virtual {p1, p2}, Lcom/android/server/wm/WindowList;->remove(Ljava/lang/Object;)Z
-
-    .line 438
-    iget-object p1, p0, Lcom/android/server/wm/WindowContainer;->mChildren:Lcom/android/server/wm/WindowList;
-
-    invoke-virtual {p1, p2}, Lcom/android/server/wm/WindowList;->add(Ljava/lang/Object;)Z
+    const/high16 p1, -0x80000000
 
     .line 439
+    :cond_51
+    :goto_51
+    if-eq p1, v0, :cond_88
+
+    if-eq p1, v2, :cond_63
+
+    .line 467
+    iget-object v0, p0, Lcom/android/server/wm/WindowContainer;->mChildren:Lcom/android/server/wm/WindowList;
+
+    invoke-virtual {v0, p2}, Lcom/android/server/wm/WindowList;->remove(Ljava/lang/Object;)Z
+
+    .line 468
+    iget-object v0, p0, Lcom/android/server/wm/WindowContainer;->mChildren:Lcom/android/server/wm/WindowList;
+
+    invoke-virtual {v0, p1, p2}, Lcom/android/server/wm/WindowList;->add(ILjava/lang/Object;)V
+
+    .line 469
     invoke-virtual {p0}, Lcom/android/server/wm/WindowContainer;->onChildPositionChanged()V
+
+    goto :goto_ac
 
     .line 441
-    :cond_75
-    if-eqz p3, :cond_a9
+    :cond_63
+    iget-object v0, p0, Lcom/android/server/wm/WindowContainer;->mChildren:Lcom/android/server/wm/WindowList;
 
-    invoke-virtual {p0}, Lcom/android/server/wm/WindowContainer;->getParent()Lcom/android/server/wm/WindowContainer;
+    invoke-virtual {v0}, Lcom/android/server/wm/WindowList;->peekLast()Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v0
 
-    if-eqz p1, :cond_a9
+    if-eq v0, p2, :cond_78
 
     .line 442
-    invoke-virtual {p0}, Lcom/android/server/wm/WindowContainer;->getParent()Lcom/android/server/wm/WindowContainer;
+    iget-object v0, p0, Lcom/android/server/wm/WindowContainer;->mChildren:Lcom/android/server/wm/WindowList;
 
-    move-result-object p1
+    invoke-virtual {v0, p2}, Lcom/android/server/wm/WindowList;->remove(Ljava/lang/Object;)Z
 
-    invoke-virtual {p1, v2, p0, v3}, Lcom/android/server/wm/WindowContainer;->positionChildAt(ILcom/android/server/wm/WindowContainer;Z)V
+    .line 443
+    iget-object v0, p0, Lcom/android/server/wm/WindowContainer;->mChildren:Lcom/android/server/wm/WindowList;
 
-    goto :goto_a9
+    invoke-virtual {v0, p2}, Lcom/android/server/wm/WindowList;->add(Ljava/lang/Object;)Z
 
-    .line 447
-    :cond_85
-    iget-object p1, p0, Lcom/android/server/wm/WindowContainer;->mChildren:Lcom/android/server/wm/WindowList;
-
-    invoke-virtual {p1}, Lcom/android/server/wm/WindowList;->peekFirst()Ljava/lang/Object;
-
-    move-result-object p1
-
-    if-eq p1, p2, :cond_9a
-
-    .line 448
-    iget-object p1, p0, Lcom/android/server/wm/WindowContainer;->mChildren:Lcom/android/server/wm/WindowList;
-
-    invoke-virtual {p1, p2}, Lcom/android/server/wm/WindowList;->remove(Ljava/lang/Object;)Z
-
-    .line 449
-    iget-object p1, p0, Lcom/android/server/wm/WindowContainer;->mChildren:Lcom/android/server/wm/WindowList;
-
-    invoke-virtual {p1, p2}, Lcom/android/server/wm/WindowList;->addFirst(Ljava/lang/Object;)V
-
-    .line 450
+    .line 444
     invoke-virtual {p0}, Lcom/android/server/wm/WindowContainer;->onChildPositionChanged()V
 
-    .line 452
-    :cond_9a
-    if-eqz p3, :cond_a9
+    .line 446
+    :cond_78
+    if-eqz p3, :cond_ac
 
     invoke-virtual {p0}, Lcom/android/server/wm/WindowContainer;->getParent()Lcom/android/server/wm/WindowContainer;
 
-    move-result-object p1
+    move-result-object v0
 
-    if-eqz p1, :cond_a9
+    if-eqz v0, :cond_ac
+
+    .line 447
+    invoke-virtual {p0}, Lcom/android/server/wm/WindowContainer;->getParent()Lcom/android/server/wm/WindowContainer;
+
+    move-result-object v0
+
+    invoke-virtual {v0, v2, p0, v3}, Lcom/android/server/wm/WindowContainer;->positionChildAt(ILcom/android/server/wm/WindowContainer;Z)V
+
+    goto :goto_ac
+
+    .line 452
+    :cond_88
+    iget-object v1, p0, Lcom/android/server/wm/WindowContainer;->mChildren:Lcom/android/server/wm/WindowList;
+
+    invoke-virtual {v1}, Lcom/android/server/wm/WindowList;->peekFirst()Ljava/lang/Object;
+
+    move-result-object v1
+
+    if-eq v1, p2, :cond_9d
 
     .line 453
+    iget-object v1, p0, Lcom/android/server/wm/WindowContainer;->mChildren:Lcom/android/server/wm/WindowList;
+
+    invoke-virtual {v1, p2}, Lcom/android/server/wm/WindowList;->remove(Ljava/lang/Object;)Z
+
+    .line 454
+    iget-object v1, p0, Lcom/android/server/wm/WindowContainer;->mChildren:Lcom/android/server/wm/WindowList;
+
+    invoke-virtual {v1, p2}, Lcom/android/server/wm/WindowList;->addFirst(Ljava/lang/Object;)V
+
+    .line 455
+    invoke-virtual {p0}, Lcom/android/server/wm/WindowContainer;->onChildPositionChanged()V
+
+    .line 457
+    :cond_9d
+    if-eqz p3, :cond_ac
+
     invoke-virtual {p0}, Lcom/android/server/wm/WindowContainer;->getParent()Lcom/android/server/wm/WindowContainer;
 
-    move-result-object p1
+    move-result-object v1
 
-    invoke-virtual {p1, v0, p0, v3}, Lcom/android/server/wm/WindowContainer;->positionChildAt(ILcom/android/server/wm/WindowContainer;Z)V
+    if-eqz v1, :cond_ac
 
-    .line 466
-    :cond_a9
-    :goto_a9
+    .line 458
+    invoke-virtual {p0}, Lcom/android/server/wm/WindowContainer;->getParent()Lcom/android/server/wm/WindowContainer;
+
+    move-result-object v1
+
+    invoke-virtual {v1, v0, p0, v3}, Lcom/android/server/wm/WindowContainer;->positionChildAt(ILcom/android/server/wm/WindowContainer;Z)V
+
+    .line 471
+    :cond_ac
+    :goto_ac
     return-void
 
-    .line 417
-    :cond_aa
-    new-instance p1, Ljava/lang/IllegalArgumentException;
+    .line 422
+    :cond_ad
+    new-instance v0, Ljava/lang/IllegalArgumentException;
 
-    new-instance p3, Ljava/lang/StringBuilder;
+    new-instance v1, Ljava/lang/StringBuilder;
 
-    invoke-direct {p3}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v0, "removeChild: container="
+    const-string v2, "removeChild: container="
 
-    invoke-virtual {p3, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {p2}, Lcom/android/server/wm/WindowContainer;->getName()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v2
 
-    invoke-virtual {p3, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string v0, " is not a child of container="
+    const-string v2, " is not a child of container="
 
-    invoke-virtual {p3, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    .line 418
+    .line 423
     invoke-virtual {p0}, Lcom/android/server/wm/WindowContainer;->getName()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v2
 
-    invoke-virtual {p3, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string v0, " current parent="
+    const-string v2, " current parent="
 
-    invoke-virtual {p3, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    .line 419
+    .line 424
     invoke-virtual {p2}, Lcom/android/server/wm/WindowContainer;->getParent()Lcom/android/server/wm/WindowContainer;
 
-    move-result-object p2
+    move-result-object v2
 
-    invoke-virtual {p3, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p2
+    move-result-object v1
 
-    invoke-direct {p1, p2}, Ljava/lang/IllegalArgumentException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v0, v1}, Ljava/lang/IllegalArgumentException;-><init>(Ljava/lang/String;)V
 
-    throw p1
+    throw v0
 .end method
 
 .method prepareSurfaces()V
     .registers 3
 
-    .line 1199
+    .line 1204
+    .local p0, "this":Lcom/android/server/wm/WindowContainer;, "Lcom/android/server/wm/WindowContainer<TE;>;"
     iget-object v0, p0, Lcom/android/server/wm/WindowContainer;->mSurfaceAnimator:Lcom/android/server/wm/SurfaceAnimator;
 
     invoke-virtual {v0}, Lcom/android/server/wm/SurfaceAnimator;->hasLeash()Z
@@ -3480,9 +3757,10 @@
 
     iput-boolean v0, p0, Lcom/android/server/wm/WindowContainer;->mCommittedReparentToAnimationLeash:Z
 
-    .line 1200
+    .line 1205
     const/4 v0, 0x0
 
+    .local v0, "i":I
     :goto_9
     iget-object v1, p0, Lcom/android/server/wm/WindowContainer;->mChildren:Lcom/android/server/wm/WindowList;
 
@@ -3492,7 +3770,7 @@
 
     if-ge v0, v1, :cond_1f
 
-    .line 1201
+    .line 1206
     iget-object v1, p0, Lcom/android/server/wm/WindowContainer;->mChildren:Lcom/android/server/wm/WindowList;
 
     invoke-virtual {v1, v0}, Lcom/android/server/wm/WindowList;->get(I)Ljava/lang/Object;
@@ -3503,31 +3781,35 @@
 
     invoke-virtual {v1}, Lcom/android/server/wm/WindowContainer;->prepareSurfaces()V
 
-    .line 1200
+    .line 1205
     add-int/lit8 v0, v0, 0x1
 
     goto :goto_9
 
-    .line 1203
+    .line 1208
+    .end local v0  # "i":I
     :cond_1f
     return-void
 .end method
 
 .method reassignLayer(Landroid/view/SurfaceControl$Transaction;)V
     .registers 3
+    .param p1, "t"  # Landroid/view/SurfaceControl$Transaction;
 
-    .line 1295
+    .line 1300
+    .local p0, "this":Lcom/android/server/wm/WindowContainer;, "Lcom/android/server/wm/WindowContainer<TE;>;"
     invoke-virtual {p0}, Lcom/android/server/wm/WindowContainer;->getParent()Lcom/android/server/wm/WindowContainer;
 
     move-result-object v0
 
-    .line 1296
+    .line 1301
+    .local v0, "parent":Lcom/android/server/wm/WindowContainer;
     if-eqz v0, :cond_9
 
-    .line 1297
+    .line 1302
     invoke-virtual {v0, p1}, Lcom/android/server/wm/WindowContainer;->assignChildLayers(Landroid/view/SurfaceControl$Transaction;)V
 
-    .line 1299
+    .line 1304
     :cond_9
     return-void
 .end method
@@ -3540,7 +3822,9 @@
         }
     .end annotation
 
-    .line 289
+    .line 294
+    .local p0, "this":Lcom/android/server/wm/WindowContainer;, "Lcom/android/server/wm/WindowContainer<TE;>;"
+    .local p1, "child":Lcom/android/server/wm/WindowContainer;, "TE;"
     iget-object v0, p0, Lcom/android/server/wm/WindowContainer;->mChildren:Lcom/android/server/wm/WindowList;
 
     invoke-virtual {v0, p1}, Lcom/android/server/wm/WindowList;->remove(Ljava/lang/Object;)Z
@@ -3549,18 +3833,18 @@
 
     if-eqz v0, :cond_10
 
-    .line 290
+    .line 295
     invoke-direct {p0, p1}, Lcom/android/server/wm/WindowContainer;->onChildRemoved(Lcom/android/server/wm/WindowContainer;)V
 
-    .line 291
+    .line 296
     const/4 v0, 0x0
 
     invoke-virtual {p1, v0}, Lcom/android/server/wm/WindowContainer;->setParent(Lcom/android/server/wm/WindowContainer;)V
 
-    .line 296
+    .line 301
     return-void
 
-    .line 293
+    .line 298
     :cond_10
     new-instance v0, Ljava/lang/IllegalArgumentException;
 
@@ -3574,26 +3858,26 @@
 
     invoke-virtual {p1}, Lcom/android/server/wm/WindowContainer;->getName()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v2
 
-    invoke-virtual {v1, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string p1, " is not a child of container="
+    const-string v2, " is not a child of container="
 
-    invoke-virtual {v1, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    .line 294
+    .line 299
     invoke-virtual {p0}, Lcom/android/server/wm/WindowContainer;->getName()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v2
 
-    invoke-virtual {v1, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v1
 
-    invoke-direct {v0, p1}, Ljava/lang/IllegalArgumentException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v0, v1}, Ljava/lang/IllegalArgumentException;-><init>(Ljava/lang/String;)V
 
     throw v0
 .end method
@@ -3601,7 +3885,8 @@
 .method removeIfPossible()V
     .registers 3
 
-    .line 386
+    .line 391
+    .local p0, "this":Lcom/android/server/wm/WindowContainer;, "Lcom/android/server/wm/WindowContainer<TE;>;"
     iget-object v0, p0, Lcom/android/server/wm/WindowContainer;->mChildren:Lcom/android/server/wm/WindowList;
 
     invoke-virtual {v0}, Lcom/android/server/wm/WindowList;->size()I
@@ -3610,10 +3895,11 @@
 
     add-int/lit8 v0, v0, -0x1
 
+    .local v0, "i":I
     :goto_8
     if-ltz v0, :cond_18
 
-    .line 387
+    .line 392
     iget-object v1, p0, Lcom/android/server/wm/WindowContainer;->mChildren:Lcom/android/server/wm/WindowList;
 
     invoke-virtual {v1, v0}, Lcom/android/server/wm/WindowList;->get(I)Ljava/lang/Object;
@@ -3622,15 +3908,18 @@
 
     check-cast v1, Lcom/android/server/wm/WindowContainer;
 
-    .line 388
+    .line 393
+    .local v1, "wc":Lcom/android/server/wm/WindowContainer;
     invoke-virtual {v1}, Lcom/android/server/wm/WindowContainer;->removeIfPossible()V
 
-    .line 386
+    .line 391
+    .end local v1  # "wc":Lcom/android/server/wm/WindowContainer;
     add-int/lit8 v0, v0, -0x1
 
     goto :goto_8
 
-    .line 390
+    .line 395
+    .end local v0  # "i":I
     :cond_18
     return-void
 .end method
@@ -3638,7 +3927,8 @@
 .method removeImmediately()V
     .registers 4
 
-    .line 316
+    .line 321
+    .local p0, "this":Lcom/android/server/wm/WindowContainer;, "Lcom/android/server/wm/WindowContainer<TE;>;"
     :goto_0
     iget-object v0, p0, Lcom/android/server/wm/WindowContainer;->mChildren:Lcom/android/server/wm/WindowList;
 
@@ -3648,7 +3938,7 @@
 
     if-nez v0, :cond_1f
 
-    .line 317
+    .line 322
     iget-object v0, p0, Lcom/android/server/wm/WindowContainer;->mChildren:Lcom/android/server/wm/WindowList;
 
     invoke-virtual {v0}, Lcom/android/server/wm/WindowList;->peekLast()Ljava/lang/Object;
@@ -3657,10 +3947,11 @@
 
     check-cast v0, Lcom/android/server/wm/WindowContainer;
 
-    .line 318
+    .line 323
+    .local v0, "child":Lcom/android/server/wm/WindowContainer;, "TE;"
     invoke-virtual {v0}, Lcom/android/server/wm/WindowContainer;->removeImmediately()V
 
-    .line 322
+    .line 327
     iget-object v1, p0, Lcom/android/server/wm/WindowContainer;->mChildren:Lcom/android/server/wm/WindowList;
 
     invoke-virtual {v1, v0}, Lcom/android/server/wm/WindowList;->remove(Ljava/lang/Object;)Z
@@ -3669,14 +3960,15 @@
 
     if-eqz v1, :cond_1e
 
-    .line 323
+    .line 328
     invoke-direct {p0, v0}, Lcom/android/server/wm/WindowContainer;->onChildRemoved(Lcom/android/server/wm/WindowContainer;)V
 
-    .line 325
+    .line 330
+    .end local v0  # "child":Lcom/android/server/wm/WindowContainer;, "TE;"
     :cond_1e
     goto :goto_0
 
-    .line 327
+    .line 332
     :cond_1f
     iget-object v0, p0, Lcom/android/server/wm/WindowContainer;->mSurfaceControl:Landroid/view/SurfaceControl;
 
@@ -3684,7 +3976,7 @@
 
     if-eqz v0, :cond_41
 
-    .line 328
+    .line 333
     invoke-virtual {p0}, Lcom/android/server/wm/WindowContainer;->getPendingTransaction()Landroid/view/SurfaceControl$Transaction;
 
     move-result-object v0
@@ -3693,12 +3985,12 @@
 
     invoke-virtual {v0, v2}, Landroid/view/SurfaceControl$Transaction;->remove(Landroid/view/SurfaceControl;)Landroid/view/SurfaceControl$Transaction;
 
-    .line 332
+    .line 337
     iget-object v0, p0, Lcom/android/server/wm/WindowContainer;->mParent:Lcom/android/server/wm/WindowContainer;
 
     if-eqz v0, :cond_3c
 
-    .line 333
+    .line 338
     invoke-virtual {v0}, Lcom/android/server/wm/WindowContainer;->getPendingTransaction()Landroid/view/SurfaceControl$Transaction;
 
     move-result-object v0
@@ -3709,52 +4001,56 @@
 
     invoke-virtual {v0, v2}, Landroid/view/SurfaceControl$Transaction;->merge(Landroid/view/SurfaceControl$Transaction;)Landroid/view/SurfaceControl$Transaction;
 
-    .line 336
+    .line 341
     :cond_3c
     iput-object v1, p0, Lcom/android/server/wm/WindowContainer;->mSurfaceControl:Landroid/view/SurfaceControl;
 
-    .line 337
+    .line 342
     invoke-virtual {p0}, Lcom/android/server/wm/WindowContainer;->scheduleAnimation()V
 
-    .line 340
+    .line 345
     :cond_41
     iget-object v0, p0, Lcom/android/server/wm/WindowContainer;->mParent:Lcom/android/server/wm/WindowContainer;
 
     if-eqz v0, :cond_48
 
-    .line 341
+    .line 346
     invoke-virtual {v0, p0}, Lcom/android/server/wm/WindowContainer;->removeChild(Lcom/android/server/wm/WindowContainer;)V
 
-    .line 344
+    .line 349
     :cond_48
     iget-object v0, p0, Lcom/android/server/wm/WindowContainer;->mController:Lcom/android/server/wm/WindowContainerController;
 
     if-eqz v0, :cond_4f
 
-    .line 345
+    .line 350
     invoke-virtual {p0, v1}, Lcom/android/server/wm/WindowContainer;->setController(Lcom/android/server/wm/WindowContainerController;)V
 
-    .line 348
+    .line 353
     :cond_4f
     return-void
 .end method
 
 .method protected reparentSurfaceControl(Landroid/view/SurfaceControl$Transaction;Landroid/view/SurfaceControl;)V
     .registers 4
+    .param p1, "t"  # Landroid/view/SurfaceControl$Transaction;
+    .param p2, "newParent"  # Landroid/view/SurfaceControl;
 
-    .line 1088
+    .line 1093
+    .local p0, "this":Lcom/android/server/wm/WindowContainer;, "Lcom/android/server/wm/WindowContainer<TE;>;"
     iget-object v0, p0, Lcom/android/server/wm/WindowContainer;->mSurfaceAnimator:Lcom/android/server/wm/SurfaceAnimator;
 
     invoke-virtual {v0, p1, p2}, Lcom/android/server/wm/SurfaceAnimator;->reparent(Landroid/view/SurfaceControl$Transaction;Landroid/view/SurfaceControl;)V
 
-    .line 1089
+    .line 1094
     return-void
 .end method
 
 .method resetDragResizingChangeReported()V
     .registers 3
 
-    .line 564
+    .line 569
+    .local p0, "this":Lcom/android/server/wm/WindowContainer;, "Lcom/android/server/wm/WindowContainer<TE;>;"
     iget-object v0, p0, Lcom/android/server/wm/WindowContainer;->mChildren:Lcom/android/server/wm/WindowList;
 
     invoke-virtual {v0}, Lcom/android/server/wm/WindowList;->size()I
@@ -3763,10 +4059,11 @@
 
     add-int/lit8 v0, v0, -0x1
 
+    .local v0, "i":I
     :goto_8
     if-ltz v0, :cond_18
 
-    .line 565
+    .line 570
     iget-object v1, p0, Lcom/android/server/wm/WindowContainer;->mChildren:Lcom/android/server/wm/WindowList;
 
     invoke-virtual {v1, v0}, Lcom/android/server/wm/WindowList;->get(I)Ljava/lang/Object;
@@ -3775,15 +4072,18 @@
 
     check-cast v1, Lcom/android/server/wm/WindowContainer;
 
-    .line 566
+    .line 571
+    .local v1, "wc":Lcom/android/server/wm/WindowContainer;
     invoke-virtual {v1}, Lcom/android/server/wm/WindowContainer;->resetDragResizingChangeReported()V
 
-    .line 564
+    .line 569
+    .end local v1  # "wc":Lcom/android/server/wm/WindowContainer;
     add-int/lit8 v0, v0, -0x1
 
     goto :goto_8
 
-    .line 568
+    .line 573
+    .end local v0  # "i":I
     :cond_18
     return-void
 .end method
@@ -3791,15 +4091,16 @@
 .method scheduleAnimation()V
     .registers 2
 
-    .line 1218
+    .line 1223
+    .local p0, "this":Lcom/android/server/wm/WindowContainer;, "Lcom/android/server/wm/WindowContainer<TE;>;"
     iget-object v0, p0, Lcom/android/server/wm/WindowContainer;->mParent:Lcom/android/server/wm/WindowContainer;
 
     if-eqz v0, :cond_7
 
-    .line 1219
+    .line 1224
     invoke-virtual {v0}, Lcom/android/server/wm/WindowContainer;->scheduleAnimation()V
 
-    .line 1221
+    .line 1226
     :cond_7
     return-void
 .end method
@@ -3807,7 +4108,8 @@
 .method sendAppVisibilityToClients()V
     .registers 3
 
-    .line 626
+    .line 631
+    .local p0, "this":Lcom/android/server/wm/WindowContainer;, "Lcom/android/server/wm/WindowContainer<TE;>;"
     iget-object v0, p0, Lcom/android/server/wm/WindowContainer;->mChildren:Lcom/android/server/wm/WindowList;
 
     invoke-virtual {v0}, Lcom/android/server/wm/WindowList;->size()I
@@ -3816,10 +4118,11 @@
 
     add-int/lit8 v0, v0, -0x1
 
+    .local v0, "i":I
     :goto_8
     if-ltz v0, :cond_18
 
-    .line 627
+    .line 632
     iget-object v1, p0, Lcom/android/server/wm/WindowContainer;->mChildren:Lcom/android/server/wm/WindowList;
 
     invoke-virtual {v1, v0}, Lcom/android/server/wm/WindowList;->get(I)Ljava/lang/Object;
@@ -3828,23 +4131,28 @@
 
     check-cast v1, Lcom/android/server/wm/WindowContainer;
 
-    .line 628
+    .line 633
+    .local v1, "wc":Lcom/android/server/wm/WindowContainer;
     invoke-virtual {v1}, Lcom/android/server/wm/WindowContainer;->sendAppVisibilityToClients()V
 
-    .line 626
+    .line 631
+    .end local v1  # "wc":Lcom/android/server/wm/WindowContainer;
     add-int/lit8 v0, v0, -0x1
 
     goto :goto_8
 
-    .line 630
+    .line 635
+    .end local v0  # "i":I
     :cond_18
     return-void
 .end method
 
 .method setController(Lcom/android/server/wm/WindowContainerController;)V
-    .registers 4
+    .registers 5
+    .param p1, "controller"  # Lcom/android/server/wm/WindowContainerController;
 
-    .line 991
+    .line 996
+    .local p0, "this":Lcom/android/server/wm/WindowContainer;, "Lcom/android/server/wm/WindowContainer<TE;>;"
     iget-object v0, p0, Lcom/android/server/wm/WindowContainer;->mController:Lcom/android/server/wm/WindowContainerController;
 
     if-eqz v0, :cond_32
@@ -3853,102 +4161,111 @@
 
     goto :goto_32
 
-    .line 992
+    .line 997
     :cond_7
-    new-instance p1, Ljava/lang/IllegalArgumentException;
+    new-instance v0, Ljava/lang/IllegalArgumentException;
 
-    new-instance v0, Ljava/lang/StringBuilder;
+    new-instance v1, Ljava/lang/StringBuilder;
 
-    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v1, "Can\'t set controller="
+    const-string v2, "Can\'t set controller="
 
-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    iget-object v1, p0, Lcom/android/server/wm/WindowContainer;->mController:Lcom/android/server/wm/WindowContainerController;
+    iget-object v2, p0, Lcom/android/server/wm/WindowContainer;->mController:Lcom/android/server/wm/WindowContainerController;
 
-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
-    const-string v1, " for container="
+    const-string v2, " for container="
 
-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0, p0}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, p0}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
-    const-string v1, " Already set to="
+    const-string v2, " Already set to="
 
-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    iget-object v1, p0, Lcom/android/server/wm/WindowContainer;->mController:Lcom/android/server/wm/WindowContainerController;
+    iget-object v2, p0, Lcom/android/server/wm/WindowContainer;->mController:Lcom/android/server/wm/WindowContainerController;
 
-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v1
 
-    invoke-direct {p1, v0}, Ljava/lang/IllegalArgumentException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v0, v1}, Ljava/lang/IllegalArgumentException;-><init>(Ljava/lang/String;)V
 
-    throw p1
+    throw v0
 
-    .line 995
+    .line 1000
     :cond_32
     :goto_32
     if-eqz p1, :cond_38
 
-    .line 996
+    .line 1001
     invoke-virtual {p1, p0}, Lcom/android/server/wm/WindowContainerController;->setContainer(Lcom/android/server/wm/WindowContainer;)V
 
     goto :goto_40
 
-    .line 997
+    .line 1002
     :cond_38
     iget-object v0, p0, Lcom/android/server/wm/WindowContainer;->mController:Lcom/android/server/wm/WindowContainerController;
 
     if-eqz v0, :cond_40
 
-    .line 998
+    .line 1003
     const/4 v1, 0x0
 
     invoke-virtual {v0, v1}, Lcom/android/server/wm/WindowContainerController;->setContainer(Lcom/android/server/wm/WindowContainer;)V
 
-    .line 1000
+    .line 1005
     :cond_40
     :goto_40
     iput-object p1, p0, Lcom/android/server/wm/WindowContainer;->mController:Lcom/android/server/wm/WindowContainerController;
 
-    .line 1001
+    .line 1006
     return-void
 .end method
 
 .method protected setLayer(Landroid/view/SurfaceControl$Transaction;I)V
     .registers 4
+    .param p1, "t"  # Landroid/view/SurfaceControl$Transaction;
+    .param p2, "layer"  # I
 
-    .line 1077
+    .line 1082
+    .local p0, "this":Lcom/android/server/wm/WindowContainer;, "Lcom/android/server/wm/WindowContainer<TE;>;"
     iget-object v0, p0, Lcom/android/server/wm/WindowContainer;->mSurfaceAnimator:Lcom/android/server/wm/SurfaceAnimator;
 
     invoke-virtual {v0, p1, p2}, Lcom/android/server/wm/SurfaceAnimator;->setLayer(Landroid/view/SurfaceControl$Transaction;I)V
 
-    .line 1078
+    .line 1083
     return-void
 .end method
 
 .method setOrientation(I)V
     .registers 3
+    .param p1, "orientation"  # I
 
-    .line 752
+    .line 757
+    .local p0, "this":Lcom/android/server/wm/WindowContainer;, "Lcom/android/server/wm/WindowContainer<TE;>;"
     const/4 v0, 0x0
 
     invoke-virtual {p0, p1, v0, v0}, Lcom/android/server/wm/WindowContainer;->setOrientation(ILandroid/os/IBinder;Lcom/android/server/wm/ConfigurationContainer;)V
 
-    .line 754
+    .line 759
     return-void
 .end method
 
 .method setOrientation(ILandroid/os/IBinder;Lcom/android/server/wm/ConfigurationContainer;)V
-    .registers 5
+    .registers 6
+    .param p1, "orientation"  # I
+    .param p2, "freezeDisplayToken"  # Landroid/os/IBinder;
+    .param p3, "requestingContainer"  # Lcom/android/server/wm/ConfigurationContainer;
 
-    .line 770
+    .line 775
+    .local p0, "this":Lcom/android/server/wm/WindowContainer;, "Lcom/android/server/wm/WindowContainer<TE;>;"
     iget v0, p0, Lcom/android/server/wm/WindowContainer;->mOrientation:I
 
     if-eq v0, p1, :cond_6
@@ -3960,29 +4277,31 @@
     :cond_6
     const/4 v0, 0x0
 
-    .line 771
+    .line 776
+    .local v0, "changed":Z
     :goto_7
     iput p1, p0, Lcom/android/server/wm/WindowContainer;->mOrientation:I
 
-    .line 772
+    .line 777
     if-nez v0, :cond_c
 
-    .line 773
+    .line 778
     return-void
 
-    .line 775
+    .line 780
     :cond_c
     invoke-virtual {p0}, Lcom/android/server/wm/WindowContainer;->getParent()Lcom/android/server/wm/WindowContainer;
 
-    move-result-object p1
+    move-result-object v1
 
-    .line 776
-    if-eqz p1, :cond_15
+    .line 781
+    .local v1, "parent":Lcom/android/server/wm/WindowContainer;
+    if-eqz v1, :cond_15
 
-    .line 777
+    .line 782
     invoke-virtual {p0, p2, p3}, Lcom/android/server/wm/WindowContainer;->onDescendantOrientationChanged(Landroid/os/IBinder;Lcom/android/server/wm/ConfigurationContainer;)Z
 
-    .line 779
+    .line 784
     :cond_15
     return-void
 .end method
@@ -3998,32 +4317,39 @@
         }
     .end annotation
 
-    .line 169
+    .line 174
+    .local p0, "this":Lcom/android/server/wm/WindowContainer;, "Lcom/android/server/wm/WindowContainer<TE;>;"
+    .local p1, "parent":Lcom/android/server/wm/WindowContainer;, "Lcom/android/server/wm/WindowContainer<Lcom/android/server/wm/WindowContainer;>;"
     iput-object p1, p0, Lcom/android/server/wm/WindowContainer;->mParent:Lcom/android/server/wm/WindowContainer;
 
-    .line 170
+    .line 175
     invoke-virtual {p0}, Lcom/android/server/wm/WindowContainer;->onParentChanged()V
 
-    .line 171
+    .line 176
     return-void
 .end method
 
 .method protected setRelativeLayer(Landroid/view/SurfaceControl$Transaction;Landroid/view/SurfaceControl;I)V
     .registers 5
+    .param p1, "t"  # Landroid/view/SurfaceControl$Transaction;
+    .param p2, "relativeTo"  # Landroid/view/SurfaceControl;
+    .param p3, "layer"  # I
 
-    .line 1084
+    .line 1089
+    .local p0, "this":Lcom/android/server/wm/WindowContainer;, "Lcom/android/server/wm/WindowContainer<TE;>;"
     iget-object v0, p0, Lcom/android/server/wm/WindowContainer;->mSurfaceAnimator:Lcom/android/server/wm/SurfaceAnimator;
 
     invoke-virtual {v0, p1, p2, p3}, Lcom/android/server/wm/SurfaceAnimator;->setRelativeLayer(Landroid/view/SurfaceControl$Transaction;Landroid/view/SurfaceControl;I)V
 
-    .line 1085
+    .line 1090
     return-void
 .end method
 
 .method setWaitingForDrawnIfResizingChanged()V
     .registers 3
 
-    .line 531
+    .line 536
+    .local p0, "this":Lcom/android/server/wm/WindowContainer;, "Lcom/android/server/wm/WindowContainer<TE;>;"
     iget-object v0, p0, Lcom/android/server/wm/WindowContainer;->mChildren:Lcom/android/server/wm/WindowList;
 
     invoke-virtual {v0}, Lcom/android/server/wm/WindowList;->size()I
@@ -4032,10 +4358,11 @@
 
     add-int/lit8 v0, v0, -0x1
 
+    .local v0, "i":I
     :goto_8
     if-ltz v0, :cond_18
 
-    .line 532
+    .line 537
     iget-object v1, p0, Lcom/android/server/wm/WindowContainer;->mChildren:Lcom/android/server/wm/WindowList;
 
     invoke-virtual {v1, v0}, Lcom/android/server/wm/WindowList;->get(I)Ljava/lang/Object;
@@ -4044,15 +4371,18 @@
 
     check-cast v1, Lcom/android/server/wm/WindowContainer;
 
-    .line 533
+    .line 538
+    .local v1, "wc":Lcom/android/server/wm/WindowContainer;
     invoke-virtual {v1}, Lcom/android/server/wm/WindowContainer;->setWaitingForDrawnIfResizingChanged()V
 
-    .line 531
+    .line 536
+    .end local v1  # "wc":Lcom/android/server/wm/WindowContainer;
     add-int/lit8 v0, v0, -0x1
 
     goto :goto_8
 
-    .line 535
+    .line 540
+    .end local v0  # "i":I
     :cond_18
     return-void
 .end method
@@ -4060,20 +4390,22 @@
 .method shouldMagnify()Z
     .registers 4
 
-    .line 1036
+    .line 1041
+    .local p0, "this":Lcom/android/server/wm/WindowContainer;, "Lcom/android/server/wm/WindowContainer<TE;>;"
     iget-object v0, p0, Lcom/android/server/wm/WindowContainer;->mSurfaceControl:Landroid/view/SurfaceControl;
 
     const/4 v1, 0x0
 
     if-nez v0, :cond_6
 
-    .line 1037
+    .line 1042
     return v1
 
-    .line 1040
+    .line 1045
     :cond_6
-    move v0, v1
+    const/4 v0, 0x0
 
+    .local v0, "i":I
     :goto_7
     iget-object v2, p0, Lcom/android/server/wm/WindowContainer;->mChildren:Lcom/android/server/wm/WindowList;
 
@@ -4083,7 +4415,7 @@
 
     if-ge v0, v2, :cond_21
 
-    .line 1041
+    .line 1046
     iget-object v2, p0, Lcom/android/server/wm/WindowContainer;->mChildren:Lcom/android/server/wm/WindowList;
 
     invoke-virtual {v2, v0}, Lcom/android/server/wm/WindowList;->get(I)Ljava/lang/Object;
@@ -4098,16 +4430,17 @@
 
     if-nez v2, :cond_1e
 
-    .line 1042
+    .line 1047
     return v1
 
-    .line 1040
+    .line 1045
     :cond_1e
     add-int/lit8 v0, v0, 0x1
 
     goto :goto_7
 
-    .line 1045
+    .line 1050
+    .end local v0  # "i":I
     :cond_21
     const/4 v0, 0x1
 
@@ -4115,33 +4448,69 @@
 .end method
 
 .method startAnimation(Landroid/view/SurfaceControl$Transaction;Lcom/android/server/wm/AnimationAdapter;Z)V
-    .registers 5
+    .registers 6
+    .param p1, "t"  # Landroid/view/SurfaceControl$Transaction;
+    .param p2, "anim"  # Lcom/android/server/wm/AnimationAdapter;
+    .param p3, "hidden"  # Z
 
-    .line 1257
+    .line 1258
+    .local p0, "this":Lcom/android/server/wm/WindowContainer;, "Lcom/android/server/wm/WindowContainer<TE;>;"
+    sget-boolean v0, Lcom/android/server/wm/WindowManagerDebugConfig;->DEBUG_ANIM:Z
+
+    if-eqz v0, :cond_22
+
+    new-instance v0, Ljava/lang/StringBuilder;
+
+    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
+
+    const-string v1, "Starting animation on "
+
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v0, p0}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+
+    const-string v1, ": "
+
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v0, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v0
+
+    const-string v1, "WindowManager"
+
+    invoke-static {v1, v0}, Landroid/util/Slog;->v(Ljava/lang/String;Ljava/lang/String;)I
+
+    .line 1262
+    :cond_22
     iget-object v0, p0, Lcom/android/server/wm/WindowContainer;->mSurfaceAnimator:Lcom/android/server/wm/SurfaceAnimator;
 
     invoke-virtual {v0, p1, p2, p3}, Lcom/android/server/wm/SurfaceAnimator;->startAnimation(Landroid/view/SurfaceControl$Transaction;Lcom/android/server/wm/AnimationAdapter;Z)V
 
-    .line 1258
+    .line 1263
     return-void
 .end method
 
 .method startDelayingAnimationStart()V
     .registers 2
 
-    .line 1331
+    .line 1336
+    .local p0, "this":Lcom/android/server/wm/WindowContainer;, "Lcom/android/server/wm/WindowContainer<TE;>;"
     iget-object v0, p0, Lcom/android/server/wm/WindowContainer;->mSurfaceAnimator:Lcom/android/server/wm/SurfaceAnimator;
 
     invoke-virtual {v0}, Lcom/android/server/wm/SurfaceAnimator;->startDelayingAnimationStart()V
 
-    .line 1332
+    .line 1337
     return-void
 .end method
 
 .method switchUser()V
     .registers 3
 
-    .line 854
+    .line 859
+    .local p0, "this":Lcom/android/server/wm/WindowContainer;, "Lcom/android/server/wm/WindowContainer<TE;>;"
     iget-object v0, p0, Lcom/android/server/wm/WindowContainer;->mChildren:Lcom/android/server/wm/WindowList;
 
     invoke-virtual {v0}, Lcom/android/server/wm/WindowList;->size()I
@@ -4150,10 +4519,11 @@
 
     add-int/lit8 v0, v0, -0x1
 
+    .local v0, "i":I
     :goto_8
     if-ltz v0, :cond_18
 
-    .line 855
+    .line 860
     iget-object v1, p0, Lcom/android/server/wm/WindowContainer;->mChildren:Lcom/android/server/wm/WindowList;
 
     invoke-virtual {v1, v0}, Lcom/android/server/wm/WindowList;->get(I)Ljava/lang/Object;
@@ -4164,48 +4534,52 @@
 
     invoke-virtual {v1}, Lcom/android/server/wm/WindowContainer;->switchUser()V
 
-    .line 854
+    .line 859
     add-int/lit8 v0, v0, -0x1
 
     goto :goto_8
 
-    .line 857
+    .line 862
+    .end local v0  # "i":I
     :cond_18
     return-void
 .end method
 
 .method transferAnimation(Lcom/android/server/wm/WindowContainer;)V
-    .registers 3
+    .registers 4
+    .param p1, "from"  # Lcom/android/server/wm/WindowContainer;
 
-    .line 1261
+    .line 1266
+    .local p0, "this":Lcom/android/server/wm/WindowContainer;, "Lcom/android/server/wm/WindowContainer<TE;>;"
     iget-object v0, p0, Lcom/android/server/wm/WindowContainer;->mSurfaceAnimator:Lcom/android/server/wm/SurfaceAnimator;
 
-    iget-object p1, p1, Lcom/android/server/wm/WindowContainer;->mSurfaceAnimator:Lcom/android/server/wm/SurfaceAnimator;
+    iget-object v1, p1, Lcom/android/server/wm/WindowContainer;->mSurfaceAnimator:Lcom/android/server/wm/SurfaceAnimator;
 
-    invoke-virtual {v0, p1}, Lcom/android/server/wm/SurfaceAnimator;->transferAnimation(Lcom/android/server/wm/SurfaceAnimator;)V
+    invoke-virtual {v0, v1}, Lcom/android/server/wm/SurfaceAnimator;->transferAnimation(Lcom/android/server/wm/SurfaceAnimator;)V
 
-    .line 1262
+    .line 1267
     return-void
 .end method
 
 .method updateSurfacePosition()V
     .registers 5
 
-    .line 1360
+    .line 1365
+    .local p0, "this":Lcom/android/server/wm/WindowContainer;, "Lcom/android/server/wm/WindowContainer<TE;>;"
     iget-object v0, p0, Lcom/android/server/wm/WindowContainer;->mSurfaceControl:Landroid/view/SurfaceControl;
 
     if-nez v0, :cond_5
 
-    .line 1361
+    .line 1366
     return-void
 
-    .line 1364
+    .line 1369
     :cond_5
     iget-object v0, p0, Lcom/android/server/wm/WindowContainer;->mTmpPos:Landroid/graphics/Point;
 
     invoke-virtual {p0, v0}, Lcom/android/server/wm/WindowContainer;->getRelativeDisplayedPosition(Landroid/graphics/Point;)V
 
-    .line 1365
+    .line 1370
     iget-object v0, p0, Lcom/android/server/wm/WindowContainer;->mTmpPos:Landroid/graphics/Point;
 
     iget-object v1, p0, Lcom/android/server/wm/WindowContainer;->mLastSurfacePosition:Landroid/graphics/Point;
@@ -4216,10 +4590,10 @@
 
     if-eqz v0, :cond_15
 
-    .line 1366
+    .line 1371
     return-void
 
-    .line 1369
+    .line 1374
     :cond_15
     invoke-virtual {p0}, Lcom/android/server/wm/WindowContainer;->getPendingTransaction()Landroid/view/SurfaceControl$Transaction;
 
@@ -4241,7 +4615,7 @@
 
     invoke-virtual {v0, v1, v2, v3}, Landroid/view/SurfaceControl$Transaction;->setPosition(Landroid/view/SurfaceControl;FF)Landroid/view/SurfaceControl$Transaction;
 
-    .line 1370
+    .line 1375
     iget-object v0, p0, Lcom/android/server/wm/WindowContainer;->mLastSurfacePosition:Landroid/graphics/Point;
 
     iget-object v1, p0, Lcom/android/server/wm/WindowContainer;->mTmpPos:Landroid/graphics/Point;
@@ -4254,71 +4628,77 @@
 
     invoke-virtual {v0, v1, v2}, Landroid/graphics/Point;->set(II)V
 
-    .line 1371
+    .line 1376
     return-void
 .end method
 
 .method public writeToProto(Landroid/util/proto/ProtoOutputStream;JI)V
-    .registers 8
+    .registers 11
+    .param p1, "proto"  # Landroid/util/proto/ProtoOutputStream;
+    .param p2, "fieldId"  # J
+    .param p4, "logLevel"  # I
 
-    .line 1138
+    .line 1143
+    .local p0, "this":Lcom/android/server/wm/WindowContainer;, "Lcom/android/server/wm/WindowContainer<TE;>;"
     invoke-virtual {p0}, Lcom/android/server/wm/WindowContainer;->isVisible()Z
 
     move-result v0
 
-    .line 1139
+    .line 1144
+    .local v0, "isVisible":Z
     const/4 v1, 0x2
 
     if-ne p4, v1, :cond_a
 
     if-nez v0, :cond_a
 
-    .line 1140
+    .line 1145
     return-void
 
-    .line 1143
+    .line 1148
     :cond_a
     invoke-virtual {p1, p2, p3}, Landroid/util/proto/ProtoOutputStream;->start(J)J
 
-    move-result-wide p2
+    move-result-wide v1
 
-    .line 1144
-    const-wide v1, 0x10b00000001L
+    .line 1149
+    .local v1, "token":J
+    const-wide v3, 0x10b00000001L
 
-    invoke-super {p0, p1, v1, v2, p4}, Lcom/android/server/wm/ConfigurationContainer;->writeToProto(Landroid/util/proto/ProtoOutputStream;JI)V
-
-    .line 1145
-    const-wide v1, 0x10500000002L
-
-    iget p4, p0, Lcom/android/server/wm/WindowContainer;->mOrientation:I
-
-    invoke-virtual {p1, v1, v2, p4}, Landroid/util/proto/ProtoOutputStream;->write(JI)V
-
-    .line 1146
-    const-wide v1, 0x10800000003L
-
-    invoke-virtual {p1, v1, v2, v0}, Landroid/util/proto/ProtoOutputStream;->write(JZ)V
-
-    .line 1147
-    iget-object p4, p0, Lcom/android/server/wm/WindowContainer;->mSurfaceAnimator:Lcom/android/server/wm/SurfaceAnimator;
-
-    invoke-virtual {p4}, Lcom/android/server/wm/SurfaceAnimator;->isAnimating()Z
-
-    move-result p4
-
-    if-eqz p4, :cond_3a
-
-    .line 1148
-    iget-object p4, p0, Lcom/android/server/wm/WindowContainer;->mSurfaceAnimator:Lcom/android/server/wm/SurfaceAnimator;
-
-    const-wide v0, 0x10b00000004L
-
-    invoke-virtual {p4, p1, v0, v1}, Lcom/android/server/wm/SurfaceAnimator;->writeToProto(Landroid/util/proto/ProtoOutputStream;J)V
+    invoke-super {p0, p1, v3, v4, p4}, Lcom/android/server/wm/ConfigurationContainer;->writeToProto(Landroid/util/proto/ProtoOutputStream;JI)V
 
     .line 1150
-    :cond_3a
-    invoke-virtual {p1, p2, p3}, Landroid/util/proto/ProtoOutputStream;->end(J)V
+    const-wide v3, 0x10500000002L
+
+    iget v5, p0, Lcom/android/server/wm/WindowContainer;->mOrientation:I
+
+    invoke-virtual {p1, v3, v4, v5}, Landroid/util/proto/ProtoOutputStream;->write(JI)V
 
     .line 1151
+    const-wide v3, 0x10800000003L
+
+    invoke-virtual {p1, v3, v4, v0}, Landroid/util/proto/ProtoOutputStream;->write(JZ)V
+
+    .line 1152
+    iget-object v3, p0, Lcom/android/server/wm/WindowContainer;->mSurfaceAnimator:Lcom/android/server/wm/SurfaceAnimator;
+
+    invoke-virtual {v3}, Lcom/android/server/wm/SurfaceAnimator;->isAnimating()Z
+
+    move-result v3
+
+    if-eqz v3, :cond_3a
+
+    .line 1153
+    iget-object v3, p0, Lcom/android/server/wm/WindowContainer;->mSurfaceAnimator:Lcom/android/server/wm/SurfaceAnimator;
+
+    const-wide v4, 0x10b00000004L
+
+    invoke-virtual {v3, p1, v4, v5}, Lcom/android/server/wm/SurfaceAnimator;->writeToProto(Landroid/util/proto/ProtoOutputStream;J)V
+
+    .line 1155
+    :cond_3a
+    invoke-virtual {p1, v1, v2}, Landroid/util/proto/ProtoOutputStream;->end(J)V
+
+    .line 1156
     return-void
 .end method

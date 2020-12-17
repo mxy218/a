@@ -25,7 +25,7 @@
 .method private constructor <init>(Lcom/android/server/display/DisplayPowerController;)V
     .registers 2
 
-    .line 1974
+    .line 2176
     iput-object p1, p0, Lcom/android/server/display/DisplayPowerController$ScreenOffUnblocker;->this$0:Lcom/android/server/display/DisplayPowerController;
 
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -35,8 +35,10 @@
 
 .method synthetic constructor <init>(Lcom/android/server/display/DisplayPowerController;Lcom/android/server/display/DisplayPowerController$1;)V
     .registers 3
+    .param p1, "x0"  # Lcom/android/server/display/DisplayPowerController;
+    .param p2, "x1"  # Lcom/android/server/display/DisplayPowerController$1;
 
-    .line 1974
+    .line 2176
     invoke-direct {p0, p1}, Lcom/android/server/display/DisplayPowerController$ScreenOffUnblocker;-><init>(Lcom/android/server/display/DisplayPowerController;)V
 
     return-void
@@ -47,10 +49,10 @@
 .method public onScreenOff()V
     .registers 3
 
-    .line 1977
+    .line 2179
     iget-object v0, p0, Lcom/android/server/display/DisplayPowerController$ScreenOffUnblocker;->this$0:Lcom/android/server/display/DisplayPowerController;
 
-    invoke-static {v0}, Lcom/android/server/display/DisplayPowerController;->access$1900(Lcom/android/server/display/DisplayPowerController;)Lcom/android/server/display/DisplayPowerController$DisplayControllerHandler;
+    invoke-static {v0}, Lcom/android/server/display/DisplayPowerController;->access$2500(Lcom/android/server/display/DisplayPowerController;)Lcom/android/server/display/DisplayPowerController$DisplayControllerHandler;
 
     move-result-object v0
 
@@ -60,15 +62,16 @@
 
     move-result-object v0
 
-    .line 1978
+    .line 2180
+    .local v0, "msg":Landroid/os/Message;
     iget-object v1, p0, Lcom/android/server/display/DisplayPowerController$ScreenOffUnblocker;->this$0:Lcom/android/server/display/DisplayPowerController;
 
-    invoke-static {v1}, Lcom/android/server/display/DisplayPowerController;->access$1900(Lcom/android/server/display/DisplayPowerController;)Lcom/android/server/display/DisplayPowerController$DisplayControllerHandler;
+    invoke-static {v1}, Lcom/android/server/display/DisplayPowerController;->access$2500(Lcom/android/server/display/DisplayPowerController;)Lcom/android/server/display/DisplayPowerController$DisplayControllerHandler;
 
     move-result-object v1
 
     invoke-virtual {v1, v0}, Lcom/android/server/display/DisplayPowerController$DisplayControllerHandler;->sendMessage(Landroid/os/Message;)Z
 
-    .line 1979
+    .line 2181
     return-void
 .end method

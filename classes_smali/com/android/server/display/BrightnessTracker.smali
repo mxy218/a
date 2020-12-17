@@ -57,11 +57,6 @@
 
 .field static final DEBUG:Z = false
 
-.field static final ENABLE_COLOR_SAMPLING:Z = false
-    .annotation build Lcom/android/internal/annotations/VisibleForTesting;
-    .end annotation
-.end field
-
 .field private static final EVENTS_FILE:Ljava/lang/String; = "brightness_events.xml"
 
 .field private static final FORMAT:Ljava/text/SimpleDateFormat;
@@ -193,7 +188,7 @@
 .method static constructor <clinit>()V
     .registers 5
 
-    .line 104
+    .line 102
     sget-object v0, Ljava/util/concurrent/TimeUnit;->DAYS:Ljava/util/concurrent/TimeUnit;
 
     const-wide/16 v1, 0x1e
@@ -204,7 +199,7 @@
 
     sput-wide v0, Lcom/android/server/display/BrightnessTracker;->MAX_EVENT_AGE:J
 
-    .line 106
+    .line 104
     sget-object v0, Ljava/util/concurrent/TimeUnit;->SECONDS:Ljava/util/concurrent/TimeUnit;
 
     const-wide/16 v1, 0xa
@@ -215,7 +210,7 @@
 
     sput-wide v3, Lcom/android/server/display/BrightnessTracker;->LUX_EVENT_HORIZON:J
 
-    .line 131
+    .line 129
     new-instance v0, Ljava/text/SimpleDateFormat;
 
     const-string v3, "MM-dd HH:mm:ss.SSS"
@@ -224,7 +219,7 @@
 
     sput-object v0, Lcom/android/server/display/BrightnessTracker;->FORMAT:Ljava/text/SimpleDateFormat;
 
-    .line 133
+    .line 131
     sget-object v0, Ljava/util/concurrent/TimeUnit;->SECONDS:Ljava/util/concurrent/TimeUnit;
 
     invoke-virtual {v0, v1, v2}, Ljava/util/concurrent/TimeUnit;->toSeconds(J)J
@@ -238,18 +233,20 @@
 
 .method public constructor <init>(Landroid/content/Context;Lcom/android/server/display/BrightnessTracker$Injector;)V
     .registers 6
+    .param p1, "context"  # Landroid/content/Context;
+    .param p2, "injector"  # Lcom/android/server/display/BrightnessTracker$Injector;
 
-    .line 180
+    .line 178
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
-    .line 138
+    .line 136
     new-instance v0, Ljava/lang/Object;
 
     invoke-direct {v0}, Ljava/lang/Object;-><init>()V
 
     iput-object v0, p0, Lcom/android/server/display/BrightnessTracker;->mEventsLock:Ljava/lang/Object;
 
-    .line 139
+    .line 137
     new-instance v0, Lcom/android/internal/util/RingBuffer;
 
     const-class v1, Landroid/hardware/display/BrightnessChangeEvent;
@@ -260,98 +257,99 @@
 
     iput-object v0, p0, Lcom/android/server/display/BrightnessTracker;->mEvents:Lcom/android/internal/util/RingBuffer;
 
-    .line 165
+    .line 163
     const/16 v0, -0x2710
 
     iput v0, p0, Lcom/android/server/display/BrightnessTracker;->mCurrentUserId:I
 
-    .line 168
+    .line 166
     new-instance v0, Ljava/lang/Object;
 
     invoke-direct {v0}, Ljava/lang/Object;-><init>()V
 
     iput-object v0, p0, Lcom/android/server/display/BrightnessTracker;->mDataCollectionLock:Ljava/lang/Object;
 
-    .line 169
+    .line 167
     new-instance v0, Ljava/util/ArrayDeque;
 
     invoke-direct {v0}, Ljava/util/ArrayDeque;-><init>()V
 
     iput-object v0, p0, Lcom/android/server/display/BrightnessTracker;->mLastSensorReadings:Ljava/util/Deque;
 
-    .line 171
+    .line 169
     const/high16 v0, 0x7fc00000  # Float.NaN
 
     iput v0, p0, Lcom/android/server/display/BrightnessTracker;->mLastBatteryLevel:F
 
-    .line 173
+    .line 171
     const/high16 v0, -0x40800000  # -1.0f
 
     iput v0, p0, Lcom/android/server/display/BrightnessTracker;->mLastBrightness:F
 
-    .line 183
+    .line 181
     iput-object p1, p0, Lcom/android/server/display/BrightnessTracker;->mContext:Landroid/content/Context;
 
-    .line 184
+    .line 182
     invoke-virtual {p1}, Landroid/content/Context;->getContentResolver()Landroid/content/ContentResolver;
 
-    move-result-object p1
+    move-result-object v0
 
-    iput-object p1, p0, Lcom/android/server/display/BrightnessTracker;->mContentResolver:Landroid/content/ContentResolver;
+    iput-object v0, p0, Lcom/android/server/display/BrightnessTracker;->mContentResolver:Landroid/content/ContentResolver;
 
-    .line 185
+    .line 183
     if-eqz p2, :cond_3c
 
-    .line 186
+    .line 184
     iput-object p2, p0, Lcom/android/server/display/BrightnessTracker;->mInjector:Lcom/android/server/display/BrightnessTracker$Injector;
 
     goto :goto_43
 
-    .line 188
+    .line 186
     :cond_3c
-    new-instance p1, Lcom/android/server/display/BrightnessTracker$Injector;
+    new-instance v0, Lcom/android/server/display/BrightnessTracker$Injector;
 
-    invoke-direct {p1}, Lcom/android/server/display/BrightnessTracker$Injector;-><init>()V
+    invoke-direct {v0}, Lcom/android/server/display/BrightnessTracker$Injector;-><init>()V
 
-    iput-object p1, p0, Lcom/android/server/display/BrightnessTracker;->mInjector:Lcom/android/server/display/BrightnessTracker$Injector;
+    iput-object v0, p0, Lcom/android/server/display/BrightnessTracker;->mInjector:Lcom/android/server/display/BrightnessTracker$Injector;
+
+    .line 188
+    :goto_43
+    new-instance v0, Lcom/android/server/display/BrightnessTracker$TrackerHandler;
+
+    iget-object v1, p0, Lcom/android/server/display/BrightnessTracker;->mInjector:Lcom/android/server/display/BrightnessTracker$Injector;
+
+    invoke-virtual {v1}, Lcom/android/server/display/BrightnessTracker$Injector;->getBackgroundHandler()Landroid/os/Handler;
+
+    move-result-object v1
+
+    invoke-virtual {v1}, Landroid/os/Handler;->getLooper()Landroid/os/Looper;
+
+    move-result-object v1
+
+    invoke-direct {v0, p0, v1}, Lcom/android/server/display/BrightnessTracker$TrackerHandler;-><init>(Lcom/android/server/display/BrightnessTracker;Landroid/os/Looper;)V
+
+    iput-object v0, p0, Lcom/android/server/display/BrightnessTracker;->mBgHandler:Landroid/os/Handler;
+
+    .line 189
+    iget-object v0, p0, Lcom/android/server/display/BrightnessTracker;->mContext:Landroid/content/Context;
+
+    const-class v1, Landroid/os/UserManager;
+
+    invoke-virtual {v0, v1}, Landroid/content/Context;->getSystemService(Ljava/lang/Class;)Ljava/lang/Object;
+
+    move-result-object v0
+
+    check-cast v0, Landroid/os/UserManager;
+
+    iput-object v0, p0, Lcom/android/server/display/BrightnessTracker;->mUserManager:Landroid/os/UserManager;
 
     .line 190
-    :goto_43
-    new-instance p1, Lcom/android/server/display/BrightnessTracker$TrackerHandler;
-
-    iget-object p2, p0, Lcom/android/server/display/BrightnessTracker;->mInjector:Lcom/android/server/display/BrightnessTracker$Injector;
-
-    invoke-virtual {p2}, Lcom/android/server/display/BrightnessTracker$Injector;->getBackgroundHandler()Landroid/os/Handler;
-
-    move-result-object p2
-
-    invoke-virtual {p2}, Landroid/os/Handler;->getLooper()Landroid/os/Looper;
-
-    move-result-object p2
-
-    invoke-direct {p1, p0, p2}, Lcom/android/server/display/BrightnessTracker$TrackerHandler;-><init>(Lcom/android/server/display/BrightnessTracker;Landroid/os/Looper;)V
-
-    iput-object p1, p0, Lcom/android/server/display/BrightnessTracker;->mBgHandler:Landroid/os/Handler;
-
-    .line 191
-    iget-object p1, p0, Lcom/android/server/display/BrightnessTracker;->mContext:Landroid/content/Context;
-
-    const-class p2, Landroid/os/UserManager;
-
-    invoke-virtual {p1, p2}, Landroid/content/Context;->getSystemService(Ljava/lang/Class;)Ljava/lang/Object;
-
-    move-result-object p1
-
-    check-cast p1, Landroid/os/UserManager;
-
-    iput-object p1, p0, Lcom/android/server/display/BrightnessTracker;->mUserManager:Landroid/os/UserManager;
-
-    .line 192
     return-void
 .end method
 
 .method static synthetic access$1000(Lcom/android/server/display/BrightnessTracker;)V
     .registers 1
+    .param p0, "x0"  # Lcom/android/server/display/BrightnessTracker;
 
     .line 93
     invoke-direct {p0}, Lcom/android/server/display/BrightnessTracker;->scheduleWriteBrightnessTrackerState()V
@@ -361,6 +359,9 @@
 
 .method static synthetic access$1100(Lcom/android/server/display/BrightnessTracker;II)V
     .registers 3
+    .param p0, "x0"  # Lcom/android/server/display/BrightnessTracker;
+    .param p1, "x1"  # I
+    .param p2, "x2"  # I
 
     .line 93
     invoke-direct {p0, p1, p2}, Lcom/android/server/display/BrightnessTracker;->batteryLevelChanged(II)V
@@ -370,6 +371,8 @@
 
 .method static synthetic access$1200(Lcom/android/server/display/BrightnessTracker;F)V
     .registers 2
+    .param p0, "x0"  # Lcom/android/server/display/BrightnessTracker;
+    .param p1, "x1"  # F
 
     .line 93
     invoke-direct {p0, p1}, Lcom/android/server/display/BrightnessTracker;->backgroundStart(F)V
@@ -379,6 +382,13 @@
 
 .method static synthetic access$1300(Lcom/android/server/display/BrightnessTracker;FZFZZJ)V
     .registers 8
+    .param p0, "x0"  # Lcom/android/server/display/BrightnessTracker;
+    .param p1, "x1"  # F
+    .param p2, "x2"  # Z
+    .param p3, "x3"  # F
+    .param p4, "x4"  # Z
+    .param p5, "x5"  # Z
+    .param p6, "x6"  # J
 
     .line 93
     invoke-direct/range {p0 .. p7}, Lcom/android/server/display/BrightnessTracker;->handleBrightnessChanged(FZFZZJ)V
@@ -388,6 +398,7 @@
 
 .method static synthetic access$1400(Lcom/android/server/display/BrightnessTracker;)V
     .registers 1
+    .param p0, "x0"  # Lcom/android/server/display/BrightnessTracker;
 
     .line 93
     invoke-direct {p0}, Lcom/android/server/display/BrightnessTracker;->startSensorListener()V
@@ -397,6 +408,7 @@
 
 .method static synthetic access$1500(Lcom/android/server/display/BrightnessTracker;)V
     .registers 1
+    .param p0, "x0"  # Lcom/android/server/display/BrightnessTracker;
 
     .line 93
     invoke-direct {p0}, Lcom/android/server/display/BrightnessTracker;->enableColorSampling()V
@@ -406,6 +418,7 @@
 
 .method static synthetic access$1600(Lcom/android/server/display/BrightnessTracker;)V
     .registers 1
+    .param p0, "x0"  # Lcom/android/server/display/BrightnessTracker;
 
     .line 93
     invoke-direct {p0}, Lcom/android/server/display/BrightnessTracker;->stopSensorListener()V
@@ -415,6 +428,7 @@
 
 .method static synthetic access$1700(Lcom/android/server/display/BrightnessTracker;)V
     .registers 1
+    .param p0, "x0"  # Lcom/android/server/display/BrightnessTracker;
 
     .line 93
     invoke-direct {p0}, Lcom/android/server/display/BrightnessTracker;->disableColorSampling()V
@@ -424,6 +438,8 @@
 
 .method static synthetic access$400(Lcom/android/server/display/BrightnessTracker;Landroid/hardware/SensorEvent;)V
     .registers 2
+    .param p0, "x0"  # Lcom/android/server/display/BrightnessTracker;
+    .param p1, "x1"  # Landroid/hardware/SensorEvent;
 
     .line 93
     invoke-direct {p0, p1}, Lcom/android/server/display/BrightnessTracker;->recordSensorEvent(Landroid/hardware/SensorEvent;)V
@@ -433,6 +449,8 @@
 
 .method static synthetic access$500(Lcom/android/server/display/BrightnessTracker;Landroid/hardware/SensorEvent;)V
     .registers 2
+    .param p0, "x0"  # Lcom/android/server/display/BrightnessTracker;
+    .param p1, "x1"  # Landroid/hardware/SensorEvent;
 
     .line 93
     invoke-direct {p0, p1}, Lcom/android/server/display/BrightnessTracker;->recordAmbientBrightnessStats(Landroid/hardware/SensorEvent;)V
@@ -442,6 +460,7 @@
 
 .method static synthetic access$600(Lcom/android/server/display/BrightnessTracker;)V
     .registers 1
+    .param p0, "x0"  # Lcom/android/server/display/BrightnessTracker;
 
     .line 93
     invoke-direct {p0}, Lcom/android/server/display/BrightnessTracker;->updateColorSampling()V
@@ -450,42 +469,46 @@
 .end method
 
 .method static synthetic access$700(Lcom/android/server/display/BrightnessTracker;)Landroid/content/ContentResolver;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/display/BrightnessTracker;
 
     .line 93
-    iget-object p0, p0, Lcom/android/server/display/BrightnessTracker;->mContentResolver:Landroid/content/ContentResolver;
+    iget-object v0, p0, Lcom/android/server/display/BrightnessTracker;->mContentResolver:Landroid/content/ContentResolver;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$800(Lcom/android/server/display/BrightnessTracker;)Lcom/android/server/display/BrightnessTracker$Injector;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/display/BrightnessTracker;
 
     .line 93
-    iget-object p0, p0, Lcom/android/server/display/BrightnessTracker;->mInjector:Lcom/android/server/display/BrightnessTracker$Injector;
+    iget-object v0, p0, Lcom/android/server/display/BrightnessTracker;->mInjector:Lcom/android/server/display/BrightnessTracker$Injector;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$900(Lcom/android/server/display/BrightnessTracker;)Landroid/os/Handler;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/display/BrightnessTracker;
 
     .line 93
-    iget-object p0, p0, Lcom/android/server/display/BrightnessTracker;->mBgHandler:Landroid/os/Handler;
+    iget-object v0, p0, Lcom/android/server/display/BrightnessTracker;->mBgHandler:Landroid/os/Handler;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method private backgroundStart(F)V
     .registers 6
+    .param p1, "initialBrightness"  # F
 
-    .line 208
+    .line 206
     invoke-direct {p0}, Lcom/android/server/display/BrightnessTracker;->readEvents()V
 
-    .line 209
+    .line 207
     invoke-direct {p0}, Lcom/android/server/display/BrightnessTracker;->readAmbientBrightnessStats()V
 
-    .line 211
+    .line 209
     new-instance v0, Lcom/android/server/display/BrightnessTracker$SensorListener;
 
     const/4 v1, 0x0
@@ -494,7 +517,7 @@
 
     iput-object v0, p0, Lcom/android/server/display/BrightnessTracker;->mSensorListener:Lcom/android/server/display/BrightnessTracker$SensorListener;
 
-    .line 213
+    .line 211
     new-instance v0, Lcom/android/server/display/BrightnessTracker$SettingsObserver;
 
     iget-object v2, p0, Lcom/android/server/display/BrightnessTracker;->mBgHandler:Landroid/os/Handler;
@@ -503,7 +526,7 @@
 
     iput-object v0, p0, Lcom/android/server/display/BrightnessTracker;->mSettingsObserver:Lcom/android/server/display/BrightnessTracker$SettingsObserver;
 
-    .line 214
+    .line 212
     iget-object v0, p0, Lcom/android/server/display/BrightnessTracker;->mInjector:Lcom/android/server/display/BrightnessTracker$Injector;
 
     iget-object v2, p0, Lcom/android/server/display/BrightnessTracker;->mContentResolver:Landroid/content/ContentResolver;
@@ -512,42 +535,43 @@
 
     invoke-virtual {v0, v2, v3}, Lcom/android/server/display/BrightnessTracker$Injector;->registerBrightnessModeObserver(Landroid/content/ContentResolver;Landroid/database/ContentObserver;)V
 
-    .line 215
+    .line 213
     invoke-direct {p0}, Lcom/android/server/display/BrightnessTracker;->startSensorListener()V
 
-    .line 217
+    .line 215
     new-instance v0, Landroid/content/IntentFilter;
 
     invoke-direct {v0}, Landroid/content/IntentFilter;-><init>()V
 
-    .line 218
+    .line 216
+    .local v0, "intentFilter":Landroid/content/IntentFilter;
     const-string v2, "android.intent.action.ACTION_SHUTDOWN"
 
     invoke-virtual {v0, v2}, Landroid/content/IntentFilter;->addAction(Ljava/lang/String;)V
 
-    .line 219
+    .line 217
     const-string v2, "android.intent.action.BATTERY_CHANGED"
 
     invoke-virtual {v0, v2}, Landroid/content/IntentFilter;->addAction(Ljava/lang/String;)V
 
-    .line 220
+    .line 218
     const-string v2, "android.intent.action.SCREEN_ON"
 
     invoke-virtual {v0, v2}, Landroid/content/IntentFilter;->addAction(Ljava/lang/String;)V
 
-    .line 221
+    .line 219
     const-string v2, "android.intent.action.SCREEN_OFF"
 
     invoke-virtual {v0, v2}, Landroid/content/IntentFilter;->addAction(Ljava/lang/String;)V
 
-    .line 222
+    .line 220
     new-instance v2, Lcom/android/server/display/BrightnessTracker$Receiver;
 
     invoke-direct {v2, p0, v1}, Lcom/android/server/display/BrightnessTracker$Receiver;-><init>(Lcom/android/server/display/BrightnessTracker;Lcom/android/server/display/BrightnessTracker$1;)V
 
     iput-object v2, p0, Lcom/android/server/display/BrightnessTracker;->mBroadcastReceiver:Landroid/content/BroadcastReceiver;
 
-    .line 223
+    .line 221
     iget-object v1, p0, Lcom/android/server/display/BrightnessTracker;->mInjector:Lcom/android/server/display/BrightnessTracker$Injector;
 
     iget-object v2, p0, Lcom/android/server/display/BrightnessTracker;->mContext:Landroid/content/Context;
@@ -556,97 +580,99 @@
 
     invoke-virtual {v1, v2, v3, v0}, Lcom/android/server/display/BrightnessTracker$Injector;->registerReceiver(Landroid/content/Context;Landroid/content/BroadcastReceiver;Landroid/content/IntentFilter;)V
 
+    .line 223
+    iget-object v1, p0, Lcom/android/server/display/BrightnessTracker;->mInjector:Lcom/android/server/display/BrightnessTracker$Injector;
+
+    iget-object v2, p0, Lcom/android/server/display/BrightnessTracker;->mContext:Landroid/content/Context;
+
+    invoke-virtual {v1, v2}, Lcom/android/server/display/BrightnessTracker$Injector;->scheduleIdleJob(Landroid/content/Context;)V
+
+    .line 224
+    iget-object v1, p0, Lcom/android/server/display/BrightnessTracker;->mDataCollectionLock:Ljava/lang/Object;
+
+    monitor-enter v1
+
     .line 225
-    iget-object v0, p0, Lcom/android/server/display/BrightnessTracker;->mInjector:Lcom/android/server/display/BrightnessTracker$Injector;
-
-    iget-object v1, p0, Lcom/android/server/display/BrightnessTracker;->mContext:Landroid/content/Context;
-
-    invoke-virtual {v0, v1}, Lcom/android/server/display/BrightnessTracker$Injector;->scheduleIdleJob(Landroid/content/Context;)V
-
-    .line 226
-    iget-object v0, p0, Lcom/android/server/display/BrightnessTracker;->mDataCollectionLock:Ljava/lang/Object;
-
-    monitor-enter v0
-
-    .line 227
     :try_start_56
     iput p1, p0, Lcom/android/server/display/BrightnessTracker;->mLastBrightness:F
 
-    .line 228
-    const/4 p1, 0x1
+    .line 226
+    const/4 v2, 0x1
 
-    iput-boolean p1, p0, Lcom/android/server/display/BrightnessTracker;->mStarted:Z
+    iput-boolean v2, p0, Lcom/android/server/display/BrightnessTracker;->mStarted:Z
 
-    .line 229
-    monitor-exit v0
+    .line 227
+    monitor-exit v1
     :try_end_5c
     .catchall {:try_start_56 .. :try_end_5c} :catchall_60
 
-    .line 230
+    .line 228
     invoke-direct {p0}, Lcom/android/server/display/BrightnessTracker;->enableColorSampling()V
 
-    .line 231
+    .line 229
     return-void
 
-    .line 229
+    .line 227
     :catchall_60
-    move-exception p1
+    move-exception v2
 
     :try_start_61
-    monitor-exit v0
+    monitor-exit v1
     :try_end_62
     .catchall {:try_start_61 .. :try_end_62} :catchall_60
 
-    throw p1
+    throw v2
 .end method
 
 .method private batteryLevelChanged(II)V
-    .registers 4
+    .registers 6
+    .param p1, "level"  # I
+    .param p2, "scale"  # I
 
-    .line 879
+    .line 876
     iget-object v0, p0, Lcom/android/server/display/BrightnessTracker;->mDataCollectionLock:Ljava/lang/Object;
 
     monitor-enter v0
 
-    .line 880
-    int-to-float p1, p1
+    .line 877
+    int-to-float v1, p1
 
-    int-to-float p2, p2
+    int-to-float v2, p2
 
-    div-float/2addr p1, p2
+    div-float/2addr v1, v2
 
     :try_start_6
-    iput p1, p0, Lcom/android/server/display/BrightnessTracker;->mLastBatteryLevel:F
+    iput v1, p0, Lcom/android/server/display/BrightnessTracker;->mLastBatteryLevel:F
 
-    .line 881
+    .line 878
     monitor-exit v0
 
-    .line 882
+    .line 879
     return-void
 
-    .line 881
+    .line 878
     :catchall_a
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_c
     .catchall {:try_start_6 .. :try_end_c} :catchall_a
 
-    throw p1
+    throw v1
 .end method
 
 .method private disableColorSampling()V
     .registers 4
 
-    .line 801
+    .line 798
     iget-boolean v0, p0, Lcom/android/server/display/BrightnessTracker;->mColorSamplingEnabled:Z
 
     if-nez v0, :cond_5
 
-    .line 802
+    .line 799
     return-void
 
-    .line 804
+    .line 801
     :cond_5
     iget-object v0, p0, Lcom/android/server/display/BrightnessTracker;->mInjector:Lcom/android/server/display/BrightnessTracker$Injector;
 
@@ -654,35 +680,36 @@
 
     invoke-virtual {v0, v1, v1}, Lcom/android/server/display/BrightnessTracker$Injector;->enableColorSampling(ZI)Z
 
-    .line 805
+    .line 802
     iput-boolean v1, p0, Lcom/android/server/display/BrightnessTracker;->mColorSamplingEnabled:Z
 
-    .line 806
+    .line 803
     iget-object v0, p0, Lcom/android/server/display/BrightnessTracker;->mDisplayListener:Lcom/android/server/display/BrightnessTracker$DisplayListener;
 
     if-eqz v0, :cond_1b
 
-    .line 807
+    .line 804
     iget-object v1, p0, Lcom/android/server/display/BrightnessTracker;->mInjector:Lcom/android/server/display/BrightnessTracker$Injector;
 
     iget-object v2, p0, Lcom/android/server/display/BrightnessTracker;->mContext:Landroid/content/Context;
 
     invoke-virtual {v1, v2, v0}, Lcom/android/server/display/BrightnessTracker$Injector;->unRegisterDisplayListener(Landroid/content/Context;Landroid/hardware/display/DisplayManager$DisplayListener;)V
 
-    .line 808
+    .line 805
     const/4 v0, 0x0
 
     iput-object v0, p0, Lcom/android/server/display/BrightnessTracker;->mDisplayListener:Lcom/android/server/display/BrightnessTracker$DisplayListener;
 
-    .line 813
+    .line 810
     :cond_1b
     return-void
 .end method
 
 .method private dumpLocal(Ljava/io/PrintWriter;)V
     .registers 4
+    .param p1, "pw"  # Ljava/io/PrintWriter;
 
-    .line 755
+    .line 753
     new-instance v0, Ljava/lang/StringBuilder;
 
     invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
@@ -701,7 +728,7 @@
 
     invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
-    .line 756
+    .line 754
     new-instance v0, Ljava/lang/StringBuilder;
 
     invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
@@ -720,7 +747,7 @@
 
     invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
-    .line 757
+    .line 755
     new-instance v0, Ljava/lang/StringBuilder;
 
     invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
@@ -739,7 +766,7 @@
 
     invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
-    .line 758
+    .line 756
     new-instance v0, Ljava/lang/StringBuilder;
 
     invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
@@ -758,357 +785,594 @@
 
     invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
-    .line 759
+    .line 757
     return-void
 .end method
 
 .method private enableColorSampling()V
-    .registers 1
+    .registers 6
+
+    .line 760
+    iget-object v0, p0, Lcom/android/server/display/BrightnessTracker;->mInjector:Lcom/android/server/display/BrightnessTracker$Injector;
+
+    iget-object v1, p0, Lcom/android/server/display/BrightnessTracker;->mContentResolver:Landroid/content/ContentResolver;
+
+    invoke-virtual {v0, v1}, Lcom/android/server/display/BrightnessTracker$Injector;->isBrightnessModeAutomatic(Landroid/content/ContentResolver;)Z
+
+    move-result v0
+
+    if-eqz v0, :cond_78
+
+    iget-object v0, p0, Lcom/android/server/display/BrightnessTracker;->mInjector:Lcom/android/server/display/BrightnessTracker$Injector;
+
+    iget-object v1, p0, Lcom/android/server/display/BrightnessTracker;->mContext:Landroid/content/Context;
+
+    .line 761
+    invoke-virtual {v0, v1}, Lcom/android/server/display/BrightnessTracker$Injector;->isInteractive(Landroid/content/Context;)Z
+
+    move-result v0
+
+    if-eqz v0, :cond_78
+
+    iget-boolean v0, p0, Lcom/android/server/display/BrightnessTracker;->mColorSamplingEnabled:Z
+
+    if-eqz v0, :cond_19
+
+    goto :goto_78
 
     .line 766
+    :cond_19
+    iget-object v0, p0, Lcom/android/server/display/BrightnessTracker;->mInjector:Lcom/android/server/display/BrightnessTracker$Injector;
+
+    iget-object v1, p0, Lcom/android/server/display/BrightnessTracker;->mContext:Landroid/content/Context;
+
+    invoke-virtual {v0, v1}, Lcom/android/server/display/BrightnessTracker$Injector;->getFrameRate(Landroid/content/Context;)F
+
+    move-result v0
+
+    iput v0, p0, Lcom/android/server/display/BrightnessTracker;->mFrameRate:F
+
+    .line 767
+    iget v0, p0, Lcom/android/server/display/BrightnessTracker;->mFrameRate:F
+
+    const/4 v1, 0x0
+
+    cmpg-float v1, v0, v1
+
+    if-gtz v1, :cond_32
+
+    .line 768
+    const-string v0, "BrightnessTracker"
+
+    const-string v1, "Default display has a zero or negative framerate."
+
+    invoke-static {v0, v1}, Landroid/util/Slog;->wtf(Ljava/lang/String;Ljava/lang/String;)I
+
+    .line 769
+    return-void
+
+    .line 771
+    :cond_32
+    sget-wide v1, Lcom/android/server/display/BrightnessTracker;->COLOR_SAMPLE_DURATION:J
+
+    long-to-float v1, v1
+
+    mul-float/2addr v0, v1
+
+    float-to-int v0, v0
+
+    iput v0, p0, Lcom/android/server/display/BrightnessTracker;->mNoFramesToSample:I
+
+    .line 773
+    iget-object v0, p0, Lcom/android/server/display/BrightnessTracker;->mInjector:Lcom/android/server/display/BrightnessTracker$Injector;
+
+    invoke-virtual {v0}, Lcom/android/server/display/BrightnessTracker$Injector;->getSamplingAttributes()Landroid/hardware/display/DisplayedContentSamplingAttributes;
+
+    move-result-object v0
+
+    .line 781
+    .local v0, "attributes":Landroid/hardware/display/DisplayedContentSamplingAttributes;
+    if-eqz v0, :cond_5c
+
+    invoke-virtual {v0}, Landroid/hardware/display/DisplayedContentSamplingAttributes;->getPixelFormat()I
+
+    move-result v1
+
+    const/16 v2, 0x37
+
+    if-ne v1, v2, :cond_5c
+
+    .line 782
+    invoke-virtual {v0}, Landroid/hardware/display/DisplayedContentSamplingAttributes;->getComponentMask()I
+
+    move-result v1
+
+    and-int/lit8 v1, v1, 0x4
+
+    if-eqz v1, :cond_5c
+
+    .line 784
+    iget-object v1, p0, Lcom/android/server/display/BrightnessTracker;->mInjector:Lcom/android/server/display/BrightnessTracker$Injector;
+
+    const/4 v2, 0x1
+
+    iget v3, p0, Lcom/android/server/display/BrightnessTracker;->mNoFramesToSample:I
+
+    invoke-virtual {v1, v2, v3}, Lcom/android/server/display/BrightnessTracker$Injector;->enableColorSampling(ZI)Z
+
+    move-result v1
+
+    iput-boolean v1, p0, Lcom/android/server/display/BrightnessTracker;->mColorSamplingEnabled:Z
+
+    .line 791
+    :cond_5c
+    iget-boolean v1, p0, Lcom/android/server/display/BrightnessTracker;->mColorSamplingEnabled:Z
+
+    if-eqz v1, :cond_77
+
+    iget-object v1, p0, Lcom/android/server/display/BrightnessTracker;->mDisplayListener:Lcom/android/server/display/BrightnessTracker$DisplayListener;
+
+    if-nez v1, :cond_77
+
+    .line 792
+    new-instance v1, Lcom/android/server/display/BrightnessTracker$DisplayListener;
+
+    const/4 v2, 0x0
+
+    invoke-direct {v1, p0, v2}, Lcom/android/server/display/BrightnessTracker$DisplayListener;-><init>(Lcom/android/server/display/BrightnessTracker;Lcom/android/server/display/BrightnessTracker$1;)V
+
+    iput-object v1, p0, Lcom/android/server/display/BrightnessTracker;->mDisplayListener:Lcom/android/server/display/BrightnessTracker$DisplayListener;
+
+    .line 793
+    iget-object v1, p0, Lcom/android/server/display/BrightnessTracker;->mInjector:Lcom/android/server/display/BrightnessTracker$Injector;
+
+    iget-object v2, p0, Lcom/android/server/display/BrightnessTracker;->mContext:Landroid/content/Context;
+
+    iget-object v3, p0, Lcom/android/server/display/BrightnessTracker;->mDisplayListener:Lcom/android/server/display/BrightnessTracker$DisplayListener;
+
+    iget-object v4, p0, Lcom/android/server/display/BrightnessTracker;->mBgHandler:Landroid/os/Handler;
+
+    invoke-virtual {v1, v2, v3, v4}, Lcom/android/server/display/BrightnessTracker$Injector;->registerDisplayListener(Landroid/content/Context;Landroid/hardware/display/DisplayManager$DisplayListener;Landroid/os/Handler;)V
+
+    .line 795
+    :cond_77
+    return-void
+
+    .line 763
+    .end local v0  # "attributes":Landroid/hardware/display/DisplayedContentSamplingAttributes;
+    :cond_78
+    :goto_78
     return-void
 .end method
 
 .method private handleBrightnessChanged(FZFZZJ)V
-    .registers 16
+    .registers 28
+    .param p1, "brightness"  # F
+    .param p2, "userInitiated"  # Z
+    .param p3, "powerBrightnessFactor"  # F
+    .param p4, "isUserSetBrightness"  # Z
+    .param p5, "isDefaultBrightnessConfig"  # Z
+    .param p6, "timestamp"  # J
 
-    .line 320
-    iget-object v0, p0, Lcom/android/server/display/BrightnessTracker;->mDataCollectionLock:Ljava/lang/Object;
+    .line 318
+    move-object/from16 v1, p0
 
-    monitor-enter v0
+    move/from16 v2, p1
+
+    iget-object v3, v1, Lcom/android/server/display/BrightnessTracker;->mDataCollectionLock:Ljava/lang/Object;
+
+    monitor-enter v3
+
+    .line 319
+    :try_start_7
+    iget-boolean v0, v1, Lcom/android/server/display/BrightnessTracker;->mStarted:Z
+
+    if-nez v0, :cond_d
 
     .line 321
-    :try_start_3
-    iget-boolean v1, p0, Lcom/android/server/display/BrightnessTracker;->mStarted:Z
-
-    if-nez v1, :cond_9
-
-    .line 323
-    monitor-exit v0
+    monitor-exit v3
 
     return-void
 
-    .line 326
-    :cond_9
-    iget v1, p0, Lcom/android/server/display/BrightnessTracker;->mLastBrightness:F
+    .line 324
+    :cond_d
+    iget v0, v1, Lcom/android/server/display/BrightnessTracker;->mLastBrightness:F
+
+    .line 325
+    .local v0, "previousBrightness":F
+    iput v2, v1, Lcom/android/server/display/BrightnessTracker;->mLastBrightness:F
 
     .line 327
-    iput p1, p0, Lcom/android/server/display/BrightnessTracker;->mLastBrightness:F
+    if-nez p2, :cond_15
 
-    .line 329
-    if-nez p2, :cond_11
-
-    .line 333
-    monitor-exit v0
+    .line 331
+    monitor-exit v3
 
     return-void
+
+    .line 334
+    :cond_15
+    new-instance v4, Landroid/hardware/display/BrightnessChangeEvent$Builder;
+
+    invoke-direct {v4}, Landroid/hardware/display/BrightnessChangeEvent$Builder;-><init>()V
+
+    .line 335
+    .local v4, "builder":Landroid/hardware/display/BrightnessChangeEvent$Builder;
+    invoke-virtual {v4, v2}, Landroid/hardware/display/BrightnessChangeEvent$Builder;->setBrightness(F)Landroid/hardware/display/BrightnessChangeEvent$Builder;
 
     .line 336
-    :cond_11
-    new-instance p2, Landroid/hardware/display/BrightnessChangeEvent$Builder;
+    move-wide/from16 v5, p6
 
-    invoke-direct {p2}, Landroid/hardware/display/BrightnessChangeEvent$Builder;-><init>()V
+    invoke-virtual {v4, v5, v6}, Landroid/hardware/display/BrightnessChangeEvent$Builder;->setTimeStamp(J)Landroid/hardware/display/BrightnessChangeEvent$Builder;
 
     .line 337
-    invoke-virtual {p2, p1}, Landroid/hardware/display/BrightnessChangeEvent$Builder;->setBrightness(F)Landroid/hardware/display/BrightnessChangeEvent$Builder;
+    move/from16 v7, p3
+
+    invoke-virtual {v4, v7}, Landroid/hardware/display/BrightnessChangeEvent$Builder;->setPowerBrightnessFactor(F)Landroid/hardware/display/BrightnessChangeEvent$Builder;
+    :try_end_27
+    .catchall {:try_start_7 .. :try_end_27} :catchall_109
 
     .line 338
-    invoke-virtual {p2, p6, p7}, Landroid/hardware/display/BrightnessChangeEvent$Builder;->setTimeStamp(J)Landroid/hardware/display/BrightnessChangeEvent$Builder;
+    move/from16 v8, p4
+
+    :try_start_29
+    invoke-virtual {v4, v8}, Landroid/hardware/display/BrightnessChangeEvent$Builder;->setUserBrightnessPoint(Z)Landroid/hardware/display/BrightnessChangeEvent$Builder;
+    :try_end_2c
+    .catchall {:try_start_29 .. :try_end_2c} :catchall_107
 
     .line 339
-    invoke-virtual {p2, p3}, Landroid/hardware/display/BrightnessChangeEvent$Builder;->setPowerBrightnessFactor(F)Landroid/hardware/display/BrightnessChangeEvent$Builder;
+    move/from16 v9, p5
 
-    .line 340
-    invoke-virtual {p2, p4}, Landroid/hardware/display/BrightnessChangeEvent$Builder;->setUserBrightnessPoint(Z)Landroid/hardware/display/BrightnessChangeEvent$Builder;
+    :try_start_2e
+    invoke-virtual {v4, v9}, Landroid/hardware/display/BrightnessChangeEvent$Builder;->setIsDefaultBrightnessConfig(Z)Landroid/hardware/display/BrightnessChangeEvent$Builder;
 
     .line 341
-    invoke-virtual {p2, p5}, Landroid/hardware/display/BrightnessChangeEvent$Builder;->setIsDefaultBrightnessConfig(Z)Landroid/hardware/display/BrightnessChangeEvent$Builder;
+    iget-object v10, v1, Lcom/android/server/display/BrightnessTracker;->mLastSensorReadings:Ljava/util/Deque;
 
-    .line 343
-    iget-object p1, p0, Lcom/android/server/display/BrightnessTracker;->mLastSensorReadings:Ljava/util/Deque;
+    invoke-interface {v10}, Ljava/util/Deque;->size()I
 
-    invoke-interface {p1}, Ljava/util/Deque;->size()I
+    move-result v10
 
-    move-result p1
+    .line 342
+    .local v10, "readingCount":I
+    if-nez v10, :cond_3b
 
     .line 344
-    if-nez p1, :cond_2f
-
-    .line 346
-    monitor-exit v0
+    monitor-exit v3
 
     return-void
 
-    .line 349
-    :cond_2f
-    new-array p3, p1, [F
+    .line 347
+    :cond_3b
+    new-array v11, v10, [F
+
+    .line 348
+    .local v11, "luxValues":[F
+    new-array v12, v10, [J
 
     .line 350
-    new-array p1, p1, [J
+    .local v12, "luxTimestamps":[J
+    const/4 v13, 0x0
 
-    .line 352
-    const/4 p4, 0x0
+    .line 353
+    .local v13, "pos":I
+    iget-object v14, v1, Lcom/android/server/display/BrightnessTracker;->mInjector:Lcom/android/server/display/BrightnessTracker$Injector;
+
+    invoke-virtual {v14}, Lcom/android/server/display/BrightnessTracker$Injector;->currentTimeMillis()J
+
+    move-result-wide v14
+
+    .line 354
+    .local v14, "currentTimeMillis":J
+    iget-object v2, v1, Lcom/android/server/display/BrightnessTracker;->mInjector:Lcom/android/server/display/BrightnessTracker$Injector;
+
+    invoke-virtual {v2}, Lcom/android/server/display/BrightnessTracker$Injector;->elapsedRealtimeNanos()J
+
+    move-result-wide v16
 
     .line 355
-    iget-object p5, p0, Lcom/android/server/display/BrightnessTracker;->mInjector:Lcom/android/server/display/BrightnessTracker$Injector;
+    .local v16, "elapsedTimeNanos":J
+    iget-object v2, v1, Lcom/android/server/display/BrightnessTracker;->mLastSensorReadings:Ljava/util/Deque;
 
-    invoke-virtual {p5}, Lcom/android/server/display/BrightnessTracker$Injector;->currentTimeMillis()J
+    invoke-interface {v2}, Ljava/util/Deque;->iterator()Ljava/util/Iterator;
 
-    move-result-wide p5
+    move-result-object v2
+
+    :goto_52
+    invoke-interface {v2}, Ljava/util/Iterator;->hasNext()Z
+
+    move-result v18
+
+    if-eqz v18, :cond_80
+
+    invoke-interface {v2}, Ljava/util/Iterator;->next()Ljava/lang/Object;
+
+    move-result-object v18
+
+    check-cast v18, Lcom/android/server/display/BrightnessTracker$LightData;
+
+    move-object/from16 v19, v18
 
     .line 356
-    iget-object p7, p0, Lcom/android/server/display/BrightnessTracker;->mInjector:Lcom/android/server/display/BrightnessTracker$Injector;
+    .local v19, "reading":Lcom/android/server/display/BrightnessTracker$LightData;
+    move-object/from16 v18, v2
 
-    invoke-virtual {p7}, Lcom/android/server/display/BrightnessTracker$Injector;->elapsedRealtimeNanos()J
+    move-object/from16 v2, v19
+
+    .end local v19  # "reading":Lcom/android/server/display/BrightnessTracker$LightData;
+    .local v2, "reading":Lcom/android/server/display/BrightnessTracker$LightData;
+    iget v5, v2, Lcom/android/server/display/BrightnessTracker$LightData;->lux:F
+
+    aput v5, v11, v13
+
+    .line 357
+    sget-object v5, Ljava/util/concurrent/TimeUnit;->NANOSECONDS:Ljava/util/concurrent/TimeUnit;
+
+    iget-wide v6, v2, Lcom/android/server/display/BrightnessTracker$LightData;->timestamp:J
+
+    sub-long v6, v16, v6
+
+    .line 358
+    invoke-virtual {v5, v6, v7}, Ljava/util/concurrent/TimeUnit;->toMillis(J)J
+
+    move-result-wide v5
+
+    sub-long v5, v14, v5
+
+    aput-wide v5, v12, v13
+
+    .line 359
+    nop
+
+    .end local v2  # "reading":Lcom/android/server/display/BrightnessTracker$LightData;
+    add-int/lit8 v13, v13, 0x1
+
+    .line 360
+    move/from16 v7, p3
+
+    move-wide/from16 v5, p6
+
+    move-object/from16 v2, v18
+
+    goto :goto_52
+
+    .line 361
+    :cond_80
+    invoke-virtual {v4, v11}, Landroid/hardware/display/BrightnessChangeEvent$Builder;->setLuxValues([F)Landroid/hardware/display/BrightnessChangeEvent$Builder;
+
+    .line 362
+    invoke-virtual {v4, v12}, Landroid/hardware/display/BrightnessChangeEvent$Builder;->setLuxTimestamps([J)Landroid/hardware/display/BrightnessChangeEvent$Builder;
+
+    .line 364
+    iget v2, v1, Lcom/android/server/display/BrightnessTracker;->mLastBatteryLevel:F
+
+    invoke-virtual {v4, v2}, Landroid/hardware/display/BrightnessChangeEvent$Builder;->setBatteryLevel(F)Landroid/hardware/display/BrightnessChangeEvent$Builder;
+
+    .line 365
+    invoke-virtual {v4, v0}, Landroid/hardware/display/BrightnessChangeEvent$Builder;->setLastBrightness(F)Landroid/hardware/display/BrightnessChangeEvent$Builder;
+
+    .line 366
+    nop
+
+    .end local v0  # "previousBrightness":F
+    .end local v10  # "readingCount":I
+    .end local v11  # "luxValues":[F
+    .end local v12  # "luxTimestamps":[J
+    .end local v13  # "pos":I
+    .end local v14  # "currentTimeMillis":J
+    .end local v16  # "elapsedTimeNanos":J
+    monitor-exit v3
+    :try_end_90
+    .catchall {:try_start_2e .. :try_end_90} :catchall_110
+
+    .line 369
+    :try_start_90
+    iget-object v0, v1, Lcom/android/server/display/BrightnessTracker;->mInjector:Lcom/android/server/display/BrightnessTracker$Injector;
+
+    invoke-virtual {v0}, Lcom/android/server/display/BrightnessTracker$Injector;->getFocusedStack()Landroid/app/ActivityManager$StackInfo;
+
+    move-result-object v0
+
+    .line 370
+    .local v0, "focusedStack":Landroid/app/ActivityManager$StackInfo;
+    if-eqz v0, :cond_104
+
+    iget-object v2, v0, Landroid/app/ActivityManager$StackInfo;->topActivity:Landroid/content/ComponentName;
+
+    if-eqz v2, :cond_104
+
+    .line 371
+    iget v2, v0, Landroid/app/ActivityManager$StackInfo;->userId:I
+
+    invoke-virtual {v4, v2}, Landroid/hardware/display/BrightnessChangeEvent$Builder;->setUserId(I)Landroid/hardware/display/BrightnessChangeEvent$Builder;
+
+    .line 372
+    iget-object v2, v0, Landroid/app/ActivityManager$StackInfo;->topActivity:Landroid/content/ComponentName;
+
+    invoke-virtual {v2}, Landroid/content/ComponentName;->getPackageName()Ljava/lang/String;
+
+    move-result-object v2
+
+    invoke-virtual {v4, v2}, Landroid/hardware/display/BrightnessChangeEvent$Builder;->setPackageName(Ljava/lang/String;)Landroid/hardware/display/BrightnessChangeEvent$Builder;
+    :try_end_aa
+    .catch Landroid/os/RemoteException; {:try_start_90 .. :try_end_aa} :catch_105
+
+    .line 383
+    .end local v0  # "focusedStack":Landroid/app/ActivityManager$StackInfo;
+    nop
+
+    .line 385
+    iget-object v0, v1, Lcom/android/server/display/BrightnessTracker;->mInjector:Lcom/android/server/display/BrightnessTracker$Injector;
+
+    iget-object v2, v1, Lcom/android/server/display/BrightnessTracker;->mContext:Landroid/content/Context;
+
+    invoke-virtual {v0, v2}, Lcom/android/server/display/BrightnessTracker$Injector;->isNightDisplayActivated(Landroid/content/Context;)Z
+
+    move-result v0
+
+    invoke-virtual {v4, v0}, Landroid/hardware/display/BrightnessChangeEvent$Builder;->setNightMode(Z)Landroid/hardware/display/BrightnessChangeEvent$Builder;
+
+    .line 386
+    iget-object v0, v1, Lcom/android/server/display/BrightnessTracker;->mInjector:Lcom/android/server/display/BrightnessTracker$Injector;
+
+    iget-object v2, v1, Lcom/android/server/display/BrightnessTracker;->mContext:Landroid/content/Context;
+
+    invoke-virtual {v0, v2}, Lcom/android/server/display/BrightnessTracker$Injector;->getNightDisplayColorTemperature(Landroid/content/Context;)I
+
+    move-result v0
+
+    invoke-virtual {v4, v0}, Landroid/hardware/display/BrightnessChangeEvent$Builder;->setColorTemperature(I)Landroid/hardware/display/BrightnessChangeEvent$Builder;
+
+    .line 388
+    iget-boolean v0, v1, Lcom/android/server/display/BrightnessTracker;->mColorSamplingEnabled:Z
+
+    if-eqz v0, :cond_f0
+
+    .line 389
+    iget-object v0, v1, Lcom/android/server/display/BrightnessTracker;->mInjector:Lcom/android/server/display/BrightnessTracker$Injector;
+
+    iget v2, v1, Lcom/android/server/display/BrightnessTracker;->mNoFramesToSample:I
+
+    invoke-virtual {v0, v2}, Lcom/android/server/display/BrightnessTracker$Injector;->sampleColor(I)Landroid/hardware/display/DisplayedContentSample;
+
+    move-result-object v0
+
+    .line 390
+    .local v0, "sample":Landroid/hardware/display/DisplayedContentSample;
+    if-eqz v0, :cond_f0
+
+    sget-object v2, Landroid/hardware/display/DisplayedContentSample$ColorComponent;->CHANNEL2:Landroid/hardware/display/DisplayedContentSample$ColorComponent;
+
+    invoke-virtual {v0, v2}, Landroid/hardware/display/DisplayedContentSample;->getSampleComponent(Landroid/hardware/display/DisplayedContentSample$ColorComponent;)[J
+
+    move-result-object v2
+
+    if-eqz v2, :cond_f0
+
+    .line 392
+    invoke-virtual {v0}, Landroid/hardware/display/DisplayedContentSample;->getNumFrames()J
 
     move-result-wide v2
 
-    .line 357
-    iget-object p7, p0, Lcom/android/server/display/BrightnessTracker;->mLastSensorReadings:Ljava/util/Deque;
+    long-to-float v2, v2
 
-    invoke-interface {p7}, Ljava/util/Deque;->iterator()Ljava/util/Iterator;
+    iget v3, v1, Lcom/android/server/display/BrightnessTracker;->mFrameRate:F
 
-    move-result-object p7
+    div-float/2addr v2, v3
 
-    :goto_46
-    invoke-interface {p7}, Ljava/util/Iterator;->hasNext()Z
+    const/high16 v3, 0x447a0000  # 1000.0f
 
-    move-result v4
+    mul-float/2addr v2, v3
 
-    if-eqz v4, :cond_67
-
-    invoke-interface {p7}, Ljava/util/Iterator;->next()Ljava/lang/Object;
-
-    move-result-object v4
-
-    check-cast v4, Lcom/android/server/display/BrightnessTracker$LightData;
-
-    .line 358
-    iget v5, v4, Lcom/android/server/display/BrightnessTracker$LightData;->lux:F
-
-    aput v5, p3, p4
-
-    .line 359
-    sget-object v5, Ljava/util/concurrent/TimeUnit;->NANOSECONDS:Ljava/util/concurrent/TimeUnit;
-
-    iget-wide v6, v4, Lcom/android/server/display/BrightnessTracker$LightData;->timestamp:J
-
-    sub-long v6, v2, v6
-
-    .line 360
-    invoke-virtual {v5, v6, v7}, Ljava/util/concurrent/TimeUnit;->toMillis(J)J
-
-    move-result-wide v4
-
-    sub-long v4, p5, v4
-
-    aput-wide v4, p1, p4
-
-    .line 361
-    add-int/lit8 p4, p4, 0x1
-
-    .line 362
-    goto :goto_46
-
-    .line 363
-    :cond_67
-    invoke-virtual {p2, p3}, Landroid/hardware/display/BrightnessChangeEvent$Builder;->setLuxValues([F)Landroid/hardware/display/BrightnessChangeEvent$Builder;
-
-    .line 364
-    invoke-virtual {p2, p1}, Landroid/hardware/display/BrightnessChangeEvent$Builder;->setLuxTimestamps([J)Landroid/hardware/display/BrightnessChangeEvent$Builder;
-
-    .line 366
-    iget p1, p0, Lcom/android/server/display/BrightnessTracker;->mLastBatteryLevel:F
-
-    invoke-virtual {p2, p1}, Landroid/hardware/display/BrightnessChangeEvent$Builder;->setBatteryLevel(F)Landroid/hardware/display/BrightnessChangeEvent$Builder;
-
-    .line 367
-    invoke-virtual {p2, v1}, Landroid/hardware/display/BrightnessChangeEvent$Builder;->setLastBrightness(F)Landroid/hardware/display/BrightnessChangeEvent$Builder;
-
-    .line 368
-    monitor-exit v0
-    :try_end_76
-    .catchall {:try_start_3 .. :try_end_76} :catchall_ed
-
-    .line 371
-    :try_start_76
-    iget-object p1, p0, Lcom/android/server/display/BrightnessTracker;->mInjector:Lcom/android/server/display/BrightnessTracker$Injector;
-
-    invoke-virtual {p1}, Lcom/android/server/display/BrightnessTracker$Injector;->getFocusedStack()Landroid/app/ActivityManager$StackInfo;
-
-    move-result-object p1
-
-    .line 372
-    if-eqz p1, :cond_ea
-
-    iget-object p3, p1, Landroid/app/ActivityManager$StackInfo;->topActivity:Landroid/content/ComponentName;
-
-    if-eqz p3, :cond_ea
-
-    .line 373
-    iget p3, p1, Landroid/app/ActivityManager$StackInfo;->userId:I
-
-    invoke-virtual {p2, p3}, Landroid/hardware/display/BrightnessChangeEvent$Builder;->setUserId(I)Landroid/hardware/display/BrightnessChangeEvent$Builder;
-
-    .line 374
-    iget-object p1, p1, Landroid/app/ActivityManager$StackInfo;->topActivity:Landroid/content/ComponentName;
-
-    invoke-virtual {p1}, Landroid/content/ComponentName;->getPackageName()Ljava/lang/String;
-
-    move-result-object p1
-
-    invoke-virtual {p2, p1}, Landroid/hardware/display/BrightnessChangeEvent$Builder;->setPackageName(Ljava/lang/String;)Landroid/hardware/display/BrightnessChangeEvent$Builder;
-    :try_end_90
-    .catch Landroid/os/RemoteException; {:try_start_76 .. :try_end_90} :catch_eb
-
-    .line 385
-    nop
-
-    .line 387
-    iget-object p1, p0, Lcom/android/server/display/BrightnessTracker;->mInjector:Lcom/android/server/display/BrightnessTracker$Injector;
-
-    iget-object p3, p0, Lcom/android/server/display/BrightnessTracker;->mContext:Landroid/content/Context;
-
-    invoke-virtual {p1, p3}, Lcom/android/server/display/BrightnessTracker$Injector;->isNightDisplayActivated(Landroid/content/Context;)Z
-
-    move-result p1
-
-    invoke-virtual {p2, p1}, Landroid/hardware/display/BrightnessChangeEvent$Builder;->setNightMode(Z)Landroid/hardware/display/BrightnessChangeEvent$Builder;
-
-    .line 388
-    iget-object p1, p0, Lcom/android/server/display/BrightnessTracker;->mInjector:Lcom/android/server/display/BrightnessTracker$Injector;
-
-    iget-object p3, p0, Lcom/android/server/display/BrightnessTracker;->mContext:Landroid/content/Context;
-
-    invoke-virtual {p1, p3}, Lcom/android/server/display/BrightnessTracker$Injector;->getNightDisplayColorTemperature(Landroid/content/Context;)I
-
-    move-result p1
-
-    invoke-virtual {p2, p1}, Landroid/hardware/display/BrightnessChangeEvent$Builder;->setColorTemperature(I)Landroid/hardware/display/BrightnessChangeEvent$Builder;
-
-    .line 390
-    iget-boolean p1, p0, Lcom/android/server/display/BrightnessTracker;->mColorSamplingEnabled:Z
-
-    if-eqz p1, :cond_d6
-
-    .line 391
-    iget-object p1, p0, Lcom/android/server/display/BrightnessTracker;->mInjector:Lcom/android/server/display/BrightnessTracker$Injector;
-
-    iget p3, p0, Lcom/android/server/display/BrightnessTracker;->mNoFramesToSample:I
-
-    invoke-virtual {p1, p3}, Lcom/android/server/display/BrightnessTracker$Injector;->sampleColor(I)Landroid/hardware/display/DisplayedContentSample;
-
-    move-result-object p1
-
-    .line 392
-    if-eqz p1, :cond_d6
-
-    sget-object p3, Landroid/hardware/display/DisplayedContentSample$ColorComponent;->CHANNEL2:Landroid/hardware/display/DisplayedContentSample$ColorComponent;
-
-    invoke-virtual {p1, p3}, Landroid/hardware/display/DisplayedContentSample;->getSampleComponent(Landroid/hardware/display/DisplayedContentSample$ColorComponent;)[J
-
-    move-result-object p3
-
-    if-eqz p3, :cond_d6
+    .line 393
+    .local v2, "numMillis":F
+    sget-object v3, Landroid/hardware/display/DisplayedContentSample$ColorComponent;->CHANNEL2:Landroid/hardware/display/DisplayedContentSample$ColorComponent;
 
     .line 394
-    invoke-virtual {p1}, Landroid/hardware/display/DisplayedContentSample;->getNumFrames()J
+    invoke-virtual {v0, v3}, Landroid/hardware/display/DisplayedContentSample;->getSampleComponent(Landroid/hardware/display/DisplayedContentSample$ColorComponent;)[J
 
-    move-result-wide p3
-
-    long-to-float p3, p3
-
-    iget p4, p0, Lcom/android/server/display/BrightnessTracker;->mFrameRate:F
-
-    div-float/2addr p3, p4
-
-    const/high16 p4, 0x447a0000  # 1000.0f
-
-    mul-float/2addr p3, p4
+    move-result-object v3
 
     .line 395
-    sget-object p4, Landroid/hardware/display/DisplayedContentSample$ColorComponent;->CHANNEL2:Landroid/hardware/display/DisplayedContentSample$ColorComponent;
+    invoke-static {v2}, Ljava/lang/Math;->round(F)I
 
-    .line 396
-    invoke-virtual {p1, p4}, Landroid/hardware/display/DisplayedContentSample;->getSampleComponent(Landroid/hardware/display/DisplayedContentSample$ColorComponent;)[J
+    move-result v5
 
-    move-result-object p1
+    int-to-long v5, v5
 
-    .line 397
-    invoke-static {p3}, Ljava/lang/Math;->round(F)I
+    .line 393
+    invoke-virtual {v4, v3, v5, v6}, Landroid/hardware/display/BrightnessChangeEvent$Builder;->setColorValues([JJ)Landroid/hardware/display/BrightnessChangeEvent$Builder;
 
-    move-result p3
+    .line 399
+    .end local v0  # "sample":Landroid/hardware/display/DisplayedContentSample;
+    .end local v2  # "numMillis":F
+    :cond_f0
+    invoke-virtual {v4}, Landroid/hardware/display/BrightnessChangeEvent$Builder;->build()Landroid/hardware/display/BrightnessChangeEvent;
 
-    int-to-long p3, p3
+    move-result-object v2
 
-    .line 395
-    invoke-virtual {p2, p1, p3, p4}, Landroid/hardware/display/BrightnessChangeEvent$Builder;->setColorValues([JJ)Landroid/hardware/display/BrightnessChangeEvent$Builder;
+    .line 403
+    .local v2, "event":Landroid/hardware/display/BrightnessChangeEvent;
+    iget-object v3, v1, Lcom/android/server/display/BrightnessTracker;->mEventsLock:Ljava/lang/Object;
 
-    .line 401
-    :cond_d6
-    invoke-virtual {p2}, Landroid/hardware/display/BrightnessChangeEvent$Builder;->build()Landroid/hardware/display/BrightnessChangeEvent;
+    monitor-enter v3
 
-    move-result-object p1
+    .line 404
+    const/4 v0, 0x1
+
+    :try_start_f8
+    iput-boolean v0, v1, Lcom/android/server/display/BrightnessTracker;->mEventsDirty:Z
 
     .line 405
-    iget-object p2, p0, Lcom/android/server/display/BrightnessTracker;->mEventsLock:Ljava/lang/Object;
+    iget-object v0, v1, Lcom/android/server/display/BrightnessTracker;->mEvents:Lcom/android/internal/util/RingBuffer;
 
-    monitor-enter p2
+    invoke-virtual {v0, v2}, Lcom/android/internal/util/RingBuffer;->append(Ljava/lang/Object;)V
 
     .line 406
-    const/4 p3, 0x1
-
-    :try_start_de
-    iput-boolean p3, p0, Lcom/android/server/display/BrightnessTracker;->mEventsDirty:Z
+    monitor-exit v3
 
     .line 407
-    iget-object p3, p0, Lcom/android/server/display/BrightnessTracker;->mEvents:Lcom/android/internal/util/RingBuffer;
-
-    invoke-virtual {p3, p1}, Lcom/android/internal/util/RingBuffer;->append(Ljava/lang/Object;)V
-
-    .line 408
-    monitor-exit p2
-
-    .line 409
     return-void
 
-    .line 408
-    :catchall_e7
-    move-exception p1
+    .line 406
+    :catchall_101
+    move-exception v0
 
-    monitor-exit p2
-    :try_end_e9
-    .catchall {:try_start_de .. :try_end_e9} :catchall_e7
+    monitor-exit v3
+    :try_end_103
+    .catchall {:try_start_f8 .. :try_end_103} :catchall_101
 
-    throw p1
+    throw v0
+
+    .line 378
+    .end local v2  # "event":Landroid/hardware/display/BrightnessChangeEvent;
+    .local v0, "focusedStack":Landroid/app/ActivityManager$StackInfo;
+    :cond_104
+    return-void
 
     .line 380
-    :cond_ea
-    return-void
+    .end local v0  # "focusedStack":Landroid/app/ActivityManager$StackInfo;
+    :catch_105
+    move-exception v0
 
     .line 382
-    :catch_eb
-    move-exception p1
-
-    .line 384
+    .local v0, "e":Landroid/os/RemoteException;
     return-void
 
-    .line 368
-    :catchall_ed
-    move-exception p1
+    .line 366
+    .end local v0  # "e":Landroid/os/RemoteException;
+    .end local v4  # "builder":Landroid/hardware/display/BrightnessChangeEvent$Builder;
+    :catchall_107
+    move-exception v0
 
-    :try_start_ee
-    monitor-exit v0
-    :try_end_ef
-    .catchall {:try_start_ee .. :try_end_ef} :catchall_ed
+    goto :goto_10c
 
-    throw p1
+    :catchall_109
+    move-exception v0
+
+    move/from16 v8, p4
+
+    :goto_10c
+    move/from16 v9, p5
+
+    :goto_10e
+    :try_start_10e
+    monitor-exit v3
+    :try_end_10f
+    .catchall {:try_start_10e .. :try_end_10f} :catchall_110
+
+    throw v0
+
+    :catchall_110
+    move-exception v0
+
+    goto :goto_10e
 .end method
 
 .method private readAmbientBrightnessStats()V
-    .registers 5
+    .registers 6
 
-    .line 510
+    .line 508
     new-instance v0, Lcom/android/server/display/AmbientBrightnessStatsTracker;
 
     iget-object v1, p0, Lcom/android/server/display/BrightnessTracker;->mUserManager:Landroid/os/UserManager;
@@ -1119,7 +1383,7 @@
 
     iput-object v0, p0, Lcom/android/server/display/BrightnessTracker;->mAmbientBrightnessStatsTracker:Lcom/android/server/display/AmbientBrightnessStatsTracker;
 
-    .line 511
+    .line 509
     iget-object v0, p0, Lcom/android/server/display/BrightnessTracker;->mInjector:Lcom/android/server/display/BrightnessTracker$Injector;
 
     const-string v1, "ambient_brightness_stats.xml"
@@ -1128,96 +1392,107 @@
 
     move-result-object v0
 
-    .line 512
-    if-eqz v0, :cond_3a
+    .line 510
+    .local v0, "readFrom":Landroid/util/AtomicFile;
+    if-eqz v0, :cond_3d
 
     invoke-virtual {v0}, Landroid/util/AtomicFile;->exists()Z
 
     move-result v1
 
-    if-eqz v1, :cond_3a
+    if-eqz v1, :cond_3d
+
+    .line 511
+    const/4 v1, 0x0
 
     .line 513
-    nop
-
-    .line 515
+    .local v1, "input":Ljava/io/FileInputStream;
     :try_start_1b
     invoke-virtual {v0}, Landroid/util/AtomicFile;->openRead()Ljava/io/FileInputStream;
 
     move-result-object v2
 
-    .line 516
-    iget-object v1, p0, Lcom/android/server/display/BrightnessTracker;->mAmbientBrightnessStatsTracker:Lcom/android/server/display/AmbientBrightnessStatsTracker;
+    move-object v1, v2
 
-    invoke-virtual {v1, v2}, Lcom/android/server/display/AmbientBrightnessStatsTracker;->readStats(Ljava/io/InputStream;)V
-    :try_end_24
-    .catch Ljava/io/IOException; {:try_start_1b .. :try_end_24} :catch_2a
-    .catchall {:try_start_1b .. :try_end_24} :catchall_28
+    .line 514
+    iget-object v2, p0, Lcom/android/server/display/BrightnessTracker;->mAmbientBrightnessStatsTracker:Lcom/android/server/display/AmbientBrightnessStatsTracker;
 
-    .line 521
-    :goto_24
-    invoke-static {v2}, Llibcore/io/IoUtils;->closeQuietly(Ljava/lang/AutoCloseable;)V
-
-    .line 522
-    goto :goto_3a
-
-    .line 521
-    :catchall_28
-    move-exception v0
-
-    goto :goto_36
-
-    .line 517
-    :catch_2a
-    move-exception v1
-
-    .line 518
-    :try_start_2b
-    invoke-virtual {v0}, Landroid/util/AtomicFile;->delete()V
+    invoke-virtual {v2, v1}, Lcom/android/server/display/AmbientBrightnessStatsTracker;->readStats(Ljava/io/InputStream;)V
+    :try_end_25
+    .catch Ljava/io/IOException; {:try_start_1b .. :try_end_25} :catch_2c
+    .catchall {:try_start_1b .. :try_end_25} :catchall_2a
 
     .line 519
-    const-string v0, "BrightnessTracker"
+    nop
 
-    const-string v3, "Failed to read ambient brightness stats."
+    :goto_26
+    invoke-static {v1}, Llibcore/io/IoUtils;->closeQuietly(Ljava/lang/AutoCloseable;)V
 
-    invoke-static {v0, v3, v1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
-    :try_end_35
-    .catchall {:try_start_2b .. :try_end_35} :catchall_28
+    .line 520
+    goto :goto_3d
 
-    goto :goto_24
+    .line 519
+    :catchall_2a
+    move-exception v2
 
-    .line 521
-    :goto_36
-    invoke-static {v2}, Llibcore/io/IoUtils;->closeQuietly(Ljava/lang/AutoCloseable;)V
+    goto :goto_39
 
-    throw v0
+    .line 515
+    :catch_2c
+    move-exception v2
 
-    .line 524
-    :cond_3a
-    :goto_3a
+    .line 516
+    .local v2, "e":Ljava/io/IOException;
+    :try_start_2d
+    invoke-virtual {v0}, Landroid/util/AtomicFile;->delete()V
+
+    .line 517
+    const-string v3, "BrightnessTracker"
+
+    const-string v4, "Failed to read ambient brightness stats."
+
+    invoke-static {v3, v4, v2}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    :try_end_37
+    .catchall {:try_start_2d .. :try_end_37} :catchall_2a
+
+    .line 519
+    nop
+
+    .end local v2  # "e":Ljava/io/IOException;
+    goto :goto_26
+
+    :goto_39
+    invoke-static {v1}, Llibcore/io/IoUtils;->closeQuietly(Ljava/lang/AutoCloseable;)V
+
+    throw v2
+
+    .line 522
+    .end local v1  # "input":Ljava/io/FileInputStream;
+    :cond_3d
+    :goto_3d
     return-void
 .end method
 
 .method private readEvents()V
-    .registers 6
+    .registers 7
 
-    .line 489
+    .line 487
     iget-object v0, p0, Lcom/android/server/display/BrightnessTracker;->mEventsLock:Ljava/lang/Object;
 
     monitor-enter v0
 
-    .line 491
+    .line 489
     const/4 v1, 0x1
 
     :try_start_4
     iput-boolean v1, p0, Lcom/android/server/display/BrightnessTracker;->mEventsDirty:Z
 
-    .line 492
+    .line 490
     iget-object v1, p0, Lcom/android/server/display/BrightnessTracker;->mEvents:Lcom/android/internal/util/RingBuffer;
 
     invoke-virtual {v1}, Lcom/android/internal/util/RingBuffer;->clear()V
 
-    .line 493
+    .line 491
     iget-object v1, p0, Lcom/android/server/display/BrightnessTracker;->mInjector:Lcom/android/server/display/BrightnessTracker$Injector;
 
     const-string v2, "brightness_events.xml"
@@ -1226,117 +1501,133 @@
 
     move-result-object v1
 
-    .line 494
-    if-eqz v1, :cond_39
+    .line 492
+    .local v1, "readFrom":Landroid/util/AtomicFile;
+    if-eqz v1, :cond_3e
 
     invoke-virtual {v1}, Landroid/util/AtomicFile;->exists()Z
 
     move-result v2
     :try_end_19
-    .catchall {:try_start_4 .. :try_end_19} :catchall_3b
+    .catchall {:try_start_4 .. :try_end_19} :catchall_40
 
-    if-eqz v2, :cond_39
+    if-eqz v2, :cond_3e
 
-    .line 495
+    .line 493
     const/4 v2, 0x0
 
-    .line 497
+    .line 495
+    .local v2, "input":Ljava/io/FileInputStream;
     :try_start_1c
     invoke-virtual {v1}, Landroid/util/AtomicFile;->openRead()Ljava/io/FileInputStream;
 
-    move-result-object v2
+    move-result-object v3
 
-    .line 498
+    move-object v2, v3
+
+    .line 496
     invoke-virtual {p0, v2}, Lcom/android/server/display/BrightnessTracker;->readEventsLocked(Ljava/io/InputStream;)V
-    :try_end_23
-    .catch Ljava/io/IOException; {:try_start_1c .. :try_end_23} :catch_29
-    .catchall {:try_start_1c .. :try_end_23} :catchall_27
-
-    .line 503
-    :goto_23
-    :try_start_23
-    invoke-static {v2}, Llibcore/io/IoUtils;->closeQuietly(Ljava/lang/AutoCloseable;)V
-    :try_end_26
-    .catchall {:try_start_23 .. :try_end_26} :catchall_3b
-
-    .line 504
-    goto :goto_39
-
-    .line 503
-    :catchall_27
-    move-exception v1
-
-    goto :goto_35
-
-    .line 499
-    :catch_29
-    move-exception v3
-
-    .line 500
-    :try_start_2a
-    invoke-virtual {v1}, Landroid/util/AtomicFile;->delete()V
+    :try_end_24
+    .catch Ljava/io/IOException; {:try_start_1c .. :try_end_24} :catch_2a
+    .catchall {:try_start_1c .. :try_end_24} :catchall_28
 
     .line 501
-    const-string v1, "BrightnessTracker"
+    :try_start_24
+    invoke-static {v2}, Llibcore/io/IoUtils;->closeQuietly(Ljava/lang/AutoCloseable;)V
+    :try_end_27
+    .catchall {:try_start_24 .. :try_end_27} :catchall_40
 
-    const-string v4, "Failed to read change mEvents."
+    .line 502
+    :goto_27
+    goto :goto_3e
 
-    invoke-static {v1, v4, v3}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
-    :try_end_34
-    .catchall {:try_start_2a .. :try_end_34} :catchall_27
+    .line 501
+    :catchall_28
+    move-exception v3
 
-    goto :goto_23
+    goto :goto_3a
 
-    .line 503
-    :goto_35
-    :try_start_35
+    .line 497
+    :catch_2a
+    move-exception v3
+
+    .line 498
+    .local v3, "e":Ljava/io/IOException;
+    :try_start_2b
+    invoke-virtual {v1}, Landroid/util/AtomicFile;->delete()V
+
+    .line 499
+    const-string v4, "BrightnessTracker"
+
+    const-string v5, "Failed to read change mEvents."
+
+    invoke-static {v4, v5, v3}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    :try_end_35
+    .catchall {:try_start_2b .. :try_end_35} :catchall_28
+
+    .line 501
+    nop
+
+    .end local v3  # "e":Ljava/io/IOException;
+    :try_start_36
     invoke-static {v2}, Llibcore/io/IoUtils;->closeQuietly(Ljava/lang/AutoCloseable;)V
 
-    throw v1
+    goto :goto_27
 
-    .line 506
-    :cond_39
-    :goto_39
+    :goto_3a
+    invoke-static {v2}, Llibcore/io/IoUtils;->closeQuietly(Ljava/lang/AutoCloseable;)V
+
+    .end local p0  # "this":Lcom/android/server/display/BrightnessTracker;
+    throw v3
+
+    .line 504
+    .end local v1  # "readFrom":Landroid/util/AtomicFile;
+    .end local v2  # "input":Ljava/io/FileInputStream;
+    .restart local p0  # "this":Lcom/android/server/display/BrightnessTracker;
+    :cond_3e
+    :goto_3e
     monitor-exit v0
 
-    .line 507
+    .line 505
     return-void
 
-    .line 506
-    :catchall_3b
+    .line 504
+    :catchall_40
     move-exception v1
 
     monitor-exit v0
-    :try_end_3d
-    .catchall {:try_start_35 .. :try_end_3d} :catchall_3b
+    :try_end_42
+    .catchall {:try_start_36 .. :try_end_42} :catchall_40
 
     throw v1
 .end method
 
 .method private recordAmbientBrightnessStats(Landroid/hardware/SensorEvent;)V
-    .registers 5
+    .registers 6
+    .param p1, "event"  # Landroid/hardware/SensorEvent;
 
-    .line 875
+    .line 872
     iget-object v0, p0, Lcom/android/server/display/BrightnessTracker;->mAmbientBrightnessStatsTracker:Lcom/android/server/display/AmbientBrightnessStatsTracker;
 
     iget v1, p0, Lcom/android/server/display/BrightnessTracker;->mCurrentUserId:I
 
-    iget-object p1, p1, Landroid/hardware/SensorEvent;->values:[F
+    iget-object v2, p1, Landroid/hardware/SensorEvent;->values:[F
 
-    const/4 v2, 0x0
+    const/4 v3, 0x0
 
-    aget p1, p1, v2
+    aget v2, v2, v3
 
-    invoke-virtual {v0, v1, p1}, Lcom/android/server/display/AmbientBrightnessStatsTracker;->add(IF)V
+    invoke-virtual {v0, v1, v2}, Lcom/android/server/display/AmbientBrightnessStatsTracker;->add(IF)V
 
-    .line 876
+    .line 873
     return-void
 .end method
 
 .method private recordSensorEvent(Landroid/hardware/SensorEvent;)V
     .registers 9
+    .param p1, "event"  # Landroid/hardware/SensorEvent;
 
-    .line 845
+    .line 842
     iget-object v0, p0, Lcom/android/server/display/BrightnessTracker;->mInjector:Lcom/android/server/display/BrightnessTracker$Injector;
 
     invoke-virtual {v0}, Lcom/android/server/display/BrightnessTracker$Injector;->elapsedRealtimeNanos()J
@@ -1347,12 +1638,13 @@
 
     sub-long/2addr v0, v2
 
-    .line 846
+    .line 843
+    .local v0, "horizon":J
     iget-object v2, p0, Lcom/android/server/display/BrightnessTracker;->mDataCollectionLock:Ljava/lang/Object;
 
     monitor-enter v2
 
-    .line 850
+    .line 847
     :try_start_c
     iget-object v3, p0, Lcom/android/server/display/BrightnessTracker;->mLastSensorReadings:Ljava/util/Deque;
 
@@ -1366,7 +1658,7 @@
 
     iget-object v5, p0, Lcom/android/server/display/BrightnessTracker;->mLastSensorReadings:Ljava/util/Deque;
 
-    .line 851
+    .line 848
     invoke-interface {v5}, Ljava/util/Deque;->getLast()Ljava/lang/Object;
 
     move-result-object v5
@@ -1379,18 +1671,19 @@
 
     if-gez v3, :cond_26
 
-    .line 853
+    .line 850
     monitor-exit v2
 
     return-void
 
-    .line 855
+    .line 852
     :cond_26
     const/4 v3, 0x0
 
     move-object v4, v3
 
-    .line 856
+    .line 853
+    .local v4, "data":Lcom/android/server/display/BrightnessTracker$LightData;
     :goto_28
     iget-object v5, p0, Lcom/android/server/display/BrightnessTracker;->mLastSensorReadings:Ljava/util/Deque;
 
@@ -1398,11 +1691,11 @@
 
     move-result v5
 
-    if-nez v5, :cond_47
+    if-nez v5, :cond_48
 
     iget-object v5, p0, Lcom/android/server/display/BrightnessTracker;->mLastSensorReadings:Ljava/util/Deque;
 
-    .line 857
+    .line 854
     invoke-interface {v5}, Ljava/util/Deque;->getFirst()Ljava/lang/Object;
 
     move-result-object v5
@@ -1413,79 +1706,86 @@
 
     cmp-long v5, v5, v0
 
-    if-gez v5, :cond_47
+    if-gez v5, :cond_48
 
-    .line 859
-    iget-object v4, p0, Lcom/android/server/display/BrightnessTracker;->mLastSensorReadings:Ljava/util/Deque;
+    .line 856
+    iget-object v5, p0, Lcom/android/server/display/BrightnessTracker;->mLastSensorReadings:Ljava/util/Deque;
 
-    invoke-interface {v4}, Ljava/util/Deque;->removeFirst()Ljava/lang/Object;
+    invoke-interface {v5}, Ljava/util/Deque;->removeFirst()Ljava/lang/Object;
 
-    move-result-object v4
+    move-result-object v5
 
-    check-cast v4, Lcom/android/server/display/BrightnessTracker$LightData;
+    check-cast v5, Lcom/android/server/display/BrightnessTracker$LightData;
+
+    move-object v4, v5
 
     goto :goto_28
 
-    .line 863
-    :cond_47
-    if-eqz v4, :cond_4e
+    .line 860
+    :cond_48
+    if-eqz v4, :cond_4f
+
+    .line 861
+    iget-object v5, p0, Lcom/android/server/display/BrightnessTracker;->mLastSensorReadings:Ljava/util/Deque;
+
+    invoke-interface {v5, v4}, Ljava/util/Deque;->addFirst(Ljava/lang/Object;)V
 
     .line 864
-    iget-object v0, p0, Lcom/android/server/display/BrightnessTracker;->mLastSensorReadings:Ljava/util/Deque;
+    :cond_4f
+    new-instance v5, Lcom/android/server/display/BrightnessTracker$LightData;
 
-    invoke-interface {v0, v4}, Ljava/util/Deque;->addFirst(Ljava/lang/Object;)V
+    invoke-direct {v5, v3}, Lcom/android/server/display/BrightnessTracker$LightData;-><init>(Lcom/android/server/display/BrightnessTracker$1;)V
+
+    move-object v3, v5
+
+    .line 865
+    .end local v4  # "data":Lcom/android/server/display/BrightnessTracker$LightData;
+    .local v3, "data":Lcom/android/server/display/BrightnessTracker$LightData;
+    iget-wide v4, p1, Landroid/hardware/SensorEvent;->timestamp:J
+
+    iput-wide v4, v3, Lcom/android/server/display/BrightnessTracker$LightData;->timestamp:J
+
+    .line 866
+    iget-object v4, p1, Landroid/hardware/SensorEvent;->values:[F
+
+    const/4 v5, 0x0
+
+    aget v4, v4, v5
+
+    iput v4, v3, Lcom/android/server/display/BrightnessTracker$LightData;->lux:F
 
     .line 867
-    :cond_4e
-    new-instance v0, Lcom/android/server/display/BrightnessTracker$LightData;
+    iget-object v4, p0, Lcom/android/server/display/BrightnessTracker;->mLastSensorReadings:Ljava/util/Deque;
 
-    invoke-direct {v0, v3}, Lcom/android/server/display/BrightnessTracker$LightData;-><init>(Lcom/android/server/display/BrightnessTracker$1;)V
+    invoke-interface {v4, v3}, Ljava/util/Deque;->addLast(Ljava/lang/Object;)V
 
     .line 868
-    iget-wide v3, p1, Landroid/hardware/SensorEvent;->timestamp:J
-
-    iput-wide v3, v0, Lcom/android/server/display/BrightnessTracker$LightData;->timestamp:J
+    .end local v3  # "data":Lcom/android/server/display/BrightnessTracker$LightData;
+    monitor-exit v2
 
     .line 869
-    iget-object p1, p1, Landroid/hardware/SensorEvent;->values:[F
-
-    const/4 v1, 0x0
-
-    aget p1, p1, v1
-
-    iput p1, v0, Lcom/android/server/display/BrightnessTracker$LightData;->lux:F
-
-    .line 870
-    iget-object p1, p0, Lcom/android/server/display/BrightnessTracker;->mLastSensorReadings:Ljava/util/Deque;
-
-    invoke-interface {p1, v0}, Ljava/util/Deque;->addLast(Ljava/lang/Object;)V
-
-    .line 871
-    monitor-exit v2
-
-    .line 872
     return-void
 
-    .line 871
-    :catchall_65
-    move-exception p1
+    .line 868
+    :catchall_67
+    move-exception v3
 
     monitor-exit v2
-    :try_end_67
-    .catchall {:try_start_c .. :try_end_67} :catchall_65
+    :try_end_69
+    .catchall {:try_start_c .. :try_end_69} :catchall_67
 
-    throw p1
+    throw v3
 .end method
 
 .method private scheduleWriteBrightnessTrackerState()V
     .registers 3
 
-    .line 431
+    .line 429
     iget-boolean v0, p0, Lcom/android/server/display/BrightnessTracker;->mWriteBrightnessTrackerStateScheduled:Z
 
     if-nez v0, :cond_11
 
-    .line 432
+    .line 430
     iget-object v0, p0, Lcom/android/server/display/BrightnessTracker;->mBgHandler:Landroid/os/Handler;
 
     new-instance v1, Lcom/android/server/display/-$$Lambda$BrightnessTracker$fmx2Mcw7OCEtRi9DwxxGQgA74fg;
@@ -1494,12 +1794,12 @@
 
     invoke-virtual {v0, v1}, Landroid/os/Handler;->post(Ljava/lang/Runnable;)Z
 
-    .line 437
+    .line 435
     const/4 v0, 0x1
 
     iput-boolean v0, p0, Lcom/android/server/display/BrightnessTracker;->mWriteBrightnessTrackerStateScheduled:Z
 
-    .line 439
+    .line 437
     :cond_11
     return-void
 .end method
@@ -1507,7 +1807,7 @@
 .method private startSensorListener()V
     .registers 5
 
-    .line 412
+    .line 410
     iget-boolean v0, p0, Lcom/android/server/display/BrightnessTracker;->mSensorRegistered:Z
 
     if-nez v0, :cond_2d
@@ -1516,7 +1816,7 @@
 
     iget-object v1, p0, Lcom/android/server/display/BrightnessTracker;->mContext:Landroid/content/Context;
 
-    .line 413
+    .line 411
     invoke-virtual {v0, v1}, Lcom/android/server/display/BrightnessTracker$Injector;->isInteractive(Landroid/content/Context;)Z
 
     move-result v0
@@ -1527,39 +1827,39 @@
 
     iget-object v1, p0, Lcom/android/server/display/BrightnessTracker;->mContentResolver:Landroid/content/ContentResolver;
 
-    .line 414
+    .line 412
     invoke-virtual {v0, v1}, Lcom/android/server/display/BrightnessTracker$Injector;->isBrightnessModeAutomatic(Landroid/content/ContentResolver;)Z
 
     move-result v0
 
     if-eqz v0, :cond_2d
 
-    .line 415
+    .line 413
     iget-object v0, p0, Lcom/android/server/display/BrightnessTracker;->mAmbientBrightnessStatsTracker:Lcom/android/server/display/AmbientBrightnessStatsTracker;
 
     invoke-virtual {v0}, Lcom/android/server/display/AmbientBrightnessStatsTracker;->start()V
 
-    .line 416
+    .line 414
     const/4 v0, 0x1
 
     iput-boolean v0, p0, Lcom/android/server/display/BrightnessTracker;->mSensorRegistered:Z
 
-    .line 417
+    .line 415
     iget-object v0, p0, Lcom/android/server/display/BrightnessTracker;->mInjector:Lcom/android/server/display/BrightnessTracker$Injector;
 
     iget-object v1, p0, Lcom/android/server/display/BrightnessTracker;->mContext:Landroid/content/Context;
 
     iget-object v2, p0, Lcom/android/server/display/BrightnessTracker;->mSensorListener:Lcom/android/server/display/BrightnessTracker$SensorListener;
 
-    .line 418
+    .line 416
     invoke-virtual {v0}, Lcom/android/server/display/BrightnessTracker$Injector;->getBackgroundHandler()Landroid/os/Handler;
 
     move-result-object v3
 
-    .line 417
+    .line 415
     invoke-virtual {v0, v1, v2, v3}, Lcom/android/server/display/BrightnessTracker$Injector;->registerSensorListener(Landroid/content/Context;Landroid/hardware/SensorEventListener;Landroid/os/Handler;)V
 
-    .line 420
+    .line 418
     :cond_2d
     return-void
 .end method
@@ -1567,17 +1867,17 @@
 .method private stopSensorListener()V
     .registers 4
 
-    .line 423
+    .line 421
     iget-boolean v0, p0, Lcom/android/server/display/BrightnessTracker;->mSensorRegistered:Z
 
     if-eqz v0, :cond_15
 
-    .line 424
+    .line 422
     iget-object v0, p0, Lcom/android/server/display/BrightnessTracker;->mAmbientBrightnessStatsTracker:Lcom/android/server/display/AmbientBrightnessStatsTracker;
 
     invoke-virtual {v0}, Lcom/android/server/display/AmbientBrightnessStatsTracker;->stop()V
 
-    .line 425
+    .line 423
     iget-object v0, p0, Lcom/android/server/display/BrightnessTracker;->mInjector:Lcom/android/server/display/BrightnessTracker$Injector;
 
     iget-object v1, p0, Lcom/android/server/display/BrightnessTracker;->mContext:Landroid/content/Context;
@@ -1586,12 +1886,12 @@
 
     invoke-virtual {v0, v1, v2}, Lcom/android/server/display/BrightnessTracker$Injector;->unregisterSensorListener(Landroid/content/Context;Landroid/hardware/SensorEventListener;)V
 
-    .line 426
+    .line 424
     const/4 v0, 0x0
 
     iput-boolean v0, p0, Lcom/android/server/display/BrightnessTracker;->mSensorRegistered:Z
 
-    .line 428
+    .line 426
     :cond_15
     return-void
 .end method
@@ -1599,15 +1899,15 @@
 .method private updateColorSampling()V
     .registers 3
 
-    .line 816
+    .line 813
     iget-boolean v0, p0, Lcom/android/server/display/BrightnessTracker;->mColorSamplingEnabled:Z
 
     if-nez v0, :cond_5
 
-    .line 817
+    .line 814
     return-void
 
-    .line 819
+    .line 816
     :cond_5
     iget-object v0, p0, Lcom/android/server/display/BrightnessTracker;->mInjector:Lcom/android/server/display/BrightnessTracker$Injector;
 
@@ -1617,28 +1917,29 @@
 
     move-result v0
 
-    .line 820
+    .line 817
+    .local v0, "frameRate":F
     iget v1, p0, Lcom/android/server/display/BrightnessTracker;->mFrameRate:F
 
-    cmpl-float v0, v0, v1
+    cmpl-float v1, v0, v1
 
-    if-eqz v0, :cond_19
+    if-eqz v1, :cond_19
 
-    .line 821
+    .line 818
     invoke-direct {p0}, Lcom/android/server/display/BrightnessTracker;->disableColorSampling()V
 
-    .line 822
+    .line 819
     invoke-direct {p0}, Lcom/android/server/display/BrightnessTracker;->enableColorSampling()V
 
-    .line 824
+    .line 821
     :cond_19
     return-void
 .end method
 
 .method private writeAmbientBrightnessStats()V
-    .registers 4
+    .registers 6
 
-    .line 473
+    .line 471
     iget-object v0, p0, Lcom/android/server/display/BrightnessTracker;->mInjector:Lcom/android/server/display/BrightnessTracker$Injector;
 
     const-string v1, "ambient_brightness_stats.xml"
@@ -1647,74 +1948,80 @@
 
     move-result-object v0
 
-    .line 474
+    .line 472
+    .local v0, "writeTo":Landroid/util/AtomicFile;
     if-nez v0, :cond_b
 
-    .line 475
+    .line 473
     return-void
 
-    .line 477
+    .line 475
     :cond_b
     const/4 v1, 0x0
 
-    .line 479
+    .line 477
+    .local v1, "output":Ljava/io/FileOutputStream;
     :try_start_c
     invoke-virtual {v0}, Landroid/util/AtomicFile;->startWrite()Ljava/io/FileOutputStream;
 
-    move-result-object v1
+    move-result-object v2
 
-    .line 480
+    move-object v1, v2
+
+    .line 478
     iget-object v2, p0, Lcom/android/server/display/BrightnessTracker;->mAmbientBrightnessStatsTracker:Lcom/android/server/display/AmbientBrightnessStatsTracker;
 
     invoke-virtual {v2, v1}, Lcom/android/server/display/AmbientBrightnessStatsTracker;->writeStats(Ljava/io/OutputStream;)V
 
-    .line 481
+    .line 479
     invoke-virtual {v0, v1}, Landroid/util/AtomicFile;->finishWrite(Ljava/io/FileOutputStream;)V
-    :try_end_18
-    .catch Ljava/io/IOException; {:try_start_c .. :try_end_18} :catch_19
-
-    .line 485
-    goto :goto_24
-
-    .line 482
-    :catch_19
-    move-exception v2
+    :try_end_19
+    .catch Ljava/io/IOException; {:try_start_c .. :try_end_19} :catch_1a
 
     .line 483
+    goto :goto_25
+
+    .line 480
+    :catch_1a
+    move-exception v2
+
+    .line 481
+    .local v2, "e":Ljava/io/IOException;
     invoke-virtual {v0, v1}, Landroid/util/AtomicFile;->failWrite(Ljava/io/FileOutputStream;)V
 
+    .line 482
+    const-string v3, "BrightnessTracker"
+
+    const-string v4, "Failed to write ambient brightness stats."
+
+    invoke-static {v3, v4, v2}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+
     .line 484
-    const-string v0, "BrightnessTracker"
-
-    const-string v1, "Failed to write ambient brightness stats."
-
-    invoke-static {v0, v1, v2}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
-
-    .line 486
-    :goto_24
+    .end local v2  # "e":Ljava/io/IOException;
+    :goto_25
     return-void
 .end method
 
 .method private writeEvents()V
-    .registers 5
+    .registers 7
 
-    .line 442
+    .line 440
     iget-object v0, p0, Lcom/android/server/display/BrightnessTracker;->mEventsLock:Ljava/lang/Object;
 
     monitor-enter v0
 
-    .line 443
+    .line 441
     :try_start_3
     iget-boolean v1, p0, Lcom/android/server/display/BrightnessTracker;->mEventsDirty:Z
 
     if-nez v1, :cond_9
 
-    .line 445
+    .line 443
     monitor-exit v0
 
     return-void
 
-    .line 448
+    .line 446
     :cond_9
     iget-object v1, p0, Lcom/android/server/display/BrightnessTracker;->mInjector:Lcom/android/server/display/BrightnessTracker$Injector;
 
@@ -1724,15 +2031,16 @@
 
     move-result-object v1
 
-    .line 449
+    .line 447
+    .local v1, "writeTo":Landroid/util/AtomicFile;
     if-nez v1, :cond_15
 
-    .line 450
+    .line 448
     monitor-exit v0
 
     return-void
 
-    .line 452
+    .line 450
     :cond_15
     iget-object v2, p0, Lcom/android/server/display/BrightnessTracker;->mEvents:Lcom/android/internal/util/RingBuffer;
 
@@ -1744,78 +2052,85 @@
 
     if-eqz v2, :cond_2a
 
-    .line 453
+    .line 451
     invoke-virtual {v1}, Landroid/util/AtomicFile;->exists()Z
 
     move-result v2
 
     if-eqz v2, :cond_27
 
-    .line 454
+    .line 452
     invoke-virtual {v1}, Landroid/util/AtomicFile;->delete()V
 
-    .line 456
+    .line 454
     :cond_27
     iput-boolean v3, p0, Lcom/android/server/display/BrightnessTracker;->mEventsDirty:Z
     :try_end_29
-    .catchall {:try_start_3 .. :try_end_29} :catchall_45
+    .catchall {:try_start_3 .. :try_end_29} :catchall_46
 
-    goto :goto_43
+    goto :goto_44
 
-    .line 458
+    .line 456
     :cond_2a
     const/4 v2, 0x0
 
-    .line 460
+    .line 458
+    .local v2, "output":Ljava/io/FileOutputStream;
     :try_start_2b
     invoke-virtual {v1}, Landroid/util/AtomicFile;->startWrite()Ljava/io/FileOutputStream;
 
-    move-result-object v2
+    move-result-object v4
 
-    .line 461
+    move-object v2, v4
+
+    .line 459
     invoke-virtual {p0, v2}, Lcom/android/server/display/BrightnessTracker;->writeEventsLocked(Ljava/io/OutputStream;)V
 
-    .line 462
+    .line 460
     invoke-virtual {v1, v2}, Landroid/util/AtomicFile;->finishWrite(Ljava/io/FileOutputStream;)V
 
-    .line 463
+    .line 461
     iput-boolean v3, p0, Lcom/android/server/display/BrightnessTracker;->mEventsDirty:Z
-    :try_end_37
-    .catch Ljava/io/IOException; {:try_start_2b .. :try_end_37} :catch_38
-    .catchall {:try_start_2b .. :try_end_37} :catchall_45
-
-    .line 467
-    goto :goto_43
-
-    .line 464
-    :catch_38
-    move-exception v3
+    :try_end_38
+    .catch Ljava/io/IOException; {:try_start_2b .. :try_end_38} :catch_39
+    .catchall {:try_start_2b .. :try_end_38} :catchall_46
 
     .line 465
-    :try_start_39
+    goto :goto_44
+
+    .line 462
+    :catch_39
+    move-exception v3
+
+    .line 463
+    .local v3, "e":Ljava/io/IOException;
+    :try_start_3a
     invoke-virtual {v1, v2}, Landroid/util/AtomicFile;->failWrite(Ljava/io/FileOutputStream;)V
 
-    .line 466
-    const-string v1, "BrightnessTracker"
+    .line 464
+    const-string v4, "BrightnessTracker"
 
-    const-string v2, "Failed to write change mEvents."
+    const-string v5, "Failed to write change mEvents."
 
-    invoke-static {v1, v2, v3}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    invoke-static {v4, v5, v3}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
-    .line 469
-    :goto_43
+    .line 467
+    .end local v1  # "writeTo":Landroid/util/AtomicFile;
+    .end local v2  # "output":Ljava/io/FileOutputStream;
+    .end local v3  # "e":Ljava/io/IOException;
+    :goto_44
     monitor-exit v0
 
-    .line 470
+    .line 468
     return-void
 
-    .line 469
-    :catchall_45
+    .line 467
+    :catchall_46
     move-exception v1
 
     monitor-exit v0
-    :try_end_47
-    .catchall {:try_start_39 .. :try_end_47} :catchall_45
+    :try_end_48
+    .catchall {:try_start_3a .. :try_end_48} :catchall_46
 
     throw v1
 .end method
@@ -1824,18 +2139,19 @@
 # virtual methods
 .method public dump(Ljava/io/PrintWriter;)V
     .registers 11
+    .param p1, "pw"  # Ljava/io/PrintWriter;
 
-    .line 712
+    .line 710
     const-string v0, "BrightnessTracker state:"
 
     invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
-    .line 713
+    .line 711
     iget-object v0, p0, Lcom/android/server/display/BrightnessTracker;->mDataCollectionLock:Ljava/lang/Object;
 
     monitor-enter v0
 
-    .line 714
+    .line 712
     :try_start_8
     new-instance v1, Ljava/lang/StringBuilder;
 
@@ -1855,7 +2171,7 @@
 
     invoke-virtual {p1, v1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
-    .line 715
+    .line 713
     new-instance v1, Ljava/lang/StringBuilder;
 
     invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
@@ -1874,7 +2190,7 @@
 
     invoke-virtual {p1, v1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
-    .line 716
+    .line 714
     new-instance v1, Ljava/lang/StringBuilder;
 
     invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
@@ -1893,7 +2209,7 @@
 
     invoke-virtual {p1, v1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
-    .line 717
+    .line 715
     new-instance v1, Ljava/lang/StringBuilder;
 
     invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
@@ -1916,7 +2232,7 @@
 
     invoke-virtual {p1, v1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
-    .line 718
+    .line 716
     iget-object v1, p0, Lcom/android/server/display/BrightnessTracker;->mLastSensorReadings:Ljava/util/Deque;
 
     invoke-interface {v1}, Ljava/util/Deque;->isEmpty()Z
@@ -1925,7 +2241,7 @@
 
     if-nez v1, :cond_9c
 
-    .line 719
+    .line 717
     new-instance v1, Ljava/lang/StringBuilder;
 
     invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
@@ -1936,7 +2252,7 @@
 
     iget-object v2, p0, Lcom/android/server/display/BrightnessTracker;->mLastSensorReadings:Ljava/util/Deque;
 
-    .line 720
+    .line 718
     invoke-interface {v2}, Ljava/util/Deque;->peekFirst()Ljava/lang/Object;
 
     move-result-object v2
@@ -1953,7 +2269,7 @@
 
     iget-object v2, p0, Lcom/android/server/display/BrightnessTracker;->mLastSensorReadings:Ljava/util/Deque;
 
-    .line 721
+    .line 719
     invoke-interface {v2}, Ljava/util/Deque;->peekLast()Ljava/lang/Object;
 
     move-result-object v2
@@ -1968,21 +2284,21 @@
 
     move-result-object v1
 
-    .line 719
+    .line 717
     invoke-virtual {p1, v1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
-    .line 723
+    .line 721
     :cond_9c
     monitor-exit v0
     :try_end_9d
     .catchall {:try_start_8 .. :try_end_9d} :catchall_205
 
-    .line 724
+    .line 722
     iget-object v1, p0, Lcom/android/server/display/BrightnessTracker;->mEventsLock:Ljava/lang/Object;
 
     monitor-enter v1
 
-    .line 725
+    .line 723
     :try_start_a0
     new-instance v0, Ljava/lang/StringBuilder;
 
@@ -2002,7 +2318,7 @@
 
     invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
-    .line 726
+    .line 724
     new-instance v0, Ljava/lang/StringBuilder;
 
     invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
@@ -2025,7 +2341,7 @@
 
     invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
-    .line 727
+    .line 725
     iget-object v0, p0, Lcom/android/server/display/BrightnessTracker;->mEvents:Lcom/android/internal/util/RingBuffer;
 
     invoke-virtual {v0}, Lcom/android/internal/util/RingBuffer;->toArray()[Ljava/lang/Object;
@@ -2034,17 +2350,19 @@
 
     check-cast v0, [Landroid/hardware/display/BrightnessChangeEvent;
 
-    .line 728
+    .line 726
+    .local v0, "events":[Landroid/hardware/display/BrightnessChangeEvent;
     const/4 v2, 0x0
 
     move v3, v2
 
+    .local v3, "i":I
     :goto_da
     array-length v4, v0
 
     if-ge v3, v4, :cond_1d2
 
-    .line 729
+    .line 727
     new-instance v4, Ljava/lang/StringBuilder;
 
     invoke-direct {v4}, Ljava/lang/StringBuilder;-><init>()V
@@ -2075,7 +2393,7 @@
 
     invoke-virtual {p1, v4}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
-    .line 730
+    .line 728
     new-instance v4, Ljava/lang/StringBuilder;
 
     invoke-direct {v4}, Ljava/lang/StringBuilder;-><init>()V
@@ -2096,7 +2414,7 @@
 
     invoke-virtual {p1, v4}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
-    .line 731
+    .line 729
     new-instance v4, Ljava/lang/StringBuilder;
 
     invoke-direct {v4}, Ljava/lang/StringBuilder;-><init>()V
@@ -2127,7 +2445,7 @@
 
     invoke-virtual {p1, v4}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
-    .line 732
+    .line 730
     new-instance v4, Ljava/lang/StringBuilder;
 
     invoke-direct {v4}, Ljava/lang/StringBuilder;-><init>()V
@@ -2148,7 +2466,7 @@
 
     invoke-virtual {p1, v4}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
-    .line 733
+    .line 731
     new-instance v4, Ljava/lang/StringBuilder;
 
     invoke-direct {v4}, Ljava/lang/StringBuilder;-><init>()V
@@ -2169,7 +2487,7 @@
 
     invoke-virtual {p1, v4}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
-    .line 734
+    .line 732
     new-instance v4, Ljava/lang/StringBuilder;
 
     invoke-direct {v4}, Ljava/lang/StringBuilder;-><init>()V
@@ -2190,14 +2508,15 @@
 
     invoke-virtual {p1, v4}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
-    .line 735
+    .line 733
     const-string v4, " {"
 
     invoke-virtual {p1, v4}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
-    .line 736
+    .line 734
     move v4, v2
 
+    .local v4, "j":I
     :goto_18a
     aget-object v5, v0, v3
 
@@ -2207,15 +2526,15 @@
 
     if-ge v4, v5, :cond_1c8
 
-    .line 737
+    .line 735
     if-eqz v4, :cond_198
 
-    .line 738
+    .line 736
     const-string v5, ", "
 
     invoke-virtual {p1, v5}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
-    .line 740
+    .line 738
     :cond_198
     new-instance v5, Ljava/lang/StringBuilder;
 
@@ -2255,29 +2574,32 @@
 
     invoke-virtual {p1, v5}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
-    .line 736
+    .line 734
     add-int/lit8 v4, v4, 0x1
 
     goto :goto_18a
 
-    .line 742
+    .line 740
+    .end local v4  # "j":I
     :cond_1c8
     const-string/jumbo v4, "}"
 
     invoke-virtual {p1, v4}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
-    .line 728
+    .line 726
     add-int/lit8 v3, v3, 0x1
 
     goto/16 :goto_da
 
-    .line 744
+    .line 742
+    .end local v0  # "events":[Landroid/hardware/display/BrightnessChangeEvent;
+    .end local v3  # "i":I
     :cond_1d2
     monitor-exit v1
     :try_end_1d3
     .catchall {:try_start_a0 .. :try_end_1d3} :catchall_202
 
-    .line 745
+    .line 743
     new-instance v0, Ljava/lang/StringBuilder;
 
     invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
@@ -2296,7 +2618,7 @@
 
     invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
-    .line 747
+    .line 745
     iget-object v0, p0, Lcom/android/server/display/BrightnessTracker;->mBgHandler:Landroid/os/Handler;
 
     new-instance v1, Lcom/android/server/display/-$$Lambda$BrightnessTracker$_S_g5htVKYYPRPZzYSZzGdy7hM0;
@@ -2307,48 +2629,49 @@
 
     invoke-virtual {v0, v1, v2, v3}, Landroid/os/Handler;->runWithScissors(Ljava/lang/Runnable;J)Z
 
-    .line 748
+    .line 746
     iget-object v0, p0, Lcom/android/server/display/BrightnessTracker;->mAmbientBrightnessStatsTracker:Lcom/android/server/display/AmbientBrightnessStatsTracker;
 
     if-eqz v0, :cond_201
 
-    .line 749
+    .line 747
     invoke-virtual {p1}, Ljava/io/PrintWriter;->println()V
 
-    .line 750
+    .line 748
     iget-object v0, p0, Lcom/android/server/display/BrightnessTracker;->mAmbientBrightnessStatsTracker:Lcom/android/server/display/AmbientBrightnessStatsTracker;
 
     invoke-virtual {v0, p1}, Lcom/android/server/display/AmbientBrightnessStatsTracker;->dump(Ljava/io/PrintWriter;)V
 
-    .line 752
+    .line 750
     :cond_201
     return-void
 
-    .line 744
+    .line 742
     :catchall_202
-    move-exception p1
+    move-exception v0
 
     :try_start_203
     monitor-exit v1
     :try_end_204
     .catchall {:try_start_203 .. :try_end_204} :catchall_202
 
-    throw p1
+    throw v0
 
-    .line 723
+    .line 721
     :catchall_205
-    move-exception p1
+    move-exception v1
 
     :try_start_206
     monitor-exit v0
     :try_end_207
     .catchall {:try_start_206 .. :try_end_207} :catchall_205
 
-    throw p1
+    throw v1
 .end method
 
 .method public getAmbientBrightnessStats(I)Landroid/content/pm/ParceledListSlice;
-    .registers 3
+    .registers 4
+    .param p1, "userId"  # I
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(I)",
@@ -2358,40 +2681,44 @@
         }
     .end annotation
 
-    .line 827
+    .line 824
     iget-object v0, p0, Lcom/android/server/display/BrightnessTracker;->mAmbientBrightnessStatsTracker:Lcom/android/server/display/AmbientBrightnessStatsTracker;
 
     if-eqz v0, :cond_11
 
-    .line 828
+    .line 825
     nop
 
-    .line 829
+    .line 826
     invoke-virtual {v0, p1}, Lcom/android/server/display/AmbientBrightnessStatsTracker;->getUserStats(I)Ljava/util/ArrayList;
 
-    move-result-object p1
+    move-result-object v0
 
-    .line 830
-    if-eqz p1, :cond_11
+    .line 827
+    .local v0, "stats":Ljava/util/ArrayList;, "Ljava/util/ArrayList<Landroid/hardware/display/AmbientBrightnessDayStats;>;"
+    if-eqz v0, :cond_11
+
+    .line 828
+    new-instance v1, Landroid/content/pm/ParceledListSlice;
+
+    invoke-direct {v1, v0}, Landroid/content/pm/ParceledListSlice;-><init>(Ljava/util/List;)V
+
+    return-object v1
 
     .line 831
-    new-instance v0, Landroid/content/pm/ParceledListSlice;
-
-    invoke-direct {v0, p1}, Landroid/content/pm/ParceledListSlice;-><init>(Ljava/util/List;)V
-
-    return-object v0
-
-    .line 834
+    .end local v0  # "stats":Ljava/util/ArrayList;, "Ljava/util/ArrayList<Landroid/hardware/display/AmbientBrightnessDayStats;>;"
     :cond_11
     invoke-static {}, Landroid/content/pm/ParceledListSlice;->emptyList()Landroid/content/pm/ParceledListSlice;
 
-    move-result-object p1
+    move-result-object v0
 
-    return-object p1
+    return-object v0
 .end method
 
 .method public getEvents(IZ)Landroid/content/pm/ParceledListSlice;
-    .registers 10
+    .registers 12
+    .param p1, "userId"  # I
+    .param p2, "includePackage"  # Z
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(IZ)",
@@ -2401,12 +2728,12 @@
         }
     .end annotation
 
-    .line 266
+    .line 264
     iget-object v0, p0, Lcom/android/server/display/BrightnessTracker;->mEventsLock:Ljava/lang/Object;
 
     monitor-enter v0
 
-    .line 267
+    .line 265
     :try_start_3
     iget-object v1, p0, Lcom/android/server/display/BrightnessTracker;->mEvents:Lcom/android/internal/util/RingBuffer;
 
@@ -2416,12 +2743,13 @@
 
     check-cast v1, [Landroid/hardware/display/BrightnessChangeEvent;
 
-    .line 268
+    .line 266
+    .local v1, "events":[Landroid/hardware/display/BrightnessChangeEvent;
     monitor-exit v0
     :try_end_c
-    .catchall {:try_start_3 .. :try_end_c} :catchall_70
+    .catchall {:try_start_3 .. :try_end_c} :catchall_6f
 
-    .line 269
+    .line 267
     iget-object v0, p0, Lcom/android/server/display/BrightnessTracker;->mInjector:Lcom/android/server/display/BrightnessTracker$Injector;
 
     iget-object v2, p0, Lcom/android/server/display/BrightnessTracker;->mUserManager:Landroid/os/UserManager;
@@ -2430,146 +2758,164 @@
 
     move-result-object v0
 
-    .line 270
+    .line 268
+    .local v0, "profiles":[I
     new-instance v2, Ljava/util/HashMap;
 
     invoke-direct {v2}, Ljava/util/HashMap;-><init>()V
 
-    .line 271
+    .line 269
+    .local v2, "toRedact":Ljava/util/Map;, "Ljava/util/Map<Ljava/lang/Integer;Ljava/lang/Boolean;>;"
     const/4 v3, 0x0
 
-    move v4, v3
+    .local v3, "i":I
+    :goto_1a
+    array-length v4, v0
 
-    :goto_1b
-    array-length v5, v0
+    const/4 v5, 0x1
 
-    const/4 v6, 0x1
+    if-ge v3, v4, :cond_36
 
-    if-ge v4, v5, :cond_37
+    .line 270
+    aget v4, v0, v3
 
-    .line 272
-    aget v5, v0, v4
+    .line 273
+    .local v4, "profileId":I
+    if-eqz p2, :cond_26
 
-    .line 275
-    if-eqz p2, :cond_27
+    if-eq v4, p1, :cond_25
 
-    if-eq v5, p1, :cond_26
+    goto :goto_26
 
-    goto :goto_27
+    :cond_25
+    const/4 v5, 0x0
 
+    .line 274
+    .local v5, "redact":Z
     :cond_26
-    move v6, v3
+    :goto_26
+    aget v6, v0, v3
 
-    .line 276
-    :cond_27
-    :goto_27
-    aget v5, v0, v4
-
-    invoke-static {v5}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
-
-    move-result-object v5
-
-    invoke-static {v6}, Ljava/lang/Boolean;->valueOf(Z)Ljava/lang/Boolean;
+    invoke-static {v6}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
 
     move-result-object v6
 
-    invoke-interface {v2, v5, v6}, Ljava/util/Map;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+    invoke-static {v5}, Ljava/lang/Boolean;->valueOf(Z)Ljava/lang/Boolean;
 
-    .line 271
-    add-int/lit8 v4, v4, 0x1
+    move-result-object v7
 
-    goto :goto_1b
+    invoke-interface {v2, v6, v7}, Ljava/util/Map;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
 
-    .line 278
-    :cond_37
-    new-instance p1, Ljava/util/ArrayList;
-
-    array-length p2, v1
-
-    invoke-direct {p1, p2}, Ljava/util/ArrayList;-><init>(I)V
-
-    .line 279
-    nop
-
-    :goto_3e
-    array-length p2, v1
-
-    if-ge v3, p2, :cond_6a
-
-    .line 280
-    aget-object p2, v1, v3
-
-    iget p2, p2, Landroid/hardware/display/BrightnessChangeEvent;->userId:I
-
-    invoke-static {p2}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
-
-    move-result-object p2
-
-    invoke-interface {v2, p2}, Ljava/util/Map;->get(Ljava/lang/Object;)Ljava/lang/Object;
-
-    move-result-object p2
-
-    check-cast p2, Ljava/lang/Boolean;
-
-    .line 281
-    if-eqz p2, :cond_67
-
-    .line 282
-    invoke-virtual {p2}, Ljava/lang/Boolean;->booleanValue()Z
-
-    move-result p2
-
-    if-nez p2, :cond_5d
-
-    .line 283
-    aget-object p2, v1, v3
-
-    invoke-virtual {p1, p2}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
-
-    goto :goto_67
-
-    .line 285
-    :cond_5d
-    new-instance p2, Landroid/hardware/display/BrightnessChangeEvent;
-
-    aget-object v0, v1, v3
-
-    invoke-direct {p2, v0, v6}, Landroid/hardware/display/BrightnessChangeEvent;-><init>(Landroid/hardware/display/BrightnessChangeEvent;Z)V
-
-    .line 287
-    invoke-virtual {p1, p2}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
-
-    .line 279
-    :cond_67
-    :goto_67
+    .line 269
+    .end local v4  # "profileId":I
+    .end local v5  # "redact":Z
     add-int/lit8 v3, v3, 0x1
 
-    goto :goto_3e
+    goto :goto_1a
 
-    .line 291
-    :cond_6a
-    new-instance p2, Landroid/content/pm/ParceledListSlice;
+    .line 276
+    .end local v3  # "i":I
+    :cond_36
+    new-instance v3, Ljava/util/ArrayList;
 
-    invoke-direct {p2, p1}, Landroid/content/pm/ParceledListSlice;-><init>(Ljava/util/List;)V
+    array-length v4, v1
 
-    return-object p2
+    invoke-direct {v3, v4}, Ljava/util/ArrayList;-><init>(I)V
 
-    .line 268
-    :catchall_70
-    move-exception p1
+    .line 277
+    .local v3, "out":Ljava/util/ArrayList;, "Ljava/util/ArrayList<Landroid/hardware/display/BrightnessChangeEvent;>;"
+    const/4 v4, 0x0
 
-    :try_start_71
+    .local v4, "i":I
+    :goto_3d
+    array-length v6, v1
+
+    if-ge v4, v6, :cond_69
+
+    .line 278
+    aget-object v6, v1, v4
+
+    iget v6, v6, Landroid/hardware/display/BrightnessChangeEvent;->userId:I
+
+    invoke-static {v6}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
+
+    move-result-object v6
+
+    invoke-interface {v2, v6}, Ljava/util/Map;->get(Ljava/lang/Object;)Ljava/lang/Object;
+
+    move-result-object v6
+
+    check-cast v6, Ljava/lang/Boolean;
+
+    .line 279
+    .local v6, "redact":Ljava/lang/Boolean;
+    if-eqz v6, :cond_66
+
+    .line 280
+    invoke-virtual {v6}, Ljava/lang/Boolean;->booleanValue()Z
+
+    move-result v7
+
+    if-nez v7, :cond_5c
+
+    .line 281
+    aget-object v7, v1, v4
+
+    invoke-virtual {v3, v7}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
+
+    goto :goto_66
+
+    .line 283
+    :cond_5c
+    new-instance v7, Landroid/hardware/display/BrightnessChangeEvent;
+
+    aget-object v8, v1, v4
+
+    invoke-direct {v7, v8, v5}, Landroid/hardware/display/BrightnessChangeEvent;-><init>(Landroid/hardware/display/BrightnessChangeEvent;Z)V
+
+    .line 285
+    .local v7, "event":Landroid/hardware/display/BrightnessChangeEvent;
+    invoke-virtual {v3, v7}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
+
+    .line 277
+    .end local v6  # "redact":Ljava/lang/Boolean;
+    .end local v7  # "event":Landroid/hardware/display/BrightnessChangeEvent;
+    :cond_66
+    :goto_66
+    add-int/lit8 v4, v4, 0x1
+
+    goto :goto_3d
+
+    .line 289
+    .end local v4  # "i":I
+    :cond_69
+    new-instance v4, Landroid/content/pm/ParceledListSlice;
+
+    invoke-direct {v4, v3}, Landroid/content/pm/ParceledListSlice;-><init>(Ljava/util/List;)V
+
+    return-object v4
+
+    .line 266
+    .end local v0  # "profiles":[I
+    .end local v1  # "events":[Landroid/hardware/display/BrightnessChangeEvent;
+    .end local v2  # "toRedact":Ljava/util/Map;, "Ljava/util/Map<Ljava/lang/Integer;Ljava/lang/Boolean;>;"
+    .end local v3  # "out":Ljava/util/ArrayList;, "Ljava/util/ArrayList<Landroid/hardware/display/BrightnessChangeEvent;>;"
+    :catchall_6f
+    move-exception v1
+
+    :try_start_70
     monitor-exit v0
-    :try_end_72
-    .catchall {:try_start_71 .. :try_end_72} :catchall_70
+    :try_end_71
+    .catchall {:try_start_70 .. :try_end_71} :catchall_6f
 
-    throw p1
+    throw v1
 .end method
 
 .method public synthetic lambda$dump$1$BrightnessTracker(Ljava/io/PrintWriter;)V
     .registers 2
+    .param p1, "pw"  # Ljava/io/PrintWriter;
 
-    .line 747
+    .line 745
     invoke-direct {p0, p1}, Lcom/android/server/display/BrightnessTracker;->dumpLocal(Ljava/io/PrintWriter;)V
 
     return-void
@@ -2578,35 +2924,40 @@
 .method public synthetic lambda$scheduleWriteBrightnessTrackerState$0$BrightnessTracker()V
     .registers 2
 
-    .line 433
+    .line 431
     const/4 v0, 0x0
 
     iput-boolean v0, p0, Lcom/android/server/display/BrightnessTracker;->mWriteBrightnessTrackerStateScheduled:Z
 
-    .line 434
+    .line 432
     invoke-direct {p0}, Lcom/android/server/display/BrightnessTracker;->writeEvents()V
 
-    .line 435
+    .line 433
     invoke-direct {p0}, Lcom/android/server/display/BrightnessTracker;->writeAmbientBrightnessStats()V
 
-    .line 436
+    .line 434
     return-void
 .end method
 
 .method public notifyBrightnessChanged(FZFZZ)V
     .registers 16
+    .param p1, "brightness"  # F
+    .param p2, "userInitiated"  # Z
+    .param p3, "powerBrightnessFactor"  # F
+    .param p4, "isUserSetBrightness"  # Z
+    .param p5, "isDefaultBrightnessConfig"  # Z
 
-    .line 308
+    .line 306
     iget-object v0, p0, Lcom/android/server/display/BrightnessTracker;->mBgHandler:Landroid/os/Handler;
 
-    .line 309
+    .line 307
     const/4 v1, 0x0
 
     new-instance v9, Lcom/android/server/display/BrightnessTracker$BrightnessChangeValues;
 
     iget-object v2, p0, Lcom/android/server/display/BrightnessTracker;->mInjector:Lcom/android/server/display/BrightnessTracker$Injector;
 
-    .line 311
+    .line 309
     invoke-virtual {v2}, Lcom/android/server/display/BrightnessTracker$Injector;->currentTimeMillis()J
 
     move-result-wide v7
@@ -2623,42 +2974,45 @@
 
     invoke-direct/range {v2 .. v8}, Lcom/android/server/display/BrightnessTracker$BrightnessChangeValues;-><init>(FFZZJ)V
 
-    .line 308
-    const/4 p1, 0x1
+    .line 306
+    const/4 v2, 0x1
 
-    invoke-virtual {v0, p1, p2, v1, v9}, Landroid/os/Handler;->obtainMessage(IIILjava/lang/Object;)Landroid/os/Message;
+    invoke-virtual {v0, v2, p2, v1, v9}, Landroid/os/Handler;->obtainMessage(IIILjava/lang/Object;)Landroid/os/Message;
 
-    move-result-object p1
+    move-result-object v0
 
-    .line 312
-    invoke-virtual {p1}, Landroid/os/Message;->sendToTarget()V
+    .line 310
+    .local v0, "m":Landroid/os/Message;
+    invoke-virtual {v0}, Landroid/os/Message;->sendToTarget()V
 
-    .line 313
+    .line 311
     return-void
 .end method
 
 .method public onSwitchUser(I)V
     .registers 2
+    .param p1, "newUserId"  # I
 
-    .line 256
+    .line 254
     iput p1, p0, Lcom/android/server/display/BrightnessTracker;->mCurrentUserId:I
 
-    .line 257
+    .line 255
     return-void
 .end method
 
 .method public persistBrightnessTrackerState()V
     .registers 1
 
-    .line 295
+    .line 293
     invoke-direct {p0}, Lcom/android/server/display/BrightnessTracker;->scheduleWriteBrightnessTrackerState()V
 
-    .line 296
+    .line 294
     return-void
 .end method
 
 .method readEventsLocked(Ljava/io/InputStream;)V
-    .registers 19
+    .registers 38
+    .param p1, "stream"  # Ljava/io/InputStream;
     .annotation build Lcom/android/internal/annotations/GuardedBy;
         value = {
             "mEventsLock"
@@ -2674,7 +3028,7 @@
         }
     .end annotation
 
-    .line 600
+    .line 598
     move-object/from16 v1, p0
 
     const-string v0, ","
@@ -2684,7 +3038,8 @@
 
     move-result-object v2
 
-    .line 601
+    .line 599
+    .local v2, "parser":Lorg/xmlpull/v1/XmlPullParser;
     sget-object v3, Ljava/nio/charset/StandardCharsets;->UTF_8:Ljava/nio/charset/Charset;
 
     invoke-virtual {v3}, Ljava/nio/charset/Charset;->name()Ljava/lang/String;
@@ -2695,477 +3050,780 @@
 
     invoke-interface {v2, v4, v3}, Lorg/xmlpull/v1/XmlPullParser;->setInput(Ljava/io/InputStream;Ljava/lang/String;)V
 
-    .line 604
+    .line 602
     :goto_13
     invoke-interface {v2}, Lorg/xmlpull/v1/XmlPullParser;->next()I
 
     move-result v3
 
-    const/4 v4, 0x1
+    move v5, v3
 
-    if-eq v3, v4, :cond_1e
+    .local v5, "type":I
+    const/4 v6, 0x1
 
-    const/4 v5, 0x2
+    if-eq v3, v6, :cond_1f
 
-    if-eq v3, v5, :cond_1e
+    const/4 v3, 0x2
+
+    if-eq v5, v3, :cond_1f
 
     goto :goto_13
 
-    .line 607
-    :cond_1e
+    .line 605
+    :cond_1f
     invoke-interface {v2}, Lorg/xmlpull/v1/XmlPullParser;->getName()Ljava/lang/String;
 
     move-result-object v3
 
-    .line 608
-    const-string v5, "events"
+    .line 606
+    .local v3, "tag":Ljava/lang/String;
+    const-string v7, "events"
 
-    invoke-virtual {v5, v3}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
-
-    move-result v5
-
-    if-eqz v5, :cond_18f
-
-    .line 613
-    iget-object v3, v1, Lcom/android/server/display/BrightnessTracker;->mInjector:Lcom/android/server/display/BrightnessTracker$Injector;
-
-    invoke-virtual {v3}, Lcom/android/server/display/BrightnessTracker$Injector;->currentTimeMillis()J
-
-    move-result-wide v5
-
-    sget-wide v7, Lcom/android/server/display/BrightnessTracker;->MAX_EVENT_AGE:J
-
-    sub-long/2addr v5, v7
-
-    .line 615
-    invoke-interface {v2}, Lorg/xmlpull/v1/XmlPullParser;->next()I
-
-    .line 616
-    invoke-interface {v2}, Lorg/xmlpull/v1/XmlPullParser;->getDepth()I
-
-    move-result v3
-
-    .line 617
-    :cond_3a
-    :goto_3a
-    invoke-interface {v2}, Lorg/xmlpull/v1/XmlPullParser;->next()I
+    invoke-virtual {v7, v3}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
     move-result v7
 
-    if-eq v7, v4, :cond_18d
+    if-eqz v7, :cond_21c
 
-    const/4 v8, 0x3
+    .line 611
+    iget-object v7, v1, Lcom/android/server/display/BrightnessTracker;->mInjector:Lcom/android/server/display/BrightnessTracker$Injector;
 
-    if-ne v7, v8, :cond_49
+    invoke-virtual {v7}, Lcom/android/server/display/BrightnessTracker$Injector;->currentTimeMillis()J
 
-    .line 618
+    move-result-wide v7
+
+    sget-wide v9, Lcom/android/server/display/BrightnessTracker;->MAX_EVENT_AGE:J
+
+    sub-long/2addr v7, v9
+
+    .line 613
+    .local v7, "timeCutOff":J
+    invoke-interface {v2}, Lorg/xmlpull/v1/XmlPullParser;->next()I
+
+    .line 614
     invoke-interface {v2}, Lorg/xmlpull/v1/XmlPullParser;->getDepth()I
 
     move-result v9
 
-    if-le v9, v3, :cond_18d
+    .line 615
+    .local v9, "outerDepth":I
+    :goto_3b
+    invoke-interface {v2}, Lorg/xmlpull/v1/XmlPullParser;->next()I
 
-    .line 619
-    :cond_49
-    if-eq v7, v8, :cond_3a
+    move-result v10
 
-    const/4 v8, 0x4
+    move v5, v10
 
-    if-ne v7, v8, :cond_4f
+    if-eq v10, v6, :cond_214
+
+    const/4 v10, 0x3
+
+    if-ne v5, v10, :cond_4b
+
+    .line 616
+    invoke-interface {v2}, Lorg/xmlpull/v1/XmlPullParser;->getDepth()I
+
+    move-result v11
+
+    if-le v11, v9, :cond_21a
+
+    .line 617
+    :cond_4b
+    if-eq v5, v10, :cond_1ff
+
+    const/4 v10, 0x4
+
+    if-ne v5, v10, :cond_5a
+
+    .line 618
+    move-object/from16 v16, v0
+
+    move-object/from16 v30, v2
+
+    move/from16 v22, v5
+
+    move/from16 v25, v9
+
+    goto/16 :goto_207
 
     .line 620
-    goto :goto_3a
-
-    .line 622
-    :cond_4f
+    :cond_5a
     invoke-interface {v2}, Lorg/xmlpull/v1/XmlPullParser;->getName()Ljava/lang/String;
 
-    move-result-object v7
+    move-result-object v10
 
-    .line 623
-    const-string v8, "event"
+    move-object v3, v10
 
-    invoke-virtual {v8, v7}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    .line 621
+    const-string v10, "event"
 
-    move-result v7
+    invoke-virtual {v10, v3}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    if-eqz v7, :cond_3a
+    move-result v10
+
+    if-eqz v10, :cond_1e6
+
+    .line 622
+    new-instance v10, Landroid/hardware/display/BrightnessChangeEvent$Builder;
+
+    invoke-direct {v10}, Landroid/hardware/display/BrightnessChangeEvent$Builder;-><init>()V
 
     .line 624
-    new-instance v7, Landroid/hardware/display/BrightnessChangeEvent$Builder;
+    .local v10, "builder":Landroid/hardware/display/BrightnessChangeEvent$Builder;
+    const-string/jumbo v11, "nits"
 
-    invoke-direct {v7}, Landroid/hardware/display/BrightnessChangeEvent$Builder;-><init>()V
+    const/4 v12, 0x0
+
+    invoke-interface {v2, v12, v11}, Lorg/xmlpull/v1/XmlPullParser;->getAttributeValue(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+
+    move-result-object v11
+
+    .line 625
+    .local v11, "brightness":Ljava/lang/String;
+    invoke-static {v11}, Ljava/lang/Float;->parseFloat(Ljava/lang/String;)F
+
+    move-result v13
+
+    invoke-virtual {v10, v13}, Landroid/hardware/display/BrightnessChangeEvent$Builder;->setBrightness(F)Landroid/hardware/display/BrightnessChangeEvent$Builder;
 
     .line 626
-    const-string/jumbo v8, "nits"
+    const-string/jumbo v13, "timestamp"
 
-    const/4 v9, 0x0
+    invoke-interface {v2, v12, v13}, Lorg/xmlpull/v1/XmlPullParser;->getAttributeValue(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
 
-    invoke-interface {v2, v9, v8}, Lorg/xmlpull/v1/XmlPullParser;->getAttributeValue(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
-
-    move-result-object v8
+    move-result-object v13
 
     .line 627
-    invoke-static {v8}, Ljava/lang/Float;->parseFloat(Ljava/lang/String;)F
-
-    move-result v8
-
-    invoke-virtual {v7, v8}, Landroid/hardware/display/BrightnessChangeEvent$Builder;->setBrightness(F)Landroid/hardware/display/BrightnessChangeEvent$Builder;
-
-    .line 628
-    const-string/jumbo v8, "timestamp"
-
-    invoke-interface {v2, v9, v8}, Lorg/xmlpull/v1/XmlPullParser;->getAttributeValue(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
-
-    move-result-object v8
-
-    .line 629
-    invoke-static {v8}, Ljava/lang/Long;->parseLong(Ljava/lang/String;)J
-
-    move-result-wide v10
-
-    invoke-virtual {v7, v10, v11}, Landroid/hardware/display/BrightnessChangeEvent$Builder;->setTimeStamp(J)Landroid/hardware/display/BrightnessChangeEvent$Builder;
-
-    .line 630
-    const-string/jumbo v8, "packageName"
-
-    invoke-interface {v2, v9, v8}, Lorg/xmlpull/v1/XmlPullParser;->getAttributeValue(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
-
-    move-result-object v8
-
-    invoke-virtual {v7, v8}, Landroid/hardware/display/BrightnessChangeEvent$Builder;->setPackageName(Ljava/lang/String;)Landroid/hardware/display/BrightnessChangeEvent$Builder;
-
-    .line 631
-    const-string/jumbo v8, "user"
-
-    invoke-interface {v2, v9, v8}, Lorg/xmlpull/v1/XmlPullParser;->getAttributeValue(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
-
-    move-result-object v8
-
-    .line 632
-    iget-object v10, v1, Lcom/android/server/display/BrightnessTracker;->mInjector:Lcom/android/server/display/BrightnessTracker$Injector;
-
-    iget-object v11, v1, Lcom/android/server/display/BrightnessTracker;->mUserManager:Landroid/os/UserManager;
-
-    invoke-static {v8}, Ljava/lang/Integer;->parseInt(Ljava/lang/String;)I
-
-    move-result v8
-
-    invoke-virtual {v10, v11, v8}, Lcom/android/server/display/BrightnessTracker$Injector;->getUserId(Landroid/os/UserManager;I)I
-
-    move-result v8
-
-    invoke-virtual {v7, v8}, Landroid/hardware/display/BrightnessChangeEvent$Builder;->setUserId(I)Landroid/hardware/display/BrightnessChangeEvent$Builder;
-
-    .line 633
-    const-string v8, "batteryLevel"
-
-    invoke-interface {v2, v9, v8}, Lorg/xmlpull/v1/XmlPullParser;->getAttributeValue(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
-
-    move-result-object v8
-
-    .line 634
-    invoke-static {v8}, Ljava/lang/Float;->parseFloat(Ljava/lang/String;)F
-
-    move-result v8
-
-    invoke-virtual {v7, v8}, Landroid/hardware/display/BrightnessChangeEvent$Builder;->setBatteryLevel(F)Landroid/hardware/display/BrightnessChangeEvent$Builder;
-
-    .line 635
-    const-string/jumbo v8, "nightMode"
-
-    invoke-interface {v2, v9, v8}, Lorg/xmlpull/v1/XmlPullParser;->getAttributeValue(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
-
-    move-result-object v8
-
-    .line 636
-    invoke-static {v8}, Ljava/lang/Boolean;->parseBoolean(Ljava/lang/String;)Z
-
-    move-result v8
-
-    invoke-virtual {v7, v8}, Landroid/hardware/display/BrightnessChangeEvent$Builder;->setNightMode(Z)Landroid/hardware/display/BrightnessChangeEvent$Builder;
-
-    .line 637
-    const-string v8, "colorTemperature"
-
-    .line 638
-    invoke-interface {v2, v9, v8}, Lorg/xmlpull/v1/XmlPullParser;->getAttributeValue(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
-
-    move-result-object v8
-
-    .line 639
-    invoke-static {v8}, Ljava/lang/Integer;->parseInt(Ljava/lang/String;)I
-
-    move-result v8
-
-    invoke-virtual {v7, v8}, Landroid/hardware/display/BrightnessChangeEvent$Builder;->setColorTemperature(I)Landroid/hardware/display/BrightnessChangeEvent$Builder;
-
-    .line 640
-    const-string v8, "lastNits"
-
-    invoke-interface {v2, v9, v8}, Lorg/xmlpull/v1/XmlPullParser;->getAttributeValue(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
-
-    move-result-object v8
-
-    .line 641
-    invoke-static {v8}, Ljava/lang/Float;->parseFloat(Ljava/lang/String;)F
-
-    move-result v8
-
-    invoke-virtual {v7, v8}, Landroid/hardware/display/BrightnessChangeEvent$Builder;->setLastBrightness(F)Landroid/hardware/display/BrightnessChangeEvent$Builder;
-
-    .line 643
-    const-string v8, "lux"
-
-    invoke-interface {v2, v9, v8}, Lorg/xmlpull/v1/XmlPullParser;->getAttributeValue(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
-
-    move-result-object v8
-
-    .line 644
-    const-string v10, "luxTimestamps"
-
-    invoke-interface {v2, v9, v10}, Lorg/xmlpull/v1/XmlPullParser;->getAttributeValue(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
-
-    move-result-object v10
-
-    .line 646
-    invoke-virtual {v8, v0}, Ljava/lang/String;->split(Ljava/lang/String;)[Ljava/lang/String;
-
-    move-result-object v8
-
-    .line 647
-    invoke-virtual {v10, v0}, Ljava/lang/String;->split(Ljava/lang/String;)[Ljava/lang/String;
-
-    move-result-object v10
-
-    .line 648
-    array-length v11, v8
-
-    array-length v12, v10
-
-    if-eq v11, v12, :cond_ec
-
-    .line 649
-    goto/16 :goto_3a
-
-    .line 651
-    :cond_ec
-    array-length v11, v8
-
-    new-array v11, v11, [F
-
-    .line 652
-    array-length v12, v8
-
-    new-array v12, v12, [J
-
-    .line 653
-    const/4 v13, 0x0
-
-    move v14, v13
-
-    :goto_f4
-    array-length v15, v11
-
-    if-ge v14, v15, :cond_10a
-
-    .line 654
-    aget-object v15, v8, v14
-
-    invoke-static {v15}, Ljava/lang/Float;->parseFloat(Ljava/lang/String;)F
-
-    move-result v15
-
-    aput v15, v11, v14
-
-    .line 655
-    aget-object v15, v10, v14
-
-    invoke-static {v15}, Ljava/lang/Long;->parseLong(Ljava/lang/String;)J
-
-    move-result-wide v15
-
-    aput-wide v15, v12, v14
-
-    .line 653
-    add-int/lit8 v14, v14, 0x1
-
-    goto :goto_f4
-
-    .line 657
-    :cond_10a
-    invoke-virtual {v7, v11}, Landroid/hardware/display/BrightnessChangeEvent$Builder;->setLuxValues([F)Landroid/hardware/display/BrightnessChangeEvent$Builder;
-
-    .line 658
-    invoke-virtual {v7, v12}, Landroid/hardware/display/BrightnessChangeEvent$Builder;->setLuxTimestamps([J)Landroid/hardware/display/BrightnessChangeEvent$Builder;
-
-    .line 660
-    const-string v8, "defaultConfig"
-
-    invoke-interface {v2, v9, v8}, Lorg/xmlpull/v1/XmlPullParser;->getAttributeValue(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
-
-    move-result-object v8
-
-    .line 661
-    if-eqz v8, :cond_11f
-
-    .line 662
-    invoke-static {v8}, Ljava/lang/Boolean;->parseBoolean(Ljava/lang/String;)Z
-
-    move-result v8
-
-    invoke-virtual {v7, v8}, Landroid/hardware/display/BrightnessChangeEvent$Builder;->setIsDefaultBrightnessConfig(Z)Landroid/hardware/display/BrightnessChangeEvent$Builder;
-
-    .line 664
-    :cond_11f
-    const-string/jumbo v8, "powerSaveFactor"
-
-    invoke-interface {v2, v9, v8}, Lorg/xmlpull/v1/XmlPullParser;->getAttributeValue(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
-
-    move-result-object v8
-
-    .line 665
-    if-eqz v8, :cond_130
-
-    .line 666
-    invoke-static {v8}, Ljava/lang/Float;->parseFloat(Ljava/lang/String;)F
-
-    move-result v8
-
-    invoke-virtual {v7, v8}, Landroid/hardware/display/BrightnessChangeEvent$Builder;->setPowerBrightnessFactor(F)Landroid/hardware/display/BrightnessChangeEvent$Builder;
-
-    goto :goto_135
-
-    .line 668
-    :cond_130
-    const/high16 v8, 0x3f800000  # 1.0f
-
-    invoke-virtual {v7, v8}, Landroid/hardware/display/BrightnessChangeEvent$Builder;->setPowerBrightnessFactor(F)Landroid/hardware/display/BrightnessChangeEvent$Builder;
-
-    .line 670
-    :goto_135
-    const-string/jumbo v8, "userPoint"
-
-    invoke-interface {v2, v9, v8}, Lorg/xmlpull/v1/XmlPullParser;->getAttributeValue(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
-
-    move-result-object v8
-
-    .line 671
-    if-eqz v8, :cond_145
-
-    .line 672
-    invoke-static {v8}, Ljava/lang/Boolean;->parseBoolean(Ljava/lang/String;)Z
-
-    move-result v8
-
-    invoke-virtual {v7, v8}, Landroid/hardware/display/BrightnessChangeEvent$Builder;->setUserBrightnessPoint(Z)Landroid/hardware/display/BrightnessChangeEvent$Builder;
-
-    .line 675
-    :cond_145
-    const-string v8, "colorSampleDuration"
-
-    .line 676
-    invoke-interface {v2, v9, v8}, Lorg/xmlpull/v1/XmlPullParser;->getAttributeValue(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
-
-    move-result-object v8
-
-    .line 677
-    const-string v10, "colorValueBuckets"
-
-    .line 678
-    invoke-interface {v2, v9, v10}, Lorg/xmlpull/v1/XmlPullParser;->getAttributeValue(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
-
-    move-result-object v9
-
-    .line 679
-    if-eqz v8, :cond_172
-
-    if-eqz v9, :cond_172
-
-    .line 680
-    invoke-static {v8}, Ljava/lang/Long;->parseLong(Ljava/lang/String;)J
-
-    move-result-wide v10
-
-    .line 681
-    invoke-virtual {v9, v0}, Ljava/lang/String;->split(Ljava/lang/String;)[Ljava/lang/String;
-
-    move-result-object v8
-
-    .line 682
-    array-length v9, v8
-
-    new-array v9, v9, [J
-
-    .line 683
-    nop
-
-    :goto_161
-    array-length v12, v9
-
-    if-ge v13, v12, :cond_16f
-
-    .line 684
-    aget-object v12, v8, v13
-
-    invoke-static {v12}, Ljava/lang/Long;->parseLong(Ljava/lang/String;)J
+    .local v13, "timestamp":Ljava/lang/String;
+    invoke-static {v13}, Ljava/lang/Long;->parseLong(Ljava/lang/String;)J
 
     move-result-wide v14
 
-    aput-wide v14, v9, v13
+    invoke-virtual {v10, v14, v15}, Landroid/hardware/display/BrightnessChangeEvent$Builder;->setTimeStamp(J)Landroid/hardware/display/BrightnessChangeEvent$Builder;
 
-    .line 683
-    add-int/lit8 v13, v13, 0x1
+    .line 628
+    const-string/jumbo v14, "packageName"
 
-    goto :goto_161
+    invoke-interface {v2, v12, v14}, Lorg/xmlpull/v1/XmlPullParser;->getAttributeValue(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
 
-    .line 686
-    :cond_16f
-    invoke-virtual {v7, v9, v10, v11}, Landroid/hardware/display/BrightnessChangeEvent$Builder;->setColorValues([JJ)Landroid/hardware/display/BrightnessChangeEvent$Builder;
+    move-result-object v14
 
-    .line 689
-    :cond_172
-    invoke-virtual {v7}, Landroid/hardware/display/BrightnessChangeEvent$Builder;->build()Landroid/hardware/display/BrightnessChangeEvent;
+    invoke-virtual {v10, v14}, Landroid/hardware/display/BrightnessChangeEvent$Builder;->setPackageName(Ljava/lang/String;)Landroid/hardware/display/BrightnessChangeEvent$Builder;
 
-    move-result-object v7
+    .line 629
+    const-string/jumbo v14, "user"
+
+    invoke-interface {v2, v12, v14}, Lorg/xmlpull/v1/XmlPullParser;->getAttributeValue(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+
+    move-result-object v14
+
+    .line 630
+    .local v14, "user":Ljava/lang/String;
+    iget-object v15, v1, Lcom/android/server/display/BrightnessTracker;->mInjector:Lcom/android/server/display/BrightnessTracker$Injector;
+
+    iget-object v6, v1, Lcom/android/server/display/BrightnessTracker;->mUserManager:Landroid/os/UserManager;
+
+    invoke-static {v14}, Ljava/lang/Integer;->parseInt(Ljava/lang/String;)I
+
+    move-result v12
+
+    invoke-virtual {v15, v6, v12}, Lcom/android/server/display/BrightnessTracker$Injector;->getUserId(Landroid/os/UserManager;I)I
+
+    move-result v6
+
+    invoke-virtual {v10, v6}, Landroid/hardware/display/BrightnessChangeEvent$Builder;->setUserId(I)Landroid/hardware/display/BrightnessChangeEvent$Builder;
+
+    .line 631
+    const-string v6, "batteryLevel"
+
+    const/4 v12, 0x0
+
+    invoke-interface {v2, v12, v6}, Lorg/xmlpull/v1/XmlPullParser;->getAttributeValue(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+
+    move-result-object v6
+
+    .line 632
+    .local v6, "batteryLevel":Ljava/lang/String;
+    invoke-static {v6}, Ljava/lang/Float;->parseFloat(Ljava/lang/String;)F
+
+    move-result v12
+
+    invoke-virtual {v10, v12}, Landroid/hardware/display/BrightnessChangeEvent$Builder;->setBatteryLevel(F)Landroid/hardware/display/BrightnessChangeEvent$Builder;
+
+    .line 633
+    const-string/jumbo v12, "nightMode"
+
+    const/4 v15, 0x0
+
+    invoke-interface {v2, v15, v12}, Lorg/xmlpull/v1/XmlPullParser;->getAttributeValue(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+
+    move-result-object v12
+
+    .line 634
+    .local v12, "nightMode":Ljava/lang/String;
+    invoke-static {v12}, Ljava/lang/Boolean;->parseBoolean(Ljava/lang/String;)Z
+
+    move-result v15
+
+    invoke-virtual {v10, v15}, Landroid/hardware/display/BrightnessChangeEvent$Builder;->setNightMode(Z)Landroid/hardware/display/BrightnessChangeEvent$Builder;
+
+    .line 635
+    const-string v15, "colorTemperature"
+
+    .line 636
+    move-object/from16 v17, v3
+
+    const/4 v3, 0x0
+
+    .end local v3  # "tag":Ljava/lang/String;
+    .local v17, "tag":Ljava/lang/String;
+    invoke-interface {v2, v3, v15}, Lorg/xmlpull/v1/XmlPullParser;->getAttributeValue(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+
+    move-result-object v15
+
+    move-object v3, v15
+
+    .line 637
+    .local v3, "colorTemperature":Ljava/lang/String;
+    invoke-static {v3}, Ljava/lang/Integer;->parseInt(Ljava/lang/String;)I
+
+    move-result v15
+
+    invoke-virtual {v10, v15}, Landroid/hardware/display/BrightnessChangeEvent$Builder;->setColorTemperature(I)Landroid/hardware/display/BrightnessChangeEvent$Builder;
+
+    .line 638
+    const-string/jumbo v15, "lastNits"
+
+    move-object/from16 v18, v3
+
+    const/4 v3, 0x0
+
+    .end local v3  # "colorTemperature":Ljava/lang/String;
+    .local v18, "colorTemperature":Ljava/lang/String;
+    invoke-interface {v2, v3, v15}, Lorg/xmlpull/v1/XmlPullParser;->getAttributeValue(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+
+    move-result-object v15
+
+    move-object v3, v15
+
+    .line 639
+    .local v3, "lastBrightness":Ljava/lang/String;
+    invoke-static {v3}, Ljava/lang/Float;->parseFloat(Ljava/lang/String;)F
+
+    move-result v15
+
+    invoke-virtual {v10, v15}, Landroid/hardware/display/BrightnessChangeEvent$Builder;->setLastBrightness(F)Landroid/hardware/display/BrightnessChangeEvent$Builder;
+
+    .line 641
+    const-string/jumbo v15, "lux"
+
+    move-object/from16 v19, v3
+
+    const/4 v3, 0x0
+
+    .end local v3  # "lastBrightness":Ljava/lang/String;
+    .local v19, "lastBrightness":Ljava/lang/String;
+    invoke-interface {v2, v3, v15}, Lorg/xmlpull/v1/XmlPullParser;->getAttributeValue(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+
+    move-result-object v15
+
+    .line 642
+    .local v15, "luxValue":Ljava/lang/String;
+    const-string/jumbo v3, "luxTimestamps"
+
+    const/4 v4, 0x0
+
+    invoke-interface {v2, v4, v3}, Lorg/xmlpull/v1/XmlPullParser;->getAttributeValue(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+
+    move-result-object v3
+
+    .line 644
+    .local v3, "luxTimestamp":Ljava/lang/String;
+    invoke-virtual {v15, v0}, Ljava/lang/String;->split(Ljava/lang/String;)[Ljava/lang/String;
+
+    move-result-object v4
+
+    .line 645
+    .local v4, "luxValuesStrings":[Ljava/lang/String;
+    invoke-virtual {v3, v0}, Ljava/lang/String;->split(Ljava/lang/String;)[Ljava/lang/String;
+
+    move-result-object v20
+
+    move-object/from16 v21, v20
+
+    .line 646
+    .local v21, "luxTimestampsStrings":[Ljava/lang/String;
+    move-object/from16 v20, v3
+
+    .end local v3  # "luxTimestamp":Ljava/lang/String;
+    .local v20, "luxTimestamp":Ljava/lang/String;
+    array-length v3, v4
+
+    move/from16 v22, v5
+
+    move-object/from16 v5, v21
+
+    move-object/from16 v21, v6
+
+    .end local v6  # "batteryLevel":Ljava/lang/String;
+    .local v5, "luxTimestampsStrings":[Ljava/lang/String;
+    .local v21, "batteryLevel":Ljava/lang/String;
+    .local v22, "type":I
+    array-length v6, v5
+
+    if-eq v3, v6, :cond_119
+
+    .line 647
+    move-object/from16 v16, v0
+
+    move-object/from16 v30, v2
+
+    move/from16 v25, v9
+
+    goto/16 :goto_1f0
+
+    .line 649
+    :cond_119
+    array-length v3, v4
+
+    new-array v3, v3, [F
+
+    .line 650
+    .local v3, "luxValues":[F
+    array-length v6, v4
+
+    new-array v6, v6, [J
+
+    .line 651
+    .local v6, "luxTimestamps":[J
+    const/16 v23, 0x0
+
+    move/from16 v24, v23
+
+    move/from16 v25, v9
+
+    move/from16 v9, v24
+
+    .local v9, "i":I
+    .local v25, "outerDepth":I
+    :goto_127
+    move-object/from16 v24, v11
+
+    .end local v11  # "brightness":Ljava/lang/String;
+    .local v24, "brightness":Ljava/lang/String;
+    array-length v11, v3
+
+    if-ge v9, v11, :cond_141
+
+    .line 652
+    aget-object v11, v4, v9
+
+    invoke-static {v11}, Ljava/lang/Float;->parseFloat(Ljava/lang/String;)F
+
+    move-result v11
+
+    aput v11, v3, v9
+
+    .line 653
+    aget-object v11, v5, v9
+
+    invoke-static {v11}, Ljava/lang/Long;->parseLong(Ljava/lang/String;)J
+
+    move-result-wide v26
+
+    aput-wide v26, v6, v9
+
+    .line 651
+    add-int/lit8 v9, v9, 0x1
+
+    move-object/from16 v11, v24
+
+    goto :goto_127
+
+    .line 655
+    .end local v9  # "i":I
+    :cond_141
+    invoke-virtual {v10, v3}, Landroid/hardware/display/BrightnessChangeEvent$Builder;->setLuxValues([F)Landroid/hardware/display/BrightnessChangeEvent$Builder;
+
+    .line 656
+    invoke-virtual {v10, v6}, Landroid/hardware/display/BrightnessChangeEvent$Builder;->setLuxTimestamps([J)Landroid/hardware/display/BrightnessChangeEvent$Builder;
+
+    .line 658
+    const-string v9, "defaultConfig"
+
+    const/4 v11, 0x0
+
+    invoke-interface {v2, v11, v9}, Lorg/xmlpull/v1/XmlPullParser;->getAttributeValue(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+
+    move-result-object v9
+
+    .line 659
+    .local v9, "defaultConfig":Ljava/lang/String;
+    if-eqz v9, :cond_157
+
+    .line 660
+    invoke-static {v9}, Ljava/lang/Boolean;->parseBoolean(Ljava/lang/String;)Z
+
+    move-result v11
+
+    invoke-virtual {v10, v11}, Landroid/hardware/display/BrightnessChangeEvent$Builder;->setIsDefaultBrightnessConfig(Z)Landroid/hardware/display/BrightnessChangeEvent$Builder;
+
+    .line 662
+    :cond_157
+    const-string/jumbo v11, "powerSaveFactor"
+
+    move-object/from16 v26, v3
+
+    const/4 v3, 0x0
+
+    .end local v3  # "luxValues":[F
+    .local v26, "luxValues":[F
+    invoke-interface {v2, v3, v11}, Lorg/xmlpull/v1/XmlPullParser;->getAttributeValue(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+
+    move-result-object v11
+
+    move-object v3, v11
+
+    .line 663
+    .local v3, "powerSave":Ljava/lang/String;
+    if-eqz v3, :cond_16c
+
+    .line 664
+    invoke-static {v3}, Ljava/lang/Float;->parseFloat(Ljava/lang/String;)F
+
+    move-result v11
+
+    invoke-virtual {v10, v11}, Landroid/hardware/display/BrightnessChangeEvent$Builder;->setPowerBrightnessFactor(F)Landroid/hardware/display/BrightnessChangeEvent$Builder;
+
+    goto :goto_171
+
+    .line 666
+    :cond_16c
+    const/high16 v11, 0x3f800000  # 1.0f
+
+    invoke-virtual {v10, v11}, Landroid/hardware/display/BrightnessChangeEvent$Builder;->setPowerBrightnessFactor(F)Landroid/hardware/display/BrightnessChangeEvent$Builder;
+
+    .line 668
+    :goto_171
+    const-string/jumbo v11, "userPoint"
+
+    move-object/from16 v27, v3
+
+    const/4 v3, 0x0
+
+    .end local v3  # "powerSave":Ljava/lang/String;
+    .local v27, "powerSave":Ljava/lang/String;
+    invoke-interface {v2, v3, v11}, Lorg/xmlpull/v1/XmlPullParser;->getAttributeValue(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+
+    move-result-object v11
+
+    move-object v3, v11
+
+    .line 669
+    .local v3, "userPoint":Ljava/lang/String;
+    if-eqz v3, :cond_185
+
+    .line 670
+    invoke-static {v3}, Ljava/lang/Boolean;->parseBoolean(Ljava/lang/String;)Z
+
+    move-result v11
+
+    invoke-virtual {v10, v11}, Landroid/hardware/display/BrightnessChangeEvent$Builder;->setUserBrightnessPoint(Z)Landroid/hardware/display/BrightnessChangeEvent$Builder;
+
+    .line 673
+    :cond_185
+    const-string v11, "colorSampleDuration"
+
+    .line 674
+    move-object/from16 v28, v3
+
+    const/4 v3, 0x0
+
+    .end local v3  # "userPoint":Ljava/lang/String;
+    .local v28, "userPoint":Ljava/lang/String;
+    invoke-interface {v2, v3, v11}, Lorg/xmlpull/v1/XmlPullParser;->getAttributeValue(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+
+    move-result-object v11
+
+    .line 675
+    .local v11, "colorSampleDurationString":Ljava/lang/String;
+    const-string v3, "colorValueBuckets"
+
+    .line 676
+    move-object/from16 v29, v4
+
+    const/4 v4, 0x0
+
+    .end local v4  # "luxValuesStrings":[Ljava/lang/String;
+    .local v29, "luxValuesStrings":[Ljava/lang/String;
+    invoke-interface {v2, v4, v3}, Lorg/xmlpull/v1/XmlPullParser;->getAttributeValue(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+
+    move-result-object v3
+
+    .line 677
+    .local v3, "colorValueBucketsString":Ljava/lang/String;
+    if-eqz v11, :cond_1c6
+
+    if-eqz v3, :cond_1c6
+
+    .line 678
+    invoke-static {v11}, Ljava/lang/Long;->parseLong(Ljava/lang/String;)J
+
+    move-result-wide v30
+
+    move-wide/from16 v32, v30
+
+    .line 679
+    .local v32, "colorSampleDuration":J
+    invoke-virtual {v3, v0}, Ljava/lang/String;->split(Ljava/lang/String;)[Ljava/lang/String;
+
+    move-result-object v4
+
+    .line 680
+    .local v4, "buckets":[Ljava/lang/String;
+    move-object/from16 v16, v0
+
+    array-length v0, v4
+
+    new-array v0, v0, [J
+
+    .line 681
+    .local v0, "bucketValues":[J
+    move-object/from16 v30, v2
+
+    move/from16 v2, v23
+
+    .local v2, "i":I
+    .local v30, "parser":Lorg/xmlpull/v1/XmlPullParser;
+    :goto_1ae
+    move-object/from16 v23, v3
+
+    .end local v3  # "colorValueBucketsString":Ljava/lang/String;
+    .local v23, "colorValueBucketsString":Ljava/lang/String;
+    array-length v3, v0
+
+    if-ge v2, v3, :cond_1c0
+
+    .line 682
+    aget-object v3, v4, v2
+
+    invoke-static {v3}, Ljava/lang/Long;->parseLong(Ljava/lang/String;)J
+
+    move-result-wide v34
+
+    aput-wide v34, v0, v2
+
+    .line 681
+    add-int/lit8 v2, v2, 0x1
+
+    move-object/from16 v3, v23
+
+    goto :goto_1ae
+
+    .line 684
+    .end local v2  # "i":I
+    :cond_1c0
+    move-wide/from16 v2, v32
+
+    .end local v32  # "colorSampleDuration":J
+    .local v2, "colorSampleDuration":J
+    invoke-virtual {v10, v0, v2, v3}, Landroid/hardware/display/BrightnessChangeEvent$Builder;->setColorValues([JJ)Landroid/hardware/display/BrightnessChangeEvent$Builder;
+
+    goto :goto_1cc
+
+    .line 677
+    .end local v0  # "bucketValues":[J
+    .end local v4  # "buckets":[Ljava/lang/String;
+    .end local v23  # "colorValueBucketsString":Ljava/lang/String;
+    .end local v30  # "parser":Lorg/xmlpull/v1/XmlPullParser;
+    .local v2, "parser":Lorg/xmlpull/v1/XmlPullParser;
+    .restart local v3  # "colorValueBucketsString":Ljava/lang/String;
+    :cond_1c6
+    move-object/from16 v16, v0
+
+    move-object/from16 v30, v2
+
+    move-object/from16 v23, v3
+
+    .line 687
+    .end local v2  # "parser":Lorg/xmlpull/v1/XmlPullParser;
+    .end local v3  # "colorValueBucketsString":Ljava/lang/String;
+    .restart local v23  # "colorValueBucketsString":Ljava/lang/String;
+    .restart local v30  # "parser":Lorg/xmlpull/v1/XmlPullParser;
+    :goto_1cc
+    invoke-virtual {v10}, Landroid/hardware/display/BrightnessChangeEvent$Builder;->build()Landroid/hardware/display/BrightnessChangeEvent;
+
+    move-result-object v0
+
+    .line 693
+    .local v0, "event":Landroid/hardware/display/BrightnessChangeEvent;
+    iget v2, v0, Landroid/hardware/display/BrightnessChangeEvent;->userId:I
+
+    const/4 v3, -0x1
+
+    if-eq v2, v3, :cond_1e5
+
+    iget-wide v2, v0, Landroid/hardware/display/BrightnessChangeEvent;->timeStamp:J
+
+    cmp-long v2, v2, v7
+
+    if-lez v2, :cond_1e5
+
+    iget-object v2, v0, Landroid/hardware/display/BrightnessChangeEvent;->luxValues:[F
+
+    array-length v2, v2
+
+    if-lez v2, :cond_1e5
 
     .line 695
-    iget v8, v7, Landroid/hardware/display/BrightnessChangeEvent;->userId:I
+    iget-object v2, v1, Lcom/android/server/display/BrightnessTracker;->mEvents:Lcom/android/internal/util/RingBuffer;
 
-    const/4 v9, -0x1
-
-    if-eq v8, v9, :cond_18b
-
-    iget-wide v8, v7, Landroid/hardware/display/BrightnessChangeEvent;->timeStamp:J
-
-    cmp-long v8, v8, v5
-
-    if-lez v8, :cond_18b
-
-    iget-object v8, v7, Landroid/hardware/display/BrightnessChangeEvent;->luxValues:[F
-
-    array-length v8, v8
-
-    if-lez v8, :cond_18b
+    invoke-virtual {v2, v0}, Lcom/android/internal/util/RingBuffer;->append(Ljava/lang/Object;)V
 
     .line 697
-    iget-object v8, v1, Lcom/android/server/display/BrightnessTracker;->mEvents:Lcom/android/internal/util/RingBuffer;
+    .end local v0  # "event":Landroid/hardware/display/BrightnessChangeEvent;
+    .end local v5  # "luxTimestampsStrings":[Ljava/lang/String;
+    .end local v6  # "luxTimestamps":[J
+    .end local v9  # "defaultConfig":Ljava/lang/String;
+    .end local v10  # "builder":Landroid/hardware/display/BrightnessChangeEvent$Builder;
+    .end local v11  # "colorSampleDurationString":Ljava/lang/String;
+    .end local v12  # "nightMode":Ljava/lang/String;
+    .end local v13  # "timestamp":Ljava/lang/String;
+    .end local v14  # "user":Ljava/lang/String;
+    .end local v15  # "luxValue":Ljava/lang/String;
+    .end local v18  # "colorTemperature":Ljava/lang/String;
+    .end local v19  # "lastBrightness":Ljava/lang/String;
+    .end local v20  # "luxTimestamp":Ljava/lang/String;
+    .end local v21  # "batteryLevel":Ljava/lang/String;
+    .end local v23  # "colorValueBucketsString":Ljava/lang/String;
+    .end local v24  # "brightness":Ljava/lang/String;
+    .end local v26  # "luxValues":[F
+    .end local v27  # "powerSave":Ljava/lang/String;
+    .end local v28  # "userPoint":Ljava/lang/String;
+    .end local v29  # "luxValuesStrings":[Ljava/lang/String;
+    :cond_1e5
+    goto :goto_1f0
 
-    invoke-virtual {v8, v7}, Lcom/android/internal/util/RingBuffer;->append(Ljava/lang/Object;)V
+    .line 621
+    .end local v17  # "tag":Ljava/lang/String;
+    .end local v22  # "type":I
+    .end local v25  # "outerDepth":I
+    .end local v30  # "parser":Lorg/xmlpull/v1/XmlPullParser;
+    .restart local v2  # "parser":Lorg/xmlpull/v1/XmlPullParser;
+    .local v3, "tag":Ljava/lang/String;
+    .local v5, "type":I
+    .local v9, "outerDepth":I
+    :cond_1e6
+    move-object/from16 v16, v0
 
-    .line 699
-    :cond_18b
-    goto/16 :goto_3a
+    move-object/from16 v30, v2
 
-    .line 708
-    :cond_18d
+    move-object/from16 v17, v3
+
+    move/from16 v22, v5
+
+    move/from16 v25, v9
+
+    .line 615
+    .end local v2  # "parser":Lorg/xmlpull/v1/XmlPullParser;
+    .end local v3  # "tag":Ljava/lang/String;
+    .end local v5  # "type":I
+    .end local v9  # "outerDepth":I
+    .restart local v17  # "tag":Ljava/lang/String;
+    .restart local v22  # "type":I
+    .restart local v25  # "outerDepth":I
+    .restart local v30  # "parser":Lorg/xmlpull/v1/XmlPullParser;
+    :goto_1f0
+    move-object/from16 v4, p1
+
+    move-object/from16 v0, v16
+
+    move-object/from16 v3, v17
+
+    move/from16 v5, v22
+
+    move/from16 v9, v25
+
+    move-object/from16 v2, v30
+
+    const/4 v6, 0x1
+
+    goto/16 :goto_3b
+
+    .line 617
+    .end local v17  # "tag":Ljava/lang/String;
+    .end local v22  # "type":I
+    .end local v25  # "outerDepth":I
+    .end local v30  # "parser":Lorg/xmlpull/v1/XmlPullParser;
+    .restart local v2  # "parser":Lorg/xmlpull/v1/XmlPullParser;
+    .restart local v3  # "tag":Ljava/lang/String;
+    .restart local v5  # "type":I
+    .restart local v9  # "outerDepth":I
+    :cond_1ff
+    move-object/from16 v16, v0
+
+    move-object/from16 v30, v2
+
+    move/from16 v22, v5
+
+    move/from16 v25, v9
+
+    .line 615
+    .end local v2  # "parser":Lorg/xmlpull/v1/XmlPullParser;
+    .end local v5  # "type":I
+    .end local v9  # "outerDepth":I
+    .restart local v22  # "type":I
+    .restart local v25  # "outerDepth":I
+    .restart local v30  # "parser":Lorg/xmlpull/v1/XmlPullParser;
+    :goto_207
+    move-object/from16 v4, p1
+
+    move-object/from16 v0, v16
+
+    move/from16 v5, v22
+
+    move/from16 v9, v25
+
+    move-object/from16 v2, v30
+
+    const/4 v6, 0x1
+
+    goto/16 :goto_3b
+
+    .end local v22  # "type":I
+    .end local v25  # "outerDepth":I
+    .end local v30  # "parser":Lorg/xmlpull/v1/XmlPullParser;
+    .restart local v2  # "parser":Lorg/xmlpull/v1/XmlPullParser;
+    .restart local v5  # "type":I
+    .restart local v9  # "outerDepth":I
+    :cond_214
+    move-object/from16 v30, v2
+
+    move/from16 v22, v5
+
+    move/from16 v25, v9
+
+    .line 706
+    .end local v2  # "parser":Lorg/xmlpull/v1/XmlPullParser;
+    .end local v3  # "tag":Ljava/lang/String;
+    .end local v5  # "type":I
+    .end local v7  # "timeCutOff":J
+    .end local v9  # "outerDepth":I
+    :cond_21a
     nop
 
-    .line 709
+    .line 707
     return-void
 
-    .line 609
-    :cond_18f
+    .line 607
+    .restart local v2  # "parser":Lorg/xmlpull/v1/XmlPullParser;
+    .restart local v3  # "tag":Ljava/lang/String;
+    .restart local v5  # "type":I
+    :cond_21c
+    move-object/from16 v30, v2
+
+    .end local v2  # "parser":Lorg/xmlpull/v1/XmlPullParser;
+    .restart local v30  # "parser":Lorg/xmlpull/v1/XmlPullParser;
     new-instance v0, Lorg/xmlpull/v1/XmlPullParserException;
 
     new-instance v2, Ljava/lang/StringBuilder;
@@ -3184,18 +3842,26 @@
 
     invoke-direct {v0, v2}, Lorg/xmlpull/v1/XmlPullParserException;-><init>(Ljava/lang/String;)V
 
+    .end local p0  # "this":Lcom/android/server/display/BrightnessTracker;
+    .end local p1  # "stream":Ljava/io/InputStream;
     throw v0
-    :try_end_1a6
-    .catch Ljava/lang/NullPointerException; {:try_start_4 .. :try_end_1a6} :catch_1a6
-    .catch Ljava/lang/NumberFormatException; {:try_start_4 .. :try_end_1a6} :catch_1a6
-    .catch Lorg/xmlpull/v1/XmlPullParserException; {:try_start_4 .. :try_end_1a6} :catch_1a6
-    .catch Ljava/io/IOException; {:try_start_4 .. :try_end_1a6} :catch_1a6
+    :try_end_235
+    .catch Ljava/lang/NullPointerException; {:try_start_4 .. :try_end_235} :catch_235
+    .catch Ljava/lang/NumberFormatException; {:try_start_4 .. :try_end_235} :catch_235
+    .catch Lorg/xmlpull/v1/XmlPullParserException; {:try_start_4 .. :try_end_235} :catch_235
+    .catch Ljava/io/IOException; {:try_start_4 .. :try_end_235} :catch_235
 
-    .line 701
-    :catch_1a6
+    .line 699
+    .end local v3  # "tag":Ljava/lang/String;
+    .end local v5  # "type":I
+    .end local v30  # "parser":Lorg/xmlpull/v1/XmlPullParser;
+    .restart local p0  # "this":Lcom/android/server/display/BrightnessTracker;
+    .restart local p1  # "stream":Ljava/io/InputStream;
+    :catch_235
     move-exception v0
 
-    .line 704
+    .line 702
+    .local v0, "e":Ljava/lang/Exception;
     new-instance v2, Lcom/android/internal/util/RingBuffer;
 
     const-class v3, Landroid/hardware/display/BrightnessChangeEvent;
@@ -3206,49 +3872,50 @@
 
     iput-object v2, v1, Lcom/android/server/display/BrightnessTracker;->mEvents:Lcom/android/internal/util/RingBuffer;
 
+    .line 703
+    const-string v2, "BrightnessTracker"
+
+    const-string v3, "Failed to parse brightness event"
+
+    invoke-static {v2, v3, v0}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+
     .line 705
-    const-string v1, "BrightnessTracker"
+    new-instance v2, Ljava/io/IOException;
 
-    const-string v2, "Failed to parse brightness event"
+    const-string v3, "failed to parse file"
 
-    invoke-static {v1, v2, v0}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    invoke-direct {v2, v3, v0}, Ljava/io/IOException;-><init>(Ljava/lang/String;Ljava/lang/Throwable;)V
 
-    .line 707
-    new-instance v1, Ljava/io/IOException;
-
-    const-string v2, "failed to parse file"
-
-    invoke-direct {v1, v2, v0}, Ljava/io/IOException;-><init>(Ljava/lang/String;Ljava/lang/Throwable;)V
-
-    throw v1
+    throw v2
 .end method
 
 .method public start(F)V
-    .registers 4
+    .registers 5
+    .param p1, "initialBrightness"  # F
 
-    .line 203
+    .line 201
     invoke-static {}, Landroid/app/ActivityManager;->getCurrentUser()I
 
     move-result v0
 
     iput v0, p0, Lcom/android/server/display/BrightnessTracker;->mCurrentUserId:I
 
-    .line 204
+    .line 202
     iget-object v0, p0, Lcom/android/server/display/BrightnessTracker;->mBgHandler:Landroid/os/Handler;
 
     invoke-static {p1}, Ljava/lang/Float;->valueOf(F)Ljava/lang/Float;
 
-    move-result-object p1
+    move-result-object v1
 
-    const/4 v1, 0x0
+    const/4 v2, 0x0
 
-    invoke-virtual {v0, v1, p1}, Landroid/os/Handler;->obtainMessage(ILjava/lang/Object;)Landroid/os/Message;
+    invoke-virtual {v0, v2, v1}, Landroid/os/Handler;->obtainMessage(ILjava/lang/Object;)Landroid/os/Message;
 
-    move-result-object p1
+    move-result-object v0
 
-    invoke-virtual {p1}, Landroid/os/Message;->sendToTarget()V
+    invoke-virtual {v0}, Landroid/os/Message;->sendToTarget()V
 
-    .line 205
+    .line 203
     return-void
 .end method
 
@@ -3257,17 +3924,17 @@
     .annotation build Lcom/android/internal/annotations/VisibleForTesting;
     .end annotation
 
-    .line 239
+    .line 237
     iget-object v0, p0, Lcom/android/server/display/BrightnessTracker;->mBgHandler:Landroid/os/Handler;
 
     const/4 v1, 0x0
 
     invoke-virtual {v0, v1}, Landroid/os/Handler;->removeMessages(I)V
 
-    .line 240
+    .line 238
     invoke-direct {p0}, Lcom/android/server/display/BrightnessTracker;->stopSensorListener()V
 
-    .line 241
+    .line 239
     iget-object v0, p0, Lcom/android/server/display/BrightnessTracker;->mInjector:Lcom/android/server/display/BrightnessTracker$Injector;
 
     iget-object v2, p0, Lcom/android/server/display/BrightnessTracker;->mContext:Landroid/content/Context;
@@ -3276,7 +3943,7 @@
 
     invoke-virtual {v0, v2, v3}, Lcom/android/server/display/BrightnessTracker$Injector;->unregisterSensorListener(Landroid/content/Context;Landroid/hardware/SensorEventListener;)V
 
-    .line 242
+    .line 240
     iget-object v0, p0, Lcom/android/server/display/BrightnessTracker;->mInjector:Lcom/android/server/display/BrightnessTracker$Injector;
 
     iget-object v2, p0, Lcom/android/server/display/BrightnessTracker;->mContext:Landroid/content/Context;
@@ -3285,7 +3952,7 @@
 
     invoke-virtual {v0, v2, v3}, Lcom/android/server/display/BrightnessTracker$Injector;->unregisterBrightnessModeObserver(Landroid/content/Context;Landroid/database/ContentObserver;)V
 
-    .line 243
+    .line 241
     iget-object v0, p0, Lcom/android/server/display/BrightnessTracker;->mInjector:Lcom/android/server/display/BrightnessTracker$Injector;
 
     iget-object v2, p0, Lcom/android/server/display/BrightnessTracker;->mContext:Landroid/content/Context;
@@ -3294,34 +3961,34 @@
 
     invoke-virtual {v0, v2, v3}, Lcom/android/server/display/BrightnessTracker$Injector;->unregisterReceiver(Landroid/content/Context;Landroid/content/BroadcastReceiver;)V
 
-    .line 244
+    .line 242
     iget-object v0, p0, Lcom/android/server/display/BrightnessTracker;->mInjector:Lcom/android/server/display/BrightnessTracker$Injector;
 
     iget-object v2, p0, Lcom/android/server/display/BrightnessTracker;->mContext:Landroid/content/Context;
 
     invoke-virtual {v0, v2}, Lcom/android/server/display/BrightnessTracker$Injector;->cancelIdleJob(Landroid/content/Context;)V
 
-    .line 246
+    .line 244
     iget-object v0, p0, Lcom/android/server/display/BrightnessTracker;->mDataCollectionLock:Ljava/lang/Object;
 
     monitor-enter v0
 
-    .line 247
+    .line 245
     :try_start_2e
     iput-boolean v1, p0, Lcom/android/server/display/BrightnessTracker;->mStarted:Z
 
-    .line 248
+    .line 246
     monitor-exit v0
     :try_end_31
     .catchall {:try_start_2e .. :try_end_31} :catchall_35
 
-    .line 249
+    .line 247
     invoke-direct {p0}, Lcom/android/server/display/BrightnessTracker;->disableColorSampling()V
 
-    .line 250
+    .line 248
     return-void
 
-    .line 248
+    .line 246
     :catchall_35
     move-exception v1
 
@@ -3334,7 +4001,8 @@
 .end method
 
 .method writeEventsLocked(Ljava/io/OutputStream;)V
-    .registers 16
+    .registers 20
+    .param p1, "stream"  # Ljava/io/OutputStream;
     .annotation build Lcom/android/internal/annotations/GuardedBy;
         value = {
             "mEventsLock"
@@ -3350,443 +4018,476 @@
         }
     .end annotation
 
-    .line 529
-    new-instance v0, Lcom/android/internal/util/FastXmlSerializer;
+    .line 527
+    move-object/from16 v0, p0
 
-    invoke-direct {v0}, Lcom/android/internal/util/FastXmlSerializer;-><init>()V
+    new-instance v1, Lcom/android/internal/util/FastXmlSerializer;
+
+    invoke-direct {v1}, Lcom/android/internal/util/FastXmlSerializer;-><init>()V
+
+    .line 528
+    .local v1, "out":Lorg/xmlpull/v1/XmlSerializer;
+    sget-object v2, Ljava/nio/charset/StandardCharsets;->UTF_8:Ljava/nio/charset/Charset;
+
+    invoke-virtual {v2}, Ljava/nio/charset/Charset;->name()Ljava/lang/String;
+
+    move-result-object v2
+
+    move-object/from16 v3, p1
+
+    invoke-interface {v1, v3, v2}, Lorg/xmlpull/v1/XmlSerializer;->setOutput(Ljava/io/OutputStream;Ljava/lang/String;)V
+
+    .line 529
+    const/4 v2, 0x1
+
+    invoke-static {v2}, Ljava/lang/Boolean;->valueOf(Z)Ljava/lang/Boolean;
+
+    move-result-object v4
+
+    const/4 v5, 0x0
+
+    invoke-interface {v1, v5, v4}, Lorg/xmlpull/v1/XmlSerializer;->startDocument(Ljava/lang/String;Ljava/lang/Boolean;)V
 
     .line 530
-    sget-object v1, Ljava/nio/charset/StandardCharsets;->UTF_8:Ljava/nio/charset/Charset;
+    const-string v4, "http://xmlpull.org/v1/doc/features.html#indent-output"
 
-    invoke-virtual {v1}, Ljava/nio/charset/Charset;->name()Ljava/lang/String;
-
-    move-result-object v1
-
-    invoke-interface {v0, p1, v1}, Lorg/xmlpull/v1/XmlSerializer;->setOutput(Ljava/io/OutputStream;Ljava/lang/String;)V
-
-    .line 531
-    const/4 v1, 0x1
-
-    invoke-static {v1}, Ljava/lang/Boolean;->valueOf(Z)Ljava/lang/Boolean;
-
-    move-result-object v2
-
-    const/4 v3, 0x0
-
-    invoke-interface {v0, v3, v2}, Lorg/xmlpull/v1/XmlSerializer;->startDocument(Ljava/lang/String;Ljava/lang/Boolean;)V
+    invoke-interface {v1, v4, v2}, Lorg/xmlpull/v1/XmlSerializer;->setFeature(Ljava/lang/String;Z)V
 
     .line 532
-    const-string v2, "http://xmlpull.org/v1/doc/features.html#indent-output"
+    const-string v2, "events"
 
-    invoke-interface {v0, v2, v1}, Lorg/xmlpull/v1/XmlSerializer;->setFeature(Ljava/lang/String;Z)V
+    invoke-interface {v1, v5, v2}, Lorg/xmlpull/v1/XmlSerializer;->startTag(Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
 
-    .line 534
-    const-string v1, "events"
+    .line 533
+    iget-object v4, v0, Lcom/android/server/display/BrightnessTracker;->mEvents:Lcom/android/internal/util/RingBuffer;
 
-    invoke-interface {v0, v3, v1}, Lorg/xmlpull/v1/XmlSerializer;->startTag(Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
+    invoke-virtual {v4}, Lcom/android/internal/util/RingBuffer;->toArray()[Ljava/lang/Object;
+
+    move-result-object v4
+
+    check-cast v4, [Landroid/hardware/display/BrightnessChangeEvent;
 
     .line 535
-    iget-object v2, p0, Lcom/android/server/display/BrightnessTracker;->mEvents:Lcom/android/internal/util/RingBuffer;
+    .local v4, "toWrite":[Landroid/hardware/display/BrightnessChangeEvent;
+    iget-object v6, v0, Lcom/android/server/display/BrightnessTracker;->mEvents:Lcom/android/internal/util/RingBuffer;
 
-    invoke-virtual {v2}, Lcom/android/internal/util/RingBuffer;->toArray()[Ljava/lang/Object;
+    invoke-virtual {v6}, Lcom/android/internal/util/RingBuffer;->clear()V
 
-    move-result-object v2
+    .line 539
+    iget-object v6, v0, Lcom/android/server/display/BrightnessTracker;->mInjector:Lcom/android/server/display/BrightnessTracker$Injector;
 
-    check-cast v2, [Landroid/hardware/display/BrightnessChangeEvent;
+    invoke-virtual {v6}, Lcom/android/server/display/BrightnessTracker$Injector;->currentTimeMillis()J
 
-    .line 537
-    iget-object v4, p0, Lcom/android/server/display/BrightnessTracker;->mEvents:Lcom/android/internal/util/RingBuffer;
+    move-result-wide v6
 
-    invoke-virtual {v4}, Lcom/android/internal/util/RingBuffer;->clear()V
+    sget-wide v8, Lcom/android/server/display/BrightnessTracker;->MAX_EVENT_AGE:J
+
+    sub-long/2addr v6, v8
+
+    .line 540
+    .local v6, "timeCutOff":J
+    const/4 v8, 0x0
+
+    .local v8, "i":I
+    :goto_3c
+    array-length v9, v4
+
+    if-ge v8, v9, :cond_18f
 
     .line 541
-    iget-object v4, p0, Lcom/android/server/display/BrightnessTracker;->mInjector:Lcom/android/server/display/BrightnessTracker$Injector;
+    iget-object v9, v0, Lcom/android/server/display/BrightnessTracker;->mInjector:Lcom/android/server/display/BrightnessTracker$Injector;
 
-    invoke-virtual {v4}, Lcom/android/server/display/BrightnessTracker$Injector;->currentTimeMillis()J
+    iget-object v10, v0, Lcom/android/server/display/BrightnessTracker;->mUserManager:Landroid/os/UserManager;
 
-    move-result-wide v4
+    aget-object v11, v4, v8
 
-    sget-wide v6, Lcom/android/server/display/BrightnessTracker;->MAX_EVENT_AGE:J
+    iget v11, v11, Landroid/hardware/display/BrightnessChangeEvent;->userId:I
 
-    sub-long/2addr v4, v6
+    invoke-virtual {v9, v10, v11}, Lcom/android/server/display/BrightnessTracker$Injector;->getUserSerialNumber(Landroid/os/UserManager;I)I
+
+    move-result v9
 
     .line 542
-    const/4 v6, 0x0
+    .local v9, "userSerialNo":I
+    const/4 v10, -0x1
 
-    move v7, v6
+    if-eq v9, v10, :cond_18a
 
-    :goto_39
-    array-length v8, v2
-
-    if-ge v7, v8, :cond_184
-
-    .line 543
-    iget-object v8, p0, Lcom/android/server/display/BrightnessTracker;->mInjector:Lcom/android/server/display/BrightnessTracker$Injector;
-
-    iget-object v9, p0, Lcom/android/server/display/BrightnessTracker;->mUserManager:Landroid/os/UserManager;
-
-    aget-object v10, v2, v7
-
-    iget v10, v10, Landroid/hardware/display/BrightnessChangeEvent;->userId:I
-
-    invoke-virtual {v8, v9, v10}, Lcom/android/server/display/BrightnessTracker$Injector;->getUserSerialNumber(Landroid/os/UserManager;I)I
-
-    move-result v8
-
-    .line 544
-    const/4 v9, -0x1
-
-    if-eq v8, v9, :cond_180
-
-    aget-object v9, v2, v7
-
-    iget-wide v9, v9, Landroid/hardware/display/BrightnessChangeEvent;->timeStamp:J
-
-    cmp-long v9, v9, v4
-
-    if-lez v9, :cond_180
-
-    .line 545
-    iget-object v9, p0, Lcom/android/server/display/BrightnessTracker;->mEvents:Lcom/android/internal/util/RingBuffer;
-
-    aget-object v10, v2, v7
-
-    invoke-virtual {v9, v10}, Lcom/android/internal/util/RingBuffer;->append(Ljava/lang/Object;)V
-
-    .line 546
-    const-string v9, "event"
-
-    invoke-interface {v0, v3, v9}, Lorg/xmlpull/v1/XmlSerializer;->startTag(Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
-
-    .line 547
-    aget-object v10, v2, v7
-
-    iget v10, v10, Landroid/hardware/display/BrightnessChangeEvent;->brightness:F
-
-    invoke-static {v10}, Ljava/lang/Float;->toString(F)Ljava/lang/String;
-
-    move-result-object v10
-
-    const-string/jumbo v11, "nits"
-
-    invoke-interface {v0, v3, v11, v10}, Lorg/xmlpull/v1/XmlSerializer;->attribute(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
-
-    .line 548
-    aget-object v10, v2, v7
+    aget-object v10, v4, v8
 
     iget-wide v10, v10, Landroid/hardware/display/BrightnessChangeEvent;->timeStamp:J
 
-    invoke-static {v10, v11}, Ljava/lang/Long;->toString(J)Ljava/lang/String;
+    cmp-long v10, v10, v6
 
-    move-result-object v10
+    if-lez v10, :cond_18a
 
-    const-string/jumbo v11, "timestamp"
+    .line 543
+    iget-object v10, v0, Lcom/android/server/display/BrightnessTracker;->mEvents:Lcom/android/internal/util/RingBuffer;
 
-    invoke-interface {v0, v3, v11, v10}, Lorg/xmlpull/v1/XmlSerializer;->attribute(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
+    aget-object v11, v4, v8
 
-    .line 549
-    aget-object v10, v2, v7
+    invoke-virtual {v10, v11}, Lcom/android/internal/util/RingBuffer;->append(Ljava/lang/Object;)V
 
-    iget-object v10, v10, Landroid/hardware/display/BrightnessChangeEvent;->packageName:Ljava/lang/String;
+    .line 544
+    const-string v10, "event"
 
-    const-string/jumbo v11, "packageName"
+    invoke-interface {v1, v5, v10}, Lorg/xmlpull/v1/XmlSerializer;->startTag(Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
 
-    invoke-interface {v0, v3, v11, v10}, Lorg/xmlpull/v1/XmlSerializer;->attribute(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
+    .line 545
+    aget-object v11, v4, v8
 
-    .line 550
-    invoke-static {v8}, Ljava/lang/Integer;->toString(I)Ljava/lang/String;
+    iget v11, v11, Landroid/hardware/display/BrightnessChangeEvent;->brightness:F
 
-    move-result-object v8
+    invoke-static {v11}, Ljava/lang/Float;->toString(F)Ljava/lang/String;
 
-    const-string/jumbo v10, "user"
+    move-result-object v11
 
-    invoke-interface {v0, v3, v10, v8}, Lorg/xmlpull/v1/XmlSerializer;->attribute(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
+    const-string/jumbo v12, "nits"
 
-    .line 551
-    aget-object v8, v2, v7
+    invoke-interface {v1, v5, v12, v11}, Lorg/xmlpull/v1/XmlSerializer;->attribute(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
 
-    iget v8, v8, Landroid/hardware/display/BrightnessChangeEvent;->batteryLevel:F
+    .line 546
+    aget-object v11, v4, v8
 
-    invoke-static {v8}, Ljava/lang/Float;->toString(F)Ljava/lang/String;
-
-    move-result-object v8
-
-    const-string v10, "batteryLevel"
-
-    invoke-interface {v0, v3, v10, v8}, Lorg/xmlpull/v1/XmlSerializer;->attribute(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
-
-    .line 552
-    aget-object v8, v2, v7
-
-    iget-boolean v8, v8, Landroid/hardware/display/BrightnessChangeEvent;->nightMode:Z
-
-    invoke-static {v8}, Ljava/lang/Boolean;->toString(Z)Ljava/lang/String;
-
-    move-result-object v8
-
-    const-string/jumbo v10, "nightMode"
-
-    invoke-interface {v0, v3, v10, v8}, Lorg/xmlpull/v1/XmlSerializer;->attribute(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
-
-    .line 553
-    aget-object v8, v2, v7
-
-    iget v8, v8, Landroid/hardware/display/BrightnessChangeEvent;->colorTemperature:I
-
-    invoke-static {v8}, Ljava/lang/Integer;->toString(I)Ljava/lang/String;
-
-    move-result-object v8
-
-    const-string v10, "colorTemperature"
-
-    invoke-interface {v0, v3, v10, v8}, Lorg/xmlpull/v1/XmlSerializer;->attribute(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
-
-    .line 555
-    aget-object v8, v2, v7
-
-    iget v8, v8, Landroid/hardware/display/BrightnessChangeEvent;->lastBrightness:F
-
-    .line 556
-    invoke-static {v8}, Ljava/lang/Float;->toString(F)Ljava/lang/String;
-
-    move-result-object v8
-
-    .line 555
-    const-string v10, "lastNits"
-
-    invoke-interface {v0, v3, v10, v8}, Lorg/xmlpull/v1/XmlSerializer;->attribute(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
-
-    .line 557
-    aget-object v8, v2, v7
-
-    iget-boolean v8, v8, Landroid/hardware/display/BrightnessChangeEvent;->isDefaultBrightnessConfig:Z
-
-    .line 558
-    invoke-static {v8}, Ljava/lang/Boolean;->toString(Z)Ljava/lang/String;
-
-    move-result-object v8
-
-    .line 557
-    const-string v10, "defaultConfig"
-
-    invoke-interface {v0, v3, v10, v8}, Lorg/xmlpull/v1/XmlSerializer;->attribute(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
-
-    .line 559
-    aget-object v8, v2, v7
-
-    iget v8, v8, Landroid/hardware/display/BrightnessChangeEvent;->powerBrightnessFactor:F
-
-    .line 560
-    invoke-static {v8}, Ljava/lang/Float;->toString(F)Ljava/lang/String;
-
-    move-result-object v8
-
-    .line 559
-    const-string/jumbo v10, "powerSaveFactor"
-
-    invoke-interface {v0, v3, v10, v8}, Lorg/xmlpull/v1/XmlSerializer;->attribute(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
-
-    .line 561
-    aget-object v8, v2, v7
-
-    iget-boolean v8, v8, Landroid/hardware/display/BrightnessChangeEvent;->isUserSetBrightness:Z
-
-    .line 562
-    invoke-static {v8}, Ljava/lang/Boolean;->toString(Z)Ljava/lang/String;
-
-    move-result-object v8
-
-    .line 561
-    const-string/jumbo v10, "userPoint"
-
-    invoke-interface {v0, v3, v10, v8}, Lorg/xmlpull/v1/XmlSerializer;->attribute(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
-
-    .line 563
-    new-instance v8, Ljava/lang/StringBuilder;
-
-    invoke-direct {v8}, Ljava/lang/StringBuilder;-><init>()V
-
-    .line 564
-    new-instance v10, Ljava/lang/StringBuilder;
-
-    invoke-direct {v10}, Ljava/lang/StringBuilder;-><init>()V
-
-    .line 565
-    move v11, v6
-
-    :goto_f8
-    aget-object v12, v2, v7
-
-    iget-object v12, v12, Landroid/hardware/display/BrightnessChangeEvent;->luxValues:[F
-
-    array-length v12, v12
-
-    const/16 v13, 0x2c
-
-    if-ge v11, v12, :cond_126
-
-    .line 566
-    if-lez v11, :cond_109
-
-    .line 567
-    invoke-virtual {v8, v13}, Ljava/lang/StringBuilder;->append(C)Ljava/lang/StringBuilder;
-
-    .line 568
-    invoke-virtual {v10, v13}, Ljava/lang/StringBuilder;->append(C)Ljava/lang/StringBuilder;
-
-    .line 570
-    :cond_109
-    aget-object v12, v2, v7
-
-    iget-object v12, v12, Landroid/hardware/display/BrightnessChangeEvent;->luxValues:[F
-
-    aget v12, v12, v11
-
-    invoke-static {v12}, Ljava/lang/Float;->toString(F)Ljava/lang/String;
-
-    move-result-object v12
-
-    invoke-virtual {v8, v12}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    .line 571
-    aget-object v12, v2, v7
-
-    iget-object v12, v12, Landroid/hardware/display/BrightnessChangeEvent;->luxTimestamps:[J
-
-    aget-wide v12, v12, v11
-
-    invoke-static {v12, v13}, Ljava/lang/Long;->toString(J)Ljava/lang/String;
-
-    move-result-object v12
-
-    invoke-virtual {v10, v12}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    .line 565
-    add-int/lit8 v11, v11, 0x1
-
-    goto :goto_f8
-
-    .line 573
-    :cond_126
-    invoke-virtual {v8}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
-
-    move-result-object v8
-
-    const-string v11, "lux"
-
-    invoke-interface {v0, v3, v11, v8}, Lorg/xmlpull/v1/XmlSerializer;->attribute(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
-
-    .line 574
-    invoke-virtual {v10}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
-
-    move-result-object v8
-
-    const-string v10, "luxTimestamps"
-
-    invoke-interface {v0, v3, v10, v8}, Lorg/xmlpull/v1/XmlSerializer;->attribute(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
-
-    .line 575
-    aget-object v8, v2, v7
-
-    iget-object v8, v8, Landroid/hardware/display/BrightnessChangeEvent;->colorValueBuckets:[J
-
-    if-eqz v8, :cond_17d
-
-    aget-object v8, v2, v7
-
-    iget-object v8, v8, Landroid/hardware/display/BrightnessChangeEvent;->colorValueBuckets:[J
-
-    array-length v8, v8
-
-    if-lez v8, :cond_17d
-
-    .line 577
-    aget-object v8, v2, v7
-
-    iget-wide v10, v8, Landroid/hardware/display/BrightnessChangeEvent;->colorSampleDuration:J
-
-    .line 578
-    invoke-static {v10, v11}, Ljava/lang/Long;->toString(J)Ljava/lang/String;
-
-    move-result-object v8
-
-    .line 577
-    const-string v10, "colorSampleDuration"
-
-    invoke-interface {v0, v3, v10, v8}, Lorg/xmlpull/v1/XmlSerializer;->attribute(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
-
-    .line 579
-    new-instance v8, Ljava/lang/StringBuilder;
-
-    invoke-direct {v8}, Ljava/lang/StringBuilder;-><init>()V
-
-    .line 580
-    move v10, v6
-
-    :goto_158
-    aget-object v11, v2, v7
-
-    iget-object v11, v11, Landroid/hardware/display/BrightnessChangeEvent;->colorValueBuckets:[J
-
-    array-length v11, v11
-
-    if-ge v10, v11, :cond_174
-
-    .line 581
-    if-lez v10, :cond_164
-
-    .line 582
-    invoke-virtual {v8, v13}, Ljava/lang/StringBuilder;->append(C)Ljava/lang/StringBuilder;
-
-    .line 584
-    :cond_164
-    aget-object v11, v2, v7
-
-    iget-object v11, v11, Landroid/hardware/display/BrightnessChangeEvent;->colorValueBuckets:[J
-
-    aget-wide v11, v11, v10
+    iget-wide v11, v11, Landroid/hardware/display/BrightnessChangeEvent;->timeStamp:J
 
     invoke-static {v11, v12}, Ljava/lang/Long;->toString(J)Ljava/lang/String;
 
     move-result-object v11
 
-    invoke-virtual {v8, v11}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    const-string/jumbo v12, "timestamp"
+
+    invoke-interface {v1, v5, v12, v11}, Lorg/xmlpull/v1/XmlSerializer;->attribute(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
+
+    .line 547
+    aget-object v11, v4, v8
+
+    iget-object v11, v11, Landroid/hardware/display/BrightnessChangeEvent;->packageName:Ljava/lang/String;
+
+    const-string/jumbo v12, "packageName"
+
+    invoke-interface {v1, v5, v12, v11}, Lorg/xmlpull/v1/XmlSerializer;->attribute(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
+
+    .line 548
+    invoke-static {v9}, Ljava/lang/Integer;->toString(I)Ljava/lang/String;
+
+    move-result-object v11
+
+    const-string/jumbo v12, "user"
+
+    invoke-interface {v1, v5, v12, v11}, Lorg/xmlpull/v1/XmlSerializer;->attribute(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
+
+    .line 549
+    aget-object v11, v4, v8
+
+    iget v11, v11, Landroid/hardware/display/BrightnessChangeEvent;->batteryLevel:F
+
+    invoke-static {v11}, Ljava/lang/Float;->toString(F)Ljava/lang/String;
+
+    move-result-object v11
+
+    const-string v12, "batteryLevel"
+
+    invoke-interface {v1, v5, v12, v11}, Lorg/xmlpull/v1/XmlSerializer;->attribute(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
+
+    .line 550
+    aget-object v11, v4, v8
+
+    iget-boolean v11, v11, Landroid/hardware/display/BrightnessChangeEvent;->nightMode:Z
+
+    invoke-static {v11}, Ljava/lang/Boolean;->toString(Z)Ljava/lang/String;
+
+    move-result-object v11
+
+    const-string/jumbo v12, "nightMode"
+
+    invoke-interface {v1, v5, v12, v11}, Lorg/xmlpull/v1/XmlSerializer;->attribute(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
+
+    .line 551
+    aget-object v11, v4, v8
+
+    iget v11, v11, Landroid/hardware/display/BrightnessChangeEvent;->colorTemperature:I
+
+    invoke-static {v11}, Ljava/lang/Integer;->toString(I)Ljava/lang/String;
+
+    move-result-object v11
+
+    const-string v12, "colorTemperature"
+
+    invoke-interface {v1, v5, v12, v11}, Lorg/xmlpull/v1/XmlSerializer;->attribute(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
+
+    .line 553
+    aget-object v11, v4, v8
+
+    iget v11, v11, Landroid/hardware/display/BrightnessChangeEvent;->lastBrightness:F
+
+    .line 554
+    invoke-static {v11}, Ljava/lang/Float;->toString(F)Ljava/lang/String;
+
+    move-result-object v11
+
+    .line 553
+    const-string/jumbo v12, "lastNits"
+
+    invoke-interface {v1, v5, v12, v11}, Lorg/xmlpull/v1/XmlSerializer;->attribute(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
+
+    .line 555
+    aget-object v11, v4, v8
+
+    iget-boolean v11, v11, Landroid/hardware/display/BrightnessChangeEvent;->isDefaultBrightnessConfig:Z
+
+    .line 556
+    invoke-static {v11}, Ljava/lang/Boolean;->toString(Z)Ljava/lang/String;
+
+    move-result-object v11
+
+    .line 555
+    const-string v12, "defaultConfig"
+
+    invoke-interface {v1, v5, v12, v11}, Lorg/xmlpull/v1/XmlSerializer;->attribute(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
+
+    .line 557
+    aget-object v11, v4, v8
+
+    iget v11, v11, Landroid/hardware/display/BrightnessChangeEvent;->powerBrightnessFactor:F
+
+    .line 558
+    invoke-static {v11}, Ljava/lang/Float;->toString(F)Ljava/lang/String;
+
+    move-result-object v11
+
+    .line 557
+    const-string/jumbo v12, "powerSaveFactor"
+
+    invoke-interface {v1, v5, v12, v11}, Lorg/xmlpull/v1/XmlSerializer;->attribute(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
+
+    .line 559
+    aget-object v11, v4, v8
+
+    iget-boolean v11, v11, Landroid/hardware/display/BrightnessChangeEvent;->isUserSetBrightness:Z
+
+    .line 560
+    invoke-static {v11}, Ljava/lang/Boolean;->toString(Z)Ljava/lang/String;
+
+    move-result-object v11
+
+    .line 559
+    const-string/jumbo v12, "userPoint"
+
+    invoke-interface {v1, v5, v12, v11}, Lorg/xmlpull/v1/XmlSerializer;->attribute(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
+
+    .line 561
+    new-instance v11, Ljava/lang/StringBuilder;
+
+    invoke-direct {v11}, Ljava/lang/StringBuilder;-><init>()V
+
+    .line 562
+    .local v11, "luxValues":Ljava/lang/StringBuilder;
+    new-instance v12, Ljava/lang/StringBuilder;
+
+    invoke-direct {v12}, Ljava/lang/StringBuilder;-><init>()V
+
+    .line 563
+    .local v12, "luxTimestamps":Ljava/lang/StringBuilder;
+    const/4 v13, 0x0
+
+    .local v13, "j":I
+    :goto_fc
+    aget-object v14, v4, v8
+
+    iget-object v14, v14, Landroid/hardware/display/BrightnessChangeEvent;->luxValues:[F
+
+    array-length v14, v14
+
+    const/16 v15, 0x2c
+
+    if-ge v13, v14, :cond_12a
+
+    .line 564
+    if-lez v13, :cond_10d
+
+    .line 565
+    invoke-virtual {v11, v15}, Ljava/lang/StringBuilder;->append(C)Ljava/lang/StringBuilder;
+
+    .line 566
+    invoke-virtual {v12, v15}, Ljava/lang/StringBuilder;->append(C)Ljava/lang/StringBuilder;
+
+    .line 568
+    :cond_10d
+    aget-object v14, v4, v8
+
+    iget-object v14, v14, Landroid/hardware/display/BrightnessChangeEvent;->luxValues:[F
+
+    aget v14, v14, v13
+
+    invoke-static {v14}, Ljava/lang/Float;->toString(F)Ljava/lang/String;
+
+    move-result-object v14
+
+    invoke-virtual {v11, v14}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    .line 569
+    aget-object v14, v4, v8
+
+    iget-object v14, v14, Landroid/hardware/display/BrightnessChangeEvent;->luxTimestamps:[J
+
+    aget-wide v14, v14, v13
+
+    invoke-static {v14, v15}, Ljava/lang/Long;->toString(J)Ljava/lang/String;
+
+    move-result-object v14
+
+    invoke-virtual {v12, v14}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    .line 563
+    add-int/lit8 v13, v13, 0x1
+
+    goto :goto_fc
+
+    .line 571
+    .end local v13  # "j":I
+    :cond_12a
+    invoke-virtual {v11}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v13
+
+    const-string/jumbo v14, "lux"
+
+    invoke-interface {v1, v5, v14, v13}, Lorg/xmlpull/v1/XmlSerializer;->attribute(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
+
+    .line 572
+    invoke-virtual {v12}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v13
+
+    const-string/jumbo v14, "luxTimestamps"
+
+    invoke-interface {v1, v5, v14, v13}, Lorg/xmlpull/v1/XmlSerializer;->attribute(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
+
+    .line 573
+    aget-object v13, v4, v8
+
+    iget-object v13, v13, Landroid/hardware/display/BrightnessChangeEvent;->colorValueBuckets:[J
+
+    if-eqz v13, :cond_186
+
+    aget-object v13, v4, v8
+
+    iget-object v13, v13, Landroid/hardware/display/BrightnessChangeEvent;->colorValueBuckets:[J
+
+    array-length v13, v13
+
+    if-lez v13, :cond_186
+
+    .line 575
+    aget-object v13, v4, v8
+
+    iget-wide v13, v13, Landroid/hardware/display/BrightnessChangeEvent;->colorSampleDuration:J
+
+    .line 576
+    invoke-static {v13, v14}, Ljava/lang/Long;->toString(J)Ljava/lang/String;
+
+    move-result-object v13
+
+    .line 575
+    const-string v14, "colorSampleDuration"
+
+    invoke-interface {v1, v5, v14, v13}, Lorg/xmlpull/v1/XmlSerializer;->attribute(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
+
+    .line 577
+    new-instance v13, Ljava/lang/StringBuilder;
+
+    invoke-direct {v13}, Ljava/lang/StringBuilder;-><init>()V
+
+    .line 578
+    .local v13, "buckets":Ljava/lang/StringBuilder;
+    const/4 v14, 0x0
+
+    .local v14, "j":I
+    :goto_15e
+    aget-object v5, v4, v8
+
+    iget-object v5, v5, Landroid/hardware/display/BrightnessChangeEvent;->colorValueBuckets:[J
+
+    array-length v5, v5
+
+    if-ge v14, v5, :cond_17b
+
+    .line 579
+    if-lez v14, :cond_16a
 
     .line 580
-    add-int/lit8 v10, v10, 0x1
+    invoke-virtual {v13, v15}, Ljava/lang/StringBuilder;->append(C)Ljava/lang/StringBuilder;
 
-    goto :goto_158
+    .line 582
+    :cond_16a
+    aget-object v5, v4, v8
+
+    iget-object v5, v5, Landroid/hardware/display/BrightnessChangeEvent;->colorValueBuckets:[J
+
+    aget-wide v16, v5, v14
+
+    invoke-static/range {v16 .. v17}, Ljava/lang/Long;->toString(J)Ljava/lang/String;
+
+    move-result-object v5
+
+    invoke-virtual {v13, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    .line 578
+    add-int/lit8 v14, v14, 0x1
+
+    const/4 v5, 0x0
+
+    goto :goto_15e
+
+    .line 584
+    .end local v14  # "j":I
+    :cond_17b
+    invoke-virtual {v13}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v5
+
+    const-string v14, "colorValueBuckets"
+
+    const/4 v15, 0x0
+
+    invoke-interface {v1, v15, v14, v5}, Lorg/xmlpull/v1/XmlSerializer;->attribute(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
+
+    goto :goto_187
+
+    .line 573
+    .end local v13  # "buckets":Ljava/lang/StringBuilder;
+    :cond_186
+    move-object v15, v5
 
     .line 586
-    :cond_174
-    invoke-virtual {v8}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    :goto_187
+    invoke-interface {v1, v15, v10}, Lorg/xmlpull/v1/XmlSerializer;->endTag(Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
 
-    move-result-object v8
+    .line 540
+    .end local v9  # "userSerialNo":I
+    .end local v11  # "luxValues":Ljava/lang/StringBuilder;
+    .end local v12  # "luxTimestamps":Ljava/lang/StringBuilder;
+    :cond_18a
+    add-int/lit8 v8, v8, 0x1
 
-    const-string v10, "colorValueBuckets"
+    const/4 v5, 0x0
 
-    invoke-interface {v0, v3, v10, v8}, Lorg/xmlpull/v1/XmlSerializer;->attribute(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
+    goto/16 :goto_3c
 
-    .line 588
-    :cond_17d
-    invoke-interface {v0, v3, v9}, Lorg/xmlpull/v1/XmlSerializer;->endTag(Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
+    .line 589
+    .end local v8  # "i":I
+    :cond_18f
+    const/4 v5, 0x0
 
-    .line 542
-    :cond_180
-    add-int/lit8 v7, v7, 0x1
+    invoke-interface {v1, v5, v2}, Lorg/xmlpull/v1/XmlSerializer;->endTag(Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
 
-    goto/16 :goto_39
+    .line 590
+    invoke-interface {v1}, Lorg/xmlpull/v1/XmlSerializer;->endDocument()V
 
     .line 591
-    :cond_184
-    invoke-interface {v0, v3, v1}, Lorg/xmlpull/v1/XmlSerializer;->endTag(Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
+    invoke-virtual/range {p1 .. p1}, Ljava/io/OutputStream;->flush()V
 
     .line 592
-    invoke-interface {v0}, Lorg/xmlpull/v1/XmlSerializer;->endDocument()V
-
-    .line 593
-    invoke-virtual {p1}, Ljava/io/OutputStream;->flush()V
-
-    .line 594
     return-void
 .end method

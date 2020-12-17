@@ -41,6 +41,7 @@
     .end annotation
 
     .line 576
+    .local p1, "pkgSource":Ljava/util/function/Supplier;, "Ljava/util/function/Supplier<Ljava/lang/String;>;"
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
     .line 577
@@ -54,13 +55,14 @@
 # virtual methods
 .method public matches(Ljava/lang/String;)Z
     .registers 3
+    .param p1, "pkgCandidate"  # Ljava/lang/String;
 
     .line 581
     if-nez p1, :cond_4
 
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    return p1
+    return v0
 
     .line 583
     :cond_4
@@ -73,9 +75,9 @@
     if-eqz v0, :cond_e
 
     .line 584
-    const/4 p1, 0x1
+    const/4 v0, 0x1
 
-    return p1
+    return v0
 
     .line 587
     :cond_e
@@ -94,7 +96,7 @@
 
     invoke-static {p1, v0}, Ljava/util/Objects;->equals(Ljava/lang/Object;Ljava/lang/Object;)Z
 
-    move-result p1
+    move-result v0
 
-    return p1
+    return v0
 .end method

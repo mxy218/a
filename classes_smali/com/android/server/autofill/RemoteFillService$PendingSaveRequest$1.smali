@@ -21,6 +21,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/autofill/RemoteFillService$PendingSaveRequest;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/autofill/RemoteFillService$PendingSaveRequest;
 
     .line 315
     iput-object p1, p0, Lcom/android/server/autofill/RemoteFillService$PendingSaveRequest$1;->this$0:Lcom/android/server/autofill/RemoteFillService$PendingSaveRequest;
@@ -34,6 +35,7 @@
 # virtual methods
 .method public onFailure(Ljava/lang/CharSequence;)V
     .registers 4
+    .param p1, "message"  # Ljava/lang/CharSequence;
 
     .line 329
     iget-object v0, p0, Lcom/android/server/autofill/RemoteFillService$PendingSaveRequest$1;->this$0:Lcom/android/server/autofill/RemoteFillService$PendingSaveRequest;
@@ -57,6 +59,7 @@
     check-cast v0, Lcom/android/server/autofill/RemoteFillService;
 
     .line 332
+    .local v0, "remoteService":Lcom/android/server/autofill/RemoteFillService;
     if-eqz v0, :cond_18
 
     .line 333
@@ -71,6 +74,7 @@
 
 .method public onSuccess(Landroid/content/IntentSender;)V
     .registers 4
+    .param p1, "intentSender"  # Landroid/content/IntentSender;
 
     .line 318
     iget-object v0, p0, Lcom/android/server/autofill/RemoteFillService$PendingSaveRequest$1;->this$0:Lcom/android/server/autofill/RemoteFillService$PendingSaveRequest;
@@ -94,6 +98,7 @@
     check-cast v0, Lcom/android/server/autofill/RemoteFillService;
 
     .line 321
+    .local v0, "remoteService":Lcom/android/server/autofill/RemoteFillService;
     if-eqz v0, :cond_18
 
     .line 322

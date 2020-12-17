@@ -60,6 +60,7 @@
     invoke-direct {v0, v1}, Ljava/io/File;-><init>(Ljava/lang/String;)V
 
     .line 171
+    .local v0, "extconDir":Ljava/io/File;
     invoke-virtual {v0}, Ljava/io/File;->exists()Z
 
     move-result v1
@@ -68,23 +69,24 @@
 
     invoke-virtual {v0}, Ljava/io/File;->isDirectory()Z
 
-    move-result v0
+    move-result v1
 
-    if-eqz v0, :cond_15
+    if-eqz v1, :cond_15
 
-    const/4 v0, 0x1
+    const/4 v1, 0x1
 
     goto :goto_16
 
     :cond_15
-    const/4 v0, 0x0
+    const/4 v1, 0x0
 
     :goto_16
-    return v0
+    return v1
 .end method
 
 .method public static namedExtconDirExists(Ljava/lang/String;)Z
     .registers 4
+    .param p0, "name"  # Ljava/lang/String;
 
     .line 164
     new-instance v0, Ljava/io/File;
@@ -101,38 +103,40 @@
 
     invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v1
 
-    invoke-direct {v0, p0}, Ljava/io/File;-><init>(Ljava/lang/String;)V
+    invoke-direct {v0, v1}, Ljava/io/File;-><init>(Ljava/lang/String;)V
 
     .line 165
+    .local v0, "extconDir":Ljava/io/File;
     invoke-virtual {v0}, Ljava/io/File;->exists()Z
 
-    move-result p0
+    move-result v1
 
-    if-eqz p0, :cond_24
+    if-eqz v1, :cond_24
 
     invoke-virtual {v0}, Ljava/io/File;->isDirectory()Z
 
-    move-result p0
+    move-result v1
 
-    if-eqz p0, :cond_24
+    if-eqz v1, :cond_24
 
-    const/4 p0, 0x1
+    const/4 v1, 0x1
 
     goto :goto_25
 
     :cond_24
-    const/4 p0, 0x0
+    const/4 v1, 0x0
 
     :goto_25
-    return p0
+    return v1
 .end method
 
 
 # virtual methods
 .method public final onUEvent(Landroid/os/UEventObserver$UEvent;)V
-    .registers 4
+    .registers 6
+    .param p1, "event"  # Landroid/os/UEventObserver$UEvent;
 
     .line 58
     const-string v0, "DEVPATH"
@@ -142,49 +146,51 @@
     move-result-object v0
 
     .line 59
+    .local v0, "devPath":Ljava/lang/String;
     iget-object v1, p0, Lcom/android/server/ExtconUEventObserver;->mExtconInfos:Ljava/util/Map;
 
     invoke-interface {v1, v0}, Ljava/util/Map;->get(Ljava/lang/Object;)Ljava/lang/Object;
 
-    move-result-object v0
+    move-result-object v1
 
-    check-cast v0, Lcom/android/server/ExtconUEventObserver$ExtconInfo;
+    check-cast v1, Lcom/android/server/ExtconUEventObserver$ExtconInfo;
 
     .line 60
-    if-eqz v0, :cond_14
+    .local v1, "info":Lcom/android/server/ExtconUEventObserver$ExtconInfo;
+    if-eqz v1, :cond_14
 
     .line 61
-    invoke-virtual {p0, v0, p1}, Lcom/android/server/ExtconUEventObserver;->onUEvent(Lcom/android/server/ExtconUEventObserver$ExtconInfo;Landroid/os/UEventObserver$UEvent;)V
+    invoke-virtual {p0, v1, p1}, Lcom/android/server/ExtconUEventObserver;->onUEvent(Lcom/android/server/ExtconUEventObserver$ExtconInfo;Landroid/os/UEventObserver$UEvent;)V
 
     goto :goto_34
 
     .line 63
     :cond_14
-    new-instance v0, Ljava/lang/StringBuilder;
+    new-instance v2, Ljava/lang/StringBuilder;
 
-    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v1, "No match found for DEVPATH of "
+    const-string v3, "No match found for DEVPATH of "
 
-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
-    const-string p1, " in "
+    const-string v3, " in "
 
-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    iget-object p1, p0, Lcom/android/server/ExtconUEventObserver;->mExtconInfos:Ljava/util/Map;
+    iget-object v3, p0, Lcom/android/server/ExtconUEventObserver;->mExtconInfos:Ljava/util/Map;
 
-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v2
 
-    const-string v0, "ExtconUEventObserver"
+    const-string v3, "ExtconUEventObserver"
 
-    invoke-static {v0, p1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v3, v2}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 65
     :goto_34
@@ -195,7 +201,8 @@
 .end method
 
 .method public startObserving(Lcom/android/server/ExtconUEventObserver$ExtconInfo;)V
-    .registers 4
+    .registers 5
+    .param p1, "extconInfo"  # Lcom/android/server/ExtconUEventObserver$ExtconInfo;
 
     .line 77
     invoke-virtual {p1}, Lcom/android/server/ExtconUEventObserver$ExtconInfo;->getDevicePath()Ljava/lang/String;
@@ -203,38 +210,39 @@
     move-result-object v0
 
     .line 78
+    .local v0, "devicePath":Ljava/lang/String;
     if-nez v0, :cond_2b
 
     .line 79
-    new-instance v0, Ljava/lang/StringBuilder;
+    new-instance v1, Ljava/lang/StringBuilder;
 
-    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v1, "Unable to start observing  "
+    const-string v2, "Unable to start observing  "
 
-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {p1}, Lcom/android/server/ExtconUEventObserver$ExtconInfo;->getName()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v2
 
-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string p1, " because the device path is null. "
+    const-string v2, " because the device path is null. "
 
-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string p1, "This probably means the selinux policies need to be changed."
+    const-string v2, "This probably means the selinux policies need to be changed."
 
-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v1
 
-    const-string v0, "ExtconUEventObserver"
+    const-string v2, "ExtconUEventObserver"
 
-    invoke-static {v0, p1}, Landroid/util/Slog;->wtf(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v2, v1}, Landroid/util/Slog;->wtf(Ljava/lang/String;Ljava/lang/String;)I
 
     goto :goto_44
 
@@ -245,21 +253,21 @@
     invoke-interface {v1, v0, p1}, Ljava/util/Map;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
 
     .line 84
-    new-instance p1, Ljava/lang/StringBuilder;
+    new-instance v1, Ljava/lang/StringBuilder;
 
-    invoke-direct {p1}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v1, "DEVPATH="
+    const-string v2, "DEVPATH="
 
-    invoke-virtual {p1, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p1, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v1
 
-    invoke-virtual {p0, p1}, Lcom/android/server/ExtconUEventObserver;->startObserving(Ljava/lang/String;)V
+    invoke-virtual {p0, v1}, Lcom/android/server/ExtconUEventObserver;->startObserving(Ljava/lang/String;)V
 
     .line 86
     :goto_44

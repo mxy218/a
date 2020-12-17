@@ -18,6 +18,7 @@
 # direct methods
 .method constructor <init>(Landroid/app/role/IRoleManager;)V
     .registers 2
+    .param p1, "roleManager"  # Landroid/app/role/IRoleManager;
 
     .line 37
     invoke-direct {p0}, Landroid/os/ShellCommand;-><init>()V
@@ -30,7 +31,7 @@
 .end method
 
 .method private getFlagsMaybe()I
-    .registers 2
+    .registers 3
 
     .line 101
     invoke-virtual {p0}, Lcom/android/server/role/RoleManagerShellCommand;->getNextArg()Ljava/lang/String;
@@ -38,65 +39,63 @@
     move-result-object v0
 
     .line 102
+    .local v0, "flags":Ljava/lang/String;
     if-nez v0, :cond_8
 
     .line 103
-    const/4 v0, 0x0
+    const/4 v1, 0x0
 
-    return v0
+    return v1
 
     .line 105
     :cond_8
     invoke-static {v0}, Ljava/lang/Integer;->parseInt(Ljava/lang/String;)I
 
-    move-result v0
+    move-result v1
 
-    return v0
+    return v1
 .end method
 
 .method private getUserIdMaybe()I
-    .registers 3
+    .registers 4
 
     .line 92
-    nop
+    const/4 v0, 0x0
 
     .line 93
+    .local v0, "userId":I
     invoke-virtual {p0}, Lcom/android/server/role/RoleManagerShellCommand;->getNextOption()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v1
 
     .line 94
-    if-eqz v0, :cond_18
+    .local v1, "option":Ljava/lang/String;
+    if-eqz v1, :cond_17
 
-    const-string v1, "--user"
+    const-string v2, "--user"
 
-    invoke-virtual {v0, v1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v1, v2}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result v0
+    move-result v2
 
-    if-eqz v0, :cond_18
+    if-eqz v2, :cond_17
 
     .line 95
     invoke-virtual {p0}, Lcom/android/server/role/RoleManagerShellCommand;->getNextArgRequired()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v2
 
-    invoke-static {v0}, Landroid/os/UserHandle;->parseUserArg(Ljava/lang/String;)I
+    invoke-static {v2}, Landroid/os/UserHandle;->parseUserArg(Ljava/lang/String;)I
 
     move-result v0
 
-    goto :goto_19
-
     .line 97
-    :cond_18
-    const/4 v0, 0x0
-
-    :goto_19
+    :cond_17
     return v0
 .end method
 
 .method private runAddRoleHolder()I
-    .registers 8
+    .registers 12
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -106,43 +105,58 @@
     .line 109
     invoke-direct {p0}, Lcom/android/server/role/RoleManagerShellCommand;->getUserIdMaybe()I
 
-    move-result v4
+    move-result v6
 
     .line 110
+    .local v6, "userId":I
     invoke-virtual {p0}, Lcom/android/server/role/RoleManagerShellCommand;->getNextArgRequired()Ljava/lang/String;
 
-    move-result-object v1
+    move-result-object v7
 
     .line 111
+    .local v7, "roleName":Ljava/lang/String;
     invoke-virtual {p0}, Lcom/android/server/role/RoleManagerShellCommand;->getNextArgRequired()Ljava/lang/String;
 
-    move-result-object v2
+    move-result-object v8
 
     .line 112
+    .local v8, "packageName":Ljava/lang/String;
     invoke-direct {p0}, Lcom/android/server/role/RoleManagerShellCommand;->getFlagsMaybe()I
 
-    move-result v3
+    move-result v9
 
     .line 114
-    new-instance v6, Lcom/android/server/role/RoleManagerShellCommand$CallbackFuture;
+    .local v9, "flags":I
+    new-instance v0, Lcom/android/server/role/RoleManagerShellCommand$CallbackFuture;
 
-    const/4 v0, 0x0
+    const/4 v1, 0x0
 
-    invoke-direct {v6, p0, v0}, Lcom/android/server/role/RoleManagerShellCommand$CallbackFuture;-><init>(Lcom/android/server/role/RoleManagerShellCommand;Lcom/android/server/role/RoleManagerShellCommand$1;)V
+    invoke-direct {v0, p0, v1}, Lcom/android/server/role/RoleManagerShellCommand$CallbackFuture;-><init>(Lcom/android/server/role/RoleManagerShellCommand;Lcom/android/server/role/RoleManagerShellCommand$1;)V
+
+    move-object v10, v0
 
     .line 115
+    .local v10, "future":Lcom/android/server/role/RoleManagerShellCommand$CallbackFuture;
     iget-object v0, p0, Lcom/android/server/role/RoleManagerShellCommand;->mRoleManager:Landroid/app/role/IRoleManager;
 
     .line 116
-    invoke-virtual {v6}, Lcom/android/server/role/RoleManagerShellCommand$CallbackFuture;->createCallback()Landroid/os/RemoteCallback;
+    invoke-virtual {v10}, Lcom/android/server/role/RoleManagerShellCommand$CallbackFuture;->createCallback()Landroid/os/RemoteCallback;
 
     move-result-object v5
 
     .line 115
+    move-object v1, v7
+
+    move-object v2, v8
+
+    move v3, v9
+
+    move v4, v6
+
     invoke-interface/range {v0 .. v5}, Landroid/app/role/IRoleManager;->addRoleHolderAsUser(Ljava/lang/String;Ljava/lang/String;IILandroid/os/RemoteCallback;)V
 
     .line 117
-    invoke-virtual {v6}, Lcom/android/server/role/RoleManagerShellCommand$CallbackFuture;->waitForResult()I
+    invoke-virtual {v10}, Lcom/android/server/role/RoleManagerShellCommand$CallbackFuture;->waitForResult()I
 
     move-result v0
 
@@ -163,16 +177,19 @@
     move-result v0
 
     .line 134
+    .local v0, "userId":I
     invoke-virtual {p0}, Lcom/android/server/role/RoleManagerShellCommand;->getNextArgRequired()Ljava/lang/String;
 
     move-result-object v1
 
     .line 135
+    .local v1, "roleName":Ljava/lang/String;
     invoke-direct {p0}, Lcom/android/server/role/RoleManagerShellCommand;->getFlagsMaybe()I
 
     move-result v2
 
     .line 137
+    .local v2, "flags":I
     new-instance v3, Lcom/android/server/role/RoleManagerShellCommand$CallbackFuture;
 
     const/4 v4, 0x0
@@ -180,6 +197,7 @@
     invoke-direct {v3, p0, v4}, Lcom/android/server/role/RoleManagerShellCommand$CallbackFuture;-><init>(Lcom/android/server/role/RoleManagerShellCommand;Lcom/android/server/role/RoleManagerShellCommand$1;)V
 
     .line 138
+    .local v3, "future":Lcom/android/server/role/RoleManagerShellCommand$CallbackFuture;
     iget-object v4, p0, Lcom/android/server/role/RoleManagerShellCommand;->mRoleManager:Landroid/app/role/IRoleManager;
 
     invoke-virtual {v3}, Lcom/android/server/role/RoleManagerShellCommand$CallbackFuture;->createCallback()Landroid/os/RemoteCallback;
@@ -191,13 +209,13 @@
     .line 139
     invoke-virtual {v3}, Lcom/android/server/role/RoleManagerShellCommand$CallbackFuture;->waitForResult()I
 
-    move-result v0
+    move-result v4
 
-    return v0
+    return v4
 .end method
 
 .method private runRemoveRoleHolder()I
-    .registers 8
+    .registers 12
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -207,43 +225,58 @@
     .line 121
     invoke-direct {p0}, Lcom/android/server/role/RoleManagerShellCommand;->getUserIdMaybe()I
 
-    move-result v4
+    move-result v6
 
     .line 122
+    .local v6, "userId":I
     invoke-virtual {p0}, Lcom/android/server/role/RoleManagerShellCommand;->getNextArgRequired()Ljava/lang/String;
 
-    move-result-object v1
+    move-result-object v7
 
     .line 123
+    .local v7, "roleName":Ljava/lang/String;
     invoke-virtual {p0}, Lcom/android/server/role/RoleManagerShellCommand;->getNextArgRequired()Ljava/lang/String;
 
-    move-result-object v2
+    move-result-object v8
 
     .line 124
+    .local v8, "packageName":Ljava/lang/String;
     invoke-direct {p0}, Lcom/android/server/role/RoleManagerShellCommand;->getFlagsMaybe()I
 
-    move-result v3
+    move-result v9
 
     .line 126
-    new-instance v6, Lcom/android/server/role/RoleManagerShellCommand$CallbackFuture;
+    .local v9, "flags":I
+    new-instance v0, Lcom/android/server/role/RoleManagerShellCommand$CallbackFuture;
 
-    const/4 v0, 0x0
+    const/4 v1, 0x0
 
-    invoke-direct {v6, p0, v0}, Lcom/android/server/role/RoleManagerShellCommand$CallbackFuture;-><init>(Lcom/android/server/role/RoleManagerShellCommand;Lcom/android/server/role/RoleManagerShellCommand$1;)V
+    invoke-direct {v0, p0, v1}, Lcom/android/server/role/RoleManagerShellCommand$CallbackFuture;-><init>(Lcom/android/server/role/RoleManagerShellCommand;Lcom/android/server/role/RoleManagerShellCommand$1;)V
+
+    move-object v10, v0
 
     .line 127
+    .local v10, "future":Lcom/android/server/role/RoleManagerShellCommand$CallbackFuture;
     iget-object v0, p0, Lcom/android/server/role/RoleManagerShellCommand;->mRoleManager:Landroid/app/role/IRoleManager;
 
     .line 128
-    invoke-virtual {v6}, Lcom/android/server/role/RoleManagerShellCommand$CallbackFuture;->createCallback()Landroid/os/RemoteCallback;
+    invoke-virtual {v10}, Lcom/android/server/role/RoleManagerShellCommand$CallbackFuture;->createCallback()Landroid/os/RemoteCallback;
 
     move-result-object v5
 
     .line 127
+    move-object v1, v7
+
+    move-object v2, v8
+
+    move v3, v9
+
+    move v4, v6
+
     invoke-interface/range {v0 .. v5}, Landroid/app/role/IRoleManager;->removeRoleHolderAsUser(Ljava/lang/String;Ljava/lang/String;IILandroid/os/RemoteCallback;)V
 
     .line 129
-    invoke-virtual {v6}, Lcom/android/server/role/RoleManagerShellCommand$CallbackFuture;->waitForResult()I
+    invoke-virtual {v10}, Lcom/android/server/role/RoleManagerShellCommand$CallbackFuture;->waitForResult()I
 
     move-result v0
 
@@ -254,6 +287,7 @@
 # virtual methods
 .method public onCommand(Ljava/lang/String;)I
     .registers 8
+    .param p1, "cmd"  # Ljava/lang/String;
 
     .line 69
     if-nez p1, :cond_7
@@ -261,9 +295,9 @@
     .line 70
     invoke-virtual {p0, p1}, Lcom/android/server/role/RoleManagerShellCommand;->handleDefaultCommands(Ljava/lang/String;)I
 
-    move-result p1
+    move-result v0
 
-    return p1
+    return v0
 
     .line 73
     :cond_7
@@ -272,6 +306,7 @@
     move-result-object v0
 
     .line 75
+    .local v0, "pw":Ljava/io/PrintWriter;
     const/4 v1, -0x1
 
     :try_start_c
@@ -350,58 +385,60 @@
     .line 83
     invoke-virtual {p0, p1}, Lcom/android/server/role/RoleManagerShellCommand;->handleDefaultCommands(Ljava/lang/String;)I
 
-    move-result p1
+    move-result v1
 
-    return p1
+    return v1
 
     .line 81
     :cond_4d
     invoke-direct {p0}, Lcom/android/server/role/RoleManagerShellCommand;->runClearRoleHolders()I
 
-    move-result p1
+    move-result v1
 
-    return p1
+    return v1
 
     .line 79
     :cond_52
     invoke-direct {p0}, Lcom/android/server/role/RoleManagerShellCommand;->runRemoveRoleHolder()I
 
-    move-result p1
+    move-result v1
 
-    return p1
+    return v1
 
     .line 77
     :cond_57
     invoke-direct {p0}, Lcom/android/server/role/RoleManagerShellCommand;->runAddRoleHolder()I
 
-    move-result p1
+    move-result v1
     :try_end_5b
     .catch Landroid/os/RemoteException; {:try_start_c .. :try_end_5b} :catch_5c
 
-    return p1
+    return v1
 
     .line 85
     :catch_5c
-    move-exception p1
+    move-exception v2
 
     .line 86
-    new-instance v2, Ljava/lang/StringBuilder;
+    .local v2, "e":Landroid/os/RemoteException;
+    new-instance v3, Ljava/lang/StringBuilder;
 
-    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v3, "Remote exception: "
+    const-string v4, "Remote exception: "
 
-    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v2, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v3
 
-    invoke-virtual {v0, p1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {v0, v3}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
     .line 88
+    .end local v2  # "e":Landroid/os/RemoteException;
     return v1
 .end method
 
@@ -414,6 +451,7 @@
     move-result-object v0
 
     .line 145
+    .local v0, "pw":Ljava/io/PrintWriter;
     const-string v1, "Role manager (role) commands:"
 
     invoke-virtual {v0, v1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V

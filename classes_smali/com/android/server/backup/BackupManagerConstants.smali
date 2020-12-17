@@ -110,6 +110,8 @@
 # direct methods
 .method public constructor <init>(Landroid/os/Handler;Landroid/content/ContentResolver;)V
     .registers 4
+    .param p1, "handler"  # Landroid/os/Handler;
+    .param p2, "resolver"  # Landroid/content/ContentResolver;
 
     .line 106
     const-string v0, "backup_manager_constants"
@@ -171,6 +173,7 @@
     return-object v0
 
     .line 225
+    .end local p0  # "this":Lcom/android/server/backup/BackupManagerConstants;
     :catchall_23
     move-exception v0
 
@@ -216,6 +219,7 @@
     return-wide v0
 
     .line 197
+    .end local p0  # "this":Lcom/android/server/backup/BackupManagerConstants;
     :catchall_1d
     move-exception v0
 
@@ -261,6 +265,7 @@
     return v0
 
     .line 207
+    .end local p0  # "this":Lcom/android/server/backup/BackupManagerConstants;
     :catchall_1d
     move-exception v0
 
@@ -306,6 +311,7 @@
     return v0
 
     .line 214
+    .end local p0  # "this":Lcom/android/server/backup/BackupManagerConstants;
     :catchall_1d
     move-exception v0
 
@@ -351,6 +357,7 @@
     return-wide v0
 
     .line 167
+    .end local p0  # "this":Lcom/android/server/backup/BackupManagerConstants;
     :catchall_1d
     move-exception v0
 
@@ -396,6 +403,7 @@
     return-wide v0
 
     .line 157
+    .end local p0  # "this":Lcom/android/server/backup/BackupManagerConstants;
     :catchall_1d
     move-exception v0
 
@@ -441,6 +449,7 @@
     return v0
 
     .line 177
+    .end local p0  # "this":Lcom/android/server/backup/BackupManagerConstants;
     :catchall_1d
     move-exception v0
 
@@ -486,6 +495,7 @@
     return v0
 
     .line 187
+    .end local p0  # "this":Lcom/android/server/backup/BackupManagerConstants;
     :catchall_1d
     move-exception v0
 
@@ -496,25 +506,27 @@
 
 .method public getSettingValue(Landroid/content/ContentResolver;)Ljava/lang/String;
     .registers 3
+    .param p1, "resolver"  # Landroid/content/ContentResolver;
 
     .line 110
     const-string v0, "backup_manager_constants"
 
     invoke-static {p1, v0}, Landroid/provider/Settings$Secure;->getString(Landroid/content/ContentResolver;Ljava/lang/String;)Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    return-object p1
+    return-object v0
 .end method
 
 .method public declared-synchronized update(Landroid/util/KeyValueListParser;)V
     .registers 6
+    .param p1, "parser"  # Landroid/util/KeyValueListParser;
 
     monitor-enter p0
 
     .line 114
     :try_start_1
-    const-string v0, "key_value_backup_interval_milliseconds"
+    const-string/jumbo v0, "key_value_backup_interval_milliseconds"
 
     const-wide/32 v1, 0xdbba00
 
@@ -526,7 +538,7 @@
     iput-wide v0, p0, Lcom/android/server/backup/BackupManagerConstants;->mKeyValueBackupIntervalMilliseconds:J
 
     .line 118
-    const-string v0, "key_value_backup_fuzz_milliseconds"
+    const-string/jumbo v0, "key_value_backup_fuzz_milliseconds"
 
     const-wide/32 v1, 0x927c0
 
@@ -538,7 +550,7 @@
     iput-wide v0, p0, Lcom/android/server/backup/BackupManagerConstants;->mKeyValueBackupFuzzMilliseconds:J
 
     .line 122
-    const-string v0, "key_value_backup_require_charging"
+    const-string/jumbo v0, "key_value_backup_require_charging"
 
     .line 123
     const/4 v1, 0x1
@@ -550,7 +562,7 @@
     iput-boolean v0, p0, Lcom/android/server/backup/BackupManagerConstants;->mKeyValueBackupRequireCharging:Z
 
     .line 126
-    const-string v0, "key_value_backup_required_network_type"
+    const-string/jumbo v0, "key_value_backup_required_network_type"
 
     .line 127
     invoke-virtual {p1, v0, v1}, Landroid/util/KeyValueListParser;->getInt(Ljava/lang/String;I)I
@@ -601,44 +613,48 @@
     .line 142
     invoke-virtual {p1, v0, v1}, Landroid/util/KeyValueListParser;->getString(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
     .line 145
-    invoke-virtual {p1}, Ljava/lang/String;->isEmpty()Z
+    .local v0, "backupFinishedNotificationReceivers":Ljava/lang/String;
+    invoke-virtual {v0}, Ljava/lang/String;->isEmpty()Z
 
-    move-result v0
+    move-result v1
 
-    if-eqz v0, :cond_58
+    if-eqz v1, :cond_5c
 
     .line 146
-    const/4 p1, 0x0
+    const/4 v1, 0x0
 
-    new-array p1, p1, [Ljava/lang/String;
+    new-array v1, v1, [Ljava/lang/String;
 
-    iput-object p1, p0, Lcom/android/server/backup/BackupManagerConstants;->mBackupFinishedNotificationReceivers:[Ljava/lang/String;
+    iput-object v1, p0, Lcom/android/server/backup/BackupManagerConstants;->mBackupFinishedNotificationReceivers:[Ljava/lang/String;
 
-    goto :goto_60
+    goto :goto_64
 
     .line 148
-    :cond_58
-    const-string v0, ":"
+    .end local p0  # "this":Lcom/android/server/backup/BackupManagerConstants;
+    :cond_5c
+    const-string v1, ":"
 
-    invoke-virtual {p1, v0}, Ljava/lang/String;->split(Ljava/lang/String;)[Ljava/lang/String;
+    invoke-virtual {v0, v1}, Ljava/lang/String;->split(Ljava/lang/String;)[Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v1
 
-    iput-object p1, p0, Lcom/android/server/backup/BackupManagerConstants;->mBackupFinishedNotificationReceivers:[Ljava/lang/String;
-    :try_end_60
-    .catchall {:try_start_1 .. :try_end_60} :catchall_62
+    iput-object v1, p0, Lcom/android/server/backup/BackupManagerConstants;->mBackupFinishedNotificationReceivers:[Ljava/lang/String;
+    :try_end_64
+    .catchall {:try_start_1 .. :try_end_64} :catchall_66
 
     .line 150
-    :goto_60
+    :goto_64
     monitor-exit p0
 
     return-void
 
     .line 113
-    :catchall_62
+    .end local v0  # "backupFinishedNotificationReceivers":Ljava/lang/String;
+    .end local p1  # "parser":Landroid/util/KeyValueListParser;
+    :catchall_66
     move-exception p1
 
     monitor-exit p0

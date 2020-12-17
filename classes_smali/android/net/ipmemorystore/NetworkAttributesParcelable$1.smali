@@ -40,6 +40,7 @@
 # virtual methods
 .method public createFromParcel(Landroid/os/Parcel;)Landroid/net/ipmemorystore/NetworkAttributesParcelable;
     .registers 3
+    .param p1, "_aidl_source"  # Landroid/os/Parcel;
 
     .line 20
     new-instance v0, Landroid/net/ipmemorystore/NetworkAttributesParcelable;
@@ -47,6 +48,7 @@
     invoke-direct {v0}, Landroid/net/ipmemorystore/NetworkAttributesParcelable;-><init>()V
 
     .line 21
+    .local v0, "_aidl_out":Landroid/net/ipmemorystore/NetworkAttributesParcelable;
     invoke-virtual {v0, p1}, Landroid/net/ipmemorystore/NetworkAttributesParcelable;->readFromParcel(Landroid/os/Parcel;)V
 
     .line 22
@@ -65,12 +67,13 @@
 .end method
 
 .method public newArray(I)[Landroid/net/ipmemorystore/NetworkAttributesParcelable;
-    .registers 2
+    .registers 3
+    .param p1, "_aidl_size"  # I
 
     .line 26
-    new-array p1, p1, [Landroid/net/ipmemorystore/NetworkAttributesParcelable;
+    new-array v0, p1, [Landroid/net/ipmemorystore/NetworkAttributesParcelable;
 
-    return-object p1
+    return-object v0
 .end method
 
 .method public bridge synthetic newArray(I)[Ljava/lang/Object;

@@ -38,6 +38,9 @@
 # direct methods
 .method public constructor <init>(JLandroid/content/ComponentName;I)V
     .registers 5
+    .param p1, "timestamp"  # J
+    .param p3, "component"  # Landroid/content/ComponentName;
+    .param p4, "event"  # I
 
     .line 123
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -57,6 +60,7 @@
 
 .method public static eventToString(I)Ljava/lang/String;
     .registers 2
+    .param p0, "event"  # I
 
     .line 137
     const/4 v0, 0x1
@@ -76,39 +80,40 @@
     if-eq p0, v0, :cond_f
 
     .line 147
-    const-string p0, "Unknown Event Occurred"
+    const-string v0, "Unknown Event Occurred"
 
-    return-object p0
+    return-object v0
 
     .line 145
     :cond_f
-    const-string p0, "Permanently Stopped"
+    const-string v0, "Permanently Stopped"
 
-    return-object p0
+    return-object v0
 
     .line 143
     :cond_12
-    const-string p0, "Binding Died For"
+    const-string v0, "Binding Died For"
 
-    return-object p0
+    return-object v0
 
     .line 141
     :cond_15
-    const-string p0, "Disconnected"
+    const-string v0, "Disconnected"
 
-    return-object p0
+    return-object v0
 
     .line 139
     :cond_18
-    const-string p0, "Connected"
+    const-string v0, "Connected"
 
-    return-object p0
+    return-object v0
 .end method
 
 
 # virtual methods
 .method public toLogString(Ljava/text/SimpleDateFormat;)Ljava/lang/String;
     .registers 6
+    .param p1, "dateFormat"  # Ljava/text/SimpleDateFormat;
 
     .line 131
     new-instance v0, Ljava/lang/StringBuilder;
@@ -123,47 +128,47 @@
 
     invoke-virtual {p1, v1}, Ljava/text/SimpleDateFormat;->format(Ljava/util/Date;)Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v1
 
-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string p1, "   "
+    const-string v1, "   "
 
-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    iget p1, p0, Lcom/android/server/utils/ManagedApplicationService$LogEvent;->event:I
+    iget v1, p0, Lcom/android/server/utils/ManagedApplicationService$LogEvent;->event:I
 
-    invoke-static {p1}, Lcom/android/server/utils/ManagedApplicationService$LogEvent;->eventToString(I)Ljava/lang/String;
+    invoke-static {v1}, Lcom/android/server/utils/ManagedApplicationService$LogEvent;->eventToString(I)Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v1
 
-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string p1, " Managed Service: "
+    const-string v1, " Managed Service: "
 
-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     .line 133
-    iget-object p1, p0, Lcom/android/server/utils/ManagedApplicationService$LogEvent;->component:Landroid/content/ComponentName;
+    iget-object v1, p0, Lcom/android/server/utils/ManagedApplicationService$LogEvent;->component:Landroid/content/ComponentName;
 
-    if-nez p1, :cond_2d
+    if-nez v1, :cond_2d
 
-    const-string p1, "None"
+    const-string v1, "None"
 
     goto :goto_31
 
     :cond_2d
-    invoke-virtual {p1}, Landroid/content/ComponentName;->flattenToString()Ljava/lang/String;
+    invoke-virtual {v1}, Landroid/content/ComponentName;->flattenToString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v1
 
     :goto_31
-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
     .line 131
-    return-object p1
+    return-object v0
 .end method

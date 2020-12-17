@@ -32,6 +32,8 @@
 
 .method synthetic constructor <init>(Lcom/google/android/startop/iorap/IorapForwardingService;Lcom/google/android/startop/iorap/IorapForwardingService$1;)V
     .registers 3
+    .param p1, "x0"  # Lcom/google/android/startop/iorap/IorapForwardingService;
+    .param p2, "x1"  # Lcom/google/android/startop/iorap/IorapForwardingService$1;
 
     .line 339
     invoke-direct {p0, p1}, Lcom/google/android/startop/iorap/IorapForwardingService$RemoteTaskListener;-><init>(Lcom/google/android/startop/iorap/IorapForwardingService;)V
@@ -43,6 +45,8 @@
 # virtual methods
 .method public onComplete(Lcom/google/android/startop/iorap/RequestId;Lcom/google/android/startop/iorap/TaskResult;)V
     .registers 5
+    .param p1, "requestId"  # Lcom/google/android/startop/iorap/RequestId;
+    .param p2, "result"  # Lcom/google/android/startop/iorap/TaskResult;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -63,21 +67,21 @@
 
     aput-object p1, v0, v1
 
-    const/4 p1, 0x1
+    const/4 v1, 0x1
 
-    aput-object p2, v0, p1
+    aput-object p2, v0, v1
 
     .line 354
-    const-string p1, "RemoteTaskListener#onComplete(%s, %s)"
+    const-string v1, "RemoteTaskListener#onComplete(%s, %s)"
 
-    invoke-static {p1, v0}, Ljava/lang/String;->format(Ljava/lang/String;[Ljava/lang/Object;)Ljava/lang/String;
+    invoke-static {v1, v0}, Ljava/lang/String;->format(Ljava/lang/String;[Ljava/lang/Object;)Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
     .line 353
-    const-string p2, "IorapForwardingService"
+    const-string v1, "IorapForwardingService"
 
-    invoke-static {p2, p1}, Landroid/util/Log;->v(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v0}, Landroid/util/Log;->v(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 358
     :cond_18
@@ -86,6 +90,8 @@
 
 .method public onProgress(Lcom/google/android/startop/iorap/RequestId;Lcom/google/android/startop/iorap/TaskResult;)V
     .registers 5
+    .param p1, "requestId"  # Lcom/google/android/startop/iorap/RequestId;
+    .param p2, "result"  # Lcom/google/android/startop/iorap/TaskResult;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -106,21 +112,21 @@
 
     aput-object p1, v0, v1
 
-    const/4 p1, 0x1
+    const/4 v1, 0x1
 
-    aput-object p2, v0, p1
+    aput-object p2, v0, v1
 
     .line 344
-    const-string p1, "RemoteTaskListener#onProgress(%s, %s)"
+    const-string v1, "RemoteTaskListener#onProgress(%s, %s)"
 
-    invoke-static {p1, v0}, Ljava/lang/String;->format(Ljava/lang/String;[Ljava/lang/Object;)Ljava/lang/String;
+    invoke-static {v1, v0}, Ljava/lang/String;->format(Ljava/lang/String;[Ljava/lang/Object;)Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
     .line 343
-    const-string p2, "IorapForwardingService"
+    const-string v1, "IorapForwardingService"
 
-    invoke-static {p2, p1}, Landroid/util/Log;->v(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v0}, Landroid/util/Log;->v(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 348
     :cond_18

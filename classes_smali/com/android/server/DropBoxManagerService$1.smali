@@ -21,8 +21,9 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/DropBoxManagerService;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/DropBoxManagerService;
 
-    .line 120
+    .line 124
     iput-object p1, p0, Lcom/android/server/DropBoxManagerService$1;->this$0:Lcom/android/server/DropBoxManagerService;
 
     invoke-direct {p0}, Landroid/content/BroadcastReceiver;-><init>()V
@@ -33,23 +34,25 @@
 
 # virtual methods
 .method public onReceive(Landroid/content/Context;Landroid/content/Intent;)V
-    .registers 5
+    .registers 6
+    .param p1, "context"  # Landroid/content/Context;
+    .param p2, "intent"  # Landroid/content/Intent;
 
-    .line 124
-    iget-object p1, p0, Lcom/android/server/DropBoxManagerService$1;->this$0:Lcom/android/server/DropBoxManagerService;
+    .line 128
+    iget-object v0, p0, Lcom/android/server/DropBoxManagerService$1;->this$0:Lcom/android/server/DropBoxManagerService;
 
-    const-wide/16 v0, 0x0
+    const-wide/16 v1, 0x0
 
-    invoke-static {p1, v0, v1}, Lcom/android/server/DropBoxManagerService;->access$002(Lcom/android/server/DropBoxManagerService;J)J
+    invoke-static {v0, v1, v2}, Lcom/android/server/DropBoxManagerService;->access$002(Lcom/android/server/DropBoxManagerService;J)J
 
-    .line 129
-    new-instance p1, Lcom/android/server/DropBoxManagerService$1$1;
+    .line 133
+    new-instance v0, Lcom/android/server/DropBoxManagerService$1$1;
 
-    invoke-direct {p1, p0}, Lcom/android/server/DropBoxManagerService$1$1;-><init>(Lcom/android/server/DropBoxManagerService$1;)V
+    invoke-direct {v0, p0}, Lcom/android/server/DropBoxManagerService$1$1;-><init>(Lcom/android/server/DropBoxManagerService$1;)V
 
-    .line 138
-    invoke-virtual {p1}, Lcom/android/server/DropBoxManagerService$1$1;->start()V
+    .line 142
+    invoke-virtual {v0}, Lcom/android/server/DropBoxManagerService$1$1;->start()V
 
-    .line 139
+    .line 143
     return-void
 .end method

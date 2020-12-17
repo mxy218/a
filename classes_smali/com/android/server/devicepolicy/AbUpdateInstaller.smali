@@ -98,15 +98,20 @@
 .end method
 
 .method constructor <init>(Landroid/content/Context;Landroid/os/ParcelFileDescriptor;Landroid/app/admin/StartInstallingUpdateCallback;Lcom/android/server/devicepolicy/DevicePolicyManagerService$Injector;Lcom/android/server/devicepolicy/DevicePolicyConstants;)V
-    .registers 6
+    .registers 7
+    .param p1, "context"  # Landroid/content/Context;
+    .param p2, "updateFileDescriptor"  # Landroid/os/ParcelFileDescriptor;
+    .param p3, "callback"  # Landroid/app/admin/StartInstallingUpdateCallback;
+    .param p4, "injector"  # Lcom/android/server/devicepolicy/DevicePolicyManagerService$Injector;
+    .param p5, "constants"  # Lcom/android/server/devicepolicy/DevicePolicyConstants;
 
     .line 147
     invoke-direct/range {p0 .. p5}, Lcom/android/server/devicepolicy/UpdateInstaller;-><init>(Landroid/content/Context;Landroid/os/ParcelFileDescriptor;Landroid/app/admin/StartInstallingUpdateCallback;Lcom/android/server/devicepolicy/DevicePolicyManagerService$Injector;Lcom/android/server/devicepolicy/DevicePolicyConstants;)V
 
     .line 148
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    iput-boolean p1, p0, Lcom/android/server/devicepolicy/AbUpdateInstaller;->mUpdateInstalled:Z
+    iput-boolean v0, p0, Lcom/android/server/devicepolicy/AbUpdateInstaller;->mUpdateInstalled:Z
 
     .line 149
     return-void
@@ -131,7 +136,8 @@
 .end method
 
 .method private applyPayload(Ljava/lang/String;)V
-    .registers 11
+    .registers 12
+    .param p1, "updatePath"  # Ljava/lang/String;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Ljava/io/IOException;
@@ -162,71 +168,77 @@
 
     move-result-object v0
 
-    move-object v7, v0
-
-    check-cast v7, [Ljava/lang/String;
+    check-cast v0, [Ljava/lang/String;
 
     .line 192
-    iget-wide v0, p0, Lcom/android/server/devicepolicy/AbUpdateInstaller;->mSizeForUpdate:J
+    .local v0, "headerKeyValuePairs":[Ljava/lang/String;
+    iget-wide v1, p0, Lcom/android/server/devicepolicy/AbUpdateInstaller;->mSizeForUpdate:J
 
-    const-wide/16 v2, -0x1
+    const-wide/16 v3, -0x1
 
-    cmp-long v0, v0, v2
+    cmp-long v1, v1, v3
 
     const-string v8, "UpdateInstaller"
 
-    if-nez v0, :cond_2a
+    if-nez v1, :cond_29
 
     .line 193
-    const-string p1, "Failed to find payload entry in the given package."
+    const-string v1, "Failed to find payload entry in the given package."
 
-    invoke-static {v8, p1}, Landroid/util/Log;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v8, v1}, Landroid/util/Log;->w(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 194
-    const/4 v0, 0x3
+    const/4 v2, 0x3
 
-    invoke-virtual {p0, v0, p1}, Lcom/android/server/devicepolicy/AbUpdateInstaller;->notifyCallbackOnError(ILjava/lang/String;)V
+    invoke-virtual {p0, v2, v1}, Lcom/android/server/devicepolicy/AbUpdateInstaller;->notifyCallbackOnError(ILjava/lang/String;)V
 
     .line 197
     return-void
 
     .line 200
-    :cond_2a
+    :cond_29
     invoke-direct {p0}, Lcom/android/server/devicepolicy/AbUpdateInstaller;->buildBoundUpdateEngine()Landroid/os/UpdateEngine;
 
-    move-result-object v1
+    move-result-object v9
 
     .line 202
-    :try_start_2e
+    .local v9, "updateEngine":Landroid/os/UpdateEngine;
+    :try_start_2d
     iget-wide v3, p0, Lcom/android/server/devicepolicy/AbUpdateInstaller;->mOffsetForUpdate:J
 
     iget-wide v5, p0, Lcom/android/server/devicepolicy/AbUpdateInstaller;->mSizeForUpdate:J
 
+    move-object v1, v9
+
     move-object v2, p1
 
+    move-object v7, v0
+
     invoke-virtual/range {v1 .. v7}, Landroid/os/UpdateEngine;->applyPayload(Ljava/lang/String;JJ[Ljava/lang/String;)V
-    :try_end_36
-    .catch Ljava/lang/Exception; {:try_start_2e .. :try_end_36} :catch_37
+    :try_end_37
+    .catch Ljava/lang/Exception; {:try_start_2d .. :try_end_37} :catch_38
 
     .line 211
-    goto :goto_41
+    goto :goto_42
 
     .line 204
-    :catch_37
-    move-exception p1
+    :catch_38
+    move-exception v1
 
     .line 207
-    const-string v0, "Failed to install update from file."
+    .local v1, "e":Ljava/lang/Exception;
+    const-string v2, "Failed to install update from file."
 
-    invoke-static {v8, v0, p1}, Landroid/util/Log;->w(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    invoke-static {v8, v2, v1}, Landroid/util/Log;->w(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
     .line 208
-    const/4 p1, 0x1
+    const/4 v3, 0x1
 
-    invoke-virtual {p0, p1, v0}, Lcom/android/server/devicepolicy/AbUpdateInstaller;->notifyCallbackOnError(ILjava/lang/String;)V
+    invoke-virtual {p0, v3, v2}, Lcom/android/server/devicepolicy/AbUpdateInstaller;->notifyCallbackOnError(ILjava/lang/String;)V
 
     .line 212
-    :goto_41
+    .end local v1  # "e":Ljava/lang/Exception;
+    :goto_42
     return-void
 .end method
 
@@ -239,6 +251,7 @@
     invoke-direct {v0}, Landroid/os/UpdateEngine;-><init>()V
 
     .line 183
+    .local v0, "updateEngine":Landroid/os/UpdateEngine;
     new-instance v1, Lcom/android/server/devicepolicy/AbUpdateInstaller$DelegatingUpdateEngineCallback;
 
     invoke-direct {v1, p0, v0}, Lcom/android/server/devicepolicy/AbUpdateInstaller$DelegatingUpdateEngineCallback;-><init>(Lcom/android/server/devicepolicy/UpdateInstaller;Landroid/os/UpdateEngine;)V
@@ -267,6 +280,7 @@
     invoke-direct {v0}, Ljava/util/HashMap;-><init>()V
 
     .line 65
+    .local v0, "map":Ljava/util/Map;, "Ljava/util/Map<Ljava/lang/Integer;Ljava/lang/Integer;>;"
     nop
 
     .line 66
@@ -488,6 +502,7 @@
     invoke-direct {v0}, Ljava/util/HashMap;-><init>()V
 
     .line 112
+    .local v0, "map":Ljava/util/Map;, "Ljava/util/Map<Ljava/lang/Integer;Ljava/lang/String;>;"
     const/4 v1, 0x1
 
     invoke-static {v1}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
@@ -639,15 +654,17 @@
 
 .method private buildOffsetForEntry(Ljava/util/zip/ZipEntry;Ljava/lang/String;)J
     .registers 7
+    .param p1, "entry"  # Ljava/util/zip/ZipEntry;
+    .param p2, "name"  # Ljava/lang/String;
 
     .line 243
     invoke-virtual {p2}, Ljava/lang/String;->length()I
 
-    move-result p2
+    move-result v0
 
-    add-int/lit8 p2, p2, 0x1e
+    add-int/lit8 v0, v0, 0x1e
 
-    int-to-long v0, p2
+    int-to-long v0, v0
 
     invoke-virtual {p1}, Ljava/util/zip/ZipEntry;->getCompressedSize()J
 
@@ -658,37 +675,38 @@
     .line 244
     invoke-virtual {p1}, Ljava/util/zip/ZipEntry;->getExtra()[B
 
-    move-result-object p2
+    move-result-object v2
 
-    if-nez p2, :cond_14
+    if-nez v2, :cond_14
 
-    const/4 p1, 0x0
+    const/4 v2, 0x0
 
     goto :goto_19
 
     :cond_14
     invoke-virtual {p1}, Ljava/util/zip/ZipEntry;->getExtra()[B
 
-    move-result-object p1
+    move-result-object v2
 
-    array-length p1, p1
+    array-length v2, v2
 
     :goto_19
-    int-to-long p1, p1
+    int-to-long v2, v2
 
-    add-long/2addr v0, p1
+    add-long/2addr v0, v2
 
     .line 243
     return-wide v0
 .end method
 
 .method static synthetic lambda$applyPayload$0(I)[Ljava/lang/String;
-    .registers 1
+    .registers 2
+    .param p0, "x$0"  # I
 
     .line 191
-    new-array p0, p0, [Ljava/lang/String;
+    new-array v0, p0, [Ljava/lang/String;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method private setState()V
@@ -744,7 +762,8 @@
 .end method
 
 .method private updatePropertiesForEntry(Ljava/util/zip/ZipEntry;)V
-    .registers 5
+    .registers 6
+    .param p1, "entry"  # Ljava/util/zip/ZipEntry;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Ljava/io/IOException;
@@ -761,13 +780,14 @@
     .line 249
     invoke-virtual {v2, p1}, Ljava/util/zip/ZipFile;->getInputStream(Ljava/util/zip/ZipEntry;)Ljava/io/InputStream;
 
-    move-result-object p1
+    move-result-object v2
 
-    invoke-direct {v1, p1}, Ljava/io/InputStreamReader;-><init>(Ljava/io/InputStream;)V
+    invoke-direct {v1, v2}, Ljava/io/InputStreamReader;-><init>(Ljava/io/InputStream;)V
 
     invoke-direct {v0, v1}, Ljava/io/BufferedReader;-><init>(Ljava/io/Reader;)V
 
     .line 248
+    .local v0, "bufferedReader":Ljava/io/BufferedReader;
     nop
 
     .line 253
@@ -775,53 +795,65 @@
     :try_start_11
     invoke-virtual {v0}, Ljava/io/BufferedReader;->readLine()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v1
 
-    if-eqz p1, :cond_1d
+    move-object v2, v1
+
+    .local v2, "line":Ljava/lang/String;
+    if-eqz v1, :cond_1e
 
     .line 254
     iget-object v1, p0, Lcom/android/server/devicepolicy/AbUpdateInstaller;->mProperties:Ljava/util/List;
 
-    invoke-interface {v1, p1}, Ljava/util/List;->add(Ljava/lang/Object;)Z
-    :try_end_1c
-    .catchall {:try_start_11 .. :try_end_1c} :catchall_21
+    invoke-interface {v1, v2}, Ljava/util/List;->add(Ljava/lang/Object;)Z
+    :try_end_1d
+    .catchall {:try_start_11 .. :try_end_1d} :catchall_22
 
     goto :goto_11
 
     .line 256
-    :cond_1d
+    .end local v2  # "line":Ljava/lang/String;
+    :cond_1e
     invoke-virtual {v0}, Ljava/io/BufferedReader;->close()V
 
     .line 257
+    .end local v0  # "bufferedReader":Ljava/io/BufferedReader;
     return-void
 
     .line 248
-    :catchall_21
-    move-exception p1
-
-    :try_start_22
-    throw p1
-    :try_end_23
-    .catchall {:try_start_22 .. :try_end_23} :catchall_23
-
-    .line 256
-    :catchall_23
+    .restart local v0  # "bufferedReader":Ljava/io/BufferedReader;
+    :catchall_22
     move-exception v1
 
-    :try_start_24
-    invoke-virtual {v0}, Ljava/io/BufferedReader;->close()V
-    :try_end_27
-    .catchall {:try_start_24 .. :try_end_27} :catchall_28
-
-    goto :goto_2c
-
-    :catchall_28
-    move-exception v0
-
-    invoke-virtual {p1, v0}, Ljava/lang/Throwable;->addSuppressed(Ljava/lang/Throwable;)V
-
-    :goto_2c
+    .end local v0  # "bufferedReader":Ljava/io/BufferedReader;
+    .end local p0  # "this":Lcom/android/server/devicepolicy/AbUpdateInstaller;
+    .end local p1  # "entry":Ljava/util/zip/ZipEntry;
+    :try_start_23
     throw v1
+    :try_end_24
+    .catchall {:try_start_23 .. :try_end_24} :catchall_24
+
+    .line 256
+    .restart local v0  # "bufferedReader":Ljava/io/BufferedReader;
+    .restart local p0  # "this":Lcom/android/server/devicepolicy/AbUpdateInstaller;
+    .restart local p1  # "entry":Ljava/util/zip/ZipEntry;
+    :catchall_24
+    move-exception v2
+
+    :try_start_25
+    invoke-virtual {v0}, Ljava/io/BufferedReader;->close()V
+    :try_end_28
+    .catchall {:try_start_25 .. :try_end_28} :catchall_29
+
+    goto :goto_2d
+
+    :catchall_29
+    move-exception v3
+
+    invoke-virtual {v1, v3}, Ljava/lang/Throwable;->addSuppressed(Ljava/lang/Throwable;)V
+
+    :goto_2d
+    throw v2
 .end method
 
 .method private updateStateForPayload()Z
@@ -836,6 +868,7 @@
     const-wide/16 v0, 0x0
 
     .line 216
+    .local v0, "offset":J
     :goto_2
     iget-object v2, p0, Lcom/android/server/devicepolicy/AbUpdateInstaller;->mEntries:Ljava/util/Enumeration;
 
@@ -855,11 +888,13 @@
     check-cast v2, Ljava/util/zip/ZipEntry;
 
     .line 219
+    .local v2, "entry":Ljava/util/zip/ZipEntry;
     invoke-virtual {v2}, Ljava/util/zip/ZipEntry;->getName()Ljava/lang/String;
 
     move-result-object v3
 
     .line 220
+    .local v3, "name":Ljava/lang/String;
     invoke-direct {p0, v2, v3}, Lcom/android/server/devicepolicy/AbUpdateInstaller;->buildOffsetForEntry(Ljava/util/zip/ZipEntry;Ljava/lang/String;)J
 
     move-result-wide v4
@@ -876,9 +911,9 @@
     .line 222
     invoke-virtual {v2}, Ljava/util/zip/ZipEntry;->getCompressedSize()J
 
-    move-result-wide v2
+    move-result-wide v4
 
-    sub-long/2addr v0, v2
+    sub-long/2addr v0, v4
 
     .line 223
     goto :goto_2
@@ -896,43 +931,43 @@
     .line 226
     invoke-virtual {v2}, Ljava/util/zip/ZipEntry;->getMethod()I
 
-    move-result v3
+    move-result v4
 
-    if-eqz v3, :cond_43
+    if-eqz v4, :cond_43
 
     .line 227
-    const-string v0, "Invalid compression method."
+    const-string v4, "Invalid compression method."
 
-    const-string v1, "UpdateInstaller"
+    const-string v5, "UpdateInstaller"
 
-    invoke-static {v1, v0}, Landroid/util/Log;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v5, v4}, Landroid/util/Log;->w(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 228
-    const/4 v1, 0x3
+    const/4 v5, 0x3
 
-    invoke-virtual {p0, v1, v0}, Lcom/android/server/devicepolicy/AbUpdateInstaller;->notifyCallbackOnError(ILjava/lang/String;)V
+    invoke-virtual {p0, v5, v4}, Lcom/android/server/devicepolicy/AbUpdateInstaller;->notifyCallbackOnError(ILjava/lang/String;)V
 
     .line 231
-    const/4 v0, 0x0
+    const/4 v4, 0x0
 
-    return v0
+    return v4
 
     .line 233
     :cond_43
     invoke-virtual {v2}, Ljava/util/zip/ZipEntry;->getCompressedSize()J
 
-    move-result-wide v3
+    move-result-wide v4
 
-    iput-wide v3, p0, Lcom/android/server/devicepolicy/AbUpdateInstaller;->mSizeForUpdate:J
+    iput-wide v4, p0, Lcom/android/server/devicepolicy/AbUpdateInstaller;->mSizeForUpdate:J
 
     .line 234
     invoke-virtual {v2}, Ljava/util/zip/ZipEntry;->getCompressedSize()J
 
-    move-result-wide v2
+    move-result-wide v4
 
-    sub-long v2, v0, v2
+    sub-long v4, v0, v4
 
-    iput-wide v2, p0, Lcom/android/server/devicepolicy/AbUpdateInstaller;->mOffsetForUpdate:J
+    iput-wide v4, p0, Lcom/android/server/devicepolicy/AbUpdateInstaller;->mOffsetForUpdate:J
 
     goto :goto_5e
 
@@ -942,23 +977,25 @@
 
     invoke-virtual {v4, v3}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result v3
+    move-result v4
 
-    if-eqz v3, :cond_5e
+    if-eqz v4, :cond_5e
 
     .line 236
     invoke-direct {p0, v2}, Lcom/android/server/devicepolicy/AbUpdateInstaller;->updatePropertiesForEntry(Ljava/util/zip/ZipEntry;)V
 
     .line 238
+    .end local v2  # "entry":Ljava/util/zip/ZipEntry;
+    .end local v3  # "name":Ljava/lang/String;
     :cond_5e
     :goto_5e
     goto :goto_2
 
     .line 239
     :cond_5f
-    const/4 v0, 0x1
+    const/4 v2, 0x1
 
-    return v0
+    return v2
 .end method
 
 
@@ -1012,6 +1049,7 @@
     move-exception v1
 
     .line 165
+    .local v1, "e":Ljava/io/IOException;
     invoke-static {v0, v1}, Landroid/util/Log;->w(Ljava/lang/String;Ljava/lang/Throwable;)I
 
     .line 166
@@ -1020,18 +1058,20 @@
     .line 168
     invoke-static {v1}, Landroid/util/Log;->getStackTraceString(Ljava/lang/Throwable;)Ljava/lang/String;
 
-    move-result-object v1
+    move-result-object v2
 
     .line 166
-    invoke-virtual {p0, v0, v1}, Lcom/android/server/devicepolicy/AbUpdateInstaller;->notifyCallbackOnError(ILjava/lang/String;)V
+    invoke-virtual {p0, v0, v2}, Lcom/android/server/devicepolicy/AbUpdateInstaller;->notifyCallbackOnError(ILjava/lang/String;)V
 
     goto :goto_3c
 
     .line 159
+    .end local v1  # "e":Ljava/io/IOException;
     :catch_2f
     move-exception v1
 
     .line 160
+    .local v1, "e":Ljava/util/zip/ZipException;
     invoke-static {v0, v1}, Landroid/util/Log;->w(Ljava/lang/String;Ljava/lang/Throwable;)I
 
     .line 161
@@ -1040,12 +1080,13 @@
     .line 163
     invoke-static {v1}, Landroid/util/Log;->getStackTraceString(Ljava/lang/Throwable;)Ljava/lang/String;
 
-    move-result-object v1
+    move-result-object v2
 
     .line 161
-    invoke-virtual {p0, v0, v1}, Lcom/android/server/devicepolicy/AbUpdateInstaller;->notifyCallbackOnError(ILjava/lang/String;)V
+    invoke-virtual {p0, v0, v2}, Lcom/android/server/devicepolicy/AbUpdateInstaller;->notifyCallbackOnError(ILjava/lang/String;)V
 
     .line 169
+    .end local v1  # "e":Ljava/util/zip/ZipException;
     :goto_3b
     nop
 
@@ -1057,7 +1098,7 @@
     :cond_3d
     new-instance v0, Ljava/lang/IllegalStateException;
 
-    const-string v1, "installUpdateInThread can be called only once."
+    const-string/jumbo v1, "installUpdateInThread can be called only once."
 
     invoke-direct {v0, v1}, Ljava/lang/IllegalStateException;-><init>(Ljava/lang/String;)V
 

@@ -23,6 +23,8 @@
 # direct methods
 .method constructor <init>(Landroid/os/IBinder;I)V
     .registers 3
+    .param p1, "windowToken"  # Landroid/os/IBinder;
+    .param p2, "windowCookie"  # I
 
     .line 543
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V

@@ -21,6 +21,8 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/notification/NotificationUsageStats;Landroid/os/Looper;)V
     .registers 3
+    .param p1, "this$0"  # Lcom/android/server/notification/NotificationUsageStats;
+    .param p2, "x0"  # Landroid/os/Looper;
 
     .line 89
     iput-object p1, p0, Lcom/android/server/notification/NotificationUsageStats$1;->this$0:Lcom/android/server/notification/NotificationUsageStats;
@@ -34,6 +36,7 @@
 # virtual methods
 .method public handleMessage(Landroid/os/Message;)V
     .registers 4
+    .param p1, "msg"  # Landroid/os/Message;
 
     .line 92
     iget v0, p1, Landroid/os/Message;->what:I
@@ -51,25 +54,25 @@
 
     invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    iget p1, p1, Landroid/os/Message;->what:I
+    iget v1, p1, Landroid/os/Message;->what:I
 
-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
     invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    const-string v0, "NotificationUsageStats"
+    const-string v1, "NotificationUsageStats"
 
-    invoke-static {v0, p1}, Landroid/util/Log;->wtf(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v0}, Landroid/util/Log;->wtf(Ljava/lang/String;Ljava/lang/String;)I
 
     goto :goto_24
 
     .line 94
     :cond_1e
-    iget-object p1, p0, Lcom/android/server/notification/NotificationUsageStats$1;->this$0:Lcom/android/server/notification/NotificationUsageStats;
+    iget-object v0, p0, Lcom/android/server/notification/NotificationUsageStats$1;->this$0:Lcom/android/server/notification/NotificationUsageStats;
 
-    invoke-virtual {p1}, Lcom/android/server/notification/NotificationUsageStats;->emit()V
+    invoke-virtual {v0}, Lcom/android/server/notification/NotificationUsageStats;->emit()V
 
     .line 95
     nop

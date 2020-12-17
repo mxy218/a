@@ -21,8 +21,9 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/location/GnssLocationProvider;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/location/GnssLocationProvider;
 
-    .line 691
+    .line 676
     iput-object p1, p0, Lcom/android/server/location/GnssLocationProvider$5;->this$0:Lcom/android/server/location/GnssLocationProvider;
 
     invoke-direct {p0}, Landroid/content/BroadcastReceiver;-><init>()V
@@ -33,30 +34,32 @@
 
 # virtual methods
 .method public onReceive(Landroid/content/Context;Landroid/content/Intent;)V
-    .registers 3
+    .registers 5
+    .param p1, "context"  # Landroid/content/Context;
+    .param p2, "intent"  # Landroid/content/Intent;
 
-    .line 694
+    .line 679
     invoke-virtual {p0}, Lcom/android/server/location/GnssLocationProvider$5;->getSendingUserId()I
 
-    move-result p1
+    move-result v0
 
-    const/4 p2, -0x1
+    const/4 v1, -0x1
 
-    if-ne p1, p2, :cond_12
+    if-ne v0, v1, :cond_12
 
-    .line 695
-    iget-object p1, p0, Lcom/android/server/location/GnssLocationProvider$5;->this$0:Lcom/android/server/location/GnssLocationProvider;
+    .line 680
+    iget-object v0, p0, Lcom/android/server/location/GnssLocationProvider$5;->this$0:Lcom/android/server/location/GnssLocationProvider;
 
-    const/4 p2, 0x1
+    const/4 v1, 0x1
 
-    invoke-static {p1, p2}, Lcom/android/server/location/GnssLocationProvider;->access$1002(Lcom/android/server/location/GnssLocationProvider;Z)Z
+    invoke-static {v0, v1}, Lcom/android/server/location/GnssLocationProvider;->access$702(Lcom/android/server/location/GnssLocationProvider;Z)Z
 
-    .line 696
-    iget-object p1, p0, Lcom/android/server/location/GnssLocationProvider$5;->this$0:Lcom/android/server/location/GnssLocationProvider;
+    .line 681
+    iget-object v0, p0, Lcom/android/server/location/GnssLocationProvider$5;->this$0:Lcom/android/server/location/GnssLocationProvider;
 
-    invoke-static {p1}, Lcom/android/server/location/GnssLocationProvider;->access$1100(Lcom/android/server/location/GnssLocationProvider;)V
+    invoke-static {v0}, Lcom/android/server/location/GnssLocationProvider;->access$800(Lcom/android/server/location/GnssLocationProvider;)V
 
-    .line 698
+    .line 683
     :cond_12
     return-void
 .end method

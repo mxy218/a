@@ -59,6 +59,7 @@
 # direct methods
 .method public constructor <init>(Lcom/android/server/tv/TvInputHardwareManager;Landroid/media/tv/TvInputHardwareInfo;)V
     .registers 6
+    .param p2, "info"  # Landroid/media/tv/TvInputHardwareInfo;
 
     .line 779
     iput-object p1, p0, Lcom/android/server/tv/TvInputHardwareManager$TvInputHardwareImpl;->this$0:Lcom/android/server/tv/TvInputHardwareManager;
@@ -136,9 +137,9 @@
 
     move-result-object p1
 
-    iget-object p2, p0, Lcom/android/server/tv/TvInputHardwareManager$TvInputHardwareImpl;->mAudioListener:Landroid/media/AudioManager$OnAudioPortUpdateListener;
+    iget-object v0, p0, Lcom/android/server/tv/TvInputHardwareManager$TvInputHardwareImpl;->mAudioListener:Landroid/media/AudioManager$OnAudioPortUpdateListener;
 
-    invoke-virtual {p1, p2}, Landroid/media/AudioManager;->registerAudioPortUpdateListener(Landroid/media/AudioManager$OnAudioPortUpdateListener;)V
+    invoke-virtual {p1, v0}, Landroid/media/AudioManager;->registerAudioPortUpdateListener(Landroid/media/AudioManager$OnAudioPortUpdateListener;)V
 
     .line 782
     iget-object p1, p0, Lcom/android/server/tv/TvInputHardwareManager$TvInputHardwareImpl;->mInfo:Landroid/media/tv/TvInputHardwareInfo;
@@ -156,13 +157,13 @@
 
     move-result p1
 
-    iget-object p2, p0, Lcom/android/server/tv/TvInputHardwareManager$TvInputHardwareImpl;->mInfo:Landroid/media/tv/TvInputHardwareInfo;
+    iget-object v0, p0, Lcom/android/server/tv/TvInputHardwareManager$TvInputHardwareImpl;->mInfo:Landroid/media/tv/TvInputHardwareInfo;
 
-    invoke-virtual {p2}, Landroid/media/tv/TvInputHardwareInfo;->getAudioAddress()Ljava/lang/String;
+    invoke-virtual {v0}, Landroid/media/tv/TvInputHardwareInfo;->getAudioAddress()Ljava/lang/String;
 
-    move-result-object p2
+    move-result-object v0
 
-    invoke-direct {p0, p1, p2}, Lcom/android/server/tv/TvInputHardwareManager$TvInputHardwareImpl;->findAudioDevicePort(ILjava/lang/String;)Landroid/media/AudioDevicePort;
+    invoke-direct {p0, p1, v0}, Lcom/android/server/tv/TvInputHardwareManager$TvInputHardwareImpl;->findAudioDevicePort(ILjava/lang/String;)Landroid/media/AudioDevicePort;
 
     move-result-object p1
 
@@ -179,16 +180,18 @@
 .end method
 
 .method static synthetic access$1100(Lcom/android/server/tv/TvInputHardwareManager$TvInputHardwareImpl;)Ljava/lang/Object;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/tv/TvInputHardwareManager$TvInputHardwareImpl;
 
     .line 732
-    iget-object p0, p0, Lcom/android/server/tv/TvInputHardwareManager$TvInputHardwareImpl;->mImplLock:Ljava/lang/Object;
+    iget-object v0, p0, Lcom/android/server/tv/TvInputHardwareManager$TvInputHardwareImpl;->mImplLock:Ljava/lang/Object;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$1200(Lcom/android/server/tv/TvInputHardwareManager$TvInputHardwareImpl;)V
     .registers 1
+    .param p0, "x0"  # Lcom/android/server/tv/TvInputHardwareManager$TvInputHardwareImpl;
 
     .line 732
     invoke-direct {p0}, Lcom/android/server/tv/TvInputHardwareManager$TvInputHardwareImpl;->updateAudioConfigLocked()V
@@ -198,6 +201,8 @@
 
 .method static synthetic access$1302(Lcom/android/server/tv/TvInputHardwareManager$TvInputHardwareImpl;Landroid/media/AudioDevicePort;)Landroid/media/AudioDevicePort;
     .registers 2
+    .param p0, "x0"  # Lcom/android/server/tv/TvInputHardwareManager$TvInputHardwareImpl;
+    .param p1, "x1"  # Landroid/media/AudioDevicePort;
 
     .line 732
     iput-object p1, p0, Lcom/android/server/tv/TvInputHardwareManager$TvInputHardwareImpl;->mAudioSource:Landroid/media/AudioDevicePort;
@@ -206,25 +211,29 @@
 .end method
 
 .method static synthetic access$1400(Lcom/android/server/tv/TvInputHardwareManager$TvInputHardwareImpl;)Ljava/util/List;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/tv/TvInputHardwareManager$TvInputHardwareImpl;
 
     .line 732
-    iget-object p0, p0, Lcom/android/server/tv/TvInputHardwareManager$TvInputHardwareImpl;->mAudioSink:Ljava/util/List;
+    iget-object v0, p0, Lcom/android/server/tv/TvInputHardwareManager$TvInputHardwareImpl;->mAudioSink:Ljava/util/List;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$1500(Lcom/android/server/tv/TvInputHardwareManager$TvInputHardwareImpl;)Landroid/media/AudioPatch;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/tv/TvInputHardwareManager$TvInputHardwareImpl;
 
     .line 732
-    iget-object p0, p0, Lcom/android/server/tv/TvInputHardwareManager$TvInputHardwareImpl;->mAudioPatch:Landroid/media/AudioPatch;
+    iget-object v0, p0, Lcom/android/server/tv/TvInputHardwareManager$TvInputHardwareImpl;->mAudioPatch:Landroid/media/AudioPatch;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$1502(Lcom/android/server/tv/TvInputHardwareManager$TvInputHardwareImpl;Landroid/media/AudioPatch;)Landroid/media/AudioPatch;
     .registers 2
+    .param p0, "x0"  # Lcom/android/server/tv/TvInputHardwareManager$TvInputHardwareImpl;
+    .param p1, "x1"  # Landroid/media/AudioPatch;
 
     .line 732
     iput-object p1, p0, Lcom/android/server/tv/TvInputHardwareManager$TvInputHardwareImpl;->mAudioPatch:Landroid/media/AudioPatch;
@@ -234,6 +243,7 @@
 
 .method static synthetic access$3000(Lcom/android/server/tv/TvInputHardwareManager$TvInputHardwareImpl;)V
     .registers 1
+    .param p0, "x0"  # Lcom/android/server/tv/TvInputHardwareManager$TvInputHardwareImpl;
 
     .line 732
     invoke-direct {p0}, Lcom/android/server/tv/TvInputHardwareManager$TvInputHardwareImpl;->handleAudioSinkUpdated()V
@@ -242,29 +252,36 @@
 .end method
 
 .method static synthetic access$700(Lcom/android/server/tv/TvInputHardwareManager$TvInputHardwareImpl;Landroid/view/Surface;Landroid/media/tv/TvStreamConfig;)Z
-    .registers 3
+    .registers 4
+    .param p0, "x0"  # Lcom/android/server/tv/TvInputHardwareManager$TvInputHardwareImpl;
+    .param p1, "x1"  # Landroid/view/Surface;
+    .param p2, "x2"  # Landroid/media/tv/TvStreamConfig;
 
     .line 732
     invoke-direct {p0, p1, p2}, Lcom/android/server/tv/TvInputHardwareManager$TvInputHardwareImpl;->startCapture(Landroid/view/Surface;Landroid/media/tv/TvStreamConfig;)Z
 
-    move-result p0
+    move-result v0
 
-    return p0
+    return v0
 .end method
 
 .method static synthetic access$800(Lcom/android/server/tv/TvInputHardwareManager$TvInputHardwareImpl;Landroid/media/tv/TvStreamConfig;)Z
-    .registers 2
+    .registers 3
+    .param p0, "x0"  # Lcom/android/server/tv/TvInputHardwareManager$TvInputHardwareImpl;
+    .param p1, "x1"  # Landroid/media/tv/TvStreamConfig;
 
     .line 732
     invoke-direct {p0, p1}, Lcom/android/server/tv/TvInputHardwareManager$TvInputHardwareImpl;->stopCapture(Landroid/media/tv/TvStreamConfig;)Z
 
-    move-result p0
+    move-result v0
 
-    return p0
+    return v0
 .end method
 
 .method private findAudioDevicePort(ILjava/lang/String;)Landroid/media/AudioDevicePort;
-    .registers 7
+    .registers 8
+    .param p1, "type"  # I
+    .param p2, "address"  # Ljava/lang/String;
 
     .line 804
     const/4 v0, 0x0
@@ -281,6 +298,7 @@
     invoke-direct {v1}, Ljava/util/ArrayList;-><init>()V
 
     .line 808
+    .local v1, "devicePorts":Ljava/util/ArrayList;, "Ljava/util/ArrayList<Landroid/media/AudioDevicePort;>;"
     iget-object v2, p0, Lcom/android/server/tv/TvInputHardwareManager$TvInputHardwareImpl;->this$0:Lcom/android/server/tv/TvInputHardwareManager;
 
     invoke-static {v2}, Lcom/android/server/tv/TvInputHardwareManager;->access$1600(Lcom/android/server/tv/TvInputHardwareManager;)Landroid/media/AudioManager;
@@ -298,42 +316,44 @@
     :cond_15
     invoke-virtual {v1}, Ljava/util/ArrayList;->iterator()Ljava/util/Iterator;
 
-    move-result-object v1
-
-    :goto_19
-    invoke-interface {v1}, Ljava/util/Iterator;->hasNext()Z
-
-    move-result v2
-
-    if-eqz v2, :cond_37
-
-    invoke-interface {v1}, Ljava/util/Iterator;->next()Ljava/lang/Object;
-
     move-result-object v2
 
-    check-cast v2, Landroid/media/AudioDevicePort;
-
-    .line 812
-    invoke-virtual {v2}, Landroid/media/AudioDevicePort;->type()I
+    :goto_19
+    invoke-interface {v2}, Ljava/util/Iterator;->hasNext()Z
 
     move-result v3
 
-    if-ne v3, p1, :cond_36
+    if-eqz v3, :cond_37
 
-    invoke-virtual {v2}, Landroid/media/AudioDevicePort;->address()Ljava/lang/String;
+    invoke-interface {v2}, Ljava/util/Iterator;->next()Ljava/lang/Object;
 
     move-result-object v3
 
-    invoke-virtual {v3, p2}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    check-cast v3, Landroid/media/AudioDevicePort;
 
-    move-result v3
+    .line 812
+    .local v3, "port":Landroid/media/AudioDevicePort;
+    invoke-virtual {v3}, Landroid/media/AudioDevicePort;->type()I
 
-    if-eqz v3, :cond_36
+    move-result v4
+
+    if-ne v4, p1, :cond_36
+
+    invoke-virtual {v3}, Landroid/media/AudioDevicePort;->address()Ljava/lang/String;
+
+    move-result-object v4
+
+    invoke-virtual {v4, p2}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+
+    move-result v4
+
+    if-eqz v4, :cond_36
 
     .line 813
-    return-object v2
+    return-object v3
 
     .line 815
+    .end local v3  # "port":Landroid/media/AudioDevicePort;
     :cond_36
     goto :goto_19
 
@@ -343,7 +363,7 @@
 .end method
 
 .method private findAudioSinkFromAudioPolicy(Ljava/util/List;)V
-    .registers 7
+    .registers 8
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(",
@@ -354,6 +374,7 @@
     .end annotation
 
     .line 789
+    .local p1, "sinks":Ljava/util/List;, "Ljava/util/List<Landroid/media/AudioDevicePort;>;"
     invoke-interface {p1}, Ljava/util/List;->clear()V
 
     .line 790
@@ -362,6 +383,7 @@
     invoke-direct {v0}, Ljava/util/ArrayList;-><init>()V
 
     .line 791
+    .local v0, "devicePorts":Ljava/util/ArrayList;, "Ljava/util/ArrayList<Landroid/media/AudioDevicePort;>;"
     iget-object v1, p0, Lcom/android/server/tv/TvInputHardwareManager$TvInputHardwareImpl;->this$0:Lcom/android/server/tv/TvInputHardwareManager;
 
     invoke-static {v1}, Lcom/android/server/tv/TvInputHardwareManager;->access$1600(Lcom/android/server/tv/TvInputHardwareManager;)Landroid/media/AudioManager;
@@ -390,47 +412,50 @@
     move-result v1
 
     .line 795
+    .local v1, "sinkDevice":I
     invoke-virtual {v0}, Ljava/util/ArrayList;->iterator()Ljava/util/Iterator;
-
-    move-result-object v0
-
-    :goto_23
-    invoke-interface {v0}, Ljava/util/Iterator;->hasNext()Z
-
-    move-result v2
-
-    if-eqz v2, :cond_43
-
-    invoke-interface {v0}, Ljava/util/Iterator;->next()Ljava/lang/Object;
 
     move-result-object v2
 
-    check-cast v2, Landroid/media/AudioDevicePort;
+    :goto_23
+    invoke-interface {v2}, Ljava/util/Iterator;->hasNext()Z
+
+    move-result v3
+
+    if-eqz v3, :cond_43
+
+    invoke-interface {v2}, Ljava/util/Iterator;->next()Ljava/lang/Object;
+
+    move-result-object v3
+
+    check-cast v3, Landroid/media/AudioDevicePort;
 
     .line 796
-    invoke-virtual {v2}, Landroid/media/AudioDevicePort;->type()I
+    .local v3, "port":Landroid/media/AudioDevicePort;
+    invoke-virtual {v3}, Landroid/media/AudioDevicePort;->type()I
 
-    move-result v3
+    move-result v4
 
-    and-int/2addr v3, v1
+    and-int/2addr v4, v1
 
-    if-eqz v3, :cond_42
+    if-eqz v4, :cond_42
 
     .line 797
-    invoke-virtual {v2}, Landroid/media/AudioDevicePort;->type()I
+    invoke-virtual {v3}, Landroid/media/AudioDevicePort;->type()I
 
-    move-result v3
+    move-result v4
 
-    const/high16 v4, -0x80000000
+    const/high16 v5, -0x80000000
 
-    and-int/2addr v3, v4
+    and-int/2addr v4, v5
 
-    if-nez v3, :cond_42
+    if-nez v4, :cond_42
 
     .line 798
-    invoke-interface {p1, v2}, Ljava/util/List;->add(Ljava/lang/Object;)Z
+    invoke-interface {p1, v3}, Ljava/util/List;->add(Ljava/lang/Object;)Z
 
     .line 800
+    .end local v3  # "port":Landroid/media/AudioDevicePort;
     :cond_42
     goto :goto_23
 
@@ -470,6 +495,8 @@
 
 .method private startCapture(Landroid/view/Surface;Landroid/media/tv/TvStreamConfig;)Z
     .registers 7
+    .param p1, "surface"  # Landroid/view/Surface;
+    .param p2, "config"  # Landroid/media/tv/TvStreamConfig;
 
     .line 1023
     iget-object v0, p0, Lcom/android/server/tv/TvInputHardwareManager$TvInputHardwareImpl;->mImplLock:Ljava/lang/Object;
@@ -528,10 +555,11 @@
 
     invoke-virtual {v1, v3, p1, p2}, Lcom/android/server/tv/TvInputHal;->addOrUpdateStream(ILandroid/view/Surface;Landroid/media/tv/TvStreamConfig;)I
 
-    move-result p1
+    move-result v1
 
     .line 1035
-    if-nez p1, :cond_2b
+    .local v1, "result":I
+    if-nez v1, :cond_2b
 
     const/4 v2, 0x1
 
@@ -541,6 +569,7 @@
     return v2
 
     .line 1028
+    .end local v1  # "result":I
     :cond_2d
     :goto_2d
     monitor-exit v0
@@ -549,17 +578,18 @@
 
     .line 1036
     :catchall_2f
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_31
     .catchall {:try_start_3 .. :try_end_31} :catchall_2f
 
-    throw p1
+    throw v1
 .end method
 
 .method private stopCapture(Landroid/media/tv/TvStreamConfig;)Z
     .registers 6
+    .param p1, "config"  # Landroid/media/tv/TvStreamConfig;
 
     .line 1040
     iget-object v0, p0, Lcom/android/server/tv/TvInputHardwareManager$TvInputHardwareImpl;->mImplLock:Ljava/lang/Object;
@@ -604,10 +634,11 @@
 
     invoke-virtual {v1, v3, p1}, Lcom/android/server/tv/TvInputHal;->removeStream(ILandroid/media/tv/TvStreamConfig;)I
 
-    move-result p1
+    move-result v1
 
     .line 1049
-    if-nez p1, :cond_21
+    .local v1, "result":I
+    if-nez v1, :cond_21
 
     const/4 v2, 0x1
 
@@ -617,18 +648,19 @@
     return v2
 
     .line 1050
+    .end local v1  # "result":I
     :catchall_23
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_25
     .catchall {:try_start_3 .. :try_end_25} :catchall_23
 
-    throw p1
+    throw v1
 .end method
 
 .method private updateAudioConfigLocked()V
-    .registers 17
+    .registers 21
 
     .line 880
     move-object/from16 v0, p0
@@ -638,16 +670,16 @@
     move-result v1
 
     .line 881
+    .local v1, "sinkUpdated":Z
     invoke-direct/range {p0 .. p0}, Lcom/android/server/tv/TvInputHardwareManager$TvInputHardwareImpl;->updateAudioSourceLocked()Z
 
     move-result v2
 
     .line 885
+    .local v2, "sourceUpdated":Z
     iget-object v3, v0, Lcom/android/server/tv/TvInputHardwareManager$TvInputHardwareImpl;->mAudioSource:Landroid/media/AudioDevicePort;
 
-    const/4 v4, 0x0
-
-    if-eqz v3, :cond_1dd
+    if-eqz v3, :cond_1f7
 
     iget-object v3, v0, Lcom/android/server/tv/TvInputHardwareManager$TvInputHardwareImpl;->mAudioSink:Ljava/util/List;
 
@@ -655,16 +687,20 @@
 
     move-result v3
 
-    if-nez v3, :cond_1dd
+    if-nez v3, :cond_1f7
 
     iget-object v3, v0, Lcom/android/server/tv/TvInputHardwareManager$TvInputHardwareImpl;->mActiveConfig:Landroid/media/tv/TvStreamConfig;
 
-    if-nez v3, :cond_1d
+    if-nez v3, :cond_20
 
-    goto/16 :goto_1dd
+    move/from16 v18, v1
+
+    move/from16 v19, v2
+
+    goto/16 :goto_1fb
 
     .line 893
-    :cond_1d
+    :cond_20
     iget-object v3, v0, Lcom/android/server/tv/TvInputHardwareManager$TvInputHardwareImpl;->this$0:Lcom/android/server/tv/TvInputHardwareManager;
 
     invoke-static {v3}, Lcom/android/server/tv/TvInputHardwareManager;->access$1800(Lcom/android/server/tv/TvInputHardwareManager;)V
@@ -681,536 +717,606 @@
     mul-float/2addr v3, v5
 
     .line 895
-    nop
+    .local v3, "volume":F
+    const/4 v5, 0x0
 
     .line 896
-    iget-object v5, v0, Lcom/android/server/tv/TvInputHardwareManager$TvInputHardwareImpl;->mAudioSource:Landroid/media/AudioDevicePort;
+    .local v5, "sourceGainConfig":Landroid/media/AudioGainConfig;
+    iget-object v6, v0, Lcom/android/server/tv/TvInputHardwareManager$TvInputHardwareImpl;->mAudioSource:Landroid/media/AudioDevicePort;
 
-    invoke-virtual {v5}, Landroid/media/AudioDevicePort;->gains()[Landroid/media/AudioGain;
+    invoke-virtual {v6}, Landroid/media/AudioDevicePort;->gains()[Landroid/media/AudioGain;
 
-    move-result-object v5
+    move-result-object v6
 
-    array-length v5, v5
-
-    const/4 v6, 0x0
+    array-length v6, v6
 
     const/4 v7, 0x1
 
-    if-lez v5, :cond_9a
+    const/4 v8, 0x0
 
-    iget v5, v0, Lcom/android/server/tv/TvInputHardwareManager$TvInputHardwareImpl;->mCommittedVolume:F
+    if-lez v6, :cond_9c
 
-    cmpl-float v5, v3, v5
+    iget v6, v0, Lcom/android/server/tv/TvInputHardwareManager$TvInputHardwareImpl;->mCommittedVolume:F
 
-    if-eqz v5, :cond_9a
+    cmpl-float v6, v3, v6
+
+    if-eqz v6, :cond_9c
 
     .line 897
-    nop
+    const/4 v6, 0x0
 
     .line 898
-    iget-object v5, v0, Lcom/android/server/tv/TvInputHardwareManager$TvInputHardwareImpl;->mAudioSource:Landroid/media/AudioDevicePort;
+    .local v6, "sourceGain":Landroid/media/AudioGain;
+    iget-object v9, v0, Lcom/android/server/tv/TvInputHardwareManager$TvInputHardwareImpl;->mAudioSource:Landroid/media/AudioDevicePort;
 
-    invoke-virtual {v5}, Landroid/media/AudioDevicePort;->gains()[Landroid/media/AudioGain;
+    invoke-virtual {v9}, Landroid/media/AudioDevicePort;->gains()[Landroid/media/AudioGain;
 
-    move-result-object v5
+    move-result-object v9
 
-    array-length v8, v5
+    array-length v10, v9
 
-    move v9, v6
+    move v11, v8
 
-    :goto_46
-    if-ge v9, v8, :cond_56
+    :goto_49
+    if-ge v11, v10, :cond_59
 
-    aget-object v10, v5, v9
+    aget-object v12, v9, v11
 
     .line 899
-    invoke-virtual {v10}, Landroid/media/AudioGain;->mode()I
+    .local v12, "gain":Landroid/media/AudioGain;
+    invoke-virtual {v12}, Landroid/media/AudioGain;->mode()I
 
-    move-result v11
+    move-result v13
 
-    and-int/2addr v11, v7
+    and-int/2addr v13, v7
 
-    if-eqz v11, :cond_53
+    if-eqz v13, :cond_56
 
     .line 900
-    nop
+    move-object v6, v12
 
     .line 901
-    goto :goto_57
+    goto :goto_59
 
     .line 898
-    :cond_53
-    add-int/lit8 v9, v9, 0x1
-
-    goto :goto_46
-
+    .end local v12  # "gain":Landroid/media/AudioGain;
     :cond_56
-    move-object v10, v4
+    add-int/lit8 v11, v11, 0x1
+
+    goto :goto_49
 
     .line 905
-    :goto_57
-    if-eqz v10, :cond_91
+    :cond_59
+    :goto_59
+    if-eqz v6, :cond_93
 
     .line 906
-    invoke-virtual {v10}, Landroid/media/AudioGain;->maxValue()I
-
-    move-result v5
-
-    invoke-virtual {v10}, Landroid/media/AudioGain;->minValue()I
-
-    move-result v8
-
-    sub-int/2addr v5, v8
-
-    .line 907
-    invoke-virtual {v10}, Landroid/media/AudioGain;->stepValue()I
-
-    move-result v8
-
-    div-int/2addr v5, v8
-
-    .line 908
-    invoke-virtual {v10}, Landroid/media/AudioGain;->minValue()I
-
-    move-result v8
-
-    .line 909
-    const/high16 v9, 0x3f800000  # 1.0f
-
-    cmpg-float v9, v3, v9
-
-    if-gez v9, :cond_7f
-
-    .line 910
-    invoke-virtual {v10}, Landroid/media/AudioGain;->stepValue()I
+    invoke-virtual {v6}, Landroid/media/AudioGain;->maxValue()I
 
     move-result v9
 
-    int-to-float v5, v5
+    invoke-virtual {v6}, Landroid/media/AudioGain;->minValue()I
 
-    mul-float/2addr v5, v3
+    move-result v10
 
-    float-to-double v11, v5
+    sub-int/2addr v9, v10
 
-    const-wide/high16 v13, 0x3fe0000000000000L  # 0.5
+    .line 907
+    invoke-virtual {v6}, Landroid/media/AudioGain;->stepValue()I
 
-    add-double/2addr v11, v13
+    move-result v10
 
-    double-to-int v5, v11
+    div-int/2addr v9, v10
 
-    mul-int/2addr v9, v5
+    .line 908
+    .local v9, "steps":I
+    invoke-virtual {v6}, Landroid/media/AudioGain;->minValue()I
 
-    add-int/2addr v8, v9
+    move-result v10
 
-    goto :goto_83
+    .line 909
+    .local v10, "gainValue":I
+    const/high16 v11, 0x3f800000  # 1.0f
+
+    cmpg-float v11, v3, v11
+
+    if-gez v11, :cond_81
+
+    .line 910
+    invoke-virtual {v6}, Landroid/media/AudioGain;->stepValue()I
+
+    move-result v11
+
+    int-to-float v12, v9
+
+    mul-float/2addr v12, v3
+
+    float-to-double v12, v12
+
+    const-wide/high16 v14, 0x3fe0000000000000L  # 0.5
+
+    add-double/2addr v12, v14
+
+    double-to-int v12, v12
+
+    mul-int/2addr v11, v12
+
+    add-int/2addr v10, v11
+
+    goto :goto_85
 
     .line 912
-    :cond_7f
-    invoke-virtual {v10}, Landroid/media/AudioGain;->maxValue()I
+    :cond_81
+    invoke-virtual {v6}, Landroid/media/AudioGain;->maxValue()I
 
-    move-result v8
+    move-result v10
 
     .line 915
-    :goto_83
-    new-array v5, v7, [I
+    :goto_85
+    new-array v11, v7, [I
 
-    aput v8, v5, v6
+    aput v10, v11, v8
 
     .line 916
+    .local v11, "gainValues":[I
     nop
 
     .line 917
-    invoke-virtual {v10}, Landroid/media/AudioGain;->channelMask()I
+    invoke-virtual {v6}, Landroid/media/AudioGain;->channelMask()I
 
-    move-result v8
+    move-result v12
 
     .line 916
-    invoke-virtual {v10, v7, v8, v5, v6}, Landroid/media/AudioGain;->buildConfig(II[II)Landroid/media/AudioGainConfig;
+    invoke-virtual {v6, v7, v12, v11, v8}, Landroid/media/AudioGain;->buildConfig(II[II)Landroid/media/AudioGainConfig;
 
     move-result-object v5
 
     .line 918
-    goto :goto_9b
+    .end local v9  # "steps":I
+    .end local v10  # "gainValue":I
+    .end local v11  # "gainValues":[I
+    goto :goto_9c
 
     .line 919
-    :cond_91
+    :cond_93
     invoke-static {}, Lcom/android/server/tv/TvInputHardwareManager;->access$900()Ljava/lang/String;
 
-    move-result-object v5
+    move-result-object v9
 
-    const-string v8, "No audio source gain with MODE_JOINT support exists."
+    const-string v10, "No audio source gain with MODE_JOINT support exists."
 
-    invoke-static {v5, v8}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v9, v10}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 923
-    :cond_9a
-    move-object v5, v4
+    .end local v6  # "sourceGain":Landroid/media/AudioGain;
+    :cond_9c
+    :goto_9c
+    iget-object v6, v0, Lcom/android/server/tv/TvInputHardwareManager$TvInputHardwareImpl;->mAudioSource:Landroid/media/AudioDevicePort;
 
-    :goto_9b
-    iget-object v8, v0, Lcom/android/server/tv/TvInputHardwareManager$TvInputHardwareImpl;->mAudioSource:Landroid/media/AudioDevicePort;
+    invoke-virtual {v6}, Landroid/media/AudioDevicePort;->activeConfig()Landroid/media/AudioPortConfig;
 
-    invoke-virtual {v8}, Landroid/media/AudioDevicePort;->activeConfig()Landroid/media/AudioPortConfig;
-
-    move-result-object v8
+    move-result-object v6
 
     .line 924
+    .local v6, "sourceConfig":Landroid/media/AudioPortConfig;
     new-instance v9, Ljava/util/ArrayList;
 
     invoke-direct {v9}, Ljava/util/ArrayList;-><init>()V
 
     .line 925
+    .local v9, "sinkConfigs":Ljava/util/List;, "Ljava/util/List<Landroid/media/AudioPortConfig;>;"
     new-array v10, v7, [Landroid/media/AudioPatch;
 
     iget-object v11, v0, Lcom/android/server/tv/TvInputHardwareManager$TvInputHardwareImpl;->mAudioPatch:Landroid/media/AudioPatch;
 
-    aput-object v11, v10, v6
+    aput-object v11, v10, v8
 
     .line 926
-    if-nez v2, :cond_b3
+    .local v10, "audioPatchArray":[Landroid/media/AudioPatch;
+    if-nez v2, :cond_b4
 
-    if-eqz v1, :cond_b1
-
-    goto :goto_b3
-
-    :cond_b1
-    move v1, v6
+    if-eqz v1, :cond_b2
 
     goto :goto_b4
 
-    :cond_b3
-    :goto_b3
-    move v1, v7
+    :cond_b2
+    move v11, v8
+
+    goto :goto_b5
+
+    :cond_b4
+    :goto_b4
+    move v11, v7
 
     .line 928
-    :goto_b4
-    iget-object v2, v0, Lcom/android/server/tv/TvInputHardwareManager$TvInputHardwareImpl;->mAudioSink:Ljava/util/List;
+    .local v11, "shouldRecreateAudioPatch":Z
+    :goto_b5
+    iget-object v12, v0, Lcom/android/server/tv/TvInputHardwareManager$TvInputHardwareImpl;->mAudioSink:Ljava/util/List;
 
-    invoke-interface {v2}, Ljava/util/List;->iterator()Ljava/util/Iterator;
-
-    move-result-object v2
-
-    :goto_ba
-    invoke-interface {v2}, Ljava/util/Iterator;->hasNext()Z
-
-    move-result v11
-
-    if-eqz v11, :cond_12f
-
-    invoke-interface {v2}, Ljava/util/Iterator;->next()Ljava/lang/Object;
-
-    move-result-object v11
-
-    check-cast v11, Landroid/media/AudioDevicePort;
-
-    .line 929
-    invoke-virtual {v11}, Landroid/media/AudioDevicePort;->activeConfig()Landroid/media/AudioPortConfig;
+    invoke-interface {v12}, Ljava/util/List;->iterator()Ljava/util/Iterator;
 
     move-result-object v12
 
-    .line 930
-    iget v13, v0, Lcom/android/server/tv/TvInputHardwareManager$TvInputHardwareImpl;->mDesiredSamplingRate:I
-
-    .line 931
-    iget v14, v0, Lcom/android/server/tv/TvInputHardwareManager$TvInputHardwareImpl;->mDesiredChannelMask:I
-
-    .line 932
-    iget v15, v0, Lcom/android/server/tv/TvInputHardwareManager$TvInputHardwareImpl;->mDesiredFormat:I
-
-    .line 935
-    if-eqz v12, :cond_e4
-
-    .line 936
-    if-nez v13, :cond_d8
-
-    .line 937
-    invoke-virtual {v12}, Landroid/media/AudioPortConfig;->samplingRate()I
+    :goto_bb
+    invoke-interface {v12}, Ljava/util/Iterator;->hasNext()Z
 
     move-result v13
 
-    .line 939
-    :cond_d8
-    if-ne v14, v7, :cond_de
+    if-eqz v13, :cond_137
 
-    .line 940
-    invoke-virtual {v12}, Landroid/media/AudioPortConfig;->channelMask()I
+    invoke-interface {v12}, Ljava/util/Iterator;->next()Ljava/lang/Object;
 
-    move-result v14
+    move-result-object v13
 
-    .line 942
-    :cond_de
-    if-ne v15, v7, :cond_e4
+    check-cast v13, Landroid/media/AudioDevicePort;
 
-    .line 943
-    invoke-virtual {v12}, Landroid/media/AudioPortConfig;->format()I
+    .line 929
+    .local v13, "audioSink":Landroid/media/AudioDevicePort;
+    invoke-virtual {v13}, Landroid/media/AudioDevicePort;->activeConfig()Landroid/media/AudioPortConfig;
+
+    move-result-object v14
+
+    .line 930
+    .local v14, "sinkConfig":Landroid/media/AudioPortConfig;
+    iget v15, v0, Lcom/android/server/tv/TvInputHardwareManager$TvInputHardwareImpl;->mDesiredSamplingRate:I
+
+    .line 931
+    .local v15, "sinkSamplingRate":I
+    iget v4, v0, Lcom/android/server/tv/TvInputHardwareManager$TvInputHardwareImpl;->mDesiredChannelMask:I
+
+    .line 932
+    .local v4, "sinkChannelMask":I
+    iget v8, v0, Lcom/android/server/tv/TvInputHardwareManager$TvInputHardwareImpl;->mDesiredFormat:I
+
+    .line 935
+    .local v8, "sinkFormat":I
+    if-eqz v14, :cond_e5
+
+    .line 936
+    if-nez v15, :cond_d9
+
+    .line 937
+    invoke-virtual {v14}, Landroid/media/AudioPortConfig;->samplingRate()I
 
     move-result v15
 
+    .line 939
+    :cond_d9
+    if-ne v4, v7, :cond_df
+
+    .line 940
+    invoke-virtual {v14}, Landroid/media/AudioPortConfig;->channelMask()I
+
+    move-result v4
+
+    .line 942
+    :cond_df
+    if-ne v8, v7, :cond_e5
+
+    .line 943
+    invoke-virtual {v14}, Landroid/media/AudioPortConfig;->format()I
+
+    move-result v8
+
     .line 947
-    :cond_e4
-    if-eqz v12, :cond_f8
+    :cond_e5
+    if-eqz v14, :cond_f9
 
     .line 948
-    invoke-virtual {v12}, Landroid/media/AudioPortConfig;->samplingRate()I
+    invoke-virtual {v14}, Landroid/media/AudioPortConfig;->samplingRate()I
 
     move-result v7
 
-    if-ne v7, v13, :cond_f8
+    if-ne v7, v15, :cond_f9
 
     .line 949
-    invoke-virtual {v12}, Landroid/media/AudioPortConfig;->channelMask()I
+    invoke-virtual {v14}, Landroid/media/AudioPortConfig;->channelMask()I
 
     move-result v7
 
-    if-ne v7, v14, :cond_f8
+    if-ne v7, v4, :cond_f9
 
     .line 950
-    invoke-virtual {v12}, Landroid/media/AudioPortConfig;->format()I
+    invoke-virtual {v14}, Landroid/media/AudioPortConfig;->format()I
 
     move-result v7
 
-    if-eq v7, v15, :cond_12a
+    if-eq v7, v8, :cond_131
 
     .line 952
-    :cond_f8
-    invoke-virtual {v11}, Landroid/media/AudioDevicePort;->samplingRates()[I
+    :cond_f9
+    invoke-virtual {v13}, Landroid/media/AudioDevicePort;->samplingRates()[I
 
-    move-result-object v1
+    move-result-object v7
 
-    invoke-static {v1, v13}, Lcom/android/server/tv/TvInputHardwareManager;->access$2000([II)Z
+    invoke-static {v7, v15}, Lcom/android/server/tv/TvInputHardwareManager;->access$2000([II)Z
 
-    move-result v1
+    move-result v7
 
-    if-nez v1, :cond_10f
+    if-nez v7, :cond_113
 
     .line 953
-    invoke-virtual {v11}, Landroid/media/AudioDevicePort;->samplingRates()[I
+    invoke-virtual {v13}, Landroid/media/AudioDevicePort;->samplingRates()[I
 
-    move-result-object v1
+    move-result-object v7
 
-    array-length v1, v1
+    array-length v7, v7
 
-    if-lez v1, :cond_10f
+    if-lez v7, :cond_113
 
     .line 954
-    invoke-virtual {v11}, Landroid/media/AudioDevicePort;->samplingRates()[I
+    invoke-virtual {v13}, Landroid/media/AudioDevicePort;->samplingRates()[I
 
-    move-result-object v1
+    move-result-object v7
 
-    aget v13, v1, v6
+    const/16 v17, 0x0
+
+    aget v7, v7, v17
+
+    move v15, v7
 
     .line 956
-    :cond_10f
-    invoke-virtual {v11}, Landroid/media/AudioDevicePort;->channelMasks()[I
+    :cond_113
+    invoke-virtual {v13}, Landroid/media/AudioDevicePort;->channelMasks()[I
 
-    move-result-object v1
+    move-result-object v7
 
-    invoke-static {v1, v14}, Lcom/android/server/tv/TvInputHardwareManager;->access$2000([II)Z
+    invoke-static {v7, v4}, Lcom/android/server/tv/TvInputHardwareManager;->access$2000([II)Z
 
-    move-result v1
+    move-result v7
 
-    if-nez v1, :cond_11a
+    if-nez v7, :cond_11e
 
     .line 957
-    const/4 v14, 0x1
+    const/4 v4, 0x1
 
     .line 959
-    :cond_11a
-    invoke-virtual {v11}, Landroid/media/AudioDevicePort;->formats()[I
+    :cond_11e
+    invoke-virtual {v13}, Landroid/media/AudioDevicePort;->formats()[I
 
-    move-result-object v1
+    move-result-object v7
 
-    invoke-static {v1, v15}, Lcom/android/server/tv/TvInputHardwareManager;->access$2000([II)Z
+    invoke-static {v7, v8}, Lcom/android/server/tv/TvInputHardwareManager;->access$2000([II)Z
 
-    move-result v1
+    move-result v7
 
-    if-nez v1, :cond_125
+    if-nez v7, :cond_12a
 
     .line 960
-    const/4 v15, 0x1
+    const/4 v7, 0x1
+
+    move v8, v7
 
     .line 962
-    :cond_125
-    invoke-virtual {v11, v13, v14, v15, v4}, Landroid/media/AudioDevicePort;->buildConfig(IIILandroid/media/AudioGainConfig;)Landroid/media/AudioDevicePortConfig;
+    :cond_12a
+    const/4 v7, 0x0
 
-    move-result-object v12
+    invoke-virtual {v13, v15, v4, v8, v7}, Landroid/media/AudioDevicePort;->buildConfig(IIILandroid/media/AudioGainConfig;)Landroid/media/AudioDevicePortConfig;
+
+    move-result-object v14
 
     .line 964
-    const/4 v1, 0x1
+    const/4 v7, 0x1
+
+    move v11, v7
 
     .line 966
-    :cond_12a
-    invoke-interface {v9, v12}, Ljava/util/List;->add(Ljava/lang/Object;)Z
+    :cond_131
+    invoke-interface {v9, v14}, Ljava/util/List;->add(Ljava/lang/Object;)Z
 
     .line 967
+    .end local v4  # "sinkChannelMask":I
+    .end local v8  # "sinkFormat":I
+    .end local v13  # "audioSink":Landroid/media/AudioDevicePort;
+    .end local v14  # "sinkConfig":Landroid/media/AudioPortConfig;
+    .end local v15  # "sinkSamplingRate":I
     const/4 v7, 0x1
 
-    goto :goto_ba
+    const/4 v8, 0x0
+
+    goto :goto_bb
 
     .line 970
-    :cond_12f
-    invoke-interface {v9, v6}, Ljava/util/List;->get(I)Ljava/lang/Object;
+    :cond_137
+    const/4 v4, 0x0
 
-    move-result-object v2
+    invoke-interface {v9, v4}, Ljava/util/List;->get(I)Ljava/lang/Object;
 
-    check-cast v2, Landroid/media/AudioPortConfig;
+    move-result-object v7
+
+    move-object v4, v7
+
+    check-cast v4, Landroid/media/AudioPortConfig;
 
     .line 971
-    if-eqz v8, :cond_139
+    .local v4, "sinkConfig":Landroid/media/AudioPortConfig;
+    if-eqz v6, :cond_14a
 
-    if-eqz v5, :cond_1a1
+    if-eqz v5, :cond_144
+
+    goto :goto_14a
+
+    :cond_144
+    move/from16 v18, v1
+
+    move/from16 v19, v2
+
+    goto/16 :goto_1ba
 
     .line 972
-    :cond_139
-    nop
+    :cond_14a
+    :goto_14a
+    const/4 v7, 0x0
 
     .line 973
-    iget-object v1, v0, Lcom/android/server/tv/TvInputHardwareManager$TvInputHardwareImpl;->mAudioSource:Landroid/media/AudioDevicePort;
+    .local v7, "sourceSamplingRate":I
+    iget-object v8, v0, Lcom/android/server/tv/TvInputHardwareManager$TvInputHardwareImpl;->mAudioSource:Landroid/media/AudioDevicePort;
 
-    invoke-virtual {v1}, Landroid/media/AudioDevicePort;->samplingRates()[I
-
-    move-result-object v1
-
-    invoke-virtual {v2}, Landroid/media/AudioPortConfig;->samplingRate()I
-
-    move-result v4
-
-    invoke-static {v1, v4}, Lcom/android/server/tv/TvInputHardwareManager;->access$2000([II)Z
-
-    move-result v1
-
-    if-eqz v1, :cond_14f
-
-    .line 974
-    invoke-virtual {v2}, Landroid/media/AudioPortConfig;->samplingRate()I
-
-    move-result v1
-
-    goto :goto_162
-
-    .line 975
-    :cond_14f
-    iget-object v1, v0, Lcom/android/server/tv/TvInputHardwareManager$TvInputHardwareImpl;->mAudioSource:Landroid/media/AudioDevicePort;
-
-    invoke-virtual {v1}, Landroid/media/AudioDevicePort;->samplingRates()[I
-
-    move-result-object v1
-
-    array-length v1, v1
-
-    if-lez v1, :cond_161
-
-    .line 977
-    iget-object v1, v0, Lcom/android/server/tv/TvInputHardwareManager$TvInputHardwareImpl;->mAudioSource:Landroid/media/AudioDevicePort;
-
-    invoke-virtual {v1}, Landroid/media/AudioDevicePort;->samplingRates()[I
-
-    move-result-object v1
-
-    aget v1, v1, v6
-
-    goto :goto_162
-
-    .line 975
-    :cond_161
-    move v1, v6
-
-    .line 979
-    :goto_162
-    nop
-
-    .line 980
-    iget-object v4, v0, Lcom/android/server/tv/TvInputHardwareManager$TvInputHardwareImpl;->mAudioSource:Landroid/media/AudioDevicePort;
-
-    invoke-virtual {v4}, Landroid/media/AudioDevicePort;->channelMasks()[I
-
-    move-result-object v4
-
-    array-length v7, v4
-
-    move v8, v6
-
-    :goto_16b
-    if-ge v8, v7, :cond_182
-
-    aget v11, v4, v8
-
-    .line 981
-    invoke-virtual {v2}, Landroid/media/AudioPortConfig;->channelMask()I
-
-    move-result v12
-
-    invoke-static {v12}, Landroid/media/AudioFormat;->channelCountFromOutChannelMask(I)I
-
-    move-result v12
-
-    .line 982
-    invoke-static {v11}, Landroid/media/AudioFormat;->channelCountFromInChannelMask(I)I
-
-    move-result v13
-
-    if-ne v12, v13, :cond_17f
-
-    .line 983
-    nop
-
-    .line 984
-    goto :goto_183
-
-    .line 980
-    :cond_17f
-    add-int/lit8 v8, v8, 0x1
-
-    goto :goto_16b
-
-    :cond_182
-    const/4 v11, 0x1
-
-    .line 987
-    :goto_183
-    nop
-
-    .line 988
-    iget-object v4, v0, Lcom/android/server/tv/TvInputHardwareManager$TvInputHardwareImpl;->mAudioSource:Landroid/media/AudioDevicePort;
-
-    invoke-virtual {v4}, Landroid/media/AudioDevicePort;->formats()[I
-
-    move-result-object v4
-
-    invoke-virtual {v2}, Landroid/media/AudioPortConfig;->format()I
-
-    move-result v7
-
-    invoke-static {v4, v7}, Lcom/android/server/tv/TvInputHardwareManager;->access$2000([II)Z
-
-    move-result v4
-
-    if-eqz v4, :cond_199
-
-    .line 989
-    invoke-virtual {v2}, Landroid/media/AudioPortConfig;->format()I
-
-    move-result v7
-
-    goto :goto_19a
-
-    .line 988
-    :cond_199
-    const/4 v7, 0x1
-
-    .line 991
-    :goto_19a
-    iget-object v2, v0, Lcom/android/server/tv/TvInputHardwareManager$TvInputHardwareImpl;->mAudioSource:Landroid/media/AudioDevicePort;
-
-    invoke-virtual {v2, v1, v11, v7, v5}, Landroid/media/AudioDevicePort;->buildConfig(IIILandroid/media/AudioGainConfig;)Landroid/media/AudioDevicePortConfig;
+    invoke-virtual {v8}, Landroid/media/AudioDevicePort;->samplingRates()[I
 
     move-result-object v8
 
-    .line 993
+    invoke-virtual {v4}, Landroid/media/AudioPortConfig;->samplingRate()I
+
+    move-result v12
+
+    invoke-static {v8, v12}, Lcom/android/server/tv/TvInputHardwareManager;->access$2000([II)Z
+
+    move-result v8
+
+    if-eqz v8, :cond_160
+
+    .line 974
+    invoke-virtual {v4}, Landroid/media/AudioPortConfig;->samplingRate()I
+
+    move-result v7
+
+    goto :goto_172
+
+    .line 975
+    :cond_160
+    iget-object v8, v0, Lcom/android/server/tv/TvInputHardwareManager$TvInputHardwareImpl;->mAudioSource:Landroid/media/AudioDevicePort;
+
+    invoke-virtual {v8}, Landroid/media/AudioDevicePort;->samplingRates()[I
+
+    move-result-object v8
+
+    array-length v8, v8
+
+    if-lez v8, :cond_172
+
+    .line 977
+    iget-object v8, v0, Lcom/android/server/tv/TvInputHardwareManager$TvInputHardwareImpl;->mAudioSource:Landroid/media/AudioDevicePort;
+
+    invoke-virtual {v8}, Landroid/media/AudioDevicePort;->samplingRates()[I
+
+    move-result-object v8
+
+    const/4 v12, 0x0
+
+    aget v7, v8, v12
+
+    .line 979
+    :cond_172
+    :goto_172
+    const/4 v8, 0x1
+
+    .line 980
+    .local v8, "sourceChannelMask":I
+    iget-object v12, v0, Lcom/android/server/tv/TvInputHardwareManager$TvInputHardwareImpl;->mAudioSource:Landroid/media/AudioDevicePort;
+
+    invoke-virtual {v12}, Landroid/media/AudioDevicePort;->channelMasks()[I
+
+    move-result-object v12
+
+    array-length v13, v12
+
+    const/4 v14, 0x0
+
+    :goto_17b
+    if-ge v14, v13, :cond_19a
+
+    aget v15, v12, v14
+
+    .line 981
+    .local v15, "inChannelMask":I
+    invoke-virtual {v4}, Landroid/media/AudioPortConfig;->channelMask()I
+
+    move-result v16
+
+    move/from16 v18, v1
+
+    .end local v1  # "sinkUpdated":Z
+    .local v18, "sinkUpdated":Z
+    invoke-static/range {v16 .. v16}, Landroid/media/AudioFormat;->channelCountFromOutChannelMask(I)I
+
+    move-result v1
+
+    .line 982
+    move/from16 v19, v2
+
+    .end local v2  # "sourceUpdated":Z
+    .local v19, "sourceUpdated":Z
+    invoke-static {v15}, Landroid/media/AudioFormat;->channelCountFromInChannelMask(I)I
+
+    move-result v2
+
+    if-ne v1, v2, :cond_193
+
+    .line 983
+    move v8, v15
+
+    .line 984
+    goto :goto_19e
+
+    .line 980
+    .end local v15  # "inChannelMask":I
+    :cond_193
+    add-int/lit8 v14, v14, 0x1
+
+    move/from16 v1, v18
+
+    move/from16 v2, v19
+
+    goto :goto_17b
+
+    .end local v18  # "sinkUpdated":Z
+    .end local v19  # "sourceUpdated":Z
+    .restart local v1  # "sinkUpdated":Z
+    .restart local v2  # "sourceUpdated":Z
+    :cond_19a
+    move/from16 v18, v1
+
+    move/from16 v19, v2
+
+    .line 987
+    .end local v1  # "sinkUpdated":Z
+    .end local v2  # "sourceUpdated":Z
+    .restart local v18  # "sinkUpdated":Z
+    .restart local v19  # "sourceUpdated":Z
+    :goto_19e
     const/4 v1, 0x1
 
+    .line 988
+    .local v1, "sourceFormat":I
+    iget-object v2, v0, Lcom/android/server/tv/TvInputHardwareManager$TvInputHardwareImpl;->mAudioSource:Landroid/media/AudioDevicePort;
+
+    invoke-virtual {v2}, Landroid/media/AudioDevicePort;->formats()[I
+
+    move-result-object v2
+
+    invoke-virtual {v4}, Landroid/media/AudioPortConfig;->format()I
+
+    move-result v12
+
+    invoke-static {v2, v12}, Lcom/android/server/tv/TvInputHardwareManager;->access$2000([II)Z
+
+    move-result v2
+
+    if-eqz v2, :cond_1b3
+
+    .line 989
+    invoke-virtual {v4}, Landroid/media/AudioPortConfig;->format()I
+
+    move-result v1
+
+    .line 991
+    :cond_1b3
+    iget-object v2, v0, Lcom/android/server/tv/TvInputHardwareManager$TvInputHardwareImpl;->mAudioSource:Landroid/media/AudioDevicePort;
+
+    invoke-virtual {v2, v7, v8, v1, v5}, Landroid/media/AudioDevicePort;->buildConfig(IIILandroid/media/AudioGainConfig;)Landroid/media/AudioDevicePortConfig;
+
+    move-result-object v6
+
+    .line 993
+    const/4 v11, 0x1
+
     .line 995
-    :cond_1a1
-    if-eqz v1, :cond_1dc
+    .end local v1  # "sourceFormat":I
+    .end local v7  # "sourceSamplingRate":I
+    .end local v8  # "sourceChannelMask":I
+    :goto_1ba
+    if-eqz v11, :cond_1f6
 
     .line 996
     iput v3, v0, Lcom/android/server/tv/TvInputHardwareManager$TvInputHardwareImpl;->mCommittedVolume:F
@@ -1218,7 +1324,7 @@
     .line 997
     iget-object v1, v0, Lcom/android/server/tv/TvInputHardwareManager$TvInputHardwareImpl;->mAudioPatch:Landroid/media/AudioPatch;
 
-    if-eqz v1, :cond_1b3
+    if-eqz v1, :cond_1cc
 
     .line 998
     iget-object v1, v0, Lcom/android/server/tv/TvInputHardwareManager$TvInputHardwareImpl;->this$0:Lcom/android/server/tv/TvInputHardwareManager;
@@ -1230,7 +1336,7 @@
     invoke-static {v1}, Landroid/media/AudioManager;->releaseAudioPatch(Landroid/media/AudioPatch;)I
 
     .line 1000
-    :cond_1b3
+    :cond_1cc
     iget-object v1, v0, Lcom/android/server/tv/TvInputHardwareManager$TvInputHardwareImpl;->this$0:Lcom/android/server/tv/TvInputHardwareManager;
 
     invoke-static {v1}, Lcom/android/server/tv/TvInputHardwareManager;->access$1600(Lcom/android/server/tv/TvInputHardwareManager;)Landroid/media/AudioManager;
@@ -1239,51 +1345,73 @@
 
     new-array v1, v1, [Landroid/media/AudioPortConfig;
 
-    aput-object v8, v1, v6
+    const/4 v2, 0x0
+
+    aput-object v6, v1, v2
 
     .line 1003
     invoke-interface {v9}, Ljava/util/List;->size()I
 
-    move-result v2
+    move-result v7
 
-    new-array v2, v2, [Landroid/media/AudioPortConfig;
+    new-array v7, v7, [Landroid/media/AudioPortConfig;
 
-    invoke-interface {v9, v2}, Ljava/util/List;->toArray([Ljava/lang/Object;)[Ljava/lang/Object;
+    invoke-interface {v9, v7}, Ljava/util/List;->toArray([Ljava/lang/Object;)[Ljava/lang/Object;
 
-    move-result-object v2
+    move-result-object v7
 
-    check-cast v2, [Landroid/media/AudioPortConfig;
+    check-cast v7, [Landroid/media/AudioPortConfig;
 
     .line 1000
-    invoke-static {v10, v1, v2}, Landroid/media/AudioManager;->createAudioPatch([Landroid/media/AudioPatch;[Landroid/media/AudioPortConfig;[Landroid/media/AudioPortConfig;)I
+    invoke-static {v10, v1, v7}, Landroid/media/AudioManager;->createAudioPatch([Landroid/media/AudioPatch;[Landroid/media/AudioPortConfig;[Landroid/media/AudioPortConfig;)I
 
     .line 1004
-    aget-object v1, v10, v6
+    aget-object v1, v10, v2
 
     iput-object v1, v0, Lcom/android/server/tv/TvInputHardwareManager$TvInputHardwareImpl;->mAudioPatch:Landroid/media/AudioPatch;
 
     .line 1005
-    if-eqz v5, :cond_1dc
+    if-eqz v5, :cond_1f6
 
     .line 1006
     iget-object v1, v0, Lcom/android/server/tv/TvInputHardwareManager$TvInputHardwareImpl;->this$0:Lcom/android/server/tv/TvInputHardwareManager;
 
     invoke-static {v1}, Lcom/android/server/tv/TvInputHardwareManager;->access$1600(Lcom/android/server/tv/TvInputHardwareManager;)Landroid/media/AudioManager;
 
-    iget-object v0, v0, Lcom/android/server/tv/TvInputHardwareManager$TvInputHardwareImpl;->mAudioSource:Landroid/media/AudioDevicePort;
+    iget-object v1, v0, Lcom/android/server/tv/TvInputHardwareManager$TvInputHardwareImpl;->mAudioSource:Landroid/media/AudioDevicePort;
 
-    invoke-static {v0, v5}, Landroid/media/AudioManager;->setAudioPortGain(Landroid/media/AudioPort;Landroid/media/AudioGainConfig;)I
+    invoke-static {v1, v5}, Landroid/media/AudioManager;->setAudioPortGain(Landroid/media/AudioPort;Landroid/media/AudioGainConfig;)I
 
     .line 1009
-    :cond_1dc
+    :cond_1f6
     return-void
 
+    .line 885
+    .end local v3  # "volume":F
+    .end local v4  # "sinkConfig":Landroid/media/AudioPortConfig;
+    .end local v5  # "sourceGainConfig":Landroid/media/AudioGainConfig;
+    .end local v6  # "sourceConfig":Landroid/media/AudioPortConfig;
+    .end local v9  # "sinkConfigs":Ljava/util/List;, "Ljava/util/List<Landroid/media/AudioPortConfig;>;"
+    .end local v10  # "audioPatchArray":[Landroid/media/AudioPatch;
+    .end local v11  # "shouldRecreateAudioPatch":Z
+    .end local v18  # "sinkUpdated":Z
+    .end local v19  # "sourceUpdated":Z
+    .local v1, "sinkUpdated":Z
+    .restart local v2  # "sourceUpdated":Z
+    :cond_1f7
+    move/from16 v18, v1
+
+    move/from16 v19, v2
+
     .line 886
-    :cond_1dd
-    :goto_1dd
+    .end local v1  # "sinkUpdated":Z
+    .end local v2  # "sourceUpdated":Z
+    .restart local v18  # "sinkUpdated":Z
+    .restart local v19  # "sourceUpdated":Z
+    :goto_1fb
     iget-object v1, v0, Lcom/android/server/tv/TvInputHardwareManager$TvInputHardwareImpl;->mAudioPatch:Landroid/media/AudioPatch;
 
-    if-eqz v1, :cond_1ed
+    if-eqz v1, :cond_20c
 
     .line 887
     iget-object v1, v0, Lcom/android/server/tv/TvInputHardwareManager$TvInputHardwareImpl;->this$0:Lcom/android/server/tv/TvInputHardwareManager;
@@ -1295,10 +1423,12 @@
     invoke-static {v1}, Landroid/media/AudioManager;->releaseAudioPatch(Landroid/media/AudioPatch;)I
 
     .line 888
-    iput-object v4, v0, Lcom/android/server/tv/TvInputHardwareManager$TvInputHardwareImpl;->mAudioPatch:Landroid/media/AudioPatch;
+    const/4 v1, 0x0
+
+    iput-object v1, v0, Lcom/android/server/tv/TvInputHardwareManager$TvInputHardwareImpl;->mAudioPatch:Landroid/media/AudioPatch;
 
     .line 890
-    :cond_1ed
+    :cond_20c
     return-void
 .end method
 
@@ -1324,6 +1454,7 @@
     iget-object v0, p0, Lcom/android/server/tv/TvInputHardwareManager$TvInputHardwareImpl;->mAudioSink:Ljava/util/List;
 
     .line 1068
+    .local v0, "previousSink":Ljava/util/List;, "Ljava/util/List<Landroid/media/AudioDevicePort;>;"
     new-instance v1, Ljava/util/ArrayList;
 
     invoke-direct {v1}, Ljava/util/ArrayList;-><init>()V
@@ -1352,6 +1483,7 @@
     move-result-object v1
 
     .line 1074
+    .local v1, "audioSink":Landroid/media/AudioDevicePort;
     if-eqz v1, :cond_2a
 
     .line 1075
@@ -1360,6 +1492,7 @@
     invoke-interface {v2, v1}, Ljava/util/List;->add(Ljava/lang/Object;)Z
 
     .line 1080
+    .end local v1  # "audioSink":Landroid/media/AudioDevicePort;
     :cond_2a
     :goto_2a
     iget-object v1, p0, Lcom/android/server/tv/TvInputHardwareManager$TvInputHardwareImpl;->mAudioSink:Ljava/util/List;
@@ -1388,11 +1521,11 @@
     .line 1084
     invoke-interface {v0}, Ljava/util/List;->isEmpty()Z
 
-    move-result v0
+    move-result v1
 
-    xor-int/2addr v0, v3
+    xor-int/2addr v1, v3
 
-    return v0
+    return v1
 .end method
 
 .method private updateAudioSourceLocked()Z
@@ -1417,6 +1550,7 @@
     iget-object v0, p0, Lcom/android/server/tv/TvInputHardwareManager$TvInputHardwareImpl;->mAudioSource:Landroid/media/AudioDevicePort;
 
     .line 1058
+    .local v0, "previousSource":Landroid/media/AudioDevicePort;
     iget-object v2, p0, Lcom/android/server/tv/TvInputHardwareManager$TvInputHardwareImpl;->mInfo:Landroid/media/tv/TvInputHardwareInfo;
 
     invoke-virtual {v2}, Landroid/media/tv/TvInputHardwareInfo;->getAudioType()I
@@ -1452,9 +1586,9 @@
     :cond_27
     invoke-virtual {v2, v0}, Landroid/media/AudioDevicePort;->equals(Ljava/lang/Object;)Z
 
-    move-result v0
+    move-result v2
 
-    if-nez v0, :cond_2e
+    if-nez v2, :cond_2e
 
     move v1, v3
 
@@ -1496,7 +1630,12 @@
 .end method
 
 .method public overrideAudioSink(ILjava/lang/String;III)V
-    .registers 7
+    .registers 8
+    .param p1, "audioType"  # I
+    .param p2, "audioAddress"  # Ljava/lang/String;
+    .param p3, "samplingRate"  # I
+    .param p4, "channelMask"  # I
+    .param p5, "format"  # I
 
     .line 1096
     iget-object v0, p0, Lcom/android/server/tv/TvInputHardwareManager$TvInputHardwareImpl;->mImplLock:Ljava/lang/Object;
@@ -1530,13 +1669,13 @@
 
     .line 1105
     :catchall_12
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_14
     .catchall {:try_start_3 .. :try_end_14} :catchall_12
 
-    throw p1
+    throw v1
 .end method
 
 .method public release()V
@@ -1602,7 +1741,8 @@
 .end method
 
 .method public setStreamVolume(F)V
-    .registers 4
+    .registers 5
+    .param p1, "volume"  # F
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -1634,27 +1774,33 @@
 
     .line 1015
     :cond_e
-    new-instance p1, Ljava/lang/IllegalStateException;
+    new-instance v1, Ljava/lang/IllegalStateException;
 
-    const-string v1, "Device already released."
+    const-string v2, "Device already released."
 
-    invoke-direct {p1, v1}, Ljava/lang/IllegalStateException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v1, v2}, Ljava/lang/IllegalStateException;-><init>(Ljava/lang/String;)V
 
-    throw p1
+    .end local p0  # "this":Lcom/android/server/tv/TvInputHardwareManager$TvInputHardwareImpl;
+    .end local p1  # "volume":F
+    throw v1
 
     .line 1019
+    .restart local p0  # "this":Lcom/android/server/tv/TvInputHardwareManager$TvInputHardwareImpl;
+    .restart local p1  # "volume":F
     :catchall_16
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_18
     .catchall {:try_start_3 .. :try_end_18} :catchall_16
 
-    throw p1
+    throw v1
 .end method
 
 .method public setSurface(Landroid/view/Surface;Landroid/media/tv/TvStreamConfig;)Z
-    .registers 10
+    .registers 11
+    .param p1, "surface"  # Landroid/view/Surface;
+    .param p2, "config"  # Landroid/media/tv/TvStreamConfig;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -1670,84 +1816,118 @@
     :try_start_3
     iget-boolean v1, p0, Lcom/android/server/tv/TvInputHardwareManager$TvInputHardwareImpl;->mReleased:Z
 
-    if-nez v1, :cond_71
+    if-nez v1, :cond_70
 
     .line 841
-    nop
-
-    .line 842
     const/4 v1, 0x0
 
-    const/4 v2, 0x1
+    .line 842
+    .local v1, "result":I
+    const/4 v2, 0x0
 
-    const/4 v3, 0x0
+    const/4 v3, 0x1
 
-    if-nez p1, :cond_28
+    const/4 v4, 0x0
+
+    if-nez p1, :cond_29
 
     .line 844
-    iget-object p1, p0, Lcom/android/server/tv/TvInputHardwareManager$TvInputHardwareImpl;->mActiveConfig:Landroid/media/tv/TvStreamConfig;
+    iget-object v5, p0, Lcom/android/server/tv/TvInputHardwareManager$TvInputHardwareImpl;->mActiveConfig:Landroid/media/tv/TvStreamConfig;
 
-    if-eqz p1, :cond_26
+    if-eqz v5, :cond_27
 
     .line 845
-    iget-object p1, p0, Lcom/android/server/tv/TvInputHardwareManager$TvInputHardwareImpl;->this$0:Lcom/android/server/tv/TvInputHardwareManager;
+    iget-object v5, p0, Lcom/android/server/tv/TvInputHardwareManager$TvInputHardwareImpl;->this$0:Lcom/android/server/tv/TvInputHardwareManager;
 
-    invoke-static {p1}, Lcom/android/server/tv/TvInputHardwareManager;->access$1700(Lcom/android/server/tv/TvInputHardwareManager;)Lcom/android/server/tv/TvInputHal;
+    invoke-static {v5}, Lcom/android/server/tv/TvInputHardwareManager;->access$1700(Lcom/android/server/tv/TvInputHardwareManager;)Lcom/android/server/tv/TvInputHal;
 
-    move-result-object p1
+    move-result-object v5
 
-    iget-object p2, p0, Lcom/android/server/tv/TvInputHardwareManager$TvInputHardwareImpl;->mInfo:Landroid/media/tv/TvInputHardwareInfo;
+    iget-object v6, p0, Lcom/android/server/tv/TvInputHardwareManager$TvInputHardwareImpl;->mInfo:Landroid/media/tv/TvInputHardwareInfo;
 
-    invoke-virtual {p2}, Landroid/media/tv/TvInputHardwareInfo;->getDeviceId()I
+    invoke-virtual {v6}, Landroid/media/tv/TvInputHardwareInfo;->getDeviceId()I
 
-    move-result p2
+    move-result v6
 
-    iget-object v4, p0, Lcom/android/server/tv/TvInputHardwareManager$TvInputHardwareImpl;->mActiveConfig:Landroid/media/tv/TvStreamConfig;
+    iget-object v7, p0, Lcom/android/server/tv/TvInputHardwareManager$TvInputHardwareImpl;->mActiveConfig:Landroid/media/tv/TvStreamConfig;
 
-    invoke-virtual {p1, p2, v4}, Lcom/android/server/tv/TvInputHal;->removeStream(ILandroid/media/tv/TvStreamConfig;)I
+    invoke-virtual {v5, v6, v7}, Lcom/android/server/tv/TvInputHal;->removeStream(ILandroid/media/tv/TvStreamConfig;)I
 
-    move-result p1
+    move-result v5
+
+    move v1, v5
 
     .line 846
-    iput-object v1, p0, Lcom/android/server/tv/TvInputHardwareManager$TvInputHardwareImpl;->mActiveConfig:Landroid/media/tv/TvStreamConfig;
+    iput-object v2, p0, Lcom/android/server/tv/TvInputHardwareManager$TvInputHardwareImpl;->mActiveConfig:Landroid/media/tv/TvStreamConfig;
 
-    goto :goto_68
+    goto :goto_67
 
     .line 849
-    :cond_26
-    monitor-exit v0
-
-    return v2
-
-    .line 853
-    :cond_28
-    if-nez p2, :cond_2c
-
-    .line 854
+    :cond_27
     monitor-exit v0
 
     return v3
 
+    .line 853
+    :cond_29
+    if-nez p2, :cond_2d
+
+    .line 854
+    monitor-exit v0
+
+    return v4
+
     .line 857
-    :cond_2c
-    iget-object v4, p0, Lcom/android/server/tv/TvInputHardwareManager$TvInputHardwareImpl;->mActiveConfig:Landroid/media/tv/TvStreamConfig;
+    :cond_2d
+    iget-object v5, p0, Lcom/android/server/tv/TvInputHardwareManager$TvInputHardwareImpl;->mActiveConfig:Landroid/media/tv/TvStreamConfig;
 
-    if-eqz v4, :cond_4f
+    if-eqz v5, :cond_50
 
-    iget-object v4, p0, Lcom/android/server/tv/TvInputHardwareManager$TvInputHardwareImpl;->mActiveConfig:Landroid/media/tv/TvStreamConfig;
+    iget-object v5, p0, Lcom/android/server/tv/TvInputHardwareManager$TvInputHardwareImpl;->mActiveConfig:Landroid/media/tv/TvStreamConfig;
 
-    invoke-virtual {p2, v4}, Landroid/media/tv/TvStreamConfig;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {p2, v5}, Landroid/media/tv/TvStreamConfig;->equals(Ljava/lang/Object;)Z
 
-    move-result v4
+    move-result v5
 
-    if-nez v4, :cond_4f
+    if-nez v5, :cond_50
 
     .line 858
-    iget-object v4, p0, Lcom/android/server/tv/TvInputHardwareManager$TvInputHardwareImpl;->this$0:Lcom/android/server/tv/TvInputHardwareManager;
+    iget-object v5, p0, Lcom/android/server/tv/TvInputHardwareManager$TvInputHardwareImpl;->this$0:Lcom/android/server/tv/TvInputHardwareManager;
 
-    invoke-static {v4}, Lcom/android/server/tv/TvInputHardwareManager;->access$1700(Lcom/android/server/tv/TvInputHardwareManager;)Lcom/android/server/tv/TvInputHal;
+    invoke-static {v5}, Lcom/android/server/tv/TvInputHardwareManager;->access$1700(Lcom/android/server/tv/TvInputHardwareManager;)Lcom/android/server/tv/TvInputHal;
 
-    move-result-object v4
+    move-result-object v5
+
+    iget-object v6, p0, Lcom/android/server/tv/TvInputHardwareManager$TvInputHardwareImpl;->mInfo:Landroid/media/tv/TvInputHardwareInfo;
+
+    invoke-virtual {v6}, Landroid/media/tv/TvInputHardwareInfo;->getDeviceId()I
+
+    move-result v6
+
+    iget-object v7, p0, Lcom/android/server/tv/TvInputHardwareManager$TvInputHardwareImpl;->mActiveConfig:Landroid/media/tv/TvStreamConfig;
+
+    invoke-virtual {v5, v6, v7}, Lcom/android/server/tv/TvInputHal;->removeStream(ILandroid/media/tv/TvStreamConfig;)I
+
+    move-result v5
+
+    move v1, v5
+
+    .line 859
+    if-eqz v1, :cond_50
+
+    .line 860
+    iput-object v2, p0, Lcom/android/server/tv/TvInputHardwareManager$TvInputHardwareImpl;->mActiveConfig:Landroid/media/tv/TvStreamConfig;
+
+    .line 864
+    :cond_50
+    if-nez v1, :cond_67
+
+    .line 865
+    iget-object v2, p0, Lcom/android/server/tv/TvInputHardwareManager$TvInputHardwareImpl;->this$0:Lcom/android/server/tv/TvInputHardwareManager;
+
+    invoke-static {v2}, Lcom/android/server/tv/TvInputHardwareManager;->access$1700(Lcom/android/server/tv/TvInputHardwareManager;)Lcom/android/server/tv/TvInputHal;
+
+    move-result-object v2
 
     iget-object v5, p0, Lcom/android/server/tv/TvInputHardwareManager$TvInputHardwareImpl;->mInfo:Landroid/media/tv/TvInputHardwareInfo;
 
@@ -1755,92 +1935,60 @@
 
     move-result v5
 
-    iget-object v6, p0, Lcom/android/server/tv/TvInputHardwareManager$TvInputHardwareImpl;->mActiveConfig:Landroid/media/tv/TvStreamConfig;
+    invoke-virtual {v2, v5, p1, p2}, Lcom/android/server/tv/TvInputHal;->addOrUpdateStream(ILandroid/view/Surface;Landroid/media/tv/TvStreamConfig;)I
 
-    invoke-virtual {v4, v5, v6}, Lcom/android/server/tv/TvInputHal;->removeStream(ILandroid/media/tv/TvStreamConfig;)I
+    move-result v2
 
-    move-result v4
-
-    .line 859
-    if-eqz v4, :cond_50
-
-    .line 860
-    iput-object v1, p0, Lcom/android/server/tv/TvInputHardwareManager$TvInputHardwareImpl;->mActiveConfig:Landroid/media/tv/TvStreamConfig;
-
-    goto :goto_50
-
-    .line 864
-    :cond_4f
-    move v4, v3
-
-    :cond_50
-    :goto_50
-    if-nez v4, :cond_67
-
-    .line 865
-    iget-object v1, p0, Lcom/android/server/tv/TvInputHardwareManager$TvInputHardwareImpl;->this$0:Lcom/android/server/tv/TvInputHardwareManager;
-
-    invoke-static {v1}, Lcom/android/server/tv/TvInputHardwareManager;->access$1700(Lcom/android/server/tv/TvInputHardwareManager;)Lcom/android/server/tv/TvInputHal;
-
-    move-result-object v1
-
-    iget-object v4, p0, Lcom/android/server/tv/TvInputHardwareManager$TvInputHardwareImpl;->mInfo:Landroid/media/tv/TvInputHardwareInfo;
-
-    invoke-virtual {v4}, Landroid/media/tv/TvInputHardwareInfo;->getDeviceId()I
-
-    move-result v4
-
-    invoke-virtual {v1, v4, p1, p2}, Lcom/android/server/tv/TvInputHal;->addOrUpdateStream(ILandroid/view/Surface;Landroid/media/tv/TvStreamConfig;)I
-
-    move-result p1
+    move v1, v2
 
     .line 866
-    if-nez p1, :cond_68
+    if-nez v1, :cond_67
 
     .line 867
     iput-object p2, p0, Lcom/android/server/tv/TvInputHardwareManager$TvInputHardwareImpl;->mActiveConfig:Landroid/media/tv/TvStreamConfig;
 
-    goto :goto_68
-
-    .line 864
-    :cond_67
-    move p1, v4
-
     .line 871
-    :cond_68
-    :goto_68
+    :cond_67
+    :goto_67
     invoke-direct {p0}, Lcom/android/server/tv/TvInputHardwareManager$TvInputHardwareImpl;->updateAudioConfigLocked()V
 
     .line 872
-    if-nez p1, :cond_6e
+    if-nez v1, :cond_6d
 
-    goto :goto_6f
+    goto :goto_6e
 
-    :cond_6e
-    move v2, v3
+    :cond_6d
+    move v3, v4
 
-    :goto_6f
+    :goto_6e
     monitor-exit v0
 
-    return v2
+    return v3
 
     .line 838
-    :cond_71
-    new-instance p1, Ljava/lang/IllegalStateException;
+    .end local v1  # "result":I
+    :cond_70
+    new-instance v1, Ljava/lang/IllegalStateException;
 
-    const-string p2, "Device already released."
+    const-string v2, "Device already released."
 
-    invoke-direct {p1, p2}, Ljava/lang/IllegalStateException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v1, v2}, Ljava/lang/IllegalStateException;-><init>(Ljava/lang/String;)V
 
-    throw p1
+    .end local p0  # "this":Lcom/android/server/tv/TvInputHardwareManager$TvInputHardwareImpl;
+    .end local p1  # "surface":Landroid/view/Surface;
+    .end local p2  # "config":Landroid/media/tv/TvStreamConfig;
+    throw v1
 
     .line 873
-    :catchall_79
-    move-exception p1
+    .restart local p0  # "this":Lcom/android/server/tv/TvInputHardwareManager$TvInputHardwareImpl;
+    .restart local p1  # "surface":Landroid/view/Surface;
+    .restart local p2  # "config":Landroid/media/tv/TvStreamConfig;
+    :catchall_78
+    move-exception v1
 
     monitor-exit v0
-    :try_end_7b
-    .catchall {:try_start_3 .. :try_end_7b} :catchall_79
+    :try_end_7a
+    .catchall {:try_start_3 .. :try_end_7a} :catchall_78
 
-    throw p1
+    throw v1
 .end method

@@ -21,6 +21,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/hdmi/HdmiControlService;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/hdmi/HdmiControlService;
 
     .line 2674
     iput-object p1, p0, Lcom/android/server/hdmi/HdmiControlService$4;->this$0:Lcom/android/server/hdmi/HdmiControlService;
@@ -34,6 +35,7 @@
 # virtual methods
 .method public onComplete(I)V
     .registers 4
+    .param p1, "result"  # I
 
     .line 2677
     if-eqz p1, :cond_18
@@ -51,11 +53,11 @@
 
     invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    const-string v0, "HdmiControlService"
+    const-string v1, "HdmiControlService"
 
-    invoke-static {v0, p1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v0}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 2680
     :cond_18

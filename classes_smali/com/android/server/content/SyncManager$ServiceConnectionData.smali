@@ -25,18 +25,21 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/content/SyncManager;Lcom/android/server/content/SyncManager$ActiveSyncContext;Landroid/os/IBinder;)V
     .registers 4
+    .param p1, "this$0"  # Lcom/android/server/content/SyncManager;
+    .param p2, "activeSyncContext"  # Lcom/android/server/content/SyncManager$ActiveSyncContext;
+    .param p3, "adapter"  # Landroid/os/IBinder;
 
-    .line 2852
+    .line 2865
     iput-object p1, p0, Lcom/android/server/content/SyncManager$ServiceConnectionData;->this$0:Lcom/android/server/content/SyncManager;
 
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
-    .line 2853
+    .line 2866
     iput-object p2, p0, Lcom/android/server/content/SyncManager$ServiceConnectionData;->activeSyncContext:Lcom/android/server/content/SyncManager$ActiveSyncContext;
 
-    .line 2854
+    .line 2867
     iput-object p3, p0, Lcom/android/server/content/SyncManager$ServiceConnectionData;->adapter:Landroid/os/IBinder;
 
-    .line 2855
+    .line 2868
     return-void
 .end method

@@ -24,7 +24,9 @@
 
 # direct methods
 .method private constructor <init>(Landroid/content/pm/ShortcutInfo;[B)V
-    .registers 3
+    .registers 5
+    .param p1, "shortcut"  # Landroid/content/pm/ShortcutInfo;
+    .param p2, "bytes"  # [B
 
     .line 94
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -38,9 +40,9 @@
     .line 97
     invoke-static {}, Landroid/os/SystemClock;->uptimeMillis()J
 
-    move-result-wide p1
+    move-result-wide v0
 
-    iput-wide p1, p0, Lcom/android/server/pm/ShortcutBitmapSaver$PendingItem;->mInstantiatedUptimeMillis:J
+    iput-wide v0, p0, Lcom/android/server/pm/ShortcutBitmapSaver$PendingItem;->mInstantiatedUptimeMillis:J
 
     .line 98
     return-void
@@ -48,6 +50,9 @@
 
 .method synthetic constructor <init>(Landroid/content/pm/ShortcutInfo;[BLcom/android/server/pm/ShortcutBitmapSaver$1;)V
     .registers 4
+    .param p1, "x0"  # Landroid/content/pm/ShortcutInfo;
+    .param p2, "x1"  # [B
+    .param p3, "x2"  # Lcom/android/server/pm/ShortcutBitmapSaver$1;
 
     .line 84
     invoke-direct {p0, p1, p2}, Lcom/android/server/pm/ShortcutBitmapSaver$PendingItem;-><init>(Landroid/content/pm/ShortcutInfo;[B)V

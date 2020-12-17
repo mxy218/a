@@ -42,6 +42,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/am/ActivityManagerService;)V
     .registers 3
+    .param p1, "service"  # Lcom/android/server/am/ActivityManagerService;
 
     .line 70
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -63,12 +64,14 @@
 
 # virtual methods
 .method dump(Ljava/io/PrintWriter;Ljava/lang/String;)V
-    .registers 8
+    .registers 7
+    .param p1, "pw"  # Ljava/io/PrintWriter;
+    .param p2, "prefix"  # Ljava/lang/String;
 
     .line 99
     invoke-virtual {p1, p2}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
-    const-string v0, "mClass="
+    const-string/jumbo v0, "mClass="
 
     invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
@@ -88,116 +91,118 @@
     .line 101
     invoke-virtual {p1, p2}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
-    const-string v0, "mRunningProcesses:"
+    const-string/jumbo v0, "mRunningProcesses:"
 
     invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
     .line 102
     const/4 v0, 0x0
 
-    move v1, v0
+    .local v0, "i":I
+    :goto_22
+    iget-object v1, p0, Lcom/android/server/am/ActiveInstrumentation;->mRunningProcesses:Ljava/util/ArrayList;
 
-    :goto_21
-    iget-object v2, p0, Lcom/android/server/am/ActiveInstrumentation;->mRunningProcesses:Ljava/util/ArrayList;
+    invoke-virtual {v1}, Ljava/util/ArrayList;->size()I
 
-    invoke-virtual {v2}, Ljava/util/ArrayList;->size()I
+    move-result v1
 
-    move-result v2
-
-    if-ge v1, v2, :cond_45
+    if-ge v0, v1, :cond_46
 
     .line 103
     invoke-virtual {p1, p2}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
-    const-string v2, "  #"
-
-    invoke-virtual {p1, v2}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
-
-    invoke-virtual {p1, v1}, Ljava/io/PrintWriter;->print(I)V
-
-    const-string v2, ": "
-
-    invoke-virtual {p1, v2}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
-
-    .line 104
-    iget-object v2, p0, Lcom/android/server/am/ActiveInstrumentation;->mRunningProcesses:Ljava/util/ArrayList;
-
-    invoke-virtual {v2, v1}, Ljava/util/ArrayList;->get(I)Ljava/lang/Object;
-
-    move-result-object v2
-
-    invoke-virtual {p1, v2}, Ljava/io/PrintWriter;->println(Ljava/lang/Object;)V
-
-    .line 102
-    add-int/lit8 v1, v1, 0x1
-
-    goto :goto_21
-
-    .line 106
-    :cond_45
-    invoke-virtual {p1, p2}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
-
-    const-string v1, "mTargetProcesses="
+    const-string v1, "  #"
 
     invoke-virtual {p1, v1}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
-    .line 107
-    iget-object v1, p0, Lcom/android/server/am/ActiveInstrumentation;->mTargetProcesses:[Ljava/lang/String;
+    invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->print(I)V
 
-    invoke-static {v1}, Ljava/util/Arrays;->toString([Ljava/lang/Object;)Ljava/lang/String;
+    const-string v1, ": "
+
+    invoke-virtual {p1, v1}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
+
+    .line 104
+    iget-object v1, p0, Lcom/android/server/am/ActiveInstrumentation;->mRunningProcesses:Ljava/util/ArrayList;
+
+    invoke-virtual {v1, v0}, Ljava/util/ArrayList;->get(I)Ljava/lang/Object;
 
     move-result-object v1
 
-    invoke-virtual {p1, v1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {p1, v1}, Ljava/io/PrintWriter;->println(Ljava/lang/Object;)V
+
+    .line 102
+    add-int/lit8 v0, v0, 0x1
+
+    goto :goto_22
+
+    .line 106
+    .end local v0  # "i":I
+    :cond_46
+    invoke-virtual {p1, p2}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
+
+    const-string/jumbo v0, "mTargetProcesses="
+
+    invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
+
+    .line 107
+    iget-object v0, p0, Lcom/android/server/am/ActiveInstrumentation;->mTargetProcesses:[Ljava/lang/String;
+
+    invoke-static {v0}, Ljava/util/Arrays;->toString([Ljava/lang/Object;)Ljava/lang/String;
+
+    move-result-object v0
+
+    invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
     .line 108
     invoke-virtual {p1, p2}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
-    const-string v1, "mTargetInfo="
+    const-string/jumbo v0, "mTargetInfo="
 
-    invoke-virtual {p1, v1}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
+    invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
     .line 109
-    iget-object v1, p0, Lcom/android/server/am/ActiveInstrumentation;->mTargetInfo:Landroid/content/pm/ApplicationInfo;
+    iget-object v0, p0, Lcom/android/server/am/ActiveInstrumentation;->mTargetInfo:Landroid/content/pm/ApplicationInfo;
 
-    invoke-virtual {p1, v1}, Ljava/io/PrintWriter;->println(Ljava/lang/Object;)V
+    invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->println(Ljava/lang/Object;)V
 
     .line 110
-    iget-object v1, p0, Lcom/android/server/am/ActiveInstrumentation;->mTargetInfo:Landroid/content/pm/ApplicationInfo;
+    iget-object v0, p0, Lcom/android/server/am/ActiveInstrumentation;->mTargetInfo:Landroid/content/pm/ApplicationInfo;
 
-    if-eqz v1, :cond_80
+    if-eqz v0, :cond_84
 
     .line 111
-    new-instance v2, Landroid/util/PrintWriterPrinter;
+    new-instance v1, Landroid/util/PrintWriterPrinter;
 
-    invoke-direct {v2, p1}, Landroid/util/PrintWriterPrinter;-><init>(Ljava/io/PrintWriter;)V
+    invoke-direct {v1, p1}, Landroid/util/PrintWriterPrinter;-><init>(Ljava/io/PrintWriter;)V
 
-    new-instance v3, Ljava/lang/StringBuilder;
+    new-instance v2, Ljava/lang/StringBuilder;
 
-    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
 
-    invoke-virtual {v3, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string v4, "  "
+    const-string v3, "  "
 
-    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v3
+    move-result-object v2
 
-    invoke-virtual {v1, v2, v3, v0}, Landroid/content/pm/ApplicationInfo;->dump(Landroid/util/Printer;Ljava/lang/String;I)V
+    const/4 v3, 0x0
+
+    invoke-virtual {v0, v1, v2, v3}, Landroid/content/pm/ApplicationInfo;->dump(Landroid/util/Printer;Ljava/lang/String;I)V
 
     .line 113
-    :cond_80
+    :cond_84
     iget-object v0, p0, Lcom/android/server/am/ActiveInstrumentation;->mProfileFile:Ljava/lang/String;
 
-    if-eqz v0, :cond_91
+    if-eqz v0, :cond_96
 
     .line 114
     invoke-virtual {p1, p2}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
-    const-string v0, "mProfileFile="
+    const-string/jumbo v0, "mProfileFile="
 
     invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
@@ -206,15 +211,15 @@
     invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
     .line 116
-    :cond_91
+    :cond_96
     iget-object v0, p0, Lcom/android/server/am/ActiveInstrumentation;->mWatcher:Landroid/app/IInstrumentationWatcher;
 
-    if-eqz v0, :cond_a2
+    if-eqz v0, :cond_a8
 
     .line 117
     invoke-virtual {p1, p2}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
-    const-string v0, "mWatcher="
+    const-string/jumbo v0, "mWatcher="
 
     invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
@@ -223,15 +228,15 @@
     invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->println(Ljava/lang/Object;)V
 
     .line 119
-    :cond_a2
+    :cond_a8
     iget-object v0, p0, Lcom/android/server/am/ActiveInstrumentation;->mUiAutomationConnection:Landroid/app/IUiAutomationConnection;
 
-    if-eqz v0, :cond_b3
+    if-eqz v0, :cond_ba
 
     .line 120
     invoke-virtual {p1, p2}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
-    const-string v0, "mUiAutomationConnection="
+    const-string/jumbo v0, "mUiAutomationConnection="
 
     invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
@@ -241,8 +246,8 @@
     invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->println(Ljava/lang/Object;)V
 
     .line 123
-    :cond_b3
-    const-string v0, "mHasBackgroundActivityStartsPermission="
+    :cond_ba
+    const-string/jumbo v0, "mHasBackgroundActivityStartsPermission="
 
     invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
@@ -254,14 +259,14 @@
     .line 125
     invoke-virtual {p1, p2}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
-    const-string p2, "mArguments="
+    const-string/jumbo v0, "mArguments="
 
-    invoke-virtual {p1, p2}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
+    invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
     .line 126
-    iget-object p2, p0, Lcom/android/server/am/ActiveInstrumentation;->mArguments:Landroid/os/Bundle;
+    iget-object v0, p0, Lcom/android/server/am/ActiveInstrumentation;->mArguments:Landroid/os/Bundle;
 
-    invoke-virtual {p1, p2}, Ljava/io/PrintWriter;->println(Ljava/lang/Object;)V
+    invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->println(Ljava/lang/Object;)V
 
     .line 127
     return-void
@@ -269,6 +274,7 @@
 
 .method removeProcess(Lcom/android/server/am/ProcessRecord;)V
     .registers 3
+    .param p1, "proc"  # Lcom/android/server/am/ProcessRecord;
 
     .line 75
     const/4 v0, 0x1
@@ -281,20 +287,20 @@
     invoke-virtual {v0, p1}, Ljava/util/ArrayList;->remove(Ljava/lang/Object;)Z
 
     .line 77
-    iget-object p1, p0, Lcom/android/server/am/ActiveInstrumentation;->mRunningProcesses:Ljava/util/ArrayList;
+    iget-object v0, p0, Lcom/android/server/am/ActiveInstrumentation;->mRunningProcesses:Ljava/util/ArrayList;
 
-    invoke-virtual {p1}, Ljava/util/ArrayList;->size()I
+    invoke-virtual {v0}, Ljava/util/ArrayList;->size()I
 
-    move-result p1
+    move-result v0
 
-    if-nez p1, :cond_17
+    if-nez v0, :cond_17
 
     .line 78
-    iget-object p1, p0, Lcom/android/server/am/ActiveInstrumentation;->mService:Lcom/android/server/am/ActivityManagerService;
+    iget-object v0, p0, Lcom/android/server/am/ActiveInstrumentation;->mService:Lcom/android/server/am/ActivityManagerService;
 
-    iget-object p1, p1, Lcom/android/server/am/ActivityManagerService;->mActiveInstrumentation:Ljava/util/ArrayList;
+    iget-object v0, v0, Lcom/android/server/am/ActivityManagerService;->mActiveInstrumentation:Ljava/util/ArrayList;
 
-    invoke-virtual {p1, p0}, Ljava/util/ArrayList;->remove(Ljava/lang/Object;)Z
+    invoke-virtual {v0, p0}, Ljava/util/ArrayList;->remove(Ljava/lang/Object;)Z
 
     .line 80
     :cond_17
@@ -312,6 +318,7 @@
     invoke-direct {v0, v1}, Ljava/lang/StringBuilder;-><init>(I)V
 
     .line 84
+    .local v0, "sb":Ljava/lang/StringBuilder;
     const-string v1, "ActiveInstrumentation{"
 
     invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
@@ -379,144 +386,151 @@
     .line 95
     invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v1
 
-    return-object v0
+    return-object v1
 .end method
 
 .method writeToProto(Landroid/util/proto/ProtoOutputStream;J)V
-    .registers 11
+    .registers 13
+    .param p1, "proto"  # Landroid/util/proto/ProtoOutputStream;
+    .param p2, "fieldId"  # J
 
     .line 130
     invoke-virtual {p1, p2, p3}, Landroid/util/proto/ProtoOutputStream;->start(J)J
 
-    move-result-wide p2
+    move-result-wide v0
 
     .line 131
-    iget-object v0, p0, Lcom/android/server/am/ActiveInstrumentation;->mClass:Landroid/content/ComponentName;
+    .local v0, "token":J
+    iget-object v2, p0, Lcom/android/server/am/ActiveInstrumentation;->mClass:Landroid/content/ComponentName;
 
-    const-wide v1, 0x10b00000001L
+    const-wide v3, 0x10b00000001L
 
-    invoke-virtual {v0, p1, v1, v2}, Landroid/content/ComponentName;->writeToProto(Landroid/util/proto/ProtoOutputStream;J)V
+    invoke-virtual {v2, p1, v3, v4}, Landroid/content/ComponentName;->writeToProto(Landroid/util/proto/ProtoOutputStream;J)V
 
     .line 132
-    iget-boolean v0, p0, Lcom/android/server/am/ActiveInstrumentation;->mFinished:Z
+    iget-boolean v2, p0, Lcom/android/server/am/ActiveInstrumentation;->mFinished:Z
 
-    const-wide v1, 0x10800000002L
+    const-wide v3, 0x10800000002L
 
-    invoke-virtual {p1, v1, v2, v0}, Landroid/util/proto/ProtoOutputStream;->write(JZ)V
+    invoke-virtual {p1, v3, v4, v2}, Landroid/util/proto/ProtoOutputStream;->write(JZ)V
 
     .line 133
-    const/4 v0, 0x0
+    const/4 v2, 0x0
 
-    move v1, v0
+    .local v2, "i":I
+    :goto_19
+    iget-object v3, p0, Lcom/android/server/am/ActiveInstrumentation;->mRunningProcesses:Ljava/util/ArrayList;
 
-    :goto_1a
-    iget-object v2, p0, Lcom/android/server/am/ActiveInstrumentation;->mRunningProcesses:Ljava/util/ArrayList;
+    invoke-virtual {v3}, Ljava/util/ArrayList;->size()I
 
-    invoke-virtual {v2}, Ljava/util/ArrayList;->size()I
+    move-result v3
 
-    move-result v2
-
-    if-ge v1, v2, :cond_35
+    if-ge v2, v3, :cond_34
 
     .line 134
-    iget-object v2, p0, Lcom/android/server/am/ActiveInstrumentation;->mRunningProcesses:Ljava/util/ArrayList;
+    iget-object v3, p0, Lcom/android/server/am/ActiveInstrumentation;->mRunningProcesses:Ljava/util/ArrayList;
 
-    invoke-virtual {v2, v1}, Ljava/util/ArrayList;->get(I)Ljava/lang/Object;
+    invoke-virtual {v3, v2}, Ljava/util/ArrayList;->get(I)Ljava/lang/Object;
 
-    move-result-object v2
+    move-result-object v3
 
-    check-cast v2, Lcom/android/server/am/ProcessRecord;
+    check-cast v3, Lcom/android/server/am/ProcessRecord;
 
-    const-wide v3, 0x20b00000003L
+    const-wide v4, 0x20b00000003L
 
-    invoke-virtual {v2, p1, v3, v4}, Lcom/android/server/am/ProcessRecord;->writeToProto(Landroid/util/proto/ProtoOutputStream;J)V
+    invoke-virtual {v3, p1, v4, v5}, Lcom/android/server/am/ProcessRecord;->writeToProto(Landroid/util/proto/ProtoOutputStream;J)V
 
     .line 133
-    add-int/lit8 v1, v1, 0x1
+    add-int/lit8 v2, v2, 0x1
 
-    goto :goto_1a
+    goto :goto_19
 
     .line 137
-    :cond_35
-    iget-object v1, p0, Lcom/android/server/am/ActiveInstrumentation;->mTargetProcesses:[Ljava/lang/String;
+    .end local v2  # "i":I
+    :cond_34
+    iget-object v2, p0, Lcom/android/server/am/ActiveInstrumentation;->mTargetProcesses:[Ljava/lang/String;
 
-    array-length v2, v1
+    array-length v3, v2
 
-    move v3, v0
+    const/4 v4, 0x0
+
+    move v5, v4
 
     :goto_39
-    if-ge v3, v2, :cond_48
+    if-ge v5, v3, :cond_48
 
-    aget-object v4, v1, v3
+    aget-object v6, v2, v5
 
     .line 138
-    const-wide v5, 0x20900000004L
+    .local v6, "p":Ljava/lang/String;
+    const-wide v7, 0x20900000004L
 
-    invoke-virtual {p1, v5, v6, v4}, Landroid/util/proto/ProtoOutputStream;->write(JLjava/lang/String;)V
+    invoke-virtual {p1, v7, v8, v6}, Landroid/util/proto/ProtoOutputStream;->write(JLjava/lang/String;)V
 
     .line 137
-    add-int/lit8 v3, v3, 0x1
+    .end local v6  # "p":Ljava/lang/String;
+    add-int/lit8 v5, v5, 0x1
 
     goto :goto_39
 
     .line 140
     :cond_48
-    iget-object v1, p0, Lcom/android/server/am/ActiveInstrumentation;->mTargetInfo:Landroid/content/pm/ApplicationInfo;
+    iget-object v2, p0, Lcom/android/server/am/ActiveInstrumentation;->mTargetInfo:Landroid/content/pm/ApplicationInfo;
 
-    if-eqz v1, :cond_54
+    if-eqz v2, :cond_54
 
     .line 141
-    const-wide v2, 0x10b00000005L
+    const-wide v5, 0x10b00000005L
 
-    invoke-virtual {v1, p1, v2, v3, v0}, Landroid/content/pm/ApplicationInfo;->writeToProto(Landroid/util/proto/ProtoOutputStream;JI)V
+    invoke-virtual {v2, p1, v5, v6, v4}, Landroid/content/pm/ApplicationInfo;->writeToProto(Landroid/util/proto/ProtoOutputStream;JI)V
 
     .line 143
     :cond_54
-    const-wide v0, 0x10900000006L
+    const-wide v2, 0x10900000006L
 
-    iget-object v2, p0, Lcom/android/server/am/ActiveInstrumentation;->mProfileFile:Ljava/lang/String;
+    iget-object v4, p0, Lcom/android/server/am/ActiveInstrumentation;->mProfileFile:Ljava/lang/String;
 
-    invoke-virtual {p1, v0, v1, v2}, Landroid/util/proto/ProtoOutputStream;->write(JLjava/lang/String;)V
+    invoke-virtual {p1, v2, v3, v4}, Landroid/util/proto/ProtoOutputStream;->write(JLjava/lang/String;)V
 
     .line 144
-    const-wide v0, 0x10900000007L
+    const-wide v2, 0x10900000007L
 
-    iget-object v2, p0, Lcom/android/server/am/ActiveInstrumentation;->mWatcher:Landroid/app/IInstrumentationWatcher;
+    iget-object v4, p0, Lcom/android/server/am/ActiveInstrumentation;->mWatcher:Landroid/app/IInstrumentationWatcher;
 
-    invoke-virtual {v2}, Ljava/lang/Object;->toString()Ljava/lang/String;
+    invoke-virtual {v4}, Ljava/lang/Object;->toString()Ljava/lang/String;
 
-    move-result-object v2
+    move-result-object v4
 
-    invoke-virtual {p1, v0, v1, v2}, Landroid/util/proto/ProtoOutputStream;->write(JLjava/lang/String;)V
+    invoke-virtual {p1, v2, v3, v4}, Landroid/util/proto/ProtoOutputStream;->write(JLjava/lang/String;)V
 
     .line 145
-    const-wide v0, 0x10900000008L
+    const-wide v2, 0x10900000008L
 
-    iget-object v2, p0, Lcom/android/server/am/ActiveInstrumentation;->mUiAutomationConnection:Landroid/app/IUiAutomationConnection;
+    iget-object v4, p0, Lcom/android/server/am/ActiveInstrumentation;->mUiAutomationConnection:Landroid/app/IUiAutomationConnection;
 
     .line 146
-    invoke-virtual {v2}, Ljava/lang/Object;->toString()Ljava/lang/String;
+    invoke-virtual {v4}, Ljava/lang/Object;->toString()Ljava/lang/String;
 
-    move-result-object v2
+    move-result-object v4
 
     .line 145
-    invoke-virtual {p1, v0, v1, v2}, Landroid/util/proto/ProtoOutputStream;->write(JLjava/lang/String;)V
+    invoke-virtual {p1, v2, v3, v4}, Landroid/util/proto/ProtoOutputStream;->write(JLjava/lang/String;)V
 
     .line 147
-    iget-object v0, p0, Lcom/android/server/am/ActiveInstrumentation;->mArguments:Landroid/os/Bundle;
+    iget-object v2, p0, Lcom/android/server/am/ActiveInstrumentation;->mArguments:Landroid/os/Bundle;
 
-    if-eqz v0, :cond_86
+    if-eqz v2, :cond_86
 
     .line 148
-    const-wide v1, 0x10b0000000aL
+    const-wide v3, 0x10b0000000aL
 
-    invoke-virtual {v0, p1, v1, v2}, Landroid/os/Bundle;->writeToProto(Landroid/util/proto/ProtoOutputStream;J)V
+    invoke-virtual {v2, p1, v3, v4}, Landroid/os/Bundle;->writeToProto(Landroid/util/proto/ProtoOutputStream;J)V
 
     .line 150
     :cond_86
-    invoke-virtual {p1, p2, p3}, Landroid/util/proto/ProtoOutputStream;->end(J)V
+    invoke-virtual {p1, v0, v1}, Landroid/util/proto/ProtoOutputStream;->end(J)V
 
     .line 151
     return-void

@@ -24,6 +24,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/media/RemoteDisplayProviderWatcher;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/media/RemoteDisplayProviderWatcher;
 
     .line 197
     iput-object p1, p0, Lcom/android/server/media/RemoteDisplayProviderWatcher$2;->this$0:Lcom/android/server/media/RemoteDisplayProviderWatcher;

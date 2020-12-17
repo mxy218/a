@@ -12,6 +12,8 @@
 # direct methods
 .method public constructor <init>(ILandroid/security/keystore/AndroidKeyStoreSecretKey;)V
     .registers 3
+    .param p1, "generationId"  # I
+    .param p2, "key"  # Landroid/security/keystore/AndroidKeyStoreSecretKey;
 
     .line 44
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V

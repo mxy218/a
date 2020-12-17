@@ -51,7 +51,8 @@
 .end method
 
 .method public static appGetsFullBackup(Landroid/content/pm/PackageInfo;)Z
-    .registers 3
+    .registers 4
+    .param p0, "pkg"  # Landroid/content/pm/PackageInfo;
 
     .line 192
     iget-object v0, p0, Landroid/content/pm/PackageInfo;->applicationInfo:Landroid/content/pm/ApplicationInfo;
@@ -63,15 +64,15 @@
     if-eqz v0, :cond_13
 
     .line 194
-    iget-object p0, p0, Landroid/content/pm/PackageInfo;->applicationInfo:Landroid/content/pm/ApplicationInfo;
+    iget-object v0, p0, Landroid/content/pm/PackageInfo;->applicationInfo:Landroid/content/pm/ApplicationInfo;
 
-    iget p0, p0, Landroid/content/pm/ApplicationInfo;->flags:I
+    iget v0, v0, Landroid/content/pm/ApplicationInfo;->flags:I
 
-    const/high16 v0, 0x4000000
+    const/high16 v2, 0x4000000
 
-    and-int/2addr p0, v0
+    and-int/2addr v0, v2
 
-    if-eqz p0, :cond_11
+    if-eqz v0, :cond_11
 
     goto :goto_12
 
@@ -88,6 +89,8 @@
 
 .method static appIsDisabled(Landroid/content/pm/ApplicationInfo;I)Z
     .registers 3
+    .param p0, "app"  # Landroid/content/pm/ApplicationInfo;
+    .param p1, "userId"  # I
 
     .line 151
     const-class v0, Landroid/content/pm/PackageManagerInternal;
@@ -100,13 +103,16 @@
 
     invoke-static {p0, v0, p1}, Lcom/android/server/backup/utils/AppBackupUtils;->appIsDisabled(Landroid/content/pm/ApplicationInfo;Landroid/content/pm/PackageManagerInternal;I)Z
 
-    move-result p0
+    move-result v0
 
-    return p0
+    return v0
 .end method
 
 .method static appIsDisabled(Landroid/content/pm/ApplicationInfo;Landroid/content/pm/PackageManagerInternal;I)Z
-    .registers 4
+    .registers 6
+    .param p0, "app"  # Landroid/content/pm/ApplicationInfo;
+    .param p1, "packageManager"  # Landroid/content/pm/PackageManagerInternal;
+    .param p2, "userId"  # I
     .annotation build Lcom/android/internal/annotations/VisibleForTesting;
     .end annotation
 
@@ -115,45 +121,48 @@
 
     invoke-virtual {p1, v0, p2}, Landroid/content/pm/PackageManagerInternal;->getApplicationEnabledState(Ljava/lang/String;I)I
 
-    move-result p1
+    move-result v0
 
     .line 159
-    const/4 p2, 0x1
+    .local v0, "enabledSetting":I
+    const/4 v1, 0x1
 
-    if-eqz p1, :cond_15
+    if-eqz v0, :cond_15
 
-    const/4 p0, 0x2
+    const/4 v2, 0x2
 
-    if-eq p1, p0, :cond_14
+    if-eq v0, v2, :cond_14
 
-    const/4 p0, 0x3
+    const/4 v2, 0x3
 
-    if-eq p1, p0, :cond_14
+    if-eq v0, v2, :cond_14
 
-    const/4 p0, 0x4
+    const/4 v2, 0x4
 
-    if-eq p1, p0, :cond_14
+    if-eq v0, v2, :cond_14
 
     .line 167
-    const/4 p0, 0x0
+    const/4 v1, 0x0
 
-    return p0
+    return v1
 
     .line 163
     :cond_14
-    return p2
+    return v1
 
     .line 165
     :cond_15
-    iget-boolean p0, p0, Landroid/content/pm/ApplicationInfo;->enabled:Z
+    iget-boolean v2, p0, Landroid/content/pm/ApplicationInfo;->enabled:Z
 
-    xor-int/2addr p0, p2
+    xor-int/2addr v1, v2
 
-    return p0
+    return v1
 .end method
 
 .method public static appIsEligibleForBackup(Landroid/content/pm/ApplicationInfo;I)Z
     .registers 3
+    .param p0, "app"  # Landroid/content/pm/ApplicationInfo;
+    .param p1, "userId"  # I
 
     .line 68
     const-class v0, Landroid/content/pm/PackageManagerInternal;
@@ -168,13 +177,16 @@
     .line 68
     invoke-static {p0, v0, p1}, Lcom/android/server/backup/utils/AppBackupUtils;->appIsEligibleForBackup(Landroid/content/pm/ApplicationInfo;Landroid/content/pm/PackageManagerInternal;I)Z
 
-    move-result p0
+    move-result v0
 
-    return p0
+    return v0
 .end method
 
 .method static appIsEligibleForBackup(Landroid/content/pm/ApplicationInfo;Landroid/content/pm/PackageManagerInternal;I)Z
     .registers 6
+    .param p0, "app"  # Landroid/content/pm/ApplicationInfo;
+    .param p1, "packageManager"  # Landroid/content/pm/PackageManagerInternal;
+    .param p2, "userId"  # I
     .annotation build Lcom/android/internal/annotations/VisibleForTesting;
     .end annotation
 
@@ -258,28 +270,33 @@
     :cond_36
     invoke-static {p0, p1, p2}, Lcom/android/server/backup/utils/AppBackupUtils;->appIsDisabled(Landroid/content/pm/ApplicationInfo;Landroid/content/pm/PackageManagerInternal;I)Z
 
-    move-result p0
+    move-result v0
 
-    xor-int/lit8 p0, p0, 0x1
+    xor-int/lit8 v0, v0, 0x1
 
-    return p0
+    return v0
 .end method
 
 .method public static appIsKeyValueOnly(Landroid/content/pm/PackageInfo;)Z
-    .registers 1
+    .registers 2
+    .param p0, "pkg"  # Landroid/content/pm/PackageInfo;
 
     .line 206
     invoke-static {p0}, Lcom/android/server/backup/utils/AppBackupUtils;->appGetsFullBackup(Landroid/content/pm/PackageInfo;)Z
 
-    move-result p0
+    move-result v0
 
-    xor-int/lit8 p0, p0, 0x1
+    xor-int/lit8 v0, v0, 0x1
 
-    return p0
+    return v0
 .end method
 
 .method public static appIsRunningAndEligibleForBackupWithTransport(Lcom/android/server/backup/transport/TransportClient;Ljava/lang/String;Landroid/content/pm/PackageManager;I)Z
-    .registers 6
+    .registers 11
+    .param p0, "transportClient"  # Lcom/android/server/backup/transport/TransportClient;
+    .param p1, "packageName"  # Ljava/lang/String;
+    .param p2, "pm"  # Landroid/content/pm/PackageManager;
+    .param p3, "userId"  # I
 
     .line 123
     const/high16 v0, 0x8000000
@@ -289,33 +306,35 @@
     :try_start_3
     invoke-virtual {p2, p1, v0, p3}, Landroid/content/pm/PackageManager;->getPackageInfoAsUser(Ljava/lang/String;II)Landroid/content/pm/PackageInfo;
 
-    move-result-object p1
+    move-result-object v0
 
     .line 125
-    iget-object p2, p1, Landroid/content/pm/PackageInfo;->applicationInfo:Landroid/content/pm/ApplicationInfo;
+    .local v0, "packageInfo":Landroid/content/pm/PackageInfo;
+    iget-object v2, v0, Landroid/content/pm/PackageInfo;->applicationInfo:Landroid/content/pm/ApplicationInfo;
 
     .line 126
-    invoke-static {p2, p3}, Lcom/android/server/backup/utils/AppBackupUtils;->appIsEligibleForBackup(Landroid/content/pm/ApplicationInfo;I)Z
+    .local v2, "applicationInfo":Landroid/content/pm/ApplicationInfo;
+    invoke-static {v2, p3}, Lcom/android/server/backup/utils/AppBackupUtils;->appIsEligibleForBackup(Landroid/content/pm/ApplicationInfo;I)Z
 
-    move-result v0
+    move-result v3
 
-    if-eqz v0, :cond_4b
+    if-eqz v3, :cond_4b
 
     .line 127
-    invoke-static {p2}, Lcom/android/server/backup/utils/AppBackupUtils;->appIsStopped(Landroid/content/pm/ApplicationInfo;)Z
+    invoke-static {v2}, Lcom/android/server/backup/utils/AppBackupUtils;->appIsStopped(Landroid/content/pm/ApplicationInfo;)Z
 
-    move-result v0
+    move-result v3
 
-    if-nez v0, :cond_4b
+    if-nez v3, :cond_4b
 
     .line 128
-    invoke-static {p2, p3}, Lcom/android/server/backup/utils/AppBackupUtils;->appIsDisabled(Landroid/content/pm/ApplicationInfo;I)Z
+    invoke-static {v2, p3}, Lcom/android/server/backup/utils/AppBackupUtils;->appIsDisabled(Landroid/content/pm/ApplicationInfo;I)Z
 
-    move-result p2
+    move-result v3
     :try_end_19
     .catch Landroid/content/pm/PackageManager$NameNotFoundException; {:try_start_3 .. :try_end_19} :catch_4c
 
-    if-eqz p2, :cond_1c
+    if-eqz v3, :cond_1c
 
     goto :goto_4b
 
@@ -325,66 +344,70 @@
 
     .line 133
     :try_start_1e
-    const-string p2, "AppBackupUtils.appIsRunningAndEligibleForBackupWithTransport"
+    const-string v3, "AppBackupUtils.appIsRunningAndEligibleForBackupWithTransport"
 
     .line 134
-    invoke-virtual {p0, p2}, Lcom/android/server/backup/transport/TransportClient;->connectOrThrow(Ljava/lang/String;)Lcom/android/internal/backup/IBackupTransport;
+    invoke-virtual {p0, v3}, Lcom/android/server/backup/transport/TransportClient;->connectOrThrow(Ljava/lang/String;)Lcom/android/internal/backup/IBackupTransport;
 
-    move-result-object p0
+    move-result-object v3
 
     .line 136
+    .local v3, "transport":Lcom/android/internal/backup/IBackupTransport;
     nop
 
     .line 137
-    invoke-static {p1}, Lcom/android/server/backup/utils/AppBackupUtils;->appGetsFullBackup(Landroid/content/pm/PackageInfo;)Z
+    invoke-static {v0}, Lcom/android/server/backup/utils/AppBackupUtils;->appGetsFullBackup(Landroid/content/pm/PackageInfo;)Z
 
-    move-result p2
+    move-result v4
 
     .line 136
-    invoke-interface {p0, p1, p2}, Lcom/android/internal/backup/IBackupTransport;->isAppEligibleForBackup(Landroid/content/pm/PackageInfo;Z)Z
+    invoke-interface {v3, v0, v4}, Lcom/android/internal/backup/IBackupTransport;->isAppEligibleForBackup(Landroid/content/pm/PackageInfo;Z)Z
 
-    move-result p0
+    move-result v1
     :try_end_2d
     .catch Ljava/lang/Exception; {:try_start_1e .. :try_end_2d} :catch_2e
     .catch Landroid/content/pm/PackageManager$NameNotFoundException; {:try_start_1e .. :try_end_2d} :catch_4c
 
-    return p0
+    return v1
 
     .line 138
+    .end local v3  # "transport":Lcom/android/internal/backup/IBackupTransport;
     :catch_2e
-    move-exception p0
+    move-exception v3
 
     .line 139
+    .local v3, "e":Ljava/lang/Exception;
     :try_start_2f
-    const-string p1, "BackupManagerService"
+    const-string v4, "BackupManagerService"
 
-    new-instance p2, Ljava/lang/StringBuilder;
+    new-instance v5, Ljava/lang/StringBuilder;
 
-    invoke-direct {p2}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v5}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string p3, "Unable to ask about eligibility: "
+    const-string v6, "Unable to ask about eligibility: "
 
-    invoke-virtual {p2, p3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p0}, Ljava/lang/Exception;->getMessage()Ljava/lang/String;
+    invoke-virtual {v3}, Ljava/lang/Exception;->getMessage()Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v6
 
-    invoke-virtual {p2, p0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v5}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v5
 
-    invoke-static {p1, p0}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v4, v5}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
     :try_end_49
     .catch Landroid/content/pm/PackageManager$NameNotFoundException; {:try_start_2f .. :try_end_49} :catch_4c
 
     .line 143
+    .end local v3  # "e":Ljava/lang/Exception;
     :cond_49
-    const/4 p0, 0x1
+    const/4 v1, 0x1
 
-    return p0
+    return v1
 
     .line 129
     :cond_4b
@@ -392,49 +415,56 @@
     return v1
 
     .line 144
+    .end local v0  # "packageInfo":Landroid/content/pm/PackageInfo;
+    .end local v2  # "applicationInfo":Landroid/content/pm/ApplicationInfo;
     :catch_4c
-    move-exception p0
+    move-exception v0
 
     .line 145
+    .local v0, "e":Landroid/content/pm/PackageManager$NameNotFoundException;
     return v1
 .end method
 
 .method public static appIsStopped(Landroid/content/pm/ApplicationInfo;)Z
-    .registers 2
+    .registers 3
+    .param p0, "app"  # Landroid/content/pm/ApplicationInfo;
 
     .line 184
-    iget p0, p0, Landroid/content/pm/ApplicationInfo;->flags:I
+    iget v0, p0, Landroid/content/pm/ApplicationInfo;->flags:I
 
-    const/high16 v0, 0x200000
+    const/high16 v1, 0x200000
 
-    and-int/2addr p0, v0
+    and-int/2addr v0, v1
 
-    if-eqz p0, :cond_9
+    if-eqz v0, :cond_9
 
-    const/4 p0, 0x1
+    const/4 v0, 0x1
 
     goto :goto_a
 
     :cond_9
-    const/4 p0, 0x0
+    const/4 v0, 0x0
 
     :goto_a
-    return p0
+    return v0
 .end method
 
 .method public static signaturesMatch([Landroid/content/pm/Signature;Landroid/content/pm/PackageInfo;Landroid/content/pm/PackageManagerInternal;)Z
-    .registers 10
+    .registers 14
+    .param p0, "storedSigs"  # [Landroid/content/pm/Signature;
+    .param p1, "target"  # Landroid/content/pm/PackageInfo;
+    .param p2, "pmi"  # Landroid/content/pm/PackageManagerInternal;
 
     .line 229
     const/4 v0, 0x0
 
-    if-eqz p1, :cond_55
+    if-eqz p1, :cond_53
 
     iget-object v1, p1, Landroid/content/pm/PackageInfo;->packageName:Ljava/lang/String;
 
     if-nez v1, :cond_8
 
-    goto :goto_55
+    goto :goto_53
 
     .line 238
     :cond_8
@@ -467,14 +497,15 @@
     iget-object v1, p1, Landroid/content/pm/PackageInfo;->signingInfo:Landroid/content/pm/SigningInfo;
 
     .line 251
+    .local v1, "signingInfo":Landroid/content/pm/SigningInfo;
     if-nez v1, :cond_25
 
     .line 252
-    const-string p0, "BackupManagerService"
+    const-string v2, "BackupManagerService"
 
-    const-string/jumbo p1, "signingInfo is empty, app was either unsigned or the flag PackageManager#GET_SIGNING_CERTIFICATES was not specified"
+    const-string/jumbo v3, "signingInfo is empty, app was either unsigned or the flag PackageManager#GET_SIGNING_CERTIFICATES was not specified"
 
-    invoke-static {p0, p1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v2, v3}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 254
     return v0
@@ -484,90 +515,99 @@
     array-length v3, p0
 
     .line 263
+    .local v3, "nStored":I
     if-ne v3, v2, :cond_31
 
     .line 269
-    aget-object p0, p0, v0
+    aget-object v0, p0, v0
 
-    iget-object p1, p1, Landroid/content/pm/PackageInfo;->packageName:Ljava/lang/String;
+    iget-object v2, p1, Landroid/content/pm/PackageInfo;->packageName:Ljava/lang/String;
 
-    invoke-virtual {p2, p0, p1}, Landroid/content/pm/PackageManagerInternal;->isDataRestoreSafe(Landroid/content/pm/Signature;Ljava/lang/String;)Z
+    invoke-virtual {p2, v0, v2}, Landroid/content/pm/PackageManagerInternal;->isDataRestoreSafe(Landroid/content/pm/Signature;Ljava/lang/String;)Z
 
-    move-result p0
+    move-result v0
 
-    return p0
+    return v0
 
     .line 274
     :cond_31
     invoke-virtual {v1}, Landroid/content/pm/SigningInfo;->getApkContentsSigners()[Landroid/content/pm/Signature;
 
-    move-result-object p1
+    move-result-object v4
 
     .line 275
-    array-length p2, p1
+    .local v4, "deviceSigs":[Landroid/content/pm/Signature;
+    array-length v5, v4
 
     .line 278
-    move v1, v0
+    .local v5, "nDevice":I
+    const/4 v6, 0x0
 
+    .local v6, "i":I
     :goto_37
-    if-ge v1, v3, :cond_54
+    if-ge v6, v3, :cond_52
 
     .line 279
-    nop
+    const/4 v7, 0x0
 
     .line 280
-    move v4, v0
+    .local v7, "match":Z
+    const/4 v8, 0x0
 
+    .local v8, "j":I
     :goto_3b
-    if-ge v4, p2, :cond_4d
+    if-ge v8, v5, :cond_4c
 
     .line 281
-    aget-object v5, p0, v1
+    aget-object v9, p0, v6
 
-    aget-object v6, p1, v4
+    aget-object v10, v4, v8
 
-    invoke-virtual {v5, v6}, Landroid/content/pm/Signature;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v9, v10}, Landroid/content/pm/Signature;->equals(Ljava/lang/Object;)Z
 
-    move-result v5
+    move-result v9
 
-    if-eqz v5, :cond_4a
+    if-eqz v9, :cond_49
 
     .line 282
-    nop
+    const/4 v7, 0x1
 
     .line 283
-    move v4, v2
-
-    goto :goto_4e
+    goto :goto_4c
 
     .line 280
-    :cond_4a
-    add-int/lit8 v4, v4, 0x1
+    :cond_49
+    add-int/lit8 v8, v8, 0x1
 
     goto :goto_3b
 
-    :cond_4d
-    move v4, v0
-
     .line 286
-    :goto_4e
-    if-nez v4, :cond_51
+    .end local v8  # "j":I
+    :cond_4c
+    :goto_4c
+    if-nez v7, :cond_4f
 
     .line 287
     return v0
 
     .line 278
-    :cond_51
-    add-int/lit8 v1, v1, 0x1
+    .end local v7  # "match":Z
+    :cond_4f
+    add-int/lit8 v6, v6, 0x1
 
     goto :goto_37
 
     .line 291
-    :cond_54
+    .end local v6  # "i":I
+    :cond_52
     return v2
 
     .line 230
-    :cond_55
-    :goto_55
+    .end local v1  # "signingInfo":Landroid/content/pm/SigningInfo;
+    .end local v3  # "nStored":I
+    .end local v4  # "deviceSigs":[Landroid/content/pm/Signature;
+    .end local v5  # "nDevice":I
+    :cond_53
+    :goto_53
     return v0
 .end method

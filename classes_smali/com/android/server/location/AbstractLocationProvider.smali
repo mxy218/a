@@ -20,6 +20,8 @@
 # direct methods
 .method protected constructor <init>(Landroid/content/Context;Lcom/android/server/location/AbstractLocationProvider$LocationProviderManager;)V
     .registers 3
+    .param p1, "context"  # Landroid/content/Context;
+    .param p2, "locationProviderManager"  # Lcom/android/server/location/AbstractLocationProvider$LocationProviderManager;
 
     .line 74
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -65,14 +67,15 @@
 .end method
 
 .method public getStatus(Landroid/os/Bundle;)I
-    .registers 2
+    .registers 3
+    .param p1, "extras"  # Landroid/os/Bundle;
     .annotation runtime Ljava/lang/Deprecated;
     .end annotation
 
     .line 132
-    const/4 p1, 0x2
+    const/4 v0, 0x2
 
-    return p1
+    return v0
 .end method
 
 .method public getStatusUpdateTime()J
@@ -88,6 +91,7 @@
 
 .method protected reportLocation(Landroid/location/Location;)V
     .registers 3
+    .param p1, "location"  # Landroid/location/Location;
 
     .line 83
     iget-object v0, p0, Lcom/android/server/location/AbstractLocationProvider;->mLocationProviderManager:Lcom/android/server/location/AbstractLocationProvider$LocationProviderManager;
@@ -110,6 +114,7 @@
     .end annotation
 
     .line 90
+    .local p1, "locations":Ljava/util/List;, "Ljava/util/List<Landroid/location/Location;>;"
     iget-object v0, p0, Lcom/android/server/location/AbstractLocationProvider;->mLocationProviderManager:Lcom/android/server/location/AbstractLocationProvider$LocationProviderManager;
 
     invoke-interface {v0, p1}, Lcom/android/server/location/AbstractLocationProvider$LocationProviderManager;->onReportLocation(Ljava/util/List;)V
@@ -123,6 +128,7 @@
 
 .method protected setEnabled(Z)V
     .registers 3
+    .param p1, "enabled"  # Z
 
     .line 98
     iget-object v0, p0, Lcom/android/server/location/AbstractLocationProvider;->mLocationProviderManager:Lcom/android/server/location/AbstractLocationProvider$LocationProviderManager;
@@ -135,6 +141,7 @@
 
 .method protected setProperties(Lcom/android/internal/location/ProviderProperties;)V
     .registers 3
+    .param p1, "properties"  # Lcom/android/internal/location/ProviderProperties;
 
     .line 106
     iget-object v0, p0, Lcom/android/server/location/AbstractLocationProvider;->mLocationProviderManager:Lcom/android/server/location/AbstractLocationProvider$LocationProviderManager;

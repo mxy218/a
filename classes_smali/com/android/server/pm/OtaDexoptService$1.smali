@@ -23,6 +23,9 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/pm/OtaDexoptService;Landroid/content/Context;ZLjava/util/List;)V
     .registers 5
+    .param p1, "this$0"  # Lcom/android/server/pm/OtaDexoptService;
+    .param p2, "context"  # Landroid/content/Context;
+    .param p3, "isolated"  # Z
 
     .line 269
     iput-object p1, p0, Lcom/android/server/pm/OtaDexoptService$1;->this$0:Lcom/android/server/pm/OtaDexoptService;
@@ -36,6 +39,8 @@
 
 .method private encodeParameter(Ljava/lang/StringBuilder;Ljava/lang/Object;)V
     .registers 7
+    .param p1, "builder"  # Ljava/lang/StringBuilder;
+    .param p2, "arg"  # Ljava/lang/Object;
 
     .line 316
     const/16 v0, 0x20
@@ -46,9 +51,9 @@
     if-nez p2, :cond_d
 
     .line 319
-    const/16 p2, 0x21
+    const/16 v0, 0x21
 
-    invoke-virtual {p1, p2}, Ljava/lang/StringBuilder;->append(C)Ljava/lang/StringBuilder;
+    invoke-virtual {p1, v0}, Ljava/lang/StringBuilder;->append(C)Ljava/lang/StringBuilder;
 
     .line 320
     return-void
@@ -60,6 +65,7 @@
     move-result-object v1
 
     .line 324
+    .local v1, "txt":Ljava/lang/String;
     const/4 v2, 0x0
 
     invoke-virtual {v1, v2}, Ljava/lang/String;->indexOf(I)I
@@ -92,31 +98,47 @@
 
     .line 325
     :cond_2b
-    new-instance p1, Ljava/lang/IllegalArgumentException;
+    new-instance v0, Ljava/lang/IllegalArgumentException;
 
-    new-instance v0, Ljava/lang/StringBuilder;
+    new-instance v2, Ljava/lang/StringBuilder;
 
-    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v1, "Invalid argument while executing "
+    const-string v3, "Invalid argument while executing "
 
-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p2
+    move-result-object v2
 
-    invoke-direct {p1, p2}, Ljava/lang/IllegalArgumentException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v0, v2}, Ljava/lang/IllegalArgumentException;-><init>(Ljava/lang/String;)V
 
-    throw p1
+    throw v0
 .end method
 
 
 # virtual methods
 .method public dexopt(Ljava/lang/String;ILjava/lang/String;Ljava/lang/String;ILjava/lang/String;ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;ZILjava/lang/String;Ljava/lang/String;Ljava/lang/String;)V
-    .registers 20
+    .registers 32
+    .param p1, "apkPath"  # Ljava/lang/String;
+    .param p2, "uid"  # I
+    .param p3, "pkgName"  # Ljava/lang/String;
+    .param p4, "instructionSet"  # Ljava/lang/String;
+    .param p5, "dexoptNeeded"  # I
+    .param p6, "outputPath"  # Ljava/lang/String;
+    .param p7, "dexFlags"  # I
+    .param p8, "compilerFilter"  # Ljava/lang/String;
+    .param p9, "volumeUuid"  # Ljava/lang/String;
+    .param p10, "sharedLibraries"  # Ljava/lang/String;
+    .param p11, "seInfo"  # Ljava/lang/String;
+    .param p12, "downgrade"  # Z
+    .param p13, "targetSdkVersion"  # I
+    .param p14, "profileName"  # Ljava/lang/String;
+    .param p15, "dexMetadataPath"  # Ljava/lang/String;
+    .param p16, "dexoptCompilationReason"  # Ljava/lang/String;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Lcom/android/server/pm/Installer$InstallerException;
@@ -131,6 +153,7 @@
     invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
 
     .line 288
+    .local v1, "builder":Ljava/lang/StringBuilder;
     const-string v2, "10 "
 
     invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
@@ -141,103 +164,103 @@
     invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     .line 292
-    move-object v2, p1
+    move-object/from16 v2, p1
 
-    invoke-direct {p0, v1, p1}, Lcom/android/server/pm/OtaDexoptService$1;->encodeParameter(Ljava/lang/StringBuilder;Ljava/lang/Object;)V
+    invoke-direct {p0, v1, v2}, Lcom/android/server/pm/OtaDexoptService$1;->encodeParameter(Ljava/lang/StringBuilder;Ljava/lang/Object;)V
 
     .line 293
-    invoke-static {p2}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
+    invoke-static/range {p2 .. p2}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
 
-    move-result-object v2
+    move-result-object v3
 
-    invoke-direct {p0, v1, v2}, Lcom/android/server/pm/OtaDexoptService$1;->encodeParameter(Ljava/lang/StringBuilder;Ljava/lang/Object;)V
+    invoke-direct {p0, v1, v3}, Lcom/android/server/pm/OtaDexoptService$1;->encodeParameter(Ljava/lang/StringBuilder;Ljava/lang/Object;)V
 
     .line 294
-    move-object v2, p3
+    move-object/from16 v3, p3
 
-    invoke-direct {p0, v1, p3}, Lcom/android/server/pm/OtaDexoptService$1;->encodeParameter(Ljava/lang/StringBuilder;Ljava/lang/Object;)V
+    invoke-direct {p0, v1, v3}, Lcom/android/server/pm/OtaDexoptService$1;->encodeParameter(Ljava/lang/StringBuilder;Ljava/lang/Object;)V
 
     .line 295
-    move-object v2, p4
+    move-object/from16 v4, p4
 
-    invoke-direct {p0, v1, p4}, Lcom/android/server/pm/OtaDexoptService$1;->encodeParameter(Ljava/lang/StringBuilder;Ljava/lang/Object;)V
+    invoke-direct {p0, v1, v4}, Lcom/android/server/pm/OtaDexoptService$1;->encodeParameter(Ljava/lang/StringBuilder;Ljava/lang/Object;)V
 
     .line 296
-    invoke-static {p5}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
+    invoke-static/range {p5 .. p5}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
 
-    move-result-object v2
+    move-result-object v5
 
-    invoke-direct {p0, v1, v2}, Lcom/android/server/pm/OtaDexoptService$1;->encodeParameter(Ljava/lang/StringBuilder;Ljava/lang/Object;)V
+    invoke-direct {p0, v1, v5}, Lcom/android/server/pm/OtaDexoptService$1;->encodeParameter(Ljava/lang/StringBuilder;Ljava/lang/Object;)V
 
     .line 297
-    move-object v2, p6
+    move-object/from16 v5, p6
 
-    invoke-direct {p0, v1, p6}, Lcom/android/server/pm/OtaDexoptService$1;->encodeParameter(Ljava/lang/StringBuilder;Ljava/lang/Object;)V
+    invoke-direct {p0, v1, v5}, Lcom/android/server/pm/OtaDexoptService$1;->encodeParameter(Ljava/lang/StringBuilder;Ljava/lang/Object;)V
 
     .line 298
-    invoke-static {p7}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
+    invoke-static/range {p7 .. p7}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
 
-    move-result-object v2
+    move-result-object v6
 
-    invoke-direct {p0, v1, v2}, Lcom/android/server/pm/OtaDexoptService$1;->encodeParameter(Ljava/lang/StringBuilder;Ljava/lang/Object;)V
+    invoke-direct {p0, v1, v6}, Lcom/android/server/pm/OtaDexoptService$1;->encodeParameter(Ljava/lang/StringBuilder;Ljava/lang/Object;)V
 
     .line 299
-    move-object v2, p8
+    move-object/from16 v6, p8
 
-    invoke-direct {p0, v1, p8}, Lcom/android/server/pm/OtaDexoptService$1;->encodeParameter(Ljava/lang/StringBuilder;Ljava/lang/Object;)V
+    invoke-direct {p0, v1, v6}, Lcom/android/server/pm/OtaDexoptService$1;->encodeParameter(Ljava/lang/StringBuilder;Ljava/lang/Object;)V
 
     .line 300
-    move-object v2, p9
+    move-object/from16 v7, p9
 
-    invoke-direct {p0, v1, p9}, Lcom/android/server/pm/OtaDexoptService$1;->encodeParameter(Ljava/lang/StringBuilder;Ljava/lang/Object;)V
+    invoke-direct {p0, v1, v7}, Lcom/android/server/pm/OtaDexoptService$1;->encodeParameter(Ljava/lang/StringBuilder;Ljava/lang/Object;)V
 
     .line 301
-    move-object v2, p10
+    move-object/from16 v8, p10
 
-    invoke-direct {p0, v1, p10}, Lcom/android/server/pm/OtaDexoptService$1;->encodeParameter(Ljava/lang/StringBuilder;Ljava/lang/Object;)V
+    invoke-direct {p0, v1, v8}, Lcom/android/server/pm/OtaDexoptService$1;->encodeParameter(Ljava/lang/StringBuilder;Ljava/lang/Object;)V
 
     .line 302
-    move-object v2, p11
+    move-object/from16 v9, p11
 
-    invoke-direct {p0, v1, p11}, Lcom/android/server/pm/OtaDexoptService$1;->encodeParameter(Ljava/lang/StringBuilder;Ljava/lang/Object;)V
+    invoke-direct {p0, v1, v9}, Lcom/android/server/pm/OtaDexoptService$1;->encodeParameter(Ljava/lang/StringBuilder;Ljava/lang/Object;)V
 
     .line 303
-    invoke-static {p12}, Ljava/lang/Boolean;->valueOf(Z)Ljava/lang/Boolean;
+    invoke-static/range {p12 .. p12}, Ljava/lang/Boolean;->valueOf(Z)Ljava/lang/Boolean;
 
-    move-result-object v2
+    move-result-object v10
 
-    invoke-direct {p0, v1, v2}, Lcom/android/server/pm/OtaDexoptService$1;->encodeParameter(Ljava/lang/StringBuilder;Ljava/lang/Object;)V
+    invoke-direct {p0, v1, v10}, Lcom/android/server/pm/OtaDexoptService$1;->encodeParameter(Ljava/lang/StringBuilder;Ljava/lang/Object;)V
 
     .line 304
     invoke-static/range {p13 .. p13}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
 
-    move-result-object v2
+    move-result-object v10
 
-    invoke-direct {p0, v1, v2}, Lcom/android/server/pm/OtaDexoptService$1;->encodeParameter(Ljava/lang/StringBuilder;Ljava/lang/Object;)V
+    invoke-direct {p0, v1, v10}, Lcom/android/server/pm/OtaDexoptService$1;->encodeParameter(Ljava/lang/StringBuilder;Ljava/lang/Object;)V
 
     .line 305
-    move-object/from16 v2, p14
+    move-object/from16 v10, p14
 
-    invoke-direct {p0, v1, v2}, Lcom/android/server/pm/OtaDexoptService$1;->encodeParameter(Ljava/lang/StringBuilder;Ljava/lang/Object;)V
+    invoke-direct {p0, v1, v10}, Lcom/android/server/pm/OtaDexoptService$1;->encodeParameter(Ljava/lang/StringBuilder;Ljava/lang/Object;)V
 
     .line 306
-    move-object/from16 v2, p15
+    move-object/from16 v11, p15
 
-    invoke-direct {p0, v1, v2}, Lcom/android/server/pm/OtaDexoptService$1;->encodeParameter(Ljava/lang/StringBuilder;Ljava/lang/Object;)V
+    invoke-direct {p0, v1, v11}, Lcom/android/server/pm/OtaDexoptService$1;->encodeParameter(Ljava/lang/StringBuilder;Ljava/lang/Object;)V
 
     .line 307
-    move-object/from16 v2, p16
+    move-object/from16 v12, p16
 
-    invoke-direct {p0, v1, v2}, Lcom/android/server/pm/OtaDexoptService$1;->encodeParameter(Ljava/lang/StringBuilder;Ljava/lang/Object;)V
+    invoke-direct {p0, v1, v12}, Lcom/android/server/pm/OtaDexoptService$1;->encodeParameter(Ljava/lang/StringBuilder;Ljava/lang/Object;)V
 
     .line 309
-    iget-object v0, v0, Lcom/android/server/pm/OtaDexoptService$1;->val$commands:Ljava/util/List;
+    iget-object v13, v0, Lcom/android/server/pm/OtaDexoptService$1;->val$commands:Ljava/util/List;
 
     invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v1
+    move-result-object v14
 
-    invoke-interface {v0, v1}, Ljava/util/List;->add(Ljava/lang/Object;)Z
+    invoke-interface {v13, v14}, Ljava/util/List;->add(Ljava/lang/Object;)Z
 
     .line 310
     return-void

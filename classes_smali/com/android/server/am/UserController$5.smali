@@ -23,8 +23,9 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/am/UserController;Lcom/android/server/am/UserState;)V
     .registers 3
+    .param p1, "this$0"  # Lcom/android/server/am/UserController;
 
-    .line 753
+    .line 733
     iput-object p1, p0, Lcom/android/server/am/UserController$5;->this$0:Lcom/android/server/am/UserController;
 
     iput-object p2, p0, Lcom/android/server/am/UserController$5;->val$uss:Lcom/android/server/am/UserState;
@@ -37,21 +38,28 @@
 
 # virtual methods
 .method public performReceive(Landroid/content/Intent;ILjava/lang/String;Landroid/os/Bundle;ZZI)V
-    .registers 8
+    .registers 10
+    .param p1, "intent"  # Landroid/content/Intent;
+    .param p2, "resultCode"  # I
+    .param p3, "data"  # Ljava/lang/String;
+    .param p4, "extras"  # Landroid/os/Bundle;
+    .param p5, "ordered"  # Z
+    .param p6, "sticky"  # Z
+    .param p7, "sendingUser"  # I
 
-    .line 757
-    iget-object p1, p0, Lcom/android/server/am/UserController$5;->this$0:Lcom/android/server/am/UserController;
+    .line 737
+    iget-object v0, p0, Lcom/android/server/am/UserController$5;->this$0:Lcom/android/server/am/UserController;
 
-    invoke-static {p1}, Lcom/android/server/am/UserController;->access$200(Lcom/android/server/am/UserController;)Landroid/os/Handler;
+    invoke-static {v0}, Lcom/android/server/am/UserController;->access$200(Lcom/android/server/am/UserController;)Landroid/os/Handler;
 
-    move-result-object p1
+    move-result-object v0
 
-    new-instance p2, Lcom/android/server/am/UserController$5$1;
+    new-instance v1, Lcom/android/server/am/UserController$5$1;
 
-    invoke-direct {p2, p0}, Lcom/android/server/am/UserController$5$1;-><init>(Lcom/android/server/am/UserController$5;)V
+    invoke-direct {v1, p0}, Lcom/android/server/am/UserController$5$1;-><init>(Lcom/android/server/am/UserController$5;)V
 
-    invoke-virtual {p1, p2}, Landroid/os/Handler;->post(Ljava/lang/Runnable;)Z
+    invoke-virtual {v0, v1}, Landroid/os/Handler;->post(Ljava/lang/Runnable;)Z
 
-    .line 763
+    .line 743
     return-void
 .end method

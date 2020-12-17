@@ -23,8 +23,9 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/display/color/ColorDisplayService$CustomNightDisplayAutoMode;Lcom/android/server/display/color/ColorDisplayService;)V
     .registers 3
+    .param p1, "this$1"  # Lcom/android/server/display/color/ColorDisplayService$CustomNightDisplayAutoMode;
 
-    .line 965
+    .line 909
     iput-object p1, p0, Lcom/android/server/display/color/ColorDisplayService$CustomNightDisplayAutoMode$1;->this$1:Lcom/android/server/display/color/ColorDisplayService$CustomNightDisplayAutoMode;
 
     iput-object p2, p0, Lcom/android/server/display/color/ColorDisplayService$CustomNightDisplayAutoMode$1;->val$this$0:Lcom/android/server/display/color/ColorDisplayService;
@@ -37,13 +38,15 @@
 
 # virtual methods
 .method public onReceive(Landroid/content/Context;Landroid/content/Intent;)V
-    .registers 3
+    .registers 4
+    .param p1, "context"  # Landroid/content/Context;
+    .param p2, "intent"  # Landroid/content/Intent;
 
-    .line 968
-    iget-object p1, p0, Lcom/android/server/display/color/ColorDisplayService$CustomNightDisplayAutoMode$1;->this$1:Lcom/android/server/display/color/ColorDisplayService$CustomNightDisplayAutoMode;
+    .line 912
+    iget-object v0, p0, Lcom/android/server/display/color/ColorDisplayService$CustomNightDisplayAutoMode$1;->this$1:Lcom/android/server/display/color/ColorDisplayService$CustomNightDisplayAutoMode;
 
-    invoke-static {p1}, Lcom/android/server/display/color/ColorDisplayService$CustomNightDisplayAutoMode;->access$2100(Lcom/android/server/display/color/ColorDisplayService$CustomNightDisplayAutoMode;)V
+    invoke-static {v0}, Lcom/android/server/display/color/ColorDisplayService$CustomNightDisplayAutoMode;->access$2100(Lcom/android/server/display/color/ColorDisplayService$CustomNightDisplayAutoMode;)V
 
-    .line 969
+    .line 913
     return-void
 .end method

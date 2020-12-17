@@ -21,8 +21,12 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/wm/SystemGesturesPointerEventListener;Landroid/content/Context;Landroid/view/GestureDetector$OnGestureListener;Landroid/os/Handler;)V
     .registers 5
+    .param p1, "this$0"  # Lcom/android/server/wm/SystemGesturesPointerEventListener;
+    .param p2, "x0"  # Landroid/content/Context;
+    .param p3, "x1"  # Landroid/view/GestureDetector$OnGestureListener;
+    .param p4, "x2"  # Landroid/os/Handler;
 
-    .line 121
+    .line 122
     iput-object p1, p0, Lcom/android/server/wm/SystemGesturesPointerEventListener$1;->this$0:Lcom/android/server/wm/SystemGesturesPointerEventListener;
 
     invoke-direct {p0, p2, p3, p4}, Landroid/view/GestureDetector;-><init>(Landroid/content/Context;Landroid/view/GestureDetector$OnGestureListener;Landroid/os/Handler;)V

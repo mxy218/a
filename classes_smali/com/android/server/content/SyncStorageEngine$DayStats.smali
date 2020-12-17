@@ -29,6 +29,7 @@
 # direct methods
 .method public constructor <init>(I)V
     .registers 2
+    .param p1, "day"  # I
 
     .line 364
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V

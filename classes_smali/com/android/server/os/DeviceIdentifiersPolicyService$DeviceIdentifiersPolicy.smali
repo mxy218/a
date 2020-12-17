@@ -21,6 +21,7 @@
 # direct methods
 .method public constructor <init>(Landroid/content/Context;)V
     .registers 2
+    .param p1, "context"  # Landroid/content/Context;
 
     .line 48
     invoke-direct {p0}, Landroid/os/IDeviceIdentifiersPolicyService$Stub;-><init>()V
@@ -73,6 +74,7 @@
 
 .method public getSerialForPackage(Ljava/lang/String;)Ljava/lang/String;
     .registers 4
+    .param p1, "callingPackage"  # Ljava/lang/String;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -86,22 +88,22 @@
 
     invoke-static {v0, p1, v1}, Lcom/android/internal/telephony/TelephonyPermissions;->checkCallingOrSelfReadDeviceIdentifiers(Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)Z
 
-    move-result p1
+    move-result v0
 
-    const-string/jumbo v0, "unknown"
+    const-string/jumbo v1, "unknown"
 
-    if-nez p1, :cond_e
+    if-nez v0, :cond_e
 
     .line 69
-    return-object v0
+    return-object v1
 
     .line 71
     :cond_e
-    const-string/jumbo p1, "ro.serialno"
+    const-string/jumbo v0, "ro.serialno"
 
-    invoke-static {p1, v0}, Landroid/os/SystemProperties;->get(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+    invoke-static {v0, v1}, Landroid/os/SystemProperties;->get(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    return-object p1
+    return-object v0
 .end method

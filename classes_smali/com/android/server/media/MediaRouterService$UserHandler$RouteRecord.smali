@@ -28,256 +28,290 @@
 
 # direct methods
 .method public constructor <init>(Lcom/android/server/media/MediaRouterService$UserHandler$ProviderRecord;Ljava/lang/String;Ljava/lang/String;)V
-    .registers 4
-
-    .line 1488
-    invoke-direct {p0}, Ljava/lang/Object;-><init>()V
-
-    .line 1489
-    iput-object p1, p0, Lcom/android/server/media/MediaRouterService$UserHandler$RouteRecord;->mProviderRecord:Lcom/android/server/media/MediaRouterService$UserHandler$ProviderRecord;
-
-    .line 1490
-    iput-object p2, p0, Lcom/android/server/media/MediaRouterService$UserHandler$RouteRecord;->mDescriptorId:Ljava/lang/String;
+    .registers 5
+    .param p1, "providerRecord"  # Lcom/android/server/media/MediaRouterService$UserHandler$ProviderRecord;
+    .param p2, "descriptorId"  # Ljava/lang/String;
+    .param p3, "uniqueId"  # Ljava/lang/String;
 
     .line 1491
-    new-instance p1, Landroid/media/MediaRouterClientState$RouteInfo;
-
-    invoke-direct {p1, p3}, Landroid/media/MediaRouterClientState$RouteInfo;-><init>(Ljava/lang/String;)V
-
-    iput-object p1, p0, Lcom/android/server/media/MediaRouterService$UserHandler$RouteRecord;->mMutableInfo:Landroid/media/MediaRouterClientState$RouteInfo;
+    invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
     .line 1492
+    iput-object p1, p0, Lcom/android/server/media/MediaRouterService$UserHandler$RouteRecord;->mProviderRecord:Lcom/android/server/media/MediaRouterService$UserHandler$ProviderRecord;
+
+    .line 1493
+    iput-object p2, p0, Lcom/android/server/media/MediaRouterService$UserHandler$RouteRecord;->mDescriptorId:Ljava/lang/String;
+
+    .line 1494
+    new-instance v0, Landroid/media/MediaRouterClientState$RouteInfo;
+
+    invoke-direct {v0, p3}, Landroid/media/MediaRouterClientState$RouteInfo;-><init>(Ljava/lang/String;)V
+
+    iput-object v0, p0, Lcom/android/server/media/MediaRouterService$UserHandler$RouteRecord;->mMutableInfo:Landroid/media/MediaRouterClientState$RouteInfo;
+
+    .line 1495
     return-void
 .end method
 
 .method private static computeDescription(Landroid/media/RemoteDisplayState$RemoteDisplayInfo;)Ljava/lang/String;
-    .registers 2
+    .registers 3
+    .param p0, "descriptor"  # Landroid/media/RemoteDisplayState$RemoteDisplayInfo;
 
-    .line 1617
-    iget-object p0, p0, Landroid/media/RemoteDisplayState$RemoteDisplayInfo;->description:Ljava/lang/String;
+    .line 1620
+    iget-object v0, p0, Landroid/media/RemoteDisplayState$RemoteDisplayInfo;->description:Ljava/lang/String;
 
-    .line 1618
-    invoke-static {p0}, Landroid/text/TextUtils;->isEmpty(Ljava/lang/CharSequence;)Z
+    .line 1621
+    .local v0, "description":Ljava/lang/String;
+    invoke-static {v0}, Landroid/text/TextUtils;->isEmpty(Ljava/lang/CharSequence;)Z
 
-    move-result v0
+    move-result v1
 
-    if-eqz v0, :cond_9
+    if-eqz v1, :cond_a
 
-    const/4 p0, 0x0
+    const/4 v1, 0x0
 
-    :cond_9
-    return-object p0
+    goto :goto_b
+
+    :cond_a
+    move-object v1, v0
+
+    :goto_b
+    return-object v1
 .end method
 
 .method private static computeEnabled(Landroid/media/RemoteDisplayState$RemoteDisplayInfo;)Z
-    .registers 2
+    .registers 3
+    .param p0, "descriptor"  # Landroid/media/RemoteDisplayState$RemoteDisplayInfo;
 
-    .line 1628
-    iget p0, p0, Landroid/media/RemoteDisplayState$RemoteDisplayInfo;->status:I
+    .line 1631
+    iget v0, p0, Landroid/media/RemoteDisplayState$RemoteDisplayInfo;->status:I
 
-    const/4 v0, 0x2
+    const/4 v1, 0x2
 
-    if-eq p0, v0, :cond_d
-
-    const/4 v0, 0x3
-
-    if-eq p0, v0, :cond_d
-
-    const/4 v0, 0x4
-
-    if-eq p0, v0, :cond_d
-
-    .line 1634
-    const/4 p0, 0x0
-
-    return p0
-
-    .line 1632
-    :cond_d
-    const/4 p0, 0x1
-
-    return p0
-.end method
-
-.method private static computeName(Landroid/media/RemoteDisplayState$RemoteDisplayInfo;)Ljava/lang/String;
-    .registers 1
-
-    .line 1613
-    iget-object p0, p0, Landroid/media/RemoteDisplayState$RemoteDisplayInfo;->name:Ljava/lang/String;
-
-    return-object p0
-.end method
-
-.method private static computePlaybackStream(Landroid/media/RemoteDisplayState$RemoteDisplayInfo;)I
-    .registers 1
-
-    .line 1660
-    const/4 p0, 0x3
-
-    return p0
-.end method
-
-.method private static computePlaybackType(Landroid/media/RemoteDisplayState$RemoteDisplayInfo;)I
-    .registers 1
-
-    .line 1656
-    const/4 p0, 0x1
-
-    return p0
-.end method
-
-.method private static computePresentationDisplayId(Landroid/media/RemoteDisplayState$RemoteDisplayInfo;)I
-    .registers 1
-
-    .line 1693
-    iget p0, p0, Landroid/media/RemoteDisplayState$RemoteDisplayInfo;->presentationDisplayId:I
-
-    .line 1694
-    if-gez p0, :cond_5
-
-    const/4 p0, -0x1
-
-    :cond_5
-    return p0
-.end method
-
-.method private static computeStatusCode(Landroid/media/RemoteDisplayState$RemoteDisplayInfo;)I
-    .registers 4
-
-    .line 1639
-    iget p0, p0, Landroid/media/RemoteDisplayState$RemoteDisplayInfo;->status:I
-
-    const/4 v0, 0x4
-
-    if-eqz p0, :cond_18
-
-    const/4 v1, 0x1
-
-    if-eq p0, v1, :cond_16
+    if-eq v0, v1, :cond_d
 
     const/4 v1, 0x3
 
-    const/4 v2, 0x2
+    if-eq v0, v1, :cond_d
 
-    if-eq p0, v2, :cond_15
+    const/4 v1, 0x4
 
-    if-eq p0, v1, :cond_14
+    if-eq v0, v1, :cond_d
 
-    if-eq p0, v0, :cond_12
+    .line 1637
+    const/4 v0, 0x0
 
-    .line 1651
-    const/4 p0, 0x0
+    return v0
 
-    return p0
+    .line 1635
+    :cond_d
+    const/4 v0, 0x1
 
-    .line 1649
-    :cond_12
-    const/4 p0, 0x6
-
-    return p0
-
-    .line 1647
-    :cond_14
-    return v2
-
-    .line 1643
-    :cond_15
-    return v1
-
-    .line 1645
-    :cond_16
-    const/4 p0, 0x5
-
-    return p0
-
-    .line 1641
-    :cond_18
     return v0
 .end method
 
+.method private static computeName(Landroid/media/RemoteDisplayState$RemoteDisplayInfo;)Ljava/lang/String;
+    .registers 2
+    .param p0, "descriptor"  # Landroid/media/RemoteDisplayState$RemoteDisplayInfo;
+
+    .line 1616
+    iget-object v0, p0, Landroid/media/RemoteDisplayState$RemoteDisplayInfo;->name:Ljava/lang/String;
+
+    return-object v0
+.end method
+
+.method private static computePlaybackStream(Landroid/media/RemoteDisplayState$RemoteDisplayInfo;)I
+    .registers 2
+    .param p0, "descriptor"  # Landroid/media/RemoteDisplayState$RemoteDisplayInfo;
+
+    .line 1663
+    const/4 v0, 0x3
+
+    return v0
+.end method
+
+.method private static computePlaybackType(Landroid/media/RemoteDisplayState$RemoteDisplayInfo;)I
+    .registers 2
+    .param p0, "descriptor"  # Landroid/media/RemoteDisplayState$RemoteDisplayInfo;
+
+    .line 1659
+    const/4 v0, 0x1
+
+    return v0
+.end method
+
+.method private static computePresentationDisplayId(Landroid/media/RemoteDisplayState$RemoteDisplayInfo;)I
+    .registers 3
+    .param p0, "descriptor"  # Landroid/media/RemoteDisplayState$RemoteDisplayInfo;
+
+    .line 1696
+    iget v0, p0, Landroid/media/RemoteDisplayState$RemoteDisplayInfo;->presentationDisplayId:I
+
+    .line 1697
+    .local v0, "displayId":I
+    if-gez v0, :cond_6
+
+    const/4 v1, -0x1
+
+    goto :goto_7
+
+    :cond_6
+    move v1, v0
+
+    :goto_7
+    return v1
+.end method
+
+.method private static computeStatusCode(Landroid/media/RemoteDisplayState$RemoteDisplayInfo;)I
+    .registers 5
+    .param p0, "descriptor"  # Landroid/media/RemoteDisplayState$RemoteDisplayInfo;
+
+    .line 1642
+    iget v0, p0, Landroid/media/RemoteDisplayState$RemoteDisplayInfo;->status:I
+
+    const/4 v1, 0x4
+
+    if-eqz v0, :cond_18
+
+    const/4 v2, 0x1
+
+    if-eq v0, v2, :cond_16
+
+    const/4 v2, 0x3
+
+    const/4 v3, 0x2
+
+    if-eq v0, v3, :cond_15
+
+    if-eq v0, v2, :cond_14
+
+    if-eq v0, v1, :cond_12
+
+    .line 1654
+    const/4 v0, 0x0
+
+    return v0
+
+    .line 1652
+    :cond_12
+    const/4 v0, 0x6
+
+    return v0
+
+    .line 1650
+    :cond_14
+    return v3
+
+    .line 1646
+    :cond_15
+    return v2
+
+    .line 1648
+    :cond_16
+    const/4 v0, 0x5
+
+    return v0
+
+    .line 1644
+    :cond_18
+    return v1
+.end method
+
 .method private static computeSupportedTypes(Landroid/media/RemoteDisplayState$RemoteDisplayInfo;)I
-    .registers 1
+    .registers 2
+    .param p0, "descriptor"  # Landroid/media/RemoteDisplayState$RemoteDisplayInfo;
 
-    .line 1622
-    const/4 p0, 0x7
+    .line 1625
+    const/4 v0, 0x7
 
-    return p0
+    return v0
 .end method
 
 .method private static computeVolume(Landroid/media/RemoteDisplayState$RemoteDisplayInfo;)I
-    .registers 2
-
-    .line 1664
-    iget v0, p0, Landroid/media/RemoteDisplayState$RemoteDisplayInfo;->volume:I
-
-    .line 1665
-    iget p0, p0, Landroid/media/RemoteDisplayState$RemoteDisplayInfo;->volumeMax:I
-
-    .line 1666
-    if-gez v0, :cond_8
+    .registers 4
+    .param p0, "descriptor"  # Landroid/media/RemoteDisplayState$RemoteDisplayInfo;
 
     .line 1667
-    const/4 p0, 0x0
-
-    return p0
+    iget v0, p0, Landroid/media/RemoteDisplayState$RemoteDisplayInfo;->volume:I
 
     .line 1668
-    :cond_8
-    if-le v0, p0, :cond_b
+    .local v0, "volume":I
+    iget v1, p0, Landroid/media/RemoteDisplayState$RemoteDisplayInfo;->volumeMax:I
 
     .line 1669
-    return p0
+    .local v1, "volumeMax":I
+    if-gez v0, :cond_8
+
+    .line 1670
+    const/4 v2, 0x0
+
+    return v2
 
     .line 1671
+    :cond_8
+    if-le v0, v1, :cond_b
+
+    .line 1672
+    return v1
+
+    .line 1674
     :cond_b
     return v0
 .end method
 
 .method private static computeVolumeHandling(Landroid/media/RemoteDisplayState$RemoteDisplayInfo;)I
-    .registers 2
-
-    .line 1680
-    iget p0, p0, Landroid/media/RemoteDisplayState$RemoteDisplayInfo;->volumeHandling:I
-
-    .line 1681
-    const/4 v0, 0x1
-
-    if-eq p0, v0, :cond_7
-
-    .line 1686
-    const/4 p0, 0x0
-
-    return p0
+    .registers 3
+    .param p0, "descriptor"  # Landroid/media/RemoteDisplayState$RemoteDisplayInfo;
 
     .line 1683
+    iget v0, p0, Landroid/media/RemoteDisplayState$RemoteDisplayInfo;->volumeHandling:I
+
+    .line 1684
+    .local v0, "volumeHandling":I
+    const/4 v1, 0x1
+
+    if-eq v0, v1, :cond_7
+
+    .line 1689
+    const/4 v1, 0x0
+
+    return v1
+
+    .line 1686
     :cond_7
-    return v0
+    return v1
 .end method
 
 .method private static computeVolumeMax(Landroid/media/RemoteDisplayState$RemoteDisplayInfo;)I
-    .registers 1
+    .registers 3
+    .param p0, "descriptor"  # Landroid/media/RemoteDisplayState$RemoteDisplayInfo;
 
-    .line 1675
-    iget p0, p0, Landroid/media/RemoteDisplayState$RemoteDisplayInfo;->volumeMax:I
+    .line 1678
+    iget v0, p0, Landroid/media/RemoteDisplayState$RemoteDisplayInfo;->volumeMax:I
 
-    .line 1676
-    if-lez p0, :cond_5
+    .line 1679
+    .local v0, "volumeMax":I
+    if-lez v0, :cond_6
 
-    goto :goto_6
+    move v1, v0
 
-    :cond_5
-    const/4 p0, 0x0
+    goto :goto_7
 
-    :goto_6
-    return p0
+    :cond_6
+    const/4 v1, 0x0
+
+    :goto_7
+    return v1
 .end method
 
 
 # virtual methods
 .method public dump(Ljava/io/PrintWriter;Ljava/lang/String;)V
-    .registers 5
+    .registers 6
+    .param p1, "pw"  # Ljava/io/PrintWriter;
+    .param p2, "prefix"  # Ljava/lang/String;
 
-    .line 1598
+    .line 1601
     new-instance v0, Ljava/lang/StringBuilder;
 
     invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
@@ -292,63 +326,6 @@
 
     invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
-    .line 1600
-    new-instance v0, Ljava/lang/StringBuilder;
-
-    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
-
-    invoke-virtual {v0, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    const-string p2, "  "
-
-    invoke-virtual {v0, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
-
-    move-result-object p2
-
-    .line 1601
-    new-instance v0, Ljava/lang/StringBuilder;
-
-    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
-
-    invoke-virtual {v0, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    const-string v1, "mMutableInfo="
-
-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    iget-object v1, p0, Lcom/android/server/media/MediaRouterService$UserHandler$RouteRecord;->mMutableInfo:Landroid/media/MediaRouterClientState$RouteInfo;
-
-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
-
-    move-result-object v0
-
-    invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
-
-    .line 1602
-    new-instance v0, Ljava/lang/StringBuilder;
-
-    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
-
-    invoke-virtual {v0, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    const-string v1, "mDescriptorId="
-
-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    iget-object v1, p0, Lcom/android/server/media/MediaRouterService$UserHandler$RouteRecord;->mDescriptorId:Ljava/lang/String;
-
-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
-
-    move-result-object v0
-
-    invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
-
     .line 1603
     new-instance v0, Ljava/lang/StringBuilder;
 
@@ -356,28 +333,86 @@
 
     invoke-virtual {v0, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string p2, "mDescriptor="
+    const-string v1, "  "
 
-    invoke-virtual {v0, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    iget-object p2, p0, Lcom/android/server/media/MediaRouterService$UserHandler$RouteRecord;->mDescriptor:Landroid/media/RemoteDisplayState$RemoteDisplayInfo;
-
-    invoke-virtual {v0, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p2
-
-    invoke-virtual {p1, p2}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    move-result-object v0
 
     .line 1604
+    .local v0, "indent":Ljava/lang/String;
+    new-instance v1, Ljava/lang/StringBuilder;
+
+    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
+
+    invoke-virtual {v1, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    const-string/jumbo v2, "mMutableInfo="
+
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    iget-object v2, p0, Lcom/android/server/media/MediaRouterService$UserHandler$RouteRecord;->mMutableInfo:Landroid/media/MediaRouterClientState$RouteInfo;
+
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v1
+
+    invoke-virtual {p1, v1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+
+    .line 1605
+    new-instance v1, Ljava/lang/StringBuilder;
+
+    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
+
+    invoke-virtual {v1, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    const-string/jumbo v2, "mDescriptorId="
+
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    iget-object v2, p0, Lcom/android/server/media/MediaRouterService$UserHandler$RouteRecord;->mDescriptorId:Ljava/lang/String;
+
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v1
+
+    invoke-virtual {p1, v1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+
+    .line 1606
+    new-instance v1, Ljava/lang/StringBuilder;
+
+    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
+
+    invoke-virtual {v1, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    const-string/jumbo v2, "mDescriptor="
+
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    iget-object v2, p0, Lcom/android/server/media/MediaRouterService$UserHandler$RouteRecord;->mDescriptor:Landroid/media/RemoteDisplayState$RemoteDisplayInfo;
+
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v1
+
+    invoke-virtual {p1, v1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+
+    .line 1607
     return-void
 .end method
 
 .method public getDescriptorId()Ljava/lang/String;
     .registers 2
 
-    .line 1503
+    .line 1506
     iget-object v0, p0, Lcom/android/server/media/MediaRouterService$UserHandler$RouteRecord;->mDescriptorId:Ljava/lang/String;
 
     return-object v0
@@ -386,12 +421,12 @@
 .method public getInfo()Landroid/media/MediaRouterClientState$RouteInfo;
     .registers 3
 
-    .line 1511
+    .line 1514
     iget-object v0, p0, Lcom/android/server/media/MediaRouterService$UserHandler$RouteRecord;->mImmutableInfo:Landroid/media/MediaRouterClientState$RouteInfo;
 
     if-nez v0, :cond_d
 
-    .line 1512
+    .line 1515
     new-instance v0, Landroid/media/MediaRouterClientState$RouteInfo;
 
     iget-object v1, p0, Lcom/android/server/media/MediaRouterService$UserHandler$RouteRecord;->mMutableInfo:Landroid/media/MediaRouterClientState$RouteInfo;
@@ -400,7 +435,7 @@
 
     iput-object v0, p0, Lcom/android/server/media/MediaRouterService$UserHandler$RouteRecord;->mImmutableInfo:Landroid/media/MediaRouterClientState$RouteInfo;
 
-    .line 1514
+    .line 1517
     :cond_d
     iget-object v0, p0, Lcom/android/server/media/MediaRouterService$UserHandler$RouteRecord;->mImmutableInfo:Landroid/media/MediaRouterClientState$RouteInfo;
 
@@ -410,7 +445,7 @@
 .method public getProvider()Lcom/android/server/media/RemoteDisplayProviderProxy;
     .registers 2
 
-    .line 1495
+    .line 1498
     iget-object v0, p0, Lcom/android/server/media/MediaRouterService$UserHandler$RouteRecord;->mProviderRecord:Lcom/android/server/media/MediaRouterService$UserHandler$ProviderRecord;
 
     invoke-virtual {v0}, Lcom/android/server/media/MediaRouterService$UserHandler$ProviderRecord;->getProvider()Lcom/android/server/media/RemoteDisplayProviderProxy;
@@ -423,7 +458,7 @@
 .method public getProviderRecord()Lcom/android/server/media/MediaRouterService$UserHandler$ProviderRecord;
     .registers 2
 
-    .line 1499
+    .line 1502
     iget-object v0, p0, Lcom/android/server/media/MediaRouterService$UserHandler$RouteRecord;->mProviderRecord:Lcom/android/server/media/MediaRouterService$UserHandler$ProviderRecord;
 
     return-object v0
@@ -432,7 +467,7 @@
 .method public getStatus()I
     .registers 2
 
-    .line 1526
+    .line 1529
     iget-object v0, p0, Lcom/android/server/media/MediaRouterService$UserHandler$RouteRecord;->mMutableInfo:Landroid/media/MediaRouterClientState$RouteInfo;
 
     iget v0, v0, Landroid/media/MediaRouterClientState$RouteInfo;->statusCode:I
@@ -443,7 +478,7 @@
 .method public getUniqueId()Ljava/lang/String;
     .registers 2
 
-    .line 1507
+    .line 1510
     iget-object v0, p0, Lcom/android/server/media/MediaRouterService$UserHandler$RouteRecord;->mMutableInfo:Landroid/media/MediaRouterClientState$RouteInfo;
 
     iget-object v0, v0, Landroid/media/MediaRouterClientState$RouteInfo;->id:Ljava/lang/String;
@@ -454,7 +489,7 @@
 .method public isEnabled()Z
     .registers 2
 
-    .line 1522
+    .line 1525
     iget-object v0, p0, Lcom/android/server/media/MediaRouterService$UserHandler$RouteRecord;->mMutableInfo:Landroid/media/MediaRouterClientState$RouteInfo;
 
     iget-boolean v0, v0, Landroid/media/MediaRouterClientState$RouteInfo;->enabled:Z
@@ -465,7 +500,7 @@
 .method public isValid()Z
     .registers 2
 
-    .line 1518
+    .line 1521
     iget-object v0, p0, Lcom/android/server/media/MediaRouterService$UserHandler$RouteRecord;->mDescriptor:Landroid/media/RemoteDisplayState$RemoteDisplayInfo;
 
     if-eqz v0, :cond_6
@@ -484,7 +519,7 @@
 .method public toString()Ljava/lang/String;
     .registers 3
 
-    .line 1608
+    .line 1611
     new-instance v0, Ljava/lang/StringBuilder;
 
     invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
@@ -521,274 +556,294 @@
 .end method
 
 .method public updateDescriptor(Landroid/media/RemoteDisplayState$RemoteDisplayInfo;)Z
-    .registers 6
-
-    .line 1530
-    nop
-
-    .line 1531
-    iget-object v0, p0, Lcom/android/server/media/MediaRouterService$UserHandler$RouteRecord;->mDescriptor:Landroid/media/RemoteDisplayState$RemoteDisplayInfo;
-
-    const/4 v1, 0x1
-
-    const/4 v2, 0x0
-
-    if-eq v0, p1, :cond_b8
-
-    .line 1532
-    iput-object p1, p0, Lcom/android/server/media/MediaRouterService$UserHandler$RouteRecord;->mDescriptor:Landroid/media/RemoteDisplayState$RemoteDisplayInfo;
+    .registers 15
+    .param p1, "descriptor"  # Landroid/media/RemoteDisplayState$RemoteDisplayInfo;
 
     .line 1533
-    if-eqz p1, :cond_b8
+    const/4 v0, 0x0
 
     .line 1534
-    invoke-static {p1}, Lcom/android/server/media/MediaRouterService$UserHandler$RouteRecord;->computeName(Landroid/media/RemoteDisplayState$RemoteDisplayInfo;)Ljava/lang/String;
+    .local v0, "changed":Z
+    iget-object v1, p0, Lcom/android/server/media/MediaRouterService$UserHandler$RouteRecord;->mDescriptor:Landroid/media/RemoteDisplayState$RemoteDisplayInfo;
 
-    move-result-object v0
+    if-eq v1, p1, :cond_b6
 
     .line 1535
-    iget-object v3, p0, Lcom/android/server/media/MediaRouterService$UserHandler$RouteRecord;->mMutableInfo:Landroid/media/MediaRouterClientState$RouteInfo;
-
-    iget-object v3, v3, Landroid/media/MediaRouterClientState$RouteInfo;->name:Ljava/lang/String;
-
-    invoke-static {v3, v0}, Ljava/util/Objects;->equals(Ljava/lang/Object;Ljava/lang/Object;)Z
-
-    move-result v3
-
-    if-nez v3, :cond_1e
+    iput-object p1, p0, Lcom/android/server/media/MediaRouterService$UserHandler$RouteRecord;->mDescriptor:Landroid/media/RemoteDisplayState$RemoteDisplayInfo;
 
     .line 1536
-    iget-object v2, p0, Lcom/android/server/media/MediaRouterService$UserHandler$RouteRecord;->mMutableInfo:Landroid/media/MediaRouterClientState$RouteInfo;
-
-    iput-object v0, v2, Landroid/media/MediaRouterClientState$RouteInfo;->name:Ljava/lang/String;
+    if-eqz p1, :cond_b6
 
     .line 1537
-    move v2, v1
+    invoke-static {p1}, Lcom/android/server/media/MediaRouterService$UserHandler$RouteRecord;->computeName(Landroid/media/RemoteDisplayState$RemoteDisplayInfo;)Ljava/lang/String;
+
+    move-result-object v1
+
+    .line 1538
+    .local v1, "name":Ljava/lang/String;
+    iget-object v2, p0, Lcom/android/server/media/MediaRouterService$UserHandler$RouteRecord;->mMutableInfo:Landroid/media/MediaRouterClientState$RouteInfo;
+
+    iget-object v2, v2, Landroid/media/MediaRouterClientState$RouteInfo;->name:Ljava/lang/String;
+
+    invoke-static {v2, v1}, Ljava/util/Objects;->equals(Ljava/lang/Object;Ljava/lang/Object;)Z
+
+    move-result v2
+
+    if-nez v2, :cond_1c
 
     .line 1539
-    :cond_1e
-    invoke-static {p1}, Lcom/android/server/media/MediaRouterService$UserHandler$RouteRecord;->computeDescription(Landroid/media/RemoteDisplayState$RemoteDisplayInfo;)Ljava/lang/String;
+    iget-object v2, p0, Lcom/android/server/media/MediaRouterService$UserHandler$RouteRecord;->mMutableInfo:Landroid/media/MediaRouterClientState$RouteInfo;
 
-    move-result-object v0
+    iput-object v1, v2, Landroid/media/MediaRouterClientState$RouteInfo;->name:Ljava/lang/String;
 
     .line 1540
+    const/4 v0, 0x1
+
+    .line 1542
+    :cond_1c
+    invoke-static {p1}, Lcom/android/server/media/MediaRouterService$UserHandler$RouteRecord;->computeDescription(Landroid/media/RemoteDisplayState$RemoteDisplayInfo;)Ljava/lang/String;
+
+    move-result-object v2
+
+    .line 1543
+    .local v2, "description":Ljava/lang/String;
     iget-object v3, p0, Lcom/android/server/media/MediaRouterService$UserHandler$RouteRecord;->mMutableInfo:Landroid/media/MediaRouterClientState$RouteInfo;
 
     iget-object v3, v3, Landroid/media/MediaRouterClientState$RouteInfo;->description:Ljava/lang/String;
 
-    invoke-static {v3, v0}, Ljava/util/Objects;->equals(Ljava/lang/Object;Ljava/lang/Object;)Z
+    invoke-static {v3, v2}, Ljava/util/Objects;->equals(Ljava/lang/Object;Ljava/lang/Object;)Z
 
     move-result v3
 
-    if-nez v3, :cond_31
-
-    .line 1541
-    iget-object v2, p0, Lcom/android/server/media/MediaRouterService$UserHandler$RouteRecord;->mMutableInfo:Landroid/media/MediaRouterClientState$RouteInfo;
-
-    iput-object v0, v2, Landroid/media/MediaRouterClientState$RouteInfo;->description:Ljava/lang/String;
-
-    .line 1542
-    move v2, v1
+    if-nez v3, :cond_2f
 
     .line 1544
-    :cond_31
-    invoke-static {p1}, Lcom/android/server/media/MediaRouterService$UserHandler$RouteRecord;->computeSupportedTypes(Landroid/media/RemoteDisplayState$RemoteDisplayInfo;)I
+    iget-object v3, p0, Lcom/android/server/media/MediaRouterService$UserHandler$RouteRecord;->mMutableInfo:Landroid/media/MediaRouterClientState$RouteInfo;
 
-    move-result v0
+    iput-object v2, v3, Landroid/media/MediaRouterClientState$RouteInfo;->description:Ljava/lang/String;
 
     .line 1545
-    iget-object v3, p0, Lcom/android/server/media/MediaRouterService$UserHandler$RouteRecord;->mMutableInfo:Landroid/media/MediaRouterClientState$RouteInfo;
-
-    iget v3, v3, Landroid/media/MediaRouterClientState$RouteInfo;->supportedTypes:I
-
-    if-eq v3, v0, :cond_40
-
-    .line 1546
-    iget-object v2, p0, Lcom/android/server/media/MediaRouterService$UserHandler$RouteRecord;->mMutableInfo:Landroid/media/MediaRouterClientState$RouteInfo;
-
-    iput v0, v2, Landroid/media/MediaRouterClientState$RouteInfo;->supportedTypes:I
+    const/4 v0, 0x1
 
     .line 1547
-    move v2, v1
+    :cond_2f
+    invoke-static {p1}, Lcom/android/server/media/MediaRouterService$UserHandler$RouteRecord;->computeSupportedTypes(Landroid/media/RemoteDisplayState$RemoteDisplayInfo;)I
+
+    move-result v3
+
+    .line 1548
+    .local v3, "supportedTypes":I
+    iget-object v4, p0, Lcom/android/server/media/MediaRouterService$UserHandler$RouteRecord;->mMutableInfo:Landroid/media/MediaRouterClientState$RouteInfo;
+
+    iget v4, v4, Landroid/media/MediaRouterClientState$RouteInfo;->supportedTypes:I
+
+    if-eq v4, v3, :cond_3e
 
     .line 1549
-    :cond_40
-    invoke-static {p1}, Lcom/android/server/media/MediaRouterService$UserHandler$RouteRecord;->computeEnabled(Landroid/media/RemoteDisplayState$RemoteDisplayInfo;)Z
+    iget-object v4, p0, Lcom/android/server/media/MediaRouterService$UserHandler$RouteRecord;->mMutableInfo:Landroid/media/MediaRouterClientState$RouteInfo;
 
-    move-result v0
+    iput v3, v4, Landroid/media/MediaRouterClientState$RouteInfo;->supportedTypes:I
 
     .line 1550
-    iget-object v3, p0, Lcom/android/server/media/MediaRouterService$UserHandler$RouteRecord;->mMutableInfo:Landroid/media/MediaRouterClientState$RouteInfo;
-
-    iget-boolean v3, v3, Landroid/media/MediaRouterClientState$RouteInfo;->enabled:Z
-
-    if-eq v3, v0, :cond_4f
-
-    .line 1551
-    iget-object v2, p0, Lcom/android/server/media/MediaRouterService$UserHandler$RouteRecord;->mMutableInfo:Landroid/media/MediaRouterClientState$RouteInfo;
-
-    iput-boolean v0, v2, Landroid/media/MediaRouterClientState$RouteInfo;->enabled:Z
+    const/4 v0, 0x1
 
     .line 1552
-    move v2, v1
+    :cond_3e
+    invoke-static {p1}, Lcom/android/server/media/MediaRouterService$UserHandler$RouteRecord;->computeEnabled(Landroid/media/RemoteDisplayState$RemoteDisplayInfo;)Z
+
+    move-result v4
+
+    .line 1553
+    .local v4, "enabled":Z
+    iget-object v5, p0, Lcom/android/server/media/MediaRouterService$UserHandler$RouteRecord;->mMutableInfo:Landroid/media/MediaRouterClientState$RouteInfo;
+
+    iget-boolean v5, v5, Landroid/media/MediaRouterClientState$RouteInfo;->enabled:Z
+
+    if-eq v5, v4, :cond_4d
 
     .line 1554
-    :cond_4f
-    invoke-static {p1}, Lcom/android/server/media/MediaRouterService$UserHandler$RouteRecord;->computeStatusCode(Landroid/media/RemoteDisplayState$RemoteDisplayInfo;)I
+    iget-object v5, p0, Lcom/android/server/media/MediaRouterService$UserHandler$RouteRecord;->mMutableInfo:Landroid/media/MediaRouterClientState$RouteInfo;
 
-    move-result v0
+    iput-boolean v4, v5, Landroid/media/MediaRouterClientState$RouteInfo;->enabled:Z
 
     .line 1555
-    iget-object v3, p0, Lcom/android/server/media/MediaRouterService$UserHandler$RouteRecord;->mMutableInfo:Landroid/media/MediaRouterClientState$RouteInfo;
-
-    iget v3, v3, Landroid/media/MediaRouterClientState$RouteInfo;->statusCode:I
-
-    if-eq v3, v0, :cond_5e
-
-    .line 1556
-    iget-object v2, p0, Lcom/android/server/media/MediaRouterService$UserHandler$RouteRecord;->mMutableInfo:Landroid/media/MediaRouterClientState$RouteInfo;
-
-    iput v0, v2, Landroid/media/MediaRouterClientState$RouteInfo;->statusCode:I
+    const/4 v0, 0x1
 
     .line 1557
-    move v2, v1
+    :cond_4d
+    invoke-static {p1}, Lcom/android/server/media/MediaRouterService$UserHandler$RouteRecord;->computeStatusCode(Landroid/media/RemoteDisplayState$RemoteDisplayInfo;)I
+
+    move-result v5
+
+    .line 1558
+    .local v5, "statusCode":I
+    iget-object v6, p0, Lcom/android/server/media/MediaRouterService$UserHandler$RouteRecord;->mMutableInfo:Landroid/media/MediaRouterClientState$RouteInfo;
+
+    iget v6, v6, Landroid/media/MediaRouterClientState$RouteInfo;->statusCode:I
+
+    if-eq v6, v5, :cond_5c
 
     .line 1559
-    :cond_5e
-    invoke-static {p1}, Lcom/android/server/media/MediaRouterService$UserHandler$RouteRecord;->computePlaybackType(Landroid/media/RemoteDisplayState$RemoteDisplayInfo;)I
+    iget-object v6, p0, Lcom/android/server/media/MediaRouterService$UserHandler$RouteRecord;->mMutableInfo:Landroid/media/MediaRouterClientState$RouteInfo;
 
-    move-result v0
+    iput v5, v6, Landroid/media/MediaRouterClientState$RouteInfo;->statusCode:I
 
     .line 1560
-    iget-object v3, p0, Lcom/android/server/media/MediaRouterService$UserHandler$RouteRecord;->mMutableInfo:Landroid/media/MediaRouterClientState$RouteInfo;
-
-    iget v3, v3, Landroid/media/MediaRouterClientState$RouteInfo;->playbackType:I
-
-    if-eq v3, v0, :cond_6d
-
-    .line 1561
-    iget-object v2, p0, Lcom/android/server/media/MediaRouterService$UserHandler$RouteRecord;->mMutableInfo:Landroid/media/MediaRouterClientState$RouteInfo;
-
-    iput v0, v2, Landroid/media/MediaRouterClientState$RouteInfo;->playbackType:I
+    const/4 v0, 0x1
 
     .line 1562
-    move v2, v1
+    :cond_5c
+    invoke-static {p1}, Lcom/android/server/media/MediaRouterService$UserHandler$RouteRecord;->computePlaybackType(Landroid/media/RemoteDisplayState$RemoteDisplayInfo;)I
+
+    move-result v6
+
+    .line 1563
+    .local v6, "playbackType":I
+    iget-object v7, p0, Lcom/android/server/media/MediaRouterService$UserHandler$RouteRecord;->mMutableInfo:Landroid/media/MediaRouterClientState$RouteInfo;
+
+    iget v7, v7, Landroid/media/MediaRouterClientState$RouteInfo;->playbackType:I
+
+    if-eq v7, v6, :cond_6b
 
     .line 1564
-    :cond_6d
-    invoke-static {p1}, Lcom/android/server/media/MediaRouterService$UserHandler$RouteRecord;->computePlaybackStream(Landroid/media/RemoteDisplayState$RemoteDisplayInfo;)I
+    iget-object v7, p0, Lcom/android/server/media/MediaRouterService$UserHandler$RouteRecord;->mMutableInfo:Landroid/media/MediaRouterClientState$RouteInfo;
 
-    move-result v0
+    iput v6, v7, Landroid/media/MediaRouterClientState$RouteInfo;->playbackType:I
 
     .line 1565
-    iget-object v3, p0, Lcom/android/server/media/MediaRouterService$UserHandler$RouteRecord;->mMutableInfo:Landroid/media/MediaRouterClientState$RouteInfo;
-
-    iget v3, v3, Landroid/media/MediaRouterClientState$RouteInfo;->playbackStream:I
-
-    if-eq v3, v0, :cond_7c
-
-    .line 1566
-    iget-object v2, p0, Lcom/android/server/media/MediaRouterService$UserHandler$RouteRecord;->mMutableInfo:Landroid/media/MediaRouterClientState$RouteInfo;
-
-    iput v0, v2, Landroid/media/MediaRouterClientState$RouteInfo;->playbackStream:I
+    const/4 v0, 0x1
 
     .line 1567
-    move v2, v1
+    :cond_6b
+    invoke-static {p1}, Lcom/android/server/media/MediaRouterService$UserHandler$RouteRecord;->computePlaybackStream(Landroid/media/RemoteDisplayState$RemoteDisplayInfo;)I
+
+    move-result v7
+
+    .line 1568
+    .local v7, "playbackStream":I
+    iget-object v8, p0, Lcom/android/server/media/MediaRouterService$UserHandler$RouteRecord;->mMutableInfo:Landroid/media/MediaRouterClientState$RouteInfo;
+
+    iget v8, v8, Landroid/media/MediaRouterClientState$RouteInfo;->playbackStream:I
+
+    if-eq v8, v7, :cond_7a
 
     .line 1569
-    :cond_7c
-    invoke-static {p1}, Lcom/android/server/media/MediaRouterService$UserHandler$RouteRecord;->computeVolume(Landroid/media/RemoteDisplayState$RemoteDisplayInfo;)I
+    iget-object v8, p0, Lcom/android/server/media/MediaRouterService$UserHandler$RouteRecord;->mMutableInfo:Landroid/media/MediaRouterClientState$RouteInfo;
 
-    move-result v0
+    iput v7, v8, Landroid/media/MediaRouterClientState$RouteInfo;->playbackStream:I
 
     .line 1570
-    iget-object v3, p0, Lcom/android/server/media/MediaRouterService$UserHandler$RouteRecord;->mMutableInfo:Landroid/media/MediaRouterClientState$RouteInfo;
-
-    iget v3, v3, Landroid/media/MediaRouterClientState$RouteInfo;->volume:I
-
-    if-eq v3, v0, :cond_8b
-
-    .line 1571
-    iget-object v2, p0, Lcom/android/server/media/MediaRouterService$UserHandler$RouteRecord;->mMutableInfo:Landroid/media/MediaRouterClientState$RouteInfo;
-
-    iput v0, v2, Landroid/media/MediaRouterClientState$RouteInfo;->volume:I
+    const/4 v0, 0x1
 
     .line 1572
-    move v2, v1
+    :cond_7a
+    invoke-static {p1}, Lcom/android/server/media/MediaRouterService$UserHandler$RouteRecord;->computeVolume(Landroid/media/RemoteDisplayState$RemoteDisplayInfo;)I
+
+    move-result v8
+
+    .line 1573
+    .local v8, "volume":I
+    iget-object v9, p0, Lcom/android/server/media/MediaRouterService$UserHandler$RouteRecord;->mMutableInfo:Landroid/media/MediaRouterClientState$RouteInfo;
+
+    iget v9, v9, Landroid/media/MediaRouterClientState$RouteInfo;->volume:I
+
+    if-eq v9, v8, :cond_89
 
     .line 1574
-    :cond_8b
-    invoke-static {p1}, Lcom/android/server/media/MediaRouterService$UserHandler$RouteRecord;->computeVolumeMax(Landroid/media/RemoteDisplayState$RemoteDisplayInfo;)I
+    iget-object v9, p0, Lcom/android/server/media/MediaRouterService$UserHandler$RouteRecord;->mMutableInfo:Landroid/media/MediaRouterClientState$RouteInfo;
 
-    move-result v0
+    iput v8, v9, Landroid/media/MediaRouterClientState$RouteInfo;->volume:I
 
     .line 1575
-    iget-object v3, p0, Lcom/android/server/media/MediaRouterService$UserHandler$RouteRecord;->mMutableInfo:Landroid/media/MediaRouterClientState$RouteInfo;
-
-    iget v3, v3, Landroid/media/MediaRouterClientState$RouteInfo;->volumeMax:I
-
-    if-eq v3, v0, :cond_9a
-
-    .line 1576
-    iget-object v2, p0, Lcom/android/server/media/MediaRouterService$UserHandler$RouteRecord;->mMutableInfo:Landroid/media/MediaRouterClientState$RouteInfo;
-
-    iput v0, v2, Landroid/media/MediaRouterClientState$RouteInfo;->volumeMax:I
+    const/4 v0, 0x1
 
     .line 1577
-    move v2, v1
+    :cond_89
+    invoke-static {p1}, Lcom/android/server/media/MediaRouterService$UserHandler$RouteRecord;->computeVolumeMax(Landroid/media/RemoteDisplayState$RemoteDisplayInfo;)I
+
+    move-result v9
+
+    .line 1578
+    .local v9, "volumeMax":I
+    iget-object v10, p0, Lcom/android/server/media/MediaRouterService$UserHandler$RouteRecord;->mMutableInfo:Landroid/media/MediaRouterClientState$RouteInfo;
+
+    iget v10, v10, Landroid/media/MediaRouterClientState$RouteInfo;->volumeMax:I
+
+    if-eq v10, v9, :cond_98
 
     .line 1579
-    :cond_9a
-    invoke-static {p1}, Lcom/android/server/media/MediaRouterService$UserHandler$RouteRecord;->computeVolumeHandling(Landroid/media/RemoteDisplayState$RemoteDisplayInfo;)I
+    iget-object v10, p0, Lcom/android/server/media/MediaRouterService$UserHandler$RouteRecord;->mMutableInfo:Landroid/media/MediaRouterClientState$RouteInfo;
 
-    move-result v0
+    iput v9, v10, Landroid/media/MediaRouterClientState$RouteInfo;->volumeMax:I
 
     .line 1580
-    iget-object v3, p0, Lcom/android/server/media/MediaRouterService$UserHandler$RouteRecord;->mMutableInfo:Landroid/media/MediaRouterClientState$RouteInfo;
-
-    iget v3, v3, Landroid/media/MediaRouterClientState$RouteInfo;->volumeHandling:I
-
-    if-eq v3, v0, :cond_a9
-
-    .line 1581
-    iget-object v2, p0, Lcom/android/server/media/MediaRouterService$UserHandler$RouteRecord;->mMutableInfo:Landroid/media/MediaRouterClientState$RouteInfo;
-
-    iput v0, v2, Landroid/media/MediaRouterClientState$RouteInfo;->volumeHandling:I
+    const/4 v0, 0x1
 
     .line 1582
-    move v2, v1
+    :cond_98
+    invoke-static {p1}, Lcom/android/server/media/MediaRouterService$UserHandler$RouteRecord;->computeVolumeHandling(Landroid/media/RemoteDisplayState$RemoteDisplayInfo;)I
+
+    move-result v10
+
+    .line 1583
+    .local v10, "volumeHandling":I
+    iget-object v11, p0, Lcom/android/server/media/MediaRouterService$UserHandler$RouteRecord;->mMutableInfo:Landroid/media/MediaRouterClientState$RouteInfo;
+
+    iget v11, v11, Landroid/media/MediaRouterClientState$RouteInfo;->volumeHandling:I
+
+    if-eq v11, v10, :cond_a7
 
     .line 1584
-    :cond_a9
-    invoke-static {p1}, Lcom/android/server/media/MediaRouterService$UserHandler$RouteRecord;->computePresentationDisplayId(Landroid/media/RemoteDisplayState$RemoteDisplayInfo;)I
+    iget-object v11, p0, Lcom/android/server/media/MediaRouterService$UserHandler$RouteRecord;->mMutableInfo:Landroid/media/MediaRouterClientState$RouteInfo;
 
-    move-result p1
+    iput v10, v11, Landroid/media/MediaRouterClientState$RouteInfo;->volumeHandling:I
 
     .line 1585
-    iget-object v0, p0, Lcom/android/server/media/MediaRouterService$UserHandler$RouteRecord;->mMutableInfo:Landroid/media/MediaRouterClientState$RouteInfo;
-
-    iget v0, v0, Landroid/media/MediaRouterClientState$RouteInfo;->presentationDisplayId:I
-
-    if-eq v0, p1, :cond_b8
-
-    .line 1586
-    iget-object v0, p0, Lcom/android/server/media/MediaRouterService$UserHandler$RouteRecord;->mMutableInfo:Landroid/media/MediaRouterClientState$RouteInfo;
-
-    iput p1, v0, Landroid/media/MediaRouterClientState$RouteInfo;->presentationDisplayId:I
+    const/4 v0, 0x1
 
     .line 1587
-    move v2, v1
+    :cond_a7
+    invoke-static {p1}, Lcom/android/server/media/MediaRouterService$UserHandler$RouteRecord;->computePresentationDisplayId(Landroid/media/RemoteDisplayState$RemoteDisplayInfo;)I
 
-    .line 1591
-    :cond_b8
-    if-eqz v2, :cond_bd
+    move-result v11
 
-    .line 1592
-    const/4 p1, 0x0
+    .line 1588
+    .local v11, "presentationDisplayId":I
+    iget-object v12, p0, Lcom/android/server/media/MediaRouterService$UserHandler$RouteRecord;->mMutableInfo:Landroid/media/MediaRouterClientState$RouteInfo;
 
-    iput-object p1, p0, Lcom/android/server/media/MediaRouterService$UserHandler$RouteRecord;->mImmutableInfo:Landroid/media/MediaRouterClientState$RouteInfo;
+    iget v12, v12, Landroid/media/MediaRouterClientState$RouteInfo;->presentationDisplayId:I
+
+    if-eq v12, v11, :cond_b6
+
+    .line 1589
+    iget-object v12, p0, Lcom/android/server/media/MediaRouterService$UserHandler$RouteRecord;->mMutableInfo:Landroid/media/MediaRouterClientState$RouteInfo;
+
+    iput v11, v12, Landroid/media/MediaRouterClientState$RouteInfo;->presentationDisplayId:I
+
+    .line 1590
+    const/4 v0, 0x1
 
     .line 1594
-    :cond_bd
-    return v2
+    .end local v1  # "name":Ljava/lang/String;
+    .end local v2  # "description":Ljava/lang/String;
+    .end local v3  # "supportedTypes":I
+    .end local v4  # "enabled":Z
+    .end local v5  # "statusCode":I
+    .end local v6  # "playbackType":I
+    .end local v7  # "playbackStream":I
+    .end local v8  # "volume":I
+    .end local v9  # "volumeMax":I
+    .end local v10  # "volumeHandling":I
+    .end local v11  # "presentationDisplayId":I
+    :cond_b6
+    if-eqz v0, :cond_bb
+
+    .line 1595
+    const/4 v1, 0x0
+
+    iput-object v1, p0, Lcom/android/server/media/MediaRouterService$UserHandler$RouteRecord;->mImmutableInfo:Landroid/media/MediaRouterClientState$RouteInfo;
+
+    .line 1597
+    :cond_bb
+    return v0
 .end method

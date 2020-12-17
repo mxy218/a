@@ -21,6 +21,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/connectivity/PacManager;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/connectivity/PacManager;
 
     .line 142
     iput-object p1, p0, Lcom/android/server/connectivity/PacManager$PacRefreshIntentReceiver;->this$0:Lcom/android/server/connectivity/PacManager;
@@ -33,22 +34,24 @@
 
 # virtual methods
 .method public onReceive(Landroid/content/Context;Landroid/content/Intent;)V
-    .registers 3
+    .registers 5
+    .param p1, "context"  # Landroid/content/Context;
+    .param p2, "intent"  # Landroid/content/Intent;
 
     .line 144
-    iget-object p1, p0, Lcom/android/server/connectivity/PacManager$PacRefreshIntentReceiver;->this$0:Lcom/android/server/connectivity/PacManager;
+    iget-object v0, p0, Lcom/android/server/connectivity/PacManager$PacRefreshIntentReceiver;->this$0:Lcom/android/server/connectivity/PacManager;
 
-    invoke-static {p1}, Lcom/android/server/connectivity/PacManager;->access$1000(Lcom/android/server/connectivity/PacManager;)Landroid/os/Handler;
+    invoke-static {v0}, Lcom/android/server/connectivity/PacManager;->access$1000(Lcom/android/server/connectivity/PacManager;)Landroid/os/Handler;
 
-    move-result-object p1
+    move-result-object v0
 
-    iget-object p2, p0, Lcom/android/server/connectivity/PacManager$PacRefreshIntentReceiver;->this$0:Lcom/android/server/connectivity/PacManager;
+    iget-object v1, p0, Lcom/android/server/connectivity/PacManager$PacRefreshIntentReceiver;->this$0:Lcom/android/server/connectivity/PacManager;
 
-    invoke-static {p2}, Lcom/android/server/connectivity/PacManager;->access$900(Lcom/android/server/connectivity/PacManager;)Ljava/lang/Runnable;
+    invoke-static {v1}, Lcom/android/server/connectivity/PacManager;->access$900(Lcom/android/server/connectivity/PacManager;)Ljava/lang/Runnable;
 
-    move-result-object p2
+    move-result-object v1
 
-    invoke-virtual {p1, p2}, Landroid/os/Handler;->post(Ljava/lang/Runnable;)Z
+    invoke-virtual {v0, v1}, Landroid/os/Handler;->post(Ljava/lang/Runnable;)Z
 
     .line 145
     return-void

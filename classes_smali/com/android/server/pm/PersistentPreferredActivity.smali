@@ -20,6 +20,8 @@
 # direct methods
 .method constructor <init>(Landroid/content/IntentFilter;Landroid/content/ComponentName;)V
     .registers 3
+    .param p1, "filter"  # Landroid/content/IntentFilter;
+    .param p2, "activity"  # Landroid/content/ComponentName;
 
     .line 42
     invoke-direct {p0, p1}, Landroid/content/IntentFilter;-><init>(Landroid/content/IntentFilter;)V
@@ -32,7 +34,8 @@
 .end method
 
 .method constructor <init>(Lorg/xmlpull/v1/XmlPullParser;)V
-    .registers 10
+    .registers 11
+    .param p1, "parser"  # Lorg/xmlpull/v1/XmlPullParser;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Lorg/xmlpull/v1/XmlPullParserException;,
@@ -53,6 +56,7 @@
     move-result-object v0
 
     .line 48
+    .local v0, "shortComponent":Ljava/lang/String;
     invoke-static {v0}, Landroid/content/ComponentName;->unflattenFromString(Ljava/lang/String;)Landroid/content/ComponentName;
 
     move-result-object v1
@@ -84,111 +88,116 @@
     .line 53
     invoke-interface {p1}, Lorg/xmlpull/v1/XmlPullParser;->getPositionDescription()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v4
 
-    invoke-virtual {v1, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v1
 
     .line 50
-    invoke-static {v3, v0}, Lcom/android/server/pm/PackageManagerService;->reportSettingsProblem(ILjava/lang/String;)V
+    invoke-static {v3, v1}, Lcom/android/server/pm/PackageManagerService;->reportSettingsProblem(ILjava/lang/String;)V
 
     .line 55
     :cond_36
     invoke-interface {p1}, Lorg/xmlpull/v1/XmlPullParser;->getDepth()I
 
-    move-result v0
+    move-result v1
 
     .line 56
+    .local v1, "outerDepth":I
     invoke-interface {p1}, Lorg/xmlpull/v1/XmlPullParser;->getName()Ljava/lang/String;
 
-    move-result-object v1
+    move-result-object v4
 
     .line 58
+    .local v4, "tagName":Ljava/lang/String;
     :cond_3e
     :goto_3e
     invoke-interface {p1}, Lorg/xmlpull/v1/XmlPullParser;->next()I
 
-    move-result v4
+    move-result v5
 
-    const/4 v5, 0x1
+    move v6, v5
 
-    const-string v6, "filter"
+    .local v6, "type":I
+    const/4 v7, 0x1
 
-    if-eq v4, v5, :cond_86
+    const-string v8, "filter"
+
+    if-eq v5, v7, :cond_87
 
     const/4 v5, 0x3
 
-    if-ne v4, v5, :cond_50
+    if-ne v6, v5, :cond_51
 
     .line 59
     invoke-interface {p1}, Lorg/xmlpull/v1/XmlPullParser;->getDepth()I
 
     move-result v7
 
-    if-le v7, v0, :cond_86
+    if-le v7, v1, :cond_87
 
     .line 60
-    :cond_50
+    :cond_51
     invoke-interface {p1}, Lorg/xmlpull/v1/XmlPullParser;->getName()Ljava/lang/String;
 
-    move-result-object v1
+    move-result-object v4
 
     .line 61
-    if-eq v4, v5, :cond_3e
+    if-eq v6, v5, :cond_3e
 
     const/4 v5, 0x4
 
-    if-ne v4, v5, :cond_5a
+    if-ne v6, v5, :cond_5b
 
     .line 62
     goto :goto_3e
 
     .line 63
-    :cond_5a
+    :cond_5b
     const/4 v5, 0x2
 
-    if-ne v4, v5, :cond_3e
+    if-ne v6, v5, :cond_3e
 
     .line 64
-    invoke-virtual {v1, v6}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v4, v8}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result v4
+    move-result v5
 
-    if-eqz v4, :cond_64
+    if-eqz v5, :cond_65
 
     .line 65
-    goto :goto_86
+    goto :goto_87
 
     .line 67
-    :cond_64
-    new-instance v4, Ljava/lang/StringBuilder;
+    :cond_65
+    new-instance v5, Ljava/lang/StringBuilder;
 
-    invoke-direct {v4}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v5}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v5, "Unknown element: "
+    const-string v7, "Unknown element: "
 
-    invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v5, v7}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v4, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v5, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v4, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v5, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     .line 69
     invoke-interface {p1}, Lorg/xmlpull/v1/XmlPullParser;->getPositionDescription()Ljava/lang/String;
 
+    move-result-object v7
+
+    invoke-virtual {v5, v7}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v5}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
     move-result-object v5
 
-    invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v4}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
-
-    move-result-object v4
-
     .line 67
-    invoke-static {v3, v4}, Lcom/android/server/pm/PackageManagerService;->reportSettingsProblem(ILjava/lang/String;)V
+    invoke-static {v3, v5}, Lcom/android/server/pm/PackageManagerService;->reportSettingsProblem(ILjava/lang/String;)V
 
     .line 70
     invoke-static {p1}, Lcom/android/internal/util/XmlUtils;->skipCurrentTag(Lorg/xmlpull/v1/XmlPullParser;)V
@@ -196,48 +205,48 @@
     goto :goto_3e
 
     .line 74
-    :cond_86
-    :goto_86
-    invoke-virtual {v1, v6}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    :cond_87
+    :goto_87
+    invoke-virtual {v4, v8}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result v0
+    move-result v2
 
-    if-eqz v0, :cond_90
+    if-eqz v2, :cond_91
 
     .line 75
     invoke-virtual {p0, p1}, Lcom/android/server/pm/PersistentPreferredActivity;->readFromXml(Lorg/xmlpull/v1/XmlPullParser;)V
 
-    goto :goto_ab
+    goto :goto_ac
 
     .line 77
-    :cond_90
-    new-instance v0, Ljava/lang/StringBuilder;
+    :cond_91
+    new-instance v2, Ljava/lang/StringBuilder;
 
-    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v1, "Missing element filter at "
+    const-string v5, "Missing element filter at "
 
-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     .line 79
     invoke-interface {p1}, Lorg/xmlpull/v1/XmlPullParser;->getPositionDescription()Ljava/lang/String;
 
-    move-result-object v1
+    move-result-object v5
 
-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v2
 
     .line 77
-    invoke-static {v3, v0}, Lcom/android/server/pm/PackageManagerService;->reportSettingsProblem(ILjava/lang/String;)V
+    invoke-static {v3, v2}, Lcom/android/server/pm/PackageManagerService;->reportSettingsProblem(ILjava/lang/String;)V
 
     .line 80
     invoke-static {p1}, Lcom/android/internal/util/XmlUtils;->skipCurrentTag(Lorg/xmlpull/v1/XmlPullParser;)V
 
     .line 82
-    :goto_ab
+    :goto_ac
     return-void
 .end method
 
@@ -292,6 +301,7 @@
 
 .method public writeToXml(Lorg/xmlpull/v1/XmlSerializer;)V
     .registers 5
+    .param p1, "serializer"  # Lorg/xmlpull/v1/XmlSerializer;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Ljava/io/IOException;

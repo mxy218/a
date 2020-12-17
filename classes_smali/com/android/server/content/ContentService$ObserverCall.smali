@@ -27,6 +27,10 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/content/ContentService$ObserverNode;Landroid/database/IContentObserver;ZI)V
     .registers 5
+    .param p1, "node"  # Lcom/android/server/content/ContentService$ObserverNode;
+    .param p2, "observer"  # Landroid/database/IContentObserver;
+    .param p3, "selfChange"  # Z
+    .param p4, "observerUserId"  # I
 
     .line 505
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V

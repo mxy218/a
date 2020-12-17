@@ -21,21 +21,24 @@
 # direct methods
 .method private constructor <init>(Lcom/android/server/pm/PackageManagerException;)V
     .registers 2
+    .param p1, "reason"  # Lcom/android/server/pm/PackageManagerException;
 
-    .line 19608
+    .line 20365
     invoke-direct {p0}, Ljava/lang/Exception;-><init>()V
 
-    .line 19609
+    .line 20366
     iput-object p1, p0, Lcom/android/server/pm/PackageManagerService$SystemDeleteException;->reason:Lcom/android/server/pm/PackageManagerException;
 
-    .line 19610
+    .line 20367
     return-void
 .end method
 
 .method synthetic constructor <init>(Lcom/android/server/pm/PackageManagerException;Lcom/android/server/pm/PackageManagerService$1;)V
     .registers 3
+    .param p1, "x0"  # Lcom/android/server/pm/PackageManagerException;
+    .param p2, "x1"  # Lcom/android/server/pm/PackageManagerService$1;
 
-    .line 19605
+    .line 20362
     invoke-direct {p0, p1}, Lcom/android/server/pm/PackageManagerService$SystemDeleteException;-><init>(Lcom/android/server/pm/PackageManagerException;)V
 
     return-void

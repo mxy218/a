@@ -50,6 +50,14 @@
 
 .method constructor <init>(Landroid/content/Context;Landroid/content/ComponentName;ILcom/android/server/autofill/RemoteAugmentedAutofillService$RemoteAugmentedAutofillServiceCallbacks;ZZII)V
     .registers 19
+    .param p1, "context"  # Landroid/content/Context;
+    .param p2, "serviceName"  # Landroid/content/ComponentName;
+    .param p3, "userId"  # I
+    .param p4, "callbacks"  # Lcom/android/server/autofill/RemoteAugmentedAutofillService$RemoteAugmentedAutofillServiceCallbacks;
+    .param p5, "bindInstantServiceAllowed"  # Z
+    .param p6, "verbose"  # Z
+    .param p7, "idleUnbindTimeoutMs"  # I
+    .param p8, "requestTimeoutMs"  # I
 
     .line 64
     move-object v9, p0
@@ -95,9 +103,9 @@
     iput v0, v9, Lcom/android/server/autofill/RemoteAugmentedAutofillService;->mIdleUnbindTimeoutMs:I
 
     .line 68
-    move/from16 v0, p8
+    move/from16 v1, p8
 
-    iput v0, v9, Lcom/android/server/autofill/RemoteAugmentedAutofillService;->mRequestTimeoutMs:I
+    iput v1, v9, Lcom/android/server/autofill/RemoteAugmentedAutofillService;->mRequestTimeoutMs:I
 
     .line 71
     invoke-virtual {p0}, Lcom/android/server/autofill/RemoteAugmentedAutofillService;->scheduleBind()V
@@ -107,12 +115,13 @@
 .end method
 
 .method static synthetic access$1500(Lcom/android/server/autofill/RemoteAugmentedAutofillService;)Landroid/os/IInterface;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/autofill/RemoteAugmentedAutofillService;
 
     .line 51
-    iget-object p0, p0, Lcom/android/server/autofill/RemoteAugmentedAutofillService;->mService:Landroid/os/IInterface;
+    iget-object v0, p0, Lcom/android/server/autofill/RemoteAugmentedAutofillService;->mService:Landroid/os/IInterface;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$1600()Ljava/lang/String;
@@ -125,16 +134,19 @@
 .end method
 
 .method static synthetic access$1700(Lcom/android/server/autofill/RemoteAugmentedAutofillService;)I
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/autofill/RemoteAugmentedAutofillService;
 
     .line 51
-    iget p0, p0, Lcom/android/server/autofill/RemoteAugmentedAutofillService;->mRequestTimeoutMs:I
+    iget v0, p0, Lcom/android/server/autofill/RemoteAugmentedAutofillService;->mRequestTimeoutMs:I
 
-    return p0
+    return v0
 .end method
 
 .method static synthetic access$1800(Lcom/android/server/autofill/RemoteAugmentedAutofillService;Landroid/os/ICancellationSignal;)V
     .registers 2
+    .param p0, "x0"  # Lcom/android/server/autofill/RemoteAugmentedAutofillService;
+    .param p1, "x1"  # Landroid/os/ICancellationSignal;
 
     .line 51
     invoke-direct {p0, p1}, Lcom/android/server/autofill/RemoteAugmentedAutofillService;->dispatchOnFillTimeout(Landroid/os/ICancellationSignal;)V
@@ -144,6 +156,7 @@
 
 .method private dispatchOnFillTimeout(Landroid/os/ICancellationSignal;)V
     .registers 4
+    .param p1, "cancellation"  # Landroid/os/ICancellationSignal;
 
     .line 154
     iget-object v0, p0, Lcom/android/server/autofill/RemoteAugmentedAutofillService;->mHandler:Landroid/os/Handler;
@@ -159,7 +172,10 @@
 .end method
 
 .method static getComponentName(Ljava/lang/String;IZ)Landroid/util/Pair;
-    .registers 6
+    .registers 10
+    .param p0, "componentName"  # Ljava/lang/String;
+    .param p1, "userId"  # I
+    .param p2, "isTemporary"  # Z
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(",
@@ -173,120 +189,124 @@
     .end annotation
 
     .line 77
-    nop
+    const/16 v0, 0x80
 
     .line 78
+    .local v0, "flags":I
     if-nez p2, :cond_7
 
     .line 79
-    const p2, 0x100080
+    const/high16 v1, 0x100000
 
-    goto :goto_9
-
-    .line 78
-    :cond_7
-    const/16 p2, 0x80
+    or-int/2addr v0, v1
 
     .line 83
-    :goto_9
-    nop
+    :cond_7
+    const/4 v1, 0x0
 
     .line 85
-    const/4 v0, 0x0
+    .local v1, "serviceInfo":Landroid/content/pm/ServiceInfo;
+    const/4 v2, 0x0
 
-    :try_start_b
+    :try_start_9
     invoke-static {p0}, Landroid/content/ComponentName;->unflattenFromString(Ljava/lang/String;)Landroid/content/ComponentName;
 
-    move-result-object v1
+    move-result-object v3
 
     .line 86
+    .local v3, "serviceComponent":Landroid/content/ComponentName;
     invoke-static {}, Landroid/app/AppGlobals;->getPackageManager()Landroid/content/pm/IPackageManager;
 
-    move-result-object v2
+    move-result-object v4
 
-    invoke-interface {v2, v1, p2, p1}, Landroid/content/pm/IPackageManager;->getServiceInfo(Landroid/content/ComponentName;II)Landroid/content/pm/ServiceInfo;
+    invoke-interface {v4, v3, v0, p1}, Landroid/content/pm/IPackageManager;->getServiceInfo(Landroid/content/ComponentName;II)Landroid/content/pm/ServiceInfo;
 
-    move-result-object p1
+    move-result-object v4
+
+    move-object v1, v4
 
     .line 88
-    if-nez p1, :cond_38
+    if-nez v1, :cond_37
 
     .line 89
-    sget-object p1, Lcom/android/server/autofill/RemoteAugmentedAutofillService;->TAG:Ljava/lang/String;
+    sget-object v4, Lcom/android/server/autofill/RemoteAugmentedAutofillService;->TAG:Ljava/lang/String;
 
-    new-instance v1, Ljava/lang/StringBuilder;
+    new-instance v5, Ljava/lang/StringBuilder;
 
-    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v5}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v2, "Bad service name for flags "
+    const-string v6, "Bad service name for flags "
 
-    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v1, p2}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v5, v0}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    const-string p2, ": "
+    const-string v6, ": "
 
-    invoke-virtual {v1, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v1, p0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v5, p0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v5}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p2
+    move-result-object v5
 
-    invoke-static {p1, p2}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
-    :try_end_37
-    .catch Ljava/lang/Exception; {:try_start_b .. :try_end_37} :catch_3f
+    invoke-static {v4, v5}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
+    :try_end_36
+    .catch Ljava/lang/Exception; {:try_start_9 .. :try_end_36} :catch_3e
 
     .line 90
-    return-object v0
+    return-object v2
 
     .line 95
-    :cond_38
+    :cond_37
     nop
 
     .line 96
-    new-instance p0, Landroid/util/Pair;
+    new-instance v2, Landroid/util/Pair;
 
-    invoke-direct {p0, p1, v1}, Landroid/util/Pair;-><init>(Ljava/lang/Object;Ljava/lang/Object;)V
+    invoke-direct {v2, v1, v3}, Landroid/util/Pair;-><init>(Ljava/lang/Object;Ljava/lang/Object;)V
 
-    return-object p0
+    return-object v2
 
     .line 92
-    :catch_3f
-    move-exception p1
+    .end local v3  # "serviceComponent":Landroid/content/ComponentName;
+    :catch_3e
+    move-exception v3
 
     .line 93
-    sget-object p2, Lcom/android/server/autofill/RemoteAugmentedAutofillService;->TAG:Ljava/lang/String;
+    .local v3, "e":Ljava/lang/Exception;
+    sget-object v4, Lcom/android/server/autofill/RemoteAugmentedAutofillService;->TAG:Ljava/lang/String;
 
-    new-instance v1, Ljava/lang/StringBuilder;
+    new-instance v5, Ljava/lang/StringBuilder;
 
-    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v5}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v2, "Error getting service info for \'"
+    const-string v6, "Error getting service info for \'"
 
-    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v1, p0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v5, p0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string p0, "\': "
+    const-string v6, "\': "
 
-    invoke-virtual {v1, p0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v1, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    invoke-virtual {v5, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v5}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v5
 
-    invoke-static {p2, p0}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v4, v5}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 94
-    return-object v0
+    return-object v2
 .end method
 
 .method static synthetic lambda$onDestroyAutofillWindowsRequest$0(Landroid/service/autofill/augmented/IAugmentedAutofillService;)V
     .registers 1
+    .param p0, "s"  # Landroid/service/autofill/augmented/IAugmentedAutofillService;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -324,14 +344,15 @@
 .end method
 
 .method protected getServiceInterface(Landroid/os/IBinder;)Landroid/service/autofill/augmented/IAugmentedAutofillService;
-    .registers 2
+    .registers 3
+    .param p1, "service"  # Landroid/os/IBinder;
 
     .line 117
     invoke-static {p1}, Landroid/service/autofill/augmented/IAugmentedAutofillService$Stub;->asInterface(Landroid/os/IBinder;)Landroid/service/autofill/augmented/IAugmentedAutofillService;
 
-    move-result-object p1
+    move-result-object v0
 
-    return-object p1
+    return-object v0
 .end method
 
 .method protected getTimeoutIdleBindMillis()J
@@ -347,6 +368,7 @@
 
 .method protected handleOnConnectedStateChanged(Z)V
     .registers 6
+    .param p1, "state"  # Z
 
     .line 101
     if-eqz p1, :cond_f
@@ -401,6 +423,7 @@
     move-exception v0
 
     .line 111
+    .local v0, "e":Ljava/lang/Exception;
     iget-object v1, p0, Lcom/android/server/autofill/RemoteAugmentedAutofillService;->mTag:Ljava/lang/String;
 
     new-instance v2, Ljava/lang/StringBuilder;
@@ -413,25 +436,27 @@
 
     invoke-virtual {v2, p1}, Ljava/lang/StringBuilder;->append(Z)Ljava/lang/StringBuilder;
 
-    const-string p1, "): "
+    const-string v3, "): "
 
-    invoke-virtual {v2, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v2, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v2
 
-    invoke-static {v1, p1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v2}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 113
+    .end local v0  # "e":Ljava/lang/Exception;
     :goto_44
     return-void
 .end method
 
 .method public synthetic lambda$dispatchOnFillTimeout$1$RemoteAugmentedAutofillService(Landroid/os/ICancellationSignal;)V
-    .registers 5
+    .registers 6
+    .param p1, "cancellation"  # Landroid/os/ICancellationSignal;
 
     .line 156
     :try_start_0
@@ -444,28 +469,30 @@
 
     .line 157
     :catch_4
-    move-exception p1
+    move-exception v0
 
     .line 158
-    iget-object v0, p0, Lcom/android/server/autofill/RemoteAugmentedAutofillService;->mTag:Ljava/lang/String;
+    .local v0, "e":Landroid/os/RemoteException;
+    iget-object v1, p0, Lcom/android/server/autofill/RemoteAugmentedAutofillService;->mTag:Ljava/lang/String;
 
-    new-instance v1, Ljava/lang/StringBuilder;
+    new-instance v2, Ljava/lang/StringBuilder;
 
-    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v2, "Error calling cancellation signal: "
+    const-string v3, "Error calling cancellation signal: "
 
-    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v1, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v2
 
-    invoke-static {v0, p1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v2}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 160
+    .end local v0  # "e":Landroid/os/RemoteException;
     :goto_1b
     return-void
 .end method
@@ -484,6 +511,12 @@
 
 .method public onRequestAutofillLocked(ILandroid/view/autofill/IAutoFillManagerClient;ILandroid/content/ComponentName;Landroid/view/autofill/AutofillId;Landroid/view/autofill/AutofillValue;)V
     .registers 16
+    .param p1, "sessionId"  # I
+    .param p2, "client"  # Landroid/view/autofill/IAutoFillManagerClient;
+    .param p3, "taskId"  # I
+    .param p4, "activityComponent"  # Landroid/content/ComponentName;
+    .param p5, "focusedId"  # Landroid/view/autofill/AutofillId;
+    .param p6, "focusedValue"  # Landroid/view/autofill/AutofillValue;
 
     .line 136
     new-instance v8, Lcom/android/server/autofill/RemoteAugmentedAutofillService$PendingAutofillRequest;

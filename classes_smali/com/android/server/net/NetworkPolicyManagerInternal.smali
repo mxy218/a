@@ -21,15 +21,19 @@
 
 .method public static isUidNetworkingBlocked(IIZZ)Z
     .registers 5
+    .param p0, "uid"  # I
+    .param p1, "uidRules"  # I
+    .param p2, "isNetworkMetered"  # Z
+    .param p3, "isBackgroundRestricted"  # Z
 
-    .line 73
+    .line 68
     const/4 v0, 0x0
 
     invoke-static {p0, p1, p2, p3, v0}, Lcom/android/server/net/NetworkPolicyManagerService;->isUidNetworkingBlockedInternal(IIZZLcom/android/server/net/NetworkPolicyLogger;)Z
 
-    move-result p0
+    move-result v0
 
-    return p0
+    return v0
 .end method
 
 
@@ -41,9 +45,6 @@
 .end method
 
 .method public abstract getSubscriptionPlan(Landroid/net/NetworkTemplate;)Landroid/telephony/SubscriptionPlan;
-.end method
-
-.method public abstract isNetworkingIsolatedByUidRules(I)Z
 .end method
 
 .method public abstract isUidNetworkingBlocked(ILjava/lang/String;)Z

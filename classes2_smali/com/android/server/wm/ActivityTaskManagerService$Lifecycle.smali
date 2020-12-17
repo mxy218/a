@@ -21,18 +21,19 @@
 # direct methods
 .method public constructor <init>(Landroid/content/Context;)V
     .registers 3
+    .param p1, "context"  # Landroid/content/Context;
 
-    .line 988
+    .line 1019
     invoke-direct {p0, p1}, Lcom/android/server/SystemService;-><init>(Landroid/content/Context;)V
 
-    .line 989
+    .line 1020
     new-instance v0, Lcom/android/server/wm/ActivityTaskManagerService;
 
     invoke-direct {v0, p1}, Lcom/android/server/wm/ActivityTaskManagerService;-><init>(Landroid/content/Context;)V
 
     iput-object v0, p0, Lcom/android/server/wm/ActivityTaskManagerService$Lifecycle;->mService:Lcom/android/server/wm/ActivityTaskManagerService;
 
-    .line 990
+    .line 1021
     return-void
 .end method
 
@@ -41,7 +42,7 @@
 .method public getService()Lcom/android/server/wm/ActivityTaskManagerService;
     .registers 2
 
-    .line 1013
+    .line 1044
     iget-object v0, p0, Lcom/android/server/wm/ActivityTaskManagerService$Lifecycle;->mService:Lcom/android/server/wm/ActivityTaskManagerService;
 
     return-object v0
@@ -49,8 +50,9 @@
 
 .method public onCleanupUser(I)V
     .registers 4
+    .param p1, "userId"  # I
 
-    .line 1007
+    .line 1038
     iget-object v0, p0, Lcom/android/server/wm/ActivityTaskManagerService$Lifecycle;->mService:Lcom/android/server/wm/ActivityTaskManagerService;
 
     invoke-virtual {v0}, Lcom/android/server/wm/ActivityTaskManagerService;->getGlobalLock()Lcom/android/server/wm/WindowManagerGlobalLock;
@@ -62,7 +64,7 @@
     :try_start_7
     invoke-static {}, Lcom/android/server/wm/WindowManagerService;->boostPriorityForLockedSection()V
 
-    .line 1008
+    .line 1039
     iget-object v1, p0, Lcom/android/server/wm/ActivityTaskManagerService$Lifecycle;->mService:Lcom/android/server/wm/ActivityTaskManagerService;
 
     iget-object v1, v1, Lcom/android/server/wm/ActivityTaskManagerService;->mStackSupervisor:Lcom/android/server/wm/ActivityStackSupervisor;
@@ -71,19 +73,19 @@
 
     invoke-virtual {v1, p1}, Lcom/android/server/wm/LaunchParamsPersister;->onCleanupUser(I)V
 
-    .line 1009
+    .line 1040
     monitor-exit v0
     :try_end_14
     .catchall {:try_start_7 .. :try_end_14} :catchall_18
 
     invoke-static {}, Lcom/android/server/wm/WindowManagerService;->resetPriorityAfterLockedSection()V
 
-    .line 1010
+    .line 1041
     return-void
 
-    .line 1009
+    .line 1040
     :catchall_18
-    move-exception p1
+    move-exception v1
 
     :try_start_19
     monitor-exit v0
@@ -92,32 +94,33 @@
 
     invoke-static {}, Lcom/android/server/wm/WindowManagerService;->resetPriorityAfterLockedSection()V
 
-    throw p1
+    throw v1
 .end method
 
 .method public onStart()V
     .registers 3
 
-    .line 994
+    .line 1025
     iget-object v0, p0, Lcom/android/server/wm/ActivityTaskManagerService$Lifecycle;->mService:Lcom/android/server/wm/ActivityTaskManagerService;
 
     const-string v1, "activity_task"
 
     invoke-virtual {p0, v1, v0}, Lcom/android/server/wm/ActivityTaskManagerService$Lifecycle;->publishBinderService(Ljava/lang/String;Landroid/os/IBinder;)V
 
-    .line 995
+    .line 1026
     iget-object v0, p0, Lcom/android/server/wm/ActivityTaskManagerService$Lifecycle;->mService:Lcom/android/server/wm/ActivityTaskManagerService;
 
     invoke-static {v0}, Lcom/android/server/wm/ActivityTaskManagerService;->access$200(Lcom/android/server/wm/ActivityTaskManagerService;)V
 
-    .line 996
+    .line 1027
     return-void
 .end method
 
 .method public onUnlockUser(I)V
     .registers 4
+    .param p1, "userId"  # I
 
-    .line 1000
+    .line 1031
     iget-object v0, p0, Lcom/android/server/wm/ActivityTaskManagerService$Lifecycle;->mService:Lcom/android/server/wm/ActivityTaskManagerService;
 
     invoke-virtual {v0}, Lcom/android/server/wm/ActivityTaskManagerService;->getGlobalLock()Lcom/android/server/wm/WindowManagerGlobalLock;
@@ -129,26 +132,26 @@
     :try_start_7
     invoke-static {}, Lcom/android/server/wm/WindowManagerService;->boostPriorityForLockedSection()V
 
-    .line 1001
+    .line 1032
     iget-object v1, p0, Lcom/android/server/wm/ActivityTaskManagerService$Lifecycle;->mService:Lcom/android/server/wm/ActivityTaskManagerService;
 
     iget-object v1, v1, Lcom/android/server/wm/ActivityTaskManagerService;->mStackSupervisor:Lcom/android/server/wm/ActivityStackSupervisor;
 
     invoke-virtual {v1, p1}, Lcom/android/server/wm/ActivityStackSupervisor;->onUserUnlocked(I)V
 
-    .line 1002
+    .line 1033
     monitor-exit v0
     :try_end_12
     .catchall {:try_start_7 .. :try_end_12} :catchall_16
 
     invoke-static {}, Lcom/android/server/wm/WindowManagerService;->resetPriorityAfterLockedSection()V
 
-    .line 1003
+    .line 1034
     return-void
 
-    .line 1002
+    .line 1033
     :catchall_16
-    move-exception p1
+    move-exception v1
 
     :try_start_17
     monitor-exit v0
@@ -157,5 +160,5 @@
 
     invoke-static {}, Lcom/android/server/wm/WindowManagerService;->resetPriorityAfterLockedSection()V
 
-    throw p1
+    throw v1
 .end method

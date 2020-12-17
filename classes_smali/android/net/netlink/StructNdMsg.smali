@@ -97,51 +97,54 @@
 .end method
 
 .method private static hasAvailableSpace(Ljava/nio/ByteBuffer;)Z
-    .registers 2
+    .registers 3
+    .param p0, "byteBuffer"  # Ljava/nio/ByteBuffer;
 
     .line 103
     if-eqz p0, :cond_c
 
     invoke-virtual {p0}, Ljava/nio/ByteBuffer;->remaining()I
 
-    move-result p0
+    move-result v0
 
-    const/16 v0, 0xc
+    const/16 v1, 0xc
 
-    if-lt p0, v0, :cond_c
+    if-lt v0, v1, :cond_c
 
-    const/4 p0, 0x1
+    const/4 v0, 0x1
 
     goto :goto_d
 
     :cond_c
-    const/4 p0, 0x0
+    const/4 v0, 0x0
 
     :goto_d
-    return p0
+    return v0
 .end method
 
 .method public static isNudStateConnected(S)Z
-    .registers 1
+    .registers 2
+    .param p0, "nudState"  # S
 
     .line 63
-    and-int/lit16 p0, p0, 0xc2
+    and-int/lit16 v0, p0, 0xc2
 
-    if-eqz p0, :cond_6
+    if-eqz v0, :cond_6
 
-    const/4 p0, 0x1
+    const/4 v0, 0x1
 
     goto :goto_7
 
     :cond_6
-    const/4 p0, 0x0
+    const/4 v0, 0x0
 
     :goto_7
-    return p0
+    return v0
 .end method
 
 .method public static isNudStateValid(S)Z
     .registers 2
+    .param p0, "nudState"  # S
 
     .line 67
     invoke-static {p0}, Landroid/net/netlink/StructNdMsg;->isNudStateConnected(S)Z
@@ -150,27 +153,28 @@
 
     if-nez v0, :cond_d
 
-    and-int/lit8 p0, p0, 0x1c
+    and-int/lit8 v0, p0, 0x1c
 
-    if-eqz p0, :cond_b
+    if-eqz v0, :cond_b
 
     goto :goto_d
 
     :cond_b
-    const/4 p0, 0x0
+    const/4 v0, 0x0
 
     goto :goto_e
 
     :cond_d
     :goto_d
-    const/4 p0, 0x1
+    const/4 v0, 0x1
 
     :goto_e
-    return p0
+    return v0
 .end method
 
 .method public static parse(Ljava/nio/ByteBuffer;)Landroid/net/netlink/StructNdMsg;
-    .registers 3
+    .registers 5
+    .param p0, "byteBuffer"  # Ljava/nio/ByteBuffer;
 
     .line 107
     invoke-static {p0}, Landroid/net/netlink/StructNdMsg;->hasAvailableSpace(Ljava/nio/ByteBuffer;)Z
@@ -179,9 +183,9 @@
 
     if-nez v0, :cond_8
 
-    const/4 p0, 0x0
+    const/4 v0, 0x0
 
-    return-object p0
+    return-object v0
 
     .line 112
     :cond_8
@@ -190,6 +194,7 @@
     invoke-direct {v0}, Landroid/net/netlink/StructNdMsg;-><init>()V
 
     .line 113
+    .local v0, "struct":Landroid/net/netlink/StructNdMsg;
     invoke-virtual {p0}, Ljava/nio/ByteBuffer;->get()B
 
     move-result v1
@@ -199,36 +204,42 @@
     .line 114
     invoke-virtual {p0}, Ljava/nio/ByteBuffer;->get()B
 
-    .line 115
-    invoke-virtual {p0}, Ljava/nio/ByteBuffer;->getShort()S
-
-    .line 116
-    invoke-virtual {p0}, Ljava/nio/ByteBuffer;->getInt()I
-
     move-result v1
 
-    iput v1, v0, Landroid/net/netlink/StructNdMsg;->ndm_ifindex:I
+    .line 115
+    .local v1, "pad1":B
+    invoke-virtual {p0}, Ljava/nio/ByteBuffer;->getShort()S
+
+    move-result v2
+
+    .line 116
+    .local v2, "pad2":S
+    invoke-virtual {p0}, Ljava/nio/ByteBuffer;->getInt()I
+
+    move-result v3
+
+    iput v3, v0, Landroid/net/netlink/StructNdMsg;->ndm_ifindex:I
 
     .line 117
     invoke-virtual {p0}, Ljava/nio/ByteBuffer;->getShort()S
 
-    move-result v1
+    move-result v3
 
-    iput-short v1, v0, Landroid/net/netlink/StructNdMsg;->ndm_state:S
+    iput-short v3, v0, Landroid/net/netlink/StructNdMsg;->ndm_state:S
 
     .line 118
     invoke-virtual {p0}, Ljava/nio/ByteBuffer;->get()B
 
-    move-result v1
+    move-result v3
 
-    iput-byte v1, v0, Landroid/net/netlink/StructNdMsg;->ndm_flags:B
+    iput-byte v3, v0, Landroid/net/netlink/StructNdMsg;->ndm_flags:B
 
     .line 119
     invoke-virtual {p0}, Ljava/nio/ByteBuffer;->get()B
 
-    move-result p0
+    move-result v3
 
-    iput-byte p0, v0, Landroid/net/netlink/StructNdMsg;->ndm_type:B
+    iput-byte v3, v0, Landroid/net/netlink/StructNdMsg;->ndm_type:B
 
     .line 120
     return-object v0
@@ -236,6 +247,7 @@
 
 .method public static stringForNudFlags(B)Ljava/lang/String;
     .registers 4
+    .param p0, "flags"  # B
 
     .line 79
     new-instance v0, Ljava/lang/StringBuilder;
@@ -243,6 +255,7 @@
     invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
 
     .line 80
+    .local v0, "sb":Ljava/lang/StringBuilder;
     sget-byte v1, Landroid/net/netlink/StructNdMsg;->NTF_USE:B
 
     and-int/2addr v1, p0
@@ -329,36 +342,37 @@
     :cond_4b
     sget-byte v1, Landroid/net/netlink/StructNdMsg;->NTF_ROUTER:B
 
-    and-int/2addr p0, v1
+    and-int/2addr v1, p0
 
-    if-eqz p0, :cond_5e
+    if-eqz v1, :cond_5e
 
     .line 96
     invoke-virtual {v0}, Ljava/lang/StringBuilder;->length()I
 
-    move-result p0
+    move-result v1
 
-    if-lez p0, :cond_59
+    if-lez v1, :cond_59
 
     invoke-virtual {v0, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     .line 97
     :cond_59
-    const-string p0, "NTF_ROUTER"
+    const-string v1, "NTF_ROUTER"
 
-    invoke-virtual {v0, p0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     .line 99
     :cond_5e
     invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v1
 
-    return-object p0
+    return-object v1
 .end method
 
 .method public static stringForNudState(S)Ljava/lang/String;
     .registers 3
+    .param p0, "nudState"  # S
 
     .line 47
     if-eqz p0, :cond_4e
@@ -406,69 +420,69 @@
 
     invoke-static {p0}, Ljava/lang/String;->valueOf(I)Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v1
 
-    invoke-virtual {v0, p0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v0
 
-    return-object p0
+    return-object v0
 
     .line 56
     :cond_36
-    const-string p0, "NUD_PERMANENT"
+    const-string v0, "NUD_PERMANENT"
 
-    return-object p0
+    return-object v0
 
     .line 55
     :cond_39
-    const-string p0, "NUD_NOARP"
+    const-string v0, "NUD_NOARP"
 
-    return-object p0
+    return-object v0
 
     .line 54
     :cond_3c
-    const-string p0, "NUD_FAILED"
+    const-string v0, "NUD_FAILED"
 
-    return-object p0
+    return-object v0
 
     .line 53
     :cond_3f
-    const-string p0, "NUD_PROBE"
+    const-string v0, "NUD_PROBE"
 
-    return-object p0
+    return-object v0
 
     .line 52
     :cond_42
-    const-string p0, "NUD_DELAY"
+    const-string v0, "NUD_DELAY"
 
-    return-object p0
+    return-object v0
 
     .line 51
     :cond_45
-    const-string p0, "NUD_STALE"
+    const-string v0, "NUD_STALE"
 
-    return-object p0
+    return-object v0
 
     .line 50
     :cond_48
-    const-string p0, "NUD_REACHABLE"
+    const-string v0, "NUD_REACHABLE"
 
-    return-object p0
+    return-object v0
 
     .line 49
     :cond_4b
-    const-string p0, "NUD_INCOMPLETE"
+    const-string v0, "NUD_INCOMPLETE"
 
-    return-object p0
+    return-object v0
 
     .line 48
     :cond_4e
-    const-string p0, "NUD_NONE"
+    const-string v0, "NUD_NONE"
 
-    return-object p0
+    return-object v0
 .end method
 
 
@@ -501,6 +515,7 @@
 
 .method public pack(Ljava/nio/ByteBuffer;)V
     .registers 3
+    .param p1, "byteBuffer"  # Ljava/nio/ByteBuffer;
 
     .line 137
     iget-byte v0, p0, Landroid/net/netlink/StructNdMsg;->ndm_family:B
@@ -576,6 +591,7 @@
     move-result-object v0
 
     .line 157
+    .local v0, "stateStr":Ljava/lang/String;
     new-instance v4, Ljava/lang/StringBuilder;
 
     invoke-direct {v4}, Ljava/lang/StringBuilder;-><init>()V
@@ -603,6 +619,7 @@
     move-result-object v1
 
     .line 158
+    .local v1, "flagsStr":Ljava/lang/String;
     new-instance v2, Ljava/lang/StringBuilder;
 
     invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
@@ -634,28 +651,28 @@
 
     invoke-virtual {v2, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string/jumbo v0, "}, flags{"
+    const-string/jumbo v3, "}, flags{"
 
-    invoke-virtual {v2, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v2, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string/jumbo v0, "}, type{"
+    const-string/jumbo v3, "}, type{"
 
-    invoke-virtual {v2, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    iget-byte v0, p0, Landroid/net/netlink/StructNdMsg;->ndm_type:B
+    iget-byte v3, p0, Landroid/net/netlink/StructNdMsg;->ndm_type:B
 
-    invoke-virtual {v2, v0}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    const-string/jumbo v0, "} }"
+    const-string/jumbo v3, "} }"
 
-    invoke-virtual {v2, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v2
 
     .line 158
-    return-object v0
+    return-object v2
 .end method

@@ -21,6 +21,8 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/CertBlacklister$BlacklistObserver;Ljava/lang/String;)V
     .registers 3
+    .param p1, "this$0"  # Lcom/android/server/CertBlacklister$BlacklistObserver;
+    .param p2, "x0"  # Ljava/lang/String;
 
     .line 77
     iput-object p1, p0, Lcom/android/server/CertBlacklister$BlacklistObserver$1;->this$0:Lcom/android/server/CertBlacklister$BlacklistObserver;
@@ -53,7 +55,8 @@
     move-result-object v1
 
     .line 81
-    if-eqz v1, :cond_6a
+    .local v1, "blacklist":Ljava/lang/String;
+    if-eqz v1, :cond_68
 
     .line 82
     const-string v2, "CertBlacklister"
@@ -62,14 +65,15 @@
 
     invoke-static {v2, v3}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
     :try_end_16
-    .catchall {:try_start_7 .. :try_end_16} :catchall_6c
+    .catchall {:try_start_7 .. :try_end_16} :catchall_6a
 
     .line 83
     const/4 v2, 0x0
 
     .line 86
+    .local v2, "out":Ljava/io/FileOutputStream;
     :try_start_17
-    const-string v3, "journal"
+    const-string/jumbo v3, "journal"
 
     const-string v4, ""
 
@@ -84,6 +88,7 @@
     move-result-object v3
 
     .line 88
+    .local v3, "tmp":Ljava/io/File;
     const/4 v4, 0x1
 
     const/4 v5, 0x0
@@ -94,117 +99,109 @@
     new-instance v4, Ljava/io/FileOutputStream;
 
     invoke-direct {v4, v3}, Ljava/io/FileOutputStream;-><init>(Ljava/io/File;)V
-    :try_end_2f
-    .catch Ljava/io/IOException; {:try_start_17 .. :try_end_2f} :catch_5a
-    .catchall {:try_start_17 .. :try_end_2f} :catchall_58
+
+    move-object v2, v4
 
     .line 91
-    :try_start_2f
     invoke-virtual {v1}, Ljava/lang/String;->getBytes()[B
 
-    move-result-object v1
+    move-result-object v4
 
-    invoke-virtual {v4, v1}, Ljava/io/FileOutputStream;->write([B)V
+    invoke-virtual {v2, v4}, Ljava/io/FileOutputStream;->write([B)V
 
     .line 93
-    invoke-static {v4}, Landroid/os/FileUtils;->sync(Ljava/io/FileOutputStream;)Z
+    invoke-static {v2}, Landroid/os/FileUtils;->sync(Ljava/io/FileOutputStream;)Z
 
     .line 95
-    new-instance v1, Ljava/io/File;
+    new-instance v4, Ljava/io/File;
 
-    iget-object v2, p0, Lcom/android/server/CertBlacklister$BlacklistObserver$1;->this$0:Lcom/android/server/CertBlacklister$BlacklistObserver;
+    iget-object v5, p0, Lcom/android/server/CertBlacklister$BlacklistObserver$1;->this$0:Lcom/android/server/CertBlacklister$BlacklistObserver;
 
-    invoke-static {v2}, Lcom/android/server/CertBlacklister$BlacklistObserver;->access$100(Lcom/android/server/CertBlacklister$BlacklistObserver;)Ljava/lang/String;
+    invoke-static {v5}, Lcom/android/server/CertBlacklister$BlacklistObserver;->access$100(Lcom/android/server/CertBlacklister$BlacklistObserver;)Ljava/lang/String;
 
-    move-result-object v2
+    move-result-object v5
 
-    invoke-direct {v1, v2}, Ljava/io/File;-><init>(Ljava/lang/String;)V
+    invoke-direct {v4, v5}, Ljava/io/File;-><init>(Ljava/lang/String;)V
 
-    invoke-virtual {v3, v1}, Ljava/io/File;->renameTo(Ljava/io/File;)Z
+    invoke-virtual {v3, v4}, Ljava/io/File;->renameTo(Ljava/io/File;)Z
 
     .line 96
-    const-string v1, "CertBlacklister"
+    const-string v4, "CertBlacklister"
 
-    const-string v2, "Certificate blacklist updated"
+    const-string v5, "Certificate blacklist updated"
 
-    invoke-static {v1, v2}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
-    :try_end_4e
-    .catch Ljava/io/IOException; {:try_start_2f .. :try_end_4e} :catch_55
-    .catchall {:try_start_2f .. :try_end_4e} :catchall_52
-
-    .line 100
-    :try_start_4e
-    invoke-static {v4}, Llibcore/io/IoUtils;->closeQuietly(Ljava/lang/AutoCloseable;)V
-    :try_end_51
-    .catchall {:try_start_4e .. :try_end_51} :catchall_6c
-
-    goto :goto_65
-
-    :catchall_52
-    move-exception v1
-
-    move-object v2, v4
-
-    goto :goto_66
-
-    .line 97
-    :catch_55
-    move-exception v1
-
-    move-object v2, v4
-
-    goto :goto_5b
+    invoke-static {v4, v5}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
+    :try_end_50
+    .catch Ljava/io/IOException; {:try_start_17 .. :try_end_50} :catch_57
+    .catchall {:try_start_17 .. :try_end_50} :catchall_55
 
     .line 100
-    :catchall_58
-    move-exception v1
+    nop
 
-    goto :goto_66
+    .end local v3  # "tmp":Ljava/io/File;
+    :try_start_51
+    invoke-static {v2}, Llibcore/io/IoUtils;->closeQuietly(Ljava/lang/AutoCloseable;)V
+    :try_end_54
+    .catchall {:try_start_51 .. :try_end_54} :catchall_6a
+
+    goto :goto_63
+
+    :catchall_55
+    move-exception v3
+
+    goto :goto_64
 
     .line 97
-    :catch_5a
-    move-exception v1
+    :catch_57
+    move-exception v3
 
     .line 98
-    :goto_5b
-    :try_start_5b
-    const-string v3, "CertBlacklister"
+    .local v3, "e":Ljava/io/IOException;
+    :try_start_58
+    const-string v4, "CertBlacklister"
 
-    const-string v4, "Failed to write blacklist"
+    const-string v5, "Failed to write blacklist"
 
-    invoke-static {v3, v4, v1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
-    :try_end_62
-    .catchall {:try_start_5b .. :try_end_62} :catchall_58
+    invoke-static {v4, v5, v3}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    :try_end_5f
+    .catchall {:try_start_58 .. :try_end_5f} :catchall_55
 
     .line 100
-    :try_start_62
+    nop
+
+    .end local v3  # "e":Ljava/io/IOException;
+    :try_start_60
     invoke-static {v2}, Llibcore/io/IoUtils;->closeQuietly(Ljava/lang/AutoCloseable;)V
 
     .line 101
-    :goto_65
-    goto :goto_6a
+    :goto_63
+    goto :goto_68
 
     .line 100
-    :goto_66
+    :goto_64
     invoke-static {v2}, Llibcore/io/IoUtils;->closeQuietly(Ljava/lang/AutoCloseable;)V
 
-    throw v1
+    .end local p0  # "this":Lcom/android/server/CertBlacklister$BlacklistObserver$1;
+    throw v3
 
     .line 103
-    :cond_6a
-    :goto_6a
+    .end local v1  # "blacklist":Ljava/lang/String;
+    .end local v2  # "out":Ljava/io/FileOutputStream;
+    .restart local p0  # "this":Lcom/android/server/CertBlacklister$BlacklistObserver$1;
+    :cond_68
+    :goto_68
     monitor-exit v0
 
     .line 104
     return-void
 
     .line 103
-    :catchall_6c
+    :catchall_6a
     move-exception v1
 
     monitor-exit v0
-    :try_end_6e
-    .catchall {:try_start_62 .. :try_end_6e} :catchall_6c
+    :try_end_6c
+    .catchall {:try_start_60 .. :try_end_6c} :catchall_6a
 
     throw v1
 .end method

@@ -27,34 +27,36 @@
 # direct methods
 .method constructor <init>(Ljava/io/File;Ljava/io/File;)V
     .registers 3
+    .param p1, "dumpDir"  # Ljava/io/File;
+    .param p2, "fdThreshold"  # Ljava/io/File;
 
-    .line 723
+    .line 869
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
-    .line 724
+    .line 870
     iput-object p1, p0, Lcom/android/server/Watchdog$OpenFdMonitor;->mDumpDir:Ljava/io/File;
 
-    .line 725
+    .line 871
     iput-object p2, p0, Lcom/android/server/Watchdog$OpenFdMonitor;->mFdHighWaterMark:Ljava/io/File;
 
-    .line 726
+    .line 872
     return-void
 .end method
 
 .method public static create()Lcom/android/server/Watchdog$OpenFdMonitor;
     .registers 7
 
-    .line 700
+    .line 846
     sget-boolean v0, Landroid/os/Build;->IS_DEBUGGABLE:Z
 
     const/4 v1, 0x0
 
     if-nez v0, :cond_6
 
-    .line 701
+    .line 847
     return-object v1
 
-    .line 706
+    .line 852
     :cond_6
     :try_start_6
     sget v0, Landroid/system/OsConstants;->RLIMIT_NOFILE:I
@@ -65,10 +67,11 @@
     :try_end_c
     .catch Landroid/system/ErrnoException; {:try_start_6 .. :try_end_c} :catch_35
 
-    .line 710
+    .line 856
+    .local v0, "rlimit":Landroid/system/StructRlimit;
     nop
 
-    .line 719
+    .line 865
     new-instance v1, Ljava/io/File;
 
     new-instance v2, Ljava/lang/StringBuilder;
@@ -89,47 +92,52 @@
 
     invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v2
 
-    invoke-direct {v1, v0}, Ljava/io/File;-><init>(Ljava/lang/String;)V
+    invoke-direct {v1, v2}, Ljava/io/File;-><init>(Ljava/lang/String;)V
 
-    .line 720
-    new-instance v0, Lcom/android/server/Watchdog$OpenFdMonitor;
+    .line 866
+    .local v1, "fdThreshold":Ljava/io/File;
+    new-instance v2, Lcom/android/server/Watchdog$OpenFdMonitor;
 
-    new-instance v2, Ljava/io/File;
+    new-instance v3, Ljava/io/File;
 
-    const-string v3, "/data/anr"
+    const-string v4, "/data/anr"
 
-    invoke-direct {v2, v3}, Ljava/io/File;-><init>(Ljava/lang/String;)V
+    invoke-direct {v3, v4}, Ljava/io/File;-><init>(Ljava/lang/String;)V
 
-    invoke-direct {v0, v2, v1}, Lcom/android/server/Watchdog$OpenFdMonitor;-><init>(Ljava/io/File;Ljava/io/File;)V
+    invoke-direct {v2, v3, v1}, Lcom/android/server/Watchdog$OpenFdMonitor;-><init>(Ljava/io/File;Ljava/io/File;)V
 
-    return-object v0
+    return-object v2
 
-    .line 707
+    .line 853
+    .end local v0  # "rlimit":Landroid/system/StructRlimit;
+    .end local v1  # "fdThreshold":Ljava/io/File;
     :catch_35
     move-exception v0
 
-    .line 708
+    .line 854
+    .local v0, "errno":Landroid/system/ErrnoException;
     const-string v2, "Watchdog"
 
     const-string v3, "Error thrown from getrlimit(RLIMIT_NOFILE)"
 
     invoke-static {v2, v3, v0}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
-    .line 709
+    .line 855
     return-object v1
 .end method
 
 .method private dumpOpenDescriptors()V
-    .registers 9
+    .registers 12
 
-    .line 735
+    .line 881
     new-instance v0, Ljava/util/ArrayList;
 
     invoke-direct {v0}, Ljava/util/ArrayList;-><init>()V
 
-    .line 736
+    .line 882
+    .local v0, "dumpInfo":Ljava/util/List;, "Ljava/util/List<Ljava/lang/String;>;"
     const/4 v1, 0x1
 
     new-array v1, v1, [Ljava/lang/Object;
@@ -152,7 +160,8 @@
 
     move-result-object v1
 
-    .line 737
+    .line 883
+    .local v1, "fdDirPath":Ljava/lang/String;
     new-instance v2, Ljava/io/File;
 
     invoke-direct {v2, v1}, Ljava/io/File;-><init>(Ljava/lang/String;)V
@@ -161,154 +170,173 @@
 
     move-result-object v2
 
-    .line 738
+    .line 884
+    .local v2, "fds":[Ljava/io/File;
     if-nez v2, :cond_39
 
-    .line 739
-    new-instance v2, Ljava/lang/StringBuilder;
+    .line 885
+    new-instance v4, Ljava/lang/StringBuilder;
 
-    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v4}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v4, "Unable to list "
+    const-string v5, "Unable to list "
 
-    invoke-virtual {v2, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v2, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v4, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v4}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v1
+    move-result-object v4
 
-    invoke-interface {v0, v1}, Ljava/util/List;->add(Ljava/lang/Object;)Z
+    invoke-interface {v0, v4}, Ljava/util/List;->add(Ljava/lang/Object;)Z
 
-    goto :goto_68
+    goto :goto_6a
 
-    .line 741
+    .line 887
     :cond_39
-    array-length v1, v2
+    array-length v4, v2
 
-    move v4, v3
+    move v5, v3
 
     :goto_3b
-    if-ge v4, v1, :cond_68
+    if-ge v5, v4, :cond_6a
 
-    aget-object v5, v2, v4
+    aget-object v6, v2, v5
 
-    .line 742
-    invoke-virtual {v5}, Ljava/io/File;->getAbsolutePath()Ljava/lang/String;
+    .line 888
+    .local v6, "f":Ljava/io/File;
+    invoke-virtual {v6}, Ljava/io/File;->getAbsolutePath()Ljava/lang/String;
 
-    move-result-object v5
+    move-result-object v7
 
-    .line 743
-    nop
+    .line 889
+    .local v7, "fdSymLink":Ljava/lang/String;
+    const-string v8, ""
 
-    .line 745
-    :try_start_44
-    invoke-static {v5}, Landroid/system/Os;->readlink(Ljava/lang/String;)Ljava/lang/String;
+    .line 891
+    .local v8, "resolvedPath":Ljava/lang/String;
+    :try_start_45
+    invoke-static {v7}, Landroid/system/Os;->readlink(Ljava/lang/String;)Ljava/lang/String;
 
-    move-result-object v6
-    :try_end_48
-    .catch Landroid/system/ErrnoException; {:try_start_44 .. :try_end_48} :catch_49
+    move-result-object v9
+    :try_end_49
+    .catch Landroid/system/ErrnoException; {:try_start_45 .. :try_end_49} :catch_4b
 
-    .line 748
-    goto :goto_4e
+    move-object v8, v9
 
-    .line 746
-    :catch_49
-    move-exception v6
+    .line 894
+    goto :goto_50
 
-    .line 747
-    invoke-virtual {v6}, Landroid/system/ErrnoException;->getMessage()Ljava/lang/String;
+    .line 892
+    :catch_4b
+    move-exception v9
 
-    move-result-object v6
+    .line 893
+    .local v9, "ex":Landroid/system/ErrnoException;
+    invoke-virtual {v9}, Landroid/system/ErrnoException;->getMessage()Ljava/lang/String;
 
-    .line 749
-    :goto_4e
-    new-instance v7, Ljava/lang/StringBuilder;
+    move-result-object v8
 
-    invoke-direct {v7}, Ljava/lang/StringBuilder;-><init>()V
+    .line 895
+    .end local v9  # "ex":Landroid/system/ErrnoException;
+    :goto_50
+    new-instance v9, Ljava/lang/StringBuilder;
 
-    invoke-virtual {v7, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-direct {v9}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v5, "\t"
+    invoke-virtual {v9, v7}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v7, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    const-string v10, "\t"
 
-    invoke-virtual {v7, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v9, v10}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v7}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v9, v8}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    move-result-object v5
+    invoke-virtual {v9}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    invoke-interface {v0, v5}, Ljava/util/List;->add(Ljava/lang/Object;)Z
+    move-result-object v9
 
-    .line 741
-    add-int/lit8 v4, v4, 0x1
+    invoke-interface {v0, v9}, Ljava/util/List;->add(Ljava/lang/Object;)Z
+
+    .line 887
+    .end local v6  # "f":Ljava/io/File;
+    .end local v7  # "fdSymLink":Ljava/lang/String;
+    .end local v8  # "resolvedPath":Ljava/lang/String;
+    add-int/lit8 v5, v5, 0x1
 
     goto :goto_3b
 
-    .line 755
-    :cond_68
-    :goto_68
-    :try_start_68
-    const-string v1, "anr_fd_"
+    .line 901
+    :cond_6a
+    :goto_6a
+    :try_start_6a
+    const-string v4, "anr_fd_"
 
-    const-string v2, ""
+    const-string v5, ""
 
-    iget-object v4, p0, Lcom/android/server/Watchdog$OpenFdMonitor;->mDumpDir:Ljava/io/File;
+    iget-object v6, p0, Lcom/android/server/Watchdog$OpenFdMonitor;->mDumpDir:Ljava/io/File;
 
-    invoke-static {v1, v2, v4}, Ljava/io/File;->createTempFile(Ljava/lang/String;Ljava/lang/String;Ljava/io/File;)Ljava/io/File;
+    invoke-static {v4, v5, v6}, Ljava/io/File;->createTempFile(Ljava/lang/String;Ljava/lang/String;Ljava/io/File;)Ljava/io/File;
 
-    move-result-object v1
+    move-result-object v4
 
-    .line 756
-    invoke-virtual {v1}, Ljava/io/File;->getAbsolutePath()Ljava/lang/String;
+    .line 902
+    .local v4, "dumpFile":Ljava/io/File;
+    invoke-virtual {v4}, Ljava/io/File;->getAbsolutePath()Ljava/lang/String;
 
-    move-result-object v1
+    move-result-object v5
 
-    new-array v2, v3, [Ljava/lang/String;
+    new-array v6, v3, [Ljava/lang/String;
 
-    invoke-static {v1, v2}, Ljava/nio/file/Paths;->get(Ljava/lang/String;[Ljava/lang/String;)Ljava/nio/file/Path;
+    invoke-static {v5, v6}, Ljava/nio/file/Paths;->get(Ljava/lang/String;[Ljava/lang/String;)Ljava/nio/file/Path;
 
-    move-result-object v1
+    move-result-object v5
 
-    .line 757
-    sget-object v2, Ljava/nio/charset/StandardCharsets;->UTF_8:Ljava/nio/charset/Charset;
+    .line 903
+    .local v5, "out":Ljava/nio/file/Path;
+    sget-object v6, Ljava/nio/charset/StandardCharsets;->UTF_8:Ljava/nio/charset/Charset;
 
     new-array v3, v3, [Ljava/nio/file/OpenOption;
 
-    invoke-static {v1, v0, v2, v3}, Ljava/nio/file/Files;->write(Ljava/nio/file/Path;Ljava/lang/Iterable;Ljava/nio/charset/Charset;[Ljava/nio/file/OpenOption;)Ljava/nio/file/Path;
-    :try_end_83
-    .catch Ljava/io/IOException; {:try_start_68 .. :try_end_83} :catch_84
+    invoke-static {v5, v0, v6, v3}, Ljava/nio/file/Files;->write(Ljava/nio/file/Path;Ljava/lang/Iterable;Ljava/nio/charset/Charset;[Ljava/nio/file/OpenOption;)Ljava/nio/file/Path;
+    :try_end_85
+    .catch Ljava/io/IOException; {:try_start_6a .. :try_end_85} :catch_87
 
-    .line 760
-    goto :goto_9b
+    .line 906
+    nop
 
-    .line 758
-    :catch_84
-    move-exception v0
+    .end local v4  # "dumpFile":Ljava/io/File;
+    .end local v5  # "out":Ljava/nio/file/Path;
+    goto :goto_9e
 
-    .line 759
-    new-instance v1, Ljava/lang/StringBuilder;
+    .line 904
+    :catch_87
+    move-exception v3
 
-    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
+    .line 905
+    .local v3, "ex":Ljava/io/IOException;
+    new-instance v4, Ljava/lang/StringBuilder;
 
-    const-string v2, "Unable to write open descriptors to file: "
+    invoke-direct {v4}, Ljava/lang/StringBuilder;-><init>()V
 
-    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    const-string v5, "Unable to write open descriptors to file: "
 
-    invoke-virtual {v1, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v4, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
-    move-result-object v0
+    invoke-virtual {v4}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    const-string v1, "Watchdog"
+    move-result-object v4
 
-    invoke-static {v1, v0}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    const-string v5, "Watchdog"
 
-    .line 761
-    :goto_9b
+    invoke-static {v5, v4}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+
+    .line 907
+    .end local v3  # "ex":Ljava/io/IOException;
+    :goto_9e
     return-void
 .end method
 
@@ -317,7 +345,7 @@
 .method public monitor()Z
     .registers 2
 
-    .line 768
+    .line 914
     iget-object v0, p0, Lcom/android/server/Watchdog$OpenFdMonitor;->mFdHighWaterMark:Ljava/io/File;
 
     invoke-virtual {v0}, Ljava/io/File;->exists()Z
@@ -326,15 +354,15 @@
 
     if-eqz v0, :cond_d
 
-    .line 769
+    .line 915
     invoke-direct {p0}, Lcom/android/server/Watchdog$OpenFdMonitor;->dumpOpenDescriptors()V
 
-    .line 770
+    .line 916
     const/4 v0, 0x1
 
     return v0
 
-    .line 773
+    .line 919
     :cond_d
     const/4 v0, 0x0
 

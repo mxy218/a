@@ -48,6 +48,9 @@
 
 .method static synthetic access$800(Lcom/android/server/print/RemotePrintSpooler$SetPrintJobStateCaller;Ljava/lang/Object;I)V
     .registers 3
+    .param p0, "x0"  # Lcom/android/server/print/RemotePrintSpooler$SetPrintJobStateCaller;
+    .param p1, "x1"  # Ljava/lang/Object;
+    .param p2, "x2"  # I
 
     .line 763
     invoke-virtual {p0, p1, p2}, Lcom/android/server/print/RemotePrintSpooler$SetPrintJobStateCaller;->onRemoteMethodResult(Ljava/lang/Object;I)V
@@ -59,6 +62,10 @@
 # virtual methods
 .method public setPrintJobState(Landroid/print/IPrintSpooler;Landroid/print/PrintJobId;ILjava/lang/String;)Z
     .registers 12
+    .param p1, "target"  # Landroid/print/IPrintSpooler;
+    .param p2, "printJobId"  # Landroid/print/PrintJobId;
+    .param p3, "status"  # I
+    .param p4, "error"  # Ljava/lang/String;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;,
@@ -72,6 +79,7 @@
     move-result v6
 
     .line 779
+    .local v6, "sequence":I
     iget-object v4, p0, Lcom/android/server/print/RemotePrintSpooler$SetPrintJobStateCaller;->mCallback:Landroid/print/IPrintSpoolerCallbacks;
 
     move-object v0, p1
@@ -89,13 +97,13 @@
     .line 780
     invoke-virtual {p0, v6}, Lcom/android/server/print/RemotePrintSpooler$SetPrintJobStateCaller;->getResultTimed(I)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v0
 
-    check-cast p1, Ljava/lang/Boolean;
+    check-cast v0, Ljava/lang/Boolean;
 
-    invoke-virtual {p1}, Ljava/lang/Boolean;->booleanValue()Z
+    invoke-virtual {v0}, Ljava/lang/Boolean;->booleanValue()Z
 
-    move-result p1
+    move-result v0
 
-    return p1
+    return v0
 .end method

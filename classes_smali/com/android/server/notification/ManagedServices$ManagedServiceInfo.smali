@@ -36,31 +36,38 @@
 # direct methods
 .method public constructor <init>(Lcom/android/server/notification/ManagedServices;Landroid/os/IInterface;Landroid/content/ComponentName;IZLandroid/content/ServiceConnection;I)V
     .registers 8
+    .param p1, "this$0"  # Lcom/android/server/notification/ManagedServices;
+    .param p2, "service"  # Landroid/os/IInterface;
+    .param p3, "component"  # Landroid/content/ComponentName;
+    .param p4, "userid"  # I
+    .param p5, "isSystem"  # Z
+    .param p6, "connection"  # Landroid/content/ServiceConnection;
+    .param p7, "targetSdkVersion"  # I
 
-    .line 1325
+    .line 1311
     iput-object p1, p0, Lcom/android/server/notification/ManagedServices$ManagedServiceInfo;->this$0:Lcom/android/server/notification/ManagedServices;
 
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
-    .line 1326
+    .line 1312
     iput-object p2, p0, Lcom/android/server/notification/ManagedServices$ManagedServiceInfo;->service:Landroid/os/IInterface;
 
-    .line 1327
+    .line 1313
     iput-object p3, p0, Lcom/android/server/notification/ManagedServices$ManagedServiceInfo;->component:Landroid/content/ComponentName;
 
-    .line 1328
+    .line 1314
     iput p4, p0, Lcom/android/server/notification/ManagedServices$ManagedServiceInfo;->userid:I
 
-    .line 1329
+    .line 1315
     iput-boolean p5, p0, Lcom/android/server/notification/ManagedServices$ManagedServiceInfo;->isSystem:Z
 
-    .line 1330
+    .line 1316
     iput-object p6, p0, Lcom/android/server/notification/ManagedServices$ManagedServiceInfo;->connection:Landroid/content/ServiceConnection;
 
-    .line 1331
+    .line 1317
     iput p7, p0, Lcom/android/server/notification/ManagedServices$ManagedServiceInfo;->targetSdkVersion:I
 
-    .line 1332
+    .line 1318
     return-void
 .end method
 
@@ -69,7 +76,7 @@
 .method public binderDied()V
     .registers 4
 
-    .line 1389
+    .line 1375
     iget-object v0, p0, Lcom/android/server/notification/ManagedServices$ManagedServiceInfo;->this$0:Lcom/android/server/notification/ManagedServices;
 
     iget-boolean v0, v0, Lcom/android/server/notification/ManagedServices;->DEBUG:Z
@@ -84,7 +91,7 @@
 
     invoke-static {v0, v1}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 1394
+    .line 1380
     :cond_f
     iget-object v0, p0, Lcom/android/server/notification/ManagedServices$ManagedServiceInfo;->this$0:Lcom/android/server/notification/ManagedServices;
 
@@ -92,16 +99,17 @@
 
     iget v2, p0, Lcom/android/server/notification/ManagedServices$ManagedServiceInfo;->userid:I
 
-    invoke-static {v0, v1, v2}, Lcom/android/server/notification/ManagedServices;->access$900(Lcom/android/server/notification/ManagedServices;Landroid/os/IInterface;I)Lcom/android/server/notification/ManagedServices$ManagedServiceInfo;
+    invoke-static {v0, v1, v2}, Lcom/android/server/notification/ManagedServices;->access$1000(Lcom/android/server/notification/ManagedServices;Landroid/os/IInterface;I)Lcom/android/server/notification/ManagedServices$ManagedServiceInfo;
 
-    .line 1395
+    .line 1381
     return-void
 .end method
 
 .method public enabledAndUserMatches(I)Z
     .registers 7
+    .param p1, "nid"  # I
 
-    .line 1372
+    .line 1358
     invoke-virtual {p0}, Lcom/android/server/notification/ManagedServices$ManagedServiceInfo;->isEnabledForCurrentProfiles()Z
 
     move-result v0
@@ -110,10 +118,10 @@
 
     if-nez v0, :cond_8
 
-    .line 1373
+    .line 1359
     return v1
 
-    .line 1375
+    .line 1361
     :cond_8
     iget v0, p0, Lcom/android/server/notification/ManagedServices$ManagedServiceInfo;->userid:I
 
@@ -125,7 +133,7 @@
 
     return v3
 
-    .line 1376
+    .line 1362
     :cond_f
     iget-boolean v4, p0, Lcom/android/server/notification/ManagedServices$ManagedServiceInfo;->isSystem:Z
 
@@ -133,7 +141,7 @@
 
     return v3
 
-    .line 1377
+    .line 1363
     :cond_14
     if-eq p1, v2, :cond_35
 
@@ -141,7 +149,7 @@
 
     goto :goto_35
 
-    .line 1378
+    .line 1364
     :cond_19
     invoke-virtual {p0}, Lcom/android/server/notification/ManagedServices$ManagedServiceInfo;->supportsProfiles()Z
 
@@ -151,8 +159,8 @@
 
     iget-object v0, p0, Lcom/android/server/notification/ManagedServices$ManagedServiceInfo;->this$0:Lcom/android/server/notification/ManagedServices;
 
-    .line 1379
-    invoke-static {v0}, Lcom/android/server/notification/ManagedServices;->access$800(Lcom/android/server/notification/ManagedServices;)Lcom/android/server/notification/ManagedServices$UserProfiles;
+    .line 1365
+    invoke-static {v0}, Lcom/android/server/notification/ManagedServices;->access$900(Lcom/android/server/notification/ManagedServices;)Lcom/android/server/notification/ManagedServices$UserProfiles;
 
     move-result-object v0
 
@@ -162,12 +170,12 @@
 
     if-eqz v0, :cond_33
 
-    .line 1380
+    .line 1366
     invoke-virtual {p0, p1}, Lcom/android/server/notification/ManagedServices$ManagedServiceInfo;->isPermittedForProfile(I)Z
 
-    move-result p1
+    move-result v0
 
-    if-eqz p1, :cond_33
+    if-eqz v0, :cond_33
 
     move v1, v3
 
@@ -176,31 +184,32 @@
     :cond_33
     nop
 
-    .line 1378
+    .line 1364
     :goto_34
     return v1
 
-    .line 1377
+    .line 1363
     :cond_35
     :goto_35
     return v3
 .end method
 
 .method public equals(Ljava/lang/Object;)Z
-    .registers 6
+    .registers 7
+    .param p1, "o"  # Ljava/lang/Object;
 
-    .line 1426
+    .line 1412
     const/4 v0, 0x1
 
     if-ne p0, p1, :cond_4
 
     return v0
 
-    .line 1427
+    .line 1413
     :cond_4
     const/4 v1, 0x0
 
-    if-eqz p1, :cond_47
+    if-eqz p1, :cond_48
 
     invoke-virtual {p0}, Ljava/lang/Object;->getClass()Ljava/lang/Class;
 
@@ -212,83 +221,87 @@
 
     if-eq v2, v3, :cond_12
 
+    goto :goto_48
+
+    .line 1414
+    :cond_12
+    move-object v2, p1
+
+    check-cast v2, Lcom/android/server/notification/ManagedServices$ManagedServiceInfo;
+
+    .line 1415
+    .local v2, "that":Lcom/android/server/notification/ManagedServices$ManagedServiceInfo;
+    iget v3, p0, Lcom/android/server/notification/ManagedServices$ManagedServiceInfo;->userid:I
+
+    iget v4, v2, Lcom/android/server/notification/ManagedServices$ManagedServiceInfo;->userid:I
+
+    if-ne v3, v4, :cond_46
+
+    iget-boolean v3, p0, Lcom/android/server/notification/ManagedServices$ManagedServiceInfo;->isSystem:Z
+
+    iget-boolean v4, v2, Lcom/android/server/notification/ManagedServices$ManagedServiceInfo;->isSystem:Z
+
+    if-ne v3, v4, :cond_46
+
+    iget v3, p0, Lcom/android/server/notification/ManagedServices$ManagedServiceInfo;->targetSdkVersion:I
+
+    iget v4, v2, Lcom/android/server/notification/ManagedServices$ManagedServiceInfo;->targetSdkVersion:I
+
+    if-ne v3, v4, :cond_46
+
+    iget-object v3, p0, Lcom/android/server/notification/ManagedServices$ManagedServiceInfo;->service:Landroid/os/IInterface;
+
+    iget-object v4, v2, Lcom/android/server/notification/ManagedServices$ManagedServiceInfo;->service:Landroid/os/IInterface;
+
+    .line 1418
+    invoke-static {v3, v4}, Ljava/util/Objects;->equals(Ljava/lang/Object;Ljava/lang/Object;)Z
+
+    move-result v3
+
+    if-eqz v3, :cond_46
+
+    iget-object v3, p0, Lcom/android/server/notification/ManagedServices$ManagedServiceInfo;->component:Landroid/content/ComponentName;
+
+    iget-object v4, v2, Lcom/android/server/notification/ManagedServices$ManagedServiceInfo;->component:Landroid/content/ComponentName;
+
+    .line 1419
+    invoke-static {v3, v4}, Ljava/util/Objects;->equals(Ljava/lang/Object;Ljava/lang/Object;)Z
+
+    move-result v3
+
+    if-eqz v3, :cond_46
+
+    iget-object v3, p0, Lcom/android/server/notification/ManagedServices$ManagedServiceInfo;->connection:Landroid/content/ServiceConnection;
+
+    iget-object v4, v2, Lcom/android/server/notification/ManagedServices$ManagedServiceInfo;->connection:Landroid/content/ServiceConnection;
+
+    .line 1420
+    invoke-static {v3, v4}, Ljava/util/Objects;->equals(Ljava/lang/Object;Ljava/lang/Object;)Z
+
+    move-result v3
+
+    if-eqz v3, :cond_46
+
     goto :goto_47
 
-    .line 1428
-    :cond_12
-    check-cast p1, Lcom/android/server/notification/ManagedServices$ManagedServiceInfo;
-
-    .line 1429
-    iget v2, p0, Lcom/android/server/notification/ManagedServices$ManagedServiceInfo;->userid:I
-
-    iget v3, p1, Lcom/android/server/notification/ManagedServices$ManagedServiceInfo;->userid:I
-
-    if-ne v2, v3, :cond_45
-
-    iget-boolean v2, p0, Lcom/android/server/notification/ManagedServices$ManagedServiceInfo;->isSystem:Z
-
-    iget-boolean v3, p1, Lcom/android/server/notification/ManagedServices$ManagedServiceInfo;->isSystem:Z
-
-    if-ne v2, v3, :cond_45
-
-    iget v2, p0, Lcom/android/server/notification/ManagedServices$ManagedServiceInfo;->targetSdkVersion:I
-
-    iget v3, p1, Lcom/android/server/notification/ManagedServices$ManagedServiceInfo;->targetSdkVersion:I
-
-    if-ne v2, v3, :cond_45
-
-    iget-object v2, p0, Lcom/android/server/notification/ManagedServices$ManagedServiceInfo;->service:Landroid/os/IInterface;
-
-    iget-object v3, p1, Lcom/android/server/notification/ManagedServices$ManagedServiceInfo;->service:Landroid/os/IInterface;
-
-    .line 1432
-    invoke-static {v2, v3}, Ljava/util/Objects;->equals(Ljava/lang/Object;Ljava/lang/Object;)Z
-
-    move-result v2
-
-    if-eqz v2, :cond_45
-
-    iget-object v2, p0, Lcom/android/server/notification/ManagedServices$ManagedServiceInfo;->component:Landroid/content/ComponentName;
-
-    iget-object v3, p1, Lcom/android/server/notification/ManagedServices$ManagedServiceInfo;->component:Landroid/content/ComponentName;
-
-    .line 1433
-    invoke-static {v2, v3}, Ljava/util/Objects;->equals(Ljava/lang/Object;Ljava/lang/Object;)Z
-
-    move-result v2
-
-    if-eqz v2, :cond_45
-
-    iget-object v2, p0, Lcom/android/server/notification/ManagedServices$ManagedServiceInfo;->connection:Landroid/content/ServiceConnection;
-
-    iget-object p1, p1, Lcom/android/server/notification/ManagedServices$ManagedServiceInfo;->connection:Landroid/content/ServiceConnection;
-
-    .line 1434
-    invoke-static {v2, p1}, Ljava/util/Objects;->equals(Ljava/lang/Object;Ljava/lang/Object;)Z
-
-    move-result p1
-
-    if-eqz p1, :cond_45
-
-    goto :goto_46
-
-    :cond_45
+    :cond_46
     move v0, v1
 
-    .line 1429
-    :goto_46
+    .line 1415
+    :goto_47
     return v0
 
-    .line 1427
-    :cond_47
-    :goto_47
+    .line 1413
+    .end local v2  # "that":Lcom/android/server/notification/ManagedServices$ManagedServiceInfo;
+    :cond_48
+    :goto_48
     return v1
 .end method
 
 .method public getOwner()Lcom/android/server/notification/ManagedServices;
     .registers 2
 
-    .line 1339
+    .line 1325
     iget-object v0, p0, Lcom/android/server/notification/ManagedServices$ManagedServiceInfo;->this$0:Lcom/android/server/notification/ManagedServices;
 
     return-object v0
@@ -297,7 +310,7 @@
 .method public hashCode()I
     .registers 4
 
-    .line 1439
+    .line 1425
     const/4 v0, 0x6
 
     new-array v0, v0, [Ljava/lang/Object;
@@ -360,7 +373,7 @@
 .method public isEnabledForCurrentProfiles()Z
     .registers 3
 
-    .line 1399
+    .line 1385
     iget-boolean v0, p0, Lcom/android/server/notification/ManagedServices$ManagedServiceInfo;->isSystem:Z
 
     if-eqz v0, :cond_6
@@ -369,7 +382,7 @@
 
     return v0
 
-    .line 1400
+    .line 1386
     :cond_6
     iget-object v0, p0, Lcom/android/server/notification/ManagedServices$ManagedServiceInfo;->connection:Landroid/content/ServiceConnection;
 
@@ -379,11 +392,11 @@
 
     return v0
 
-    .line 1401
+    .line 1387
     :cond_c
     iget-object v0, p0, Lcom/android/server/notification/ManagedServices$ManagedServiceInfo;->this$0:Lcom/android/server/notification/ManagedServices;
 
-    invoke-static {v0}, Lcom/android/server/notification/ManagedServices;->access$1000(Lcom/android/server/notification/ManagedServices;)Landroid/util/ArraySet;
+    invoke-static {v0}, Lcom/android/server/notification/ManagedServices;->access$1100(Lcom/android/server/notification/ManagedServices;)Landroid/util/ArraySet;
 
     move-result-object v0
 
@@ -398,30 +411,32 @@
 
 .method public isGuest(Lcom/android/server/notification/ManagedServices;)Z
     .registers 3
+    .param p1, "host"  # Lcom/android/server/notification/ManagedServices;
 
-    .line 1335
+    .line 1321
     iget-object v0, p0, Lcom/android/server/notification/ManagedServices$ManagedServiceInfo;->this$0:Lcom/android/server/notification/ManagedServices;
 
     if-eq v0, p1, :cond_6
 
-    const/4 p1, 0x1
+    const/4 v0, 0x1
 
     goto :goto_7
 
     :cond_6
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
     :goto_7
-    return p1
+    return v0
 .end method
 
 .method public isPermittedForProfile(I)Z
     .registers 6
+    .param p1, "userId"  # I
 
-    .line 1410
+    .line 1396
     iget-object v0, p0, Lcom/android/server/notification/ManagedServices$ManagedServiceInfo;->this$0:Lcom/android/server/notification/ManagedServices;
 
-    invoke-static {v0}, Lcom/android/server/notification/ManagedServices;->access$800(Lcom/android/server/notification/ManagedServices;)Lcom/android/server/notification/ManagedServices$UserProfiles;
+    invoke-static {v0}, Lcom/android/server/notification/ManagedServices;->access$900(Lcom/android/server/notification/ManagedServices;)Lcom/android/server/notification/ManagedServices$UserProfiles;
 
     move-result-object v0
 
@@ -431,18 +446,18 @@
 
     if-nez v0, :cond_e
 
-    .line 1411
-    const/4 p1, 0x1
+    .line 1397
+    const/4 v0, 0x1
 
-    return p1
+    return v0
 
-    .line 1413
+    .line 1399
     :cond_e
     iget-object v0, p0, Lcom/android/server/notification/ManagedServices$ManagedServiceInfo;->this$0:Lcom/android/server/notification/ManagedServices;
 
     iget-object v0, v0, Lcom/android/server/notification/ManagedServices;->mContext:Landroid/content/Context;
 
-    .line 1414
+    .line 1400
     const-string v1, "device_policy"
 
     invoke-virtual {v0, v1}, Landroid/content/Context;->getSystemService(Ljava/lang/String;)Ljava/lang/Object;
@@ -451,46 +466,49 @@
 
     check-cast v0, Landroid/app/admin/DevicePolicyManager;
 
-    .line 1415
+    .line 1401
+    .local v0, "dpm":Landroid/app/admin/DevicePolicyManager;
     invoke-static {}, Landroid/os/Binder;->clearCallingIdentity()J
 
     move-result-wide v1
 
-    .line 1417
+    .line 1403
+    .local v1, "identity":J
     :try_start_1e
     iget-object v3, p0, Lcom/android/server/notification/ManagedServices$ManagedServiceInfo;->component:Landroid/content/ComponentName;
 
-    .line 1418
+    .line 1404
     invoke-virtual {v3}, Landroid/content/ComponentName;->getPackageName()Ljava/lang/String;
 
     move-result-object v3
 
-    .line 1417
+    .line 1403
     invoke-virtual {v0, v3, p1}, Landroid/app/admin/DevicePolicyManager;->isNotificationListenerServicePermitted(Ljava/lang/String;I)Z
 
-    move-result p1
+    move-result v3
     :try_end_28
     .catchall {:try_start_1e .. :try_end_28} :catchall_2c
 
-    .line 1420
+    .line 1406
     invoke-static {v1, v2}, Landroid/os/Binder;->restoreCallingIdentity(J)V
 
-    .line 1417
-    return p1
+    .line 1403
+    return v3
 
-    .line 1420
+    .line 1406
     :catchall_2c
-    move-exception p1
+    move-exception v3
 
     invoke-static {v1, v2}, Landroid/os/Binder;->restoreCallingIdentity(J)V
 
-    throw p1
+    throw v3
 .end method
 
 .method public isSameUser(I)Z
     .registers 4
+    .param p1, "userId"  # I
 
-    .line 1365
+    .line 1351
     invoke-virtual {p0}, Lcom/android/server/notification/ManagedServices$ManagedServiceInfo;->isEnabledForCurrentProfiles()Z
 
     move-result v0
@@ -499,10 +517,10 @@
 
     if-nez v0, :cond_8
 
-    .line 1366
+    .line 1352
     return v1
 
-    .line 1368
+    .line 1354
     :cond_8
     iget v0, p0, Lcom/android/server/notification/ManagedServices$ManagedServiceInfo;->userid:I
 
@@ -517,7 +535,7 @@
 .method public supportsProfiles()Z
     .registers 3
 
-    .line 1384
+    .line 1370
     iget v0, p0, Lcom/android/server/notification/ManagedServices$ManagedServiceInfo;->targetSdkVersion:I
 
     const/16 v1, 0x15
@@ -538,14 +556,14 @@
 .method public toString()Ljava/lang/String;
     .registers 3
 
-    .line 1344
+    .line 1330
     new-instance v0, Ljava/lang/StringBuilder;
 
     const-string v1, "ManagedServiceInfo["
 
     invoke-direct {v0, v1}, Ljava/lang/StringBuilder;-><init>(Ljava/lang/String;)V
 
-    .line 1345
+    .line 1331
     const-string v1, "component="
 
     invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
@@ -554,7 +572,7 @@
 
     invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
-    .line 1346
+    .line 1332
     const-string v1, ",userid="
 
     invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
@@ -563,7 +581,7 @@
 
     invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    .line 1347
+    .line 1333
     const-string v1, ",isSystem="
 
     invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
@@ -572,7 +590,7 @@
 
     invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Z)Ljava/lang/StringBuilder;
 
-    .line 1348
+    .line 1334
     const-string v1, ",targetSdkVersion="
 
     invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
@@ -581,7 +599,7 @@
 
     invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    .line 1349
+    .line 1335
     const-string v1, ",connection="
 
     invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
@@ -600,7 +618,7 @@
     :goto_3c
     invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    .line 1350
+    .line 1336
     const-string v1, ",service="
 
     invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
@@ -611,73 +629,77 @@
 
     const/16 v1, 0x5d
 
-    .line 1351
+    .line 1337
     invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(C)Ljava/lang/StringBuilder;
 
     invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
     move-result-object v0
 
-    .line 1344
+    .line 1330
     return-object v0
 .end method
 
 .method public writeToProto(Landroid/util/proto/ProtoOutputStream;JLcom/android/server/notification/ManagedServices;)V
-    .registers 8
+    .registers 10
+    .param p1, "proto"  # Landroid/util/proto/ProtoOutputStream;
+    .param p2, "fieldId"  # J
+    .param p4, "host"  # Lcom/android/server/notification/ManagedServices;
 
-    .line 1355
+    .line 1341
     invoke-virtual {p1, p2, p3}, Landroid/util/proto/ProtoOutputStream;->start(J)J
 
-    move-result-wide p2
+    move-result-wide v0
 
-    .line 1356
-    iget-object v0, p0, Lcom/android/server/notification/ManagedServices$ManagedServiceInfo;->component:Landroid/content/ComponentName;
+    .line 1342
+    .local v0, "token":J
+    iget-object v2, p0, Lcom/android/server/notification/ManagedServices$ManagedServiceInfo;->component:Landroid/content/ComponentName;
 
-    const-wide v1, 0x10b00000001L
+    const-wide v3, 0x10b00000001L
 
-    invoke-virtual {v0, p1, v1, v2}, Landroid/content/ComponentName;->writeToProto(Landroid/util/proto/ProtoOutputStream;J)V
+    invoke-virtual {v2, p1, v3, v4}, Landroid/content/ComponentName;->writeToProto(Landroid/util/proto/ProtoOutputStream;J)V
 
-    .line 1357
-    iget v0, p0, Lcom/android/server/notification/ManagedServices$ManagedServiceInfo;->userid:I
+    .line 1343
+    iget v2, p0, Lcom/android/server/notification/ManagedServices$ManagedServiceInfo;->userid:I
 
-    const-wide v1, 0x10500000002L
+    const-wide v3, 0x10500000002L
 
-    invoke-virtual {p1, v1, v2, v0}, Landroid/util/proto/ProtoOutputStream;->write(JI)V
+    invoke-virtual {p1, v3, v4, v2}, Landroid/util/proto/ProtoOutputStream;->write(JI)V
 
-    .line 1358
-    iget-object v0, p0, Lcom/android/server/notification/ManagedServices$ManagedServiceInfo;->service:Landroid/os/IInterface;
+    .line 1344
+    iget-object v2, p0, Lcom/android/server/notification/ManagedServices$ManagedServiceInfo;->service:Landroid/os/IInterface;
 
-    invoke-virtual {v0}, Ljava/lang/Object;->getClass()Ljava/lang/Class;
+    invoke-virtual {v2}, Ljava/lang/Object;->getClass()Ljava/lang/Class;
 
-    move-result-object v0
+    move-result-object v2
 
-    invoke-virtual {v0}, Ljava/lang/Class;->getName()Ljava/lang/String;
+    invoke-virtual {v2}, Ljava/lang/Class;->getName()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v2
 
-    const-wide v1, 0x10900000003L
+    const-wide v3, 0x10900000003L
 
-    invoke-virtual {p1, v1, v2, v0}, Landroid/util/proto/ProtoOutputStream;->write(JLjava/lang/String;)V
+    invoke-virtual {p1, v3, v4, v2}, Landroid/util/proto/ProtoOutputStream;->write(JLjava/lang/String;)V
 
-    .line 1359
-    iget-boolean v0, p0, Lcom/android/server/notification/ManagedServices$ManagedServiceInfo;->isSystem:Z
+    .line 1345
+    iget-boolean v2, p0, Lcom/android/server/notification/ManagedServices$ManagedServiceInfo;->isSystem:Z
 
-    const-wide v1, 0x10800000004L
+    const-wide v3, 0x10800000004L
 
-    invoke-virtual {p1, v1, v2, v0}, Landroid/util/proto/ProtoOutputStream;->write(JZ)V
+    invoke-virtual {p1, v3, v4, v2}, Landroid/util/proto/ProtoOutputStream;->write(JZ)V
 
-    .line 1360
+    .line 1346
     invoke-virtual {p0, p4}, Lcom/android/server/notification/ManagedServices$ManagedServiceInfo;->isGuest(Lcom/android/server/notification/ManagedServices;)Z
 
-    move-result p4
+    move-result v2
 
-    const-wide v0, 0x10800000005L
+    const-wide v3, 0x10800000005L
 
-    invoke-virtual {p1, v0, v1, p4}, Landroid/util/proto/ProtoOutputStream;->write(JZ)V
+    invoke-virtual {p1, v3, v4, v2}, Landroid/util/proto/ProtoOutputStream;->write(JZ)V
 
-    .line 1361
-    invoke-virtual {p1, p2, p3}, Landroid/util/proto/ProtoOutputStream;->end(J)V
+    .line 1347
+    invoke-virtual {p1, v0, v1}, Landroid/util/proto/ProtoOutputStream;->end(J)V
 
-    .line 1362
+    .line 1348
     return-void
 .end method

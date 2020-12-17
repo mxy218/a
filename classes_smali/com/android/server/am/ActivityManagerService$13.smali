@@ -21,8 +21,12 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/am/ActivityManagerService;ILandroid/os/IBinder;Ljava/lang/String;)V
     .registers 5
+    .param p1, "this$0"  # Lcom/android/server/am/ActivityManagerService;
+    .param p2, "_pid"  # I
+    .param p3, "_token"  # Landroid/os/IBinder;
+    .param p4, "_reason"  # Ljava/lang/String;
 
-    .line 5667
+    .line 6002
     iput-object p1, p0, Lcom/android/server/am/ActivityManagerService$13;->this$0:Lcom/android/server/am/ActivityManagerService;
 
     invoke-direct {p0, p1, p2, p3, p4}, Lcom/android/server/am/ActivityManagerService$ImportanceToken;-><init>(Lcom/android/server/am/ActivityManagerService;ILandroid/os/IBinder;Ljava/lang/String;)V
@@ -35,11 +39,11 @@
 .method public binderDied()V
     .registers 2
 
-    .line 5670
+    .line 6005
     iget-object v0, p0, Lcom/android/server/am/ActivityManagerService$13;->this$0:Lcom/android/server/am/ActivityManagerService;
 
     invoke-virtual {v0, p0}, Lcom/android/server/am/ActivityManagerService;->importanceTokenDied(Lcom/android/server/am/ActivityManagerService$ImportanceToken;)V
 
-    .line 5671
+    .line 6006
     return-void
 .end method

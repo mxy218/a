@@ -25,7 +25,8 @@
 
 # direct methods
 .method constructor <init>(I)V
-    .registers 2
+    .registers 3
+    .param p1, "max"  # I
 
     .line 325
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -34,9 +35,9 @@
     iput p1, p0, Lcom/android/server/IpSecService$ResourceTracker;->mMax:I
 
     .line 327
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    iput p1, p0, Lcom/android/server/IpSecService$ResourceTracker;->mCurrent:I
+    iput v0, p0, Lcom/android/server/IpSecService$ResourceTracker;->mCurrent:I
 
     .line 328
     return-void

@@ -71,7 +71,9 @@
 
 # direct methods
 .method private static synthetic $closeResource(Ljava/lang/Throwable;Ljava/lang/AutoCloseable;)V
-    .registers 2
+    .registers 3
+    .param p0, "x0"  # Ljava/lang/Throwable;
+    .param p1, "x1"  # Ljava/lang/AutoCloseable;
 
     .line 303
     if-eqz p0, :cond_b
@@ -84,9 +86,9 @@
     goto :goto_e
 
     :catchall_6
-    move-exception p1
+    move-exception v0
 
-    invoke-virtual {p0, p1}, Ljava/lang/Throwable;->addSuppressed(Ljava/lang/Throwable;)V
+    invoke-virtual {p0, v0}, Ljava/lang/Throwable;->addSuppressed(Ljava/lang/Throwable;)V
 
     goto :goto_e
 
@@ -99,6 +101,7 @@
 
 .method public constructor <init>(Landroid/content/Context;)V
     .registers 5
+    .param p1, "context"  # Landroid/content/Context;
 
     .line 104
     invoke-static {}, Lcom/android/server/IoThread;->get()Lcom/android/server/IoThread;
@@ -120,7 +123,11 @@
 .end method
 
 .method constructor <init>(Landroid/content/Context;Landroid/os/Looper;II)V
-    .registers 6
+    .registers 7
+    .param p1, "context"  # Landroid/content/Context;
+    .param p2, "looper"  # Landroid/os/Looper;
+    .param p3, "maxRetries"  # I
+    .param p4, "retryIntervalMs"  # I
     .annotation build Lcom/android/internal/annotations/VisibleForTesting;
     .end annotation
 
@@ -164,19 +171,19 @@
     iput-object p1, p0, Lcom/android/server/power/batterysaver/FileUpdater;->mContext:Landroid/content/Context;
 
     .line 113
-    new-instance p1, Landroid/os/Handler;
+    new-instance v0, Landroid/os/Handler;
 
-    invoke-direct {p1, p2}, Landroid/os/Handler;-><init>(Landroid/os/Looper;)V
+    invoke-direct {v0, p2}, Landroid/os/Handler;-><init>(Landroid/os/Looper;)V
 
-    iput-object p1, p0, Lcom/android/server/power/batterysaver/FileUpdater;->mHandler:Landroid/os/Handler;
+    iput-object v0, p0, Lcom/android/server/power/batterysaver/FileUpdater;->mHandler:Landroid/os/Handler;
 
     .line 115
     iput p3, p0, Lcom/android/server/power/batterysaver/FileUpdater;->MAX_RETRIES:I
 
     .line 116
-    int-to-long p1, p4
+    int-to-long v0, p4
 
-    iput-wide p1, p0, Lcom/android/server/power/batterysaver/FileUpdater;->RETRY_INTERVAL_MS:J
+    iput-wide v0, p0, Lcom/android/server/power/batterysaver/FileUpdater;->RETRY_INTERVAL_MS:J
 
     .line 117
     return-void
@@ -199,6 +206,7 @@
     .end annotation
 
     .line 180
+    .local p1, "source":Landroid/util/ArrayMap;, "Landroid/util/ArrayMap<Ljava/lang/String;Ljava/lang/String;>;"
     new-instance v0, Landroid/util/ArrayMap;
 
     invoke-direct {v0, p1}, Landroid/util/ArrayMap;-><init>(Landroid/util/ArrayMap;)V
@@ -208,6 +216,7 @@
 
 .method private doWtf(Ljava/lang/String;)V
     .registers 3
+    .param p1, "message"  # Ljava/lang/String;
 
     .line 383
     const/4 v0, 0x0
@@ -220,6 +229,7 @@
 
 .method private ensureDefaultLoaded(Ljava/lang/String;)Z
     .registers 6
+    .param p1, "file"  # Ljava/lang/String;
 
     .line 265
     iget-object v0, p0, Lcom/android/server/power/batterysaver/FileUpdater;->mLock:Ljava/lang/Object;
@@ -258,6 +268,7 @@
     .catch Ljava/io/IOException; {:try_start_f .. :try_end_13} :catch_24
 
     .line 279
+    .local v0, "originalValue":Ljava/lang/String;
     nop
 
     .line 280
@@ -282,19 +293,21 @@
 
     .line 283
     :catchall_21
-    move-exception p1
+    move-exception v2
 
     monitor-exit v1
     :try_end_23
     .catchall {:try_start_17 .. :try_end_23} :catchall_21
 
-    throw p1
+    throw v2
 
     .line 273
+    .end local v0  # "originalValue":Ljava/lang/String;
     :catch_24
     move-exception v0
 
     .line 275
+    .local v0, "e":Ljava/io/IOException;
     const-string v1, "Unable to read from file"
 
     invoke-virtual {p0, v1, v0}, Lcom/android/server/power/batterysaver/FileUpdater;->injectWtf(Ljava/lang/String;Ljava/lang/Throwable;)V
@@ -303,24 +316,25 @@
     invoke-direct {p0, p1}, Lcom/android/server/power/batterysaver/FileUpdater;->removePendingWrite(Ljava/lang/String;)V
 
     .line 278
-    const/4 p1, 0x0
+    const/4 v1, 0x0
 
-    return p1
+    return v1
 
     .line 269
+    .end local v0  # "e":Ljava/io/IOException;
     :catchall_2f
-    move-exception p1
+    move-exception v1
 
     :try_start_30
     monitor-exit v0
     :try_end_31
     .catchall {:try_start_30 .. :try_end_31} :catchall_2f
 
-    throw p1
+    throw v1
 .end method
 
 .method private getKeysString(Ljava/util/Map;)Ljava/lang/String;
-    .registers 3
+    .registers 4
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(",
@@ -333,19 +347,20 @@
     .end annotation
 
     .line 175
+    .local p1, "source":Ljava/util/Map;, "Ljava/util/Map<Ljava/lang/String;Ljava/lang/String;>;"
     new-instance v0, Ljava/util/ArrayList;
 
     invoke-interface {p1}, Ljava/util/Map;->keySet()Ljava/util/Set;
 
-    move-result-object p1
+    move-result-object v1
 
-    invoke-direct {v0, p1}, Ljava/util/ArrayList;-><init>(Ljava/util/Collection;)V
+    invoke-direct {v0, v1}, Ljava/util/ArrayList;-><init>(Ljava/util/Collection;)V
 
     invoke-virtual {v0}, Ljava/util/ArrayList;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    return-object p1
+    return-object v0
 .end method
 
 .method private handleWriteOnHandler()V
@@ -380,101 +395,114 @@
     move-result-object v1
 
     .line 204
+    .local v1, "writes":Landroid/util/ArrayMap;, "Landroid/util/ArrayMap<Ljava/lang/String;Ljava/lang/String;>;"
     monitor-exit v0
     :try_end_14
-    .catchall {:try_start_3 .. :try_end_14} :catchall_42
+    .catchall {:try_start_3 .. :try_end_14} :catchall_41
 
     .line 208
-    nop
+    const/4 v0, 0x0
 
     .line 210
+    .local v0, "needRetry":Z
     invoke-virtual {v1}, Landroid/util/ArrayMap;->size()I
 
-    move-result v0
+    move-result v2
 
     .line 211
-    const/4 v2, 0x0
+    .local v2, "size":I
+    const/4 v3, 0x0
 
-    move v3, v2
-
-    :goto_1b
-    if-ge v2, v0, :cond_3c
+    .local v3, "i":I
+    :goto_1a
+    if-ge v3, v2, :cond_3b
 
     .line 212
-    invoke-virtual {v1, v2}, Landroid/util/ArrayMap;->keyAt(I)Ljava/lang/Object;
+    invoke-virtual {v1, v3}, Landroid/util/ArrayMap;->keyAt(I)Ljava/lang/Object;
 
     move-result-object v4
 
     check-cast v4, Ljava/lang/String;
 
     .line 213
-    invoke-virtual {v1, v2}, Landroid/util/ArrayMap;->valueAt(I)Ljava/lang/Object;
+    .local v4, "file":Ljava/lang/String;
+    invoke-virtual {v1, v3}, Landroid/util/ArrayMap;->valueAt(I)Ljava/lang/Object;
 
     move-result-object v5
 
     check-cast v5, Ljava/lang/String;
 
     .line 216
+    .local v5, "value":Ljava/lang/String;
     invoke-direct {p0, v4}, Lcom/android/server/power/batterysaver/FileUpdater;->ensureDefaultLoaded(Ljava/lang/String;)Z
 
     move-result v6
 
-    if-nez v6, :cond_30
+    if-nez v6, :cond_2f
 
     .line 217
-    goto :goto_39
+    goto :goto_38
 
     .line 223
-    :cond_30
-    :try_start_30
+    :cond_2f
+    :try_start_2f
     invoke-virtual {p0, v4, v5}, Lcom/android/server/power/batterysaver/FileUpdater;->injectWriteToFile(Ljava/lang/String;Ljava/lang/String;)V
 
     .line 225
     invoke-direct {p0, v4}, Lcom/android/server/power/batterysaver/FileUpdater;->removePendingWrite(Ljava/lang/String;)V
-    :try_end_36
-    .catch Ljava/io/IOException; {:try_start_30 .. :try_end_36} :catch_37
+    :try_end_35
+    .catch Ljava/io/IOException; {:try_start_2f .. :try_end_35} :catch_36
 
     .line 228
-    goto :goto_39
+    goto :goto_38
 
     .line 226
-    :catch_37
-    move-exception v3
+    :catch_36
+    move-exception v6
 
     .line 227
-    const/4 v3, 0x1
+    .local v6, "e":Ljava/io/IOException;
+    const/4 v0, 0x1
 
     .line 211
-    :goto_39
-    add-int/lit8 v2, v2, 0x1
+    .end local v4  # "file":Ljava/lang/String;
+    .end local v5  # "value":Ljava/lang/String;
+    .end local v6  # "e":Ljava/io/IOException;
+    :goto_38
+    add-int/lit8 v3, v3, 0x1
 
-    goto :goto_1b
+    goto :goto_1a
 
     .line 230
-    :cond_3c
-    if-eqz v3, :cond_41
+    .end local v3  # "i":I
+    :cond_3b
+    if-eqz v0, :cond_40
 
     .line 231
     invoke-direct {p0}, Lcom/android/server/power/batterysaver/FileUpdater;->scheduleRetry()V
 
     .line 233
-    :cond_41
+    :cond_40
     return-void
 
     .line 204
-    :catchall_42
+    .end local v0  # "needRetry":Z
+    .end local v1  # "writes":Landroid/util/ArrayMap;, "Landroid/util/ArrayMap<Ljava/lang/String;Ljava/lang/String;>;"
+    .end local v2  # "size":I
+    :catchall_41
     move-exception v1
 
-    :try_start_43
+    :try_start_42
     monitor-exit v0
-    :try_end_44
-    .catchall {:try_start_43 .. :try_end_44} :catchall_42
+    :try_end_43
+    .catchall {:try_start_42 .. :try_end_43} :catchall_41
 
     throw v1
 .end method
 
 .method private removePendingWrite(Ljava/lang/String;)V
     .registers 4
+    .param p1, "file"  # Ljava/lang/String;
 
     .line 236
     iget-object v0, p0, Lcom/android/server/power/batterysaver/FileUpdater;->mLock:Ljava/lang/Object;
@@ -495,13 +523,13 @@
 
     .line 238
     :catchall_a
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_c
     .catchall {:try_start_3 .. :try_end_c} :catchall_a
 
-    throw p1
+    throw v1
 .end method
 
 .method private saveDefaultValuesLocked()V
@@ -524,12 +552,12 @@
     invoke-direct {v1, v2}, Landroid/util/AtomicFile;-><init>(Ljava/io/File;)V
 
     .line 313
-    nop
-
-    .line 315
+    .local v1, "file":Landroid/util/AtomicFile;
     const/4 v2, 0x0
 
-    :try_start_d
+    .line 315
+    .local v2, "outs":Ljava/io/FileOutputStream;
+    :try_start_c
     invoke-virtual {v1}, Landroid/util/AtomicFile;->getBaseFile()Ljava/io/File;
 
     move-result-object v3
@@ -544,99 +572,94 @@
     invoke-virtual {v1}, Landroid/util/AtomicFile;->startWrite()Ljava/io/FileOutputStream;
 
     move-result-object v3
-    :try_end_1c
-    .catch Ljava/io/IOException; {:try_start_d .. :try_end_1c} :catch_46
-    .catch Lorg/xmlpull/v1/XmlPullParserException; {:try_start_d .. :try_end_1c} :catch_46
-    .catch Ljava/lang/RuntimeException; {:try_start_d .. :try_end_1c} :catch_46
+
+    move-object v2, v3
 
     .line 319
-    :try_start_1c
-    new-instance v4, Lcom/android/internal/util/FastXmlSerializer;
+    new-instance v3, Lcom/android/internal/util/FastXmlSerializer;
 
-    invoke-direct {v4}, Lcom/android/internal/util/FastXmlSerializer;-><init>()V
+    invoke-direct {v3}, Lcom/android/internal/util/FastXmlSerializer;-><init>()V
 
     .line 320
-    sget-object v5, Ljava/nio/charset/StandardCharsets;->UTF_8:Ljava/nio/charset/Charset;
+    .local v3, "out":Lorg/xmlpull/v1/XmlSerializer;
+    sget-object v4, Ljava/nio/charset/StandardCharsets;->UTF_8:Ljava/nio/charset/Charset;
 
-    invoke-virtual {v5}, Ljava/nio/charset/Charset;->name()Ljava/lang/String;
+    invoke-virtual {v4}, Ljava/nio/charset/Charset;->name()Ljava/lang/String;
 
-    move-result-object v5
+    move-result-object v4
 
-    invoke-interface {v4, v3, v5}, Lorg/xmlpull/v1/XmlSerializer;->setOutput(Ljava/io/OutputStream;Ljava/lang/String;)V
+    invoke-interface {v3, v2, v4}, Lorg/xmlpull/v1/XmlSerializer;->setOutput(Ljava/io/OutputStream;Ljava/lang/String;)V
 
     .line 321
-    const/4 v5, 0x1
+    const/4 v4, 0x1
 
-    invoke-static {v5}, Ljava/lang/Boolean;->valueOf(Z)Ljava/lang/Boolean;
+    invoke-static {v4}, Ljava/lang/Boolean;->valueOf(Z)Ljava/lang/Boolean;
 
-    move-result-object v5
+    move-result-object v4
 
-    invoke-interface {v4, v2, v5}, Lorg/xmlpull/v1/XmlSerializer;->startDocument(Ljava/lang/String;Ljava/lang/Boolean;)V
+    const/4 v5, 0x0
+
+    invoke-interface {v3, v5, v4}, Lorg/xmlpull/v1/XmlSerializer;->startDocument(Ljava/lang/String;Ljava/lang/Boolean;)V
 
     .line 322
-    invoke-interface {v4, v2, v0}, Lorg/xmlpull/v1/XmlSerializer;->startTag(Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
+    invoke-interface {v3, v5, v0}, Lorg/xmlpull/v1/XmlSerializer;->startTag(Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
 
     .line 324
-    iget-object v5, p0, Lcom/android/server/power/batterysaver/FileUpdater;->mDefaultValues:Landroid/util/ArrayMap;
+    iget-object v4, p0, Lcom/android/server/power/batterysaver/FileUpdater;->mDefaultValues:Landroid/util/ArrayMap;
 
-    invoke-static {v5, v4, v2}, Lcom/android/internal/util/XmlUtils;->writeMapXml(Ljava/util/Map;Lorg/xmlpull/v1/XmlSerializer;Lcom/android/internal/util/XmlUtils$WriteMapCallback;)V
+    invoke-static {v4, v3, v5}, Lcom/android/internal/util/XmlUtils;->writeMapXml(Ljava/util/Map;Lorg/xmlpull/v1/XmlSerializer;Lcom/android/internal/util/XmlUtils$WriteMapCallback;)V
 
     .line 327
-    invoke-interface {v4, v2, v0}, Lorg/xmlpull/v1/XmlSerializer;->endTag(Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
+    invoke-interface {v3, v5, v0}, Lorg/xmlpull/v1/XmlSerializer;->endTag(Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
 
     .line 328
-    invoke-interface {v4}, Lorg/xmlpull/v1/XmlSerializer;->endDocument()V
+    invoke-interface {v3}, Lorg/xmlpull/v1/XmlSerializer;->endDocument()V
 
     .line 331
-    invoke-virtual {v1, v3}, Landroid/util/AtomicFile;->finishWrite(Ljava/io/FileOutputStream;)V
-    :try_end_43
-    .catch Ljava/io/IOException; {:try_start_1c .. :try_end_43} :catch_44
-    .catch Lorg/xmlpull/v1/XmlPullParserException; {:try_start_1c .. :try_end_43} :catch_44
-    .catch Ljava/lang/RuntimeException; {:try_start_1c .. :try_end_43} :catch_44
+    invoke-virtual {v1, v2}, Landroid/util/AtomicFile;->finishWrite(Ljava/io/FileOutputStream;)V
+    :try_end_44
+    .catch Ljava/io/IOException; {:try_start_c .. :try_end_44} :catch_45
+    .catch Lorg/xmlpull/v1/XmlPullParserException; {:try_start_c .. :try_end_44} :catch_45
+    .catch Ljava/lang/RuntimeException; {:try_start_c .. :try_end_44} :catch_45
 
     .line 335
-    goto :goto_65
+    .end local v3  # "out":Lorg/xmlpull/v1/XmlSerializer;
+    goto :goto_63
 
     .line 332
-    :catch_44
+    :catch_45
     move-exception v0
-
-    goto :goto_48
-
-    :catch_46
-    move-exception v0
-
-    move-object v3, v2
 
     .line 333
-    :goto_48
-    new-instance v2, Ljava/lang/StringBuilder;
+    .local v0, "e":Ljava/lang/Exception;
+    new-instance v3, Ljava/lang/StringBuilder;
 
-    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
 
     const-string v4, "Failed to write to file "
 
-    invoke-virtual {v2, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v1}, Landroid/util/AtomicFile;->getBaseFile()Ljava/io/File;
 
     move-result-object v4
 
-    invoke-virtual {v2, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v2
+    move-result-object v3
 
     const-string v4, "BatterySaverController"
 
-    invoke-static {v4, v2, v0}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    invoke-static {v4, v3, v0}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
     .line 334
-    invoke-virtual {v1, v3}, Landroid/util/AtomicFile;->failWrite(Ljava/io/FileOutputStream;)V
+    invoke-virtual {v1, v2}, Landroid/util/AtomicFile;->failWrite(Ljava/io/FileOutputStream;)V
 
     .line 336
-    :goto_65
+    .end local v0  # "e":Ljava/lang/Exception;
+    :goto_63
     return-void
 .end method
 
@@ -778,6 +801,7 @@
     invoke-direct {v0, v1, v2}, Ljava/io/File;-><init>(Ljava/io/File;Ljava/lang/String;)V
 
     .line 393
+    .local v0, "dir":Ljava/io/File;
     invoke-virtual {v0}, Ljava/io/File;->mkdirs()Z
 
     .line 394
@@ -791,7 +815,8 @@
 .end method
 
 .method injectReadFromFileTrimmed(Ljava/lang/String;)Ljava/lang/String;
-    .registers 2
+    .registers 3
+    .param p1, "file"  # Ljava/lang/String;
     .annotation build Lcom/android/internal/annotations/VisibleForTesting;
     .end annotation
 
@@ -804,13 +829,13 @@
     .line 289
     invoke-static {p1}, Llibcore/io/IoUtils;->readFileAsString(Ljava/lang/String;)Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    invoke-virtual {p1}, Ljava/lang/String;->trim()Ljava/lang/String;
+    invoke-virtual {v0}, Ljava/lang/String;->trim()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    return-object p1
+    return-object v0
 .end method
 
 .method injectShouldSkipWrite()Z
@@ -832,6 +857,8 @@
 
 .method injectWriteToFile(Ljava/lang/String;Ljava/lang/String;)V
     .registers 7
+    .param p1, "file"  # Ljava/lang/String;
+    .param p2, "value"  # Ljava/lang/String;
     .annotation build Lcom/android/internal/annotations/VisibleForTesting;
     .end annotation
 
@@ -851,25 +878,25 @@
     if-eqz v0, :cond_22
 
     .line 295
-    new-instance p2, Ljava/lang/StringBuilder;
+    new-instance v0, Ljava/lang/StringBuilder;
 
-    invoke-direct {p2}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v0, "Skipped writing to \'"
+    const-string v2, "Skipped writing to \'"
 
-    invoke-virtual {p2, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p2, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string p1, "\'"
+    const-string v2, "\'"
 
-    invoke-virtual {p2, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    invoke-static {v1, p1}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v0}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 296
     return-void
@@ -884,6 +911,7 @@
     .catch Ljava/io/IOException; {:try_start_22 .. :try_end_27} :catch_37
     .catch Ljava/lang/RuntimeException; {:try_start_22 .. :try_end_27} :catch_37
 
+    .local v0, "out":Ljava/io/FileWriter;
     const/4 v2, 0x0
 
     .line 302
@@ -900,36 +928,54 @@
     .catch Ljava/lang/RuntimeException; {:try_start_2b .. :try_end_2e} :catch_37
 
     .line 306
+    .end local v0  # "out":Ljava/io/FileWriter;
     nop
 
     .line 307
     return-void
 
     .line 301
+    .restart local v0  # "out":Ljava/io/FileWriter;
     :catchall_30
     move-exception v2
 
+    .end local v0  # "out":Ljava/io/FileWriter;
+    .end local p0  # "this":Lcom/android/server/power/batterysaver/FileUpdater;
+    .end local p1  # "file":Ljava/lang/String;
+    .end local p2  # "value":Ljava/lang/String;
     :try_start_31
     throw v2
     :try_end_32
     .catchall {:try_start_31 .. :try_end_32} :catchall_32
 
     .line 303
+    .restart local v0  # "out":Ljava/io/FileWriter;
+    .restart local p0  # "this":Lcom/android/server/power/batterysaver/FileUpdater;
+    .restart local p1  # "file":Ljava/lang/String;
+    .restart local p2  # "value":Ljava/lang/String;
     :catchall_32
     move-exception v3
 
     :try_start_33
     invoke-static {v2, v0}, Lcom/android/server/power/batterysaver/FileUpdater;->$closeResource(Ljava/lang/Throwable;Ljava/lang/AutoCloseable;)V
 
+    .end local p0  # "this":Lcom/android/server/power/batterysaver/FileUpdater;
+    .end local p1  # "file":Ljava/lang/String;
+    .end local p2  # "value":Ljava/lang/String;
     throw v3
     :try_end_37
     .catch Ljava/io/IOException; {:try_start_33 .. :try_end_37} :catch_37
     .catch Ljava/lang/RuntimeException; {:try_start_33 .. :try_end_37} :catch_37
 
+    .end local v0  # "out":Ljava/io/FileWriter;
+    .restart local p0  # "this":Lcom/android/server/power/batterysaver/FileUpdater;
+    .restart local p1  # "file":Ljava/lang/String;
+    .restart local p2  # "value":Ljava/lang/String;
     :catch_37
     move-exception v0
 
     .line 304
+    .local v0, "e":Ljava/lang/Exception;
     new-instance v2, Ljava/lang/StringBuilder;
 
     invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
@@ -940,27 +986,27 @@
 
     invoke-virtual {v2, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string p2, "\' to \'"
+    const-string v3, "\' to \'"
 
-    invoke-virtual {v2, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v2, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    const-string p1, "\': "
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v2, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    const-string v3, "\': "
+
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v0}, Ljava/lang/Exception;->getMessage()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v3
 
-    invoke-virtual {v2, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v2
 
-    invoke-static {v1, p1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v2}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 305
     throw v0
@@ -968,6 +1014,8 @@
 
 .method injectWtf(Ljava/lang/String;Ljava/lang/Throwable;)V
     .registers 4
+    .param p1, "message"  # Ljava/lang/String;
+    .param p2, "e"  # Ljava/lang/Throwable;
     .annotation build Lcom/android/internal/annotations/VisibleForTesting;
     .end annotation
 
@@ -990,7 +1038,7 @@
 .end method
 
 .method loadDefaultValuesLocked()Z
-    .registers 12
+    .registers 14
     .annotation build Lcom/android/internal/annotations/GuardedBy;
         value = {
             "mLock"
@@ -1012,32 +1060,34 @@
     invoke-direct {v1, v2}, Landroid/util/AtomicFile;-><init>(Ljava/io/File;)V
 
     .line 345
-    nop
-
-    .line 346
+    .local v1, "file":Landroid/util/AtomicFile;
     const/4 v2, 0x0
 
-    const/4 v3, 0x1
+    .line 346
+    .local v2, "read":Ljava/util/Map;, "Ljava/util/Map<Ljava/lang/String;Ljava/lang/String;>;"
+    const/4 v3, 0x0
 
-    const/4 v4, 0x0
+    const/4 v4, 0x1
 
-    :try_start_f
+    :try_start_e
     invoke-virtual {v1}, Landroid/util/AtomicFile;->openRead()Ljava/io/FileInputStream;
 
     move-result-object v5
-    :try_end_13
-    .catch Ljava/io/FileNotFoundException; {:try_start_f .. :try_end_13} :catch_8f
-    .catch Ljava/io/IOException; {:try_start_f .. :try_end_13} :catch_73
-    .catch Lorg/xmlpull/v1/XmlPullParserException; {:try_start_f .. :try_end_13} :catch_73
-    .catch Ljava/lang/RuntimeException; {:try_start_f .. :try_end_13} :catch_73
+    :try_end_12
+    .catch Ljava/io/FileNotFoundException; {:try_start_e .. :try_end_12} :catch_89
+    .catch Ljava/io/IOException; {:try_start_e .. :try_end_12} :catch_6f
+    .catch Lorg/xmlpull/v1/XmlPullParserException; {:try_start_e .. :try_end_12} :catch_6f
+    .catch Ljava/lang/RuntimeException; {:try_start_e .. :try_end_12} :catch_6f
 
     .line 347
-    :try_start_13
+    .local v5, "in":Ljava/io/FileInputStream;
+    :try_start_12
     invoke-static {}, Landroid/util/Xml;->newPullParser()Lorg/xmlpull/v1/XmlPullParser;
 
     move-result-object v6
 
     .line 348
+    .local v6, "parser":Lorg/xmlpull/v1/XmlPullParser;
     sget-object v7, Ljava/nio/charset/StandardCharsets;->UTF_8:Ljava/nio/charset/Charset;
 
     invoke-virtual {v7}, Ljava/nio/charset/Charset;->name()Ljava/lang/String;
@@ -1045,73 +1095,75 @@
     move-result-object v7
 
     invoke-interface {v6, v5, v7}, Lorg/xmlpull/v1/XmlPullParser;->setInput(Ljava/io/InputStream;Ljava/lang/String;)V
-    :try_end_20
-    .catchall {:try_start_13 .. :try_end_20} :catchall_67
-
-    move-object v7, v4
 
     .line 351
-    :cond_21
-    :goto_21
-    :try_start_21
+    :cond_1f
+    :goto_1f
     invoke-interface {v6}, Lorg/xmlpull/v1/XmlPullParser;->next()I
 
-    move-result v8
+    move-result v7
 
-    if-eq v8, v3, :cond_5f
+    move v8, v7
+
+    .local v8, "type":I
+    const/4 v9, 0x0
+
+    if-eq v7, v4, :cond_60
 
     .line 352
-    const/4 v9, 0x2
+    const/4 v7, 0x2
 
-    if-eq v8, v9, :cond_2b
+    if-eq v8, v7, :cond_2b
 
     .line 353
-    goto :goto_21
+    goto :goto_1f
 
     .line 355
     :cond_2b
     invoke-interface {v6}, Lorg/xmlpull/v1/XmlPullParser;->getDepth()I
 
-    move-result v8
+    move-result v7
 
     .line 357
+    .local v7, "depth":I
     invoke-interface {v6}, Lorg/xmlpull/v1/XmlPullParser;->getName()Ljava/lang/String;
 
-    move-result-object v9
+    move-result-object v10
     :try_end_33
-    .catchall {:try_start_21 .. :try_end_33} :catchall_65
+    .catchall {:try_start_12 .. :try_end_33} :catchall_66
 
     .line 358
-    const-string v10, "defaults"
+    .local v10, "tag":Ljava/lang/String;
+    const-string v11, "defaults"
 
-    if-ne v8, v3, :cond_58
+    if-ne v7, v4, :cond_58
 
     .line 359
     :try_start_37
-    invoke-virtual {v10, v9}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v11, v10}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result v8
+    move-result v11
 
-    if-nez v8, :cond_21
+    if-nez v11, :cond_1f
 
     .line 360
-    new-instance v6, Ljava/lang/StringBuilder;
+    new-instance v11, Ljava/lang/StringBuilder;
 
-    invoke-direct {v6}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v11}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v8, "Invalid root tag: "
+    const-string v12, "Invalid root tag: "
 
-    invoke-virtual {v6, v8}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v11, v12}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v6, v9}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v11, v10}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v6}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v11}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v6
+    move-result-object v11
 
-    invoke-static {v0, v6}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v0, v11}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
     :try_end_51
-    .catchall {:try_start_37 .. :try_end_51} :catchall_65
+    .catchall {:try_start_37 .. :try_end_51} :catchall_66
 
     .line 361
     nop
@@ -1120,132 +1172,141 @@
     if-eqz v5, :cond_57
 
     :try_start_54
-    invoke-static {v4, v5}, Lcom/android/server/power/batterysaver/FileUpdater;->$closeResource(Ljava/lang/Throwable;Ljava/lang/AutoCloseable;)V
+    invoke-static {v9, v5}, Lcom/android/server/power/batterysaver/FileUpdater;->$closeResource(Ljava/lang/Throwable;Ljava/lang/AutoCloseable;)V
     :try_end_57
-    .catch Ljava/io/FileNotFoundException; {:try_start_54 .. :try_end_57} :catch_8f
-    .catch Ljava/io/IOException; {:try_start_54 .. :try_end_57} :catch_71
-    .catch Lorg/xmlpull/v1/XmlPullParserException; {:try_start_54 .. :try_end_57} :catch_71
-    .catch Ljava/lang/RuntimeException; {:try_start_54 .. :try_end_57} :catch_71
+    .catch Ljava/io/FileNotFoundException; {:try_start_54 .. :try_end_57} :catch_89
+    .catch Ljava/io/IOException; {:try_start_54 .. :try_end_57} :catch_6f
+    .catch Lorg/xmlpull/v1/XmlPullParserException; {:try_start_54 .. :try_end_57} :catch_6f
+    .catch Ljava/lang/RuntimeException; {:try_start_54 .. :try_end_57} :catch_6f
 
     .line 361
     :cond_57
-    return v2
+    return v3
 
     .line 365
     :cond_58
     :try_start_58
-    new-array v8, v3, [Ljava/lang/String;
+    new-array v12, v4, [Ljava/lang/String;
 
     .line 366
-    invoke-static {v6, v10, v8, v4}, Lcom/android/internal/util/XmlUtils;->readThisArrayMapXml(Lorg/xmlpull/v1/XmlPullParser;Ljava/lang/String;[Ljava/lang/String;Lcom/android/internal/util/XmlUtils$ReadMapCallback;)Landroid/util/ArrayMap;
+    .local v12, "tagName":[Ljava/lang/String;
+    invoke-static {v6, v11, v12, v9}, Lcom/android/internal/util/XmlUtils;->readThisArrayMapXml(Lorg/xmlpull/v1/XmlPullParser;Ljava/lang/String;[Ljava/lang/String;Lcom/android/internal/util/XmlUtils$ReadMapCallback;)Landroid/util/ArrayMap;
 
-    move-result-object v7
+    move-result-object v9
     :try_end_5e
-    .catchall {:try_start_58 .. :try_end_5e} :catchall_65
+    .catchall {:try_start_58 .. :try_end_5e} :catchall_66
+
+    move-object v2, v9
 
     .line 368
-    goto :goto_21
+    .end local v7  # "depth":I
+    .end local v10  # "tag":Ljava/lang/String;
+    .end local v12  # "tagName":[Ljava/lang/String;
+    goto :goto_1f
 
     .line 369
-    :cond_5f
-    if-eqz v5, :cond_64
+    .end local v6  # "parser":Lorg/xmlpull/v1/XmlPullParser;
+    .end local v8  # "type":I
+    :cond_60
+    if-eqz v5, :cond_8b
 
-    :try_start_61
-    invoke-static {v4, v5}, Lcom/android/server/power/batterysaver/FileUpdater;->$closeResource(Ljava/lang/Throwable;Ljava/lang/AutoCloseable;)V
-    :try_end_64
-    .catch Ljava/io/FileNotFoundException; {:try_start_61 .. :try_end_64} :catch_8f
-    .catch Ljava/io/IOException; {:try_start_61 .. :try_end_64} :catch_71
-    .catch Lorg/xmlpull/v1/XmlPullParserException; {:try_start_61 .. :try_end_64} :catch_71
-    .catch Ljava/lang/RuntimeException; {:try_start_61 .. :try_end_64} :catch_71
+    :try_start_62
+    invoke-static {v9, v5}, Lcom/android/server/power/batterysaver/FileUpdater;->$closeResource(Ljava/lang/Throwable;Ljava/lang/AutoCloseable;)V
+    :try_end_65
+    .catch Ljava/io/FileNotFoundException; {:try_start_62 .. :try_end_65} :catch_89
+    .catch Ljava/io/IOException; {:try_start_62 .. :try_end_65} :catch_6f
+    .catch Lorg/xmlpull/v1/XmlPullParserException; {:try_start_62 .. :try_end_65} :catch_6f
+    .catch Ljava/lang/RuntimeException; {:try_start_62 .. :try_end_65} :catch_6f
 
-    .line 373
-    :cond_64
-    goto :goto_92
+    goto :goto_8b
 
     .line 346
-    :catchall_65
+    :catchall_66
     move-exception v6
 
-    goto :goto_69
-
-    :catchall_67
-    move-exception v6
-
-    move-object v7, v4
-
-    :goto_69
-    :try_start_69
+    .end local v1  # "file":Landroid/util/AtomicFile;
+    .end local v2  # "read":Ljava/util/Map;, "Ljava/util/Map<Ljava/lang/String;Ljava/lang/String;>;"
+    .end local v5  # "in":Ljava/io/FileInputStream;
+    .end local p0  # "this":Lcom/android/server/power/batterysaver/FileUpdater;
+    :try_start_67
     throw v6
-    :try_end_6a
-    .catchall {:try_start_69 .. :try_end_6a} :catchall_6a
+    :try_end_68
+    .catchall {:try_start_67 .. :try_end_68} :catchall_68
 
     .line 369
-    :catchall_6a
-    move-exception v8
+    .restart local v1  # "file":Landroid/util/AtomicFile;
+    .restart local v2  # "read":Ljava/util/Map;, "Ljava/util/Map<Ljava/lang/String;Ljava/lang/String;>;"
+    .restart local v5  # "in":Ljava/io/FileInputStream;
+    .restart local p0  # "this":Lcom/android/server/power/batterysaver/FileUpdater;
+    :catchall_68
+    move-exception v7
 
-    if-eqz v5, :cond_70
+    if-eqz v5, :cond_6e
 
-    :try_start_6d
+    :try_start_6b
     invoke-static {v6, v5}, Lcom/android/server/power/batterysaver/FileUpdater;->$closeResource(Ljava/lang/Throwable;Ljava/lang/AutoCloseable;)V
 
-    :cond_70
-    throw v8
-    :try_end_71
-    .catch Ljava/io/FileNotFoundException; {:try_start_6d .. :try_end_71} :catch_8f
-    .catch Ljava/io/IOException; {:try_start_6d .. :try_end_71} :catch_71
-    .catch Lorg/xmlpull/v1/XmlPullParserException; {:try_start_6d .. :try_end_71} :catch_71
-    .catch Ljava/lang/RuntimeException; {:try_start_6d .. :try_end_71} :catch_71
+    .end local v1  # "file":Landroid/util/AtomicFile;
+    .end local v2  # "read":Ljava/util/Map;, "Ljava/util/Map<Ljava/lang/String;Ljava/lang/String;>;"
+    .end local p0  # "this":Lcom/android/server/power/batterysaver/FileUpdater;
+    :cond_6e
+    throw v7
+    :try_end_6f
+    .catch Ljava/io/FileNotFoundException; {:try_start_6b .. :try_end_6f} :catch_89
+    .catch Ljava/io/IOException; {:try_start_6b .. :try_end_6f} :catch_6f
+    .catch Lorg/xmlpull/v1/XmlPullParserException; {:try_start_6b .. :try_end_6f} :catch_6f
+    .catch Ljava/lang/RuntimeException; {:try_start_6b .. :try_end_6f} :catch_6f
 
     .line 371
-    :catch_71
-    move-exception v4
-
-    goto :goto_76
-
-    :catch_73
+    .end local v5  # "in":Ljava/io/FileInputStream;
+    .restart local v1  # "file":Landroid/util/AtomicFile;
+    .restart local v2  # "read":Ljava/util/Map;, "Ljava/util/Map<Ljava/lang/String;Ljava/lang/String;>;"
+    .restart local p0  # "this":Lcom/android/server/power/batterysaver/FileUpdater;
+    :catch_6f
     move-exception v5
 
-    move-object v7, v4
-
-    move-object v4, v5
-
     .line 372
-    :goto_76
-    new-instance v5, Ljava/lang/StringBuilder;
+    .local v5, "e":Ljava/lang/Exception;
+    new-instance v6, Ljava/lang/StringBuilder;
 
-    invoke-direct {v5}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v6}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v6, "Failed to read file "
+    const-string v7, "Failed to read file "
 
-    invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v6, v7}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v1}, Landroid/util/AtomicFile;->getBaseFile()Ljava/io/File;
 
-    move-result-object v1
+    move-result-object v7
 
-    invoke-virtual {v5, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    invoke-virtual {v6, v7}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v5}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v6}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v1
+    move-result-object v6
 
-    invoke-static {v0, v1, v4}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    invoke-static {v0, v6, v5}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
-    goto :goto_92
+    goto :goto_8c
 
     .line 369
-    :catch_8f
+    .end local v5  # "e":Ljava/lang/Exception;
+    :catch_89
     move-exception v0
 
     .line 370
-    nop
+    .local v0, "e":Ljava/io/FileNotFoundException;
+    const/4 v2, 0x0
 
     .line 373
-    move-object v7, v4
+    .end local v0  # "e":Ljava/io/FileNotFoundException;
+    :cond_8b
+    :goto_8b
+    nop
 
     .line 374
-    :goto_92
-    if-eqz v7, :cond_9f
+    :goto_8c
+    if-eqz v2, :cond_99
 
     .line 375
     iget-object v0, p0, Lcom/android/server/power/batterysaver/FileUpdater;->mDefaultValues:Landroid/util/ArrayMap;
@@ -1255,14 +1316,14 @@
     .line 376
     iget-object v0, p0, Lcom/android/server/power/batterysaver/FileUpdater;->mDefaultValues:Landroid/util/ArrayMap;
 
-    invoke-virtual {v0, v7}, Landroid/util/ArrayMap;->putAll(Ljava/util/Map;)V
+    invoke-virtual {v0, v2}, Landroid/util/ArrayMap;->putAll(Ljava/util/Map;)V
 
     .line 377
-    return v3
+    return v4
 
     .line 379
-    :cond_9f
-    return v2
+    :cond_99
+    return v3
 .end method
 
 .method public restoreDefault()V
@@ -1302,7 +1363,8 @@
 .end method
 
 .method public systemReady(Z)V
-    .registers 4
+    .registers 5
+    .param p1, "runtimeRestarted"  # Z
 
     .line 120
     iget-object v0, p0, Lcom/android/server/power/batterysaver/FileUpdater;->mLock:Ljava/lang/Object;
@@ -1316,16 +1378,16 @@
     :try_start_5
     invoke-virtual {p0}, Lcom/android/server/power/batterysaver/FileUpdater;->loadDefaultValuesLocked()Z
 
-    move-result p1
+    move-result v1
 
-    if-eqz p1, :cond_1d
+    if-eqz v1, :cond_1d
 
     .line 124
-    const-string p1, "BatterySaverController"
+    const-string v1, "BatterySaverController"
 
-    const-string v1, "Default values loaded after runtime restart; writing them..."
+    const-string v2, "Default values loaded after runtime restart; writing them..."
 
-    invoke-static {p1, v1}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v2}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 125
     invoke-virtual {p0}, Lcom/android/server/power/batterysaver/FileUpdater;->restoreDefault()V
@@ -1336,9 +1398,9 @@
     :cond_16
     invoke-virtual {p0}, Lcom/android/server/power/batterysaver/FileUpdater;->injectDefaultValuesFilename()Ljava/io/File;
 
-    move-result-object p1
+    move-result-object v1
 
-    invoke-virtual {p1}, Ljava/io/File;->delete()Z
+    invoke-virtual {v1}, Ljava/io/File;->delete()Z
 
     .line 131
     :cond_1d
@@ -1350,13 +1412,13 @@
 
     .line 131
     :catchall_1f
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_21
     .catchall {:try_start_5 .. :try_end_21} :catchall_1f
 
-    throw p1
+    throw v1
 .end method
 
 .method public writeFiles(Landroid/util/ArrayMap;)V
@@ -1372,6 +1434,7 @@
     .end annotation
 
     .line 138
+    .local p1, "fileValues":Landroid/util/ArrayMap;, "Landroid/util/ArrayMap<Ljava/lang/String;Ljava/lang/String;>;"
     iget-object v0, p0, Lcom/android/server/power/batterysaver/FileUpdater;->mLock:Ljava/lang/Object;
 
     monitor-enter v0
@@ -1384,8 +1447,9 @@
 
     add-int/lit8 v1, v1, -0x1
 
+    .local v1, "i":I
     :goto_9
-    if-ltz v1, :cond_1f
+    if-ltz v1, :cond_20
 
     .line 140
     invoke-virtual {p1, v1}, Landroid/util/ArrayMap;->keyAt(I)Ljava/lang/Object;
@@ -1395,6 +1459,7 @@
     check-cast v2, Ljava/lang/String;
 
     .line 141
+    .local v2, "file":Ljava/lang/String;
     invoke-virtual {p1, v1}, Landroid/util/ArrayMap;->valueAt(I)Ljava/lang/Object;
 
     move-result-object v3
@@ -1402,34 +1467,40 @@
     check-cast v3, Ljava/lang/String;
 
     .line 147
+    .local v3, "value":Ljava/lang/String;
     iget-object v4, p0, Lcom/android/server/power/batterysaver/FileUpdater;->mPendingWrites:Landroid/util/ArrayMap;
 
     invoke-virtual {v4, v2, v3}, Landroid/util/ArrayMap;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
 
     .line 139
+    nop
+
+    .end local v2  # "file":Ljava/lang/String;
+    .end local v3  # "value":Ljava/lang/String;
     add-int/lit8 v1, v1, -0x1
 
     goto :goto_9
 
     .line 150
-    :cond_1f
-    const/4 p1, 0x0
+    .end local v1  # "i":I
+    :cond_20
+    const/4 v1, 0x0
 
-    iput p1, p0, Lcom/android/server/power/batterysaver/FileUpdater;->mRetries:I
+    iput v1, p0, Lcom/android/server/power/batterysaver/FileUpdater;->mRetries:I
 
     .line 152
-    iget-object p1, p0, Lcom/android/server/power/batterysaver/FileUpdater;->mHandler:Landroid/os/Handler;
+    iget-object v1, p0, Lcom/android/server/power/batterysaver/FileUpdater;->mHandler:Landroid/os/Handler;
 
-    iget-object v1, p0, Lcom/android/server/power/batterysaver/FileUpdater;->mHandleWriteOnHandlerRunnable:Ljava/lang/Runnable;
+    iget-object v2, p0, Lcom/android/server/power/batterysaver/FileUpdater;->mHandleWriteOnHandlerRunnable:Ljava/lang/Runnable;
 
-    invoke-virtual {p1, v1}, Landroid/os/Handler;->removeCallbacks(Ljava/lang/Runnable;)V
+    invoke-virtual {v1, v2}, Landroid/os/Handler;->removeCallbacks(Ljava/lang/Runnable;)V
 
     .line 153
-    iget-object p1, p0, Lcom/android/server/power/batterysaver/FileUpdater;->mHandler:Landroid/os/Handler;
+    iget-object v1, p0, Lcom/android/server/power/batterysaver/FileUpdater;->mHandler:Landroid/os/Handler;
 
-    iget-object v1, p0, Lcom/android/server/power/batterysaver/FileUpdater;->mHandleWriteOnHandlerRunnable:Ljava/lang/Runnable;
+    iget-object v2, p0, Lcom/android/server/power/batterysaver/FileUpdater;->mHandleWriteOnHandlerRunnable:Ljava/lang/Runnable;
 
-    invoke-virtual {p1, v1}, Landroid/os/Handler;->post(Ljava/lang/Runnable;)Z
+    invoke-virtual {v1, v2}, Landroid/os/Handler;->post(Ljava/lang/Runnable;)Z
 
     .line 154
     monitor-exit v0
@@ -1438,12 +1509,12 @@
     return-void
 
     .line 154
-    :catchall_32
-    move-exception p1
+    :catchall_33
+    move-exception v1
 
     monitor-exit v0
-    :try_end_34
-    .catchall {:try_start_3 .. :try_end_34} :catchall_32
+    :try_end_35
+    .catchall {:try_start_3 .. :try_end_35} :catchall_33
 
-    throw p1
+    throw v1
 .end method

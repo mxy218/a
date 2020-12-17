@@ -25,6 +25,9 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/IpSecService;ILjava/io/FileDescriptor;I)V
     .registers 5
+    .param p2, "resourceId"  # I
+    .param p3, "socket"  # Ljava/io/FileDescriptor;
+    .param p4, "port"  # I
 
     .line 939
     iput-object p1, p0, Lcom/android/server/IpSecService$EncapSocketRecord;->this$0:Lcom/android/server/IpSecService;

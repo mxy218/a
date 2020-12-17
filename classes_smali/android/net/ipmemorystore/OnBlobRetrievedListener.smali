@@ -6,6 +6,7 @@
 # direct methods
 .method public static toAIDL(Landroid/net/ipmemorystore/OnBlobRetrievedListener;)Landroid/net/ipmemorystore/IOnBlobRetrievedListener;
     .registers 2
+    .param p0, "listener"  # Landroid/net/ipmemorystore/OnBlobRetrievedListener;
 
     .line 34
     new-instance v0, Landroid/net/ipmemorystore/OnBlobRetrievedListener$1;

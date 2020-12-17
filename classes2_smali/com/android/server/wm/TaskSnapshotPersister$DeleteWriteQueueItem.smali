@@ -25,21 +25,23 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/wm/TaskSnapshotPersister;II)V
     .registers 5
+    .param p2, "taskId"  # I
+    .param p3, "userId"  # I
 
-    .line 438
+    .line 414
     iput-object p1, p0, Lcom/android/server/wm/TaskSnapshotPersister$DeleteWriteQueueItem;->this$0:Lcom/android/server/wm/TaskSnapshotPersister;
 
     const/4 v0, 0x0
 
     invoke-direct {p0, p1, v0}, Lcom/android/server/wm/TaskSnapshotPersister$WriteQueueItem;-><init>(Lcom/android/server/wm/TaskSnapshotPersister;Lcom/android/server/wm/TaskSnapshotPersister$1;)V
 
-    .line 439
+    .line 415
     iput p2, p0, Lcom/android/server/wm/TaskSnapshotPersister$DeleteWriteQueueItem;->mTaskId:I
 
-    .line 440
+    .line 416
     iput p3, p0, Lcom/android/server/wm/TaskSnapshotPersister$DeleteWriteQueueItem;->mUserId:I
 
-    .line 441
+    .line 417
     return-void
 .end method
 
@@ -48,15 +50,15 @@
 .method write()V
     .registers 4
 
-    .line 445
+    .line 421
     iget-object v0, p0, Lcom/android/server/wm/TaskSnapshotPersister$DeleteWriteQueueItem;->this$0:Lcom/android/server/wm/TaskSnapshotPersister;
 
     iget v1, p0, Lcom/android/server/wm/TaskSnapshotPersister$DeleteWriteQueueItem;->mTaskId:I
 
     iget v2, p0, Lcom/android/server/wm/TaskSnapshotPersister$DeleteWriteQueueItem;->mUserId:I
 
-    invoke-static {v0, v1, v2}, Lcom/android/server/wm/TaskSnapshotPersister;->access$1000(Lcom/android/server/wm/TaskSnapshotPersister;II)V
+    invoke-static {v0, v1, v2}, Lcom/android/server/wm/TaskSnapshotPersister;->access$900(Lcom/android/server/wm/TaskSnapshotPersister;II)V
 
-    .line 446
+    .line 422
     return-void
 .end method

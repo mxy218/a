@@ -18,7 +18,7 @@
 
     const-string v1, "ct_logs"
 
-    const-string v2, "metadata/"
+    const-string/jumbo v2, "metadata/"
 
     const-string/jumbo v3, "version"
 
@@ -29,7 +29,7 @@
 .end method
 
 .method private deleteOldLogDirectories()V
-    .registers 5
+    .registers 7
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Ljava/io/IOException;
@@ -63,31 +63,35 @@
     move-result-object v0
 
     .line 171
+    .local v0, "currentTarget":Ljava/io/File;
     new-instance v1, Lcom/android/server/updates/CertificateTransparencyLogInstallReceiver$1;
 
     invoke-direct {v1, p0, v0}, Lcom/android/server/updates/CertificateTransparencyLogInstallReceiver$1;-><init>(Lcom/android/server/updates/CertificateTransparencyLogInstallReceiver;Ljava/io/File;)V
 
     .line 177
-    iget-object v0, p0, Lcom/android/server/updates/CertificateTransparencyLogInstallReceiver;->updateDir:Ljava/io/File;
+    .local v1, "filter":Ljava/io/FileFilter;
+    iget-object v2, p0, Lcom/android/server/updates/CertificateTransparencyLogInstallReceiver;->updateDir:Ljava/io/File;
 
-    invoke-virtual {v0, v1}, Ljava/io/File;->listFiles(Ljava/io/FileFilter;)[Ljava/io/File;
+    invoke-virtual {v2, v1}, Ljava/io/File;->listFiles(Ljava/io/FileFilter;)[Ljava/io/File;
 
-    move-result-object v0
+    move-result-object v2
 
-    array-length v1, v0
+    array-length v3, v2
 
-    const/4 v2, 0x0
+    const/4 v4, 0x0
 
     :goto_23
-    if-ge v2, v1, :cond_2d
+    if-ge v4, v3, :cond_2d
 
-    aget-object v3, v0, v2
+    aget-object v5, v2, v4
 
     .line 178
-    invoke-static {v3}, Landroid/os/FileUtils;->deleteContentsAndDir(Ljava/io/File;)Z
+    .local v5, "f":Ljava/io/File;
+    invoke-static {v5}, Landroid/os/FileUtils;->deleteContentsAndDir(Ljava/io/File;)Z
 
     .line 177
-    add-int/lit8 v2, v2, 0x1
+    .end local v5  # "f":Ljava/io/File;
+    add-int/lit8 v4, v4, 0x1
 
     goto :goto_23
 
@@ -97,50 +101,57 @@
 .end method
 
 .method private getLogFileName(Ljava/lang/String;)Ljava/lang/String;
-    .registers 4
+    .registers 5
+    .param p1, "base64PublicKey"  # Ljava/lang/String;
 
     .line 151
     const/4 v0, 0x0
 
     invoke-static {p1, v0}, Landroid/util/Base64;->decode(Ljava/lang/String;I)[B
 
-    move-result-object p1
-
-    .line 153
-    :try_start_5
-    const-string v1, "SHA-256"
-
-    invoke-static {v1}, Ljava/security/MessageDigest;->getInstance(Ljava/lang/String;)Ljava/security/MessageDigest;
-
     move-result-object v1
 
-    invoke-virtual {v1, p1}, Ljava/security/MessageDigest;->digest([B)[B
+    .line 153
+    .local v1, "keyBytes":[B
+    :try_start_5
+    const-string v2, "SHA-256"
 
-    move-result-object p1
+    invoke-static {v2}, Ljava/security/MessageDigest;->getInstance(Ljava/lang/String;)Ljava/security/MessageDigest;
+
+    move-result-object v2
+
+    invoke-virtual {v2, v1}, Ljava/security/MessageDigest;->digest([B)[B
+
+    move-result-object v2
 
     .line 154
-    invoke-static {p1, v0}, Lcom/android/internal/util/HexDump;->toHexString([BZ)Ljava/lang/String;
+    .local v2, "id":[B
+    invoke-static {v2, v0}, Lcom/android/internal/util/HexDump;->toHexString([BZ)Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
     :try_end_13
     .catch Ljava/security/NoSuchAlgorithmException; {:try_start_5 .. :try_end_13} :catch_14
 
-    return-object p1
+    return-object v0
 
     .line 155
+    .end local v2  # "id":[B
     :catch_14
-    move-exception p1
+    move-exception v0
 
     .line 157
-    new-instance v0, Ljava/lang/RuntimeException;
+    .local v0, "e":Ljava/security/NoSuchAlgorithmException;
+    new-instance v2, Ljava/lang/RuntimeException;
 
-    invoke-direct {v0, p1}, Ljava/lang/RuntimeException;-><init>(Ljava/lang/Throwable;)V
+    invoke-direct {v2, v0}, Ljava/lang/RuntimeException;-><init>(Ljava/lang/Throwable;)V
 
-    throw v0
+    throw v2
 .end method
 
 .method private installLog(Ljava/io/File;Lorg/json/JSONObject;)V
-    .registers 9
+    .registers 11
+    .param p1, "directory"  # Ljava/io/File;
+    .param p2, "logObject"  # Lorg/json/JSONObject;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Ljava/io/IOException;
@@ -152,9 +163,9 @@
 
     const-string/jumbo v1, "url"
 
-    const-string v2, "key"
+    const-string/jumbo v2, "key"
 
-    :try_start_7
+    :try_start_8
     invoke-virtual {p2, v2}, Lorg/json/JSONObject;->getString(Ljava/lang/String;)Ljava/lang/String;
 
     move-result-object v3
@@ -164,143 +175,183 @@
     move-result-object v3
 
     .line 130
+    .local v3, "logFilename":Ljava/lang/String;
     new-instance v4, Ljava/io/File;
 
     invoke-direct {v4, p1, v3}, Ljava/io/File;-><init>(Ljava/io/File;Ljava/lang/String;)V
 
     .line 131
-    new-instance p1, Ljava/io/OutputStreamWriter;
+    .local v4, "file":Ljava/io/File;
+    new-instance v5, Ljava/io/OutputStreamWriter;
 
-    new-instance v3, Ljava/io/FileOutputStream;
+    new-instance v6, Ljava/io/FileOutputStream;
 
-    invoke-direct {v3, v4}, Ljava/io/FileOutputStream;-><init>(Ljava/io/File;)V
+    invoke-direct {v6, v4}, Ljava/io/FileOutputStream;-><init>(Ljava/io/File;)V
 
-    sget-object v5, Ljava/nio/charset/StandardCharsets;->UTF_8:Ljava/nio/charset/Charset;
+    sget-object v7, Ljava/nio/charset/StandardCharsets;->UTF_8:Ljava/nio/charset/Charset;
 
-    invoke-direct {p1, v3, v5}, Ljava/io/OutputStreamWriter;-><init>(Ljava/io/OutputStream;Ljava/nio/charset/Charset;)V
-    :try_end_20
-    .catch Lorg/json/JSONException; {:try_start_7 .. :try_end_20} :catch_69
+    invoke-direct {v5, v6, v7}, Ljava/io/OutputStreamWriter;-><init>(Ljava/io/OutputStream;Ljava/nio/charset/Charset;)V
+    :try_end_21
+    .catch Lorg/json/JSONException; {:try_start_8 .. :try_end_21} :catch_6a
 
     .line 133
-    :try_start_20
+    .local v5, "out":Ljava/io/OutputStreamWriter;
+    :try_start_21
     invoke-virtual {p2, v2}, Lorg/json/JSONObject;->getString(Ljava/lang/String;)Ljava/lang/String;
 
-    move-result-object v3
+    move-result-object v6
 
-    invoke-direct {p0, p1, v2, v3}, Lcom/android/server/updates/CertificateTransparencyLogInstallReceiver;->writeLogEntry(Ljava/io/OutputStreamWriter;Ljava/lang/String;Ljava/lang/String;)V
+    invoke-direct {p0, v5, v2, v6}, Lcom/android/server/updates/CertificateTransparencyLogInstallReceiver;->writeLogEntry(Ljava/io/OutputStreamWriter;Ljava/lang/String;Ljava/lang/String;)V
 
     .line 134
     invoke-virtual {p2, v1}, Lorg/json/JSONObject;->getString(Ljava/lang/String;)Ljava/lang/String;
 
     move-result-object v2
 
-    invoke-direct {p0, p1, v1, v2}, Lcom/android/server/updates/CertificateTransparencyLogInstallReceiver;->writeLogEntry(Ljava/io/OutputStreamWriter;Ljava/lang/String;Ljava/lang/String;)V
+    invoke-direct {p0, v5, v1, v2}, Lcom/android/server/updates/CertificateTransparencyLogInstallReceiver;->writeLogEntry(Ljava/io/OutputStreamWriter;Ljava/lang/String;Ljava/lang/String;)V
 
     .line 135
     invoke-virtual {p2, v0}, Lorg/json/JSONObject;->getString(Ljava/lang/String;)Ljava/lang/String;
 
-    move-result-object p2
+    move-result-object v1
 
-    invoke-direct {p0, p1, v0, p2}, Lcom/android/server/updates/CertificateTransparencyLogInstallReceiver;->writeLogEntry(Ljava/io/OutputStreamWriter;Ljava/lang/String;Ljava/lang/String;)V
-    :try_end_35
-    .catchall {:try_start_20 .. :try_end_35} :catchall_5d
+    invoke-direct {p0, v5, v0, v1}, Lcom/android/server/updates/CertificateTransparencyLogInstallReceiver;->writeLogEntry(Ljava/io/OutputStreamWriter;Ljava/lang/String;Ljava/lang/String;)V
+    :try_end_36
+    .catchall {:try_start_21 .. :try_end_36} :catchall_5e
 
     .line 136
-    :try_start_35
-    invoke-virtual {p1}, Ljava/io/OutputStreamWriter;->close()V
+    :try_start_36
+    invoke-virtual {v5}, Ljava/io/OutputStreamWriter;->close()V
 
     .line 137
-    const/4 p1, 0x1
+    .end local v5  # "out":Ljava/io/OutputStreamWriter;
+    const/4 v0, 0x1
 
-    const/4 p2, 0x0
+    const/4 v1, 0x0
 
-    invoke-virtual {v4, p1, p2}, Ljava/io/File;->setReadable(ZZ)Z
+    invoke-virtual {v4, v0, v1}, Ljava/io/File;->setReadable(ZZ)Z
 
-    move-result p1
+    move-result v0
 
-    if-eqz p1, :cond_42
+    if-eqz v0, :cond_43
 
     .line 142
+    .end local v3  # "logFilename":Ljava/lang/String;
+    .end local v4  # "file":Ljava/io/File;
     nop
 
     .line 144
     return-void
 
     .line 138
-    :cond_42
-    new-instance p1, Ljava/io/IOException;
+    .restart local v3  # "logFilename":Ljava/lang/String;
+    .restart local v4  # "file":Ljava/io/File;
+    :cond_43
+    new-instance v0, Ljava/io/IOException;
 
-    new-instance p2, Ljava/lang/StringBuilder;
+    new-instance v1, Ljava/lang/StringBuilder;
 
-    invoke-direct {p2}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v0, "Failed to set permissions on "
+    const-string v2, "Failed to set permissions on "
 
-    invoke-virtual {p2, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v4}, Ljava/io/File;->getCanonicalPath()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v2
 
-    invoke-virtual {p2, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p2
+    move-result-object v1
 
-    invoke-direct {p1, p2}, Ljava/io/IOException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v0, v1}, Ljava/io/IOException;-><init>(Ljava/lang/String;)V
 
-    throw p1
-    :try_end_5d
-    .catch Lorg/json/JSONException; {:try_start_35 .. :try_end_5d} :catch_69
+    .end local p0  # "this":Lcom/android/server/updates/CertificateTransparencyLogInstallReceiver;
+    .end local p1  # "directory":Ljava/io/File;
+    .end local p2  # "logObject":Lorg/json/JSONObject;
+    throw v0
+    :try_end_5e
+    .catch Lorg/json/JSONException; {:try_start_36 .. :try_end_5e} :catch_6a
 
     .line 131
-    :catchall_5d
-    move-exception p2
-
-    :try_start_5e
-    throw p2
-    :try_end_5f
-    .catchall {:try_start_5e .. :try_end_5f} :catchall_5f
-
-    .line 136
-    :catchall_5f
+    .restart local v5  # "out":Ljava/io/OutputStreamWriter;
+    .restart local p0  # "this":Lcom/android/server/updates/CertificateTransparencyLogInstallReceiver;
+    .restart local p1  # "directory":Ljava/io/File;
+    .restart local p2  # "logObject":Lorg/json/JSONObject;
+    :catchall_5e
     move-exception v0
 
-    :try_start_60
-    invoke-virtual {p1}, Ljava/io/OutputStreamWriter;->close()V
-    :try_end_63
-    .catchall {:try_start_60 .. :try_end_63} :catchall_64
-
-    goto :goto_68
-
-    :catchall_64
-    move-exception p1
-
-    :try_start_65
-    invoke-virtual {p2, p1}, Ljava/lang/Throwable;->addSuppressed(Ljava/lang/Throwable;)V
-
-    :goto_68
+    .end local v3  # "logFilename":Ljava/lang/String;
+    .end local v4  # "file":Ljava/io/File;
+    .end local v5  # "out":Ljava/io/OutputStreamWriter;
+    .end local p0  # "this":Lcom/android/server/updates/CertificateTransparencyLogInstallReceiver;
+    .end local p1  # "directory":Ljava/io/File;
+    .end local p2  # "logObject":Lorg/json/JSONObject;
+    :try_start_5f
     throw v0
-    :try_end_69
-    .catch Lorg/json/JSONException; {:try_start_65 .. :try_end_69} :catch_69
+    :try_end_60
+    .catchall {:try_start_5f .. :try_end_60} :catchall_60
+
+    .line 136
+    .restart local v3  # "logFilename":Ljava/lang/String;
+    .restart local v4  # "file":Ljava/io/File;
+    .restart local v5  # "out":Ljava/io/OutputStreamWriter;
+    .restart local p0  # "this":Lcom/android/server/updates/CertificateTransparencyLogInstallReceiver;
+    .restart local p1  # "directory":Ljava/io/File;
+    .restart local p2  # "logObject":Lorg/json/JSONObject;
+    :catchall_60
+    move-exception v1
+
+    :try_start_61
+    invoke-virtual {v5}, Ljava/io/OutputStreamWriter;->close()V
+    :try_end_64
+    .catchall {:try_start_61 .. :try_end_64} :catchall_65
+
+    goto :goto_69
+
+    :catchall_65
+    move-exception v2
+
+    :try_start_66
+    invoke-virtual {v0, v2}, Ljava/lang/Throwable;->addSuppressed(Ljava/lang/Throwable;)V
+
+    .end local p0  # "this":Lcom/android/server/updates/CertificateTransparencyLogInstallReceiver;
+    .end local p1  # "directory":Ljava/io/File;
+    .end local p2  # "logObject":Lorg/json/JSONObject;
+    :goto_69
+    throw v1
+    :try_end_6a
+    .catch Lorg/json/JSONException; {:try_start_66 .. :try_end_6a} :catch_6a
 
     .line 140
-    :catch_69
-    move-exception p1
+    .end local v3  # "logFilename":Ljava/lang/String;
+    .end local v4  # "file":Ljava/io/File;
+    .end local v5  # "out":Ljava/io/OutputStreamWriter;
+    .restart local p0  # "this":Lcom/android/server/updates/CertificateTransparencyLogInstallReceiver;
+    .restart local p1  # "directory":Ljava/io/File;
+    .restart local p2  # "logObject":Lorg/json/JSONObject;
+    :catch_6a
+    move-exception v0
 
     .line 141
-    new-instance p2, Ljava/io/IOException;
+    .local v0, "e":Lorg/json/JSONException;
+    new-instance v1, Ljava/io/IOException;
 
-    const-string v0, "Failed to parse log"
+    const-string v2, "Failed to parse log"
 
-    invoke-direct {p2, v0, p1}, Ljava/io/IOException;-><init>(Ljava/lang/String;Ljava/lang/Throwable;)V
+    invoke-direct {v1, v2, v0}, Ljava/io/IOException;-><init>(Ljava/lang/String;Ljava/lang/Throwable;)V
 
-    throw p2
+    throw v1
 .end method
 
 .method private writeLogEntry(Ljava/io/OutputStreamWriter;Ljava/lang/String;Ljava/lang/String;)V
-    .registers 5
+    .registers 6
+    .param p1, "out"  # Ljava/io/OutputStreamWriter;
+    .param p2, "key"  # Ljava/lang/String;
+    .param p3, "value"  # Ljava/lang/String;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Ljava/io/IOException;
@@ -314,21 +365,21 @@
 
     invoke-virtual {v0, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string p2, ":"
+    const-string v1, ":"
 
-    invoke-virtual {v0, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v0, p3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string p2, "\n"
+    const-string v1, "\n"
 
-    invoke-virtual {v0, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p2
+    move-result-object v0
 
-    invoke-virtual {p1, p2}, Ljava/io/OutputStreamWriter;->write(Ljava/lang/String;)V
+    invoke-virtual {p1, v0}, Ljava/io/OutputStreamWriter;->write(Ljava/lang/String;)V
 
     .line 164
     return-void
@@ -338,6 +389,8 @@
 # virtual methods
 .method protected install([BI)V
     .registers 11
+    .param p1, "content"  # [B
+    .param p2, "version"  # I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Ljava/io/IOException;
@@ -358,7 +411,7 @@
 
     const-string v1, "Unable to make directory "
 
-    if-eqz v0, :cond_155
+    if-eqz v0, :cond_157
 
     .line 62
     iget-object v0, p0, Lcom/android/server/updates/CertificateTransparencyLogInstallReceiver;->updateDir:Ljava/io/File;
@@ -371,7 +424,7 @@
 
     move-result v0
 
-    if-eqz v0, :cond_138
+    if-eqz v0, :cond_13a
 
     .line 66
     new-instance v0, Ljava/io/File;
@@ -383,6 +436,7 @@
     invoke-direct {v0, v4, v5}, Ljava/io/File;-><init>(Ljava/io/File;Ljava/lang/String;)V
 
     .line 67
+    .local v0, "currentSymlink":Ljava/io/File;
     new-instance v4, Ljava/io/File;
 
     iget-object v5, p0, Lcom/android/server/updates/CertificateTransparencyLogInstallReceiver;->updateDir:Ljava/io/File;
@@ -391,7 +445,7 @@
 
     invoke-direct {v6}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v7, "logs-"
+    const-string/jumbo v7, "logs-"
 
     invoke-virtual {v6, v7}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
@@ -408,11 +462,12 @@
     invoke-direct {v4, v5, v6}, Ljava/io/File;-><init>(Ljava/io/File;Ljava/lang/String;)V
 
     .line 70
+    .local v4, "newVersion":Ljava/io/File;
     invoke-virtual {v4}, Ljava/io/File;->exists()Z
 
     move-result v5
 
-    if-eqz v5, :cond_69
+    if-eqz v5, :cond_6a
 
     .line 74
     invoke-virtual {v4}, Ljava/io/File;->getCanonicalPath()Ljava/lang/String;
@@ -427,24 +482,24 @@
 
     move-result v5
 
-    if-eqz v5, :cond_66
+    if-eqz v5, :cond_67
 
     .line 75
-    iget-object p1, p0, Lcom/android/server/updates/CertificateTransparencyLogInstallReceiver;->updateDir:Ljava/io/File;
+    iget-object v1, p0, Lcom/android/server/updates/CertificateTransparencyLogInstallReceiver;->updateDir:Ljava/io/File;
 
-    iget-object v0, p0, Lcom/android/server/updates/CertificateTransparencyLogInstallReceiver;->updateVersion:Ljava/io/File;
+    iget-object v2, p0, Lcom/android/server/updates/CertificateTransparencyLogInstallReceiver;->updateVersion:Ljava/io/File;
 
-    int-to-long v1, p2
+    int-to-long v5, p2
 
-    invoke-static {v1, v2}, Ljava/lang/Long;->toString(J)Ljava/lang/String;
+    invoke-static {v5, v6}, Ljava/lang/Long;->toString(J)Ljava/lang/String;
 
-    move-result-object p2
+    move-result-object v3
 
-    invoke-virtual {p2}, Ljava/lang/String;->getBytes()[B
+    invoke-virtual {v3}, Ljava/lang/String;->getBytes()[B
 
-    move-result-object p2
+    move-result-object v3
 
-    invoke-virtual {p0, p1, v0, p2}, Lcom/android/server/updates/CertificateTransparencyLogInstallReceiver;->writeUpdate(Ljava/io/File;Ljava/io/File;[B)V
+    invoke-virtual {p0, v1, v2, v3}, Lcom/android/server/updates/CertificateTransparencyLogInstallReceiver;->writeUpdate(Ljava/io/File;Ljava/io/File;[B)V
 
     .line 76
     invoke-direct {p0}, Lcom/android/server/updates/CertificateTransparencyLogInstallReceiver;->deleteOldLogDirectories()V
@@ -453,12 +508,12 @@
     return-void
 
     .line 79
-    :cond_66
+    :cond_67
     invoke-static {v4}, Landroid/os/FileUtils;->deleteContentsAndDir(Ljava/io/File;)Z
 
     .line 84
-    :cond_69
-    :try_start_69
+    :cond_6a
+    :try_start_6a
     invoke-virtual {v4}, Ljava/io/File;->mkdir()Z
 
     .line 85
@@ -466,20 +521,20 @@
 
     move-result v5
 
-    if-eqz v5, :cond_11a
+    if-eqz v5, :cond_11c
 
     .line 88
     invoke-virtual {v4, v3, v2}, Ljava/io/File;->setReadable(ZZ)Z
 
     move-result v1
-    :try_end_76
-    .catch Ljava/io/IOException; {:try_start_69 .. :try_end_76} :catch_133
-    .catch Ljava/lang/RuntimeException; {:try_start_69 .. :try_end_76} :catch_133
+    :try_end_77
+    .catch Ljava/io/IOException; {:try_start_6a .. :try_end_77} :catch_135
+    .catch Ljava/lang/RuntimeException; {:try_start_6a .. :try_end_77} :catch_135
 
-    if-eqz v1, :cond_fa
+    if-eqz v1, :cond_fc
 
     .line 95
-    :try_start_78
+    :try_start_79
     new-instance v1, Lorg/json/JSONObject;
 
     new-instance v3, Ljava/lang/String;
@@ -491,128 +546,138 @@
     invoke-direct {v1, v3}, Lorg/json/JSONObject;-><init>(Ljava/lang/String;)V
 
     .line 96
-    const-string p1, "logs"
+    .local v1, "json":Lorg/json/JSONObject;
+    const-string/jumbo v3, "logs"
 
-    invoke-virtual {v1, p1}, Lorg/json/JSONObject;->getJSONArray(Ljava/lang/String;)Lorg/json/JSONArray;
+    invoke-virtual {v1, v3}, Lorg/json/JSONObject;->getJSONArray(Ljava/lang/String;)Lorg/json/JSONArray;
 
-    move-result-object p1
+    move-result-object v3
 
     .line 97
+    .local v3, "logs":Lorg/json/JSONArray;
     nop
 
-    :goto_8b
-    invoke-virtual {p1}, Lorg/json/JSONArray;->length()I
+    .local v2, "i":I
+    :goto_8d
+    invoke-virtual {v3}, Lorg/json/JSONArray;->length()I
 
-    move-result v1
+    move-result v5
 
-    if-ge v2, v1, :cond_9b
+    if-ge v2, v5, :cond_9d
 
     .line 98
-    invoke-virtual {p1, v2}, Lorg/json/JSONArray;->getJSONObject(I)Lorg/json/JSONObject;
+    invoke-virtual {v3, v2}, Lorg/json/JSONArray;->getJSONObject(I)Lorg/json/JSONObject;
 
-    move-result-object v1
+    move-result-object v5
 
     .line 99
-    invoke-direct {p0, v4, v1}, Lcom/android/server/updates/CertificateTransparencyLogInstallReceiver;->installLog(Ljava/io/File;Lorg/json/JSONObject;)V
-    :try_end_98
-    .catch Lorg/json/JSONException; {:try_start_78 .. :try_end_98} :catch_f1
-    .catch Ljava/io/IOException; {:try_start_78 .. :try_end_98} :catch_133
-    .catch Ljava/lang/RuntimeException; {:try_start_78 .. :try_end_98} :catch_133
+    .local v5, "log":Lorg/json/JSONObject;
+    invoke-direct {p0, v4, v5}, Lcom/android/server/updates/CertificateTransparencyLogInstallReceiver;->installLog(Ljava/io/File;Lorg/json/JSONObject;)V
+    :try_end_9a
+    .catch Lorg/json/JSONException; {:try_start_79 .. :try_end_9a} :catch_f3
+    .catch Ljava/io/IOException; {:try_start_79 .. :try_end_9a} :catch_135
+    .catch Ljava/lang/RuntimeException; {:try_start_79 .. :try_end_9a} :catch_135
 
     .line 97
+    .end local v5  # "log":Lorg/json/JSONObject;
     add-int/lit8 v2, v2, 0x1
 
-    goto :goto_8b
+    goto :goto_8d
 
     .line 103
-    :cond_9b
+    .end local v1  # "json":Lorg/json/JSONObject;
+    .end local v2  # "i":I
+    .end local v3  # "logs":Lorg/json/JSONArray;
+    :cond_9d
     nop
 
     .line 107
-    :try_start_9c
-    new-instance p1, Ljava/io/File;
+    :try_start_9e
+    new-instance v1, Ljava/io/File;
 
-    iget-object v1, p0, Lcom/android/server/updates/CertificateTransparencyLogInstallReceiver;->updateDir:Ljava/io/File;
+    iget-object v2, p0, Lcom/android/server/updates/CertificateTransparencyLogInstallReceiver;->updateDir:Ljava/io/File;
 
-    const-string/jumbo v2, "new_symlink"
+    const-string/jumbo v3, "new_symlink"
 
-    invoke-direct {p1, v1, v2}, Ljava/io/File;-><init>(Ljava/io/File;Ljava/lang/String;)V
-    :try_end_a6
-    .catch Ljava/io/IOException; {:try_start_9c .. :try_end_a6} :catch_133
-    .catch Ljava/lang/RuntimeException; {:try_start_9c .. :try_end_a6} :catch_133
+    invoke-direct {v1, v2, v3}, Ljava/io/File;-><init>(Ljava/io/File;Ljava/lang/String;)V
+    :try_end_a8
+    .catch Ljava/io/IOException; {:try_start_9e .. :try_end_a8} :catch_135
+    .catch Ljava/lang/RuntimeException; {:try_start_9e .. :try_end_a8} :catch_135
 
     .line 109
-    :try_start_a6
+    .local v1, "tempSymlink":Ljava/io/File;
+    :try_start_a8
     invoke-virtual {v4}, Ljava/io/File;->getCanonicalPath()Ljava/lang/String;
-
-    move-result-object v1
-
-    invoke-virtual {p1}, Ljava/io/File;->getCanonicalPath()Ljava/lang/String;
 
     move-result-object v2
 
-    invoke-static {v1, v2}, Landroid/system/Os;->symlink(Ljava/lang/String;Ljava/lang/String;)V
-    :try_end_b1
-    .catch Landroid/system/ErrnoException; {:try_start_a6 .. :try_end_b1} :catch_e8
-    .catch Ljava/io/IOException; {:try_start_a6 .. :try_end_b1} :catch_133
-    .catch Ljava/lang/RuntimeException; {:try_start_a6 .. :try_end_b1} :catch_133
+    invoke-virtual {v1}, Ljava/io/File;->getCanonicalPath()Ljava/lang/String;
+
+    move-result-object v3
+
+    invoke-static {v2, v3}, Landroid/system/Os;->symlink(Ljava/lang/String;Ljava/lang/String;)V
+    :try_end_b3
+    .catch Landroid/system/ErrnoException; {:try_start_a8 .. :try_end_b3} :catch_ea
+    .catch Ljava/io/IOException; {:try_start_a8 .. :try_end_b3} :catch_135
+    .catch Ljava/lang/RuntimeException; {:try_start_a8 .. :try_end_b3} :catch_135
 
     .line 112
     nop
 
     .line 115
-    :try_start_b2
+    :try_start_b4
     invoke-virtual {v0}, Ljava/io/File;->getAbsoluteFile()Ljava/io/File;
 
-    move-result-object v0
+    move-result-object v2
 
-    invoke-virtual {p1, v0}, Ljava/io/File;->renameTo(Ljava/io/File;)Z
-    :try_end_b9
-    .catch Ljava/io/IOException; {:try_start_b2 .. :try_end_b9} :catch_133
-    .catch Ljava/lang/RuntimeException; {:try_start_b2 .. :try_end_b9} :catch_133
+    invoke-virtual {v1, v2}, Ljava/io/File;->renameTo(Ljava/io/File;)Z
+    :try_end_bb
+    .catch Ljava/io/IOException; {:try_start_b4 .. :try_end_bb} :catch_135
+    .catch Ljava/lang/RuntimeException; {:try_start_b4 .. :try_end_bb} :catch_135
 
     .line 119
     nop
 
     .line 120
-    new-instance p1, Ljava/lang/StringBuilder;
+    .end local v1  # "tempSymlink":Ljava/io/File;
+    new-instance v1, Ljava/lang/StringBuilder;
 
-    invoke-direct {p1}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v0, "CT log directory updated to "
+    const-string v2, "CT log directory updated to "
 
-    invoke-virtual {p1, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v4}, Ljava/io/File;->getAbsolutePath()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v2
 
-    invoke-virtual {p1, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v1
 
-    const-string v0, "CTLogInstallReceiver"
+    const-string v2, "CTLogInstallReceiver"
 
-    invoke-static {v0, p1}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v2, v1}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 122
-    iget-object p1, p0, Lcom/android/server/updates/CertificateTransparencyLogInstallReceiver;->updateDir:Ljava/io/File;
+    iget-object v1, p0, Lcom/android/server/updates/CertificateTransparencyLogInstallReceiver;->updateDir:Ljava/io/File;
 
-    iget-object v0, p0, Lcom/android/server/updates/CertificateTransparencyLogInstallReceiver;->updateVersion:Ljava/io/File;
+    iget-object v2, p0, Lcom/android/server/updates/CertificateTransparencyLogInstallReceiver;->updateVersion:Ljava/io/File;
 
-    int-to-long v1, p2
+    int-to-long v5, p2
 
-    invoke-static {v1, v2}, Ljava/lang/Long;->toString(J)Ljava/lang/String;
+    invoke-static {v5, v6}, Ljava/lang/Long;->toString(J)Ljava/lang/String;
 
-    move-result-object p2
+    move-result-object v3
 
-    invoke-virtual {p2}, Ljava/lang/String;->getBytes()[B
+    invoke-virtual {v3}, Ljava/lang/String;->getBytes()[B
 
-    move-result-object p2
+    move-result-object v3
 
-    invoke-virtual {p0, p1, v0, p2}, Lcom/android/server/updates/CertificateTransparencyLogInstallReceiver;->writeUpdate(Ljava/io/File;Ljava/io/File;[B)V
+    invoke-virtual {p0, v1, v2, v3}, Lcom/android/server/updates/CertificateTransparencyLogInstallReceiver;->writeUpdate(Ljava/io/File;Ljava/io/File;[B)V
 
     .line 124
     invoke-direct {p0}, Lcom/android/server/updates/CertificateTransparencyLogInstallReceiver;->deleteOldLogDirectories()V
@@ -621,151 +686,201 @@
     return-void
 
     .line 110
-    :catch_e8
-    move-exception p1
+    .restart local v1  # "tempSymlink":Ljava/io/File;
+    :catch_ea
+    move-exception v2
 
     .line 111
-    :try_start_e9
-    new-instance p2, Ljava/io/IOException;
+    .local v2, "e":Landroid/system/ErrnoException;
+    :try_start_eb
+    new-instance v3, Ljava/io/IOException;
 
-    const-string v0, "Failed to create symlink"
+    const-string v5, "Failed to create symlink"
 
-    invoke-direct {p2, v0, p1}, Ljava/io/IOException;-><init>(Ljava/lang/String;Ljava/lang/Throwable;)V
+    invoke-direct {v3, v5, v2}, Ljava/io/IOException;-><init>(Ljava/lang/String;Ljava/lang/Throwable;)V
 
-    throw p2
+    .end local v0  # "currentSymlink":Ljava/io/File;
+    .end local v4  # "newVersion":Ljava/io/File;
+    .end local p0  # "this":Lcom/android/server/updates/CertificateTransparencyLogInstallReceiver;
+    .end local p1  # "content":[B
+    .end local p2  # "version":I
+    throw v3
 
     .line 101
-    :catch_f1
-    move-exception p1
+    .end local v1  # "tempSymlink":Ljava/io/File;
+    .end local v2  # "e":Landroid/system/ErrnoException;
+    .restart local v0  # "currentSymlink":Ljava/io/File;
+    .restart local v4  # "newVersion":Ljava/io/File;
+    .restart local p0  # "this":Lcom/android/server/updates/CertificateTransparencyLogInstallReceiver;
+    .restart local p1  # "content":[B
+    .restart local p2  # "version":I
+    :catch_f3
+    move-exception v1
 
     .line 102
-    new-instance p2, Ljava/io/IOException;
+    .local v1, "e":Lorg/json/JSONException;
+    new-instance v2, Ljava/io/IOException;
 
-    const-string v0, "Failed to parse logs"
+    const-string v3, "Failed to parse logs"
 
-    invoke-direct {p2, v0, p1}, Ljava/io/IOException;-><init>(Ljava/lang/String;Ljava/lang/Throwable;)V
+    invoke-direct {v2, v3, v1}, Ljava/io/IOException;-><init>(Ljava/lang/String;Ljava/lang/Throwable;)V
 
-    throw p2
+    .end local v0  # "currentSymlink":Ljava/io/File;
+    .end local v4  # "newVersion":Ljava/io/File;
+    .end local p0  # "this":Lcom/android/server/updates/CertificateTransparencyLogInstallReceiver;
+    .end local p1  # "content":[B
+    .end local p2  # "version":I
+    throw v2
 
     .line 89
-    :cond_fa
-    new-instance p1, Ljava/io/IOException;
+    .end local v1  # "e":Lorg/json/JSONException;
+    .restart local v0  # "currentSymlink":Ljava/io/File;
+    .restart local v4  # "newVersion":Ljava/io/File;
+    .restart local p0  # "this":Lcom/android/server/updates/CertificateTransparencyLogInstallReceiver;
+    .restart local p1  # "content":[B
+    .restart local p2  # "version":I
+    :cond_fc
+    new-instance v1, Ljava/io/IOException;
 
-    new-instance p2, Ljava/lang/StringBuilder;
+    new-instance v2, Ljava/lang/StringBuilder;
 
-    invoke-direct {p2}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v0, "Failed to set "
+    const-string v3, "Failed to set "
 
-    invoke-virtual {p2, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v4}, Ljava/io/File;->getCanonicalPath()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v3
 
-    invoke-virtual {p2, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string v0, " readable"
+    const-string v3, " readable"
 
-    invoke-virtual {p2, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p2
+    move-result-object v2
 
-    invoke-direct {p1, p2}, Ljava/io/IOException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v1, v2}, Ljava/io/IOException;-><init>(Ljava/lang/String;)V
 
-    throw p1
+    .end local v0  # "currentSymlink":Ljava/io/File;
+    .end local v4  # "newVersion":Ljava/io/File;
+    .end local p0  # "this":Lcom/android/server/updates/CertificateTransparencyLogInstallReceiver;
+    .end local p1  # "content":[B
+    .end local p2  # "version":I
+    throw v1
 
     .line 86
-    :cond_11a
-    new-instance p1, Ljava/io/IOException;
+    .restart local v0  # "currentSymlink":Ljava/io/File;
+    .restart local v4  # "newVersion":Ljava/io/File;
+    .restart local p0  # "this":Lcom/android/server/updates/CertificateTransparencyLogInstallReceiver;
+    .restart local p1  # "content":[B
+    .restart local p2  # "version":I
+    :cond_11c
+    new-instance v2, Ljava/io/IOException;
 
-    new-instance p2, Ljava/lang/StringBuilder;
+    new-instance v3, Ljava/lang/StringBuilder;
 
-    invoke-direct {p2}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
 
-    invoke-virtual {p2, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v4}, Ljava/io/File;->getCanonicalPath()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v1
 
-    invoke-virtual {p2, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p2
+    move-result-object v1
 
-    invoke-direct {p1, p2}, Ljava/io/IOException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v2, v1}, Ljava/io/IOException;-><init>(Ljava/lang/String;)V
 
-    throw p1
-    :try_end_133
-    .catch Ljava/io/IOException; {:try_start_e9 .. :try_end_133} :catch_133
-    .catch Ljava/lang/RuntimeException; {:try_start_e9 .. :try_end_133} :catch_133
+    .end local v0  # "currentSymlink":Ljava/io/File;
+    .end local v4  # "newVersion":Ljava/io/File;
+    .end local p0  # "this":Lcom/android/server/updates/CertificateTransparencyLogInstallReceiver;
+    .end local p1  # "content":[B
+    .end local p2  # "version":I
+    throw v2
+    :try_end_135
+    .catch Ljava/io/IOException; {:try_start_eb .. :try_end_135} :catch_135
+    .catch Ljava/lang/RuntimeException; {:try_start_eb .. :try_end_135} :catch_135
 
     .line 116
-    :catch_133
-    move-exception p1
+    .restart local v0  # "currentSymlink":Ljava/io/File;
+    .restart local v4  # "newVersion":Ljava/io/File;
+    .restart local p0  # "this":Lcom/android/server/updates/CertificateTransparencyLogInstallReceiver;
+    .restart local p1  # "content":[B
+    .restart local p2  # "version":I
+    :catch_135
+    move-exception v1
 
     .line 117
+    .local v1, "e":Ljava/lang/Exception;
     invoke-static {v4}, Landroid/os/FileUtils;->deleteContentsAndDir(Ljava/io/File;)Z
 
     .line 118
-    throw p1
+    throw v1
 
     .line 63
-    :cond_138
-    new-instance p1, Ljava/io/IOException;
+    .end local v0  # "currentSymlink":Ljava/io/File;
+    .end local v1  # "e":Ljava/lang/Exception;
+    .end local v4  # "newVersion":Ljava/io/File;
+    :cond_13a
+    new-instance v0, Ljava/io/IOException;
 
-    new-instance p2, Ljava/lang/StringBuilder;
+    new-instance v1, Ljava/lang/StringBuilder;
 
-    invoke-direct {p2}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v0, "Unable to set permissions on "
+    const-string v2, "Unable to set permissions on "
 
-    invoke-virtual {p2, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    iget-object v0, p0, Lcom/android/server/updates/CertificateTransparencyLogInstallReceiver;->updateDir:Ljava/io/File;
+    iget-object v2, p0, Lcom/android/server/updates/CertificateTransparencyLogInstallReceiver;->updateDir:Ljava/io/File;
 
     .line 64
-    invoke-virtual {v0}, Ljava/io/File;->getCanonicalPath()Ljava/lang/String;
+    invoke-virtual {v2}, Ljava/io/File;->getCanonicalPath()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v2
 
-    invoke-virtual {p2, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p2
+    move-result-object v1
 
-    invoke-direct {p1, p2}, Ljava/io/IOException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v0, v1}, Ljava/io/IOException;-><init>(Ljava/lang/String;)V
 
-    throw p1
+    throw v0
 
     .line 60
-    :cond_155
-    new-instance p1, Ljava/io/IOException;
+    :cond_157
+    new-instance v0, Ljava/io/IOException;
 
-    new-instance p2, Ljava/lang/StringBuilder;
+    new-instance v2, Ljava/lang/StringBuilder;
 
-    invoke-direct {p2}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
 
-    invoke-virtual {p2, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    iget-object v0, p0, Lcom/android/server/updates/CertificateTransparencyLogInstallReceiver;->updateDir:Ljava/io/File;
+    iget-object v1, p0, Lcom/android/server/updates/CertificateTransparencyLogInstallReceiver;->updateDir:Ljava/io/File;
 
-    invoke-virtual {v0}, Ljava/io/File;->getCanonicalPath()Ljava/lang/String;
+    invoke-virtual {v1}, Ljava/io/File;->getCanonicalPath()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v1
 
-    invoke-virtual {p2, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p2
+    move-result-object v1
 
-    invoke-direct {p1, p2}, Ljava/io/IOException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v0, v1}, Ljava/io/IOException;-><init>(Ljava/lang/String;)V
 
-    throw p1
+    throw v0
 .end method

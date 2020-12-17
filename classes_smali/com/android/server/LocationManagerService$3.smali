@@ -21,8 +21,10 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/LocationManagerService;Landroid/os/Handler;)V
     .registers 3
+    .param p1, "this$0"  # Lcom/android/server/LocationManagerService;
+    .param p2, "x0"  # Landroid/os/Handler;
 
-    .line 368
+    .line 456
     iput-object p1, p0, Lcom/android/server/LocationManagerService$3;->this$0:Lcom/android/server/LocationManagerService;
 
     invoke-direct {p0, p2}, Landroid/database/ContentObserver;-><init>(Landroid/os/Handler;)V
@@ -33,36 +35,46 @@
 
 # virtual methods
 .method public onChange(Z)V
-    .registers 3
+    .registers 4
+    .param p1, "selfChange"  # Z
 
-    .line 371
-    iget-object p1, p0, Lcom/android/server/LocationManagerService$3;->this$0:Lcom/android/server/LocationManagerService;
-
-    invoke-static {p1}, Lcom/android/server/LocationManagerService;->access$100(Lcom/android/server/LocationManagerService;)Ljava/lang/Object;
-
-    move-result-object p1
-
-    monitor-enter p1
-
-    .line 372
-    :try_start_7
+    .line 459
     iget-object v0, p0, Lcom/android/server/LocationManagerService$3;->this$0:Lcom/android/server/LocationManagerService;
 
-    invoke-static {v0}, Lcom/android/server/LocationManagerService;->access$400(Lcom/android/server/LocationManagerService;)V
+    invoke-static {v0}, Lcom/android/server/LocationManagerService;->access$100(Lcom/android/server/LocationManagerService;)Ljava/lang/Object;
 
-    .line 373
-    monitor-exit p1
+    move-result-object v0
 
-    .line 374
+    monitor-enter v0
+
+    .line 460
+    :try_start_7
+    iget-object v1, p0, Lcom/android/server/LocationManagerService$3;->this$0:Lcom/android/server/LocationManagerService;
+
+    invoke-static {v1}, Lcom/android/server/LocationManagerService;->access$400(Lcom/android/server/LocationManagerService;)V
+
+    .line 462
+    iget-object v1, p0, Lcom/android/server/LocationManagerService$3;->this$0:Lcom/android/server/LocationManagerService;
+
+    invoke-static {v1}, Lcom/android/server/LocationManagerService;->access$500(Lcom/android/server/LocationManagerService;)Lcom/android/server/LocationManagerService$LocDataCollection;
+
+    move-result-object v1
+
+    invoke-virtual {v1}, Lcom/android/server/LocationManagerService$LocDataCollection;->eventLocMode()V
+
+    .line 464
+    monitor-exit v0
+
+    .line 465
     return-void
 
-    .line 373
-    :catchall_e
-    move-exception v0
+    .line 464
+    :catchall_17
+    move-exception v1
 
-    monitor-exit p1
-    :try_end_10
-    .catchall {:try_start_7 .. :try_end_10} :catchall_e
+    monitor-exit v0
+    :try_end_19
+    .catchall {:try_start_7 .. :try_end_19} :catchall_17
 
-    throw v0
+    throw v1
 .end method

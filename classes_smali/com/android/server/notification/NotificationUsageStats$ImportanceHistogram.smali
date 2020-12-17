@@ -34,18 +34,18 @@
 .method static constructor <clinit>()V
     .registers 6
 
-    .line 747
+    .line 734
     const-string/jumbo v0, "none"
 
-    const-string v1, "min"
+    const-string/jumbo v1, "min"
 
-    const-string v2, "low"
+    const-string/jumbo v2, "low"
 
     const-string v3, "default"
 
     const-string v4, "high"
 
-    const-string v5, "max"
+    const-string/jumbo v5, "max"
 
     filled-new-array/range {v0 .. v5}, [Ljava/lang/String;
 
@@ -57,64 +57,68 @@
 .end method
 
 .method constructor <init>(Landroid/content/Context;Ljava/lang/String;)V
-    .registers 6
+    .registers 8
+    .param p1, "context"  # Landroid/content/Context;
+    .param p2, "prefix"  # Ljava/lang/String;
 
-    .line 754
+    .line 741
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
-    .line 755
+    .line 742
     iput-object p1, p0, Lcom/android/server/notification/NotificationUsageStats$ImportanceHistogram;->mContext:Landroid/content/Context;
 
-    .line 756
-    const/4 p1, 0x6
+    .line 743
+    const/4 v0, 0x6
 
-    new-array v0, p1, [I
+    new-array v1, v0, [I
 
-    iput-object v0, p0, Lcom/android/server/notification/NotificationUsageStats$ImportanceHistogram;->mCount:[I
+    iput-object v1, p0, Lcom/android/server/notification/NotificationUsageStats$ImportanceHistogram;->mCount:[I
 
-    .line 757
-    new-array v0, p1, [Ljava/lang/String;
+    .line 744
+    new-array v1, v0, [Ljava/lang/String;
 
-    iput-object v0, p0, Lcom/android/server/notification/NotificationUsageStats$ImportanceHistogram;->mCounterNames:[Ljava/lang/String;
+    iput-object v1, p0, Lcom/android/server/notification/NotificationUsageStats$ImportanceHistogram;->mCounterNames:[Ljava/lang/String;
 
-    .line 758
+    .line 745
     iput-object p2, p0, Lcom/android/server/notification/NotificationUsageStats$ImportanceHistogram;->mPrefix:Ljava/lang/String;
 
-    .line 759
-    const/4 p2, 0x0
+    .line 746
+    const/4 v1, 0x0
 
+    .local v1, "i":I
     :goto_11
-    if-ge p2, p1, :cond_2f
+    if-ge v1, v0, :cond_2f
 
-    .line 760
-    iget-object v0, p0, Lcom/android/server/notification/NotificationUsageStats$ImportanceHistogram;->mCounterNames:[Ljava/lang/String;
+    .line 747
+    iget-object v2, p0, Lcom/android/server/notification/NotificationUsageStats$ImportanceHistogram;->mCounterNames:[Ljava/lang/String;
 
-    new-instance v1, Ljava/lang/StringBuilder;
+    new-instance v3, Ljava/lang/StringBuilder;
 
-    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
 
-    iget-object v2, p0, Lcom/android/server/notification/NotificationUsageStats$ImportanceHistogram;->mPrefix:Ljava/lang/String;
+    iget-object v4, p0, Lcom/android/server/notification/NotificationUsageStats$ImportanceHistogram;->mPrefix:Ljava/lang/String;
 
-    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    sget-object v2, Lcom/android/server/notification/NotificationUsageStats$ImportanceHistogram;->IMPORTANCE_NAMES:[Ljava/lang/String;
+    sget-object v4, Lcom/android/server/notification/NotificationUsageStats$ImportanceHistogram;->IMPORTANCE_NAMES:[Ljava/lang/String;
 
-    aget-object v2, v2, p2
+    aget-object v4, v4, v1
 
-    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v1
+    move-result-object v3
 
-    aput-object v1, v0, p2
+    aput-object v3, v2, v1
 
-    .line 759
-    add-int/lit8 p2, p2, 0x1
+    .line 746
+    add-int/lit8 v1, v1, 0x1
 
     goto :goto_11
 
-    .line 762
+    .line 749
+    .end local v1  # "i":I
     :cond_2f
     return-void
 .end method
@@ -123,8 +127,9 @@
 # virtual methods
 .method increment(I)V
     .registers 4
+    .param p1, "imp"  # I
 
-    .line 765
+    .line 752
     iget-object v0, p0, Lcom/android/server/notification/NotificationUsageStats$ImportanceHistogram;->mCount:[I
 
     array-length v0, v0
@@ -133,15 +138,15 @@
 
     invoke-static {p1, v0}, Ljava/lang/Math;->min(II)I
 
+    move-result v0
+
+    const/4 v1, 0x0
+
+    invoke-static {v1, v0}, Ljava/lang/Math;->max(II)I
+
     move-result p1
 
-    const/4 v0, 0x0
-
-    invoke-static {v0, p1}, Ljava/lang/Math;->max(II)I
-
-    move-result p1
-
-    .line 766
+    .line 753
     iget-object v0, p0, Lcom/android/server/notification/NotificationUsageStats$ImportanceHistogram;->mCount:[I
 
     aget v1, v0, p1
@@ -150,22 +155,24 @@
 
     aput v1, v0, p1
 
-    .line 767
+    .line 754
     return-void
 .end method
 
 .method maybeCount(Lcom/android/server/notification/NotificationUsageStats$ImportanceHistogram;)V
     .registers 6
+    .param p1, "prev"  # Lcom/android/server/notification/NotificationUsageStats$ImportanceHistogram;
 
-    .line 770
+    .line 757
     const/4 v0, 0x0
 
+    .local v0, "i":I
     :goto_1
     const/4 v1, 0x6
 
     if-ge v0, v1, :cond_1b
 
-    .line 771
+    .line 758
     iget-object v1, p0, Lcom/android/server/notification/NotificationUsageStats$ImportanceHistogram;->mCount:[I
 
     aget v1, v1, v0
@@ -176,10 +183,11 @@
 
     sub-int/2addr v1, v2
 
-    .line 772
+    .line 759
+    .local v1, "value":I
     if-lez v1, :cond_18
 
-    .line 773
+    .line 760
     iget-object v2, p0, Lcom/android/server/notification/NotificationUsageStats$ImportanceHistogram;->mContext:Landroid/content/Context;
 
     iget-object v3, p0, Lcom/android/server/notification/NotificationUsageStats$ImportanceHistogram;->mCounterNames:[Ljava/lang/String;
@@ -188,49 +196,54 @@
 
     invoke-static {v2, v3, v1}, Lcom/android/internal/logging/MetricsLogger;->count(Landroid/content/Context;Ljava/lang/String;I)V
 
-    .line 770
+    .line 757
+    .end local v1  # "value":I
     :cond_18
     add-int/lit8 v0, v0, 0x1
 
     goto :goto_1
 
-    .line 776
+    .line 763
+    .end local v0  # "i":I
     :cond_1b
     return-void
 .end method
 
 .method public maybePut(Lorg/json/JSONObject;Lcom/android/server/notification/NotificationUsageStats$ImportanceHistogram;)V
-    .registers 5
+    .registers 6
+    .param p1, "dump"  # Lorg/json/JSONObject;
+    .param p2, "prev"  # Lcom/android/server/notification/NotificationUsageStats$ImportanceHistogram;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Lorg/json/JSONException;
         }
     .end annotation
 
-    .line 786
-    iget-object p2, p0, Lcom/android/server/notification/NotificationUsageStats$ImportanceHistogram;->mPrefix:Ljava/lang/String;
+    .line 773
+    iget-object v0, p0, Lcom/android/server/notification/NotificationUsageStats$ImportanceHistogram;->mPrefix:Ljava/lang/String;
 
-    new-instance v0, Lorg/json/JSONArray;
+    new-instance v1, Lorg/json/JSONArray;
 
-    iget-object v1, p0, Lcom/android/server/notification/NotificationUsageStats$ImportanceHistogram;->mCount:[I
+    iget-object v2, p0, Lcom/android/server/notification/NotificationUsageStats$ImportanceHistogram;->mCount:[I
 
-    invoke-direct {v0, v1}, Lorg/json/JSONArray;-><init>(Ljava/lang/Object;)V
+    invoke-direct {v1, v2}, Lorg/json/JSONArray;-><init>(Ljava/lang/Object;)V
 
-    invoke-virtual {p1, p2, v0}, Lorg/json/JSONObject;->put(Ljava/lang/String;Ljava/lang/Object;)Lorg/json/JSONObject;
+    invoke-virtual {p1, v0, v1}, Lorg/json/JSONObject;->put(Ljava/lang/String;Ljava/lang/Object;)Lorg/json/JSONObject;
 
-    .line 787
+    .line 774
     return-void
 .end method
 
 .method public toString()Ljava/lang/String;
     .registers 4
 
-    .line 791
+    .line 778
     new-instance v0, Ljava/lang/StringBuilder;
 
     invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
 
-    .line 792
+    .line 779
+    .local v0, "output":Ljava/lang/StringBuilder;
     iget-object v1, p0, Lcom/android/server/notification/NotificationUsageStats$ImportanceHistogram;->mPrefix:Ljava/lang/String;
 
     invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
@@ -239,63 +252,67 @@
 
     invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    .line 793
+    .line 780
     const/4 v1, 0x0
 
+    .local v1, "i":I
     :goto_10
     const/4 v2, 0x6
 
     if-ge v1, v2, :cond_25
 
-    .line 794
+    .line 781
     iget-object v2, p0, Lcom/android/server/notification/NotificationUsageStats$ImportanceHistogram;->mCount:[I
 
     aget v2, v2, v1
 
     invoke-virtual {v0, v2}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    .line 795
+    .line 782
     const/4 v2, 0x5
 
     if-ge v1, v2, :cond_22
 
-    .line 796
+    .line 783
     const-string v2, ", "
 
     invoke-virtual {v0, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    .line 793
+    .line 780
     :cond_22
     add-int/lit8 v1, v1, 0x1
 
     goto :goto_10
 
-    .line 799
+    .line 786
+    .end local v1  # "i":I
     :cond_25
     const-string v1, "]"
 
     invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    .line 800
+    .line 787
     invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v1
 
-    return-object v0
+    return-object v1
 .end method
 
 .method update(Lcom/android/server/notification/NotificationUsageStats$ImportanceHistogram;)V
     .registers 5
+    .param p1, "that"  # Lcom/android/server/notification/NotificationUsageStats$ImportanceHistogram;
 
-    .line 779
+    .line 766
     const/4 v0, 0x0
 
+    .local v0, "i":I
     :goto_1
     const/4 v1, 0x6
 
     if-ge v0, v1, :cond_f
 
-    .line 780
+    .line 767
     iget-object v1, p0, Lcom/android/server/notification/NotificationUsageStats$ImportanceHistogram;->mCount:[I
 
     iget-object v2, p1, Lcom/android/server/notification/NotificationUsageStats$ImportanceHistogram;->mCount:[I
@@ -304,12 +321,13 @@
 
     aput v2, v1, v0
 
-    .line 779
+    .line 766
     add-int/lit8 v0, v0, 0x1
 
     goto :goto_1
 
-    .line 782
+    .line 769
+    .end local v0  # "i":I
     :cond_f
     return-void
 .end method

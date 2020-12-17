@@ -77,6 +77,7 @@
 
 .method public constructor <init>(Landroid/content/Context;)V
     .registers 4
+    .param p1, "context"  # Landroid/content/Context;
 
     .line 141
     invoke-direct {p0, p1}, Lcom/android/server/SystemService;-><init>(Landroid/content/Context;)V
@@ -123,13 +124,13 @@
     iput-object p1, p0, Lcom/android/server/PersistentDataBlockService;->mContext:Landroid/content/Context;
 
     .line 143
-    const-string/jumbo p1, "ro.frp.pst"
+    const-string/jumbo v0, "ro.frp.pst"
 
-    invoke-static {p1}, Landroid/os/SystemProperties;->get(Ljava/lang/String;)Ljava/lang/String;
+    invoke-static {v0}, Landroid/os/SystemProperties;->get(Ljava/lang/String;)Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    iput-object p1, p0, Lcom/android/server/PersistentDataBlockService;->mDataBlockFile:Ljava/lang/String;
+    iput-object v0, p0, Lcom/android/server/PersistentDataBlockService;->mDataBlockFile:Ljava/lang/String;
 
     .line 144
     const-wide/16 v0, -0x1
@@ -142,6 +143,8 @@
 
 .method static synthetic access$000(Lcom/android/server/PersistentDataBlockService;I)V
     .registers 2
+    .param p0, "x0"  # Lcom/android/server/PersistentDataBlockService;
+    .param p1, "x1"  # I
 
     .line 103
     invoke-direct {p0, p1}, Lcom/android/server/PersistentDataBlockService;->enforceUid(I)V
@@ -151,6 +154,7 @@
 
 .method static synthetic access$100(Lcom/android/server/PersistentDataBlockService;)J
     .registers 3
+    .param p0, "x0"  # Lcom/android/server/PersistentDataBlockService;
 
     .line 103
     invoke-direct {p0}, Lcom/android/server/PersistentDataBlockService;->doGetMaximumDataBlockSize()J
@@ -161,18 +165,21 @@
 .end method
 
 .method static synthetic access$1000(Lcom/android/server/PersistentDataBlockService;Ljava/lang/String;)I
-    .registers 2
+    .registers 3
+    .param p0, "x0"  # Lcom/android/server/PersistentDataBlockService;
+    .param p1, "x1"  # Ljava/lang/String;
 
     .line 103
     invoke-direct {p0, p1}, Lcom/android/server/PersistentDataBlockService;->nativeWipe(Ljava/lang/String;)I
 
-    move-result p0
+    move-result v0
 
-    return p0
+    return v0
 .end method
 
 .method static synthetic access$1100(Lcom/android/server/PersistentDataBlockService;)V
     .registers 1
+    .param p0, "x0"  # Lcom/android/server/PersistentDataBlockService;
 
     .line 103
     invoke-direct {p0}, Lcom/android/server/PersistentDataBlockService;->enforceIsAdmin()V
@@ -182,6 +189,8 @@
 
 .method static synthetic access$1200(Lcom/android/server/PersistentDataBlockService;Ljava/lang/String;)V
     .registers 2
+    .param p0, "x0"  # Lcom/android/server/PersistentDataBlockService;
+    .param p1, "x1"  # Ljava/lang/String;
 
     .line 103
     invoke-direct {p0, p1}, Lcom/android/server/PersistentDataBlockService;->enforceUserRestriction(Ljava/lang/String;)V
@@ -191,6 +200,8 @@
 
 .method static synthetic access$1300(Lcom/android/server/PersistentDataBlockService;Z)V
     .registers 2
+    .param p0, "x0"  # Lcom/android/server/PersistentDataBlockService;
+    .param p1, "x1"  # Z
 
     .line 103
     invoke-direct {p0, p1}, Lcom/android/server/PersistentDataBlockService;->doSetOemUnlockEnabledLocked(Z)V
@@ -200,6 +211,7 @@
 
 .method static synthetic access$1400(Lcom/android/server/PersistentDataBlockService;)V
     .registers 1
+    .param p0, "x0"  # Lcom/android/server/PersistentDataBlockService;
 
     .line 103
     invoke-direct {p0}, Lcom/android/server/PersistentDataBlockService;->enforceOemUnlockReadPermission()V
@@ -208,36 +220,40 @@
 .end method
 
 .method static synthetic access$1500(Lcom/android/server/PersistentDataBlockService;)Z
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/PersistentDataBlockService;
 
     .line 103
     invoke-direct {p0}, Lcom/android/server/PersistentDataBlockService;->doGetOemUnlockEnabled()Z
 
-    move-result p0
+    move-result v0
 
-    return p0
+    return v0
 .end method
 
 .method static synthetic access$1600(Lcom/android/server/PersistentDataBlockService;)Landroid/content/Context;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/PersistentDataBlockService;
 
     .line 103
-    iget-object p0, p0, Lcom/android/server/PersistentDataBlockService;->mContext:Landroid/content/Context;
+    iget-object v0, p0, Lcom/android/server/PersistentDataBlockService;->mContext:Landroid/content/Context;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$1700(Lcom/android/server/PersistentDataBlockService;)Lcom/android/server/PersistentDataBlockManagerInternal;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/PersistentDataBlockService;
 
     .line 103
-    iget-object p0, p0, Lcom/android/server/PersistentDataBlockService;->mInternalService:Lcom/android/server/PersistentDataBlockManagerInternal;
+    iget-object v0, p0, Lcom/android/server/PersistentDataBlockService;->mInternalService:Lcom/android/server/PersistentDataBlockManagerInternal;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$1800(Lcom/android/server/PersistentDataBlockService;)J
     .registers 3
+    .param p0, "x0"  # Lcom/android/server/PersistentDataBlockService;
 
     .line 103
     invoke-direct {p0}, Lcom/android/server/PersistentDataBlockService;->getFrpCredentialDataOffset()J
@@ -249,6 +265,7 @@
 
 .method static synthetic access$1900(Lcom/android/server/PersistentDataBlockService;)J
     .registers 3
+    .param p0, "x0"  # Lcom/android/server/PersistentDataBlockService;
 
     .line 103
     invoke-direct {p0}, Lcom/android/server/PersistentDataBlockService;->getTestHarnessModeDataOffset()J
@@ -259,12 +276,13 @@
 .end method
 
 .method static synthetic access$200(Lcom/android/server/PersistentDataBlockService;)Ljava/lang/String;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/PersistentDataBlockService;
 
     .line 103
-    iget-object p0, p0, Lcom/android/server/PersistentDataBlockService;->mDataBlockFile:Ljava/lang/String;
+    iget-object v0, p0, Lcom/android/server/PersistentDataBlockService;->mDataBlockFile:Ljava/lang/String;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$300()Ljava/lang/String;
@@ -277,25 +295,29 @@
 .end method
 
 .method static synthetic access$400(Lcom/android/server/PersistentDataBlockService;)Ljava/lang/Object;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/PersistentDataBlockService;
 
     .line 103
-    iget-object p0, p0, Lcom/android/server/PersistentDataBlockService;->mLock:Ljava/lang/Object;
+    iget-object v0, p0, Lcom/android/server/PersistentDataBlockService;->mLock:Ljava/lang/Object;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$500(Lcom/android/server/PersistentDataBlockService;)Z
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/PersistentDataBlockService;
 
     .line 103
-    iget-boolean p0, p0, Lcom/android/server/PersistentDataBlockService;->mIsWritable:Z
+    iget-boolean v0, p0, Lcom/android/server/PersistentDataBlockService;->mIsWritable:Z
 
-    return p0
+    return v0
 .end method
 
 .method static synthetic access$502(Lcom/android/server/PersistentDataBlockService;Z)Z
     .registers 2
+    .param p0, "x0"  # Lcom/android/server/PersistentDataBlockService;
+    .param p1, "x1"  # Z
 
     .line 103
     iput-boolean p1, p0, Lcom/android/server/PersistentDataBlockService;->mIsWritable:Z
@@ -304,29 +326,33 @@
 .end method
 
 .method static synthetic access$600(Lcom/android/server/PersistentDataBlockService;)Z
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/PersistentDataBlockService;
 
     .line 103
     invoke-direct {p0}, Lcom/android/server/PersistentDataBlockService;->computeAndWriteDigestLocked()Z
 
-    move-result p0
+    move-result v0
 
-    return p0
+    return v0
 .end method
 
 .method static synthetic access$700(Lcom/android/server/PersistentDataBlockService;)Z
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/PersistentDataBlockService;
 
     .line 103
     invoke-direct {p0}, Lcom/android/server/PersistentDataBlockService;->enforceChecksumValidity()Z
 
-    move-result p0
+    move-result v0
 
-    return p0
+    return v0
 .end method
 
 .method static synthetic access$800(Lcom/android/server/PersistentDataBlockService;Ljava/io/DataInputStream;)I
-    .registers 2
+    .registers 3
+    .param p0, "x0"  # Lcom/android/server/PersistentDataBlockService;
+    .param p1, "x1"  # Ljava/io/DataInputStream;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Ljava/io/IOException;
@@ -336,13 +362,14 @@
     .line 103
     invoke-direct {p0, p1}, Lcom/android/server/PersistentDataBlockService;->getTotalDataSizeLocked(Ljava/io/DataInputStream;)I
 
-    move-result p0
+    move-result v0
 
-    return p0
+    return v0
 .end method
 
 .method static synthetic access$900(Lcom/android/server/PersistentDataBlockService;)V
     .registers 1
+    .param p0, "x0"  # Lcom/android/server/PersistentDataBlockService;
 
     .line 103
     invoke-direct {p0}, Lcom/android/server/PersistentDataBlockService;->enforceOemUnlockWritePermission()V
@@ -361,6 +388,7 @@
     move-result-object v0
 
     .line 289
+    .local v0, "digest":[B
     const/4 v1, 0x0
 
     if-eqz v0, :cond_45
@@ -384,6 +412,7 @@
     .catch Ljava/io/FileNotFoundException; {:try_start_8 .. :try_end_19} :catch_3b
 
     .line 297
+    .local v2, "outputStream":Ljava/io/DataOutputStream;
     nop
 
     .line 300
@@ -405,27 +434,28 @@
     nop
 
     .line 308
-    const/4 v0, 0x1
+    const/4 v1, 0x1
 
-    return v0
+    return v1
 
     .line 306
     :catchall_28
-    move-exception v0
+    move-exception v1
 
     goto :goto_37
 
     .line 302
     :catch_2a
-    move-exception v0
+    move-exception v3
 
     .line 303
+    .local v3, "e":Ljava/io/IOException;
     :try_start_2b
-    sget-object v3, Lcom/android/server/PersistentDataBlockService;->TAG:Ljava/lang/String;
+    sget-object v4, Lcom/android/server/PersistentDataBlockService;->TAG:Ljava/lang/String;
 
-    const-string v4, "failed to write block checksum"
+    const-string v5, "failed to write block checksum"
 
-    invoke-static {v3, v4, v0}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    invoke-static {v4, v5, v3}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
     :try_end_32
     .catchall {:try_start_2b .. :try_end_32} :catchall_28
 
@@ -439,32 +469,37 @@
     return v1
 
     .line 306
+    .end local v3  # "e":Ljava/io/IOException;
     :goto_37
     invoke-static {v2}, Llibcore/io/IoUtils;->closeQuietly(Ljava/lang/AutoCloseable;)V
 
-    throw v0
+    throw v1
 
     .line 294
+    .end local v2  # "outputStream":Ljava/io/DataOutputStream;
     :catch_3b
-    move-exception v0
+    move-exception v2
 
     .line 295
-    sget-object v2, Lcom/android/server/PersistentDataBlockService;->TAG:Ljava/lang/String;
+    .local v2, "e":Ljava/io/FileNotFoundException;
+    sget-object v3, Lcom/android/server/PersistentDataBlockService;->TAG:Ljava/lang/String;
 
-    const-string/jumbo v3, "partition not available?"
+    const-string/jumbo v4, "partition not available?"
 
-    invoke-static {v2, v3, v0}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    invoke-static {v3, v4, v2}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
     .line 296
     return v1
 
     .line 310
+    .end local v2  # "e":Ljava/io/FileNotFoundException;
     :cond_45
     return v1
 .end method
 
 .method private computeDigestLocked([B)[B
-    .registers 8
+    .registers 10
+    .param p1, "storedDigest"  # [B
 
     .line 317
     const/4 v0, 0x0
@@ -484,9 +519,10 @@
 
     invoke-direct {v1, v2}, Ljava/io/DataInputStream;-><init>(Ljava/io/InputStream;)V
     :try_end_12
-    .catch Ljava/io/FileNotFoundException; {:try_start_1 .. :try_end_12} :catch_63
+    .catch Ljava/io/FileNotFoundException; {:try_start_1 .. :try_end_12} :catch_64
 
     .line 321
+    .local v1, "inputStream":Ljava/io/DataInputStream;
     nop
 
     .line 325
@@ -497,9 +533,10 @@
 
     move-result-object v2
     :try_end_19
-    .catch Ljava/security/NoSuchAlgorithmException; {:try_start_13 .. :try_end_19} :catch_57
+    .catch Ljava/security/NoSuchAlgorithmException; {:try_start_13 .. :try_end_19} :catch_58
 
     .line 331
+    .local v2, "md":Ljava/security/MessageDigest;
     nop
 
     .line 334
@@ -523,35 +560,41 @@
 
     .line 341
     :goto_28
-    const/16 p1, 0x400
+    const/16 v4, 0x400
 
-    new-array p1, p1, [B
+    new-array v4, v4, [B
 
     .line 342
-    const/4 v4, 0x0
+    .local v4, "data":[B
+    const/4 v5, 0x0
 
-    invoke-virtual {v2, p1, v4, v3}, Ljava/security/MessageDigest;->update([BII)V
+    invoke-virtual {v2, v4, v5, v3}, Ljava/security/MessageDigest;->update([BII)V
 
     .line 343
     :goto_30
-    invoke-virtual {v1, p1}, Ljava/io/DataInputStream;->read([B)I
+    invoke-virtual {v1, v4}, Ljava/io/DataInputStream;->read([B)I
 
     move-result v3
 
-    const/4 v5, -0x1
+    move v6, v3
 
-    if-eq v3, v5, :cond_3b
+    .local v6, "read":I
+    const/4 v7, -0x1
+
+    if-eq v3, v7, :cond_3c
 
     .line 344
-    invoke-virtual {v2, p1, v4, v3}, Ljava/security/MessageDigest;->update([BII)V
-    :try_end_3a
-    .catch Ljava/io/IOException; {:try_start_1e .. :try_end_3a} :catch_46
-    .catchall {:try_start_1e .. :try_end_3a} :catchall_44
+    invoke-virtual {v2, v4, v5, v6}, Ljava/security/MessageDigest;->update([BII)V
+    :try_end_3b
+    .catch Ljava/io/IOException; {:try_start_1e .. :try_end_3b} :catch_47
+    .catchall {:try_start_1e .. :try_end_3b} :catchall_45
 
     goto :goto_30
 
     .line 350
-    :cond_3b
+    .end local v4  # "data":[B
+    .end local v6  # "read":I
+    :cond_3c
     invoke-static {v1}, Llibcore/io/IoUtils;->closeQuietly(Ljava/lang/AutoCloseable;)V
 
     .line 351
@@ -560,29 +603,30 @@
     .line 353
     invoke-virtual {v2}, Ljava/security/MessageDigest;->digest()[B
 
-    move-result-object p1
+    move-result-object v0
 
-    return-object p1
+    return-object v0
 
     .line 350
-    :catchall_44
-    move-exception p1
+    :catchall_45
+    move-exception v0
 
-    goto :goto_53
+    goto :goto_54
 
     .line 346
-    :catch_46
-    move-exception p1
+    :catch_47
+    move-exception v3
 
     .line 347
-    :try_start_47
-    sget-object v2, Lcom/android/server/PersistentDataBlockService;->TAG:Ljava/lang/String;
+    .local v3, "e":Ljava/io/IOException;
+    :try_start_48
+    sget-object v4, Lcom/android/server/PersistentDataBlockService;->TAG:Ljava/lang/String;
 
-    const-string v3, "failed to read partition"
+    const-string v5, "failed to read partition"
 
-    invoke-static {v2, v3, p1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
-    :try_end_4e
-    .catchall {:try_start_47 .. :try_end_4e} :catchall_44
+    invoke-static {v4, v5, v3}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    :try_end_4f
+    .catchall {:try_start_48 .. :try_end_4f} :catchall_45
 
     .line 348
     nop
@@ -594,21 +638,24 @@
     return-object v0
 
     .line 350
-    :goto_53
+    .end local v3  # "e":Ljava/io/IOException;
+    :goto_54
     invoke-static {v1}, Llibcore/io/IoUtils;->closeQuietly(Ljava/lang/AutoCloseable;)V
 
-    throw p1
+    throw v0
 
     .line 326
-    :catch_57
-    move-exception p1
+    .end local v2  # "md":Ljava/security/MessageDigest;
+    :catch_58
+    move-exception v2
 
     .line 328
-    sget-object v2, Lcom/android/server/PersistentDataBlockService;->TAG:Ljava/lang/String;
+    .local v2, "e":Ljava/security/NoSuchAlgorithmException;
+    sget-object v3, Lcom/android/server/PersistentDataBlockService;->TAG:Ljava/lang/String;
 
-    const-string v3, "SHA-256 not supported?"
+    const-string v4, "SHA-256 not supported?"
 
-    invoke-static {v2, v3, p1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    invoke-static {v3, v4, v2}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
     .line 329
     invoke-static {v1}, Llibcore/io/IoUtils;->closeQuietly(Ljava/lang/AutoCloseable;)V
@@ -617,15 +664,18 @@
     return-object v0
 
     .line 318
-    :catch_63
-    move-exception p1
+    .end local v1  # "inputStream":Ljava/io/DataInputStream;
+    .end local v2  # "e":Ljava/security/NoSuchAlgorithmException;
+    :catch_64
+    move-exception v1
 
     .line 319
-    sget-object v1, Lcom/android/server/PersistentDataBlockService;->TAG:Ljava/lang/String;
+    .local v1, "e":Ljava/io/FileNotFoundException;
+    sget-object v2, Lcom/android/server/PersistentDataBlockService;->TAG:Ljava/lang/String;
 
-    const-string/jumbo v2, "partition not available?"
+    const-string/jumbo v3, "partition not available?"
 
-    invoke-static {v1, v2, p1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    invoke-static {v2, v3, v1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
     .line 320
     return-object v0
@@ -660,19 +710,17 @@
     sub-long/2addr v0, v2
 
     .line 435
+    .local v0, "actualSize":J
     const-wide/32 v2, 0x19000
 
     cmp-long v4, v0, v2
 
     if-gtz v4, :cond_1b
 
-    goto :goto_1c
+    move-wide v2, v0
 
     :cond_1b
-    move-wide v0, v2
-
-    :goto_1c
-    return-wide v0
+    return-wide v2
 .end method
 
 .method private doGetOemUnlockEnabled()Z
@@ -699,6 +747,7 @@
     .catch Ljava/io/FileNotFoundException; {:try_start_1 .. :try_end_12} :catch_45
 
     .line 417
+    .local v1, "inputStream":Ljava/io/DataInputStream;
     nop
 
     .line 420
@@ -756,6 +805,8 @@
     :try_end_30
     .catchall {:try_start_2f .. :try_end_30} :catchall_2e
 
+    .end local v1  # "inputStream":Ljava/io/DataInputStream;
+    .end local p0  # "this":Lcom/android/server/PersistentDataBlockService;
     :try_start_30
     throw v3
     :try_end_31
@@ -763,6 +814,8 @@
     .catchall {:try_start_30 .. :try_end_31} :catchall_31
 
     .line 428
+    .restart local v1  # "inputStream":Ljava/io/DataInputStream;
+    .restart local p0  # "this":Lcom/android/server/PersistentDataBlockService;
     :catchall_31
     move-exception v0
 
@@ -773,6 +826,7 @@
     move-exception v2
 
     .line 425
+    .local v2, "e":Ljava/io/IOException;
     :try_start_34
     sget-object v3, Lcom/android/server/PersistentDataBlockService;->TAG:Ljava/lang/String;
 
@@ -792,21 +846,24 @@
     return v0
 
     .line 428
+    .end local v2  # "e":Ljava/io/IOException;
     :goto_41
     invoke-static {v1}, Llibcore/io/IoUtils;->closeQuietly(Ljava/lang/AutoCloseable;)V
 
     throw v0
 
     .line 414
+    .end local v1  # "inputStream":Ljava/io/DataInputStream;
     :catch_45
     move-exception v1
 
     .line 415
-    sget-object v1, Lcom/android/server/PersistentDataBlockService;->TAG:Ljava/lang/String;
+    .local v1, "e":Ljava/io/FileNotFoundException;
+    sget-object v2, Lcom/android/server/PersistentDataBlockService;->TAG:Ljava/lang/String;
 
-    const-string/jumbo v2, "partition not available"
+    const-string/jumbo v3, "partition not available"
 
-    invoke-static {v1, v2}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v2, v3}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 416
     return v0
@@ -814,6 +871,7 @@
 
 .method private doSetOemUnlockEnabledLocked(Z)V
     .registers 11
+    .param p1, "enabled"  # Z
 
     .line 385
     const-string v0, "1"
@@ -836,6 +894,7 @@
     .catch Ljava/io/FileNotFoundException; {:try_start_7 .. :try_end_13} :catch_64
 
     .line 389
+    .local v3, "outputStream":Ljava/io/FileOutputStream;
     nop
 
     .line 392
@@ -845,6 +904,7 @@
     move-result-object v4
 
     .line 394
+    .local v4, "channel":Ljava/nio/channels/FileChannel;
     invoke-direct {p0}, Lcom/android/server/PersistentDataBlockService;->getBlockDeviceSize()J
 
     move-result-wide v5
@@ -863,6 +923,7 @@
     move-result-object v6
 
     .line 397
+    .local v6, "data":Ljava/nio/ByteBuffer;
     if-eqz p1, :cond_2a
 
     goto :goto_2b
@@ -886,6 +947,8 @@
     .catchall {:try_start_14 .. :try_end_37} :catchall_43
 
     .line 405
+    .end local v4  # "channel":Ljava/nio/channels/FileChannel;
+    .end local v6  # "data":Ljava/nio/ByteBuffer;
     if-eqz p1, :cond_3a
 
     goto :goto_3b
@@ -916,6 +979,7 @@
     move-exception v4
 
     .line 402
+    .local v4, "e":Ljava/io/IOException;
     :try_start_46
     sget-object v5, Lcom/android/server/PersistentDataBlockService;->TAG:Ljava/lang/String;
 
@@ -943,6 +1007,7 @@
     return-void
 
     .line 405
+    .end local v4  # "e":Ljava/io/IOException;
     :goto_59
     if-eqz p1, :cond_5c
 
@@ -960,22 +1025,24 @@
     throw v4
 
     .line 386
+    .end local v3  # "outputStream":Ljava/io/FileOutputStream;
     :catch_64
-    move-exception p1
+    move-exception v0
 
     .line 387
-    sget-object v0, Lcom/android/server/PersistentDataBlockService;->TAG:Ljava/lang/String;
+    .local v0, "e":Ljava/io/FileNotFoundException;
+    sget-object v1, Lcom/android/server/PersistentDataBlockService;->TAG:Ljava/lang/String;
 
-    const-string/jumbo v1, "partition not available"
+    const-string/jumbo v2, "partition not available"
 
-    invoke-static {v0, v1, p1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    invoke-static {v1, v2, v0}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
     .line 388
     return-void
 .end method
 
 .method private enforceChecksumValidity()Z
-    .registers 4
+    .registers 6
 
     .line 273
     const/16 v0, 0x20
@@ -983,6 +1050,7 @@
     new-array v0, v0, [B
 
     .line 275
+    .local v0, "storedDigest":[B
     iget-object v1, p0, Lcom/android/server/PersistentDataBlockService;->mLock:Ljava/lang/Object;
 
     monitor-enter v1
@@ -994,57 +1062,61 @@
     move-result-object v2
 
     .line 277
+    .local v2, "digest":[B
     if-eqz v2, :cond_17
 
     invoke-static {v0, v2}, Ljava/util/Arrays;->equals([B[B)Z
 
-    move-result v0
+    move-result v3
 
-    if-nez v0, :cond_14
+    if-nez v3, :cond_14
 
     goto :goto_17
 
     .line 282
+    .end local v2  # "digest":[B
     :cond_14
     monitor-exit v1
 
     .line 284
-    const/4 v0, 0x1
+    const/4 v1, 0x1
 
-    return v0
+    return v1
 
     .line 278
+    .restart local v2  # "digest":[B
     :cond_17
     :goto_17
-    sget-object v0, Lcom/android/server/PersistentDataBlockService;->TAG:Ljava/lang/String;
+    sget-object v3, Lcom/android/server/PersistentDataBlockService;->TAG:Ljava/lang/String;
 
-    const-string v2, "Formatting FRP partition..."
+    const-string v4, "Formatting FRP partition..."
 
-    invoke-static {v0, v2}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v3, v4}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 279
-    const/4 v0, 0x0
+    const/4 v3, 0x0
 
-    invoke-direct {p0, v0}, Lcom/android/server/PersistentDataBlockService;->formatPartitionLocked(Z)V
+    invoke-direct {p0, v3}, Lcom/android/server/PersistentDataBlockService;->formatPartitionLocked(Z)V
 
     .line 280
     monitor-exit v1
 
-    return v0
+    return v3
 
     .line 282
+    .end local v2  # "digest":[B
     :catchall_24
-    move-exception v0
+    move-exception v2
 
     monitor-exit v1
     :try_end_26
     .catchall {:try_start_7 .. :try_end_26} :catchall_24
 
-    throw v0
+    throw v2
 .end method
 
 .method private enforceIsAdmin()V
-    .registers 3
+    .registers 5
 
     .line 225
     invoke-static {}, Landroid/os/UserHandle;->getCallingUserId()I
@@ -1052,6 +1124,7 @@
     move-result v0
 
     .line 226
+    .local v0, "userId":I
     iget-object v1, p0, Lcom/android/server/PersistentDataBlockService;->mContext:Landroid/content/Context;
 
     invoke-static {v1}, Landroid/os/UserManager;->get(Landroid/content/Context;)Landroid/os/UserManager;
@@ -1060,23 +1133,24 @@
 
     invoke-virtual {v1, v0}, Landroid/os/UserManager;->isUserAdmin(I)Z
 
-    move-result v0
+    move-result v1
 
     .line 227
-    if-eqz v0, :cond_11
+    .local v1, "isAdmin":Z
+    if-eqz v1, :cond_11
 
     .line 231
     return-void
 
     .line 228
     :cond_11
-    new-instance v0, Ljava/lang/SecurityException;
+    new-instance v2, Ljava/lang/SecurityException;
 
-    const-string v1, "Only the Admin user is allowed to change OEM unlock state"
+    const-string v3, "Only the Admin user is allowed to change OEM unlock state"
 
-    invoke-direct {v0, v1}, Ljava/lang/SecurityException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v2, v3}, Ljava/lang/SecurityException;-><init>(Ljava/lang/String;)V
 
-    throw v0
+    throw v2
 .end method
 
 .method private enforceOemUnlockReadPermission()V
@@ -1142,6 +1216,7 @@
 
 .method private enforceUid(I)V
     .registers 5
+    .param p1, "callingUid"  # I
 
     .line 219
     iget v0, p0, Lcom/android/server/PersistentDataBlockService;->mAllowedUid:I
@@ -1165,21 +1240,22 @@
 
     invoke-virtual {v1, p1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    const-string p1, " not allowed to access PST"
+    const-string v2, " not allowed to access PST"
 
-    invoke-virtual {v1, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v1
 
-    invoke-direct {v0, p1}, Ljava/lang/SecurityException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v0, v1}, Ljava/lang/SecurityException;-><init>(Ljava/lang/String;)V
 
     throw v0
 .end method
 
 .method private enforceUserRestriction(Ljava/lang/String;)V
     .registers 5
+    .param p1, "userRestriction"  # Ljava/lang/String;
 
     .line 234
     iget-object v0, p0, Lcom/android/server/PersistentDataBlockService;->mContext:Landroid/content/Context;
@@ -1213,9 +1289,9 @@
 
     invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v1
 
-    invoke-direct {v0, p1}, Ljava/lang/SecurityException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v0, v1}, Ljava/lang/SecurityException;-><init>(Ljava/lang/String;)V
 
     throw v0
 .end method
@@ -1229,6 +1305,7 @@
     move-result v0
 
     .line 193
+    .local v0, "enabled":Z
     if-eqz v0, :cond_12
 
     .line 194
@@ -1248,37 +1325,38 @@
     goto :goto_12
 
     :catchall_f
-    move-exception v0
+    move-exception v2
 
     monitor-exit v1
     :try_end_11
     .catchall {:try_start_a .. :try_end_11} :catchall_f
 
-    throw v0
+    throw v2
 
     .line 199
     :cond_12
     :goto_12
     if-eqz v0, :cond_17
 
-    const-string v0, "1"
+    const-string v1, "1"
 
     goto :goto_19
 
     :cond_17
-    const-string v0, "0"
+    const-string v1, "0"
 
     :goto_19
-    const-string/jumbo v1, "sys.oem_unlock_allowed"
+    const-string/jumbo v2, "sys.oem_unlock_allowed"
 
-    invoke-static {v1, v0}, Landroid/os/SystemProperties;->set(Ljava/lang/String;Ljava/lang/String;)V
+    invoke-static {v2, v1}, Landroid/os/SystemProperties;->set(Ljava/lang/String;Ljava/lang/String;)V
 
     .line 200
     return-void
 .end method
 
 .method private formatPartitionLocked(Z)V
-    .registers 6
+    .registers 7
+    .param p1, "setOemUnlockEnabled"  # Z
 
     .line 359
     :try_start_0
@@ -1299,6 +1377,7 @@
     .catch Ljava/io/FileNotFoundException; {:try_start_0 .. :try_end_11} :catch_43
 
     .line 363
+    .local v0, "outputStream":Ljava/io/DataOutputStream;
     nop
 
     .line 365
@@ -1307,6 +1386,7 @@
     new-array v2, v1, [B
 
     .line 367
+    .local v2, "data":[B
     const/4 v3, 0x0
 
     :try_start_17
@@ -1343,21 +1423,22 @@
 
     .line 375
     :catchall_31
-    move-exception p1
+    move-exception v1
 
     goto :goto_3f
 
     .line 371
     :catch_33
-    move-exception p1
+    move-exception v1
 
     .line 372
+    .local v1, "e":Ljava/io/IOException;
     :try_start_34
-    sget-object v1, Lcom/android/server/PersistentDataBlockService;->TAG:Ljava/lang/String;
+    sget-object v3, Lcom/android/server/PersistentDataBlockService;->TAG:Ljava/lang/String;
 
-    const-string v2, "failed to format block"
+    const-string v4, "failed to format block"
 
-    invoke-static {v1, v2, p1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    invoke-static {v3, v4, v1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
     :try_end_3b
     .catchall {:try_start_34 .. :try_end_3b} :catchall_31
 
@@ -1368,28 +1449,33 @@
     return-void
 
     .line 375
+    .end local v1  # "e":Ljava/io/IOException;
     :goto_3f
     invoke-static {v0}, Llibcore/io/IoUtils;->closeQuietly(Ljava/lang/AutoCloseable;)V
 
-    throw p1
+    throw v1
 
     .line 360
+    .end local v0  # "outputStream":Ljava/io/DataOutputStream;
+    .end local v2  # "data":[B
     :catch_43
-    move-exception p1
+    move-exception v0
 
     .line 361
-    sget-object v0, Lcom/android/server/PersistentDataBlockService;->TAG:Ljava/lang/String;
+    .local v0, "e":Ljava/io/FileNotFoundException;
+    sget-object v1, Lcom/android/server/PersistentDataBlockService;->TAG:Ljava/lang/String;
 
-    const-string/jumbo v1, "partition not available?"
+    const-string/jumbo v2, "partition not available?"
 
-    invoke-static {v0, v1, p1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    invoke-static {v1, v2, v0}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
     .line 362
     return-void
 .end method
 
 .method private getAllowedUid(I)I
-    .registers 6
+    .registers 9
+    .param p1, "userHandle"  # I
 
     .line 148
     iget-object v0, p0, Lcom/android/server/PersistentDataBlockService;->mContext:Landroid/content/Context;
@@ -1399,13 +1485,14 @@
     move-result-object v0
 
     .line 149
-    const v1, 0x104019b
+    const v1, 0x1040196
 
     invoke-virtual {v0, v1}, Landroid/content/res/Resources;->getString(I)Ljava/lang/String;
 
     move-result-object v0
 
     .line 150
+    .local v0, "allowedPackage":Ljava/lang/String;
     iget-object v1, p0, Lcom/android/server/PersistentDataBlockService;->mContext:Landroid/content/Context;
 
     invoke-virtual {v1}, Landroid/content/Context;->getPackageManager()Landroid/content/pm/PackageManager;
@@ -1413,49 +1500,53 @@
     move-result-object v1
 
     .line 151
-    nop
+    .local v1, "pm":Landroid/content/pm/PackageManager;
+    const/4 v2, -0x1
 
     .line 153
-    const/high16 v2, 0x100000
+    .local v2, "allowedUid":I
+    const/high16 v3, 0x100000
 
     :try_start_16
-    invoke-virtual {v1, v0, v2, p1}, Landroid/content/pm/PackageManager;->getPackageUidAsUser(Ljava/lang/String;II)I
+    invoke-virtual {v1, v0, v3, p1}, Landroid/content/pm/PackageManager;->getPackageUidAsUser(Ljava/lang/String;II)I
 
-    move-result p1
+    move-result v3
     :try_end_1a
-    .catch Landroid/content/pm/PackageManager$NameNotFoundException; {:try_start_16 .. :try_end_1a} :catch_1b
+    .catch Landroid/content/pm/PackageManager$NameNotFoundException; {:try_start_16 .. :try_end_1a} :catch_1c
+
+    move v2, v3
 
     .line 158
     goto :goto_34
 
     .line 155
-    :catch_1b
-    move-exception p1
+    :catch_1c
+    move-exception v3
 
     .line 157
-    sget-object v1, Lcom/android/server/PersistentDataBlockService;->TAG:Ljava/lang/String;
+    .local v3, "e":Landroid/content/pm/PackageManager$NameNotFoundException;
+    sget-object v4, Lcom/android/server/PersistentDataBlockService;->TAG:Ljava/lang/String;
 
-    new-instance v2, Ljava/lang/StringBuilder;
+    new-instance v5, Ljava/lang/StringBuilder;
 
-    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v5}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string/jumbo v3, "not able to find package "
+    const-string/jumbo v6, "not able to find package "
 
-    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v2, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v5, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v5}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v5
 
-    invoke-static {v1, v0, p1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
-
-    const/4 p1, -0x1
+    invoke-static {v4, v5, v3}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
     .line 159
+    .end local v3  # "e":Landroid/content/pm/PackageManager$NameNotFoundException;
     :goto_34
-    return p1
+    return v2
 .end method
 
 .method private getBlockDeviceSize()J
@@ -1544,6 +1635,7 @@
 
 .method private getTotalDataSizeLocked(Ljava/io/DataInputStream;)I
     .registers 4
+    .param p1, "inputStream"  # Ljava/io/DataInputStream;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Ljava/io/IOException;
@@ -1561,6 +1653,7 @@
     move-result v0
 
     .line 246
+    .local v0, "blockId":I
     const v1, 0x19901873
 
     if-ne v0, v1, :cond_13
@@ -1568,17 +1661,20 @@
     .line 247
     invoke-virtual {p1}, Ljava/io/DataInputStream;->readInt()I
 
-    move-result p1
+    move-result v1
 
+    .local v1, "totalDataSize":I
     goto :goto_14
 
     .line 249
+    .end local v1  # "totalDataSize":I
     :cond_13
-    const/4 p1, 0x0
+    const/4 v1, 0x0
 
     .line 251
+    .restart local v1  # "totalDataSize":I
     :goto_14
-    return p1
+    return v1
 .end method
 
 .method private native nativeGetBlockDeviceSize(Ljava/lang/String;)J
@@ -1625,6 +1721,7 @@
 
 .method public onBootPhase(I)V
     .registers 7
+    .param p1, "phase"  # I
 
     .line 177
     const-string v0, "Service "
@@ -1664,44 +1761,6 @@
     .line 180
     :cond_1b
     :try_start_1b
-    new-instance p1, Ljava/lang/IllegalStateException;
-
-    new-instance v1, Ljava/lang/StringBuilder;
-
-    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
-
-    invoke-virtual {v1, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    sget-object v2, Lcom/android/server/PersistentDataBlockService;->TAG:Ljava/lang/String;
-
-    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    const-string v2, " init timeout"
-
-    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
-
-    move-result-object v1
-
-    invoke-direct {p1, v1}, Ljava/lang/IllegalStateException;-><init>(Ljava/lang/String;)V
-
-    throw p1
-    :try_end_37
-    .catch Ljava/lang/InterruptedException; {:try_start_1b .. :try_end_37} :catch_37
-
-    .line 182
-    :catch_37
-    move-exception p1
-
-    .line 183
-    invoke-static {}, Ljava/lang/Thread;->currentThread()Ljava/lang/Thread;
-
-    move-result-object v1
-
-    invoke-virtual {v1}, Ljava/lang/Thread;->interrupt()V
-
-    .line 184
     new-instance v1, Ljava/lang/IllegalStateException;
 
     new-instance v2, Ljava/lang/StringBuilder;
@@ -1710,23 +1769,67 @@
 
     invoke-virtual {v2, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    sget-object v0, Lcom/android/server/PersistentDataBlockService;->TAG:Ljava/lang/String;
+    sget-object v3, Lcom/android/server/PersistentDataBlockService;->TAG:Ljava/lang/String;
 
-    invoke-virtual {v2, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string v0, " init interrupted"
+    const-string v3, " init timeout"
 
-    invoke-virtual {v2, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
+    move-result-object v2
+
+    invoke-direct {v1, v2}, Ljava/lang/IllegalStateException;-><init>(Ljava/lang/String;)V
+
+    .end local p0  # "this":Lcom/android/server/PersistentDataBlockService;
+    .end local p1  # "phase":I
+    throw v1
+    :try_end_37
+    .catch Ljava/lang/InterruptedException; {:try_start_1b .. :try_end_37} :catch_37
+
+    .line 182
+    .restart local p0  # "this":Lcom/android/server/PersistentDataBlockService;
+    .restart local p1  # "phase":I
+    :catch_37
+    move-exception v1
+
+    .line 183
+    .local v1, "e":Ljava/lang/InterruptedException;
+    invoke-static {}, Ljava/lang/Thread;->currentThread()Ljava/lang/Thread;
+
+    move-result-object v2
+
+    invoke-virtual {v2}, Ljava/lang/Thread;->interrupt()V
+
+    .line 184
+    new-instance v2, Ljava/lang/IllegalStateException;
+
+    new-instance v3, Ljava/lang/StringBuilder;
+
+    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
+
+    invoke-virtual {v3, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    sget-object v0, Lcom/android/server/PersistentDataBlockService;->TAG:Ljava/lang/String;
+
+    invoke-virtual {v3, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    const-string v0, " init interrupted"
+
+    invoke-virtual {v3, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
     move-result-object v0
 
-    invoke-direct {v1, v0, p1}, Ljava/lang/IllegalStateException;-><init>(Ljava/lang/String;Ljava/lang/Throwable;)V
+    invoke-direct {v2, v0, v1}, Ljava/lang/IllegalStateException;-><init>(Ljava/lang/String;Ljava/lang/Throwable;)V
 
-    throw v1
+    throw v2
 
     .line 188
+    .end local v1  # "e":Ljava/lang/InterruptedException;
     :cond_5b
     :goto_5b
     invoke-super {p0, p1}, Lcom/android/server/SystemService;->onBootPhase(I)V

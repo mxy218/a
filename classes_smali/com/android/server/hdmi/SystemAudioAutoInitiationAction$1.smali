@@ -24,6 +24,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/hdmi/SystemAudioAutoInitiationAction;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/hdmi/SystemAudioAutoInitiationAction;
 
     .line 49
     iput-object p1, p0, Lcom/android/server/hdmi/SystemAudioAutoInitiationAction$1;->this$0:Lcom/android/server/hdmi/SystemAudioAutoInitiationAction;
@@ -36,15 +37,16 @@
 
 # virtual methods
 .method public onSendCompleted(I)V
-    .registers 2
+    .registers 3
+    .param p1, "error"  # I
 
     .line 52
     if-eqz p1, :cond_7
 
     .line 53
-    iget-object p1, p0, Lcom/android/server/hdmi/SystemAudioAutoInitiationAction$1;->this$0:Lcom/android/server/hdmi/SystemAudioAutoInitiationAction;
+    iget-object v0, p0, Lcom/android/server/hdmi/SystemAudioAutoInitiationAction$1;->this$0:Lcom/android/server/hdmi/SystemAudioAutoInitiationAction;
 
-    invoke-static {p1}, Lcom/android/server/hdmi/SystemAudioAutoInitiationAction;->access$000(Lcom/android/server/hdmi/SystemAudioAutoInitiationAction;)V
+    invoke-static {v0}, Lcom/android/server/hdmi/SystemAudioAutoInitiationAction;->access$000(Lcom/android/server/hdmi/SystemAudioAutoInitiationAction;)V
 
     .line 55
     :cond_7

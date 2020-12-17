@@ -30,6 +30,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/hdmi/HdmiCecController;IILcom/android/server/hdmi/HdmiCecController$AllocateAddressCallback;)V
     .registers 5
+    .param p1, "this$0"  # Lcom/android/server/hdmi/HdmiCecController;
 
     .line 195
     iput-object p1, p0, Lcom/android/server/hdmi/HdmiCecController$3;->this$0:Lcom/android/server/hdmi/HdmiCecController;

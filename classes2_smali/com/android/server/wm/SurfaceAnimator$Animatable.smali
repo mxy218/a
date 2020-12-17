@@ -46,10 +46,11 @@
 .end method
 
 .method public shouldDeferAnimationFinish(Ljava/lang/Runnable;)Z
-    .registers 2
+    .registers 3
+    .param p1, "endDeferFinishCallback"  # Ljava/lang/Runnable;
 
     .line 450
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    return p1
+    return v0
 .end method

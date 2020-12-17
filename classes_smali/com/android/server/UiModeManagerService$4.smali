@@ -24,8 +24,9 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/UiModeManagerService;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/UiModeManagerService;
 
-    .line 211
+    .line 181
     iput-object p1, p0, Lcom/android/server/UiModeManagerService$4;->this$0:Lcom/android/server/UiModeManagerService;
 
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -36,64 +37,52 @@
 
 # virtual methods
 .method public onTwilightStateChanged(Lcom/android/server/twilight/TwilightState;)V
-    .registers 4
+    .registers 5
+    .param p1, "state"  # Lcom/android/server/twilight/TwilightState;
 
-    .line 214
-    iget-object p1, p0, Lcom/android/server/UiModeManagerService$4;->this$0:Lcom/android/server/UiModeManagerService;
+    .line 184
+    iget-object v0, p0, Lcom/android/server/UiModeManagerService$4;->this$0:Lcom/android/server/UiModeManagerService;
 
-    iget-object p1, p1, Lcom/android/server/UiModeManagerService;->mLock:Ljava/lang/Object;
+    iget-object v0, v0, Lcom/android/server/UiModeManagerService;->mLock:Ljava/lang/Object;
 
-    monitor-enter p1
+    monitor-enter v0
 
-    .line 215
+    .line 185
     :try_start_5
-    iget-object v0, p0, Lcom/android/server/UiModeManagerService$4;->this$0:Lcom/android/server/UiModeManagerService;
+    iget-object v1, p0, Lcom/android/server/UiModeManagerService$4;->this$0:Lcom/android/server/UiModeManagerService;
 
-    invoke-static {v0}, Lcom/android/server/UiModeManagerService;->access$300(Lcom/android/server/UiModeManagerService;)I
+    invoke-static {v1}, Lcom/android/server/UiModeManagerService;->access$300(Lcom/android/server/UiModeManagerService;)I
 
-    move-result v0
+    move-result v1
 
-    if-nez v0, :cond_21
+    if-nez v1, :cond_18
 
-    .line 216
-    iget-object v0, p0, Lcom/android/server/UiModeManagerService$4;->this$0:Lcom/android/server/UiModeManagerService;
+    .line 186
+    iget-object v1, p0, Lcom/android/server/UiModeManagerService$4;->this$0:Lcom/android/server/UiModeManagerService;
 
-    invoke-static {v0}, Lcom/android/server/UiModeManagerService;->access$400(Lcom/android/server/UiModeManagerService;)Z
+    invoke-static {v1}, Lcom/android/server/UiModeManagerService;->access$400(Lcom/android/server/UiModeManagerService;)V
 
-    move-result v0
+    .line 187
+    iget-object v1, p0, Lcom/android/server/UiModeManagerService$4;->this$0:Lcom/android/server/UiModeManagerService;
 
-    if-eqz v0, :cond_1c
+    const/4 v2, 0x0
 
-    .line 217
-    iget-object v0, p0, Lcom/android/server/UiModeManagerService$4;->this$0:Lcom/android/server/UiModeManagerService;
+    invoke-virtual {v1, v2, v2}, Lcom/android/server/UiModeManagerService;->updateLocked(II)V
 
-    const/4 v1, 0x0
+    .line 189
+    :cond_18
+    monitor-exit v0
 
-    invoke-virtual {v0, v1, v1}, Lcom/android/server/UiModeManagerService;->updateLocked(II)V
-
-    goto :goto_21
-
-    .line 219
-    :cond_1c
-    iget-object v0, p0, Lcom/android/server/UiModeManagerService$4;->this$0:Lcom/android/server/UiModeManagerService;
-
-    invoke-static {v0}, Lcom/android/server/UiModeManagerService;->access$500(Lcom/android/server/UiModeManagerService;)V
-
-    .line 222
-    :cond_21
-    :goto_21
-    monitor-exit p1
-
-    .line 223
+    .line 190
     return-void
 
-    .line 222
-    :catchall_23
-    move-exception v0
+    .line 189
+    :catchall_1a
+    move-exception v1
 
-    monitor-exit p1
-    :try_end_25
-    .catchall {:try_start_5 .. :try_end_25} :catchall_23
+    monitor-exit v0
+    :try_end_1c
+    .catchall {:try_start_5 .. :try_end_1c} :catchall_1a
 
-    throw v0
+    throw v1
 .end method

@@ -5,7 +5,7 @@
 
 # annotations
 .annotation system Ldalvik/annotation/EnclosingMethod;
-    value = Lcom/android/server/StorageManagerService;->setPrimaryStorageUuid(Ljava/lang/String;Landroid/content/pm/IPackageMoveObserver;)V
+    value = Lcom/android/server/StorageManagerService;->abortIdleMaint(Ljava/lang/Runnable;)V
 .end annotation
 
 .annotation system Ldalvik/annotation/InnerClass;
@@ -17,13 +17,18 @@
 # instance fields
 .field final synthetic this$0:Lcom/android/server/StorageManagerService;
 
+.field final synthetic val$callback:Ljava/lang/Runnable;
+
 
 # direct methods
-.method constructor <init>(Lcom/android/server/StorageManagerService;)V
-    .registers 2
+.method constructor <init>(Lcom/android/server/StorageManagerService;Ljava/lang/Runnable;)V
+    .registers 3
+    .param p1, "this$0"  # Lcom/android/server/StorageManagerService;
 
-    .line 2313
+    .line 2202
     iput-object p1, p0, Lcom/android/server/StorageManagerService$11;->this$0:Lcom/android/server/StorageManagerService;
+
+    iput-object p2, p0, Lcom/android/server/StorageManagerService$11;->val$callback:Ljava/lang/Runnable;
 
     invoke-direct {p0}, Landroid/os/IVoldTaskListener$Stub;-><init>()V
 
@@ -33,43 +38,34 @@
 
 # virtual methods
 .method public onFinished(ILandroid/os/PersistableBundle;)V
-    .registers 3
+    .registers 5
+    .param p1, "status"  # I
+    .param p2, "extras"  # Landroid/os/PersistableBundle;
 
-    .line 2324
+    .line 2209
+    iget-object v0, p0, Lcom/android/server/StorageManagerService$11;->val$callback:Ljava/lang/Runnable;
+
+    if-eqz v0, :cond_d
+
+    .line 2210
+    invoke-static {}, Lcom/android/internal/os/BackgroundThread;->getHandler()Landroid/os/Handler;
+
+    move-result-object v0
+
+    iget-object v1, p0, Lcom/android/server/StorageManagerService$11;->val$callback:Ljava/lang/Runnable;
+
+    invoke-virtual {v0, v1}, Landroid/os/Handler;->post(Ljava/lang/Runnable;)Z
+
+    .line 2212
+    :cond_d
     return-void
 .end method
 
 .method public onStatus(ILandroid/os/PersistableBundle;)V
-    .registers 4
+    .registers 3
+    .param p1, "status"  # I
+    .param p2, "extras"  # Landroid/os/PersistableBundle;
 
-    .line 2316
-    iget-object p2, p0, Lcom/android/server/StorageManagerService$11;->this$0:Lcom/android/server/StorageManagerService;
-
-    invoke-static {p2}, Lcom/android/server/StorageManagerService;->access$2700(Lcom/android/server/StorageManagerService;)Ljava/lang/Object;
-
-    move-result-object p2
-
-    monitor-enter p2
-
-    .line 2317
-    :try_start_7
-    iget-object v0, p0, Lcom/android/server/StorageManagerService$11;->this$0:Lcom/android/server/StorageManagerService;
-
-    invoke-static {v0, p1}, Lcom/android/server/StorageManagerService;->access$4600(Lcom/android/server/StorageManagerService;I)V
-
-    .line 2318
-    monitor-exit p2
-
-    .line 2319
+    .line 2206
     return-void
-
-    .line 2318
-    :catchall_e
-    move-exception p1
-
-    monitor-exit p2
-    :try_end_10
-    .catchall {:try_start_7 .. :try_end_10} :catchall_e
-
-    throw p1
 .end method

@@ -27,6 +27,8 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/pm/BackgroundDexOptService;Ljava/lang/String;Lcom/android/server/pm/PackageManagerService;Landroid/util/ArraySet;Landroid/app/job/JobParameters;)V
     .registers 6
+    .param p1, "this$0"  # Lcom/android/server/pm/BackgroundDexOptService;
+    .param p2, "x0"  # Ljava/lang/String;
 
     .line 253
     iput-object p1, p0, Lcom/android/server/pm/BackgroundDexOptService$2;->this$0:Lcom/android/server/pm/BackgroundDexOptService;
@@ -45,7 +47,7 @@
 
 # virtual methods
 .method public run()V
-    .registers 4
+    .registers 5
 
     .line 256
     iget-object v0, p0, Lcom/android/server/pm/BackgroundDexOptService$2;->this$0:Lcom/android/server/pm/BackgroundDexOptService;
@@ -59,25 +61,26 @@
     move-result v0
 
     .line 257
+    .local v0, "result":I
     const/4 v1, 0x2
 
     if-eq v0, v1, :cond_1c
 
     .line 258
-    const-string v0, "BackgroundDexOptService"
+    const-string v1, "BackgroundDexOptService"
 
-    const-string v1, "Idle optimizations aborted because of space constraints."
+    const-string v2, "Idle optimizations aborted because of space constraints."
 
-    invoke-static {v0, v1}, Landroid/util/Log;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v2}, Landroid/util/Log;->w(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 261
-    iget-object v0, p0, Lcom/android/server/pm/BackgroundDexOptService$2;->this$0:Lcom/android/server/pm/BackgroundDexOptService;
+    iget-object v1, p0, Lcom/android/server/pm/BackgroundDexOptService$2;->this$0:Lcom/android/server/pm/BackgroundDexOptService;
 
-    iget-object v1, p0, Lcom/android/server/pm/BackgroundDexOptService$2;->val$jobParams:Landroid/app/job/JobParameters;
+    iget-object v2, p0, Lcom/android/server/pm/BackgroundDexOptService$2;->val$jobParams:Landroid/app/job/JobParameters;
 
-    const/4 v2, 0x0
+    const/4 v3, 0x0
 
-    invoke-virtual {v0, v1, v2}, Lcom/android/server/pm/BackgroundDexOptService;->jobFinished(Landroid/app/job/JobParameters;Z)V
+    invoke-virtual {v1, v2, v3}, Lcom/android/server/pm/BackgroundDexOptService;->jobFinished(Landroid/app/job/JobParameters;Z)V
 
     .line 263
     :cond_1c

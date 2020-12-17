@@ -21,8 +21,10 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/wm/TaskSnapshotPersister;Ljava/lang/String;)V
     .registers 3
+    .param p1, "this$0"  # Lcom/android/server/wm/TaskSnapshotPersister;
+    .param p2, "x0"  # Ljava/lang/String;
 
-    .line 245
+    .line 241
     iput-object p1, p0, Lcom/android/server/wm/TaskSnapshotPersister$1;->this$0:Lcom/android/server/wm/TaskSnapshotPersister;
 
     invoke-direct {p0, p2}, Ljava/lang/Thread;-><init>(Ljava/lang/String;)V
@@ -33,18 +35,15 @@
 
 # virtual methods
 .method public run()V
-    .registers 5
+    .registers 6
 
-    .line 247
+    .line 243
     const/16 v0, 0xa
 
     invoke-static {v0}, Landroid/os/Process;->setThreadPriority(I)V
 
-    .line 250
+    .line 246
     :goto_5
-    nop
-
-    .line 251
     iget-object v0, p0, Lcom/android/server/wm/TaskSnapshotPersister$1;->this$0:Lcom/android/server/wm/TaskSnapshotPersister;
 
     invoke-static {v0}, Lcom/android/server/wm/TaskSnapshotPersister;->access$100(Lcom/android/server/wm/TaskSnapshotPersister;)Ljava/lang/Object;
@@ -53,27 +52,25 @@
 
     monitor-enter v0
 
-    .line 252
-    :try_start_d
+    .line 247
+    :try_start_c
     iget-object v1, p0, Lcom/android/server/wm/TaskSnapshotPersister$1;->this$0:Lcom/android/server/wm/TaskSnapshotPersister;
 
     invoke-static {v1}, Lcom/android/server/wm/TaskSnapshotPersister;->access$200(Lcom/android/server/wm/TaskSnapshotPersister;)Z
 
     move-result v1
 
-    const/4 v2, 0x0
+    if-eqz v1, :cond_16
 
-    if-eqz v1, :cond_19
-
-    .line 253
+    .line 248
     const/4 v1, 0x0
 
-    move v3, v2
+    .local v1, "next":Lcom/android/server/wm/TaskSnapshotPersister$WriteQueueItem;
+    goto :goto_27
 
-    goto :goto_3c
-
-    .line 255
-    :cond_19
+    .line 250
+    .end local v1  # "next":Lcom/android/server/wm/TaskSnapshotPersister$WriteQueueItem;
+    :cond_16
     iget-object v1, p0, Lcom/android/server/wm/TaskSnapshotPersister$1;->this$0:Lcom/android/server/wm/TaskSnapshotPersister;
 
     invoke-static {v1}, Lcom/android/server/wm/TaskSnapshotPersister;->access$300(Lcom/android/server/wm/TaskSnapshotPersister;)Ljava/util/ArrayDeque;
@@ -86,70 +83,43 @@
 
     check-cast v1, Lcom/android/server/wm/TaskSnapshotPersister$WriteQueueItem;
 
-    .line 256
-    if-eqz v1, :cond_3b
+    .line 251
+    .restart local v1  # "next":Lcom/android/server/wm/TaskSnapshotPersister$WriteQueueItem;
+    if-eqz v1, :cond_27
 
-    .line 257
-    invoke-virtual {v1}, Lcom/android/server/wm/TaskSnapshotPersister$WriteQueueItem;->isReady()Z
-
-    move-result v3
-
-    if-eqz v3, :cond_32
-
-    .line 258
-    const/4 v3, 0x1
-
-    .line 259
+    .line 252
     invoke-virtual {v1}, Lcom/android/server/wm/TaskSnapshotPersister$WriteQueueItem;->onDequeuedLocked()V
 
-    goto :goto_3c
-
-    .line 261
-    :cond_32
-    iget-object v3, p0, Lcom/android/server/wm/TaskSnapshotPersister$1;->this$0:Lcom/android/server/wm/TaskSnapshotPersister;
-
-    invoke-static {v3}, Lcom/android/server/wm/TaskSnapshotPersister;->access$300(Lcom/android/server/wm/TaskSnapshotPersister;)Ljava/util/ArrayDeque;
-
-    move-result-object v3
-
-    invoke-virtual {v3, v1}, Ljava/util/ArrayDeque;->addLast(Ljava/lang/Object;)V
-
-    .line 265
-    :cond_3b
-    move v3, v2
-
-    :goto_3c
+    .line 255
+    :cond_27
+    :goto_27
     monitor-exit v0
-    :try_end_3d
-    .catchall {:try_start_d .. :try_end_3d} :catchall_80
+    :try_end_28
+    .catchall {:try_start_c .. :try_end_28} :catchall_6a
 
-    .line 266
-    if-eqz v1, :cond_49
+    .line 256
+    if-eqz v1, :cond_32
 
-    .line 267
-    if-eqz v3, :cond_44
-
-    .line 268
+    .line 257
     invoke-virtual {v1}, Lcom/android/server/wm/TaskSnapshotPersister$WriteQueueItem;->write()V
 
-    .line 270
-    :cond_44
-    const-wide/16 v0, 0x64
+    .line 258
+    const-wide/16 v2, 0x64
 
-    invoke-static {v0, v1}, Landroid/os/SystemClock;->sleep(J)V
+    invoke-static {v2, v3}, Landroid/os/SystemClock;->sleep(J)V
 
-    .line 272
-    :cond_49
+    .line 260
+    :cond_32
     iget-object v0, p0, Lcom/android/server/wm/TaskSnapshotPersister$1;->this$0:Lcom/android/server/wm/TaskSnapshotPersister;
 
     invoke-static {v0}, Lcom/android/server/wm/TaskSnapshotPersister;->access$100(Lcom/android/server/wm/TaskSnapshotPersister;)Ljava/lang/Object;
 
-    move-result-object v1
+    move-result-object v2
 
-    monitor-enter v1
+    monitor-enter v2
 
-    .line 273
-    :try_start_50
+    .line 261
+    :try_start_39
     iget-object v0, p0, Lcom/android/server/wm/TaskSnapshotPersister$1;->this$0:Lcom/android/server/wm/TaskSnapshotPersister;
 
     invoke-static {v0}, Lcom/android/server/wm/TaskSnapshotPersister;->access$300(Lcom/android/server/wm/TaskSnapshotPersister;)Ljava/util/ArrayDeque;
@@ -160,8 +130,9 @@
 
     move-result v0
 
-    .line 274
-    if-nez v0, :cond_66
+    .line 262
+    .local v0, "writeQueueEmpty":Z
+    if-nez v0, :cond_4f
 
     iget-object v3, p0, Lcom/android/server/wm/TaskSnapshotPersister$1;->this$0:Lcom/android/server/wm/TaskSnapshotPersister;
 
@@ -169,72 +140,78 @@
 
     move-result v3
 
-    if-nez v3, :cond_66
+    if-nez v3, :cond_4f
 
-    .line 275
-    monitor-exit v1
-    :try_end_65
-    .catchall {:try_start_50 .. :try_end_65} :catchall_7d
+    .line 263
+    monitor-exit v2
+    :try_end_4e
+    .catchall {:try_start_39 .. :try_end_4e} :catchall_67
 
     goto :goto_5
 
-    .line 278
-    :cond_66
-    :try_start_66
+    .line 266
+    :cond_4f
+    :try_start_4f
     iget-object v3, p0, Lcom/android/server/wm/TaskSnapshotPersister$1;->this$0:Lcom/android/server/wm/TaskSnapshotPersister;
 
     invoke-static {v3, v0}, Lcom/android/server/wm/TaskSnapshotPersister;->access$402(Lcom/android/server/wm/TaskSnapshotPersister;Z)Z
 
-    .line 279
-    iget-object v0, p0, Lcom/android/server/wm/TaskSnapshotPersister$1;->this$0:Lcom/android/server/wm/TaskSnapshotPersister;
+    .line 267
+    iget-object v3, p0, Lcom/android/server/wm/TaskSnapshotPersister$1;->this$0:Lcom/android/server/wm/TaskSnapshotPersister;
 
-    invoke-static {v0}, Lcom/android/server/wm/TaskSnapshotPersister;->access$100(Lcom/android/server/wm/TaskSnapshotPersister;)Ljava/lang/Object;
+    invoke-static {v3}, Lcom/android/server/wm/TaskSnapshotPersister;->access$100(Lcom/android/server/wm/TaskSnapshotPersister;)Ljava/lang/Object;
 
-    move-result-object v0
+    move-result-object v3
 
-    invoke-virtual {v0}, Ljava/lang/Object;->wait()V
+    invoke-virtual {v3}, Ljava/lang/Object;->wait()V
 
-    .line 280
-    iget-object v0, p0, Lcom/android/server/wm/TaskSnapshotPersister$1;->this$0:Lcom/android/server/wm/TaskSnapshotPersister;
+    .line 268
+    iget-object v3, p0, Lcom/android/server/wm/TaskSnapshotPersister$1;->this$0:Lcom/android/server/wm/TaskSnapshotPersister;
 
-    invoke-static {v0, v2}, Lcom/android/server/wm/TaskSnapshotPersister;->access$402(Lcom/android/server/wm/TaskSnapshotPersister;Z)Z
-    :try_end_79
-    .catch Ljava/lang/InterruptedException; {:try_start_66 .. :try_end_79} :catch_7a
-    .catchall {:try_start_66 .. :try_end_79} :catchall_7d
+    const/4 v4, 0x0
 
-    .line 282
-    goto :goto_7b
+    invoke-static {v3, v4}, Lcom/android/server/wm/TaskSnapshotPersister;->access$402(Lcom/android/server/wm/TaskSnapshotPersister;Z)Z
+    :try_end_63
+    .catch Ljava/lang/InterruptedException; {:try_start_4f .. :try_end_63} :catch_64
+    .catchall {:try_start_4f .. :try_end_63} :catchall_67
 
-    .line 281
-    :catch_7a
-    move-exception v0
+    .line 270
+    goto :goto_65
 
-    .line 283
-    :goto_7b
-    :try_start_7b
-    monitor-exit v1
+    .line 269
+    :catch_64
+    move-exception v3
 
-    .line 284
+    .line 271
+    .end local v0  # "writeQueueEmpty":Z
+    :goto_65
+    :try_start_65
+    monitor-exit v2
+
+    .line 272
+    .end local v1  # "next":Lcom/android/server/wm/TaskSnapshotPersister$WriteQueueItem;
     goto :goto_5
 
-    .line 283
-    :catchall_7d
+    .line 271
+    .restart local v1  # "next":Lcom/android/server/wm/TaskSnapshotPersister$WriteQueueItem;
+    :catchall_67
     move-exception v0
 
-    monitor-exit v1
-    :try_end_7f
-    .catchall {:try_start_7b .. :try_end_7f} :catchall_7d
+    monitor-exit v2
+    :try_end_69
+    .catchall {:try_start_65 .. :try_end_69} :catchall_67
 
     throw v0
 
-    .line 265
-    :catchall_80
+    .line 255
+    .end local v1  # "next":Lcom/android/server/wm/TaskSnapshotPersister$WriteQueueItem;
+    :catchall_6a
     move-exception v1
 
-    :try_start_81
+    :try_start_6b
     monitor-exit v0
-    :try_end_82
-    .catchall {:try_start_81 .. :try_end_82} :catchall_80
+    :try_end_6c
+    .catchall {:try_start_6b .. :try_end_6c} :catchall_6a
 
     throw v1
 .end method

@@ -29,6 +29,7 @@
 # direct methods
 .method public constructor <init>(Landroid/app/PendingIntent;)V
     .registers 3
+    .param p1, "receiver"  # Landroid/app/PendingIntent;
 
     .line 46
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -51,6 +52,7 @@
 # virtual methods
 .method public deliverResult(Landroid/content/Context;)V
     .registers 8
+    .param p1, "context"  # Landroid/content/Context;
 
     .line 83
     invoke-virtual {p0}, Lcom/android/server/am/AppTimeTracker;->stop()V
@@ -61,6 +63,7 @@
     invoke-direct {v0}, Landroid/os/Bundle;-><init>()V
 
     .line 85
+    .local v0, "extras":Landroid/os/Bundle;
     iget-wide v1, p0, Lcom/android/server/am/AppTimeTracker;->mTotalTime:J
 
     const-string v3, "android.activity.usage_time"
@@ -73,6 +76,7 @@
     invoke-direct {v1}, Landroid/os/Bundle;-><init>()V
 
     .line 87
+    .local v1, "pkgs":Landroid/os/Bundle;
     iget-object v2, p0, Lcom/android/server/am/AppTimeTracker;->mPackageTimes:Landroid/util/ArrayMap;
 
     invoke-virtual {v2}, Landroid/util/ArrayMap;->size()I
@@ -81,6 +85,7 @@
 
     add-int/lit8 v2, v2, -0x1
 
+    .local v2, "i":I
     :goto_1c
     if-ltz v2, :cond_36
 
@@ -111,26 +116,28 @@
     goto :goto_1c
 
     .line 90
+    .end local v2  # "i":I
     :cond_36
     const-string v2, "android.usage_time_packages"
 
     invoke-virtual {v0, v2, v1}, Landroid/os/Bundle;->putBundle(Ljava/lang/String;Landroid/os/Bundle;)V
 
     .line 91
-    new-instance v1, Landroid/content/Intent;
+    new-instance v2, Landroid/content/Intent;
 
-    invoke-direct {v1}, Landroid/content/Intent;-><init>()V
+    invoke-direct {v2}, Landroid/content/Intent;-><init>()V
 
     .line 92
-    invoke-virtual {v1, v0}, Landroid/content/Intent;->putExtras(Landroid/os/Bundle;)Landroid/content/Intent;
+    .local v2, "fillinIntent":Landroid/content/Intent;
+    invoke-virtual {v2, v0}, Landroid/content/Intent;->putExtras(Landroid/os/Bundle;)Landroid/content/Intent;
 
     .line 94
     :try_start_43
-    iget-object v0, p0, Lcom/android/server/am/AppTimeTracker;->mReceiver:Landroid/app/PendingIntent;
+    iget-object v3, p0, Lcom/android/server/am/AppTimeTracker;->mReceiver:Landroid/app/PendingIntent;
 
-    const/4 v2, 0x0
+    const/4 v4, 0x0
 
-    invoke-virtual {v0, p1, v2, v1}, Landroid/app/PendingIntent;->send(Landroid/content/Context;ILandroid/content/Intent;)V
+    invoke-virtual {v3, p1, v4, v2}, Landroid/app/PendingIntent;->send(Landroid/content/Context;ILandroid/content/Intent;)V
     :try_end_49
     .catch Landroid/app/PendingIntent$CanceledException; {:try_start_43 .. :try_end_49} :catch_4a
 
@@ -139,7 +146,7 @@
 
     .line 95
     :catch_4a
-    move-exception p1
+    move-exception v3
 
     .line 97
     :goto_4b
@@ -148,11 +155,14 @@
 
 .method public dump(Ljava/io/PrintWriter;Ljava/lang/String;Z)V
     .registers 8
+    .param p1, "pw"  # Ljava/io/PrintWriter;
+    .param p2, "prefix"  # Ljava/lang/String;
+    .param p3, "details"  # Z
 
     .line 107
     invoke-virtual {p1, p2}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
-    const-string v0, "mReceiver="
+    const-string/jumbo v0, "mReceiver="
 
     invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
@@ -163,7 +173,7 @@
     .line 108
     invoke-virtual {p1, p2}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
-    const-string v0, "mTotalTime="
+    const-string/jumbo v0, "mTotalTime="
 
     invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
@@ -178,19 +188,20 @@
     .line 111
     const/4 v0, 0x0
 
-    :goto_1e
+    .local v0, "i":I
+    :goto_20
     iget-object v1, p0, Lcom/android/server/am/AppTimeTracker;->mPackageTimes:Landroid/util/ArrayMap;
 
     invoke-virtual {v1}, Landroid/util/ArrayMap;->size()I
 
     move-result v1
 
-    if-ge v0, v1, :cond_51
+    if-ge v0, v1, :cond_54
 
     .line 112
     invoke-virtual {p1, p2}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
-    const-string v1, "mPackageTime:"
+    const-string/jumbo v1, "mPackageTime:"
 
     invoke-virtual {p1, v1}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
@@ -228,26 +239,27 @@
     .line 111
     add-int/lit8 v0, v0, 0x1
 
-    goto :goto_1e
+    goto :goto_20
 
     .line 117
-    :cond_51
-    if-eqz p3, :cond_7c
+    .end local v0  # "i":I
+    :cond_54
+    if-eqz p3, :cond_81
 
     iget-wide v0, p0, Lcom/android/server/am/AppTimeTracker;->mStartedTime:J
 
     const-wide/16 v2, 0x0
 
-    cmp-long p3, v0, v2
+    cmp-long v0, v0, v2
 
-    if-eqz p3, :cond_7c
+    if-eqz v0, :cond_81
 
     .line 118
     invoke-virtual {p1, p2}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
-    const-string p3, "mStartedTime="
+    const-string/jumbo v0, "mStartedTime="
 
-    invoke-virtual {p1, p3}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
+    invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
     .line 119
     invoke-static {}, Landroid/os/SystemClock;->elapsedRealtime()J
@@ -264,21 +276,24 @@
     .line 121
     invoke-virtual {p1, p2}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
-    const-string p2, "mStartedPackage="
+    const-string/jumbo v0, "mStartedPackage="
 
-    invoke-virtual {p1, p2}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
+    invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
-    iget-object p2, p0, Lcom/android/server/am/AppTimeTracker;->mStartedPackage:Ljava/lang/String;
+    iget-object v0, p0, Lcom/android/server/am/AppTimeTracker;->mStartedPackage:Ljava/lang/String;
 
-    invoke-virtual {p1, p2}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
     .line 123
-    :cond_7c
+    :cond_81
     return-void
 .end method
 
 .method public dumpWithHeader(Ljava/io/PrintWriter;Ljava/lang/String;Z)V
-    .registers 5
+    .registers 6
+    .param p1, "pw"  # Ljava/io/PrintWriter;
+    .param p2, "prefix"  # Ljava/lang/String;
+    .param p3, "details"  # Z
 
     .line 100
     invoke-virtual {p1, p2}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
@@ -310,22 +325,23 @@
 
     invoke-virtual {v0, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string p2, "  "
+    const-string v1, "  "
 
-    invoke-virtual {v0, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p2
+    move-result-object v0
 
-    invoke-virtual {p0, p1, p2, p3}, Lcom/android/server/am/AppTimeTracker;->dump(Ljava/io/PrintWriter;Ljava/lang/String;Z)V
+    invoke-virtual {p0, p1, v0, p3}, Lcom/android/server/am/AppTimeTracker;->dump(Ljava/io/PrintWriter;Ljava/lang/String;Z)V
 
     .line 104
     return-void
 .end method
 
 .method public start(Ljava/lang/String;)V
-    .registers 10
+    .registers 12
+    .param p1, "packageName"  # Ljava/lang/String;
 
     .line 51
     invoke-static {}, Landroid/os/SystemClock;->elapsedRealtime()J
@@ -333,6 +349,7 @@
     move-result-wide v0
 
     .line 52
+    .local v0, "now":J
     iget-wide v2, p0, Lcom/android/server/am/AppTimeTracker;->mStartedTime:J
 
     const-wide/16 v4, 0x0
@@ -352,68 +369,70 @@
 
     move-result v2
 
-    if-nez v2, :cond_45
+    if-nez v2, :cond_46
 
     .line 56
     iget-object v2, p0, Lcom/android/server/am/AppTimeTracker;->mStartedPackageTime:Landroid/util/MutableLong;
 
-    if-eqz v2, :cond_27
+    if-eqz v2, :cond_28
 
     .line 57
     iget-wide v6, p0, Lcom/android/server/am/AppTimeTracker;->mStartedTime:J
 
-    sub-long/2addr v0, v6
+    sub-long v6, v0, v6
 
     .line 58
-    iget-wide v6, v2, Landroid/util/MutableLong;->value:J
+    .local v6, "elapsedTime":J
+    iget-wide v8, v2, Landroid/util/MutableLong;->value:J
 
-    add-long/2addr v6, v0
+    add-long/2addr v8, v6
 
-    iput-wide v6, v2, Landroid/util/MutableLong;->value:J
+    iput-wide v8, v2, Landroid/util/MutableLong;->value:J
 
     .line 59
     iget-wide v2, p0, Lcom/android/server/am/AppTimeTracker;->mTotalTime:J
 
-    add-long/2addr v2, v0
+    add-long/2addr v2, v6
 
     iput-wide v2, p0, Lcom/android/server/am/AppTimeTracker;->mTotalTime:J
 
     .line 61
-    :cond_27
+    .end local v6  # "elapsedTime":J
+    :cond_28
     iput-object p1, p0, Lcom/android/server/am/AppTimeTracker;->mStartedPackage:Ljava/lang/String;
 
     .line 62
-    iget-object v0, p0, Lcom/android/server/am/AppTimeTracker;->mPackageTimes:Landroid/util/ArrayMap;
+    iget-object v2, p0, Lcom/android/server/am/AppTimeTracker;->mPackageTimes:Landroid/util/ArrayMap;
 
-    invoke-virtual {v0, p1}, Landroid/util/ArrayMap;->get(Ljava/lang/Object;)Ljava/lang/Object;
+    invoke-virtual {v2, p1}, Landroid/util/ArrayMap;->get(Ljava/lang/Object;)Ljava/lang/Object;
 
-    move-result-object v0
+    move-result-object v2
 
-    check-cast v0, Landroid/util/MutableLong;
+    check-cast v2, Landroid/util/MutableLong;
 
-    iput-object v0, p0, Lcom/android/server/am/AppTimeTracker;->mStartedPackageTime:Landroid/util/MutableLong;
+    iput-object v2, p0, Lcom/android/server/am/AppTimeTracker;->mStartedPackageTime:Landroid/util/MutableLong;
 
     .line 63
-    iget-object v0, p0, Lcom/android/server/am/AppTimeTracker;->mStartedPackageTime:Landroid/util/MutableLong;
+    iget-object v2, p0, Lcom/android/server/am/AppTimeTracker;->mStartedPackageTime:Landroid/util/MutableLong;
 
-    if-nez v0, :cond_45
+    if-nez v2, :cond_46
 
     .line 64
-    new-instance v0, Landroid/util/MutableLong;
+    new-instance v2, Landroid/util/MutableLong;
 
-    invoke-direct {v0, v4, v5}, Landroid/util/MutableLong;-><init>(J)V
+    invoke-direct {v2, v4, v5}, Landroid/util/MutableLong;-><init>(J)V
 
-    iput-object v0, p0, Lcom/android/server/am/AppTimeTracker;->mStartedPackageTime:Landroid/util/MutableLong;
+    iput-object v2, p0, Lcom/android/server/am/AppTimeTracker;->mStartedPackageTime:Landroid/util/MutableLong;
 
     .line 65
-    iget-object v0, p0, Lcom/android/server/am/AppTimeTracker;->mPackageTimes:Landroid/util/ArrayMap;
+    iget-object v2, p0, Lcom/android/server/am/AppTimeTracker;->mPackageTimes:Landroid/util/ArrayMap;
 
-    iget-object v1, p0, Lcom/android/server/am/AppTimeTracker;->mStartedPackageTime:Landroid/util/MutableLong;
+    iget-object v3, p0, Lcom/android/server/am/AppTimeTracker;->mStartedPackageTime:Landroid/util/MutableLong;
 
-    invoke-virtual {v0, p1, v1}, Landroid/util/ArrayMap;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+    invoke-virtual {v2, p1, v3}, Landroid/util/ArrayMap;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
 
     .line 68
-    :cond_45
+    :cond_46
     return-void
 .end method
 
@@ -439,6 +458,7 @@
     sub-long/2addr v0, v2
 
     .line 73
+    .local v0, "elapsedTime":J
     iget-wide v2, p0, Lcom/android/server/am/AppTimeTracker;->mTotalTime:J
 
     add-long/2addr v2, v0
@@ -459,20 +479,24 @@
 
     .line 77
     :cond_1d
-    const/4 v0, 0x0
+    const/4 v2, 0x0
 
-    iput-object v0, p0, Lcom/android/server/am/AppTimeTracker;->mStartedPackage:Ljava/lang/String;
+    iput-object v2, p0, Lcom/android/server/am/AppTimeTracker;->mStartedPackage:Ljava/lang/String;
 
     .line 78
-    iput-object v0, p0, Lcom/android/server/am/AppTimeTracker;->mStartedPackageTime:Landroid/util/MutableLong;
+    iput-object v2, p0, Lcom/android/server/am/AppTimeTracker;->mStartedPackageTime:Landroid/util/MutableLong;
 
     .line 80
+    .end local v0  # "elapsedTime":J
     :cond_22
     return-void
 .end method
 
 .method public writeToProto(Landroid/util/proto/ProtoOutputStream;JZ)V
     .registers 18
+    .param p1, "proto"  # Landroid/util/proto/ProtoOutputStream;
+    .param p2, "fieldId"  # J
+    .param p4, "details"  # Z
 
     .line 126
     move-object v0, p0
@@ -484,6 +508,7 @@
     move-result-wide v9
 
     .line 127
+    .local v9, "token":J
     iget-object v1, v0, Lcom/android/server/am/AppTimeTracker;->mReceiver:Landroid/app/PendingIntent;
 
     invoke-virtual {v1}, Landroid/app/PendingIntent;->toString()Ljava/lang/String;
@@ -504,6 +529,7 @@
     .line 129
     const/4 v1, 0x0
 
+    .local v1, "i":I
     :goto_1f
     iget-object v4, v0, Lcom/android/server/am/AppTimeTracker;->mPackageTimes:Landroid/util/ArrayMap;
 
@@ -521,6 +547,7 @@
     move-result-wide v4
 
     .line 131
+    .local v4, "ptoken":J
     iget-object v11, v0, Lcom/android/server/am/AppTimeTracker;->mPackageTimes:Landroid/util/ArrayMap;
 
     invoke-virtual {v11, v1}, Landroid/util/ArrayMap;->keyAt(I)Ljava/lang/Object;
@@ -548,11 +575,13 @@
     invoke-virtual {p1, v4, v5}, Landroid/util/proto/ProtoOutputStream;->end(J)V
 
     .line 129
+    .end local v4  # "ptoken":J
     add-int/lit8 v1, v1, 0x1
 
     goto :goto_1f
 
     .line 135
+    .end local v1  # "i":I
     :cond_4e
     if-eqz p4, :cond_6f
 
@@ -580,9 +609,9 @@
     .line 138
     const-wide v1, 0x10900000005L
 
-    iget-object v0, v0, Lcom/android/server/am/AppTimeTracker;->mStartedPackage:Ljava/lang/String;
+    iget-object v3, v0, Lcom/android/server/am/AppTimeTracker;->mStartedPackage:Ljava/lang/String;
 
-    invoke-virtual {p1, v1, v2, v0}, Landroid/util/proto/ProtoOutputStream;->write(JLjava/lang/String;)V
+    invoke-virtual {p1, v1, v2, v3}, Landroid/util/proto/ProtoOutputStream;->write(JLjava/lang/String;)V
 
     .line 140
     :cond_6f

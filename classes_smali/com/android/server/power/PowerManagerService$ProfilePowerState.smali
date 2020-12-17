@@ -28,24 +28,26 @@
 
 # direct methods
 .method public constructor <init>(IJ)V
-    .registers 4
+    .registers 6
+    .param p1, "userId"  # I
+    .param p2, "screenOffTimeout"  # J
 
-    .line 617
+    .line 600
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
-    .line 618
+    .line 601
     iput p1, p0, Lcom/android/server/power/PowerManagerService$ProfilePowerState;->mUserId:I
 
-    .line 619
+    .line 602
     iput-wide p2, p0, Lcom/android/server/power/PowerManagerService$ProfilePowerState;->mScreenOffTimeout:J
 
-    .line 621
+    .line 604
     invoke-static {}, Landroid/os/SystemClock;->uptimeMillis()J
 
-    move-result-wide p1
+    move-result-wide v0
 
-    iput-wide p1, p0, Lcom/android/server/power/PowerManagerService$ProfilePowerState;->mLastUserActivityTime:J
+    iput-wide v0, p0, Lcom/android/server/power/PowerManagerService$ProfilePowerState;->mLastUserActivityTime:J
 
-    .line 622
+    .line 605
     return-void
 .end method

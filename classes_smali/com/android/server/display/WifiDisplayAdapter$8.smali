@@ -21,8 +21,9 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/display/WifiDisplayAdapter;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/display/WifiDisplayAdapter;
 
-    .line 431
+    .line 452
     iput-object p1, p0, Lcom/android/server/display/WifiDisplayAdapter$8;->this$0:Lcom/android/server/display/WifiDisplayAdapter;
 
     invoke-direct {p0}, Landroid/content/BroadcastReceiver;-><init>()V
@@ -33,51 +34,53 @@
 
 # virtual methods
 .method public onReceive(Landroid/content/Context;Landroid/content/Intent;)V
-    .registers 3
+    .registers 5
+    .param p1, "context"  # Landroid/content/Context;
+    .param p2, "intent"  # Landroid/content/Intent;
 
-    .line 434
+    .line 455
     invoke-virtual {p2}, Landroid/content/Intent;->getAction()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    const-string p2, "android.server.display.wfd.DISCONNECT"
+    const-string v1, "android.server.display.wfd.DISCONNECT"
 
-    invoke-virtual {p1, p2}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v0, v1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result p1
+    move-result v0
 
-    if-eqz p1, :cond_1d
+    if-eqz v0, :cond_1d
 
-    .line 435
-    iget-object p1, p0, Lcom/android/server/display/WifiDisplayAdapter$8;->this$0:Lcom/android/server/display/WifiDisplayAdapter;
+    .line 456
+    iget-object v0, p0, Lcom/android/server/display/WifiDisplayAdapter$8;->this$0:Lcom/android/server/display/WifiDisplayAdapter;
 
-    invoke-virtual {p1}, Lcom/android/server/display/WifiDisplayAdapter;->getSyncRoot()Lcom/android/server/display/DisplayManagerService$SyncRoot;
+    invoke-virtual {v0}, Lcom/android/server/display/WifiDisplayAdapter;->getSyncRoot()Lcom/android/server/display/DisplayManagerService$SyncRoot;
 
-    move-result-object p1
+    move-result-object v0
 
-    monitor-enter p1
+    monitor-enter v0
 
-    .line 436
+    .line 457
     :try_start_13
-    iget-object p2, p0, Lcom/android/server/display/WifiDisplayAdapter$8;->this$0:Lcom/android/server/display/WifiDisplayAdapter;
+    iget-object v1, p0, Lcom/android/server/display/WifiDisplayAdapter$8;->this$0:Lcom/android/server/display/WifiDisplayAdapter;
 
-    invoke-virtual {p2}, Lcom/android/server/display/WifiDisplayAdapter;->requestDisconnectLocked()V
+    invoke-virtual {v1}, Lcom/android/server/display/WifiDisplayAdapter;->requestDisconnectLocked()V
 
-    .line 437
-    monitor-exit p1
+    .line 458
+    monitor-exit v0
 
     goto :goto_1d
 
     :catchall_1a
-    move-exception p2
+    move-exception v1
 
-    monitor-exit p1
+    monitor-exit v0
     :try_end_1c
     .catchall {:try_start_13 .. :try_end_1c} :catchall_1a
 
-    throw p2
+    throw v1
 
-    .line 439
+    .line 460
     :cond_1d
     :goto_1d
     return-void

@@ -38,49 +38,55 @@
 
 # direct methods
 .method constructor <init>(Lcom/android/internal/view/IInputMethodClient;Lcom/android/internal/view/IInputContext;IIILcom/android/server/inputmethod/InputMethodManagerService$ClientDeathRecipient;)V
-    .registers 7
+    .registers 12
+    .param p1, "_client"  # Lcom/android/internal/view/IInputMethodClient;
+    .param p2, "_inputContext"  # Lcom/android/internal/view/IInputContext;
+    .param p3, "_uid"  # I
+    .param p4, "_pid"  # I
+    .param p5, "_selfReportedDisplayId"  # I
+    .param p6, "_clientDeathRecipient"  # Lcom/android/server/inputmethod/InputMethodManagerService$ClientDeathRecipient;
 
-    .line 432
+    .line 451
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
-    .line 433
+    .line 452
     iput-object p1, p0, Lcom/android/server/inputmethod/InputMethodManagerService$ClientState;->client:Lcom/android/internal/view/IInputMethodClient;
 
-    .line 434
+    .line 453
     iput-object p2, p0, Lcom/android/server/inputmethod/InputMethodManagerService$ClientState;->inputContext:Lcom/android/internal/view/IInputContext;
 
-    .line 435
+    .line 454
     iput p3, p0, Lcom/android/server/inputmethod/InputMethodManagerService$ClientState;->uid:I
 
-    .line 436
+    .line 455
     iput p4, p0, Lcom/android/server/inputmethod/InputMethodManagerService$ClientState;->pid:I
 
-    .line 437
+    .line 456
     iput p5, p0, Lcom/android/server/inputmethod/InputMethodManagerService$ClientState;->selfReportedDisplayId:I
 
-    .line 438
-    new-instance p1, Landroid/view/inputmethod/InputBinding;
+    .line 457
+    new-instance v0, Landroid/view/inputmethod/InputBinding;
 
-    iget-object p2, p0, Lcom/android/server/inputmethod/InputMethodManagerService$ClientState;->inputContext:Lcom/android/internal/view/IInputContext;
+    iget-object v1, p0, Lcom/android/server/inputmethod/InputMethodManagerService$ClientState;->inputContext:Lcom/android/internal/view/IInputContext;
 
-    invoke-interface {p2}, Lcom/android/internal/view/IInputContext;->asBinder()Landroid/os/IBinder;
+    invoke-interface {v1}, Lcom/android/internal/view/IInputContext;->asBinder()Landroid/os/IBinder;
 
-    move-result-object p2
+    move-result-object v1
 
-    iget p3, p0, Lcom/android/server/inputmethod/InputMethodManagerService$ClientState;->uid:I
+    iget v2, p0, Lcom/android/server/inputmethod/InputMethodManagerService$ClientState;->uid:I
 
-    iget p4, p0, Lcom/android/server/inputmethod/InputMethodManagerService$ClientState;->pid:I
+    iget v3, p0, Lcom/android/server/inputmethod/InputMethodManagerService$ClientState;->pid:I
 
-    const/4 p5, 0x0
+    const/4 v4, 0x0
 
-    invoke-direct {p1, p5, p2, p3, p4}, Landroid/view/inputmethod/InputBinding;-><init>(Landroid/view/inputmethod/InputConnection;Landroid/os/IBinder;II)V
+    invoke-direct {v0, v4, v1, v2, v3}, Landroid/view/inputmethod/InputBinding;-><init>(Landroid/view/inputmethod/InputConnection;Landroid/os/IBinder;II)V
 
-    iput-object p1, p0, Lcom/android/server/inputmethod/InputMethodManagerService$ClientState;->binding:Landroid/view/inputmethod/InputBinding;
+    iput-object v0, p0, Lcom/android/server/inputmethod/InputMethodManagerService$ClientState;->binding:Landroid/view/inputmethod/InputBinding;
 
-    .line 439
+    .line 458
     iput-object p6, p0, Lcom/android/server/inputmethod/InputMethodManagerService$ClientState;->clientDeathRecipient:Lcom/android/server/inputmethod/InputMethodManagerService$ClientDeathRecipient;
 
-    .line 440
+    .line 459
     return-void
 .end method
 
@@ -89,7 +95,7 @@
 .method public toString()Ljava/lang/String;
     .registers 3
 
-    .line 425
+    .line 444
     new-instance v0, Ljava/lang/StringBuilder;
 
     invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
@@ -98,12 +104,12 @@
 
     invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    .line 426
+    .line 445
     invoke-static {p0}, Ljava/lang/System;->identityHashCode(Ljava/lang/Object;)I
 
     move-result v1
 
-    .line 425
+    .line 444
     invoke-static {v1}, Ljava/lang/Integer;->toHexString(I)Ljava/lang/String;
 
     move-result-object v1

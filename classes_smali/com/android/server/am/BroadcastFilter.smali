@@ -22,6 +22,14 @@
 # direct methods
 .method constructor <init>(Landroid/content/IntentFilter;Lcom/android/server/am/ReceiverList;Ljava/lang/String;Ljava/lang/String;IIZZ)V
     .registers 9
+    .param p1, "_filter"  # Landroid/content/IntentFilter;
+    .param p2, "_receiverList"  # Lcom/android/server/am/ReceiverList;
+    .param p3, "_packageName"  # Ljava/lang/String;
+    .param p4, "_requiredPermission"  # Ljava/lang/String;
+    .param p5, "_owningUid"  # I
+    .param p6, "_userId"  # I
+    .param p7, "_instantApp"  # Z
+    .param p8, "_visibleToInstantApp"  # Z
 
     .line 39
     invoke-direct {p0, p1}, Landroid/content/IntentFilter;-><init>(Landroid/content/IntentFilter;)V
@@ -55,6 +63,8 @@
 # virtual methods
 .method public dump(Ljava/io/PrintWriter;Ljava/lang/String;)V
     .registers 4
+    .param p1, "pw"  # Ljava/io/PrintWriter;
+    .param p2, "prefix"  # Ljava/lang/String;
 
     .line 61
     new-instance v0, Landroid/util/PrintWriterPrinter;
@@ -74,6 +84,8 @@
 
 .method public dumpBrief(Ljava/io/PrintWriter;Ljava/lang/String;)V
     .registers 3
+    .param p1, "pw"  # Ljava/io/PrintWriter;
+    .param p2, "prefix"  # Ljava/lang/String;
 
     .line 66
     invoke-virtual {p0, p1, p2}, Lcom/android/server/am/BroadcastFilter;->dumpBroadcastFilterState(Ljava/io/PrintWriter;Ljava/lang/String;)V
@@ -84,6 +96,8 @@
 
 .method dumpBroadcastFilterState(Ljava/io/PrintWriter;Ljava/lang/String;)V
     .registers 4
+    .param p1, "pw"  # Ljava/io/PrintWriter;
+    .param p2, "prefix"  # Ljava/lang/String;
 
     .line 75
     iget-object v0, p0, Lcom/android/server/am/BroadcastFilter;->requiredPermission:Ljava/lang/String;
@@ -93,13 +107,13 @@
     .line 76
     invoke-virtual {p1, p2}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
-    const-string/jumbo p2, "requiredPermission="
+    const-string/jumbo v0, "requiredPermission="
 
-    invoke-virtual {p1, p2}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
+    invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
-    iget-object p2, p0, Lcom/android/server/am/BroadcastFilter;->requiredPermission:Ljava/lang/String;
+    iget-object v0, p0, Lcom/android/server/am/BroadcastFilter;->requiredPermission:Ljava/lang/String;
 
-    invoke-virtual {p1, p2}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
     .line 78
     :cond_12
@@ -108,6 +122,9 @@
 
 .method public dumpInReceiverList(Ljava/io/PrintWriter;Landroid/util/Printer;Ljava/lang/String;)V
     .registers 4
+    .param p1, "pw"  # Ljava/io/PrintWriter;
+    .param p2, "pr"  # Landroid/util/Printer;
+    .param p3, "prefix"  # Ljava/lang/String;
 
     .line 70
     invoke-super {p0, p2, p3}, Landroid/content/IntentFilter;->dump(Landroid/util/Printer;Ljava/lang/String;)V
@@ -128,6 +145,7 @@
     invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
 
     .line 82
+    .local v0, "sb":Ljava/lang/StringBuilder;
     const-string v1, "BroadcastFilter{"
 
     invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
@@ -179,57 +197,60 @@
     .line 91
     invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v1
 
-    return-object v0
+    return-object v1
 .end method
 
 .method public writeToProto(Landroid/util/proto/ProtoOutputStream;J)V
-    .registers 7
+    .registers 9
+    .param p1, "proto"  # Landroid/util/proto/ProtoOutputStream;
+    .param p2, "fieldId"  # J
 
     .line 50
     invoke-virtual {p1, p2, p3}, Landroid/util/proto/ProtoOutputStream;->start(J)J
 
-    move-result-wide p2
+    move-result-wide v0
 
     .line 51
-    const-wide v0, 0x10b00000001L
+    .local v0, "token":J
+    const-wide v2, 0x10b00000001L
 
-    invoke-super {p0, p1, v0, v1}, Landroid/content/IntentFilter;->writeToProto(Landroid/util/proto/ProtoOutputStream;J)V
+    invoke-super {p0, p1, v2, v3}, Landroid/content/IntentFilter;->writeToProto(Landroid/util/proto/ProtoOutputStream;J)V
 
     .line 52
-    iget-object v0, p0, Lcom/android/server/am/BroadcastFilter;->requiredPermission:Ljava/lang/String;
+    iget-object v2, p0, Lcom/android/server/am/BroadcastFilter;->requiredPermission:Ljava/lang/String;
 
-    if-eqz v0, :cond_18
+    if-eqz v2, :cond_18
 
     .line 53
-    const-wide v1, 0x10900000002L
+    const-wide v3, 0x10900000002L
 
-    invoke-virtual {p1, v1, v2, v0}, Landroid/util/proto/ProtoOutputStream;->write(JLjava/lang/String;)V
+    invoke-virtual {p1, v3, v4, v2}, Landroid/util/proto/ProtoOutputStream;->write(JLjava/lang/String;)V
 
     .line 55
     :cond_18
-    const-wide v0, 0x10900000003L
+    const-wide v2, 0x10900000003L
 
     invoke-static {p0}, Ljava/lang/System;->identityHashCode(Ljava/lang/Object;)I
 
-    move-result v2
+    move-result v4
 
-    invoke-static {v2}, Ljava/lang/Integer;->toHexString(I)Ljava/lang/String;
+    invoke-static {v4}, Ljava/lang/Integer;->toHexString(I)Ljava/lang/String;
 
-    move-result-object v2
+    move-result-object v4
 
-    invoke-virtual {p1, v0, v1, v2}, Landroid/util/proto/ProtoOutputStream;->write(JLjava/lang/String;)V
+    invoke-virtual {p1, v2, v3, v4}, Landroid/util/proto/ProtoOutputStream;->write(JLjava/lang/String;)V
 
     .line 56
-    const-wide v0, 0x10500000004L
+    const-wide v2, 0x10500000004L
 
-    iget v2, p0, Lcom/android/server/am/BroadcastFilter;->owningUserId:I
+    iget v4, p0, Lcom/android/server/am/BroadcastFilter;->owningUserId:I
 
-    invoke-virtual {p1, v0, v1, v2}, Landroid/util/proto/ProtoOutputStream;->write(JI)V
+    invoke-virtual {p1, v2, v3, v4}, Landroid/util/proto/ProtoOutputStream;->write(JI)V
 
     .line 57
-    invoke-virtual {p1, p2, p3}, Landroid/util/proto/ProtoOutputStream;->end(J)V
+    invoke-virtual {p1, v0, v1}, Landroid/util/proto/ProtoOutputStream;->end(J)V
 
     .line 58
     return-void

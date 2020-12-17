@@ -127,6 +127,8 @@
 # direct methods
 .method public constructor <init>(Landroid/os/Handler;Landroid/content/ContentResolver;)V
     .registers 4
+    .param p1, "handler"  # Landroid/os/Handler;
+    .param p2, "resolver"  # Landroid/content/ContentResolver;
 
     .line 105
     const-string v0, "backup_agent_timeout_parameters"
@@ -138,11 +140,11 @@
     invoke-direct {p0, p1, p2, v0}, Landroid/util/KeyValueSettingObserver;-><init>(Landroid/os/Handler;Landroid/content/ContentResolver;Landroid/net/Uri;)V
 
     .line 102
-    new-instance p1, Ljava/lang/Object;
+    new-instance v0, Ljava/lang/Object;
 
-    invoke-direct {p1}, Ljava/lang/Object;-><init>()V
+    invoke-direct {v0}, Ljava/lang/Object;-><init>()V
 
-    iput-object p1, p0, Lcom/android/server/backup/BackupAgentTimeoutParameters;->mLock:Ljava/lang/Object;
+    iput-object v0, p0, Lcom/android/server/backup/BackupAgentTimeoutParameters;->mLock:Ljava/lang/Object;
 
     .line 106
     return-void
@@ -392,15 +394,16 @@
 
 .method public getSettingValue(Landroid/content/ContentResolver;)Ljava/lang/String;
     .registers 3
+    .param p1, "resolver"  # Landroid/content/ContentResolver;
 
     .line 109
     const-string v0, "backup_agent_timeout_parameters"
 
     invoke-static {p1, v0}, Landroid/provider/Settings$Global;->getString(Landroid/content/ContentResolver;Ljava/lang/String;)Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    return-object p1
+    return-object v0
 .end method
 
 .method public getSharedBackupAgentTimeoutMillis()J
@@ -453,6 +456,7 @@
 
 .method public update(Landroid/util/KeyValueListParser;)V
     .registers 8
+    .param p1, "parser"  # Landroid/util/KeyValueListParser;
 
     .line 113
     iget-object v0, p0, Lcom/android/server/backup/BackupAgentTimeoutParameters;->mLock:Ljava/lang/Object;
@@ -461,7 +465,7 @@
 
     .line 114
     :try_start_3
-    const-string v1, "kv_backup_agent_timeout_millis"
+    const-string/jumbo v1, "kv_backup_agent_timeout_millis"
 
     .line 115
     const-wide/16 v2, 0x7530
@@ -537,12 +541,12 @@
     return-void
 
     .line 138
-    :catchall_46
-    move-exception p1
+    :catchall_47
+    move-exception v1
 
     monitor-exit v0
-    :try_end_48
-    .catchall {:try_start_3 .. :try_end_48} :catchall_46
+    :try_end_49
+    .catchall {:try_start_3 .. :try_end_49} :catchall_47
 
-    throw p1
+    throw v1
 .end method

@@ -22,7 +22,10 @@
 .end method
 
 .method static encodeWatchlistReport(Lcom/android/server/net/watchlist/WatchlistConfig;[BLjava/util/List;Lcom/android/server/net/watchlist/WatchlistReportDbHelper$AggregatedResult;)[B
-    .registers 5
+    .registers 6
+    .param p0, "config"  # Lcom/android/server/net/watchlist/WatchlistConfig;
+    .param p1, "userSecret"  # [B
+    .param p3, "aggregatedResult"  # Lcom/android/server/net/watchlist/WatchlistReportDbHelper$AggregatedResult;
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(",
@@ -37,6 +40,7 @@
     .end annotation
 
     .line 55
+    .local p2, "appDigestList":Ljava/util/List;, "Ljava/util/List<Ljava/lang/String;>;"
     nop
 
     .line 56
@@ -47,18 +51,20 @@
     .line 55
     invoke-static {v0, p1, p2, p3}, Lcom/android/server/net/watchlist/PrivacyUtils;->createDpEncodedReportMap(Z[BLjava/util/List;Lcom/android/server/net/watchlist/WatchlistReportDbHelper$AggregatedResult;)Ljava/util/Map;
 
-    move-result-object p1
+    move-result-object v0
 
     .line 57
-    invoke-static {p0, p1}, Lcom/android/server/net/watchlist/ReportEncoder;->serializeReport(Lcom/android/server/net/watchlist/WatchlistConfig;Ljava/util/Map;)[B
+    .local v0, "resultMap":Ljava/util/Map;, "Ljava/util/Map<Ljava/lang/String;Ljava/lang/Boolean;>;"
+    invoke-static {p0, v0}, Lcom/android/server/net/watchlist/ReportEncoder;->serializeReport(Lcom/android/server/net/watchlist/WatchlistConfig;Ljava/util/Map;)[B
 
-    move-result-object p0
+    move-result-object v1
 
-    return-object p0
+    return-object v1
 .end method
 
 .method static serializeReport(Lcom/android/server/net/watchlist/WatchlistConfig;Ljava/util/Map;)[B
-    .registers 9
+    .registers 14
+    .param p0, "config"  # Lcom/android/server/net/watchlist/WatchlistConfig;
     .annotation build Lcom/android/internal/annotations/VisibleForTesting;
     .end annotation
 
@@ -74,144 +80,160 @@
     .end annotation
 
     .line 72
+    .local p1, "encodedReportMap":Ljava/util/Map;, "Ljava/util/Map<Ljava/lang/String;Ljava/lang/Boolean;>;"
     invoke-virtual {p0}, Lcom/android/server/net/watchlist/WatchlistConfig;->getWatchlistConfigHash()[B
 
-    move-result-object p0
+    move-result-object v0
 
     .line 73
-    const/4 v0, 0x0
+    .local v0, "watchlistHash":[B
+    const/4 v1, 0x0
 
-    const-string v1, "ReportEncoder"
+    const-string v2, "ReportEncoder"
 
-    if-nez p0, :cond_f
+    if-nez v0, :cond_f
 
     .line 74
-    const-string p0, "No watchlist hash"
+    const-string v3, "No watchlist hash"
 
-    invoke-static {v1, p0}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v2, v3}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 75
-    return-object v0
+    return-object v1
 
     .line 77
     :cond_f
-    array-length v2, p0
+    array-length v3, v0
 
-    const/16 v3, 0x20
+    const/16 v4, 0x20
 
-    if-eq v2, v3, :cond_1a
+    if-eq v3, v4, :cond_1a
 
     .line 78
-    const-string p0, "Unexpected hash length"
+    const-string v3, "Unexpected hash length"
 
-    invoke-static {v1, p0}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v2, v3}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 79
-    return-object v0
+    return-object v1
 
     .line 81
     :cond_1a
-    new-instance v0, Ljava/io/ByteArrayOutputStream;
+    new-instance v1, Ljava/io/ByteArrayOutputStream;
 
-    invoke-direct {v0}, Ljava/io/ByteArrayOutputStream;-><init>()V
+    invoke-direct {v1}, Ljava/io/ByteArrayOutputStream;-><init>()V
 
     .line 82
-    new-instance v1, Landroid/util/proto/ProtoOutputStream;
+    .local v1, "reportOutputStream":Ljava/io/ByteArrayOutputStream;
+    new-instance v2, Landroid/util/proto/ProtoOutputStream;
 
-    invoke-direct {v1, v0}, Landroid/util/proto/ProtoOutputStream;-><init>(Ljava/io/OutputStream;)V
+    invoke-direct {v2, v1}, Landroid/util/proto/ProtoOutputStream;-><init>(Ljava/io/OutputStream;)V
 
     .line 85
-    const-wide v2, 0x10500000001L
+    .local v2, "proto":Landroid/util/proto/ProtoOutputStream;
+    const-wide v3, 0x10500000001L
 
-    const/4 v4, 0x1
+    const/4 v5, 0x1
 
-    invoke-virtual {v1, v2, v3, v4}, Landroid/util/proto/ProtoOutputStream;->write(JI)V
+    invoke-virtual {v2, v3, v4, v5}, Landroid/util/proto/ProtoOutputStream;->write(JI)V
 
     .line 86
-    const-wide v2, 0x10900000002L
+    const-wide v3, 0x10900000002L
 
     .line 87
-    invoke-static {p0}, Lcom/android/internal/util/HexDump;->toHexString([B)Ljava/lang/String;
+    invoke-static {v0}, Lcom/android/internal/util/HexDump;->toHexString([B)Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v5
 
     .line 86
-    invoke-virtual {v1, v2, v3, p0}, Landroid/util/proto/ProtoOutputStream;->write(JLjava/lang/String;)V
+    invoke-virtual {v2, v3, v4, v5}, Landroid/util/proto/ProtoOutputStream;->write(JLjava/lang/String;)V
 
     .line 90
     invoke-interface {p1}, Ljava/util/Map;->entrySet()Ljava/util/Set;
 
-    move-result-object p0
+    move-result-object v3
 
-    invoke-interface {p0}, Ljava/util/Set;->iterator()Ljava/util/Iterator;
+    invoke-interface {v3}, Ljava/util/Set;->iterator()Ljava/util/Iterator;
 
-    move-result-object p0
+    move-result-object v3
 
     :goto_41
-    invoke-interface {p0}, Ljava/util/Iterator;->hasNext()Z
+    invoke-interface {v3}, Ljava/util/Iterator;->hasNext()Z
 
-    move-result p1
+    move-result v4
 
-    if-eqz p1, :cond_7d
+    if-eqz v4, :cond_7e
 
-    invoke-interface {p0}, Ljava/util/Iterator;->next()Ljava/lang/Object;
+    invoke-interface {v3}, Ljava/util/Iterator;->next()Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v4
 
-    check-cast p1, Ljava/util/Map$Entry;
+    check-cast v4, Ljava/util/Map$Entry;
 
     .line 91
-    invoke-interface {p1}, Ljava/util/Map$Entry;->getKey()Ljava/lang/Object;
+    .local v4, "entry":Ljava/util/Map$Entry;, "Ljava/util/Map$Entry<Ljava/lang/String;Ljava/lang/Boolean;>;"
+    invoke-interface {v4}, Ljava/util/Map$Entry;->getKey()Ljava/lang/Object;
 
-    move-result-object v2
+    move-result-object v5
 
-    check-cast v2, Ljava/lang/String;
+    check-cast v5, Ljava/lang/String;
 
     .line 92
-    invoke-static {v2}, Lcom/android/internal/util/HexDump;->hexStringToByteArray(Ljava/lang/String;)[B
+    .local v5, "key":Ljava/lang/String;
+    invoke-static {v5}, Lcom/android/internal/util/HexDump;->hexStringToByteArray(Ljava/lang/String;)[B
+
+    move-result-object v6
 
     .line 93
-    invoke-interface {p1}, Ljava/util/Map$Entry;->getValue()Ljava/lang/Object;
+    .local v6, "digest":[B
+    invoke-interface {v4}, Ljava/util/Map$Entry;->getValue()Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v7
 
-    check-cast p1, Ljava/lang/Boolean;
+    check-cast v7, Ljava/lang/Boolean;
 
-    invoke-virtual {p1}, Ljava/lang/Boolean;->booleanValue()Z
+    invoke-virtual {v7}, Ljava/lang/Boolean;->booleanValue()Z
 
-    move-result p1
+    move-result v7
 
     .line 94
-    const-wide v3, 0x20b00000003L
+    .local v7, "encodedResult":Z
+    const-wide v8, 0x20b00000003L
 
-    invoke-virtual {v1, v3, v4}, Landroid/util/proto/ProtoOutputStream;->start(J)J
+    invoke-virtual {v2, v8, v9}, Landroid/util/proto/ProtoOutputStream;->start(J)J
 
-    move-result-wide v3
+    move-result-wide v8
 
     .line 95
-    const-wide v5, 0x10900000001L
+    .local v8, "token":J
+    const-wide v10, 0x10900000001L
 
-    invoke-virtual {v1, v5, v6, v2}, Landroid/util/proto/ProtoOutputStream;->write(JLjava/lang/String;)V
+    invoke-virtual {v2, v10, v11, v5}, Landroid/util/proto/ProtoOutputStream;->write(JLjava/lang/String;)V
 
     .line 96
-    const-wide v5, 0x10800000002L
+    const-wide v10, 0x10800000002L
 
-    invoke-virtual {v1, v5, v6, p1}, Landroid/util/proto/ProtoOutputStream;->write(JZ)V
+    invoke-virtual {v2, v10, v11, v7}, Landroid/util/proto/ProtoOutputStream;->write(JZ)V
 
     .line 97
-    invoke-virtual {v1, v3, v4}, Landroid/util/proto/ProtoOutputStream;->end(J)V
+    invoke-virtual {v2, v8, v9}, Landroid/util/proto/ProtoOutputStream;->end(J)V
 
     .line 98
+    .end local v4  # "entry":Ljava/util/Map$Entry;, "Ljava/util/Map$Entry<Ljava/lang/String;Ljava/lang/Boolean;>;"
+    .end local v5  # "key":Ljava/lang/String;
+    .end local v6  # "digest":[B
+    .end local v7  # "encodedResult":Z
+    .end local v8  # "token":J
     goto :goto_41
 
     .line 99
-    :cond_7d
-    invoke-virtual {v1}, Landroid/util/proto/ProtoOutputStream;->flush()V
+    :cond_7e
+    invoke-virtual {v2}, Landroid/util/proto/ProtoOutputStream;->flush()V
 
     .line 100
-    invoke-virtual {v0}, Ljava/io/ByteArrayOutputStream;->toByteArray()[B
+    invoke-virtual {v1}, Ljava/io/ByteArrayOutputStream;->toByteArray()[B
 
-    move-result-object p0
+    move-result-object v3
 
-    return-object p0
+    return-object v3
 .end method

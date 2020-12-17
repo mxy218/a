@@ -17,6 +17,8 @@
 # direct methods
 .method public constructor <init>(Ljava/lang/String;Lcom/android/server/NativeDaemonEvent;)V
     .registers 3
+    .param p1, "command"  # Ljava/lang/String;
+    .param p2, "event"  # Lcom/android/server/NativeDaemonEvent;
 
     .line 552
     invoke-direct {p0, p1, p2}, Lcom/android/server/NativeDaemonConnectorException;-><init>(Ljava/lang/String;Lcom/android/server/NativeDaemonEvent;)V

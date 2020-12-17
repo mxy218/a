@@ -52,110 +52,103 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/wm/ActivityTaskManagerService;Lcom/android/server/wm/ActivityStackSupervisor;)V
     .registers 4
+    .param p1, "service"  # Lcom/android/server/wm/ActivityTaskManagerService;
+    .param p2, "stackSupervisor"  # Lcom/android/server/wm/ActivityStackSupervisor;
 
-    .line 80
+    .line 78
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
-    .line 75
+    .line 73
     new-instance v0, Landroid/util/SparseArray;
 
     invoke-direct {v0}, Landroid/util/SparseArray;-><init>()V
 
     iput-object v0, p0, Lcom/android/server/wm/KeyguardController;->mDisplayStates:Landroid/util/SparseArray;
 
-    .line 81
+    .line 79
     iput-object p1, p0, Lcom/android/server/wm/KeyguardController;->mService:Lcom/android/server/wm/ActivityTaskManagerService;
 
-    .line 82
+    .line 80
     iput-object p2, p0, Lcom/android/server/wm/KeyguardController;->mStackSupervisor:Lcom/android/server/wm/ActivityStackSupervisor;
 
-    .line 83
+    .line 81
     return-void
 .end method
 
 .method static synthetic access$400(Lcom/android/server/wm/KeyguardController;)Lcom/android/server/wm/WindowManagerService;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/wm/KeyguardController;
 
-    .line 62
-    iget-object p0, p0, Lcom/android/server/wm/KeyguardController;->mWindowManager:Lcom/android/server/wm/WindowManagerService;
+    .line 60
+    iget-object v0, p0, Lcom/android/server/wm/KeyguardController;->mWindowManager:Lcom/android/server/wm/WindowManagerService;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$500(Lcom/android/server/wm/KeyguardController;I)V
     .registers 2
+    .param p0, "x0"  # Lcom/android/server/wm/KeyguardController;
+    .param p1, "x1"  # I
 
-    .line 62
+    .line 60
     invoke-direct {p0, p1}, Lcom/android/server/wm/KeyguardController;->handleOccludedChanged(I)V
 
     return-void
 .end method
 
 .method static synthetic access$600(Lcom/android/server/wm/KeyguardController;)Lcom/android/server/wm/ActivityTaskManagerService;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/wm/KeyguardController;
 
-    .line 62
-    iget-object p0, p0, Lcom/android/server/wm/KeyguardController;->mService:Lcom/android/server/wm/ActivityTaskManagerService;
+    .line 60
+    iget-object v0, p0, Lcom/android/server/wm/KeyguardController;->mService:Lcom/android/server/wm/ActivityTaskManagerService;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method private convertTransitFlags(I)I
     .registers 4
-
-    .line 233
-    nop
-
-    .line 234
-    and-int/lit8 v0, p1, 0x1
-
-    if-eqz v0, :cond_7
-
-    .line 235
-    const/4 v0, 0x1
-
-    goto :goto_8
-
-    .line 234
-    :cond_7
-    const/4 v0, 0x0
-
-    .line 237
-    :goto_8
-    and-int/lit8 v1, p1, 0x2
-
-    if-eqz v1, :cond_e
-
-    .line 238
-    or-int/lit8 v0, v0, 0x2
-
-    .line 240
-    :cond_e
-    and-int/lit8 v1, p1, 0x4
-
-    if-eqz v1, :cond_14
-
-    .line 241
-    or-int/lit8 v0, v0, 0x4
+    .param p1, "keyguardGoingAwayFlags"  # I
 
     .line 243
-    :cond_14
-    and-int/lit8 p1, p1, 0x8
-
-    if-eqz p1, :cond_1a
+    const/4 v0, 0x0
 
     .line 244
-    or-int/lit8 v0, v0, 0x8
+    .local v0, "result":I
+    and-int/lit8 v1, p1, 0x1
 
-    .line 246
-    :cond_1a
+    if-eqz v1, :cond_7
+
+    .line 245
+    or-int/lit8 v0, v0, 0x1
+
+    .line 247
+    :cond_7
+    and-int/lit8 v1, p1, 0x2
+
+    if-eqz v1, :cond_d
+
+    .line 248
+    or-int/lit8 v0, v0, 0x2
+
+    .line 250
+    :cond_d
+    and-int/lit8 v1, p1, 0x4
+
+    if-eqz v1, :cond_13
+
+    .line 251
+    or-int/lit8 v0, v0, 0x4
+
+    .line 253
+    :cond_13
     return v0
 .end method
 
 .method private dismissDockedStackIfNeeded()V
     .registers 4
 
-    .line 400
+    .line 407
     iget-boolean v0, p0, Lcom/android/server/wm/KeyguardController;->mKeyguardShowing:Z
 
     if-eqz v0, :cond_21
@@ -168,10 +161,10 @@
 
     if-eqz v0, :cond_21
 
-    .line 405
+    .line 412
     iget-object v0, p0, Lcom/android/server/wm/KeyguardController;->mRootActivityContainer:Lcom/android/server/wm/RootActivityContainer;
 
-    .line 406
+    .line 413
     invoke-virtual {v0}, Lcom/android/server/wm/RootActivityContainer;->getDefaultDisplay()Lcom/android/server/wm/ActivityDisplay;
 
     move-result-object v0
@@ -180,35 +173,40 @@
 
     move-result-object v0
 
-    .line 407
+    .line 414
+    .local v0, "stack":Lcom/android/server/wm/ActivityStack;
     if-nez v0, :cond_18
 
-    .line 408
+    .line 415
     return-void
 
-    .line 410
+    .line 417
     :cond_18
     iget-object v1, p0, Lcom/android/server/wm/KeyguardController;->mStackSupervisor:Lcom/android/server/wm/ActivityStackSupervisor;
 
-    .line 411
+    .line 418
     invoke-virtual {v0}, Lcom/android/server/wm/ActivityStack;->isFocusedStackOnDisplay()Z
 
     move-result v2
 
-    .line 410
+    .line 417
     invoke-virtual {v1, v0, v2}, Lcom/android/server/wm/ActivityStackSupervisor;->moveTasksToFullscreenStackLocked(Lcom/android/server/wm/ActivityStack;Z)V
 
-    .line 413
+    .line 420
+    .end local v0  # "stack":Lcom/android/server/wm/ActivityStack;
     :cond_21
     return-void
 .end method
 
 .method private dumpDisplayStates(Ljava/io/PrintWriter;Ljava/lang/String;)V
     .registers 5
+    .param p1, "pw"  # Ljava/io/PrintWriter;
+    .param p2, "prefix"  # Ljava/lang/String;
 
-    .line 576
+    .line 595
     const/4 v0, 0x0
 
+    .local v0, "i":I
     :goto_1
     iget-object v1, p0, Lcom/android/server/wm/KeyguardController;->mDisplayStates:Landroid/util/SparseArray;
 
@@ -218,7 +216,7 @@
 
     if-ge v0, v1, :cond_17
 
-    .line 577
+    .line 596
     iget-object v1, p0, Lcom/android/server/wm/KeyguardController;->mDisplayStates:Landroid/util/SparseArray;
 
     invoke-virtual {v1, v0}, Landroid/util/SparseArray;->valueAt(I)Ljava/lang/Object;
@@ -229,48 +227,53 @@
 
     invoke-virtual {v1, p1, p2}, Lcom/android/server/wm/KeyguardController$KeyguardDisplayState;->dumpStatus(Ljava/io/PrintWriter;Ljava/lang/String;)V
 
-    .line 576
+    .line 595
     add-int/lit8 v0, v0, 0x1
 
     goto :goto_1
 
-    .line 579
+    .line 598
+    .end local v0  # "i":I
     :cond_17
     return-void
 .end method
 
 .method private failCallback(Lcom/android/internal/policy/IKeyguardDismissCallback;)V
-    .registers 4
+    .registers 5
+    .param p1, "callback"  # Lcom/android/internal/policy/IKeyguardDismissCallback;
 
-    .line 226
+    .line 236
     :try_start_0
     invoke-interface {p1}, Lcom/android/internal/policy/IKeyguardDismissCallback;->onDismissError()V
     :try_end_3
     .catch Landroid/os/RemoteException; {:try_start_0 .. :try_end_3} :catch_4
 
-    .line 229
+    .line 239
     goto :goto_c
 
-    .line 227
+    .line 237
     :catch_4
-    move-exception p1
+    move-exception v0
 
-    .line 228
-    const-string v0, "ActivityTaskManager"
+    .line 238
+    .local v0, "e":Landroid/os/RemoteException;
+    const-string v1, "ActivityTaskManager"
 
-    const-string v1, "Failed to call callback"
+    const-string v2, "Failed to call callback"
 
-    invoke-static {v0, v1, p1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    invoke-static {v1, v2, v0}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
-    .line 230
+    .line 240
+    .end local v0  # "e":Landroid/os/RemoteException;
     :goto_c
     return-void
 .end method
 
 .method private getDisplay(I)Lcom/android/server/wm/KeyguardController$KeyguardDisplayState;
-    .registers 4
+    .registers 5
+    .param p1, "displayId"  # I
 
-    .line 433
+    .line 440
     iget-object v0, p0, Lcom/android/server/wm/KeyguardController;->mDisplayStates:Landroid/util/SparseArray;
 
     invoke-virtual {v0, p1}, Landroid/util/SparseArray;->get(I)Ljava/lang/Object;
@@ -279,30 +282,33 @@
 
     check-cast v0, Lcom/android/server/wm/KeyguardController$KeyguardDisplayState;
 
-    .line 434
-    if-nez v0, :cond_16
+    .line 441
+    .local v0, "state":Lcom/android/server/wm/KeyguardController$KeyguardDisplayState;
+    if-nez v0, :cond_17
 
-    .line 435
-    new-instance v0, Lcom/android/server/wm/KeyguardController$KeyguardDisplayState;
+    .line 442
+    new-instance v1, Lcom/android/server/wm/KeyguardController$KeyguardDisplayState;
 
-    iget-object v1, p0, Lcom/android/server/wm/KeyguardController;->mService:Lcom/android/server/wm/ActivityTaskManagerService;
+    iget-object v2, p0, Lcom/android/server/wm/KeyguardController;->mService:Lcom/android/server/wm/ActivityTaskManagerService;
 
-    invoke-direct {v0, v1, p1}, Lcom/android/server/wm/KeyguardController$KeyguardDisplayState;-><init>(Lcom/android/server/wm/ActivityTaskManagerService;I)V
+    invoke-direct {v1, v2, p1}, Lcom/android/server/wm/KeyguardController$KeyguardDisplayState;-><init>(Lcom/android/server/wm/ActivityTaskManagerService;I)V
 
-    .line 436
+    move-object v0, v1
+
+    .line 443
     iget-object v1, p0, Lcom/android/server/wm/KeyguardController;->mDisplayStates:Landroid/util/SparseArray;
 
     invoke-virtual {v1, p1, v0}, Landroid/util/SparseArray;->append(ILjava/lang/Object;)V
 
-    .line 438
-    :cond_16
+    .line 445
+    :cond_17
     return-object v0
 .end method
 
 .method private handleDismissKeyguard()V
     .registers 6
 
-    .line 344
+    .line 351
     iget-object v0, p0, Lcom/android/server/wm/KeyguardController;->mWindowManager:Lcom/android/server/wm/WindowManagerService;
 
     iget-object v1, p0, Lcom/android/server/wm/KeyguardController;->mService:Lcom/android/server/wm/ActivityTaskManagerService;
@@ -317,10 +323,10 @@
 
     if-nez v0, :cond_f
 
-    .line 345
+    .line 352
     return-void
 
-    .line 348
+    .line 355
     :cond_f
     iget-object v0, p0, Lcom/android/server/wm/KeyguardController;->mWindowManager:Lcom/android/server/wm/WindowManagerService;
 
@@ -328,22 +334,23 @@
 
     invoke-virtual {v0, v1, v1}, Lcom/android/server/wm/WindowManagerService;->dismissKeyguard(Lcom/android/internal/policy/IKeyguardDismissCallback;Ljava/lang/CharSequence;)V
 
-    .line 349
+    .line 356
     const/4 v0, 0x1
 
     iput-boolean v0, p0, Lcom/android/server/wm/KeyguardController;->mDismissalRequested:Z
 
-    .line 353
+    .line 360
     iget-object v2, p0, Lcom/android/server/wm/KeyguardController;->mRootActivityContainer:Lcom/android/server/wm/RootActivityContainer;
 
-    .line 354
+    .line 361
     invoke-virtual {v2}, Lcom/android/server/wm/RootActivityContainer;->getDefaultDisplay()Lcom/android/server/wm/ActivityDisplay;
 
     move-result-object v2
 
     iget-object v2, v2, Lcom/android/server/wm/ActivityDisplay;->mDisplayContent:Lcom/android/server/wm/DisplayContent;
 
-    .line 355
+    .line 362
+    .local v2, "dc":Lcom/android/server/wm/DisplayContent;
     iget-boolean v3, p0, Lcom/android/server/wm/KeyguardController;->mKeyguardShowing:Z
 
     if-eqz v3, :cond_44
@@ -356,7 +363,7 @@
 
     iget-object v3, v2, Lcom/android/server/wm/DisplayContent;->mAppTransition:Lcom/android/server/wm/AppTransition;
 
-    .line 356
+    .line 363
     invoke-virtual {v3}, Lcom/android/server/wm/AppTransition;->getAppTransition()I
 
     move-result v3
@@ -365,158 +372,161 @@
 
     if-ne v3, v4, :cond_44
 
-    .line 357
+    .line 364
     iget v3, p0, Lcom/android/server/wm/KeyguardController;->mBeforeUnoccludeTransit:I
 
     const/4 v4, 0x0
 
     invoke-virtual {v2, v3, v4, v4, v0}, Lcom/android/server/wm/DisplayContent;->prepareAppTransition(IZIZ)V
 
-    .line 359
+    .line 366
     iget-object v0, p0, Lcom/android/server/wm/KeyguardController;->mRootActivityContainer:Lcom/android/server/wm/RootActivityContainer;
 
     invoke-virtual {v0, v1, v4, v4}, Lcom/android/server/wm/RootActivityContainer;->ensureActivitiesVisible(Lcom/android/server/wm/ActivityRecord;IZ)V
 
-    .line 360
+    .line 367
     iget-object v0, p0, Lcom/android/server/wm/KeyguardController;->mWindowManager:Lcom/android/server/wm/WindowManagerService;
 
     invoke-virtual {v0}, Lcom/android/server/wm/WindowManagerService;->executeAppTransition()V
 
-    .line 362
+    .line 369
     :cond_44
     return-void
 .end method
 
 .method private handleOccludedChanged(I)V
-    .registers 5
-
-    .line 314
-    if-eqz p1, :cond_6
-
-    .line 315
-    invoke-direct {p0, p1}, Lcom/android/server/wm/KeyguardController;->updateKeyguardSleepToken(I)V
-
-    .line 316
-    return-void
-
-    .line 319
-    :cond_6
-    iget-object p1, p0, Lcom/android/server/wm/KeyguardController;->mWindowManager:Lcom/android/server/wm/WindowManagerService;
-
-    const/4 v0, 0x0
-
-    invoke-direct {p0, v0}, Lcom/android/server/wm/KeyguardController;->isDisplayOccluded(I)Z
-
-    move-result v1
-
-    invoke-virtual {p1, v1}, Lcom/android/server/wm/WindowManagerService;->onKeyguardOccludedChanged(Z)V
-
-    .line 320
-    invoke-virtual {p0}, Lcom/android/server/wm/KeyguardController;->isKeyguardLocked()Z
-
-    move-result p1
-
-    if-eqz p1, :cond_46
+    .registers 6
+    .param p1, "displayId"  # I
 
     .line 321
-    iget-object p1, p0, Lcom/android/server/wm/KeyguardController;->mWindowManager:Lcom/android/server/wm/WindowManagerService;
+    if-eqz p1, :cond_6
 
-    invoke-virtual {p1}, Lcom/android/server/wm/WindowManagerService;->deferSurfaceLayout()V
+    .line 322
+    invoke-direct {p0, p1}, Lcom/android/server/wm/KeyguardController;->updateKeyguardSleepToken(I)V
 
     .line 323
-    :try_start_1b
-    iget-object p1, p0, Lcom/android/server/wm/KeyguardController;->mRootActivityContainer:Lcom/android/server/wm/RootActivityContainer;
+    return-void
 
-    invoke-virtual {p1}, Lcom/android/server/wm/RootActivityContainer;->getDefaultDisplay()Lcom/android/server/wm/ActivityDisplay;
-
-    move-result-object p1
-
-    iget-object p1, p1, Lcom/android/server/wm/ActivityDisplay;->mDisplayContent:Lcom/android/server/wm/DisplayContent;
-
-    .line 324
-    invoke-direct {p0}, Lcom/android/server/wm/KeyguardController;->resolveOccludeTransit()I
-
-    move-result v1
-
-    const/4 v2, 0x1
-
-    invoke-virtual {p1, v1, v0, v0, v2}, Lcom/android/server/wm/DisplayContent;->prepareAppTransition(IZIZ)V
-
-    .line 327
-    invoke-direct {p0, v0}, Lcom/android/server/wm/KeyguardController;->updateKeyguardSleepToken(I)V
-
-    .line 328
-    iget-object p1, p0, Lcom/android/server/wm/KeyguardController;->mRootActivityContainer:Lcom/android/server/wm/RootActivityContainer;
+    .line 326
+    :cond_6
+    iget-object v0, p0, Lcom/android/server/wm/KeyguardController;->mWindowManager:Lcom/android/server/wm/WindowManagerService;
 
     const/4 v1, 0x0
 
-    invoke-virtual {p1, v1, v0, v0}, Lcom/android/server/wm/RootActivityContainer;->ensureActivitiesVisible(Lcom/android/server/wm/ActivityRecord;IZ)V
+    invoke-direct {p0, v1}, Lcom/android/server/wm/KeyguardController;->isDisplayOccluded(I)Z
 
-    .line 329
-    iget-object p1, p0, Lcom/android/server/wm/KeyguardController;->mWindowManager:Lcom/android/server/wm/WindowManagerService;
+    move-result v2
 
-    invoke-virtual {p1}, Lcom/android/server/wm/WindowManagerService;->executeAppTransition()V
-    :try_end_39
-    .catchall {:try_start_1b .. :try_end_39} :catchall_3f
+    invoke-virtual {v0, v2}, Lcom/android/server/wm/WindowManagerService;->onKeyguardOccludedChanged(Z)V
 
-    .line 331
-    iget-object p1, p0, Lcom/android/server/wm/KeyguardController;->mWindowManager:Lcom/android/server/wm/WindowManagerService;
+    .line 327
+    invoke-virtual {p0}, Lcom/android/server/wm/KeyguardController;->isKeyguardLocked()Z
 
-    invoke-virtual {p1}, Lcom/android/server/wm/WindowManagerService;->continueSurfaceLayout()V
+    move-result v0
 
-    .line 332
-    goto :goto_46
+    if-eqz v0, :cond_46
 
-    .line 331
-    :catchall_3f
-    move-exception p1
-
+    .line 328
     iget-object v0, p0, Lcom/android/server/wm/KeyguardController;->mWindowManager:Lcom/android/server/wm/WindowManagerService;
 
-    invoke-virtual {v0}, Lcom/android/server/wm/WindowManagerService;->continueSurfaceLayout()V
+    invoke-virtual {v0}, Lcom/android/server/wm/WindowManagerService;->deferSurfaceLayout()V
 
-    throw p1
+    .line 330
+    :try_start_1b
+    iget-object v0, p0, Lcom/android/server/wm/KeyguardController;->mRootActivityContainer:Lcom/android/server/wm/RootActivityContainer;
 
-    .line 334
-    :cond_46
-    :goto_46
-    invoke-direct {p0}, Lcom/android/server/wm/KeyguardController;->dismissDockedStackIfNeeded()V
-
-    .line 335
-    return-void
-.end method
-
-.method private isDisplayOccluded(I)Z
-    .registers 2
-
-    .line 365
-    invoke-direct {p0, p1}, Lcom/android/server/wm/KeyguardController;->getDisplay(I)Lcom/android/server/wm/KeyguardController$KeyguardDisplayState;
-
-    move-result-object p1
-
-    invoke-static {p1}, Lcom/android/server/wm/KeyguardController$KeyguardDisplayState;->access$200(Lcom/android/server/wm/KeyguardController$KeyguardDisplayState;)Z
-
-    move-result p1
-
-    return p1
-.end method
-
-.method private resolveOccludeTransit()I
-    .registers 6
-
-    .line 377
-    iget-object v0, p0, Lcom/android/server/wm/KeyguardController;->mService:Lcom/android/server/wm/ActivityTaskManagerService;
-
-    iget-object v0, v0, Lcom/android/server/wm/ActivityTaskManagerService;->mRootActivityContainer:Lcom/android/server/wm/RootActivityContainer;
-
-    .line 378
     invoke-virtual {v0}, Lcom/android/server/wm/RootActivityContainer;->getDefaultDisplay()Lcom/android/server/wm/ActivityDisplay;
 
     move-result-object v0
 
     iget-object v0, v0, Lcom/android/server/wm/ActivityDisplay;->mDisplayContent:Lcom/android/server/wm/DisplayContent;
 
-    .line 379
+    .line 331
+    invoke-direct {p0}, Lcom/android/server/wm/KeyguardController;->resolveOccludeTransit()I
+
+    move-result v2
+
+    const/4 v3, 0x1
+
+    invoke-virtual {v0, v2, v1, v1, v3}, Lcom/android/server/wm/DisplayContent;->prepareAppTransition(IZIZ)V
+
+    .line 334
+    invoke-direct {p0, v1}, Lcom/android/server/wm/KeyguardController;->updateKeyguardSleepToken(I)V
+
+    .line 335
+    iget-object v0, p0, Lcom/android/server/wm/KeyguardController;->mRootActivityContainer:Lcom/android/server/wm/RootActivityContainer;
+
+    const/4 v2, 0x0
+
+    invoke-virtual {v0, v2, v1, v1}, Lcom/android/server/wm/RootActivityContainer;->ensureActivitiesVisible(Lcom/android/server/wm/ActivityRecord;IZ)V
+
+    .line 336
+    iget-object v0, p0, Lcom/android/server/wm/KeyguardController;->mWindowManager:Lcom/android/server/wm/WindowManagerService;
+
+    invoke-virtual {v0}, Lcom/android/server/wm/WindowManagerService;->executeAppTransition()V
+    :try_end_39
+    .catchall {:try_start_1b .. :try_end_39} :catchall_3f
+
+    .line 338
+    iget-object v0, p0, Lcom/android/server/wm/KeyguardController;->mWindowManager:Lcom/android/server/wm/WindowManagerService;
+
+    invoke-virtual {v0}, Lcom/android/server/wm/WindowManagerService;->continueSurfaceLayout()V
+
+    .line 339
+    goto :goto_46
+
+    .line 338
+    :catchall_3f
+    move-exception v0
+
+    iget-object v1, p0, Lcom/android/server/wm/KeyguardController;->mWindowManager:Lcom/android/server/wm/WindowManagerService;
+
+    invoke-virtual {v1}, Lcom/android/server/wm/WindowManagerService;->continueSurfaceLayout()V
+
+    throw v0
+
+    .line 341
+    :cond_46
+    :goto_46
+    invoke-direct {p0}, Lcom/android/server/wm/KeyguardController;->dismissDockedStackIfNeeded()V
+
+    .line 342
+    return-void
+.end method
+
+.method private isDisplayOccluded(I)Z
+    .registers 3
+    .param p1, "displayId"  # I
+
+    .line 372
+    invoke-direct {p0, p1}, Lcom/android/server/wm/KeyguardController;->getDisplay(I)Lcom/android/server/wm/KeyguardController$KeyguardDisplayState;
+
+    move-result-object v0
+
+    invoke-static {v0}, Lcom/android/server/wm/KeyguardController$KeyguardDisplayState;->access$200(Lcom/android/server/wm/KeyguardController$KeyguardDisplayState;)Z
+
+    move-result v0
+
+    return v0
+.end method
+
+.method private resolveOccludeTransit()I
+    .registers 6
+
+    .line 384
+    iget-object v0, p0, Lcom/android/server/wm/KeyguardController;->mService:Lcom/android/server/wm/ActivityTaskManagerService;
+
+    iget-object v0, v0, Lcom/android/server/wm/ActivityTaskManagerService;->mRootActivityContainer:Lcom/android/server/wm/RootActivityContainer;
+
+    .line 385
+    invoke-virtual {v0}, Lcom/android/server/wm/RootActivityContainer;->getDefaultDisplay()Lcom/android/server/wm/ActivityDisplay;
+
+    move-result-object v0
+
+    iget-object v0, v0, Lcom/android/server/wm/ActivityDisplay;->mDisplayContent:Lcom/android/server/wm/DisplayContent;
+
+    .line 386
+    .local v0, "dc":Lcom/android/server/wm/DisplayContent;
     iget v1, p0, Lcom/android/server/wm/KeyguardController;->mBeforeUnoccludeTransit:I
 
     const/16 v2, 0x17
@@ -529,26 +539,26 @@
 
     iget-object v1, v0, Lcom/android/server/wm/DisplayContent;->mAppTransition:Lcom/android/server/wm/AppTransition;
 
-    .line 380
+    .line 387
     invoke-virtual {v1}, Lcom/android/server/wm/AppTransition;->getAppTransition()I
 
     move-result v1
 
     if-ne v1, v2, :cond_23
 
-    .line 382
+    .line 389
     invoke-direct {p0, v3}, Lcom/android/server/wm/KeyguardController;->isDisplayOccluded(I)Z
 
     move-result v1
 
     if-eqz v1, :cond_23
 
-    .line 386
-    iget v0, p0, Lcom/android/server/wm/KeyguardController;->mBeforeUnoccludeTransit:I
+    .line 393
+    iget v1, p0, Lcom/android/server/wm/KeyguardController;->mBeforeUnoccludeTransit:I
 
-    return v0
+    return v1
 
-    .line 388
+    .line 395
     :cond_23
     invoke-direct {p0, v3}, Lcom/android/server/wm/KeyguardController;->isDisplayOccluded(I)Z
 
@@ -556,44 +566,45 @@
 
     if-nez v1, :cond_32
 
-    .line 391
-    iget-object v0, v0, Lcom/android/server/wm/DisplayContent;->mAppTransition:Lcom/android/server/wm/AppTransition;
+    .line 398
+    iget-object v1, v0, Lcom/android/server/wm/DisplayContent;->mAppTransition:Lcom/android/server/wm/AppTransition;
 
-    invoke-virtual {v0}, Lcom/android/server/wm/AppTransition;->getAppTransition()I
+    invoke-virtual {v1}, Lcom/android/server/wm/AppTransition;->getAppTransition()I
 
-    move-result v0
+    move-result v1
 
-    iput v0, p0, Lcom/android/server/wm/KeyguardController;->mBeforeUnoccludeTransit:I
+    iput v1, p0, Lcom/android/server/wm/KeyguardController;->mBeforeUnoccludeTransit:I
 
-    .line 392
+    .line 399
     return v2
 
-    .line 394
+    .line 401
     :cond_32
-    const/16 v0, 0x16
+    const/16 v1, 0x16
 
-    return v0
+    return v1
 .end method
 
 .method private setKeyguardGoingAway(Z)V
     .registers 3
+    .param p1, "keyguardGoingAway"  # Z
 
-    .line 220
+    .line 230
     iput-boolean p1, p0, Lcom/android/server/wm/KeyguardController;->mKeyguardGoingAway:Z
 
-    .line 221
+    .line 231
     iget-object v0, p0, Lcom/android/server/wm/KeyguardController;->mWindowManager:Lcom/android/server/wm/WindowManagerService;
 
     invoke-virtual {v0, p1}, Lcom/android/server/wm/WindowManagerService;->setKeyguardGoingAway(Z)V
 
-    .line 222
+    .line 232
     return-void
 .end method
 
 .method private updateKeyguardSleepToken()V
-    .registers 3
+    .registers 4
 
-    .line 416
+    .line 423
     iget-object v0, p0, Lcom/android/server/wm/KeyguardController;->mRootActivityContainer:Lcom/android/server/wm/RootActivityContainer;
 
     invoke-virtual {v0}, Lcom/android/server/wm/RootActivityContainer;->getChildCount()I
@@ -602,41 +613,47 @@
 
     add-int/lit8 v0, v0, -0x1
 
-    .line 417
+    .line 424
+    .local v0, "displayNdx":I
     :goto_8
     if-ltz v0, :cond_18
 
-    .line 418
+    .line 425
     iget-object v1, p0, Lcom/android/server/wm/KeyguardController;->mRootActivityContainer:Lcom/android/server/wm/RootActivityContainer;
 
     invoke-virtual {v1, v0}, Lcom/android/server/wm/RootActivityContainer;->getChildAt(I)Lcom/android/server/wm/ActivityDisplay;
 
     move-result-object v1
 
-    .line 419
-    iget v1, v1, Lcom/android/server/wm/ActivityDisplay;->mDisplayId:I
+    .line 426
+    .local v1, "display":Lcom/android/server/wm/ActivityDisplay;
+    iget v2, v1, Lcom/android/server/wm/ActivityDisplay;->mDisplayId:I
 
-    invoke-direct {p0, v1}, Lcom/android/server/wm/KeyguardController;->updateKeyguardSleepToken(I)V
+    invoke-direct {p0, v2}, Lcom/android/server/wm/KeyguardController;->updateKeyguardSleepToken(I)V
 
-    .line 417
+    .line 424
+    .end local v1  # "display":Lcom/android/server/wm/ActivityDisplay;
     add-int/lit8 v0, v0, -0x1
 
     goto :goto_8
 
-    .line 421
+    .line 428
+    .end local v0  # "displayNdx":I
     :cond_18
     return-void
 .end method
 
 .method private updateKeyguardSleepToken(I)V
     .registers 4
+    .param p1, "displayId"  # I
 
-    .line 424
+    .line 431
     invoke-direct {p0, p1}, Lcom/android/server/wm/KeyguardController;->getDisplay(I)Lcom/android/server/wm/KeyguardController$KeyguardDisplayState;
 
     move-result-object v0
 
-    .line 425
+    .line 432
+    .local v0, "state":Lcom/android/server/wm/KeyguardController$KeyguardDisplayState;
     invoke-virtual {p0, p1}, Lcom/android/server/wm/KeyguardController;->isKeyguardUnoccludedOrAodShowing(I)Z
 
     move-result v1
@@ -649,102 +666,110 @@
 
     if-nez v1, :cond_14
 
-    .line 426
+    .line 433
     invoke-virtual {v0}, Lcom/android/server/wm/KeyguardController$KeyguardDisplayState;->acquiredSleepToken()V
 
     goto :goto_23
 
-    .line 427
+    .line 434
     :cond_14
     invoke-virtual {p0, p1}, Lcom/android/server/wm/KeyguardController;->isKeyguardUnoccludedOrAodShowing(I)Z
 
-    move-result p1
+    move-result v1
 
-    if-nez p1, :cond_23
+    if-nez v1, :cond_23
 
     invoke-static {v0}, Lcom/android/server/wm/KeyguardController$KeyguardDisplayState;->access$300(Lcom/android/server/wm/KeyguardController$KeyguardDisplayState;)Lcom/android/server/wm/ActivityTaskManagerInternal$SleepToken;
 
-    move-result-object p1
+    move-result-object v1
 
-    if-eqz p1, :cond_23
+    if-eqz v1, :cond_23
 
-    .line 428
+    .line 435
     invoke-virtual {v0}, Lcom/android/server/wm/KeyguardController$KeyguardDisplayState;->releaseSleepToken()V
 
-    .line 430
+    .line 437
     :cond_23
     :goto_23
     return-void
 .end method
 
 .method private visibilitiesUpdated()V
-    .registers 5
+    .registers 6
 
-    .line 291
-    nop
+    .line 298
+    const/4 v0, 0x0
 
-    .line 292
-    iget-object v0, p0, Lcom/android/server/wm/KeyguardController;->mRootActivityContainer:Lcom/android/server/wm/RootActivityContainer;
+    .line 299
+    .local v0, "requestDismissKeyguard":Z
+    iget-object v1, p0, Lcom/android/server/wm/KeyguardController;->mRootActivityContainer:Lcom/android/server/wm/RootActivityContainer;
 
-    invoke-virtual {v0}, Lcom/android/server/wm/RootActivityContainer;->getChildCount()I
+    invoke-virtual {v1}, Lcom/android/server/wm/RootActivityContainer;->getChildCount()I
 
-    move-result v0
+    move-result v1
 
-    add-int/lit8 v0, v0, -0x1
+    add-int/lit8 v1, v1, -0x1
 
-    const/4 v1, 0x0
+    .line 300
+    .local v1, "displayNdx":I
+    :goto_9
+    if-ltz v1, :cond_22
 
-    .line 293
-    :goto_a
-    if-ltz v0, :cond_23
-
-    .line 294
+    .line 301
     iget-object v2, p0, Lcom/android/server/wm/KeyguardController;->mRootActivityContainer:Lcom/android/server/wm/RootActivityContainer;
 
-    invoke-virtual {v2, v0}, Lcom/android/server/wm/RootActivityContainer;->getChildAt(I)Lcom/android/server/wm/ActivityDisplay;
+    invoke-virtual {v2, v1}, Lcom/android/server/wm/RootActivityContainer;->getChildAt(I)Lcom/android/server/wm/ActivityDisplay;
 
     move-result-object v2
 
-    .line 295
+    .line 302
+    .local v2, "display":Lcom/android/server/wm/ActivityDisplay;
     iget v3, v2, Lcom/android/server/wm/ActivityDisplay;->mDisplayId:I
 
     invoke-direct {p0, v3}, Lcom/android/server/wm/KeyguardController;->getDisplay(I)Lcom/android/server/wm/KeyguardController$KeyguardDisplayState;
 
     move-result-object v3
 
-    .line 296
+    .line 303
+    .local v3, "state":Lcom/android/server/wm/KeyguardController$KeyguardDisplayState;
     invoke-virtual {v3, p0, v2}, Lcom/android/server/wm/KeyguardController$KeyguardDisplayState;->visibilitiesUpdated(Lcom/android/server/wm/KeyguardController;Lcom/android/server/wm/ActivityDisplay;)V
 
-    .line 297
+    .line 304
     invoke-static {v3}, Lcom/android/server/wm/KeyguardController$KeyguardDisplayState;->access$100(Lcom/android/server/wm/KeyguardController$KeyguardDisplayState;)Z
 
-    move-result v2
+    move-result v4
 
-    or-int/2addr v1, v2
+    or-int/2addr v0, v4
 
-    .line 293
-    add-int/lit8 v0, v0, -0x1
+    .line 300
+    .end local v2  # "display":Lcom/android/server/wm/ActivityDisplay;
+    .end local v3  # "state":Lcom/android/server/wm/KeyguardController$KeyguardDisplayState;
+    add-int/lit8 v1, v1, -0x1
 
-    goto :goto_a
+    goto :goto_9
 
-    .line 301
-    :cond_23
-    if-eqz v1, :cond_28
+    .line 308
+    .end local v1  # "displayNdx":I
+    :cond_22
+    if-eqz v0, :cond_27
 
-    .line 302
+    .line 309
     invoke-direct {p0}, Lcom/android/server/wm/KeyguardController;->handleDismissKeyguard()V
 
-    .line 304
-    :cond_28
+    .line 311
+    :cond_27
     return-void
 .end method
 
 .method private writeDisplayStatesToProto(Landroid/util/proto/ProtoOutputStream;J)V
     .registers 6
+    .param p1, "proto"  # Landroid/util/proto/ProtoOutputStream;
+    .param p2, "fieldId"  # J
 
-    .line 582
+    .line 601
     const/4 v0, 0x0
 
+    .local v0, "i":I
     :goto_1
     iget-object v1, p0, Lcom/android/server/wm/KeyguardController;->mDisplayStates:Landroid/util/SparseArray;
 
@@ -754,7 +779,7 @@
 
     if-ge v0, v1, :cond_17
 
-    .line 583
+    .line 602
     iget-object v1, p0, Lcom/android/server/wm/KeyguardController;->mDisplayStates:Landroid/util/SparseArray;
 
     invoke-virtual {v1, v0}, Landroid/util/SparseArray;->valueAt(I)Ljava/lang/Object;
@@ -765,12 +790,13 @@
 
     invoke-virtual {v1, p1, p2, p3}, Lcom/android/server/wm/KeyguardController$KeyguardDisplayState;->writeToProto(Landroid/util/proto/ProtoOutputStream;J)V
 
-    .line 582
+    .line 601
     add-int/lit8 v0, v0, 0x1
 
     goto :goto_1
 
-    .line 585
+    .line 604
+    .end local v0  # "i":I
     :cond_17
     return-void
 .end method
@@ -780,21 +806,21 @@
 .method beginActivityVisibilityUpdate()V
     .registers 2
 
-    .line 253
+    .line 260
     iget v0, p0, Lcom/android/server/wm/KeyguardController;->mVisibilityTransactionDepth:I
 
     add-int/lit8 v0, v0, 0x1
 
     iput v0, p0, Lcom/android/server/wm/KeyguardController;->mVisibilityTransactionDepth:I
 
-    .line 254
+    .line 261
     return-void
 .end method
 
 .method canDismissKeyguard()Z
     .registers 3
 
-    .line 372
+    .line 379
     iget-object v0, p0, Lcom/android/server/wm/KeyguardController;->mWindowManager:Lcom/android/server/wm/WindowManagerService;
 
     invoke-virtual {v0}, Lcom/android/server/wm/WindowManagerService;->isKeyguardTrusted()Z
@@ -807,7 +833,7 @@
 
     iget-object v1, p0, Lcom/android/server/wm/KeyguardController;->mService:Lcom/android/server/wm/ActivityTaskManagerService;
 
-    .line 373
+    .line 380
     invoke-virtual {v1}, Lcom/android/server/wm/ActivityTaskManagerService;->getCurrentUserId()I
 
     move-result v1
@@ -829,184 +855,270 @@
     :goto_19
     const/4 v0, 0x1
 
-    .line 372
+    .line 379
     :goto_1a
     return v0
 .end method
 
 .method canShowActivityWhileKeyguardShowing(Lcom/android/server/wm/ActivityRecord;Z)Z
-    .registers 3
+    .registers 4
+    .param p1, "r"  # Lcom/android/server/wm/ActivityRecord;
+    .param p2, "dismissKeyguard"  # Z
 
-    .line 276
+    .line 283
     if-eqz p2, :cond_26
 
     invoke-virtual {p0}, Lcom/android/server/wm/KeyguardController;->canDismissKeyguard()Z
 
-    move-result p2
+    move-result v0
 
-    if-eqz p2, :cond_26
+    if-eqz v0, :cond_26
 
-    iget-boolean p2, p0, Lcom/android/server/wm/KeyguardController;->mAodShowing:Z
+    iget-boolean v0, p0, Lcom/android/server/wm/KeyguardController;->mAodShowing:Z
 
-    if-nez p2, :cond_26
+    if-nez v0, :cond_26
 
-    iget-boolean p2, p0, Lcom/android/server/wm/KeyguardController;->mDismissalRequested:Z
+    iget-boolean v0, p0, Lcom/android/server/wm/KeyguardController;->mDismissalRequested:Z
 
-    if-nez p2, :cond_24
+    if-nez v0, :cond_24
 
-    .line 278
+    .line 285
     invoke-virtual {p1}, Lcom/android/server/wm/ActivityRecord;->canShowWhenLocked()Z
 
-    move-result p2
+    move-result v0
 
-    if-eqz p2, :cond_26
+    if-eqz v0, :cond_26
 
-    .line 279
+    .line 286
     invoke-virtual {p1}, Lcom/android/server/wm/ActivityRecord;->getDisplayId()I
 
-    move-result p2
+    move-result v0
 
-    invoke-direct {p0, p2}, Lcom/android/server/wm/KeyguardController;->getDisplay(I)Lcom/android/server/wm/KeyguardController$KeyguardDisplayState;
+    invoke-direct {p0, v0}, Lcom/android/server/wm/KeyguardController;->getDisplay(I)Lcom/android/server/wm/KeyguardController$KeyguardDisplayState;
 
-    move-result-object p2
+    move-result-object v0
 
-    invoke-static {p2}, Lcom/android/server/wm/KeyguardController$KeyguardDisplayState;->access$000(Lcom/android/server/wm/KeyguardController$KeyguardDisplayState;)Lcom/android/server/wm/ActivityRecord;
+    invoke-static {v0}, Lcom/android/server/wm/KeyguardController$KeyguardDisplayState;->access$000(Lcom/android/server/wm/KeyguardController$KeyguardDisplayState;)Lcom/android/server/wm/ActivityRecord;
 
-    move-result-object p2
+    move-result-object v0
 
-    if-eq p2, p1, :cond_26
+    if-eq v0, p1, :cond_26
 
     :cond_24
-    const/4 p1, 0x1
+    const/4 v0, 0x1
 
     goto :goto_27
 
     :cond_26
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    .line 276
+    .line 283
     :goto_27
-    return p1
+    return v0
 .end method
 
 .method canShowWhileOccluded(ZZ)Z
-    .registers 3
+    .registers 5
+    .param p1, "dismissKeyguard"  # Z
+    .param p2, "showWhenLocked"  # Z
 
-    .line 286
+    .line 293
     if-nez p2, :cond_15
 
     if-eqz p1, :cond_13
 
-    iget-object p1, p0, Lcom/android/server/wm/KeyguardController;->mWindowManager:Lcom/android/server/wm/WindowManagerService;
+    iget-object v0, p0, Lcom/android/server/wm/KeyguardController;->mWindowManager:Lcom/android/server/wm/WindowManagerService;
 
-    iget-object p2, p0, Lcom/android/server/wm/KeyguardController;->mService:Lcom/android/server/wm/ActivityTaskManagerService;
+    iget-object v1, p0, Lcom/android/server/wm/KeyguardController;->mService:Lcom/android/server/wm/ActivityTaskManagerService;
 
-    .line 287
-    invoke-virtual {p2}, Lcom/android/server/wm/ActivityTaskManagerService;->getCurrentUserId()I
+    .line 294
+    invoke-virtual {v1}, Lcom/android/server/wm/ActivityTaskManagerService;->getCurrentUserId()I
 
-    move-result p2
+    move-result v1
 
-    invoke-virtual {p1, p2}, Lcom/android/server/wm/WindowManagerService;->isKeyguardSecure(I)Z
+    invoke-virtual {v0, v1}, Lcom/android/server/wm/WindowManagerService;->isKeyguardSecure(I)Z
 
-    move-result p1
+    move-result v0
 
-    if-nez p1, :cond_13
+    if-nez v0, :cond_13
 
     goto :goto_15
 
     :cond_13
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
     goto :goto_16
 
     :cond_15
     :goto_15
-    const/4 p1, 0x1
+    const/4 v0, 0x1
 
-    .line 286
+    .line 293
     :goto_16
-    return p1
+    return v0
 .end method
 
 .method dismissKeyguard(Landroid/os/IBinder;Lcom/android/internal/policy/IKeyguardDismissCallback;Ljava/lang/CharSequence;)V
-    .registers 6
+    .registers 8
+    .param p1, "token"  # Landroid/os/IBinder;
+    .param p2, "callback"  # Lcom/android/internal/policy/IKeyguardDismissCallback;
+    .param p3, "message"  # Ljava/lang/CharSequence;
 
-    .line 203
+    .line 201
     invoke-static {p1}, Lcom/android/server/wm/ActivityRecord;->forTokenLocked(Landroid/os/IBinder;)Lcom/android/server/wm/ActivityRecord;
-
-    move-result-object p1
-
-    .line 204
-    if-eqz p1, :cond_3a
-
-    iget-boolean v0, p1, Lcom/android/server/wm/ActivityRecord;->visibleIgnoringKeyguard:Z
-
-    if-nez v0, :cond_b
-
-    goto :goto_3a
-
-    .line 208
-    :cond_b
-    new-instance v0, Ljava/lang/StringBuilder;
-
-    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
-
-    const-string v1, "Activity requesting to dismiss Keyguard: "
-
-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
     move-result-object v0
 
-    const-string v1, "ActivityTaskManager"
+    .line 202
+    .local v0, "activityRecord":Lcom/android/server/wm/ActivityRecord;
+    if-eqz v0, :cond_83
 
-    invoke-static {v1, v0}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
+    iget-boolean v1, v0, Lcom/android/server/wm/ActivityRecord;->visibleIgnoringKeyguard:Z
 
-    .line 212
-    invoke-virtual {p1}, Lcom/android/server/wm/ActivityRecord;->getTurnScreenOnFlag()Z
+    if-nez v1, :cond_c
 
-    move-result v0
+    goto/16 :goto_83
 
-    if-eqz v0, :cond_34
+    .line 208
+    :cond_c
+    iget-object v1, p0, Lcom/android/server/wm/KeyguardController;->mService:Lcom/android/server/wm/ActivityTaskManagerService;
 
-    invoke-virtual {p1}, Lcom/android/server/wm/ActivityRecord;->isTopRunningActivity()Z
+    iget-object v1, v1, Lcom/android/server/wm/ActivityTaskManagerService;->mWindowManager:Lcom/android/server/wm/WindowManagerService;
 
-    move-result p1
+    iget-object v1, v1, Lcom/android/server/wm/WindowManagerService;->mWmsExtInternal:Lcom/android/server/wm/FlymeWindowManagerInternal;
 
-    if-eqz p1, :cond_34
+    const/4 v2, 0x4
+
+    invoke-virtual {v1, v2}, Lcom/android/server/wm/FlymeWindowManagerInternal;->isFeatureOpen(I)Z
+
+    move-result v1
+
+    const-string v2, "ActivityTaskManager"
+
+    if-eqz v1, :cond_56
+
+    .line 209
+    invoke-virtual {p0}, Lcom/android/server/wm/KeyguardController;->isKeyguardLocked()Z
+
+    move-result v1
+
+    if-nez v1, :cond_2d
+
+    iget-object v1, p0, Lcom/android/server/wm/KeyguardController;->mService:Lcom/android/server/wm/ActivityTaskManagerService;
+
+    iget-object v1, v1, Lcom/android/server/wm/ActivityTaskManagerService;->mWindowManager:Lcom/android/server/wm/WindowManagerService;
+
+    iget-object v1, v1, Lcom/android/server/wm/WindowManagerService;->mPowerManager:Landroid/os/PowerManager;
+
+    invoke-virtual {v1}, Landroid/os/PowerManager;->isInteractive()Z
+
+    move-result v1
+
+    if-nez v1, :cond_56
+
+    .line 210
+    :cond_2d
+    invoke-virtual {v0}, Lcom/android/server/wm/ActivityRecord;->canShowWhenLocked()Z
+
+    move-result v1
+
+    if-nez v1, :cond_56
+
+    .line 211
+    new-instance v1, Ljava/lang/StringBuilder;
+
+    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
+
+    const-string v3, "Abort dismissKeyguard: "
+
+    invoke-virtual {v1, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    iget-object v3, v0, Lcom/android/server/wm/ActivityRecord;->intent:Landroid/content/Intent;
+
+    invoke-virtual {v3}, Landroid/content/Intent;->getPackage()Ljava/lang/String;
+
+    move-result-object v3
+
+    invoke-virtual {v1, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    const-string v3, " has no permission \"Display views on lock screen\""
+
+    invoke-virtual {v1, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v1
+
+    invoke-static {v2, v1}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 213
-    iget-object p1, p0, Lcom/android/server/wm/KeyguardController;->mStackSupervisor:Lcom/android/server/wm/ActivityStackSupervisor;
-
-    const-string v0, "dismissKeyguard"
-
-    invoke-virtual {p1, v0}, Lcom/android/server/wm/ActivityStackSupervisor;->wakeUp(Ljava/lang/String;)V
-
-    .line 216
-    :cond_34
-    iget-object p1, p0, Lcom/android/server/wm/KeyguardController;->mWindowManager:Lcom/android/server/wm/WindowManagerService;
-
-    invoke-virtual {p1, p2, p3}, Lcom/android/server/wm/WindowManagerService;->dismissKeyguard(Lcom/android/internal/policy/IKeyguardDismissCallback;Ljava/lang/CharSequence;)V
-
-    .line 217
-    return-void
-
-    .line 205
-    :cond_3a
-    :goto_3a
     invoke-direct {p0, p2}, Lcom/android/server/wm/KeyguardController;->failCallback(Lcom/android/internal/policy/IKeyguardDismissCallback;)V
 
-    .line 206
+    .line 214
+    return-void
+
+    .line 218
+    :cond_56
+    new-instance v1, Ljava/lang/StringBuilder;
+
+    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
+
+    const-string v3, "Activity requesting to dismiss Keyguard: "
+
+    invoke-virtual {v1, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v1, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v1
+
+    invoke-static {v2, v1}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
+
+    .line 222
+    invoke-virtual {v0}, Lcom/android/server/wm/ActivityRecord;->getTurnScreenOnFlag()Z
+
+    move-result v1
+
+    if-eqz v1, :cond_7d
+
+    invoke-virtual {v0}, Lcom/android/server/wm/ActivityRecord;->isTopRunningActivity()Z
+
+    move-result v1
+
+    if-eqz v1, :cond_7d
+
+    .line 223
+    iget-object v1, p0, Lcom/android/server/wm/KeyguardController;->mStackSupervisor:Lcom/android/server/wm/ActivityStackSupervisor;
+
+    const-string v2, "dismissKeyguard"
+
+    invoke-virtual {v1, v2}, Lcom/android/server/wm/ActivityStackSupervisor;->wakeUp(Ljava/lang/String;)V
+
+    .line 226
+    :cond_7d
+    iget-object v1, p0, Lcom/android/server/wm/KeyguardController;->mWindowManager:Lcom/android/server/wm/WindowManagerService;
+
+    invoke-virtual {v1, p2, p3}, Lcom/android/server/wm/WindowManagerService;->dismissKeyguard(Lcom/android/internal/policy/IKeyguardDismissCallback;Ljava/lang/CharSequence;)V
+
+    .line 227
+    return-void
+
+    .line 203
+    :cond_83
+    :goto_83
+    invoke-direct {p0, p2}, Lcom/android/server/wm/KeyguardController;->failCallback(Lcom/android/internal/policy/IKeyguardDismissCallback;)V
+
+    .line 204
     return-void
 .end method
 
 .method dump(Ljava/io/PrintWriter;Ljava/lang/String;)V
     .registers 5
+    .param p1, "pw"  # Ljava/io/PrintWriter;
+    .param p2, "prefix"  # Ljava/lang/String;
 
-    .line 558
+    .line 577
     new-instance v0, Ljava/lang/StringBuilder;
 
     invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
@@ -1023,7 +1135,7 @@
 
     invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
-    .line 559
+    .line 578
     new-instance v0, Ljava/lang/StringBuilder;
 
     invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
@@ -1044,7 +1156,7 @@
 
     invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
-    .line 560
+    .line 579
     new-instance v0, Ljava/lang/StringBuilder;
 
     invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
@@ -1065,7 +1177,7 @@
 
     invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
-    .line 561
+    .line 580
     new-instance v0, Ljava/lang/StringBuilder;
 
     invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
@@ -1086,10 +1198,10 @@
 
     invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
-    .line 562
+    .line 581
     invoke-direct {p0, p1, p2}, Lcom/android/server/wm/KeyguardController;->dumpDisplayStates(Ljava/io/PrintWriter;Ljava/lang/String;)V
 
-    .line 563
+    .line 582
     new-instance v0, Ljava/lang/StringBuilder;
 
     invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
@@ -1110,50 +1222,50 @@
 
     invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
-    .line 564
+    .line 583
     new-instance v0, Ljava/lang/StringBuilder;
 
     invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
 
     invoke-virtual {v0, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string p2, "  mVisibilityTransactionDepth="
+    const-string v1, "  mVisibilityTransactionDepth="
 
-    invoke-virtual {v0, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    iget p2, p0, Lcom/android/server/wm/KeyguardController;->mVisibilityTransactionDepth:I
+    iget v1, p0, Lcom/android/server/wm/KeyguardController;->mVisibilityTransactionDepth:I
 
-    invoke-virtual {v0, p2}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
     invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p2
+    move-result-object v0
 
-    invoke-virtual {p1, p2}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
-    .line 565
+    .line 584
     return-void
 .end method
 
 .method endActivityVisibilityUpdate()V
     .registers 2
 
-    .line 261
+    .line 268
     iget v0, p0, Lcom/android/server/wm/KeyguardController;->mVisibilityTransactionDepth:I
 
     add-int/lit8 v0, v0, -0x1
 
     iput v0, p0, Lcom/android/server/wm/KeyguardController;->mVisibilityTransactionDepth:I
 
-    .line 262
+    .line 269
     iget v0, p0, Lcom/android/server/wm/KeyguardController;->mVisibilityTransactionDepth:I
 
     if-nez v0, :cond_d
 
-    .line 263
+    .line 270
     invoke-direct {p0}, Lcom/android/server/wm/KeyguardController;->visibilitiesUpdated()V
 
-    .line 265
+    .line 272
     :cond_d
     return-void
 .end method
@@ -1161,7 +1273,7 @@
 .method isKeyguardGoingAway()Z
     .registers 2
 
-    .line 131
+    .line 129
     iget-boolean v0, p0, Lcom/android/server/wm/KeyguardController;->mKeyguardGoingAway:Z
 
     if-eqz v0, :cond_a
@@ -1184,7 +1296,7 @@
 .method isKeyguardLocked()Z
     .registers 2
 
-    .line 123
+    .line 121
     iget-boolean v0, p0, Lcom/android/server/wm/KeyguardController;->mKeyguardShowing:Z
 
     if-eqz v0, :cond_a
@@ -1206,8 +1318,9 @@
 
 .method isKeyguardOrAodShowing(I)Z
     .registers 3
+    .param p1, "displayId"  # I
 
-    .line 95
+    .line 93
     iget-boolean v0, p0, Lcom/android/server/wm/KeyguardController;->mKeyguardShowing:Z
 
     if-nez v0, :cond_8
@@ -1221,29 +1334,30 @@
 
     if-nez v0, :cond_14
 
-    .line 96
+    .line 94
     invoke-direct {p0, p1}, Lcom/android/server/wm/KeyguardController;->isDisplayOccluded(I)Z
 
-    move-result p1
+    move-result v0
 
-    if-nez p1, :cond_14
+    if-nez v0, :cond_14
 
-    const/4 p1, 0x1
+    const/4 v0, 0x1
 
     goto :goto_15
 
     :cond_14
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    .line 95
+    .line 93
     :goto_15
-    return p1
+    return v0
 .end method
 
 .method isKeyguardShowing(I)Z
     .registers 3
+    .param p1, "displayId"  # I
 
-    .line 116
+    .line 114
     iget-boolean v0, p0, Lcom/android/server/wm/KeyguardController;->mKeyguardShowing:Z
 
     if-eqz v0, :cond_10
@@ -1254,59 +1368,61 @@
 
     invoke-direct {p0, p1}, Lcom/android/server/wm/KeyguardController;->isDisplayOccluded(I)Z
 
-    move-result p1
+    move-result v0
 
-    if-nez p1, :cond_10
+    if-nez v0, :cond_10
 
-    const/4 p1, 0x1
+    const/4 v0, 0x1
 
     goto :goto_11
 
     :cond_10
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
     :goto_11
-    return p1
+    return v0
 .end method
 
 .method isKeyguardUnoccludedOrAodShowing(I)Z
     .registers 3
+    .param p1, "displayId"  # I
 
-    .line 105
+    .line 103
     if-nez p1, :cond_8
 
     iget-boolean v0, p0, Lcom/android/server/wm/KeyguardController;->mAodShowing:Z
 
     if-eqz v0, :cond_8
 
+    .line 104
+    const/4 v0, 0x1
+
+    return v0
+
     .line 106
-    const/4 p1, 0x1
-
-    return p1
-
-    .line 108
     :cond_8
     invoke-virtual {p0, p1}, Lcom/android/server/wm/KeyguardController;->isKeyguardOrAodShowing(I)Z
 
-    move-result p1
+    move-result v0
 
-    return p1
+    return v0
 .end method
 
 .method keyguardGoingAway(I)V
-    .registers 9
+    .registers 10
+    .param p1, "flags"  # I
 
-    .line 174
+    .line 172
     const-string v0, "keyguardGoingAway: surfaceLayout"
 
     iget-boolean v1, p0, Lcom/android/server/wm/KeyguardController;->mKeyguardShowing:Z
 
     if-nez v1, :cond_7
 
-    .line 175
+    .line 173
     return-void
 
-    .line 177
+    .line 175
     :cond_7
     const-wide/16 v1, 0x40
 
@@ -1314,18 +1430,18 @@
 
     invoke-static {v1, v2, v3}, Landroid/os/Trace;->traceBegin(JLjava/lang/String;)V
 
-    .line 178
+    .line 176
     iget-object v3, p0, Lcom/android/server/wm/KeyguardController;->mWindowManager:Lcom/android/server/wm/WindowManagerService;
 
     invoke-virtual {v3}, Lcom/android/server/wm/WindowManagerService;->deferSurfaceLayout()V
 
-    .line 180
+    .line 178
     const/4 v3, 0x1
 
     :try_start_14
     invoke-direct {p0, v3}, Lcom/android/server/wm/KeyguardController;->setKeyguardGoingAway(Z)V
 
-    .line 181
+    .line 179
     iget-object v4, p0, Lcom/android/server/wm/KeyguardController;->mRootActivityContainer:Lcom/android/server/wm/RootActivityContainer;
 
     invoke-virtual {v4}, Lcom/android/server/wm/RootActivityContainer;->getDefaultDisplay()Lcom/android/server/wm/ActivityDisplay;
@@ -1336,87 +1452,88 @@
 
     const/16 v5, 0x14
 
-    .line 183
+    .line 181
     invoke-direct {p0, p1}, Lcom/android/server/wm/KeyguardController;->convertTransitFlags(I)I
 
-    move-result p1
+    move-result v6
 
-    .line 182
-    const/4 v6, 0x0
+    .line 180
+    const/4 v7, 0x0
 
-    invoke-virtual {v4, v5, v6, p1, v6}, Lcom/android/server/wm/DisplayContent;->prepareAppTransition(IZIZ)V
+    invoke-virtual {v4, v5, v7, v6, v7}, Lcom/android/server/wm/DisplayContent;->prepareAppTransition(IZIZ)V
 
-    .line 185
+    .line 183
     invoke-direct {p0}, Lcom/android/server/wm/KeyguardController;->updateKeyguardSleepToken()V
 
+    .line 186
+    iget-object v4, p0, Lcom/android/server/wm/KeyguardController;->mRootActivityContainer:Lcom/android/server/wm/RootActivityContainer;
+
+    invoke-virtual {v4}, Lcom/android/server/wm/RootActivityContainer;->resumeFocusedStacksTopActivities()Z
+
+    .line 187
+    iget-object v4, p0, Lcom/android/server/wm/KeyguardController;->mRootActivityContainer:Lcom/android/server/wm/RootActivityContainer;
+
+    const/4 v5, 0x0
+
+    invoke-virtual {v4, v5, v7, v7}, Lcom/android/server/wm/RootActivityContainer;->ensureActivitiesVisible(Lcom/android/server/wm/ActivityRecord;IZ)V
+
     .line 188
-    iget-object p1, p0, Lcom/android/server/wm/KeyguardController;->mRootActivityContainer:Lcom/android/server/wm/RootActivityContainer;
+    iget-object v4, p0, Lcom/android/server/wm/KeyguardController;->mRootActivityContainer:Lcom/android/server/wm/RootActivityContainer;
 
-    invoke-virtual {p1}, Lcom/android/server/wm/RootActivityContainer;->resumeFocusedStacksTopActivities()Z
-
-    .line 189
-    iget-object p1, p0, Lcom/android/server/wm/KeyguardController;->mRootActivityContainer:Lcom/android/server/wm/RootActivityContainer;
-
-    const/4 v4, 0x0
-
-    invoke-virtual {p1, v4, v6, v6}, Lcom/android/server/wm/RootActivityContainer;->ensureActivitiesVisible(Lcom/android/server/wm/ActivityRecord;IZ)V
+    invoke-virtual {v4, v3}, Lcom/android/server/wm/RootActivityContainer;->addStartingWindowsForVisibleActivities(Z)V
 
     .line 190
-    iget-object p1, p0, Lcom/android/server/wm/KeyguardController;->mRootActivityContainer:Lcom/android/server/wm/RootActivityContainer;
+    iget-object v3, p0, Lcom/android/server/wm/KeyguardController;->mWindowManager:Lcom/android/server/wm/WindowManagerService;
 
-    invoke-virtual {p1, v3}, Lcom/android/server/wm/RootActivityContainer;->addStartingWindowsForVisibleActivities(Z)V
-
-    .line 192
-    iget-object p1, p0, Lcom/android/server/wm/KeyguardController;->mWindowManager:Lcom/android/server/wm/WindowManagerService;
-
-    invoke-virtual {p1}, Lcom/android/server/wm/WindowManagerService;->executeAppTransition()V
+    invoke-virtual {v3}, Lcom/android/server/wm/WindowManagerService;->executeAppTransition()V
     :try_end_41
     .catchall {:try_start_14 .. :try_end_41} :catchall_51
 
-    .line 194
+    .line 192
     invoke-static {v1, v2, v0}, Landroid/os/Trace;->traceBegin(JLjava/lang/String;)V
 
-    .line 195
-    iget-object p1, p0, Lcom/android/server/wm/KeyguardController;->mWindowManager:Lcom/android/server/wm/WindowManagerService;
-
-    invoke-virtual {p1}, Lcom/android/server/wm/WindowManagerService;->continueSurfaceLayout()V
-
-    .line 196
-    invoke-static {v1, v2}, Landroid/os/Trace;->traceEnd(J)V
-
-    .line 198
-    invoke-static {v1, v2}, Landroid/os/Trace;->traceEnd(J)V
-
-    .line 199
-    nop
-
-    .line 200
-    return-void
-
-    .line 194
-    :catchall_51
-    move-exception p1
-
-    invoke-static {v1, v2, v0}, Landroid/os/Trace;->traceBegin(JLjava/lang/String;)V
-
-    .line 195
+    .line 193
     iget-object v0, p0, Lcom/android/server/wm/KeyguardController;->mWindowManager:Lcom/android/server/wm/WindowManagerService;
 
     invoke-virtual {v0}, Lcom/android/server/wm/WindowManagerService;->continueSurfaceLayout()V
 
+    .line 194
+    invoke-static {v1, v2}, Landroid/os/Trace;->traceEnd(J)V
+
     .line 196
     invoke-static {v1, v2}, Landroid/os/Trace;->traceEnd(J)V
 
+    .line 197
+    nop
+
     .line 198
+    return-void
+
+    .line 192
+    :catchall_51
+    move-exception v3
+
+    invoke-static {v1, v2, v0}, Landroid/os/Trace;->traceBegin(JLjava/lang/String;)V
+
+    .line 193
+    iget-object v0, p0, Lcom/android/server/wm/KeyguardController;->mWindowManager:Lcom/android/server/wm/WindowManagerService;
+
+    invoke-virtual {v0}, Lcom/android/server/wm/WindowManagerService;->continueSurfaceLayout()V
+
+    .line 194
     invoke-static {v1, v2}, Landroid/os/Trace;->traceEnd(J)V
 
-    throw p1
+    .line 196
+    invoke-static {v1, v2}, Landroid/os/Trace;->traceEnd(J)V
+
+    throw v3
 .end method
 
 .method onDisplayRemoved(I)V
-    .registers 3
+    .registers 4
+    .param p1, "displayId"  # I
 
-    .line 442
+    .line 449
     iget-object v0, p0, Lcom/android/server/wm/KeyguardController;->mDisplayStates:Landroid/util/SparseArray;
 
     invoke-virtual {v0, p1}, Landroid/util/SparseArray;->get(I)Ljava/lang/Object;
@@ -1425,26 +1542,29 @@
 
     check-cast v0, Lcom/android/server/wm/KeyguardController$KeyguardDisplayState;
 
-    .line 443
+    .line 450
+    .local v0, "state":Lcom/android/server/wm/KeyguardController$KeyguardDisplayState;
     if-eqz v0, :cond_12
 
-    .line 444
+    .line 451
     invoke-virtual {v0}, Lcom/android/server/wm/KeyguardController$KeyguardDisplayState;->onRemoved()V
 
-    .line 445
-    iget-object v0, p0, Lcom/android/server/wm/KeyguardController;->mDisplayStates:Landroid/util/SparseArray;
+    .line 452
+    iget-object v1, p0, Lcom/android/server/wm/KeyguardController;->mDisplayStates:Landroid/util/SparseArray;
 
-    invoke-virtual {v0, p1}, Landroid/util/SparseArray;->remove(I)V
+    invoke-virtual {v1, p1}, Landroid/util/SparseArray;->remove(I)V
 
-    .line 447
+    .line 454
     :cond_12
     return-void
 .end method
 
 .method setKeyguardShown(ZZ)V
-    .registers 7
+    .registers 8
+    .param p1, "keyguardShowing"  # Z
+    .param p2, "aodShowing"  # Z
 
-    .line 139
+    .line 137
     iget-boolean v0, p0, Lcom/android/server/wm/KeyguardController;->mKeyguardShowing:Z
 
     const/4 v1, 0x1
@@ -1470,7 +1590,8 @@
     :goto_f
     move v0, v1
 
-    .line 141
+    .line 139
+    .local v0, "keyguardChanged":Z
     :goto_10
     iget-boolean v3, p0, Lcom/android/server/wm/KeyguardController;->mAodShowing:Z
 
@@ -1481,115 +1602,120 @@
     :cond_15
     move v1, v2
 
-    .line 142
+    .line 140
+    .local v1, "aodChanged":Z
     :goto_16
     if-nez v0, :cond_1b
 
     if-nez v1, :cond_1b
 
-    .line 143
+    .line 141
     return-void
 
-    .line 145
+    .line 143
     :cond_1b
     iput-boolean p1, p0, Lcom/android/server/wm/KeyguardController;->mKeyguardShowing:Z
 
-    .line 146
+    .line 144
     iput-boolean p2, p0, Lcom/android/server/wm/KeyguardController;->mAodShowing:Z
 
+    .line 145
+    iget-object v3, p0, Lcom/android/server/wm/KeyguardController;->mWindowManager:Lcom/android/server/wm/WindowManagerService;
+
+    invoke-virtual {v3, p2}, Lcom/android/server/wm/WindowManagerService;->setAodShowing(Z)V
+
     .line 147
-    iget-object v1, p0, Lcom/android/server/wm/KeyguardController;->mWindowManager:Lcom/android/server/wm/WindowManagerService;
-
-    invoke-virtual {v1, p2}, Lcom/android/server/wm/WindowManagerService;->setAodShowing(Z)V
-
-    .line 149
     if-eqz v0, :cond_30
 
-    .line 151
+    .line 149
     invoke-direct {p0}, Lcom/android/server/wm/KeyguardController;->dismissDockedStackIfNeeded()V
 
-    .line 152
+    .line 150
     invoke-direct {p0, v2}, Lcom/android/server/wm/KeyguardController;->setKeyguardGoingAway(Z)V
 
-    .line 153
+    .line 151
     if-eqz p1, :cond_30
 
-    .line 154
+    .line 152
     iput-boolean v2, p0, Lcom/android/server/wm/KeyguardController;->mDismissalRequested:Z
 
-    .line 158
+    .line 156
     :cond_30
-    iget-object p1, p0, Lcom/android/server/wm/KeyguardController;->mWindowManager:Lcom/android/server/wm/WindowManagerService;
+    iget-object v3, p0, Lcom/android/server/wm/KeyguardController;->mWindowManager:Lcom/android/server/wm/WindowManagerService;
 
-    .line 159
+    .line 157
     invoke-virtual {p0, v2}, Lcom/android/server/wm/KeyguardController;->isKeyguardOrAodShowing(I)Z
 
-    move-result p2
+    move-result v4
 
-    .line 158
-    invoke-virtual {p1, p2}, Lcom/android/server/wm/WindowManagerService;->setKeyguardOrAodShowingOnDefaultDisplay(Z)V
+    .line 156
+    invoke-virtual {v3, v4}, Lcom/android/server/wm/WindowManagerService;->setKeyguardOrAodShowingOnDefaultDisplay(Z)V
 
-    .line 163
+    .line 161
     invoke-direct {p0}, Lcom/android/server/wm/KeyguardController;->updateKeyguardSleepToken()V
 
-    .line 164
-    iget-object p1, p0, Lcom/android/server/wm/KeyguardController;->mRootActivityContainer:Lcom/android/server/wm/RootActivityContainer;
+    .line 162
+    iget-object v3, p0, Lcom/android/server/wm/KeyguardController;->mRootActivityContainer:Lcom/android/server/wm/RootActivityContainer;
 
-    const/4 p2, 0x0
+    const/4 v4, 0x0
 
-    invoke-virtual {p1, p2, v2, v2}, Lcom/android/server/wm/RootActivityContainer;->ensureActivitiesVisible(Lcom/android/server/wm/ActivityRecord;IZ)V
+    invoke-virtual {v3, v4, v2, v2}, Lcom/android/server/wm/RootActivityContainer;->ensureActivitiesVisible(Lcom/android/server/wm/ActivityRecord;IZ)V
 
-    .line 165
+    .line 163
     return-void
 .end method
 
 .method setWindowManager(Lcom/android/server/wm/WindowManagerService;)V
-    .registers 2
+    .registers 3
+    .param p1, "windowManager"  # Lcom/android/server/wm/WindowManagerService;
 
-    .line 86
+    .line 84
     iput-object p1, p0, Lcom/android/server/wm/KeyguardController;->mWindowManager:Lcom/android/server/wm/WindowManagerService;
 
-    .line 87
-    iget-object p1, p0, Lcom/android/server/wm/KeyguardController;->mService:Lcom/android/server/wm/ActivityTaskManagerService;
+    .line 85
+    iget-object v0, p0, Lcom/android/server/wm/KeyguardController;->mService:Lcom/android/server/wm/ActivityTaskManagerService;
 
-    iget-object p1, p1, Lcom/android/server/wm/ActivityTaskManagerService;->mRootActivityContainer:Lcom/android/server/wm/RootActivityContainer;
+    iget-object v0, v0, Lcom/android/server/wm/ActivityTaskManagerService;->mRootActivityContainer:Lcom/android/server/wm/RootActivityContainer;
 
-    iput-object p1, p0, Lcom/android/server/wm/KeyguardController;->mRootActivityContainer:Lcom/android/server/wm/RootActivityContainer;
+    iput-object v0, p0, Lcom/android/server/wm/KeyguardController;->mRootActivityContainer:Lcom/android/server/wm/RootActivityContainer;
 
-    .line 88
+    .line 86
     return-void
 .end method
 
 .method writeToProto(Landroid/util/proto/ProtoOutputStream;J)V
-    .registers 7
+    .registers 9
+    .param p1, "proto"  # Landroid/util/proto/ProtoOutputStream;
+    .param p2, "fieldId"  # J
 
-    .line 568
+    .line 587
     invoke-virtual {p1, p2, p3}, Landroid/util/proto/ProtoOutputStream;->start(J)J
 
-    move-result-wide p2
+    move-result-wide v0
 
-    .line 569
-    iget-boolean v0, p0, Lcom/android/server/wm/KeyguardController;->mAodShowing:Z
+    .line 588
+    .local v0, "token":J
+    iget-boolean v2, p0, Lcom/android/server/wm/KeyguardController;->mAodShowing:Z
 
-    const-wide v1, 0x10800000003L
+    const-wide v3, 0x10800000003L
 
-    invoke-virtual {p1, v1, v2, v0}, Landroid/util/proto/ProtoOutputStream;->write(JZ)V
+    invoke-virtual {p1, v3, v4, v2}, Landroid/util/proto/ProtoOutputStream;->write(JZ)V
 
-    .line 570
-    iget-boolean v0, p0, Lcom/android/server/wm/KeyguardController;->mKeyguardShowing:Z
+    .line 589
+    iget-boolean v2, p0, Lcom/android/server/wm/KeyguardController;->mKeyguardShowing:Z
 
-    const-wide v1, 0x10800000001L
+    const-wide v3, 0x10800000001L
 
-    invoke-virtual {p1, v1, v2, v0}, Landroid/util/proto/ProtoOutputStream;->write(JZ)V
+    invoke-virtual {p1, v3, v4, v2}, Landroid/util/proto/ProtoOutputStream;->write(JZ)V
 
-    .line 571
-    const-wide v0, 0x20b00000002L
+    .line 590
+    const-wide v2, 0x20b00000002L
 
-    invoke-direct {p0, p1, v0, v1}, Lcom/android/server/wm/KeyguardController;->writeDisplayStatesToProto(Landroid/util/proto/ProtoOutputStream;J)V
+    invoke-direct {p0, p1, v2, v3}, Lcom/android/server/wm/KeyguardController;->writeDisplayStatesToProto(Landroid/util/proto/ProtoOutputStream;J)V
 
-    .line 572
-    invoke-virtual {p1, p2, p3}, Landroid/util/proto/ProtoOutputStream;->end(J)V
+    .line 591
+    invoke-virtual {p1, v0, v1}, Landroid/util/proto/ProtoOutputStream;->end(J)V
 
-    .line 573
+    .line 592
     return-void
 .end method

@@ -21,8 +21,6 @@
 
 
 # instance fields
-.field activatedTimeElapsed:J
-
 .field active:Z
 
 .field final synthetic this$0:Lcom/android/server/DeviceIdleController;
@@ -30,17 +28,18 @@
 
 # direct methods
 .method constructor <init>(Lcom/android/server/DeviceIdleController;)V
-    .registers 2
+    .registers 3
+    .param p1, "this$0"  # Lcom/android/server/DeviceIdleController;
 
-    .line 742
+    .line 658
     iput-object p1, p0, Lcom/android/server/DeviceIdleController$MotionListener;->this$0:Lcom/android/server/DeviceIdleController;
 
     invoke-direct {p0}, Landroid/hardware/TriggerEventListener;-><init>()V
 
-    .line 745
-    const/4 p1, 0x0
+    .line 661
+    const/4 v0, 0x0
 
-    iput-boolean p1, p0, Lcom/android/server/DeviceIdleController$MotionListener;->active:Z
+    iput-boolean v0, p0, Lcom/android/server/DeviceIdleController$MotionListener;->active:Z
 
     return-void
 .end method
@@ -50,7 +49,7 @@
 .method public isActive()Z
     .registers 2
 
-    .line 754
+    .line 664
     iget-boolean v0, p0, Lcom/android/server/DeviceIdleController$MotionListener;->active:Z
 
     return v0
@@ -58,102 +57,106 @@
 
 .method public onAccuracyChanged(Landroid/hardware/Sensor;I)V
     .registers 3
+    .param p1, "sensor"  # Landroid/hardware/Sensor;
+    .param p2, "accuracy"  # I
 
-    .line 775
+    .line 685
     return-void
 .end method
 
 .method public onSensorChanged(Landroid/hardware/SensorEvent;)V
-    .registers 4
+    .registers 5
+    .param p1, "event"  # Landroid/hardware/SensorEvent;
 
-    .line 767
-    iget-object p1, p0, Lcom/android/server/DeviceIdleController$MotionListener;->this$0:Lcom/android/server/DeviceIdleController;
-
-    monitor-enter p1
-
-    .line 768
-    :try_start_3
+    .line 677
     iget-object v0, p0, Lcom/android/server/DeviceIdleController$MotionListener;->this$0:Lcom/android/server/DeviceIdleController;
 
-    invoke-static {v0}, Lcom/android/server/DeviceIdleController;->access$300(Lcom/android/server/DeviceIdleController;)Landroid/hardware/SensorManager;
+    monitor-enter v0
 
-    move-result-object v0
-
+    .line 678
+    :try_start_3
     iget-object v1, p0, Lcom/android/server/DeviceIdleController$MotionListener;->this$0:Lcom/android/server/DeviceIdleController;
 
-    invoke-static {v1}, Lcom/android/server/DeviceIdleController;->access$200(Lcom/android/server/DeviceIdleController;)Landroid/hardware/Sensor;
+    invoke-static {v1}, Lcom/android/server/DeviceIdleController;->access$300(Lcom/android/server/DeviceIdleController;)Landroid/hardware/SensorManager;
 
     move-result-object v1
 
-    invoke-virtual {v0, p0, v1}, Landroid/hardware/SensorManager;->unregisterListener(Landroid/hardware/SensorEventListener;Landroid/hardware/Sensor;)V
+    iget-object v2, p0, Lcom/android/server/DeviceIdleController$MotionListener;->this$0:Lcom/android/server/DeviceIdleController;
 
-    .line 769
-    const/4 v0, 0x0
+    invoke-static {v2}, Lcom/android/server/DeviceIdleController;->access$200(Lcom/android/server/DeviceIdleController;)Landroid/hardware/Sensor;
 
-    iput-boolean v0, p0, Lcom/android/server/DeviceIdleController$MotionListener;->active:Z
+    move-result-object v2
 
-    .line 770
-    iget-object v0, p0, Lcom/android/server/DeviceIdleController$MotionListener;->this$0:Lcom/android/server/DeviceIdleController;
+    invoke-virtual {v1, p0, v2}, Landroid/hardware/SensorManager;->unregisterListener(Landroid/hardware/SensorEventListener;Landroid/hardware/Sensor;)V
 
-    invoke-virtual {v0}, Lcom/android/server/DeviceIdleController;->motionLocked()V
+    .line 679
+    const/4 v1, 0x0
 
-    .line 771
-    monitor-exit p1
+    iput-boolean v1, p0, Lcom/android/server/DeviceIdleController$MotionListener;->active:Z
 
-    .line 772
+    .line 680
+    iget-object v1, p0, Lcom/android/server/DeviceIdleController$MotionListener;->this$0:Lcom/android/server/DeviceIdleController;
+
+    invoke-virtual {v1}, Lcom/android/server/DeviceIdleController;->motionLocked()V
+
+    .line 681
+    monitor-exit v0
+
+    .line 682
     return-void
 
-    .line 771
+    .line 681
     :catchall_1c
-    move-exception v0
+    move-exception v1
 
-    monitor-exit p1
+    monitor-exit v0
     :try_end_1e
     .catchall {:try_start_3 .. :try_end_1e} :catchall_1c
 
-    throw v0
+    throw v1
 .end method
 
 .method public onTrigger(Landroid/hardware/TriggerEvent;)V
-    .registers 3
+    .registers 4
+    .param p1, "event"  # Landroid/hardware/TriggerEvent;
 
-    .line 759
-    iget-object p1, p0, Lcom/android/server/DeviceIdleController$MotionListener;->this$0:Lcom/android/server/DeviceIdleController;
-
-    monitor-enter p1
-
-    .line 760
-    const/4 v0, 0x0
-
-    :try_start_4
-    iput-boolean v0, p0, Lcom/android/server/DeviceIdleController$MotionListener;->active:Z
-
-    .line 761
+    .line 669
     iget-object v0, p0, Lcom/android/server/DeviceIdleController$MotionListener;->this$0:Lcom/android/server/DeviceIdleController;
 
-    invoke-virtual {v0}, Lcom/android/server/DeviceIdleController;->motionLocked()V
+    monitor-enter v0
 
-    .line 762
-    monitor-exit p1
+    .line 670
+    const/4 v1, 0x0
 
-    .line 763
+    :try_start_4
+    iput-boolean v1, p0, Lcom/android/server/DeviceIdleController$MotionListener;->active:Z
+
+    .line 671
+    iget-object v1, p0, Lcom/android/server/DeviceIdleController$MotionListener;->this$0:Lcom/android/server/DeviceIdleController;
+
+    invoke-virtual {v1}, Lcom/android/server/DeviceIdleController;->motionLocked()V
+
+    .line 672
+    monitor-exit v0
+
+    .line 673
     return-void
 
-    .line 762
+    .line 672
     :catchall_d
-    move-exception v0
+    move-exception v1
 
-    monitor-exit p1
+    monitor-exit v0
     :try_end_f
     .catchall {:try_start_4 .. :try_end_f} :catchall_d
 
-    throw v0
+    throw v1
 .end method
 
 .method public registerLocked()Z
     .registers 5
 
-    .line 779
+    .line 689
     iget-object v0, p0, Lcom/android/server/DeviceIdleController$MotionListener;->this$0:Lcom/android/server/DeviceIdleController;
 
     invoke-static {v0}, Lcom/android/server/DeviceIdleController;->access$200(Lcom/android/server/DeviceIdleController;)Landroid/hardware/Sensor;
@@ -168,7 +171,7 @@
 
     if-ne v0, v1, :cond_22
 
-    .line 780
+    .line 690
     iget-object v0, p0, Lcom/android/server/DeviceIdleController$MotionListener;->this$0:Lcom/android/server/DeviceIdleController;
 
     invoke-static {v0}, Lcom/android/server/DeviceIdleController;->access$300(Lcom/android/server/DeviceIdleController;)Landroid/hardware/SensorManager;
@@ -189,9 +192,11 @@
 
     move-result v0
 
+    .local v0, "success":Z
     goto :goto_37
 
-    .line 782
+    .line 692
+    .end local v0  # "success":Z
     :cond_22
     iget-object v0, p0, Lcom/android/server/DeviceIdleController$MotionListener;->this$0:Lcom/android/server/DeviceIdleController;
 
@@ -205,44 +210,32 @@
 
     iget-object v2, p0, Lcom/android/server/DeviceIdleController$MotionListener;->this$0:Lcom/android/server/DeviceIdleController;
 
-    .line 783
+    .line 693
     invoke-static {v2}, Lcom/android/server/DeviceIdleController;->access$200(Lcom/android/server/DeviceIdleController;)Landroid/hardware/Sensor;
 
     move-result-object v2
 
     const/4 v3, 0x3
 
-    .line 782
+    .line 692
     invoke-virtual {v0, v1, v2, v3}, Landroid/hardware/SensorManager;->registerListener(Landroid/hardware/SensorEventListener;Landroid/hardware/Sensor;I)Z
 
     move-result v0
 
-    .line 785
+    .line 695
+    .restart local v0  # "success":Z
     :goto_37
-    if-eqz v0, :cond_49
+    if-eqz v0, :cond_3d
 
-    .line 786
+    .line 696
     const/4 v1, 0x1
 
     iput-boolean v1, p0, Lcom/android/server/DeviceIdleController$MotionListener;->active:Z
 
-    .line 787
-    iget-object v1, p0, Lcom/android/server/DeviceIdleController$MotionListener;->this$0:Lcom/android/server/DeviceIdleController;
+    goto :goto_59
 
-    invoke-static {v1}, Lcom/android/server/DeviceIdleController;->access$400(Lcom/android/server/DeviceIdleController;)Lcom/android/server/DeviceIdleController$Injector;
-
-    move-result-object v1
-
-    invoke-virtual {v1}, Lcom/android/server/DeviceIdleController$Injector;->getElapsedRealtime()J
-
-    move-result-wide v1
-
-    iput-wide v1, p0, Lcom/android/server/DeviceIdleController$MotionListener;->activatedTimeElapsed:J
-
-    goto :goto_65
-
-    .line 789
-    :cond_49
+    .line 698
+    :cond_3d
     new-instance v1, Ljava/lang/StringBuilder;
 
     invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
@@ -267,15 +260,15 @@
 
     invoke-static {v2, v1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 791
-    :goto_65
+    .line 700
+    :goto_59
     return v0
 .end method
 
 .method public unregisterLocked()V
     .registers 4
 
-    .line 795
+    .line 704
     iget-object v0, p0, Lcom/android/server/DeviceIdleController$MotionListener;->this$0:Lcom/android/server/DeviceIdleController;
 
     invoke-static {v0}, Lcom/android/server/DeviceIdleController;->access$200(Lcom/android/server/DeviceIdleController;)Landroid/hardware/Sensor;
@@ -290,7 +283,7 @@
 
     if-ne v0, v1, :cond_21
 
-    .line 796
+    .line 705
     iget-object v0, p0, Lcom/android/server/DeviceIdleController$MotionListener;->this$0:Lcom/android/server/DeviceIdleController;
 
     invoke-static {v0}, Lcom/android/server/DeviceIdleController;->access$300(Lcom/android/server/DeviceIdleController;)Landroid/hardware/SensorManager;
@@ -311,7 +304,7 @@
 
     goto :goto_2e
 
-    .line 798
+    .line 707
     :cond_21
     iget-object v0, p0, Lcom/android/server/DeviceIdleController$MotionListener;->this$0:Lcom/android/server/DeviceIdleController;
 
@@ -325,12 +318,12 @@
 
     invoke-virtual {v0, v1}, Landroid/hardware/SensorManager;->unregisterListener(Landroid/hardware/SensorEventListener;)V
 
-    .line 800
+    .line 709
     :goto_2e
     const/4 v0, 0x0
 
     iput-boolean v0, p0, Lcom/android/server/DeviceIdleController$MotionListener;->active:Z
 
-    .line 801
+    .line 710
     return-void
 .end method

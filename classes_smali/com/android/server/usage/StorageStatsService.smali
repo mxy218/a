@@ -70,7 +70,8 @@
 .end method
 
 .method public constructor <init>(Landroid/content/Context;)V
-    .registers 3
+    .registers 4
+    .param p1, "context"  # Landroid/content/Context;
 
     .line 104
     invoke-direct {p0}, Landroid/app/usage/IStorageStatsManager$Stub;-><init>()V
@@ -163,43 +164,43 @@
     iput-object v0, p0, Lcom/android/server/usage/StorageStatsService;->mInstaller:Lcom/android/server/pm/Installer;
 
     .line 113
-    iget-object p1, p0, Lcom/android/server/usage/StorageStatsService;->mInstaller:Lcom/android/server/pm/Installer;
+    iget-object v0, p0, Lcom/android/server/usage/StorageStatsService;->mInstaller:Lcom/android/server/pm/Installer;
 
-    invoke-virtual {p1}, Lcom/android/server/pm/Installer;->onStart()V
+    invoke-virtual {v0}, Lcom/android/server/pm/Installer;->onStart()V
 
     .line 114
     invoke-direct {p0}, Lcom/android/server/usage/StorageStatsService;->invalidateMounts()V
 
     .line 116
-    new-instance p1, Lcom/android/server/usage/StorageStatsService$H;
+    new-instance v0, Lcom/android/server/usage/StorageStatsService$H;
 
     invoke-static {}, Lcom/android/server/IoThread;->get()Lcom/android/server/IoThread;
 
-    move-result-object v0
+    move-result-object v1
 
-    invoke-virtual {v0}, Lcom/android/server/IoThread;->getLooper()Landroid/os/Looper;
+    invoke-virtual {v1}, Lcom/android/server/IoThread;->getLooper()Landroid/os/Looper;
 
-    move-result-object v0
+    move-result-object v1
 
-    invoke-direct {p1, p0, v0}, Lcom/android/server/usage/StorageStatsService$H;-><init>(Lcom/android/server/usage/StorageStatsService;Landroid/os/Looper;)V
+    invoke-direct {v0, p0, v1}, Lcom/android/server/usage/StorageStatsService$H;-><init>(Lcom/android/server/usage/StorageStatsService;Landroid/os/Looper;)V
 
-    iput-object p1, p0, Lcom/android/server/usage/StorageStatsService;->mHandler:Lcom/android/server/usage/StorageStatsService$H;
+    iput-object v0, p0, Lcom/android/server/usage/StorageStatsService;->mHandler:Lcom/android/server/usage/StorageStatsService$H;
 
     .line 117
-    iget-object p1, p0, Lcom/android/server/usage/StorageStatsService;->mHandler:Lcom/android/server/usage/StorageStatsService$H;
+    iget-object v0, p0, Lcom/android/server/usage/StorageStatsService;->mHandler:Lcom/android/server/usage/StorageStatsService$H;
 
-    const/16 v0, 0x65
+    const/16 v1, 0x65
 
-    invoke-virtual {p1, v0}, Lcom/android/server/usage/StorageStatsService$H;->sendEmptyMessage(I)Z
+    invoke-virtual {v0, v1}, Lcom/android/server/usage/StorageStatsService$H;->sendEmptyMessage(I)Z
 
     .line 119
-    iget-object p1, p0, Lcom/android/server/usage/StorageStatsService;->mStorage:Landroid/os/storage/StorageManager;
+    iget-object v0, p0, Lcom/android/server/usage/StorageStatsService;->mStorage:Landroid/os/storage/StorageManager;
 
-    new-instance v0, Lcom/android/server/usage/StorageStatsService$1;
+    new-instance v1, Lcom/android/server/usage/StorageStatsService$1;
 
-    invoke-direct {v0, p0}, Lcom/android/server/usage/StorageStatsService$1;-><init>(Lcom/android/server/usage/StorageStatsService;)V
+    invoke-direct {v1, p0}, Lcom/android/server/usage/StorageStatsService$1;-><init>(Lcom/android/server/usage/StorageStatsService;)V
 
-    invoke-virtual {p1, v0}, Landroid/os/storage/StorageManager;->registerListener(Landroid/os/storage/StorageEventListener;)V
+    invoke-virtual {v0, v1}, Landroid/os/storage/StorageManager;->registerListener(Landroid/os/storage/StorageEventListener;)V
 
     .line 132
     return-void
@@ -207,6 +208,7 @@
 
 .method static synthetic access$000(Lcom/android/server/usage/StorageStatsService;)V
     .registers 1
+    .param p0, "x0"  # Lcom/android/server/usage/StorageStatsService;
 
     .line 71
     invoke-direct {p0}, Lcom/android/server/usage/StorageStatsService;->invalidateMounts()V
@@ -215,34 +217,40 @@
 .end method
 
 .method static synthetic access$100(Lcom/android/server/usage/StorageStatsService;)Landroid/content/Context;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/usage/StorageStatsService;
 
     .line 71
-    iget-object p0, p0, Lcom/android/server/usage/StorageStatsService;->mContext:Landroid/content/Context;
+    iget-object v0, p0, Lcom/android/server/usage/StorageStatsService;->mContext:Landroid/content/Context;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$200(Lcom/android/server/usage/StorageStatsService;)Lcom/android/server/pm/Installer;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/usage/StorageStatsService;
 
     .line 71
-    iget-object p0, p0, Lcom/android/server/usage/StorageStatsService;->mInstaller:Lcom/android/server/pm/Installer;
+    iget-object v0, p0, Lcom/android/server/usage/StorageStatsService;->mInstaller:Lcom/android/server/pm/Installer;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$300(Lcom/android/server/usage/StorageStatsService;)Landroid/util/ArrayMap;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/usage/StorageStatsService;
 
     .line 71
-    iget-object p0, p0, Lcom/android/server/usage/StorageStatsService;->mCacheQuotas:Landroid/util/ArrayMap;
+    iget-object v0, p0, Lcom/android/server/usage/StorageStatsService;->mCacheQuotas:Landroid/util/ArrayMap;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method private static checkEquals(Ljava/lang/String;JJ)V
-    .registers 6
+    .registers 7
+    .param p0, "msg"  # Ljava/lang/String;
+    .param p1, "expected"  # J
+    .param p3, "actual"  # J
 
     .line 446
     cmp-long v0, p1, p3
@@ -256,25 +264,25 @@
 
     invoke-virtual {v0, p0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string p0, " expected "
+    const-string v1, " expected "
 
-    invoke-virtual {v0, p0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v0, p1, p2}, Ljava/lang/StringBuilder;->append(J)Ljava/lang/StringBuilder;
 
-    const-string p0, " actual "
+    const-string v1, " actual "
 
-    invoke-virtual {v0, p0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v0, p3, p4}, Ljava/lang/StringBuilder;->append(J)Ljava/lang/StringBuilder;
 
     invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v0
 
-    const-string p1, "StorageStatsService"
+    const-string v1, "StorageStatsService"
 
-    invoke-static {p1, p0}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v0}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 449
     :cond_25
@@ -283,6 +291,9 @@
 
 .method private static checkEquals(Ljava/lang/String;Landroid/content/pm/PackageStats;Landroid/content/pm/PackageStats;)V
     .registers 8
+    .param p0, "msg"  # Ljava/lang/String;
+    .param p1, "a"  # Landroid/content/pm/PackageStats;
+    .param p2, "b"  # Landroid/content/pm/PackageStats;
 
     .line 437
     new-instance v0, Ljava/lang/StringBuilder;
@@ -396,19 +407,19 @@
 
     invoke-virtual {v0, p0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string p0, " externalCacheSize"
+    const-string v1, " externalCacheSize"
 
-    invoke-virtual {v0, p0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v0
 
-    iget-wide v0, p1, Landroid/content/pm/PackageStats;->externalCacheSize:J
+    iget-wide v1, p1, Landroid/content/pm/PackageStats;->externalCacheSize:J
 
-    iget-wide p1, p2, Landroid/content/pm/PackageStats;->externalCacheSize:J
+    iget-wide v3, p2, Landroid/content/pm/PackageStats;->externalCacheSize:J
 
-    invoke-static {p0, v0, v1, p1, p2}, Lcom/android/server/usage/StorageStatsService;->checkEquals(Ljava/lang/String;JJ)V
+    invoke-static {v0, v1, v2, v3, v4}, Lcom/android/server/usage/StorageStatsService;->checkEquals(Ljava/lang/String;JJ)V
 
     .line 443
     return-void
@@ -416,10 +427,14 @@
 
 .method private static checkEquals(Ljava/lang/String;[J[J)V
     .registers 9
+    .param p0, "msg"  # Ljava/lang/String;
+    .param p1, "a"  # [J
+    .param p2, "b"  # [J
 
     .line 431
     const/4 v0, 0x0
 
+    .local v0, "i":I
     :goto_1
     array-length v1, p1
 
@@ -458,12 +473,15 @@
     goto :goto_1
 
     .line 434
+    .end local v0  # "i":I
     :cond_27
     return-void
 .end method
 
 .method private enforcePermission(ILjava/lang/String;)V
     .registers 7
+    .param p1, "callingUid"  # I
+    .param p2, "callingPackage"  # Ljava/lang/String;
 
     .line 143
     iget-object v0, p0, Lcom/android/server/usage/StorageStatsService;->mAppOps:Landroid/app/AppOpsManager;
@@ -475,6 +493,7 @@
     move-result v0
 
     .line 145
+    .local v0, "mode":I
     if-eqz v0, :cond_3e
 
     const/4 v1, 0x3
@@ -482,13 +501,13 @@
     if-ne v0, v1, :cond_17
 
     .line 149
-    iget-object p1, p0, Lcom/android/server/usage/StorageStatsService;->mContext:Landroid/content/Context;
+    iget-object v1, p0, Lcom/android/server/usage/StorageStatsService;->mContext:Landroid/content/Context;
 
-    const-string p2, "android.permission.PACKAGE_USAGE_STATS"
+    const-string v2, "android.permission.PACKAGE_USAGE_STATS"
 
-    const-string v0, "StorageStatsService"
+    const-string v3, "StorageStatsService"
 
-    invoke-virtual {p1, p2, v0}, Landroid/content/Context;->enforceCallingOrSelfPermission(Ljava/lang/String;Ljava/lang/String;)V
+    invoke-virtual {v1, v2, v3}, Landroid/content/Context;->enforceCallingOrSelfPermission(Ljava/lang/String;Ljava/lang/String;)V
 
     .line 151
     return-void
@@ -507,23 +526,23 @@
 
     invoke-virtual {v2, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string p2, " from UID "
+    const-string v3, " from UID "
 
-    invoke-virtual {v2, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v2, p1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    const-string p1, " blocked by mode "
+    const-string v3, " blocked by mode "
 
-    invoke-virtual {v2, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v2, v0}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
     invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v2
 
-    invoke-direct {v1, p1}, Ljava/lang/SecurityException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v1, v2}, Ljava/lang/SecurityException;-><init>(Ljava/lang/String;)V
 
     throw v1
 
@@ -533,64 +552,68 @@
 .end method
 
 .method private getAppIds(I)[I
-    .registers 5
+    .registers 7
+    .param p1, "userId"  # I
 
     .line 411
-    nop
-
-    .line 412
-    iget-object v0, p0, Lcom/android/server/usage/StorageStatsService;->mPackage:Landroid/content/pm/PackageManager;
-
-    const/16 v1, 0x2000
-
-    invoke-virtual {v0, v1, p1}, Landroid/content/pm/PackageManager;->getInstalledApplicationsAsUser(II)Ljava/util/List;
-
-    move-result-object p1
-
-    invoke-interface {p1}, Ljava/util/List;->iterator()Ljava/util/Iterator;
-
-    move-result-object p1
-
     const/4 v0, 0x0
 
-    :goto_e
-    invoke-interface {p1}, Ljava/util/Iterator;->hasNext()Z
+    .line 412
+    .local v0, "appIds":[I
+    iget-object v1, p0, Lcom/android/server/usage/StorageStatsService;->mPackage:Landroid/content/pm/PackageManager;
 
-    move-result v1
+    const/16 v2, 0x2000
 
-    if-eqz v1, :cond_2b
-
-    invoke-interface {p1}, Ljava/util/Iterator;->next()Ljava/lang/Object;
+    invoke-virtual {v1, v2, p1}, Landroid/content/pm/PackageManager;->getInstalledApplicationsAsUser(II)Ljava/util/List;
 
     move-result-object v1
 
-    check-cast v1, Landroid/content/pm/ApplicationInfo;
+    invoke-interface {v1}, Ljava/util/List;->iterator()Ljava/util/Iterator;
 
-    .line 414
-    iget v1, v1, Landroid/content/pm/ApplicationInfo;->uid:I
+    move-result-object v1
 
-    invoke-static {v1}, Landroid/os/UserHandle;->getAppId(I)I
-
-    move-result v1
-
-    .line 415
-    invoke-static {v0, v1}, Lcom/android/internal/util/ArrayUtils;->contains([II)Z
+    :goto_d
+    invoke-interface {v1}, Ljava/util/Iterator;->hasNext()Z
 
     move-result v2
 
-    if-nez v2, :cond_2a
+    if-eqz v2, :cond_2a
+
+    invoke-interface {v1}, Ljava/util/Iterator;->next()Ljava/lang/Object;
+
+    move-result-object v2
+
+    check-cast v2, Landroid/content/pm/ApplicationInfo;
+
+    .line 414
+    .local v2, "app":Landroid/content/pm/ApplicationInfo;
+    iget v3, v2, Landroid/content/pm/ApplicationInfo;->uid:I
+
+    invoke-static {v3}, Landroid/os/UserHandle;->getAppId(I)I
+
+    move-result v3
+
+    .line 415
+    .local v3, "appId":I
+    invoke-static {v0, v3}, Lcom/android/internal/util/ArrayUtils;->contains([II)Z
+
+    move-result v4
+
+    if-nez v4, :cond_29
 
     .line 416
-    invoke-static {v0, v1}, Lcom/android/internal/util/ArrayUtils;->appendInt([II)[I
+    invoke-static {v0, v3}, Lcom/android/internal/util/ArrayUtils;->appendInt([II)[I
 
     move-result-object v0
 
     .line 418
-    :cond_2a
-    goto :goto_e
+    .end local v2  # "app":Landroid/content/pm/ApplicationInfo;
+    .end local v3  # "appId":I
+    :cond_29
+    goto :goto_d
 
     .line 419
-    :cond_2b
+    :cond_2a
     return-object v0
 .end method
 
@@ -637,6 +660,7 @@
     move-exception v0
 
     .line 138
+    .local v0, "e":Lcom/android/server/pm/Installer$InstallerException;
     const-string v1, "StorageStatsService"
 
     const-string v2, "Failed to invalidate mounts"
@@ -644,12 +668,14 @@
     invoke-static {v1, v2, v0}, Landroid/util/Slog;->wtf(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
     .line 140
+    .end local v0  # "e":Lcom/android/server/pm/Installer$InstallerException;
     :goto_e
     return-void
 .end method
 
 .method static isCacheQuotaCalculationsEnabled(Landroid/content/ContentResolver;)Z
     .registers 3
+    .param p0, "resolver"  # Landroid/content/ContentResolver;
     .annotation build Lcom/android/internal/annotations/VisibleForTesting;
     .end annotation
 
@@ -660,9 +686,9 @@
 
     invoke-static {p0, v1, v0}, Landroid/provider/Settings$Global;->getInt(Landroid/content/ContentResolver;Ljava/lang/String;I)I
 
-    move-result p0
+    move-result v1
 
-    if-eqz p0, :cond_a
+    if-eqz v1, :cond_a
 
     goto :goto_b
 
@@ -675,6 +701,7 @@
 
 .method private static translate(Landroid/content/pm/PackageStats;)Landroid/app/usage/StorageStats;
     .registers 6
+    .param p0, "stats"  # Landroid/content/pm/PackageStats;
 
     .line 452
     new-instance v0, Landroid/app/usage/StorageStats;
@@ -682,6 +709,7 @@
     invoke-direct {v0}, Landroid/app/usage/StorageStats;-><init>()V
 
     .line 453
+    .local v0, "res":Landroid/app/usage/StorageStats;
     iget-wide v1, p0, Landroid/content/pm/PackageStats;->codeSize:J
 
     iget-wide v3, p0, Landroid/content/pm/PackageStats;->externalCodeSize:J
@@ -715,7 +743,9 @@
 
 # virtual methods
 .method public getCacheBytes(Ljava/lang/String;Ljava/lang/String;)J
-    .registers 7
+    .registers 10
+    .param p1, "volumeUuid"  # Ljava/lang/String;
+    .param p2, "callingPackage"  # Ljava/lang/String;
 
     .line 225
     invoke-static {}, Landroid/os/Binder;->getCallingUid()I
@@ -725,58 +755,64 @@
     invoke-direct {p0, v0, p2}, Lcom/android/server/usage/StorageStatsService;->enforcePermission(ILjava/lang/String;)V
 
     .line 227
-    nop
-
-    .line 228
-    iget-object p2, p0, Lcom/android/server/usage/StorageStatsService;->mUser:Landroid/os/UserManager;
-
-    invoke-virtual {p2}, Landroid/os/UserManager;->getUsers()Ljava/util/List;
-
-    move-result-object p2
-
-    invoke-interface {p2}, Ljava/util/List;->iterator()Ljava/util/Iterator;
-
-    move-result-object p2
-
     const-wide/16 v0, 0x0
 
-    :goto_14
-    invoke-interface {p2}, Ljava/util/Iterator;->hasNext()Z
+    .line 228
+    .local v0, "cacheBytes":J
+    iget-object v2, p0, Lcom/android/server/usage/StorageStatsService;->mUser:Landroid/os/UserManager;
 
-    move-result v2
-
-    if-eqz v2, :cond_2b
-
-    invoke-interface {p2}, Ljava/util/Iterator;->next()Ljava/lang/Object;
+    invoke-virtual {v2}, Landroid/os/UserManager;->getUsers()Ljava/util/List;
 
     move-result-object v2
 
-    check-cast v2, Landroid/content/pm/UserInfo;
+    invoke-interface {v2}, Ljava/util/List;->iterator()Ljava/util/Iterator;
+
+    move-result-object v2
+
+    :goto_13
+    invoke-interface {v2}, Ljava/util/Iterator;->hasNext()Z
+
+    move-result v3
+
+    if-eqz v3, :cond_2a
+
+    invoke-interface {v2}, Ljava/util/Iterator;->next()Ljava/lang/Object;
+
+    move-result-object v3
+
+    check-cast v3, Landroid/content/pm/UserInfo;
 
     .line 229
-    iget v2, v2, Landroid/content/pm/UserInfo;->id:I
+    .local v3, "user":Landroid/content/pm/UserInfo;
+    iget v4, v3, Landroid/content/pm/UserInfo;->id:I
 
-    const/4 v3, 0x0
+    const/4 v5, 0x0
 
-    invoke-virtual {p0, p1, v2, v3}, Lcom/android/server/usage/StorageStatsService;->queryStatsForUser(Ljava/lang/String;ILjava/lang/String;)Landroid/app/usage/StorageStats;
+    invoke-virtual {p0, p1, v4, v5}, Lcom/android/server/usage/StorageStatsService;->queryStatsForUser(Ljava/lang/String;ILjava/lang/String;)Landroid/app/usage/StorageStats;
 
-    move-result-object v2
+    move-result-object v4
 
     .line 230
-    iget-wide v2, v2, Landroid/app/usage/StorageStats;->cacheBytes:J
+    .local v4, "stats":Landroid/app/usage/StorageStats;
+    iget-wide v5, v4, Landroid/app/usage/StorageStats;->cacheBytes:J
 
-    add-long/2addr v0, v2
+    add-long/2addr v0, v5
 
     .line 231
-    goto :goto_14
+    .end local v3  # "user":Landroid/content/pm/UserInfo;
+    .end local v4  # "stats":Landroid/app/usage/StorageStats;
+    goto :goto_13
 
     .line 232
-    :cond_2b
+    :cond_2a
     return-wide v0
 .end method
 
 .method public getCacheQuotaBytes(Ljava/lang/String;ILjava/lang/String;)J
-    .registers 6
+    .registers 7
+    .param p1, "volumeUuid"  # Ljava/lang/String;
+    .param p2, "uid"  # I
+    .param p3, "callingPackage"  # Ljava/lang/String;
 
     .line 237
     invoke-static {}, Landroid/os/Binder;->getCallingUid()I
@@ -786,288 +822,319 @@
     invoke-direct {p0, v0, p3}, Lcom/android/server/usage/StorageStatsService;->enforcePermission(ILjava/lang/String;)V
 
     .line 239
-    iget-object p3, p0, Lcom/android/server/usage/StorageStatsService;->mCacheQuotas:Landroid/util/ArrayMap;
+    iget-object v0, p0, Lcom/android/server/usage/StorageStatsService;->mCacheQuotas:Landroid/util/ArrayMap;
 
-    invoke-virtual {p3, p1}, Landroid/util/ArrayMap;->containsKey(Ljava/lang/Object;)Z
+    invoke-virtual {v0, p1}, Landroid/util/ArrayMap;->containsKey(Ljava/lang/Object;)Z
 
-    move-result p3
+    move-result v0
 
-    if-eqz p3, :cond_1e
+    if-eqz v0, :cond_1e
 
     .line 240
-    iget-object p3, p0, Lcom/android/server/usage/StorageStatsService;->mCacheQuotas:Landroid/util/ArrayMap;
+    iget-object v0, p0, Lcom/android/server/usage/StorageStatsService;->mCacheQuotas:Landroid/util/ArrayMap;
 
-    invoke-virtual {p3, p1}, Landroid/util/ArrayMap;->get(Ljava/lang/Object;)Ljava/lang/Object;
+    invoke-virtual {v0, p1}, Landroid/util/ArrayMap;->get(Ljava/lang/Object;)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v0
 
-    check-cast p1, Landroid/util/SparseLongArray;
+    check-cast v0, Landroid/util/SparseLongArray;
 
     .line 241
-    sget-wide v0, Lcom/android/server/usage/StorageStatsService;->DEFAULT_QUOTA:J
+    .local v0, "uidMap":Landroid/util/SparseLongArray;
+    sget-wide v1, Lcom/android/server/usage/StorageStatsService;->DEFAULT_QUOTA:J
 
-    invoke-virtual {p1, p2, v0, v1}, Landroid/util/SparseLongArray;->get(IJ)J
+    invoke-virtual {v0, p2, v1, v2}, Landroid/util/SparseLongArray;->get(IJ)J
 
-    move-result-wide p1
+    move-result-wide v1
 
-    return-wide p1
+    return-wide v1
 
     .line 244
+    .end local v0  # "uidMap":Landroid/util/SparseLongArray;
     :cond_1e
-    sget-wide p1, Lcom/android/server/usage/StorageStatsService;->DEFAULT_QUOTA:J
+    sget-wide v0, Lcom/android/server/usage/StorageStatsService;->DEFAULT_QUOTA:J
 
-    return-wide p1
+    return-wide v0
 .end method
 
 .method public getFreeBytes(Ljava/lang/String;Ljava/lang/String;)J
-    .registers 10
+    .registers 15
+    .param p1, "volumeUuid"  # Ljava/lang/String;
+    .param p2, "callingPackage"  # Ljava/lang/String;
 
     .line 197
-    const-string p2, "android"
+    const-string v0, "android"
 
     invoke-static {}, Landroid/os/Binder;->clearCallingIdentity()J
 
-    move-result-wide v0
+    move-result-wide v1
 
     .line 201
+    .local v1, "token":J
     :try_start_6
-    iget-object v2, p0, Lcom/android/server/usage/StorageStatsService;->mStorage:Landroid/os/storage/StorageManager;
+    iget-object v3, p0, Lcom/android/server/usage/StorageStatsService;->mStorage:Landroid/os/storage/StorageManager;
 
-    invoke-virtual {v2, p1}, Landroid/os/storage/StorageManager;->findPathForUuid(Ljava/lang/String;)Ljava/io/File;
+    invoke-virtual {v3, p1}, Landroid/os/storage/StorageManager;->findPathForUuid(Ljava/lang/String;)Ljava/io/File;
 
-    move-result-object v2
+    move-result-object v3
     :try_end_c
-    .catch Ljava/io/FileNotFoundException; {:try_start_6 .. :try_end_c} :catch_38
-    .catchall {:try_start_6 .. :try_end_c} :catchall_36
+    .catch Ljava/io/FileNotFoundException; {:try_start_6 .. :try_end_c} :catch_39
+    .catchall {:try_start_6 .. :try_end_c} :catchall_37
 
     .line 204
+    .local v3, "path":Ljava/io/File;
     nop
 
     .line 209
     :try_start_d
-    invoke-virtual {p0, p1, p2}, Lcom/android/server/usage/StorageStatsService;->isQuotaSupported(Ljava/lang/String;Ljava/lang/String;)Z
+    invoke-virtual {p0, p1, v0}, Lcom/android/server/usage/StorageStatsService;->isQuotaSupported(Ljava/lang/String;Ljava/lang/String;)Z
 
-    move-result v3
+    move-result v4
 
-    if-eqz v3, :cond_2e
+    if-eqz v4, :cond_2f
 
     .line 210
-    invoke-virtual {p0, p1, p2}, Lcom/android/server/usage/StorageStatsService;->getCacheBytes(Ljava/lang/String;Ljava/lang/String;)J
+    invoke-virtual {p0, p1, v0}, Lcom/android/server/usage/StorageStatsService;->getCacheBytes(Ljava/lang/String;Ljava/lang/String;)J
 
-    move-result-wide p1
+    move-result-wide v4
 
     .line 211
-    iget-object v3, p0, Lcom/android/server/usage/StorageStatsService;->mStorage:Landroid/os/storage/StorageManager;
+    .local v4, "cacheTotal":J
+    iget-object v0, p0, Lcom/android/server/usage/StorageStatsService;->mStorage:Landroid/os/storage/StorageManager;
 
-    const/4 v4, 0x0
+    const/4 v6, 0x0
 
-    invoke-virtual {v3, v2, v4}, Landroid/os/storage/StorageManager;->getStorageCacheBytes(Ljava/io/File;I)J
+    invoke-virtual {v0, v3, v6}, Landroid/os/storage/StorageManager;->getStorageCacheBytes(Ljava/io/File;I)J
 
-    move-result-wide v3
+    move-result-wide v6
 
     .line 212
-    const-wide/16 v5, 0x0
+    .local v6, "cacheReserved":J
+    const-wide/16 v8, 0x0
 
-    sub-long/2addr p1, v3
+    sub-long v10, v4, v6
 
-    invoke-static {v5, v6, p1, p2}, Ljava/lang/Math;->max(JJ)J
+    invoke-static {v8, v9, v10, v11}, Ljava/lang/Math;->max(JJ)J
 
-    move-result-wide p1
-
-    .line 214
-    invoke-virtual {v2}, Ljava/io/File;->getUsableSpace()J
-
-    move-result-wide v2
-    :try_end_29
-    .catchall {:try_start_d .. :try_end_29} :catchall_36
-
-    add-long/2addr v2, p1
-
-    .line 219
-    invoke-static {v0, v1}, Landroid/os/Binder;->restoreCallingIdentity(J)V
+    move-result-wide v8
 
     .line 214
-    return-wide v2
+    .local v8, "cacheClearable":J
+    invoke-virtual {v3}, Ljava/io/File;->getUsableSpace()J
 
-    .line 216
-    :cond_2e
-    :try_start_2e
-    invoke-virtual {v2}, Ljava/io/File;->getUsableSpace()J
+    move-result-wide v10
+    :try_end_2a
+    .catchall {:try_start_d .. :try_end_2a} :catchall_37
 
-    move-result-wide p1
-    :try_end_32
-    .catchall {:try_start_2e .. :try_end_32} :catchall_36
+    add-long/2addr v10, v8
 
     .line 219
-    invoke-static {v0, v1}, Landroid/os/Binder;->restoreCallingIdentity(J)V
+    invoke-static {v1, v2}, Landroid/os/Binder;->restoreCallingIdentity(J)V
+
+    .line 214
+    return-wide v10
 
     .line 216
-    return-wide p1
+    .end local v4  # "cacheTotal":J
+    .end local v6  # "cacheReserved":J
+    .end local v8  # "cacheClearable":J
+    :cond_2f
+    :try_start_2f
+    invoke-virtual {v3}, Ljava/io/File;->getUsableSpace()J
+
+    move-result-wide v4
+    :try_end_33
+    .catchall {:try_start_2f .. :try_end_33} :catchall_37
 
     .line 219
-    :catchall_36
-    move-exception p1
+    invoke-static {v1, v2}, Landroid/os/Binder;->restoreCallingIdentity(J)V
 
-    goto :goto_3f
+    .line 216
+    return-wide v4
+
+    .line 219
+    .end local v3  # "path":Ljava/io/File;
+    :catchall_37
+    move-exception v0
+
+    goto :goto_40
 
     .line 202
-    :catch_38
-    move-exception p1
+    :catch_39
+    move-exception v0
 
     .line 203
-    :try_start_39
-    new-instance p2, Landroid/os/ParcelableException;
+    .local v0, "e":Ljava/io/FileNotFoundException;
+    :try_start_3a
+    new-instance v3, Landroid/os/ParcelableException;
 
-    invoke-direct {p2, p1}, Landroid/os/ParcelableException;-><init>(Ljava/lang/Throwable;)V
+    invoke-direct {v3, v0}, Landroid/os/ParcelableException;-><init>(Ljava/lang/Throwable;)V
 
-    throw p2
-    :try_end_3f
-    .catchall {:try_start_39 .. :try_end_3f} :catchall_36
+    .end local v1  # "token":J
+    .end local p0  # "this":Lcom/android/server/usage/StorageStatsService;
+    .end local p1  # "volumeUuid":Ljava/lang/String;
+    .end local p2  # "callingPackage":Ljava/lang/String;
+    throw v3
+    :try_end_40
+    .catchall {:try_start_3a .. :try_end_40} :catchall_37
 
     .line 219
-    :goto_3f
-    invoke-static {v0, v1}, Landroid/os/Binder;->restoreCallingIdentity(J)V
+    .end local v0  # "e":Ljava/io/FileNotFoundException;
+    .restart local v1  # "token":J
+    .restart local p0  # "this":Lcom/android/server/usage/StorageStatsService;
+    .restart local p1  # "volumeUuid":Ljava/lang/String;
+    .restart local p2  # "callingPackage":Ljava/lang/String;
+    :goto_40
+    invoke-static {v1, v2}, Landroid/os/Binder;->restoreCallingIdentity(J)V
 
-    throw p1
+    throw v0
 .end method
 
 .method public getTotalBytes(Ljava/lang/String;Ljava/lang/String;)J
-    .registers 6
+    .registers 8
+    .param p1, "volumeUuid"  # Ljava/lang/String;
+    .param p2, "callingPackage"  # Ljava/lang/String;
 
     .line 181
-    sget-object p2, Landroid/os/storage/StorageManager;->UUID_PRIVATE_INTERNAL:Ljava/lang/String;
+    sget-object v0, Landroid/os/storage/StorageManager;->UUID_PRIVATE_INTERNAL:Ljava/lang/String;
 
-    if-ne p1, p2, :cond_f
+    if-ne p1, v0, :cond_f
 
     .line 182
-    iget-object p1, p0, Lcom/android/server/usage/StorageStatsService;->mStorage:Landroid/os/storage/StorageManager;
+    iget-object v0, p0, Lcom/android/server/usage/StorageStatsService;->mStorage:Landroid/os/storage/StorageManager;
 
-    invoke-virtual {p1}, Landroid/os/storage/StorageManager;->getPrimaryStorageSize()J
+    invoke-virtual {v0}, Landroid/os/storage/StorageManager;->getPrimaryStorageSize()J
 
-    move-result-wide p1
+    move-result-wide v0
 
-    invoke-static {p1, p2}, Landroid/os/FileUtils;->roundStorageSize(J)J
+    invoke-static {v0, v1}, Landroid/os/FileUtils;->roundStorageSize(J)J
 
-    move-result-wide p1
+    move-result-wide v0
 
-    return-wide p1
+    return-wide v0
 
     .line 184
     :cond_f
-    iget-object p2, p0, Lcom/android/server/usage/StorageStatsService;->mStorage:Landroid/os/storage/StorageManager;
+    iget-object v0, p0, Lcom/android/server/usage/StorageStatsService;->mStorage:Landroid/os/storage/StorageManager;
 
-    invoke-virtual {p2, p1}, Landroid/os/storage/StorageManager;->findVolumeByUuid(Ljava/lang/String;)Landroid/os/storage/VolumeInfo;
+    invoke-virtual {v0, p1}, Landroid/os/storage/StorageManager;->findVolumeByUuid(Ljava/lang/String;)Landroid/os/storage/VolumeInfo;
 
-    move-result-object p2
+    move-result-object v0
 
     .line 185
-    if-eqz p2, :cond_20
+    .local v0, "vol":Landroid/os/storage/VolumeInfo;
+    if-eqz v0, :cond_20
 
     .line 189
-    iget-object p1, p2, Landroid/os/storage/VolumeInfo;->disk:Landroid/os/storage/DiskInfo;
+    iget-object v1, v0, Landroid/os/storage/VolumeInfo;->disk:Landroid/os/storage/DiskInfo;
 
-    iget-wide p1, p1, Landroid/os/storage/DiskInfo;->size:J
+    iget-wide v1, v1, Landroid/os/storage/DiskInfo;->size:J
 
-    invoke-static {p1, p2}, Landroid/os/FileUtils;->roundStorageSize(J)J
+    invoke-static {v1, v2}, Landroid/os/FileUtils;->roundStorageSize(J)J
 
-    move-result-wide p1
+    move-result-wide v1
 
-    return-wide p1
+    return-wide v1
 
     .line 186
     :cond_20
-    new-instance p2, Landroid/os/ParcelableException;
+    new-instance v1, Landroid/os/ParcelableException;
 
-    new-instance v0, Ljava/io/IOException;
+    new-instance v2, Ljava/io/IOException;
 
-    new-instance v1, Ljava/lang/StringBuilder;
+    new-instance v3, Ljava/lang/StringBuilder;
 
-    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v2, "Failed to find storage device for UUID "
+    const-string v4, "Failed to find storage device for UUID "
 
-    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v1, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v3
 
-    invoke-direct {v0, p1}, Ljava/io/IOException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v2, v3}, Ljava/io/IOException;-><init>(Ljava/lang/String;)V
 
-    invoke-direct {p2, v0}, Landroid/os/ParcelableException;-><init>(Ljava/lang/Throwable;)V
+    invoke-direct {v1, v2}, Landroid/os/ParcelableException;-><init>(Ljava/lang/Throwable;)V
 
-    throw p2
+    throw v1
 .end method
 
 .method public isQuotaSupported(Ljava/lang/String;Ljava/lang/String;)Z
-    .registers 4
+    .registers 7
+    .param p1, "volumeUuid"  # Ljava/lang/String;
+    .param p2, "callingPackage"  # Ljava/lang/String;
 
     .line 161
     :try_start_0
-    iget-object p2, p0, Lcom/android/server/usage/StorageStatsService;->mInstaller:Lcom/android/server/pm/Installer;
+    iget-object v0, p0, Lcom/android/server/usage/StorageStatsService;->mInstaller:Lcom/android/server/pm/Installer;
 
-    invoke-virtual {p2, p1}, Lcom/android/server/pm/Installer;->isQuotaSupported(Ljava/lang/String;)Z
+    invoke-virtual {v0, p1}, Lcom/android/server/pm/Installer;->isQuotaSupported(Ljava/lang/String;)Z
 
-    move-result p1
+    move-result v0
     :try_end_6
     .catch Lcom/android/server/pm/Installer$InstallerException; {:try_start_0 .. :try_end_6} :catch_7
 
-    return p1
+    return v0
 
     .line 162
     :catch_7
-    move-exception p1
+    move-exception v0
 
     .line 163
-    new-instance p2, Landroid/os/ParcelableException;
+    .local v0, "e":Lcom/android/server/pm/Installer$InstallerException;
+    new-instance v1, Landroid/os/ParcelableException;
 
-    new-instance v0, Ljava/io/IOException;
+    new-instance v2, Ljava/io/IOException;
 
-    invoke-virtual {p1}, Lcom/android/server/pm/Installer$InstallerException;->getMessage()Ljava/lang/String;
+    invoke-virtual {v0}, Lcom/android/server/pm/Installer$InstallerException;->getMessage()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v3
 
-    invoke-direct {v0, p1}, Ljava/io/IOException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v2, v3}, Ljava/io/IOException;-><init>(Ljava/lang/String;)V
 
-    invoke-direct {p2, v0}, Landroid/os/ParcelableException;-><init>(Ljava/lang/Throwable;)V
+    invoke-direct {v1, v2}, Landroid/os/ParcelableException;-><init>(Ljava/lang/Throwable;)V
 
-    throw p2
+    throw v1
 .end method
 
 .method public isReservedSupported(Ljava/lang/String;Ljava/lang/String;)Z
-    .registers 4
+    .registers 5
+    .param p1, "volumeUuid"  # Ljava/lang/String;
+    .param p2, "callingPackage"  # Ljava/lang/String;
 
     .line 169
-    sget-object p2, Landroid/os/storage/StorageManager;->UUID_PRIVATE_INTERNAL:Ljava/lang/String;
+    sget-object v0, Landroid/os/storage/StorageManager;->UUID_PRIVATE_INTERNAL:Ljava/lang/String;
 
-    const/4 v0, 0x0
+    const/4 v1, 0x0
 
-    if-ne p1, p2, :cond_14
+    if-ne p1, v0, :cond_14
 
     .line 170
-    const-string/jumbo p1, "vold.has_reserved"
+    const-string/jumbo v0, "vold.has_reserved"
 
-    invoke-static {p1, v0}, Landroid/os/SystemProperties;->getBoolean(Ljava/lang/String;Z)Z
+    invoke-static {v0, v1}, Landroid/os/SystemProperties;->getBoolean(Ljava/lang/String;Z)Z
 
-    move-result p1
+    move-result v0
 
-    if-nez p1, :cond_12
+    if-nez v0, :cond_12
 
-    sget-boolean p1, Landroid/os/Build;->IS_CONTAINER:Z
+    sget-boolean v0, Landroid/os/Build;->IS_CONTAINER:Z
 
-    if-eqz p1, :cond_13
+    if-eqz v0, :cond_13
 
     :cond_12
-    const/4 v0, 0x1
+    const/4 v1, 0x1
 
     :cond_13
-    return v0
+    return v1
 
     .line 173
     :cond_14
-    return v0
+    return v1
 .end method
 
 .method notifySignificantDelta()V
@@ -1099,7 +1166,10 @@
 .end method
 
 .method public queryExternalStatsForUser(Ljava/lang/String;ILjava/lang/String;)Landroid/app/usage/ExternalStorageStats;
-    .registers 7
+    .registers 10
+    .param p1, "volumeUuid"  # Ljava/lang/String;
+    .param p2, "userId"  # I
+    .param p3, "callingPackage"  # Ljava/lang/String;
 
     .line 378
     invoke-static {}, Landroid/os/UserHandle;->getCallingUserId()I
@@ -1128,620 +1198,775 @@
     .line 386
     invoke-direct {p0, p2}, Lcom/android/server/usage/StorageStatsService;->getAppIds(I)[I
 
-    move-result-object p3
+    move-result-object v0
 
     .line 389
+    .local v0, "appIds":[I
     :try_start_1a
-    iget-object v0, p0, Lcom/android/server/usage/StorageStatsService;->mInstaller:Lcom/android/server/pm/Installer;
+    iget-object v1, p0, Lcom/android/server/usage/StorageStatsService;->mInstaller:Lcom/android/server/pm/Installer;
 
     invoke-static {}, Lcom/android/server/usage/StorageStatsService;->getDefaultFlags()I
 
-    move-result v1
+    move-result v2
 
-    invoke-virtual {v0, p1, p2, v1, p3}, Lcom/android/server/pm/Installer;->getExternalSize(Ljava/lang/String;II[I)[J
+    invoke-virtual {v1, p1, p2, v2, v0}, Lcom/android/server/pm/Installer;->getExternalSize(Ljava/lang/String;II[I)[J
 
-    move-result-object v0
+    move-result-object v1
 
     .line 391
-    const-string v1, "fw.verify_storage"
+    .local v1, "stats":[J
+    const-string v2, "fw.verify_storage"
 
-    const/4 v2, 0x0
+    const/4 v3, 0x0
 
-    invoke-static {v1, v2}, Landroid/os/SystemProperties;->getBoolean(Ljava/lang/String;Z)Z
+    invoke-static {v2, v3}, Landroid/os/SystemProperties;->getBoolean(Ljava/lang/String;Z)Z
 
-    move-result v1
+    move-result v2
 
-    if-eqz v1, :cond_47
+    if-eqz v2, :cond_47
 
     .line 392
-    iget-object v1, p0, Lcom/android/server/usage/StorageStatsService;->mInstaller:Lcom/android/server/pm/Installer;
+    iget-object v2, p0, Lcom/android/server/usage/StorageStatsService;->mInstaller:Lcom/android/server/pm/Installer;
 
-    invoke-virtual {v1, p1, p2, v2, p3}, Lcom/android/server/pm/Installer;->getExternalSize(Ljava/lang/String;II[I)[J
+    invoke-virtual {v2, p1, p2, v3, v0}, Lcom/android/server/pm/Installer;->getExternalSize(Ljava/lang/String;II[I)[J
 
-    move-result-object p1
+    move-result-object v2
 
     .line 394
-    new-instance p3, Ljava/lang/StringBuilder;
+    .local v2, "manualStats":[J
+    new-instance v4, Ljava/lang/StringBuilder;
 
-    invoke-direct {p3}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v4}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v1, "External "
+    const-string v5, "External "
 
-    invoke-virtual {p3, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p3, p2}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v4, p2}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v4}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p2
+    move-result-object v4
 
-    invoke-static {p2, p1, v0}, Lcom/android/server/usage/StorageStatsService;->checkEquals(Ljava/lang/String;[J[J)V
+    invoke-static {v4, v2, v1}, Lcom/android/server/usage/StorageStatsService;->checkEquals(Ljava/lang/String;[J[J)V
     :try_end_47
     .catch Lcom/android/server/pm/Installer$InstallerException; {:try_start_1a .. :try_end_47} :catch_6b
 
     .line 398
+    .end local v2  # "manualStats":[J
     :cond_47
     nop
 
     .line 400
-    new-instance p1, Landroid/app/usage/ExternalStorageStats;
+    new-instance v2, Landroid/app/usage/ExternalStorageStats;
 
-    invoke-direct {p1}, Landroid/app/usage/ExternalStorageStats;-><init>()V
+    invoke-direct {v2}, Landroid/app/usage/ExternalStorageStats;-><init>()V
 
     .line 401
-    aget-wide p2, v0, v2
+    .local v2, "res":Landroid/app/usage/ExternalStorageStats;
+    aget-wide v3, v1, v3
 
-    iput-wide p2, p1, Landroid/app/usage/ExternalStorageStats;->totalBytes:J
+    iput-wide v3, v2, Landroid/app/usage/ExternalStorageStats;->totalBytes:J
 
     .line 402
-    const/4 p2, 0x1
+    const/4 v3, 0x1
 
-    aget-wide p2, v0, p2
+    aget-wide v3, v1, v3
 
-    iput-wide p2, p1, Landroid/app/usage/ExternalStorageStats;->audioBytes:J
+    iput-wide v3, v2, Landroid/app/usage/ExternalStorageStats;->audioBytes:J
 
     .line 403
-    const/4 p2, 0x2
+    const/4 v3, 0x2
 
-    aget-wide p2, v0, p2
+    aget-wide v3, v1, v3
 
-    iput-wide p2, p1, Landroid/app/usage/ExternalStorageStats;->videoBytes:J
+    iput-wide v3, v2, Landroid/app/usage/ExternalStorageStats;->videoBytes:J
 
     .line 404
-    const/4 p2, 0x3
+    const/4 v3, 0x3
 
-    aget-wide p2, v0, p2
+    aget-wide v3, v1, v3
 
-    iput-wide p2, p1, Landroid/app/usage/ExternalStorageStats;->imageBytes:J
+    iput-wide v3, v2, Landroid/app/usage/ExternalStorageStats;->imageBytes:J
 
     .line 405
-    const/4 p2, 0x4
+    const/4 v3, 0x4
 
-    aget-wide p2, v0, p2
+    aget-wide v3, v1, v3
 
-    iput-wide p2, p1, Landroid/app/usage/ExternalStorageStats;->appBytes:J
+    iput-wide v3, v2, Landroid/app/usage/ExternalStorageStats;->appBytes:J
 
     .line 406
-    const/4 p2, 0x5
+    const/4 v3, 0x5
 
-    aget-wide p2, v0, p2
+    aget-wide v3, v1, v3
 
-    iput-wide p2, p1, Landroid/app/usage/ExternalStorageStats;->obbBytes:J
+    iput-wide v3, v2, Landroid/app/usage/ExternalStorageStats;->obbBytes:J
 
     .line 407
-    return-object p1
+    return-object v2
 
     .line 396
+    .end local v1  # "stats":[J
+    .end local v2  # "res":Landroid/app/usage/ExternalStorageStats;
     :catch_6b
-    move-exception p1
+    move-exception v1
 
     .line 397
-    new-instance p2, Landroid/os/ParcelableException;
+    .local v1, "e":Lcom/android/server/pm/Installer$InstallerException;
+    new-instance v2, Landroid/os/ParcelableException;
 
-    new-instance p3, Ljava/io/IOException;
+    new-instance v3, Ljava/io/IOException;
 
-    invoke-virtual {p1}, Lcom/android/server/pm/Installer$InstallerException;->getMessage()Ljava/lang/String;
+    invoke-virtual {v1}, Lcom/android/server/pm/Installer$InstallerException;->getMessage()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v4
 
-    invoke-direct {p3, p1}, Ljava/io/IOException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v3, v4}, Ljava/io/IOException;-><init>(Ljava/lang/String;)V
 
-    invoke-direct {p2, p3}, Landroid/os/ParcelableException;-><init>(Ljava/lang/Throwable;)V
+    invoke-direct {v2, v3}, Landroid/os/ParcelableException;-><init>(Ljava/lang/Throwable;)V
 
-    throw p2
+    throw v2
 .end method
 
 .method public queryStatsForPackage(Ljava/lang/String;Ljava/lang/String;ILjava/lang/String;)Landroid/app/usage/StorageStats;
-    .registers 16
+    .registers 24
+    .param p1, "volumeUuid"  # Ljava/lang/String;
+    .param p2, "packageName"  # Ljava/lang/String;
+    .param p3, "userId"  # I
+    .param p4, "callingPackage"  # Ljava/lang/String;
 
     .line 250
+    move-object/from16 v1, p0
+
+    move-object/from16 v2, p2
+
+    move/from16 v12, p3
+
+    move-object/from16 v13, p4
+
     invoke-static {}, Landroid/os/UserHandle;->getCallingUserId()I
 
-    move-result v4
+    move-result v0
 
-    const-string v5, "StorageStatsService"
+    const-string v3, "StorageStatsService"
 
-    if-eq p3, v4, :cond_f
+    if-eq v12, v0, :cond_17
 
     .line 251
-    iget-object v4, p0, Lcom/android/server/usage/StorageStatsService;->mContext:Landroid/content/Context;
+    iget-object v0, v1, Lcom/android/server/usage/StorageStatsService;->mContext:Landroid/content/Context;
 
-    const-string v6, "android.permission.INTERACT_ACROSS_USERS"
+    const-string v4, "android.permission.INTERACT_ACROSS_USERS"
 
-    invoke-virtual {v4, v6, v5}, Landroid/content/Context;->enforceCallingOrSelfPermission(Ljava/lang/String;Ljava/lang/String;)V
+    invoke-virtual {v0, v4, v3}, Landroid/content/Context;->enforceCallingOrSelfPermission(Ljava/lang/String;Ljava/lang/String;)V
 
     .line 257
-    :cond_f
-    :try_start_f
-    iget-object v4, p0, Lcom/android/server/usage/StorageStatsService;->mPackage:Landroid/content/pm/PackageManager;
+    :cond_17
+    :try_start_17
+    iget-object v0, v1, Lcom/android/server/usage/StorageStatsService;->mPackage:Landroid/content/pm/PackageManager;
 
-    const/16 v6, 0x2000
+    const/16 v4, 0x2000
 
-    invoke-virtual {v4, p2, v6, p3}, Landroid/content/pm/PackageManager;->getApplicationInfoAsUser(Ljava/lang/String;II)Landroid/content/pm/ApplicationInfo;
+    invoke-virtual {v0, v2, v4, v12}, Landroid/content/pm/PackageManager;->getApplicationInfoAsUser(Ljava/lang/String;II)Landroid/content/pm/ApplicationInfo;
 
-    move-result-object v4
-    :try_end_17
-    .catch Landroid/content/pm/PackageManager$NameNotFoundException; {:try_start_f .. :try_end_17} :catch_90
+    move-result-object v0
+    :try_end_1f
+    .catch Landroid/content/pm/PackageManager$NameNotFoundException; {:try_start_17 .. :try_end_1f} :catch_a9
+
+    move-object v14, v0
 
     .line 261
+    .local v14, "appInfo":Landroid/content/pm/ApplicationInfo;
     nop
 
     .line 263
     invoke-static {}, Landroid/os/Binder;->getCallingUid()I
 
-    move-result v6
+    move-result v0
 
-    iget v7, v4, Landroid/content/pm/ApplicationInfo;->uid:I
+    iget v4, v14, Landroid/content/pm/ApplicationInfo;->uid:I
 
-    if-ne v6, v7, :cond_21
+    if-ne v0, v4, :cond_2a
 
-    goto :goto_28
+    goto :goto_31
 
     .line 266
-    :cond_21
+    :cond_2a
     invoke-static {}, Landroid/os/Binder;->getCallingUid()I
 
-    move-result v6
+    move-result v0
 
-    invoke-direct {p0, v6, p4}, Lcom/android/server/usage/StorageStatsService;->enforcePermission(ILjava/lang/String;)V
+    invoke-direct {v1, v0, v13}, Lcom/android/server/usage/StorageStatsService;->enforcePermission(ILjava/lang/String;)V
 
     .line 269
-    :goto_28
-    iget-object v6, p0, Lcom/android/server/usage/StorageStatsService;->mPackage:Landroid/content/pm/PackageManager;
+    :goto_31
+    iget-object v0, v1, Lcom/android/server/usage/StorageStatsService;->mPackage:Landroid/content/pm/PackageManager;
 
-    iget v7, v4, Landroid/content/pm/ApplicationInfo;->uid:I
+    iget v4, v14, Landroid/content/pm/ApplicationInfo;->uid:I
 
-    invoke-virtual {v6, v7}, Landroid/content/pm/PackageManager;->getPackagesForUid(I)[Ljava/lang/String;
+    invoke-virtual {v0, v4}, Landroid/content/pm/PackageManager;->getPackagesForUid(I)[Ljava/lang/String;
 
-    move-result-object v6
+    move-result-object v0
 
-    invoke-static {v6}, Lcom/android/internal/util/ArrayUtils;->defeatNullable([Ljava/lang/String;)[Ljava/lang/String;
+    invoke-static {v0}, Lcom/android/internal/util/ArrayUtils;->defeatNullable([Ljava/lang/String;)[Ljava/lang/String;
 
-    move-result-object v6
+    move-result-object v0
 
-    array-length v6, v6
+    array-length v0, v0
 
-    const/4 v7, 0x1
+    const/4 v4, 0x1
 
-    if-ne v6, v7, :cond_3f
+    if-ne v0, v4, :cond_4a
 
     .line 271
-    iget v1, v4, Landroid/content/pm/ApplicationInfo;->uid:I
+    iget v0, v14, Landroid/content/pm/ApplicationInfo;->uid:I
 
-    invoke-virtual {p0, p1, v1, p4}, Lcom/android/server/usage/StorageStatsService;->queryStatsForUid(Ljava/lang/String;ILjava/lang/String;)Landroid/app/usage/StorageStats;
+    move-object/from16 v15, p1
+
+    invoke-virtual {v1, v15, v0, v13}, Lcom/android/server/usage/StorageStatsService;->queryStatsForUid(Ljava/lang/String;ILjava/lang/String;)Landroid/app/usage/StorageStats;
 
     move-result-object v0
 
     return-object v0
 
     .line 274
-    :cond_3f
-    iget v2, v4, Landroid/content/pm/ApplicationInfo;->uid:I
+    :cond_4a
+    move-object/from16 v15, p1
 
-    invoke-static {v2}, Landroid/os/UserHandle;->getUserId(I)I
+    iget v0, v14, Landroid/content/pm/ApplicationInfo;->uid:I
 
-    move-result v8
+    invoke-static {v0}, Landroid/os/UserHandle;->getUserId(I)I
+
+    move-result v16
 
     .line 275
-    new-array v2, v7, [Ljava/lang/String;
+    .local v16, "appId":I
+    new-array v5, v4, [Ljava/lang/String;
 
-    const/4 v9, 0x0
+    const/4 v0, 0x0
 
-    aput-object p2, v2, v9
+    aput-object v2, v5, v0
 
     .line 276
-    new-array v7, v7, [J
+    .local v5, "packageNames":[Ljava/lang/String;
+    new-array v10, v4, [J
 
     .line 277
-    new-array v1, v9, [Ljava/lang/String;
+    .local v10, "ceDataInodes":[J
+    new-array v0, v0, [Ljava/lang/String;
 
     .line 279
-    invoke-virtual {v4}, Landroid/content/pm/ApplicationInfo;->isSystemApp()Z
+    .local v0, "codePaths":[Ljava/lang/String;
+    invoke-virtual {v14}, Landroid/content/pm/ApplicationInfo;->isSystemApp()Z
 
-    move-result v9
+    move-result v4
 
-    if-eqz v9, :cond_5c
+    if-eqz v4, :cond_6a
 
-    invoke-virtual {v4}, Landroid/content/pm/ApplicationInfo;->isUpdatedSystemApp()Z
+    invoke-virtual {v14}, Landroid/content/pm/ApplicationInfo;->isUpdatedSystemApp()Z
 
-    move-result v9
+    move-result v4
 
-    if-nez v9, :cond_5c
+    if-nez v4, :cond_6a
 
-    move-object v9, v1
+    move-object/from16 v17, v0
 
-    goto :goto_69
+    goto :goto_79
 
     .line 282
-    :cond_5c
-    const-class v9, Ljava/lang/String;
+    :cond_6a
+    const-class v4, Ljava/lang/String;
 
     .line 283
-    invoke-virtual {v4}, Landroid/content/pm/ApplicationInfo;->getCodePath()Ljava/lang/String;
+    invoke-virtual {v14}, Landroid/content/pm/ApplicationInfo;->getCodePath()Ljava/lang/String;
+
+    move-result-object v6
+
+    .line 282
+    invoke-static {v4, v0, v6}, Lcom/android/internal/util/ArrayUtils;->appendElement(Ljava/lang/Class;[Ljava/lang/Object;Ljava/lang/Object;)[Ljava/lang/Object;
 
     move-result-object v4
 
-    .line 282
-    invoke-static {v9, v1, v4}, Lcom/android/internal/util/ArrayUtils;->appendElement(Ljava/lang/Class;[Ljava/lang/Object;Ljava/lang/Object;)[Ljava/lang/Object;
+    move-object v0, v4
 
-    move-result-object v1
+    check-cast v0, [Ljava/lang/String;
 
-    check-cast v1, [Ljava/lang/String;
-
-    move-object v9, v1
+    move-object/from16 v17, v0
 
     .line 286
-    :goto_69
-    new-instance v10, Landroid/content/pm/PackageStats;
+    .end local v0  # "codePaths":[Ljava/lang/String;
+    .local v17, "codePaths":[Ljava/lang/String;
+    :goto_79
+    new-instance v11, Landroid/content/pm/PackageStats;
 
-    invoke-direct {v10, v5}, Landroid/content/pm/PackageStats;-><init>(Ljava/lang/String;)V
+    invoke-direct {v11, v3}, Landroid/content/pm/PackageStats;-><init>(Ljava/lang/String;)V
 
     .line 288
-    :try_start_6e
-    iget-object v0, p0, Lcom/android/server/usage/StorageStatsService;->mInstaller:Lcom/android/server/pm/Installer;
+    .local v11, "stats":Landroid/content/pm/PackageStats;
+    :try_start_7e
+    iget-object v3, v1, Lcom/android/server/usage/StorageStatsService;->mInstaller:Lcom/android/server/pm/Installer;
+    :try_end_80
+    .catch Lcom/android/server/pm/Installer$InstallerException; {:try_start_7e .. :try_end_80} :catch_97
 
-    const/4 v4, 0x0
+    const/4 v7, 0x0
 
-    move-object v1, p1
+    move-object/from16 v4, p1
 
-    move v3, p3
+    move/from16 v6, p3
 
-    move v5, v8
+    move/from16 v8, v16
 
-    move-object v6, v7
+    move-object v9, v10
 
-    move-object v7, v9
+    move-object/from16 v18, v10
 
-    move-object v8, v10
+    .end local v10  # "ceDataInodes":[J
+    .local v18, "ceDataInodes":[J
+    move-object/from16 v10, v17
 
-    invoke-virtual/range {v0 .. v8}, Lcom/android/server/pm/Installer;->getAppSize(Ljava/lang/String;[Ljava/lang/String;III[J[Ljava/lang/String;Landroid/content/pm/PackageStats;)V
-    :try_end_7a
-    .catch Lcom/android/server/pm/Installer$InstallerException; {:try_start_6e .. :try_end_7a} :catch_80
+    :try_start_8c
+    invoke-virtual/range {v3 .. v11}, Lcom/android/server/pm/Installer;->getAppSize(Ljava/lang/String;[Ljava/lang/String;III[J[Ljava/lang/String;Landroid/content/pm/PackageStats;)V
+    :try_end_8f
+    .catch Lcom/android/server/pm/Installer$InstallerException; {:try_start_8c .. :try_end_8f} :catch_95
 
     .line 292
     nop
 
     .line 293
-    invoke-static {v10}, Lcom/android/server/usage/StorageStatsService;->translate(Landroid/content/pm/PackageStats;)Landroid/app/usage/StorageStats;
+    invoke-static {v11}, Lcom/android/server/usage/StorageStatsService;->translate(Landroid/content/pm/PackageStats;)Landroid/app/usage/StorageStats;
 
     move-result-object v0
 
     return-object v0
 
     .line 290
-    :catch_80
+    :catch_95
     move-exception v0
 
-    .line 291
-    new-instance v1, Landroid/os/ParcelableException;
+    goto :goto_9a
 
-    new-instance v2, Ljava/io/IOException;
+    .end local v18  # "ceDataInodes":[J
+    .restart local v10  # "ceDataInodes":[J
+    :catch_97
+    move-exception v0
+
+    move-object/from16 v18, v10
+
+    .line 291
+    .end local v10  # "ceDataInodes":[J
+    .local v0, "e":Lcom/android/server/pm/Installer$InstallerException;
+    .restart local v18  # "ceDataInodes":[J
+    :goto_9a
+    new-instance v3, Landroid/os/ParcelableException;
+
+    new-instance v4, Ljava/io/IOException;
 
     invoke-virtual {v0}, Lcom/android/server/pm/Installer$InstallerException;->getMessage()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v6
 
-    invoke-direct {v2, v0}, Ljava/io/IOException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v4, v6}, Ljava/io/IOException;-><init>(Ljava/lang/String;)V
 
-    invoke-direct {v1, v2}, Landroid/os/ParcelableException;-><init>(Ljava/lang/Throwable;)V
+    invoke-direct {v3, v4}, Landroid/os/ParcelableException;-><init>(Ljava/lang/Throwable;)V
 
-    throw v1
+    throw v3
 
     .line 259
-    :catch_90
+    .end local v0  # "e":Lcom/android/server/pm/Installer$InstallerException;
+    .end local v5  # "packageNames":[Ljava/lang/String;
+    .end local v11  # "stats":Landroid/content/pm/PackageStats;
+    .end local v14  # "appInfo":Landroid/content/pm/ApplicationInfo;
+    .end local v16  # "appId":I
+    .end local v17  # "codePaths":[Ljava/lang/String;
+    .end local v18  # "ceDataInodes":[J
+    :catch_a9
     move-exception v0
 
+    move-object/from16 v15, p1
+
     .line 260
-    new-instance v1, Landroid/os/ParcelableException;
+    .local v0, "e":Landroid/content/pm/PackageManager$NameNotFoundException;
+    new-instance v3, Landroid/os/ParcelableException;
 
-    invoke-direct {v1, v0}, Landroid/os/ParcelableException;-><init>(Ljava/lang/Throwable;)V
+    invoke-direct {v3, v0}, Landroid/os/ParcelableException;-><init>(Ljava/lang/Throwable;)V
 
-    throw v1
+    throw v3
 .end method
 
 .method public queryStatsForUid(Ljava/lang/String;ILjava/lang/String;)Landroid/app/usage/StorageStats;
-    .registers 21
+    .registers 24
+    .param p1, "volumeUuid"  # Ljava/lang/String;
+    .param p2, "uid"  # I
+    .param p3, "callingPackage"  # Ljava/lang/String;
 
     .line 299
-    move-object/from16 v0, p0
+    move-object/from16 v1, p0
 
-    move/from16 v1, p2
+    move/from16 v2, p2
 
     invoke-static/range {p2 .. p2}, Landroid/os/UserHandle;->getUserId(I)I
 
-    move-result v11
-
-    .line 300
-    invoke-static/range {p2 .. p2}, Landroid/os/UserHandle;->getAppId(I)I
-
     move-result v12
 
+    .line 300
+    .local v12, "userId":I
+    invoke-static/range {p2 .. p2}, Landroid/os/UserHandle;->getAppId(I)I
+
+    move-result v13
+
     .line 302
+    .local v13, "appId":I
     invoke-static {}, Landroid/os/UserHandle;->getCallingUserId()I
 
-    move-result v2
+    move-result v0
 
-    const-string v13, "StorageStatsService"
+    const-string v14, "StorageStatsService"
 
-    if-eq v11, v2, :cond_1b
+    if-eq v12, v0, :cond_1b
 
     .line 303
-    iget-object v2, v0, Lcom/android/server/usage/StorageStatsService;->mContext:Landroid/content/Context;
+    iget-object v0, v1, Lcom/android/server/usage/StorageStatsService;->mContext:Landroid/content/Context;
 
     const-string v3, "android.permission.INTERACT_ACROSS_USERS"
 
-    invoke-virtual {v2, v3, v13}, Landroid/content/Context;->enforceCallingOrSelfPermission(Ljava/lang/String;Ljava/lang/String;)V
+    invoke-virtual {v0, v3, v14}, Landroid/content/Context;->enforceCallingOrSelfPermission(Ljava/lang/String;Ljava/lang/String;)V
 
     .line 307
     :cond_1b
     invoke-static {}, Landroid/os/Binder;->getCallingUid()I
 
-    move-result v2
+    move-result v0
 
-    if-ne v2, v1, :cond_22
+    if-ne v0, v2, :cond_24
 
-    goto :goto_2b
+    move-object/from16 v15, p3
+
+    goto :goto_2d
 
     .line 310
-    :cond_22
+    :cond_24
     invoke-static {}, Landroid/os/Binder;->getCallingUid()I
 
-    move-result v2
+    move-result v0
 
-    move-object/from16 v3, p3
+    move-object/from16 v15, p3
 
-    invoke-direct {v0, v2, v3}, Lcom/android/server/usage/StorageStatsService;->enforcePermission(ILjava/lang/String;)V
+    invoke-direct {v1, v0, v15}, Lcom/android/server/usage/StorageStatsService;->enforcePermission(ILjava/lang/String;)V
 
     .line 313
-    :goto_2b
-    iget-object v2, v0, Lcom/android/server/usage/StorageStatsService;->mPackage:Landroid/content/pm/PackageManager;
+    :goto_2d
+    iget-object v0, v1, Lcom/android/server/usage/StorageStatsService;->mPackage:Landroid/content/pm/PackageManager;
 
-    invoke-virtual {v2, v1}, Landroid/content/pm/PackageManager;->getPackagesForUid(I)[Ljava/lang/String;
+    invoke-virtual {v0, v2}, Landroid/content/pm/PackageManager;->getPackagesForUid(I)[Ljava/lang/String;
 
-    move-result-object v2
+    move-result-object v0
 
-    invoke-static {v2}, Lcom/android/internal/util/ArrayUtils;->defeatNullable([Ljava/lang/String;)[Ljava/lang/String;
+    invoke-static {v0}, Lcom/android/internal/util/ArrayUtils;->defeatNullable([Ljava/lang/String;)[Ljava/lang/String;
 
-    move-result-object v14
+    move-result-object v11
 
     .line 314
-    array-length v2, v14
+    .local v11, "packageNames":[Ljava/lang/String;
+    array-length v0, v11
 
-    new-array v15, v2, [J
+    new-array v10, v0, [J
 
     .line 315
-    const/4 v10, 0x0
+    .local v10, "ceDataInodes":[J
+    const/4 v0, 0x0
 
-    new-array v2, v10, [Ljava/lang/String;
+    new-array v3, v0, [Ljava/lang/String;
 
     .line 317
-    move-object v9, v2
+    .local v3, "codePaths":[Ljava/lang/String;
+    const/4 v4, 0x0
 
-    move v2, v10
+    move-object v9, v3
 
-    :goto_3d
-    array-length v3, v14
+    .end local v3  # "codePaths":[Ljava/lang/String;
+    .local v4, "i":I
+    .local v9, "codePaths":[Ljava/lang/String;
+    :goto_3f
+    array-length v3, v11
 
-    if-ge v2, v3, :cond_6f
+    if-ge v4, v3, :cond_71
 
     .line 319
-    :try_start_40
-    iget-object v3, v0, Lcom/android/server/usage/StorageStatsService;->mPackage:Landroid/content/pm/PackageManager;
+    :try_start_42
+    iget-object v3, v1, Lcom/android/server/usage/StorageStatsService;->mPackage:Landroid/content/pm/PackageManager;
 
-    aget-object v4, v14, v2
+    aget-object v5, v11, v4
 
-    const/16 v5, 0x2000
+    const/16 v6, 0x2000
 
-    invoke-virtual {v3, v4, v5, v11}, Landroid/content/pm/PackageManager;->getApplicationInfoAsUser(Ljava/lang/String;II)Landroid/content/pm/ApplicationInfo;
+    invoke-virtual {v3, v5, v6, v12}, Landroid/content/pm/PackageManager;->getApplicationInfoAsUser(Ljava/lang/String;II)Landroid/content/pm/ApplicationInfo;
 
     move-result-object v3
 
     .line 321
+    .local v3, "appInfo":Landroid/content/pm/ApplicationInfo;
     invoke-virtual {v3}, Landroid/content/pm/ApplicationInfo;->isSystemApp()Z
 
-    move-result v4
+    move-result v5
 
-    if-eqz v4, :cond_57
+    if-eqz v5, :cond_59
 
     invoke-virtual {v3}, Landroid/content/pm/ApplicationInfo;->isUpdatedSystemApp()Z
 
-    move-result v4
+    move-result v5
 
-    if-nez v4, :cond_57
+    if-nez v5, :cond_59
 
-    goto :goto_64
+    goto :goto_66
 
     .line 324
-    :cond_57
-    const-class v4, Ljava/lang/String;
+    :cond_59
+    const-class v5, Ljava/lang/String;
 
     .line 325
     invoke-virtual {v3}, Landroid/content/pm/ApplicationInfo;->getCodePath()Ljava/lang/String;
 
-    move-result-object v3
+    move-result-object v6
 
     .line 324
-    invoke-static {v4, v9, v3}, Lcom/android/internal/util/ArrayUtils;->appendElement(Ljava/lang/Class;[Ljava/lang/Object;Ljava/lang/Object;)[Ljava/lang/Object;
+    invoke-static {v5, v9, v6}, Lcom/android/internal/util/ArrayUtils;->appendElement(Ljava/lang/Class;[Ljava/lang/Object;Ljava/lang/Object;)[Ljava/lang/Object;
 
-    move-result-object v3
+    move-result-object v5
 
-    move-object v9, v3
+    check-cast v5, [Ljava/lang/String;
+    :try_end_65
+    .catch Landroid/content/pm/PackageManager$NameNotFoundException; {:try_start_42 .. :try_end_65} :catch_6a
 
-    check-cast v9, [Ljava/lang/String;
-    :try_end_64
-    .catch Landroid/content/pm/PackageManager$NameNotFoundException; {:try_start_40 .. :try_end_64} :catch_68
+    move-object v9, v5
 
     .line 329
-    :goto_64
+    .end local v3  # "appInfo":Landroid/content/pm/ApplicationInfo;
+    :goto_66
     nop
 
     .line 317
-    add-int/lit8 v2, v2, 0x1
+    add-int/lit8 v4, v4, 0x1
 
-    goto :goto_3d
+    goto :goto_3f
 
     .line 327
-    :catch_68
+    :catch_6a
     move-exception v0
 
     .line 328
-    new-instance v1, Landroid/os/ParcelableException;
+    .local v0, "e":Landroid/content/pm/PackageManager$NameNotFoundException;
+    new-instance v3, Landroid/os/ParcelableException;
 
-    invoke-direct {v1, v0}, Landroid/os/ParcelableException;-><init>(Ljava/lang/Throwable;)V
+    invoke-direct {v3, v0}, Landroid/os/ParcelableException;-><init>(Ljava/lang/Throwable;)V
 
-    throw v1
+    throw v3
 
     .line 332
-    :cond_6f
-    new-instance v8, Landroid/content/pm/PackageStats;
+    .end local v0  # "e":Landroid/content/pm/PackageManager$NameNotFoundException;
+    .end local v4  # "i":I
+    :cond_71
+    new-instance v3, Landroid/content/pm/PackageStats;
 
-    invoke-direct {v8, v13}, Landroid/content/pm/PackageStats;-><init>(Ljava/lang/String;)V
+    invoke-direct {v3, v14}, Landroid/content/pm/PackageStats;-><init>(Ljava/lang/String;)V
+
+    move-object v8, v3
 
     .line 334
-    :try_start_74
-    iget-object v2, v0, Lcom/android/server/usage/StorageStatsService;->mInstaller:Lcom/android/server/pm/Installer;
+    .local v8, "stats":Landroid/content/pm/PackageStats;
+    :try_start_77
+    iget-object v3, v1, Lcom/android/server/usage/StorageStatsService;->mInstaller:Lcom/android/server/pm/Installer;
 
     invoke-static {}, Lcom/android/server/usage/StorageStatsService;->getDefaultFlags()I
 
-    move-result v6
+    move-result v7
+    :try_end_7d
+    .catch Lcom/android/server/pm/Installer$InstallerException; {:try_start_77 .. :try_end_7d} :catch_d5
 
-    move-object/from16 v3, p1
+    move-object/from16 v4, p1
 
-    move-object v4, v14
+    move-object v5, v11
 
-    move v5, v11
+    move v6, v12
 
-    move v7, v12
+    move-object/from16 v16, v8
 
-    move-object/from16 p3, v8
+    .end local v8  # "stats":Landroid/content/pm/PackageStats;
+    .local v16, "stats":Landroid/content/pm/PackageStats;
+    move v8, v13
 
-    move-object v8, v15
+    move-object/from16 v17, v9
 
-    move-object/from16 v16, v9
+    .end local v9  # "codePaths":[Ljava/lang/String;
+    .local v17, "codePaths":[Ljava/lang/String;
+    move-object v9, v10
 
-    move v1, v10
+    move-object/from16 v18, v10
 
-    move-object/from16 v10, p3
+    .end local v10  # "ceDataInodes":[J
+    .local v18, "ceDataInodes":[J
+    move-object/from16 v10, v17
 
-    invoke-virtual/range {v2 .. v10}, Lcom/android/server/pm/Installer;->getAppSize(Ljava/lang/String;[Ljava/lang/String;III[J[Ljava/lang/String;Landroid/content/pm/PackageStats;)V
+    move-object/from16 v19, v11
+
+    .end local v11  # "packageNames":[Ljava/lang/String;
+    .local v19, "packageNames":[Ljava/lang/String;
+    move-object/from16 v11, v16
+
+    :try_start_8f
+    invoke-virtual/range {v3 .. v11}, Lcom/android/server/pm/Installer;->getAppSize(Ljava/lang/String;[Ljava/lang/String;III[J[Ljava/lang/String;Landroid/content/pm/PackageStats;)V
 
     .line 337
-    const-string v2, "fw.verify_storage"
+    const-string v3, "fw.verify_storage"
 
-    invoke-static {v2, v1}, Landroid/os/SystemProperties;->getBoolean(Ljava/lang/String;Z)Z
+    invoke-static {v3, v0}, Landroid/os/SystemProperties;->getBoolean(Ljava/lang/String;Z)Z
 
-    move-result v1
+    move-result v0
 
-    if-eqz v1, :cond_bf
+    if-eqz v0, :cond_c9
 
     .line 338
-    new-instance v1, Landroid/content/pm/PackageStats;
+    new-instance v0, Landroid/content/pm/PackageStats;
 
-    invoke-direct {v1, v13}, Landroid/content/pm/PackageStats;-><init>(Ljava/lang/String;)V
+    invoke-direct {v0, v14}, Landroid/content/pm/PackageStats;-><init>(Ljava/lang/String;)V
 
     .line 339
-    iget-object v2, v0, Lcom/android/server/usage/StorageStatsService;->mInstaller:Lcom/android/server/pm/Installer;
+    .local v0, "manualStats":Landroid/content/pm/PackageStats;
+    iget-object v3, v1, Lcom/android/server/usage/StorageStatsService;->mInstaller:Lcom/android/server/pm/Installer;
 
-    const/4 v6, 0x0
+    const/4 v7, 0x0
 
-    move-object/from16 v3, p1
+    move-object/from16 v4, p1
 
-    move-object v4, v14
+    move-object/from16 v5, v19
 
-    move v5, v11
+    move v6, v12
 
-    move v7, v12
+    move v8, v13
 
-    move-object v8, v15
+    move-object/from16 v9, v18
 
-    move-object/from16 v9, v16
+    move-object/from16 v10, v17
 
-    move-object v10, v1
+    move-object v11, v0
 
-    invoke-virtual/range {v2 .. v10}, Lcom/android/server/pm/Installer;->getAppSize(Ljava/lang/String;[Ljava/lang/String;III[J[Ljava/lang/String;Landroid/content/pm/PackageStats;)V
+    invoke-virtual/range {v3 .. v11}, Lcom/android/server/pm/Installer;->getAppSize(Ljava/lang/String;[Ljava/lang/String;III[J[Ljava/lang/String;Landroid/content/pm/PackageStats;)V
 
     .line 341
-    new-instance v0, Ljava/lang/StringBuilder;
+    new-instance v3, Ljava/lang/StringBuilder;
 
-    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v2, "UID "
+    const-string v4, "UID "
 
-    invoke-virtual {v0, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    move/from16 v2, p2
+    invoke-virtual {v3, v2}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0, v2}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    move-result-object v3
+    :try_end_c1
+    .catch Lcom/android/server/pm/Installer$InstallerException; {:try_start_8f .. :try_end_c1} :catch_d1
 
-    move-result-object v0
+    move-object/from16 v4, v16
 
-    move-object/from16 v2, p3
+    .end local v16  # "stats":Landroid/content/pm/PackageStats;
+    .local v4, "stats":Landroid/content/pm/PackageStats;
+    :try_start_c3
+    invoke-static {v3, v0, v4}, Lcom/android/server/usage/StorageStatsService;->checkEquals(Ljava/lang/String;Landroid/content/pm/PackageStats;Landroid/content/pm/PackageStats;)V
+    :try_end_c6
+    .catch Lcom/android/server/pm/Installer$InstallerException; {:try_start_c3 .. :try_end_c6} :catch_c7
 
-    invoke-static {v0, v1, v2}, Lcom/android/server/usage/StorageStatsService;->checkEquals(Ljava/lang/String;Landroid/content/pm/PackageStats;Landroid/content/pm/PackageStats;)V
-    :try_end_be
-    .catch Lcom/android/server/pm/Installer$InstallerException; {:try_start_74 .. :try_end_be} :catch_c7
+    goto :goto_cb
 
-    goto :goto_c1
+    .line 343
+    .end local v0  # "manualStats":Landroid/content/pm/PackageStats;
+    :catch_c7
+    move-exception v0
+
+    goto :goto_dd
 
     .line 337
-    :cond_bf
-    move-object/from16 v2, p3
+    .end local v4  # "stats":Landroid/content/pm/PackageStats;
+    .restart local v16  # "stats":Landroid/content/pm/PackageStats;
+    :cond_c9
+    move-object/from16 v4, v16
 
     .line 345
-    :goto_c1
+    .end local v16  # "stats":Landroid/content/pm/PackageStats;
+    .restart local v4  # "stats":Landroid/content/pm/PackageStats;
+    :goto_cb
     nop
 
     .line 346
-    invoke-static {v2}, Lcom/android/server/usage/StorageStatsService;->translate(Landroid/content/pm/PackageStats;)Landroid/app/usage/StorageStats;
+    invoke-static {v4}, Lcom/android/server/usage/StorageStatsService;->translate(Landroid/content/pm/PackageStats;)Landroid/app/usage/StorageStats;
 
     move-result-object v0
 
     return-object v0
 
     .line 343
-    :catch_c7
+    .end local v4  # "stats":Landroid/content/pm/PackageStats;
+    .restart local v16  # "stats":Landroid/content/pm/PackageStats;
+    :catch_d1
     move-exception v0
 
-    .line 344
-    new-instance v1, Landroid/os/ParcelableException;
+    move-object/from16 v4, v16
 
-    new-instance v2, Ljava/io/IOException;
+    .end local v16  # "stats":Landroid/content/pm/PackageStats;
+    .restart local v4  # "stats":Landroid/content/pm/PackageStats;
+    goto :goto_dd
+
+    .end local v4  # "stats":Landroid/content/pm/PackageStats;
+    .end local v17  # "codePaths":[Ljava/lang/String;
+    .end local v18  # "ceDataInodes":[J
+    .end local v19  # "packageNames":[Ljava/lang/String;
+    .restart local v8  # "stats":Landroid/content/pm/PackageStats;
+    .restart local v9  # "codePaths":[Ljava/lang/String;
+    .restart local v10  # "ceDataInodes":[J
+    .restart local v11  # "packageNames":[Ljava/lang/String;
+    :catch_d5
+    move-exception v0
+
+    move-object v4, v8
+
+    move-object/from16 v17, v9
+
+    move-object/from16 v18, v10
+
+    move-object/from16 v19, v11
+
+    .line 344
+    .end local v8  # "stats":Landroid/content/pm/PackageStats;
+    .end local v9  # "codePaths":[Ljava/lang/String;
+    .end local v10  # "ceDataInodes":[J
+    .end local v11  # "packageNames":[Ljava/lang/String;
+    .local v0, "e":Lcom/android/server/pm/Installer$InstallerException;
+    .restart local v4  # "stats":Landroid/content/pm/PackageStats;
+    .restart local v17  # "codePaths":[Ljava/lang/String;
+    .restart local v18  # "ceDataInodes":[J
+    .restart local v19  # "packageNames":[Ljava/lang/String;
+    :goto_dd
+    new-instance v3, Landroid/os/ParcelableException;
+
+    new-instance v5, Ljava/io/IOException;
 
     invoke-virtual {v0}, Lcom/android/server/pm/Installer$InstallerException;->getMessage()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v6
 
-    invoke-direct {v2, v0}, Ljava/io/IOException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v5, v6}, Ljava/io/IOException;-><init>(Ljava/lang/String;)V
 
-    invoke-direct {v1, v2}, Landroid/os/ParcelableException;-><init>(Ljava/lang/Throwable;)V
+    invoke-direct {v3, v5}, Landroid/os/ParcelableException;-><init>(Ljava/lang/Throwable;)V
 
-    throw v1
+    throw v3
 .end method
 
 .method public queryStatsForUser(Ljava/lang/String;ILjava/lang/String;)Landroid/app/usage/StorageStats;
     .registers 13
+    .param p1, "volumeUuid"  # Ljava/lang/String;
+    .param p2, "userId"  # I
+    .param p3, "callingPackage"  # Ljava/lang/String;
 
     .line 351
     invoke-static {}, Landroid/os/UserHandle;->getCallingUserId()I
@@ -1770,15 +1995,19 @@
     .line 359
     invoke-direct {p0, p2}, Lcom/android/server/usage/StorageStatsService;->getAppIds(I)[I
 
-    move-result-object p3
+    move-result-object v0
 
     .line 360
-    new-instance v0, Landroid/content/pm/PackageStats;
+    .local v0, "appIds":[I
+    new-instance v2, Landroid/content/pm/PackageStats;
 
-    invoke-direct {v0, v1}, Landroid/content/pm/PackageStats;-><init>(Ljava/lang/String;)V
+    invoke-direct {v2, v1}, Landroid/content/pm/PackageStats;-><init>(Ljava/lang/String;)V
+
+    move-object v8, v2
 
     .line 362
-    :try_start_1f
+    .local v8, "stats":Landroid/content/pm/PackageStats;
+    :try_start_20
     iget-object v2, p0, Lcom/android/server/usage/StorageStatsService;->mInstaller:Lcom/android/server/pm/Installer;
 
     invoke-static {}, Lcom/android/server/usage/StorageStatsService;->getDefaultFlags()I
@@ -1789,9 +2018,9 @@
 
     move v4, p2
 
-    move-object v6, p3
+    move-object v6, v0
 
-    move-object v7, v0
+    move-object v7, v8
 
     invoke-virtual/range {v2 .. v7}, Lcom/android/server/pm/Installer;->getUserSize(Ljava/lang/String;II[ILandroid/content/pm/PackageStats;)V
 
@@ -1804,14 +2033,17 @@
 
     move-result v2
 
-    if-eqz v2, :cond_58
+    if-eqz v2, :cond_5a
 
     .line 365
-    new-instance v8, Landroid/content/pm/PackageStats;
+    new-instance v2, Landroid/content/pm/PackageStats;
 
-    invoke-direct {v8, v1}, Landroid/content/pm/PackageStats;-><init>(Ljava/lang/String;)V
+    invoke-direct {v2, v1}, Landroid/content/pm/PackageStats;-><init>(Ljava/lang/String;)V
+
+    move-object v1, v2
 
     .line 366
+    .local v1, "manualStats":Landroid/content/pm/PackageStats;
     iget-object v2, p0, Lcom/android/server/usage/StorageStatsService;->mInstaller:Lcom/android/server/pm/Installer;
 
     const/4 v5, 0x0
@@ -1820,58 +2052,60 @@
 
     move v4, p2
 
-    move-object v6, p3
+    move-object v6, v0
 
-    move-object v7, v8
+    move-object v7, v1
 
     invoke-virtual/range {v2 .. v7}, Lcom/android/server/pm/Installer;->getUserSize(Ljava/lang/String;II[ILandroid/content/pm/PackageStats;)V
 
     .line 367
-    new-instance p1, Ljava/lang/StringBuilder;
+    new-instance v2, Ljava/lang/StringBuilder;
 
-    invoke-direct {p1}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string p3, "User "
+    const-string v3, "User "
 
-    invoke-virtual {p1, p3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p1, p2}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, p2}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v2
 
-    invoke-static {p1, v8, v0}, Lcom/android/server/usage/StorageStatsService;->checkEquals(Ljava/lang/String;Landroid/content/pm/PackageStats;Landroid/content/pm/PackageStats;)V
-    :try_end_58
-    .catch Lcom/android/server/pm/Installer$InstallerException; {:try_start_1f .. :try_end_58} :catch_5e
+    invoke-static {v2, v1, v8}, Lcom/android/server/usage/StorageStatsService;->checkEquals(Ljava/lang/String;Landroid/content/pm/PackageStats;Landroid/content/pm/PackageStats;)V
+    :try_end_5a
+    .catch Lcom/android/server/pm/Installer$InstallerException; {:try_start_20 .. :try_end_5a} :catch_60
 
     .line 371
-    :cond_58
+    .end local v1  # "manualStats":Landroid/content/pm/PackageStats;
+    :cond_5a
     nop
 
     .line 372
-    invoke-static {v0}, Lcom/android/server/usage/StorageStatsService;->translate(Landroid/content/pm/PackageStats;)Landroid/app/usage/StorageStats;
+    invoke-static {v8}, Lcom/android/server/usage/StorageStatsService;->translate(Landroid/content/pm/PackageStats;)Landroid/app/usage/StorageStats;
 
-    move-result-object p1
+    move-result-object v1
 
-    return-object p1
+    return-object v1
 
     .line 369
-    :catch_5e
-    move-exception p1
+    :catch_60
+    move-exception v1
 
     .line 370
-    new-instance p2, Landroid/os/ParcelableException;
+    .local v1, "e":Lcom/android/server/pm/Installer$InstallerException;
+    new-instance v2, Landroid/os/ParcelableException;
 
-    new-instance p3, Ljava/io/IOException;
+    new-instance v3, Ljava/io/IOException;
 
-    invoke-virtual {p1}, Lcom/android/server/pm/Installer$InstallerException;->getMessage()Ljava/lang/String;
+    invoke-virtual {v1}, Lcom/android/server/pm/Installer$InstallerException;->getMessage()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v4
 
-    invoke-direct {p3, p1}, Ljava/io/IOException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v3, v4}, Ljava/io/IOException;-><init>(Ljava/lang/String;)V
 
-    invoke-direct {p2, p3}, Landroid/os/ParcelableException;-><init>(Ljava/lang/Throwable;)V
+    invoke-direct {v2, v3}, Landroid/os/ParcelableException;-><init>(Ljava/lang/Throwable;)V
 
-    throw p2
+    throw v2
 .end method

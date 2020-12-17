@@ -22,7 +22,7 @@
 .method static constructor <clinit>()V
     .registers 3
 
-    .line 333
+    .line 338
     invoke-static {}, Landroid/net/NetworkRequest$Type;->values()[Landroid/net/NetworkRequest$Type;
 
     move-result-object v0

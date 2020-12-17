@@ -29,6 +29,7 @@
 # direct methods
 .method public constructor <init>(Lcom/android/server/textservices/TextServicesManagerService$SpellCheckerBindGroup;)V
     .registers 2
+    .param p1, "group"  # Lcom/android/server/textservices/TextServicesManagerService$SpellCheckerBindGroup;
 
     .line 1047
     invoke-direct {p0}, Landroid/os/RemoteCallbackList;-><init>()V
@@ -55,6 +56,7 @@
 
 .method public onCallbackDied(Lcom/android/internal/textservice/ISpellCheckerSessionListener;)V
     .registers 3
+    .param p1, "listener"  # Lcom/android/internal/textservice/ISpellCheckerSessionListener;
 
     .line 1053
     iget-object v0, p0, Lcom/android/server/textservices/TextServicesManagerService$InternalDeathRecipients;->mGroup:Lcom/android/server/textservices/TextServicesManagerService$SpellCheckerBindGroup;

@@ -63,6 +63,7 @@
 
 .method constructor <init>(Lcom/android/server/location/GnssBatchingProvider$GnssBatchingProviderNative;)V
     .registers 2
+    .param p1, "gnssBatchingProviderNative"  # Lcom/android/server/location/GnssBatchingProvider$GnssBatchingProviderNative;
     .annotation build Lcom/android/internal/annotations/VisibleForTesting;
     .end annotation
 
@@ -88,14 +89,16 @@
 .end method
 
 .method static synthetic access$100(JZ)Z
-    .registers 3
+    .registers 4
+    .param p0, "x0"  # J
+    .param p2, "x1"  # Z
 
     .line 13
     invoke-static {p0, p1, p2}, Lcom/android/server/location/GnssBatchingProvider;->native_start_batch(JZ)Z
 
-    move-result p0
+    move-result v0
 
-    return p0
+    return v0
 .end method
 
 .method static synthetic access$200()V
@@ -285,6 +288,8 @@
 
 .method public start(JZ)Z
     .registers 6
+    .param p1, "periodNanos"  # J
+    .param p3, "wakeOnFifoFull"  # Z
 
     .line 52
     iget-boolean v0, p0, Lcom/android/server/location/GnssBatchingProvider;->mEnabled:Z
@@ -299,32 +304,32 @@
     if-gtz v0, :cond_27
 
     .line 56
-    new-instance p3, Ljava/lang/StringBuilder;
+    new-instance v0, Ljava/lang/StringBuilder;
 
-    invoke-direct {p3}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v0, "Invalid periodNanos "
+    const-string v1, "Invalid periodNanos "
 
-    invoke-virtual {p3, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p3, p1, p2}, Ljava/lang/StringBuilder;->append(J)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, p1, p2}, Ljava/lang/StringBuilder;->append(J)Ljava/lang/StringBuilder;
 
-    const-string p1, " in batching request, not started"
+    const-string v1, " in batching request, not started"
 
-    invoke-virtual {p3, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    const-string p2, "GnssBatchingProvider"
+    const-string v1, "GnssBatchingProvider"
 
-    invoke-static {p2, p1}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v0}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 58
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    return p1
+    return v0
 
     .line 60
     :cond_27
@@ -349,17 +354,17 @@
 
     .line 65
     :cond_37
-    iget-boolean p1, p0, Lcom/android/server/location/GnssBatchingProvider;->mStarted:Z
+    iget-boolean v0, p0, Lcom/android/server/location/GnssBatchingProvider;->mStarted:Z
 
-    return p1
+    return v0
 
     .line 53
     :cond_3a
-    new-instance p1, Ljava/lang/IllegalStateException;
+    new-instance v0, Ljava/lang/IllegalStateException;
 
-    invoke-direct {p1}, Ljava/lang/IllegalStateException;-><init>()V
+    invoke-direct {v0}, Ljava/lang/IllegalStateException;-><init>()V
 
-    throw p1
+    throw v0
 .end method
 
 .method public stop()Z
@@ -373,6 +378,7 @@
     move-result v0
 
     .line 84
+    .local v0, "stopped":Z
     if-eqz v0, :cond_b
 
     .line 85

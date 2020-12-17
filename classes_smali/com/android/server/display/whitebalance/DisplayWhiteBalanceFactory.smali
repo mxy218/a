@@ -13,14 +13,17 @@
 .method private constructor <init>()V
     .registers 1
 
-    .line 101
+    .line 86
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
     return-void
 .end method
 
 .method public static create(Landroid/os/Handler;Landroid/hardware/SensorManager;Landroid/content/res/Resources;)Lcom/android/server/display/whitebalance/DisplayWhiteBalanceController;
-    .registers 20
+    .registers 24
+    .param p0, "handler"  # Landroid/os/Handler;
+    .param p1, "sensorManager"  # Landroid/hardware/SensorManager;
+    .param p2, "resources"  # Landroid/content/res/Resources;
 
     .line 59
     move-object/from16 v0, p2
@@ -28,427 +31,460 @@
     .line 60
     invoke-static/range {p0 .. p2}, Lcom/android/server/display/whitebalance/DisplayWhiteBalanceFactory;->createBrightnessSensor(Landroid/os/Handler;Landroid/hardware/SensorManager;Landroid/content/res/Resources;)Lcom/android/server/display/whitebalance/AmbientSensor$AmbientBrightnessSensor;
 
-    move-result-object v14
+    move-result-object v11
 
     .line 61
+    .local v11, "brightnessSensor":Lcom/android/server/display/whitebalance/AmbientSensor$AmbientBrightnessSensor;
     invoke-static/range {p2 .. p2}, Lcom/android/server/display/whitebalance/DisplayWhiteBalanceFactory;->createBrightnessFilter(Landroid/content/res/Resources;)Lcom/android/server/display/whitebalance/AmbientFilter;
 
-    move-result-object v2
+    move-result-object v12
 
     .line 62
+    .local v12, "brightnessFilter":Lcom/android/server/display/whitebalance/AmbientFilter;
     nop
 
     .line 63
     invoke-static/range {p0 .. p2}, Lcom/android/server/display/whitebalance/DisplayWhiteBalanceFactory;->createColorTemperatureSensor(Landroid/os/Handler;Landroid/hardware/SensorManager;Landroid/content/res/Resources;)Lcom/android/server/display/whitebalance/AmbientSensor$AmbientColorTemperatureSensor;
 
-    move-result-object v15
+    move-result-object v13
 
     .line 64
+    .local v13, "colorTemperatureSensor":Lcom/android/server/display/whitebalance/AmbientSensor$AmbientColorTemperatureSensor;
     invoke-static/range {p2 .. p2}, Lcom/android/server/display/whitebalance/DisplayWhiteBalanceFactory;->createColorTemperatureFilter(Landroid/content/res/Resources;)Lcom/android/server/display/whitebalance/AmbientFilter;
 
-    move-result-object v4
+    move-result-object v14
 
     .line 65
+    .local v14, "colorTemperatureFilter":Lcom/android/server/display/whitebalance/AmbientFilter;
     invoke-static/range {p2 .. p2}, Lcom/android/server/display/whitebalance/DisplayWhiteBalanceFactory;->createThrottler(Landroid/content/res/Resources;)Lcom/android/server/display/whitebalance/DisplayWhiteBalanceThrottler;
 
-    move-result-object v5
+    move-result-object v15
 
     .line 66
-    const v1, 0x107003a
-
-    invoke-static {v0, v1}, Lcom/android/server/display/whitebalance/DisplayWhiteBalanceFactory;->getFloatArray(Landroid/content/res/Resources;I)[F
-
-    move-result-object v6
-
-    .line 69
-    const v1, 0x1070039
-
-    invoke-static {v0, v1}, Lcom/android/server/display/whitebalance/DisplayWhiteBalanceFactory;->getFloatArray(Landroid/content/res/Resources;I)[F
-
-    move-result-object v7
-
-    .line 72
-    const v1, 0x10500a2
+    .local v15, "throttler":Lcom/android/server/display/whitebalance/DisplayWhiteBalanceThrottler;
+    const v1, 0x10500a0
 
     invoke-static {v0, v1}, Lcom/android/server/display/whitebalance/DisplayWhiteBalanceFactory;->getFloat(Landroid/content/res/Resources;I)F
 
-    move-result v8
+    move-result v16
 
-    .line 75
-    const v1, 0x1070037
-
-    invoke-static {v0, v1}, Lcom/android/server/display/whitebalance/DisplayWhiteBalanceFactory;->getFloatArray(Landroid/content/res/Resources;I)[F
-
-    move-result-object v9
-
-    .line 78
-    const v1, 0x1070036
-
-    invoke-static {v0, v1}, Lcom/android/server/display/whitebalance/DisplayWhiteBalanceFactory;->getFloatArray(Landroid/content/res/Resources;I)[F
-
-    move-result-object v10
-
-    .line 81
+    .line 69
+    .local v16, "lowLightAmbientBrightnessThreshold":F
     const v1, 0x10500a1
 
     invoke-static {v0, v1}, Lcom/android/server/display/whitebalance/DisplayWhiteBalanceFactory;->getFloat(Landroid/content/res/Resources;I)F
 
-    move-result v11
+    move-result v17
 
-    .line 84
-    const v1, 0x1070030
-
-    invoke-static {v0, v1}, Lcom/android/server/display/whitebalance/DisplayWhiteBalanceFactory;->getFloatArray(Landroid/content/res/Resources;I)[F
-
-    move-result-object v12
-
-    .line 86
-    const v1, 0x1070033
+    .line 72
+    .local v17, "lowLightAmbientColorTemperature":F
+    const v1, 0x107002b
 
     invoke-static {v0, v1}, Lcom/android/server/display/whitebalance/DisplayWhiteBalanceFactory;->getFloatArray(Landroid/content/res/Resources;I)[F
 
-    move-result-object v13
+    move-result-object v18
 
-    .line 88
-    new-instance v3, Lcom/android/server/display/whitebalance/DisplayWhiteBalanceController;
+    .line 74
+    .local v18, "ambientColorTemperatures":[F
+    const v1, 0x107002e
 
-    move-object v0, v3
+    invoke-static {v0, v1}, Lcom/android/server/display/whitebalance/DisplayWhiteBalanceFactory;->getFloatArray(Landroid/content/res/Resources;I)[F
 
-    move-object v1, v14
+    move-result-object v19
 
-    move-object/from16 v16, v14
+    .line 76
+    .local v19, "displayColorTempeartures":[F
+    new-instance v20, Lcom/android/server/display/whitebalance/DisplayWhiteBalanceController;
 
-    move-object v14, v3
+    move-object/from16 v1, v20
 
-    move-object v3, v15
+    move-object v2, v11
 
-    invoke-direct/range {v0 .. v13}, Lcom/android/server/display/whitebalance/DisplayWhiteBalanceController;-><init>(Lcom/android/server/display/whitebalance/AmbientSensor$AmbientBrightnessSensor;Lcom/android/server/display/whitebalance/AmbientFilter;Lcom/android/server/display/whitebalance/AmbientSensor$AmbientColorTemperatureSensor;Lcom/android/server/display/whitebalance/AmbientFilter;Lcom/android/server/display/whitebalance/DisplayWhiteBalanceThrottler;[F[FF[F[FF[F[F)V
+    move-object v3, v12
 
-    .line 95
-    move-object/from16 v0, v16
+    move-object v4, v13
 
-    invoke-virtual {v0, v14}, Lcom/android/server/display/whitebalance/AmbientSensor$AmbientBrightnessSensor;->setCallbacks(Lcom/android/server/display/whitebalance/AmbientSensor$AmbientBrightnessSensor$Callbacks;)Z
+    move-object v5, v14
 
-    .line 96
-    invoke-virtual {v15, v14}, Lcom/android/server/display/whitebalance/AmbientSensor$AmbientColorTemperatureSensor;->setCallbacks(Lcom/android/server/display/whitebalance/AmbientSensor$AmbientColorTemperatureSensor$Callbacks;)Z
+    move-object v6, v15
 
-    .line 97
-    return-object v14
+    move/from16 v7, v16
+
+    move/from16 v8, v17
+
+    move-object/from16 v9, v18
+
+    move-object/from16 v10, v19
+
+    invoke-direct/range {v1 .. v10}, Lcom/android/server/display/whitebalance/DisplayWhiteBalanceController;-><init>(Lcom/android/server/display/whitebalance/AmbientSensor$AmbientBrightnessSensor;Lcom/android/server/display/whitebalance/AmbientFilter;Lcom/android/server/display/whitebalance/AmbientSensor$AmbientColorTemperatureSensor;Lcom/android/server/display/whitebalance/AmbientFilter;Lcom/android/server/display/whitebalance/DisplayWhiteBalanceThrottler;FF[F[F)V
+
+    .line 80
+    .local v1, "controller":Lcom/android/server/display/whitebalance/DisplayWhiteBalanceController;
+    invoke-virtual {v11, v1}, Lcom/android/server/display/whitebalance/AmbientSensor$AmbientBrightnessSensor;->setCallbacks(Lcom/android/server/display/whitebalance/AmbientSensor$AmbientBrightnessSensor$Callbacks;)Z
+
+    .line 81
+    invoke-virtual {v13, v1}, Lcom/android/server/display/whitebalance/AmbientSensor$AmbientColorTemperatureSensor;->setCallbacks(Lcom/android/server/display/whitebalance/AmbientSensor$AmbientColorTemperatureSensor$Callbacks;)Z
+
+    .line 82
+    return-object v1
 .end method
 
-.method public static createBrightnessFilter(Landroid/content/res/Resources;)Lcom/android/server/display/whitebalance/AmbientFilter;
-    .registers 4
+.method static createBrightnessFilter(Landroid/content/res/Resources;)Lcom/android/server/display/whitebalance/AmbientFilter;
+    .registers 5
+    .param p0, "resources"  # Landroid/content/res/Resources;
+    .annotation build Lcom/android/internal/annotations/VisibleForTesting;
+    .end annotation
 
-    .line 119
-    const v0, 0x10e0044
+    .line 105
+    const v0, 0x10e0043
 
     invoke-virtual {p0, v0}, Landroid/content/res/Resources;->getInteger(I)I
 
     move-result v0
 
-    .line 121
+    .line 107
+    .local v0, "horizon":I
+    const v1, 0x105009e
+
+    invoke-static {p0, v1}, Lcom/android/server/display/whitebalance/DisplayWhiteBalanceFactory;->getFloat(Landroid/content/res/Resources;I)F
+
+    move-result v1
+
+    .line 109
+    .local v1, "intercept":F
+    invoke-static {v1}, Ljava/lang/Float;->isNaN(F)Z
+
+    move-result v2
+
+    if-nez v2, :cond_1c
+
+    .line 110
+    new-instance v2, Lcom/android/server/display/whitebalance/AmbientFilter$WeightedMovingAverageAmbientFilter;
+
+    const-string v3, "AmbientBrightnessFilter"
+
+    invoke-direct {v2, v3, v0, v1}, Lcom/android/server/display/whitebalance/AmbientFilter$WeightedMovingAverageAmbientFilter;-><init>(Ljava/lang/String;IF)V
+
+    return-object v2
+
+    .line 113
+    :cond_1c
+    new-instance v2, Ljava/lang/IllegalArgumentException;
+
+    const-string/jumbo v3, "missing configurations: expected config_displayWhiteBalanceBrightnessFilterIntercept"
+
+    invoke-direct {v2, v3}, Ljava/lang/IllegalArgumentException;-><init>(Ljava/lang/String;)V
+
+    throw v2
+.end method
+
+.method public static createBrightnessSensor(Landroid/os/Handler;Landroid/hardware/SensorManager;Landroid/content/res/Resources;)Lcom/android/server/display/whitebalance/AmbientSensor$AmbientBrightnessSensor;
+    .registers 5
+    .param p0, "handler"  # Landroid/os/Handler;
+    .param p1, "sensorManager"  # Landroid/hardware/SensorManager;
+    .param p2, "resources"  # Landroid/content/res/Resources;
+    .annotation build Lcom/android/internal/annotations/VisibleForTesting;
+    .end annotation
+
+    .line 94
+    const v0, 0x10e0044
+
+    invoke-virtual {p2, v0}, Landroid/content/res/Resources;->getInteger(I)I
+
+    move-result v0
+
+    .line 96
+    .local v0, "rate":I
+    new-instance v1, Lcom/android/server/display/whitebalance/AmbientSensor$AmbientBrightnessSensor;
+
+    invoke-direct {v1, p0, p1, v0}, Lcom/android/server/display/whitebalance/AmbientSensor$AmbientBrightnessSensor;-><init>(Landroid/os/Handler;Landroid/hardware/SensorManager;I)V
+
+    return-object v1
+.end method
+
+.method private static createColorTemperatureFilter(Landroid/content/res/Resources;)Lcom/android/server/display/whitebalance/AmbientFilter;
+    .registers 5
+    .param p0, "resources"  # Landroid/content/res/Resources;
+
+    .line 134
+    const v0, 0x10e0046
+
+    invoke-virtual {p0, v0}, Landroid/content/res/Resources;->getInteger(I)I
+
+    move-result v0
+
+    .line 137
+    .local v0, "horizon":I
     const v1, 0x105009f
 
     invoke-static {p0, v1}, Lcom/android/server/display/whitebalance/DisplayWhiteBalanceFactory;->getFloat(Landroid/content/res/Resources;I)F
 
-    move-result p0
-
-    .line 123
-    invoke-static {p0}, Ljava/lang/Float;->isNaN(F)Z
-
     move-result v1
 
-    if-nez v1, :cond_1c
+    .line 140
+    .local v1, "intercept":F
+    invoke-static {v1}, Ljava/lang/Float;->isNaN(F)Z
 
-    .line 124
-    new-instance v1, Lcom/android/server/display/whitebalance/AmbientFilter$WeightedMovingAverageAmbientFilter;
+    move-result v2
 
-    const-string v2, "AmbientBrightnessFilter"
+    if-nez v2, :cond_1c
 
-    invoke-direct {v1, v2, v0, p0}, Lcom/android/server/display/whitebalance/AmbientFilter$WeightedMovingAverageAmbientFilter;-><init>(Ljava/lang/String;IF)V
+    .line 141
+    new-instance v2, Lcom/android/server/display/whitebalance/AmbientFilter$WeightedMovingAverageAmbientFilter;
 
-    return-object v1
+    const-string v3, "AmbientColorTemperatureFilter"
 
-    .line 127
+    invoke-direct {v2, v3, v0, v1}, Lcom/android/server/display/whitebalance/AmbientFilter$WeightedMovingAverageAmbientFilter;-><init>(Ljava/lang/String;IF)V
+
+    return-object v2
+
+    .line 144
     :cond_1c
-    new-instance p0, Ljava/lang/IllegalArgumentException;
+    new-instance v2, Ljava/lang/IllegalArgumentException;
 
-    const-string v0, "missing configurations: expected config_displayWhiteBalanceBrightnessFilterIntercept"
+    const-string/jumbo v3, "missing configurations: expected config_displayWhiteBalanceColorTemperatureFilterIntercept"
 
-    invoke-direct {p0, v0}, Ljava/lang/IllegalArgumentException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v2, v3}, Ljava/lang/IllegalArgumentException;-><init>(Ljava/lang/String;)V
 
-    throw p0
-.end method
-
-.method public static createBrightnessSensor(Landroid/os/Handler;Landroid/hardware/SensorManager;Landroid/content/res/Resources;)Lcom/android/server/display/whitebalance/AmbientSensor$AmbientBrightnessSensor;
-    .registers 4
-    .annotation build Lcom/android/internal/annotations/VisibleForTesting;
-    .end annotation
-
-    .line 109
-    const v0, 0x10e0045
-
-    invoke-virtual {p2, v0}, Landroid/content/res/Resources;->getInteger(I)I
-
-    move-result p2
-
-    .line 111
-    new-instance v0, Lcom/android/server/display/whitebalance/AmbientSensor$AmbientBrightnessSensor;
-
-    invoke-direct {v0, p0, p1, p2}, Lcom/android/server/display/whitebalance/AmbientSensor$AmbientBrightnessSensor;-><init>(Landroid/os/Handler;Landroid/hardware/SensorManager;I)V
-
-    return-object v0
-.end method
-
-.method private static createColorTemperatureFilter(Landroid/content/res/Resources;)Lcom/android/server/display/whitebalance/AmbientFilter;
-    .registers 4
-
-    .line 147
-    const v0, 0x10e0047
-
-    invoke-virtual {p0, v0}, Landroid/content/res/Resources;->getInteger(I)I
-
-    move-result v0
-
-    .line 150
-    const v1, 0x10500a0
-
-    invoke-static {p0, v1}, Lcom/android/server/display/whitebalance/DisplayWhiteBalanceFactory;->getFloat(Landroid/content/res/Resources;I)F
-
-    move-result p0
-
-    .line 153
-    invoke-static {p0}, Ljava/lang/Float;->isNaN(F)Z
-
-    move-result v1
-
-    if-nez v1, :cond_1c
-
-    .line 154
-    new-instance v1, Lcom/android/server/display/whitebalance/AmbientFilter$WeightedMovingAverageAmbientFilter;
-
-    const-string v2, "AmbientColorTemperatureFilter"
-
-    invoke-direct {v1, v2, v0, p0}, Lcom/android/server/display/whitebalance/AmbientFilter$WeightedMovingAverageAmbientFilter;-><init>(Ljava/lang/String;IF)V
-
-    return-object v1
-
-    .line 157
-    :cond_1c
-    new-instance p0, Ljava/lang/IllegalArgumentException;
-
-    const-string v0, "missing configurations: expected config_displayWhiteBalanceColorTemperatureFilterIntercept"
-
-    invoke-direct {p0, v0}, Ljava/lang/IllegalArgumentException;-><init>(Ljava/lang/String;)V
-
-    throw p0
+    throw v2
 .end method
 
 .method public static createColorTemperatureSensor(Landroid/os/Handler;Landroid/hardware/SensorManager;Landroid/content/res/Resources;)Lcom/android/server/display/whitebalance/AmbientSensor$AmbientColorTemperatureSensor;
-    .registers 5
+    .registers 6
+    .param p0, "handler"  # Landroid/os/Handler;
+    .param p1, "sensorManager"  # Landroid/hardware/SensorManager;
+    .param p2, "resources"  # Landroid/content/res/Resources;
     .annotation build Lcom/android/internal/annotations/VisibleForTesting;
     .end annotation
 
-    .line 137
-    const v0, 0x1040170
+    .line 124
+    const v0, 0x104016a
 
     invoke-virtual {p2, v0}, Landroid/content/res/Resources;->getString(I)Ljava/lang/String;
 
     move-result-object v0
 
-    .line 140
-    const v1, 0x10e004a
+    .line 127
+    .local v0, "name":Ljava/lang/String;
+    const v1, 0x10e0049
 
     invoke-virtual {p2, v1}, Landroid/content/res/Resources;->getInteger(I)I
 
-    move-result p2
+    move-result v1
 
-    .line 143
-    new-instance v1, Lcom/android/server/display/whitebalance/AmbientSensor$AmbientColorTemperatureSensor;
+    .line 130
+    .local v1, "rate":I
+    new-instance v2, Lcom/android/server/display/whitebalance/AmbientSensor$AmbientColorTemperatureSensor;
 
-    invoke-direct {v1, p0, p1, v0, p2}, Lcom/android/server/display/whitebalance/AmbientSensor$AmbientColorTemperatureSensor;-><init>(Landroid/os/Handler;Landroid/hardware/SensorManager;Ljava/lang/String;I)V
+    invoke-direct {v2, p0, p1, v0, v1}, Lcom/android/server/display/whitebalance/AmbientSensor$AmbientColorTemperatureSensor;-><init>(Landroid/os/Handler;Landroid/hardware/SensorManager;Ljava/lang/String;I)V
 
-    return-object v1
+    return-object v2
 .end method
 
 .method private static createThrottler(Landroid/content/res/Resources;)Lcom/android/server/display/whitebalance/DisplayWhiteBalanceThrottler;
-    .registers 8
+    .registers 13
+    .param p0, "resources"  # Landroid/content/res/Resources;
 
-    .line 162
-    const v0, 0x10e004b
-
-    invoke-virtual {p0, v0}, Landroid/content/res/Resources;->getInteger(I)I
-
-    move-result v2
-
-    .line 164
-    const v0, 0x10e004c
+    .line 149
+    const v0, 0x10e004a
 
     invoke-virtual {p0, v0}, Landroid/content/res/Resources;->getInteger(I)I
 
-    move-result v3
+    move-result v0
 
-    .line 166
-    const v0, 0x1070031
+    .line 151
+    .local v0, "increaseDebounce":I
+    const v1, 0x10e004b
 
-    invoke-static {p0, v0}, Lcom/android/server/display/whitebalance/DisplayWhiteBalanceFactory;->getFloatArray(Landroid/content/res/Resources;I)[F
+    invoke-virtual {p0, v1}, Landroid/content/res/Resources;->getInteger(I)I
 
-    move-result-object v4
+    move-result v7
 
-    .line 168
-    const v0, 0x1070038
+    .line 153
+    .local v7, "decreaseDebounce":I
+    const v1, 0x107002c
 
-    invoke-static {p0, v0}, Lcom/android/server/display/whitebalance/DisplayWhiteBalanceFactory;->getFloatArray(Landroid/content/res/Resources;I)[F
+    invoke-static {p0, v1}, Lcom/android/server/display/whitebalance/DisplayWhiteBalanceFactory;->getFloatArray(Landroid/content/res/Resources;I)[F
 
-    move-result-object v5
+    move-result-object v8
 
-    .line 170
-    const v0, 0x1070032
+    .line 155
+    .local v8, "baseThresholds":[F
+    const v1, 0x1070031
 
-    invoke-static {p0, v0}, Lcom/android/server/display/whitebalance/DisplayWhiteBalanceFactory;->getFloatArray(Landroid/content/res/Resources;I)[F
+    invoke-static {p0, v1}, Lcom/android/server/display/whitebalance/DisplayWhiteBalanceFactory;->getFloatArray(Landroid/content/res/Resources;I)[F
 
-    move-result-object v6
+    move-result-object v9
 
-    .line 172
-    new-instance p0, Lcom/android/server/display/whitebalance/DisplayWhiteBalanceThrottler;
+    .line 157
+    .local v9, "increaseThresholds":[F
+    const v1, 0x107002d
 
-    move-object v1, p0
+    invoke-static {p0, v1}, Lcom/android/server/display/whitebalance/DisplayWhiteBalanceFactory;->getFloatArray(Landroid/content/res/Resources;I)[F
+
+    move-result-object v10
+
+    .line 159
+    .local v10, "decreaseThresholds":[F
+    new-instance v11, Lcom/android/server/display/whitebalance/DisplayWhiteBalanceThrottler;
+
+    move-object v1, v11
+
+    move v2, v0
+
+    move v3, v7
+
+    move-object v4, v8
+
+    move-object v5, v9
+
+    move-object v6, v10
 
     invoke-direct/range {v1 .. v6}, Lcom/android/server/display/whitebalance/DisplayWhiteBalanceThrottler;-><init>(II[F[F[F)V
 
-    return-object p0
+    return-object v11
 .end method
 
 .method private static getFloat(Landroid/content/res/Resources;I)F
-    .registers 4
+    .registers 5
+    .param p0, "resources"  # Landroid/content/res/Resources;
+    .param p1, "id"  # I
 
-    .line 177
+    .line 164
     new-instance v0, Landroid/util/TypedValue;
 
     invoke-direct {v0}, Landroid/util/TypedValue;-><init>()V
 
-    .line 178
+    .line 165
+    .local v0, "value":Landroid/util/TypedValue;
     const/4 v1, 0x1
 
     invoke-virtual {p0, p1, v0, v1}, Landroid/content/res/Resources;->getValue(ILandroid/util/TypedValue;Z)V
 
-    .line 179
-    iget p0, v0, Landroid/util/TypedValue;->type:I
+    .line 166
+    iget v1, v0, Landroid/util/TypedValue;->type:I
 
-    const/4 p1, 0x4
+    const/4 v2, 0x4
 
-    if-eq p0, p1, :cond_11
+    if-eq v1, v2, :cond_11
 
-    .line 180
-    const/high16 p0, 0x7fc00000  # Float.NaN
+    .line 167
+    const/high16 v1, 0x7fc00000  # Float.NaN
 
-    return p0
+    return v1
 
-    .line 182
+    .line 169
     :cond_11
     invoke-virtual {v0}, Landroid/util/TypedValue;->getFloat()F
 
-    move-result p0
+    move-result v1
 
-    return p0
+    return v1
 .end method
 
 .method private static getFloatArray(Landroid/content/res/Resources;I)[F
-    .registers 5
+    .registers 7
+    .param p0, "resources"  # Landroid/content/res/Resources;
+    .param p1, "id"  # I
 
-    .line 186
+    .line 173
     invoke-virtual {p0, p1}, Landroid/content/res/Resources;->obtainTypedArray(I)Landroid/content/res/TypedArray;
 
-    move-result-object p0
+    move-result-object v0
 
-    .line 188
+    .line 175
+    .local v0, "array":Landroid/content/res/TypedArray;
     :try_start_4
-    invoke-virtual {p0}, Landroid/content/res/TypedArray;->length()I
+    invoke-virtual {v0}, Landroid/content/res/TypedArray;->length()I
 
-    move-result p1
+    move-result v1
     :try_end_8
     .catchall {:try_start_4 .. :try_end_8} :catchall_37
 
-    const/4 v0, 0x0
+    const/4 v2, 0x0
 
-    if-nez p1, :cond_10
+    if-nez v1, :cond_10
 
-    .line 189
+    .line 176
     nop
 
-    .line 200
-    invoke-virtual {p0}, Landroid/content/res/TypedArray;->recycle()V
+    .line 187
+    invoke-virtual {v0}, Landroid/content/res/TypedArray;->recycle()V
 
-    .line 189
-    return-object v0
+    .line 176
+    return-object v2
 
-    .line 191
+    .line 178
     :cond_10
     :try_start_10
-    invoke-virtual {p0}, Landroid/content/res/TypedArray;->length()I
+    invoke-virtual {v0}, Landroid/content/res/TypedArray;->length()I
 
-    move-result p1
+    move-result v1
 
-    new-array p1, p1, [F
+    new-array v1, v1, [F
 
-    .line 192
-    const/4 v1, 0x0
+    .line 179
+    .local v1, "values":[F
+    const/4 v3, 0x0
 
+    .local v3, "i":I
     :goto_17
-    array-length v2, p1
+    array-length v4, v1
 
-    if-ge v1, v2, :cond_32
+    if-ge v3, v4, :cond_32
 
-    .line 193
-    const/high16 v2, 0x7fc00000  # Float.NaN
+    .line 180
+    const/high16 v4, 0x7fc00000  # Float.NaN
 
-    invoke-virtual {p0, v1, v2}, Landroid/content/res/TypedArray;->getFloat(IF)F
+    invoke-virtual {v0, v3, v4}, Landroid/content/res/TypedArray;->getFloat(IF)F
 
-    move-result v2
+    move-result v4
 
-    aput v2, p1, v1
+    aput v4, v1, v3
 
-    .line 194
-    aget v2, p1, v1
+    .line 181
+    aget v4, v1, v3
 
-    invoke-static {v2}, Ljava/lang/Float;->isNaN(F)Z
+    invoke-static {v4}, Ljava/lang/Float;->isNaN(F)Z
 
-    move-result v2
+    move-result v4
     :try_end_28
     .catchall {:try_start_10 .. :try_end_28} :catchall_37
 
-    if-eqz v2, :cond_2f
+    if-eqz v4, :cond_2f
 
-    .line 195
+    .line 182
     nop
 
-    .line 200
-    invoke-virtual {p0}, Landroid/content/res/TypedArray;->recycle()V
+    .line 187
+    invoke-virtual {v0}, Landroid/content/res/TypedArray;->recycle()V
 
-    .line 195
-    return-object v0
+    .line 182
+    return-object v2
 
-    .line 192
+    .line 179
     :cond_2f
-    add-int/lit8 v1, v1, 0x1
+    add-int/lit8 v3, v3, 0x1
 
     goto :goto_17
 
-    .line 198
+    .line 185
+    .end local v3  # "i":I
     :cond_32
     nop
 
-    .line 200
-    invoke-virtual {p0}, Landroid/content/res/TypedArray;->recycle()V
+    .line 187
+    invoke-virtual {v0}, Landroid/content/res/TypedArray;->recycle()V
 
-    .line 198
-    return-object p1
+    .line 185
+    return-object v1
 
-    .line 200
+    .line 187
+    .end local v1  # "values":[F
     :catchall_37
-    move-exception p1
+    move-exception v1
 
-    invoke-virtual {p0}, Landroid/content/res/TypedArray;->recycle()V
+    invoke-virtual {v0}, Landroid/content/res/TypedArray;->recycle()V
 
-    throw p1
+    throw v1
 .end method

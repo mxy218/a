@@ -25,6 +25,8 @@
 # direct methods
 .method constructor <init>(Landroid/os/Looper;Lcom/android/server/media/AudioPlayerStateMonitor$OnAudioPlayerActiveStateChangedListener;)V
     .registers 3
+    .param p1, "looper"  # Landroid/os/Looper;
+    .param p2, "listener"  # Lcom/android/server/media/AudioPlayerStateMonitor$OnAudioPlayerActiveStateChangedListener;
 
     .line 70
     invoke-direct {p0, p1}, Landroid/os/Handler;-><init>(Landroid/os/Looper;)V
@@ -39,7 +41,8 @@
 
 # virtual methods
 .method public handleMessage(Landroid/os/Message;)V
-    .registers 5
+    .registers 6
+    .param p1, "msg"  # Landroid/os/Message;
 
     .line 76
     iget v0, p1, Landroid/os/Message;->what:I
@@ -58,9 +61,9 @@
 
     check-cast v2, Landroid/media/AudioPlaybackConfiguration;
 
-    iget p1, p1, Landroid/os/Message;->arg1:I
+    iget v3, p1, Landroid/os/Message;->arg1:I
 
-    if-eqz p1, :cond_11
+    if-eqz v3, :cond_11
 
     goto :goto_12
 
@@ -77,6 +80,8 @@
 
 .method sendAudioPlayerActiveStateChangedMessage(Landroid/media/AudioPlaybackConfiguration;Z)V
     .registers 5
+    .param p1, "config"  # Landroid/media/AudioPlaybackConfiguration;
+    .param p2, "isRemoved"  # Z
 
     .line 86
     nop
@@ -89,10 +94,10 @@
 
     invoke-virtual {p0, v1, p2, v0, p1}, Lcom/android/server/media/AudioPlayerStateMonitor$MessageHandler;->obtainMessage(IIILjava/lang/Object;)Landroid/os/Message;
 
-    move-result-object p1
+    move-result-object v0
 
     .line 87
-    invoke-virtual {p1}, Landroid/os/Message;->sendToTarget()V
+    invoke-virtual {v0}, Landroid/os/Message;->sendToTarget()V
 
     .line 88
     return-void

@@ -31,7 +31,7 @@
 .end method
 
 .method public static get()Lcom/android/server/inputmethod/InputMethodManagerInternal;
-    .registers 1
+    .registers 2
 
     .line 88
     const-class v0, Lcom/android/server/inputmethod/InputMethodManagerInternal;
@@ -44,15 +44,18 @@
     check-cast v0, Lcom/android/server/inputmethod/InputMethodManagerInternal;
 
     .line 90
-    if-eqz v0, :cond_b
+    .local v0, "instance":Lcom/android/server/inputmethod/InputMethodManagerInternal;
+    if-eqz v0, :cond_c
 
-    goto :goto_d
+    move-object v1, v0
 
-    :cond_b
-    sget-object v0, Lcom/android/server/inputmethod/InputMethodManagerInternal;->NOP:Lcom/android/server/inputmethod/InputMethodManagerInternal;
+    goto :goto_e
 
-    :goto_d
-    return-object v0
+    :cond_c
+    sget-object v1, Lcom/android/server/inputmethod/InputMethodManagerInternal;->NOP:Lcom/android/server/inputmethod/InputMethodManagerInternal;
+
+    :goto_e
+    return-object v1
 .end method
 
 

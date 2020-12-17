@@ -14,6 +14,7 @@
 # direct methods
 .method public constructor <init>(Landroid/util/SparseIntArray;)V
     .registers 2
+    .param p1, "array"  # Landroid/util/SparseIntArray;
 
     .line 29
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -29,54 +30,59 @@
 # virtual methods
 .method public get(I)I
     .registers 3
+    .param p1, "key"  # I
 
     .line 38
     iget-object v0, p0, Lcom/android/server/hdmi/UnmodifiableSparseIntArray;->mArray:Landroid/util/SparseIntArray;
 
     invoke-virtual {v0, p1}, Landroid/util/SparseIntArray;->get(I)I
 
-    move-result p1
+    move-result v0
 
-    return p1
+    return v0
 .end method
 
 .method public get(II)I
     .registers 4
+    .param p1, "key"  # I
+    .param p2, "valueIfKeyNotFound"  # I
 
     .line 42
     iget-object v0, p0, Lcom/android/server/hdmi/UnmodifiableSparseIntArray;->mArray:Landroid/util/SparseIntArray;
 
     invoke-virtual {v0, p1, p2}, Landroid/util/SparseIntArray;->get(II)I
 
-    move-result p1
+    move-result v0
 
-    return p1
+    return v0
 .end method
 
 .method public indexOfValue(I)I
     .registers 3
+    .param p1, "value"  # I
 
     .line 54
     iget-object v0, p0, Lcom/android/server/hdmi/UnmodifiableSparseIntArray;->mArray:Landroid/util/SparseIntArray;
 
     invoke-virtual {v0, p1}, Landroid/util/SparseIntArray;->indexOfValue(I)I
 
-    move-result p1
+    move-result v0
 
-    return p1
+    return v0
 .end method
 
 .method public keyAt(I)I
     .registers 3
+    .param p1, "index"  # I
 
     .line 46
     iget-object v0, p0, Lcom/android/server/hdmi/UnmodifiableSparseIntArray;->mArray:Landroid/util/SparseIntArray;
 
     invoke-virtual {v0, p1}, Landroid/util/SparseIntArray;->keyAt(I)I
 
-    move-result p1
+    move-result v0
 
-    return p1
+    return v0
 .end method
 
 .method public size()I
@@ -107,13 +113,14 @@
 
 .method public valueAt(I)I
     .registers 3
+    .param p1, "index"  # I
 
     .line 50
     iget-object v0, p0, Lcom/android/server/hdmi/UnmodifiableSparseIntArray;->mArray:Landroid/util/SparseIntArray;
 
     invoke-virtual {v0, p1}, Landroid/util/SparseIntArray;->valueAt(I)I
 
-    move-result p1
+    move-result v0
 
-    return p1
+    return v0
 .end method

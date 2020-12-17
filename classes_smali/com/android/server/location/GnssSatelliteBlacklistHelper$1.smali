@@ -21,6 +21,8 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/location/GnssSatelliteBlacklistHelper;Landroid/os/Handler;)V
     .registers 3
+    .param p1, "this$0"  # Lcom/android/server/location/GnssSatelliteBlacklistHelper;
+    .param p2, "x0"  # Landroid/os/Handler;
 
     .line 36
     iput-object p1, p0, Lcom/android/server/location/GnssSatelliteBlacklistHelper$1;->this$0:Lcom/android/server/location/GnssSatelliteBlacklistHelper;
@@ -33,12 +35,13 @@
 
 # virtual methods
 .method public onChange(Z)V
-    .registers 2
+    .registers 3
+    .param p1, "selfChange"  # Z
 
     .line 39
-    iget-object p1, p0, Lcom/android/server/location/GnssSatelliteBlacklistHelper$1;->this$0:Lcom/android/server/location/GnssSatelliteBlacklistHelper;
+    iget-object v0, p0, Lcom/android/server/location/GnssSatelliteBlacklistHelper$1;->this$0:Lcom/android/server/location/GnssSatelliteBlacklistHelper;
 
-    invoke-virtual {p1}, Lcom/android/server/location/GnssSatelliteBlacklistHelper;->updateSatelliteBlacklist()V
+    invoke-virtual {v0}, Lcom/android/server/location/GnssSatelliteBlacklistHelper;->updateSatelliteBlacklist()V
 
     .line 40
     return-void

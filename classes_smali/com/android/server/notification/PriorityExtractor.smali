@@ -30,6 +30,8 @@
 # virtual methods
 .method public initialize(Landroid/content/Context;Lcom/android/server/notification/NotificationUsageStats;)V
     .registers 3
+    .param p1, "ctx"  # Landroid/content/Context;
+    .param p2, "usageStats"  # Lcom/android/server/notification/NotificationUsageStats;
 
     .line 33
     return-void
@@ -37,11 +39,12 @@
 
 .method public process(Lcom/android/server/notification/NotificationRecord;)Lcom/android/server/notification/RankingReconsideration;
     .registers 4
+    .param p1, "record"  # Lcom/android/server/notification/NotificationRecord;
 
     .line 36
     const/4 v0, 0x0
 
-    if-eqz p1, :cond_20
+    if-eqz p1, :cond_29
 
     invoke-virtual {p1}, Lcom/android/server/notification/NotificationRecord;->getNotification()Landroid/app/Notification;
 
@@ -49,7 +52,7 @@
 
     if-nez v1, :cond_a
 
-    goto :goto_20
+    goto :goto_29
 
     .line 41
     :cond_a
@@ -62,6 +65,12 @@
 
     .line 46
     :cond_f
+    nop
+
+    .line 48
+    nop
+
+    .line 46
     invoke-virtual {p1}, Lcom/android/server/notification/NotificationRecord;->getChannel()Landroid/app/NotificationChannel;
 
     move-result-object v1
@@ -70,42 +79,55 @@
 
     move-result v1
 
-    if-eqz v1, :cond_1b
+    if-nez v1, :cond_24
 
-    .line 47
-    const/4 v1, 0x2
+    .line 48
+    invoke-virtual {p1}, Lcom/android/server/notification/NotificationRecord;->isMaxPriority()Z
 
-    goto :goto_1c
+    move-result v1
 
-    :cond_1b
+    if-eqz v1, :cond_22
+
+    goto :goto_24
+
+    .line 50
+    :cond_22
     const/4 v1, 0x0
 
+    goto :goto_25
+
+    :cond_24
+    :goto_24
+    const/4 v1, 0x2
+
     .line 46
-    :goto_1c
+    :goto_25
     invoke-virtual {p1, v1}, Lcom/android/server/notification/NotificationRecord;->setPackagePriority(I)V
 
-    .line 49
+    .line 52
     return-object v0
 
     .line 38
-    :cond_20
-    :goto_20
+    :cond_29
+    :goto_29
     return-object v0
 .end method
 
 .method public setConfig(Lcom/android/server/notification/RankingConfig;)V
     .registers 2
+    .param p1, "config"  # Lcom/android/server/notification/RankingConfig;
 
-    .line 54
+    .line 57
     iput-object p1, p0, Lcom/android/server/notification/PriorityExtractor;->mConfig:Lcom/android/server/notification/RankingConfig;
 
-    .line 55
+    .line 58
     return-void
 .end method
 
 .method public setZenHelper(Lcom/android/server/notification/ZenModeHelper;)V
     .registers 2
+    .param p1, "helper"  # Lcom/android/server/notification/ZenModeHelper;
 
-    .line 60
+    .line 63
     return-void
 .end method

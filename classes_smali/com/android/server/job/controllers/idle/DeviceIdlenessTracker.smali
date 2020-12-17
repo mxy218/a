@@ -101,7 +101,7 @@
 .method private handleIdleTrigger()V
     .registers 5
 
-    .line 162
+    .line 163
     iget-boolean v0, p0, Lcom/android/server/job/controllers/idle/DeviceIdlenessTracker;->mIdle:Z
 
     const-string v1, "JobScheduler.DeviceIdlenessTracker"
@@ -116,13 +116,13 @@
 
     if-eqz v0, :cond_37
 
-    .line 163
+    .line 164
     :cond_e
     sget-boolean v0, Lcom/android/server/job/controllers/idle/DeviceIdlenessTracker;->DEBUG:Z
 
     if-eqz v0, :cond_2c
 
-    .line 164
+    .line 165
     new-instance v0, Ljava/lang/StringBuilder;
 
     invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
@@ -145,13 +145,13 @@
 
     invoke-static {v1, v0}, Landroid/util/Slog;->v(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 166
+    .line 167
     :cond_2c
     const/4 v0, 0x1
 
     iput-boolean v0, p0, Lcom/android/server/job/controllers/idle/DeviceIdlenessTracker;->mIdle:Z
 
-    .line 167
+    .line 168
     iget-object v0, p0, Lcom/android/server/job/controllers/idle/DeviceIdlenessTracker;->mIdleListener:Lcom/android/server/job/controllers/idle/IdlenessListener;
 
     iget-boolean v1, p0, Lcom/android/server/job/controllers/idle/DeviceIdlenessTracker;->mIdle:Z
@@ -160,13 +160,13 @@
 
     goto :goto_5b
 
-    .line 169
+    .line 170
     :cond_37
     sget-boolean v0, Lcom/android/server/job/controllers/idle/DeviceIdlenessTracker;->DEBUG:Z
 
     if-eqz v0, :cond_5b
 
-    .line 170
+    .line 171
     new-instance v0, Ljava/lang/StringBuilder;
 
     invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
@@ -193,7 +193,7 @@
 
     invoke-static {v1, v0}, Landroid/util/Slog;->v(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 174
+    .line 175
     :cond_5b
     :goto_5b
     return-void
@@ -203,6 +203,7 @@
 # virtual methods
 .method public dump(Ljava/io/PrintWriter;)V
     .registers 3
+    .param p1, "pw"  # Ljava/io/PrintWriter;
 
     .line 98
     const-string v0, "  mIdle: "
@@ -256,6 +257,8 @@
 
 .method public onReceive(Landroid/content/Context;Landroid/content/Intent;)V
     .registers 20
+    .param p1, "context"  # Landroid/content/Context;
+    .param p2, "intent"  # Landroid/content/Intent;
 
     .line 105
     move-object/from16 v0, p0
@@ -265,6 +268,7 @@
     move-result-object v1
 
     .line 106
+    .local v1, "action":Ljava/lang/String;
     const-string v2, "android.intent.action.SCREEN_ON"
 
     invoke-virtual {v1, v2}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
@@ -329,22 +333,22 @@
 
     goto :goto_4c
 
-    .line 155
+    .line 156
     :cond_3d
     const-string v2, "com.android.server.ACTION_TRIGGER_IDLE"
 
     invoke-virtual {v1, v2}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result v1
+    move-result v2
 
-    if-eqz v1, :cond_4a
+    if-eqz v2, :cond_4a
 
-    .line 156
+    .line 157
     invoke-direct/range {p0 .. p0}, Lcom/android/server/job/controllers/idle/DeviceIdlenessTracker;->handleIdleTrigger()V
 
     goto/16 :goto_dd
 
-    .line 155
+    .line 156
     :cond_4a
     :goto_4a
     goto/16 :goto_dd
@@ -388,49 +392,51 @@
     move-result-wide v4
 
     .line 148
+    .local v4, "nowElapsed":J
     iget-wide v6, v0, Lcom/android/server/job/controllers/idle/DeviceIdlenessTracker;->mInactivityIdleThreshold:J
 
-    add-long v10, v4, v6
+    add-long/2addr v6, v4
 
     .line 149
+    .local v6, "when":J
     sget-boolean v2, Lcom/android/server/job/controllers/idle/DeviceIdlenessTracker;->DEBUG:Z
 
-    if-eqz v2, :cond_90
+    if-eqz v2, :cond_8f
 
     .line 150
     new-instance v2, Ljava/lang/StringBuilder;
 
     invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v6, "Scheduling idle : "
+    const-string v8, "Scheduling idle : "
 
-    invoke-virtual {v2, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v2, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    const-string v1, " now:"
+    invoke-virtual {v2, v8}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v2, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    const-string v8, " now:"
+
+    invoke-virtual {v2, v8}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v2, v4, v5}, Ljava/lang/StringBuilder;->append(J)Ljava/lang/StringBuilder;
 
-    const-string v1, " when="
+    const-string v8, " when="
 
-    invoke-virtual {v2, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v8}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v2, v10, v11}, Ljava/lang/StringBuilder;->append(J)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v6, v7}, Ljava/lang/StringBuilder;->append(J)Ljava/lang/StringBuilder;
 
     invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v1
+    move-result-object v2
 
-    invoke-static {v3, v1}, Landroid/util/Slog;->v(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v3, v2}, Landroid/util/Slog;->v(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 153
-    :cond_90
+    .line 154
+    :cond_8f
     iget-object v8, v0, Lcom/android/server/job/controllers/idle/DeviceIdlenessTracker;->mAlarm:Landroid/app/AlarmManager;
 
-    const/4 v9, 0x2
+    const/4 v9, 0x3
 
     iget-wide v12, v0, Lcom/android/server/job/controllers/idle/DeviceIdlenessTracker;->mIdleWindowSlop:J
 
@@ -440,8 +446,12 @@
 
     const-string v14, "JS idleness"
 
+    move-wide v10, v6
+
     invoke-virtual/range {v8 .. v16}, Landroid/app/AlarmManager;->setWindow(IJJLjava/lang/String;Landroid/app/AlarmManager$OnAlarmListener;Landroid/os/Handler;)V
 
+    .end local v4  # "nowElapsed":J
+    .end local v6  # "when":J
     goto :goto_4a
 
     .line 109
@@ -493,34 +503,34 @@
 
     invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v1
+    move-result-object v2
 
-    invoke-static {v3, v1}, Landroid/util/Slog;->v(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v3, v2}, Landroid/util/Slog;->v(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 124
     :cond_c9
-    iget-object v1, v0, Lcom/android/server/job/controllers/idle/DeviceIdlenessTracker;->mAlarm:Landroid/app/AlarmManager;
+    iget-object v2, v0, Lcom/android/server/job/controllers/idle/DeviceIdlenessTracker;->mAlarm:Landroid/app/AlarmManager;
 
-    iget-object v2, v0, Lcom/android/server/job/controllers/idle/DeviceIdlenessTracker;->mIdleAlarmListener:Landroid/app/AlarmManager$OnAlarmListener;
+    iget-object v3, v0, Lcom/android/server/job/controllers/idle/DeviceIdlenessTracker;->mIdleAlarmListener:Landroid/app/AlarmManager$OnAlarmListener;
 
-    invoke-virtual {v1, v2}, Landroid/app/AlarmManager;->cancel(Landroid/app/AlarmManager$OnAlarmListener;)V
+    invoke-virtual {v2, v3}, Landroid/app/AlarmManager;->cancel(Landroid/app/AlarmManager$OnAlarmListener;)V
 
     .line 125
-    iget-boolean v1, v0, Lcom/android/server/job/controllers/idle/DeviceIdlenessTracker;->mIdle:Z
+    iget-boolean v2, v0, Lcom/android/server/job/controllers/idle/DeviceIdlenessTracker;->mIdle:Z
 
-    if-eqz v1, :cond_dd
+    if-eqz v2, :cond_dd
 
     .line 127
     iput-boolean v6, v0, Lcom/android/server/job/controllers/idle/DeviceIdlenessTracker;->mIdle:Z
 
     .line 128
-    iget-object v1, v0, Lcom/android/server/job/controllers/idle/DeviceIdlenessTracker;->mIdleListener:Lcom/android/server/job/controllers/idle/IdlenessListener;
+    iget-object v2, v0, Lcom/android/server/job/controllers/idle/DeviceIdlenessTracker;->mIdleListener:Lcom/android/server/job/controllers/idle/IdlenessListener;
 
-    iget-boolean v0, v0, Lcom/android/server/job/controllers/idle/DeviceIdlenessTracker;->mIdle:Z
+    iget-boolean v3, v0, Lcom/android/server/job/controllers/idle/DeviceIdlenessTracker;->mIdle:Z
 
-    invoke-interface {v1, v0}, Lcom/android/server/job/controllers/idle/IdlenessListener;->reportNewIdleState(Z)V
+    invoke-interface {v2, v3}, Lcom/android/server/job/controllers/idle/IdlenessListener;->reportNewIdleState(Z)V
 
-    .line 158
+    .line 159
     :cond_dd
     :goto_dd
     return-void
@@ -528,6 +538,8 @@
 
 .method public startTracking(Landroid/content/Context;Lcom/android/server/job/controllers/idle/IdlenessListener;)V
     .registers 5
+    .param p1, "context"  # Landroid/content/Context;
+    .param p2, "listener"  # Lcom/android/server/job/controllers/idle/IdlenessListener;
 
     .line 69
     iput-object p2, p0, Lcom/android/server/job/controllers/idle/DeviceIdlenessTracker;->mIdleListener:Lcom/android/server/job/controllers/idle/IdlenessListener;
@@ -535,86 +547,87 @@
     .line 70
     invoke-virtual {p1}, Landroid/content/Context;->getResources()Landroid/content/res/Resources;
 
-    move-result-object p2
+    move-result-object v0
 
-    const v0, 0x10e0061
+    const v1, 0x10e0060
 
-    invoke-virtual {p2, v0}, Landroid/content/res/Resources;->getInteger(I)I
+    invoke-virtual {v0, v1}, Landroid/content/res/Resources;->getInteger(I)I
 
-    move-result p2
+    move-result v0
 
-    int-to-long v0, p2
+    int-to-long v0, v0
 
     iput-wide v0, p0, Lcom/android/server/job/controllers/idle/DeviceIdlenessTracker;->mInactivityIdleThreshold:J
 
     .line 72
     invoke-virtual {p1}, Landroid/content/Context;->getResources()Landroid/content/res/Resources;
 
-    move-result-object p2
+    move-result-object v0
 
-    const v0, 0x10e0060
+    const v1, 0x10e005f
 
-    invoke-virtual {p2, v0}, Landroid/content/res/Resources;->getInteger(I)I
+    invoke-virtual {v0, v1}, Landroid/content/res/Resources;->getInteger(I)I
 
-    move-result p2
+    move-result v0
 
-    int-to-long v0, p2
+    int-to-long v0, v0
 
     iput-wide v0, p0, Lcom/android/server/job/controllers/idle/DeviceIdlenessTracker;->mIdleWindowSlop:J
 
     .line 74
-    const-string p2, "alarm"
+    const-string v0, "alarm"
 
-    invoke-virtual {p1, p2}, Landroid/content/Context;->getSystemService(Ljava/lang/String;)Ljava/lang/Object;
+    invoke-virtual {p1, v0}, Landroid/content/Context;->getSystemService(Ljava/lang/String;)Ljava/lang/Object;
 
-    move-result-object p2
+    move-result-object v0
 
-    check-cast p2, Landroid/app/AlarmManager;
+    check-cast v0, Landroid/app/AlarmManager;
 
-    iput-object p2, p0, Lcom/android/server/job/controllers/idle/DeviceIdlenessTracker;->mAlarm:Landroid/app/AlarmManager;
+    iput-object v0, p0, Lcom/android/server/job/controllers/idle/DeviceIdlenessTracker;->mAlarm:Landroid/app/AlarmManager;
 
     .line 76
-    new-instance p2, Landroid/content/IntentFilter;
+    new-instance v0, Landroid/content/IntentFilter;
 
-    invoke-direct {p2}, Landroid/content/IntentFilter;-><init>()V
+    invoke-direct {v0}, Landroid/content/IntentFilter;-><init>()V
 
     .line 79
-    const-string v0, "android.intent.action.SCREEN_ON"
+    .local v0, "filter":Landroid/content/IntentFilter;
+    const-string v1, "android.intent.action.SCREEN_ON"
 
-    invoke-virtual {p2, v0}, Landroid/content/IntentFilter;->addAction(Ljava/lang/String;)V
+    invoke-virtual {v0, v1}, Landroid/content/IntentFilter;->addAction(Ljava/lang/String;)V
 
     .line 80
-    const-string v0, "android.intent.action.SCREEN_OFF"
+    const-string v1, "android.intent.action.SCREEN_OFF"
 
-    invoke-virtual {p2, v0}, Landroid/content/IntentFilter;->addAction(Ljava/lang/String;)V
+    invoke-virtual {v0, v1}, Landroid/content/IntentFilter;->addAction(Ljava/lang/String;)V
 
     .line 83
-    const-string v0, "android.intent.action.DREAMING_STARTED"
+    const-string v1, "android.intent.action.DREAMING_STARTED"
 
-    invoke-virtual {p2, v0}, Landroid/content/IntentFilter;->addAction(Ljava/lang/String;)V
+    invoke-virtual {v0, v1}, Landroid/content/IntentFilter;->addAction(Ljava/lang/String;)V
 
     .line 84
-    const-string v0, "android.intent.action.DREAMING_STOPPED"
+    const-string v1, "android.intent.action.DREAMING_STOPPED"
 
-    invoke-virtual {p2, v0}, Landroid/content/IntentFilter;->addAction(Ljava/lang/String;)V
+    invoke-virtual {v0, v1}, Landroid/content/IntentFilter;->addAction(Ljava/lang/String;)V
 
     .line 87
-    const-string v0, "com.android.server.ACTION_TRIGGER_IDLE"
+    const-string v1, "com.android.server.ACTION_TRIGGER_IDLE"
 
-    invoke-virtual {p2, v0}, Landroid/content/IntentFilter;->addAction(Ljava/lang/String;)V
+    invoke-virtual {v0, v1}, Landroid/content/IntentFilter;->addAction(Ljava/lang/String;)V
 
     .line 90
-    const-string v0, "android.intent.action.DOCK_IDLE"
+    const-string v1, "android.intent.action.DOCK_IDLE"
 
-    invoke-virtual {p2, v0}, Landroid/content/IntentFilter;->addAction(Ljava/lang/String;)V
+    invoke-virtual {v0, v1}, Landroid/content/IntentFilter;->addAction(Ljava/lang/String;)V
 
     .line 91
-    const-string v0, "android.intent.action.DOCK_ACTIVE"
+    const-string v1, "android.intent.action.DOCK_ACTIVE"
 
-    invoke-virtual {p2, v0}, Landroid/content/IntentFilter;->addAction(Ljava/lang/String;)V
+    invoke-virtual {v0, v1}, Landroid/content/IntentFilter;->addAction(Ljava/lang/String;)V
 
     .line 93
-    invoke-virtual {p1, p0, p2}, Landroid/content/Context;->registerReceiver(Landroid/content/BroadcastReceiver;Landroid/content/IntentFilter;)Landroid/content/Intent;
+    invoke-virtual {p1, p0, v0}, Landroid/content/Context;->registerReceiver(Landroid/content/BroadcastReceiver;Landroid/content/IntentFilter;)Landroid/content/Intent;
 
     .line 94
     return-void

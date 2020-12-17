@@ -21,6 +21,7 @@
 # direct methods
 .method constructor <init>(Landroid/os/Handler;Lcom/android/server/timedetector/TimeDetectorService;)V
     .registers 3
+    .param p1, "x0"  # Landroid/os/Handler;
 
     .line 81
     iput-object p2, p0, Lcom/android/server/timedetector/TimeDetectorService$1;->val$timeDetectorService:Lcom/android/server/timedetector/TimeDetectorService;
@@ -33,12 +34,13 @@
 
 # virtual methods
 .method public onChange(Z)V
-    .registers 2
+    .registers 3
+    .param p1, "selfChange"  # Z
 
     .line 83
-    iget-object p1, p0, Lcom/android/server/timedetector/TimeDetectorService$1;->val$timeDetectorService:Lcom/android/server/timedetector/TimeDetectorService;
+    iget-object v0, p0, Lcom/android/server/timedetector/TimeDetectorService$1;->val$timeDetectorService:Lcom/android/server/timedetector/TimeDetectorService;
 
-    invoke-virtual {p1}, Lcom/android/server/timedetector/TimeDetectorService;->handleAutoTimeDetectionToggle()V
+    invoke-virtual {v0}, Lcom/android/server/timedetector/TimeDetectorService;->handleAutoTimeDetectionToggle()V
 
     .line 84
     return-void

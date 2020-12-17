@@ -54,6 +54,7 @@
 
 .method public onUserStarted(I)V
     .registers 2
+    .param p1, "userId"  # I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -66,6 +67,7 @@
 
 .method public onUserStopped(I)V
     .registers 2
+    .param p1, "userId"  # I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;

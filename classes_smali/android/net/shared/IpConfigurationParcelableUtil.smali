@@ -15,13 +15,14 @@
 
 .method public static fromStableParcelable(Landroid/net/DhcpResultsParcelable;)Landroid/net/DhcpResults;
     .registers 3
+    .param p0, "p"  # Landroid/net/DhcpResultsParcelable;
 
     .line 52
     if-nez p0, :cond_4
 
-    const/4 p0, 0x0
+    const/4 v0, 0x0
 
-    return-object p0
+    return-object v0
 
     .line 53
     :cond_4
@@ -32,6 +33,7 @@
     invoke-direct {v0, v1}, Landroid/net/DhcpResults;-><init>(Landroid/net/StaticIpConfiguration;)V
 
     .line 54
+    .local v0, "results":Landroid/net/DhcpResults;
     iget v1, p0, Landroid/net/DhcpResultsParcelable;->leaseDuration:I
 
     iput v1, v0, Landroid/net/DhcpResults;->leaseDuration:I
@@ -58,42 +60,44 @@
     iput-object v1, v0, Landroid/net/DhcpResults;->vendorInfo:Ljava/lang/String;
 
     .line 58
-    iget-object p0, p0, Landroid/net/DhcpResultsParcelable;->serverHostName:Ljava/lang/String;
+    iget-object v1, p0, Landroid/net/DhcpResultsParcelable;->serverHostName:Ljava/lang/String;
 
-    iput-object p0, v0, Landroid/net/DhcpResults;->serverHostName:Ljava/lang/String;
+    iput-object v1, v0, Landroid/net/DhcpResults;->serverHostName:Ljava/lang/String;
 
     .line 59
     return-object v0
 .end method
 
 .method public static parcelAddress(Ljava/net/InetAddress;)Ljava/lang/String;
-    .registers 1
+    .registers 2
+    .param p0, "addr"  # Ljava/net/InetAddress;
 
     .line 67
     if-nez p0, :cond_4
 
-    const/4 p0, 0x0
+    const/4 v0, 0x0
 
-    return-object p0
+    return-object v0
 
     .line 68
     :cond_4
     invoke-virtual {p0}, Ljava/net/InetAddress;->getHostAddress()Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v0
 
-    return-object p0
+    return-object v0
 .end method
 
 .method public static toStableParcelable(Landroid/net/DhcpResults;)Landroid/net/DhcpResultsParcelable;
     .registers 3
+    .param p0, "results"  # Landroid/net/DhcpResults;
 
     .line 37
     if-nez p0, :cond_4
 
-    const/4 p0, 0x0
+    const/4 v0, 0x0
 
-    return-object p0
+    return-object v0
 
     .line 38
     :cond_4
@@ -102,6 +106,7 @@
     invoke-direct {v0}, Landroid/net/DhcpResultsParcelable;-><init>()V
 
     .line 39
+    .local v0, "p":Landroid/net/DhcpResultsParcelable;
     invoke-virtual {p0}, Landroid/net/DhcpResults;->toStaticIpConfiguration()Landroid/net/StaticIpConfiguration;
 
     move-result-object v1
@@ -133,29 +138,30 @@
     iput-object v1, v0, Landroid/net/DhcpResultsParcelable;->vendorInfo:Ljava/lang/String;
 
     .line 44
-    iget-object p0, p0, Landroid/net/DhcpResults;->serverHostName:Ljava/lang/String;
+    iget-object v1, p0, Landroid/net/DhcpResults;->serverHostName:Ljava/lang/String;
 
-    iput-object p0, v0, Landroid/net/DhcpResultsParcelable;->serverHostName:Ljava/lang/String;
+    iput-object v1, v0, Landroid/net/DhcpResultsParcelable;->serverHostName:Ljava/lang/String;
 
     .line 45
     return-object v0
 .end method
 
 .method public static unparcelAddress(Ljava/lang/String;)Ljava/net/InetAddress;
-    .registers 1
+    .registers 2
+    .param p0, "addr"  # Ljava/lang/String;
 
     .line 76
     if-nez p0, :cond_4
 
-    const/4 p0, 0x0
+    const/4 v0, 0x0
 
-    return-object p0
+    return-object v0
 
     .line 77
     :cond_4
     invoke-static {p0}, Landroid/net/InetAddresses;->parseNumericAddress(Ljava/lang/String;)Ljava/net/InetAddress;
 
-    move-result-object p0
+    move-result-object v0
 
-    return-object p0
+    return-object v0
 .end method

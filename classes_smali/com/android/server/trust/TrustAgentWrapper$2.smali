@@ -21,6 +21,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/trust/TrustAgentWrapper;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/trust/TrustAgentWrapper;
 
     .line 121
     iput-object p1, p0, Lcom/android/server/trust/TrustAgentWrapper$2;->this$0:Lcom/android/server/trust/TrustAgentWrapper;
@@ -34,13 +35,14 @@
 # virtual methods
 .method public handleMessage(Landroid/os/Message;)V
     .registers 20
+    .param p1, "msg"  # Landroid/os/Message;
 
     .line 124
     move-object/from16 v1, p0
 
-    move-object/from16 v0, p1
+    move-object/from16 v2, p1
 
-    iget v2, v0, Landroid/os/Message;->what:I
+    iget v0, v2, Landroid/os/Message;->what:I
 
     const-string v3, "escrow_token"
 
@@ -48,19 +50,19 @@
 
     const-string v5, "handle"
 
-    const-string/jumbo v6, "user_id"
+    const/4 v6, 0x1
 
-    const/4 v7, 0x0
+    const-string/jumbo v7, "user_id"
 
-    const/4 v8, 0x1
+    const/4 v8, 0x0
 
     const-string v9, "TrustAgentWrapper"
 
     const/4 v10, 0x0
 
-    packed-switch v2, :pswitch_data_374
+    packed-switch v0, :pswitch_data_378
 
-    goto/16 :goto_373
+    goto/16 :goto_376
 
     .line 262
     :pswitch_18  #0xb
@@ -68,251 +70,279 @@
 
     move-result-object v0
 
-    const-string v2, "message"
+    const-string/jumbo v3, "message"
 
-    invoke-virtual {v0, v2}, Landroid/os/Bundle;->getCharSequence(Ljava/lang/String;)Ljava/lang/CharSequence;
+    invoke-virtual {v0, v3}, Landroid/os/Bundle;->getCharSequence(Ljava/lang/String;)Ljava/lang/CharSequence;
 
     move-result-object v0
 
     .line 263
-    iget-object v1, v1, Lcom/android/server/trust/TrustAgentWrapper$2;->this$0:Lcom/android/server/trust/TrustAgentWrapper;
+    .local v0, "message":Ljava/lang/CharSequence;
+    iget-object v3, v1, Lcom/android/server/trust/TrustAgentWrapper$2;->this$0:Lcom/android/server/trust/TrustAgentWrapper;
 
-    invoke-static {v1}, Lcom/android/server/trust/TrustAgentWrapper;->access$1100(Lcom/android/server/trust/TrustAgentWrapper;)Lcom/android/server/trust/TrustManagerService;
+    invoke-static {v3}, Lcom/android/server/trust/TrustAgentWrapper;->access$1100(Lcom/android/server/trust/TrustAgentWrapper;)Lcom/android/server/trust/TrustManagerService;
 
-    move-result-object v1
+    move-result-object v3
 
-    invoke-virtual {v1, v0}, Lcom/android/server/trust/TrustManagerService;->showKeyguardErrorMessage(Ljava/lang/CharSequence;)V
+    invoke-virtual {v3, v0}, Lcom/android/server/trust/TrustManagerService;->showKeyguardErrorMessage(Ljava/lang/CharSequence;)V
 
     .line 264
-    goto/16 :goto_373
+    goto/16 :goto_376
 
     .line 255
-    :pswitch_2d  #0xa
+    .end local v0  # "message":Ljava/lang/CharSequence;
+    :pswitch_2e  #0xa
     invoke-virtual/range {p1 .. p1}, Landroid/os/Message;->getData()Landroid/os/Bundle;
 
-    move-result-object v2
+    move-result-object v0
 
-    invoke-virtual {v2, v5}, Landroid/os/Bundle;->getLong(Ljava/lang/String;)J
+    invoke-virtual {v0, v5}, Landroid/os/Bundle;->getLong(Ljava/lang/String;)J
 
     move-result-wide v4
 
     .line 256
+    .local v4, "handle":J
     invoke-virtual/range {p1 .. p1}, Landroid/os/Message;->getData()Landroid/os/Bundle;
 
-    move-result-object v2
+    move-result-object v0
 
-    invoke-virtual {v2, v6}, Landroid/os/Bundle;->getInt(Ljava/lang/String;)I
+    invoke-virtual {v0, v7}, Landroid/os/Bundle;->getInt(Ljava/lang/String;)I
 
-    move-result v2
+    move-result v0
 
     .line 257
+    .local v0, "userId":I
     invoke-virtual/range {p1 .. p1}, Landroid/os/Message;->getData()Landroid/os/Bundle;
 
-    move-result-object v0
+    move-result-object v6
 
-    invoke-virtual {v0, v3}, Landroid/os/Bundle;->getByteArray(Ljava/lang/String;)[B
+    invoke-virtual {v6, v3}, Landroid/os/Bundle;->getByteArray(Ljava/lang/String;)[B
 
-    move-result-object v0
+    move-result-object v3
 
     .line 258
-    iget-object v1, v1, Lcom/android/server/trust/TrustAgentWrapper$2;->this$0:Lcom/android/server/trust/TrustAgentWrapper;
+    .local v3, "eToken":[B
+    iget-object v6, v1, Lcom/android/server/trust/TrustAgentWrapper$2;->this$0:Lcom/android/server/trust/TrustAgentWrapper;
 
-    invoke-static {v1}, Lcom/android/server/trust/TrustAgentWrapper;->access$1100(Lcom/android/server/trust/TrustAgentWrapper;)Lcom/android/server/trust/TrustManagerService;
+    invoke-static {v6}, Lcom/android/server/trust/TrustAgentWrapper;->access$1100(Lcom/android/server/trust/TrustAgentWrapper;)Lcom/android/server/trust/TrustManagerService;
 
-    move-result-object v1
+    move-result-object v6
 
-    invoke-virtual {v1, v4, v5, v0, v2}, Lcom/android/server/trust/TrustManagerService;->unlockUserWithToken(J[BI)V
+    invoke-virtual {v6, v4, v5, v3, v0}, Lcom/android/server/trust/TrustManagerService;->unlockUserWithToken(J[BI)V
 
     .line 259
-    goto/16 :goto_373
+    goto/16 :goto_376
 
     .line 227
-    :pswitch_50  #0x9
+    .end local v0  # "userId":I
+    .end local v3  # "eToken":[B
+    .end local v4  # "handle":J
+    :pswitch_51  #0x9
     invoke-virtual/range {p1 .. p1}, Landroid/os/Message;->getData()Landroid/os/Bundle;
 
-    move-result-object v2
+    move-result-object v0
 
-    invoke-virtual {v2, v5}, Landroid/os/Bundle;->getLong(Ljava/lang/String;)J
+    invoke-virtual {v0, v5}, Landroid/os/Bundle;->getLong(Ljava/lang/String;)J
 
-    move-result-wide v2
+    move-result-wide v3
 
     .line 228
+    .local v3, "handle":J
     invoke-virtual/range {p1 .. p1}, Landroid/os/Message;->getData()Landroid/os/Bundle;
 
     move-result-object v0
 
-    invoke-virtual {v0, v6}, Landroid/os/Bundle;->getInt(Ljava/lang/String;)I
+    invoke-virtual {v0, v7}, Landroid/os/Bundle;->getInt(Ljava/lang/String;)I
 
-    move-result v0
+    move-result v5
 
     .line 229
-    iget-object v4, v1, Lcom/android/server/trust/TrustAgentWrapper$2;->this$0:Lcom/android/server/trust/TrustAgentWrapper;
-
-    invoke-static {v4}, Lcom/android/server/trust/TrustAgentWrapper;->access$1100(Lcom/android/server/trust/TrustAgentWrapper;)Lcom/android/server/trust/TrustManagerService;
-
-    move-result-object v4
-
-    invoke-virtual {v4, v2, v3, v0}, Lcom/android/server/trust/TrustManagerService;->isEscrowTokenActive(JI)Z
-
-    move-result v0
-
-    .line 231
-    :try_start_6a
-    iget-object v4, v1, Lcom/android/server/trust/TrustAgentWrapper$2;->this$0:Lcom/android/server/trust/TrustAgentWrapper;
-
-    invoke-static {v4}, Lcom/android/server/trust/TrustAgentWrapper;->access$1600(Lcom/android/server/trust/TrustAgentWrapper;)Landroid/service/trust/ITrustAgentService;
-
-    move-result-object v4
-
-    if-eqz v4, :cond_7f
-
-    .line 232
-    iget-object v4, v1, Lcom/android/server/trust/TrustAgentWrapper$2;->this$0:Lcom/android/server/trust/TrustAgentWrapper;
-
-    invoke-static {v4}, Lcom/android/server/trust/TrustAgentWrapper;->access$1600(Lcom/android/server/trust/TrustAgentWrapper;)Landroid/service/trust/ITrustAgentService;
-
-    move-result-object v4
-
-    .line 233
-    if-eqz v0, :cond_7b
-
-    goto :goto_7c
-
-    .line 234
-    :cond_7b
-    move v8, v10
-
-    .line 232
-    :goto_7c
-    invoke-interface {v4, v2, v3, v8}, Landroid/service/trust/ITrustAgentService;->onTokenStateReceived(JI)V
-    :try_end_7f
-    .catch Landroid/os/RemoteException; {:try_start_6a .. :try_end_7f} :catch_81
-
-    .line 238
-    :cond_7f
-    goto/16 :goto_373
-
-    .line 236
-    :catch_81
-    move-exception v0
-
-    .line 237
-    iget-object v1, v1, Lcom/android/server/trust/TrustAgentWrapper$2;->this$0:Lcom/android/server/trust/TrustAgentWrapper;
-
-    invoke-static {v1, v0}, Lcom/android/server/trust/TrustAgentWrapper;->access$1700(Lcom/android/server/trust/TrustAgentWrapper;Ljava/lang/Exception;)V
-
-    .line 239
-    goto/16 :goto_373
-
-    .line 242
-    :pswitch_89  #0x8
-    invoke-virtual/range {p1 .. p1}, Landroid/os/Message;->getData()Landroid/os/Bundle;
-
-    move-result-object v2
-
-    invoke-virtual {v2, v5}, Landroid/os/Bundle;->getLong(Ljava/lang/String;)J
-
-    move-result-wide v2
-
-    .line 243
-    invoke-virtual/range {p1 .. p1}, Landroid/os/Message;->getData()Landroid/os/Bundle;
-
-    move-result-object v0
-
-    invoke-virtual {v0, v6}, Landroid/os/Bundle;->getInt(Ljava/lang/String;)I
-
-    move-result v0
-
-    .line 244
-    iget-object v4, v1, Lcom/android/server/trust/TrustAgentWrapper$2;->this$0:Lcom/android/server/trust/TrustAgentWrapper;
-
-    invoke-static {v4}, Lcom/android/server/trust/TrustAgentWrapper;->access$1100(Lcom/android/server/trust/TrustAgentWrapper;)Lcom/android/server/trust/TrustManagerService;
-
-    move-result-object v4
-
-    invoke-virtual {v4, v2, v3, v0}, Lcom/android/server/trust/TrustManagerService;->removeEscrowToken(JI)Z
-
-    move-result v0
-
-    .line 246
-    :try_start_a3
-    iget-object v4, v1, Lcom/android/server/trust/TrustAgentWrapper$2;->this$0:Lcom/android/server/trust/TrustAgentWrapper;
-
-    invoke-static {v4}, Lcom/android/server/trust/TrustAgentWrapper;->access$1600(Lcom/android/server/trust/TrustAgentWrapper;)Landroid/service/trust/ITrustAgentService;
-
-    move-result-object v4
-
-    if-eqz v4, :cond_b4
-
-    .line 247
-    iget-object v4, v1, Lcom/android/server/trust/TrustAgentWrapper$2;->this$0:Lcom/android/server/trust/TrustAgentWrapper;
-
-    invoke-static {v4}, Lcom/android/server/trust/TrustAgentWrapper;->access$1600(Lcom/android/server/trust/TrustAgentWrapper;)Landroid/service/trust/ITrustAgentService;
-
-    move-result-object v4
-
-    invoke-interface {v4, v2, v3, v0}, Landroid/service/trust/ITrustAgentService;->onEscrowTokenRemoved(JZ)V
-    :try_end_b4
-    .catch Landroid/os/RemoteException; {:try_start_a3 .. :try_end_b4} :catch_b6
-
-    .line 251
-    :cond_b4
-    goto/16 :goto_373
-
-    .line 249
-    :catch_b6
-    move-exception v0
-
-    .line 250
-    iget-object v1, v1, Lcom/android/server/trust/TrustAgentWrapper$2;->this$0:Lcom/android/server/trust/TrustAgentWrapper;
-
-    invoke-static {v1, v0}, Lcom/android/server/trust/TrustAgentWrapper;->access$1700(Lcom/android/server/trust/TrustAgentWrapper;Ljava/lang/Exception;)V
-
-    .line 252
-    goto/16 :goto_373
-
-    .line 207
-    :pswitch_be  #0x7
-    invoke-virtual/range {p1 .. p1}, Landroid/os/Message;->getData()Landroid/os/Bundle;
-
-    move-result-object v2
-
-    invoke-virtual {v2, v3}, Landroid/os/Bundle;->getByteArray(Ljava/lang/String;)[B
-
-    move-result-object v2
-
-    .line 208
-    invoke-virtual/range {p1 .. p1}, Landroid/os/Message;->getData()Landroid/os/Bundle;
-
-    move-result-object v0
-
-    invoke-virtual {v0, v6}, Landroid/os/Bundle;->getInt(Ljava/lang/String;)I
-
-    move-result v3
-
-    .line 209
+    .local v5, "userId":I
     iget-object v0, v1, Lcom/android/server/trust/TrustAgentWrapper$2;->this$0:Lcom/android/server/trust/TrustAgentWrapper;
 
     invoke-static {v0}, Lcom/android/server/trust/TrustAgentWrapper;->access$1100(Lcom/android/server/trust/TrustAgentWrapper;)Lcom/android/server/trust/TrustManagerService;
 
     move-result-object v0
 
-    invoke-virtual {v0, v2, v3}, Lcom/android/server/trust/TrustManagerService;->addEscrowToken([BI)J
+    invoke-virtual {v0, v3, v4, v5}, Lcom/android/server/trust/TrustManagerService;->isEscrowTokenActive(JI)Z
 
-    move-result-wide v4
+    move-result v7
 
-    .line 210
-    nop
-
-    .line 212
-    :try_start_d9
+    .line 231
+    .local v7, "active":Z
+    :try_start_6b
     iget-object v0, v1, Lcom/android/server/trust/TrustAgentWrapper$2;->this$0:Lcom/android/server/trust/TrustAgentWrapper;
 
     invoke-static {v0}, Lcom/android/server/trust/TrustAgentWrapper;->access$1600(Lcom/android/server/trust/TrustAgentWrapper;)Landroid/service/trust/ITrustAgentService;
 
     move-result-object v0
 
-    if-eqz v0, :cond_ef
+    if-eqz v0, :cond_80
+
+    .line 232
+    iget-object v0, v1, Lcom/android/server/trust/TrustAgentWrapper$2;->this$0:Lcom/android/server/trust/TrustAgentWrapper;
+
+    invoke-static {v0}, Lcom/android/server/trust/TrustAgentWrapper;->access$1600(Lcom/android/server/trust/TrustAgentWrapper;)Landroid/service/trust/ITrustAgentService;
+
+    move-result-object v0
+
+    .line 233
+    if-eqz v7, :cond_7c
+
+    goto :goto_7d
+
+    .line 234
+    :cond_7c
+    move v6, v10
+
+    .line 232
+    :goto_7d
+    invoke-interface {v0, v3, v4, v6}, Landroid/service/trust/ITrustAgentService;->onTokenStateReceived(JI)V
+    :try_end_80
+    .catch Landroid/os/RemoteException; {:try_start_6b .. :try_end_80} :catch_82
+
+    .line 238
+    :cond_80
+    goto/16 :goto_376
+
+    .line 236
+    :catch_82
+    move-exception v0
+
+    .line 237
+    .local v0, "e":Landroid/os/RemoteException;
+    iget-object v6, v1, Lcom/android/server/trust/TrustAgentWrapper$2;->this$0:Lcom/android/server/trust/TrustAgentWrapper;
+
+    invoke-static {v6, v0}, Lcom/android/server/trust/TrustAgentWrapper;->access$1700(Lcom/android/server/trust/TrustAgentWrapper;Ljava/lang/Exception;)V
+
+    .line 239
+    .end local v0  # "e":Landroid/os/RemoteException;
+    goto/16 :goto_376
+
+    .line 242
+    .end local v3  # "handle":J
+    .end local v5  # "userId":I
+    .end local v7  # "active":Z
+    :pswitch_8a  #0x8
+    invoke-virtual/range {p1 .. p1}, Landroid/os/Message;->getData()Landroid/os/Bundle;
+
+    move-result-object v0
+
+    invoke-virtual {v0, v5}, Landroid/os/Bundle;->getLong(Ljava/lang/String;)J
+
+    move-result-wide v3
+
+    .line 243
+    .restart local v3  # "handle":J
+    invoke-virtual/range {p1 .. p1}, Landroid/os/Message;->getData()Landroid/os/Bundle;
+
+    move-result-object v0
+
+    invoke-virtual {v0, v7}, Landroid/os/Bundle;->getInt(Ljava/lang/String;)I
+
+    move-result v5
+
+    .line 244
+    .restart local v5  # "userId":I
+    iget-object v0, v1, Lcom/android/server/trust/TrustAgentWrapper$2;->this$0:Lcom/android/server/trust/TrustAgentWrapper;
+
+    invoke-static {v0}, Lcom/android/server/trust/TrustAgentWrapper;->access$1100(Lcom/android/server/trust/TrustAgentWrapper;)Lcom/android/server/trust/TrustManagerService;
+
+    move-result-object v0
+
+    invoke-virtual {v0, v3, v4, v5}, Lcom/android/server/trust/TrustManagerService;->removeEscrowToken(JI)Z
+
+    move-result v6
+
+    .line 246
+    .local v6, "success":Z
+    :try_start_a4
+    iget-object v0, v1, Lcom/android/server/trust/TrustAgentWrapper$2;->this$0:Lcom/android/server/trust/TrustAgentWrapper;
+
+    invoke-static {v0}, Lcom/android/server/trust/TrustAgentWrapper;->access$1600(Lcom/android/server/trust/TrustAgentWrapper;)Landroid/service/trust/ITrustAgentService;
+
+    move-result-object v0
+
+    if-eqz v0, :cond_b5
+
+    .line 247
+    iget-object v0, v1, Lcom/android/server/trust/TrustAgentWrapper$2;->this$0:Lcom/android/server/trust/TrustAgentWrapper;
+
+    invoke-static {v0}, Lcom/android/server/trust/TrustAgentWrapper;->access$1600(Lcom/android/server/trust/TrustAgentWrapper;)Landroid/service/trust/ITrustAgentService;
+
+    move-result-object v0
+
+    invoke-interface {v0, v3, v4, v6}, Landroid/service/trust/ITrustAgentService;->onEscrowTokenRemoved(JZ)V
+    :try_end_b5
+    .catch Landroid/os/RemoteException; {:try_start_a4 .. :try_end_b5} :catch_b7
+
+    .line 251
+    :cond_b5
+    goto/16 :goto_376
+
+    .line 249
+    :catch_b7
+    move-exception v0
+
+    .line 250
+    .restart local v0  # "e":Landroid/os/RemoteException;
+    iget-object v7, v1, Lcom/android/server/trust/TrustAgentWrapper$2;->this$0:Lcom/android/server/trust/TrustAgentWrapper;
+
+    invoke-static {v7, v0}, Lcom/android/server/trust/TrustAgentWrapper;->access$1700(Lcom/android/server/trust/TrustAgentWrapper;Ljava/lang/Exception;)V
+
+    .line 252
+    .end local v0  # "e":Landroid/os/RemoteException;
+    goto/16 :goto_376
+
+    .line 207
+    .end local v3  # "handle":J
+    .end local v5  # "userId":I
+    .end local v6  # "success":Z
+    :pswitch_bf  #0x7
+    invoke-virtual/range {p1 .. p1}, Landroid/os/Message;->getData()Landroid/os/Bundle;
+
+    move-result-object v0
+
+    invoke-virtual {v0, v3}, Landroid/os/Bundle;->getByteArray(Ljava/lang/String;)[B
+
+    move-result-object v3
+
+    .line 208
+    .local v3, "eToken":[B
+    invoke-virtual/range {p1 .. p1}, Landroid/os/Message;->getData()Landroid/os/Bundle;
+
+    move-result-object v0
+
+    invoke-virtual {v0, v7}, Landroid/os/Bundle;->getInt(Ljava/lang/String;)I
+
+    move-result v4
+
+    .line 209
+    .local v4, "userId":I
+    iget-object v0, v1, Lcom/android/server/trust/TrustAgentWrapper$2;->this$0:Lcom/android/server/trust/TrustAgentWrapper;
+
+    invoke-static {v0}, Lcom/android/server/trust/TrustAgentWrapper;->access$1100(Lcom/android/server/trust/TrustAgentWrapper;)Lcom/android/server/trust/TrustManagerService;
+
+    move-result-object v0
+
+    invoke-virtual {v0, v3, v4}, Lcom/android/server/trust/TrustManagerService;->addEscrowToken([BI)J
+
+    move-result-wide v5
+
+    .line 210
+    .local v5, "handle":J
+    const/4 v7, 0x0
+
+    .line 212
+    .local v7, "resultDeliverred":Z
+    :try_start_da
+    iget-object v0, v1, Lcom/android/server/trust/TrustAgentWrapper$2;->this$0:Lcom/android/server/trust/TrustAgentWrapper;
+
+    invoke-static {v0}, Lcom/android/server/trust/TrustAgentWrapper;->access$1600(Lcom/android/server/trust/TrustAgentWrapper;)Landroid/service/trust/ITrustAgentService;
+
+    move-result-object v0
+
+    if-eqz v0, :cond_f1
 
     .line 213
     iget-object v0, v1, Lcom/android/server/trust/TrustAgentWrapper$2;->this$0:Lcom/android/server/trust/TrustAgentWrapper;
@@ -322,34 +352,38 @@
     move-result-object v0
 
     .line 214
-    invoke-static {v3}, Landroid/os/UserHandle;->of(I)Landroid/os/UserHandle;
+    invoke-static {v4}, Landroid/os/UserHandle;->of(I)Landroid/os/UserHandle;
 
-    move-result-object v6
+    move-result-object v8
 
     .line 213
-    invoke-interface {v0, v2, v4, v5, v6}, Landroid/service/trust/ITrustAgentService;->onEscrowTokenAdded([BJLandroid/os/UserHandle;)V
-    :try_end_ee
-    .catch Landroid/os/RemoteException; {:try_start_d9 .. :try_end_ee} :catch_f0
+    invoke-interface {v0, v3, v5, v6, v8}, Landroid/service/trust/ITrustAgentService;->onEscrowTokenAdded([BJLandroid/os/UserHandle;)V
+    :try_end_ef
+    .catch Landroid/os/RemoteException; {:try_start_da .. :try_end_ef} :catch_f2
 
     .line 215
-    move v10, v8
+    const/4 v0, 0x1
+
+    move v7, v0
 
     .line 219
-    :cond_ef
-    goto :goto_f6
+    :cond_f1
+    goto :goto_f8
 
     .line 217
-    :catch_f0
+    :catch_f2
     move-exception v0
 
     .line 218
-    iget-object v2, v1, Lcom/android/server/trust/TrustAgentWrapper$2;->this$0:Lcom/android/server/trust/TrustAgentWrapper;
+    .restart local v0  # "e":Landroid/os/RemoteException;
+    iget-object v8, v1, Lcom/android/server/trust/TrustAgentWrapper$2;->this$0:Lcom/android/server/trust/TrustAgentWrapper;
 
-    invoke-static {v2, v0}, Lcom/android/server/trust/TrustAgentWrapper;->access$1700(Lcom/android/server/trust/TrustAgentWrapper;Ljava/lang/Exception;)V
+    invoke-static {v8, v0}, Lcom/android/server/trust/TrustAgentWrapper;->access$1700(Lcom/android/server/trust/TrustAgentWrapper;Ljava/lang/Exception;)V
 
     .line 221
-    :goto_f6
-    if-nez v10, :cond_373
+    .end local v0  # "e":Landroid/os/RemoteException;
+    :goto_f8
+    if-nez v7, :cond_376
 
     .line 222
     iget-object v0, v1, Lcom/android/server/trust/TrustAgentWrapper$2;->this$0:Lcom/android/server/trust/TrustAgentWrapper;
@@ -358,25 +392,29 @@
 
     move-result-object v0
 
-    invoke-virtual {v0, v4, v5, v3}, Lcom/android/server/trust/TrustManagerService;->removeEscrowToken(JI)Z
+    invoke-virtual {v0, v5, v6, v4}, Lcom/android/server/trust/TrustManagerService;->removeEscrowToken(JI)Z
 
-    goto/16 :goto_373
+    goto/16 :goto_376
 
     .line 198
-    :pswitch_103  #0x6
-    iget-object v2, v1, Lcom/android/server/trust/TrustAgentWrapper$2;->this$0:Lcom/android/server/trust/TrustAgentWrapper;
+    .end local v3  # "eToken":[B
+    .end local v4  # "userId":I
+    .end local v5  # "handle":J
+    .end local v7  # "resultDeliverred":Z
+    :pswitch_105  #0x6
+    iget-object v0, v1, Lcom/android/server/trust/TrustAgentWrapper$2;->this$0:Lcom/android/server/trust/TrustAgentWrapper;
 
-    iget v0, v0, Landroid/os/Message;->arg1:I
+    iget v3, v2, Landroid/os/Message;->arg1:I
 
-    if-eqz v0, :cond_10a
+    if-eqz v3, :cond_10c
 
-    goto :goto_10b
+    goto :goto_10d
 
-    :cond_10a
-    move v8, v10
+    :cond_10c
+    move v6, v10
 
-    :goto_10b
-    invoke-static {v2, v8}, Lcom/android/server/trust/TrustAgentWrapper;->access$1502(Lcom/android/server/trust/TrustAgentWrapper;Z)Z
+    :goto_10d
+    invoke-static {v0, v6}, Lcom/android/server/trust/TrustAgentWrapper;->access$1502(Lcom/android/server/trust/TrustAgentWrapper;Z)Z
 
     .line 199
     iget-object v0, v1, Lcom/android/server/trust/TrustAgentWrapper$2;->this$0:Lcom/android/server/trust/TrustAgentWrapper;
@@ -385,7 +423,7 @@
 
     move-result v0
 
-    if-nez v0, :cond_120
+    if-nez v0, :cond_122
 
     .line 200
     iget-object v0, v1, Lcom/android/server/trust/TrustAgentWrapper$2;->this$0:Lcom/android/server/trust/TrustAgentWrapper;
@@ -395,10 +433,10 @@
     .line 201
     iget-object v0, v1, Lcom/android/server/trust/TrustAgentWrapper$2;->this$0:Lcom/android/server/trust/TrustAgentWrapper;
 
-    invoke-static {v0, v7}, Lcom/android/server/trust/TrustAgentWrapper;->access$302(Lcom/android/server/trust/TrustAgentWrapper;Ljava/lang/CharSequence;)Ljava/lang/CharSequence;
+    invoke-static {v0, v8}, Lcom/android/server/trust/TrustAgentWrapper;->access$302(Lcom/android/server/trust/TrustAgentWrapper;Ljava/lang/CharSequence;)Ljava/lang/CharSequence;
 
     .line 203
-    :cond_120
+    :cond_122
     iget-object v0, v1, Lcom/android/server/trust/TrustAgentWrapper$2;->this$0:Lcom/android/server/trust/TrustAgentWrapper;
 
     invoke-static {v0}, Lcom/android/server/trust/TrustAgentWrapper;->access$1100(Lcom/android/server/trust/TrustAgentWrapper;)Lcom/android/server/trust/TrustManagerService;
@@ -407,25 +445,25 @@
 
     iget-object v0, v0, Lcom/android/server/trust/TrustManagerService;->mArchive:Lcom/android/server/trust/TrustArchive;
 
-    iget-object v2, v1, Lcom/android/server/trust/TrustAgentWrapper$2;->this$0:Lcom/android/server/trust/TrustAgentWrapper;
-
-    invoke-static {v2}, Lcom/android/server/trust/TrustAgentWrapper;->access$1000(Lcom/android/server/trust/TrustAgentWrapper;)I
-
-    move-result v2
-
     iget-object v3, v1, Lcom/android/server/trust/TrustAgentWrapper$2;->this$0:Lcom/android/server/trust/TrustAgentWrapper;
 
-    invoke-static {v3}, Lcom/android/server/trust/TrustAgentWrapper;->access$000(Lcom/android/server/trust/TrustAgentWrapper;)Landroid/content/ComponentName;
+    invoke-static {v3}, Lcom/android/server/trust/TrustAgentWrapper;->access$1000(Lcom/android/server/trust/TrustAgentWrapper;)I
 
-    move-result-object v3
+    move-result v3
 
     iget-object v4, v1, Lcom/android/server/trust/TrustAgentWrapper$2;->this$0:Lcom/android/server/trust/TrustAgentWrapper;
 
-    invoke-static {v4}, Lcom/android/server/trust/TrustAgentWrapper;->access$1500(Lcom/android/server/trust/TrustAgentWrapper;)Z
+    invoke-static {v4}, Lcom/android/server/trust/TrustAgentWrapper;->access$000(Lcom/android/server/trust/TrustAgentWrapper;)Landroid/content/ComponentName;
 
-    move-result v4
+    move-result-object v4
 
-    invoke-virtual {v0, v2, v3, v4}, Lcom/android/server/trust/TrustArchive;->logManagingTrust(ILandroid/content/ComponentName;Z)V
+    iget-object v5, v1, Lcom/android/server/trust/TrustAgentWrapper$2;->this$0:Lcom/android/server/trust/TrustAgentWrapper;
+
+    invoke-static {v5}, Lcom/android/server/trust/TrustAgentWrapper;->access$1500(Lcom/android/server/trust/TrustAgentWrapper;)Z
+
+    move-result v5
+
+    invoke-virtual {v0, v3, v4, v5}, Lcom/android/server/trust/TrustArchive;->logManagingTrust(ILandroid/content/ComponentName;Z)V
 
     .line 204
     iget-object v0, v1, Lcom/android/server/trust/TrustAgentWrapper$2;->this$0:Lcom/android/server/trust/TrustAgentWrapper;
@@ -434,180 +472,186 @@
 
     move-result-object v0
 
-    iget-object v1, v1, Lcom/android/server/trust/TrustAgentWrapper$2;->this$0:Lcom/android/server/trust/TrustAgentWrapper;
+    iget-object v3, v1, Lcom/android/server/trust/TrustAgentWrapper$2;->this$0:Lcom/android/server/trust/TrustAgentWrapper;
 
-    invoke-static {v1}, Lcom/android/server/trust/TrustAgentWrapper;->access$1000(Lcom/android/server/trust/TrustAgentWrapper;)I
+    invoke-static {v3}, Lcom/android/server/trust/TrustAgentWrapper;->access$1000(Lcom/android/server/trust/TrustAgentWrapper;)I
 
-    move-result v1
+    move-result v3
 
-    invoke-virtual {v0, v1, v10}, Lcom/android/server/trust/TrustManagerService;->updateTrust(II)V
+    invoke-virtual {v0, v3, v10}, Lcom/android/server/trust/TrustManagerService;->updateTrust(II)V
 
     .line 205
-    goto/16 :goto_373
+    goto/16 :goto_376
 
     .line 182
-    :pswitch_14e  #0x5
-    iget-object v2, v0, Landroid/os/Message;->obj:Ljava/lang/Object;
+    :pswitch_150  #0x5
+    iget-object v0, v2, Landroid/os/Message;->obj:Ljava/lang/Object;
 
-    check-cast v2, Landroid/os/IBinder;
+    check-cast v0, Landroid/os/IBinder;
 
     .line 183
-    iget v0, v0, Landroid/os/Message;->arg1:I
+    .local v0, "token":Landroid/os/IBinder;
+    iget v3, v2, Landroid/os/Message;->arg1:I
 
-    if-eqz v0, :cond_157
+    if-eqz v3, :cond_159
 
-    goto :goto_158
+    goto :goto_15a
 
-    :cond_157
-    move v8, v10
+    :cond_159
+    move v6, v10
+
+    :goto_15a
+    move v3, v6
 
     .line 184
-    :goto_158
-    iget-object v0, v1, Lcom/android/server/trust/TrustAgentWrapper$2;->this$0:Lcom/android/server/trust/TrustAgentWrapper;
+    .local v3, "result":Z
+    iget-object v4, v1, Lcom/android/server/trust/TrustAgentWrapper$2;->this$0:Lcom/android/server/trust/TrustAgentWrapper;
 
-    invoke-static {v0}, Lcom/android/server/trust/TrustAgentWrapper;->access$1300(Lcom/android/server/trust/TrustAgentWrapper;)Landroid/os/IBinder;
+    invoke-static {v4}, Lcom/android/server/trust/TrustAgentWrapper;->access$1300(Lcom/android/server/trust/TrustAgentWrapper;)Landroid/os/IBinder;
 
-    move-result-object v0
+    move-result-object v4
 
-    if-ne v0, v2, :cond_1a9
+    if-ne v4, v0, :cond_1ac
 
     .line 185
-    iget-object v0, v1, Lcom/android/server/trust/TrustAgentWrapper$2;->this$0:Lcom/android/server/trust/TrustAgentWrapper;
+    iget-object v4, v1, Lcom/android/server/trust/TrustAgentWrapper$2;->this$0:Lcom/android/server/trust/TrustAgentWrapper;
 
-    invoke-static {v0, v7}, Lcom/android/server/trust/TrustAgentWrapper;->access$1302(Lcom/android/server/trust/TrustAgentWrapper;Landroid/os/IBinder;)Landroid/os/IBinder;
+    invoke-static {v4, v8}, Lcom/android/server/trust/TrustAgentWrapper;->access$1302(Lcom/android/server/trust/TrustAgentWrapper;Landroid/os/IBinder;)Landroid/os/IBinder;
 
     .line 186
-    iget-object v0, v1, Lcom/android/server/trust/TrustAgentWrapper$2;->this$0:Lcom/android/server/trust/TrustAgentWrapper;
+    iget-object v4, v1, Lcom/android/server/trust/TrustAgentWrapper$2;->this$0:Lcom/android/server/trust/TrustAgentWrapper;
 
-    invoke-static {v0}, Lcom/android/server/trust/TrustAgentWrapper;->access$1400(Lcom/android/server/trust/TrustAgentWrapper;)Z
+    invoke-static {v4}, Lcom/android/server/trust/TrustAgentWrapper;->access$1400(Lcom/android/server/trust/TrustAgentWrapper;)Z
 
-    move-result v0
+    move-result v4
 
-    if-eqz v0, :cond_373
+    if-eqz v4, :cond_376
 
-    if-eqz v8, :cond_373
+    if-eqz v3, :cond_376
 
     .line 187
     invoke-static {}, Lcom/android/server/trust/TrustAgentWrapper;->access$500()Z
 
-    move-result v0
+    move-result v4
 
-    if-eqz v0, :cond_193
+    if-eqz v4, :cond_196
 
-    new-instance v0, Ljava/lang/StringBuilder;
+    new-instance v4, Ljava/lang/StringBuilder;
 
-    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v4}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v2, "Re-enabling agent because it acknowledged enabled features: "
+    const-string v5, "Re-enabling agent because it acknowledged enabled features: "
 
-    invoke-virtual {v0, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    iget-object v2, v1, Lcom/android/server/trust/TrustAgentWrapper$2;->this$0:Lcom/android/server/trust/TrustAgentWrapper;
+    iget-object v5, v1, Lcom/android/server/trust/TrustAgentWrapper$2;->this$0:Lcom/android/server/trust/TrustAgentWrapper;
 
     .line 188
-    invoke-static {v2}, Lcom/android/server/trust/TrustAgentWrapper;->access$000(Lcom/android/server/trust/TrustAgentWrapper;)Landroid/content/ComponentName;
+    invoke-static {v5}, Lcom/android/server/trust/TrustAgentWrapper;->access$000(Lcom/android/server/trust/TrustAgentWrapper;)Landroid/content/ComponentName;
 
-    move-result-object v2
+    move-result-object v5
 
-    invoke-virtual {v2}, Landroid/content/ComponentName;->flattenToShortString()Ljava/lang/String;
+    invoke-virtual {v5}, Landroid/content/ComponentName;->flattenToShortString()Ljava/lang/String;
 
-    move-result-object v2
+    move-result-object v5
 
-    invoke-virtual {v0, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v4}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v4
 
     .line 187
-    invoke-static {v9, v0}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v9, v4}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 189
-    :cond_193
-    iget-object v0, v1, Lcom/android/server/trust/TrustAgentWrapper$2;->this$0:Lcom/android/server/trust/TrustAgentWrapper;
+    :cond_196
+    iget-object v4, v1, Lcom/android/server/trust/TrustAgentWrapper$2;->this$0:Lcom/android/server/trust/TrustAgentWrapper;
 
-    invoke-static {v0, v10}, Lcom/android/server/trust/TrustAgentWrapper;->access$1402(Lcom/android/server/trust/TrustAgentWrapper;Z)Z
+    invoke-static {v4, v10}, Lcom/android/server/trust/TrustAgentWrapper;->access$1402(Lcom/android/server/trust/TrustAgentWrapper;Z)Z
 
     .line 190
-    iget-object v0, v1, Lcom/android/server/trust/TrustAgentWrapper$2;->this$0:Lcom/android/server/trust/TrustAgentWrapper;
+    iget-object v4, v1, Lcom/android/server/trust/TrustAgentWrapper$2;->this$0:Lcom/android/server/trust/TrustAgentWrapper;
 
-    invoke-static {v0}, Lcom/android/server/trust/TrustAgentWrapper;->access$1100(Lcom/android/server/trust/TrustAgentWrapper;)Lcom/android/server/trust/TrustManagerService;
+    invoke-static {v4}, Lcom/android/server/trust/TrustAgentWrapper;->access$1100(Lcom/android/server/trust/TrustAgentWrapper;)Lcom/android/server/trust/TrustManagerService;
 
-    move-result-object v0
+    move-result-object v4
 
-    iget-object v1, v1, Lcom/android/server/trust/TrustAgentWrapper$2;->this$0:Lcom/android/server/trust/TrustAgentWrapper;
+    iget-object v5, v1, Lcom/android/server/trust/TrustAgentWrapper$2;->this$0:Lcom/android/server/trust/TrustAgentWrapper;
 
-    invoke-static {v1}, Lcom/android/server/trust/TrustAgentWrapper;->access$1000(Lcom/android/server/trust/TrustAgentWrapper;)I
+    invoke-static {v5}, Lcom/android/server/trust/TrustAgentWrapper;->access$1000(Lcom/android/server/trust/TrustAgentWrapper;)I
 
-    move-result v1
+    move-result v5
 
-    invoke-virtual {v0, v1, v10}, Lcom/android/server/trust/TrustManagerService;->updateTrust(II)V
+    invoke-virtual {v4, v5, v10}, Lcom/android/server/trust/TrustManagerService;->updateTrust(II)V
 
-    goto/16 :goto_373
+    goto/16 :goto_376
 
     .line 193
-    :cond_1a9
+    :cond_1ac
     invoke-static {}, Lcom/android/server/trust/TrustAgentWrapper;->access$500()Z
 
-    move-result v0
+    move-result v4
 
-    if-eqz v0, :cond_373
+    if-eqz v4, :cond_376
 
-    new-instance v0, Ljava/lang/StringBuilder;
+    new-instance v4, Ljava/lang/StringBuilder;
 
-    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v4}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v2, "Ignoring MSG_SET_TRUST_AGENT_FEATURES_COMPLETED with obsolete token: "
+    const-string v5, "Ignoring MSG_SET_TRUST_AGENT_FEATURES_COMPLETED with obsolete token: "
 
-    invoke-virtual {v0, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    iget-object v1, v1, Lcom/android/server/trust/TrustAgentWrapper$2;->this$0:Lcom/android/server/trust/TrustAgentWrapper;
+    iget-object v5, v1, Lcom/android/server/trust/TrustAgentWrapper$2;->this$0:Lcom/android/server/trust/TrustAgentWrapper;
 
     .line 194
-    invoke-static {v1}, Lcom/android/server/trust/TrustAgentWrapper;->access$000(Lcom/android/server/trust/TrustAgentWrapper;)Landroid/content/ComponentName;
+    invoke-static {v5}, Lcom/android/server/trust/TrustAgentWrapper;->access$000(Lcom/android/server/trust/TrustAgentWrapper;)Landroid/content/ComponentName;
 
-    move-result-object v1
+    move-result-object v5
 
-    invoke-virtual {v1}, Landroid/content/ComponentName;->flattenToShortString()Ljava/lang/String;
+    invoke-virtual {v5}, Landroid/content/ComponentName;->flattenToShortString()Ljava/lang/String;
 
-    move-result-object v1
+    move-result-object v5
 
-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v4}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v4
 
     .line 193
-    invoke-static {v9, v0}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v9, v4}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
-    goto/16 :goto_373
+    goto/16 :goto_376
 
     .line 176
-    :pswitch_1cf  #0x4
+    .end local v0  # "token":Landroid/os/IBinder;
+    .end local v3  # "result":Z
+    :pswitch_1d2  #0x4
     new-instance v0, Ljava/lang/StringBuilder;
 
     invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v2, "Connection attempt to agent "
+    const-string v3, "Connection attempt to agent "
 
-    invoke-virtual {v0, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    iget-object v2, v1, Lcom/android/server/trust/TrustAgentWrapper$2;->this$0:Lcom/android/server/trust/TrustAgentWrapper;
+    iget-object v3, v1, Lcom/android/server/trust/TrustAgentWrapper$2;->this$0:Lcom/android/server/trust/TrustAgentWrapper;
 
-    invoke-static {v2}, Lcom/android/server/trust/TrustAgentWrapper;->access$000(Lcom/android/server/trust/TrustAgentWrapper;)Landroid/content/ComponentName;
+    invoke-static {v3}, Lcom/android/server/trust/TrustAgentWrapper;->access$000(Lcom/android/server/trust/TrustAgentWrapper;)Landroid/content/ComponentName;
 
-    move-result-object v2
+    move-result-object v3
 
-    invoke-virtual {v2}, Landroid/content/ComponentName;->flattenToShortString()Ljava/lang/String;
+    invoke-virtual {v3}, Landroid/content/ComponentName;->flattenToShortString()Ljava/lang/String;
 
-    move-result-object v2
+    move-result-object v3
 
-    invoke-virtual {v0, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string v2, " timed out, rebinding"
+    const-string v3, " timed out, rebinding"
 
-    invoke-virtual {v0, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
@@ -627,38 +671,38 @@
 
     move-result-object v0
 
-    iget-object v2, v1, Lcom/android/server/trust/TrustAgentWrapper$2;->this$0:Lcom/android/server/trust/TrustAgentWrapper;
+    iget-object v3, v1, Lcom/android/server/trust/TrustAgentWrapper$2;->this$0:Lcom/android/server/trust/TrustAgentWrapper;
 
-    invoke-static {v2}, Lcom/android/server/trust/TrustAgentWrapper;->access$000(Lcom/android/server/trust/TrustAgentWrapper;)Landroid/content/ComponentName;
+    invoke-static {v3}, Lcom/android/server/trust/TrustAgentWrapper;->access$000(Lcom/android/server/trust/TrustAgentWrapper;)Landroid/content/ComponentName;
 
-    move-result-object v2
+    move-result-object v3
 
-    iget-object v1, v1, Lcom/android/server/trust/TrustAgentWrapper$2;->this$0:Lcom/android/server/trust/TrustAgentWrapper;
+    iget-object v4, v1, Lcom/android/server/trust/TrustAgentWrapper$2;->this$0:Lcom/android/server/trust/TrustAgentWrapper;
 
-    invoke-static {v1}, Lcom/android/server/trust/TrustAgentWrapper;->access$1000(Lcom/android/server/trust/TrustAgentWrapper;)I
+    invoke-static {v4}, Lcom/android/server/trust/TrustAgentWrapper;->access$1000(Lcom/android/server/trust/TrustAgentWrapper;)I
 
-    move-result v1
+    move-result v4
 
-    invoke-virtual {v0, v2, v1}, Lcom/android/server/trust/TrustManagerService;->resetAgent(Landroid/content/ComponentName;I)V
+    invoke-virtual {v0, v3, v4}, Lcom/android/server/trust/TrustManagerService;->resetAgent(Landroid/content/ComponentName;I)V
 
     .line 180
-    goto/16 :goto_373
+    goto/16 :goto_376
 
     .line 162
-    :pswitch_20e  #0x3
+    :pswitch_211  #0x3
     invoke-static {}, Lcom/android/server/trust/TrustAgentWrapper;->access$500()Z
 
-    move-result v2
+    move-result v0
 
-    if-eqz v2, :cond_232
+    if-eqz v0, :cond_235
 
-    new-instance v2, Ljava/lang/StringBuilder;
+    new-instance v0, Ljava/lang/StringBuilder;
 
-    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
 
     const-string v3, "Trust timed out : "
 
-    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     iget-object v3, v1, Lcom/android/server/trust/TrustAgentWrapper$2;->this$0:Lcom/android/server/trust/TrustAgentWrapper;
 
@@ -670,23 +714,23 @@
 
     move-result-object v3
 
-    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v2
+    move-result-object v0
 
-    invoke-static {v9, v2}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v9, v0}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 163
-    :cond_232
-    iget-object v2, v1, Lcom/android/server/trust/TrustAgentWrapper$2;->this$0:Lcom/android/server/trust/TrustAgentWrapper;
+    :cond_235
+    iget-object v0, v1, Lcom/android/server/trust/TrustAgentWrapper$2;->this$0:Lcom/android/server/trust/TrustAgentWrapper;
 
-    invoke-static {v2}, Lcom/android/server/trust/TrustAgentWrapper;->access$1100(Lcom/android/server/trust/TrustAgentWrapper;)Lcom/android/server/trust/TrustManagerService;
+    invoke-static {v0}, Lcom/android/server/trust/TrustAgentWrapper;->access$1100(Lcom/android/server/trust/TrustAgentWrapper;)Lcom/android/server/trust/TrustManagerService;
 
-    move-result-object v2
+    move-result-object v0
 
-    iget-object v2, v2, Lcom/android/server/trust/TrustManagerService;->mArchive:Lcom/android/server/trust/TrustArchive;
+    iget-object v0, v0, Lcom/android/server/trust/TrustManagerService;->mArchive:Lcom/android/server/trust/TrustArchive;
 
     iget-object v3, v1, Lcom/android/server/trust/TrustAgentWrapper$2;->this$0:Lcom/android/server/trust/TrustAgentWrapper;
 
@@ -700,39 +744,39 @@
 
     move-result-object v5
 
-    invoke-virtual {v2, v3, v5}, Lcom/android/server/trust/TrustArchive;->logTrustTimeout(ILandroid/content/ComponentName;)V
+    invoke-virtual {v0, v3, v5}, Lcom/android/server/trust/TrustArchive;->logTrustTimeout(ILandroid/content/ComponentName;)V
 
     .line 164
-    iget-object v2, v1, Lcom/android/server/trust/TrustAgentWrapper$2;->this$0:Lcom/android/server/trust/TrustAgentWrapper;
+    iget-object v0, v1, Lcom/android/server/trust/TrustAgentWrapper$2;->this$0:Lcom/android/server/trust/TrustAgentWrapper;
 
-    invoke-static {v2}, Lcom/android/server/trust/TrustAgentWrapper;->access$1200(Lcom/android/server/trust/TrustAgentWrapper;)V
+    invoke-static {v0}, Lcom/android/server/trust/TrustAgentWrapper;->access$1200(Lcom/android/server/trust/TrustAgentWrapper;)V
 
     .line 167
-    :pswitch_24e  #0x2
-    iget-object v2, v1, Lcom/android/server/trust/TrustAgentWrapper$2;->this$0:Lcom/android/server/trust/TrustAgentWrapper;
+    :pswitch_251  #0x2
+    iget-object v0, v1, Lcom/android/server/trust/TrustAgentWrapper$2;->this$0:Lcom/android/server/trust/TrustAgentWrapper;
 
-    invoke-static {v2, v10}, Lcom/android/server/trust/TrustAgentWrapper;->access$202(Lcom/android/server/trust/TrustAgentWrapper;Z)Z
+    invoke-static {v0, v10}, Lcom/android/server/trust/TrustAgentWrapper;->access$202(Lcom/android/server/trust/TrustAgentWrapper;Z)Z
 
     .line 168
-    iget-object v2, v1, Lcom/android/server/trust/TrustAgentWrapper$2;->this$0:Lcom/android/server/trust/TrustAgentWrapper;
+    iget-object v0, v1, Lcom/android/server/trust/TrustAgentWrapper$2;->this$0:Lcom/android/server/trust/TrustAgentWrapper;
 
-    invoke-static {v2, v7}, Lcom/android/server/trust/TrustAgentWrapper;->access$302(Lcom/android/server/trust/TrustAgentWrapper;Ljava/lang/CharSequence;)Ljava/lang/CharSequence;
+    invoke-static {v0, v8}, Lcom/android/server/trust/TrustAgentWrapper;->access$302(Lcom/android/server/trust/TrustAgentWrapper;Ljava/lang/CharSequence;)Ljava/lang/CharSequence;
 
     .line 169
-    iget-object v2, v1, Lcom/android/server/trust/TrustAgentWrapper$2;->this$0:Lcom/android/server/trust/TrustAgentWrapper;
+    iget-object v0, v1, Lcom/android/server/trust/TrustAgentWrapper$2;->this$0:Lcom/android/server/trust/TrustAgentWrapper;
 
-    invoke-static {v2}, Lcom/android/server/trust/TrustAgentWrapper;->access$100(Lcom/android/server/trust/TrustAgentWrapper;)Landroid/os/Handler;
+    invoke-static {v0}, Lcom/android/server/trust/TrustAgentWrapper;->access$100(Lcom/android/server/trust/TrustAgentWrapper;)Landroid/os/Handler;
 
-    move-result-object v2
+    move-result-object v0
 
     const/4 v3, 0x3
 
-    invoke-virtual {v2, v3}, Landroid/os/Handler;->removeMessages(I)V
+    invoke-virtual {v0, v3}, Landroid/os/Handler;->removeMessages(I)V
 
     .line 170
-    iget v0, v0, Landroid/os/Message;->what:I
+    iget v0, v2, Landroid/os/Message;->what:I
 
-    if-ne v0, v4, :cond_27d
+    if-ne v0, v4, :cond_280
 
     .line 171
     iget-object v0, v1, Lcom/android/server/trust/TrustAgentWrapper$2;->this$0:Lcom/android/server/trust/TrustAgentWrapper;
@@ -743,70 +787,70 @@
 
     iget-object v0, v0, Lcom/android/server/trust/TrustManagerService;->mArchive:Lcom/android/server/trust/TrustArchive;
 
-    iget-object v2, v1, Lcom/android/server/trust/TrustAgentWrapper$2;->this$0:Lcom/android/server/trust/TrustAgentWrapper;
-
-    invoke-static {v2}, Lcom/android/server/trust/TrustAgentWrapper;->access$1000(Lcom/android/server/trust/TrustAgentWrapper;)I
-
-    move-result v2
-
     iget-object v3, v1, Lcom/android/server/trust/TrustAgentWrapper$2;->this$0:Lcom/android/server/trust/TrustAgentWrapper;
 
-    invoke-static {v3}, Lcom/android/server/trust/TrustAgentWrapper;->access$000(Lcom/android/server/trust/TrustAgentWrapper;)Landroid/content/ComponentName;
+    invoke-static {v3}, Lcom/android/server/trust/TrustAgentWrapper;->access$1000(Lcom/android/server/trust/TrustAgentWrapper;)I
 
-    move-result-object v3
+    move-result v3
 
-    invoke-virtual {v0, v2, v3}, Lcom/android/server/trust/TrustArchive;->logRevokeTrust(ILandroid/content/ComponentName;)V
+    iget-object v4, v1, Lcom/android/server/trust/TrustAgentWrapper$2;->this$0:Lcom/android/server/trust/TrustAgentWrapper;
+
+    invoke-static {v4}, Lcom/android/server/trust/TrustAgentWrapper;->access$000(Lcom/android/server/trust/TrustAgentWrapper;)Landroid/content/ComponentName;
+
+    move-result-object v4
+
+    invoke-virtual {v0, v3, v4}, Lcom/android/server/trust/TrustArchive;->logRevokeTrust(ILandroid/content/ComponentName;)V
 
     .line 173
-    :cond_27d
+    :cond_280
     iget-object v0, v1, Lcom/android/server/trust/TrustAgentWrapper$2;->this$0:Lcom/android/server/trust/TrustAgentWrapper;
 
     invoke-static {v0}, Lcom/android/server/trust/TrustAgentWrapper;->access$1100(Lcom/android/server/trust/TrustAgentWrapper;)Lcom/android/server/trust/TrustManagerService;
 
     move-result-object v0
 
-    iget-object v1, v1, Lcom/android/server/trust/TrustAgentWrapper$2;->this$0:Lcom/android/server/trust/TrustAgentWrapper;
+    iget-object v3, v1, Lcom/android/server/trust/TrustAgentWrapper$2;->this$0:Lcom/android/server/trust/TrustAgentWrapper;
 
-    invoke-static {v1}, Lcom/android/server/trust/TrustAgentWrapper;->access$1000(Lcom/android/server/trust/TrustAgentWrapper;)I
+    invoke-static {v3}, Lcom/android/server/trust/TrustAgentWrapper;->access$1000(Lcom/android/server/trust/TrustAgentWrapper;)I
 
-    move-result v1
+    move-result v3
 
-    invoke-virtual {v0, v1, v10}, Lcom/android/server/trust/TrustManagerService;->updateTrust(II)V
+    invoke-virtual {v0, v3, v10}, Lcom/android/server/trust/TrustManagerService;->updateTrust(II)V
 
     .line 174
-    goto/16 :goto_373
+    goto/16 :goto_376
 
     .line 126
-    :pswitch_28e  #0x1
-    iget-object v2, v1, Lcom/android/server/trust/TrustAgentWrapper$2;->this$0:Lcom/android/server/trust/TrustAgentWrapper;
+    :pswitch_291  #0x1
+    iget-object v0, v1, Lcom/android/server/trust/TrustAgentWrapper$2;->this$0:Lcom/android/server/trust/TrustAgentWrapper;
 
-    invoke-virtual {v2}, Lcom/android/server/trust/TrustAgentWrapper;->isConnected()Z
+    invoke-virtual {v0}, Lcom/android/server/trust/TrustAgentWrapper;->isConnected()Z
 
-    move-result v2
+    move-result v0
 
-    if-nez v2, :cond_2b5
+    if-nez v0, :cond_2b8
 
     .line 127
     new-instance v0, Ljava/lang/StringBuilder;
 
     invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v2, "Agent is not connected, cannot grant trust: "
+    const-string v3, "Agent is not connected, cannot grant trust: "
 
-    invoke-virtual {v0, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    iget-object v1, v1, Lcom/android/server/trust/TrustAgentWrapper$2;->this$0:Lcom/android/server/trust/TrustAgentWrapper;
+    iget-object v3, v1, Lcom/android/server/trust/TrustAgentWrapper$2;->this$0:Lcom/android/server/trust/TrustAgentWrapper;
 
     .line 128
-    invoke-static {v1}, Lcom/android/server/trust/TrustAgentWrapper;->access$000(Lcom/android/server/trust/TrustAgentWrapper;)Landroid/content/ComponentName;
+    invoke-static {v3}, Lcom/android/server/trust/TrustAgentWrapper;->access$000(Lcom/android/server/trust/TrustAgentWrapper;)Landroid/content/ComponentName;
 
-    move-result-object v1
+    move-result-object v3
 
-    invoke-virtual {v1}, Landroid/content/ComponentName;->flattenToShortString()Ljava/lang/String;
+    invoke-virtual {v3}, Landroid/content/ComponentName;->flattenToShortString()Ljava/lang/String;
 
-    move-result-object v1
+    move-result-object v3
 
-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
@@ -819,56 +863,58 @@
     return-void
 
     .line 131
-    :cond_2b5
-    iget-object v2, v1, Lcom/android/server/trust/TrustAgentWrapper$2;->this$0:Lcom/android/server/trust/TrustAgentWrapper;
+    :cond_2b8
+    iget-object v0, v1, Lcom/android/server/trust/TrustAgentWrapper$2;->this$0:Lcom/android/server/trust/TrustAgentWrapper;
 
-    invoke-static {v2, v8}, Lcom/android/server/trust/TrustAgentWrapper;->access$202(Lcom/android/server/trust/TrustAgentWrapper;Z)Z
+    invoke-static {v0, v6}, Lcom/android/server/trust/TrustAgentWrapper;->access$202(Lcom/android/server/trust/TrustAgentWrapper;Z)Z
 
     .line 132
-    iget-object v2, v1, Lcom/android/server/trust/TrustAgentWrapper$2;->this$0:Lcom/android/server/trust/TrustAgentWrapper;
+    iget-object v0, v1, Lcom/android/server/trust/TrustAgentWrapper$2;->this$0:Lcom/android/server/trust/TrustAgentWrapper;
 
-    iget-object v3, v0, Landroid/os/Message;->obj:Ljava/lang/Object;
+    iget-object v3, v2, Landroid/os/Message;->obj:Ljava/lang/Object;
 
     check-cast v3, Ljava/lang/CharSequence;
 
-    invoke-static {v2, v3}, Lcom/android/server/trust/TrustAgentWrapper;->access$302(Lcom/android/server/trust/TrustAgentWrapper;Ljava/lang/CharSequence;)Ljava/lang/CharSequence;
+    invoke-static {v0, v3}, Lcom/android/server/trust/TrustAgentWrapper;->access$302(Lcom/android/server/trust/TrustAgentWrapper;Ljava/lang/CharSequence;)Ljava/lang/CharSequence;
 
     .line 133
-    iget v2, v0, Landroid/os/Message;->arg1:I
+    iget v0, v2, Landroid/os/Message;->arg1:I
 
     .line 134
+    .local v0, "flags":I
     invoke-virtual/range {p1 .. p1}, Landroid/os/Message;->getData()Landroid/os/Bundle;
 
-    move-result-object v0
+    move-result-object v3
 
-    const-string v3, "duration"
+    const-string v5, "duration"
 
-    invoke-virtual {v0, v3}, Landroid/os/Bundle;->getLong(Ljava/lang/String;)J
+    invoke-virtual {v3, v5}, Landroid/os/Bundle;->getLong(Ljava/lang/String;)J
 
     move-result-wide v5
 
     .line 135
+    .local v5, "durationMs":J
     const-wide/16 v11, 0x0
 
-    cmp-long v0, v5, v11
+    cmp-long v3, v5, v11
 
-    if-lez v0, :cond_336
+    if-lez v3, :cond_339
 
     .line 137
-    iget-object v0, v1, Lcom/android/server/trust/TrustAgentWrapper$2;->this$0:Lcom/android/server/trust/TrustAgentWrapper;
+    iget-object v3, v1, Lcom/android/server/trust/TrustAgentWrapper$2;->this$0:Lcom/android/server/trust/TrustAgentWrapper;
 
-    invoke-static {v0}, Lcom/android/server/trust/TrustAgentWrapper;->access$400(Lcom/android/server/trust/TrustAgentWrapper;)J
+    invoke-static {v3}, Lcom/android/server/trust/TrustAgentWrapper;->access$400(Lcom/android/server/trust/TrustAgentWrapper;)J
 
     move-result-wide v13
 
-    cmp-long v0, v13, v11
+    cmp-long v3, v13, v11
 
-    if-eqz v0, :cond_30c
+    if-eqz v3, :cond_30f
 
     .line 142
-    iget-object v0, v1, Lcom/android/server/trust/TrustAgentWrapper$2;->this$0:Lcom/android/server/trust/TrustAgentWrapper;
+    iget-object v3, v1, Lcom/android/server/trust/TrustAgentWrapper$2;->this$0:Lcom/android/server/trust/TrustAgentWrapper;
 
-    invoke-static {v0}, Lcom/android/server/trust/TrustAgentWrapper;->access$400(Lcom/android/server/trust/TrustAgentWrapper;)J
+    invoke-static {v3}, Lcom/android/server/trust/TrustAgentWrapper;->access$400(Lcom/android/server/trust/TrustAgentWrapper;)J
 
     move-result-wide v11
 
@@ -877,174 +923,184 @@
     move-result-wide v11
 
     .line 143
+    .local v11, "duration":J
     invoke-static {}, Lcom/android/server/trust/TrustAgentWrapper;->access$500()Z
 
-    move-result v0
+    move-result v3
 
-    if-eqz v0, :cond_30d
+    if-eqz v3, :cond_310
 
     .line 144
-    new-instance v0, Ljava/lang/StringBuilder;
+    new-instance v3, Ljava/lang/StringBuilder;
 
-    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v3, "DPM lock timeout in effect. Timeout adjusted from "
+    const-string v7, "DPM lock timeout in effect. Timeout adjusted from "
 
-    invoke-virtual {v0, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v7}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0, v5, v6}, Ljava/lang/StringBuilder;->append(J)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v5, v6}, Ljava/lang/StringBuilder;->append(J)Ljava/lang/StringBuilder;
 
-    const-string v3, " to "
+    const-string v7, " to "
 
-    invoke-virtual {v0, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v7}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0, v11, v12}, Ljava/lang/StringBuilder;->append(J)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v11, v12}, Ljava/lang/StringBuilder;->append(J)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v3
 
-    invoke-static {v9, v0}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v9, v3}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
 
-    goto :goto_30d
+    goto :goto_310
 
     .line 148
-    :cond_30c
+    .end local v11  # "duration":J
+    :cond_30f
     move-wide v11, v5
 
     .line 150
-    :cond_30d
-    :goto_30d
+    .restart local v11  # "duration":J
+    :cond_310
+    :goto_310
     invoke-static {}, Landroid/os/SystemClock;->elapsedRealtime()J
 
-    move-result-wide v8
+    move-result-wide v13
 
-    add-long/2addr v8, v11
+    add-long/2addr v13, v11
 
     .line 151
-    iget-object v0, v1, Lcom/android/server/trust/TrustAgentWrapper$2;->this$0:Lcom/android/server/trust/TrustAgentWrapper;
+    .local v13, "expiration":J
+    iget-object v3, v1, Lcom/android/server/trust/TrustAgentWrapper$2;->this$0:Lcom/android/server/trust/TrustAgentWrapper;
 
-    invoke-static {v0}, Lcom/android/server/trust/TrustAgentWrapper;->access$700(Lcom/android/server/trust/TrustAgentWrapper;)Landroid/content/Context;
+    invoke-static {v3}, Lcom/android/server/trust/TrustAgentWrapper;->access$700(Lcom/android/server/trust/TrustAgentWrapper;)Landroid/content/Context;
 
-    move-result-object v3
+    move-result-object v7
 
-    iget-object v11, v1, Lcom/android/server/trust/TrustAgentWrapper$2;->this$0:Lcom/android/server/trust/TrustAgentWrapper;
+    iget-object v9, v1, Lcom/android/server/trust/TrustAgentWrapper$2;->this$0:Lcom/android/server/trust/TrustAgentWrapper;
 
-    invoke-static {v11}, Lcom/android/server/trust/TrustAgentWrapper;->access$800(Lcom/android/server/trust/TrustAgentWrapper;)Landroid/content/Intent;
+    invoke-static {v9}, Lcom/android/server/trust/TrustAgentWrapper;->access$800(Lcom/android/server/trust/TrustAgentWrapper;)Landroid/content/Intent;
 
-    move-result-object v11
+    move-result-object v9
 
-    const/high16 v12, 0x10000000
+    const/high16 v15, 0x10000000
 
-    invoke-static {v3, v10, v11, v12}, Landroid/app/PendingIntent;->getBroadcast(Landroid/content/Context;ILandroid/content/Intent;I)Landroid/app/PendingIntent;
+    invoke-static {v7, v10, v9, v15}, Landroid/app/PendingIntent;->getBroadcast(Landroid/content/Context;ILandroid/content/Intent;I)Landroid/app/PendingIntent;
 
-    move-result-object v3
+    move-result-object v7
 
-    invoke-static {v0, v3}, Lcom/android/server/trust/TrustAgentWrapper;->access$602(Lcom/android/server/trust/TrustAgentWrapper;Landroid/app/PendingIntent;)Landroid/app/PendingIntent;
+    invoke-static {v3, v7}, Lcom/android/server/trust/TrustAgentWrapper;->access$602(Lcom/android/server/trust/TrustAgentWrapper;Landroid/app/PendingIntent;)Landroid/app/PendingIntent;
 
     .line 153
-    iget-object v0, v1, Lcom/android/server/trust/TrustAgentWrapper$2;->this$0:Lcom/android/server/trust/TrustAgentWrapper;
+    iget-object v3, v1, Lcom/android/server/trust/TrustAgentWrapper$2;->this$0:Lcom/android/server/trust/TrustAgentWrapper;
 
-    invoke-static {v0}, Lcom/android/server/trust/TrustAgentWrapper;->access$900(Lcom/android/server/trust/TrustAgentWrapper;)Landroid/app/AlarmManager;
+    invoke-static {v3}, Lcom/android/server/trust/TrustAgentWrapper;->access$900(Lcom/android/server/trust/TrustAgentWrapper;)Landroid/app/AlarmManager;
 
-    move-result-object v0
+    move-result-object v3
+
+    iget-object v7, v1, Lcom/android/server/trust/TrustAgentWrapper$2;->this$0:Lcom/android/server/trust/TrustAgentWrapper;
+
+    .line 154
+    invoke-static {v7}, Lcom/android/server/trust/TrustAgentWrapper;->access$600(Lcom/android/server/trust/TrustAgentWrapper;)Landroid/app/PendingIntent;
+
+    move-result-object v7
+
+    .line 153
+    invoke-virtual {v3, v4, v13, v14, v7}, Landroid/app/AlarmManager;->set(IJLandroid/app/PendingIntent;)V
+
+    .line 156
+    .end local v11  # "duration":J
+    .end local v13  # "expiration":J
+    :cond_339
+    iget-object v3, v1, Lcom/android/server/trust/TrustAgentWrapper$2;->this$0:Lcom/android/server/trust/TrustAgentWrapper;
+
+    invoke-static {v3}, Lcom/android/server/trust/TrustAgentWrapper;->access$1100(Lcom/android/server/trust/TrustAgentWrapper;)Lcom/android/server/trust/TrustManagerService;
+
+    move-result-object v3
+
+    iget-object v11, v3, Lcom/android/server/trust/TrustManagerService;->mArchive:Lcom/android/server/trust/TrustArchive;
 
     iget-object v3, v1, Lcom/android/server/trust/TrustAgentWrapper$2;->this$0:Lcom/android/server/trust/TrustAgentWrapper;
 
-    .line 154
-    invoke-static {v3}, Lcom/android/server/trust/TrustAgentWrapper;->access$600(Lcom/android/server/trust/TrustAgentWrapper;)Landroid/app/PendingIntent;
-
-    move-result-object v3
-
-    .line 153
-    invoke-virtual {v0, v4, v8, v9, v3}, Landroid/app/AlarmManager;->set(IJLandroid/app/PendingIntent;)V
-
-    .line 156
-    :cond_336
-    iget-object v0, v1, Lcom/android/server/trust/TrustAgentWrapper$2;->this$0:Lcom/android/server/trust/TrustAgentWrapper;
-
-    invoke-static {v0}, Lcom/android/server/trust/TrustAgentWrapper;->access$1100(Lcom/android/server/trust/TrustAgentWrapper;)Lcom/android/server/trust/TrustManagerService;
-
-    move-result-object v0
-
-    iget-object v11, v0, Lcom/android/server/trust/TrustManagerService;->mArchive:Lcom/android/server/trust/TrustArchive;
-
-    iget-object v0, v1, Lcom/android/server/trust/TrustAgentWrapper$2;->this$0:Lcom/android/server/trust/TrustAgentWrapper;
-
-    invoke-static {v0}, Lcom/android/server/trust/TrustAgentWrapper;->access$1000(Lcom/android/server/trust/TrustAgentWrapper;)I
+    invoke-static {v3}, Lcom/android/server/trust/TrustAgentWrapper;->access$1000(Lcom/android/server/trust/TrustAgentWrapper;)I
 
     move-result v12
 
-    iget-object v0, v1, Lcom/android/server/trust/TrustAgentWrapper$2;->this$0:Lcom/android/server/trust/TrustAgentWrapper;
+    iget-object v3, v1, Lcom/android/server/trust/TrustAgentWrapper$2;->this$0:Lcom/android/server/trust/TrustAgentWrapper;
 
-    invoke-static {v0}, Lcom/android/server/trust/TrustAgentWrapper;->access$000(Lcom/android/server/trust/TrustAgentWrapper;)Landroid/content/ComponentName;
+    invoke-static {v3}, Lcom/android/server/trust/TrustAgentWrapper;->access$000(Lcom/android/server/trust/TrustAgentWrapper;)Landroid/content/ComponentName;
 
     move-result-object v13
 
     .line 157
-    iget-object v0, v1, Lcom/android/server/trust/TrustAgentWrapper$2;->this$0:Lcom/android/server/trust/TrustAgentWrapper;
+    iget-object v3, v1, Lcom/android/server/trust/TrustAgentWrapper$2;->this$0:Lcom/android/server/trust/TrustAgentWrapper;
 
-    invoke-static {v0}, Lcom/android/server/trust/TrustAgentWrapper;->access$300(Lcom/android/server/trust/TrustAgentWrapper;)Ljava/lang/CharSequence;
+    invoke-static {v3}, Lcom/android/server/trust/TrustAgentWrapper;->access$300(Lcom/android/server/trust/TrustAgentWrapper;)Ljava/lang/CharSequence;
 
-    move-result-object v0
+    move-result-object v3
 
-    if-eqz v0, :cond_35c
+    if-eqz v3, :cond_35f
 
-    iget-object v0, v1, Lcom/android/server/trust/TrustAgentWrapper$2;->this$0:Lcom/android/server/trust/TrustAgentWrapper;
+    iget-object v3, v1, Lcom/android/server/trust/TrustAgentWrapper$2;->this$0:Lcom/android/server/trust/TrustAgentWrapper;
 
-    invoke-static {v0}, Lcom/android/server/trust/TrustAgentWrapper;->access$300(Lcom/android/server/trust/TrustAgentWrapper;)Ljava/lang/CharSequence;
+    invoke-static {v3}, Lcom/android/server/trust/TrustAgentWrapper;->access$300(Lcom/android/server/trust/TrustAgentWrapper;)Ljava/lang/CharSequence;
 
-    move-result-object v0
+    move-result-object v3
 
-    invoke-interface {v0}, Ljava/lang/CharSequence;->toString()Ljava/lang/String;
+    invoke-interface {v3}, Ljava/lang/CharSequence;->toString()Ljava/lang/String;
 
-    move-result-object v7
+    move-result-object v8
 
-    :cond_35c
-    move-object v14, v7
+    :cond_35f
+    move-object v14, v8
 
     .line 156
     move-wide v15, v5
 
-    move/from16 v17, v2
+    move/from16 v17, v0
 
     invoke-virtual/range {v11 .. v17}, Lcom/android/server/trust/TrustArchive;->logGrantTrust(ILandroid/content/ComponentName;Ljava/lang/String;JI)V
 
     .line 159
-    iget-object v0, v1, Lcom/android/server/trust/TrustAgentWrapper$2;->this$0:Lcom/android/server/trust/TrustAgentWrapper;
+    iget-object v3, v1, Lcom/android/server/trust/TrustAgentWrapper$2;->this$0:Lcom/android/server/trust/TrustAgentWrapper;
 
-    invoke-static {v0}, Lcom/android/server/trust/TrustAgentWrapper;->access$1100(Lcom/android/server/trust/TrustAgentWrapper;)Lcom/android/server/trust/TrustManagerService;
+    invoke-static {v3}, Lcom/android/server/trust/TrustAgentWrapper;->access$1100(Lcom/android/server/trust/TrustAgentWrapper;)Lcom/android/server/trust/TrustManagerService;
 
-    move-result-object v0
+    move-result-object v3
 
-    iget-object v1, v1, Lcom/android/server/trust/TrustAgentWrapper$2;->this$0:Lcom/android/server/trust/TrustAgentWrapper;
+    iget-object v4, v1, Lcom/android/server/trust/TrustAgentWrapper$2;->this$0:Lcom/android/server/trust/TrustAgentWrapper;
 
-    invoke-static {v1}, Lcom/android/server/trust/TrustAgentWrapper;->access$1000(Lcom/android/server/trust/TrustAgentWrapper;)I
+    invoke-static {v4}, Lcom/android/server/trust/TrustAgentWrapper;->access$1000(Lcom/android/server/trust/TrustAgentWrapper;)I
 
-    move-result v1
+    move-result v4
 
-    invoke-virtual {v0, v1, v2}, Lcom/android/server/trust/TrustManagerService;->updateTrust(II)V
+    invoke-virtual {v3, v4, v0}, Lcom/android/server/trust/TrustManagerService;->updateTrust(II)V
 
     .line 160
     nop
 
     .line 267
-    :cond_373
-    :goto_373
+    .end local v0  # "flags":I
+    .end local v5  # "durationMs":J
+    :cond_376
+    :goto_376
     return-void
 
-    :pswitch_data_374
+    nop
+
+    :pswitch_data_378
     .packed-switch 0x1
-        :pswitch_28e  #00000001
-        :pswitch_24e  #00000002
-        :pswitch_20e  #00000003
-        :pswitch_1cf  #00000004
-        :pswitch_14e  #00000005
-        :pswitch_103  #00000006
-        :pswitch_be  #00000007
-        :pswitch_89  #00000008
-        :pswitch_50  #00000009
-        :pswitch_2d  #0000000a
+        :pswitch_291  #00000001
+        :pswitch_251  #00000002
+        :pswitch_211  #00000003
+        :pswitch_1d2  #00000004
+        :pswitch_150  #00000005
+        :pswitch_105  #00000006
+        :pswitch_bf  #00000007
+        :pswitch_8a  #00000008
+        :pswitch_51  #00000009
+        :pswitch_2e  #0000000a
         :pswitch_18  #0000000b
     .end packed-switch
 .end method

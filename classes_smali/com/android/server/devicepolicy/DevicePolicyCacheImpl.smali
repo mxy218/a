@@ -58,6 +58,8 @@
 # virtual methods
 .method public dump(Ljava/lang/String;Ljava/io/PrintWriter;)V
     .registers 5
+    .param p1, "prefix"  # Ljava/lang/String;
+    .param p2, "pw"  # Ljava/io/PrintWriter;
 
     .line 84
     const-string v0, "Device policy cache"
@@ -96,23 +98,23 @@
 
     invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string p1, "Password quality: "
+    const-string v1, "Password quality: "
 
-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    iget-object p1, p0, Lcom/android/server/devicepolicy/DevicePolicyCacheImpl;->mPasswordQuality:Landroid/util/SparseIntArray;
+    iget-object v1, p0, Lcom/android/server/devicepolicy/DevicePolicyCacheImpl;->mPasswordQuality:Landroid/util/SparseIntArray;
 
-    invoke-virtual {p1}, Landroid/util/SparseIntArray;->toString()Ljava/lang/String;
+    invoke-virtual {v1}, Landroid/util/SparseIntArray;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v1
 
-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    invoke-virtual {p2, p1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {p2, v0}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
     .line 87
     return-void
@@ -120,6 +122,7 @@
 
 .method public getPasswordQuality(I)I
     .registers 5
+    .param p1, "userHandle"  # I
 
     .line 69
     iget-object v0, p0, Lcom/android/server/devicepolicy/DevicePolicyCacheImpl;->mLock:Ljava/lang/Object;
@@ -134,25 +137,26 @@
 
     invoke-virtual {v1, p1, v2}, Landroid/util/SparseIntArray;->get(II)I
 
-    move-result p1
+    move-result v1
 
     monitor-exit v0
 
-    return p1
+    return v1
 
     .line 72
     :catchall_c
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_e
     .catchall {:try_start_3 .. :try_end_e} :catchall_c
 
-    throw p1
+    throw v1
 .end method
 
 .method public getScreenCaptureDisabled(I)Z
     .registers 4
+    .param p1, "userHandle"  # I
 
     .line 56
     iget-object v0, p0, Lcom/android/server/devicepolicy/DevicePolicyCacheImpl;->mLock:Ljava/lang/Object;
@@ -165,25 +169,26 @@
 
     invoke-virtual {v1, p1}, Landroid/util/SparseBooleanArray;->get(I)Z
 
-    move-result p1
+    move-result v1
 
     monitor-exit v0
 
-    return p1
+    return v1
 
     .line 58
     :catchall_b
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_d
     .catchall {:try_start_3 .. :try_end_d} :catchall_b
 
-    throw p1
+    throw v1
 .end method
 
 .method public onUserRemoved(I)V
     .registers 4
+    .param p1, "userHandle"  # I
 
     .line 48
     iget-object v0, p0, Lcom/android/server/devicepolicy/DevicePolicyCacheImpl;->mLock:Ljava/lang/Object;
@@ -209,17 +214,19 @@
 
     .line 51
     :catchall_f
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_11
     .catchall {:try_start_3 .. :try_end_11} :catchall_f
 
-    throw p1
+    throw v1
 .end method
 
 .method public setPasswordQuality(II)V
     .registers 5
+    .param p1, "userHandle"  # I
+    .param p2, "quality"  # I
 
     .line 77
     iget-object v0, p0, Lcom/android/server/devicepolicy/DevicePolicyCacheImpl;->mLock:Ljava/lang/Object;
@@ -240,17 +247,19 @@
 
     .line 79
     :catchall_a
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_c
     .catchall {:try_start_3 .. :try_end_c} :catchall_a
 
-    throw p1
+    throw v1
 .end method
 
 .method public setScreenCaptureDisabled(IZ)V
     .registers 5
+    .param p1, "userHandle"  # I
+    .param p2, "disabled"  # Z
 
     .line 62
     iget-object v0, p0, Lcom/android/server/devicepolicy/DevicePolicyCacheImpl;->mLock:Ljava/lang/Object;
@@ -271,11 +280,11 @@
 
     .line 64
     :catchall_a
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_c
     .catchall {:try_start_3 .. :try_end_c} :catchall_a
 
-    throw p1
+    throw v1
 .end method

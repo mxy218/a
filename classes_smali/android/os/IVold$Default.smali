@@ -31,6 +31,8 @@
 # virtual methods
 .method public abortChanges(Ljava/lang/String;Z)V
     .registers 3
+    .param p1, "device"  # Ljava/lang/String;
+    .param p2, "retry"  # Z
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -43,6 +45,7 @@
 
 .method public abortIdleMaint(Landroid/os/IVoldTaskListener;)V
     .registers 2
+    .param p1, "listener"  # Landroid/os/IVoldTaskListener;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -55,6 +58,8 @@
 
 .method public addAppIds([Ljava/lang/String;[I)V
     .registers 3
+    .param p1, "packageNames"  # [Ljava/lang/String;
+    .param p2, "appIds"  # [I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -67,6 +72,8 @@
 
 .method public addSandboxIds([I[Ljava/lang/String;)V
     .registers 3
+    .param p1, "appIds"  # [I
+    .param p2, "sandboxIds"  # [Ljava/lang/String;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -79,6 +86,10 @@
 
 .method public addUserKeyAuth(IILjava/lang/String;Ljava/lang/String;)V
     .registers 5
+    .param p1, "userId"  # I
+    .param p2, "userSerial"  # I
+    .param p3, "token"  # Ljava/lang/String;
+    .param p4, "secret"  # Ljava/lang/String;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -100,6 +111,8 @@
 
 .method public benchmark(Ljava/lang/String;Landroid/os/IVoldTaskListener;)V
     .registers 3
+    .param p1, "volId"  # Ljava/lang/String;
+    .param p2, "listener"  # Landroid/os/IVoldTaskListener;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -112,6 +125,7 @@
 
 .method public checkEncryption(Ljava/lang/String;)V
     .registers 2
+    .param p1, "volId"  # Ljava/lang/String;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -124,6 +138,10 @@
 
 .method public clearUserKeyAuth(IILjava/lang/String;Ljava/lang/String;)V
     .registers 5
+    .param p1, "userId"  # I
+    .param p2, "userSerial"  # I
+    .param p3, "token"  # Ljava/lang/String;
+    .param p4, "secret"  # Ljava/lang/String;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -147,7 +165,10 @@
 .end method
 
 .method public createObb(Ljava/lang/String;Ljava/lang/String;I)Ljava/lang/String;
-    .registers 4
+    .registers 5
+    .param p1, "sourcePath"  # Ljava/lang/String;
+    .param p2, "sourceKey"  # Ljava/lang/String;
+    .param p3, "ownerGid"  # I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -155,13 +176,18 @@
     .end annotation
 
     .line 76
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    return-object p1
+    return-object v0
 .end method
 
 .method public createStubVolume(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
-    .registers 6
+    .registers 7
+    .param p1, "sourcePath"  # Ljava/lang/String;
+    .param p2, "mountPath"  # Ljava/lang/String;
+    .param p3, "fsType"  # Ljava/lang/String;
+    .param p4, "fsUuid"  # Ljava/lang/String;
+    .param p5, "fsLabel"  # Ljava/lang/String;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -169,13 +195,16 @@
     .end annotation
 
     .line 229
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    return-object p1
+    return-object v0
 .end method
 
 .method public createUserKey(IIZ)V
     .registers 4
+    .param p1, "userId"  # I
+    .param p2, "userSerial"  # I
+    .param p3, "ephemeral"  # Z
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -188,6 +217,7 @@
 
 .method public destroyObb(Ljava/lang/String;)V
     .registers 2
+    .param p1, "volId"  # Ljava/lang/String;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -200,6 +230,9 @@
 
 .method public destroySandboxForApp(Ljava/lang/String;Ljava/lang/String;I)V
     .registers 4
+    .param p1, "packageName"  # Ljava/lang/String;
+    .param p2, "sandboxId"  # Ljava/lang/String;
+    .param p3, "userId"  # I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -212,6 +245,7 @@
 
 .method public destroyStubVolume(Ljava/lang/String;)V
     .registers 2
+    .param p1, "volId"  # Ljava/lang/String;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -224,6 +258,7 @@
 
 .method public destroyUserKey(I)V
     .registers 2
+    .param p1, "userId"  # I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -236,6 +271,9 @@
 
 .method public destroyUserStorage(Ljava/lang/String;II)V
     .registers 4
+    .param p1, "uuid"  # Ljava/lang/String;
+    .param p2, "userId"  # I
+    .param p3, "storageFlags"  # I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -248,6 +286,8 @@
 
 .method public encryptFstab(Ljava/lang/String;Ljava/lang/String;)V
     .registers 3
+    .param p1, "blkDevice"  # Ljava/lang/String;
+    .param p2, "mountPoint"  # Ljava/lang/String;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -272,6 +312,9 @@
 
 .method public fdeChangePassword(ILjava/lang/String;Ljava/lang/String;)V
     .registers 4
+    .param p1, "passwordType"  # I
+    .param p2, "currentPassword"  # Ljava/lang/String;
+    .param p3, "password"  # Ljava/lang/String;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -284,6 +327,7 @@
 
 .method public fdeCheckPassword(Ljava/lang/String;)V
     .registers 2
+    .param p1, "password"  # Ljava/lang/String;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -322,6 +366,9 @@
 
 .method public fdeEnable(ILjava/lang/String;I)V
     .registers 4
+    .param p1, "passwordType"  # I
+    .param p2, "password"  # Ljava/lang/String;
+    .param p3, "encryptionFlags"  # I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -333,7 +380,8 @@
 .end method
 
 .method public fdeGetField(Ljava/lang/String;)Ljava/lang/String;
-    .registers 2
+    .registers 3
+    .param p1, "key"  # Ljava/lang/String;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -341,9 +389,9 @@
     .end annotation
 
     .line 118
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    return-object p1
+    return-object v0
 .end method
 
 .method public fdeGetPassword()Ljava/lang/String;
@@ -388,6 +436,8 @@
 
 .method public fdeSetField(Ljava/lang/String;Ljava/lang/String;)V
     .registers 3
+    .param p1, "key"  # Ljava/lang/String;
+    .param p2, "value"  # Ljava/lang/String;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -400,6 +450,7 @@
 
 .method public fdeVerifyPassword(Ljava/lang/String;)V
     .registers 2
+    .param p1, "password"  # Ljava/lang/String;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -412,6 +463,7 @@
 
 .method public fixateNewestUserKeyAuth(I)V
     .registers 2
+    .param p1, "userId"  # I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -424,6 +476,8 @@
 
 .method public forgetPartition(Ljava/lang/String;Ljava/lang/String;)V
     .registers 3
+    .param p1, "partGuid"  # Ljava/lang/String;
+    .param p2, "fsUuid"  # Ljava/lang/String;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -436,6 +490,8 @@
 
 .method public format(Ljava/lang/String;Ljava/lang/String;)V
     .registers 3
+    .param p1, "volId"  # Ljava/lang/String;
+    .param p2, "fsType"  # Ljava/lang/String;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -448,6 +504,8 @@
 
 .method public fstrim(ILandroid/os/IVoldTaskListener;)V
     .registers 3
+    .param p1, "fstrimFlags"  # I
+    .param p2, "listener"  # Landroid/os/IVoldTaskListener;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -486,6 +544,7 @@
 
 .method public lockUserKey(I)V
     .registers 2
+    .param p1, "userId"  # I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -510,6 +569,7 @@
 
 .method public mkdirs(Ljava/lang/String;)V
     .registers 2
+    .param p1, "path"  # Ljava/lang/String;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -534,6 +594,9 @@
 
 .method public mount(Ljava/lang/String;II)V
     .registers 4
+    .param p1, "volId"  # Ljava/lang/String;
+    .param p2, "mountFlags"  # I
+    .param p3, "mountUserId"  # I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -545,7 +608,9 @@
 .end method
 
 .method public mountAppFuse(II)Ljava/io/FileDescriptor;
-    .registers 3
+    .registers 4
+    .param p1, "uid"  # I
+    .param p2, "mountId"  # I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -553,9 +618,9 @@
     .end annotation
 
     .line 92
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    return-object p1
+    return-object v0
 .end method
 
 .method public mountDefaultEncrypted()V
@@ -572,6 +637,8 @@
 
 .method public mountFstab(Ljava/lang/String;Ljava/lang/String;)V
     .registers 3
+    .param p1, "blkDevice"  # Ljava/lang/String;
+    .param p2, "mountPoint"  # Ljava/lang/String;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -584,6 +651,9 @@
 
 .method public moveStorage(Ljava/lang/String;Ljava/lang/String;Landroid/os/IVoldTaskListener;)V
     .registers 4
+    .param p1, "fromVolId"  # Ljava/lang/String;
+    .param p2, "toVolId"  # Ljava/lang/String;
+    .param p3, "listener"  # Landroid/os/IVoldTaskListener;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -624,6 +694,7 @@
 
 .method public onSecureKeyguardStateChanged(Z)V
     .registers 2
+    .param p1, "isShowing"  # Z
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -636,6 +707,8 @@
 
 .method public onUserAdded(II)V
     .registers 3
+    .param p1, "userId"  # I
+    .param p2, "userSerial"  # I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -648,6 +721,7 @@
 
 .method public onUserRemoved(I)V
     .registers 2
+    .param p1, "userId"  # I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -660,6 +734,7 @@
 
 .method public onUserStarted(I)V
     .registers 2
+    .param p1, "userId"  # I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -672,6 +747,7 @@
 
 .method public onUserStopped(I)V
     .registers 2
+    .param p1, "userId"  # I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -683,7 +759,11 @@
 .end method
 
 .method public openAppFuseFile(IIII)Ljava/io/FileDescriptor;
-    .registers 5
+    .registers 6
+    .param p1, "uid"  # I
+    .param p2, "mountId"  # I
+    .param p3, "fileId"  # I
+    .param p4, "flags"  # I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -691,13 +771,16 @@
     .end annotation
 
     .line 236
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    return-object p1
+    return-object v0
 .end method
 
 .method public partition(Ljava/lang/String;II)V
     .registers 4
+    .param p1, "diskId"  # Ljava/lang/String;
+    .param p2, "partitionType"  # I
+    .param p3, "ratio"  # I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -722,6 +805,10 @@
 
 .method public prepareSandboxForApp(Ljava/lang/String;ILjava/lang/String;I)V
     .registers 5
+    .param p1, "packageName"  # Ljava/lang/String;
+    .param p2, "appId"  # I
+    .param p3, "sandboxId"  # Ljava/lang/String;
+    .param p4, "userId"  # I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -734,6 +821,10 @@
 
 .method public prepareUserStorage(Ljava/lang/String;III)V
     .registers 5
+    .param p1, "uuid"  # Ljava/lang/String;
+    .param p2, "userId"  # I
+    .param p3, "userSerial"  # I
+    .param p4, "storageFlags"  # I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -746,6 +837,8 @@
 
 .method public remountUid(II)V
     .registers 3
+    .param p1, "uid"  # I
+    .param p2, "remountMode"  # I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -770,6 +863,7 @@
 
 .method public restoreCheckpoint(Ljava/lang/String;)V
     .registers 2
+    .param p1, "device"  # Ljava/lang/String;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -782,6 +876,8 @@
 
 .method public restoreCheckpointPart(Ljava/lang/String;I)V
     .registers 3
+    .param p1, "device"  # Ljava/lang/String;
+    .param p2, "count"  # I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -794,6 +890,7 @@
 
 .method public runIdleMaint(Landroid/os/IVoldTaskListener;)V
     .registers 2
+    .param p1, "listener"  # Landroid/os/IVoldTaskListener;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -806,6 +903,7 @@
 
 .method public setListener(Landroid/os/IVoldListener;)V
     .registers 2
+    .param p1, "listener"  # Landroid/os/IVoldListener;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -830,6 +928,7 @@
 
 .method public startCheckpoint(I)V
     .registers 2
+    .param p1, "retry"  # I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -884,6 +983,10 @@
 
 .method public unlockUserKey(IILjava/lang/String;Ljava/lang/String;)V
     .registers 5
+    .param p1, "userId"  # I
+    .param p2, "userSerial"  # I
+    .param p3, "token"  # Ljava/lang/String;
+    .param p4, "secret"  # Ljava/lang/String;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -896,6 +999,7 @@
 
 .method public unmount(Ljava/lang/String;)V
     .registers 2
+    .param p1, "volId"  # Ljava/lang/String;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -908,6 +1012,8 @@
 
 .method public unmountAppFuse(II)V
     .registers 3
+    .param p1, "uid"  # I
+    .param p2, "mountId"  # I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;

@@ -26,16 +26,17 @@
 # direct methods
 .method public constructor <init>(Lcom/android/server/biometrics/face/FaceService;Landroid/hardware/face/IFaceServiceReceiver;)V
     .registers 3
+    .param p2, "receiver"  # Landroid/hardware/face/IFaceServiceReceiver;
 
-    .line 765
+    .line 611
     iput-object p1, p0, Lcom/android/server/biometrics/face/FaceService$ServiceListenerImpl;->this$0:Lcom/android/server/biometrics/face/FaceService;
 
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
-    .line 766
+    .line 612
     iput-object p2, p0, Lcom/android/server/biometrics/face/FaceService$ServiceListenerImpl;->mFaceServiceReceiver:Landroid/hardware/face/IFaceServiceReceiver;
 
-    .line 767
+    .line 613
     return-void
 .end method
 
@@ -43,60 +44,67 @@
 # virtual methods
 .method public onAcquired(JII)V
     .registers 6
+    .param p1, "deviceId"  # J
+    .param p3, "acquiredInfo"  # I
+    .param p4, "vendorCode"  # I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
         }
     .end annotation
 
-    .line 782
+    .line 628
     iget-object v0, p0, Lcom/android/server/biometrics/face/FaceService$ServiceListenerImpl;->mFaceServiceReceiver:Landroid/hardware/face/IFaceServiceReceiver;
 
     if-eqz v0, :cond_7
 
-    .line 783
+    .line 629
     invoke-interface {v0, p1, p2, p3, p4}, Landroid/hardware/face/IFaceServiceReceiver;->onAcquired(JII)V
 
-    .line 785
+    .line 631
     :cond_7
     return-void
 .end method
 
 .method public onAuthenticationFailed(J)V
     .registers 4
+    .param p1, "deviceId"  # J
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
         }
     .end annotation
 
-    .line 803
+    .line 649
     iget-object v0, p0, Lcom/android/server/biometrics/face/FaceService$ServiceListenerImpl;->mFaceServiceReceiver:Landroid/hardware/face/IFaceServiceReceiver;
 
     if-eqz v0, :cond_7
 
-    .line 804
+    .line 650
     invoke-interface {v0, p1, p2}, Landroid/hardware/face/IFaceServiceReceiver;->onAuthenticationFailed(J)V
 
-    .line 806
+    .line 652
     :cond_7
     return-void
 .end method
 
 .method public onAuthenticationSucceeded(JLandroid/hardware/biometrics/BiometricAuthenticator$Identifier;I)V
-    .registers 6
+    .registers 7
+    .param p1, "deviceId"  # J
+    .param p3, "biometric"  # Landroid/hardware/biometrics/BiometricAuthenticator$Identifier;
+    .param p4, "userId"  # I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
         }
     .end annotation
 
-    .line 791
+    .line 637
     iget-object v0, p0, Lcom/android/server/biometrics/face/FaceService$ServiceListenerImpl;->mFaceServiceReceiver:Landroid/hardware/face/IFaceServiceReceiver;
 
-    if-eqz v0, :cond_1b
+    if-eqz v0, :cond_1c
 
-    .line 792
+    .line 638
     if-eqz p3, :cond_14
 
     instance-of v0, p3, Landroid/hardware/face/Face;
@@ -105,141 +113,153 @@
 
     goto :goto_14
 
-    .line 796
+    .line 642
     :cond_b
-    const-string p1, "FaceService"
+    const-string v0, "FaceService"
 
-    const-string/jumbo p2, "onAuthenticationSucceeded received non-face biometric"
+    const-string/jumbo v1, "onAuthenticationSucceeded received non-face biometric"
 
-    invoke-static {p1, p2}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v0, v1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
 
-    goto :goto_1b
+    goto :goto_1c
 
-    .line 793
+    .line 639
     :cond_14
     :goto_14
     iget-object v0, p0, Lcom/android/server/biometrics/face/FaceService$ServiceListenerImpl;->mFaceServiceReceiver:Landroid/hardware/face/IFaceServiceReceiver;
 
-    check-cast p3, Landroid/hardware/face/Face;
+    move-object v1, p3
 
-    invoke-interface {v0, p1, p2, p3, p4}, Landroid/hardware/face/IFaceServiceReceiver;->onAuthenticationSucceeded(JLandroid/hardware/face/Face;I)V
+    check-cast v1, Landroid/hardware/face/Face;
 
-    .line 799
-    :cond_1b
-    :goto_1b
+    invoke-interface {v0, p1, p2, v1, p4}, Landroid/hardware/face/IFaceServiceReceiver;->onAuthenticationSucceeded(JLandroid/hardware/face/Face;I)V
+
+    .line 645
+    :cond_1c
+    :goto_1c
     return-void
 .end method
 
 .method public onEnrollResult(Landroid/hardware/biometrics/BiometricAuthenticator$Identifier;I)V
-    .registers 6
+    .registers 7
+    .param p1, "identifier"  # Landroid/hardware/biometrics/BiometricAuthenticator$Identifier;
+    .param p2, "remaining"  # I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
         }
     .end annotation
 
-    .line 772
+    .line 618
     iget-object v0, p0, Lcom/android/server/biometrics/face/FaceService$ServiceListenerImpl;->mFaceServiceReceiver:Landroid/hardware/face/IFaceServiceReceiver;
 
     if-eqz v0, :cond_f
 
-    .line 773
+    .line 619
     invoke-virtual {p1}, Landroid/hardware/biometrics/BiometricAuthenticator$Identifier;->getDeviceId()J
 
     move-result-wide v1
 
-    .line 774
+    .line 620
     invoke-virtual {p1}, Landroid/hardware/biometrics/BiometricAuthenticator$Identifier;->getBiometricId()I
 
-    move-result p1
+    move-result v3
 
-    .line 773
-    invoke-interface {v0, v1, v2, p1, p2}, Landroid/hardware/face/IFaceServiceReceiver;->onEnrollResult(JII)V
+    .line 619
+    invoke-interface {v0, v1, v2, v3, p2}, Landroid/hardware/face/IFaceServiceReceiver;->onEnrollResult(JII)V
 
-    .line 777
+    .line 623
     :cond_f
     return-void
 .end method
 
 .method public onEnumerated(Landroid/hardware/biometrics/BiometricAuthenticator$Identifier;I)V
-    .registers 6
+    .registers 7
+    .param p1, "identifier"  # Landroid/hardware/biometrics/BiometricAuthenticator$Identifier;
+    .param p2, "remaining"  # I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
         }
     .end annotation
 
-    .line 828
+    .line 674
     iget-object v0, p0, Lcom/android/server/biometrics/face/FaceService$ServiceListenerImpl;->mFaceServiceReceiver:Landroid/hardware/face/IFaceServiceReceiver;
 
     if-eqz v0, :cond_f
 
-    .line 829
+    .line 675
     invoke-virtual {p1}, Landroid/hardware/biometrics/BiometricAuthenticator$Identifier;->getDeviceId()J
 
     move-result-wide v1
 
-    .line 830
+    .line 676
     invoke-virtual {p1}, Landroid/hardware/biometrics/BiometricAuthenticator$Identifier;->getBiometricId()I
 
-    move-result p1
+    move-result v3
 
-    .line 829
-    invoke-interface {v0, v1, v2, p1, p2}, Landroid/hardware/face/IFaceServiceReceiver;->onEnumerated(JII)V
+    .line 675
+    invoke-interface {v0, v1, v2, v3, p2}, Landroid/hardware/face/IFaceServiceReceiver;->onEnumerated(JII)V
 
-    .line 832
+    .line 678
     :cond_f
     return-void
 .end method
 
 .method public onError(JIII)V
-    .registers 6
+    .registers 7
+    .param p1, "deviceId"  # J
+    .param p3, "error"  # I
+    .param p4, "vendorCode"  # I
+    .param p5, "cookie"  # I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
         }
     .end annotation
 
-    .line 811
-    iget-object p5, p0, Lcom/android/server/biometrics/face/FaceService$ServiceListenerImpl;->mFaceServiceReceiver:Landroid/hardware/face/IFaceServiceReceiver;
+    .line 657
+    iget-object v0, p0, Lcom/android/server/biometrics/face/FaceService$ServiceListenerImpl;->mFaceServiceReceiver:Landroid/hardware/face/IFaceServiceReceiver;
 
-    if-eqz p5, :cond_7
+    if-eqz v0, :cond_7
 
-    .line 812
-    invoke-interface {p5, p1, p2, p3, p4}, Landroid/hardware/face/IFaceServiceReceiver;->onError(JII)V
+    .line 658
+    invoke-interface {v0, p1, p2, p3, p4}, Landroid/hardware/face/IFaceServiceReceiver;->onError(JII)V
 
-    .line 814
+    .line 660
     :cond_7
     return-void
 .end method
 
 .method public onRemoved(Landroid/hardware/biometrics/BiometricAuthenticator$Identifier;I)V
-    .registers 6
+    .registers 7
+    .param p1, "identifier"  # Landroid/hardware/biometrics/BiometricAuthenticator$Identifier;
+    .param p2, "remaining"  # I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
         }
     .end annotation
 
-    .line 819
+    .line 665
     iget-object v0, p0, Lcom/android/server/biometrics/face/FaceService$ServiceListenerImpl;->mFaceServiceReceiver:Landroid/hardware/face/IFaceServiceReceiver;
 
     if-eqz v0, :cond_f
 
-    .line 820
+    .line 666
     invoke-virtual {p1}, Landroid/hardware/biometrics/BiometricAuthenticator$Identifier;->getDeviceId()J
 
     move-result-wide v1
 
-    .line 821
+    .line 667
     invoke-virtual {p1}, Landroid/hardware/biometrics/BiometricAuthenticator$Identifier;->getBiometricId()I
 
-    move-result p1
+    move-result v3
 
-    .line 820
-    invoke-interface {v0, v1, v2, p1, p2}, Landroid/hardware/face/IFaceServiceReceiver;->onRemoved(JII)V
+    .line 666
+    invoke-interface {v0, v1, v2, v3, p2}, Landroid/hardware/face/IFaceServiceReceiver;->onRemoved(JII)V
 
-    .line 823
+    .line 669
     :cond_f
     return-void
 .end method

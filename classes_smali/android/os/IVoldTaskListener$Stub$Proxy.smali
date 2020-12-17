@@ -28,6 +28,7 @@
 # direct methods
 .method constructor <init>(Landroid/os/IBinder;)V
     .registers 2
+    .param p1, "remote"  # Landroid/os/IBinder;
 
     .line 100
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -61,6 +62,8 @@
 
 .method public onFinished(ILandroid/os/PersistableBundle;)V
     .registers 8
+    .param p1, "status"  # I
+    .param p2, "extras"  # Landroid/os/PersistableBundle;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -73,6 +76,7 @@
     move-result-object v0
 
     .line 138
+    .local v0, "_data":Landroid/os/Parcel;
     :try_start_4
     const-string v1, "android.os.IVoldTaskListener"
 
@@ -113,20 +117,21 @@
     move-result v1
 
     .line 148
+    .local v1, "_status":Z
     if-nez v1, :cond_35
 
     invoke-static {}, Landroid/os/IVoldTaskListener$Stub;->getDefaultImpl()Landroid/os/IVoldTaskListener;
 
-    move-result-object v1
+    move-result-object v2
 
-    if-eqz v1, :cond_35
+    if-eqz v2, :cond_35
 
     .line 149
     invoke-static {}, Landroid/os/IVoldTaskListener$Stub;->getDefaultImpl()Landroid/os/IVoldTaskListener;
 
-    move-result-object v1
+    move-result-object v2
 
-    invoke-interface {v1, p1, p2}, Landroid/os/IVoldTaskListener;->onFinished(ILandroid/os/PersistableBundle;)V
+    invoke-interface {v2, p1, p2}, Landroid/os/IVoldTaskListener;->onFinished(ILandroid/os/PersistableBundle;)V
     :try_end_31
     .catchall {:try_start_4 .. :try_end_31} :catchall_3a
 
@@ -137,6 +142,7 @@
     return-void
 
     .line 154
+    .end local v1  # "_status":Z
     :cond_35
     invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
 
@@ -148,15 +154,17 @@
 
     .line 154
     :catchall_3a
-    move-exception p1
+    move-exception v1
 
     invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
 
-    throw p1
+    throw v1
 .end method
 
 .method public onStatus(ILandroid/os/PersistableBundle;)V
     .registers 7
+    .param p1, "status"  # I
+    .param p2, "extras"  # Landroid/os/PersistableBundle;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -169,6 +177,7 @@
     move-result-object v0
 
     .line 115
+    .local v0, "_data":Landroid/os/Parcel;
     :try_start_4
     const-string v1, "android.os.IVoldTaskListener"
 
@@ -207,20 +216,21 @@
     move-result v1
 
     .line 125
+    .local v1, "_status":Z
     if-nez v1, :cond_34
 
     invoke-static {}, Landroid/os/IVoldTaskListener$Stub;->getDefaultImpl()Landroid/os/IVoldTaskListener;
 
-    move-result-object v1
+    move-result-object v2
 
-    if-eqz v1, :cond_34
+    if-eqz v2, :cond_34
 
     .line 126
     invoke-static {}, Landroid/os/IVoldTaskListener$Stub;->getDefaultImpl()Landroid/os/IVoldTaskListener;
 
-    move-result-object v1
+    move-result-object v2
 
-    invoke-interface {v1, p1, p2}, Landroid/os/IVoldTaskListener;->onStatus(ILandroid/os/PersistableBundle;)V
+    invoke-interface {v2, p1, p2}, Landroid/os/IVoldTaskListener;->onStatus(ILandroid/os/PersistableBundle;)V
     :try_end_30
     .catchall {:try_start_4 .. :try_end_30} :catchall_39
 
@@ -231,6 +241,7 @@
     return-void
 
     .line 131
+    .end local v1  # "_status":Z
     :cond_34
     invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
 
@@ -242,9 +253,9 @@
 
     .line 131
     :catchall_39
-    move-exception p1
+    move-exception v1
 
     invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
 
-    throw p1
+    throw v1
 .end method

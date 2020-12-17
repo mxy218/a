@@ -40,6 +40,7 @@
 # virtual methods
 .method public createFromParcel(Landroid/os/Parcel;)Landroid/gsi/GsiInstallParams;
     .registers 3
+    .param p1, "_aidl_source"  # Landroid/os/Parcel;
 
     .line 27
     new-instance v0, Landroid/gsi/GsiInstallParams;
@@ -47,6 +48,7 @@
     invoke-direct {v0}, Landroid/gsi/GsiInstallParams;-><init>()V
 
     .line 28
+    .local v0, "_aidl_out":Landroid/gsi/GsiInstallParams;
     invoke-virtual {v0, p1}, Landroid/gsi/GsiInstallParams;->readFromParcel(Landroid/os/Parcel;)V
 
     .line 29
@@ -65,12 +67,13 @@
 .end method
 
 .method public newArray(I)[Landroid/gsi/GsiInstallParams;
-    .registers 2
+    .registers 3
+    .param p1, "_aidl_size"  # I
 
     .line 33
-    new-array p1, p1, [Landroid/gsi/GsiInstallParams;
+    new-array v0, p1, [Landroid/gsi/GsiInstallParams;
 
-    return-object p1
+    return-object v0
 .end method
 
 .method public bridge synthetic newArray(I)[Ljava/lang/Object;

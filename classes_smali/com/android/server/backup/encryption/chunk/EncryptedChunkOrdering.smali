@@ -10,6 +10,7 @@
 # direct methods
 .method private constructor <init>([B)V
     .registers 2
+    .param p1, "encryptedChunkOrdering"  # [B
 
     .line 64
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -23,6 +24,7 @@
 
 .method public static create([B)Lcom/android/server/backup/encryption/chunk/EncryptedChunkOrdering;
     .registers 2
+    .param p0, "encryptedChunkOrdering"  # [B
 
     .line 36
     new-instance v0, Lcom/android/server/backup/encryption/chunk/EncryptedChunkOrdering;
@@ -44,15 +46,16 @@
 .end method
 
 .method public equals(Ljava/lang/Object;)Z
-    .registers 3
+    .registers 5
+    .param p1, "o"  # Ljava/lang/Object;
 
     .line 47
     if-ne p0, p1, :cond_4
 
     .line 48
-    const/4 p1, 0x1
+    const/4 v0, 0x1
 
-    return p1
+    return v0
 
     .line 50
     :cond_4
@@ -61,24 +64,27 @@
     if-nez v0, :cond_a
 
     .line 51
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    return p1
+    return v0
 
     .line 54
     :cond_a
-    check-cast p1, Lcom/android/server/backup/encryption/chunk/EncryptedChunkOrdering;
+    move-object v0, p1
+
+    check-cast v0, Lcom/android/server/backup/encryption/chunk/EncryptedChunkOrdering;
 
     .line 55
-    iget-object v0, p0, Lcom/android/server/backup/encryption/chunk/EncryptedChunkOrdering;->mEncryptedChunkOrdering:[B
+    .local v0, "encryptedChunkOrdering":Lcom/android/server/backup/encryption/chunk/EncryptedChunkOrdering;
+    iget-object v1, p0, Lcom/android/server/backup/encryption/chunk/EncryptedChunkOrdering;->mEncryptedChunkOrdering:[B
 
-    iget-object p1, p1, Lcom/android/server/backup/encryption/chunk/EncryptedChunkOrdering;->mEncryptedChunkOrdering:[B
+    iget-object v2, v0, Lcom/android/server/backup/encryption/chunk/EncryptedChunkOrdering;->mEncryptedChunkOrdering:[B
 
-    invoke-static {v0, p1}, Ljava/util/Arrays;->equals([B[B)Z
+    invoke-static {v1, v2}, Ljava/util/Arrays;->equals([B[B)Z
 
-    move-result p1
+    move-result v1
 
-    return p1
+    return v1
 .end method
 
 .method public hashCode()I

@@ -25,6 +25,7 @@
 # direct methods
 .method public constructor <init>(Ljava/lang/String;)V
     .registers 2
+    .param p1, "name"  # Ljava/lang/String;
 
     .line 123
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -37,7 +38,8 @@
 .end method
 
 .method public static getExtconInfos(Ljava/lang/String;)Ljava/util/List;
-    .registers 7
+    .registers 10
+    .param p0, "regex"  # Ljava/lang/String;
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(",
@@ -59,135 +61,145 @@
     if-nez v0, :cond_d
 
     .line 95
-    new-instance p0, Ljava/util/ArrayList;
+    new-instance v0, Ljava/util/ArrayList;
 
-    invoke-direct {p0, v1}, Ljava/util/ArrayList;-><init>(I)V
+    invoke-direct {v0, v1}, Ljava/util/ArrayList;-><init>(I)V
 
-    return-object p0
+    return-object v0
 
     .line 97
     :cond_d
     if-nez p0, :cond_11
 
-    const/4 p0, 0x0
+    const/4 v0, 0x0
 
     goto :goto_15
 
     :cond_11
     invoke-static {p0}, Ljava/util/regex/Pattern;->compile(Ljava/lang/String;)Ljava/util/regex/Pattern;
 
-    move-result-object p0
+    move-result-object v0
 
     .line 98
+    .local v0, "p":Ljava/util/regex/Pattern;
     :goto_15
-    new-instance v0, Ljava/io/File;
+    new-instance v2, Ljava/io/File;
 
-    const-string v2, "/sys/class/extcon"
+    const-string v3, "/sys/class/extcon"
 
-    invoke-direct {v0, v2}, Ljava/io/File;-><init>(Ljava/lang/String;)V
+    invoke-direct {v2, v3}, Ljava/io/File;-><init>(Ljava/lang/String;)V
 
     .line 99
-    invoke-virtual {v0}, Ljava/io/File;->listFiles()[Ljava/io/File;
+    .local v2, "file":Ljava/io/File;
+    invoke-virtual {v2}, Ljava/io/File;->listFiles()[Ljava/io/File;
 
-    move-result-object v2
+    move-result-object v3
 
     .line 100
-    if-nez v2, :cond_5b
+    .local v3, "files":[Ljava/io/File;
+    if-nez v3, :cond_5b
 
     .line 101
-    new-instance p0, Ljava/lang/StringBuilder;
+    new-instance v4, Ljava/lang/StringBuilder;
 
-    invoke-direct {p0}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v4}, Ljava/lang/StringBuilder;-><init>()V
 
-    invoke-virtual {p0, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    invoke-virtual {v4, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
-    const-string v2, " exists "
+    const-string v5, " exists "
 
-    invoke-virtual {p0, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0}, Ljava/io/File;->exists()Z
-
-    move-result v2
-
-    invoke-virtual {p0, v2}, Ljava/lang/StringBuilder;->append(Z)Ljava/lang/StringBuilder;
-
-    const-string v2, " isDir "
-
-    invoke-virtual {p0, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v0}, Ljava/io/File;->isDirectory()Z
-
-    move-result v0
-
-    invoke-virtual {p0, v0}, Ljava/lang/StringBuilder;->append(Z)Ljava/lang/StringBuilder;
-
-    const-string v0, " but listFiles returns null. "
-
-    invoke-virtual {p0, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    const-string v0, "This probably means the selinux policies need to be changed."
-
-    invoke-virtual {p0, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {p0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
-
-    move-result-object p0
-
-    const-string v0, "ExtconInfo"
-
-    invoke-static {v0, p0}, Landroid/util/Slog;->wtf(Ljava/lang/String;Ljava/lang/String;)I
-
-    .line 104
-    new-instance p0, Ljava/util/ArrayList;
-
-    invoke-direct {p0, v1}, Ljava/util/ArrayList;-><init>(I)V
-
-    return-object p0
-
-    .line 106
-    :cond_5b
-    new-instance v0, Ljava/util/ArrayList;
-
-    array-length v3, v2
-
-    invoke-direct {v0, v3}, Ljava/util/ArrayList;-><init>(I)V
-
-    .line 107
-    array-length v3, v2
-
-    :goto_62
-    if-ge v1, v3, :cond_81
-
-    aget-object v4, v2, v1
-
-    .line 108
-    invoke-virtual {v4}, Ljava/io/File;->getName()Ljava/lang/String;
-
-    move-result-object v4
-
-    .line 109
-    if-eqz p0, :cond_76
-
-    invoke-virtual {p0, v4}, Ljava/util/regex/Pattern;->matcher(Ljava/lang/CharSequence;)Ljava/util/regex/Matcher;
-
-    move-result-object v5
-
-    invoke-virtual {v5}, Ljava/util/regex/Matcher;->matches()Z
+    invoke-virtual {v2}, Ljava/io/File;->exists()Z
 
     move-result v5
 
-    if-eqz v5, :cond_7e
+    invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Z)Ljava/lang/StringBuilder;
+
+    const-string v5, " isDir "
+
+    invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v2}, Ljava/io/File;->isDirectory()Z
+
+    move-result v5
+
+    invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Z)Ljava/lang/StringBuilder;
+
+    const-string v5, " but listFiles returns null. "
+
+    invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    const-string v5, "This probably means the selinux policies need to be changed."
+
+    invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v4}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v4
+
+    const-string v5, "ExtconInfo"
+
+    invoke-static {v5, v4}, Landroid/util/Slog;->wtf(Ljava/lang/String;Ljava/lang/String;)I
+
+    .line 104
+    new-instance v4, Ljava/util/ArrayList;
+
+    invoke-direct {v4, v1}, Ljava/util/ArrayList;-><init>(I)V
+
+    return-object v4
+
+    .line 106
+    :cond_5b
+    new-instance v4, Ljava/util/ArrayList;
+
+    array-length v5, v3
+
+    invoke-direct {v4, v5}, Ljava/util/ArrayList;-><init>(I)V
+
+    .line 107
+    .local v4, "list":Ljava/util/ArrayList;
+    array-length v5, v3
+
+    :goto_62
+    if-ge v1, v5, :cond_81
+
+    aget-object v6, v3, v1
+
+    .line 108
+    .local v6, "f":Ljava/io/File;
+    invoke-virtual {v6}, Ljava/io/File;->getName()Ljava/lang/String;
+
+    move-result-object v7
+
+    .line 109
+    .local v7, "name":Ljava/lang/String;
+    if-eqz v0, :cond_76
+
+    invoke-virtual {v0, v7}, Ljava/util/regex/Pattern;->matcher(Ljava/lang/CharSequence;)Ljava/util/regex/Matcher;
+
+    move-result-object v8
+
+    invoke-virtual {v8}, Ljava/util/regex/Matcher;->matches()Z
+
+    move-result v8
+
+    if-eqz v8, :cond_7e
 
     .line 110
     :cond_76
-    new-instance v5, Lcom/android/server/ExtconUEventObserver$ExtconInfo;
+    new-instance v8, Lcom/android/server/ExtconUEventObserver$ExtconInfo;
 
-    invoke-direct {v5, v4}, Lcom/android/server/ExtconUEventObserver$ExtconInfo;-><init>(Ljava/lang/String;)V
+    invoke-direct {v8, v7}, Lcom/android/server/ExtconUEventObserver$ExtconInfo;-><init>(Ljava/lang/String;)V
 
     .line 111
-    invoke-virtual {v0, v5}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
+    .local v8, "uei":Lcom/android/server/ExtconUEventObserver$ExtconInfo;
+    invoke-virtual {v4, v8}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
 
     .line 107
+    .end local v6  # "f":Ljava/io/File;
+    .end local v7  # "name":Ljava/lang/String;
+    .end local v8  # "uei":Lcom/android/server/ExtconUEventObserver$ExtconInfo;
     :cond_7e
     add-int/lit8 v1, v1, 0x1
 
@@ -195,7 +207,7 @@
 
     .line 117
     :cond_81
-    return-object v0
+    return-object v4
 .end method
 
 
@@ -226,31 +238,35 @@
     move-result-object v1
 
     .line 143
+    .local v1, "extconPath":Ljava/lang/String;
     new-instance v2, Ljava/io/File;
 
     invoke-direct {v2, v1}, Ljava/io/File;-><init>(Ljava/lang/String;)V
 
     .line 144
+    .local v2, "devPath":Ljava/io/File;
     invoke-virtual {v2}, Ljava/io/File;->exists()Z
 
-    move-result v1
+    move-result v3
 
-    if-eqz v1, :cond_2b
+    if-eqz v3, :cond_2b
 
     .line 145
     invoke-virtual {v2}, Ljava/io/File;->getCanonicalPath()Ljava/lang/String;
 
-    move-result-object v1
+    move-result-object v3
 
     .line 146
-    const-string v2, "/devices"
+    .local v3, "canonicalPath":Ljava/lang/String;
+    const-string v4, "/devices"
 
-    invoke-virtual {v1, v2}, Ljava/lang/String;->indexOf(Ljava/lang/String;)I
+    invoke-virtual {v3, v4}, Ljava/lang/String;->indexOf(Ljava/lang/String;)I
 
-    move-result v2
+    move-result v4
 
     .line 147
-    invoke-virtual {v1, v2}, Ljava/lang/String;->substring(I)Ljava/lang/String;
+    .local v4, "start":I
+    invoke-virtual {v3, v4}, Ljava/lang/String;->substring(I)Ljava/lang/String;
 
     move-result-object v0
     :try_end_2a
@@ -259,14 +275,19 @@
     return-object v0
 
     .line 149
+    .end local v3  # "canonicalPath":Ljava/lang/String;
+    .end local v4  # "start":I
     :cond_2b
     return-object v0
 
     .line 150
+    .end local v1  # "extconPath":Ljava/lang/String;
+    .end local v2  # "devPath":Ljava/io/File;
     :catch_2c
     move-exception v1
 
     .line 151
+    .local v1, "e":Ljava/io/IOException;
     new-instance v2, Ljava/lang/StringBuilder;
 
     invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V

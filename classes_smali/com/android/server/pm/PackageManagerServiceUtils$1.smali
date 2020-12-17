@@ -30,18 +30,20 @@
 
 # virtual methods
 .method public accept(Ljava/io/File;Ljava/lang/String;)Z
-    .registers 3
+    .registers 5
+    .param p1, "dir"  # Ljava/io/File;
+    .param p2, "name"  # Ljava/lang/String;
 
     .line 718
     invoke-virtual {p2}, Ljava/lang/String;->toLowerCase()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    const-string p2, ".gz"
+    const-string v1, ".gz"
 
-    invoke-virtual {p1, p2}, Ljava/lang/String;->endsWith(Ljava/lang/String;)Z
+    invoke-virtual {v0, v1}, Ljava/lang/String;->endsWith(Ljava/lang/String;)Z
 
-    move-result p1
+    move-result v0
 
-    return p1
+    return v0
 .end method

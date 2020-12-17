@@ -25,19 +25,24 @@
 .end method
 
 .method public static create(Landroid/os/Parcel;)[B
-    .registers 1
+    .registers 2
+    .param p0, "p"  # Landroid/os/Parcel;
 
     .line 360
     invoke-virtual {p0}, Landroid/os/Parcel;->createByteArray()[B
 
-    move-result-object p0
+    move-result-object v0
 
     .line 362
-    return-object p0
+    .local v0, "data":[B
+    return-object v0
 .end method
 
 .method public static write(Landroid/os/Parcel;[BI)V
     .registers 3
+    .param p0, "p"  # Landroid/os/Parcel;
+    .param p1, "activityRecordSnapshot"  # [B
+    .param p2, "flags"  # I
 
     .line 356
     invoke-virtual {p0, p1}, Landroid/os/Parcel;->writeByteArray([B)V

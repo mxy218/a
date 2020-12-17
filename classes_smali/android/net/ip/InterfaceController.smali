@@ -18,6 +18,9 @@
 # direct methods
 .method public constructor <init>(Ljava/lang/String;Landroid/net/INetd;Landroid/net/util/SharedLog;)V
     .registers 4
+    .param p1, "ifname"  # Ljava/lang/String;
+    .param p2, "netd"  # Landroid/net/INetd;
+    .param p3, "log"  # Landroid/net/util/SharedLog;
 
     .line 45
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -36,23 +39,26 @@
 .end method
 
 .method private varargs logError(Ljava/lang/String;[Ljava/lang/Object;)V
-    .registers 4
+    .registers 5
+    .param p1, "fmt"  # Ljava/lang/String;
+    .param p2, "args"  # [Ljava/lang/Object;
 
     .line 191
     iget-object v0, p0, Landroid/net/ip/InterfaceController;->mLog:Landroid/net/util/SharedLog;
 
     invoke-static {p1, p2}, Ljava/lang/String;->format(Ljava/lang/String;[Ljava/lang/Object;)Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v1
 
-    invoke-virtual {v0, p1}, Landroid/net/util/SharedLog;->e(Ljava/lang/String;)V
+    invoke-virtual {v0, v1}, Landroid/net/util/SharedLog;->e(Ljava/lang/String;)V
 
     .line 192
     return-void
 .end method
 
 .method private setEnableIPv6(Z)Z
-    .registers 6
+    .registers 7
+    .param p1, "enabled"  # Z
 
     .line 87
     const/4 v0, 0x1
@@ -78,36 +84,38 @@
     move-exception v1
 
     .line 89
+    .local v1, "e":Ljava/lang/Exception;
     const/4 v2, 0x2
 
     new-array v2, v2, [Ljava/lang/Object;
 
     if-eqz p1, :cond_13
 
-    const-string p1, "enabling"
+    const-string v3, "enabling"
 
     goto :goto_15
 
     :cond_13
-    const-string p1, "disabling"
+    const-string v3, "disabling"
 
     :goto_15
-    const/4 v3, 0x0
+    const/4 v4, 0x0
 
-    aput-object p1, v2, v3
+    aput-object v3, v2, v4
 
     aput-object v1, v2, v0
 
-    const-string p1, "%s IPv6 failed: %s"
+    const-string v0, "%s IPv6 failed: %s"
 
-    invoke-direct {p0, p1, v2}, Landroid/net/ip/InterfaceController;->logError(Ljava/lang/String;[Ljava/lang/Object;)V
+    invoke-direct {p0, v0, v2}, Landroid/net/ip/InterfaceController;->logError(Ljava/lang/String;[Ljava/lang/Object;)V
 
     .line 90
-    return v3
+    return v4
 .end method
 
 .method private setInterfaceAddress(Landroid/net/LinkAddress;)Z
-    .registers 7
+    .registers 8
+    .param p1, "addr"  # Landroid/net/LinkAddress;
 
     .line 52
     new-instance v0, Landroid/net/InterfaceConfigurationParcel;
@@ -115,6 +123,7 @@
     invoke-direct {v0}, Landroid/net/InterfaceConfigurationParcel;-><init>()V
 
     .line 53
+    .local v0, "ifConfig":Landroid/net/InterfaceConfigurationParcel;
     iget-object v1, p0, Landroid/net/ip/InterfaceController;->mIfName:Ljava/lang/String;
 
     iput-object v1, v0, Landroid/net/InterfaceConfigurationParcel;->ifName:Ljava/lang/String;
@@ -133,29 +142,29 @@
     .line 55
     invoke-virtual {p1}, Landroid/net/LinkAddress;->getPrefixLength()I
 
-    move-result p1
+    move-result v1
 
-    iput p1, v0, Landroid/net/InterfaceConfigurationParcel;->prefixLength:I
+    iput v1, v0, Landroid/net/InterfaceConfigurationParcel;->prefixLength:I
 
     .line 56
-    const-string p1, ""
+    const-string v1, ""
 
-    iput-object p1, v0, Landroid/net/InterfaceConfigurationParcel;->hwAddr:Ljava/lang/String;
+    iput-object v1, v0, Landroid/net/InterfaceConfigurationParcel;->hwAddr:Ljava/lang/String;
 
     .line 57
-    const/4 p1, 0x0
+    const/4 v1, 0x0
 
-    new-array v1, p1, [Ljava/lang/String;
+    new-array v2, v1, [Ljava/lang/String;
 
-    iput-object v1, v0, Landroid/net/InterfaceConfigurationParcel;->flags:[Ljava/lang/String;
+    iput-object v2, v0, Landroid/net/InterfaceConfigurationParcel;->flags:[Ljava/lang/String;
 
     .line 59
-    const/4 v1, 0x1
+    const/4 v2, 0x1
 
     :try_start_23
-    iget-object v2, p0, Landroid/net/ip/InterfaceController;->mNetd:Landroid/net/INetd;
+    iget-object v3, p0, Landroid/net/ip/InterfaceController;->mNetd:Landroid/net/INetd;
 
-    invoke-interface {v2, v0}, Landroid/net/INetd;->interfaceSetCfg(Landroid/net/InterfaceConfigurationParcel;)V
+    invoke-interface {v3, v0}, Landroid/net/INetd;->interfaceSetCfg(Landroid/net/InterfaceConfigurationParcel;)V
     :try_end_28
     .catch Landroid/os/RemoteException; {:try_start_23 .. :try_end_28} :catch_2a
     .catch Landroid/os/ServiceSpecificException; {:try_start_23 .. :try_end_28} :catch_2a
@@ -164,47 +173,49 @@
     nop
 
     .line 65
-    return v1
+    return v2
 
     .line 60
     :catch_2a
-    move-exception v2
+    move-exception v3
 
     .line 61
-    const/4 v3, 0x3
+    .local v3, "e":Ljava/lang/Exception;
+    const/4 v4, 0x3
 
-    new-array v3, v3, [Ljava/lang/Object;
+    new-array v4, v4, [Ljava/lang/Object;
 
-    iget-object v4, v0, Landroid/net/InterfaceConfigurationParcel;->ipv4Addr:Ljava/lang/String;
+    iget-object v5, v0, Landroid/net/InterfaceConfigurationParcel;->ipv4Addr:Ljava/lang/String;
 
-    aput-object v4, v3, p1
+    aput-object v5, v4, v1
 
-    iget v0, v0, Landroid/net/InterfaceConfigurationParcel;->prefixLength:I
+    iget v5, v0, Landroid/net/InterfaceConfigurationParcel;->prefixLength:I
 
     .line 62
-    invoke-static {v0}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
+    invoke-static {v5}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
 
-    move-result-object v0
+    move-result-object v5
 
-    aput-object v0, v3, v1
+    aput-object v5, v4, v2
 
-    const/4 v0, 0x2
+    const/4 v2, 0x2
 
-    aput-object v2, v3, v0
+    aput-object v3, v4, v2
 
     .line 61
-    const-string v0, "Setting IPv4 address to %s/%d failed: %s"
+    const-string v2, "Setting IPv4 address to %s/%d failed: %s"
 
-    invoke-direct {p0, v0, v3}, Landroid/net/ip/InterfaceController;->logError(Ljava/lang/String;[Ljava/lang/Object;)V
+    invoke-direct {p0, v2, v4}, Landroid/net/ip/InterfaceController;->logError(Ljava/lang/String;[Ljava/lang/Object;)V
 
     .line 63
-    return p1
+    return v1
 .end method
 
 
 # virtual methods
 .method public addAddress(Landroid/net/LinkAddress;)Z
-    .registers 3
+    .registers 4
+    .param p1, "addr"  # Landroid/net/LinkAddress;
 
     .line 148
     invoke-virtual {p1}, Landroid/net/LinkAddress;->getAddress()Ljava/net/InetAddress;
@@ -213,17 +224,19 @@
 
     invoke-virtual {p1}, Landroid/net/LinkAddress;->getPrefixLength()I
 
-    move-result p1
+    move-result v1
 
-    invoke-virtual {p0, v0, p1}, Landroid/net/ip/InterfaceController;->addAddress(Ljava/net/InetAddress;I)Z
+    invoke-virtual {p0, v0, v1}, Landroid/net/ip/InterfaceController;->addAddress(Ljava/net/InetAddress;I)Z
 
-    move-result p1
+    move-result v0
 
-    return p1
+    return v0
 .end method
 
 .method public addAddress(Ljava/net/InetAddress;I)Z
-    .registers 7
+    .registers 8
+    .param p1, "ip"  # Ljava/net/InetAddress;
+    .param p2, "prefixLen"  # I
 
     .line 156
     const/4 v0, 0x1
@@ -253,6 +266,7 @@
     move-exception v1
 
     .line 158
+    .local v1, "e":Ljava/lang/Exception;
     const/4 v2, 0x3
 
     new-array v2, v2, [Ljava/lang/Object;
@@ -263,24 +277,24 @@
 
     invoke-static {p2}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
 
-    move-result-object p1
+    move-result-object v4
 
-    aput-object p1, v2, v0
+    aput-object v4, v2, v0
 
-    const/4 p1, 0x2
+    const/4 v0, 0x2
 
-    aput-object v1, v2, p1
+    aput-object v1, v2, v0
 
-    const-string p1, "failed to add %s/%d: %s"
+    const-string v0, "failed to add %s/%d: %s"
 
-    invoke-direct {p0, p1, v2}, Landroid/net/ip/InterfaceController;->logError(Ljava/lang/String;[Ljava/lang/Object;)V
+    invoke-direct {p0, v0, v2}, Landroid/net/ip/InterfaceController;->logError(Ljava/lang/String;[Ljava/lang/Object;)V
 
     .line 159
     return v3
 .end method
 
 .method public clearAllAddresses()Z
-    .registers 4
+    .registers 5
 
     .line 182
     const/4 v0, 0x1
@@ -305,15 +319,16 @@
     move-exception v1
 
     .line 184
+    .local v1, "e":Ljava/lang/Exception;
     new-array v0, v0, [Ljava/lang/Object;
 
     const/4 v2, 0x0
 
     aput-object v1, v0, v2
 
-    const-string v1, "Failed to clear addresses: %s"
+    const-string v3, "Failed to clear addresses: %s"
 
-    invoke-direct {p0, v1, v0}, Landroid/net/ip/InterfaceController;->logError(Ljava/lang/String;[Ljava/lang/Object;)V
+    invoke-direct {p0, v3, v0}, Landroid/net/ip/InterfaceController;->logError(Ljava/lang/String;[Ljava/lang/Object;)V
 
     .line 185
     return v2
@@ -363,7 +378,9 @@
 .end method
 
 .method public removeAddress(Ljava/net/InetAddress;I)Z
-    .registers 7
+    .registers 8
+    .param p1, "ip"  # Ljava/net/InetAddress;
+    .param p2, "prefixLen"  # I
 
     .line 169
     const/4 v0, 0x1
@@ -393,6 +410,7 @@
     move-exception v1
 
     .line 171
+    .local v1, "e":Ljava/lang/Exception;
     const/4 v2, 0x3
 
     new-array v2, v2, [Ljava/lang/Object;
@@ -403,17 +421,17 @@
 
     invoke-static {p2}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
 
-    move-result-object p1
+    move-result-object v4
 
-    aput-object p1, v2, v0
+    aput-object v4, v2, v0
 
-    const/4 p1, 0x2
+    const/4 v0, 0x2
 
-    aput-object v1, v2, p1
+    aput-object v1, v2, v0
 
-    const-string p1, "failed to remove %s/%d: %s"
+    const-string v0, "failed to remove %s/%d: %s"
 
-    invoke-direct {p0, p1, v2}, Landroid/net/ip/InterfaceController;->logError(Ljava/lang/String;[Ljava/lang/Object;)V
+    invoke-direct {p0, v0, v2}, Landroid/net/ip/InterfaceController;->logError(Ljava/lang/String;[Ljava/lang/Object;)V
 
     .line 172
     return v3
@@ -421,6 +439,7 @@
 
 .method public setIPv4Address(Landroid/net/LinkAddress;)Z
     .registers 3
+    .param p1, "address"  # Landroid/net/LinkAddress;
 
     .line 72
     invoke-virtual {p1}, Landroid/net/LinkAddress;->getAddress()Ljava/net/InetAddress;
@@ -432,21 +451,22 @@
     if-nez v0, :cond_a
 
     .line 73
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    return p1
+    return v0
 
     .line 75
     :cond_a
     invoke-direct {p0, p1}, Landroid/net/ip/InterfaceController;->setInterfaceAddress(Landroid/net/LinkAddress;)Z
 
-    move-result p1
+    move-result v0
 
-    return p1
+    return v0
 .end method
 
 .method public setIPv6AddrGenModeIfSupported(I)Z
-    .registers 7
+    .registers 8
+    .param p1, "mode"  # I
 
     .line 131
     const-string v0, "Unable to set IPv6 addrgen mode: %s"
@@ -470,19 +490,20 @@
 
     .line 135
     :catch_c
-    move-exception p1
+    move-exception v3
 
     .line 136
-    iget v3, p1, Landroid/os/ServiceSpecificException;->errorCode:I
+    .local v3, "e":Landroid/os/ServiceSpecificException;
+    iget v4, v3, Landroid/os/ServiceSpecificException;->errorCode:I
 
-    sget v4, Landroid/system/OsConstants;->EOPNOTSUPP:I
+    sget v5, Landroid/system/OsConstants;->EOPNOTSUPP:I
 
-    if-eq v3, v4, :cond_1b
+    if-eq v4, v5, :cond_1b
 
     .line 137
     new-array v1, v1, [Ljava/lang/Object;
 
-    aput-object p1, v1, v2
+    aput-object v3, v1, v2
 
     invoke-direct {p0, v0, v1}, Landroid/net/ip/InterfaceController;->logError(Ljava/lang/String;[Ljava/lang/Object;)V
 
@@ -490,18 +511,20 @@
     return v2
 
     .line 141
+    .end local v3  # "e":Landroid/os/ServiceSpecificException;
     :cond_1b
     :goto_1b
     return v1
 
     .line 132
     :catch_1c
-    move-exception p1
+    move-exception v3
 
     .line 133
+    .local v3, "e":Landroid/os/RemoteException;
     new-array v1, v1, [Ljava/lang/Object;
 
-    aput-object p1, v1, v2
+    aput-object v3, v1, v2
 
     invoke-direct {p0, v0, v1}, Landroid/net/ip/InterfaceController;->logError(Ljava/lang/String;[Ljava/lang/Object;)V
 
@@ -510,7 +533,8 @@
 .end method
 
 .method public setIPv6PrivacyExtensions(Z)Z
-    .registers 6
+    .registers 7
+    .param p1, "enabled"  # Z
 
     .line 115
     const/4 v0, 0x1
@@ -536,6 +560,7 @@
     move-exception v1
 
     .line 117
+    .local v1, "e":Ljava/lang/Exception;
     const/4 v2, 0x2
 
     new-array v2, v2, [Ljava/lang/Object;
@@ -543,25 +568,25 @@
     .line 118
     if-eqz p1, :cond_13
 
-    const-string p1, "enabling"
+    const-string v3, "enabling"
 
     goto :goto_15
 
     :cond_13
-    const-string p1, "disabling"
+    const-string v3, "disabling"
 
     :goto_15
-    const/4 v3, 0x0
+    const/4 v4, 0x0
 
-    aput-object p1, v2, v3
+    aput-object v3, v2, v4
 
     aput-object v1, v2, v0
 
     .line 117
-    const-string p1, "error %s IPv6 privacy extensions: %s"
+    const-string v0, "error %s IPv6 privacy extensions: %s"
 
-    invoke-direct {p0, p1, v2}, Landroid/net/ip/InterfaceController;->logError(Ljava/lang/String;[Ljava/lang/Object;)V
+    invoke-direct {p0, v0, v2}, Landroid/net/ip/InterfaceController;->logError(Ljava/lang/String;[Ljava/lang/Object;)V
 
     .line 119
-    return v3
+    return v4
 .end method

@@ -24,7 +24,8 @@
 
 # direct methods
 .method public constructor <init>(Lcom/android/server/firewall/IntentFirewall;Ljava/io/File;)V
-    .registers 3
+    .registers 4
+    .param p2, "monitoredDir"  # Ljava/io/File;
 
     .line 559
     iput-object p1, p0, Lcom/android/server/firewall/IntentFirewall$RuleObserver;->this$0:Lcom/android/server/firewall/IntentFirewall;
@@ -34,9 +35,9 @@
 
     move-result-object p1
 
-    const/16 p2, 0x3c8
+    const/16 v0, 0x3c8
 
-    invoke-direct {p0, p1, p2}, Landroid/os/FileObserver;-><init>(Ljava/lang/String;I)V
+    invoke-direct {p0, p1, v0}, Landroid/os/FileObserver;-><init>(Ljava/lang/String;I)V
 
     .line 561
     return-void
@@ -45,34 +46,36 @@
 
 # virtual methods
 .method public onEvent(ILjava/lang/String;)V
-    .registers 5
+    .registers 7
+    .param p1, "event"  # I
+    .param p2, "path"  # Ljava/lang/String;
 
     .line 565
-    const-string p1, ".xml"
+    const-string v0, ".xml"
 
-    invoke-virtual {p2, p1}, Ljava/lang/String;->endsWith(Ljava/lang/String;)Z
+    invoke-virtual {p2, v0}, Ljava/lang/String;->endsWith(Ljava/lang/String;)Z
 
-    move-result p1
+    move-result v0
 
-    if-eqz p1, :cond_19
+    if-eqz v0, :cond_19
 
     .line 569
-    iget-object p1, p0, Lcom/android/server/firewall/IntentFirewall$RuleObserver;->this$0:Lcom/android/server/firewall/IntentFirewall;
+    iget-object v0, p0, Lcom/android/server/firewall/IntentFirewall$RuleObserver;->this$0:Lcom/android/server/firewall/IntentFirewall;
 
-    iget-object p1, p1, Lcom/android/server/firewall/IntentFirewall;->mHandler:Lcom/android/server/firewall/IntentFirewall$FirewallHandler;
+    iget-object v0, v0, Lcom/android/server/firewall/IntentFirewall;->mHandler:Lcom/android/server/firewall/IntentFirewall$FirewallHandler;
 
-    const/4 p2, 0x0
+    const/4 v1, 0x0
 
-    invoke-virtual {p1, p2}, Lcom/android/server/firewall/IntentFirewall$FirewallHandler;->removeMessages(I)V
+    invoke-virtual {v0, v1}, Lcom/android/server/firewall/IntentFirewall$FirewallHandler;->removeMessages(I)V
 
     .line 570
-    iget-object p1, p0, Lcom/android/server/firewall/IntentFirewall$RuleObserver;->this$0:Lcom/android/server/firewall/IntentFirewall;
+    iget-object v0, p0, Lcom/android/server/firewall/IntentFirewall$RuleObserver;->this$0:Lcom/android/server/firewall/IntentFirewall;
 
-    iget-object p1, p1, Lcom/android/server/firewall/IntentFirewall;->mHandler:Lcom/android/server/firewall/IntentFirewall$FirewallHandler;
+    iget-object v0, v0, Lcom/android/server/firewall/IntentFirewall;->mHandler:Lcom/android/server/firewall/IntentFirewall$FirewallHandler;
 
-    const-wide/16 v0, 0xfa
+    const-wide/16 v2, 0xfa
 
-    invoke-virtual {p1, p2, v0, v1}, Lcom/android/server/firewall/IntentFirewall$FirewallHandler;->sendEmptyMessageDelayed(IJ)Z
+    invoke-virtual {v0, v1, v2, v3}, Lcom/android/server/firewall/IntentFirewall$FirewallHandler;->sendEmptyMessageDelayed(IJ)Z
 
     .line 572
     :cond_19

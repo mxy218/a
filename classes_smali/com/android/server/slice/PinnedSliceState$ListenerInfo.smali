@@ -31,6 +31,11 @@
 # direct methods
 .method public constructor <init>(Lcom/android/server/slice/PinnedSliceState;Landroid/os/IBinder;Ljava/lang/String;ZII)V
     .registers 7
+    .param p2, "token"  # Landroid/os/IBinder;
+    .param p3, "pkg"  # Ljava/lang/String;
+    .param p4, "hasPermission"  # Z
+    .param p5, "callingUid"  # I
+    .param p6, "callingPid"  # I
 
     .line 219
     iput-object p1, p0, Lcom/android/server/slice/PinnedSliceState$ListenerInfo;->this$0:Lcom/android/server/slice/PinnedSliceState;
@@ -57,10 +62,11 @@
 .end method
 
 .method static synthetic access$000(Lcom/android/server/slice/PinnedSliceState$ListenerInfo;)Landroid/os/IBinder;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/slice/PinnedSliceState$ListenerInfo;
 
     .line 210
-    iget-object p0, p0, Lcom/android/server/slice/PinnedSliceState$ListenerInfo;->token:Landroid/os/IBinder;
+    iget-object v0, p0, Lcom/android/server/slice/PinnedSliceState$ListenerInfo;->token:Landroid/os/IBinder;
 
-    return-object p0
+    return-object v0
 .end method

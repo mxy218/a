@@ -47,7 +47,8 @@
 .end method
 
 .method private checkCallerUid(I)V
-    .registers 3
+    .registers 4
+    .param p1, "uid"  # I
 
     .line 462
     invoke-static {}, Landroid/os/Binder;->getCallingUid()I
@@ -56,26 +57,26 @@
 
     if-eq p1, v0, :cond_17
 
-    const/16 p1, 0x3e8
+    const/16 v0, 0x3e8
 
     .line 463
     invoke-static {}, Landroid/os/Binder;->getCallingUid()I
 
-    move-result v0
+    move-result v1
 
-    if-ne p1, v0, :cond_f
+    if-ne v0, v1, :cond_f
 
     goto :goto_17
 
     .line 464
     :cond_f
-    new-instance p1, Ljava/lang/SecurityException;
+    new-instance v0, Ljava/lang/SecurityException;
 
-    const-string v0, "Attempted access of unowned resources"
+    const-string v1, "Attempted access of unowned resources"
 
-    invoke-direct {p1, v0}, Ljava/lang/SecurityException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v0, v1}, Ljava/lang/SecurityException;-><init>(Ljava/lang/String;)V
 
-    throw p1
+    throw v0
 
     .line 466
     :cond_17
@@ -87,6 +88,7 @@
 # virtual methods
 .method public getUserRecord(I)Lcom/android/server/IpSecService$UserRecord;
     .registers 4
+    .param p1, "uid"  # I
 
     .line 450
     invoke-direct {p0, p1}, Lcom/android/server/IpSecService$UserResourceTracker;->checkCallerUid(I)V
@@ -101,12 +103,15 @@
     check-cast v0, Lcom/android/server/IpSecService$UserRecord;
 
     .line 453
-    if-nez v0, :cond_17
+    .local v0, "r":Lcom/android/server/IpSecService$UserRecord;
+    if-nez v0, :cond_18
 
     .line 454
-    new-instance v0, Lcom/android/server/IpSecService$UserRecord;
+    new-instance v1, Lcom/android/server/IpSecService$UserRecord;
 
-    invoke-direct {v0}, Lcom/android/server/IpSecService$UserRecord;-><init>()V
+    invoke-direct {v1}, Lcom/android/server/IpSecService$UserRecord;-><init>()V
+
+    move-object v0, v1
 
     .line 455
     iget-object v1, p0, Lcom/android/server/IpSecService$UserResourceTracker;->mUserRecords:Landroid/util/SparseArray;
@@ -114,7 +119,7 @@
     invoke-virtual {v1, p1, v0}, Landroid/util/SparseArray;->put(ILjava/lang/Object;)V
 
     .line 457
-    :cond_17
+    :cond_18
     return-object v0
 .end method
 

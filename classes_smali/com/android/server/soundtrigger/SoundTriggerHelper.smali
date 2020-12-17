@@ -69,7 +69,7 @@
 
 .field private mPowerSaveModeListener:Lcom/android/server/soundtrigger/SoundTriggerHelper$PowerSaveModeListener;
 
-.field private mRecognitionRequested:Z
+.field private mRecognitionRunning:Z
 
 .field private mServiceDisabled:Z
 
@@ -79,6 +79,7 @@
 # direct methods
 .method constructor <init>(Landroid/content/Context;)V
     .registers 6
+    .param p1, "context"  # Landroid/content/Context;
 
     .line 112
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -102,7 +103,7 @@
     iput-boolean v0, p0, Lcom/android/server/soundtrigger/SoundTriggerHelper;->mServiceDisabled:Z
 
     .line 108
-    iput-boolean v0, p0, Lcom/android/server/soundtrigger/SoundTriggerHelper;->mRecognitionRequested:Z
+    iput-boolean v0, p0, Lcom/android/server/soundtrigger/SoundTriggerHelper;->mRecognitionRunning:Z
 
     .line 113
     new-instance v1, Ljava/util/ArrayList;
@@ -110,11 +111,13 @@
     invoke-direct {v1}, Ljava/util/ArrayList;-><init>()V
 
     .line 114
+    .local v1, "modules":Ljava/util/ArrayList;, "Ljava/util/ArrayList<Landroid/hardware/soundtrigger/SoundTrigger$ModuleProperties;>;"
     invoke-static {v1}, Landroid/hardware/soundtrigger/SoundTrigger;->listModules(Ljava/util/ArrayList;)I
 
     move-result v2
 
     .line 115
+    .local v2, "status":I
     iput-object p1, p0, Lcom/android/server/soundtrigger/SoundTriggerHelper;->mContext:Landroid/content/Context;
 
     .line 116
@@ -133,41 +136,41 @@
 
     invoke-virtual {p1, v3}, Landroid/content/Context;->getSystemService(Ljava/lang/String;)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v3
 
-    check-cast p1, Landroid/os/PowerManager;
+    check-cast v3, Landroid/os/PowerManager;
 
-    iput-object p1, p0, Lcom/android/server/soundtrigger/SoundTriggerHelper;->mPowerManager:Landroid/os/PowerManager;
+    iput-object v3, p0, Lcom/android/server/soundtrigger/SoundTriggerHelper;->mPowerManager:Landroid/os/PowerManager;
 
     .line 118
-    new-instance p1, Ljava/util/HashMap;
+    new-instance v3, Ljava/util/HashMap;
 
-    invoke-direct {p1}, Ljava/util/HashMap;-><init>()V
+    invoke-direct {v3}, Ljava/util/HashMap;-><init>()V
 
-    iput-object p1, p0, Lcom/android/server/soundtrigger/SoundTriggerHelper;->mModelDataMap:Ljava/util/HashMap;
+    iput-object v3, p0, Lcom/android/server/soundtrigger/SoundTriggerHelper;->mModelDataMap:Ljava/util/HashMap;
 
     .line 119
-    new-instance p1, Ljava/util/HashMap;
+    new-instance v3, Ljava/util/HashMap;
 
-    invoke-direct {p1}, Ljava/util/HashMap;-><init>()V
+    invoke-direct {v3}, Ljava/util/HashMap;-><init>()V
 
-    iput-object p1, p0, Lcom/android/server/soundtrigger/SoundTriggerHelper;->mKeyphraseUuidMap:Ljava/util/HashMap;
+    iput-object v3, p0, Lcom/android/server/soundtrigger/SoundTriggerHelper;->mKeyphraseUuidMap:Ljava/util/HashMap;
 
     .line 120
-    new-instance p1, Lcom/android/server/soundtrigger/SoundTriggerHelper$MyCallStateListener;
+    new-instance v3, Lcom/android/server/soundtrigger/SoundTriggerHelper$MyCallStateListener;
 
-    invoke-direct {p1, p0}, Lcom/android/server/soundtrigger/SoundTriggerHelper$MyCallStateListener;-><init>(Lcom/android/server/soundtrigger/SoundTriggerHelper;)V
+    invoke-direct {v3, p0}, Lcom/android/server/soundtrigger/SoundTriggerHelper$MyCallStateListener;-><init>(Lcom/android/server/soundtrigger/SoundTriggerHelper;)V
 
-    iput-object p1, p0, Lcom/android/server/soundtrigger/SoundTriggerHelper;->mPhoneStateListener:Landroid/telephony/PhoneStateListener;
+    iput-object v3, p0, Lcom/android/server/soundtrigger/SoundTriggerHelper;->mPhoneStateListener:Landroid/telephony/PhoneStateListener;
 
     .line 121
     if-nez v2, :cond_5b
 
     invoke-virtual {v1}, Ljava/util/ArrayList;->size()I
 
-    move-result p1
+    move-result v3
 
-    if-nez p1, :cond_52
+    if-nez v3, :cond_52
 
     goto :goto_5b
 
@@ -175,69 +178,72 @@
     :cond_52
     invoke-virtual {v1, v0}, Ljava/util/ArrayList;->get(I)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v0
 
-    check-cast p1, Landroid/hardware/soundtrigger/SoundTrigger$ModuleProperties;
+    check-cast v0, Landroid/hardware/soundtrigger/SoundTrigger$ModuleProperties;
 
-    iput-object p1, p0, Lcom/android/server/soundtrigger/SoundTriggerHelper;->mModuleProperties:Landroid/hardware/soundtrigger/SoundTrigger$ModuleProperties;
+    iput-object v0, p0, Lcom/android/server/soundtrigger/SoundTriggerHelper;->mModuleProperties:Landroid/hardware/soundtrigger/SoundTrigger$ModuleProperties;
 
-    goto :goto_82
+    goto :goto_83
 
     .line 122
     :cond_5b
     :goto_5b
-    new-instance p1, Ljava/lang/StringBuilder;
+    new-instance v0, Ljava/lang/StringBuilder;
 
-    invoke-direct {p1}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v0, "listModules status="
+    const-string/jumbo v3, "listModules status="
 
-    invoke-virtual {p1, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p1, v2}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v2}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    const-string v0, ", # of modules="
+    const-string v3, ", # of modules="
 
-    invoke-virtual {p1, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v1}, Ljava/util/ArrayList;->size()I
 
-    move-result v0
+    move-result v3
 
-    invoke-virtual {p1, v0}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v3}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    const-string v0, "SoundTriggerHelper"
+    const-string v3, "SoundTriggerHelper"
 
-    invoke-static {v0, p1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v3, v0}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 123
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    iput-object p1, p0, Lcom/android/server/soundtrigger/SoundTriggerHelper;->mModuleProperties:Landroid/hardware/soundtrigger/SoundTrigger$ModuleProperties;
+    iput-object v0, p0, Lcom/android/server/soundtrigger/SoundTriggerHelper;->mModuleProperties:Landroid/hardware/soundtrigger/SoundTrigger$ModuleProperties;
 
     .line 124
-    iput-object p1, p0, Lcom/android/server/soundtrigger/SoundTriggerHelper;->mModule:Landroid/hardware/soundtrigger/SoundTriggerModule;
+    iput-object v0, p0, Lcom/android/server/soundtrigger/SoundTriggerHelper;->mModule:Landroid/hardware/soundtrigger/SoundTriggerModule;
 
     .line 129
-    :goto_82
+    :goto_83
     return-void
 .end method
 
 .method static synthetic access$000(Lcom/android/server/soundtrigger/SoundTriggerHelper;)Ljava/lang/Object;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/soundtrigger/SoundTriggerHelper;
 
     .line 66
-    iget-object p0, p0, Lcom/android/server/soundtrigger/SoundTriggerHelper;->mLock:Ljava/lang/Object;
+    iget-object v0, p0, Lcom/android/server/soundtrigger/SoundTriggerHelper;->mLock:Ljava/lang/Object;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$100(Lcom/android/server/soundtrigger/SoundTriggerHelper;Z)V
     .registers 2
+    .param p0, "x0"  # Lcom/android/server/soundtrigger/SoundTriggerHelper;
+    .param p1, "x1"  # Z
 
     .line 66
     invoke-direct {p0, p1}, Lcom/android/server/soundtrigger/SoundTriggerHelper;->onCallStateChangedLocked(Z)V
@@ -246,16 +252,19 @@
 .end method
 
 .method static synthetic access$200(Lcom/android/server/soundtrigger/SoundTriggerHelper;)Landroid/os/PowerManager;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/soundtrigger/SoundTriggerHelper;
 
     .line 66
-    iget-object p0, p0, Lcom/android/server/soundtrigger/SoundTriggerHelper;->mPowerManager:Landroid/os/PowerManager;
+    iget-object v0, p0, Lcom/android/server/soundtrigger/SoundTriggerHelper;->mPowerManager:Landroid/os/PowerManager;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$300(Lcom/android/server/soundtrigger/SoundTriggerHelper;Z)V
     .registers 2
+    .param p0, "x0"  # Lcom/android/server/soundtrigger/SoundTriggerHelper;
+    .param p1, "x1"  # Z
 
     .line 66
     invoke-direct {p0, p1}, Lcom/android/server/soundtrigger/SoundTriggerHelper;->onPowerSaveModeChangedLocked(Z)V
@@ -265,6 +274,7 @@
 
 .method private cleanUpExistingKeyphraseModelLocked(Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;)I
     .registers 5
+    .param p1, "modelData"  # Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;
 
     .line 218
     const/4 v0, 0x1
@@ -274,6 +284,7 @@
     move-result v0
 
     .line 219
+    .local v0, "status":I
     if-eqz v0, :cond_21
 
     .line 220
@@ -288,28 +299,28 @@
     .line 221
     invoke-virtual {p1}, Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v2
 
-    invoke-virtual {v1, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v1
 
     .line 220
-    const-string v1, "SoundTriggerHelper"
+    const-string v2, "SoundTriggerHelper"
 
-    invoke-static {v1, p1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v2, v1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 223
     :cond_21
     return v0
 .end method
 
-.method private computeRecognitionRequestedLocked()Z
-    .registers 4
+.method private computeRecognitionRunningLocked()Z
+    .registers 5
 
-    .line 1231
+    .line 1201
     iget-object v0, p0, Lcom/android/server/soundtrigger/SoundTriggerHelper;->mModuleProperties:Landroid/hardware/soundtrigger/SoundTrigger$ModuleProperties;
 
     const/4 v1, 0x0
@@ -322,7 +333,7 @@
 
     goto :goto_32
 
-    .line 1235
+    .line 1205
     :cond_a
     iget-object v0, p0, Lcom/android/server/soundtrigger/SoundTriggerHelper;->mModelDataMap:Ljava/util/HashMap;
 
@@ -347,51 +358,55 @@
 
     check-cast v2, Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;
 
-    .line 1236
-    invoke-virtual {v2}, Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;->isRequested()Z
+    .line 1206
+    .local v2, "modelData":Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;
+    invoke-virtual {v2}, Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;->isModelStarted()Z
 
-    move-result v2
+    move-result v3
 
-    if-eqz v2, :cond_2c
+    if-eqz v3, :cond_2c
 
-    .line 1237
+    .line 1207
     const/4 v0, 0x1
 
-    iput-boolean v0, p0, Lcom/android/server/soundtrigger/SoundTriggerHelper;->mRecognitionRequested:Z
+    iput-boolean v0, p0, Lcom/android/server/soundtrigger/SoundTriggerHelper;->mRecognitionRunning:Z
 
-    .line 1238
-    iget-boolean v0, p0, Lcom/android/server/soundtrigger/SoundTriggerHelper;->mRecognitionRequested:Z
+    .line 1208
+    iget-boolean v0, p0, Lcom/android/server/soundtrigger/SoundTriggerHelper;->mRecognitionRunning:Z
 
     return v0
 
-    .line 1240
+    .line 1210
+    .end local v2  # "modelData":Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;
     :cond_2c
     goto :goto_14
 
-    .line 1241
+    .line 1211
     :cond_2d
-    iput-boolean v1, p0, Lcom/android/server/soundtrigger/SoundTriggerHelper;->mRecognitionRequested:Z
+    iput-boolean v1, p0, Lcom/android/server/soundtrigger/SoundTriggerHelper;->mRecognitionRunning:Z
 
-    .line 1242
-    iget-boolean v0, p0, Lcom/android/server/soundtrigger/SoundTriggerHelper;->mRecognitionRequested:Z
+    .line 1212
+    iget-boolean v0, p0, Lcom/android/server/soundtrigger/SoundTriggerHelper;->mRecognitionRunning:Z
 
     return v0
 
-    .line 1232
+    .line 1202
     :cond_32
     :goto_32
-    iput-boolean v1, p0, Lcom/android/server/soundtrigger/SoundTriggerHelper;->mRecognitionRequested:Z
+    iput-boolean v1, p0, Lcom/android/server/soundtrigger/SoundTriggerHelper;->mRecognitionRunning:Z
 
-    .line 1233
-    iget-boolean v0, p0, Lcom/android/server/soundtrigger/SoundTriggerHelper;->mRecognitionRequested:Z
+    .line 1203
+    iget-boolean v0, p0, Lcom/android/server/soundtrigger/SoundTriggerHelper;->mRecognitionRunning:Z
 
     return v0
 .end method
 
 .method private createKeyphraseModelDataLocked(Ljava/util/UUID;I)Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;
     .registers 5
+    .param p1, "modelId"  # Ljava/util/UUID;
+    .param p2, "keyphraseId"  # I
 
-    .line 1085
+    .line 1068
     iget-object v0, p0, Lcom/android/server/soundtrigger/SoundTriggerHelper;->mKeyphraseUuidMap:Ljava/util/HashMap;
 
     invoke-static {p2}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
@@ -400,38 +415,39 @@
 
     invoke-virtual {v0, v1}, Ljava/util/HashMap;->remove(Ljava/lang/Object;)Ljava/lang/Object;
 
-    .line 1086
+    .line 1069
     iget-object v0, p0, Lcom/android/server/soundtrigger/SoundTriggerHelper;->mModelDataMap:Ljava/util/HashMap;
 
     invoke-virtual {v0, p1}, Ljava/util/HashMap;->remove(Ljava/lang/Object;)Ljava/lang/Object;
 
-    .line 1087
+    .line 1070
     iget-object v0, p0, Lcom/android/server/soundtrigger/SoundTriggerHelper;->mKeyphraseUuidMap:Ljava/util/HashMap;
 
     invoke-static {p2}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
 
-    move-result-object p2
+    move-result-object v1
 
-    invoke-virtual {v0, p2, p1}, Ljava/util/HashMap;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+    invoke-virtual {v0, v1, p1}, Ljava/util/HashMap;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
 
-    .line 1088
+    .line 1071
     invoke-static {p1}, Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;->createKeyphraseModelData(Ljava/util/UUID;)Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;
 
-    move-result-object p2
+    move-result-object v0
 
-    .line 1089
-    iget-object v0, p0, Lcom/android/server/soundtrigger/SoundTriggerHelper;->mModelDataMap:Ljava/util/HashMap;
+    .line 1072
+    .local v0, "modelData":Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;
+    iget-object v1, p0, Lcom/android/server/soundtrigger/SoundTriggerHelper;->mModelDataMap:Ljava/util/HashMap;
 
-    invoke-virtual {v0, p1, p2}, Ljava/util/HashMap;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+    invoke-virtual {v1, p1, v0}, Ljava/util/HashMap;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
 
-    .line 1090
-    return-object p2
+    .line 1073
+    return-object v0
 .end method
 
 .method private dumpModelStateLocked()V
-    .registers 5
+    .registers 6
 
-    .line 1222
+    .line 1192
     iget-object v0, p0, Lcom/android/server/soundtrigger/SoundTriggerHelper;->mModelDataMap:Ljava/util/HashMap;
 
     invoke-virtual {v0}, Ljava/util/HashMap;->keySet()Ljava/util/Set;
@@ -455,392 +471,401 @@
 
     check-cast v1, Ljava/util/UUID;
 
-    .line 1223
+    .line 1193
+    .local v1, "modelId":Ljava/util/UUID;
     iget-object v2, p0, Lcom/android/server/soundtrigger/SoundTriggerHelper;->mModelDataMap:Ljava/util/HashMap;
 
     invoke-virtual {v2, v1}, Ljava/util/HashMap;->get(Ljava/lang/Object;)Ljava/lang/Object;
 
-    move-result-object v1
+    move-result-object v2
 
-    check-cast v1, Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;
+    check-cast v2, Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;
 
-    .line 1224
-    new-instance v2, Ljava/lang/StringBuilder;
+    .line 1194
+    .local v2, "modelData":Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;
+    new-instance v3, Ljava/lang/StringBuilder;
 
-    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v3, "Model :"
+    const-string v4, "Model :"
 
-    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v1}, Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;->toString()Ljava/lang/String;
+    invoke-virtual {v2}, Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;->toString()Ljava/lang/String;
 
-    move-result-object v1
+    move-result-object v4
 
-    invoke-virtual {v2, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v1
+    move-result-object v3
 
-    const-string v2, "SoundTriggerHelper"
+    const-string v4, "SoundTriggerHelper"
 
-    invoke-static {v2, v1}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v4, v3}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 1225
+    .line 1195
+    .end local v1  # "modelId":Ljava/util/UUID;
+    .end local v2  # "modelData":Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;
     goto :goto_a
 
-    .line 1226
+    .line 1196
     :cond_39
     return-void
 .end method
 
 .method private forceStopAndUnloadModelLocked(Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;Ljava/lang/Exception;)V
     .registers 4
+    .param p1, "modelData"  # Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;
+    .param p2, "exception"  # Ljava/lang/Exception;
 
-    .line 982
+    .line 968
     const/4 v0, 0x0
 
     invoke-direct {p0, p1, p2, v0}, Lcom/android/server/soundtrigger/SoundTriggerHelper;->forceStopAndUnloadModelLocked(Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;Ljava/lang/Exception;Ljava/util/Iterator;)V
 
-    .line 983
+    .line 969
     return-void
 .end method
 
 .method private forceStopAndUnloadModelLocked(Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;Ljava/lang/Exception;Ljava/util/Iterator;)V
-    .registers 6
+    .registers 8
+    .param p1, "modelData"  # Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;
+    .param p2, "exception"  # Ljava/lang/Exception;
+    .param p3, "modelDataIterator"  # Ljava/util/Iterator;
 
-    .line 998
+    .line 984
     const-string v0, "SoundTriggerHelper"
 
     if-eqz p2, :cond_9
 
-    .line 999
+    .line 985
     const-string v1, "forceStopAndUnloadModel"
 
     invoke-static {v0, v1, p2}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
-    .line 1001
+    .line 987
     :cond_9
-    iget-object p2, p0, Lcom/android/server/soundtrigger/SoundTriggerHelper;->mModule:Landroid/hardware/soundtrigger/SoundTriggerModule;
-
-    if-nez p2, :cond_e
-
-    .line 1002
-    return-void
-
-    .line 1004
-    :cond_e
     invoke-virtual {p1}, Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;->isModelStarted()Z
 
-    move-result p2
+    move-result v1
 
-    if-eqz p2, :cond_58
+    if-eqz v1, :cond_53
 
-    .line 1005
-    new-instance p2, Ljava/lang/StringBuilder;
+    .line 988
+    new-instance v1, Ljava/lang/StringBuilder;
 
-    invoke-direct {p2}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v1, "Stopping previously started dangling model "
+    const-string v2, "Stopping previously started dangling model "
 
-    invoke-virtual {p2, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {p1}, Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;->getHandle()I
 
-    move-result v1
+    move-result v2
 
-    invoke-virtual {p2, v1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p2
+    move-result-object v1
 
-    invoke-static {v0, p2}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v0, v1}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 1006
-    iget-object p2, p0, Lcom/android/server/soundtrigger/SoundTriggerHelper;->mModule:Landroid/hardware/soundtrigger/SoundTriggerModule;
+    .line 989
+    iget-object v1, p0, Lcom/android/server/soundtrigger/SoundTriggerHelper;->mModule:Landroid/hardware/soundtrigger/SoundTriggerModule;
 
     invoke-virtual {p1}, Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;->getHandle()I
 
+    move-result v2
+
+    invoke-virtual {v1, v2}, Landroid/hardware/soundtrigger/SoundTriggerModule;->stopRecognition(I)I
+
     move-result v1
 
-    invoke-virtual {p2, v1}, Landroid/hardware/soundtrigger/SoundTriggerModule;->stopRecognition(I)I
+    if-eqz v1, :cond_3b
 
-    move-result p2
-
-    if-eqz p2, :cond_40
-
-    .line 1007
+    .line 990
     invoke-virtual {p1}, Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;->setStopped()V
 
-    .line 1008
-    const/4 p2, 0x0
+    .line 991
+    const/4 v1, 0x0
 
-    invoke-virtual {p1, p2}, Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;->setRequested(Z)V
+    invoke-virtual {p1, v1}, Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;->setRequested(Z)V
 
-    goto :goto_58
+    goto :goto_53
 
-    .line 1010
-    :cond_40
-    new-instance p2, Ljava/lang/StringBuilder;
+    .line 993
+    :cond_3b
+    new-instance v1, Ljava/lang/StringBuilder;
 
-    invoke-direct {p2}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v1, "Failed to stop model "
+    const-string v2, "Failed to stop model "
 
-    invoke-virtual {p2, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {p1}, Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;->getHandle()I
 
-    move-result v1
+    move-result v2
 
-    invoke-virtual {p2, v1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p2
+    move-result-object v1
 
-    invoke-static {v0, p2}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v0, v1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 1013
-    :cond_58
-    :goto_58
+    .line 996
+    :cond_53
+    :goto_53
     invoke-virtual {p1}, Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;->isModelLoaded()Z
 
-    move-result p2
+    move-result v1
 
-    if-eqz p2, :cond_d5
+    if-eqz v1, :cond_d0
 
-    .line 1014
-    new-instance p2, Ljava/lang/StringBuilder;
+    .line 997
+    new-instance v1, Ljava/lang/StringBuilder;
 
-    invoke-direct {p2}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v1, "Unloading previously loaded dangling model "
+    const-string v2, "Unloading previously loaded dangling model "
 
-    invoke-virtual {p2, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {p1}, Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;->getHandle()I
 
-    move-result v1
+    move-result v2
 
-    invoke-virtual {p2, v1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p2
+    move-result-object v1
 
-    invoke-static {v0, p2}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v0, v1}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 1015
-    iget-object p2, p0, Lcom/android/server/soundtrigger/SoundTriggerHelper;->mModule:Landroid/hardware/soundtrigger/SoundTriggerModule;
+    .line 998
+    iget-object v1, p0, Lcom/android/server/soundtrigger/SoundTriggerHelper;->mModule:Landroid/hardware/soundtrigger/SoundTriggerModule;
 
     invoke-virtual {p1}, Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;->getHandle()I
 
+    move-result v2
+
+    invoke-virtual {v1, v2}, Landroid/hardware/soundtrigger/SoundTriggerModule;->unloadSoundModel(I)I
+
     move-result v1
 
-    invoke-virtual {p2, v1}, Landroid/hardware/soundtrigger/SoundTriggerModule;->unloadSoundModel(I)I
+    if-nez v1, :cond_b8
 
-    move-result p2
+    .line 1000
+    if-eqz p3, :cond_83
 
-    if-nez p2, :cond_bd
-
-    .line 1017
-    if-eqz p3, :cond_88
-
-    .line 1018
+    .line 1001
     invoke-interface {p3}, Ljava/util/Iterator;->remove()V
 
-    goto :goto_91
+    goto :goto_8c
 
-    .line 1020
-    :cond_88
-    iget-object p2, p0, Lcom/android/server/soundtrigger/SoundTriggerHelper;->mModelDataMap:Ljava/util/HashMap;
-
-    invoke-virtual {p1}, Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;->getModelId()Ljava/util/UUID;
-
-    move-result-object p3
-
-    invoke-virtual {p2, p3}, Ljava/util/HashMap;->remove(Ljava/lang/Object;)Ljava/lang/Object;
-
-    .line 1022
-    :goto_91
-    iget-object p2, p0, Lcom/android/server/soundtrigger/SoundTriggerHelper;->mKeyphraseUuidMap:Ljava/util/HashMap;
-
-    invoke-virtual {p2}, Ljava/util/HashMap;->entrySet()Ljava/util/Set;
-
-    move-result-object p2
-
-    invoke-interface {p2}, Ljava/util/Set;->iterator()Ljava/util/Iterator;
-
-    move-result-object p2
-
-    .line 1023
-    :goto_9b
-    invoke-interface {p2}, Ljava/util/Iterator;->hasNext()Z
-
-    move-result p3
-
-    if-eqz p3, :cond_b9
-
-    .line 1024
-    invoke-interface {p2}, Ljava/util/Iterator;->next()Ljava/lang/Object;
-
-    move-result-object p3
-
-    check-cast p3, Ljava/util/Map$Entry;
-
-    .line 1025
-    invoke-interface {p3}, Ljava/util/Map$Entry;->getValue()Ljava/lang/Object;
-
-    move-result-object p3
+    .line 1003
+    :cond_83
+    iget-object v0, p0, Lcom/android/server/soundtrigger/SoundTriggerHelper;->mModelDataMap:Ljava/util/HashMap;
 
     invoke-virtual {p1}, Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;->getModelId()Ljava/util/UUID;
+
+    move-result-object v1
+
+    invoke-virtual {v0, v1}, Ljava/util/HashMap;->remove(Ljava/lang/Object;)Ljava/lang/Object;
+
+    .line 1005
+    :goto_8c
+    iget-object v0, p0, Lcom/android/server/soundtrigger/SoundTriggerHelper;->mKeyphraseUuidMap:Ljava/util/HashMap;
+
+    invoke-virtual {v0}, Ljava/util/HashMap;->entrySet()Ljava/util/Set;
 
     move-result-object v0
 
-    invoke-virtual {p3, v0}, Ljava/lang/Object;->equals(Ljava/lang/Object;)Z
+    invoke-interface {v0}, Ljava/util/Set;->iterator()Ljava/util/Iterator;
 
-    move-result p3
+    move-result-object v0
 
-    if-eqz p3, :cond_b8
+    .line 1006
+    .local v0, "it":Ljava/util/Iterator;
+    :goto_96
+    invoke-interface {v0}, Ljava/util/Iterator;->hasNext()Z
 
-    .line 1026
-    invoke-interface {p2}, Ljava/util/Iterator;->remove()V
+    move-result v1
 
-    .line 1028
-    :cond_b8
-    goto :goto_9b
+    if-eqz v1, :cond_b4
 
-    .line 1029
-    :cond_b9
+    .line 1007
+    invoke-interface {v0}, Ljava/util/Iterator;->next()Ljava/lang/Object;
+
+    move-result-object v1
+
+    check-cast v1, Ljava/util/Map$Entry;
+
+    .line 1008
+    .local v1, "pair":Ljava/util/Map$Entry;
+    invoke-interface {v1}, Ljava/util/Map$Entry;->getValue()Ljava/lang/Object;
+
+    move-result-object v2
+
+    invoke-virtual {p1}, Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;->getModelId()Ljava/util/UUID;
+
+    move-result-object v3
+
+    invoke-virtual {v2, v3}, Ljava/lang/Object;->equals(Ljava/lang/Object;)Z
+
+    move-result v2
+
+    if-eqz v2, :cond_b3
+
+    .line 1009
+    invoke-interface {v0}, Ljava/util/Iterator;->remove()V
+
+    .line 1011
+    .end local v1  # "pair":Ljava/util/Map$Entry;
+    :cond_b3
+    goto :goto_96
+
+    .line 1012
+    :cond_b4
     invoke-virtual {p1}, Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;->clearState()V
 
-    .line 1030
-    goto :goto_d5
+    .line 1013
+    .end local v0  # "it":Ljava/util/Iterator;
+    goto :goto_d0
 
-    .line 1031
-    :cond_bd
-    new-instance p2, Ljava/lang/StringBuilder;
+    .line 1014
+    :cond_b8
+    new-instance v1, Ljava/lang/StringBuilder;
 
-    invoke-direct {p2}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string p3, "Failed to unload model "
+    const-string v2, "Failed to unload model "
 
-    invoke-virtual {p2, p3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {p1}, Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;->getHandle()I
 
-    move-result p1
+    move-result v2
 
-    invoke-virtual {p2, p1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v1
 
-    invoke-static {v0, p1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v0, v1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 1034
-    :cond_d5
-    :goto_d5
+    .line 1017
+    :cond_d0
+    :goto_d0
     return-void
 .end method
 
 .method private getKeyphraseIdFromEvent(Landroid/hardware/soundtrigger/SoundTrigger$KeyphraseRecognitionEvent;)I
-    .registers 5
+    .registers 6
+    .param p1, "event"  # Landroid/hardware/soundtrigger/SoundTrigger$KeyphraseRecognitionEvent;
 
-    .line 782
+    .line 774
     const/high16 v0, -0x80000000
 
     const-string v1, "SoundTriggerHelper"
 
     if-nez p1, :cond_c
 
-    .line 783
-    const-string p1, "Null RecognitionEvent received."
+    .line 775
+    const-string v2, "Null RecognitionEvent received."
 
-    invoke-static {v1, p1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v2}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 784
+    .line 776
     return v0
 
-    .line 786
+    .line 778
     :cond_c
-    iget-object p1, p1, Landroid/hardware/soundtrigger/SoundTrigger$KeyphraseRecognitionEvent;->keyphraseExtras:[Landroid/hardware/soundtrigger/SoundTrigger$KeyphraseRecognitionExtra;
+    iget-object v2, p1, Landroid/hardware/soundtrigger/SoundTrigger$KeyphraseRecognitionEvent;->keyphraseExtras:[Landroid/hardware/soundtrigger/SoundTrigger$KeyphraseRecognitionExtra;
 
-    .line 788
-    if-eqz p1, :cond_1a
+    .line 780
+    .local v2, "keyphraseExtras":[Landroid/hardware/soundtrigger/SoundTrigger$KeyphraseRecognitionExtra;
+    if-eqz v2, :cond_1a
 
-    array-length v2, p1
+    array-length v3, v2
 
-    if-nez v2, :cond_14
+    if-nez v3, :cond_14
 
     goto :goto_1a
 
-    .line 793
+    .line 785
     :cond_14
     const/4 v0, 0x0
 
-    aget-object p1, p1, v0
+    aget-object v0, v2, v0
 
-    iget p1, p1, Landroid/hardware/soundtrigger/SoundTrigger$KeyphraseRecognitionExtra;->id:I
+    iget v0, v0, Landroid/hardware/soundtrigger/SoundTrigger$KeyphraseRecognitionExtra;->id:I
 
-    return p1
+    return v0
 
-    .line 789
+    .line 781
     :cond_1a
     :goto_1a
-    const-string p1, "Invalid keyphrase recognition event!"
+    const-string v3, "Invalid keyphrase recognition event!"
 
-    invoke-static {v1, p1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v3}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 790
+    .line 782
     return v0
 .end method
 
 .method private getKeyphraseModelDataLocked(I)Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;
-    .registers 3
+    .registers 4
+    .param p1, "keyphraseId"  # I
 
-    .line 1075
+    .line 1058
     iget-object v0, p0, Lcom/android/server/soundtrigger/SoundTriggerHelper;->mKeyphraseUuidMap:Ljava/util/HashMap;
 
     invoke-static {p1}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
 
-    move-result-object p1
+    move-result-object v1
 
-    invoke-virtual {v0, p1}, Ljava/util/HashMap;->get(Ljava/lang/Object;)Ljava/lang/Object;
+    invoke-virtual {v0, v1}, Ljava/util/HashMap;->get(Ljava/lang/Object;)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v0
 
-    check-cast p1, Ljava/util/UUID;
+    check-cast v0, Ljava/util/UUID;
 
-    .line 1076
-    if-nez p1, :cond_10
+    .line 1059
+    .local v0, "uuid":Ljava/util/UUID;
+    if-nez v0, :cond_10
 
-    .line 1077
-    const/4 p1, 0x0
+    .line 1060
+    const/4 v1, 0x0
 
-    return-object p1
+    return-object v1
 
-    .line 1079
+    .line 1062
     :cond_10
-    iget-object v0, p0, Lcom/android/server/soundtrigger/SoundTriggerHelper;->mModelDataMap:Ljava/util/HashMap;
+    iget-object v1, p0, Lcom/android/server/soundtrigger/SoundTriggerHelper;->mModelDataMap:Ljava/util/HashMap;
 
-    invoke-virtual {v0, p1}, Ljava/util/HashMap;->get(Ljava/lang/Object;)Ljava/lang/Object;
+    invoke-virtual {v1, v0}, Ljava/util/HashMap;->get(Ljava/lang/Object;)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v1
 
-    check-cast p1, Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;
+    check-cast v1, Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;
 
-    return-object p1
+    return-object v1
 .end method
 
 .method private getModelDataForLocked(I)Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;
     .registers 5
+    .param p1, "modelHandle"  # I
 
-    .line 1098
+    .line 1081
     iget-object v0, p0, Lcom/android/server/soundtrigger/SoundTriggerHelper;->mModelDataMap:Ljava/util/HashMap;
 
     invoke-virtual {v0}, Ljava/util/HashMap;->values()Ljava/util/Collection;
@@ -864,31 +889,34 @@
 
     check-cast v1, Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;
 
-    .line 1099
+    .line 1082
+    .local v1, "model":Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;
     invoke-virtual {v1}, Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;->getHandle()I
 
     move-result v2
 
     if-ne v2, p1, :cond_1d
 
-    .line 1100
+    .line 1083
     return-object v1
 
-    .line 1102
+    .line 1085
+    .end local v1  # "model":Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;
     :cond_1d
     goto :goto_a
 
-    .line 1103
+    .line 1086
     :cond_1e
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    return-object p1
+    return-object v0
 .end method
 
 .method private getOrCreateGenericModelDataLocked(Ljava/util/UUID;)Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;
-    .registers 4
+    .registers 5
+    .param p1, "modelId"  # Ljava/util/UUID;
 
-    .line 1054
+    .line 1037
     iget-object v0, p0, Lcom/android/server/soundtrigger/SoundTriggerHelper;->mModelDataMap:Ljava/util/HashMap;
 
     invoke-virtual {v0, p1}, Ljava/util/HashMap;->get(Ljava/lang/Object;)Ljava/lang/Object;
@@ -897,66 +925,59 @@
 
     check-cast v0, Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;
 
-    .line 1055
+    .line 1038
+    .local v0, "modelData":Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;
     if-nez v0, :cond_14
 
-    .line 1056
+    .line 1039
     invoke-static {p1}, Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;->createGenericModelData(Ljava/util/UUID;)Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;
 
     move-result-object v0
 
-    .line 1057
+    .line 1040
     iget-object v1, p0, Lcom/android/server/soundtrigger/SoundTriggerHelper;->mModelDataMap:Ljava/util/HashMap;
 
     invoke-virtual {v1, p1, v0}, Ljava/util/HashMap;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
 
     goto :goto_23
 
-    .line 1058
+    .line 1041
     :cond_14
     invoke-virtual {v0}, Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;->isGenericModel()Z
 
-    move-result p1
+    move-result v1
 
-    if-nez p1, :cond_23
+    if-nez v1, :cond_23
 
-    .line 1059
-    const-string p1, "SoundTriggerHelper"
+    .line 1042
+    const-string v1, "SoundTriggerHelper"
 
-    const-string v0, "UUID already used for non-generic model."
+    const-string v2, "UUID already used for non-generic model."
 
-    invoke-static {p1, v0}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v2}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 1060
-    const/4 p1, 0x0
+    .line 1043
+    const/4 v1, 0x0
 
-    return-object p1
+    return-object v1
 
-    .line 1062
+    .line 1045
     :cond_23
     :goto_23
     return-object v0
 .end method
 
 .method private initializeTelephonyAndPowerStateListeners()V
-    .registers 8
+    .registers 7
 
-    .line 933
-    iget-boolean v0, p0, Lcom/android/server/soundtrigger/SoundTriggerHelper;->mRecognitionRequested:Z
-
-    if-eqz v0, :cond_5
-
-    .line 934
-    return-void
-
-    .line 936
-    :cond_5
+    .line 924
     invoke-static {}, Landroid/os/Binder;->clearCallingIdentity()J
 
     move-result-wide v0
 
-    .line 939
-    :try_start_9
+    .line 927
+    .local v0, "token":J
+    :try_start_4
     iget-object v2, p0, Lcom/android/server/soundtrigger/SoundTriggerHelper;->mTelephonyManager:Landroid/telephony/TelephonyManager;
 
     invoke-virtual {v2}, Landroid/telephony/TelephonyManager;->getCallState()I
@@ -965,56 +986,54 @@
 
     const/4 v3, 0x2
 
-    const/4 v4, 0x1
+    if-ne v2, v3, :cond_f
 
-    if-ne v2, v3, :cond_15
+    const/4 v2, 0x1
 
-    move v2, v4
+    goto :goto_10
 
-    goto :goto_16
-
-    :cond_15
+    :cond_f
     const/4 v2, 0x0
 
-    :goto_16
+    :goto_10
     iput-boolean v2, p0, Lcom/android/server/soundtrigger/SoundTriggerHelper;->mCallActive:Z
 
-    .line 942
+    .line 930
     iget-object v2, p0, Lcom/android/server/soundtrigger/SoundTriggerHelper;->mTelephonyManager:Landroid/telephony/TelephonyManager;
 
     iget-object v3, p0, Lcom/android/server/soundtrigger/SoundTriggerHelper;->mPhoneStateListener:Landroid/telephony/PhoneStateListener;
 
-    const/16 v5, 0x20
+    const/16 v4, 0x20
 
-    invoke-virtual {v2, v3, v5}, Landroid/telephony/TelephonyManager;->listen(Landroid/telephony/PhoneStateListener;I)V
+    invoke-virtual {v2, v3, v4}, Landroid/telephony/TelephonyManager;->listen(Landroid/telephony/PhoneStateListener;I)V
 
-    .line 946
+    .line 934
     iget-object v2, p0, Lcom/android/server/soundtrigger/SoundTriggerHelper;->mPowerSaveModeListener:Lcom/android/server/soundtrigger/SoundTriggerHelper$PowerSaveModeListener;
 
-    if-nez v2, :cond_3a
+    if-nez v2, :cond_34
 
-    .line 947
+    .line 935
     new-instance v2, Lcom/android/server/soundtrigger/SoundTriggerHelper$PowerSaveModeListener;
 
     invoke-direct {v2, p0}, Lcom/android/server/soundtrigger/SoundTriggerHelper$PowerSaveModeListener;-><init>(Lcom/android/server/soundtrigger/SoundTriggerHelper;)V
 
     iput-object v2, p0, Lcom/android/server/soundtrigger/SoundTriggerHelper;->mPowerSaveModeListener:Lcom/android/server/soundtrigger/SoundTriggerHelper$PowerSaveModeListener;
 
-    .line 948
+    .line 936
     iget-object v2, p0, Lcom/android/server/soundtrigger/SoundTriggerHelper;->mContext:Landroid/content/Context;
 
     iget-object v3, p0, Lcom/android/server/soundtrigger/SoundTriggerHelper;->mPowerSaveModeListener:Lcom/android/server/soundtrigger/SoundTriggerHelper$PowerSaveModeListener;
 
-    new-instance v5, Landroid/content/IntentFilter;
+    new-instance v4, Landroid/content/IntentFilter;
 
-    const-string v6, "android.os.action.POWER_SAVE_MODE_CHANGED"
+    const-string v5, "android.os.action.POWER_SAVE_MODE_CHANGED"
 
-    invoke-direct {v5, v6}, Landroid/content/IntentFilter;-><init>(Ljava/lang/String;)V
+    invoke-direct {v4, v5}, Landroid/content/IntentFilter;-><init>(Ljava/lang/String;)V
 
-    invoke-virtual {v2, v3, v5}, Landroid/content/Context;->registerReceiver(Landroid/content/BroadcastReceiver;Landroid/content/IntentFilter;)Landroid/content/Intent;
+    invoke-virtual {v2, v3, v4}, Landroid/content/Context;->registerReceiver(Landroid/content/BroadcastReceiver;Landroid/content/IntentFilter;)Landroid/content/Intent;
 
-    .line 951
-    :cond_3a
+    .line 939
+    :cond_34
     iget-object v2, p0, Lcom/android/server/soundtrigger/SoundTriggerHelper;->mPowerManager:Landroid/os/PowerManager;
 
     const/16 v3, 0x8
@@ -1026,23 +1045,20 @@
     iget-boolean v2, v2, Landroid/os/PowerSaveState;->batterySaverEnabled:Z
 
     iput-boolean v2, p0, Lcom/android/server/soundtrigger/SoundTriggerHelper;->mIsPowerSaveMode:Z
+    :try_end_40
+    .catchall {:try_start_4 .. :try_end_40} :catchall_45
 
-    .line 954
-    iput-boolean v4, p0, Lcom/android/server/soundtrigger/SoundTriggerHelper;->mRecognitionRequested:Z
-    :try_end_48
-    .catchall {:try_start_9 .. :try_end_48} :catchall_4d
-
-    .line 956
+    .line 942
     invoke-static {v0, v1}, Landroid/os/Binder;->restoreCallingIdentity(J)V
 
-    .line 957
+    .line 943
     nop
 
-    .line 958
+    .line 944
     return-void
 
-    .line 956
-    :catchall_4d
+    .line 942
+    :catchall_45
     move-exception v2
 
     invoke-static {v0, v1}, Landroid/os/Binder;->restoreCallingIdentity(J)V
@@ -1053,12 +1069,13 @@
 .method private internalClearGlobalStateLocked()V
     .registers 6
 
-    .line 874
+    .line 866
     invoke-static {}, Landroid/os/Binder;->clearCallingIdentity()J
 
     move-result-wide v0
 
-    .line 876
+    .line 868
+    .local v0, "token":J
     :try_start_4
     iget-object v2, p0, Lcom/android/server/soundtrigger/SoundTriggerHelper;->mTelephonyManager:Landroid/telephony/TelephonyManager;
 
@@ -1068,38 +1085,35 @@
 
     invoke-virtual {v2, v3, v4}, Landroid/telephony/TelephonyManager;->listen(Landroid/telephony/PhoneStateListener;I)V
     :try_end_c
-    .catchall {:try_start_4 .. :try_end_c} :catchall_1f
+    .catchall {:try_start_4 .. :try_end_c} :catchall_1d
 
-    .line 878
+    .line 870
     invoke-static {v0, v1}, Landroid/os/Binder;->restoreCallingIdentity(J)V
 
-    .line 879
+    .line 871
     nop
 
-    .line 882
-    iget-object v0, p0, Lcom/android/server/soundtrigger/SoundTriggerHelper;->mPowerSaveModeListener:Lcom/android/server/soundtrigger/SoundTriggerHelper$PowerSaveModeListener;
+    .line 874
+    iget-object v2, p0, Lcom/android/server/soundtrigger/SoundTriggerHelper;->mPowerSaveModeListener:Lcom/android/server/soundtrigger/SoundTriggerHelper$PowerSaveModeListener;
 
-    if-eqz v0, :cond_1c
+    if-eqz v2, :cond_1c
 
-    .line 883
-    iget-object v1, p0, Lcom/android/server/soundtrigger/SoundTriggerHelper;->mContext:Landroid/content/Context;
+    .line 875
+    iget-object v3, p0, Lcom/android/server/soundtrigger/SoundTriggerHelper;->mContext:Landroid/content/Context;
 
-    invoke-virtual {v1, v0}, Landroid/content/Context;->unregisterReceiver(Landroid/content/BroadcastReceiver;)V
+    invoke-virtual {v3, v2}, Landroid/content/Context;->unregisterReceiver(Landroid/content/BroadcastReceiver;)V
 
-    .line 884
-    const/4 v0, 0x0
+    .line 876
+    const/4 v2, 0x0
 
-    iput-object v0, p0, Lcom/android/server/soundtrigger/SoundTriggerHelper;->mPowerSaveModeListener:Lcom/android/server/soundtrigger/SoundTriggerHelper$PowerSaveModeListener;
-
-    .line 886
-    :cond_1c
-    iput-boolean v4, p0, Lcom/android/server/soundtrigger/SoundTriggerHelper;->mRecognitionRequested:Z
-
-    .line 887
-    return-void
+    iput-object v2, p0, Lcom/android/server/soundtrigger/SoundTriggerHelper;->mPowerSaveModeListener:Lcom/android/server/soundtrigger/SoundTriggerHelper$PowerSaveModeListener;
 
     .line 878
-    :catchall_1f
+    :cond_1c
+    return-void
+
+    .line 870
+    :catchall_1d
     move-exception v2
 
     invoke-static {v0, v1}, Landroid/os/Binder;->restoreCallingIdentity(J)V
@@ -1110,7 +1124,7 @@
 .method private internalClearModelStateLocked()V
     .registers 3
 
-    .line 891
+    .line 882
     iget-object v0, p0, Lcom/android/server/soundtrigger/SoundTriggerHelper;->mModelDataMap:Ljava/util/HashMap;
 
     invoke-virtual {v0}, Ljava/util/HashMap;->values()Ljava/util/Collection;
@@ -1134,124 +1148,86 @@
 
     check-cast v1, Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;
 
-    .line 892
+    .line 883
+    .local v1, "modelData":Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;
     invoke-virtual {v1}, Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;->clearState()V
 
-    .line 893
+    .line 884
+    .end local v1  # "modelData":Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;
     goto :goto_a
 
-    .line 894
+    .line 885
     :cond_1a
     return-void
 .end method
 
 .method private isKeyphraseRecognitionEvent(Landroid/hardware/soundtrigger/SoundTrigger$RecognitionEvent;)Z
-    .registers 2
+    .registers 3
+    .param p1, "event"  # Landroid/hardware/soundtrigger/SoundTrigger$RecognitionEvent;
 
-    .line 645
-    instance-of p1, p1, Landroid/hardware/soundtrigger/SoundTrigger$KeyphraseRecognitionEvent;
+    .line 637
+    instance-of v0, p1, Landroid/hardware/soundtrigger/SoundTrigger$KeyphraseRecognitionEvent;
 
-    return p1
+    return v0
 .end method
 
 .method private isRecognitionAllowed()Z
-    .registers 5
+    .registers 2
 
-    .line 1112
-    iget-boolean v0, p0, Lcom/android/server/soundtrigger/SoundTriggerHelper;->mRecognitionRequested:Z
-
-    const/4 v1, 0x1
-
-    const/4 v2, 0x0
-
-    if-nez v0, :cond_20
-
-    .line 1113
-    iget-object v0, p0, Lcom/android/server/soundtrigger/SoundTriggerHelper;->mTelephonyManager:Landroid/telephony/TelephonyManager;
-
-    invoke-virtual {v0}, Landroid/telephony/TelephonyManager;->getCallState()I
-
-    move-result v0
-
-    const/4 v3, 0x2
-
-    if-ne v0, v3, :cond_11
-
-    move v0, v1
-
-    goto :goto_12
-
-    :cond_11
-    move v0, v2
-
-    :goto_12
-    iput-boolean v0, p0, Lcom/android/server/soundtrigger/SoundTriggerHelper;->mCallActive:Z
-
-    .line 1114
-    iget-object v0, p0, Lcom/android/server/soundtrigger/SoundTriggerHelper;->mPowerManager:Landroid/os/PowerManager;
-
-    const/16 v3, 0x8
-
-    .line 1115
-    invoke-virtual {v0, v3}, Landroid/os/PowerManager;->getPowerSaveState(I)Landroid/os/PowerSaveState;
-
-    move-result-object v0
-
-    iget-boolean v0, v0, Landroid/os/PowerSaveState;->batterySaverEnabled:Z
-
-    iput-boolean v0, p0, Lcom/android/server/soundtrigger/SoundTriggerHelper;->mIsPowerSaveMode:Z
-
-    .line 1117
-    :cond_20
+    .line 1093
     iget-boolean v0, p0, Lcom/android/server/soundtrigger/SoundTriggerHelper;->mCallActive:Z
 
-    if-nez v0, :cond_2d
+    if-nez v0, :cond_e
 
     iget-boolean v0, p0, Lcom/android/server/soundtrigger/SoundTriggerHelper;->mServiceDisabled:Z
 
-    if-nez v0, :cond_2d
+    if-nez v0, :cond_e
 
     iget-boolean v0, p0, Lcom/android/server/soundtrigger/SoundTriggerHelper;->mIsPowerSaveMode:Z
 
-    if-nez v0, :cond_2d
+    if-nez v0, :cond_e
 
-    goto :goto_2e
+    const/4 v0, 0x1
 
-    :cond_2d
-    move v1, v2
+    goto :goto_f
 
-    :goto_2e
-    return v1
+    :cond_e
+    const/4 v0, 0x0
+
+    :goto_f
+    return v0
 .end method
 
 .method private onCallStateChangedLocked(Z)V
     .registers 3
+    .param p1, "callActive"  # Z
 
-    .line 725
+    .line 717
     iget-boolean v0, p0, Lcom/android/server/soundtrigger/SoundTriggerHelper;->mCallActive:Z
 
     if-ne v0, p1, :cond_5
 
-    .line 728
+    .line 720
     return-void
 
-    .line 730
+    .line 722
     :cond_5
     iput-boolean p1, p0, Lcom/android/server/soundtrigger/SoundTriggerHelper;->mCallActive:Z
 
-    .line 731
-    const/4 p1, 0x1
+    .line 723
+    const/4 v0, 0x1
 
-    invoke-direct {p0, p1}, Lcom/android/server/soundtrigger/SoundTriggerHelper;->updateAllRecognitionsLocked(Z)V
+    invoke-direct {p0, v0}, Lcom/android/server/soundtrigger/SoundTriggerHelper;->updateAllRecognitionsLocked(Z)V
 
-    .line 732
+    .line 724
     return-void
 .end method
 
 .method private onGenericRecognitionSuccessLocked(Landroid/hardware/soundtrigger/SoundTrigger$GenericRecognitionEvent;)V
-    .registers 7
+    .registers 8
+    .param p1, "event"  # Landroid/hardware/soundtrigger/SoundTrigger$GenericRecognitionEvent;
 
-    .line 649
+    .line 641
     iget-object v0, p0, Lcom/android/server/soundtrigger/SoundTriggerHelper;->mContext:Landroid/content/Context;
 
     const/4 v1, 0x1
@@ -1260,7 +1236,7 @@
 
     invoke-static {v0, v2, v1}, Lcom/android/internal/logging/MetricsLogger;->count(Landroid/content/Context;Ljava/lang/String;I)V
 
-    .line 650
+    .line 642
     iget v0, p1, Landroid/hardware/soundtrigger/SoundTrigger$GenericRecognitionEvent;->status:I
 
     if-eqz v0, :cond_13
@@ -1271,10 +1247,10 @@
 
     if-eq v0, v2, :cond_13
 
-    .line 652
+    .line 644
     return-void
 
-    .line 654
+    .line 646
     :cond_13
     iget v0, p1, Landroid/hardware/soundtrigger/SoundTrigger$GenericRecognitionEvent;->soundModelHandle:I
 
@@ -1282,7 +1258,8 @@
 
     move-result-object v0
 
-    .line 655
+    .line 647
+    .local v0, "model":Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;
     const-string v2, "SoundTriggerHelper"
 
     if-eqz v0, :cond_83
@@ -1295,161 +1272,170 @@
 
     goto :goto_83
 
-    .line 661
+    .line 653
     :cond_24
     invoke-virtual {v0}, Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;->getCallback()Landroid/hardware/soundtrigger/IRecognitionStatusCallback;
 
     move-result-object v3
 
-    .line 662
+    .line 654
+    .local v3, "callback":Landroid/hardware/soundtrigger/IRecognitionStatusCallback;
     if-nez v3, :cond_41
 
-    .line 663
-    new-instance v0, Ljava/lang/StringBuilder;
+    .line 655
+    new-instance v1, Ljava/lang/StringBuilder;
 
-    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v1, "Generic recognition event: Null callback for model handle: "
+    const-string v4, "Generic recognition event: Null callback for model handle: "
 
-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    iget p1, p1, Landroid/hardware/soundtrigger/SoundTrigger$GenericRecognitionEvent;->soundModelHandle:I
+    iget v4, p1, Landroid/hardware/soundtrigger/SoundTrigger$GenericRecognitionEvent;->soundModelHandle:I
 
-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v4}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v1
 
-    invoke-static {v2, p1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v2, v1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 665
+    .line 657
     return-void
 
-    .line 668
+    .line 660
     :cond_41
     invoke-virtual {v0}, Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;->setStopped()V
 
-    .line 671
+    .line 663
     :try_start_44
     invoke-interface {v3, p1}, Landroid/hardware/soundtrigger/IRecognitionStatusCallback;->onGenericSoundTriggerDetected(Landroid/hardware/soundtrigger/SoundTrigger$GenericRecognitionEvent;)V
     :try_end_47
     .catch Landroid/os/DeadObjectException; {:try_start_44 .. :try_end_47} :catch_7e
     .catch Landroid/os/RemoteException; {:try_start_44 .. :try_end_47} :catch_48
 
-    .line 677
+    .line 669
     goto :goto_4e
 
-    .line 675
+    .line 667
     :catch_48
-    move-exception v3
+    move-exception v4
 
-    .line 676
-    const-string v4, "RemoteException in onGenericSoundTriggerDetected"
+    .line 668
+    .local v4, "e":Landroid/os/RemoteException;
+    const-string v5, "RemoteException in onGenericSoundTriggerDetected"
 
-    invoke-static {v2, v4, v3}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    invoke-static {v2, v5, v4}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
-    .line 679
+    .line 671
+    .end local v4  # "e":Landroid/os/RemoteException;
     :goto_4e
     invoke-virtual {v0}, Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;->getRecognitionConfig()Landroid/hardware/soundtrigger/SoundTrigger$RecognitionConfig;
 
-    move-result-object v3
+    move-result-object v4
 
-    .line 680
-    if-nez v3, :cond_6b
+    .line 672
+    .local v4, "config":Landroid/hardware/soundtrigger/SoundTrigger$RecognitionConfig;
+    if-nez v4, :cond_6b
 
-    .line 681
-    new-instance v0, Ljava/lang/StringBuilder;
+    .line 673
+    new-instance v1, Ljava/lang/StringBuilder;
 
-    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v1, "Generic recognition event: Null RecognitionConfig for model handle: "
+    const-string v5, "Generic recognition event: Null RecognitionConfig for model handle: "
 
-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    iget p1, p1, Landroid/hardware/soundtrigger/SoundTrigger$GenericRecognitionEvent;->soundModelHandle:I
+    iget v5, p1, Landroid/hardware/soundtrigger/SoundTrigger$GenericRecognitionEvent;->soundModelHandle:I
 
-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v5}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v1
 
-    invoke-static {v2, p1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v2, v1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 683
+    .line 675
     return-void
 
-    .line 686
+    .line 678
     :cond_6b
-    iget-boolean p1, v3, Landroid/hardware/soundtrigger/SoundTrigger$RecognitionConfig;->allowMultipleTriggers:Z
+    iget-boolean v2, v4, Landroid/hardware/soundtrigger/SoundTrigger$RecognitionConfig;->allowMultipleTriggers:Z
 
-    invoke-virtual {v0, p1}, Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;->setRequested(Z)V
+    invoke-virtual {v0, v2}, Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;->setRequested(Z)V
 
-    .line 688
+    .line 680
     invoke-virtual {v0}, Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;->isRequested()Z
 
-    move-result p1
+    move-result v2
 
-    if-eqz p1, :cond_7d
+    if-eqz v2, :cond_7d
 
-    .line 689
+    .line 681
     invoke-direct {p0}, Lcom/android/server/soundtrigger/SoundTriggerHelper;->isRecognitionAllowed()Z
 
-    move-result p1
+    move-result v2
 
-    invoke-direct {p0, v0, p1, v1}, Lcom/android/server/soundtrigger/SoundTriggerHelper;->updateRecognitionLocked(Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;ZZ)I
+    invoke-direct {p0, v0, v2, v1}, Lcom/android/server/soundtrigger/SoundTriggerHelper;->updateRecognitionLocked(Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;ZZ)I
 
-    .line 692
+    .line 684
     :cond_7d
     return-void
 
-    .line 672
+    .line 664
+    .end local v4  # "config":Landroid/hardware/soundtrigger/SoundTrigger$RecognitionConfig;
     :catch_7e
-    move-exception p1
+    move-exception v1
 
-    .line 673
-    invoke-direct {p0, v0, p1}, Lcom/android/server/soundtrigger/SoundTriggerHelper;->forceStopAndUnloadModelLocked(Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;Ljava/lang/Exception;)V
+    .line 665
+    .local v1, "e":Landroid/os/DeadObjectException;
+    invoke-direct {p0, v0, v1}, Lcom/android/server/soundtrigger/SoundTriggerHelper;->forceStopAndUnloadModelLocked(Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;Ljava/lang/Exception;)V
 
-    .line 674
+    .line 666
     return-void
 
-    .line 656
+    .line 648
+    .end local v1  # "e":Landroid/os/DeadObjectException;
+    .end local v3  # "callback":Landroid/hardware/soundtrigger/IRecognitionStatusCallback;
     :cond_83
     :goto_83
-    new-instance v0, Ljava/lang/StringBuilder;
+    new-instance v1, Ljava/lang/StringBuilder;
 
-    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v1, "Generic recognition event: Model does not exist for handle: "
+    const-string v3, "Generic recognition event: Model does not exist for handle: "
 
-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    iget p1, p1, Landroid/hardware/soundtrigger/SoundTrigger$GenericRecognitionEvent;->soundModelHandle:I
+    iget v3, p1, Landroid/hardware/soundtrigger/SoundTrigger$GenericRecognitionEvent;->soundModelHandle:I
 
-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v3}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v1
 
-    invoke-static {v2, p1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v2, v1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 658
+    .line 650
     return-void
 .end method
 
 .method private onKeyphraseRecognitionSuccessLocked(Landroid/hardware/soundtrigger/SoundTrigger$KeyphraseRecognitionEvent;)V
-    .registers 7
+    .registers 8
+    .param p1, "event"  # Landroid/hardware/soundtrigger/SoundTrigger$KeyphraseRecognitionEvent;
 
-    .line 797
+    .line 789
     const-string v0, "SoundTriggerHelper"
 
     const-string v1, "Recognition success"
 
     invoke-static {v0, v1}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 798
+    .line 790
     iget-object v1, p0, Lcom/android/server/soundtrigger/SoundTriggerHelper;->mContext:Landroid/content/Context;
 
     const/4 v2, 0x1
@@ -1458,17 +1444,19 @@
 
     invoke-static {v1, v3, v2}, Lcom/android/internal/logging/MetricsLogger;->count(Landroid/content/Context;Ljava/lang/String;I)V
 
-    .line 799
+    .line 791
     invoke-direct {p0, p1}, Lcom/android/server/soundtrigger/SoundTriggerHelper;->getKeyphraseIdFromEvent(Landroid/hardware/soundtrigger/SoundTrigger$KeyphraseRecognitionEvent;)I
 
     move-result v1
 
-    .line 800
+    .line 792
+    .local v1, "keyphraseId":I
     invoke-direct {p0, v1}, Lcom/android/server/soundtrigger/SoundTriggerHelper;->getKeyphraseModelDataLocked(I)Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;
 
     move-result-object v3
 
-    .line 802
+    .line 794
+    .local v3, "modelData":Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;
     if-eqz v3, :cond_5c
 
     invoke-virtual {v3}, Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;->isKeyphraseModel()Z
@@ -1479,150 +1467,158 @@
 
     goto :goto_5c
 
-    .line 807
+    .line 799
     :cond_21
     invoke-virtual {v3}, Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;->getCallback()Landroid/hardware/soundtrigger/IRecognitionStatusCallback;
 
-    move-result-object v1
+    move-result-object v4
 
-    if-nez v1, :cond_2d
+    if-nez v4, :cond_2d
 
-    .line 808
-    const-string p1, "Received onRecognition event without callback for keyphrase model."
+    .line 800
+    const-string v2, "Received onRecognition event without callback for keyphrase model."
 
-    invoke-static {v0, p1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v0, v2}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 809
+    .line 801
     return-void
 
-    .line 812
+    .line 804
     :cond_2d
     invoke-virtual {v3}, Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;->setStopped()V
 
-    .line 815
+    .line 807
     :try_start_30
     invoke-virtual {v3}, Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;->getCallback()Landroid/hardware/soundtrigger/IRecognitionStatusCallback;
 
-    move-result-object v1
+    move-result-object v4
 
-    invoke-interface {v1, p1}, Landroid/hardware/soundtrigger/IRecognitionStatusCallback;->onKeyphraseDetected(Landroid/hardware/soundtrigger/SoundTrigger$KeyphraseRecognitionEvent;)V
+    invoke-interface {v4, p1}, Landroid/hardware/soundtrigger/IRecognitionStatusCallback;->onKeyphraseDetected(Landroid/hardware/soundtrigger/SoundTrigger$KeyphraseRecognitionEvent;)V
     :try_end_37
     .catch Landroid/os/DeadObjectException; {:try_start_30 .. :try_end_37} :catch_57
     .catch Landroid/os/RemoteException; {:try_start_30 .. :try_end_37} :catch_38
 
-    .line 821
+    .line 813
     goto :goto_3e
 
-    .line 819
+    .line 811
     :catch_38
-    move-exception p1
+    move-exception v4
 
-    .line 820
-    const-string v1, "RemoteException in onKeyphraseDetected"
+    .line 812
+    .local v4, "e":Landroid/os/RemoteException;
+    const-string v5, "RemoteException in onKeyphraseDetected"
 
-    invoke-static {v0, v1, p1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    invoke-static {v0, v5, v4}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
-    .line 823
+    .line 815
+    .end local v4  # "e":Landroid/os/RemoteException;
     :goto_3e
     invoke-virtual {v3}, Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;->getRecognitionConfig()Landroid/hardware/soundtrigger/SoundTrigger$RecognitionConfig;
 
-    move-result-object p1
+    move-result-object v0
 
-    .line 824
-    if-eqz p1, :cond_49
+    .line 816
+    .local v0, "config":Landroid/hardware/soundtrigger/SoundTrigger$RecognitionConfig;
+    if-eqz v0, :cond_49
 
-    .line 826
-    iget-boolean p1, p1, Landroid/hardware/soundtrigger/SoundTrigger$RecognitionConfig;->allowMultipleTriggers:Z
+    .line 818
+    iget-boolean v4, v0, Landroid/hardware/soundtrigger/SoundTrigger$RecognitionConfig;->allowMultipleTriggers:Z
 
-    invoke-virtual {v3, p1}, Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;->setRequested(Z)V
+    invoke-virtual {v3, v4}, Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;->setRequested(Z)V
 
-    .line 829
+    .line 821
     :cond_49
     invoke-virtual {v3}, Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;->isRequested()Z
 
-    move-result p1
+    move-result v4
 
-    if-eqz p1, :cond_56
+    if-eqz v4, :cond_56
 
-    .line 830
+    .line 822
     invoke-direct {p0}, Lcom/android/server/soundtrigger/SoundTriggerHelper;->isRecognitionAllowed()Z
 
-    move-result p1
+    move-result v4
 
-    invoke-direct {p0, v3, p1, v2}, Lcom/android/server/soundtrigger/SoundTriggerHelper;->updateRecognitionLocked(Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;ZZ)I
+    invoke-direct {p0, v3, v4, v2}, Lcom/android/server/soundtrigger/SoundTriggerHelper;->updateRecognitionLocked(Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;ZZ)I
 
-    .line 832
+    .line 824
     :cond_56
     return-void
 
-    .line 816
+    .line 808
+    .end local v0  # "config":Landroid/hardware/soundtrigger/SoundTrigger$RecognitionConfig;
     :catch_57
-    move-exception p1
+    move-exception v0
 
-    .line 817
-    invoke-direct {p0, v3, p1}, Lcom/android/server/soundtrigger/SoundTriggerHelper;->forceStopAndUnloadModelLocked(Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;Ljava/lang/Exception;)V
+    .line 809
+    .local v0, "e":Landroid/os/DeadObjectException;
+    invoke-direct {p0, v3, v0}, Lcom/android/server/soundtrigger/SoundTriggerHelper;->forceStopAndUnloadModelLocked(Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;Ljava/lang/Exception;)V
 
-    .line 818
+    .line 810
     return-void
 
-    .line 803
+    .line 795
+    .end local v0  # "e":Landroid/os/DeadObjectException;
     :cond_5c
     :goto_5c
-    new-instance p1, Ljava/lang/StringBuilder;
+    new-instance v2, Ljava/lang/StringBuilder;
 
-    invoke-direct {p1}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v2, "Keyphase model data does not exist for ID:"
+    const-string v4, "Keyphase model data does not exist for ID:"
 
-    invoke-virtual {p1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p1, v1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v2
 
-    invoke-static {v0, p1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v0, v2}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 804
+    .line 796
     return-void
 .end method
 
 .method private onPowerSaveModeChangedLocked(Z)V
     .registers 3
+    .param p1, "isPowerSaveMode"  # Z
 
-    .line 735
+    .line 727
     iget-boolean v0, p0, Lcom/android/server/soundtrigger/SoundTriggerHelper;->mIsPowerSaveMode:Z
 
     if-ne v0, p1, :cond_5
 
-    .line 736
+    .line 728
     return-void
 
-    .line 738
+    .line 730
     :cond_5
     iput-boolean p1, p0, Lcom/android/server/soundtrigger/SoundTriggerHelper;->mIsPowerSaveMode:Z
 
-    .line 739
-    const/4 p1, 0x1
+    .line 731
+    const/4 v0, 0x1
 
-    invoke-direct {p0, p1}, Lcom/android/server/soundtrigger/SoundTriggerHelper;->updateAllRecognitionsLocked(Z)V
+    invoke-direct {p0, v0}, Lcom/android/server/soundtrigger/SoundTriggerHelper;->updateAllRecognitionsLocked(Z)V
 
-    .line 740
+    .line 732
     return-void
 .end method
 
 .method private onRecognitionAbortLocked(Landroid/hardware/soundtrigger/SoundTrigger$RecognitionEvent;)V
     .registers 6
+    .param p1, "event"  # Landroid/hardware/soundtrigger/SoundTrigger$RecognitionEvent;
 
-    .line 755
+    .line 747
     const-string v0, "SoundTriggerHelper"
 
     const-string v1, "Recognition aborted"
 
     invoke-static {v0, v1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 756
+    .line 748
     iget-object v1, p0, Lcom/android/server/soundtrigger/SoundTriggerHelper;->mContext:Landroid/content/Context;
 
     const-string/jumbo v2, "sth_recognition_aborted"
@@ -1631,57 +1627,62 @@
 
     invoke-static {v1, v2, v3}, Lcom/android/internal/logging/MetricsLogger;->count(Landroid/content/Context;Ljava/lang/String;I)V
 
-    .line 757
-    iget p1, p1, Landroid/hardware/soundtrigger/SoundTrigger$RecognitionEvent;->soundModelHandle:I
+    .line 749
+    iget v1, p1, Landroid/hardware/soundtrigger/SoundTrigger$RecognitionEvent;->soundModelHandle:I
 
-    invoke-direct {p0, p1}, Lcom/android/server/soundtrigger/SoundTriggerHelper;->getModelDataForLocked(I)Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;
-
-    move-result-object p1
-
-    .line 758
-    if-eqz p1, :cond_34
-
-    invoke-virtual {p1}, Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;->isModelStarted()Z
-
-    move-result v1
-
-    if-eqz v1, :cond_34
-
-    .line 759
-    invoke-virtual {p1}, Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;->setStopped()V
-
-    .line 761
-    :try_start_21
-    invoke-virtual {p1}, Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;->getCallback()Landroid/hardware/soundtrigger/IRecognitionStatusCallback;
+    invoke-direct {p0, v1}, Lcom/android/server/soundtrigger/SoundTriggerHelper;->getModelDataForLocked(I)Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;
 
     move-result-object v1
 
-    invoke-interface {v1}, Landroid/hardware/soundtrigger/IRecognitionStatusCallback;->onRecognitionPaused()V
+    .line 750
+    .local v1, "modelData":Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;
+    if-eqz v1, :cond_34
+
+    invoke-virtual {v1}, Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;->isModelStarted()Z
+
+    move-result v2
+
+    if-eqz v2, :cond_34
+
+    .line 751
+    invoke-virtual {v1}, Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;->setStopped()V
+
+    .line 753
+    :try_start_21
+    invoke-virtual {v1}, Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;->getCallback()Landroid/hardware/soundtrigger/IRecognitionStatusCallback;
+
+    move-result-object v2
+
+    invoke-interface {v2}, Landroid/hardware/soundtrigger/IRecognitionStatusCallback;->onRecognitionPaused()V
     :try_end_28
     .catch Landroid/os/DeadObjectException; {:try_start_21 .. :try_end_28} :catch_30
     .catch Landroid/os/RemoteException; {:try_start_21 .. :try_end_28} :catch_29
 
     goto :goto_34
 
-    .line 764
+    .line 756
     :catch_29
-    move-exception p1
+    move-exception v2
 
-    .line 765
-    const-string v1, "RemoteException in onRecognitionPaused"
+    .line 757
+    .local v2, "e":Landroid/os/RemoteException;
+    const-string v3, "RemoteException in onRecognitionPaused"
 
-    invoke-static {v0, v1, p1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    invoke-static {v0, v3, v2}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
     goto :goto_34
 
-    .line 762
+    .line 754
+    .end local v2  # "e":Landroid/os/RemoteException;
     :catch_30
     move-exception v0
 
-    .line 763
-    invoke-direct {p0, p1, v0}, Lcom/android/server/soundtrigger/SoundTriggerHelper;->forceStopAndUnloadModelLocked(Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;Ljava/lang/Exception;)V
+    .line 755
+    .local v0, "e":Landroid/os/DeadObjectException;
+    invoke-direct {p0, v1, v0}, Lcom/android/server/soundtrigger/SoundTriggerHelper;->forceStopAndUnloadModelLocked(Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;Ljava/lang/Exception;)V
 
-    .line 768
+    .line 760
+    .end local v0  # "e":Landroid/os/DeadObjectException;
     :cond_34
     :goto_34
     return-void
@@ -1690,14 +1691,14 @@
 .method private onRecognitionFailureLocked()V
     .registers 4
 
-    .line 771
+    .line 763
     const-string v0, "SoundTriggerHelper"
 
     const-string v1, "Recognition failure"
 
     invoke-static {v0, v1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 772
+    .line 764
     iget-object v0, p0, Lcom/android/server/soundtrigger/SoundTriggerHelper;->mContext:Landroid/content/Context;
 
     const-string/jumbo v1, "sth_recognition_failure_event"
@@ -1706,7 +1707,7 @@
 
     invoke-static {v0, v1, v2}, Lcom/android/internal/logging/MetricsLogger;->count(Landroid/content/Context;Ljava/lang/String;I)V
 
-    .line 774
+    .line 766
     const/high16 v0, -0x80000000
 
     :try_start_12
@@ -1714,25 +1715,25 @@
     :try_end_15
     .catchall {:try_start_12 .. :try_end_15} :catchall_1d
 
-    .line 776
+    .line 768
     invoke-direct {p0}, Lcom/android/server/soundtrigger/SoundTriggerHelper;->internalClearModelStateLocked()V
 
-    .line 777
+    .line 769
     invoke-direct {p0}, Lcom/android/server/soundtrigger/SoundTriggerHelper;->internalClearGlobalStateLocked()V
 
-    .line 778
+    .line 770
     nop
 
-    .line 779
+    .line 771
     return-void
 
-    .line 776
+    .line 768
     :catchall_1d
     move-exception v0
 
     invoke-direct {p0}, Lcom/android/server/soundtrigger/SoundTriggerHelper;->internalClearModelStateLocked()V
 
-    .line 777
+    .line 769
     invoke-direct {p0}, Lcom/android/server/soundtrigger/SoundTriggerHelper;->internalClearGlobalStateLocked()V
 
     throw v0
@@ -1741,7 +1742,7 @@
 .method private onServiceDiedLocked()V
     .registers 5
 
-    .line 859
+    .line 851
     const/4 v0, 0x0
 
     :try_start_1
@@ -1753,52 +1754,52 @@
 
     invoke-static {v1, v2, v3}, Lcom/android/internal/logging/MetricsLogger;->count(Landroid/content/Context;Ljava/lang/String;I)V
 
-    .line 860
+    .line 852
     sget v1, Landroid/hardware/soundtrigger/SoundTrigger;->STATUS_DEAD_OBJECT:I
 
     invoke-direct {p0, v1}, Lcom/android/server/soundtrigger/SoundTriggerHelper;->sendErrorCallbacksToAllLocked(I)V
     :try_end_f
     .catchall {:try_start_1 .. :try_end_f} :catchall_1f
 
-    .line 862
+    .line 854
     invoke-direct {p0}, Lcom/android/server/soundtrigger/SoundTriggerHelper;->internalClearModelStateLocked()V
 
-    .line 863
+    .line 855
     invoke-direct {p0}, Lcom/android/server/soundtrigger/SoundTriggerHelper;->internalClearGlobalStateLocked()V
 
-    .line 864
+    .line 856
     iget-object v1, p0, Lcom/android/server/soundtrigger/SoundTriggerHelper;->mModule:Landroid/hardware/soundtrigger/SoundTriggerModule;
 
     if-eqz v1, :cond_1e
 
-    .line 865
+    .line 857
     invoke-virtual {v1}, Landroid/hardware/soundtrigger/SoundTriggerModule;->detach()V
 
-    .line 866
+    .line 858
     iput-object v0, p0, Lcom/android/server/soundtrigger/SoundTriggerHelper;->mModule:Landroid/hardware/soundtrigger/SoundTriggerModule;
 
-    .line 869
+    .line 861
     :cond_1e
     return-void
 
-    .line 862
+    .line 854
     :catchall_1f
     move-exception v1
 
     invoke-direct {p0}, Lcom/android/server/soundtrigger/SoundTriggerHelper;->internalClearModelStateLocked()V
 
-    .line 863
+    .line 855
     invoke-direct {p0}, Lcom/android/server/soundtrigger/SoundTriggerHelper;->internalClearGlobalStateLocked()V
 
-    .line 864
+    .line 856
     iget-object v2, p0, Lcom/android/server/soundtrigger/SoundTriggerHelper;->mModule:Landroid/hardware/soundtrigger/SoundTriggerModule;
 
     if-eqz v2, :cond_2f
 
-    .line 865
+    .line 857
     invoke-virtual {v2}, Landroid/hardware/soundtrigger/SoundTriggerModule;->detach()V
 
-    .line 866
+    .line 858
     iput-object v0, p0, Lcom/android/server/soundtrigger/SoundTriggerHelper;->mModule:Landroid/hardware/soundtrigger/SoundTriggerModule;
 
     :cond_2f
@@ -1807,39 +1808,42 @@
 
 .method private onServiceStateChangedLocked(Z)V
     .registers 3
+    .param p1, "disabled"  # Z
 
-    .line 747
+    .line 739
     iget-boolean v0, p0, Lcom/android/server/soundtrigger/SoundTriggerHelper;->mServiceDisabled:Z
 
     if-ne p1, v0, :cond_5
 
-    .line 748
+    .line 740
     return-void
 
-    .line 750
+    .line 742
     :cond_5
     iput-boolean p1, p0, Lcom/android/server/soundtrigger/SoundTriggerHelper;->mServiceDisabled:Z
 
-    .line 751
-    const/4 p1, 0x1
+    .line 743
+    const/4 v0, 0x1
 
-    invoke-direct {p0, p1}, Lcom/android/server/soundtrigger/SoundTriggerHelper;->updateAllRecognitionsLocked(Z)V
-
-    .line 752
-    return-void
-.end method
-
-.method private onSoundModelUpdatedLocked(Landroid/hardware/soundtrigger/SoundTrigger$SoundModelEvent;)V
-    .registers 2
+    invoke-direct {p0, v0}, Lcom/android/server/soundtrigger/SoundTriggerHelper;->updateAllRecognitionsLocked(Z)V
 
     .line 744
     return-void
 .end method
 
-.method private removeKeyphraseModelLocked(I)V
-    .registers 4
+.method private onSoundModelUpdatedLocked(Landroid/hardware/soundtrigger/SoundTrigger$SoundModelEvent;)V
+    .registers 2
+    .param p1, "event"  # Landroid/hardware/soundtrigger/SoundTrigger$SoundModelEvent;
 
-    .line 1066
+    .line 736
+    return-void
+.end method
+
+.method private removeKeyphraseModelLocked(I)V
+    .registers 5
+    .param p1, "keyphraseId"  # I
+
+    .line 1049
     iget-object v0, p0, Lcom/android/server/soundtrigger/SoundTriggerHelper;->mKeyphraseUuidMap:Ljava/util/HashMap;
 
     invoke-static {p1}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
@@ -1852,35 +1856,37 @@
 
     check-cast v0, Ljava/util/UUID;
 
-    .line 1067
+    .line 1050
+    .local v0, "uuid":Ljava/util/UUID;
     if-nez v0, :cond_f
 
-    .line 1068
+    .line 1051
     return-void
 
-    .line 1070
+    .line 1053
     :cond_f
     iget-object v1, p0, Lcom/android/server/soundtrigger/SoundTriggerHelper;->mModelDataMap:Ljava/util/HashMap;
 
     invoke-virtual {v1, v0}, Ljava/util/HashMap;->remove(Ljava/lang/Object;)Ljava/lang/Object;
 
-    .line 1071
-    iget-object v0, p0, Lcom/android/server/soundtrigger/SoundTriggerHelper;->mKeyphraseUuidMap:Ljava/util/HashMap;
+    .line 1054
+    iget-object v1, p0, Lcom/android/server/soundtrigger/SoundTriggerHelper;->mKeyphraseUuidMap:Ljava/util/HashMap;
 
     invoke-static {p1}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
 
-    move-result-object p1
+    move-result-object v2
 
-    invoke-virtual {v0, p1}, Ljava/util/HashMap;->remove(Ljava/lang/Object;)Ljava/lang/Object;
+    invoke-virtual {v1, v2}, Ljava/util/HashMap;->remove(Ljava/lang/Object;)Ljava/lang/Object;
 
-    .line 1072
+    .line 1055
     return-void
 .end method
 
 .method private sendErrorCallbacksToAllLocked(I)V
-    .registers 7
+    .registers 8
+    .param p1, "errorCode"  # I
 
-    .line 962
+    .line 948
     iget-object v0, p0, Lcom/android/server/soundtrigger/SoundTriggerHelper;->mModelDataMap:Ljava/util/HashMap;
 
     invoke-virtual {v0}, Ljava/util/HashMap;->values()Ljava/util/Collection;
@@ -1904,271 +1910,285 @@
 
     check-cast v1, Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;
 
-    .line 963
+    .line 949
+    .local v1, "modelData":Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;
     invoke-virtual {v1}, Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;->getCallback()Landroid/hardware/soundtrigger/IRecognitionStatusCallback;
 
     move-result-object v2
 
-    .line 964
+    .line 950
+    .local v2, "callback":Landroid/hardware/soundtrigger/IRecognitionStatusCallback;
     if-eqz v2, :cond_3b
 
-    .line 966
+    .line 952
     :try_start_1c
     invoke-interface {v2, p1}, Landroid/hardware/soundtrigger/IRecognitionStatusCallback;->onError(I)V
     :try_end_1f
     .catch Landroid/os/RemoteException; {:try_start_1c .. :try_end_1f} :catch_20
 
-    .line 970
+    .line 956
     goto :goto_3b
 
-    .line 967
+    .line 953
     :catch_20
-    move-exception v2
+    move-exception v3
 
-    .line 968
-    new-instance v3, Ljava/lang/StringBuilder;
+    .line 954
+    .local v3, "e":Landroid/os/RemoteException;
+    new-instance v4, Ljava/lang/StringBuilder;
 
-    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v4}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v4, "RemoteException sendErrorCallbacksToAllLocked for model handle "
+    const-string v5, "RemoteException sendErrorCallbacksToAllLocked for model handle "
 
-    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    .line 969
+    .line 955
     invoke-virtual {v1}, Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;->getHandle()I
 
-    move-result v1
+    move-result v5
 
-    invoke-virtual {v3, v1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v4}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v1
+    move-result-object v4
 
-    .line 968
-    const-string v3, "SoundTriggerHelper"
+    .line 954
+    const-string v5, "SoundTriggerHelper"
 
-    invoke-static {v3, v1, v2}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    invoke-static {v5, v4, v3}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
-    .line 972
+    .line 958
+    .end local v1  # "modelData":Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;
+    .end local v2  # "callback":Landroid/hardware/soundtrigger/IRecognitionStatusCallback;
+    .end local v3  # "e":Landroid/os/RemoteException;
     :cond_3b
     :goto_3b
     goto :goto_a
 
-    .line 973
+    .line 959
     :cond_3c
     return-void
 .end method
 
 .method private startRecognitionLocked(Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;Z)I
-    .registers 11
+    .registers 12
+    .param p1, "modelData"  # Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;
+    .param p2, "notify"  # Z
 
-    .line 1123
+    .line 1099
     invoke-virtual {p1}, Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;->getCallback()Landroid/hardware/soundtrigger/IRecognitionStatusCallback;
 
     move-result-object v0
 
-    .line 1124
+    .line 1100
+    .local v0, "callback":Landroid/hardware/soundtrigger/IRecognitionStatusCallback;
     invoke-virtual {p1}, Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;->getHandle()I
 
     move-result v1
 
-    .line 1125
+    .line 1101
+    .local v1, "handle":I
     invoke-virtual {p1}, Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;->getRecognitionConfig()Landroid/hardware/soundtrigger/SoundTrigger$RecognitionConfig;
 
     move-result-object v2
 
-    .line 1126
-    const-string/jumbo v3, "sth_start_recognition_error"
+    .line 1102
+    .local v2, "config":Landroid/hardware/soundtrigger/SoundTrigger$RecognitionConfig;
+    const/high16 v3, -0x80000000
 
-    const/high16 v4, -0x80000000
+    const-string/jumbo v4, "sth_start_recognition_error"
 
     const/4 v5, 0x1
 
     const-string v6, "SoundTriggerHelper"
 
-    if-eqz v0, :cond_8d
+    if-eqz v0, :cond_89
 
-    if-eq v1, v4, :cond_8d
+    if-eq v1, v3, :cond_89
 
-    if-nez v2, :cond_1c
+    if-nez v2, :cond_1b
 
-    goto/16 :goto_8d
+    goto :goto_89
 
-    .line 1133
-    :cond_1c
+    .line 1109
+    :cond_1b
     invoke-direct {p0}, Lcom/android/server/soundtrigger/SoundTriggerHelper;->isRecognitionAllowed()Z
 
-    move-result v7
+    move-result v3
 
-    if-nez v7, :cond_32
+    if-nez v3, :cond_31
 
-    .line 1135
-    const-string/jumbo p1, "startRecognition requested but not allowed."
+    .line 1111
+    const-string/jumbo v3, "startRecognition requested but not allowed."
 
-    invoke-static {v6, p1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v6, v3}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 1136
-    iget-object p1, p0, Lcom/android/server/soundtrigger/SoundTriggerHelper;->mContext:Landroid/content/Context;
+    .line 1112
+    iget-object v3, p0, Lcom/android/server/soundtrigger/SoundTriggerHelper;->mContext:Landroid/content/Context;
 
-    const-string/jumbo p2, "sth_start_recognition_not_allowed"
+    const-string/jumbo v4, "sth_start_recognition_not_allowed"
 
-    invoke-static {p1, p2, v5}, Lcom/android/internal/logging/MetricsLogger;->count(Landroid/content/Context;Ljava/lang/String;I)V
+    invoke-static {v3, v4, v5}, Lcom/android/internal/logging/MetricsLogger;->count(Landroid/content/Context;Ljava/lang/String;I)V
 
-    .line 1137
-    const/4 p1, 0x0
+    .line 1113
+    const/4 v3, 0x0
 
-    return p1
+    return v3
 
-    .line 1140
-    :cond_32
-    iget-object v7, p0, Lcom/android/server/soundtrigger/SoundTriggerHelper;->mModule:Landroid/hardware/soundtrigger/SoundTriggerModule;
+    .line 1116
+    :cond_31
+    iget-object v3, p0, Lcom/android/server/soundtrigger/SoundTriggerHelper;->mModule:Landroid/hardware/soundtrigger/SoundTriggerModule;
 
-    if-nez v7, :cond_37
+    invoke-virtual {v3, v1, v2}, Landroid/hardware/soundtrigger/SoundTriggerModule;->startRecognition(ILandroid/hardware/soundtrigger/SoundTrigger$RecognitionConfig;)I
 
-    .line 1141
-    return v4
+    move-result v3
 
-    .line 1143
-    :cond_37
-    invoke-virtual {v7, v1, v2}, Landroid/hardware/soundtrigger/SoundTriggerModule;->startRecognition(ILandroid/hardware/soundtrigger/SoundTrigger$RecognitionConfig;)I
+    .line 1117
+    .local v3, "status":I
+    if-eqz v3, :cond_65
 
-    move-result v1
+    .line 1118
+    new-instance v7, Ljava/lang/StringBuilder;
 
-    .line 1144
-    if-eqz v1, :cond_69
+    invoke-direct {v7}, Ljava/lang/StringBuilder;-><init>()V
 
-    .line 1145
-    new-instance v2, Ljava/lang/StringBuilder;
+    const-string/jumbo v8, "startRecognition failed with "
 
-    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-virtual {v7, v8}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string/jumbo v4, "startRecognition failed with "
+    invoke-virtual {v7, v3}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v2, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v7}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    invoke-virtual {v2, v1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    move-result-object v7
 
-    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-static {v6, v7}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
-    move-result-object v2
+    .line 1119
+    iget-object v7, p0, Lcom/android/server/soundtrigger/SoundTriggerHelper;->mContext:Landroid/content/Context;
 
-    invoke-static {v6, v2}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v7, v4, v5}, Lcom/android/internal/logging/MetricsLogger;->count(Landroid/content/Context;Ljava/lang/String;I)V
 
-    .line 1146
-    iget-object v2, p0, Lcom/android/server/soundtrigger/SoundTriggerHelper;->mContext:Landroid/content/Context;
+    .line 1121
+    if-eqz p2, :cond_88
 
-    invoke-static {v2, v3, v5}, Lcom/android/internal/logging/MetricsLogger;->count(Landroid/content/Context;Ljava/lang/String;I)V
-
-    .line 1148
-    if-eqz p2, :cond_8c
-
-    .line 1150
-    :try_start_59
-    invoke-interface {v0, v1}, Landroid/hardware/soundtrigger/IRecognitionStatusCallback;->onError(I)V
-    :try_end_5c
-    .catch Landroid/os/DeadObjectException; {:try_start_59 .. :try_end_5c} :catch_64
-    .catch Landroid/os/RemoteException; {:try_start_59 .. :try_end_5c} :catch_5d
-
-    .line 1155
-    :goto_5c
-    goto :goto_8c
-
-    .line 1153
-    :catch_5d
-    move-exception p1
-
-    .line 1154
-    const-string p2, "RemoteException in onError"
-
-    invoke-static {v6, p2, p1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
-
-    goto :goto_5c
-
-    .line 1151
-    :catch_64
-    move-exception p2
-
-    .line 1152
-    invoke-direct {p0, p1, p2}, Lcom/android/server/soundtrigger/SoundTriggerHelper;->forceStopAndUnloadModelLocked(Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;Ljava/lang/Exception;)V
-
-    goto :goto_5c
-
-    .line 1158
-    :cond_69
-    const-string/jumbo v2, "startRecognition successful."
-
-    invoke-static {v6, v2}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
-
-    .line 1159
-    iget-object v2, p0, Lcom/android/server/soundtrigger/SoundTriggerHelper;->mContext:Landroid/content/Context;
-
-    const-string/jumbo v3, "sth_start_recognition_success"
-
-    invoke-static {v2, v3, v5}, Lcom/android/internal/logging/MetricsLogger;->count(Landroid/content/Context;Ljava/lang/String;I)V
-
-    .line 1160
-    invoke-virtual {p1}, Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;->setStarted()V
-
-    .line 1162
-    if-eqz p2, :cond_8c
-
-    .line 1164
-    :try_start_7c
-    invoke-interface {v0}, Landroid/hardware/soundtrigger/IRecognitionStatusCallback;->onRecognitionResumed()V
-    :try_end_7f
-    .catch Landroid/os/DeadObjectException; {:try_start_7c .. :try_end_7f} :catch_87
-    .catch Landroid/os/RemoteException; {:try_start_7c .. :try_end_7f} :catch_80
-
-    .line 1169
-    :goto_7f
-    goto :goto_8c
-
-    .line 1167
-    :catch_80
-    move-exception p1
-
-    .line 1168
-    const-string p2, "RemoteException in onRecognitionResumed"
-
-    invoke-static {v6, p2, p1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
-
-    goto :goto_8c
-
-    .line 1165
-    :catch_87
-    move-exception p2
-
-    .line 1166
-    invoke-direct {p0, p1, p2}, Lcom/android/server/soundtrigger/SoundTriggerHelper;->forceStopAndUnloadModelLocked(Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;Ljava/lang/Exception;)V
-
-    goto :goto_7f
-
-    .line 1175
-    :cond_8c
-    :goto_8c
-    return v1
+    .line 1123
+    :try_start_55
+    invoke-interface {v0, v3}, Landroid/hardware/soundtrigger/IRecognitionStatusCallback;->onError(I)V
+    :try_end_58
+    .catch Landroid/os/DeadObjectException; {:try_start_55 .. :try_end_58} :catch_60
+    .catch Landroid/os/RemoteException; {:try_start_55 .. :try_end_58} :catch_59
 
     .line 1128
-    :cond_8d
-    :goto_8d
-    const-string/jumbo p1, "startRecognition: Bad data passed in."
+    :goto_58
+    goto :goto_88
 
-    invoke-static {v6, p1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    .line 1126
+    :catch_59
+    move-exception v4
 
-    .line 1129
-    iget-object p1, p0, Lcom/android/server/soundtrigger/SoundTriggerHelper;->mContext:Landroid/content/Context;
+    .line 1127
+    .local v4, "e":Landroid/os/RemoteException;
+    const-string v5, "RemoteException in onError"
 
-    invoke-static {p1, v3, v5}, Lcom/android/internal/logging/MetricsLogger;->count(Landroid/content/Context;Ljava/lang/String;I)V
+    invoke-static {v6, v5, v4}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
-    .line 1130
-    return v4
+    .end local v4  # "e":Landroid/os/RemoteException;
+    goto :goto_58
+
+    .line 1124
+    :catch_60
+    move-exception v4
+
+    .line 1125
+    .local v4, "e":Landroid/os/DeadObjectException;
+    invoke-direct {p0, p1, v4}, Lcom/android/server/soundtrigger/SoundTriggerHelper;->forceStopAndUnloadModelLocked(Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;Ljava/lang/Exception;)V
+
+    .end local v4  # "e":Landroid/os/DeadObjectException;
+    goto :goto_58
+
+    .line 1131
+    :cond_65
+    const-string/jumbo v4, "startRecognition successful."
+
+    invoke-static {v6, v4}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
+
+    .line 1132
+    iget-object v4, p0, Lcom/android/server/soundtrigger/SoundTriggerHelper;->mContext:Landroid/content/Context;
+
+    const-string/jumbo v7, "sth_start_recognition_success"
+
+    invoke-static {v4, v7, v5}, Lcom/android/internal/logging/MetricsLogger;->count(Landroid/content/Context;Ljava/lang/String;I)V
+
+    .line 1133
+    invoke-virtual {p1}, Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;->setStarted()V
+
+    .line 1135
+    if-eqz p2, :cond_88
+
+    .line 1137
+    :try_start_78
+    invoke-interface {v0}, Landroid/hardware/soundtrigger/IRecognitionStatusCallback;->onRecognitionResumed()V
+    :try_end_7b
+    .catch Landroid/os/DeadObjectException; {:try_start_78 .. :try_end_7b} :catch_83
+    .catch Landroid/os/RemoteException; {:try_start_78 .. :try_end_7b} :catch_7c
+
+    .line 1142
+    :goto_7b
+    goto :goto_88
+
+    .line 1140
+    :catch_7c
+    move-exception v4
+
+    .line 1141
+    .local v4, "e":Landroid/os/RemoteException;
+    const-string v5, "RemoteException in onRecognitionResumed"
+
+    invoke-static {v6, v5, v4}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+
+    goto :goto_88
+
+    .line 1138
+    .end local v4  # "e":Landroid/os/RemoteException;
+    :catch_83
+    move-exception v4
+
+    .line 1139
+    .local v4, "e":Landroid/os/DeadObjectException;
+    invoke-direct {p0, p1, v4}, Lcom/android/server/soundtrigger/SoundTriggerHelper;->forceStopAndUnloadModelLocked(Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;Ljava/lang/Exception;)V
+
+    .end local v4  # "e":Landroid/os/DeadObjectException;
+    goto :goto_7b
+
+    .line 1148
+    :cond_88
+    :goto_88
+    return v3
+
+    .line 1104
+    .end local v3  # "status":I
+    :cond_89
+    :goto_89
+    const-string/jumbo v7, "startRecognition: Bad data passed in."
+
+    invoke-static {v6, v7}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+
+    .line 1105
+    iget-object v6, p0, Lcom/android/server/soundtrigger/SoundTriggerHelper;->mContext:Landroid/content/Context;
+
+    invoke-static {v6, v4, v5}, Lcom/android/internal/logging/MetricsLogger;->count(Landroid/content/Context;Ljava/lang/String;I)V
+
+    .line 1106
+    return v3
 .end method
 
 .method private stopAndUnloadDeadModelsLocked()V
     .registers 5
 
-    .line 1037
+    .line 1020
     iget-object v0, p0, Lcom/android/server/soundtrigger/SoundTriggerHelper;->mModelDataMap:Ljava/util/HashMap;
 
     invoke-virtual {v0}, Ljava/util/HashMap;->entrySet()Ljava/util/Set;
@@ -2179,7 +2199,8 @@
 
     move-result-object v0
 
-    .line 1038
+    .line 1021
+    .local v0, "it":Ljava/util/Iterator;
     :goto_a
     invoke-interface {v0}, Ljava/util/Iterator;->hasNext()Z
 
@@ -2187,7 +2208,7 @@
 
     if-eqz v1, :cond_65
 
-    .line 1039
+    .line 1022
     invoke-interface {v0}, Ljava/util/Iterator;->next()Ljava/lang/Object;
 
     move-result-object v1
@@ -2200,17 +2221,18 @@
 
     check-cast v1, Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;
 
-    .line 1040
+    .line 1023
+    .local v1, "modelData":Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;
     invoke-virtual {v1}, Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;->isModelLoaded()Z
 
     move-result v2
 
     if-nez v2, :cond_23
 
-    .line 1041
+    .line 1024
     goto :goto_a
 
-    .line 1043
+    .line 1026
     :cond_23
     invoke-virtual {v1}, Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;->getCallback()Landroid/hardware/soundtrigger/IRecognitionStatusCallback;
 
@@ -2218,7 +2240,7 @@
 
     if-eqz v2, :cond_41
 
-    .line 1044
+    .line 1027
     invoke-virtual {v1}, Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;->getCallback()Landroid/hardware/soundtrigger/IRecognitionStatusCallback;
 
     move-result-object v2
@@ -2229,7 +2251,7 @@
 
     if-eqz v2, :cond_64
 
-    .line 1045
+    .line 1028
     invoke-virtual {v1}, Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;->getCallback()Landroid/hardware/soundtrigger/IRecognitionStatusCallback;
 
     move-result-object v2
@@ -2244,7 +2266,7 @@
 
     if-nez v2, :cond_64
 
-    .line 1047
+    .line 1030
     :cond_41
     new-instance v2, Ljava/lang/StringBuilder;
 
@@ -2272,40 +2294,43 @@
 
     invoke-static {v3, v2}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 1048
+    .line 1031
     const/4 v2, 0x0
 
     invoke-direct {p0, v1, v2, v0}, Lcom/android/server/soundtrigger/SoundTriggerHelper;->forceStopAndUnloadModelLocked(Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;Ljava/lang/Exception;Ljava/util/Iterator;)V
 
-    .line 1050
+    .line 1033
+    .end local v1  # "modelData":Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;
     :cond_64
     goto :goto_a
 
-    .line 1051
+    .line 1034
     :cond_65
     return-void
 .end method
 
 .method private stopRecognition(Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;Landroid/hardware/soundtrigger/IRecognitionStatusCallback;)I
-    .registers 7
+    .registers 8
+    .param p1, "modelData"  # Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;
+    .param p2, "callback"  # Landroid/hardware/soundtrigger/IRecognitionStatusCallback;
 
-    .line 417
+    .line 415
     iget-object v0, p0, Lcom/android/server/soundtrigger/SoundTriggerHelper;->mLock:Ljava/lang/Object;
 
     monitor-enter v0
 
-    .line 418
+    .line 416
     const/high16 v1, -0x80000000
 
     if-nez p2, :cond_9
 
-    .line 419
+    .line 417
     :try_start_7
     monitor-exit v0
 
     return v1
 
-    .line 421
+    .line 419
     :cond_9
     iget-object v2, p0, Lcom/android/server/soundtrigger/SoundTriggerHelper;->mModuleProperties:Landroid/hardware/soundtrigger/SoundTrigger$ModuleProperties;
 
@@ -2317,16 +2342,17 @@
 
     goto :goto_66
 
-    .line 426
+    .line 424
     :cond_12
     invoke-virtual {p1}, Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;->getCallback()Landroid/hardware/soundtrigger/IRecognitionStatusCallback;
 
     move-result-object v2
 
-    .line 427
+    .line 425
+    .local v2, "currentCallback":Landroid/hardware/soundtrigger/IRecognitionStatusCallback;
     if-eqz v2, :cond_5d
 
-    .line 428
+    .line 426
     invoke-virtual {p1}, Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;->isRequested()Z
 
     move-result v3
@@ -2341,161 +2367,157 @@
 
     goto :goto_5d
 
-    .line 434
+    .line 432
     :cond_25
     invoke-interface {v2}, Landroid/hardware/soundtrigger/IRecognitionStatusCallback;->asBinder()Landroid/os/IBinder;
 
-    move-result-object v2
+    move-result-object v3
 
     invoke-interface {p2}, Landroid/hardware/soundtrigger/IRecognitionStatusCallback;->asBinder()Landroid/os/IBinder;
 
-    move-result-object p2
+    move-result-object v4
 
-    if-eq v2, p2, :cond_38
+    if-eq v3, v4, :cond_38
 
-    .line 437
-    const-string p1, "SoundTriggerHelper"
+    .line 435
+    const-string v3, "SoundTriggerHelper"
 
-    const-string p2, "Attempting stopRecognition for another recognition"
+    const-string v4, "Attempting stopRecognition for another recognition"
 
-    invoke-static {p1, p2}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v3, v4}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 438
+    .line 436
     monitor-exit v0
 
     return v1
 
-    .line 442
+    .line 440
     :cond_38
-    const/4 p2, 0x0
+    const/4 v1, 0x0
 
-    invoke-virtual {p1, p2}, Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;->setRequested(Z)V
+    invoke-virtual {p1, v1}, Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;->setRequested(Z)V
 
-    .line 443
+    .line 441
     invoke-direct {p0}, Lcom/android/server/soundtrigger/SoundTriggerHelper;->isRecognitionAllowed()Z
+
+    move-result v3
+
+    invoke-direct {p0, p1, v3, v1}, Lcom/android/server/soundtrigger/SoundTriggerHelper;->updateRecognitionLocked(Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;ZZ)I
 
     move-result v1
 
-    invoke-direct {p0, p1, v1, p2}, Lcom/android/server/soundtrigger/SoundTriggerHelper;->updateRecognitionLocked(Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;ZZ)I
+    .line 443
+    .local v1, "status":I
+    if-eqz v1, :cond_48
 
-    move-result p2
-
-    .line 445
-    if-eqz p2, :cond_48
-
-    .line 446
+    .line 444
     monitor-exit v0
 
-    return p2
+    return v1
 
-    .line 451
+    .line 449
     :cond_48
     invoke-virtual {p1}, Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;->setLoaded()V
 
-    .line 452
+    .line 450
     invoke-virtual {p1}, Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;->clearCallback()V
 
+    .line 451
+    const/4 v3, 0x0
+
+    invoke-virtual {p1, v3}, Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;->setRecognitionConfig(Landroid/hardware/soundtrigger/SoundTrigger$RecognitionConfig;)V
+
     .line 453
-    const/4 v1, 0x0
+    invoke-direct {p0}, Lcom/android/server/soundtrigger/SoundTriggerHelper;->computeRecognitionRunningLocked()Z
 
-    invoke-virtual {p1, v1}, Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;->setRecognitionConfig(Landroid/hardware/soundtrigger/SoundTrigger$RecognitionConfig;)V
+    move-result v3
 
-    .line 455
-    invoke-direct {p0}, Lcom/android/server/soundtrigger/SoundTriggerHelper;->computeRecognitionRequestedLocked()Z
+    if-nez v3, :cond_5b
 
-    move-result p1
-
-    if-nez p1, :cond_5b
-
-    .line 456
+    .line 454
     invoke-direct {p0}, Lcom/android/server/soundtrigger/SoundTriggerHelper;->internalClearGlobalStateLocked()V
 
-    .line 459
+    .line 457
     :cond_5b
     monitor-exit v0
 
-    return p2
+    return v1
 
-    .line 430
+    .line 428
+    .end local v1  # "status":I
     :cond_5d
     :goto_5d
-    const-string p1, "SoundTriggerHelper"
+    const-string v3, "SoundTriggerHelper"
 
-    const-string p2, "Attempting stopRecognition without a successful startRecognition"
+    const-string v4, "Attempting stopRecognition without a successful startRecognition"
 
-    invoke-static {p1, p2}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v3, v4}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 431
+    .line 429
     monitor-exit v0
 
     return v1
 
-    .line 422
+    .line 420
+    .end local v2  # "currentCallback":Landroid/hardware/soundtrigger/IRecognitionStatusCallback;
     :cond_66
     :goto_66
-    const-string p1, "SoundTriggerHelper"
+    const-string v2, "SoundTriggerHelper"
 
-    const-string p2, "Attempting stopRecognition without the capability"
+    const-string v3, "Attempting stopRecognition without the capability"
 
-    invoke-static {p1, p2}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v2, v3}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 423
+    .line 421
     monitor-exit v0
 
     return v1
 
-    .line 460
+    .line 458
     :catchall_6f
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_71
     .catchall {:try_start_7 .. :try_end_71} :catchall_6f
 
-    throw p1
+    throw v1
 .end method
 
 .method private stopRecognitionLocked(Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;Z)I
     .registers 9
+    .param p1, "modelData"  # Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;
+    .param p2, "notify"  # Z
 
-    .line 1179
-    iget-object v0, p0, Lcom/android/server/soundtrigger/SoundTriggerHelper;->mModule:Landroid/hardware/soundtrigger/SoundTriggerModule;
-
-    if-nez v0, :cond_7
-
-    .line 1180
-    const/high16 p1, -0x80000000
-
-    return p1
-
-    .line 1183
-    :cond_7
+    .line 1152
     invoke-virtual {p1}, Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;->getCallback()Landroid/hardware/soundtrigger/IRecognitionStatusCallback;
 
     move-result-object v0
 
-    .line 1185
-    nop
+    .line 1155
+    .local v0, "callback":Landroid/hardware/soundtrigger/IRecognitionStatusCallback;
+    const/4 v1, 0x0
 
-    .line 1187
-    iget-object v1, p0, Lcom/android/server/soundtrigger/SoundTriggerHelper;->mModule:Landroid/hardware/soundtrigger/SoundTriggerModule;
+    .line 1157
+    .local v1, "status":I
+    iget-object v2, p0, Lcom/android/server/soundtrigger/SoundTriggerHelper;->mModule:Landroid/hardware/soundtrigger/SoundTriggerModule;
 
     invoke-virtual {p1}, Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;->getHandle()I
 
-    move-result v2
+    move-result v3
 
-    invoke-virtual {v1, v2}, Landroid/hardware/soundtrigger/SoundTriggerModule;->stopRecognition(I)I
+    invoke-virtual {v2, v3}, Landroid/hardware/soundtrigger/SoundTriggerModule;->stopRecognition(I)I
 
     move-result v1
 
-    .line 1189
+    .line 1159
     const/4 v2, 0x1
 
     const-string v3, "SoundTriggerHelper"
 
-    if-eqz v1, :cond_4a
+    if-eqz v1, :cond_43
 
-    .line 1190
+    .line 1160
     new-instance v4, Ljava/lang/StringBuilder;
 
     invoke-direct {v4}, Ljava/lang/StringBuilder;-><init>()V
@@ -2512,241 +2534,246 @@
 
     invoke-static {v3, v4}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 1191
+    .line 1161
     iget-object v4, p0, Lcom/android/server/soundtrigger/SoundTriggerHelper;->mContext:Landroid/content/Context;
 
     const-string/jumbo v5, "sth_stop_recognition_error"
 
     invoke-static {v4, v5, v2}, Lcom/android/internal/logging/MetricsLogger;->count(Landroid/content/Context;Ljava/lang/String;I)V
 
-    .line 1192
-    if-eqz p2, :cond_67
+    .line 1162
+    if-eqz p2, :cond_60
 
-    .line 1194
-    :try_start_3a
+    .line 1164
+    :try_start_33
     invoke-interface {v0, v1}, Landroid/hardware/soundtrigger/IRecognitionStatusCallback;->onError(I)V
-    :try_end_3d
-    .catch Landroid/os/DeadObjectException; {:try_start_3a .. :try_end_3d} :catch_45
-    .catch Landroid/os/RemoteException; {:try_start_3a .. :try_end_3d} :catch_3e
+    :try_end_36
+    .catch Landroid/os/DeadObjectException; {:try_start_33 .. :try_end_36} :catch_3e
+    .catch Landroid/os/RemoteException; {:try_start_33 .. :try_end_36} :catch_37
 
-    .line 1199
-    :goto_3d
-    goto :goto_67
+    .line 1169
+    :goto_36
+    goto :goto_60
 
-    .line 1197
+    .line 1167
+    :catch_37
+    move-exception v2
+
+    .line 1168
+    .local v2, "e":Landroid/os/RemoteException;
+    const-string v4, "RemoteException in onError"
+
+    invoke-static {v3, v4, v2}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+
+    .end local v2  # "e":Landroid/os/RemoteException;
+    goto :goto_36
+
+    .line 1165
     :catch_3e
-    move-exception p1
+    move-exception v2
 
-    .line 1198
-    const-string p2, "RemoteException in onError"
+    .line 1166
+    .local v2, "e":Landroid/os/DeadObjectException;
+    invoke-direct {p0, p1, v2}, Lcom/android/server/soundtrigger/SoundTriggerHelper;->forceStopAndUnloadModelLocked(Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;Ljava/lang/Exception;)V
 
-    invoke-static {v3, p2, p1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    .end local v2  # "e":Landroid/os/DeadObjectException;
+    goto :goto_36
 
-    goto :goto_3d
-
-    .line 1195
-    :catch_45
-    move-exception p2
-
-    .line 1196
-    invoke-direct {p0, p1, p2}, Lcom/android/server/soundtrigger/SoundTriggerHelper;->forceStopAndUnloadModelLocked(Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;Ljava/lang/Exception;)V
-
-    goto :goto_3d
-
-    .line 1202
-    :cond_4a
+    .line 1172
+    :cond_43
     invoke-virtual {p1}, Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;->setStopped()V
 
-    .line 1203
+    .line 1173
     iget-object v4, p0, Lcom/android/server/soundtrigger/SoundTriggerHelper;->mContext:Landroid/content/Context;
 
     const-string/jumbo v5, "sth_stop_recognition_success"
 
     invoke-static {v4, v5, v2}, Lcom/android/internal/logging/MetricsLogger;->count(Landroid/content/Context;Ljava/lang/String;I)V
 
-    .line 1205
-    if-eqz p2, :cond_67
+    .line 1175
+    if-eqz p2, :cond_60
 
-    .line 1207
-    :try_start_57
+    .line 1177
+    :try_start_50
     invoke-interface {v0}, Landroid/hardware/soundtrigger/IRecognitionStatusCallback;->onRecognitionPaused()V
-    :try_end_5a
-    .catch Landroid/os/DeadObjectException; {:try_start_57 .. :try_end_5a} :catch_62
-    .catch Landroid/os/RemoteException; {:try_start_57 .. :try_end_5a} :catch_5b
+    :try_end_53
+    .catch Landroid/os/DeadObjectException; {:try_start_50 .. :try_end_53} :catch_5b
+    .catch Landroid/os/RemoteException; {:try_start_50 .. :try_end_53} :catch_54
 
-    .line 1212
-    :goto_5a
-    goto :goto_67
+    .line 1182
+    :goto_53
+    goto :goto_60
 
-    .line 1210
+    .line 1180
+    :catch_54
+    move-exception v2
+
+    .line 1181
+    .local v2, "e":Landroid/os/RemoteException;
+    const-string v4, "RemoteException in onRecognitionPaused"
+
+    invoke-static {v3, v4, v2}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+
+    goto :goto_60
+
+    .line 1178
+    .end local v2  # "e":Landroid/os/RemoteException;
     :catch_5b
-    move-exception p1
+    move-exception v2
 
-    .line 1211
-    const-string p2, "RemoteException in onRecognitionPaused"
+    .line 1179
+    .local v2, "e":Landroid/os/DeadObjectException;
+    invoke-direct {p0, p1, v2}, Lcom/android/server/soundtrigger/SoundTriggerHelper;->forceStopAndUnloadModelLocked(Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;Ljava/lang/Exception;)V
 
-    invoke-static {v3, p2, p1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    .end local v2  # "e":Landroid/os/DeadObjectException;
+    goto :goto_53
 
-    goto :goto_67
-
-    .line 1208
-    :catch_62
-    move-exception p2
-
-    .line 1209
-    invoke-direct {p0, p1, p2}, Lcom/android/server/soundtrigger/SoundTriggerHelper;->forceStopAndUnloadModelLocked(Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;Ljava/lang/Exception;)V
-
-    goto :goto_5a
-
-    .line 1218
-    :cond_67
-    :goto_67
+    .line 1188
+    :cond_60
+    :goto_60
     return v1
 .end method
 
 .method private tryStopAndUnloadLocked(Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;ZZ)I
-    .registers 7
+    .registers 9
+    .param p1, "modelData"  # Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;
+    .param p2, "stopModel"  # Z
+    .param p3, "unloadModel"  # Z
 
-    .line 468
-    nop
+    .line 466
+    const/4 v0, 0x0
 
-    .line 469
+    .line 467
+    .local v0, "status":I
     invoke-virtual {p1}, Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;->isModelNotLoaded()Z
 
-    move-result v0
+    move-result v1
 
-    const/4 v1, 0x0
+    if-eqz v1, :cond_8
 
-    if-eqz v0, :cond_9
+    .line 468
+    return v0
 
     .line 470
-    return v1
-
-    .line 472
-    :cond_9
-    const-string v0, "SoundTriggerHelper"
+    :cond_8
+    const-string v1, "SoundTriggerHelper"
 
     if-eqz p2, :cond_2f
 
     invoke-virtual {p1}, Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;->isModelStarted()Z
 
-    move-result p2
+    move-result v2
 
-    if-eqz p2, :cond_2f
+    if-eqz v2, :cond_2f
+
+    .line 471
+    const/4 v2, 0x0
+
+    invoke-direct {p0, p1, v2}, Lcom/android/server/soundtrigger/SoundTriggerHelper;->stopRecognitionLocked(Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;Z)I
+
+    move-result v0
 
     .line 473
-    invoke-direct {p0, p1, v1}, Lcom/android/server/soundtrigger/SoundTriggerHelper;->stopRecognitionLocked(Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;Z)I
+    if-eqz v0, :cond_2f
 
-    move-result v1
+    .line 474
+    new-instance v2, Ljava/lang/StringBuilder;
+
+    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
+
+    const-string/jumbo v3, "stopRecognition failed: "
+
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v2, v0}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v2
+
+    invoke-static {v1, v2}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 475
-    if-eqz v1, :cond_2f
+    return v0
 
-    .line 476
-    new-instance p1, Ljava/lang/StringBuilder;
-
-    invoke-direct {p1}, Ljava/lang/StringBuilder;-><init>()V
-
-    const-string/jumbo p2, "stopRecognition failed: "
-
-    invoke-virtual {p1, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {p1, v1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
-
-    invoke-virtual {p1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
-
-    move-result-object p1
-
-    invoke-static {v0, p1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
-
-    .line 477
-    return v1
-
-    .line 481
+    .line 479
     :cond_2f
-    if-eqz p3, :cond_6f
+    if-eqz p3, :cond_6a
 
     invoke-virtual {p1}, Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;->isModelLoaded()Z
 
-    move-result p2
+    move-result v2
 
-    if-eqz p2, :cond_6f
+    if-eqz v2, :cond_6a
 
-    .line 482
-    const-string p2, "Unloading previously loaded stale model."
+    .line 480
+    const-string v2, "Unloading previously loaded stale model."
 
-    invoke-static {v0, p2}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v2}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 483
-    iget-object p2, p0, Lcom/android/server/soundtrigger/SoundTriggerHelper;->mModule:Landroid/hardware/soundtrigger/SoundTriggerModule;
+    .line 481
+    iget-object v2, p0, Lcom/android/server/soundtrigger/SoundTriggerHelper;->mModule:Landroid/hardware/soundtrigger/SoundTriggerModule;
 
-    if-nez p2, :cond_43
-
-    .line 484
-    const/high16 p1, -0x80000000
-
-    return p1
-
-    .line 486
-    :cond_43
     invoke-virtual {p1}, Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;->getHandle()I
 
-    move-result p3
+    move-result v3
 
-    invoke-virtual {p2, p3}, Landroid/hardware/soundtrigger/SoundTriggerModule;->unloadSoundModel(I)I
+    invoke-virtual {v2, v3}, Landroid/hardware/soundtrigger/SoundTriggerModule;->unloadSoundModel(I)I
 
-    move-result v1
+    move-result v0
+
+    .line 482
+    iget-object v2, p0, Lcom/android/server/soundtrigger/SoundTriggerHelper;->mContext:Landroid/content/Context;
+
+    const/4 v3, 0x1
+
+    const-string/jumbo v4, "sth_unloading_stale_model"
+
+    invoke-static {v2, v4, v3}, Lcom/android/internal/logging/MetricsLogger;->count(Landroid/content/Context;Ljava/lang/String;I)V
+
+    .line 483
+    if-eqz v0, :cond_67
+
+    .line 484
+    new-instance v2, Ljava/lang/StringBuilder;
+
+    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
+
+    const-string/jumbo v3, "unloadSoundModel call failed with "
+
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v2, v0}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v2
+
+    invoke-static {v1, v2}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+
+    goto :goto_6a
 
     .line 487
-    iget-object p2, p0, Lcom/android/server/soundtrigger/SoundTriggerHelper;->mContext:Landroid/content/Context;
-
-    const/4 p3, 0x1
-
-    const-string/jumbo v2, "sth_unloading_stale_model"
-
-    invoke-static {p2, v2, p3}, Lcom/android/internal/logging/MetricsLogger;->count(Landroid/content/Context;Ljava/lang/String;I)V
-
-    .line 488
-    if-eqz v1, :cond_6c
-
-    .line 489
-    new-instance p1, Ljava/lang/StringBuilder;
-
-    invoke-direct {p1}, Ljava/lang/StringBuilder;-><init>()V
-
-    const-string/jumbo p2, "unloadSoundModel call failed with "
-
-    invoke-virtual {p1, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {p1, v1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
-
-    invoke-virtual {p1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
-
-    move-result-object p1
-
-    invoke-static {v0, p1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
-
-    goto :goto_6f
-
-    .line 492
-    :cond_6c
+    :cond_67
     invoke-virtual {p1}, Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;->clearState()V
 
-    .line 495
-    :cond_6f
-    :goto_6f
-    return v1
+    .line 490
+    :cond_6a
+    :goto_6a
+    return v0
 .end method
 
 .method private updateAllRecognitionsLocked(Z)V
-    .registers 5
+    .registers 6
+    .param p1, "notify"  # Z
 
-    .line 835
+    .line 827
     invoke-direct {p0}, Lcom/android/server/soundtrigger/SoundTriggerHelper;->isRecognitionAllowed()Z
 
     move-result v0
 
-    .line 837
+    .line 829
+    .local v0, "isAllowed":Z
     new-instance v1, Ljava/util/ArrayList;
 
     iget-object v2, p0, Lcom/android/server/soundtrigger/SoundTriggerHelper;->mModelDataMap:Ljava/util/HashMap;
@@ -2757,39 +2784,45 @@
 
     invoke-direct {v1, v2}, Ljava/util/ArrayList;-><init>(Ljava/util/Collection;)V
 
-    .line 838
+    .line 830
+    .local v1, "modelDatas":Ljava/util/ArrayList;, "Ljava/util/ArrayList<Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;>;"
     invoke-virtual {v1}, Ljava/util/ArrayList;->iterator()Ljava/util/Iterator;
-
-    move-result-object v1
-
-    :goto_13
-    invoke-interface {v1}, Ljava/util/Iterator;->hasNext()Z
-
-    move-result v2
-
-    if-eqz v2, :cond_23
-
-    invoke-interface {v1}, Ljava/util/Iterator;->next()Ljava/lang/Object;
 
     move-result-object v2
 
-    check-cast v2, Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;
+    :goto_13
+    invoke-interface {v2}, Ljava/util/Iterator;->hasNext()Z
 
-    .line 839
-    invoke-direct {p0, v2, v0, p1}, Lcom/android/server/soundtrigger/SoundTriggerHelper;->updateRecognitionLocked(Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;ZZ)I
+    move-result v3
 
-    .line 840
+    if-eqz v3, :cond_23
+
+    invoke-interface {v2}, Ljava/util/Iterator;->next()Ljava/lang/Object;
+
+    move-result-object v3
+
+    check-cast v3, Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;
+
+    .line 831
+    .local v3, "modelData":Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;
+    invoke-direct {p0, v3, v0, p1}, Lcom/android/server/soundtrigger/SoundTriggerHelper;->updateRecognitionLocked(Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;ZZ)I
+
+    .line 832
+    .end local v3  # "modelData":Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;
     goto :goto_13
 
-    .line 841
+    .line 833
     :cond_23
     return-void
 .end method
 
 .method private updateRecognitionLocked(Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;ZZ)I
-    .registers 6
+    .registers 7
+    .param p1, "model"  # Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;
+    .param p2, "isAllowed"  # Z
+    .param p3, "notify"  # Z
 
-    .line 845
+    .line 837
     invoke-virtual {p1}, Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;->isRequested()Z
 
     move-result v0
@@ -2800,128 +2833,133 @@
 
     if-eqz p2, :cond_b
 
-    const/4 p2, 0x1
+    const/4 v0, 0x1
 
     goto :goto_c
 
     :cond_b
-    move p2, v1
+    move v0, v1
 
-    .line 846
+    .line 838
+    .local v0, "start":Z
     :goto_c
     invoke-virtual {p1}, Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;->isModelStarted()Z
 
-    move-result v0
+    move-result v2
 
-    if-ne p2, v0, :cond_13
+    if-ne v0, v2, :cond_13
 
-    .line 848
+    .line 840
     return v1
 
-    .line 850
+    .line 842
     :cond_13
-    if-eqz p2, :cond_1a
+    if-eqz v0, :cond_1a
 
-    .line 851
+    .line 843
     invoke-direct {p0, p1, p3}, Lcom/android/server/soundtrigger/SoundTriggerHelper;->startRecognitionLocked(Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;Z)I
 
-    move-result p1
+    move-result v1
 
-    return p1
+    return v1
 
-    .line 853
+    .line 845
     :cond_1a
     invoke-direct {p0, p1, p3}, Lcom/android/server/soundtrigger/SoundTriggerHelper;->stopRecognitionLocked(Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;Z)I
 
-    move-result p1
+    move-result v1
 
-    return p1
+    return v1
 .end method
 
 
 # virtual methods
 .method dump(Ljava/io/FileDescriptor;Ljava/io/PrintWriter;[Ljava/lang/String;)V
-    .registers 4
+    .registers 6
+    .param p1, "fd"  # Ljava/io/FileDescriptor;
+    .param p2, "pw"  # Ljava/io/PrintWriter;
+    .param p3, "args"  # [Ljava/lang/String;
 
-    .line 922
-    iget-object p1, p0, Lcom/android/server/soundtrigger/SoundTriggerHelper;->mLock:Ljava/lang/Object;
-
-    monitor-enter p1
-
-    .line 923
-    :try_start_3
-    const-string p3, "  module properties="
-
-    invoke-virtual {p2, p3}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
-
-    .line 924
-    iget-object p3, p0, Lcom/android/server/soundtrigger/SoundTriggerHelper;->mModuleProperties:Landroid/hardware/soundtrigger/SoundTrigger$ModuleProperties;
-
-    if-nez p3, :cond_10
-
-    const-string/jumbo p3, "null"
-
-    goto :goto_12
-
-    :cond_10
-    iget-object p3, p0, Lcom/android/server/soundtrigger/SoundTriggerHelper;->mModuleProperties:Landroid/hardware/soundtrigger/SoundTrigger$ModuleProperties;
-
-    :goto_12
-    invoke-virtual {p2, p3}, Ljava/io/PrintWriter;->println(Ljava/lang/Object;)V
-
-    .line 926
-    const-string p3, "  call active="
-
-    invoke-virtual {p2, p3}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
-
-    iget-boolean p3, p0, Lcom/android/server/soundtrigger/SoundTriggerHelper;->mCallActive:Z
-
-    invoke-virtual {p2, p3}, Ljava/io/PrintWriter;->println(Z)V
-
-    .line 927
-    const-string p3, "  power save mode active="
-
-    invoke-virtual {p2, p3}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
-
-    iget-boolean p3, p0, Lcom/android/server/soundtrigger/SoundTriggerHelper;->mIsPowerSaveMode:Z
-
-    invoke-virtual {p2, p3}, Ljava/io/PrintWriter;->println(Z)V
-
-    .line 928
-    const-string p3, "  service disabled="
-
-    invoke-virtual {p2, p3}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
-
-    iget-boolean p3, p0, Lcom/android/server/soundtrigger/SoundTriggerHelper;->mServiceDisabled:Z
-
-    invoke-virtual {p2, p3}, Ljava/io/PrintWriter;->println(Z)V
-
-    .line 929
-    monitor-exit p1
-
-    .line 930
-    return-void
-
-    .line 929
-    :catchall_35
-    move-exception p2
-
-    monitor-exit p1
-    :try_end_37
-    .catchall {:try_start_3 .. :try_end_37} :catchall_35
-
-    throw p2
-.end method
-
-.method getGenericModelState(Ljava/util/UUID;)I
-    .registers 7
-
-    .line 579
+    .line 913
     iget-object v0, p0, Lcom/android/server/soundtrigger/SoundTriggerHelper;->mLock:Ljava/lang/Object;
 
     monitor-enter v0
 
-    .line 580
+    .line 914
+    :try_start_3
+    const-string v1, "  module properties="
+
+    invoke-virtual {p2, v1}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
+
+    .line 915
+    iget-object v1, p0, Lcom/android/server/soundtrigger/SoundTriggerHelper;->mModuleProperties:Landroid/hardware/soundtrigger/SoundTrigger$ModuleProperties;
+
+    if-nez v1, :cond_10
+
+    const-string/jumbo v1, "null"
+
+    goto :goto_12
+
+    :cond_10
+    iget-object v1, p0, Lcom/android/server/soundtrigger/SoundTriggerHelper;->mModuleProperties:Landroid/hardware/soundtrigger/SoundTrigger$ModuleProperties;
+
+    :goto_12
+    invoke-virtual {p2, v1}, Ljava/io/PrintWriter;->println(Ljava/lang/Object;)V
+
+    .line 917
+    const-string v1, "  call active="
+
+    invoke-virtual {p2, v1}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
+
+    iget-boolean v1, p0, Lcom/android/server/soundtrigger/SoundTriggerHelper;->mCallActive:Z
+
+    invoke-virtual {p2, v1}, Ljava/io/PrintWriter;->println(Z)V
+
+    .line 918
+    const-string v1, "  power save mode active="
+
+    invoke-virtual {p2, v1}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
+
+    iget-boolean v1, p0, Lcom/android/server/soundtrigger/SoundTriggerHelper;->mIsPowerSaveMode:Z
+
+    invoke-virtual {p2, v1}, Ljava/io/PrintWriter;->println(Z)V
+
+    .line 919
+    const-string v1, "  service disabled="
+
+    invoke-virtual {p2, v1}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
+
+    iget-boolean v1, p0, Lcom/android/server/soundtrigger/SoundTriggerHelper;->mServiceDisabled:Z
+
+    invoke-virtual {p2, v1}, Ljava/io/PrintWriter;->println(Z)V
+
+    .line 920
+    monitor-exit v0
+
+    .line 921
+    return-void
+
+    .line 920
+    :catchall_35
+    move-exception v1
+
+    monitor-exit v0
+    :try_end_37
+    .catchall {:try_start_3 .. :try_end_37} :catchall_35
+
+    throw v1
+.end method
+
+.method getGenericModelState(Ljava/util/UUID;)I
+    .registers 8
+    .param p1, "modelId"  # Ljava/util/UUID;
+
+    .line 571
+    iget-object v0, p0, Lcom/android/server/soundtrigger/SoundTriggerHelper;->mLock:Ljava/lang/Object;
+
+    monitor-enter v0
+
+    .line 572
     :try_start_3
     iget-object v1, p0, Lcom/android/server/soundtrigger/SoundTriggerHelper;->mContext:Landroid/content/Context;
 
@@ -2931,7 +2969,7 @@
 
     invoke-static {v1, v2, v3}, Lcom/android/internal/logging/MetricsLogger;->count(Landroid/content/Context;Ljava/lang/String;I)V
 
-    .line 581
+    .line 573
     const/high16 v1, -0x80000000
 
     if-eqz p1, :cond_86
@@ -2942,7 +2980,7 @@
 
     goto :goto_86
 
-    .line 584
+    .line 576
     :cond_15
     iget-object v2, p0, Lcom/android/server/soundtrigger/SoundTriggerHelper;->mModelDataMap:Ljava/util/HashMap;
 
@@ -2952,7 +2990,8 @@
 
     check-cast v2, Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;
 
-    .line 585
+    .line 577
+    .local v2, "modelData":Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;
     if-eqz v2, :cond_6e
 
     invoke-virtual {v2}, Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;->isGenericModel()Z
@@ -2963,7 +3002,7 @@
 
     goto :goto_6e
 
-    .line 590
+    .line 582
     :cond_26
     invoke-virtual {v2}, Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;->isModelLoaded()Z
 
@@ -2971,31 +3010,31 @@
 
     if-nez v3, :cond_44
 
-    .line 591
-    const-string v2, "SoundTriggerHelper"
+    .line 583
+    const-string v3, "SoundTriggerHelper"
 
-    new-instance v3, Ljava/lang/StringBuilder;
+    new-instance v4, Ljava/lang/StringBuilder;
 
-    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v4}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v4, "GetGenericModelState: Given generic model is not loaded:"
+    const-string v5, "GetGenericModelState: Given generic model is not loaded:"
 
-    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v3, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    invoke-virtual {v4, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v4}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v4
 
-    invoke-static {v2, p1}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v3, v4}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 592
+    .line 584
     monitor-exit v0
 
     return v1
 
-    .line 594
+    .line 586
     :cond_44
     invoke-virtual {v2}, Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;->isModelStarted()Z
 
@@ -3003,182 +3042,188 @@
 
     if-nez v3, :cond_62
 
-    .line 595
-    const-string v2, "SoundTriggerHelper"
+    .line 587
+    const-string v3, "SoundTriggerHelper"
 
-    new-instance v3, Ljava/lang/StringBuilder;
+    new-instance v4, Ljava/lang/StringBuilder;
 
-    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v4}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v4, "GetGenericModelState: Given generic model is not started:"
+    const-string v5, "GetGenericModelState: Given generic model is not started:"
 
-    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v3, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    invoke-virtual {v4, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v4}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v4
 
-    invoke-static {v2, p1}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
-
-    .line 596
-    monitor-exit v0
-
-    return v1
-
-    .line 599
-    :cond_62
-    iget-object p1, p0, Lcom/android/server/soundtrigger/SoundTriggerHelper;->mModule:Landroid/hardware/soundtrigger/SoundTriggerModule;
-
-    invoke-virtual {v2}, Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;->getHandle()I
-
-    move-result v1
-
-    invoke-virtual {p1, v1}, Landroid/hardware/soundtrigger/SoundTriggerModule;->getModelState(I)I
-
-    move-result p1
-
-    monitor-exit v0
-
-    return p1
-
-    .line 586
-    :cond_6e
-    :goto_6e
-    const-string v2, "SoundTriggerHelper"
-
-    new-instance v3, Ljava/lang/StringBuilder;
-
-    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
-
-    const-string v4, "GetGenericModelState error: Invalid generic model id:"
-
-    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v3, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
-
-    move-result-object p1
-
-    invoke-static {v2, p1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v3, v4}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 588
     monitor-exit v0
 
     return v1
 
-    .line 582
+    .line 591
+    :cond_62
+    iget-object v1, p0, Lcom/android/server/soundtrigger/SoundTriggerHelper;->mModule:Landroid/hardware/soundtrigger/SoundTriggerModule;
+
+    invoke-virtual {v2}, Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;->getHandle()I
+
+    move-result v3
+
+    invoke-virtual {v1, v3}, Landroid/hardware/soundtrigger/SoundTriggerModule;->getModelState(I)I
+
+    move-result v1
+
+    monitor-exit v0
+
+    return v1
+
+    .line 578
+    :cond_6e
+    :goto_6e
+    const-string v3, "SoundTriggerHelper"
+
+    new-instance v4, Ljava/lang/StringBuilder;
+
+    invoke-direct {v4}, Ljava/lang/StringBuilder;-><init>()V
+
+    const-string v5, "GetGenericModelState error: Invalid generic model id:"
+
+    invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v4, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v4}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v4
+
+    invoke-static {v3, v4}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+
+    .line 580
+    monitor-exit v0
+
+    return v1
+
+    .line 574
+    .end local v2  # "modelData":Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;
     :cond_86
     :goto_86
     monitor-exit v0
 
     return v1
 
-    .line 600
+    .line 592
     :catchall_88
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_8a
     .catchall {:try_start_3 .. :try_end_8a} :catchall_88
 
-    throw p1
+    throw v1
 .end method
 
 .method getKeyphraseModelState(Ljava/util/UUID;)I
-    .registers 3
+    .registers 4
+    .param p1, "modelId"  # Ljava/util/UUID;
 
-    .line 604
-    const-string p1, "SoundTriggerHelper"
+    .line 596
+    const-string v0, "SoundTriggerHelper"
 
-    const-string v0, "GetKeyphraseModelState error: Not implemented"
+    const-string v1, "GetKeyphraseModelState error: Not implemented"
 
-    invoke-static {p1, v0}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v0, v1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 605
-    const/high16 p1, -0x80000000
+    .line 597
+    const/high16 v0, -0x80000000
 
-    return p1
+    return v0
 .end method
 
 .method public getModuleProperties()Landroid/hardware/soundtrigger/SoundTrigger$ModuleProperties;
     .registers 2
 
-    .line 499
+    .line 494
     iget-object v0, p0, Lcom/android/server/soundtrigger/SoundTriggerHelper;->mModuleProperties:Landroid/hardware/soundtrigger/SoundTrigger$ModuleProperties;
 
     return-object v0
 .end method
 
 .method isRecognitionRequested(Ljava/util/UUID;)Z
-    .registers 4
+    .registers 5
+    .param p1, "modelId"  # Ljava/util/UUID;
 
-    .line 572
+    .line 564
     iget-object v0, p0, Lcom/android/server/soundtrigger/SoundTriggerHelper;->mLock:Ljava/lang/Object;
 
     monitor-enter v0
 
-    .line 573
+    .line 565
     :try_start_3
     iget-object v1, p0, Lcom/android/server/soundtrigger/SoundTriggerHelper;->mModelDataMap:Ljava/util/HashMap;
 
     invoke-virtual {v1, p1}, Ljava/util/HashMap;->get(Ljava/lang/Object;)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v1
 
-    check-cast p1, Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;
+    check-cast v1, Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;
 
-    .line 574
-    if-eqz p1, :cond_15
+    .line 566
+    .local v1, "modelData":Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;
+    if-eqz v1, :cond_15
 
-    invoke-virtual {p1}, Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;->isRequested()Z
+    invoke-virtual {v1}, Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;->isRequested()Z
 
-    move-result p1
+    move-result v2
 
-    if-eqz p1, :cond_15
+    if-eqz v2, :cond_15
 
-    const/4 p1, 0x1
+    const/4 v2, 0x1
 
     goto :goto_16
 
     :cond_15
-    const/4 p1, 0x0
+    const/4 v2, 0x0
 
     :goto_16
     monitor-exit v0
 
-    return p1
+    return v2
 
-    .line 575
+    .line 567
+    .end local v1  # "modelData":Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;
     :catchall_18
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_1a
     .catchall {:try_start_3 .. :try_end_1a} :catchall_18
 
-    throw p1
+    throw v1
 .end method
 
 .method public onRecognition(Landroid/hardware/soundtrigger/SoundTrigger$RecognitionEvent;)V
     .registers 5
+    .param p1, "event"  # Landroid/hardware/soundtrigger/SoundTrigger$RecognitionEvent;
 
-    .line 611
+    .line 603
     if-nez p1, :cond_a
 
-    .line 612
-    const-string p1, "SoundTriggerHelper"
+    .line 604
+    const-string v0, "SoundTriggerHelper"
 
-    const-string v0, "Null recognition event!"
+    const-string v1, "Null recognition event!"
 
-    invoke-static {p1, v0}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v0, v1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 613
+    .line 605
     return-void
 
-    .line 616
+    .line 608
     :cond_a
     instance-of v0, p1, Landroid/hardware/soundtrigger/SoundTrigger$KeyphraseRecognitionEvent;
 
@@ -3188,23 +3233,23 @@
 
     if-nez v0, :cond_1a
 
-    .line 618
-    const-string p1, "SoundTriggerHelper"
+    .line 610
+    const-string v0, "SoundTriggerHelper"
 
-    const-string v0, "Invalid recognition event type (not one of generic or keyphrase)!"
+    const-string v1, "Invalid recognition event type (not one of generic or keyphrase)!"
 
-    invoke-static {p1, v0}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v0, v1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 619
+    .line 611
     return-void
 
-    .line 623
+    .line 615
     :cond_1a
     iget-object v0, p0, Lcom/android/server/soundtrigger/SoundTriggerHelper;->mLock:Ljava/lang/Object;
 
     monitor-enter v0
 
-    .line 624
+    .line 616
     :try_start_1d
     iget v1, p1, Landroid/hardware/soundtrigger/SoundTrigger$RecognitionEvent;->status:I
 
@@ -3222,72 +3267,76 @@
 
     if-eq v1, v2, :cond_33
 
-    goto :goto_44
+    goto :goto_46
 
-    .line 630
+    .line 622
     :cond_2b
     invoke-direct {p0}, Lcom/android/server/soundtrigger/SoundTriggerHelper;->onRecognitionFailureLocked()V
 
-    .line 631
-    goto :goto_44
+    .line 623
+    goto :goto_46
 
-    .line 626
+    .line 618
     :cond_2f
     invoke-direct {p0, p1}, Lcom/android/server/soundtrigger/SoundTriggerHelper;->onRecognitionAbortLocked(Landroid/hardware/soundtrigger/SoundTrigger$RecognitionEvent;)V
 
-    .line 627
-    goto :goto_44
+    .line 619
+    goto :goto_46
 
-    .line 634
+    .line 626
     :cond_33
     invoke-direct {p0, p1}, Lcom/android/server/soundtrigger/SoundTriggerHelper;->isKeyphraseRecognitionEvent(Landroid/hardware/soundtrigger/SoundTrigger$RecognitionEvent;)Z
 
     move-result v1
 
-    if-eqz v1, :cond_3f
+    if-eqz v1, :cond_40
 
-    .line 635
-    check-cast p1, Landroid/hardware/soundtrigger/SoundTrigger$KeyphraseRecognitionEvent;
+    .line 627
+    move-object v1, p1
 
-    invoke-direct {p0, p1}, Lcom/android/server/soundtrigger/SoundTriggerHelper;->onKeyphraseRecognitionSuccessLocked(Landroid/hardware/soundtrigger/SoundTrigger$KeyphraseRecognitionEvent;)V
+    check-cast v1, Landroid/hardware/soundtrigger/SoundTrigger$KeyphraseRecognitionEvent;
 
-    goto :goto_44
+    invoke-direct {p0, v1}, Lcom/android/server/soundtrigger/SoundTriggerHelper;->onKeyphraseRecognitionSuccessLocked(Landroid/hardware/soundtrigger/SoundTrigger$KeyphraseRecognitionEvent;)V
 
-    .line 637
-    :cond_3f
-    check-cast p1, Landroid/hardware/soundtrigger/SoundTrigger$GenericRecognitionEvent;
+    goto :goto_46
 
-    invoke-direct {p0, p1}, Lcom/android/server/soundtrigger/SoundTriggerHelper;->onGenericRecognitionSuccessLocked(Landroid/hardware/soundtrigger/SoundTrigger$GenericRecognitionEvent;)V
+    .line 629
+    :cond_40
+    move-object v1, p1
 
-    .line 641
-    :goto_44
+    check-cast v1, Landroid/hardware/soundtrigger/SoundTrigger$GenericRecognitionEvent;
+
+    invoke-direct {p0, v1}, Lcom/android/server/soundtrigger/SoundTriggerHelper;->onGenericRecognitionSuccessLocked(Landroid/hardware/soundtrigger/SoundTrigger$GenericRecognitionEvent;)V
+
+    .line 633
+    :goto_46
     monitor-exit v0
 
-    .line 642
+    .line 634
     return-void
 
-    .line 641
-    :catchall_46
-    move-exception p1
+    .line 633
+    :catchall_48
+    move-exception v1
 
     monitor-exit v0
-    :try_end_48
-    .catchall {:try_start_1d .. :try_end_48} :catchall_46
+    :try_end_4a
+    .catchall {:try_start_1d .. :try_end_4a} :catchall_48
 
-    throw p1
+    throw v1
 .end method
 
 .method public onServiceDied()V
     .registers 4
 
-    .line 717
+    .line 709
     const-string v0, "SoundTriggerHelper"
 
     const-string/jumbo v1, "onServiceDied!!"
 
     invoke-static {v0, v1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 718
+    .line 710
     iget-object v0, p0, Lcom/android/server/soundtrigger/SoundTriggerHelper;->mContext:Landroid/content/Context;
 
     const-string/jumbo v1, "sth_service_died"
@@ -3296,22 +3345,22 @@
 
     invoke-static {v0, v1, v2}, Lcom/android/internal/logging/MetricsLogger;->count(Landroid/content/Context;Ljava/lang/String;I)V
 
-    .line 719
+    .line 711
     iget-object v0, p0, Lcom/android/server/soundtrigger/SoundTriggerHelper;->mLock:Ljava/lang/Object;
 
     monitor-enter v0
 
-    .line 720
+    .line 712
     :try_start_14
     invoke-direct {p0}, Lcom/android/server/soundtrigger/SoundTriggerHelper;->onServiceDiedLocked()V
 
-    .line 721
+    .line 713
     monitor-exit v0
 
-    .line 722
+    .line 714
     return-void
 
-    .line 721
+    .line 713
     :catchall_19
     move-exception v1
 
@@ -3324,13 +3373,14 @@
 
 .method public onServiceStateChange(I)V
     .registers 4
+    .param p1, "state"  # I
 
-    .line 710
+    .line 702
     iget-object v0, p0, Lcom/android/server/soundtrigger/SoundTriggerHelper;->mLock:Ljava/lang/Object;
 
     monitor-enter v0
 
-    .line 711
+    .line 703
     const/4 v1, 0x1
 
     if-ne v1, p1, :cond_7
@@ -3344,46 +3394,47 @@
     :try_start_8
     invoke-direct {p0, v1}, Lcom/android/server/soundtrigger/SoundTriggerHelper;->onServiceStateChangedLocked(Z)V
 
-    .line 712
+    .line 704
     monitor-exit v0
 
-    .line 713
+    .line 705
     return-void
 
-    .line 712
+    .line 704
     :catchall_d
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_f
     .catchall {:try_start_8 .. :try_end_f} :catchall_d
 
-    throw p1
+    throw v1
 .end method
 
 .method public onSoundModelUpdate(Landroid/hardware/soundtrigger/SoundTrigger$SoundModelEvent;)V
     .registers 6
+    .param p1, "event"  # Landroid/hardware/soundtrigger/SoundTrigger$SoundModelEvent;
 
-    .line 696
+    .line 688
     if-nez p1, :cond_a
 
-    .line 697
-    const-string p1, "SoundTriggerHelper"
+    .line 689
+    const-string v0, "SoundTriggerHelper"
 
-    const-string v0, "Invalid sound model event!"
+    const-string v1, "Invalid sound model event!"
 
-    invoke-static {p1, v0}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v0, v1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 698
+    .line 690
     return-void
 
-    .line 701
+    .line 693
     :cond_a
     iget-object v0, p0, Lcom/android/server/soundtrigger/SoundTriggerHelper;->mLock:Ljava/lang/Object;
 
     monitor-enter v0
 
-    .line 702
+    .line 694
     :try_start_d
     iget-object v1, p0, Lcom/android/server/soundtrigger/SoundTriggerHelper;->mContext:Landroid/content/Context;
 
@@ -3393,28 +3444,32 @@
 
     invoke-static {v1, v2, v3}, Lcom/android/internal/logging/MetricsLogger;->count(Landroid/content/Context;Ljava/lang/String;I)V
 
-    .line 703
+    .line 695
     invoke-direct {p0, p1}, Lcom/android/server/soundtrigger/SoundTriggerHelper;->onSoundModelUpdatedLocked(Landroid/hardware/soundtrigger/SoundTrigger$SoundModelEvent;)V
 
-    .line 704
+    .line 696
     monitor-exit v0
 
-    .line 705
+    .line 697
     return-void
 
-    .line 704
+    .line 696
     :catchall_1b
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_1d
     .catchall {:try_start_d .. :try_end_1d} :catchall_1b
 
-    throw p1
+    throw v1
 .end method
 
 .method startGenericRecognition(Ljava/util/UUID;Landroid/hardware/soundtrigger/SoundTrigger$GenericSoundModel;Landroid/hardware/soundtrigger/IRecognitionStatusCallback;Landroid/hardware/soundtrigger/SoundTrigger$RecognitionConfig;)I
-    .registers 13
+    .registers 14
+    .param p1, "modelId"  # Ljava/util/UUID;
+    .param p2, "soundModel"  # Landroid/hardware/soundtrigger/SoundTrigger$GenericSoundModel;
+    .param p3, "callback"  # Landroid/hardware/soundtrigger/IRecognitionStatusCallback;
+    .param p4, "recognitionConfig"  # Landroid/hardware/soundtrigger/SoundTrigger$RecognitionConfig;
 
     .line 144
     iget-object v0, p0, Lcom/android/server/soundtrigger/SoundTriggerHelper;->mContext:Landroid/content/Context;
@@ -3428,15 +3483,15 @@
     .line 145
     const/high16 v0, -0x80000000
 
-    if-eqz p1, :cond_35
+    if-eqz p1, :cond_36
 
-    if-eqz p2, :cond_35
+    if-eqz p2, :cond_36
 
-    if-eqz p3, :cond_35
+    if-eqz p3, :cond_36
 
     if-nez p4, :cond_14
 
-    goto :goto_35
+    goto :goto_36
 
     .line 151
     :cond_14
@@ -3448,17 +3503,18 @@
     :try_start_17
     invoke-direct {p0, p1}, Lcom/android/server/soundtrigger/SoundTriggerHelper;->getOrCreateGenericModelDataLocked(Ljava/util/UUID;)Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;
 
-    move-result-object v4
+    move-result-object v2
 
     .line 153
-    if-nez v4, :cond_26
+    .local v2, "modelData":Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;
+    if-nez v2, :cond_26
 
     .line 154
-    const-string p1, "SoundTriggerHelper"
+    const-string v3, "SoundTriggerHelper"
 
-    const-string p2, "Irrecoverable error occurred, check UUID / sound model data."
+    const-string v4, "Irrecoverable error occurred, check UUID / sound model data."
 
-    invoke-static {p1, p2}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v3, v4}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 155
     monitor-exit v1
@@ -3467,49 +3523,56 @@
 
     .line 157
     :cond_26
-    const/high16 v7, -0x80000000
+    const/high16 v8, -0x80000000
 
-    move-object v2, p0
+    move-object v3, p0
 
-    move-object v3, p2
+    move-object v4, p2
 
-    move-object v5, p3
+    move-object v5, v2
 
-    move-object v6, p4
+    move-object v6, p3
 
-    invoke-virtual/range {v2 .. v7}, Lcom/android/server/soundtrigger/SoundTriggerHelper;->startRecognition(Landroid/hardware/soundtrigger/SoundTrigger$SoundModel;Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;Landroid/hardware/soundtrigger/IRecognitionStatusCallback;Landroid/hardware/soundtrigger/SoundTrigger$RecognitionConfig;I)I
+    move-object v7, p4
 
-    move-result p1
+    invoke-virtual/range {v3 .. v8}, Lcom/android/server/soundtrigger/SoundTriggerHelper;->startRecognition(Landroid/hardware/soundtrigger/SoundTrigger$SoundModel;Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;Landroid/hardware/soundtrigger/IRecognitionStatusCallback;Landroid/hardware/soundtrigger/SoundTrigger$RecognitionConfig;I)I
+
+    move-result v0
 
     monitor-exit v1
 
-    return p1
+    return v0
 
     .line 159
-    :catchall_32
-    move-exception p1
+    .end local v2  # "modelData":Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;
+    :catchall_33
+    move-exception v0
 
     monitor-exit v1
-    :try_end_34
-    .catchall {:try_start_17 .. :try_end_34} :catchall_32
+    :try_end_35
+    .catchall {:try_start_17 .. :try_end_35} :catchall_33
 
-    throw p1
+    throw v0
 
     .line 147
-    :cond_35
-    :goto_35
-    const-string p1, "SoundTriggerHelper"
+    :cond_36
+    :goto_36
+    const-string v1, "SoundTriggerHelper"
 
-    const-string p2, "Passed in bad data to startGenericRecognition()."
+    const-string v2, "Passed in bad data to startGenericRecognition()."
 
-    invoke-static {p1, p2}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v2}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 148
     return v0
 .end method
 
 .method startKeyphraseRecognition(ILandroid/hardware/soundtrigger/SoundTrigger$KeyphraseSoundModel;Landroid/hardware/soundtrigger/IRecognitionStatusCallback;Landroid/hardware/soundtrigger/SoundTrigger$RecognitionConfig;)I
-    .registers 12
+    .registers 13
+    .param p1, "keyphraseId"  # I
+    .param p2, "soundModel"  # Landroid/hardware/soundtrigger/SoundTrigger$KeyphraseSoundModel;
+    .param p3, "callback"  # Landroid/hardware/soundtrigger/IRecognitionStatusCallback;
+    .param p4, "recognitionConfig"  # Landroid/hardware/soundtrigger/SoundTrigger$RecognitionConfig;
 
     .line 173
     iget-object v0, p0, Lcom/android/server/soundtrigger/SoundTriggerHelper;->mLock:Ljava/lang/Object;
@@ -3529,13 +3592,13 @@
     .line 175
     const/high16 v1, -0x80000000
 
-    if-eqz p2, :cond_5a
+    if-eqz p2, :cond_5b
 
-    if-eqz p3, :cond_5a
+    if-eqz p3, :cond_5b
 
     if-nez p4, :cond_15
 
-    goto :goto_5a
+    goto :goto_5b
 
     .line 187
     :cond_15
@@ -3544,6 +3607,7 @@
     move-result-object v2
 
     .line 188
+    .local v2, "model":Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;
     if-eqz v2, :cond_2a
 
     invoke-virtual {v2}, Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;->isKeyphraseModel()Z
@@ -3553,11 +3617,11 @@
     if-nez v3, :cond_2a
 
     .line 189
-    const-string p1, "SoundTriggerHelper"
+    const-string v3, "SoundTriggerHelper"
 
-    const-string p2, "Generic model with same UUID exists."
+    const-string v4, "Generic model with same UUID exists."
 
-    invoke-static {p1, p2}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v3, v4}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 190
     monitor-exit v0
@@ -3586,6 +3650,7 @@
     move-result v1
 
     .line 197
+    .local v1, "status":I
     if-eqz v1, :cond_40
 
     .line 198
@@ -3601,6 +3666,7 @@
     const/4 v2, 0x0
 
     .line 206
+    .end local v1  # "status":I
     :cond_44
     if-nez v2, :cond_4e
 
@@ -3609,458 +3675,480 @@
 
     invoke-direct {p0, v1, p1}, Lcom/android/server/soundtrigger/SoundTriggerHelper;->createKeyphraseModelDataLocked(Ljava/util/UUID;I)Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;
 
-    move-result-object v2
+    move-result-object v1
 
-    move-object v3, v2
+    move-object v2, v1
 
     goto :goto_4f
 
     .line 206
     :cond_4e
-    move-object v3, v2
+    move-object v1, v2
 
     .line 210
+    .end local v2  # "model":Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;
+    .local v1, "model":Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;
     :goto_4f
-    move-object v1, p0
+    move-object v2, p0
 
-    move-object v2, p2
+    move-object v3, p2
 
-    move-object v4, p3
+    move-object v4, v1
 
-    move-object v5, p4
+    move-object v5, p3
 
-    move v6, p1
+    move-object v6, p4
 
-    invoke-virtual/range {v1 .. v6}, Lcom/android/server/soundtrigger/SoundTriggerHelper;->startRecognition(Landroid/hardware/soundtrigger/SoundTrigger$SoundModel;Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;Landroid/hardware/soundtrigger/IRecognitionStatusCallback;Landroid/hardware/soundtrigger/SoundTrigger$RecognitionConfig;I)I
+    move v7, p1
 
-    move-result p1
+    invoke-virtual/range {v2 .. v7}, Lcom/android/server/soundtrigger/SoundTriggerHelper;->startRecognition(Landroid/hardware/soundtrigger/SoundTrigger$SoundModel;Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;Landroid/hardware/soundtrigger/IRecognitionStatusCallback;Landroid/hardware/soundtrigger/SoundTrigger$RecognitionConfig;I)I
+
+    move-result v2
 
     monitor-exit v0
 
-    return p1
+    return v2
 
     .line 176
-    :cond_5a
-    :goto_5a
+    .end local v1  # "model":Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;
+    :cond_5b
+    :goto_5b
     monitor-exit v0
 
     return v1
 
     .line 212
-    :catchall_5c
-    move-exception p1
+    :catchall_5d
+    move-exception v1
 
     monitor-exit v0
-    :try_end_5e
-    .catchall {:try_start_3 .. :try_end_5e} :catchall_5c
+    :try_end_5f
+    .catchall {:try_start_3 .. :try_end_5f} :catchall_5d
 
-    throw p1
+    throw v1
 .end method
 
 .method startRecognition(Landroid/hardware/soundtrigger/SoundTrigger$SoundModel;Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;Landroid/hardware/soundtrigger/IRecognitionStatusCallback;Landroid/hardware/soundtrigger/SoundTrigger$RecognitionConfig;I)I
-    .registers 13
+    .registers 15
+    .param p1, "soundModel"  # Landroid/hardware/soundtrigger/SoundTrigger$SoundModel;
+    .param p2, "modelData"  # Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;
+    .param p3, "callback"  # Landroid/hardware/soundtrigger/IRecognitionStatusCallback;
+    .param p4, "recognitionConfig"  # Landroid/hardware/soundtrigger/SoundTrigger$RecognitionConfig;
+    .param p5, "keyphraseId"  # I
 
     .line 242
-    iget-object p5, p0, Lcom/android/server/soundtrigger/SoundTriggerHelper;->mLock:Ljava/lang/Object;
+    iget-object v0, p0, Lcom/android/server/soundtrigger/SoundTriggerHelper;->mLock:Ljava/lang/Object;
 
-    monitor-enter p5
+    monitor-enter v0
 
     .line 243
     :try_start_3
-    iget-object v0, p0, Lcom/android/server/soundtrigger/SoundTriggerHelper;->mModuleProperties:Landroid/hardware/soundtrigger/SoundTrigger$ModuleProperties;
+    iget-object v1, p0, Lcom/android/server/soundtrigger/SoundTriggerHelper;->mModuleProperties:Landroid/hardware/soundtrigger/SoundTrigger$ModuleProperties;
 
-    const/high16 v1, -0x80000000
+    const/high16 v2, -0x80000000
 
-    if-nez v0, :cond_12
+    if-nez v1, :cond_12
 
     .line 244
-    const-string p1, "SoundTriggerHelper"
+    const-string v1, "SoundTriggerHelper"
 
-    const-string p2, "Attempting startRecognition without the capability"
+    const-string v3, "Attempting startRecognition without the capability"
 
-    invoke-static {p1, p2}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v3}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 245
-    monitor-exit p5
+    monitor-exit v0
 
-    return v1
+    return v2
 
     .line 247
     :cond_12
-    iget-object v0, p0, Lcom/android/server/soundtrigger/SoundTriggerHelper;->mModule:Landroid/hardware/soundtrigger/SoundTriggerModule;
+    iget-object v1, p0, Lcom/android/server/soundtrigger/SoundTriggerHelper;->mModule:Landroid/hardware/soundtrigger/SoundTriggerModule;
 
-    if-nez v0, :cond_2f
+    if-nez v1, :cond_2f
 
     .line 248
-    iget-object v0, p0, Lcom/android/server/soundtrigger/SoundTriggerHelper;->mModuleProperties:Landroid/hardware/soundtrigger/SoundTrigger$ModuleProperties;
+    iget-object v1, p0, Lcom/android/server/soundtrigger/SoundTriggerHelper;->mModuleProperties:Landroid/hardware/soundtrigger/SoundTrigger$ModuleProperties;
 
-    iget v0, v0, Landroid/hardware/soundtrigger/SoundTrigger$ModuleProperties;->id:I
-
-    const/4 v2, 0x0
-
-    invoke-static {v0, p0, v2}, Landroid/hardware/soundtrigger/SoundTrigger;->attachModule(ILandroid/hardware/soundtrigger/SoundTrigger$StatusListener;Landroid/os/Handler;)Landroid/hardware/soundtrigger/SoundTriggerModule;
-
-    move-result-object v0
-
-    iput-object v0, p0, Lcom/android/server/soundtrigger/SoundTriggerHelper;->mModule:Landroid/hardware/soundtrigger/SoundTriggerModule;
-
-    .line 249
-    iget-object v0, p0, Lcom/android/server/soundtrigger/SoundTriggerHelper;->mModule:Landroid/hardware/soundtrigger/SoundTriggerModule;
-
-    if-nez v0, :cond_2f
-
-    .line 250
-    const-string p1, "SoundTriggerHelper"
-
-    const-string/jumbo p2, "startRecognition cannot attach to sound trigger module"
-
-    invoke-static {p1, p2}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
-
-    .line 251
-    monitor-exit p5
-
-    return v1
-
-    .line 262
-    :cond_2f
-    invoke-virtual {p2}, Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;->getSoundModel()Landroid/hardware/soundtrigger/SoundTrigger$SoundModel;
-
-    move-result-object v0
-
-    const/4 v2, 0x1
+    iget v1, v1, Landroid/hardware/soundtrigger/SoundTrigger$ModuleProperties;->id:I
 
     const/4 v3, 0x0
 
-    if-eqz v0, :cond_88
+    invoke-static {v1, p0, v3}, Landroid/hardware/soundtrigger/SoundTrigger;->attachModule(ILandroid/hardware/soundtrigger/SoundTrigger$StatusListener;Landroid/os/Handler;)Landroid/hardware/soundtrigger/SoundTriggerModule;
 
-    .line 263
-    nop
+    move-result-object v1
 
-    .line 264
-    nop
+    iput-object v1, p0, Lcom/android/server/soundtrigger/SoundTriggerHelper;->mModule:Landroid/hardware/soundtrigger/SoundTriggerModule;
 
-    .line 265
+    .line 249
+    iget-object v1, p0, Lcom/android/server/soundtrigger/SoundTriggerHelper;->mModule:Landroid/hardware/soundtrigger/SoundTriggerModule;
+
+    if-nez v1, :cond_2f
+
+    .line 250
+    const-string v1, "SoundTriggerHelper"
+
+    const-string/jumbo v3, "startRecognition cannot attach to sound trigger module"
+
+    invoke-static {v1, v3}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+
+    .line 251
+    monitor-exit v0
+
+    return v2
+
+    .line 256
+    :cond_2f
+    iget-boolean v1, p0, Lcom/android/server/soundtrigger/SoundTriggerHelper;->mRecognitionRunning:Z
+
+    if-nez v1, :cond_36
+
+    .line 257
+    invoke-direct {p0}, Lcom/android/server/soundtrigger/SoundTriggerHelper;->initializeTelephonyAndPowerStateListeners()V
+
+    .line 267
+    :cond_36
     invoke-virtual {p2}, Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;->getSoundModel()Landroid/hardware/soundtrigger/SoundTrigger$SoundModel;
 
-    move-result-object v0
+    move-result-object v1
 
-    invoke-virtual {v0, p1}, Landroid/hardware/soundtrigger/SoundTrigger$SoundModel;->equals(Ljava/lang/Object;)Z
-
-    move-result v0
-
-    if-eqz v0, :cond_4d
-
-    invoke-virtual {p2}, Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;->isModelStarted()Z
-
-    move-result v0
-
-    if-eqz v0, :cond_4d
+    if-eqz v1, :cond_8b
 
     .line 268
-    nop
+    const/4 v1, 0x0
 
     .line 269
-    move v0, v2
-
-    move v4, v3
-
-    goto :goto_62
+    .local v1, "stopModel":Z
+    const/4 v3, 0x0
 
     .line 270
-    :cond_4d
+    .local v3, "unloadModel":Z
     invoke-virtual {p2}, Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;->getSoundModel()Landroid/hardware/soundtrigger/SoundTrigger$SoundModel;
 
-    move-result-object v0
+    move-result-object v4
 
-    invoke-virtual {v0, p1}, Landroid/hardware/soundtrigger/SoundTrigger$SoundModel;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v4, p1}, Landroid/hardware/soundtrigger/SoundTrigger$SoundModel;->equals(Ljava/lang/Object;)Z
 
-    move-result v0
+    move-result v4
 
-    if-nez v0, :cond_60
+    if-eqz v4, :cond_51
 
-    .line 273
     invoke-virtual {p2}, Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;->isModelStarted()Z
 
-    move-result v0
+    move-result v4
+
+    if-eqz v4, :cond_51
+
+    .line 273
+    const/4 v1, 0x1
 
     .line 274
+    const/4 v3, 0x0
+
+    goto :goto_65
+
+    .line 275
+    :cond_51
+    invoke-virtual {p2}, Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;->getSoundModel()Landroid/hardware/soundtrigger/SoundTrigger$SoundModel;
+
+    move-result-object v4
+
+    invoke-virtual {v4, p1}, Landroid/hardware/soundtrigger/SoundTrigger$SoundModel;->equals(Ljava/lang/Object;)Z
+
+    move-result v4
+
+    if-nez v4, :cond_65
+
+    .line 278
+    invoke-virtual {p2}, Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;->isModelStarted()Z
+
+    move-result v4
+
+    move v1, v4
+
+    .line 279
     invoke-virtual {p2}, Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;->isModelLoaded()Z
 
     move-result v4
 
-    goto :goto_62
-
-    .line 270
-    :cond_60
-    move v0, v3
-
-    move v4, v0
-
-    .line 276
-    :goto_62
-    if-nez v0, :cond_66
-
-    if-eqz v4, :cond_88
-
-    .line 277
-    :cond_66
-    invoke-direct {p0, p2, v0, v4}, Lcom/android/server/soundtrigger/SoundTriggerHelper;->tryStopAndUnloadLocked(Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;ZZ)I
-
-    move-result v0
-
-    .line 278
-    if-eqz v0, :cond_88
-
-    .line 279
-    const-string p1, "SoundTriggerHelper"
-
-    new-instance p3, Ljava/lang/StringBuilder;
-
-    invoke-direct {p3}, Ljava/lang/StringBuilder;-><init>()V
-
-    const-string p4, "Unable to stop or unload previous model: "
-
-    invoke-virtual {p3, p4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    .line 280
-    invoke-virtual {p2}, Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;->toString()Ljava/lang/String;
-
-    move-result-object p2
-
-    invoke-virtual {p3, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {p3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
-
-    move-result-object p2
-
-    .line 279
-    invoke-static {p1, p2}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    move v3, v4
 
     .line 281
-    monitor-exit p5
+    :cond_65
+    :goto_65
+    if-nez v1, :cond_69
 
-    return v0
+    if-eqz v3, :cond_8b
 
-    .line 286
-    :cond_88
-    invoke-virtual {p2}, Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;->getCallback()Landroid/hardware/soundtrigger/IRecognitionStatusCallback;
+    .line 282
+    :cond_69
+    invoke-direct {p0, p2, v1, v3}, Lcom/android/server/soundtrigger/SoundTriggerHelper;->tryStopAndUnloadLocked(Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;ZZ)I
 
-    move-result-object v0
+    move-result v4
 
-    .line 287
-    if-eqz v0, :cond_c1
+    .line 283
+    .local v4, "status":I
+    if-eqz v4, :cond_8b
 
-    invoke-interface {v0}, Landroid/hardware/soundtrigger/IRecognitionStatusCallback;->asBinder()Landroid/os/IBinder;
-
-    move-result-object v4
-
-    invoke-interface {p3}, Landroid/hardware/soundtrigger/IRecognitionStatusCallback;->asBinder()Landroid/os/IBinder;
-
-    move-result-object v5
-
-    if-eq v4, v5, :cond_c1
-
-    .line 288
-    const-string v4, "SoundTriggerHelper"
+    .line 284
+    const-string v2, "SoundTriggerHelper"
 
     new-instance v5, Ljava/lang/StringBuilder;
 
     invoke-direct {v5}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v6, "Canceling previous recognition for model id: "
+    const-string v6, "Unable to stop or unload previous model: "
 
     invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    .line 289
-    invoke-virtual {p2}, Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;->getModelId()Ljava/util/UUID;
+    .line 285
+    invoke-virtual {p2}, Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;->toString()Ljava/lang/String;
 
     move-result-object v6
 
-    invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v5}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
     move-result-object v5
 
-    .line 288
-    invoke-static {v4, v5}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
-    :try_end_b2
-    .catchall {:try_start_3 .. :try_end_b2} :catchall_132
+    .line 284
+    invoke-static {v2, v5}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 291
-    :try_start_b2
-    invoke-interface {v0, v1}, Landroid/hardware/soundtrigger/IRecognitionStatusCallback;->onError(I)V
-    :try_end_b5
-    .catch Landroid/os/RemoteException; {:try_start_b2 .. :try_end_b5} :catch_b6
-    .catchall {:try_start_b2 .. :try_end_b5} :catchall_132
-
-    .line 294
-    goto :goto_be
-
-    .line 292
-    :catch_b6
-    move-exception v0
-
-    .line 293
-    :try_start_b7
-    const-string v4, "SoundTriggerHelper"
-
-    const-string v5, "RemoteException in onDetectionStopped"
-
-    invoke-static {v4, v5, v0}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
-
-    .line 295
-    :goto_be
-    invoke-virtual {p2}, Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;->clearCallback()V
-
-    .line 299
-    :cond_c1
-    invoke-virtual {p2}, Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;->isModelLoaded()Z
-
-    move-result v0
-
-    if-nez v0, :cond_11b
-
-    .line 304
-    invoke-direct {p0}, Lcom/android/server/soundtrigger/SoundTriggerHelper;->stopAndUnloadDeadModelsLocked()V
-
-    .line 305
-    new-array v0, v2, [I
-
-    aput v1, v0, v3
-
-    .line 306
-    iget-object v4, p0, Lcom/android/server/soundtrigger/SoundTriggerHelper;->mModule:Landroid/hardware/soundtrigger/SoundTriggerModule;
-
-    invoke-virtual {v4, p1, v0}, Landroid/hardware/soundtrigger/SoundTriggerModule;->loadSoundModel(Landroid/hardware/soundtrigger/SoundTrigger$SoundModel;[I)I
-
-    move-result v4
-
-    .line 307
-    if-eqz v4, :cond_ee
-
-    .line 308
-    const-string p1, "SoundTriggerHelper"
-
-    new-instance p2, Ljava/lang/StringBuilder;
-
-    invoke-direct {p2}, Ljava/lang/StringBuilder;-><init>()V
-
-    const-string p3, "loadSoundModel call failed with "
-
-    invoke-virtual {p2, p3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {p2, v4}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
-
-    invoke-virtual {p2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
-
-    move-result-object p2
-
-    invoke-static {p1, p2}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
-
-    .line 309
-    monitor-exit p5
+    .line 286
+    monitor-exit v0
 
     return v4
 
-    .line 311
-    :cond_ee
-    aget v4, v0, v3
+    .line 291
+    .end local v1  # "stopModel":Z
+    .end local v3  # "unloadModel":Z
+    .end local v4  # "status":I
+    :cond_8b
+    invoke-virtual {p2}, Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;->getCallback()Landroid/hardware/soundtrigger/IRecognitionStatusCallback;
 
-    if-ne v4, v1, :cond_fb
+    move-result-object v1
 
-    .line 312
-    const-string p1, "SoundTriggerHelper"
+    .line 292
+    .local v1, "oldCallback":Landroid/hardware/soundtrigger/IRecognitionStatusCallback;
+    if-eqz v1, :cond_c4
 
-    const-string p2, "loadSoundModel call returned invalid sound model handle"
+    invoke-interface {v1}, Landroid/hardware/soundtrigger/IRecognitionStatusCallback;->asBinder()Landroid/os/IBinder;
 
-    invoke-static {p1, p2}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    move-result-object v3
 
-    .line 313
-    monitor-exit p5
+    invoke-interface {p3}, Landroid/hardware/soundtrigger/IRecognitionStatusCallback;->asBinder()Landroid/os/IBinder;
 
-    return v1
+    move-result-object v4
 
-    .line 315
-    :cond_fb
-    aget v1, v0, v3
+    if-eq v3, v4, :cond_c4
 
-    invoke-virtual {p2, v1}, Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;->setHandle(I)V
-
-    .line 316
-    invoke-virtual {p2}, Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;->setLoaded()V
-
-    .line 317
-    const-string v1, "SoundTriggerHelper"
+    .line 293
+    const-string v3, "SoundTriggerHelper"
 
     new-instance v4, Ljava/lang/StringBuilder;
 
     invoke-direct {v4}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v5, "Sound model loaded with handle:"
+    const-string v5, "Canceling previous recognition for model id: "
 
     invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    aget v0, v0, v3
+    .line 294
+    invoke-virtual {p2}, Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;->getModelId()Ljava/util/UUID;
 
-    invoke-virtual {v4, v0}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    move-result-object v5
+
+    invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v4}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v4
 
-    invoke-static {v1, v0}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
+    .line 293
+    invoke-static {v3, v4}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    :try_end_b5
+    .catchall {:try_start_3 .. :try_end_b5} :catchall_134
 
-    .line 319
-    :cond_11b
-    invoke-virtual {p2, p3}, Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;->setCallback(Landroid/hardware/soundtrigger/IRecognitionStatusCallback;)V
+    .line 296
+    :try_start_b5
+    invoke-interface {v1, v2}, Landroid/hardware/soundtrigger/IRecognitionStatusCallback;->onError(I)V
+    :try_end_b8
+    .catch Landroid/os/RemoteException; {:try_start_b5 .. :try_end_b8} :catch_b9
+    .catchall {:try_start_b5 .. :try_end_b8} :catchall_134
+
+    .line 299
+    goto :goto_c1
+
+    .line 297
+    :catch_b9
+    move-exception v3
+
+    .line 298
+    .local v3, "e":Landroid/os/RemoteException;
+    :try_start_ba
+    const-string v4, "SoundTriggerHelper"
+
+    const-string v5, "RemoteException in onDetectionStopped"
+
+    invoke-static {v4, v5, v3}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+
+    .line 300
+    .end local v3  # "e":Landroid/os/RemoteException;
+    :goto_c1
+    invoke-virtual {p2}, Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;->clearCallback()V
+
+    .line 304
+    :cond_c4
+    invoke-virtual {p2}, Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;->isModelLoaded()Z
+
+    move-result v3
+
+    const/4 v4, 0x1
+
+    const/4 v5, 0x0
+
+    if-nez v3, :cond_122
+
+    .line 309
+    invoke-direct {p0}, Lcom/android/server/soundtrigger/SoundTriggerHelper;->stopAndUnloadDeadModelsLocked()V
+
+    .line 310
+    new-array v3, v4, [I
+
+    aput v2, v3, v5
+
+    .line 311
+    .local v3, "handle":[I
+    iget-object v6, p0, Lcom/android/server/soundtrigger/SoundTriggerHelper;->mModule:Landroid/hardware/soundtrigger/SoundTriggerModule;
+
+    invoke-virtual {v6, p1, v3}, Landroid/hardware/soundtrigger/SoundTriggerModule;->loadSoundModel(Landroid/hardware/soundtrigger/SoundTrigger$SoundModel;[I)I
+
+    move-result v6
+
+    .line 312
+    .local v6, "status":I
+    if-eqz v6, :cond_f4
+
+    .line 313
+    const-string v2, "SoundTriggerHelper"
+
+    new-instance v4, Ljava/lang/StringBuilder;
+
+    invoke-direct {v4}, Ljava/lang/StringBuilder;-><init>()V
+
+    const-string/jumbo v5, "loadSoundModel call failed with "
+
+    invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v4, v6}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v4}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v4
+
+    invoke-static {v2, v4}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+
+    .line 314
+    monitor-exit v0
+
+    return v6
+
+    .line 316
+    :cond_f4
+    aget v7, v3, v5
+
+    if-ne v7, v2, :cond_102
+
+    .line 317
+    const-string v4, "SoundTriggerHelper"
+
+    const-string/jumbo v5, "loadSoundModel call returned invalid sound model handle"
+
+    invoke-static {v4, v5}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+
+    .line 318
+    monitor-exit v0
+
+    return v2
 
     .line 320
-    invoke-virtual {p2, v2}, Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;->setRequested(Z)V
+    :cond_102
+    aget v2, v3, v5
+
+    invoke-virtual {p2, v2}, Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;->setHandle(I)V
 
     .line 321
-    invoke-virtual {p2, p4}, Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;->setRecognitionConfig(Landroid/hardware/soundtrigger/SoundTrigger$RecognitionConfig;)V
+    invoke-virtual {p2}, Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;->setLoaded()V
 
     .line 322
-    invoke-virtual {p2, p1}, Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;->setSoundModel(Landroid/hardware/soundtrigger/SoundTrigger$SoundModel;)V
+    const-string v2, "SoundTriggerHelper"
+
+    new-instance v7, Ljava/lang/StringBuilder;
+
+    invoke-direct {v7}, Ljava/lang/StringBuilder;-><init>()V
+
+    const-string v8, "Sound model loaded with handle:"
+
+    invoke-virtual {v7, v8}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    aget v8, v3, v5
+
+    invoke-virtual {v7, v8}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v7}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v7
+
+    invoke-static {v2, v7}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 324
-    invoke-direct {p0, p2, v3}, Lcom/android/server/soundtrigger/SoundTriggerHelper;->startRecognitionLocked(Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;Z)I
+    .end local v3  # "handle":[I
+    .end local v6  # "status":I
+    :cond_122
+    invoke-virtual {p2, p3}, Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;->setCallback(Landroid/hardware/soundtrigger/IRecognitionStatusCallback;)V
 
-    move-result p1
+    .line 325
+    invoke-virtual {p2, v4}, Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;->setRequested(Z)V
 
-    .line 328
-    if-nez p1, :cond_130
+    .line 326
+    invoke-virtual {p2, p4}, Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;->setRecognitionConfig(Landroid/hardware/soundtrigger/SoundTrigger$RecognitionConfig;)V
+
+    .line 327
+    invoke-virtual {p2, p1}, Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;->setSoundModel(Landroid/hardware/soundtrigger/SoundTrigger$SoundModel;)V
 
     .line 329
-    invoke-direct {p0}, Lcom/android/server/soundtrigger/SoundTriggerHelper;->initializeTelephonyAndPowerStateListeners()V
+    invoke-direct {p0, p2, v5}, Lcom/android/server/soundtrigger/SoundTriggerHelper;->startRecognitionLocked(Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;Z)I
 
-    .line 332
-    :cond_130
-    monitor-exit p5
+    move-result v2
 
-    return p1
+    monitor-exit v0
 
-    .line 333
-    :catchall_132
-    move-exception p1
+    return v2
 
-    monitor-exit p5
-    :try_end_134
-    .catchall {:try_start_b7 .. :try_end_134} :catchall_132
+    .line 331
+    .end local v1  # "oldCallback":Landroid/hardware/soundtrigger/IRecognitionStatusCallback;
+    :catchall_134
+    move-exception v1
 
-    throw p1
+    monitor-exit v0
+    :try_end_136
+    .catchall {:try_start_ba .. :try_end_136} :catchall_134
+
+    throw v1
 .end method
 
 .method stopGenericRecognition(Ljava/util/UUID;Landroid/hardware/soundtrigger/IRecognitionStatusCallback;)I
-    .registers 7
+    .registers 9
+    .param p1, "modelId"  # Ljava/util/UUID;
+    .param p2, "callback"  # Landroid/hardware/soundtrigger/IRecognitionStatusCallback;
 
-    .line 347
+    .line 345
     iget-object v0, p0, Lcom/android/server/soundtrigger/SoundTriggerHelper;->mLock:Ljava/lang/Object;
 
     monitor-enter v0
 
-    .line 348
+    .line 346
     :try_start_3
     iget-object v1, p0, Lcom/android/server/soundtrigger/SoundTriggerHelper;->mContext:Landroid/content/Context;
 
@@ -4070,7 +4158,7 @@
 
     invoke-static {v1, v2, v3}, Lcom/android/internal/logging/MetricsLogger;->count(Landroid/content/Context;Ljava/lang/String;I)V
 
-    .line 349
+    .line 347
     const/high16 v1, -0x80000000
 
     if-eqz p2, :cond_5b
@@ -4079,7 +4167,7 @@
 
     goto :goto_5b
 
-    .line 355
+    .line 353
     :cond_13
     iget-object v2, p0, Lcom/android/server/soundtrigger/SoundTriggerHelper;->mModelDataMap:Ljava/util/HashMap;
 
@@ -4089,7 +4177,8 @@
 
     check-cast v2, Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;
 
-    .line 356
+    .line 354
+    .local v2, "modelData":Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;
     if-eqz v2, :cond_43
 
     invoke-virtual {v2}, Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;->isGenericModel()Z
@@ -4100,112 +4189,117 @@
 
     goto :goto_43
 
-    .line 361
+    .line 359
     :cond_24
     invoke-direct {p0, v2, p2}, Lcom/android/server/soundtrigger/SoundTriggerHelper;->stopRecognition(Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;Landroid/hardware/soundtrigger/IRecognitionStatusCallback;)I
 
-    move-result p1
+    move-result v1
 
-    .line 362
-    if-eqz p1, :cond_41
+    .line 360
+    .local v1, "status":I
+    if-eqz v1, :cond_41
+
+    .line 361
+    const-string v3, "SoundTriggerHelper"
+
+    new-instance v4, Ljava/lang/StringBuilder;
+
+    invoke-direct {v4}, Ljava/lang/StringBuilder;-><init>()V
+
+    const-string/jumbo v5, "stopGenericRecognition failed: "
+
+    invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v4, v1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v4}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v4
+
+    invoke-static {v3, v4}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 363
-    const-string p2, "SoundTriggerHelper"
-
-    new-instance v1, Ljava/lang/StringBuilder;
-
-    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
-
-    const-string/jumbo v2, "stopGenericRecognition failed: "
-
-    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v1, p1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
-
-    move-result-object v1
-
-    invoke-static {p2, v1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
-
-    .line 365
     :cond_41
     monitor-exit v0
 
-    return p1
+    return v1
 
-    .line 357
+    .line 355
+    .end local v1  # "status":I
     :cond_43
     :goto_43
-    const-string p2, "SoundTriggerHelper"
+    const-string v3, "SoundTriggerHelper"
 
-    new-instance v2, Ljava/lang/StringBuilder;
+    new-instance v4, Ljava/lang/StringBuilder;
 
-    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v4}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v3, "Attempting stopRecognition on invalid model with id:"
+    const-string v5, "Attempting stopRecognition on invalid model with id:"
 
-    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v2, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    invoke-virtual {v4, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v4}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v4
 
-    invoke-static {p2, p1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v3, v4}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 358
+    .line 356
     monitor-exit v0
 
     return v1
 
-    .line 350
+    .line 348
+    .end local v2  # "modelData":Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;
     :cond_5b
     :goto_5b
-    const-string p2, "SoundTriggerHelper"
+    const-string v2, "SoundTriggerHelper"
 
-    new-instance v2, Ljava/lang/StringBuilder;
+    new-instance v3, Ljava/lang/StringBuilder;
 
-    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v3, "Null callbackreceived for stopGenericRecognition() for modelid:"
+    const-string v4, "Null callbackreceived for stopGenericRecognition() for modelid:"
 
-    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v2, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v3
 
-    invoke-static {p2, p1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v2, v3}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 352
+    .line 350
     monitor-exit v0
 
     return v1
 
-    .line 366
+    .line 364
     :catchall_73
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_75
     .catchall {:try_start_3 .. :try_end_75} :catchall_73
 
-    throw p1
+    throw v1
 .end method
 
 .method stopKeyphraseRecognition(ILandroid/hardware/soundtrigger/IRecognitionStatusCallback;)I
-    .registers 7
+    .registers 9
+    .param p1, "keyphraseId"  # I
+    .param p2, "callback"  # Landroid/hardware/soundtrigger/IRecognitionStatusCallback;
 
-    .line 380
+    .line 378
     iget-object v0, p0, Lcom/android/server/soundtrigger/SoundTriggerHelper;->mLock:Ljava/lang/Object;
 
     monitor-enter v0
 
-    .line 381
+    .line 379
     :try_start_3
     iget-object v1, p0, Lcom/android/server/soundtrigger/SoundTriggerHelper;->mContext:Landroid/content/Context;
 
@@ -4215,42 +4309,43 @@
 
     invoke-static {v1, v2, v3}, Lcom/android/internal/logging/MetricsLogger;->count(Landroid/content/Context;Ljava/lang/String;I)V
 
-    .line 382
+    .line 380
     const/high16 v1, -0x80000000
 
     if-nez p2, :cond_28
 
+    .line 381
+    const-string v2, "SoundTriggerHelper"
+
+    new-instance v3, Ljava/lang/StringBuilder;
+
+    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
+
+    const-string v4, "Null callback received for stopKeyphraseRecognition() for keyphraseId:"
+
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v3, p1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v3
+
+    invoke-static {v2, v3}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
+
     .line 383
-    const-string p2, "SoundTriggerHelper"
-
-    new-instance v2, Ljava/lang/StringBuilder;
-
-    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
-
-    const-string v3, "Null callback received for stopKeyphraseRecognition() for keyphraseId:"
-
-    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v2, p1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
-
-    move-result-object p1
-
-    invoke-static {p2, p1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
-
-    .line 385
     monitor-exit v0
 
     return v1
 
-    .line 388
+    .line 386
     :cond_28
     invoke-direct {p0, p1}, Lcom/android/server/soundtrigger/SoundTriggerHelper;->getKeyphraseModelDataLocked(I)Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;
 
     move-result-object v2
 
-    .line 389
+    .line 387
+    .local v2, "modelData":Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;
     if-eqz v2, :cond_3f
 
     invoke-virtual {v2}, Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;->isKeyphraseModel()Z
@@ -4261,72 +4356,76 @@
 
     goto :goto_3f
 
-    .line 400
+    .line 398
     :cond_35
     invoke-direct {p0, v2, p2}, Lcom/android/server/soundtrigger/SoundTriggerHelper;->stopRecognition(Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;Landroid/hardware/soundtrigger/IRecognitionStatusCallback;)I
 
-    move-result p1
+    move-result v1
 
-    .line 401
-    if-eqz p1, :cond_3d
+    .line 399
+    .local v1, "status":I
+    if-eqz v1, :cond_3d
 
-    .line 402
-    monitor-exit v0
-
-    return p1
-
-    .line 405
-    :cond_3d
-    monitor-exit v0
-
-    return p1
-
-    .line 390
-    :cond_3f
-    :goto_3f
-    const-string p2, "SoundTriggerHelper"
-
-    new-instance v2, Ljava/lang/StringBuilder;
-
-    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
-
-    const-string v3, "No model exists for given keyphrase Id "
-
-    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v2, p1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
-
-    move-result-object p1
-
-    invoke-static {p2, p1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
-
-    .line 391
+    .line 400
     monitor-exit v0
 
     return v1
 
-    .line 406
+    .line 403
+    :cond_3d
+    monitor-exit v0
+
+    return v1
+
+    .line 388
+    .end local v1  # "status":I
+    :cond_3f
+    :goto_3f
+    const-string v3, "SoundTriggerHelper"
+
+    new-instance v4, Ljava/lang/StringBuilder;
+
+    invoke-direct {v4}, Ljava/lang/StringBuilder;-><init>()V
+
+    const-string v5, "No model exists for given keyphrase Id "
+
+    invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v4, p1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v4}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v4
+
+    invoke-static {v3, v4}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
+
+    .line 389
+    monitor-exit v0
+
+    return v1
+
+    .line 404
+    .end local v2  # "modelData":Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;
     :catchall_57
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_59
     .catchall {:try_start_3 .. :try_end_59} :catchall_57
 
-    throw p1
+    throw v1
 .end method
 
 .method unloadGenericSoundModel(Ljava/util/UUID;)I
-    .registers 9
+    .registers 8
+    .param p1, "modelId"  # Ljava/util/UUID;
 
-    .line 531
+    .line 526
     iget-object v0, p0, Lcom/android/server/soundtrigger/SoundTriggerHelper;->mLock:Ljava/lang/Object;
 
     monitor-enter v0
 
-    .line 532
+    .line 527
     :try_start_3
     iget-object v1, p0, Lcom/android/server/soundtrigger/SoundTriggerHelper;->mContext:Landroid/content/Context;
 
@@ -4336,18 +4435,18 @@
 
     invoke-static {v1, v2, v3}, Lcom/android/internal/logging/MetricsLogger;->count(Landroid/content/Context;Ljava/lang/String;I)V
 
-    .line 533
+    .line 528
     const/high16 v1, -0x80000000
 
-    if-eqz p1, :cond_b9
+    if-eqz p1, :cond_b3
 
     iget-object v2, p0, Lcom/android/server/soundtrigger/SoundTriggerHelper;->mModule:Landroid/hardware/soundtrigger/SoundTriggerModule;
 
     if-nez v2, :cond_16
 
-    goto/16 :goto_b9
+    goto/16 :goto_b3
 
-    .line 536
+    .line 531
     :cond_16
     iget-object v2, p0, Lcom/android/server/soundtrigger/SoundTriggerHelper;->mModelDataMap:Ljava/util/HashMap;
 
@@ -4357,8 +4456,9 @@
 
     check-cast v2, Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;
 
-    .line 537
-    if-eqz v2, :cond_a1
+    .line 532
+    .local v2, "modelData":Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;
+    if-eqz v2, :cond_9b
 
     invoke-virtual {v2}, Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;->isGenericModel()Z
 
@@ -4366,193 +4466,188 @@
 
     if-nez v3, :cond_27
 
-    goto :goto_a1
+    goto :goto_9b
 
-    .line 542
+    .line 537
     :cond_27
     invoke-virtual {v2}, Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;->isModelLoaded()Z
 
-    move-result v3
-
-    const/4 v4, 0x0
-
-    if-nez v3, :cond_46
-
-    .line 544
-    const-string v1, "SoundTriggerHelper"
-
-    new-instance v2, Ljava/lang/StringBuilder;
-
-    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
-
-    const-string v3, "Unload: Given generic model is not loaded:"
-
-    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v2, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
-
-    move-result-object p1
-
-    invoke-static {v1, p1}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
-
-    .line 545
-    monitor-exit v0
-
-    return v4
-
-    .line 547
-    :cond_46
-    invoke-virtual {v2}, Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;->isModelStarted()Z
-
-    move-result v3
-
-    if-eqz v3, :cond_69
-
-    .line 548
-    invoke-direct {p0, v2, v4}, Lcom/android/server/soundtrigger/SoundTriggerHelper;->stopRecognitionLocked(Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;Z)I
-
-    move-result v3
-
-    .line 550
-    if-eqz v3, :cond_69
-
-    .line 551
-    const-string v4, "SoundTriggerHelper"
-
-    new-instance v5, Ljava/lang/StringBuilder;
-
-    invoke-direct {v5}, Ljava/lang/StringBuilder;-><init>()V
-
-    const-string/jumbo v6, "stopGenericRecognition failed: "
-
-    invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v5, v3}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v5}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
-
-    move-result-object v3
-
-    invoke-static {v4, v3}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
-
-    .line 555
-    :cond_69
-    iget-object v3, p0, Lcom/android/server/soundtrigger/SoundTriggerHelper;->mModule:Landroid/hardware/soundtrigger/SoundTriggerModule;
-
-    if-nez v3, :cond_6f
-
-    .line 556
-    monitor-exit v0
-
-    return v1
-
-    .line 558
-    :cond_6f
-    iget-object v1, p0, Lcom/android/server/soundtrigger/SoundTriggerHelper;->mModule:Landroid/hardware/soundtrigger/SoundTriggerModule;
-
-    invoke-virtual {v2}, Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;->getHandle()I
-
-    move-result v2
-
-    invoke-virtual {v1, v2}, Landroid/hardware/soundtrigger/SoundTriggerModule;->unloadSoundModel(I)I
-
     move-result v1
 
-    .line 559
-    if-eqz v1, :cond_9a
+    const/4 v3, 0x0
 
-    .line 560
-    const-string v2, "SoundTriggerHelper"
+    if-nez v1, :cond_46
 
-    new-instance v3, Ljava/lang/StringBuilder;
+    .line 539
+    const-string v1, "SoundTriggerHelper"
 
-    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
+    new-instance v4, Ljava/lang/StringBuilder;
 
-    const-string/jumbo v4, "unloadGenericSoundModel() call failed with "
+    invoke-direct {v4}, Ljava/lang/StringBuilder;-><init>()V
 
-    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    const-string v5, "Unload: Given generic model is not loaded:"
 
-    invoke-virtual {v3, v1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v4, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
-    move-result-object v3
+    invoke-virtual {v4}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    invoke-static {v2, v3}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    move-result-object v4
 
-    .line 561
-    const-string v2, "SoundTriggerHelper"
-
-    const-string/jumbo v3, "unloadGenericSoundModel() force-marking model as unloaded."
-
-    invoke-static {v2, v3}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
-
-    .line 565
-    :cond_9a
-    iget-object v2, p0, Lcom/android/server/soundtrigger/SoundTriggerHelper;->mModelDataMap:Ljava/util/HashMap;
-
-    invoke-virtual {v2, p1}, Ljava/util/HashMap;->remove(Ljava/lang/Object;)Ljava/lang/Object;
-
-    .line 567
-    monitor-exit v0
-
-    return v1
-
-    .line 538
-    :cond_a1
-    :goto_a1
-    const-string v2, "SoundTriggerHelper"
-
-    new-instance v3, Ljava/lang/StringBuilder;
-
-    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
-
-    const-string v4, "Unload error: Attempting unload invalid generic model with id:"
-
-    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v3, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
-
-    move-result-object p1
-
-    invoke-static {v2, p1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v4}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 540
     monitor-exit v0
 
-    return v1
+    return v3
 
-    .line 534
-    :cond_b9
-    :goto_b9
+    .line 542
+    :cond_46
+    invoke-virtual {v2}, Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;->isModelStarted()Z
+
+    move-result v1
+
+    if-eqz v1, :cond_69
+
+    .line 543
+    invoke-direct {p0, v2, v3}, Lcom/android/server/soundtrigger/SoundTriggerHelper;->stopRecognitionLocked(Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;Z)I
+
+    move-result v1
+
+    .line 545
+    .local v1, "status":I
+    if-eqz v1, :cond_69
+
+    .line 546
+    const-string v3, "SoundTriggerHelper"
+
+    new-instance v4, Ljava/lang/StringBuilder;
+
+    invoke-direct {v4}, Ljava/lang/StringBuilder;-><init>()V
+
+    const-string/jumbo v5, "stopGenericRecognition failed: "
+
+    invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v4, v1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v4}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v4
+
+    invoke-static {v3, v4}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+
+    .line 550
+    .end local v1  # "status":I
+    :cond_69
+    iget-object v1, p0, Lcom/android/server/soundtrigger/SoundTriggerHelper;->mModule:Landroid/hardware/soundtrigger/SoundTriggerModule;
+
+    invoke-virtual {v2}, Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;->getHandle()I
+
+    move-result v3
+
+    invoke-virtual {v1, v3}, Landroid/hardware/soundtrigger/SoundTriggerModule;->unloadSoundModel(I)I
+
+    move-result v1
+
+    .line 551
+    .restart local v1  # "status":I
+    if-eqz v1, :cond_94
+
+    .line 552
+    const-string v3, "SoundTriggerHelper"
+
+    new-instance v4, Ljava/lang/StringBuilder;
+
+    invoke-direct {v4}, Ljava/lang/StringBuilder;-><init>()V
+
+    const-string/jumbo v5, "unloadGenericSoundModel() call failed with "
+
+    invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v4, v1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v4}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v4
+
+    invoke-static {v3, v4}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+
+    .line 553
+    const-string v3, "SoundTriggerHelper"
+
+    const-string/jumbo v4, "unloadGenericSoundModel() force-marking model as unloaded."
+
+    invoke-static {v3, v4}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+
+    .line 557
+    :cond_94
+    iget-object v3, p0, Lcom/android/server/soundtrigger/SoundTriggerHelper;->mModelDataMap:Ljava/util/HashMap;
+
+    invoke-virtual {v3, p1}, Ljava/util/HashMap;->remove(Ljava/lang/Object;)Ljava/lang/Object;
+
+    .line 559
     monitor-exit v0
 
     return v1
 
-    .line 568
-    :catchall_bb
-    move-exception p1
+    .line 533
+    .end local v1  # "status":I
+    :cond_9b
+    :goto_9b
+    const-string v3, "SoundTriggerHelper"
+
+    new-instance v4, Ljava/lang/StringBuilder;
+
+    invoke-direct {v4}, Ljava/lang/StringBuilder;-><init>()V
+
+    const-string v5, "Unload error: Attempting unload invalid generic model with id:"
+
+    invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v4, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v4}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v4
+
+    invoke-static {v3, v4}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+
+    .line 535
+    monitor-exit v0
+
+    return v1
+
+    .line 529
+    .end local v2  # "modelData":Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;
+    :cond_b3
+    :goto_b3
+    monitor-exit v0
+
+    return v1
+
+    .line 560
+    :catchall_b5
+    move-exception v1
 
     monitor-exit v0
-    :try_end_bd
-    .catchall {:try_start_3 .. :try_end_bd} :catchall_bb
+    :try_end_b7
+    .catchall {:try_start_3 .. :try_end_b7} :catchall_b5
 
-    throw p1
+    throw v1
 .end method
 
 .method unloadKeyphraseSoundModel(I)I
     .registers 8
+    .param p1, "keyphraseId"  # I
 
-    .line 503
+    .line 498
     iget-object v0, p0, Lcom/android/server/soundtrigger/SoundTriggerHelper;->mLock:Ljava/lang/Object;
 
     monitor-enter v0
 
-    .line 504
+    .line 499
     :try_start_3
     iget-object v1, p0, Lcom/android/server/soundtrigger/SoundTriggerHelper;->mContext:Landroid/content/Context;
 
@@ -4562,42 +4657,43 @@
 
     invoke-static {v1, v2, v3}, Lcom/android/internal/logging/MetricsLogger;->count(Landroid/content/Context;Ljava/lang/String;I)V
 
-    .line 505
+    .line 500
     invoke-direct {p0, p1}, Lcom/android/server/soundtrigger/SoundTriggerHelper;->getKeyphraseModelDataLocked(I)Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;
 
     move-result-object v1
 
-    .line 506
+    .line 501
+    .local v1, "modelData":Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;
     iget-object v2, p0, Lcom/android/server/soundtrigger/SoundTriggerHelper;->mModule:Landroid/hardware/soundtrigger/SoundTriggerModule;
 
     const/high16 v3, -0x80000000
 
-    if-eqz v2, :cond_71
+    if-eqz v2, :cond_72
 
-    if-eqz v1, :cond_71
+    if-eqz v1, :cond_72
 
     invoke-virtual {v1}, Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;->getHandle()I
 
     move-result v2
 
-    if-eq v2, v3, :cond_71
+    if-eq v2, v3, :cond_72
 
-    .line 507
+    .line 502
     invoke-virtual {v1}, Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;->isKeyphraseModel()Z
 
     move-result v2
 
     if-nez v2, :cond_25
 
-    goto :goto_71
+    goto :goto_72
 
-    .line 512
+    .line 507
     :cond_25
     const/4 v2, 0x0
 
     invoke-virtual {v1, v2}, Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;->setRequested(Z)V
 
-    .line 513
+    .line 508
     invoke-direct {p0}, Lcom/android/server/soundtrigger/SoundTriggerHelper;->isRecognitionAllowed()Z
 
     move-result v3
@@ -4606,10 +4702,11 @@
 
     move-result v2
 
-    .line 515
+    .line 510
+    .local v2, "status":I
     if-eqz v2, :cond_49
 
-    .line 516
+    .line 511
     const-string v3, "SoundTriggerHelper"
 
     new-instance v4, Ljava/lang/StringBuilder;
@@ -4624,67 +4721,71 @@
 
     invoke-virtual {v4}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v2
+    move-result-object v4
 
-    invoke-static {v3, v2}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v3, v4}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 519
+    .line 514
     :cond_49
-    iget-object v2, p0, Lcom/android/server/soundtrigger/SoundTriggerHelper;->mModule:Landroid/hardware/soundtrigger/SoundTriggerModule;
+    iget-object v3, p0, Lcom/android/server/soundtrigger/SoundTriggerHelper;->mModule:Landroid/hardware/soundtrigger/SoundTriggerModule;
 
     invoke-virtual {v1}, Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;->getHandle()I
 
-    move-result v1
+    move-result v4
 
-    invoke-virtual {v2, v1}, Landroid/hardware/soundtrigger/SoundTriggerModule;->unloadSoundModel(I)I
+    invoke-virtual {v3, v4}, Landroid/hardware/soundtrigger/SoundTriggerModule;->unloadSoundModel(I)I
 
-    move-result v1
+    move-result v3
+
+    move v2, v3
+
+    .line 515
+    if-eqz v2, :cond_6d
+
+    .line 516
+    const-string v3, "SoundTriggerHelper"
+
+    new-instance v4, Ljava/lang/StringBuilder;
+
+    invoke-direct {v4}, Ljava/lang/StringBuilder;-><init>()V
+
+    const-string/jumbo v5, "unloadKeyphraseSoundModel call failed with "
+
+    invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v4, v2}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v4}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v4
+
+    invoke-static {v3, v4}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 520
-    if-eqz v1, :cond_6c
-
-    .line 521
-    const-string v2, "SoundTriggerHelper"
-
-    new-instance v3, Ljava/lang/StringBuilder;
-
-    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
-
-    const-string/jumbo v4, "unloadKeyphraseSoundModel call failed with "
-
-    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v3, v1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
-
-    move-result-object v3
-
-    invoke-static {v2, v3}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
-
-    .line 525
-    :cond_6c
+    :cond_6d
     invoke-direct {p0, p1}, Lcom/android/server/soundtrigger/SoundTriggerHelper;->removeKeyphraseModelLocked(I)V
 
-    .line 526
+    .line 521
     monitor-exit v0
 
-    return v1
+    return v2
 
-    .line 508
-    :cond_71
-    :goto_71
+    .line 503
+    .end local v2  # "status":I
+    :cond_72
+    :goto_72
     monitor-exit v0
 
     return v3
 
-    .line 527
-    :catchall_73
-    move-exception p1
+    .line 522
+    .end local v1  # "modelData":Lcom/android/server/soundtrigger/SoundTriggerHelper$ModelData;
+    :catchall_74
+    move-exception v1
 
     monitor-exit v0
-    :try_end_75
-    .catchall {:try_start_3 .. :try_end_75} :catchall_73
+    :try_end_76
+    .catchall {:try_start_3 .. :try_end_76} :catchall_74
 
-    throw p1
+    throw v1
 .end method

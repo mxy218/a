@@ -94,7 +94,7 @@
 
     sget-object v1, Ljava/lang/Integer;->TYPE:Ljava/lang/Class;
 
-    const-string v2, "long_press_timeout"
+    const-string/jumbo v2, "long_press_timeout"
 
     invoke-interface {v0, v2, v1}, Ljava/util/Map;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
 
@@ -311,6 +311,7 @@
 
 .method public constructor <init>(Lcom/android/server/am/ActivityManagerService;)V
     .registers 3
+    .param p1, "activityManagerService"  # Lcom/android/server/am/ActivityManagerService;
 
     .line 94
     iget-object v0, p1, Lcom/android/server/am/ActivityManagerService;->mHandler:Lcom/android/server/am/ActivityManagerService$MainHandler;
@@ -338,7 +339,7 @@
 .end method
 
 .method private beginObserveCoreSettings()V
-    .registers 5
+    .registers 6
 
     .line 119
     sget-object v0, Lcom/android/server/am/CoreSettingsObserver;->sSecureSettingToTypeMap:Ljava/util/Map;
@@ -367,22 +368,26 @@
     check-cast v1, Ljava/lang/String;
 
     .line 120
+    .local v1, "setting":Ljava/lang/String;
     invoke-static {v1}, Landroid/provider/Settings$Secure;->getUriFor(Ljava/lang/String;)Landroid/net/Uri;
-
-    move-result-object v1
-
-    .line 121
-    iget-object v3, p0, Lcom/android/server/am/CoreSettingsObserver;->mActivityManagerService:Lcom/android/server/am/ActivityManagerService;
-
-    iget-object v3, v3, Lcom/android/server/am/ActivityManagerService;->mContext:Landroid/content/Context;
-
-    invoke-virtual {v3}, Landroid/content/Context;->getContentResolver()Landroid/content/ContentResolver;
 
     move-result-object v3
 
-    invoke-virtual {v3, v1, v2, p0}, Landroid/content/ContentResolver;->registerContentObserver(Landroid/net/Uri;ZLandroid/database/ContentObserver;)V
+    .line 121
+    .local v3, "uri":Landroid/net/Uri;
+    iget-object v4, p0, Lcom/android/server/am/CoreSettingsObserver;->mActivityManagerService:Lcom/android/server/am/ActivityManagerService;
+
+    iget-object v4, v4, Lcom/android/server/am/ActivityManagerService;->mContext:Landroid/content/Context;
+
+    invoke-virtual {v4}, Landroid/content/Context;->getContentResolver()Landroid/content/ContentResolver;
+
+    move-result-object v4
+
+    invoke-virtual {v4, v3, v2, p0}, Landroid/content/ContentResolver;->registerContentObserver(Landroid/net/Uri;ZLandroid/database/ContentObserver;)V
 
     .line 123
+    .end local v1  # "setting":Ljava/lang/String;
+    .end local v3  # "uri":Landroid/net/Uri;
     goto :goto_a
 
     .line 125
@@ -411,22 +416,26 @@
     check-cast v1, Ljava/lang/String;
 
     .line 126
+    .restart local v1  # "setting":Ljava/lang/String;
     invoke-static {v1}, Landroid/provider/Settings$System;->getUriFor(Ljava/lang/String;)Landroid/net/Uri;
-
-    move-result-object v1
-
-    .line 127
-    iget-object v3, p0, Lcom/android/server/am/CoreSettingsObserver;->mActivityManagerService:Lcom/android/server/am/ActivityManagerService;
-
-    iget-object v3, v3, Lcom/android/server/am/ActivityManagerService;->mContext:Landroid/content/Context;
-
-    invoke-virtual {v3}, Landroid/content/Context;->getContentResolver()Landroid/content/ContentResolver;
 
     move-result-object v3
 
-    invoke-virtual {v3, v1, v2, p0}, Landroid/content/ContentResolver;->registerContentObserver(Landroid/net/Uri;ZLandroid/database/ContentObserver;)V
+    .line 127
+    .restart local v3  # "uri":Landroid/net/Uri;
+    iget-object v4, p0, Lcom/android/server/am/CoreSettingsObserver;->mActivityManagerService:Lcom/android/server/am/ActivityManagerService;
+
+    iget-object v4, v4, Lcom/android/server/am/ActivityManagerService;->mContext:Landroid/content/Context;
+
+    invoke-virtual {v4}, Landroid/content/Context;->getContentResolver()Landroid/content/ContentResolver;
+
+    move-result-object v4
+
+    invoke-virtual {v4, v3, v2, p0}, Landroid/content/ContentResolver;->registerContentObserver(Landroid/net/Uri;ZLandroid/database/ContentObserver;)V
 
     .line 129
+    .end local v1  # "setting":Ljava/lang/String;
+    .end local v3  # "uri":Landroid/net/Uri;
     goto :goto_31
 
     .line 131
@@ -455,22 +464,26 @@
     check-cast v1, Ljava/lang/String;
 
     .line 132
+    .restart local v1  # "setting":Ljava/lang/String;
     invoke-static {v1}, Landroid/provider/Settings$Global;->getUriFor(Ljava/lang/String;)Landroid/net/Uri;
-
-    move-result-object v1
-
-    .line 133
-    iget-object v3, p0, Lcom/android/server/am/CoreSettingsObserver;->mActivityManagerService:Lcom/android/server/am/ActivityManagerService;
-
-    iget-object v3, v3, Lcom/android/server/am/ActivityManagerService;->mContext:Landroid/content/Context;
-
-    invoke-virtual {v3}, Landroid/content/Context;->getContentResolver()Landroid/content/ContentResolver;
 
     move-result-object v3
 
-    invoke-virtual {v3, v1, v2, p0}, Landroid/content/ContentResolver;->registerContentObserver(Landroid/net/Uri;ZLandroid/database/ContentObserver;)V
+    .line 133
+    .restart local v3  # "uri":Landroid/net/Uri;
+    iget-object v4, p0, Lcom/android/server/am/CoreSettingsObserver;->mActivityManagerService:Lcom/android/server/am/ActivityManagerService;
+
+    iget-object v4, v4, Lcom/android/server/am/ActivityManagerService;->mContext:Landroid/content/Context;
+
+    invoke-virtual {v4}, Landroid/content/Context;->getContentResolver()Landroid/content/ContentResolver;
+
+    move-result-object v4
+
+    invoke-virtual {v4, v3, v2, p0}, Landroid/content/ContentResolver;->registerContentObserver(Landroid/net/Uri;ZLandroid/database/ContentObserver;)V
 
     .line 135
+    .end local v1  # "setting":Ljava/lang/String;
+    .end local v3  # "uri":Landroid/net/Uri;
     goto :goto_57
 
     .line 136
@@ -531,12 +544,13 @@
 .end method
 
 .method public onChange(Z)V
-    .registers 3
+    .registers 4
+    .param p1, "selfChange"  # Z
 
     .line 106
-    iget-object p1, p0, Lcom/android/server/am/CoreSettingsObserver;->mActivityManagerService:Lcom/android/server/am/ActivityManagerService;
+    iget-object v0, p0, Lcom/android/server/am/CoreSettingsObserver;->mActivityManagerService:Lcom/android/server/am/ActivityManagerService;
 
-    monitor-enter p1
+    monitor-enter v0
 
     :try_start_3
     invoke-static {}, Lcom/android/server/am/ActivityManagerService;->boostPriorityForLockedSection()V
@@ -545,7 +559,7 @@
     invoke-direct {p0}, Lcom/android/server/am/CoreSettingsObserver;->sendCoreSettings()V
 
     .line 108
-    monitor-exit p1
+    monitor-exit v0
     :try_end_a
     .catchall {:try_start_3 .. :try_end_a} :catchall_e
 
@@ -556,20 +570,21 @@
 
     .line 108
     :catchall_e
-    move-exception v0
+    move-exception v1
 
     :try_start_f
-    monitor-exit p1
+    monitor-exit v0
     :try_end_10
     .catchall {:try_start_f .. :try_end_10} :catchall_e
 
     invoke-static {}, Lcom/android/server/am/ActivityManagerService;->resetPriorityAfterLockedSection()V
 
-    throw v0
+    throw v1
 .end method
 
 .method populateSettings(Landroid/os/Bundle;Ljava/util/Map;)V
-    .registers 9
+    .registers 11
+    .param p1, "snapshot"  # Landroid/os/Bundle;
     .annotation build Lcom/android/internal/annotations/VisibleForTesting;
     .end annotation
 
@@ -585,11 +600,13 @@
     .end annotation
 
     .line 140
+    .local p2, "map":Ljava/util/Map;, "Ljava/util/Map<Ljava/lang/String;Ljava/lang/Class<*>;>;"
     iget-object v0, p0, Lcom/android/server/am/CoreSettingsObserver;->mActivityManagerService:Lcom/android/server/am/ActivityManagerService;
 
     iget-object v0, v0, Lcom/android/server/am/ActivityManagerService;->mContext:Landroid/content/Context;
 
     .line 141
+    .local v0, "context":Landroid/content/Context;
     invoke-interface {p2}, Ljava/util/Map;->entrySet()Ljava/util/Set;
 
     move-result-object v1
@@ -612,6 +629,7 @@
     check-cast v2, Ljava/util/Map$Entry;
 
     .line 142
+    .local v2, "entry":Ljava/util/Map$Entry;, "Ljava/util/Map$Entry<Ljava/lang/String;Ljava/lang/Class<*>;>;"
     invoke-interface {v2}, Ljava/util/Map$Entry;->getKey()Ljava/lang/Object;
 
     move-result-object v3
@@ -619,6 +637,7 @@
     check-cast v3, Ljava/lang/String;
 
     .line 144
+    .local v3, "setting":Ljava/lang/String;
     sget-object v4, Lcom/android/server/am/CoreSettingsObserver;->sSecureSettingToTypeMap:Ljava/util/Map;
 
     if-ne p2, v4, :cond_2b
@@ -632,9 +651,11 @@
 
     move-result-object v4
 
+    .local v4, "value":Ljava/lang/String;
     goto :goto_40
 
     .line 146
+    .end local v4  # "value":Ljava/lang/String;
     :cond_2b
     sget-object v4, Lcom/android/server/am/CoreSettingsObserver;->sSystemSettingToTypeMap:Ljava/util/Map;
 
@@ -649,9 +670,11 @@
 
     move-result-object v4
 
+    .restart local v4  # "value":Ljava/lang/String;
     goto :goto_40
 
     .line 149
+    .end local v4  # "value":Ljava/lang/String;
     :cond_38
     invoke-virtual {v0}, Landroid/content/Context;->getContentResolver()Landroid/content/ContentResolver;
 
@@ -662,6 +685,7 @@
     move-result-object v4
 
     .line 151
+    .restart local v4  # "value":Ljava/lang/String;
     :goto_40
     if-nez v4, :cond_46
 
@@ -675,14 +699,15 @@
     :cond_46
     invoke-interface {v2}, Ljava/util/Map$Entry;->getValue()Ljava/lang/Object;
 
-    move-result-object v2
+    move-result-object v5
 
-    check-cast v2, Ljava/lang/Class;
+    check-cast v5, Ljava/lang/Class;
 
     .line 156
-    const-class v5, Ljava/lang/String;
+    .local v5, "type":Ljava/lang/Class;, "Ljava/lang/Class<*>;"
+    const-class v6, Ljava/lang/String;
 
-    if-ne v2, v5, :cond_54
+    if-ne v5, v6, :cond_54
 
     .line 157
     invoke-virtual {p1, v3, v4}, Landroid/os/Bundle;->putString(Ljava/lang/String;Ljava/lang/String;)V
@@ -691,48 +716,52 @@
 
     .line 158
     :cond_54
-    sget-object v5, Ljava/lang/Integer;->TYPE:Ljava/lang/Class;
+    sget-object v6, Ljava/lang/Integer;->TYPE:Ljava/lang/Class;
 
-    if-ne v2, v5, :cond_60
+    if-ne v5, v6, :cond_60
 
     .line 159
     invoke-static {v4}, Ljava/lang/Integer;->parseInt(Ljava/lang/String;)I
 
-    move-result v2
+    move-result v6
 
-    invoke-virtual {p1, v3, v2}, Landroid/os/Bundle;->putInt(Ljava/lang/String;I)V
+    invoke-virtual {p1, v3, v6}, Landroid/os/Bundle;->putInt(Ljava/lang/String;I)V
 
     goto :goto_77
 
     .line 160
     :cond_60
-    sget-object v5, Ljava/lang/Float;->TYPE:Ljava/lang/Class;
+    sget-object v6, Ljava/lang/Float;->TYPE:Ljava/lang/Class;
 
-    if-ne v2, v5, :cond_6c
+    if-ne v5, v6, :cond_6c
 
     .line 161
     invoke-static {v4}, Ljava/lang/Float;->parseFloat(Ljava/lang/String;)F
 
-    move-result v2
+    move-result v6
 
-    invoke-virtual {p1, v3, v2}, Landroid/os/Bundle;->putFloat(Ljava/lang/String;F)V
+    invoke-virtual {p1, v3, v6}, Landroid/os/Bundle;->putFloat(Ljava/lang/String;F)V
 
     goto :goto_77
 
     .line 162
     :cond_6c
-    sget-object v5, Ljava/lang/Long;->TYPE:Ljava/lang/Class;
+    sget-object v6, Ljava/lang/Long;->TYPE:Ljava/lang/Class;
 
-    if-ne v2, v5, :cond_77
+    if-ne v5, v6, :cond_77
 
     .line 163
     invoke-static {v4}, Ljava/lang/Long;->parseLong(Ljava/lang/String;)J
 
-    move-result-wide v4
+    move-result-wide v6
 
-    invoke-virtual {p1, v3, v4, v5}, Landroid/os/Bundle;->putLong(Ljava/lang/String;J)V
+    invoke-virtual {p1, v3, v6, v7}, Landroid/os/Bundle;->putLong(Ljava/lang/String;J)V
 
     .line 165
+    .end local v2  # "entry":Ljava/util/Map$Entry;, "Ljava/util/Map$Entry<Ljava/lang/String;Ljava/lang/Class<*>;>;"
+    .end local v3  # "setting":Ljava/lang/String;
+    .end local v4  # "value":Ljava/lang/String;
+    .end local v5  # "type":Ljava/lang/Class;, "Ljava/lang/Class<*>;"
     :cond_77
     :goto_77
     goto :goto_c

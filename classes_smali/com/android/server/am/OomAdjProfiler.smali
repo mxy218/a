@@ -171,21 +171,23 @@
 .end method
 
 .method static synthetic access$100(Lcom/android/server/am/OomAdjProfiler;)Z
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/am/OomAdjProfiler;
 
     .line 31
-    iget-boolean p0, p0, Lcom/android/server/am/OomAdjProfiler;->mOnBattery:Z
+    iget-boolean v0, p0, Lcom/android/server/am/OomAdjProfiler;->mOnBattery:Z
 
-    return p0
+    return v0
 .end method
 
 .method static synthetic access$200(Lcom/android/server/am/OomAdjProfiler;)Z
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/am/OomAdjProfiler;
 
     .line 31
-    iget-boolean p0, p0, Lcom/android/server/am/OomAdjProfiler;->mScreenOff:Z
+    iget-boolean v0, p0, Lcom/android/server/am/OomAdjProfiler;->mScreenOff:Z
 
-    return p0
+    return v0
 .end method
 
 .method private scheduleSystemServerCpuTimeUpdate()V
@@ -197,6 +199,8 @@
 
 .method private updateSystemServerCpuTime(ZZ)V
     .registers 3
+    .param p1, "onBattery"  # Z
+    .param p2, "screenOff"  # Z
 
     .line 120
     return-void
@@ -206,6 +210,7 @@
 # virtual methods
 .method batteryPowerChanged(Z)V
     .registers 2
+    .param p1, "onBattery"  # Z
 
     .line 63
     return-void
@@ -213,6 +218,7 @@
 
 .method dump(Ljava/io/PrintWriter;)V
     .registers 2
+    .param p1, "pw"  # Ljava/io/PrintWriter;
 
     .line 146
     return-void
@@ -220,6 +226,7 @@
 
 .method onWakefulnessChanged(I)V
     .registers 2
+    .param p1, "wakefulness"  # I
 
     .line 73
     return-void

@@ -23,8 +23,9 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/am/BatteryStatsService;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/am/BatteryStatsService;
 
-    .line 183
+    .line 196
     iput-object p1, p0, Lcom/android/server/am/BatteryStatsService$1;->this$0:Lcom/android/server/am/BatteryStatsService;
 
     invoke-direct {p0}, Lcom/android/internal/os/BatteryStatsImpl$UserInfoProvider;-><init>()V
@@ -37,12 +38,12 @@
 .method public getUserIds()[I
     .registers 2
 
-    .line 187
+    .line 200
     iget-object v0, p0, Lcom/android/server/am/BatteryStatsService$1;->umi:Landroid/os/UserManagerInternal;
 
     if-nez v0, :cond_e
 
-    .line 188
+    .line 201
     const-class v0, Landroid/os/UserManagerInternal;
 
     invoke-static {v0}, Lcom/android/server/LocalServices;->getService(Ljava/lang/Class;)Ljava/lang/Object;
@@ -53,7 +54,7 @@
 
     iput-object v0, p0, Lcom/android/server/am/BatteryStatsService$1;->umi:Landroid/os/UserManagerInternal;
 
-    .line 190
+    .line 203
     :cond_e
     iget-object v0, p0, Lcom/android/server/am/BatteryStatsService$1;->umi:Landroid/os/UserManagerInternal;
 

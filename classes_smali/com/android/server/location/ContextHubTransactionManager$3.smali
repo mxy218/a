@@ -27,6 +27,9 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/location/ContextHubTransactionManager;IIIJLandroid/hardware/location/IContextHubTransactionCallback;)V
     .registers 8
+    .param p1, "this$0"  # Lcom/android/server/location/ContextHubTransactionManager;
+    .param p2, "id"  # I
+    .param p3, "type"  # I
 
     .line 195
     iput-object p1, p0, Lcom/android/server/location/ContextHubTransactionManager$3;->this$0:Lcom/android/server/location/ContextHubTransactionManager;
@@ -78,6 +81,7 @@
     move-exception v0
 
     .line 202
+    .local v0, "e":Landroid/os/RemoteException;
     new-instance v1, Ljava/lang/StringBuilder;
 
     invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
@@ -105,13 +109,14 @@
     invoke-static {v2, v1, v0}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
     .line 204
-    const/4 v0, 0x1
+    const/4 v1, 0x1
 
-    return v0
+    return v1
 .end method
 
 .method onTransactionComplete(I)V
-    .registers 4
+    .registers 5
+    .param p1, "result"  # I
 
     .line 211
     :try_start_0
@@ -126,16 +131,18 @@
 
     .line 212
     :catch_6
-    move-exception p1
+    move-exception v0
 
     .line 213
-    const-string v0, "ContextHubTransactionManager"
+    .local v0, "e":Landroid/os/RemoteException;
+    const-string v1, "ContextHubTransactionManager"
 
-    const-string v1, "RemoteException while calling client onTransactionComplete"
+    const-string v2, "RemoteException while calling client onTransactionComplete"
 
-    invoke-static {v0, v1, p1}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    invoke-static {v1, v2, v0}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
     .line 215
+    .end local v0  # "e":Landroid/os/RemoteException;
     :goto_e
     return-void
 .end method

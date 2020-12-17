@@ -35,6 +35,8 @@
 
 .method synthetic constructor <init>(Lcom/android/server/accounts/AccountManagerBackupHelper;Lcom/android/server/accounts/AccountManagerBackupHelper$1;)V
     .registers 3
+    .param p1, "x0"  # Lcom/android/server/accounts/AccountManagerBackupHelper;
+    .param p2, "x1"  # Lcom/android/server/accounts/AccountManagerBackupHelper$1;
 
     .line 307
     invoke-direct {p0, p1}, Lcom/android/server/accounts/AccountManagerBackupHelper$CancelRestoreCommand;-><init>(Lcom/android/server/accounts/AccountManagerBackupHelper;)V

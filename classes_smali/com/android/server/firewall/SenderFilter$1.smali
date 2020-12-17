@@ -17,6 +17,7 @@
 # direct methods
 .method constructor <init>(Ljava/lang/String;)V
     .registers 2
+    .param p1, "tag"  # Ljava/lang/String;
 
     .line 58
     invoke-direct {p0, p1}, Lcom/android/server/firewall/FilterFactory;-><init>(Ljava/lang/String;)V
@@ -28,6 +29,7 @@
 # virtual methods
 .method public newFilter(Lorg/xmlpull/v1/XmlPullParser;)Lcom/android/server/firewall/Filter;
     .registers 7
+    .param p1, "parser"  # Lorg/xmlpull/v1/XmlPullParser;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Ljava/io/IOException;,
@@ -45,6 +47,7 @@
     move-result-object v1
 
     .line 62
+    .local v1, "typeString":Ljava/lang/String;
     if-eqz v1, :cond_59
 
     .line 66
@@ -59,9 +62,9 @@
     .line 67
     invoke-static {}, Lcom/android/server/firewall/SenderFilter;->access$000()Lcom/android/server/firewall/Filter;
 
-    move-result-object p1
+    move-result-object v0
 
-    return-object p1
+    return-object v0
 
     .line 68
     :cond_18
@@ -76,9 +79,9 @@
     .line 69
     invoke-static {}, Lcom/android/server/firewall/SenderFilter;->access$100()Lcom/android/server/firewall/Filter;
 
-    move-result-object p1
+    move-result-object v0
 
-    return-object p1
+    return-object v0
 
     .line 70
     :cond_26
@@ -93,9 +96,9 @@
     .line 71
     invoke-static {}, Lcom/android/server/firewall/SenderFilter;->access$200()Lcom/android/server/firewall/Filter;
 
-    move-result-object p1
+    move-result-object v0
 
-    return-object p1
+    return-object v0
 
     .line 72
     :cond_34
@@ -110,9 +113,9 @@
     .line 73
     invoke-static {}, Lcom/android/server/firewall/SenderFilter;->access$300()Lcom/android/server/firewall/Filter;
 
-    move-result-object p1
+    move-result-object v0
 
-    return-object p1
+    return-object v0
 
     .line 75
     :cond_42
@@ -130,19 +133,19 @@
 
     invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v1
+    move-result-object v3
 
-    invoke-direct {v2, v1, p1, v0}, Lorg/xmlpull/v1/XmlPullParserException;-><init>(Ljava/lang/String;Lorg/xmlpull/v1/XmlPullParser;Ljava/lang/Throwable;)V
+    invoke-direct {v2, v3, p1, v0}, Lorg/xmlpull/v1/XmlPullParserException;-><init>(Ljava/lang/String;Lorg/xmlpull/v1/XmlPullParser;Ljava/lang/Throwable;)V
 
     throw v2
 
     .line 63
     :cond_59
-    new-instance v1, Lorg/xmlpull/v1/XmlPullParserException;
+    new-instance v2, Lorg/xmlpull/v1/XmlPullParserException;
 
-    const-string/jumbo v2, "type attribute must be specified for <sender>"
+    const-string/jumbo v3, "type attribute must be specified for <sender>"
 
-    invoke-direct {v1, v2, p1, v0}, Lorg/xmlpull/v1/XmlPullParserException;-><init>(Ljava/lang/String;Lorg/xmlpull/v1/XmlPullParser;Ljava/lang/Throwable;)V
+    invoke-direct {v2, v3, p1, v0}, Lorg/xmlpull/v1/XmlPullParserException;-><init>(Ljava/lang/String;Lorg/xmlpull/v1/XmlPullParser;Ljava/lang/Throwable;)V
 
-    throw v1
+    throw v2
 .end method

@@ -23,6 +23,8 @@
 # direct methods
 .method constructor <init>(Landroid/app/ActivityManager$TaskSnapshot;Lcom/android/server/wm/AppWindowToken;)V
     .registers 3
+    .param p1, "snapshot"  # Landroid/app/ActivityManager$TaskSnapshot;
+    .param p2, "topApp"  # Lcom/android/server/wm/AppWindowToken;
 
     .line 139
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V

@@ -40,20 +40,22 @@
 .end method
 
 .method protected isPackageForFilter(Ljava/lang/String;Lcom/android/server/pm/PersistentPreferredActivity;)Z
-    .registers 3
+    .registers 4
+    .param p1, "packageName"  # Ljava/lang/String;
+    .param p2, "filter"  # Lcom/android/server/pm/PersistentPreferredActivity;
 
     .line 30
-    iget-object p2, p2, Lcom/android/server/pm/PersistentPreferredActivity;->mComponent:Landroid/content/ComponentName;
+    iget-object v0, p2, Lcom/android/server/pm/PersistentPreferredActivity;->mComponent:Landroid/content/ComponentName;
 
-    invoke-virtual {p2}, Landroid/content/ComponentName;->getPackageName()Ljava/lang/String;
+    invoke-virtual {v0}, Landroid/content/ComponentName;->getPackageName()Ljava/lang/String;
 
-    move-result-object p2
+    move-result-object v0
 
-    invoke-virtual {p1, p2}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {p1, v0}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result p1
+    move-result v0
 
-    return p1
+    return v0
 .end method
 
 .method protected bridge synthetic newArray(I)[Landroid/content/IntentFilter;
@@ -68,10 +70,11 @@
 .end method
 
 .method protected newArray(I)[Lcom/android/server/pm/PersistentPreferredActivity;
-    .registers 2
+    .registers 3
+    .param p1, "size"  # I
 
     .line 25
-    new-array p1, p1, [Lcom/android/server/pm/PersistentPreferredActivity;
+    new-array v0, p1, [Lcom/android/server/pm/PersistentPreferredActivity;
 
-    return-object p1
+    return-object v0
 .end method

@@ -33,7 +33,9 @@
 
 # direct methods
 .method private static synthetic $closeResource(Ljava/lang/Throwable;Ljava/lang/AutoCloseable;)V
-    .registers 2
+    .registers 3
+    .param p0, "x0"  # Ljava/lang/Throwable;
+    .param p1, "x1"  # Ljava/lang/AutoCloseable;
 
     .line 99
     if-eqz p0, :cond_b
@@ -46,9 +48,9 @@
     goto :goto_e
 
     :catchall_6
-    move-exception p1
+    move-exception v0
 
-    invoke-virtual {p0, p1}, Ljava/lang/Throwable;->addSuppressed(Ljava/lang/Throwable;)V
+    invoke-virtual {p0, v0}, Ljava/lang/Throwable;->addSuppressed(Ljava/lang/Throwable;)V
 
     goto :goto_e
 
@@ -61,6 +63,7 @@
 
 .method constructor <init>(Ljava/io/File;)V
     .registers 3
+    .param p1, "stateDirectory"  # Ljava/io/File;
 
     .line 65
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -80,7 +83,7 @@
 .end method
 
 .method private loadFromDisk()V
-    .registers 6
+    .registers 7
 
     .line 129
     const-string v0, "ProcessedPackagesJournal"
@@ -94,6 +97,7 @@
     invoke-direct {v1, v2, v3}, Ljava/io/File;-><init>(Ljava/io/File;Ljava/lang/String;)V
 
     .line 131
+    .local v1, "journalFile":Ljava/io/File;
     invoke-virtual {v1}, Ljava/io/File;->exists()Z
 
     move-result v2
@@ -118,84 +122,102 @@
 
     invoke-direct {v2, v3}, Ljava/io/DataInputStream;-><init>(Ljava/io/InputStream;)V
     :try_end_22
-    .catch Ljava/io/EOFException; {:try_start_13 .. :try_end_22} :catch_4e
-    .catch Ljava/io/IOException; {:try_start_13 .. :try_end_22} :catch_47
+    .catch Ljava/io/EOFException; {:try_start_13 .. :try_end_22} :catch_4f
+    .catch Ljava/io/IOException; {:try_start_13 .. :try_end_22} :catch_48
 
     .line 138
+    .local v2, "oldJournal":Ljava/io/DataInputStream;
     :goto_22
     :try_start_22
     invoke-virtual {v2}, Ljava/io/DataInputStream;->readUTF()Ljava/lang/String;
 
-    move-result-object v1
-
-    .line 140
-    new-instance v3, Ljava/lang/StringBuilder;
-
-    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
-
-    const-string v4, "   + "
-
-    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v3, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
-
     move-result-object v3
 
-    invoke-static {v0, v3}, Landroid/util/Slog;->v(Ljava/lang/String;Ljava/lang/String;)I
+    .line 140
+    .local v3, "packageName":Ljava/lang/String;
+    new-instance v4, Ljava/lang/StringBuilder;
+
+    invoke-direct {v4}, Ljava/lang/StringBuilder;-><init>()V
+
+    const-string v5, "   + "
+
+    invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v4, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v4}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v4
+
+    invoke-static {v0, v4}, Landroid/util/Slog;->v(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 142
-    iget-object v3, p0, Lcom/android/server/backup/ProcessedPackagesJournal;->mProcessedPackages:Ljava/util/Set;
+    iget-object v4, p0, Lcom/android/server/backup/ProcessedPackagesJournal;->mProcessedPackages:Ljava/util/Set;
 
-    invoke-interface {v3, v1}, Ljava/util/Set;->add(Ljava/lang/Object;)Z
+    invoke-interface {v4, v3}, Ljava/util/Set;->add(Ljava/lang/Object;)Z
     :try_end_3f
-    .catchall {:try_start_22 .. :try_end_3f} :catchall_40
+    .catchall {:try_start_22 .. :try_end_3f} :catchall_41
 
     .line 143
+    nop
+
+    .end local v3  # "packageName":Ljava/lang/String;
     goto :goto_22
 
     .line 135
-    :catchall_40
-    move-exception v1
-
-    :try_start_41
-    throw v1
-    :try_end_42
-    .catchall {:try_start_41 .. :try_end_42} :catchall_42
-
-    .line 144
-    :catchall_42
+    :catchall_41
     move-exception v3
 
-    :try_start_43
-    invoke-static {v1, v2}, Lcom/android/server/backup/ProcessedPackagesJournal;->$closeResource(Ljava/lang/Throwable;Ljava/lang/AutoCloseable;)V
-
+    .end local v1  # "journalFile":Ljava/io/File;
+    .end local v2  # "oldJournal":Ljava/io/DataInputStream;
+    .end local p0  # "this":Lcom/android/server/backup/ProcessedPackagesJournal;
+    :try_start_42
     throw v3
-    :try_end_47
-    .catch Ljava/io/EOFException; {:try_start_43 .. :try_end_47} :catch_4e
-    .catch Ljava/io/IOException; {:try_start_43 .. :try_end_47} :catch_47
-
-    .line 146
-    :catch_47
-    move-exception v1
-
-    .line 147
-    const-string v2, "Error reading processed packages journal"
-
-    invoke-static {v0, v2, v1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
-
-    goto :goto_50
+    :try_end_43
+    .catchall {:try_start_42 .. :try_end_43} :catchall_43
 
     .line 144
-    :catch_4e
+    .restart local v1  # "journalFile":Ljava/io/File;
+    .restart local v2  # "oldJournal":Ljava/io/DataInputStream;
+    .restart local p0  # "this":Lcom/android/server/backup/ProcessedPackagesJournal;
+    :catchall_43
+    move-exception v4
+
+    :try_start_44
+    invoke-static {v3, v2}, Lcom/android/server/backup/ProcessedPackagesJournal;->$closeResource(Ljava/lang/Throwable;Ljava/lang/AutoCloseable;)V
+
+    .end local v1  # "journalFile":Ljava/io/File;
+    .end local p0  # "this":Lcom/android/server/backup/ProcessedPackagesJournal;
+    throw v4
+    :try_end_48
+    .catch Ljava/io/EOFException; {:try_start_44 .. :try_end_48} :catch_4f
+    .catch Ljava/io/IOException; {:try_start_44 .. :try_end_48} :catch_48
+
+    .line 146
+    .end local v2  # "oldJournal":Ljava/io/DataInputStream;
+    .restart local v1  # "journalFile":Ljava/io/File;
+    .restart local p0  # "this":Lcom/android/server/backup/ProcessedPackagesJournal;
+    :catch_48
+    move-exception v2
+
+    .line 147
+    .local v2, "e":Ljava/io/IOException;
+    const-string v3, "Error reading processed packages journal"
+
+    invoke-static {v0, v3, v2}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+
+    goto :goto_51
+
+    .line 144
+    .end local v2  # "e":Ljava/io/IOException;
+    :catch_4f
     move-exception v0
 
     .line 148
     nop
 
     .line 149
-    :goto_50
+    :goto_51
     return-void
 .end method
 
@@ -203,6 +225,7 @@
 # virtual methods
 .method addPackage(Ljava/lang/String;)V
     .registers 8
+    .param p1, "packageName"  # Ljava/lang/String;
 
     .line 88
     iget-object v0, p0, Lcom/android/server/backup/ProcessedPackagesJournal;->mProcessedPackages:Ljava/util/Set;
@@ -237,6 +260,7 @@
     .catchall {:try_start_3 .. :try_end_17} :catchall_56
 
     .line 96
+    .local v1, "journalFile":Ljava/io/File;
     :try_start_17
     new-instance v2, Ljava/io/RandomAccessFile;
 
@@ -247,6 +271,7 @@
     .catch Ljava/io/IOException; {:try_start_17 .. :try_end_1f} :catch_35
     .catchall {:try_start_17 .. :try_end_1f} :catchall_56
 
+    .local v2, "out":Ljava/io/RandomAccessFile;
     const/4 v3, 0x0
 
     .line 97
@@ -270,59 +295,77 @@
     .catchall {:try_start_2a .. :try_end_2d} :catchall_56
 
     .line 101
+    .end local v2  # "out":Ljava/io/RandomAccessFile;
     goto :goto_54
 
     .line 96
+    .restart local v2  # "out":Ljava/io/RandomAccessFile;
     :catchall_2e
     move-exception v3
 
+    .end local v1  # "journalFile":Ljava/io/File;
+    .end local v2  # "out":Ljava/io/RandomAccessFile;
+    .end local p0  # "this":Lcom/android/server/backup/ProcessedPackagesJournal;
+    .end local p1  # "packageName":Ljava/lang/String;
     :try_start_2f
     throw v3
     :try_end_30
     .catchall {:try_start_2f .. :try_end_30} :catchall_30
 
     .line 99
+    .restart local v1  # "journalFile":Ljava/io/File;
+    .restart local v2  # "out":Ljava/io/RandomAccessFile;
+    .restart local p0  # "this":Lcom/android/server/backup/ProcessedPackagesJournal;
+    .restart local p1  # "packageName":Ljava/lang/String;
     :catchall_30
     move-exception v4
 
     :try_start_31
     invoke-static {v3, v2}, Lcom/android/server/backup/ProcessedPackagesJournal;->$closeResource(Ljava/lang/Throwable;Ljava/lang/AutoCloseable;)V
 
+    .end local p0  # "this":Lcom/android/server/backup/ProcessedPackagesJournal;
+    .end local p1  # "packageName":Ljava/lang/String;
     throw v4
     :try_end_35
     .catch Ljava/io/IOException; {:try_start_31 .. :try_end_35} :catch_35
     .catchall {:try_start_31 .. :try_end_35} :catchall_56
 
+    .end local v2  # "out":Ljava/io/RandomAccessFile;
+    .restart local p0  # "this":Lcom/android/server/backup/ProcessedPackagesJournal;
+    .restart local p1  # "packageName":Ljava/lang/String;
     :catch_35
     move-exception v2
 
     .line 100
+    .local v2, "e":Ljava/io/IOException;
     :try_start_36
-    const-string v2, "ProcessedPackagesJournal"
+    const-string v3, "ProcessedPackagesJournal"
 
-    new-instance v3, Ljava/lang/StringBuilder;
+    new-instance v4, Ljava/lang/StringBuilder;
 
-    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v4}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v4, "Can\'t log backup of "
+    const-string v5, "Can\'t log backup of "
 
-    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v3, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v4, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string p1, " to "
+    const-string v5, " to "
 
-    invoke-virtual {v3, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v3, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    invoke-virtual {v4, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v4}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v4
 
-    invoke-static {v2, p1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v3, v4}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 102
+    .end local v1  # "journalFile":Ljava/io/File;
+    .end local v2  # "e":Ljava/io/IOException;
     :goto_54
     monitor-exit v0
 
@@ -331,13 +374,13 @@
 
     .line 102
     :catchall_56
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_58
     .catchall {:try_start_36 .. :try_end_58} :catchall_56
 
-    throw p1
+    throw v1
 .end method
 
 .method getPackagesCopy()Ljava/util/Set;
@@ -381,6 +424,7 @@
 
 .method hasBeenProcessed(Ljava/lang/String;)Z
     .registers 4
+    .param p1, "packageName"  # Ljava/lang/String;
 
     .line 82
     iget-object v0, p0, Lcom/android/server/backup/ProcessedPackagesJournal;->mProcessedPackages:Ljava/util/Set;
@@ -393,21 +437,21 @@
 
     invoke-interface {v1, p1}, Ljava/util/Set;->contains(Ljava/lang/Object;)Z
 
-    move-result p1
+    move-result v1
 
     monitor-exit v0
 
-    return p1
+    return v1
 
     .line 84
     :catchall_b
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_d
     .catchall {:try_start_3 .. :try_end_d} :catchall_b
 
-    throw p1
+    throw v1
 .end method
 
 .method init()V
@@ -463,21 +507,25 @@
     invoke-direct {v1, v2, v3}, Ljava/io/File;-><init>(Ljava/io/File;Ljava/lang/String;)V
 
     .line 124
+    .local v1, "journalFile":Ljava/io/File;
     invoke-virtual {v1}, Ljava/io/File;->delete()Z
 
     .line 125
+    nop
+
+    .end local v1  # "journalFile":Ljava/io/File;
     monitor-exit v0
 
     .line 126
     return-void
 
     .line 125
-    :catchall_17
+    :catchall_18
     move-exception v1
 
     monitor-exit v0
-    :try_end_19
-    .catchall {:try_start_3 .. :try_end_19} :catchall_17
+    :try_end_1a
+    .catchall {:try_start_3 .. :try_end_1a} :catchall_18
 
     throw v1
 .end method

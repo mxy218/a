@@ -10,9 +10,9 @@
     .line 22
     const-string v0, "/data/misc/textclassifier/"
 
-    const-string v1, "lang_id.model"
+    const-string/jumbo v1, "lang_id.model"
 
-    const-string v2, "metadata/lang_id"
+    const-string/jumbo v2, "metadata/lang_id"
 
     const-string/jumbo v3, "version"
 
@@ -25,10 +25,12 @@
 
 # virtual methods
 .method protected verifyVersion(II)Z
-    .registers 3
+    .registers 4
+    .param p1, "current"  # I
+    .param p2, "alternative"  # I
 
     .line 31
-    const/4 p1, 0x1
+    const/4 v0, 0x1
 
-    return p1
+    return v0
 .end method

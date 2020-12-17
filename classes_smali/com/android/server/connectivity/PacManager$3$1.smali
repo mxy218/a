@@ -21,6 +21,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/connectivity/PacManager$3;)V
     .registers 2
+    .param p1, "this$1"  # Lcom/android/server/connectivity/PacManager$3;
 
     .line 355
     iput-object p1, p0, Lcom/android/server/connectivity/PacManager$3$1;->this$1:Lcom/android/server/connectivity/PacManager$3;
@@ -34,6 +35,7 @@
 # virtual methods
 .method public setProxyPort(I)V
     .registers 5
+    .param p1, "port"  # I
 
     .line 358
     iget-object v0, p0, Lcom/android/server/connectivity/PacManager$3$1;->this$1:Lcom/android/server/connectivity/PacManager$3;
@@ -83,24 +85,24 @@
 
     invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v1
 
-    invoke-static {v0, p1}, Landroid/util/Log;->d(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v0, v1}, Landroid/util/Log;->d(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 365
-    iget-object p1, p0, Lcom/android/server/connectivity/PacManager$3$1;->this$1:Lcom/android/server/connectivity/PacManager$3;
+    iget-object v0, p0, Lcom/android/server/connectivity/PacManager$3$1;->this$1:Lcom/android/server/connectivity/PacManager$3;
 
-    iget-object p1, p1, Lcom/android/server/connectivity/PacManager$3;->this$0:Lcom/android/server/connectivity/PacManager;
+    iget-object v0, v0, Lcom/android/server/connectivity/PacManager$3;->this$0:Lcom/android/server/connectivity/PacManager;
 
-    invoke-static {p1}, Lcom/android/server/connectivity/PacManager;->access$600(Lcom/android/server/connectivity/PacManager;)V
+    invoke-static {v0}, Lcom/android/server/connectivity/PacManager;->access$600(Lcom/android/server/connectivity/PacManager;)V
 
     goto :goto_3f
 
     .line 367
     :cond_3a
-    const-string p1, "Received invalid port from Local Proxy, PAC will not be operational"
+    const-string v1, "Received invalid port from Local Proxy, PAC will not be operational"
 
-    invoke-static {v0, p1}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v0, v1}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 370
     :goto_3f

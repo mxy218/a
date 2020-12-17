@@ -55,6 +55,9 @@
 
 .method static synthetic access$7000(Lcom/android/server/autofill/AutofillManagerService$AutofillCompatState;Ljava/lang/String;Ljava/io/PrintWriter;)V
     .registers 3
+    .param p0, "x0"  # Lcom/android/server/autofill/AutofillManagerService$AutofillCompatState;
+    .param p1, "x1"  # Ljava/lang/String;
+    .param p2, "x2"  # Ljava/io/PrintWriter;
 
     .line 852
     invoke-direct {p0, p1, p2}, Lcom/android/server/autofill/AutofillManagerService$AutofillCompatState;->dump(Ljava/lang/String;Ljava/io/PrintWriter;)V
@@ -63,7 +66,9 @@
 .end method
 
 .method private dump(Ljava/lang/String;Ljava/io/PrintWriter;)V
-    .registers 11
+    .registers 13
+    .param p1, "prefix"  # Ljava/lang/String;
+    .param p2, "pw"  # Ljava/io/PrintWriter;
 
     .line 940
     iget-object v0, p0, Lcom/android/server/autofill/AutofillManagerService$AutofillCompatState;->mLock:Ljava/lang/Object;
@@ -77,9 +82,9 @@
     if-nez v1, :cond_e
 
     .line 942
-    const-string p1, "N/A"
+    const-string v1, "N/A"
 
-    invoke-virtual {p2, p1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {p2, v1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
     .line 943
     monitor-exit v0
@@ -106,10 +111,12 @@
     move-result-object v1
 
     .line 947
+    .local v1, "prefix2":Ljava/lang/String;
     const/4 v2, 0x0
 
     move v3, v2
 
+    .local v3, "i":I
     :goto_24
     iget-object v4, p0, Lcom/android/server/autofill/AutofillManagerService$AutofillCompatState;->mUserSpecs:Landroid/util/SparseArray;
 
@@ -127,6 +134,7 @@
     move-result v4
 
     .line 949
+    .local v4, "user":I
     invoke-virtual {p2, p1}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
     .line 950
@@ -138,61 +146,72 @@
     invoke-virtual {p2, v4}, Ljava/io/PrintWriter;->println(I)V
 
     .line 952
-    iget-object v4, p0, Lcom/android/server/autofill/AutofillManagerService$AutofillCompatState;->mUserSpecs:Landroid/util/SparseArray;
+    iget-object v5, p0, Lcom/android/server/autofill/AutofillManagerService$AutofillCompatState;->mUserSpecs:Landroid/util/SparseArray;
 
-    invoke-virtual {v4, v3}, Landroid/util/SparseArray;->valueAt(I)Ljava/lang/Object;
+    invoke-virtual {v5, v3}, Landroid/util/SparseArray;->valueAt(I)Ljava/lang/Object;
 
-    move-result-object v4
+    move-result-object v5
 
-    check-cast v4, Landroid/util/ArrayMap;
+    check-cast v5, Landroid/util/ArrayMap;
 
     .line 953
-    move v5, v2
+    .local v5, "perUser":Landroid/util/ArrayMap;, "Landroid/util/ArrayMap<Ljava/lang/String;Lcom/android/server/autofill/AutofillManagerService$PackageCompatState;>;"
+    move v6, v2
 
+    .local v6, "j":I
     :goto_46
-    invoke-virtual {v4}, Landroid/util/ArrayMap;->size()I
+    invoke-virtual {v5}, Landroid/util/ArrayMap;->size()I
 
-    move-result v6
+    move-result v7
 
-    if-ge v5, v6, :cond_69
+    if-ge v6, v7, :cond_69
 
     .line 954
-    invoke-virtual {v4, v5}, Landroid/util/ArrayMap;->keyAt(I)Ljava/lang/Object;
-
-    move-result-object v6
-
-    check-cast v6, Ljava/lang/String;
-
-    .line 955
-    invoke-virtual {v4, v5}, Landroid/util/ArrayMap;->valueAt(I)Ljava/lang/Object;
+    invoke-virtual {v5, v6}, Landroid/util/ArrayMap;->keyAt(I)Ljava/lang/Object;
 
     move-result-object v7
 
-    check-cast v7, Lcom/android/server/autofill/AutofillManagerService$PackageCompatState;
+    check-cast v7, Ljava/lang/String;
+
+    .line 955
+    .local v7, "packageName":Ljava/lang/String;
+    invoke-virtual {v5, v6}, Landroid/util/ArrayMap;->valueAt(I)Ljava/lang/Object;
+
+    move-result-object v8
+
+    check-cast v8, Lcom/android/server/autofill/AutofillManagerService$PackageCompatState;
 
     .line 956
+    .local v8, "state":Lcom/android/server/autofill/AutofillManagerService$PackageCompatState;
     invoke-virtual {p2, v1}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
-    invoke-virtual {p2, v6}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
+    invoke-virtual {p2, v7}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
-    const-string v6, ": "
+    const-string v9, ": "
 
-    invoke-virtual {p2, v6}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
+    invoke-virtual {p2, v9}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
-    invoke-virtual {p2, v7}, Ljava/io/PrintWriter;->println(Ljava/lang/Object;)V
+    invoke-virtual {p2, v8}, Ljava/io/PrintWriter;->println(Ljava/lang/Object;)V
 
     .line 953
-    add-int/lit8 v5, v5, 0x1
+    .end local v7  # "packageName":Ljava/lang/String;
+    .end local v8  # "state":Lcom/android/server/autofill/AutofillManagerService$PackageCompatState;
+    add-int/lit8 v6, v6, 0x1
 
     goto :goto_46
 
     .line 947
+    .end local v4  # "user":I
+    .end local v5  # "perUser":Landroid/util/ArrayMap;, "Landroid/util/ArrayMap<Ljava/lang/String;Lcom/android/server/autofill/AutofillManagerService$PackageCompatState;>;"
+    .end local v6  # "j":I
     :cond_69
     add-int/lit8 v3, v3, 0x1
 
     goto :goto_24
 
     .line 959
+    .end local v1  # "prefix2":Ljava/lang/String;
+    .end local v3  # "i":I
     :cond_6c
     monitor-exit v0
 
@@ -201,19 +220,23 @@
 
     .line 959
     :catchall_6e
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_70
     .catchall {:try_start_3 .. :try_end_70} :catchall_6e
 
-    throw p1
+    throw v1
 .end method
 
 
 # virtual methods
 .method addCompatibilityModeRequest(Ljava/lang/String;J[Ljava/lang/String;I)V
     .registers 9
+    .param p1, "packageName"  # Ljava/lang/String;
+    .param p2, "versionCode"  # J
+    .param p4, "urlBarResourceIds"  # [Ljava/lang/String;
+    .param p5, "userId"  # I
 
     .line 899
     iget-object v0, p0, Lcom/android/server/autofill/AutofillManagerService$AutofillCompatState;->mLock:Ljava/lang/Object;
@@ -244,12 +267,15 @@
     check-cast v1, Landroid/util/ArrayMap;
 
     .line 904
-    if-nez v1, :cond_22
+    .local v1, "userSpec":Landroid/util/ArrayMap;, "Landroid/util/ArrayMap<Ljava/lang/String;Lcom/android/server/autofill/AutofillManagerService$PackageCompatState;>;"
+    if-nez v1, :cond_23
 
     .line 905
-    new-instance v1, Landroid/util/ArrayMap;
+    new-instance v2, Landroid/util/ArrayMap;
 
-    invoke-direct {v1}, Landroid/util/ArrayMap;-><init>()V
+    invoke-direct {v2}, Landroid/util/ArrayMap;-><init>()V
+
+    move-object v1, v2
 
     .line 906
     iget-object v2, p0, Lcom/android/server/autofill/AutofillManagerService$AutofillCompatState;->mUserSpecs:Landroid/util/SparseArray;
@@ -257,32 +283,37 @@
     invoke-virtual {v2, p5, v1}, Landroid/util/SparseArray;->put(ILjava/lang/Object;)V
 
     .line 908
-    :cond_22
-    new-instance p5, Lcom/android/server/autofill/AutofillManagerService$PackageCompatState;
+    :cond_23
+    new-instance v2, Lcom/android/server/autofill/AutofillManagerService$PackageCompatState;
 
-    invoke-direct {p5, p2, p3, p4}, Lcom/android/server/autofill/AutofillManagerService$PackageCompatState;-><init>(J[Ljava/lang/String;)V
+    invoke-direct {v2, p2, p3, p4}, Lcom/android/server/autofill/AutofillManagerService$PackageCompatState;-><init>(J[Ljava/lang/String;)V
 
-    invoke-virtual {v1, p1, p5}, Landroid/util/ArrayMap;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+    invoke-virtual {v1, p1, v2}, Landroid/util/ArrayMap;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
 
     .line 910
+    nop
+
+    .end local v1  # "userSpec":Landroid/util/ArrayMap;, "Landroid/util/ArrayMap<Ljava/lang/String;Lcom/android/server/autofill/AutofillManagerService$PackageCompatState;>;"
     monitor-exit v0
 
     .line 911
     return-void
 
     .line 910
-    :catchall_2c
-    move-exception p1
+    :catchall_2e
+    move-exception v1
 
     monitor-exit v0
-    :try_end_2e
-    .catchall {:try_start_3 .. :try_end_2e} :catchall_2c
+    :try_end_30
+    .catchall {:try_start_3 .. :try_end_30} :catchall_2e
 
-    throw p1
+    throw v1
 .end method
 
 .method getUrlBarResourceIds(Ljava/lang/String;I)[Ljava/lang/String;
-    .registers 6
+    .registers 7
+    .param p1, "packageName"  # Ljava/lang/String;
+    .param p2, "userId"  # I
 
     .line 881
     iget-object v0, p0, Lcom/android/server/autofill/AutofillManagerService$AutofillCompatState;->mLock:Ljava/lang/Object;
@@ -308,12 +339,13 @@
 
     invoke-virtual {v1, p2}, Landroid/util/SparseArray;->get(I)Ljava/lang/Object;
 
-    move-result-object p2
+    move-result-object v1
 
-    check-cast p2, Landroid/util/ArrayMap;
+    check-cast v1, Landroid/util/ArrayMap;
 
     .line 886
-    if-nez p2, :cond_16
+    .local v1, "userSpec":Landroid/util/ArrayMap;, "Landroid/util/ArrayMap<Ljava/lang/String;Lcom/android/server/autofill/AutofillManagerService$PackageCompatState;>;"
+    if-nez v1, :cond_16
 
     .line 887
     monitor-exit v0
@@ -322,14 +354,15 @@
 
     .line 889
     :cond_16
-    invoke-virtual {p2, p1}, Landroid/util/ArrayMap;->get(Ljava/lang/Object;)Ljava/lang/Object;
+    invoke-virtual {v1, p1}, Landroid/util/ArrayMap;->get(Ljava/lang/Object;)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v3
 
-    check-cast p1, Lcom/android/server/autofill/AutofillManagerService$PackageCompatState;
+    check-cast v3, Lcom/android/server/autofill/AutofillManagerService$PackageCompatState;
 
     .line 890
-    if-nez p1, :cond_20
+    .local v3, "metadata":Lcom/android/server/autofill/AutofillManagerService$PackageCompatState;
+    if-nez v3, :cond_20
 
     .line 891
     monitor-exit v0
@@ -338,27 +371,32 @@
 
     .line 893
     :cond_20
-    invoke-static {p1}, Lcom/android/server/autofill/AutofillManagerService$PackageCompatState;->access$1100(Lcom/android/server/autofill/AutofillManagerService$PackageCompatState;)[Ljava/lang/String;
+    invoke-static {v3}, Lcom/android/server/autofill/AutofillManagerService$PackageCompatState;->access$1100(Lcom/android/server/autofill/AutofillManagerService$PackageCompatState;)[Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v2
 
     monitor-exit v0
 
-    return-object p1
+    return-object v2
 
     .line 894
+    .end local v1  # "userSpec":Landroid/util/ArrayMap;, "Landroid/util/ArrayMap<Ljava/lang/String;Lcom/android/server/autofill/AutofillManagerService$PackageCompatState;>;"
+    .end local v3  # "metadata":Lcom/android/server/autofill/AutofillManagerService$PackageCompatState;
     :catchall_26
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_28
     .catchall {:try_start_3 .. :try_end_28} :catchall_26
 
-    throw p1
+    throw v1
 .end method
 
 .method isCompatibilityModeRequested(Ljava/lang/String;JI)Z
-    .registers 10
+    .registers 11
+    .param p1, "packageName"  # Ljava/lang/String;
+    .param p2, "versionCode"  # J
+    .param p4, "userId"  # I
 
     .line 863
     iget-object v0, p0, Lcom/android/server/autofill/AutofillManagerService$AutofillCompatState;->mLock:Ljava/lang/Object;
@@ -384,12 +422,13 @@
 
     invoke-virtual {v1, p4}, Landroid/util/SparseArray;->get(I)Ljava/lang/Object;
 
-    move-result-object p4
+    move-result-object v1
 
-    check-cast p4, Landroid/util/ArrayMap;
+    check-cast v1, Landroid/util/ArrayMap;
 
     .line 868
-    if-nez p4, :cond_16
+    .local v1, "userSpec":Landroid/util/ArrayMap;, "Landroid/util/ArrayMap<Ljava/lang/String;Lcom/android/server/autofill/AutofillManagerService$PackageCompatState;>;"
+    if-nez v1, :cond_16
 
     .line 869
     monitor-exit v0
@@ -398,14 +437,15 @@
 
     .line 871
     :cond_16
-    invoke-virtual {p4, p1}, Landroid/util/ArrayMap;->get(Ljava/lang/Object;)Ljava/lang/Object;
+    invoke-virtual {v1, p1}, Landroid/util/ArrayMap;->get(Ljava/lang/Object;)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v3
 
-    check-cast p1, Lcom/android/server/autofill/AutofillManagerService$PackageCompatState;
+    check-cast v3, Lcom/android/server/autofill/AutofillManagerService$PackageCompatState;
 
     .line 872
-    if-nez p1, :cond_20
+    .local v3, "metadata":Lcom/android/server/autofill/AutofillManagerService$PackageCompatState;
+    if-nez v3, :cond_20
 
     .line 873
     monitor-exit v0
@@ -414,13 +454,13 @@
 
     .line 875
     :cond_20
-    invoke-static {p1}, Lcom/android/server/autofill/AutofillManagerService$PackageCompatState;->access$1000(Lcom/android/server/autofill/AutofillManagerService$PackageCompatState;)J
+    invoke-static {v3}, Lcom/android/server/autofill/AutofillManagerService$PackageCompatState;->access$1000(Lcom/android/server/autofill/AutofillManagerService$PackageCompatState;)J
 
-    move-result-wide v3
+    move-result-wide v4
 
-    cmp-long p1, p2, v3
+    cmp-long v4, p2, v4
 
-    if-gtz p1, :cond_29
+    if-gtz v4, :cond_29
 
     const/4 v2, 0x1
 
@@ -430,18 +470,21 @@
     return v2
 
     .line 876
+    .end local v1  # "userSpec":Landroid/util/ArrayMap;, "Landroid/util/ArrayMap<Ljava/lang/String;Lcom/android/server/autofill/AutofillManagerService$PackageCompatState;>;"
+    .end local v3  # "metadata":Lcom/android/server/autofill/AutofillManagerService$PackageCompatState;
     :catchall_2b
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_2d
     .catchall {:try_start_3 .. :try_end_2d} :catchall_2b
 
-    throw p1
+    throw v1
 .end method
 
 .method removeCompatibilityModeRequests(I)V
     .registers 4
+    .param p1, "userId"  # I
 
     .line 914
     iget-object v0, p0, Lcom/android/server/autofill/AutofillManagerService$AutofillCompatState;->mLock:Ljava/lang/Object;
@@ -460,18 +503,18 @@
     invoke-virtual {v1, p1}, Landroid/util/SparseArray;->remove(I)V
 
     .line 917
-    iget-object p1, p0, Lcom/android/server/autofill/AutofillManagerService$AutofillCompatState;->mUserSpecs:Landroid/util/SparseArray;
+    iget-object v1, p0, Lcom/android/server/autofill/AutofillManagerService$AutofillCompatState;->mUserSpecs:Landroid/util/SparseArray;
 
-    invoke-virtual {p1}, Landroid/util/SparseArray;->size()I
+    invoke-virtual {v1}, Landroid/util/SparseArray;->size()I
 
-    move-result p1
+    move-result v1
 
-    if-gtz p1, :cond_17
+    if-gtz v1, :cond_17
 
     .line 918
-    const/4 p1, 0x0
+    const/4 v1, 0x0
 
-    iput-object p1, p0, Lcom/android/server/autofill/AutofillManagerService$AutofillCompatState;->mUserSpecs:Landroid/util/SparseArray;
+    iput-object v1, p0, Lcom/android/server/autofill/AutofillManagerService$AutofillCompatState;->mUserSpecs:Landroid/util/SparseArray;
 
     .line 921
     :cond_17
@@ -482,17 +525,18 @@
 
     .line 921
     :catchall_19
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_1b
     .catchall {:try_start_3 .. :try_end_1b} :catchall_19
 
-    throw p1
+    throw v1
 .end method
 
 .method reset(I)V
-    .registers 6
+    .registers 7
+    .param p1, "userId"  # I
 
     .line 925
     iget-object v0, p0, Lcom/android/server/autofill/AutofillManagerService$AutofillCompatState;->mLock:Ljava/lang/Object;
@@ -503,7 +547,7 @@
     :try_start_3
     iget-object v1, p0, Lcom/android/server/autofill/AutofillManagerService$AutofillCompatState;->mUserSpecs:Landroid/util/SparseArray;
 
-    if-eqz v1, :cond_3e
+    if-eqz v1, :cond_3f
 
     .line 927
     iget-object v1, p0, Lcom/android/server/autofill/AutofillManagerService$AutofillCompatState;->mUserSpecs:Landroid/util/SparseArray;
@@ -511,73 +555,75 @@
     invoke-virtual {v1, p1}, Landroid/util/SparseArray;->delete(I)V
 
     .line 928
-    iget-object p1, p0, Lcom/android/server/autofill/AutofillManagerService$AutofillCompatState;->mUserSpecs:Landroid/util/SparseArray;
+    iget-object v1, p0, Lcom/android/server/autofill/AutofillManagerService$AutofillCompatState;->mUserSpecs:Landroid/util/SparseArray;
 
-    invoke-virtual {p1}, Landroid/util/SparseArray;->size()I
+    invoke-virtual {v1}, Landroid/util/SparseArray;->size()I
 
-    move-result p1
+    move-result v1
 
     .line 929
-    if-nez p1, :cond_24
+    .local v1, "newSize":I
+    if-nez v1, :cond_24
 
     .line 930
-    sget-boolean p1, Lcom/android/server/autofill/Helper;->sVerbose:Z
+    sget-boolean v2, Lcom/android/server/autofill/Helper;->sVerbose:Z
 
-    if-eqz p1, :cond_20
+    if-eqz v2, :cond_20
 
-    const-string p1, "AutofillManagerService"
+    const-string v2, "AutofillManagerService"
 
-    const-string/jumbo v1, "reseting mUserSpecs"
+    const-string/jumbo v3, "reseting mUserSpecs"
 
-    invoke-static {p1, v1}, Landroid/util/Slog;->v(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v2, v3}, Landroid/util/Slog;->v(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 931
     :cond_20
-    const/4 p1, 0x0
+    const/4 v2, 0x0
 
-    iput-object p1, p0, Lcom/android/server/autofill/AutofillManagerService$AutofillCompatState;->mUserSpecs:Landroid/util/SparseArray;
+    iput-object v2, p0, Lcom/android/server/autofill/AutofillManagerService$AutofillCompatState;->mUserSpecs:Landroid/util/SparseArray;
 
-    goto :goto_3e
+    goto :goto_3f
 
     .line 933
     :cond_24
-    sget-boolean v1, Lcom/android/server/autofill/Helper;->sVerbose:Z
+    sget-boolean v2, Lcom/android/server/autofill/Helper;->sVerbose:Z
 
-    if-eqz v1, :cond_3e
+    if-eqz v2, :cond_3f
 
-    const-string v1, "AutofillManagerService"
+    const-string v2, "AutofillManagerService"
 
-    new-instance v2, Ljava/lang/StringBuilder;
+    new-instance v3, Ljava/lang/StringBuilder;
 
-    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v3, "mUserSpecs down to "
+    const-string/jumbo v4, "mUserSpecs down to "
 
-    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v2, p1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v3
 
-    invoke-static {v1, p1}, Landroid/util/Slog;->v(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v2, v3}, Landroid/util/Slog;->v(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 936
-    :cond_3e
-    :goto_3e
+    .end local v1  # "newSize":I
+    :cond_3f
+    :goto_3f
     monitor-exit v0
 
     .line 937
     return-void
 
     .line 936
-    :catchall_40
-    move-exception p1
+    :catchall_41
+    move-exception v1
 
     monitor-exit v0
-    :try_end_42
-    .catchall {:try_start_3 .. :try_end_42} :catchall_40
+    :try_end_43
+    .catchall {:try_start_3 .. :try_end_43} :catchall_41
 
-    throw p1
+    throw v1
 .end method

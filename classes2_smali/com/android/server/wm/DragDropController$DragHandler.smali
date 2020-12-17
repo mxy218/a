@@ -23,68 +23,71 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/wm/DragDropController;Lcom/android/server/wm/WindowManagerService;Landroid/os/Looper;)V
     .registers 4
-
-    .line 335
-    iput-object p1, p0, Lcom/android/server/wm/DragDropController$DragHandler;->this$0:Lcom/android/server/wm/DragDropController;
+    .param p2, "service"  # Lcom/android/server/wm/WindowManagerService;
+    .param p3, "looper"  # Landroid/os/Looper;
 
     .line 336
-    invoke-direct {p0, p3}, Landroid/os/Handler;-><init>(Landroid/os/Looper;)V
+    iput-object p1, p0, Lcom/android/server/wm/DragDropController$DragHandler;->this$0:Lcom/android/server/wm/DragDropController;
 
     .line 337
-    iput-object p2, p0, Lcom/android/server/wm/DragDropController$DragHandler;->mService:Lcom/android/server/wm/WindowManagerService;
+    invoke-direct {p0, p3}, Landroid/os/Handler;-><init>(Landroid/os/Looper;)V
 
     .line 338
+    iput-object p2, p0, Lcom/android/server/wm/DragDropController$DragHandler;->mService:Lcom/android/server/wm/WindowManagerService;
+
+    .line 339
     return-void
 .end method
 
 
 # virtual methods
 .method public handleMessage(Landroid/os/Message;)V
-    .registers 4
+    .registers 6
+    .param p1, "msg"  # Landroid/os/Message;
 
-    .line 342
+    .line 343
     iget v0, p1, Landroid/os/Message;->what:I
 
-    if-eqz v0, :cond_59
+    if-eqz v0, :cond_64
 
     const/4 v1, 0x1
 
     if-eq v0, v1, :cond_3c
 
-    const/4 p1, 0x2
+    const/4 v1, 0x2
 
-    if-eq v0, p1, :cond_c
+    if-eq v0, v1, :cond_c
 
-    goto/16 :goto_84
+    goto/16 :goto_a9
 
-    .line 372
+    .line 373
     :cond_c
-    iget-object p1, p0, Lcom/android/server/wm/DragDropController$DragHandler;->mService:Lcom/android/server/wm/WindowManagerService;
+    iget-object v0, p0, Lcom/android/server/wm/DragDropController$DragHandler;->mService:Lcom/android/server/wm/WindowManagerService;
 
-    iget-object v0, p1, Lcom/android/server/wm/WindowManagerService;->mGlobalLock:Lcom/android/server/wm/WindowManagerGlobalLock;
+    iget-object v0, v0, Lcom/android/server/wm/WindowManagerService;->mGlobalLock:Lcom/android/server/wm/WindowManagerGlobalLock;
 
     monitor-enter v0
 
     :try_start_11
     invoke-static {}, Lcom/android/server/wm/WindowManagerService;->boostPriorityForLockedSection()V
 
-    .line 373
-    iget-object p1, p0, Lcom/android/server/wm/DragDropController$DragHandler;->this$0:Lcom/android/server/wm/DragDropController;
-
-    invoke-static {p1}, Lcom/android/server/wm/DragDropController;->access$000(Lcom/android/server/wm/DragDropController;)Lcom/android/server/wm/DragState;
-
-    move-result-object p1
-
-    if-nez p1, :cond_28
-
     .line 374
-    const-string p1, "WindowManager"
+    iget-object v1, p0, Lcom/android/server/wm/DragDropController$DragHandler;->this$0:Lcom/android/server/wm/DragDropController;
 
-    const-string v1, "mDragState unexpectedly became null while plyaing animation"
+    invoke-static {v1}, Lcom/android/server/wm/DragDropController;->access$000(Lcom/android/server/wm/DragDropController;)Lcom/android/server/wm/DragState;
 
-    invoke-static {p1, v1}, Landroid/util/Slog;->wtf(Ljava/lang/String;Ljava/lang/String;)I
+    move-result-object v1
 
-    .line 376
+    if-nez v1, :cond_28
+
+    .line 375
+    const-string v1, "WindowManager"
+
+    const-string v2, "mDragState unexpectedly became null while plyaing animation"
+
+    invoke-static {v1, v2}, Landroid/util/Slog;->wtf(Ljava/lang/String;Ljava/lang/String;)I
+
+    .line 377
     monitor-exit v0
     :try_end_24
     .catchall {:try_start_11 .. :try_end_24} :catchall_36
@@ -93,28 +96,28 @@
 
     return-void
 
-    .line 378
+    .line 379
     :cond_28
     :try_start_28
-    iget-object p1, p0, Lcom/android/server/wm/DragDropController$DragHandler;->this$0:Lcom/android/server/wm/DragDropController;
+    iget-object v1, p0, Lcom/android/server/wm/DragDropController$DragHandler;->this$0:Lcom/android/server/wm/DragDropController;
 
-    invoke-static {p1}, Lcom/android/server/wm/DragDropController;->access$000(Lcom/android/server/wm/DragDropController;)Lcom/android/server/wm/DragState;
+    invoke-static {v1}, Lcom/android/server/wm/DragDropController;->access$000(Lcom/android/server/wm/DragDropController;)Lcom/android/server/wm/DragState;
 
-    move-result-object p1
+    move-result-object v1
 
-    invoke-virtual {p1}, Lcom/android/server/wm/DragState;->closeLocked()V
+    invoke-virtual {v1}, Lcom/android/server/wm/DragState;->closeLocked()V
 
-    .line 379
+    .line 380
     monitor-exit v0
     :try_end_32
     .catchall {:try_start_28 .. :try_end_32} :catchall_36
 
     invoke-static {}, Lcom/android/server/wm/WindowManagerService;->resetPriorityAfterLockedSection()V
 
-    goto :goto_84
+    goto :goto_a9
 
     :catchall_36
-    move-exception p1
+    move-exception v1
 
     :try_start_37
     monitor-exit v0
@@ -123,126 +126,169 @@
 
     invoke-static {}, Lcom/android/server/wm/WindowManagerService;->resetPriorityAfterLockedSection()V
 
-    throw p1
+    throw v1
+
+    .line 361
+    :cond_3c
+    sget-boolean v0, Lcom/android/server/wm/WindowManagerDebugConfig;->DEBUG_DRAG:Z
+
+    if-eqz v0, :cond_47
 
     .line 362
-    :cond_3c
-    iget-object p1, p1, Landroid/os/Message;->obj:Ljava/lang/Object;
+    const-string v0, "WindowManager"
 
-    check-cast p1, Lcom/android/server/wm/DragState$InputInterceptor;
+    const-string v1, "Drag ending; tearing down input channel"
 
-    .line 364
-    if-nez p1, :cond_43
+    invoke-static {v0, v1}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
 
-    return-void
+    .line 363
+    :cond_47
+    iget-object v0, p1, Landroid/os/Message;->obj:Ljava/lang/Object;
+
+    check-cast v0, Lcom/android/server/wm/DragState$InputInterceptor;
 
     .line 365
-    :cond_43
-    iget-object v0, p0, Lcom/android/server/wm/DragDropController$DragHandler;->mService:Lcom/android/server/wm/WindowManagerService;
+    .local v0, "interceptor":Lcom/android/server/wm/DragState$InputInterceptor;
+    if-nez v0, :cond_4e
 
-    iget-object v0, v0, Lcom/android/server/wm/WindowManagerService;->mGlobalLock:Lcom/android/server/wm/WindowManagerGlobalLock;
-
-    monitor-enter v0
-
-    :try_start_48
-    invoke-static {}, Lcom/android/server/wm/WindowManagerService;->boostPriorityForLockedSection()V
-
-    .line 366
-    invoke-virtual {p1}, Lcom/android/server/wm/DragState$InputInterceptor;->tearDown()V
-
-    .line 367
-    monitor-exit v0
-    :try_end_4f
-    .catchall {:try_start_48 .. :try_end_4f} :catchall_53
-
-    invoke-static {}, Lcom/android/server/wm/WindowManagerService;->resetPriorityAfterLockedSection()V
-
-    .line 368
-    goto :goto_84
-
-    .line 367
-    :catchall_53
-    move-exception p1
-
-    :try_start_54
-    monitor-exit v0
-    :try_end_55
-    .catchall {:try_start_54 .. :try_end_55} :catchall_53
-
-    invoke-static {}, Lcom/android/server/wm/WindowManagerService;->resetPriorityAfterLockedSection()V
-
-    throw p1
-
-    .line 344
-    :cond_59
-    iget-object p1, p1, Landroid/os/Message;->obj:Ljava/lang/Object;
-
-    check-cast p1, Landroid/os/IBinder;
-
-    .line 349
-    iget-object p1, p0, Lcom/android/server/wm/DragDropController$DragHandler;->mService:Lcom/android/server/wm/WindowManagerService;
-
-    iget-object p1, p1, Lcom/android/server/wm/WindowManagerService;->mGlobalLock:Lcom/android/server/wm/WindowManagerGlobalLock;
-
-    monitor-enter p1
-
-    :try_start_62
-    invoke-static {}, Lcom/android/server/wm/WindowManagerService;->boostPriorityForLockedSection()V
-
-    .line 351
-    iget-object v0, p0, Lcom/android/server/wm/DragDropController$DragHandler;->this$0:Lcom/android/server/wm/DragDropController;
-
-    invoke-static {v0}, Lcom/android/server/wm/DragDropController;->access$000(Lcom/android/server/wm/DragDropController;)Lcom/android/server/wm/DragState;
-
-    move-result-object v0
-
-    if-eqz v0, :cond_7f
-
-    .line 352
-    iget-object v0, p0, Lcom/android/server/wm/DragDropController$DragHandler;->this$0:Lcom/android/server/wm/DragDropController;
-
-    invoke-static {v0}, Lcom/android/server/wm/DragDropController;->access$000(Lcom/android/server/wm/DragDropController;)Lcom/android/server/wm/DragState;
-
-    move-result-object v0
-
-    const/4 v1, 0x0
-
-    iput-boolean v1, v0, Lcom/android/server/wm/DragState;->mDragResult:Z
-
-    .line 353
-    iget-object v0, p0, Lcom/android/server/wm/DragDropController$DragHandler;->this$0:Lcom/android/server/wm/DragDropController;
-
-    invoke-static {v0}, Lcom/android/server/wm/DragDropController;->access$000(Lcom/android/server/wm/DragDropController;)Lcom/android/server/wm/DragState;
-
-    move-result-object v0
-
-    invoke-virtual {v0}, Lcom/android/server/wm/DragState;->endDragLocked()V
-
-    .line 355
-    :cond_7f
-    monitor-exit p1
-    :try_end_80
-    .catchall {:try_start_62 .. :try_end_80} :catchall_85
-
-    invoke-static {}, Lcom/android/server/wm/WindowManagerService;->resetPriorityAfterLockedSection()V
-
-    .line 356
-    nop
-
-    .line 383
-    :goto_84
     return-void
 
-    .line 355
-    :catchall_85
-    move-exception v0
+    .line 366
+    :cond_4e
+    iget-object v1, p0, Lcom/android/server/wm/DragDropController$DragHandler;->mService:Lcom/android/server/wm/WindowManagerService;
 
-    :try_start_86
-    monitor-exit p1
-    :try_end_87
-    .catchall {:try_start_86 .. :try_end_87} :catchall_85
+    iget-object v1, v1, Lcom/android/server/wm/WindowManagerService;->mGlobalLock:Lcom/android/server/wm/WindowManagerGlobalLock;
+
+    monitor-enter v1
+
+    :try_start_53
+    invoke-static {}, Lcom/android/server/wm/WindowManagerService;->boostPriorityForLockedSection()V
+
+    .line 367
+    invoke-virtual {v0}, Lcom/android/server/wm/DragState$InputInterceptor;->tearDown()V
+
+    .line 368
+    monitor-exit v1
+    :try_end_5a
+    .catchall {:try_start_53 .. :try_end_5a} :catchall_5e
 
     invoke-static {}, Lcom/android/server/wm/WindowManagerService;->resetPriorityAfterLockedSection()V
 
-    throw v0
+    .line 369
+    goto :goto_a9
+
+    .line 368
+    :catchall_5e
+    move-exception v2
+
+    :try_start_5f
+    monitor-exit v1
+    :try_end_60
+    .catchall {:try_start_5f .. :try_end_60} :catchall_5e
+
+    invoke-static {}, Lcom/android/server/wm/WindowManagerService;->resetPriorityAfterLockedSection()V
+
+    throw v2
+
+    .line 345
+    .end local v0  # "interceptor":Lcom/android/server/wm/DragState$InputInterceptor;
+    :cond_64
+    iget-object v0, p1, Landroid/os/Message;->obj:Ljava/lang/Object;
+
+    check-cast v0, Landroid/os/IBinder;
+
+    .line 346
+    .local v0, "win":Landroid/os/IBinder;
+    sget-boolean v1, Lcom/android/server/wm/WindowManagerDebugConfig;->DEBUG_DRAG:Z
+
+    if-eqz v1, :cond_82
+
+    .line 347
+    new-instance v1, Ljava/lang/StringBuilder;
+
+    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
+
+    const-string v2, "Timeout ending drag to win "
+
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v1, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v1
+
+    const-string v2, "WindowManager"
+
+    invoke-static {v2, v1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+
+    .line 350
+    :cond_82
+    iget-object v1, p0, Lcom/android/server/wm/DragDropController$DragHandler;->mService:Lcom/android/server/wm/WindowManagerService;
+
+    iget-object v1, v1, Lcom/android/server/wm/WindowManagerService;->mGlobalLock:Lcom/android/server/wm/WindowManagerGlobalLock;
+
+    monitor-enter v1
+
+    :try_start_87
+    invoke-static {}, Lcom/android/server/wm/WindowManagerService;->boostPriorityForLockedSection()V
+
+    .line 352
+    iget-object v2, p0, Lcom/android/server/wm/DragDropController$DragHandler;->this$0:Lcom/android/server/wm/DragDropController;
+
+    invoke-static {v2}, Lcom/android/server/wm/DragDropController;->access$000(Lcom/android/server/wm/DragDropController;)Lcom/android/server/wm/DragState;
+
+    move-result-object v2
+
+    if-eqz v2, :cond_a4
+
+    .line 353
+    iget-object v2, p0, Lcom/android/server/wm/DragDropController$DragHandler;->this$0:Lcom/android/server/wm/DragDropController;
+
+    invoke-static {v2}, Lcom/android/server/wm/DragDropController;->access$000(Lcom/android/server/wm/DragDropController;)Lcom/android/server/wm/DragState;
+
+    move-result-object v2
+
+    const/4 v3, 0x0
+
+    iput-boolean v3, v2, Lcom/android/server/wm/DragState;->mDragResult:Z
+
+    .line 354
+    iget-object v2, p0, Lcom/android/server/wm/DragDropController$DragHandler;->this$0:Lcom/android/server/wm/DragDropController;
+
+    invoke-static {v2}, Lcom/android/server/wm/DragDropController;->access$000(Lcom/android/server/wm/DragDropController;)Lcom/android/server/wm/DragState;
+
+    move-result-object v2
+
+    invoke-virtual {v2}, Lcom/android/server/wm/DragState;->endDragLocked()V
+
+    .line 356
+    :cond_a4
+    monitor-exit v1
+    :try_end_a5
+    .catchall {:try_start_87 .. :try_end_a5} :catchall_aa
+
+    invoke-static {}, Lcom/android/server/wm/WindowManagerService;->resetPriorityAfterLockedSection()V
+
+    .line 357
+    nop
+
+    .line 384
+    .end local v0  # "win":Landroid/os/IBinder;
+    :goto_a9
+    return-void
+
+    .line 356
+    .restart local v0  # "win":Landroid/os/IBinder;
+    :catchall_aa
+    move-exception v2
+
+    :try_start_ab
+    monitor-exit v1
+    :try_end_ac
+    .catchall {:try_start_ab .. :try_end_ac} :catchall_aa
+
+    invoke-static {}, Lcom/android/server/wm/WindowManagerService;->resetPriorityAfterLockedSection()V
+
+    throw v2
 .end method

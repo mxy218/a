@@ -21,6 +21,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/testharness/TestHarnessModeService;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/testharness/TestHarnessModeService;
 
     .line 264
     iput-object p1, p0, Lcom/android/server/testharness/TestHarnessModeService$1;->this$0:Lcom/android/server/testharness/TestHarnessModeService;
@@ -34,6 +35,12 @@
 # virtual methods
 .method public onShellCommand(Ljava/io/FileDescriptor;Ljava/io/FileDescriptor;Ljava/io/FileDescriptor;[Ljava/lang/String;Landroid/os/ShellCallback;Landroid/os/ResultReceiver;)V
     .registers 15
+    .param p1, "in"  # Ljava/io/FileDescriptor;
+    .param p2, "out"  # Ljava/io/FileDescriptor;
+    .param p3, "err"  # Ljava/io/FileDescriptor;
+    .param p4, "args"  # [Ljava/lang/String;
+    .param p5, "callback"  # Landroid/os/ShellCallback;
+    .param p6, "resultReceiver"  # Landroid/os/ResultReceiver;
 
     .line 268
     new-instance v0, Lcom/android/server/testharness/TestHarnessModeService$TestHarnessModeShellCommand;

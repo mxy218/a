@@ -39,6 +39,9 @@
 # direct methods
 .method public constructor <init>(Lcom/android/server/utils/UserTokenWatcher$Callback;Landroid/os/Handler;Ljava/lang/String;)V
     .registers 6
+    .param p1, "callback"  # Lcom/android/server/utils/UserTokenWatcher$Callback;
+    .param p2, "handler"  # Landroid/os/Handler;
+    .param p3, "tag"  # Ljava/lang/String;
 
     .line 44
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -66,27 +69,32 @@
 .end method
 
 .method static synthetic access$100(Lcom/android/server/utils/UserTokenWatcher;)Lcom/android/server/utils/UserTokenWatcher$Callback;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/utils/UserTokenWatcher;
 
     .line 35
-    iget-object p0, p0, Lcom/android/server/utils/UserTokenWatcher;->mCallback:Lcom/android/server/utils/UserTokenWatcher$Callback;
+    iget-object v0, p0, Lcom/android/server/utils/UserTokenWatcher;->mCallback:Lcom/android/server/utils/UserTokenWatcher$Callback;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$200(Lcom/android/server/utils/UserTokenWatcher;)Landroid/util/SparseArray;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/utils/UserTokenWatcher;
 
     .line 35
-    iget-object p0, p0, Lcom/android/server/utils/UserTokenWatcher;->mWatchers:Landroid/util/SparseArray;
+    iget-object v0, p0, Lcom/android/server/utils/UserTokenWatcher;->mWatchers:Landroid/util/SparseArray;
 
-    return-object p0
+    return-object v0
 .end method
 
 
 # virtual methods
 .method public acquire(Landroid/os/IBinder;Ljava/lang/String;I)V
-    .registers 12
+    .registers 13
+    .param p1, "token"  # Landroid/os/IBinder;
+    .param p2, "tag"  # Ljava/lang/String;
+    .param p3, "userId"  # I
 
     .line 66
     iget-object v0, p0, Lcom/android/server/utils/UserTokenWatcher;->mWatchers:Landroid/util/SparseArray;
@@ -104,10 +112,11 @@
     check-cast v1, Landroid/os/TokenWatcher;
 
     .line 68
-    if-nez v1, :cond_1f
+    .local v1, "watcher":Landroid/os/TokenWatcher;
+    if-nez v1, :cond_20
 
     .line 69
-    new-instance v1, Lcom/android/server/utils/UserTokenWatcher$InnerTokenWatcher;
+    new-instance v8, Lcom/android/server/utils/UserTokenWatcher$InnerTokenWatcher;
 
     iget-object v5, p0, Lcom/android/server/utils/UserTokenWatcher;->mHandler:Landroid/os/Handler;
 
@@ -115,7 +124,7 @@
 
     const/4 v7, 0x0
 
-    move-object v2, v1
+    move-object v2, v8
 
     move-object v3, p0
 
@@ -123,34 +132,38 @@
 
     invoke-direct/range {v2 .. v7}, Lcom/android/server/utils/UserTokenWatcher$InnerTokenWatcher;-><init>(Lcom/android/server/utils/UserTokenWatcher;ILandroid/os/Handler;Ljava/lang/String;Lcom/android/server/utils/UserTokenWatcher$1;)V
 
+    move-object v1, v8
+
     .line 70
     iget-object v2, p0, Lcom/android/server/utils/UserTokenWatcher;->mWatchers:Landroid/util/SparseArray;
 
     invoke-virtual {v2, p3, v1}, Landroid/util/SparseArray;->put(ILjava/lang/Object;)V
 
     .line 72
-    :cond_1f
+    :cond_20
     invoke-virtual {v1, p1, p2}, Landroid/os/TokenWatcher;->acquire(Landroid/os/IBinder;Ljava/lang/String;)V
 
     .line 73
+    .end local v1  # "watcher":Landroid/os/TokenWatcher;
     monitor-exit v0
 
     .line 74
     return-void
 
     .line 73
-    :catchall_24
-    move-exception p1
+    :catchall_25
+    move-exception v1
 
     monitor-exit v0
-    :try_end_26
-    .catchall {:try_start_3 .. :try_end_26} :catchall_24
+    :try_end_27
+    .catchall {:try_start_3 .. :try_end_27} :catchall_25
 
-    throw p1
+    throw v1
 .end method
 
 .method public dump(Ljava/io/PrintWriter;)V
-    .registers 7
+    .registers 8
+    .param p1, "pw"  # Ljava/io/PrintWriter;
 
     .line 109
     iget-object v0, p0, Lcom/android/server/utils/UserTokenWatcher;->mWatchers:Landroid/util/SparseArray;
@@ -160,6 +173,7 @@
     .line 110
     const/4 v1, 0x0
 
+    .local v1, "i":I
     :goto_4
     :try_start_4
     iget-object v2, p0, Lcom/android/server/utils/UserTokenWatcher;->mWatchers:Landroid/util/SparseArray;
@@ -178,6 +192,7 @@
     move-result v2
 
     .line 112
+    .local v2, "userId":I
     iget-object v3, p0, Lcom/android/server/utils/UserTokenWatcher;->mWatchers:Landroid/util/SparseArray;
 
     invoke-virtual {v3, v1}, Landroid/util/SparseArray;->valueAt(I)Ljava/lang/Object;
@@ -187,6 +202,7 @@
     check-cast v3, Landroid/os/TokenWatcher;
 
     .line 113
+    .local v3, "watcher":Landroid/os/TokenWatcher;
     invoke-virtual {v3}, Landroid/os/TokenWatcher;->isAcquired()Z
 
     move-result v4
@@ -202,26 +218,29 @@
     invoke-virtual {p1, v2}, Ljava/io/PrintWriter;->print(I)V
 
     .line 116
-    const-string v2, ":"
+    const-string v4, ":"
 
-    invoke-virtual {p1, v2}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {p1, v4}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
     .line 117
-    new-instance v2, Lcom/android/internal/util/IndentingPrintWriter;
+    new-instance v4, Lcom/android/internal/util/IndentingPrintWriter;
 
-    const-string v4, " "
+    const-string v5, " "
 
-    invoke-direct {v2, p1, v4}, Lcom/android/internal/util/IndentingPrintWriter;-><init>(Ljava/io/Writer;Ljava/lang/String;)V
+    invoke-direct {v4, p1, v5}, Lcom/android/internal/util/IndentingPrintWriter;-><init>(Ljava/io/Writer;Ljava/lang/String;)V
 
-    invoke-virtual {v3, v2}, Landroid/os/TokenWatcher;->dump(Ljava/io/PrintWriter;)V
+    invoke-virtual {v3, v4}, Landroid/os/TokenWatcher;->dump(Ljava/io/PrintWriter;)V
 
     .line 110
+    .end local v2  # "userId":I
+    .end local v3  # "watcher":Landroid/os/TokenWatcher;
     :cond_37
     add-int/lit8 v1, v1, 0x1
 
     goto :goto_4
 
     .line 120
+    .end local v1  # "i":I
     :cond_3a
     monitor-exit v0
 
@@ -230,17 +249,18 @@
 
     .line 120
     :catchall_3c
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_3e
     .catchall {:try_start_4 .. :try_end_3e} :catchall_3c
 
-    throw p1
+    throw v1
 .end method
 
 .method public isAcquired(I)Z
-    .registers 4
+    .registers 5
+    .param p1, "userId"  # I
 
     .line 99
     iget-object v0, p0, Lcom/android/server/utils/UserTokenWatcher;->mWatchers:Landroid/util/SparseArray;
@@ -253,44 +273,48 @@
 
     invoke-virtual {v1, p1}, Landroid/util/SparseArray;->get(I)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v1
 
-    check-cast p1, Landroid/os/TokenWatcher;
+    check-cast v1, Landroid/os/TokenWatcher;
 
     .line 101
-    if-eqz p1, :cond_15
+    .local v1, "watcher":Landroid/os/TokenWatcher;
+    if-eqz v1, :cond_15
 
-    invoke-virtual {p1}, Landroid/os/TokenWatcher;->isAcquired()Z
+    invoke-virtual {v1}, Landroid/os/TokenWatcher;->isAcquired()Z
 
-    move-result p1
+    move-result v2
 
-    if-eqz p1, :cond_15
+    if-eqz v2, :cond_15
 
-    const/4 p1, 0x1
+    const/4 v2, 0x1
 
     goto :goto_16
 
     :cond_15
-    const/4 p1, 0x0
+    const/4 v2, 0x0
 
     :goto_16
     monitor-exit v0
 
-    return p1
+    return v2
 
     .line 102
+    .end local v1  # "watcher":Landroid/os/TokenWatcher;
     :catchall_18
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_1a
     .catchall {:try_start_3 .. :try_end_1a} :catchall_18
 
-    throw p1
+    throw v1
 .end method
 
 .method public release(Landroid/os/IBinder;I)V
     .registers 5
+    .param p1, "token"  # Landroid/os/IBinder;
+    .param p2, "userId"  # I
 
     .line 85
     iget-object v0, p0, Lcom/android/server/utils/UserTokenWatcher;->mWatchers:Landroid/util/SparseArray;
@@ -303,17 +327,19 @@
 
     invoke-virtual {v1, p2}, Landroid/util/SparseArray;->get(I)Ljava/lang/Object;
 
-    move-result-object p2
+    move-result-object v1
 
-    check-cast p2, Landroid/os/TokenWatcher;
+    check-cast v1, Landroid/os/TokenWatcher;
 
     .line 87
-    if-eqz p2, :cond_10
+    .local v1, "watcher":Landroid/os/TokenWatcher;
+    if-eqz v1, :cond_10
 
     .line 88
-    invoke-virtual {p2, p1}, Landroid/os/TokenWatcher;->release(Landroid/os/IBinder;)V
+    invoke-virtual {v1, p1}, Landroid/os/TokenWatcher;->release(Landroid/os/IBinder;)V
 
     .line 90
+    .end local v1  # "watcher":Landroid/os/TokenWatcher;
     :cond_10
     monitor-exit v0
 
@@ -322,11 +348,11 @@
 
     .line 90
     :catchall_12
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_14
     .catchall {:try_start_3 .. :try_end_14} :catchall_12
 
-    throw p1
+    throw v1
 .end method

@@ -21,6 +21,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/notification/EventConditionProvider;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/notification/EventConditionProvider;
 
     .line 325
     iput-object p1, p0, Lcom/android/server/notification/EventConditionProvider$3;->this$0:Lcom/android/server/notification/EventConditionProvider;
@@ -33,42 +34,44 @@
 
 # virtual methods
 .method public onReceive(Landroid/content/Context;Landroid/content/Intent;)V
-    .registers 4
+    .registers 5
+    .param p1, "context"  # Landroid/content/Context;
+    .param p2, "intent"  # Landroid/content/Intent;
 
     .line 328
     invoke-static {}, Lcom/android/server/notification/EventConditionProvider;->access$100()Z
 
-    move-result p1
+    move-result v0
 
-    if-eqz p1, :cond_21
+    if-eqz v0, :cond_21
 
-    new-instance p1, Ljava/lang/StringBuilder;
+    new-instance v0, Ljava/lang/StringBuilder;
 
-    invoke-direct {p1}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string/jumbo v0, "onReceive "
+    const-string/jumbo v1, "onReceive "
 
-    invoke-virtual {p1, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {p2}, Landroid/content/Intent;->getAction()Ljava/lang/String;
 
-    move-result-object p2
+    move-result-object v1
 
-    invoke-virtual {p1, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    const-string p2, "ConditionProviders.ECP"
+    const-string v1, "ConditionProviders.ECP"
 
-    invoke-static {p2, p1}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v0}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 329
     :cond_21
-    iget-object p1, p0, Lcom/android/server/notification/EventConditionProvider$3;->this$0:Lcom/android/server/notification/EventConditionProvider;
+    iget-object v0, p0, Lcom/android/server/notification/EventConditionProvider$3;->this$0:Lcom/android/server/notification/EventConditionProvider;
 
-    invoke-static {p1}, Lcom/android/server/notification/EventConditionProvider;->access$400(Lcom/android/server/notification/EventConditionProvider;)V
+    invoke-static {v0}, Lcom/android/server/notification/EventConditionProvider;->access$400(Lcom/android/server/notification/EventConditionProvider;)V
 
     .line 330
     return-void

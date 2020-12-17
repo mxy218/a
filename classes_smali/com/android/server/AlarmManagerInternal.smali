@@ -18,8 +18,5 @@
 .method public abstract registerInFlightListener(Lcom/android/server/AlarmManagerInternal$InFlightListener;)V
 .end method
 
-.method public abstract remove(Landroid/app/PendingIntent;)V
-.end method
-
 .method public abstract removeAlarmsForUid(I)V
 .end method

@@ -132,17 +132,18 @@
 
 .method public static valueOf(Ljava/lang/String;)Lcom/android/server/broadcastradio/hal2/FrequencyBand;
     .registers 2
+    .param p0, "name"  # Ljava/lang/String;
 
     .line 22
     const-class v0, Lcom/android/server/broadcastradio/hal2/FrequencyBand;
 
     invoke-static {v0, p0}, Ljava/lang/Enum;->valueOf(Ljava/lang/Class;Ljava/lang/String;)Ljava/lang/Enum;
 
-    move-result-object p0
+    move-result-object v0
 
-    check-cast p0, Lcom/android/server/broadcastradio/hal2/FrequencyBand;
+    check-cast v0, Lcom/android/server/broadcastradio/hal2/FrequencyBand;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method public static values()[Lcom/android/server/broadcastradio/hal2/FrequencyBand;

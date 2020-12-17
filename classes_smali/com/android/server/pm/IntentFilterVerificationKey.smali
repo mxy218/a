@@ -14,6 +14,9 @@
 # direct methods
 .method public constructor <init>([Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V
     .registers 8
+    .param p1, "domains"  # [Ljava/lang/String;
+    .param p2, "packageName"  # Ljava/lang/String;
+    .param p3, "className"  # Ljava/lang/String;
 
     .line 30
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -24,6 +27,7 @@
     invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
 
     .line 32
+    .local v0, "sb":Ljava/lang/StringBuilder;
     array-length v1, p1
 
     const/4 v2, 0x0
@@ -34,9 +38,11 @@
     aget-object v3, p1, v2
 
     .line 33
+    .local v3, "host":Ljava/lang/String;
     invoke-virtual {v0, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     .line 32
+    .end local v3  # "host":Ljava/lang/String;
     add-int/lit8 v2, v2, 0x1
 
     goto :goto_a
@@ -45,9 +51,9 @@
     :cond_14
     invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v1
 
-    iput-object p1, p0, Lcom/android/server/pm/IntentFilterVerificationKey;->domains:Ljava/lang/String;
+    iput-object v1, p0, Lcom/android/server/pm/IntentFilterVerificationKey;->domains:Ljava/lang/String;
 
     .line 36
     iput-object p2, p0, Lcom/android/server/pm/IntentFilterVerificationKey;->packageName:Ljava/lang/String;
@@ -62,7 +68,8 @@
 
 # virtual methods
 .method public equals(Ljava/lang/Object;)Z
-    .registers 6
+    .registers 7
+    .param p1, "o"  # Ljava/lang/Object;
 
     .line 42
     const/4 v0, 0x1
@@ -75,7 +82,7 @@
     :cond_4
     const/4 v1, 0x0
 
-    if-eqz p1, :cond_49
+    if-eqz p1, :cond_4c
 
     invoke-virtual {p0}, Ljava/lang/Object;->getClass()Ljava/lang/Class;
 
@@ -87,95 +94,101 @@
 
     if-eq v2, v3, :cond_12
 
-    goto :goto_49
+    goto :goto_4c
 
     .line 45
     :cond_12
-    check-cast p1, Lcom/android/server/pm/IntentFilterVerificationKey;
+    move-object v2, p1
+
+    check-cast v2, Lcom/android/server/pm/IntentFilterVerificationKey;
 
     .line 47
-    iget-object v2, p0, Lcom/android/server/pm/IntentFilterVerificationKey;->domains:Ljava/lang/String;
+    .local v2, "that":Lcom/android/server/pm/IntentFilterVerificationKey;
+    iget-object v3, p0, Lcom/android/server/pm/IntentFilterVerificationKey;->domains:Ljava/lang/String;
 
-    if-eqz v2, :cond_21
+    if-eqz v3, :cond_22
 
-    iget-object v3, p1, Lcom/android/server/pm/IntentFilterVerificationKey;->domains:Ljava/lang/String;
+    iget-object v4, v2, Lcom/android/server/pm/IntentFilterVerificationKey;->domains:Ljava/lang/String;
 
-    invoke-virtual {v2, v3}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v3, v4}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result v2
+    move-result v3
 
-    if-nez v2, :cond_26
+    if-nez v3, :cond_27
 
-    goto :goto_25
+    goto :goto_26
 
-    :cond_21
-    iget-object v2, p1, Lcom/android/server/pm/IntentFilterVerificationKey;->domains:Ljava/lang/String;
+    :cond_22
+    iget-object v3, v2, Lcom/android/server/pm/IntentFilterVerificationKey;->domains:Ljava/lang/String;
 
-    if-eqz v2, :cond_26
+    if-eqz v3, :cond_27
 
-    :goto_25
+    :goto_26
     return v1
 
     .line 48
-    :cond_26
-    iget-object v2, p0, Lcom/android/server/pm/IntentFilterVerificationKey;->className:Ljava/lang/String;
+    :cond_27
+    iget-object v3, p0, Lcom/android/server/pm/IntentFilterVerificationKey;->className:Ljava/lang/String;
 
-    if-eqz v2, :cond_33
+    if-eqz v3, :cond_34
 
-    iget-object v3, p1, Lcom/android/server/pm/IntentFilterVerificationKey;->className:Ljava/lang/String;
+    iget-object v4, v2, Lcom/android/server/pm/IntentFilterVerificationKey;->className:Ljava/lang/String;
 
-    invoke-virtual {v2, v3}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v3, v4}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result v2
+    move-result v3
 
-    if-nez v2, :cond_38
+    if-nez v3, :cond_39
 
-    goto :goto_37
+    goto :goto_38
 
-    :cond_33
-    iget-object v2, p1, Lcom/android/server/pm/IntentFilterVerificationKey;->className:Ljava/lang/String;
+    :cond_34
+    iget-object v3, v2, Lcom/android/server/pm/IntentFilterVerificationKey;->className:Ljava/lang/String;
 
-    if-eqz v2, :cond_38
+    if-eqz v3, :cond_39
 
     .line 49
-    :goto_37
+    :goto_38
     return v1
 
     .line 50
-    :cond_38
-    iget-object v2, p0, Lcom/android/server/pm/IntentFilterVerificationKey;->packageName:Ljava/lang/String;
+    :cond_39
+    iget-object v3, p0, Lcom/android/server/pm/IntentFilterVerificationKey;->packageName:Ljava/lang/String;
 
-    iget-object p1, p1, Lcom/android/server/pm/IntentFilterVerificationKey;->packageName:Ljava/lang/String;
+    if-eqz v3, :cond_46
 
-    if-eqz v2, :cond_45
+    iget-object v4, v2, Lcom/android/server/pm/IntentFilterVerificationKey;->packageName:Ljava/lang/String;
 
-    invoke-virtual {v2, p1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v3, v4}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result p1
+    move-result v3
 
-    if-nez p1, :cond_48
+    if-nez v3, :cond_4b
 
-    goto :goto_47
+    goto :goto_4a
 
-    :cond_45
-    if-eqz p1, :cond_48
+    :cond_46
+    iget-object v3, v2, Lcom/android/server/pm/IntentFilterVerificationKey;->packageName:Ljava/lang/String;
+
+    if-eqz v3, :cond_4b
 
     .line 51
-    :goto_47
+    :goto_4a
     return v1
 
     .line 53
-    :cond_48
+    :cond_4b
     return v0
 
     .line 43
-    :cond_49
-    :goto_49
+    .end local v2  # "that":Lcom/android/server/pm/IntentFilterVerificationKey;
+    :cond_4c
+    :goto_4c
     return v1
 .end method
 
 .method public hashCode()I
-    .registers 4
+    .registers 5
 
     .line 58
     iget-object v0, p0, Lcom/android/server/pm/IntentFilterVerificationKey;->domains:Ljava/lang/String;
@@ -194,33 +207,36 @@
     move v0, v1
 
     .line 59
+    .local v0, "result":I
     :goto_b
-    mul-int/lit8 v0, v0, 0x1f
+    mul-int/lit8 v2, v0, 0x1f
 
-    iget-object v2, p0, Lcom/android/server/pm/IntentFilterVerificationKey;->packageName:Ljava/lang/String;
+    iget-object v3, p0, Lcom/android/server/pm/IntentFilterVerificationKey;->packageName:Ljava/lang/String;
 
-    if-eqz v2, :cond_16
+    if-eqz v3, :cond_16
 
-    invoke-virtual {v2}, Ljava/lang/String;->hashCode()I
+    invoke-virtual {v3}, Ljava/lang/String;->hashCode()I
 
-    move-result v2
+    move-result v3
 
     goto :goto_17
 
     :cond_16
-    move v2, v1
+    move v3, v1
 
     :goto_17
-    add-int/2addr v0, v2
+    add-int/2addr v2, v3
 
     .line 60
-    mul-int/lit8 v0, v0, 0x1f
+    .end local v0  # "result":I
+    .local v2, "result":I
+    mul-int/lit8 v0, v2, 0x1f
 
-    iget-object v2, p0, Lcom/android/server/pm/IntentFilterVerificationKey;->className:Ljava/lang/String;
+    iget-object v3, p0, Lcom/android/server/pm/IntentFilterVerificationKey;->className:Ljava/lang/String;
 
-    if-eqz v2, :cond_22
+    if-eqz v3, :cond_22
 
-    invoke-virtual {v2}, Ljava/lang/String;->hashCode()I
+    invoke-virtual {v3}, Ljava/lang/String;->hashCode()I
 
     move-result v1
 
@@ -228,5 +244,7 @@
     add-int/2addr v0, v1
 
     .line 61
+    .end local v2  # "result":I
+    .restart local v0  # "result":I
     return v0
 .end method

@@ -41,6 +41,8 @@
     .end annotation
 
     .line 29
+    .local p0, "this":Lcom/android/server/hdmi/UnmodifiableSparseArray;, "Lcom/android/server/hdmi/UnmodifiableSparseArray<TE;>;"
+    .local p1, "array":Landroid/util/SparseArray;, "Landroid/util/SparseArray<TE;>;"
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
     .line 30
@@ -54,6 +56,7 @@
 # virtual methods
 .method public get(I)Ljava/lang/Object;
     .registers 3
+    .param p1, "key"  # I
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(I)TE;"
@@ -61,17 +64,19 @@
     .end annotation
 
     .line 38
+    .local p0, "this":Lcom/android/server/hdmi/UnmodifiableSparseArray;, "Lcom/android/server/hdmi/UnmodifiableSparseArray<TE;>;"
     iget-object v0, p0, Lcom/android/server/hdmi/UnmodifiableSparseArray;->mArray:Landroid/util/SparseArray;
 
     invoke-virtual {v0, p1}, Landroid/util/SparseArray;->get(I)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v0
 
-    return-object p1
+    return-object v0
 .end method
 
 .method public get(ILjava/lang/Object;)Ljava/lang/Object;
     .registers 4
+    .param p1, "key"  # I
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(ITE;)TE;"
@@ -79,13 +84,15 @@
     .end annotation
 
     .line 42
+    .local p0, "this":Lcom/android/server/hdmi/UnmodifiableSparseArray;, "Lcom/android/server/hdmi/UnmodifiableSparseArray<TE;>;"
+    .local p2, "valueIfKeyNotFound":Ljava/lang/Object;, "TE;"
     iget-object v0, p0, Lcom/android/server/hdmi/UnmodifiableSparseArray;->mArray:Landroid/util/SparseArray;
 
     invoke-virtual {v0, p1, p2}, Landroid/util/SparseArray;->get(ILjava/lang/Object;)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v0
 
-    return-object p1
+    return-object v0
 .end method
 
 .method public indexOfValue(Ljava/lang/Object;)I
@@ -97,32 +104,37 @@
     .end annotation
 
     .line 54
+    .local p0, "this":Lcom/android/server/hdmi/UnmodifiableSparseArray;, "Lcom/android/server/hdmi/UnmodifiableSparseArray<TE;>;"
+    .local p1, "value":Ljava/lang/Object;, "TE;"
     iget-object v0, p0, Lcom/android/server/hdmi/UnmodifiableSparseArray;->mArray:Landroid/util/SparseArray;
 
     invoke-virtual {v0, p1}, Landroid/util/SparseArray;->indexOfValue(Ljava/lang/Object;)I
 
-    move-result p1
+    move-result v0
 
-    return p1
+    return v0
 .end method
 
 .method public keyAt(I)I
     .registers 3
+    .param p1, "index"  # I
 
     .line 46
+    .local p0, "this":Lcom/android/server/hdmi/UnmodifiableSparseArray;, "Lcom/android/server/hdmi/UnmodifiableSparseArray<TE;>;"
     iget-object v0, p0, Lcom/android/server/hdmi/UnmodifiableSparseArray;->mArray:Landroid/util/SparseArray;
 
     invoke-virtual {v0, p1}, Landroid/util/SparseArray;->keyAt(I)I
 
-    move-result p1
+    move-result v0
 
-    return p1
+    return v0
 .end method
 
 .method public size()I
     .registers 2
 
     .line 34
+    .local p0, "this":Lcom/android/server/hdmi/UnmodifiableSparseArray;, "Lcom/android/server/hdmi/UnmodifiableSparseArray<TE;>;"
     iget-object v0, p0, Lcom/android/server/hdmi/UnmodifiableSparseArray;->mArray:Landroid/util/SparseArray;
 
     invoke-virtual {v0}, Landroid/util/SparseArray;->size()I
@@ -136,6 +148,7 @@
     .registers 2
 
     .line 59
+    .local p0, "this":Lcom/android/server/hdmi/UnmodifiableSparseArray;, "Lcom/android/server/hdmi/UnmodifiableSparseArray<TE;>;"
     iget-object v0, p0, Lcom/android/server/hdmi/UnmodifiableSparseArray;->mArray:Landroid/util/SparseArray;
 
     invoke-virtual {v0}, Landroid/util/SparseArray;->toString()Ljava/lang/String;
@@ -147,6 +160,7 @@
 
 .method public valueAt(I)Ljava/lang/Object;
     .registers 3
+    .param p1, "index"  # I
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(I)TE;"
@@ -154,11 +168,12 @@
     .end annotation
 
     .line 50
+    .local p0, "this":Lcom/android/server/hdmi/UnmodifiableSparseArray;, "Lcom/android/server/hdmi/UnmodifiableSparseArray<TE;>;"
     iget-object v0, p0, Lcom/android/server/hdmi/UnmodifiableSparseArray;->mArray:Landroid/util/SparseArray;
 
     invoke-virtual {v0, p1}, Landroid/util/SparseArray;->valueAt(I)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v0
 
-    return-object p1
+    return-object v0
 .end method

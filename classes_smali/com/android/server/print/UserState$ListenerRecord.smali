@@ -41,7 +41,7 @@
 
 # direct methods
 .method public constructor <init>(Lcom/android/server/print/UserState;Landroid/os/IInterface;)V
-    .registers 3
+    .registers 4
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(TT;)V"
@@ -55,6 +55,8 @@
     .end annotation
 
     .line 1238
+    .local p0, "this":Lcom/android/server/print/UserState$ListenerRecord;, "Lcom/android/server/print/UserState$ListenerRecord<TT;>;"
+    .local p2, "listener":Landroid/os/IInterface;, "TT;"
     iput-object p1, p0, Lcom/android/server/print/UserState$ListenerRecord;->this$0:Lcom/android/server/print/UserState;
 
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -67,9 +69,9 @@
 
     move-result-object p1
 
-    const/4 p2, 0x0
+    const/4 v0, 0x0
 
-    invoke-interface {p1, p0, p2}, Landroid/os/IBinder;->linkToDeath(Landroid/os/IBinder$DeathRecipient;I)V
+    invoke-interface {p1, p0, v0}, Landroid/os/IBinder;->linkToDeath(Landroid/os/IBinder$DeathRecipient;I)V
 
     .line 1241
     return-void
@@ -81,6 +83,7 @@
     .registers 3
 
     .line 1249
+    .local p0, "this":Lcom/android/server/print/UserState$ListenerRecord;, "Lcom/android/server/print/UserState$ListenerRecord<TT;>;"
     iget-object v0, p0, Lcom/android/server/print/UserState$ListenerRecord;->listener:Landroid/os/IInterface;
 
     invoke-interface {v0}, Landroid/os/IInterface;->asBinder()Landroid/os/IBinder;
@@ -102,6 +105,7 @@
     .registers 3
 
     .line 1244
+    .local p0, "this":Lcom/android/server/print/UserState$ListenerRecord;, "Lcom/android/server/print/UserState$ListenerRecord<TT;>;"
     iget-object v0, p0, Lcom/android/server/print/UserState$ListenerRecord;->listener:Landroid/os/IInterface;
 
     invoke-interface {v0}, Landroid/os/IInterface;->asBinder()Landroid/os/IBinder;

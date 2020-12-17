@@ -21,8 +21,9 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/display/AutomaticBrightnessController;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/display/AutomaticBrightnessController;
 
-    .line 956
+    .line 1190
     iput-object p1, p0, Lcom/android/server/display/AutomaticBrightnessController$TaskStackListenerImpl;->this$0:Lcom/android/server/display/AutomaticBrightnessController;
 
     invoke-direct {p0}, Landroid/app/TaskStackListener;-><init>()V
@@ -35,7 +36,7 @@
 .method public onTaskStackChanged()V
     .registers 3
 
-    .line 959
+    .line 1193
     iget-object v0, p0, Lcom/android/server/display/AutomaticBrightnessController$TaskStackListenerImpl;->this$0:Lcom/android/server/display/AutomaticBrightnessController;
 
     invoke-static {v0}, Lcom/android/server/display/AutomaticBrightnessController;->access$500(Lcom/android/server/display/AutomaticBrightnessController;)Lcom/android/server/display/AutomaticBrightnessController$AutomaticBrightnessHandler;
@@ -46,6 +47,6 @@
 
     invoke-virtual {v0, v1}, Lcom/android/server/display/AutomaticBrightnessController$AutomaticBrightnessHandler;->sendEmptyMessage(I)Z
 
-    .line 960
+    .line 1194
     return-void
 .end method

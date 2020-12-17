@@ -26,6 +26,7 @@
 # direct methods
 .method private constructor <init>(Lcom/android/server/wm/Dimmer;Landroid/view/SurfaceControl;)V
     .registers 3
+    .param p2, "dimLayer"  # Landroid/view/SurfaceControl;
 
     .line 46
     iput-object p1, p0, Lcom/android/server/wm/Dimmer$DimAnimatable;->this$0:Lcom/android/server/wm/Dimmer;
@@ -41,6 +42,9 @@
 
 .method synthetic constructor <init>(Lcom/android/server/wm/Dimmer;Landroid/view/SurfaceControl;Lcom/android/server/wm/Dimmer$1;)V
     .registers 4
+    .param p1, "x0"  # Lcom/android/server/wm/Dimmer;
+    .param p2, "x1"  # Landroid/view/SurfaceControl;
+    .param p3, "x2"  # Lcom/android/server/wm/Dimmer$1;
 
     .line 43
     invoke-direct {p0, p1, p2}, Lcom/android/server/wm/Dimmer$DimAnimatable;-><init>(Lcom/android/server/wm/Dimmer;Landroid/view/SurfaceControl;)V
@@ -179,6 +183,8 @@
 
 .method public onAnimationLeashCreated(Landroid/view/SurfaceControl$Transaction;Landroid/view/SurfaceControl;)V
     .registers 3
+    .param p1, "t"  # Landroid/view/SurfaceControl$Transaction;
+    .param p2, "leash"  # Landroid/view/SurfaceControl;
 
     .line 62
     return-void
@@ -186,6 +192,7 @@
 
 .method public onAnimationLeashLost(Landroid/view/SurfaceControl$Transaction;)V
     .registers 2
+    .param p1, "t"  # Landroid/view/SurfaceControl$Transaction;
 
     .line 66
     return-void

@@ -21,6 +21,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/connectivity/tethering/EntitlementManager;Landroid/os/Looper;)V
     .registers 3
+    .param p2, "looper"  # Landroid/os/Looper;
 
     .line 504
     iput-object p1, p0, Lcom/android/server/connectivity/tethering/EntitlementManager$EntitlementHandler;->this$0:Lcom/android/server/connectivity/tethering/EntitlementManager;
@@ -35,7 +36,8 @@
 
 # virtual methods
 .method public handleMessage(Landroid/os/Message;)V
-    .registers 5
+    .registers 6
+    .param p1, "msg"  # Landroid/os/Message;
 
     .line 510
     iget v0, p1, Landroid/os/Message;->what:I
@@ -73,15 +75,15 @@
 
     invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    iget p1, p1, Landroid/os/Message;->what:I
+    iget v2, p1, Landroid/os/Message;->what:I
 
-    invoke-virtual {v1, p1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
     invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v1
 
-    invoke-virtual {v0, p1}, Landroid/net/util/SharedLog;->log(Ljava/lang/String;)V
+    invoke-virtual {v0, v1}, Landroid/net/util/SharedLog;->log(Ljava/lang/String;)V
 
     goto :goto_71
 
@@ -95,50 +97,52 @@
 
     check-cast v2, Landroid/os/ResultReceiver;
 
-    iget p1, p1, Landroid/os/Message;->arg2:I
+    iget v3, p1, Landroid/os/Message;->arg2:I
 
     .line 526
-    invoke-static {p1}, Lcom/android/server/connectivity/tethering/EntitlementManager;->access$200(I)Z
+    invoke-static {v3}, Lcom/android/server/connectivity/tethering/EntitlementManager;->access$200(I)Z
 
-    move-result p1
+    move-result v3
 
     .line 525
-    invoke-static {v0, v1, v2, p1}, Lcom/android/server/connectivity/tethering/EntitlementManager;->access$700(Lcom/android/server/connectivity/tethering/EntitlementManager;ILandroid/os/ResultReceiver;Z)V
+    invoke-static {v0, v1, v2, v3}, Lcom/android/server/connectivity/tethering/EntitlementManager;->access$700(Lcom/android/server/connectivity/tethering/EntitlementManager;ILandroid/os/ResultReceiver;Z)V
 
     .line 527
     goto :goto_71
 
     .line 521
     :cond_3f
-    iget-object p1, p0, Lcom/android/server/connectivity/tethering/EntitlementManager$EntitlementHandler;->this$0:Lcom/android/server/connectivity/tethering/EntitlementManager;
-
-    invoke-static {p1}, Lcom/android/server/connectivity/tethering/EntitlementManager;->access$100(Lcom/android/server/connectivity/tethering/EntitlementManager;)Lcom/android/server/connectivity/tethering/EntitlementManager$TetheringConfigurationFetcher;
-
-    move-result-object p1
-
-    invoke-interface {p1}, Lcom/android/server/connectivity/tethering/EntitlementManager$TetheringConfigurationFetcher;->fetchTetheringConfiguration()Lcom/android/server/connectivity/tethering/TetheringConfiguration;
-
-    move-result-object p1
-
-    .line 522
     iget-object v0, p0, Lcom/android/server/connectivity/tethering/EntitlementManager$EntitlementHandler;->this$0:Lcom/android/server/connectivity/tethering/EntitlementManager;
 
-    invoke-static {v0, p1}, Lcom/android/server/connectivity/tethering/EntitlementManager;->access$600(Lcom/android/server/connectivity/tethering/EntitlementManager;Lcom/android/server/connectivity/tethering/TetheringConfiguration;)V
+    invoke-static {v0}, Lcom/android/server/connectivity/tethering/EntitlementManager;->access$100(Lcom/android/server/connectivity/tethering/EntitlementManager;)Lcom/android/server/connectivity/tethering/EntitlementManager$TetheringConfigurationFetcher;
+
+    move-result-object v0
+
+    invoke-interface {v0}, Lcom/android/server/connectivity/tethering/EntitlementManager$TetheringConfigurationFetcher;->fetchTetheringConfiguration()Lcom/android/server/connectivity/tethering/TetheringConfiguration;
+
+    move-result-object v0
+
+    .line 522
+    .local v0, "config":Lcom/android/server/connectivity/tethering/TetheringConfiguration;
+    iget-object v1, p0, Lcom/android/server/connectivity/tethering/EntitlementManager$EntitlementHandler;->this$0:Lcom/android/server/connectivity/tethering/EntitlementManager;
+
+    invoke-static {v1, v0}, Lcom/android/server/connectivity/tethering/EntitlementManager;->access$600(Lcom/android/server/connectivity/tethering/EntitlementManager;Lcom/android/server/connectivity/tethering/TetheringConfiguration;)V
 
     .line 523
     goto :goto_71
 
     .line 518
+    .end local v0  # "config":Lcom/android/server/connectivity/tethering/TetheringConfiguration;
     :cond_4f
     iget-object v0, p0, Lcom/android/server/connectivity/tethering/EntitlementManager$EntitlementHandler;->this$0:Lcom/android/server/connectivity/tethering/EntitlementManager;
 
-    iget p1, p1, Landroid/os/Message;->arg1:I
+    iget v1, p1, Landroid/os/Message;->arg1:I
 
-    invoke-static {p1}, Lcom/android/server/connectivity/tethering/EntitlementManager;->access$200(I)Z
+    invoke-static {v1}, Lcom/android/server/connectivity/tethering/EntitlementManager;->access$200(I)Z
 
-    move-result p1
+    move-result v1
 
-    invoke-static {v0, p1}, Lcom/android/server/connectivity/tethering/EntitlementManager;->access$500(Lcom/android/server/connectivity/tethering/EntitlementManager;Z)V
+    invoke-static {v0, v1}, Lcom/android/server/connectivity/tethering/EntitlementManager;->access$500(Lcom/android/server/connectivity/tethering/EntitlementManager;Z)V
 
     .line 519
     goto :goto_71
@@ -147,9 +151,9 @@
     :cond_5b
     iget-object v0, p0, Lcom/android/server/connectivity/tethering/EntitlementManager$EntitlementHandler;->this$0:Lcom/android/server/connectivity/tethering/EntitlementManager;
 
-    iget p1, p1, Landroid/os/Message;->arg1:I
+    iget v1, p1, Landroid/os/Message;->arg1:I
 
-    invoke-static {v0, p1}, Lcom/android/server/connectivity/tethering/EntitlementManager;->access$400(Lcom/android/server/connectivity/tethering/EntitlementManager;I)V
+    invoke-static {v0, v1}, Lcom/android/server/connectivity/tethering/EntitlementManager;->access$400(Lcom/android/server/connectivity/tethering/EntitlementManager;I)V
 
     .line 516
     goto :goto_71
@@ -160,13 +164,13 @@
 
     iget v1, p1, Landroid/os/Message;->arg1:I
 
-    iget p1, p1, Landroid/os/Message;->arg2:I
+    iget v2, p1, Landroid/os/Message;->arg2:I
 
-    invoke-static {p1}, Lcom/android/server/connectivity/tethering/EntitlementManager;->access$200(I)Z
+    invoke-static {v2}, Lcom/android/server/connectivity/tethering/EntitlementManager;->access$200(I)Z
 
-    move-result p1
+    move-result v2
 
-    invoke-static {v0, v1, p1}, Lcom/android/server/connectivity/tethering/EntitlementManager;->access$300(Lcom/android/server/connectivity/tethering/EntitlementManager;IZ)V
+    invoke-static {v0, v1, v2}, Lcom/android/server/connectivity/tethering/EntitlementManager;->access$300(Lcom/android/server/connectivity/tethering/EntitlementManager;IZ)V
 
     .line 513
     nop

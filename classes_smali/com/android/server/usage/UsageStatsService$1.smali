@@ -21,8 +21,9 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/usage/UsageStatsService;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/usage/UsageStatsService;
 
-    .line 160
+    .line 185
     iput-object p1, p0, Lcom/android/server/usage/UsageStatsService$1;->this$0:Lcom/android/server/usage/UsageStatsService;
 
     invoke-direct {p0}, Landroid/app/usage/UsageStatsManagerInternal$AppIdleStateChangeListener;-><init>()V
@@ -33,54 +34,61 @@
 
 # virtual methods
 .method public onAppIdleStateChanged(Ljava/lang/String;IZII)V
-    .registers 9
+    .registers 10
+    .param p1, "packageName"  # Ljava/lang/String;
+    .param p2, "userId"  # I
+    .param p3, "idle"  # Z
+    .param p4, "bucket"  # I
+    .param p5, "reason"  # I
 
-    .line 164
-    new-instance p3, Landroid/app/usage/UsageEvents$Event;
+    .line 189
+    new-instance v0, Landroid/app/usage/UsageEvents$Event;
 
-    .line 165
+    .line 190
     invoke-static {}, Landroid/os/SystemClock;->elapsedRealtime()J
 
-    move-result-wide v0
+    move-result-wide v1
 
-    const/16 v2, 0xb
+    const/16 v3, 0xb
 
-    invoke-direct {p3, v2, v0, v1}, Landroid/app/usage/UsageEvents$Event;-><init>(IJ)V
+    invoke-direct {v0, v3, v1, v2}, Landroid/app/usage/UsageEvents$Event;-><init>(IJ)V
 
-    .line 166
-    shl-int/lit8 p4, p4, 0x10
+    .line 191
+    .local v0, "event":Landroid/app/usage/UsageEvents$Event;
+    shl-int/lit8 v1, p4, 0x10
 
-    const v0, 0xffff
+    const v2, 0xffff
 
-    and-int/2addr p5, v0
+    and-int/2addr v2, p5
 
-    or-int/2addr p4, p5
+    or-int/2addr v1, v2
 
-    iput p4, p3, Landroid/app/usage/UsageEvents$Event;->mBucketAndReason:I
+    iput v1, v0, Landroid/app/usage/UsageEvents$Event;->mBucketAndReason:I
 
-    .line 167
-    iput-object p1, p3, Landroid/app/usage/UsageEvents$Event;->mPackage:Ljava/lang/String;
+    .line 192
+    iput-object p1, v0, Landroid/app/usage/UsageEvents$Event;->mPackage:Ljava/lang/String;
 
-    .line 168
-    iget-object p1, p0, Lcom/android/server/usage/UsageStatsService$1;->this$0:Lcom/android/server/usage/UsageStatsService;
+    .line 193
+    iget-object v1, p0, Lcom/android/server/usage/UsageStatsService$1;->this$0:Lcom/android/server/usage/UsageStatsService;
 
-    iget-object p1, p1, Lcom/android/server/usage/UsageStatsService;->mHandler:Landroid/os/Handler;
+    iget-object v1, v1, Lcom/android/server/usage/UsageStatsService;->mHandler:Landroid/os/Handler;
 
-    const/4 p4, 0x0
+    const/4 v2, 0x0
 
-    invoke-virtual {p1, p4, p2, p4, p3}, Landroid/os/Handler;->obtainMessage(IIILjava/lang/Object;)Landroid/os/Message;
+    invoke-virtual {v1, v2, p2, v2, v0}, Landroid/os/Handler;->obtainMessage(IIILjava/lang/Object;)Landroid/os/Message;
 
-    move-result-object p1
+    move-result-object v1
 
-    invoke-virtual {p1}, Landroid/os/Message;->sendToTarget()V
+    invoke-virtual {v1}, Landroid/os/Message;->sendToTarget()V
 
-    .line 169
+    .line 194
     return-void
 .end method
 
 .method public onParoleStateChanged(Z)V
     .registers 2
+    .param p1, "isParoleOn"  # Z
 
-    .line 174
+    .line 199
     return-void
 .end method

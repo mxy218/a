@@ -53,7 +53,8 @@
 
 # virtual methods
 .method onPhaseTwoResolved(Ljava/util/List;J)V
-    .registers 16
+    .registers 18
+    .param p2, "startTime"  # J
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(",
@@ -64,153 +65,162 @@
     .end annotation
 
     .line 190
-    const/4 v0, 0x0
+    .local p1, "instantAppResolveInfoList":Ljava/util/List;, "Ljava/util/List<Landroid/content/pm/InstantAppResolveInfo;>;"
+    move-object v0, p0
 
-    if-eqz p1, :cond_25
+    if-eqz p1, :cond_23
 
     invoke-interface {p1}, Ljava/util/List;->size()I
 
     move-result v1
 
-    if-lez v1, :cond_25
+    if-lez v1, :cond_23
 
     .line 191
-    iget-object v3, p0, Lcom/android/server/pm/InstantAppResolver$1;->val$origIntent:Landroid/content/Intent;
+    iget-object v2, v0, Lcom/android/server/pm/InstantAppResolver$1;->val$origIntent:Landroid/content/Intent;
+
+    const/4 v3, 0x0
 
     const/4 v4, 0x0
 
-    const/4 v5, 0x0
-
     .line 194
-    invoke-virtual {v3}, Landroid/content/Intent;->getPackage()Ljava/lang/String;
+    invoke-virtual {v2}, Landroid/content/Intent;->getPackage()Ljava/lang/String;
 
-    move-result-object v6
+    move-result-object v5
 
-    iget-object v1, p0, Lcom/android/server/pm/InstantAppResolver$1;->val$requestObj:Landroid/content/pm/InstantAppRequest;
+    iget-object v1, v0, Lcom/android/server/pm/InstantAppResolver$1;->val$requestObj:Landroid/content/pm/InstantAppRequest;
 
-    iget-object v7, v1, Landroid/content/pm/InstantAppRequest;->digest:Landroid/content/pm/InstantAppResolveInfo$InstantAppDigest;
+    iget-object v6, v1, Landroid/content/pm/InstantAppRequest;->digest:Landroid/content/pm/InstantAppResolveInfo$InstantAppDigest;
 
-    iget-object v8, p0, Lcom/android/server/pm/InstantAppResolver$1;->val$token:Ljava/lang/String;
+    iget-object v7, v0, Lcom/android/server/pm/InstantAppResolver$1;->val$token:Ljava/lang/String;
 
     .line 192
-    move-object v2, p1
+    move-object v1, p1
 
-    invoke-static/range {v2 .. v8}, Lcom/android/server/pm/InstantAppResolver;->access$000(Ljava/util/List;Landroid/content/Intent;Ljava/lang/String;ILjava/lang/String;Landroid/content/pm/InstantAppResolveInfo$InstantAppDigest;Ljava/lang/String;)Landroid/content/pm/AuxiliaryResolveInfo;
+    invoke-static/range {v1 .. v7}, Lcom/android/server/pm/InstantAppResolver;->access$000(Ljava/util/List;Landroid/content/Intent;Ljava/lang/String;ILjava/lang/String;Landroid/content/pm/InstantAppResolveInfo$InstantAppDigest;Ljava/lang/String;)Landroid/content/pm/AuxiliaryResolveInfo;
 
-    move-result-object p1
+    move-result-object v1
 
     .line 196
-    if-eqz p1, :cond_22
+    .local v1, "instantAppIntentInfo":Landroid/content/pm/AuxiliaryResolveInfo;
+    if-eqz v1, :cond_21
 
     .line 197
-    iget-object p1, p1, Landroid/content/pm/AuxiliaryResolveInfo;->failureIntent:Landroid/content/Intent;
+    iget-object v2, v1, Landroid/content/pm/AuxiliaryResolveInfo;->failureIntent:Landroid/content/Intent;
 
-    move-object v0, p1
-
-    goto :goto_23
+    .local v2, "failureIntent":Landroid/content/Intent;
+    goto :goto_22
 
     .line 199
-    :cond_22
-    nop
-
-    .line 201
-    :goto_23
-    move-object v3, v0
-
-    goto :goto_26
-
-    .line 202
-    :cond_25
-    move-object v3, v0
-
-    .line 204
-    :goto_26
-    iget-object p1, p0, Lcom/android/server/pm/InstantAppResolver$1;->val$requestObj:Landroid/content/pm/InstantAppRequest;
-
-    iget-object v1, p1, Landroid/content/pm/InstantAppRequest;->origIntent:Landroid/content/Intent;
-
-    iget-object v2, p0, Lcom/android/server/pm/InstantAppResolver$1;->val$sanitizedIntent:Landroid/content/Intent;
-
-    iget-object p1, p0, Lcom/android/server/pm/InstantAppResolver$1;->val$requestObj:Landroid/content/pm/InstantAppRequest;
-
-    iget-object v4, p1, Landroid/content/pm/InstantAppRequest;->callingPackage:Ljava/lang/String;
-
-    iget-object p1, p0, Lcom/android/server/pm/InstantAppResolver$1;->val$requestObj:Landroid/content/pm/InstantAppRequest;
-
-    iget-object v5, p1, Landroid/content/pm/InstantAppRequest;->verificationBundle:Landroid/os/Bundle;
-
-    iget-object p1, p0, Lcom/android/server/pm/InstantAppResolver$1;->val$requestObj:Landroid/content/pm/InstantAppRequest;
-
-    iget-object v6, p1, Landroid/content/pm/InstantAppRequest;->resolvedType:Ljava/lang/String;
-
-    iget-object p1, p0, Lcom/android/server/pm/InstantAppResolver$1;->val$requestObj:Landroid/content/pm/InstantAppRequest;
-
-    iget v7, p1, Landroid/content/pm/InstantAppRequest;->userId:I
-
-    iget-object p1, p0, Lcom/android/server/pm/InstantAppResolver$1;->val$requestObj:Landroid/content/pm/InstantAppRequest;
-
-    iget-object p1, p1, Landroid/content/pm/InstantAppRequest;->responseObj:Landroid/content/pm/AuxiliaryResolveInfo;
-
-    iget-object v8, p1, Landroid/content/pm/AuxiliaryResolveInfo;->installFailureActivity:Landroid/content/ComponentName;
-
-    iget-object v9, p0, Lcom/android/server/pm/InstantAppResolver$1;->val$token:Ljava/lang/String;
-
-    const/4 v10, 0x0
-
-    iget-object p1, p0, Lcom/android/server/pm/InstantAppResolver$1;->val$requestObj:Landroid/content/pm/InstantAppRequest;
-
-    iget-object p1, p1, Landroid/content/pm/InstantAppRequest;->responseObj:Landroid/content/pm/AuxiliaryResolveInfo;
-
-    iget-object v11, p1, Landroid/content/pm/AuxiliaryResolveInfo;->filters:Ljava/util/List;
-
-    invoke-static/range {v1 .. v11}, Lcom/android/server/pm/InstantAppResolver;->buildEphemeralInstallerIntent(Landroid/content/Intent;Landroid/content/Intent;Landroid/content/Intent;Ljava/lang/String;Landroid/os/Bundle;Ljava/lang/String;ILandroid/content/ComponentName;Ljava/lang/String;ZLjava/util/List;)Landroid/content/Intent;
-
-    move-result-object p1
-
-    .line 216
-    new-instance v0, Landroid/content/ComponentName;
-
-    iget-object v1, p0, Lcom/android/server/pm/InstantAppResolver$1;->val$instantAppInstaller:Landroid/content/pm/ActivityInfo;
-
-    iget-object v1, v1, Landroid/content/pm/ActivityInfo;->packageName:Ljava/lang/String;
-
-    iget-object v2, p0, Lcom/android/server/pm/InstantAppResolver$1;->val$instantAppInstaller:Landroid/content/pm/ActivityInfo;
-
-    iget-object v2, v2, Landroid/content/pm/ActivityInfo;->name:Ljava/lang/String;
-
-    invoke-direct {v0, v1, v2}, Landroid/content/ComponentName;-><init>(Ljava/lang/String;Ljava/lang/String;)V
-
-    invoke-virtual {p1, v0}, Landroid/content/Intent;->setComponent(Landroid/content/ComponentName;)Landroid/content/Intent;
-
-    .line 219
-    const/16 v0, 0x384
-
-    iget-object v1, p0, Lcom/android/server/pm/InstantAppResolver$1;->val$token:Ljava/lang/String;
-
-    .line 220
-    iget-object v2, p0, Lcom/android/server/pm/InstantAppResolver$1;->val$requestObj:Landroid/content/pm/InstantAppRequest;
-
-    iget-object v2, v2, Landroid/content/pm/InstantAppRequest;->responseObj:Landroid/content/pm/AuxiliaryResolveInfo;
-
-    iget-object v2, v2, Landroid/content/pm/AuxiliaryResolveInfo;->filters:Ljava/util/List;
-
-    if-eqz v2, :cond_6d
-
+    .end local v2  # "failureIntent":Landroid/content/Intent;
+    :cond_21
     const/4 v2, 0x0
 
-    goto :goto_6e
+    .line 201
+    .end local v1  # "instantAppIntentInfo":Landroid/content/pm/AuxiliaryResolveInfo;
+    .restart local v2  # "failureIntent":Landroid/content/Intent;
+    :goto_22
+    goto :goto_24
 
-    :cond_6d
-    const/4 v2, 0x1
+    .line 202
+    .end local v2  # "failureIntent":Landroid/content/Intent;
+    :cond_23
+    const/4 v2, 0x0
+
+    .line 204
+    .restart local v2  # "failureIntent":Landroid/content/Intent;
+    :goto_24
+    iget-object v1, v0, Lcom/android/server/pm/InstantAppResolver$1;->val$requestObj:Landroid/content/pm/InstantAppRequest;
+
+    iget-object v3, v1, Landroid/content/pm/InstantAppRequest;->origIntent:Landroid/content/Intent;
+
+    iget-object v4, v0, Lcom/android/server/pm/InstantAppResolver$1;->val$sanitizedIntent:Landroid/content/Intent;
+
+    iget-object v1, v0, Lcom/android/server/pm/InstantAppResolver$1;->val$requestObj:Landroid/content/pm/InstantAppRequest;
+
+    iget-object v6, v1, Landroid/content/pm/InstantAppRequest;->callingPackage:Ljava/lang/String;
+
+    iget-object v1, v0, Lcom/android/server/pm/InstantAppResolver$1;->val$requestObj:Landroid/content/pm/InstantAppRequest;
+
+    iget-object v7, v1, Landroid/content/pm/InstantAppRequest;->verificationBundle:Landroid/os/Bundle;
+
+    iget-object v1, v0, Lcom/android/server/pm/InstantAppResolver$1;->val$requestObj:Landroid/content/pm/InstantAppRequest;
+
+    iget-object v8, v1, Landroid/content/pm/InstantAppRequest;->resolvedType:Ljava/lang/String;
+
+    iget-object v1, v0, Lcom/android/server/pm/InstantAppResolver$1;->val$requestObj:Landroid/content/pm/InstantAppRequest;
+
+    iget v9, v1, Landroid/content/pm/InstantAppRequest;->userId:I
+
+    iget-object v1, v0, Lcom/android/server/pm/InstantAppResolver$1;->val$requestObj:Landroid/content/pm/InstantAppRequest;
+
+    iget-object v1, v1, Landroid/content/pm/InstantAppRequest;->responseObj:Landroid/content/pm/AuxiliaryResolveInfo;
+
+    iget-object v10, v1, Landroid/content/pm/AuxiliaryResolveInfo;->installFailureActivity:Landroid/content/ComponentName;
+
+    iget-object v11, v0, Lcom/android/server/pm/InstantAppResolver$1;->val$token:Ljava/lang/String;
+
+    const/4 v12, 0x0
+
+    iget-object v1, v0, Lcom/android/server/pm/InstantAppResolver$1;->val$requestObj:Landroid/content/pm/InstantAppRequest;
+
+    iget-object v1, v1, Landroid/content/pm/InstantAppRequest;->responseObj:Landroid/content/pm/AuxiliaryResolveInfo;
+
+    iget-object v13, v1, Landroid/content/pm/AuxiliaryResolveInfo;->filters:Ljava/util/List;
+
+    move-object v5, v2
+
+    invoke-static/range {v3 .. v13}, Lcom/android/server/pm/InstantAppResolver;->buildEphemeralInstallerIntent(Landroid/content/Intent;Landroid/content/Intent;Landroid/content/Intent;Ljava/lang/String;Landroid/os/Bundle;Ljava/lang/String;ILandroid/content/ComponentName;Ljava/lang/String;ZLjava/util/List;)Landroid/content/Intent;
+
+    move-result-object v1
+
+    .line 216
+    .local v1, "installerIntent":Landroid/content/Intent;
+    new-instance v3, Landroid/content/ComponentName;
+
+    iget-object v4, v0, Lcom/android/server/pm/InstantAppResolver$1;->val$instantAppInstaller:Landroid/content/pm/ActivityInfo;
+
+    iget-object v4, v4, Landroid/content/pm/ActivityInfo;->packageName:Ljava/lang/String;
+
+    iget-object v5, v0, Lcom/android/server/pm/InstantAppResolver$1;->val$instantAppInstaller:Landroid/content/pm/ActivityInfo;
+
+    iget-object v5, v5, Landroid/content/pm/ActivityInfo;->name:Ljava/lang/String;
+
+    invoke-direct {v3, v4, v5}, Landroid/content/ComponentName;-><init>(Ljava/lang/String;Ljava/lang/String;)V
+
+    invoke-virtual {v1, v3}, Landroid/content/Intent;->setComponent(Landroid/content/ComponentName;)Landroid/content/Intent;
 
     .line 219
-    :goto_6e
-    invoke-static {v0, p2, p3, v1, v2}, Lcom/android/server/pm/InstantAppResolver;->access$100(IJLjava/lang/String;I)V
+    const/16 v3, 0x384
+
+    iget-object v4, v0, Lcom/android/server/pm/InstantAppResolver$1;->val$token:Ljava/lang/String;
+
+    .line 220
+    iget-object v5, v0, Lcom/android/server/pm/InstantAppResolver$1;->val$requestObj:Landroid/content/pm/InstantAppRequest;
+
+    iget-object v5, v5, Landroid/content/pm/InstantAppRequest;->responseObj:Landroid/content/pm/AuxiliaryResolveInfo;
+
+    iget-object v5, v5, Landroid/content/pm/AuxiliaryResolveInfo;->filters:Ljava/util/List;
+
+    if-eqz v5, :cond_6c
+
+    const/4 v5, 0x0
+
+    goto :goto_6d
+
+    :cond_6c
+    const/4 v5, 0x1
+
+    .line 219
+    :goto_6d
+    move-wide/from16 v6, p2
+
+    invoke-static {v3, v6, v7, v4, v5}, Lcom/android/server/pm/InstantAppResolver;->access$100(IJLjava/lang/String;I)V
 
     .line 222
-    iget-object p2, p0, Lcom/android/server/pm/InstantAppResolver$1;->val$context:Landroid/content/Context;
+    iget-object v3, v0, Lcom/android/server/pm/InstantAppResolver$1;->val$context:Landroid/content/Context;
 
-    invoke-virtual {p2, p1}, Landroid/content/Context;->startActivity(Landroid/content/Intent;)V
+    invoke-virtual {v3, v1}, Landroid/content/Context;->startActivity(Landroid/content/Intent;)V
 
     .line 223
     return-void

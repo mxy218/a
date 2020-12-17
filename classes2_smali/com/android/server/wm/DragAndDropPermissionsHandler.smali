@@ -37,6 +37,12 @@
 # direct methods
 .method constructor <init>(Landroid/content/ClipData;ILjava/lang/String;III)V
     .registers 8
+    .param p1, "clipData"  # Landroid/content/ClipData;
+    .param p2, "sourceUid"  # I
+    .param p3, "targetPackage"  # Ljava/lang/String;
+    .param p4, "mode"  # I
+    .param p5, "sourceUserId"  # I
+    .param p6, "targetUserId"  # I
 
     .line 50
     invoke-direct {p0}, Lcom/android/internal/view/IDragAndDropPermissions$Stub;-><init>()V
@@ -75,9 +81,9 @@
     iput p6, p0, Lcom/android/server/wm/DragAndDropPermissionsHandler;->mTargetUserId:I
 
     .line 57
-    iget-object p2, p0, Lcom/android/server/wm/DragAndDropPermissionsHandler;->mUris:Ljava/util/ArrayList;
+    iget-object v0, p0, Lcom/android/server/wm/DragAndDropPermissionsHandler;->mUris:Ljava/util/ArrayList;
 
-    invoke-virtual {p1, p2}, Landroid/content/ClipData;->collectUris(Ljava/util/List;)V
+    invoke-virtual {p1, v0}, Landroid/content/ClipData;->collectUris(Ljava/util/List;)V
 
     .line 58
     return-void
@@ -85,6 +91,7 @@
 
 .method private doTake(Landroid/os/IBinder;)V
     .registers 14
+    .param p1, "permissionOwner"  # Landroid/os/IBinder;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -97,8 +104,10 @@
     move-result-wide v0
 
     .line 77
+    .local v0, "origId":J
     const/4 v2, 0x0
 
+    .local v2, "i":I
     :goto_5
     :try_start_5
     iget-object v3, p0, Lcom/android/server/wm/DragAndDropPermissionsHandler;->mUris:Ljava/util/ArrayList;
@@ -148,6 +157,7 @@
     goto :goto_5
 
     .line 83
+    .end local v2  # "i":I
     :cond_2b
     invoke-static {v0, v1}, Landroid/os/Binder;->restoreCallingIdentity(J)V
 
@@ -159,11 +169,11 @@
 
     .line 83
     :catchall_30
-    move-exception p1
+    move-exception v2
 
     invoke-static {v0, v1}, Landroid/os/Binder;->restoreCallingIdentity(J)V
 
-    throw p1
+    throw v2
 .end method
 
 
@@ -211,32 +221,33 @@
 
     .line 106
     :cond_9
-    nop
+    const/4 v0, 0x0
 
     .line 107
-    iget-object v0, p0, Lcom/android/server/wm/DragAndDropPermissionsHandler;->mActivityToken:Landroid/os/IBinder;
-
-    const/4 v1, 0x0
+    .local v0, "permissionOwner":Landroid/os/IBinder;
+    iget-object v1, p0, Lcom/android/server/wm/DragAndDropPermissionsHandler;->mActivityToken:Landroid/os/IBinder;
 
     const/4 v2, 0x0
 
-    if-eqz v0, :cond_26
+    if-eqz v1, :cond_26
 
     .line 109
-    :try_start_10
+    :try_start_f
     invoke-static {}, Landroid/app/ActivityTaskManager;->getService()Landroid/app/IActivityTaskManager;
 
-    move-result-object v0
+    move-result-object v1
 
     iget-object v3, p0, Lcom/android/server/wm/DragAndDropPermissionsHandler;->mActivityToken:Landroid/os/IBinder;
 
     .line 110
-    invoke-interface {v0, v3}, Landroid/app/IActivityTaskManager;->getUriPermissionOwnerForActivity(Landroid/os/IBinder;)Landroid/os/IBinder;
+    invoke-interface {v1, v3}, Landroid/app/IActivityTaskManager;->getUriPermissionOwnerForActivity(Landroid/os/IBinder;)Landroid/os/IBinder;
 
-    move-result-object v0
-    :try_end_1a
-    .catch Ljava/lang/Exception; {:try_start_10 .. :try_end_1a} :catch_22
-    .catchall {:try_start_10 .. :try_end_1a} :catchall_1e
+    move-result-object v1
+    :try_end_19
+    .catch Ljava/lang/Exception; {:try_start_f .. :try_end_19} :catch_22
+    .catchall {:try_start_f .. :try_end_19} :catchall_1e
+
+    move-object v0, v1
 
     .line 115
     iput-object v2, p0, Lcom/android/server/wm/DragAndDropPermissionsHandler;->mActivityToken:Landroid/os/IBinder;
@@ -245,26 +256,28 @@
     nop
 
     .line 115
-    goto :goto_31
+    goto :goto_32
 
     :catchall_1e
-    move-exception v0
+    move-exception v1
 
     iput-object v2, p0, Lcom/android/server/wm/DragAndDropPermissionsHandler;->mActivityToken:Landroid/os/IBinder;
 
-    throw v0
+    throw v1
 
     .line 111
     :catch_22
-    move-exception v0
+    move-exception v1
 
     .line 115
+    .local v1, "e":Ljava/lang/Exception;
     iput-object v2, p0, Lcom/android/server/wm/DragAndDropPermissionsHandler;->mActivityToken:Landroid/os/IBinder;
 
     .line 113
     return-void
 
     .line 118
+    .end local v1  # "e":Ljava/lang/Exception;
     :cond_26
     iget-object v0, p0, Lcom/android/server/wm/DragAndDropPermissionsHandler;->mPermissionOwnerToken:Landroid/os/IBinder;
 
@@ -272,39 +285,43 @@
     iput-object v2, p0, Lcom/android/server/wm/DragAndDropPermissionsHandler;->mPermissionOwnerToken:Landroid/os/IBinder;
 
     .line 120
-    iget-object v3, p0, Lcom/android/server/wm/DragAndDropPermissionsHandler;->mTransientToken:Landroid/os/IBinder;
+    iget-object v1, p0, Lcom/android/server/wm/DragAndDropPermissionsHandler;->mTransientToken:Landroid/os/IBinder;
 
-    invoke-interface {v3, p0, v1}, Landroid/os/IBinder;->unlinkToDeath(Landroid/os/IBinder$DeathRecipient;I)Z
+    const/4 v3, 0x0
+
+    invoke-interface {v1, p0, v3}, Landroid/os/IBinder;->unlinkToDeath(Landroid/os/IBinder$DeathRecipient;I)Z
 
     .line 121
     iput-object v2, p0, Lcom/android/server/wm/DragAndDropPermissionsHandler;->mTransientToken:Landroid/os/IBinder;
 
     .line 124
-    :goto_31
-    const-class v2, Lcom/android/server/uri/UriGrantsManagerInternal;
+    :goto_32
+    const-class v1, Lcom/android/server/uri/UriGrantsManagerInternal;
 
-    invoke-static {v2}, Lcom/android/server/LocalServices;->getService(Ljava/lang/Class;)Ljava/lang/Object;
+    invoke-static {v1}, Lcom/android/server/LocalServices;->getService(Ljava/lang/Class;)Ljava/lang/Object;
 
-    move-result-object v2
+    move-result-object v1
 
-    check-cast v2, Lcom/android/server/uri/UriGrantsManagerInternal;
+    check-cast v1, Lcom/android/server/uri/UriGrantsManagerInternal;
 
     .line 125
-    nop
+    .local v1, "ugm":Lcom/android/server/uri/UriGrantsManagerInternal;
+    const/4 v2, 0x0
 
-    :goto_3a
+    .local v2, "i":I
+    :goto_3b
     iget-object v3, p0, Lcom/android/server/wm/DragAndDropPermissionsHandler;->mUris:Ljava/util/ArrayList;
 
     invoke-virtual {v3}, Ljava/util/ArrayList;->size()I
 
     move-result v3
 
-    if-ge v1, v3, :cond_54
+    if-ge v2, v3, :cond_55
 
     .line 126
     iget-object v3, p0, Lcom/android/server/wm/DragAndDropPermissionsHandler;->mUris:Ljava/util/ArrayList;
 
-    invoke-virtual {v3, v1}, Ljava/util/ArrayList;->get(I)Ljava/lang/Object;
+    invoke-virtual {v3, v2}, Ljava/util/ArrayList;->get(I)Ljava/lang/Object;
 
     move-result-object v3
 
@@ -314,20 +331,22 @@
 
     iget v5, p0, Lcom/android/server/wm/DragAndDropPermissionsHandler;->mSourceUserId:I
 
-    invoke-interface {v2, v0, v3, v4, v5}, Lcom/android/server/uri/UriGrantsManagerInternal;->revokeUriPermissionFromOwner(Landroid/os/IBinder;Landroid/net/Uri;II)V
+    invoke-interface {v1, v0, v3, v4, v5}, Lcom/android/server/uri/UriGrantsManagerInternal;->revokeUriPermissionFromOwner(Landroid/os/IBinder;Landroid/net/Uri;II)V
 
     .line 125
-    add-int/lit8 v1, v1, 0x1
+    add-int/lit8 v2, v2, 0x1
 
-    goto :goto_3a
+    goto :goto_3b
 
     .line 128
-    :cond_54
+    .end local v2  # "i":I
+    :cond_55
     return-void
 .end method
 
 .method public take(Landroid/os/IBinder;)V
-    .registers 3
+    .registers 4
+    .param p1, "activityToken"  # Landroid/os/IBinder;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -352,22 +371,24 @@
     .line 68
     invoke-static {}, Landroid/app/ActivityTaskManager;->getService()Landroid/app/IActivityTaskManager;
 
-    move-result-object p1
+    move-result-object v0
 
-    iget-object v0, p0, Lcom/android/server/wm/DragAndDropPermissionsHandler;->mActivityToken:Landroid/os/IBinder;
+    iget-object v1, p0, Lcom/android/server/wm/DragAndDropPermissionsHandler;->mActivityToken:Landroid/os/IBinder;
 
     .line 69
-    invoke-interface {p1, v0}, Landroid/app/IActivityTaskManager;->getUriPermissionOwnerForActivity(Landroid/os/IBinder;)Landroid/os/IBinder;
+    invoke-interface {v0, v1}, Landroid/app/IActivityTaskManager;->getUriPermissionOwnerForActivity(Landroid/os/IBinder;)Landroid/os/IBinder;
 
-    move-result-object p1
+    move-result-object v0
 
     .line 71
-    invoke-direct {p0, p1}, Lcom/android/server/wm/DragAndDropPermissionsHandler;->doTake(Landroid/os/IBinder;)V
+    .local v0, "permissionOwner":Landroid/os/IBinder;
+    invoke-direct {p0, v0}, Lcom/android/server/wm/DragAndDropPermissionsHandler;->doTake(Landroid/os/IBinder;)V
 
     .line 72
     return-void
 
     .line 63
+    .end local v0  # "permissionOwner":Landroid/os/IBinder;
     :cond_19
     :goto_19
     return-void
@@ -375,6 +396,7 @@
 
 .method public takeTransient(Landroid/os/IBinder;)V
     .registers 4
+    .param p1, "transientToken"  # Landroid/os/IBinder;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -415,16 +437,16 @@
     iput-object p1, p0, Lcom/android/server/wm/DragAndDropPermissionsHandler;->mTransientToken:Landroid/os/IBinder;
 
     .line 95
-    iget-object p1, p0, Lcom/android/server/wm/DragAndDropPermissionsHandler;->mTransientToken:Landroid/os/IBinder;
+    iget-object v0, p0, Lcom/android/server/wm/DragAndDropPermissionsHandler;->mTransientToken:Landroid/os/IBinder;
 
-    const/4 v0, 0x0
+    const/4 v1, 0x0
 
-    invoke-interface {p1, p0, v0}, Landroid/os/IBinder;->linkToDeath(Landroid/os/IBinder$DeathRecipient;I)V
+    invoke-interface {v0, p0, v1}, Landroid/os/IBinder;->linkToDeath(Landroid/os/IBinder$DeathRecipient;I)V
 
     .line 97
-    iget-object p1, p0, Lcom/android/server/wm/DragAndDropPermissionsHandler;->mPermissionOwnerToken:Landroid/os/IBinder;
+    iget-object v0, p0, Lcom/android/server/wm/DragAndDropPermissionsHandler;->mPermissionOwnerToken:Landroid/os/IBinder;
 
-    invoke-direct {p0, p1}, Lcom/android/server/wm/DragAndDropPermissionsHandler;->doTake(Landroid/os/IBinder;)V
+    invoke-direct {p0, v0}, Lcom/android/server/wm/DragAndDropPermissionsHandler;->doTake(Landroid/os/IBinder;)V
 
     .line 98
     return-void

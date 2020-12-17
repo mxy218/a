@@ -36,7 +36,9 @@
 
 # direct methods
 .method public constructor <init>(Landroid/content/Context;Landroid/os/Handler;)V
-    .registers 3
+    .registers 4
+    .param p1, "context"  # Landroid/content/Context;
+    .param p2, "handler"  # Landroid/os/Handler;
 
     .line 236
     invoke-direct {p0, p2}, Landroid/database/ContentObserver;-><init>(Landroid/os/Handler;)V
@@ -48,11 +50,11 @@
     iput-object p2, p0, Lcom/android/server/NetworkScoreService$DispatchingContentObserver;->mHandler:Landroid/os/Handler;
 
     .line 239
-    new-instance p1, Landroid/util/ArrayMap;
+    new-instance v0, Landroid/util/ArrayMap;
 
-    invoke-direct {p1}, Landroid/util/ArrayMap;-><init>()V
+    invoke-direct {v0}, Landroid/util/ArrayMap;-><init>()V
 
-    iput-object p1, p0, Lcom/android/server/NetworkScoreService$DispatchingContentObserver;->mUriEventMap:Ljava/util/Map;
+    iput-object v0, p0, Lcom/android/server/NetworkScoreService$DispatchingContentObserver;->mUriEventMap:Ljava/util/Map;
 
     .line 240
     return-void
@@ -61,28 +63,31 @@
 
 # virtual methods
 .method observe(Landroid/net/Uri;I)V
-    .registers 4
+    .registers 5
+    .param p1, "uri"  # Landroid/net/Uri;
+    .param p2, "what"  # I
 
     .line 243
     iget-object v0, p0, Lcom/android/server/NetworkScoreService$DispatchingContentObserver;->mUriEventMap:Ljava/util/Map;
 
     invoke-static {p2}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
 
-    move-result-object p2
+    move-result-object v1
 
-    invoke-interface {v0, p1, p2}, Ljava/util/Map;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+    invoke-interface {v0, p1, v1}, Ljava/util/Map;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
 
     .line 244
-    iget-object p2, p0, Lcom/android/server/NetworkScoreService$DispatchingContentObserver;->mContext:Landroid/content/Context;
+    iget-object v0, p0, Lcom/android/server/NetworkScoreService$DispatchingContentObserver;->mContext:Landroid/content/Context;
 
-    invoke-virtual {p2}, Landroid/content/Context;->getContentResolver()Landroid/content/ContentResolver;
+    invoke-virtual {v0}, Landroid/content/Context;->getContentResolver()Landroid/content/ContentResolver;
 
-    move-result-object p2
+    move-result-object v0
 
     .line 245
-    const/4 v0, 0x0
+    .local v0, "resolver":Landroid/content/ContentResolver;
+    const/4 v1, 0x0
 
-    invoke-virtual {p2, p1, v0, p0}, Landroid/content/ContentResolver;->registerContentObserver(Landroid/net/Uri;ZLandroid/database/ContentObserver;)V
+    invoke-virtual {v0, p1, v1, p0}, Landroid/content/ContentResolver;->registerContentObserver(Landroid/net/Uri;ZLandroid/database/ContentObserver;)V
 
     .line 246
     return-void
@@ -90,6 +95,7 @@
 
 .method public onChange(Z)V
     .registers 3
+    .param p1, "selfChange"  # Z
 
     .line 250
     const/4 v0, 0x0
@@ -101,7 +107,9 @@
 .end method
 
 .method public onChange(ZLandroid/net/Uri;)V
-    .registers 6
+    .registers 7
+    .param p1, "selfChange"  # Z
+    .param p2, "uri"  # Landroid/net/Uri;
 
     .line 255
     invoke-static {}, Lcom/android/server/NetworkScoreService;->access$000()Z
@@ -120,67 +128,68 @@
 
     invoke-static {p1}, Ljava/lang/Boolean;->valueOf(Z)Ljava/lang/Boolean;
 
-    move-result-object p1
+    move-result-object v3
 
-    aput-object p1, v0, v2
+    aput-object v3, v0, v2
 
-    const/4 p1, 0x1
+    const/4 v2, 0x1
 
-    aput-object p2, v0, p1
+    aput-object p2, v0, v2
 
-    const-string/jumbo p1, "onChange(%s, %s)"
+    const-string/jumbo v2, "onChange(%s, %s)"
 
-    invoke-static {p1, v0}, Ljava/lang/String;->format(Ljava/lang/String;[Ljava/lang/Object;)Ljava/lang/String;
+    invoke-static {v2, v0}, Ljava/lang/String;->format(Ljava/lang/String;[Ljava/lang/Object;)Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    invoke-static {v1, p1}, Landroid/util/Log;->d(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v0}, Landroid/util/Log;->d(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 256
     :cond_1f
-    iget-object p1, p0, Lcom/android/server/NetworkScoreService$DispatchingContentObserver;->mUriEventMap:Ljava/util/Map;
+    iget-object v0, p0, Lcom/android/server/NetworkScoreService$DispatchingContentObserver;->mUriEventMap:Ljava/util/Map;
 
-    invoke-interface {p1, p2}, Ljava/util/Map;->get(Ljava/lang/Object;)Ljava/lang/Object;
+    invoke-interface {v0, p2}, Ljava/util/Map;->get(Ljava/lang/Object;)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v0
 
-    check-cast p1, Ljava/lang/Integer;
+    check-cast v0, Ljava/lang/Integer;
 
     .line 257
-    if-eqz p1, :cond_37
+    .local v0, "what":Ljava/lang/Integer;
+    if-eqz v0, :cond_37
 
     .line 258
-    iget-object p2, p0, Lcom/android/server/NetworkScoreService$DispatchingContentObserver;->mHandler:Landroid/os/Handler;
+    iget-object v1, p0, Lcom/android/server/NetworkScoreService$DispatchingContentObserver;->mHandler:Landroid/os/Handler;
 
-    invoke-virtual {p1}, Ljava/lang/Integer;->intValue()I
+    invoke-virtual {v0}, Ljava/lang/Integer;->intValue()I
 
-    move-result p1
+    move-result v2
 
-    invoke-virtual {p2, p1}, Landroid/os/Handler;->obtainMessage(I)Landroid/os/Message;
+    invoke-virtual {v1, v2}, Landroid/os/Handler;->obtainMessage(I)Landroid/os/Message;
 
-    move-result-object p1
+    move-result-object v1
 
-    invoke-virtual {p1}, Landroid/os/Message;->sendToTarget()V
+    invoke-virtual {v1}, Landroid/os/Message;->sendToTarget()V
 
     goto :goto_4b
 
     .line 260
     :cond_37
-    new-instance p1, Ljava/lang/StringBuilder;
+    new-instance v2, Ljava/lang/StringBuilder;
 
-    invoke-direct {p1}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v0, "No matching event to send for URI = "
+    const-string v3, "No matching event to send for URI = "
 
-    invoke-virtual {p1, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p1, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v2
 
-    invoke-static {v1, p1}, Landroid/util/Log;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v2}, Landroid/util/Log;->w(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 262
     :goto_4b

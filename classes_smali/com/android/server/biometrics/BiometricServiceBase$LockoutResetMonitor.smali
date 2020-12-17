@@ -33,77 +33,81 @@
 
 # direct methods
 .method public constructor <init>(Lcom/android/server/biometrics/BiometricServiceBase;Landroid/hardware/biometrics/IBiometricServiceLockoutResetCallback;)V
-    .registers 5
+    .registers 6
+    .param p2, "callback"  # Landroid/hardware/biometrics/IBiometricServiceLockoutResetCallback;
 
-    .line 571
+    .line 565
     iput-object p1, p0, Lcom/android/server/biometrics/BiometricServiceBase$LockoutResetMonitor;->this$0:Lcom/android/server/biometrics/BiometricServiceBase;
 
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
-    .line 602
+    .line 596
     new-instance v0, Lcom/android/server/biometrics/BiometricServiceBase$LockoutResetMonitor$2;
 
     invoke-direct {v0, p0}, Lcom/android/server/biometrics/BiometricServiceBase$LockoutResetMonitor$2;-><init>(Lcom/android/server/biometrics/BiometricServiceBase$LockoutResetMonitor;)V
 
     iput-object v0, p0, Lcom/android/server/biometrics/BiometricServiceBase$LockoutResetMonitor;->mRemoveCallbackRunnable:Ljava/lang/Runnable;
 
-    .line 572
+    .line 566
     iput-object p2, p0, Lcom/android/server/biometrics/BiometricServiceBase$LockoutResetMonitor;->mCallback:Landroid/hardware/biometrics/IBiometricServiceLockoutResetCallback;
 
-    .line 573
+    .line 567
     invoke-static {p1}, Lcom/android/server/biometrics/BiometricServiceBase;->access$1000(Lcom/android/server/biometrics/BiometricServiceBase;)Landroid/os/PowerManager;
 
-    move-result-object p2
+    move-result-object v0
 
-    const/4 v0, 0x1
+    const/4 v1, 0x1
 
-    const-string v1, "lockout reset callback"
+    const-string/jumbo v2, "lockout reset callback"
 
-    invoke-virtual {p2, v0, v1}, Landroid/os/PowerManager;->newWakeLock(ILjava/lang/String;)Landroid/os/PowerManager$WakeLock;
+    invoke-virtual {v0, v1, v2}, Landroid/os/PowerManager;->newWakeLock(ILjava/lang/String;)Landroid/os/PowerManager$WakeLock;
 
-    move-result-object p2
+    move-result-object v0
 
-    iput-object p2, p0, Lcom/android/server/biometrics/BiometricServiceBase$LockoutResetMonitor;->mWakeLock:Landroid/os/PowerManager$WakeLock;
+    iput-object v0, p0, Lcom/android/server/biometrics/BiometricServiceBase$LockoutResetMonitor;->mWakeLock:Landroid/os/PowerManager$WakeLock;
 
-    .line 576
-    :try_start_1b
-    iget-object p2, p0, Lcom/android/server/biometrics/BiometricServiceBase$LockoutResetMonitor;->mCallback:Landroid/hardware/biometrics/IBiometricServiceLockoutResetCallback;
+    .line 570
+    :try_start_1c
+    iget-object v0, p0, Lcom/android/server/biometrics/BiometricServiceBase$LockoutResetMonitor;->mCallback:Landroid/hardware/biometrics/IBiometricServiceLockoutResetCallback;
 
-    invoke-interface {p2}, Landroid/hardware/biometrics/IBiometricServiceLockoutResetCallback;->asBinder()Landroid/os/IBinder;
+    invoke-interface {v0}, Landroid/hardware/biometrics/IBiometricServiceLockoutResetCallback;->asBinder()Landroid/os/IBinder;
 
-    move-result-object p2
+    move-result-object v0
 
-    const/4 v0, 0x0
+    const/4 v1, 0x0
 
-    invoke-interface {p2, p0, v0}, Landroid/os/IBinder;->linkToDeath(Landroid/os/IBinder$DeathRecipient;I)V
-    :try_end_25
-    .catch Landroid/os/RemoteException; {:try_start_1b .. :try_end_25} :catch_26
+    invoke-interface {v0, p0, v1}, Landroid/os/IBinder;->linkToDeath(Landroid/os/IBinder$DeathRecipient;I)V
+    :try_end_26
+    .catch Landroid/os/RemoteException; {:try_start_1c .. :try_end_26} :catch_27
 
-    .line 579
-    goto :goto_30
+    .line 573
+    goto :goto_31
 
-    .line 577
-    :catch_26
-    move-exception p2
+    .line 571
+    :catch_27
+    move-exception v0
 
-    .line 578
+    .line 572
+    .local v0, "e":Landroid/os/RemoteException;
     invoke-virtual {p1}, Lcom/android/server/biometrics/BiometricServiceBase;->getTag()Ljava/lang/String;
 
     move-result-object p1
 
-    const-string v0, "caught remote exception in linkToDeath"
+    const-string v1, "caught remote exception in linkToDeath"
 
-    invoke-static {p1, v0, p2}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    invoke-static {p1, v1, v0}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
-    .line 580
-    :goto_30
+    .line 574
+    .end local v0  # "e":Landroid/os/RemoteException;
+    :goto_31
     return-void
 .end method
 
 .method static synthetic access$1100(Lcom/android/server/biometrics/BiometricServiceBase$LockoutResetMonitor;)V
     .registers 1
+    .param p0, "x0"  # Lcom/android/server/biometrics/BiometricServiceBase$LockoutResetMonitor;
 
-    .line 566
+    .line 560
     invoke-direct {p0}, Lcom/android/server/biometrics/BiometricServiceBase$LockoutResetMonitor;->releaseWakelock()V
 
     return-void
@@ -112,7 +116,7 @@
 .method private releaseWakelock()V
     .registers 2
 
-    .line 617
+    .line 611
     iget-object v0, p0, Lcom/android/server/biometrics/BiometricServiceBase$LockoutResetMonitor;->mWakeLock:Landroid/os/PowerManager$WakeLock;
 
     invoke-virtual {v0}, Landroid/os/PowerManager$WakeLock;->isHeld()Z
@@ -121,12 +125,12 @@
 
     if-eqz v0, :cond_d
 
-    .line 618
+    .line 612
     iget-object v0, p0, Lcom/android/server/biometrics/BiometricServiceBase$LockoutResetMonitor;->mWakeLock:Landroid/os/PowerManager$WakeLock;
 
     invoke-virtual {v0}, Landroid/os/PowerManager$WakeLock;->release()V
 
-    .line 620
+    .line 614
     :cond_d
     return-void
 .end method
@@ -136,7 +140,7 @@
 .method public binderDied()V
     .registers 3
 
-    .line 612
+    .line 606
     iget-object v0, p0, Lcom/android/server/biometrics/BiometricServiceBase$LockoutResetMonitor;->this$0:Lcom/android/server/biometrics/BiometricServiceBase;
 
     invoke-virtual {v0}, Lcom/android/server/biometrics/BiometricServiceBase;->getTag()Ljava/lang/String;
@@ -147,7 +151,7 @@
 
     invoke-static {v0, v1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 613
+    .line 607
     iget-object v0, p0, Lcom/android/server/biometrics/BiometricServiceBase$LockoutResetMonitor;->this$0:Lcom/android/server/biometrics/BiometricServiceBase;
 
     iget-object v0, v0, Lcom/android/server/biometrics/BiometricServiceBase;->mHandler:Lcom/android/server/biometrics/BiometricServiceBase$H;
@@ -156,19 +160,19 @@
 
     invoke-virtual {v0, v1}, Lcom/android/server/biometrics/BiometricServiceBase$H;->post(Ljava/lang/Runnable;)Z
 
-    .line 614
+    .line 608
     return-void
 .end method
 
 .method public sendLockoutReset()V
     .registers 5
 
-    .line 583
+    .line 577
     iget-object v0, p0, Lcom/android/server/biometrics/BiometricServiceBase$LockoutResetMonitor;->mCallback:Landroid/hardware/biometrics/IBiometricServiceLockoutResetCallback;
 
     if-eqz v0, :cond_41
 
-    .line 585
+    .line 579
     :try_start_4
     iget-object v0, p0, Lcom/android/server/biometrics/BiometricServiceBase$LockoutResetMonitor;->mWakeLock:Landroid/os/PowerManager$WakeLock;
 
@@ -176,7 +180,7 @@
 
     invoke-virtual {v0, v1, v2}, Landroid/os/PowerManager$WakeLock;->acquire(J)V
 
-    .line 586
+    .line 580
     iget-object v0, p0, Lcom/android/server/biometrics/BiometricServiceBase$LockoutResetMonitor;->mCallback:Landroid/hardware/biometrics/IBiometricServiceLockoutResetCallback;
 
     iget-object v1, p0, Lcom/android/server/biometrics/BiometricServiceBase$LockoutResetMonitor;->this$0:Lcom/android/server/biometrics/BiometricServiceBase;
@@ -196,11 +200,12 @@
 
     goto :goto_41
 
-    .line 595
+    .line 589
     :catch_1c
     move-exception v0
 
-    .line 596
+    .line 590
+    .local v0, "e":Landroid/os/RemoteException;
     iget-object v1, p0, Lcom/android/server/biometrics/BiometricServiceBase$LockoutResetMonitor;->this$0:Lcom/android/server/biometrics/BiometricServiceBase;
 
     invoke-virtual {v1}, Lcom/android/server/biometrics/BiometricServiceBase;->getTag()Ljava/lang/String;
@@ -211,16 +216,18 @@
 
     invoke-static {v1, v2, v0}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
-    .line 597
+    .line 591
     invoke-direct {p0}, Lcom/android/server/biometrics/BiometricServiceBase$LockoutResetMonitor;->releaseWakelock()V
 
     goto :goto_41
 
-    .line 592
+    .line 586
+    .end local v0  # "e":Landroid/os/RemoteException;
     :catch_2c
     move-exception v0
 
-    .line 593
+    .line 587
+    .local v0, "e":Landroid/os/DeadObjectException;
     iget-object v1, p0, Lcom/android/server/biometrics/BiometricServiceBase$LockoutResetMonitor;->this$0:Lcom/android/server/biometrics/BiometricServiceBase;
 
     invoke-virtual {v1}, Lcom/android/server/biometrics/BiometricServiceBase;->getTag()Ljava/lang/String;
@@ -231,16 +238,17 @@
 
     invoke-static {v1, v2, v0}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
+    .line 588
+    iget-object v1, p0, Lcom/android/server/biometrics/BiometricServiceBase$LockoutResetMonitor;->this$0:Lcom/android/server/biometrics/BiometricServiceBase;
+
+    iget-object v1, v1, Lcom/android/server/biometrics/BiometricServiceBase;->mHandler:Lcom/android/server/biometrics/BiometricServiceBase$H;
+
+    iget-object v2, p0, Lcom/android/server/biometrics/BiometricServiceBase$LockoutResetMonitor;->mRemoveCallbackRunnable:Ljava/lang/Runnable;
+
+    invoke-virtual {v1, v2}, Lcom/android/server/biometrics/BiometricServiceBase$H;->post(Ljava/lang/Runnable;)Z
+
     .line 594
-    iget-object v0, p0, Lcom/android/server/biometrics/BiometricServiceBase$LockoutResetMonitor;->this$0:Lcom/android/server/biometrics/BiometricServiceBase;
-
-    iget-object v0, v0, Lcom/android/server/biometrics/BiometricServiceBase;->mHandler:Lcom/android/server/biometrics/BiometricServiceBase$H;
-
-    iget-object v1, p0, Lcom/android/server/biometrics/BiometricServiceBase$LockoutResetMonitor;->mRemoveCallbackRunnable:Ljava/lang/Runnable;
-
-    invoke-virtual {v0, v1}, Lcom/android/server/biometrics/BiometricServiceBase$H;->post(Ljava/lang/Runnable;)Z
-
-    .line 600
+    .end local v0  # "e":Landroid/os/DeadObjectException;
     :cond_41
     :goto_41
     return-void

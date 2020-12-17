@@ -23,6 +23,7 @@
 
 .method public static final dumpBitfield(I)Ljava/lang/String;
     .registers 5
+    .param p0, "o"  # I
 
     .line 38
     new-instance v0, Ljava/util/ArrayList;
@@ -30,98 +31,97 @@
     invoke-direct {v0}, Ljava/util/ArrayList;-><init>()V
 
     .line 39
-    nop
+    .local v0, "list":Ljava/util/ArrayList;, "Ljava/util/ArrayList<Ljava/lang/String;>;"
+    const/4 v1, 0x0
 
     .line 40
-    const-string v1, "DATA_ROLE"
+    .local v1, "flipped":I
+    const-string v2, "DATA_ROLE"
 
-    invoke-virtual {v0, v1}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
+    invoke-virtual {v0, v2}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
 
     .line 41
-    and-int/lit8 v1, p0, 0x1
+    and-int/lit8 v2, p0, 0x1
 
-    const/4 v2, 0x1
+    const/4 v3, 0x1
 
-    if-ne v1, v2, :cond_16
+    if-ne v2, v3, :cond_17
 
     .line 42
-    const-string v1, "POWER_ROLE"
+    const-string v2, "POWER_ROLE"
 
-    invoke-virtual {v0, v1}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
+    invoke-virtual {v0, v2}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
 
     .line 43
-    goto :goto_17
-
-    .line 41
-    :cond_16
-    const/4 v2, 0x0
+    or-int/lit8 v1, v1, 0x1
 
     .line 45
-    :goto_17
-    and-int/lit8 v1, p0, 0x2
+    :cond_17
+    and-int/lit8 v2, p0, 0x2
 
     const/4 v3, 0x2
 
-    if-ne v1, v3, :cond_23
+    if-ne v2, v3, :cond_23
 
     .line 46
-    const-string v1, "MODE"
+    const-string v2, "MODE"
 
-    invoke-virtual {v0, v1}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
+    invoke-virtual {v0, v2}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
 
     .line 47
-    or-int/lit8 v2, v2, 0x2
+    or-int/lit8 v1, v1, 0x2
 
     .line 49
     :cond_23
-    if-eq p0, v2, :cond_3f
+    if-eq p0, v1, :cond_3f
 
     .line 50
-    new-instance v1, Ljava/lang/StringBuilder;
+    new-instance v2, Ljava/lang/StringBuilder;
 
-    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
 
     const-string v3, "0x"
 
-    invoke-virtual {v1, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    not-int v2, v2
+    not-int v3, v1
 
-    and-int/2addr p0, v2
+    and-int/2addr v3, p0
 
-    invoke-static {p0}, Ljava/lang/Integer;->toHexString(I)Ljava/lang/String;
+    invoke-static {v3}, Ljava/lang/Integer;->toHexString(I)Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v3
 
-    invoke-virtual {v1, p0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v2
 
-    invoke-virtual {v0, p0}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
+    invoke-virtual {v0, v2}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
 
     .line 52
     :cond_3f
-    const-string p0, " | "
+    const-string v2, " | "
 
-    invoke-static {p0, v0}, Ljava/lang/String;->join(Ljava/lang/CharSequence;Ljava/lang/Iterable;)Ljava/lang/String;
+    invoke-static {v2, v0}, Ljava/lang/String;->join(Ljava/lang/CharSequence;Ljava/lang/Iterable;)Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v2
 
-    return-object p0
+    return-object v2
 .end method
 
 .method public static final toString(I)Ljava/lang/String;
     .registers 3
+    .param p0, "o"  # I
 
     .line 25
     if-nez p0, :cond_5
 
     .line 26
-    const-string p0, "DATA_ROLE"
+    const-string v0, "DATA_ROLE"
 
-    return-object p0
+    return-object v0
 
     .line 28
     :cond_5
@@ -130,9 +130,9 @@
     if-ne p0, v0, :cond_b
 
     .line 29
-    const-string p0, "POWER_ROLE"
+    const-string v0, "POWER_ROLE"
 
-    return-object p0
+    return-object v0
 
     .line 31
     :cond_b
@@ -141,9 +141,9 @@
     if-ne p0, v0, :cond_11
 
     .line 32
-    const-string p0, "MODE"
+    const-string v0, "MODE"
 
-    return-object p0
+    return-object v0
 
     .line 34
     :cond_11
@@ -157,13 +157,13 @@
 
     invoke-static {p0}, Ljava/lang/Integer;->toHexString(I)Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v1
 
-    invoke-virtual {v0, p0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v0
 
-    return-object p0
+    return-object v0
 .end method

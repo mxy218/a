@@ -21,6 +21,7 @@
 # direct methods
 .method public constructor <init>(Landroid/content/Context;)V
     .registers 3
+    .param p1, "context"  # Landroid/content/Context;
 
     .line 109
     new-instance v0, Lcom/android/server/appbinding/AppBindingService$Injector;
@@ -35,6 +36,8 @@
 
 .method constructor <init>(Landroid/content/Context;Lcom/android/server/appbinding/AppBindingService$Injector;)V
     .registers 5
+    .param p1, "context"  # Landroid/content/Context;
+    .param p2, "injector"  # Lcom/android/server/appbinding/AppBindingService$Injector;
 
     .line 113
     invoke-direct {p0, p1}, Lcom/android/server/SystemService;-><init>(Landroid/content/Context;)V
@@ -56,6 +59,7 @@
 # virtual methods
 .method public onBootPhase(I)V
     .registers 3
+    .param p1, "phase"  # I
 
     .line 124
     iget-object v0, p0, Lcom/android/server/appbinding/AppBindingService$Lifecycle;->mService:Lcom/android/server/appbinding/AppBindingService;
@@ -82,6 +86,7 @@
 
 .method public onStartUser(I)V
     .registers 3
+    .param p1, "userHandle"  # I
 
     .line 129
     iget-object v0, p0, Lcom/android/server/appbinding/AppBindingService$Lifecycle;->mService:Lcom/android/server/appbinding/AppBindingService;
@@ -94,6 +99,7 @@
 
 .method public onStopUser(I)V
     .registers 3
+    .param p1, "userHandle"  # I
 
     .line 139
     iget-object v0, p0, Lcom/android/server/appbinding/AppBindingService$Lifecycle;->mService:Lcom/android/server/appbinding/AppBindingService;
@@ -106,6 +112,7 @@
 
 .method public onUnlockUser(I)V
     .registers 3
+    .param p1, "userId"  # I
 
     .line 134
     iget-object v0, p0, Lcom/android/server/appbinding/AppBindingService$Lifecycle;->mService:Lcom/android/server/appbinding/AppBindingService;

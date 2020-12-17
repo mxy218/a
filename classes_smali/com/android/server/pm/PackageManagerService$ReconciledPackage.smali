@@ -59,6 +59,16 @@
 # direct methods
 .method private constructor <init>(Lcom/android/server/pm/PackageManagerService$ReconcileRequest;Lcom/android/server/pm/PackageManagerService$InstallArgs;Lcom/android/server/pm/PackageSetting;Lcom/android/server/pm/PackageManagerService$PackageInstalledInfo;Lcom/android/server/pm/PackageManagerService$PrepareResult;Lcom/android/server/pm/PackageManagerService$ScanResult;Lcom/android/server/pm/PackageManagerService$DeletePackageAction;Ljava/util/List;Landroid/content/pm/PackageParser$SigningDetails;ZZ)V
     .registers 12
+    .param p1, "request"  # Lcom/android/server/pm/PackageManagerService$ReconcileRequest;
+    .param p2, "installArgs"  # Lcom/android/server/pm/PackageManagerService$InstallArgs;
+    .param p3, "pkgSetting"  # Lcom/android/server/pm/PackageSetting;
+    .param p4, "installResult"  # Lcom/android/server/pm/PackageManagerService$PackageInstalledInfo;
+    .param p5, "prepareResult"  # Lcom/android/server/pm/PackageManagerService$PrepareResult;
+    .param p6, "scanResult"  # Lcom/android/server/pm/PackageManagerService$ScanResult;
+    .param p7, "deletePackageAction"  # Lcom/android/server/pm/PackageManagerService$DeletePackageAction;
+    .param p9, "signingDetails"  # Landroid/content/pm/PackageParser$SigningDetails;
+    .param p10, "sharedUserSignaturesChanged"  # Z
+    .param p11, "removeAppKeySetData"  # Z
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(",
@@ -77,68 +87,82 @@
         }
     .end annotation
 
-    .line 16559
+    .line 17131
+    .local p8, "allowedSharedLibraryInfos":Ljava/util/List;, "Ljava/util/List<Landroid/content/pm/SharedLibraryInfo;>;"
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
-    .line 16560
+    .line 17132
     iput-object p1, p0, Lcom/android/server/pm/PackageManagerService$ReconciledPackage;->request:Lcom/android/server/pm/PackageManagerService$ReconcileRequest;
 
-    .line 16561
+    .line 17133
     iput-object p2, p0, Lcom/android/server/pm/PackageManagerService$ReconciledPackage;->installArgs:Lcom/android/server/pm/PackageManagerService$InstallArgs;
 
-    .line 16562
+    .line 17134
     iput-object p3, p0, Lcom/android/server/pm/PackageManagerService$ReconciledPackage;->pkgSetting:Lcom/android/server/pm/PackageSetting;
 
-    .line 16563
+    .line 17135
     iput-object p4, p0, Lcom/android/server/pm/PackageManagerService$ReconciledPackage;->installResult:Lcom/android/server/pm/PackageManagerService$PackageInstalledInfo;
 
-    .line 16564
+    .line 17136
     iput-object p5, p0, Lcom/android/server/pm/PackageManagerService$ReconciledPackage;->prepareResult:Lcom/android/server/pm/PackageManagerService$PrepareResult;
 
-    .line 16565
+    .line 17137
     iput-object p6, p0, Lcom/android/server/pm/PackageManagerService$ReconciledPackage;->scanResult:Lcom/android/server/pm/PackageManagerService$ScanResult;
 
-    .line 16566
+    .line 17138
     iput-object p7, p0, Lcom/android/server/pm/PackageManagerService$ReconciledPackage;->deletePackageAction:Lcom/android/server/pm/PackageManagerService$DeletePackageAction;
 
-    .line 16567
+    .line 17139
     iput-object p8, p0, Lcom/android/server/pm/PackageManagerService$ReconciledPackage;->allowedSharedLibraryInfos:Ljava/util/List;
 
-    .line 16568
+    .line 17140
     iput-object p9, p0, Lcom/android/server/pm/PackageManagerService$ReconciledPackage;->signingDetails:Landroid/content/pm/PackageParser$SigningDetails;
 
-    .line 16569
+    .line 17141
     iput-boolean p10, p0, Lcom/android/server/pm/PackageManagerService$ReconciledPackage;->sharedUserSignaturesChanged:Z
 
-    .line 16570
+    .line 17142
     iput-boolean p11, p0, Lcom/android/server/pm/PackageManagerService$ReconciledPackage;->removeAppKeySetData:Z
 
-    .line 16571
+    .line 17143
     return-void
 .end method
 
 .method synthetic constructor <init>(Lcom/android/server/pm/PackageManagerService$ReconcileRequest;Lcom/android/server/pm/PackageManagerService$InstallArgs;Lcom/android/server/pm/PackageSetting;Lcom/android/server/pm/PackageManagerService$PackageInstalledInfo;Lcom/android/server/pm/PackageManagerService$PrepareResult;Lcom/android/server/pm/PackageManagerService$ScanResult;Lcom/android/server/pm/PackageManagerService$DeletePackageAction;Ljava/util/List;Landroid/content/pm/PackageParser$SigningDetails;ZZLcom/android/server/pm/PackageManagerService$1;)V
     .registers 13
+    .param p1, "x0"  # Lcom/android/server/pm/PackageManagerService$ReconcileRequest;
+    .param p2, "x1"  # Lcom/android/server/pm/PackageManagerService$InstallArgs;
+    .param p3, "x2"  # Lcom/android/server/pm/PackageSetting;
+    .param p4, "x3"  # Lcom/android/server/pm/PackageManagerService$PackageInstalledInfo;
+    .param p5, "x4"  # Lcom/android/server/pm/PackageManagerService$PrepareResult;
+    .param p6, "x5"  # Lcom/android/server/pm/PackageManagerService$ScanResult;
+    .param p7, "x6"  # Lcom/android/server/pm/PackageManagerService$DeletePackageAction;
+    .param p8, "x7"  # Ljava/util/List;
+    .param p9, "x8"  # Landroid/content/pm/PackageParser$SigningDetails;
+    .param p10, "x9"  # Z
+    .param p11, "x10"  # Z
+    .param p12, "x11"  # Lcom/android/server/pm/PackageManagerService$1;
 
-    .line 16534
+    .line 17106
     invoke-direct/range {p0 .. p11}, Lcom/android/server/pm/PackageManagerService$ReconciledPackage;-><init>(Lcom/android/server/pm/PackageManagerService$ReconcileRequest;Lcom/android/server/pm/PackageManagerService$InstallArgs;Lcom/android/server/pm/PackageSetting;Lcom/android/server/pm/PackageManagerService$PackageInstalledInfo;Lcom/android/server/pm/PackageManagerService$PrepareResult;Lcom/android/server/pm/PackageManagerService$ScanResult;Lcom/android/server/pm/PackageManagerService$DeletePackageAction;Ljava/util/List;Landroid/content/pm/PackageParser$SigningDetails;ZZ)V
 
     return-void
 .end method
 
-.method static synthetic access$2100(Lcom/android/server/pm/PackageManagerService$ReconciledPackage;)Ljava/util/Map;
-    .registers 1
+.method static synthetic access$2300(Lcom/android/server/pm/PackageManagerService$ReconciledPackage;)Ljava/util/Map;
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/pm/PackageManagerService$ReconciledPackage;
 
-    .line 16534
+    .line 17106
     invoke-direct {p0}, Lcom/android/server/pm/PackageManagerService$ReconciledPackage;->getCombinedPackages()Ljava/util/Map;
 
-    move-result-object p0
+    move-result-object v0
 
-    return-object p0
+    return-object v0
 .end method
 
 .method private getCombinedPackages()Ljava/util/Map;
-    .registers 5
+    .registers 6
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "()",
@@ -149,14 +173,14 @@
         }
     .end annotation
 
-    .line 16579
+    .line 17151
     new-instance v0, Landroid/util/ArrayMap;
 
     iget-object v1, p0, Lcom/android/server/pm/PackageManagerService$ReconciledPackage;->request:Lcom/android/server/pm/PackageManagerService$ReconcileRequest;
 
     iget-object v1, v1, Lcom/android/server/pm/PackageManagerService$ReconcileRequest;->allPackages:Ljava/util/Map;
 
-    .line 16580
+    .line 17152
     invoke-interface {v1}, Ljava/util/Map;->size()I
 
     move-result v1
@@ -173,14 +197,15 @@
 
     invoke-direct {v0, v1}, Landroid/util/ArrayMap;-><init>(I)V
 
-    .line 16582
+    .line 17154
+    .local v0, "combinedPackages":Landroid/util/ArrayMap;, "Landroid/util/ArrayMap<Ljava/lang/String;Landroid/content/pm/PackageParser$Package;>;"
     iget-object v1, p0, Lcom/android/server/pm/PackageManagerService$ReconciledPackage;->request:Lcom/android/server/pm/PackageManagerService$ReconcileRequest;
 
     iget-object v1, v1, Lcom/android/server/pm/PackageManagerService$ReconcileRequest;->allPackages:Ljava/util/Map;
 
     invoke-virtual {v0, v1}, Landroid/util/ArrayMap;->putAll(Ljava/util/Map;)V
 
-    .line 16583
+    .line 17155
     iget-object v1, p0, Lcom/android/server/pm/PackageManagerService$ReconciledPackage;->request:Lcom/android/server/pm/PackageManagerService$ReconcileRequest;
 
     iget-object v1, v1, Lcom/android/server/pm/PackageManagerService$ReconcileRequest;->scannedPackages:Ljava/util/Map;
@@ -206,21 +231,23 @@
 
     check-cast v2, Lcom/android/server/pm/PackageManagerService$ScanResult;
 
-    .line 16584
+    .line 17156
+    .local v2, "scanResult":Lcom/android/server/pm/PackageManagerService$ScanResult;
     iget-object v3, v2, Lcom/android/server/pm/PackageManagerService$ScanResult;->pkgSetting:Lcom/android/server/pm/PackageSetting;
 
     iget-object v3, v3, Lcom/android/server/pm/PackageSetting;->name:Ljava/lang/String;
 
-    iget-object v2, v2, Lcom/android/server/pm/PackageManagerService$ScanResult;->request:Lcom/android/server/pm/PackageManagerService$ScanRequest;
+    iget-object v4, v2, Lcom/android/server/pm/PackageManagerService$ScanResult;->request:Lcom/android/server/pm/PackageManagerService$ScanRequest;
 
-    iget-object v2, v2, Lcom/android/server/pm/PackageManagerService$ScanRequest;->pkg:Landroid/content/pm/PackageParser$Package;
+    iget-object v4, v4, Lcom/android/server/pm/PackageManagerService$ScanRequest;->pkg:Landroid/content/pm/PackageParser$Package;
 
-    invoke-virtual {v0, v3, v2}, Landroid/util/ArrayMap;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+    invoke-virtual {v0, v3, v4}, Landroid/util/ArrayMap;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
 
-    .line 16585
+    .line 17157
+    .end local v2  # "scanResult":Lcom/android/server/pm/PackageManagerService$ScanResult;
     goto :goto_29
 
-    .line 16586
+    .line 17158
     :cond_41
     return-object v0
 .end method

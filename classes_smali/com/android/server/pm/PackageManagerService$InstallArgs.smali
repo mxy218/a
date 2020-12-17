@@ -17,6 +17,10 @@
 # instance fields
 .field final abiOverride:Ljava/lang/String;
 
+.field callInstallPid:I
+
+.field callInstallUid:I
+
 .field final installFlags:I
 
 .field final installGrantPermissions:[Ljava/lang/String;
@@ -58,7 +62,22 @@
 
 # direct methods
 .method constructor <init>(Lcom/android/server/pm/PackageManagerService$OriginInfo;Lcom/android/server/pm/PackageManagerService$MoveInfo;Landroid/content/pm/IPackageInstallObserver2;ILjava/lang/String;Ljava/lang/String;Landroid/os/UserHandle;[Ljava/lang/String;Ljava/lang/String;[Ljava/lang/String;Ljava/util/List;Ljava/lang/String;ILandroid/content/pm/PackageParser$SigningDetails;ILcom/android/server/pm/PackageManagerService$MultiPackageInstallParams;)V
-    .registers 19
+    .registers 33
+    .param p1, "origin"  # Lcom/android/server/pm/PackageManagerService$OriginInfo;
+    .param p2, "move"  # Lcom/android/server/pm/PackageManagerService$MoveInfo;
+    .param p3, "observer"  # Landroid/content/pm/IPackageInstallObserver2;
+    .param p4, "installFlags"  # I
+    .param p5, "installerPackageName"  # Ljava/lang/String;
+    .param p6, "volumeUuid"  # Ljava/lang/String;
+    .param p7, "user"  # Landroid/os/UserHandle;
+    .param p8, "instructionSets"  # [Ljava/lang/String;
+    .param p9, "abiOverride"  # Ljava/lang/String;
+    .param p10, "installGrantPermissions"  # [Ljava/lang/String;
+    .param p12, "traceMethod"  # Ljava/lang/String;
+    .param p13, "traceCookie"  # I
+    .param p14, "signingDetails"  # Landroid/content/pm/PackageParser$SigningDetails;
+    .param p15, "installReason"  # I
+    .param p16, "multiPackageInstallParams"  # Lcom/android/server/pm/PackageManagerService$MultiPackageInstallParams;
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(",
@@ -86,92 +105,93 @@
         }
     .end annotation
 
-    .line 15735
-    move-object v0, p0
+    .line 16301
+    .local p11, "whitelistedRestrictedPermissions":Ljava/util/List;, "Ljava/util/List<Ljava/lang/String;>;"
+    move-object/from16 v0, p0
 
-    invoke-direct {p0}, Ljava/lang/Object;-><init>()V
+    invoke-direct/range {p0 .. p0}, Ljava/lang/Object;-><init>()V
 
-    .line 15736
-    move-object v1, p1
+    .line 16302
+    move-object/from16 v1, p1
 
     iput-object v1, v0, Lcom/android/server/pm/PackageManagerService$InstallArgs;->origin:Lcom/android/server/pm/PackageManagerService$OriginInfo;
 
-    .line 15737
-    move-object v1, p2
+    .line 16303
+    move-object/from16 v2, p2
 
-    iput-object v1, v0, Lcom/android/server/pm/PackageManagerService$InstallArgs;->move:Lcom/android/server/pm/PackageManagerService$MoveInfo;
+    iput-object v2, v0, Lcom/android/server/pm/PackageManagerService$InstallArgs;->move:Lcom/android/server/pm/PackageManagerService$MoveInfo;
 
-    .line 15738
-    move v1, p4
+    .line 16304
+    move/from16 v3, p4
 
-    iput v1, v0, Lcom/android/server/pm/PackageManagerService$InstallArgs;->installFlags:I
+    iput v3, v0, Lcom/android/server/pm/PackageManagerService$InstallArgs;->installFlags:I
 
-    .line 15739
-    move-object v1, p3
+    .line 16305
+    move-object/from16 v4, p3
 
-    iput-object v1, v0, Lcom/android/server/pm/PackageManagerService$InstallArgs;->observer:Landroid/content/pm/IPackageInstallObserver2;
+    iput-object v4, v0, Lcom/android/server/pm/PackageManagerService$InstallArgs;->observer:Landroid/content/pm/IPackageInstallObserver2;
 
-    .line 15740
-    move-object v1, p5
+    .line 16306
+    move-object/from16 v5, p5
 
-    iput-object v1, v0, Lcom/android/server/pm/PackageManagerService$InstallArgs;->installerPackageName:Ljava/lang/String;
+    iput-object v5, v0, Lcom/android/server/pm/PackageManagerService$InstallArgs;->installerPackageName:Ljava/lang/String;
 
-    .line 15741
-    move-object v1, p6
+    .line 16307
+    move-object/from16 v6, p6
 
-    iput-object v1, v0, Lcom/android/server/pm/PackageManagerService$InstallArgs;->volumeUuid:Ljava/lang/String;
+    iput-object v6, v0, Lcom/android/server/pm/PackageManagerService$InstallArgs;->volumeUuid:Ljava/lang/String;
 
-    .line 15742
-    move-object v1, p7
+    .line 16308
+    move-object/from16 v7, p7
 
-    iput-object v1, v0, Lcom/android/server/pm/PackageManagerService$InstallArgs;->user:Landroid/os/UserHandle;
+    iput-object v7, v0, Lcom/android/server/pm/PackageManagerService$InstallArgs;->user:Landroid/os/UserHandle;
 
-    .line 15743
-    move-object v1, p8
+    .line 16309
+    move-object/from16 v8, p8
 
-    iput-object v1, v0, Lcom/android/server/pm/PackageManagerService$InstallArgs;->instructionSets:[Ljava/lang/String;
+    iput-object v8, v0, Lcom/android/server/pm/PackageManagerService$InstallArgs;->instructionSets:[Ljava/lang/String;
 
-    .line 15744
-    move-object v1, p9
+    .line 16310
+    move-object/from16 v9, p9
 
-    iput-object v1, v0, Lcom/android/server/pm/PackageManagerService$InstallArgs;->abiOverride:Ljava/lang/String;
+    iput-object v9, v0, Lcom/android/server/pm/PackageManagerService$InstallArgs;->abiOverride:Ljava/lang/String;
 
-    .line 15745
-    move-object v1, p10
+    .line 16311
+    move-object/from16 v10, p10
 
-    iput-object v1, v0, Lcom/android/server/pm/PackageManagerService$InstallArgs;->installGrantPermissions:[Ljava/lang/String;
+    iput-object v10, v0, Lcom/android/server/pm/PackageManagerService$InstallArgs;->installGrantPermissions:[Ljava/lang/String;
 
-    .line 15746
-    move-object v1, p11
+    .line 16312
+    move-object/from16 v11, p11
 
-    iput-object v1, v0, Lcom/android/server/pm/PackageManagerService$InstallArgs;->whitelistedRestrictedPermissions:Ljava/util/List;
+    iput-object v11, v0, Lcom/android/server/pm/PackageManagerService$InstallArgs;->whitelistedRestrictedPermissions:Ljava/util/List;
 
-    .line 15747
-    move-object v1, p12
+    .line 16313
+    move-object/from16 v12, p12
 
-    iput-object v1, v0, Lcom/android/server/pm/PackageManagerService$InstallArgs;->traceMethod:Ljava/lang/String;
+    iput-object v12, v0, Lcom/android/server/pm/PackageManagerService$InstallArgs;->traceMethod:Ljava/lang/String;
 
-    .line 15748
-    move v1, p13
+    .line 16314
+    move/from16 v13, p13
 
-    iput v1, v0, Lcom/android/server/pm/PackageManagerService$InstallArgs;->traceCookie:I
+    iput v13, v0, Lcom/android/server/pm/PackageManagerService$InstallArgs;->traceCookie:I
 
-    .line 15749
-    move-object/from16 v1, p14
+    .line 16315
+    move-object/from16 v14, p14
 
-    iput-object v1, v0, Lcom/android/server/pm/PackageManagerService$InstallArgs;->signingDetails:Landroid/content/pm/PackageParser$SigningDetails;
+    iput-object v14, v0, Lcom/android/server/pm/PackageManagerService$InstallArgs;->signingDetails:Landroid/content/pm/PackageParser$SigningDetails;
 
-    .line 15750
-    move/from16 v1, p15
+    .line 16316
+    move/from16 v15, p15
 
-    iput v1, v0, Lcom/android/server/pm/PackageManagerService$InstallArgs;->installReason:I
+    iput v15, v0, Lcom/android/server/pm/PackageManagerService$InstallArgs;->installReason:I
 
-    .line 15751
+    .line 16317
     move-object/from16 v1, p16
 
     iput-object v1, v0, Lcom/android/server/pm/PackageManagerService$InstallArgs;->mMultiPackageInstallParams:Lcom/android/server/pm/PackageManagerService$MultiPackageInstallParams;
 
-    .line 15752
+    .line 16318
     return-void
 .end method
 
@@ -184,12 +204,13 @@
 .end method
 
 .method doPostCopy(I)I
-    .registers 2
+    .registers 3
+    .param p1, "uid"  # I
 
-    .line 15788
-    const/4 p1, 0x1
+    .line 16354
+    const/4 v0, 0x1
 
-    return p1
+    return v0
 .end method
 
 .method abstract doPostDeleteLI(Z)Z
@@ -201,7 +222,7 @@
 .method doPreCopy()I
     .registers 2
 
-    .line 15779
+    .line 16345
     const/4 v0, 0x1
 
     return v0
@@ -222,7 +243,7 @@
 .method getUser()Landroid/os/UserHandle;
     .registers 2
 
-    .line 15796
+    .line 16362
     iget-object v0, p0, Lcom/android/server/pm/PackageManagerService$InstallArgs;->user:Landroid/os/UserHandle;
 
     return-object v0
@@ -231,7 +252,7 @@
 .method protected isEphemeral()Z
     .registers 2
 
-    .line 15792
+    .line 16358
     iget v0, p0, Lcom/android/server/pm/PackageManagerService$InstallArgs;->installFlags:I
 
     and-int/lit16 v0, v0, 0x800

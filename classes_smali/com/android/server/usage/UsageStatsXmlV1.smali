@@ -91,7 +91,10 @@
 .end method
 
 .method private static loadChooserCounts(Lorg/xmlpull/v1/XmlPullParser;Landroid/app/usage/UsageStats;Ljava/lang/String;)V
-    .registers 6
+    .registers 9
+    .param p0, "parser"  # Lorg/xmlpull/v1/XmlPullParser;
+    .param p1, "usageStats"  # Landroid/app/usage/UsageStats;
+    .param p2, "action"  # Ljava/lang/String;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Lorg/xmlpull/v1/XmlPullParserException;,
@@ -134,102 +137,115 @@
     invoke-direct {v0}, Landroid/util/ArrayMap;-><init>()V
 
     .line 164
+    .local v0, "counts":Landroid/util/ArrayMap;, "Landroid/util/ArrayMap<Ljava/lang/String;Ljava/lang/Integer;>;"
     iget-object v1, p1, Landroid/app/usage/UsageStats;->mChooserCounts:Landroid/util/ArrayMap;
 
     invoke-virtual {v1, p2, v0}, Landroid/util/ArrayMap;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
 
     .line 168
+    .end local v0  # "counts":Landroid/util/ArrayMap;, "Landroid/util/ArrayMap<Ljava/lang/String;Ljava/lang/Integer;>;"
     :cond_20
     :goto_20
     invoke-interface {p0}, Lorg/xmlpull/v1/XmlPullParser;->next()I
 
     move-result v0
 
-    const/4 v1, 0x1
+    move v1, v0
 
-    if-eq v0, v1, :cond_60
+    .local v1, "eventCode":I
+    const/4 v2, 0x1
+
+    if-eq v0, v2, :cond_61
 
     .line 169
     invoke-interface {p0}, Lorg/xmlpull/v1/XmlPullParser;->getName()Ljava/lang/String;
 
-    move-result-object v1
+    move-result-object v0
 
     .line 170
+    .local v0, "tag":Ljava/lang/String;
     const/4 v2, 0x3
 
-    if-ne v0, v2, :cond_37
+    if-ne v1, v2, :cond_38
 
     const-string v2, "chosen_action"
 
-    invoke-virtual {v1, v2}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v0, v2}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
     move-result v2
 
-    if-eqz v2, :cond_37
+    if-eqz v2, :cond_38
 
     .line 171
-    goto :goto_60
+    goto :goto_61
 
     .line 173
-    :cond_37
+    :cond_38
     const/4 v2, 0x2
 
-    if-eq v0, v2, :cond_3b
+    if-eq v1, v2, :cond_3c
 
     .line 174
     goto :goto_20
 
     .line 176
-    :cond_3b
-    const-string v0, "category"
+    :cond_3c
+    const-string v2, "category"
 
-    invoke-virtual {v1, v0}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v0, v2}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result v0
+    move-result v2
 
-    if-eqz v0, :cond_5f
+    if-eqz v2, :cond_60
 
     .line 177
-    const-string/jumbo v0, "name"
+    const-string/jumbo v2, "name"
 
-    invoke-static {p0, v0}, Lcom/android/internal/util/XmlUtils;->readStringAttribute(Lorg/xmlpull/v1/XmlPullParser;Ljava/lang/String;)Ljava/lang/String;
-
-    move-result-object v0
-
-    .line 178
-    const-string v1, "count"
-
-    invoke-static {p0, v1}, Lcom/android/internal/util/XmlUtils;->readIntAttribute(Lorg/xmlpull/v1/XmlPullParser;Ljava/lang/String;)I
-
-    move-result v1
-
-    .line 179
-    iget-object v2, p1, Landroid/app/usage/UsageStats;->mChooserCounts:Landroid/util/ArrayMap;
-
-    invoke-virtual {v2, p2}, Landroid/util/ArrayMap;->get(Ljava/lang/Object;)Ljava/lang/Object;
+    invoke-static {p0, v2}, Lcom/android/internal/util/XmlUtils;->readStringAttribute(Lorg/xmlpull/v1/XmlPullParser;Ljava/lang/String;)Ljava/lang/String;
 
     move-result-object v2
 
-    check-cast v2, Landroid/util/ArrayMap;
+    .line 178
+    .local v2, "category":Ljava/lang/String;
+    const-string v3, "count"
 
-    invoke-static {v1}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
+    invoke-static {p0, v3}, Lcom/android/internal/util/XmlUtils;->readIntAttribute(Lorg/xmlpull/v1/XmlPullParser;Ljava/lang/String;)I
 
-    move-result-object v1
+    move-result v3
 
-    invoke-virtual {v2, v0, v1}, Landroid/util/ArrayMap;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+    .line 179
+    .local v3, "count":I
+    iget-object v4, p1, Landroid/app/usage/UsageStats;->mChooserCounts:Landroid/util/ArrayMap;
+
+    invoke-virtual {v4, p2}, Landroid/util/ArrayMap;->get(Ljava/lang/Object;)Ljava/lang/Object;
+
+    move-result-object v4
+
+    check-cast v4, Landroid/util/ArrayMap;
+
+    invoke-static {v3}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
+
+    move-result-object v5
+
+    invoke-virtual {v4, v2, v5}, Landroid/util/ArrayMap;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
 
     .line 181
-    :cond_5f
+    .end local v0  # "tag":Ljava/lang/String;
+    .end local v2  # "category":Ljava/lang/String;
+    .end local v3  # "count":I
+    :cond_60
     goto :goto_20
 
     .line 182
-    :cond_60
-    :goto_60
+    :cond_61
+    :goto_61
     return-void
 .end method
 
 .method private static loadConfigStats(Lorg/xmlpull/v1/XmlPullParser;Lcom/android/server/usage/IntervalStats;)V
-    .registers 7
+    .registers 8
+    .param p0, "parser"  # Lorg/xmlpull/v1/XmlPullParser;
+    .param p1, "statsOut"  # Lcom/android/server/usage/IntervalStats;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Lorg/xmlpull/v1/XmlPullParserException;,
@@ -243,65 +259,69 @@
     invoke-direct {v0}, Landroid/content/res/Configuration;-><init>()V
 
     .line 187
+    .local v0, "config":Landroid/content/res/Configuration;
     invoke-static {p0, v0}, Landroid/content/res/Configuration;->readXmlAttrs(Lorg/xmlpull/v1/XmlPullParser;Landroid/content/res/Configuration;)V
 
     .line 189
     invoke-virtual {p1, v0}, Lcom/android/server/usage/IntervalStats;->getOrCreateConfigurationStats(Landroid/content/res/Configuration;)Landroid/app/usage/ConfigurationStats;
 
-    move-result-object v0
+    move-result-object v1
 
     .line 192
-    iget-wide v1, p1, Lcom/android/server/usage/IntervalStats;->beginTime:J
+    .local v1, "configStats":Landroid/app/usage/ConfigurationStats;
+    iget-wide v2, p1, Lcom/android/server/usage/IntervalStats;->beginTime:J
 
-    const-string v3, "lastTimeActive"
+    const-string/jumbo v4, "lastTimeActive"
 
-    invoke-static {p0, v3}, Lcom/android/internal/util/XmlUtils;->readLongAttribute(Lorg/xmlpull/v1/XmlPullParser;Ljava/lang/String;)J
+    invoke-static {p0, v4}, Lcom/android/internal/util/XmlUtils;->readLongAttribute(Lorg/xmlpull/v1/XmlPullParser;Ljava/lang/String;)J
 
-    move-result-wide v3
+    move-result-wide v4
 
-    add-long/2addr v1, v3
+    add-long/2addr v2, v4
 
-    iput-wide v1, v0, Landroid/app/usage/ConfigurationStats;->mLastTimeActive:J
+    iput-wide v2, v1, Landroid/app/usage/ConfigurationStats;->mLastTimeActive:J
 
     .line 195
-    const-string/jumbo v1, "timeActive"
+    const-string/jumbo v2, "timeActive"
 
-    invoke-static {p0, v1}, Lcom/android/internal/util/XmlUtils;->readLongAttribute(Lorg/xmlpull/v1/XmlPullParser;Ljava/lang/String;)J
+    invoke-static {p0, v2}, Lcom/android/internal/util/XmlUtils;->readLongAttribute(Lorg/xmlpull/v1/XmlPullParser;Ljava/lang/String;)J
 
-    move-result-wide v1
+    move-result-wide v2
 
-    iput-wide v1, v0, Landroid/app/usage/ConfigurationStats;->mTotalTimeActive:J
+    iput-wide v2, v1, Landroid/app/usage/ConfigurationStats;->mTotalTimeActive:J
 
     .line 196
-    const-string v1, "count"
+    const-string v2, "count"
 
-    invoke-static {p0, v1}, Lcom/android/internal/util/XmlUtils;->readIntAttribute(Lorg/xmlpull/v1/XmlPullParser;Ljava/lang/String;)I
+    invoke-static {p0, v2}, Lcom/android/internal/util/XmlUtils;->readIntAttribute(Lorg/xmlpull/v1/XmlPullParser;Ljava/lang/String;)I
 
-    move-result v1
+    move-result v2
 
-    iput v1, v0, Landroid/app/usage/ConfigurationStats;->mActivationCount:I
+    iput v2, v1, Landroid/app/usage/ConfigurationStats;->mActivationCount:I
 
     .line 197
-    const-string v1, "active"
+    const-string v2, "active"
 
-    invoke-static {p0, v1}, Lcom/android/internal/util/XmlUtils;->readBooleanAttribute(Lorg/xmlpull/v1/XmlPullParser;Ljava/lang/String;)Z
+    invoke-static {p0, v2}, Lcom/android/internal/util/XmlUtils;->readBooleanAttribute(Lorg/xmlpull/v1/XmlPullParser;Ljava/lang/String;)Z
 
-    move-result p0
+    move-result v2
 
-    if-eqz p0, :cond_34
+    if-eqz v2, :cond_35
 
     .line 198
-    iget-object p0, v0, Landroid/app/usage/ConfigurationStats;->mConfiguration:Landroid/content/res/Configuration;
+    iget-object v2, v1, Landroid/app/usage/ConfigurationStats;->mConfiguration:Landroid/content/res/Configuration;
 
-    iput-object p0, p1, Lcom/android/server/usage/IntervalStats;->activeConfiguration:Landroid/content/res/Configuration;
+    iput-object v2, p1, Lcom/android/server/usage/IntervalStats;->activeConfiguration:Landroid/content/res/Configuration;
 
     .line 200
-    :cond_34
+    :cond_35
     return-void
 .end method
 
 .method private static loadCountAndTime(Lorg/xmlpull/v1/XmlPullParser;Lcom/android/server/usage/IntervalStats$EventTracker;)V
     .registers 5
+    .param p0, "parser"  # Lorg/xmlpull/v1/XmlPullParser;
+    .param p1, "tracker"  # Lcom/android/server/usage/IntervalStats$EventTracker;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Ljava/io/IOException;,
@@ -339,7 +359,9 @@
 .end method
 
 .method private static loadEvent(Lorg/xmlpull/v1/XmlPullParser;Lcom/android/server/usage/IntervalStats;)V
-    .registers 8
+    .registers 10
+    .param p0, "parser"  # Lorg/xmlpull/v1/XmlPullParser;
+    .param p1, "statsOut"  # Lcom/android/server/usage/IntervalStats;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Lorg/xmlpull/v1/XmlPullParserException;,
@@ -355,7 +377,8 @@
     move-result-object v0
 
     .line 205
-    if-eqz v0, :cond_91
+    .local v0, "packageName":Ljava/lang/String;
+    if-eqz v0, :cond_92
 
     .line 208
     const-string v1, "class"
@@ -365,186 +388,198 @@
     move-result-object v1
 
     .line 210
+    .local v1, "className":Ljava/lang/String;
     invoke-virtual {p1, v0, v1}, Lcom/android/server/usage/IntervalStats;->buildEvent(Ljava/lang/String;Ljava/lang/String;)Landroid/app/usage/UsageEvents$Event;
 
-    move-result-object v0
+    move-result-object v2
 
     .line 212
-    const/4 v1, 0x0
+    .local v2, "event":Landroid/app/usage/UsageEvents$Event;
+    const/4 v3, 0x0
 
-    const-string v2, "flags"
+    const-string v4, "flags"
 
-    invoke-static {p0, v2, v1}, Lcom/android/internal/util/XmlUtils;->readIntAttribute(Lorg/xmlpull/v1/XmlPullParser;Ljava/lang/String;I)I
+    invoke-static {p0, v4, v3}, Lcom/android/internal/util/XmlUtils;->readIntAttribute(Lorg/xmlpull/v1/XmlPullParser;Ljava/lang/String;I)I
 
-    move-result v2
+    move-result v4
 
-    iput v2, v0, Landroid/app/usage/UsageEvents$Event;->mFlags:I
+    iput v4, v2, Landroid/app/usage/UsageEvents$Event;->mFlags:I
 
     .line 215
-    iget-wide v2, p1, Lcom/android/server/usage/IntervalStats;->beginTime:J
+    iget-wide v4, p1, Lcom/android/server/usage/IntervalStats;->beginTime:J
 
-    const-string/jumbo v4, "time"
+    const-string/jumbo v6, "time"
 
-    invoke-static {p0, v4}, Lcom/android/internal/util/XmlUtils;->readLongAttribute(Lorg/xmlpull/v1/XmlPullParser;Ljava/lang/String;)J
+    invoke-static {p0, v6}, Lcom/android/internal/util/XmlUtils;->readLongAttribute(Lorg/xmlpull/v1/XmlPullParser;Ljava/lang/String;)J
 
-    move-result-wide v4
+    move-result-wide v6
 
-    add-long/2addr v2, v4
+    add-long/2addr v4, v6
 
-    iput-wide v2, v0, Landroid/app/usage/UsageEvents$Event;->mTimeStamp:J
+    iput-wide v4, v2, Landroid/app/usage/UsageEvents$Event;->mTimeStamp:J
 
     .line 217
-    const-string/jumbo v2, "type"
+    const-string/jumbo v4, "type"
 
-    invoke-static {p0, v2}, Lcom/android/internal/util/XmlUtils;->readIntAttribute(Lorg/xmlpull/v1/XmlPullParser;Ljava/lang/String;)I
+    invoke-static {p0, v4}, Lcom/android/internal/util/XmlUtils;->readIntAttribute(Lorg/xmlpull/v1/XmlPullParser;Ljava/lang/String;)I
 
-    move-result v2
+    move-result v4
 
-    iput v2, v0, Landroid/app/usage/UsageEvents$Event;->mEventType:I
+    iput v4, v2, Landroid/app/usage/UsageEvents$Event;->mEventType:I
 
     .line 220
     :try_start_31
-    const-string v2, "instanceId"
+    const-string/jumbo v4, "instanceId"
 
-    invoke-static {p0, v2}, Lcom/android/internal/util/XmlUtils;->readIntAttribute(Lorg/xmlpull/v1/XmlPullParser;Ljava/lang/String;)I
+    invoke-static {p0, v4}, Lcom/android/internal/util/XmlUtils;->readIntAttribute(Lorg/xmlpull/v1/XmlPullParser;Ljava/lang/String;)I
 
-    move-result v2
+    move-result v4
 
-    iput v2, v0, Landroid/app/usage/UsageEvents$Event;->mInstanceId:I
-    :try_end_39
-    .catch Ljava/io/IOException; {:try_start_31 .. :try_end_39} :catch_3a
+    iput v4, v2, Landroid/app/usage/UsageEvents$Event;->mInstanceId:I
+    :try_end_3a
+    .catch Ljava/io/IOException; {:try_start_31 .. :try_end_3a} :catch_3b
 
     .line 223
-    goto :goto_42
+    goto :goto_43
 
     .line 221
-    :catch_3a
-    move-exception v2
+    :catch_3b
+    move-exception v4
 
     .line 222
-    const-string v3, "UsageStatsXmlV1"
+    .local v4, "e":Ljava/io/IOException;
+    const-string v5, "UsageStatsXmlV1"
 
-    const-string v4, "Failed to parse mInstanceId"
+    const-string v6, "Failed to parse mInstanceId"
 
-    invoke-static {v3, v4, v2}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    invoke-static {v5, v6, v4}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
     .line 225
-    :goto_42
-    iget v2, v0, Landroid/app/usage/UsageEvents$Event;->mEventType:I
+    .end local v4  # "e":Ljava/io/IOException;
+    :goto_43
+    iget v4, v2, Landroid/app/usage/UsageEvents$Event;->mEventType:I
 
-    const/4 v3, 0x5
+    const/4 v5, 0x5
 
-    if-eq v2, v3, :cond_80
+    if-eq v4, v5, :cond_81
 
-    const/16 v3, 0x8
+    const/16 v5, 0x8
 
-    const/4 v4, 0x0
+    const/4 v6, 0x0
 
-    if-eq v2, v3, :cond_70
+    if-eq v4, v5, :cond_71
 
-    const/16 v3, 0xb
+    const/16 v5, 0xb
 
-    if-eq v2, v3, :cond_66
+    if-eq v4, v5, :cond_67
 
-    const/16 v1, 0xc
+    const/16 v3, 0xc
 
-    if-eq v2, v1, :cond_55
+    if-eq v4, v3, :cond_56
 
-    goto :goto_8d
+    goto :goto_8e
 
     .line 238
-    :cond_55
+    :cond_56
     nop
 
     .line 239
-    const-string/jumbo v1, "notificationChannel"
+    const-string/jumbo v3, "notificationChannel"
 
-    invoke-static {p0, v1}, Lcom/android/internal/util/XmlUtils;->readStringAttribute(Lorg/xmlpull/v1/XmlPullParser;Ljava/lang/String;)Ljava/lang/String;
+    invoke-static {p0, v3}, Lcom/android/internal/util/XmlUtils;->readStringAttribute(Lorg/xmlpull/v1/XmlPullParser;Ljava/lang/String;)Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v3
 
     .line 240
-    if-eqz p0, :cond_63
+    .local v3, "channelId":Ljava/lang/String;
+    if-eqz v3, :cond_64
 
-    invoke-virtual {p0}, Ljava/lang/String;->intern()Ljava/lang/String;
+    invoke-virtual {v3}, Ljava/lang/String;->intern()Ljava/lang/String;
 
-    move-result-object v4
+    move-result-object v6
 
-    :cond_63
-    iput-object v4, v0, Landroid/app/usage/UsageEvents$Event;->mNotificationChannelId:Ljava/lang/String;
+    :cond_64
+    iput-object v6, v2, Landroid/app/usage/UsageEvents$Event;->mNotificationChannelId:Ljava/lang/String;
 
-    goto :goto_8d
+    goto :goto_8e
 
     .line 235
-    :cond_66
-    const-string/jumbo v2, "standbyBucket"
+    .end local v3  # "channelId":Ljava/lang/String;
+    :cond_67
+    const-string/jumbo v4, "standbyBucket"
 
-    invoke-static {p0, v2, v1}, Lcom/android/internal/util/XmlUtils;->readIntAttribute(Lorg/xmlpull/v1/XmlPullParser;Ljava/lang/String;I)I
+    invoke-static {p0, v4, v3}, Lcom/android/internal/util/XmlUtils;->readIntAttribute(Lorg/xmlpull/v1/XmlPullParser;Ljava/lang/String;I)I
 
-    move-result p0
+    move-result v3
 
-    iput p0, v0, Landroid/app/usage/UsageEvents$Event;->mBucketAndReason:I
+    iput v3, v2, Landroid/app/usage/UsageEvents$Event;->mBucketAndReason:I
 
     .line 236
-    goto :goto_8d
+    goto :goto_8e
 
     .line 231
-    :cond_70
-    const-string/jumbo v1, "shortcutId"
+    :cond_71
+    const-string/jumbo v3, "shortcutId"
 
-    invoke-static {p0, v1}, Lcom/android/internal/util/XmlUtils;->readStringAttribute(Lorg/xmlpull/v1/XmlPullParser;Ljava/lang/String;)Ljava/lang/String;
+    invoke-static {p0, v3}, Lcom/android/internal/util/XmlUtils;->readStringAttribute(Lorg/xmlpull/v1/XmlPullParser;Ljava/lang/String;)Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v3
 
     .line 232
-    if-eqz p0, :cond_7d
+    .local v3, "id":Ljava/lang/String;
+    if-eqz v3, :cond_7e
 
-    invoke-virtual {p0}, Ljava/lang/String;->intern()Ljava/lang/String;
+    invoke-virtual {v3}, Ljava/lang/String;->intern()Ljava/lang/String;
 
-    move-result-object v4
+    move-result-object v6
 
-    :cond_7d
-    iput-object v4, v0, Landroid/app/usage/UsageEvents$Event;->mShortcutId:Ljava/lang/String;
+    :cond_7e
+    iput-object v6, v2, Landroid/app/usage/UsageEvents$Event;->mShortcutId:Ljava/lang/String;
 
     .line 233
-    goto :goto_8d
+    goto :goto_8e
 
     .line 227
-    :cond_80
-    new-instance v1, Landroid/content/res/Configuration;
+    .end local v3  # "id":Ljava/lang/String;
+    :cond_81
+    new-instance v3, Landroid/content/res/Configuration;
 
-    invoke-direct {v1}, Landroid/content/res/Configuration;-><init>()V
+    invoke-direct {v3}, Landroid/content/res/Configuration;-><init>()V
 
-    iput-object v1, v0, Landroid/app/usage/UsageEvents$Event;->mConfiguration:Landroid/content/res/Configuration;
+    iput-object v3, v2, Landroid/app/usage/UsageEvents$Event;->mConfiguration:Landroid/content/res/Configuration;
 
     .line 228
-    iget-object v1, v0, Landroid/app/usage/UsageEvents$Event;->mConfiguration:Landroid/content/res/Configuration;
+    iget-object v3, v2, Landroid/app/usage/UsageEvents$Event;->mConfiguration:Landroid/content/res/Configuration;
 
-    invoke-static {p0, v1}, Landroid/content/res/Configuration;->readXmlAttrs(Lorg/xmlpull/v1/XmlPullParser;Landroid/content/res/Configuration;)V
+    invoke-static {p0, v3}, Landroid/content/res/Configuration;->readXmlAttrs(Lorg/xmlpull/v1/XmlPullParser;Landroid/content/res/Configuration;)V
 
     .line 229
     nop
 
     .line 243
-    :goto_8d
-    invoke-virtual {p1, v0}, Lcom/android/server/usage/IntervalStats;->addEvent(Landroid/app/usage/UsageEvents$Event;)V
+    :goto_8e
+    invoke-virtual {p1, v2}, Lcom/android/server/usage/IntervalStats;->addEvent(Landroid/app/usage/UsageEvents$Event;)V
 
     .line 244
     return-void
 
     .line 206
-    :cond_91
-    new-instance p0, Ljava/net/ProtocolException;
+    .end local v1  # "className":Ljava/lang/String;
+    .end local v2  # "event":Landroid/app/usage/UsageEvents$Event;
+    :cond_92
+    new-instance v1, Ljava/net/ProtocolException;
 
-    const-string/jumbo p1, "no package attribute present"
+    const-string/jumbo v2, "no package attribute present"
 
-    invoke-direct {p0, p1}, Ljava/net/ProtocolException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v1, v2}, Ljava/net/ProtocolException;-><init>(Ljava/lang/String;)V
 
-    throw p0
+    throw v1
 .end method
 
 .method private static loadUsageStats(Lorg/xmlpull/v1/XmlPullParser;Lcom/android/server/usage/IntervalStats;)V
-    .registers 9
+    .registers 10
+    .param p0, "parser"  # Lorg/xmlpull/v1/XmlPullParser;
+    .param p1, "statsOut"  # Lcom/android/server/usage/IntervalStats;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Lorg/xmlpull/v1/XmlPullParserException;,
@@ -564,172 +599,185 @@
     move-result-object v2
 
     .line 88
-    if-eqz v2, :cond_a6
+    .local v2, "pkg":Ljava/lang/String;
+    if-eqz v2, :cond_ab
 
     .line 91
     invoke-virtual {p1, v2}, Lcom/android/server/usage/IntervalStats;->getOrCreateUsageStats(Ljava/lang/String;)Landroid/app/usage/UsageStats;
 
-    move-result-object v2
+    move-result-object v3
 
     .line 94
-    iget-wide v3, p1, Lcom/android/server/usage/IntervalStats;->beginTime:J
+    .local v3, "stats":Landroid/app/usage/UsageStats;
+    iget-wide v4, p1, Lcom/android/server/usage/IntervalStats;->beginTime:J
 
-    const-string v5, "lastTimeActive"
+    const-string/jumbo v6, "lastTimeActive"
 
-    invoke-static {p0, v5}, Lcom/android/internal/util/XmlUtils;->readLongAttribute(Lorg/xmlpull/v1/XmlPullParser;Ljava/lang/String;)J
+    invoke-static {p0, v6}, Lcom/android/internal/util/XmlUtils;->readLongAttribute(Lorg/xmlpull/v1/XmlPullParser;Ljava/lang/String;)J
 
-    move-result-wide v5
+    move-result-wide v6
 
-    add-long/2addr v3, v5
+    add-long/2addr v4, v6
 
-    iput-wide v3, v2, Landroid/app/usage/UsageStats;->mLastTimeUsed:J
+    iput-wide v4, v3, Landroid/app/usage/UsageStats;->mLastTimeUsed:J
 
     .line 98
-    :try_start_1b
-    iget-wide v3, p1, Lcom/android/server/usage/IntervalStats;->beginTime:J
+    :try_start_1c
+    iget-wide v4, p1, Lcom/android/server/usage/IntervalStats;->beginTime:J
 
-    const-string v5, "lastTimeVisible"
+    const-string/jumbo v6, "lastTimeVisible"
 
-    invoke-static {p0, v5}, Lcom/android/internal/util/XmlUtils;->readLongAttribute(Lorg/xmlpull/v1/XmlPullParser;Ljava/lang/String;)J
+    invoke-static {p0, v6}, Lcom/android/internal/util/XmlUtils;->readLongAttribute(Lorg/xmlpull/v1/XmlPullParser;Ljava/lang/String;)J
 
-    move-result-wide v5
+    move-result-wide v6
 
-    add-long/2addr v3, v5
+    add-long/2addr v4, v6
 
-    iput-wide v3, v2, Landroid/app/usage/UsageStats;->mLastTimeVisible:J
-    :try_end_26
-    .catch Ljava/io/IOException; {:try_start_1b .. :try_end_26} :catch_27
+    iput-wide v4, v3, Landroid/app/usage/UsageStats;->mLastTimeVisible:J
+    :try_end_28
+    .catch Ljava/io/IOException; {:try_start_1c .. :try_end_28} :catch_29
 
     .line 102
-    goto :goto_2d
+    goto :goto_2f
 
     .line 100
-    :catch_27
-    move-exception v3
+    :catch_29
+    move-exception v4
 
     .line 101
-    const-string v3, "Failed to parse mLastTimeVisible"
+    .local v4, "e":Ljava/io/IOException;
+    const-string v5, "Failed to parse mLastTimeVisible"
 
-    invoke-static {v0, v3}, Landroid/util/Log;->i(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v0, v5}, Landroid/util/Log;->i(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 105
-    :goto_2d
-    :try_start_2d
-    iget-wide v3, p1, Lcom/android/server/usage/IntervalStats;->beginTime:J
+    .end local v4  # "e":Ljava/io/IOException;
+    :goto_2f
+    :try_start_2f
+    iget-wide v4, p1, Lcom/android/server/usage/IntervalStats;->beginTime:J
 
-    const-string p1, "lastTimeServiceUsed"
+    const-string/jumbo v6, "lastTimeServiceUsed"
 
-    invoke-static {p0, p1}, Lcom/android/internal/util/XmlUtils;->readLongAttribute(Lorg/xmlpull/v1/XmlPullParser;Ljava/lang/String;)J
+    invoke-static {p0, v6}, Lcom/android/internal/util/XmlUtils;->readLongAttribute(Lorg/xmlpull/v1/XmlPullParser;Ljava/lang/String;)J
 
-    move-result-wide v5
+    move-result-wide v6
 
-    add-long/2addr v3, v5
+    add-long/2addr v4, v6
 
-    iput-wide v3, v2, Landroid/app/usage/UsageStats;->mLastTimeForegroundServiceUsed:J
-    :try_end_38
-    .catch Ljava/io/IOException; {:try_start_2d .. :try_end_38} :catch_39
+    iput-wide v4, v3, Landroid/app/usage/UsageStats;->mLastTimeForegroundServiceUsed:J
+    :try_end_3b
+    .catch Ljava/io/IOException; {:try_start_2f .. :try_end_3b} :catch_3c
 
     .line 109
-    goto :goto_3f
+    goto :goto_42
 
     .line 107
-    :catch_39
-    move-exception p1
+    :catch_3c
+    move-exception v4
 
     .line 108
-    const-string p1, "Failed to parse mLastTimeForegroundServiceUsed"
+    .restart local v4  # "e":Ljava/io/IOException;
+    const-string v5, "Failed to parse mLastTimeForegroundServiceUsed"
 
-    invoke-static {v0, p1}, Landroid/util/Log;->i(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v0, v5}, Landroid/util/Log;->i(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 111
-    :goto_3f
-    const-string/jumbo p1, "timeActive"
+    .end local v4  # "e":Ljava/io/IOException;
+    :goto_42
+    const-string/jumbo v4, "timeActive"
 
-    invoke-static {p0, p1}, Lcom/android/internal/util/XmlUtils;->readLongAttribute(Lorg/xmlpull/v1/XmlPullParser;Ljava/lang/String;)J
+    invoke-static {p0, v4}, Lcom/android/internal/util/XmlUtils;->readLongAttribute(Lorg/xmlpull/v1/XmlPullParser;Ljava/lang/String;)J
 
-    move-result-wide v3
+    move-result-wide v4
 
-    iput-wide v3, v2, Landroid/app/usage/UsageStats;->mTotalTimeInForeground:J
+    iput-wide v4, v3, Landroid/app/usage/UsageStats;->mTotalTimeInForeground:J
 
     .line 114
-    :try_start_48
-    const-string/jumbo p1, "timeVisible"
+    :try_start_4b
+    const-string/jumbo v4, "timeVisible"
 
-    invoke-static {p0, p1}, Lcom/android/internal/util/XmlUtils;->readLongAttribute(Lorg/xmlpull/v1/XmlPullParser;Ljava/lang/String;)J
+    invoke-static {p0, v4}, Lcom/android/internal/util/XmlUtils;->readLongAttribute(Lorg/xmlpull/v1/XmlPullParser;Ljava/lang/String;)J
 
-    move-result-wide v3
+    move-result-wide v4
 
-    iput-wide v3, v2, Landroid/app/usage/UsageStats;->mTotalTimeVisible:J
-    :try_end_51
-    .catch Ljava/io/IOException; {:try_start_48 .. :try_end_51} :catch_52
+    iput-wide v4, v3, Landroid/app/usage/UsageStats;->mTotalTimeVisible:J
+    :try_end_54
+    .catch Ljava/io/IOException; {:try_start_4b .. :try_end_54} :catch_55
 
     .line 117
-    goto :goto_58
+    goto :goto_5b
 
     .line 115
-    :catch_52
-    move-exception p1
+    :catch_55
+    move-exception v4
 
     .line 116
-    const-string p1, "Failed to parse mTotalTimeVisible"
+    .restart local v4  # "e":Ljava/io/IOException;
+    const-string v5, "Failed to parse mTotalTimeVisible"
 
-    invoke-static {v0, p1}, Landroid/util/Log;->i(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v0, v5}, Landroid/util/Log;->i(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 120
-    :goto_58
-    :try_start_58
-    const-string/jumbo p1, "timeServiceUsed"
+    .end local v4  # "e":Ljava/io/IOException;
+    :goto_5b
+    :try_start_5b
+    const-string/jumbo v4, "timeServiceUsed"
 
-    invoke-static {p0, p1}, Lcom/android/internal/util/XmlUtils;->readLongAttribute(Lorg/xmlpull/v1/XmlPullParser;Ljava/lang/String;)J
+    invoke-static {p0, v4}, Lcom/android/internal/util/XmlUtils;->readLongAttribute(Lorg/xmlpull/v1/XmlPullParser;Ljava/lang/String;)J
 
-    move-result-wide v3
+    move-result-wide v4
 
-    iput-wide v3, v2, Landroid/app/usage/UsageStats;->mTotalTimeForegroundServiceUsed:J
-    :try_end_61
-    .catch Ljava/io/IOException; {:try_start_58 .. :try_end_61} :catch_62
+    iput-wide v4, v3, Landroid/app/usage/UsageStats;->mTotalTimeForegroundServiceUsed:J
+    :try_end_64
+    .catch Ljava/io/IOException; {:try_start_5b .. :try_end_64} :catch_65
 
     .line 124
-    goto :goto_68
+    goto :goto_6b
 
     .line 122
-    :catch_62
-    move-exception p1
+    :catch_65
+    move-exception v4
 
     .line 123
-    const-string p1, "Failed to parse mTotalTimeForegroundServiceUsed"
+    .restart local v4  # "e":Ljava/io/IOException;
+    const-string v5, "Failed to parse mTotalTimeForegroundServiceUsed"
 
-    invoke-static {v0, p1}, Landroid/util/Log;->i(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v0, v5}, Landroid/util/Log;->i(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 126
-    :goto_68
-    const-string p1, "lastEvent"
+    .end local v4  # "e":Ljava/io/IOException;
+    :goto_6b
+    const-string/jumbo v0, "lastEvent"
 
-    invoke-static {p0, p1}, Lcom/android/internal/util/XmlUtils;->readIntAttribute(Lorg/xmlpull/v1/XmlPullParser;Ljava/lang/String;)I
+    invoke-static {p0, v0}, Lcom/android/internal/util/XmlUtils;->readIntAttribute(Lorg/xmlpull/v1/XmlPullParser;Ljava/lang/String;)I
 
-    move-result p1
+    move-result v0
 
-    iput p1, v2, Landroid/app/usage/UsageStats;->mLastEvent:I
+    iput v0, v3, Landroid/app/usage/UsageStats;->mLastEvent:I
 
     .line 127
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    const-string v0, "appLaunchCount"
+    const-string v4, "appLaunchCount"
 
-    invoke-static {p0, v0, p1}, Lcom/android/internal/util/XmlUtils;->readIntAttribute(Lorg/xmlpull/v1/XmlPullParser;Ljava/lang/String;I)I
+    invoke-static {p0, v4, v0}, Lcom/android/internal/util/XmlUtils;->readIntAttribute(Lorg/xmlpull/v1/XmlPullParser;Ljava/lang/String;I)I
 
-    move-result p1
+    move-result v0
 
-    iput p1, v2, Landroid/app/usage/UsageStats;->mAppLaunchCount:I
+    iput v0, v3, Landroid/app/usage/UsageStats;->mAppLaunchCount:I
 
     .line 130
-    :goto_79
+    :goto_7d
     invoke-interface {p0}, Lorg/xmlpull/v1/XmlPullParser;->next()I
 
-    move-result p1
+    move-result v0
 
-    const/4 v0, 0x1
+    move v4, v0
 
-    if-eq p1, v0, :cond_a5
+    .local v4, "eventCode":I
+    const/4 v5, 0x1
+
+    if-eq v0, v5, :cond_aa
 
     .line 131
     invoke-interface {p0}, Lorg/xmlpull/v1/XmlPullParser;->getName()Ljava/lang/String;
@@ -737,70 +785,78 @@
     move-result-object v0
 
     .line 132
-    const/4 v3, 0x3
+    .local v0, "tag":Ljava/lang/String;
+    const/4 v5, 0x3
 
-    if-ne p1, v3, :cond_8e
+    if-ne v4, v5, :cond_93
 
     invoke-virtual {v0, v1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result v3
+    move-result v5
 
-    if-eqz v3, :cond_8e
+    if-eqz v5, :cond_93
 
     .line 133
-    goto :goto_a5
+    goto :goto_aa
 
     .line 135
-    :cond_8e
-    const/4 v3, 0x2
+    :cond_93
+    const/4 v5, 0x2
 
-    if-eq p1, v3, :cond_92
+    if-eq v4, v5, :cond_97
 
     .line 136
-    goto :goto_79
+    goto :goto_7d
 
     .line 138
-    :cond_92
-    const-string p1, "chosen_action"
+    :cond_97
+    const-string v5, "chosen_action"
 
-    invoke-virtual {v0, p1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v0, v5}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result p1
+    move-result v5
 
-    if-eqz p1, :cond_a4
+    if-eqz v5, :cond_a9
 
     .line 139
-    const-string/jumbo p1, "name"
+    const-string/jumbo v5, "name"
 
-    invoke-static {p0, p1}, Lcom/android/internal/util/XmlUtils;->readStringAttribute(Lorg/xmlpull/v1/XmlPullParser;Ljava/lang/String;)Ljava/lang/String;
+    invoke-static {p0, v5}, Lcom/android/internal/util/XmlUtils;->readStringAttribute(Lorg/xmlpull/v1/XmlPullParser;Ljava/lang/String;)Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v5
 
     .line 140
-    invoke-static {p0, v2, p1}, Lcom/android/server/usage/UsageStatsXmlV1;->loadChooserCounts(Lorg/xmlpull/v1/XmlPullParser;Landroid/app/usage/UsageStats;Ljava/lang/String;)V
+    .local v5, "action":Ljava/lang/String;
+    invoke-static {p0, v3, v5}, Lcom/android/server/usage/UsageStatsXmlV1;->loadChooserCounts(Lorg/xmlpull/v1/XmlPullParser;Landroid/app/usage/UsageStats;Ljava/lang/String;)V
 
     .line 142
-    :cond_a4
-    goto :goto_79
+    .end local v0  # "tag":Ljava/lang/String;
+    .end local v5  # "action":Ljava/lang/String;
+    :cond_a9
+    goto :goto_7d
 
     .line 143
-    :cond_a5
-    :goto_a5
+    :cond_aa
+    :goto_aa
     return-void
 
     .line 89
-    :cond_a6
-    new-instance p0, Ljava/net/ProtocolException;
+    .end local v3  # "stats":Landroid/app/usage/UsageStats;
+    .end local v4  # "eventCode":I
+    :cond_ab
+    new-instance v0, Ljava/net/ProtocolException;
 
-    const-string/jumbo p1, "no package attribute present"
+    const-string/jumbo v1, "no package attribute present"
 
-    invoke-direct {p0, p1}, Ljava/net/ProtocolException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v0, v1}, Ljava/net/ProtocolException;-><init>(Ljava/lang/String;)V
 
-    throw p0
+    throw v0
 .end method
 
 .method public static read(Lorg/xmlpull/v1/XmlPullParser;Lcom/android/server/usage/IntervalStats;)V
-    .registers 9
+    .registers 10
+    .param p0, "parser"  # Lorg/xmlpull/v1/XmlPullParser;
+    .param p1, "statsOut"  # Lcom/android/server/usage/IntervalStats;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Lorg/xmlpull/v1/XmlPullParserException;,
@@ -845,253 +901,262 @@
 
     .line 391
     :try_start_1f
-    const-string v1, "majorVersion"
+    const-string/jumbo v1, "majorVersion"
 
     invoke-static {p0, v1}, Lcom/android/internal/util/XmlUtils;->readIntAttribute(Lorg/xmlpull/v1/XmlPullParser;Ljava/lang/String;)I
 
     move-result v1
 
     iput v1, p1, Lcom/android/server/usage/IntervalStats;->majorVersion:I
-    :try_end_27
-    .catch Ljava/io/IOException; {:try_start_1f .. :try_end_27} :catch_28
+    :try_end_28
+    .catch Ljava/io/IOException; {:try_start_1f .. :try_end_28} :catch_29
 
     .line 394
-    goto :goto_2e
+    goto :goto_2f
 
     .line 392
-    :catch_28
+    :catch_29
     move-exception v1
 
     .line 393
+    .local v1, "e":Ljava/io/IOException;
     const-string v2, "Failed to parse majorVersion"
 
     invoke-static {v0, v2, v1}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
     .line 397
-    :goto_2e
-    :try_start_2e
-    const-string v1, "minorVersion"
+    .end local v1  # "e":Ljava/io/IOException;
+    :goto_2f
+    :try_start_2f
+    const-string/jumbo v1, "minorVersion"
 
     invoke-static {p0, v1}, Lcom/android/internal/util/XmlUtils;->readIntAttribute(Lorg/xmlpull/v1/XmlPullParser;Ljava/lang/String;)I
 
     move-result v1
 
     iput v1, p1, Lcom/android/server/usage/IntervalStats;->minorVersion:I
-    :try_end_36
-    .catch Ljava/io/IOException; {:try_start_2e .. :try_end_36} :catch_37
+    :try_end_38
+    .catch Ljava/io/IOException; {:try_start_2f .. :try_end_38} :catch_39
 
     .line 400
-    goto :goto_3d
+    goto :goto_3f
 
     .line 398
-    :catch_37
+    :catch_39
     move-exception v1
 
     .line 399
+    .restart local v1  # "e":Ljava/io/IOException;
     const-string v2, "Failed to parse minorVersion"
 
     invoke-static {v0, v2, v1}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
     .line 403
-    :goto_3d
+    .end local v1  # "e":Ljava/io/IOException;
+    :goto_3f
     invoke-interface {p0}, Lorg/xmlpull/v1/XmlPullParser;->getDepth()I
 
     move-result v0
 
     .line 404
-    :goto_41
+    .local v0, "outerDepth":I
+    :goto_43
     invoke-interface {p0}, Lorg/xmlpull/v1/XmlPullParser;->next()I
 
     move-result v1
 
-    const/4 v2, 0x1
+    move v2, v1
 
-    if-eq v1, v2, :cond_d4
+    .local v2, "eventCode":I
+    const/4 v3, 0x1
 
-    const/4 v3, 0x3
+    if-eq v1, v3, :cond_da
 
-    if-ne v1, v3, :cond_51
+    const/4 v1, 0x3
+
+    if-ne v2, v1, :cond_54
 
     .line 405
     invoke-interface {p0}, Lorg/xmlpull/v1/XmlPullParser;->getDepth()I
 
     move-result v4
 
-    if-le v4, v0, :cond_d4
+    if-le v4, v0, :cond_da
 
     .line 406
-    :cond_51
+    :cond_54
     const/4 v4, 0x2
 
-    if-eq v1, v4, :cond_55
+    if-eq v2, v4, :cond_58
 
     .line 407
-    goto :goto_41
+    goto :goto_43
 
     .line 410
-    :cond_55
+    :cond_58
     invoke-interface {p0}, Lorg/xmlpull/v1/XmlPullParser;->getName()Ljava/lang/String;
 
-    move-result-object v1
+    move-result-object v5
 
     .line 411
-    const/4 v5, -0x1
+    .local v5, "tag":Ljava/lang/String;
+    const/4 v6, -0x1
 
-    invoke-virtual {v1}, Ljava/lang/String;->hashCode()I
+    invoke-virtual {v5}, Ljava/lang/String;->hashCode()I
 
-    move-result v6
+    move-result v7
 
-    sparse-switch v6, :sswitch_data_d6
+    sparse-switch v7, :sswitch_data_dc
 
-    :cond_61
-    goto :goto_a9
+    :cond_64
+    goto :goto_af
 
-    :sswitch_62
-    const-string v2, "interactive"
+    :sswitch_65
+    const-string/jumbo v1, "interactive"
 
-    invoke-virtual {v1, v2}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
-
-    move-result v1
-
-    if-eqz v1, :cond_61
-
-    const/4 v2, 0x0
-
-    goto :goto_aa
-
-    :sswitch_6c
-    const-string v2, "keyguard-shown"
-
-    invoke-virtual {v1, v2}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v5, v1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
     move-result v1
 
-    if-eqz v1, :cond_61
+    if-eqz v1, :cond_64
 
-    move v2, v4
+    const/4 v3, 0x0
 
-    goto :goto_aa
+    goto :goto_b0
 
-    :sswitch_76
-    const-string v2, "event"
+    :sswitch_70
+    const-string/jumbo v1, "keyguard-shown"
 
-    invoke-virtual {v1, v2}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
-
-    move-result v1
-
-    if-eqz v1, :cond_61
-
-    const/4 v2, 0x6
-
-    goto :goto_aa
-
-    :sswitch_80
-    const-string/jumbo v2, "package"
-
-    invoke-virtual {v1, v2}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v5, v1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
     move-result v1
 
-    if-eqz v1, :cond_61
+    if-eqz v1, :cond_64
 
-    const/4 v2, 0x4
+    move v3, v4
 
-    goto :goto_aa
+    goto :goto_b0
 
-    :sswitch_8b
-    const-string/jumbo v3, "non-interactive"
+    :sswitch_7b
+    const-string v1, "event"
 
-    invoke-virtual {v1, v3}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
-
-    move-result v1
-
-    if-eqz v1, :cond_61
-
-    goto :goto_aa
-
-    :sswitch_95
-    const-string v2, "keyguard-hidden"
-
-    invoke-virtual {v1, v2}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v5, v1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
     move-result v1
 
-    if-eqz v1, :cond_61
+    if-eqz v1, :cond_64
 
-    move v2, v3
+    const/4 v3, 0x6
 
-    goto :goto_aa
+    goto :goto_b0
 
-    :sswitch_9f
-    const-string v2, "config"
+    :sswitch_85
+    const-string/jumbo v1, "package"
 
-    invoke-virtual {v1, v2}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v5, v1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
     move-result v1
 
-    if-eqz v1, :cond_61
+    if-eqz v1, :cond_64
 
-    const/4 v2, 0x5
+    const/4 v3, 0x4
 
-    goto :goto_aa
+    goto :goto_b0
 
-    :goto_a9
-    move v2, v5
+    :sswitch_90
+    const-string/jumbo v1, "non-interactive"
 
-    :goto_aa
-    packed-switch v2, :pswitch_data_f4
+    invoke-virtual {v5, v1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    goto :goto_d2
+    move-result v1
+
+    if-eqz v1, :cond_64
+
+    goto :goto_b0
+
+    :sswitch_9a
+    const-string/jumbo v3, "keyguard-hidden"
+
+    invoke-virtual {v5, v3}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+
+    move-result v3
+
+    if-eqz v3, :cond_64
+
+    move v3, v1
+
+    goto :goto_b0
+
+    :sswitch_a5
+    const-string v1, "config"
+
+    invoke-virtual {v5, v1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+
+    move-result v1
+
+    if-eqz v1, :cond_64
+
+    const/4 v3, 0x5
+
+    goto :goto_b0
+
+    :goto_af
+    move v3, v6
+
+    :goto_b0
+    packed-switch v3, :pswitch_data_fa
+
+    goto :goto_d8
 
     .line 437
-    :pswitch_ae  #0x6
+    :pswitch_b4  #0x6
     invoke-static {p0, p1}, Lcom/android/server/usage/UsageStatsXmlV1;->loadEvent(Lorg/xmlpull/v1/XmlPullParser;Lcom/android/server/usage/IntervalStats;)V
 
-    goto :goto_d2
+    goto :goto_d8
 
     .line 433
-    :pswitch_b2  #0x5
+    :pswitch_b8  #0x5
     invoke-static {p0, p1}, Lcom/android/server/usage/UsageStatsXmlV1;->loadConfigStats(Lorg/xmlpull/v1/XmlPullParser;Lcom/android/server/usage/IntervalStats;)V
 
     .line 434
-    goto :goto_d2
+    goto :goto_d8
 
     .line 429
-    :pswitch_b6  #0x4
+    :pswitch_bc  #0x4
     invoke-static {p0, p1}, Lcom/android/server/usage/UsageStatsXmlV1;->loadUsageStats(Lorg/xmlpull/v1/XmlPullParser;Lcom/android/server/usage/IntervalStats;)V
 
     .line 430
-    goto :goto_d2
+    goto :goto_d8
 
     .line 425
-    :pswitch_ba  #0x3
+    :pswitch_c0  #0x3
     iget-object v1, p1, Lcom/android/server/usage/IntervalStats;->keyguardHiddenTracker:Lcom/android/server/usage/IntervalStats$EventTracker;
 
     invoke-static {p0, v1}, Lcom/android/server/usage/UsageStatsXmlV1;->loadCountAndTime(Lorg/xmlpull/v1/XmlPullParser;Lcom/android/server/usage/IntervalStats$EventTracker;)V
 
     .line 426
-    goto :goto_d2
+    goto :goto_d8
 
     .line 421
-    :pswitch_c0  #0x2
+    :pswitch_c6  #0x2
     iget-object v1, p1, Lcom/android/server/usage/IntervalStats;->keyguardShownTracker:Lcom/android/server/usage/IntervalStats$EventTracker;
 
     invoke-static {p0, v1}, Lcom/android/server/usage/UsageStatsXmlV1;->loadCountAndTime(Lorg/xmlpull/v1/XmlPullParser;Lcom/android/server/usage/IntervalStats$EventTracker;)V
 
     .line 422
-    goto :goto_d2
+    goto :goto_d8
 
     .line 417
-    :pswitch_c6  #0x1
+    :pswitch_cc  #0x1
     iget-object v1, p1, Lcom/android/server/usage/IntervalStats;->nonInteractiveTracker:Lcom/android/server/usage/IntervalStats$EventTracker;
 
     invoke-static {p0, v1}, Lcom/android/server/usage/UsageStatsXmlV1;->loadCountAndTime(Lorg/xmlpull/v1/XmlPullParser;Lcom/android/server/usage/IntervalStats$EventTracker;)V
 
     .line 418
-    goto :goto_d2
+    goto :goto_d8
 
     .line 413
-    :pswitch_cc  #0x0
+    :pswitch_d2  #0x0
     iget-object v1, p1, Lcom/android/server/usage/IntervalStats;->interactiveTracker:Lcom/android/server/usage/IntervalStats$EventTracker;
 
     invoke-static {p0, v1}, Lcom/android/server/usage/UsageStatsXmlV1;->loadCountAndTime(Lorg/xmlpull/v1/XmlPullParser;Lcom/android/server/usage/IntervalStats$EventTracker;)V
@@ -1100,40 +1165,43 @@
     nop
 
     .line 440
-    :goto_d2
-    goto/16 :goto_41
+    .end local v5  # "tag":Ljava/lang/String;
+    :goto_d8
+    goto/16 :goto_43
 
     .line 441
-    :cond_d4
+    :cond_da
     return-void
 
     nop
 
-    :sswitch_data_d6
+    :sswitch_data_dc
     .sparse-switch
-        -0x50c07cbe -> :sswitch_9f
-        -0x45b2e24f -> :sswitch_95
-        -0x301c401e -> :sswitch_8b
-        -0x301acbba -> :sswitch_80
-        0x5c6729a -> :sswitch_76
-        0x1f63682a -> :sswitch_6c
-        0x6deacee2 -> :sswitch_62
+        -0x50c07cbe -> :sswitch_a5
+        -0x45b2e24f -> :sswitch_9a
+        -0x301c401e -> :sswitch_90
+        -0x301acbba -> :sswitch_85
+        0x5c6729a -> :sswitch_7b
+        0x1f63682a -> :sswitch_70
+        0x6deacee2 -> :sswitch_65
     .end sparse-switch
 
-    :pswitch_data_f4
+    :pswitch_data_fa
     .packed-switch 0x0
-        :pswitch_cc  #00000000
-        :pswitch_c6  #00000001
-        :pswitch_c0  #00000002
-        :pswitch_ba  #00000003
-        :pswitch_b6  #00000004
-        :pswitch_b2  #00000005
-        :pswitch_ae  #00000006
+        :pswitch_d2  #00000000
+        :pswitch_cc  #00000001
+        :pswitch_c6  #00000002
+        :pswitch_c0  #00000003
+        :pswitch_bc  #00000004
+        :pswitch_b8  #00000005
+        :pswitch_b4  #00000006
     .end packed-switch
 .end method
 
 .method public static write(Lorg/xmlpull/v1/XmlSerializer;Lcom/android/server/usage/IntervalStats;)V
     .registers 9
+    .param p0, "xml"  # Lorg/xmlpull/v1/XmlSerializer;
+    .param p1, "stats"  # Lcom/android/server/usage/IntervalStats;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Ljava/io/IOException;
@@ -1154,14 +1222,14 @@
     .line 453
     iget v0, p1, Lcom/android/server/usage/IntervalStats;->majorVersion:I
 
-    const-string v1, "majorVersion"
+    const-string/jumbo v1, "majorVersion"
 
     invoke-static {p0, v1, v0}, Lcom/android/internal/util/XmlUtils;->writeIntAttribute(Lorg/xmlpull/v1/XmlSerializer;Ljava/lang/String;I)V
 
     .line 454
     iget v0, p1, Lcom/android/server/usage/IntervalStats;->minorVersion:I
 
-    const-string v1, "minorVersion"
+    const-string/jumbo v1, "minorVersion"
 
     invoke-static {p0, v1, v0}, Lcom/android/internal/util/XmlUtils;->writeIntAttribute(Lorg/xmlpull/v1/XmlSerializer;Ljava/lang/String;I)V
 
@@ -1174,7 +1242,7 @@
 
     iget-wide v1, v1, Lcom/android/server/usage/IntervalStats$EventTracker;->duration:J
 
-    const-string v3, "interactive"
+    const-string/jumbo v3, "interactive"
 
     invoke-static {p0, v3, v0, v1, v2}, Lcom/android/server/usage/UsageStatsXmlV1;->writeCountAndTime(Lorg/xmlpull/v1/XmlSerializer;Ljava/lang/String;IJ)V
 
@@ -1200,7 +1268,7 @@
 
     iget-wide v1, v1, Lcom/android/server/usage/IntervalStats$EventTracker;->duration:J
 
-    const-string v3, "keyguard-shown"
+    const-string/jumbo v3, "keyguard-shown"
 
     invoke-static {p0, v3, v0, v1, v2}, Lcom/android/server/usage/UsageStatsXmlV1;->writeCountAndTime(Lorg/xmlpull/v1/XmlSerializer;Ljava/lang/String;IJ)V
 
@@ -1213,7 +1281,7 @@
 
     iget-wide v1, v1, Lcom/android/server/usage/IntervalStats$EventTracker;->duration:J
 
-    const-string v3, "keyguard-hidden"
+    const-string/jumbo v3, "keyguard-hidden"
 
     invoke-static {p0, v3, v0, v1, v2}, Lcom/android/server/usage/UsageStatsXmlV1;->writeCountAndTime(Lorg/xmlpull/v1/XmlSerializer;Ljava/lang/String;IJ)V
 
@@ -1232,31 +1300,32 @@
     move-result v2
 
     .line 467
+    .local v2, "statsCount":I
     const/4 v3, 0x0
 
-    move v4, v3
-
-    :goto_5c
-    if-ge v4, v2, :cond_6c
+    .local v3, "i":I
+    :goto_60
+    if-ge v3, v2, :cond_70
 
     .line 468
-    iget-object v5, p1, Lcom/android/server/usage/IntervalStats;->packageStats:Landroid/util/ArrayMap;
+    iget-object v4, p1, Lcom/android/server/usage/IntervalStats;->packageStats:Landroid/util/ArrayMap;
 
-    invoke-virtual {v5, v4}, Landroid/util/ArrayMap;->valueAt(I)Ljava/lang/Object;
+    invoke-virtual {v4, v3}, Landroid/util/ArrayMap;->valueAt(I)Ljava/lang/Object;
 
-    move-result-object v5
+    move-result-object v4
 
-    check-cast v5, Landroid/app/usage/UsageStats;
+    check-cast v4, Landroid/app/usage/UsageStats;
 
-    invoke-static {p0, p1, v5}, Lcom/android/server/usage/UsageStatsXmlV1;->writeUsageStats(Lorg/xmlpull/v1/XmlSerializer;Lcom/android/server/usage/IntervalStats;Landroid/app/usage/UsageStats;)V
+    invoke-static {p0, p1, v4}, Lcom/android/server/usage/UsageStatsXmlV1;->writeUsageStats(Lorg/xmlpull/v1/XmlSerializer;Lcom/android/server/usage/IntervalStats;Landroid/app/usage/UsageStats;)V
 
     .line 467
-    add-int/lit8 v4, v4, 0x1
+    add-int/lit8 v3, v3, 0x1
 
-    goto :goto_5c
+    goto :goto_60
 
     .line 470
-    :cond_6c
+    .end local v3  # "i":I
+    :cond_70
     invoke-interface {p0, v1, v0}, Lorg/xmlpull/v1/XmlSerializer;->endTag(Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
 
     .line 472
@@ -1265,17 +1334,19 @@
     invoke-interface {p0, v1, v0}, Lorg/xmlpull/v1/XmlSerializer;->startTag(Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
 
     .line 473
-    iget-object v2, p1, Lcom/android/server/usage/IntervalStats;->configurations:Landroid/util/ArrayMap;
+    iget-object v3, p1, Lcom/android/server/usage/IntervalStats;->configurations:Landroid/util/ArrayMap;
 
-    invoke-virtual {v2}, Landroid/util/ArrayMap;->size()I
+    invoke-virtual {v3}, Landroid/util/ArrayMap;->size()I
 
-    move-result v2
+    move-result v3
 
     .line 474
-    move v4, v3
+    .local v3, "configCount":I
+    const/4 v4, 0x0
 
-    :goto_7b
-    if-ge v4, v2, :cond_99
+    .local v4, "i":I
+    :goto_7f
+    if-ge v4, v3, :cond_9d
 
     .line 475
     iget-object v5, p1, Lcom/android/server/usage/IntervalStats;->activeConfiguration:Landroid/content/res/Configuration;
@@ -1293,6 +1364,7 @@
     move-result v5
 
     .line 476
+    .local v5, "active":Z
     iget-object v6, p1, Lcom/android/server/usage/IntervalStats;->configurations:Landroid/util/ArrayMap;
 
     invoke-virtual {v6, v4}, Landroid/util/ArrayMap;->valueAt(I)Ljava/lang/Object;
@@ -1304,12 +1376,14 @@
     invoke-static {p0, p1, v6, v5}, Lcom/android/server/usage/UsageStatsXmlV1;->writeConfigStats(Lorg/xmlpull/v1/XmlSerializer;Lcom/android/server/usage/IntervalStats;Landroid/app/usage/ConfigurationStats;Z)V
 
     .line 474
+    .end local v5  # "active":Z
     add-int/lit8 v4, v4, 0x1
 
-    goto :goto_7b
+    goto :goto_7f
 
     .line 478
-    :cond_99
+    .end local v4  # "i":I
+    :cond_9d
     invoke-interface {p0, v1, v0}, Lorg/xmlpull/v1/XmlSerializer;->endTag(Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
 
     .line 480
@@ -1318,34 +1392,37 @@
     invoke-interface {p0, v1, v0}, Lorg/xmlpull/v1/XmlSerializer;->startTag(Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
 
     .line 481
-    iget-object v2, p1, Lcom/android/server/usage/IntervalStats;->events:Landroid/app/usage/EventList;
-
-    invoke-virtual {v2}, Landroid/app/usage/EventList;->size()I
-
-    move-result v2
-
-    .line 482
-    nop
-
-    :goto_a8
-    if-ge v3, v2, :cond_b6
-
-    .line 483
     iget-object v4, p1, Lcom/android/server/usage/IntervalStats;->events:Landroid/app/usage/EventList;
 
-    invoke-virtual {v4, v3}, Landroid/app/usage/EventList;->get(I)Landroid/app/usage/UsageEvents$Event;
+    invoke-virtual {v4}, Landroid/app/usage/EventList;->size()I
 
-    move-result-object v4
-
-    invoke-static {p0, p1, v4}, Lcom/android/server/usage/UsageStatsXmlV1;->writeEvent(Lorg/xmlpull/v1/XmlSerializer;Lcom/android/server/usage/IntervalStats;Landroid/app/usage/UsageEvents$Event;)V
+    move-result v4
 
     .line 482
-    add-int/lit8 v3, v3, 0x1
+    .local v4, "eventCount":I
+    const/4 v5, 0x0
 
-    goto :goto_a8
+    .local v5, "i":I
+    :goto_ac
+    if-ge v5, v4, :cond_ba
+
+    .line 483
+    iget-object v6, p1, Lcom/android/server/usage/IntervalStats;->events:Landroid/app/usage/EventList;
+
+    invoke-virtual {v6, v5}, Landroid/app/usage/EventList;->get(I)Landroid/app/usage/UsageEvents$Event;
+
+    move-result-object v6
+
+    invoke-static {p0, p1, v6}, Lcom/android/server/usage/UsageStatsXmlV1;->writeEvent(Lorg/xmlpull/v1/XmlSerializer;Lcom/android/server/usage/IntervalStats;Landroid/app/usage/UsageEvents$Event;)V
+
+    .line 482
+    add-int/lit8 v5, v5, 0x1
+
+    goto :goto_ac
 
     .line 485
-    :cond_b6
+    .end local v5  # "i":I
+    :cond_ba
     invoke-interface {p0, v1, v0}, Lorg/xmlpull/v1/XmlSerializer;->endTag(Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
 
     .line 486
@@ -1354,6 +1431,8 @@
 
 .method private static writeChooserCounts(Lorg/xmlpull/v1/XmlSerializer;Landroid/app/usage/UsageStats;)V
     .registers 9
+    .param p0, "xml"  # Lorg/xmlpull/v1/XmlSerializer;
+    .param p1, "usageStats"  # Landroid/app/usage/UsageStats;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Ljava/io/IOException;
@@ -1391,8 +1470,10 @@
     move-result v0
 
     .line 285
+    .local v0, "chooserCountSize":I
     const/4 v1, 0x0
 
+    .local v1, "i":I
     :goto_1a
     if-ge v1, v0, :cond_4c
 
@@ -1406,6 +1487,7 @@
     check-cast v2, Ljava/lang/String;
 
     .line 287
+    .local v2, "action":Ljava/lang/String;
     iget-object v3, p1, Landroid/app/usage/UsageStats;->mChooserCounts:Landroid/util/ArrayMap;
 
     invoke-virtual {v3, v1}, Landroid/util/ArrayMap;->valueAt(I)Ljava/lang/Object;
@@ -1415,6 +1497,7 @@
     check-cast v3, Landroid/util/ArrayMap;
 
     .line 288
+    .local v3, "counts":Landroid/util/ArrayMap;, "Landroid/util/ArrayMap<Ljava/lang/String;Ljava/lang/Integer;>;"
     if-eqz v2, :cond_49
 
     if-eqz v3, :cond_49
@@ -1448,6 +1531,8 @@
     invoke-interface {p0, v5, v4}, Lorg/xmlpull/v1/XmlSerializer;->endTag(Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
 
     .line 285
+    .end local v2  # "action":Ljava/lang/String;
+    .end local v3  # "counts":Landroid/util/ArrayMap;, "Landroid/util/ArrayMap<Ljava/lang/String;Ljava/lang/Integer;>;"
     :cond_49
     :goto_49
     add-int/lit8 v1, v1, 0x1
@@ -1455,10 +1540,12 @@
     goto :goto_1a
 
     .line 296
+    .end local v1  # "i":I
     :cond_4c
     return-void
 
     .line 282
+    .end local v0  # "chooserCountSize":I
     :cond_4d
     :goto_4d
     return-void
@@ -1466,6 +1553,10 @@
 
 .method private static writeConfigStats(Lorg/xmlpull/v1/XmlSerializer;Lcom/android/server/usage/IntervalStats;Landroid/app/usage/ConfigurationStats;Z)V
     .registers 10
+    .param p0, "xml"  # Lorg/xmlpull/v1/XmlSerializer;
+    .param p1, "stats"  # Lcom/android/server/usage/IntervalStats;
+    .param p2, "configStats"  # Landroid/app/usage/ConfigurationStats;
+    .param p3, "isActive"  # Z
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Ljava/io/IOException;
@@ -1486,39 +1577,39 @@
 
     sub-long/2addr v2, v4
 
-    const-string p1, "lastTimeActive"
+    const-string/jumbo v4, "lastTimeActive"
 
-    invoke-static {p0, p1, v2, v3}, Lcom/android/internal/util/XmlUtils;->writeLongAttribute(Lorg/xmlpull/v1/XmlSerializer;Ljava/lang/String;J)V
+    invoke-static {p0, v4, v2, v3}, Lcom/android/internal/util/XmlUtils;->writeLongAttribute(Lorg/xmlpull/v1/XmlSerializer;Ljava/lang/String;J)V
 
     .line 321
     iget-wide v2, p2, Landroid/app/usage/ConfigurationStats;->mTotalTimeActive:J
 
-    const-string/jumbo p1, "timeActive"
+    const-string/jumbo v4, "timeActive"
 
-    invoke-static {p0, p1, v2, v3}, Lcom/android/internal/util/XmlUtils;->writeLongAttribute(Lorg/xmlpull/v1/XmlSerializer;Ljava/lang/String;J)V
+    invoke-static {p0, v4, v2, v3}, Lcom/android/internal/util/XmlUtils;->writeLongAttribute(Lorg/xmlpull/v1/XmlSerializer;Ljava/lang/String;J)V
 
     .line 322
-    iget p1, p2, Landroid/app/usage/ConfigurationStats;->mActivationCount:I
+    iget v2, p2, Landroid/app/usage/ConfigurationStats;->mActivationCount:I
 
-    const-string v2, "count"
+    const-string v3, "count"
 
-    invoke-static {p0, v2, p1}, Lcom/android/internal/util/XmlUtils;->writeIntAttribute(Lorg/xmlpull/v1/XmlSerializer;Ljava/lang/String;I)V
+    invoke-static {p0, v3, v2}, Lcom/android/internal/util/XmlUtils;->writeIntAttribute(Lorg/xmlpull/v1/XmlSerializer;Ljava/lang/String;I)V
 
     .line 323
-    if-eqz p3, :cond_27
+    if-eqz p3, :cond_28
 
     .line 324
-    const/4 p1, 0x1
+    const/4 v2, 0x1
 
-    const-string p3, "active"
+    const-string v3, "active"
 
-    invoke-static {p0, p3, p1}, Lcom/android/internal/util/XmlUtils;->writeBooleanAttribute(Lorg/xmlpull/v1/XmlSerializer;Ljava/lang/String;Z)V
+    invoke-static {p0, v3, v2}, Lcom/android/internal/util/XmlUtils;->writeBooleanAttribute(Lorg/xmlpull/v1/XmlSerializer;Ljava/lang/String;Z)V
 
     .line 328
-    :cond_27
-    iget-object p1, p2, Landroid/app/usage/ConfigurationStats;->mConfiguration:Landroid/content/res/Configuration;
+    :cond_28
+    iget-object v2, p2, Landroid/app/usage/ConfigurationStats;->mConfiguration:Landroid/content/res/Configuration;
 
-    invoke-static {p0, p1}, Landroid/content/res/Configuration;->writeXmlAttrs(Lorg/xmlpull/v1/XmlSerializer;Landroid/content/res/Configuration;)V
+    invoke-static {p0, v2}, Landroid/content/res/Configuration;->writeXmlAttrs(Lorg/xmlpull/v1/XmlSerializer;Landroid/content/res/Configuration;)V
 
     .line 330
     invoke-interface {p0, v1, v0}, Lorg/xmlpull/v1/XmlSerializer;->endTag(Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
@@ -1529,6 +1620,10 @@
 
 .method private static writeCountAndTime(Lorg/xmlpull/v1/XmlSerializer;Ljava/lang/String;IJ)V
     .registers 7
+    .param p0, "xml"  # Lorg/xmlpull/v1/XmlSerializer;
+    .param p1, "tag"  # Ljava/lang/String;
+    .param p2, "count"  # I
+    .param p3, "time"  # J
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Ljava/io/IOException;
@@ -1546,9 +1641,9 @@
     invoke-static {p0, v1, p2}, Lcom/android/internal/util/XmlUtils;->writeIntAttribute(Lorg/xmlpull/v1/XmlSerializer;Ljava/lang/String;I)V
 
     .line 274
-    const-string/jumbo p2, "time"
+    const-string/jumbo v1, "time"
 
-    invoke-static {p0, p2, p3, p4}, Lcom/android/internal/util/XmlUtils;->writeLongAttribute(Lorg/xmlpull/v1/XmlSerializer;Ljava/lang/String;J)V
+    invoke-static {p0, v1, p3, p4}, Lcom/android/internal/util/XmlUtils;->writeLongAttribute(Lorg/xmlpull/v1/XmlSerializer;Ljava/lang/String;J)V
 
     .line 275
     invoke-interface {p0, v0, p1}, Lorg/xmlpull/v1/XmlSerializer;->endTag(Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
@@ -1559,6 +1654,7 @@
 
 .method private static writeCountsForAction(Lorg/xmlpull/v1/XmlSerializer;Landroid/util/ArrayMap;)V
     .registers 9
+    .param p0, "xml"  # Lorg/xmlpull/v1/XmlSerializer;
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(",
@@ -1577,13 +1673,16 @@
     .end annotation
 
     .line 300
+    .local p1, "counts":Landroid/util/ArrayMap;, "Landroid/util/ArrayMap<Ljava/lang/String;Ljava/lang/Integer;>;"
     invoke-virtual {p1}, Landroid/util/ArrayMap;->size()I
 
     move-result v0
 
     .line 301
+    .local v0, "countsSize":I
     const/4 v1, 0x0
 
+    .local v1, "i":I
     :goto_5
     if-ge v1, v0, :cond_30
 
@@ -1595,6 +1694,7 @@
     check-cast v2, Ljava/lang/String;
 
     .line 303
+    .local v2, "key":Ljava/lang/String;
     invoke-virtual {p1, v1}, Landroid/util/ArrayMap;->valueAt(I)Ljava/lang/Object;
 
     move-result-object v3
@@ -1606,6 +1706,7 @@
     move-result v3
 
     .line 304
+    .local v3, "count":I
     if-lez v3, :cond_2d
 
     .line 305
@@ -1621,26 +1722,32 @@
     invoke-static {p0, v6, v2}, Lcom/android/internal/util/XmlUtils;->writeStringAttribute(Lorg/xmlpull/v1/XmlSerializer;Ljava/lang/String;Ljava/lang/CharSequence;)V
 
     .line 307
-    const-string v2, "count"
+    const-string v6, "count"
 
-    invoke-static {p0, v2, v3}, Lcom/android/internal/util/XmlUtils;->writeIntAttribute(Lorg/xmlpull/v1/XmlSerializer;Ljava/lang/String;I)V
+    invoke-static {p0, v6, v3}, Lcom/android/internal/util/XmlUtils;->writeIntAttribute(Lorg/xmlpull/v1/XmlSerializer;Ljava/lang/String;I)V
 
     .line 308
     invoke-interface {p0, v5, v4}, Lorg/xmlpull/v1/XmlSerializer;->endTag(Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
 
     .line 301
+    .end local v2  # "key":Ljava/lang/String;
+    .end local v3  # "count":I
     :cond_2d
     add-int/lit8 v1, v1, 0x1
 
     goto :goto_5
 
     .line 311
+    .end local v1  # "i":I
     :cond_30
     return-void
 .end method
 
 .method private static writeEvent(Lorg/xmlpull/v1/XmlSerializer;Lcom/android/server/usage/IntervalStats;Landroid/app/usage/UsageEvents$Event;)V
     .registers 9
+    .param p0, "xml"  # Lorg/xmlpull/v1/XmlSerializer;
+    .param p1, "stats"  # Lcom/android/server/usage/IntervalStats;
+    .param p2, "event"  # Landroid/app/usage/UsageEvents$Event;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Ljava/io/IOException;
@@ -1661,131 +1768,131 @@
 
     sub-long/2addr v2, v4
 
-    const-string/jumbo p1, "time"
+    const-string/jumbo v4, "time"
 
-    invoke-static {p0, p1, v2, v3}, Lcom/android/internal/util/XmlUtils;->writeLongAttribute(Lorg/xmlpull/v1/XmlSerializer;Ljava/lang/String;J)V
+    invoke-static {p0, v4, v2, v3}, Lcom/android/internal/util/XmlUtils;->writeLongAttribute(Lorg/xmlpull/v1/XmlSerializer;Ljava/lang/String;J)V
 
     .line 340
-    iget-object p1, p2, Landroid/app/usage/UsageEvents$Event;->mPackage:Ljava/lang/String;
+    iget-object v2, p2, Landroid/app/usage/UsageEvents$Event;->mPackage:Ljava/lang/String;
 
-    const-string/jumbo v2, "package"
+    const-string/jumbo v3, "package"
 
-    invoke-static {p0, v2, p1}, Lcom/android/internal/util/XmlUtils;->writeStringAttribute(Lorg/xmlpull/v1/XmlSerializer;Ljava/lang/String;Ljava/lang/CharSequence;)V
+    invoke-static {p0, v3, v2}, Lcom/android/internal/util/XmlUtils;->writeStringAttribute(Lorg/xmlpull/v1/XmlSerializer;Ljava/lang/String;Ljava/lang/CharSequence;)V
 
     .line 341
-    iget-object p1, p2, Landroid/app/usage/UsageEvents$Event;->mClass:Ljava/lang/String;
+    iget-object v2, p2, Landroid/app/usage/UsageEvents$Event;->mClass:Ljava/lang/String;
 
-    if-eqz p1, :cond_24
+    if-eqz v2, :cond_24
 
     .line 342
-    iget-object p1, p2, Landroid/app/usage/UsageEvents$Event;->mClass:Ljava/lang/String;
+    iget-object v2, p2, Landroid/app/usage/UsageEvents$Event;->mClass:Ljava/lang/String;
 
-    const-string v2, "class"
+    const-string v3, "class"
 
-    invoke-static {p0, v2, p1}, Lcom/android/internal/util/XmlUtils;->writeStringAttribute(Lorg/xmlpull/v1/XmlSerializer;Ljava/lang/String;Ljava/lang/CharSequence;)V
+    invoke-static {p0, v3, v2}, Lcom/android/internal/util/XmlUtils;->writeStringAttribute(Lorg/xmlpull/v1/XmlSerializer;Ljava/lang/String;Ljava/lang/CharSequence;)V
 
     .line 344
     :cond_24
-    iget p1, p2, Landroid/app/usage/UsageEvents$Event;->mFlags:I
+    iget v2, p2, Landroid/app/usage/UsageEvents$Event;->mFlags:I
 
-    const-string v2, "flags"
+    const-string v3, "flags"
 
-    invoke-static {p0, v2, p1}, Lcom/android/internal/util/XmlUtils;->writeIntAttribute(Lorg/xmlpull/v1/XmlSerializer;Ljava/lang/String;I)V
+    invoke-static {p0, v3, v2}, Lcom/android/internal/util/XmlUtils;->writeIntAttribute(Lorg/xmlpull/v1/XmlSerializer;Ljava/lang/String;I)V
 
     .line 345
-    iget p1, p2, Landroid/app/usage/UsageEvents$Event;->mEventType:I
+    iget v2, p2, Landroid/app/usage/UsageEvents$Event;->mEventType:I
 
-    const-string/jumbo v2, "type"
+    const-string/jumbo v3, "type"
 
-    invoke-static {p0, v2, p1}, Lcom/android/internal/util/XmlUtils;->writeIntAttribute(Lorg/xmlpull/v1/XmlSerializer;Ljava/lang/String;I)V
+    invoke-static {p0, v3, v2}, Lcom/android/internal/util/XmlUtils;->writeIntAttribute(Lorg/xmlpull/v1/XmlSerializer;Ljava/lang/String;I)V
 
     .line 346
-    iget p1, p2, Landroid/app/usage/UsageEvents$Event;->mInstanceId:I
+    iget v2, p2, Landroid/app/usage/UsageEvents$Event;->mInstanceId:I
 
-    const-string v2, "instanceId"
+    const-string/jumbo v3, "instanceId"
 
-    invoke-static {p0, v2, p1}, Lcom/android/internal/util/XmlUtils;->writeIntAttribute(Lorg/xmlpull/v1/XmlSerializer;Ljava/lang/String;I)V
+    invoke-static {p0, v3, v2}, Lcom/android/internal/util/XmlUtils;->writeIntAttribute(Lorg/xmlpull/v1/XmlSerializer;Ljava/lang/String;I)V
 
     .line 348
-    iget p1, p2, Landroid/app/usage/UsageEvents$Event;->mEventType:I
+    iget v2, p2, Landroid/app/usage/UsageEvents$Event;->mEventType:I
 
-    const/4 v2, 0x5
+    const/4 v3, 0x5
 
-    if-eq p1, v2, :cond_73
+    if-eq v2, v3, :cond_74
 
-    const/16 v2, 0x8
+    const/16 v3, 0x8
 
-    if-eq p1, v2, :cond_66
+    if-eq v2, v3, :cond_67
 
-    const/16 v2, 0xb
+    const/16 v3, 0xb
 
-    if-eq p1, v2, :cond_59
+    if-eq v2, v3, :cond_5a
 
-    const/16 v2, 0xc
+    const/16 v3, 0xc
 
-    if-eq p1, v2, :cond_4c
+    if-eq v2, v3, :cond_4d
 
-    goto :goto_7c
+    goto :goto_7d
 
     .line 365
-    :cond_4c
-    iget-object p1, p2, Landroid/app/usage/UsageEvents$Event;->mNotificationChannelId:Ljava/lang/String;
+    :cond_4d
+    iget-object v2, p2, Landroid/app/usage/UsageEvents$Event;->mNotificationChannelId:Ljava/lang/String;
 
-    if-eqz p1, :cond_7c
+    if-eqz v2, :cond_7d
 
     .line 366
-    iget-object p1, p2, Landroid/app/usage/UsageEvents$Event;->mNotificationChannelId:Ljava/lang/String;
+    iget-object v2, p2, Landroid/app/usage/UsageEvents$Event;->mNotificationChannelId:Ljava/lang/String;
 
-    const-string/jumbo p2, "notificationChannel"
+    const-string/jumbo v3, "notificationChannel"
 
-    invoke-static {p0, p2, p1}, Lcom/android/internal/util/XmlUtils;->writeStringAttribute(Lorg/xmlpull/v1/XmlSerializer;Ljava/lang/String;Ljava/lang/CharSequence;)V
+    invoke-static {p0, v3, v2}, Lcom/android/internal/util/XmlUtils;->writeStringAttribute(Lorg/xmlpull/v1/XmlSerializer;Ljava/lang/String;Ljava/lang/CharSequence;)V
 
-    goto :goto_7c
+    goto :goto_7d
 
     .line 360
-    :cond_59
-    iget p1, p2, Landroid/app/usage/UsageEvents$Event;->mBucketAndReason:I
+    :cond_5a
+    iget v2, p2, Landroid/app/usage/UsageEvents$Event;->mBucketAndReason:I
 
-    if-eqz p1, :cond_7c
+    if-eqz v2, :cond_7d
 
     .line 361
-    iget p1, p2, Landroid/app/usage/UsageEvents$Event;->mBucketAndReason:I
+    iget v2, p2, Landroid/app/usage/UsageEvents$Event;->mBucketAndReason:I
 
-    const-string/jumbo p2, "standbyBucket"
+    const-string/jumbo v3, "standbyBucket"
 
-    invoke-static {p0, p2, p1}, Lcom/android/internal/util/XmlUtils;->writeIntAttribute(Lorg/xmlpull/v1/XmlSerializer;Ljava/lang/String;I)V
+    invoke-static {p0, v3, v2}, Lcom/android/internal/util/XmlUtils;->writeIntAttribute(Lorg/xmlpull/v1/XmlSerializer;Ljava/lang/String;I)V
 
-    goto :goto_7c
+    goto :goto_7d
 
     .line 355
-    :cond_66
-    iget-object p1, p2, Landroid/app/usage/UsageEvents$Event;->mShortcutId:Ljava/lang/String;
+    :cond_67
+    iget-object v2, p2, Landroid/app/usage/UsageEvents$Event;->mShortcutId:Ljava/lang/String;
 
-    if-eqz p1, :cond_7c
+    if-eqz v2, :cond_7d
 
     .line 356
-    iget-object p1, p2, Landroid/app/usage/UsageEvents$Event;->mShortcutId:Ljava/lang/String;
+    iget-object v2, p2, Landroid/app/usage/UsageEvents$Event;->mShortcutId:Ljava/lang/String;
 
-    const-string/jumbo p2, "shortcutId"
+    const-string/jumbo v3, "shortcutId"
 
-    invoke-static {p0, p2, p1}, Lcom/android/internal/util/XmlUtils;->writeStringAttribute(Lorg/xmlpull/v1/XmlSerializer;Ljava/lang/String;Ljava/lang/CharSequence;)V
+    invoke-static {p0, v3, v2}, Lcom/android/internal/util/XmlUtils;->writeStringAttribute(Lorg/xmlpull/v1/XmlSerializer;Ljava/lang/String;Ljava/lang/CharSequence;)V
 
-    goto :goto_7c
+    goto :goto_7d
 
     .line 350
-    :cond_73
-    iget-object p1, p2, Landroid/app/usage/UsageEvents$Event;->mConfiguration:Landroid/content/res/Configuration;
+    :cond_74
+    iget-object v2, p2, Landroid/app/usage/UsageEvents$Event;->mConfiguration:Landroid/content/res/Configuration;
 
-    if-eqz p1, :cond_7c
+    if-eqz v2, :cond_7d
 
     .line 351
-    iget-object p1, p2, Landroid/app/usage/UsageEvents$Event;->mConfiguration:Landroid/content/res/Configuration;
+    iget-object v2, p2, Landroid/app/usage/UsageEvents$Event;->mConfiguration:Landroid/content/res/Configuration;
 
-    invoke-static {p0, p1}, Landroid/content/res/Configuration;->writeXmlAttrs(Lorg/xmlpull/v1/XmlSerializer;Landroid/content/res/Configuration;)V
+    invoke-static {p0, v2}, Landroid/content/res/Configuration;->writeXmlAttrs(Lorg/xmlpull/v1/XmlSerializer;Landroid/content/res/Configuration;)V
 
     .line 372
-    :cond_7c
-    :goto_7c
+    :cond_7d
+    :goto_7d
     invoke-interface {p0, v1, v0}, Lorg/xmlpull/v1/XmlSerializer;->endTag(Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
 
     .line 373
@@ -1794,6 +1901,9 @@
 
 .method private static writeUsageStats(Lorg/xmlpull/v1/XmlSerializer;Lcom/android/server/usage/IntervalStats;Landroid/app/usage/UsageStats;)V
     .registers 9
+    .param p0, "xml"  # Lorg/xmlpull/v1/XmlSerializer;
+    .param p1, "stats"  # Lcom/android/server/usage/IntervalStats;
+    .param p2, "usageStats"  # Landroid/app/usage/UsageStats;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Ljava/io/IOException;
@@ -1814,7 +1924,7 @@
 
     sub-long/2addr v2, v4
 
-    const-string v4, "lastTimeActive"
+    const-string/jumbo v4, "lastTimeActive"
 
     invoke-static {p0, v4, v2, v3}, Lcom/android/internal/util/XmlUtils;->writeLongAttribute(Lorg/xmlpull/v1/XmlSerializer;Ljava/lang/String;J)V
 
@@ -1825,7 +1935,7 @@
 
     sub-long/2addr v2, v4
 
-    const-string v4, "lastTimeVisible"
+    const-string/jumbo v4, "lastTimeVisible"
 
     invoke-static {p0, v4, v2, v3}, Lcom/android/internal/util/XmlUtils;->writeLongAttribute(Lorg/xmlpull/v1/XmlSerializer;Ljava/lang/String;J)V
 
@@ -1836,57 +1946,57 @@
 
     sub-long/2addr v2, v4
 
-    const-string p1, "lastTimeServiceUsed"
+    const-string/jumbo v4, "lastTimeServiceUsed"
 
-    invoke-static {p0, p1, v2, v3}, Lcom/android/internal/util/XmlUtils;->writeLongAttribute(Lorg/xmlpull/v1/XmlSerializer;Ljava/lang/String;J)V
+    invoke-static {p0, v4, v2, v3}, Lcom/android/internal/util/XmlUtils;->writeLongAttribute(Lorg/xmlpull/v1/XmlSerializer;Ljava/lang/String;J)V
 
     .line 257
-    iget-object p1, p2, Landroid/app/usage/UsageStats;->mPackageName:Ljava/lang/String;
+    iget-object v2, p2, Landroid/app/usage/UsageStats;->mPackageName:Ljava/lang/String;
 
-    invoke-static {p0, v1, p1}, Lcom/android/internal/util/XmlUtils;->writeStringAttribute(Lorg/xmlpull/v1/XmlSerializer;Ljava/lang/String;Ljava/lang/CharSequence;)V
+    invoke-static {p0, v1, v2}, Lcom/android/internal/util/XmlUtils;->writeStringAttribute(Lorg/xmlpull/v1/XmlSerializer;Ljava/lang/String;Ljava/lang/CharSequence;)V
 
     .line 258
     iget-wide v2, p2, Landroid/app/usage/UsageStats;->mTotalTimeInForeground:J
 
-    const-string/jumbo p1, "timeActive"
+    const-string/jumbo v4, "timeActive"
 
-    invoke-static {p0, p1, v2, v3}, Lcom/android/internal/util/XmlUtils;->writeLongAttribute(Lorg/xmlpull/v1/XmlSerializer;Ljava/lang/String;J)V
+    invoke-static {p0, v4, v2, v3}, Lcom/android/internal/util/XmlUtils;->writeLongAttribute(Lorg/xmlpull/v1/XmlSerializer;Ljava/lang/String;J)V
 
     .line 259
     iget-wide v2, p2, Landroid/app/usage/UsageStats;->mTotalTimeVisible:J
 
-    const-string/jumbo p1, "timeVisible"
+    const-string/jumbo v4, "timeVisible"
 
-    invoke-static {p0, p1, v2, v3}, Lcom/android/internal/util/XmlUtils;->writeLongAttribute(Lorg/xmlpull/v1/XmlSerializer;Ljava/lang/String;J)V
+    invoke-static {p0, v4, v2, v3}, Lcom/android/internal/util/XmlUtils;->writeLongAttribute(Lorg/xmlpull/v1/XmlSerializer;Ljava/lang/String;J)V
 
     .line 260
     iget-wide v2, p2, Landroid/app/usage/UsageStats;->mTotalTimeForegroundServiceUsed:J
 
-    const-string/jumbo p1, "timeServiceUsed"
+    const-string/jumbo v4, "timeServiceUsed"
 
-    invoke-static {p0, p1, v2, v3}, Lcom/android/internal/util/XmlUtils;->writeLongAttribute(Lorg/xmlpull/v1/XmlSerializer;Ljava/lang/String;J)V
+    invoke-static {p0, v4, v2, v3}, Lcom/android/internal/util/XmlUtils;->writeLongAttribute(Lorg/xmlpull/v1/XmlSerializer;Ljava/lang/String;J)V
 
     .line 262
-    iget p1, p2, Landroid/app/usage/UsageStats;->mLastEvent:I
+    iget v2, p2, Landroid/app/usage/UsageStats;->mLastEvent:I
 
-    const-string v2, "lastEvent"
+    const-string/jumbo v3, "lastEvent"
 
-    invoke-static {p0, v2, p1}, Lcom/android/internal/util/XmlUtils;->writeIntAttribute(Lorg/xmlpull/v1/XmlSerializer;Ljava/lang/String;I)V
+    invoke-static {p0, v3, v2}, Lcom/android/internal/util/XmlUtils;->writeIntAttribute(Lorg/xmlpull/v1/XmlSerializer;Ljava/lang/String;I)V
 
     .line 263
-    iget p1, p2, Landroid/app/usage/UsageStats;->mAppLaunchCount:I
+    iget v2, p2, Landroid/app/usage/UsageStats;->mAppLaunchCount:I
 
-    if-lez p1, :cond_54
+    if-lez v2, :cond_58
 
     .line 264
-    iget p1, p2, Landroid/app/usage/UsageStats;->mAppLaunchCount:I
+    iget v2, p2, Landroid/app/usage/UsageStats;->mAppLaunchCount:I
 
-    const-string v2, "appLaunchCount"
+    const-string v3, "appLaunchCount"
 
-    invoke-static {p0, v2, p1}, Lcom/android/internal/util/XmlUtils;->writeIntAttribute(Lorg/xmlpull/v1/XmlSerializer;Ljava/lang/String;I)V
+    invoke-static {p0, v3, v2}, Lcom/android/internal/util/XmlUtils;->writeIntAttribute(Lorg/xmlpull/v1/XmlSerializer;Ljava/lang/String;I)V
 
     .line 266
-    :cond_54
+    :cond_58
     invoke-static {p0, p2}, Lcom/android/server/usage/UsageStatsXmlV1;->writeChooserCounts(Lorg/xmlpull/v1/XmlSerializer;Landroid/app/usage/UsageStats;)V
 
     .line 267

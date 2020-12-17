@@ -24,8 +24,9 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/wm/AppWindowToken;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/wm/AppWindowToken;
 
-    .line 2200
+    .line 2255
     iput-object p1, p0, Lcom/android/server/wm/AppWindowToken$1;->this$0:Lcom/android/server/wm/AppWindowToken;
 
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -36,9 +37,9 @@
 
 # virtual methods
 .method public run()V
-    .registers 6
+    .registers 8
 
-    .line 2206
+    .line 2261
     iget-object v0, p0, Lcom/android/server/wm/AppWindowToken$1;->this$0:Lcom/android/server/wm/AppWindowToken;
 
     iget-object v0, v0, Lcom/android/server/wm/AppWindowToken;->mWmService:Lcom/android/server/wm/WindowManagerService;
@@ -50,7 +51,7 @@
     :try_start_7
     invoke-static {}, Lcom/android/server/wm/WindowManagerService;->boostPriorityForLockedSection()V
 
-    .line 2208
+    .line 2263
     iget-object v1, p0, Lcom/android/server/wm/AppWindowToken$1;->this$0:Lcom/android/server/wm/AppWindowToken;
 
     iget-object v1, v1, Lcom/android/server/wm/AppWindowToken;->mWmService:Lcom/android/server/wm/WindowManagerService;
@@ -59,75 +60,136 @@
 
     invoke-virtual {v1, p0}, Landroid/os/Handler;->removeCallbacks(Ljava/lang/Runnable;)V
 
-    .line 2210
+    .line 2265
     iget-object v1, p0, Lcom/android/server/wm/AppWindowToken$1;->this$0:Lcom/android/server/wm/AppWindowToken;
 
     iget-object v1, v1, Lcom/android/server/wm/AppWindowToken;->mStartingData:Lcom/android/server/wm/StartingData;
 
-    if-nez v1, :cond_1e
+    if-nez v1, :cond_3a
 
-    .line 2216
+    .line 2267
+    sget-boolean v1, Lcom/android/server/wm/WindowManagerDebugConfig;->DEBUG_STARTING_WINDOW:Z
+
+    if-eqz v1, :cond_35
+
+    .line 2268
+    const-string v1, "WindowManager"
+
+    new-instance v2, Ljava/lang/StringBuilder;
+
+    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
+
+    const-string v3, "startingData was nulled out before handling mAddStartingWindow: "
+
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    iget-object v3, p0, Lcom/android/server/wm/AppWindowToken$1;->this$0:Lcom/android/server/wm/AppWindowToken;
+
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v2
+
+    invoke-static {v1, v2}, Landroid/util/Slog;->v(Ljava/lang/String;Ljava/lang/String;)I
+
+    .line 2271
+    :cond_35
     monitor-exit v0
-    :try_end_1a
-    .catchall {:try_start_7 .. :try_end_1a} :catchall_71
+    :try_end_36
+    .catchall {:try_start_7 .. :try_end_36} :catchall_137
 
     invoke-static {}, Lcom/android/server/wm/WindowManagerService;->resetPriorityAfterLockedSection()V
 
     return-void
 
-    .line 2218
-    :cond_1e
-    :try_start_1e
+    .line 2273
+    :cond_3a
+    :try_start_3a
     iget-object v1, p0, Lcom/android/server/wm/AppWindowToken$1;->this$0:Lcom/android/server/wm/AppWindowToken;
 
     iget-object v1, v1, Lcom/android/server/wm/AppWindowToken;->mStartingData:Lcom/android/server/wm/StartingData;
 
-    .line 2219
+    .line 2274
+    .local v1, "startingData":Lcom/android/server/wm/StartingData;
     monitor-exit v0
-    :try_end_23
-    .catchall {:try_start_1e .. :try_end_23} :catchall_71
+    :try_end_3f
+    .catchall {:try_start_3a .. :try_end_3f} :catchall_137
 
     invoke-static {}, Lcom/android/server/wm/WindowManagerService;->resetPriorityAfterLockedSection()V
 
-    .line 2225
-    nop
+    .line 2276
+    sget-boolean v0, Lcom/android/server/wm/WindowManagerDebugConfig;->DEBUG_STARTING_WINDOW:Z
 
-    .line 2227
+    if-eqz v0, :cond_64
+
+    .line 2277
+    new-instance v0, Ljava/lang/StringBuilder;
+
+    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
+
+    const-string v2, "Add starting "
+
+    invoke-virtual {v0, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v0, p0}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+
+    const-string v2, ": startingData="
+
+    invoke-virtual {v0, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v0
+
+    const-string v2, "WindowManager"
+
+    invoke-static {v2, v0}, Landroid/util/Slog;->v(Ljava/lang/String;Ljava/lang/String;)I
+
+    .line 2280
+    :cond_64
     const/4 v0, 0x0
 
-    :try_start_28
+    .line 2282
+    .local v0, "surface":Lcom/android/server/policy/WindowManagerPolicy$StartingSurface;
+    :try_start_65
     iget-object v2, p0, Lcom/android/server/wm/AppWindowToken$1;->this$0:Lcom/android/server/wm/AppWindowToken;
 
     invoke-virtual {v1, v2}, Lcom/android/server/wm/StartingData;->createStartingSurface(Lcom/android/server/wm/AppWindowToken;)Lcom/android/server/policy/WindowManagerPolicy$StartingSurface;
 
-    move-result-object v1
-    :try_end_2e
-    .catch Ljava/lang/Exception; {:try_start_28 .. :try_end_2e} :catch_2f
+    move-result-object v2
+    :try_end_6b
+    .catch Ljava/lang/Exception; {:try_start_65 .. :try_end_6b} :catch_6d
 
-    .line 2230
-    goto :goto_38
+    move-object v0, v2
 
-    .line 2228
-    :catch_2f
-    move-exception v1
+    .line 2285
+    goto :goto_75
 
-    .line 2229
-    const-string v2, "WindowManager"
+    .line 2283
+    :catch_6d
+    move-exception v2
 
-    const-string v3, "Exception when adding starting window"
+    .line 2284
+    .local v2, "e":Ljava/lang/Exception;
+    const-string v3, "WindowManager"
 
-    invoke-static {v2, v3, v1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    const-string v4, "Exception when adding starting window"
 
-    move-object v1, v0
+    invoke-static {v3, v4, v2}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
-    .line 2231
-    :goto_38
-    if-eqz v1, :cond_70
+    .line 2286
+    .end local v2  # "e":Ljava/lang/Exception;
+    :goto_75
+    if-eqz v0, :cond_118
 
-    .line 2232
+    .line 2287
     const/4 v2, 0x0
 
-    .line 2233
+    .line 2288
+    .local v2, "abort":Z
     iget-object v3, p0, Lcom/android/server/wm/AppWindowToken$1;->this$0:Lcom/android/server/wm/AppWindowToken;
 
     iget-object v3, v3, Lcom/android/server/wm/AppWindowToken;->mWmService:Lcom/android/server/wm/WindowManagerService;
@@ -136,89 +198,223 @@
 
     monitor-enter v3
 
-    :try_start_42
+    :try_start_7f
     invoke-static {}, Lcom/android/server/wm/WindowManagerService;->boostPriorityForLockedSection()V
 
-    .line 2236
+    .line 2291
     iget-object v4, p0, Lcom/android/server/wm/AppWindowToken$1;->this$0:Lcom/android/server/wm/AppWindowToken;
 
     iget-boolean v4, v4, Lcom/android/server/wm/AppWindowToken;->removed:Z
 
-    if-nez v4, :cond_57
+    if-nez v4, :cond_94
 
     iget-object v4, p0, Lcom/android/server/wm/AppWindowToken$1;->this$0:Lcom/android/server/wm/AppWindowToken;
 
     iget-object v4, v4, Lcom/android/server/wm/AppWindowToken;->mStartingData:Lcom/android/server/wm/StartingData;
 
-    if-nez v4, :cond_52
+    if-nez v4, :cond_8f
 
-    goto :goto_57
+    goto :goto_94
 
-    .line 2245
-    :cond_52
-    iget-object v0, p0, Lcom/android/server/wm/AppWindowToken$1;->this$0:Lcom/android/server/wm/AppWindowToken;
+    .line 2300
+    :cond_8f
+    iget-object v4, p0, Lcom/android/server/wm/AppWindowToken$1;->this$0:Lcom/android/server/wm/AppWindowToken;
 
-    iput-object v1, v0, Lcom/android/server/wm/AppWindowToken;->startingSurface:Lcom/android/server/policy/WindowManagerPolicy$StartingSurface;
+    iput-object v0, v4, Lcom/android/server/wm/AppWindowToken;->startingSurface:Lcom/android/server/policy/WindowManagerPolicy$StartingSurface;
 
-    goto :goto_60
+    goto :goto_d2
 
-    .line 2241
-    :cond_57
-    :goto_57
-    iget-object v2, p0, Lcom/android/server/wm/AppWindowToken$1;->this$0:Lcom/android/server/wm/AppWindowToken;
+    .line 2292
+    :cond_94
+    :goto_94
+    sget-boolean v4, Lcom/android/server/wm/WindowManagerDebugConfig;->DEBUG_STARTING_WINDOW:Z
 
-    iput-object v0, v2, Lcom/android/server/wm/AppWindowToken;->startingWindow:Lcom/android/server/wm/WindowState;
+    if-eqz v4, :cond_c8
 
-    .line 2242
-    iget-object v2, p0, Lcom/android/server/wm/AppWindowToken$1;->this$0:Lcom/android/server/wm/AppWindowToken;
+    .line 2293
+    const-string v4, "WindowManager"
 
-    iput-object v0, v2, Lcom/android/server/wm/AppWindowToken;->mStartingData:Lcom/android/server/wm/StartingData;
+    new-instance v5, Ljava/lang/StringBuilder;
 
-    .line 2243
+    invoke-direct {v5}, Ljava/lang/StringBuilder;-><init>()V
+
+    const-string v6, "Aborted starting "
+
+    invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    iget-object v6, p0, Lcom/android/server/wm/AppWindowToken$1;->this$0:Lcom/android/server/wm/AppWindowToken;
+
+    invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+
+    const-string v6, ": removed="
+
+    invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    iget-object v6, p0, Lcom/android/server/wm/AppWindowToken$1;->this$0:Lcom/android/server/wm/AppWindowToken;
+
+    iget-boolean v6, v6, Lcom/android/server/wm/AppWindowToken;->removed:Z
+
+    invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(Z)Ljava/lang/StringBuilder;
+
+    const-string v6, " startingData="
+
+    invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    iget-object v6, p0, Lcom/android/server/wm/AppWindowToken$1;->this$0:Lcom/android/server/wm/AppWindowToken;
+
+    iget-object v6, v6, Lcom/android/server/wm/AppWindowToken;->mStartingData:Lcom/android/server/wm/StartingData;
+
+    invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v5}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v5
+
+    invoke-static {v4, v5}, Landroid/util/Slog;->v(Ljava/lang/String;Ljava/lang/String;)I
+
+    .line 2296
+    :cond_c8
+    iget-object v4, p0, Lcom/android/server/wm/AppWindowToken$1;->this$0:Lcom/android/server/wm/AppWindowToken;
+
+    const/4 v5, 0x0
+
+    iput-object v5, v4, Lcom/android/server/wm/AppWindowToken;->startingWindow:Lcom/android/server/wm/WindowState;
+
+    .line 2297
+    iget-object v4, p0, Lcom/android/server/wm/AppWindowToken$1;->this$0:Lcom/android/server/wm/AppWindowToken;
+
+    iput-object v5, v4, Lcom/android/server/wm/AppWindowToken;->mStartingData:Lcom/android/server/wm/StartingData;
+
+    .line 2298
     const/4 v2, 0x1
 
-    .line 2252
-    :goto_60
+    .line 2302
+    :goto_d2
+    sget-boolean v4, Lcom/android/server/wm/WindowManagerDebugConfig;->DEBUG_STARTING_WINDOW:Z
+
+    if-eqz v4, :cond_108
+
+    if-nez v2, :cond_108
+
+    .line 2303
+    const-string v4, "WindowManager"
+
+    new-instance v5, Ljava/lang/StringBuilder;
+
+    invoke-direct {v5}, Ljava/lang/StringBuilder;-><init>()V
+
+    const-string v6, "Added starting "
+
+    invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    iget-object v6, p0, Lcom/android/server/wm/AppWindowToken$1;->this$0:Lcom/android/server/wm/AppWindowToken;
+
+    invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+
+    const-string v6, ": startingWindow="
+
+    invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    iget-object v6, p0, Lcom/android/server/wm/AppWindowToken$1;->this$0:Lcom/android/server/wm/AppWindowToken;
+
+    iget-object v6, v6, Lcom/android/server/wm/AppWindowToken;->startingWindow:Lcom/android/server/wm/WindowState;
+
+    invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+
+    const-string v6, " startingView="
+
+    invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    iget-object v6, p0, Lcom/android/server/wm/AppWindowToken$1;->this$0:Lcom/android/server/wm/AppWindowToken;
+
+    iget-object v6, v6, Lcom/android/server/wm/AppWindowToken;->startingSurface:Lcom/android/server/policy/WindowManagerPolicy$StartingSurface;
+
+    invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v5}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v5
+
+    invoke-static {v4, v5}, Landroid/util/Slog;->v(Ljava/lang/String;Ljava/lang/String;)I
+
+    .line 2307
+    :cond_108
     monitor-exit v3
-    :try_end_61
-    .catchall {:try_start_42 .. :try_end_61} :catchall_6a
+    :try_end_109
+    .catchall {:try_start_7f .. :try_end_109} :catchall_112
 
     invoke-static {}, Lcom/android/server/wm/WindowManagerService;->resetPriorityAfterLockedSection()V
 
-    .line 2253
-    if-eqz v2, :cond_70
+    .line 2308
+    if-eqz v2, :cond_135
 
-    .line 2254
-    invoke-interface {v1}, Lcom/android/server/policy/WindowManagerPolicy$StartingSurface;->remove()V
+    .line 2309
+    invoke-interface {v0}, Lcom/android/server/policy/WindowManagerPolicy$StartingSurface;->remove()V
 
-    goto :goto_70
+    goto :goto_135
 
-    .line 2252
-    :catchall_6a
-    move-exception v0
+    .line 2307
+    :catchall_112
+    move-exception v4
 
-    :try_start_6b
+    :try_start_113
     monitor-exit v3
-    :try_end_6c
-    .catchall {:try_start_6b .. :try_end_6c} :catchall_6a
+    :try_end_114
+    .catchall {:try_start_113 .. :try_end_114} :catchall_112
 
     invoke-static {}, Lcom/android/server/wm/WindowManagerService;->resetPriorityAfterLockedSection()V
 
-    throw v0
+    throw v4
 
-    .line 2259
-    :cond_70
-    :goto_70
+    .line 2311
+    .end local v2  # "abort":Z
+    :cond_118
+    sget-boolean v2, Lcom/android/server/wm/WindowManagerDebugConfig;->DEBUG_STARTING_WINDOW:Z
+
+    if-eqz v2, :cond_135
+
+    .line 2312
+    new-instance v2, Ljava/lang/StringBuilder;
+
+    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
+
+    const-string v3, "Surface returned was null: "
+
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    iget-object v3, p0, Lcom/android/server/wm/AppWindowToken$1;->this$0:Lcom/android/server/wm/AppWindowToken;
+
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v2
+
+    const-string v3, "WindowManager"
+
+    invoke-static {v3, v2}, Landroid/util/Slog;->v(Ljava/lang/String;Ljava/lang/String;)I
+
+    goto :goto_136
+
+    .line 2311
+    :cond_135
+    :goto_135
+    nop
+
+    .line 2314
+    :goto_136
     return-void
 
-    .line 2219
-    :catchall_71
+    .line 2274
+    .end local v0  # "surface":Lcom/android/server/policy/WindowManagerPolicy$StartingSurface;
+    .end local v1  # "startingData":Lcom/android/server/wm/StartingData;
+    :catchall_137
     move-exception v1
 
-    :try_start_72
+    :try_start_138
     monitor-exit v0
-    :try_end_73
-    .catchall {:try_start_72 .. :try_end_73} :catchall_71
+    :try_end_139
+    .catchall {:try_start_138 .. :try_end_139} :catchall_137
 
     invoke-static {}, Lcom/android/server/wm/WindowManagerService;->resetPriorityAfterLockedSection()V
 

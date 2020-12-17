@@ -21,6 +21,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/accounts/AccountManagerService;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/accounts/AccountManagerService;
 
     .line 335
     iput-object p1, p0, Lcom/android/server/accounts/AccountManagerService$3;->this$0:Lcom/android/server/accounts/AccountManagerService;
@@ -33,28 +34,32 @@
 
 # virtual methods
 .method public onPackageAdded(Ljava/lang/String;I)V
-    .registers 4
+    .registers 5
+    .param p1, "packageName"  # Ljava/lang/String;
+    .param p2, "uid"  # I
 
     .line 339
-    iget-object p1, p0, Lcom/android/server/accounts/AccountManagerService$3;->this$0:Lcom/android/server/accounts/AccountManagerService;
+    iget-object v0, p0, Lcom/android/server/accounts/AccountManagerService$3;->this$0:Lcom/android/server/accounts/AccountManagerService;
 
-    const/4 v0, 0x1
+    const/4 v1, 0x1
 
-    invoke-static {p1, p2, v0}, Lcom/android/server/accounts/AccountManagerService;->access$400(Lcom/android/server/accounts/AccountManagerService;IZ)V
+    invoke-static {v0, p2, v1}, Lcom/android/server/accounts/AccountManagerService;->access$400(Lcom/android/server/accounts/AccountManagerService;IZ)V
 
     .line 340
     return-void
 .end method
 
 .method public onPackageUpdateFinished(Ljava/lang/String;I)V
-    .registers 4
+    .registers 5
+    .param p1, "packageName"  # Ljava/lang/String;
+    .param p2, "uid"  # I
 
     .line 345
-    iget-object p1, p0, Lcom/android/server/accounts/AccountManagerService$3;->this$0:Lcom/android/server/accounts/AccountManagerService;
+    iget-object v0, p0, Lcom/android/server/accounts/AccountManagerService$3;->this$0:Lcom/android/server/accounts/AccountManagerService;
 
-    const/4 v0, 0x1
+    const/4 v1, 0x1
 
-    invoke-static {p1, p2, v0}, Lcom/android/server/accounts/AccountManagerService;->access$400(Lcom/android/server/accounts/AccountManagerService;IZ)V
+    invoke-static {v0, p2, v1}, Lcom/android/server/accounts/AccountManagerService;->access$400(Lcom/android/server/accounts/AccountManagerService;IZ)V
 
     .line 346
     return-void

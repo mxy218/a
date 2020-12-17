@@ -68,43 +68,44 @@
 .end method
 
 .method public constructor <init>(Lcom/android/server/job/JobSchedulerService;)V
-    .registers 3
+    .registers 4
+    .param p1, "service"  # Lcom/android/server/job/JobSchedulerService;
 
     .line 60
     invoke-direct {p0, p1}, Lcom/android/server/job/controllers/StateController;-><init>(Lcom/android/server/job/JobSchedulerService;)V
 
     .line 229
-    new-instance p1, Lcom/android/server/job/controllers/BackgroundJobsController$1;
+    new-instance v0, Lcom/android/server/job/controllers/BackgroundJobsController$1;
 
-    invoke-direct {p1, p0}, Lcom/android/server/job/controllers/BackgroundJobsController$1;-><init>(Lcom/android/server/job/controllers/BackgroundJobsController;)V
+    invoke-direct {v0, p0}, Lcom/android/server/job/controllers/BackgroundJobsController$1;-><init>(Lcom/android/server/job/controllers/BackgroundJobsController;)V
 
-    iput-object p1, p0, Lcom/android/server/job/controllers/BackgroundJobsController;->mForceAppStandbyListener:Lcom/android/server/AppStateTracker$Listener;
+    iput-object v0, p0, Lcom/android/server/job/controllers/BackgroundJobsController;->mForceAppStandbyListener:Lcom/android/server/AppStateTracker$Listener;
 
     .line 62
-    const-class p1, Lcom/android/server/AppStateTracker;
+    const-class v0, Lcom/android/server/AppStateTracker;
 
     .line 63
-    invoke-static {p1}, Lcom/android/server/LocalServices;->getService(Ljava/lang/Class;)Ljava/lang/Object;
+    invoke-static {v0}, Lcom/android/server/LocalServices;->getService(Ljava/lang/Class;)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v0
 
-    check-cast p1, Lcom/android/server/AppStateTracker;
+    check-cast v0, Lcom/android/server/AppStateTracker;
 
     .line 62
-    invoke-static {p1}, Lcom/android/internal/util/Preconditions;->checkNotNull(Ljava/lang/Object;)Ljava/lang/Object;
+    invoke-static {v0}, Lcom/android/internal/util/Preconditions;->checkNotNull(Ljava/lang/Object;)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v0
 
-    check-cast p1, Lcom/android/server/AppStateTracker;
+    check-cast v0, Lcom/android/server/AppStateTracker;
 
-    iput-object p1, p0, Lcom/android/server/job/controllers/BackgroundJobsController;->mAppStateTracker:Lcom/android/server/AppStateTracker;
+    iput-object v0, p0, Lcom/android/server/job/controllers/BackgroundJobsController;->mAppStateTracker:Lcom/android/server/AppStateTracker;
 
     .line 64
-    iget-object p1, p0, Lcom/android/server/job/controllers/BackgroundJobsController;->mAppStateTracker:Lcom/android/server/AppStateTracker;
+    iget-object v0, p0, Lcom/android/server/job/controllers/BackgroundJobsController;->mAppStateTracker:Lcom/android/server/AppStateTracker;
 
-    iget-object v0, p0, Lcom/android/server/job/controllers/BackgroundJobsController;->mForceAppStandbyListener:Lcom/android/server/AppStateTracker$Listener;
+    iget-object v1, p0, Lcom/android/server/job/controllers/BackgroundJobsController;->mForceAppStandbyListener:Lcom/android/server/AppStateTracker$Listener;
 
-    invoke-virtual {p1, v0}, Lcom/android/server/AppStateTracker;->addListener(Lcom/android/server/AppStateTracker$Listener;)V
+    invoke-virtual {v0, v1}, Lcom/android/server/AppStateTracker;->addListener(Lcom/android/server/AppStateTracker$Listener;)V
 
     .line 65
     return-void
@@ -112,6 +113,7 @@
 
 .method static synthetic access$000(Lcom/android/server/job/controllers/BackgroundJobsController;)V
     .registers 1
+    .param p0, "x0"  # Lcom/android/server/job/controllers/BackgroundJobsController;
 
     .line 47
     invoke-direct {p0}, Lcom/android/server/job/controllers/BackgroundJobsController;->updateAllJobRestrictionsLocked()V
@@ -121,6 +123,9 @@
 
 .method static synthetic access$100(Lcom/android/server/job/controllers/BackgroundJobsController;IZ)V
     .registers 3
+    .param p0, "x0"  # Lcom/android/server/job/controllers/BackgroundJobsController;
+    .param p1, "x1"  # I
+    .param p2, "x2"  # Z
 
     .line 47
     invoke-direct {p0, p1, p2}, Lcom/android/server/job/controllers/BackgroundJobsController;->updateJobRestrictionsForUidLocked(IZ)V
@@ -143,27 +148,31 @@
 .end method
 
 .method private updateJobRestrictionsForUidLocked(IZ)V
-    .registers 3
+    .registers 4
+    .param p1, "uid"  # I
+    .param p2, "isActive"  # Z
 
     .line 159
     if-eqz p2, :cond_4
 
-    const/4 p2, 0x1
+    const/4 v0, 0x1
 
     goto :goto_5
 
     :cond_4
-    const/4 p2, 0x2
+    const/4 v0, 0x2
 
     :goto_5
-    invoke-direct {p0, p1, p2}, Lcom/android/server/job/controllers/BackgroundJobsController;->updateJobRestrictionsLocked(II)V
+    invoke-direct {p0, p1, v0}, Lcom/android/server/job/controllers/BackgroundJobsController;->updateJobRestrictionsLocked(II)V
 
     .line 160
     return-void
 .end method
 
 .method private updateJobRestrictionsLocked(II)V
-    .registers 8
+    .registers 13
+    .param p1, "filterUid"  # I
+    .param p2, "newActiveState"  # I
 
     .line 163
     new-instance v0, Lcom/android/server/job/controllers/BackgroundJobsController$UpdateJobFunctor;
@@ -171,120 +180,124 @@
     invoke-direct {v0, p0, p2}, Lcom/android/server/job/controllers/BackgroundJobsController$UpdateJobFunctor;-><init>(Lcom/android/server/job/controllers/BackgroundJobsController;I)V
 
     .line 165
-    sget-boolean p2, Lcom/android/server/job/controllers/BackgroundJobsController;->DEBUG:Z
+    .local v0, "updateTrackedJobs":Lcom/android/server/job/controllers/BackgroundJobsController$UpdateJobFunctor;
+    sget-boolean v1, Lcom/android/server/job/controllers/BackgroundJobsController;->DEBUG:Z
 
-    const-wide/16 v1, 0x0
+    const-wide/16 v2, 0x0
 
-    if-eqz p2, :cond_10
+    if-eqz v1, :cond_10
 
     invoke-static {}, Landroid/os/SystemClock;->elapsedRealtimeNanos()J
 
-    move-result-wide v3
+    move-result-wide v4
 
     goto :goto_11
 
     :cond_10
-    move-wide v3, v1
+    move-wide v4, v2
 
     .line 167
+    .local v4, "start":J
     :goto_11
-    iget-object p2, p0, Lcom/android/server/job/controllers/BackgroundJobsController;->mService:Lcom/android/server/job/JobSchedulerService;
+    iget-object v1, p0, Lcom/android/server/job/controllers/BackgroundJobsController;->mService:Lcom/android/server/job/JobSchedulerService;
 
-    invoke-virtual {p2}, Lcom/android/server/job/JobSchedulerService;->getJobStore()Lcom/android/server/job/JobStore;
+    invoke-virtual {v1}, Lcom/android/server/job/JobSchedulerService;->getJobStore()Lcom/android/server/job/JobStore;
 
-    move-result-object p2
+    move-result-object v1
 
     .line 168
+    .local v1, "store":Lcom/android/server/job/JobStore;
     if-lez p1, :cond_1d
 
     .line 169
-    invoke-virtual {p2, p1, v0}, Lcom/android/server/job/JobStore;->forEachJobForSourceUid(ILjava/util/function/Consumer;)V
+    invoke-virtual {v1, p1, v0}, Lcom/android/server/job/JobStore;->forEachJobForSourceUid(ILjava/util/function/Consumer;)V
 
     goto :goto_20
 
     .line 171
     :cond_1d
-    invoke-virtual {p2, v0}, Lcom/android/server/job/JobStore;->forEachJob(Ljava/util/function/Consumer;)V
+    invoke-virtual {v1, v0}, Lcom/android/server/job/JobStore;->forEachJob(Ljava/util/function/Consumer;)V
 
     .line 174
     :goto_20
-    sget-boolean p1, Lcom/android/server/job/controllers/BackgroundJobsController;->DEBUG:Z
+    sget-boolean v6, Lcom/android/server/job/controllers/BackgroundJobsController;->DEBUG:Z
 
-    if-eqz p1, :cond_2a
+    if-eqz v6, :cond_29
 
     invoke-static {}, Landroid/os/SystemClock;->elapsedRealtimeNanos()J
 
-    move-result-wide p1
+    move-result-wide v2
 
-    sub-long v1, p1, v3
+    sub-long/2addr v2, v4
 
     .line 175
-    :cond_2a
-    sget-boolean p1, Lcom/android/server/job/controllers/BackgroundJobsController;->DEBUG:Z
+    .local v2, "time":J
+    :cond_29
+    sget-boolean v6, Lcom/android/server/job/controllers/BackgroundJobsController;->DEBUG:Z
 
-    if-eqz p1, :cond_58
+    if-eqz v6, :cond_58
 
     .line 176
-    const/4 p1, 0x3
+    const/4 v6, 0x3
 
-    new-array p1, p1, [Ljava/lang/Object;
+    new-array v6, v6, [Ljava/lang/Object;
 
-    const/4 p2, 0x0
+    const/4 v7, 0x0
 
-    iget v3, v0, Lcom/android/server/job/controllers/BackgroundJobsController$UpdateJobFunctor;->mCheckedCount:I
+    iget v8, v0, Lcom/android/server/job/controllers/BackgroundJobsController$UpdateJobFunctor;->mCheckedCount:I
 
     .line 178
-    invoke-static {v3}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
+    invoke-static {v8}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
 
-    move-result-object v3
+    move-result-object v8
 
-    aput-object v3, p1, p2
+    aput-object v8, v6, v7
 
-    const/4 p2, 0x1
+    const/4 v7, 0x1
 
-    iget v3, v0, Lcom/android/server/job/controllers/BackgroundJobsController$UpdateJobFunctor;->mTotalCount:I
+    iget v8, v0, Lcom/android/server/job/controllers/BackgroundJobsController$UpdateJobFunctor;->mTotalCount:I
 
     .line 179
-    invoke-static {v3}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
+    invoke-static {v8}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
 
-    move-result-object v3
+    move-result-object v8
 
-    aput-object v3, p1, p2
+    aput-object v8, v6, v7
 
-    const/4 p2, 0x2
+    const/4 v7, 0x2
 
-    const-wide/16 v3, 0x3e8
+    const-wide/16 v8, 0x3e8
 
-    div-long/2addr v1, v3
+    div-long v8, v2, v8
 
     .line 180
-    invoke-static {v1, v2}, Ljava/lang/Long;->valueOf(J)Ljava/lang/Long;
+    invoke-static {v8, v9}, Ljava/lang/Long;->valueOf(J)Ljava/lang/Long;
 
-    move-result-object v1
+    move-result-object v8
 
-    aput-object v1, p1, p2
+    aput-object v8, v6, v7
 
     .line 176
-    const-string p2, "Job status updated: %d/%d checked/total jobs, %d us"
+    const-string v7, "Job status updated: %d/%d checked/total jobs, %d us"
 
-    invoke-static {p2, p1}, Ljava/lang/String;->format(Ljava/lang/String;[Ljava/lang/Object;)Ljava/lang/String;
+    invoke-static {v7, v6}, Ljava/lang/String;->format(Ljava/lang/String;[Ljava/lang/Object;)Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v6
 
-    const-string p2, "JobScheduler.Background"
+    const-string v7, "JobScheduler.Background"
 
-    invoke-static {p2, p1}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v7, v6}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 184
     :cond_58
-    iget-boolean p1, v0, Lcom/android/server/job/controllers/BackgroundJobsController$UpdateJobFunctor;->mChanged:Z
+    iget-boolean v6, v0, Lcom/android/server/job/controllers/BackgroundJobsController$UpdateJobFunctor;->mChanged:Z
 
-    if-eqz p1, :cond_61
+    if-eqz v6, :cond_61
 
     .line 185
-    iget-object p1, p0, Lcom/android/server/job/controllers/BackgroundJobsController;->mStateChangedListener:Lcom/android/server/job/StateChangedListener;
+    iget-object v6, p0, Lcom/android/server/job/controllers/BackgroundJobsController;->mStateChangedListener:Lcom/android/server/job/StateChangedListener;
 
-    invoke-interface {p1}, Lcom/android/server/job/StateChangedListener;->onControllerStateChanged()V
+    invoke-interface {v6}, Lcom/android/server/job/StateChangedListener;->onControllerStateChanged()V
 
     .line 187
     :cond_61
@@ -294,7 +307,9 @@
 
 # virtual methods
 .method public dumpControllerStateLocked(Landroid/util/proto/ProtoOutputStream;JLjava/util/function/Predicate;)V
-    .registers 10
+    .registers 12
+    .param p1, "proto"  # Landroid/util/proto/ProtoOutputStream;
+    .param p2, "fieldId"  # J
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(",
@@ -307,40 +322,43 @@
     .end annotation
 
     .line 114
+    .local p4, "predicate":Ljava/util/function/Predicate;, "Ljava/util/function/Predicate<Lcom/android/server/job/controllers/JobStatus;>;"
     invoke-virtual {p1, p2, p3}, Landroid/util/proto/ProtoOutputStream;->start(J)J
 
-    move-result-wide p2
+    move-result-wide v0
 
     .line 115
-    const-wide v0, 0x10b00000001L
+    .local v0, "token":J
+    const-wide v2, 0x10b00000001L
 
-    invoke-virtual {p1, v0, v1}, Landroid/util/proto/ProtoOutputStream;->start(J)J
+    invoke-virtual {p1, v2, v3}, Landroid/util/proto/ProtoOutputStream;->start(J)J
 
-    move-result-wide v2
+    move-result-wide v4
 
     .line 117
-    iget-object v4, p0, Lcom/android/server/job/controllers/BackgroundJobsController;->mAppStateTracker:Lcom/android/server/AppStateTracker;
+    .local v4, "mToken":J
+    iget-object v6, p0, Lcom/android/server/job/controllers/BackgroundJobsController;->mAppStateTracker:Lcom/android/server/AppStateTracker;
 
-    invoke-virtual {v4, p1, v0, v1}, Lcom/android/server/AppStateTracker;->dumpProto(Landroid/util/proto/ProtoOutputStream;J)V
+    invoke-virtual {v6, p1, v2, v3}, Lcom/android/server/AppStateTracker;->dumpProto(Landroid/util/proto/ProtoOutputStream;J)V
 
     .line 120
-    iget-object v0, p0, Lcom/android/server/job/controllers/BackgroundJobsController;->mService:Lcom/android/server/job/JobSchedulerService;
+    iget-object v2, p0, Lcom/android/server/job/controllers/BackgroundJobsController;->mService:Lcom/android/server/job/JobSchedulerService;
 
-    invoke-virtual {v0}, Lcom/android/server/job/JobSchedulerService;->getJobStore()Lcom/android/server/job/JobStore;
+    invoke-virtual {v2}, Lcom/android/server/job/JobSchedulerService;->getJobStore()Lcom/android/server/job/JobStore;
 
-    move-result-object v0
+    move-result-object v2
 
-    new-instance v1, Lcom/android/server/job/controllers/-$$Lambda$BackgroundJobsController$ypgNv91qX_67RP8z3Z9CsC0SRRs;
+    new-instance v3, Lcom/android/server/job/controllers/-$$Lambda$BackgroundJobsController$ypgNv91qX_67RP8z3Z9CsC0SRRs;
 
-    invoke-direct {v1, p0, p1}, Lcom/android/server/job/controllers/-$$Lambda$BackgroundJobsController$ypgNv91qX_67RP8z3Z9CsC0SRRs;-><init>(Lcom/android/server/job/controllers/BackgroundJobsController;Landroid/util/proto/ProtoOutputStream;)V
+    invoke-direct {v3, p0, p1}, Lcom/android/server/job/controllers/-$$Lambda$BackgroundJobsController$ypgNv91qX_67RP8z3Z9CsC0SRRs;-><init>(Lcom/android/server/job/controllers/BackgroundJobsController;Landroid/util/proto/ProtoOutputStream;)V
 
-    invoke-virtual {v0, p4, v1}, Lcom/android/server/job/JobStore;->forEachJob(Ljava/util/function/Predicate;Ljava/util/function/Consumer;)V
+    invoke-virtual {v2, p4, v3}, Lcom/android/server/job/JobStore;->forEachJob(Ljava/util/function/Predicate;Ljava/util/function/Consumer;)V
 
     .line 150
-    invoke-virtual {p1, v2, v3}, Landroid/util/proto/ProtoOutputStream;->end(J)V
+    invoke-virtual {p1, v4, v5}, Landroid/util/proto/ProtoOutputStream;->end(J)V
 
     .line 151
-    invoke-virtual {p1, p2, p3}, Landroid/util/proto/ProtoOutputStream;->end(J)V
+    invoke-virtual {p1, v0, v1}, Landroid/util/proto/ProtoOutputStream;->end(J)V
 
     .line 152
     return-void
@@ -348,6 +366,7 @@
 
 .method public dumpControllerStateLocked(Lcom/android/internal/util/IndentingPrintWriter;Ljava/util/function/Predicate;)V
     .registers 5
+    .param p1, "pw"  # Lcom/android/internal/util/IndentingPrintWriter;
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(",
@@ -359,6 +378,7 @@
     .end annotation
 
     .line 80
+    .local p2, "predicate":Ljava/util/function/Predicate;, "Ljava/util/function/Predicate<Lcom/android/server/job/controllers/JobStatus;>;"
     iget-object v0, p0, Lcom/android/server/job/controllers/BackgroundJobsController;->mAppStateTracker:Lcom/android/server/AppStateTracker;
 
     invoke-virtual {v0, p1}, Lcom/android/server/AppStateTracker;->dump(Lcom/android/internal/util/IndentingPrintWriter;)V
@@ -384,7 +404,9 @@
 .end method
 
 .method public synthetic lambda$dumpControllerStateLocked$0$BackgroundJobsController(Lcom/android/internal/util/IndentingPrintWriter;Lcom/android/server/job/controllers/JobStatus;)V
-    .registers 6
+    .registers 7
+    .param p1, "pw"  # Lcom/android/internal/util/IndentingPrintWriter;
+    .param p2, "jobStatus"  # Lcom/android/server/job/controllers/JobStatus;
 
     .line 84
     invoke-virtual {p2}, Lcom/android/server/job/controllers/JobStatus;->getSourceUid()I
@@ -392,11 +414,13 @@
     move-result v0
 
     .line 85
+    .local v0, "uid":I
     invoke-virtual {p2}, Lcom/android/server/job/controllers/JobStatus;->getSourcePackageName()Ljava/lang/String;
 
     move-result-object v1
 
     .line 86
+    .local v1, "sourcePkg":Ljava/lang/String;
     const-string v2, "#"
 
     invoke-virtual {p1, v2}, Lcom/android/internal/util/IndentingPrintWriter;->print(Ljava/lang/String;)V
@@ -474,43 +498,43 @@
 
     invoke-virtual {v2, v0, v1}, Lcom/android/server/AppStateTracker;->isRunAnyInBackgroundAppOpsAllowed(ILjava/lang/String;)Z
 
-    move-result v0
+    move-result v2
 
-    if-eqz v0, :cond_55
+    if-eqz v2, :cond_55
 
     .line 100
-    const-string v0, "allowed]"
+    const-string v2, "allowed]"
 
     goto :goto_57
 
     :cond_55
-    const-string v0, "disallowed]"
+    const-string v2, "disallowed]"
 
     .line 99
     :goto_57
-    invoke-virtual {p1, v0}, Lcom/android/internal/util/IndentingPrintWriter;->print(Ljava/lang/String;)V
+    invoke-virtual {p1, v2}, Lcom/android/internal/util/IndentingPrintWriter;->print(Ljava/lang/String;)V
 
     .line 102
-    iget p2, p2, Lcom/android/server/job/controllers/JobStatus;->satisfiedConstraints:I
+    iget v2, p2, Lcom/android/server/job/controllers/JobStatus;->satisfiedConstraints:I
 
-    const/high16 v0, 0x400000
+    const/high16 v3, 0x400000
 
-    and-int/2addr p2, v0
+    and-int/2addr v2, v3
 
-    if-eqz p2, :cond_67
+    if-eqz v2, :cond_67
 
     .line 104
-    const-string p2, " RUNNABLE"
+    const-string v2, " RUNNABLE"
 
-    invoke-virtual {p1, p2}, Lcom/android/internal/util/IndentingPrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {p1, v2}, Lcom/android/internal/util/IndentingPrintWriter;->println(Ljava/lang/String;)V
 
     goto :goto_6c
 
     .line 106
     :cond_67
-    const-string p2, " WAITING"
+    const-string v2, " WAITING"
 
-    invoke-virtual {p1, p2}, Lcom/android/internal/util/IndentingPrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {p1, v2}, Lcom/android/internal/util/IndentingPrintWriter;->println(Ljava/lang/String;)V
 
     .line 108
     :goto_6c
@@ -518,7 +542,9 @@
 .end method
 
 .method public synthetic lambda$dumpControllerStateLocked$1$BackgroundJobsController(Landroid/util/proto/ProtoOutputStream;Lcom/android/server/job/controllers/JobStatus;)V
-    .registers 12
+    .registers 13
+    .param p1, "proto"  # Landroid/util/proto/ProtoOutputStream;
+    .param p2, "jobStatus"  # Lcom/android/server/job/controllers/JobStatus;
 
     .line 121
     nop
@@ -531,6 +557,7 @@
     move-result-wide v0
 
     .line 124
+    .local v0, "jsToken":J
     const-wide v2, 0x10b00000001L
 
     invoke-virtual {p2, p1, v2, v3}, Lcom/android/server/job/controllers/JobStatus;->writeToShortProto(Landroid/util/proto/ProtoOutputStream;J)V
@@ -541,6 +568,7 @@
     move-result v2
 
     .line 127
+    .local v2, "sourceUid":I
     const-wide v3, 0x10500000002L
 
     invoke-virtual {p1, v3, v4, v2}, Landroid/util/proto/ProtoOutputStream;->write(JI)V
@@ -551,6 +579,7 @@
     move-result-object v3
 
     .line 129
+    .local v3, "sourcePkg":Ljava/lang/String;
     const-wide v4, 0x10900000003L
 
     invoke-virtual {p1, v4, v5, v3}, Landroid/util/proto/ProtoOutputStream;->write(JLjava/lang/String;)V
@@ -616,26 +645,26 @@
     .line 139
     invoke-virtual {v4, v2, v3}, Lcom/android/server/AppStateTracker;->isRunAnyInBackgroundAppOpsAllowed(ILjava/lang/String;)Z
 
-    move-result v2
+    move-result v4
 
     .line 137
-    invoke-virtual {p1, v7, v8, v2}, Landroid/util/proto/ProtoOutputStream;->write(JZ)V
+    invoke-virtual {p1, v7, v8, v4}, Landroid/util/proto/ProtoOutputStream;->write(JZ)V
 
     .line 142
-    const-wide v2, 0x10800000007L
+    const-wide v7, 0x10800000007L
 
-    iget p2, p2, Lcom/android/server/job/controllers/JobStatus;->satisfiedConstraints:I
+    iget v4, p2, Lcom/android/server/job/controllers/JobStatus;->satisfiedConstraints:I
 
-    const/high16 v4, 0x400000
+    const/high16 v9, 0x400000
 
-    and-int/2addr p2, v4
+    and-int/2addr v4, v9
 
-    if-eqz p2, :cond_71
+    if-eqz v4, :cond_71
 
     move v5, v6
 
     :cond_71
-    invoke-virtual {p1, v2, v3, v5}, Landroid/util/proto/ProtoOutputStream;->write(JZ)V
+    invoke-virtual {p1, v7, v8, v5}, Landroid/util/proto/ProtoOutputStream;->write(JZ)V
 
     .line 147
     invoke-virtual {p1, v0, v1}, Landroid/util/proto/ProtoOutputStream;->end(J)V
@@ -645,12 +674,14 @@
 .end method
 
 .method public maybeStartTrackingJobLocked(Lcom/android/server/job/controllers/JobStatus;Lcom/android/server/job/controllers/JobStatus;)V
-    .registers 3
+    .registers 4
+    .param p1, "jobStatus"  # Lcom/android/server/job/controllers/JobStatus;
+    .param p2, "lastJob"  # Lcom/android/server/job/controllers/JobStatus;
 
     .line 69
-    const/4 p2, 0x0
+    const/4 v0, 0x0
 
-    invoke-virtual {p0, p1, p2}, Lcom/android/server/job/controllers/BackgroundJobsController;->updateSingleJobRestrictionLocked(Lcom/android/server/job/controllers/JobStatus;I)Z
+    invoke-virtual {p0, p1, v0}, Lcom/android/server/job/controllers/BackgroundJobsController;->updateSingleJobRestrictionLocked(Lcom/android/server/job/controllers/JobStatus;I)Z
 
     .line 70
     return-void
@@ -658,6 +689,9 @@
 
 .method public maybeStopTrackingJobLocked(Lcom/android/server/job/controllers/JobStatus;Lcom/android/server/job/controllers/JobStatus;Z)V
     .registers 4
+    .param p1, "jobStatus"  # Lcom/android/server/job/controllers/JobStatus;
+    .param p2, "incomingJob"  # Lcom/android/server/job/controllers/JobStatus;
+    .param p3, "forUpdate"  # Z
 
     .line 75
     return-void
@@ -665,6 +699,8 @@
 
 .method updateSingleJobRestrictionLocked(Lcom/android/server/job/controllers/JobStatus;I)Z
     .registers 9
+    .param p1, "jobStatus"  # Lcom/android/server/job/controllers/JobStatus;
+    .param p2, "activeState"  # I
 
     .line 191
     invoke-virtual {p1}, Lcom/android/server/job/controllers/JobStatus;->getSourceUid()I
@@ -672,11 +708,13 @@
     move-result v0
 
     .line 192
+    .local v0, "uid":I
     invoke-virtual {p1}, Lcom/android/server/job/controllers/JobStatus;->getSourcePackageName()Ljava/lang/String;
 
     move-result-object v1
 
     .line 194
+    .local v1, "packageName":Ljava/lang/String;
     iget-object v2, p0, Lcom/android/server/job/controllers/BackgroundJobsController;->mAppStateTracker:Lcom/android/server/AppStateTracker;
 
     .line 195
@@ -703,46 +741,52 @@
     :goto_16
     invoke-virtual {v2, v0, v1, v3}, Lcom/android/server/AppStateTracker;->areJobsRestricted(ILjava/lang/String;Z)Z
 
-    move-result v1
+    move-result v2
+
+    xor-int/2addr v2, v4
 
     .line 199
-    xor-int/2addr v1, v4
-
+    .local v2, "canRun":Z
     if-nez p2, :cond_24
 
     .line 200
-    iget-object p2, p0, Lcom/android/server/job/controllers/BackgroundJobsController;->mAppStateTracker:Lcom/android/server/AppStateTracker;
+    iget-object v3, p0, Lcom/android/server/job/controllers/BackgroundJobsController;->mAppStateTracker:Lcom/android/server/AppStateTracker;
 
-    invoke-virtual {p2, v0}, Lcom/android/server/AppStateTracker;->isUidActive(I)Z
+    invoke-virtual {v3, v0}, Lcom/android/server/AppStateTracker;->isUidActive(I)Z
 
-    move-result p2
+    move-result v3
 
+    .local v3, "isActive":Z
     goto :goto_29
 
     .line 202
+    .end local v3  # "isActive":Z
     :cond_24
-    if-ne p2, v4, :cond_28
+    if-ne p2, v4, :cond_27
 
-    move p2, v4
+    goto :goto_28
 
-    goto :goto_29
+    :cond_27
+    move v4, v5
 
-    :cond_28
-    move p2, v5
+    :goto_28
+    move v3, v4
 
     .line 204
+    .restart local v3  # "isActive":Z
     :goto_29
-    invoke-virtual {p1, v1}, Lcom/android/server/job/controllers/JobStatus;->setBackgroundNotRestrictedConstraintSatisfied(Z)Z
+    invoke-virtual {p1, v2}, Lcom/android/server/job/controllers/JobStatus;->setBackgroundNotRestrictedConstraintSatisfied(Z)Z
 
-    move-result v0
+    move-result v4
 
     .line 205
-    invoke-virtual {p1, p2}, Lcom/android/server/job/controllers/JobStatus;->setUidActive(Z)Z
+    .local v4, "didChange":Z
+    invoke-virtual {p1, v3}, Lcom/android/server/job/controllers/JobStatus;->setUidActive(Z)Z
 
-    move-result p1
+    move-result v5
 
-    or-int/2addr p1, v0
+    or-int/2addr v4, v5
 
     .line 206
-    return p1
+    return v4
 .end method

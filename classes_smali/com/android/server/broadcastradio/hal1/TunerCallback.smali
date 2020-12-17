@@ -40,7 +40,10 @@
 
 # direct methods
 .method constructor <init>(Lcom/android/server/broadcastradio/hal1/Tuner;Landroid/hardware/radio/ITunerCallback;I)V
-    .registers 5
+    .registers 6
+    .param p1, "tuner"  # Lcom/android/server/broadcastradio/hal1/Tuner;
+    .param p2, "clientCallback"  # Landroid/hardware/radio/ITunerCallback;
+    .param p3, "halRev"  # I
 
     .line 53
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -66,16 +69,17 @@
     .line 56
     invoke-direct {p0, p1, p3}, Lcom/android/server/broadcastradio/hal1/TunerCallback;->nativeInit(Lcom/android/server/broadcastradio/hal1/Tuner;I)J
 
-    move-result-wide p1
+    move-result-wide v0
 
-    iput-wide p1, p0, Lcom/android/server/broadcastradio/hal1/TunerCallback;->mNativeContext:J
+    iput-wide v0, p0, Lcom/android/server/broadcastradio/hal1/TunerCallback;->mNativeContext:J
 
     .line 57
     return-void
 .end method
 
 .method private dispatch(Lcom/android/server/broadcastradio/hal1/TunerCallback$RunnableThrowingRemoteException;)V
-    .registers 4
+    .registers 5
+    .param p1, "func"  # Lcom/android/server/broadcastradio/hal1/TunerCallback$RunnableThrowingRemoteException;
 
     .line 79
     :try_start_0
@@ -88,16 +92,18 @@
 
     .line 80
     :catch_4
-    move-exception p1
+    move-exception v0
 
     .line 81
-    const-string v0, "BroadcastRadioService.TunerCallback"
+    .local v0, "e":Landroid/os/RemoteException;
+    const-string v1, "BroadcastRadioService.TunerCallback"
 
-    const-string v1, "client died"
+    const-string v2, "client died"
 
-    invoke-static {v0, v1, p1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    invoke-static {v1, v2, v0}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
     .line 83
+    .end local v0  # "e":Landroid/os/RemoteException;
     :goto_c
     return-void
 .end method
@@ -129,7 +135,7 @@
 .end method
 
 .method private sendProgramListUpdate()V
-    .registers 5
+    .registers 7
 
     .line 158
     iget-object v0, p0, Lcom/android/server/broadcastradio/hal1/TunerCallback;->mProgramListFilter:Ljava/util/concurrent/atomic/AtomicReference;
@@ -141,6 +147,7 @@
     check-cast v0, Landroid/hardware/radio/ProgramList$Filter;
 
     .line 159
+    .local v0, "filter":Landroid/hardware/radio/ProgramList$Filter;
     if-nez v0, :cond_b
 
     return-void
@@ -152,61 +159,68 @@
 
     invoke-virtual {v0}, Landroid/hardware/radio/ProgramList$Filter;->getVendorFilter()Ljava/util/Map;
 
-    move-result-object v0
+    move-result-object v2
 
-    invoke-virtual {v1, v0}, Lcom/android/server/broadcastradio/hal1/Tuner;->getProgramList(Ljava/util/Map;)Ljava/util/List;
+    invoke-virtual {v1, v2}, Lcom/android/server/broadcastradio/hal1/Tuner;->getProgramList(Ljava/util/Map;)Ljava/util/List;
 
-    move-result-object v0
+    move-result-object v1
     :try_end_15
     .catch Ljava/lang/IllegalStateException; {:try_start_b .. :try_end_15} :catch_34
 
     .line 167
+    .local v1, "modified":Ljava/util/List;, "Ljava/util/List<Landroid/hardware/radio/RadioManager$ProgramInfo;>;"
     nop
 
     .line 168
-    invoke-interface {v0}, Ljava/util/List;->stream()Ljava/util/stream/Stream;
+    invoke-interface {v1}, Ljava/util/List;->stream()Ljava/util/stream/Stream;
 
-    move-result-object v0
+    move-result-object v2
 
     invoke-static {}, Ljava/util/stream/Collectors;->toSet()Ljava/util/stream/Collector;
 
-    move-result-object v1
+    move-result-object v3
 
-    invoke-interface {v0, v1}, Ljava/util/stream/Stream;->collect(Ljava/util/stream/Collector;)Ljava/lang/Object;
+    invoke-interface {v2, v3}, Ljava/util/stream/Stream;->collect(Ljava/util/stream/Collector;)Ljava/lang/Object;
 
-    move-result-object v0
+    move-result-object v2
 
-    check-cast v0, Ljava/util/Set;
+    check-cast v2, Ljava/util/Set;
 
     .line 169
-    new-instance v1, Landroid/hardware/radio/ProgramList$Chunk;
+    .local v2, "modifiedSet":Ljava/util/Set;, "Ljava/util/Set<Landroid/hardware/radio/RadioManager$ProgramInfo;>;"
+    new-instance v3, Landroid/hardware/radio/ProgramList$Chunk;
 
-    const/4 v2, 0x0
+    const/4 v4, 0x0
 
-    const/4 v3, 0x1
+    const/4 v5, 0x1
 
-    invoke-direct {v1, v3, v3, v0, v2}, Landroid/hardware/radio/ProgramList$Chunk;-><init>(ZZLjava/util/Set;Ljava/util/Set;)V
+    invoke-direct {v3, v5, v5, v2, v4}, Landroid/hardware/radio/ProgramList$Chunk;-><init>(ZZLjava/util/Set;Ljava/util/Set;)V
 
     .line 170
-    new-instance v0, Lcom/android/server/broadcastradio/hal1/-$$Lambda$TunerCallback$C_-9BcvTpHXxQ-jC-hu9LBHT0XU;
+    .local v3, "chunk":Landroid/hardware/radio/ProgramList$Chunk;
+    new-instance v4, Lcom/android/server/broadcastradio/hal1/-$$Lambda$TunerCallback$C_-9BcvTpHXxQ-jC-hu9LBHT0XU;
 
-    invoke-direct {v0, p0, v1}, Lcom/android/server/broadcastradio/hal1/-$$Lambda$TunerCallback$C_-9BcvTpHXxQ-jC-hu9LBHT0XU;-><init>(Lcom/android/server/broadcastradio/hal1/TunerCallback;Landroid/hardware/radio/ProgramList$Chunk;)V
+    invoke-direct {v4, p0, v3}, Lcom/android/server/broadcastradio/hal1/-$$Lambda$TunerCallback$C_-9BcvTpHXxQ-jC-hu9LBHT0XU;-><init>(Lcom/android/server/broadcastradio/hal1/TunerCallback;Landroid/hardware/radio/ProgramList$Chunk;)V
 
-    invoke-direct {p0, v0}, Lcom/android/server/broadcastradio/hal1/TunerCallback;->dispatch(Lcom/android/server/broadcastradio/hal1/TunerCallback$RunnableThrowingRemoteException;)V
+    invoke-direct {p0, v4}, Lcom/android/server/broadcastradio/hal1/TunerCallback;->dispatch(Lcom/android/server/broadcastradio/hal1/TunerCallback$RunnableThrowingRemoteException;)V
 
     .line 171
     return-void
 
     .line 164
+    .end local v1  # "modified":Ljava/util/List;, "Ljava/util/List<Landroid/hardware/radio/RadioManager$ProgramInfo;>;"
+    .end local v2  # "modifiedSet":Ljava/util/Set;, "Ljava/util/Set<Landroid/hardware/radio/RadioManager$ProgramInfo;>;"
+    .end local v3  # "chunk":Landroid/hardware/radio/ProgramList$Chunk;
     :catch_34
-    move-exception v0
+    move-exception v1
 
     .line 165
-    const-string v0, "BroadcastRadioService.TunerCallback"
+    .local v1, "ex":Ljava/lang/IllegalStateException;
+    const-string v2, "BroadcastRadioService.TunerCallback"
 
-    const-string v1, "Program list not ready yet"
+    const-string v3, "Program list not ready yet"
 
-    invoke-static {v0, v1}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v2, v3}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 166
     return-void
@@ -270,6 +284,7 @@
 
 .method public synthetic lambda$onAntennaState$5$TunerCallback(Z)V
     .registers 3
+    .param p1, "connected"  # Z
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -286,6 +301,7 @@
 
 .method public synthetic lambda$onBackgroundScanAvailabilityChange$6$TunerCallback(Z)V
     .registers 3
+    .param p1, "isAvailable"  # Z
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -318,6 +334,7 @@
 
 .method public synthetic lambda$onConfigurationChanged$1$TunerCallback(Landroid/hardware/radio/RadioManager$BandConfig;)V
     .registers 3
+    .param p1, "config"  # Landroid/hardware/radio/RadioManager$BandConfig;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -334,6 +351,7 @@
 
 .method public synthetic lambda$onCurrentProgramInfoChanged$2$TunerCallback(Landroid/hardware/radio/RadioManager$ProgramInfo;)V
     .registers 3
+    .param p1, "info"  # Landroid/hardware/radio/RadioManager$ProgramInfo;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -350,6 +368,7 @@
 
 .method public synthetic lambda$onEmergencyAnnouncement$4$TunerCallback(Z)V
     .registers 3
+    .param p1, "active"  # Z
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -366,6 +385,7 @@
 
 .method public synthetic lambda$onError$0$TunerCallback(I)V
     .registers 3
+    .param p1, "status"  # I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -398,6 +418,7 @@
 
 .method public synthetic lambda$onProgramListUpdated$10$TunerCallback(Landroid/hardware/radio/ProgramList$Chunk;)V
     .registers 3
+    .param p1, "chunk"  # Landroid/hardware/radio/ProgramList$Chunk;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -414,6 +435,7 @@
 
 .method public synthetic lambda$onTrafficAnnouncement$3$TunerCallback(Z)V
     .registers 3
+    .param p1, "active"  # Z
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -430,6 +452,7 @@
 
 .method public synthetic lambda$sendProgramListUpdate$9$TunerCallback(Landroid/hardware/radio/ProgramList$Chunk;)V
     .registers 3
+    .param p1, "chunk"  # Landroid/hardware/radio/ProgramList$Chunk;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -446,6 +469,7 @@
 
 .method public onAntennaState(Z)V
     .registers 3
+    .param p1, "connected"  # Z
 
     .line 138
     new-instance v0, Lcom/android/server/broadcastradio/hal1/-$$Lambda$TunerCallback$QNBMPvImBEGMe4jaw6iOF4QPjns;
@@ -460,6 +484,7 @@
 
 .method public onBackgroundScanAvailabilityChange(Z)V
     .registers 3
+    .param p1, "isAvailable"  # Z
 
     .line 143
     new-instance v0, Lcom/android/server/broadcastradio/hal1/-$$Lambda$TunerCallback$ndOBpfBmClsz77tzZfe3mvcA1lI;
@@ -488,6 +513,7 @@
 
 .method public onConfigurationChanged(Landroid/hardware/radio/RadioManager$BandConfig;)V
     .registers 3
+    .param p1, "config"  # Landroid/hardware/radio/RadioManager$BandConfig;
 
     .line 117
     const/4 v0, 0x1
@@ -507,6 +533,7 @@
 
 .method public onCurrentProgramInfoChanged(Landroid/hardware/radio/RadioManager$ProgramInfo;)V
     .registers 3
+    .param p1, "info"  # Landroid/hardware/radio/RadioManager$ProgramInfo;
 
     .line 123
     new-instance v0, Lcom/android/server/broadcastradio/hal1/-$$Lambda$TunerCallback$yDfY5pWuRHaQpNiYhPjLkNUUrc0;
@@ -521,6 +548,7 @@
 
 .method public onEmergencyAnnouncement(Z)V
     .registers 3
+    .param p1, "active"  # Z
 
     .line 133
     new-instance v0, Lcom/android/server/broadcastradio/hal1/-$$Lambda$TunerCallback$-h4udaDmWtN-rprVGi_U0x7oSJc;
@@ -535,6 +563,7 @@
 
 .method public onError(I)V
     .registers 3
+    .param p1, "status"  # I
 
     .line 107
     new-instance v0, Lcom/android/server/broadcastradio/hal1/-$$Lambda$TunerCallback$QwopTG5nMx1CO2s6KecqSuCqviA;
@@ -548,14 +577,15 @@
 .end method
 
 .method public onParametersUpdated(Ljava/util/Map;)V
-    .registers 3
+    .registers 4
+    .param p1, "parameters"  # Ljava/util/Map;
 
     .line 180
-    const-string p1, "BroadcastRadioService.TunerCallback"
+    const-string v0, "BroadcastRadioService.TunerCallback"
 
-    const-string v0, "Not applicable for HAL 1.x"
+    const-string v1, "Not applicable for HAL 1.x"
 
-    invoke-static {p1, v0}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v0, v1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 181
     return-void
@@ -580,6 +610,7 @@
 
 .method public onProgramListUpdated(Landroid/hardware/radio/ProgramList$Chunk;)V
     .registers 3
+    .param p1, "chunk"  # Landroid/hardware/radio/ProgramList$Chunk;
 
     .line 175
     new-instance v0, Lcom/android/server/broadcastradio/hal1/-$$Lambda$TunerCallback$yVJR7oPW6kDozlkthdDAOaT7L-4;
@@ -594,6 +625,7 @@
 
 .method public onTrafficAnnouncement(Z)V
     .registers 3
+    .param p1, "active"  # Z
 
     .line 128
     new-instance v0, Lcom/android/server/broadcastradio/hal1/-$$Lambda$TunerCallback$nm8WiKzJMmmFFCbXZdjr71O3V8Q;
@@ -607,14 +639,16 @@
 .end method
 
 .method public onTuneFailed(ILandroid/hardware/radio/ProgramSelector;)V
-    .registers 3
+    .registers 5
+    .param p1, "result"  # I
+    .param p2, "selector"  # Landroid/hardware/radio/ProgramSelector;
 
     .line 112
-    const-string p1, "BroadcastRadioService.TunerCallback"
+    const-string v0, "BroadcastRadioService.TunerCallback"
 
-    const-string p2, "Not applicable for HAL 1.x"
+    const-string v1, "Not applicable for HAL 1.x"
 
-    invoke-static {p1, p2}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v0, v1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 113
     return-void
@@ -622,16 +656,19 @@
 
 .method startProgramListUpdates(Landroid/hardware/radio/ProgramList$Filter;)V
     .registers 3
+    .param p1, "filter"  # Landroid/hardware/radio/ProgramList$Filter;
 
     .line 92
-    if-nez p1, :cond_7
+    if-nez p1, :cond_8
 
-    new-instance p1, Landroid/hardware/radio/ProgramList$Filter;
+    new-instance v0, Landroid/hardware/radio/ProgramList$Filter;
 
-    invoke-direct {p1}, Landroid/hardware/radio/ProgramList$Filter;-><init>()V
+    invoke-direct {v0}, Landroid/hardware/radio/ProgramList$Filter;-><init>()V
+
+    move-object p1, v0
 
     .line 93
-    :cond_7
+    :cond_8
     iget-object v0, p0, Lcom/android/server/broadcastradio/hal1/TunerCallback;->mProgramListFilter:Ljava/util/concurrent/atomic/AtomicReference;
 
     invoke-virtual {v0, p1}, Ljava/util/concurrent/atomic/AtomicReference;->set(Ljava/lang/Object;)V

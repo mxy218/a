@@ -22,7 +22,7 @@
 .method private constructor <init>(Lcom/android/server/dreams/DreamManagerService;)V
     .registers 2
 
-    .line 490
+    .line 494
     iput-object p1, p0, Lcom/android/server/dreams/DreamManagerService$BinderService;->this$0:Lcom/android/server/dreams/DreamManagerService;
 
     invoke-direct {p0}, Landroid/service/dreams/IDreamManager$Stub;-><init>()V
@@ -32,8 +32,10 @@
 
 .method synthetic constructor <init>(Lcom/android/server/dreams/DreamManagerService;Lcom/android/server/dreams/DreamManagerService$1;)V
     .registers 3
+    .param p1, "x0"  # Lcom/android/server/dreams/DreamManagerService;
+    .param p2, "x1"  # Lcom/android/server/dreams/DreamManagerService$1;
 
-    .line 490
+    .line 494
     invoke-direct {p0, p1}, Lcom/android/server/dreams/DreamManagerService$BinderService;-><init>(Lcom/android/server/dreams/DreamManagerService;)V
 
     return-void
@@ -44,19 +46,20 @@
 .method public awaken()V
     .registers 4
 
-    .line 591
+    .line 595
     iget-object v0, p0, Lcom/android/server/dreams/DreamManagerService$BinderService;->this$0:Lcom/android/server/dreams/DreamManagerService;
 
     const-string v1, "android.permission.WRITE_DREAM_STATE"
 
     invoke-static {v0, v1}, Lcom/android/server/dreams/DreamManagerService;->access$1000(Lcom/android/server/dreams/DreamManagerService;Ljava/lang/String;)V
 
-    .line 593
+    .line 597
     invoke-static {}, Landroid/os/Binder;->clearCallingIdentity()J
 
     move-result-wide v0
 
-    .line 595
+    .line 599
+    .local v0, "ident":J
     :try_start_b
     iget-object v2, p0, Lcom/android/server/dreams/DreamManagerService$BinderService;->this$0:Lcom/android/server/dreams/DreamManagerService;
 
@@ -64,16 +67,16 @@
     :try_end_10
     .catchall {:try_start_b .. :try_end_10} :catchall_15
 
-    .line 597
+    .line 601
     invoke-static {v0, v1}, Landroid/os/Binder;->restoreCallingIdentity(J)V
 
-    .line 598
+    .line 602
     nop
 
-    .line 599
+    .line 603
     return-void
 
-    .line 597
+    .line 601
     :catchall_15
     move-exception v2
 
@@ -85,19 +88,20 @@
 .method public dream()V
     .registers 4
 
-    .line 555
+    .line 559
     iget-object v0, p0, Lcom/android/server/dreams/DreamManagerService$BinderService;->this$0:Lcom/android/server/dreams/DreamManagerService;
 
     const-string v1, "android.permission.WRITE_DREAM_STATE"
 
     invoke-static {v0, v1}, Lcom/android/server/dreams/DreamManagerService;->access$1000(Lcom/android/server/dreams/DreamManagerService;Ljava/lang/String;)V
 
-    .line 557
+    .line 561
     invoke-static {}, Landroid/os/Binder;->clearCallingIdentity()J
 
     move-result-wide v0
 
-    .line 559
+    .line 563
+    .local v0, "ident":J
     :try_start_b
     iget-object v2, p0, Lcom/android/server/dreams/DreamManagerService$BinderService;->this$0:Lcom/android/server/dreams/DreamManagerService;
 
@@ -105,16 +109,16 @@
     :try_end_10
     .catchall {:try_start_b .. :try_end_10} :catchall_15
 
-    .line 561
+    .line 565
     invoke-static {v0, v1}, Landroid/os/Binder;->restoreCallingIdentity(J)V
 
-    .line 562
+    .line 566
     nop
 
-    .line 563
+    .line 567
     return-void
 
-    .line 561
+    .line 565
     :catchall_15
     move-exception v2
 
@@ -124,69 +128,76 @@
 .end method
 
 .method protected dump(Ljava/io/FileDescriptor;Ljava/io/PrintWriter;[Ljava/lang/String;)V
-    .registers 6
+    .registers 7
+    .param p1, "fd"  # Ljava/io/FileDescriptor;
+    .param p2, "pw"  # Ljava/io/PrintWriter;
+    .param p3, "args"  # [Ljava/lang/String;
 
-    .line 493
-    iget-object p1, p0, Lcom/android/server/dreams/DreamManagerService$BinderService;->this$0:Lcom/android/server/dreams/DreamManagerService;
+    .line 497
+    iget-object v0, p0, Lcom/android/server/dreams/DreamManagerService$BinderService;->this$0:Lcom/android/server/dreams/DreamManagerService;
 
-    invoke-static {p1}, Lcom/android/server/dreams/DreamManagerService;->access$800(Lcom/android/server/dreams/DreamManagerService;)Landroid/content/Context;
+    invoke-static {v0}, Lcom/android/server/dreams/DreamManagerService;->access$800(Lcom/android/server/dreams/DreamManagerService;)Landroid/content/Context;
 
-    move-result-object p1
+    move-result-object v0
 
-    const-string p3, "DreamManagerService"
+    const-string v1, "DreamManagerService"
 
-    invoke-static {p1, p3, p2}, Lcom/android/internal/util/DumpUtils;->checkDumpPermission(Landroid/content/Context;Ljava/lang/String;Ljava/io/PrintWriter;)Z
+    invoke-static {v0, v1, p2}, Lcom/android/internal/util/DumpUtils;->checkDumpPermission(Landroid/content/Context;Ljava/lang/String;Ljava/io/PrintWriter;)Z
 
-    move-result p1
+    move-result v0
 
-    if-nez p1, :cond_f
+    if-nez v0, :cond_f
 
     return-void
 
-    .line 494
+    .line 498
     :cond_f
     invoke-static {}, Landroid/os/Binder;->clearCallingIdentity()J
 
     move-result-wide v0
 
-    .line 496
+    .line 500
+    .local v0, "ident":J
     :try_start_13
-    iget-object p1, p0, Lcom/android/server/dreams/DreamManagerService$BinderService;->this$0:Lcom/android/server/dreams/DreamManagerService;
+    iget-object v2, p0, Lcom/android/server/dreams/DreamManagerService$BinderService;->this$0:Lcom/android/server/dreams/DreamManagerService;
 
-    invoke-static {p1, p2}, Lcom/android/server/dreams/DreamManagerService;->access$900(Lcom/android/server/dreams/DreamManagerService;Ljava/io/PrintWriter;)V
+    invoke-static {v2, p2}, Lcom/android/server/dreams/DreamManagerService;->access$900(Lcom/android/server/dreams/DreamManagerService;Ljava/io/PrintWriter;)V
     :try_end_18
     .catchall {:try_start_13 .. :try_end_18} :catchall_1d
 
-    .line 498
+    .line 502
     invoke-static {v0, v1}, Landroid/os/Binder;->restoreCallingIdentity(J)V
 
-    .line 499
+    .line 503
     nop
 
-    .line 500
+    .line 504
     return-void
 
-    .line 498
+    .line 502
     :catchall_1d
-    move-exception p1
+    move-exception v2
 
     invoke-static {v0, v1}, Landroid/os/Binder;->restoreCallingIdentity(J)V
 
-    throw p1
+    throw v2
 .end method
 
 .method public finishSelf(Landroid/os/IBinder;Z)V
     .registers 6
-
-    .line 604
-    if-eqz p1, :cond_15
+    .param p1, "token"  # Landroid/os/IBinder;
+    .param p2, "immediate"  # Z
 
     .line 608
+    if-eqz p1, :cond_15
+
+    .line 612
     invoke-static {}, Landroid/os/Binder;->clearCallingIdentity()J
 
     move-result-wide v0
 
-    .line 610
+    .line 614
+    .local v0, "ident":J
     :try_start_6
     iget-object v2, p0, Lcom/android/server/dreams/DreamManagerService$BinderService;->this$0:Lcom/android/server/dreams/DreamManagerService;
 
@@ -194,50 +205,53 @@
     :try_end_b
     .catchall {:try_start_6 .. :try_end_b} :catchall_10
 
-    .line 612
+    .line 616
     invoke-static {v0, v1}, Landroid/os/Binder;->restoreCallingIdentity(J)V
 
-    .line 613
+    .line 617
     nop
 
-    .line 614
+    .line 618
     return-void
 
-    .line 612
+    .line 616
     :catchall_10
-    move-exception p1
+    move-exception v2
 
     invoke-static {v0, v1}, Landroid/os/Binder;->restoreCallingIdentity(J)V
 
-    throw p1
+    throw v2
 
-    .line 605
+    .line 609
+    .end local v0  # "ident":J
     :cond_15
-    new-instance p1, Ljava/lang/IllegalArgumentException;
+    new-instance v0, Ljava/lang/IllegalArgumentException;
 
-    const-string/jumbo p2, "token must not be null"
+    const-string/jumbo v1, "token must not be null"
 
-    invoke-direct {p1, p2}, Ljava/lang/IllegalArgumentException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v0, v1}, Ljava/lang/IllegalArgumentException;-><init>(Ljava/lang/String;)V
 
-    throw p1
+    throw v0
 .end method
 
 .method public forceAmbientDisplayEnabled(Z)V
     .registers 5
+    .param p1, "enabled"  # Z
 
-    .line 648
+    .line 652
     iget-object v0, p0, Lcom/android/server/dreams/DreamManagerService$BinderService;->this$0:Lcom/android/server/dreams/DreamManagerService;
 
     const-string v1, "android.permission.DEVICE_POWER"
 
     invoke-static {v0, v1}, Lcom/android/server/dreams/DreamManagerService;->access$1000(Lcom/android/server/dreams/DreamManagerService;Ljava/lang/String;)V
 
-    .line 650
+    .line 654
     invoke-static {}, Landroid/os/Binder;->clearCallingIdentity()J
 
     move-result-wide v0
 
-    .line 652
+    .line 656
+    .local v0, "ident":J
     :try_start_b
     iget-object v2, p0, Lcom/android/server/dreams/DreamManagerService$BinderService;->this$0:Lcom/android/server/dreams/DreamManagerService;
 
@@ -245,130 +259,135 @@
     :try_end_10
     .catchall {:try_start_b .. :try_end_10} :catchall_15
 
-    .line 654
+    .line 658
     invoke-static {v0, v1}, Landroid/os/Binder;->restoreCallingIdentity(J)V
 
-    .line 655
+    .line 659
     nop
 
-    .line 656
+    .line 660
     return-void
 
-    .line 654
+    .line 658
     :catchall_15
-    move-exception p1
+    move-exception v2
 
     invoke-static {v0, v1}, Landroid/os/Binder;->restoreCallingIdentity(J)V
 
-    throw p1
+    throw v2
 .end method
 
 .method public getDefaultDreamComponent()Landroid/content/ComponentName;
     .registers 5
 
-    .line 530
+    .line 534
     iget-object v0, p0, Lcom/android/server/dreams/DreamManagerService$BinderService;->this$0:Lcom/android/server/dreams/DreamManagerService;
 
     const-string v1, "android.permission.READ_DREAM_STATE"
 
     invoke-static {v0, v1}, Lcom/android/server/dreams/DreamManagerService;->access$1000(Lcom/android/server/dreams/DreamManagerService;Ljava/lang/String;)V
 
-    .line 532
+    .line 536
     invoke-static {}, Landroid/os/UserHandle;->getCallingUserId()I
 
     move-result v0
 
-    .line 533
+    .line 537
+    .local v0, "userId":I
     invoke-static {}, Landroid/os/Binder;->clearCallingIdentity()J
 
     move-result-wide v1
 
-    .line 535
+    .line 539
+    .local v1, "ident":J
     :try_start_f
     iget-object v3, p0, Lcom/android/server/dreams/DreamManagerService$BinderService;->this$0:Lcom/android/server/dreams/DreamManagerService;
 
     invoke-static {v3, v0}, Lcom/android/server/dreams/DreamManagerService;->access$1300(Lcom/android/server/dreams/DreamManagerService;I)Landroid/content/ComponentName;
 
-    move-result-object v0
+    move-result-object v3
     :try_end_15
     .catchall {:try_start_f .. :try_end_15} :catchall_19
 
-    .line 537
+    .line 541
     invoke-static {v1, v2}, Landroid/os/Binder;->restoreCallingIdentity(J)V
 
-    .line 535
-    return-object v0
+    .line 539
+    return-object v3
 
-    .line 537
+    .line 541
     :catchall_19
-    move-exception v0
+    move-exception v3
 
     invoke-static {v1, v2}, Landroid/os/Binder;->restoreCallingIdentity(J)V
 
-    throw v0
+    throw v3
 .end method
 
 .method public getDreamComponents()[Landroid/content/ComponentName;
     .registers 5
 
-    .line 504
+    .line 508
     iget-object v0, p0, Lcom/android/server/dreams/DreamManagerService$BinderService;->this$0:Lcom/android/server/dreams/DreamManagerService;
 
     const-string v1, "android.permission.READ_DREAM_STATE"
 
     invoke-static {v0, v1}, Lcom/android/server/dreams/DreamManagerService;->access$1000(Lcom/android/server/dreams/DreamManagerService;Ljava/lang/String;)V
 
-    .line 506
+    .line 510
     invoke-static {}, Landroid/os/UserHandle;->getCallingUserId()I
 
     move-result v0
 
-    .line 507
+    .line 511
+    .local v0, "userId":I
     invoke-static {}, Landroid/os/Binder;->clearCallingIdentity()J
 
     move-result-wide v1
 
-    .line 509
+    .line 513
+    .local v1, "ident":J
     :try_start_f
     iget-object v3, p0, Lcom/android/server/dreams/DreamManagerService$BinderService;->this$0:Lcom/android/server/dreams/DreamManagerService;
 
     invoke-static {v3, v0}, Lcom/android/server/dreams/DreamManagerService;->access$1100(Lcom/android/server/dreams/DreamManagerService;I)[Landroid/content/ComponentName;
 
-    move-result-object v0
+    move-result-object v3
     :try_end_15
     .catchall {:try_start_f .. :try_end_15} :catchall_19
 
-    .line 511
+    .line 515
     invoke-static {v1, v2}, Landroid/os/Binder;->restoreCallingIdentity(J)V
 
-    .line 509
-    return-object v0
+    .line 513
+    return-object v3
 
-    .line 511
+    .line 515
     :catchall_19
-    move-exception v0
+    move-exception v3
 
     invoke-static {v1, v2}, Landroid/os/Binder;->restoreCallingIdentity(J)V
 
-    throw v0
+    throw v3
 .end method
 
 .method public isDreaming()Z
     .registers 4
 
-    .line 543
+    .line 547
     iget-object v0, p0, Lcom/android/server/dreams/DreamManagerService$BinderService;->this$0:Lcom/android/server/dreams/DreamManagerService;
 
     const-string v1, "android.permission.READ_DREAM_STATE"
 
     invoke-static {v0, v1}, Lcom/android/server/dreams/DreamManagerService;->access$1000(Lcom/android/server/dreams/DreamManagerService;Ljava/lang/String;)V
 
-    .line 545
+    .line 549
     invoke-static {}, Landroid/os/Binder;->clearCallingIdentity()J
 
     move-result-wide v0
 
-    .line 547
+    .line 551
+    .local v0, "ident":J
     :try_start_b
     iget-object v2, p0, Lcom/android/server/dreams/DreamManagerService$BinderService;->this$0:Lcom/android/server/dreams/DreamManagerService;
 
@@ -378,13 +397,13 @@
     :try_end_11
     .catchall {:try_start_b .. :try_end_11} :catchall_15
 
-    .line 549
+    .line 553
     invoke-static {v0, v1}, Landroid/os/Binder;->restoreCallingIdentity(J)V
 
-    .line 547
+    .line 551
     return v2
 
-    .line 549
+    .line 553
     :catchall_15
     move-exception v2
 
@@ -395,25 +414,28 @@
 
 .method public setDreamComponents([Landroid/content/ComponentName;)V
     .registers 6
+    .param p1, "componentNames"  # [Landroid/content/ComponentName;
 
-    .line 517
+    .line 521
     iget-object v0, p0, Lcom/android/server/dreams/DreamManagerService$BinderService;->this$0:Lcom/android/server/dreams/DreamManagerService;
 
     const-string v1, "android.permission.WRITE_DREAM_STATE"
 
     invoke-static {v0, v1}, Lcom/android/server/dreams/DreamManagerService;->access$1000(Lcom/android/server/dreams/DreamManagerService;Ljava/lang/String;)V
 
-    .line 519
+    .line 523
     invoke-static {}, Landroid/os/UserHandle;->getCallingUserId()I
 
     move-result v0
 
-    .line 520
+    .line 524
+    .local v0, "userId":I
     invoke-static {}, Landroid/os/Binder;->clearCallingIdentity()J
 
     move-result-wide v1
 
-    .line 522
+    .line 526
+    .local v1, "ident":J
     :try_start_f
     iget-object v3, p0, Lcom/android/server/dreams/DreamManagerService$BinderService;->this$0:Lcom/android/server/dreams/DreamManagerService;
 
@@ -421,36 +443,40 @@
     :try_end_14
     .catchall {:try_start_f .. :try_end_14} :catchall_19
 
-    .line 524
+    .line 528
     invoke-static {v1, v2}, Landroid/os/Binder;->restoreCallingIdentity(J)V
 
-    .line 525
+    .line 529
     nop
 
-    .line 526
+    .line 530
     return-void
 
-    .line 524
+    .line 528
     :catchall_19
-    move-exception p1
+    move-exception v3
 
     invoke-static {v1, v2}, Landroid/os/Binder;->restoreCallingIdentity(J)V
 
-    throw p1
+    throw v3
 .end method
 
 .method public startDozing(Landroid/os/IBinder;II)V
     .registers 7
-
-    .line 619
-    if-eqz p1, :cond_15
+    .param p1, "token"  # Landroid/os/IBinder;
+    .param p2, "screenState"  # I
+    .param p3, "screenBrightness"  # I
 
     .line 623
+    if-eqz p1, :cond_15
+
+    .line 627
     invoke-static {}, Landroid/os/Binder;->clearCallingIdentity()J
 
     move-result-wide v0
 
-    .line 625
+    .line 629
+    .local v0, "ident":J
     :try_start_6
     iget-object v2, p0, Lcom/android/server/dreams/DreamManagerService$BinderService;->this$0:Lcom/android/server/dreams/DreamManagerService;
 
@@ -458,46 +484,49 @@
     :try_end_b
     .catchall {:try_start_6 .. :try_end_b} :catchall_10
 
-    .line 627
+    .line 631
     invoke-static {v0, v1}, Landroid/os/Binder;->restoreCallingIdentity(J)V
 
-    .line 628
+    .line 632
     nop
 
-    .line 629
+    .line 633
     return-void
 
-    .line 627
+    .line 631
     :catchall_10
-    move-exception p1
+    move-exception v2
 
     invoke-static {v0, v1}, Landroid/os/Binder;->restoreCallingIdentity(J)V
 
-    throw p1
+    throw v2
 
-    .line 620
+    .line 624
+    .end local v0  # "ident":J
     :cond_15
-    new-instance p1, Ljava/lang/IllegalArgumentException;
+    new-instance v0, Ljava/lang/IllegalArgumentException;
 
-    const-string/jumbo p2, "token must not be null"
+    const-string/jumbo v1, "token must not be null"
 
-    invoke-direct {p1, p2}, Ljava/lang/IllegalArgumentException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v0, v1}, Ljava/lang/IllegalArgumentException;-><init>(Ljava/lang/String;)V
 
-    throw p1
+    throw v0
 .end method
 
 .method public stopDozing(Landroid/os/IBinder;)V
     .registers 5
-
-    .line 634
-    if-eqz p1, :cond_15
+    .param p1, "token"  # Landroid/os/IBinder;
 
     .line 638
+    if-eqz p1, :cond_15
+
+    .line 642
     invoke-static {}, Landroid/os/Binder;->clearCallingIdentity()J
 
     move-result-wide v0
 
-    .line 640
+    .line 644
+    .local v0, "ident":J
     :try_start_6
     iget-object v2, p0, Lcom/android/server/dreams/DreamManagerService$BinderService;->this$0:Lcom/android/server/dreams/DreamManagerService;
 
@@ -505,126 +534,134 @@
     :try_end_b
     .catchall {:try_start_6 .. :try_end_b} :catchall_10
 
-    .line 642
+    .line 646
     invoke-static {v0, v1}, Landroid/os/Binder;->restoreCallingIdentity(J)V
 
-    .line 643
+    .line 647
     nop
 
-    .line 644
+    .line 648
     return-void
 
-    .line 642
+    .line 646
     :catchall_10
-    move-exception p1
+    move-exception v2
 
     invoke-static {v0, v1}, Landroid/os/Binder;->restoreCallingIdentity(J)V
 
-    throw p1
+    throw v2
 
-    .line 635
+    .line 639
+    .end local v0  # "ident":J
     :cond_15
-    new-instance p1, Ljava/lang/IllegalArgumentException;
+    new-instance v0, Ljava/lang/IllegalArgumentException;
 
-    const-string/jumbo v0, "token must not be null"
+    const-string/jumbo v1, "token must not be null"
 
-    invoke-direct {p1, v0}, Ljava/lang/IllegalArgumentException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v0, v1}, Ljava/lang/IllegalArgumentException;-><init>(Ljava/lang/String;)V
 
-    throw p1
+    throw v0
 .end method
 
 .method public testDream(Landroid/content/ComponentName;)V
-    .registers 6
+    .registers 7
+    .param p1, "dream"  # Landroid/content/ComponentName;
 
-    .line 567
+    .line 571
     if-eqz p1, :cond_45
 
-    .line 570
+    .line 574
     iget-object v0, p0, Lcom/android/server/dreams/DreamManagerService$BinderService;->this$0:Lcom/android/server/dreams/DreamManagerService;
 
     const-string v1, "android.permission.WRITE_DREAM_STATE"
 
     invoke-static {v0, v1}, Lcom/android/server/dreams/DreamManagerService;->access$1000(Lcom/android/server/dreams/DreamManagerService;Ljava/lang/String;)V
 
-    .line 572
+    .line 576
     invoke-static {}, Landroid/os/UserHandle;->getCallingUserId()I
 
     move-result v0
 
-    .line 573
+    .line 577
+    .local v0, "callingUserId":I
     invoke-static {}, Landroid/app/ActivityManager;->getCurrentUser()I
 
     move-result v1
 
-    .line 574
+    .line 578
+    .local v1, "currentUserId":I
     if-eq v0, v1, :cond_32
 
-    .line 576
-    new-instance p1, Ljava/lang/StringBuilder;
+    .line 580
+    new-instance v2, Ljava/lang/StringBuilder;
 
-    invoke-direct {p1}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v2, "Aborted attempt to start a test dream while a different  user is active: callingUserId="
+    const-string v3, "Aborted attempt to start a test dream while a different  user is active: callingUserId="
 
-    invoke-virtual {p1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p1, v0}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v0}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    const-string v0, ", currentUserId="
+    const-string v3, ", currentUserId="
 
-    invoke-virtual {p1, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p1, v1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v2
 
-    const-string v0, "DreamManagerService"
+    const-string v3, "DreamManagerService"
 
-    invoke-static {v0, p1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v3, v2}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 579
+    .line 583
     return-void
 
-    .line 581
+    .line 585
     :cond_32
     invoke-static {}, Landroid/os/Binder;->clearCallingIdentity()J
 
-    move-result-wide v1
+    move-result-wide v2
 
-    .line 583
+    .line 587
+    .local v2, "ident":J
     :try_start_36
-    iget-object v3, p0, Lcom/android/server/dreams/DreamManagerService$BinderService;->this$0:Lcom/android/server/dreams/DreamManagerService;
+    iget-object v4, p0, Lcom/android/server/dreams/DreamManagerService$BinderService;->this$0:Lcom/android/server/dreams/DreamManagerService;
 
-    invoke-static {v3, p1, v0}, Lcom/android/server/dreams/DreamManagerService;->access$1600(Lcom/android/server/dreams/DreamManagerService;Landroid/content/ComponentName;I)V
+    invoke-static {v4, p1, v0}, Lcom/android/server/dreams/DreamManagerService;->access$1600(Lcom/android/server/dreams/DreamManagerService;Landroid/content/ComponentName;I)V
     :try_end_3b
     .catchall {:try_start_36 .. :try_end_3b} :catchall_40
 
-    .line 585
-    invoke-static {v1, v2}, Landroid/os/Binder;->restoreCallingIdentity(J)V
+    .line 589
+    invoke-static {v2, v3}, Landroid/os/Binder;->restoreCallingIdentity(J)V
 
-    .line 586
+    .line 590
     nop
 
-    .line 587
+    .line 591
     return-void
 
-    .line 585
+    .line 589
     :catchall_40
-    move-exception p1
+    move-exception v4
 
-    invoke-static {v1, v2}, Landroid/os/Binder;->restoreCallingIdentity(J)V
+    invoke-static {v2, v3}, Landroid/os/Binder;->restoreCallingIdentity(J)V
 
-    throw p1
+    throw v4
 
-    .line 568
+    .line 572
+    .end local v0  # "callingUserId":I
+    .end local v1  # "currentUserId":I
+    .end local v2  # "ident":J
     :cond_45
-    new-instance p1, Ljava/lang/IllegalArgumentException;
+    new-instance v0, Ljava/lang/IllegalArgumentException;
 
-    const-string v0, "dream must not be null"
+    const-string v1, "dream must not be null"
 
-    invoke-direct {p1, v0}, Ljava/lang/IllegalArgumentException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v0, v1}, Ljava/lang/IllegalArgumentException;-><init>(Ljava/lang/String;)V
 
-    throw p1
+    throw v0
 .end method

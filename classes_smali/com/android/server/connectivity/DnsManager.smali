@@ -13,6 +13,12 @@
 
 
 # static fields
+.field private static final CHINA_COUNTRY_CODE:Ljava/lang/String; = "CN"
+
+.field private static final DEFAULT_DNS_CN:Ljava/lang/String; = "114.114.114.114"
+
+.field private static final DEFAULT_DNS_GOOGLE:Ljava/lang/String; = "8.8.8.8"
+
 .field private static final DNS_RESOLVER_DEFAULT_MAX_SAMPLES:I = 0x40
 
 .field private static final DNS_RESOLVER_DEFAULT_MIN_SAMPLES:I = 0x8
@@ -71,12 +77,14 @@
 
 .field private final mSystemProperties:Lcom/android/server/connectivity/MockableSystemProperties;
 
+.field private final mWifiManager:Landroid/net/wifi/WifiManager;
+
 
 # direct methods
 .method static constructor <clinit>()V
     .registers 1
 
-    .line 115
+    .line 122
     const-class v0, Lcom/android/server/connectivity/DnsManager;
 
     invoke-virtual {v0}, Ljava/lang/Class;->getSimpleName()Ljava/lang/String;
@@ -85,7 +93,7 @@
 
     sput-object v0, Lcom/android/server/connectivity/DnsManager;->TAG:Ljava/lang/String;
 
-    .line 116
+    .line 123
     new-instance v0, Landroid/net/shared/PrivateDnsConfig;
 
     invoke-direct {v0}, Landroid/net/shared/PrivateDnsConfig;-><init>()V
@@ -96,73 +104,91 @@
 .end method
 
 .method public constructor <init>(Landroid/content/Context;Landroid/net/IDnsResolver;Lcom/android/server/connectivity/MockableSystemProperties;)V
-    .registers 4
+    .registers 6
+    .param p1, "ctx"  # Landroid/content/Context;
+    .param p2, "dnsResolver"  # Landroid/net/IDnsResolver;
+    .param p3, "sp"  # Lcom/android/server/connectivity/MockableSystemProperties;
 
-    .line 249
+    .line 263
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
-    .line 250
+    .line 264
     iput-object p1, p0, Lcom/android/server/connectivity/DnsManager;->mContext:Landroid/content/Context;
 
-    .line 251
-    iget-object p1, p0, Lcom/android/server/connectivity/DnsManager;->mContext:Landroid/content/Context;
+    .line 265
+    iget-object v0, p0, Lcom/android/server/connectivity/DnsManager;->mContext:Landroid/content/Context;
 
-    invoke-virtual {p1}, Landroid/content/Context;->getContentResolver()Landroid/content/ContentResolver;
+    invoke-virtual {v0}, Landroid/content/Context;->getContentResolver()Landroid/content/ContentResolver;
 
-    move-result-object p1
+    move-result-object v0
 
-    iput-object p1, p0, Lcom/android/server/connectivity/DnsManager;->mContentResolver:Landroid/content/ContentResolver;
+    iput-object v0, p0, Lcom/android/server/connectivity/DnsManager;->mContentResolver:Landroid/content/ContentResolver;
 
-    .line 252
+    .line 266
     iput-object p2, p0, Lcom/android/server/connectivity/DnsManager;->mDnsResolver:Landroid/net/IDnsResolver;
 
-    .line 253
+    .line 267
     iput-object p3, p0, Lcom/android/server/connectivity/DnsManager;->mSystemProperties:Lcom/android/server/connectivity/MockableSystemProperties;
 
-    .line 254
-    new-instance p1, Ljava/util/HashMap;
+    .line 268
+    new-instance v0, Ljava/util/HashMap;
 
-    invoke-direct {p1}, Ljava/util/HashMap;-><init>()V
+    invoke-direct {v0}, Ljava/util/HashMap;-><init>()V
 
-    iput-object p1, p0, Lcom/android/server/connectivity/DnsManager;->mPrivateDnsMap:Ljava/util/Map;
+    iput-object v0, p0, Lcom/android/server/connectivity/DnsManager;->mPrivateDnsMap:Ljava/util/Map;
 
-    .line 255
-    new-instance p1, Ljava/util/HashMap;
+    .line 269
+    new-instance v0, Ljava/util/HashMap;
 
-    invoke-direct {p1}, Ljava/util/HashMap;-><init>()V
+    invoke-direct {v0}, Ljava/util/HashMap;-><init>()V
 
-    iput-object p1, p0, Lcom/android/server/connectivity/DnsManager;->mPrivateDnsValidationMap:Ljava/util/Map;
+    iput-object v0, p0, Lcom/android/server/connectivity/DnsManager;->mPrivateDnsValidationMap:Ljava/util/Map;
 
-    .line 259
+    .line 271
+    iget-object v0, p0, Lcom/android/server/connectivity/DnsManager;->mContext:Landroid/content/Context;
+
+    const-string/jumbo v1, "wifi"
+
+    invoke-virtual {v0, v1}, Landroid/content/Context;->getSystemService(Ljava/lang/String;)Ljava/lang/Object;
+
+    move-result-object v0
+
+    check-cast v0, Landroid/net/wifi/WifiManager;
+
+    iput-object v0, p0, Lcom/android/server/connectivity/DnsManager;->mWifiManager:Landroid/net/wifi/WifiManager;
+
+    .line 275
     return-void
 .end method
 
 .method private flushVmDnsCache()V
     .registers 6
 
-    .line 392
+    .line 445
     new-instance v0, Landroid/content/Intent;
 
     const-string v1, "android.intent.action.CLEAR_DNS_CACHE"
 
     invoke-direct {v0, v1}, Landroid/content/Intent;-><init>(Ljava/lang/String;)V
 
-    .line 393
+    .line 446
+    .local v0, "intent":Landroid/content/Intent;
     const/high16 v1, 0x20000000
 
     invoke-virtual {v0, v1}, Landroid/content/Intent;->addFlags(I)Landroid/content/Intent;
 
-    .line 397
+    .line 450
     const/high16 v1, 0x4000000
 
     invoke-virtual {v0, v1}, Landroid/content/Intent;->addFlags(I)Landroid/content/Intent;
 
-    .line 398
+    .line 451
     invoke-static {}, Landroid/os/Binder;->clearCallingIdentity()J
 
     move-result-wide v1
 
-    .line 400
+    .line 453
+    .local v1, "ident":J
     :try_start_15
     iget-object v3, p0, Lcom/android/server/connectivity/DnsManager;->mContext:Landroid/content/Context;
 
@@ -172,37 +198,112 @@
     :try_end_1c
     .catchall {:try_start_15 .. :try_end_1c} :catchall_21
 
-    .line 402
+    .line 455
     invoke-static {v1, v2}, Landroid/os/Binder;->restoreCallingIdentity(J)V
 
-    .line 403
+    .line 456
     nop
 
-    .line 404
+    .line 457
     return-void
 
-    .line 402
+    .line 455
     :catchall_21
-    move-exception v0
+    move-exception v3
 
     invoke-static {v1, v2}, Landroid/os/Binder;->restoreCallingIdentity(J)V
 
-    throw v0
+    throw v3
+.end method
+
+.method private getCountryCode()Ljava/lang/String;
+    .registers 5
+
+    .line 325
+    iget-object v0, p0, Lcom/android/server/connectivity/DnsManager;->mWifiManager:Landroid/net/wifi/WifiManager;
+
+    invoke-virtual {v0}, Landroid/net/wifi/WifiManager;->getCountryCode()Ljava/lang/String;
+
+    move-result-object v0
+
+    .line 326
+    .local v0, "countryCode":Ljava/lang/String;
+    invoke-static {v0}, Landroid/text/TextUtils;->isEmpty(Ljava/lang/CharSequence;)Z
+
+    move-result v1
+
+    if-eqz v1, :cond_26
+
+    .line 327
+    iget-object v1, p0, Lcom/android/server/connectivity/DnsManager;->mContext:Landroid/content/Context;
+
+    .line 328
+    const-string v2, "country_detector"
+
+    invoke-virtual {v1, v2}, Landroid/content/Context;->getSystemService(Ljava/lang/String;)Ljava/lang/Object;
+
+    move-result-object v1
+
+    check-cast v1, Landroid/location/CountryDetector;
+
+    .line 329
+    .local v1, "detector":Landroid/location/CountryDetector;
+    if-eqz v1, :cond_26
+
+    invoke-virtual {v1}, Landroid/location/CountryDetector;->detectCountry()Landroid/location/Country;
+
+    move-result-object v2
+
+    if-eqz v2, :cond_26
+
+    .line 330
+    invoke-virtual {v1}, Landroid/location/CountryDetector;->detectCountry()Landroid/location/Country;
+
+    move-result-object v2
+
+    invoke-virtual {v2}, Landroid/location/Country;->getCountryIso()Ljava/lang/String;
+
+    move-result-object v0
+
+    .line 333
+    .end local v1  # "detector":Landroid/location/CountryDetector;
+    :cond_26
+    sget-object v1, Lcom/android/server/connectivity/DnsManager;->TAG:Ljava/lang/String;
+
+    new-instance v2, Ljava/lang/StringBuilder;
+
+    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
+
+    const-string v3, "Current country code is "
+
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v2, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v2
+
+    invoke-static {v1, v2}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
+
+    .line 334
+    return-object v0
 .end method
 
 .method private static getDomainStrings(Ljava/lang/String;)[Ljava/lang/String;
     .registers 2
+    .param p0, "domains"  # Ljava/lang/String;
 
-    .line 462
+    .line 515
     invoke-static {p0}, Landroid/text/TextUtils;->isEmpty(Ljava/lang/CharSequence;)Z
 
     move-result v0
 
     if-eqz v0, :cond_a
 
-    const/4 p0, 0x0
+    const/4 v0, 0x0
 
-    new-array p0, p0, [Ljava/lang/String;
+    new-array v0, v0, [Ljava/lang/String;
 
     goto :goto_10
 
@@ -211,34 +312,38 @@
 
     invoke-virtual {p0, v0}, Ljava/lang/String;->split(Ljava/lang/String;)[Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v0
 
     :goto_10
-    return-object p0
+    return-object v0
 .end method
 
 .method private getIntSetting(Ljava/lang/String;I)I
     .registers 4
+    .param p1, "which"  # Ljava/lang/String;
+    .param p2, "dflt"  # I
 
-    .line 437
+    .line 490
     iget-object v0, p0, Lcom/android/server/connectivity/DnsManager;->mContentResolver:Landroid/content/ContentResolver;
 
     invoke-static {v0, p1, p2}, Landroid/provider/Settings$Global;->getInt(Landroid/content/ContentResolver;Ljava/lang/String;I)I
 
-    move-result p1
+    move-result v0
 
-    return p1
+    return v0
 .end method
 
 .method public static getPrivateDnsConfig(Landroid/content/ContentResolver;)Landroid/net/shared/PrivateDnsConfig;
-    .registers 4
+    .registers 6
+    .param p0, "cr"  # Landroid/content/ContentResolver;
 
-    .line 125
+    .line 139
     invoke-static {p0}, Lcom/android/server/connectivity/DnsManager;->getPrivateDnsMode(Landroid/content/ContentResolver;)Ljava/lang/String;
 
     move-result-object v0
 
-    .line 127
+    .line 141
+    .local v0, "mode":Ljava/lang/String;
     invoke-static {v0}, Landroid/text/TextUtils;->isEmpty(Ljava/lang/CharSequence;)Z
 
     move-result v1
@@ -260,75 +365,80 @@
     :cond_15
     const/4 v1, 0x0
 
-    .line 129
+    .line 143
+    .local v1, "useTls":Z
     :goto_16
     const-string v2, "hostname"
 
     invoke-virtual {v2, v0}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result v0
+    move-result v2
 
-    if-eqz v0, :cond_2c
+    if-eqz v2, :cond_2c
 
-    .line 130
-    const-string/jumbo v0, "private_dns_specifier"
+    .line 144
+    const-string/jumbo v2, "private_dns_specifier"
 
-    invoke-static {p0, v0}, Lcom/android/server/connectivity/DnsManager;->getStringSetting(Landroid/content/ContentResolver;Ljava/lang/String;)Ljava/lang/String;
+    invoke-static {p0, v2}, Lcom/android/server/connectivity/DnsManager;->getStringSetting(Landroid/content/ContentResolver;Ljava/lang/String;)Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v2
 
-    .line 131
-    new-instance v0, Landroid/net/shared/PrivateDnsConfig;
+    .line 145
+    .local v2, "specifier":Ljava/lang/String;
+    new-instance v3, Landroid/net/shared/PrivateDnsConfig;
 
-    const/4 v1, 0x0
+    const/4 v4, 0x0
 
-    invoke-direct {v0, p0, v1}, Landroid/net/shared/PrivateDnsConfig;-><init>(Ljava/lang/String;[Ljava/net/InetAddress;)V
+    invoke-direct {v3, v2, v4}, Landroid/net/shared/PrivateDnsConfig;-><init>(Ljava/lang/String;[Ljava/net/InetAddress;)V
 
-    return-object v0
+    return-object v3
 
-    .line 134
+    .line 148
+    .end local v2  # "specifier":Ljava/lang/String;
     :cond_2c
-    new-instance p0, Landroid/net/shared/PrivateDnsConfig;
+    new-instance v2, Landroid/net/shared/PrivateDnsConfig;
 
-    invoke-direct {p0, v1}, Landroid/net/shared/PrivateDnsConfig;-><init>(Z)V
+    invoke-direct {v2, v1}, Landroid/net/shared/PrivateDnsConfig;-><init>(Z)V
 
-    return-object p0
+    return-object v2
 .end method
 
 .method private static getPrivateDnsMode(Landroid/content/ContentResolver;)Ljava/lang/String;
     .registers 3
+    .param p0, "cr"  # Landroid/content/ContentResolver;
 
-    .line 451
+    .line 504
     const-string/jumbo v0, "private_dns_mode"
 
     invoke-static {p0, v0}, Lcom/android/server/connectivity/DnsManager;->getStringSetting(Landroid/content/ContentResolver;Ljava/lang/String;)Ljava/lang/String;
 
     move-result-object v0
 
-    .line 452
+    .line 505
+    .local v0, "mode":Ljava/lang/String;
     invoke-static {v0}, Landroid/text/TextUtils;->isEmpty(Ljava/lang/CharSequence;)Z
 
     move-result v1
 
     if-eqz v1, :cond_14
 
-    const-string/jumbo v0, "private_dns_default_mode"
+    const-string/jumbo v1, "private_dns_default_mode"
 
-    invoke-static {p0, v0}, Lcom/android/server/connectivity/DnsManager;->getStringSetting(Landroid/content/ContentResolver;Ljava/lang/String;)Ljava/lang/String;
+    invoke-static {p0, v1}, Lcom/android/server/connectivity/DnsManager;->getStringSetting(Landroid/content/ContentResolver;Ljava/lang/String;)Ljava/lang/String;
 
     move-result-object v0
 
-    .line 453
+    .line 506
     :cond_14
     invoke-static {v0}, Landroid/text/TextUtils;->isEmpty(Ljava/lang/CharSequence;)Z
 
-    move-result p0
+    move-result v1
 
-    if-eqz p0, :cond_1d
+    if-eqz v1, :cond_1d
 
-    const-string/jumbo v0, "opportunistic"
+    const-string/jumbo v0, "off"
 
-    .line 454
+    .line 507
     :cond_1d
     return-object v0
 .end method
@@ -336,12 +446,12 @@
 .method public static getPrivateDnsSettingsUris()[Landroid/net/Uri;
     .registers 3
 
-    .line 138
+    .line 152
     const/4 v0, 0x3
 
     new-array v0, v0, [Landroid/net/Uri;
 
-    .line 139
+    .line 153
     const-string/jumbo v1, "private_dns_default_mode"
 
     invoke-static {v1}, Landroid/provider/Settings$Global;->getUriFor(Ljava/lang/String;)Landroid/net/Uri;
@@ -352,7 +462,7 @@
 
     aput-object v1, v0, v2
 
-    .line 140
+    .line 154
     const-string/jumbo v1, "private_dns_mode"
 
     invoke-static {v1}, Landroid/provider/Settings$Global;->getUriFor(Ljava/lang/String;)Landroid/net/Uri;
@@ -363,7 +473,7 @@
 
     aput-object v1, v0, v2
 
-    .line 141
+    .line 155
     const-string/jumbo v1, "private_dns_specifier"
 
     invoke-static {v1}, Landroid/provider/Settings$Global;->getUriFor(Ljava/lang/String;)Landroid/net/Uri;
@@ -374,36 +484,42 @@
 
     aput-object v1, v0, v2
 
-    .line 138
+    .line 152
     return-object v0
 .end method
 
 .method private static getStringSetting(Landroid/content/ContentResolver;Ljava/lang/String;)Ljava/lang/String;
-    .registers 2
+    .registers 3
+    .param p0, "cr"  # Landroid/content/ContentResolver;
+    .param p1, "which"  # Ljava/lang/String;
 
-    .line 458
+    .line 511
     invoke-static {p0, p1}, Landroid/provider/Settings$Global;->getString(Landroid/content/ContentResolver;Ljava/lang/String;)Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v0
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic lambda$setDnsConfigurationForNetwork$0(Landroid/net/LinkProperties;Ljava/net/InetAddress;)Z
-    .registers 2
+    .registers 3
+    .param p0, "lp"  # Landroid/net/LinkProperties;
+    .param p1, "ip"  # Ljava/net/InetAddress;
 
-    .line 336
+    .line 367
     invoke-virtual {p0, p1}, Landroid/net/LinkProperties;->isReachable(Ljava/net/InetAddress;)Z
 
-    move-result p0
+    move-result v0
 
-    return p0
+    return v0
 .end method
 
 .method private setNetDnsProperty(ILjava/lang/String;)V
-    .registers 5
+    .registers 7
+    .param p1, "which"  # I
+    .param p2, "value"  # Ljava/lang/String;
 
-    .line 441
+    .line 494
     new-instance v0, Ljava/lang/StringBuilder;
 
     invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
@@ -416,31 +532,34 @@
 
     invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    .line 444
+    .line 497
+    .local v0, "key":Ljava/lang/String;
     :try_start_12
-    iget-object v0, p0, Lcom/android/server/connectivity/DnsManager;->mSystemProperties:Lcom/android/server/connectivity/MockableSystemProperties;
+    iget-object v1, p0, Lcom/android/server/connectivity/DnsManager;->mSystemProperties:Lcom/android/server/connectivity/MockableSystemProperties;
 
-    invoke-virtual {v0, p1, p2}, Lcom/android/server/connectivity/MockableSystemProperties;->set(Ljava/lang/String;Ljava/lang/String;)V
+    invoke-virtual {v1, v0, p2}, Lcom/android/server/connectivity/MockableSystemProperties;->set(Ljava/lang/String;Ljava/lang/String;)V
     :try_end_17
     .catch Ljava/lang/Exception; {:try_start_12 .. :try_end_17} :catch_18
 
-    .line 447
+    .line 500
     goto :goto_20
 
-    .line 445
+    .line 498
     :catch_18
-    move-exception p1
+    move-exception v1
 
-    .line 446
-    sget-object p2, Lcom/android/server/connectivity/DnsManager;->TAG:Ljava/lang/String;
+    .line 499
+    .local v1, "e":Ljava/lang/Exception;
+    sget-object v2, Lcom/android/server/connectivity/DnsManager;->TAG:Ljava/lang/String;
 
-    const-string v0, "Error setting unsupported net.dns property: "
+    const-string v3, "Error setting unsupported net.dns property: "
 
-    invoke-static {p2, v0, p1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    invoke-static {v2, v3, v1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
-    .line 448
+    .line 501
+    .end local v1  # "e":Ljava/lang/Exception;
     :goto_20
     return-void
 .end method
@@ -448,7 +567,7 @@
 .method private updateParametersSettings()V
     .registers 7
 
-    .line 407
+    .line 460
     const/16 v0, 0x708
 
     const-string v1, "dns_resolver_sample_validity_seconds"
@@ -459,7 +578,7 @@
 
     iput v1, p0, Lcom/android/server/connectivity/DnsManager;->mSampleValidity:I
 
-    .line 410
+    .line 463
     iget v1, p0, Lcom/android/server/connectivity/DnsManager;->mSampleValidity:I
 
     const-string v2, ", using default="
@@ -470,7 +589,7 @@
 
     if-le v1, v3, :cond_35
 
-    .line 411
+    .line 464
     :cond_15
     sget-object v1, Lcom/android/server/connectivity/DnsManager;->TAG:Ljava/lang/String;
 
@@ -496,10 +615,10 @@
 
     invoke-static {v1, v3}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 413
+    .line 466
     iput v0, p0, Lcom/android/server/connectivity/DnsManager;->mSampleValidity:I
 
-    .line 416
+    .line 469
     :cond_35
     const/16 v0, 0x19
 
@@ -511,7 +630,7 @@
 
     iput v1, p0, Lcom/android/server/connectivity/DnsManager;->mSuccessThreshold:I
 
-    .line 419
+    .line 472
     iget v1, p0, Lcom/android/server/connectivity/DnsManager;->mSuccessThreshold:I
 
     if-ltz v1, :cond_47
@@ -520,7 +639,7 @@
 
     if-le v1, v3, :cond_67
 
-    .line 420
+    .line 473
     :cond_47
     sget-object v1, Lcom/android/server/connectivity/DnsManager;->TAG:Ljava/lang/String;
 
@@ -546,10 +665,10 @@
 
     invoke-static {v1, v2}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 422
+    .line 475
     iput v0, p0, Lcom/android/server/connectivity/DnsManager;->mSuccessThreshold:I
 
-    .line 425
+    .line 478
     :cond_67
     const/16 v0, 0x8
 
@@ -561,7 +680,7 @@
 
     iput v1, p0, Lcom/android/server/connectivity/DnsManager;->mMinSamples:I
 
-    .line 426
+    .line 479
     const/16 v1, 0x40
 
     const-string v2, "dns_resolver_max_samples"
@@ -572,7 +691,7 @@
 
     iput v2, p0, Lcom/android/server/connectivity/DnsManager;->mMaxSamples:I
 
-    .line 427
+    .line 480
     iget v2, p0, Lcom/android/server/connectivity/DnsManager;->mMinSamples:I
 
     if-ltz v2, :cond_85
@@ -583,7 +702,7 @@
 
     if-le v3, v1, :cond_be
 
-    .line 428
+    .line 481
     :cond_85
     sget-object v2, Lcom/android/server/connectivity/DnsManager;->TAG:Ljava/lang/String;
 
@@ -627,13 +746,13 @@
 
     invoke-static {v2, v3}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 431
+    .line 484
     iput v0, p0, Lcom/android/server/connectivity/DnsManager;->mMinSamples:I
 
-    .line 432
+    .line 485
     iput v1, p0, Lcom/android/server/connectivity/DnsManager;->mMaxSamples:I
 
-    .line 434
+    .line 487
     :cond_be
     return-void
 .end method
@@ -643,7 +762,7 @@
 .method public getPrivateDnsConfig()Landroid/net/shared/PrivateDnsConfig;
     .registers 2
 
-    .line 262
+    .line 278
     iget-object v0, p0, Lcom/android/server/connectivity/DnsManager;->mContentResolver:Landroid/content/ContentResolver;
 
     invoke-static {v0}, Lcom/android/server/connectivity/DnsManager;->getPrivateDnsConfig(Landroid/content/ContentResolver;)Landroid/net/shared/PrivateDnsConfig;
@@ -655,8 +774,9 @@
 
 .method public removeNetwork(Landroid/net/Network;)V
     .registers 4
+    .param p1, "network"  # Landroid/net/Network;
 
-    .line 266
+    .line 282
     iget-object v0, p0, Lcom/android/server/connectivity/DnsManager;->mPrivateDnsMap:Ljava/util/Map;
 
     iget v1, p1, Landroid/net/Network;->netId:I
@@ -667,23 +787,23 @@
 
     invoke-interface {v0, v1}, Ljava/util/Map;->remove(Ljava/lang/Object;)Ljava/lang/Object;
 
-    .line 267
+    .line 283
     iget-object v0, p0, Lcom/android/server/connectivity/DnsManager;->mPrivateDnsValidationMap:Ljava/util/Map;
 
-    iget p1, p1, Landroid/net/Network;->netId:I
+    iget v1, p1, Landroid/net/Network;->netId:I
 
-    invoke-static {p1}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
+    invoke-static {v1}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
 
-    move-result-object p1
+    move-result-object v1
 
-    invoke-interface {v0, p1}, Ljava/util/Map;->remove(Ljava/lang/Object;)Ljava/lang/Object;
+    invoke-interface {v0, v1}, Ljava/util/Map;->remove(Ljava/lang/Object;)Ljava/lang/Object;
 
-    .line 268
+    .line 284
     return-void
 .end method
 
 .method public setDefaultDnsSystemProperties(Ljava/util/Collection;)V
-    .registers 4
+    .registers 6
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(",
@@ -693,81 +813,89 @@
         }
     .end annotation
 
-    .line 377
-    nop
-
-    .line 378
-    invoke-interface {p1}, Ljava/util/Collection;->iterator()Ljava/util/Iterator;
-
-    move-result-object p1
-
+    .line 430
+    .local p1, "dnses":Ljava/util/Collection;, "Ljava/util/Collection<Ljava/net/InetAddress;>;"
     const/4 v0, 0x0
 
-    :goto_6
-    invoke-interface {p1}, Ljava/util/Iterator;->hasNext()Z
-
-    move-result v1
-
-    if-eqz v1, :cond_1c
-
-    invoke-interface {p1}, Ljava/util/Iterator;->next()Ljava/lang/Object;
+    .line 431
+    .local v0, "last":I
+    invoke-interface {p1}, Ljava/util/Collection;->iterator()Ljava/util/Iterator;
 
     move-result-object v1
 
-    check-cast v1, Ljava/net/InetAddress;
+    :goto_5
+    invoke-interface {v1}, Ljava/util/Iterator;->hasNext()Z
 
-    .line 379
+    move-result v2
+
+    if-eqz v2, :cond_1b
+
+    invoke-interface {v1}, Ljava/util/Iterator;->next()Ljava/lang/Object;
+
+    move-result-object v2
+
+    check-cast v2, Ljava/net/InetAddress;
+
+    .line 432
+    .local v2, "dns":Ljava/net/InetAddress;
     add-int/lit8 v0, v0, 0x1
 
-    .line 380
-    invoke-virtual {v1}, Ljava/net/InetAddress;->getHostAddress()Ljava/lang/String;
+    .line 433
+    invoke-virtual {v2}, Ljava/net/InetAddress;->getHostAddress()Ljava/lang/String;
 
-    move-result-object v1
+    move-result-object v3
 
-    invoke-direct {p0, v0, v1}, Lcom/android/server/connectivity/DnsManager;->setNetDnsProperty(ILjava/lang/String;)V
+    invoke-direct {p0, v0, v3}, Lcom/android/server/connectivity/DnsManager;->setNetDnsProperty(ILjava/lang/String;)V
 
-    .line 381
-    goto :goto_6
+    .line 434
+    .end local v2  # "dns":Ljava/net/InetAddress;
+    goto :goto_5
 
-    .line 382
-    :cond_1c
-    add-int/lit8 p1, v0, 0x1
+    .line 435
+    :cond_1b
+    add-int/lit8 v1, v0, 0x1
 
-    :goto_1e
-    iget v1, p0, Lcom/android/server/connectivity/DnsManager;->mNumDnsEntries:I
+    .local v1, "i":I
+    :goto_1d
+    iget v2, p0, Lcom/android/server/connectivity/DnsManager;->mNumDnsEntries:I
 
-    if-gt p1, v1, :cond_2a
+    if-gt v1, v2, :cond_29
 
-    .line 383
-    const-string v1, ""
+    .line 436
+    const-string v2, ""
 
-    invoke-direct {p0, p1, v1}, Lcom/android/server/connectivity/DnsManager;->setNetDnsProperty(ILjava/lang/String;)V
+    invoke-direct {p0, v1, v2}, Lcom/android/server/connectivity/DnsManager;->setNetDnsProperty(ILjava/lang/String;)V
 
-    .line 382
-    add-int/lit8 p1, p1, 0x1
+    .line 435
+    add-int/lit8 v1, v1, 0x1
 
-    goto :goto_1e
+    goto :goto_1d
 
-    .line 385
-    :cond_2a
+    .line 438
+    .end local v1  # "i":I
+    :cond_29
     iput v0, p0, Lcom/android/server/connectivity/DnsManager;->mNumDnsEntries:I
 
-    .line 386
+    .line 439
     return-void
 .end method
 
 .method public setDnsConfigurationForNetwork(ILandroid/net/LinkProperties;Z)V
-    .registers 10
+    .registers 14
+    .param p1, "netId"  # I
+    .param p2, "lp"  # Landroid/net/LinkProperties;
+    .param p3, "isDefaultNetwork"  # Z
 
-    .line 310
+    .line 341
     invoke-direct {p0}, Lcom/android/server/connectivity/DnsManager;->updateParametersSettings()V
 
-    .line 311
+    .line 342
     new-instance v0, Landroid/net/ResolverParamsParcel;
 
     invoke-direct {v0}, Landroid/net/ResolverParamsParcel;-><init>()V
 
-    .line 320
+    .line 351
+    .local v0, "paramsParcel":Landroid/net/ResolverParamsParcel;
     iget-object v1, p0, Lcom/android/server/connectivity/DnsManager;->mPrivateDnsMap:Ljava/util/Map;
 
     invoke-static {p1}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
@@ -782,38 +910,41 @@
 
     check-cast v1, Landroid/net/shared/PrivateDnsConfig;
 
-    .line 323
+    .line 354
+    .local v1, "privateDnsCfg":Landroid/net/shared/PrivateDnsConfig;
     iget-boolean v2, v1, Landroid/net/shared/PrivateDnsConfig;->useTls:Z
 
-    .line 324
+    .line 355
+    .local v2, "useTls":Z
     invoke-virtual {v1}, Landroid/net/shared/PrivateDnsConfig;->inStrictMode()Z
 
     move-result v3
 
-    .line 325
+    .line 356
+    .local v3, "strictMode":Z
     iput p1, v0, Landroid/net/ResolverParamsParcel;->netId:I
 
-    .line 326
+    .line 357
     iget v4, p0, Lcom/android/server/connectivity/DnsManager;->mSampleValidity:I
 
     iput v4, v0, Landroid/net/ResolverParamsParcel;->sampleValiditySeconds:I
 
-    .line 327
+    .line 358
     iget v4, p0, Lcom/android/server/connectivity/DnsManager;->mSuccessThreshold:I
 
     iput v4, v0, Landroid/net/ResolverParamsParcel;->successThreshold:I
 
-    .line 328
+    .line 359
     iget v4, p0, Lcom/android/server/connectivity/DnsManager;->mMinSamples:I
 
     iput v4, v0, Landroid/net/ResolverParamsParcel;->minSamples:I
 
-    .line 329
+    .line 360
     iget v4, p0, Lcom/android/server/connectivity/DnsManager;->mMaxSamples:I
 
     iput v4, v0, Landroid/net/ResolverParamsParcel;->maxSamples:I
 
-    .line 330
+    .line 361
     invoke-virtual {p2}, Landroid/net/LinkProperties;->getDnsServers()Ljava/util/List;
 
     move-result-object v4
@@ -824,7 +955,7 @@
 
     iput-object v4, v0, Landroid/net/ResolverParamsParcel;->servers:[Ljava/lang/String;
 
-    .line 331
+    .line 362
     invoke-virtual {p2}, Landroid/net/LinkProperties;->getDomains()Ljava/lang/String;
 
     move-result-object v4
@@ -835,7 +966,7 @@
 
     iput-object v4, v0, Landroid/net/ResolverParamsParcel;->domains:[Ljava/lang/String;
 
-    .line 332
+    .line 363
     if-eqz v3, :cond_47
 
     iget-object v4, v1, Landroid/net/shared/PrivateDnsConfig;->hostname:Ljava/lang/String;
@@ -848,317 +979,430 @@
     :goto_49
     iput-object v4, v0, Landroid/net/ResolverParamsParcel;->tlsName:Ljava/lang/String;
 
-    .line 333
+    .line 364
     nop
 
-    .line 334
+    .line 365
     const/4 v4, 0x0
 
     if-eqz v3, :cond_6d
 
-    iget-object v1, v1, Landroid/net/shared/PrivateDnsConfig;->ips:[Ljava/net/InetAddress;
+    iget-object v5, v1, Landroid/net/shared/PrivateDnsConfig;->ips:[Ljava/net/InetAddress;
 
-    .line 335
-    invoke-static {v1}, Ljava/util/Arrays;->stream([Ljava/lang/Object;)Ljava/util/stream/Stream;
+    .line 366
+    invoke-static {v5}, Ljava/util/Arrays;->stream([Ljava/lang/Object;)Ljava/util/stream/Stream;
 
-    move-result-object v1
+    move-result-object v5
 
-    new-instance v3, Lcom/android/server/connectivity/-$$Lambda$DnsManager$Z_oEyRSp0wthIcVTcqKDoAJRe6Q;
+    new-instance v6, Lcom/android/server/connectivity/-$$Lambda$DnsManager$Z_oEyRSp0wthIcVTcqKDoAJRe6Q;
 
-    invoke-direct {v3, p2}, Lcom/android/server/connectivity/-$$Lambda$DnsManager$Z_oEyRSp0wthIcVTcqKDoAJRe6Q;-><init>(Landroid/net/LinkProperties;)V
+    invoke-direct {v6, p2}, Lcom/android/server/connectivity/-$$Lambda$DnsManager$Z_oEyRSp0wthIcVTcqKDoAJRe6Q;-><init>(Landroid/net/LinkProperties;)V
 
-    .line 336
-    invoke-interface {v1, v3}, Ljava/util/stream/Stream;->filter(Ljava/util/function/Predicate;)Ljava/util/stream/Stream;
+    .line 367
+    invoke-interface {v5, v6}, Ljava/util/stream/Stream;->filter(Ljava/util/function/Predicate;)Ljava/util/stream/Stream;
 
-    move-result-object v1
+    move-result-object v5
 
-    .line 337
+    .line 368
     invoke-static {}, Ljava/util/stream/Collectors;->toList()Ljava/util/stream/Collector;
 
-    move-result-object v3
+    move-result-object v6
 
-    invoke-interface {v1, v3}, Ljava/util/stream/Stream;->collect(Ljava/util/stream/Collector;)Ljava/lang/Object;
+    invoke-interface {v5, v6}, Ljava/util/stream/Stream;->collect(Ljava/util/stream/Collector;)Ljava/lang/Object;
 
-    move-result-object v1
+    move-result-object v5
 
-    check-cast v1, Ljava/util/Collection;
+    check-cast v5, Ljava/util/Collection;
 
-    .line 334
-    invoke-static {v1}, Landroid/net/NetworkUtils;->makeStrings(Ljava/util/Collection;)[Ljava/lang/String;
+    .line 365
+    invoke-static {v5}, Landroid/net/NetworkUtils;->makeStrings(Ljava/util/Collection;)[Ljava/lang/String;
 
-    move-result-object v1
+    move-result-object v5
 
     goto :goto_74
 
-    .line 338
+    .line 369
     :cond_6d
     if-eqz v2, :cond_72
 
-    iget-object v1, v0, Landroid/net/ResolverParamsParcel;->servers:[Ljava/lang/String;
+    iget-object v5, v0, Landroid/net/ResolverParamsParcel;->servers:[Ljava/lang/String;
 
     goto :goto_74
 
-    .line 339
+    .line 370
     :cond_72
-    new-array v1, v4, [Ljava/lang/String;
+    new-array v5, v4, [Ljava/lang/String;
 
     :goto_74
-    iput-object v1, v0, Landroid/net/ResolverParamsParcel;->tlsServers:[Ljava/lang/String;
+    iput-object v5, v0, Landroid/net/ResolverParamsParcel;->tlsServers:[Ljava/lang/String;
 
-    .line 340
-    new-array v1, v4, [Ljava/lang/String;
+    .line 371
+    new-array v5, v4, [Ljava/lang/String;
 
-    iput-object v1, v0, Landroid/net/ResolverParamsParcel;->tlsFingerprints:[Ljava/lang/String;
+    iput-object v5, v0, Landroid/net/ResolverParamsParcel;->tlsFingerprints:[Ljava/lang/String;
 
-    .line 343
+    .line 374
     if-eqz v2, :cond_ab
 
-    .line 344
-    iget-object v1, p0, Lcom/android/server/connectivity/DnsManager;->mPrivateDnsValidationMap:Ljava/util/Map;
+    .line 375
+    iget-object v5, p0, Lcom/android/server/connectivity/DnsManager;->mPrivateDnsValidationMap:Ljava/util/Map;
 
     invoke-static {p1}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
 
-    move-result-object v2
+    move-result-object v6
 
-    invoke-interface {v1, v2}, Ljava/util/Map;->containsKey(Ljava/lang/Object;)Z
+    invoke-interface {v5, v6}, Ljava/util/Map;->containsKey(Ljava/lang/Object;)Z
 
-    move-result v1
+    move-result v5
 
-    if-nez v1, :cond_97
+    if-nez v5, :cond_97
 
-    .line 345
-    iget-object v1, p0, Lcom/android/server/connectivity/DnsManager;->mPrivateDnsValidationMap:Ljava/util/Map;
+    .line 376
+    iget-object v5, p0, Lcom/android/server/connectivity/DnsManager;->mPrivateDnsValidationMap:Ljava/util/Map;
 
     invoke-static {p1}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
 
-    move-result-object v2
+    move-result-object v6
 
-    new-instance v3, Lcom/android/server/connectivity/DnsManager$PrivateDnsValidationStatuses;
+    new-instance v7, Lcom/android/server/connectivity/DnsManager$PrivateDnsValidationStatuses;
 
-    const/4 v5, 0x0
+    const/4 v8, 0x0
 
-    invoke-direct {v3, v5}, Lcom/android/server/connectivity/DnsManager$PrivateDnsValidationStatuses;-><init>(Lcom/android/server/connectivity/DnsManager$1;)V
+    invoke-direct {v7, v8}, Lcom/android/server/connectivity/DnsManager$PrivateDnsValidationStatuses;-><init>(Lcom/android/server/connectivity/DnsManager$1;)V
 
-    invoke-interface {v1, v2, v3}, Ljava/util/Map;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+    invoke-interface {v5, v6, v7}, Ljava/util/Map;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
 
-    .line 347
+    .line 378
     :cond_97
-    iget-object v1, p0, Lcom/android/server/connectivity/DnsManager;->mPrivateDnsValidationMap:Ljava/util/Map;
+    iget-object v5, p0, Lcom/android/server/connectivity/DnsManager;->mPrivateDnsValidationMap:Ljava/util/Map;
 
     invoke-static {p1}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
 
-    move-result-object p1
+    move-result-object v6
 
-    invoke-interface {v1, p1}, Ljava/util/Map;->get(Ljava/lang/Object;)Ljava/lang/Object;
+    invoke-interface {v5, v6}, Ljava/util/Map;->get(Ljava/lang/Object;)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v5
 
-    check-cast p1, Lcom/android/server/connectivity/DnsManager$PrivateDnsValidationStatuses;
+    check-cast v5, Lcom/android/server/connectivity/DnsManager$PrivateDnsValidationStatuses;
 
-    iget-object v1, v0, Landroid/net/ResolverParamsParcel;->tlsServers:[Ljava/lang/String;
+    iget-object v6, v0, Landroid/net/ResolverParamsParcel;->tlsServers:[Ljava/lang/String;
 
-    iget-object v2, v0, Landroid/net/ResolverParamsParcel;->tlsName:Ljava/lang/String;
+    iget-object v7, v0, Landroid/net/ResolverParamsParcel;->tlsName:Ljava/lang/String;
 
-    invoke-static {p1, v1, v2}, Lcom/android/server/connectivity/DnsManager$PrivateDnsValidationStatuses;->access$400(Lcom/android/server/connectivity/DnsManager$PrivateDnsValidationStatuses;[Ljava/lang/String;Ljava/lang/String;)V
+    invoke-static {v5, v6, v7}, Lcom/android/server/connectivity/DnsManager$PrivateDnsValidationStatuses;->access$400(Lcom/android/server/connectivity/DnsManager$PrivateDnsValidationStatuses;[Ljava/lang/String;Ljava/lang/String;)V
 
     goto :goto_b4
 
-    .line 350
+    .line 381
     :cond_ab
-    iget-object v1, p0, Lcom/android/server/connectivity/DnsManager;->mPrivateDnsValidationMap:Ljava/util/Map;
+    iget-object v5, p0, Lcom/android/server/connectivity/DnsManager;->mPrivateDnsValidationMap:Ljava/util/Map;
 
     invoke-static {p1}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
 
-    move-result-object p1
+    move-result-object v6
 
-    invoke-interface {v1, p1}, Ljava/util/Map;->remove(Ljava/lang/Object;)Ljava/lang/Object;
+    invoke-interface {v5, v6}, Ljava/util/Map;->remove(Ljava/lang/Object;)Ljava/lang/Object;
 
-    .line 353
+    .line 386
     :goto_b4
-    sget-object p1, Lcom/android/server/connectivity/DnsManager;->TAG:Ljava/lang/String;
+    const-string/jumbo v5, "vendor.meizu.sys.cts_state"
 
-    const/16 v1, 0xb
+    invoke-static {v5, v4}, Landroid/os/SystemProperties;->getBoolean(Ljava/lang/String;Z)Z
 
-    new-array v1, v1, [Ljava/lang/Object;
+    move-result v5
 
-    iget v2, v0, Landroid/net/ResolverParamsParcel;->netId:I
+    .line 387
+    .local v5, "mCtsRunning":Z
+    if-nez v5, :cond_116
 
-    .line 354
-    invoke-static {v2}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
+    .line 389
+    invoke-direct {p0}, Lcom/android/server/connectivity/DnsManager;->getCountryCode()Ljava/lang/String;
 
-    move-result-object v2
+    move-result-object v6
 
-    aput-object v2, v1, v4
+    .line 390
+    .local v6, "countryCode":Ljava/lang/String;
+    sget-object v7, Lcom/android/server/connectivity/DnsManager;->TAG:Ljava/lang/String;
 
-    const/4 v2, 0x1
+    new-instance v8, Ljava/lang/StringBuilder;
 
-    iget-object v3, v0, Landroid/net/ResolverParamsParcel;->servers:[Ljava/lang/String;
+    invoke-direct {v8}, Ljava/lang/StringBuilder;-><init>()V
 
-    invoke-static {v3}, Ljava/util/Arrays;->toString([Ljava/lang/Object;)Ljava/lang/String;
+    const-string/jumbo v9, "setDnsConfigurationForNetwork dns is "
 
-    move-result-object v3
+    invoke-virtual {v8, v9}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    aput-object v3, v1, v2
+    iget-object v9, v0, Landroid/net/ResolverParamsParcel;->servers:[Ljava/lang/String;
 
-    const/4 v2, 0x2
+    invoke-static {v9}, Ljava/util/Arrays;->toString([Ljava/lang/Object;)Ljava/lang/String;
 
-    iget-object v3, v0, Landroid/net/ResolverParamsParcel;->domains:[Ljava/lang/String;
+    move-result-object v9
 
-    .line 355
-    invoke-static {v3}, Ljava/util/Arrays;->toString([Ljava/lang/Object;)Ljava/lang/String;
+    invoke-virtual {v8, v9}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    move-result-object v3
+    invoke-virtual {v8}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    aput-object v3, v1, v2
+    move-result-object v8
 
-    const/4 v2, 0x3
+    invoke-static {v7, v8}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
 
-    iget v3, v0, Landroid/net/ResolverParamsParcel;->sampleValiditySeconds:I
+    .line 391
+    new-instance v7, Ljava/util/ArrayList;
 
-    invoke-static {v3}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
+    iget-object v8, v0, Landroid/net/ResolverParamsParcel;->servers:[Ljava/lang/String;
 
-    move-result-object v3
+    invoke-static {v8}, Ljava/util/Arrays;->asList([Ljava/lang/Object;)Ljava/util/List;
 
-    aput-object v3, v1, v2
+    move-result-object v8
 
-    const/4 v2, 0x4
+    invoke-direct {v7, v8}, Ljava/util/ArrayList;-><init>(Ljava/util/Collection;)V
 
-    iget v3, v0, Landroid/net/ResolverParamsParcel;->successThreshold:I
+    .line 392
+    .local v7, "dnsServers":Ljava/util/List;, "Ljava/util/List<Ljava/lang/String;>;"
+    const-string v8, "CN"
 
-    .line 356
-    invoke-static {v3}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
+    invoke-virtual {v8, v6}, Ljava/lang/String;->equalsIgnoreCase(Ljava/lang/String;)Z
 
-    move-result-object v3
+    move-result v8
 
-    aput-object v3, v1, v2
+    if-eqz v8, :cond_fd
 
-    const/4 v2, 0x5
+    .line 393
+    const-string v8, "114.114.114.114"
 
-    iget v3, v0, Landroid/net/ResolverParamsParcel;->minSamples:I
+    invoke-interface {v7, v8}, Ljava/util/List;->contains(Ljava/lang/Object;)Z
 
-    invoke-static {v3}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
+    move-result v9
 
-    move-result-object v3
+    if-nez v9, :cond_108
 
-    aput-object v3, v1, v2
+    .line 394
+    invoke-interface {v7, v8}, Ljava/util/List;->add(Ljava/lang/Object;)Z
 
-    const/4 v2, 0x6
+    goto :goto_108
 
-    iget v3, v0, Landroid/net/ResolverParamsParcel;->maxSamples:I
+    .line 397
+    :cond_fd
+    const-string v8, "8.8.8.8"
 
-    .line 357
-    invoke-static {v3}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
+    invoke-interface {v7, v8}, Ljava/util/List;->contains(Ljava/lang/Object;)Z
 
-    move-result-object v3
+    move-result v9
 
-    aput-object v3, v1, v2
+    if-nez v9, :cond_108
 
-    const/4 v2, 0x7
+    .line 398
+    invoke-interface {v7, v8}, Ljava/util/List;->add(Ljava/lang/Object;)Z
 
-    iget v3, v0, Landroid/net/ResolverParamsParcel;->baseTimeoutMsec:I
+    .line 401
+    :cond_108
+    :goto_108
+    invoke-interface {v7}, Ljava/util/List;->size()I
 
-    invoke-static {v3}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
+    move-result v8
 
-    move-result-object v3
+    new-array v8, v8, [Ljava/lang/String;
 
-    aput-object v3, v1, v2
+    invoke-interface {v7, v8}, Ljava/util/List;->toArray([Ljava/lang/Object;)[Ljava/lang/Object;
 
-    const/16 v2, 0x8
+    move-result-object v8
 
-    iget v3, v0, Landroid/net/ResolverParamsParcel;->retryCount:I
+    check-cast v8, [Ljava/lang/String;
 
-    .line 358
-    invoke-static {v3}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
+    iput-object v8, v0, Landroid/net/ResolverParamsParcel;->servers:[Ljava/lang/String;
 
-    move-result-object v3
+    .line 406
+    .end local v6  # "countryCode":Ljava/lang/String;
+    .end local v7  # "dnsServers":Ljava/util/List;, "Ljava/util/List<Ljava/lang/String;>;"
+    :cond_116
+    sget-object v6, Lcom/android/server/connectivity/DnsManager;->TAG:Ljava/lang/String;
 
-    aput-object v3, v1, v2
+    const/16 v7, 0xb
 
-    const/16 v2, 0x9
+    new-array v7, v7, [Ljava/lang/Object;
 
-    iget-object v3, v0, Landroid/net/ResolverParamsParcel;->tlsName:Ljava/lang/String;
+    iget v8, v0, Landroid/net/ResolverParamsParcel;->netId:I
 
-    aput-object v3, v1, v2
+    .line 407
+    invoke-static {v8}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
 
-    const/16 v2, 0xa
+    move-result-object v8
 
-    iget-object v3, v0, Landroid/net/ResolverParamsParcel;->tlsServers:[Ljava/lang/String;
+    aput-object v8, v7, v4
 
-    .line 359
-    invoke-static {v3}, Ljava/util/Arrays;->toString([Ljava/lang/Object;)Ljava/lang/String;
+    const/4 v4, 0x1
 
-    move-result-object v3
+    iget-object v8, v0, Landroid/net/ResolverParamsParcel;->servers:[Ljava/lang/String;
 
-    aput-object v3, v1, v2
+    invoke-static {v8}, Ljava/util/Arrays;->toString([Ljava/lang/Object;)Ljava/lang/String;
 
-    .line 353
-    const-string/jumbo v2, "setDnsConfigurationForNetwork(%d, %s, %s, %d, %d, %d, %d, %d, %d, %s, %s)"
+    move-result-object v8
 
-    invoke-static {v2, v1}, Ljava/lang/String;->format(Ljava/lang/String;[Ljava/lang/Object;)Ljava/lang/String;
+    aput-object v8, v7, v4
 
-    move-result-object v1
+    const/4 v4, 0x2
 
-    invoke-static {p1, v1}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
+    iget-object v8, v0, Landroid/net/ResolverParamsParcel;->domains:[Ljava/lang/String;
 
-    .line 362
-    :try_start_125
-    iget-object p1, p0, Lcom/android/server/connectivity/DnsManager;->mDnsResolver:Landroid/net/IDnsResolver;
+    .line 408
+    invoke-static {v8}, Ljava/util/Arrays;->toString([Ljava/lang/Object;)Ljava/lang/String;
 
-    invoke-interface {p1, v0}, Landroid/net/IDnsResolver;->setResolverConfiguration(Landroid/net/ResolverParamsParcel;)V
-    :try_end_12a
-    .catch Landroid/os/RemoteException; {:try_start_125 .. :try_end_12a} :catch_138
-    .catch Landroid/os/ServiceSpecificException; {:try_start_125 .. :try_end_12a} :catch_138
+    move-result-object v8
 
-    .line 366
+    aput-object v8, v7, v4
+
+    const/4 v4, 0x3
+
+    iget v8, v0, Landroid/net/ResolverParamsParcel;->sampleValiditySeconds:I
+
+    invoke-static {v8}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
+
+    move-result-object v8
+
+    aput-object v8, v7, v4
+
+    const/4 v4, 0x4
+
+    iget v8, v0, Landroid/net/ResolverParamsParcel;->successThreshold:I
+
+    .line 409
+    invoke-static {v8}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
+
+    move-result-object v8
+
+    aput-object v8, v7, v4
+
+    const/4 v4, 0x5
+
+    iget v8, v0, Landroid/net/ResolverParamsParcel;->minSamples:I
+
+    invoke-static {v8}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
+
+    move-result-object v8
+
+    aput-object v8, v7, v4
+
+    const/4 v4, 0x6
+
+    iget v8, v0, Landroid/net/ResolverParamsParcel;->maxSamples:I
+
+    .line 410
+    invoke-static {v8}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
+
+    move-result-object v8
+
+    aput-object v8, v7, v4
+
+    const/4 v4, 0x7
+
+    iget v8, v0, Landroid/net/ResolverParamsParcel;->baseTimeoutMsec:I
+
+    invoke-static {v8}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
+
+    move-result-object v8
+
+    aput-object v8, v7, v4
+
+    const/16 v4, 0x8
+
+    iget v8, v0, Landroid/net/ResolverParamsParcel;->retryCount:I
+
+    .line 411
+    invoke-static {v8}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
+
+    move-result-object v8
+
+    aput-object v8, v7, v4
+
+    const/16 v4, 0x9
+
+    iget-object v8, v0, Landroid/net/ResolverParamsParcel;->tlsName:Ljava/lang/String;
+
+    aput-object v8, v7, v4
+
+    const/16 v4, 0xa
+
+    iget-object v8, v0, Landroid/net/ResolverParamsParcel;->tlsServers:[Ljava/lang/String;
+
+    .line 412
+    invoke-static {v8}, Ljava/util/Arrays;->toString([Ljava/lang/Object;)Ljava/lang/String;
+
+    move-result-object v8
+
+    aput-object v8, v7, v4
+
+    .line 406
+    const-string/jumbo v4, "setDnsConfigurationForNetwork(%d, %s, %s, %d, %d, %d, %d, %d, %d, %s, %s)"
+
+    invoke-static {v4, v7}, Ljava/lang/String;->format(Ljava/lang/String;[Ljava/lang/Object;)Ljava/lang/String;
+
+    move-result-object v4
+
+    invoke-static {v6, v4}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
+
+    .line 415
+    :try_start_187
+    iget-object v4, p0, Lcom/android/server/connectivity/DnsManager;->mDnsResolver:Landroid/net/IDnsResolver;
+
+    invoke-interface {v4, v0}, Landroid/net/IDnsResolver;->setResolverConfiguration(Landroid/net/ResolverParamsParcel;)V
+    :try_end_18c
+    .catch Landroid/os/RemoteException; {:try_start_187 .. :try_end_18c} :catch_19a
+    .catch Landroid/os/ServiceSpecificException; {:try_start_187 .. :try_end_18c} :catch_19a
+
+    .line 419
     nop
 
-    .line 372
-    if-eqz p3, :cond_134
+    .line 425
+    if-eqz p3, :cond_196
 
     invoke-virtual {p2}, Landroid/net/LinkProperties;->getDnsServers()Ljava/util/List;
 
-    move-result-object p1
+    move-result-object v4
 
-    invoke-virtual {p0, p1}, Lcom/android/server/connectivity/DnsManager;->setDefaultDnsSystemProperties(Ljava/util/Collection;)V
+    invoke-virtual {p0, v4}, Lcom/android/server/connectivity/DnsManager;->setDefaultDnsSystemProperties(Ljava/util/Collection;)V
 
-    .line 373
-    :cond_134
+    .line 426
+    :cond_196
     invoke-direct {p0}, Lcom/android/server/connectivity/DnsManager;->flushVmDnsCache()V
 
-    .line 374
+    .line 427
     return-void
 
-    .line 363
-    :catch_138
-    move-exception p1
+    .line 416
+    :catch_19a
+    move-exception v4
 
-    .line 364
-    sget-object p2, Lcom/android/server/connectivity/DnsManager;->TAG:Ljava/lang/String;
+    .line 417
+    .local v4, "e":Ljava/lang/Exception;
+    sget-object v6, Lcom/android/server/connectivity/DnsManager;->TAG:Ljava/lang/String;
 
-    new-instance p3, Ljava/lang/StringBuilder;
+    new-instance v7, Ljava/lang/StringBuilder;
 
-    invoke-direct {p3}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v7}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v0, "Error setting DNS configuration: "
+    const-string v8, "Error setting DNS configuration: "
 
-    invoke-virtual {p3, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v7, v8}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p3, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    invoke-virtual {v7, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v7}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v7
 
-    invoke-static {p2, p1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v6, v7}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 365
+    .line 418
     return-void
 .end method
 
 .method public updatePrivateDns(Landroid/net/Network;Landroid/net/shared/PrivateDnsConfig;)Landroid/net/shared/PrivateDnsConfig;
     .registers 6
+    .param p1, "network"  # Landroid/net/Network;
+    .param p2, "cfg"  # Landroid/net/shared/PrivateDnsConfig;
 
-    .line 271
+    .line 287
     sget-object v0, Lcom/android/server/connectivity/DnsManager;->TAG:Ljava/lang/String;
 
     new-instance v1, Ljava/lang/StringBuilder;
@@ -1187,51 +1431,53 @@
 
     invoke-static {v0, v1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 272
+    .line 288
     if-eqz p2, :cond_35
 
-    .line 273
+    .line 289
     iget-object v0, p0, Lcom/android/server/connectivity/DnsManager;->mPrivateDnsMap:Ljava/util/Map;
 
-    iget p1, p1, Landroid/net/Network;->netId:I
+    iget v1, p1, Landroid/net/Network;->netId:I
 
-    invoke-static {p1}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
+    invoke-static {v1}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
 
-    move-result-object p1
+    move-result-object v1
 
-    invoke-interface {v0, p1, p2}, Ljava/util/Map;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+    invoke-interface {v0, v1, p2}, Ljava/util/Map;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v0
 
-    check-cast p1, Landroid/net/shared/PrivateDnsConfig;
+    check-cast v0, Landroid/net/shared/PrivateDnsConfig;
 
     goto :goto_43
 
-    .line 274
+    .line 290
     :cond_35
-    iget-object p2, p0, Lcom/android/server/connectivity/DnsManager;->mPrivateDnsMap:Ljava/util/Map;
+    iget-object v0, p0, Lcom/android/server/connectivity/DnsManager;->mPrivateDnsMap:Ljava/util/Map;
 
-    iget p1, p1, Landroid/net/Network;->netId:I
+    iget v1, p1, Landroid/net/Network;->netId:I
 
-    invoke-static {p1}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
+    invoke-static {v1}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
 
-    move-result-object p1
+    move-result-object v1
 
-    invoke-interface {p2, p1}, Ljava/util/Map;->remove(Ljava/lang/Object;)Ljava/lang/Object;
+    invoke-interface {v0, v1}, Ljava/util/Map;->remove(Ljava/lang/Object;)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v0
 
-    check-cast p1, Landroid/net/shared/PrivateDnsConfig;
+    check-cast v0, Landroid/net/shared/PrivateDnsConfig;
 
-    .line 272
+    .line 288
     :goto_43
-    return-object p1
+    return-object v0
 .end method
 
 .method public updatePrivateDnsStatus(ILandroid/net/LinkProperties;)V
-    .registers 9
+    .registers 11
+    .param p1, "netId"  # I
+    .param p2, "lp"  # Landroid/net/LinkProperties;
 
-    .line 280
+    .line 296
     iget-object v0, p0, Lcom/android/server/connectivity/DnsManager;->mPrivateDnsMap:Ljava/util/Map;
 
     invoke-static {p1}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
@@ -1246,112 +1492,120 @@
 
     check-cast v0, Landroid/net/shared/PrivateDnsConfig;
 
-    .line 283
+    .line 299
+    .local v0, "privateDnsCfg":Landroid/net/shared/PrivateDnsConfig;
     iget-boolean v1, v0, Landroid/net/shared/PrivateDnsConfig;->useTls:Z
 
-    .line 285
+    .line 301
+    .local v1, "useTls":Z
     const/4 v2, 0x0
 
     if-eqz v1, :cond_20
 
-    iget-object v1, p0, Lcom/android/server/connectivity/DnsManager;->mPrivateDnsValidationMap:Ljava/util/Map;
+    iget-object v3, p0, Lcom/android/server/connectivity/DnsManager;->mPrivateDnsValidationMap:Ljava/util/Map;
 
     invoke-static {p1}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
 
-    move-result-object p1
+    move-result-object v4
 
-    invoke-interface {v1, p1}, Ljava/util/Map;->get(Ljava/lang/Object;)Ljava/lang/Object;
+    invoke-interface {v3, v4}, Ljava/util/Map;->get(Ljava/lang/Object;)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v3
 
-    check-cast p1, Lcom/android/server/connectivity/DnsManager$PrivateDnsValidationStatuses;
+    check-cast v3, Lcom/android/server/connectivity/DnsManager$PrivateDnsValidationStatuses;
 
     goto :goto_21
 
     :cond_20
-    move-object p1, v2
+    move-object v3, v2
 
-    .line 286
+    .line 302
+    .local v3, "statuses":Lcom/android/server/connectivity/DnsManager$PrivateDnsValidationStatuses;
     :goto_21
-    const/4 v1, 0x1
+    const/4 v4, 0x1
 
-    const/4 v3, 0x0
+    const/4 v5, 0x0
 
-    if-eqz p1, :cond_2d
+    if-eqz v3, :cond_2d
 
-    invoke-static {p1}, Lcom/android/server/connectivity/DnsManager$PrivateDnsValidationStatuses;->access$000(Lcom/android/server/connectivity/DnsManager$PrivateDnsValidationStatuses;)Z
+    invoke-static {v3}, Lcom/android/server/connectivity/DnsManager$PrivateDnsValidationStatuses;->access$000(Lcom/android/server/connectivity/DnsManager$PrivateDnsValidationStatuses;)Z
 
-    move-result v4
+    move-result v6
 
-    if-eqz v4, :cond_2d
+    if-eqz v6, :cond_2d
 
-    move v4, v1
+    move v6, v4
 
     goto :goto_2e
 
     :cond_2d
-    move v4, v3
+    move v6, v5
 
-    .line 287
+    .line 303
+    .local v6, "validated":Z
     :goto_2e
     invoke-virtual {v0}, Landroid/net/shared/PrivateDnsConfig;->inStrictMode()Z
 
-    move-result v5
+    move-result v7
 
-    .line 288
-    if-eqz v5, :cond_36
+    .line 304
+    .local v7, "strictMode":Z
+    if-eqz v7, :cond_36
 
     iget-object v2, v0, Landroid/net/shared/PrivateDnsConfig;->hostname:Ljava/lang/String;
 
-    .line 289
+    .line 305
+    .local v2, "tlsHostname":Ljava/lang/String;
     :cond_36
-    if-nez v5, :cond_3c
+    if-nez v7, :cond_3c
 
-    if-eqz v4, :cond_3b
+    if-eqz v6, :cond_3b
 
     goto :goto_3c
 
     :cond_3b
-    move v1, v3
+    move v4, v5
 
-    .line 291
+    .line 307
+    .local v4, "usingPrivateDns":Z
     :cond_3c
     :goto_3c
-    invoke-virtual {p2, v1}, Landroid/net/LinkProperties;->setUsePrivateDns(Z)V
+    invoke-virtual {p2, v4}, Landroid/net/LinkProperties;->setUsePrivateDns(Z)V
 
-    .line 292
+    .line 308
     invoke-virtual {p2, v2}, Landroid/net/LinkProperties;->setPrivateDnsServerName(Ljava/lang/String;)V
 
-    .line 293
-    if-eqz v1, :cond_4a
+    .line 309
+    if-eqz v4, :cond_4a
 
-    if-eqz p1, :cond_4a
+    if-eqz v3, :cond_4a
 
-    .line 294
-    invoke-static {p1, p2}, Lcom/android/server/connectivity/DnsManager$PrivateDnsValidationStatuses;->access$100(Lcom/android/server/connectivity/DnsManager$PrivateDnsValidationStatuses;Landroid/net/LinkProperties;)Landroid/net/LinkProperties;
+    .line 310
+    invoke-static {v3, p2}, Lcom/android/server/connectivity/DnsManager$PrivateDnsValidationStatuses;->access$100(Lcom/android/server/connectivity/DnsManager$PrivateDnsValidationStatuses;Landroid/net/LinkProperties;)Landroid/net/LinkProperties;
 
     goto :goto_4f
 
-    .line 296
+    .line 312
     :cond_4a
-    sget-object p1, Ljava/util/Collections;->EMPTY_LIST:Ljava/util/List;
+    sget-object v5, Ljava/util/Collections;->EMPTY_LIST:Ljava/util/List;
 
-    invoke-virtual {p2, p1}, Landroid/net/LinkProperties;->setValidatedPrivateDnsServers(Ljava/util/Collection;)V
+    invoke-virtual {p2, v5}, Landroid/net/LinkProperties;->setValidatedPrivateDnsServers(Ljava/util/Collection;)V
 
-    .line 298
+    .line 314
     :goto_4f
     return-void
 .end method
 
 .method public updatePrivateDnsValidation(Lcom/android/server/connectivity/DnsManager$PrivateDnsValidationUpdate;)V
     .registers 4
+    .param p1, "update"  # Lcom/android/server/connectivity/DnsManager$PrivateDnsValidationUpdate;
 
-    .line 301
+    .line 317
     iget-object v0, p0, Lcom/android/server/connectivity/DnsManager;->mPrivateDnsValidationMap:Ljava/util/Map;
 
     iget v1, p1, Lcom/android/server/connectivity/DnsManager$PrivateDnsValidationUpdate;->netId:I
 
-    .line 302
+    .line 318
     invoke-static {v1}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
 
     move-result-object v1
@@ -1362,15 +1616,16 @@
 
     check-cast v0, Lcom/android/server/connectivity/DnsManager$PrivateDnsValidationStatuses;
 
-    .line 303
+    .line 319
+    .local v0, "statuses":Lcom/android/server/connectivity/DnsManager$PrivateDnsValidationStatuses;
     if-nez v0, :cond_11
 
     return-void
 
-    .line 304
+    .line 320
     :cond_11
     invoke-static {v0, p1}, Lcom/android/server/connectivity/DnsManager$PrivateDnsValidationStatuses;->access$200(Lcom/android/server/connectivity/DnsManager$PrivateDnsValidationStatuses;Lcom/android/server/connectivity/DnsManager$PrivateDnsValidationUpdate;)V
 
-    .line 305
+    .line 321
     return-void
 .end method

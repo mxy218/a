@@ -28,8 +28,9 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/SystemServer;ZLjava/lang/String;)V
     .registers 4
+    .param p1, "this$0"  # Lcom/android/server/SystemServer;
 
-    .line 608
+    .line 640
     iput-object p1, p0, Lcom/android/server/SystemServer$1;->this$0:Lcom/android/server/SystemServer;
 
     iput-boolean p2, p0, Lcom/android/server/SystemServer$1;->val$reboot:Z
@@ -46,10 +47,10 @@
 .method public run()V
     .registers 4
 
-    .line 611
+    .line 643
     monitor-enter p0
 
-    .line 612
+    .line 644
     const/4 v0, 0x0
 
     :try_start_2
@@ -59,13 +60,13 @@
 
     invoke-static {v0, v1, v2}, Lcom/android/server/power/ShutdownThread;->rebootOrShutdown(Landroid/content/Context;ZLjava/lang/String;)V
 
-    .line 613
+    .line 645
     monitor-exit p0
 
-    .line 614
+    .line 646
     return-void
 
-    .line 613
+    .line 645
     :catchall_b
     move-exception v0
 

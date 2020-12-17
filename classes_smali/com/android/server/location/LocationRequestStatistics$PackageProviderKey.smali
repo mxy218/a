@@ -23,6 +23,8 @@
 # direct methods
 .method public constructor <init>(Ljava/lang/String;Ljava/lang/String;)V
     .registers 3
+    .param p1, "packageName"  # Ljava/lang/String;
+    .param p2, "providerName"  # Ljava/lang/String;
 
     .line 80
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -40,7 +42,8 @@
 
 # virtual methods
 .method public equals(Ljava/lang/Object;)Z
-    .registers 5
+    .registers 6
+    .param p1, "other"  # Ljava/lang/Object;
 
     .line 87
     instance-of v0, p1, Lcom/android/server/location/LocationRequestStatistics$PackageProviderKey;
@@ -54,39 +57,42 @@
 
     .line 91
     :cond_6
-    check-cast p1, Lcom/android/server/location/LocationRequestStatistics$PackageProviderKey;
+    move-object v0, p1
+
+    check-cast v0, Lcom/android/server/location/LocationRequestStatistics$PackageProviderKey;
 
     .line 92
-    iget-object v0, p0, Lcom/android/server/location/LocationRequestStatistics$PackageProviderKey;->packageName:Ljava/lang/String;
+    .local v0, "otherKey":Lcom/android/server/location/LocationRequestStatistics$PackageProviderKey;
+    iget-object v2, p0, Lcom/android/server/location/LocationRequestStatistics$PackageProviderKey;->packageName:Ljava/lang/String;
 
-    iget-object v2, p1, Lcom/android/server/location/LocationRequestStatistics$PackageProviderKey;->packageName:Ljava/lang/String;
+    iget-object v3, v0, Lcom/android/server/location/LocationRequestStatistics$PackageProviderKey;->packageName:Ljava/lang/String;
 
-    invoke-virtual {v0, v2}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v2, v3}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result v0
+    move-result v2
 
-    if-eqz v0, :cond_1e
+    if-eqz v2, :cond_1f
 
-    iget-object v0, p0, Lcom/android/server/location/LocationRequestStatistics$PackageProviderKey;->providerName:Ljava/lang/String;
+    iget-object v2, p0, Lcom/android/server/location/LocationRequestStatistics$PackageProviderKey;->providerName:Ljava/lang/String;
 
-    iget-object p1, p1, Lcom/android/server/location/LocationRequestStatistics$PackageProviderKey;->providerName:Ljava/lang/String;
+    iget-object v3, v0, Lcom/android/server/location/LocationRequestStatistics$PackageProviderKey;->providerName:Ljava/lang/String;
 
     .line 93
-    invoke-virtual {v0, p1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v2, v3}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result p1
+    move-result v2
 
-    if-eqz p1, :cond_1e
+    if-eqz v2, :cond_1f
 
     const/4 v1, 0x1
 
-    goto :goto_1f
+    goto :goto_20
 
-    :cond_1e
+    :cond_1f
     nop
 
     .line 92
-    :goto_1f
+    :goto_20
     return v1
 .end method
 

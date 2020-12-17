@@ -33,6 +33,13 @@
 # direct methods
 .method public constructor <init>(Landroid/content/Context;Ljava/lang/String;Landroid/content/ComponentName;ILcom/android/server/appprediction/RemoteAppPredictionService$RemoteAppPredictionServiceCallbacks;ZZ)V
     .registers 18
+    .param p1, "context"  # Landroid/content/Context;
+    .param p2, "serviceInterface"  # Ljava/lang/String;
+    .param p3, "componentName"  # Landroid/content/ComponentName;
+    .param p4, "userId"  # I
+    .param p5, "callback"  # Lcom/android/server/appprediction/RemoteAppPredictionService$RemoteAppPredictionServiceCallbacks;
+    .param p6, "bindInstantServiceAllowed"  # Z
+    .param p7, "verbose"  # Z
 
     .line 51
     nop
@@ -85,6 +92,9 @@
 
 .method static synthetic lambda$notifyAppTargetEvent$1(Landroid/app/prediction/AppPredictionSessionId;Landroid/app/prediction/AppTargetEvent;Landroid/service/appprediction/IPredictionService;)V
     .registers 3
+    .param p0, "sessionId"  # Landroid/app/prediction/AppPredictionSessionId;
+    .param p1, "event"  # Landroid/app/prediction/AppTargetEvent;
+    .param p2, "s"  # Landroid/service/appprediction/IPredictionService;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -99,6 +109,10 @@
 
 .method static synthetic lambda$notifyLaunchLocationShown$2(Landroid/app/prediction/AppPredictionSessionId;Ljava/lang/String;Landroid/content/pm/ParceledListSlice;Landroid/service/appprediction/IPredictionService;)V
     .registers 4
+    .param p0, "sessionId"  # Landroid/app/prediction/AppPredictionSessionId;
+    .param p1, "launchLocation"  # Ljava/lang/String;
+    .param p2, "targetIds"  # Landroid/content/pm/ParceledListSlice;
+    .param p3, "s"  # Landroid/service/appprediction/IPredictionService;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -113,6 +127,9 @@
 
 .method static synthetic lambda$onCreatePredictionSession$0(Landroid/app/prediction/AppPredictionContext;Landroid/app/prediction/AppPredictionSessionId;Landroid/service/appprediction/IPredictionService;)V
     .registers 3
+    .param p0, "context"  # Landroid/app/prediction/AppPredictionContext;
+    .param p1, "sessionId"  # Landroid/app/prediction/AppPredictionSessionId;
+    .param p2, "s"  # Landroid/service/appprediction/IPredictionService;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -127,6 +144,8 @@
 
 .method static synthetic lambda$onDestroyPredictionSession$7(Landroid/app/prediction/AppPredictionSessionId;Landroid/service/appprediction/IPredictionService;)V
     .registers 2
+    .param p0, "sessionId"  # Landroid/app/prediction/AppPredictionSessionId;
+    .param p1, "s"  # Landroid/service/appprediction/IPredictionService;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -141,6 +160,9 @@
 
 .method static synthetic lambda$registerPredictionUpdates$4(Landroid/app/prediction/AppPredictionSessionId;Landroid/app/prediction/IPredictionCallback;Landroid/service/appprediction/IPredictionService;)V
     .registers 3
+    .param p0, "sessionId"  # Landroid/app/prediction/AppPredictionSessionId;
+    .param p1, "callback"  # Landroid/app/prediction/IPredictionCallback;
+    .param p2, "s"  # Landroid/service/appprediction/IPredictionService;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -155,6 +177,8 @@
 
 .method static synthetic lambda$requestPredictionUpdate$6(Landroid/app/prediction/AppPredictionSessionId;Landroid/service/appprediction/IPredictionService;)V
     .registers 2
+    .param p0, "sessionId"  # Landroid/app/prediction/AppPredictionSessionId;
+    .param p1, "s"  # Landroid/service/appprediction/IPredictionService;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -169,6 +193,10 @@
 
 .method static synthetic lambda$sortAppTargets$3(Landroid/app/prediction/AppPredictionSessionId;Landroid/content/pm/ParceledListSlice;Landroid/app/prediction/IPredictionCallback;Landroid/service/appprediction/IPredictionService;)V
     .registers 4
+    .param p0, "sessionId"  # Landroid/app/prediction/AppPredictionSessionId;
+    .param p1, "targets"  # Landroid/content/pm/ParceledListSlice;
+    .param p2, "callback"  # Landroid/app/prediction/IPredictionCallback;
+    .param p3, "s"  # Landroid/service/appprediction/IPredictionService;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -183,6 +211,9 @@
 
 .method static synthetic lambda$unregisterPredictionUpdates$5(Landroid/app/prediction/AppPredictionSessionId;Landroid/app/prediction/IPredictionCallback;Landroid/service/appprediction/IPredictionService;)V
     .registers 3
+    .param p0, "sessionId"  # Landroid/app/prediction/AppPredictionSessionId;
+    .param p1, "callback"  # Landroid/app/prediction/IPredictionCallback;
+    .param p2, "s"  # Landroid/service/appprediction/IPredictionService;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -218,14 +249,15 @@
 .end method
 
 .method protected getServiceInterface(Landroid/os/IBinder;)Landroid/service/appprediction/IPredictionService;
-    .registers 2
+    .registers 3
+    .param p1, "service"  # Landroid/os/IBinder;
 
     .line 60
     invoke-static {p1}, Landroid/service/appprediction/IPredictionService$Stub;->asInterface(Landroid/os/IBinder;)Landroid/service/appprediction/IPredictionService;
 
-    move-result-object p1
+    move-result-object v0
 
-    return-object p1
+    return-object v0
 .end method
 
 .method protected getTimeoutIdleBindMillis()J
@@ -239,22 +271,25 @@
 
 .method protected handleOnConnectedStateChanged(Z)V
     .registers 3
+    .param p1, "connected"  # Z
 
-    .line 163
+    .line 156
     iget-object v0, p0, Lcom/android/server/appprediction/RemoteAppPredictionService;->mCallback:Lcom/android/server/appprediction/RemoteAppPredictionService$RemoteAppPredictionServiceCallbacks;
 
     if-eqz v0, :cond_7
 
-    .line 164
+    .line 157
     invoke-interface {v0, p1}, Lcom/android/server/appprediction/RemoteAppPredictionService$RemoteAppPredictionServiceCallbacks;->onConnectedStateChanged(Z)V
 
-    .line 166
+    .line 159
     :cond_7
     return-void
 .end method
 
 .method public notifyAppTargetEvent(Landroid/app/prediction/AppPredictionSessionId;Landroid/app/prediction/AppTargetEvent;)V
     .registers 4
+    .param p1, "sessionId"  # Landroid/app/prediction/AppPredictionSessionId;
+    .param p2, "event"  # Landroid/app/prediction/AppTargetEvent;
 
     .line 86
     new-instance v0, Lcom/android/server/appprediction/-$$Lambda$RemoteAppPredictionService$qroIh2ewx0BLP-J9XIAX2CaX8J4;
@@ -269,6 +304,9 @@
 
 .method public notifyLaunchLocationShown(Landroid/app/prediction/AppPredictionSessionId;Ljava/lang/String;Landroid/content/pm/ParceledListSlice;)V
     .registers 5
+    .param p1, "sessionId"  # Landroid/app/prediction/AppPredictionSessionId;
+    .param p2, "launchLocation"  # Ljava/lang/String;
+    .param p3, "targetIds"  # Landroid/content/pm/ParceledListSlice;
 
     .line 94
     new-instance v0, Lcom/android/server/appprediction/-$$Lambda$RemoteAppPredictionService$2EyTj40DnIRaUJU1GBU3r9jPAJg;
@@ -283,6 +321,8 @@
 
 .method public onCreatePredictionSession(Landroid/app/prediction/AppPredictionContext;Landroid/app/prediction/AppPredictionSessionId;)V
     .registers 4
+    .param p1, "context"  # Landroid/app/prediction/AppPredictionContext;
+    .param p2, "sessionId"  # Landroid/app/prediction/AppPredictionSessionId;
 
     .line 78
     new-instance v0, Lcom/android/server/appprediction/-$$Lambda$RemoteAppPredictionService$Ikwq62LQ8mos7hCBmykUhqvUq2Y;
@@ -297,6 +337,7 @@
 
 .method public onDestroyPredictionSession(Landroid/app/prediction/AppPredictionSessionId;)V
     .registers 3
+    .param p1, "sessionId"  # Landroid/app/prediction/AppPredictionSessionId;
 
     .line 134
     new-instance v0, Lcom/android/server/appprediction/-$$Lambda$RemoteAppPredictionService$dsYLGE9YRnrxNNkC1jG8ymCUr5Q;
@@ -309,18 +350,10 @@
     return-void
 .end method
 
-.method public reconnect()V
-    .registers 1
-
-    .line 141
-    invoke-super {p0}, Lcom/android/internal/infra/AbstractMultiplePendingRequestsRemoteService;->scheduleBind()V
-
-    .line 142
-    return-void
-.end method
-
 .method public registerPredictionUpdates(Landroid/app/prediction/AppPredictionSessionId;Landroid/app/prediction/IPredictionCallback;)V
     .registers 4
+    .param p1, "sessionId"  # Landroid/app/prediction/AppPredictionSessionId;
+    .param p2, "callback"  # Landroid/app/prediction/IPredictionCallback;
 
     .line 112
     new-instance v0, Lcom/android/server/appprediction/-$$Lambda$RemoteAppPredictionService$UaZoW5Y9AD8L3ktnyw-25jtnxhA;
@@ -335,6 +368,7 @@
 
 .method public requestPredictionUpdate(Landroid/app/prediction/AppPredictionSessionId;)V
     .registers 3
+    .param p1, "sessionId"  # Landroid/app/prediction/AppPredictionSessionId;
 
     .line 127
     new-instance v0, Lcom/android/server/appprediction/-$$Lambda$RemoteAppPredictionService$9DCowUTEF8fYuBlWGxOmP5hTAWA;
@@ -349,6 +383,9 @@
 
 .method public sortAppTargets(Landroid/app/prediction/AppPredictionSessionId;Landroid/content/pm/ParceledListSlice;Landroid/app/prediction/IPredictionCallback;)V
     .registers 5
+    .param p1, "sessionId"  # Landroid/app/prediction/AppPredictionSessionId;
+    .param p2, "targets"  # Landroid/content/pm/ParceledListSlice;
+    .param p3, "callback"  # Landroid/app/prediction/IPredictionCallback;
 
     .line 103
     new-instance v0, Lcom/android/server/appprediction/-$$Lambda$RemoteAppPredictionService$V2_zSuJJPrke_XrPl6iB-Ekw1Z4;
@@ -363,6 +400,8 @@
 
 .method public unregisterPredictionUpdates(Landroid/app/prediction/AppPredictionSessionId;Landroid/app/prediction/IPredictionCallback;)V
     .registers 4
+    .param p1, "sessionId"  # Landroid/app/prediction/AppPredictionSessionId;
+    .param p2, "callback"  # Landroid/app/prediction/IPredictionCallback;
 
     .line 120
     new-instance v0, Lcom/android/server/appprediction/-$$Lambda$RemoteAppPredictionService$sQgYVaCXRIosCYaNa7w5ZuNn7u8;

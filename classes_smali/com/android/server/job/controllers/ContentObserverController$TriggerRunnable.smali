@@ -24,6 +24,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/job/controllers/ContentObserverController$JobInstance;)V
     .registers 2
+    .param p1, "instance"  # Lcom/android/server/job/controllers/ContentObserverController$JobInstance;
 
     .line 231
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V

@@ -23,6 +23,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/vr/SettingsObserver;Ljava/lang/String;)V
     .registers 3
+    .param p1, "this$0"  # Lcom/android/server/vr/SettingsObserver;
 
     .line 70
     iput-object p1, p0, Lcom/android/server/vr/SettingsObserver$1;->this$0:Lcom/android/server/vr/SettingsObserver;
@@ -37,61 +38,69 @@
 
 # virtual methods
 .method public onReceive(Landroid/content/Context;Landroid/content/Intent;)V
-    .registers 5
+    .registers 8
+    .param p1, "context"  # Landroid/content/Context;
+    .param p2, "intent"  # Landroid/content/Intent;
 
     .line 73
     invoke-virtual {p2}, Landroid/content/Intent;->getAction()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    const-string v0, "android.os.action.SETTING_RESTORED"
+    const-string v1, "android.os.action.SETTING_RESTORED"
 
-    invoke-virtual {v0, p1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v1, v0}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result p1
+    move-result v0
 
-    if-eqz p1, :cond_32
+    if-eqz v0, :cond_32
 
     .line 74
-    const-string/jumbo p1, "setting_name"
-
-    invoke-virtual {p2, p1}, Landroid/content/Intent;->getStringExtra(Ljava/lang/String;)Ljava/lang/String;
-
-    move-result-object p1
-
-    .line 75
-    iget-object v0, p0, Lcom/android/server/vr/SettingsObserver$1;->val$secureSettingName:Ljava/lang/String;
-
-    invoke-static {p1, v0}, Ljava/util/Objects;->equals(Ljava/lang/Object;Ljava/lang/Object;)Z
-
-    move-result p1
-
-    if-eqz p1, :cond_32
-
-    .line 76
-    const-string/jumbo p1, "previous_value"
-
-    invoke-virtual {p2, p1}, Landroid/content/Intent;->getStringExtra(Ljava/lang/String;)Ljava/lang/String;
-
-    move-result-object p1
-
-    .line 77
-    const-string/jumbo v0, "new_value"
+    const-string/jumbo v0, "setting_name"
 
     invoke-virtual {p2, v0}, Landroid/content/Intent;->getStringExtra(Ljava/lang/String;)Ljava/lang/String;
 
-    move-result-object p2
+    move-result-object v0
 
-    .line 78
-    iget-object v0, p0, Lcom/android/server/vr/SettingsObserver$1;->this$0:Lcom/android/server/vr/SettingsObserver;
+    .line 75
+    .local v0, "element":Ljava/lang/String;
+    iget-object v1, p0, Lcom/android/server/vr/SettingsObserver$1;->val$secureSettingName:Ljava/lang/String;
 
-    invoke-virtual {p0}, Lcom/android/server/vr/SettingsObserver$1;->getSendingUserId()I
+    invoke-static {v0, v1}, Ljava/util/Objects;->equals(Ljava/lang/Object;Ljava/lang/Object;)Z
 
     move-result v1
 
-    invoke-static {v0, p1, p2, v1}, Lcom/android/server/vr/SettingsObserver;->access$000(Lcom/android/server/vr/SettingsObserver;Ljava/lang/String;Ljava/lang/String;I)V
+    if-eqz v1, :cond_32
+
+    .line 76
+    const-string/jumbo v1, "previous_value"
+
+    invoke-virtual {p2, v1}, Landroid/content/Intent;->getStringExtra(Ljava/lang/String;)Ljava/lang/String;
+
+    move-result-object v1
+
+    .line 77
+    .local v1, "prevValue":Ljava/lang/String;
+    const-string/jumbo v2, "new_value"
+
+    invoke-virtual {p2, v2}, Landroid/content/Intent;->getStringExtra(Ljava/lang/String;)Ljava/lang/String;
+
+    move-result-object v2
+
+    .line 78
+    .local v2, "newValue":Ljava/lang/String;
+    iget-object v3, p0, Lcom/android/server/vr/SettingsObserver$1;->this$0:Lcom/android/server/vr/SettingsObserver;
+
+    invoke-virtual {p0}, Lcom/android/server/vr/SettingsObserver$1;->getSendingUserId()I
+
+    move-result v4
+
+    invoke-static {v3, v1, v2, v4}, Lcom/android/server/vr/SettingsObserver;->access$000(Lcom/android/server/vr/SettingsObserver;Ljava/lang/String;Ljava/lang/String;I)V
 
     .line 81
+    .end local v0  # "element":Ljava/lang/String;
+    .end local v1  # "prevValue":Ljava/lang/String;
+    .end local v2  # "newValue":Ljava/lang/String;
     :cond_32
     return-void
 .end method

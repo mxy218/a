@@ -14,6 +14,8 @@
 # direct methods
 .method constructor <init>(II)V
     .registers 4
+    .param p1, "id"  # I
+    .param p2, "type"  # I
 
     .line 40
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -37,6 +39,7 @@
 # virtual methods
 .method getTimeout(Ljava/util/concurrent/TimeUnit;)J
     .registers 5
+    .param p1, "unit"  # Ljava/util/concurrent/TimeUnit;
 
     .line 101
     iget v0, p0, Lcom/android/server/location/ContextHubServiceTransaction;->mTransactionType:I
@@ -96,6 +99,7 @@
 
 .method onQueryResponse(ILjava/util/List;)V
     .registers 3
+    .param p1, "result"  # I
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(I",
@@ -106,6 +110,7 @@
     .end annotation
 
     .line 77
+    .local p2, "nanoAppStateList":Ljava/util/List;, "Ljava/util/List<Landroid/hardware/location/NanoAppState;>;"
     return-void
 .end method
 
@@ -114,6 +119,7 @@
 
 .method onTransactionComplete(I)V
     .registers 2
+    .param p1, "result"  # I
 
     .line 65
     return-void

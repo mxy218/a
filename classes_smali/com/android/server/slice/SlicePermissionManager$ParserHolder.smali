@@ -39,6 +39,8 @@
 
 .method synthetic constructor <init>(Lcom/android/server/slice/SlicePermissionManager;Lcom/android/server/slice/SlicePermissionManager$1;)V
     .registers 3
+    .param p1, "x0"  # Lcom/android/server/slice/SlicePermissionManager;
+    .param p2, "x1"  # Lcom/android/server/slice/SlicePermissionManager$1;
 
     .line 451
     invoke-direct {p0, p1}, Lcom/android/server/slice/SlicePermissionManager$ParserHolder;-><init>(Lcom/android/server/slice/SlicePermissionManager;)V
@@ -47,16 +49,19 @@
 .end method
 
 .method static synthetic access$100(Lcom/android/server/slice/SlicePermissionManager$ParserHolder;)Lorg/xmlpull/v1/XmlPullParser;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/slice/SlicePermissionManager$ParserHolder;
 
     .line 451
-    iget-object p0, p0, Lcom/android/server/slice/SlicePermissionManager$ParserHolder;->parser:Lorg/xmlpull/v1/XmlPullParser;
+    iget-object v0, p0, Lcom/android/server/slice/SlicePermissionManager$ParserHolder;->parser:Lorg/xmlpull/v1/XmlPullParser;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$102(Lcom/android/server/slice/SlicePermissionManager$ParserHolder;Lorg/xmlpull/v1/XmlPullParser;)Lorg/xmlpull/v1/XmlPullParser;
     .registers 2
+    .param p0, "x0"  # Lcom/android/server/slice/SlicePermissionManager$ParserHolder;
+    .param p1, "x1"  # Lorg/xmlpull/v1/XmlPullParser;
 
     .line 451
     iput-object p1, p0, Lcom/android/server/slice/SlicePermissionManager$ParserHolder;->parser:Lorg/xmlpull/v1/XmlPullParser;
@@ -65,16 +70,19 @@
 .end method
 
 .method static synthetic access$300(Lcom/android/server/slice/SlicePermissionManager$ParserHolder;)Ljava/io/InputStream;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/slice/SlicePermissionManager$ParserHolder;
 
     .line 451
-    iget-object p0, p0, Lcom/android/server/slice/SlicePermissionManager$ParserHolder;->input:Ljava/io/InputStream;
+    iget-object v0, p0, Lcom/android/server/slice/SlicePermissionManager$ParserHolder;->input:Ljava/io/InputStream;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$302(Lcom/android/server/slice/SlicePermissionManager$ParserHolder;Ljava/io/InputStream;)Ljava/io/InputStream;
     .registers 2
+    .param p0, "x0"  # Lcom/android/server/slice/SlicePermissionManager$ParserHolder;
+    .param p1, "x1"  # Ljava/io/InputStream;
 
     .line 451
     iput-object p1, p0, Lcom/android/server/slice/SlicePermissionManager$ParserHolder;->input:Ljava/io/InputStream;

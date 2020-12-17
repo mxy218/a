@@ -40,6 +40,7 @@
 
 .method public forceReevaluation(I)V
     .registers 2
+    .param p1, "uid"  # I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -73,6 +74,7 @@
 
 .method public notifyCaptivePortalAppFinished(I)V
     .registers 2
+    .param p1, "response"  # I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -85,6 +87,7 @@
 
 .method public notifyDnsResponse(I)V
     .registers 2
+    .param p1, "returnCode"  # I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -97,6 +100,7 @@
 
 .method public notifyLinkPropertiesChanged(Landroid/net/LinkProperties;)V
     .registers 2
+    .param p1, "lp"  # Landroid/net/LinkProperties;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -109,6 +113,7 @@
 
 .method public notifyNetworkCapabilitiesChanged(Landroid/net/NetworkCapabilities;)V
     .registers 2
+    .param p1, "nc"  # Landroid/net/NetworkCapabilities;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -121,6 +126,8 @@
 
 .method public notifyNetworkConnected(Landroid/net/LinkProperties;Landroid/net/NetworkCapabilities;)V
     .registers 3
+    .param p1, "lp"  # Landroid/net/LinkProperties;
+    .param p2, "nc"  # Landroid/net/NetworkCapabilities;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -145,6 +152,7 @@
 
 .method public notifyPrivateDnsChanged(Landroid/net/PrivateDnsConfigParcel;)V
     .registers 2
+    .param p1, "config"  # Landroid/net/PrivateDnsConfigParcel;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;

@@ -17,6 +17,9 @@
 # direct methods
 .method private constructor <init>(Lcom/android/server/hdmi/HdmiControlService;ILandroid/hardware/hdmi/IHdmiControlCallback;)V
     .registers 4
+    .param p1, "srv"  # Lcom/android/server/hdmi/HdmiControlService;
+    .param p2, "id"  # I
+    .param p3, "callback"  # Landroid/hardware/hdmi/IHdmiControlCallback;
 
     .line 91
     invoke-direct {p0, p1, p2, p3}, Lcom/android/server/hdmi/SelectRequestBuffer$SelectRequest;-><init>(Lcom/android/server/hdmi/HdmiControlService;ILandroid/hardware/hdmi/IHdmiControlCallback;)V
@@ -27,6 +30,10 @@
 
 .method synthetic constructor <init>(Lcom/android/server/hdmi/HdmiControlService;ILandroid/hardware/hdmi/IHdmiControlCallback;Lcom/android/server/hdmi/SelectRequestBuffer$1;)V
     .registers 5
+    .param p1, "x0"  # Lcom/android/server/hdmi/HdmiControlService;
+    .param p2, "x1"  # I
+    .param p3, "x2"  # Landroid/hardware/hdmi/IHdmiControlCallback;
+    .param p4, "x3"  # Lcom/android/server/hdmi/SelectRequestBuffer$1;
 
     .line 89
     invoke-direct {p0, p1, p2, p3}, Lcom/android/server/hdmi/SelectRequestBuffer$DeviceSelectRequest;-><init>(Lcom/android/server/hdmi/HdmiControlService;ILandroid/hardware/hdmi/IHdmiControlCallback;)V

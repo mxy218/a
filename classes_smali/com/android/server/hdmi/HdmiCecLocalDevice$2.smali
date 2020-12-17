@@ -26,6 +26,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/hdmi/HdmiCecLocalDevice;Lcom/android/server/hdmi/HdmiCecLocalDevice$PendingActionClearedCallback;)V
     .registers 3
+    .param p1, "this$0"  # Lcom/android/server/hdmi/HdmiCecLocalDevice;
 
     .line 956
     iput-object p1, p0, Lcom/android/server/hdmi/HdmiCecLocalDevice$2;->this$0:Lcom/android/server/hdmi/HdmiCecLocalDevice;
@@ -41,6 +42,7 @@
 # virtual methods
 .method public onCleared(Lcom/android/server/hdmi/HdmiCecLocalDevice;)V
     .registers 4
+    .param p1, "device"  # Lcom/android/server/hdmi/HdmiCecLocalDevice;
 
     .line 959
     iget-object v0, p0, Lcom/android/server/hdmi/HdmiCecLocalDevice$2;->this$0:Lcom/android/server/hdmi/HdmiCecLocalDevice;

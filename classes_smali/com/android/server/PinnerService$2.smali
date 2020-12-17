@@ -23,8 +23,10 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/PinnerService;Landroid/os/Handler;Landroid/net/Uri;)V
     .registers 4
+    .param p1, "this$0"  # Lcom/android/server/PinnerService;
+    .param p2, "x0"  # Landroid/os/Handler;
 
-    .line 275
+    .line 276
     iput-object p1, p0, Lcom/android/server/PinnerService$2;->this$0:Lcom/android/server/PinnerService;
 
     iput-object p3, p0, Lcom/android/server/PinnerService$2;->val$userSetupCompleteUri:Landroid/net/Uri;
@@ -37,29 +39,31 @@
 
 # virtual methods
 .method public onChange(ZLandroid/net/Uri;)V
-    .registers 4
-
-    .line 278
-    iget-object p1, p0, Lcom/android/server/PinnerService$2;->val$userSetupCompleteUri:Landroid/net/Uri;
-
-    invoke-virtual {p1, p2}, Landroid/net/Uri;->equals(Ljava/lang/Object;)Z
-
-    move-result p1
-
-    if-eqz p1, :cond_12
+    .registers 6
+    .param p1, "selfChange"  # Z
+    .param p2, "uri"  # Landroid/net/Uri;
 
     .line 279
-    iget-object p1, p0, Lcom/android/server/PinnerService$2;->this$0:Lcom/android/server/PinnerService;
+    iget-object v0, p0, Lcom/android/server/PinnerService$2;->val$userSetupCompleteUri:Landroid/net/Uri;
+
+    invoke-virtual {v0, p2}, Landroid/net/Uri;->equals(Ljava/lang/Object;)Z
+
+    move-result v0
+
+    if-eqz v0, :cond_12
+
+    .line 280
+    iget-object v0, p0, Lcom/android/server/PinnerService$2;->this$0:Lcom/android/server/PinnerService;
 
     invoke-static {}, Landroid/app/ActivityManager;->getCurrentUser()I
 
-    move-result p2
+    move-result v1
 
-    const/4 v0, 0x1
+    const/4 v2, 0x1
 
-    invoke-static {p1, v0, p2, v0}, Lcom/android/server/PinnerService;->access$100(Lcom/android/server/PinnerService;IIZ)V
+    invoke-static {v0, v2, v1, v2}, Lcom/android/server/PinnerService;->access$100(Lcom/android/server/PinnerService;IIZ)V
 
-    .line 282
+    .line 283
     :cond_12
     return-void
 .end method

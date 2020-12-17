@@ -21,6 +21,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/usb/UsbService;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/usb/UsbService;
 
     .line 158
     iput-object p1, p0, Lcom/android/server/usb/UsbService$1;->this$0:Lcom/android/server/usb/UsbService;
@@ -33,42 +34,45 @@
 
 # virtual methods
 .method public onReceive(Landroid/content/Context;Landroid/content/Intent;)V
-    .registers 3
+    .registers 5
+    .param p1, "context"  # Landroid/content/Context;
+    .param p2, "intent"  # Landroid/content/Intent;
 
     .line 161
     invoke-virtual {p2}, Landroid/content/Intent;->getAction()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
     .line 162
+    .local v0, "action":Ljava/lang/String;
     nop
 
     .line 163
-    const-string p2, "android.app.action.DEVICE_POLICY_MANAGER_STATE_CHANGED"
+    const-string v1, "android.app.action.DEVICE_POLICY_MANAGER_STATE_CHANGED"
 
-    invoke-virtual {p2, p1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v1, v0}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result p1
+    move-result v1
 
-    if-eqz p1, :cond_1e
+    if-eqz v1, :cond_1e
 
     .line 164
-    iget-object p1, p0, Lcom/android/server/usb/UsbService$1;->this$0:Lcom/android/server/usb/UsbService;
+    iget-object v1, p0, Lcom/android/server/usb/UsbService$1;->this$0:Lcom/android/server/usb/UsbService;
 
-    invoke-static {p1}, Lcom/android/server/usb/UsbService;->access$200(Lcom/android/server/usb/UsbService;)Lcom/android/server/usb/UsbDeviceManager;
+    invoke-static {v1}, Lcom/android/server/usb/UsbService;->access$200(Lcom/android/server/usb/UsbService;)Lcom/android/server/usb/UsbDeviceManager;
 
-    move-result-object p1
+    move-result-object v1
 
-    if-eqz p1, :cond_1e
+    if-eqz v1, :cond_1e
 
     .line 165
-    iget-object p1, p0, Lcom/android/server/usb/UsbService$1;->this$0:Lcom/android/server/usb/UsbService;
+    iget-object v1, p0, Lcom/android/server/usb/UsbService$1;->this$0:Lcom/android/server/usb/UsbService;
 
-    invoke-static {p1}, Lcom/android/server/usb/UsbService;->access$200(Lcom/android/server/usb/UsbService;)Lcom/android/server/usb/UsbDeviceManager;
+    invoke-static {v1}, Lcom/android/server/usb/UsbService;->access$200(Lcom/android/server/usb/UsbService;)Lcom/android/server/usb/UsbDeviceManager;
 
-    move-result-object p1
+    move-result-object v1
 
-    invoke-virtual {p1}, Lcom/android/server/usb/UsbDeviceManager;->updateUserRestrictions()V
+    invoke-virtual {v1}, Lcom/android/server/usb/UsbDeviceManager;->updateUserRestrictions()V
 
     .line 168
     :cond_1e

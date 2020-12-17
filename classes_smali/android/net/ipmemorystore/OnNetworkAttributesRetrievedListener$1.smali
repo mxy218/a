@@ -42,7 +42,10 @@
 .end method
 
 .method public onNetworkAttributesRetrieved(Landroid/net/ipmemorystore/StatusParcelable;Ljava/lang/String;Landroid/net/ipmemorystore/NetworkAttributesParcelable;)V
-    .registers 6
+    .registers 7
+    .param p1, "statusParcelable"  # Landroid/net/ipmemorystore/StatusParcelable;
+    .param p2, "l2Key"  # Ljava/lang/String;
+    .param p3, "networkAttributesParcelable"  # Landroid/net/ipmemorystore/NetworkAttributesParcelable;
 
     .line 41
     iget-object v0, p0, Landroid/net/ipmemorystore/OnNetworkAttributesRetrievedListener$1;->val$listener:Landroid/net/ipmemorystore/OnNetworkAttributesRetrievedListener;
@@ -58,18 +61,18 @@
     if-nez p3, :cond_d
 
     .line 44
-    const/4 p1, 0x0
+    const/4 v2, 0x0
 
     goto :goto_12
 
     :cond_d
-    new-instance p1, Landroid/net/ipmemorystore/NetworkAttributes;
+    new-instance v2, Landroid/net/ipmemorystore/NetworkAttributes;
 
-    invoke-direct {p1, p3}, Landroid/net/ipmemorystore/NetworkAttributes;-><init>(Landroid/net/ipmemorystore/NetworkAttributesParcelable;)V
+    invoke-direct {v2, p3}, Landroid/net/ipmemorystore/NetworkAttributes;-><init>(Landroid/net/ipmemorystore/NetworkAttributesParcelable;)V
 
     .line 42
     :goto_12
-    invoke-interface {v0, v1, p2, p1}, Landroid/net/ipmemorystore/OnNetworkAttributesRetrievedListener;->onNetworkAttributesRetrieved(Landroid/net/ipmemorystore/Status;Ljava/lang/String;Landroid/net/ipmemorystore/NetworkAttributes;)V
+    invoke-interface {v0, v1, p2, v2}, Landroid/net/ipmemorystore/OnNetworkAttributesRetrievedListener;->onNetworkAttributesRetrieved(Landroid/net/ipmemorystore/Status;Ljava/lang/String;Landroid/net/ipmemorystore/NetworkAttributes;)V
 
     .line 46
     :cond_15

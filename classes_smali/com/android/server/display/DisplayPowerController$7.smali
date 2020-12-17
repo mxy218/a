@@ -26,8 +26,9 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/display/DisplayPowerController;Ljava/io/PrintWriter;)V
     .registers 3
+    .param p1, "this$0"  # Lcom/android/server/display/DisplayPowerController;
 
-    .line 1762
+    .line 1939
     iput-object p1, p0, Lcom/android/server/display/DisplayPowerController$7;->this$0:Lcom/android/server/display/DisplayPowerController;
 
     iput-object p2, p0, Lcom/android/server/display/DisplayPowerController$7;->val$pw:Ljava/io/PrintWriter;
@@ -42,13 +43,13 @@
 .method public run()V
     .registers 3
 
-    .line 1765
+    .line 1942
     iget-object v0, p0, Lcom/android/server/display/DisplayPowerController$7;->this$0:Lcom/android/server/display/DisplayPowerController;
 
     iget-object v1, p0, Lcom/android/server/display/DisplayPowerController$7;->val$pw:Ljava/io/PrintWriter;
 
-    invoke-static {v0, v1}, Lcom/android/server/display/DisplayPowerController;->access$500(Lcom/android/server/display/DisplayPowerController;Ljava/io/PrintWriter;)V
+    invoke-static {v0, v1}, Lcom/android/server/display/DisplayPowerController;->access$800(Lcom/android/server/display/DisplayPowerController;Ljava/io/PrintWriter;)V
 
-    .line 1766
+    .line 1943
     return-void
 .end method

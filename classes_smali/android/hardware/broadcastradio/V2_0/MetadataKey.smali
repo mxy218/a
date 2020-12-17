@@ -49,6 +49,7 @@
 
 .method public static final dumpBitfield(I)Ljava/lang/String;
     .registers 5
+    .param p0, "o"  # I
 
     .line 133
     new-instance v0, Ljava/util/ArrayList;
@@ -56,309 +57,308 @@
     invoke-direct {v0}, Ljava/util/ArrayList;-><init>()V
 
     .line 134
-    nop
+    .local v0, "list":Ljava/util/ArrayList;, "Ljava/util/ArrayList<Ljava/lang/String;>;"
+    const/4 v1, 0x0
 
     .line 135
-    and-int/lit8 v1, p0, 0x1
+    .local v1, "flipped":I
+    and-int/lit8 v2, p0, 0x1
 
-    const/4 v2, 0x1
+    const/4 v3, 0x1
 
-    if-ne v1, v2, :cond_11
+    if-ne v2, v3, :cond_12
 
     .line 136
-    const-string v1, "RDS_PS"
+    const-string v2, "RDS_PS"
 
-    invoke-virtual {v0, v1}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
+    invoke-virtual {v0, v2}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
 
     .line 137
-    goto :goto_12
-
-    .line 135
-    :cond_11
-    const/4 v2, 0x0
+    or-int/lit8 v1, v1, 0x1
 
     .line 139
-    :goto_12
-    and-int/lit8 v1, p0, 0x2
+    :cond_12
+    and-int/lit8 v2, p0, 0x2
 
     const/4 v3, 0x2
 
-    if-ne v1, v3, :cond_1e
+    if-ne v2, v3, :cond_1e
 
     .line 140
-    const-string v1, "RDS_PTY"
+    const-string v2, "RDS_PTY"
 
-    invoke-virtual {v0, v1}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
+    invoke-virtual {v0, v2}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
 
     .line 141
-    or-int/lit8 v2, v2, 0x2
+    or-int/lit8 v1, v1, 0x2
 
     .line 143
     :cond_1e
-    and-int/lit8 v1, p0, 0x3
+    and-int/lit8 v2, p0, 0x3
 
     const/4 v3, 0x3
 
-    if-ne v1, v3, :cond_2a
+    if-ne v2, v3, :cond_2a
 
     .line 144
-    const-string v1, "RBDS_PTY"
+    const-string v2, "RBDS_PTY"
 
-    invoke-virtual {v0, v1}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
+    invoke-virtual {v0, v2}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
 
     .line 145
-    or-int/lit8 v2, v2, 0x3
+    or-int/lit8 v1, v1, 0x3
 
     .line 147
     :cond_2a
-    and-int/lit8 v1, p0, 0x4
+    and-int/lit8 v2, p0, 0x4
 
     const/4 v3, 0x4
 
-    if-ne v1, v3, :cond_36
+    if-ne v2, v3, :cond_36
 
     .line 148
-    const-string v1, "RDS_RT"
+    const-string v2, "RDS_RT"
 
-    invoke-virtual {v0, v1}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
+    invoke-virtual {v0, v2}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
 
     .line 149
-    or-int/lit8 v2, v2, 0x4
+    or-int/lit8 v1, v1, 0x4
 
     .line 151
     :cond_36
-    and-int/lit8 v1, p0, 0x5
+    and-int/lit8 v2, p0, 0x5
 
     const/4 v3, 0x5
 
-    if-ne v1, v3, :cond_42
+    if-ne v2, v3, :cond_42
 
     .line 152
-    const-string v1, "SONG_TITLE"
+    const-string v2, "SONG_TITLE"
 
-    invoke-virtual {v0, v1}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
+    invoke-virtual {v0, v2}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
 
     .line 153
-    or-int/lit8 v2, v2, 0x5
+    or-int/lit8 v1, v1, 0x5
 
     .line 155
     :cond_42
-    and-int/lit8 v1, p0, 0x6
+    and-int/lit8 v2, p0, 0x6
 
     const/4 v3, 0x6
 
-    if-ne v1, v3, :cond_4e
+    if-ne v2, v3, :cond_4e
 
     .line 156
-    const-string v1, "SONG_ARTIST"
+    const-string v2, "SONG_ARTIST"
 
-    invoke-virtual {v0, v1}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
+    invoke-virtual {v0, v2}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
 
     .line 157
-    or-int/lit8 v2, v2, 0x6
+    or-int/lit8 v1, v1, 0x6
 
     .line 159
     :cond_4e
-    and-int/lit8 v1, p0, 0x7
+    and-int/lit8 v2, p0, 0x7
 
     const/4 v3, 0x7
 
-    if-ne v1, v3, :cond_5a
+    if-ne v2, v3, :cond_5a
 
     .line 160
-    const-string v1, "SONG_ALBUM"
+    const-string v2, "SONG_ALBUM"
 
-    invoke-virtual {v0, v1}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
+    invoke-virtual {v0, v2}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
 
     .line 161
-    or-int/lit8 v2, v2, 0x7
+    or-int/lit8 v1, v1, 0x7
 
     .line 163
     :cond_5a
-    and-int/lit8 v1, p0, 0x8
+    and-int/lit8 v2, p0, 0x8
 
     const/16 v3, 0x8
 
-    if-ne v1, v3, :cond_67
+    if-ne v2, v3, :cond_67
 
     .line 164
-    const-string v1, "STATION_ICON"
+    const-string v2, "STATION_ICON"
 
-    invoke-virtual {v0, v1}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
+    invoke-virtual {v0, v2}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
 
     .line 165
-    or-int/lit8 v2, v2, 0x8
+    or-int/lit8 v1, v1, 0x8
 
     .line 167
     :cond_67
-    and-int/lit8 v1, p0, 0x9
+    and-int/lit8 v2, p0, 0x9
 
     const/16 v3, 0x9
 
-    if-ne v1, v3, :cond_74
+    if-ne v2, v3, :cond_74
 
     .line 168
-    const-string v1, "ALBUM_ART"
+    const-string v2, "ALBUM_ART"
 
-    invoke-virtual {v0, v1}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
+    invoke-virtual {v0, v2}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
 
     .line 169
-    or-int/lit8 v2, v2, 0x9
+    or-int/lit8 v1, v1, 0x9
 
     .line 171
     :cond_74
-    and-int/lit8 v1, p0, 0xa
+    and-int/lit8 v2, p0, 0xa
 
     const/16 v3, 0xa
 
-    if-ne v1, v3, :cond_81
+    if-ne v2, v3, :cond_81
 
     .line 172
-    const-string v1, "PROGRAM_NAME"
+    const-string v2, "PROGRAM_NAME"
 
-    invoke-virtual {v0, v1}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
+    invoke-virtual {v0, v2}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
 
     .line 173
-    or-int/lit8 v2, v2, 0xa
+    or-int/lit8 v1, v1, 0xa
 
     .line 175
     :cond_81
-    and-int/lit8 v1, p0, 0xb
+    and-int/lit8 v2, p0, 0xb
 
     const/16 v3, 0xb
 
-    if-ne v1, v3, :cond_8e
+    if-ne v2, v3, :cond_8e
 
     .line 176
-    const-string v1, "DAB_ENSEMBLE_NAME"
+    const-string v2, "DAB_ENSEMBLE_NAME"
 
-    invoke-virtual {v0, v1}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
+    invoke-virtual {v0, v2}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
 
     .line 177
-    or-int/lit8 v2, v2, 0xb
+    or-int/lit8 v1, v1, 0xb
 
     .line 179
     :cond_8e
-    and-int/lit8 v1, p0, 0xc
+    and-int/lit8 v2, p0, 0xc
 
     const/16 v3, 0xc
 
-    if-ne v1, v3, :cond_9b
+    if-ne v2, v3, :cond_9b
 
     .line 180
-    const-string v1, "DAB_ENSEMBLE_NAME_SHORT"
+    const-string v2, "DAB_ENSEMBLE_NAME_SHORT"
 
-    invoke-virtual {v0, v1}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
+    invoke-virtual {v0, v2}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
 
     .line 181
-    or-int/lit8 v2, v2, 0xc
+    or-int/lit8 v1, v1, 0xc
 
     .line 183
     :cond_9b
-    and-int/lit8 v1, p0, 0xd
+    and-int/lit8 v2, p0, 0xd
 
     const/16 v3, 0xd
 
-    if-ne v1, v3, :cond_a8
+    if-ne v2, v3, :cond_a8
 
     .line 184
-    const-string v1, "DAB_SERVICE_NAME"
+    const-string v2, "DAB_SERVICE_NAME"
 
-    invoke-virtual {v0, v1}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
+    invoke-virtual {v0, v2}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
 
     .line 185
-    or-int/lit8 v2, v2, 0xd
+    or-int/lit8 v1, v1, 0xd
 
     .line 187
     :cond_a8
-    and-int/lit8 v1, p0, 0xe
+    and-int/lit8 v2, p0, 0xe
 
     const/16 v3, 0xe
 
-    if-ne v1, v3, :cond_b5
+    if-ne v2, v3, :cond_b5
 
     .line 188
-    const-string v1, "DAB_SERVICE_NAME_SHORT"
+    const-string v2, "DAB_SERVICE_NAME_SHORT"
 
-    invoke-virtual {v0, v1}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
+    invoke-virtual {v0, v2}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
 
     .line 189
-    or-int/lit8 v2, v2, 0xe
+    or-int/lit8 v1, v1, 0xe
 
     .line 191
     :cond_b5
-    and-int/lit8 v1, p0, 0xf
+    and-int/lit8 v2, p0, 0xf
 
     const/16 v3, 0xf
 
-    if-ne v1, v3, :cond_c2
+    if-ne v2, v3, :cond_c2
 
     .line 192
-    const-string v1, "DAB_COMPONENT_NAME"
+    const-string v2, "DAB_COMPONENT_NAME"
 
-    invoke-virtual {v0, v1}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
+    invoke-virtual {v0, v2}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
 
     .line 193
-    or-int/lit8 v2, v2, 0xf
+    or-int/lit8 v1, v1, 0xf
 
     .line 195
     :cond_c2
-    and-int/lit8 v1, p0, 0x10
+    and-int/lit8 v2, p0, 0x10
 
     const/16 v3, 0x10
 
-    if-ne v1, v3, :cond_cf
+    if-ne v2, v3, :cond_cf
 
     .line 196
-    const-string v1, "DAB_COMPONENT_NAME_SHORT"
+    const-string v2, "DAB_COMPONENT_NAME_SHORT"
 
-    invoke-virtual {v0, v1}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
+    invoke-virtual {v0, v2}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
 
     .line 197
-    or-int/lit8 v2, v2, 0x10
+    or-int/lit8 v1, v1, 0x10
 
     .line 199
     :cond_cf
-    if-eq p0, v2, :cond_eb
+    if-eq p0, v1, :cond_eb
 
     .line 200
-    new-instance v1, Ljava/lang/StringBuilder;
+    new-instance v2, Ljava/lang/StringBuilder;
 
-    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
 
     const-string v3, "0x"
 
-    invoke-virtual {v1, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    not-int v2, v2
+    not-int v3, v1
 
-    and-int/2addr p0, v2
+    and-int/2addr v3, p0
 
-    invoke-static {p0}, Ljava/lang/Integer;->toHexString(I)Ljava/lang/String;
+    invoke-static {v3}, Ljava/lang/Integer;->toHexString(I)Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v3
 
-    invoke-virtual {v1, p0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v2
 
-    invoke-virtual {v0, p0}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
+    invoke-virtual {v0, v2}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
 
     .line 202
     :cond_eb
-    const-string p0, " | "
+    const-string v2, " | "
 
-    invoke-static {p0, v0}, Ljava/lang/String;->join(Ljava/lang/CharSequence;Ljava/lang/Iterable;)Ljava/lang/String;
+    invoke-static {v2, v0}, Ljava/lang/String;->join(Ljava/lang/CharSequence;Ljava/lang/Iterable;)Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v2
 
-    return-object p0
+    return-object v2
 .end method
 
 .method public static final toString(I)Ljava/lang/String;
     .registers 3
+    .param p0, "o"  # I
 
     .line 81
     const/4 v0, 0x1
@@ -366,9 +366,9 @@
     if-ne p0, v0, :cond_6
 
     .line 82
-    const-string p0, "RDS_PS"
+    const-string v0, "RDS_PS"
 
-    return-object p0
+    return-object v0
 
     .line 84
     :cond_6
@@ -377,9 +377,9 @@
     if-ne p0, v0, :cond_c
 
     .line 85
-    const-string p0, "RDS_PTY"
+    const-string v0, "RDS_PTY"
 
-    return-object p0
+    return-object v0
 
     .line 87
     :cond_c
@@ -388,9 +388,9 @@
     if-ne p0, v0, :cond_12
 
     .line 88
-    const-string p0, "RBDS_PTY"
+    const-string v0, "RBDS_PTY"
 
-    return-object p0
+    return-object v0
 
     .line 90
     :cond_12
@@ -399,9 +399,9 @@
     if-ne p0, v0, :cond_18
 
     .line 91
-    const-string p0, "RDS_RT"
+    const-string v0, "RDS_RT"
 
-    return-object p0
+    return-object v0
 
     .line 93
     :cond_18
@@ -410,9 +410,9 @@
     if-ne p0, v0, :cond_1e
 
     .line 94
-    const-string p0, "SONG_TITLE"
+    const-string v0, "SONG_TITLE"
 
-    return-object p0
+    return-object v0
 
     .line 96
     :cond_1e
@@ -421,9 +421,9 @@
     if-ne p0, v0, :cond_24
 
     .line 97
-    const-string p0, "SONG_ARTIST"
+    const-string v0, "SONG_ARTIST"
 
-    return-object p0
+    return-object v0
 
     .line 99
     :cond_24
@@ -432,9 +432,9 @@
     if-ne p0, v0, :cond_2a
 
     .line 100
-    const-string p0, "SONG_ALBUM"
+    const-string v0, "SONG_ALBUM"
 
-    return-object p0
+    return-object v0
 
     .line 102
     :cond_2a
@@ -443,9 +443,9 @@
     if-ne p0, v0, :cond_31
 
     .line 103
-    const-string p0, "STATION_ICON"
+    const-string v0, "STATION_ICON"
 
-    return-object p0
+    return-object v0
 
     .line 105
     :cond_31
@@ -454,9 +454,9 @@
     if-ne p0, v0, :cond_38
 
     .line 106
-    const-string p0, "ALBUM_ART"
+    const-string v0, "ALBUM_ART"
 
-    return-object p0
+    return-object v0
 
     .line 108
     :cond_38
@@ -465,9 +465,9 @@
     if-ne p0, v0, :cond_3f
 
     .line 109
-    const-string p0, "PROGRAM_NAME"
+    const-string v0, "PROGRAM_NAME"
 
-    return-object p0
+    return-object v0
 
     .line 111
     :cond_3f
@@ -476,9 +476,9 @@
     if-ne p0, v0, :cond_46
 
     .line 112
-    const-string p0, "DAB_ENSEMBLE_NAME"
+    const-string v0, "DAB_ENSEMBLE_NAME"
 
-    return-object p0
+    return-object v0
 
     .line 114
     :cond_46
@@ -487,9 +487,9 @@
     if-ne p0, v0, :cond_4d
 
     .line 115
-    const-string p0, "DAB_ENSEMBLE_NAME_SHORT"
+    const-string v0, "DAB_ENSEMBLE_NAME_SHORT"
 
-    return-object p0
+    return-object v0
 
     .line 117
     :cond_4d
@@ -498,9 +498,9 @@
     if-ne p0, v0, :cond_54
 
     .line 118
-    const-string p0, "DAB_SERVICE_NAME"
+    const-string v0, "DAB_SERVICE_NAME"
 
-    return-object p0
+    return-object v0
 
     .line 120
     :cond_54
@@ -509,9 +509,9 @@
     if-ne p0, v0, :cond_5b
 
     .line 121
-    const-string p0, "DAB_SERVICE_NAME_SHORT"
+    const-string v0, "DAB_SERVICE_NAME_SHORT"
 
-    return-object p0
+    return-object v0
 
     .line 123
     :cond_5b
@@ -520,9 +520,9 @@
     if-ne p0, v0, :cond_62
 
     .line 124
-    const-string p0, "DAB_COMPONENT_NAME"
+    const-string v0, "DAB_COMPONENT_NAME"
 
-    return-object p0
+    return-object v0
 
     .line 126
     :cond_62
@@ -531,9 +531,9 @@
     if-ne p0, v0, :cond_69
 
     .line 127
-    const-string p0, "DAB_COMPONENT_NAME_SHORT"
+    const-string v0, "DAB_COMPONENT_NAME_SHORT"
 
-    return-object p0
+    return-object v0
 
     .line 129
     :cond_69
@@ -547,13 +547,13 @@
 
     invoke-static {p0}, Ljava/lang/Integer;->toHexString(I)Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v1
 
-    invoke-virtual {v0, p0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v0
 
-    return-object p0
+    return-object v0
 .end method

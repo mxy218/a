@@ -15,7 +15,10 @@
 
 # direct methods
 .method public constructor <init>(IILandroid/view/DisplayInfo;)V
-    .registers 7
+    .registers 9
+    .param p1, "oldRotation"  # I
+    .param p2, "newRotation"  # I
+    .param p3, "info"  # Landroid/view/DisplayInfo;
 
     .line 48
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -58,47 +61,53 @@
     :cond_1f
     const/4 v1, 0x0
 
-    .line 53
     :cond_20
     :goto_20
-    if-eqz v1, :cond_25
+    move v0, v1
 
-    iget v0, p3, Landroid/view/DisplayInfo;->logicalWidth:I
+    .line 53
+    .local v0, "flipped":Z
+    if-eqz v0, :cond_26
 
-    goto :goto_27
+    iget v1, p3, Landroid/view/DisplayInfo;->logicalWidth:I
 
-    :cond_25
-    iget v0, p3, Landroid/view/DisplayInfo;->logicalHeight:I
+    goto :goto_28
+
+    :cond_26
+    iget v1, p3, Landroid/view/DisplayInfo;->logicalHeight:I
 
     .line 54
-    :goto_27
-    if-eqz v1, :cond_2c
+    .local v1, "h":I
+    :goto_28
+    if-eqz v0, :cond_2d
 
-    iget p3, p3, Landroid/view/DisplayInfo;->logicalHeight:I
+    iget v2, p3, Landroid/view/DisplayInfo;->logicalHeight:I
 
-    goto :goto_2e
+    goto :goto_2f
 
-    :cond_2c
-    iget p3, p3, Landroid/view/DisplayInfo;->logicalWidth:I
+    :cond_2d
+    iget v2, p3, Landroid/view/DisplayInfo;->logicalWidth:I
 
     .line 56
-    :goto_2e
-    new-instance v1, Landroid/graphics/Matrix;
+    .local v2, "w":I
+    :goto_2f
+    new-instance v3, Landroid/graphics/Matrix;
 
-    invoke-direct {v1}, Landroid/graphics/Matrix;-><init>()V
+    invoke-direct {v3}, Landroid/graphics/Matrix;-><init>()V
 
     .line 57
-    iget-object v2, p0, Lcom/android/server/wm/SeamlessRotator;->mTransform:Landroid/graphics/Matrix;
+    .local v3, "tmp":Landroid/graphics/Matrix;
+    iget-object v4, p0, Lcom/android/server/wm/SeamlessRotator;->mTransform:Landroid/graphics/Matrix;
 
-    invoke-static {p1, p3, v0, v2}, Lcom/android/server/wm/utils/CoordinateTransforms;->transformLogicalToPhysicalCoordinates(IIILandroid/graphics/Matrix;)V
+    invoke-static {p1, v2, v1, v4}, Lcom/android/server/wm/utils/CoordinateTransforms;->transformLogicalToPhysicalCoordinates(IIILandroid/graphics/Matrix;)V
 
     .line 58
-    invoke-static {p2, p3, v0, v1}, Lcom/android/server/wm/utils/CoordinateTransforms;->transformPhysicalToLogicalCoordinates(IIILandroid/graphics/Matrix;)V
+    invoke-static {p2, v2, v1, v3}, Lcom/android/server/wm/utils/CoordinateTransforms;->transformPhysicalToLogicalCoordinates(IIILandroid/graphics/Matrix;)V
 
     .line 59
-    iget-object p1, p0, Lcom/android/server/wm/SeamlessRotator;->mTransform:Landroid/graphics/Matrix;
+    iget-object v4, p0, Lcom/android/server/wm/SeamlessRotator;->mTransform:Landroid/graphics/Matrix;
 
-    invoke-virtual {p1, v1}, Landroid/graphics/Matrix;->postConcat(Landroid/graphics/Matrix;)Z
+    invoke-virtual {v4, v3}, Landroid/graphics/Matrix;->postConcat(Landroid/graphics/Matrix;)Z
 
     .line 60
     return-void
@@ -108,6 +117,7 @@
 # virtual methods
 .method public dump(Ljava/io/PrintWriter;)V
     .registers 3
+    .param p1, "pw"  # Ljava/io/PrintWriter;
 
     .line 110
     const-string v0, "{old="
@@ -136,7 +146,9 @@
 .end method
 
 .method public finish(Lcom/android/server/wm/WindowState;Z)V
-    .registers 7
+    .registers 8
+    .param p1, "win"  # Lcom/android/server/wm/WindowState;
+    .param p2, "timeout"  # Z
 
     .line 97
     iget-object v0, p0, Lcom/android/server/wm/SeamlessRotator;->mTransform:Landroid/graphics/Matrix;
@@ -149,6 +161,7 @@
     move-result-object v0
 
     .line 99
+    .local v0, "t":Landroid/view/SurfaceControl$Transaction;
     iget-object v1, p1, Lcom/android/server/wm/WindowState;->mSurfaceControl:Landroid/view/SurfaceControl;
 
     iget-object v2, p0, Lcom/android/server/wm/SeamlessRotator;->mTransform:Landroid/graphics/Matrix;
@@ -184,46 +197,46 @@
     if-nez p2, :cond_4f
 
     .line 102
-    iget-object p2, p1, Lcom/android/server/wm/WindowState;->mSurfaceControl:Landroid/view/SurfaceControl;
+    iget-object v1, p1, Lcom/android/server/wm/WindowState;->mSurfaceControl:Landroid/view/SurfaceControl;
 
-    iget-object v1, p1, Lcom/android/server/wm/WindowState;->mWinAnimator:Lcom/android/server/wm/WindowStateAnimator;
+    iget-object v2, p1, Lcom/android/server/wm/WindowState;->mWinAnimator:Lcom/android/server/wm/WindowStateAnimator;
 
-    iget-object v1, v1, Lcom/android/server/wm/WindowStateAnimator;->mSurfaceController:Lcom/android/server/wm/WindowSurfaceController;
+    iget-object v2, v2, Lcom/android/server/wm/WindowStateAnimator;->mSurfaceController:Lcom/android/server/wm/WindowSurfaceController;
 
     .line 103
-    invoke-virtual {v1}, Lcom/android/server/wm/WindowSurfaceController;->getHandle()Landroid/os/IBinder;
+    invoke-virtual {v2}, Lcom/android/server/wm/WindowSurfaceController;->getHandle()Landroid/os/IBinder;
 
-    move-result-object v1
+    move-result-object v2
 
     invoke-virtual {p1}, Lcom/android/server/wm/WindowState;->getFrameNumber()J
 
-    move-result-wide v2
+    move-result-wide v3
 
     .line 102
-    invoke-virtual {v0, p2, v1, v2, v3}, Landroid/view/SurfaceControl$Transaction;->deferTransactionUntil(Landroid/view/SurfaceControl;Landroid/os/IBinder;J)Landroid/view/SurfaceControl$Transaction;
+    invoke-virtual {v0, v1, v2, v3, v4}, Landroid/view/SurfaceControl$Transaction;->deferTransactionUntil(Landroid/view/SurfaceControl;Landroid/os/IBinder;J)Landroid/view/SurfaceControl$Transaction;
 
     .line 104
-    iget-object p2, p1, Lcom/android/server/wm/WindowState;->mWinAnimator:Lcom/android/server/wm/WindowStateAnimator;
-
-    iget-object p2, p2, Lcom/android/server/wm/WindowStateAnimator;->mSurfaceController:Lcom/android/server/wm/WindowSurfaceController;
-
-    iget-object p2, p2, Lcom/android/server/wm/WindowSurfaceController;->mSurfaceControl:Landroid/view/SurfaceControl;
-
     iget-object v1, p1, Lcom/android/server/wm/WindowState;->mWinAnimator:Lcom/android/server/wm/WindowStateAnimator;
 
     iget-object v1, v1, Lcom/android/server/wm/WindowStateAnimator;->mSurfaceController:Lcom/android/server/wm/WindowSurfaceController;
 
-    .line 105
-    invoke-virtual {v1}, Lcom/android/server/wm/WindowSurfaceController;->getHandle()Landroid/os/IBinder;
+    iget-object v1, v1, Lcom/android/server/wm/WindowSurfaceController;->mSurfaceControl:Landroid/view/SurfaceControl;
 
-    move-result-object v1
+    iget-object v2, p1, Lcom/android/server/wm/WindowState;->mWinAnimator:Lcom/android/server/wm/WindowStateAnimator;
+
+    iget-object v2, v2, Lcom/android/server/wm/WindowStateAnimator;->mSurfaceController:Lcom/android/server/wm/WindowSurfaceController;
+
+    .line 105
+    invoke-virtual {v2}, Lcom/android/server/wm/WindowSurfaceController;->getHandle()Landroid/os/IBinder;
+
+    move-result-object v2
 
     invoke-virtual {p1}, Lcom/android/server/wm/WindowState;->getFrameNumber()J
 
-    move-result-wide v2
+    move-result-wide v3
 
     .line 104
-    invoke-virtual {v0, p2, v1, v2, v3}, Landroid/view/SurfaceControl$Transaction;->deferTransactionUntil(Landroid/view/SurfaceControl;Landroid/os/IBinder;J)Landroid/view/SurfaceControl$Transaction;
+    invoke-virtual {v0, v1, v2, v3, v4}, Landroid/view/SurfaceControl$Transaction;->deferTransactionUntil(Landroid/view/SurfaceControl;Landroid/os/IBinder;J)Landroid/view/SurfaceControl$Transaction;
 
     .line 107
     :cond_4f
@@ -248,6 +261,7 @@
     invoke-direct {v0}, Ljava/io/StringWriter;-><init>()V
 
     .line 117
+    .local v0, "sw":Ljava/io/StringWriter;
     new-instance v1, Ljava/io/PrintWriter;
 
     invoke-direct {v1, v0}, Ljava/io/PrintWriter;-><init>(Ljava/io/Writer;)V
@@ -265,19 +279,21 @@
 
     invoke-virtual {v0}, Ljava/io/StringWriter;->toString()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v2
 
-    invoke-virtual {v1, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v1
 
-    return-object v0
+    return-object v1
 .end method
 
 .method public unrotate(Landroid/view/SurfaceControl$Transaction;Lcom/android/server/wm/WindowState;)V
     .registers 7
+    .param p1, "transaction"  # Landroid/view/SurfaceControl$Transaction;
+    .param p2, "win"  # Lcom/android/server/wm/WindowState;
 
     .line 67
     invoke-virtual {p2}, Lcom/android/server/wm/WindowState;->getSurfaceControl()Landroid/view/SurfaceControl;
@@ -316,6 +332,7 @@
     aput v1, v0, v3
 
     .line 71
+    .local v0, "winSurfacePos":[F
     iget-object v1, p0, Lcom/android/server/wm/SeamlessRotator;->mTransform:Landroid/graphics/Matrix;
 
     invoke-virtual {v1, v0}, Landroid/graphics/Matrix;->mapPoints([F)V
@@ -323,13 +340,13 @@
     .line 72
     invoke-virtual {p2}, Lcom/android/server/wm/WindowState;->getSurfaceControl()Landroid/view/SurfaceControl;
 
-    move-result-object p2
+    move-result-object v1
 
-    aget v1, v0, v2
+    aget v2, v0, v2
 
-    aget v0, v0, v3
+    aget v3, v0, v3
 
-    invoke-virtual {p1, p2, v1, v0}, Landroid/view/SurfaceControl$Transaction;->setPosition(Landroid/view/SurfaceControl;FF)Landroid/view/SurfaceControl$Transaction;
+    invoke-virtual {p1, v1, v2, v3}, Landroid/view/SurfaceControl$Transaction;->setPosition(Landroid/view/SurfaceControl;FF)Landroid/view/SurfaceControl$Transaction;
 
     .line 73
     return-void

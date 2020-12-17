@@ -41,7 +41,7 @@
 .method static constructor <clinit>()V
     .registers 1
 
-    .line 36
+    .line 35
     sget-object v0, Lcom/android/server/wm/-$$Lambda$RunningTasks$B8bQN-i7MO0XIePhmkVnejRGNp0;->INSTANCE:Lcom/android/server/wm/-$$Lambda$RunningTasks$B8bQN-i7MO0XIePhmkVnejRGNp0;
 
     sput-object v0, Lcom/android/server/wm/RunningTasks;->LAST_ACTIVE_TIME_COMPARATOR:Ljava/util/Comparator;
@@ -52,10 +52,10 @@
 .method constructor <init>()V
     .registers 3
 
-    .line 33
+    .line 32
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
-    .line 39
+    .line 38
     new-instance v0, Ljava/util/TreeSet;
 
     sget-object v1, Lcom/android/server/wm/RunningTasks;->LAST_ACTIVE_TIME_COMPARATOR:Ljava/util/Comparator;
@@ -64,7 +64,7 @@
 
     iput-object v0, p0, Lcom/android/server/wm/RunningTasks;->mTmpSortedSet:Ljava/util/TreeSet;
 
-    .line 40
+    .line 39
     new-instance v0, Ljava/util/ArrayList;
 
     invoke-direct {v0}, Ljava/util/ArrayList;-><init>()V
@@ -75,54 +75,61 @@
 .end method
 
 .method private createRunningTaskInfo(Lcom/android/server/wm/TaskRecord;)Landroid/app/ActivityManager$RunningTaskInfo;
-    .registers 3
+    .registers 4
+    .param p1, "task"  # Lcom/android/server/wm/TaskRecord;
 
-    .line 81
+    .line 80
     new-instance v0, Landroid/app/ActivityManager$RunningTaskInfo;
 
     invoke-direct {v0}, Landroid/app/ActivityManager$RunningTaskInfo;-><init>()V
 
-    .line 82
+    .line 81
+    .local v0, "rti":Landroid/app/ActivityManager$RunningTaskInfo;
     invoke-virtual {p1, v0}, Lcom/android/server/wm/TaskRecord;->fillTaskInfo(Landroid/app/TaskInfo;)V
 
+    .line 83
+    iget v1, v0, Landroid/app/ActivityManager$RunningTaskInfo;->taskId:I
+
+    iput v1, v0, Landroid/app/ActivityManager$RunningTaskInfo;->id:I
+
     .line 84
-    iget p1, v0, Landroid/app/ActivityManager$RunningTaskInfo;->taskId:I
-
-    iput p1, v0, Landroid/app/ActivityManager$RunningTaskInfo;->id:I
-
-    .line 85
     return-object v0
 .end method
 
 .method static synthetic lambda$static$0(Lcom/android/server/wm/TaskRecord;Lcom/android/server/wm/TaskRecord;)I
-    .registers 4
+    .registers 6
+    .param p0, "o1"  # Lcom/android/server/wm/TaskRecord;
+    .param p1, "o2"  # Lcom/android/server/wm/TaskRecord;
 
-    .line 37
+    .line 36
     iget-wide v0, p1, Lcom/android/server/wm/TaskRecord;->lastActiveTime:J
 
-    iget-wide p0, p0, Lcom/android/server/wm/TaskRecord;->lastActiveTime:J
+    iget-wide v2, p0, Lcom/android/server/wm/TaskRecord;->lastActiveTime:J
 
-    sub-long/2addr v0, p0
+    sub-long/2addr v0, v2
 
     invoke-static {v0, v1}, Ljava/lang/Long;->signum(J)I
 
-    move-result p0
+    move-result v0
 
-    return p0
+    return v0
 .end method
 
 
 # virtual methods
-.method getTasks(ILjava/util/List;IILjava/util/ArrayList;IZZLandroid/util/ArraySet;)V
-    .registers 24
-    .param p3  # I
+.method getTasks(ILjava/util/List;IILjava/util/ArrayList;IZ)V
+    .registers 21
+    .param p1, "maxNum"  # I
+    .param p3, "ignoreActivityType"  # I
         .annotation build Landroid/app/WindowConfiguration$ActivityType;
         .end annotation
     .end param
-    .param p4  # I
+    .param p4, "ignoreWindowingMode"  # I
         .annotation build Landroid/app/WindowConfiguration$WindowingMode;
         .end annotation
     .end param
+    .param p6, "callingUid"  # I
+    .param p7, "allowed"  # Z
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(I",
@@ -131,39 +138,40 @@
             ">;II",
             "Ljava/util/ArrayList<",
             "Lcom/android/server/wm/ActivityDisplay;",
-            ">;IZZ",
-            "Landroid/util/ArraySet<",
-            "Ljava/lang/Integer;",
-            ">;)V"
+            ">;IZ)V"
         }
     .end annotation
 
-    .line 46
+    .line 45
+    .local p2, "list":Ljava/util/List;, "Ljava/util/List<Landroid/app/ActivityManager$RunningTaskInfo;>;"
+    .local p5, "activityDisplays":Ljava/util/ArrayList;, "Ljava/util/ArrayList<Lcom/android/server/wm/ActivityDisplay;>;"
     move-object v0, p0
 
     if-gtz p1, :cond_4
 
-    .line 47
+    .line 46
     return-void
 
-    .line 51
+    .line 50
     :cond_4
     iget-object v1, v0, Lcom/android/server/wm/RunningTasks;->mTmpSortedSet:Ljava/util/TreeSet;
 
     invoke-virtual {v1}, Ljava/util/TreeSet;->clear()V
 
-    .line 52
+    .line 51
     invoke-virtual/range {p5 .. p5}, Ljava/util/ArrayList;->size()I
 
     move-result v1
 
-    .line 53
+    .line 52
+    .local v1, "numDisplays":I
     const/4 v2, 0x0
 
+    .local v2, "displayNdx":I
     :goto_e
-    if-ge v2, v1, :cond_47
+    if-ge v2, v1, :cond_44
 
-    .line 54
+    .line 53
     move-object/from16 v3, p5
 
     invoke-virtual {v3, v2}, Ljava/util/ArrayList;->get(I)Ljava/lang/Object;
@@ -172,28 +180,33 @@
 
     check-cast v4, Lcom/android/server/wm/ActivityDisplay;
 
-    .line 55
+    .line 54
+    .local v4, "display":Lcom/android/server/wm/ActivityDisplay;
     invoke-virtual {v4}, Lcom/android/server/wm/ActivityDisplay;->getChildCount()I
 
     move-result v5
 
     add-int/lit8 v5, v5, -0x1
 
+    .local v5, "stackNdx":I
     :goto_1e
-    if-ltz v5, :cond_44
+    if-ltz v5, :cond_41
 
-    .line 56
+    .line 55
     invoke-virtual {v4, v5}, Lcom/android/server/wm/ActivityDisplay;->getChildAt(I)Lcom/android/server/wm/ActivityStack;
 
-    move-result-object v6
+    move-result-object v12
+
+    .line 56
+    .local v12, "stack":Lcom/android/server/wm/ActivityStack;
+    iget-object v6, v0, Lcom/android/server/wm/RunningTasks;->mTmpStackTasks:Ljava/util/ArrayList;
+
+    invoke-virtual {v6}, Ljava/util/ArrayList;->clear()V
 
     .line 57
     iget-object v7, v0, Lcom/android/server/wm/RunningTasks;->mTmpStackTasks:Ljava/util/ArrayList;
 
-    invoke-virtual {v7}, Ljava/util/ArrayList;->clear()V
-
-    .line 58
-    iget-object v7, v0, Lcom/android/server/wm/RunningTasks;->mTmpStackTasks:Ljava/util/ArrayList;
+    move-object v6, v12
 
     move/from16 v8, p3
 
@@ -203,79 +216,93 @@
 
     move/from16 v11, p7
 
-    move/from16 v12, p8
+    invoke-virtual/range {v6 .. v11}, Lcom/android/server/wm/ActivityStack;->getRunningTasks(Ljava/util/List;IIIZ)V
 
-    move-object/from16 v13, p9
-
-    invoke-virtual/range {v6 .. v13}, Lcom/android/server/wm/ActivityStack;->getRunningTasks(Ljava/util/List;IIIZZLandroid/util/ArraySet;)V
-
-    .line 60
+    .line 59
     iget-object v6, v0, Lcom/android/server/wm/RunningTasks;->mTmpSortedSet:Ljava/util/TreeSet;
 
     iget-object v7, v0, Lcom/android/server/wm/RunningTasks;->mTmpStackTasks:Ljava/util/ArrayList;
 
     invoke-virtual {v6, v7}, Ljava/util/TreeSet;->addAll(Ljava/util/Collection;)Z
 
-    .line 55
+    .line 54
+    .end local v12  # "stack":Lcom/android/server/wm/ActivityStack;
     add-int/lit8 v5, v5, -0x1
 
     goto :goto_1e
 
-    .line 53
-    :cond_44
+    .line 52
+    .end local v4  # "display":Lcom/android/server/wm/ActivityDisplay;
+    .end local v5  # "stackNdx":I
+    :cond_41
     add-int/lit8 v2, v2, 0x1
 
     goto :goto_e
 
+    :cond_44
+    move-object/from16 v3, p5
+
+    .line 64
+    .end local v2  # "displayNdx":I
+    iget-object v2, v0, Lcom/android/server/wm/RunningTasks;->mTmpSortedSet:Ljava/util/TreeSet;
+
+    invoke-virtual {v2}, Ljava/util/TreeSet;->iterator()Ljava/util/Iterator;
+
+    move-result-object v2
+
+    move v4, p1
+
     .line 65
-    :cond_47
-    iget-object v1, v0, Lcom/android/server/wm/RunningTasks;->mTmpSortedSet:Ljava/util/TreeSet;
+    .end local p1  # "maxNum":I
+    .local v2, "iter":Ljava/util/Iterator;, "Ljava/util/Iterator<Lcom/android/server/wm/TaskRecord;>;"
+    .local v4, "maxNum":I
+    :goto_4d
+    invoke-interface {v2}, Ljava/util/Iterator;->hasNext()Z
 
-    invoke-virtual {v1}, Ljava/util/TreeSet;->iterator()Ljava/util/Iterator;
+    move-result v5
 
-    move-result-object v1
-
-    move v2, p1
+    if-eqz v5, :cond_69
 
     .line 66
-    :goto_4e
-    invoke-interface {v1}, Ljava/util/Iterator;->hasNext()Z
-
-    move-result v3
-
-    if-eqz v3, :cond_69
+    if-nez v4, :cond_57
 
     .line 67
-    if-nez v2, :cond_57
+    move-object v7, p2
 
-    .line 68
-    goto :goto_69
+    goto :goto_6a
+
+    .line 70
+    :cond_57
+    invoke-interface {v2}, Ljava/util/Iterator;->next()Ljava/lang/Object;
+
+    move-result-object v5
+
+    check-cast v5, Lcom/android/server/wm/TaskRecord;
 
     .line 71
-    :cond_57
-    invoke-interface {v1}, Ljava/util/Iterator;->next()Ljava/lang/Object;
+    .local v5, "task":Lcom/android/server/wm/TaskRecord;
+    invoke-direct {p0, v5}, Lcom/android/server/wm/RunningTasks;->createRunningTaskInfo(Lcom/android/server/wm/TaskRecord;)Landroid/app/ActivityManager$RunningTaskInfo;
 
-    move-result-object v3
+    move-result-object v6
 
-    check-cast v3, Lcom/android/server/wm/TaskRecord;
+    move-object v7, p2
+
+    invoke-interface {p2, v6}, Ljava/util/List;->add(Ljava/lang/Object;)Z
 
     .line 72
-    invoke-direct {p0, v3}, Lcom/android/server/wm/RunningTasks;->createRunningTaskInfo(Lcom/android/server/wm/TaskRecord;)Landroid/app/ActivityManager$RunningTaskInfo;
+    nop
 
-    move-result-object v3
-
-    move-object/from16 v4, p2
-
-    invoke-interface {v4, v3}, Ljava/util/List;->add(Ljava/lang/Object;)Z
+    .end local v5  # "task":Lcom/android/server/wm/TaskRecord;
+    add-int/lit8 v4, v4, -0x1
 
     .line 73
-    add-int/lit8 v2, v2, -0x1
+    goto :goto_4d
+
+    .line 65
+    :cond_69
+    move-object v7, p2
 
     .line 74
-    goto :goto_4e
-
-    .line 75
-    :cond_69
-    :goto_69
+    :goto_6a
     return-void
 .end method

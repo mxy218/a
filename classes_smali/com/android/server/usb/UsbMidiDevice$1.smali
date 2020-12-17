@@ -24,6 +24,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/usb/UsbMidiDevice;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/usb/UsbMidiDevice;
 
     .line 77
     iput-object p1, p0, Lcom/android/server/usb/UsbMidiDevice$1;->this$0:Lcom/android/server/usb/UsbMidiDevice;
@@ -43,157 +44,157 @@
 .end method
 
 .method public onDeviceStatusChanged(Landroid/media/midi/MidiDeviceServer;Landroid/media/midi/MidiDeviceStatus;)V
-    .registers 8
+    .registers 9
+    .param p1, "server"  # Landroid/media/midi/MidiDeviceServer;
+    .param p2, "status"  # Landroid/media/midi/MidiDeviceStatus;
 
     .line 81
     invoke-virtual {p2}, Landroid/media/midi/MidiDeviceStatus;->getDeviceInfo()Landroid/media/midi/MidiDeviceInfo;
 
-    move-result-object p1
+    move-result-object v0
 
     .line 82
-    invoke-virtual {p1}, Landroid/media/midi/MidiDeviceInfo;->getInputPortCount()I
+    .local v0, "deviceInfo":Landroid/media/midi/MidiDeviceInfo;
+    invoke-virtual {v0}, Landroid/media/midi/MidiDeviceInfo;->getInputPortCount()I
 
-    move-result v0
+    move-result v1
 
     .line 83
-    invoke-virtual {p1}, Landroid/media/midi/MidiDeviceInfo;->getOutputPortCount()I
-
-    move-result p1
-
-    .line 84
-    nop
-
-    .line 86
-    const/4 v1, 0x0
-
-    move v2, v1
-
-    :goto_f
-    const/4 v3, 0x1
-
-    if-ge v2, v0, :cond_1e
-
-    .line 87
-    invoke-virtual {p2, v2}, Landroid/media/midi/MidiDeviceStatus;->isInputPortOpen(I)Z
-
-    move-result v4
-
-    if-eqz v4, :cond_1b
-
-    .line 88
-    nop
-
-    .line 89
-    move v0, v3
-
-    goto :goto_1f
-
-    .line 86
-    :cond_1b
-    add-int/lit8 v2, v2, 0x1
-
-    goto :goto_f
-
-    :cond_1e
-    move v0, v1
-
-    .line 93
-    :goto_1f
-    if-nez v0, :cond_30
-
-    .line 94
-    nop
-
-    :goto_22
-    if-ge v1, p1, :cond_30
-
-    .line 95
-    invoke-virtual {p2, v1}, Landroid/media/midi/MidiDeviceStatus;->getOutputPortOpenCount(I)I
+    .local v1, "inputPorts":I
+    invoke-virtual {v0}, Landroid/media/midi/MidiDeviceInfo;->getOutputPortCount()I
 
     move-result v2
 
-    if-lez v2, :cond_2d
+    .line 84
+    .local v2, "outputPorts":I
+    const/4 v3, 0x0
 
-    .line 96
-    nop
+    .line 86
+    .local v3, "hasOpenPorts":Z
+    const/4 v4, 0x0
 
-    .line 97
-    move v0, v3
+    .local v4, "i":I
+    :goto_e
+    if-ge v4, v1, :cond_1b
 
-    goto :goto_30
+    .line 87
+    invoke-virtual {p2, v4}, Landroid/media/midi/MidiDeviceStatus;->isInputPortOpen(I)Z
+
+    move-result v5
+
+    if-eqz v5, :cond_18
+
+    .line 88
+    const/4 v3, 0x1
+
+    .line 89
+    goto :goto_1b
+
+    .line 86
+    :cond_18
+    add-int/lit8 v4, v4, 0x1
+
+    goto :goto_e
+
+    .line 93
+    .end local v4  # "i":I
+    :cond_1b
+    :goto_1b
+    if-nez v3, :cond_2b
 
     .line 94
-    :cond_2d
-    add-int/lit8 v1, v1, 0x1
+    const/4 v4, 0x0
 
-    goto :goto_22
+    .restart local v4  # "i":I
+    :goto_1e
+    if-ge v4, v2, :cond_2b
+
+    .line 95
+    invoke-virtual {p2, v4}, Landroid/media/midi/MidiDeviceStatus;->getOutputPortOpenCount(I)I
+
+    move-result v5
+
+    if-lez v5, :cond_28
+
+    .line 96
+    const/4 v3, 0x1
+
+    .line 97
+    goto :goto_2b
+
+    .line 94
+    :cond_28
+    add-int/lit8 v4, v4, 0x1
+
+    goto :goto_1e
 
     .line 102
-    :cond_30
-    :goto_30
-    iget-object p1, p0, Lcom/android/server/usb/UsbMidiDevice$1;->this$0:Lcom/android/server/usb/UsbMidiDevice;
+    .end local v4  # "i":I
+    :cond_2b
+    :goto_2b
+    iget-object v4, p0, Lcom/android/server/usb/UsbMidiDevice$1;->this$0:Lcom/android/server/usb/UsbMidiDevice;
 
-    invoke-static {p1}, Lcom/android/server/usb/UsbMidiDevice;->access$000(Lcom/android/server/usb/UsbMidiDevice;)Ljava/lang/Object;
+    invoke-static {v4}, Lcom/android/server/usb/UsbMidiDevice;->access$000(Lcom/android/server/usb/UsbMidiDevice;)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v4
 
-    monitor-enter p1
+    monitor-enter v4
 
     .line 103
-    if-eqz v0, :cond_49
+    if-eqz v3, :cond_44
 
-    :try_start_39
-    iget-object p2, p0, Lcom/android/server/usb/UsbMidiDevice$1;->this$0:Lcom/android/server/usb/UsbMidiDevice;
+    :try_start_34
+    iget-object v5, p0, Lcom/android/server/usb/UsbMidiDevice$1;->this$0:Lcom/android/server/usb/UsbMidiDevice;
 
-    invoke-static {p2}, Lcom/android/server/usb/UsbMidiDevice;->access$100(Lcom/android/server/usb/UsbMidiDevice;)Z
+    invoke-static {v5}, Lcom/android/server/usb/UsbMidiDevice;->access$100(Lcom/android/server/usb/UsbMidiDevice;)Z
 
-    move-result p2
+    move-result v5
 
-    if-nez p2, :cond_49
+    if-nez v5, :cond_44
 
     .line 104
-    iget-object p2, p0, Lcom/android/server/usb/UsbMidiDevice$1;->this$0:Lcom/android/server/usb/UsbMidiDevice;
+    iget-object v5, p0, Lcom/android/server/usb/UsbMidiDevice$1;->this$0:Lcom/android/server/usb/UsbMidiDevice;
 
-    invoke-static {p2}, Lcom/android/server/usb/UsbMidiDevice;->access$200(Lcom/android/server/usb/UsbMidiDevice;)Z
+    invoke-static {v5}, Lcom/android/server/usb/UsbMidiDevice;->access$200(Lcom/android/server/usb/UsbMidiDevice;)Z
 
-    goto :goto_58
+    goto :goto_53
 
     .line 108
-    :catchall_47
-    move-exception p2
+    :catchall_42
+    move-exception v5
 
-    goto :goto_5a
+    goto :goto_55
 
     .line 105
-    :cond_49
-    if-nez v0, :cond_58
+    :cond_44
+    if-nez v3, :cond_53
 
-    iget-object p2, p0, Lcom/android/server/usb/UsbMidiDevice$1;->this$0:Lcom/android/server/usb/UsbMidiDevice;
+    iget-object v5, p0, Lcom/android/server/usb/UsbMidiDevice$1;->this$0:Lcom/android/server/usb/UsbMidiDevice;
 
-    invoke-static {p2}, Lcom/android/server/usb/UsbMidiDevice;->access$100(Lcom/android/server/usb/UsbMidiDevice;)Z
+    invoke-static {v5}, Lcom/android/server/usb/UsbMidiDevice;->access$100(Lcom/android/server/usb/UsbMidiDevice;)Z
 
-    move-result p2
+    move-result v5
 
-    if-eqz p2, :cond_58
+    if-eqz v5, :cond_53
 
     .line 106
-    iget-object p2, p0, Lcom/android/server/usb/UsbMidiDevice$1;->this$0:Lcom/android/server/usb/UsbMidiDevice;
+    iget-object v5, p0, Lcom/android/server/usb/UsbMidiDevice$1;->this$0:Lcom/android/server/usb/UsbMidiDevice;
 
-    invoke-static {p2}, Lcom/android/server/usb/UsbMidiDevice;->access$300(Lcom/android/server/usb/UsbMidiDevice;)V
+    invoke-static {v5}, Lcom/android/server/usb/UsbMidiDevice;->access$300(Lcom/android/server/usb/UsbMidiDevice;)V
 
     .line 108
-    :cond_58
-    :goto_58
-    monitor-exit p1
+    :cond_53
+    :goto_53
+    monitor-exit v4
 
     .line 109
     return-void
 
     .line 108
-    :goto_5a
-    monitor-exit p1
-    :try_end_5b
-    .catchall {:try_start_39 .. :try_end_5b} :catchall_47
+    :goto_55
+    monitor-exit v4
+    :try_end_56
+    .catchall {:try_start_34 .. :try_end_56} :catchall_42
 
-    throw p2
+    throw v5
 .end method

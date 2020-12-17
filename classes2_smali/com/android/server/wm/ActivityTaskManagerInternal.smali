@@ -41,7 +41,7 @@
 .method public constructor <init>()V
     .registers 1
 
-    .line 54
+    .line 55
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
     return-void
@@ -191,6 +191,9 @@
 .method public abstract isCallerRecents(I)Z
 .end method
 
+.method public abstract isControllerAMonkey()Z
+.end method
+
 .method public abstract isFactoryTestProcess(Lcom/android/server/wm/WindowProcessController;)Z
 .end method
 
@@ -237,9 +240,6 @@
 .end method
 
 .method public abstract notifyLockedProfile(II)V
-.end method
-
-.method public abstract notifySingleTaskDisplayDrawn(I)V
 .end method
 
 .method public abstract onActiveUidsCleared()V

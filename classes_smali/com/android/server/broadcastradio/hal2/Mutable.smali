@@ -29,6 +29,7 @@
     .registers 2
 
     .line 34
+    .local p0, "this":Lcom/android/server/broadcastradio/hal2/Mutable;, "Lcom/android/server/broadcastradio/hal2/Mutable<TE;>;"
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
     .line 35
@@ -49,6 +50,8 @@
     .end annotation
 
     .line 43
+    .local p0, "this":Lcom/android/server/broadcastradio/hal2/Mutable;, "Lcom/android/server/broadcastradio/hal2/Mutable<TE;>;"
+    .local p1, "value":Ljava/lang/Object;, "TE;"
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
     .line 44

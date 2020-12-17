@@ -35,6 +35,8 @@
 
 .method synthetic constructor <init>(Lcom/android/server/connectivity/PermissionMonitor;Lcom/android/server/connectivity/PermissionMonitor$1;)V
     .registers 3
+    .param p1, "x0"  # Lcom/android/server/connectivity/PermissionMonitor;
+    .param p2, "x1"  # Lcom/android/server/connectivity/PermissionMonitor$1;
 
     .line 105
     invoke-direct {p0, p1}, Lcom/android/server/connectivity/PermissionMonitor$PackageListObserver;-><init>(Lcom/android/server/connectivity/PermissionMonitor;)V
@@ -43,127 +45,120 @@
 .end method
 
 .method private getPermissionForUid(I)I
-    .registers 7
+    .registers 10
+    .param p1, "uid"  # I
 
     .line 108
-    nop
+    const/4 v0, 0x0
 
     .line 111
-    iget-object v0, p0, Lcom/android/server/connectivity/PermissionMonitor$PackageListObserver;->this$0:Lcom/android/server/connectivity/PermissionMonitor;
+    .local v0, "permission":I
+    iget-object v1, p0, Lcom/android/server/connectivity/PermissionMonitor$PackageListObserver;->this$0:Lcom/android/server/connectivity/PermissionMonitor;
 
-    invoke-static {v0}, Lcom/android/server/connectivity/PermissionMonitor;->access$000(Lcom/android/server/connectivity/PermissionMonitor;)Landroid/content/pm/PackageManager;
+    invoke-static {v1}, Lcom/android/server/connectivity/PermissionMonitor;->access$000(Lcom/android/server/connectivity/PermissionMonitor;)Landroid/content/pm/PackageManager;
 
-    move-result-object v0
+    move-result-object v1
 
-    invoke-virtual {v0, p1}, Landroid/content/pm/PackageManager;->getPackagesForUid(I)[Ljava/lang/String;
+    invoke-virtual {v1, p1}, Landroid/content/pm/PackageManager;->getPackagesForUid(I)[Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v1
 
     .line 112
-    if-eqz p1, :cond_2f
+    .local v1, "packages":[Ljava/lang/String;
+    if-eqz v1, :cond_2e
 
-    array-length v0, p1
+    array-length v2, v1
 
-    if-lez v0, :cond_2f
+    if-lez v2, :cond_2e
 
     .line 113
-    array-length v0, p1
+    array-length v2, v1
 
-    const/4 v1, 0x0
+    const/4 v3, 0x0
 
-    move v2, v1
+    :goto_12
+    if-ge v3, v2, :cond_2f
 
-    :goto_13
-    if-ge v1, v0, :cond_30
-
-    aget-object v3, p1, v1
+    aget-object v4, v1, v3
 
     .line 114
-    iget-object v4, p0, Lcom/android/server/connectivity/PermissionMonitor$PackageListObserver;->this$0:Lcom/android/server/connectivity/PermissionMonitor;
+    .local v4, "name":Ljava/lang/String;
+    iget-object v5, p0, Lcom/android/server/connectivity/PermissionMonitor$PackageListObserver;->this$0:Lcom/android/server/connectivity/PermissionMonitor;
 
-    invoke-static {v4, v3}, Lcom/android/server/connectivity/PermissionMonitor;->access$100(Lcom/android/server/connectivity/PermissionMonitor;Ljava/lang/String;)Landroid/content/pm/PackageInfo;
+    invoke-static {v5, v4}, Lcom/android/server/connectivity/PermissionMonitor;->access$100(Lcom/android/server/connectivity/PermissionMonitor;Ljava/lang/String;)Landroid/content/pm/PackageInfo;
 
-    move-result-object v3
+    move-result-object v5
 
     .line 115
-    if-eqz v3, :cond_2c
+    .local v5, "app":Landroid/content/pm/PackageInfo;
+    if-eqz v5, :cond_2b
 
-    iget-object v4, v3, Landroid/content/pm/PackageInfo;->requestedPermissions:[Ljava/lang/String;
+    iget-object v6, v5, Landroid/content/pm/PackageInfo;->requestedPermissions:[Ljava/lang/String;
 
-    if-eqz v4, :cond_2c
+    if-eqz v6, :cond_2b
 
     .line 116
-    iget-object v4, v3, Landroid/content/pm/PackageInfo;->requestedPermissions:[Ljava/lang/String;
+    iget-object v6, v5, Landroid/content/pm/PackageInfo;->requestedPermissions:[Ljava/lang/String;
 
-    iget-object v3, v3, Landroid/content/pm/PackageInfo;->requestedPermissionsFlags:[I
+    iget-object v7, v5, Landroid/content/pm/PackageInfo;->requestedPermissionsFlags:[I
 
-    invoke-static {v4, v3}, Lcom/android/server/connectivity/PermissionMonitor;->access$200([Ljava/lang/String;[I)I
+    invoke-static {v6, v7}, Lcom/android/server/connectivity/PermissionMonitor;->access$200([Ljava/lang/String;[I)I
 
-    move-result v3
+    move-result v6
 
-    or-int/2addr v2, v3
+    or-int/2addr v0, v6
 
     .line 113
-    :cond_2c
-    add-int/lit8 v1, v1, 0x1
+    .end local v4  # "name":Ljava/lang/String;
+    .end local v5  # "app":Landroid/content/pm/PackageInfo;
+    :cond_2b
+    add-int/lit8 v3, v3, 0x1
 
-    goto :goto_13
+    goto :goto_12
 
     .line 122
-    :cond_2f
-    const/4 v2, -0x1
+    :cond_2e
+    const/4 v0, -0x1
 
     .line 124
-    :cond_30
-    return v2
+    :cond_2f
+    return v0
 .end method
 
 
 # virtual methods
 .method public onPackageAdded(Ljava/lang/String;I)V
-    .registers 4
+    .registers 5
+    .param p1, "packageName"  # Ljava/lang/String;
+    .param p2, "uid"  # I
 
     .line 129
-    iget-object p1, p0, Lcom/android/server/connectivity/PermissionMonitor$PackageListObserver;->this$0:Lcom/android/server/connectivity/PermissionMonitor;
+    iget-object v0, p0, Lcom/android/server/connectivity/PermissionMonitor$PackageListObserver;->this$0:Lcom/android/server/connectivity/PermissionMonitor;
 
     invoke-direct {p0, p2}, Lcom/android/server/connectivity/PermissionMonitor$PackageListObserver;->getPermissionForUid(I)I
 
-    move-result v0
+    move-result v1
 
-    invoke-virtual {p1, p2, v0}, Lcom/android/server/connectivity/PermissionMonitor;->sendPackagePermissionsForUid(II)V
+    invoke-virtual {v0, p2, v1}, Lcom/android/server/connectivity/PermissionMonitor;->sendPackagePermissionsForUid(II)V
 
     .line 130
     return-void
 .end method
 
-.method public onPackageChanged(Ljava/lang/String;I)V
-    .registers 4
+.method public onPackageRemoved(Ljava/lang/String;I)V
+    .registers 5
+    .param p1, "packageName"  # Ljava/lang/String;
+    .param p2, "uid"  # I
 
     .line 134
-    iget-object p1, p0, Lcom/android/server/connectivity/PermissionMonitor$PackageListObserver;->this$0:Lcom/android/server/connectivity/PermissionMonitor;
+    iget-object v0, p0, Lcom/android/server/connectivity/PermissionMonitor$PackageListObserver;->this$0:Lcom/android/server/connectivity/PermissionMonitor;
 
     invoke-direct {p0, p2}, Lcom/android/server/connectivity/PermissionMonitor$PackageListObserver;->getPermissionForUid(I)I
 
-    move-result v0
+    move-result v1
 
-    invoke-virtual {p1, p2, v0}, Lcom/android/server/connectivity/PermissionMonitor;->sendPackagePermissionsForUid(II)V
+    invoke-virtual {v0, p2, v1}, Lcom/android/server/connectivity/PermissionMonitor;->sendPackagePermissionsForUid(II)V
 
     .line 135
-    return-void
-.end method
-
-.method public onPackageRemoved(Ljava/lang/String;I)V
-    .registers 4
-
-    .line 139
-    iget-object p1, p0, Lcom/android/server/connectivity/PermissionMonitor$PackageListObserver;->this$0:Lcom/android/server/connectivity/PermissionMonitor;
-
-    invoke-direct {p0, p2}, Lcom/android/server/connectivity/PermissionMonitor$PackageListObserver;->getPermissionForUid(I)I
-
-    move-result v0
-
-    invoke-virtual {p1, p2, v0}, Lcom/android/server/connectivity/PermissionMonitor;->sendPackagePermissionsForUid(II)V
-
-    .line 140
     return-void
 .end method

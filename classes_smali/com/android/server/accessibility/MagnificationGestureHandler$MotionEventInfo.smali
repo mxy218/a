@@ -60,16 +60,19 @@
 .end method
 
 .method static synthetic access$600(Lcom/android/server/accessibility/MagnificationGestureHandler$MotionEventInfo;)Lcom/android/server/accessibility/MagnificationGestureHandler$MotionEventInfo;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/accessibility/MagnificationGestureHandler$MotionEventInfo;
 
     .line 987
-    iget-object p0, p0, Lcom/android/server/accessibility/MagnificationGestureHandler$MotionEventInfo;->mNext:Lcom/android/server/accessibility/MagnificationGestureHandler$MotionEventInfo;
+    iget-object v0, p0, Lcom/android/server/accessibility/MagnificationGestureHandler$MotionEventInfo;->mNext:Lcom/android/server/accessibility/MagnificationGestureHandler$MotionEventInfo;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$602(Lcom/android/server/accessibility/MagnificationGestureHandler$MotionEventInfo;Lcom/android/server/accessibility/MagnificationGestureHandler$MotionEventInfo;)Lcom/android/server/accessibility/MagnificationGestureHandler$MotionEventInfo;
     .registers 2
+    .param p0, "x0"  # Lcom/android/server/accessibility/MagnificationGestureHandler$MotionEventInfo;
+    .param p1, "x1"  # Lcom/android/server/accessibility/MagnificationGestureHandler$MotionEventInfo;
 
     .line 987
     iput-object p1, p0, Lcom/android/server/accessibility/MagnificationGestureHandler$MotionEventInfo;->mNext:Lcom/android/server/accessibility/MagnificationGestureHandler$MotionEventInfo;
@@ -109,6 +112,8 @@
 
 .method static countOf(Lcom/android/server/accessibility/MagnificationGestureHandler$MotionEventInfo;I)I
     .registers 4
+    .param p0, "info"  # Lcom/android/server/accessibility/MagnificationGestureHandler$MotionEventInfo;
+    .param p1, "eventType"  # I
 
     .line 1054
     const/4 v0, 0x0
@@ -130,35 +135,38 @@
     const/4 v0, 0x1
 
     :cond_d
-    iget-object p0, p0, Lcom/android/server/accessibility/MagnificationGestureHandler$MotionEventInfo;->mNext:Lcom/android/server/accessibility/MagnificationGestureHandler$MotionEventInfo;
+    iget-object v1, p0, Lcom/android/server/accessibility/MagnificationGestureHandler$MotionEventInfo;->mNext:Lcom/android/server/accessibility/MagnificationGestureHandler$MotionEventInfo;
 
     .line 1056
-    invoke-static {p0, p1}, Lcom/android/server/accessibility/MagnificationGestureHandler$MotionEventInfo;->countOf(Lcom/android/server/accessibility/MagnificationGestureHandler$MotionEventInfo;I)I
+    invoke-static {v1, p1}, Lcom/android/server/accessibility/MagnificationGestureHandler$MotionEventInfo;->countOf(Lcom/android/server/accessibility/MagnificationGestureHandler$MotionEventInfo;I)I
 
-    move-result p0
+    move-result v1
 
-    add-int/2addr v0, p0
+    add-int/2addr v0, v1
 
     .line 1055
     return v0
 .end method
 
 .method private initialize(Landroid/view/MotionEvent;Landroid/view/MotionEvent;I)V
-    .registers 4
+    .registers 5
+    .param p1, "event"  # Landroid/view/MotionEvent;
+    .param p2, "rawEvent"  # Landroid/view/MotionEvent;
+    .param p3, "policyFlags"  # I
 
     .line 1027
     invoke-static {p1}, Landroid/view/MotionEvent;->obtain(Landroid/view/MotionEvent;)Landroid/view/MotionEvent;
 
-    move-result-object p1
+    move-result-object v0
 
-    iput-object p1, p0, Lcom/android/server/accessibility/MagnificationGestureHandler$MotionEventInfo;->event:Landroid/view/MotionEvent;
+    iput-object v0, p0, Lcom/android/server/accessibility/MagnificationGestureHandler$MotionEventInfo;->event:Landroid/view/MotionEvent;
 
     .line 1028
     invoke-static {p2}, Landroid/view/MotionEvent;->obtain(Landroid/view/MotionEvent;)Landroid/view/MotionEvent;
 
-    move-result-object p1
+    move-result-object v0
 
-    iput-object p1, p0, Lcom/android/server/accessibility/MagnificationGestureHandler$MotionEventInfo;->rawEvent:Landroid/view/MotionEvent;
+    iput-object v0, p0, Lcom/android/server/accessibility/MagnificationGestureHandler$MotionEventInfo;->rawEvent:Landroid/view/MotionEvent;
 
     .line 1029
     iput p3, p0, Lcom/android/server/accessibility/MagnificationGestureHandler$MotionEventInfo;->policyFlags:I
@@ -169,6 +177,9 @@
 
 .method public static obtain(Landroid/view/MotionEvent;Landroid/view/MotionEvent;I)Lcom/android/server/accessibility/MagnificationGestureHandler$MotionEventInfo;
     .registers 5
+    .param p0, "event"  # Landroid/view/MotionEvent;
+    .param p1, "rawEvent"  # Landroid/view/MotionEvent;
+    .param p2, "policyFlags"  # I
 
     .line 1003
     sget-object v0, Lcom/android/server/accessibility/MagnificationGestureHandler$MotionEventInfo;->sLock:Ljava/lang/Object;
@@ -182,6 +193,7 @@
     move-result-object v1
 
     .line 1005
+    .local v1, "info":Lcom/android/server/accessibility/MagnificationGestureHandler$MotionEventInfo;
     invoke-direct {v1, p0, p1, p2}, Lcom/android/server/accessibility/MagnificationGestureHandler$MotionEventInfo;->initialize(Landroid/view/MotionEvent;Landroid/view/MotionEvent;I)V
 
     .line 1006
@@ -190,14 +202,15 @@
     return-object v1
 
     .line 1007
+    .end local v1  # "info":Lcom/android/server/accessibility/MagnificationGestureHandler$MotionEventInfo;
     :catchall_c
-    move-exception p0
+    move-exception v1
 
     monitor-exit v0
     :try_end_e
     .catchall {:try_start_3 .. :try_end_e} :catchall_c
 
-    throw p0
+    throw v1
 .end method
 
 .method private static obtainInternal()Lcom/android/server/accessibility/MagnificationGestureHandler$MotionEventInfo;
@@ -217,6 +230,7 @@
     sget-object v0, Lcom/android/server/accessibility/MagnificationGestureHandler$MotionEventInfo;->sPool:Lcom/android/server/accessibility/MagnificationGestureHandler$MotionEventInfo;
 
     .line 1016
+    .local v0, "info":Lcom/android/server/accessibility/MagnificationGestureHandler$MotionEventInfo;
     iget-object v1, v0, Lcom/android/server/accessibility/MagnificationGestureHandler$MotionEventInfo;->mNext:Lcom/android/server/accessibility/MagnificationGestureHandler$MotionEventInfo;
 
     sput-object v1, Lcom/android/server/accessibility/MagnificationGestureHandler$MotionEventInfo;->sPool:Lcom/android/server/accessibility/MagnificationGestureHandler$MotionEventInfo;
@@ -234,18 +248,21 @@
     goto :goto_1a
 
     .line 1020
+    .end local v0  # "info":Lcom/android/server/accessibility/MagnificationGestureHandler$MotionEventInfo;
     :cond_15
     new-instance v0, Lcom/android/server/accessibility/MagnificationGestureHandler$MotionEventInfo;
 
     invoke-direct {v0}, Lcom/android/server/accessibility/MagnificationGestureHandler$MotionEventInfo;-><init>()V
 
     .line 1022
+    .restart local v0  # "info":Lcom/android/server/accessibility/MagnificationGestureHandler$MotionEventInfo;
     :goto_1a
     return-object v0
 .end method
 
 .method public static toString(Lcom/android/server/accessibility/MagnificationGestureHandler$MotionEventInfo;)Ljava/lang/String;
     .registers 5
+    .param p0, "info"  # Lcom/android/server/accessibility/MagnificationGestureHandler$MotionEventInfo;
 
     .line 1060
     const-string v0, ""
@@ -284,14 +301,14 @@
 
     invoke-virtual {v1, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    iget-object p0, p0, Lcom/android/server/accessibility/MagnificationGestureHandler$MotionEventInfo;->mNext:Lcom/android/server/accessibility/MagnificationGestureHandler$MotionEventInfo;
+    iget-object v0, p0, Lcom/android/server/accessibility/MagnificationGestureHandler$MotionEventInfo;->mNext:Lcom/android/server/accessibility/MagnificationGestureHandler$MotionEventInfo;
 
     .line 1063
-    invoke-static {p0}, Lcom/android/server/accessibility/MagnificationGestureHandler$MotionEventInfo;->toString(Lcom/android/server/accessibility/MagnificationGestureHandler$MotionEventInfo;)Ljava/lang/String;
+    invoke-static {v0}, Lcom/android/server/accessibility/MagnificationGestureHandler$MotionEventInfo;->toString(Lcom/android/server/accessibility/MagnificationGestureHandler$MotionEventInfo;)Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v0
 
-    invoke-virtual {v1, p0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
@@ -363,9 +380,11 @@
 
     invoke-direct {v1, v2}, Ljava/lang/IllegalStateException;-><init>(Ljava/lang/String;)V
 
+    .end local p0  # "this":Lcom/android/server/accessibility/MagnificationGestureHandler$MotionEventInfo;
     throw v1
 
     .line 1044
+    .restart local p0  # "this":Lcom/android/server/accessibility/MagnificationGestureHandler$MotionEventInfo;
     :catchall_28
     move-exception v1
 

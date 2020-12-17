@@ -21,6 +21,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/am/BaseErrorDialog;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/am/BaseErrorDialog;
 
     .line 77
     iput-object p1, p0, Lcom/android/server/am/BaseErrorDialog$1;->this$0:Lcom/android/server/am/BaseErrorDialog;
@@ -34,6 +35,7 @@
 # virtual methods
 .method public handleMessage(Landroid/os/Message;)V
     .registers 5
+    .param p1, "msg"  # Landroid/os/Message;
 
     .line 79
     iget v0, p1, Landroid/os/Message;->what:I
@@ -45,27 +47,27 @@
     if-nez v0, :cond_11
 
     .line 80
-    iget-object p1, p0, Lcom/android/server/am/BaseErrorDialog$1;->this$0:Lcom/android/server/am/BaseErrorDialog;
+    iget-object v0, p0, Lcom/android/server/am/BaseErrorDialog$1;->this$0:Lcom/android/server/am/BaseErrorDialog;
 
-    invoke-static {p1, v1}, Lcom/android/server/am/BaseErrorDialog;->access$002(Lcom/android/server/am/BaseErrorDialog;Z)Z
+    invoke-static {v0, v1}, Lcom/android/server/am/BaseErrorDialog;->access$002(Lcom/android/server/am/BaseErrorDialog;Z)Z
 
     .line 81
-    iget-object p1, p0, Lcom/android/server/am/BaseErrorDialog$1;->this$0:Lcom/android/server/am/BaseErrorDialog;
+    iget-object v0, p0, Lcom/android/server/am/BaseErrorDialog$1;->this$0:Lcom/android/server/am/BaseErrorDialog;
 
-    invoke-static {p1, v2}, Lcom/android/server/am/BaseErrorDialog;->access$100(Lcom/android/server/am/BaseErrorDialog;Z)V
+    invoke-static {v0, v2}, Lcom/android/server/am/BaseErrorDialog;->access$100(Lcom/android/server/am/BaseErrorDialog;Z)V
 
     goto :goto_1a
 
     .line 82
     :cond_11
-    iget p1, p1, Landroid/os/Message;->what:I
+    iget v0, p1, Landroid/os/Message;->what:I
 
-    if-ne p1, v2, :cond_1a
+    if-ne v0, v2, :cond_1a
 
     .line 83
-    iget-object p1, p0, Lcom/android/server/am/BaseErrorDialog$1;->this$0:Lcom/android/server/am/BaseErrorDialog;
+    iget-object v0, p0, Lcom/android/server/am/BaseErrorDialog$1;->this$0:Lcom/android/server/am/BaseErrorDialog;
 
-    invoke-static {p1, v1}, Lcom/android/server/am/BaseErrorDialog;->access$100(Lcom/android/server/am/BaseErrorDialog;Z)V
+    invoke-static {v0, v1}, Lcom/android/server/am/BaseErrorDialog;->access$100(Lcom/android/server/am/BaseErrorDialog;Z)V
 
     .line 85
     :cond_1a

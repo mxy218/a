@@ -33,6 +33,8 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/wm/WindowManagerService;Lcom/android/server/wm/DisplayContent;)V
     .registers 4
+    .param p1, "service"  # Lcom/android/server/wm/WindowManagerService;
+    .param p2, "displayContent"  # Lcom/android/server/wm/DisplayContent;
 
     .line 65
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -63,71 +65,83 @@
 .end method
 
 .method private notifyVisibilitiesUpdated()V
-    .registers 6
+    .registers 5
+
+    .line 140
+    sget-boolean v0, Lcom/android/server/wm/WindowManagerDebugConfig;->DEBUG_UNKNOWN_APP_VISIBILITY:Z
+
+    if-eqz v0, :cond_b
+
+    .line 141
+    const-string v0, "WindowManager"
+
+    const-string v1, "Visibility updated DONE"
+
+    invoke-static {v0, v1}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 143
-    nop
+    :cond_b
+    const/4 v0, 0x0
 
     .line 144
-    iget-object v0, p0, Lcom/android/server/wm/UnknownAppVisibilityController;->mUnknownApps:Landroid/util/ArrayMap;
+    .local v0, "changed":Z
+    iget-object v1, p0, Lcom/android/server/wm/UnknownAppVisibilityController;->mUnknownApps:Landroid/util/ArrayMap;
 
-    invoke-virtual {v0}, Landroid/util/ArrayMap;->size()I
+    invoke-virtual {v1}, Landroid/util/ArrayMap;->size()I
 
-    move-result v0
+    move-result v1
 
-    const/4 v1, 0x1
+    add-int/lit8 v1, v1, -0x1
 
-    sub-int/2addr v0, v1
-
-    const/4 v2, 0x0
-
-    :goto_a
-    if-ltz v0, :cond_24
+    .local v1, "i":I
+    :goto_14
+    if-ltz v1, :cond_2e
 
     .line 145
-    iget-object v3, p0, Lcom/android/server/wm/UnknownAppVisibilityController;->mUnknownApps:Landroid/util/ArrayMap;
+    iget-object v2, p0, Lcom/android/server/wm/UnknownAppVisibilityController;->mUnknownApps:Landroid/util/ArrayMap;
 
-    invoke-virtual {v3, v0}, Landroid/util/ArrayMap;->valueAt(I)Ljava/lang/Object;
+    invoke-virtual {v2, v1}, Landroid/util/ArrayMap;->valueAt(I)Ljava/lang/Object;
 
-    move-result-object v3
+    move-result-object v2
 
-    check-cast v3, Ljava/lang/Integer;
+    check-cast v2, Ljava/lang/Integer;
 
-    invoke-virtual {v3}, Ljava/lang/Integer;->intValue()I
+    invoke-virtual {v2}, Ljava/lang/Integer;->intValue()I
 
-    move-result v3
+    move-result v2
 
-    const/4 v4, 0x3
+    const/4 v3, 0x3
 
-    if-ne v3, v4, :cond_21
+    if-ne v2, v3, :cond_2b
 
     .line 146
     iget-object v2, p0, Lcom/android/server/wm/UnknownAppVisibilityController;->mUnknownApps:Landroid/util/ArrayMap;
 
-    invoke-virtual {v2, v0}, Landroid/util/ArrayMap;->removeAt(I)Ljava/lang/Object;
+    invoke-virtual {v2, v1}, Landroid/util/ArrayMap;->removeAt(I)Ljava/lang/Object;
 
     .line 147
-    move v2, v1
+    const/4 v0, 0x1
 
     .line 144
-    :cond_21
-    add-int/lit8 v0, v0, -0x1
+    :cond_2b
+    add-int/lit8 v1, v1, -0x1
 
-    goto :goto_a
+    goto :goto_14
 
     .line 150
-    :cond_24
-    if-eqz v2, :cond_2d
+    .end local v1  # "i":I
+    :cond_2e
+    if-eqz v0, :cond_37
 
     .line 151
-    iget-object v0, p0, Lcom/android/server/wm/UnknownAppVisibilityController;->mService:Lcom/android/server/wm/WindowManagerService;
+    iget-object v1, p0, Lcom/android/server/wm/UnknownAppVisibilityController;->mService:Lcom/android/server/wm/WindowManagerService;
 
-    iget-object v0, v0, Lcom/android/server/wm/WindowManagerService;->mWindowPlacerLocked:Lcom/android/server/wm/WindowSurfacePlacer;
+    iget-object v1, v1, Lcom/android/server/wm/WindowManagerService;->mWindowPlacerLocked:Lcom/android/server/wm/WindowSurfacePlacer;
 
-    invoke-virtual {v0}, Lcom/android/server/wm/WindowSurfacePlacer;->performSurfacePlacement()V
+    invoke-virtual {v1}, Lcom/android/server/wm/WindowSurfacePlacer;->performSurfacePlacement()V
 
     .line 153
-    :cond_2d
+    :cond_37
     return-void
 .end method
 
@@ -147,9 +161,35 @@
 .end method
 
 .method appRemovedOrHidden(Lcom/android/server/wm/AppWindowToken;)V
-    .registers 3
+    .registers 4
+    .param p1, "appWindow"  # Lcom/android/server/wm/AppWindowToken;
+
+    .line 91
+    sget-boolean v0, Lcom/android/server/wm/WindowManagerDebugConfig;->DEBUG_UNKNOWN_APP_VISIBILITY:Z
+
+    if-eqz v0, :cond_1a
+
+    .line 92
+    new-instance v0, Ljava/lang/StringBuilder;
+
+    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
+
+    const-string v1, "App removed or hidden appWindow="
+
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v0
+
+    const-string v1, "WindowManager"
+
+    invoke-static {v1, v0}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 94
+    :cond_1a
     iget-object v0, p0, Lcom/android/server/wm/UnknownAppVisibilityController;->mUnknownApps:Landroid/util/ArrayMap;
 
     invoke-virtual {v0, p1}, Landroid/util/ArrayMap;->remove(Ljava/lang/Object;)Ljava/lang/Object;
@@ -172,6 +212,8 @@
 
 .method dump(Ljava/io/PrintWriter;Ljava/lang/String;)V
     .registers 6
+    .param p1, "pw"  # Ljava/io/PrintWriter;
+    .param p2, "prefix"  # Ljava/lang/String;
 
     .line 156
     iget-object v0, p0, Lcom/android/server/wm/UnknownAppVisibilityController;->mUnknownApps:Landroid/util/ArrayMap;
@@ -212,6 +254,7 @@
 
     add-int/lit8 v0, v0, -0x1
 
+    .local v0, "i":I
     :goto_25
     if-ltz v0, :cond_55
 
@@ -260,6 +303,7 @@
     goto :goto_25
 
     .line 164
+    .end local v0  # "i":I
     :cond_55
     return-void
 .end method
@@ -273,6 +317,7 @@
     invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
 
     .line 80
+    .local v0, "builder":Ljava/lang/StringBuilder;
     iget-object v1, p0, Lcom/android/server/wm/UnknownAppVisibilityController;->mUnknownApps:Landroid/util/ArrayMap;
 
     invoke-virtual {v1}, Landroid/util/ArrayMap;->size()I
@@ -281,6 +326,7 @@
 
     add-int/lit8 v1, v1, -0x1
 
+    .local v1, "i":I
     :goto_d
     if-ltz v1, :cond_35
 
@@ -325,16 +371,18 @@
     goto :goto_d
 
     .line 87
+    .end local v1  # "i":I
     :cond_35
     invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v1
 
-    return-object v0
+    return-object v1
 .end method
 
 .method notifyAppResumedFinished(Lcom/android/server/wm/AppWindowToken;)V
     .registers 4
+    .param p1, "appWindow"  # Lcom/android/server/wm/AppWindowToken;
 
     .line 112
     iget-object v0, p0, Lcom/android/server/wm/UnknownAppVisibilityController;->mUnknownApps:Landroid/util/ArrayMap;
@@ -343,7 +391,7 @@
 
     move-result v0
 
-    if-eqz v0, :cond_21
+    if-eqz v0, :cond_3b
 
     iget-object v0, p0, Lcom/android/server/wm/UnknownAppVisibilityController;->mUnknownApps:Landroid/util/ArrayMap;
 
@@ -360,9 +408,34 @@
 
     const/4 v1, 0x1
 
-    if-ne v0, v1, :cond_21
+    if-ne v0, v1, :cond_3b
+
+    .line 114
+    sget-boolean v0, Lcom/android/server/wm/WindowManagerDebugConfig;->DEBUG_UNKNOWN_APP_VISIBILITY:Z
+
+    if-eqz v0, :cond_31
+
+    .line 115
+    new-instance v0, Ljava/lang/StringBuilder;
+
+    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
+
+    const-string v1, "App resume finished appWindow="
+
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v0
+
+    const-string v1, "WindowManager"
+
+    invoke-static {v1, v0}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 117
+    :cond_31
     iget-object v0, p0, Lcom/android/server/wm/UnknownAppVisibilityController;->mUnknownApps:Landroid/util/ArrayMap;
 
     const/4 v1, 0x2
@@ -374,14 +447,40 @@
     invoke-virtual {v0, p1, v1}, Landroid/util/ArrayMap;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
 
     .line 119
-    :cond_21
+    :cond_3b
     return-void
 .end method
 
 .method notifyLaunched(Lcom/android/server/wm/AppWindowToken;)V
     .registers 4
+    .param p1, "appWindow"  # Lcom/android/server/wm/AppWindowToken;
+
+    .line 102
+    sget-boolean v0, Lcom/android/server/wm/WindowManagerDebugConfig;->DEBUG_UNKNOWN_APP_VISIBILITY:Z
+
+    if-eqz v0, :cond_1a
+
+    .line 103
+    new-instance v0, Ljava/lang/StringBuilder;
+
+    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
+
+    const-string v1, "App launched appWindow="
+
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v0
+
+    const-string v1, "WindowManager"
+
+    invoke-static {v1, v0}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 105
+    :cond_1a
     iget-object v0, p0, Lcom/android/server/wm/UnknownAppVisibilityController;->mUnknownApps:Landroid/util/ArrayMap;
 
     const/4 v1, 0x1
@@ -397,7 +496,8 @@
 .end method
 
 .method notifyRelayouted(Lcom/android/server/wm/AppWindowToken;)V
-    .registers 4
+    .registers 6
+    .param p1, "appWindow"  # Lcom/android/server/wm/AppWindowToken;
 
     .line 125
     iget-object v0, p0, Lcom/android/server/wm/UnknownAppVisibilityController;->mUnknownApps:Landroid/util/ArrayMap;
@@ -411,8 +511,33 @@
     .line 126
     return-void
 
-    .line 131
+    .line 128
     :cond_9
+    sget-boolean v0, Lcom/android/server/wm/WindowManagerDebugConfig;->DEBUG_UNKNOWN_APP_VISIBILITY:Z
+
+    if-eqz v0, :cond_23
+
+    .line 129
+    new-instance v0, Ljava/lang/StringBuilder;
+
+    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
+
+    const-string v1, "App relayouted appWindow="
+
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v0
+
+    const-string v1, "WindowManager"
+
+    invoke-static {v1, v0}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
+
+    .line 131
+    :cond_23
     iget-object v0, p0, Lcom/android/server/wm/UnknownAppVisibilityController;->mUnknownApps:Landroid/util/ArrayMap;
 
     invoke-virtual {v0, p1}, Landroid/util/ArrayMap;->get(Ljava/lang/Object;)Ljava/lang/Object;
@@ -426,41 +551,42 @@
     move-result v0
 
     .line 132
+    .local v0, "state":I
     const/4 v1, 0x2
 
-    if-ne v0, v1, :cond_34
+    if-ne v0, v1, :cond_4e
 
     .line 133
-    iget-object v0, p0, Lcom/android/server/wm/UnknownAppVisibilityController;->mUnknownApps:Landroid/util/ArrayMap;
+    iget-object v1, p0, Lcom/android/server/wm/UnknownAppVisibilityController;->mUnknownApps:Landroid/util/ArrayMap;
 
-    const/4 v1, 0x3
+    const/4 v2, 0x3
 
-    invoke-static {v1}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
+    invoke-static {v2}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
 
-    move-result-object v1
+    move-result-object v2
 
-    invoke-virtual {v0, p1, v1}, Landroid/util/ArrayMap;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+    invoke-virtual {v1, p1, v2}, Landroid/util/ArrayMap;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
 
     .line 134
-    iget-object v0, p0, Lcom/android/server/wm/UnknownAppVisibilityController;->mService:Lcom/android/server/wm/WindowManagerService;
+    iget-object v1, p0, Lcom/android/server/wm/UnknownAppVisibilityController;->mService:Lcom/android/server/wm/WindowManagerService;
 
-    new-instance v1, Lcom/android/server/wm/-$$Lambda$UnknownAppVisibilityController$FYhcjOhYWVp6HX5hr3GGaPg67Gc;
+    new-instance v2, Lcom/android/server/wm/-$$Lambda$UnknownAppVisibilityController$FYhcjOhYWVp6HX5hr3GGaPg67Gc;
 
-    invoke-direct {v1, p0}, Lcom/android/server/wm/-$$Lambda$UnknownAppVisibilityController$FYhcjOhYWVp6HX5hr3GGaPg67Gc;-><init>(Lcom/android/server/wm/UnknownAppVisibilityController;)V
+    invoke-direct {v2, p0}, Lcom/android/server/wm/-$$Lambda$UnknownAppVisibilityController$FYhcjOhYWVp6HX5hr3GGaPg67Gc;-><init>(Lcom/android/server/wm/UnknownAppVisibilityController;)V
 
     .line 135
     invoke-virtual {p1}, Lcom/android/server/wm/AppWindowToken;->getDisplayContent()Lcom/android/server/wm/DisplayContent;
 
-    move-result-object p1
+    move-result-object v3
 
-    invoke-virtual {p1}, Lcom/android/server/wm/DisplayContent;->getDisplayId()I
+    invoke-virtual {v3}, Lcom/android/server/wm/DisplayContent;->getDisplayId()I
 
-    move-result p1
+    move-result v3
 
     .line 134
-    invoke-virtual {v0, v1, p1}, Lcom/android/server/wm/WindowManagerService;->notifyKeyguardFlagsChanged(Ljava/lang/Runnable;I)V
+    invoke-virtual {v1, v2, v3}, Lcom/android/server/wm/WindowManagerService;->notifyKeyguardFlagsChanged(Ljava/lang/Runnable;I)V
 
     .line 137
-    :cond_34
+    :cond_4e
     return-void
 .end method

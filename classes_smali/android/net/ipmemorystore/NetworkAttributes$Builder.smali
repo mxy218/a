@@ -71,6 +71,7 @@
 
 .method public setAssignedV4Address(Ljava/net/Inet4Address;)Landroid/net/ipmemorystore/NetworkAttributes$Builder;
     .registers 2
+    .param p1, "assignedV4Address"  # Ljava/net/Inet4Address;
 
     .line 226
     iput-object p1, p0, Landroid/net/ipmemorystore/NetworkAttributes$Builder;->mAssignedAddress:Ljava/net/Inet4Address;
@@ -81,9 +82,10 @@
 
 .method public setAssignedV4AddressExpiry(Ljava/lang/Long;)Landroid/net/ipmemorystore/NetworkAttributes$Builder;
     .registers 6
+    .param p1, "assignedV4AddressExpiry"  # Ljava/lang/Long;
 
     .line 239
-    if-eqz p1, :cond_15
+    if-eqz p1, :cond_16
 
     invoke-virtual {p1}, Ljava/lang/Long;->longValue()J
 
@@ -95,21 +97,21 @@
 
     if-lez v0, :cond_d
 
-    goto :goto_15
+    goto :goto_16
 
     .line 240
     :cond_d
-    new-instance p1, Ljava/lang/IllegalArgumentException;
+    new-instance v0, Ljava/lang/IllegalArgumentException;
 
-    const-string v0, "lease expiry can\'t be negative or zero"
+    const-string/jumbo v1, "lease expiry can\'t be negative or zero"
 
-    invoke-direct {p1, v0}, Ljava/lang/IllegalArgumentException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v0, v1}, Ljava/lang/IllegalArgumentException;-><init>(Ljava/lang/String;)V
 
-    throw p1
+    throw v0
 
     .line 242
-    :cond_15
-    :goto_15
+    :cond_16
+    :goto_16
     iput-object p1, p0, Landroid/net/ipmemorystore/NetworkAttributes$Builder;->mAssignedAddressExpiry:Ljava/lang/Long;
 
     .line 243
@@ -117,7 +119,7 @@
 .end method
 
 .method public setDnsAddresses(Ljava/util/List;)Landroid/net/ipmemorystore/NetworkAttributes$Builder;
-    .registers 4
+    .registers 5
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(",
@@ -129,6 +131,7 @@
     .end annotation
 
     .line 262
+    .local p1, "dnsAddresses":Ljava/util/List;, "Ljava/util/List<Ljava/net/InetAddress;>;"
     if-eqz p1, :cond_1d
 
     .line 265
@@ -150,22 +153,26 @@
     check-cast v1, Ljava/net/InetAddress;
 
     .line 266
+    .local v1, "address":Ljava/net/InetAddress;
     if-eqz v1, :cond_15
 
     .line 267
+    .end local v1  # "address":Ljava/net/InetAddress;
     goto :goto_6
 
     .line 266
+    .restart local v1  # "address":Ljava/net/InetAddress;
     :cond_15
-    new-instance p1, Ljava/lang/IllegalArgumentException;
+    new-instance v0, Ljava/lang/IllegalArgumentException;
 
-    const-string v0, "Null DNS address"
+    const-string v2, "Null DNS address"
 
-    invoke-direct {p1, v0}, Ljava/lang/IllegalArgumentException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v0, v2}, Ljava/lang/IllegalArgumentException;-><init>(Ljava/lang/String;)V
 
-    throw p1
+    throw v0
 
     .line 269
+    .end local v1  # "address":Ljava/net/InetAddress;
     :cond_1d
     iput-object p1, p0, Landroid/net/ipmemorystore/NetworkAttributes$Builder;->mDnsAddresses:Ljava/util/List;
 
@@ -175,6 +182,7 @@
 
 .method public setGroupHint(Ljava/lang/String;)Landroid/net/ipmemorystore/NetworkAttributes$Builder;
     .registers 2
+    .param p1, "groupHint"  # Ljava/lang/String;
 
     .line 252
     iput-object p1, p0, Landroid/net/ipmemorystore/NetworkAttributes$Builder;->mGroupHint:Ljava/lang/String;
@@ -184,7 +192,8 @@
 .end method
 
 .method public setMtu(Ljava/lang/Integer;)Landroid/net/ipmemorystore/NetworkAttributes$Builder;
-    .registers 3
+    .registers 4
+    .param p1, "mtu"  # Ljava/lang/Integer;
 
     .line 279
     if-eqz p1, :cond_11
@@ -198,13 +207,13 @@
     goto :goto_11
 
     :cond_9
-    new-instance p1, Ljava/lang/IllegalArgumentException;
+    new-instance v0, Ljava/lang/IllegalArgumentException;
 
-    const-string v0, "MTU can\'t be negative"
+    const-string v1, "MTU can\'t be negative"
 
-    invoke-direct {p1, v0}, Ljava/lang/IllegalArgumentException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v0, v1}, Ljava/lang/IllegalArgumentException;-><init>(Ljava/lang/String;)V
 
-    throw p1
+    throw v0
 
     .line 280
     :cond_11

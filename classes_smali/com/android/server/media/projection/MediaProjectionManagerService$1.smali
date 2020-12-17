@@ -21,6 +21,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/media/projection/MediaProjectionManagerService;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/media/projection/MediaProjectionManagerService;
 
     .line 104
     iput-object p1, p0, Lcom/android/server/media/projection/MediaProjectionManagerService$1;->this$0:Lcom/android/server/media/projection/MediaProjectionManagerService;
@@ -34,6 +35,9 @@
 # virtual methods
 .method public onForegroundActivitiesChanged(IIZ)V
     .registers 4
+    .param p1, "pid"  # I
+    .param p2, "uid"  # I
+    .param p3, "fg"  # Z
 
     .line 107
     return-void
@@ -41,6 +45,9 @@
 
 .method public onForegroundServicesChanged(III)V
     .registers 5
+    .param p1, "pid"  # I
+    .param p2, "uid"  # I
+    .param p3, "serviceTypes"  # I
 
     .line 111
     iget-object v0, p0, Lcom/android/server/media/projection/MediaProjectionManagerService$1;->this$0:Lcom/android/server/media/projection/MediaProjectionManagerService;
@@ -53,6 +60,8 @@
 
 .method public onProcessDied(II)V
     .registers 3
+    .param p1, "pid"  # I
+    .param p2, "uid"  # I
 
     .line 117
     return-void

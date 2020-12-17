@@ -21,6 +21,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/usage/StorageStatsService;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/usage/StorageStatsService;
 
     .line 119
     iput-object p1, p0, Lcom/android/server/usage/StorageStatsService$1;->this$0:Lcom/android/server/usage/StorageStatsService;
@@ -33,31 +34,34 @@
 
 # virtual methods
 .method public onVolumeStateChanged(Landroid/os/storage/VolumeInfo;II)V
-    .registers 5
+    .registers 7
+    .param p1, "vol"  # Landroid/os/storage/VolumeInfo;
+    .param p2, "oldState"  # I
+    .param p3, "newState"  # I
 
     .line 122
-    iget p1, p1, Landroid/os/storage/VolumeInfo;->type:I
+    iget v0, p1, Landroid/os/storage/VolumeInfo;->type:I
 
-    const/4 p2, 0x2
+    const/4 v1, 0x2
 
-    if-eqz p1, :cond_b
+    if-eqz v0, :cond_b
 
-    const/4 v0, 0x1
+    const/4 v2, 0x1
 
-    if-eq p1, v0, :cond_b
+    if-eq v0, v2, :cond_b
 
-    if-eq p1, p2, :cond_b
+    if-eq v0, v1, :cond_b
 
     goto :goto_12
 
     .line 126
     :cond_b
-    if-ne p3, p2, :cond_12
+    if-ne p3, v1, :cond_12
 
     .line 127
-    iget-object p1, p0, Lcom/android/server/usage/StorageStatsService$1;->this$0:Lcom/android/server/usage/StorageStatsService;
+    iget-object v0, p0, Lcom/android/server/usage/StorageStatsService$1;->this$0:Lcom/android/server/usage/StorageStatsService;
 
-    invoke-static {p1}, Lcom/android/server/usage/StorageStatsService;->access$000(Lcom/android/server/usage/StorageStatsService;)V
+    invoke-static {v0}, Lcom/android/server/usage/StorageStatsService;->access$000(Lcom/android/server/usage/StorageStatsService;)V
 
     .line 130
     :cond_12

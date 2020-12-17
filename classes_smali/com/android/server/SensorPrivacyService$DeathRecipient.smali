@@ -25,7 +25,8 @@
 
 # direct methods
 .method constructor <init>(Lcom/android/server/SensorPrivacyService;Landroid/hardware/ISensorPrivacyListener;)V
-    .registers 3
+    .registers 4
+    .param p2, "listener"  # Landroid/hardware/ISensorPrivacyListener;
 
     .line 282
     iput-object p1, p0, Lcom/android/server/SensorPrivacyService$DeathRecipient;->this$0:Lcom/android/server/SensorPrivacyService;
@@ -43,9 +44,9 @@
 
     move-result-object p1
 
-    const/4 p2, 0x0
+    const/4 v0, 0x0
 
-    invoke-interface {p1, p0, p2}, Landroid/os/IBinder;->linkToDeath(Landroid/os/IBinder$DeathRecipient;I)V
+    invoke-interface {p1, p0, v0}, Landroid/os/IBinder;->linkToDeath(Landroid/os/IBinder$DeathRecipient;I)V
     :try_end_11
     .catch Landroid/os/RemoteException; {:try_start_7 .. :try_end_11} :catch_12
 

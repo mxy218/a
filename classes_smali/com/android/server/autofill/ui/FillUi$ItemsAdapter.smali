@@ -54,6 +54,7 @@
     .end annotation
 
     .line 778
+    .local p2, "items":Ljava/util/List;, "Ljava/util/List<Lcom/android/server/autofill/ui/FillUi$ViewItem;>;"
     iput-object p1, p0, Lcom/android/server/autofill/ui/FillUi$ItemsAdapter;->this$0:Lcom/android/server/autofill/ui/FillUi;
 
     invoke-direct {p0}, Landroid/widget/BaseAdapter;-><init>()V
@@ -86,21 +87,23 @@
 .end method
 
 .method static synthetic access$700(Lcom/android/server/autofill/ui/FillUi$ItemsAdapter;)Ljava/util/List;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/autofill/ui/FillUi$ItemsAdapter;
 
     .line 773
-    iget-object p0, p0, Lcom/android/server/autofill/ui/FillUi$ItemsAdapter;->mAllItems:Ljava/util/List;
+    iget-object v0, p0, Lcom/android/server/autofill/ui/FillUi$ItemsAdapter;->mAllItems:Ljava/util/List;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$800(Lcom/android/server/autofill/ui/FillUi$ItemsAdapter;)Ljava/util/List;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/autofill/ui/FillUi$ItemsAdapter;
 
     .line 773
-    iget-object p0, p0, Lcom/android/server/autofill/ui/FillUi$ItemsAdapter;->mFilteredItems:Ljava/util/List;
+    iget-object v0, p0, Lcom/android/server/autofill/ui/FillUi$ItemsAdapter;->mFilteredItems:Ljava/util/List;
 
-    return-object p0
+    return-object v0
 .end method
 
 
@@ -131,17 +134,18 @@
 
 .method public getItem(I)Lcom/android/server/autofill/ui/FillUi$ViewItem;
     .registers 3
+    .param p1, "position"  # I
 
     .line 824
     iget-object v0, p0, Lcom/android/server/autofill/ui/FillUi$ItemsAdapter;->mFilteredItems:Ljava/util/List;
 
     invoke-interface {v0, p1}, Ljava/util/List;->get(I)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v0
 
-    check-cast p1, Lcom/android/server/autofill/ui/FillUi$ViewItem;
+    check-cast v0, Lcom/android/server/autofill/ui/FillUi$ViewItem;
 
-    return-object p1
+    return-object v0
 .end method
 
 .method public bridge synthetic getItem(I)Ljava/lang/Object;
@@ -157,6 +161,7 @@
 
 .method public getItemId(I)J
     .registers 4
+    .param p1, "position"  # I
 
     .line 829
     int-to-long v0, p1
@@ -165,16 +170,19 @@
 .end method
 
 .method public getView(ILandroid/view/View;Landroid/view/ViewGroup;)Landroid/view/View;
-    .registers 4
+    .registers 5
+    .param p1, "position"  # I
+    .param p2, "convertView"  # Landroid/view/View;
+    .param p3, "parent"  # Landroid/view/ViewGroup;
 
     .line 834
     invoke-virtual {p0, p1}, Lcom/android/server/autofill/ui/FillUi$ItemsAdapter;->getItem(I)Lcom/android/server/autofill/ui/FillUi$ViewItem;
 
-    move-result-object p1
+    move-result-object v0
 
-    iget-object p1, p1, Lcom/android/server/autofill/ui/FillUi$ViewItem;->view:Landroid/view/View;
+    iget-object v0, v0, Lcom/android/server/autofill/ui/FillUi$ViewItem;->view:Landroid/view/View;
 
-    return-object p1
+    return-object v0
 .end method
 
 .method public toString()Ljava/lang/String;

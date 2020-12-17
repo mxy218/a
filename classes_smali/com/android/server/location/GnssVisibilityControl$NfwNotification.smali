@@ -43,6 +43,14 @@
 # direct methods
 .method private constructor <init>(Ljava/lang/String;BLjava/lang/String;BLjava/lang/String;BZZ)V
     .registers 9
+    .param p1, "proxyAppPackageName"  # Ljava/lang/String;
+    .param p2, "protocolStack"  # B
+    .param p3, "otherProtocolStackName"  # Ljava/lang/String;
+    .param p4, "requestor"  # B
+    .param p5, "requestorId"  # Ljava/lang/String;
+    .param p6, "responseType"  # B
+    .param p7, "inEmergencyMode"  # Z
+    .param p8, "isCachedLocation"  # Z
 
     .line 301
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -77,6 +85,15 @@
 
 .method synthetic constructor <init>(Ljava/lang/String;BLjava/lang/String;BLjava/lang/String;BZZLcom/android/server/location/GnssVisibilityControl$1;)V
     .registers 10
+    .param p1, "x0"  # Ljava/lang/String;
+    .param p2, "x1"  # B
+    .param p3, "x2"  # Ljava/lang/String;
+    .param p4, "x3"  # B
+    .param p5, "x4"  # Ljava/lang/String;
+    .param p6, "x5"  # B
+    .param p7, "x6"  # Z
+    .param p8, "x7"  # Z
+    .param p9, "x8"  # Lcom/android/server/location/GnssVisibilityControl$1;
 
     .line 284
     invoke-direct/range {p0 .. p8}, Lcom/android/server/location/GnssVisibilityControl$NfwNotification;-><init>(Ljava/lang/String;BLjava/lang/String;BLjava/lang/String;BZZ)V
@@ -85,130 +102,143 @@
 .end method
 
 .method static synthetic access$1000(Lcom/android/server/location/GnssVisibilityControl$NfwNotification;)B
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/location/GnssVisibilityControl$NfwNotification;
 
     .line 284
-    iget-byte p0, p0, Lcom/android/server/location/GnssVisibilityControl$NfwNotification;->mProtocolStack:B
+    iget-byte v0, p0, Lcom/android/server/location/GnssVisibilityControl$NfwNotification;->mProtocolStack:B
 
-    return p0
+    return v0
 .end method
 
 .method static synthetic access$1100(Lcom/android/server/location/GnssVisibilityControl$NfwNotification;)Ljava/lang/String;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/location/GnssVisibilityControl$NfwNotification;
 
     .line 284
-    iget-object p0, p0, Lcom/android/server/location/GnssVisibilityControl$NfwNotification;->mOtherProtocolStackName:Ljava/lang/String;
+    iget-object v0, p0, Lcom/android/server/location/GnssVisibilityControl$NfwNotification;->mOtherProtocolStackName:Ljava/lang/String;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$1200(Lcom/android/server/location/GnssVisibilityControl$NfwNotification;)B
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/location/GnssVisibilityControl$NfwNotification;
 
     .line 284
-    iget-byte p0, p0, Lcom/android/server/location/GnssVisibilityControl$NfwNotification;->mRequestor:B
+    iget-byte v0, p0, Lcom/android/server/location/GnssVisibilityControl$NfwNotification;->mRequestor:B
 
-    return p0
+    return v0
 .end method
 
 .method static synthetic access$1300(Lcom/android/server/location/GnssVisibilityControl$NfwNotification;)Ljava/lang/String;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/location/GnssVisibilityControl$NfwNotification;
 
     .line 284
-    iget-object p0, p0, Lcom/android/server/location/GnssVisibilityControl$NfwNotification;->mRequestorId:Ljava/lang/String;
+    iget-object v0, p0, Lcom/android/server/location/GnssVisibilityControl$NfwNotification;->mRequestorId:Ljava/lang/String;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$1400(Lcom/android/server/location/GnssVisibilityControl$NfwNotification;)B
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/location/GnssVisibilityControl$NfwNotification;
 
     .line 284
-    iget-byte p0, p0, Lcom/android/server/location/GnssVisibilityControl$NfwNotification;->mResponseType:B
+    iget-byte v0, p0, Lcom/android/server/location/GnssVisibilityControl$NfwNotification;->mResponseType:B
 
-    return p0
+    return v0
 .end method
 
 .method static synthetic access$1500(Lcom/android/server/location/GnssVisibilityControl$NfwNotification;)Z
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/location/GnssVisibilityControl$NfwNotification;
 
     .line 284
-    iget-boolean p0, p0, Lcom/android/server/location/GnssVisibilityControl$NfwNotification;->mInEmergencyMode:Z
+    iget-boolean v0, p0, Lcom/android/server/location/GnssVisibilityControl$NfwNotification;->mInEmergencyMode:Z
 
-    return p0
+    return v0
 .end method
 
 .method static synthetic access$1600(Lcom/android/server/location/GnssVisibilityControl$NfwNotification;)Z
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/location/GnssVisibilityControl$NfwNotification;
 
     .line 284
-    iget-boolean p0, p0, Lcom/android/server/location/GnssVisibilityControl$NfwNotification;->mIsCachedLocation:Z
+    iget-boolean v0, p0, Lcom/android/server/location/GnssVisibilityControl$NfwNotification;->mIsCachedLocation:Z
 
-    return p0
+    return v0
 .end method
 
 .method static synthetic access$400(Lcom/android/server/location/GnssVisibilityControl$NfwNotification;)Z
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/location/GnssVisibilityControl$NfwNotification;
 
     .line 284
     invoke-direct {p0}, Lcom/android/server/location/GnssVisibilityControl$NfwNotification;->isEmergencyRequestNotification()Z
 
-    move-result p0
+    move-result v0
 
-    return p0
+    return v0
 .end method
 
 .method static synthetic access$500(Lcom/android/server/location/GnssVisibilityControl$NfwNotification;)Ljava/lang/String;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/location/GnssVisibilityControl$NfwNotification;
 
     .line 284
-    iget-object p0, p0, Lcom/android/server/location/GnssVisibilityControl$NfwNotification;->mProxyAppPackageName:Ljava/lang/String;
+    iget-object v0, p0, Lcom/android/server/location/GnssVisibilityControl$NfwNotification;->mProxyAppPackageName:Ljava/lang/String;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$600(Lcom/android/server/location/GnssVisibilityControl$NfwNotification;)Z
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/location/GnssVisibilityControl$NfwNotification;
 
     .line 284
     invoke-direct {p0}, Lcom/android/server/location/GnssVisibilityControl$NfwNotification;->isRequestAccepted()Z
 
-    move-result p0
+    move-result v0
 
-    return p0
+    return v0
 .end method
 
 .method static synthetic access$700(Lcom/android/server/location/GnssVisibilityControl$NfwNotification;)Z
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/location/GnssVisibilityControl$NfwNotification;
 
     .line 284
     invoke-direct {p0}, Lcom/android/server/location/GnssVisibilityControl$NfwNotification;->isRequestAttributedToProxyApp()Z
 
-    move-result p0
+    move-result v0
 
-    return p0
+    return v0
 .end method
 
 .method static synthetic access$800(Lcom/android/server/location/GnssVisibilityControl$NfwNotification;)Z
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/location/GnssVisibilityControl$NfwNotification;
 
     .line 284
     invoke-direct {p0}, Lcom/android/server/location/GnssVisibilityControl$NfwNotification;->isLocationProvided()Z
 
-    move-result p0
+    move-result v0
 
-    return p0
+    return v0
 .end method
 
 .method static synthetic access$900(Lcom/android/server/location/GnssVisibilityControl$NfwNotification;)Ljava/lang/String;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/location/GnssVisibilityControl$NfwNotification;
 
     .line 284
     invoke-direct {p0}, Lcom/android/server/location/GnssVisibilityControl$NfwNotification;->getResponseTypeAsString()Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v0
 
-    return-object p0
+    return-object v0
 .end method
 
 .method private getResponseTypeAsString()Ljava/lang/String;

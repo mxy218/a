@@ -32,7 +32,8 @@
 .end method
 
 .method private getInterarrivalEstimate(J)D
-    .registers 7
+    .registers 9
+    .param p1, "now"  # J
 
     .line 61
     iget-object v0, p0, Lcom/android/server/notification/RateEstimator;->mLastEventTime:Ljava/lang/Long;
@@ -41,41 +42,43 @@
 
     move-result-wide v0
 
-    sub-long/2addr p1, v0
+    sub-long v0, p1, v0
 
-    long-to-double p1, p1
+    long-to-double v0, v0
 
-    const-wide v0, 0x408f400000000000L  # 1000.0
+    const-wide v2, 0x408f400000000000L  # 1000.0
 
-    div-double/2addr p1, v0
+    div-double/2addr v0, v2
 
     .line 62
-    const-wide v0, 0x3f40624dd2f1a9fcL  # 5.0E-4
+    .local v0, "dt":D
+    const-wide v2, 0x3f40624dd2f1a9fcL  # 5.0E-4
 
-    invoke-static {p1, p2, v0, v1}, Ljava/lang/Math;->max(DD)D
+    invoke-static {v0, v1, v2, v3}, Ljava/lang/Math;->max(DD)D
 
-    move-result-wide p1
+    move-result-wide v0
 
     .line 64
-    iget-wide v0, p0, Lcom/android/server/notification/RateEstimator;->mInterarrivalTime:D
+    iget-wide v2, p0, Lcom/android/server/notification/RateEstimator;->mInterarrivalTime:D
 
-    const-wide v2, 0x3fe999999999999aL  # 0.8
+    const-wide v4, 0x3fe999999999999aL  # 0.8
 
-    mul-double/2addr v0, v2
+    mul-double/2addr v2, v4
 
-    const-wide v2, 0x3fc9999999999998L  # 0.19999999999999996
+    const-wide v4, 0x3fc9999999999998L  # 0.19999999999999996
 
-    mul-double/2addr p1, v2
+    mul-double/2addr v4, v0
 
-    add-double/2addr v0, p1
+    add-double/2addr v2, v4
 
-    return-wide v0
+    return-wide v2
 .end method
 
 
 # virtual methods
 .method public getRate(J)F
-    .registers 5
+    .registers 7
+    .param p1, "now"  # J
 
     .line 53
     iget-object v0, p0, Lcom/android/server/notification/RateEstimator;->mLastEventTime:Ljava/lang/Long;
@@ -83,9 +86,9 @@
     if-nez v0, :cond_6
 
     .line 54
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    return p1
+    return v0
 
     .line 56
     :cond_6
@@ -93,17 +96,18 @@
 
     invoke-direct {p0, p1, p2}, Lcom/android/server/notification/RateEstimator;->getInterarrivalEstimate(J)D
 
-    move-result-wide p1
+    move-result-wide v2
 
-    div-double/2addr v0, p1
+    div-double/2addr v0, v2
 
-    double-to-float p1, v0
+    double-to-float v0, v0
 
-    return p1
+    return v0
 .end method
 
 .method public update(J)F
     .registers 7
+    .param p1, "now"  # J
 
     .line 39
     iget-object v0, p0, Lcom/android/server/notification/RateEstimator;->mLastEventTime:Ljava/lang/Long;
@@ -113,9 +117,11 @@
     .line 41
     const/4 v0, 0x0
 
+    .local v0, "rate":F
     goto :goto_12
 
     .line 44
+    .end local v0  # "rate":F
     :cond_6
     invoke-direct {p0, p1, p2}, Lcom/android/server/notification/RateEstimator;->getInterarrivalEstimate(J)D
 
@@ -133,12 +139,13 @@
     double-to-float v0, v0
 
     .line 47
+    .restart local v0  # "rate":F
     :goto_12
     invoke-static {p1, p2}, Ljava/lang/Long;->valueOf(J)Ljava/lang/Long;
 
-    move-result-object p1
+    move-result-object v1
 
-    iput-object p1, p0, Lcom/android/server/notification/RateEstimator;->mLastEventTime:Ljava/lang/Long;
+    iput-object v1, p0, Lcom/android/server/notification/RateEstimator;->mLastEventTime:Ljava/lang/Long;
 
     .line 48
     return v0

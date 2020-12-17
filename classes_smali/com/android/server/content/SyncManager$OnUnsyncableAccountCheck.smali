@@ -38,6 +38,7 @@
 # direct methods
 .method constructor <init>(Landroid/content/pm/RegisteredServicesCache$ServiceInfo;Lcom/android/server/content/SyncManager$OnReadyCallback;)V
     .registers 3
+    .param p2, "onReadyCallback"  # Lcom/android/server/content/SyncManager$OnReadyCallback;
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(",
@@ -49,23 +50,25 @@
         }
     .end annotation
 
-    .line 2772
+    .line 2785
+    .local p1, "syncAdapterInfo":Landroid/content/pm/RegisteredServicesCache$ServiceInfo;, "Landroid/content/pm/RegisteredServicesCache$ServiceInfo<Landroid/content/SyncAdapterType;>;"
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
-    .line 2773
+    .line 2786
     iput-object p1, p0, Lcom/android/server/content/SyncManager$OnUnsyncableAccountCheck;->mSyncAdapterInfo:Landroid/content/pm/RegisteredServicesCache$ServiceInfo;
 
-    .line 2774
+    .line 2787
     iput-object p2, p0, Lcom/android/server/content/SyncManager$OnUnsyncableAccountCheck;->mOnReadyCallback:Lcom/android/server/content/SyncManager$OnReadyCallback;
 
-    .line 2775
+    .line 2788
     return-void
 .end method
 
 .method static synthetic access$2400(Lcom/android/server/content/SyncManager$OnUnsyncableAccountCheck;)V
     .registers 1
+    .param p0, "x0"  # Lcom/android/server/content/SyncManager$OnUnsyncableAccountCheck;
 
-    .line 2763
+    .line 2776
     invoke-direct {p0}, Lcom/android/server/content/SyncManager$OnUnsyncableAccountCheck;->onReady()V
 
     return-void
@@ -74,12 +77,13 @@
 .method private onReady()V
     .registers 4
 
-    .line 2778
+    .line 2791
     invoke-static {}, Landroid/os/Binder;->clearCallingIdentity()J
 
     move-result-wide v0
 
-    .line 2780
+    .line 2793
+    .local v0, "identity":J
     :try_start_4
     iget-object v2, p0, Lcom/android/server/content/SyncManager$OnUnsyncableAccountCheck;->mOnReadyCallback:Lcom/android/server/content/SyncManager$OnReadyCallback;
 
@@ -87,16 +91,16 @@
     :try_end_9
     .catchall {:try_start_4 .. :try_end_9} :catchall_e
 
-    .line 2782
+    .line 2795
     invoke-static {v0, v1}, Landroid/os/Binder;->restoreCallingIdentity(J)V
 
-    .line 2783
+    .line 2796
     nop
 
-    .line 2784
+    .line 2797
     return-void
 
-    .line 2782
+    .line 2795
     :catchall_e
     move-exception v2
 
@@ -108,62 +112,68 @@
 
 # virtual methods
 .method public onServiceConnected(Landroid/content/ComponentName;Landroid/os/IBinder;)V
-    .registers 4
+    .registers 7
+    .param p1, "name"  # Landroid/content/ComponentName;
+    .param p2, "service"  # Landroid/os/IBinder;
 
-    .line 2788
+    .line 2801
     invoke-static {p2}, Landroid/content/ISyncAdapter$Stub;->asInterface(Landroid/os/IBinder;)Landroid/content/ISyncAdapter;
 
-    move-result-object p1
+    move-result-object v0
 
-    .line 2791
+    .line 2804
+    .local v0, "adapter":Landroid/content/ISyncAdapter;
     :try_start_4
-    new-instance p2, Lcom/android/server/content/SyncManager$OnUnsyncableAccountCheck$1;
+    new-instance v1, Lcom/android/server/content/SyncManager$OnUnsyncableAccountCheck$1;
 
-    invoke-direct {p2, p0}, Lcom/android/server/content/SyncManager$OnUnsyncableAccountCheck$1;-><init>(Lcom/android/server/content/SyncManager$OnUnsyncableAccountCheck;)V
+    invoke-direct {v1, p0}, Lcom/android/server/content/SyncManager$OnUnsyncableAccountCheck$1;-><init>(Lcom/android/server/content/SyncManager$OnUnsyncableAccountCheck;)V
 
-    invoke-interface {p1, p2}, Landroid/content/ISyncAdapter;->onUnsyncableAccount(Landroid/content/ISyncAdapterUnsyncableAccountCallback;)V
+    invoke-interface {v0, v1}, Landroid/content/ISyncAdapter;->onUnsyncableAccount(Landroid/content/ISyncAdapterUnsyncableAccountCallback;)V
     :try_end_c
     .catch Landroid/os/RemoteException; {:try_start_4 .. :try_end_c} :catch_d
 
-    .line 2806
+    .line 2819
     goto :goto_29
 
-    .line 2799
+    .line 2812
     :catch_d
-    move-exception p1
+    move-exception v1
 
-    .line 2800
-    new-instance p2, Ljava/lang/StringBuilder;
+    .line 2813
+    .local v1, "e":Landroid/os/RemoteException;
+    new-instance v2, Ljava/lang/StringBuilder;
 
-    invoke-direct {p2}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v0, "Could not call onUnsyncableAccountDone "
+    const-string v3, "Could not call onUnsyncableAccountDone "
 
-    invoke-virtual {p2, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    iget-object v0, p0, Lcom/android/server/content/SyncManager$OnUnsyncableAccountCheck;->mSyncAdapterInfo:Landroid/content/pm/RegisteredServicesCache$ServiceInfo;
+    iget-object v3, p0, Lcom/android/server/content/SyncManager$OnUnsyncableAccountCheck;->mSyncAdapterInfo:Landroid/content/pm/RegisteredServicesCache$ServiceInfo;
 
-    invoke-virtual {p2, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p2
+    move-result-object v2
 
-    const-string v0, "SyncManager"
+    const-string v3, "SyncManager"
 
-    invoke-static {v0, p2, p1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    invoke-static {v3, v2, v1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
-    .line 2805
+    .line 2818
     invoke-direct {p0}, Lcom/android/server/content/SyncManager$OnUnsyncableAccountCheck;->onReady()V
 
-    .line 2807
+    .line 2820
+    .end local v1  # "e":Landroid/os/RemoteException;
     :goto_29
     return-void
 .end method
 
 .method public onServiceDisconnected(Landroid/content/ComponentName;)V
     .registers 2
+    .param p1, "name"  # Landroid/content/ComponentName;
 
-    .line 2812
+    .line 2825
     return-void
 .end method

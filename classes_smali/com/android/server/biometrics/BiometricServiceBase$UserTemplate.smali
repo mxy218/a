@@ -25,18 +25,20 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/biometrics/BiometricServiceBase;Landroid/hardware/biometrics/BiometricAuthenticator$Identifier;I)V
     .registers 4
+    .param p2, "identifier"  # Landroid/hardware/biometrics/BiometricAuthenticator$Identifier;
+    .param p3, "userId"  # I
 
-    .line 630
+    .line 624
     iput-object p1, p0, Lcom/android/server/biometrics/BiometricServiceBase$UserTemplate;->this$0:Lcom/android/server/biometrics/BiometricServiceBase;
 
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
-    .line 631
+    .line 625
     iput-object p2, p0, Lcom/android/server/biometrics/BiometricServiceBase$UserTemplate;->mIdentifier:Landroid/hardware/biometrics/BiometricAuthenticator$Identifier;
 
-    .line 632
+    .line 626
     iput p3, p0, Lcom/android/server/biometrics/BiometricServiceBase$UserTemplate;->mUserId:I
 
-    .line 633
+    .line 627
     return-void
 .end method

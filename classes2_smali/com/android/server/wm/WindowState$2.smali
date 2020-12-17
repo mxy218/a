@@ -25,7 +25,7 @@
 .method constructor <init>(Lcom/android/server/wm/WindowManagerService;)V
     .registers 2
 
-    .line 721
+    .line 687
     iput-object p1, p0, Lcom/android/server/wm/WindowState$2;->val$service:Lcom/android/server/wm/WindowManagerService;
 
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -38,7 +38,7 @@
 .method public isInteractive()Z
     .registers 2
 
-    .line 729
+    .line 695
     iget-object v0, p0, Lcom/android/server/wm/WindowState$2;->val$service:Lcom/android/server/wm/WindowManagerService;
 
     iget-object v0, v0, Lcom/android/server/wm/WindowManagerService;->mPowerManager:Landroid/os/PowerManager;
@@ -52,14 +52,17 @@
 
 .method public wakeUp(JILjava/lang/String;)V
     .registers 6
+    .param p1, "time"  # J
+    .param p3, "reason"  # I
+    .param p4, "details"  # Ljava/lang/String;
 
-    .line 724
+    .line 690
     iget-object v0, p0, Lcom/android/server/wm/WindowState$2;->val$service:Lcom/android/server/wm/WindowManagerService;
 
     iget-object v0, v0, Lcom/android/server/wm/WindowManagerService;->mPowerManager:Landroid/os/PowerManager;
 
     invoke-virtual {v0, p1, p2, p3, p4}, Landroid/os/PowerManager;->wakeUp(JILjava/lang/String;)V
 
-    .line 725
+    .line 691
     return-void
 .end method

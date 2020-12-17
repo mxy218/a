@@ -23,6 +23,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/devicepolicy/DevicePolicyManagerService;Landroid/os/IBinder;)V
     .registers 3
+    .param p1, "this$0"  # Lcom/android/server/devicepolicy/DevicePolicyManagerService;
 
     .line 5989
     iput-object p1, p0, Lcom/android/server/devicepolicy/DevicePolicyManagerService$6;->this$0:Lcom/android/server/devicepolicy/DevicePolicyManagerService;
@@ -37,19 +38,22 @@
 
 # virtual methods
 .method public onReceive(Landroid/content/Context;Landroid/content/Intent;)V
-    .registers 4
+    .registers 6
+    .param p1, "context"  # Landroid/content/Context;
+    .param p2, "intent"  # Landroid/content/Intent;
 
     .line 5992
     invoke-virtual {p0}, Lcom/android/server/devicepolicy/DevicePolicyManagerService$6;->getResultData()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
     .line 5993
-    iget-object p2, p0, Lcom/android/server/devicepolicy/DevicePolicyManagerService$6;->this$0:Lcom/android/server/devicepolicy/DevicePolicyManagerService;
+    .local v0, "chosenAlias":Ljava/lang/String;
+    iget-object v1, p0, Lcom/android/server/devicepolicy/DevicePolicyManagerService$6;->this$0:Lcom/android/server/devicepolicy/DevicePolicyManagerService;
 
-    iget-object v0, p0, Lcom/android/server/devicepolicy/DevicePolicyManagerService$6;->val$response:Landroid/os/IBinder;
+    iget-object v2, p0, Lcom/android/server/devicepolicy/DevicePolicyManagerService$6;->val$response:Landroid/os/IBinder;
 
-    invoke-static {p2, p1, v0}, Lcom/android/server/devicepolicy/DevicePolicyManagerService;->access$2200(Lcom/android/server/devicepolicy/DevicePolicyManagerService;Ljava/lang/String;Landroid/os/IBinder;)V
+    invoke-static {v1, v0, v2}, Lcom/android/server/devicepolicy/DevicePolicyManagerService;->access$2200(Lcom/android/server/devicepolicy/DevicePolicyManagerService;Ljava/lang/String;Landroid/os/IBinder;)V
 
     .line 5994
     return-void

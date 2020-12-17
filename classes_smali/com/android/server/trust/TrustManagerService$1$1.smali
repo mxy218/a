@@ -28,6 +28,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/trust/TrustManagerService$1;Ljava/io/PrintWriter;Ljava/util/List;)V
     .registers 4
+    .param p1, "this$1"  # Lcom/android/server/trust/TrustManagerService$1;
 
     .line 1172
     iput-object p1, p0, Lcom/android/server/trust/TrustManagerService$1$1;->this$1:Lcom/android/server/trust/TrustManagerService$1;
@@ -74,6 +75,7 @@
     check-cast v1, Landroid/content/pm/UserInfo;
 
     .line 1177
+    .local v1, "user":Landroid/content/pm/UserInfo;
     iget-object v2, p0, Lcom/android/server/trust/TrustManagerService$1$1;->this$1:Lcom/android/server/trust/TrustManagerService$1;
 
     iget-object v3, p0, Lcom/android/server/trust/TrustManagerService$1$1;->val$fout:Ljava/io/PrintWriter;
@@ -101,6 +103,7 @@
     invoke-static {v2, v3, v1, v4}, Lcom/android/server/trust/TrustManagerService$1;->access$900(Lcom/android/server/trust/TrustManagerService$1;Ljava/io/PrintWriter;Landroid/content/pm/UserInfo;Z)V
 
     .line 1178
+    .end local v1  # "user":Landroid/content/pm/UserInfo;
     goto :goto_d
 
     .line 1179

@@ -59,7 +59,8 @@
 
 # direct methods
 .method public constructor <init>(I)V
-    .registers 6
+    .registers 7
+    .param p1, "nextModuleId"  # I
 
     .line 119
     const-string v0, "BcRadio2Srv"
@@ -113,77 +114,87 @@
     :try_start_2d
     invoke-static {}, Landroid/hidl/manager/V1_0/IServiceManager;->getService()Landroid/hidl/manager/V1_0/IServiceManager;
 
-    move-result-object p1
+    move-result-object v1
 
     .line 123
-    if-nez p1, :cond_39
+    .local v1, "manager":Landroid/hidl/manager/V1_0/IServiceManager;
+    if-nez v1, :cond_39
 
     .line 124
-    const-string p1, "failed to get HIDL Service Manager"
+    const-string v2, "failed to get HIDL Service Manager"
 
-    invoke-static {v0, p1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v0, v2}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 125
     return-void
 
     .line 127
     :cond_39
-    const-string v1, "android.hardware.broadcastradio@2.0::IBroadcastRadio"
+    const-string v2, "android.hardware.broadcastradio@2.0::IBroadcastRadio"
 
-    const-string v2, ""
+    const-string v3, ""
 
-    iget-object v3, p0, Lcom/android/server/broadcastradio/hal2/BroadcastRadioService;->mServiceListener:Landroid/hidl/manager/V1_0/IServiceNotification$Stub;
+    iget-object v4, p0, Lcom/android/server/broadcastradio/hal2/BroadcastRadioService;->mServiceListener:Landroid/hidl/manager/V1_0/IServiceNotification$Stub;
 
-    invoke-interface {p1, v1, v2, v3}, Landroid/hidl/manager/V1_0/IServiceManager;->registerForNotifications(Ljava/lang/String;Ljava/lang/String;Landroid/hidl/manager/V1_0/IServiceNotification;)Z
+    invoke-interface {v1, v2, v3, v4}, Landroid/hidl/manager/V1_0/IServiceManager;->registerForNotifications(Ljava/lang/String;Ljava/lang/String;Landroid/hidl/manager/V1_0/IServiceNotification;)Z
     :try_end_42
-    .catch Landroid/os/RemoteException; {:try_start_2d .. :try_end_42} :catch_43
+    .catch Landroid/os/RemoteException; {:try_start_2d .. :try_end_42} :catch_44
 
     .line 130
-    goto :goto_49
+    nop
+
+    .end local v1  # "manager":Landroid/hidl/manager/V1_0/IServiceManager;
+    goto :goto_4a
 
     .line 128
-    :catch_43
-    move-exception p1
+    :catch_44
+    move-exception v1
 
     .line 129
-    const-string v1, "failed to register for service notifications: "
+    .local v1, "ex":Landroid/os/RemoteException;
+    const-string v2, "failed to register for service notifications: "
 
-    invoke-static {v0, v1, p1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    invoke-static {v0, v2, v1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
     .line 131
-    :goto_49
+    .end local v1  # "ex":Landroid/os/RemoteException;
+    :goto_4a
     return-void
 .end method
 
 .method static synthetic access$000(Lcom/android/server/broadcastradio/hal2/BroadcastRadioService;)Ljava/lang/Object;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/broadcastradio/hal2/BroadcastRadioService;
 
     .line 42
-    iget-object p0, p0, Lcom/android/server/broadcastradio/hal2/BroadcastRadioService;->mLock:Ljava/lang/Object;
+    iget-object v0, p0, Lcom/android/server/broadcastradio/hal2/BroadcastRadioService;->mLock:Ljava/lang/Object;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$100(Lcom/android/server/broadcastradio/hal2/BroadcastRadioService;)Ljava/util/Map;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/broadcastradio/hal2/BroadcastRadioService;
 
     .line 42
-    iget-object p0, p0, Lcom/android/server/broadcastradio/hal2/BroadcastRadioService;->mServiceNameToModuleIdMap:Ljava/util/Map;
+    iget-object v0, p0, Lcom/android/server/broadcastradio/hal2/BroadcastRadioService;->mServiceNameToModuleIdMap:Ljava/util/Map;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$200(Lcom/android/server/broadcastradio/hal2/BroadcastRadioService;)I
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/broadcastradio/hal2/BroadcastRadioService;
 
     .line 42
-    iget p0, p0, Lcom/android/server/broadcastradio/hal2/BroadcastRadioService;->mNextModuleId:I
+    iget v0, p0, Lcom/android/server/broadcastradio/hal2/BroadcastRadioService;->mNextModuleId:I
 
-    return p0
+    return v0
 .end method
 
 .method static synthetic access$208(Lcom/android/server/broadcastradio/hal2/BroadcastRadioService;)I
     .registers 3
+    .param p0, "x0"  # Lcom/android/server/broadcastradio/hal2/BroadcastRadioService;
 
     .line 42
     iget v0, p0, Lcom/android/server/broadcastradio/hal2/BroadcastRadioService;->mNextModuleId:I
@@ -196,36 +207,41 @@
 .end method
 
 .method static synthetic access$300(Lcom/android/server/broadcastradio/hal2/BroadcastRadioService;)Ljava/util/Map;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/broadcastradio/hal2/BroadcastRadioService;
 
     .line 42
-    iget-object p0, p0, Lcom/android/server/broadcastradio/hal2/BroadcastRadioService;->mModules:Ljava/util/Map;
+    iget-object v0, p0, Lcom/android/server/broadcastradio/hal2/BroadcastRadioService;->mModules:Ljava/util/Map;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$400(Lcom/android/server/broadcastradio/hal2/BroadcastRadioService;)Landroid/os/IHwBinder$DeathRecipient;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/broadcastradio/hal2/BroadcastRadioService;
 
     .line 42
-    iget-object p0, p0, Lcom/android/server/broadcastradio/hal2/BroadcastRadioService;->mDeathRecipient:Landroid/os/IHwBinder$DeathRecipient;
+    iget-object v0, p0, Lcom/android/server/broadcastradio/hal2/BroadcastRadioService;->mDeathRecipient:Landroid/os/IHwBinder$DeathRecipient;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic lambda$listModules$0(Lcom/android/server/broadcastradio/hal2/RadioModule;)Landroid/hardware/radio/RadioManager$ModuleProperties;
-    .registers 1
+    .registers 2
+    .param p0, "module"  # Lcom/android/server/broadcastradio/hal2/RadioModule;
 
     .line 135
-    iget-object p0, p0, Lcom/android/server/broadcastradio/hal2/RadioModule;->mProperties:Landroid/hardware/radio/RadioManager$ModuleProperties;
+    iget-object v0, p0, Lcom/android/server/broadcastradio/hal2/RadioModule;->mProperties:Landroid/hardware/radio/RadioManager$ModuleProperties;
 
-    return-object p0
+    return-object v0
 .end method
 
 
 # virtual methods
 .method public addAnnouncementListener([ILandroid/hardware/radio/IAnnouncementListener;)Landroid/hardware/radio/ICloseHandle;
-    .registers 9
+    .registers 11
+    .param p1, "enabledTypes"  # [I
+    .param p2, "listener"  # Landroid/hardware/radio/IAnnouncementListener;
 
     .line 177
     new-instance v0, Lcom/android/server/broadcastradio/hal2/AnnouncementAggregator;
@@ -233,101 +249,105 @@
     invoke-direct {v0, p2}, Lcom/android/server/broadcastradio/hal2/AnnouncementAggregator;-><init>(Landroid/hardware/radio/IAnnouncementListener;)V
 
     .line 178
-    nop
+    .local v0, "aggregator":Lcom/android/server/broadcastradio/hal2/AnnouncementAggregator;
+    const/4 v1, 0x0
 
     .line 179
-    iget-object p2, p0, Lcom/android/server/broadcastradio/hal2/BroadcastRadioService;->mLock:Ljava/lang/Object;
+    .local v1, "anySupported":Z
+    iget-object v2, p0, Lcom/android/server/broadcastradio/hal2/BroadcastRadioService;->mLock:Ljava/lang/Object;
 
-    monitor-enter p2
+    monitor-enter v2
 
     .line 180
     :try_start_9
-    iget-object v1, p0, Lcom/android/server/broadcastradio/hal2/BroadcastRadioService;->mModules:Ljava/util/Map;
+    iget-object v3, p0, Lcom/android/server/broadcastradio/hal2/BroadcastRadioService;->mModules:Ljava/util/Map;
 
-    invoke-interface {v1}, Ljava/util/Map;->values()Ljava/util/Collection;
-
-    move-result-object v1
-
-    invoke-interface {v1}, Ljava/util/Collection;->iterator()Ljava/util/Iterator;
-
-    move-result-object v1
-
-    const/4 v2, 0x0
-
-    :goto_14
-    invoke-interface {v1}, Ljava/util/Iterator;->hasNext()Z
-
-    move-result v3
-
-    if-eqz v3, :cond_2e
-
-    invoke-interface {v1}, Ljava/util/Iterator;->next()Ljava/lang/Object;
+    invoke-interface {v3}, Ljava/util/Map;->values()Ljava/util/Collection;
 
     move-result-object v3
 
-    check-cast v3, Lcom/android/server/broadcastradio/hal2/RadioModule;
-    :try_end_20
-    .catchall {:try_start_9 .. :try_end_20} :catchall_39
+    invoke-interface {v3}, Ljava/util/Collection;->iterator()Ljava/util/Iterator;
+
+    move-result-object v3
+
+    :goto_13
+    invoke-interface {v3}, Ljava/util/Iterator;->hasNext()Z
+
+    move-result v4
+
+    if-eqz v4, :cond_2d
+
+    invoke-interface {v3}, Ljava/util/Iterator;->next()Ljava/lang/Object;
+
+    move-result-object v4
+
+    check-cast v4, Lcom/android/server/broadcastradio/hal2/RadioModule;
+    :try_end_1f
+    .catchall {:try_start_9 .. :try_end_1f} :catchall_38
 
     .line 182
-    :try_start_20
-    invoke-virtual {v0, v3, p1}, Lcom/android/server/broadcastradio/hal2/AnnouncementAggregator;->watchModule(Lcom/android/server/broadcastradio/hal2/RadioModule;[I)V
-    :try_end_23
-    .catch Ljava/lang/UnsupportedOperationException; {:try_start_20 .. :try_end_23} :catch_25
-    .catchall {:try_start_20 .. :try_end_23} :catchall_39
+    .local v4, "module":Lcom/android/server/broadcastradio/hal2/RadioModule;
+    :try_start_1f
+    invoke-virtual {v0, v4, p1}, Lcom/android/server/broadcastradio/hal2/AnnouncementAggregator;->watchModule(Lcom/android/server/broadcastradio/hal2/RadioModule;[I)V
+    :try_end_22
+    .catch Ljava/lang/UnsupportedOperationException; {:try_start_1f .. :try_end_22} :catch_24
+    .catchall {:try_start_1f .. :try_end_22} :catchall_38
 
     .line 183
-    const/4 v2, 0x1
+    const/4 v1, 0x1
 
     .line 186
-    goto :goto_2d
+    goto :goto_2c
 
     .line 184
-    :catch_25
-    move-exception v3
+    :catch_24
+    move-exception v5
 
     .line 185
-    :try_start_26
-    const-string v4, "BcRadio2Srv"
+    .local v5, "ex":Ljava/lang/UnsupportedOperationException;
+    :try_start_25
+    const-string v6, "BcRadio2Srv"
 
-    const-string v5, "Announcements not supported for this module"
+    const-string v7, "Announcements not supported for this module"
 
-    invoke-static {v4, v5, v3}, Landroid/util/Slog;->v(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    invoke-static {v6, v7, v5}, Landroid/util/Slog;->v(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
     .line 187
-    :goto_2d
-    goto :goto_14
+    .end local v4  # "module":Lcom/android/server/broadcastradio/hal2/RadioModule;
+    .end local v5  # "ex":Ljava/lang/UnsupportedOperationException;
+    :goto_2c
+    goto :goto_13
 
     .line 188
-    :cond_2e
-    monitor-exit p2
-    :try_end_2f
-    .catchall {:try_start_26 .. :try_end_2f} :catchall_39
+    :cond_2d
+    monitor-exit v2
+    :try_end_2e
+    .catchall {:try_start_25 .. :try_end_2e} :catchall_38
 
     .line 189
-    if-nez v2, :cond_38
+    if-nez v1, :cond_37
 
     .line 190
-    const-string p1, "BcRadio2Srv"
+    const-string v2, "BcRadio2Srv"
 
-    const-string p2, "There are no HAL modules that support announcements"
+    const-string v3, "There are no HAL modules that support announcements"
 
-    invoke-static {p1, p2}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v2, v3}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 192
-    :cond_38
+    :cond_37
     return-object v0
 
     .line 188
-    :catchall_39
-    move-exception p1
+    :catchall_38
+    move-exception v3
 
-    :try_start_3a
-    monitor-exit p2
-    :try_end_3b
-    .catchall {:try_start_3a .. :try_end_3b} :catchall_39
+    :try_start_39
+    monitor-exit v2
+    :try_end_3a
+    .catchall {:try_start_39 .. :try_end_3a} :catchall_38
 
-    throw p1
+    throw v3
 .end method
 
 .method public hasAnyModules()Z
@@ -372,7 +392,8 @@
 .end method
 
 .method public hasModule(I)Z
-    .registers 4
+    .registers 5
+    .param p1, "id"  # I
 
     .line 141
     iget-object v0, p0, Lcom/android/server/broadcastradio/hal2/BroadcastRadioService;->mLock:Ljava/lang/Object;
@@ -385,25 +406,25 @@
 
     invoke-static {p1}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
 
-    move-result-object p1
+    move-result-object v2
 
-    invoke-interface {v1, p1}, Ljava/util/Map;->containsKey(Ljava/lang/Object;)Z
+    invoke-interface {v1, v2}, Ljava/util/Map;->containsKey(Ljava/lang/Object;)Z
 
-    move-result p1
+    move-result v1
 
     monitor-exit v0
 
-    return p1
+    return v1
 
     .line 143
     :catchall_f
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_11
     .catchall {:try_start_3 .. :try_end_11} :catchall_f
 
-    throw p1
+    throw v1
 .end method
 
 .method public listModules()Ljava/util/Collection;
@@ -468,7 +489,11 @@
 .end method
 
 .method public openSession(ILandroid/hardware/radio/RadioManager$BandConfig;ZLandroid/hardware/radio/ITunerCallback;)Landroid/hardware/radio/ITuner;
-    .registers 6
+    .registers 9
+    .param p1, "moduleId"  # I
+    .param p2, "legacyConfig"  # Landroid/hardware/radio/RadioManager$BandConfig;
+    .param p3, "withAudio"  # Z
+    .param p4, "callback"  # Landroid/hardware/radio/ITunerCallback;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -479,81 +504,99 @@
     invoke-static {p4}, Ljava/util/Objects;->requireNonNull(Ljava/lang/Object;)Ljava/lang/Object;
 
     .line 156
-    if-eqz p3, :cond_2d
+    if-eqz p3, :cond_2e
 
     .line 160
-    nop
+    const/4 v0, 0x0
 
     .line 161
-    iget-object p3, p0, Lcom/android/server/broadcastradio/hal2/BroadcastRadioService;->mLock:Ljava/lang/Object;
+    .local v0, "module":Lcom/android/server/broadcastradio/hal2/RadioModule;
+    iget-object v1, p0, Lcom/android/server/broadcastradio/hal2/BroadcastRadioService;->mLock:Ljava/lang/Object;
 
-    monitor-enter p3
+    monitor-enter v1
 
     .line 162
     :try_start_9
-    iget-object v0, p0, Lcom/android/server/broadcastradio/hal2/BroadcastRadioService;->mModules:Ljava/util/Map;
+    iget-object v2, p0, Lcom/android/server/broadcastradio/hal2/BroadcastRadioService;->mModules:Ljava/util/Map;
 
     invoke-static {p1}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
 
-    move-result-object p1
+    move-result-object v3
 
-    invoke-interface {v0, p1}, Ljava/util/Map;->get(Ljava/lang/Object;)Ljava/lang/Object;
+    invoke-interface {v2, v3}, Ljava/util/Map;->get(Ljava/lang/Object;)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v2
 
-    check-cast p1, Lcom/android/server/broadcastradio/hal2/RadioModule;
+    check-cast v2, Lcom/android/server/broadcastradio/hal2/RadioModule;
+
+    move-object v0, v2
 
     .line 163
-    if-eqz p1, :cond_22
+    if-eqz v0, :cond_23
 
     .line 166
-    monitor-exit p3
-    :try_end_18
-    .catchall {:try_start_9 .. :try_end_18} :catchall_2a
+    monitor-exit v1
+    :try_end_19
+    .catchall {:try_start_9 .. :try_end_19} :catchall_2b
 
     .line 168
-    invoke-virtual {p1, p4}, Lcom/android/server/broadcastradio/hal2/RadioModule;->openSession(Landroid/hardware/radio/ITunerCallback;)Lcom/android/server/broadcastradio/hal2/TunerSession;
+    invoke-virtual {v0, p4}, Lcom/android/server/broadcastradio/hal2/RadioModule;->openSession(Landroid/hardware/radio/ITunerCallback;)Lcom/android/server/broadcastradio/hal2/TunerSession;
 
-    move-result-object p1
+    move-result-object v1
 
     .line 169
-    if-eqz p2, :cond_21
+    .local v1, "tunerSession":Lcom/android/server/broadcastradio/hal2/TunerSession;
+    if-eqz p2, :cond_22
 
     .line 170
-    invoke-virtual {p1, p2}, Lcom/android/server/broadcastradio/hal2/TunerSession;->setConfiguration(Landroid/hardware/radio/RadioManager$BandConfig;)V
+    invoke-virtual {v1, p2}, Lcom/android/server/broadcastradio/hal2/TunerSession;->setConfiguration(Landroid/hardware/radio/RadioManager$BandConfig;)V
 
     .line 172
-    :cond_21
-    return-object p1
+    :cond_22
+    return-object v1
 
     .line 164
-    :cond_22
-    :try_start_22
-    new-instance p1, Ljava/lang/IllegalArgumentException;
+    .end local v1  # "tunerSession":Lcom/android/server/broadcastradio/hal2/TunerSession;
+    :cond_23
+    :try_start_23
+    new-instance v2, Ljava/lang/IllegalArgumentException;
 
-    const-string p2, "Invalid module ID"
+    const-string v3, "Invalid module ID"
 
-    invoke-direct {p1, p2}, Ljava/lang/IllegalArgumentException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v2, v3}, Ljava/lang/IllegalArgumentException;-><init>(Ljava/lang/String;)V
 
-    throw p1
+    .end local v0  # "module":Lcom/android/server/broadcastradio/hal2/RadioModule;
+    .end local p0  # "this":Lcom/android/server/broadcastradio/hal2/BroadcastRadioService;
+    .end local p1  # "moduleId":I
+    .end local p2  # "legacyConfig":Landroid/hardware/radio/RadioManager$BandConfig;
+    .end local p3  # "withAudio":Z
+    .end local p4  # "callback":Landroid/hardware/radio/ITunerCallback;
+    throw v2
 
     .line 166
-    :catchall_2a
-    move-exception p1
+    .restart local v0  # "module":Lcom/android/server/broadcastradio/hal2/RadioModule;
+    .restart local p0  # "this":Lcom/android/server/broadcastradio/hal2/BroadcastRadioService;
+    .restart local p1  # "moduleId":I
+    .restart local p2  # "legacyConfig":Landroid/hardware/radio/RadioManager$BandConfig;
+    .restart local p3  # "withAudio":Z
+    .restart local p4  # "callback":Landroid/hardware/radio/ITunerCallback;
+    :catchall_2b
+    move-exception v2
 
-    monitor-exit p3
-    :try_end_2c
-    .catchall {:try_start_22 .. :try_end_2c} :catchall_2a
+    monitor-exit v1
+    :try_end_2d
+    .catchall {:try_start_23 .. :try_end_2d} :catchall_2b
 
-    throw p1
+    throw v2
 
     .line 157
-    :cond_2d
-    new-instance p1, Ljava/lang/IllegalArgumentException;
+    .end local v0  # "module":Lcom/android/server/broadcastradio/hal2/RadioModule;
+    :cond_2e
+    new-instance v0, Ljava/lang/IllegalArgumentException;
 
-    const-string p2, "Non-audio sessions not supported with HAL 2.x"
+    const-string v1, "Non-audio sessions not supported with HAL 2.x"
 
-    invoke-direct {p1, p2}, Ljava/lang/IllegalArgumentException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v0, v1}, Ljava/lang/IllegalArgumentException;-><init>(Ljava/lang/String;)V
 
-    throw p1
+    throw v0
 .end method

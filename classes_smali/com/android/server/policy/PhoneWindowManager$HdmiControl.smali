@@ -21,21 +21,24 @@
 # direct methods
 .method private constructor <init>(Landroid/hardware/hdmi/HdmiPlaybackClient;)V
     .registers 2
+    .param p1, "client"  # Landroid/hardware/hdmi/HdmiPlaybackClient;
 
-    .line 1758
+    .line 1634
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
-    .line 1759
+    .line 1635
     iput-object p1, p0, Lcom/android/server/policy/PhoneWindowManager$HdmiControl;->mClient:Landroid/hardware/hdmi/HdmiPlaybackClient;
 
-    .line 1760
+    .line 1636
     return-void
 .end method
 
 .method synthetic constructor <init>(Landroid/hardware/hdmi/HdmiPlaybackClient;Lcom/android/server/policy/PhoneWindowManager$1;)V
     .registers 3
+    .param p1, "x0"  # Landroid/hardware/hdmi/HdmiPlaybackClient;
+    .param p2, "x1"  # Lcom/android/server/policy/PhoneWindowManager$1;
 
-    .line 1755
+    .line 1631
     invoke-direct {p0, p1}, Lcom/android/server/policy/PhoneWindowManager$HdmiControl;-><init>(Landroid/hardware/hdmi/HdmiPlaybackClient;)V
 
     return-void
@@ -46,15 +49,15 @@
 .method public turnOnTv()V
     .registers 3
 
-    .line 1763
+    .line 1639
     iget-object v0, p0, Lcom/android/server/policy/PhoneWindowManager$HdmiControl;->mClient:Landroid/hardware/hdmi/HdmiPlaybackClient;
 
     if-nez v0, :cond_5
 
-    .line 1764
+    .line 1640
     return-void
 
-    .line 1766
+    .line 1642
     :cond_5
     new-instance v1, Lcom/android/server/policy/PhoneWindowManager$HdmiControl$1;
 
@@ -62,6 +65,6 @@
 
     invoke-virtual {v0, v1}, Landroid/hardware/hdmi/HdmiPlaybackClient;->oneTouchPlay(Landroid/hardware/hdmi/HdmiPlaybackClient$OneTouchPlayCallback;)V
 
-    .line 1774
+    .line 1650
     return-void
 .end method

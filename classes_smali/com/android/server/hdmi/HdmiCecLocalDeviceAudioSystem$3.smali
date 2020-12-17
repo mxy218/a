@@ -24,6 +24,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;
 
     .line 1255
     iput-object p1, p0, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem$3;->this$0:Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;
@@ -36,7 +37,7 @@
 
 # virtual methods
 .method public onDeviceDiscoveryDone(Ljava/util/List;)V
-    .registers 4
+    .registers 5
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(",
@@ -47,29 +48,32 @@
     .end annotation
 
     .line 1258
+    .local p1, "deviceInfos":Ljava/util/List;, "Ljava/util/List<Landroid/hardware/hdmi/HdmiDeviceInfo;>;"
     invoke-interface {p1}, Ljava/util/List;->iterator()Ljava/util/Iterator;
-
-    move-result-object p1
-
-    :goto_4
-    invoke-interface {p1}, Ljava/util/Iterator;->hasNext()Z
-
-    move-result v0
-
-    if-eqz v0, :cond_16
-
-    invoke-interface {p1}, Ljava/util/Iterator;->next()Ljava/lang/Object;
 
     move-result-object v0
 
-    check-cast v0, Landroid/hardware/hdmi/HdmiDeviceInfo;
+    :goto_4
+    invoke-interface {v0}, Ljava/util/Iterator;->hasNext()Z
+
+    move-result v1
+
+    if-eqz v1, :cond_16
+
+    invoke-interface {v0}, Ljava/util/Iterator;->next()Ljava/lang/Object;
+
+    move-result-object v1
+
+    check-cast v1, Landroid/hardware/hdmi/HdmiDeviceInfo;
 
     .line 1259
-    iget-object v1, p0, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem$3;->this$0:Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;
+    .local v1, "info":Landroid/hardware/hdmi/HdmiDeviceInfo;
+    iget-object v2, p0, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem$3;->this$0:Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;
 
-    invoke-virtual {v1, v0}, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->addCecDevice(Landroid/hardware/hdmi/HdmiDeviceInfo;)V
+    invoke-virtual {v2, v1}, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->addCecDevice(Landroid/hardware/hdmi/HdmiDeviceInfo;)V
 
     .line 1260
+    .end local v1  # "info":Landroid/hardware/hdmi/HdmiDeviceInfo;
     goto :goto_4
 
     .line 1261

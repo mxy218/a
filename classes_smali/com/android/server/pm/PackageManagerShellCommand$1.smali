@@ -33,6 +33,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/pm/PackageManagerShellCommand;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/pm/PackageManagerShellCommand;
 
     .line 553
     iput-object p1, p0, Lcom/android/server/pm/PackageManagerShellCommand$1;->this$0:Lcom/android/server/pm/PackageManagerShellCommand;
@@ -46,6 +47,8 @@
 # virtual methods
 .method public compare(Landroid/content/pm/FeatureInfo;Landroid/content/pm/FeatureInfo;)I
     .registers 5
+    .param p1, "o1"  # Landroid/content/pm/FeatureInfo;
+    .param p2, "o2"  # Landroid/content/pm/FeatureInfo;
 
     .line 555
     iget-object v0, p1, Landroid/content/pm/FeatureInfo;->name:Ljava/lang/String;
@@ -54,9 +57,9 @@
 
     if-ne v0, v1, :cond_8
 
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    return p1
+    return v0
 
     .line 556
     :cond_8
@@ -64,9 +67,9 @@
 
     if-nez v0, :cond_e
 
-    const/4 p1, -0x1
+    const/4 v0, -0x1
 
-    return p1
+    return v0
 
     .line 557
     :cond_e
@@ -74,21 +77,21 @@
 
     if-nez v0, :cond_14
 
-    const/4 p1, 0x1
+    const/4 v0, 0x1
 
-    return p1
+    return v0
 
     .line 558
     :cond_14
-    iget-object p1, p1, Landroid/content/pm/FeatureInfo;->name:Ljava/lang/String;
+    iget-object v0, p1, Landroid/content/pm/FeatureInfo;->name:Ljava/lang/String;
 
-    iget-object p2, p2, Landroid/content/pm/FeatureInfo;->name:Ljava/lang/String;
+    iget-object v1, p2, Landroid/content/pm/FeatureInfo;->name:Ljava/lang/String;
 
-    invoke-virtual {p1, p2}, Ljava/lang/String;->compareTo(Ljava/lang/String;)I
+    invoke-virtual {v0, v1}, Ljava/lang/String;->compareTo(Ljava/lang/String;)I
 
-    move-result p1
+    move-result v0
 
-    return p1
+    return v0
 .end method
 
 .method public bridge synthetic compare(Ljava/lang/Object;Ljava/lang/Object;)I

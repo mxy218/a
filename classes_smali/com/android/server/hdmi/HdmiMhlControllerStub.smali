@@ -46,6 +46,7 @@
 
 .method private constructor <init>(Lcom/android/server/hdmi/HdmiControlService;)V
     .registers 2
+    .param p1, "service"  # Lcom/android/server/hdmi/HdmiControlService;
 
     .line 39
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -56,6 +57,7 @@
 
 .method static create(Lcom/android/server/hdmi/HdmiControlService;)Lcom/android/server/hdmi/HdmiMhlControllerStub;
     .registers 2
+    .param p0, "service"  # Lcom/android/server/hdmi/HdmiControlService;
 
     .line 48
     new-instance v0, Lcom/android/server/hdmi/HdmiMhlControllerStub;
@@ -68,12 +70,13 @@
 
 # virtual methods
 .method addLocalDevice(Lcom/android/server/hdmi/HdmiMhlLocalDeviceStub;)Lcom/android/server/hdmi/HdmiMhlLocalDeviceStub;
-    .registers 2
+    .registers 3
+    .param p1, "device"  # Lcom/android/server/hdmi/HdmiMhlLocalDeviceStub;
 
     .line 92
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    return-object p1
+    return-object v0
 .end method
 
 .method clearAllLocalDevices()V
@@ -85,6 +88,7 @@
 
 .method dump(Lcom/android/internal/util/IndentingPrintWriter;)V
     .registers 2
+    .param p1, "pw"  # Lcom/android/internal/util/IndentingPrintWriter;
 
     .line 140
     return-void
@@ -108,48 +112,53 @@
 .end method
 
 .method getEcbusDeviceRoles(I)I
-    .registers 2
+    .registers 3
+    .param p1, "portId"  # I
 
     .line 136
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    return p1
+    return v0
 .end method
 
 .method getLocalDevice(I)Lcom/android/server/hdmi/HdmiMhlLocalDeviceStub;
-    .registers 2
+    .registers 3
+    .param p1, "portId"  # I
 
     .line 61
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    return-object p1
+    return-object v0
 .end method
 
 .method getLocalDeviceById(I)Lcom/android/server/hdmi/HdmiMhlLocalDeviceStub;
-    .registers 2
+    .registers 3
+    .param p1, "deviceId"  # I
 
     .line 70
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    return-object p1
+    return-object v0
 .end method
 
 .method getMhlVersion(I)I
-    .registers 2
+    .registers 3
+    .param p1, "portId"  # I
 
     .line 111
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    return p1
+    return v0
 .end method
 
 .method getPeerMhlVersion(I)I
-    .registers 2
+    .registers 3
+    .param p1, "portId"  # I
 
     .line 120
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    return p1
+    return v0
 .end method
 
 .method getPortInfos()[Landroid/hardware/hdmi/HdmiPortInfo;
@@ -162,12 +171,13 @@
 .end method
 
 .method getSupportedFeatures(I)I
-    .registers 2
+    .registers 3
+    .param p1, "portId"  # I
 
     .line 128
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    return p1
+    return v0
 .end method
 
 .method isReady()Z
@@ -180,16 +190,21 @@
 .end method
 
 .method removeLocalDevice(I)Lcom/android/server/hdmi/HdmiMhlLocalDeviceStub;
-    .registers 2
+    .registers 3
+    .param p1, "portId"  # I
 
     .line 83
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    return-object p1
+    return-object v0
 .end method
 
 .method sendVendorCommand(III[B)V
     .registers 5
+    .param p1, "portId"  # I
+    .param p2, "offset"  # I
+    .param p3, "length"  # I
+    .param p4, "data"  # [B
 
     .line 99
     return-void
@@ -197,6 +212,8 @@
 
 .method setOption(II)V
     .registers 3
+    .param p1, "flag"  # I
+    .param p2, "value"  # I
 
     .line 102
     return-void

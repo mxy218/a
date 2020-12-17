@@ -36,6 +36,8 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/wm/TaskSnapshotPersister;Landroid/util/ArraySet;[I)V
     .registers 5
+    .param p1, "this$0"  # Lcom/android/server/wm/TaskSnapshotPersister;
+    .param p3, "runningUserIds"  # [I
     .annotation build Lcom/android/internal/annotations/VisibleForTesting;
     .end annotation
 
@@ -48,41 +50,43 @@
         }
     .end annotation
 
-    .line 456
+    .line 432
+    .local p2, "persistentTaskIds":Landroid/util/ArraySet;, "Landroid/util/ArraySet<Ljava/lang/Integer;>;"
     iput-object p1, p0, Lcom/android/server/wm/TaskSnapshotPersister$RemoveObsoleteFilesQueueItem;->this$0:Lcom/android/server/wm/TaskSnapshotPersister;
 
     const/4 v0, 0x0
 
     invoke-direct {p0, p1, v0}, Lcom/android/server/wm/TaskSnapshotPersister$WriteQueueItem;-><init>(Lcom/android/server/wm/TaskSnapshotPersister;Lcom/android/server/wm/TaskSnapshotPersister$1;)V
 
-    .line 457
-    new-instance p1, Landroid/util/ArraySet;
+    .line 433
+    new-instance v0, Landroid/util/ArraySet;
 
-    invoke-direct {p1, p2}, Landroid/util/ArraySet;-><init>(Landroid/util/ArraySet;)V
+    invoke-direct {v0, p2}, Landroid/util/ArraySet;-><init>(Landroid/util/ArraySet;)V
 
-    iput-object p1, p0, Lcom/android/server/wm/TaskSnapshotPersister$RemoveObsoleteFilesQueueItem;->mPersistentTaskIds:Landroid/util/ArraySet;
+    iput-object v0, p0, Lcom/android/server/wm/TaskSnapshotPersister$RemoveObsoleteFilesQueueItem;->mPersistentTaskIds:Landroid/util/ArraySet;
 
-    .line 458
-    array-length p1, p3
+    .line 434
+    array-length v0, p3
 
-    invoke-static {p3, p1}, Ljava/util/Arrays;->copyOf([II)[I
+    invoke-static {p3, v0}, Ljava/util/Arrays;->copyOf([II)[I
 
-    move-result-object p1
+    move-result-object v0
 
-    iput-object p1, p0, Lcom/android/server/wm/TaskSnapshotPersister$RemoveObsoleteFilesQueueItem;->mRunningUserIds:[I
+    iput-object v0, p0, Lcom/android/server/wm/TaskSnapshotPersister$RemoveObsoleteFilesQueueItem;->mRunningUserIds:[I
 
-    .line 459
+    .line 435
     return-void
 .end method
 
 
 # virtual methods
 .method getTaskId(Ljava/lang/String;)I
-    .registers 6
+    .registers 8
+    .param p1, "fileName"  # Ljava/lang/String;
     .annotation build Lcom/android/internal/annotations/VisibleForTesting;
     .end annotation
 
-    .line 485
+    .line 461
     const-string v0, ".proto"
 
     invoke-virtual {p1, v0}, Ljava/lang/String;->endsWith(Ljava/lang/String;)Z
@@ -101,10 +105,10 @@
 
     if-nez v0, :cond_12
 
-    .line 486
+    .line 462
     return v1
 
-    .line 488
+    .line 464
     :cond_12
     const/16 v0, 0x2e
 
@@ -112,67 +116,70 @@
 
     move-result v0
 
-    .line 489
+    .line 465
+    .local v0, "end":I
     if-ne v0, v1, :cond_1b
 
-    .line 490
+    .line 466
     return v1
 
-    .line 492
+    .line 468
     :cond_1b
     const/4 v2, 0x0
 
     invoke-virtual {p1, v2, v0}, Ljava/lang/String;->substring(II)Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v3
 
-    .line 493
-    const-string v0, "_reduced"
+    .line 469
+    .local v3, "name":Ljava/lang/String;
+    const-string v4, "_reduced"
 
-    invoke-virtual {p1, v0}, Ljava/lang/String;->endsWith(Ljava/lang/String;)Z
+    invoke-virtual {v3, v4}, Ljava/lang/String;->endsWith(Ljava/lang/String;)Z
 
-    move-result v3
+    move-result v5
 
-    if-eqz v3, :cond_35
+    if-eqz v5, :cond_35
 
-    .line 494
-    invoke-virtual {p1}, Ljava/lang/String;->length()I
+    .line 470
+    invoke-virtual {v3}, Ljava/lang/String;->length()I
 
-    move-result v3
+    move-result v5
 
-    invoke-virtual {v0}, Ljava/lang/String;->length()I
+    invoke-virtual {v4}, Ljava/lang/String;->length()I
 
-    move-result v0
+    move-result v4
 
-    sub-int/2addr v3, v0
+    sub-int/2addr v5, v4
 
-    invoke-virtual {p1, v2, v3}, Ljava/lang/String;->substring(II)Ljava/lang/String;
+    invoke-virtual {v3, v2, v5}, Ljava/lang/String;->substring(II)Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v3
 
-    .line 497
+    .line 473
     :cond_35
     :try_start_35
-    invoke-static {p1}, Ljava/lang/Integer;->parseInt(Ljava/lang/String;)I
+    invoke-static {v3}, Ljava/lang/Integer;->parseInt(Ljava/lang/String;)I
 
-    move-result p1
+    move-result v1
     :try_end_39
     .catch Ljava/lang/NumberFormatException; {:try_start_35 .. :try_end_39} :catch_3a
 
-    return p1
+    return v1
 
-    .line 498
+    .line 474
     :catch_3a
-    move-exception p1
+    move-exception v2
 
-    .line 499
+    .line 475
+    .local v2, "e":Ljava/lang/NumberFormatException;
     return v1
 .end method
 
 .method write()V
-    .registers 14
+    .registers 15
 
-    .line 464
+    .line 440
     iget-object v0, p0, Lcom/android/server/wm/TaskSnapshotPersister$RemoveObsoleteFilesQueueItem;->this$0:Lcom/android/server/wm/TaskSnapshotPersister;
 
     invoke-static {v0}, Lcom/android/server/wm/TaskSnapshotPersister;->access$100(Lcom/android/server/wm/TaskSnapshotPersister;)Ljava/lang/Object;
@@ -181,24 +188,25 @@
 
     monitor-enter v0
 
-    .line 465
+    .line 441
     :try_start_7
     new-instance v1, Landroid/util/ArraySet;
 
     iget-object v2, p0, Lcom/android/server/wm/TaskSnapshotPersister$RemoveObsoleteFilesQueueItem;->this$0:Lcom/android/server/wm/TaskSnapshotPersister;
 
-    invoke-static {v2}, Lcom/android/server/wm/TaskSnapshotPersister;->access$1200(Lcom/android/server/wm/TaskSnapshotPersister;)Landroid/util/ArraySet;
+    invoke-static {v2}, Lcom/android/server/wm/TaskSnapshotPersister;->access$1100(Lcom/android/server/wm/TaskSnapshotPersister;)Landroid/util/ArraySet;
 
     move-result-object v2
 
     invoke-direct {v1, v2}, Landroid/util/ArraySet;-><init>(Landroid/util/ArraySet;)V
 
-    .line 466
+    .line 442
+    .local v1, "newPersistedTaskIds":Landroid/util/ArraySet;, "Landroid/util/ArraySet<Ljava/lang/Integer;>;"
     monitor-exit v0
     :try_end_13
     .catchall {:try_start_7 .. :try_end_13} :catchall_58
 
-    .line 467
+    .line 443
     iget-object v0, p0, Lcom/android/server/wm/TaskSnapshotPersister$RemoveObsoleteFilesQueueItem;->mRunningUserIds:[I
 
     array-length v2, v0
@@ -212,89 +220,100 @@
 
     aget v5, v0, v4
 
-    .line 468
+    .line 444
+    .local v5, "userId":I
     iget-object v6, p0, Lcom/android/server/wm/TaskSnapshotPersister$RemoveObsoleteFilesQueueItem;->this$0:Lcom/android/server/wm/TaskSnapshotPersister;
 
-    invoke-static {v6, v5}, Lcom/android/server/wm/TaskSnapshotPersister;->access$900(Lcom/android/server/wm/TaskSnapshotPersister;I)Ljava/io/File;
-
-    move-result-object v5
-
-    .line 469
-    invoke-virtual {v5}, Ljava/io/File;->list()[Ljava/lang/String;
+    invoke-static {v6, v5}, Lcom/android/server/wm/TaskSnapshotPersister;->access$800(Lcom/android/server/wm/TaskSnapshotPersister;I)Ljava/io/File;
 
     move-result-object v6
 
-    .line 470
-    if-nez v6, :cond_29
+    .line 445
+    .local v6, "dir":Ljava/io/File;
+    invoke-virtual {v6}, Ljava/io/File;->list()[Ljava/lang/String;
 
-    .line 471
+    move-result-object v7
+
+    .line 446
+    .local v7, "files":[Ljava/lang/String;
+    if-nez v7, :cond_29
+
+    .line 447
     goto :goto_54
 
-    .line 473
+    .line 449
     :cond_29
-    array-length v7, v6
+    array-length v8, v7
 
-    move v8, v3
+    move v9, v3
 
     :goto_2b
-    if-ge v8, v7, :cond_54
+    if-ge v9, v8, :cond_54
 
-    aget-object v9, v6, v8
+    aget-object v10, v7, v9
 
-    .line 474
-    invoke-virtual {p0, v9}, Lcom/android/server/wm/TaskSnapshotPersister$RemoveObsoleteFilesQueueItem;->getTaskId(Ljava/lang/String;)I
-
-    move-result v10
-
-    .line 475
-    iget-object v11, p0, Lcom/android/server/wm/TaskSnapshotPersister$RemoveObsoleteFilesQueueItem;->mPersistentTaskIds:Landroid/util/ArraySet;
-
-    invoke-static {v10}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
-
-    move-result-object v12
-
-    invoke-virtual {v11, v12}, Landroid/util/ArraySet;->contains(Ljava/lang/Object;)Z
+    .line 450
+    .local v10, "file":Ljava/lang/String;
+    invoke-virtual {p0, v10}, Lcom/android/server/wm/TaskSnapshotPersister$RemoveObsoleteFilesQueueItem;->getTaskId(Ljava/lang/String;)I
 
     move-result v11
 
-    if-nez v11, :cond_51
+    .line 451
+    .local v11, "taskId":I
+    iget-object v12, p0, Lcom/android/server/wm/TaskSnapshotPersister$RemoveObsoleteFilesQueueItem;->mPersistentTaskIds:Landroid/util/ArraySet;
 
-    .line 476
-    invoke-static {v10}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
+    invoke-static {v11}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
 
-    move-result-object v10
+    move-result-object v13
 
-    invoke-virtual {v1, v10}, Landroid/util/ArraySet;->contains(Ljava/lang/Object;)Z
+    invoke-virtual {v12, v13}, Landroid/util/ArraySet;->contains(Ljava/lang/Object;)Z
 
-    move-result v10
+    move-result v12
 
-    if-nez v10, :cond_51
+    if-nez v12, :cond_51
 
-    .line 477
-    new-instance v10, Ljava/io/File;
+    .line 452
+    invoke-static {v11}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
 
-    invoke-direct {v10, v5, v9}, Ljava/io/File;-><init>(Ljava/io/File;Ljava/lang/String;)V
+    move-result-object v12
 
-    invoke-virtual {v10}, Ljava/io/File;->delete()Z
+    invoke-virtual {v1, v12}, Landroid/util/ArraySet;->contains(Ljava/lang/Object;)Z
 
-    .line 473
+    move-result v12
+
+    if-nez v12, :cond_51
+
+    .line 453
+    new-instance v12, Ljava/io/File;
+
+    invoke-direct {v12, v6, v10}, Ljava/io/File;-><init>(Ljava/io/File;Ljava/lang/String;)V
+
+    invoke-virtual {v12}, Ljava/io/File;->delete()Z
+
+    .line 449
+    .end local v10  # "file":Ljava/lang/String;
+    .end local v11  # "taskId":I
     :cond_51
-    add-int/lit8 v8, v8, 0x1
+    add-int/lit8 v9, v9, 0x1
 
     goto :goto_2b
 
-    .line 467
+    .line 443
+    .end local v5  # "userId":I
+    .end local v6  # "dir":Ljava/io/File;
+    .end local v7  # "files":[Ljava/lang/String;
     :cond_54
     :goto_54
     add-int/lit8 v4, v4, 0x1
 
     goto :goto_18
 
-    .line 481
+    .line 457
     :cond_57
     return-void
 
-    .line 466
+    .line 442
+    .end local v1  # "newPersistedTaskIds":Landroid/util/ArraySet;, "Landroid/util/ArraySet<Ljava/lang/Integer;>;"
     :catchall_58
     move-exception v1
 

@@ -51,6 +51,7 @@
 
 .method setTo(Lcom/android/server/wm/RootActivityContainer$FindTaskResult;)V
     .registers 3
+    .param p1, "result"  # Lcom/android/server/wm/RootActivityContainer$FindTaskResult;
 
     .line 219
     iget-object v0, p1, Lcom/android/server/wm/RootActivityContainer$FindTaskResult;->mRecord:Lcom/android/server/wm/ActivityRecord;
@@ -58,9 +59,9 @@
     iput-object v0, p0, Lcom/android/server/wm/RootActivityContainer$FindTaskResult;->mRecord:Lcom/android/server/wm/ActivityRecord;
 
     .line 220
-    iget-boolean p1, p1, Lcom/android/server/wm/RootActivityContainer$FindTaskResult;->mIdealMatch:Z
+    iget-boolean v0, p1, Lcom/android/server/wm/RootActivityContainer$FindTaskResult;->mIdealMatch:Z
 
-    iput-boolean p1, p0, Lcom/android/server/wm/RootActivityContainer$FindTaskResult;->mIdealMatch:Z
+    iput-boolean v0, p0, Lcom/android/server/wm/RootActivityContainer$FindTaskResult;->mIdealMatch:Z
 
     .line 221
     return-void

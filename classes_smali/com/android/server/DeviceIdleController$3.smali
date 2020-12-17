@@ -24,8 +24,9 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/DeviceIdleController;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/DeviceIdleController;
 
-    .line 641
+    .line 609
     iput-object p1, p0, Lcom/android/server/DeviceIdleController$3;->this$0:Lcom/android/server/DeviceIdleController;
 
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -38,7 +39,7 @@
 .method public onAlarm()V
     .registers 3
 
-    .line 644
+    .line 612
     iget-object v0, p0, Lcom/android/server/DeviceIdleController$3;->this$0:Lcom/android/server/DeviceIdleController;
 
     invoke-static {v0}, Lcom/android/server/DeviceIdleController;->access$000(Lcom/android/server/DeviceIdleController;)I
@@ -49,18 +50,18 @@
 
     if-ne v0, v1, :cond_16
 
-    .line 645
+    .line 613
     iget-object v0, p0, Lcom/android/server/DeviceIdleController$3;->this$0:Lcom/android/server/DeviceIdleController;
 
     monitor-enter v0
 
-    .line 648
+    .line 616
     :try_start_c
     iget-object v1, p0, Lcom/android/server/DeviceIdleController$3;->this$0:Lcom/android/server/DeviceIdleController;
 
     invoke-virtual {v1}, Lcom/android/server/DeviceIdleController;->becomeInactiveIfAppropriateLocked()V
 
-    .line 649
+    .line 617
     monitor-exit v0
 
     goto :goto_16
@@ -74,7 +75,7 @@
 
     throw v1
 
-    .line 651
+    .line 619
     :cond_16
     :goto_16
     return-void

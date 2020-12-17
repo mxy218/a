@@ -38,6 +38,7 @@
 
 .method synthetic constructor <init>(Lcom/android/server/backup/BackupPasswordManager$1;)V
     .registers 2
+    .param p1, "x0"  # Lcom/android/server/backup/BackupPasswordManager$1;
 
     .line 287
     invoke-direct {p0}, Lcom/android/server/backup/BackupPasswordManager$PasswordHashFileCodec;-><init>()V
@@ -48,7 +49,8 @@
 
 # virtual methods
 .method public deserialize(Ljava/io/DataInputStream;)Lcom/android/server/backup/BackupPasswordManager$BackupPasswordHash;
-    .registers 4
+    .registers 6
+    .param p1, "dataInputStream"  # Ljava/io/DataInputStream;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Ljava/io/IOException;
@@ -61,22 +63,25 @@
     move-result v0
 
     .line 301
-    new-array v0, v0, [B
+    .local v0, "saltLen":I
+    new-array v1, v0, [B
 
     .line 302
-    invoke-virtual {p1, v0}, Ljava/io/DataInputStream;->readFully([B)V
+    .local v1, "salt":[B
+    invoke-virtual {p1, v1}, Ljava/io/DataInputStream;->readFully([B)V
 
     .line 303
     invoke-virtual {p1}, Ljava/io/DataInputStream;->readUTF()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v2
 
     .line 304
-    new-instance v1, Lcom/android/server/backup/BackupPasswordManager$BackupPasswordHash;
+    .local v2, "hash":Ljava/lang/String;
+    new-instance v3, Lcom/android/server/backup/BackupPasswordManager$BackupPasswordHash;
 
-    invoke-direct {v1, p1, v0}, Lcom/android/server/backup/BackupPasswordManager$BackupPasswordHash;-><init>(Ljava/lang/String;[B)V
+    invoke-direct {v3, v2, v1}, Lcom/android/server/backup/BackupPasswordManager$BackupPasswordHash;-><init>(Ljava/lang/String;[B)V
 
-    return-object v1
+    return-object v3
 .end method
 
 .method public bridge synthetic deserialize(Ljava/io/DataInputStream;)Ljava/lang/Object;
@@ -97,6 +102,8 @@
 
 .method public serialize(Lcom/android/server/backup/BackupPasswordManager$BackupPasswordHash;Ljava/io/DataOutputStream;)V
     .registers 4
+    .param p1, "backupPasswordHash"  # Lcom/android/server/backup/BackupPasswordManager$BackupPasswordHash;
+    .param p2, "dataOutputStream"  # Ljava/io/DataOutputStream;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Ljava/io/IOException;
@@ -116,9 +123,9 @@
     invoke-virtual {p2, v0}, Ljava/io/DataOutputStream;->write([B)V
 
     .line 294
-    iget-object p1, p1, Lcom/android/server/backup/BackupPasswordManager$BackupPasswordHash;->hash:Ljava/lang/String;
+    iget-object v0, p1, Lcom/android/server/backup/BackupPasswordManager$BackupPasswordHash;->hash:Ljava/lang/String;
 
-    invoke-virtual {p2, p1}, Ljava/io/DataOutputStream;->writeUTF(Ljava/lang/String;)V
+    invoke-virtual {p2, v0}, Ljava/io/DataOutputStream;->writeUTF(Ljava/lang/String;)V
 
     .line 295
     return-void

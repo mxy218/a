@@ -23,6 +23,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/audio/MediaFocusControl;Landroid/media/audiopolicy/IAudioPolicyCallback;)V
     .registers 3
+    .param p1, "this$0"  # Lcom/android/server/audio/MediaFocusControl;
 
     .line 517
     iput-object p1, p0, Lcom/android/server/audio/MediaFocusControl$1;->this$0:Lcom/android/server/audio/MediaFocusControl;
@@ -103,6 +104,7 @@
     move-exception v1
 
     .line 529
+    .local v1, "e":Landroid/os/RemoteException;
     :try_start_2b
     const-string v2, "MediaFocusControl"
 
@@ -131,6 +133,7 @@
     invoke-static {v2, v3, v1}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
     .line 532
+    .end local v1  # "e":Landroid/os/RemoteException;
     :goto_47
     monitor-exit v0
 

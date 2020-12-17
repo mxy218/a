@@ -153,7 +153,11 @@
 .end method
 
 .method public constructor <init>(IILjava/lang/String;I)V
-    .registers 5
+    .registers 8
+    .param p1, "formatMajorVersion"  # I
+    .param p2, "formatMinorVersion"  # I
+    .param p3, "rulesVersion"  # Ljava/lang/String;
+    .param p4, "revision"  # I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Lcom/android/timezone/distro/DistroException;
@@ -166,29 +170,29 @@
     .line 67
     invoke-static {p1}, Lcom/android/timezone/distro/DistroVersion;->validate3DigitVersion(I)I
 
-    move-result p1
+    move-result v0
 
-    iput p1, p0, Lcom/android/timezone/distro/DistroVersion;->formatMajorVersion:I
+    iput v0, p0, Lcom/android/timezone/distro/DistroVersion;->formatMajorVersion:I
 
     .line 68
     invoke-static {p2}, Lcom/android/timezone/distro/DistroVersion;->validate3DigitVersion(I)I
 
-    move-result p1
+    move-result v0
 
-    iput p1, p0, Lcom/android/timezone/distro/DistroVersion;->formatMinorVersion:I
+    iput v0, p0, Lcom/android/timezone/distro/DistroVersion;->formatMinorVersion:I
 
     .line 69
-    sget-object p1, Lcom/android/timezone/distro/DistroVersion;->RULES_VERSION_PATTERN:Ljava/util/regex/Pattern;
+    sget-object v0, Lcom/android/timezone/distro/DistroVersion;->RULES_VERSION_PATTERN:Ljava/util/regex/Pattern;
 
-    invoke-virtual {p1, p3}, Ljava/util/regex/Pattern;->matcher(Ljava/lang/CharSequence;)Ljava/util/regex/Matcher;
+    invoke-virtual {v0, p3}, Ljava/util/regex/Pattern;->matcher(Ljava/lang/CharSequence;)Ljava/util/regex/Matcher;
 
-    move-result-object p1
+    move-result-object v0
 
-    invoke-virtual {p1}, Ljava/util/regex/Matcher;->matches()Z
+    invoke-virtual {v0}, Ljava/util/regex/Matcher;->matches()Z
 
-    move-result p1
+    move-result v0
 
-    if-eqz p1, :cond_24
+    if-eqz v0, :cond_24
 
     .line 72
     iput-object p3, p0, Lcom/android/timezone/distro/DistroVersion;->rulesVersion:Ljava/lang/String;
@@ -196,92 +200,102 @@
     .line 73
     invoke-static {p4}, Lcom/android/timezone/distro/DistroVersion;->validate3DigitVersion(I)I
 
-    move-result p1
+    move-result v0
 
-    iput p1, p0, Lcom/android/timezone/distro/DistroVersion;->revision:I
+    iput v0, p0, Lcom/android/timezone/distro/DistroVersion;->revision:I
 
     .line 74
     return-void
 
     .line 70
     :cond_24
-    new-instance p1, Lcom/android/timezone/distro/DistroException;
+    new-instance v0, Lcom/android/timezone/distro/DistroException;
 
-    new-instance p2, Ljava/lang/StringBuilder;
+    new-instance v1, Ljava/lang/StringBuilder;
 
-    invoke-direct {p2}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string p4, "Invalid rulesVersion: "
+    const-string v2, "Invalid rulesVersion: "
 
-    invoke-virtual {p2, p4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p2, p3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, p3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p2
+    move-result-object v1
 
-    invoke-direct {p1, p2}, Lcom/android/timezone/distro/DistroException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v0, v1}, Lcom/android/timezone/distro/DistroException;-><init>(Ljava/lang/String;)V
 
-    throw p1
+    throw v0
 .end method
 
 .method private static from3DigitVersionString(Ljava/lang/String;)I
-    .registers 4
+    .registers 5
+    .param p0, "versionString"  # Ljava/lang/String;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Lcom/android/timezone/distro/DistroException;
         }
     .end annotation
 
+    .line 168
+    const-string v0, "versionString must be a zero padded, 3 digit, positive decimal integer"
+
     .line 170
+    .local v0, "parseErrorMessage":Ljava/lang/String;
     invoke-virtual {p0}, Ljava/lang/String;->length()I
 
-    move-result v0
+    move-result v1
 
-    const-string v1, "versionString must be a zero padded, 3 digit, positive decimal integer"
+    const-string v2, "versionString must be a zero padded, 3 digit, positive decimal integer"
 
-    const/4 v2, 0x3
+    const/4 v3, 0x3
 
-    if-ne v0, v2, :cond_19
+    if-ne v1, v3, :cond_1b
 
     .line 174
-    :try_start_9
+    :try_start_b
     invoke-static {p0}, Ljava/lang/Integer;->parseInt(Ljava/lang/String;)I
 
-    move-result p0
+    move-result v1
 
     .line 175
-    invoke-static {p0}, Lcom/android/timezone/distro/DistroVersion;->validate3DigitVersion(I)I
+    .local v1, "version":I
+    invoke-static {v1}, Lcom/android/timezone/distro/DistroVersion;->validate3DigitVersion(I)I
 
-    move-result p0
-    :try_end_11
-    .catch Ljava/lang/NumberFormatException; {:try_start_9 .. :try_end_11} :catch_12
+    move-result v2
+    :try_end_13
+    .catch Ljava/lang/NumberFormatException; {:try_start_b .. :try_end_13} :catch_14
 
-    return p0
+    return v2
 
     .line 176
-    :catch_12
-    move-exception p0
+    .end local v1  # "version":I
+    :catch_14
+    move-exception v1
 
     .line 177
-    new-instance v0, Lcom/android/timezone/distro/DistroException;
+    .local v1, "e":Ljava/lang/NumberFormatException;
+    new-instance v3, Lcom/android/timezone/distro/DistroException;
 
-    invoke-direct {v0, v1, p0}, Lcom/android/timezone/distro/DistroException;-><init>(Ljava/lang/String;Ljava/lang/Throwable;)V
+    invoke-direct {v3, v2, v1}, Lcom/android/timezone/distro/DistroException;-><init>(Ljava/lang/String;Ljava/lang/Throwable;)V
 
-    throw v0
+    throw v3
 
     .line 171
-    :cond_19
-    new-instance p0, Lcom/android/timezone/distro/DistroException;
+    .end local v1  # "e":Ljava/lang/NumberFormatException;
+    :cond_1b
+    new-instance v1, Lcom/android/timezone/distro/DistroException;
 
-    invoke-direct {p0, v1}, Lcom/android/timezone/distro/DistroException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v1, v2}, Lcom/android/timezone/distro/DistroException;-><init>(Ljava/lang/String;)V
 
-    throw p0
+    throw v1
 .end method
 
 .method public static fromBytes([B)Lcom/android/timezone/distro/DistroVersion;
-    .registers 7
+    .registers 12
+    .param p0, "bytes"  # [B
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Lcom/android/timezone/distro/DistroException;
@@ -298,127 +312,144 @@
     invoke-direct {v1, p0, v2}, Ljava/lang/String;-><init>([BLjava/nio/charset/Charset;)V
 
     .line 79
+    .local v1, "distroVersion":Ljava/lang/String;
     :try_start_9
-    sget-object p0, Lcom/android/timezone/distro/DistroVersion;->DISTRO_VERSION_PATTERN:Ljava/util/regex/Pattern;
+    sget-object v2, Lcom/android/timezone/distro/DistroVersion;->DISTRO_VERSION_PATTERN:Ljava/util/regex/Pattern;
 
-    invoke-virtual {p0, v1}, Ljava/util/regex/Pattern;->matcher(Ljava/lang/CharSequence;)Ljava/util/regex/Matcher;
-
-    move-result-object p0
-
-    .line 80
-    invoke-virtual {p0}, Ljava/util/regex/Matcher;->matches()Z
-
-    move-result v2
-
-    if-eqz v2, :cond_3b
-
-    .line 84
-    const/4 v2, 0x1
-
-    invoke-virtual {p0, v2}, Ljava/util/regex/Matcher;->group(I)Ljava/lang/String;
+    invoke-virtual {v2, v1}, Ljava/util/regex/Pattern;->matcher(Ljava/lang/CharSequence;)Ljava/util/regex/Matcher;
 
     move-result-object v2
 
-    .line 85
-    const/4 v3, 0x2
-
-    invoke-virtual {p0, v3}, Ljava/util/regex/Matcher;->group(I)Ljava/lang/String;
-
-    move-result-object v3
-
-    .line 86
-    const/4 v4, 0x3
-
-    invoke-virtual {p0, v4}, Ljava/util/regex/Matcher;->group(I)Ljava/lang/String;
-
-    move-result-object v4
-
-    .line 87
-    const/4 v5, 0x4
-
-    invoke-virtual {p0, v5}, Ljava/util/regex/Matcher;->group(I)Ljava/lang/String;
-
-    move-result-object p0
-
-    .line 88
-    new-instance v5, Lcom/android/timezone/distro/DistroVersion;
-
-    .line 89
-    invoke-static {v2}, Lcom/android/timezone/distro/DistroVersion;->from3DigitVersionString(Ljava/lang/String;)I
-
-    move-result v2
-
-    .line 90
-    invoke-static {v3}, Lcom/android/timezone/distro/DistroVersion;->from3DigitVersionString(Ljava/lang/String;)I
+    .line 80
+    .local v2, "matcher":Ljava/util/regex/Matcher;
+    invoke-virtual {v2}, Ljava/util/regex/Matcher;->matches()Z
 
     move-result v3
 
-    .line 92
-    invoke-static {p0}, Lcom/android/timezone/distro/DistroVersion;->from3DigitVersionString(Ljava/lang/String;)I
+    if-eqz v3, :cond_3b
 
-    move-result p0
+    .line 84
+    const/4 v3, 0x1
 
-    invoke-direct {v5, v2, v3, v4, p0}, Lcom/android/timezone/distro/DistroVersion;-><init>(IILjava/lang/String;I)V
+    invoke-virtual {v2, v3}, Ljava/util/regex/Matcher;->group(I)Ljava/lang/String;
+
+    move-result-object v3
+
+    .line 85
+    .local v3, "formatMajorVersion":Ljava/lang/String;
+    const/4 v4, 0x2
+
+    invoke-virtual {v2, v4}, Ljava/util/regex/Matcher;->group(I)Ljava/lang/String;
+
+    move-result-object v4
+
+    .line 86
+    .local v4, "formatMinorVersion":Ljava/lang/String;
+    const/4 v5, 0x3
+
+    invoke-virtual {v2, v5}, Ljava/util/regex/Matcher;->group(I)Ljava/lang/String;
+
+    move-result-object v5
+
+    .line 87
+    .local v5, "rulesVersion":Ljava/lang/String;
+    const/4 v6, 0x4
+
+    invoke-virtual {v2, v6}, Ljava/util/regex/Matcher;->group(I)Ljava/lang/String;
+
+    move-result-object v6
 
     .line 88
-    return-object v5
+    .local v6, "revision":Ljava/lang/String;
+    new-instance v7, Lcom/android/timezone/distro/DistroVersion;
+
+    .line 89
+    invoke-static {v3}, Lcom/android/timezone/distro/DistroVersion;->from3DigitVersionString(Ljava/lang/String;)I
+
+    move-result v8
+
+    .line 90
+    invoke-static {v4}, Lcom/android/timezone/distro/DistroVersion;->from3DigitVersionString(Ljava/lang/String;)I
+
+    move-result v9
+
+    .line 92
+    invoke-static {v6}, Lcom/android/timezone/distro/DistroVersion;->from3DigitVersionString(Ljava/lang/String;)I
+
+    move-result v10
+
+    invoke-direct {v7, v8, v9, v5, v10}, Lcom/android/timezone/distro/DistroVersion;-><init>(IILjava/lang/String;I)V
+
+    .line 88
+    return-object v7
 
     .line 81
+    .end local v3  # "formatMajorVersion":Ljava/lang/String;
+    .end local v4  # "formatMinorVersion":Ljava/lang/String;
+    .end local v5  # "rulesVersion":Ljava/lang/String;
+    .end local v6  # "revision":Ljava/lang/String;
     :cond_3b
-    new-instance p0, Lcom/android/timezone/distro/DistroException;
+    new-instance v3, Lcom/android/timezone/distro/DistroException;
 
-    new-instance v2, Ljava/lang/StringBuilder;
+    new-instance v4, Ljava/lang/StringBuilder;
 
-    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v4}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v3, "Invalid distro version string: \""
+    const-string v5, "Invalid distro version string: \""
 
-    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v2, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v4, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v2, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v4, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v4}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v2
+    move-result-object v4
 
-    invoke-direct {p0, v2}, Lcom/android/timezone/distro/DistroException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v3, v4}, Lcom/android/timezone/distro/DistroException;-><init>(Ljava/lang/String;)V
 
-    throw p0
+    .end local v1  # "distroVersion":Ljava/lang/String;
+    .end local p0  # "bytes":[B
+    throw v3
     :try_end_55
     .catch Ljava/lang/IndexOutOfBoundsException; {:try_start_9 .. :try_end_55} :catch_55
 
     .line 93
+    .end local v2  # "matcher":Ljava/util/regex/Matcher;
+    .restart local v1  # "distroVersion":Ljava/lang/String;
+    .restart local p0  # "bytes":[B
     :catch_55
-    move-exception p0
+    move-exception v2
 
     .line 95
-    new-instance p0, Lcom/android/timezone/distro/DistroException;
+    .local v2, "e":Ljava/lang/IndexOutOfBoundsException;
+    new-instance v3, Lcom/android/timezone/distro/DistroException;
 
-    new-instance v2, Ljava/lang/StringBuilder;
+    new-instance v4, Ljava/lang/StringBuilder;
 
-    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v4}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v3, "Distro version string too short: \""
+    const-string v5, "Distro version string too short: \""
 
-    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v2, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v4, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v2, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v4, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v4}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
     move-result-object v0
 
-    invoke-direct {p0, v0}, Lcom/android/timezone/distro/DistroException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v3, v0}, Lcom/android/timezone/distro/DistroException;-><init>(Ljava/lang/String;)V
 
-    throw p0
+    throw v3
 .end method
 
 .method private static to3DigitVersionString(I)Ljava/lang/String;
-    .registers 5
+    .registers 6
+    .param p0, "version"  # I
 
     .line 158
     :try_start_0
@@ -434,36 +465,41 @@
 
     invoke-static {p0}, Lcom/android/timezone/distro/DistroVersion;->validate3DigitVersion(I)I
 
-    move-result p0
+    move-result v4
 
-    invoke-static {p0}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
+    invoke-static {v4}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
 
-    move-result-object p0
+    move-result-object v4
 
-    aput-object p0, v2, v3
+    aput-object v4, v2, v3
 
     invoke-static {v0, v1, v2}, Ljava/lang/String;->format(Ljava/util/Locale;Ljava/lang/String;[Ljava/lang/Object;)Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v0
     :try_end_16
     .catch Lcom/android/timezone/distro/DistroException; {:try_start_0 .. :try_end_16} :catch_17
 
-    return-object p0
+    return-object v0
 
     .line 159
     :catch_17
-    move-exception p0
+    move-exception v0
 
     .line 160
-    new-instance v0, Ljava/lang/IllegalArgumentException;
+    .local v0, "e":Lcom/android/timezone/distro/DistroException;
+    new-instance v1, Ljava/lang/IllegalArgumentException;
 
-    invoke-direct {v0, p0}, Ljava/lang/IllegalArgumentException;-><init>(Ljava/lang/Throwable;)V
+    invoke-direct {v1, v0}, Ljava/lang/IllegalArgumentException;-><init>(Ljava/lang/Throwable;)V
 
-    throw v0
+    throw v1
 .end method
 
 .method public static toBytes(IILjava/lang/String;I)[B
-    .registers 5
+    .registers 6
+    .param p0, "majorFormatVersion"  # I
+    .param p1, "minorFormatVerison"  # I
+    .param p2, "rulesVersion"  # Ljava/lang/String;
+    .param p3, "revision"  # I
 
     .line 106
     new-instance v0, Ljava/lang/StringBuilder;
@@ -472,42 +508,44 @@
 
     invoke-static {p0, p1}, Lcom/android/timezone/distro/DistroVersion;->toFormatVersionString(II)Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v1
 
-    invoke-virtual {v0, p0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string p0, "|"
+    const-string v1, "|"
 
-    invoke-virtual {v0, p0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v0, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0, p0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     .line 107
     invoke-static {p3}, Lcom/android/timezone/distro/DistroVersion;->to3DigitVersionString(I)Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v1
 
-    invoke-virtual {v0, p0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v0
 
-    sget-object p1, Ljava/nio/charset/StandardCharsets;->US_ASCII:Ljava/nio/charset/Charset;
+    sget-object v1, Ljava/nio/charset/StandardCharsets;->US_ASCII:Ljava/nio/charset/Charset;
 
     .line 108
-    invoke-virtual {p0, p1}, Ljava/lang/String;->getBytes(Ljava/nio/charset/Charset;)[B
+    invoke-virtual {v0, v1}, Ljava/lang/String;->getBytes(Ljava/nio/charset/Charset;)[B
 
-    move-result-object p0
+    move-result-object v0
 
     .line 106
-    return-object p0
+    return-object v0
 .end method
 
 .method private static toFormatVersionString(II)Ljava/lang/String;
-    .registers 3
+    .registers 4
+    .param p0, "majorFormatVersion"  # I
+    .param p1, "minorFormatVersion"  # I
 
     .line 190
     new-instance v0, Ljava/lang/StringBuilder;
@@ -516,31 +554,32 @@
 
     invoke-static {p0}, Lcom/android/timezone/distro/DistroVersion;->to3DigitVersionString(I)Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v1
 
-    invoke-virtual {v0, p0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string p0, "."
+    const-string v1, "."
 
-    invoke-virtual {v0, p0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     .line 191
     invoke-static {p1}, Lcom/android/timezone/distro/DistroVersion;->to3DigitVersionString(I)Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v1
 
-    invoke-virtual {v0, p0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v0
 
     .line 190
-    return-object p0
+    return-object v0
 .end method
 
 .method private static validate3DigitVersion(I)I
     .registers 4
+    .param p0, "value"  # I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Lcom/android/timezone/distro/DistroException;
@@ -573,9 +612,9 @@
 
     invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v1
 
-    invoke-direct {v0, p0}, Lcom/android/timezone/distro/DistroException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v0, v1}, Lcom/android/timezone/distro/DistroException;-><init>(Ljava/lang/String;)V
 
     throw v0
 .end method
@@ -583,21 +622,22 @@
 
 # virtual methods
 .method public equals(Ljava/lang/Object;)Z
-    .registers 5
+    .registers 6
+    .param p1, "o"  # Ljava/lang/Object;
 
     .line 113
     if-ne p0, p1, :cond_4
 
     .line 114
-    const/4 p1, 0x1
+    const/4 v0, 0x1
 
-    return p1
+    return v0
 
     .line 116
     :cond_4
     const/4 v0, 0x0
 
-    if-eqz p1, :cond_32
+    if-eqz p1, :cond_33
 
     invoke-virtual {p0}, Ljava/lang/Object;->getClass()Ljava/lang/Class;
 
@@ -609,95 +649,106 @@
 
     if-eq v1, v2, :cond_12
 
-    goto :goto_32
+    goto :goto_33
 
     .line 120
     :cond_12
-    check-cast p1, Lcom/android/timezone/distro/DistroVersion;
+    move-object v1, p1
+
+    check-cast v1, Lcom/android/timezone/distro/DistroVersion;
 
     .line 122
-    iget v1, p0, Lcom/android/timezone/distro/DistroVersion;->formatMajorVersion:I
+    .local v1, "that":Lcom/android/timezone/distro/DistroVersion;
+    iget v2, p0, Lcom/android/timezone/distro/DistroVersion;->formatMajorVersion:I
 
-    iget v2, p1, Lcom/android/timezone/distro/DistroVersion;->formatMajorVersion:I
+    iget v3, v1, Lcom/android/timezone/distro/DistroVersion;->formatMajorVersion:I
 
-    if-eq v1, v2, :cond_1b
+    if-eq v2, v3, :cond_1c
 
     .line 123
     return v0
 
     .line 125
-    :cond_1b
-    iget v1, p0, Lcom/android/timezone/distro/DistroVersion;->formatMinorVersion:I
+    :cond_1c
+    iget v2, p0, Lcom/android/timezone/distro/DistroVersion;->formatMinorVersion:I
 
-    iget v2, p1, Lcom/android/timezone/distro/DistroVersion;->formatMinorVersion:I
+    iget v3, v1, Lcom/android/timezone/distro/DistroVersion;->formatMinorVersion:I
 
-    if-eq v1, v2, :cond_22
+    if-eq v2, v3, :cond_23
 
     .line 126
     return v0
 
     .line 128
-    :cond_22
-    iget v1, p0, Lcom/android/timezone/distro/DistroVersion;->revision:I
+    :cond_23
+    iget v2, p0, Lcom/android/timezone/distro/DistroVersion;->revision:I
 
-    iget v2, p1, Lcom/android/timezone/distro/DistroVersion;->revision:I
+    iget v3, v1, Lcom/android/timezone/distro/DistroVersion;->revision:I
 
-    if-eq v1, v2, :cond_29
+    if-eq v2, v3, :cond_2a
 
     .line 129
     return v0
 
     .line 131
-    :cond_29
+    :cond_2a
     iget-object v0, p0, Lcom/android/timezone/distro/DistroVersion;->rulesVersion:Ljava/lang/String;
 
-    iget-object p1, p1, Lcom/android/timezone/distro/DistroVersion;->rulesVersion:Ljava/lang/String;
+    iget-object v2, v1, Lcom/android/timezone/distro/DistroVersion;->rulesVersion:Ljava/lang/String;
 
-    invoke-virtual {v0, p1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v0, v2}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result p1
+    move-result v0
 
-    return p1
+    return v0
 
     .line 117
-    :cond_32
-    :goto_32
+    .end local v1  # "that":Lcom/android/timezone/distro/DistroVersion;
+    :cond_33
+    :goto_33
     return v0
 .end method
 
 .method public hashCode()I
-    .registers 3
+    .registers 4
 
     .line 136
     iget v0, p0, Lcom/android/timezone/distro/DistroVersion;->formatMajorVersion:I
 
     .line 137
-    mul-int/lit8 v0, v0, 0x1f
+    .local v0, "result":I
+    mul-int/lit8 v1, v0, 0x1f
 
-    iget v1, p0, Lcom/android/timezone/distro/DistroVersion;->formatMinorVersion:I
+    iget v2, p0, Lcom/android/timezone/distro/DistroVersion;->formatMinorVersion:I
 
-    add-int/2addr v0, v1
+    add-int/2addr v1, v2
 
     .line 138
-    mul-int/lit8 v0, v0, 0x1f
+    .end local v0  # "result":I
+    .local v1, "result":I
+    mul-int/lit8 v0, v1, 0x1f
 
-    iget-object v1, p0, Lcom/android/timezone/distro/DistroVersion;->rulesVersion:Ljava/lang/String;
+    iget-object v2, p0, Lcom/android/timezone/distro/DistroVersion;->rulesVersion:Ljava/lang/String;
 
-    invoke-virtual {v1}, Ljava/lang/String;->hashCode()I
+    invoke-virtual {v2}, Ljava/lang/String;->hashCode()I
 
-    move-result v1
+    move-result v2
 
-    add-int/2addr v0, v1
+    add-int/2addr v0, v2
 
     .line 139
-    mul-int/lit8 v0, v0, 0x1f
+    .end local v1  # "result":I
+    .restart local v0  # "result":I
+    mul-int/lit8 v1, v0, 0x1f
 
-    iget v1, p0, Lcom/android/timezone/distro/DistroVersion;->revision:I
+    iget v2, p0, Lcom/android/timezone/distro/DistroVersion;->revision:I
 
-    add-int/2addr v0, v1
+    add-int/2addr v1, v2
 
     .line 140
-    return v0
+    .end local v0  # "result":I
+    .restart local v1  # "result":I
+    return v1
 .end method
 
 .method public toBytes()[B

@@ -149,7 +149,8 @@
 .end method
 
 .method private getCachedStringRef(Ljava/lang/String;)Ljava/lang/String;
-    .registers 3
+    .registers 4
+    .param p1, "str"  # Ljava/lang/String;
 
     .line 417
     iget-object v0, p0, Lcom/android/server/usage/IntervalStats;->mStringCache:Landroid/util/ArraySet;
@@ -159,31 +160,33 @@
     move-result v0
 
     .line 418
+    .local v0, "index":I
     if-gez v0, :cond_e
 
     .line 419
-    iget-object v0, p0, Lcom/android/server/usage/IntervalStats;->mStringCache:Landroid/util/ArraySet;
+    iget-object v1, p0, Lcom/android/server/usage/IntervalStats;->mStringCache:Landroid/util/ArraySet;
 
-    invoke-virtual {v0, p1}, Landroid/util/ArraySet;->add(Ljava/lang/Object;)Z
+    invoke-virtual {v1, p1}, Landroid/util/ArraySet;->add(Ljava/lang/Object;)Z
 
     .line 420
     return-object p1
 
     .line 422
     :cond_e
-    iget-object p1, p0, Lcom/android/server/usage/IntervalStats;->mStringCache:Landroid/util/ArraySet;
+    iget-object v1, p0, Lcom/android/server/usage/IntervalStats;->mStringCache:Landroid/util/ArraySet;
 
-    invoke-virtual {p1, v0}, Landroid/util/ArraySet;->valueAt(I)Ljava/lang/Object;
+    invoke-virtual {v1, v0}, Landroid/util/ArraySet;->valueAt(I)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v1
 
-    check-cast p1, Ljava/lang/String;
+    check-cast v1, Ljava/lang/String;
 
-    return-object p1
+    return-object v1
 .end method
 
 .method private isStatefulEvent(I)Z
     .registers 4
+    .param p1, "eventType"  # I
 
     .line 257
     const/4 v0, 0x1
@@ -209,9 +212,9 @@
     packed-switch p1, :pswitch_data_16
 
     .line 270
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    return p1
+    return v0
 
     .line 268
     :cond_15
@@ -230,6 +233,7 @@
 
 .method private isUserVisibleEvent(I)Z
     .registers 3
+    .param p1, "eventType"  # I
 
     .line 278
     const/4 v0, 0x6
@@ -240,21 +244,22 @@
 
     if-eq p1, v0, :cond_9
 
-    const/4 p1, 0x1
+    const/4 v0, 0x1
 
     goto :goto_a
 
     :cond_9
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
     :goto_a
-    return p1
+    return v0
 .end method
 
 
 # virtual methods
 .method public addEvent(Landroid/app/usage/UsageEvents$Event;)V
     .registers 6
+    .param p1, "event"  # Landroid/app/usage/UsageEvents$Event;
     .annotation build Lcom/android/internal/annotations/VisibleForTesting;
     .end annotation
 
@@ -365,6 +370,7 @@
     .end annotation
 
     .line 406
+    .local p1, "out":Ljava/util/List;, "Ljava/util/List<Landroid/app/usage/EventStats;>;"
     iget-object v0, p0, Lcom/android/server/usage/IntervalStats;->interactiveTracker:Lcom/android/server/usage/IntervalStats$EventTracker;
 
     iget-wide v3, p0, Lcom/android/server/usage/IntervalStats;->beginTime:J
@@ -418,6 +424,7 @@
 
 .method buildEvent(Landroid/util/proto/ProtoInputStream;Ljava/util/List;)Landroid/app/usage/UsageEvents$Event;
     .registers 8
+    .param p1, "parser"  # Landroid/util/proto/ProtoInputStream;
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(",
@@ -436,11 +443,13 @@
     .end annotation
 
     .line 167
+    .local p2, "stringPool":Ljava/util/List;, "Ljava/util/List<Ljava/lang/String;>;"
     new-instance v0, Landroid/app/usage/UsageEvents$Event;
 
     invoke-direct {v0}, Landroid/app/usage/UsageEvents$Event;-><init>()V
 
     .line 169
+    .local v0, "event":Landroid/app/usage/UsageEvents$Event;
     :goto_5
     invoke-virtual {p1}, Landroid/util/proto/ProtoInputStream;->nextField()I
 
@@ -744,74 +753,74 @@
 
     .line 230
     :pswitch_11f  #0xffffffff
-    iget p1, v0, Landroid/app/usage/UsageEvents$Event;->mEventType:I
+    iget v1, v0, Landroid/app/usage/UsageEvents$Event;->mEventType:I
 
-    const/4 p2, 0x5
+    const/4 v2, 0x5
 
-    if-eq p1, p2, :cond_13d
+    if-eq v1, v2, :cond_13d
 
-    const/16 p2, 0x8
+    const/16 v2, 0x8
 
-    const-string v1, ""
+    const-string v3, ""
 
-    if-eq p1, p2, :cond_136
+    if-eq v1, v2, :cond_136
 
-    const/16 p2, 0xc
+    const/16 v2, 0xc
 
-    if-eq p1, p2, :cond_12f
+    if-eq v1, v2, :cond_12f
 
     goto :goto_148
 
     .line 242
     :cond_12f
-    iget-object p1, v0, Landroid/app/usage/UsageEvents$Event;->mNotificationChannelId:Ljava/lang/String;
+    iget-object v1, v0, Landroid/app/usage/UsageEvents$Event;->mNotificationChannelId:Ljava/lang/String;
 
-    if-nez p1, :cond_148
+    if-nez v1, :cond_148
 
     .line 243
-    iput-object v1, v0, Landroid/app/usage/UsageEvents$Event;->mNotificationChannelId:Ljava/lang/String;
+    iput-object v3, v0, Landroid/app/usage/UsageEvents$Event;->mNotificationChannelId:Ljava/lang/String;
 
     goto :goto_148
 
     .line 237
     :cond_136
-    iget-object p1, v0, Landroid/app/usage/UsageEvents$Event;->mShortcutId:Ljava/lang/String;
+    iget-object v1, v0, Landroid/app/usage/UsageEvents$Event;->mShortcutId:Ljava/lang/String;
 
-    if-nez p1, :cond_148
+    if-nez v1, :cond_148
 
     .line 238
-    iput-object v1, v0, Landroid/app/usage/UsageEvents$Event;->mShortcutId:Ljava/lang/String;
+    iput-object v3, v0, Landroid/app/usage/UsageEvents$Event;->mShortcutId:Ljava/lang/String;
 
     goto :goto_148
 
     .line 232
     :cond_13d
-    iget-object p1, v0, Landroid/app/usage/UsageEvents$Event;->mConfiguration:Landroid/content/res/Configuration;
+    iget-object v1, v0, Landroid/app/usage/UsageEvents$Event;->mConfiguration:Landroid/content/res/Configuration;
 
-    if-nez p1, :cond_148
+    if-nez v1, :cond_148
 
     .line 233
-    new-instance p1, Landroid/content/res/Configuration;
+    new-instance v1, Landroid/content/res/Configuration;
 
-    invoke-direct {p1}, Landroid/content/res/Configuration;-><init>()V
+    invoke-direct {v1}, Landroid/content/res/Configuration;-><init>()V
 
-    iput-object p1, v0, Landroid/app/usage/UsageEvents$Event;->mConfiguration:Landroid/content/res/Configuration;
+    iput-object v1, v0, Landroid/app/usage/UsageEvents$Event;->mConfiguration:Landroid/content/res/Configuration;
 
     .line 247
     :cond_148
     :goto_148
-    iget-wide p1, v0, Landroid/app/usage/UsageEvents$Event;->mTimeStamp:J
+    iget-wide v1, v0, Landroid/app/usage/UsageEvents$Event;->mTimeStamp:J
 
-    const-wide/16 v1, 0x0
+    const-wide/16 v3, 0x0
 
-    cmp-long p1, p1, v1
+    cmp-long v1, v1, v3
 
-    if-nez p1, :cond_154
+    if-nez v1, :cond_154
 
     .line 249
-    iget-wide p1, p0, Lcom/android/server/usage/IntervalStats;->beginTime:J
+    iget-wide v1, p0, Lcom/android/server/usage/IntervalStats;->beginTime:J
 
-    iput-wide p1, v0, Landroid/app/usage/UsageEvents$Event;->mTimeStamp:J
+    iput-wide v1, v0, Landroid/app/usage/UsageEvents$Event;->mTimeStamp:J
 
     .line 251
     :cond_154
@@ -846,7 +855,9 @@
 .end method
 
 .method buildEvent(Ljava/lang/String;Ljava/lang/String;)Landroid/app/usage/UsageEvents$Event;
-    .registers 4
+    .registers 5
+    .param p1, "packageName"  # Ljava/lang/String;
+    .param p2, "className"  # Ljava/lang/String;
 
     .line 153
     new-instance v0, Landroid/app/usage/UsageEvents$Event;
@@ -854,11 +865,12 @@
     invoke-direct {v0}, Landroid/app/usage/UsageEvents$Event;-><init>()V
 
     .line 154
+    .local v0, "event":Landroid/app/usage/UsageEvents$Event;
     invoke-direct {p0, p1}, Lcom/android/server/usage/IntervalStats;->getCachedStringRef(Ljava/lang/String;)Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v1
 
-    iput-object p1, v0, Landroid/app/usage/UsageEvents$Event;->mPackage:Ljava/lang/String;
+    iput-object v1, v0, Landroid/app/usage/UsageEvents$Event;->mPackage:Ljava/lang/String;
 
     .line 155
     if-eqz p2, :cond_13
@@ -866,9 +878,9 @@
     .line 156
     invoke-direct {p0, p2}, Lcom/android/server/usage/IntervalStats;->getCachedStringRef(Ljava/lang/String;)Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v1
 
-    iput-object p1, v0, Landroid/app/usage/UsageEvents$Event;->mClass:Ljava/lang/String;
+    iput-object v1, v0, Landroid/app/usage/UsageEvents$Event;->mClass:Ljava/lang/String;
 
     .line 158
     :cond_13
@@ -877,6 +889,7 @@
 
 .method commitTime(J)V
     .registers 4
+    .param p1, "timeStamp"  # J
 
     .line 379
     iget-object v0, p0, Lcom/android/server/usage/IntervalStats;->interactiveTracker:Lcom/android/server/usage/IntervalStats$EventTracker;
@@ -904,6 +917,7 @@
 
 .method getOrCreateConfigurationStats(Landroid/content/res/Configuration;)Landroid/app/usage/ConfigurationStats;
     .registers 5
+    .param p1, "config"  # Landroid/content/res/Configuration;
 
     .line 138
     iget-object v0, p0, Lcom/android/server/usage/IntervalStats;->configurations:Landroid/util/ArrayMap;
@@ -915,12 +929,15 @@
     check-cast v0, Landroid/app/usage/ConfigurationStats;
 
     .line 139
-    if-nez v0, :cond_1e
+    .local v0, "configStats":Landroid/app/usage/ConfigurationStats;
+    if-nez v0, :cond_1f
 
     .line 140
-    new-instance v0, Landroid/app/usage/ConfigurationStats;
+    new-instance v1, Landroid/app/usage/ConfigurationStats;
 
-    invoke-direct {v0}, Landroid/app/usage/ConfigurationStats;-><init>()V
+    invoke-direct {v1}, Landroid/app/usage/ConfigurationStats;-><init>()V
+
+    move-object v0, v1
 
     .line 141
     iget-wide v1, p0, Lcom/android/server/usage/IntervalStats;->beginTime:J
@@ -941,12 +958,13 @@
     invoke-virtual {v1, p1, v0}, Landroid/util/ArrayMap;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
 
     .line 146
-    :cond_1e
+    :cond_1f
     return-object v0
 .end method
 
 .method getOrCreateUsageStats(Ljava/lang/String;)Landroid/app/usage/UsageStats;
     .registers 5
+    .param p1, "packageName"  # Ljava/lang/String;
 
     .line 122
     iget-object v0, p0, Lcom/android/server/usage/IntervalStats;->packageStats:Landroid/util/ArrayMap;
@@ -958,19 +976,22 @@
     check-cast v0, Landroid/app/usage/UsageStats;
 
     .line 123
-    if-nez v0, :cond_24
+    .local v0, "usageStats":Landroid/app/usage/UsageStats;
+    if-nez v0, :cond_25
 
     .line 124
-    new-instance v0, Landroid/app/usage/UsageStats;
+    new-instance v1, Landroid/app/usage/UsageStats;
 
-    invoke-direct {v0}, Landroid/app/usage/UsageStats;-><init>()V
+    invoke-direct {v1}, Landroid/app/usage/UsageStats;-><init>()V
+
+    move-object v0, v1
 
     .line 125
     invoke-direct {p0, p1}, Lcom/android/server/usage/IntervalStats;->getCachedStringRef(Ljava/lang/String;)Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v1
 
-    iput-object p1, v0, Landroid/app/usage/UsageStats;->mPackageName:Ljava/lang/String;
+    iput-object v1, v0, Landroid/app/usage/UsageStats;->mPackageName:Ljava/lang/String;
 
     .line 126
     iget-wide v1, p0, Lcom/android/server/usage/IntervalStats;->beginTime:J
@@ -983,59 +1004,69 @@
     iput-wide v1, v0, Landroid/app/usage/UsageStats;->mEndTimeStamp:J
 
     .line 128
-    iget-object p1, p0, Lcom/android/server/usage/IntervalStats;->packageStats:Landroid/util/ArrayMap;
+    iget-object v1, p0, Lcom/android/server/usage/IntervalStats;->packageStats:Landroid/util/ArrayMap;
 
-    iget-object v1, v0, Landroid/app/usage/UsageStats;->mPackageName:Ljava/lang/String;
+    iget-object v2, v0, Landroid/app/usage/UsageStats;->mPackageName:Ljava/lang/String;
 
-    invoke-virtual {p1, v1, v0}, Landroid/util/ArrayMap;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+    invoke-virtual {v1, v2, v0}, Landroid/util/ArrayMap;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
 
     .line 130
-    :cond_24
+    :cond_25
     return-object v0
 .end method
 
 .method incrementAppLaunchCount(Ljava/lang/String;)V
-    .registers 3
+    .registers 4
+    .param p1, "packageName"  # Ljava/lang/String;
 
     .line 374
     invoke-virtual {p0, p1}, Lcom/android/server/usage/IntervalStats;->getOrCreateUsageStats(Ljava/lang/String;)Landroid/app/usage/UsageStats;
 
-    move-result-object p1
+    move-result-object v0
 
     .line 375
-    iget v0, p1, Landroid/app/usage/UsageStats;->mAppLaunchCount:I
+    .local v0, "usageStats":Landroid/app/usage/UsageStats;
+    iget v1, v0, Landroid/app/usage/UsageStats;->mAppLaunchCount:I
 
-    add-int/lit8 v0, v0, 0x1
+    add-int/lit8 v1, v1, 0x1
 
-    iput v0, p1, Landroid/app/usage/UsageStats;->mAppLaunchCount:I
+    iput v1, v0, Landroid/app/usage/UsageStats;->mAppLaunchCount:I
 
     .line 376
     return-void
 .end method
 
 .method public update(Ljava/lang/String;Ljava/lang/String;JII)V
-    .registers 14
+    .registers 16
+    .param p1, "packageName"  # Ljava/lang/String;
+    .param p2, "className"  # Ljava/lang/String;
+    .param p3, "timeStamp"  # J
+    .param p5, "eventType"  # I
+    .param p6, "instanceId"  # I
     .annotation build Lcom/android/internal/annotations/VisibleForTesting;
     .end annotation
 
     .line 296
     const/16 v0, 0x1a
 
-    if-eq p5, v0, :cond_15
+    if-eq p5, v0, :cond_16
 
     const/16 v0, 0x19
 
     if-ne p5, v0, :cond_9
 
-    goto :goto_15
+    goto :goto_16
 
     .line 305
     :cond_9
     invoke-virtual {p0, p1}, Lcom/android/server/usage/IntervalStats;->getOrCreateUsageStats(Ljava/lang/String;)Landroid/app/usage/UsageStats;
 
-    move-result-object v1
+    move-result-object v0
 
     .line 306
+    .local v0, "usageStats":Landroid/app/usage/UsageStats;
+    move-object v1, v0
+
     move-object v2, p2
 
     move-wide v3, p3
@@ -1046,151 +1077,165 @@
 
     invoke-virtual/range {v1 .. v6}, Landroid/app/usage/UsageStats;->update(Ljava/lang/String;JII)V
 
-    goto :goto_32
+    goto :goto_33
 
     .line 299
-    :cond_15
-    :goto_15
-    iget-object p1, p0, Lcom/android/server/usage/IntervalStats;->packageStats:Landroid/util/ArrayMap;
-
-    invoke-virtual {p1}, Landroid/util/ArrayMap;->size()I
-
-    move-result p1
-
-    .line 300
-    const/4 p2, 0x0
-
-    :goto_1c
-    if-ge p2, p1, :cond_31
-
-    .line 301
+    .end local v0  # "usageStats":Landroid/app/usage/UsageStats;
+    :cond_16
+    :goto_16
     iget-object v0, p0, Lcom/android/server/usage/IntervalStats;->packageStats:Landroid/util/ArrayMap;
 
-    invoke-virtual {v0, p2}, Landroid/util/ArrayMap;->valueAt(I)Ljava/lang/Object;
+    invoke-virtual {v0}, Landroid/util/ArrayMap;->size()I
 
-    move-result-object v0
-
-    move-object v1, v0
-
-    check-cast v1, Landroid/app/usage/UsageStats;
-
-    .line 302
-    const/4 v2, 0x0
-
-    move-wide v3, p3
-
-    move v5, p5
-
-    move v6, p6
-
-    invoke-virtual/range {v1 .. v6}, Landroid/app/usage/UsageStats;->update(Ljava/lang/String;JII)V
+    move-result v0
 
     .line 300
-    add-int/lit8 p2, p2, 0x1
+    .local v0, "size":I
+    const/4 v1, 0x0
 
-    goto :goto_1c
+    .local v1, "i":I
+    :goto_1d
+    if-ge v1, v0, :cond_32
+
+    .line 301
+    iget-object v2, p0, Lcom/android/server/usage/IntervalStats;->packageStats:Landroid/util/ArrayMap;
+
+    invoke-virtual {v2, v1}, Landroid/util/ArrayMap;->valueAt(I)Ljava/lang/Object;
+
+    move-result-object v2
+
+    check-cast v2, Landroid/app/usage/UsageStats;
+
+    .line 302
+    .local v2, "usageStats":Landroid/app/usage/UsageStats;
+    const/4 v4, 0x0
+
+    move-object v3, v2
+
+    move-wide v5, p3
+
+    move v7, p5
+
+    move v8, p6
+
+    invoke-virtual/range {v3 .. v8}, Landroid/app/usage/UsageStats;->update(Ljava/lang/String;JII)V
+
+    .line 300
+    .end local v2  # "usageStats":Landroid/app/usage/UsageStats;
+    add-int/lit8 v1, v1, 0x1
+
+    goto :goto_1d
 
     .line 304
-    :cond_31
+    .end local v0  # "size":I
+    .end local v1  # "i":I
+    :cond_32
     nop
 
     .line 308
-    :goto_32
-    iget-wide p1, p0, Lcom/android/server/usage/IntervalStats;->endTime:J
+    :goto_33
+    iget-wide v0, p0, Lcom/android/server/usage/IntervalStats;->endTime:J
 
-    cmp-long p1, p3, p1
+    cmp-long v0, p3, v0
 
-    if-lez p1, :cond_3a
+    if-lez v0, :cond_3b
 
     .line 309
     iput-wide p3, p0, Lcom/android/server/usage/IntervalStats;->endTime:J
 
     .line 311
-    :cond_3a
+    :cond_3b
     return-void
 .end method
 
 .method updateChooserCounts(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V
-    .registers 5
+    .registers 9
+    .param p1, "packageName"  # Ljava/lang/String;
+    .param p2, "category"  # Ljava/lang/String;
+    .param p3, "action"  # Ljava/lang/String;
 
     .line 339
     invoke-virtual {p0, p1}, Lcom/android/server/usage/IntervalStats;->getOrCreateUsageStats(Ljava/lang/String;)Landroid/app/usage/UsageStats;
 
-    move-result-object p1
+    move-result-object v0
 
     .line 340
-    iget-object v0, p1, Landroid/app/usage/UsageStats;->mChooserCounts:Landroid/util/ArrayMap;
+    .local v0, "usageStats":Landroid/app/usage/UsageStats;
+    iget-object v1, v0, Landroid/app/usage/UsageStats;->mChooserCounts:Landroid/util/ArrayMap;
 
-    if-nez v0, :cond_f
+    if-nez v1, :cond_f
 
     .line 341
-    new-instance v0, Landroid/util/ArrayMap;
+    new-instance v1, Landroid/util/ArrayMap;
 
-    invoke-direct {v0}, Landroid/util/ArrayMap;-><init>()V
+    invoke-direct {v1}, Landroid/util/ArrayMap;-><init>()V
 
-    iput-object v0, p1, Landroid/app/usage/UsageStats;->mChooserCounts:Landroid/util/ArrayMap;
+    iput-object v1, v0, Landroid/app/usage/UsageStats;->mChooserCounts:Landroid/util/ArrayMap;
 
     .line 344
     :cond_f
-    iget-object v0, p1, Landroid/app/usage/UsageStats;->mChooserCounts:Landroid/util/ArrayMap;
+    iget-object v1, v0, Landroid/app/usage/UsageStats;->mChooserCounts:Landroid/util/ArrayMap;
 
-    invoke-virtual {v0, p3}, Landroid/util/ArrayMap;->indexOfKey(Ljava/lang/Object;)I
+    invoke-virtual {v1, p3}, Landroid/util/ArrayMap;->indexOfKey(Ljava/lang/Object;)I
 
-    move-result v0
+    move-result v1
 
     .line 345
-    if-gez v0, :cond_22
+    .local v1, "idx":I
+    if-gez v1, :cond_22
 
     .line 346
-    new-instance v0, Landroid/util/ArrayMap;
+    new-instance v2, Landroid/util/ArrayMap;
 
-    invoke-direct {v0}, Landroid/util/ArrayMap;-><init>()V
+    invoke-direct {v2}, Landroid/util/ArrayMap;-><init>()V
 
     .line 347
-    iget-object p1, p1, Landroid/app/usage/UsageStats;->mChooserCounts:Landroid/util/ArrayMap;
+    .local v2, "chooserCounts":Landroid/util/ArrayMap;, "Landroid/util/ArrayMap<Ljava/lang/String;Ljava/lang/Integer;>;"
+    iget-object v3, v0, Landroid/app/usage/UsageStats;->mChooserCounts:Landroid/util/ArrayMap;
 
-    invoke-virtual {p1, p3, v0}, Landroid/util/ArrayMap;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+    invoke-virtual {v3, p3, v2}, Landroid/util/ArrayMap;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
 
-    goto :goto_2b
+    goto :goto_2a
 
     .line 349
+    .end local v2  # "chooserCounts":Landroid/util/ArrayMap;, "Landroid/util/ArrayMap<Ljava/lang/String;Ljava/lang/Integer;>;"
     :cond_22
-    iget-object p1, p1, Landroid/app/usage/UsageStats;->mChooserCounts:Landroid/util/ArrayMap;
+    iget-object v2, v0, Landroid/app/usage/UsageStats;->mChooserCounts:Landroid/util/ArrayMap;
 
-    invoke-virtual {p1, v0}, Landroid/util/ArrayMap;->valueAt(I)Ljava/lang/Object;
+    invoke-virtual {v2, v1}, Landroid/util/ArrayMap;->valueAt(I)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v2
 
-    move-object v0, p1
-
-    check-cast v0, Landroid/util/ArrayMap;
+    check-cast v2, Landroid/util/ArrayMap;
 
     .line 351
-    :goto_2b
-    const/4 p1, 0x0
+    .restart local v2  # "chooserCounts":Landroid/util/ArrayMap;, "Landroid/util/ArrayMap<Ljava/lang/String;Ljava/lang/Integer;>;"
+    :goto_2a
+    const/4 v3, 0x0
 
-    invoke-static {p1}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
+    invoke-static {v3}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
 
-    move-result-object p1
+    move-result-object v3
 
-    invoke-virtual {v0, p2, p1}, Landroid/util/ArrayMap;->getOrDefault(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+    invoke-virtual {v2, p2, v3}, Landroid/util/ArrayMap;->getOrDefault(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v3
 
-    check-cast p1, Ljava/lang/Integer;
+    check-cast v3, Ljava/lang/Integer;
 
-    invoke-virtual {p1}, Ljava/lang/Integer;->intValue()I
+    invoke-virtual {v3}, Ljava/lang/Integer;->intValue()I
 
-    move-result p1
+    move-result v3
 
     .line 352
-    add-int/lit8 p1, p1, 0x1
+    .local v3, "currentCount":I
+    add-int/lit8 v4, v3, 0x1
 
-    invoke-static {p1}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
+    invoke-static {v4}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
 
-    move-result-object p1
+    move-result-object v4
 
-    invoke-virtual {v0, p2, p1}, Landroid/util/ArrayMap;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+    invoke-virtual {v2, p2, v4}, Landroid/util/ArrayMap;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
 
     .line 353
     return-void
@@ -1198,6 +1243,8 @@
 
 .method updateConfigurationStats(Landroid/content/res/Configuration;J)V
     .registers 9
+    .param p1, "config"  # Landroid/content/res/Configuration;
+    .param p2, "timeStamp"  # J
 
     .line 356
     iget-object v0, p0, Lcom/android/server/usage/IntervalStats;->activeConfiguration:Landroid/content/res/Configuration;
@@ -1214,6 +1261,7 @@
     check-cast v0, Landroid/app/usage/ConfigurationStats;
 
     .line 358
+    .local v0, "activeStats":Landroid/app/usage/ConfigurationStats;
     iget-wide v1, v0, Landroid/app/usage/ConfigurationStats;->mTotalTimeActive:J
 
     iget-wide v3, v0, Landroid/app/usage/ConfigurationStats;->mLastTimeActive:J
@@ -1232,36 +1280,39 @@
     iput-wide v1, v0, Landroid/app/usage/ConfigurationStats;->mLastTimeActive:J
 
     .line 362
+    .end local v0  # "activeStats":Landroid/app/usage/ConfigurationStats;
     :cond_1b
     if-eqz p1, :cond_2d
 
     .line 363
     invoke-virtual {p0, p1}, Lcom/android/server/usage/IntervalStats;->getOrCreateConfigurationStats(Landroid/content/res/Configuration;)Landroid/app/usage/ConfigurationStats;
 
-    move-result-object p1
+    move-result-object v0
 
     .line 364
-    iput-wide p2, p1, Landroid/app/usage/ConfigurationStats;->mLastTimeActive:J
+    .local v0, "configStats":Landroid/app/usage/ConfigurationStats;
+    iput-wide p2, v0, Landroid/app/usage/ConfigurationStats;->mLastTimeActive:J
 
     .line 365
-    iget v0, p1, Landroid/app/usage/ConfigurationStats;->mActivationCount:I
+    iget v1, v0, Landroid/app/usage/ConfigurationStats;->mActivationCount:I
 
-    add-int/lit8 v0, v0, 0x1
+    add-int/lit8 v1, v1, 0x1
 
-    iput v0, p1, Landroid/app/usage/ConfigurationStats;->mActivationCount:I
+    iput v1, v0, Landroid/app/usage/ConfigurationStats;->mActivationCount:I
 
     .line 366
-    iget-object p1, p1, Landroid/app/usage/ConfigurationStats;->mConfiguration:Landroid/content/res/Configuration;
+    iget-object v1, v0, Landroid/app/usage/ConfigurationStats;->mConfiguration:Landroid/content/res/Configuration;
 
-    iput-object p1, p0, Lcom/android/server/usage/IntervalStats;->activeConfiguration:Landroid/content/res/Configuration;
+    iput-object v1, p0, Lcom/android/server/usage/IntervalStats;->activeConfiguration:Landroid/content/res/Configuration;
 
     .line 368
+    .end local v0  # "configStats":Landroid/app/usage/ConfigurationStats;
     :cond_2d
     iget-wide v0, p0, Lcom/android/server/usage/IntervalStats;->endTime:J
 
-    cmp-long p1, p2, v0
+    cmp-long v0, p2, v0
 
-    if-lez p1, :cond_35
+    if-lez v0, :cond_35
 
     .line 369
     iput-wide p2, p0, Lcom/android/server/usage/IntervalStats;->endTime:J
@@ -1273,6 +1324,7 @@
 
 .method updateKeyguardHidden(J)V
     .registers 4
+    .param p1, "timeStamp"  # J
 
     .line 401
     iget-object v0, p0, Lcom/android/server/usage/IntervalStats;->keyguardHiddenTracker:Lcom/android/server/usage/IntervalStats$EventTracker;
@@ -1290,6 +1342,7 @@
 
 .method updateKeyguardShown(J)V
     .registers 4
+    .param p1, "timeStamp"  # J
 
     .line 396
     iget-object v0, p0, Lcom/android/server/usage/IntervalStats;->keyguardShownTracker:Lcom/android/server/usage/IntervalStats$EventTracker;
@@ -1307,6 +1360,7 @@
 
 .method updateScreenInteractive(J)V
     .registers 4
+    .param p1, "timeStamp"  # J
 
     .line 386
     iget-object v0, p0, Lcom/android/server/usage/IntervalStats;->interactiveTracker:Lcom/android/server/usage/IntervalStats$EventTracker;
@@ -1324,6 +1378,7 @@
 
 .method updateScreenNonInteractive(J)V
     .registers 4
+    .param p1, "timeStamp"  # J
 
     .line 391
     iget-object v0, p0, Lcom/android/server/usage/IntervalStats;->nonInteractiveTracker:Lcom/android/server/usage/IntervalStats$EventTracker;

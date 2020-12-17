@@ -56,6 +56,7 @@
 # virtual methods
 .method public onPropertiesChanged(Landroid/provider/DeviceConfig$Properties;)V
     .registers 6
+    .param p1, "properties"  # Landroid/provider/DeviceConfig$Properties;
 
     .line 150
     iget-object v0, p0, Lcom/android/server/gpu/GpuService$DeviceConfigListener;->this$0:Lcom/android/server/gpu/GpuService;
@@ -90,15 +91,15 @@
     .line 153
     invoke-virtual {p1, v2, v3}, Landroid/provider/DeviceConfig$Properties;->getString(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v2
 
     .line 152
-    invoke-static {v1, p1}, Lcom/android/server/gpu/GpuService;->access$600(Lcom/android/server/gpu/GpuService;Ljava/lang/String;)V
+    invoke-static {v1, v2}, Lcom/android/server/gpu/GpuService;->access$600(Lcom/android/server/gpu/GpuService;Ljava/lang/String;)V
 
     .line 154
-    iget-object p1, p0, Lcom/android/server/gpu/GpuService$DeviceConfigListener;->this$0:Lcom/android/server/gpu/GpuService;
+    iget-object v1, p0, Lcom/android/server/gpu/GpuService$DeviceConfigListener;->this$0:Lcom/android/server/gpu/GpuService;
 
-    invoke-static {p1}, Lcom/android/server/gpu/GpuService;->access$300(Lcom/android/server/gpu/GpuService;)V
+    invoke-static {v1}, Lcom/android/server/gpu/GpuService;->access$300(Lcom/android/server/gpu/GpuService;)V
 
     .line 156
     :cond_25
@@ -109,11 +110,11 @@
 
     .line 156
     :catchall_27
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_29
     .catchall {:try_start_7 .. :try_end_29} :catchall_27
 
-    throw p1
+    throw v1
 .end method

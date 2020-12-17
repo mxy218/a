@@ -21,6 +21,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/rollback/LocalIntentReceiver;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/rollback/LocalIntentReceiver;
 
     .line 36
     iput-object p1, p0, Lcom/android/server/rollback/LocalIntentReceiver$1;->this$0:Lcom/android/server/rollback/LocalIntentReceiver;
@@ -33,14 +34,21 @@
 
 # virtual methods
 .method public send(ILandroid/content/Intent;Ljava/lang/String;Landroid/os/IBinder;Landroid/content/IIntentReceiver;Ljava/lang/String;Landroid/os/Bundle;)V
-    .registers 8
+    .registers 9
+    .param p1, "code"  # I
+    .param p2, "intent"  # Landroid/content/Intent;
+    .param p3, "resolvedType"  # Ljava/lang/String;
+    .param p4, "whitelistToken"  # Landroid/os/IBinder;
+    .param p5, "finishedReceiver"  # Landroid/content/IIntentReceiver;
+    .param p6, "requiredPermission"  # Ljava/lang/String;
+    .param p7, "options"  # Landroid/os/Bundle;
 
     .line 40
-    iget-object p1, p0, Lcom/android/server/rollback/LocalIntentReceiver$1;->this$0:Lcom/android/server/rollback/LocalIntentReceiver;
+    iget-object v0, p0, Lcom/android/server/rollback/LocalIntentReceiver$1;->this$0:Lcom/android/server/rollback/LocalIntentReceiver;
 
-    iget-object p1, p1, Lcom/android/server/rollback/LocalIntentReceiver;->mConsumer:Ljava/util/function/Consumer;
+    iget-object v0, v0, Lcom/android/server/rollback/LocalIntentReceiver;->mConsumer:Ljava/util/function/Consumer;
 
-    invoke-interface {p1, p2}, Ljava/util/function/Consumer;->accept(Ljava/lang/Object;)V
+    invoke-interface {v0, p2}, Ljava/util/function/Consumer;->accept(Ljava/lang/Object;)V
 
     .line 41
     return-void

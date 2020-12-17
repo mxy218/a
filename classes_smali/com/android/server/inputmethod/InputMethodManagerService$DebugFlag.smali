@@ -36,7 +36,7 @@
 .method static constructor <clinit>()V
     .registers 1
 
-    .line 264
+    .line 270
     new-instance v0, Ljava/lang/Object;
 
     invoke-direct {v0}, Ljava/lang/Object;-><init>()V
@@ -47,25 +47,27 @@
 .end method
 
 .method public constructor <init>(Ljava/lang/String;Z)V
-    .registers 3
+    .registers 4
+    .param p1, "key"  # Ljava/lang/String;
+    .param p2, "defaultValue"  # Z
 
-    .line 270
+    .line 276
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
-    .line 271
+    .line 277
     iput-object p1, p0, Lcom/android/server/inputmethod/InputMethodManagerService$DebugFlag;->mKey:Ljava/lang/String;
 
-    .line 272
+    .line 278
     iput-boolean p2, p0, Lcom/android/server/inputmethod/InputMethodManagerService$DebugFlag;->mDefaultValue:Z
 
-    .line 273
+    .line 279
     invoke-static {p1, p2}, Landroid/os/SystemProperties;->getBoolean(Ljava/lang/String;Z)Z
 
-    move-result p1
+    move-result v0
 
-    iput-boolean p1, p0, Lcom/android/server/inputmethod/InputMethodManagerService$DebugFlag;->mValue:Z
+    iput-boolean v0, p0, Lcom/android/server/inputmethod/InputMethodManagerService$DebugFlag;->mValue:Z
 
-    .line 274
+    .line 280
     return-void
 .end method
 
@@ -74,12 +76,12 @@
 .method refresh()V
     .registers 4
 
-    .line 277
+    .line 283
     sget-object v0, Lcom/android/server/inputmethod/InputMethodManagerService$DebugFlag;->LOCK:Ljava/lang/Object;
 
     monitor-enter v0
 
-    .line 278
+    .line 284
     :try_start_3
     iget-object v1, p0, Lcom/android/server/inputmethod/InputMethodManagerService$DebugFlag;->mKey:Ljava/lang/String;
 
@@ -91,13 +93,13 @@
 
     iput-boolean v1, p0, Lcom/android/server/inputmethod/InputMethodManagerService$DebugFlag;->mValue:Z
 
-    .line 279
+    .line 285
     monitor-exit v0
 
-    .line 280
+    .line 286
     return-void
 
-    .line 279
+    .line 285
     :catchall_f
     move-exception v1
 
@@ -111,12 +113,12 @@
 .method value()Z
     .registers 3
 
-    .line 283
+    .line 289
     sget-object v0, Lcom/android/server/inputmethod/InputMethodManagerService$DebugFlag;->LOCK:Ljava/lang/Object;
 
     monitor-enter v0
 
-    .line 284
+    .line 290
     :try_start_3
     iget-boolean v1, p0, Lcom/android/server/inputmethod/InputMethodManagerService$DebugFlag;->mValue:Z
 
@@ -124,7 +126,7 @@
 
     return v1
 
-    .line 285
+    .line 291
     :catchall_7
     move-exception v1
 

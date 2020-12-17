@@ -24,19 +24,20 @@
 # direct methods
 .method public constructor <init>(Ljava/io/File;)V
     .registers 2
+    .param p1, "file"  # Ljava/io/File;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Ljava/io/FileNotFoundException;
         }
     .end annotation
 
-    .line 1362
+    .line 1373
     invoke-direct {p0, p1}, Ljava/io/FileOutputStream;-><init>(Ljava/io/File;)V
 
-    .line 1363
+    .line 1374
     iput-object p1, p0, Lcom/android/server/pm/ShortcutService$FileOutputStreamWithPath;->mFile:Ljava/io/File;
 
-    .line 1364
+    .line 1375
     return-void
 .end method
 
@@ -45,7 +46,7 @@
 .method public getFile()Ljava/io/File;
     .registers 2
 
-    .line 1367
+    .line 1378
     iget-object v0, p0, Lcom/android/server/pm/ShortcutService$FileOutputStreamWithPath;->mFile:Ljava/io/File;
 
     return-object v0

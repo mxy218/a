@@ -40,6 +40,7 @@
 
 .method private constructor <init>(Landroid/os/Parcel;)V
     .registers 3
+    .param p1, "in"  # Landroid/os/Parcel;
 
     .line 81
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -54,9 +55,9 @@
     .line 83
     invoke-virtual {p1}, Landroid/os/Parcel;->readString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    iput-object p1, p0, Lcom/google/android/startop/iorap/ActivityInfo;->activityName:Ljava/lang/String;
+    iput-object v0, p0, Lcom/google/android/startop/iorap/ActivityInfo;->activityName:Ljava/lang/String;
 
     .line 85
     invoke-direct {p0}, Lcom/google/android/startop/iorap/ActivityInfo;->checkConstructorArguments()V
@@ -67,6 +68,8 @@
 
 .method synthetic constructor <init>(Landroid/os/Parcel;Lcom/google/android/startop/iorap/ActivityInfo$1;)V
     .registers 3
+    .param p1, "x0"  # Landroid/os/Parcel;
+    .param p2, "x1"  # Lcom/google/android/startop/iorap/ActivityInfo$1;
 
     .line 35
     invoke-direct {p0, p1}, Lcom/google/android/startop/iorap/ActivityInfo;-><init>(Landroid/os/Parcel;)V
@@ -76,6 +79,8 @@
 
 .method public constructor <init>(Ljava/lang/String;Ljava/lang/String;)V
     .registers 3
+    .param p1, "packageName"  # Ljava/lang/String;
+    .param p2, "activityName"  # Ljava/lang/String;
 
     .line 42
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -116,6 +121,7 @@
 
 .method private equals(Lcom/google/android/startop/iorap/ActivityInfo;)Z
     .registers 4
+    .param p1, "other"  # Lcom/google/android/startop/iorap/ActivityInfo;
 
     .line 70
     iget-object v0, p0, Lcom/google/android/startop/iorap/ActivityInfo;->packageName:Ljava/lang/String;
@@ -130,25 +136,25 @@
 
     iget-object v0, p0, Lcom/google/android/startop/iorap/ActivityInfo;->activityName:Ljava/lang/String;
 
-    iget-object p1, p1, Lcom/google/android/startop/iorap/ActivityInfo;->activityName:Ljava/lang/String;
+    iget-object v1, p1, Lcom/google/android/startop/iorap/ActivityInfo;->activityName:Ljava/lang/String;
 
     .line 71
-    invoke-static {v0, p1}, Ljava/util/Objects;->equals(Ljava/lang/Object;Ljava/lang/Object;)Z
+    invoke-static {v0, v1}, Ljava/util/Objects;->equals(Ljava/lang/Object;Ljava/lang/Object;)Z
 
-    move-result p1
+    move-result v0
 
-    if-eqz p1, :cond_16
+    if-eqz v0, :cond_16
 
-    const/4 p1, 0x1
+    const/4 v0, 0x1
 
     goto :goto_17
 
     :cond_16
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
     .line 70
     :goto_17
-    return p1
+    return v0
 .end method
 
 
@@ -164,35 +170,38 @@
 
 .method public equals(Ljava/lang/Object;)Z
     .registers 3
+    .param p1, "other"  # Ljava/lang/Object;
 
     .line 61
     if-ne p0, p1, :cond_4
 
     .line 62
-    const/4 p1, 0x1
+    const/4 v0, 0x1
 
-    return p1
+    return v0
 
     .line 63
     :cond_4
     instance-of v0, p1, Lcom/google/android/startop/iorap/ActivityInfo;
 
-    if-eqz v0, :cond_f
+    if-eqz v0, :cond_10
 
     .line 64
-    check-cast p1, Lcom/google/android/startop/iorap/ActivityInfo;
+    move-object v0, p1
 
-    invoke-direct {p0, p1}, Lcom/google/android/startop/iorap/ActivityInfo;->equals(Lcom/google/android/startop/iorap/ActivityInfo;)Z
+    check-cast v0, Lcom/google/android/startop/iorap/ActivityInfo;
 
-    move-result p1
+    invoke-direct {p0, v0}, Lcom/google/android/startop/iorap/ActivityInfo;->equals(Lcom/google/android/startop/iorap/ActivityInfo;)Z
 
-    return p1
+    move-result v0
+
+    return v0
 
     .line 66
-    :cond_f
-    const/4 p1, 0x0
+    :cond_10
+    const/4 v0, 0x0
 
-    return p1
+    return v0
 .end method
 
 .method public toString()Ljava/lang/String;
@@ -225,17 +234,19 @@
 .end method
 
 .method public writeToParcel(Landroid/os/Parcel;I)V
-    .registers 3
+    .registers 4
+    .param p1, "out"  # Landroid/os/Parcel;
+    .param p2, "flags"  # I
 
     .line 77
-    iget-object p2, p0, Lcom/google/android/startop/iorap/ActivityInfo;->packageName:Ljava/lang/String;
+    iget-object v0, p0, Lcom/google/android/startop/iorap/ActivityInfo;->packageName:Ljava/lang/String;
 
-    invoke-virtual {p1, p2}, Landroid/os/Parcel;->writeString(Ljava/lang/String;)V
+    invoke-virtual {p1, v0}, Landroid/os/Parcel;->writeString(Ljava/lang/String;)V
 
     .line 78
-    iget-object p2, p0, Lcom/google/android/startop/iorap/ActivityInfo;->activityName:Ljava/lang/String;
+    iget-object v0, p0, Lcom/google/android/startop/iorap/ActivityInfo;->activityName:Ljava/lang/String;
 
-    invoke-virtual {p1, p2}, Landroid/os/Parcel;->writeString(Ljava/lang/String;)V
+    invoke-virtual {p1, v0}, Landroid/os/Parcel;->writeString(Ljava/lang/String;)V
 
     .line 79
     return-void

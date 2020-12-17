@@ -39,6 +39,9 @@
 # direct methods
 .method private constructor <init>(Lcom/android/server/wm/LaunchParamsPersister;ILandroid/content/ComponentName;Lcom/android/server/wm/LaunchParamsPersister$PersistableLaunchParams;)V
     .registers 5
+    .param p2, "userId"  # I
+    .param p3, "componentName"  # Landroid/content/ComponentName;
+    .param p4, "launchParams"  # Lcom/android/server/wm/LaunchParamsPersister$PersistableLaunchParams;
 
     .line 325
     iput-object p1, p0, Lcom/android/server/wm/LaunchParamsPersister$LaunchParamsWriteQueueItem;->this$0:Lcom/android/server/wm/LaunchParamsPersister;
@@ -60,6 +63,11 @@
 
 .method synthetic constructor <init>(Lcom/android/server/wm/LaunchParamsPersister;ILandroid/content/ComponentName;Lcom/android/server/wm/LaunchParamsPersister$PersistableLaunchParams;Lcom/android/server/wm/LaunchParamsPersister$1;)V
     .registers 6
+    .param p1, "x0"  # Lcom/android/server/wm/LaunchParamsPersister;
+    .param p2, "x1"  # I
+    .param p3, "x2"  # Landroid/content/ComponentName;
+    .param p4, "x3"  # Lcom/android/server/wm/LaunchParamsPersister$PersistableLaunchParams;
+    .param p5, "x4"  # Lcom/android/server/wm/LaunchParamsPersister$1;
 
     .line 317
     invoke-direct {p0, p1, p2, p3, p4}, Lcom/android/server/wm/LaunchParamsPersister$LaunchParamsWriteQueueItem;-><init>(Lcom/android/server/wm/LaunchParamsPersister;ILandroid/content/ComponentName;Lcom/android/server/wm/LaunchParamsPersister$PersistableLaunchParams;)V
@@ -68,12 +76,13 @@
 .end method
 
 .method static synthetic access$600(Lcom/android/server/wm/LaunchParamsPersister$LaunchParamsWriteQueueItem;)Landroid/content/ComponentName;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/wm/LaunchParamsPersister$LaunchParamsWriteQueueItem;
 
     .line 317
-    iget-object p0, p0, Lcom/android/server/wm/LaunchParamsPersister$LaunchParamsWriteQueueItem;->mComponentName:Landroid/content/ComponentName;
+    iget-object v0, p0, Lcom/android/server/wm/LaunchParamsPersister$LaunchParamsWriteQueueItem;->mComponentName:Landroid/content/ComponentName;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method private saveParamsToXml()Ljava/io/StringWriter;
@@ -87,11 +96,13 @@
     invoke-direct {v1}, Ljava/io/StringWriter;-><init>()V
 
     .line 333
+    .local v1, "writer":Ljava/io/StringWriter;
     new-instance v2, Lcom/android/internal/util/FastXmlSerializer;
 
     invoke-direct {v2}, Lcom/android/internal/util/FastXmlSerializer;-><init>()V
 
     .line 336
+    .local v2, "serializer":Lorg/xmlpull/v1/XmlSerializer;
     const/4 v3, 0x0
 
     :try_start_d
@@ -133,6 +144,7 @@
     move-exception v0
 
     .line 348
+    .local v0, "e":Ljava/io/IOException;
     return-object v3
 .end method
 
@@ -140,6 +152,7 @@
 # virtual methods
 .method public matches(Lcom/android/server/wm/LaunchParamsPersister$LaunchParamsWriteQueueItem;)Z
     .registers 4
+    .param p1, "item"  # Lcom/android/server/wm/LaunchParamsPersister$LaunchParamsWriteQueueItem;
 
     .line 381
     iget v0, p0, Lcom/android/server/wm/LaunchParamsPersister$LaunchParamsWriteQueueItem;->mUserId:I
@@ -150,23 +163,23 @@
 
     iget-object v0, p0, Lcom/android/server/wm/LaunchParamsPersister$LaunchParamsWriteQueueItem;->mComponentName:Landroid/content/ComponentName;
 
-    iget-object p1, p1, Lcom/android/server/wm/LaunchParamsPersister$LaunchParamsWriteQueueItem;->mComponentName:Landroid/content/ComponentName;
+    iget-object v1, p1, Lcom/android/server/wm/LaunchParamsPersister$LaunchParamsWriteQueueItem;->mComponentName:Landroid/content/ComponentName;
 
-    invoke-virtual {v0, p1}, Landroid/content/ComponentName;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v0, v1}, Landroid/content/ComponentName;->equals(Ljava/lang/Object;)Z
 
-    move-result p1
+    move-result v0
 
-    if-eqz p1, :cond_12
+    if-eqz v0, :cond_12
 
-    const/4 p1, 0x1
+    const/4 v0, 0x1
 
     goto :goto_13
 
     :cond_12
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
     :goto_13
-    return p1
+    return v0
 .end method
 
 .method public bridge synthetic matches(Lcom/android/server/wm/PersisterQueue$WriteQueueItem;)Z
@@ -183,7 +196,7 @@
 .end method
 
 .method public process()V
-    .registers 7
+    .registers 10
 
     .line 354
     invoke-direct {p0}, Lcom/android/server/wm/LaunchParamsPersister$LaunchParamsWriteQueueItem;->saveParamsToXml()Ljava/io/StringWriter;
@@ -191,6 +204,7 @@
     move-result-object v0
 
     .line 356
+    .local v0, "writer":Ljava/io/StringWriter;
     iget-object v1, p0, Lcom/android/server/wm/LaunchParamsPersister$LaunchParamsWriteQueueItem;->this$0:Lcom/android/server/wm/LaunchParamsPersister;
 
     iget v2, p0, Lcom/android/server/wm/LaunchParamsPersister$LaunchParamsWriteQueueItem;->mUserId:I
@@ -200,6 +214,7 @@
     move-result-object v1
 
     .line 357
+    .local v1, "launchParamFolder":Ljava/io/File;
     invoke-virtual {v1}, Ljava/io/File;->isDirectory()Z
 
     move-result v2
@@ -215,23 +230,23 @@
     if-nez v2, :cond_31
 
     .line 358
-    new-instance v0, Ljava/lang/StringBuilder;
+    new-instance v2, Ljava/lang/StringBuilder;
 
-    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v1, "Failed to create folder for "
+    const-string v4, "Failed to create folder for "
 
-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    iget v1, p0, Lcom/android/server/wm/LaunchParamsPersister$LaunchParamsWriteQueueItem;->mUserId:I
+    iget v4, p0, Lcom/android/server/wm/LaunchParamsPersister$LaunchParamsWriteQueueItem;->mUserId:I
 
-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v4}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v2
 
-    invoke-static {v3, v0}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v3, v2}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 359
     return-void
@@ -244,85 +259,92 @@
 
     invoke-static {v2, v1, v4}, Lcom/android/server/wm/LaunchParamsPersister;->access$500(Lcom/android/server/wm/LaunchParamsPersister;Ljava/io/File;Landroid/content/ComponentName;)Ljava/io/File;
 
-    move-result-object v1
+    move-result-object v2
 
     .line 363
-    new-instance v2, Landroid/util/AtomicFile;
+    .local v2, "launchParamFile":Ljava/io/File;
+    new-instance v4, Landroid/util/AtomicFile;
 
-    invoke-direct {v2, v1}, Landroid/util/AtomicFile;-><init>(Ljava/io/File;)V
+    invoke-direct {v4, v2}, Landroid/util/AtomicFile;-><init>(Ljava/io/File;)V
 
     .line 365
-    const/4 v1, 0x0
+    .local v4, "atomicFile":Landroid/util/AtomicFile;
+    const/4 v5, 0x0
 
     .line 367
+    .local v5, "stream":Ljava/io/FileOutputStream;
     :try_start_3f
-    invoke-virtual {v2}, Landroid/util/AtomicFile;->startWrite()Ljava/io/FileOutputStream;
+    invoke-virtual {v4}, Landroid/util/AtomicFile;->startWrite()Ljava/io/FileOutputStream;
 
-    move-result-object v1
+    move-result-object v6
+
+    move-object v5, v6
 
     .line 368
     invoke-virtual {v0}, Ljava/io/StringWriter;->toString()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v6
 
-    invoke-virtual {v0}, Ljava/lang/String;->getBytes()[B
+    invoke-virtual {v6}, Ljava/lang/String;->getBytes()[B
 
-    move-result-object v0
+    move-result-object v6
 
-    invoke-virtual {v1, v0}, Ljava/io/FileOutputStream;->write([B)V
-    :try_end_4e
-    .catch Ljava/lang/Exception; {:try_start_3f .. :try_end_4e} :catch_53
+    invoke-virtual {v5, v6}, Ljava/io/FileOutputStream;->write([B)V
+    :try_end_4f
+    .catch Ljava/lang/Exception; {:try_start_3f .. :try_end_4f} :catch_54
 
     .line 375
     nop
 
     .line 376
-    invoke-virtual {v2, v1}, Landroid/util/AtomicFile;->finishWrite(Ljava/io/FileOutputStream;)V
+    invoke-virtual {v4, v5}, Landroid/util/AtomicFile;->finishWrite(Ljava/io/FileOutputStream;)V
 
     .line 377
     return-void
 
     .line 369
-    :catch_53
-    move-exception v0
+    :catch_54
+    move-exception v6
 
     .line 370
-    new-instance v4, Ljava/lang/StringBuilder;
+    .local v6, "e":Ljava/lang/Exception;
+    new-instance v7, Ljava/lang/StringBuilder;
 
-    invoke-direct {v4}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v7}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v5, "Failed to write param file for "
+    const-string v8, "Failed to write param file for "
 
-    invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v7, v8}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    iget-object v5, p0, Lcom/android/server/wm/LaunchParamsPersister$LaunchParamsWriteQueueItem;->mComponentName:Landroid/content/ComponentName;
+    iget-object v8, p0, Lcom/android/server/wm/LaunchParamsPersister$LaunchParamsWriteQueueItem;->mComponentName:Landroid/content/ComponentName;
 
-    invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    invoke-virtual {v7, v8}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v4}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v7}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v4
+    move-result-object v7
 
-    invoke-static {v3, v4, v0}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    invoke-static {v3, v7, v6}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
     .line 371
-    if-eqz v1, :cond_6f
+    if-eqz v5, :cond_70
 
     .line 372
-    invoke-virtual {v2, v1}, Landroid/util/AtomicFile;->failWrite(Ljava/io/FileOutputStream;)V
+    invoke-virtual {v4, v5}, Landroid/util/AtomicFile;->failWrite(Ljava/io/FileOutputStream;)V
 
     .line 374
-    :cond_6f
+    :cond_70
     return-void
 .end method
 
 .method public updateFrom(Lcom/android/server/wm/LaunchParamsPersister$LaunchParamsWriteQueueItem;)V
-    .registers 2
+    .registers 3
+    .param p1, "item"  # Lcom/android/server/wm/LaunchParamsPersister$LaunchParamsWriteQueueItem;
 
     .line 386
-    iget-object p1, p1, Lcom/android/server/wm/LaunchParamsPersister$LaunchParamsWriteQueueItem;->mLaunchParams:Lcom/android/server/wm/LaunchParamsPersister$PersistableLaunchParams;
+    iget-object v0, p1, Lcom/android/server/wm/LaunchParamsPersister$LaunchParamsWriteQueueItem;->mLaunchParams:Lcom/android/server/wm/LaunchParamsPersister$PersistableLaunchParams;
 
-    iput-object p1, p0, Lcom/android/server/wm/LaunchParamsPersister$LaunchParamsWriteQueueItem;->mLaunchParams:Lcom/android/server/wm/LaunchParamsPersister$PersistableLaunchParams;
+    iput-object v0, p0, Lcom/android/server/wm/LaunchParamsPersister$LaunchParamsWriteQueueItem;->mLaunchParams:Lcom/android/server/wm/LaunchParamsPersister$PersistableLaunchParams;
 
     .line 387
     return-void

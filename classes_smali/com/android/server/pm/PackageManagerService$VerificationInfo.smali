@@ -31,22 +31,26 @@
 # direct methods
 .method constructor <init>(Landroid/net/Uri;Landroid/net/Uri;II)V
     .registers 5
+    .param p1, "originatingUri"  # Landroid/net/Uri;
+    .param p2, "referrer"  # Landroid/net/Uri;
+    .param p3, "originatingUid"  # I
+    .param p4, "installerUid"  # I
 
-    .line 15068
+    .line 15565
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
-    .line 15069
+    .line 15566
     iput-object p1, p0, Lcom/android/server/pm/PackageManagerService$VerificationInfo;->originatingUri:Landroid/net/Uri;
 
-    .line 15070
+    .line 15567
     iput-object p2, p0, Lcom/android/server/pm/PackageManagerService$VerificationInfo;->referrer:Landroid/net/Uri;
 
-    .line 15071
+    .line 15568
     iput p3, p0, Lcom/android/server/pm/PackageManagerService$VerificationInfo;->originatingUid:I
 
-    .line 15072
+    .line 15569
     iput p4, p0, Lcom/android/server/pm/PackageManagerService$VerificationInfo;->installerUid:I
 
-    .line 15073
+    .line 15570
     return-void
 .end method

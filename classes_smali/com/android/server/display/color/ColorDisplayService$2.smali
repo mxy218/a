@@ -21,8 +21,10 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/display/color/ColorDisplayService;Landroid/os/Handler;)V
     .registers 3
+    .param p1, "this$0"  # Lcom/android/server/display/color/ColorDisplayService;
+    .param p2, "x0"  # Landroid/os/Handler;
 
-    .line 306
+    .line 275
     iput-object p1, p0, Lcom/android/server/display/color/ColorDisplayService$2;->this$0:Lcom/android/server/display/color/ColorDisplayService;
 
     invoke-direct {p0, p2}, Landroid/database/ContentObserver;-><init>(Landroid/os/Handler;)V
@@ -33,373 +35,380 @@
 
 # virtual methods
 .method public onChange(ZLandroid/net/Uri;)V
-    .registers 4
+    .registers 7
+    .param p1, "selfChange"  # Z
+    .param p2, "uri"  # Landroid/net/Uri;
 
-    .line 309
+    .line 278
     invoke-super {p0, p1, p2}, Landroid/database/ContentObserver;->onChange(ZLandroid/net/Uri;)V
 
-    .line 311
+    .line 280
     if-nez p2, :cond_7
 
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
     goto :goto_b
 
     :cond_7
     invoke-virtual {p2}, Landroid/net/Uri;->getLastPathSegment()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    .line 312
+    .line 281
+    .local v0, "setting":Ljava/lang/String;
     :goto_b
-    if-eqz p1, :cond_12c
+    if-eqz v0, :cond_12c
 
-    .line 313
-    const/4 p2, -0x1
+    .line 282
+    const/4 v1, -0x1
 
-    invoke-virtual {p1}, Ljava/lang/String;->hashCode()I
+    invoke-virtual {v0}, Ljava/lang/String;->hashCode()I
 
-    move-result v0
+    move-result v2
 
-    sparse-switch v0, :sswitch_data_12e
+    sparse-switch v2, :sswitch_data_12e
 
     :cond_15
     goto/16 :goto_81
 
     :sswitch_17
-    const-string/jumbo v0, "night_display_custom_start_time"
+    const-string/jumbo v2, "night_display_custom_start_time"
 
-    invoke-virtual {p1, v0}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v0, v2}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result p1
+    move-result v2
 
-    if-eqz p1, :cond_15
+    if-eqz v2, :cond_15
 
-    const/4 p2, 0x3
+    const/4 v1, 0x3
 
     goto :goto_81
 
     :sswitch_22
-    const-string v0, "display_color_mode"
+    const-string v2, "display_color_mode"
 
-    invoke-virtual {p1, v0}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v0, v2}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result p1
+    move-result v2
 
-    if-eqz p1, :cond_15
+    if-eqz v2, :cond_15
 
-    const/4 p2, 0x5
+    const/4 v1, 0x5
 
     goto :goto_81
 
     :sswitch_2c
-    const-string v0, "display_white_balance_enabled"
+    const-string v2, "display_white_balance_enabled"
 
-    invoke-virtual {p1, v0}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v0, v2}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result p1
+    move-result v2
 
-    if-eqz p1, :cond_15
+    if-eqz v2, :cond_15
 
-    const/16 p2, 0x9
+    const/16 v1, 0x9
 
     goto :goto_81
 
     :sswitch_37
-    const-string/jumbo v0, "night_display_activated"
+    const-string/jumbo v2, "night_display_activated"
 
-    invoke-virtual {p1, v0}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v0, v2}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result p1
+    move-result v2
 
-    if-eqz p1, :cond_15
+    if-eqz v2, :cond_15
 
-    const/4 p2, 0x0
+    const/4 v1, 0x0
 
     goto :goto_81
 
     :sswitch_42
-    const-string v0, "accessibility_display_daltonizer"
+    const-string v2, "accessibility_display_daltonizer"
 
-    invoke-virtual {p1, v0}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v0, v2}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result p1
+    move-result v2
 
-    if-eqz p1, :cond_15
+    if-eqz v2, :cond_15
 
-    const/16 p2, 0x8
+    const/16 v1, 0x8
 
     goto :goto_81
 
     :sswitch_4d
-    const-string v0, "accessibility_display_inversion_enabled"
+    const-string v2, "accessibility_display_inversion_enabled"
 
-    invoke-virtual {p1, v0}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v0, v2}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result p1
+    move-result v2
 
-    if-eqz p1, :cond_15
+    if-eqz v2, :cond_15
 
-    const/4 p2, 0x6
+    const/4 v1, 0x6
 
     goto :goto_81
 
     :sswitch_57
-    const-string v0, "accessibility_display_daltonizer_enabled"
+    const-string v2, "accessibility_display_daltonizer_enabled"
 
-    invoke-virtual {p1, v0}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v0, v2}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result p1
+    move-result v2
 
-    if-eqz p1, :cond_15
+    if-eqz v2, :cond_15
 
-    const/4 p2, 0x7
+    const/4 v1, 0x7
 
     goto :goto_81
 
     :sswitch_61
-    const-string/jumbo v0, "night_display_color_temperature"
+    const-string/jumbo v2, "night_display_color_temperature"
 
-    invoke-virtual {p1, v0}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v0, v2}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result p1
+    move-result v2
 
-    if-eqz p1, :cond_15
+    if-eqz v2, :cond_15
 
-    const/4 p2, 0x1
+    const/4 v1, 0x1
 
     goto :goto_81
 
     :sswitch_6c
-    const-string/jumbo v0, "night_display_custom_end_time"
+    const-string/jumbo v2, "night_display_custom_end_time"
 
-    invoke-virtual {p1, v0}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v0, v2}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result p1
+    move-result v2
 
-    if-eqz p1, :cond_15
+    if-eqz v2, :cond_15
 
-    const/4 p2, 0x4
+    const/4 v1, 0x4
 
     goto :goto_81
 
     :sswitch_77
-    const-string/jumbo v0, "night_display_auto_mode"
+    const-string/jumbo v2, "night_display_auto_mode"
 
-    invoke-virtual {p1, v0}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v0, v2}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result p1
+    move-result v2
 
-    if-eqz p1, :cond_15
+    if-eqz v2, :cond_15
 
-    const/4 p2, 0x2
+    const/4 v1, 0x2
 
     :goto_81
-    packed-switch p2, :pswitch_data_158
+    packed-switch v1, :pswitch_data_158
 
     goto/16 :goto_12c
 
-    .line 357
+    .line 326
     :pswitch_86  #0x9
-    iget-object p1, p0, Lcom/android/server/display/color/ColorDisplayService$2;->this$0:Lcom/android/server/display/color/ColorDisplayService;
+    iget-object v1, p0, Lcom/android/server/display/color/ColorDisplayService$2;->this$0:Lcom/android/server/display/color/ColorDisplayService;
 
-    invoke-virtual {p1}, Lcom/android/server/display/color/ColorDisplayService;->updateDisplayWhiteBalanceStatus()V
+    invoke-virtual {v1}, Lcom/android/server/display/color/ColorDisplayService;->updateDisplayWhiteBalanceStatus()V
 
     goto/16 :goto_12c
-
-    .line 354
-    :pswitch_8d  #0x8
-    iget-object p1, p0, Lcom/android/server/display/color/ColorDisplayService$2;->this$0:Lcom/android/server/display/color/ColorDisplayService;
-
-    invoke-static {p1}, Lcom/android/server/display/color/ColorDisplayService;->access$1900(Lcom/android/server/display/color/ColorDisplayService;)V
-
-    .line 355
-    goto/16 :goto_12c
-
-    .line 350
-    :pswitch_94  #0x7
-    iget-object p1, p0, Lcom/android/server/display/color/ColorDisplayService$2;->this$0:Lcom/android/server/display/color/ColorDisplayService;
-
-    invoke-static {p1}, Lcom/android/server/display/color/ColorDisplayService;->access$1900(Lcom/android/server/display/color/ColorDisplayService;)V
-
-    .line 351
-    iget-object p1, p0, Lcom/android/server/display/color/ColorDisplayService$2;->this$0:Lcom/android/server/display/color/ColorDisplayService;
-
-    invoke-static {p1}, Lcom/android/server/display/color/ColorDisplayService;->access$1800(Lcom/android/server/display/color/ColorDisplayService;)V
-
-    .line 352
-    goto/16 :goto_12c
-
-    .line 346
-    :pswitch_a0  #0x6
-    iget-object p1, p0, Lcom/android/server/display/color/ColorDisplayService$2;->this$0:Lcom/android/server/display/color/ColorDisplayService;
-
-    invoke-static {p1}, Lcom/android/server/display/color/ColorDisplayService;->access$1700(Lcom/android/server/display/color/ColorDisplayService;)V
-
-    .line 347
-    iget-object p1, p0, Lcom/android/server/display/color/ColorDisplayService$2;->this$0:Lcom/android/server/display/color/ColorDisplayService;
-
-    invoke-static {p1}, Lcom/android/server/display/color/ColorDisplayService;->access$1800(Lcom/android/server/display/color/ColorDisplayService;)V
-
-    .line 348
-    goto/16 :goto_12c
-
-    .line 343
-    :pswitch_ac  #0x5
-    iget-object p1, p0, Lcom/android/server/display/color/ColorDisplayService$2;->this$0:Lcom/android/server/display/color/ColorDisplayService;
-
-    invoke-static {p1}, Lcom/android/server/display/color/ColorDisplayService;->access$1500(Lcom/android/server/display/color/ColorDisplayService;)I
-
-    move-result p2
-
-    invoke-static {p1, p2}, Lcom/android/server/display/color/ColorDisplayService;->access$1600(Lcom/android/server/display/color/ColorDisplayService;I)V
-
-    .line 344
-    goto/16 :goto_12c
-
-    .line 339
-    :pswitch_b7  #0x4
-    iget-object p1, p0, Lcom/android/server/display/color/ColorDisplayService$2;->this$0:Lcom/android/server/display/color/ColorDisplayService;
-
-    .line 340
-    invoke-static {p1}, Lcom/android/server/display/color/ColorDisplayService;->access$1300(Lcom/android/server/display/color/ColorDisplayService;)Landroid/hardware/display/Time;
-
-    move-result-object p2
-
-    invoke-virtual {p2}, Landroid/hardware/display/Time;->getLocalTime()Ljava/time/LocalTime;
-
-    move-result-object p2
-
-    .line 339
-    invoke-static {p1, p2}, Lcom/android/server/display/color/ColorDisplayService;->access$1400(Lcom/android/server/display/color/ColorDisplayService;Ljava/time/LocalTime;)V
-
-    .line 341
-    goto :goto_12c
-
-    .line 335
-    :pswitch_c5  #0x3
-    iget-object p1, p0, Lcom/android/server/display/color/ColorDisplayService$2;->this$0:Lcom/android/server/display/color/ColorDisplayService;
-
-    .line 336
-    invoke-static {p1}, Lcom/android/server/display/color/ColorDisplayService;->access$1100(Lcom/android/server/display/color/ColorDisplayService;)Landroid/hardware/display/Time;
-
-    move-result-object p2
-
-    invoke-virtual {p2}, Landroid/hardware/display/Time;->getLocalTime()Ljava/time/LocalTime;
-
-    move-result-object p2
-
-    .line 335
-    invoke-static {p1, p2}, Lcom/android/server/display/color/ColorDisplayService;->access$1200(Lcom/android/server/display/color/ColorDisplayService;Ljava/time/LocalTime;)V
-
-    .line 337
-    goto :goto_12c
-
-    .line 332
-    :pswitch_d3  #0x2
-    iget-object p1, p0, Lcom/android/server/display/color/ColorDisplayService$2;->this$0:Lcom/android/server/display/color/ColorDisplayService;
-
-    invoke-static {p1}, Lcom/android/server/display/color/ColorDisplayService;->access$900(Lcom/android/server/display/color/ColorDisplayService;)I
-
-    move-result p2
-
-    invoke-static {p1, p2}, Lcom/android/server/display/color/ColorDisplayService;->access$1000(Lcom/android/server/display/color/ColorDisplayService;I)V
-
-    .line 333
-    goto :goto_12c
 
     .line 323
-    :pswitch_dd  #0x1
-    iget-object p1, p0, Lcom/android/server/display/color/ColorDisplayService$2;->this$0:Lcom/android/server/display/color/ColorDisplayService;
+    :pswitch_8d  #0x8
+    iget-object v1, p0, Lcom/android/server/display/color/ColorDisplayService$2;->this$0:Lcom/android/server/display/color/ColorDisplayService;
 
-    invoke-static {p1}, Lcom/android/server/display/color/ColorDisplayService;->access$800(Lcom/android/server/display/color/ColorDisplayService;)Lcom/android/server/display/color/ColorDisplayService$NightDisplayTintController;
-
-    move-result-object p1
+    invoke-static {v1}, Lcom/android/server/display/color/ColorDisplayService;->access$1900(Lcom/android/server/display/color/ColorDisplayService;)V
 
     .line 324
-    invoke-virtual {p1}, Lcom/android/server/display/color/ColorDisplayService$NightDisplayTintController;->getColorTemperatureSetting()I
+    goto/16 :goto_12c
 
-    move-result p1
+    .line 319
+    :pswitch_94  #0x7
+    iget-object v1, p0, Lcom/android/server/display/color/ColorDisplayService$2;->this$0:Lcom/android/server/display/color/ColorDisplayService;
 
-    .line 325
-    iget-object p2, p0, Lcom/android/server/display/color/ColorDisplayService$2;->this$0:Lcom/android/server/display/color/ColorDisplayService;
+    invoke-static {v1}, Lcom/android/server/display/color/ColorDisplayService;->access$1900(Lcom/android/server/display/color/ColorDisplayService;)V
 
-    invoke-static {p2}, Lcom/android/server/display/color/ColorDisplayService;->access$800(Lcom/android/server/display/color/ColorDisplayService;)Lcom/android/server/display/color/ColorDisplayService$NightDisplayTintController;
+    .line 320
+    iget-object v1, p0, Lcom/android/server/display/color/ColorDisplayService$2;->this$0:Lcom/android/server/display/color/ColorDisplayService;
 
-    move-result-object p2
+    invoke-static {v1}, Lcom/android/server/display/color/ColorDisplayService;->access$1800(Lcom/android/server/display/color/ColorDisplayService;)V
 
-    invoke-virtual {p2}, Lcom/android/server/display/color/ColorDisplayService$NightDisplayTintController;->getColorTemperature()I
+    .line 321
+    goto/16 :goto_12c
 
-    move-result p2
+    .line 315
+    :pswitch_a0  #0x6
+    iget-object v1, p0, Lcom/android/server/display/color/ColorDisplayService$2;->this$0:Lcom/android/server/display/color/ColorDisplayService;
 
-    if-eq p2, p1, :cond_12c
+    invoke-static {v1}, Lcom/android/server/display/color/ColorDisplayService;->access$1700(Lcom/android/server/display/color/ColorDisplayService;)V
 
-    .line 327
-    iget-object p2, p0, Lcom/android/server/display/color/ColorDisplayService$2;->this$0:Lcom/android/server/display/color/ColorDisplayService;
+    .line 316
+    iget-object v1, p0, Lcom/android/server/display/color/ColorDisplayService$2;->this$0:Lcom/android/server/display/color/ColorDisplayService;
 
-    invoke-static {p2}, Lcom/android/server/display/color/ColorDisplayService;->access$800(Lcom/android/server/display/color/ColorDisplayService;)Lcom/android/server/display/color/ColorDisplayService$NightDisplayTintController;
+    invoke-static {v1}, Lcom/android/server/display/color/ColorDisplayService;->access$1800(Lcom/android/server/display/color/ColorDisplayService;)V
 
-    move-result-object p2
+    .line 317
+    goto/16 :goto_12c
 
-    .line 328
-    invoke-virtual {p2, p1}, Lcom/android/server/display/color/ColorDisplayService$NightDisplayTintController;->onColorTemperatureChanged(I)V
+    .line 312
+    :pswitch_ac  #0x5
+    iget-object v1, p0, Lcom/android/server/display/color/ColorDisplayService$2;->this$0:Lcom/android/server/display/color/ColorDisplayService;
+
+    invoke-static {v1}, Lcom/android/server/display/color/ColorDisplayService;->access$1500(Lcom/android/server/display/color/ColorDisplayService;)I
+
+    move-result v2
+
+    invoke-static {v1, v2}, Lcom/android/server/display/color/ColorDisplayService;->access$1600(Lcom/android/server/display/color/ColorDisplayService;I)V
+
+    .line 313
+    goto/16 :goto_12c
+
+    .line 308
+    :pswitch_b7  #0x4
+    iget-object v1, p0, Lcom/android/server/display/color/ColorDisplayService$2;->this$0:Lcom/android/server/display/color/ColorDisplayService;
+
+    .line 309
+    invoke-static {v1}, Lcom/android/server/display/color/ColorDisplayService;->access$1300(Lcom/android/server/display/color/ColorDisplayService;)Landroid/hardware/display/Time;
+
+    move-result-object v2
+
+    invoke-virtual {v2}, Landroid/hardware/display/Time;->getLocalTime()Ljava/time/LocalTime;
+
+    move-result-object v2
+
+    .line 308
+    invoke-static {v1, v2}, Lcom/android/server/display/color/ColorDisplayService;->access$1400(Lcom/android/server/display/color/ColorDisplayService;Ljava/time/LocalTime;)V
+
+    .line 310
+    goto :goto_12c
+
+    .line 304
+    :pswitch_c5  #0x3
+    iget-object v1, p0, Lcom/android/server/display/color/ColorDisplayService$2;->this$0:Lcom/android/server/display/color/ColorDisplayService;
+
+    .line 305
+    invoke-static {v1}, Lcom/android/server/display/color/ColorDisplayService;->access$1100(Lcom/android/server/display/color/ColorDisplayService;)Landroid/hardware/display/Time;
+
+    move-result-object v2
+
+    invoke-virtual {v2}, Landroid/hardware/display/Time;->getLocalTime()Ljava/time/LocalTime;
+
+    move-result-object v2
+
+    .line 304
+    invoke-static {v1, v2}, Lcom/android/server/display/color/ColorDisplayService;->access$1200(Lcom/android/server/display/color/ColorDisplayService;Ljava/time/LocalTime;)V
+
+    .line 306
+    goto :goto_12c
+
+    .line 301
+    :pswitch_d3  #0x2
+    iget-object v1, p0, Lcom/android/server/display/color/ColorDisplayService$2;->this$0:Lcom/android/server/display/color/ColorDisplayService;
+
+    invoke-static {v1}, Lcom/android/server/display/color/ColorDisplayService;->access$900(Lcom/android/server/display/color/ColorDisplayService;)I
+
+    move-result v2
+
+    invoke-static {v1, v2}, Lcom/android/server/display/color/ColorDisplayService;->access$1000(Lcom/android/server/display/color/ColorDisplayService;I)V
+
+    .line 302
+    goto :goto_12c
+
+    .line 292
+    :pswitch_dd  #0x1
+    iget-object v1, p0, Lcom/android/server/display/color/ColorDisplayService$2;->this$0:Lcom/android/server/display/color/ColorDisplayService;
+
+    invoke-static {v1}, Lcom/android/server/display/color/ColorDisplayService;->access$800(Lcom/android/server/display/color/ColorDisplayService;)Lcom/android/server/display/color/ColorDisplayService$NightDisplayTintController;
+
+    move-result-object v1
+
+    .line 293
+    invoke-virtual {v1}, Lcom/android/server/display/color/ColorDisplayService$NightDisplayTintController;->getColorTemperatureSetting()I
+
+    move-result v1
+
+    .line 294
+    .local v1, "temperature":I
+    iget-object v2, p0, Lcom/android/server/display/color/ColorDisplayService$2;->this$0:Lcom/android/server/display/color/ColorDisplayService;
+
+    invoke-static {v2}, Lcom/android/server/display/color/ColorDisplayService;->access$800(Lcom/android/server/display/color/ColorDisplayService;)Lcom/android/server/display/color/ColorDisplayService$NightDisplayTintController;
+
+    move-result-object v2
+
+    invoke-virtual {v2}, Lcom/android/server/display/color/ColorDisplayService$NightDisplayTintController;->getColorTemperature()I
+
+    move-result v2
+
+    if-eq v2, v1, :cond_12c
+
+    .line 296
+    iget-object v2, p0, Lcom/android/server/display/color/ColorDisplayService$2;->this$0:Lcom/android/server/display/color/ColorDisplayService;
+
+    invoke-static {v2}, Lcom/android/server/display/color/ColorDisplayService;->access$800(Lcom/android/server/display/color/ColorDisplayService;)Lcom/android/server/display/color/ColorDisplayService$NightDisplayTintController;
+
+    move-result-object v2
+
+    .line 297
+    invoke-virtual {v2, v1}, Lcom/android/server/display/color/ColorDisplayService$NightDisplayTintController;->onColorTemperatureChanged(I)V
 
     goto :goto_12c
 
-    .line 315
+    .line 284
+    .end local v1  # "temperature":I
     :pswitch_fd  #0x0
-    iget-object p1, p0, Lcom/android/server/display/color/ColorDisplayService$2;->this$0:Lcom/android/server/display/color/ColorDisplayService;
+    iget-object v1, p0, Lcom/android/server/display/color/ColorDisplayService$2;->this$0:Lcom/android/server/display/color/ColorDisplayService;
 
-    invoke-static {p1}, Lcom/android/server/display/color/ColorDisplayService;->access$800(Lcom/android/server/display/color/ColorDisplayService;)Lcom/android/server/display/color/ColorDisplayService$NightDisplayTintController;
+    invoke-static {v1}, Lcom/android/server/display/color/ColorDisplayService;->access$800(Lcom/android/server/display/color/ColorDisplayService;)Lcom/android/server/display/color/ColorDisplayService$NightDisplayTintController;
 
-    move-result-object p1
+    move-result-object v1
 
-    .line 316
-    invoke-virtual {p1}, Lcom/android/server/display/color/ColorDisplayService$NightDisplayTintController;->isActivatedSetting()Z
+    .line 285
+    invoke-virtual {v1}, Lcom/android/server/display/color/ColorDisplayService$NightDisplayTintController;->isActivatedSetting()Z
 
-    move-result p1
+    move-result v1
 
-    .line 317
-    iget-object p2, p0, Lcom/android/server/display/color/ColorDisplayService$2;->this$0:Lcom/android/server/display/color/ColorDisplayService;
+    .line 286
+    .local v1, "activated":Z
+    iget-object v2, p0, Lcom/android/server/display/color/ColorDisplayService$2;->this$0:Lcom/android/server/display/color/ColorDisplayService;
 
-    invoke-static {p2}, Lcom/android/server/display/color/ColorDisplayService;->access$800(Lcom/android/server/display/color/ColorDisplayService;)Lcom/android/server/display/color/ColorDisplayService$NightDisplayTintController;
+    invoke-static {v2}, Lcom/android/server/display/color/ColorDisplayService;->access$800(Lcom/android/server/display/color/ColorDisplayService;)Lcom/android/server/display/color/ColorDisplayService$NightDisplayTintController;
 
-    move-result-object p2
+    move-result-object v2
 
-    invoke-virtual {p2}, Lcom/android/server/display/color/ColorDisplayService$NightDisplayTintController;->isActivatedStateNotSet()Z
+    invoke-virtual {v2}, Lcom/android/server/display/color/ColorDisplayService$NightDisplayTintController;->isActivatedStateNotSet()Z
 
-    move-result p2
+    move-result v2
 
-    if-nez p2, :cond_11f
+    if-nez v2, :cond_11f
 
-    iget-object p2, p0, Lcom/android/server/display/color/ColorDisplayService$2;->this$0:Lcom/android/server/display/color/ColorDisplayService;
+    iget-object v2, p0, Lcom/android/server/display/color/ColorDisplayService$2;->this$0:Lcom/android/server/display/color/ColorDisplayService;
 
-    .line 318
-    invoke-static {p2}, Lcom/android/server/display/color/ColorDisplayService;->access$800(Lcom/android/server/display/color/ColorDisplayService;)Lcom/android/server/display/color/ColorDisplayService$NightDisplayTintController;
+    .line 287
+    invoke-static {v2}, Lcom/android/server/display/color/ColorDisplayService;->access$800(Lcom/android/server/display/color/ColorDisplayService;)Lcom/android/server/display/color/ColorDisplayService$NightDisplayTintController;
 
-    move-result-object p2
+    move-result-object v2
 
-    invoke-virtual {p2}, Lcom/android/server/display/color/ColorDisplayService$NightDisplayTintController;->isActivated()Z
+    invoke-virtual {v2}, Lcom/android/server/display/color/ColorDisplayService$NightDisplayTintController;->isActivated()Z
 
-    move-result p2
+    move-result v2
 
-    if-eq p2, p1, :cond_12c
+    if-eq v2, v1, :cond_12c
 
-    .line 319
+    .line 288
     :cond_11f
-    iget-object p2, p0, Lcom/android/server/display/color/ColorDisplayService$2;->this$0:Lcom/android/server/display/color/ColorDisplayService;
+    iget-object v2, p0, Lcom/android/server/display/color/ColorDisplayService$2;->this$0:Lcom/android/server/display/color/ColorDisplayService;
 
-    invoke-static {p2}, Lcom/android/server/display/color/ColorDisplayService;->access$800(Lcom/android/server/display/color/ColorDisplayService;)Lcom/android/server/display/color/ColorDisplayService$NightDisplayTintController;
+    invoke-static {v2}, Lcom/android/server/display/color/ColorDisplayService;->access$800(Lcom/android/server/display/color/ColorDisplayService;)Lcom/android/server/display/color/ColorDisplayService$NightDisplayTintController;
 
-    move-result-object p2
+    move-result-object v2
 
-    invoke-static {p1}, Ljava/lang/Boolean;->valueOf(Z)Ljava/lang/Boolean;
+    invoke-static {v1}, Ljava/lang/Boolean;->valueOf(Z)Ljava/lang/Boolean;
 
-    move-result-object p1
+    move-result-object v3
 
-    invoke-virtual {p2, p1}, Lcom/android/server/display/color/ColorDisplayService$NightDisplayTintController;->setActivated(Ljava/lang/Boolean;)V
+    invoke-virtual {v2, v3}, Lcom/android/server/display/color/ColorDisplayService$NightDisplayTintController;->setActivated(Ljava/lang/Boolean;)V
 
-    .line 361
+    .line 330
+    .end local v1  # "activated":Z
     :cond_12c
     :goto_12c
     return-void

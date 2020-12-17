@@ -23,6 +23,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/location/ContextHubService;I)V
     .registers 3
+    .param p1, "this$0"  # Lcom/android/server/location/ContextHubService;
 
     .line 341
     iput-object p1, p0, Lcom/android/server/location/ContextHubService$4;->this$0:Lcom/android/server/location/ContextHubService;
@@ -37,7 +38,8 @@
 
 # virtual methods
 .method public onQueryResponse(ILjava/util/List;)V
-    .registers 6
+    .registers 8
+    .param p1, "result"  # I
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(I",
@@ -48,26 +50,28 @@
     .end annotation
 
     .line 348
-    const/4 p2, 0x1
+    .local p2, "nanoAppStateList":Ljava/util/List;, "Ljava/util/List<Landroid/hardware/location/NanoAppState;>;"
+    const/4 v0, 0x1
 
-    new-array p2, p2, [B
+    new-array v0, v0, [B
 
-    int-to-byte p1, p1
+    int-to-byte v1, p1
 
-    const/4 v0, 0x0
+    const/4 v2, 0x0
 
-    aput-byte p1, p2, v0
+    aput-byte v1, v0, v2
 
     .line 349
-    iget-object p1, p0, Lcom/android/server/location/ContextHubService$4;->this$0:Lcom/android/server/location/ContextHubService;
+    .local v0, "data":[B
+    iget-object v1, p0, Lcom/android/server/location/ContextHubService$4;->this$0:Lcom/android/server/location/ContextHubService;
 
-    iget v0, p0, Lcom/android/server/location/ContextHubService$4;->val$contextHubId:I
+    iget v2, p0, Lcom/android/server/location/ContextHubService$4;->val$contextHubId:I
 
-    const/4 v1, 0x5
+    const/4 v3, 0x5
 
-    const/4 v2, -0x1
+    const/4 v4, -0x1
 
-    invoke-static {p1, v1, v0, v2, p2}, Lcom/android/server/location/ContextHubService;->access$600(Lcom/android/server/location/ContextHubService;III[B)I
+    invoke-static {v1, v3, v2, v4, v0}, Lcom/android/server/location/ContextHubService;->access$600(Lcom/android/server/location/ContextHubService;III[B)I
 
     .line 350
     return-void
@@ -75,6 +79,7 @@
 
 .method public onTransactionComplete(I)V
     .registers 2
+    .param p1, "result"  # I
 
     .line 344
     return-void

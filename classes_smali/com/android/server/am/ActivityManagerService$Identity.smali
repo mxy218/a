@@ -27,21 +27,24 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/am/ActivityManagerService;Landroid/os/IBinder;II)V
     .registers 5
+    .param p2, "_token"  # Landroid/os/IBinder;
+    .param p3, "_pid"  # I
+    .param p4, "_uid"  # I
 
-    .line 1112
+    .line 1190
     iput-object p1, p0, Lcom/android/server/am/ActivityManagerService$Identity;->this$0:Lcom/android/server/am/ActivityManagerService;
 
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
-    .line 1113
+    .line 1191
     iput-object p2, p0, Lcom/android/server/am/ActivityManagerService$Identity;->token:Landroid/os/IBinder;
 
-    .line 1114
+    .line 1192
     iput p3, p0, Lcom/android/server/am/ActivityManagerService$Identity;->pid:I
 
-    .line 1115
+    .line 1193
     iput p4, p0, Lcom/android/server/am/ActivityManagerService$Identity;->uid:I
 
-    .line 1116
+    .line 1194
     return-void
 .end method

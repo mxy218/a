@@ -27,6 +27,7 @@
 
 .method public static final dumpBitfield(I)Ljava/lang/String;
     .registers 5
+    .param p0, "o"  # I
 
     .line 34
     new-instance v0, Ljava/util/ArrayList;
@@ -34,133 +35,132 @@
     invoke-direct {v0}, Ljava/util/ArrayList;-><init>()V
 
     .line 35
-    nop
+    .local v0, "list":Ljava/util/ArrayList;, "Ljava/util/ArrayList<Ljava/lang/String;>;"
+    const/4 v1, 0x0
 
     .line 36
-    and-int/lit8 v1, p0, 0x1
+    .local v1, "flipped":I
+    and-int/lit8 v2, p0, 0x1
 
-    const/4 v2, 0x1
+    const/4 v3, 0x1
 
-    if-ne v1, v2, :cond_11
+    if-ne v2, v3, :cond_12
 
     .line 37
-    const-string v1, "UNKNOWN"
+    const-string v2, "UNKNOWN"
 
-    invoke-virtual {v0, v1}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
+    invoke-virtual {v0, v2}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
 
     .line 38
-    goto :goto_12
-
-    .line 36
-    :cond_11
-    const/4 v2, 0x0
+    or-int/lit8 v1, v1, 0x1
 
     .line 40
-    :goto_12
-    and-int/lit8 v1, p0, 0x2
+    :cond_12
+    and-int/lit8 v2, p0, 0x2
 
     const/4 v3, 0x2
 
-    if-ne v1, v3, :cond_1e
+    if-ne v2, v3, :cond_1e
 
     .line 41
-    const-string v1, "CHARGING"
+    const-string v2, "CHARGING"
 
-    invoke-virtual {v0, v1}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
+    invoke-virtual {v0, v2}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
 
     .line 42
-    or-int/lit8 v2, v2, 0x2
+    or-int/lit8 v1, v1, 0x2
 
     .line 44
     :cond_1e
-    and-int/lit8 v1, p0, 0x3
+    and-int/lit8 v2, p0, 0x3
 
     const/4 v3, 0x3
 
-    if-ne v1, v3, :cond_2a
+    if-ne v2, v3, :cond_2a
 
     .line 45
-    const-string v1, "DISCHARGING"
+    const-string v2, "DISCHARGING"
 
-    invoke-virtual {v0, v1}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
+    invoke-virtual {v0, v2}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
 
     .line 46
-    or-int/lit8 v2, v2, 0x3
+    or-int/lit8 v1, v1, 0x3
 
     .line 48
     :cond_2a
-    and-int/lit8 v1, p0, 0x4
+    and-int/lit8 v2, p0, 0x4
 
     const/4 v3, 0x4
 
-    if-ne v1, v3, :cond_36
+    if-ne v2, v3, :cond_36
 
     .line 49
-    const-string v1, "NOT_CHARGING"
+    const-string v2, "NOT_CHARGING"
 
-    invoke-virtual {v0, v1}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
+    invoke-virtual {v0, v2}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
 
     .line 50
-    or-int/lit8 v2, v2, 0x4
+    or-int/lit8 v1, v1, 0x4
 
     .line 52
     :cond_36
-    and-int/lit8 v1, p0, 0x5
+    and-int/lit8 v2, p0, 0x5
 
     const/4 v3, 0x5
 
-    if-ne v1, v3, :cond_42
+    if-ne v2, v3, :cond_42
 
     .line 53
-    const-string v1, "FULL"
+    const-string v2, "FULL"
 
-    invoke-virtual {v0, v1}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
+    invoke-virtual {v0, v2}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
 
     .line 54
-    or-int/lit8 v2, v2, 0x5
+    or-int/lit8 v1, v1, 0x5
 
     .line 56
     :cond_42
-    if-eq p0, v2, :cond_5e
+    if-eq p0, v1, :cond_5e
 
     .line 57
-    new-instance v1, Ljava/lang/StringBuilder;
+    new-instance v2, Ljava/lang/StringBuilder;
 
-    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
 
     const-string v3, "0x"
 
-    invoke-virtual {v1, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    not-int v2, v2
+    not-int v3, v1
 
-    and-int/2addr p0, v2
+    and-int/2addr v3, p0
 
-    invoke-static {p0}, Ljava/lang/Integer;->toHexString(I)Ljava/lang/String;
+    invoke-static {v3}, Ljava/lang/Integer;->toHexString(I)Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v3
 
-    invoke-virtual {v1, p0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v2
 
-    invoke-virtual {v0, p0}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
+    invoke-virtual {v0, v2}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
 
     .line 59
     :cond_5e
-    const-string p0, " | "
+    const-string v2, " | "
 
-    invoke-static {p0, v0}, Ljava/lang/String;->join(Ljava/lang/CharSequence;Ljava/lang/Iterable;)Ljava/lang/String;
+    invoke-static {v2, v0}, Ljava/lang/String;->join(Ljava/lang/CharSequence;Ljava/lang/Iterable;)Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v2
 
-    return-object p0
+    return-object v2
 .end method
 
 .method public static final toString(I)Ljava/lang/String;
     .registers 3
+    .param p0, "o"  # I
 
     .line 15
     const/4 v0, 0x1
@@ -168,9 +168,9 @@
     if-ne p0, v0, :cond_6
 
     .line 16
-    const-string p0, "UNKNOWN"
+    const-string v0, "UNKNOWN"
 
-    return-object p0
+    return-object v0
 
     .line 18
     :cond_6
@@ -179,9 +179,9 @@
     if-ne p0, v0, :cond_c
 
     .line 19
-    const-string p0, "CHARGING"
+    const-string v0, "CHARGING"
 
-    return-object p0
+    return-object v0
 
     .line 21
     :cond_c
@@ -190,9 +190,9 @@
     if-ne p0, v0, :cond_12
 
     .line 22
-    const-string p0, "DISCHARGING"
+    const-string v0, "DISCHARGING"
 
-    return-object p0
+    return-object v0
 
     .line 24
     :cond_12
@@ -201,9 +201,9 @@
     if-ne p0, v0, :cond_18
 
     .line 25
-    const-string p0, "NOT_CHARGING"
+    const-string v0, "NOT_CHARGING"
 
-    return-object p0
+    return-object v0
 
     .line 27
     :cond_18
@@ -212,9 +212,9 @@
     if-ne p0, v0, :cond_1e
 
     .line 28
-    const-string p0, "FULL"
+    const-string v0, "FULL"
 
-    return-object p0
+    return-object v0
 
     .line 30
     :cond_1e
@@ -228,13 +228,13 @@
 
     invoke-static {p0}, Ljava/lang/Integer;->toHexString(I)Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v1
 
-    invoke-virtual {v0, p0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v0
 
-    return-object p0
+    return-object v0
 .end method

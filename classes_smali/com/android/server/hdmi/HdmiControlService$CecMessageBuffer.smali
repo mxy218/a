@@ -49,6 +49,8 @@
 
 .method synthetic constructor <init>(Lcom/android/server/hdmi/HdmiControlService;Lcom/android/server/hdmi/HdmiControlService$1;)V
     .registers 3
+    .param p1, "x0"  # Lcom/android/server/hdmi/HdmiControlService;
+    .param p2, "x1"  # Lcom/android/server/hdmi/HdmiControlService$1;
 
     .line 369
     invoke-direct {p0, p1}, Lcom/android/server/hdmi/HdmiControlService$CecMessageBuffer;-><init>(Lcom/android/server/hdmi/HdmiControlService;)V
@@ -58,6 +60,7 @@
 
 .method private bufferActiveSource(Lcom/android/server/hdmi/HdmiCecMessage;)V
     .registers 3
+    .param p1, "message"  # Lcom/android/server/hdmi/HdmiCecMessage;
 
     .line 401
     const/16 v0, 0x82
@@ -80,6 +83,7 @@
 
 .method private bufferImageOrTextViewOn(Lcom/android/server/hdmi/HdmiCecMessage;)V
     .registers 3
+    .param p1, "message"  # Lcom/android/server/hdmi/HdmiCecMessage;
 
     .line 407
     const/4 v0, 0x4
@@ -111,55 +115,61 @@
 
 .method private replaceMessageIfBuffered(Lcom/android/server/hdmi/HdmiCecMessage;I)Z
     .registers 6
+    .param p1, "message"  # Lcom/android/server/hdmi/HdmiCecMessage;
+    .param p2, "opcode"  # I
 
     .line 415
     const/4 v0, 0x0
 
-    move v1, v0
+    .local v0, "i":I
+    :goto_1
+    iget-object v1, p0, Lcom/android/server/hdmi/HdmiControlService$CecMessageBuffer;->mBuffer:Ljava/util/List;
 
-    :goto_2
-    iget-object v2, p0, Lcom/android/server/hdmi/HdmiControlService$CecMessageBuffer;->mBuffer:Ljava/util/List;
+    invoke-interface {v1}, Ljava/util/List;->size()I
 
-    invoke-interface {v2}, Ljava/util/List;->size()I
+    move-result v1
 
-    move-result v2
-
-    if-ge v1, v2, :cond_22
+    if-ge v0, v1, :cond_21
 
     .line 416
-    iget-object v2, p0, Lcom/android/server/hdmi/HdmiControlService$CecMessageBuffer;->mBuffer:Ljava/util/List;
+    iget-object v1, p0, Lcom/android/server/hdmi/HdmiControlService$CecMessageBuffer;->mBuffer:Ljava/util/List;
 
-    invoke-interface {v2, v1}, Ljava/util/List;->get(I)Ljava/lang/Object;
+    invoke-interface {v1, v0}, Ljava/util/List;->get(I)Ljava/lang/Object;
 
-    move-result-object v2
+    move-result-object v1
 
-    check-cast v2, Lcom/android/server/hdmi/HdmiCecMessage;
+    check-cast v1, Lcom/android/server/hdmi/HdmiCecMessage;
 
     .line 417
-    invoke-virtual {v2}, Lcom/android/server/hdmi/HdmiCecMessage;->getOpcode()I
+    .local v1, "bufferedMessage":Lcom/android/server/hdmi/HdmiCecMessage;
+    invoke-virtual {v1}, Lcom/android/server/hdmi/HdmiCecMessage;->getOpcode()I
 
     move-result v2
 
-    if-ne v2, p2, :cond_1f
+    if-ne v2, p2, :cond_1e
 
     .line 418
-    iget-object p2, p0, Lcom/android/server/hdmi/HdmiControlService$CecMessageBuffer;->mBuffer:Ljava/util/List;
+    iget-object v2, p0, Lcom/android/server/hdmi/HdmiControlService$CecMessageBuffer;->mBuffer:Ljava/util/List;
 
-    invoke-interface {p2, v1, p1}, Ljava/util/List;->set(ILjava/lang/Object;)Ljava/lang/Object;
+    invoke-interface {v2, v0, p1}, Ljava/util/List;->set(ILjava/lang/Object;)Ljava/lang/Object;
 
     .line 419
-    const/4 p1, 0x1
+    const/4 v2, 0x1
 
-    return p1
+    return v2
 
     .line 415
-    :cond_1f
-    add-int/lit8 v1, v1, 0x1
+    .end local v1  # "bufferedMessage":Lcom/android/server/hdmi/HdmiCecMessage;
+    :cond_1e
+    add-int/lit8 v0, v0, 0x1
 
-    goto :goto_2
+    goto :goto_1
 
     .line 422
-    :cond_22
+    .end local v0  # "i":I
+    :cond_21
+    const/4 v0, 0x0
+
     return v0
 .end method
 
@@ -167,6 +177,7 @@
 # virtual methods
 .method public bufferMessage(Lcom/android/server/hdmi/HdmiCecMessage;)Z
     .registers 5
+    .param p1, "message"  # Lcom/android/server/hdmi/HdmiCecMessage;
 
     .line 373
     invoke-virtual {p1}, Lcom/android/server/hdmi/HdmiCecMessage;->getOpcode()I
@@ -188,9 +199,9 @@
     if-eq v0, v1, :cond_12
 
     .line 384
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    return p1
+    return v0
 
     .line 375
     :cond_12
@@ -231,6 +242,7 @@
     check-cast v1, Lcom/android/server/hdmi/HdmiCecMessage;
 
     .line 390
+    .local v1, "message":Lcom/android/server/hdmi/HdmiCecMessage;
     iget-object v2, p0, Lcom/android/server/hdmi/HdmiControlService$CecMessageBuffer;->this$0:Lcom/android/server/hdmi/HdmiControlService;
 
     new-instance v3, Lcom/android/server/hdmi/HdmiControlService$CecMessageBuffer$1;
@@ -240,6 +252,7 @@
     invoke-virtual {v2, v3}, Lcom/android/server/hdmi/HdmiControlService;->runOnServiceThread(Ljava/lang/Runnable;)V
 
     .line 396
+    .end local v1  # "message":Lcom/android/server/hdmi/HdmiCecMessage;
     goto :goto_6
 
     .line 397

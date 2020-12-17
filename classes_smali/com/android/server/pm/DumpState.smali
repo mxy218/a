@@ -105,6 +105,7 @@
 
 .method public isDumping(I)Z
     .registers 4
+    .param p1, "type"  # I
 
     .line 59
     iget v0, p0, Lcom/android/server/pm/DumpState;->mTypes:I
@@ -124,9 +125,9 @@
     :cond_a
     iget v0, p0, Lcom/android/server/pm/DumpState;->mTypes:I
 
-    and-int/2addr p1, v0
+    and-int/2addr v0, p1
 
-    if-eqz p1, :cond_10
+    if-eqz v0, :cond_10
 
     goto :goto_11
 
@@ -139,23 +140,24 @@
 
 .method public isOptionEnabled(I)Z
     .registers 3
+    .param p1, "option"  # I
 
     .line 71
     iget v0, p0, Lcom/android/server/pm/DumpState;->mOptions:I
 
-    and-int/2addr p1, v0
+    and-int/2addr v0, p1
 
-    if-eqz p1, :cond_7
+    if-eqz v0, :cond_7
 
-    const/4 p1, 0x1
+    const/4 v0, 0x1
 
     goto :goto_8
 
     :cond_7
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
     :goto_8
-    return p1
+    return v0
 .end method
 
 .method public onTitlePrinted()Z
@@ -165,6 +167,7 @@
     iget-boolean v0, p0, Lcom/android/server/pm/DumpState;->mTitlePrinted:Z
 
     .line 80
+    .local v0, "printed":Z
     const/4 v1, 0x1
 
     iput-boolean v1, p0, Lcom/android/server/pm/DumpState;->mTitlePrinted:Z
@@ -175,13 +178,14 @@
 
 .method public setDump(I)V
     .registers 3
+    .param p1, "type"  # I
 
     .line 67
     iget v0, p0, Lcom/android/server/pm/DumpState;->mTypes:I
 
-    or-int/2addr p1, v0
+    or-int/2addr v0, p1
 
-    iput p1, p0, Lcom/android/server/pm/DumpState;->mTypes:I
+    iput v0, p0, Lcom/android/server/pm/DumpState;->mTypes:I
 
     .line 68
     return-void
@@ -189,13 +193,14 @@
 
 .method public setOptionEnabled(I)V
     .registers 3
+    .param p1, "option"  # I
 
     .line 75
     iget v0, p0, Lcom/android/server/pm/DumpState;->mOptions:I
 
-    or-int/2addr p1, v0
+    or-int/2addr v0, p1
 
-    iput p1, p0, Lcom/android/server/pm/DumpState;->mOptions:I
+    iput v0, p0, Lcom/android/server/pm/DumpState;->mOptions:I
 
     .line 76
     return-void
@@ -203,6 +208,7 @@
 
 .method public setSharedUser(Lcom/android/server/pm/SharedUserSetting;)V
     .registers 2
+    .param p1, "user"  # Lcom/android/server/pm/SharedUserSetting;
 
     .line 97
     iput-object p1, p0, Lcom/android/server/pm/DumpState;->mSharedUser:Lcom/android/server/pm/SharedUserSetting;
@@ -213,6 +219,7 @@
 
 .method public setTitlePrinted(Z)V
     .registers 2
+    .param p1, "enabled"  # Z
 
     .line 89
     iput-boolean p1, p0, Lcom/android/server/pm/DumpState;->mTitlePrinted:Z

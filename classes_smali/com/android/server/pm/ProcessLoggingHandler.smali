@@ -51,7 +51,8 @@
 .end method
 
 .method private computeHashOfApkFile(Ljava/lang/String;)[B
-    .registers 6
+    .registers 7
+    .param p1, "packageArchiveLocation"  # Ljava/lang/String;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Ljava/io/IOException;,
@@ -67,6 +68,7 @@
     move-result-object v0
 
     .line 103
+    .local v0, "md":Ljava/security/MessageDigest;
     new-instance v1, Ljava/io/FileInputStream;
 
     new-instance v2, Ljava/io/File;
@@ -76,47 +78,53 @@
     invoke-direct {v1, v2}, Ljava/io/FileInputStream;-><init>(Ljava/io/File;)V
 
     .line 104
-    const/high16 p1, 0x10000
+    .local v1, "input":Ljava/io/FileInputStream;
+    const/high16 v2, 0x10000
 
-    new-array p1, p1, [B
+    new-array v2, v2, [B
 
     .line 106
+    .local v2, "buffer":[B
     :goto_14
-    invoke-virtual {v1, p1}, Ljava/io/FileInputStream;->read([B)I
+    invoke-virtual {v1, v2}, Ljava/io/FileInputStream;->read([B)I
 
-    move-result v2
+    move-result v3
 
-    if-lez v2, :cond_1f
+    move v4, v3
+
+    .local v4, "size":I
+    if-lez v3, :cond_20
 
     .line 107
     const/4 v3, 0x0
 
-    invoke-virtual {v0, p1, v3, v2}, Ljava/security/MessageDigest;->update([BII)V
+    invoke-virtual {v0, v2, v3, v4}, Ljava/security/MessageDigest;->update([BII)V
 
     goto :goto_14
 
     .line 109
-    :cond_1f
+    :cond_20
     invoke-virtual {v1}, Ljava/io/FileInputStream;->close()V
 
     .line 110
     invoke-virtual {v0}, Ljava/security/MessageDigest;->digest()[B
 
-    move-result-object p1
+    move-result-object v3
 
-    return-object p1
+    return-object v3
 .end method
 
 .method private computeStringHashOfApk(Ljava/lang/String;)Ljava/lang/String;
     .registers 10
+    .param p1, "apkFile"  # Ljava/lang/String;
 
     .line 80
     if-nez p1, :cond_5
 
     .line 81
-    const-string p1, "No APK"
+    const-string v0, "No APK"
 
-    return-object p1
+    return-object v0
 
     .line 83
     :cond_5
@@ -129,7 +137,8 @@
     check-cast v0, Ljava/lang/String;
 
     .line 84
-    if-nez v0, :cond_46
+    .local v0, "apkHash":Ljava/lang/String;
+    if-nez v0, :cond_48
 
     .line 86
     :try_start_f
@@ -138,15 +147,18 @@
     move-result-object v1
 
     .line 87
+    .local v1, "hash":[B
     new-instance v2, Ljava/lang/StringBuilder;
 
     invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
 
     .line 88
+    .local v2, "sb":Ljava/lang/StringBuilder;
     const/4 v3, 0x0
 
     move v4, v3
 
+    .local v4, "i":I
     :goto_1a
     array-length v5, v1
 
@@ -179,51 +191,63 @@
     goto :goto_1a
 
     .line 91
+    .end local v4  # "i":I
     :cond_34
     invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v3
+
+    move-object v0, v3
 
     .line 92
-    iget-object v1, p0, Lcom/android/server/pm/ProcessLoggingHandler;->mProcessLoggingBaseApkHashes:Ljava/util/HashMap;
+    iget-object v3, p0, Lcom/android/server/pm/ProcessLoggingHandler;->mProcessLoggingBaseApkHashes:Ljava/util/HashMap;
 
-    invoke-virtual {v1, p1, v0}, Ljava/util/HashMap;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
-    :try_end_3d
-    .catch Ljava/io/IOException; {:try_start_f .. :try_end_3d} :catch_3e
-    .catch Ljava/security/NoSuchAlgorithmException; {:try_start_f .. :try_end_3d} :catch_3e
+    invoke-virtual {v3, p1, v0}, Ljava/util/HashMap;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+    :try_end_3e
+    .catch Ljava/io/IOException; {:try_start_f .. :try_end_3e} :catch_40
+    .catch Ljava/security/NoSuchAlgorithmException; {:try_start_f .. :try_end_3e} :catch_40
 
     .line 95
-    goto :goto_46
+    nop
+
+    .end local v1  # "hash":[B
+    .end local v2  # "sb":Ljava/lang/StringBuilder;
+    goto :goto_48
 
     .line 93
-    :catch_3e
-    move-exception p1
+    :catch_40
+    move-exception v1
 
     .line 94
-    const-string v1, "ProcessLoggingHandler"
+    .local v1, "e":Ljava/lang/Exception;
+    const-string v2, "ProcessLoggingHandler"
 
-    const-string v2, "computeStringHashOfApk() failed"
+    const-string v3, "computeStringHashOfApk() failed"
 
-    invoke-static {v1, v2, p1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    invoke-static {v2, v3, v1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
     .line 97
-    :cond_46
-    :goto_46
-    if-eqz v0, :cond_49
+    .end local v1  # "e":Ljava/lang/Exception;
+    :cond_48
+    :goto_48
+    if-eqz v0, :cond_4c
 
-    goto :goto_4b
+    move-object v1, v0
 
-    :cond_49
-    const-string v0, "Failed to count APK hash"
+    goto :goto_4e
 
-    :goto_4b
-    return-object v0
+    :cond_4c
+    const-string v1, "Failed to count APK hash"
+
+    :goto_4e
+    return-object v1
 .end method
 
 
 # virtual methods
 .method public handleMessage(Landroid/os/Message;)V
-    .registers 13
+    .registers 16
+    .param p1, "msg"  # Landroid/os/Message;
 
     .line 49
     iget v0, p1, Landroid/os/Message;->what:I
@@ -244,124 +268,143 @@
     :cond_b
     invoke-virtual {p1}, Landroid/os/Message;->getData()Landroid/os/Bundle;
 
-    move-result-object p1
+    move-result-object v0
 
     .line 65
-    iget-object v0, p0, Lcom/android/server/pm/ProcessLoggingHandler;->mProcessLoggingBaseApkHashes:Ljava/util/HashMap;
+    .local v0, "bundle":Landroid/os/Bundle;
+    iget-object v2, p0, Lcom/android/server/pm/ProcessLoggingHandler;->mProcessLoggingBaseApkHashes:Ljava/util/HashMap;
 
-    invoke-virtual {p1, v1}, Landroid/os/Bundle;->getString(Ljava/lang/String;)Ljava/lang/String;
+    invoke-virtual {v0, v1}, Landroid/os/Bundle;->getString(Ljava/lang/String;)Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v1
 
-    invoke-virtual {v0, p1}, Ljava/util/HashMap;->remove(Ljava/lang/Object;)Ljava/lang/Object;
+    invoke-virtual {v2, v1}, Ljava/util/HashMap;->remove(Ljava/lang/Object;)Ljava/lang/Object;
 
     .line 66
     goto :goto_6e
 
     .line 51
+    .end local v0  # "bundle":Landroid/os/Bundle;
     :cond_19
     invoke-virtual {p1}, Landroid/os/Message;->getData()Landroid/os/Bundle;
 
-    move-result-object p1
-
-    .line 52
-    const-string/jumbo v0, "processName"
-
-    invoke-virtual {p1, v0}, Landroid/os/Bundle;->getString(Ljava/lang/String;)Ljava/lang/String;
-
     move-result-object v0
 
+    .line 52
+    .restart local v0  # "bundle":Landroid/os/Bundle;
+    const-string/jumbo v4, "processName"
+
+    invoke-virtual {v0, v4}, Landroid/os/Bundle;->getString(Ljava/lang/String;)Ljava/lang/String;
+
+    move-result-object v4
+
     .line 53
-    const-string/jumbo v4, "uid"
+    .local v4, "processName":Ljava/lang/String;
+    const-string/jumbo v5, "uid"
 
-    invoke-virtual {p1, v4}, Landroid/os/Bundle;->getInt(Ljava/lang/String;)I
+    invoke-virtual {v0, v5}, Landroid/os/Bundle;->getInt(Ljava/lang/String;)I
 
-    move-result v4
+    move-result v5
 
     .line 54
-    const-string/jumbo v5, "seinfo"
+    .local v5, "uid":I
+    const-string/jumbo v6, "seinfo"
 
-    invoke-virtual {p1, v5}, Landroid/os/Bundle;->getString(Ljava/lang/String;)Ljava/lang/String;
+    invoke-virtual {v0, v6}, Landroid/os/Bundle;->getString(Ljava/lang/String;)Ljava/lang/String;
 
-    move-result-object v5
+    move-result-object v6
 
     .line 55
-    invoke-virtual {p1, v1}, Landroid/os/Bundle;->getString(Ljava/lang/String;)Ljava/lang/String;
+    .local v6, "seinfo":Ljava/lang/String;
+    invoke-virtual {v0, v1}, Landroid/os/Bundle;->getString(Ljava/lang/String;)Ljava/lang/String;
 
     move-result-object v1
 
     .line 56
-    const-string/jumbo v6, "pid"
+    .local v1, "apkFile":Ljava/lang/String;
+    const-string/jumbo v7, "pid"
 
-    invoke-virtual {p1, v6}, Landroid/os/Bundle;->getInt(Ljava/lang/String;)I
+    invoke-virtual {v0, v7}, Landroid/os/Bundle;->getInt(Ljava/lang/String;)I
 
-    move-result v6
+    move-result v7
 
     .line 57
-    const-string/jumbo v7, "startTimestamp"
+    .local v7, "pid":I
+    const-string/jumbo v8, "startTimestamp"
 
-    invoke-virtual {p1, v7}, Landroid/os/Bundle;->getLong(Ljava/lang/String;)J
+    invoke-virtual {v0, v8}, Landroid/os/Bundle;->getLong(Ljava/lang/String;)J
 
-    move-result-wide v7
+    move-result-wide v8
 
     .line 58
+    .local v8, "startTimestamp":J
     invoke-direct {p0, v1}, Lcom/android/server/pm/ProcessLoggingHandler;->computeStringHashOfApk(Ljava/lang/String;)Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v10
 
     .line 59
-    const v1, 0x33455
+    .local v10, "apkHash":Ljava/lang/String;
+    const v11, 0x33455
 
-    const/4 v9, 0x6
+    const/4 v12, 0x6
 
-    new-array v9, v9, [Ljava/lang/Object;
+    new-array v12, v12, [Ljava/lang/Object;
 
-    const/4 v10, 0x0
+    const/4 v13, 0x0
 
-    aput-object v0, v9, v10
+    aput-object v4, v12, v13
 
     .line 60
-    invoke-static {v7, v8}, Ljava/lang/Long;->valueOf(J)Ljava/lang/Long;
+    invoke-static {v8, v9}, Ljava/lang/Long;->valueOf(J)Ljava/lang/Long;
 
-    move-result-object v0
+    move-result-object v13
 
-    aput-object v0, v9, v3
+    aput-object v13, v12, v3
 
-    invoke-static {v4}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
+    invoke-static {v5}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
 
-    move-result-object v0
+    move-result-object v3
 
-    aput-object v0, v9, v2
+    aput-object v3, v12, v2
 
-    const/4 v0, 0x3
+    const/4 v2, 0x3
 
-    invoke-static {v6}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
+    invoke-static {v7}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
 
-    move-result-object v2
+    move-result-object v3
 
-    aput-object v2, v9, v0
+    aput-object v3, v12, v2
 
-    const/4 v0, 0x4
+    const/4 v2, 0x4
 
-    aput-object v5, v9, v0
+    aput-object v6, v12, v2
 
-    const/4 v0, 0x5
+    const/4 v2, 0x5
 
-    aput-object p1, v9, v0
+    aput-object v10, v12, v2
 
     .line 59
-    invoke-static {v1, v9}, Landroid/app/admin/SecurityLog;->writeEvent(I[Ljava/lang/Object;)I
+    invoke-static {v11, v12}, Landroid/app/admin/SecurityLog;->writeEvent(I[Ljava/lang/Object;)I
 
     .line 61
     nop
 
     .line 69
+    .end local v0  # "bundle":Landroid/os/Bundle;
+    .end local v1  # "apkFile":Ljava/lang/String;
+    .end local v4  # "processName":Ljava/lang/String;
+    .end local v5  # "uid":I
+    .end local v6  # "seinfo":Ljava/lang/String;
+    .end local v7  # "pid":I
+    .end local v8  # "startTimestamp":J
+    .end local v10  # "apkHash":Ljava/lang/String;
     :goto_6e
     return-void
 .end method
 
 .method invalidateProcessLoggingBaseApkHash(Ljava/lang/String;)V
     .registers 4
+    .param p1, "apkPath"  # Ljava/lang/String;
 
     .line 72
     new-instance v0, Landroid/os/Bundle;
@@ -369,22 +412,24 @@
     invoke-direct {v0}, Landroid/os/Bundle;-><init>()V
 
     .line 73
+    .local v0, "data":Landroid/os/Bundle;
     const-string v1, "apkFile"
 
     invoke-virtual {v0, v1, p1}, Landroid/os/Bundle;->putString(Ljava/lang/String;Ljava/lang/String;)V
 
     .line 74
-    const/4 p1, 0x2
+    const/4 v1, 0x2
 
-    invoke-virtual {p0, p1}, Lcom/android/server/pm/ProcessLoggingHandler;->obtainMessage(I)Landroid/os/Message;
+    invoke-virtual {p0, v1}, Lcom/android/server/pm/ProcessLoggingHandler;->obtainMessage(I)Landroid/os/Message;
 
-    move-result-object p1
+    move-result-object v1
 
     .line 75
-    invoke-virtual {p1, v0}, Landroid/os/Message;->setData(Landroid/os/Bundle;)V
+    .local v1, "msg":Landroid/os/Message;
+    invoke-virtual {v1, v0}, Landroid/os/Message;->setData(Landroid/os/Bundle;)V
 
     .line 76
-    invoke-virtual {p0, p1}, Lcom/android/server/pm/ProcessLoggingHandler;->sendMessage(Landroid/os/Message;)Z
+    invoke-virtual {p0, v1}, Lcom/android/server/pm/ProcessLoggingHandler;->sendMessage(Landroid/os/Message;)Z
 
     .line 77
     return-void

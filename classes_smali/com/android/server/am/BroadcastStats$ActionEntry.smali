@@ -51,6 +51,7 @@
 # direct methods
 .method constructor <init>(Ljava/lang/String;)V
     .registers 3
+    .param p1, "action"  # Ljava/lang/String;
 
     .line 56
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V

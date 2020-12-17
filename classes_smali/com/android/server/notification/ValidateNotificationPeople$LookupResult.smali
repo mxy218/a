@@ -23,20 +23,22 @@
 
 .field private final mExpireMillis:J
 
+.field private mInWhiteList:Z
+
 
 # direct methods
 .method public constructor <init>()V
     .registers 5
 
-    .line 421
+    .line 479
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
-    .line 419
+    .line 475
     const/4 v0, 0x0
 
     iput v0, p0, Lcom/android/server/notification/ValidateNotificationPeople$LookupResult;->mAffinity:F
 
-    .line 422
+    .line 480
     invoke-static {}, Ljava/lang/System;->currentTimeMillis()J
 
     move-result-wide v0
@@ -47,25 +49,26 @@
 
     iput-wide v0, p0, Lcom/android/server/notification/ValidateNotificationPeople$LookupResult;->mExpireMillis:J
 
-    .line 423
+    .line 481
     return-void
 .end method
 
 .method static synthetic access$400(Lcom/android/server/notification/ValidateNotificationPeople$LookupResult;)Z
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/notification/ValidateNotificationPeople$LookupResult;
 
-    .line 415
+    .line 471
     invoke-direct {p0}, Lcom/android/server/notification/ValidateNotificationPeople$LookupResult;->isExpired()Z
 
-    move-result p0
+    move-result v0
 
-    return p0
+    return v0
 .end method
 
 .method private isExpired()Z
     .registers 5
 
-    .line 453
+    .line 520
     iget-wide v0, p0, Lcom/android/server/notification/ValidateNotificationPeople$LookupResult;->mExpireMillis:J
 
     invoke-static {}, Ljava/lang/System;->currentTimeMillis()J
@@ -90,7 +93,7 @@
 .method private isInvalid()Z
     .registers 3
 
-    .line 457
+    .line 524
     iget v0, p0, Lcom/android/server/notification/ValidateNotificationPeople$LookupResult;->mAffinity:F
 
     const/4 v1, 0x0
@@ -125,29 +128,39 @@
 .method public getAffinity()F
     .registers 2
 
-    .line 461
+    .line 528
     invoke-direct {p0}, Lcom/android/server/notification/ValidateNotificationPeople$LookupResult;->isInvalid()Z
 
     move-result v0
 
     if-eqz v0, :cond_8
 
-    .line 462
+    .line 529
     const/4 v0, 0x0
 
     return v0
 
-    .line 464
+    .line 531
     :cond_8
     iget v0, p0, Lcom/android/server/notification/ValidateNotificationPeople$LookupResult;->mAffinity:F
 
     return v0
 .end method
 
-.method public mergeContact(Landroid/database/Cursor;)V
-    .registers 6
+.method public isContactInWhiteList()Z
+    .registers 2
 
-    .line 426
+    .line 535
+    iget-boolean v0, p0, Lcom/android/server/notification/ValidateNotificationPeople$LookupResult;->mInWhiteList:Z
+
+    return v0
+.end method
+
+.method public mergeContact(Landroid/database/Cursor;)V
+    .registers 11
+    .param p1, "cursor"  # Landroid/database/Cursor;
+
+    .line 484
     iget v0, p0, Lcom/android/server/notification/ValidateNotificationPeople$LookupResult;->mAffinity:F
 
     const/high16 v1, 0x3f000000  # 0.5f
@@ -158,140 +171,209 @@
 
     iput v0, p0, Lcom/android/server/notification/ValidateNotificationPeople$LookupResult;->mAffinity:F
 
-    .line 430
+    .line 488
     const-string v0, "_id"
 
     invoke-interface {p1, v0}, Landroid/database/Cursor;->getColumnIndex(Ljava/lang/String;)I
 
     move-result v0
 
-    .line 431
+    .line 489
+    .local v0, "idIdx":I
     const-string v1, "ValidateNoPeople"
 
     if-ltz v0, :cond_33
 
-    .line 432
+    .line 490
     invoke-interface {p1, v0}, Landroid/database/Cursor;->getInt(I)I
-
-    move-result v0
-
-    .line 433
-    invoke-static {}, Lcom/android/server/notification/ValidateNotificationPeople;->access$000()Z
 
     move-result v2
 
-    if-eqz v2, :cond_39
+    .line 491
+    .local v2, "id":I
+    invoke-static {}, Lcom/android/server/notification/ValidateNotificationPeople;->access$000()Z
 
-    new-instance v2, Ljava/lang/StringBuilder;
+    move-result v3
 
-    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
+    if-eqz v3, :cond_3a
 
-    const-string v3, "contact _ID is: "
+    new-instance v3, Ljava/lang/StringBuilder;
 
-    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
 
-    invoke-virtual {v2, v0}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    const-string v4, "contact _ID is: "
 
-    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    move-result-object v0
+    invoke-virtual {v3, v2}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    invoke-static {v1, v0}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    goto :goto_39
+    move-result-object v3
 
-    .line 435
+    invoke-static {v1, v3}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
+
+    goto :goto_3a
+
+    .line 493
+    .end local v2  # "id":I
     :cond_33
-    nop
+    const/4 v2, -0x1
 
-    .line 436
-    const-string v0, "invalid cursor: no _ID"
+    .line 494
+    .restart local v2  # "id":I
+    const-string/jumbo v3, "invalid cursor: no _ID"
 
-    invoke-static {v1, v0}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v3}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 440
-    :cond_39
-    :goto_39
-    const-string/jumbo v0, "starred"
+    .line 498
+    :cond_3a
+    :goto_3a
+    const-string/jumbo v3, "starred"
 
-    invoke-interface {p1, v0}, Landroid/database/Cursor;->getColumnIndex(Ljava/lang/String;)I
+    invoke-interface {p1, v3}, Landroid/database/Cursor;->getColumnIndex(Ljava/lang/String;)I
 
-    move-result v0
+    move-result v3
 
-    .line 441
-    if-ltz v0, :cond_72
+    .line 499
+    .local v3, "starIdx":I
+    const/4 v4, 0x1
 
-    .line 442
-    invoke-interface {p1, v0}, Landroid/database/Cursor;->getInt(I)I
+    const/4 v5, 0x0
 
-    move-result p1
+    if-ltz v3, :cond_75
 
-    if-eqz p1, :cond_4a
+    .line 500
+    invoke-interface {p1, v3}, Landroid/database/Cursor;->getInt(I)I
 
-    const/4 p1, 0x1
+    move-result v6
 
-    goto :goto_4b
+    if-eqz v6, :cond_4d
 
-    :cond_4a
-    const/4 p1, 0x0
+    move v6, v4
 
-    .line 443
-    :goto_4b
-    if-eqz p1, :cond_57
+    goto :goto_4e
 
-    .line 444
-    iget v0, p0, Lcom/android/server/notification/ValidateNotificationPeople$LookupResult;->mAffinity:F
+    :cond_4d
+    move v6, v5
 
-    const/high16 v2, 0x3f800000  # 1.0f
+    .line 501
+    .local v6, "isStarred":Z
+    :goto_4e
+    if-eqz v6, :cond_5a
 
-    invoke-static {v0, v2}, Ljava/lang/Math;->max(FF)F
+    .line 502
+    iget v7, p0, Lcom/android/server/notification/ValidateNotificationPeople$LookupResult;->mAffinity:F
 
-    move-result v0
+    const/high16 v8, 0x3f800000  # 1.0f
 
-    iput v0, p0, Lcom/android/server/notification/ValidateNotificationPeople$LookupResult;->mAffinity:F
+    invoke-static {v7, v8}, Ljava/lang/Math;->max(FF)F
 
-    .line 446
-    :cond_57
+    move-result v7
+
+    iput v7, p0, Lcom/android/server/notification/ValidateNotificationPeople$LookupResult;->mAffinity:F
+
+    .line 504
+    :cond_5a
     invoke-static {}, Lcom/android/server/notification/ValidateNotificationPeople;->access$000()Z
 
-    move-result v0
+    move-result v7
 
-    if-eqz v0, :cond_71
+    if-eqz v7, :cond_74
 
-    new-instance v0, Ljava/lang/StringBuilder;
+    new-instance v7, Ljava/lang/StringBuilder;
 
-    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v7}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v2, "contact STARRED is: "
+    const-string v8, "contact STARRED is: "
 
-    invoke-virtual {v0, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v7, v8}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Z)Ljava/lang/StringBuilder;
+    invoke-virtual {v7, v6}, Ljava/lang/StringBuilder;->append(Z)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v7}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v7
 
-    invoke-static {v1, p1}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v7}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 447
-    :cond_71
-    goto :goto_7d
+    .line 505
+    .end local v6  # "isStarred":Z
+    :cond_74
+    goto :goto_81
 
-    .line 448
-    :cond_72
+    .line 506
+    :cond_75
     invoke-static {}, Lcom/android/server/notification/ValidateNotificationPeople;->access$000()Z
 
-    move-result p1
+    move-result v6
 
-    if-eqz p1, :cond_7d
+    if-eqz v6, :cond_81
 
-    const-string p1, "invalid cursor: no STARRED"
+    const-string/jumbo v6, "invalid cursor: no STARRED"
 
-    invoke-static {v1, p1}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v6}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 450
-    :cond_7d
-    :goto_7d
+    .line 509
+    :cond_81
+    :goto_81
+    const-string v6, "contact_type"
+
+    invoke-interface {p1, v6}, Landroid/database/Cursor;->getColumnIndex(Ljava/lang/String;)I
+
+    move-result v6
+
+    .line 510
+    .local v6, "whiteListIdx":I
+    if-ltz v6, :cond_b3
+
+    .line 511
+    iget-boolean v7, p0, Lcom/android/server/notification/ValidateNotificationPeople$LookupResult;->mInWhiteList:Z
+
+    if-nez v7, :cond_95
+
+    invoke-interface {p1, v6}, Landroid/database/Cursor;->getInt(I)I
+
+    move-result v7
+
+    if-eqz v7, :cond_94
+
+    goto :goto_95
+
+    :cond_94
+    move v4, v5
+
+    :cond_95
+    :goto_95
+    iput-boolean v4, p0, Lcom/android/server/notification/ValidateNotificationPeople$LookupResult;->mInWhiteList:Z
+
+    .line 512
+    invoke-static {}, Lcom/android/server/notification/ValidateNotificationPeople;->access$000()Z
+
+    move-result v4
+
+    if-eqz v4, :cond_b3
+
+    .line 513
+    new-instance v4, Ljava/lang/StringBuilder;
+
+    invoke-direct {v4}, Ljava/lang/StringBuilder;-><init>()V
+
+    const-string v5, "contact in white list mInWhiteList = "
+
+    invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    iget-boolean v5, p0, Lcom/android/server/notification/ValidateNotificationPeople$LookupResult;->mInWhiteList:Z
+
+    invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Z)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v4}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v4
+
+    invoke-static {v1, v4}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
+
+    .line 517
+    :cond_b3
     return-void
 .end method

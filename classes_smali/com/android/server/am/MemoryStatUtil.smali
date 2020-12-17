@@ -232,6 +232,7 @@
 
 .method static parseCmdlineFromProcfs(Ljava/lang/String;)Ljava/lang/String;
     .registers 3
+    .param p0, "cmdline"  # Ljava/lang/String;
     .annotation build Lcom/android/internal/annotations/VisibleForTesting;
     .end annotation
 
@@ -239,9 +240,9 @@
     if-nez p0, :cond_5
 
     .line 261
-    const-string p0, ""
+    const-string v0, ""
 
-    return-object p0
+    return-object v0
 
     .line 263
     :cond_5
@@ -252,6 +253,7 @@
     move-result v0
 
     .line 264
+    .local v0, "firstNullByte":I
     const/4 v1, -0x1
 
     if-ne v0, v1, :cond_f
@@ -265,13 +267,14 @@
 
     invoke-virtual {p0, v1, v0}, Ljava/lang/String;->substring(II)Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v1
 
-    return-object p0
+    return-object v1
 .end method
 
 .method static parseIonHeapSizeFromDebugfs(Ljava/lang/String;)J
     .registers 3
+    .param p0, "contents"  # Ljava/lang/String;
     .annotation build Lcom/android/internal/annotations/VisibleForTesting;
     .end annotation
 
@@ -306,6 +309,7 @@
 
 .method static parseMemoryStatFromMemcg(Ljava/lang/String;)Lcom/android/server/am/MemoryStatUtil$MemoryStat;
     .registers 4
+    .param p0, "memoryStatContents"  # Ljava/lang/String;
     .annotation build Lcom/android/internal/annotations/VisibleForTesting;
     .end annotation
 
@@ -327,6 +331,7 @@
     invoke-direct {v0}, Lcom/android/server/am/MemoryStatUtil$MemoryStat;-><init>()V
 
     .line 193
+    .local v0, "memoryStat":Lcom/android/server/am/MemoryStatUtil$MemoryStat;
     sget-object v1, Lcom/android/server/am/MemoryStatUtil;->PGFAULT:Ljava/util/regex/Pattern;
 
     invoke-static {v1, p0}, Lcom/android/server/am/MemoryStatUtil;->tryParseLong(Ljava/util/regex/Pattern;Ljava/lang/String;)J
@@ -375,15 +380,18 @@
     return-object v0
 
     .line 189
+    .end local v0  # "memoryStat":Lcom/android/server/am/MemoryStatUtil$MemoryStat;
     :cond_37
     :goto_37
-    const/4 p0, 0x0
+    const/4 v0, 0x0
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static parseMemoryStatFromProcfs(Ljava/lang/String;Ljava/lang/String;)Lcom/android/server/am/MemoryStatUtil$MemoryStat;
-    .registers 8
+    .registers 9
+    .param p0, "procStatContents"  # Ljava/lang/String;
+    .param p1, "procStatusContents"  # Ljava/lang/String;
     .annotation build Lcom/android/internal/annotations/VisibleForTesting;
     .end annotation
 
@@ -418,14 +426,15 @@
 
     invoke-virtual {p0, v1}, Ljava/lang/String;->split(Ljava/lang/String;)[Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v1
 
     .line 216
-    array-length v1, p0
+    .local v1, "splits":[Ljava/lang/String;
+    array-length v2, v1
 
-    const/16 v2, 0x18
+    const/16 v3, 0x18
 
-    if-ge v1, v2, :cond_1f
+    if-ge v2, v3, :cond_1f
 
     .line 217
     return-object v0
@@ -433,105 +442,110 @@
     .line 221
     :cond_1f
     :try_start_1f
-    new-instance v1, Lcom/android/server/am/MemoryStatUtil$MemoryStat;
+    new-instance v2, Lcom/android/server/am/MemoryStatUtil$MemoryStat;
 
-    invoke-direct {v1}, Lcom/android/server/am/MemoryStatUtil$MemoryStat;-><init>()V
+    invoke-direct {v2}, Lcom/android/server/am/MemoryStatUtil$MemoryStat;-><init>()V
 
     .line 222
-    const/16 v2, 0x9
+    .local v2, "memoryStat":Lcom/android/server/am/MemoryStatUtil$MemoryStat;
+    const/16 v3, 0x9
 
-    aget-object v2, p0, v2
+    aget-object v3, v1, v3
 
-    invoke-static {v2}, Ljava/lang/Long;->parseLong(Ljava/lang/String;)J
+    invoke-static {v3}, Ljava/lang/Long;->parseLong(Ljava/lang/String;)J
 
-    move-result-wide v2
+    move-result-wide v3
 
-    iput-wide v2, v1, Lcom/android/server/am/MemoryStatUtil$MemoryStat;->pgfault:J
+    iput-wide v3, v2, Lcom/android/server/am/MemoryStatUtil$MemoryStat;->pgfault:J
 
     .line 223
-    const/16 v2, 0xb
+    const/16 v3, 0xb
 
-    aget-object v2, p0, v2
+    aget-object v3, v1, v3
 
-    invoke-static {v2}, Ljava/lang/Long;->parseLong(Ljava/lang/String;)J
+    invoke-static {v3}, Ljava/lang/Long;->parseLong(Ljava/lang/String;)J
 
-    move-result-wide v2
+    move-result-wide v3
 
-    iput-wide v2, v1, Lcom/android/server/am/MemoryStatUtil$MemoryStat;->pgmajfault:J
+    iput-wide v3, v2, Lcom/android/server/am/MemoryStatUtil$MemoryStat;->pgmajfault:J
 
     .line 224
-    sget-object v2, Lcom/android/server/am/MemoryStatUtil;->PROCFS_RSS_IN_KILOBYTES:Ljava/util/regex/Pattern;
+    sget-object v3, Lcom/android/server/am/MemoryStatUtil;->PROCFS_RSS_IN_KILOBYTES:Ljava/util/regex/Pattern;
 
     .line 225
-    invoke-static {v2, p1}, Lcom/android/server/am/MemoryStatUtil;->tryParseLong(Ljava/util/regex/Pattern;Ljava/lang/String;)J
+    invoke-static {v3, p1}, Lcom/android/server/am/MemoryStatUtil;->tryParseLong(Ljava/util/regex/Pattern;Ljava/lang/String;)J
 
-    move-result-wide v2
+    move-result-wide v3
 
-    const-wide/16 v4, 0x400
+    const-wide/16 v5, 0x400
 
-    mul-long/2addr v2, v4
+    mul-long/2addr v3, v5
 
-    iput-wide v2, v1, Lcom/android/server/am/MemoryStatUtil$MemoryStat;->rssInBytes:J
+    iput-wide v3, v2, Lcom/android/server/am/MemoryStatUtil$MemoryStat;->rssInBytes:J
 
     .line 226
-    sget-object v2, Lcom/android/server/am/MemoryStatUtil;->PROCFS_ANON_RSS_IN_KILOBYTES:Ljava/util/regex/Pattern;
+    sget-object v3, Lcom/android/server/am/MemoryStatUtil;->PROCFS_ANON_RSS_IN_KILOBYTES:Ljava/util/regex/Pattern;
 
     .line 227
-    invoke-static {v2, p1}, Lcom/android/server/am/MemoryStatUtil;->tryParseLong(Ljava/util/regex/Pattern;Ljava/lang/String;)J
+    invoke-static {v3, p1}, Lcom/android/server/am/MemoryStatUtil;->tryParseLong(Ljava/util/regex/Pattern;Ljava/lang/String;)J
 
-    move-result-wide v2
+    move-result-wide v3
 
-    mul-long/2addr v2, v4
+    mul-long/2addr v3, v5
 
-    iput-wide v2, v1, Lcom/android/server/am/MemoryStatUtil$MemoryStat;->anonRssInBytes:J
+    iput-wide v3, v2, Lcom/android/server/am/MemoryStatUtil$MemoryStat;->anonRssInBytes:J
 
     .line 228
-    sget-object v2, Lcom/android/server/am/MemoryStatUtil;->PROCFS_SWAP_IN_KILOBYTES:Ljava/util/regex/Pattern;
+    sget-object v3, Lcom/android/server/am/MemoryStatUtil;->PROCFS_SWAP_IN_KILOBYTES:Ljava/util/regex/Pattern;
 
     .line 229
-    invoke-static {v2, p1}, Lcom/android/server/am/MemoryStatUtil;->tryParseLong(Ljava/util/regex/Pattern;Ljava/lang/String;)J
+    invoke-static {v3, p1}, Lcom/android/server/am/MemoryStatUtil;->tryParseLong(Ljava/util/regex/Pattern;Ljava/lang/String;)J
 
-    move-result-wide v2
+    move-result-wide v3
 
-    mul-long/2addr v2, v4
+    mul-long/2addr v3, v5
 
-    iput-wide v2, v1, Lcom/android/server/am/MemoryStatUtil$MemoryStat;->swapInBytes:J
+    iput-wide v3, v2, Lcom/android/server/am/MemoryStatUtil$MemoryStat;->swapInBytes:J
 
     .line 230
-    const/16 p1, 0x15
+    const/16 v3, 0x15
 
-    aget-object p0, p0, p1
+    aget-object v3, v1, v3
 
-    invoke-static {p0}, Ljava/lang/Long;->parseLong(Ljava/lang/String;)J
+    invoke-static {v3}, Ljava/lang/Long;->parseLong(Ljava/lang/String;)J
 
-    move-result-wide p0
+    move-result-wide v3
 
-    sget-wide v2, Lcom/android/server/am/MemoryStatUtil;->JIFFY_NANOS:J
+    sget-wide v5, Lcom/android/server/am/MemoryStatUtil;->JIFFY_NANOS:J
 
-    mul-long/2addr p0, v2
+    mul-long/2addr v3, v5
 
-    iput-wide p0, v1, Lcom/android/server/am/MemoryStatUtil$MemoryStat;->startTimeNanos:J
+    iput-wide v3, v2, Lcom/android/server/am/MemoryStatUtil$MemoryStat;->startTimeNanos:J
     :try_end_62
     .catch Ljava/lang/NumberFormatException; {:try_start_1f .. :try_end_62} :catch_63
 
     .line 231
-    return-object v1
+    return-object v2
 
     .line 232
+    .end local v2  # "memoryStat":Lcom/android/server/am/MemoryStatUtil$MemoryStat;
     :catch_63
-    move-exception p0
+    move-exception v2
 
     .line 233
-    const-string p1, "ActivityManager"
+    .local v2, "e":Ljava/lang/NumberFormatException;
+    const-string v3, "ActivityManager"
 
-    const-string v1, "Failed to parse value"
+    const-string v4, "Failed to parse value"
 
-    invoke-static {p1, v1, p0}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    invoke-static {v3, v4, v2}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
     .line 234
     return-object v0
 
     .line 212
+    .end local v1  # "splits":[Ljava/lang/String;
+    .end local v2  # "e":Ljava/lang/NumberFormatException;
     :cond_6c
     :goto_6c
     return-object v0
@@ -543,7 +557,8 @@
 .end method
 
 .method static parseProcessIonHeapSizesFromDebugfs(Ljava/lang/String;)Ljava/util/List;
-    .registers 9
+    .registers 10
+    .param p0, "contents"  # Ljava/lang/String;
     .annotation build Lcom/android/internal/annotations/VisibleForTesting;
     .end annotation
 
@@ -559,7 +574,7 @@
     .end annotation
 
     .line 288
-    if-eqz p0, :cond_77
+    if-eqz p0, :cond_78
 
     invoke-virtual {p0}, Ljava/lang/String;->isEmpty()Z
 
@@ -567,7 +582,7 @@
 
     if-eqz v0, :cond_9
 
-    goto :goto_77
+    goto :goto_78
 
     .line 292
     :cond_9
@@ -575,158 +590,177 @@
 
     invoke-virtual {v0, p0}, Ljava/util/regex/Pattern;->matcher(Ljava/lang/CharSequence;)Ljava/util/regex/Matcher;
 
-    move-result-object p0
+    move-result-object v0
 
     .line 293
-    new-instance v0, Landroid/util/SparseArray;
+    .local v0, "m":Ljava/util/regex/Matcher;
+    new-instance v1, Landroid/util/SparseArray;
 
-    invoke-direct {v0}, Landroid/util/SparseArray;-><init>()V
+    invoke-direct {v1}, Landroid/util/SparseArray;-><init>()V
 
     .line 294
+    .local v1, "entries":Landroid/util/SparseArray;, "Landroid/util/SparseArray<Lcom/android/server/am/MemoryStatUtil$IonAllocations;>;"
     :goto_14
-    invoke-virtual {p0}, Ljava/util/regex/Matcher;->find()Z
-
-    move-result v1
-
-    if-eqz v1, :cond_5a
-
-    .line 296
-    const/4 v1, 0x1
-
-    :try_start_1b
-    invoke-virtual {p0, v1}, Ljava/util/regex/Matcher;->group(I)Ljava/lang/String;
-
-    move-result-object v2
-
-    invoke-static {v2}, Ljava/lang/Integer;->parseInt(Ljava/lang/String;)I
+    invoke-virtual {v0}, Ljava/util/regex/Matcher;->find()Z
 
     move-result v2
 
-    .line 297
-    const/4 v3, 0x2
+    if-eqz v2, :cond_5b
 
-    invoke-virtual {p0, v3}, Ljava/util/regex/Matcher;->group(I)Ljava/lang/String;
+    .line 296
+    const/4 v2, 0x1
+
+    :try_start_1b
+    invoke-virtual {v0, v2}, Ljava/util/regex/Matcher;->group(I)Ljava/lang/String;
 
     move-result-object v3
 
-    invoke-static {v3}, Ljava/lang/Long;->parseLong(Ljava/lang/String;)J
+    invoke-static {v3}, Ljava/lang/Integer;->parseInt(Ljava/lang/String;)I
 
-    move-result-wide v3
+    move-result v3
+
+    .line 297
+    .local v3, "pid":I
+    const/4 v4, 0x2
+
+    invoke-virtual {v0, v4}, Ljava/util/regex/Matcher;->group(I)Ljava/lang/String;
+
+    move-result-object v4
+
+    invoke-static {v4}, Ljava/lang/Long;->parseLong(Ljava/lang/String;)J
+
+    move-result-wide v4
 
     .line 298
-    invoke-virtual {v0, v2}, Landroid/util/SparseArray;->get(I)Ljava/lang/Object;
+    .local v4, "sizeInBytes":J
+    invoke-virtual {v1, v3}, Landroid/util/SparseArray;->get(I)Ljava/lang/Object;
 
-    move-result-object v5
+    move-result-object v6
 
-    check-cast v5, Lcom/android/server/am/MemoryStatUtil$IonAllocations;
+    check-cast v6, Lcom/android/server/am/MemoryStatUtil$IonAllocations;
 
     .line 299
-    if-nez v5, :cond_3c
+    .local v6, "allocations":Lcom/android/server/am/MemoryStatUtil$IonAllocations;
+    if-nez v6, :cond_3d
 
     .line 300
-    new-instance v5, Lcom/android/server/am/MemoryStatUtil$IonAllocations;
+    new-instance v7, Lcom/android/server/am/MemoryStatUtil$IonAllocations;
 
-    invoke-direct {v5}, Lcom/android/server/am/MemoryStatUtil$IonAllocations;-><init>()V
+    invoke-direct {v7}, Lcom/android/server/am/MemoryStatUtil$IonAllocations;-><init>()V
+
+    move-object v6, v7
 
     .line 301
-    invoke-virtual {v0, v2, v5}, Landroid/util/SparseArray;->put(ILjava/lang/Object;)V
+    invoke-virtual {v1, v3, v6}, Landroid/util/SparseArray;->put(ILjava/lang/Object;)V
 
     .line 303
-    :cond_3c
-    iput v2, v5, Lcom/android/server/am/MemoryStatUtil$IonAllocations;->pid:I
+    :cond_3d
+    iput v3, v6, Lcom/android/server/am/MemoryStatUtil$IonAllocations;->pid:I
 
     .line 304
-    iget-wide v6, v5, Lcom/android/server/am/MemoryStatUtil$IonAllocations;->totalSizeInBytes:J
+    iget-wide v7, v6, Lcom/android/server/am/MemoryStatUtil$IonAllocations;->totalSizeInBytes:J
 
-    add-long/2addr v6, v3
+    add-long/2addr v7, v4
 
-    iput-wide v6, v5, Lcom/android/server/am/MemoryStatUtil$IonAllocations;->totalSizeInBytes:J
+    iput-wide v7, v6, Lcom/android/server/am/MemoryStatUtil$IonAllocations;->totalSizeInBytes:J
 
     .line 305
-    iget v2, v5, Lcom/android/server/am/MemoryStatUtil$IonAllocations;->count:I
+    iget v7, v6, Lcom/android/server/am/MemoryStatUtil$IonAllocations;->count:I
 
-    add-int/2addr v2, v1
+    add-int/2addr v7, v2
 
-    iput v2, v5, Lcom/android/server/am/MemoryStatUtil$IonAllocations;->count:I
+    iput v7, v6, Lcom/android/server/am/MemoryStatUtil$IonAllocations;->count:I
 
     .line 306
-    iget-wide v1, v5, Lcom/android/server/am/MemoryStatUtil$IonAllocations;->maxSizeInBytes:J
+    iget-wide v7, v6, Lcom/android/server/am/MemoryStatUtil$IonAllocations;->maxSizeInBytes:J
 
-    invoke-static {v1, v2, v3, v4}, Ljava/lang/Math;->max(JJ)J
+    invoke-static {v7, v8, v4, v5}, Ljava/lang/Math;->max(JJ)J
 
-    move-result-wide v1
+    move-result-wide v7
 
-    iput-wide v1, v5, Lcom/android/server/am/MemoryStatUtil$IonAllocations;->maxSizeInBytes:J
-    :try_end_50
-    .catch Ljava/lang/NumberFormatException; {:try_start_1b .. :try_end_50} :catch_51
+    iput-wide v7, v6, Lcom/android/server/am/MemoryStatUtil$IonAllocations;->maxSizeInBytes:J
+    :try_end_51
+    .catch Ljava/lang/NumberFormatException; {:try_start_1b .. :try_end_51} :catch_52
 
-    goto :goto_59
+    .end local v3  # "pid":I
+    .end local v4  # "sizeInBytes":J
+    .end local v6  # "allocations":Lcom/android/server/am/MemoryStatUtil$IonAllocations;
+    goto :goto_5a
 
     .line 307
-    :catch_51
-    move-exception v1
+    :catch_52
+    move-exception v2
 
     .line 308
-    const-string v2, "ActivityManager"
+    .local v2, "e":Ljava/lang/NumberFormatException;
+    const-string v3, "ActivityManager"
 
-    const-string v3, "Failed to parse value"
+    const-string v4, "Failed to parse value"
 
-    invoke-static {v2, v3, v1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    invoke-static {v3, v4, v2}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
     .line 309
-    :goto_59
+    .end local v2  # "e":Ljava/lang/NumberFormatException;
+    :goto_5a
     goto :goto_14
 
     .line 312
-    :cond_5a
-    new-instance p0, Ljava/util/ArrayList;
+    :cond_5b
+    new-instance v2, Ljava/util/ArrayList;
 
-    invoke-virtual {v0}, Landroid/util/SparseArray;->size()I
+    invoke-virtual {v1}, Landroid/util/SparseArray;->size()I
 
-    move-result v1
+    move-result v3
 
-    invoke-direct {p0, v1}, Ljava/util/ArrayList;-><init>(I)V
+    invoke-direct {v2, v3}, Ljava/util/ArrayList;-><init>(I)V
 
     .line 313
-    const/4 v1, 0x0
+    .local v2, "result":Ljava/util/List;, "Ljava/util/List<Lcom/android/server/am/MemoryStatUtil$IonAllocations;>;"
+    const/4 v3, 0x0
 
-    :goto_64
-    invoke-virtual {v0}, Landroid/util/SparseArray;->size()I
+    .local v3, "i":I
+    :goto_65
+    invoke-virtual {v1}, Landroid/util/SparseArray;->size()I
 
-    move-result v2
+    move-result v4
 
-    if-ge v1, v2, :cond_76
+    if-ge v3, v4, :cond_77
 
     .line 314
-    invoke-virtual {v0, v1}, Landroid/util/SparseArray;->valueAt(I)Ljava/lang/Object;
+    invoke-virtual {v1, v3}, Landroid/util/SparseArray;->valueAt(I)Ljava/lang/Object;
 
-    move-result-object v2
+    move-result-object v4
 
-    check-cast v2, Lcom/android/server/am/MemoryStatUtil$IonAllocations;
+    check-cast v4, Lcom/android/server/am/MemoryStatUtil$IonAllocations;
 
-    invoke-interface {p0, v2}, Ljava/util/List;->add(Ljava/lang/Object;)Z
+    invoke-interface {v2, v4}, Ljava/util/List;->add(Ljava/lang/Object;)Z
 
     .line 313
-    add-int/lit8 v1, v1, 0x1
+    add-int/lit8 v3, v3, 0x1
 
-    goto :goto_64
+    goto :goto_65
 
     .line 316
-    :cond_76
-    return-object p0
+    .end local v3  # "i":I
+    :cond_77
+    return-object v2
 
     .line 289
-    :cond_77
-    :goto_77
+    .end local v0  # "m":Ljava/util/regex/Matcher;
+    .end local v1  # "entries":Landroid/util/SparseArray;, "Landroid/util/SparseArray<Lcom/android/server/am/MemoryStatUtil$IonAllocations;>;"
+    .end local v2  # "result":Ljava/util/List;, "Ljava/util/List<Lcom/android/server/am/MemoryStatUtil$IonAllocations;>;"
+    :cond_78
+    :goto_78
     invoke-static {}, Ljava/util/Collections;->emptyList()Ljava/util/List;
 
-    move-result-object p0
+    move-result-object v0
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static parseVmHWMFromProcfs(Ljava/lang/String;)J
     .registers 5
+    .param p0, "procStatusContents"  # Ljava/lang/String;
     .annotation build Lcom/android/internal/annotations/VisibleForTesting;
     .end annotation
 
@@ -764,7 +798,8 @@
 .end method
 
 .method public static readCmdlineFromProcfs(I)Ljava/lang/String;
-    .registers 4
+    .registers 5
+    .param p0, "pid"  # I
 
     .line 143
     sget-object v0, Ljava/util/Locale;->US:Ljava/util/Locale;
@@ -775,32 +810,34 @@
 
     invoke-static {p0}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
 
-    move-result-object p0
+    move-result-object v2
 
-    const/4 v2, 0x0
+    const/4 v3, 0x0
 
-    aput-object p0, v1, v2
+    aput-object v2, v1, v3
 
-    const-string p0, "/proc/%d/cmdline"
+    const-string v2, "/proc/%d/cmdline"
 
-    invoke-static {v0, p0, v1}, Ljava/lang/String;->format(Ljava/util/Locale;Ljava/lang/String;[Ljava/lang/Object;)Ljava/lang/String;
+    invoke-static {v0, v2, v1}, Ljava/lang/String;->format(Ljava/util/Locale;Ljava/lang/String;[Ljava/lang/Object;)Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v0
 
     .line 144
-    invoke-static {p0}, Lcom/android/server/am/MemoryStatUtil;->readFileContents(Ljava/lang/String;)Ljava/lang/String;
+    .local v0, "path":Ljava/lang/String;
+    invoke-static {v0}, Lcom/android/server/am/MemoryStatUtil;->readFileContents(Ljava/lang/String;)Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v1
 
-    invoke-static {p0}, Lcom/android/server/am/MemoryStatUtil;->parseCmdlineFromProcfs(Ljava/lang/String;)Ljava/lang/String;
+    invoke-static {v1}, Lcom/android/server/am/MemoryStatUtil;->parseCmdlineFromProcfs(Ljava/lang/String;)Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v1
 
-    return-object p0
+    return-object v1
 .end method
 
 .method private static readFileContents(Ljava/lang/String;)Ljava/lang/String;
-    .registers 4
+    .registers 6
+    .param p0, "path"  # Ljava/lang/String;
 
     .line 168
     new-instance v0, Ljava/io/File;
@@ -808,47 +845,73 @@
     invoke-direct {v0, p0}, Ljava/io/File;-><init>(Ljava/lang/String;)V
 
     .line 169
+    .local v0, "file":Ljava/io/File;
     invoke-virtual {v0}, Ljava/io/File;->exists()Z
 
-    move-result p0
+    move-result v1
 
-    const/4 v1, 0x0
+    const-string v2, "ActivityManager"
 
-    if-nez p0, :cond_d
+    const/4 v3, 0x0
+
+    if-nez v1, :cond_27
+
+    .line 170
+    sget-boolean v1, Lcom/android/server/wm/ActivityTaskManagerDebugConfig;->DEBUG_METRICS:Z
+
+    if-eqz v1, :cond_26
+
+    new-instance v1, Ljava/lang/StringBuilder;
+
+    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
+
+    invoke-virtual {v1, p0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    const-string v4, " not found"
+
+    invoke-virtual {v1, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v1
+
+    invoke-static {v2, v1}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 171
-    return-object v1
+    :cond_26
+    return-object v3
 
     .line 175
-    :cond_d
-    const/4 p0, 0x0
+    :cond_27
+    const/4 v1, 0x0
 
-    :try_start_e
-    invoke-static {v0, p0, v1}, Landroid/os/FileUtils;->readTextFile(Ljava/io/File;ILjava/lang/String;)Ljava/lang/String;
+    :try_start_28
+    invoke-static {v0, v1, v3}, Landroid/os/FileUtils;->readTextFile(Ljava/io/File;ILjava/lang/String;)Ljava/lang/String;
 
-    move-result-object p0
-    :try_end_12
-    .catch Ljava/io/IOException; {:try_start_e .. :try_end_12} :catch_13
+    move-result-object v1
+    :try_end_2c
+    .catch Ljava/io/IOException; {:try_start_28 .. :try_end_2c} :catch_2d
 
-    return-object p0
+    return-object v1
 
     .line 176
-    :catch_13
-    move-exception p0
+    :catch_2d
+    move-exception v1
 
     .line 177
-    const-string v0, "ActivityManager"
+    .local v1, "e":Ljava/io/IOException;
+    const-string v4, "Failed to read file:"
 
-    const-string v2, "Failed to read file:"
-
-    invoke-static {v0, v2, p0}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    invoke-static {v2, v4, v1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
     .line 178
-    return-object v1
+    return-object v3
 .end method
 
 .method public static readMemoryStatFromFilesystem(II)Lcom/android/server/am/MemoryStatUtil$MemoryStat;
     .registers 3
+    .param p0, "uid"  # I
+    .param p1, "pid"  # I
 
     .line 101
     invoke-static {}, Lcom/android/server/am/MemoryStatUtil;->hasMemcg()Z
@@ -859,21 +922,23 @@
 
     invoke-static {p0, p1}, Lcom/android/server/am/MemoryStatUtil;->readMemoryStatFromMemcg(II)Lcom/android/server/am/MemoryStatUtil$MemoryStat;
 
-    move-result-object p0
+    move-result-object v0
 
     goto :goto_f
 
     :cond_b
     invoke-static {p1}, Lcom/android/server/am/MemoryStatUtil;->readMemoryStatFromProcfs(I)Lcom/android/server/am/MemoryStatUtil$MemoryStat;
 
-    move-result-object p0
+    move-result-object v0
 
     :goto_f
-    return-object p0
+    return-object v0
 .end method
 
 .method static readMemoryStatFromMemcg(II)Lcom/android/server/am/MemoryStatUtil$MemoryStat;
-    .registers 5
+    .registers 6
+    .param p0, "uid"  # I
+    .param p1, "pid"  # I
 
     .line 111
     sget-object v0, Ljava/util/Locale;->US:Ljava/util/Locale;
@@ -884,40 +949,42 @@
 
     invoke-static {p0}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
 
-    move-result-object p0
+    move-result-object v2
 
-    const/4 v2, 0x0
+    const/4 v3, 0x0
 
-    aput-object p0, v1, v2
+    aput-object v2, v1, v3
 
     invoke-static {p1}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
 
-    move-result-object p0
+    move-result-object v2
 
-    const/4 p1, 0x1
+    const/4 v3, 0x1
 
-    aput-object p0, v1, p1
+    aput-object v2, v1, v3
 
-    const-string p0, "/dev/memcg/apps/uid_%d/pid_%d/memory.stat"
+    const-string v2, "/dev/memcg/apps/uid_%d/pid_%d/memory.stat"
 
-    invoke-static {v0, p0, v1}, Ljava/lang/String;->format(Ljava/util/Locale;Ljava/lang/String;[Ljava/lang/Object;)Ljava/lang/String;
+    invoke-static {v0, v2, v1}, Ljava/lang/String;->format(Ljava/util/Locale;Ljava/lang/String;[Ljava/lang/Object;)Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v0
 
     .line 112
-    invoke-static {p0}, Lcom/android/server/am/MemoryStatUtil;->readFileContents(Ljava/lang/String;)Ljava/lang/String;
+    .local v0, "statPath":Ljava/lang/String;
+    invoke-static {v0}, Lcom/android/server/am/MemoryStatUtil;->readFileContents(Ljava/lang/String;)Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v1
 
-    invoke-static {p0}, Lcom/android/server/am/MemoryStatUtil;->parseMemoryStatFromMemcg(Ljava/lang/String;)Lcom/android/server/am/MemoryStatUtil$MemoryStat;
+    invoke-static {v1}, Lcom/android/server/am/MemoryStatUtil;->parseMemoryStatFromMemcg(Ljava/lang/String;)Lcom/android/server/am/MemoryStatUtil$MemoryStat;
 
-    move-result-object p0
+    move-result-object v1
 
-    return-object p0
+    return-object v1
 .end method
 
 .method public static readMemoryStatFromProcfs(I)Lcom/android/server/am/MemoryStatUtil$MemoryStat;
     .registers 6
+    .param p0, "pid"  # I
 
     .line 122
     sget-object v0, Ljava/util/Locale;->US:Ljava/util/Locale;
@@ -941,36 +1008,38 @@
     move-result-object v0
 
     .line 123
+    .local v0, "statPath":Ljava/lang/String;
     sget-object v2, Ljava/util/Locale;->US:Ljava/util/Locale;
 
     new-array v1, v1, [Ljava/lang/Object;
 
     invoke-static {p0}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
 
-    move-result-object p0
+    move-result-object v3
 
-    aput-object p0, v1, v4
+    aput-object v3, v1, v4
 
-    const-string p0, "/proc/%d/status"
+    const-string v3, "/proc/%d/status"
 
-    invoke-static {v2, p0, v1}, Ljava/lang/String;->format(Ljava/util/Locale;Ljava/lang/String;[Ljava/lang/Object;)Ljava/lang/String;
+    invoke-static {v2, v3, v1}, Ljava/lang/String;->format(Ljava/util/Locale;Ljava/lang/String;[Ljava/lang/Object;)Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v1
 
     .line 124
+    .local v1, "statusPath":Ljava/lang/String;
     invoke-static {v0}, Lcom/android/server/am/MemoryStatUtil;->readFileContents(Ljava/lang/String;)Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v2
 
-    invoke-static {p0}, Lcom/android/server/am/MemoryStatUtil;->readFileContents(Ljava/lang/String;)Ljava/lang/String;
+    invoke-static {v1}, Lcom/android/server/am/MemoryStatUtil;->readFileContents(Ljava/lang/String;)Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v3
 
-    invoke-static {v0, p0}, Lcom/android/server/am/MemoryStatUtil;->parseMemoryStatFromProcfs(Ljava/lang/String;Ljava/lang/String;)Lcom/android/server/am/MemoryStatUtil$MemoryStat;
+    invoke-static {v2, v3}, Lcom/android/server/am/MemoryStatUtil;->parseMemoryStatFromProcfs(Ljava/lang/String;Ljava/lang/String;)Lcom/android/server/am/MemoryStatUtil$MemoryStat;
 
-    move-result-object p0
+    move-result-object v2
 
-    return-object p0
+    return-object v2
 .end method
 
 .method public static readProcessSystemIonHeapSizesFromDebugfs()Ljava/util/List;
@@ -999,7 +1068,8 @@
 .end method
 
 .method public static readRssHighWaterMarkFromProcfs(I)J
-    .registers 4
+    .registers 5
+    .param p0, "pid"  # I
 
     .line 132
     sget-object v0, Ljava/util/Locale;->US:Ljava/util/Locale;
@@ -1010,28 +1080,29 @@
 
     invoke-static {p0}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
 
-    move-result-object p0
+    move-result-object v2
 
-    const/4 v2, 0x0
+    const/4 v3, 0x0
 
-    aput-object p0, v1, v2
+    aput-object v2, v1, v3
 
-    const-string p0, "/proc/%d/status"
+    const-string v2, "/proc/%d/status"
 
-    invoke-static {v0, p0, v1}, Ljava/lang/String;->format(Ljava/util/Locale;Ljava/lang/String;[Ljava/lang/Object;)Ljava/lang/String;
+    invoke-static {v0, v2, v1}, Ljava/lang/String;->format(Ljava/util/Locale;Ljava/lang/String;[Ljava/lang/Object;)Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v0
 
     .line 133
-    invoke-static {p0}, Lcom/android/server/am/MemoryStatUtil;->readFileContents(Ljava/lang/String;)Ljava/lang/String;
+    .local v0, "statusPath":Ljava/lang/String;
+    invoke-static {v0}, Lcom/android/server/am/MemoryStatUtil;->readFileContents(Ljava/lang/String;)Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v1
 
-    invoke-static {p0}, Lcom/android/server/am/MemoryStatUtil;->parseVmHWMFromProcfs(Ljava/lang/String;)J
+    invoke-static {v1}, Lcom/android/server/am/MemoryStatUtil;->parseVmHWMFromProcfs(Ljava/lang/String;)J
 
-    move-result-wide v0
+    move-result-wide v1
 
-    return-wide v0
+    return-wide v1
 .end method
 
 .method public static readSystemIonHeapSizeFromDebugfs()J
@@ -1052,49 +1123,53 @@
 .end method
 
 .method private static tryParseLong(Ljava/util/regex/Pattern;Ljava/lang/String;)J
-    .registers 5
+    .registers 8
+    .param p0, "pattern"  # Ljava/util/regex/Pattern;
+    .param p1, "input"  # Ljava/lang/String;
 
     .line 331
     invoke-virtual {p0, p1}, Ljava/util/regex/Pattern;->matcher(Ljava/lang/CharSequence;)Ljava/util/regex/Matcher;
 
-    move-result-object p0
+    move-result-object v0
 
     .line 333
-    const-wide/16 v0, 0x0
+    .local v0, "m":Ljava/util/regex/Matcher;
+    const-wide/16 v1, 0x0
 
     :try_start_6
-    invoke-virtual {p0}, Ljava/util/regex/Matcher;->find()Z
+    invoke-virtual {v0}, Ljava/util/regex/Matcher;->find()Z
 
-    move-result p1
+    move-result v3
 
-    if-eqz p1, :cond_15
+    if-eqz v3, :cond_15
 
-    const/4 p1, 0x1
+    const/4 v3, 0x1
 
-    invoke-virtual {p0, p1}, Ljava/util/regex/Matcher;->group(I)Ljava/lang/String;
+    invoke-virtual {v0, v3}, Ljava/util/regex/Matcher;->group(I)Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v3
 
-    invoke-static {p0}, Ljava/lang/Long;->parseLong(Ljava/lang/String;)J
+    invoke-static {v3}, Ljava/lang/Long;->parseLong(Ljava/lang/String;)J
 
-    move-result-wide v0
+    move-result-wide v1
     :try_end_15
     .catch Ljava/lang/NumberFormatException; {:try_start_6 .. :try_end_15} :catch_16
 
     :cond_15
-    return-wide v0
+    return-wide v1
 
     .line 334
     :catch_16
-    move-exception p0
+    move-exception v3
 
     .line 335
-    const-string p1, "ActivityManager"
+    .local v3, "e":Ljava/lang/NumberFormatException;
+    const-string v4, "ActivityManager"
 
-    const-string v2, "Failed to parse value"
+    const-string v5, "Failed to parse value"
 
-    invoke-static {p1, v2, p0}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    invoke-static {v4, v5, v3}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
     .line 336
-    return-wide v0
+    return-wide v1
 .end method

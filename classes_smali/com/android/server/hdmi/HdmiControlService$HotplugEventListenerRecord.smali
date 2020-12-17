@@ -26,6 +26,7 @@
 # direct methods
 .method public constructor <init>(Lcom/android/server/hdmi/HdmiControlService;Landroid/hardware/hdmi/IHdmiHotplugEventListener;)V
     .registers 3
+    .param p2, "listener"  # Landroid/hardware/hdmi/IHdmiHotplugEventListener;
 
     .line 1323
     iput-object p1, p0, Lcom/android/server/hdmi/HdmiControlService$HotplugEventListenerRecord;->this$0:Lcom/android/server/hdmi/HdmiControlService;
@@ -40,12 +41,13 @@
 .end method
 
 .method static synthetic access$5300(Lcom/android/server/hdmi/HdmiControlService$HotplugEventListenerRecord;)Landroid/hardware/hdmi/IHdmiHotplugEventListener;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/hdmi/HdmiControlService$HotplugEventListenerRecord;
 
     .line 1320
-    iget-object p0, p0, Lcom/android/server/hdmi/HdmiControlService$HotplugEventListenerRecord;->mListener:Landroid/hardware/hdmi/IHdmiHotplugEventListener;
+    iget-object v0, p0, Lcom/android/server/hdmi/HdmiControlService$HotplugEventListenerRecord;->mListener:Landroid/hardware/hdmi/IHdmiHotplugEventListener;
 
-    return-object p0
+    return-object v0
 .end method
 
 
@@ -90,7 +92,8 @@
 .end method
 
 .method public equals(Ljava/lang/Object;)Z
-    .registers 5
+    .registers 7
+    .param p1, "obj"  # Ljava/lang/Object;
 
     .line 1336
     instance-of v0, p1, Lcom/android/server/hdmi/HdmiControlService$HotplugEventListenerRecord;
@@ -111,21 +114,24 @@
 
     .line 1338
     :cond_a
-    check-cast p1, Lcom/android/server/hdmi/HdmiControlService$HotplugEventListenerRecord;
+    move-object v2, p1
+
+    check-cast v2, Lcom/android/server/hdmi/HdmiControlService$HotplugEventListenerRecord;
 
     .line 1339
-    iget-object p1, p1, Lcom/android/server/hdmi/HdmiControlService$HotplugEventListenerRecord;->mListener:Landroid/hardware/hdmi/IHdmiHotplugEventListener;
+    .local v2, "other":Lcom/android/server/hdmi/HdmiControlService$HotplugEventListenerRecord;
+    iget-object v3, v2, Lcom/android/server/hdmi/HdmiControlService$HotplugEventListenerRecord;->mListener:Landroid/hardware/hdmi/IHdmiHotplugEventListener;
 
-    iget-object v2, p0, Lcom/android/server/hdmi/HdmiControlService$HotplugEventListenerRecord;->mListener:Landroid/hardware/hdmi/IHdmiHotplugEventListener;
+    iget-object v4, p0, Lcom/android/server/hdmi/HdmiControlService$HotplugEventListenerRecord;->mListener:Landroid/hardware/hdmi/IHdmiHotplugEventListener;
 
-    if-ne p1, v2, :cond_13
+    if-ne v3, v4, :cond_14
 
-    goto :goto_14
+    goto :goto_15
 
-    :cond_13
+    :cond_14
     move v0, v1
 
-    :goto_14
+    :goto_15
     return v0
 .end method
 

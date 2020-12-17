@@ -24,6 +24,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/telecom/TelecomLoaderService$TelecomServiceConnection;)V
     .registers 2
+    .param p1, "this$1"  # Lcom/android/server/telecom/TelecomLoaderService$TelecomServiceConnection;
 
     .line 59
     iput-object p1, p0, Lcom/android/server/telecom/TelecomLoaderService$TelecomServiceConnection$1;->this$1:Lcom/android/server/telecom/TelecomLoaderService$TelecomServiceConnection;

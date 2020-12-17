@@ -12,6 +12,8 @@
 # direct methods
 .method constructor <init>(JJ)V
     .registers 5
+    .param p1, "updateAppVersion"  # J
+    .param p3, "dataAppVersion"  # J
 
     .line 27
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -29,7 +31,8 @@
 
 # virtual methods
 .method public equals(Ljava/lang/Object;)Z
-    .registers 8
+    .registers 9
+    .param p1, "o"  # Ljava/lang/Object;
 
     .line 34
     const/4 v0, 0x1
@@ -43,7 +46,7 @@
     :cond_4
     const/4 v1, 0x0
 
-    if-eqz p1, :cond_28
+    if-eqz p1, :cond_29
 
     invoke-virtual {p0}, Ljava/lang/Object;->getClass()Ljava/lang/Class;
 
@@ -55,50 +58,54 @@
 
     if-eq v2, v3, :cond_12
 
-    goto :goto_28
+    goto :goto_29
 
     .line 41
     :cond_12
-    check-cast p1, Lcom/android/server/timezone/PackageVersions;
+    move-object v2, p1
+
+    check-cast v2, Lcom/android/server/timezone/PackageVersions;
 
     .line 43
-    iget-wide v2, p0, Lcom/android/server/timezone/PackageVersions;->mUpdateAppVersion:J
+    .local v2, "that":Lcom/android/server/timezone/PackageVersions;
+    iget-wide v3, p0, Lcom/android/server/timezone/PackageVersions;->mUpdateAppVersion:J
 
-    iget-wide v4, p1, Lcom/android/server/timezone/PackageVersions;->mUpdateAppVersion:J
+    iget-wide v5, v2, Lcom/android/server/timezone/PackageVersions;->mUpdateAppVersion:J
 
-    cmp-long v2, v2, v4
+    cmp-long v3, v3, v5
 
-    if-eqz v2, :cond_1d
+    if-eqz v3, :cond_1e
 
     .line 44
     return v1
 
     .line 46
-    :cond_1d
-    iget-wide v2, p0, Lcom/android/server/timezone/PackageVersions;->mDataAppVersion:J
+    :cond_1e
+    iget-wide v3, p0, Lcom/android/server/timezone/PackageVersions;->mDataAppVersion:J
 
-    iget-wide v4, p1, Lcom/android/server/timezone/PackageVersions;->mDataAppVersion:J
+    iget-wide v5, v2, Lcom/android/server/timezone/PackageVersions;->mDataAppVersion:J
 
-    cmp-long p1, v2, v4
+    cmp-long v3, v3, v5
 
-    if-nez p1, :cond_26
+    if-nez v3, :cond_27
 
-    goto :goto_27
+    goto :goto_28
 
-    :cond_26
+    :cond_27
     move v0, v1
 
-    :goto_27
+    :goto_28
     return v0
 
     .line 38
-    :cond_28
-    :goto_28
+    .end local v2  # "that":Lcom/android/server/timezone/PackageVersions;
+    :cond_29
+    :goto_29
     return v1
 .end method
 
 .method public hashCode()I
-    .registers 4
+    .registers 5
 
     .line 51
     iget-wide v0, p0, Lcom/android/server/timezone/PackageVersions;->mUpdateAppVersion:J
@@ -108,18 +115,21 @@
     move-result v0
 
     .line 52
-    mul-int/lit8 v0, v0, 0x1f
+    .local v0, "result":I
+    mul-int/lit8 v1, v0, 0x1f
 
-    iget-wide v1, p0, Lcom/android/server/timezone/PackageVersions;->mDataAppVersion:J
+    iget-wide v2, p0, Lcom/android/server/timezone/PackageVersions;->mDataAppVersion:J
 
-    invoke-static {v1, v2}, Ljava/lang/Long;->hashCode(J)I
+    invoke-static {v2, v3}, Ljava/lang/Long;->hashCode(J)I
 
-    move-result v1
+    move-result v2
 
-    add-int/2addr v0, v1
+    add-int/2addr v1, v2
 
     .line 53
-    return v0
+    .end local v0  # "result":I
+    .local v1, "result":I
+    return v1
 .end method
 
 .method public toString()Ljava/lang/String;

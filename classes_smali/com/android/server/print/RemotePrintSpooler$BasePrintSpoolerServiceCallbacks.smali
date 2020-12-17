@@ -26,6 +26,7 @@
 
 .method synthetic constructor <init>(Lcom/android/server/print/RemotePrintSpooler$1;)V
     .registers 2
+    .param p1, "x0"  # Lcom/android/server/print/RemotePrintSpooler$1;
 
     .line 868
     invoke-direct {p0}, Lcom/android/server/print/RemotePrintSpooler$BasePrintSpoolerServiceCallbacks;-><init>()V
@@ -37,6 +38,7 @@
 # virtual methods
 .method public customPrinterIconCacheCleared(I)V
     .registers 2
+    .param p1, "sequence"  # I
 
     .line 908
     return-void
@@ -44,6 +46,8 @@
 
 .method public onCancelPrintJobResult(ZI)V
     .registers 3
+    .param p1, "canceled"  # Z
+    .param p2, "sequence"  # I
 
     .line 883
     return-void
@@ -51,6 +55,7 @@
 
 .method public onCustomPrinterIconCached(I)V
     .registers 2
+    .param p1, "sequence"  # I
 
     .line 898
     return-void
@@ -58,6 +63,8 @@
 
 .method public onGetCustomPrinterIconResult(Landroid/graphics/drawable/Icon;I)V
     .registers 3
+    .param p1, "icon"  # Landroid/graphics/drawable/Icon;
+    .param p2, "sequence"  # I
 
     .line 903
     return-void
@@ -65,6 +72,8 @@
 
 .method public onGetPrintJobInfoResult(Landroid/print/PrintJobInfo;I)V
     .registers 3
+    .param p1, "printJob"  # Landroid/print/PrintJobInfo;
+    .param p2, "sequence"  # I
 
     .line 878
     return-void
@@ -72,6 +81,7 @@
 
 .method public onGetPrintJobInfosResult(Ljava/util/List;I)V
     .registers 3
+    .param p2, "sequence"  # I
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(",
@@ -82,11 +92,14 @@
     .end annotation
 
     .line 873
+    .local p1, "printJobIds":Ljava/util/List;, "Ljava/util/List<Landroid/print/PrintJobInfo;>;"
     return-void
 .end method
 
 .method public onSetPrintJobStateResult(ZI)V
     .registers 3
+    .param p1, "success"  # Z
+    .param p2, "sequece"  # I
 
     .line 888
     return-void
@@ -94,6 +107,8 @@
 
 .method public onSetPrintJobTagResult(ZI)V
     .registers 3
+    .param p1, "success"  # Z
+    .param p2, "sequence"  # I
 
     .line 893
     return-void

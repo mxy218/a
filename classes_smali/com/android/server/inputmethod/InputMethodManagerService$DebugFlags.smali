@@ -24,7 +24,7 @@
 .method static constructor <clinit>()V
     .registers 3
 
-    .line 294
+    .line 300
     new-instance v0, Lcom/android/server/inputmethod/InputMethodManagerService$DebugFlag;
 
     const/4 v1, 0x0
@@ -35,7 +35,7 @@
 
     sput-object v0, Lcom/android/server/inputmethod/InputMethodManagerService$DebugFlags;->FLAG_OPTIMIZE_START_INPUT:Lcom/android/server/inputmethod/InputMethodManagerService$DebugFlag;
 
-    .line 296
+    .line 302
     new-instance v0, Lcom/android/server/inputmethod/InputMethodManagerService$DebugFlag;
 
     const-string/jumbo v2, "persist.pre_render_ime_views"
@@ -50,7 +50,7 @@
 .method private constructor <init>()V
     .registers 1
 
-    .line 293
+    .line 299
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
     return-void

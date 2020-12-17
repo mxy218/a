@@ -26,8 +26,9 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/devicepolicy/DevicePolicyManagerService;I)V
     .registers 3
+    .param p1, "this$0"  # Lcom/android/server/devicepolicy/DevicePolicyManagerService;
 
-    .line 7226
+    .line 7222
     iput-object p1, p0, Lcom/android/server/devicepolicy/DevicePolicyManagerService$8;->this$0:Lcom/android/server/devicepolicy/DevicePolicyManagerService;
 
     iput p2, p0, Lcom/android/server/devicepolicy/DevicePolicyManagerService$8;->val$userHandle:I
@@ -42,7 +43,7 @@
 .method public run()V
     .registers 4
 
-    .line 7230
+    .line 7226
     :try_start_0
     iget-object v0, p0, Lcom/android/server/devicepolicy/DevicePolicyManagerService$8;->this$0:Lcom/android/server/devicepolicy/DevicePolicyManagerService;
 
@@ -58,21 +59,23 @@
     :try_end_d
     .catch Landroid/os/RemoteException; {:try_start_0 .. :try_end_d} :catch_e
 
-    .line 7233
+    .line 7229
     goto :goto_16
 
-    .line 7231
+    .line 7227
     :catch_e
     move-exception v0
 
-    .line 7232
+    .line 7228
+    .local v0, "e":Landroid/os/RemoteException;
     const-string v1, "DevicePolicyManager"
 
     const-string v2, "Unable to notify WindowManager."
 
     invoke-static {v1, v2, v0}, Landroid/util/Log;->w(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
-    .line 7234
+    .line 7230
+    .end local v0  # "e":Landroid/os/RemoteException;
     :goto_16
     return-void
 .end method

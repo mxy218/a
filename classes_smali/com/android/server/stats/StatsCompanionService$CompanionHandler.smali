@@ -17,10 +17,11 @@
 # direct methods
 .method constructor <init>(Landroid/os/Looper;)V
     .registers 2
+    .param p1, "looper"  # Landroid/os/Looper;
 
-    .line 253
+    .line 251
     invoke-direct {p0, p1}, Landroid/os/Handler;-><init>(Landroid/os/Looper;)V
 
-    .line 254
+    .line 252
     return-void
 .end method

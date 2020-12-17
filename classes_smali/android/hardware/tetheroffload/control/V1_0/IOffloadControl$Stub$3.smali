@@ -26,6 +26,7 @@
 # direct methods
 .method constructor <init>(Landroid/hardware/tetheroffload/control/V1_0/IOffloadControl$Stub;Landroid/os/HwParcel;)V
     .registers 3
+    .param p1, "this$0"  # Landroid/hardware/tetheroffload/control/V1_0/IOffloadControl$Stub;
 
     .line 869
     iput-object p1, p0, Landroid/hardware/tetheroffload/control/V1_0/IOffloadControl$Stub$3;->this$0:Landroid/hardware/tetheroffload/control/V1_0/IOffloadControl$Stub;
@@ -41,6 +42,8 @@
 # virtual methods
 .method public onValues(ZLjava/lang/String;)V
     .registers 5
+    .param p1, "success"  # Z
+    .param p2, "errMsg"  # Ljava/lang/String;
 
     .line 872
     iget-object v0, p0, Landroid/hardware/tetheroffload/control/V1_0/IOffloadControl$Stub$3;->val$_hidl_reply:Landroid/os/HwParcel;
@@ -55,14 +58,14 @@
     invoke-virtual {v0, p1}, Landroid/os/HwParcel;->writeBool(Z)V
 
     .line 874
-    iget-object p1, p0, Landroid/hardware/tetheroffload/control/V1_0/IOffloadControl$Stub$3;->val$_hidl_reply:Landroid/os/HwParcel;
+    iget-object v0, p0, Landroid/hardware/tetheroffload/control/V1_0/IOffloadControl$Stub$3;->val$_hidl_reply:Landroid/os/HwParcel;
 
-    invoke-virtual {p1, p2}, Landroid/os/HwParcel;->writeString(Ljava/lang/String;)V
+    invoke-virtual {v0, p2}, Landroid/os/HwParcel;->writeString(Ljava/lang/String;)V
 
     .line 875
-    iget-object p1, p0, Landroid/hardware/tetheroffload/control/V1_0/IOffloadControl$Stub$3;->val$_hidl_reply:Landroid/os/HwParcel;
+    iget-object v0, p0, Landroid/hardware/tetheroffload/control/V1_0/IOffloadControl$Stub$3;->val$_hidl_reply:Landroid/os/HwParcel;
 
-    invoke-virtual {p1}, Landroid/os/HwParcel;->send()V
+    invoke-virtual {v0}, Landroid/os/HwParcel;->send()V
 
     .line 876
     return-void

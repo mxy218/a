@@ -15,7 +15,8 @@
 
 # direct methods
 .method public constructor <init>(Landroid/content/Context;)V
-    .registers 2
+    .registers 3
+    .param p1, "ctx"  # Landroid/content/Context;
 
     .line 39
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -24,11 +25,11 @@
     iput-object p1, p0, Lcom/android/server/location/CountryDetectorBase;->mContext:Landroid/content/Context;
 
     .line 41
-    new-instance p1, Landroid/os/Handler;
+    new-instance v0, Landroid/os/Handler;
 
-    invoke-direct {p1}, Landroid/os/Handler;-><init>()V
+    invoke-direct {v0}, Landroid/os/Handler;-><init>()V
 
-    iput-object p1, p0, Lcom/android/server/location/CountryDetectorBase;->mHandler:Landroid/os/Handler;
+    iput-object v0, p0, Lcom/android/server/location/CountryDetectorBase;->mHandler:Landroid/os/Handler;
 
     .line 42
     return-void
@@ -41,6 +42,7 @@
 
 .method protected notifyListener(Landroid/location/Country;)V
     .registers 3
+    .param p1, "country"  # Landroid/location/Country;
 
     .line 68
     iget-object v0, p0, Lcom/android/server/location/CountryDetectorBase;->mListener:Landroid/location/CountryListener;
@@ -57,6 +59,7 @@
 
 .method public setCountryListener(Landroid/location/CountryListener;)V
     .registers 2
+    .param p1, "listener"  # Landroid/location/CountryListener;
 
     .line 58
     iput-object p1, p0, Lcom/android/server/location/CountryDetectorBase;->mListener:Landroid/location/CountryListener;

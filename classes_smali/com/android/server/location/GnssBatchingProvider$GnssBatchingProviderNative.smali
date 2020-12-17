@@ -72,14 +72,16 @@
 .end method
 
 .method public startBatch(JZ)Z
-    .registers 4
+    .registers 5
+    .param p1, "periodNanos"  # J
+    .param p3, "wakeOnFifoFull"  # Z
 
     .line 114
     invoke-static {p1, p2, p3}, Lcom/android/server/location/GnssBatchingProvider;->access$100(JZ)Z
 
-    move-result p1
+    move-result v0
 
-    return p1
+    return v0
 .end method
 
 .method public stopBatch()Z

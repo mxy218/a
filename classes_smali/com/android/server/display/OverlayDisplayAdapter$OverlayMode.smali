@@ -25,6 +25,9 @@
 # direct methods
 .method constructor <init>(III)V
     .registers 4
+    .param p1, "width"  # I
+    .param p2, "height"  # I
+    .param p3, "densityDpi"  # I
 
     .line 525
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V

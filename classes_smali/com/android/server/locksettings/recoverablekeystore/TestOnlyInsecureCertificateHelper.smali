@@ -21,7 +21,9 @@
 
 # virtual methods
 .method public doesCredentialSupportInsecureMode(I[B)Z
-    .registers 7
+    .registers 8
+    .param p1, "credentialType"  # I
+    .param p2, "credential"  # [B
 
     .line 97
     const/4 v0, 0x0
@@ -45,56 +47,60 @@
     nop
 
     .line 104
-    const-string p1, "INSECURE_PSWD_"
+    const-string v1, "INSECURE_PSWD_"
 
-    invoke-virtual {p1}, Ljava/lang/String;->getBytes()[B
+    invoke-virtual {v1}, Ljava/lang/String;->getBytes()[B
 
-    move-result-object p1
+    move-result-object v1
 
     .line 105
-    array-length v1, p2
+    .local v1, "insecurePasswordPrefixBytes":[B
+    array-length v2, p2
 
-    array-length v2, p1
+    array-length v3, v1
 
-    if-ge v1, v2, :cond_14
+    if-ge v2, v3, :cond_14
 
     .line 106
     return v0
 
     .line 108
     :cond_14
-    move v1, v0
+    const/4 v2, 0x0
 
+    .local v2, "i":I
     :goto_15
-    array-length v2, p1
+    array-length v3, v1
 
-    if-ge v1, v2, :cond_22
+    if-ge v2, v3, :cond_22
 
     .line 109
-    aget-byte v2, p2, v1
+    aget-byte v3, p2, v2
 
-    aget-byte v3, p1, v1
+    aget-byte v4, v1, v2
 
-    if-eq v2, v3, :cond_1f
+    if-eq v3, v4, :cond_1f
 
     .line 110
     return v0
 
     .line 108
     :cond_1f
-    add-int/lit8 v1, v1, 0x1
+    add-int/lit8 v2, v2, 0x1
 
     goto :goto_15
 
     .line 113
+    .end local v2  # "i":I
     :cond_22
-    const/4 p1, 0x1
+    const/4 v0, 0x1
 
-    return p1
+    return v0
 .end method
 
 .method public getDefaultCertificateAliasIfEmpty(Ljava/lang/String;)Ljava/lang/String;
-    .registers 3
+    .registers 4
+    .param p1, "rootCertificateAlias"  # Ljava/lang/String;
 
     .line 72
     if-eqz p1, :cond_8
@@ -107,11 +113,11 @@
 
     .line 73
     :cond_8
-    const-string p1, "TestCertHelper"
+    const-string v0, "TestCertHelper"
 
-    const-string/jumbo v0, "rootCertificateAlias is null or empty - use secure default value"
+    const-string/jumbo v1, "rootCertificateAlias is null or empty - use secure default value"
 
-    invoke-static {p1, v0}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v0, v1}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 75
     const-string p1, "GoogleCloudKeyVaultServiceV1"
@@ -122,7 +128,8 @@
 .end method
 
 .method public getRootCertificate(Ljava/lang/String;)Ljava/security/cert/X509Certificate;
-    .registers 4
+    .registers 6
+    .param p1, "rootCertificateAlias"  # Ljava/lang/String;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -144,9 +151,9 @@
     .line 58
     invoke-static {}, Landroid/security/keystore/recovery/TrustedRootCertificates;->getTestOnlyInsecureCertificate()Ljava/security/cert/X509Certificate;
 
-    move-result-object p1
+    move-result-object v0
 
-    return-object p1
+    return-object v0
 
     .line 61
     :cond_f
@@ -155,29 +162,31 @@
     .line 62
     invoke-static {p1}, Landroid/security/keystore/recovery/TrustedRootCertificates;->getRootCertificate(Ljava/lang/String;)Ljava/security/cert/X509Certificate;
 
-    move-result-object p1
+    move-result-object v0
 
     .line 63
-    if-eqz p1, :cond_17
+    .local v0, "rootCertificate":Ljava/security/cert/X509Certificate;
+    if-eqz v0, :cond_17
 
     .line 67
-    return-object p1
+    return-object v0
 
     .line 64
     :cond_17
-    new-instance p1, Landroid/os/ServiceSpecificException;
+    new-instance v1, Landroid/os/ServiceSpecificException;
 
-    const/16 v0, 0x1c
+    const/16 v2, 0x1c
 
-    const-string v1, "The provided root certificate alias is invalid"
+    const-string v3, "The provided root certificate alias is invalid"
 
-    invoke-direct {p1, v0, v1}, Landroid/os/ServiceSpecificException;-><init>(ILjava/lang/String;)V
+    invoke-direct {v1, v2, v3}, Landroid/os/ServiceSpecificException;-><init>(ILjava/lang/String;)V
 
-    throw p1
+    throw v1
 .end method
 
 .method public isTestOnlyCertificateAlias(Ljava/lang/String;)Z
     .registers 3
+    .param p1, "rootCertificateAlias"  # Ljava/lang/String;
 
     .line 81
     nop
@@ -187,14 +196,15 @@
 
     invoke-virtual {v0, p1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result p1
+    move-result v0
 
     .line 81
-    return p1
+    return v0
 .end method
 
 .method public isValidRootCertificateAlias(Ljava/lang/String;)Z
     .registers 3
+    .param p1, "rootCertificateAlias"  # Ljava/lang/String;
 
     .line 86
     invoke-static {}, Landroid/security/keystore/recovery/TrustedRootCertificates;->getRootCertificates()Ljava/util/Map;
@@ -210,28 +220,28 @@
     .line 87
     invoke-virtual {p0, p1}, Lcom/android/server/locksettings/recoverablekeystore/TestOnlyInsecureCertificateHelper;->isTestOnlyCertificateAlias(Ljava/lang/String;)Z
 
-    move-result p1
+    move-result v0
 
-    if-eqz p1, :cond_11
+    if-eqz v0, :cond_11
 
     goto :goto_13
 
     :cond_11
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
     goto :goto_14
 
     :cond_13
     :goto_13
-    const/4 p1, 0x1
+    const/4 v0, 0x1
 
     .line 86
     :goto_14
-    return p1
+    return v0
 .end method
 
 .method public keepOnlyWhitelistedInsecureKeys(Ljava/util/Map;)Ljava/util/Map;
-    .registers 7
+    .registers 9
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(",
@@ -249,12 +259,13 @@
     .end annotation
 
     .line 118
+    .local p1, "rawKeys":Ljava/util/Map;, "Ljava/util/Map<Ljava/lang/String;Landroid/util/Pair<Ljavax/crypto/SecretKey;[B>;>;"
     if-nez p1, :cond_4
 
     .line 119
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    return-object p1
+    return-object v0
 
     .line 121
     :cond_4
@@ -263,105 +274,110 @@
     invoke-direct {v0}, Ljava/util/HashMap;-><init>()V
 
     .line 122
+    .local v0, "filteredKeys":Ljava/util/Map;, "Ljava/util/Map<Ljava/lang/String;Landroid/util/Pair<Ljavax/crypto/SecretKey;[B>;>;"
     invoke-interface {p1}, Ljava/util/Map;->entrySet()Ljava/util/Set;
-
-    move-result-object p1
-
-    invoke-interface {p1}, Ljava/util/Set;->iterator()Ljava/util/Iterator;
-
-    move-result-object p1
-
-    :goto_11
-    invoke-interface {p1}, Ljava/util/Iterator;->hasNext()Z
-
-    move-result v1
-
-    if-eqz v1, :cond_6a
-
-    invoke-interface {p1}, Ljava/util/Iterator;->next()Ljava/lang/Object;
 
     move-result-object v1
 
-    check-cast v1, Ljava/util/Map$Entry;
+    invoke-interface {v1}, Ljava/util/Set;->iterator()Ljava/util/Iterator;
 
-    .line 123
-    invoke-interface {v1}, Ljava/util/Map$Entry;->getKey()Ljava/lang/Object;
+    move-result-object v1
+
+    :goto_11
+    invoke-interface {v1}, Ljava/util/Iterator;->hasNext()Z
+
+    move-result v2
+
+    if-eqz v2, :cond_6a
+
+    invoke-interface {v1}, Ljava/util/Iterator;->next()Ljava/lang/Object;
 
     move-result-object v2
 
-    check-cast v2, Ljava/lang/String;
+    check-cast v2, Ljava/util/Map$Entry;
 
-    .line 124
-    if-eqz v2, :cond_69
-
-    .line 125
-    const-string v3, "INSECURE_KEY_ALIAS_KEY_MATERIAL_IS_NOT_PROTECTED_"
-
-    invoke-virtual {v2, v3}, Ljava/lang/String;->startsWith(Ljava/lang/String;)Z
-
-    move-result v3
-
-    if-eqz v3, :cond_69
-
-    .line 126
-    invoke-interface {v1}, Ljava/util/Map$Entry;->getKey()Ljava/lang/Object;
+    .line 123
+    .local v2, "entry":Ljava/util/Map$Entry;, "Ljava/util/Map$Entry<Ljava/lang/String;Landroid/util/Pair<Ljavax/crypto/SecretKey;[B>;>;"
+    invoke-interface {v2}, Ljava/util/Map$Entry;->getKey()Ljava/lang/Object;
 
     move-result-object v3
 
     check-cast v3, Ljava/lang/String;
 
-    .line 127
-    invoke-interface {v1}, Ljava/util/Map$Entry;->getValue()Ljava/lang/Object;
+    .line 124
+    .local v3, "alias":Ljava/lang/String;
+    if-eqz v3, :cond_69
+
+    .line 125
+    const-string v4, "INSECURE_KEY_ALIAS_KEY_MATERIAL_IS_NOT_PROTECTED_"
+
+    invoke-virtual {v3, v4}, Ljava/lang/String;->startsWith(Ljava/lang/String;)Z
+
+    move-result v4
+
+    if-eqz v4, :cond_69
+
+    .line 126
+    invoke-interface {v2}, Ljava/util/Map$Entry;->getKey()Ljava/lang/Object;
 
     move-result-object v4
 
-    check-cast v4, Landroid/util/Pair;
+    check-cast v4, Ljava/lang/String;
 
-    iget-object v4, v4, Landroid/util/Pair;->first:Ljava/lang/Object;
+    .line 127
+    invoke-interface {v2}, Ljava/util/Map$Entry;->getValue()Ljava/lang/Object;
 
-    check-cast v4, Ljavax/crypto/SecretKey;
+    move-result-object v5
 
-    invoke-interface {v1}, Ljava/util/Map$Entry;->getValue()Ljava/lang/Object;
+    check-cast v5, Landroid/util/Pair;
 
-    move-result-object v1
+    iget-object v5, v5, Landroid/util/Pair;->first:Ljava/lang/Object;
 
-    check-cast v1, Landroid/util/Pair;
+    check-cast v5, Ljavax/crypto/SecretKey;
 
-    iget-object v1, v1, Landroid/util/Pair;->second:Ljava/lang/Object;
+    invoke-interface {v2}, Ljava/util/Map$Entry;->getValue()Ljava/lang/Object;
 
-    check-cast v1, [B
+    move-result-object v6
 
-    invoke-static {v4, v1}, Landroid/util/Pair;->create(Ljava/lang/Object;Ljava/lang/Object;)Landroid/util/Pair;
+    check-cast v6, Landroid/util/Pair;
 
-    move-result-object v1
+    iget-object v6, v6, Landroid/util/Pair;->second:Ljava/lang/Object;
+
+    check-cast v6, [B
+
+    invoke-static {v5, v6}, Landroid/util/Pair;->create(Ljava/lang/Object;Ljava/lang/Object;)Landroid/util/Pair;
+
+    move-result-object v5
 
     .line 126
-    invoke-interface {v0, v3, v1}, Ljava/util/Map;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+    invoke-interface {v0, v4, v5}, Ljava/util/Map;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
 
     .line 128
-    new-instance v1, Ljava/lang/StringBuilder;
+    new-instance v4, Ljava/lang/StringBuilder;
 
-    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v4}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v3, "adding key with insecure alias "
+    const-string v5, "adding key with insecure alias "
 
-    invoke-virtual {v1, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v4, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string v2, " to the recovery snapshot"
+    const-string v5, " to the recovery snapshot"
 
-    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v4}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v1
+    move-result-object v4
 
-    const-string v2, "TestCertHelper"
+    const-string v5, "TestCertHelper"
 
-    invoke-static {v2, v1}, Landroid/util/Log;->d(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v5, v4}, Landroid/util/Log;->d(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 130
+    .end local v2  # "entry":Ljava/util/Map$Entry;, "Ljava/util/Map$Entry<Ljava/lang/String;Landroid/util/Pair<Ljavax/crypto/SecretKey;[B>;>;"
+    .end local v3  # "alias":Ljava/lang/String;
     :cond_69
     goto :goto_11
 

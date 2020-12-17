@@ -29,25 +29,28 @@
 # direct methods
 .method private constructor <init>(Lcom/android/server/wm/WindowState;)V
     .registers 3
+    .param p1, "outer"  # Lcom/android/server/wm/WindowState;
 
-    .line 4882
+    .line 4785
     invoke-direct {p0}, Landroid/view/IWindowId$Stub;-><init>()V
 
-    .line 4889
+    .line 4792
     new-instance v0, Ljava/lang/ref/WeakReference;
 
     invoke-direct {v0, p1}, Ljava/lang/ref/WeakReference;-><init>(Ljava/lang/Object;)V
 
     iput-object v0, p0, Lcom/android/server/wm/WindowState$WindowId;->mOuter:Ljava/lang/ref/WeakReference;
 
-    .line 4890
+    .line 4793
     return-void
 .end method
 
 .method synthetic constructor <init>(Lcom/android/server/wm/WindowState;Lcom/android/server/wm/WindowState$1;)V
     .registers 3
+    .param p1, "x0"  # Lcom/android/server/wm/WindowState;
+    .param p2, "x1"  # Lcom/android/server/wm/WindowState$1;
 
-    .line 4879
+    .line 4782
     invoke-direct {p0, p1}, Lcom/android/server/wm/WindowState$WindowId;-><init>(Lcom/android/server/wm/WindowState;)V
 
     return-void
@@ -56,9 +59,9 @@
 
 # virtual methods
 .method public isFocused()Z
-    .registers 3
+    .registers 4
 
-    .line 4908
+    .line 4811
     iget-object v0, p0, Lcom/android/server/wm/WindowState$WindowId;->mOuter:Ljava/lang/ref/WeakReference;
 
     invoke-virtual {v0}, Ljava/lang/ref/WeakReference;->get()Ljava/lang/Object;
@@ -67,10 +70,11 @@
 
     check-cast v0, Lcom/android/server/wm/WindowState;
 
-    .line 4909
+    .line 4812
+    .local v0, "outer":Lcom/android/server/wm/WindowState;
     if-eqz v0, :cond_21
 
-    .line 4910
+    .line 4813
     iget-object v1, v0, Lcom/android/server/wm/WindowState;->mWmService:Lcom/android/server/wm/WindowManagerService;
 
     iget-object v1, v1, Lcom/android/server/wm/WindowManagerService;->mGlobalLock:Lcom/android/server/wm/WindowManagerGlobalLock;
@@ -80,10 +84,10 @@
     :try_start_f
     invoke-static {}, Lcom/android/server/wm/WindowManagerService;->boostPriorityForLockedSection()V
 
-    .line 4911
+    .line 4814
     invoke-virtual {v0}, Lcom/android/server/wm/WindowState;->isFocused()Z
 
-    move-result v0
+    move-result v2
 
     monitor-exit v1
     :try_end_17
@@ -91,11 +95,11 @@
 
     invoke-static {}, Lcom/android/server/wm/WindowManagerService;->resetPriorityAfterLockedSection()V
 
-    return v0
+    return v2
 
-    .line 4912
+    .line 4815
     :catchall_1b
-    move-exception v0
+    move-exception v2
 
     :try_start_1c
     monitor-exit v1
@@ -104,19 +108,20 @@
 
     invoke-static {}, Lcom/android/server/wm/WindowManagerService;->resetPriorityAfterLockedSection()V
 
-    throw v0
+    throw v2
 
-    .line 4914
+    .line 4817
     :cond_21
-    const/4 v0, 0x0
+    const/4 v1, 0x0
 
-    return v0
+    return v1
 .end method
 
 .method public registerFocusObserver(Landroid/view/IWindowFocusObserver;)V
     .registers 3
+    .param p1, "observer"  # Landroid/view/IWindowFocusObserver;
 
-    .line 4894
+    .line 4797
     iget-object v0, p0, Lcom/android/server/wm/WindowState$WindowId;->mOuter:Ljava/lang/ref/WeakReference;
 
     invoke-virtual {v0}, Ljava/lang/ref/WeakReference;->get()Ljava/lang/Object;
@@ -125,21 +130,23 @@
 
     check-cast v0, Lcom/android/server/wm/WindowState;
 
-    .line 4895
+    .line 4798
+    .local v0, "outer":Lcom/android/server/wm/WindowState;
     if-eqz v0, :cond_d
 
-    .line 4896
+    .line 4799
     invoke-virtual {v0, p1}, Lcom/android/server/wm/WindowState;->registerFocusObserver(Landroid/view/IWindowFocusObserver;)V
 
-    .line 4898
+    .line 4801
     :cond_d
     return-void
 .end method
 
 .method public unregisterFocusObserver(Landroid/view/IWindowFocusObserver;)V
     .registers 3
+    .param p1, "observer"  # Landroid/view/IWindowFocusObserver;
 
-    .line 4901
+    .line 4804
     iget-object v0, p0, Lcom/android/server/wm/WindowState$WindowId;->mOuter:Ljava/lang/ref/WeakReference;
 
     invoke-virtual {v0}, Ljava/lang/ref/WeakReference;->get()Ljava/lang/Object;
@@ -148,13 +155,14 @@
 
     check-cast v0, Lcom/android/server/wm/WindowState;
 
-    .line 4902
+    .line 4805
+    .local v0, "outer":Lcom/android/server/wm/WindowState;
     if-eqz v0, :cond_d
 
-    .line 4903
+    .line 4806
     invoke-virtual {v0, p1}, Lcom/android/server/wm/WindowState;->unregisterFocusObserver(Landroid/view/IWindowFocusObserver;)V
 
-    .line 4905
+    .line 4808
     :cond_d
     return-void
 .end method

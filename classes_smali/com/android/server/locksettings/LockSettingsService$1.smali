@@ -26,8 +26,9 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/locksettings/LockSettingsService;I)V
     .registers 3
+    .param p1, "this$0"  # Lcom/android/server/locksettings/LockSettingsService;
 
-    .line 626
+    .line 617
     iput-object p1, p0, Lcom/android/server/locksettings/LockSettingsService$1;->this$0:Lcom/android/server/locksettings/LockSettingsService;
 
     iput p2, p0, Lcom/android/server/locksettings/LockSettingsService$1;->val$userId:I
@@ -42,14 +43,14 @@
 .method public run()V
     .registers 4
 
-    .line 629
+    .line 620
     iget-object v0, p0, Lcom/android/server/locksettings/LockSettingsService$1;->this$0:Lcom/android/server/locksettings/LockSettingsService;
 
     iget v1, p0, Lcom/android/server/locksettings/LockSettingsService$1;->val$userId:I
 
     invoke-static {v0, v1}, Lcom/android/server/locksettings/LockSettingsService;->access$200(Lcom/android/server/locksettings/LockSettingsService;I)V
 
-    .line 631
+    .line 622
     iget-object v0, p0, Lcom/android/server/locksettings/LockSettingsService$1;->this$0:Lcom/android/server/locksettings/LockSettingsService;
 
     new-instance v1, Landroid/os/UserHandle;
@@ -60,7 +61,7 @@
 
     invoke-static {v0, v1}, Lcom/android/server/locksettings/LockSettingsService;->access$300(Lcom/android/server/locksettings/LockSettingsService;Landroid/os/UserHandle;)V
 
-    .line 633
+    .line 624
     iget-object v0, p0, Lcom/android/server/locksettings/LockSettingsService$1;->this$0:Lcom/android/server/locksettings/LockSettingsService;
 
     invoke-static {v0}, Lcom/android/server/locksettings/LockSettingsService;->access$400(Lcom/android/server/locksettings/LockSettingsService;)Landroid/os/UserManager;
@@ -79,7 +80,7 @@
 
     if-eqz v0, :cond_2d
 
-    .line 634
+    .line 625
     iget-object v0, p0, Lcom/android/server/locksettings/LockSettingsService$1;->this$0:Lcom/android/server/locksettings/LockSettingsService;
 
     iget v1, p0, Lcom/android/server/locksettings/LockSettingsService$1;->val$userId:I
@@ -88,7 +89,7 @@
 
     invoke-virtual {v0, v1, v2}, Lcom/android/server/locksettings/LockSettingsService;->tieManagedProfileLockIfNecessary(I[B)V
 
-    .line 641
+    .line 632
     :cond_2d
     iget-object v0, p0, Lcom/android/server/locksettings/LockSettingsService$1;->this$0:Lcom/android/server/locksettings/LockSettingsService;
 
@@ -118,14 +119,14 @@
 
     if-nez v0, :cond_50
 
-    .line 642
+    .line 633
     iget-object v0, p0, Lcom/android/server/locksettings/LockSettingsService$1;->this$0:Lcom/android/server/locksettings/LockSettingsService;
 
     iget v1, p0, Lcom/android/server/locksettings/LockSettingsService$1;->val$userId:I
 
     invoke-static {v0, v1}, Lcom/android/server/locksettings/LockSettingsService;->access$600(Lcom/android/server/locksettings/LockSettingsService;I)V
 
-    .line 644
+    .line 635
     :cond_50
     return-void
 .end method

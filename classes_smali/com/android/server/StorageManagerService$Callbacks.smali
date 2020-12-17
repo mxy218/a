@@ -42,53 +42,67 @@
 
 # direct methods
 .method public constructor <init>(Landroid/os/Looper;)V
-    .registers 2
+    .registers 3
+    .param p1, "looper"  # Landroid/os/Looper;
 
-    .line 3736
+    .line 3849
     invoke-direct {p0, p1}, Landroid/os/Handler;-><init>(Landroid/os/Looper;)V
 
-    .line 3732
-    new-instance p1, Landroid/os/RemoteCallbackList;
+    .line 3845
+    new-instance v0, Landroid/os/RemoteCallbackList;
 
-    invoke-direct {p1}, Landroid/os/RemoteCallbackList;-><init>()V
+    invoke-direct {v0}, Landroid/os/RemoteCallbackList;-><init>()V
 
-    iput-object p1, p0, Lcom/android/server/StorageManagerService$Callbacks;->mCallbacks:Landroid/os/RemoteCallbackList;
+    iput-object v0, p0, Lcom/android/server/StorageManagerService$Callbacks;->mCallbacks:Landroid/os/RemoteCallbackList;
 
-    .line 3737
+    .line 3850
     return-void
 .end method
 
-.method static synthetic access$2600(Lcom/android/server/StorageManagerService$Callbacks;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V
+.method static synthetic access$2700(Lcom/android/server/StorageManagerService$Callbacks;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V
     .registers 4
+    .param p0, "x0"  # Lcom/android/server/StorageManagerService$Callbacks;
+    .param p1, "x1"  # Ljava/lang/String;
+    .param p2, "x2"  # Ljava/lang/String;
+    .param p3, "x3"  # Ljava/lang/String;
 
-    .line 3724
+    .line 3837
     invoke-direct {p0, p1, p2, p3}, Lcom/android/server/StorageManagerService$Callbacks;->notifyStorageStateChanged(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V
 
     return-void
 .end method
 
-.method static synthetic access$3100(Lcom/android/server/StorageManagerService$Callbacks;Landroid/os/storage/DiskInfo;)V
+.method static synthetic access$3200(Lcom/android/server/StorageManagerService$Callbacks;Landroid/os/storage/DiskInfo;)V
     .registers 2
+    .param p0, "x0"  # Lcom/android/server/StorageManagerService$Callbacks;
+    .param p1, "x1"  # Landroid/os/storage/DiskInfo;
 
-    .line 3724
+    .line 3837
     invoke-direct {p0, p1}, Lcom/android/server/StorageManagerService$Callbacks;->notifyDiskDestroyed(Landroid/os/storage/DiskInfo;)V
 
     return-void
 .end method
 
-.method static synthetic access$3400(Lcom/android/server/StorageManagerService$Callbacks;Landroid/os/storage/DiskInfo;I)V
+.method static synthetic access$3500(Lcom/android/server/StorageManagerService$Callbacks;Landroid/os/storage/DiskInfo;I)V
     .registers 3
+    .param p0, "x0"  # Lcom/android/server/StorageManagerService$Callbacks;
+    .param p1, "x1"  # Landroid/os/storage/DiskInfo;
+    .param p2, "x2"  # I
 
-    .line 3724
+    .line 3837
     invoke-direct {p0, p1, p2}, Lcom/android/server/StorageManagerService$Callbacks;->notifyDiskScanned(Landroid/os/storage/DiskInfo;I)V
 
     return-void
 .end method
 
-.method static synthetic access$3500(Lcom/android/server/StorageManagerService$Callbacks;Landroid/os/storage/VolumeInfo;II)V
+.method static synthetic access$3600(Lcom/android/server/StorageManagerService$Callbacks;Landroid/os/storage/VolumeInfo;II)V
     .registers 4
+    .param p0, "x0"  # Lcom/android/server/StorageManagerService$Callbacks;
+    .param p1, "x1"  # Landroid/os/storage/VolumeInfo;
+    .param p2, "x2"  # I
+    .param p3, "x3"  # I
 
-    .line 3724
+    .line 3837
     invoke-direct {p0, p1, p2, p3}, Lcom/android/server/StorageManagerService$Callbacks;->notifyVolumeStateChanged(Landroid/os/storage/VolumeInfo;II)V
 
     return-void
@@ -96,8 +110,10 @@
 
 .method static synthetic access$4400(Lcom/android/server/StorageManagerService$Callbacks;Landroid/os/storage/VolumeRecord;)V
     .registers 2
+    .param p0, "x0"  # Lcom/android/server/StorageManagerService$Callbacks;
+    .param p1, "x1"  # Landroid/os/storage/VolumeRecord;
 
-    .line 3724
+    .line 3837
     invoke-direct {p0, p1}, Lcom/android/server/StorageManagerService$Callbacks;->notifyVolumeRecordChanged(Landroid/os/storage/VolumeRecord;)V
 
     return-void
@@ -105,106 +121,111 @@
 
 .method static synthetic access$4500(Lcom/android/server/StorageManagerService$Callbacks;Ljava/lang/String;)V
     .registers 2
+    .param p0, "x0"  # Lcom/android/server/StorageManagerService$Callbacks;
+    .param p1, "x1"  # Ljava/lang/String;
 
-    .line 3724
+    .line 3837
     invoke-direct {p0, p1}, Lcom/android/server/StorageManagerService$Callbacks;->notifyVolumeForgotten(Ljava/lang/String;)V
 
     return-void
 .end method
 
 .method private invokeCallback(Landroid/os/storage/IStorageEventListener;ILcom/android/internal/os/SomeArgs;)V
-    .registers 5
+    .registers 7
+    .param p1, "callback"  # Landroid/os/storage/IStorageEventListener;
+    .param p2, "what"  # I
+    .param p3, "args"  # Lcom/android/internal/os/SomeArgs;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
         }
     .end annotation
 
-    .line 3764
+    .line 3877
     packed-switch p2, :pswitch_data_44
 
     goto :goto_42
 
-    .line 3787
+    .line 3900
     :pswitch_4  #0x6
-    iget-object p2, p3, Lcom/android/internal/os/SomeArgs;->arg1:Ljava/lang/Object;
+    iget-object v0, p3, Lcom/android/internal/os/SomeArgs;->arg1:Ljava/lang/Object;
 
-    check-cast p2, Landroid/os/storage/DiskInfo;
+    check-cast v0, Landroid/os/storage/DiskInfo;
 
-    invoke-interface {p1, p2}, Landroid/os/storage/IStorageEventListener;->onDiskDestroyed(Landroid/os/storage/DiskInfo;)V
+    invoke-interface {p1, v0}, Landroid/os/storage/IStorageEventListener;->onDiskDestroyed(Landroid/os/storage/DiskInfo;)V
 
     goto :goto_42
 
-    .line 3783
+    .line 3896
     :pswitch_c  #0x5
-    iget-object p2, p3, Lcom/android/internal/os/SomeArgs;->arg1:Ljava/lang/Object;
+    iget-object v0, p3, Lcom/android/internal/os/SomeArgs;->arg1:Ljava/lang/Object;
 
-    check-cast p2, Landroid/os/storage/DiskInfo;
+    check-cast v0, Landroid/os/storage/DiskInfo;
 
-    iget p3, p3, Lcom/android/internal/os/SomeArgs;->argi2:I
+    iget v1, p3, Lcom/android/internal/os/SomeArgs;->argi2:I
 
-    invoke-interface {p1, p2, p3}, Landroid/os/storage/IStorageEventListener;->onDiskScanned(Landroid/os/storage/DiskInfo;I)V
+    invoke-interface {p1, v0, v1}, Landroid/os/storage/IStorageEventListener;->onDiskScanned(Landroid/os/storage/DiskInfo;I)V
 
-    .line 3784
+    .line 3897
     goto :goto_42
 
-    .line 3779
+    .line 3892
     :pswitch_16  #0x4
-    iget-object p2, p3, Lcom/android/internal/os/SomeArgs;->arg1:Ljava/lang/Object;
-
-    check-cast p2, Ljava/lang/String;
-
-    invoke-interface {p1, p2}, Landroid/os/storage/IStorageEventListener;->onVolumeForgotten(Ljava/lang/String;)V
-
-    .line 3780
-    goto :goto_42
-
-    .line 3775
-    :pswitch_1e  #0x3
-    iget-object p2, p3, Lcom/android/internal/os/SomeArgs;->arg1:Ljava/lang/Object;
-
-    check-cast p2, Landroid/os/storage/VolumeRecord;
-
-    invoke-interface {p1, p2}, Landroid/os/storage/IStorageEventListener;->onVolumeRecordChanged(Landroid/os/storage/VolumeRecord;)V
-
-    .line 3776
-    goto :goto_42
-
-    .line 3771
-    :pswitch_26  #0x2
-    iget-object p2, p3, Lcom/android/internal/os/SomeArgs;->arg1:Ljava/lang/Object;
-
-    check-cast p2, Landroid/os/storage/VolumeInfo;
-
-    iget v0, p3, Lcom/android/internal/os/SomeArgs;->argi2:I
-
-    iget p3, p3, Lcom/android/internal/os/SomeArgs;->argi3:I
-
-    invoke-interface {p1, p2, v0, p3}, Landroid/os/storage/IStorageEventListener;->onVolumeStateChanged(Landroid/os/storage/VolumeInfo;II)V
-
-    .line 3772
-    goto :goto_42
-
-    .line 3766
-    :pswitch_32  #0x1
-    iget-object p2, p3, Lcom/android/internal/os/SomeArgs;->arg1:Ljava/lang/Object;
-
-    check-cast p2, Ljava/lang/String;
-
-    iget-object v0, p3, Lcom/android/internal/os/SomeArgs;->arg2:Ljava/lang/Object;
+    iget-object v0, p3, Lcom/android/internal/os/SomeArgs;->arg1:Ljava/lang/Object;
 
     check-cast v0, Ljava/lang/String;
 
-    iget-object p3, p3, Lcom/android/internal/os/SomeArgs;->arg3:Ljava/lang/Object;
+    invoke-interface {p1, v0}, Landroid/os/storage/IStorageEventListener;->onVolumeForgotten(Ljava/lang/String;)V
 
-    check-cast p3, Ljava/lang/String;
+    .line 3893
+    goto :goto_42
 
-    invoke-interface {p1, p2, v0, p3}, Landroid/os/storage/IStorageEventListener;->onStorageStateChanged(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V
+    .line 3888
+    :pswitch_1e  #0x3
+    iget-object v0, p3, Lcom/android/internal/os/SomeArgs;->arg1:Ljava/lang/Object;
 
-    .line 3768
+    check-cast v0, Landroid/os/storage/VolumeRecord;
+
+    invoke-interface {p1, v0}, Landroid/os/storage/IStorageEventListener;->onVolumeRecordChanged(Landroid/os/storage/VolumeRecord;)V
+
+    .line 3889
+    goto :goto_42
+
+    .line 3884
+    :pswitch_26  #0x2
+    iget-object v0, p3, Lcom/android/internal/os/SomeArgs;->arg1:Ljava/lang/Object;
+
+    check-cast v0, Landroid/os/storage/VolumeInfo;
+
+    iget v1, p3, Lcom/android/internal/os/SomeArgs;->argi2:I
+
+    iget v2, p3, Lcom/android/internal/os/SomeArgs;->argi3:I
+
+    invoke-interface {p1, v0, v1, v2}, Landroid/os/storage/IStorageEventListener;->onVolumeStateChanged(Landroid/os/storage/VolumeInfo;II)V
+
+    .line 3885
+    goto :goto_42
+
+    .line 3879
+    :pswitch_32  #0x1
+    iget-object v0, p3, Lcom/android/internal/os/SomeArgs;->arg1:Ljava/lang/Object;
+
+    check-cast v0, Ljava/lang/String;
+
+    iget-object v1, p3, Lcom/android/internal/os/SomeArgs;->arg2:Ljava/lang/Object;
+
+    check-cast v1, Ljava/lang/String;
+
+    iget-object v2, p3, Lcom/android/internal/os/SomeArgs;->arg3:Ljava/lang/Object;
+
+    check-cast v2, Ljava/lang/String;
+
+    invoke-interface {p1, v0, v1, v2}, Landroid/os/storage/IStorageEventListener;->onStorageStateChanged(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V
+
+    .line 3881
     nop
 
-    .line 3791
+    .line 3904
     :goto_42
     return-void
 
@@ -222,177 +243,194 @@
 .end method
 
 .method private notifyDiskDestroyed(Landroid/os/storage/DiskInfo;)V
-    .registers 3
+    .registers 4
+    .param p1, "disk"  # Landroid/os/storage/DiskInfo;
 
-    .line 3829
+    .line 3942
     invoke-static {}, Lcom/android/internal/os/SomeArgs;->obtain()Lcom/android/internal/os/SomeArgs;
 
     move-result-object v0
 
-    .line 3830
+    .line 3943
+    .local v0, "args":Lcom/android/internal/os/SomeArgs;
     invoke-virtual {p1}, Landroid/os/storage/DiskInfo;->clone()Landroid/os/storage/DiskInfo;
 
-    move-result-object p1
+    move-result-object v1
 
-    iput-object p1, v0, Lcom/android/internal/os/SomeArgs;->arg1:Ljava/lang/Object;
+    iput-object v1, v0, Lcom/android/internal/os/SomeArgs;->arg1:Ljava/lang/Object;
 
-    .line 3831
-    const/4 p1, 0x6
+    .line 3944
+    const/4 v1, 0x6
 
-    invoke-virtual {p0, p1, v0}, Lcom/android/server/StorageManagerService$Callbacks;->obtainMessage(ILjava/lang/Object;)Landroid/os/Message;
+    invoke-virtual {p0, v1, v0}, Lcom/android/server/StorageManagerService$Callbacks;->obtainMessage(ILjava/lang/Object;)Landroid/os/Message;
 
-    move-result-object p1
+    move-result-object v1
 
-    invoke-virtual {p1}, Landroid/os/Message;->sendToTarget()V
+    invoke-virtual {v1}, Landroid/os/Message;->sendToTarget()V
 
-    .line 3832
+    .line 3945
     return-void
 .end method
 
 .method private notifyDiskScanned(Landroid/os/storage/DiskInfo;I)V
-    .registers 4
+    .registers 5
+    .param p1, "disk"  # Landroid/os/storage/DiskInfo;
+    .param p2, "volumeCount"  # I
 
-    .line 3822
+    .line 3935
     invoke-static {}, Lcom/android/internal/os/SomeArgs;->obtain()Lcom/android/internal/os/SomeArgs;
 
     move-result-object v0
 
-    .line 3823
+    .line 3936
+    .local v0, "args":Lcom/android/internal/os/SomeArgs;
     invoke-virtual {p1}, Landroid/os/storage/DiskInfo;->clone()Landroid/os/storage/DiskInfo;
 
-    move-result-object p1
+    move-result-object v1
 
-    iput-object p1, v0, Lcom/android/internal/os/SomeArgs;->arg1:Ljava/lang/Object;
+    iput-object v1, v0, Lcom/android/internal/os/SomeArgs;->arg1:Ljava/lang/Object;
 
-    .line 3824
+    .line 3937
     iput p2, v0, Lcom/android/internal/os/SomeArgs;->argi2:I
 
-    .line 3825
-    const/4 p1, 0x5
+    .line 3938
+    const/4 v1, 0x5
 
-    invoke-virtual {p0, p1, v0}, Lcom/android/server/StorageManagerService$Callbacks;->obtainMessage(ILjava/lang/Object;)Landroid/os/Message;
+    invoke-virtual {p0, v1, v0}, Lcom/android/server/StorageManagerService$Callbacks;->obtainMessage(ILjava/lang/Object;)Landroid/os/Message;
 
-    move-result-object p1
+    move-result-object v1
 
-    invoke-virtual {p1}, Landroid/os/Message;->sendToTarget()V
+    invoke-virtual {v1}, Landroid/os/Message;->sendToTarget()V
 
-    .line 3826
+    .line 3939
     return-void
 .end method
 
 .method private notifyStorageStateChanged(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V
-    .registers 5
+    .registers 6
+    .param p1, "path"  # Ljava/lang/String;
+    .param p2, "oldState"  # Ljava/lang/String;
+    .param p3, "newState"  # Ljava/lang/String;
 
-    .line 3794
+    .line 3907
     invoke-static {}, Lcom/android/internal/os/SomeArgs;->obtain()Lcom/android/internal/os/SomeArgs;
 
     move-result-object v0
 
-    .line 3795
+    .line 3908
+    .local v0, "args":Lcom/android/internal/os/SomeArgs;
     iput-object p1, v0, Lcom/android/internal/os/SomeArgs;->arg1:Ljava/lang/Object;
 
-    .line 3796
+    .line 3909
     iput-object p2, v0, Lcom/android/internal/os/SomeArgs;->arg2:Ljava/lang/Object;
 
-    .line 3797
+    .line 3910
     iput-object p3, v0, Lcom/android/internal/os/SomeArgs;->arg3:Ljava/lang/Object;
 
-    .line 3798
-    const/4 p1, 0x1
+    .line 3911
+    const/4 v1, 0x1
 
-    invoke-virtual {p0, p1, v0}, Lcom/android/server/StorageManagerService$Callbacks;->obtainMessage(ILjava/lang/Object;)Landroid/os/Message;
+    invoke-virtual {p0, v1, v0}, Lcom/android/server/StorageManagerService$Callbacks;->obtainMessage(ILjava/lang/Object;)Landroid/os/Message;
 
-    move-result-object p1
+    move-result-object v1
 
-    invoke-virtual {p1}, Landroid/os/Message;->sendToTarget()V
+    invoke-virtual {v1}, Landroid/os/Message;->sendToTarget()V
 
-    .line 3799
+    .line 3912
     return-void
 .end method
 
 .method private notifyVolumeForgotten(Ljava/lang/String;)V
-    .registers 3
+    .registers 4
+    .param p1, "fsUuid"  # Ljava/lang/String;
 
-    .line 3816
+    .line 3929
     invoke-static {}, Lcom/android/internal/os/SomeArgs;->obtain()Lcom/android/internal/os/SomeArgs;
 
     move-result-object v0
 
-    .line 3817
+    .line 3930
+    .local v0, "args":Lcom/android/internal/os/SomeArgs;
     iput-object p1, v0, Lcom/android/internal/os/SomeArgs;->arg1:Ljava/lang/Object;
 
-    .line 3818
-    const/4 p1, 0x4
+    .line 3931
+    const/4 v1, 0x4
 
-    invoke-virtual {p0, p1, v0}, Lcom/android/server/StorageManagerService$Callbacks;->obtainMessage(ILjava/lang/Object;)Landroid/os/Message;
+    invoke-virtual {p0, v1, v0}, Lcom/android/server/StorageManagerService$Callbacks;->obtainMessage(ILjava/lang/Object;)Landroid/os/Message;
 
-    move-result-object p1
+    move-result-object v1
 
-    invoke-virtual {p1}, Landroid/os/Message;->sendToTarget()V
+    invoke-virtual {v1}, Landroid/os/Message;->sendToTarget()V
 
-    .line 3819
+    .line 3932
     return-void
 .end method
 
 .method private notifyVolumeRecordChanged(Landroid/os/storage/VolumeRecord;)V
-    .registers 3
+    .registers 4
+    .param p1, "rec"  # Landroid/os/storage/VolumeRecord;
 
-    .line 3810
+    .line 3923
     invoke-static {}, Lcom/android/internal/os/SomeArgs;->obtain()Lcom/android/internal/os/SomeArgs;
 
     move-result-object v0
 
-    .line 3811
+    .line 3924
+    .local v0, "args":Lcom/android/internal/os/SomeArgs;
     invoke-virtual {p1}, Landroid/os/storage/VolumeRecord;->clone()Landroid/os/storage/VolumeRecord;
 
-    move-result-object p1
+    move-result-object v1
 
-    iput-object p1, v0, Lcom/android/internal/os/SomeArgs;->arg1:Ljava/lang/Object;
+    iput-object v1, v0, Lcom/android/internal/os/SomeArgs;->arg1:Ljava/lang/Object;
 
-    .line 3812
-    const/4 p1, 0x3
+    .line 3925
+    const/4 v1, 0x3
 
-    invoke-virtual {p0, p1, v0}, Lcom/android/server/StorageManagerService$Callbacks;->obtainMessage(ILjava/lang/Object;)Landroid/os/Message;
+    invoke-virtual {p0, v1, v0}, Lcom/android/server/StorageManagerService$Callbacks;->obtainMessage(ILjava/lang/Object;)Landroid/os/Message;
 
-    move-result-object p1
+    move-result-object v1
 
-    invoke-virtual {p1}, Landroid/os/Message;->sendToTarget()V
+    invoke-virtual {v1}, Landroid/os/Message;->sendToTarget()V
 
-    .line 3813
+    .line 3926
     return-void
 .end method
 
 .method private notifyVolumeStateChanged(Landroid/os/storage/VolumeInfo;II)V
-    .registers 5
+    .registers 6
+    .param p1, "vol"  # Landroid/os/storage/VolumeInfo;
+    .param p2, "oldState"  # I
+    .param p3, "newState"  # I
 
-    .line 3802
+    .line 3915
     invoke-static {}, Lcom/android/internal/os/SomeArgs;->obtain()Lcom/android/internal/os/SomeArgs;
 
     move-result-object v0
 
-    .line 3803
+    .line 3916
+    .local v0, "args":Lcom/android/internal/os/SomeArgs;
     invoke-virtual {p1}, Landroid/os/storage/VolumeInfo;->clone()Landroid/os/storage/VolumeInfo;
 
-    move-result-object p1
+    move-result-object v1
 
-    iput-object p1, v0, Lcom/android/internal/os/SomeArgs;->arg1:Ljava/lang/Object;
+    iput-object v1, v0, Lcom/android/internal/os/SomeArgs;->arg1:Ljava/lang/Object;
 
-    .line 3804
+    .line 3917
     iput p2, v0, Lcom/android/internal/os/SomeArgs;->argi2:I
 
-    .line 3805
+    .line 3918
     iput p3, v0, Lcom/android/internal/os/SomeArgs;->argi3:I
 
-    .line 3806
-    const/4 p1, 0x2
+    .line 3919
+    const/4 v1, 0x2
 
-    invoke-virtual {p0, p1, v0}, Lcom/android/server/StorageManagerService$Callbacks;->obtainMessage(ILjava/lang/Object;)Landroid/os/Message;
+    invoke-virtual {p0, v1, v0}, Lcom/android/server/StorageManagerService$Callbacks;->obtainMessage(ILjava/lang/Object;)Landroid/os/Message;
 
-    move-result-object p1
+    move-result-object v1
 
-    invoke-virtual {p1}, Landroid/os/Message;->sendToTarget()V
+    invoke-virtual {v1}, Landroid/os/Message;->sendToTarget()V
 
-    .line 3807
+    .line 3920
     return-void
 .end method
 
@@ -400,26 +438,30 @@
 # virtual methods
 .method public handleMessage(Landroid/os/Message;)V
     .registers 7
+    .param p1, "msg"  # Landroid/os/Message;
 
-    .line 3749
+    .line 3862
     iget-object v0, p1, Landroid/os/Message;->obj:Ljava/lang/Object;
 
     check-cast v0, Lcom/android/internal/os/SomeArgs;
 
-    .line 3750
+    .line 3863
+    .local v0, "args":Lcom/android/internal/os/SomeArgs;
     iget-object v1, p0, Lcom/android/server/StorageManagerService$Callbacks;->mCallbacks:Landroid/os/RemoteCallbackList;
 
     invoke-virtual {v1}, Landroid/os/RemoteCallbackList;->beginBroadcast()I
 
     move-result v1
 
-    .line 3751
+    .line 3864
+    .local v1, "n":I
     const/4 v2, 0x0
 
+    .local v2, "i":I
     :goto_b
     if-ge v2, v1, :cond_1f
 
-    .line 3752
+    .line 3865
     iget-object v3, p0, Lcom/android/server/StorageManagerService$Callbacks;->mCallbacks:Landroid/os/RemoteCallbackList;
 
     invoke-virtual {v3, v2}, Landroid/os/RemoteCallbackList;->getBroadcastItem(I)Landroid/os/IInterface;
@@ -428,7 +470,8 @@
 
     check-cast v3, Landroid/os/storage/IStorageEventListener;
 
-    .line 3754
+    .line 3867
+    .local v3, "callback":Landroid/os/storage/IStorageEventListener;
     :try_start_15
     iget v4, p1, Landroid/os/Message;->what:I
 
@@ -436,52 +479,56 @@
     :try_end_1a
     .catch Landroid/os/RemoteException; {:try_start_15 .. :try_end_1a} :catch_1b
 
-    .line 3756
+    .line 3869
     goto :goto_1c
 
-    .line 3755
+    .line 3868
     :catch_1b
-    move-exception v3
+    move-exception v4
 
-    .line 3751
+    .line 3864
+    .end local v3  # "callback":Landroid/os/storage/IStorageEventListener;
     :goto_1c
     add-int/lit8 v2, v2, 0x1
 
     goto :goto_b
 
-    .line 3758
+    .line 3871
+    .end local v2  # "i":I
     :cond_1f
-    iget-object p1, p0, Lcom/android/server/StorageManagerService$Callbacks;->mCallbacks:Landroid/os/RemoteCallbackList;
+    iget-object v2, p0, Lcom/android/server/StorageManagerService$Callbacks;->mCallbacks:Landroid/os/RemoteCallbackList;
 
-    invoke-virtual {p1}, Landroid/os/RemoteCallbackList;->finishBroadcast()V
+    invoke-virtual {v2}, Landroid/os/RemoteCallbackList;->finishBroadcast()V
 
-    .line 3759
+    .line 3872
     invoke-virtual {v0}, Lcom/android/internal/os/SomeArgs;->recycle()V
 
-    .line 3760
+    .line 3873
     return-void
 .end method
 
 .method public register(Landroid/os/storage/IStorageEventListener;)V
     .registers 3
+    .param p1, "callback"  # Landroid/os/storage/IStorageEventListener;
 
-    .line 3740
+    .line 3853
     iget-object v0, p0, Lcom/android/server/StorageManagerService$Callbacks;->mCallbacks:Landroid/os/RemoteCallbackList;
 
     invoke-virtual {v0, p1}, Landroid/os/RemoteCallbackList;->register(Landroid/os/IInterface;)Z
 
-    .line 3741
+    .line 3854
     return-void
 .end method
 
 .method public unregister(Landroid/os/storage/IStorageEventListener;)V
     .registers 3
+    .param p1, "callback"  # Landroid/os/storage/IStorageEventListener;
 
-    .line 3744
+    .line 3857
     iget-object v0, p0, Lcom/android/server/StorageManagerService$Callbacks;->mCallbacks:Landroid/os/RemoteCallbackList;
 
     invoke-virtual {v0, p1}, Landroid/os/RemoteCallbackList;->unregister(Landroid/os/IInterface;)Z
 
-    .line 3745
+    .line 3858
     return-void
 .end method

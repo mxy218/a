@@ -48,6 +48,7 @@
 # direct methods
 .method public constructor <init>(Landroid/content/Context;)V
     .registers 5
+    .param p1, "context"  # Landroid/content/Context;
 
     .line 73
     invoke-direct {p0, p1}, Lcom/android/server/SystemService;-><init>(Landroid/content/Context;)V
@@ -111,25 +112,25 @@
     .line 77
     invoke-virtual {p1}, Landroid/content/Context;->getResources()Landroid/content/res/Resources;
 
-    move-result-object p1
+    move-result-object v0
 
-    const v0, 0x1110016
+    const v1, 0x1110015
 
-    invoke-virtual {p1, v0}, Landroid/content/res/Resources;->getBoolean(I)Z
+    invoke-virtual {v0, v1}, Landroid/content/res/Resources;->getBoolean(I)Z
 
-    move-result p1
+    move-result v0
 
-    iput-boolean p1, p0, Lcom/android/server/DockObserver;->mAllowTheaterModeWakeFromDock:Z
+    iput-boolean v0, p0, Lcom/android/server/DockObserver;->mAllowTheaterModeWakeFromDock:Z
 
     .line 80
     invoke-direct {p0}, Lcom/android/server/DockObserver;->init()V
 
     .line 82
-    iget-object p1, p0, Lcom/android/server/DockObserver;->mObserver:Landroid/os/UEventObserver;
+    iget-object v0, p0, Lcom/android/server/DockObserver;->mObserver:Landroid/os/UEventObserver;
 
-    const-string v0, "DEVPATH=/devices/virtual/switch/dock"
+    const-string v1, "DEVPATH=/devices/virtual/switch/dock"
 
-    invoke-virtual {p1, v0}, Landroid/os/UEventObserver;->startObserving(Ljava/lang/String;)V
+    invoke-virtual {v0, v1}, Landroid/os/UEventObserver;->startObserving(Ljava/lang/String;)V
 
     .line 83
     return-void
@@ -137,6 +138,7 @@
 
 .method static synthetic access$100(Lcom/android/server/DockObserver;)V
     .registers 1
+    .param p0, "x0"  # Lcom/android/server/DockObserver;
 
     .line 48
     invoke-direct {p0}, Lcom/android/server/DockObserver;->handleDockStateChange()V
@@ -145,25 +147,29 @@
 .end method
 
 .method static synthetic access$200(Lcom/android/server/DockObserver;)Landroid/os/PowerManager$WakeLock;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/DockObserver;
 
     .line 48
-    iget-object p0, p0, Lcom/android/server/DockObserver;->mWakeLock:Landroid/os/PowerManager$WakeLock;
+    iget-object v0, p0, Lcom/android/server/DockObserver;->mWakeLock:Landroid/os/PowerManager$WakeLock;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$300(Lcom/android/server/DockObserver;)Ljava/lang/Object;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/DockObserver;
 
     .line 48
-    iget-object p0, p0, Lcom/android/server/DockObserver;->mLock:Ljava/lang/Object;
+    iget-object v0, p0, Lcom/android/server/DockObserver;->mLock:Ljava/lang/Object;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$400(Lcom/android/server/DockObserver;I)V
     .registers 2
+    .param p0, "x0"  # Lcom/android/server/DockObserver;
+    .param p1, "x1"  # I
 
     .line 48
     invoke-direct {p0, p1}, Lcom/android/server/DockObserver;->setActualDockStateLocked(I)V
@@ -172,16 +178,19 @@
 .end method
 
 .method static synthetic access$500(Lcom/android/server/DockObserver;)Z
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/DockObserver;
 
     .line 48
-    iget-boolean p0, p0, Lcom/android/server/DockObserver;->mUpdatesStopped:Z
+    iget-boolean v0, p0, Lcom/android/server/DockObserver;->mUpdatesStopped:Z
 
-    return p0
+    return v0
 .end method
 
 .method static synthetic access$502(Lcom/android/server/DockObserver;Z)Z
     .registers 2
+    .param p0, "x0"  # Lcom/android/server/DockObserver;
+    .param p1, "x1"  # Z
 
     .line 48
     iput-boolean p1, p0, Lcom/android/server/DockObserver;->mUpdatesStopped:Z
@@ -190,34 +199,39 @@
 .end method
 
 .method static synthetic access$600(Lcom/android/server/DockObserver;)I
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/DockObserver;
 
     .line 48
-    iget p0, p0, Lcom/android/server/DockObserver;->mReportedDockState:I
+    iget v0, p0, Lcom/android/server/DockObserver;->mReportedDockState:I
 
-    return p0
+    return v0
 .end method
 
 .method static synthetic access$700(Lcom/android/server/DockObserver;)I
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/DockObserver;
 
     .line 48
-    iget p0, p0, Lcom/android/server/DockObserver;->mPreviousDockState:I
+    iget v0, p0, Lcom/android/server/DockObserver;->mPreviousDockState:I
 
-    return p0
+    return v0
 .end method
 
 .method static synthetic access$800(Lcom/android/server/DockObserver;)I
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/DockObserver;
 
     .line 48
-    iget p0, p0, Lcom/android/server/DockObserver;->mActualDockState:I
+    iget v0, p0, Lcom/android/server/DockObserver;->mActualDockState:I
 
-    return p0
+    return v0
 .end method
 
 .method static synthetic access$900(Lcom/android/server/DockObserver;I)V
     .registers 2
+    .param p0, "x0"  # Lcom/android/server/DockObserver;
+    .param p1, "x1"  # I
 
     .line 48
     invoke-direct {p0, p1}, Lcom/android/server/DockObserver;->setDockStateLocked(I)V
@@ -226,7 +240,7 @@
 .end method
 
 .method private handleDockStateChange()V
-    .registers 11
+    .registers 14
 
     .line 153
     iget-object v0, p0, Lcom/android/server/DockObserver;->mLock:Ljava/lang/Object;
@@ -267,6 +281,7 @@
     iget v1, p0, Lcom/android/server/DockObserver;->mPreviousDockState:I
 
     .line 157
+    .local v1, "previousDockState":I
     iget v2, p0, Lcom/android/server/DockObserver;->mReportedDockState:I
 
     iput v2, p0, Lcom/android/server/DockObserver;->mPreviousDockState:I
@@ -281,6 +296,7 @@
     move-result-object v2
 
     .line 161
+    .local v2, "cr":Landroid/content/ContentResolver;
     const-string v3, "device_provisioned"
 
     const/4 v4, 0x0
@@ -292,11 +308,11 @@
     if-nez v3, :cond_45
 
     .line 163
-    const-string v1, "DockObserver"
+    const-string v3, "DockObserver"
 
-    const-string v2, "Device not provisioned, skipping dock broadcast"
+    const-string v4, "Device not provisioned, skipping dock broadcast"
 
-    invoke-static {v1, v2}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v3, v4}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 164
     monitor-exit v0
@@ -312,6 +328,7 @@
     invoke-direct {v3, v5}, Landroid/content/Intent;-><init>(Ljava/lang/String;)V
 
     .line 169
+    .local v3, "intent":Landroid/content/Intent;
     const/high16 v5, 0x20000000
 
     invoke-virtual {v3, v5}, Landroid/content/Intent;->addFlags(I)Landroid/content/Intent;
@@ -342,6 +359,7 @@
     move v5, v4
 
     .line 174
+    .local v5, "dockSoundsEnabled":Z
     :goto_64
     const-string v7, "dock_sounds_enabled_when_accessbility"
 
@@ -359,6 +377,7 @@
     move v7, v4
 
     .line 176
+    .local v7, "dockSoundsEnabledWhenAccessibility":Z
     :goto_6f
     const-string v8, "accessibility_enabled"
 
@@ -371,119 +390,131 @@
     move v4, v6
 
     .line 181
+    .local v4, "accessibilityEnabled":Z
     :cond_78
     if-nez v5, :cond_7e
 
-    if-eqz v4, :cond_db
+    if-eqz v4, :cond_df
 
-    if-eqz v7, :cond_db
+    if-eqz v7, :cond_df
 
     .line 183
     :cond_7e
-    const/4 v4, 0x0
+    const/4 v8, 0x0
 
     .line 184
-    iget v5, p0, Lcom/android/server/DockObserver;->mReportedDockState:I
+    .local v8, "whichSound":Ljava/lang/String;
+    iget v9, p0, Lcom/android/server/DockObserver;->mReportedDockState:I
 
-    const/4 v7, 0x2
+    const/4 v10, 0x2
 
-    const/4 v8, 0x4
+    const/4 v11, 0x4
 
-    const/4 v9, 0x3
+    const/4 v12, 0x3
 
-    if-nez v5, :cond_95
+    if-nez v9, :cond_97
 
     .line 185
-    if-eq v1, v6, :cond_92
+    if-eq v1, v6, :cond_93
 
-    if-eq v1, v9, :cond_92
+    if-eq v1, v12, :cond_93
 
-    if-ne v1, v8, :cond_8d
+    if-ne v1, v11, :cond_8d
 
-    goto :goto_92
+    goto :goto_93
 
     .line 189
     :cond_8d
-    if-ne v1, v7, :cond_ab
+    if-ne v1, v10, :cond_af
 
     .line 190
-    const-string v4, "car_undock_sound"
+    const-string v9, "car_undock_sound"
 
-    goto :goto_ab
+    move-object v8, v9
+
+    goto :goto_af
 
     .line 188
-    :cond_92
-    :goto_92
-    const-string v4, "desk_undock_sound"
+    :cond_93
+    :goto_93
+    const-string v9, "desk_undock_sound"
 
-    goto :goto_ab
+    move-object v8, v9
+
+    goto :goto_af
 
     .line 193
-    :cond_95
-    iget v1, p0, Lcom/android/server/DockObserver;->mReportedDockState:I
+    :cond_97
+    iget v9, p0, Lcom/android/server/DockObserver;->mReportedDockState:I
 
-    if-eq v1, v6, :cond_a9
+    if-eq v9, v6, :cond_ac
 
-    iget v1, p0, Lcom/android/server/DockObserver;->mReportedDockState:I
+    iget v9, p0, Lcom/android/server/DockObserver;->mReportedDockState:I
 
-    if-eq v1, v9, :cond_a9
+    if-eq v9, v12, :cond_ac
 
-    iget v1, p0, Lcom/android/server/DockObserver;->mReportedDockState:I
+    iget v9, p0, Lcom/android/server/DockObserver;->mReportedDockState:I
 
-    if-ne v1, v8, :cond_a2
+    if-ne v9, v11, :cond_a4
 
-    goto :goto_a9
+    goto :goto_ac
 
     .line 197
-    :cond_a2
-    iget v1, p0, Lcom/android/server/DockObserver;->mReportedDockState:I
+    :cond_a4
+    iget v9, p0, Lcom/android/server/DockObserver;->mReportedDockState:I
 
-    if-ne v1, v7, :cond_ab
+    if-ne v9, v10, :cond_af
 
     .line 198
-    const-string v4, "car_dock_sound"
+    const-string v9, "car_dock_sound"
 
-    goto :goto_ab
+    move-object v8, v9
+
+    goto :goto_af
 
     .line 196
-    :cond_a9
-    :goto_a9
-    const-string v4, "desk_dock_sound"
+    :cond_ac
+    :goto_ac
+    const-string v9, "desk_dock_sound"
+
+    move-object v8, v9
 
     .line 202
-    :cond_ab
-    :goto_ab
-    if-eqz v4, :cond_db
+    :cond_af
+    :goto_af
+    if-eqz v8, :cond_df
 
     .line 203
-    invoke-static {v2, v4}, Landroid/provider/Settings$Global;->getString(Landroid/content/ContentResolver;Ljava/lang/String;)Ljava/lang/String;
+    invoke-static {v2, v8}, Landroid/provider/Settings$Global;->getString(Landroid/content/ContentResolver;Ljava/lang/String;)Ljava/lang/String;
 
-    move-result-object v1
+    move-result-object v9
 
     .line 204
-    if-eqz v1, :cond_db
+    .local v9, "soundPath":Ljava/lang/String;
+    if-eqz v9, :cond_df
 
     .line 205
-    new-instance v2, Ljava/lang/StringBuilder;
+    new-instance v10, Ljava/lang/StringBuilder;
 
-    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v10}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v4, "file://"
+    const-string v11, "file://"
 
-    invoke-virtual {v2, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v10, v11}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v2, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v10, v9}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v10}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v1
+    move-result-object v10
 
-    invoke-static {v1}, Landroid/net/Uri;->parse(Ljava/lang/String;)Landroid/net/Uri;
+    invoke-static {v10}, Landroid/net/Uri;->parse(Ljava/lang/String;)Landroid/net/Uri;
 
-    move-result-object v1
+    move-result-object v10
 
     .line 206
-    if-eqz v1, :cond_db
+    .local v10, "soundUri":Landroid/net/Uri;
+    if-eqz v10, :cond_df
 
     .line 207
     nop
@@ -491,45 +522,56 @@
     .line 208
     invoke-virtual {p0}, Lcom/android/server/DockObserver;->getContext()Landroid/content/Context;
 
-    move-result-object v2
+    move-result-object v11
 
     .line 207
-    invoke-static {v2, v1}, Landroid/media/RingtoneManager;->getRingtone(Landroid/content/Context;Landroid/net/Uri;)Landroid/media/Ringtone;
+    invoke-static {v11, v10}, Landroid/media/RingtoneManager;->getRingtone(Landroid/content/Context;Landroid/net/Uri;)Landroid/media/Ringtone;
 
-    move-result-object v1
+    move-result-object v11
 
     .line 209
-    if-eqz v1, :cond_db
+    .local v11, "sfx":Landroid/media/Ringtone;
+    if-eqz v11, :cond_df
 
     .line 210
-    invoke-virtual {v1, v6}, Landroid/media/Ringtone;->setStreamType(I)V
+    invoke-virtual {v11, v6}, Landroid/media/Ringtone;->setStreamType(I)V
 
     .line 211
-    invoke-virtual {v1}, Landroid/media/Ringtone;->play()V
+    invoke-virtual {v11}, Landroid/media/Ringtone;->play()V
 
     .line 221
-    :cond_db
+    .end local v8  # "whichSound":Ljava/lang/String;
+    .end local v9  # "soundPath":Ljava/lang/String;
+    .end local v10  # "soundUri":Landroid/net/Uri;
+    .end local v11  # "sfx":Landroid/media/Ringtone;
+    :cond_df
     invoke-virtual {p0}, Lcom/android/server/DockObserver;->getContext()Landroid/content/Context;
 
-    move-result-object v1
+    move-result-object v6
 
-    sget-object v2, Landroid/os/UserHandle;->ALL:Landroid/os/UserHandle;
+    sget-object v8, Landroid/os/UserHandle;->ALL:Landroid/os/UserHandle;
 
-    invoke-virtual {v1, v3, v2}, Landroid/content/Context;->sendStickyBroadcastAsUser(Landroid/content/Intent;Landroid/os/UserHandle;)V
+    invoke-virtual {v6, v3, v8}, Landroid/content/Context;->sendStickyBroadcastAsUser(Landroid/content/Intent;Landroid/os/UserHandle;)V
 
     .line 222
+    .end local v1  # "previousDockState":I
+    .end local v2  # "cr":Landroid/content/ContentResolver;
+    .end local v3  # "intent":Landroid/content/Intent;
+    .end local v4  # "accessibilityEnabled":Z
+    .end local v5  # "dockSoundsEnabled":Z
+    .end local v7  # "dockSoundsEnabledWhenAccessibility":Z
     monitor-exit v0
 
     .line 223
     return-void
 
     .line 222
-    :catchall_e6
+    :catchall_ea
     move-exception v1
 
     monitor-exit v0
-    :try_end_e8
-    .catchall {:try_start_3 .. :try_end_e8} :catchall_e6
+    :try_end_ec
+    .catchall {:try_start_3 .. :try_end_ec} :catchall_ea
 
     throw v1
 .end method
@@ -549,17 +591,19 @@
     new-array v2, v1, [C
 
     .line 108
+    .local v2, "buffer":[C
     new-instance v3, Ljava/io/FileReader;
 
     const-string v4, "/sys/class/switch/dock/state"
 
     invoke-direct {v3, v4}, Ljava/io/FileReader;-><init>(Ljava/lang/String;)V
     :try_end_e
-    .catch Ljava/io/FileNotFoundException; {:try_start_5 .. :try_end_e} :catch_3b
-    .catch Ljava/lang/Exception; {:try_start_5 .. :try_end_e} :catch_32
-    .catchall {:try_start_5 .. :try_end_e} :catchall_30
+    .catch Ljava/io/FileNotFoundException; {:try_start_5 .. :try_end_e} :catch_3c
+    .catch Ljava/lang/Exception; {:try_start_5 .. :try_end_e} :catch_33
+    .catchall {:try_start_5 .. :try_end_e} :catchall_31
 
     .line 110
+    .local v3, "file":Ljava/io/FileReader;
     const/4 v4, 0x0
 
     :try_start_f
@@ -568,99 +612,116 @@
     move-result v1
 
     .line 111
+    .local v1, "len":I
     new-instance v5, Ljava/lang/String;
 
     invoke-direct {v5, v2, v4, v1}, Ljava/lang/String;-><init>([CII)V
 
     invoke-virtual {v5}, Ljava/lang/String;->trim()Ljava/lang/String;
 
-    move-result-object v1
+    move-result-object v4
 
-    invoke-static {v1}, Ljava/lang/Integer;->parseInt(Ljava/lang/String;)I
+    invoke-static {v4}, Ljava/lang/Integer;->parseInt(Ljava/lang/String;)I
 
-    move-result v1
+    move-result v4
 
-    invoke-direct {p0, v1}, Lcom/android/server/DockObserver;->setActualDockStateLocked(I)V
+    invoke-direct {p0, v4}, Lcom/android/server/DockObserver;->setActualDockStateLocked(I)V
 
     .line 112
-    iget v1, p0, Lcom/android/server/DockObserver;->mActualDockState:I
+    iget v4, p0, Lcom/android/server/DockObserver;->mActualDockState:I
 
-    iput v1, p0, Lcom/android/server/DockObserver;->mPreviousDockState:I
+    iput v4, p0, Lcom/android/server/DockObserver;->mPreviousDockState:I
     :try_end_27
-    .catchall {:try_start_f .. :try_end_27} :catchall_2b
+    .catchall {:try_start_f .. :try_end_27} :catchall_2c
 
     .line 114
+    .end local v1  # "len":I
     :try_start_27
     invoke-virtual {v3}, Ljava/io/FileReader;->close()V
 
     .line 115
-    goto :goto_43
+    nop
+
+    .line 120
+    .end local v2  # "buffer":[C
+    .end local v3  # "file":Ljava/io/FileReader;
+    goto :goto_45
 
     .line 114
-    :catchall_2b
+    .restart local v2  # "buffer":[C
+    .restart local v3  # "file":Ljava/io/FileReader;
+    :catchall_2c
     move-exception v1
 
     invoke-virtual {v3}, Ljava/io/FileReader;->close()V
 
+    .end local p0  # "this":Lcom/android/server/DockObserver;
     throw v1
-    :try_end_30
-    .catch Ljava/io/FileNotFoundException; {:try_start_27 .. :try_end_30} :catch_3b
-    .catch Ljava/lang/Exception; {:try_start_27 .. :try_end_30} :catch_32
-    .catchall {:try_start_27 .. :try_end_30} :catchall_30
+    :try_end_31
+    .catch Ljava/io/FileNotFoundException; {:try_start_27 .. :try_end_31} :catch_3c
+    .catch Ljava/lang/Exception; {:try_start_27 .. :try_end_31} :catch_33
+    .catchall {:try_start_27 .. :try_end_31} :catchall_31
 
     .line 121
-    :catchall_30
+    .end local v2  # "buffer":[C
+    .end local v3  # "file":Ljava/io/FileReader;
+    .restart local p0  # "this":Lcom/android/server/DockObserver;
+    :catchall_31
     move-exception v1
 
-    goto :goto_46
+    goto :goto_47
 
     .line 118
-    :catch_32
+    :catch_33
     move-exception v1
 
     .line 119
-    :try_start_33
+    .local v1, "e":Ljava/lang/Exception;
+    :try_start_34
     const-string v2, "DockObserver"
 
     const-string v3, ""
 
     invoke-static {v2, v3, v1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
-    goto :goto_44
+    goto :goto_45
 
     .line 116
-    :catch_3b
+    .end local v1  # "e":Ljava/lang/Exception;
+    :catch_3c
     move-exception v1
 
     .line 117
-    const-string v1, "DockObserver"
+    .local v1, "e":Ljava/io/FileNotFoundException;
+    const-string v2, "DockObserver"
 
-    const-string v2, "This kernel does not have dock station support"
+    const-string v3, "This kernel does not have dock station support"
 
-    invoke-static {v1, v2}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v2, v3}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 120
-    :goto_43
     nop
 
     .line 121
-    :goto_44
+    .end local v1  # "e":Ljava/io/FileNotFoundException;
+    :goto_45
     monitor-exit v0
 
     .line 122
     return-void
 
     .line 121
-    :goto_46
+    :goto_47
     monitor-exit v0
-    :try_end_47
-    .catchall {:try_start_33 .. :try_end_47} :catchall_30
+    :try_end_48
+    .catchall {:try_start_34 .. :try_end_48} :catchall_31
 
     throw v1
 .end method
 
 .method private setActualDockStateLocked(I)V
     .registers 3
+    .param p1, "newState"  # I
 
     .line 125
     iput p1, p0, Lcom/android/server/DockObserver;->mActualDockState:I
@@ -679,7 +740,8 @@
 .end method
 
 .method private setDockStateLocked(I)V
-    .registers 5
+    .registers 6
+    .param p1, "newState"  # I
 
     .line 132
     iget v0, p0, Lcom/android/server/DockObserver;->mReportedDockState:I
@@ -690,45 +752,45 @@
     iput p1, p0, Lcom/android/server/DockObserver;->mReportedDockState:I
 
     .line 134
-    iget-boolean p1, p0, Lcom/android/server/DockObserver;->mSystemReady:Z
+    iget-boolean v0, p0, Lcom/android/server/DockObserver;->mSystemReady:Z
 
-    if-eqz p1, :cond_2e
+    if-eqz v0, :cond_2e
 
     .line 136
-    iget-boolean p1, p0, Lcom/android/server/DockObserver;->mAllowTheaterModeWakeFromDock:Z
+    iget-boolean v0, p0, Lcom/android/server/DockObserver;->mAllowTheaterModeWakeFromDock:Z
 
-    if-nez p1, :cond_20
+    if-nez v0, :cond_20
 
     .line 137
     invoke-virtual {p0}, Lcom/android/server/DockObserver;->getContext()Landroid/content/Context;
 
-    move-result-object p1
+    move-result-object v0
 
-    invoke-virtual {p1}, Landroid/content/Context;->getContentResolver()Landroid/content/ContentResolver;
+    invoke-virtual {v0}, Landroid/content/Context;->getContentResolver()Landroid/content/ContentResolver;
 
-    move-result-object p1
+    move-result-object v0
 
-    const/4 v0, 0x0
+    const/4 v1, 0x0
 
-    const-string/jumbo v1, "theater_mode_on"
+    const-string/jumbo v2, "theater_mode_on"
 
-    invoke-static {p1, v1, v0}, Landroid/provider/Settings$Global;->getInt(Landroid/content/ContentResolver;Ljava/lang/String;I)I
+    invoke-static {v0, v2, v1}, Landroid/provider/Settings$Global;->getInt(Landroid/content/ContentResolver;Ljava/lang/String;I)I
 
-    move-result p1
+    move-result v0
 
-    if-nez p1, :cond_2b
+    if-nez v0, :cond_2b
 
     .line 139
     :cond_20
-    iget-object p1, p0, Lcom/android/server/DockObserver;->mPowerManager:Landroid/os/PowerManager;
+    iget-object v0, p0, Lcom/android/server/DockObserver;->mPowerManager:Landroid/os/PowerManager;
 
     invoke-static {}, Landroid/os/SystemClock;->uptimeMillis()J
 
-    move-result-wide v0
+    move-result-wide v1
 
-    const-string v2, "android.server:DOCK"
+    const-string v3, "android.server:DOCK"
 
-    invoke-virtual {p1, v0, v1, v2}, Landroid/os/PowerManager;->wakeUp(JLjava/lang/String;)V
+    invoke-virtual {v0, v1, v2, v3}, Landroid/os/PowerManager;->wakeUp(JLjava/lang/String;)V
 
     .line 142
     :cond_2b
@@ -761,7 +823,8 @@
 
 # virtual methods
 .method public onBootPhase(I)V
-    .registers 3
+    .registers 4
+    .param p1, "phase"  # I
 
     .line 92
     const/16 v0, 0x226
@@ -769,38 +832,38 @@
     if-ne p1, v0, :cond_16
 
     .line 93
-    iget-object p1, p0, Lcom/android/server/DockObserver;->mLock:Ljava/lang/Object;
+    iget-object v0, p0, Lcom/android/server/DockObserver;->mLock:Ljava/lang/Object;
 
-    monitor-enter p1
+    monitor-enter v0
 
     .line 94
-    const/4 v0, 0x1
+    const/4 v1, 0x1
 
     :try_start_8
-    iput-boolean v0, p0, Lcom/android/server/DockObserver;->mSystemReady:Z
+    iput-boolean v1, p0, Lcom/android/server/DockObserver;->mSystemReady:Z
 
     .line 97
-    iget v0, p0, Lcom/android/server/DockObserver;->mReportedDockState:I
+    iget v1, p0, Lcom/android/server/DockObserver;->mReportedDockState:I
 
-    if-eqz v0, :cond_11
+    if-eqz v1, :cond_11
 
     .line 98
     invoke-direct {p0}, Lcom/android/server/DockObserver;->updateLocked()V
 
     .line 100
     :cond_11
-    monitor-exit p1
+    monitor-exit v0
 
     goto :goto_16
 
     :catchall_13
-    move-exception v0
+    move-exception v1
 
-    monitor-exit p1
+    monitor-exit v0
     :try_end_15
     .catchall {:try_start_8 .. :try_end_15} :catchall_13
 
-    throw v0
+    throw v1
 
     .line 102
     :cond_16

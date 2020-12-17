@@ -29,7 +29,9 @@
 
 # direct methods
 .method constructor <init>(Lcom/android/server/wm/KeyguardDisableHandler$Injector;Landroid/os/Handler;)V
-    .registers 5
+    .registers 6
+    .param p1, "injector"  # Lcom/android/server/wm/KeyguardDisableHandler$Injector;
+    .param p2, "handler"  # Landroid/os/Handler;
     .annotation build Lcom/android/internal/annotations/VisibleForTesting;
     .end annotation
 
@@ -52,55 +54,60 @@
     iput-object p1, p0, Lcom/android/server/wm/KeyguardDisableHandler;->mInjector:Lcom/android/server/wm/KeyguardDisableHandler$Injector;
 
     .line 49
-    new-instance p1, Lcom/android/server/utils/UserTokenWatcher;
+    new-instance v0, Lcom/android/server/utils/UserTokenWatcher;
 
-    iget-object v0, p0, Lcom/android/server/wm/KeyguardDisableHandler;->mCallback:Lcom/android/server/utils/UserTokenWatcher$Callback;
+    iget-object v1, p0, Lcom/android/server/wm/KeyguardDisableHandler;->mCallback:Lcom/android/server/utils/UserTokenWatcher$Callback;
 
-    const-string v1, "WindowManager"
+    const-string v2, "WindowManager"
 
-    invoke-direct {p1, v0, p2, v1}, Lcom/android/server/utils/UserTokenWatcher;-><init>(Lcom/android/server/utils/UserTokenWatcher$Callback;Landroid/os/Handler;Ljava/lang/String;)V
+    invoke-direct {v0, v1, p2, v2}, Lcom/android/server/utils/UserTokenWatcher;-><init>(Lcom/android/server/utils/UserTokenWatcher$Callback;Landroid/os/Handler;Ljava/lang/String;)V
 
-    iput-object p1, p0, Lcom/android/server/wm/KeyguardDisableHandler;->mAppTokenWatcher:Lcom/android/server/utils/UserTokenWatcher;
+    iput-object v0, p0, Lcom/android/server/wm/KeyguardDisableHandler;->mAppTokenWatcher:Lcom/android/server/utils/UserTokenWatcher;
 
     .line 50
-    new-instance p1, Lcom/android/server/utils/UserTokenWatcher;
+    new-instance v0, Lcom/android/server/utils/UserTokenWatcher;
 
-    iget-object v0, p0, Lcom/android/server/wm/KeyguardDisableHandler;->mCallback:Lcom/android/server/utils/UserTokenWatcher$Callback;
+    iget-object v1, p0, Lcom/android/server/wm/KeyguardDisableHandler;->mCallback:Lcom/android/server/utils/UserTokenWatcher$Callback;
 
-    invoke-direct {p1, v0, p2, v1}, Lcom/android/server/utils/UserTokenWatcher;-><init>(Lcom/android/server/utils/UserTokenWatcher$Callback;Landroid/os/Handler;Ljava/lang/String;)V
+    invoke-direct {v0, v1, p2, v2}, Lcom/android/server/utils/UserTokenWatcher;-><init>(Lcom/android/server/utils/UserTokenWatcher$Callback;Landroid/os/Handler;Ljava/lang/String;)V
 
-    iput-object p1, p0, Lcom/android/server/wm/KeyguardDisableHandler;->mSystemTokenWatcher:Lcom/android/server/utils/UserTokenWatcher;
+    iput-object v0, p0, Lcom/android/server/wm/KeyguardDisableHandler;->mSystemTokenWatcher:Lcom/android/server/utils/UserTokenWatcher;
 
     .line 51
     return-void
 .end method
 
 .method static create(Landroid/content/Context;Lcom/android/server/policy/WindowManagerPolicy;Landroid/os/Handler;)Lcom/android/server/wm/KeyguardDisableHandler;
-    .registers 5
+    .registers 6
+    .param p0, "context"  # Landroid/content/Context;
+    .param p1, "policy"  # Lcom/android/server/policy/WindowManagerPolicy;
+    .param p2, "handler"  # Landroid/os/Handler;
 
     .line 125
-    const-class p0, Landroid/os/UserManagerInternal;
+    const-class v0, Landroid/os/UserManagerInternal;
 
-    invoke-static {p0}, Lcom/android/server/LocalServices;->getService(Ljava/lang/Class;)Ljava/lang/Object;
+    invoke-static {v0}, Lcom/android/server/LocalServices;->getService(Ljava/lang/Class;)Ljava/lang/Object;
 
-    move-result-object p0
+    move-result-object v0
 
-    check-cast p0, Landroid/os/UserManagerInternal;
+    check-cast v0, Landroid/os/UserManagerInternal;
 
     .line 126
-    new-instance v0, Lcom/android/server/wm/KeyguardDisableHandler;
+    .local v0, "userManager":Landroid/os/UserManagerInternal;
+    new-instance v1, Lcom/android/server/wm/KeyguardDisableHandler;
 
-    new-instance v1, Lcom/android/server/wm/KeyguardDisableHandler$2;
+    new-instance v2, Lcom/android/server/wm/KeyguardDisableHandler$2;
 
-    invoke-direct {v1, p1, p0}, Lcom/android/server/wm/KeyguardDisableHandler$2;-><init>(Lcom/android/server/policy/WindowManagerPolicy;Landroid/os/UserManagerInternal;)V
+    invoke-direct {v2, p1, v0}, Lcom/android/server/wm/KeyguardDisableHandler$2;-><init>(Lcom/android/server/policy/WindowManagerPolicy;Landroid/os/UserManagerInternal;)V
 
-    invoke-direct {v0, v1, p2}, Lcom/android/server/wm/KeyguardDisableHandler;-><init>(Lcom/android/server/wm/KeyguardDisableHandler$Injector;Landroid/os/Handler;)V
+    invoke-direct {v1, v2, p2}, Lcom/android/server/wm/KeyguardDisableHandler;-><init>(Lcom/android/server/wm/KeyguardDisableHandler$Injector;Landroid/os/Handler;)V
 
-    return-object v0
+    return-object v1
 .end method
 
 .method private shouldKeyguardBeEnabled(I)Z
-    .registers 6
+    .registers 9
+    .param p1, "userId"  # I
 
     .line 97
     iget-object v0, p0, Lcom/android/server/wm/KeyguardDisableHandler;->mInjector:Lcom/android/server/wm/KeyguardDisableHandler$Injector;
@@ -112,6 +119,7 @@
     move-result v0
 
     .line 98
+    .local v0, "dpmRequiresPassword":Z
     iget-object v1, p0, Lcom/android/server/wm/KeyguardDisableHandler;->mInjector:Lcom/android/server/wm/KeyguardDisableHandler$Injector;
 
     iget v2, p0, Lcom/android/server/wm/KeyguardDisableHandler;->mCurrentUser:I
@@ -121,6 +129,7 @@
     move-result v1
 
     .line 100
+    .local v1, "keyguardSecure":Z
     const/4 v2, 0x0
 
     const/4 v3, 0x1
@@ -129,59 +138,64 @@
 
     if-nez v1, :cond_18
 
-    move v1, v3
+    move v4, v3
 
     goto :goto_19
 
     :cond_18
-    move v1, v2
+    move v4, v2
 
     .line 103
+    .local v4, "allowedFromApps":Z
     :goto_19
-    nop
+    xor-int/lit8 v5, v0, 0x1
 
     .line 105
-    xor-int/2addr v0, v3
+    .local v5, "allowedFromSystem":Z
+    if-eqz v4, :cond_25
 
-    if-eqz v1, :cond_25
+    iget-object v6, p0, Lcom/android/server/wm/KeyguardDisableHandler;->mAppTokenWatcher:Lcom/android/server/utils/UserTokenWatcher;
 
-    iget-object v1, p0, Lcom/android/server/wm/KeyguardDisableHandler;->mAppTokenWatcher:Lcom/android/server/utils/UserTokenWatcher;
+    invoke-virtual {v6, p1}, Lcom/android/server/utils/UserTokenWatcher;->isAcquired(I)Z
 
-    invoke-virtual {v1, p1}, Lcom/android/server/utils/UserTokenWatcher;->isAcquired(I)Z
+    move-result v6
 
-    move-result v1
-
-    if-nez v1, :cond_2f
+    if-nez v6, :cond_2f
 
     :cond_25
-    if-eqz v0, :cond_31
+    if-eqz v5, :cond_31
 
-    iget-object v0, p0, Lcom/android/server/wm/KeyguardDisableHandler;->mSystemTokenWatcher:Lcom/android/server/utils/UserTokenWatcher;
+    iget-object v6, p0, Lcom/android/server/wm/KeyguardDisableHandler;->mSystemTokenWatcher:Lcom/android/server/utils/UserTokenWatcher;
 
     .line 106
-    invoke-virtual {v0, p1}, Lcom/android/server/utils/UserTokenWatcher;->isAcquired(I)Z
+    invoke-virtual {v6, p1}, Lcom/android/server/utils/UserTokenWatcher;->isAcquired(I)Z
 
-    move-result p1
+    move-result v6
 
-    if-eqz p1, :cond_31
+    if-eqz v6, :cond_31
 
     :cond_2f
-    move v2, v3
+    move v6, v3
 
     goto :goto_32
 
     :cond_31
-    nop
+    move v6, v2
 
     .line 107
+    .local v6, "shouldBeDisabled":Z
     :goto_32
-    xor-int/lit8 p1, v2, 0x1
+    if-nez v6, :cond_35
 
-    return p1
+    move v2, v3
+
+    :cond_35
+    return v2
 .end method
 
 .method private updateKeyguardEnabledLocked(I)V
-    .registers 3
+    .registers 4
+    .param p1, "userId"  # I
 
     .line 67
     iget v0, p0, Lcom/android/server/wm/KeyguardDisableHandler;->mCurrentUser:I
@@ -194,15 +208,15 @@
 
     .line 68
     :cond_7
-    iget-object p1, p0, Lcom/android/server/wm/KeyguardDisableHandler;->mInjector:Lcom/android/server/wm/KeyguardDisableHandler$Injector;
+    iget-object v0, p0, Lcom/android/server/wm/KeyguardDisableHandler;->mInjector:Lcom/android/server/wm/KeyguardDisableHandler$Injector;
 
-    iget v0, p0, Lcom/android/server/wm/KeyguardDisableHandler;->mCurrentUser:I
+    iget v1, p0, Lcom/android/server/wm/KeyguardDisableHandler;->mCurrentUser:I
 
-    invoke-direct {p0, v0}, Lcom/android/server/wm/KeyguardDisableHandler;->shouldKeyguardBeEnabled(I)Z
+    invoke-direct {p0, v1}, Lcom/android/server/wm/KeyguardDisableHandler;->shouldKeyguardBeEnabled(I)Z
 
-    move-result v0
+    move-result v1
 
-    invoke-interface {p1, v0}, Lcom/android/server/wm/KeyguardDisableHandler$Injector;->enableKeyguard(Z)V
+    invoke-interface {v0, v1}, Lcom/android/server/wm/KeyguardDisableHandler$Injector;->enableKeyguard(Z)V
 
     .line 70
     :cond_12
@@ -210,7 +224,9 @@
 .end method
 
 .method private watcherForCallingUid(Landroid/os/IBinder;I)Lcom/android/server/utils/UserTokenWatcher;
-    .registers 4
+    .registers 5
+    .param p1, "token"  # Landroid/os/IBinder;
+    .param p2, "callingUid"  # I
 
     .line 83
     invoke-static {p2}, Landroid/os/Process;->isApplicationUid(I)Z
@@ -220,9 +236,9 @@
     if-eqz v0, :cond_9
 
     .line 84
-    iget-object p1, p0, Lcom/android/server/wm/KeyguardDisableHandler;->mAppTokenWatcher:Lcom/android/server/utils/UserTokenWatcher;
+    iget-object v0, p0, Lcom/android/server/wm/KeyguardDisableHandler;->mAppTokenWatcher:Lcom/android/server/utils/UserTokenWatcher;
 
-    return-object p1
+    return-object v0
 
     .line 85
     :cond_9
@@ -230,72 +246,82 @@
 
     if-ne p2, v0, :cond_14
 
-    instance-of p1, p1, Lcom/android/server/wm/LockTaskController$LockTaskToken;
+    instance-of v0, p1, Lcom/android/server/wm/LockTaskController$LockTaskToken;
 
-    if-eqz p1, :cond_14
+    if-eqz v0, :cond_14
 
     .line 90
-    iget-object p1, p0, Lcom/android/server/wm/KeyguardDisableHandler;->mSystemTokenWatcher:Lcom/android/server/utils/UserTokenWatcher;
+    iget-object v0, p0, Lcom/android/server/wm/KeyguardDisableHandler;->mSystemTokenWatcher:Lcom/android/server/utils/UserTokenWatcher;
 
-    return-object p1
+    return-object v0
 
     .line 92
     :cond_14
-    new-instance p1, Ljava/lang/UnsupportedOperationException;
+    new-instance v0, Ljava/lang/UnsupportedOperationException;
 
-    const-string p2, "Only apps can use the KeyguardLock API"
+    const-string v1, "Only apps can use the KeyguardLock API"
 
-    invoke-direct {p1, p2}, Ljava/lang/UnsupportedOperationException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v0, v1}, Ljava/lang/UnsupportedOperationException;-><init>(Ljava/lang/String;)V
 
-    throw p1
+    throw v0
 .end method
 
 
 # virtual methods
 .method disableKeyguard(Landroid/os/IBinder;Ljava/lang/String;II)V
-    .registers 6
+    .registers 7
+    .param p1, "token"  # Landroid/os/IBinder;
+    .param p2, "tag"  # Ljava/lang/String;
+    .param p3, "callingUid"  # I
+    .param p4, "userId"  # I
 
     .line 73
     invoke-direct {p0, p1, p3}, Lcom/android/server/wm/KeyguardDisableHandler;->watcherForCallingUid(Landroid/os/IBinder;I)Lcom/android/server/utils/UserTokenWatcher;
 
-    move-result-object p3
+    move-result-object v0
 
     .line 74
-    iget-object v0, p0, Lcom/android/server/wm/KeyguardDisableHandler;->mInjector:Lcom/android/server/wm/KeyguardDisableHandler$Injector;
+    .local v0, "watcherForCaller":Lcom/android/server/utils/UserTokenWatcher;
+    iget-object v1, p0, Lcom/android/server/wm/KeyguardDisableHandler;->mInjector:Lcom/android/server/wm/KeyguardDisableHandler$Injector;
 
-    invoke-interface {v0, p4}, Lcom/android/server/wm/KeyguardDisableHandler$Injector;->getProfileParentId(I)I
+    invoke-interface {v1, p4}, Lcom/android/server/wm/KeyguardDisableHandler$Injector;->getProfileParentId(I)I
 
-    move-result p4
+    move-result v1
 
-    invoke-virtual {p3, p1, p2, p4}, Lcom/android/server/utils/UserTokenWatcher;->acquire(Landroid/os/IBinder;Ljava/lang/String;I)V
+    invoke-virtual {v0, p1, p2, v1}, Lcom/android/server/utils/UserTokenWatcher;->acquire(Landroid/os/IBinder;Ljava/lang/String;I)V
 
     .line 75
     return-void
 .end method
 
 .method reenableKeyguard(Landroid/os/IBinder;II)V
-    .registers 5
+    .registers 6
+    .param p1, "token"  # Landroid/os/IBinder;
+    .param p2, "callingUid"  # I
+    .param p3, "userId"  # I
 
     .line 78
     invoke-direct {p0, p1, p2}, Lcom/android/server/wm/KeyguardDisableHandler;->watcherForCallingUid(Landroid/os/IBinder;I)Lcom/android/server/utils/UserTokenWatcher;
 
-    move-result-object p2
+    move-result-object v0
 
     .line 79
-    iget-object v0, p0, Lcom/android/server/wm/KeyguardDisableHandler;->mInjector:Lcom/android/server/wm/KeyguardDisableHandler$Injector;
+    .local v0, "watcherForCaller":Lcom/android/server/utils/UserTokenWatcher;
+    iget-object v1, p0, Lcom/android/server/wm/KeyguardDisableHandler;->mInjector:Lcom/android/server/wm/KeyguardDisableHandler$Injector;
 
-    invoke-interface {v0, p3}, Lcom/android/server/wm/KeyguardDisableHandler$Injector;->getProfileParentId(I)I
+    invoke-interface {v1, p3}, Lcom/android/server/wm/KeyguardDisableHandler$Injector;->getProfileParentId(I)I
 
-    move-result p3
+    move-result v1
 
-    invoke-virtual {p2, p1, p3}, Lcom/android/server/utils/UserTokenWatcher;->release(Landroid/os/IBinder;I)V
+    invoke-virtual {v0, p1, v1}, Lcom/android/server/utils/UserTokenWatcher;->release(Landroid/os/IBinder;I)V
 
     .line 80
     return-void
 .end method
 
 .method public setCurrentUser(I)V
-    .registers 2
+    .registers 3
+    .param p1, "user"  # I
 
     .line 54
     monitor-enter p0
@@ -305,9 +331,9 @@
     iput p1, p0, Lcom/android/server/wm/KeyguardDisableHandler;->mCurrentUser:I
 
     .line 56
-    const/4 p1, -0x1
+    const/4 v0, -0x1
 
-    invoke-direct {p0, p1}, Lcom/android/server/wm/KeyguardDisableHandler;->updateKeyguardEnabledLocked(I)V
+    invoke-direct {p0, v0}, Lcom/android/server/wm/KeyguardDisableHandler;->updateKeyguardEnabledLocked(I)V
 
     .line 57
     monitor-exit p0
@@ -317,17 +343,18 @@
 
     .line 57
     :catchall_9
-    move-exception p1
+    move-exception v0
 
     monitor-exit p0
     :try_end_b
     .catchall {:try_start_1 .. :try_end_b} :catchall_9
 
-    throw p1
+    throw v0
 .end method
 
 .method updateKeyguardEnabled(I)V
-    .registers 2
+    .registers 3
+    .param p1, "userId"  # I
 
     .line 61
     monitor-enter p0
@@ -344,11 +371,11 @@
 
     .line 63
     :catchall_6
-    move-exception p1
+    move-exception v0
 
     monitor-exit p0
     :try_end_8
     .catchall {:try_start_1 .. :try_end_8} :catchall_6
 
-    throw p1
+    throw v0
 .end method

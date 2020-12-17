@@ -21,8 +21,9 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/UiModeManagerService;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/UiModeManagerService;
 
-    .line 195
+    .line 165
     iput-object p1, p0, Lcom/android/server/UiModeManagerService$3;->this$0:Lcom/android/server/UiModeManagerService;
 
     invoke-direct {p0}, Landroid/content/BroadcastReceiver;-><init>()V
@@ -33,104 +34,106 @@
 
 # virtual methods
 .method public onReceive(Landroid/content/Context;Landroid/content/Intent;)V
-    .registers 6
+    .registers 7
+    .param p1, "context"  # Landroid/content/Context;
+    .param p2, "intent"  # Landroid/content/Intent;
 
-    .line 198
+    .line 168
     invoke-virtual {p2}, Landroid/content/Intent;->getAction()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    invoke-virtual {p1}, Ljava/lang/String;->hashCode()I
+    invoke-virtual {v0}, Ljava/lang/String;->hashCode()I
 
-    move-result v0
+    move-result v1
 
-    const/4 v1, 0x0
+    const/4 v2, 0x0
 
-    const v2, -0x5bb23923
+    const v3, -0x5bb23923
 
-    if-eq v0, v2, :cond_f
+    if-eq v1, v3, :cond_f
 
     :cond_e
     goto :goto_19
 
     :cond_f
-    const-string v0, "android.intent.action.BATTERY_CHANGED"
+    const-string v1, "android.intent.action.BATTERY_CHANGED"
 
-    invoke-virtual {p1, v0}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v0, v1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result p1
+    move-result v0
 
-    if-eqz p1, :cond_e
+    if-eqz v0, :cond_e
 
-    move p1, v1
+    move v0, v2
 
     goto :goto_1a
 
     :goto_19
-    const/4 p1, -0x1
+    const/4 v0, -0x1
 
     :goto_1a
-    if-eqz p1, :cond_1d
+    if-eqz v0, :cond_1d
 
     goto :goto_2e
 
-    .line 200
+    .line 170
     :cond_1d
-    iget-object p1, p0, Lcom/android/server/UiModeManagerService$3;->this$0:Lcom/android/server/UiModeManagerService;
+    iget-object v0, p0, Lcom/android/server/UiModeManagerService$3;->this$0:Lcom/android/server/UiModeManagerService;
 
-    const-string/jumbo v0, "plugged"
+    const-string/jumbo v1, "plugged"
 
-    invoke-virtual {p2, v0, v1}, Landroid/content/Intent;->getIntExtra(Ljava/lang/String;I)I
+    invoke-virtual {p2, v1, v2}, Landroid/content/Intent;->getIntExtra(Ljava/lang/String;I)I
 
-    move-result p2
+    move-result v1
 
-    if-eqz p2, :cond_2a
+    if-eqz v1, :cond_2a
 
-    const/4 p2, 0x1
+    const/4 v1, 0x1
 
     goto :goto_2b
 
     :cond_2a
-    move p2, v1
+    move v1, v2
 
     :goto_2b
-    invoke-static {p1, p2}, Lcom/android/server/UiModeManagerService;->access$202(Lcom/android/server/UiModeManagerService;Z)Z
+    invoke-static {v0, v1}, Lcom/android/server/UiModeManagerService;->access$202(Lcom/android/server/UiModeManagerService;Z)Z
 
-    .line 203
+    .line 173
     :goto_2e
-    iget-object p1, p0, Lcom/android/server/UiModeManagerService$3;->this$0:Lcom/android/server/UiModeManagerService;
+    iget-object v0, p0, Lcom/android/server/UiModeManagerService$3;->this$0:Lcom/android/server/UiModeManagerService;
 
-    iget-object p1, p1, Lcom/android/server/UiModeManagerService;->mLock:Ljava/lang/Object;
+    iget-object v0, v0, Lcom/android/server/UiModeManagerService;->mLock:Ljava/lang/Object;
 
-    monitor-enter p1
+    monitor-enter v0
 
-    .line 204
+    .line 174
     :try_start_33
-    iget-object p2, p0, Lcom/android/server/UiModeManagerService$3;->this$0:Lcom/android/server/UiModeManagerService;
+    iget-object v1, p0, Lcom/android/server/UiModeManagerService$3;->this$0:Lcom/android/server/UiModeManagerService;
 
-    iget-boolean p2, p2, Lcom/android/server/UiModeManagerService;->mSystemReady:Z
+    iget-boolean v1, v1, Lcom/android/server/UiModeManagerService;->mSystemReady:Z
 
-    if-eqz p2, :cond_3e
+    if-eqz v1, :cond_3e
 
-    .line 205
-    iget-object p2, p0, Lcom/android/server/UiModeManagerService$3;->this$0:Lcom/android/server/UiModeManagerService;
+    .line 175
+    iget-object v1, p0, Lcom/android/server/UiModeManagerService$3;->this$0:Lcom/android/server/UiModeManagerService;
 
-    invoke-virtual {p2, v1, v1}, Lcom/android/server/UiModeManagerService;->updateLocked(II)V
+    invoke-virtual {v1, v2, v2}, Lcom/android/server/UiModeManagerService;->updateLocked(II)V
 
-    .line 207
+    .line 177
     :cond_3e
-    monitor-exit p1
+    monitor-exit v0
 
-    .line 208
+    .line 178
     return-void
 
-    .line 207
+    .line 177
     :catchall_40
-    move-exception p2
+    move-exception v1
 
-    monitor-exit p1
+    monitor-exit v0
     :try_end_42
     .catchall {:try_start_33 .. :try_end_42} :catchall_40
 
-    throw p2
+    throw v1
 .end method

@@ -25,17 +25,19 @@
 
 # virtual methods
 .method public matches(Lcom/android/server/wm/PersisterQueue$WriteQueueItem;)Z
-    .registers 2
+    .registers 3
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(TT;)Z"
         }
     .end annotation
 
-    .line 257
-    const/4 p1, 0x0
+    .line 266
+    .local p0, "this":Lcom/android/server/wm/PersisterQueue$WriteQueueItem;, "Lcom/android/server/wm/PersisterQueue$WriteQueueItem<TT;>;"
+    .local p1, "item":Lcom/android/server/wm/PersisterQueue$WriteQueueItem;, "TT;"
+    const/4 v0, 0x0
 
-    return p1
+    return v0
 .end method
 
 .method public abstract process()V
@@ -49,6 +51,8 @@
         }
     .end annotation
 
-    .line 254
+    .line 263
+    .local p0, "this":Lcom/android/server/wm/PersisterQueue$WriteQueueItem;, "Lcom/android/server/wm/PersisterQueue$WriteQueueItem<TT;>;"
+    .local p1, "item":Lcom/android/server/wm/PersisterQueue$WriteQueueItem;, "TT;"
     return-void
 .end method

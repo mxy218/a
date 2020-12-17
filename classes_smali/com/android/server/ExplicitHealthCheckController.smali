@@ -81,6 +81,7 @@
 # direct methods
 .method constructor <init>(Landroid/content/Context;)V
     .registers 3
+    .param p1, "context"  # Landroid/content/Context;
 
     .line 90
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -101,6 +102,8 @@
 
 .method static synthetic access$000(Lcom/android/server/ExplicitHealthCheckController;Landroid/os/IBinder;)V
     .registers 2
+    .param p0, "x0"  # Lcom/android/server/ExplicitHealthCheckController;
+    .param p1, "x1"  # Landroid/os/IBinder;
 
     .line 57
     invoke-direct {p0, p1}, Lcom/android/server/ExplicitHealthCheckController;->initState(Landroid/os/IBinder;)V
@@ -109,16 +112,19 @@
 .end method
 
 .method static synthetic access$100(Lcom/android/server/ExplicitHealthCheckController;)Ljava/lang/Object;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/ExplicitHealthCheckController;
 
     .line 57
-    iget-object p0, p0, Lcom/android/server/ExplicitHealthCheckController;->mLock:Ljava/lang/Object;
+    iget-object v0, p0, Lcom/android/server/ExplicitHealthCheckController;->mLock:Ljava/lang/Object;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$202(Lcom/android/server/ExplicitHealthCheckController;Landroid/service/watchdog/IExplicitHealthCheckService;)Landroid/service/watchdog/IExplicitHealthCheckService;
     .registers 2
+    .param p0, "x0"  # Lcom/android/server/ExplicitHealthCheckController;
+    .param p1, "x1"  # Landroid/service/watchdog/IExplicitHealthCheckService;
 
     .line 57
     iput-object p1, p0, Lcom/android/server/ExplicitHealthCheckController;->mRemoteService:Landroid/service/watchdog/IExplicitHealthCheckService;
@@ -128,6 +134,7 @@
 
 .method static synthetic access$300(Lcom/android/server/ExplicitHealthCheckController;)V
     .registers 1
+    .param p0, "x0"  # Lcom/android/server/ExplicitHealthCheckController;
 
     .line 57
     invoke-direct {p0}, Lcom/android/server/ExplicitHealthCheckController;->unbindService()V
@@ -137,6 +144,7 @@
 
 .method static synthetic access$400(Lcom/android/server/ExplicitHealthCheckController;)V
     .registers 1
+    .param p0, "x0"  # Lcom/android/server/ExplicitHealthCheckController;
 
     .line 57
     invoke-direct {p0}, Lcom/android/server/ExplicitHealthCheckController;->bindService()V
@@ -145,7 +153,7 @@
 .end method
 
 .method private actOnDifference(Ljava/util/Collection;Ljava/util/Collection;Ljava/util/function/Consumer;)V
-    .registers 6
+    .registers 7
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(",
@@ -162,36 +170,42 @@
     .end annotation
 
     .line 183
+    .local p1, "collection1":Ljava/util/Collection;, "Ljava/util/Collection<Ljava/lang/String;>;"
+    .local p2, "collection2":Ljava/util/Collection;, "Ljava/util/Collection<Ljava/lang/String;>;"
+    .local p3, "action":Ljava/util/function/Consumer;, "Ljava/util/function/Consumer<Ljava/lang/String;>;"
     invoke-interface {p1}, Ljava/util/Collection;->iterator()Ljava/util/Iterator;
-
-    move-result-object p1
-
-    .line 184
-    :goto_4
-    invoke-interface {p1}, Ljava/util/Iterator;->hasNext()Z
-
-    move-result v0
-
-    if-eqz v0, :cond_1a
-
-    .line 185
-    invoke-interface {p1}, Ljava/util/Iterator;->next()Ljava/lang/Object;
 
     move-result-object v0
 
-    check-cast v0, Ljava/lang/String;
-
-    .line 186
-    invoke-interface {p2, v0}, Ljava/util/Collection;->contains(Ljava/lang/Object;)Z
+    .line 184
+    .local v0, "iterator":Ljava/util/Iterator;, "Ljava/util/Iterator<Ljava/lang/String;>;"
+    :goto_4
+    invoke-interface {v0}, Ljava/util/Iterator;->hasNext()Z
 
     move-result v1
 
-    if-nez v1, :cond_19
+    if-eqz v1, :cond_1a
+
+    .line 185
+    invoke-interface {v0}, Ljava/util/Iterator;->next()Ljava/lang/Object;
+
+    move-result-object v1
+
+    check-cast v1, Ljava/lang/String;
+
+    .line 186
+    .local v1, "packageName":Ljava/lang/String;
+    invoke-interface {p2, v1}, Ljava/util/Collection;->contains(Ljava/lang/Object;)Z
+
+    move-result v2
+
+    if-nez v2, :cond_19
 
     .line 187
-    invoke-interface {p3, v0}, Ljava/util/function/Consumer;->accept(Ljava/lang/Object;)V
+    invoke-interface {p3, v1}, Ljava/util/function/Consumer;->accept(Ljava/lang/Object;)V
 
     .line 189
+    .end local v1  # "packageName":Ljava/lang/String;
     :cond_19
     goto :goto_4
 
@@ -201,7 +215,7 @@
 .end method
 
 .method private bindService()V
-    .registers 7
+    .registers 8
 
     .line 291
     iget-object v0, p0, Lcom/android/server/ExplicitHealthCheckController;->mLock:Ljava/lang/Object;
@@ -212,17 +226,17 @@
     :try_start_3
     iget-boolean v1, p0, Lcom/android/server/ExplicitHealthCheckController;->mEnabled:Z
 
-    if-eqz v1, :cond_44
+    if-eqz v1, :cond_45
 
     iget-object v1, p0, Lcom/android/server/ExplicitHealthCheckController;->mConnection:Landroid/content/ServiceConnection;
 
-    if-nez v1, :cond_44
+    if-nez v1, :cond_45
 
     iget-object v1, p0, Lcom/android/server/ExplicitHealthCheckController;->mRemoteService:Landroid/service/watchdog/IExplicitHealthCheckService;
 
     if-eqz v1, :cond_10
 
-    goto :goto_44
+    goto :goto_45
 
     .line 302
     :cond_10
@@ -231,14 +245,15 @@
     move-result-object v1
 
     .line 303
+    .local v1, "component":Landroid/content/ComponentName;
     if-nez v1, :cond_1f
 
     .line 304
-    const-string v1, "ExplicitHealthCheckController"
+    const-string v2, "ExplicitHealthCheckController"
 
-    const-string v2, "Explicit health check service not found"
+    const-string v3, "Explicit health check service not found"
 
-    invoke-static {v1, v2}, Landroid/util/Slog;->wtf(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v2, v3}, Landroid/util/Slog;->wtf(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 305
     monitor-exit v0
@@ -252,51 +267,56 @@
     invoke-direct {v2}, Landroid/content/Intent;-><init>()V
 
     .line 309
+    .local v2, "intent":Landroid/content/Intent;
     invoke-virtual {v2, v1}, Landroid/content/Intent;->setComponent(Landroid/content/ComponentName;)Landroid/content/Intent;
 
     .line 310
-    new-instance v1, Lcom/android/server/ExplicitHealthCheckController$1;
+    new-instance v3, Lcom/android/server/ExplicitHealthCheckController$1;
 
-    invoke-direct {v1, p0}, Lcom/android/server/ExplicitHealthCheckController$1;-><init>(Lcom/android/server/ExplicitHealthCheckController;)V
+    invoke-direct {v3, p0}, Lcom/android/server/ExplicitHealthCheckController$1;-><init>(Lcom/android/server/ExplicitHealthCheckController;)V
 
-    iput-object v1, p0, Lcom/android/server/ExplicitHealthCheckController;->mConnection:Landroid/content/ServiceConnection;
+    iput-object v3, p0, Lcom/android/server/ExplicitHealthCheckController;->mConnection:Landroid/content/ServiceConnection;
 
     .line 344
-    iget-object v1, p0, Lcom/android/server/ExplicitHealthCheckController;->mContext:Landroid/content/Context;
+    iget-object v3, p0, Lcom/android/server/ExplicitHealthCheckController;->mContext:Landroid/content/Context;
 
-    iget-object v3, p0, Lcom/android/server/ExplicitHealthCheckController;->mConnection:Landroid/content/ServiceConnection;
+    iget-object v4, p0, Lcom/android/server/ExplicitHealthCheckController;->mConnection:Landroid/content/ServiceConnection;
 
-    const/4 v4, 0x1
+    const/4 v5, 0x1
 
-    const/4 v5, 0x0
+    const/4 v6, 0x0
 
     .line 345
-    invoke-static {v5}, Landroid/os/UserHandle;->of(I)Landroid/os/UserHandle;
+    invoke-static {v6}, Landroid/os/UserHandle;->of(I)Landroid/os/UserHandle;
 
-    move-result-object v5
+    move-result-object v6
 
     .line 344
-    invoke-virtual {v1, v2, v3, v4, v5}, Landroid/content/Context;->bindServiceAsUser(Landroid/content/Intent;Landroid/content/ServiceConnection;ILandroid/os/UserHandle;)Z
+    invoke-virtual {v3, v2, v4, v5, v6}, Landroid/content/Context;->bindServiceAsUser(Landroid/content/Intent;Landroid/content/ServiceConnection;ILandroid/os/UserHandle;)Z
 
     .line 346
-    const-string v1, "ExplicitHealthCheckController"
+    const-string v3, "ExplicitHealthCheckController"
 
-    const-string v2, "Explicit health check service is bound"
+    const-string v4, "Explicit health check service is bound"
 
-    invoke-static {v1, v2}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v3, v4}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 347
+    nop
+
+    .end local v1  # "component":Landroid/content/ComponentName;
+    .end local v2  # "intent":Landroid/content/Intent;
     monitor-exit v0
 
     .line 348
     return-void
 
     .line 293
-    :cond_44
-    :goto_44
+    :cond_45
+    :goto_45
     iget-boolean v1, p0, Lcom/android/server/ExplicitHealthCheckController;->mEnabled:Z
 
-    if-nez v1, :cond_50
+    if-nez v1, :cond_51
 
     .line 294
     const-string v1, "ExplicitHealthCheckController"
@@ -305,13 +325,13 @@
 
     invoke-static {v1, v2}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
 
-    goto :goto_63
+    goto :goto_64
 
     .line 295
-    :cond_50
+    :cond_51
     iget-object v1, p0, Lcom/android/server/ExplicitHealthCheckController;->mRemoteService:Landroid/service/watchdog/IExplicitHealthCheckService;
 
-    if-eqz v1, :cond_5c
+    if-eqz v1, :cond_5d
 
     .line 296
     const-string v1, "ExplicitHealthCheckController"
@@ -320,10 +340,10 @@
 
     invoke-static {v1, v2}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
 
-    goto :goto_63
+    goto :goto_64
 
     .line 298
-    :cond_5c
+    :cond_5d
     const-string v1, "ExplicitHealthCheckController"
 
     const-string v2, "Not binding to service, service already connecting"
@@ -331,24 +351,25 @@
     invoke-static {v1, v2}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 300
-    :goto_63
+    :goto_64
     monitor-exit v0
 
     return-void
 
     .line 347
-    :catchall_65
+    :catchall_66
     move-exception v1
 
     monitor-exit v0
-    :try_end_67
-    .catchall {:try_start_3 .. :try_end_67} :catchall_65
+    :try_end_68
+    .catchall {:try_start_3 .. :try_end_68} :catchall_66
 
     throw v1
 .end method
 
 .method private cancel(Ljava/lang/String;)V
     .registers 7
+    .param p1, "packageName"  # Ljava/lang/String;
 
     .line 218
     iget-object v0, p0, Lcom/android/server/ExplicitHealthCheckController;->mLock:Ljava/lang/Object;
@@ -421,6 +442,7 @@
     move-exception v1
 
     .line 229
+    .local v1, "e":Landroid/os/RemoteException;
     :try_start_39
     const-string v2, "ExplicitHealthCheckController"
 
@@ -436,11 +458,12 @@
 
     invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v3
 
-    invoke-static {v2, p1, v1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    invoke-static {v2, v3, v1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
     .line 231
+    .end local v1  # "e":Landroid/os/RemoteException;
     :goto_4f
     monitor-exit v0
 
@@ -449,13 +472,13 @@
 
     .line 231
     :catchall_51
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_53
     .catchall {:try_start_39 .. :try_end_53} :catchall_51
 
-    throw p1
+    throw v1
 .end method
 
 .method private getRequestedPackages(Ljava/util/function/Consumer;)V
@@ -471,6 +494,7 @@
     .end annotation
 
     .line 266
+    .local p1, "consumer":Ljava/util/function/Consumer;, "Ljava/util/function/Consumer<Ljava/util/List<Ljava/lang/String;>;>;"
     iget-object v0, p0, Lcom/android/server/ExplicitHealthCheckController;->mLock:Ljava/lang/Object;
 
     monitor-enter v0
@@ -522,17 +546,19 @@
 
     .line 278
     :catch_24
-    move-exception p1
+    move-exception v1
 
     .line 281
+    .local v1, "e":Landroid/os/RemoteException;
     :try_start_25
-    const-string v1, "ExplicitHealthCheckController"
+    const-string v2, "ExplicitHealthCheckController"
 
-    const-string v2, "Failed to get health check requested packages"
+    const-string v3, "Failed to get health check requested packages"
 
-    invoke-static {v1, v2, p1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    invoke-static {v2, v3, v1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
     .line 283
+    .end local v1  # "e":Landroid/os/RemoteException;
     :goto_2c
     monitor-exit v0
 
@@ -541,17 +567,17 @@
 
     .line 283
     :catchall_2e
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_30
     .catchall {:try_start_25 .. :try_end_30} :catchall_2e
 
-    throw p1
+    throw v1
 .end method
 
 .method private getServiceComponentNameLocked()Landroid/content/ComponentName;
-    .registers 6
+    .registers 7
     .annotation build Lcom/android/internal/annotations/GuardedBy;
         value = {
             "mLock"
@@ -564,6 +590,7 @@
     move-result-object v0
 
     .line 387
+    .local v0, "serviceInfo":Landroid/content/pm/ServiceInfo;
     const/4 v1, 0x0
 
     if-nez v0, :cond_8
@@ -582,41 +609,42 @@
     invoke-direct {v2, v3, v4}, Landroid/content/ComponentName;-><init>(Ljava/lang/String;Ljava/lang/String;)V
 
     .line 392
-    iget-object v0, v0, Landroid/content/pm/ServiceInfo;->permission:Ljava/lang/String;
+    .local v2, "name":Landroid/content/ComponentName;
+    iget-object v3, v0, Landroid/content/pm/ServiceInfo;->permission:Ljava/lang/String;
 
     .line 393
-    const-string v3, "android.permission.BIND_EXPLICIT_HEALTH_CHECK_SERVICE"
+    const-string v4, "android.permission.BIND_EXPLICIT_HEALTH_CHECK_SERVICE"
 
-    invoke-virtual {v3, v0}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v4, v3}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result v0
+    move-result v3
 
-    if-nez v0, :cond_39
+    if-nez v3, :cond_39
 
     .line 394
-    new-instance v0, Ljava/lang/StringBuilder;
+    new-instance v3, Ljava/lang/StringBuilder;
 
-    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
 
     invoke-virtual {v2}, Landroid/content/ComponentName;->flattenToShortString()Ljava/lang/String;
 
-    move-result-object v2
+    move-result-object v5
 
-    invoke-virtual {v0, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string v2, " does not require permission "
+    const-string v5, " does not require permission "
 
-    invoke-virtual {v0, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v3
 
-    const-string v2, "ExplicitHealthCheckController"
+    const-string v4, "ExplicitHealthCheckController"
 
-    invoke-static {v2, v0}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v4, v3}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 396
     return-object v1
@@ -627,7 +655,7 @@
 .end method
 
 .method private getServiceInfoLocked()Landroid/content/pm/ServiceInfo;
-    .registers 6
+    .registers 7
     .annotation build Lcom/android/internal/annotations/GuardedBy;
         value = {
             "mLock"
@@ -647,6 +675,7 @@
     move-result-object v0
 
     .line 367
+    .local v0, "packageName":Ljava/lang/String;
     const/4 v1, 0x0
 
     const-string v2, "ExplicitHealthCheckController"
@@ -654,9 +683,9 @@
     if-nez v0, :cond_16
 
     .line 368
-    const-string/jumbo v0, "no external services package!"
+    const-string/jumbo v3, "no external services package!"
 
-    invoke-static {v2, v0}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v2, v3}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 369
     return-object v1
@@ -670,42 +699,44 @@
     invoke-direct {v3, v4}, Landroid/content/Intent;-><init>(Ljava/lang/String;)V
 
     .line 373
+    .local v3, "intent":Landroid/content/Intent;
     invoke-virtual {v3, v0}, Landroid/content/Intent;->setPackage(Ljava/lang/String;)Landroid/content/Intent;
 
     .line 374
-    iget-object v0, p0, Lcom/android/server/ExplicitHealthCheckController;->mContext:Landroid/content/Context;
+    iget-object v4, p0, Lcom/android/server/ExplicitHealthCheckController;->mContext:Landroid/content/Context;
 
-    invoke-virtual {v0}, Landroid/content/Context;->getPackageManager()Landroid/content/pm/PackageManager;
+    invoke-virtual {v4}, Landroid/content/Context;->getPackageManager()Landroid/content/pm/PackageManager;
 
-    move-result-object v0
+    move-result-object v4
 
-    const/16 v4, 0x84
+    const/16 v5, 0x84
 
-    invoke-virtual {v0, v3, v4}, Landroid/content/pm/PackageManager;->resolveService(Landroid/content/Intent;I)Landroid/content/pm/ResolveInfo;
+    invoke-virtual {v4, v3, v5}, Landroid/content/pm/PackageManager;->resolveService(Landroid/content/Intent;I)Landroid/content/pm/ResolveInfo;
 
-    move-result-object v0
+    move-result-object v4
 
     .line 376
-    if-eqz v0, :cond_36
+    .local v4, "resolveInfo":Landroid/content/pm/ResolveInfo;
+    if-eqz v4, :cond_36
 
-    iget-object v3, v0, Landroid/content/pm/ResolveInfo;->serviceInfo:Landroid/content/pm/ServiceInfo;
+    iget-object v5, v4, Landroid/content/pm/ResolveInfo;->serviceInfo:Landroid/content/pm/ServiceInfo;
 
-    if-nez v3, :cond_33
+    if-nez v5, :cond_33
 
     goto :goto_36
 
     .line 380
     :cond_33
-    iget-object v0, v0, Landroid/content/pm/ResolveInfo;->serviceInfo:Landroid/content/pm/ServiceInfo;
+    iget-object v1, v4, Landroid/content/pm/ResolveInfo;->serviceInfo:Landroid/content/pm/ServiceInfo;
 
-    return-object v0
+    return-object v1
 
     .line 377
     :cond_36
     :goto_36
-    const-string v0, "No valid components found."
+    const-string v5, "No valid components found."
 
-    invoke-static {v2, v0}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v2, v5}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 378
     return-object v1
@@ -724,6 +755,7 @@
     .end annotation
 
     .line 239
+    .local p1, "consumer":Ljava/util/function/Consumer;, "Ljava/util/function/Consumer<Ljava/util/List<Landroid/service/watchdog/ExplicitHealthCheckService$PackageConfig;>;>;"
     iget-object v0, p0, Lcom/android/server/ExplicitHealthCheckController;->mLock:Ljava/lang/Object;
 
     monitor-enter v0
@@ -775,17 +807,19 @@
 
     .line 252
     :catch_24
-    move-exception p1
+    move-exception v1
 
     .line 256
+    .local v1, "e":Landroid/os/RemoteException;
     :try_start_25
-    const-string v1, "ExplicitHealthCheckController"
+    const-string v2, "ExplicitHealthCheckController"
 
-    const-string v2, "Failed to get health check supported packages"
+    const-string v3, "Failed to get health check supported packages"
 
-    invoke-static {v1, v2, p1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    invoke-static {v2, v3, v1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
     .line 258
+    .end local v1  # "e":Landroid/os/RemoteException;
     :goto_2c
     monitor-exit v0
 
@@ -794,17 +828,18 @@
 
     .line 258
     :catchall_2e
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_30
     .catchall {:try_start_25 .. :try_end_30} :catchall_2e
 
-    throw p1
+    throw v1
 .end method
 
 .method private initState(Landroid/os/IBinder;)V
-    .registers 5
+    .registers 6
+    .param p1, "service"  # Landroid/os/IBinder;
 
     .line 402
     iget-object v0, p0, Lcom/android/server/ExplicitHealthCheckController;->mLock:Ljava/lang/Object;
@@ -818,11 +853,11 @@
     if-nez v1, :cond_13
 
     .line 404
-    const-string p1, "ExplicitHealthCheckController"
+    const-string v1, "ExplicitHealthCheckController"
 
-    const-string v1, "Attempting to connect disabled service?? Unbinding..."
+    const-string v2, "Attempting to connect disabled service?? Unbinding..."
 
-    invoke-static {p1, v1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v2}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 406
     invoke-direct {p0}, Lcom/android/server/ExplicitHealthCheckController;->unbindService()V
@@ -836,32 +871,32 @@
     :cond_13
     invoke-static {p1}, Landroid/service/watchdog/IExplicitHealthCheckService$Stub;->asInterface(Landroid/os/IBinder;)Landroid/service/watchdog/IExplicitHealthCheckService;
 
-    move-result-object p1
+    move-result-object v1
 
-    iput-object p1, p0, Lcom/android/server/ExplicitHealthCheckController;->mRemoteService:Landroid/service/watchdog/IExplicitHealthCheckService;
+    iput-object v1, p0, Lcom/android/server/ExplicitHealthCheckController;->mRemoteService:Landroid/service/watchdog/IExplicitHealthCheckService;
     :try_end_19
     .catchall {:try_start_3 .. :try_end_19} :catchall_3f
 
     .line 411
     :try_start_19
-    iget-object p1, p0, Lcom/android/server/ExplicitHealthCheckController;->mRemoteService:Landroid/service/watchdog/IExplicitHealthCheckService;
+    iget-object v1, p0, Lcom/android/server/ExplicitHealthCheckController;->mRemoteService:Landroid/service/watchdog/IExplicitHealthCheckService;
 
-    new-instance v1, Landroid/os/RemoteCallback;
+    new-instance v2, Landroid/os/RemoteCallback;
 
-    new-instance v2, Lcom/android/server/-$$Lambda$ExplicitHealthCheckController$6YGiVtgCnlJ0hMIeX5TzlFUaNrY;
+    new-instance v3, Lcom/android/server/-$$Lambda$ExplicitHealthCheckController$6YGiVtgCnlJ0hMIeX5TzlFUaNrY;
 
-    invoke-direct {v2, p0}, Lcom/android/server/-$$Lambda$ExplicitHealthCheckController$6YGiVtgCnlJ0hMIeX5TzlFUaNrY;-><init>(Lcom/android/server/ExplicitHealthCheckController;)V
+    invoke-direct {v3, p0}, Lcom/android/server/-$$Lambda$ExplicitHealthCheckController$6YGiVtgCnlJ0hMIeX5TzlFUaNrY;-><init>(Lcom/android/server/ExplicitHealthCheckController;)V
 
-    invoke-direct {v1, v2}, Landroid/os/RemoteCallback;-><init>(Landroid/os/RemoteCallback$OnResultListener;)V
+    invoke-direct {v2, v3}, Landroid/os/RemoteCallback;-><init>(Landroid/os/RemoteCallback$OnResultListener;)V
 
-    invoke-interface {p1, v1}, Landroid/service/watchdog/IExplicitHealthCheckService;->setCallback(Landroid/os/RemoteCallback;)V
+    invoke-interface {v1, v2}, Landroid/service/watchdog/IExplicitHealthCheckService;->setCallback(Landroid/os/RemoteCallback;)V
 
     .line 425
-    const-string p1, "ExplicitHealthCheckController"
+    const-string v1, "ExplicitHealthCheckController"
 
-    const-string v1, "Service initialized, syncing requests"
+    const-string v2, "Service initialized, syncing requests"
 
-    invoke-static {p1, v1}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v2}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
     :try_end_2f
     .catch Landroid/os/RemoteException; {:try_start_19 .. :try_end_2f} :catch_30
     .catchall {:try_start_19 .. :try_end_2f} :catchall_3f
@@ -871,80 +906,87 @@
 
     .line 426
     :catch_30
-    move-exception p1
+    move-exception v1
 
     .line 427
+    .local v1, "e":Landroid/os/RemoteException;
     :try_start_31
-    const-string p1, "ExplicitHealthCheckController"
+    const-string v2, "ExplicitHealthCheckController"
 
-    const-string v1, "Could not setCallback on explicit health check service"
+    const-string v3, "Could not setCallback on explicit health check service"
 
-    invoke-static {p1, v1}, Landroid/util/Slog;->wtf(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v2, v3}, Landroid/util/Slog;->wtf(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 429
+    .end local v1  # "e":Landroid/os/RemoteException;
     :goto_38
     monitor-exit v0
     :try_end_39
     .catchall {:try_start_31 .. :try_end_39} :catchall_3f
 
     .line 431
-    iget-object p1, p0, Lcom/android/server/ExplicitHealthCheckController;->mNotifySyncRunnable:Ljava/lang/Runnable;
+    iget-object v0, p0, Lcom/android/server/ExplicitHealthCheckController;->mNotifySyncRunnable:Ljava/lang/Runnable;
 
-    invoke-interface {p1}, Ljava/lang/Runnable;->run()V
+    invoke-interface {v0}, Ljava/lang/Runnable;->run()V
 
     .line 432
     return-void
 
     .line 429
     :catchall_3f
-    move-exception p1
+    move-exception v1
 
     :try_start_40
     monitor-exit v0
     :try_end_41
     .catchall {:try_start_40 .. :try_end_41} :catchall_3f
 
-    throw p1
+    throw v1
 .end method
 
 .method static synthetic lambda$getRequestedPackages$5(Ljava/util/function/Consumer;Landroid/os/Bundle;)V
-    .registers 4
+    .registers 5
+    .param p0, "consumer"  # Ljava/util/function/Consumer;
+    .param p1, "result"  # Landroid/os/Bundle;
 
     .line 274
     const-string v0, "android.service.watchdog.extra.requested_packages"
 
     invoke-virtual {p1, v0}, Landroid/os/Bundle;->getStringArrayList(Ljava/lang/String;)Ljava/util/ArrayList;
 
-    move-result-object p1
-
-    .line 275
-    new-instance v0, Ljava/lang/StringBuilder;
-
-    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
-
-    const-string v1, "Explicit health check requested packages "
-
-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
-
     move-result-object v0
 
-    const-string v1, "ExplicitHealthCheckController"
+    .line 275
+    .local v0, "packages":Ljava/util/List;, "Ljava/util/List<Ljava/lang/String;>;"
+    new-instance v1, Ljava/lang/StringBuilder;
 
-    invoke-static {v1, v0}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
+
+    const-string v2, "Explicit health check requested packages "
+
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v1, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v1
+
+    const-string v2, "ExplicitHealthCheckController"
+
+    invoke-static {v2, v1}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 276
-    invoke-interface {p0, p1}, Ljava/util/function/Consumer;->accept(Ljava/lang/Object;)V
+    invoke-interface {p0, v0}, Ljava/util/function/Consumer;->accept(Ljava/lang/Object;)V
 
     .line 277
     return-void
 .end method
 
 .method static synthetic lambda$getSupportedPackages$4(Ljava/util/function/Consumer;Landroid/os/Bundle;)V
-    .registers 4
+    .registers 5
+    .param p0, "consumer"  # Ljava/util/function/Consumer;
+    .param p1, "result"  # Landroid/os/Bundle;
 
     .line 247
     nop
@@ -954,29 +996,30 @@
 
     invoke-virtual {p1, v0}, Landroid/os/Bundle;->getParcelableArrayList(Ljava/lang/String;)Ljava/util/ArrayList;
 
-    move-result-object p1
-
-    .line 249
-    new-instance v0, Ljava/lang/StringBuilder;
-
-    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
-
-    const-string v1, "Explicit health check supported packages "
-
-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
-
     move-result-object v0
 
-    const-string v1, "ExplicitHealthCheckController"
+    .line 249
+    .local v0, "packages":Ljava/util/List;, "Ljava/util/List<Landroid/service/watchdog/ExplicitHealthCheckService$PackageConfig;>;"
+    new-instance v1, Ljava/lang/StringBuilder;
 
-    invoke-static {v1, v0}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
+
+    const-string v2, "Explicit health check supported packages "
+
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v1, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v1
+
+    const-string v2, "ExplicitHealthCheckController"
+
+    invoke-static {v2, v1}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 250
-    invoke-interface {p0, p1}, Ljava/util/function/Consumer;->accept(Ljava/lang/Object;)V
+    invoke-interface {p0, v0}, Ljava/util/function/Consumer;->accept(Ljava/lang/Object;)V
 
     .line 251
     return-void
@@ -984,6 +1027,7 @@
 
 .method private prepareServiceLocked(Ljava/lang/String;)Z
     .registers 4
+    .param p1, "action"  # Ljava/lang/String;
     .annotation build Lcom/android/internal/annotations/GuardedBy;
         value = {
             "mLock"
@@ -1000,9 +1044,9 @@
     if-eqz v0, :cond_a
 
     .line 444
-    const/4 p1, 0x1
+    const/4 v0, 0x1
 
-    return p1
+    return v0
 
     .line 446
     :cond_a
@@ -1017,46 +1061,47 @@
     invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     .line 447
-    iget-boolean p1, p0, Lcom/android/server/ExplicitHealthCheckController;->mEnabled:Z
+    iget-boolean v1, p0, Lcom/android/server/ExplicitHealthCheckController;->mEnabled:Z
 
-    if-eqz p1, :cond_1e
+    if-eqz v1, :cond_1e
 
-    const-string p1, ". Binding..."
+    const-string v1, ". Binding..."
 
     goto :goto_20
 
     :cond_1e
-    const-string p1, ". Disabled"
+    const-string v1, ". Disabled"
 
     :goto_20
-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
     .line 446
-    const-string v0, "ExplicitHealthCheckController"
+    const-string v1, "ExplicitHealthCheckController"
 
-    invoke-static {v0, p1}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v0}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 448
-    iget-boolean p1, p0, Lcom/android/server/ExplicitHealthCheckController;->mEnabled:Z
+    iget-boolean v0, p0, Lcom/android/server/ExplicitHealthCheckController;->mEnabled:Z
 
-    if-eqz p1, :cond_33
+    if-eqz v0, :cond_33
 
     .line 449
     invoke-direct {p0}, Lcom/android/server/ExplicitHealthCheckController;->bindService()V
 
     .line 451
     :cond_33
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    return p1
+    return v0
 .end method
 
 .method private request(Ljava/lang/String;)V
     .registers 7
+    .param p1, "packageName"  # Ljava/lang/String;
 
     .line 198
     iget-object v0, p0, Lcom/android/server/ExplicitHealthCheckController;->mLock:Ljava/lang/Object;
@@ -1129,6 +1174,7 @@
     move-exception v1
 
     .line 207
+    .local v1, "e":Landroid/os/RemoteException;
     :try_start_3a
     const-string v2, "ExplicitHealthCheckController"
 
@@ -1144,11 +1190,12 @@
 
     invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v3
 
-    invoke-static {v2, p1, v1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    invoke-static {v2, v3, v1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
     .line 209
+    .end local v1  # "e":Landroid/os/RemoteException;
     :goto_50
     monitor-exit v0
 
@@ -1157,13 +1204,13 @@
 
     .line 209
     :catchall_52
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_54
     .catchall {:try_start_3a .. :try_end_54} :catchall_52
 
-    throw p1
+    throw v1
 .end method
 
 .method private unbindService()V
@@ -1223,63 +1270,65 @@
 
 # virtual methods
 .method public synthetic lambda$initState$6$ExplicitHealthCheckController(Landroid/os/Bundle;)V
-    .registers 5
+    .registers 6
+    .param p1, "result"  # Landroid/os/Bundle;
 
     .line 412
     const-string v0, "android.service.watchdog.extra.health_check_passed_package"
 
     invoke-virtual {p1, v0}, Landroid/os/Bundle;->getString(Ljava/lang/String;)Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
     .line 413
-    invoke-static {p1}, Landroid/text/TextUtils;->isEmpty(Ljava/lang/CharSequence;)Z
+    .local v0, "packageName":Ljava/lang/String;
+    invoke-static {v0}, Landroid/text/TextUtils;->isEmpty(Ljava/lang/CharSequence;)Z
 
-    move-result v0
+    move-result v1
 
-    const-string v1, "ExplicitHealthCheckController"
+    const-string v2, "ExplicitHealthCheckController"
 
-    if-nez v0, :cond_30
+    if-nez v1, :cond_30
 
     .line 414
-    iget-object v0, p0, Lcom/android/server/ExplicitHealthCheckController;->mPassedConsumer:Ljava/util/function/Consumer;
+    iget-object v1, p0, Lcom/android/server/ExplicitHealthCheckController;->mPassedConsumer:Ljava/util/function/Consumer;
 
-    if-nez v0, :cond_2c
+    if-nez v1, :cond_2c
 
     .line 415
-    new-instance v0, Ljava/lang/StringBuilder;
+    new-instance v1, Ljava/lang/StringBuilder;
 
-    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v2, "Health check passed for package "
+    const-string v3, "Health check passed for package "
 
-    invoke-virtual {v0, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string p1, "but no consumer registered."
+    const-string v3, "but no consumer registered."
 
-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v1
 
-    invoke-static {v1, p1}, Landroid/util/Slog;->wtf(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v2, v1}, Landroid/util/Slog;->wtf(Ljava/lang/String;Ljava/lang/String;)I
 
     goto :goto_35
 
     .line 419
     :cond_2c
-    invoke-interface {v0, p1}, Ljava/util/function/Consumer;->accept(Ljava/lang/Object;)V
+    invoke-interface {v1, v0}, Ljava/util/function/Consumer;->accept(Ljava/lang/Object;)V
 
     goto :goto_35
 
     .line 422
     :cond_30
-    const-string p1, "Empty package passed explicit health check?"
+    const-string v1, "Empty package passed explicit health check?"
 
-    invoke-static {v1, p1}, Landroid/util/Slog;->wtf(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v2, v1}, Landroid/util/Slog;->wtf(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 424
     :goto_35
@@ -1288,6 +1337,7 @@
 
 .method public synthetic lambda$syncRequests$0$ExplicitHealthCheckController(Ljava/lang/String;)V
     .registers 2
+    .param p1, "p"  # Ljava/lang/String;
 
     .line 166
     invoke-direct {p0, p1}, Lcom/android/server/ExplicitHealthCheckController;->cancel(Ljava/lang/String;)V
@@ -1297,6 +1347,7 @@
 
 .method public synthetic lambda$syncRequests$1$ExplicitHealthCheckController(Ljava/lang/String;)V
     .registers 2
+    .param p1, "p"  # Ljava/lang/String;
 
     .line 169
     invoke-direct {p0, p1}, Lcom/android/server/ExplicitHealthCheckController;->request(Ljava/lang/String;)V
@@ -1305,7 +1356,10 @@
 .end method
 
 .method public synthetic lambda$syncRequests$2$ExplicitHealthCheckController(Ljava/util/List;Ljava/util/Set;Ljava/util/List;)V
-    .registers 7
+    .registers 9
+    .param p1, "supportedPackageConfigs"  # Ljava/util/List;
+    .param p2, "newRequestedPackages"  # Ljava/util/Set;
+    .param p3, "previousRequestedPackages"  # Ljava/util/List;
 
     .line 153
     iget-object v0, p0, Lcom/android/server/ExplicitHealthCheckController;->mLock:Ljava/lang/Object;
@@ -1319,64 +1373,69 @@
     invoke-direct {v1}, Landroid/util/ArraySet;-><init>()V
 
     .line 158
+    .local v1, "supportedPackages":Ljava/util/Set;, "Ljava/util/Set<Ljava/lang/String;>;"
     invoke-interface {p1}, Ljava/util/List;->iterator()Ljava/util/Iterator;
 
-    move-result-object p1
+    move-result-object v2
 
     :goto_c
-    invoke-interface {p1}, Ljava/util/Iterator;->hasNext()Z
+    invoke-interface {v2}, Ljava/util/Iterator;->hasNext()Z
 
-    move-result v2
+    move-result v3
 
-    if-eqz v2, :cond_20
+    if-eqz v3, :cond_21
 
-    invoke-interface {p1}, Ljava/util/Iterator;->next()Ljava/lang/Object;
+    invoke-interface {v2}, Ljava/util/Iterator;->next()Ljava/lang/Object;
 
-    move-result-object v2
+    move-result-object v3
 
-    check-cast v2, Landroid/service/watchdog/ExplicitHealthCheckService$PackageConfig;
+    check-cast v3, Landroid/service/watchdog/ExplicitHealthCheckService$PackageConfig;
 
     .line 159
-    invoke-virtual {v2}, Landroid/service/watchdog/ExplicitHealthCheckService$PackageConfig;->getPackageName()Ljava/lang/String;
+    .local v3, "config":Landroid/service/watchdog/ExplicitHealthCheckService$PackageConfig;
+    invoke-virtual {v3}, Landroid/service/watchdog/ExplicitHealthCheckService$PackageConfig;->getPackageName()Ljava/lang/String;
 
-    move-result-object v2
+    move-result-object v4
 
-    invoke-interface {v1, v2}, Ljava/util/Set;->add(Ljava/lang/Object;)Z
+    invoke-interface {v1, v4}, Ljava/util/Set;->add(Ljava/lang/Object;)Z
 
     .line 160
+    nop
+
+    .end local v3  # "config":Landroid/service/watchdog/ExplicitHealthCheckService$PackageConfig;
     goto :goto_c
 
     .line 162
-    :cond_20
+    :cond_21
     invoke-interface {p2, v1}, Ljava/util/Set;->retainAll(Ljava/util/Collection;)Z
 
     .line 165
-    new-instance p1, Lcom/android/server/-$$Lambda$ExplicitHealthCheckController$fE2pZ6ZhwFEJPuOl0ochqPnSmyI;
+    new-instance v2, Lcom/android/server/-$$Lambda$ExplicitHealthCheckController$fE2pZ6ZhwFEJPuOl0ochqPnSmyI;
 
-    invoke-direct {p1, p0}, Lcom/android/server/-$$Lambda$ExplicitHealthCheckController$fE2pZ6ZhwFEJPuOl0ochqPnSmyI;-><init>(Lcom/android/server/ExplicitHealthCheckController;)V
+    invoke-direct {v2, p0}, Lcom/android/server/-$$Lambda$ExplicitHealthCheckController$fE2pZ6ZhwFEJPuOl0ochqPnSmyI;-><init>(Lcom/android/server/ExplicitHealthCheckController;)V
 
-    invoke-direct {p0, p3, p2, p1}, Lcom/android/server/ExplicitHealthCheckController;->actOnDifference(Ljava/util/Collection;Ljava/util/Collection;Ljava/util/function/Consumer;)V
+    invoke-direct {p0, p3, p2, v2}, Lcom/android/server/ExplicitHealthCheckController;->actOnDifference(Ljava/util/Collection;Ljava/util/Collection;Ljava/util/function/Consumer;)V
 
     .line 168
-    new-instance p1, Lcom/android/server/-$$Lambda$ExplicitHealthCheckController$ucIBQc_IW2iYt6j4dngAncLT6nQ;
+    new-instance v2, Lcom/android/server/-$$Lambda$ExplicitHealthCheckController$ucIBQc_IW2iYt6j4dngAncLT6nQ;
 
-    invoke-direct {p1, p0}, Lcom/android/server/-$$Lambda$ExplicitHealthCheckController$ucIBQc_IW2iYt6j4dngAncLT6nQ;-><init>(Lcom/android/server/ExplicitHealthCheckController;)V
+    invoke-direct {v2, p0}, Lcom/android/server/-$$Lambda$ExplicitHealthCheckController$ucIBQc_IW2iYt6j4dngAncLT6nQ;-><init>(Lcom/android/server/ExplicitHealthCheckController;)V
 
-    invoke-direct {p0, p2, p3, p1}, Lcom/android/server/ExplicitHealthCheckController;->actOnDifference(Ljava/util/Collection;Ljava/util/Collection;Ljava/util/function/Consumer;)V
+    invoke-direct {p0, p2, p3, v2}, Lcom/android/server/ExplicitHealthCheckController;->actOnDifference(Ljava/util/Collection;Ljava/util/Collection;Ljava/util/function/Consumer;)V
 
     .line 171
     invoke-interface {p2}, Ljava/util/Set;->isEmpty()Z
 
-    move-result p1
+    move-result v2
 
-    if-eqz p1, :cond_45
+    if-eqz v2, :cond_46
 
     .line 172
-    const-string p1, "ExplicitHealthCheckController"
+    const-string v2, "ExplicitHealthCheckController"
 
-    const-string p2, "No more health check requests, unbinding..."
+    const-string v3, "No more health check requests, unbinding..."
 
-    invoke-static {p1, p2}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v2, v3}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 173
     invoke-direct {p0}, Lcom/android/server/ExplicitHealthCheckController;->unbindService()V
@@ -1387,25 +1446,28 @@
     return-void
 
     .line 176
-    :cond_45
+    .end local v1  # "supportedPackages":Ljava/util/Set;, "Ljava/util/Set<Ljava/lang/String;>;"
+    :cond_46
     monitor-exit v0
 
     .line 177
     return-void
 
     .line 176
-    :catchall_47
-    move-exception p1
+    :catchall_48
+    move-exception v1
 
     monitor-exit v0
-    :try_end_49
-    .catchall {:try_start_3 .. :try_end_49} :catchall_47
+    :try_end_4a
+    .catchall {:try_start_3 .. :try_end_4a} :catchall_48
 
-    throw p1
+    throw v1
 .end method
 
 .method public synthetic lambda$syncRequests$3$ExplicitHealthCheckController(Ljava/util/Set;Ljava/util/List;)V
     .registers 4
+    .param p1, "newRequestedPackages"  # Ljava/util/Set;
+    .param p2, "supportedPackageConfigs"  # Ljava/util/List;
 
     .line 151
     iget-object v0, p0, Lcom/android/server/ExplicitHealthCheckController;->mSupportedConsumer:Ljava/util/function/Consumer;
@@ -1425,6 +1487,7 @@
 
 .method public setCallbacks(Ljava/util/function/Consumer;Ljava/util/function/Consumer;Ljava/lang/Runnable;)V
     .registers 7
+    .param p3, "notifySyncRunnable"  # Ljava/lang/Runnable;
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(",
@@ -1441,6 +1504,8 @@
     .end annotation
 
     .line 110
+    .local p1, "passedConsumer":Ljava/util/function/Consumer;, "Ljava/util/function/Consumer<Ljava/lang/String;>;"
+    .local p2, "supportedConsumer":Ljava/util/function/Consumer;, "Ljava/util/function/Consumer<Ljava/util/List<Landroid/service/watchdog/ExplicitHealthCheckService$PackageConfig;>;>;"
     iget-object v0, p0, Lcom/android/server/ExplicitHealthCheckController;->mLock:Ljava/lang/Object;
 
     monitor-enter v0
@@ -1471,29 +1536,29 @@
     :cond_16
     invoke-static {p1}, Lcom/android/internal/util/Preconditions;->checkNotNull(Ljava/lang/Object;)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v1
 
-    check-cast p1, Ljava/util/function/Consumer;
+    check-cast v1, Ljava/util/function/Consumer;
 
-    iput-object p1, p0, Lcom/android/server/ExplicitHealthCheckController;->mPassedConsumer:Ljava/util/function/Consumer;
+    iput-object v1, p0, Lcom/android/server/ExplicitHealthCheckController;->mPassedConsumer:Ljava/util/function/Consumer;
 
     .line 117
     invoke-static {p2}, Lcom/android/internal/util/Preconditions;->checkNotNull(Ljava/lang/Object;)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v1
 
-    check-cast p1, Ljava/util/function/Consumer;
+    check-cast v1, Ljava/util/function/Consumer;
 
-    iput-object p1, p0, Lcom/android/server/ExplicitHealthCheckController;->mSupportedConsumer:Ljava/util/function/Consumer;
+    iput-object v1, p0, Lcom/android/server/ExplicitHealthCheckController;->mSupportedConsumer:Ljava/util/function/Consumer;
 
     .line 118
     invoke-static {p3}, Lcom/android/internal/util/Preconditions;->checkNotNull(Ljava/lang/Object;)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v1
 
-    check-cast p1, Ljava/lang/Runnable;
+    check-cast v1, Ljava/lang/Runnable;
 
-    iput-object p1, p0, Lcom/android/server/ExplicitHealthCheckController;->mNotifySyncRunnable:Ljava/lang/Runnable;
+    iput-object v1, p0, Lcom/android/server/ExplicitHealthCheckController;->mNotifySyncRunnable:Ljava/lang/Runnable;
 
     .line 119
     monitor-exit v0
@@ -1503,17 +1568,18 @@
 
     .line 119
     :catchall_30
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_32
     .catchall {:try_start_3 .. :try_end_32} :catchall_30
 
-    throw p1
+    throw v1
 .end method
 
 .method public setEnabled(Z)V
     .registers 6
+    .param p1, "enabled"  # Z
 
     .line 96
     iget-object v0, p0, Lcom/android/server/ExplicitHealthCheckController;->mLock:Ljava/lang/Object;
@@ -1561,17 +1627,17 @@
 
     .line 99
     :catchall_24
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_26
     .catchall {:try_start_3 .. :try_end_26} :catchall_24
 
-    throw p1
+    throw v1
 .end method
 
 .method public syncRequests(Ljava/util/Set;)V
-    .registers 4
+    .registers 5
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(",
@@ -1582,6 +1648,7 @@
     .end annotation
 
     .line 138
+    .local p1, "newRequestedPackages":Ljava/util/Set;, "Ljava/util/Set<Ljava/lang/String;>;"
     iget-object v0, p0, Lcom/android/server/ExplicitHealthCheckController;->mLock:Ljava/lang/Object;
 
     monitor-enter v0
@@ -1591,6 +1658,7 @@
     iget-boolean v1, p0, Lcom/android/server/ExplicitHealthCheckController;->mEnabled:Z
 
     .line 140
+    .local v1, "enabled":Z
     monitor-exit v0
     :try_end_6
     .catchall {:try_start_3 .. :try_end_6} :catchall_22
@@ -1599,20 +1667,20 @@
     if-nez v1, :cond_19
 
     .line 143
-    const-string p1, "ExplicitHealthCheckController"
+    const-string v0, "ExplicitHealthCheckController"
 
-    const-string v0, "Health checks disabled, no supported packages"
+    const-string v2, "Health checks disabled, no supported packages"
 
-    invoke-static {p1, v0}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v0, v2}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 145
-    iget-object p1, p0, Lcom/android/server/ExplicitHealthCheckController;->mSupportedConsumer:Ljava/util/function/Consumer;
+    iget-object v0, p0, Lcom/android/server/ExplicitHealthCheckController;->mSupportedConsumer:Ljava/util/function/Consumer;
 
     invoke-static {}, Ljava/util/Collections;->emptyList()Ljava/util/List;
 
-    move-result-object v0
+    move-result-object v2
 
-    invoke-interface {p1, v0}, Ljava/util/function/Consumer;->accept(Ljava/lang/Object;)V
+    invoke-interface {v0, v2}, Ljava/util/function/Consumer;->accept(Ljava/lang/Object;)V
 
     .line 146
     return-void
@@ -1629,13 +1697,14 @@
     return-void
 
     .line 140
+    .end local v1  # "enabled":Z
     :catchall_22
-    move-exception p1
+    move-exception v1
 
     :try_start_23
     monitor-exit v0
     :try_end_24
     .catchall {:try_start_23 .. :try_end_24} :catchall_22
 
-    throw p1
+    throw v1
 .end method

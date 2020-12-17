@@ -30,6 +30,7 @@
 # direct methods
 .method constructor <init>(Landroid/os/IBinder;)V
     .registers 3
+    .param p1, "remote"  # Landroid/os/IBinder;
 
     .line 92
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -87,11 +88,13 @@
     move-result-object v0
 
     .line 124
+    .local v0, "data":Landroid/os/Parcel;
     invoke-static {}, Landroid/os/Parcel;->obtain()Landroid/os/Parcel;
 
     move-result-object v1
 
     .line 126
+    .local v1, "reply":Landroid/os/Parcel;
     :try_start_d
     const-string v2, "android.net.INetworkStackStatusCallback"
 
@@ -139,6 +142,8 @@
     throw v2
 
     .line 135
+    .end local v0  # "data":Landroid/os/Parcel;
+    .end local v1  # "reply":Landroid/os/Parcel;
     :cond_33
     :goto_33
     iget v0, p0, Landroid/net/INetworkStackStatusCallback$Stub$Proxy;->mCachedVersion:I
@@ -148,6 +153,7 @@
 
 .method public onStatusAvailable(I)V
     .registers 6
+    .param p1, "statusCode"  # I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -160,6 +166,7 @@
     move-result-object v0
 
     .line 108
+    .local v0, "_data":Landroid/os/Parcel;
     :try_start_4
     const-string v1, "android.net.INetworkStackStatusCallback"
 
@@ -180,20 +187,21 @@
     move-result v1
 
     .line 111
+    .local v1, "_status":Z
     if-nez v1, :cond_27
 
     invoke-static {}, Landroid/net/INetworkStackStatusCallback$Stub;->getDefaultImpl()Landroid/net/INetworkStackStatusCallback;
 
-    move-result-object v1
+    move-result-object v2
 
-    if-eqz v1, :cond_27
+    if-eqz v2, :cond_27
 
     .line 112
     invoke-static {}, Landroid/net/INetworkStackStatusCallback$Stub;->getDefaultImpl()Landroid/net/INetworkStackStatusCallback;
 
-    move-result-object v1
+    move-result-object v2
 
-    invoke-interface {v1, p1}, Landroid/net/INetworkStackStatusCallback;->onStatusAvailable(I)V
+    invoke-interface {v2, p1}, Landroid/net/INetworkStackStatusCallback;->onStatusAvailable(I)V
     :try_end_23
     .catchall {:try_start_4 .. :try_end_23} :catchall_2c
 
@@ -204,6 +212,7 @@
     return-void
 
     .line 117
+    .end local v1  # "_status":Z
     :cond_27
     invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
 
@@ -215,9 +224,9 @@
 
     .line 117
     :catchall_2c
-    move-exception p1
+    move-exception v1
 
     invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
 
-    throw p1
+    throw v1
 .end method

@@ -21,14 +21,15 @@
 # direct methods
 .method public constructor <init>(Landroid/content/Context;)V
     .registers 2
+    .param p1, "context"  # Landroid/content/Context;
 
-    .line 374
+    .line 359
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
-    .line 375
+    .line 360
     iput-object p1, p0, Lcom/android/server/locksettings/LockSettingsService$Injector;->mContext:Landroid/content/Context;
 
-    .line 376
+    .line 361
     return-void
 .end method
 
@@ -37,7 +38,7 @@
 .method public binderGetCallingUid()I
     .registers 2
 
-    .line 457
+    .line 442
     invoke-static {}, Landroid/os/Binder;->getCallingUid()I
 
     move-result v0
@@ -48,7 +49,7 @@
 .method public getActivityManager()Landroid/app/IActivityManager;
     .registers 2
 
-    .line 411
+    .line 396
     invoke-static {}, Landroid/app/ActivityManager;->getService()Landroid/app/IActivityManager;
 
     move-result-object v0
@@ -59,7 +60,7 @@
 .method public getContext()Landroid/content/Context;
     .registers 2
 
-    .line 379
+    .line 364
     iget-object v0, p0, Lcom/android/server/locksettings/LockSettingsService$Injector;->mContext:Landroid/content/Context;
 
     return-object v0
@@ -68,7 +69,7 @@
 .method public getDevicePolicyManager()Landroid/app/admin/DevicePolicyManager;
     .registers 3
 
-    .line 427
+    .line 412
     iget-object v0, p0, Lcom/android/server/locksettings/LockSettingsService$Injector;->mContext:Landroid/content/Context;
 
     const-string v1, "device_policy"
@@ -85,7 +86,7 @@
 .method public getHandler()Landroid/os/Handler;
     .registers 2
 
-    .line 383
+    .line 368
     new-instance v0, Landroid/os/Handler;
 
     invoke-direct {v0}, Landroid/os/Handler;-><init>()V
@@ -96,7 +97,7 @@
 .method public getKeyStore()Landroid/security/KeyStore;
     .registers 2
 
-    .line 431
+    .line 416
     invoke-static {}, Landroid/security/KeyStore;->getInstance()Landroid/security/KeyStore;
 
     move-result-object v0
@@ -107,7 +108,7 @@
 .method public getLockPatternUtils()Lcom/android/internal/widget/LockPatternUtils;
     .registers 3
 
-    .line 415
+    .line 400
     new-instance v0, Lcom/android/internal/widget/LockPatternUtils;
 
     iget-object v1, p0, Lcom/android/server/locksettings/LockSettingsService$Injector;->mContext:Landroid/content/Context;
@@ -120,7 +121,7 @@
 .method public getNotificationManager()Landroid/app/NotificationManager;
     .registers 3
 
-    .line 419
+    .line 404
     iget-object v0, p0, Lcom/android/server/locksettings/LockSettingsService$Injector;->mContext:Landroid/content/Context;
 
     const-string/jumbo v1, "notification"
@@ -136,69 +137,72 @@
 
 .method public getRecoverableKeyStoreManager(Landroid/security/KeyStore;)Lcom/android/server/locksettings/recoverablekeystore/RecoverableKeyStoreManager;
     .registers 3
+    .param p1, "keyStore"  # Landroid/security/KeyStore;
 
-    .line 435
+    .line 420
     iget-object v0, p0, Lcom/android/server/locksettings/LockSettingsService$Injector;->mContext:Landroid/content/Context;
 
     invoke-static {v0, p1}, Lcom/android/server/locksettings/recoverablekeystore/RecoverableKeyStoreManager;->getInstance(Landroid/content/Context;Landroid/security/KeyStore;)Lcom/android/server/locksettings/recoverablekeystore/RecoverableKeyStoreManager;
 
-    move-result-object p1
+    move-result-object v0
 
-    return-object p1
+    return-object v0
 .end method
 
 .method public getStorage()Lcom/android/server/locksettings/LockSettingsStorage;
     .registers 3
 
-    .line 387
+    .line 372
     new-instance v0, Lcom/android/server/locksettings/LockSettingsStorage;
 
     iget-object v1, p0, Lcom/android/server/locksettings/LockSettingsService$Injector;->mContext:Landroid/content/Context;
 
     invoke-direct {v0, v1}, Lcom/android/server/locksettings/LockSettingsStorage;-><init>(Landroid/content/Context;)V
 
-    .line 388
+    .line 373
+    .local v0, "storage":Lcom/android/server/locksettings/LockSettingsStorage;
     new-instance v1, Lcom/android/server/locksettings/LockSettingsService$Injector$1;
 
     invoke-direct {v1, p0, v0}, Lcom/android/server/locksettings/LockSettingsService$Injector$1;-><init>(Lcom/android/server/locksettings/LockSettingsService$Injector;Lcom/android/server/locksettings/LockSettingsStorage;)V
 
     invoke-virtual {v0, v1}, Lcom/android/server/locksettings/LockSettingsStorage;->setDatabaseOnCreateCallback(Lcom/android/server/locksettings/LockSettingsStorage$Callback;)V
 
-    .line 399
+    .line 384
     return-object v0
 .end method
 
 .method public getStorageManager()Landroid/os/storage/IStorageManager;
-    .registers 2
+    .registers 3
 
-    .line 439
+    .line 424
     const-string/jumbo v0, "mount"
 
     invoke-static {v0}, Landroid/os/ServiceManager;->getService(Ljava/lang/String;)Landroid/os/IBinder;
 
     move-result-object v0
 
-    .line 440
+    .line 425
+    .local v0, "service":Landroid/os/IBinder;
     if-eqz v0, :cond_e
 
-    .line 441
+    .line 426
     invoke-static {v0}, Landroid/os/storage/IStorageManager$Stub;->asInterface(Landroid/os/IBinder;)Landroid/os/storage/IStorageManager;
 
-    move-result-object v0
+    move-result-object v1
 
-    return-object v0
+    return-object v1
 
-    .line 443
+    .line 428
     :cond_e
-    const/4 v0, 0x0
+    const/4 v1, 0x0
 
-    return-object v0
+    return-object v1
 .end method
 
 .method public getStrongAuth()Lcom/android/server/locksettings/LockSettingsStrongAuth;
     .registers 3
 
-    .line 403
+    .line 388
     new-instance v0, Lcom/android/server/locksettings/LockSettingsStrongAuth;
 
     iget-object v1, p0, Lcom/android/server/locksettings/LockSettingsService$Injector;->mContext:Landroid/content/Context;
@@ -211,7 +215,7 @@
 .method public getStrongAuthTracker()Lcom/android/server/locksettings/LockSettingsService$SynchronizedStrongAuthTracker;
     .registers 3
 
-    .line 407
+    .line 392
     new-instance v0, Lcom/android/server/locksettings/LockSettingsService$SynchronizedStrongAuthTracker;
 
     iget-object v1, p0, Lcom/android/server/locksettings/LockSettingsService$Injector;->mContext:Landroid/content/Context;
@@ -223,8 +227,9 @@
 
 .method public getSyntheticPasswordManager(Lcom/android/server/locksettings/LockSettingsStorage;)Lcom/android/server/locksettings/SyntheticPasswordManager;
     .registers 6
+    .param p1, "storage"  # Lcom/android/server/locksettings/LockSettingsStorage;
 
-    .line 447
+    .line 432
     new-instance v0, Lcom/android/server/locksettings/SyntheticPasswordManager;
 
     invoke-virtual {p0}, Lcom/android/server/locksettings/LockSettingsService$Injector;->getContext()Landroid/content/Context;
@@ -247,7 +252,7 @@
 .method public getUserManager()Landroid/os/UserManager;
     .registers 3
 
-    .line 423
+    .line 408
     iget-object v0, p0, Lcom/android/server/locksettings/LockSettingsService$Injector;->mContext:Landroid/content/Context;
 
     const-string/jumbo v1, "user"
@@ -261,10 +266,10 @@
     return-object v0
 .end method
 
-.method public hasEnrolledBiometrics(I)Z
-    .registers 4
+.method public hasEnrolledBiometrics()Z
+    .registers 3
 
-    .line 452
+    .line 437
     iget-object v0, p0, Lcom/android/server/locksettings/LockSettingsService$Injector;->mContext:Landroid/content/Context;
 
     const-class v1, Landroid/hardware/biometrics/BiometricManager;
@@ -275,18 +280,29 @@
 
     check-cast v0, Landroid/hardware/biometrics/BiometricManager;
 
-    .line 453
-    invoke-virtual {v0, p1}, Landroid/hardware/biometrics/BiometricManager;->hasEnrolledBiometrics(I)Z
+    .line 438
+    .local v0, "bm":Landroid/hardware/biometrics/BiometricManager;
+    invoke-virtual {v0}, Landroid/hardware/biometrics/BiometricManager;->canAuthenticate()I
 
-    move-result p1
+    move-result v1
 
-    return p1
+    if-nez v1, :cond_12
+
+    const/4 v1, 0x1
+
+    goto :goto_13
+
+    :cond_12
+    const/4 v1, 0x0
+
+    :goto_13
+    return v1
 .end method
 
 .method public isGsiRunning()Z
     .registers 3
 
-    .line 461
+    .line 446
     const/4 v0, 0x0
 
     const-string/jumbo v1, "ro.gsid.image_running"

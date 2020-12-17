@@ -27,6 +27,8 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/pm/BackgroundDexOptService;Ljava/lang/String;Landroid/app/job/JobParameters;Lcom/android/server/pm/PackageManagerService;Landroid/util/ArraySet;)V
     .registers 6
+    .param p1, "this$0"  # Lcom/android/server/pm/BackgroundDexOptService;
+    .param p2, "x0"  # Ljava/lang/String;
 
     .line 185
     iput-object p1, p0, Lcom/android/server/pm/BackgroundDexOptService$1;->this$0:Lcom/android/server/pm/BackgroundDexOptService;

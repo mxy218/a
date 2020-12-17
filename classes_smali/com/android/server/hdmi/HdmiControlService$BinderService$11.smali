@@ -26,6 +26,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/hdmi/HdmiControlService$BinderService;Z)V
     .registers 3
+    .param p1, "this$1"  # Lcom/android/server/hdmi/HdmiControlService$BinderService;
 
     .line 1807
     iput-object p1, p0, Lcom/android/server/hdmi/HdmiControlService$BinderService$11;->this$1:Lcom/android/server/hdmi/HdmiControlService$BinderService;
@@ -40,7 +41,7 @@
 
 # virtual methods
 .method public run()V
-    .registers 3
+    .registers 4
 
     .line 1810
     iget-object v0, p0, Lcom/android/server/hdmi/HdmiControlService$BinderService$11;->this$1:Lcom/android/server/hdmi/HdmiControlService$BinderService;
@@ -52,14 +53,15 @@
     move-result-object v0
 
     .line 1811
+    .local v0, "tv":Lcom/android/server/hdmi/HdmiCecLocalDeviceTv;
     if-nez v0, :cond_12
 
     .line 1812
-    const-string v0, "HdmiControlService"
+    const-string v1, "HdmiControlService"
 
-    const-string v1, "Local tv device not available"
+    const-string v2, "Local tv device not available"
 
-    invoke-static {v0, v1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v2}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 1813
     return-void

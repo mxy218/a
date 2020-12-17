@@ -29,6 +29,8 @@
 # direct methods
 .method private constructor <init>(Landroid/net/Uri;Landroid/content/ComponentName;)V
     .registers 3
+    .param p1, "id"  # Landroid/net/Uri;
+    .param p2, "component"  # Landroid/content/ComponentName;
 
     .line 384
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -45,6 +47,9 @@
 
 .method synthetic constructor <init>(Landroid/net/Uri;Landroid/content/ComponentName;Lcom/android/server/notification/ConditionProviders$1;)V
     .registers 4
+    .param p1, "x0"  # Landroid/net/Uri;
+    .param p2, "x1"  # Landroid/content/ComponentName;
+    .param p3, "x2"  # Lcom/android/server/notification/ConditionProviders$1;
 
     .line 377
     invoke-direct {p0, p1, p2}, Lcom/android/server/notification/ConditionProviders$ConditionRecord;-><init>(Landroid/net/Uri;Landroid/content/ComponentName;)V
@@ -86,14 +91,17 @@
 
     invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Z)Ljava/lang/StringBuilder;
 
+    move-result-object v0
+
     .line 394
+    .local v0, "sb":Ljava/lang/StringBuilder;
     const/16 v1, 0x5d
 
     invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(C)Ljava/lang/StringBuilder;
 
     invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v1
 
-    return-object v0
+    return-object v1
 .end method

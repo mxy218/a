@@ -17,6 +17,7 @@
 # direct methods
 .method constructor <init>(Ljava/lang/Exception;)V
     .registers 2
+    .param p1, "e"  # Ljava/lang/Exception;
 
     .line 462
     invoke-direct {p0, p1}, Ljava/lang/Exception;-><init>(Ljava/lang/Throwable;)V

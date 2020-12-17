@@ -16,6 +16,8 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/hdmi/HdmiCecLocalDevice;Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem$TvSystemAudioModeSupportedCallback;)V
     .registers 3
+    .param p1, "source"  # Lcom/android/server/hdmi/HdmiCecLocalDevice;
+    .param p2, "callback"  # Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem$TvSystemAudioModeSupportedCallback;
 
     .line 35
     invoke-direct {p0, p1}, Lcom/android/server/hdmi/HdmiCecFeatureAction;-><init>(Lcom/android/server/hdmi/HdmiCecLocalDevice;)V
@@ -29,6 +31,7 @@
 
 .method private finishAction(Z)V
     .registers 3
+    .param p1, "supported"  # Z
 
     .line 86
     iget-object v0, p0, Lcom/android/server/hdmi/DetectTvSystemAudioModeSupportAction;->mCallback:Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem$TvSystemAudioModeSupportedCallback;
@@ -52,7 +55,8 @@
 
 # virtual methods
 .method handleTimerEvent(I)V
-    .registers 3
+    .registers 4
+    .param p1, "state"  # I
 
     .line 63
     iget v0, p0, Lcom/android/server/hdmi/DetectTvSystemAudioModeSupportAction;->mState:I
@@ -64,15 +68,15 @@
 
     .line 67
     :cond_5
-    const/4 p1, 0x1
+    const/4 v1, 0x1
 
-    if-eq v0, p1, :cond_9
+    if-eq v0, v1, :cond_9
 
     goto :goto_c
 
     .line 69
     :cond_9
-    invoke-direct {p0, p1}, Lcom/android/server/hdmi/DetectTvSystemAudioModeSupportAction;->finishAction(Z)V
+    invoke-direct {p0, v1}, Lcom/android/server/hdmi/DetectTvSystemAudioModeSupportAction;->finishAction(Z)V
 
     .line 72
     :goto_c
@@ -80,15 +84,16 @@
 .end method
 
 .method public synthetic lambda$sendSetSystemAudioMode$0$DetectTvSystemAudioModeSupportAction(I)V
-    .registers 2
+    .registers 3
+    .param p1, "result"  # I
 
     .line 79
     if-eqz p1, :cond_6
 
     .line 80
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    invoke-direct {p0, p1}, Lcom/android/server/hdmi/DetectTvSystemAudioModeSupportAction;->finishAction(Z)V
+    invoke-direct {p0, v0}, Lcom/android/server/hdmi/DetectTvSystemAudioModeSupportAction;->finishAction(Z)V
 
     .line 82
     :cond_6
@@ -96,7 +101,8 @@
 .end method
 
 .method processCommand(Lcom/android/server/hdmi/HdmiCecMessage;)Z
-    .registers 5
+    .registers 6
+    .param p1, "cmd"  # Lcom/android/server/hdmi/HdmiCecMessage;
 
     .line 49
     invoke-virtual {p1}, Lcom/android/server/hdmi/HdmiCecMessage;->getOpcode()I
@@ -121,15 +127,15 @@
     :cond_d
     invoke-virtual {p1}, Lcom/android/server/hdmi/HdmiCecMessage;->getParams()[B
 
-    move-result-object p1
+    move-result-object v0
 
-    aget-byte p1, p1, v1
+    aget-byte v0, v0, v1
 
-    and-int/lit16 p1, p1, 0xff
+    and-int/lit16 v0, v0, 0xff
 
-    const/16 v0, 0x72
+    const/16 v3, 0x72
 
-    if-ne p1, v0, :cond_1d
+    if-ne v0, v3, :cond_1d
 
     .line 54
     invoke-direct {p0, v1}, Lcom/android/server/hdmi/DetectTvSystemAudioModeSupportAction;->finishAction(Z)V

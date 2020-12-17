@@ -23,6 +23,8 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/ZramWriteback;Ljava/lang/String;Landroid/app/job/JobParameters;)V
     .registers 4
+    .param p1, "this$0"  # Lcom/android/server/ZramWriteback;
+    .param p2, "x0"  # Ljava/lang/String;
 
     .line 146
     iput-object p1, p0, Lcom/android/server/ZramWriteback$1;->this$0:Lcom/android/server/ZramWriteback;

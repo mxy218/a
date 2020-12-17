@@ -4,7 +4,7 @@
 
 
 # instance fields
-.field private mAnimator:Lcom/android/server/display/color/ColorDisplayService$TintValueAnimator;
+.field private mAnimator:Landroid/animation/ValueAnimator;
 
 .field private mIsActivated:Ljava/lang/Boolean;
 
@@ -13,122 +13,10 @@
 .method constructor <init>()V
     .registers 1
 
-    .line 25
+    .line 24
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
     return-void
-.end method
-
-.method static matrixToString([FI)Ljava/lang/String;
-    .registers 8
-
-    .line 107
-    const-string v0, ""
-
-    const/4 v1, 0x1
-
-    const/4 v2, 0x0
-
-    if-eqz p0, :cond_36
-
-    if-gtz p1, :cond_9
-
-    goto :goto_36
-
-    .line 114
-    :cond_9
-    new-instance v3, Ljava/lang/StringBuilder;
-
-    invoke-direct {v3, v0}, Ljava/lang/StringBuilder;-><init>(Ljava/lang/String;)V
-
-    .line 115
-    move v0, v2
-
-    :goto_f
-    array-length v4, p0
-
-    if-ge v0, v4, :cond_31
-
-    .line 116
-    rem-int v4, v0, p1
-
-    if-nez v4, :cond_1b
-
-    .line 117
-    const-string v4, "\n      "
-
-    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    .line 119
-    :cond_1b
-    new-array v4, v1, [Ljava/lang/Object;
-
-    aget v5, p0, v0
-
-    invoke-static {v5}, Ljava/lang/Float;->valueOf(F)Ljava/lang/Float;
-
-    move-result-object v5
-
-    aput-object v5, v4, v2
-
-    const-string v5, "%9.6f"
-
-    invoke-static {v5, v4}, Ljava/lang/String;->format(Ljava/lang/String;[Ljava/lang/Object;)Ljava/lang/String;
-
-    move-result-object v4
-
-    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    .line 115
-    add-int/lit8 v0, v0, 0x1
-
-    goto :goto_f
-
-    .line 121
-    :cond_31
-    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
-
-    move-result-object p0
-
-    return-object p0
-
-    .line 108
-    :cond_36
-    :goto_36
-    new-instance v3, Ljava/lang/StringBuilder;
-
-    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
-
-    const-string v4, "Invalid arguments when formatting matrix to string, matrix is null: "
-
-    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    if-nez p0, :cond_43
-
-    goto :goto_44
-
-    :cond_43
-    move v1, v2
-
-    :goto_44
-    invoke-virtual {v3, v1}, Ljava/lang/StringBuilder;->append(Z)Ljava/lang/StringBuilder;
-
-    const-string p0, " columns: "
-
-    invoke-virtual {v3, p0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v3, p1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
-
-    move-result-object p0
-
-    const-string p1, "ColorDisplayService"
-
-    invoke-static {p1, p0}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
-
-    .line 111
-    return-object v0
 .end method
 
 
@@ -136,52 +24,53 @@
 .method public cancelAnimator()V
     .registers 2
 
-    .line 42
-    iget-object v0, p0, Lcom/android/server/display/color/TintController;->mAnimator:Lcom/android/server/display/color/ColorDisplayService$TintValueAnimator;
+    .line 41
+    iget-object v0, p0, Lcom/android/server/display/color/TintController;->mAnimator:Landroid/animation/ValueAnimator;
 
     if-eqz v0, :cond_7
 
-    .line 43
-    invoke-virtual {v0}, Lcom/android/server/display/color/ColorDisplayService$TintValueAnimator;->cancel()V
+    .line 42
+    invoke-virtual {v0}, Landroid/animation/ValueAnimator;->cancel()V
 
-    .line 45
+    .line 44
     :cond_7
     return-void
 .end method
 
 .method public dump(Ljava/io/PrintWriter;)V
     .registers 2
+    .param p1, "pw"  # Ljava/io/PrintWriter;
 
-    .line 73
+    .line 72
     return-void
 .end method
 
 .method public endAnimator()V
     .registers 2
 
-    .line 51
-    iget-object v0, p0, Lcom/android/server/display/color/TintController;->mAnimator:Lcom/android/server/display/color/ColorDisplayService$TintValueAnimator;
+    .line 50
+    iget-object v0, p0, Lcom/android/server/display/color/TintController;->mAnimator:Landroid/animation/ValueAnimator;
 
     if-eqz v0, :cond_a
 
-    .line 52
-    invoke-virtual {v0}, Lcom/android/server/display/color/ColorDisplayService$TintValueAnimator;->end()V
+    .line 51
+    invoke-virtual {v0}, Landroid/animation/ValueAnimator;->end()V
 
-    .line 53
+    .line 52
     const/4 v0, 0x0
 
-    iput-object v0, p0, Lcom/android/server/display/color/TintController;->mAnimator:Lcom/android/server/display/color/ColorDisplayService$TintValueAnimator;
+    iput-object v0, p0, Lcom/android/server/display/color/TintController;->mAnimator:Landroid/animation/ValueAnimator;
 
-    .line 55
+    .line 54
     :cond_a
     return-void
 .end method
 
-.method public getAnimator()Lcom/android/server/display/color/ColorDisplayService$TintValueAnimator;
+.method public getAnimator()Landroid/animation/ValueAnimator;
     .registers 2
 
-    .line 31
-    iget-object v0, p0, Lcom/android/server/display/color/TintController;->mAnimator:Lcom/android/server/display/color/ColorDisplayService$TintValueAnimator;
+    .line 30
+    iget-object v0, p0, Lcom/android/server/display/color/TintController;->mAnimator:Landroid/animation/ValueAnimator;
 
     return-object v0
 .end method
@@ -195,7 +84,7 @@
 .method public isActivated()Z
     .registers 2
 
-    .line 62
+    .line 61
     iget-object v0, p0, Lcom/android/server/display/color/TintController;->mIsActivated:Ljava/lang/Boolean;
 
     if-eqz v0, :cond_c
@@ -220,7 +109,7 @@
 .method public isActivatedStateNotSet()Z
     .registers 2
 
-    .line 66
+    .line 65
     iget-object v0, p0, Lcom/android/server/display/color/TintController;->mIsActivated:Ljava/lang/Boolean;
 
     if-nez v0, :cond_6
@@ -241,21 +130,23 @@
 
 .method public setActivated(Ljava/lang/Boolean;)V
     .registers 2
+    .param p1, "isActivated"  # Ljava/lang/Boolean;
 
-    .line 58
+    .line 57
     iput-object p1, p0, Lcom/android/server/display/color/TintController;->mIsActivated:Ljava/lang/Boolean;
 
-    .line 59
+    .line 58
     return-void
 .end method
 
-.method public setAnimator(Lcom/android/server/display/color/ColorDisplayService$TintValueAnimator;)V
+.method public setAnimator(Landroid/animation/ValueAnimator;)V
     .registers 2
+    .param p1, "animator"  # Landroid/animation/ValueAnimator;
+
+    .line 34
+    iput-object p1, p0, Lcom/android/server/display/color/TintController;->mAnimator:Landroid/animation/ValueAnimator;
 
     .line 35
-    iput-object p1, p0, Lcom/android/server/display/color/TintController;->mAnimator:Lcom/android/server/display/color/ColorDisplayService$TintValueAnimator;
-
-    .line 36
     return-void
 .end method
 

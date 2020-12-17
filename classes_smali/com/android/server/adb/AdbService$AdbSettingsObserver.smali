@@ -37,38 +37,42 @@
 
 # virtual methods
 .method public onChange(Z)V
-    .registers 4
+    .registers 5
+    .param p1, "selfChange"  # Z
 
     .line 170
-    iget-object p1, p0, Lcom/android/server/adb/AdbService$AdbSettingsObserver;->this$0:Lcom/android/server/adb/AdbService;
+    iget-object v0, p0, Lcom/android/server/adb/AdbService$AdbSettingsObserver;->this$0:Lcom/android/server/adb/AdbService;
 
-    invoke-static {p1}, Lcom/android/server/adb/AdbService;->access$400(Lcom/android/server/adb/AdbService;)Landroid/content/ContentResolver;
+    invoke-static {v0}, Lcom/android/server/adb/AdbService;->access$400(Lcom/android/server/adb/AdbService;)Landroid/content/ContentResolver;
 
-    move-result-object p1
+    move-result-object v0
 
-    const/4 v0, 0x0
+    const/4 v1, 0x0
 
-    const-string v1, "adb_enabled"
+    const-string v2, "adb_enabled"
 
-    invoke-static {p1, v1, v0}, Landroid/provider/Settings$Global;->getInt(Landroid/content/ContentResolver;Ljava/lang/String;I)I
+    invoke-static {v0, v2, v1}, Landroid/provider/Settings$Global;->getInt(Landroid/content/ContentResolver;Ljava/lang/String;I)I
 
-    move-result p1
+    move-result v0
 
-    const/4 v1, 0x1
+    const/4 v2, 0x1
 
-    if-lez p1, :cond_11
+    if-lez v0, :cond_11
 
+    move v1, v2
+
+    :cond_11
     move v0, v1
 
     .line 172
-    :cond_11
-    iget-object p1, p0, Lcom/android/server/adb/AdbService$AdbSettingsObserver;->this$0:Lcom/android/server/adb/AdbService;
+    .local v0, "enable":Z
+    iget-object v1, p0, Lcom/android/server/adb/AdbService$AdbSettingsObserver;->this$0:Lcom/android/server/adb/AdbService;
 
-    invoke-static {p1}, Lcom/android/server/adb/AdbService;->access$600(Lcom/android/server/adb/AdbService;)Lcom/android/server/adb/AdbService$AdbHandler;
+    invoke-static {v1}, Lcom/android/server/adb/AdbService;->access$600(Lcom/android/server/adb/AdbService;)Lcom/android/server/adb/AdbService$AdbHandler;
 
-    move-result-object p1
+    move-result-object v1
 
-    invoke-virtual {p1, v1, v0}, Lcom/android/server/adb/AdbService$AdbHandler;->sendMessage(IZ)V
+    invoke-virtual {v1, v2, v0}, Lcom/android/server/adb/AdbService$AdbHandler;->sendMessage(IZ)V
 
     .line 173
     return-void

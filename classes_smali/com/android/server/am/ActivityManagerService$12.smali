@@ -21,8 +21,9 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/am/ActivityManagerService;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/am/ActivityManagerService;
 
-    .line 5293
+    .line 5625
     iput-object p1, p0, Lcom/android/server/am/ActivityManagerService$12;->this$0:Lcom/android/server/am/ActivityManagerService;
 
     invoke-direct {p0}, Landroid/content/IIntentReceiver$Stub;-><init>()V
@@ -33,58 +34,65 @@
 
 # virtual methods
 .method public performReceive(Landroid/content/Intent;ILjava/lang/String;Landroid/os/Bundle;ZZI)V
-    .registers 8
+    .registers 14
+    .param p1, "intent"  # Landroid/content/Intent;
+    .param p2, "resultCode"  # I
+    .param p3, "data"  # Ljava/lang/String;
+    .param p4, "extras"  # Landroid/os/Bundle;
+    .param p5, "ordered"  # Z
+    .param p6, "sticky"  # Z
+    .param p7, "sendingUser"  # I
 
-    .line 5298
-    iget-object p1, p0, Lcom/android/server/am/ActivityManagerService$12;->this$0:Lcom/android/server/am/ActivityManagerService;
+    .line 5630
+    iget-object v0, p0, Lcom/android/server/am/ActivityManagerService$12;->this$0:Lcom/android/server/am/ActivityManagerService;
 
-    monitor-enter p1
+    monitor-enter v0
 
     :try_start_3
     invoke-static {}, Lcom/android/server/am/ActivityManagerService;->boostPriorityForLockedSection()V
 
-    .line 5299
-    iget-object p2, p0, Lcom/android/server/am/ActivityManagerService$12;->this$0:Lcom/android/server/am/ActivityManagerService;
+    .line 5631
+    iget-object v1, p0, Lcom/android/server/am/ActivityManagerService$12;->this$0:Lcom/android/server/am/ActivityManagerService;
 
-    iget-object p2, p2, Lcom/android/server/am/ActivityManagerService;->mOomAdjuster:Lcom/android/server/am/OomAdjuster;
+    iget-object v1, v1, Lcom/android/server/am/ActivityManagerService;->mOomAdjuster:Lcom/android/server/am/OomAdjuster;
 
-    iget-object p2, p2, Lcom/android/server/am/OomAdjuster;->mAppCompact:Lcom/android/server/am/AppCompactor;
+    iget-object v1, v1, Lcom/android/server/am/OomAdjuster;->mAppCompact:Lcom/android/server/am/AppCompactor;
 
-    invoke-virtual {p2}, Lcom/android/server/am/AppCompactor;->compactAllSystem()V
+    invoke-virtual {v1}, Lcom/android/server/am/AppCompactor;->compactAllSystem()V
 
-    .line 5300
-    iget-object p2, p0, Lcom/android/server/am/ActivityManagerService$12;->this$0:Lcom/android/server/am/ActivityManagerService;
+    .line 5632
+    iget-object v1, p0, Lcom/android/server/am/ActivityManagerService$12;->this$0:Lcom/android/server/am/ActivityManagerService;
 
     invoke-static {}, Landroid/os/SystemClock;->uptimeMillis()J
 
-    move-result-wide p3
+    move-result-wide v2
 
-    const/4 p5, 0x1
+    const/4 v4, 0x1
 
-    const/4 p6, 0x0
+    const/4 v5, 0x0
 
-    invoke-virtual {p2, p3, p4, p5, p6}, Lcom/android/server/am/ActivityManagerService;->requestPssAllProcsLocked(JZZ)V
+    invoke-virtual {v1, v2, v3, v4, v5}, Lcom/android/server/am/ActivityManagerService;->requestPssAllProcsLocked(JZZ)V
 
-    .line 5301
-    monitor-exit p1
+    .line 5633
+    monitor-exit v0
     :try_end_1b
     .catchall {:try_start_3 .. :try_end_1b} :catchall_1f
 
     invoke-static {}, Lcom/android/server/am/ActivityManagerService;->resetPriorityAfterLockedSection()V
 
-    .line 5302
+    .line 5634
     return-void
 
-    .line 5301
+    .line 5633
     :catchall_1f
-    move-exception p2
+    move-exception v1
 
     :try_start_20
-    monitor-exit p1
+    monitor-exit v0
     :try_end_21
     .catchall {:try_start_20 .. :try_end_21} :catchall_1f
 
     invoke-static {}, Lcom/android/server/am/ActivityManagerService;->resetPriorityAfterLockedSection()V
 
-    throw p2
+    throw v1
 .end method

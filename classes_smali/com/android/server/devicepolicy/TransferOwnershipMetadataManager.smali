@@ -78,6 +78,7 @@
 
 .method constructor <init>(Lcom/android/server/devicepolicy/TransferOwnershipMetadataManager$Injector;)V
     .registers 2
+    .param p1, "injector"  # Lcom/android/server/devicepolicy/TransferOwnershipMetadataManager$Injector;
     .annotation build Lcom/android/internal/annotations/VisibleForTesting;
     .end annotation
 
@@ -93,6 +94,9 @@
 
 .method private insertSimpleTag(Lorg/xmlpull/v1/XmlSerializer;Ljava/lang/String;Ljava/lang/String;)V
     .registers 5
+    .param p1, "serializer"  # Lorg/xmlpull/v1/XmlSerializer;
+    .param p2, "tagName"  # Ljava/lang/String;
+    .param p3, "value"  # Ljava/lang/String;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Ljava/io/IOException;
@@ -116,6 +120,7 @@
 
 .method private parseMetadataFile(Lorg/xmlpull/v1/XmlPullParser;)Lcom/android/server/devicepolicy/TransferOwnershipMetadataManager$Metadata;
     .registers 14
+    .param p1, "parser"  # Lorg/xmlpull/v1/XmlPullParser;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Lorg/xmlpull/v1/XmlPullParserException;,
@@ -129,67 +134,67 @@
     move-result v0
 
     .line 138
-    nop
-
-    .line 139
-    nop
-
-    .line 140
-    nop
-
-    .line 141
+    .local v0, "outerDepth":I
     const/4 v1, 0x0
 
+    .line 139
+    .local v1, "userId":I
     const/4 v2, 0x0
 
-    move v5, v1
+    .line 140
+    .local v2, "adminComponent":Ljava/lang/String;
+    const/4 v3, 0x0
 
-    move-object v3, v2
-
-    move-object v4, v3
+    .line 141
+    .local v3, "targetComponent":Ljava/lang/String;
+    const/4 v4, 0x0
 
     .line 142
-    :cond_c
-    :goto_c
+    .local v4, "adminType":Ljava/lang/String;
+    :cond_8
+    :goto_8
     invoke-interface {p1}, Lorg/xmlpull/v1/XmlPullParser;->next()I
 
-    move-result v6
+    move-result v5
 
+    move v6, v5
+
+    .local v6, "type":I
     const/4 v7, 0x1
 
-    if-eq v6, v7, :cond_88
+    if-eq v5, v7, :cond_87
 
-    const/4 v8, 0x3
+    const/4 v5, 0x3
 
-    if-ne v6, v8, :cond_1c
+    if-ne v6, v5, :cond_19
 
     .line 143
     invoke-interface {p1}, Lorg/xmlpull/v1/XmlPullParser;->getDepth()I
 
-    move-result v9
+    move-result v8
 
-    if-le v9, v0, :cond_88
+    if-le v8, v0, :cond_87
 
     .line 144
-    :cond_1c
-    if-eq v6, v8, :cond_c
+    :cond_19
+    if-eq v6, v5, :cond_8
 
-    const/4 v9, 0x4
+    const/4 v8, 0x4
 
-    if-ne v6, v9, :cond_22
+    if-ne v6, v8, :cond_1f
 
     .line 145
-    goto :goto_c
+    goto :goto_8
 
     .line 147
-    :cond_22
+    :cond_1f
     invoke-interface {p1}, Lorg/xmlpull/v1/XmlPullParser;->getName()Ljava/lang/String;
 
-    move-result-object v6
+    move-result-object v8
 
     const/4 v9, -0x1
 
-    invoke-virtual {v6}, Ljava/lang/String;->hashCode()I
+    invoke-virtual {v8}, Ljava/lang/String;->hashCode()I
 
     move-result v10
 
@@ -197,72 +202,77 @@
 
     sparse-switch v10, :sswitch_data_8e
 
-    :cond_2f
-    goto :goto_5a
+    :cond_2c
+    goto :goto_58
 
-    :sswitch_30
+    :sswitch_2d
     const-string v10, "admin-type"
 
-    invoke-virtual {v6, v10}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v8, v10}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result v6
+    move-result v8
 
-    if-eqz v6, :cond_2f
+    if-eqz v8, :cond_2c
 
-    move v9, v8
+    move v8, v5
 
-    goto :goto_5a
+    goto :goto_59
 
-    :sswitch_3a
+    :sswitch_37
     const-string/jumbo v10, "source-component"
 
-    invoke-virtual {v6, v10}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v8, v10}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result v6
+    move-result v8
 
-    if-eqz v6, :cond_2f
+    if-eqz v8, :cond_2c
 
-    move v9, v11
+    move v8, v11
 
-    goto :goto_5a
+    goto :goto_59
 
-    :sswitch_45
+    :sswitch_42
     const-string/jumbo v10, "user-id"
 
-    invoke-virtual {v6, v10}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v8, v10}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result v6
+    move-result v8
 
-    if-eqz v6, :cond_2f
+    if-eqz v8, :cond_2c
 
-    move v9, v1
+    const/4 v8, 0x0
 
-    goto :goto_5a
+    goto :goto_59
 
-    :sswitch_50
+    :sswitch_4d
     const-string/jumbo v10, "target-component"
 
-    invoke-virtual {v6, v10}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v8, v10}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result v6
+    move-result v8
 
-    if-eqz v6, :cond_2f
+    if-eqz v8, :cond_2c
 
-    move v9, v7
+    move v8, v7
 
-    :goto_5a
-    if-eqz v9, :cond_7b
+    goto :goto_59
 
-    if-eq v9, v7, :cond_73
+    :goto_58
+    move v8, v9
 
-    if-eq v9, v11, :cond_6b
+    :goto_59
+    if-eqz v8, :cond_7a
 
-    if-eq v9, v8, :cond_63
+    if-eq v8, v7, :cond_72
 
-    goto :goto_87
+    if-eq v8, v11, :cond_6a
+
+    if-eq v8, v5, :cond_62
+
+    goto :goto_86
 
     .line 161
-    :cond_63
+    :cond_62
     invoke-interface {p1}, Lorg/xmlpull/v1/XmlPullParser;->next()I
 
     .line 162
@@ -270,10 +280,10 @@
 
     move-result-object v4
 
-    goto :goto_87
+    goto :goto_86
 
     .line 157
-    :cond_6b
+    :cond_6a
     invoke-interface {p1}, Lorg/xmlpull/v1/XmlPullParser;->next()I
 
     .line 158
@@ -282,10 +292,10 @@
     move-result-object v2
 
     .line 159
-    goto :goto_87
+    goto :goto_86
 
     .line 153
-    :cond_73
+    :cond_72
     invoke-interface {p1}, Lorg/xmlpull/v1/XmlPullParser;->next()I
 
     .line 154
@@ -294,10 +304,10 @@
     move-result-object v3
 
     .line 155
-    goto :goto_87
+    goto :goto_86
 
     .line 149
-    :cond_7b
+    :cond_7a
     invoke-interface {p1}, Lorg/xmlpull/v1/XmlPullParser;->next()I
 
     .line 150
@@ -307,29 +317,31 @@
 
     invoke-static {v5}, Ljava/lang/Integer;->parseInt(Ljava/lang/String;)I
 
-    move-result v5
+    move-result v1
 
     .line 151
     nop
 
     .line 163
-    :goto_87
-    goto :goto_c
+    :goto_86
+    goto :goto_8
 
     .line 166
-    :cond_88
-    new-instance p1, Lcom/android/server/devicepolicy/TransferOwnershipMetadataManager$Metadata;
+    :cond_87
+    new-instance v5, Lcom/android/server/devicepolicy/TransferOwnershipMetadataManager$Metadata;
 
-    invoke-direct {p1, v2, v3, v5, v4}, Lcom/android/server/devicepolicy/TransferOwnershipMetadataManager$Metadata;-><init>(Ljava/lang/String;Ljava/lang/String;ILjava/lang/String;)V
+    invoke-direct {v5, v2, v3, v1, v4}, Lcom/android/server/devicepolicy/TransferOwnershipMetadataManager$Metadata;-><init>(Ljava/lang/String;Ljava/lang/String;ILjava/lang/String;)V
 
-    return-object p1
+    return-object v5
+
+    nop
 
     :sswitch_data_8e
     .sparse-switch
-        -0x1419903f -> :sswitch_50
-        -0x8c5cda3 -> :sswitch_45
-        0x10c541cb -> :sswitch_3a
-        0x264366f8 -> :sswitch_30
+        -0x1419903f -> :sswitch_4d
+        -0x8c5cda3 -> :sswitch_42
+        0x10c541cb -> :sswitch_37
+        0x264366f8 -> :sswitch_2d
     .end sparse-switch
 .end method
 
@@ -375,6 +387,7 @@
     invoke-direct {v0, v1, v2}, Ljava/io/File;-><init>(Ljava/io/File;Ljava/lang/String;)V
 
     .line 118
+    .local v0, "transferOwnershipMetadataFile":Ljava/io/File;
     invoke-virtual {v0}, Ljava/io/File;->exists()Z
 
     move-result v1
@@ -417,18 +430,20 @@
     .catch Ljava/lang/IllegalArgumentException; {:try_start_2c .. :try_end_31} :catch_4c
 
     .line 124
+    .local v1, "stream":Ljava/io/FileInputStream;
     :try_start_31
     invoke-static {}, Landroid/util/Xml;->newPullParser()Lorg/xmlpull/v1/XmlPullParser;
 
     move-result-object v3
 
     .line 125
+    .local v3, "parser":Lorg/xmlpull/v1/XmlPullParser;
     invoke-interface {v3, v1, v2}, Lorg/xmlpull/v1/XmlPullParser;->setInput(Ljava/io/InputStream;Ljava/lang/String;)V
 
     .line 126
     invoke-direct {p0, v3}, Lcom/android/server/devicepolicy/TransferOwnershipMetadataManager;->parseMetadataFile(Lorg/xmlpull/v1/XmlPullParser;)Lcom/android/server/devicepolicy/TransferOwnershipMetadataManager$Metadata;
 
-    move-result-object v3
+    move-result-object v4
     :try_end_3c
     .catchall {:try_start_31 .. :try_end_3c} :catchall_40
 
@@ -441,18 +456,25 @@
     .catch Ljava/lang/IllegalArgumentException; {:try_start_3c .. :try_end_3f} :catch_4c
 
     .line 126
-    return-object v3
+    return-object v4
 
     .line 123
+    .end local v3  # "parser":Lorg/xmlpull/v1/XmlPullParser;
     :catchall_40
     move-exception v3
 
+    .end local v0  # "transferOwnershipMetadataFile":Ljava/io/File;
+    .end local v1  # "stream":Ljava/io/FileInputStream;
+    .end local p0  # "this":Lcom/android/server/devicepolicy/TransferOwnershipMetadataManager;
     :try_start_41
     throw v3
     :try_end_42
     .catchall {:try_start_41 .. :try_end_42} :catchall_42
 
     .line 127
+    .restart local v0  # "transferOwnershipMetadataFile":Ljava/io/File;
+    .restart local v1  # "stream":Ljava/io/FileInputStream;
+    .restart local p0  # "this":Lcom/android/server/devicepolicy/TransferOwnershipMetadataManager;
     :catchall_42
     move-exception v4
 
@@ -464,11 +486,13 @@
     goto :goto_4b
 
     :catchall_47
-    move-exception v1
+    move-exception v5
 
     :try_start_48
-    invoke-virtual {v3, v1}, Ljava/lang/Throwable;->addSuppressed(Ljava/lang/Throwable;)V
+    invoke-virtual {v3, v5}, Ljava/lang/Throwable;->addSuppressed(Ljava/lang/Throwable;)V
 
+    .end local v0  # "transferOwnershipMetadataFile":Ljava/io/File;
+    .end local p0  # "this":Lcom/android/server/devicepolicy/TransferOwnershipMetadataManager;
     :goto_4b
     throw v4
     :try_end_4c
@@ -476,10 +500,14 @@
     .catch Lorg/xmlpull/v1/XmlPullParserException; {:try_start_48 .. :try_end_4c} :catch_4c
     .catch Ljava/lang/IllegalArgumentException; {:try_start_48 .. :try_end_4c} :catch_4c
 
+    .end local v1  # "stream":Ljava/io/FileInputStream;
+    .restart local v0  # "transferOwnershipMetadataFile":Ljava/io/File;
+    .restart local p0  # "this":Lcom/android/server/devicepolicy/TransferOwnershipMetadataManager;
     :catch_4c
     move-exception v1
 
     .line 128
+    .local v1, "e":Ljava/lang/Exception;
     sget-object v3, Lcom/android/server/devicepolicy/TransferOwnershipMetadataManager;->TAG:Ljava/lang/String;
 
     new-instance v4, Ljava/lang/StringBuilder;
@@ -494,11 +522,12 @@
 
     invoke-virtual {v4}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v4
 
-    invoke-static {v3, v0, v1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    invoke-static {v3, v4, v1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
     .line 131
+    .end local v1  # "e":Ljava/lang/Exception;
     return-object v2
 .end method
 
@@ -529,6 +558,7 @@
 
 .method saveMetadataFile(Lcom/android/server/devicepolicy/TransferOwnershipMetadataManager$Metadata;)Z
     .registers 9
+    .param p1, "params"  # Lcom/android/server/devicepolicy/TransferOwnershipMetadataManager$Metadata;
 
     .line 80
     new-instance v0, Ljava/io/File;
@@ -544,49 +574,52 @@
     invoke-direct {v0, v1, v2}, Ljava/io/File;-><init>(Ljava/io/File;Ljava/lang/String;)V
 
     .line 82
+    .local v0, "transferOwnershipMetadataFile":Ljava/io/File;
     new-instance v1, Landroid/util/AtomicFile;
 
     invoke-direct {v1, v0}, Landroid/util/AtomicFile;-><init>(Ljava/io/File;)V
 
     .line 83
-    nop
-
-    .line 85
+    .local v1, "atomicFile":Landroid/util/AtomicFile;
     const/4 v2, 0x0
 
-    :try_start_15
+    .line 85
+    .local v2, "stream":Ljava/io/FileOutputStream;
+    :try_start_14
     invoke-virtual {v1}, Landroid/util/AtomicFile;->startWrite()Ljava/io/FileOutputStream;
 
     move-result-object v3
-    :try_end_19
-    .catch Ljava/io/IOException; {:try_start_15 .. :try_end_19} :catch_63
+
+    move-object v2, v3
 
     .line 86
-    :try_start_19
-    new-instance v4, Lcom/android/internal/util/FastXmlSerializer;
+    new-instance v3, Lcom/android/internal/util/FastXmlSerializer;
 
-    invoke-direct {v4}, Lcom/android/internal/util/FastXmlSerializer;-><init>()V
+    invoke-direct {v3}, Lcom/android/internal/util/FastXmlSerializer;-><init>()V
 
     .line 87
-    sget-object v5, Ljava/nio/charset/StandardCharsets;->UTF_8:Ljava/nio/charset/Charset;
+    .local v3, "serializer":Lorg/xmlpull/v1/XmlSerializer;
+    sget-object v4, Ljava/nio/charset/StandardCharsets;->UTF_8:Ljava/nio/charset/Charset;
 
-    invoke-virtual {v5}, Ljava/nio/charset/Charset;->name()Ljava/lang/String;
+    invoke-virtual {v4}, Ljava/nio/charset/Charset;->name()Ljava/lang/String;
 
-    move-result-object v5
+    move-result-object v4
 
-    invoke-interface {v4, v3, v5}, Lorg/xmlpull/v1/XmlSerializer;->setOutput(Ljava/io/OutputStream;Ljava/lang/String;)V
+    invoke-interface {v3, v2, v4}, Lorg/xmlpull/v1/XmlSerializer;->setOutput(Ljava/io/OutputStream;Ljava/lang/String;)V
 
     .line 88
+    const/4 v4, 0x0
+
     const/4 v5, 0x1
 
     invoke-static {v5}, Ljava/lang/Boolean;->valueOf(Z)Ljava/lang/Boolean;
 
     move-result-object v6
 
-    invoke-interface {v4, v2, v6}, Lorg/xmlpull/v1/XmlSerializer;->startDocument(Ljava/lang/String;Ljava/lang/Boolean;)V
+    invoke-interface {v3, v4, v6}, Lorg/xmlpull/v1/XmlSerializer;->startDocument(Ljava/lang/String;Ljava/lang/Boolean;)V
 
     .line 89
-    const-string/jumbo v2, "user-id"
+    const-string/jumbo v4, "user-id"
 
     iget v6, p1, Lcom/android/server/devicepolicy/TransferOwnershipMetadataManager$Metadata;->userId:I
 
@@ -594,10 +627,10 @@
 
     move-result-object v6
 
-    invoke-direct {p0, v4, v2, v6}, Lcom/android/server/devicepolicy/TransferOwnershipMetadataManager;->insertSimpleTag(Lorg/xmlpull/v1/XmlSerializer;Ljava/lang/String;Ljava/lang/String;)V
+    invoke-direct {p0, v3, v4, v6}, Lcom/android/server/devicepolicy/TransferOwnershipMetadataManager;->insertSimpleTag(Lorg/xmlpull/v1/XmlSerializer;Ljava/lang/String;Ljava/lang/String;)V
 
     .line 90
-    const-string/jumbo v2, "source-component"
+    const-string/jumbo v4, "source-component"
 
     iget-object v6, p1, Lcom/android/server/devicepolicy/TransferOwnershipMetadataManager$Metadata;->sourceComponent:Landroid/content/ComponentName;
 
@@ -607,10 +640,10 @@
     move-result-object v6
 
     .line 90
-    invoke-direct {p0, v4, v2, v6}, Lcom/android/server/devicepolicy/TransferOwnershipMetadataManager;->insertSimpleTag(Lorg/xmlpull/v1/XmlSerializer;Ljava/lang/String;Ljava/lang/String;)V
+    invoke-direct {p0, v3, v4, v6}, Lcom/android/server/devicepolicy/TransferOwnershipMetadataManager;->insertSimpleTag(Lorg/xmlpull/v1/XmlSerializer;Ljava/lang/String;Ljava/lang/String;)V
 
     .line 92
-    const-string/jumbo v2, "target-component"
+    const-string/jumbo v4, "target-component"
 
     iget-object v6, p1, Lcom/android/server/devicepolicy/TransferOwnershipMetadataManager$Metadata;->targetComponent:Landroid/content/ComponentName;
 
@@ -620,65 +653,60 @@
     move-result-object v6
 
     .line 92
-    invoke-direct {p0, v4, v2, v6}, Lcom/android/server/devicepolicy/TransferOwnershipMetadataManager;->insertSimpleTag(Lorg/xmlpull/v1/XmlSerializer;Ljava/lang/String;Ljava/lang/String;)V
+    invoke-direct {p0, v3, v4, v6}, Lcom/android/server/devicepolicy/TransferOwnershipMetadataManager;->insertSimpleTag(Lorg/xmlpull/v1/XmlSerializer;Ljava/lang/String;Ljava/lang/String;)V
 
     .line 94
-    const-string v2, "admin-type"
+    const-string v4, "admin-type"
 
-    iget-object p1, p1, Lcom/android/server/devicepolicy/TransferOwnershipMetadataManager$Metadata;->adminType:Ljava/lang/String;
+    iget-object v6, p1, Lcom/android/server/devicepolicy/TransferOwnershipMetadataManager$Metadata;->adminType:Ljava/lang/String;
 
-    invoke-direct {p0, v4, v2, p1}, Lcom/android/server/devicepolicy/TransferOwnershipMetadataManager;->insertSimpleTag(Lorg/xmlpull/v1/XmlSerializer;Ljava/lang/String;Ljava/lang/String;)V
+    invoke-direct {p0, v3, v4, v6}, Lcom/android/server/devicepolicy/TransferOwnershipMetadataManager;->insertSimpleTag(Lorg/xmlpull/v1/XmlSerializer;Ljava/lang/String;Ljava/lang/String;)V
 
     .line 95
-    invoke-interface {v4}, Lorg/xmlpull/v1/XmlSerializer;->endDocument()V
+    invoke-interface {v3}, Lorg/xmlpull/v1/XmlSerializer;->endDocument()V
 
     .line 96
-    invoke-virtual {v1, v3}, Landroid/util/AtomicFile;->finishWrite(Ljava/io/FileOutputStream;)V
-    :try_end_60
-    .catch Ljava/io/IOException; {:try_start_19 .. :try_end_60} :catch_61
+    invoke-virtual {v1, v2}, Landroid/util/AtomicFile;->finishWrite(Ljava/io/FileOutputStream;)V
+    :try_end_61
+    .catch Ljava/io/IOException; {:try_start_14 .. :try_end_61} :catch_62
 
     .line 97
     return v5
 
     .line 98
-    :catch_61
-    move-exception p1
-
-    goto :goto_65
-
-    :catch_63
-    move-exception p1
-
-    move-object v3, v2
+    .end local v3  # "serializer":Lorg/xmlpull/v1/XmlSerializer;
+    :catch_62
+    move-exception v3
 
     .line 99
-    :goto_65
-    sget-object v2, Lcom/android/server/devicepolicy/TransferOwnershipMetadataManager;->TAG:Ljava/lang/String;
+    .local v3, "e":Ljava/io/IOException;
+    sget-object v4, Lcom/android/server/devicepolicy/TransferOwnershipMetadataManager;->TAG:Ljava/lang/String;
 
-    new-instance v4, Ljava/lang/StringBuilder;
+    new-instance v5, Ljava/lang/StringBuilder;
 
-    invoke-direct {v4}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v5}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v5, "Caught exception while trying to save Owner Transfer Params to file "
+    const-string v6, "Caught exception while trying to save Owner Transfer Params to file "
 
-    invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v4, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    invoke-virtual {v5, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v4}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v5}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v4
+    move-result-object v5
 
-    invoke-static {v2, v4, p1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    invoke-static {v4, v5, v3}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
     .line 101
     invoke-virtual {v0}, Ljava/io/File;->delete()Z
 
     .line 102
-    invoke-virtual {v1, v3}, Landroid/util/AtomicFile;->failWrite(Ljava/io/FileOutputStream;)V
+    invoke-virtual {v1, v2}, Landroid/util/AtomicFile;->failWrite(Ljava/io/FileOutputStream;)V
 
     .line 104
-    const/4 p1, 0x0
+    .end local v3  # "e":Ljava/io/IOException;
+    const/4 v3, 0x0
 
-    return p1
+    return v3
 .end method

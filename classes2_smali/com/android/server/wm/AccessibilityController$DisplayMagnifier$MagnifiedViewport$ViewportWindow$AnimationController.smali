@@ -32,7 +32,9 @@
 
 # direct methods
 .method public constructor <init>(Lcom/android/server/wm/AccessibilityController$DisplayMagnifier$MagnifiedViewport$ViewportWindow;Landroid/content/Context;Landroid/os/Looper;)V
-    .registers 5
+    .registers 7
+    .param p2, "context"  # Landroid/content/Context;
+    .param p3, "looper"  # Landroid/os/Looper;
 
     .line 924
     iput-object p1, p0, Lcom/android/server/wm/AccessibilityController$DisplayMagnifier$MagnifiedViewport$ViewportWindow$AnimationController;->this$2:Lcom/android/server/wm/AccessibilityController$DisplayMagnifier$MagnifiedViewport$ViewportWindow;
@@ -41,15 +43,15 @@
     invoke-direct {p0, p3}, Landroid/os/Handler;-><init>(Landroid/os/Looper;)V
 
     .line 926
-    const/4 p3, 0x2
+    const/4 v0, 0x2
 
-    new-array p3, p3, [I
+    new-array v0, v0, [I
 
-    fill-array-data p3, :array_32
+    fill-array-data v0, :array_32
 
-    const-string v0, "alpha"
+    const-string v1, "alpha"
 
-    invoke-static {p1, v0, p3}, Landroid/animation/ObjectAnimator;->ofInt(Ljava/lang/Object;Ljava/lang/String;[I)Landroid/animation/ObjectAnimator;
+    invoke-static {p1, v1, v0}, Landroid/animation/ObjectAnimator;->ofInt(Ljava/lang/Object;Ljava/lang/String;[I)Landroid/animation/ObjectAnimator;
 
     move-result-object p1
 
@@ -58,32 +60,34 @@
     .line 929
     new-instance p1, Landroid/view/animation/DecelerateInterpolator;
 
-    const/high16 p3, 0x40200000  # 2.5f
+    const/high16 v0, 0x40200000  # 2.5f
 
-    invoke-direct {p1, p3}, Landroid/view/animation/DecelerateInterpolator;-><init>(F)V
+    invoke-direct {p1, v0}, Landroid/view/animation/DecelerateInterpolator;-><init>(F)V
 
     .line 930
+    .local p1, "interpolator":Landroid/view/animation/Interpolator;
     invoke-virtual {p2}, Landroid/content/Context;->getResources()Landroid/content/res/Resources;
 
-    move-result-object p2
+    move-result-object v0
 
-    const p3, 0x10e0002
+    const v1, 0x10e0002
 
-    invoke-virtual {p2, p3}, Landroid/content/res/Resources;->getInteger(I)I
+    invoke-virtual {v0, v1}, Landroid/content/res/Resources;->getInteger(I)I
 
-    move-result p2
+    move-result v0
 
-    int-to-long p2, p2
+    int-to-long v0, v0
 
     .line 933
-    iget-object v0, p0, Lcom/android/server/wm/AccessibilityController$DisplayMagnifier$MagnifiedViewport$ViewportWindow$AnimationController;->mShowHideFrameAnimator:Landroid/animation/ValueAnimator;
+    .local v0, "longAnimationDuration":J
+    iget-object v2, p0, Lcom/android/server/wm/AccessibilityController$DisplayMagnifier$MagnifiedViewport$ViewportWindow$AnimationController;->mShowHideFrameAnimator:Landroid/animation/ValueAnimator;
 
-    invoke-virtual {v0, p1}, Landroid/animation/ValueAnimator;->setInterpolator(Landroid/animation/TimeInterpolator;)V
+    invoke-virtual {v2, p1}, Landroid/animation/ValueAnimator;->setInterpolator(Landroid/animation/TimeInterpolator;)V
 
     .line 934
-    iget-object p1, p0, Lcom/android/server/wm/AccessibilityController$DisplayMagnifier$MagnifiedViewport$ViewportWindow$AnimationController;->mShowHideFrameAnimator:Landroid/animation/ValueAnimator;
+    iget-object v2, p0, Lcom/android/server/wm/AccessibilityController$DisplayMagnifier$MagnifiedViewport$ViewportWindow$AnimationController;->mShowHideFrameAnimator:Landroid/animation/ValueAnimator;
 
-    invoke-virtual {p1, p2, p3}, Landroid/animation/ValueAnimator;->setDuration(J)Landroid/animation/ValueAnimator;
+    invoke-virtual {v2, v0, v1}, Landroid/animation/ValueAnimator;->setDuration(J)Landroid/animation/ValueAnimator;
 
     .line 935
     return-void
@@ -100,7 +104,8 @@
 
 # virtual methods
 .method public handleMessage(Landroid/os/Message;)V
-    .registers 5
+    .registers 6
+    .param p1, "message"  # Landroid/os/Message;
 
     .line 944
     iget v0, p1, Landroid/os/Message;->what:I
@@ -127,10 +132,11 @@
     move v0, v2
 
     .line 947
+    .local v0, "shown":Z
     :goto_e
-    iget p1, p1, Landroid/os/Message;->arg2:I
+    iget v3, p1, Landroid/os/Message;->arg2:I
 
-    if-ne p1, v1, :cond_13
+    if-ne v3, v1, :cond_13
 
     goto :goto_14
 
@@ -138,22 +144,23 @@
     move v1, v2
 
     .line 949
+    .local v1, "animate":Z
     :goto_14
     if-eqz v1, :cond_32
 
     .line 950
-    iget-object p1, p0, Lcom/android/server/wm/AccessibilityController$DisplayMagnifier$MagnifiedViewport$ViewportWindow$AnimationController;->mShowHideFrameAnimator:Landroid/animation/ValueAnimator;
+    iget-object v2, p0, Lcom/android/server/wm/AccessibilityController$DisplayMagnifier$MagnifiedViewport$ViewportWindow$AnimationController;->mShowHideFrameAnimator:Landroid/animation/ValueAnimator;
 
-    invoke-virtual {p1}, Landroid/animation/ValueAnimator;->isRunning()Z
+    invoke-virtual {v2}, Landroid/animation/ValueAnimator;->isRunning()Z
 
-    move-result p1
+    move-result v2
 
-    if-eqz p1, :cond_24
+    if-eqz v2, :cond_24
 
     .line 951
-    iget-object p1, p0, Lcom/android/server/wm/AccessibilityController$DisplayMagnifier$MagnifiedViewport$ViewportWindow$AnimationController;->mShowHideFrameAnimator:Landroid/animation/ValueAnimator;
+    iget-object v2, p0, Lcom/android/server/wm/AccessibilityController$DisplayMagnifier$MagnifiedViewport$ViewportWindow$AnimationController;->mShowHideFrameAnimator:Landroid/animation/ValueAnimator;
 
-    invoke-virtual {p1}, Landroid/animation/ValueAnimator;->reverse()V
+    invoke-virtual {v2}, Landroid/animation/ValueAnimator;->reverse()V
 
     goto :goto_46
 
@@ -162,51 +169,55 @@
     if-eqz v0, :cond_2c
 
     .line 954
-    iget-object p1, p0, Lcom/android/server/wm/AccessibilityController$DisplayMagnifier$MagnifiedViewport$ViewportWindow$AnimationController;->mShowHideFrameAnimator:Landroid/animation/ValueAnimator;
+    iget-object v2, p0, Lcom/android/server/wm/AccessibilityController$DisplayMagnifier$MagnifiedViewport$ViewportWindow$AnimationController;->mShowHideFrameAnimator:Landroid/animation/ValueAnimator;
 
-    invoke-virtual {p1}, Landroid/animation/ValueAnimator;->start()V
+    invoke-virtual {v2}, Landroid/animation/ValueAnimator;->start()V
 
     goto :goto_46
 
     .line 956
     :cond_2c
-    iget-object p1, p0, Lcom/android/server/wm/AccessibilityController$DisplayMagnifier$MagnifiedViewport$ViewportWindow$AnimationController;->mShowHideFrameAnimator:Landroid/animation/ValueAnimator;
+    iget-object v2, p0, Lcom/android/server/wm/AccessibilityController$DisplayMagnifier$MagnifiedViewport$ViewportWindow$AnimationController;->mShowHideFrameAnimator:Landroid/animation/ValueAnimator;
 
-    invoke-virtual {p1}, Landroid/animation/ValueAnimator;->reverse()V
+    invoke-virtual {v2}, Landroid/animation/ValueAnimator;->reverse()V
 
     goto :goto_46
 
     .line 960
     :cond_32
-    iget-object p1, p0, Lcom/android/server/wm/AccessibilityController$DisplayMagnifier$MagnifiedViewport$ViewportWindow$AnimationController;->mShowHideFrameAnimator:Landroid/animation/ValueAnimator;
+    iget-object v3, p0, Lcom/android/server/wm/AccessibilityController$DisplayMagnifier$MagnifiedViewport$ViewportWindow$AnimationController;->mShowHideFrameAnimator:Landroid/animation/ValueAnimator;
 
-    invoke-virtual {p1}, Landroid/animation/ValueAnimator;->cancel()V
+    invoke-virtual {v3}, Landroid/animation/ValueAnimator;->cancel()V
 
     .line 961
     if-eqz v0, :cond_41
 
     .line 962
-    iget-object p1, p0, Lcom/android/server/wm/AccessibilityController$DisplayMagnifier$MagnifiedViewport$ViewportWindow$AnimationController;->this$2:Lcom/android/server/wm/AccessibilityController$DisplayMagnifier$MagnifiedViewport$ViewportWindow;
+    iget-object v2, p0, Lcom/android/server/wm/AccessibilityController$DisplayMagnifier$MagnifiedViewport$ViewportWindow$AnimationController;->this$2:Lcom/android/server/wm/AccessibilityController$DisplayMagnifier$MagnifiedViewport$ViewportWindow;
 
-    const/16 v0, 0xff
+    const/16 v3, 0xff
 
-    invoke-virtual {p1, v0}, Lcom/android/server/wm/AccessibilityController$DisplayMagnifier$MagnifiedViewport$ViewportWindow;->setAlpha(I)V
+    invoke-virtual {v2, v3}, Lcom/android/server/wm/AccessibilityController$DisplayMagnifier$MagnifiedViewport$ViewportWindow;->setAlpha(I)V
 
     goto :goto_46
 
     .line 964
     :cond_41
-    iget-object p1, p0, Lcom/android/server/wm/AccessibilityController$DisplayMagnifier$MagnifiedViewport$ViewportWindow$AnimationController;->this$2:Lcom/android/server/wm/AccessibilityController$DisplayMagnifier$MagnifiedViewport$ViewportWindow;
+    iget-object v3, p0, Lcom/android/server/wm/AccessibilityController$DisplayMagnifier$MagnifiedViewport$ViewportWindow$AnimationController;->this$2:Lcom/android/server/wm/AccessibilityController$DisplayMagnifier$MagnifiedViewport$ViewportWindow;
 
-    invoke-virtual {p1, v2}, Lcom/android/server/wm/AccessibilityController$DisplayMagnifier$MagnifiedViewport$ViewportWindow;->setAlpha(I)V
+    invoke-virtual {v3, v2}, Lcom/android/server/wm/AccessibilityController$DisplayMagnifier$MagnifiedViewport$ViewportWindow;->setAlpha(I)V
 
     .line 969
+    .end local v0  # "shown":Z
+    .end local v1  # "animate":Z
     :goto_46
     return-void
 .end method
 
 .method public onFrameShownStateChanged(ZZ)V
     .registers 4
+    .param p1, "shown"  # Z
+    .param p2, "animate"  # Z
 
     .line 938
     nop
@@ -219,10 +230,10 @@
 
     invoke-virtual {p0, v0, p1, p2}, Lcom/android/server/wm/AccessibilityController$DisplayMagnifier$MagnifiedViewport$ViewportWindow$AnimationController;->obtainMessage(III)Landroid/os/Message;
 
-    move-result-object p1
+    move-result-object v0
 
     .line 939
-    invoke-virtual {p1}, Landroid/os/Message;->sendToTarget()V
+    invoke-virtual {v0}, Landroid/os/Message;->sendToTarget()V
 
     .line 940
     return-void

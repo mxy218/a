@@ -22,7 +22,7 @@
 .method private constructor <init>(Lcom/android/server/wm/TaskSnapshotPersister;)V
     .registers 2
 
-    .line 288
+    .line 276
     iput-object p1, p0, Lcom/android/server/wm/TaskSnapshotPersister$WriteQueueItem;->this$0:Lcom/android/server/wm/TaskSnapshotPersister;
 
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -32,8 +32,10 @@
 
 .method synthetic constructor <init>(Lcom/android/server/wm/TaskSnapshotPersister;Lcom/android/server/wm/TaskSnapshotPersister$1;)V
     .registers 3
+    .param p1, "x0"  # Lcom/android/server/wm/TaskSnapshotPersister;
+    .param p2, "x1"  # Lcom/android/server/wm/TaskSnapshotPersister$1;
 
-    .line 288
+    .line 276
     invoke-direct {p0, p1}, Lcom/android/server/wm/TaskSnapshotPersister$WriteQueueItem;-><init>(Lcom/android/server/wm/TaskSnapshotPersister;)V
 
     return-void
@@ -41,26 +43,17 @@
 
 
 # virtual methods
-.method isReady()Z
-    .registers 2
-
-    .line 293
-    const/4 v0, 0x1
-
-    return v0
-.end method
-
 .method onDequeuedLocked()V
     .registers 1
 
-    .line 308
+    .line 289
     return-void
 .end method
 
 .method onQueuedLocked()V
     .registers 1
 
-    .line 302
+    .line 283
     return-void
 .end method
 

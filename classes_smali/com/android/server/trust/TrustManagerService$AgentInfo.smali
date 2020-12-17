@@ -40,6 +40,7 @@
 
 .method synthetic constructor <init>(Lcom/android/server/trust/TrustManagerService$1;)V
     .registers 2
+    .param p1, "x0"  # Lcom/android/server/trust/TrustManagerService$1;
 
     .line 355
     invoke-direct {p0}, Lcom/android/server/trust/TrustManagerService$AgentInfo;-><init>()V
@@ -50,7 +51,8 @@
 
 # virtual methods
 .method public equals(Ljava/lang/Object;)Z
-    .registers 5
+    .registers 6
+    .param p1, "other"  # Ljava/lang/Object;
 
     .line 365
     instance-of v0, p1, Lcom/android/server/trust/TrustManagerService$AgentInfo;
@@ -64,28 +66,31 @@
 
     .line 368
     :cond_6
-    check-cast p1, Lcom/android/server/trust/TrustManagerService$AgentInfo;
+    move-object v0, p1
+
+    check-cast v0, Lcom/android/server/trust/TrustManagerService$AgentInfo;
 
     .line 369
-    iget-object v0, p0, Lcom/android/server/trust/TrustManagerService$AgentInfo;->component:Landroid/content/ComponentName;
+    .local v0, "o":Lcom/android/server/trust/TrustManagerService$AgentInfo;
+    iget-object v2, p0, Lcom/android/server/trust/TrustManagerService$AgentInfo;->component:Landroid/content/ComponentName;
 
-    iget-object v2, p1, Lcom/android/server/trust/TrustManagerService$AgentInfo;->component:Landroid/content/ComponentName;
+    iget-object v3, v0, Lcom/android/server/trust/TrustManagerService$AgentInfo;->component:Landroid/content/ComponentName;
 
-    invoke-virtual {v0, v2}, Landroid/content/ComponentName;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v2, v3}, Landroid/content/ComponentName;->equals(Ljava/lang/Object;)Z
 
-    move-result v0
+    move-result v2
 
-    if-eqz v0, :cond_19
+    if-eqz v2, :cond_1a
 
-    iget v0, p0, Lcom/android/server/trust/TrustManagerService$AgentInfo;->userId:I
+    iget v2, p0, Lcom/android/server/trust/TrustManagerService$AgentInfo;->userId:I
 
-    iget p1, p1, Lcom/android/server/trust/TrustManagerService$AgentInfo;->userId:I
+    iget v3, v0, Lcom/android/server/trust/TrustManagerService$AgentInfo;->userId:I
 
-    if-ne v0, p1, :cond_19
+    if-ne v2, v3, :cond_1a
 
     const/4 v1, 0x1
 
-    :cond_19
+    :cond_1a
     return v1
 .end method
 

@@ -78,6 +78,8 @@
 
 .method protected constructor <init>(Landroid/content/Context;Landroid/os/INetworkManagementService;)V
     .registers 5
+    .param p1, "context"  # Landroid/content/Context;
+    .param p2, "netManager"  # Landroid/os/INetworkManagementService;
     .annotation build Lcom/android/internal/annotations/VisibleForTesting;
     .end annotation
 
@@ -119,57 +121,60 @@
     iput-object v0, p0, Lcom/android/server/TestNetworkService;->mHandler:Landroid/os/Handler;
 
     .line 83
-    const-string v0, "missing Context"
+    const-string/jumbo v0, "missing Context"
 
     invoke-static {p1, v0}, Lcom/android/internal/util/Preconditions;->checkNotNull(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v0
 
-    check-cast p1, Landroid/content/Context;
+    check-cast v0, Landroid/content/Context;
 
-    iput-object p1, p0, Lcom/android/server/TestNetworkService;->mContext:Landroid/content/Context;
+    iput-object v0, p0, Lcom/android/server/TestNetworkService;->mContext:Landroid/content/Context;
 
     .line 84
-    const-string p1, "missing INetworkManagementService"
+    const-string/jumbo v0, "missing INetworkManagementService"
 
-    invoke-static {p2, p1}, Lcom/android/internal/util/Preconditions;->checkNotNull(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+    invoke-static {p2, v0}, Lcom/android/internal/util/Preconditions;->checkNotNull(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v0
 
-    check-cast p1, Landroid/os/INetworkManagementService;
+    check-cast v0, Landroid/os/INetworkManagementService;
 
-    iput-object p1, p0, Lcom/android/server/TestNetworkService;->mNMS:Landroid/os/INetworkManagementService;
+    iput-object v0, p0, Lcom/android/server/TestNetworkService;->mNMS:Landroid/os/INetworkManagementService;
 
     .line 85
     invoke-static {}, Landroid/net/util/NetdService;->getInstance()Landroid/net/INetd;
 
-    move-result-object p1
+    move-result-object v0
 
-    const-string p2, "could not get netd instance"
+    const-string v1, "could not get netd instance"
 
-    invoke-static {p1, p2}, Lcom/android/internal/util/Preconditions;->checkNotNull(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+    invoke-static {v0, v1}, Lcom/android/internal/util/Preconditions;->checkNotNull(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v0
 
-    check-cast p1, Landroid/net/INetd;
+    check-cast v0, Landroid/net/INetd;
 
-    iput-object p1, p0, Lcom/android/server/TestNetworkService;->mNetd:Landroid/net/INetd;
+    iput-object v0, p0, Lcom/android/server/TestNetworkService;->mNetd:Landroid/net/INetd;
 
     .line 86
     return-void
 .end method
 
 .method static synthetic access$000(Lcom/android/server/TestNetworkService;)Landroid/util/SparseArray;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/TestNetworkService;
 
     .line 59
-    iget-object p0, p0, Lcom/android/server/TestNetworkService;->mTestNetworkTracker:Landroid/util/SparseArray;
+    iget-object v0, p0, Lcom/android/server/TestNetworkService;->mTestNetworkTracker:Landroid/util/SparseArray;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method private createInterface(Z[Landroid/net/LinkAddress;)Landroid/net/TestNetworkInterface;
-    .registers 5
+    .registers 6
+    .param p1, "isTun"  # Z
+    .param p2, "linkAddrs"  # [Landroid/net/LinkAddress;
 
     .line 95
     iget-object v0, p0, Lcom/android/server/TestNetworkService;->mContext:Landroid/content/Context;
@@ -177,56 +182,59 @@
     invoke-static {v0}, Lcom/android/server/TestNetworkService;->enforceTestNetworkPermissions(Landroid/content/Context;)V
 
     .line 97
-    const-string v0, "missing linkAddrs"
+    const-string/jumbo v0, "missing linkAddrs"
 
     invoke-static {p2, v0}, Lcom/android/internal/util/Preconditions;->checkNotNull(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
 
     .line 99
-    if-eqz p1, :cond_10
+    if-eqz p1, :cond_11
 
     const-string/jumbo v0, "testtun"
 
-    goto :goto_13
+    goto :goto_14
 
-    :cond_10
+    :cond_11
     const-string/jumbo v0, "testtap"
 
     .line 100
-    :goto_13
+    .local v0, "ifacePrefix":Ljava/lang/String;
+    :goto_14
     new-instance v1, Ljava/lang/StringBuilder;
 
     invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
 
     invoke-virtual {v1, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    sget-object v0, Lcom/android/server/TestNetworkService;->sTestTunIndex:Ljava/util/concurrent/atomic/AtomicInteger;
+    sget-object v2, Lcom/android/server/TestNetworkService;->sTestTunIndex:Ljava/util/concurrent/atomic/AtomicInteger;
 
-    invoke-virtual {v0}, Ljava/util/concurrent/atomic/AtomicInteger;->getAndIncrement()I
+    invoke-virtual {v2}, Ljava/util/concurrent/atomic/AtomicInteger;->getAndIncrement()I
 
-    move-result v0
+    move-result v2
 
-    invoke-virtual {v1, v0}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
     invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v1
 
     .line 101
-    new-instance v1, Lcom/android/server/-$$Lambda$TestNetworkService$kNsToB0Cr6DV8jrvpBel_EzoIHE;
+    .local v1, "iface":Ljava/lang/String;
+    new-instance v2, Lcom/android/server/-$$Lambda$TestNetworkService$kNsToB0Cr6DV8jrvpBel_EzoIHE;
 
-    invoke-direct {v1, p0, p1, v0, p2}, Lcom/android/server/-$$Lambda$TestNetworkService$kNsToB0Cr6DV8jrvpBel_EzoIHE;-><init>(Lcom/android/server/TestNetworkService;ZLjava/lang/String;[Landroid/net/LinkAddress;)V
+    invoke-direct {v2, p0, p1, v1, p2}, Lcom/android/server/-$$Lambda$TestNetworkService$kNsToB0Cr6DV8jrvpBel_EzoIHE;-><init>(Lcom/android/server/TestNetworkService;ZLjava/lang/String;[Landroid/net/LinkAddress;)V
 
-    invoke-static {v1}, Landroid/os/Binder;->withCleanCallingIdentity(Lcom/android/internal/util/FunctionalUtils$ThrowingSupplier;)Ljava/lang/Object;
+    invoke-static {v2}, Landroid/os/Binder;->withCleanCallingIdentity(Lcom/android/internal/util/FunctionalUtils$ThrowingSupplier;)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v2
 
-    check-cast p1, Landroid/net/TestNetworkInterface;
+    check-cast v2, Landroid/net/TestNetworkInterface;
 
-    return-object p1
+    return-object v2
 .end method
 
 .method public static enforceTestNetworkPermissions(Landroid/content/Context;)V
     .registers 3
+    .param p0, "context"  # Landroid/content/Context;
 
     .line 355
     const-string v0, "android.permission.MANAGE_TEST_NETWORKS"
@@ -243,7 +251,12 @@
 .end method
 
 .method private registerTestNetworkAgent(Landroid/os/Looper;Landroid/content/Context;Ljava/lang/String;ILandroid/os/IBinder;)Lcom/android/server/TestNetworkService$TestNetworkAgent;
-    .registers 22
+    .registers 27
+    .param p1, "looper"  # Landroid/os/Looper;
+    .param p2, "context"  # Landroid/content/Context;
+    .param p3, "iface"  # Ljava/lang/String;
+    .param p4, "callingUid"  # I
+    .param p5, "binder"  # Landroid/os/IBinder;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;,
@@ -254,233 +267,259 @@
     .line 232
     move-object/from16 v0, p3
 
-    const-string v1, "missing Looper"
+    const-string/jumbo v1, "missing Looper"
 
-    move-object/from16 v4, p1
+    move-object/from16 v12, p1
 
-    invoke-static {v4, v1}, Lcom/android/internal/util/Preconditions;->checkNotNull(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+    invoke-static {v12, v1}, Lcom/android/internal/util/Preconditions;->checkNotNull(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
 
     .line 233
-    const-string v1, "missing Context"
+    const-string/jumbo v1, "missing Context"
 
-    move-object/from16 v5, p2
+    move-object/from16 v13, p2
 
-    invoke-static {v5, v1}, Lcom/android/internal/util/Preconditions;->checkNotNull(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+    invoke-static {v13, v1}, Lcom/android/internal/util/Preconditions;->checkNotNull(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
 
     .line 237
-    new-instance v6, Landroid/net/NetworkInfo;
+    new-instance v1, Landroid/net/NetworkInfo;
 
-    const/4 v1, 0x0
+    const/4 v2, 0x0
 
-    const/16 v2, 0x12
+    const/16 v3, 0x12
 
-    const-string v3, "TEST_NETWORK"
+    const-string v4, "TEST_NETWORK"
 
-    const-string v7, ""
+    const-string v5, ""
 
-    invoke-direct {v6, v2, v1, v3, v7}, Landroid/net/NetworkInfo;-><init>(IILjava/lang/String;Ljava/lang/String;)V
+    invoke-direct {v1, v3, v2, v4, v5}, Landroid/net/NetworkInfo;-><init>(IILjava/lang/String;Ljava/lang/String;)V
 
     .line 238
-    sget-object v2, Landroid/net/NetworkInfo$DetailedState;->CONNECTED:Landroid/net/NetworkInfo$DetailedState;
+    .local v1, "ni":Landroid/net/NetworkInfo;
+    sget-object v3, Landroid/net/NetworkInfo$DetailedState;->CONNECTED:Landroid/net/NetworkInfo$DetailedState;
 
-    const/4 v3, 0x0
+    const/4 v4, 0x0
 
-    invoke-virtual {v6, v2, v3, v3}, Landroid/net/NetworkInfo;->setDetailedState(Landroid/net/NetworkInfo$DetailedState;Ljava/lang/String;Ljava/lang/String;)V
+    invoke-virtual {v1, v3, v4, v4}, Landroid/net/NetworkInfo;->setDetailedState(Landroid/net/NetworkInfo$DetailedState;Ljava/lang/String;Ljava/lang/String;)V
 
     .line 239
-    const/4 v2, 0x1
+    const/4 v3, 0x1
 
-    invoke-virtual {v6, v2}, Landroid/net/NetworkInfo;->setIsAvailable(Z)V
+    invoke-virtual {v1, v3}, Landroid/net/NetworkInfo;->setIsAvailable(Z)V
 
     .line 242
-    new-instance v7, Landroid/net/NetworkCapabilities;
+    new-instance v5, Landroid/net/NetworkCapabilities;
 
-    invoke-direct {v7}, Landroid/net/NetworkCapabilities;-><init>()V
+    invoke-direct {v5}, Landroid/net/NetworkCapabilities;-><init>()V
+
+    move-object v14, v5
 
     .line 243
-    invoke-virtual {v7}, Landroid/net/NetworkCapabilities;->clearAll()V
+    .local v14, "nc":Landroid/net/NetworkCapabilities;
+    invoke-virtual {v14}, Landroid/net/NetworkCapabilities;->clearAll()V
 
     .line 244
-    const/4 v8, 0x7
+    const/4 v5, 0x7
 
-    invoke-virtual {v7, v8}, Landroid/net/NetworkCapabilities;->addTransportType(I)Landroid/net/NetworkCapabilities;
+    invoke-virtual {v14, v5}, Landroid/net/NetworkCapabilities;->addTransportType(I)Landroid/net/NetworkCapabilities;
 
     .line 245
-    const/16 v8, 0x15
+    const/16 v5, 0x15
 
-    invoke-virtual {v7, v8}, Landroid/net/NetworkCapabilities;->addCapability(I)Landroid/net/NetworkCapabilities;
+    invoke-virtual {v14, v5}, Landroid/net/NetworkCapabilities;->addCapability(I)Landroid/net/NetworkCapabilities;
 
     .line 246
-    const/16 v8, 0xd
+    const/16 v5, 0xd
 
-    invoke-virtual {v7, v8}, Landroid/net/NetworkCapabilities;->addCapability(I)Landroid/net/NetworkCapabilities;
+    invoke-virtual {v14, v5}, Landroid/net/NetworkCapabilities;->addCapability(I)Landroid/net/NetworkCapabilities;
 
     .line 247
-    new-instance v8, Landroid/net/StringNetworkSpecifier;
+    new-instance v5, Landroid/net/StringNetworkSpecifier;
 
-    invoke-direct {v8, v0}, Landroid/net/StringNetworkSpecifier;-><init>(Ljava/lang/String;)V
+    invoke-direct {v5, v0}, Landroid/net/StringNetworkSpecifier;-><init>(Ljava/lang/String;)V
 
-    invoke-virtual {v7, v8}, Landroid/net/NetworkCapabilities;->setNetworkSpecifier(Landroid/net/NetworkSpecifier;)Landroid/net/NetworkCapabilities;
+    invoke-virtual {v14, v5}, Landroid/net/NetworkCapabilities;->setNetworkSpecifier(Landroid/net/NetworkSpecifier;)Landroid/net/NetworkCapabilities;
 
     .line 250
-    new-instance v8, Landroid/net/LinkProperties;
+    new-instance v5, Landroid/net/LinkProperties;
 
-    invoke-direct {v8}, Landroid/net/LinkProperties;-><init>()V
+    invoke-direct {v5}, Landroid/net/LinkProperties;-><init>()V
+
+    move-object v15, v5
 
     .line 251
-    invoke-virtual {v8, v0}, Landroid/net/LinkProperties;->setInterfaceName(Ljava/lang/String;)V
+    .local v15, "lp":Landroid/net/LinkProperties;
+    invoke-virtual {v15, v0}, Landroid/net/LinkProperties;->setInterfaceName(Ljava/lang/String;)V
 
     .line 254
-    nop
+    const/4 v5, 0x0
+
+    .local v5, "allowIPv4":Z
+    const/4 v6, 0x0
 
     .line 255
+    .local v6, "allowIPv6":Z
     invoke-static/range {p3 .. p3}, Ljava/net/NetworkInterface;->getByName(Ljava/lang/String;)Ljava/net/NetworkInterface;
 
-    move-result-object v9
+    move-result-object v11
 
     .line 256
-    new-instance v10, Ljava/lang/StringBuilder;
+    .local v11, "netIntf":Ljava/net/NetworkInterface;
+    new-instance v7, Ljava/lang/StringBuilder;
 
-    invoke-direct {v10}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v7}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v11, "No such network interface found: "
+    const-string v8, "No such network interface found: "
 
-    invoke-virtual {v10, v11}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v7, v8}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v10, v9}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    invoke-virtual {v7, v11}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v10}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v7}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v10
+    move-result-object v7
 
-    invoke-static {v9, v10}, Lcom/android/internal/util/Preconditions;->checkNotNull(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+    invoke-static {v11, v7}, Lcom/android/internal/util/Preconditions;->checkNotNull(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
 
     .line 258
-    invoke-virtual {v9}, Ljava/net/NetworkInterface;->getInterfaceAddresses()Ljava/util/List;
+    invoke-virtual {v11}, Ljava/net/NetworkInterface;->getInterfaceAddresses()Ljava/util/List;
 
-    move-result-object v9
+    move-result-object v7
 
-    invoke-interface {v9}, Ljava/util/List;->iterator()Ljava/util/Iterator;
+    invoke-interface {v7}, Ljava/util/List;->iterator()Ljava/util/Iterator;
 
-    move-result-object v9
+    move-result-object v7
 
-    move v10, v1
+    move/from16 v16, v5
 
-    move v11, v10
+    move/from16 v17, v6
 
-    :goto_6f
-    invoke-interface {v9}, Ljava/util/Iterator;->hasNext()Z
+    .end local v5  # "allowIPv4":Z
+    .end local v6  # "allowIPv6":Z
+    .local v16, "allowIPv4":Z
+    .local v17, "allowIPv6":Z
+    :goto_76
+    invoke-interface {v7}, Ljava/util/Iterator;->hasNext()Z
 
-    move-result v12
+    move-result v5
 
-    if-eqz v12, :cond_a8
+    if-eqz v5, :cond_b4
 
-    invoke-interface {v9}, Ljava/util/Iterator;->next()Ljava/lang/Object;
+    invoke-interface {v7}, Ljava/util/Iterator;->next()Ljava/lang/Object;
 
-    move-result-object v12
+    move-result-object v5
 
-    check-cast v12, Ljava/net/InterfaceAddress;
+    check-cast v5, Ljava/net/InterfaceAddress;
 
     .line 259
-    new-instance v13, Landroid/net/LinkAddress;
+    .local v5, "intfAddr":Ljava/net/InterfaceAddress;
+    new-instance v6, Landroid/net/LinkAddress;
 
     .line 260
-    invoke-virtual {v12}, Ljava/net/InterfaceAddress;->getAddress()Ljava/net/InetAddress;
+    invoke-virtual {v5}, Ljava/net/InterfaceAddress;->getAddress()Ljava/net/InetAddress;
 
-    move-result-object v14
+    move-result-object v8
 
-    invoke-virtual {v12}, Ljava/net/InterfaceAddress;->getNetworkPrefixLength()S
+    invoke-virtual {v5}, Ljava/net/InterfaceAddress;->getNetworkPrefixLength()S
 
-    move-result v15
+    move-result v9
 
-    invoke-direct {v13, v14, v15}, Landroid/net/LinkAddress;-><init>(Ljava/net/InetAddress;I)V
+    invoke-direct {v6, v8, v9}, Landroid/net/LinkAddress;-><init>(Ljava/net/InetAddress;I)V
 
     .line 259
-    invoke-virtual {v8, v13}, Landroid/net/LinkProperties;->addLinkAddress(Landroid/net/LinkAddress;)Z
+    invoke-virtual {v15, v6}, Landroid/net/LinkProperties;->addLinkAddress(Landroid/net/LinkAddress;)Z
 
     .line 262
-    invoke-virtual {v12}, Ljava/net/InterfaceAddress;->getAddress()Ljava/net/InetAddress;
+    invoke-virtual {v5}, Ljava/net/InterfaceAddress;->getAddress()Ljava/net/InetAddress;
 
-    move-result-object v13
+    move-result-object v6
 
-    instance-of v13, v13, Ljava/net/Inet6Address;
+    instance-of v6, v6, Ljava/net/Inet6Address;
 
-    if-eqz v13, :cond_9e
+    if-eqz v6, :cond_a8
 
     .line 263
-    invoke-virtual {v12}, Ljava/net/InterfaceAddress;->getAddress()Ljava/net/InetAddress;
+    invoke-virtual {v5}, Ljava/net/InterfaceAddress;->getAddress()Ljava/net/InetAddress;
 
-    move-result-object v12
+    move-result-object v6
 
-    invoke-virtual {v12}, Ljava/net/InetAddress;->isLinkLocalAddress()Z
+    invoke-virtual {v6}, Ljava/net/InetAddress;->isLinkLocalAddress()Z
 
-    move-result v12
+    move-result v6
 
-    xor-int/2addr v12, v2
+    xor-int/2addr v6, v3
 
-    or-int/2addr v11, v12
+    or-int v6, v17, v6
 
-    goto :goto_a7
+    move/from16 v17, v6
+
+    .end local v17  # "allowIPv6":Z
+    .restart local v6  # "allowIPv6":Z
+    goto :goto_b3
 
     .line 264
-    :cond_9e
-    invoke-virtual {v12}, Ljava/net/InterfaceAddress;->getAddress()Ljava/net/InetAddress;
+    .end local v6  # "allowIPv6":Z
+    .restart local v17  # "allowIPv6":Z
+    :cond_a8
+    invoke-virtual {v5}, Ljava/net/InterfaceAddress;->getAddress()Ljava/net/InetAddress;
 
-    move-result-object v12
+    move-result-object v6
 
-    instance-of v12, v12, Ljava/net/Inet4Address;
+    instance-of v6, v6, Ljava/net/Inet4Address;
 
-    if-eqz v12, :cond_a7
+    if-eqz v6, :cond_b3
 
     .line 265
-    move v10, v2
+    const/4 v6, 0x1
+
+    move/from16 v16, v6
 
     .line 267
-    :cond_a7
-    :goto_a7
-    goto :goto_6f
+    .end local v5  # "intfAddr":Ljava/net/InterfaceAddress;
+    :cond_b3
+    :goto_b3
+    goto :goto_76
 
     .line 270
-    :cond_a8
-    if-eqz v10, :cond_b9
+    :cond_b4
+    if-eqz v16, :cond_c5
 
     .line 271
-    new-instance v2, Landroid/net/RouteInfo;
+    new-instance v3, Landroid/net/RouteInfo;
 
-    new-instance v9, Landroid/net/IpPrefix;
+    new-instance v5, Landroid/net/IpPrefix;
 
-    sget-object v10, Ljava/net/Inet4Address;->ANY:Ljava/net/InetAddress;
+    sget-object v6, Ljava/net/Inet4Address;->ANY:Ljava/net/InetAddress;
 
-    invoke-direct {v9, v10, v1}, Landroid/net/IpPrefix;-><init>(Ljava/net/InetAddress;I)V
+    invoke-direct {v5, v6, v2}, Landroid/net/IpPrefix;-><init>(Ljava/net/InetAddress;I)V
 
-    invoke-direct {v2, v9, v3, v0}, Landroid/net/RouteInfo;-><init>(Landroid/net/IpPrefix;Ljava/net/InetAddress;Ljava/lang/String;)V
+    invoke-direct {v3, v5, v4, v0}, Landroid/net/RouteInfo;-><init>(Landroid/net/IpPrefix;Ljava/net/InetAddress;Ljava/lang/String;)V
 
-    invoke-virtual {v8, v2}, Landroid/net/LinkProperties;->addRoute(Landroid/net/RouteInfo;)Z
+    invoke-virtual {v15, v3}, Landroid/net/LinkProperties;->addRoute(Landroid/net/RouteInfo;)Z
 
     .line 273
-    :cond_b9
-    if-eqz v11, :cond_ca
+    :cond_c5
+    if-eqz v17, :cond_d6
 
     .line 274
-    new-instance v2, Landroid/net/RouteInfo;
+    new-instance v3, Landroid/net/RouteInfo;
 
-    new-instance v9, Landroid/net/IpPrefix;
+    new-instance v5, Landroid/net/IpPrefix;
 
-    sget-object v10, Ljava/net/Inet6Address;->ANY:Ljava/net/InetAddress;
+    sget-object v6, Ljava/net/Inet6Address;->ANY:Ljava/net/InetAddress;
 
-    invoke-direct {v9, v10, v1}, Landroid/net/IpPrefix;-><init>(Ljava/net/InetAddress;I)V
+    invoke-direct {v5, v6, v2}, Landroid/net/IpPrefix;-><init>(Ljava/net/InetAddress;I)V
 
-    invoke-direct {v2, v9, v3, v0}, Landroid/net/RouteInfo;-><init>(Landroid/net/IpPrefix;Ljava/net/InetAddress;Ljava/lang/String;)V
+    invoke-direct {v3, v5, v4, v0}, Landroid/net/RouteInfo;-><init>(Landroid/net/IpPrefix;Ljava/net/InetAddress;Ljava/lang/String;)V
 
-    invoke-virtual {v8, v2}, Landroid/net/LinkProperties;->addRoute(Landroid/net/RouteInfo;)Z
+    invoke-virtual {v15, v3}, Landroid/net/LinkProperties;->addRoute(Landroid/net/RouteInfo;)Z
 
     .line 277
-    :cond_ca
-    new-instance v0, Lcom/android/server/TestNetworkService$TestNetworkAgent;
+    :cond_d6
+    new-instance v18, Lcom/android/server/TestNetworkService$TestNetworkAgent;
 
-    const/4 v11, 0x0
+    const/16 v19, 0x0
 
-    move-object v2, v0
+    move-object/from16 v2, v18
 
     move-object/from16 v3, p0
 
@@ -488,13 +527,25 @@
 
     move-object/from16 v5, p2
 
+    move-object v6, v1
+
+    move-object v7, v14
+
+    move-object v8, v15
+
     move/from16 v9, p4
 
     move-object/from16 v10, p5
 
+    move-object/from16 v20, v11
+
+    .end local v11  # "netIntf":Ljava/net/NetworkInterface;
+    .local v20, "netIntf":Ljava/net/NetworkInterface;
+    move-object/from16 v11, v19
+
     invoke-direct/range {v2 .. v11}, Lcom/android/server/TestNetworkService$TestNetworkAgent;-><init>(Lcom/android/server/TestNetworkService;Landroid/os/Looper;Landroid/content/Context;Landroid/net/NetworkInfo;Landroid/net/NetworkCapabilities;Landroid/net/LinkProperties;ILandroid/os/IBinder;Lcom/android/server/TestNetworkService$1;)V
 
-    return-object v0
+    return-object v18
 .end method
 
 
@@ -516,19 +567,23 @@
 
 .method public createTunInterface([Landroid/net/LinkAddress;)Landroid/net/TestNetworkInterface;
     .registers 3
+    .param p1, "linkAddrs"  # [Landroid/net/LinkAddress;
 
     .line 128
     const/4 v0, 0x1
 
     invoke-direct {p0, v0, p1}, Lcom/android/server/TestNetworkService;->createInterface(Z[Landroid/net/LinkAddress;)Landroid/net/TestNetworkInterface;
 
-    move-result-object p1
+    move-result-object v0
 
-    return-object p1
+    return-object v0
 .end method
 
 .method public synthetic lambda$createInterface$0$TestNetworkService(ZLjava/lang/String;[Landroid/net/LinkAddress;)Landroid/net/TestNetworkInterface;
-    .registers 9
+    .registers 11
+    .param p1, "isTun"  # Z
+    .param p2, "iface"  # Ljava/lang/String;
+    .param p3, "linkAddrs"  # [Landroid/net/LinkAddress;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Ljava/lang/Exception;
@@ -542,71 +597,79 @@
     :try_start_1
     invoke-static {p1, p2}, Lcom/android/server/TestNetworkService;->jniCreateTunTap(ZLjava/lang/String;)I
 
-    move-result p1
+    move-result v0
 
-    invoke-static {p1}, Landroid/os/ParcelFileDescriptor;->adoptFd(I)Landroid/os/ParcelFileDescriptor;
+    invoke-static {v0}, Landroid/os/ParcelFileDescriptor;->adoptFd(I)Landroid/os/ParcelFileDescriptor;
 
-    move-result-object p1
+    move-result-object v0
 
     .line 106
-    array-length v0, p3
+    .local v0, "tunIntf":Landroid/os/ParcelFileDescriptor;
+    array-length v1, p3
 
-    const/4 v1, 0x0
+    const/4 v2, 0x0
 
     :goto_b
-    if-ge v1, v0, :cond_23
+    if-ge v2, v1, :cond_23
 
-    aget-object v2, p3, v1
+    aget-object v3, p3, v2
 
     .line 107
-    iget-object v3, p0, Lcom/android/server/TestNetworkService;->mNetd:Landroid/net/INetd;
+    .local v3, "addr":Landroid/net/LinkAddress;
+    iget-object v4, p0, Lcom/android/server/TestNetworkService;->mNetd:Landroid/net/INetd;
 
     .line 109
-    invoke-virtual {v2}, Landroid/net/LinkAddress;->getAddress()Ljava/net/InetAddress;
+    invoke-virtual {v3}, Landroid/net/LinkAddress;->getAddress()Ljava/net/InetAddress;
 
-    move-result-object v4
+    move-result-object v5
 
-    invoke-virtual {v4}, Ljava/net/InetAddress;->getHostAddress()Ljava/lang/String;
+    invoke-virtual {v5}, Ljava/net/InetAddress;->getHostAddress()Ljava/lang/String;
 
-    move-result-object v4
+    move-result-object v5
 
     .line 110
-    invoke-virtual {v2}, Landroid/net/LinkAddress;->getPrefixLength()I
+    invoke-virtual {v3}, Landroid/net/LinkAddress;->getPrefixLength()I
 
-    move-result v2
+    move-result v6
 
     .line 107
-    invoke-interface {v3, p2, v4, v2}, Landroid/net/INetd;->interfaceAddAddress(Ljava/lang/String;Ljava/lang/String;I)V
+    invoke-interface {v4, p2, v5, v6}, Landroid/net/INetd;->interfaceAddAddress(Ljava/lang/String;Ljava/lang/String;I)V
 
     .line 106
-    add-int/lit8 v1, v1, 0x1
+    .end local v3  # "addr":Landroid/net/LinkAddress;
+    add-int/lit8 v2, v2, 0x1
 
     goto :goto_b
 
     .line 113
     :cond_23
-    new-instance p3, Landroid/net/TestNetworkInterface;
+    new-instance v1, Landroid/net/TestNetworkInterface;
 
-    invoke-direct {p3, p1, p2}, Landroid/net/TestNetworkInterface;-><init>(Landroid/os/ParcelFileDescriptor;Ljava/lang/String;)V
+    invoke-direct {v1, v0, p2}, Landroid/net/TestNetworkInterface;-><init>(Landroid/os/ParcelFileDescriptor;Ljava/lang/String;)V
     :try_end_28
     .catch Landroid/os/RemoteException; {:try_start_1 .. :try_end_28} :catch_29
 
-    return-object p3
+    return-object v1
 
     .line 114
+    .end local v0  # "tunIntf":Landroid/os/ParcelFileDescriptor;
     :catch_29
-    move-exception p1
+    move-exception v0
 
     .line 115
-    invoke-virtual {p1}, Landroid/os/RemoteException;->rethrowFromSystemServer()Ljava/lang/RuntimeException;
+    .local v0, "e":Landroid/os/RemoteException;
+    invoke-virtual {v0}, Landroid/os/RemoteException;->rethrowFromSystemServer()Ljava/lang/RuntimeException;
 
-    move-result-object p1
+    move-result-object v1
 
-    throw p1
+    throw v1
 .end method
 
 .method public synthetic lambda$setupTestNetwork$1$TestNetworkService(Ljava/lang/String;ILandroid/os/IBinder;)V
     .registers 12
+    .param p1, "iface"  # Ljava/lang/String;
+    .param p2, "callingUid"  # I
+    .param p3, "binder"  # Landroid/os/IBinder;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Ljava/lang/Exception;
@@ -649,16 +712,18 @@
 
     invoke-direct/range {v2 .. v7}, Lcom/android/server/TestNetworkService;->registerTestNetworkAgent(Landroid/os/Looper;Landroid/content/Context;Ljava/lang/String;ILandroid/os/IBinder;)Lcom/android/server/TestNetworkService$TestNetworkAgent;
 
-    move-result-object p1
+    move-result-object v1
 
     .line 321
-    iget-object p2, p0, Lcom/android/server/TestNetworkService;->mTestNetworkTracker:Landroid/util/SparseArray;
+    .local v1, "agent":Lcom/android/server/TestNetworkService$TestNetworkAgent;
+    iget-object v2, p0, Lcom/android/server/TestNetworkService;->mTestNetworkTracker:Landroid/util/SparseArray;
 
-    iget p3, p1, Lcom/android/server/TestNetworkService$TestNetworkAgent;->netId:I
+    iget v3, v1, Lcom/android/server/TestNetworkService$TestNetworkAgent;->netId:I
 
-    invoke-virtual {p2, p3, p1}, Landroid/util/SparseArray;->put(ILjava/lang/Object;)V
+    invoke-virtual {v2, v3, v1}, Landroid/util/SparseArray;->put(ILjava/lang/Object;)V
 
     .line 322
+    .end local v1  # "agent":Lcom/android/server/TestNetworkService$TestNetworkAgent;
     monitor-exit v0
 
     .line 327
@@ -669,43 +734,56 @@
 
     .line 322
     :catchall_22
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_24
     .catchall {:try_start_8 .. :try_end_24} :catchall_22
 
+    .end local p0  # "this":Lcom/android/server/TestNetworkService;
+    .end local p1  # "iface":Ljava/lang/String;
+    .end local p2  # "callingUid":I
+    .end local p3  # "binder":Landroid/os/IBinder;
     :try_start_24
-    throw p1
+    throw v1
     :try_end_25
     .catch Ljava/net/SocketException; {:try_start_24 .. :try_end_25} :catch_2b
     .catch Landroid/os/RemoteException; {:try_start_24 .. :try_end_25} :catch_25
 
     .line 325
+    .restart local p0  # "this":Lcom/android/server/TestNetworkService;
+    .restart local p1  # "iface":Ljava/lang/String;
+    .restart local p2  # "callingUid":I
+    .restart local p3  # "binder":Landroid/os/IBinder;
     :catch_25
-    move-exception p1
+    move-exception v0
 
     .line 326
-    invoke-virtual {p1}, Landroid/os/RemoteException;->rethrowFromSystemServer()Ljava/lang/RuntimeException;
+    .local v0, "e":Landroid/os/RemoteException;
+    invoke-virtual {v0}, Landroid/os/RemoteException;->rethrowFromSystemServer()Ljava/lang/RuntimeException;
 
-    move-result-object p1
+    move-result-object v1
 
-    throw p1
+    throw v1
 
     .line 323
+    .end local v0  # "e":Landroid/os/RemoteException;
     :catch_2b
-    move-exception p1
+    move-exception v0
 
     .line 324
-    new-instance p2, Ljava/io/UncheckedIOException;
+    .local v0, "e":Ljava/net/SocketException;
+    new-instance v1, Ljava/io/UncheckedIOException;
 
-    invoke-direct {p2, p1}, Ljava/io/UncheckedIOException;-><init>(Ljava/io/IOException;)V
+    invoke-direct {v1, v0}, Ljava/io/UncheckedIOException;-><init>(Ljava/io/IOException;)V
 
-    throw p2
+    throw v1
 .end method
 
 .method public setupTestNetwork(Ljava/lang/String;Landroid/os/IBinder;)V
     .registers 5
+    .param p1, "iface"  # Ljava/lang/String;
+    .param p2, "binder"  # Landroid/os/IBinder;
 
     .line 288
     iget-object v0, p0, Lcom/android/server/TestNetworkService;->mContext:Landroid/content/Context;
@@ -713,23 +791,23 @@
     invoke-static {v0}, Lcom/android/server/TestNetworkService;->enforceTestNetworkPermissions(Landroid/content/Context;)V
 
     .line 290
-    const-string v0, "missing Iface"
+    const-string/jumbo v0, "missing Iface"
 
     invoke-static {p1, v0}, Lcom/android/internal/util/Preconditions;->checkNotNull(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
 
     .line 291
-    const-string v0, "missing IBinder"
+    const-string/jumbo v0, "missing IBinder"
 
     invoke-static {p2, v0}, Lcom/android/internal/util/Preconditions;->checkNotNull(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
 
     .line 293
-    const-string v0, "ipsec"
+    const-string/jumbo v0, "ipsec"
 
     invoke-virtual {p1, v0}, Ljava/lang/String;->startsWith(Ljava/lang/String;)Z
 
     move-result v0
 
-    if-nez v0, :cond_29
+    if-nez v0, :cond_2c
 
     .line 294
     const-string/jumbo v0, "testtun"
@@ -738,28 +816,29 @@
 
     move-result v0
 
-    if-eqz v0, :cond_21
+    if-eqz v0, :cond_24
 
-    goto :goto_29
+    goto :goto_2c
 
     .line 295
-    :cond_21
-    new-instance p1, Ljava/lang/IllegalArgumentException;
+    :cond_24
+    new-instance v0, Ljava/lang/IllegalArgumentException;
 
-    const-string p2, "Cannot create network for non ipsec, non-testtun interface"
+    const-string v1, "Cannot create network for non ipsec, non-testtun interface"
 
-    invoke-direct {p1, p2}, Ljava/lang/IllegalArgumentException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v0, v1}, Ljava/lang/IllegalArgumentException;-><init>(Ljava/lang/String;)V
 
-    throw p1
+    throw v0
 
     .line 300
-    :cond_29
-    :goto_29
+    :cond_2c
+    :goto_2c
     invoke-static {}, Landroid/os/Binder;->getCallingUid()I
 
     move-result v0
 
     .line 301
+    .local v0, "callingUid":I
     new-instance v1, Lcom/android/server/-$$Lambda$TestNetworkService$jaBdxV1WIiJrgh0fXY_tPjFxN8I;
 
     invoke-direct {v1, p0, p1, v0, p2}, Lcom/android/server/-$$Lambda$TestNetworkService$jaBdxV1WIiJrgh0fXY_tPjFxN8I;-><init>(Lcom/android/server/TestNetworkService;Ljava/lang/String;ILandroid/os/IBinder;)V
@@ -771,7 +850,8 @@
 .end method
 
 .method public teardownTestNetwork(I)V
-    .registers 4
+    .registers 5
+    .param p1, "netId"  # I
 
     .line 334
     iget-object v0, p0, Lcom/android/server/TestNetworkService;->mContext:Landroid/content/Context;
@@ -789,57 +869,59 @@
 
     invoke-virtual {v1, p1}, Landroid/util/SparseArray;->get(I)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v1
 
-    check-cast p1, Lcom/android/server/TestNetworkService$TestNetworkAgent;
+    check-cast v1, Lcom/android/server/TestNetworkService$TestNetworkAgent;
 
     .line 339
+    .local v1, "agent":Lcom/android/server/TestNetworkService$TestNetworkAgent;
     monitor-exit v0
     :try_end_11
     .catchall {:try_start_8 .. :try_end_11} :catchall_2a
 
     .line 341
-    if-nez p1, :cond_14
+    if-nez v1, :cond_14
 
     .line 342
     return-void
 
     .line 343
     :cond_14
-    invoke-static {p1}, Lcom/android/server/TestNetworkService$TestNetworkAgent;->access$200(Lcom/android/server/TestNetworkService$TestNetworkAgent;)I
+    invoke-static {v1}, Lcom/android/server/TestNetworkService$TestNetworkAgent;->access$200(Lcom/android/server/TestNetworkService$TestNetworkAgent;)I
 
     move-result v0
 
     invoke-static {}, Landroid/os/Binder;->getCallingUid()I
 
-    move-result v1
+    move-result v2
 
-    if-ne v0, v1, :cond_22
+    if-ne v0, v2, :cond_22
 
     .line 348
-    invoke-static {p1}, Lcom/android/server/TestNetworkService$TestNetworkAgent;->access$300(Lcom/android/server/TestNetworkService$TestNetworkAgent;)V
+    invoke-static {v1}, Lcom/android/server/TestNetworkService$TestNetworkAgent;->access$300(Lcom/android/server/TestNetworkService$TestNetworkAgent;)V
 
     .line 349
     return-void
 
     .line 344
     :cond_22
-    new-instance p1, Ljava/lang/SecurityException;
+    new-instance v0, Ljava/lang/SecurityException;
 
-    const-string v0, "Attempted to modify other user\'s test networks"
+    const-string v2, "Attempted to modify other user\'s test networks"
 
-    invoke-direct {p1, v0}, Ljava/lang/SecurityException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v0, v2}, Ljava/lang/SecurityException;-><init>(Ljava/lang/String;)V
 
-    throw p1
+    throw v0
 
     .line 339
+    .end local v1  # "agent":Lcom/android/server/TestNetworkService$TestNetworkAgent;
     :catchall_2a
-    move-exception p1
+    move-exception v1
 
     :try_start_2b
     monitor-exit v0
     :try_end_2c
     .catchall {:try_start_2b .. :try_end_2c} :catchall_2a
 
-    throw p1
+    throw v1
 .end method

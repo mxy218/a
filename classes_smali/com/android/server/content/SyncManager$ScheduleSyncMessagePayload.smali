@@ -23,6 +23,8 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/content/SyncOperation;J)V
     .registers 4
+    .param p1, "syncOperation"  # Lcom/android/server/content/SyncOperation;
+    .param p2, "minDelayMillis"  # J
 
     .line 1342
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V

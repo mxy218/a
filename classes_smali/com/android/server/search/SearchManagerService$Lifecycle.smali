@@ -21,6 +21,7 @@
 # direct methods
 .method public constructor <init>(Landroid/content/Context;)V
     .registers 2
+    .param p1, "context"  # Landroid/content/Context;
 
     .line 69
     invoke-direct {p0, p1}, Lcom/android/server/SystemService;-><init>(Landroid/content/Context;)V
@@ -30,18 +31,20 @@
 .end method
 
 .method static synthetic access$000(Lcom/android/server/search/SearchManagerService$Lifecycle;)Lcom/android/server/search/SearchManagerService;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/search/SearchManagerService$Lifecycle;
 
     .line 65
-    iget-object p0, p0, Lcom/android/server/search/SearchManagerService$Lifecycle;->mService:Lcom/android/server/search/SearchManagerService;
+    iget-object v0, p0, Lcom/android/server/search/SearchManagerService$Lifecycle;->mService:Lcom/android/server/search/SearchManagerService;
 
-    return-object p0
+    return-object v0
 .end method
 
 
 # virtual methods
 .method public onCleanupUser(I)V
     .registers 3
+    .param p1, "userHandle"  # I
 
     .line 90
     iget-object v0, p0, Lcom/android/server/search/SearchManagerService$Lifecycle;->mService:Lcom/android/server/search/SearchManagerService;
@@ -79,6 +82,7 @@
 
 .method public onUnlockUser(I)V
     .registers 4
+    .param p1, "userId"  # I
 
     .line 80
     iget-object v0, p0, Lcom/android/server/search/SearchManagerService$Lifecycle;->mService:Lcom/android/server/search/SearchManagerService;

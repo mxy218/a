@@ -21,6 +21,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/autofill/RemoteAugmentedAutofillService$PendingAutofillRequest;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/autofill/RemoteAugmentedAutofillService$PendingAutofillRequest;
 
     .line 196
     iput-object p1, p0, Lcom/android/server/autofill/RemoteAugmentedAutofillService$PendingAutofillRequest$1;->this$0:Lcom/android/server/autofill/RemoteAugmentedAutofillService$PendingAutofillRequest;
@@ -58,7 +59,8 @@
 .end method
 
 .method public onCancellable(Landroid/os/ICancellationSignal;)V
-    .registers 5
+    .registers 7
+    .param p1, "cancellation"  # Landroid/os/ICancellationSignal;
 
     .line 205
     iget-object v0, p0, Lcom/android/server/autofill/RemoteAugmentedAutofillService$PendingAutofillRequest$1;->this$0:Lcom/android/server/autofill/RemoteAugmentedAutofillService$PendingAutofillRequest;
@@ -95,6 +97,7 @@
     move-result v2
 
     .line 210
+    .local v2, "cancelled":Z
     monitor-exit v1
     :try_end_1a
     .catchall {:try_start_e .. :try_end_1a} :catchall_2e
@@ -114,21 +117,24 @@
 
     .line 214
     :catch_20
-    move-exception p1
+    move-exception v1
 
     .line 215
+    .local v1, "e":Landroid/os/RemoteException;
     :try_start_21
-    iget-object v1, p0, Lcom/android/server/autofill/RemoteAugmentedAutofillService$PendingAutofillRequest$1;->this$0:Lcom/android/server/autofill/RemoteAugmentedAutofillService$PendingAutofillRequest;
+    iget-object v3, p0, Lcom/android/server/autofill/RemoteAugmentedAutofillService$PendingAutofillRequest$1;->this$0:Lcom/android/server/autofill/RemoteAugmentedAutofillService$PendingAutofillRequest;
 
-    invoke-static {v1}, Lcom/android/server/autofill/RemoteAugmentedAutofillService$PendingAutofillRequest;->access$600(Lcom/android/server/autofill/RemoteAugmentedAutofillService$PendingAutofillRequest;)Ljava/lang/String;
+    invoke-static {v3}, Lcom/android/server/autofill/RemoteAugmentedAutofillService$PendingAutofillRequest;->access$600(Lcom/android/server/autofill/RemoteAugmentedAutofillService$PendingAutofillRequest;)Ljava/lang/String;
 
-    move-result-object v1
+    move-result-object v3
 
-    const-string v2, "Error requesting a cancellation"
+    const-string v4, "Error requesting a cancellation"
 
-    invoke-static {v1, v2, p1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    invoke-static {v3, v4, v1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
     .line 218
+    .end local v1  # "e":Landroid/os/RemoteException;
+    .end local v2  # "cancelled":Z
     :cond_2c
     :goto_2c
     monitor-exit v0
@@ -140,25 +146,29 @@
 
     .line 210
     :catchall_2e
-    move-exception p1
+    move-exception v2
 
     :try_start_2f
     monitor-exit v1
     :try_end_30
     .catchall {:try_start_2f .. :try_end_30} :catchall_2e
 
+    .end local p0  # "this":Lcom/android/server/autofill/RemoteAugmentedAutofillService$PendingAutofillRequest$1;
+    .end local p1  # "cancellation":Landroid/os/ICancellationSignal;
     :try_start_30
-    throw p1
+    throw v2
 
     .line 218
+    .restart local p0  # "this":Lcom/android/server/autofill/RemoteAugmentedAutofillService$PendingAutofillRequest$1;
+    .restart local p1  # "cancellation":Landroid/os/ICancellationSignal;
     :catchall_31
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_33
     .catchall {:try_start_30 .. :try_end_33} :catchall_31
 
-    throw p1
+    throw v1
 .end method
 
 .method public onSuccess()V

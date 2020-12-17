@@ -22,7 +22,7 @@
 .method private constructor <init>()V
     .registers 1
 
-    .line 2209
+    .line 2173
     invoke-direct {p0}, Landroid/os/IProgressListener$Stub;-><init>()V
 
     return-void
@@ -30,8 +30,9 @@
 
 .method synthetic constructor <init>(Lcom/android/server/am/UserController$1;)V
     .registers 2
+    .param p1, "x0"  # Lcom/android/server/am/UserController$1;
 
-    .line 2209
+    .line 2173
     invoke-direct {p0}, Lcom/android/server/am/UserController$UserProgressListener;-><init>()V
 
     return-void
@@ -40,14 +41,16 @@
 
 # virtual methods
 .method public onFinished(ILandroid/os/Bundle;)V
-    .registers 8
+    .registers 9
+    .param p1, "id"  # I
+    .param p2, "extras"  # Landroid/os/Bundle;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
         }
     .end annotation
 
-    .line 2224
+    .line 2188
     invoke-static {}, Landroid/os/SystemClock;->uptimeMillis()J
 
     move-result-wide v0
@@ -56,128 +59,134 @@
 
     sub-long/2addr v0, v2
 
-    .line 2227
+    .line 2191
+    .local v0, "unlockTime":J
     const-wide/32 v2, 0x80000
 
-    const-string p2, "SystemServerTiming"
+    const-string v4, "SystemServerTiming"
 
     if-nez p1, :cond_19
 
-    .line 2228
-    new-instance p1, Landroid/util/TimingsTraceLog;
+    .line 2192
+    new-instance v5, Landroid/util/TimingsTraceLog;
 
-    invoke-direct {p1, p2, v2, v3}, Landroid/util/TimingsTraceLog;-><init>(Ljava/lang/String;J)V
+    invoke-direct {v5, v4, v2, v3}, Landroid/util/TimingsTraceLog;-><init>(Ljava/lang/String;J)V
 
-    .line 2229
-    const-string p2, "SystemUserUnlock"
+    .line 2193
+    const-string v2, "SystemUserUnlock"
 
-    invoke-virtual {p1, p2, v0, v1}, Landroid/util/TimingsTraceLog;->logDuration(Ljava/lang/String;J)V
+    invoke-virtual {v5, v2, v0, v1}, Landroid/util/TimingsTraceLog;->logDuration(Ljava/lang/String;J)V
 
     goto :goto_37
 
-    .line 2231
+    .line 2195
     :cond_19
-    new-instance v4, Landroid/util/TimingsTraceLog;
+    new-instance v5, Landroid/util/TimingsTraceLog;
 
-    invoke-direct {v4, p2, v2, v3}, Landroid/util/TimingsTraceLog;-><init>(Ljava/lang/String;J)V
+    invoke-direct {v5, v4, v2, v3}, Landroid/util/TimingsTraceLog;-><init>(Ljava/lang/String;J)V
 
-    new-instance p2, Ljava/lang/StringBuilder;
+    new-instance v2, Ljava/lang/StringBuilder;
 
-    invoke-direct {p2}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v2, "User"
+    const-string v3, "User"
 
-    invoke-virtual {p2, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p2, p1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, p1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    const-string p1, "Unlock"
+    const-string v3, "Unlock"
 
-    invoke-virtual {p2, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v2
 
-    .line 2232
-    invoke-virtual {v4, p1, v0, v1}, Landroid/util/TimingsTraceLog;->logDuration(Ljava/lang/String;J)V
+    .line 2196
+    invoke-virtual {v5, v2, v0, v1}, Landroid/util/TimingsTraceLog;->logDuration(Ljava/lang/String;J)V
 
-    .line 2234
+    .line 2198
     :goto_37
     return-void
 .end method
 
 .method public onProgress(IILandroid/os/Bundle;)V
-    .registers 5
+    .registers 6
+    .param p1, "id"  # I
+    .param p2, "progress"  # I
+    .param p3, "extras"  # Landroid/os/Bundle;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
         }
     .end annotation
 
-    .line 2219
-    new-instance p3, Ljava/lang/StringBuilder;
+    .line 2183
+    new-instance v0, Ljava/lang/StringBuilder;
 
-    invoke-direct {p3}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v0, "Unlocking user "
+    const-string v1, "Unlocking user "
 
-    invoke-virtual {p3, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p3, p1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    const-string p1, " progress "
+    const-string v1, " progress "
 
-    invoke-virtual {p3, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p3, p2}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, p2}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    const-string p2, "ActivityManager"
+    const-string v1, "ActivityManager"
 
-    invoke-static {p2, p1}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v0}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 2220
+    .line 2184
     return-void
 .end method
 
 .method public onStarted(ILandroid/os/Bundle;)V
-    .registers 4
+    .registers 5
+    .param p1, "id"  # I
+    .param p2, "extras"  # Landroid/os/Bundle;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
         }
     .end annotation
 
-    .line 2213
-    new-instance p2, Ljava/lang/StringBuilder;
+    .line 2177
+    new-instance v0, Ljava/lang/StringBuilder;
 
-    invoke-direct {p2}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v0, "Started unlocking user "
+    const-string v1, "Started unlocking user "
 
-    invoke-virtual {p2, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p2, p1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    const-string p2, "ActivityManager"
+    const-string v1, "ActivityManager"
 
-    invoke-static {p2, p1}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v0}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 2214
+    .line 2178
     invoke-static {}, Landroid/os/SystemClock;->uptimeMillis()J
 
-    move-result-wide p1
+    move-result-wide v0
 
-    iput-wide p1, p0, Lcom/android/server/am/UserController$UserProgressListener;->mUnlockStarted:J
+    iput-wide v0, p0, Lcom/android/server/am/UserController$UserProgressListener;->mUnlockStarted:J
 
-    .line 2215
+    .line 2179
     return-void
 .end method

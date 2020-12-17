@@ -50,6 +50,8 @@
 
 .method public constructor <init>(Ljava/io/OutputStream;I)V
     .registers 4
+    .param p1, "outputStream"  # Ljava/io/OutputStream;
+    .param p2, "maxNewByteChunkSize"  # I
 
     .line 44
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -66,9 +68,9 @@
     iput p2, p0, Lcom/android/server/backup/encryption/chunking/SingleStreamDiffScriptWriter;->mMaxNewByteChunkSize:I
 
     .line 47
-    new-array p1, p2, [B
+    new-array v0, p2, [B
 
-    iput-object p1, p0, Lcom/android/server/backup/encryption/chunking/SingleStreamDiffScriptWriter;->mByteBuffer:[B
+    iput-object v0, p0, Lcom/android/server/backup/encryption/chunking/SingleStreamDiffScriptWriter;->mByteBuffer:[B
 
     .line 48
     return-void
@@ -277,6 +279,7 @@
 
 .method public writeByte(B)V
     .registers 5
+    .param p1, "b"  # B
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Ljava/io/IOException;
@@ -304,11 +307,11 @@
     aput-byte p1, v0, v1
 
     .line 56
-    iget p1, p0, Lcom/android/server/backup/encryption/chunking/SingleStreamDiffScriptWriter;->mBufferSize:I
+    iget v0, p0, Lcom/android/server/backup/encryption/chunking/SingleStreamDiffScriptWriter;->mBufferSize:I
 
-    iget v0, p0, Lcom/android/server/backup/encryption/chunking/SingleStreamDiffScriptWriter;->mMaxNewByteChunkSize:I
+    iget v1, p0, Lcom/android/server/backup/encryption/chunking/SingleStreamDiffScriptWriter;->mMaxNewByteChunkSize:I
 
-    if-ne p1, v0, :cond_1a
+    if-ne v0, v1, :cond_1a
 
     .line 57
     invoke-direct {p0}, Lcom/android/server/backup/encryption/chunking/SingleStreamDiffScriptWriter;->writeByteBuffer()V
@@ -320,6 +323,8 @@
 
 .method public writeChunk(JI)V
     .registers 9
+    .param p1, "chunkStart"  # J
+    .param p3, "chunkLength"  # I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Ljava/io/IOException;
@@ -385,15 +390,15 @@
     if-nez v0, :cond_35
 
     .line 71
-    iget-object p1, p0, Lcom/android/server/backup/encryption/chunking/SingleStreamDiffScriptWriter;->mReusableChunk:Lcom/android/server/backup/encryption/chunking/ByteRange;
+    iget-object v0, p0, Lcom/android/server/backup/encryption/chunking/SingleStreamDiffScriptWriter;->mReusableChunk:Lcom/android/server/backup/encryption/chunking/ByteRange;
 
-    int-to-long p2, p3
+    int-to-long v1, p3
 
-    invoke-virtual {p1, p2, p3}, Lcom/android/server/backup/encryption/chunking/ByteRange;->extend(J)Lcom/android/server/backup/encryption/chunking/ByteRange;
+    invoke-virtual {v0, v1, v2}, Lcom/android/server/backup/encryption/chunking/ByteRange;->extend(J)Lcom/android/server/backup/encryption/chunking/ByteRange;
 
-    move-result-object p1
+    move-result-object v0
 
-    iput-object p1, p0, Lcom/android/server/backup/encryption/chunking/SingleStreamDiffScriptWriter;->mReusableChunk:Lcom/android/server/backup/encryption/chunking/ByteRange;
+    iput-object v0, p0, Lcom/android/server/backup/encryption/chunking/SingleStreamDiffScriptWriter;->mReusableChunk:Lcom/android/server/backup/encryption/chunking/ByteRange;
 
     goto :goto_42
 

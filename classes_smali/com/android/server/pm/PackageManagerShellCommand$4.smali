@@ -24,6 +24,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/pm/PackageManagerShellCommand;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/pm/PackageManagerShellCommand;
 
     .line 878
     iput-object p1, p0, Lcom/android/server/pm/PackageManagerShellCommand$4;->this$0:Lcom/android/server/pm/PackageManagerShellCommand;
@@ -36,7 +37,9 @@
 
 # virtual methods
 .method public handleOption(Ljava/lang/String;Landroid/os/ShellCommand;)Z
-    .registers 5
+    .registers 6
+    .param p1, "opt"  # Ljava/lang/String;
+    .param p2, "cmd"  # Landroid/os/ShellCommand;
 
     .line 881
     const-string v0, "--user"
@@ -50,17 +53,17 @@
     if-eqz v0, :cond_16
 
     .line 882
-    iget-object p1, p0, Lcom/android/server/pm/PackageManagerShellCommand$4;->this$0:Lcom/android/server/pm/PackageManagerShellCommand;
+    iget-object v0, p0, Lcom/android/server/pm/PackageManagerShellCommand$4;->this$0:Lcom/android/server/pm/PackageManagerShellCommand;
 
     invoke-virtual {p2}, Landroid/os/ShellCommand;->getNextArgRequired()Ljava/lang/String;
 
-    move-result-object p2
+    move-result-object v2
 
-    invoke-static {p2}, Landroid/os/UserHandle;->parseUserArg(Ljava/lang/String;)I
+    invoke-static {v2}, Landroid/os/UserHandle;->parseUserArg(Ljava/lang/String;)I
 
-    move-result p2
+    move-result v2
 
-    iput p2, p1, Lcom/android/server/pm/PackageManagerShellCommand;->mTargetUser:I
+    iput v2, v0, Lcom/android/server/pm/PackageManagerShellCommand;->mTargetUser:I
 
     .line 883
     return v1
@@ -76,9 +79,9 @@
     if-eqz v0, :cond_23
 
     .line 885
-    iget-object p1, p0, Lcom/android/server/pm/PackageManagerShellCommand$4;->this$0:Lcom/android/server/pm/PackageManagerShellCommand;
+    iget-object v0, p0, Lcom/android/server/pm/PackageManagerShellCommand$4;->this$0:Lcom/android/server/pm/PackageManagerShellCommand;
 
-    iput-boolean v1, p1, Lcom/android/server/pm/PackageManagerShellCommand;->mBrief:Z
+    iput-boolean v1, v0, Lcom/android/server/pm/PackageManagerShellCommand;->mBrief:Z
 
     .line 886
     return v1
@@ -94,9 +97,9 @@
     if-eqz v0, :cond_30
 
     .line 888
-    iget-object p1, p0, Lcom/android/server/pm/PackageManagerShellCommand$4;->this$0:Lcom/android/server/pm/PackageManagerShellCommand;
+    iget-object v0, p0, Lcom/android/server/pm/PackageManagerShellCommand$4;->this$0:Lcom/android/server/pm/PackageManagerShellCommand;
 
-    iput-boolean v1, p1, Lcom/android/server/pm/PackageManagerShellCommand;->mComponents:Z
+    iput-boolean v1, v0, Lcom/android/server/pm/PackageManagerShellCommand;->mComponents:Z
 
     .line 889
     return v1
@@ -107,33 +110,33 @@
 
     invoke-virtual {v0, p1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result p1
+    move-result v0
 
-    if-eqz p1, :cond_49
+    if-eqz v0, :cond_49
 
     .line 891
-    iget-object p1, p0, Lcom/android/server/pm/PackageManagerShellCommand$4;->this$0:Lcom/android/server/pm/PackageManagerShellCommand;
+    iget-object v0, p0, Lcom/android/server/pm/PackageManagerShellCommand$4;->this$0:Lcom/android/server/pm/PackageManagerShellCommand;
 
     invoke-virtual {p2}, Landroid/os/ShellCommand;->getNextArgRequired()Ljava/lang/String;
 
-    move-result-object p2
+    move-result-object v2
 
-    invoke-static {p2}, Ljava/lang/Integer;->decode(Ljava/lang/String;)Ljava/lang/Integer;
+    invoke-static {v2}, Ljava/lang/Integer;->decode(Ljava/lang/String;)Ljava/lang/Integer;
 
-    move-result-object p2
+    move-result-object v2
 
-    invoke-virtual {p2}, Ljava/lang/Integer;->intValue()I
+    invoke-virtual {v2}, Ljava/lang/Integer;->intValue()I
 
-    move-result p2
+    move-result v2
 
-    iput p2, p1, Lcom/android/server/pm/PackageManagerShellCommand;->mQueryFlags:I
+    iput v2, v0, Lcom/android/server/pm/PackageManagerShellCommand;->mQueryFlags:I
 
     .line 892
     return v1
 
     .line 894
     :cond_49
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    return p1
+    return v0
 .end method

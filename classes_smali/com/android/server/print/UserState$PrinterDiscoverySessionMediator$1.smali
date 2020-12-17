@@ -29,6 +29,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/print/UserState$PrinterDiscoverySessionMediator;)V
     .registers 2
+    .param p1, "this$1"  # Lcom/android/server/print/UserState$PrinterDiscoverySessionMediator;
 
     .line 1261
     iput-object p1, p0, Lcom/android/server/print/UserState$PrinterDiscoverySessionMediator$1;->this$1:Lcom/android/server/print/UserState$PrinterDiscoverySessionMediator;
@@ -53,6 +54,7 @@
 
 .method public onCallbackDied(Landroid/print/IPrinterDiscoveryObserver;)V
     .registers 4
+    .param p1, "observer"  # Landroid/print/IPrinterDiscoveryObserver;
 
     .line 1264
     iget-object v0, p0, Lcom/android/server/print/UserState$PrinterDiscoverySessionMediator$1;->this$1:Lcom/android/server/print/UserState$PrinterDiscoverySessionMediator;
@@ -84,11 +86,11 @@
 
     .line 1267
     :catchall_15
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_17
     .catchall {:try_start_9 .. :try_end_17} :catchall_15
 
-    throw p1
+    throw v1
 .end method

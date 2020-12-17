@@ -21,6 +21,9 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/UpdateLockService;Landroid/os/Handler;Ljava/lang/String;)V
     .registers 4
+    .param p1, "this$0"  # Lcom/android/server/UpdateLockService;
+    .param p2, "h"  # Landroid/os/Handler;
+    .param p3, "tag"  # Ljava/lang/String;
 
     .line 48
     iput-object p1, p0, Lcom/android/server/UpdateLockService$LockWatcher;->this$0:Lcom/android/server/UpdateLockService;

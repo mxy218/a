@@ -28,6 +28,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/tv/TvInputManagerService$BinderService;Lcom/android/server/tv/TvInputManagerService$UserState;Landroid/media/tv/ITvInputManagerCallback;)V
     .registers 4
+    .param p1, "this$1"  # Lcom/android/server/tv/TvInputManagerService$BinderService;
 
     .line 1009
     iput-object p1, p0, Lcom/android/server/tv/TvInputManagerService$BinderService$1;->this$1:Lcom/android/server/tv/TvInputManagerService$BinderService;

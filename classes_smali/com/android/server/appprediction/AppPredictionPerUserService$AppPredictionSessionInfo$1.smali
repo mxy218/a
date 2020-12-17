@@ -29,8 +29,9 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/appprediction/AppPredictionPerUserService$AppPredictionSessionInfo;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/appprediction/AppPredictionPerUserService$AppPredictionSessionInfo;
 
-    .line 342
+    .line 308
     iput-object p1, p0, Lcom/android/server/appprediction/AppPredictionPerUserService$AppPredictionSessionInfo$1;->this$0:Lcom/android/server/appprediction/AppPredictionPerUserService$AppPredictionSessionInfo;
 
     invoke-direct {p0}, Landroid/os/RemoteCallbackList;-><init>()V
@@ -41,27 +42,28 @@
 
 # virtual methods
 .method public onCallbackDied(Landroid/app/prediction/IPredictionCallback;)V
-    .registers 2
+    .registers 3
+    .param p1, "callback"  # Landroid/app/prediction/IPredictionCallback;
 
-    .line 349
-    iget-object p1, p0, Lcom/android/server/appprediction/AppPredictionPerUserService$AppPredictionSessionInfo$1;->this$0:Lcom/android/server/appprediction/AppPredictionPerUserService$AppPredictionSessionInfo;
+    .line 315
+    iget-object v0, p0, Lcom/android/server/appprediction/AppPredictionPerUserService$AppPredictionSessionInfo$1;->this$0:Lcom/android/server/appprediction/AppPredictionPerUserService$AppPredictionSessionInfo;
 
-    invoke-static {p1}, Lcom/android/server/appprediction/AppPredictionPerUserService$AppPredictionSessionInfo;->access$000(Lcom/android/server/appprediction/AppPredictionPerUserService$AppPredictionSessionInfo;)Landroid/os/RemoteCallbackList;
+    invoke-static {v0}, Lcom/android/server/appprediction/AppPredictionPerUserService$AppPredictionSessionInfo;->access$000(Lcom/android/server/appprediction/AppPredictionPerUserService$AppPredictionSessionInfo;)Landroid/os/RemoteCallbackList;
 
-    move-result-object p1
+    move-result-object v0
 
-    invoke-virtual {p1}, Landroid/os/RemoteCallbackList;->getRegisteredCallbackCount()I
+    invoke-virtual {v0}, Landroid/os/RemoteCallbackList;->getRegisteredCallbackCount()I
 
-    move-result p1
+    move-result v0
 
-    if-nez p1, :cond_11
+    if-nez v0, :cond_11
 
-    .line 350
-    iget-object p1, p0, Lcom/android/server/appprediction/AppPredictionPerUserService$AppPredictionSessionInfo$1;->this$0:Lcom/android/server/appprediction/AppPredictionPerUserService$AppPredictionSessionInfo;
+    .line 316
+    iget-object v0, p0, Lcom/android/server/appprediction/AppPredictionPerUserService$AppPredictionSessionInfo$1;->this$0:Lcom/android/server/appprediction/AppPredictionPerUserService$AppPredictionSessionInfo;
 
-    invoke-virtual {p1}, Lcom/android/server/appprediction/AppPredictionPerUserService$AppPredictionSessionInfo;->destroy()V
+    invoke-virtual {v0}, Lcom/android/server/appprediction/AppPredictionPerUserService$AppPredictionSessionInfo;->destroy()V
 
-    .line 352
+    .line 318
     :cond_11
     return-void
 .end method
@@ -69,7 +71,7 @@
 .method public bridge synthetic onCallbackDied(Landroid/os/IInterface;)V
     .registers 2
 
-    .line 342
+    .line 308
     check-cast p1, Landroid/app/prediction/IPredictionCallback;
 
     invoke-virtual {p0, p1}, Lcom/android/server/appprediction/AppPredictionPerUserService$AppPredictionSessionInfo$1;->onCallbackDied(Landroid/app/prediction/IPredictionCallback;)V

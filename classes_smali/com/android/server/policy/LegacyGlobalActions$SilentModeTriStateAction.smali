@@ -31,6 +31,9 @@
 # direct methods
 .method constructor <init>(Landroid/content/Context;Landroid/media/AudioManager;Landroid/os/Handler;)V
     .registers 5
+    .param p1, "context"  # Landroid/content/Context;
+    .param p2, "audioManager"  # Landroid/media/AudioManager;
+    .param p3, "handler"  # Landroid/os/Handler;
 
     .line 671
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -66,6 +69,7 @@
 
 .method private indexToRingerMode(I)I
     .registers 2
+    .param p1, "index"  # I
 
     .line 684
     return p1
@@ -73,6 +77,7 @@
 
 .method private ringerModeToIndex(I)I
     .registers 2
+    .param p1, "ringerMode"  # I
 
     .line 679
     return p1
@@ -81,85 +86,96 @@
 
 # virtual methods
 .method public create(Landroid/content/Context;Landroid/view/View;Landroid/view/ViewGroup;Landroid/view/LayoutInflater;)Landroid/view/View;
-    .registers 7
+    .registers 11
+    .param p1, "context"  # Landroid/content/Context;
+    .param p2, "convertView"  # Landroid/view/View;
+    .param p3, "parent"  # Landroid/view/ViewGroup;
+    .param p4, "inflater"  # Landroid/view/LayoutInflater;
 
     .line 695
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    const p2, 0x1090079
+    const v1, 0x1090077
 
-    invoke-virtual {p4, p2, p3, p1}, Landroid/view/LayoutInflater;->inflate(ILandroid/view/ViewGroup;Z)Landroid/view/View;
+    invoke-virtual {p4, v1, p3, v0}, Landroid/view/LayoutInflater;->inflate(ILandroid/view/ViewGroup;Z)Landroid/view/View;
 
-    move-result-object p2
+    move-result-object v1
 
     .line 697
-    iget-object p3, p0, Lcom/android/server/policy/LegacyGlobalActions$SilentModeTriStateAction;->mAudioManager:Landroid/media/AudioManager;
+    .local v1, "v":Landroid/view/View;
+    iget-object v2, p0, Lcom/android/server/policy/LegacyGlobalActions$SilentModeTriStateAction;->mAudioManager:Landroid/media/AudioManager;
 
-    invoke-virtual {p3}, Landroid/media/AudioManager;->getRingerMode()I
+    invoke-virtual {v2}, Landroid/media/AudioManager;->getRingerMode()I
 
-    move-result p3
+    move-result v2
 
-    invoke-direct {p0, p3}, Lcom/android/server/policy/LegacyGlobalActions$SilentModeTriStateAction;->ringerModeToIndex(I)I
+    invoke-direct {p0, v2}, Lcom/android/server/policy/LegacyGlobalActions$SilentModeTriStateAction;->ringerModeToIndex(I)I
 
-    move-result p3
+    move-result v2
 
     .line 698
-    move p4, p1
+    .local v2, "selectedIndex":I
+    const/4 v3, 0x0
 
+    .local v3, "i":I
     :goto_13
-    const/4 v0, 0x3
+    const/4 v4, 0x3
 
-    if-ge p4, v0, :cond_33
+    if-ge v3, v4, :cond_33
 
     .line 699
-    iget-object v0, p0, Lcom/android/server/policy/LegacyGlobalActions$SilentModeTriStateAction;->ITEM_IDS:[I
+    iget-object v4, p0, Lcom/android/server/policy/LegacyGlobalActions$SilentModeTriStateAction;->ITEM_IDS:[I
 
-    aget v0, v0, p4
+    aget v4, v4, v3
 
-    invoke-virtual {p2, v0}, Landroid/view/View;->findViewById(I)Landroid/view/View;
+    invoke-virtual {v1, v4}, Landroid/view/View;->findViewById(I)Landroid/view/View;
 
-    move-result-object v0
+    move-result-object v4
 
     .line 700
-    if-ne p3, p4, :cond_22
+    .local v4, "itemView":Landroid/view/View;
+    if-ne v2, v3, :cond_22
 
-    const/4 v1, 0x1
+    const/4 v5, 0x1
 
     goto :goto_23
 
     :cond_22
-    move v1, p1
+    move v5, v0
 
     :goto_23
-    invoke-virtual {v0, v1}, Landroid/view/View;->setSelected(Z)V
+    invoke-virtual {v4, v5}, Landroid/view/View;->setSelected(Z)V
 
     .line 702
-    invoke-static {p4}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
+    invoke-static {v3}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
 
-    move-result-object v1
+    move-result-object v5
 
-    invoke-virtual {v0, v1}, Landroid/view/View;->setTag(Ljava/lang/Object;)V
+    invoke-virtual {v4, v5}, Landroid/view/View;->setTag(Ljava/lang/Object;)V
 
     .line 703
-    invoke-virtual {v0, p0}, Landroid/view/View;->setOnClickListener(Landroid/view/View$OnClickListener;)V
+    invoke-virtual {v4, p0}, Landroid/view/View;->setOnClickListener(Landroid/view/View$OnClickListener;)V
 
     .line 698
-    add-int/lit8 p4, p4, 0x1
+    .end local v4  # "itemView":Landroid/view/View;
+    add-int/lit8 v3, v3, 0x1
 
     goto :goto_13
 
     .line 705
+    .end local v3  # "i":I
     :cond_33
-    return-object p2
+    return-object v1
 .end method
 
 .method public getLabelForAccessibility(Landroid/content/Context;)Ljava/lang/CharSequence;
-    .registers 2
+    .registers 3
+    .param p1, "context"  # Landroid/content/Context;
 
     .line 689
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    return-object p1
+    return-object v0
 .end method
 
 .method public isEnabled()Z
@@ -172,7 +188,8 @@
 .end method
 
 .method public onClick(Landroid/view/View;)V
-    .registers 5
+    .registers 7
+    .param p1, "v"  # Landroid/view/View;
 
     .line 732
     invoke-virtual {p1}, Landroid/view/View;->getTag()Ljava/lang/Object;
@@ -189,31 +206,32 @@
     :cond_9
     invoke-virtual {p1}, Landroid/view/View;->getTag()Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v0
 
-    check-cast p1, Ljava/lang/Integer;
+    check-cast v0, Ljava/lang/Integer;
 
-    invoke-virtual {p1}, Ljava/lang/Integer;->intValue()I
+    invoke-virtual {v0}, Ljava/lang/Integer;->intValue()I
 
-    move-result p1
+    move-result v0
 
     .line 735
-    iget-object v0, p0, Lcom/android/server/policy/LegacyGlobalActions$SilentModeTriStateAction;->mAudioManager:Landroid/media/AudioManager;
+    .local v0, "index":I
+    iget-object v1, p0, Lcom/android/server/policy/LegacyGlobalActions$SilentModeTriStateAction;->mAudioManager:Landroid/media/AudioManager;
 
-    invoke-direct {p0, p1}, Lcom/android/server/policy/LegacyGlobalActions$SilentModeTriStateAction;->indexToRingerMode(I)I
+    invoke-direct {p0, v0}, Lcom/android/server/policy/LegacyGlobalActions$SilentModeTriStateAction;->indexToRingerMode(I)I
 
-    move-result p1
+    move-result v2
 
-    invoke-virtual {v0, p1}, Landroid/media/AudioManager;->setRingerMode(I)V
+    invoke-virtual {v1, v2}, Landroid/media/AudioManager;->setRingerMode(I)V
 
     .line 736
-    iget-object p1, p0, Lcom/android/server/policy/LegacyGlobalActions$SilentModeTriStateAction;->mHandler:Landroid/os/Handler;
+    iget-object v1, p0, Lcom/android/server/policy/LegacyGlobalActions$SilentModeTriStateAction;->mHandler:Landroid/os/Handler;
 
-    const/4 v0, 0x0
+    const/4 v2, 0x0
 
-    const-wide/16 v1, 0x12c
+    const-wide/16 v3, 0x12c
 
-    invoke-virtual {p1, v0, v1, v2}, Landroid/os/Handler;->sendEmptyMessageDelayed(IJ)Z
+    invoke-virtual {v1, v2, v3, v4}, Landroid/os/Handler;->sendEmptyMessageDelayed(IJ)Z
 
     .line 737
     return-void

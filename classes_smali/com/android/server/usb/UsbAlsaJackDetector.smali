@@ -19,6 +19,7 @@
 # direct methods
 .method private constructor <init>(Lcom/android/server/usb/UsbAlsaDevice;)V
     .registers 3
+    .param p1, "device"  # Lcom/android/server/usb/UsbAlsaDevice;
 
     .line 34
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -48,7 +49,8 @@
 .end method
 
 .method public static startJackDetect(Lcom/android/server/usb/UsbAlsaDevice;)Lcom/android/server/usb/UsbAlsaJackDetector;
-    .registers 3
+    .registers 4
+    .param p0, "device"  # Lcom/android/server/usb/UsbAlsaDevice;
 
     .line 45
     invoke-virtual {p0}, Lcom/android/server/usb/UsbAlsaDevice;->getCardNum()I
@@ -62,9 +64,9 @@
     if-nez v0, :cond_c
 
     .line 46
-    const/4 p0, 0x0
+    const/4 v0, 0x0
 
-    return-object p0
+    return-object v0
 
     .line 48
     :cond_c
@@ -73,13 +75,14 @@
     invoke-direct {v0, p0}, Lcom/android/server/usb/UsbAlsaJackDetector;-><init>(Lcom/android/server/usb/UsbAlsaDevice;)V
 
     .line 52
-    new-instance p0, Ljava/lang/Thread;
+    .local v0, "jackDetector":Lcom/android/server/usb/UsbAlsaJackDetector;
+    new-instance v1, Ljava/lang/Thread;
 
-    const-string v1, "USB jack detect thread"
+    const-string v2, "USB jack detect thread"
 
-    invoke-direct {p0, v0, v1}, Ljava/lang/Thread;-><init>(Ljava/lang/Runnable;Ljava/lang/String;)V
+    invoke-direct {v1, v0, v2}, Ljava/lang/Thread;-><init>(Ljava/lang/Runnable;Ljava/lang/String;)V
 
-    invoke-virtual {p0}, Ljava/lang/Thread;->start()V
+    invoke-virtual {v1}, Ljava/lang/Thread;->start()V
 
     .line 53
     return-object v0

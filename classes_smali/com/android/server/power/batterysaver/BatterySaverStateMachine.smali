@@ -200,6 +200,9 @@
 # direct methods
 .method public constructor <init>(Ljava/lang/Object;Landroid/content/Context;Lcom/android/server/power/batterysaver/BatterySaverController;)V
     .registers 6
+    .param p1, "lock"  # Ljava/lang/Object;
+    .param p2, "context"  # Landroid/content/Context;
+    .param p3, "batterySaverController"  # Lcom/android/server/power/batterysaver/BatterySaverController;
 
     .line 238
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -230,55 +233,57 @@
     iput-object p3, p0, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->mBatterySaverController:Lcom/android/server/power/batterysaver/BatterySaverController;
 
     .line 242
-    const/4 p1, 0x1
+    const/4 v0, 0x1
 
-    iput p1, p0, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->mState:I
+    iput v0, p0, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->mState:I
 
     .line 244
-    iget-object p1, p0, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->mContext:Landroid/content/Context;
+    iget-object v0, p0, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->mContext:Landroid/content/Context;
 
-    invoke-virtual {p1}, Landroid/content/Context;->getResources()Landroid/content/res/Resources;
+    invoke-virtual {v0}, Landroid/content/Context;->getResources()Landroid/content/res/Resources;
 
-    move-result-object p1
+    move-result-object v0
 
-    const p2, 0x111002c
+    const v1, 0x111002a
 
-    invoke-virtual {p1, p2}, Landroid/content/res/Resources;->getBoolean(I)Z
+    invoke-virtual {v0, v1}, Landroid/content/res/Resources;->getBoolean(I)Z
 
-    move-result p1
+    move-result v0
 
-    iput-boolean p1, p0, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->mBatterySaverStickyBehaviourDisabled:Z
+    iput-boolean v0, p0, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->mBatterySaverStickyBehaviourDisabled:Z
 
     .line 246
-    iget-object p1, p0, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->mContext:Landroid/content/Context;
+    iget-object v0, p0, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->mContext:Landroid/content/Context;
 
-    invoke-virtual {p1}, Landroid/content/Context;->getResources()Landroid/content/res/Resources;
+    invoke-virtual {v0}, Landroid/content/Context;->getResources()Landroid/content/res/Resources;
 
-    move-result-object p1
+    move-result-object v0
 
-    const p2, 0x10e0058
+    const v1, 0x10e0057
 
-    invoke-virtual {p1, p2}, Landroid/content/res/Resources;->getInteger(I)I
+    invoke-virtual {v0, v1}, Landroid/content/res/Resources;->getInteger(I)I
 
-    move-result p1
+    move-result v0
 
-    iput p1, p0, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->mDynamicPowerSavingsDefaultDisableThreshold:I
+    iput v0, p0, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->mDynamicPowerSavingsDefaultDisableThreshold:I
 
     .line 248
     return-void
 .end method
 
 .method static synthetic access$000(Lcom/android/server/power/batterysaver/BatterySaverStateMachine;)Ljava/lang/Object;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/power/batterysaver/BatterySaverStateMachine;
 
     .line 94
-    iget-object p0, p0, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->mLock:Ljava/lang/Object;
+    iget-object v0, p0, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->mLock:Ljava/lang/Object;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$100(Lcom/android/server/power/batterysaver/BatterySaverStateMachine;)V
     .registers 1
+    .param p0, "x0"  # Lcom/android/server/power/batterysaver/BatterySaverStateMachine;
 
     .line 94
     invoke-direct {p0}, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->refreshSettingsLocked()V
@@ -287,102 +292,110 @@
 .end method
 
 .method private buildNotification(Ljava/lang/String;Ljava/lang/String;ILjava/lang/String;)Landroid/app/Notification;
-    .registers 9
+    .registers 11
+    .param p1, "channelId"  # Ljava/lang/String;
+    .param p2, "title"  # Ljava/lang/String;
+    .param p3, "summaryId"  # I
+    .param p4, "intentAction"  # Ljava/lang/String;
 
-    .line 839
+    .line 830
     iget-object v0, p0, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->mContext:Landroid/content/Context;
 
     invoke-virtual {v0}, Landroid/content/Context;->getResources()Landroid/content/res/Resources;
 
     move-result-object v0
 
-    .line 840
+    .line 831
+    .local v0, "res":Landroid/content/res/Resources;
     new-instance v1, Landroid/content/Intent;
 
     invoke-direct {v1, p4}, Landroid/content/Intent;-><init>(Ljava/lang/String;)V
 
-    .line 841
-    const p4, 0x10008000
+    .line 832
+    .local v1, "intent":Landroid/content/Intent;
+    const v2, 0x10008000
 
-    invoke-virtual {v1, p4}, Landroid/content/Intent;->setFlags(I)Landroid/content/Intent;
+    invoke-virtual {v1, v2}, Landroid/content/Intent;->setFlags(I)Landroid/content/Intent;
 
-    .line 842
-    iget-object p4, p0, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->mContext:Landroid/content/Context;
+    .line 833
+    iget-object v2, p0, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->mContext:Landroid/content/Context;
 
-    const/4 v2, 0x0
+    const/4 v3, 0x0
 
-    const/high16 v3, 0x8000000
+    const/high16 v4, 0x8000000
 
-    invoke-static {p4, v2, v1, v3}, Landroid/app/PendingIntent;->getActivity(Landroid/content/Context;ILandroid/content/Intent;I)Landroid/app/PendingIntent;
+    invoke-static {v2, v3, v1, v4}, Landroid/app/PendingIntent;->getActivity(Landroid/content/Context;ILandroid/content/Intent;I)Landroid/app/PendingIntent;
 
-    move-result-object p4
+    move-result-object v2
 
-    .line 844
+    .line 835
+    .local v2, "batterySaverIntent":Landroid/app/PendingIntent;
     invoke-virtual {v0, p3}, Landroid/content/res/Resources;->getString(I)Ljava/lang/String;
 
-    move-result-object p3
+    move-result-object v3
 
-    .line 846
-    new-instance v0, Landroid/app/Notification$Builder;
+    .line 837
+    .local v3, "summary":Ljava/lang/String;
+    new-instance v4, Landroid/app/Notification$Builder;
 
-    iget-object v1, p0, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->mContext:Landroid/content/Context;
+    iget-object v5, p0, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->mContext:Landroid/content/Context;
 
-    invoke-direct {v0, v1, p1}, Landroid/app/Notification$Builder;-><init>(Landroid/content/Context;Ljava/lang/String;)V
+    invoke-direct {v4, v5, p1}, Landroid/app/Notification$Builder;-><init>(Landroid/content/Context;Ljava/lang/String;)V
 
-    .line 847
-    const p1, 0x108031f
+    .line 838
+    const v5, 0x108031d
 
-    invoke-virtual {v0, p1}, Landroid/app/Notification$Builder;->setSmallIcon(I)Landroid/app/Notification$Builder;
+    invoke-virtual {v4, v5}, Landroid/app/Notification$Builder;->setSmallIcon(I)Landroid/app/Notification$Builder;
 
-    move-result-object p1
+    move-result-object v4
 
-    .line 848
-    invoke-virtual {p1, p2}, Landroid/app/Notification$Builder;->setContentTitle(Ljava/lang/CharSequence;)Landroid/app/Notification$Builder;
+    .line 839
+    invoke-virtual {v4, p2}, Landroid/app/Notification$Builder;->setContentTitle(Ljava/lang/CharSequence;)Landroid/app/Notification$Builder;
 
-    move-result-object p1
+    move-result-object v4
 
-    .line 849
-    invoke-virtual {p1, p3}, Landroid/app/Notification$Builder;->setContentText(Ljava/lang/CharSequence;)Landroid/app/Notification$Builder;
+    .line 840
+    invoke-virtual {v4, v3}, Landroid/app/Notification$Builder;->setContentText(Ljava/lang/CharSequence;)Landroid/app/Notification$Builder;
 
-    move-result-object p1
+    move-result-object v4
 
-    .line 850
-    invoke-virtual {p1, p4}, Landroid/app/Notification$Builder;->setContentIntent(Landroid/app/PendingIntent;)Landroid/app/Notification$Builder;
+    .line 841
+    invoke-virtual {v4, v2}, Landroid/app/Notification$Builder;->setContentIntent(Landroid/app/PendingIntent;)Landroid/app/Notification$Builder;
 
-    move-result-object p1
+    move-result-object v4
 
-    new-instance p2, Landroid/app/Notification$BigTextStyle;
+    new-instance v5, Landroid/app/Notification$BigTextStyle;
 
-    invoke-direct {p2}, Landroid/app/Notification$BigTextStyle;-><init>()V
+    invoke-direct {v5}, Landroid/app/Notification$BigTextStyle;-><init>()V
 
-    .line 851
-    invoke-virtual {p2, p3}, Landroid/app/Notification$BigTextStyle;->bigText(Ljava/lang/CharSequence;)Landroid/app/Notification$BigTextStyle;
+    .line 842
+    invoke-virtual {v5, v3}, Landroid/app/Notification$BigTextStyle;->bigText(Ljava/lang/CharSequence;)Landroid/app/Notification$BigTextStyle;
 
-    move-result-object p2
+    move-result-object v5
 
-    invoke-virtual {p1, p2}, Landroid/app/Notification$Builder;->setStyle(Landroid/app/Notification$Style;)Landroid/app/Notification$Builder;
+    invoke-virtual {v4, v5}, Landroid/app/Notification$Builder;->setStyle(Landroid/app/Notification$Style;)Landroid/app/Notification$Builder;
 
-    move-result-object p1
+    move-result-object v4
 
-    .line 852
-    const/4 p2, 0x1
+    .line 843
+    const/4 v5, 0x1
 
-    invoke-virtual {p1, p2}, Landroid/app/Notification$Builder;->setOnlyAlertOnce(Z)Landroid/app/Notification$Builder;
+    invoke-virtual {v4, v5}, Landroid/app/Notification$Builder;->setOnlyAlertOnce(Z)Landroid/app/Notification$Builder;
 
-    move-result-object p1
+    move-result-object v4
 
-    .line 853
-    invoke-virtual {p1, p2}, Landroid/app/Notification$Builder;->setAutoCancel(Z)Landroid/app/Notification$Builder;
+    .line 844
+    invoke-virtual {v4, v5}, Landroid/app/Notification$Builder;->setAutoCancel(Z)Landroid/app/Notification$Builder;
 
-    move-result-object p1
+    move-result-object v4
 
-    .line 854
-    invoke-virtual {p1}, Landroid/app/Notification$Builder;->build()Landroid/app/Notification;
+    .line 845
+    invoke-virtual {v4}, Landroid/app/Notification$Builder;->build()Landroid/app/Notification;
 
-    move-result-object p1
+    move-result-object v4
 
-    .line 846
-    return-object p1
+    .line 837
+    return-object v4
 .end method
 
 .method private doAutoBatterySaverLocked()V
@@ -475,6 +488,9 @@
 
 .method private enableBatterySaverLocked(ZZI)V
     .registers 5
+    .param p1, "enable"  # Z
+    .param p2, "manual"  # Z
+    .param p3, "intReason"  # I
     .annotation build Lcom/android/internal/annotations/GuardedBy;
         value = {
             "mLock"
@@ -493,7 +509,11 @@
 .end method
 
 .method private enableBatterySaverLocked(ZZILjava/lang/String;)V
-    .registers 6
+    .registers 7
+    .param p1, "enable"  # Z
+    .param p2, "manual"  # Z
+    .param p3, "intReason"  # I
+    .param p4, "strReason"  # Ljava/lang/String;
     .annotation build Lcom/android/internal/annotations/GuardedBy;
         value = {
             "mLock"
@@ -508,6 +528,7 @@
     move-result v0
 
     .line 753
+    .local v0, "wasEnabled":Z
     if-ne v0, p1, :cond_9
 
     .line 757
@@ -517,9 +538,9 @@
     :cond_9
     if-eqz p1, :cond_10
 
-    iget-boolean v0, p0, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->mIsPowered:Z
+    iget-boolean v1, p0, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->mIsPowered:Z
 
-    if-eqz v0, :cond_10
+    if-eqz v1, :cond_10
 
     .line 761
     return-void
@@ -535,128 +556,149 @@
     iput-boolean p1, p0, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->mSettingBatterySaverEnabled:Z
 
     .line 767
-    const-string p4, "low_power"
+    const-string/jumbo v1, "low_power"
 
-    invoke-virtual {p0, p4, p1}, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->putGlobalSetting(Ljava/lang/String;I)V
+    invoke-virtual {p0, v1, p1}, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->putGlobalSetting(Ljava/lang/String;I)V
 
     .line 769
-    if-eqz p2, :cond_29
+    if-eqz p2, :cond_2a
 
     .line 770
-    iget-boolean p2, p0, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->mBatterySaverStickyBehaviourDisabled:Z
+    iget-boolean v1, p0, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->mBatterySaverStickyBehaviourDisabled:Z
 
-    if-nez p2, :cond_25
+    if-nez v1, :cond_26
 
-    if-eqz p1, :cond_25
+    if-eqz p1, :cond_26
 
-    const/4 p2, 0x1
+    const/4 v1, 0x1
 
-    goto :goto_26
+    goto :goto_27
 
-    :cond_25
-    const/4 p2, 0x0
+    :cond_26
+    const/4 v1, 0x0
 
-    :goto_26
-    invoke-direct {p0, p2}, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->setStickyActive(Z)V
+    :goto_27
+    invoke-direct {p0, v1}, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->setStickyActive(Z)V
 
     .line 772
-    :cond_29
-    iget-object p2, p0, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->mBatterySaverController:Lcom/android/server/power/batterysaver/BatterySaverController;
+    :cond_2a
+    iget-object v1, p0, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->mBatterySaverController:Lcom/android/server/power/batterysaver/BatterySaverController;
 
-    invoke-virtual {p2, p1, p3}, Lcom/android/server/power/batterysaver/BatterySaverController;->enableBatterySaver(ZI)V
+    invoke-virtual {v1, p1, p3}, Lcom/android/server/power/batterysaver/BatterySaverController;->enableBatterySaver(ZI)V
 
     .line 775
-    const/16 p2, 0x9
+    const/16 v1, 0x9
 
-    if-ne p3, p2, :cond_36
+    if-ne p3, v1, :cond_3c
 
     .line 776
-    invoke-virtual {p0}, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->triggerDynamicModeNotification()V
+    new-instance v1, Lcom/android/server/power/batterysaver/-$$Lambda$mQgroChNR1F7zC7uPirCwSx_zNg;
 
-    goto :goto_3b
+    invoke-direct {v1, p0}, Lcom/android/server/power/batterysaver/-$$Lambda$mQgroChNR1F7zC7uPirCwSx_zNg;-><init>(Lcom/android/server/power/batterysaver/BatterySaverStateMachine;)V
+
+    invoke-virtual {p0, v1}, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->runOnBgThread(Ljava/lang/Runnable;)V
+
+    goto :goto_46
 
     .line 777
-    :cond_36
-    if-nez p1, :cond_3b
+    :cond_3c
+    if-nez p1, :cond_46
 
     .line 778
-    invoke-direct {p0}, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->hideDynamicModeNotification()V
+    new-instance v1, Lcom/android/server/power/batterysaver/-$$Lambda$BatterySaverStateMachine$WGmfDqFGirqPfth6R7MtcSK-Gvs;
+
+    invoke-direct {v1, p0}, Lcom/android/server/power/batterysaver/-$$Lambda$BatterySaverStateMachine$WGmfDqFGirqPfth6R7MtcSK-Gvs;-><init>(Lcom/android/server/power/batterysaver/BatterySaverStateMachine;)V
+
+    invoke-virtual {p0, v1}, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->runOnBgThread(Ljava/lang/Runnable;)V
 
     .line 786
-    :cond_3b
-    :goto_3b
+    :cond_46
+    :goto_46
     return-void
 .end method
 
 .method private ensureNotificationChannelExists(Landroid/app/NotificationManager;Ljava/lang/String;I)V
-    .registers 6
+    .registers 7
+    .param p1, "manager"  # Landroid/app/NotificationManager;
+    .param p2, "channelId"  # Ljava/lang/String;
+    .param p3, "nameId"  # I
 
-    .line 830
+    .line 821
     new-instance v0, Landroid/app/NotificationChannel;
 
     iget-object v1, p0, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->mContext:Landroid/content/Context;
 
-    .line 831
+    .line 822
     invoke-virtual {v1, p3}, Landroid/content/Context;->getText(I)Ljava/lang/CharSequence;
 
-    move-result-object p3
+    move-result-object v1
 
-    const/4 v1, 0x3
+    const/4 v2, 0x3
 
-    invoke-direct {v0, p2, p3, v1}, Landroid/app/NotificationChannel;-><init>(Ljava/lang/String;Ljava/lang/CharSequence;I)V
+    invoke-direct {v0, p2, v1, v2}, Landroid/app/NotificationChannel;-><init>(Ljava/lang/String;Ljava/lang/CharSequence;I)V
 
-    .line 832
-    const/4 p2, 0x0
+    .line 823
+    .local v0, "channel":Landroid/app/NotificationChannel;
+    const/4 v1, 0x0
 
-    invoke-virtual {v0, p2, p2}, Landroid/app/NotificationChannel;->setSound(Landroid/net/Uri;Landroid/media/AudioAttributes;)V
+    invoke-virtual {v0, v1, v1}, Landroid/app/NotificationChannel;->setSound(Landroid/net/Uri;Landroid/media/AudioAttributes;)V
 
-    .line 833
-    const/4 p2, 0x1
+    .line 824
+    const/4 v1, 0x1
 
-    invoke-virtual {v0, p2}, Landroid/app/NotificationChannel;->setBlockableSystem(Z)V
+    invoke-virtual {v0, v1}, Landroid/app/NotificationChannel;->setBlockableSystem(Z)V
 
-    .line 834
+    .line 825
     invoke-virtual {p1, v0}, Landroid/app/NotificationManager;->createNotificationChannel(Landroid/app/NotificationChannel;)V
 
-    .line 835
+    .line 826
     return-void
 .end method
 
 .method private hideDynamicModeNotification()V
     .registers 2
 
-    .line 858
+    .line 849
     const/16 v0, 0x7c8
 
     invoke-direct {p0, v0}, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->hideNotification(I)V
 
-    .line 859
+    .line 850
     return-void
 .end method
 
 .method private hideNotification(I)V
-    .registers 3
+    .registers 4
+    .param p1, "notificationId"  # I
 
-    .line 868
-    new-instance v0, Lcom/android/server/power/batterysaver/-$$Lambda$BatterySaverStateMachine$66yeetZVz7IbzEr9gw2J77hoMVI;
+    .line 857
+    iget-object v0, p0, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->mContext:Landroid/content/Context;
 
-    invoke-direct {v0, p0, p1}, Lcom/android/server/power/batterysaver/-$$Lambda$BatterySaverStateMachine$66yeetZVz7IbzEr9gw2J77hoMVI;-><init>(Lcom/android/server/power/batterysaver/BatterySaverStateMachine;I)V
+    const-class v1, Landroid/app/NotificationManager;
 
-    invoke-virtual {p0, v0}, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->runOnBgThread(Ljava/lang/Runnable;)V
+    invoke-virtual {v0, v1}, Landroid/content/Context;->getSystemService(Ljava/lang/Class;)Ljava/lang/Object;
 
-    .line 872
+    move-result-object v0
+
+    check-cast v0, Landroid/app/NotificationManager;
+
+    .line 858
+    .local v0, "manager":Landroid/app/NotificationManager;
+    invoke-virtual {v0, p1}, Landroid/app/NotificationManager;->cancel(I)V
+
+    .line 859
     return-void
 .end method
 
 .method private hideStickyDisabledNotification()V
     .registers 2
 
-    .line 862
+    .line 853
     const/16 v0, 0x7c9
 
     invoke-direct {p0, v0}, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->hideNotification(I)V
 
-    .line 863
+    .line 854
     return-void
 .end method
 
@@ -736,8 +778,16 @@
     return v0
 .end method
 
+.method public static synthetic lambda$WGmfDqFGirqPfth6R7MtcSK-Gvs(Lcom/android/server/power/batterysaver/BatterySaverStateMachine;)V
+    .registers 1
+
+    invoke-direct {p0}, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->hideDynamicModeNotification()V
+
+    return-void
+.end method
+
 .method private refreshSettingsLocked()V
-    .registers 13
+    .registers 15
     .annotation build Lcom/android/internal/annotations/GuardedBy;
         value = {
             "mLock"
@@ -747,7 +797,7 @@
     .line 362
     const/4 v0, 0x0
 
-    const-string v1, "low_power"
+    const-string/jumbo v1, "low_power"
 
     invoke-virtual {p0, v1, v0}, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->getGlobalSetting(Ljava/lang/String;I)I
 
@@ -755,101 +805,117 @@
 
     const/4 v2, 0x1
 
-    if-eqz v1, :cond_c
+    if-eqz v1, :cond_d
 
     move v4, v2
 
-    goto :goto_d
+    goto :goto_e
 
-    :cond_c
+    :cond_d
     move v4, v0
 
     .line 364
-    :goto_d
-    const-string v1, "low_power_sticky"
+    .local v4, "lowPowerModeEnabled":Z
+    :goto_e
+    const-string/jumbo v1, "low_power_sticky"
 
     invoke-virtual {p0, v1, v0}, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->getGlobalSetting(Ljava/lang/String;I)I
 
     move-result v1
 
-    if-eqz v1, :cond_17
+    if-eqz v1, :cond_19
 
     move v5, v2
 
-    goto :goto_18
+    goto :goto_1a
 
-    :cond_17
+    :cond_19
     move v5, v0
 
     .line 366
-    :goto_18
+    .local v5, "lowPowerModeEnabledSticky":Z
+    :goto_1a
     const-string v1, "dynamic_power_savings_enabled"
 
     invoke-virtual {p0, v1, v0}, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->getGlobalSetting(Ljava/lang/String;I)I
 
     move-result v1
 
-    if-eqz v1, :cond_22
+    if-eqz v1, :cond_24
 
     move v10, v2
 
-    goto :goto_23
+    goto :goto_25
 
-    :cond_22
+    :cond_24
     move v10, v0
 
     .line 368
-    :goto_23
-    const-string v1, "low_power_trigger_level"
+    .local v10, "dynamicPowerSavingsBatterySaver":Z
+    :goto_25
+    const-string/jumbo v1, "low_power_trigger_level"
 
     invoke-virtual {p0, v1, v0}, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->getGlobalSetting(Ljava/lang/String;I)I
-
-    move-result v6
-
-    .line 370
-    const-string v1, "automatic_power_save_mode"
-
-    invoke-virtual {p0, v1, v0}, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->getGlobalSetting(Ljava/lang/String;I)I
-
-    move-result v9
-
-    .line 373
-    iget v1, p0, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->mDynamicPowerSavingsDefaultDisableThreshold:I
-
-    const-string v3, "dynamic_power_savings_disable_threshold"
-
-    invoke-virtual {p0, v3, v1}, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->getGlobalSetting(Ljava/lang/String;I)I
-
-    move-result v11
-
-    .line 376
-    const-string v1, "low_power_sticky_auto_disable_enabled"
-
-    invoke-virtual {p0, v1, v2}, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->getGlobalSetting(Ljava/lang/String;I)I
 
     move-result v1
 
-    if-eqz v1, :cond_41
+    .line 370
+    .local v1, "lowPowerModeTriggerLevel":I
+    const-string v3, "automatic_power_save_mode"
+
+    invoke-virtual {p0, v3, v0}, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->getGlobalSetting(Ljava/lang/String;I)I
+
+    move-result v12
+
+    .line 373
+    .local v12, "automaticBatterySaverMode":I
+    iget v3, p0, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->mDynamicPowerSavingsDefaultDisableThreshold:I
+
+    const-string v6, "dynamic_power_savings_disable_threshold"
+
+    invoke-virtual {p0, v6, v3}, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->getGlobalSetting(Ljava/lang/String;I)I
+
+    move-result v13
+
+    .line 376
+    .local v13, "dynamicPowerSavingsDisableThreshold":I
+    const-string/jumbo v3, "low_power_sticky_auto_disable_enabled"
+
+    invoke-virtual {p0, v3, v2}, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->getGlobalSetting(Ljava/lang/String;I)I
+
+    move-result v3
+
+    if-eqz v3, :cond_45
 
     move v7, v2
 
-    goto :goto_42
+    goto :goto_46
 
-    :cond_41
+    :cond_45
     move v7, v0
 
     .line 378
-    :goto_42
+    .local v7, "isStickyAutoDisableEnabled":Z
+    :goto_46
     const/16 v0, 0x5a
 
-    const-string v1, "low_power_sticky_auto_disable_level"
+    const-string/jumbo v2, "low_power_sticky_auto_disable_level"
 
-    invoke-virtual {p0, v1, v0}, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->getGlobalSetting(Ljava/lang/String;I)I
+    invoke-virtual {p0, v2, v0}, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->getGlobalSetting(Ljava/lang/String;I)I
 
-    move-result v8
+    move-result v0
 
     .line 381
+    .local v0, "stickyAutoDisableThreshold":I
     move-object v3, p0
+
+    move v6, v1
+
+    move v8, v0
+
+    move v9, v12
+
+    move v11, v13
 
     invoke-virtual/range {v3 .. v11}, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->setSettingsLocked(ZZIZIIZI)V
 
@@ -858,28 +924,31 @@
 .end method
 
 .method private setStickyActive(Z)V
-    .registers 3
+    .registers 4
+    .param p1, "active"  # Z
 
-    .line 875
+    .line 862
     iput-boolean p1, p0, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->mSettingBatterySaverEnabledSticky:Z
 
-    .line 876
+    .line 863
     nop
 
-    .line 877
-    iget-boolean p1, p0, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->mSettingBatterySaverEnabledSticky:Z
+    .line 864
+    iget-boolean v0, p0, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->mSettingBatterySaverEnabledSticky:Z
 
-    .line 876
-    const-string v0, "low_power_sticky"
+    .line 863
+    const-string/jumbo v1, "low_power_sticky"
 
-    invoke-virtual {p0, v0, p1}, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->putGlobalSetting(Ljava/lang/String;I)V
+    invoke-virtual {p0, v1, v0}, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->putGlobalSetting(Ljava/lang/String;I)V
 
-    .line 878
+    .line 865
     return-void
 .end method
 
 .method private updateStateLocked(ZZ)V
     .registers 12
+    .param p1, "manual"  # Z
+    .param p2, "enable"  # Z
     .annotation build Lcom/android/internal/annotations/GuardedBy;
         value = {
             "mLock"
@@ -936,23 +1005,23 @@
     if-eq v0, v7, :cond_3c
 
     .line 706
-    new-instance p1, Ljava/lang/StringBuilder;
+    new-instance v0, Ljava/lang/StringBuilder;
 
-    invoke-direct {p1}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string p2, "Unknown state: "
+    const-string v1, "Unknown state: "
 
-    invoke-virtual {p1, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    iget p2, p0, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->mState:I
+    iget v1, p0, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->mState:I
 
-    invoke-virtual {p1, p2}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    invoke-static {v2, p1}, Landroid/util/Slog;->wtf(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v2, v0}, Landroid/util/Slog;->wtf(Ljava/lang/String;Ljava/lang/String;)I
 
     goto/16 :goto_174
 
@@ -961,66 +1030,68 @@
     if-eqz p1, :cond_44
 
     .line 685
-    const-string p1, "Tried to manually change BS state from PENDING_STICKY_ON"
+    const-string v0, "Tried to manually change BS state from PENDING_STICKY_ON"
 
-    invoke-static {v2, p1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v2, v0}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 686
     return-void
 
     .line 688
     :cond_44
-    iget-boolean p1, p0, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->mSettingBatterySaverStickyAutoDisableEnabled:Z
+    iget-boolean v0, p0, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->mSettingBatterySaverStickyAutoDisableEnabled:Z
 
-    if-eqz p1, :cond_50
+    if-eqz v0, :cond_50
 
-    iget p1, p0, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->mBatteryLevel:I
+    iget v0, p0, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->mBatteryLevel:I
 
-    iget p2, p0, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->mSettingBatterySaverStickyAutoDisableThreshold:I
+    iget v1, p0, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->mSettingBatterySaverStickyAutoDisableThreshold:I
 
-    if-lt p1, p2, :cond_50
+    if-lt v0, v1, :cond_50
 
-    move p1, v5
+    move v0, v5
 
     goto :goto_51
 
     :cond_50
-    move p1, v4
+    move v0, v4
 
     .line 690
+    .local v0, "shouldTurnOffSticky":Z
     :goto_51
-    iget-boolean p2, p0, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->mBatterySaverStickyBehaviourDisabled:Z
+    iget-boolean v1, p0, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->mBatterySaverStickyBehaviourDisabled:Z
 
-    if-nez p2, :cond_5c
+    if-nez v1, :cond_5c
 
-    iget-boolean p2, p0, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->mSettingBatterySaverEnabledSticky:Z
+    iget-boolean v1, p0, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->mSettingBatterySaverEnabledSticky:Z
 
-    if-nez p2, :cond_5a
+    if-nez v1, :cond_5a
 
     goto :goto_5c
 
     :cond_5a
-    move p2, v4
+    move v1, v4
 
     goto :goto_5d
 
     :cond_5c
     :goto_5c
-    move p2, v5
+    move v1, v5
 
     .line 692
+    .local v1, "isStickyDisabled":Z
     :goto_5d
-    if-nez p2, :cond_6d
+    if-nez v1, :cond_6d
 
-    if-eqz p1, :cond_62
+    if-eqz v0, :cond_62
 
     goto :goto_6d
 
     .line 696
     :cond_62
-    iget-boolean p1, p0, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->mIsPowered:Z
+    iget-boolean v2, p0, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->mIsPowered:Z
 
-    if-nez p1, :cond_174
+    if-nez v2, :cond_174
 
     .line 698
     invoke-direct {p0, v5, v5, v8}, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->enableBatterySaverLocked(ZZI)V
@@ -1044,6 +1115,8 @@
     goto/16 :goto_174
 
     .line 664
+    .end local v0  # "shouldTurnOffSticky":Z
+    .end local v1  # "isStickyDisabled":Z
     :cond_77
     if-eqz p1, :cond_88
 
@@ -1051,9 +1124,9 @@
     if-nez p2, :cond_81
 
     .line 666
-    const-string p1, "Tried to disable BS when it\'s already AUTO_SNOOZED"
+    const-string v0, "Tried to disable BS when it\'s already AUTO_SNOOZED"
 
-    invoke-static {v2, p1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v2, v0}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 667
     return-void
@@ -1069,50 +1142,50 @@
 
     .line 672
     :cond_88
-    iget-boolean p1, p0, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->mIsPowered:Z
+    iget-boolean v0, p0, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->mIsPowered:Z
 
-    if-nez p1, :cond_b0
+    if-nez v0, :cond_b0
 
     .line 673
     invoke-direct {p0}, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->isAutomaticModeActiveLocked()Z
 
-    move-result p1
+    move-result v0
 
-    if-eqz p1, :cond_98
+    if-eqz v0, :cond_98
 
     invoke-direct {p0}, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->isInAutomaticLowZoneLocked()Z
 
-    move-result p1
+    move-result v0
 
-    if-eqz p1, :cond_b0
+    if-eqz v0, :cond_b0
 
     .line 674
     :cond_98
     invoke-direct {p0}, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->isDynamicModeActiveLocked()Z
 
-    move-result p1
+    move-result v0
 
-    if-eqz p1, :cond_a4
+    if-eqz v0, :cond_a4
 
     invoke-direct {p0}, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->isInDynamicLowZoneLocked()Z
 
-    move-result p1
+    move-result v0
 
-    if-eqz p1, :cond_b0
+    if-eqz v0, :cond_b0
 
     .line 675
     :cond_a4
     invoke-direct {p0}, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->isAutomaticModeActiveLocked()Z
 
-    move-result p1
+    move-result v0
 
-    if-nez p1, :cond_174
+    if-nez v0, :cond_174
 
     invoke-direct {p0}, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->isDynamicModeActiveLocked()Z
 
-    move-result p1
+    move-result v0
 
-    if-nez p1, :cond_174
+    if-nez v0, :cond_174
 
     .line 676
     :cond_b0
@@ -1142,9 +1215,9 @@
     if-eqz p2, :cond_c9
 
     .line 636
-    const-string p1, "Tried to enable BS when it\'s already AUTO_ON"
+    const-string v0, "Tried to enable BS when it\'s already AUTO_ON"
 
-    invoke-static {v2, p1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v2, v0}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 637
     return-void
@@ -1162,15 +1235,15 @@
     :cond_d0
     invoke-direct {p0}, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->isAutomaticModeActiveLocked()Z
 
-    move-result p1
+    move-result v0
 
-    if-eqz p1, :cond_e3
+    if-eqz v0, :cond_e3
 
     invoke-direct {p0}, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->isInAutomaticLowZoneLocked()Z
 
-    move-result p1
+    move-result v0
 
-    if-nez p1, :cond_e3
+    if-nez v0, :cond_e3
 
     .line 648
     invoke-direct {p0, v4, v4, v5}, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->enableBatterySaverLocked(ZZI)V
@@ -1184,20 +1257,20 @@
     :cond_e3
     invoke-direct {p0}, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->isDynamicModeActiveLocked()Z
 
-    move-result p1
+    move-result v0
 
-    if-eqz p1, :cond_f8
+    if-eqz v0, :cond_f8
 
     invoke-direct {p0}, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->isInDynamicLowZoneLocked()Z
 
-    move-result p1
+    move-result v0
 
-    if-nez p1, :cond_f8
+    if-nez v0, :cond_f8
 
     .line 652
-    const/16 p1, 0xa
+    const/16 v0, 0xa
 
-    invoke-direct {p0, v4, v4, p1}, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->enableBatterySaverLocked(ZZI)V
+    invoke-direct {p0, v4, v4, v0}, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->enableBatterySaverLocked(ZZI)V
 
     .line 654
     iput v5, p0, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->mState:I
@@ -1208,20 +1281,20 @@
     :cond_f8
     invoke-direct {p0}, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->isAutomaticModeActiveLocked()Z
 
-    move-result p1
+    move-result v0
 
-    if-nez p1, :cond_174
+    if-nez v0, :cond_174
 
     invoke-direct {p0}, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->isDynamicModeActiveLocked()Z
 
-    move-result p1
+    move-result v0
 
-    if-nez p1, :cond_174
+    if-nez v0, :cond_174
 
     .line 656
-    const/16 p1, 0x8
+    const/16 v0, 0x8
 
-    invoke-direct {p0, v4, v4, p1}, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->enableBatterySaverLocked(ZZI)V
+    invoke-direct {p0, v4, v4, v0}, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->enableBatterySaverLocked(ZZI)V
 
     .line 658
     iput v5, p0, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->mState:I
@@ -1236,9 +1309,9 @@
     if-eqz p2, :cond_117
 
     .line 610
-    const-string p1, "Tried to enable BS when it\'s already MANUAL_ON"
+    const-string v0, "Tried to enable BS when it\'s already MANUAL_ON"
 
-    invoke-static {v2, p1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v2, v0}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 611
     return-void
@@ -1254,21 +1327,21 @@
 
     .line 616
     :cond_11d
-    iget-boolean p1, p0, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->mIsPowered:Z
+    iget-boolean v0, p0, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->mIsPowered:Z
 
-    if-eqz p1, :cond_174
+    if-eqz v0, :cond_174
 
     .line 617
     invoke-direct {p0, v4, v4, v6}, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->enableBatterySaverLocked(ZZI)V
 
     .line 619
-    iget-boolean p1, p0, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->mSettingBatterySaverEnabledSticky:Z
+    iget-boolean v0, p0, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->mSettingBatterySaverEnabledSticky:Z
 
-    if-eqz p1, :cond_12f
+    if-eqz v0, :cond_12f
 
-    iget-boolean p1, p0, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->mBatterySaverStickyBehaviourDisabled:Z
+    iget-boolean v0, p0, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->mBatterySaverStickyBehaviourDisabled:Z
 
-    if-nez p1, :cond_12f
+    if-nez v0, :cond_12f
 
     .line 621
     iput v7, p0, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->mState:I
@@ -1294,9 +1367,9 @@
     if-nez p2, :cond_140
 
     .line 585
-    const-string p1, "Tried to disable BS when it\'s already OFF"
+    const-string v0, "Tried to disable BS when it\'s already OFF"
 
-    invoke-static {v2, p1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v2, v0}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 586
     return-void
@@ -1317,15 +1390,15 @@
     :cond_149
     invoke-direct {p0}, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->isAutomaticModeActiveLocked()Z
 
-    move-result p1
+    move-result v0
 
-    if-eqz p1, :cond_15e
+    if-eqz v0, :cond_15e
 
     invoke-direct {p0}, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->isInAutomaticLowZoneLocked()Z
 
-    move-result p1
+    move-result v0
 
-    if-eqz p1, :cond_15e
+    if-eqz v0, :cond_15e
 
     .line 593
     invoke-direct {p0, v5, v4, v4}, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->enableBatterySaverLocked(ZZI)V
@@ -1342,20 +1415,20 @@
     :cond_15e
     invoke-direct {p0}, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->isDynamicModeActiveLocked()Z
 
-    move-result p1
+    move-result v0
 
-    if-eqz p1, :cond_174
+    if-eqz v0, :cond_174
 
     invoke-direct {p0}, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->isInDynamicLowZoneLocked()Z
 
-    move-result p1
+    move-result v0
 
-    if-eqz p1, :cond_174
+    if-eqz v0, :cond_174
 
     .line 598
-    const/16 p1, 0x9
+    const/16 v0, 0x9
 
-    invoke-direct {p0, v5, v4, p1}, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->enableBatterySaverLocked(ZZI)V
+    invoke-direct {p0, v5, v4, v0}, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->enableBatterySaverLocked(ZZI)V
 
     .line 600
     invoke-direct {p0}, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->hideStickyDisabledNotification()V
@@ -1373,27 +1446,28 @@
 # virtual methods
 .method public dump(Ljava/io/PrintWriter;)V
     .registers 5
+    .param p1, "pw"  # Ljava/io/PrintWriter;
 
-    .line 891
+    .line 878
     iget-object v0, p0, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->mLock:Ljava/lang/Object;
 
     monitor-enter v0
 
-    .line 892
+    .line 879
     :try_start_3
     invoke-virtual {p1}, Ljava/io/PrintWriter;->println()V
 
-    .line 893
+    .line 880
     const-string v1, "Battery saver state machine:"
 
     invoke-virtual {p1, v1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
-    .line 895
+    .line 882
     const-string v1, "  Enabled="
 
     invoke-virtual {p1, v1}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
-    .line 896
+    .line 883
     iget-object v1, p0, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->mBatterySaverController:Lcom/android/server/power/batterysaver/BatterySaverController;
 
     invoke-virtual {v1}, Lcom/android/server/power/batterysaver/BatterySaverController;->isEnabled()Z
@@ -1402,12 +1476,12 @@
 
     invoke-virtual {p1, v1}, Ljava/io/PrintWriter;->println(Z)V
 
-    .line 897
+    .line 884
     const-string v1, "    full="
 
     invoke-virtual {p1, v1}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
-    .line 898
+    .line 885
     iget-object v1, p0, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->mBatterySaverController:Lcom/android/server/power/batterysaver/BatterySaverController;
 
     invoke-virtual {v1}, Lcom/android/server/power/batterysaver/BatterySaverController;->isFullEnabled()Z
@@ -1416,12 +1490,12 @@
 
     invoke-virtual {p1, v1}, Ljava/io/PrintWriter;->println(Z)V
 
-    .line 899
+    .line 886
     const-string v1, "    adaptive="
 
     invoke-virtual {p1, v1}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
-    .line 900
+    .line 887
     iget-object v1, p0, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->mBatterySaverController:Lcom/android/server/power/batterysaver/BatterySaverController;
 
     invoke-virtual {v1}, Lcom/android/server/power/batterysaver/BatterySaverController;->isAdaptiveEnabled()Z
@@ -1430,7 +1504,7 @@
 
     invoke-virtual {p1, v1}, Ljava/io/PrintWriter;->print(Z)V
 
-    .line 901
+    .line 888
     iget-object v1, p0, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->mBatterySaverController:Lcom/android/server/power/batterysaver/BatterySaverController;
 
     invoke-virtual {v1}, Lcom/android/server/power/batterysaver/BatterySaverController;->isAdaptiveEnabled()Z
@@ -1439,15 +1513,15 @@
 
     if-eqz v1, :cond_54
 
-    .line 902
+    .line 889
     const-string v1, " (advertise="
 
     invoke-virtual {p1, v1}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
-    .line 903
+    .line 890
     iget-object v1, p0, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->mBatterySaverController:Lcom/android/server/power/batterysaver/BatterySaverController;
 
-    .line 904
+    .line 891
     invoke-virtual {v1}, Lcom/android/server/power/batterysaver/BatterySaverController;->getBatterySaverPolicy()Lcom/android/server/power/batterysaver/BatterySaverPolicy;
 
     move-result-object v1
@@ -1456,382 +1530,388 @@
 
     move-result v1
 
-    .line 903
+    .line 890
     invoke-virtual {p1, v1}, Ljava/io/PrintWriter;->print(Z)V
 
-    .line 905
+    .line 892
     const-string v1, ")"
 
     invoke-virtual {p1, v1}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
-    .line 907
+    .line 894
     :cond_54
     invoke-virtual {p1}, Ljava/io/PrintWriter;->println()V
 
-    .line 908
+    .line 895
     const-string v1, "  mState="
 
     invoke-virtual {p1, v1}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
-    .line 909
+    .line 896
     iget v1, p0, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->mState:I
 
     invoke-virtual {p1, v1}, Ljava/io/PrintWriter;->println(I)V
 
-    .line 911
+    .line 898
     const-string v1, "  mLastChangedIntReason="
 
     invoke-virtual {p1, v1}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
-    .line 912
+    .line 899
     iget v1, p0, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->mLastChangedIntReason:I
 
     invoke-virtual {p1, v1}, Ljava/io/PrintWriter;->println(I)V
 
-    .line 913
+    .line 900
     const-string v1, "  mLastChangedStrReason="
 
     invoke-virtual {p1, v1}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
-    .line 914
+    .line 901
     iget-object v1, p0, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->mLastChangedStrReason:Ljava/lang/String;
 
     invoke-virtual {p1, v1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
-    .line 916
+    .line 903
     const-string v1, "  mBootCompleted="
 
     invoke-virtual {p1, v1}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
-    .line 917
+    .line 904
     iget-boolean v1, p0, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->mBootCompleted:Z
 
     invoke-virtual {p1, v1}, Ljava/io/PrintWriter;->println(Z)V
 
-    .line 918
+    .line 905
     const-string v1, "  mSettingsLoaded="
 
     invoke-virtual {p1, v1}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
-    .line 919
+    .line 906
     iget-boolean v1, p0, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->mSettingsLoaded:Z
 
     invoke-virtual {p1, v1}, Ljava/io/PrintWriter;->println(Z)V
 
-    .line 920
+    .line 907
     const-string v1, "  mBatteryStatusSet="
 
     invoke-virtual {p1, v1}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
-    .line 921
+    .line 908
     iget-boolean v1, p0, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->mBatteryStatusSet:Z
 
     invoke-virtual {p1, v1}, Ljava/io/PrintWriter;->println(Z)V
 
-    .line 923
+    .line 910
     const-string v1, "  mIsPowered="
 
     invoke-virtual {p1, v1}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
-    .line 924
+    .line 911
     iget-boolean v1, p0, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->mIsPowered:Z
 
     invoke-virtual {p1, v1}, Ljava/io/PrintWriter;->println(Z)V
 
-    .line 925
+    .line 912
     const-string v1, "  mBatteryLevel="
 
     invoke-virtual {p1, v1}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
-    .line 926
+    .line 913
     iget v1, p0, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->mBatteryLevel:I
 
     invoke-virtual {p1, v1}, Ljava/io/PrintWriter;->println(I)V
 
-    .line 927
+    .line 914
     const-string v1, "  mIsBatteryLevelLow="
 
     invoke-virtual {p1, v1}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
-    .line 928
+    .line 915
     iget-boolean v1, p0, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->mIsBatteryLevelLow:Z
 
     invoke-virtual {p1, v1}, Ljava/io/PrintWriter;->println(Z)V
 
-    .line 930
+    .line 917
     const-string v1, "  mSettingBatterySaverEnabled="
 
     invoke-virtual {p1, v1}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
-    .line 931
+    .line 918
     iget-boolean v1, p0, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->mSettingBatterySaverEnabled:Z
 
     invoke-virtual {p1, v1}, Ljava/io/PrintWriter;->println(Z)V
 
-    .line 932
+    .line 919
     const-string v1, "  mSettingBatterySaverEnabledSticky="
 
     invoke-virtual {p1, v1}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
-    .line 933
+    .line 920
     iget-boolean v1, p0, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->mSettingBatterySaverEnabledSticky:Z
 
     invoke-virtual {p1, v1}, Ljava/io/PrintWriter;->println(Z)V
 
-    .line 934
+    .line 921
     const-string v1, "  mSettingBatterySaverStickyAutoDisableEnabled="
 
     invoke-virtual {p1, v1}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
-    .line 935
+    .line 922
     iget-boolean v1, p0, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->mSettingBatterySaverStickyAutoDisableEnabled:Z
 
     invoke-virtual {p1, v1}, Ljava/io/PrintWriter;->println(Z)V
 
-    .line 936
+    .line 923
     const-string v1, "  mSettingBatterySaverStickyAutoDisableThreshold="
 
     invoke-virtual {p1, v1}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
-    .line 937
+    .line 924
     iget v1, p0, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->mSettingBatterySaverStickyAutoDisableThreshold:I
 
     invoke-virtual {p1, v1}, Ljava/io/PrintWriter;->println(I)V
 
-    .line 938
+    .line 925
     const-string v1, "  mSettingBatterySaverTriggerThreshold="
 
     invoke-virtual {p1, v1}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
-    .line 939
+    .line 926
     iget v1, p0, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->mSettingBatterySaverTriggerThreshold:I
 
     invoke-virtual {p1, v1}, Ljava/io/PrintWriter;->println(I)V
 
-    .line 940
+    .line 927
     const-string v1, "  mBatterySaverStickyBehaviourDisabled="
 
     invoke-virtual {p1, v1}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
-    .line 941
+    .line 928
     iget-boolean v1, p0, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->mBatterySaverStickyBehaviourDisabled:Z
 
     invoke-virtual {p1, v1}, Ljava/io/PrintWriter;->println(Z)V
 
-    .line 943
+    .line 930
     const-string v1, "  mLastAdaptiveBatterySaverChangedExternallyElapsed="
 
     invoke-virtual {p1, v1}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
-    .line 944
+    .line 931
     iget-wide v1, p0, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->mLastAdaptiveBatterySaverChangedExternallyElapsed:J
 
     invoke-virtual {p1, v1, v2}, Ljava/io/PrintWriter;->println(J)V
 
-    .line 945
+    .line 932
     monitor-exit v0
 
-    .line 946
+    .line 933
     return-void
 
-    .line 945
+    .line 932
     :catchall_f9
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_fb
     .catchall {:try_start_3 .. :try_end_fb} :catchall_f9
 
-    throw p1
+    throw v1
 .end method
 
 .method public dumpProto(Landroid/util/proto/ProtoOutputStream;J)V
-    .registers 9
+    .registers 11
+    .param p1, "proto"  # Landroid/util/proto/ProtoOutputStream;
+    .param p2, "tag"  # J
 
-    .line 949
+    .line 936
     iget-object v0, p0, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->mLock:Ljava/lang/Object;
 
     monitor-enter v0
 
-    .line 950
+    .line 937
     :try_start_3
     invoke-virtual {p1, p2, p3}, Landroid/util/proto/ProtoOutputStream;->start(J)J
 
-    move-result-wide p2
+    move-result-wide v1
 
-    .line 952
-    const-wide v1, 0x10800000001L
+    .line 939
+    .local v1, "token":J
+    const-wide v3, 0x10800000001L
 
-    iget-object v3, p0, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->mBatterySaverController:Lcom/android/server/power/batterysaver/BatterySaverController;
+    iget-object v5, p0, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->mBatterySaverController:Lcom/android/server/power/batterysaver/BatterySaverController;
 
-    .line 953
-    invoke-virtual {v3}, Lcom/android/server/power/batterysaver/BatterySaverController;->isEnabled()Z
+    .line 940
+    invoke-virtual {v5}, Lcom/android/server/power/batterysaver/BatterySaverController;->isEnabled()Z
 
-    move-result v3
+    move-result v5
 
-    .line 952
-    invoke-virtual {p1, v1, v2, v3}, Landroid/util/proto/ProtoOutputStream;->write(JZ)V
+    .line 939
+    invoke-virtual {p1, v3, v4, v5}, Landroid/util/proto/ProtoOutputStream;->write(JZ)V
+
+    .line 941
+    const-wide v3, 0x10e00000012L
+
+    iget v5, p0, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->mState:I
+
+    invoke-virtual {p1, v3, v4, v5}, Landroid/util/proto/ProtoOutputStream;->write(JI)V
+
+    .line 942
+    const-wide v3, 0x1080000000eL
+
+    iget-object v5, p0, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->mBatterySaverController:Lcom/android/server/power/batterysaver/BatterySaverController;
+
+    .line 943
+    invoke-virtual {v5}, Lcom/android/server/power/batterysaver/BatterySaverController;->isFullEnabled()Z
+
+    move-result v5
+
+    .line 942
+    invoke-virtual {p1, v3, v4, v5}, Landroid/util/proto/ProtoOutputStream;->write(JZ)V
+
+    .line 944
+    const-wide v3, 0x1080000000fL
+
+    iget-object v5, p0, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->mBatterySaverController:Lcom/android/server/power/batterysaver/BatterySaverController;
+
+    .line 945
+    invoke-virtual {v5}, Lcom/android/server/power/batterysaver/BatterySaverController;->isAdaptiveEnabled()Z
+
+    move-result v5
+
+    .line 944
+    invoke-virtual {p1, v3, v4, v5}, Landroid/util/proto/ProtoOutputStream;->write(JZ)V
+
+    .line 946
+    const-wide v3, 0x10800000010L
+
+    iget-object v5, p0, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->mBatterySaverController:Lcom/android/server/power/batterysaver/BatterySaverController;
+
+    .line 947
+    invoke-virtual {v5}, Lcom/android/server/power/batterysaver/BatterySaverController;->getBatterySaverPolicy()Lcom/android/server/power/batterysaver/BatterySaverPolicy;
+
+    move-result-object v5
+
+    invoke-virtual {v5}, Lcom/android/server/power/batterysaver/BatterySaverPolicy;->shouldAdvertiseIsEnabled()Z
+
+    move-result v5
+
+    .line 946
+    invoke-virtual {p1, v3, v4, v5}, Landroid/util/proto/ProtoOutputStream;->write(JZ)V
+
+    .line 949
+    const-wide v3, 0x10800000002L
+
+    iget-boolean v5, p0, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->mBootCompleted:Z
+
+    invoke-virtual {p1, v3, v4, v5}, Landroid/util/proto/ProtoOutputStream;->write(JZ)V
+
+    .line 950
+    const-wide v3, 0x10800000003L
+
+    iget-boolean v5, p0, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->mSettingsLoaded:Z
+
+    invoke-virtual {p1, v3, v4, v5}, Landroid/util/proto/ProtoOutputStream;->write(JZ)V
+
+    .line 951
+    const-wide v3, 0x10800000004L
+
+    iget-boolean v5, p0, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->mBatteryStatusSet:Z
+
+    invoke-virtual {p1, v3, v4, v5}, Landroid/util/proto/ProtoOutputStream;->write(JZ)V
 
     .line 954
-    const-wide v1, 0x10e00000012L
+    const-wide v3, 0x10800000006L
 
-    iget v3, p0, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->mState:I
+    iget-boolean v5, p0, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->mIsPowered:Z
 
-    invoke-virtual {p1, v1, v2, v3}, Landroid/util/proto/ProtoOutputStream;->write(JI)V
+    invoke-virtual {p1, v3, v4, v5}, Landroid/util/proto/ProtoOutputStream;->write(JZ)V
 
     .line 955
-    const-wide v1, 0x1080000000eL
+    const-wide v3, 0x10500000007L
 
-    iget-object v3, p0, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->mBatterySaverController:Lcom/android/server/power/batterysaver/BatterySaverController;
+    iget v5, p0, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->mBatteryLevel:I
+
+    invoke-virtual {p1, v3, v4, v5}, Landroid/util/proto/ProtoOutputStream;->write(JI)V
 
     .line 956
-    invoke-virtual {v3}, Lcom/android/server/power/batterysaver/BatterySaverController;->isFullEnabled()Z
+    const-wide v3, 0x10800000008L
 
-    move-result v3
+    iget-boolean v5, p0, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->mIsBatteryLevelLow:Z
 
-    .line 955
-    invoke-virtual {p1, v1, v2, v3}, Landroid/util/proto/ProtoOutputStream;->write(JZ)V
-
-    .line 957
-    const-wide v1, 0x1080000000fL
-
-    iget-object v3, p0, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->mBatterySaverController:Lcom/android/server/power/batterysaver/BatterySaverController;
+    invoke-virtual {p1, v3, v4, v5}, Landroid/util/proto/ProtoOutputStream;->write(JZ)V
 
     .line 958
-    invoke-virtual {v3}, Lcom/android/server/power/batterysaver/BatterySaverController;->isAdaptiveEnabled()Z
+    const-wide v3, 0x10800000009L
 
-    move-result v3
+    iget-boolean v5, p0, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->mSettingBatterySaverEnabled:Z
 
-    .line 957
-    invoke-virtual {p1, v1, v2, v3}, Landroid/util/proto/ProtoOutputStream;->write(JZ)V
-
-    .line 959
-    const-wide v1, 0x10800000010L
-
-    iget-object v3, p0, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->mBatterySaverController:Lcom/android/server/power/batterysaver/BatterySaverController;
+    invoke-virtual {p1, v3, v4, v5}, Landroid/util/proto/ProtoOutputStream;->write(JZ)V
 
     .line 960
-    invoke-virtual {v3}, Lcom/android/server/power/batterysaver/BatterySaverController;->getBatterySaverPolicy()Lcom/android/server/power/batterysaver/BatterySaverPolicy;
+    const-wide v3, 0x1080000000aL
 
-    move-result-object v3
+    iget-boolean v5, p0, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->mSettingBatterySaverEnabledSticky:Z
 
-    invoke-virtual {v3}, Lcom/android/server/power/batterysaver/BatterySaverPolicy;->shouldAdvertiseIsEnabled()Z
-
-    move-result v3
-
-    .line 959
-    invoke-virtual {p1, v1, v2, v3}, Landroid/util/proto/ProtoOutputStream;->write(JZ)V
+    invoke-virtual {p1, v3, v4, v5}, Landroid/util/proto/ProtoOutputStream;->write(JZ)V
 
     .line 962
-    const-wide v1, 0x10800000002L
+    const-wide v3, 0x1050000000bL
 
-    iget-boolean v3, p0, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->mBootCompleted:Z
+    iget v5, p0, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->mSettingBatterySaverTriggerThreshold:I
 
-    invoke-virtual {p1, v1, v2, v3}, Landroid/util/proto/ProtoOutputStream;->write(JZ)V
-
-    .line 963
-    const-wide v1, 0x10800000003L
-
-    iget-boolean v3, p0, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->mSettingsLoaded:Z
-
-    invoke-virtual {p1, v1, v2, v3}, Landroid/util/proto/ProtoOutputStream;->write(JZ)V
+    invoke-virtual {p1, v3, v4, v5}, Landroid/util/proto/ProtoOutputStream;->write(JI)V
 
     .line 964
-    const-wide v1, 0x10800000004L
+    const-wide v3, 0x1080000000cL
 
-    iget-boolean v3, p0, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->mBatteryStatusSet:Z
+    iget-boolean v5, p0, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->mSettingBatterySaverStickyAutoDisableEnabled:Z
 
-    invoke-virtual {p1, v1, v2, v3}, Landroid/util/proto/ProtoOutputStream;->write(JZ)V
+    invoke-virtual {p1, v3, v4, v5}, Landroid/util/proto/ProtoOutputStream;->write(JZ)V
 
     .line 967
-    const-wide v1, 0x10800000006L
+    const-wide v3, 0x1050000000dL
 
-    iget-boolean v3, p0, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->mIsPowered:Z
+    iget v5, p0, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->mSettingBatterySaverStickyAutoDisableThreshold:I
 
-    invoke-virtual {p1, v1, v2, v3}, Landroid/util/proto/ProtoOutputStream;->write(JZ)V
+    invoke-virtual {p1, v3, v4, v5}, Landroid/util/proto/ProtoOutputStream;->write(JI)V
 
-    .line 968
-    const-wide v1, 0x10500000007L
+    .line 972
+    const-wide v3, 0x10300000011L
 
-    iget v3, p0, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->mBatteryLevel:I
+    iget-wide v5, p0, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->mLastAdaptiveBatterySaverChangedExternallyElapsed:J
 
-    invoke-virtual {p1, v1, v2, v3}, Landroid/util/proto/ProtoOutputStream;->write(JI)V
-
-    .line 969
-    const-wide v1, 0x10800000008L
-
-    iget-boolean v3, p0, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->mIsBatteryLevelLow:Z
-
-    invoke-virtual {p1, v1, v2, v3}, Landroid/util/proto/ProtoOutputStream;->write(JZ)V
-
-    .line 971
-    const-wide v1, 0x10800000009L
-
-    iget-boolean v3, p0, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->mSettingBatterySaverEnabled:Z
-
-    invoke-virtual {p1, v1, v2, v3}, Landroid/util/proto/ProtoOutputStream;->write(JZ)V
-
-    .line 973
-    const-wide v1, 0x1080000000aL
-
-    iget-boolean v3, p0, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->mSettingBatterySaverEnabledSticky:Z
-
-    invoke-virtual {p1, v1, v2, v3}, Landroid/util/proto/ProtoOutputStream;->write(JZ)V
-
-    .line 975
-    const-wide v1, 0x1050000000bL
-
-    iget v3, p0, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->mSettingBatterySaverTriggerThreshold:I
-
-    invoke-virtual {p1, v1, v2, v3}, Landroid/util/proto/ProtoOutputStream;->write(JI)V
+    invoke-virtual {p1, v3, v4, v5, v6}, Landroid/util/proto/ProtoOutputStream;->write(JJ)V
 
     .line 977
-    const-wide v1, 0x1080000000cL
+    invoke-virtual {p1, v1, v2}, Landroid/util/proto/ProtoOutputStream;->end(J)V
 
-    iget-boolean v3, p0, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->mSettingBatterySaverStickyAutoDisableEnabled:Z
-
-    invoke-virtual {p1, v1, v2, v3}, Landroid/util/proto/ProtoOutputStream;->write(JZ)V
-
-    .line 980
-    const-wide v1, 0x1050000000dL
-
-    iget v3, p0, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->mSettingBatterySaverStickyAutoDisableThreshold:I
-
-    invoke-virtual {p1, v1, v2, v3}, Landroid/util/proto/ProtoOutputStream;->write(JI)V
-
-    .line 985
-    const-wide v1, 0x10300000011L
-
-    iget-wide v3, p0, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->mLastAdaptiveBatterySaverChangedExternallyElapsed:J
-
-    invoke-virtual {p1, v1, v2, v3, v4}, Landroid/util/proto/ProtoOutputStream;->write(JJ)V
-
-    .line 990
-    invoke-virtual {p1, p2, p3}, Landroid/util/proto/ProtoOutputStream;->end(J)V
-
-    .line 991
+    .line 978
+    .end local v1  # "token":J
     monitor-exit v0
 
-    .line 992
+    .line 979
     return-void
 
-    .line 991
+    .line 978
     :catchall_ca
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_cc
     .catchall {:try_start_3 .. :try_end_cc} :catchall_ca
 
-    throw p1
+    throw v1
 .end method
 
 .method protected getGlobalSetting(Ljava/lang/String;I)I
     .registers 4
+    .param p1, "key"  # Ljava/lang/String;
+    .param p2, "defValue"  # I
     .annotation build Lcom/android/internal/annotations/VisibleForTesting;
     .end annotation
 
-    .line 887
+    .line 874
     iget-object v0, p0, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->mContext:Landroid/content/Context;
 
     invoke-virtual {v0}, Landroid/content/Context;->getContentResolver()Landroid/content/ContentResolver;
@@ -1840,9 +1920,9 @@
 
     invoke-static {v0, p1, p2}, Landroid/provider/Settings$Global;->getInt(Landroid/content/ContentResolver;Ljava/lang/String;I)I
 
-    move-result p1
+    move-result v0
 
-    return p1
+    return v0
 .end method
 
 .method getState()I
@@ -1874,31 +1954,6 @@
     throw v1
 .end method
 
-.method public synthetic lambda$hideNotification$4$BatterySaverStateMachine(I)V
-    .registers 5
-
-    .line 869
-    iget-object v0, p0, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->mContext:Landroid/content/Context;
-
-    const-class v1, Landroid/app/NotificationManager;
-
-    invoke-virtual {v0, v1}, Landroid/content/Context;->getSystemService(Ljava/lang/Class;)Ljava/lang/Object;
-
-    move-result-object v0
-
-    check-cast v0, Landroid/app/NotificationManager;
-
-    .line 870
-    sget-object v1, Landroid/os/UserHandle;->ALL:Landroid/os/UserHandle;
-
-    const-string v2, "BatterySaverStateMachine"
-
-    invoke-virtual {v0, v2, p1, v1}, Landroid/app/NotificationManager;->cancelAsUser(Ljava/lang/String;ILandroid/os/UserHandle;)V
-
-    .line 871
-    return-void
-.end method
-
 .method public synthetic lambda$new$1$BatterySaverStateMachine()V
     .registers 2
 
@@ -1912,7 +1967,7 @@
 .end method
 
 .method public synthetic lambda$onBootCompleted$0$BatterySaverStateMachine()V
-    .registers 5
+    .registers 6
 
     .line 297
     iget-object v0, p0, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->mContext:Landroid/content/Context;
@@ -1922,7 +1977,8 @@
     move-result-object v0
 
     .line 298
-    const-string v1, "low_power"
+    .local v0, "cr":Landroid/content/ContentResolver;
+    const-string/jumbo v1, "low_power"
 
     invoke-static {v1}, Landroid/provider/Settings$Global;->getUriFor(Ljava/lang/String;)Landroid/net/Uri;
 
@@ -1935,7 +1991,7 @@
     invoke-virtual {v0, v1, v3, v2, v3}, Landroid/content/ContentResolver;->registerContentObserver(Landroid/net/Uri;ZLandroid/database/ContentObserver;I)V
 
     .line 301
-    const-string v1, "low_power_sticky"
+    const-string/jumbo v1, "low_power_sticky"
 
     invoke-static {v1}, Landroid/provider/Settings$Global;->getUriFor(Ljava/lang/String;)Landroid/net/Uri;
 
@@ -1946,7 +2002,7 @@
     invoke-virtual {v0, v1, v3, v2, v3}, Landroid/content/ContentResolver;->registerContentObserver(Landroid/net/Uri;ZLandroid/database/ContentObserver;I)V
 
     .line 304
-    const-string v1, "low_power_trigger_level"
+    const-string/jumbo v1, "low_power_trigger_level"
 
     invoke-static {v1}, Landroid/provider/Settings$Global;->getUriFor(Ljava/lang/String;)Landroid/net/Uri;
 
@@ -1990,7 +2046,7 @@
     invoke-virtual {v0, v1, v3, v2, v3}, Landroid/content/ContentResolver;->registerContentObserver(Landroid/net/Uri;ZLandroid/database/ContentObserver;I)V
 
     .line 316
-    const-string v1, "low_power_sticky_auto_disable_enabled"
+    const-string/jumbo v1, "low_power_sticky_auto_disable_enabled"
 
     invoke-static {v1}, Landroid/provider/Settings$Global;->getUriFor(Ljava/lang/String;)Landroid/net/Uri;
 
@@ -2001,7 +2057,7 @@
     invoke-virtual {v0, v1, v3, v2, v3}, Landroid/content/ContentResolver;->registerContentObserver(Landroid/net/Uri;ZLandroid/database/ContentObserver;I)V
 
     .line 319
-    const-string v1, "low_power_sticky_auto_disable_level"
+    const-string/jumbo v1, "low_power_sticky_auto_disable_level"
 
     invoke-static {v1}, Landroid/provider/Settings$Global;->getUriFor(Ljava/lang/String;)Landroid/net/Uri;
 
@@ -2012,36 +2068,39 @@
     invoke-virtual {v0, v1, v3, v2, v3}, Landroid/content/ContentResolver;->registerContentObserver(Landroid/net/Uri;ZLandroid/database/ContentObserver;I)V
 
     .line 324
-    iget-object v0, p0, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->mLock:Ljava/lang/Object;
+    iget-object v1, p0, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->mLock:Ljava/lang/Object;
 
-    monitor-enter v0
+    monitor-enter v1
 
     .line 325
-    :try_start_62
-    const-string v1, "low_power_sticky"
+    :try_start_67
+    const-string/jumbo v2, "low_power_sticky"
 
-    invoke-virtual {p0, v1, v3}, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->getGlobalSetting(Ljava/lang/String;I)I
+    invoke-virtual {p0, v2, v3}, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->getGlobalSetting(Ljava/lang/String;I)I
 
-    move-result v1
+    move-result v2
 
-    const/4 v2, 0x1
+    const/4 v4, 0x1
 
-    if-eqz v1, :cond_6c
+    if-eqz v2, :cond_72
 
-    move v3, v2
+    move v3, v4
+
+    :cond_72
+    move v2, v3
 
     .line 328
-    :cond_6c
-    if-eqz v3, :cond_71
+    .local v2, "lowPowerModeEnabledSticky":Z
+    if-eqz v2, :cond_78
 
     .line 329
-    const/4 v1, 0x5
+    const/4 v3, 0x5
 
-    iput v1, p0, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->mState:I
+    iput v3, p0, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->mState:I
 
     .line 332
-    :cond_71
-    iput-boolean v2, p0, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->mBootCompleted:Z
+    :cond_78
+    iput-boolean v4, p0, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->mBootCompleted:Z
 
     .line 334
     invoke-direct {p0}, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->refreshSettingsLocked()V
@@ -2050,167 +2109,28 @@
     invoke-direct {p0}, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->doAutoBatterySaverLocked()V
 
     .line 337
-    monitor-exit v0
+    .end local v2  # "lowPowerModeEnabledSticky":Z
+    monitor-exit v1
 
     .line 338
     return-void
 
     .line 337
-    :catchall_7b
-    move-exception v1
+    :catchall_82
+    move-exception v2
 
-    monitor-exit v0
-    :try_end_7d
-    .catchall {:try_start_62 .. :try_end_7d} :catchall_7b
+    monitor-exit v1
+    :try_end_84
+    .catchall {:try_start_67 .. :try_end_84} :catchall_82
 
-    throw v1
-.end method
-
-.method public synthetic lambda$triggerDynamicModeNotification$2$BatterySaverStateMachine()V
-    .registers 6
-
-    .line 793
-    iget-object v0, p0, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->mContext:Landroid/content/Context;
-
-    const-class v1, Landroid/app/NotificationManager;
-
-    invoke-virtual {v0, v1}, Landroid/content/Context;->getSystemService(Ljava/lang/Class;)Ljava/lang/Object;
-
-    move-result-object v0
-
-    check-cast v0, Landroid/app/NotificationManager;
-
-    .line 794
-    const-string v1, "dynamic_mode_notification"
-
-    const v2, 0x1040212
-
-    invoke-direct {p0, v0, v1, v2}, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->ensureNotificationChannelExists(Landroid/app/NotificationManager;Ljava/lang/String;I)V
-
-    .line 797
-    iget-object v2, p0, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->mContext:Landroid/content/Context;
-
-    .line 799
-    invoke-virtual {v2}, Landroid/content/Context;->getResources()Landroid/content/res/Resources;
-
-    move-result-object v2
-
-    const v3, 0x1040214
-
-    invoke-virtual {v2, v3}, Landroid/content/res/Resources;->getString(I)Ljava/lang/String;
-
-    move-result-object v2
-
-    .line 798
-    const v3, 0x1040213
-
-    const-string v4, "android.intent.action.POWER_USAGE_SUMMARY"
-
-    invoke-direct {p0, v1, v2, v3, v4}, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->buildNotification(Ljava/lang/String;Ljava/lang/String;ILjava/lang/String;)Landroid/app/Notification;
-
-    move-result-object v1
-
-    sget-object v2, Landroid/os/UserHandle;->ALL:Landroid/os/UserHandle;
-
-    .line 797
-    const-string v3, "BatterySaverStateMachine"
-
-    const/16 v4, 0x7c8
-
-    invoke-virtual {v0, v3, v4, v1, v2}, Landroid/app/NotificationManager;->notifyAsUser(Ljava/lang/String;ILandroid/app/Notification;Landroid/os/UserHandle;)V
-
-    .line 804
-    return-void
-.end method
-
-.method public synthetic lambda$triggerStickyDisabledNotification$3$BatterySaverStateMachine()V
-    .registers 8
-
-    .line 812
-    iget-object v0, p0, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->mContext:Landroid/content/Context;
-
-    const-class v1, Landroid/app/NotificationManager;
-
-    invoke-virtual {v0, v1}, Landroid/content/Context;->getSystemService(Ljava/lang/Class;)Ljava/lang/Object;
-
-    move-result-object v0
-
-    check-cast v0, Landroid/app/NotificationManager;
-
-    .line 813
-    const-string v1, "battery_saver_channel"
-
-    const v2, 0x10400f6
-
-    invoke-direct {p0, v0, v1, v2}, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->ensureNotificationChannelExists(Landroid/app/NotificationManager;Ljava/lang/String;I)V
-
-    .line 816
-    invoke-static {}, Ljava/text/NumberFormat;->getPercentInstance()Ljava/text/NumberFormat;
-
-    move-result-object v2
-
-    iget v3, p0, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->mBatteryLevel:I
-
-    int-to-double v3, v3
-
-    const-wide/high16 v5, 0x4059000000000000L  # 100.0
-
-    div-double/2addr v3, v5
-
-    .line 817
-    invoke-virtual {v2, v3, v4}, Ljava/text/NumberFormat;->format(D)Ljava/lang/String;
-
-    move-result-object v2
-
-    .line 818
-    iget-object v3, p0, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->mContext:Landroid/content/Context;
-
-    .line 820
-    invoke-virtual {v3}, Landroid/content/Context;->getResources()Landroid/content/res/Resources;
-
-    move-result-object v3
-
-    const/4 v4, 0x1
-
-    new-array v4, v4, [Ljava/lang/Object;
-
-    const/4 v5, 0x0
-
-    aput-object v2, v4, v5
-
-    const v2, 0x10400f3
-
-    invoke-virtual {v3, v2, v4}, Landroid/content/res/Resources;->getString(I[Ljava/lang/Object;)Ljava/lang/String;
-
-    move-result-object v2
-
-    .line 819
-    const v3, 0x10400f8
-
-    const-string v4, "android.settings.BATTERY_SAVER_SETTINGS"
-
-    invoke-direct {p0, v1, v2, v3, v4}, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->buildNotification(Ljava/lang/String;Ljava/lang/String;ILjava/lang/String;)Landroid/app/Notification;
-
-    move-result-object v1
-
-    sget-object v2, Landroid/os/UserHandle;->ALL:Landroid/os/UserHandle;
-
-    .line 818
-    const-string v3, "BatterySaverStateMachine"
-
-    const/16 v4, 0x7c9
-
-    invoke-virtual {v0, v3, v4, v1, v2}, Landroid/app/NotificationManager;->notifyAsUser(Ljava/lang/String;ILandroid/app/Notification;Landroid/os/UserHandle;)V
-
-    .line 825
-    return-void
+    throw v2
 .end method
 
 .method public onBootCompleted()V
     .registers 3
 
     .line 290
-    const-string v0, "low_power"
+    const-string/jumbo v0, "low_power"
 
     const/4 v1, 0x0
 
@@ -2229,10 +2149,12 @@
 
 .method protected putGlobalSetting(Ljava/lang/String;I)V
     .registers 4
+    .param p1, "key"  # Ljava/lang/String;
+    .param p2, "value"  # I
     .annotation build Lcom/android/internal/annotations/VisibleForTesting;
     .end annotation
 
-    .line 882
+    .line 869
     iget-object v0, p0, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->mContext:Landroid/content/Context;
 
     invoke-virtual {v0}, Landroid/content/Context;->getContentResolver()Landroid/content/ContentResolver;
@@ -2241,12 +2163,13 @@
 
     invoke-static {v0, p1, p2}, Landroid/provider/Settings$Global;->putInt(Landroid/content/ContentResolver;Ljava/lang/String;I)Z
 
-    .line 883
+    .line 870
     return-void
 .end method
 
 .method runOnBgThread(Ljava/lang/Runnable;)V
     .registers 3
+    .param p1, "r"  # Ljava/lang/Runnable;
     .annotation build Lcom/android/internal/annotations/VisibleForTesting;
     .end annotation
 
@@ -2263,6 +2186,8 @@
 
 .method runOnBgThreadLazy(Ljava/lang/Runnable;I)V
     .registers 6
+    .param p1, "r"  # Ljava/lang/Runnable;
+    .param p2, "delayMillis"  # I
     .annotation build Lcom/android/internal/annotations/VisibleForTesting;
     .end annotation
 
@@ -2272,6 +2197,7 @@
     move-result-object v0
 
     .line 356
+    .local v0, "h":Landroid/os/Handler;
     invoke-virtual {v0, p1}, Landroid/os/Handler;->removeCallbacks(Ljava/lang/Runnable;)V
 
     .line 357
@@ -2285,6 +2211,7 @@
 
 .method public setAdaptiveBatterySaverEnabled(Z)Z
     .registers 5
+    .param p1, "enabled"  # Z
 
     .line 509
     iget-object v0, p0, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->mLock:Ljava/lang/Object;
@@ -2306,25 +2233,26 @@
 
     invoke-virtual {v1, p1, v2}, Lcom/android/server/power/batterysaver/BatterySaverController;->setAdaptivePolicyEnabledLocked(ZI)Z
 
-    move-result p1
+    move-result v1
 
     monitor-exit v0
 
-    return p1
+    return v1
 
     .line 513
     :catchall_13
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_15
     .catchall {:try_start_3 .. :try_end_15} :catchall_13
 
-    throw p1
+    throw v1
 .end method
 
 .method public setAdaptiveBatterySaverPolicy(Landroid/os/BatterySaverPolicyConfig;)Z
     .registers 5
+    .param p1, "config"  # Landroid/os/BatterySaverPolicyConfig;
 
     .line 524
     iget-object v0, p0, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->mLock:Ljava/lang/Object;
@@ -2346,25 +2274,26 @@
 
     invoke-virtual {v1, p1, v2}, Lcom/android/server/power/batterysaver/BatterySaverController;->setAdaptivePolicyLocked(Landroid/os/BatterySaverPolicyConfig;I)Z
 
-    move-result p1
+    move-result v1
 
     monitor-exit v0
 
-    return p1
+    return v1
 
     .line 528
     :catchall_13
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_15
     .catchall {:try_start_3 .. :try_end_15} :catchall_13
 
-    throw p1
+    throw v1
 .end method
 
 .method public setBatterySaverEnabledManually(Z)V
     .registers 4
+    .param p1, "enabled"  # Z
 
     .line 728
     iget-object v0, p0, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->mLock:Ljava/lang/Object;
@@ -2385,17 +2314,20 @@
 
     .line 732
     :catchall_9
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_b
     .catchall {:try_start_4 .. :try_end_b} :catchall_9
 
-    throw p1
+    throw v1
 .end method
 
 .method public setBatteryStatus(ZIZ)V
     .registers 10
+    .param p1, "newPowered"  # Z
+    .param p2, "newLevel"  # I
+    .param p3, "newBatteryLevelLow"  # Z
 
     .line 482
     iget-object v0, p0, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->mLock:Ljava/lang/Object;
@@ -2423,6 +2355,7 @@
     move v2, v3
 
     .line 486
+    .local v2, "poweredChanged":Z
     :goto_e
     iget v4, p0, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->mBatteryLevel:I
 
@@ -2436,6 +2369,7 @@
     move v4, v3
 
     .line 487
+    .local v4, "levelChanged":Z
     :goto_15
     iget-boolean v5, p0, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->mIsBatteryLevelLow:Z
 
@@ -2447,6 +2381,7 @@
     move v1, v3
 
     .line 489
+    .local v1, "lowChanged":Z
     :goto_1b
     if-nez v2, :cond_23
 
@@ -2473,6 +2408,9 @@
     invoke-direct {p0}, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->doAutoBatterySaverLocked()V
 
     .line 498
+    .end local v1  # "lowChanged":Z
+    .end local v2  # "poweredChanged":Z
+    .end local v4  # "levelChanged":Z
     monitor-exit v0
 
     .line 499
@@ -2480,17 +2418,25 @@
 
     .line 498
     :catchall_2e
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_30
     .catchall {:try_start_4 .. :try_end_30} :catchall_2e
 
-    throw p1
+    throw v1
 .end method
 
 .method setSettingsLocked(ZZIZIIZI)V
     .registers 25
+    .param p1, "batterySaverEnabled"  # Z
+    .param p2, "batterySaverEnabledSticky"  # Z
+    .param p3, "batterySaverTriggerThreshold"  # I
+    .param p4, "isStickyAutoDisableEnabled"  # Z
+    .param p5, "stickyAutoDisableThreshold"  # I
+    .param p6, "automaticBatterySaver"  # I
+    .param p7, "dynamicPowerSavingsBatterySaver"  # Z
+    .param p8, "dynamicPowerSavingsDisableThreshold"  # I
     .annotation build Lcom/android/internal/annotations/GuardedBy;
         value = {
             "mLock"
@@ -2529,6 +2475,8 @@
     move-result v9
 
     .line 419
+    .end local p5  # "stickyAutoDisableThreshold":I
+    .local v9, "stickyAutoDisableThreshold":I
     iget-boolean v10, v0, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->mSettingBatterySaverEnabled:Z
 
     if-eq v10, v1, :cond_1f
@@ -2541,6 +2489,7 @@
     const/4 v10, 0x0
 
     .line 420
+    .local v10, "enabledChanged":Z
     :goto_20
     iget-boolean v12, v0, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->mSettingBatterySaverEnabledSticky:Z
 
@@ -2554,6 +2503,7 @@
     const/4 v12, 0x0
 
     .line 422
+    .local v12, "stickyChanged":Z
     :goto_27
     iget v13, v0, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->mSettingBatterySaverTriggerThreshold:I
 
@@ -2567,6 +2517,7 @@
     const/4 v13, 0x0
 
     .line 424
+    .local v13, "thresholdChanged":Z
     :goto_2e
     iget-boolean v14, v0, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->mSettingBatterySaverStickyAutoDisableEnabled:Z
 
@@ -2580,6 +2531,7 @@
     const/4 v14, 0x0
 
     .line 426
+    .local v14, "stickyAutoDisableEnabledChanged":Z
     :goto_35
     iget v15, v0, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->mSettingBatterySaverStickyAutoDisableThreshold:I
 
@@ -2593,6 +2545,7 @@
     const/4 v15, 0x0
 
     .line 428
+    .local v15, "stickyAutoDisableThresholdChanged":Z
     :goto_3c
     iget v11, v0, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->mSettingAutomaticBatterySaver:I
 
@@ -2606,6 +2559,7 @@
     const/4 v11, 0x0
 
     .line 429
+    .local v11, "automaticModeChanged":Z
     :goto_43
     iget v8, v0, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->mDynamicPowerSavingsDisableThreshold:I
 
@@ -2619,6 +2573,7 @@
     const/4 v8, 0x0
 
     .line 431
+    .local v8, "dynamicPowerSavingsThresholdChanged":Z
     :goto_4a
     iget-boolean v7, v0, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->mDynamicPowerSavingsBatterySaver:Z
 
@@ -2632,6 +2587,7 @@
     const/4 v7, 0x0
 
     .line 434
+    .local v7, "dynamicPowerSavingsBatterySaverChanged":Z
     :goto_51
     if-nez v10, :cond_62
 
@@ -2714,6 +2670,7 @@
     const-string v2, "Global.low_power changed to 0"
 
     .line 461
+    .local v2, "reason":Ljava/lang/String;
     :goto_8d
     const/16 v3, 0x8
 
@@ -2722,6 +2679,7 @@
     invoke-direct {v0, v1, v4, v3, v2}, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->enableBatterySaverLocked(ZZILjava/lang/String;)V
 
     .line 463
+    .end local v2  # "reason":Ljava/lang/String;
     goto :goto_97
 
     .line 464
@@ -2734,33 +2692,148 @@
 .end method
 
 .method triggerDynamicModeNotification()V
-    .registers 2
+    .registers 6
     .annotation build Lcom/android/internal/annotations/VisibleForTesting;
     .end annotation
 
-    .line 792
-    new-instance v0, Lcom/android/server/power/batterysaver/-$$Lambda$BatterySaverStateMachine$KPPqeIS8QIZneCCBkN31dB4SR6U;
+    .line 790
+    iget-object v0, p0, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->mContext:Landroid/content/Context;
 
-    invoke-direct {v0, p0}, Lcom/android/server/power/batterysaver/-$$Lambda$BatterySaverStateMachine$KPPqeIS8QIZneCCBkN31dB4SR6U;-><init>(Lcom/android/server/power/batterysaver/BatterySaverStateMachine;)V
+    const-class v1, Landroid/app/NotificationManager;
 
-    invoke-virtual {p0, v0}, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->runOnBgThread(Ljava/lang/Runnable;)V
+    invoke-virtual {v0, v1}, Landroid/content/Context;->getSystemService(Ljava/lang/Class;)Ljava/lang/Object;
 
-    .line 805
+    move-result-object v0
+
+    check-cast v0, Landroid/app/NotificationManager;
+
+    .line 791
+    .local v0, "manager":Landroid/app/NotificationManager;
+    const-string v1, "dynamic_mode_notification"
+
+    const v2, 0x104020e
+
+    invoke-direct {p0, v0, v1, v2}, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->ensureNotificationChannelExists(Landroid/app/NotificationManager;Ljava/lang/String;I)V
+
+    .line 794
+    iget-object v2, p0, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->mContext:Landroid/content/Context;
+
+    .line 796
+    invoke-virtual {v2}, Landroid/content/Context;->getResources()Landroid/content/res/Resources;
+
+    move-result-object v2
+
+    const v3, 0x1040210
+
+    invoke-virtual {v2, v3}, Landroid/content/res/Resources;->getString(I)Ljava/lang/String;
+
+    move-result-object v2
+
+    .line 795
+    const v3, 0x104020f
+
+    const-string v4, "android.intent.action.POWER_USAGE_SUMMARY"
+
+    invoke-direct {p0, v1, v2, v3, v4}, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->buildNotification(Ljava/lang/String;Ljava/lang/String;ILjava/lang/String;)Landroid/app/Notification;
+
+    move-result-object v1
+
+    sget-object v2, Landroid/os/UserHandle;->ALL:Landroid/os/UserHandle;
+
+    .line 794
+    const-string v3, "BatterySaverStateMachine"
+
+    const/16 v4, 0x7c8
+
+    invoke-virtual {v0, v3, v4, v1, v2}, Landroid/app/NotificationManager;->notifyAsUser(Ljava/lang/String;ILandroid/app/Notification;Landroid/os/UserHandle;)V
+
+    .line 800
     return-void
 .end method
 
 .method triggerStickyDisabledNotification()V
-    .registers 2
+    .registers 8
     .annotation build Lcom/android/internal/annotations/VisibleForTesting;
     .end annotation
 
+    .line 804
+    iget-object v0, p0, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->mContext:Landroid/content/Context;
+
+    const-class v1, Landroid/app/NotificationManager;
+
+    invoke-virtual {v0, v1}, Landroid/content/Context;->getSystemService(Ljava/lang/Class;)Ljava/lang/Object;
+
+    move-result-object v0
+
+    check-cast v0, Landroid/app/NotificationManager;
+
+    .line 805
+    .local v0, "manager":Landroid/app/NotificationManager;
+    const-string v1, "battery_saver_channel"
+
+    const v2, 0x10400f3
+
+    invoke-direct {p0, v0, v1, v2}, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->ensureNotificationChannelExists(Landroid/app/NotificationManager;Ljava/lang/String;I)V
+
+    .line 808
+    invoke-static {}, Ljava/text/NumberFormat;->getPercentInstance()Ljava/text/NumberFormat;
+
+    move-result-object v2
+
+    iget v3, p0, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->mBatteryLevel:I
+
+    int-to-double v3, v3
+
+    const-wide/high16 v5, 0x4059000000000000L  # 100.0
+
+    div-double/2addr v3, v5
+
+    .line 809
+    invoke-virtual {v2, v3, v4}, Ljava/text/NumberFormat;->format(D)Ljava/lang/String;
+
+    move-result-object v2
+
+    .line 810
+    .local v2, "percentage":Ljava/lang/String;
+    iget-object v3, p0, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->mContext:Landroid/content/Context;
+
+    .line 812
+    invoke-virtual {v3}, Landroid/content/Context;->getResources()Landroid/content/res/Resources;
+
+    move-result-object v3
+
+    const/4 v4, 0x1
+
+    new-array v4, v4, [Ljava/lang/Object;
+
+    const/4 v5, 0x0
+
+    aput-object v2, v4, v5
+
+    const v5, 0x10400f0
+
+    invoke-virtual {v3, v5, v4}, Landroid/content/res/Resources;->getString(I[Ljava/lang/Object;)Ljava/lang/String;
+
+    move-result-object v3
+
     .line 811
-    new-instance v0, Lcom/android/server/power/batterysaver/-$$Lambda$BatterySaverStateMachine$QXh4KHnoFaNqEkr199qR1vIeCpo;
+    const v4, 0x10400f5
 
-    invoke-direct {v0, p0}, Lcom/android/server/power/batterysaver/-$$Lambda$BatterySaverStateMachine$QXh4KHnoFaNqEkr199qR1vIeCpo;-><init>(Lcom/android/server/power/batterysaver/BatterySaverStateMachine;)V
+    const-string v5, "android.settings.BATTERY_SAVER_SETTINGS"
 
-    invoke-virtual {p0, v0}, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->runOnBgThread(Ljava/lang/Runnable;)V
+    invoke-direct {p0, v1, v3, v4, v5}, Lcom/android/server/power/batterysaver/BatterySaverStateMachine;->buildNotification(Ljava/lang/String;Ljava/lang/String;ILjava/lang/String;)Landroid/app/Notification;
 
-    .line 826
+    move-result-object v1
+
+    sget-object v3, Landroid/os/UserHandle;->ALL:Landroid/os/UserHandle;
+
+    .line 810
+    const-string v4, "BatterySaverStateMachine"
+
+    const/16 v5, 0x7c9
+
+    invoke-virtual {v0, v4, v5, v1, v3}, Landroid/app/NotificationManager;->notifyAsUser(Ljava/lang/String;ILandroid/app/Notification;Landroid/os/UserHandle;)V
+
+    .line 817
     return-void
 .end method

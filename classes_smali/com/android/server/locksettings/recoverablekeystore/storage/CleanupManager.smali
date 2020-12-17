@@ -33,6 +33,11 @@
 # direct methods
 .method constructor <init>(Landroid/content/Context;Lcom/android/server/locksettings/recoverablekeystore/storage/RecoverySnapshotStorage;Lcom/android/server/locksettings/recoverablekeystore/storage/RecoverableKeyStoreDb;Landroid/os/UserManager;Lcom/android/server/locksettings/recoverablekeystore/storage/ApplicationKeyStorage;)V
     .registers 6
+    .param p1, "context"  # Landroid/content/Context;
+    .param p2, "snapshotStorage"  # Lcom/android/server/locksettings/recoverablekeystore/storage/RecoverySnapshotStorage;
+    .param p3, "recoverableKeyStoreDb"  # Lcom/android/server/locksettings/recoverablekeystore/storage/RecoverableKeyStoreDb;
+    .param p4, "userManager"  # Landroid/os/UserManager;
+    .param p5, "applicationKeyStorage"  # Lcom/android/server/locksettings/recoverablekeystore/storage/ApplicationKeyStorage;
     .annotation build Lcom/android/internal/annotations/VisibleForTesting;
     .end annotation
 
@@ -60,6 +65,10 @@
 
 .method public static getInstance(Landroid/content/Context;Lcom/android/server/locksettings/recoverablekeystore/storage/RecoverySnapshotStorage;Lcom/android/server/locksettings/recoverablekeystore/storage/RecoverableKeyStoreDb;Lcom/android/server/locksettings/recoverablekeystore/storage/ApplicationKeyStorage;)Lcom/android/server/locksettings/recoverablekeystore/storage/CleanupManager;
     .registers 11
+    .param p0, "context"  # Landroid/content/Context;
+    .param p1, "snapshotStorage"  # Lcom/android/server/locksettings/recoverablekeystore/storage/RecoverySnapshotStorage;
+    .param p2, "recoverableKeyStoreDb"  # Lcom/android/server/locksettings/recoverablekeystore/storage/RecoverableKeyStoreDb;
+    .param p3, "applicationKeyStorage"  # Lcom/android/server/locksettings/recoverablekeystore/storage/ApplicationKeyStorage;
 
     .line 56
     new-instance v6, Lcom/android/server/locksettings/recoverablekeystore/storage/CleanupManager;
@@ -86,7 +95,9 @@
 .end method
 
 .method private removeAllKeysForRecoveryAgent(II)V
-    .registers 8
+    .registers 10
+    .param p1, "userId"  # I
+    .param p2, "uid"  # I
 
     .line 166
     iget-object v0, p0, Lcom/android/server/locksettings/recoverablekeystore/storage/CleanupManager;->mDatabase:Lcom/android/server/locksettings/recoverablekeystore/storage/RecoverableKeyStoreDb;
@@ -96,39 +107,42 @@
     move-result v0
 
     .line 167
+    .local v0, "generationId":I
     iget-object v1, p0, Lcom/android/server/locksettings/recoverablekeystore/storage/CleanupManager;->mDatabase:Lcom/android/server/locksettings/recoverablekeystore/storage/RecoverableKeyStoreDb;
 
     invoke-virtual {v1, p1, p2, v0}, Lcom/android/server/locksettings/recoverablekeystore/storage/RecoverableKeyStoreDb;->getAllKeys(III)Ljava/util/Map;
 
-    move-result-object v0
-
-    .line 168
-    invoke-interface {v0}, Ljava/util/Map;->keySet()Ljava/util/Set;
-
-    move-result-object v0
-
-    invoke-interface {v0}, Ljava/util/Set;->iterator()Ljava/util/Iterator;
-
-    move-result-object v0
-
-    :goto_14
-    invoke-interface {v0}, Ljava/util/Iterator;->hasNext()Z
-
-    move-result v1
-
-    if-eqz v1, :cond_46
-
-    invoke-interface {v0}, Ljava/util/Iterator;->next()Ljava/lang/Object;
-
     move-result-object v1
 
-    check-cast v1, Ljava/lang/String;
+    .line 168
+    .local v1, "allKeys":Ljava/util/Map;, "Ljava/util/Map<Ljava/lang/String;Lcom/android/server/locksettings/recoverablekeystore/WrappedKey;>;"
+    invoke-interface {v1}, Ljava/util/Map;->keySet()Ljava/util/Set;
+
+    move-result-object v2
+
+    invoke-interface {v2}, Ljava/util/Set;->iterator()Ljava/util/Iterator;
+
+    move-result-object v2
+
+    :goto_14
+    invoke-interface {v2}, Ljava/util/Iterator;->hasNext()Z
+
+    move-result v3
+
+    if-eqz v3, :cond_46
+
+    invoke-interface {v2}, Ljava/util/Iterator;->next()Ljava/lang/Object;
+
+    move-result-object v3
+
+    check-cast v3, Ljava/lang/String;
 
     .line 171
+    .local v3, "alias":Ljava/lang/String;
     :try_start_20
-    iget-object v2, p0, Lcom/android/server/locksettings/recoverablekeystore/storage/CleanupManager;->mApplicationKeyStorage:Lcom/android/server/locksettings/recoverablekeystore/storage/ApplicationKeyStorage;
+    iget-object v4, p0, Lcom/android/server/locksettings/recoverablekeystore/storage/CleanupManager;->mApplicationKeyStorage:Lcom/android/server/locksettings/recoverablekeystore/storage/ApplicationKeyStorage;
 
-    invoke-virtual {v2, p1, p2, v1}, Lcom/android/server/locksettings/recoverablekeystore/storage/ApplicationKeyStorage;->deleteEntry(IILjava/lang/String;)V
+    invoke-virtual {v4, p1, p2, v3}, Lcom/android/server/locksettings/recoverablekeystore/storage/ApplicationKeyStorage;->deleteEntry(IILjava/lang/String;)V
     :try_end_25
     .catch Landroid/os/ServiceSpecificException; {:try_start_20 .. :try_end_25} :catch_26
 
@@ -137,34 +151,37 @@
 
     .line 172
     :catch_26
-    move-exception v2
+    move-exception v4
 
     .line 174
-    new-instance v3, Ljava/lang/StringBuilder;
+    .local v4, "e":Landroid/os/ServiceSpecificException;
+    new-instance v5, Ljava/lang/StringBuilder;
 
-    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v5}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v4, "Error while removing recoverable key "
+    const-string v6, "Error while removing recoverable key "
 
-    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v3, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v5, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string v1, " : "
+    const-string v6, " : "
 
-    invoke-virtual {v3, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v3, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    invoke-virtual {v5, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v5}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v1
+    move-result-object v5
 
-    const-string v2, "CleanupManager"
+    const-string v6, "CleanupManager"
 
-    invoke-static {v2, v1}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v6, v5}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 176
+    .end local v3  # "alias":Ljava/lang/String;
+    .end local v4  # "e":Landroid/os/ServiceSpecificException;
     :goto_45
     goto :goto_14
 
@@ -174,7 +191,8 @@
 .end method
 
 .method private removeDataForUser(I)V
-    .registers 6
+    .registers 7
+    .param p1, "userId"  # I
 
     .line 151
     new-instance v0, Ljava/lang/StringBuilder;
@@ -207,47 +225,50 @@
     move-result-object v0
 
     .line 153
+    .local v0, "recoveryAgents":Ljava/util/List;, "Ljava/util/List<Ljava/lang/Integer;>;"
     invoke-interface {v0}, Ljava/util/List;->iterator()Ljava/util/Iterator;
-
-    move-result-object v0
-
-    :goto_25
-    invoke-interface {v0}, Ljava/util/Iterator;->hasNext()Z
-
-    move-result v1
-
-    if-eqz v1, :cond_42
-
-    invoke-interface {v0}, Ljava/util/Iterator;->next()Ljava/lang/Object;
 
     move-result-object v1
 
-    check-cast v1, Ljava/lang/Integer;
+    :goto_25
+    invoke-interface {v1}, Ljava/util/Iterator;->hasNext()Z
+
+    move-result v2
+
+    if-eqz v2, :cond_42
+
+    invoke-interface {v1}, Ljava/util/Iterator;->next()Ljava/lang/Object;
+
+    move-result-object v2
+
+    check-cast v2, Ljava/lang/Integer;
 
     .line 154
-    iget-object v2, p0, Lcom/android/server/locksettings/recoverablekeystore/storage/CleanupManager;->mSnapshotStorage:Lcom/android/server/locksettings/recoverablekeystore/storage/RecoverySnapshotStorage;
+    .local v2, "uid":Ljava/lang/Integer;
+    iget-object v3, p0, Lcom/android/server/locksettings/recoverablekeystore/storage/CleanupManager;->mSnapshotStorage:Lcom/android/server/locksettings/recoverablekeystore/storage/RecoverySnapshotStorage;
 
-    invoke-virtual {v1}, Ljava/lang/Integer;->intValue()I
+    invoke-virtual {v2}, Ljava/lang/Integer;->intValue()I
+
+    move-result v4
+
+    invoke-virtual {v3, v4}, Lcom/android/server/locksettings/recoverablekeystore/storage/RecoverySnapshotStorage;->remove(I)V
+
+    .line 155
+    invoke-virtual {v2}, Ljava/lang/Integer;->intValue()I
 
     move-result v3
 
-    invoke-virtual {v2, v3}, Lcom/android/server/locksettings/recoverablekeystore/storage/RecoverySnapshotStorage;->remove(I)V
-
-    .line 155
-    invoke-virtual {v1}, Ljava/lang/Integer;->intValue()I
-
-    move-result v1
-
-    invoke-direct {p0, p1, v1}, Lcom/android/server/locksettings/recoverablekeystore/storage/CleanupManager;->removeAllKeysForRecoveryAgent(II)V
+    invoke-direct {p0, p1, v3}, Lcom/android/server/locksettings/recoverablekeystore/storage/CleanupManager;->removeAllKeysForRecoveryAgent(II)V
 
     .line 156
+    .end local v2  # "uid":Ljava/lang/Integer;
     goto :goto_25
 
     .line 158
     :cond_42
-    iget-object v0, p0, Lcom/android/server/locksettings/recoverablekeystore/storage/CleanupManager;->mDatabase:Lcom/android/server/locksettings/recoverablekeystore/storage/RecoverableKeyStoreDb;
+    iget-object v1, p0, Lcom/android/server/locksettings/recoverablekeystore/storage/CleanupManager;->mDatabase:Lcom/android/server/locksettings/recoverablekeystore/storage/RecoverableKeyStoreDb;
 
-    invoke-virtual {v0, p1}, Lcom/android/server/locksettings/recoverablekeystore/storage/RecoverableKeyStoreDb;->removeUserFromAllTables(I)V
+    invoke-virtual {v1, p1}, Lcom/android/server/locksettings/recoverablekeystore/storage/RecoverableKeyStoreDb;->removeUserFromAllTables(I)V
 
     .line 159
     return-void
@@ -255,6 +276,8 @@
 
 .method private storeUserSerialNumber(IJ)V
     .registers 7
+    .param p1, "userId"  # I
+    .param p2, "userSerialNumber"  # J
 
     .line 137
     new-instance v0, Ljava/lang/StringBuilder;
@@ -304,54 +327,60 @@
 
 # virtual methods
 .method public declared-synchronized registerRecoveryAgent(II)V
-    .registers 7
+    .registers 8
+    .param p1, "userId"  # I
+    .param p2, "uid"  # I
 
     monitor-enter p0
 
     .line 82
     :try_start_1
-    iget-object p2, p0, Lcom/android/server/locksettings/recoverablekeystore/storage/CleanupManager;->mSerialNumbers:Ljava/util/Map;
+    iget-object v0, p0, Lcom/android/server/locksettings/recoverablekeystore/storage/CleanupManager;->mSerialNumbers:Ljava/util/Map;
 
-    if-nez p2, :cond_8
+    if-nez v0, :cond_8
 
     .line 84
     invoke-virtual {p0}, Lcom/android/server/locksettings/recoverablekeystore/storage/CleanupManager;->verifyKnownUsers()V
 
     .line 87
+    .end local p0  # "this":Lcom/android/server/locksettings/recoverablekeystore/storage/CleanupManager;
     :cond_8
-    iget-object p2, p0, Lcom/android/server/locksettings/recoverablekeystore/storage/CleanupManager;->mSerialNumbers:Ljava/util/Map;
+    iget-object v0, p0, Lcom/android/server/locksettings/recoverablekeystore/storage/CleanupManager;->mSerialNumbers:Ljava/util/Map;
 
     invoke-static {p1}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
 
+    move-result-object v1
+
+    invoke-interface {v0, v1}, Ljava/util/Map;->get(Ljava/lang/Object;)Ljava/lang/Object;
+
     move-result-object v0
 
-    invoke-interface {p2, v0}, Ljava/util/Map;->get(Ljava/lang/Object;)Ljava/lang/Object;
-
-    move-result-object p2
-
-    check-cast p2, Ljava/lang/Long;
+    check-cast v0, Ljava/lang/Long;
 
     .line 88
-    const-wide/16 v0, -0x1
+    .local v0, "storedSerialNumber":Ljava/lang/Long;
+    const-wide/16 v1, -0x1
 
-    if-nez p2, :cond_1c
+    if-nez v0, :cond_1d
 
     .line 89
-    invoke-static {v0, v1}, Ljava/lang/Long;->valueOf(J)Ljava/lang/Long;
+    invoke-static {v1, v2}, Ljava/lang/Long;->valueOf(J)Ljava/lang/Long;
 
-    move-result-object p2
+    move-result-object v3
+
+    move-object v0, v3
 
     .line 91
-    :cond_1c
-    invoke-virtual {p2}, Ljava/lang/Long;->longValue()J
+    :cond_1d
+    invoke-virtual {v0}, Ljava/lang/Long;->longValue()J
 
-    move-result-wide v2
-    :try_end_20
-    .catchall {:try_start_1 .. :try_end_20} :catchall_39
+    move-result-wide v3
+    :try_end_21
+    .catchall {:try_start_1 .. :try_end_21} :catchall_3a
 
-    cmp-long p2, v2, v0
+    cmp-long v3, v3, v1
 
-    if-eqz p2, :cond_26
+    if-eqz v3, :cond_27
 
     .line 93
     monitor-exit p0
@@ -359,36 +388,43 @@
     return-void
 
     .line 96
-    :cond_26
-    :try_start_26
-    iget-object p2, p0, Lcom/android/server/locksettings/recoverablekeystore/storage/CleanupManager;->mUserManager:Landroid/os/UserManager;
+    .restart local p0  # "this":Lcom/android/server/locksettings/recoverablekeystore/storage/CleanupManager;
+    :cond_27
+    :try_start_27
+    iget-object v3, p0, Lcom/android/server/locksettings/recoverablekeystore/storage/CleanupManager;->mUserManager:Landroid/os/UserManager;
 
     invoke-static {p1}, Landroid/os/UserHandle;->of(I)Landroid/os/UserHandle;
 
-    move-result-object v2
+    move-result-object v4
 
-    invoke-virtual {p2, v2}, Landroid/os/UserManager;->getSerialNumberForUser(Landroid/os/UserHandle;)J
+    invoke-virtual {v3, v4}, Landroid/os/UserManager;->getSerialNumberForUser(Landroid/os/UserHandle;)J
 
-    move-result-wide v2
+    move-result-wide v3
 
     .line 97
-    cmp-long p2, v2, v0
+    .local v3, "currentSerialNumber":J
+    cmp-long v1, v3, v1
 
-    if-eqz p2, :cond_37
+    if-eqz v1, :cond_38
 
     .line 98
-    invoke-direct {p0, p1, v2, v3}, Lcom/android/server/locksettings/recoverablekeystore/storage/CleanupManager;->storeUserSerialNumber(IJ)V
-    :try_end_37
-    .catchall {:try_start_26 .. :try_end_37} :catchall_39
+    invoke-direct {p0, p1, v3, v4}, Lcom/android/server/locksettings/recoverablekeystore/storage/CleanupManager;->storeUserSerialNumber(IJ)V
+    :try_end_38
+    .catchall {:try_start_27 .. :try_end_38} :catchall_3a
 
     .line 100
-    :cond_37
+    .end local p0  # "this":Lcom/android/server/locksettings/recoverablekeystore/storage/CleanupManager;
+    :cond_38
     monitor-exit p0
 
     return-void
 
     .line 81
-    :catchall_39
+    .end local v0  # "storedSerialNumber":Ljava/lang/Long;
+    .end local v3  # "currentSerialNumber":J
+    .end local p1  # "userId":I
+    .end local p2  # "uid":I
+    :catchall_3a
     move-exception p1
 
     monitor-exit p0
@@ -397,7 +433,7 @@
 .end method
 
 .method public declared-synchronized verifyKnownUsers()V
-    .registers 11
+    .registers 12
 
     monitor-enter p0
 
@@ -417,6 +453,7 @@
     invoke-direct {v0, p0}, Lcom/android/server/locksettings/recoverablekeystore/storage/CleanupManager$1;-><init>(Lcom/android/server/locksettings/recoverablekeystore/storage/CleanupManager;)V
 
     .line 108
+    .local v0, "deletedUserIds":Ljava/util/List;, "Ljava/util/List<Ljava/lang/Integer;>;"
     iget-object v1, p0, Lcom/android/server/locksettings/recoverablekeystore/storage/CleanupManager;->mSerialNumbers:Ljava/util/Map;
 
     invoke-interface {v1}, Ljava/util/Map;->entrySet()Ljava/util/Set;
@@ -432,7 +469,7 @@
 
     move-result v2
 
-    if-eqz v2, :cond_7f
+    if-eqz v2, :cond_80
 
     invoke-interface {v1}, Ljava/util/Iterator;->next()Ljava/lang/Object;
 
@@ -441,6 +478,7 @@
     check-cast v2, Ljava/util/Map$Entry;
 
     .line 109
+    .local v2, "entry":Ljava/util/Map$Entry;, "Ljava/util/Map$Entry<Ljava/lang/Integer;Ljava/lang/Long;>;"
     invoke-interface {v2}, Ljava/util/Map$Entry;->getKey()Ljava/lang/Object;
 
     move-result-object v3
@@ -448,42 +486,48 @@
     check-cast v3, Ljava/lang/Integer;
 
     .line 110
+    .local v3, "userId":Ljava/lang/Integer;
     invoke-interface {v2}, Ljava/util/Map$Entry;->getValue()Ljava/lang/Object;
 
-    move-result-object v2
+    move-result-object v4
 
-    check-cast v2, Ljava/lang/Long;
+    check-cast v4, Ljava/lang/Long;
 
     .line 111
-    const-wide/16 v4, -0x1
+    .local v4, "storedSerialNumber":Ljava/lang/Long;
+    const-wide/16 v5, -0x1
 
-    if-nez v2, :cond_38
+    if-nez v4, :cond_39
 
     .line 112
-    invoke-static {v4, v5}, Ljava/lang/Long;->valueOf(J)Ljava/lang/Long;
-
-    move-result-object v2
-
-    .line 114
-    :cond_38
-    iget-object v6, p0, Lcom/android/server/locksettings/recoverablekeystore/storage/CleanupManager;->mUserManager:Landroid/os/UserManager;
-
-    invoke-virtual {v3}, Ljava/lang/Integer;->intValue()I
-
-    move-result v7
-
-    invoke-static {v7}, Landroid/os/UserHandle;->of(I)Landroid/os/UserHandle;
+    invoke-static {v5, v6}, Ljava/lang/Long;->valueOf(J)Ljava/lang/Long;
 
     move-result-object v7
 
-    invoke-virtual {v6, v7}, Landroid/os/UserManager;->getSerialNumberForUser(Landroid/os/UserHandle;)J
+    move-object v4, v7
 
-    move-result-wide v6
+    .line 114
+    .end local p0  # "this":Lcom/android/server/locksettings/recoverablekeystore/storage/CleanupManager;
+    :cond_39
+    iget-object v7, p0, Lcom/android/server/locksettings/recoverablekeystore/storage/CleanupManager;->mUserManager:Landroid/os/UserManager;
+
+    invoke-virtual {v3}, Ljava/lang/Integer;->intValue()I
+
+    move-result v8
+
+    invoke-static {v8}, Landroid/os/UserHandle;->of(I)Landroid/os/UserHandle;
+
+    move-result-object v8
+
+    invoke-virtual {v7, v8}, Landroid/os/UserManager;->getSerialNumberForUser(Landroid/os/UserHandle;)J
+
+    move-result-wide v7
 
     .line 115
-    cmp-long v8, v6, v4
+    .local v7, "currentSerialNumber":J
+    cmp-long v9, v7, v5
 
-    if-nez v8, :cond_55
+    if-nez v9, :cond_56
 
     .line 117
     invoke-interface {v0, v3}, Ljava/util/List;->add(Ljava/lang/Object;)Z
@@ -491,40 +535,40 @@
     .line 118
     invoke-virtual {v3}, Ljava/lang/Integer;->intValue()I
 
-    move-result v2
+    move-result v5
 
-    invoke-direct {p0, v2}, Lcom/android/server/locksettings/recoverablekeystore/storage/CleanupManager;->removeDataForUser(I)V
+    invoke-direct {p0, v5}, Lcom/android/server/locksettings/recoverablekeystore/storage/CleanupManager;->removeDataForUser(I)V
 
-    goto :goto_7e
+    goto :goto_7f
 
     .line 119
-    :cond_55
-    invoke-virtual {v2}, Ljava/lang/Long;->longValue()J
+    :cond_56
+    invoke-virtual {v4}, Ljava/lang/Long;->longValue()J
 
-    move-result-wide v8
+    move-result-wide v9
 
-    cmp-long v4, v8, v4
+    cmp-long v5, v9, v5
 
-    if-nez v4, :cond_65
+    if-nez v5, :cond_66
 
     .line 121
     invoke-virtual {v3}, Ljava/lang/Integer;->intValue()I
 
-    move-result v2
+    move-result v5
 
-    invoke-direct {p0, v2, v6, v7}, Lcom/android/server/locksettings/recoverablekeystore/storage/CleanupManager;->storeUserSerialNumber(IJ)V
+    invoke-direct {p0, v5, v7, v8}, Lcom/android/server/locksettings/recoverablekeystore/storage/CleanupManager;->storeUserSerialNumber(IJ)V
 
-    goto :goto_7e
+    goto :goto_7f
 
     .line 122
-    :cond_65
-    invoke-virtual {v2}, Ljava/lang/Long;->longValue()J
+    :cond_66
+    invoke-virtual {v4}, Ljava/lang/Long;->longValue()J
 
-    move-result-wide v4
+    move-result-wide v5
 
-    cmp-long v2, v4, v6
+    cmp-long v5, v5, v7
 
-    if-eqz v2, :cond_7e
+    if-eqz v5, :cond_7f
 
     .line 124
     invoke-interface {v0, v3}, Ljava/util/List;->add(Ljava/lang/Object;)Z
@@ -532,59 +576,68 @@
     .line 125
     invoke-virtual {v3}, Ljava/lang/Integer;->intValue()I
 
-    move-result v2
+    move-result v5
 
-    invoke-direct {p0, v2}, Lcom/android/server/locksettings/recoverablekeystore/storage/CleanupManager;->removeDataForUser(I)V
+    invoke-direct {p0, v5}, Lcom/android/server/locksettings/recoverablekeystore/storage/CleanupManager;->removeDataForUser(I)V
 
     .line 127
     invoke-virtual {v3}, Ljava/lang/Integer;->intValue()I
 
-    move-result v2
+    move-result v5
 
-    invoke-direct {p0, v2, v6, v7}, Lcom/android/server/locksettings/recoverablekeystore/storage/CleanupManager;->storeUserSerialNumber(IJ)V
+    invoke-direct {p0, v5, v7, v8}, Lcom/android/server/locksettings/recoverablekeystore/storage/CleanupManager;->storeUserSerialNumber(IJ)V
 
     .line 129
-    :cond_7e
-    :goto_7e
+    .end local v2  # "entry":Ljava/util/Map$Entry;, "Ljava/util/Map$Entry<Ljava/lang/Integer;Ljava/lang/Long;>;"
+    .end local v3  # "userId":Ljava/lang/Integer;
+    .end local v4  # "storedSerialNumber":Ljava/lang/Long;
+    .end local v7  # "currentSerialNumber":J
+    :cond_7f
+    :goto_7f
     goto :goto_18
 
     .line 131
-    :cond_7f
+    :cond_80
     invoke-interface {v0}, Ljava/util/List;->iterator()Ljava/util/Iterator;
-
-    move-result-object v0
-
-    :goto_83
-    invoke-interface {v0}, Ljava/util/Iterator;->hasNext()Z
-
-    move-result v1
-
-    if-eqz v1, :cond_95
-
-    invoke-interface {v0}, Ljava/util/Iterator;->next()Ljava/lang/Object;
 
     move-result-object v1
 
-    check-cast v1, Ljava/lang/Integer;
+    :goto_84
+    invoke-interface {v1}, Ljava/util/Iterator;->hasNext()Z
+
+    move-result v2
+
+    if-eqz v2, :cond_97
+
+    invoke-interface {v1}, Ljava/util/Iterator;->next()Ljava/lang/Object;
+
+    move-result-object v2
+
+    check-cast v2, Ljava/lang/Integer;
 
     .line 132
-    iget-object v2, p0, Lcom/android/server/locksettings/recoverablekeystore/storage/CleanupManager;->mSerialNumbers:Ljava/util/Map;
+    .local v2, "deletedUser":Ljava/lang/Integer;
+    iget-object v3, p0, Lcom/android/server/locksettings/recoverablekeystore/storage/CleanupManager;->mSerialNumbers:Ljava/util/Map;
 
-    invoke-interface {v2, v1}, Ljava/util/Map;->remove(Ljava/lang/Object;)Ljava/lang/Object;
-    :try_end_94
-    .catchall {:try_start_1 .. :try_end_94} :catchall_97
+    invoke-interface {v3, v2}, Ljava/util/Map;->remove(Ljava/lang/Object;)Ljava/lang/Object;
+    :try_end_95
+    .catchall {:try_start_1 .. :try_end_95} :catchall_99
 
     .line 133
-    goto :goto_83
+    nop
+
+    .end local v2  # "deletedUser":Ljava/lang/Integer;
+    goto :goto_84
 
     .line 134
-    :cond_95
+    :cond_97
     monitor-exit p0
 
     return-void
 
     .line 105
-    :catchall_97
+    .end local v0  # "deletedUserIds":Ljava/util/List;, "Ljava/util/List<Ljava/lang/Integer;>;"
+    :catchall_99
     move-exception v0
 
     monitor-exit p0

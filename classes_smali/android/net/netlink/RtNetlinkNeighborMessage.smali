@@ -39,29 +39,30 @@
 
 # direct methods
 .method private constructor <init>(Landroid/net/netlink/StructNlMsgHdr;)V
-    .registers 3
+    .registers 4
+    .param p1, "header"  # Landroid/net/netlink/StructNlMsgHdr;
 
     .line 176
     invoke-direct {p0, p1}, Landroid/net/netlink/NetlinkMessage;-><init>(Landroid/net/netlink/StructNlMsgHdr;)V
 
     .line 177
-    const/4 p1, 0x0
-
-    iput-object p1, p0, Landroid/net/netlink/RtNetlinkNeighborMessage;->mNdmsg:Landroid/net/netlink/StructNdMsg;
-
-    .line 178
-    iput-object p1, p0, Landroid/net/netlink/RtNetlinkNeighborMessage;->mDestination:Ljava/net/InetAddress;
-
-    .line 179
-    iput-object p1, p0, Landroid/net/netlink/RtNetlinkNeighborMessage;->mLinkLayerAddr:[B
-
-    .line 180
     const/4 v0, 0x0
 
-    iput v0, p0, Landroid/net/netlink/RtNetlinkNeighborMessage;->mNumProbes:I
+    iput-object v0, p0, Landroid/net/netlink/RtNetlinkNeighborMessage;->mNdmsg:Landroid/net/netlink/StructNdMsg;
+
+    .line 178
+    iput-object v0, p0, Landroid/net/netlink/RtNetlinkNeighborMessage;->mDestination:Ljava/net/InetAddress;
+
+    .line 179
+    iput-object v0, p0, Landroid/net/netlink/RtNetlinkNeighborMessage;->mLinkLayerAddr:[B
+
+    .line 180
+    const/4 v1, 0x0
+
+    iput v1, p0, Landroid/net/netlink/RtNetlinkNeighborMessage;->mNumProbes:I
 
     .line 181
-    iput-object p1, p0, Landroid/net/netlink/RtNetlinkNeighborMessage;->mCacheInfo:Landroid/net/netlink/StructNdaCacheInfo;
+    iput-object v0, p0, Landroid/net/netlink/RtNetlinkNeighborMessage;->mCacheInfo:Landroid/net/netlink/StructNdaCacheInfo;
 
     .line 182
     return-void
@@ -69,6 +70,8 @@
 
 .method private static findNextAttrOfType(SLjava/nio/ByteBuffer;)Landroid/net/netlink/StructNlAttr;
     .registers 5
+    .param p0, "attrType"  # S
+    .param p1, "byteBuffer"  # Ljava/nio/ByteBuffer;
 
     .line 58
     :goto_0
@@ -86,6 +89,7 @@
     move-result-object v0
 
     .line 60
+    .local v0, "nlAttr":Landroid/net/netlink/StructNlAttr;
     if-nez v0, :cond_f
 
     .line 61
@@ -100,9 +104,9 @@
     .line 64
     invoke-static {p1}, Landroid/net/netlink/StructNlAttr;->parse(Ljava/nio/ByteBuffer;)Landroid/net/netlink/StructNlAttr;
 
-    move-result-object p0
+    move-result-object v1
 
-    return-object p0
+    return-object v1
 
     .line 66
     :cond_18
@@ -127,81 +131,96 @@
 
     invoke-virtual {v0}, Landroid/net/netlink/StructNlAttr;->getAlignedLength()I
 
-    move-result v0
+    move-result v2
 
-    add-int/2addr v1, v0
+    add-int/2addr v1, v2
 
     invoke-virtual {p1, v1}, Ljava/nio/ByteBuffer;->position(I)Ljava/nio/Buffer;
 
     .line 70
+    .end local v0  # "nlAttr":Landroid/net/netlink/StructNlAttr;
     goto :goto_0
 
     .line 71
     :cond_30
     :goto_30
-    const/4 p0, 0x0
+    const/4 v0, 0x0
 
-    return-object p0
+    return-object v0
 .end method
 
 .method public static newGetNeighborsRequest(I)[B
-    .registers 5
+    .registers 6
+    .param p0, "seqNo"  # I
 
-    .line 124
+    .line 123
     const/16 v0, 0x1c
 
-    new-array v1, v0, [B
+    .line 124
+    .local v0, "length":I
+    const/16 v1, 0x1c
+
+    new-array v2, v1, [B
 
     .line 125
-    invoke-static {v1}, Ljava/nio/ByteBuffer;->wrap([B)Ljava/nio/ByteBuffer;
-
-    move-result-object v2
-
-    .line 126
-    invoke-static {}, Ljava/nio/ByteOrder;->nativeOrder()Ljava/nio/ByteOrder;
+    .local v2, "bytes":[B
+    invoke-static {v2}, Ljava/nio/ByteBuffer;->wrap([B)Ljava/nio/ByteBuffer;
 
     move-result-object v3
 
-    invoke-virtual {v2, v3}, Ljava/nio/ByteBuffer;->order(Ljava/nio/ByteOrder;)Ljava/nio/ByteBuffer;
+    .line 126
+    .local v3, "byteBuffer":Ljava/nio/ByteBuffer;
+    invoke-static {}, Ljava/nio/ByteOrder;->nativeOrder()Ljava/nio/ByteOrder;
+
+    move-result-object v4
+
+    invoke-virtual {v3, v4}, Ljava/nio/ByteBuffer;->order(Ljava/nio/ByteOrder;)Ljava/nio/ByteBuffer;
 
     .line 128
-    new-instance v3, Landroid/net/netlink/StructNlMsgHdr;
+    new-instance v4, Landroid/net/netlink/StructNlMsgHdr;
 
-    invoke-direct {v3}, Landroid/net/netlink/StructNlMsgHdr;-><init>()V
+    invoke-direct {v4}, Landroid/net/netlink/StructNlMsgHdr;-><init>()V
 
     .line 129
-    iput v0, v3, Landroid/net/netlink/StructNlMsgHdr;->nlmsg_len:I
+    .local v4, "nlmsghdr":Landroid/net/netlink/StructNlMsgHdr;
+    iput v1, v4, Landroid/net/netlink/StructNlMsgHdr;->nlmsg_len:I
 
     .line 130
-    const/16 v0, 0x1e
+    const/16 v1, 0x1e
 
-    iput-short v0, v3, Landroid/net/netlink/StructNlMsgHdr;->nlmsg_type:S
+    iput-short v1, v4, Landroid/net/netlink/StructNlMsgHdr;->nlmsg_type:S
 
     .line 131
-    const/16 v0, 0x301
+    const/16 v1, 0x301
 
-    iput-short v0, v3, Landroid/net/netlink/StructNlMsgHdr;->nlmsg_flags:S
+    iput-short v1, v4, Landroid/net/netlink/StructNlMsgHdr;->nlmsg_flags:S
 
     .line 132
-    iput p0, v3, Landroid/net/netlink/StructNlMsgHdr;->nlmsg_seq:I
+    iput p0, v4, Landroid/net/netlink/StructNlMsgHdr;->nlmsg_seq:I
 
     .line 133
-    invoke-virtual {v3, v2}, Landroid/net/netlink/StructNlMsgHdr;->pack(Ljava/nio/ByteBuffer;)V
+    invoke-virtual {v4, v3}, Landroid/net/netlink/StructNlMsgHdr;->pack(Ljava/nio/ByteBuffer;)V
 
     .line 135
-    new-instance p0, Landroid/net/netlink/StructNdMsg;
+    new-instance v1, Landroid/net/netlink/StructNdMsg;
 
-    invoke-direct {p0}, Landroid/net/netlink/StructNdMsg;-><init>()V
+    invoke-direct {v1}, Landroid/net/netlink/StructNdMsg;-><init>()V
 
     .line 136
-    invoke-virtual {p0, v2}, Landroid/net/netlink/StructNdMsg;->pack(Ljava/nio/ByteBuffer;)V
+    .local v1, "ndmsg":Landroid/net/netlink/StructNdMsg;
+    invoke-virtual {v1, v3}, Landroid/net/netlink/StructNdMsg;->pack(Ljava/nio/ByteBuffer;)V
 
     .line 138
-    return-object v1
+    return-object v2
 .end method
 
 .method public static newNewNeighborMessage(ILjava/net/InetAddress;SI[B)[B
-    .registers 8
+    .registers 10
+    .param p0, "seqNo"  # I
+    .param p1, "ip"  # Ljava/net/InetAddress;
+    .param p2, "nudState"  # S
+    .param p3, "ifIndex"  # I
+    .param p4, "llAddr"  # [B
 
     .line 147
     new-instance v0, Landroid/net/netlink/StructNlMsgHdr;
@@ -209,6 +228,7 @@
     invoke-direct {v0}, Landroid/net/netlink/StructNlMsgHdr;-><init>()V
 
     .line 148
+    .local v0, "nlmsghdr":Landroid/net/netlink/StructNlMsgHdr;
     const/16 v1, 0x1c
 
     iput-short v1, v0, Landroid/net/netlink/StructNlMsgHdr;->nlmsg_type:S
@@ -222,84 +242,90 @@
     iput p0, v0, Landroid/net/netlink/StructNlMsgHdr;->nlmsg_seq:I
 
     .line 152
-    new-instance p0, Landroid/net/netlink/RtNetlinkNeighborMessage;
+    new-instance v1, Landroid/net/netlink/RtNetlinkNeighborMessage;
 
-    invoke-direct {p0, v0}, Landroid/net/netlink/RtNetlinkNeighborMessage;-><init>(Landroid/net/netlink/StructNlMsgHdr;)V
+    invoke-direct {v1, v0}, Landroid/net/netlink/RtNetlinkNeighborMessage;-><init>(Landroid/net/netlink/StructNlMsgHdr;)V
 
     .line 153
-    new-instance v1, Landroid/net/netlink/StructNdMsg;
+    .local v1, "msg":Landroid/net/netlink/RtNetlinkNeighborMessage;
+    new-instance v2, Landroid/net/netlink/StructNdMsg;
 
-    invoke-direct {v1}, Landroid/net/netlink/StructNdMsg;-><init>()V
+    invoke-direct {v2}, Landroid/net/netlink/StructNdMsg;-><init>()V
 
-    iput-object v1, p0, Landroid/net/netlink/RtNetlinkNeighborMessage;->mNdmsg:Landroid/net/netlink/StructNdMsg;
+    iput-object v2, v1, Landroid/net/netlink/RtNetlinkNeighborMessage;->mNdmsg:Landroid/net/netlink/StructNdMsg;
 
     .line 154
-    iget-object v1, p0, Landroid/net/netlink/RtNetlinkNeighborMessage;->mNdmsg:Landroid/net/netlink/StructNdMsg;
+    iget-object v2, v1, Landroid/net/netlink/RtNetlinkNeighborMessage;->mNdmsg:Landroid/net/netlink/StructNdMsg;
 
     .line 155
-    instance-of v2, p1, Ljava/net/Inet6Address;
+    instance-of v3, p1, Ljava/net/Inet6Address;
 
-    if-eqz v2, :cond_24
+    if-eqz v3, :cond_24
 
-    sget v2, Landroid/system/OsConstants;->AF_INET6:I
+    sget v3, Landroid/system/OsConstants;->AF_INET6:I
 
     goto :goto_26
 
     :cond_24
-    sget v2, Landroid/system/OsConstants;->AF_INET:I
+    sget v3, Landroid/system/OsConstants;->AF_INET:I
 
     :goto_26
-    int-to-byte v2, v2
+    int-to-byte v3, v3
 
-    iput-byte v2, v1, Landroid/net/netlink/StructNdMsg;->ndm_family:B
+    iput-byte v3, v2, Landroid/net/netlink/StructNdMsg;->ndm_family:B
 
     .line 156
-    iget-object v1, p0, Landroid/net/netlink/RtNetlinkNeighborMessage;->mNdmsg:Landroid/net/netlink/StructNdMsg;
+    iget-object v2, v1, Landroid/net/netlink/RtNetlinkNeighborMessage;->mNdmsg:Landroid/net/netlink/StructNdMsg;
 
-    iput p3, v1, Landroid/net/netlink/StructNdMsg;->ndm_ifindex:I
+    iput p3, v2, Landroid/net/netlink/StructNdMsg;->ndm_ifindex:I
 
     .line 157
-    iput-short p2, v1, Landroid/net/netlink/StructNdMsg;->ndm_state:S
+    iput-short p2, v2, Landroid/net/netlink/StructNdMsg;->ndm_state:S
 
     .line 158
-    iput-object p1, p0, Landroid/net/netlink/RtNetlinkNeighborMessage;->mDestination:Ljava/net/InetAddress;
+    iput-object p1, v1, Landroid/net/netlink/RtNetlinkNeighborMessage;->mDestination:Ljava/net/InetAddress;
 
     .line 159
-    iput-object p4, p0, Landroid/net/netlink/RtNetlinkNeighborMessage;->mLinkLayerAddr:[B
+    iput-object p4, v1, Landroid/net/netlink/RtNetlinkNeighborMessage;->mLinkLayerAddr:[B
 
     .line 161
-    invoke-virtual {p0}, Landroid/net/netlink/RtNetlinkNeighborMessage;->getRequiredSpace()I
+    invoke-virtual {v1}, Landroid/net/netlink/RtNetlinkNeighborMessage;->getRequiredSpace()I
 
-    move-result p1
+    move-result v2
 
-    new-array p1, p1, [B
+    new-array v2, v2, [B
 
     .line 162
-    array-length p2, p1
+    .local v2, "bytes":[B
+    array-length v3, v2
 
-    iput p2, v0, Landroid/net/netlink/StructNlMsgHdr;->nlmsg_len:I
+    iput v3, v0, Landroid/net/netlink/StructNlMsgHdr;->nlmsg_len:I
 
     .line 163
-    invoke-static {p1}, Ljava/nio/ByteBuffer;->wrap([B)Ljava/nio/ByteBuffer;
+    invoke-static {v2}, Ljava/nio/ByteBuffer;->wrap([B)Ljava/nio/ByteBuffer;
 
-    move-result-object p2
+    move-result-object v3
 
     .line 164
+    .local v3, "byteBuffer":Ljava/nio/ByteBuffer;
     invoke-static {}, Ljava/nio/ByteOrder;->nativeOrder()Ljava/nio/ByteOrder;
 
-    move-result-object p3
+    move-result-object v4
 
-    invoke-virtual {p2, p3}, Ljava/nio/ByteBuffer;->order(Ljava/nio/ByteOrder;)Ljava/nio/ByteBuffer;
+    invoke-virtual {v3, v4}, Ljava/nio/ByteBuffer;->order(Ljava/nio/ByteOrder;)Ljava/nio/ByteBuffer;
 
     .line 165
-    invoke-virtual {p0, p2}, Landroid/net/netlink/RtNetlinkNeighborMessage;->pack(Ljava/nio/ByteBuffer;)V
+    invoke-virtual {v1, v3}, Landroid/net/netlink/RtNetlinkNeighborMessage;->pack(Ljava/nio/ByteBuffer;)V
 
     .line 166
-    return-object p1
+    return-object v2
 .end method
 
 .method private static packNlAttr(S[BLjava/nio/ByteBuffer;)V
-    .registers 4
+    .registers 5
+    .param p0, "nlType"  # S
+    .param p1, "nlValue"  # [B
+    .param p2, "byteBuffer"  # Ljava/nio/ByteBuffer;
 
     .line 220
     new-instance v0, Landroid/net/netlink/StructNlAttr;
@@ -307,21 +333,22 @@
     invoke-direct {v0}, Landroid/net/netlink/StructNlAttr;-><init>()V
 
     .line 221
+    .local v0, "nlAttr":Landroid/net/netlink/StructNlAttr;
     iput-short p0, v0, Landroid/net/netlink/StructNlAttr;->nla_type:S
 
     .line 222
     iput-object p1, v0, Landroid/net/netlink/StructNlAttr;->nla_value:[B
 
     .line 223
-    iget-object p0, v0, Landroid/net/netlink/StructNlAttr;->nla_value:[B
+    iget-object v1, v0, Landroid/net/netlink/StructNlAttr;->nla_value:[B
 
-    array-length p0, p0
+    array-length v1, v1
 
-    add-int/lit8 p0, p0, 0x4
+    add-int/lit8 v1, v1, 0x4
 
-    int-to-short p0, p0
+    int-to-short v1, v1
 
-    iput-short p0, v0, Landroid/net/netlink/StructNlAttr;->nla_len:S
+    iput-short v1, v0, Landroid/net/netlink/StructNlAttr;->nla_len:S
 
     .line 224
     invoke-virtual {v0, p2}, Landroid/net/netlink/StructNlAttr;->pack(Ljava/nio/ByteBuffer;)V
@@ -331,7 +358,9 @@
 .end method
 
 .method public static parse(Landroid/net/netlink/StructNlMsgHdr;Ljava/nio/ByteBuffer;)Landroid/net/netlink/RtNetlinkNeighborMessage;
-    .registers 5
+    .registers 8
+    .param p0, "header"  # Landroid/net/netlink/StructNlMsgHdr;
+    .param p1, "byteBuffer"  # Ljava/nio/ByteBuffer;
 
     .line 75
     new-instance v0, Landroid/net/netlink/RtNetlinkNeighborMessage;
@@ -339,148 +368,156 @@
     invoke-direct {v0, p0}, Landroid/net/netlink/RtNetlinkNeighborMessage;-><init>(Landroid/net/netlink/StructNlMsgHdr;)V
 
     .line 77
+    .local v0, "neighMsg":Landroid/net/netlink/RtNetlinkNeighborMessage;
     invoke-static {p1}, Landroid/net/netlink/StructNdMsg;->parse(Ljava/nio/ByteBuffer;)Landroid/net/netlink/StructNdMsg;
 
-    move-result-object p0
+    move-result-object v1
 
-    iput-object p0, v0, Landroid/net/netlink/RtNetlinkNeighborMessage;->mNdmsg:Landroid/net/netlink/StructNdMsg;
+    iput-object v1, v0, Landroid/net/netlink/RtNetlinkNeighborMessage;->mNdmsg:Landroid/net/netlink/StructNdMsg;
 
     .line 78
-    iget-object p0, v0, Landroid/net/netlink/RtNetlinkNeighborMessage;->mNdmsg:Landroid/net/netlink/StructNdMsg;
+    iget-object v1, v0, Landroid/net/netlink/RtNetlinkNeighborMessage;->mNdmsg:Landroid/net/netlink/StructNdMsg;
 
-    if-nez p0, :cond_11
+    if-nez v1, :cond_11
 
     .line 79
-    const/4 p0, 0x0
+    const/4 v1, 0x0
 
-    return-object p0
+    return-object v1
 
     .line 83
     :cond_11
     invoke-virtual {p1}, Ljava/nio/ByteBuffer;->position()I
 
-    move-result p0
+    move-result v1
 
     .line 84
-    const/4 v1, 0x1
+    .local v1, "baseOffset":I
+    const/4 v2, 0x1
 
-    invoke-static {v1, p1}, Landroid/net/netlink/RtNetlinkNeighborMessage;->findNextAttrOfType(SLjava/nio/ByteBuffer;)Landroid/net/netlink/StructNlAttr;
+    invoke-static {v2, p1}, Landroid/net/netlink/RtNetlinkNeighborMessage;->findNextAttrOfType(SLjava/nio/ByteBuffer;)Landroid/net/netlink/StructNlAttr;
 
-    move-result-object v1
+    move-result-object v2
 
     .line 85
-    if-eqz v1, :cond_22
+    .local v2, "nlAttr":Landroid/net/netlink/StructNlAttr;
+    if-eqz v2, :cond_22
 
     .line 86
-    invoke-virtual {v1}, Landroid/net/netlink/StructNlAttr;->getValueAsInetAddress()Ljava/net/InetAddress;
+    invoke-virtual {v2}, Landroid/net/netlink/StructNlAttr;->getValueAsInetAddress()Ljava/net/InetAddress;
 
-    move-result-object v1
+    move-result-object v3
 
-    iput-object v1, v0, Landroid/net/netlink/RtNetlinkNeighborMessage;->mDestination:Ljava/net/InetAddress;
+    iput-object v3, v0, Landroid/net/netlink/RtNetlinkNeighborMessage;->mDestination:Ljava/net/InetAddress;
 
     .line 89
     :cond_22
-    invoke-virtual {p1, p0}, Ljava/nio/ByteBuffer;->position(I)Ljava/nio/Buffer;
+    invoke-virtual {p1, v1}, Ljava/nio/ByteBuffer;->position(I)Ljava/nio/Buffer;
 
     .line 90
-    const/4 v1, 0x2
+    const/4 v3, 0x2
 
-    invoke-static {v1, p1}, Landroid/net/netlink/RtNetlinkNeighborMessage;->findNextAttrOfType(SLjava/nio/ByteBuffer;)Landroid/net/netlink/StructNlAttr;
+    invoke-static {v3, p1}, Landroid/net/netlink/RtNetlinkNeighborMessage;->findNextAttrOfType(SLjava/nio/ByteBuffer;)Landroid/net/netlink/StructNlAttr;
 
-    move-result-object v1
+    move-result-object v2
 
     .line 91
-    if-eqz v1, :cond_30
+    if-eqz v2, :cond_30
 
     .line 92
-    iget-object v1, v1, Landroid/net/netlink/StructNlAttr;->nla_value:[B
+    iget-object v3, v2, Landroid/net/netlink/StructNlAttr;->nla_value:[B
 
-    iput-object v1, v0, Landroid/net/netlink/RtNetlinkNeighborMessage;->mLinkLayerAddr:[B
+    iput-object v3, v0, Landroid/net/netlink/RtNetlinkNeighborMessage;->mLinkLayerAddr:[B
 
     .line 95
     :cond_30
-    invoke-virtual {p1, p0}, Ljava/nio/ByteBuffer;->position(I)Ljava/nio/Buffer;
+    invoke-virtual {p1, v1}, Ljava/nio/ByteBuffer;->position(I)Ljava/nio/Buffer;
 
     .line 96
-    const/4 v1, 0x4
+    const/4 v3, 0x4
 
-    invoke-static {v1, p1}, Landroid/net/netlink/RtNetlinkNeighborMessage;->findNextAttrOfType(SLjava/nio/ByteBuffer;)Landroid/net/netlink/StructNlAttr;
+    invoke-static {v3, p1}, Landroid/net/netlink/RtNetlinkNeighborMessage;->findNextAttrOfType(SLjava/nio/ByteBuffer;)Landroid/net/netlink/StructNlAttr;
 
-    move-result-object v1
+    move-result-object v2
 
     .line 97
-    if-eqz v1, :cond_41
+    if-eqz v2, :cond_41
 
     .line 98
-    const/4 v2, 0x0
+    const/4 v3, 0x0
 
-    invoke-virtual {v1, v2}, Landroid/net/netlink/StructNlAttr;->getValueAsInt(I)I
+    invoke-virtual {v2, v3}, Landroid/net/netlink/StructNlAttr;->getValueAsInt(I)I
 
-    move-result v1
+    move-result v3
 
-    iput v1, v0, Landroid/net/netlink/RtNetlinkNeighborMessage;->mNumProbes:I
+    iput v3, v0, Landroid/net/netlink/RtNetlinkNeighborMessage;->mNumProbes:I
 
     .line 101
     :cond_41
-    invoke-virtual {p1, p0}, Ljava/nio/ByteBuffer;->position(I)Ljava/nio/Buffer;
+    invoke-virtual {p1, v1}, Ljava/nio/ByteBuffer;->position(I)Ljava/nio/Buffer;
 
     .line 102
-    const/4 v1, 0x3
+    const/4 v3, 0x3
 
-    invoke-static {v1, p1}, Landroid/net/netlink/RtNetlinkNeighborMessage;->findNextAttrOfType(SLjava/nio/ByteBuffer;)Landroid/net/netlink/StructNlAttr;
+    invoke-static {v3, p1}, Landroid/net/netlink/RtNetlinkNeighborMessage;->findNextAttrOfType(SLjava/nio/ByteBuffer;)Landroid/net/netlink/StructNlAttr;
 
-    move-result-object v1
+    move-result-object v2
 
     .line 103
-    if-eqz v1, :cond_55
+    if-eqz v2, :cond_55
 
     .line 104
-    invoke-virtual {v1}, Landroid/net/netlink/StructNlAttr;->getValueAsByteBuffer()Ljava/nio/ByteBuffer;
+    invoke-virtual {v2}, Landroid/net/netlink/StructNlAttr;->getValueAsByteBuffer()Ljava/nio/ByteBuffer;
 
-    move-result-object v1
+    move-result-object v3
 
-    invoke-static {v1}, Landroid/net/netlink/StructNdaCacheInfo;->parse(Ljava/nio/ByteBuffer;)Landroid/net/netlink/StructNdaCacheInfo;
+    invoke-static {v3}, Landroid/net/netlink/StructNdaCacheInfo;->parse(Ljava/nio/ByteBuffer;)Landroid/net/netlink/StructNdaCacheInfo;
 
-    move-result-object v1
+    move-result-object v3
 
-    iput-object v1, v0, Landroid/net/netlink/RtNetlinkNeighborMessage;->mCacheInfo:Landroid/net/netlink/StructNdaCacheInfo;
+    iput-object v3, v0, Landroid/net/netlink/RtNetlinkNeighborMessage;->mCacheInfo:Landroid/net/netlink/StructNdaCacheInfo;
+
+    .line 107
+    :cond_55
+    const/16 v3, 0x1c
 
     .line 108
-    :cond_55
-    iget-object v1, v0, Landroid/net/netlink/RtNetlinkNeighborMessage;->mHeader:Landroid/net/netlink/StructNlMsgHdr;
+    .local v3, "kMinConsumed":I
+    iget-object v4, v0, Landroid/net/netlink/RtNetlinkNeighborMessage;->mHeader:Landroid/net/netlink/StructNlMsgHdr;
 
-    iget v1, v1, Landroid/net/netlink/StructNlMsgHdr;->nlmsg_len:I
+    iget v4, v4, Landroid/net/netlink/StructNlMsgHdr;->nlmsg_len:I
 
-    add-int/lit8 v1, v1, -0x1c
+    add-int/lit8 v4, v4, -0x1c
 
-    invoke-static {v1}, Landroid/net/netlink/NetlinkConstants;->alignedLengthOf(I)I
+    invoke-static {v4}, Landroid/net/netlink/NetlinkConstants;->alignedLengthOf(I)I
 
-    move-result v1
+    move-result v4
 
     .line 110
+    .local v4, "kAdditionalSpace":I
     invoke-virtual {p1}, Ljava/nio/ByteBuffer;->remaining()I
 
-    move-result v2
+    move-result v5
 
-    if-ge v2, v1, :cond_6d
+    if-ge v5, v4, :cond_6f
 
     .line 111
     invoke-virtual {p1}, Ljava/nio/ByteBuffer;->limit()I
 
-    move-result p0
+    move-result v5
 
-    invoke-virtual {p1, p0}, Ljava/nio/ByteBuffer;->position(I)Ljava/nio/Buffer;
+    invoke-virtual {p1, v5}, Ljava/nio/ByteBuffer;->position(I)Ljava/nio/Buffer;
 
-    goto :goto_71
+    goto :goto_74
 
     .line 113
-    :cond_6d
-    add-int/2addr p0, v1
+    :cond_6f
+    add-int v5, v1, v4
 
-    invoke-virtual {p1, p0}, Ljava/nio/ByteBuffer;->position(I)Ljava/nio/Buffer;
+    invoke-virtual {p1, v5}, Ljava/nio/ByteBuffer;->position(I)Ljava/nio/Buffer;
 
     .line 116
-    :goto_71
+    :goto_74
     return-object v0
 .end method
 
@@ -535,58 +572,58 @@
     .registers 3
 
     .line 205
-    nop
+    const/16 v0, 0x1c
 
     .line 206
-    iget-object v0, p0, Landroid/net/netlink/RtNetlinkNeighborMessage;->mDestination:Ljava/net/InetAddress;
+    .local v0, "spaceRequired":I
+    iget-object v1, p0, Landroid/net/netlink/RtNetlinkNeighborMessage;->mDestination:Ljava/net/InetAddress;
 
-    const/16 v1, 0x1c
-
-    if-eqz v0, :cond_14
+    if-eqz v1, :cond_13
 
     .line 207
     nop
 
     .line 208
-    invoke-virtual {v0}, Ljava/net/InetAddress;->getAddress()[B
+    invoke-virtual {v1}, Ljava/net/InetAddress;->getAddress()[B
 
-    move-result-object v0
+    move-result-object v1
 
-    array-length v0, v0
+    array-length v1, v1
 
-    add-int/lit8 v0, v0, 0x4
+    add-int/lit8 v1, v1, 0x4
 
     .line 207
-    invoke-static {v0}, Landroid/net/netlink/NetlinkConstants;->alignedLengthOf(I)I
+    invoke-static {v1}, Landroid/net/netlink/NetlinkConstants;->alignedLengthOf(I)I
 
-    move-result v0
+    move-result v1
 
-    add-int/2addr v1, v0
+    add-int/2addr v0, v1
 
     .line 210
-    :cond_14
-    iget-object v0, p0, Landroid/net/netlink/RtNetlinkNeighborMessage;->mLinkLayerAddr:[B
+    :cond_13
+    iget-object v1, p0, Landroid/net/netlink/RtNetlinkNeighborMessage;->mLinkLayerAddr:[B
 
-    if-eqz v0, :cond_20
+    if-eqz v1, :cond_1f
 
     .line 211
-    array-length v0, v0
+    array-length v1, v1
 
-    add-int/lit8 v0, v0, 0x4
+    add-int/lit8 v1, v1, 0x4
 
-    invoke-static {v0}, Landroid/net/netlink/NetlinkConstants;->alignedLengthOf(I)I
+    invoke-static {v1}, Landroid/net/netlink/NetlinkConstants;->alignedLengthOf(I)I
 
-    move-result v0
+    move-result v1
 
-    add-int/2addr v1, v0
+    add-int/2addr v0, v1
 
     .line 216
-    :cond_20
-    return v1
+    :cond_1f
+    return v0
 .end method
 
 .method public pack(Ljava/nio/ByteBuffer;)V
     .registers 4
+    .param p1, "byteBuffer"  # Ljava/nio/ByteBuffer;
 
     .line 228
     invoke-virtual {p0}, Landroid/net/netlink/RtNetlinkNeighborMessage;->getHeader()Landroid/net/netlink/StructNlMsgHdr;
@@ -650,6 +687,7 @@
     move-result-object v0
 
     .line 242
+    .local v0, "ipLiteral":Ljava/lang/String;
     :goto_c
     new-instance v2, Ljava/lang/StringBuilder;
 
@@ -705,54 +743,54 @@
 
     invoke-virtual {v2, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string/jumbo v0, "} linklayeraddr{"
+    const-string/jumbo v3, "} linklayeraddr{"
 
-    invoke-virtual {v2, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    iget-object v0, p0, Landroid/net/netlink/RtNetlinkNeighborMessage;->mLinkLayerAddr:[B
+    iget-object v3, p0, Landroid/net/netlink/RtNetlinkNeighborMessage;->mLinkLayerAddr:[B
 
     .line 246
-    invoke-static {v0}, Landroid/net/netlink/NetlinkConstants;->hexify([B)Ljava/lang/String;
+    invoke-static {v3}, Landroid/net/netlink/NetlinkConstants;->hexify([B)Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v3
 
-    invoke-virtual {v2, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string/jumbo v0, "} probes{"
+    const-string/jumbo v3, "} probes{"
 
-    invoke-virtual {v2, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    iget v0, p0, Landroid/net/netlink/RtNetlinkNeighborMessage;->mNumProbes:I
+    iget v3, p0, Landroid/net/netlink/RtNetlinkNeighborMessage;->mNumProbes:I
 
-    invoke-virtual {v2, v0}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    const-string/jumbo v0, "} cacheinfo{"
+    const-string/jumbo v3, "} cacheinfo{"
 
-    invoke-virtual {v2, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     .line 248
-    iget-object v0, p0, Landroid/net/netlink/RtNetlinkNeighborMessage;->mCacheInfo:Landroid/net/netlink/StructNdaCacheInfo;
+    iget-object v3, p0, Landroid/net/netlink/RtNetlinkNeighborMessage;->mCacheInfo:Landroid/net/netlink/StructNdaCacheInfo;
 
-    if-nez v0, :cond_66
+    if-nez v3, :cond_66
 
     goto :goto_6a
 
     :cond_66
-    invoke-virtual {v0}, Landroid/net/netlink/StructNdaCacheInfo;->toString()Ljava/lang/String;
+    invoke-virtual {v3}, Landroid/net/netlink/StructNdaCacheInfo;->toString()Ljava/lang/String;
 
     move-result-object v1
 
     :goto_6a
     invoke-virtual {v2, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string/jumbo v0, "} }"
+    const-string/jumbo v1, "} }"
 
-    invoke-virtual {v2, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v1
 
     .line 242
-    return-object v0
+    return-object v1
 .end method

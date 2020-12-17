@@ -7,7 +7,7 @@
 .method public constructor <init>()V
     .registers 1
 
-    .line 36
+    .line 37
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
     return-void
@@ -15,21 +15,21 @@
 
 
 # virtual methods
-.method public generateTetheringConfiguration(Landroid/content/Context;Landroid/net/util/SharedLog;I)Lcom/android/server/connectivity/tethering/TetheringConfiguration;
-    .registers 5
+.method public getDefaultDataSubscriptionId()I
+    .registers 2
 
     .line 94
-    new-instance v0, Lcom/android/server/connectivity/tethering/TetheringConfiguration;
+    invoke-static {}, Landroid/telephony/SubscriptionManager;->getDefaultDataSubscriptionId()I
 
-    invoke-direct {v0, p1, p2, p3}, Lcom/android/server/connectivity/tethering/TetheringConfiguration;-><init>(Landroid/content/Context;Landroid/net/util/SharedLog;I)V
+    move-result v0
 
-    return-object v0
+    return v0
 .end method
 
 .method public getDefaultNetworkRequest()Landroid/net/NetworkRequest;
     .registers 2
 
-    .line 78
+    .line 79
     const/4 v0, 0x0
 
     return-object v0
@@ -37,8 +37,13 @@
 
 .method public getEntitlementManager(Landroid/content/Context;Lcom/android/internal/util/StateMachine;Landroid/net/util/SharedLog;ILcom/android/server/connectivity/MockableSystemProperties;)Lcom/android/server/connectivity/tethering/EntitlementManager;
     .registers 13
+    .param p1, "ctx"  # Landroid/content/Context;
+    .param p2, "target"  # Lcom/android/internal/util/StateMachine;
+    .param p3, "log"  # Landroid/net/util/SharedLog;
+    .param p4, "what"  # I
+    .param p5, "systemProperties"  # Lcom/android/server/connectivity/MockableSystemProperties;
 
-    .line 86
+    .line 87
     new-instance v6, Lcom/android/server/connectivity/tethering/EntitlementManager;
 
     move-object v0, v6
@@ -60,6 +65,7 @@
 
 .method public getIPv6TetheringCoordinator(Ljava/util/ArrayList;Landroid/net/util/SharedLog;)Lcom/android/server/connectivity/tethering/IPv6TetheringCoordinator;
     .registers 4
+    .param p2, "log"  # Landroid/net/util/SharedLog;
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(",
@@ -72,7 +78,8 @@
         }
     .end annotation
 
-    .line 57
+    .line 58
+    .local p1, "notifyList":Ljava/util/ArrayList;, "Ljava/util/ArrayList<Landroid/net/ip/IpServer;>;"
     new-instance v0, Lcom/android/server/connectivity/tethering/IPv6TetheringCoordinator;
 
     invoke-direct {v0, p1, p2}, Lcom/android/server/connectivity/tethering/IPv6TetheringCoordinator;-><init>(Ljava/util/ArrayList;Landroid/net/util/SharedLog;)V
@@ -83,7 +90,7 @@
 .method public getIpServerDependencies()Landroid/net/ip/IpServer$Dependencies;
     .registers 2
 
-    .line 64
+    .line 65
     new-instance v0, Landroid/net/ip/IpServer$Dependencies;
 
     invoke-direct {v0}, Landroid/net/ip/IpServer$Dependencies;-><init>()V
@@ -93,8 +100,10 @@
 
 .method public getOffloadHardwareInterface(Landroid/os/Handler;Landroid/net/util/SharedLog;)Lcom/android/server/connectivity/tethering/OffloadHardwareInterface;
     .registers 4
+    .param p1, "h"  # Landroid/os/Handler;
+    .param p2, "log"  # Landroid/net/util/SharedLog;
 
-    .line 41
+    .line 42
     new-instance v0, Lcom/android/server/connectivity/tethering/OffloadHardwareInterface;
 
     invoke-direct {v0, p1, p2}, Lcom/android/server/connectivity/tethering/OffloadHardwareInterface;-><init>(Landroid/os/Handler;Landroid/net/util/SharedLog;)V
@@ -104,8 +113,12 @@
 
 .method public getUpstreamNetworkMonitor(Landroid/content/Context;Lcom/android/internal/util/StateMachine;Landroid/net/util/SharedLog;I)Lcom/android/server/connectivity/tethering/UpstreamNetworkMonitor;
     .registers 6
+    .param p1, "ctx"  # Landroid/content/Context;
+    .param p2, "target"  # Lcom/android/internal/util/StateMachine;
+    .param p3, "log"  # Landroid/net/util/SharedLog;
+    .param p4, "what"  # I
 
-    .line 49
+    .line 50
     new-instance v0, Lcom/android/server/connectivity/tethering/UpstreamNetworkMonitor;
 
     invoke-direct {v0, p1, p2, p3, p4}, Lcom/android/server/connectivity/tethering/UpstreamNetworkMonitor;-><init>(Landroid/content/Context;Lcom/android/internal/util/StateMachine;Landroid/net/util/SharedLog;I)V
@@ -116,7 +129,7 @@
 .method public isTetheringSupported()Z
     .registers 2
 
-    .line 71
+    .line 72
     const/4 v0, 0x1
 
     return v0

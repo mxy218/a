@@ -19,7 +19,7 @@
 .method public constructor <init>()V
     .registers 1
 
-    .line 43
+    .line 44
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
     return-void
@@ -34,6 +34,9 @@
 .end method
 
 .method public abstract clearForcedDisplaySize(I)V
+.end method
+
+.method public abstract clearNonHighRefreshRatePackage()V
 .end method
 
 .method public abstract computeWindowsForAccessibility()V
@@ -52,6 +55,17 @@
 .end method
 
 .method public abstract getMagnificationRegion(ILandroid/graphics/Region;)V
+.end method
+
+.method public abstract getNonHighRefreshRatePackages()Landroid/util/ArraySet;
+    .annotation system Ldalvik/annotation/Signature;
+        value = {
+            "()",
+            "Landroid/util/ArraySet<",
+            "Ljava/lang/String;",
+            ">;"
+        }
+    .end annotation
 .end method
 
 .method public abstract getTopFocusedDisplayId()I

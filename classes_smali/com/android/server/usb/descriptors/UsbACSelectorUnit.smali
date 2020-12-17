@@ -20,6 +20,10 @@
 # direct methods
 .method public constructor <init>(IBBI)V
     .registers 5
+    .param p1, "length"  # I
+    .param p2, "type"  # B
+    .param p3, "subtype"  # B
+    .param p4, "subClass"  # I
 
     .line 36
     invoke-direct {p0, p1, p2, p3, p4}, Lcom/android/server/usb/descriptors/UsbACInterface;-><init>(IBBI)V
@@ -68,6 +72,7 @@
 
 .method public parseRawDescriptors(Lcom/android/server/usb/descriptors/ByteStream;)I
     .registers 5
+    .param p1, "stream"  # Lcom/android/server/usb/descriptors/ByteStream;
 
     .line 57
     invoke-virtual {p1}, Lcom/android/server/usb/descriptors/ByteStream;->getByte()B
@@ -93,6 +98,7 @@
     .line 60
     const/4 v0, 0x0
 
+    .local v0, "index":I
     :goto_13
     iget-byte v1, p0, Lcom/android/server/usb/descriptors/UsbACSelectorUnit;->mNumPins:B
 
@@ -113,15 +119,16 @@
     goto :goto_13
 
     .line 63
+    .end local v0  # "index":I
     :cond_22
     invoke-virtual {p1}, Lcom/android/server/usb/descriptors/ByteStream;->getByte()B
 
-    move-result p1
+    move-result v0
 
-    iput-byte p1, p0, Lcom/android/server/usb/descriptors/UsbACSelectorUnit;->mNameIndex:B
+    iput-byte v0, p0, Lcom/android/server/usb/descriptors/UsbACSelectorUnit;->mNameIndex:B
 
     .line 65
-    iget p1, p0, Lcom/android/server/usb/descriptors/UsbACSelectorUnit;->mLength:I
+    iget v0, p0, Lcom/android/server/usb/descriptors/UsbACSelectorUnit;->mLength:I
 
-    return p1
+    return v0
 .end method

@@ -64,32 +64,34 @@
 .end method
 
 .method public setCount(I)V
-    .registers 3
+    .registers 4
+    .param p1, "count"  # I
 
     .line 338
     invoke-static {p1}, Ljava/lang/Integer;->toString(I)Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    const-string/jumbo v0, "sys.rescue_boot_count"
+    const-string/jumbo v1, "sys.rescue_boot_count"
 
-    invoke-static {v0, p1}, Landroid/os/SystemProperties;->set(Ljava/lang/String;Ljava/lang/String;)V
+    invoke-static {v1, v0}, Landroid/os/SystemProperties;->set(Ljava/lang/String;Ljava/lang/String;)V
 
     .line 339
     return-void
 .end method
 
 .method public setStart(J)V
-    .registers 3
+    .registers 5
+    .param p1, "start"  # J
 
     .line 348
     invoke-static {p1, p2}, Ljava/lang/Long;->toString(J)Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    const-string/jumbo p2, "sys.rescue_boot_start"
+    const-string/jumbo v1, "sys.rescue_boot_start"
 
-    invoke-static {p2, p1}, Landroid/os/SystemProperties;->set(Ljava/lang/String;Ljava/lang/String;)V
+    invoke-static {v1, v0}, Landroid/os/SystemProperties;->set(Ljava/lang/String;Ljava/lang/String;)V
 
     .line 349
     return-void

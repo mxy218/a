@@ -28,6 +28,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/print/UserState$PrintJobForAppCache;Landroid/os/IBinder;I)V
     .registers 4
+    .param p1, "this$1"  # Lcom/android/server/print/UserState$PrintJobForAppCache;
 
     .line 1748
     iput-object p1, p0, Lcom/android/server/print/UserState$PrintJobForAppCache$1;->this$1:Lcom/android/server/print/UserState$PrintJobForAppCache;

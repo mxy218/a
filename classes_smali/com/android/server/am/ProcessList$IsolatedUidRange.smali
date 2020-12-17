@@ -46,30 +46,33 @@
 
 # direct methods
 .method constructor <init>(Lcom/android/server/am/ProcessList;II)V
-    .registers 4
+    .registers 5
+    .param p1, "this$0"  # Lcom/android/server/am/ProcessList;
+    .param p2, "firstUid"  # I
+    .param p3, "lastUid"  # I
 
-    .line 400
+    .line 404
     iput-object p1, p0, Lcom/android/server/am/ProcessList$IsolatedUidRange;->this$0:Lcom/android/server/am/ProcessList;
 
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
-    .line 394
-    new-instance p1, Landroid/util/SparseBooleanArray;
+    .line 398
+    new-instance v0, Landroid/util/SparseBooleanArray;
 
-    invoke-direct {p1}, Landroid/util/SparseBooleanArray;-><init>()V
+    invoke-direct {v0}, Landroid/util/SparseBooleanArray;-><init>()V
 
-    iput-object p1, p0, Lcom/android/server/am/ProcessList$IsolatedUidRange;->mUidUsed:Landroid/util/SparseBooleanArray;
+    iput-object v0, p0, Lcom/android/server/am/ProcessList$IsolatedUidRange;->mUidUsed:Landroid/util/SparseBooleanArray;
 
-    .line 401
+    .line 405
     iput p2, p0, Lcom/android/server/am/ProcessList$IsolatedUidRange;->mFirstUid:I
 
-    .line 402
+    .line 406
     iput p3, p0, Lcom/android/server/am/ProcessList$IsolatedUidRange;->mLastUid:I
 
-    .line 403
+    .line 407
     iput p2, p0, Lcom/android/server/am/ProcessList$IsolatedUidRange;->mNextUid:I
 
-    .line 404
+    .line 408
     return-void
 .end method
 
@@ -77,13 +80,14 @@
 # virtual methods
 .method allocateIsolatedUidLocked(I)I
     .registers 8
+    .param p1, "userId"  # I
     .annotation build Lcom/android/internal/annotations/GuardedBy;
         value = {
             "ProcessList.this.mService"
         }
     .end annotation
 
-    .line 409
+    .line 413
     iget v0, p0, Lcom/android/server/am/ProcessList$IsolatedUidRange;->mLastUid:I
 
     iget v1, p0, Lcom/android/server/am/ProcessList$IsolatedUidRange;->mFirstUid:I
@@ -94,89 +98,101 @@
 
     add-int/2addr v0, v1
 
-    .line 410
+    .line 414
+    .local v0, "stepsLeft":I
     const/4 v2, 0x0
 
-    move v3, v2
+    .local v2, "i":I
+    :goto_8
+    if-ge v2, v0, :cond_35
 
-    :goto_9
-    if-ge v3, v0, :cond_35
+    .line 415
+    iget v3, p0, Lcom/android/server/am/ProcessList$IsolatedUidRange;->mNextUid:I
 
-    .line 411
+    iget v4, p0, Lcom/android/server/am/ProcessList$IsolatedUidRange;->mFirstUid:I
+
+    if-lt v3, v4, :cond_14
+
+    iget v4, p0, Lcom/android/server/am/ProcessList$IsolatedUidRange;->mLastUid:I
+
+    if-le v3, v4, :cond_18
+
+    .line 416
+    :cond_14
+    iget v3, p0, Lcom/android/server/am/ProcessList$IsolatedUidRange;->mFirstUid:I
+
+    iput v3, p0, Lcom/android/server/am/ProcessList$IsolatedUidRange;->mNextUid:I
+
+    .line 418
+    :cond_18
+    iget v3, p0, Lcom/android/server/am/ProcessList$IsolatedUidRange;->mNextUid:I
+
+    invoke-static {p1, v3}, Landroid/os/UserHandle;->getUid(II)I
+
+    move-result v3
+
+    .line 419
+    .local v3, "uid":I
     iget v4, p0, Lcom/android/server/am/ProcessList$IsolatedUidRange;->mNextUid:I
 
-    iget v5, p0, Lcom/android/server/am/ProcessList$IsolatedUidRange;->mFirstUid:I
-
-    if-lt v4, v5, :cond_15
-
-    iget v5, p0, Lcom/android/server/am/ProcessList$IsolatedUidRange;->mLastUid:I
-
-    if-le v4, v5, :cond_19
-
-    .line 412
-    :cond_15
-    iget v4, p0, Lcom/android/server/am/ProcessList$IsolatedUidRange;->mFirstUid:I
+    add-int/2addr v4, v1
 
     iput v4, p0, Lcom/android/server/am/ProcessList$IsolatedUidRange;->mNextUid:I
 
-    .line 414
-    :cond_19
-    iget v4, p0, Lcom/android/server/am/ProcessList$IsolatedUidRange;->mNextUid:I
+    .line 420
+    iget-object v4, p0, Lcom/android/server/am/ProcessList$IsolatedUidRange;->mUidUsed:Landroid/util/SparseBooleanArray;
 
-    invoke-static {p1, v4}, Landroid/os/UserHandle;->getUid(II)I
+    const/4 v5, 0x0
+
+    invoke-virtual {v4, v3, v5}, Landroid/util/SparseBooleanArray;->get(IZ)Z
 
     move-result v4
 
-    .line 415
-    iget v5, p0, Lcom/android/server/am/ProcessList$IsolatedUidRange;->mNextUid:I
-
-    add-int/2addr v5, v1
-
-    iput v5, p0, Lcom/android/server/am/ProcessList$IsolatedUidRange;->mNextUid:I
-
-    .line 416
-    iget-object v5, p0, Lcom/android/server/am/ProcessList$IsolatedUidRange;->mUidUsed:Landroid/util/SparseBooleanArray;
-
-    invoke-virtual {v5, v4, v2}, Landroid/util/SparseBooleanArray;->get(IZ)Z
-
-    move-result v5
-
-    if-nez v5, :cond_32
-
-    .line 417
-    iget-object p1, p0, Lcom/android/server/am/ProcessList$IsolatedUidRange;->mUidUsed:Landroid/util/SparseBooleanArray;
-
-    invoke-virtual {p1, v4, v1}, Landroid/util/SparseBooleanArray;->put(IZ)V
-
-    .line 418
-    return v4
-
-    .line 410
-    :cond_32
-    add-int/lit8 v3, v3, 0x1
-
-    goto :goto_9
+    if-nez v4, :cond_32
 
     .line 421
-    :cond_35
-    const/4 p1, -0x1
+    iget-object v4, p0, Lcom/android/server/am/ProcessList$IsolatedUidRange;->mUidUsed:Landroid/util/SparseBooleanArray;
 
-    return p1
+    invoke-virtual {v4, v3, v1}, Landroid/util/SparseBooleanArray;->put(IZ)V
+
+    .line 422
+    return v3
+
+    .line 414
+    :cond_32
+    add-int/lit8 v2, v2, 0x1
+
+    goto :goto_8
+
+    .line 425
+    .end local v2  # "i":I
+    .end local v3  # "uid":I
+    :cond_35
+    const/4 v1, -0x1
+
+    return v1
 .end method
 
 .method freeIsolatedUidLocked(I)V
-    .registers 3
+    .registers 4
+    .param p1, "uid"  # I
     .annotation build Lcom/android/internal/annotations/GuardedBy;
         value = {
             "ProcessList.this.mService"
         }
     .end annotation
 
-    .line 426
-    iget-object v0, p0, Lcom/android/server/am/ProcessList$IsolatedUidRange;->mUidUsed:Landroid/util/SparseBooleanArray;
+    .line 431
+    invoke-static {p1}, Landroid/os/UserHandle;->getAppId(I)I
 
-    invoke-virtual {v0, p1}, Landroid/util/SparseBooleanArray;->delete(I)V
+    move-result v0
 
-    .line 427
+    .line 432
+    .local v0, "appId":I
+    iget-object v1, p0, Lcom/android/server/am/ProcessList$IsolatedUidRange;->mUidUsed:Landroid/util/SparseBooleanArray;
+
+    invoke-virtual {v1, v0}, Landroid/util/SparseBooleanArray;->delete(I)V
+
+    .line 433
     return-void
 .end method

@@ -28,6 +28,7 @@
 # direct methods
 .method constructor <init>(Landroid/os/IBinder;)V
     .registers 2
+    .param p1, "remote"  # Landroid/os/IBinder;
 
     .line 268
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -61,6 +62,8 @@
 
 .method public onAppIntentEvent(Lcom/google/android/startop/iorap/RequestId;Lcom/google/android/startop/iorap/AppIntentEvent;)V
     .registers 8
+    .param p1, "request"  # Lcom/google/android/startop/iorap/RequestId;
+    .param p2, "event"  # Lcom/google/android/startop/iorap/AppIntentEvent;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -73,6 +76,7 @@
     move-result-object v0
 
     .line 423
+    .local v0, "_data":Landroid/os/Parcel;
     :try_start_4
     const-string v1, "com.google.android.startop.iorap.IIorap"
 
@@ -126,20 +130,21 @@
     move-result v1
 
     .line 439
+    .local v1, "_status":Z
     if-nez v1, :cond_3e
 
     invoke-static {}, Lcom/google/android/startop/iorap/IIorap$Stub;->getDefaultImpl()Lcom/google/android/startop/iorap/IIorap;
 
-    move-result-object v1
+    move-result-object v2
 
-    if-eqz v1, :cond_3e
+    if-eqz v2, :cond_3e
 
     .line 440
     invoke-static {}, Lcom/google/android/startop/iorap/IIorap$Stub;->getDefaultImpl()Lcom/google/android/startop/iorap/IIorap;
 
-    move-result-object v1
+    move-result-object v2
 
-    invoke-interface {v1, p1, p2}, Lcom/google/android/startop/iorap/IIorap;->onAppIntentEvent(Lcom/google/android/startop/iorap/RequestId;Lcom/google/android/startop/iorap/AppIntentEvent;)V
+    invoke-interface {v2, p1, p2}, Lcom/google/android/startop/iorap/IIorap;->onAppIntentEvent(Lcom/google/android/startop/iorap/RequestId;Lcom/google/android/startop/iorap/AppIntentEvent;)V
     :try_end_3a
     .catchall {:try_start_4 .. :try_end_3a} :catchall_43
 
@@ -150,6 +155,7 @@
     return-void
 
     .line 445
+    .end local v1  # "_status":Z
     :cond_3e
     invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
 
@@ -161,15 +167,17 @@
 
     .line 445
     :catchall_43
-    move-exception p1
+    move-exception v1
 
     invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
 
-    throw p1
+    throw v1
 .end method
 
 .method public onAppLaunchEvent(Lcom/google/android/startop/iorap/RequestId;Lcom/google/android/startop/iorap/AppLaunchEvent;)V
     .registers 8
+    .param p1, "request"  # Lcom/google/android/startop/iorap/RequestId;
+    .param p2, "event"  # Lcom/google/android/startop/iorap/AppLaunchEvent;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -182,6 +190,7 @@
     move-result-object v0
 
     .line 365
+    .local v0, "_data":Landroid/os/Parcel;
     :try_start_4
     const-string v1, "com.google.android.startop.iorap.IIorap"
 
@@ -235,20 +244,21 @@
     move-result v1
 
     .line 381
+    .local v1, "_status":Z
     if-nez v1, :cond_3e
 
     invoke-static {}, Lcom/google/android/startop/iorap/IIorap$Stub;->getDefaultImpl()Lcom/google/android/startop/iorap/IIorap;
 
-    move-result-object v1
+    move-result-object v2
 
-    if-eqz v1, :cond_3e
+    if-eqz v2, :cond_3e
 
     .line 382
     invoke-static {}, Lcom/google/android/startop/iorap/IIorap$Stub;->getDefaultImpl()Lcom/google/android/startop/iorap/IIorap;
 
-    move-result-object v1
+    move-result-object v2
 
-    invoke-interface {v1, p1, p2}, Lcom/google/android/startop/iorap/IIorap;->onAppLaunchEvent(Lcom/google/android/startop/iorap/RequestId;Lcom/google/android/startop/iorap/AppLaunchEvent;)V
+    invoke-interface {v2, p1, p2}, Lcom/google/android/startop/iorap/IIorap;->onAppLaunchEvent(Lcom/google/android/startop/iorap/RequestId;Lcom/google/android/startop/iorap/AppLaunchEvent;)V
     :try_end_3a
     .catchall {:try_start_4 .. :try_end_3a} :catchall_43
 
@@ -259,6 +269,7 @@
     return-void
 
     .line 387
+    .end local v1  # "_status":Z
     :cond_3e
     invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
 
@@ -270,15 +281,17 @@
 
     .line 387
     :catchall_43
-    move-exception p1
+    move-exception v1
 
     invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
 
-    throw p1
+    throw v1
 .end method
 
 .method public onPackageEvent(Lcom/google/android/startop/iorap/RequestId;Lcom/google/android/startop/iorap/PackageEvent;)V
     .registers 8
+    .param p1, "request"  # Lcom/google/android/startop/iorap/RequestId;
+    .param p2, "event"  # Lcom/google/android/startop/iorap/PackageEvent;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -291,6 +304,7 @@
     move-result-object v0
 
     .line 394
+    .local v0, "_data":Landroid/os/Parcel;
     :try_start_4
     const-string v1, "com.google.android.startop.iorap.IIorap"
 
@@ -344,20 +358,21 @@
     move-result v1
 
     .line 410
+    .local v1, "_status":Z
     if-nez v1, :cond_3e
 
     invoke-static {}, Lcom/google/android/startop/iorap/IIorap$Stub;->getDefaultImpl()Lcom/google/android/startop/iorap/IIorap;
 
-    move-result-object v1
+    move-result-object v2
 
-    if-eqz v1, :cond_3e
+    if-eqz v2, :cond_3e
 
     .line 411
     invoke-static {}, Lcom/google/android/startop/iorap/IIorap$Stub;->getDefaultImpl()Lcom/google/android/startop/iorap/IIorap;
 
-    move-result-object v1
+    move-result-object v2
 
-    invoke-interface {v1, p1, p2}, Lcom/google/android/startop/iorap/IIorap;->onPackageEvent(Lcom/google/android/startop/iorap/RequestId;Lcom/google/android/startop/iorap/PackageEvent;)V
+    invoke-interface {v2, p1, p2}, Lcom/google/android/startop/iorap/IIorap;->onPackageEvent(Lcom/google/android/startop/iorap/RequestId;Lcom/google/android/startop/iorap/PackageEvent;)V
     :try_end_3a
     .catchall {:try_start_4 .. :try_end_3a} :catchall_43
 
@@ -368,6 +383,7 @@
     return-void
 
     .line 416
+    .end local v1  # "_status":Z
     :cond_3e
     invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
 
@@ -379,15 +395,17 @@
 
     .line 416
     :catchall_43
-    move-exception p1
+    move-exception v1
 
     invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
 
-    throw p1
+    throw v1
 .end method
 
 .method public onSystemServiceEvent(Lcom/google/android/startop/iorap/RequestId;Lcom/google/android/startop/iorap/SystemServiceEvent;)V
     .registers 8
+    .param p1, "request"  # Lcom/google/android/startop/iorap/RequestId;
+    .param p2, "event"  # Lcom/google/android/startop/iorap/SystemServiceEvent;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -400,6 +418,7 @@
     move-result-object v0
 
     .line 452
+    .local v0, "_data":Landroid/os/Parcel;
     :try_start_4
     const-string v1, "com.google.android.startop.iorap.IIorap"
 
@@ -453,20 +472,21 @@
     move-result v1
 
     .line 468
+    .local v1, "_status":Z
     if-nez v1, :cond_3e
 
     invoke-static {}, Lcom/google/android/startop/iorap/IIorap$Stub;->getDefaultImpl()Lcom/google/android/startop/iorap/IIorap;
 
-    move-result-object v1
+    move-result-object v2
 
-    if-eqz v1, :cond_3e
+    if-eqz v2, :cond_3e
 
     .line 469
     invoke-static {}, Lcom/google/android/startop/iorap/IIorap$Stub;->getDefaultImpl()Lcom/google/android/startop/iorap/IIorap;
 
-    move-result-object v1
+    move-result-object v2
 
-    invoke-interface {v1, p1, p2}, Lcom/google/android/startop/iorap/IIorap;->onSystemServiceEvent(Lcom/google/android/startop/iorap/RequestId;Lcom/google/android/startop/iorap/SystemServiceEvent;)V
+    invoke-interface {v2, p1, p2}, Lcom/google/android/startop/iorap/IIorap;->onSystemServiceEvent(Lcom/google/android/startop/iorap/RequestId;Lcom/google/android/startop/iorap/SystemServiceEvent;)V
     :try_end_3a
     .catchall {:try_start_4 .. :try_end_3a} :catchall_43
 
@@ -477,6 +497,7 @@
     return-void
 
     .line 474
+    .end local v1  # "_status":Z
     :cond_3e
     invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
 
@@ -488,15 +509,17 @@
 
     .line 474
     :catchall_43
-    move-exception p1
+    move-exception v1
 
     invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
 
-    throw p1
+    throw v1
 .end method
 
 .method public onSystemServiceUserEvent(Lcom/google/android/startop/iorap/RequestId;Lcom/google/android/startop/iorap/SystemServiceUserEvent;)V
     .registers 8
+    .param p1, "request"  # Lcom/google/android/startop/iorap/RequestId;
+    .param p2, "event"  # Lcom/google/android/startop/iorap/SystemServiceUserEvent;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -509,6 +532,7 @@
     move-result-object v0
 
     .line 481
+    .local v0, "_data":Landroid/os/Parcel;
     :try_start_4
     const-string v1, "com.google.android.startop.iorap.IIorap"
 
@@ -562,20 +586,21 @@
     move-result v1
 
     .line 497
+    .local v1, "_status":Z
     if-nez v1, :cond_3e
 
     invoke-static {}, Lcom/google/android/startop/iorap/IIorap$Stub;->getDefaultImpl()Lcom/google/android/startop/iorap/IIorap;
 
-    move-result-object v1
+    move-result-object v2
 
-    if-eqz v1, :cond_3e
+    if-eqz v2, :cond_3e
 
     .line 498
     invoke-static {}, Lcom/google/android/startop/iorap/IIorap$Stub;->getDefaultImpl()Lcom/google/android/startop/iorap/IIorap;
 
-    move-result-object v1
+    move-result-object v2
 
-    invoke-interface {v1, p1, p2}, Lcom/google/android/startop/iorap/IIorap;->onSystemServiceUserEvent(Lcom/google/android/startop/iorap/RequestId;Lcom/google/android/startop/iorap/SystemServiceUserEvent;)V
+    invoke-interface {v2, p1, p2}, Lcom/google/android/startop/iorap/IIorap;->onSystemServiceUserEvent(Lcom/google/android/startop/iorap/RequestId;Lcom/google/android/startop/iorap/SystemServiceUserEvent;)V
     :try_end_3a
     .catchall {:try_start_4 .. :try_end_3a} :catchall_43
 
@@ -586,6 +611,7 @@
     return-void
 
     .line 503
+    .end local v1  # "_status":Z
     :cond_3e
     invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
 
@@ -597,15 +623,16 @@
 
     .line 503
     :catchall_43
-    move-exception p1
+    move-exception v1
 
     invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
 
-    throw p1
+    throw v1
 .end method
 
 .method public setTaskListener(Lcom/google/android/startop/iorap/ITaskListener;)V
     .registers 6
+    .param p1, "listener"  # Lcom/google/android/startop/iorap/ITaskListener;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -618,6 +645,7 @@
     move-result-object v0
 
     .line 342
+    .local v0, "_data":Landroid/os/Parcel;
     :try_start_4
     const-string v1, "com.google.android.startop.iorap.IIorap"
 
@@ -650,20 +678,21 @@
     move-result v1
 
     .line 345
+    .local v1, "_status":Z
     if-nez v1, :cond_2f
 
     invoke-static {}, Lcom/google/android/startop/iorap/IIorap$Stub;->getDefaultImpl()Lcom/google/android/startop/iorap/IIorap;
 
-    move-result-object v1
+    move-result-object v2
 
-    if-eqz v1, :cond_2f
+    if-eqz v2, :cond_2f
 
     .line 346
     invoke-static {}, Lcom/google/android/startop/iorap/IIorap$Stub;->getDefaultImpl()Lcom/google/android/startop/iorap/IIorap;
 
-    move-result-object v1
+    move-result-object v2
 
-    invoke-interface {v1, p1}, Lcom/google/android/startop/iorap/IIorap;->setTaskListener(Lcom/google/android/startop/iorap/ITaskListener;)V
+    invoke-interface {v2, p1}, Lcom/google/android/startop/iorap/IIorap;->setTaskListener(Lcom/google/android/startop/iorap/ITaskListener;)V
     :try_end_2b
     .catchall {:try_start_4 .. :try_end_2b} :catchall_34
 
@@ -674,6 +703,7 @@
     return-void
 
     .line 351
+    .end local v1  # "_status":Z
     :cond_2f
     invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
 
@@ -685,9 +715,9 @@
 
     .line 351
     :catchall_34
-    move-exception p1
+    move-exception v1
 
     invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
 
-    throw p1
+    throw v1
 .end method

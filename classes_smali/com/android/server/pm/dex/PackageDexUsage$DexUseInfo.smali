@@ -45,6 +45,7 @@
 # direct methods
 .method private constructor <init>(Lcom/android/server/pm/dex/PackageDexUsage$DexUseInfo;)V
     .registers 4
+    .param p1, "other"  # Lcom/android/server/pm/dex/PackageDexUsage$DexUseInfo;
 
     .line 831
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -76,9 +77,9 @@
     .line 836
     new-instance v0, Ljava/util/HashSet;
 
-    iget-object p1, p1, Lcom/android/server/pm/dex/PackageDexUsage$DexUseInfo;->mLoadingPackages:Ljava/util/Set;
+    iget-object v1, p1, Lcom/android/server/pm/dex/PackageDexUsage$DexUseInfo;->mLoadingPackages:Ljava/util/Set;
 
-    invoke-direct {v0, p1}, Ljava/util/HashSet;-><init>(Ljava/util/Collection;)V
+    invoke-direct {v0, v1}, Ljava/util/HashSet;-><init>(Ljava/util/Collection;)V
 
     iput-object v0, p0, Lcom/android/server/pm/dex/PackageDexUsage$DexUseInfo;->mLoadingPackages:Ljava/util/Set;
 
@@ -88,6 +89,8 @@
 
 .method synthetic constructor <init>(Lcom/android/server/pm/dex/PackageDexUsage$DexUseInfo;Lcom/android/server/pm/dex/PackageDexUsage$1;)V
     .registers 3
+    .param p1, "x0"  # Lcom/android/server/pm/dex/PackageDexUsage$DexUseInfo;
+    .param p2, "x1"  # Lcom/android/server/pm/dex/PackageDexUsage$1;
 
     .line 805
     invoke-direct {p0, p1}, Lcom/android/server/pm/dex/PackageDexUsage$DexUseInfo;-><init>(Lcom/android/server/pm/dex/PackageDexUsage$DexUseInfo;)V
@@ -96,7 +99,11 @@
 .end method
 
 .method constructor <init>(ZILjava/lang/String;Ljava/lang/String;)V
-    .registers 5
+    .registers 6
+    .param p1, "isUsedByOtherApps"  # Z
+    .param p2, "ownerUserId"  # I
+    .param p3, "classLoaderContext"  # Ljava/lang/String;
+    .param p4, "loaderIsa"  # Ljava/lang/String;
     .annotation build Lcom/android/internal/annotations/VisibleForTesting;
     .end annotation
 
@@ -113,120 +120,131 @@
     iput-object p3, p0, Lcom/android/server/pm/dex/PackageDexUsage$DexUseInfo;->mClassLoaderContext:Ljava/lang/String;
 
     .line 823
-    new-instance p1, Ljava/util/HashSet;
+    new-instance v0, Ljava/util/HashSet;
 
-    invoke-direct {p1}, Ljava/util/HashSet;-><init>()V
+    invoke-direct {v0}, Ljava/util/HashSet;-><init>()V
 
-    iput-object p1, p0, Lcom/android/server/pm/dex/PackageDexUsage$DexUseInfo;->mLoaderIsas:Ljava/util/Set;
+    iput-object v0, p0, Lcom/android/server/pm/dex/PackageDexUsage$DexUseInfo;->mLoaderIsas:Ljava/util/Set;
 
     .line 824
     if-eqz p4, :cond_17
 
     .line 825
-    iget-object p1, p0, Lcom/android/server/pm/dex/PackageDexUsage$DexUseInfo;->mLoaderIsas:Ljava/util/Set;
+    iget-object v0, p0, Lcom/android/server/pm/dex/PackageDexUsage$DexUseInfo;->mLoaderIsas:Ljava/util/Set;
 
-    invoke-interface {p1, p4}, Ljava/util/Set;->add(Ljava/lang/Object;)Z
+    invoke-interface {v0, p4}, Ljava/util/Set;->add(Ljava/lang/Object;)Z
 
     .line 827
     :cond_17
-    new-instance p1, Ljava/util/HashSet;
+    new-instance v0, Ljava/util/HashSet;
 
-    invoke-direct {p1}, Ljava/util/HashSet;-><init>()V
+    invoke-direct {v0}, Ljava/util/HashSet;-><init>()V
 
-    iput-object p1, p0, Lcom/android/server/pm/dex/PackageDexUsage$DexUseInfo;->mLoadingPackages:Ljava/util/Set;
+    iput-object v0, p0, Lcom/android/server/pm/dex/PackageDexUsage$DexUseInfo;->mLoadingPackages:Ljava/util/Set;
 
     .line 828
     return-void
 .end method
 
 .method static synthetic access$200(Lcom/android/server/pm/dex/PackageDexUsage$DexUseInfo;)Ljava/util/Set;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/pm/dex/PackageDexUsage$DexUseInfo;
 
     .line 805
-    iget-object p0, p0, Lcom/android/server/pm/dex/PackageDexUsage$DexUseInfo;->mLoadingPackages:Ljava/util/Set;
+    iget-object v0, p0, Lcom/android/server/pm/dex/PackageDexUsage$DexUseInfo;->mLoadingPackages:Ljava/util/Set;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$300(Lcom/android/server/pm/dex/PackageDexUsage$DexUseInfo;)I
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/pm/dex/PackageDexUsage$DexUseInfo;
 
     .line 805
-    iget p0, p0, Lcom/android/server/pm/dex/PackageDexUsage$DexUseInfo;->mOwnerUserId:I
+    iget v0, p0, Lcom/android/server/pm/dex/PackageDexUsage$DexUseInfo;->mOwnerUserId:I
 
-    return p0
+    return v0
 .end method
 
 .method static synthetic access$400(Lcom/android/server/pm/dex/PackageDexUsage$DexUseInfo;Lcom/android/server/pm/dex/PackageDexUsage$DexUseInfo;)Z
-    .registers 2
+    .registers 3
+    .param p0, "x0"  # Lcom/android/server/pm/dex/PackageDexUsage$DexUseInfo;
+    .param p1, "x1"  # Lcom/android/server/pm/dex/PackageDexUsage$DexUseInfo;
 
     .line 805
     invoke-direct {p0, p1}, Lcom/android/server/pm/dex/PackageDexUsage$DexUseInfo;->merge(Lcom/android/server/pm/dex/PackageDexUsage$DexUseInfo;)Z
 
-    move-result p0
+    move-result v0
 
-    return p0
+    return v0
 .end method
 
 .method static synthetic access$600(Lcom/android/server/pm/dex/PackageDexUsage$DexUseInfo;)Z
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/pm/dex/PackageDexUsage$DexUseInfo;
 
     .line 805
-    iget-boolean p0, p0, Lcom/android/server/pm/dex/PackageDexUsage$DexUseInfo;->mIsUsedByOtherApps:Z
+    iget-boolean v0, p0, Lcom/android/server/pm/dex/PackageDexUsage$DexUseInfo;->mIsUsedByOtherApps:Z
 
-    return p0
+    return v0
 .end method
 
 .method static synthetic access$700(Lcom/android/server/pm/dex/PackageDexUsage$DexUseInfo;)Ljava/util/Set;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/pm/dex/PackageDexUsage$DexUseInfo;
 
     .line 805
-    iget-object p0, p0, Lcom/android/server/pm/dex/PackageDexUsage$DexUseInfo;->mLoaderIsas:Ljava/util/Set;
+    iget-object v0, p0, Lcom/android/server/pm/dex/PackageDexUsage$DexUseInfo;->mLoaderIsas:Ljava/util/Set;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method private merge(Lcom/android/server/pm/dex/PackageDexUsage$DexUseInfo;)Z
-    .registers 9
+    .registers 10
+    .param p1, "dexUseInfo"  # Lcom/android/server/pm/dex/PackageDexUsage$DexUseInfo;
 
     .line 840
     iget-boolean v0, p0, Lcom/android/server/pm/dex/PackageDexUsage$DexUseInfo;->mIsUsedByOtherApps:Z
 
     .line 841
-    const/4 v1, 0x0
+    .local v0, "oldIsUsedByOtherApps":Z
+    iget-boolean v1, p0, Lcom/android/server/pm/dex/PackageDexUsage$DexUseInfo;->mIsUsedByOtherApps:Z
 
-    const/4 v2, 0x1
+    const/4 v2, 0x0
 
-    if-nez v0, :cond_d
+    const/4 v3, 0x1
 
-    iget-boolean v3, p1, Lcom/android/server/pm/dex/PackageDexUsage$DexUseInfo;->mIsUsedByOtherApps:Z
+    if-nez v1, :cond_f
 
-    if-eqz v3, :cond_b
+    iget-boolean v1, p1, Lcom/android/server/pm/dex/PackageDexUsage$DexUseInfo;->mIsUsedByOtherApps:Z
 
-    goto :goto_d
+    if-eqz v1, :cond_d
 
-    :cond_b
-    move v3, v1
-
-    goto :goto_e
+    goto :goto_f
 
     :cond_d
-    :goto_d
-    move v3, v2
+    move v1, v2
 
-    :goto_e
-    iput-boolean v3, p0, Lcom/android/server/pm/dex/PackageDexUsage$DexUseInfo;->mIsUsedByOtherApps:Z
+    goto :goto_10
+
+    :cond_f
+    :goto_f
+    move v1, v3
+
+    :goto_10
+    iput-boolean v1, p0, Lcom/android/server/pm/dex/PackageDexUsage$DexUseInfo;->mIsUsedByOtherApps:Z
 
     .line 842
-    iget-object v3, p0, Lcom/android/server/pm/dex/PackageDexUsage$DexUseInfo;->mLoaderIsas:Ljava/util/Set;
+    iget-object v1, p0, Lcom/android/server/pm/dex/PackageDexUsage$DexUseInfo;->mLoaderIsas:Ljava/util/Set;
 
     iget-object v4, p1, Lcom/android/server/pm/dex/PackageDexUsage$DexUseInfo;->mLoaderIsas:Ljava/util/Set;
 
-    invoke-interface {v3, v4}, Ljava/util/Set;->addAll(Ljava/util/Collection;)Z
+    invoke-interface {v1, v4}, Ljava/util/Set;->addAll(Ljava/util/Collection;)Z
 
-    move-result v3
+    move-result v1
 
     .line 843
+    .local v1, "updateIsas":Z
     iget-object v4, p0, Lcom/android/server/pm/dex/PackageDexUsage$DexUseInfo;->mLoadingPackages:Ljava/util/Set;
 
     iget-object v5, p1, Lcom/android/server/pm/dex/PackageDexUsage$DexUseInfo;->mLoadingPackages:Ljava/util/Set;
@@ -236,67 +254,71 @@
     move-result v4
 
     .line 845
+    .local v4, "updateLoadingPackages":Z
     iget-object v5, p0, Lcom/android/server/pm/dex/PackageDexUsage$DexUseInfo;->mClassLoaderContext:Ljava/lang/String;
 
     .line 846
-    const-string v6, "=UnknownClassLoaderContext="
+    .local v5, "oldClassLoaderContext":Ljava/lang/String;
+    iget-object v6, p0, Lcom/android/server/pm/dex/PackageDexUsage$DexUseInfo;->mClassLoaderContext:Ljava/lang/String;
 
-    invoke-virtual {v6, v5}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    const-string v7, "=UnknownClassLoaderContext="
+
+    invoke-virtual {v7, v6}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
     move-result v6
 
-    if-eqz v6, :cond_2f
+    if-eqz v6, :cond_33
 
     .line 848
-    iget-object p1, p1, Lcom/android/server/pm/dex/PackageDexUsage$DexUseInfo;->mClassLoaderContext:Ljava/lang/String;
+    iget-object v6, p1, Lcom/android/server/pm/dex/PackageDexUsage$DexUseInfo;->mClassLoaderContext:Ljava/lang/String;
 
-    iput-object p1, p0, Lcom/android/server/pm/dex/PackageDexUsage$DexUseInfo;->mClassLoaderContext:Ljava/lang/String;
+    iput-object v6, p0, Lcom/android/server/pm/dex/PackageDexUsage$DexUseInfo;->mClassLoaderContext:Ljava/lang/String;
 
-    goto :goto_3d
+    goto :goto_41
 
     .line 849
-    :cond_2f
+    :cond_33
     iget-object v6, p0, Lcom/android/server/pm/dex/PackageDexUsage$DexUseInfo;->mClassLoaderContext:Ljava/lang/String;
 
-    iget-object p1, p1, Lcom/android/server/pm/dex/PackageDexUsage$DexUseInfo;->mClassLoaderContext:Ljava/lang/String;
+    iget-object v7, p1, Lcom/android/server/pm/dex/PackageDexUsage$DexUseInfo;->mClassLoaderContext:Ljava/lang/String;
 
-    invoke-static {v6, p1}, Ljava/util/Objects;->equals(Ljava/lang/Object;Ljava/lang/Object;)Z
+    invoke-static {v6, v7}, Ljava/util/Objects;->equals(Ljava/lang/Object;Ljava/lang/Object;)Z
 
-    move-result p1
+    move-result v6
 
-    if-nez p1, :cond_3d
+    if-nez v6, :cond_41
 
     .line 851
-    const-string p1, "=VariableClassLoaderContext="
+    const-string v6, "=VariableClassLoaderContext="
 
-    iput-object p1, p0, Lcom/android/server/pm/dex/PackageDexUsage$DexUseInfo;->mClassLoaderContext:Ljava/lang/String;
+    iput-object v6, p0, Lcom/android/server/pm/dex/PackageDexUsage$DexUseInfo;->mClassLoaderContext:Ljava/lang/String;
 
     .line 854
-    :cond_3d
-    :goto_3d
-    if-nez v3, :cond_4d
+    :cond_41
+    :goto_41
+    if-nez v1, :cond_51
 
-    iget-boolean p1, p0, Lcom/android/server/pm/dex/PackageDexUsage$DexUseInfo;->mIsUsedByOtherApps:Z
+    iget-boolean v6, p0, Lcom/android/server/pm/dex/PackageDexUsage$DexUseInfo;->mIsUsedByOtherApps:Z
 
-    if-ne v0, p1, :cond_4d
+    if-ne v0, v6, :cond_51
 
-    if-nez v4, :cond_4d
+    if-nez v4, :cond_51
 
-    iget-object p1, p0, Lcom/android/server/pm/dex/PackageDexUsage$DexUseInfo;->mClassLoaderContext:Ljava/lang/String;
+    iget-object v6, p0, Lcom/android/server/pm/dex/PackageDexUsage$DexUseInfo;->mClassLoaderContext:Ljava/lang/String;
 
     .line 857
-    invoke-static {v5, p1}, Ljava/util/Objects;->equals(Ljava/lang/Object;Ljava/lang/Object;)Z
+    invoke-static {v5, v6}, Ljava/util/Objects;->equals(Ljava/lang/Object;Ljava/lang/Object;)Z
 
-    move-result p1
+    move-result v6
 
-    if-nez p1, :cond_4e
+    if-nez v6, :cond_52
 
-    :cond_4d
-    move v1, v2
+    :cond_51
+    move v2, v3
 
     .line 854
-    :cond_4e
-    return v1
+    :cond_52
+    return v2
 .end method
 
 

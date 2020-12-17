@@ -26,8 +26,9 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/power/Notifier;I)V
     .registers 3
+    .param p1, "this$0"  # Lcom/android/server/power/Notifier;
 
-    .line 391
+    .line 412
     iput-object p1, p0, Lcom/android/server/power/Notifier$1;->this$0:Lcom/android/server/power/Notifier;
 
     iput p2, p0, Lcom/android/server/power/Notifier$1;->val$wakefulness:I
@@ -42,7 +43,7 @@
 .method public run()V
     .registers 3
 
-    .line 394
+    .line 415
     iget-object v0, p0, Lcom/android/server/power/Notifier$1;->this$0:Lcom/android/server/power/Notifier;
 
     invoke-static {v0}, Lcom/android/server/power/Notifier;->access$000(Lcom/android/server/power/Notifier;)Landroid/app/ActivityManagerInternal;
@@ -53,6 +54,6 @@
 
     invoke-virtual {v0, v1}, Landroid/app/ActivityManagerInternal;->onWakefulnessChanged(I)V
 
-    .line 395
+    .line 416
     return-void
 .end method

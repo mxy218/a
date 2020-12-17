@@ -17,6 +17,7 @@
 # direct methods
 .method constructor <init>(Ljava/lang/String;)V
     .registers 2
+    .param p1, "tag"  # Ljava/lang/String;
 
     .line 241
     invoke-direct {p0, p1}, Lcom/android/server/firewall/StringFilter$ValueProvider;-><init>(Ljava/lang/String;)V
@@ -27,7 +28,10 @@
 
 # virtual methods
 .method public getValue(Landroid/content/ComponentName;Landroid/content/Intent;Ljava/lang/String;)Ljava/lang/String;
-    .registers 4
+    .registers 5
+    .param p1, "resolvedComponent"  # Landroid/content/ComponentName;
+    .param p2, "intent"  # Landroid/content/Intent;
+    .param p3, "resolvedType"  # Ljava/lang/String;
 
     .line 245
     if-eqz p1, :cond_7
@@ -35,13 +39,13 @@
     .line 246
     invoke-virtual {p1}, Landroid/content/ComponentName;->getClassName()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    return-object p1
+    return-object v0
 
     .line 248
     :cond_7
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    return-object p1
+    return-object v0
 .end method

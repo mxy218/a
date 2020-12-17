@@ -148,8 +148,6 @@
 
 .field private final mNetworkStatsService:Landroid/net/INetworkStatsService;
 
-.field private mNotificationManager:Landroid/app/INotificationManager;
-
 .field private final mPeriodicAlarmListener:Landroid/app/AlarmManager$OnAlarmListener;
 
 .field mProcessCpuTracker:Lcom/android/internal/os/ProcessCpuTracker;
@@ -181,7 +179,7 @@
 .method static constructor <clinit>()V
     .registers 25
 
-    .line 186
+    .line 184
     sget-object v0, Ljava/util/concurrent/TimeUnit;->DAYS:Ljava/util/concurrent/TimeUnit;
 
     const-wide/16 v1, 0x1
@@ -192,7 +190,7 @@
 
     sput-wide v0, Lcom/android/server/stats/StatsCompanionService;->MILLIS_IN_A_DAY:J
 
-    .line 223
+    .line 221
     const-string v2, "/system/bin/statsd"
 
     const-string v3, "/system/bin/surfaceflinger"
@@ -215,11 +213,11 @@
 
     const-string v12, "/system/bin/logd"
 
-    const-string v13, "media.codec"
+    const-string/jumbo v13, "media.codec"
 
-    const-string v14, "media.extractor"
+    const-string/jumbo v14, "media.extractor"
 
-    const-string v15, "media.metrics"
+    const-string/jumbo v15, "media.metrics"
 
     const-string v16, "/system/bin/mediadrmserver"
 
@@ -245,7 +243,7 @@
 
     sput-object v0, Lcom/android/server/stats/StatsCompanionService;->MEMORY_INTERESTING_NATIVE_PROCESSES:[Ljava/lang/String;
 
-    .line 262
+    .line 260
     new-instance v0, Ljava/lang/Object;
 
     invoke-direct {v0}, Ljava/lang/Object;-><init>()V
@@ -256,69 +254,70 @@
 .end method
 
 .method public constructor <init>(Landroid/content/Context;)V
-    .registers 9
+    .registers 11
+    .param p1, "context"  # Landroid/content/Context;
 
-    .line 310
+    .line 308
     invoke-direct {p0}, Landroid/os/IStatsCompanionService$Stub;-><init>()V
 
-    .line 264
+    .line 262
     new-instance v0, Lcom/android/server/stats/StatsCompanionService$AnomalyAlarmListener;
 
     invoke-direct {v0}, Lcom/android/server/stats/StatsCompanionService$AnomalyAlarmListener;-><init>()V
 
     iput-object v0, p0, Lcom/android/server/stats/StatsCompanionService;->mAnomalyAlarmListener:Landroid/app/AlarmManager$OnAlarmListener;
 
-    .line 265
+    .line 263
     new-instance v0, Lcom/android/server/stats/StatsCompanionService$PullingAlarmListener;
 
     invoke-direct {v0}, Lcom/android/server/stats/StatsCompanionService$PullingAlarmListener;-><init>()V
 
     iput-object v0, p0, Lcom/android/server/stats/StatsCompanionService;->mPullingAlarmListener:Landroid/app/AlarmManager$OnAlarmListener;
 
-    .line 266
+    .line 264
     new-instance v0, Lcom/android/server/stats/StatsCompanionService$PeriodicAlarmListener;
 
     invoke-direct {v0}, Lcom/android/server/stats/StatsCompanionService$PeriodicAlarmListener;-><init>()V
 
     iput-object v0, p0, Lcom/android/server/stats/StatsCompanionService;->mPeriodicAlarmListener:Landroid/app/AlarmManager$OnAlarmListener;
 
-    .line 270
+    .line 268
     new-instance v0, Lcom/android/internal/os/KernelWakelockReader;
 
     invoke-direct {v0}, Lcom/android/internal/os/KernelWakelockReader;-><init>()V
 
     iput-object v0, p0, Lcom/android/server/stats/StatsCompanionService;->mKernelWakelockReader:Lcom/android/internal/os/KernelWakelockReader;
 
-    .line 271
+    .line 269
     new-instance v0, Lcom/android/internal/os/KernelWakelockStats;
 
     invoke-direct {v0}, Lcom/android/internal/os/KernelWakelockStats;-><init>()V
 
     iput-object v0, p0, Lcom/android/server/stats/StatsCompanionService;->mTmpWakelockStats:Lcom/android/internal/os/KernelWakelockStats;
 
-    .line 272
+    .line 270
     const/4 v0, 0x0
 
     iput-object v0, p0, Lcom/android/server/stats/StatsCompanionService;->mWifiManager:Landroid/net/wifi/IWifiManager;
 
-    .line 273
+    .line 271
     iput-object v0, p0, Lcom/android/server/stats/StatsCompanionService;->mTelephony:Landroid/telephony/TelephonyManager;
 
-    .line 274
+    .line 272
     new-instance v1, Ljava/util/HashSet;
 
     invoke-direct {v1}, Ljava/util/HashSet;-><init>()V
 
     iput-object v1, p0, Lcom/android/server/stats/StatsCompanionService;->mDeathTimeMillis:Ljava/util/HashSet;
 
-    .line 276
+    .line 274
     new-instance v1, Ljava/util/HashMap;
 
     invoke-direct {v1}, Ljava/util/HashMap;-><init>()V
 
     iput-object v1, p0, Lcom/android/server/stats/StatsCompanionService;->mDeletedFiles:Ljava/util/HashMap;
 
-    .line 281
+    .line 279
     new-instance v1, Lcom/android/internal/os/KernelCpuUidTimeReader$KernelCpuUidUserSysTimeReader;
 
     const/4 v2, 0x0
@@ -327,77 +326,77 @@
 
     iput-object v1, p0, Lcom/android/server/stats/StatsCompanionService;->mCpuUidUserSysTimeReader:Lcom/android/internal/os/KernelCpuUidTimeReader$KernelCpuUidUserSysTimeReader;
 
-    .line 284
+    .line 282
     new-instance v1, Lcom/android/internal/os/KernelCpuUidTimeReader$KernelCpuUidFreqTimeReader;
 
     invoke-direct {v1, v2}, Lcom/android/internal/os/KernelCpuUidTimeReader$KernelCpuUidFreqTimeReader;-><init>(Z)V
 
     iput-object v1, p0, Lcom/android/server/stats/StatsCompanionService;->mCpuUidFreqTimeReader:Lcom/android/internal/os/KernelCpuUidTimeReader$KernelCpuUidFreqTimeReader;
 
-    .line 286
+    .line 284
     new-instance v1, Lcom/android/internal/os/KernelCpuUidTimeReader$KernelCpuUidActiveTimeReader;
 
     invoke-direct {v1, v2}, Lcom/android/internal/os/KernelCpuUidTimeReader$KernelCpuUidActiveTimeReader;-><init>(Z)V
 
     iput-object v1, p0, Lcom/android/server/stats/StatsCompanionService;->mCpuUidActiveTimeReader:Lcom/android/internal/os/KernelCpuUidTimeReader$KernelCpuUidActiveTimeReader;
 
-    .line 288
+    .line 286
     new-instance v1, Lcom/android/internal/os/KernelCpuUidTimeReader$KernelCpuUidClusterTimeReader;
 
     invoke-direct {v1, v2}, Lcom/android/internal/os/KernelCpuUidTimeReader$KernelCpuUidClusterTimeReader;-><init>(Z)V
 
     iput-object v1, p0, Lcom/android/server/stats/StatsCompanionService;->mCpuUidClusterTimeReader:Lcom/android/internal/os/KernelCpuUidTimeReader$KernelCpuUidClusterTimeReader;
 
-    .line 290
+    .line 288
     new-instance v1, Lcom/android/internal/os/StoragedUidIoStatsReader;
 
     invoke-direct {v1}, Lcom/android/internal/os/StoragedUidIoStatsReader;-><init>()V
 
     iput-object v1, p0, Lcom/android/server/stats/StatsCompanionService;->mStoragedUidIoStatsReader:Lcom/android/internal/os/StoragedUidIoStatsReader;
 
-    .line 295
-    const-wide/16 v3, 0x0
+    .line 293
+    const-wide/16 v1, 0x0
 
-    iput-wide v3, p0, Lcom/android/server/stats/StatsCompanionService;->mDebugElapsedClockPreviousValue:J
+    iput-wide v1, p0, Lcom/android/server/stats/StatsCompanionService;->mDebugElapsedClockPreviousValue:J
+
+    .line 294
+    iput-wide v1, p0, Lcom/android/server/stats/StatsCompanionService;->mDebugElapsedClockPullCount:J
+
+    .line 295
+    iput-wide v1, p0, Lcom/android/server/stats/StatsCompanionService;->mDebugFailingElapsedClockPreviousValue:J
 
     .line 296
-    iput-wide v3, p0, Lcom/android/server/stats/StatsCompanionService;->mDebugElapsedClockPullCount:J
+    iput-wide v1, p0, Lcom/android/server/stats/StatsCompanionService;->mDebugFailingElapsedClockPullCount:J
 
     .line 297
-    iput-wide v3, p0, Lcom/android/server/stats/StatsCompanionService;->mDebugFailingElapsedClockPreviousValue:J
-
-    .line 298
-    iput-wide v3, p0, Lcom/android/server/stats/StatsCompanionService;->mDebugFailingElapsedClockPullCount:J
-
-    .line 299
     iput-object v0, p0, Lcom/android/server/stats/StatsCompanionService;->mBatteryStatsHelper:Lcom/android/internal/os/BatteryStatsHelper;
 
-    .line 301
-    const-wide/16 v3, -0x3e8
+    .line 299
+    const-wide/16 v1, -0x3e8
 
-    iput-wide v3, p0, Lcom/android/server/stats/StatsCompanionService;->mBatteryStatsHelperTimestampMs:J
+    iput-wide v1, p0, Lcom/android/server/stats/StatsCompanionService;->mBatteryStatsHelperTimestampMs:J
 
-    .line 304
+    .line 302
     new-instance v1, Ljava/io/File;
 
-    .line 305
+    .line 303
     invoke-static {}, Lcom/android/server/SystemServiceManager;->ensureSystemDir()Ljava/io/File;
 
-    move-result-object v3
+    move-result-object v2
 
-    const-string/jumbo v4, "stats_companion"
+    const-string/jumbo v3, "stats_companion"
 
-    invoke-direct {v1, v3, v4}, Ljava/io/File;-><init>(Ljava/io/File;Ljava/lang/String;)V
+    invoke-direct {v1, v2, v3}, Ljava/io/File;-><init>(Ljava/io/File;Ljava/lang/String;)V
 
     iput-object v1, p0, Lcom/android/server/stats/StatsCompanionService;->mBaseDir:Ljava/io/File;
 
-    .line 306
+    .line 304
     iput-object v0, p0, Lcom/android/server/stats/StatsCompanionService;->mProcessCpuTracker:Lcom/android/internal/os/ProcessCpuTracker;
 
-    .line 1616
+    .line 1614
     nop
 
-    .line 1617
+    .line 1615
     const-string/jumbo v1, "procstats"
 
     invoke-static {v1}, Landroid/os/ServiceManager;->getService(Ljava/lang/String;)Landroid/os/IBinder;
@@ -410,32 +409,15 @@
 
     iput-object v1, p0, Lcom/android/server/stats/StatsCompanionService;->mProcessStats:Lcom/android/internal/app/procstats/IProcessStats;
 
-    .line 1646
-    nop
-
-    .line 1648
-    const-string/jumbo v1, "notification"
-
-    invoke-static {v1}, Landroid/os/ServiceManager;->getService(Ljava/lang/String;)Landroid/os/IBinder;
-
-    move-result-object v1
-
-    .line 1647
-    invoke-static {v1}, Landroid/app/INotificationManager$Stub;->asInterface(Landroid/os/IBinder;)Landroid/app/INotificationManager;
-
-    move-result-object v1
-
-    iput-object v1, p0, Lcom/android/server/stats/StatsCompanionService;->mNotificationManager:Landroid/app/INotificationManager;
-
-    .line 311
+    .line 309
     iput-object p1, p0, Lcom/android/server/stats/StatsCompanionService;->mContext:Landroid/content/Context;
 
-    .line 312
+    .line 310
     iget-object v1, p0, Lcom/android/server/stats/StatsCompanionService;->mContext:Landroid/content/Context;
 
-    const-string v3, "alarm"
+    const-string v2, "alarm"
 
-    invoke-virtual {v1, v3}, Landroid/content/Context;->getSystemService(Ljava/lang/String;)Ljava/lang/Object;
+    invoke-virtual {v1, v2}, Landroid/content/Context;->getSystemService(Ljava/lang/String;)Ljava/lang/Object;
 
     move-result-object v1
 
@@ -443,259 +425,274 @@
 
     iput-object v1, p0, Lcom/android/server/stats/StatsCompanionService;->mAlarmManager:Landroid/app/AlarmManager;
 
-    .line 313
+    .line 311
     nop
 
-    .line 314
+    .line 312
     const-string/jumbo v1, "netstats"
 
     invoke-static {v1}, Landroid/os/ServiceManager;->getService(Ljava/lang/String;)Landroid/os/IBinder;
 
     move-result-object v1
 
-    .line 313
+    .line 311
     invoke-static {v1}, Landroid/net/INetworkStatsService$Stub;->asInterface(Landroid/os/IBinder;)Landroid/net/INetworkStatsService;
 
     move-result-object v1
 
     iput-object v1, p0, Lcom/android/server/stats/StatsCompanionService;->mNetworkStatsService:Landroid/net/INetworkStatsService;
 
-    .line 315
+    .line 313
     iget-object v1, p0, Lcom/android/server/stats/StatsCompanionService;->mBaseDir:Ljava/io/File;
 
     invoke-virtual {v1}, Ljava/io/File;->mkdirs()Z
 
-    .line 316
+    .line 314
     new-instance v1, Lcom/android/server/stats/StatsCompanionService$AppUpdateReceiver;
 
     invoke-direct {v1, v0}, Lcom/android/server/stats/StatsCompanionService$AppUpdateReceiver;-><init>(Lcom/android/server/stats/StatsCompanionService$1;)V
 
     iput-object v1, p0, Lcom/android/server/stats/StatsCompanionService;->mAppUpdateReceiver:Landroid/content/BroadcastReceiver;
 
-    .line 317
+    .line 315
     new-instance v1, Lcom/android/server/stats/StatsCompanionService$1;
 
     invoke-direct {v1, p0}, Lcom/android/server/stats/StatsCompanionService$1;-><init>(Lcom/android/server/stats/StatsCompanionService;)V
 
     iput-object v1, p0, Lcom/android/server/stats/StatsCompanionService;->mUserUpdateReceiver:Landroid/content/BroadcastReceiver;
 
-    .line 337
+    .line 335
     new-instance v1, Lcom/android/server/stats/StatsCompanionService$ShutdownEventReceiver;
 
     invoke-direct {v1}, Lcom/android/server/stats/StatsCompanionService$ShutdownEventReceiver;-><init>()V
 
     iput-object v1, p0, Lcom/android/server/stats/StatsCompanionService;->mShutdownEventReceiver:Lcom/android/server/stats/StatsCompanionService$ShutdownEventReceiver;
 
-    .line 339
+    .line 337
     new-instance v1, Lcom/android/internal/os/PowerProfile;
 
     invoke-direct {v1, p1}, Lcom/android/internal/os/PowerProfile;-><init>(Landroid/content/Context;)V
 
-    .line 340
+    .line 338
+    .local v1, "powerProfile":Lcom/android/internal/os/PowerProfile;
     invoke-virtual {v1}, Lcom/android/internal/os/PowerProfile;->getNumCpuClusters()I
 
-    move-result p1
+    move-result v2
 
-    .line 341
-    new-array v3, p1, [Lcom/android/internal/os/KernelCpuSpeedReader;
+    .line 339
+    .local v2, "numClusters":I
+    new-array v3, v2, [Lcom/android/internal/os/KernelCpuSpeedReader;
 
     iput-object v3, p0, Lcom/android/server/stats/StatsCompanionService;->mKernelCpuSpeedReaders:[Lcom/android/internal/os/KernelCpuSpeedReader;
 
+    .line 340
+    const/4 v3, 0x0
+
+    .line 341
+    .local v3, "firstCpuOfCluster":I
+    const/4 v4, 0x0
+
+    .local v4, "i":I
+    :goto_d0
+    if-ge v4, v2, :cond_e7
+
     .line 342
-    nop
+    invoke-virtual {v1, v4}, Lcom/android/internal/os/PowerProfile;->getNumSpeedStepsInCpuCluster(I)I
+
+    move-result v5
 
     .line 343
-    move v3, v2
+    .local v5, "numSpeedSteps":I
+    iget-object v6, p0, Lcom/android/server/stats/StatsCompanionService;->mKernelCpuSpeedReaders:[Lcom/android/internal/os/KernelCpuSpeedReader;
 
-    :goto_de
-    if-ge v2, p1, :cond_f5
+    new-instance v7, Lcom/android/internal/os/KernelCpuSpeedReader;
 
-    .line 344
-    invoke-virtual {v1, v2}, Lcom/android/internal/os/PowerProfile;->getNumSpeedStepsInCpuCluster(I)I
+    invoke-direct {v7, v3, v5}, Lcom/android/internal/os/KernelCpuSpeedReader;-><init>(II)V
 
-    move-result v4
+    aput-object v7, v6, v4
 
     .line 345
-    iget-object v5, p0, Lcom/android/server/stats/StatsCompanionService;->mKernelCpuSpeedReaders:[Lcom/android/internal/os/KernelCpuSpeedReader;
+    invoke-virtual {v1, v4}, Lcom/android/internal/os/PowerProfile;->getNumCoresInCpuCluster(I)I
 
-    new-instance v6, Lcom/android/internal/os/KernelCpuSpeedReader;
+    move-result v6
 
-    invoke-direct {v6, v3, v4}, Lcom/android/internal/os/KernelCpuSpeedReader;-><init>(II)V
+    add-int/2addr v3, v6
 
-    aput-object v6, v5, v2
+    .line 341
+    .end local v5  # "numSpeedSteps":I
+    add-int/lit8 v4, v4, 0x1
 
-    .line 347
-    invoke-virtual {v1, v2}, Lcom/android/internal/os/PowerProfile;->getNumCoresInCpuCluster(I)I
+    goto :goto_d0
 
-    move-result v4
+    .line 350
+    .end local v4  # "i":I
+    :cond_e7
+    const-string/jumbo v4, "thermalservice"
 
-    add-int/2addr v3, v4
+    invoke-static {v4}, Landroid/os/ServiceManager;->getService(Ljava/lang/String;)Landroid/os/IBinder;
 
-    .line 343
-    add-int/lit8 v2, v2, 0x1
-
-    goto :goto_de
+    move-result-object v4
 
     .line 352
-    :cond_f5
-    const-string/jumbo p1, "thermalservice"
+    .local v4, "b":Landroid/os/IBinder;
+    const-string v5, "StatsCompanionService"
 
-    invoke-static {p1}, Landroid/os/ServiceManager;->getService(Ljava/lang/String;)Landroid/os/IBinder;
+    if-eqz v4, :cond_111
 
-    move-result-object p1
+    .line 353
+    invoke-static {v4}, Landroid/os/IThermalService$Stub;->asInterface(Landroid/os/IBinder;)Landroid/os/IThermalService;
 
-    .line 354
-    const-string v1, "StatsCompanionService"
+    move-result-object v6
 
-    if-eqz p1, :cond_11f
+    sput-object v6, Lcom/android/server/stats/StatsCompanionService;->sThermalService:Landroid/os/IThermalService;
 
     .line 355
-    invoke-static {p1}, Landroid/os/IThermalService$Stub;->asInterface(Landroid/os/IBinder;)Landroid/os/IThermalService;
+    :try_start_f8
+    sget-object v6, Lcom/android/server/stats/StatsCompanionService;->sThermalService:Landroid/os/IThermalService;
 
-    move-result-object p1
+    new-instance v7, Lcom/android/server/stats/StatsCompanionService$ThermalEventListener;
 
-    sput-object p1, Lcom/android/server/stats/StatsCompanionService;->sThermalService:Landroid/os/IThermalService;
+    invoke-direct {v7, v0}, Lcom/android/server/stats/StatsCompanionService$ThermalEventListener;-><init>(Lcom/android/server/stats/StatsCompanionService$1;)V
+
+    invoke-interface {v6, v7}, Landroid/os/IThermalService;->registerThermalEventListener(Landroid/os/IThermalEventListener;)Z
 
     .line 357
-    :try_start_106
-    sget-object p1, Lcom/android/server/stats/StatsCompanionService;->sThermalService:Landroid/os/IThermalService;
+    const-string/jumbo v6, "register thermal listener successfully"
 
-    new-instance v2, Lcom/android/server/stats/StatsCompanionService$ThermalEventListener;
+    invoke-static {v5, v6}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
+    :try_end_108
+    .catch Landroid/os/RemoteException; {:try_start_f8 .. :try_end_108} :catch_109
 
-    invoke-direct {v2, v0}, Lcom/android/server/stats/StatsCompanionService$ThermalEventListener;-><init>(Lcom/android/server/stats/StatsCompanionService$1;)V
+    goto :goto_110
 
-    invoke-interface {p1, v2}, Landroid/os/IThermalService;->registerThermalEventListener(Landroid/os/IThermalEventListener;)Z
-
-    .line 359
-    const-string/jumbo p1, "register thermal listener successfully"
-
-    invoke-static {v1, p1}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
-    :try_end_116
-    .catch Landroid/os/RemoteException; {:try_start_106 .. :try_end_116} :catch_117
-
-    goto :goto_11e
+    .line 358
+    :catch_109
+    move-exception v6
 
     .line 360
-    :catch_117
-    move-exception p1
+    .local v6, "e":Landroid/os/RemoteException;
+    const-string/jumbo v7, "register thermal listener error"
 
-    .line 362
-    const-string/jumbo p1, "register thermal listener error"
+    invoke-static {v5, v7}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
 
-    invoke-static {v1, p1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
+    .line 361
+    .end local v6  # "e":Landroid/os/RemoteException;
+    :goto_110
+    goto :goto_116
 
     .line 363
-    :goto_11e
-    goto :goto_124
+    :cond_111
+    const-string v6, "cannot find thermalservice, no throttling push notifications"
 
-    .line 365
-    :cond_11f
-    const-string p1, "cannot find thermalservice, no throttling push notifications"
+    invoke-static {v5, v6}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
 
-    invoke-static {v1, p1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
+    .line 367
+    :goto_116
+    new-instance v6, Landroid/net/NetworkRequest$Builder;
+
+    invoke-direct {v6}, Landroid/net/NetworkRequest$Builder;-><init>()V
+
+    invoke-virtual {v6}, Landroid/net/NetworkRequest$Builder;->build()Landroid/net/NetworkRequest;
+
+    move-result-object v6
+
+    .line 368
+    .local v6, "request":Landroid/net/NetworkRequest;
+    iget-object v7, p0, Lcom/android/server/stats/StatsCompanionService;->mContext:Landroid/content/Context;
 
     .line 369
-    :goto_124
-    new-instance p1, Landroid/net/NetworkRequest$Builder;
+    const-string v8, "connectivity"
 
-    invoke-direct {p1}, Landroid/net/NetworkRequest$Builder;-><init>()V
+    invoke-virtual {v7, v8}, Landroid/content/Context;->getSystemService(Ljava/lang/String;)Ljava/lang/Object;
 
-    invoke-virtual {p1}, Landroid/net/NetworkRequest$Builder;->build()Landroid/net/NetworkRequest;
+    move-result-object v7
 
-    move-result-object p1
+    check-cast v7, Landroid/net/ConnectivityManager;
 
     .line 370
-    iget-object v2, p0, Lcom/android/server/stats/StatsCompanionService;->mContext:Landroid/content/Context;
+    .local v7, "connectivityManager":Landroid/net/ConnectivityManager;
+    new-instance v8, Lcom/android/server/stats/StatsCompanionService$ConnectivityStatsCallback;
 
-    .line 371
-    const-string v3, "connectivity"
+    invoke-direct {v8, v0}, Lcom/android/server/stats/StatsCompanionService$ConnectivityStatsCallback;-><init>(Lcom/android/server/stats/StatsCompanionService$1;)V
 
-    invoke-virtual {v2, v3}, Landroid/content/Context;->getSystemService(Ljava/lang/String;)Ljava/lang/Object;
-
-    move-result-object v2
-
-    check-cast v2, Landroid/net/ConnectivityManager;
+    invoke-virtual {v7, v6, v8}, Landroid/net/ConnectivityManager;->registerNetworkCallback(Landroid/net/NetworkRequest;Landroid/net/ConnectivityManager$NetworkCallback;)V
 
     .line 372
-    new-instance v3, Lcom/android/server/stats/StatsCompanionService$ConnectivityStatsCallback;
+    new-instance v0, Landroid/os/HandlerThread;
 
-    invoke-direct {v3, v0}, Lcom/android/server/stats/StatsCompanionService$ConnectivityStatsCallback;-><init>(Lcom/android/server/stats/StatsCompanionService$1;)V
+    invoke-direct {v0, v5}, Landroid/os/HandlerThread;-><init>(Ljava/lang/String;)V
 
-    invoke-virtual {v2, p1, v3}, Landroid/net/ConnectivityManager;->registerNetworkCallback(Landroid/net/NetworkRequest;Landroid/net/ConnectivityManager$NetworkCallback;)V
+    .line 373
+    .local v0, "handlerThread":Landroid/os/HandlerThread;
+    invoke-virtual {v0}, Landroid/os/HandlerThread;->start()V
 
     .line 374
-    new-instance p1, Landroid/os/HandlerThread;
+    new-instance v5, Lcom/android/server/stats/StatsCompanionService$CompanionHandler;
 
-    invoke-direct {p1, v1}, Landroid/os/HandlerThread;-><init>(Ljava/lang/String;)V
+    invoke-virtual {v0}, Landroid/os/HandlerThread;->getLooper()Landroid/os/Looper;
 
-    .line 375
-    invoke-virtual {p1}, Landroid/os/HandlerThread;->start()V
+    move-result-object v8
+
+    invoke-direct {v5, v8}, Lcom/android/server/stats/StatsCompanionService$CompanionHandler;-><init>(Landroid/os/Looper;)V
+
+    iput-object v5, p0, Lcom/android/server/stats/StatsCompanionService;->mHandler:Lcom/android/server/stats/StatsCompanionService$CompanionHandler;
 
     .line 376
-    new-instance v0, Lcom/android/server/stats/StatsCompanionService$CompanionHandler;
+    iget-object v5, p0, Lcom/android/server/stats/StatsCompanionService;->mContext:Landroid/content/Context;
 
-    invoke-virtual {p1}, Landroid/os/HandlerThread;->getLooper()Landroid/os/Looper;
+    .line 377
+    invoke-static {v5}, Lcom/android/internal/os/KernelCpuThreadReaderSettingsObserver;->getSettingsModifiedReader(Landroid/content/Context;)Lcom/android/internal/os/KernelCpuThreadReaderDiff;
 
-    move-result-object p1
+    move-result-object v5
 
-    invoke-direct {v0, p1}, Lcom/android/server/stats/StatsCompanionService$CompanionHandler;-><init>(Landroid/os/Looper;)V
-
-    iput-object v0, p0, Lcom/android/server/stats/StatsCompanionService;->mHandler:Lcom/android/server/stats/StatsCompanionService$CompanionHandler;
+    iput-object v5, p0, Lcom/android/server/stats/StatsCompanionService;->mKernelCpuThreadReader:Lcom/android/internal/os/KernelCpuThreadReaderDiff;
 
     .line 378
-    iget-object p1, p0, Lcom/android/server/stats/StatsCompanionService;->mContext:Landroid/content/Context;
-
-    .line 379
-    invoke-static {p1}, Lcom/android/internal/os/KernelCpuThreadReaderSettingsObserver;->getSettingsModifiedReader(Landroid/content/Context;)Lcom/android/internal/os/KernelCpuThreadReaderDiff;
-
-    move-result-object p1
-
-    iput-object p1, p0, Lcom/android/server/stats/StatsCompanionService;->mKernelCpuThreadReader:Lcom/android/internal/os/KernelCpuThreadReaderDiff;
-
-    .line 380
     return-void
 .end method
 
 .method static synthetic access$100()Ljava/lang/Object;
     .registers 1
 
-    .line 181
+    .line 179
     sget-object v0, Lcom/android/server/stats/StatsCompanionService;->sStatsdLock:Ljava/lang/Object;
 
     return-object v0
 .end method
 
 .method static synthetic access$1000(Lcom/android/server/stats/StatsCompanionService;)Ljava/util/HashSet;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/stats/StatsCompanionService;
 
-    .line 181
-    iget-object p0, p0, Lcom/android/server/stats/StatsCompanionService;->mDeathTimeMillis:Ljava/util/HashSet;
+    .line 179
+    iget-object v0, p0, Lcom/android/server/stats/StatsCompanionService;->mDeathTimeMillis:Ljava/util/HashSet;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$1100()J
     .registers 2
 
-    .line 181
+    .line 179
     sget-wide v0, Lcom/android/server/stats/StatsCompanionService;->MILLIS_IN_A_DAY:J
 
     return-wide v0
 .end method
 
 .method static synthetic access$1200(Lcom/android/server/stats/StatsCompanionService;)Ljava/util/HashMap;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/stats/StatsCompanionService;
 
-    .line 181
-    iget-object p0, p0, Lcom/android/server/stats/StatsCompanionService;->mDeletedFiles:Ljava/util/HashMap;
+    .line 179
+    iget-object v0, p0, Lcom/android/server/stats/StatsCompanionService;->mDeletedFiles:Ljava/util/HashMap;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$200()Landroid/os/IStatsManager;
     .registers 1
 
-    .line 181
+    .line 179
     sget-object v0, Lcom/android/server/stats/StatsCompanionService;->sStatsd:Landroid/os/IStatsManager;
 
     return-object v0
@@ -703,8 +700,9 @@
 
 .method static synthetic access$202(Landroid/os/IStatsManager;)Landroid/os/IStatsManager;
     .registers 1
+    .param p0, "x0"  # Landroid/os/IStatsManager;
 
-    .line 181
+    .line 179
     sput-object p0, Lcom/android/server/stats/StatsCompanionService;->sStatsd:Landroid/os/IStatsManager;
 
     return-object p0
@@ -713,7 +711,7 @@
 .method static synthetic access$300()Landroid/os/IStatsManager;
     .registers 1
 
-    .line 181
+    .line 179
     invoke-static {}, Lcom/android/server/stats/StatsCompanionService;->fetchStatsdService()Landroid/os/IStatsManager;
 
     move-result-object v0
@@ -723,13 +721,15 @@
 
 .method static synthetic access$400(Lcom/android/server/stats/StatsCompanionService;Landroid/content/Context;)V
     .registers 2
+    .param p0, "x0"  # Lcom/android/server/stats/StatsCompanionService;
+    .param p1, "x1"  # Landroid/content/Context;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
         }
     .end annotation
 
-    .line 181
+    .line 179
     invoke-direct {p0, p1}, Lcom/android/server/stats/StatsCompanionService;->informAllUidsLocked(Landroid/content/Context;)V
 
     return-void
@@ -737,8 +737,9 @@
 
 .method static synthetic access$500(Lcom/android/server/stats/StatsCompanionService;)V
     .registers 1
+    .param p0, "x0"  # Lcom/android/server/stats/StatsCompanionService;
 
-    .line 181
+    .line 179
     invoke-direct {p0}, Lcom/android/server/stats/StatsCompanionService;->forgetEverythingLocked()V
 
     return-void
@@ -746,8 +747,9 @@
 
 .method static synthetic access$800(Lcom/android/server/stats/StatsCompanionService;)V
     .registers 1
+    .param p0, "x0"  # Lcom/android/server/stats/StatsCompanionService;
 
-    .line 181
+    .line 179
     invoke-direct {p0}, Lcom/android/server/stats/StatsCompanionService;->systemReady()V
 
     return-void
@@ -755,6 +757,9 @@
 
 .method private addNetworkStats(ILjava/util/List;Landroid/net/NetworkStats;Z)V
     .registers 20
+    .param p1, "tag"  # I
+    .param p3, "stats"  # Landroid/net/NetworkStats;
+    .param p4, "withFGBG"  # Z
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(I",
@@ -766,17 +771,20 @@
         }
     .end annotation
 
-    .line 779
+    .line 777
+    .local p2, "ret":Ljava/util/List;, "Ljava/util/List<Landroid/os/StatsLogEventWrapper;>;"
     invoke-virtual/range {p3 .. p3}, Landroid/net/NetworkStats;->size()I
 
     move-result v0
 
-    .line 780
+    .line 778
+    .local v0, "size":I
     invoke-static {}, Landroid/os/SystemClock;->elapsedRealtimeNanos()J
 
     move-result-wide v7
 
-    .line 781
+    .line 779
+    .local v7, "elapsedNanos":J
     invoke-static {}, Landroid/os/SystemClock;->currentTimeMicro()J
 
     move-result-wide v1
@@ -785,25 +793,30 @@
 
     mul-long v9, v1, v3
 
-    .line 782
-    new-instance v11, Landroid/net/NetworkStats$Entry;
+    .line 780
+    .local v9, "wallClockNanos":J
+    new-instance v1, Landroid/net/NetworkStats$Entry;
 
-    invoke-direct {v11}, Landroid/net/NetworkStats$Entry;-><init>()V
+    invoke-direct {v1}, Landroid/net/NetworkStats$Entry;-><init>()V
 
-    .line 783
+    move-object v11, v1
+
+    .line 781
+    .local v11, "entry":Landroid/net/NetworkStats$Entry;
     const/4 v1, 0x0
 
     move v12, v1
 
-    :goto_17
-    if-ge v12, v0, :cond_50
+    .local v12, "j":I
+    :goto_18
+    if-ge v12, v0, :cond_51
 
-    .line 784
+    .line 782
     move-object/from16 v13, p3
 
     invoke-virtual {v13, v12, v11}, Landroid/net/NetworkStats;->getValues(ILandroid/net/NetworkStats$Entry;)Landroid/net/NetworkStats$Entry;
 
-    .line 785
+    .line 783
     new-instance v14, Landroid/os/StatsLogEventWrapper;
 
     move-object v1, v14
@@ -816,59 +829,67 @@
 
     invoke-direct/range {v1 .. v6}, Landroid/os/StatsLogEventWrapper;-><init>(IJJ)V
 
+    .line 784
+    .local v1, "e":Landroid/os/StatsLogEventWrapper;
+    iget v2, v11, Landroid/net/NetworkStats$Entry;->uid:I
+
+    invoke-virtual {v1, v2}, Landroid/os/StatsLogEventWrapper;->writeInt(I)V
+
+    .line 785
+    if-eqz p4, :cond_35
+
     .line 786
-    iget v1, v11, Landroid/net/NetworkStats$Entry;->uid:I
+    iget v2, v11, Landroid/net/NetworkStats$Entry;->set:I
 
-    invoke-virtual {v14, v1}, Landroid/os/StatsLogEventWrapper;->writeInt(I)V
-
-    .line 787
-    if-eqz p4, :cond_34
+    invoke-virtual {v1, v2}, Landroid/os/StatsLogEventWrapper;->writeInt(I)V
 
     .line 788
-    iget v1, v11, Landroid/net/NetworkStats$Entry;->set:I
+    :cond_35
+    iget-wide v2, v11, Landroid/net/NetworkStats$Entry;->rxBytes:J
 
-    invoke-virtual {v14, v1}, Landroid/os/StatsLogEventWrapper;->writeInt(I)V
+    invoke-virtual {v1, v2, v3}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
+
+    .line 789
+    iget-wide v2, v11, Landroid/net/NetworkStats$Entry;->rxPackets:J
+
+    invoke-virtual {v1, v2, v3}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
 
     .line 790
-    :cond_34
-    iget-wide v1, v11, Landroid/net/NetworkStats$Entry;->rxBytes:J
+    iget-wide v2, v11, Landroid/net/NetworkStats$Entry;->txBytes:J
 
-    invoke-virtual {v14, v1, v2}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
+    invoke-virtual {v1, v2, v3}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
 
     .line 791
-    iget-wide v1, v11, Landroid/net/NetworkStats$Entry;->rxPackets:J
+    iget-wide v2, v11, Landroid/net/NetworkStats$Entry;->txPackets:J
 
-    invoke-virtual {v14, v1, v2}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
+    invoke-virtual {v1, v2, v3}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
 
     .line 792
-    iget-wide v1, v11, Landroid/net/NetworkStats$Entry;->txBytes:J
+    move-object/from16 v2, p2
 
-    invoke-virtual {v14, v1, v2}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
+    invoke-interface {v2, v1}, Ljava/util/List;->add(Ljava/lang/Object;)Z
 
-    .line 793
-    iget-wide v1, v11, Landroid/net/NetworkStats$Entry;->txPackets:J
-
-    invoke-virtual {v14, v1, v2}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
-
-    .line 794
-    move-object/from16 v1, p2
-
-    invoke-interface {v1, v14}, Ljava/util/List;->add(Ljava/lang/Object;)Z
-
-    .line 783
+    .line 781
+    .end local v1  # "e":Landroid/os/StatsLogEventWrapper;
     add-int/lit8 v12, v12, 0x1
 
-    goto :goto_17
+    goto :goto_18
 
-    .line 796
-    :cond_50
+    :cond_51
+    move-object/from16 v2, p2
+
+    move-object/from16 v13, p3
+
+    .line 794
+    .end local v12  # "j":I
     return-void
 .end method
 
 .method private static anonAndSwapInKilobytes(Lcom/android/server/am/MemoryStatUtil$MemoryStat;)I
     .registers 5
+    .param p0, "memoryStat"  # Lcom/android/server/am/MemoryStatUtil$MemoryStat;
 
-    .line 1232
+    .line 1230
     iget-wide v0, p0, Lcom/android/server/am/MemoryStatUtil$MemoryStat;->anonRssInBytes:J
 
     iget-wide v2, p0, Lcom/android/server/am/MemoryStatUtil$MemoryStat;->swapInBytes:J
@@ -879,13 +900,14 @@
 
     div-long/2addr v0, v2
 
-    long-to-int p0, v0
+    long-to-int v0, v0
 
-    return p0
+    return v0
 .end method
 
 .method private static awaitControllerInfo(Landroid/os/SynchronousResultReceiver;)Landroid/os/Parcelable;
     .registers 6
+    .param p0, "receiver"  # Landroid/os/SynchronousResultReceiver;
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "<T::",
@@ -896,118 +918,126 @@
         }
     .end annotation
 
-    .line 837
+    .line 835
     const-string v0, "StatsCompanionService"
 
     const/4 v1, 0x0
 
     if-nez p0, :cond_6
 
-    .line 838
+    .line 836
     return-object v1
 
-    .line 842
+    .line 840
     :cond_6
     const-wide/16 v2, 0x7d0
 
-    .line 843
+    .line 841
     :try_start_8
     invoke-virtual {p0, v2, v3}, Landroid/os/SynchronousResultReceiver;->awaitResult(J)Landroid/os/SynchronousResultReceiver$Result;
 
     move-result-object v2
 
-    .line 844
+    .line 842
+    .local v2, "result":Landroid/os/SynchronousResultReceiver$Result;
     iget-object v3, v2, Landroid/os/SynchronousResultReceiver$Result;->bundle:Landroid/os/Bundle;
 
     if-eqz v3, :cond_21
 
-    .line 846
+    .line 844
     iget-object v3, v2, Landroid/os/SynchronousResultReceiver$Result;->bundle:Landroid/os/Bundle;
 
     const/4 v4, 0x1
 
     invoke-virtual {v3, v4}, Landroid/os/Bundle;->setDefusable(Z)V
 
-    .line 848
-    iget-object v2, v2, Landroid/os/SynchronousResultReceiver$Result;->bundle:Landroid/os/Bundle;
+    .line 846
+    iget-object v3, v2, Landroid/os/SynchronousResultReceiver$Result;->bundle:Landroid/os/Bundle;
 
-    const-string v3, "controller_activity"
+    const-string v4, "controller_activity"
 
-    invoke-virtual {v2, v3}, Landroid/os/Bundle;->getParcelable(Ljava/lang/String;)Landroid/os/Parcelable;
-
-    move-result-object v2
-
-    .line 850
-    if-eqz v2, :cond_21
-
-    .line 851
-    return-object v2
-
-    .line 854
-    :cond_21
-    new-instance v2, Ljava/lang/StringBuilder;
-
-    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
-
-    const-string/jumbo v3, "no controller energy info supplied for "
-
-    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {p0}, Landroid/os/SynchronousResultReceiver;->getName()Ljava/lang/String;
+    invoke-virtual {v3, v4}, Landroid/os/Bundle;->getParcelable(Ljava/lang/String;)Landroid/os/Parcelable;
 
     move-result-object v3
 
-    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    .line 848
+    .local v3, "data":Landroid/os/Parcelable;, "TT;"
+    if-eqz v3, :cond_21
 
-    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    .line 849
+    return-object v3
 
-    move-result-object v2
+    .line 852
+    .end local v3  # "data":Landroid/os/Parcelable;, "TT;"
+    :cond_21
+    new-instance v3, Ljava/lang/StringBuilder;
 
-    invoke-static {v0, v2}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
-    :try_end_3a
-    .catch Ljava/util/concurrent/TimeoutException; {:try_start_8 .. :try_end_3a} :catch_3b
+    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
 
-    .line 857
-    goto :goto_5a
+    const-string/jumbo v4, "no controller energy info supplied for "
 
-    .line 855
-    :catch_3b
-    move-exception v2
-
-    .line 856
-    new-instance v2, Ljava/lang/StringBuilder;
-
-    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
-
-    const-string/jumbo v3, "timeout reading "
-
-    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {p0}, Landroid/os/SynchronousResultReceiver;->getName()Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v4
 
-    invoke-virtual {v2, p0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string p0, " stats"
+    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    invoke-virtual {v2, p0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    move-result-object v3
 
-    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-static {v0, v3}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
+    :try_end_3a
+    .catch Ljava/util/concurrent/TimeoutException; {:try_start_8 .. :try_end_3a} :catch_3c
 
-    move-result-object p0
+    .line 855
+    nop
 
-    invoke-static {v0, p0}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    .end local v2  # "result":Landroid/os/SynchronousResultReceiver$Result;
+    goto :goto_5b
 
-    .line 858
-    :goto_5a
+    .line 853
+    :catch_3c
+    move-exception v2
+
+    .line 854
+    .local v2, "e":Ljava/util/concurrent/TimeoutException;
+    new-instance v3, Ljava/lang/StringBuilder;
+
+    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
+
+    const-string/jumbo v4, "timeout reading "
+
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {p0}, Landroid/os/SynchronousResultReceiver;->getName()Ljava/lang/String;
+
+    move-result-object v4
+
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    const-string v4, " stats"
+
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v3
+
+    invoke-static {v0, v3}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+
+    .line 856
+    .end local v2  # "e":Ljava/util/concurrent/TimeoutException;
+    :goto_5b
     return-object v1
 .end method
 
 .method private enforceCallingPermission()V
     .registers 4
 
-    .line 2561
+    .line 2515
     invoke-static {}, Landroid/os/Binder;->getCallingPid()I
 
     move-result v0
@@ -1018,10 +1048,10 @@
 
     if-ne v0, v1, :cond_b
 
-    .line 2562
+    .line 2516
     return-void
 
-    .line 2564
+    .line 2518
     :cond_b
     iget-object v0, p0, Lcom/android/server/stats/StatsCompanionService;->mContext:Landroid/content/Context;
 
@@ -1031,7 +1061,7 @@
 
     invoke-virtual {v0, v2, v1}, Landroid/content/Context;->enforceCallingPermission(Ljava/lang/String;Ljava/lang/String;)V
 
-    .line 2565
+    .line 2519
     return-void
 .end method
 
@@ -1040,57 +1070,62 @@
 
     monitor-enter p0
 
-    .line 1143
+    .line 1141
     :try_start_1
     invoke-static {}, Landroid/bluetooth/BluetoothAdapter;->getDefaultAdapter()Landroid/bluetooth/BluetoothAdapter;
 
     move-result-object v0
 
-    .line 1144
+    .line 1142
+    .local v0, "adapter":Landroid/bluetooth/BluetoothAdapter;
     if-eqz v0, :cond_19
 
-    .line 1145
+    .line 1143
     new-instance v1, Landroid/os/SynchronousResultReceiver;
 
     const-string v2, "bluetooth"
 
     invoke-direct {v1, v2}, Landroid/os/SynchronousResultReceiver;-><init>(Ljava/lang/String;)V
 
-    .line 1147
+    .line 1145
+    .local v1, "bluetoothReceiver":Landroid/os/SynchronousResultReceiver;
     invoke-virtual {v0, v1}, Landroid/bluetooth/BluetoothAdapter;->requestControllerActivityEnergyInfo(Landroid/os/ResultReceiver;)V
 
-    .line 1148
+    .line 1146
     invoke-static {v1}, Lcom/android/server/stats/StatsCompanionService;->awaitControllerInfo(Landroid/os/SynchronousResultReceiver;)Landroid/os/Parcelable;
 
-    move-result-object v0
+    move-result-object v2
 
-    check-cast v0, Landroid/bluetooth/BluetoothActivityEnergyInfo;
+    check-cast v2, Landroid/bluetooth/BluetoothActivityEnergyInfo;
     :try_end_17
     .catchall {:try_start_1 .. :try_end_17} :catchall_23
 
     monitor-exit p0
 
-    return-object v0
+    return-object v2
 
-    .line 1150
+    .line 1148
+    .end local v1  # "bluetoothReceiver":Landroid/os/SynchronousResultReceiver;
+    .end local p0  # "this":Lcom/android/server/stats/StatsCompanionService;
     :cond_19
     :try_start_19
-    const-string v0, "StatsCompanionService"
+    const-string v1, "StatsCompanionService"
 
-    const-string v1, "Failed to get bluetooth adapter!"
+    const-string v2, "Failed to get bluetooth adapter!"
 
-    invoke-static {v0, v1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v2}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
     :try_end_20
     .catchall {:try_start_19 .. :try_end_20} :catchall_23
 
-    .line 1151
-    const/4 v0, 0x0
+    .line 1149
+    const/4 v1, 0x0
 
     monitor-exit p0
 
-    return-object v0
+    return-object v1
 
-    .line 1142
+    .line 1140
+    .end local v0  # "adapter":Landroid/bluetooth/BluetoothAdapter;
     :catchall_23
     move-exception v0
 
@@ -1102,7 +1137,7 @@
 .method private static fetchStatsdService()Landroid/os/IStatsManager;
     .registers 1
 
-    .line 2573
+    .line 2527
     const-string/jumbo v0, "stats"
 
     invoke-static {v0}, Landroid/os/ServiceManager;->getService(Ljava/lang/String;)Landroid/os/IBinder;
@@ -1124,71 +1159,73 @@
         }
     .end annotation
 
-    .line 2715
+    .line 2669
     const/4 v0, 0x0
 
     sput-object v0, Lcom/android/server/stats/StatsCompanionService;->sStatsd:Landroid/os/IStatsManager;
 
-    .line 2716
+    .line 2670
     iget-object v0, p0, Lcom/android/server/stats/StatsCompanionService;->mContext:Landroid/content/Context;
 
     iget-object v1, p0, Lcom/android/server/stats/StatsCompanionService;->mAppUpdateReceiver:Landroid/content/BroadcastReceiver;
 
     invoke-virtual {v0, v1}, Landroid/content/Context;->unregisterReceiver(Landroid/content/BroadcastReceiver;)V
 
-    .line 2717
+    .line 2671
     iget-object v0, p0, Lcom/android/server/stats/StatsCompanionService;->mContext:Landroid/content/Context;
 
     iget-object v1, p0, Lcom/android/server/stats/StatsCompanionService;->mUserUpdateReceiver:Landroid/content/BroadcastReceiver;
 
     invoke-virtual {v0, v1}, Landroid/content/Context;->unregisterReceiver(Landroid/content/BroadcastReceiver;)V
 
-    .line 2718
+    .line 2672
     iget-object v0, p0, Lcom/android/server/stats/StatsCompanionService;->mContext:Landroid/content/Context;
 
     iget-object v1, p0, Lcom/android/server/stats/StatsCompanionService;->mShutdownEventReceiver:Lcom/android/server/stats/StatsCompanionService$ShutdownEventReceiver;
 
     invoke-virtual {v0, v1}, Landroid/content/Context;->unregisterReceiver(Landroid/content/BroadcastReceiver;)V
 
-    .line 2719
+    .line 2673
     invoke-virtual {p0}, Lcom/android/server/stats/StatsCompanionService;->cancelAnomalyAlarm()V
 
-    .line 2720
+    .line 2674
     invoke-virtual {p0}, Lcom/android/server/stats/StatsCompanionService;->cancelPullingAlarm()V
 
-    .line 2722
+    .line 2676
     const-class v0, Lcom/android/server/BinderCallsStatsService$Internal;
 
-    .line 2723
+    .line 2677
     invoke-static {v0}, Lcom/android/server/LocalServices;->getService(Ljava/lang/Class;)Ljava/lang/Object;
 
     move-result-object v0
 
     check-cast v0, Lcom/android/server/BinderCallsStatsService$Internal;
 
-    .line 2724
+    .line 2678
+    .local v0, "binderStats":Lcom/android/server/BinderCallsStatsService$Internal;
     if-eqz v0, :cond_2b
 
-    .line 2725
+    .line 2679
     invoke-virtual {v0}, Lcom/android/server/BinderCallsStatsService$Internal;->reset()V
 
-    .line 2728
+    .line 2682
     :cond_2b
-    const-class v0, Lcom/android/internal/os/LooperStats;
+    const-class v1, Lcom/android/internal/os/LooperStats;
 
-    invoke-static {v0}, Lcom/android/server/LocalServices;->getService(Ljava/lang/Class;)Ljava/lang/Object;
+    invoke-static {v1}, Lcom/android/server/LocalServices;->getService(Ljava/lang/Class;)Ljava/lang/Object;
 
-    move-result-object v0
+    move-result-object v1
 
-    check-cast v0, Lcom/android/internal/os/LooperStats;
+    check-cast v1, Lcom/android/internal/os/LooperStats;
 
-    .line 2729
-    if-eqz v0, :cond_38
+    .line 2683
+    .local v1, "looperStats":Lcom/android/internal/os/LooperStats;
+    if-eqz v1, :cond_38
 
-    .line 2730
-    invoke-virtual {v0}, Lcom/android/internal/os/LooperStats;->reset()V
+    .line 2684
+    invoke-virtual {v1}, Lcom/android/internal/os/LooperStats;->reset()V
 
-    .line 2732
+    .line 2686
     :cond_38
     return-void
 .end method
@@ -1196,19 +1233,20 @@
 .method private getBatteryStatsHelper()Lcom/android/internal/os/BatteryStatsHelper;
     .registers 9
 
-    .line 1751
+    .line 1710
     iget-object v0, p0, Lcom/android/server/stats/StatsCompanionService;->mBatteryStatsHelper:Lcom/android/internal/os/BatteryStatsHelper;
 
     const/4 v1, 0x0
 
     if-nez v0, :cond_24
 
-    .line 1752
+    .line 1711
     invoke-static {}, Landroid/os/Binder;->clearCallingIdentity()J
 
     move-result-wide v2
 
-    .line 1755
+    .line 1714
+    .local v2, "callingToken":J
     :try_start_9
     new-instance v0, Lcom/android/internal/os/BatteryStatsHelper;
 
@@ -1220,24 +1258,24 @@
     :try_end_12
     .catchall {:try_start_9 .. :try_end_12} :catchall_1f
 
-    .line 1757
+    .line 1716
     invoke-static {v2, v3}, Landroid/os/Binder;->restoreCallingIdentity(J)V
 
-    .line 1758
+    .line 1717
     nop
 
-    .line 1759
+    .line 1718
     iget-object v0, p0, Lcom/android/server/stats/StatsCompanionService;->mBatteryStatsHelper:Lcom/android/internal/os/BatteryStatsHelper;
 
-    const/4 v2, 0x0
+    const/4 v4, 0x0
 
-    check-cast v2, Landroid/os/Bundle;
+    check-cast v4, Landroid/os/Bundle;
 
-    invoke-virtual {v0, v2}, Lcom/android/internal/os/BatteryStatsHelper;->create(Landroid/os/Bundle;)V
+    invoke-virtual {v0, v4}, Lcom/android/internal/os/BatteryStatsHelper;->create(Landroid/os/Bundle;)V
 
     goto :goto_24
 
-    .line 1757
+    .line 1716
     :catchall_1f
     move-exception v0
 
@@ -1245,14 +1283,16 @@
 
     throw v0
 
-    .line 1761
+    .line 1720
+    .end local v2  # "callingToken":J
     :cond_24
     :goto_24
     invoke-static {}, Landroid/os/SystemClock;->elapsedRealtime()J
 
     move-result-wide v2
 
-    .line 1762
+    .line 1721
+    .local v2, "currentTime":J
     iget-wide v4, p0, Lcom/android/server/stats/StatsCompanionService;->mBatteryStatsHelperTimestampMs:J
 
     sub-long v4, v2, v4
@@ -1263,22 +1303,22 @@
 
     if-ltz v0, :cond_3f
 
-    .line 1764
+    .line 1723
     iget-object v0, p0, Lcom/android/server/stats/StatsCompanionService;->mBatteryStatsHelper:Lcom/android/internal/os/BatteryStatsHelper;
 
     const/4 v4, -0x1
 
     invoke-virtual {v0, v1, v4}, Lcom/android/internal/os/BatteryStatsHelper;->refreshStats(II)V
 
-    .line 1766
+    .line 1725
     iget-object v0, p0, Lcom/android/server/stats/StatsCompanionService;->mBatteryStatsHelper:Lcom/android/internal/os/BatteryStatsHelper;
 
     invoke-virtual {v0}, Lcom/android/internal/os/BatteryStatsHelper;->clearStats()V
 
-    .line 1767
+    .line 1726
     iput-wide v2, p0, Lcom/android/server/stats/StatsCompanionService;->mBatteryStatsHelperTimestampMs:J
 
-    .line 1769
+    .line 1728
     :cond_3f
     iget-object v0, p0, Lcom/android/server/stats/StatsCompanionService;->mBatteryStatsHelper:Lcom/android/internal/os/BatteryStatsHelper;
 
@@ -1286,7 +1326,8 @@
 .end method
 
 .method private final informAllUidsLocked(Landroid/content/Context;)V
-    .registers 9
+    .registers 11
+    .param p1, "context"  # Landroid/content/Context;
     .annotation build Lcom/android/internal/annotations/GuardedBy;
         value = {
             "sStatsdLock"
@@ -1299,7 +1340,7 @@
         }
     .end annotation
 
-    .line 467
+    .line 465
     const-string v0, "StatsCompanionService"
 
     const-string/jumbo v1, "user"
@@ -1310,396 +1351,488 @@
 
     check-cast v1, Landroid/os/UserManager;
 
-    .line 468
+    .line 466
+    .local v1, "um":Landroid/os/UserManager;
     invoke-virtual {p1}, Landroid/content/Context;->getPackageManager()Landroid/content/pm/PackageManager;
-
-    move-result-object p1
-
-    .line 469
-    const/4 v2, 0x1
-
-    invoke-virtual {v1, v2}, Landroid/os/UserManager;->getUsers(Z)Ljava/util/List;
-
-    move-result-object v1
-
-    .line 476
-    :try_start_14
-    invoke-static {}, Landroid/os/ParcelFileDescriptor;->createPipe()[Landroid/os/ParcelFileDescriptor;
-
-    move-result-object v3
-    :try_end_18
-    .catch Ljava/io/IOException; {:try_start_14 .. :try_end_18} :catch_3c
-
-    .line 480
-    nop
-
-    .line 481
-    sget-object v4, Lcom/android/server/stats/StatsCompanionService;->sStatsd:Landroid/os/IStatsManager;
-
-    const/4 v5, 0x0
-
-    aget-object v6, v3, v5
-
-    invoke-interface {v4, v6}, Landroid/os/IStatsManager;->informAllUidData(Landroid/os/ParcelFileDescriptor;)V
-
-    .line 483
-    :try_start_21
-    aget-object v4, v3, v5
-
-    invoke-virtual {v4}, Landroid/os/ParcelFileDescriptor;->close()V
-    :try_end_26
-    .catch Ljava/io/IOException; {:try_start_21 .. :try_end_26} :catch_27
-
-    .line 486
-    goto :goto_2d
-
-    .line 484
-    :catch_27
-    move-exception v4
-
-    .line 485
-    const-string v5, "Failed to close the read side of the pipe."
-
-    invoke-static {v0, v5, v4}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
-
-    .line 487
-    :goto_2d
-    aget-object v0, v3, v2
-
-    .line 488
-    invoke-static {}, Lcom/android/internal/os/BackgroundThread;->getHandler()Landroid/os/Handler;
 
     move-result-object v2
 
-    new-instance v3, Lcom/android/server/stats/-$$Lambda$StatsCompanionService$lgt3DadUXkgOLn-AdC3Gl42vPKY;
+    .line 467
+    .local v2, "pm":Landroid/content/pm/PackageManager;
+    const/4 v3, 0x1
 
-    invoke-direct {v3, v0, v1, p1}, Lcom/android/server/stats/-$$Lambda$StatsCompanionService$lgt3DadUXkgOLn-AdC3Gl42vPKY;-><init>(Landroid/os/ParcelFileDescriptor;Ljava/util/List;Landroid/content/pm/PackageManager;)V
+    invoke-virtual {v1, v3}, Landroid/os/UserManager;->getUsers(Z)Ljava/util/List;
 
-    invoke-virtual {v2, v3}, Landroid/os/Handler;->post(Ljava/lang/Runnable;)Z
+    move-result-object v4
 
-    .line 539
-    return-void
+    .line 474
+    .local v4, "users":Ljava/util/List;, "Ljava/util/List<Landroid/content/pm/UserInfo;>;"
+    :try_start_14
+    invoke-static {}, Landroid/os/ParcelFileDescriptor;->createPipe()[Landroid/os/ParcelFileDescriptor;
 
-    .line 477
-    :catch_3c
-    move-exception p1
+    move-result-object v5
+    :try_end_18
+    .catch Ljava/io/IOException; {:try_start_14 .. :try_end_18} :catch_3c
 
     .line 478
-    const-string v1, "Failed to create a pipe to send uid map data."
-
-    invoke-static {v0, v1, p1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    .local v5, "fds":[Landroid/os/ParcelFileDescriptor;
+    nop
 
     .line 479
+    sget-object v6, Lcom/android/server/stats/StatsCompanionService;->sStatsd:Landroid/os/IStatsManager;
+
+    const/4 v7, 0x0
+
+    aget-object v8, v5, v7
+
+    invoke-interface {v6, v8}, Landroid/os/IStatsManager;->informAllUidData(Landroid/os/ParcelFileDescriptor;)V
+
+    .line 481
+    :try_start_21
+    aget-object v6, v5, v7
+
+    invoke-virtual {v6}, Landroid/os/ParcelFileDescriptor;->close()V
+    :try_end_26
+    .catch Ljava/io/IOException; {:try_start_21 .. :try_end_26} :catch_27
+
+    .line 484
+    goto :goto_2d
+
+    .line 482
+    :catch_27
+    move-exception v6
+
+    .line 483
+    .local v6, "e":Ljava/io/IOException;
+    const-string v7, "Failed to close the read side of the pipe."
+
+    invoke-static {v0, v7, v6}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+
+    .line 485
+    .end local v6  # "e":Ljava/io/IOException;
+    :goto_2d
+    aget-object v0, v5, v3
+
+    .line 486
+    .local v0, "writeFd":Landroid/os/ParcelFileDescriptor;
+    invoke-static {}, Lcom/android/internal/os/BackgroundThread;->getHandler()Landroid/os/Handler;
+
+    move-result-object v3
+
+    new-instance v6, Lcom/android/server/stats/-$$Lambda$StatsCompanionService$lgt3DadUXkgOLn-AdC3Gl42vPKY;
+
+    invoke-direct {v6, v0, v4, v2}, Lcom/android/server/stats/-$$Lambda$StatsCompanionService$lgt3DadUXkgOLn-AdC3Gl42vPKY;-><init>(Landroid/os/ParcelFileDescriptor;Ljava/util/List;Landroid/content/pm/PackageManager;)V
+
+    invoke-virtual {v3, v6}, Landroid/os/Handler;->post(Ljava/lang/Runnable;)Z
+
+    .line 537
+    return-void
+
+    .line 475
+    .end local v0  # "writeFd":Landroid/os/ParcelFileDescriptor;
+    .end local v5  # "fds":[Landroid/os/ParcelFileDescriptor;
+    :catch_3c
+    move-exception v3
+
+    .line 476
+    .local v3, "e":Ljava/io/IOException;
+    const-string v5, "Failed to create a pipe to send uid map data."
+
+    invoke-static {v0, v5, v3}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+
+    .line 477
     return-void
 .end method
 
 .method static synthetic lambda$informAllUidsLocked$0(Landroid/os/ParcelFileDescriptor;Ljava/util/List;Landroid/content/pm/PackageManager;)V
-    .registers 14
+    .registers 19
+    .param p0, "writeFd"  # Landroid/os/ParcelFileDescriptor;
+    .param p1, "users"  # Ljava/util/List;
+    .param p2, "pm"  # Landroid/content/pm/PackageManager;
+
+    .line 487
+    move-object/from16 v1, p2
+
+    const-string v2, ""
+
+    new-instance v0, Landroid/os/ParcelFileDescriptor$AutoCloseOutputStream;
+
+    move-object/from16 v3, p0
+
+    invoke-direct {v0, v3}, Landroid/os/ParcelFileDescriptor$AutoCloseOutputStream;-><init>(Landroid/os/ParcelFileDescriptor;)V
+
+    move-object v4, v0
 
     .line 489
-    const-string v0, ""
+    .local v4, "fout":Ljava/io/FileOutputStream;
+    :try_start_c
+    new-instance v0, Landroid/util/proto/ProtoOutputStream;
 
-    new-instance v1, Landroid/os/ParcelFileDescriptor$AutoCloseOutputStream;
+    invoke-direct {v0, v4}, Landroid/util/proto/ProtoOutputStream;-><init>(Ljava/io/OutputStream;)V
 
-    invoke-direct {v1, p0}, Landroid/os/ParcelFileDescriptor$AutoCloseOutputStream;-><init>(Landroid/os/ParcelFileDescriptor;)V
+    move-object v5, v0
 
-    .line 491
-    :try_start_7
-    new-instance p0, Landroid/util/proto/ProtoOutputStream;
-
-    invoke-direct {p0, v1}, Landroid/util/proto/ProtoOutputStream;-><init>(Ljava/io/OutputStream;)V
+    .line 490
+    .local v5, "output":Landroid/util/proto/ProtoOutputStream;
+    const/4 v0, 0x0
 
     .line 492
-    nop
+    .local v0, "numRecords":I
+    invoke-interface/range {p1 .. p1}, Ljava/util/List;->iterator()Ljava/util/Iterator;
+
+    move-result-object v6
+
+    :goto_17
+    invoke-interface {v6}, Ljava/util/Iterator;->hasNext()Z
+
+    move-result v7
+
+    if-eqz v7, :cond_bd
+
+    invoke-interface {v6}, Ljava/util/Iterator;->next()Ljava/lang/Object;
+
+    move-result-object v7
+
+    check-cast v7, Landroid/content/pm/UserInfo;
+
+    .line 493
+    .local v7, "profile":Landroid/content/pm/UserInfo;
+    const v8, 0x402000
+
+    iget v9, v7, Landroid/content/pm/UserInfo;->id:I
 
     .line 494
-    invoke-interface {p1}, Ljava/util/List;->iterator()Ljava/util/Iterator;
+    invoke-virtual {v1, v8, v9}, Landroid/content/pm/PackageManager;->getInstalledPackagesAsUser(II)Ljava/util/List;
 
-    move-result-object p1
-
-    :goto_11
-    invoke-interface {p1}, Ljava/util/Iterator;->hasNext()Z
-
-    move-result v2
-
-    if-eqz v2, :cond_a7
-
-    invoke-interface {p1}, Ljava/util/Iterator;->next()Ljava/lang/Object;
-
-    move-result-object v2
-
-    check-cast v2, Landroid/content/pm/UserInfo;
-
-    .line 495
-    const v3, 0x402000
-
-    iget v2, v2, Landroid/content/pm/UserInfo;->id:I
+    move-result-object v8
 
     .line 496
-    invoke-virtual {p2, v3, v2}, Landroid/content/pm/PackageManager;->getInstalledPackagesAsUser(II)Ljava/util/List;
+    .local v8, "pi":Ljava/util/List;, "Ljava/util/List<Landroid/content/pm/PackageInfo;>;"
+    const/4 v9, 0x0
 
-    move-result-object v2
+    move v10, v0
 
-    .line 498
-    const/4 v3, 0x0
+    .end local v0  # "numRecords":I
+    .local v9, "j":I
+    .local v10, "numRecords":I
+    :goto_2e
+    invoke-interface {v8}, Ljava/util/List;->size()I
 
-    :goto_27
-    invoke-interface {v2}, Ljava/util/List;->size()I
+    move-result v0
 
-    move-result v4
+    if-ge v9, v0, :cond_b7
 
-    if-ge v3, v4, :cond_a5
+    .line 497
+    invoke-interface {v8, v9}, Ljava/util/List;->get(I)Ljava/lang/Object;
 
-    .line 499
-    invoke-interface {v2, v3}, Ljava/util/List;->get(I)Ljava/lang/Object;
+    move-result-object v0
 
-    move-result-object v4
+    check-cast v0, Landroid/content/pm/PackageInfo;
 
-    check-cast v4, Landroid/content/pm/PackageInfo;
+    iget-object v0, v0, Landroid/content/pm/PackageInfo;->applicationInfo:Landroid/content/pm/ApplicationInfo;
+    :try_end_3c
+    .catchall {:try_start_c .. :try_end_3c} :catchall_c5
 
-    iget-object v4, v4, Landroid/content/pm/PackageInfo;->applicationInfo:Landroid/content/pm/ApplicationInfo;
-    :try_end_35
-    .catchall {:try_start_7 .. :try_end_35} :catchall_af
+    if-eqz v0, :cond_af
 
-    if-eqz v4, :cond_a2
+    .line 500
+    :try_start_3e
+    invoke-interface {v8, v9}, Ljava/util/List;->get(I)Ljava/lang/Object;
 
-    .line 502
-    :try_start_37
-    invoke-interface {v2, v3}, Ljava/util/List;->get(I)Ljava/lang/Object;
+    move-result-object v0
 
-    move-result-object v4
+    check-cast v0, Landroid/content/pm/PackageInfo;
 
-    check-cast v4, Landroid/content/pm/PackageInfo;
+    iget-object v0, v0, Landroid/content/pm/PackageInfo;->packageName:Ljava/lang/String;
 
-    iget-object v4, v4, Landroid/content/pm/PackageInfo;->packageName:Ljava/lang/String;
+    invoke-virtual {v1, v0}, Landroid/content/pm/PackageManager;->getInstallerPackageName(Ljava/lang/String;)Ljava/lang/String;
 
-    invoke-virtual {p2, v4}, Landroid/content/pm/PackageManager;->getInstallerPackageName(Ljava/lang/String;)Ljava/lang/String;
-
-    move-result-object v4
-    :try_end_43
-    .catch Ljava/lang/IllegalArgumentException; {:try_start_37 .. :try_end_43} :catch_44
-    .catchall {:try_start_37 .. :try_end_43} :catchall_af
-
-    .line 505
-    goto :goto_46
+    move-result-object v0
+    :try_end_4a
+    .catch Ljava/lang/IllegalArgumentException; {:try_start_3e .. :try_end_4a} :catch_4b
+    .catchall {:try_start_3e .. :try_end_4a} :catchall_c5
 
     .line 503
-    :catch_44
-    move-exception v4
+    .local v0, "installer":Ljava/lang/String;
+    goto :goto_4d
+
+    .line 501
+    .end local v0  # "installer":Ljava/lang/String;
+    :catch_4b
+    move-exception v0
+
+    .line 502
+    .local v0, "e":Ljava/lang/IllegalArgumentException;
+    move-object v0, v2
 
     .line 504
-    move-object v4, v0
+    .local v0, "installer":Ljava/lang/String;
+    :goto_4d
+    const-wide v11, 0x20b00000001L
 
-    .line 506
-    :goto_46
-    const-wide v5, 0x20b00000001L
+    .line 505
+    :try_start_52
+    invoke-virtual {v5, v11, v12}, Landroid/util/proto/ProtoOutputStream;->start(J)J
 
-    .line 507
-    :try_start_4b
-    invoke-virtual {p0, v5, v6}, Landroid/util/proto/ProtoOutputStream;->start(J)J
+    move-result-wide v11
 
-    move-result-wide v5
-
-    .line 510
-    const-wide v7, 0x10500000001L
-
-    .line 512
-    invoke-interface {v2, v3}, Ljava/util/List;->get(I)Ljava/lang/Object;
-
-    move-result-object v9
-
-    check-cast v9, Landroid/content/pm/PackageInfo;
-
-    iget-object v9, v9, Landroid/content/pm/PackageInfo;->applicationInfo:Landroid/content/pm/ApplicationInfo;
-
-    iget v9, v9, Landroid/content/pm/ApplicationInfo;->uid:I
+    .line 508
+    .local v11, "applicationInfoToken":J
+    const-wide v13, 0x10500000001L
 
     .line 510
-    invoke-virtual {p0, v7, v8, v9}, Landroid/util/proto/ProtoOutputStream;->write(JI)V
+    invoke-interface {v8, v9}, Ljava/util/List;->get(I)Ljava/lang/Object;
+
+    move-result-object v15
+
+    check-cast v15, Landroid/content/pm/PackageInfo;
+
+    iget-object v15, v15, Landroid/content/pm/PackageInfo;->applicationInfo:Landroid/content/pm/ApplicationInfo;
+
+    iget v15, v15, Landroid/content/pm/ApplicationInfo;->uid:I
+
+    .line 508
+    invoke-virtual {v5, v13, v14, v15}, Landroid/util/proto/ProtoOutputStream;->write(JI)V
+
+    .line 511
+    nop
 
     .line 513
-    const-wide v7, 0x10300000002L
+    invoke-interface {v8, v9}, Ljava/util/List;->get(I)Ljava/lang/Object;
 
-    .line 515
-    invoke-interface {v2, v3}, Ljava/util/List;->get(I)Ljava/lang/Object;
+    move-result-object v15
 
-    move-result-object v9
+    check-cast v15, Landroid/content/pm/PackageInfo;
 
-    check-cast v9, Landroid/content/pm/PackageInfo;
+    invoke-virtual {v15}, Landroid/content/pm/PackageInfo;->getLongVersionCode()J
 
-    invoke-virtual {v9}, Landroid/content/pm/PackageInfo;->getLongVersionCode()J
+    move-result-wide v13
 
-    move-result-wide v9
+    .line 511
+    move-object v15, v2
 
-    .line 513
-    invoke-virtual {p0, v7, v8, v9, v10}, Landroid/util/proto/ProtoOutputStream;->write(JJ)V
+    const-wide v1, 0x10300000002L
 
-    .line 516
-    const-wide v7, 0x10900000003L
+    invoke-virtual {v5, v1, v2, v13, v14}, Landroid/util/proto/ProtoOutputStream;->write(JJ)V
 
-    .line 518
-    invoke-interface {v2, v3}, Ljava/util/List;->get(I)Ljava/lang/Object;
-
-    move-result-object v9
-
-    check-cast v9, Landroid/content/pm/PackageInfo;
-
-    iget-object v9, v9, Landroid/content/pm/PackageInfo;->versionName:Ljava/lang/String;
+    .line 514
+    const-wide v1, 0x10900000003L
 
     .line 516
-    invoke-virtual {p0, v7, v8, v9}, Landroid/util/proto/ProtoOutputStream;->write(JLjava/lang/String;)V
+    invoke-interface {v8, v9}, Ljava/util/List;->get(I)Ljava/lang/Object;
+
+    move-result-object v13
+
+    check-cast v13, Landroid/content/pm/PackageInfo;
+
+    iget-object v13, v13, Landroid/content/pm/PackageInfo;->versionName:Ljava/lang/String;
+
+    .line 514
+    invoke-virtual {v5, v1, v2, v13}, Landroid/util/proto/ProtoOutputStream;->write(JLjava/lang/String;)V
+
+    .line 517
+    const-wide v1, 0x10900000004L
 
     .line 519
-    const-wide v7, 0x10900000004L
+    invoke-interface {v8, v9}, Ljava/util/List;->get(I)Ljava/lang/Object;
 
-    .line 521
-    invoke-interface {v2, v3}, Ljava/util/List;->get(I)Ljava/lang/Object;
+    move-result-object v13
 
-    move-result-object v9
+    check-cast v13, Landroid/content/pm/PackageInfo;
 
-    check-cast v9, Landroid/content/pm/PackageInfo;
+    iget-object v13, v13, Landroid/content/pm/PackageInfo;->packageName:Ljava/lang/String;
 
-    iget-object v9, v9, Landroid/content/pm/PackageInfo;->packageName:Ljava/lang/String;
+    .line 517
+    invoke-virtual {v5, v1, v2, v13}, Landroid/util/proto/ProtoOutputStream;->write(JLjava/lang/String;)V
 
-    .line 519
-    invoke-virtual {p0, v7, v8, v9}, Landroid/util/proto/ProtoOutputStream;->write(JLjava/lang/String;)V
+    .line 520
+    const-wide v1, 0x10900000005L
 
-    .line 522
-    const-wide v7, 0x10900000005L
+    .line 523
+    if-nez v0, :cond_a5
+
+    move-object v13, v15
+
+    goto :goto_a6
+
+    :cond_a5
+    move-object v13, v0
+
+    .line 520
+    :goto_a6
+    invoke-virtual {v5, v1, v2, v13}, Landroid/util/proto/ProtoOutputStream;->write(JLjava/lang/String;)V
+
+    .line 524
+    add-int/lit8 v10, v10, 0x1
 
     .line 525
-    if-nez v4, :cond_9b
+    invoke-virtual {v5, v11, v12}, Landroid/util/proto/ProtoOutputStream;->end(J)V
 
-    move-object v4, v0
+    goto :goto_b0
 
-    .line 522
-    :cond_9b
-    invoke-virtual {p0, v7, v8, v4}, Landroid/util/proto/ProtoOutputStream;->write(JLjava/lang/String;)V
+    .line 497
+    .end local v0  # "installer":Ljava/lang/String;
+    .end local v11  # "applicationInfoToken":J
+    :cond_af
+    move-object v15, v2
 
-    .line 526
+    .line 496
+    :goto_b0
+    add-int/lit8 v9, v9, 0x1
+
+    move-object/from16 v1, p2
+
+    move-object v2, v15
+
+    goto/16 :goto_2e
+
+    :cond_b7
+    move-object v15, v2
+
+    .line 528
+    .end local v7  # "profile":Landroid/content/pm/UserInfo;
+    .end local v8  # "pi":Ljava/util/List;, "Ljava/util/List<Landroid/content/pm/PackageInfo;>;"
+    .end local v9  # "j":I
+    move-object/from16 v1, p2
+
+    move v0, v10
+
+    goto/16 :goto_17
+
+    .line 529
+    .end local v10  # "numRecords":I
+    .local v0, "numRecords":I
+    :cond_bd
+    invoke-virtual {v5}, Landroid/util/proto/ProtoOutputStream;->flush()V
+    :try_end_c0
+    .catchall {:try_start_52 .. :try_end_c0} :catchall_c5
+
+    .line 534
+    .end local v0  # "numRecords":I
+    .end local v5  # "output":Landroid/util/proto/ProtoOutputStream;
+    invoke-static {v4}, Llibcore/io/IoUtils;->closeQuietly(Ljava/lang/AutoCloseable;)V
+
+    .line 535
     nop
-
-    .line 527
-    invoke-virtual {p0, v5, v6}, Landroid/util/proto/ProtoOutputStream;->end(J)V
-
-    .line 498
-    :cond_a2
-    add-int/lit8 v3, v3, 0x1
-
-    goto :goto_27
-
-    .line 530
-    :cond_a5
-    goto/16 :goto_11
-
-    .line 531
-    :cond_a7
-    invoke-virtual {p0}, Landroid/util/proto/ProtoOutputStream;->flush()V
-    :try_end_aa
-    .catchall {:try_start_4b .. :try_end_aa} :catchall_af
 
     .line 536
-    invoke-static {v1}, Llibcore/io/IoUtils;->closeQuietly(Ljava/lang/AutoCloseable;)V
-
-    .line 537
-    nop
-
-    .line 538
     return-void
 
-    .line 536
-    :catchall_af
-    move-exception p0
+    .line 534
+    :catchall_c5
+    move-exception v0
 
-    invoke-static {v1}, Llibcore/io/IoUtils;->closeQuietly(Ljava/lang/AutoCloseable;)V
+    invoke-static {v4}, Llibcore/io/IoUtils;->closeQuietly(Ljava/lang/AutoCloseable;)V
 
-    throw p0
+    throw v0
 .end method
 
 .method static synthetic lambda$pullDiskIo$6(IJJLjava/util/List;IJJJJJJJJJJ)V
-    .registers 34
+    .registers 43
+    .param p0, "tagId"  # I
+    .param p1, "elapsedNanos"  # J
+    .param p3, "wallClockNanos"  # J
+    .param p5, "pulledData"  # Ljava/util/List;
+    .param p6, "uid"  # I
+    .param p7, "fgCharsRead"  # J
+    .param p9, "fgCharsWrite"  # J
+    .param p11, "fgBytesRead"  # J
+    .param p13, "fgBytesWrite"  # J
+    .param p15, "bgCharsRead"  # J
+    .param p17, "bgCharsWrite"  # J
+    .param p19, "bgBytesRead"  # J
+    .param p21, "bgBytesWrite"  # J
+    .param p23, "fgFsync"  # J
+    .param p25, "bgFsync"  # J
 
-    .line 1827
+    .line 1786
     new-instance v6, Landroid/os/StatsLogEventWrapper;
 
     move-object v0, v6
 
-    move v1, p0
+    move/from16 v1, p0
 
-    move-wide v2, p1
+    move-wide/from16 v2, p1
 
-    move-wide v4, p3
+    move-wide/from16 v4, p3
 
     invoke-direct/range {v0 .. v5}, Landroid/os/StatsLogEventWrapper;-><init>(IJJ)V
 
-    .line 1829
-    move v0, p6
+    .line 1788
+    .local v0, "e":Landroid/os/StatsLogEventWrapper;
+    move/from16 v1, p6
 
-    invoke-virtual {v6, p6}, Landroid/os/StatsLogEventWrapper;->writeInt(I)V
+    invoke-virtual {v0, v1}, Landroid/os/StatsLogEventWrapper;->writeInt(I)V
 
-    .line 1830
-    move-wide v0, p7
+    .line 1789
+    move-wide/from16 v2, p7
 
-    invoke-virtual {v6, p7, p8}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
+    invoke-virtual {v0, v2, v3}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
 
-    .line 1831
-    move-wide/from16 v0, p9
+    .line 1790
+    move-wide/from16 v4, p9
 
-    invoke-virtual {v6, v0, v1}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
+    invoke-virtual {v0, v4, v5}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
 
-    .line 1832
-    move-wide/from16 v0, p11
+    .line 1791
+    move-wide/from16 v6, p11
 
-    invoke-virtual {v6, v0, v1}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
+    invoke-virtual {v0, v6, v7}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
 
-    .line 1833
-    move-wide/from16 v0, p13
+    .line 1792
+    move-wide/from16 v8, p13
 
-    invoke-virtual {v6, v0, v1}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
+    invoke-virtual {v0, v8, v9}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
 
-    .line 1834
-    move-wide/from16 v0, p15
+    .line 1793
+    move-wide/from16 v10, p15
 
-    invoke-virtual {v6, v0, v1}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
+    invoke-virtual {v0, v10, v11}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
 
-    .line 1835
-    move-wide/from16 v0, p17
+    .line 1794
+    move-wide/from16 v12, p17
 
-    invoke-virtual {v6, v0, v1}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
+    invoke-virtual {v0, v12, v13}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
 
-    .line 1836
-    move-wide/from16 v0, p19
+    .line 1795
+    move-wide/from16 v14, p19
 
-    invoke-virtual {v6, v0, v1}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
+    invoke-virtual {v0, v14, v15}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
 
-    .line 1837
-    move-wide/from16 v0, p21
+    .line 1796
+    move-wide/from16 v1, p21
 
-    invoke-virtual {v6, v0, v1}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
+    invoke-virtual {v0, v1, v2}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
 
-    .line 1838
-    move-wide/from16 v0, p23
+    .line 1797
+    move-wide/from16 v1, p23
 
-    invoke-virtual {v6, v0, v1}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
+    invoke-virtual {v0, v1, v2}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
 
-    .line 1839
-    move-wide/from16 v0, p25
+    .line 1798
+    move-wide/from16 v1, p25
 
-    invoke-virtual {v6, v0, v1}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
+    invoke-virtual {v0, v1, v2}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
 
-    .line 1840
-    move-object v0, p5
+    .line 1799
+    move-object/from16 v3, p5
 
-    invoke-interface {p5, v6}, Ljava/util/List;->add(Ljava/lang/Object;)Z
+    invoke-interface {v3, v0}, Ljava/util/List;->add(Ljava/lang/Object;)Z
 
-    .line 1841
+    .line 1800
     return-void
 .end method
 
 .method static synthetic lambda$pullKernelUidCpuActiveTime$4(IJJLjava/util/List;ILjava/lang/Long;)V
     .registers 15
+    .param p0, "tagId"  # I
+    .param p1, "elapsedNanos"  # J
+    .param p3, "wallClockNanos"  # J
+    .param p5, "pulledData"  # Ljava/util/List;
+    .param p6, "uid"  # I
+    .param p7, "cpuActiveTimesMs"  # Ljava/lang/Long;
 
-    .line 1058
+    .line 1056
     new-instance v6, Landroid/os/StatsLogEventWrapper;
 
     move-object v0, v6
@@ -1712,35 +1845,43 @@
 
     invoke-direct/range {v0 .. v5}, Landroid/os/StatsLogEventWrapper;-><init>(IJJ)V
 
-    .line 1059
-    invoke-virtual {v6, p6}, Landroid/os/StatsLogEventWrapper;->writeInt(I)V
+    .line 1057
+    .local v0, "e":Landroid/os/StatsLogEventWrapper;
+    invoke-virtual {v0, p6}, Landroid/os/StatsLogEventWrapper;->writeInt(I)V
 
-    .line 1060
+    .line 1058
     invoke-virtual {p7}, Ljava/lang/Long;->longValue()J
 
-    move-result-wide p0
+    move-result-wide v1
 
-    invoke-virtual {v6, p0, p1}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
+    invoke-virtual {v0, v1, v2}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
 
-    .line 1061
-    invoke-interface {p5, v6}, Ljava/util/List;->add(Ljava/lang/Object;)Z
+    .line 1059
+    invoke-interface {p5, v0}, Ljava/util/List;->add(Ljava/lang/Object;)Z
 
-    .line 1062
+    .line 1060
     return-void
 .end method
 
 .method static synthetic lambda$pullKernelUidCpuClusterTime$3(IJJLjava/util/List;I[J)V
     .registers 16
+    .param p0, "tagId"  # I
+    .param p1, "elapsedNanos"  # J
+    .param p3, "wallClockNanos"  # J
+    .param p5, "pulledData"  # Ljava/util/List;
+    .param p6, "uid"  # I
+    .param p7, "cpuClusterTimesMs"  # [J
 
-    .line 1043
+    .line 1041
     const/4 v0, 0x0
 
+    .local v0, "i":I
     :goto_1
     array-length v1, p7
 
     if-ge v0, v1, :cond_1e
 
-    .line 1044
+    .line 1042
     new-instance v1, Landroid/os/StatsLogEventWrapper;
 
     move-object v2, v1
@@ -1753,42 +1894,52 @@
 
     invoke-direct/range {v2 .. v7}, Landroid/os/StatsLogEventWrapper;-><init>(IJJ)V
 
-    .line 1046
+    .line 1044
+    .local v1, "e":Landroid/os/StatsLogEventWrapper;
     invoke-virtual {v1, p6}, Landroid/os/StatsLogEventWrapper;->writeInt(I)V
 
-    .line 1047
+    .line 1045
     invoke-virtual {v1, v0}, Landroid/os/StatsLogEventWrapper;->writeInt(I)V
 
-    .line 1048
+    .line 1046
     aget-wide v2, p7, v0
 
     invoke-virtual {v1, v2, v3}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
 
-    .line 1049
+    .line 1047
     invoke-interface {p5, v1}, Ljava/util/List;->add(Ljava/lang/Object;)Z
 
-    .line 1043
+    .line 1041
+    .end local v1  # "e":Landroid/os/StatsLogEventWrapper;
     add-int/lit8 v0, v0, 0x1
 
     goto :goto_1
 
-    .line 1051
+    .line 1049
+    .end local v0  # "i":I
     :cond_1e
     return-void
 .end method
 
 .method static synthetic lambda$pullKernelUidCpuFreqTime$2(IJJLjava/util/List;I[J)V
     .registers 16
+    .param p0, "tagId"  # I
+    .param p1, "elapsedNanos"  # J
+    .param p3, "wallClockNanos"  # J
+    .param p5, "pulledData"  # Ljava/util/List;
+    .param p6, "uid"  # I
+    .param p7, "cpuFreqTimeMs"  # [J
 
-    .line 1026
+    .line 1024
     const/4 v0, 0x0
 
+    .local v0, "freqIndex":I
     :goto_1
     array-length v1, p7
 
     if-ge v0, v1, :cond_26
 
-    .line 1027
+    .line 1025
     aget-wide v1, p7, v0
 
     const-wide/16 v3, 0x0
@@ -1797,7 +1948,7 @@
 
     if-eqz v1, :cond_23
 
-    .line 1028
+    .line 1026
     new-instance v1, Landroid/os/StatsLogEventWrapper;
 
     move-object v2, v1
@@ -1810,44 +1961,55 @@
 
     invoke-direct/range {v2 .. v7}, Landroid/os/StatsLogEventWrapper;-><init>(IJJ)V
 
-    .line 1030
+    .line 1028
+    .local v1, "e":Landroid/os/StatsLogEventWrapper;
     invoke-virtual {v1, p6}, Landroid/os/StatsLogEventWrapper;->writeInt(I)V
 
-    .line 1031
+    .line 1029
     invoke-virtual {v1, v0}, Landroid/os/StatsLogEventWrapper;->writeInt(I)V
 
-    .line 1032
+    .line 1030
     aget-wide v2, p7, v0
 
     invoke-virtual {v1, v2, v3}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
 
-    .line 1033
+    .line 1031
     invoke-interface {p5, v1}, Ljava/util/List;->add(Ljava/lang/Object;)Z
 
-    .line 1026
+    .line 1024
+    .end local v1  # "e":Landroid/os/StatsLogEventWrapper;
     :cond_23
     add-int/lit8 v0, v0, 0x1
 
     goto :goto_1
 
-    .line 1036
+    .line 1034
+    .end local v0  # "freqIndex":I
     :cond_26
     return-void
 .end method
 
 .method static synthetic lambda$pullKernelUidCpuTime$1(IJJLjava/util/List;I[J)V
     .registers 19
+    .param p0, "tagId"  # I
+    .param p1, "elapsedNanos"  # J
+    .param p3, "wallClockNanos"  # J
+    .param p5, "pulledData"  # Ljava/util/List;
+    .param p6, "uid"  # I
+    .param p7, "timesUs"  # [J
 
-    .line 1013
+    .line 1011
     const/4 v0, 0x0
 
     aget-wide v0, p7, v0
 
+    .local v0, "userTimeUs":J
     const/4 v2, 0x1
 
     aget-wide v2, p7, v2
 
-    .line 1014
+    .line 1012
+    .local v2, "systemTimeUs":J
     new-instance v10, Landroid/os/StatsLogEventWrapper;
 
     move-object v4, v10
@@ -1860,78 +2022,89 @@
 
     invoke-direct/range {v4 .. v9}, Landroid/os/StatsLogEventWrapper;-><init>(IJJ)V
 
-    .line 1015
-    move/from16 v4, p6
+    .line 1013
+    .local v4, "e":Landroid/os/StatsLogEventWrapper;
+    move/from16 v5, p6
 
-    invoke-virtual {v10, v4}, Landroid/os/StatsLogEventWrapper;->writeInt(I)V
+    invoke-virtual {v4, v5}, Landroid/os/StatsLogEventWrapper;->writeInt(I)V
+
+    .line 1014
+    invoke-virtual {v4, v0, v1}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
+
+    .line 1015
+    invoke-virtual {v4, v2, v3}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
 
     .line 1016
-    invoke-virtual {v10, v0, v1}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
+    move-object/from16 v6, p5
+
+    invoke-interface {v6, v4}, Ljava/util/List;->add(Ljava/lang/Object;)Z
 
     .line 1017
-    invoke-virtual {v10, v2, v3}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
-
-    .line 1018
-    move-object/from16 v0, p5
-
-    invoke-interface {v0, v10}, Ljava/util/List;->add(Ljava/lang/Object;)Z
-
-    .line 1019
     return-void
 .end method
 
 .method static synthetic lambda$readProcStatsHighWaterMark$5(ILjava/io/File;Ljava/lang/String;)Z
-    .registers 3
+    .registers 6
+    .param p0, "section"  # I
+    .param p1, "d"  # Ljava/io/File;
+    .param p2, "name"  # Ljava/lang/String;
 
-    .line 1599
+    .line 1597
     invoke-virtual {p2}, Ljava/lang/String;->toLowerCase()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    new-instance p2, Ljava/lang/StringBuilder;
+    new-instance v1, Ljava/lang/StringBuilder;
 
-    invoke-direct {p2}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
 
     invoke-static {p0}, Ljava/lang/String;->valueOf(I)Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v2
 
-    invoke-virtual {p2, p0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const/16 p0, 0x5f
+    const/16 v2, 0x5f
 
-    invoke-virtual {p2, p0}, Ljava/lang/StringBuilder;->append(C)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(C)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v1
 
-    invoke-virtual {p1, p0}, Ljava/lang/String;->startsWith(Ljava/lang/String;)Z
+    invoke-virtual {v0, v1}, Ljava/lang/String;->startsWith(Ljava/lang/String;)Z
 
-    move-result p0
+    move-result v0
 
-    return p0
+    return v0
 .end method
 
 .method private milliAmpHrsToNanoAmpSecs(D)J
-    .registers 5
+    .registers 9
+    .param p1, "mAh"  # D
 
-    .line 1774
-    const-wide v0, 0x41ead27480000000L  # 3.6E9
+    .line 1732
+    const-wide v0, 0xd693a400L
 
-    mul-double/2addr p1, v0
+    .line 1733
+    .local v0, "MILLI_AMP_HR_TO_NANO_AMP_SECS":J
+    const-wide v2, 0x41ead27480000000L  # 3.6E9
 
-    const-wide/high16 v0, 0x3fe0000000000000L  # 0.5
+    mul-double/2addr v2, p1
 
-    add-double/2addr p1, v0
+    const-wide/high16 v4, 0x3fe0000000000000L  # 0.5
 
-    double-to-long p1, p1
+    add-double/2addr v2, v4
 
-    return-wide p1
+    double-to-long v2, v2
+
+    return-wide v2
 .end method
 
 .method private pullAppOps(JJLjava/util/List;)V
-    .registers 21
+    .registers 23
+    .param p1, "elapsedNanos"  # J
+    .param p3, "wallClockNanos"  # J
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(JJ",
@@ -1941,34 +2114,38 @@
         }
     .end annotation
 
-    .line 2078
-    move-object v0, p0
+    .line 2037
+    .local p5, "pulledData":Ljava/util/List;, "Ljava/util/List<Landroid/os/StatsLogEventWrapper;>;"
+    move-object/from16 v1, p0
 
     invoke-static {}, Landroid/os/Binder;->clearCallingIdentity()J
 
-    move-result-wide v1
+    move-result-wide v2
 
-    .line 2080
-    :try_start_5
-    iget-object v3, v0, Lcom/android/server/stats/StatsCompanionService;->mContext:Landroid/content/Context;
+    .line 2039
+    .local v2, "token":J
+    :try_start_6
+    iget-object v0, v1, Lcom/android/server/stats/StatsCompanionService;->mContext:Landroid/content/Context;
 
     const-class v4, Landroid/app/AppOpsManager;
 
-    invoke-virtual {v3, v4}, Landroid/content/Context;->getSystemService(Ljava/lang/Class;)Ljava/lang/Object;
+    invoke-virtual {v0, v4}, Landroid/content/Context;->getSystemService(Ljava/lang/Class;)Ljava/lang/Object;
 
-    move-result-object v3
+    move-result-object v0
 
-    check-cast v3, Landroid/app/AppOpsManager;
+    check-cast v0, Landroid/app/AppOpsManager;
 
-    .line 2082
+    .line 2041
+    .local v0, "appOps":Landroid/app/AppOpsManager;
     new-instance v4, Ljava/util/concurrent/CompletableFuture;
 
     invoke-direct {v4}, Ljava/util/concurrent/CompletableFuture;-><init>()V
 
-    .line 2083
+    .line 2042
+    .local v4, "ops":Ljava/util/concurrent/CompletableFuture;, "Ljava/util/concurrent/CompletableFuture<Landroid/app/AppOpsManager$HistoricalOps;>;"
     new-instance v5, Landroid/app/AppOpsManager$HistoricalOpsRequest$Builder;
 
-    .line 2085
+    .line 2044
     invoke-static {}, Ljava/time/Instant;->now()Ljava/time/Instant;
 
     move-result-object v6
@@ -1989,224 +2166,332 @@
 
     invoke-direct {v5, v6, v7, v8, v9}, Landroid/app/AppOpsManager$HistoricalOpsRequest$Builder;-><init>(JJ)V
 
-    .line 2086
+    .line 2045
     invoke-virtual {v5}, Landroid/app/AppOpsManager$HistoricalOpsRequest$Builder;->build()Landroid/app/AppOpsManager$HistoricalOpsRequest;
 
     move-result-object v5
 
-    .line 2087
-    iget-object v0, v0, Lcom/android/server/stats/StatsCompanionService;->mContext:Landroid/content/Context;
+    .line 2046
+    .local v5, "histOpsRequest":Landroid/app/AppOpsManager$HistoricalOpsRequest;
+    iget-object v6, v1, Lcom/android/server/stats/StatsCompanionService;->mContext:Landroid/content/Context;
 
-    invoke-virtual {v0}, Landroid/content/Context;->getMainExecutor()Ljava/util/concurrent/Executor;
+    invoke-virtual {v6}, Landroid/content/Context;->getMainExecutor()Ljava/util/concurrent/Executor;
 
-    move-result-object v0
+    move-result-object v6
 
-    new-instance v6, Lcom/android/server/stats/-$$Lambda$wPejPqIRC0ueiw9uak8ULakT1R8;
+    invoke-static {v4}, Ljava/util/Objects;->requireNonNull(Ljava/lang/Object;)Ljava/lang/Object;
 
-    invoke-direct {v6, v4}, Lcom/android/server/stats/-$$Lambda$wPejPqIRC0ueiw9uak8ULakT1R8;-><init>(Ljava/util/concurrent/CompletableFuture;)V
+    new-instance v7, Lcom/android/server/stats/-$$Lambda$wPejPqIRC0ueiw9uak8ULakT1R8;
 
-    invoke-virtual {v3, v5, v0, v6}, Landroid/app/AppOpsManager;->getHistoricalOps(Landroid/app/AppOpsManager$HistoricalOpsRequest;Ljava/util/concurrent/Executor;Ljava/util/function/Consumer;)V
+    invoke-direct {v7, v4}, Lcom/android/server/stats/-$$Lambda$wPejPqIRC0ueiw9uak8ULakT1R8;-><init>(Ljava/util/concurrent/CompletableFuture;)V
 
-    .line 2089
-    const-wide/16 v5, 0x7d0
+    invoke-virtual {v0, v5, v6, v7}, Landroid/app/AppOpsManager;->getHistoricalOps(Landroid/app/AppOpsManager$HistoricalOpsRequest;Ljava/util/concurrent/Executor;Ljava/util/function/Consumer;)V
 
-    sget-object v0, Ljava/util/concurrent/TimeUnit;->MILLISECONDS:Ljava/util/concurrent/TimeUnit;
+    .line 2048
+    const-wide/16 v6, 0x7d0
 
-    invoke-virtual {v4, v5, v6, v0}, Ljava/util/concurrent/CompletableFuture;->get(JLjava/util/concurrent/TimeUnit;)Ljava/lang/Object;
+    sget-object v8, Ljava/util/concurrent/TimeUnit;->MILLISECONDS:Ljava/util/concurrent/TimeUnit;
 
-    move-result-object v0
+    invoke-virtual {v4, v6, v7, v8}, Ljava/util/concurrent/CompletableFuture;->get(JLjava/util/concurrent/TimeUnit;)Ljava/lang/Object;
 
-    check-cast v0, Landroid/app/AppOpsManager$HistoricalOps;
+    move-result-object v6
 
-    .line 2092
-    new-instance v9, Landroid/os/StatsLogEventWrapper;
+    check-cast v6, Landroid/app/AppOpsManager$HistoricalOps;
 
-    const/16 v4, 0x274c
+    .line 2051
+    .local v6, "histOps":Landroid/app/AppOpsManager$HistoricalOps;
+    new-instance v13, Landroid/os/StatsLogEventWrapper;
 
-    move-object v3, v9
+    const/16 v8, 0x274c
 
-    move-wide/from16 v5, p1
+    move-object v7, v13
 
-    move-wide/from16 v7, p3
+    move-wide/from16 v9, p1
 
-    invoke-direct/range {v3 .. v8}, Landroid/os/StatsLogEventWrapper;-><init>(IJJ)V
+    move-wide/from16 v11, p3
 
-    .line 2095
-    const/4 v3, 0x0
+    invoke-direct/range {v7 .. v12}, Landroid/os/StatsLogEventWrapper;-><init>(IJJ)V
 
-    move v4, v3
+    move-object v7, v13
 
-    :goto_58
-    invoke-virtual {v0}, Landroid/app/AppOpsManager$HistoricalOps;->getUidCount()I
+    .line 2054
+    .local v7, "e":Landroid/os/StatsLogEventWrapper;
+    const/4 v8, 0x0
 
-    move-result v5
+    move v9, v8
 
-    if-ge v4, v5, :cond_d3
+    .local v9, "uidIdx":I
+    :goto_5d
+    invoke-virtual {v6}, Landroid/app/AppOpsManager$HistoricalOps;->getUidCount()I
 
-    .line 2096
-    invoke-virtual {v0, v4}, Landroid/app/AppOpsManager$HistoricalOps;->getUidOpsAt(I)Landroid/app/AppOpsManager$HistoricalUidOps;
+    move-result v10
 
-    move-result-object v5
+    if-ge v9, v10, :cond_e5
 
-    .line 2097
-    invoke-virtual {v5}, Landroid/app/AppOpsManager$HistoricalUidOps;->getUid()I
+    .line 2055
+    invoke-virtual {v6, v9}, Landroid/app/AppOpsManager$HistoricalOps;->getUidOpsAt(I)Landroid/app/AppOpsManager$HistoricalUidOps;
 
-    move-result v6
+    move-result-object v10
 
-    .line 2098
-    move v7, v3
-
-    :goto_67
-    invoke-virtual {v5}, Landroid/app/AppOpsManager$HistoricalUidOps;->getPackageCount()I
-
-    move-result v8
-
-    if-ge v7, v8, :cond_c6
-
-    .line 2099
-    invoke-virtual {v5, v7}, Landroid/app/AppOpsManager$HistoricalUidOps;->getPackageOpsAt(I)Landroid/app/AppOpsManager$HistoricalPackageOps;
-
-    move-result-object v8
-
-    .line 2100
-    move v10, v3
-
-    :goto_72
-    invoke-virtual {v8}, Landroid/app/AppOpsManager$HistoricalPackageOps;->getOpCount()I
+    .line 2056
+    .local v10, "uidOps":Landroid/app/AppOpsManager$HistoricalUidOps;
+    invoke-virtual {v10}, Landroid/app/AppOpsManager$HistoricalUidOps;->getUid()I
 
     move-result v11
 
-    if-ge v10, v11, :cond_c1
+    .line 2057
+    .local v11, "uid":I
+    move v12, v8
 
-    .line 2101
-    invoke-virtual {v8, v10}, Landroid/app/AppOpsManager$HistoricalPackageOps;->getOpAt(I)Landroid/app/AppOpsManager$HistoricalOp;
+    .local v12, "pkgIdx":I
+    :goto_6c
+    invoke-virtual {v10}, Landroid/app/AppOpsManager$HistoricalUidOps;->getPackageCount()I
 
-    move-result-object v11
+    move-result v13
 
-    .line 2102
-    invoke-virtual {v9, v6}, Landroid/os/StatsLogEventWrapper;->writeInt(I)V
+    if-ge v12, v13, :cond_da
 
-    .line 2103
-    invoke-virtual {v8}, Landroid/app/AppOpsManager$HistoricalPackageOps;->getPackageName()Ljava/lang/String;
+    .line 2058
+    invoke-virtual {v10, v12}, Landroid/app/AppOpsManager$HistoricalUidOps;->getPackageOpsAt(I)Landroid/app/AppOpsManager$HistoricalPackageOps;
 
-    move-result-object v12
+    move-result-object v13
 
-    invoke-virtual {v9, v12}, Landroid/os/StatsLogEventWrapper;->writeString(Ljava/lang/String;)V
+    .line 2059
+    .local v13, "packageOps":Landroid/app/AppOpsManager$HistoricalPackageOps;
+    move v14, v8
 
-    .line 2104
-    invoke-virtual {v11}, Landroid/app/AppOpsManager$HistoricalOp;->getOpCode()I
+    .local v14, "opIdx":I
+    :goto_77
+    invoke-virtual {v13}, Landroid/app/AppOpsManager$HistoricalPackageOps;->getOpCount()I
 
-    move-result v12
+    move-result v15
 
-    invoke-virtual {v9, v12}, Landroid/os/StatsLogEventWrapper;->writeInt(I)V
+    if-ge v14, v15, :cond_d0
 
-    .line 2105
-    const/16 v12, 0xd
+    .line 2060
+    invoke-virtual {v13, v14}, Landroid/app/AppOpsManager$HistoricalPackageOps;->getOpAt(I)Landroid/app/AppOpsManager$HistoricalOp;
 
-    invoke-virtual {v11, v12}, Landroid/app/AppOpsManager$HistoricalOp;->getForegroundAccessCount(I)J
+    move-result-object v15
 
-    move-result-wide v13
+    .line 2061
+    .local v15, "op":Landroid/app/AppOpsManager$HistoricalOp;
+    invoke-virtual {v7, v11}, Landroid/os/StatsLogEventWrapper;->writeInt(I)V
 
-    invoke-virtual {v9, v13, v14}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
+    .line 2062
+    invoke-virtual {v13}, Landroid/app/AppOpsManager$HistoricalPackageOps;->getPackageName()Ljava/lang/String;
 
-    .line 2106
-    invoke-virtual {v11, v12}, Landroid/app/AppOpsManager$HistoricalOp;->getBackgroundAccessCount(I)J
+    move-result-object v8
 
-    move-result-wide v13
+    invoke-virtual {v7, v8}, Landroid/os/StatsLogEventWrapper;->writeString(Ljava/lang/String;)V
 
-    invoke-virtual {v9, v13, v14}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
+    .line 2063
+    invoke-virtual {v15}, Landroid/app/AppOpsManager$HistoricalOp;->getOpCode()I
 
-    .line 2107
-    invoke-virtual {v11, v12}, Landroid/app/AppOpsManager$HistoricalOp;->getForegroundRejectCount(I)J
+    move-result v8
 
-    move-result-wide v13
+    invoke-virtual {v7, v8}, Landroid/os/StatsLogEventWrapper;->writeInt(I)V
 
-    invoke-virtual {v9, v13, v14}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
+    .line 2064
+    const/16 v8, 0xd
 
-    .line 2108
-    invoke-virtual {v11, v12}, Landroid/app/AppOpsManager$HistoricalOp;->getBackgroundRejectCount(I)J
+    move-object/from16 v16, v0
 
-    move-result-wide v13
+    .end local v0  # "appOps":Landroid/app/AppOpsManager;
+    .local v16, "appOps":Landroid/app/AppOpsManager;
+    invoke-virtual {v15, v8}, Landroid/app/AppOpsManager$HistoricalOp;->getForegroundAccessCount(I)J
 
-    invoke-virtual {v9, v13, v14}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
+    move-result-wide v0
 
-    .line 2109
-    invoke-virtual {v11, v12}, Landroid/app/AppOpsManager$HistoricalOp;->getForegroundAccessDuration(I)J
+    invoke-virtual {v7, v0, v1}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
 
-    move-result-wide v13
+    .line 2065
+    invoke-virtual {v15, v8}, Landroid/app/AppOpsManager$HistoricalOp;->getBackgroundAccessCount(I)J
 
-    invoke-virtual {v9, v13, v14}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
+    move-result-wide v0
 
-    .line 2110
-    invoke-virtual {v11, v12}, Landroid/app/AppOpsManager$HistoricalOp;->getBackgroundAccessDuration(I)J
+    invoke-virtual {v7, v0, v1}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
 
-    move-result-wide v11
+    .line 2066
+    invoke-virtual {v15, v8}, Landroid/app/AppOpsManager$HistoricalOp;->getForegroundRejectCount(I)J
 
-    invoke-virtual {v9, v11, v12}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
+    move-result-wide v0
 
-    .line 2111
-    move-object/from16 v11, p5
+    invoke-virtual {v7, v0, v1}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
 
-    invoke-interface {v11, v9}, Ljava/util/List;->add(Ljava/lang/Object;)Z
-    :try_end_be
-    .catchall {:try_start_5 .. :try_end_be} :catchall_cb
+    .line 2067
+    invoke-virtual {v15, v8}, Landroid/app/AppOpsManager$HistoricalOp;->getBackgroundRejectCount(I)J
 
-    .line 2100
-    add-int/lit8 v10, v10, 0x1
+    move-result-wide v0
 
-    goto :goto_72
+    invoke-virtual {v7, v0, v1}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
 
-    .line 2098
-    :cond_c1
-    move-object/from16 v11, p5
+    .line 2068
+    invoke-virtual {v15, v8}, Landroid/app/AppOpsManager$HistoricalOp;->getForegroundAccessDuration(I)J
 
-    add-int/lit8 v7, v7, 0x1
+    move-result-wide v0
 
-    goto :goto_67
+    invoke-virtual {v7, v0, v1}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
 
-    .line 2095
-    :cond_c6
-    move-object/from16 v11, p5
+    .line 2069
+    invoke-virtual {v15, v8}, Landroid/app/AppOpsManager$HistoricalOp;->getBackgroundAccessDuration(I)J
 
-    add-int/lit8 v4, v4, 0x1
+    move-result-wide v0
 
-    goto :goto_58
+    invoke-virtual {v7, v0, v1}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
+    :try_end_c0
+    .catchall {:try_start_6 .. :try_end_c0} :catchall_ea
 
-    .line 2115
-    :catchall_cb
-    move-exception v0
+    .line 2070
+    move-object/from16 v1, p5
 
-    .line 2116
-    :try_start_cc
-    const-string v3, "StatsCompanionService"
+    :try_start_c2
+    invoke-interface {v1, v7}, Ljava/util/List;->add(Ljava/lang/Object;)Z
+    :try_end_c5
+    .catchall {:try_start_c2 .. :try_end_c5} :catchall_ce
 
-    const-string v4, "Could not read appops"
-
-    invoke-static {v3, v4, v0}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
-    :try_end_d3
-    .catchall {:try_start_cc .. :try_end_d3} :catchall_d8
-
-    .line 2118
-    :cond_d3
-    invoke-static {v1, v2}, Landroid/os/Binder;->restoreCallingIdentity(J)V
-
-    .line 2119
+    .line 2059
     nop
 
-    .line 2120
-    return-void
+    .end local v15  # "op":Landroid/app/AppOpsManager$HistoricalOp;
+    add-int/lit8 v14, v14, 0x1
 
-    .line 2118
-    :catchall_d8
+    const/4 v8, 0x0
+
+    move-object/from16 v1, p0
+
+    move-object/from16 v0, v16
+
+    goto :goto_77
+
+    .line 2074
+    .end local v4  # "ops":Ljava/util/concurrent/CompletableFuture;, "Ljava/util/concurrent/CompletableFuture<Landroid/app/AppOpsManager$HistoricalOps;>;"
+    .end local v5  # "histOpsRequest":Landroid/app/AppOpsManager$HistoricalOpsRequest;
+    .end local v6  # "histOps":Landroid/app/AppOpsManager$HistoricalOps;
+    .end local v7  # "e":Landroid/os/StatsLogEventWrapper;
+    .end local v9  # "uidIdx":I
+    .end local v10  # "uidOps":Landroid/app/AppOpsManager$HistoricalUidOps;
+    .end local v11  # "uid":I
+    .end local v12  # "pkgIdx":I
+    .end local v13  # "packageOps":Landroid/app/AppOpsManager$HistoricalPackageOps;
+    .end local v14  # "opIdx":I
+    .end local v16  # "appOps":Landroid/app/AppOpsManager;
+    :catchall_ce
     move-exception v0
 
-    invoke-static {v1, v2}, Landroid/os/Binder;->restoreCallingIdentity(J)V
+    goto :goto_ed
+
+    .line 2059
+    .restart local v0  # "appOps":Landroid/app/AppOpsManager;
+    .restart local v4  # "ops":Ljava/util/concurrent/CompletableFuture;, "Ljava/util/concurrent/CompletableFuture<Landroid/app/AppOpsManager$HistoricalOps;>;"
+    .restart local v5  # "histOpsRequest":Landroid/app/AppOpsManager$HistoricalOpsRequest;
+    .restart local v6  # "histOps":Landroid/app/AppOpsManager$HistoricalOps;
+    .restart local v7  # "e":Landroid/os/StatsLogEventWrapper;
+    .restart local v9  # "uidIdx":I
+    .restart local v10  # "uidOps":Landroid/app/AppOpsManager$HistoricalUidOps;
+    .restart local v11  # "uid":I
+    .restart local v12  # "pkgIdx":I
+    .restart local v13  # "packageOps":Landroid/app/AppOpsManager$HistoricalPackageOps;
+    .restart local v14  # "opIdx":I
+    :cond_d0
+    move-object/from16 v1, p5
+
+    move-object/from16 v16, v0
+
+    .line 2057
+    .end local v0  # "appOps":Landroid/app/AppOpsManager;
+    .end local v13  # "packageOps":Landroid/app/AppOpsManager$HistoricalPackageOps;
+    .end local v14  # "opIdx":I
+    .restart local v16  # "appOps":Landroid/app/AppOpsManager;
+    add-int/lit8 v12, v12, 0x1
+
+    const/4 v8, 0x0
+
+    move-object/from16 v1, p0
+
+    goto :goto_6c
+
+    .end local v16  # "appOps":Landroid/app/AppOpsManager;
+    .restart local v0  # "appOps":Landroid/app/AppOpsManager;
+    :cond_da
+    move-object/from16 v1, p5
+
+    move-object/from16 v16, v0
+
+    .line 2054
+    .end local v0  # "appOps":Landroid/app/AppOpsManager;
+    .end local v10  # "uidOps":Landroid/app/AppOpsManager$HistoricalUidOps;
+    .end local v11  # "uid":I
+    .end local v12  # "pkgIdx":I
+    .restart local v16  # "appOps":Landroid/app/AppOpsManager;
+    add-int/lit8 v9, v9, 0x1
+
+    const/4 v8, 0x0
+
+    move-object/from16 v1, p0
+
+    goto/16 :goto_5d
+
+    .end local v16  # "appOps":Landroid/app/AppOpsManager;
+    .restart local v0  # "appOps":Landroid/app/AppOpsManager;
+    :cond_e5
+    move-object/from16 v1, p5
+
+    move-object/from16 v16, v0
+
+    .line 2077
+    .end local v0  # "appOps":Landroid/app/AppOpsManager;
+    .end local v4  # "ops":Ljava/util/concurrent/CompletableFuture;, "Ljava/util/concurrent/CompletableFuture<Landroid/app/AppOpsManager$HistoricalOps;>;"
+    .end local v5  # "histOpsRequest":Landroid/app/AppOpsManager$HistoricalOpsRequest;
+    .end local v6  # "histOps":Landroid/app/AppOpsManager$HistoricalOps;
+    .end local v7  # "e":Landroid/os/StatsLogEventWrapper;
+    .end local v9  # "uidIdx":I
+    goto :goto_f5
+
+    .line 2074
+    :catchall_ea
+    move-exception v0
+
+    move-object/from16 v1, p5
+
+    .line 2075
+    .local v0, "t":Ljava/lang/Throwable;
+    :goto_ed
+    :try_start_ed
+    const-string v4, "StatsCompanionService"
+
+    const-string v5, "Could not read appops"
+
+    invoke-static {v4, v5, v0}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    :try_end_f4
+    .catchall {:try_start_ed .. :try_end_f4} :catchall_fa
+
+    .line 2077
+    nop
+
+    .end local v0  # "t":Ljava/lang/Throwable;
+    :goto_f5
+    invoke-static {v2, v3}, Landroid/os/Binder;->restoreCallingIdentity(J)V
+
+    .line 2078
+    nop
+
+    .line 2079
+    return-void
+
+    .line 2077
+    :catchall_fa
+    move-exception v0
+
+    invoke-static {v2, v3}, Landroid/os/Binder;->restoreCallingIdentity(J)V
 
     throw v0
 .end method
 
 .method private pullAppSize(IJJLjava/util/List;)V
-    .registers 24
+    .registers 27
+    .param p1, "tagId"  # I
+    .param p2, "elapsedNanos"  # J
+    .param p4, "wallClockNanos"  # J
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(IJJ",
@@ -2216,7 +2501,8 @@
         }
     .end annotation
 
-    .line 1457
+    .line 1455
+    .local p6, "pulledData":Ljava/util/List;, "Ljava/util/List<Landroid/os/StatsLogEventWrapper;>;"
     const-string v1, "StatsCompanionService"
 
     :try_start_2
@@ -2226,175 +2512,233 @@
 
     move-result-object v0
 
-    .line 1458
+    .line 1456
+    .local v0, "jsonStr":Ljava/lang/String;
     new-instance v2, Lorg/json/JSONObject;
 
     invoke-direct {v2, v0}, Lorg/json/JSONObject;-><init>(Ljava/lang/String;)V
 
+    .line 1457
+    .local v2, "json":Lorg/json/JSONObject;
+    const-string/jumbo v3, "queryTime"
+
+    const-wide/16 v4, -0x1
+
+    invoke-virtual {v2, v3, v4, v5}, Lorg/json/JSONObject;->optLong(Ljava/lang/String;J)J
+
+    move-result-wide v6
+
+    .line 1458
+    .local v6, "cache_time":J
+    const-string/jumbo v3, "packageNames"
+
+    invoke-virtual {v2, v3}, Lorg/json/JSONObject;->getJSONArray(Ljava/lang/String;)Lorg/json/JSONArray;
+
+    move-result-object v3
+
     .line 1459
-    const-string/jumbo v0, "queryTime"
-
-    const-wide/16 v3, -0x1
-
-    invoke-virtual {v2, v0, v3, v4}, Lorg/json/JSONObject;->optLong(Ljava/lang/String;J)J
-
-    move-result-wide v5
-
-    .line 1460
-    const-string/jumbo v0, "packageNames"
-
-    invoke-virtual {v2, v0}, Lorg/json/JSONObject;->getJSONArray(Ljava/lang/String;)Lorg/json/JSONArray;
-
-    move-result-object v0
-
-    .line 1461
-    const-string v7, "appSizes"
-
-    invoke-virtual {v2, v7}, Lorg/json/JSONObject;->getJSONArray(Ljava/lang/String;)Lorg/json/JSONArray;
-
-    move-result-object v7
-
-    .line 1462
-    const-string v8, "appDataSizes"
+    .local v3, "pkg_names":Lorg/json/JSONArray;
+    const-string v8, "appSizes"
 
     invoke-virtual {v2, v8}, Lorg/json/JSONObject;->getJSONArray(Ljava/lang/String;)Lorg/json/JSONArray;
 
     move-result-object v8
 
-    .line 1463
-    const-string v9, "cacheSizes"
+    .line 1460
+    .local v8, "app_sizes":Lorg/json/JSONArray;
+    const-string v9, "appDataSizes"
 
     invoke-virtual {v2, v9}, Lorg/json/JSONObject;->getJSONArray(Ljava/lang/String;)Lorg/json/JSONArray;
 
-    move-result-object v2
+    move-result-object v9
 
-    .line 1465
-    invoke-virtual {v0}, Lorg/json/JSONArray;->length()I
+    .line 1461
+    .local v9, "app_data_sizes":Lorg/json/JSONArray;
+    const-string v10, "cacheSizes"
 
-    move-result v9
+    invoke-virtual {v2, v10}, Lorg/json/JSONObject;->getJSONArray(Ljava/lang/String;)Lorg/json/JSONArray;
 
-    .line 1466
-    invoke-virtual {v7}, Lorg/json/JSONArray;->length()I
+    move-result-object v10
 
-    move-result v10
+    .line 1463
+    .local v10, "app_cache_sizes":Lorg/json/JSONArray;
+    invoke-virtual {v3}, Lorg/json/JSONArray;->length()I
 
-    if-ne v10, v9, :cond_81
+    move-result v11
 
+    .line 1464
+    .local v11, "length":I
     invoke-virtual {v8}, Lorg/json/JSONArray;->length()I
 
-    move-result v10
+    move-result v12
 
-    if-ne v10, v9, :cond_81
+    if-ne v12, v11, :cond_85
 
-    .line 1467
-    invoke-virtual {v2}, Lorg/json/JSONArray;->length()I
+    invoke-virtual {v9}, Lorg/json/JSONArray;->length()I
 
-    move-result v10
+    move-result v12
 
-    if-eq v10, v9, :cond_46
+    if-ne v12, v11, :cond_85
 
-    goto :goto_81
+    .line 1465
+    invoke-virtual {v10}, Lorg/json/JSONArray;->length()I
 
-    .line 1471
-    :cond_46
-    const/4 v10, 0x0
+    move-result v12
 
-    :goto_47
-    if-ge v10, v9, :cond_80
+    if-eq v12, v11, :cond_48
 
-    .line 1472
-    new-instance v15, Landroid/os/StatsLogEventWrapper;
+    move-object/from16 v14, p6
 
-    move-object v11, v15
-
-    move/from16 v12, p1
-
-    move-wide/from16 v13, p2
-
-    move-object v3, v15
-
-    move-wide/from16 v15, p4
-
-    invoke-direct/range {v11 .. v16}, Landroid/os/StatsLogEventWrapper;-><init>(IJJ)V
-
-    .line 1474
-    invoke-virtual {v0, v10}, Lorg/json/JSONArray;->getString(I)Ljava/lang/String;
-
-    move-result-object v4
-
-    invoke-virtual {v3, v4}, Landroid/os/StatsLogEventWrapper;->writeString(Ljava/lang/String;)V
-
-    .line 1475
-    const-wide/16 v11, -0x1
-
-    invoke-virtual {v7, v10, v11, v12}, Lorg/json/JSONArray;->optLong(IJ)J
-
-    move-result-wide v13
-
-    invoke-virtual {v3, v13, v14}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
-
-    .line 1476
-    invoke-virtual {v8, v10, v11, v12}, Lorg/json/JSONArray;->optLong(IJ)J
-
-    move-result-wide v13
-
-    invoke-virtual {v3, v13, v14}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
-
-    .line 1477
-    invoke-virtual {v2, v10, v11, v12}, Lorg/json/JSONArray;->optLong(IJ)J
-
-    move-result-wide v13
-
-    invoke-virtual {v3, v13, v14}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
-
-    .line 1478
-    invoke-virtual {v3, v5, v6}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
-
-    .line 1479
-    move-object/from16 v4, p6
-
-    invoke-interface {v4, v3}, Ljava/util/List;->add(Ljava/lang/Object;)Z
-
-    .line 1471
-    add-int/lit8 v10, v10, 0x1
-
-    move-wide v3, v11
-
-    goto :goto_47
-
-    .line 1483
-    :cond_80
-    goto :goto_8d
-
-    .line 1468
-    :cond_81
-    :goto_81
-    const-string v0, "formatting error in diskstats cache file!"
-
-    invoke-static {v1, v0}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
-    :try_end_86
-    .catch Ljava/io/IOException; {:try_start_2 .. :try_end_86} :catch_87
-    .catch Lorg/json/JSONException; {:try_start_2 .. :try_end_86} :catch_87
+    goto :goto_87
 
     .line 1469
-    return-void
+    :cond_48
+    const/4 v12, 0x0
+
+    .local v12, "i":I
+    :goto_49
+    if-ge v12, v11, :cond_82
+
+    .line 1470
+    new-instance v19, Landroid/os/StatsLogEventWrapper;
+
+    move-object/from16 v13, v19
+
+    move/from16 v14, p1
+
+    move-wide/from16 v15, p2
+
+    move-wide/from16 v17, p4
+
+    invoke-direct/range {v13 .. v18}, Landroid/os/StatsLogEventWrapper;-><init>(IJJ)V
+
+    move-object/from16 v13, v19
+
+    .line 1472
+    .local v13, "e":Landroid/os/StatsLogEventWrapper;
+    invoke-virtual {v3, v12}, Lorg/json/JSONArray;->getString(I)Ljava/lang/String;
+
+    move-result-object v14
+
+    invoke-virtual {v13, v14}, Landroid/os/StatsLogEventWrapper;->writeString(Ljava/lang/String;)V
+
+    .line 1473
+    invoke-virtual {v8, v12, v4, v5}, Lorg/json/JSONArray;->optLong(IJ)J
+
+    move-result-wide v14
+
+    invoke-virtual {v13, v14, v15}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
+
+    .line 1474
+    invoke-virtual {v9, v12, v4, v5}, Lorg/json/JSONArray;->optLong(IJ)J
+
+    move-result-wide v14
+
+    invoke-virtual {v13, v14, v15}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
+
+    .line 1475
+    invoke-virtual {v10, v12, v4, v5}, Lorg/json/JSONArray;->optLong(IJ)J
+
+    move-result-wide v14
+
+    invoke-virtual {v13, v14, v15}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
+
+    .line 1476
+    invoke-virtual {v13, v6, v7}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
+    :try_end_79
+    .catch Ljava/io/IOException; {:try_start_2 .. :try_end_79} :catch_8f
+    .catch Lorg/json/JSONException; {:try_start_2 .. :try_end_79} :catch_8f
+
+    .line 1477
+    move-object/from16 v14, p6
+
+    :try_start_7b
+    invoke-interface {v14, v13}, Ljava/util/List;->add(Ljava/lang/Object;)Z
+
+    .line 1469
+    nop
+
+    .end local v13  # "e":Landroid/os/StatsLogEventWrapper;
+    add-int/lit8 v12, v12, 0x1
+
+    goto :goto_49
+
+    :cond_82
+    move-object/from16 v14, p6
 
     .line 1481
-    :catch_87
+    .end local v0  # "jsonStr":Ljava/lang/String;
+    .end local v2  # "json":Lorg/json/JSONObject;
+    .end local v3  # "pkg_names":Lorg/json/JSONArray;
+    .end local v6  # "cache_time":J
+    .end local v8  # "app_sizes":Lorg/json/JSONArray;
+    .end local v9  # "app_data_sizes":Lorg/json/JSONArray;
+    .end local v10  # "app_cache_sizes":Lorg/json/JSONArray;
+    .end local v11  # "length":I
+    .end local v12  # "i":I
+    goto :goto_97
+
+    .line 1464
+    .restart local v0  # "jsonStr":Ljava/lang/String;
+    .restart local v2  # "json":Lorg/json/JSONObject;
+    .restart local v3  # "pkg_names":Lorg/json/JSONArray;
+    .restart local v6  # "cache_time":J
+    .restart local v8  # "app_sizes":Lorg/json/JSONArray;
+    .restart local v9  # "app_data_sizes":Lorg/json/JSONArray;
+    .restart local v10  # "app_cache_sizes":Lorg/json/JSONArray;
+    .restart local v11  # "length":I
+    :cond_85
+    move-object/from16 v14, p6
+
+    .line 1466
+    :goto_87
+    const-string v4, "formatting error in diskstats cache file!"
+
+    invoke-static {v1, v4}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
+    :try_end_8c
+    .catch Ljava/io/IOException; {:try_start_7b .. :try_end_8c} :catch_8d
+    .catch Lorg/json/JSONException; {:try_start_7b .. :try_end_8c} :catch_8d
+
+    .line 1467
+    return-void
+
+    .line 1479
+    .end local v0  # "jsonStr":Ljava/lang/String;
+    .end local v2  # "json":Lorg/json/JSONObject;
+    .end local v3  # "pkg_names":Lorg/json/JSONArray;
+    .end local v6  # "cache_time":J
+    .end local v8  # "app_sizes":Lorg/json/JSONArray;
+    .end local v9  # "app_data_sizes":Lorg/json/JSONArray;
+    .end local v10  # "app_cache_sizes":Lorg/json/JSONArray;
+    .end local v11  # "length":I
+    :catch_8d
     move-exception v0
 
-    .line 1482
+    goto :goto_92
+
+    :catch_8f
+    move-exception v0
+
+    move-object/from16 v14, p6
+
+    .line 1480
+    .local v0, "e":Ljava/lang/Exception;
+    :goto_92
     const-string v2, "exception reading diskstats cache file"
 
     invoke-static {v1, v2, v0}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
-    .line 1484
-    :goto_8d
+    .line 1482
+    .end local v0  # "e":Ljava/lang/Exception;
+    :goto_97
     return-void
 .end method
 
 .method private pullAppsOnExternalStorageInfo(IJJLjava/util/List;)V
-    .registers 19
+    .registers 24
+    .param p1, "tagId"  # I
+    .param p2, "elapsedNanos"  # J
+    .param p4, "wallClockNanos"  # J
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(IJJ",
@@ -2404,8 +2748,9 @@
         }
     .end annotation
 
-    .line 2232
-    move-object v0, p0
+    .line 2191
+    .local p6, "pulledData":Ljava/util/List;, "Ljava/util/List<Landroid/os/StatsLogEventWrapper;>;"
+    move-object/from16 v0, p0
 
     iget-object v1, v0, Lcom/android/server/stats/StatsCompanionService;->mContext:Landroid/content/Context;
 
@@ -2413,182 +2758,197 @@
 
     move-result-object v1
 
-    .line 2233
-    iget-object v0, v0, Lcom/android/server/stats/StatsCompanionService;->mContext:Landroid/content/Context;
+    .line 2192
+    .local v1, "pm":Landroid/content/pm/PackageManager;
+    iget-object v2, v0, Lcom/android/server/stats/StatsCompanionService;->mContext:Landroid/content/Context;
 
-    const-class v2, Landroid/os/storage/StorageManager;
+    const-class v3, Landroid/os/storage/StorageManager;
 
-    invoke-virtual {v0, v2}, Landroid/content/Context;->getSystemService(Ljava/lang/Class;)Ljava/lang/Object;
-
-    move-result-object v0
-
-    check-cast v0, Landroid/os/storage/StorageManager;
-
-    .line 2234
-    const/4 v2, 0x0
-
-    invoke-virtual {v1, v2}, Landroid/content/pm/PackageManager;->getInstalledApplications(I)Ljava/util/List;
-
-    move-result-object v1
-
-    .line 2235
-    invoke-interface {v1}, Ljava/util/List;->iterator()Ljava/util/Iterator;
-
-    move-result-object v1
-
-    :goto_1a
-    invoke-interface {v1}, Ljava/util/Iterator;->hasNext()Z
-
-    move-result v2
-
-    if-eqz v2, :cond_7d
-
-    invoke-interface {v1}, Ljava/util/Iterator;->next()Ljava/lang/Object;
+    invoke-virtual {v2, v3}, Landroid/content/Context;->getSystemService(Ljava/lang/Class;)Ljava/lang/Object;
 
     move-result-object v2
 
-    check-cast v2, Landroid/content/pm/ApplicationInfo;
+    check-cast v2, Landroid/os/storage/StorageManager;
 
-    .line 2236
-    iget-object v3, v2, Landroid/content/pm/ApplicationInfo;->storageUuid:Ljava/util/UUID;
+    .line 2193
+    .local v2, "storage":Landroid/os/storage/StorageManager;
+    const/4 v3, 0x0
 
-    .line 2237
-    if-eqz v3, :cond_7a
-
-    .line 2238
-    iget-object v3, v2, Landroid/content/pm/ApplicationInfo;->storageUuid:Ljava/util/UUID;
-
-    invoke-virtual {v3}, Ljava/util/UUID;->toString()Ljava/lang/String;
+    invoke-virtual {v1, v3}, Landroid/content/pm/PackageManager;->getInstalledApplications(I)Ljava/util/List;
 
     move-result-object v3
 
-    invoke-virtual {v0, v3}, Landroid/os/storage/StorageManager;->findVolumeByUuid(Ljava/lang/String;)Landroid/os/storage/VolumeInfo;
+    .line 2194
+    .local v3, "apps":Ljava/util/List;, "Ljava/util/List<Landroid/content/pm/ApplicationInfo;>;"
+    invoke-interface {v3}, Ljava/util/List;->iterator()Ljava/util/Iterator;
 
-    move-result-object v3
+    move-result-object v4
 
-    .line 2239
-    if-eqz v3, :cond_77
+    :goto_1b
+    invoke-interface {v4}, Ljava/util/Iterator;->hasNext()Z
 
-    .line 2240
-    invoke-virtual {v3}, Landroid/os/storage/VolumeInfo;->getDisk()Landroid/os/storage/DiskInfo;
+    move-result v5
 
-    move-result-object v3
+    if-eqz v5, :cond_7e
 
-    .line 2241
-    if-eqz v3, :cond_74
+    invoke-interface {v4}, Ljava/util/Iterator;->next()Ljava/lang/Object;
 
-    .line 2242
-    nop
+    move-result-object v5
 
-    .line 2243
-    invoke-virtual {v3}, Landroid/os/storage/DiskInfo;->isSd()Z
+    check-cast v5, Landroid/content/pm/ApplicationInfo;
 
-    move-result v4
+    .line 2195
+    .local v5, "appInfo":Landroid/content/pm/ApplicationInfo;
+    iget-object v6, v5, Landroid/content/pm/ApplicationInfo;->storageUuid:Ljava/util/UUID;
 
-    const/4 v5, -0x1
+    .line 2196
+    .local v6, "storageUuid":Ljava/util/UUID;
+    if-eqz v6, :cond_7b
 
-    if-eqz v4, :cond_46
+    .line 2197
+    iget-object v7, v5, Landroid/content/pm/ApplicationInfo;->storageUuid:Ljava/util/UUID;
 
-    .line 2244
-    const/4 v3, 0x1
+    invoke-virtual {v7}, Ljava/util/UUID;->toString()Ljava/lang/String;
 
-    goto :goto_57
+    move-result-object v7
 
-    .line 2245
+    invoke-virtual {v2, v7}, Landroid/os/storage/StorageManager;->findVolumeByUuid(Ljava/lang/String;)Landroid/os/storage/VolumeInfo;
+
+    move-result-object v7
+
+    .line 2198
+    .local v7, "volumeInfo":Landroid/os/storage/VolumeInfo;
+    if-eqz v7, :cond_78
+
+    .line 2199
+    invoke-virtual {v7}, Landroid/os/storage/VolumeInfo;->getDisk()Landroid/os/storage/DiskInfo;
+
+    move-result-object v8
+
+    .line 2200
+    .local v8, "diskInfo":Landroid/os/storage/DiskInfo;
+    if-eqz v8, :cond_75
+
+    .line 2201
+    const/4 v9, -0x1
+
+    .line 2202
+    .local v9, "externalStorageType":I
+    invoke-virtual {v8}, Landroid/os/storage/DiskInfo;->isSd()Z
+
+    move-result v10
+
+    if-eqz v10, :cond_46
+
+    .line 2203
+    const/4 v9, 0x1
+
+    goto :goto_55
+
+    .line 2204
     :cond_46
-    invoke-virtual {v3}, Landroid/os/storage/DiskInfo;->isUsb()Z
+    invoke-virtual {v8}, Landroid/os/storage/DiskInfo;->isUsb()Z
 
-    move-result v3
+    move-result v10
 
-    if-eqz v3, :cond_4e
+    if-eqz v10, :cond_4e
 
-    .line 2246
-    const/4 v3, 0x2
+    .line 2205
+    const/4 v9, 0x2
 
-    goto :goto_57
+    goto :goto_55
 
-    .line 2247
+    .line 2206
     :cond_4e
-    invoke-virtual {v2}, Landroid/content/pm/ApplicationInfo;->isExternal()Z
+    invoke-virtual {v5}, Landroid/content/pm/ApplicationInfo;->isExternal()Z
 
-    move-result v3
+    move-result v10
 
-    if-eqz v3, :cond_56
+    if-eqz v10, :cond_55
 
-    .line 2248
-    const/4 v3, 0x3
+    .line 2207
+    const/4 v9, 0x3
 
-    goto :goto_57
+    .line 2210
+    :cond_55
+    :goto_55
+    const/4 v10, -0x1
 
-    .line 2247
-    :cond_56
-    move v3, v5
+    if-eq v9, v10, :cond_72
 
-    .line 2251
-    :goto_57
-    if-eq v3, v5, :cond_71
+    .line 2211
+    new-instance v10, Landroid/os/StatsLogEventWrapper;
 
-    .line 2252
-    new-instance v4, Landroid/os/StatsLogEventWrapper;
+    move-object v11, v10
 
-    move-object v6, v4
+    move/from16 v12, p1
 
-    move v7, p1
+    move-wide/from16 v13, p2
 
-    move-wide v8, p2
+    move-wide/from16 v15, p4
 
-    move-wide/from16 v10, p4
+    invoke-direct/range {v11 .. v16}, Landroid/os/StatsLogEventWrapper;-><init>(IJJ)V
 
-    invoke-direct/range {v6 .. v11}, Landroid/os/StatsLogEventWrapper;-><init>(IJJ)V
+    .line 2213
+    .local v10, "e":Landroid/os/StatsLogEventWrapper;
+    invoke-virtual {v10, v9}, Landroid/os/StatsLogEventWrapper;->writeInt(I)V
 
-    .line 2254
-    invoke-virtual {v4, v3}, Landroid/os/StatsLogEventWrapper;->writeInt(I)V
+    .line 2214
+    iget-object v11, v5, Landroid/content/pm/ApplicationInfo;->packageName:Ljava/lang/String;
 
-    .line 2255
-    iget-object v2, v2, Landroid/content/pm/ApplicationInfo;->packageName:Ljava/lang/String;
+    invoke-virtual {v10, v11}, Landroid/os/StatsLogEventWrapper;->writeString(Ljava/lang/String;)V
 
-    invoke-virtual {v4, v2}, Landroid/os/StatsLogEventWrapper;->writeString(Ljava/lang/String;)V
+    .line 2215
+    move-object/from16 v11, p6
 
-    .line 2256
-    move-object/from16 v2, p6
+    invoke-interface {v11, v10}, Ljava/util/List;->add(Ljava/lang/Object;)Z
 
-    invoke-interface {v2, v4}, Ljava/util/List;->add(Ljava/lang/Object;)Z
+    goto :goto_7d
 
-    goto :goto_7c
+    .line 2210
+    .end local v10  # "e":Landroid/os/StatsLogEventWrapper;
+    :cond_72
+    move-object/from16 v11, p6
 
-    .line 2251
-    :cond_71
-    move-object/from16 v2, p6
+    goto :goto_7d
 
-    goto :goto_7c
+    .line 2200
+    .end local v9  # "externalStorageType":I
+    :cond_75
+    move-object/from16 v11, p6
 
-    .line 2241
-    :cond_74
-    move-object/from16 v2, p6
+    goto :goto_7d
 
-    goto :goto_7c
+    .line 2198
+    .end local v8  # "diskInfo":Landroid/os/storage/DiskInfo;
+    :cond_78
+    move-object/from16 v11, p6
 
-    .line 2239
-    :cond_77
-    move-object/from16 v2, p6
+    goto :goto_7d
 
-    goto :goto_7c
+    .line 2196
+    .end local v7  # "volumeInfo":Landroid/os/storage/VolumeInfo;
+    :cond_7b
+    move-object/from16 v11, p6
 
-    .line 2237
-    :cond_7a
-    move-object/from16 v2, p6
+    .line 2220
+    .end local v5  # "appInfo":Landroid/content/pm/ApplicationInfo;
+    .end local v6  # "storageUuid":Ljava/util/UUID;
+    :goto_7d
+    goto :goto_1b
 
-    .line 2261
-    :goto_7c
-    goto :goto_1a
+    .line 2221
+    :cond_7e
+    move-object/from16 v11, p6
 
-    .line 2262
-    :cond_7d
     return-void
 .end method
 
 .method private pullBinderCallsStats(IJJLjava/util/List;)V
-    .registers 16
+    .registers 18
+    .param p1, "tagId"  # I
+    .param p2, "elapsedNanos"  # J
+    .param p4, "wallClockNanos"  # J
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(IJJ",
@@ -2598,151 +2958,168 @@
         }
     .end annotation
 
-    .line 1296
+    .line 1294
+    .local p6, "pulledData":Ljava/util/List;, "Ljava/util/List<Landroid/os/StatsLogEventWrapper;>;"
     const-class v0, Lcom/android/server/BinderCallsStatsService$Internal;
 
-    .line 1297
+    .line 1295
     invoke-static {v0}, Lcom/android/server/LocalServices;->getService(Ljava/lang/Class;)Ljava/lang/Object;
 
     move-result-object v0
 
     check-cast v0, Lcom/android/server/BinderCallsStatsService$Internal;
 
-    .line 1298
-    if-eqz v0, :cond_75
+    .line 1296
+    .local v0, "binderStats":Lcom/android/server/BinderCallsStatsService$Internal;
+    if-eqz v0, :cond_79
 
-    .line 1302
+    .line 1300
     invoke-virtual {v0}, Lcom/android/server/BinderCallsStatsService$Internal;->getExportedCallStats()Ljava/util/ArrayList;
 
     move-result-object v1
 
-    .line 1303
+    .line 1301
+    .local v1, "callStats":Ljava/util/List;, "Ljava/util/List<Lcom/android/internal/os/BinderCallsStats$ExportedCallStat;>;"
     invoke-virtual {v0}, Lcom/android/server/BinderCallsStatsService$Internal;->reset()V
 
-    .line 1304
+    .line 1302
     invoke-interface {v1}, Ljava/util/List;->iterator()Ljava/util/Iterator;
 
-    move-result-object v0
+    move-result-object v2
 
     :goto_15
-    invoke-interface {v0}, Ljava/util/Iterator;->hasNext()Z
+    invoke-interface {v2}, Ljava/util/Iterator;->hasNext()Z
 
-    move-result v1
+    move-result v3
 
-    if-eqz v1, :cond_74
+    if-eqz v3, :cond_76
 
-    invoke-interface {v0}, Ljava/util/Iterator;->next()Ljava/lang/Object;
+    invoke-interface {v2}, Ljava/util/Iterator;->next()Ljava/lang/Object;
 
-    move-result-object v1
+    move-result-object v3
 
-    check-cast v1, Lcom/android/internal/os/BinderCallsStats$ExportedCallStat;
+    check-cast v3, Lcom/android/internal/os/BinderCallsStats$ExportedCallStat;
+
+    .line 1303
+    .local v3, "callStat":Lcom/android/internal/os/BinderCallsStats$ExportedCallStat;
+    new-instance v10, Landroid/os/StatsLogEventWrapper;
+
+    move-object v4, v10
+
+    move v5, p1
+
+    move-wide v6, p2
+
+    move-wide v8, p4
+
+    invoke-direct/range {v4 .. v9}, Landroid/os/StatsLogEventWrapper;-><init>(IJJ)V
+
+    .line 1304
+    .local v4, "e":Landroid/os/StatsLogEventWrapper;
+    iget v5, v3, Lcom/android/internal/os/BinderCallsStats$ExportedCallStat;->workSourceUid:I
+
+    invoke-virtual {v4, v5}, Landroid/os/StatsLogEventWrapper;->writeInt(I)V
 
     .line 1305
-    new-instance v8, Landroid/os/StatsLogEventWrapper;
+    iget-object v5, v3, Lcom/android/internal/os/BinderCallsStats$ExportedCallStat;->className:Ljava/lang/String;
 
-    move-object v2, v8
-
-    move v3, p1
-
-    move-wide v4, p2
-
-    move-wide v6, p4
-
-    invoke-direct/range {v2 .. v7}, Landroid/os/StatsLogEventWrapper;-><init>(IJJ)V
+    invoke-virtual {v4, v5}, Landroid/os/StatsLogEventWrapper;->writeString(Ljava/lang/String;)V
 
     .line 1306
-    iget v2, v1, Lcom/android/internal/os/BinderCallsStats$ExportedCallStat;->workSourceUid:I
+    iget-object v5, v3, Lcom/android/internal/os/BinderCallsStats$ExportedCallStat;->methodName:Ljava/lang/String;
 
-    invoke-virtual {v8, v2}, Landroid/os/StatsLogEventWrapper;->writeInt(I)V
+    invoke-virtual {v4, v5}, Landroid/os/StatsLogEventWrapper;->writeString(Ljava/lang/String;)V
 
     .line 1307
-    iget-object v2, v1, Lcom/android/internal/os/BinderCallsStats$ExportedCallStat;->className:Ljava/lang/String;
+    iget-wide v5, v3, Lcom/android/internal/os/BinderCallsStats$ExportedCallStat;->callCount:J
 
-    invoke-virtual {v8, v2}, Landroid/os/StatsLogEventWrapper;->writeString(Ljava/lang/String;)V
+    invoke-virtual {v4, v5, v6}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
 
     .line 1308
-    iget-object v2, v1, Lcom/android/internal/os/BinderCallsStats$ExportedCallStat;->methodName:Ljava/lang/String;
+    iget-wide v5, v3, Lcom/android/internal/os/BinderCallsStats$ExportedCallStat;->exceptionCount:J
 
-    invoke-virtual {v8, v2}, Landroid/os/StatsLogEventWrapper;->writeString(Ljava/lang/String;)V
+    invoke-virtual {v4, v5, v6}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
 
     .line 1309
-    iget-wide v2, v1, Lcom/android/internal/os/BinderCallsStats$ExportedCallStat;->callCount:J
+    iget-wide v5, v3, Lcom/android/internal/os/BinderCallsStats$ExportedCallStat;->latencyMicros:J
 
-    invoke-virtual {v8, v2, v3}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
+    invoke-virtual {v4, v5, v6}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
 
     .line 1310
-    iget-wide v2, v1, Lcom/android/internal/os/BinderCallsStats$ExportedCallStat;->exceptionCount:J
+    iget-wide v5, v3, Lcom/android/internal/os/BinderCallsStats$ExportedCallStat;->maxLatencyMicros:J
 
-    invoke-virtual {v8, v2, v3}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
+    invoke-virtual {v4, v5, v6}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
 
     .line 1311
-    iget-wide v2, v1, Lcom/android/internal/os/BinderCallsStats$ExportedCallStat;->latencyMicros:J
+    iget-wide v5, v3, Lcom/android/internal/os/BinderCallsStats$ExportedCallStat;->cpuTimeMicros:J
 
-    invoke-virtual {v8, v2, v3}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
+    invoke-virtual {v4, v5, v6}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
 
     .line 1312
-    iget-wide v2, v1, Lcom/android/internal/os/BinderCallsStats$ExportedCallStat;->maxLatencyMicros:J
+    iget-wide v5, v3, Lcom/android/internal/os/BinderCallsStats$ExportedCallStat;->maxCpuTimeMicros:J
 
-    invoke-virtual {v8, v2, v3}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
+    invoke-virtual {v4, v5, v6}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
 
     .line 1313
-    iget-wide v2, v1, Lcom/android/internal/os/BinderCallsStats$ExportedCallStat;->cpuTimeMicros:J
+    iget-wide v5, v3, Lcom/android/internal/os/BinderCallsStats$ExportedCallStat;->maxReplySizeBytes:J
 
-    invoke-virtual {v8, v2, v3}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
+    invoke-virtual {v4, v5, v6}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
 
     .line 1314
-    iget-wide v2, v1, Lcom/android/internal/os/BinderCallsStats$ExportedCallStat;->maxCpuTimeMicros:J
+    iget-wide v5, v3, Lcom/android/internal/os/BinderCallsStats$ExportedCallStat;->maxRequestSizeBytes:J
 
-    invoke-virtual {v8, v2, v3}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
+    invoke-virtual {v4, v5, v6}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
 
     .line 1315
-    iget-wide v2, v1, Lcom/android/internal/os/BinderCallsStats$ExportedCallStat;->maxReplySizeBytes:J
+    iget-wide v5, v3, Lcom/android/internal/os/BinderCallsStats$ExportedCallStat;->recordedCallCount:J
 
-    invoke-virtual {v8, v2, v3}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
+    invoke-virtual {v4, v5, v6}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
 
     .line 1316
-    iget-wide v2, v1, Lcom/android/internal/os/BinderCallsStats$ExportedCallStat;->maxRequestSizeBytes:J
+    iget-boolean v5, v3, Lcom/android/internal/os/BinderCallsStats$ExportedCallStat;->screenInteractive:Z
 
-    invoke-virtual {v8, v2, v3}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
+    invoke-virtual {v4, v5}, Landroid/os/StatsLogEventWrapper;->writeInt(I)V
 
     .line 1317
-    iget-wide v2, v1, Lcom/android/internal/os/BinderCallsStats$ExportedCallStat;->recordedCallCount:J
+    iget v5, v3, Lcom/android/internal/os/BinderCallsStats$ExportedCallStat;->callingUid:I
 
-    invoke-virtual {v8, v2, v3}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
+    invoke-virtual {v4, v5}, Landroid/os/StatsLogEventWrapper;->writeInt(I)V
 
     .line 1318
-    iget-boolean v2, v1, Lcom/android/internal/os/BinderCallsStats$ExportedCallStat;->screenInteractive:Z
+    move-object/from16 v5, p6
 
-    invoke-virtual {v8, v2}, Landroid/os/StatsLogEventWrapper;->writeInt(I)V
+    invoke-interface {v5, v4}, Ljava/util/List;->add(Ljava/lang/Object;)Z
 
     .line 1319
-    iget v1, v1, Lcom/android/internal/os/BinderCallsStats$ExportedCallStat;->callingUid:I
-
-    invoke-virtual {v8, v1}, Landroid/os/StatsLogEventWrapper;->writeInt(I)V
-
-    .line 1320
-    invoke-interface {p6, v8}, Ljava/util/List;->add(Ljava/lang/Object;)Z
-
-    .line 1321
+    .end local v3  # "callStat":Lcom/android/internal/os/BinderCallsStats$ExportedCallStat;
+    .end local v4  # "e":Landroid/os/StatsLogEventWrapper;
     goto :goto_15
 
-    .line 1322
-    :cond_74
+    .line 1320
+    :cond_76
+    move-object/from16 v5, p6
+
     return-void
 
-    .line 1299
-    :cond_75
-    new-instance p1, Ljava/lang/IllegalStateException;
+    .line 1297
+    .end local v1  # "callStats":Ljava/util/List;, "Ljava/util/List<Lcom/android/internal/os/BinderCallsStats$ExportedCallStat;>;"
+    :cond_79
+    move-object/from16 v5, p6
 
-    const-string p2, "binderStats is null"
+    new-instance v1, Ljava/lang/IllegalStateException;
 
-    invoke-direct {p1, p2}, Ljava/lang/IllegalStateException;-><init>(Ljava/lang/String;)V
+    const-string v2, "binderStats is null"
 
-    throw p1
+    invoke-direct {v1, v2}, Ljava/lang/IllegalStateException;-><init>(Ljava/lang/String;)V
+
+    throw v1
 .end method
 
 .method private pullBinderCallsStatsExceptions(IJJLjava/util/List;)V
-    .registers 16
+    .registers 18
+    .param p1, "tagId"  # I
+    .param p2, "elapsedNanos"  # J
+    .param p4, "wallClockNanos"  # J
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(IJJ",
@@ -2752,104 +3129,121 @@
         }
     .end annotation
 
-    .line 1327
+    .line 1325
+    .local p6, "pulledData":Ljava/util/List;, "Ljava/util/List<Landroid/os/StatsLogEventWrapper;>;"
     const-class v0, Lcom/android/server/BinderCallsStatsService$Internal;
 
-    .line 1328
+    .line 1326
     invoke-static {v0}, Lcom/android/server/LocalServices;->getService(Ljava/lang/Class;)Ljava/lang/Object;
 
     move-result-object v0
 
     check-cast v0, Lcom/android/server/BinderCallsStatsService$Internal;
 
-    .line 1329
-    if-eqz v0, :cond_46
+    .line 1327
+    .local v0, "binderStats":Lcom/android/server/BinderCallsStatsService$Internal;
+    if-eqz v0, :cond_4a
 
-    .line 1333
+    .line 1331
     invoke-virtual {v0}, Lcom/android/server/BinderCallsStatsService$Internal;->getExportedExceptionStats()Landroid/util/ArrayMap;
-
-    move-result-object v0
-
-    .line 1336
-    invoke-virtual {v0}, Landroid/util/ArrayMap;->entrySet()Ljava/util/Set;
-
-    move-result-object v0
-
-    invoke-interface {v0}, Ljava/util/Set;->iterator()Ljava/util/Iterator;
-
-    move-result-object v0
-
-    :goto_16
-    invoke-interface {v0}, Ljava/util/Iterator;->hasNext()Z
-
-    move-result v1
-
-    if-eqz v1, :cond_45
-
-    invoke-interface {v0}, Ljava/util/Iterator;->next()Ljava/lang/Object;
 
     move-result-object v1
 
-    check-cast v1, Ljava/util/Map$Entry;
-
-    .line 1337
-    new-instance v8, Landroid/os/StatsLogEventWrapper;
-
-    move-object v2, v8
-
-    move v3, p1
-
-    move-wide v4, p2
-
-    move-wide v6, p4
-
-    invoke-direct/range {v2 .. v7}, Landroid/os/StatsLogEventWrapper;-><init>(IJJ)V
-
-    .line 1338
-    invoke-interface {v1}, Ljava/util/Map$Entry;->getKey()Ljava/lang/Object;
+    .line 1334
+    .local v1, "exceptionStats":Landroid/util/ArrayMap;, "Landroid/util/ArrayMap<Ljava/lang/String;Ljava/lang/Integer;>;"
+    invoke-virtual {v1}, Landroid/util/ArrayMap;->entrySet()Ljava/util/Set;
 
     move-result-object v2
 
-    check-cast v2, Ljava/lang/String;
+    invoke-interface {v2}, Ljava/util/Set;->iterator()Ljava/util/Iterator;
 
-    invoke-virtual {v8, v2}, Landroid/os/StatsLogEventWrapper;->writeString(Ljava/lang/String;)V
+    move-result-object v2
+
+    :goto_16
+    invoke-interface {v2}, Ljava/util/Iterator;->hasNext()Z
+
+    move-result v3
+
+    if-eqz v3, :cond_47
+
+    invoke-interface {v2}, Ljava/util/Iterator;->next()Ljava/lang/Object;
+
+    move-result-object v3
+
+    check-cast v3, Ljava/util/Map$Entry;
+
+    .line 1335
+    .local v3, "entry":Ljava/util/Map$Entry;, "Ljava/util/Map$Entry<Ljava/lang/String;Ljava/lang/Integer;>;"
+    new-instance v10, Landroid/os/StatsLogEventWrapper;
+
+    move-object v4, v10
+
+    move v5, p1
+
+    move-wide v6, p2
+
+    move-wide v8, p4
+
+    invoke-direct/range {v4 .. v9}, Landroid/os/StatsLogEventWrapper;-><init>(IJJ)V
+
+    .line 1336
+    .local v4, "e":Landroid/os/StatsLogEventWrapper;
+    invoke-interface {v3}, Ljava/util/Map$Entry;->getKey()Ljava/lang/Object;
+
+    move-result-object v5
+
+    check-cast v5, Ljava/lang/String;
+
+    invoke-virtual {v4, v5}, Landroid/os/StatsLogEventWrapper;->writeString(Ljava/lang/String;)V
+
+    .line 1337
+    invoke-interface {v3}, Ljava/util/Map$Entry;->getValue()Ljava/lang/Object;
+
+    move-result-object v5
+
+    check-cast v5, Ljava/lang/Integer;
+
+    invoke-virtual {v5}, Ljava/lang/Integer;->intValue()I
+
+    move-result v5
+
+    invoke-virtual {v4, v5}, Landroid/os/StatsLogEventWrapper;->writeInt(I)V
+
+    .line 1338
+    move-object/from16 v5, p6
+
+    invoke-interface {v5, v4}, Ljava/util/List;->add(Ljava/lang/Object;)Z
 
     .line 1339
-    invoke-interface {v1}, Ljava/util/Map$Entry;->getValue()Ljava/lang/Object;
-
-    move-result-object v1
-
-    check-cast v1, Ljava/lang/Integer;
-
-    invoke-virtual {v1}, Ljava/lang/Integer;->intValue()I
-
-    move-result v1
-
-    invoke-virtual {v8, v1}, Landroid/os/StatsLogEventWrapper;->writeInt(I)V
-
-    .line 1340
-    invoke-interface {p6, v8}, Ljava/util/List;->add(Ljava/lang/Object;)Z
-
-    .line 1341
+    .end local v3  # "entry":Ljava/util/Map$Entry;, "Ljava/util/Map$Entry<Ljava/lang/String;Ljava/lang/Integer;>;"
+    .end local v4  # "e":Landroid/os/StatsLogEventWrapper;
     goto :goto_16
 
-    .line 1342
-    :cond_45
+    .line 1340
+    :cond_47
+    move-object/from16 v5, p6
+
     return-void
 
-    .line 1330
-    :cond_46
-    new-instance p1, Ljava/lang/IllegalStateException;
+    .line 1328
+    .end local v1  # "exceptionStats":Landroid/util/ArrayMap;, "Landroid/util/ArrayMap<Ljava/lang/String;Ljava/lang/Integer;>;"
+    :cond_4a
+    move-object/from16 v5, p6
 
-    const-string p2, "binderStats is null"
+    new-instance v1, Ljava/lang/IllegalStateException;
 
-    invoke-direct {p1, p2}, Ljava/lang/IllegalStateException;-><init>(Ljava/lang/String;)V
+    const-string v2, "binderStats is null"
 
-    throw p1
+    invoke-direct {v1, v2}, Ljava/lang/IllegalStateException;-><init>(Ljava/lang/String;)V
+
+    throw v1
 .end method
 
 .method private pullBluetoothActivityInfo(IJJLjava/util/List;)V
     .registers 15
+    .param p1, "tagId"  # I
+    .param p2, "elapsedNanos"  # J
+    .param p4, "wallClockNanos"  # J
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(IJJ",
@@ -2859,12 +3253,14 @@
         }
     .end annotation
 
-    .line 1131
+    .line 1129
+    .local p6, "pulledData":Ljava/util/List;, "Ljava/util/List<Landroid/os/StatsLogEventWrapper;>;"
     invoke-direct {p0}, Lcom/android/server/stats/StatsCompanionService;->fetchBluetoothData()Landroid/bluetooth/BluetoothActivityEnergyInfo;
 
     move-result-object v0
 
-    .line 1132
+    .line 1130
+    .local v0, "info":Landroid/bluetooth/BluetoothActivityEnergyInfo;
     new-instance v7, Landroid/os/StatsLogEventWrapper;
 
     move-object v1, v7
@@ -2877,57 +3273,61 @@
 
     invoke-direct/range {v1 .. v6}, Landroid/os/StatsLogEventWrapper;-><init>(IJJ)V
 
-    .line 1133
+    .line 1131
+    .local v1, "e":Landroid/os/StatsLogEventWrapper;
     invoke-virtual {v0}, Landroid/bluetooth/BluetoothActivityEnergyInfo;->getTimeStamp()J
 
-    move-result-wide p1
+    move-result-wide v2
 
-    invoke-virtual {v7, p1, p2}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
+    invoke-virtual {v1, v2, v3}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
 
-    .line 1134
+    .line 1132
     invoke-virtual {v0}, Landroid/bluetooth/BluetoothActivityEnergyInfo;->getBluetoothStackState()I
 
-    move-result p1
+    move-result v2
 
-    invoke-virtual {v7, p1}, Landroid/os/StatsLogEventWrapper;->writeInt(I)V
+    invoke-virtual {v1, v2}, Landroid/os/StatsLogEventWrapper;->writeInt(I)V
 
-    .line 1135
+    .line 1133
     invoke-virtual {v0}, Landroid/bluetooth/BluetoothActivityEnergyInfo;->getControllerTxTimeMillis()J
 
-    move-result-wide p1
+    move-result-wide v2
 
-    invoke-virtual {v7, p1, p2}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
+    invoke-virtual {v1, v2, v3}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
 
-    .line 1136
+    .line 1134
     invoke-virtual {v0}, Landroid/bluetooth/BluetoothActivityEnergyInfo;->getControllerRxTimeMillis()J
 
-    move-result-wide p1
+    move-result-wide v2
 
-    invoke-virtual {v7, p1, p2}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
+    invoke-virtual {v1, v2, v3}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
 
-    .line 1137
+    .line 1135
     invoke-virtual {v0}, Landroid/bluetooth/BluetoothActivityEnergyInfo;->getControllerIdleTimeMillis()J
 
-    move-result-wide p1
+    move-result-wide v2
 
-    invoke-virtual {v7, p1, p2}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
+    invoke-virtual {v1, v2, v3}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
 
-    .line 1138
+    .line 1136
     invoke-virtual {v0}, Landroid/bluetooth/BluetoothActivityEnergyInfo;->getControllerEnergyUsed()J
 
-    move-result-wide p1
+    move-result-wide v2
 
-    invoke-virtual {v7, p1, p2}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
+    invoke-virtual {v1, v2, v3}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
 
-    .line 1139
-    invoke-interface {p6, v7}, Ljava/util/List;->add(Ljava/lang/Object;)Z
+    .line 1137
+    invoke-interface {p6, v1}, Ljava/util/List;->add(Ljava/lang/Object;)Z
 
-    .line 1140
+    .line 1138
     return-void
 .end method
 
 .method private pullBluetoothBytesTransfer(IJJLjava/util/List;)V
-    .registers 18
+    .registers 19
+    .param p1, "tagId"  # I
+    .param p2, "elapsedNanos"  # J
+    .param p4, "wallClockNanos"  # J
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(IJJ",
@@ -2937,83 +3337,101 @@
         }
     .end annotation
 
-    .line 954
+    .line 952
+    .local p6, "pulledData":Ljava/util/List;, "Ljava/util/List<Landroid/os/StatsLogEventWrapper;>;"
     invoke-direct {p0}, Lcom/android/server/stats/StatsCompanionService;->fetchBluetoothData()Landroid/bluetooth/BluetoothActivityEnergyInfo;
 
     move-result-object v0
 
-    .line 955
+    .line 953
+    .local v0, "info":Landroid/bluetooth/BluetoothActivityEnergyInfo;
     invoke-virtual {v0}, Landroid/bluetooth/BluetoothActivityEnergyInfo;->getUidTraffic()[Landroid/bluetooth/UidTraffic;
 
     move-result-object v1
 
-    if-eqz v1, :cond_3a
+    if-eqz v1, :cond_3e
 
-    .line 956
+    .line 954
     invoke-virtual {v0}, Landroid/bluetooth/BluetoothActivityEnergyInfo;->getUidTraffic()[Landroid/bluetooth/UidTraffic;
 
-    move-result-object v0
+    move-result-object v1
 
-    array-length v1, v0
+    array-length v2, v1
 
-    const/4 v2, 0x0
+    const/4 v3, 0x0
 
     :goto_10
-    if-ge v2, v1, :cond_3a
+    if-ge v3, v2, :cond_3b
 
-    aget-object v3, v0, v2
+    aget-object v4, v1, v3
+
+    .line 955
+    .local v4, "traffic":Landroid/bluetooth/UidTraffic;
+    new-instance v11, Landroid/os/StatsLogEventWrapper;
+
+    move-object v5, v11
+
+    move v6, p1
+
+    move-wide v7, p2
+
+    move-wide/from16 v9, p4
+
+    invoke-direct/range {v5 .. v10}, Landroid/os/StatsLogEventWrapper;-><init>(IJJ)V
 
     .line 957
-    new-instance v10, Landroid/os/StatsLogEventWrapper;
+    .local v5, "e":Landroid/os/StatsLogEventWrapper;
+    invoke-virtual {v4}, Landroid/bluetooth/UidTraffic;->getUid()I
 
-    move-object v4, v10
+    move-result v6
 
-    move v5, p1
+    invoke-virtual {v5, v6}, Landroid/os/StatsLogEventWrapper;->writeInt(I)V
 
-    move-wide v6, p2
+    .line 958
+    invoke-virtual {v4}, Landroid/bluetooth/UidTraffic;->getRxBytes()J
 
-    move-wide v8, p4
+    move-result-wide v6
 
-    invoke-direct/range {v4 .. v9}, Landroid/os/StatsLogEventWrapper;-><init>(IJJ)V
+    invoke-virtual {v5, v6, v7}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
 
     .line 959
-    invoke-virtual {v3}, Landroid/bluetooth/UidTraffic;->getUid()I
+    invoke-virtual {v4}, Landroid/bluetooth/UidTraffic;->getTxBytes()J
 
-    move-result v4
+    move-result-wide v6
 
-    invoke-virtual {v10, v4}, Landroid/os/StatsLogEventWrapper;->writeInt(I)V
+    invoke-virtual {v5, v6, v7}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
 
     .line 960
-    invoke-virtual {v3}, Landroid/bluetooth/UidTraffic;->getRxBytes()J
+    move-object/from16 v6, p6
 
-    move-result-wide v4
+    invoke-interface {v6, v5}, Ljava/util/List;->add(Ljava/lang/Object;)Z
 
-    invoke-virtual {v10, v4, v5}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
-
-    .line 961
-    invoke-virtual {v3}, Landroid/bluetooth/UidTraffic;->getTxBytes()J
-
-    move-result-wide v3
-
-    invoke-virtual {v10, v3, v4}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
-
-    .line 962
-    move-object/from16 v3, p6
-
-    invoke-interface {v3, v10}, Ljava/util/List;->add(Ljava/lang/Object;)Z
-
-    .line 956
-    add-int/lit8 v2, v2, 0x1
+    .line 954
+    .end local v4  # "traffic":Landroid/bluetooth/UidTraffic;
+    .end local v5  # "e":Landroid/os/StatsLogEventWrapper;
+    add-int/lit8 v3, v3, 0x1
 
     goto :goto_10
 
-    .line 965
-    :cond_3a
+    :cond_3b
+    move-object/from16 v6, p6
+
+    goto :goto_40
+
+    .line 953
+    :cond_3e
+    move-object/from16 v6, p6
+
+    .line 963
+    :goto_40
     return-void
 .end method
 
 .method private pullBuildInformation(IJJLjava/util/List;)V
     .registers 14
+    .param p1, "tagId"  # I
+    .param p2, "elapsedNanos"  # J
+    .param p4, "wallClockNanos"  # J
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(IJJ",
@@ -3023,7 +3441,8 @@
         }
     .end annotation
 
-    .line 1737
+    .line 1696
+    .local p6, "pulledData":Ljava/util/List;, "Ljava/util/List<Landroid/os/StatsLogEventWrapper;>;"
     new-instance v6, Landroid/os/StatsLogEventWrapper;
 
     move-object v0, v6
@@ -3036,60 +3455,64 @@
 
     invoke-direct/range {v0 .. v5}, Landroid/os/StatsLogEventWrapper;-><init>(IJJ)V
 
-    .line 1738
-    sget-object p1, Landroid/os/Build;->FINGERPRINT:Ljava/lang/String;
+    .line 1697
+    .local v0, "e":Landroid/os/StatsLogEventWrapper;
+    sget-object v1, Landroid/os/Build;->FINGERPRINT:Ljava/lang/String;
 
-    invoke-virtual {v6, p1}, Landroid/os/StatsLogEventWrapper;->writeString(Ljava/lang/String;)V
+    invoke-virtual {v0, v1}, Landroid/os/StatsLogEventWrapper;->writeString(Ljava/lang/String;)V
 
-    .line 1739
-    sget-object p1, Landroid/os/Build;->BRAND:Ljava/lang/String;
+    .line 1698
+    sget-object v1, Landroid/os/Build;->BRAND:Ljava/lang/String;
 
-    invoke-virtual {v6, p1}, Landroid/os/StatsLogEventWrapper;->writeString(Ljava/lang/String;)V
+    invoke-virtual {v0, v1}, Landroid/os/StatsLogEventWrapper;->writeString(Ljava/lang/String;)V
 
-    .line 1740
-    sget-object p1, Landroid/os/Build;->PRODUCT:Ljava/lang/String;
+    .line 1699
+    sget-object v1, Landroid/os/Build;->PRODUCT:Ljava/lang/String;
 
-    invoke-virtual {v6, p1}, Landroid/os/StatsLogEventWrapper;->writeString(Ljava/lang/String;)V
+    invoke-virtual {v0, v1}, Landroid/os/StatsLogEventWrapper;->writeString(Ljava/lang/String;)V
 
-    .line 1741
-    sget-object p1, Landroid/os/Build;->DEVICE:Ljava/lang/String;
+    .line 1700
+    sget-object v1, Landroid/os/Build;->DEVICE:Ljava/lang/String;
 
-    invoke-virtual {v6, p1}, Landroid/os/StatsLogEventWrapper;->writeString(Ljava/lang/String;)V
+    invoke-virtual {v0, v1}, Landroid/os/StatsLogEventWrapper;->writeString(Ljava/lang/String;)V
 
-    .line 1742
-    sget-object p1, Landroid/os/Build$VERSION;->RELEASE:Ljava/lang/String;
+    .line 1701
+    sget-object v1, Landroid/os/Build$VERSION;->RELEASE:Ljava/lang/String;
 
-    invoke-virtual {v6, p1}, Landroid/os/StatsLogEventWrapper;->writeString(Ljava/lang/String;)V
+    invoke-virtual {v0, v1}, Landroid/os/StatsLogEventWrapper;->writeString(Ljava/lang/String;)V
 
-    .line 1743
-    sget-object p1, Landroid/os/Build;->ID:Ljava/lang/String;
+    .line 1702
+    sget-object v1, Landroid/os/Build;->ID:Ljava/lang/String;
 
-    invoke-virtual {v6, p1}, Landroid/os/StatsLogEventWrapper;->writeString(Ljava/lang/String;)V
+    invoke-virtual {v0, v1}, Landroid/os/StatsLogEventWrapper;->writeString(Ljava/lang/String;)V
 
-    .line 1744
-    sget-object p1, Landroid/os/Build$VERSION;->INCREMENTAL:Ljava/lang/String;
+    .line 1703
+    sget-object v1, Landroid/os/Build$VERSION;->INCREMENTAL:Ljava/lang/String;
 
-    invoke-virtual {v6, p1}, Landroid/os/StatsLogEventWrapper;->writeString(Ljava/lang/String;)V
+    invoke-virtual {v0, v1}, Landroid/os/StatsLogEventWrapper;->writeString(Ljava/lang/String;)V
 
-    .line 1745
-    sget-object p1, Landroid/os/Build;->TYPE:Ljava/lang/String;
+    .line 1704
+    sget-object v1, Landroid/os/Build;->TYPE:Ljava/lang/String;
 
-    invoke-virtual {v6, p1}, Landroid/os/StatsLogEventWrapper;->writeString(Ljava/lang/String;)V
+    invoke-virtual {v0, v1}, Landroid/os/StatsLogEventWrapper;->writeString(Ljava/lang/String;)V
 
-    .line 1746
-    sget-object p1, Landroid/os/Build;->TAGS:Ljava/lang/String;
+    .line 1705
+    sget-object v1, Landroid/os/Build;->TAGS:Ljava/lang/String;
 
-    invoke-virtual {v6, p1}, Landroid/os/StatsLogEventWrapper;->writeString(Ljava/lang/String;)V
+    invoke-virtual {v0, v1}, Landroid/os/StatsLogEventWrapper;->writeString(Ljava/lang/String;)V
 
-    .line 1747
-    invoke-interface {p6, v6}, Ljava/util/List;->add(Ljava/lang/Object;)Z
+    .line 1706
+    invoke-interface {p6, v0}, Ljava/util/List;->add(Ljava/lang/Object;)Z
 
-    .line 1748
+    .line 1707
     return-void
 .end method
 
 .method private pullCategorySize(IJJLjava/util/List;)V
-    .registers 22
+    .registers 23
+    .param p1, "tagId"  # I
+    .param p2, "elapsedNanos"  # J
+    .param p4, "wallClockNanos"  # J
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(IJJ",
@@ -3099,351 +3522,383 @@
         }
     .end annotation
 
-    move-object/from16 v0, p6
+    .local p6, "pulledData":Ljava/util/List;, "Ljava/util/List<Landroid/os/StatsLogEventWrapper;>;"
+    move-object/from16 v1, p6
 
-    .line 1489
+    .line 1487
     :try_start_2
-    const-string v1, "/data/system/diskstats_cache.json"
+    const-string v0, "/data/system/diskstats_cache.json"
 
-    invoke-static {v1}, Llibcore/io/IoUtils;->readFileAsString(Ljava/lang/String;)Ljava/lang/String;
+    invoke-static {v0}, Llibcore/io/IoUtils;->readFileAsString(Ljava/lang/String;)Ljava/lang/String;
 
-    move-result-object v1
+    move-result-object v0
 
-    .line 1490
+    .line 1488
+    .local v0, "jsonStr":Ljava/lang/String;
     new-instance v2, Lorg/json/JSONObject;
 
-    invoke-direct {v2, v1}, Lorg/json/JSONObject;-><init>(Ljava/lang/String;)V
+    invoke-direct {v2, v0}, Lorg/json/JSONObject;-><init>(Ljava/lang/String;)V
+
+    .line 1489
+    .local v2, "json":Lorg/json/JSONObject;
+    const-string/jumbo v3, "queryTime"
+
+    const-wide/16 v4, -0x1
+
+    invoke-virtual {v2, v3, v4, v5}, Lorg/json/JSONObject;->optLong(Ljava/lang/String;J)J
+
+    move-result-wide v6
 
     .line 1491
-    const-string/jumbo v1, "queryTime"
+    .local v6, "cacheTime":J
+    new-instance v3, Landroid/os/StatsLogEventWrapper;
 
-    const-wide/16 v3, -0x1
+    move-object v8, v3
 
-    invoke-virtual {v2, v1, v3, v4}, Lorg/json/JSONObject;->optLong(Ljava/lang/String;J)J
+    move/from16 v9, p1
 
-    move-result-wide v5
+    move-wide/from16 v10, p2
+
+    move-wide/from16 v12, p4
+
+    invoke-direct/range {v8 .. v13}, Landroid/os/StatsLogEventWrapper;-><init>(IJJ)V
+
+    .line 1492
+    .local v3, "e":Landroid/os/StatsLogEventWrapper;
+    const/4 v8, 0x1
+
+    invoke-virtual {v3, v8}, Landroid/os/StatsLogEventWrapper;->writeInt(I)V
 
     .line 1493
-    new-instance v1, Landroid/os/StatsLogEventWrapper;
+    const-string v8, "appSize"
 
-    move-object v7, v1
+    invoke-virtual {v2, v8, v4, v5}, Lorg/json/JSONObject;->optLong(Ljava/lang/String;J)J
 
-    move/from16 v8, p1
+    move-result-wide v8
 
-    move-wide/from16 v9, p2
-
-    move-wide/from16 v11, p4
-
-    invoke-direct/range {v7 .. v12}, Landroid/os/StatsLogEventWrapper;-><init>(IJJ)V
+    invoke-virtual {v3, v8, v9}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
 
     .line 1494
-    const/4 v7, 0x1
-
-    invoke-virtual {v1, v7}, Landroid/os/StatsLogEventWrapper;->writeInt(I)V
+    invoke-virtual {v3, v6, v7}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
 
     .line 1495
-    const-string v7, "appSize"
-
-    invoke-virtual {v2, v7, v3, v4}, Lorg/json/JSONObject;->optLong(Ljava/lang/String;J)J
-
-    move-result-wide v7
-
-    invoke-virtual {v1, v7, v8}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
-
-    .line 1496
-    invoke-virtual {v1, v5, v6}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
+    invoke-interface {v1, v3}, Ljava/util/List;->add(Ljava/lang/Object;)Z
 
     .line 1497
-    invoke-interface {v0, v1}, Ljava/util/List;->add(Ljava/lang/Object;)Z
+    new-instance v8, Landroid/os/StatsLogEventWrapper;
+
+    move-object v10, v8
+
+    move/from16 v11, p1
+
+    move-wide/from16 v12, p2
+
+    move-wide/from16 v14, p4
+
+    invoke-direct/range {v10 .. v15}, Landroid/os/StatsLogEventWrapper;-><init>(IJJ)V
+
+    move-object v3, v8
+
+    .line 1498
+    const/4 v8, 0x2
+
+    invoke-virtual {v3, v8}, Landroid/os/StatsLogEventWrapper;->writeInt(I)V
 
     .line 1499
-    new-instance v1, Landroid/os/StatsLogEventWrapper;
+    const-string v8, "appDataSize"
 
-    move-object v9, v1
+    invoke-virtual {v2, v8, v4, v5}, Lorg/json/JSONObject;->optLong(Ljava/lang/String;J)J
 
-    move/from16 v10, p1
+    move-result-wide v8
 
-    move-wide/from16 v11, p2
-
-    move-wide/from16 v13, p4
-
-    invoke-direct/range {v9 .. v14}, Landroid/os/StatsLogEventWrapper;-><init>(IJJ)V
+    invoke-virtual {v3, v8, v9}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
 
     .line 1500
-    const/4 v7, 0x2
-
-    invoke-virtual {v1, v7}, Landroid/os/StatsLogEventWrapper;->writeInt(I)V
+    invoke-virtual {v3, v6, v7}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
 
     .line 1501
-    const-string v7, "appDataSize"
-
-    invoke-virtual {v2, v7, v3, v4}, Lorg/json/JSONObject;->optLong(Ljava/lang/String;J)J
-
-    move-result-wide v7
-
-    invoke-virtual {v1, v7, v8}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
-
-    .line 1502
-    invoke-virtual {v1, v5, v6}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
+    invoke-interface {v1, v3}, Ljava/util/List;->add(Ljava/lang/Object;)Z
 
     .line 1503
-    invoke-interface {v0, v1}, Ljava/util/List;->add(Ljava/lang/Object;)Z
+    new-instance v8, Landroid/os/StatsLogEventWrapper;
+
+    move-object v10, v8
+
+    move/from16 v11, p1
+
+    move-wide/from16 v12, p2
+
+    move-wide/from16 v14, p4
+
+    invoke-direct/range {v10 .. v15}, Landroid/os/StatsLogEventWrapper;-><init>(IJJ)V
+
+    move-object v3, v8
+
+    .line 1504
+    const/4 v8, 0x3
+
+    invoke-virtual {v3, v8}, Landroid/os/StatsLogEventWrapper;->writeInt(I)V
 
     .line 1505
-    new-instance v1, Landroid/os/StatsLogEventWrapper;
+    const-string v8, "cacheSize"
 
-    move-object v9, v1
+    invoke-virtual {v2, v8, v4, v5}, Lorg/json/JSONObject;->optLong(Ljava/lang/String;J)J
 
-    move/from16 v10, p1
+    move-result-wide v8
 
-    move-wide/from16 v11, p2
-
-    move-wide/from16 v13, p4
-
-    invoke-direct/range {v9 .. v14}, Landroid/os/StatsLogEventWrapper;-><init>(IJJ)V
+    invoke-virtual {v3, v8, v9}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
 
     .line 1506
-    const/4 v7, 0x3
-
-    invoke-virtual {v1, v7}, Landroid/os/StatsLogEventWrapper;->writeInt(I)V
+    invoke-virtual {v3, v6, v7}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
 
     .line 1507
-    const-string v7, "cacheSize"
-
-    invoke-virtual {v2, v7, v3, v4}, Lorg/json/JSONObject;->optLong(Ljava/lang/String;J)J
-
-    move-result-wide v7
-
-    invoke-virtual {v1, v7, v8}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
-
-    .line 1508
-    invoke-virtual {v1, v5, v6}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
+    invoke-interface {v1, v3}, Ljava/util/List;->add(Ljava/lang/Object;)Z
 
     .line 1509
-    invoke-interface {v0, v1}, Ljava/util/List;->add(Ljava/lang/Object;)Z
+    new-instance v8, Landroid/os/StatsLogEventWrapper;
+
+    move-object v10, v8
+
+    move/from16 v11, p1
+
+    move-wide/from16 v12, p2
+
+    move-wide/from16 v14, p4
+
+    invoke-direct/range {v10 .. v15}, Landroid/os/StatsLogEventWrapper;-><init>(IJJ)V
+
+    move-object v3, v8
+
+    .line 1510
+    const/4 v8, 0x4
+
+    invoke-virtual {v3, v8}, Landroid/os/StatsLogEventWrapper;->writeInt(I)V
 
     .line 1511
-    new-instance v1, Landroid/os/StatsLogEventWrapper;
+    const-string/jumbo v8, "photosSize"
 
-    move-object v9, v1
+    invoke-virtual {v2, v8, v4, v5}, Lorg/json/JSONObject;->optLong(Ljava/lang/String;J)J
 
-    move/from16 v10, p1
+    move-result-wide v8
 
-    move-wide/from16 v11, p2
-
-    move-wide/from16 v13, p4
-
-    invoke-direct/range {v9 .. v14}, Landroid/os/StatsLogEventWrapper;-><init>(IJJ)V
+    invoke-virtual {v3, v8, v9}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
 
     .line 1512
-    const/4 v7, 0x4
-
-    invoke-virtual {v1, v7}, Landroid/os/StatsLogEventWrapper;->writeInt(I)V
+    invoke-virtual {v3, v6, v7}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
 
     .line 1513
-    const-string/jumbo v7, "photosSize"
-
-    invoke-virtual {v2, v7, v3, v4}, Lorg/json/JSONObject;->optLong(Ljava/lang/String;J)J
-
-    move-result-wide v7
-
-    invoke-virtual {v1, v7, v8}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
-
-    .line 1514
-    invoke-virtual {v1, v5, v6}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
+    invoke-interface {v1, v3}, Ljava/util/List;->add(Ljava/lang/Object;)Z
 
     .line 1515
-    invoke-interface {v0, v1}, Ljava/util/List;->add(Ljava/lang/Object;)Z
+    new-instance v8, Landroid/os/StatsLogEventWrapper;
+
+    move-object v10, v8
+
+    move/from16 v11, p1
+
+    move-wide/from16 v12, p2
+
+    move-wide/from16 v14, p4
+
+    invoke-direct/range {v10 .. v15}, Landroid/os/StatsLogEventWrapper;-><init>(IJJ)V
+
+    move-object v3, v8
+
+    .line 1516
+    const/4 v8, 0x5
+
+    invoke-virtual {v3, v8}, Landroid/os/StatsLogEventWrapper;->writeInt(I)V
 
     .line 1517
-    new-instance v1, Landroid/os/StatsLogEventWrapper;
+    const-string/jumbo v8, "videosSize"
 
-    move-object v9, v1
+    invoke-virtual {v2, v8, v4, v5}, Lorg/json/JSONObject;->optLong(Ljava/lang/String;J)J
 
-    move/from16 v10, p1
+    move-result-wide v8
 
-    move-wide/from16 v11, p2
-
-    move-wide/from16 v13, p4
-
-    invoke-direct/range {v9 .. v14}, Landroid/os/StatsLogEventWrapper;-><init>(IJJ)V
+    invoke-virtual {v3, v8, v9}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
 
     .line 1518
-    const/4 v7, 0x5
-
-    invoke-virtual {v1, v7}, Landroid/os/StatsLogEventWrapper;->writeInt(I)V
+    invoke-virtual {v3, v6, v7}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
 
     .line 1519
-    const-string/jumbo v7, "videosSize"
-
-    invoke-virtual {v2, v7, v3, v4}, Lorg/json/JSONObject;->optLong(Ljava/lang/String;J)J
-
-    move-result-wide v7
-
-    invoke-virtual {v1, v7, v8}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
-
-    .line 1520
-    invoke-virtual {v1, v5, v6}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
+    invoke-interface {v1, v3}, Ljava/util/List;->add(Ljava/lang/Object;)Z
 
     .line 1521
-    invoke-interface {v0, v1}, Ljava/util/List;->add(Ljava/lang/Object;)Z
+    new-instance v8, Landroid/os/StatsLogEventWrapper;
+
+    move-object v10, v8
+
+    move/from16 v11, p1
+
+    move-wide/from16 v12, p2
+
+    move-wide/from16 v14, p4
+
+    invoke-direct/range {v10 .. v15}, Landroid/os/StatsLogEventWrapper;-><init>(IJJ)V
+
+    move-object v3, v8
+
+    .line 1522
+    const/4 v8, 0x6
+
+    invoke-virtual {v3, v8}, Landroid/os/StatsLogEventWrapper;->writeInt(I)V
 
     .line 1523
-    new-instance v1, Landroid/os/StatsLogEventWrapper;
+    const-string v8, "audioSize"
 
-    move-object v9, v1
+    invoke-virtual {v2, v8, v4, v5}, Lorg/json/JSONObject;->optLong(Ljava/lang/String;J)J
 
-    move/from16 v10, p1
+    move-result-wide v8
 
-    move-wide/from16 v11, p2
-
-    move-wide/from16 v13, p4
-
-    invoke-direct/range {v9 .. v14}, Landroid/os/StatsLogEventWrapper;-><init>(IJJ)V
+    invoke-virtual {v3, v8, v9}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
 
     .line 1524
-    const/4 v7, 0x6
-
-    invoke-virtual {v1, v7}, Landroid/os/StatsLogEventWrapper;->writeInt(I)V
+    invoke-virtual {v3, v6, v7}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
 
     .line 1525
-    const-string v7, "audioSize"
-
-    invoke-virtual {v2, v7, v3, v4}, Lorg/json/JSONObject;->optLong(Ljava/lang/String;J)J
-
-    move-result-wide v7
-
-    invoke-virtual {v1, v7, v8}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
-
-    .line 1526
-    invoke-virtual {v1, v5, v6}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
+    invoke-interface {v1, v3}, Ljava/util/List;->add(Ljava/lang/Object;)Z
 
     .line 1527
-    invoke-interface {v0, v1}, Ljava/util/List;->add(Ljava/lang/Object;)Z
+    new-instance v8, Landroid/os/StatsLogEventWrapper;
+
+    move-object v10, v8
+
+    move/from16 v11, p1
+
+    move-wide/from16 v12, p2
+
+    move-wide/from16 v14, p4
+
+    invoke-direct/range {v10 .. v15}, Landroid/os/StatsLogEventWrapper;-><init>(IJJ)V
+
+    move-object v3, v8
+
+    .line 1528
+    const/4 v8, 0x7
+
+    invoke-virtual {v3, v8}, Landroid/os/StatsLogEventWrapper;->writeInt(I)V
 
     .line 1529
-    new-instance v1, Landroid/os/StatsLogEventWrapper;
+    const-string v8, "downloadsSize"
 
-    move-object v9, v1
+    invoke-virtual {v2, v8, v4, v5}, Lorg/json/JSONObject;->optLong(Ljava/lang/String;J)J
 
-    move/from16 v10, p1
+    move-result-wide v8
 
-    move-wide/from16 v11, p2
-
-    move-wide/from16 v13, p4
-
-    invoke-direct/range {v9 .. v14}, Landroid/os/StatsLogEventWrapper;-><init>(IJJ)V
+    invoke-virtual {v3, v8, v9}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
 
     .line 1530
-    const/4 v7, 0x7
-
-    invoke-virtual {v1, v7}, Landroid/os/StatsLogEventWrapper;->writeInt(I)V
+    invoke-virtual {v3, v6, v7}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
 
     .line 1531
-    const-string v7, "downloadsSize"
-
-    invoke-virtual {v2, v7, v3, v4}, Lorg/json/JSONObject;->optLong(Ljava/lang/String;J)J
-
-    move-result-wide v7
-
-    invoke-virtual {v1, v7, v8}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
-
-    .line 1532
-    invoke-virtual {v1, v5, v6}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
+    invoke-interface {v1, v3}, Ljava/util/List;->add(Ljava/lang/Object;)Z
 
     .line 1533
-    invoke-interface {v0, v1}, Ljava/util/List;->add(Ljava/lang/Object;)Z
+    new-instance v8, Landroid/os/StatsLogEventWrapper;
+
+    move-object v10, v8
+
+    move/from16 v11, p1
+
+    move-wide/from16 v12, p2
+
+    move-wide/from16 v14, p4
+
+    invoke-direct/range {v10 .. v15}, Landroid/os/StatsLogEventWrapper;-><init>(IJJ)V
+
+    move-object v3, v8
+
+    .line 1534
+    const/16 v8, 0x8
+
+    invoke-virtual {v3, v8}, Landroid/os/StatsLogEventWrapper;->writeInt(I)V
 
     .line 1535
-    new-instance v1, Landroid/os/StatsLogEventWrapper;
+    const-string/jumbo v8, "systemSize"
 
-    move-object v9, v1
+    invoke-virtual {v2, v8, v4, v5}, Lorg/json/JSONObject;->optLong(Ljava/lang/String;J)J
 
-    move/from16 v10, p1
+    move-result-wide v8
 
-    move-wide/from16 v11, p2
-
-    move-wide/from16 v13, p4
-
-    invoke-direct/range {v9 .. v14}, Landroid/os/StatsLogEventWrapper;-><init>(IJJ)V
+    invoke-virtual {v3, v8, v9}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
 
     .line 1536
-    const/16 v7, 0x8
-
-    invoke-virtual {v1, v7}, Landroid/os/StatsLogEventWrapper;->writeInt(I)V
+    invoke-virtual {v3, v6, v7}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
 
     .line 1537
-    const-string/jumbo v7, "systemSize"
-
-    invoke-virtual {v2, v7, v3, v4}, Lorg/json/JSONObject;->optLong(Ljava/lang/String;J)J
-
-    move-result-wide v7
-
-    invoke-virtual {v1, v7, v8}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
-
-    .line 1538
-    invoke-virtual {v1, v5, v6}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
+    invoke-interface {v1, v3}, Ljava/util/List;->add(Ljava/lang/Object;)Z
 
     .line 1539
-    invoke-interface {v0, v1}, Ljava/util/List;->add(Ljava/lang/Object;)Z
+    new-instance v8, Landroid/os/StatsLogEventWrapper;
+
+    move-object v10, v8
+
+    move/from16 v11, p1
+
+    move-wide/from16 v12, p2
+
+    move-wide/from16 v14, p4
+
+    invoke-direct/range {v10 .. v15}, Landroid/os/StatsLogEventWrapper;-><init>(IJJ)V
+
+    move-object v3, v8
+
+    .line 1540
+    const/16 v8, 0x9
+
+    invoke-virtual {v3, v8}, Landroid/os/StatsLogEventWrapper;->writeInt(I)V
 
     .line 1541
-    new-instance v1, Landroid/os/StatsLogEventWrapper;
+    const-string/jumbo v8, "otherSize"
 
-    move-object v9, v1
+    invoke-virtual {v2, v8, v4, v5}, Lorg/json/JSONObject;->optLong(Ljava/lang/String;J)J
 
-    move/from16 v10, p1
+    move-result-wide v4
 
-    move-wide/from16 v11, p2
-
-    move-wide/from16 v13, p4
-
-    invoke-direct/range {v9 .. v14}, Landroid/os/StatsLogEventWrapper;-><init>(IJJ)V
+    invoke-virtual {v3, v4, v5}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
 
     .line 1542
-    const/16 v7, 0x9
-
-    invoke-virtual {v1, v7}, Landroid/os/StatsLogEventWrapper;->writeInt(I)V
+    invoke-virtual {v3, v6, v7}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
 
     .line 1543
-    const-string/jumbo v7, "otherSize"
-
-    invoke-virtual {v2, v7, v3, v4}, Lorg/json/JSONObject;->optLong(Ljava/lang/String;J)J
-
-    move-result-wide v2
-
-    invoke-virtual {v1, v2, v3}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
-
-    .line 1544
-    invoke-virtual {v1, v5, v6}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
-
-    .line 1545
-    invoke-interface {v0, v1}, Ljava/util/List;->add(Ljava/lang/Object;)Z
-    :try_end_133
-    .catch Ljava/io/IOException; {:try_start_2 .. :try_end_133} :catch_134
-    .catch Lorg/json/JSONException; {:try_start_2 .. :try_end_133} :catch_134
-
-    .line 1548
-    goto :goto_13c
+    invoke-interface {v1, v3}, Ljava/util/List;->add(Ljava/lang/Object;)Z
+    :try_end_13b
+    .catch Ljava/io/IOException; {:try_start_2 .. :try_end_13b} :catch_13d
+    .catch Lorg/json/JSONException; {:try_start_2 .. :try_end_13b} :catch_13d
 
     .line 1546
-    :catch_134
+    nop
+
+    .end local v0  # "jsonStr":Ljava/lang/String;
+    .end local v2  # "json":Lorg/json/JSONObject;
+    .end local v3  # "e":Landroid/os/StatsLogEventWrapper;
+    .end local v6  # "cacheTime":J
+    goto :goto_145
+
+    .line 1544
+    :catch_13d
     move-exception v0
 
+    .line 1545
+    .local v0, "e":Ljava/lang/Exception;
+    const-string v2, "StatsCompanionService"
+
+    const-string v3, "exception reading diskstats cache file"
+
+    invoke-static {v2, v3, v0}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+
     .line 1547
-    const-string v1, "StatsCompanionService"
-
-    const-string v2, "exception reading diskstats cache file"
-
-    invoke-static {v1, v2, v0}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
-
-    .line 1549
-    :goto_13c
+    .end local v0  # "e":Ljava/lang/Exception;
+    :goto_145
     return-void
 .end method
 
 .method private pullCoolingDevices(IJJLjava/util/List;)V
-    .registers 18
+    .registers 19
+    .param p1, "tagId"  # I
+    .param p2, "elapsedNanos"  # J
+    .param p4, "wallClockNanos"  # J
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(IJJ",
@@ -3453,12 +3908,14 @@
         }
     .end annotation
 
-    .line 1944
+    .line 1903
+    .local p6, "pulledData":Ljava/util/List;, "Ljava/util/List<Landroid/os/StatsLogEventWrapper;>;"
     invoke-static {}, Landroid/os/Binder;->clearCallingIdentity()J
 
     move-result-wide v1
 
-    .line 1946
+    .line 1905
+    .local v1, "callingToken":J
     :try_start_4
     sget-object v0, Lcom/android/server/stats/StatsCompanionService;->sThermalService:Landroid/os/IThermalService;
 
@@ -3466,103 +3923,143 @@
 
     move-result-object v0
 
-    .line 1947
+    .line 1906
+    .local v0, "devices":Ljava/util/List;, "Ljava/util/List<Landroid/os/CoolingDevice;>;"
     invoke-interface {v0}, Ljava/util/List;->iterator()Ljava/util/Iterator;
-
-    move-result-object v0
-
-    :goto_e
-    invoke-interface {v0}, Ljava/util/Iterator;->hasNext()Z
-
-    move-result v3
-
-    if-eqz v3, :cond_49
-
-    invoke-interface {v0}, Ljava/util/Iterator;->next()Ljava/lang/Object;
 
     move-result-object v3
 
-    check-cast v3, Landroid/os/CoolingDevice;
-
-    .line 1948
-    new-instance v10, Landroid/os/StatsLogEventWrapper;
-
-    move-object v4, v10
-
-    move v5, p1
-
-    move-wide v6, p2
-
-    move-wide v8, p4
-
-    invoke-direct/range {v4 .. v9}, Landroid/os/StatsLogEventWrapper;-><init>(IJJ)V
-
-    .line 1950
-    invoke-virtual {v3}, Landroid/os/CoolingDevice;->getType()I
+    :goto_e
+    invoke-interface {v3}, Ljava/util/Iterator;->hasNext()Z
 
     move-result v4
 
-    invoke-virtual {v10, v4}, Landroid/os/StatsLogEventWrapper;->writeInt(I)V
+    if-eqz v4, :cond_44
 
-    .line 1951
-    invoke-virtual {v3}, Landroid/os/CoolingDevice;->getName()Ljava/lang/String;
+    invoke-interface {v3}, Ljava/util/Iterator;->next()Ljava/lang/Object;
 
     move-result-object v4
 
-    invoke-virtual {v10, v4}, Landroid/os/StatsLogEventWrapper;->writeString(Ljava/lang/String;)V
+    check-cast v4, Landroid/os/CoolingDevice;
 
-    .line 1952
-    invoke-virtual {v3}, Landroid/os/CoolingDevice;->getValue()J
+    .line 1907
+    .local v4, "device":Landroid/os/CoolingDevice;
+    new-instance v11, Landroid/os/StatsLogEventWrapper;
 
-    move-result-wide v3
+    move-object v5, v11
 
-    long-to-int v3, v3
+    move v6, p1
 
-    invoke-virtual {v10, v3}, Landroid/os/StatsLogEventWrapper;->writeInt(I)V
+    move-wide v7, p2
 
-    .line 1953
-    move-object/from16 v3, p6
+    move-wide/from16 v9, p4
 
-    invoke-interface {v3, v10}, Ljava/util/List;->add(Ljava/lang/Object;)Z
-    :try_end_3e
-    .catch Landroid/os/RemoteException; {:try_start_4 .. :try_end_3e} :catch_41
-    .catchall {:try_start_4 .. :try_end_3e} :catchall_3f
+    invoke-direct/range {v5 .. v10}, Landroid/os/StatsLogEventWrapper;-><init>(IJJ)V
 
-    .line 1954
+    move-object v5, v11
+
+    .line 1909
+    .local v5, "e":Landroid/os/StatsLogEventWrapper;
+    invoke-virtual {v4}, Landroid/os/CoolingDevice;->getType()I
+
+    move-result v6
+
+    invoke-virtual {v5, v6}, Landroid/os/StatsLogEventWrapper;->writeInt(I)V
+
+    .line 1910
+    invoke-virtual {v4}, Landroid/os/CoolingDevice;->getName()Ljava/lang/String;
+
+    move-result-object v6
+
+    invoke-virtual {v5, v6}, Landroid/os/StatsLogEventWrapper;->writeString(Ljava/lang/String;)V
+
+    .line 1911
+    invoke-virtual {v4}, Landroid/os/CoolingDevice;->getValue()J
+
+    move-result-wide v6
+
+    long-to-int v6, v6
+
+    invoke-virtual {v5, v6}, Landroid/os/StatsLogEventWrapper;->writeInt(I)V
+    :try_end_3b
+    .catch Landroid/os/RemoteException; {:try_start_4 .. :try_end_3b} :catch_4b
+    .catchall {:try_start_4 .. :try_end_3b} :catchall_47
+
+    .line 1912
+    move-object/from16 v6, p6
+
+    :try_start_3d
+    invoke-interface {v6, v5}, Ljava/util/List;->add(Ljava/lang/Object;)Z
+    :try_end_40
+    .catch Landroid/os/RemoteException; {:try_start_3d .. :try_end_40} :catch_42
+    .catchall {:try_start_3d .. :try_end_40} :catchall_5b
+
+    .line 1913
+    nop
+
+    .end local v4  # "device":Landroid/os/CoolingDevice;
+    .end local v5  # "e":Landroid/os/StatsLogEventWrapper;
     goto :goto_e
 
-    .line 1959
-    :catchall_3f
+    .line 1914
+    .end local v0  # "devices":Ljava/util/List;, "Ljava/util/List<Landroid/os/CoolingDevice;>;"
+    :catch_42
     move-exception v0
 
     goto :goto_4e
 
-    .line 1955
-    :catch_41
+    .line 1906
+    .restart local v0  # "devices":Ljava/util/List;, "Ljava/util/List<Landroid/os/CoolingDevice;>;"
+    :cond_44
+    move-object/from16 v6, p6
+
+    .line 1918
+    .end local v0  # "devices":Ljava/util/List;, "Ljava/util/List<Landroid/os/CoolingDevice;>;"
+    goto :goto_56
+
+    :catchall_47
     move-exception v0
 
-    .line 1957
-    :try_start_42
-    const-string v0, "StatsCompanionService"
+    move-object/from16 v6, p6
 
-    const-string v3, "Disconnected from thermal service. Cannot pull temperatures."
+    goto :goto_5c
 
-    invoke-static {v0, v3}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
-    :try_end_49
-    .catchall {:try_start_42 .. :try_end_49} :catchall_3f
+    .line 1914
+    :catch_4b
+    move-exception v0
 
-    .line 1959
-    :cond_49
-    invoke-static {v1, v2}, Landroid/os/Binder;->restoreCallingIdentity(J)V
+    move-object/from16 v6, p6
 
-    .line 1960
+    .line 1916
+    .local v0, "e":Landroid/os/RemoteException;
+    :goto_4e
+    :try_start_4e
+    const-string v3, "StatsCompanionService"
+
+    const-string v4, "Disconnected from thermal service. Cannot pull temperatures."
+
+    invoke-static {v3, v4}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
+    :try_end_55
+    .catchall {:try_start_4e .. :try_end_55} :catchall_5b
+
+    .line 1918
     nop
 
-    .line 1961
+    .end local v0  # "e":Landroid/os/RemoteException;
+    :goto_56
+    invoke-static {v1, v2}, Landroid/os/Binder;->restoreCallingIdentity(J)V
+
+    .line 1919
+    nop
+
+    .line 1920
     return-void
 
-    .line 1959
-    :goto_4e
+    .line 1918
+    :catchall_5b
+    move-exception v0
+
+    :goto_5c
     invoke-static {v1, v2}, Landroid/os/Binder;->restoreCallingIdentity(J)V
 
     throw v0
@@ -3570,6 +4067,9 @@
 
 .method private pullCpuTimePerFreq(IJJLjava/util/List;)V
     .registers 18
+    .param p1, "tagId"  # I
+    .param p2, "elapsedNanos"  # J
+    .param p4, "wallClockNanos"  # J
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(IJJ",
@@ -3579,9 +4079,11 @@
         }
     .end annotation
 
-    .line 994
+    .line 992
+    .local p6, "pulledData":Ljava/util/List;, "Ljava/util/List<Landroid/os/StatsLogEventWrapper;>;"
     const/4 v0, 0x0
 
+    .local v0, "cluster":I
     :goto_1
     move-object v1, p0
 
@@ -3591,25 +4093,27 @@
 
     if-ge v0, v3, :cond_38
 
-    .line 995
+    .line 993
     aget-object v2, v2, v0
 
     invoke-virtual {v2}, Lcom/android/internal/os/KernelCpuSpeedReader;->readAbsolute()[J
 
     move-result-object v2
 
-    .line 996
+    .line 994
+    .local v2, "clusterTimeMs":[J
     if-eqz v2, :cond_33
 
-    .line 997
+    .line 995
     array-length v3, v2
 
     add-int/lit8 v3, v3, -0x1
 
+    .local v3, "speed":I
     :goto_12
     if-ltz v3, :cond_30
 
-    .line 998
+    .line 996
     new-instance v10, Landroid/os/StatsLogEventWrapper;
 
     move-object v4, v10
@@ -3622,49 +4126,59 @@
 
     invoke-direct/range {v4 .. v9}, Landroid/os/StatsLogEventWrapper;-><init>(IJJ)V
 
+    .line 998
+    .local v4, "e":Landroid/os/StatsLogEventWrapper;
+    invoke-virtual {v4, v0}, Landroid/os/StatsLogEventWrapper;->writeInt(I)V
+
+    .line 999
+    invoke-virtual {v4, v3}, Landroid/os/StatsLogEventWrapper;->writeInt(I)V
+
     .line 1000
-    invoke-virtual {v10, v0}, Landroid/os/StatsLogEventWrapper;->writeInt(I)V
+    aget-wide v5, v2, v3
+
+    invoke-virtual {v4, v5, v6}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
 
     .line 1001
-    invoke-virtual {v10, v3}, Landroid/os/StatsLogEventWrapper;->writeInt(I)V
+    move-object/from16 v5, p6
 
-    .line 1002
-    aget-wide v4, v2, v3
+    invoke-interface {v5, v4}, Ljava/util/List;->add(Ljava/lang/Object;)Z
 
-    invoke-virtual {v10, v4, v5}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
-
-    .line 1003
-    move-object/from16 v4, p6
-
-    invoke-interface {v4, v10}, Ljava/util/List;->add(Ljava/lang/Object;)Z
-
-    .line 997
+    .line 995
+    .end local v4  # "e":Landroid/os/StatsLogEventWrapper;
     add-int/lit8 v3, v3, -0x1
 
     goto :goto_12
 
     :cond_30
-    move-object/from16 v4, p6
+    move-object/from16 v5, p6
 
     goto :goto_35
 
-    .line 996
-    :cond_33
-    move-object/from16 v4, p6
-
     .line 994
+    .end local v3  # "speed":I
+    :cond_33
+    move-object/from16 v5, p6
+
+    .line 992
+    .end local v2  # "clusterTimeMs":[J
     :goto_35
     add-int/lit8 v0, v0, 0x1
 
     goto :goto_1
 
-    .line 1007
     :cond_38
+    move-object/from16 v5, p6
+
+    .line 1005
+    .end local v0  # "cluster":I
     return-void
 .end method
 
 .method private pullCpuTimePerThreadFreq(IJJLjava/util/List;)V
     .registers 25
+    .param p1, "tagId"  # I
+    .param p2, "elapsedNanos"  # J
+    .param p4, "wallClockNanos"  # J
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(IJJ",
@@ -3674,89 +4188,95 @@
         }
     .end annotation
 
-    .line 1867
+    .line 1826
+    .local p6, "pulledData":Ljava/util/List;, "Ljava/util/List<Landroid/os/StatsLogEventWrapper;>;"
     move-object/from16 v0, p0
 
     iget-object v1, v0, Lcom/android/server/stats/StatsCompanionService;->mKernelCpuThreadReader:Lcom/android/internal/os/KernelCpuThreadReaderDiff;
 
-    if-eqz v1, :cond_d7
+    if-eqz v1, :cond_df
 
-    .line 1870
+    .line 1829
     nop
 
-    .line 1871
+    .line 1830
     invoke-virtual {v1}, Lcom/android/internal/os/KernelCpuThreadReaderDiff;->getProcessCpuUsageDiffed()Ljava/util/ArrayList;
 
     move-result-object v1
 
-    .line 1872
-    if-eqz v1, :cond_ce
+    .line 1831
+    .local v1, "processCpuUsages":Ljava/util/ArrayList;, "Ljava/util/ArrayList<Lcom/android/internal/os/KernelCpuThreadReader$ProcessCpuUsage;>;"
+    if-eqz v1, :cond_d4
 
-    .line 1875
-    iget-object v0, v0, Lcom/android/server/stats/StatsCompanionService;->mKernelCpuThreadReader:Lcom/android/internal/os/KernelCpuThreadReaderDiff;
+    .line 1834
+    iget-object v2, v0, Lcom/android/server/stats/StatsCompanionService;->mKernelCpuThreadReader:Lcom/android/internal/os/KernelCpuThreadReaderDiff;
 
-    invoke-virtual {v0}, Lcom/android/internal/os/KernelCpuThreadReaderDiff;->getCpuFrequenciesKhz()[I
+    invoke-virtual {v2}, Lcom/android/internal/os/KernelCpuThreadReaderDiff;->getCpuFrequenciesKhz()[I
 
-    move-result-object v0
+    move-result-object v2
 
-    .line 1876
-    array-length v2, v0
+    .line 1835
+    .local v2, "cpuFrequencies":[I
+    array-length v3, v2
 
-    const-string v3, "StatsCompanionService"
+    const-string v4, "StatsCompanionService"
 
-    const/16 v4, 0x8
+    const/16 v5, 0x8
 
-    if-gt v2, v4, :cond_b3
+    if-gt v3, v5, :cond_b7
 
-    .line 1882
-    const/4 v2, 0x0
+    .line 1841
+    const/4 v3, 0x0
 
-    move v5, v2
-
-    :goto_1c
+    .local v3, "i":I
+    :goto_1b
     invoke-virtual {v1}, Ljava/util/ArrayList;->size()I
 
     move-result v6
 
-    if-ge v5, v6, :cond_b2
+    if-ge v3, v6, :cond_b4
 
-    .line 1883
-    invoke-virtual {v1, v5}, Ljava/util/ArrayList;->get(I)Ljava/lang/Object;
+    .line 1842
+    invoke-virtual {v1, v3}, Ljava/util/ArrayList;->get(I)Ljava/lang/Object;
 
     move-result-object v6
 
     check-cast v6, Lcom/android/internal/os/KernelCpuThreadReader$ProcessCpuUsage;
 
-    .line 1884
+    .line 1843
+    .local v6, "processCpuUsage":Lcom/android/internal/os/KernelCpuThreadReader$ProcessCpuUsage;
     iget-object v7, v6, Lcom/android/internal/os/KernelCpuThreadReader$ProcessCpuUsage;->threadCpuUsages:Ljava/util/ArrayList;
 
-    .line 1886
-    move v8, v2
+    .line 1845
+    .local v7, "threadCpuUsages":Ljava/util/ArrayList;, "Ljava/util/ArrayList<Lcom/android/internal/os/KernelCpuThreadReader$ThreadCpuUsage;>;"
+    const/4 v8, 0x0
 
-    :goto_2b
+    .local v8, "j":I
+    :goto_2a
     invoke-virtual {v7}, Ljava/util/ArrayList;->size()I
 
     move-result v9
 
-    if-ge v8, v9, :cond_ac
+    if-ge v8, v9, :cond_ae
 
-    .line 1887
+    .line 1846
     invoke-virtual {v7, v8}, Ljava/util/ArrayList;->get(I)Ljava/lang/Object;
 
     move-result-object v9
 
     check-cast v9, Lcom/android/internal/os/KernelCpuThreadReader$ThreadCpuUsage;
 
-    .line 1888
+    .line 1847
+    .local v9, "threadCpuUsage":Lcom/android/internal/os/KernelCpuThreadReader$ThreadCpuUsage;
     iget-object v10, v9, Lcom/android/internal/os/KernelCpuThreadReader$ThreadCpuUsage;->usageTimesMillis:[I
 
     array-length v10, v10
 
-    array-length v11, v0
+    array-length v11, v2
 
     if-ne v10, v11, :cond_86
 
-    .line 1896
+    .line 1855
     new-instance v10, Landroid/os/StatsLogEventWrapper;
 
     move-object v12, v10
@@ -3769,48 +4289,50 @@
 
     invoke-direct/range {v12 .. v17}, Landroid/os/StatsLogEventWrapper;-><init>(IJJ)V
 
-    .line 1898
+    .line 1857
+    .local v10, "e":Landroid/os/StatsLogEventWrapper;
     iget v11, v6, Lcom/android/internal/os/KernelCpuThreadReader$ProcessCpuUsage;->uid:I
 
     invoke-virtual {v10, v11}, Landroid/os/StatsLogEventWrapper;->writeInt(I)V
 
-    .line 1899
+    .line 1858
     iget v11, v6, Lcom/android/internal/os/KernelCpuThreadReader$ProcessCpuUsage;->processId:I
 
     invoke-virtual {v10, v11}, Landroid/os/StatsLogEventWrapper;->writeInt(I)V
 
-    .line 1900
+    .line 1859
     iget v11, v9, Lcom/android/internal/os/KernelCpuThreadReader$ThreadCpuUsage;->threadId:I
 
     invoke-virtual {v10, v11}, Landroid/os/StatsLogEventWrapper;->writeInt(I)V
 
-    .line 1901
+    .line 1860
     iget-object v11, v6, Lcom/android/internal/os/KernelCpuThreadReader$ProcessCpuUsage;->processName:Ljava/lang/String;
 
     invoke-virtual {v10, v11}, Landroid/os/StatsLogEventWrapper;->writeString(Ljava/lang/String;)V
 
-    .line 1902
+    .line 1861
     iget-object v11, v9, Lcom/android/internal/os/KernelCpuThreadReader$ThreadCpuUsage;->threadName:Ljava/lang/String;
 
     invoke-virtual {v10, v11}, Landroid/os/StatsLogEventWrapper;->writeString(Ljava/lang/String;)V
 
-    .line 1903
-    move v11, v2
+    .line 1862
+    const/4 v11, 0x0
 
-    :goto_63
-    if-ge v11, v4, :cond_7e
+    .local v11, "k":I
+    :goto_62
+    if-ge v11, v5, :cond_7e
 
-    .line 1904
-    array-length v12, v0
+    .line 1863
+    array-length v12, v2
 
-    if-ge v11, v12, :cond_75
+    if-ge v11, v12, :cond_74
 
-    .line 1905
-    aget v12, v0, v11
+    .line 1864
+    aget v12, v2, v11
 
     invoke-virtual {v10, v12}, Landroid/os/StatsLogEventWrapper;->writeInt(I)V
 
-    .line 1906
+    .line 1865
     iget-object v12, v9, Lcom/android/internal/os/KernelCpuThreadReader$ThreadCpuUsage;->usageTimesMillis:[I
 
     aget v12, v12, v11
@@ -3819,131 +4341,161 @@
 
     goto :goto_7b
 
-    .line 1911
-    :cond_75
-    invoke-virtual {v10, v2}, Landroid/os/StatsLogEventWrapper;->writeInt(I)V
+    .line 1870
+    :cond_74
+    const/4 v12, 0x0
 
-    .line 1912
-    invoke-virtual {v10, v2}, Landroid/os/StatsLogEventWrapper;->writeInt(I)V
+    invoke-virtual {v10, v12}, Landroid/os/StatsLogEventWrapper;->writeInt(I)V
 
-    .line 1903
+    .line 1871
+    invoke-virtual {v10, v12}, Landroid/os/StatsLogEventWrapper;->writeInt(I)V
+
+    .line 1862
     :goto_7b
     add-int/lit8 v11, v11, 0x1
 
-    goto :goto_63
+    goto :goto_62
 
-    .line 1915
+    .line 1874
+    .end local v11  # "k":I
     :cond_7e
     move-object/from16 v11, p6
 
     invoke-interface {v11, v10}, Ljava/util/List;->add(Ljava/lang/Object;)Z
 
-    .line 1886
+    .line 1845
+    .end local v9  # "threadCpuUsage":Lcom/android/internal/os/KernelCpuThreadReader$ThreadCpuUsage;
+    .end local v10  # "e":Landroid/os/StatsLogEventWrapper;
     add-int/lit8 v8, v8, 0x1
 
-    goto :goto_2b
+    goto :goto_2a
 
-    .line 1889
+    .line 1848
+    .restart local v9  # "threadCpuUsage":Lcom/android/internal/os/KernelCpuThreadReader$ThreadCpuUsage;
     :cond_86
-    new-instance v1, Ljava/lang/StringBuilder;
-
-    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
-
-    const-string v2, "Unexpected number of usage times, expected "
-
-    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    array-length v0, v0
-
-    invoke-virtual {v1, v0}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
-
-    const-string v0, " but got "
-
-    invoke-virtual {v1, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    iget-object v0, v9, Lcom/android/internal/os/KernelCpuThreadReader$ThreadCpuUsage;->usageTimesMillis:[I
-
-    array-length v0, v0
-
-    invoke-virtual {v1, v0}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
-
-    move-result-object v0
-
-    .line 1892
-    invoke-static {v3, v0}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
-
-    .line 1893
-    new-instance v1, Ljava/lang/IllegalStateException;
-
-    invoke-direct {v1, v0}, Ljava/lang/IllegalStateException;-><init>(Ljava/lang/String;)V
-
-    throw v1
-
-    .line 1882
-    :cond_ac
     move-object/from16 v11, p6
 
-    add-int/lit8 v5, v5, 0x1
+    new-instance v5, Ljava/lang/StringBuilder;
 
-    goto/16 :goto_1c
+    invoke-direct {v5}, Ljava/lang/StringBuilder;-><init>()V
 
-    .line 1918
-    :cond_b2
-    return-void
+    const-string v10, "Unexpected number of usage times, expected "
+
+    invoke-virtual {v5, v10}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    array-length v10, v2
+
+    invoke-virtual {v5, v10}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+
+    const-string v10, " but got "
+
+    invoke-virtual {v5, v10}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    iget-object v10, v9, Lcom/android/internal/os/KernelCpuThreadReader$ThreadCpuUsage;->usageTimesMillis:[I
+
+    array-length v10, v10
+
+    invoke-virtual {v5, v10}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v5}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v5
+
+    .line 1851
+    .local v5, "message":Ljava/lang/String;
+    invoke-static {v4, v5}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+
+    .line 1852
+    new-instance v4, Ljava/lang/IllegalStateException;
+
+    invoke-direct {v4, v5}, Ljava/lang/IllegalStateException;-><init>(Ljava/lang/String;)V
+
+    throw v4
+
+    .line 1845
+    .end local v5  # "message":Ljava/lang/String;
+    .end local v9  # "threadCpuUsage":Lcom/android/internal/os/KernelCpuThreadReader$ThreadCpuUsage;
+    :cond_ae
+    move-object/from16 v11, p6
+
+    .line 1841
+    .end local v6  # "processCpuUsage":Lcom/android/internal/os/KernelCpuThreadReader$ProcessCpuUsage;
+    .end local v7  # "threadCpuUsages":Ljava/util/ArrayList;, "Ljava/util/ArrayList<Lcom/android/internal/os/KernelCpuThreadReader$ThreadCpuUsage;>;"
+    .end local v8  # "j":I
+    add-int/lit8 v3, v3, 0x1
+
+    goto/16 :goto_1b
+
+    :cond_b4
+    move-object/from16 v11, p6
 
     .line 1877
-    :cond_b3
-    new-instance v1, Ljava/lang/StringBuilder;
+    .end local v3  # "i":I
+    return-void
 
-    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
+    .line 1836
+    :cond_b7
+    move-object/from16 v11, p6
 
-    const-string v2, "Expected maximum 8 frequencies, but got "
+    new-instance v3, Ljava/lang/StringBuilder;
 
-    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
 
-    array-length v0, v0
+    const-string v5, "Expected maximum 8 frequencies, but got "
 
-    invoke-virtual {v1, v0}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    array-length v5, v2
 
-    move-result-object v0
+    invoke-virtual {v3, v5}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    .line 1879
-    invoke-static {v3, v0}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    .line 1880
+    move-result-object v3
+
+    .line 1838
+    .local v3, "message":Ljava/lang/String;
+    invoke-static {v4, v3}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+
+    .line 1839
+    new-instance v4, Ljava/lang/IllegalStateException;
+
+    invoke-direct {v4, v3}, Ljava/lang/IllegalStateException;-><init>(Ljava/lang/String;)V
+
+    throw v4
+
+    .line 1832
+    .end local v2  # "cpuFrequencies":[I
+    .end local v3  # "message":Ljava/lang/String;
+    :cond_d4
+    move-object/from16 v11, p6
+
+    new-instance v2, Ljava/lang/IllegalStateException;
+
+    const-string/jumbo v3, "processCpuUsages is null"
+
+    invoke-direct {v2, v3}, Ljava/lang/IllegalStateException;-><init>(Ljava/lang/String;)V
+
+    throw v2
+
+    .line 1827
+    .end local v1  # "processCpuUsages":Ljava/util/ArrayList;, "Ljava/util/ArrayList<Lcom/android/internal/os/KernelCpuThreadReader$ProcessCpuUsage;>;"
+    :cond_df
+    move-object/from16 v11, p6
+
     new-instance v1, Ljava/lang/IllegalStateException;
 
-    invoke-direct {v1, v0}, Ljava/lang/IllegalStateException;-><init>(Ljava/lang/String;)V
+    const-string/jumbo v2, "mKernelCpuThreadReader is null"
+
+    invoke-direct {v1, v2}, Ljava/lang/IllegalStateException;-><init>(Ljava/lang/String;)V
 
     throw v1
-
-    .line 1873
-    :cond_ce
-    new-instance v0, Ljava/lang/IllegalStateException;
-
-    const-string/jumbo v1, "processCpuUsages is null"
-
-    invoke-direct {v0, v1}, Ljava/lang/IllegalStateException;-><init>(Ljava/lang/String;)V
-
-    throw v0
-
-    .line 1868
-    :cond_d7
-    new-instance v0, Ljava/lang/IllegalStateException;
-
-    const-string v1, "mKernelCpuThreadReader is null"
-
-    invoke-direct {v0, v1}, Ljava/lang/IllegalStateException;-><init>(Ljava/lang/String;)V
-
-    throw v0
 .end method
 
 .method private pullDangerousPermissionState(JJLjava/util/List;)V
-    .registers 29
+    .registers 31
+    .param p1, "elapsedNanos"  # J
+    .param p3, "wallClockNanos"  # J
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(JJ",
@@ -3953,27 +4505,32 @@
         }
     .end annotation
 
-    .line 2015
-    move-object/from16 v0, p0
+    .line 1974
+    .local p5, "pulledData":Ljava/util/List;, "Ljava/util/List<Landroid/os/StatsLogEventWrapper;>;"
+    move-object/from16 v1, p0
 
     invoke-static {}, Landroid/os/Binder;->clearCallingIdentity()J
 
-    move-result-wide v1
+    move-result-wide v2
 
-    .line 2017
+    .line 1976
+    .local v2, "token":J
     :try_start_6
-    iget-object v3, v0, Lcom/android/server/stats/StatsCompanionService;->mContext:Landroid/content/Context;
+    iget-object v0, v1, Lcom/android/server/stats/StatsCompanionService;->mContext:Landroid/content/Context;
 
-    invoke-virtual {v3}, Landroid/content/Context;->getPackageManager()Landroid/content/pm/PackageManager;
+    invoke-virtual {v0}, Landroid/content/Context;->getPackageManager()Landroid/content/pm/PackageManager;
 
-    move-result-object v3
+    move-result-object v0
 
-    .line 2019
-    iget-object v0, v0, Lcom/android/server/stats/StatsCompanionService;->mContext:Landroid/content/Context;
+    move-object v4, v0
 
-    const-class v4, Landroid/os/UserManager;
+    .line 1978
+    .local v4, "pm":Landroid/content/pm/PackageManager;
+    iget-object v0, v1, Lcom/android/server/stats/StatsCompanionService;->mContext:Landroid/content/Context;
 
-    invoke-virtual {v0, v4}, Landroid/content/Context;->getSystemService(Ljava/lang/Class;)Ljava/lang/Object;
+    const-class v5, Landroid/os/UserManager;
+
+    invoke-virtual {v0, v5}, Landroid/content/Context;->getSystemService(Ljava/lang/Class;)Ljava/lang/Object;
 
     move-result-object v0
 
@@ -3981,23 +4538,30 @@
 
     invoke-virtual {v0}, Landroid/os/UserManager;->getUsers()Ljava/util/List;
 
-    move-result-object v4
+    move-result-object v0
 
-    .line 2021
-    invoke-interface {v4}, Ljava/util/List;->size()I
+    move-object v5, v0
 
-    move-result v5
+    .line 1980
+    .local v5, "users":Ljava/util/List;, "Ljava/util/List<Landroid/content/pm/UserInfo;>;"
+    invoke-interface {v5}, Ljava/util/List;->size()I
 
-    .line 2022
-    const/4 v6, 0x0
+    move-result v0
 
-    move v7, v6
+    move v6, v0
 
-    :goto_20
-    if-ge v7, v5, :cond_ca
+    .line 1981
+    .local v6, "numUsers":I
+    const/4 v0, 0x0
 
-    .line 2023
-    invoke-interface {v4, v7}, Ljava/util/List;->get(I)Ljava/lang/Object;
+    move v7, v0
+
+    .local v7, "userNum":I
+    :goto_23
+    if-ge v7, v6, :cond_d6
+
+    .line 1982
+    invoke-interface {v5, v7}, Ljava/util/List;->get(I)Ljava/lang/Object;
 
     move-result-object v0
 
@@ -4005,255 +4569,370 @@
 
     invoke-virtual {v0}, Landroid/content/pm/UserInfo;->getUserHandle()Landroid/os/UserHandle;
 
-    move-result-object v8
+    move-result-object v0
 
-    .line 2025
+    move-object v8, v0
+
+    .line 1984
+    .local v8, "user":Landroid/os/UserHandle;
     const/16 v0, 0x1000
 
-    .line 2026
+    .line 1985
     invoke-virtual {v8}, Landroid/os/UserHandle;->getIdentifier()I
 
     move-result v9
 
-    .line 2025
-    invoke-virtual {v3, v0, v9}, Landroid/content/pm/PackageManager;->getInstalledPackagesAsUser(II)Ljava/util/List;
+    .line 1984
+    invoke-virtual {v4, v0, v9}, Landroid/content/pm/PackageManager;->getInstalledPackagesAsUser(II)Ljava/util/List;
 
-    move-result-object v9
+    move-result-object v0
 
-    .line 2028
+    move-object v9, v0
+
+    .line 1987
+    .local v9, "pkgs":Ljava/util/List;, "Ljava/util/List<Landroid/content/pm/PackageInfo;>;"
     invoke-interface {v9}, Ljava/util/List;->size()I
 
-    move-result v10
+    move-result v0
 
-    .line 2029
-    move v11, v6
+    move v10, v0
 
-    :goto_3b
-    if-ge v11, v10, :cond_b7
+    .line 1988
+    .local v10, "numPkgs":I
+    const/4 v0, 0x0
 
-    .line 2030
+    move v11, v0
+
+    .local v11, "pkgNum":I
+    :goto_42
+    if-ge v11, v10, :cond_ca
+
+    .line 1989
     invoke-interface {v9, v11}, Ljava/util/List;->get(I)Ljava/lang/Object;
 
     move-result-object v0
 
+    check-cast v0, Landroid/content/pm/PackageInfo;
+
     move-object v12, v0
 
-    check-cast v12, Landroid/content/pm/PackageInfo;
-
-    .line 2032
+    .line 1991
+    .local v12, "pkg":Landroid/content/pm/PackageInfo;
     iget-object v0, v12, Landroid/content/pm/PackageInfo;->requestedPermissions:[Ljava/lang/String;
 
-    if-nez v0, :cond_4d
+    if-nez v0, :cond_55
 
-    .line 2033
-    move-object/from16 v16, v3
+    .line 1992
+    move-object/from16 v18, v4
 
-    move-object/from16 v3, p5
+    move-object/from16 v4, p5
 
-    goto :goto_b1
+    goto/16 :goto_c2
 
-    .line 2036
-    :cond_4d
+    .line 1995
+    :cond_55
     iget-object v0, v12, Landroid/content/pm/PackageInfo;->requestedPermissions:[Ljava/lang/String;
 
-    array-length v13, v0
+    array-length v0, v0
 
-    .line 2037
-    move v14, v6
+    move v13, v0
 
-    :goto_51
-    if-ge v14, v13, :cond_ad
+    .line 1996
+    .local v13, "numPerms":I
+    const/4 v0, 0x0
 
-    .line 2038
+    move v14, v0
+
+    .local v14, "permNum":I
+    :goto_5b
+    if-ge v14, v13, :cond_be
+
+    .line 1997
     iget-object v0, v12, Landroid/content/pm/PackageInfo;->requestedPermissions:[Ljava/lang/String;
 
     aget-object v0, v0, v14
-    :try_end_57
-    .catchall {:try_start_6 .. :try_end_57} :catchall_c2
+    :try_end_61
+    .catchall {:try_start_6 .. :try_end_61} :catchall_db
 
-    .line 2041
-    nop
+    move-object v15, v0
 
-    .line 2043
-    :try_start_58
-    invoke-virtual {v3, v0, v6}, Landroid/content/pm/PackageManager;->getPermissionInfo(Ljava/lang/String;I)Landroid/content/pm/PermissionInfo;
+    .line 2000
+    .local v15, "permName":Ljava/lang/String;
+    const/16 v16, 0x0
 
-    move-result-object v15
+    .line 2002
+    .local v16, "permissionFlags":I
+    const/4 v0, 0x0
 
-    .line 2044
-    iget-object v6, v12, Landroid/content/pm/PackageInfo;->packageName:Ljava/lang/String;
+    :try_start_65
+    invoke-virtual {v4, v15, v0}, Landroid/content/pm/PackageManager;->getPermissionInfo(Ljava/lang/String;I)Landroid/content/pm/PermissionInfo;
 
-    .line 2045
-    invoke-virtual {v3, v0, v6, v8}, Landroid/content/pm/PackageManager;->getPermissionFlags(Ljava/lang/String;Ljava/lang/String;Landroid/os/UserHandle;)I
+    move-result-object v17
 
-    move-result v6
-    :try_end_62
-    .catch Landroid/content/pm/PackageManager$NameNotFoundException; {:try_start_58 .. :try_end_62} :catch_a1
-    .catchall {:try_start_58 .. :try_end_62} :catchall_c2
-
-    .line 2049
-    nop
-
-    .line 2051
-    :try_start_63
-    invoke-virtual {v15}, Landroid/content/pm/PermissionInfo;->getProtection()I
-
-    move-result v15
-
-    move-object/from16 v16, v3
-
-    const/4 v3, 0x1
-
-    if-eq v15, v3, :cond_6f
-
-    .line 2052
-    move-object/from16 v3, p5
-
-    goto :goto_a7
-
-    .line 2055
-    :cond_6f
-    new-instance v15, Landroid/os/StatsLogEventWrapper;
-
-    const/16 v18, 0x2742
-
-    move-object/from16 v17, v15
-
-    move-wide/from16 v19, p1
-
-    move-wide/from16 v21, p3
-
-    invoke-direct/range {v17 .. v22}, Landroid/os/StatsLogEventWrapper;-><init>(IJJ)V
-
-    .line 2058
-    invoke-virtual {v15, v0}, Landroid/os/StatsLogEventWrapper;->writeString(Ljava/lang/String;)V
-
-    .line 2059
-    iget-object v0, v12, Landroid/content/pm/PackageInfo;->applicationInfo:Landroid/content/pm/ApplicationInfo;
-
-    iget v0, v0, Landroid/content/pm/ApplicationInfo;->uid:I
-
-    invoke-virtual {v15, v0}, Landroid/os/StatsLogEventWrapper;->writeInt(I)V
-
-    .line 2060
+    .line 2003
+    .local v17, "permissionInfo":Landroid/content/pm/PermissionInfo;
     iget-object v0, v12, Landroid/content/pm/PackageInfo;->packageName:Ljava/lang/String;
 
-    invoke-virtual {v15, v0}, Landroid/os/StatsLogEventWrapper;->writeString(Ljava/lang/String;)V
+    .line 2004
+    invoke-virtual {v4, v15, v0, v8}, Landroid/content/pm/PackageManager;->getPermissionFlags(Ljava/lang/String;Ljava/lang/String;Landroid/os/UserHandle;)I
 
-    .line 2061
-    iget-object v0, v12, Landroid/content/pm/PackageInfo;->requestedPermissionsFlags:[I
+    move-result v0
+    :try_end_6f
+    .catch Landroid/content/pm/PackageManager$NameNotFoundException; {:try_start_65 .. :try_end_6f} :catch_b1
+    .catchall {:try_start_65 .. :try_end_6f} :catchall_db
 
-    aget v0, v0, v14
-
-    and-int/lit8 v0, v0, 0x2
-
-    if-eqz v0, :cond_94
-
-    goto :goto_95
-
-    :cond_94
-    const/4 v3, 0x0
-
-    :goto_95
-    invoke-virtual {v15, v3}, Landroid/os/StatsLogEventWrapper;->writeBoolean(Z)V
-
-    .line 2063
-    invoke-virtual {v15, v6}, Landroid/os/StatsLogEventWrapper;->writeInt(I)V
-
-    .line 2065
-    move-object/from16 v3, p5
-
-    invoke-interface {v3, v15}, Ljava/util/List;->add(Ljava/lang/Object;)Z
-    :try_end_a0
-    .catchall {:try_start_63 .. :try_end_a0} :catchall_c2
-
-    goto :goto_a7
-
-    .line 2047
-    :catch_a1
-    move-exception v0
-
-    move-object/from16 v16, v3
-
-    move-object/from16 v3, p5
-
-    .line 2048
+    .line 2008
+    .end local v16  # "permissionFlags":I
+    .local v0, "permissionFlags":I
     nop
 
-    .line 2037
-    :goto_a7
-    add-int/lit8 v14, v14, 0x1
+    .line 2010
+    :try_start_70
+    invoke-virtual/range {v17 .. v17}, Landroid/content/pm/PermissionInfo;->getProtection()I
 
-    move-object/from16 v3, v16
+    move-result v1
 
-    const/4 v6, 0x0
+    move-object/from16 v18, v4
 
-    goto :goto_51
+    .end local v4  # "pm":Landroid/content/pm/PackageManager;
+    .local v18, "pm":Landroid/content/pm/PackageManager;
+    const/4 v4, 0x1
 
-    :cond_ad
-    move-object/from16 v16, v3
+    if-eq v1, v4, :cond_7c
 
-    move-object/from16 v3, p5
+    .line 2011
+    move-object/from16 v4, p5
 
-    .line 2029
-    :goto_b1
-    add-int/lit8 v11, v11, 0x1
+    goto :goto_b7
 
-    move-object/from16 v3, v16
+    .line 2014
+    :cond_7c
+    new-instance v1, Landroid/os/StatsLogEventWrapper;
 
-    const/4 v6, 0x0
+    const/16 v20, 0x2742
 
-    goto :goto_3b
+    move-object/from16 v19, v1
+
+    move-wide/from16 v21, p1
+
+    move-wide/from16 v23, p3
+
+    invoke-direct/range {v19 .. v24}, Landroid/os/StatsLogEventWrapper;-><init>(IJJ)V
+
+    .line 2017
+    .local v1, "e":Landroid/os/StatsLogEventWrapper;
+    invoke-virtual {v1, v15}, Landroid/os/StatsLogEventWrapper;->writeString(Ljava/lang/String;)V
+
+    .line 2018
+    iget-object v4, v12, Landroid/content/pm/PackageInfo;->applicationInfo:Landroid/content/pm/ApplicationInfo;
+
+    iget v4, v4, Landroid/content/pm/ApplicationInfo;->uid:I
+
+    invoke-virtual {v1, v4}, Landroid/os/StatsLogEventWrapper;->writeInt(I)V
+
+    .line 2019
+    iget-object v4, v12, Landroid/content/pm/PackageInfo;->packageName:Ljava/lang/String;
+
+    invoke-virtual {v1, v4}, Landroid/os/StatsLogEventWrapper;->writeString(Ljava/lang/String;)V
+
+    .line 2020
+    iget-object v4, v12, Landroid/content/pm/PackageInfo;->requestedPermissionsFlags:[I
+
+    aget v4, v4, v14
+
+    and-int/lit8 v4, v4, 0x2
+
+    if-eqz v4, :cond_a2
+
+    const/4 v4, 0x1
+
+    goto :goto_a3
+
+    :cond_a2
+    const/4 v4, 0x0
+
+    :goto_a3
+    invoke-virtual {v1, v4}, Landroid/os/StatsLogEventWrapper;->writeBoolean(Z)V
 
     .line 2022
-    :cond_b7
-    move-object/from16 v16, v3
+    invoke-virtual {v1, v0}, Landroid/os/StatsLogEventWrapper;->writeInt(I)V
+    :try_end_a9
+    .catchall {:try_start_70 .. :try_end_a9} :catchall_db
 
-    move-object/from16 v3, p5
+    .line 2024
+    move-object/from16 v4, p5
 
-    add-int/lit8 v7, v7, 0x1
+    :try_start_ab
+    invoke-interface {v4, v1}, Ljava/util/List;->add(Ljava/lang/Object;)Z
+    :try_end_ae
+    .catchall {:try_start_ab .. :try_end_ae} :catchall_af
 
-    move-object/from16 v3, v16
+    goto :goto_b7
 
-    const/4 v6, 0x0
-
-    goto/16 :goto_20
-
-    .line 2069
-    :catchall_c2
+    .line 2028
+    .end local v0  # "permissionFlags":I
+    .end local v1  # "e":Landroid/os/StatsLogEventWrapper;
+    .end local v5  # "users":Ljava/util/List;, "Ljava/util/List<Landroid/content/pm/UserInfo;>;"
+    .end local v6  # "numUsers":I
+    .end local v7  # "userNum":I
+    .end local v8  # "user":Landroid/os/UserHandle;
+    .end local v9  # "pkgs":Ljava/util/List;, "Ljava/util/List<Landroid/content/pm/PackageInfo;>;"
+    .end local v10  # "numPkgs":I
+    .end local v11  # "pkgNum":I
+    .end local v12  # "pkg":Landroid/content/pm/PackageInfo;
+    .end local v13  # "numPerms":I
+    .end local v14  # "permNum":I
+    .end local v15  # "permName":Ljava/lang/String;
+    .end local v17  # "permissionInfo":Landroid/content/pm/PermissionInfo;
+    .end local v18  # "pm":Landroid/content/pm/PackageManager;
+    :catchall_af
     move-exception v0
 
-    .line 2070
-    :try_start_c3
-    const-string v3, "StatsCompanionService"
+    goto :goto_de
 
-    const-string v4, "Could not read permissions"
+    .line 2006
+    .restart local v4  # "pm":Landroid/content/pm/PackageManager;
+    .restart local v5  # "users":Ljava/util/List;, "Ljava/util/List<Landroid/content/pm/UserInfo;>;"
+    .restart local v6  # "numUsers":I
+    .restart local v7  # "userNum":I
+    .restart local v8  # "user":Landroid/os/UserHandle;
+    .restart local v9  # "pkgs":Ljava/util/List;, "Ljava/util/List<Landroid/content/pm/PackageInfo;>;"
+    .restart local v10  # "numPkgs":I
+    .restart local v11  # "pkgNum":I
+    .restart local v12  # "pkg":Landroid/content/pm/PackageInfo;
+    .restart local v13  # "numPerms":I
+    .restart local v14  # "permNum":I
+    .restart local v15  # "permName":Ljava/lang/String;
+    .restart local v16  # "permissionFlags":I
+    :catch_b1
+    move-exception v0
 
-    invoke-static {v3, v4, v0}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
-    :try_end_ca
-    .catchall {:try_start_c3 .. :try_end_ca} :catchall_cf
+    move-object/from16 v18, v4
 
-    .line 2072
-    :cond_ca
-    invoke-static {v1, v2}, Landroid/os/Binder;->restoreCallingIdentity(J)V
+    move-object/from16 v4, p5
 
-    .line 2073
+    .line 2007
+    .end local v4  # "pm":Landroid/content/pm/PackageManager;
+    .local v0, "ignored":Landroid/content/pm/PackageManager$NameNotFoundException;
+    .restart local v18  # "pm":Landroid/content/pm/PackageManager;
     nop
 
-    .line 2074
-    return-void
+    .line 1996
+    .end local v0  # "ignored":Landroid/content/pm/PackageManager$NameNotFoundException;
+    .end local v15  # "permName":Ljava/lang/String;
+    .end local v16  # "permissionFlags":I
+    :goto_b7
+    add-int/lit8 v14, v14, 0x1
 
-    .line 2072
-    :catchall_cf
+    move-object/from16 v1, p0
+
+    move-object/from16 v4, v18
+
+    goto :goto_5b
+
+    .end local v18  # "pm":Landroid/content/pm/PackageManager;
+    .restart local v4  # "pm":Landroid/content/pm/PackageManager;
+    :cond_be
+    move-object/from16 v18, v4
+
+    move-object/from16 v4, p5
+
+    .line 1988
+    .end local v4  # "pm":Landroid/content/pm/PackageManager;
+    .end local v12  # "pkg":Landroid/content/pm/PackageInfo;
+    .end local v13  # "numPerms":I
+    .end local v14  # "permNum":I
+    .restart local v18  # "pm":Landroid/content/pm/PackageManager;
+    :goto_c2
+    add-int/lit8 v11, v11, 0x1
+
+    move-object/from16 v1, p0
+
+    move-object/from16 v4, v18
+
+    goto/16 :goto_42
+
+    .end local v18  # "pm":Landroid/content/pm/PackageManager;
+    .restart local v4  # "pm":Landroid/content/pm/PackageManager;
+    :cond_ca
+    move-object/from16 v18, v4
+
+    move-object/from16 v4, p5
+
+    .line 1981
+    .end local v4  # "pm":Landroid/content/pm/PackageManager;
+    .end local v8  # "user":Landroid/os/UserHandle;
+    .end local v9  # "pkgs":Ljava/util/List;, "Ljava/util/List<Landroid/content/pm/PackageInfo;>;"
+    .end local v10  # "numPkgs":I
+    .end local v11  # "pkgNum":I
+    .restart local v18  # "pm":Landroid/content/pm/PackageManager;
+    add-int/lit8 v7, v7, 0x1
+
+    move-object/from16 v1, p0
+
+    move-object/from16 v4, v18
+
+    goto/16 :goto_23
+
+    .end local v18  # "pm":Landroid/content/pm/PackageManager;
+    .restart local v4  # "pm":Landroid/content/pm/PackageManager;
+    :cond_d6
+    move-object/from16 v18, v4
+
+    move-object/from16 v4, p5
+
+    .line 2031
+    .end local v4  # "pm":Landroid/content/pm/PackageManager;
+    .end local v5  # "users":Ljava/util/List;, "Ljava/util/List<Landroid/content/pm/UserInfo;>;"
+    .end local v6  # "numUsers":I
+    .end local v7  # "userNum":I
+    goto :goto_e6
+
+    .line 2028
+    :catchall_db
     move-exception v0
 
-    invoke-static {v1, v2}, Landroid/os/Binder;->restoreCallingIdentity(J)V
+    move-object/from16 v4, p5
+
+    .line 2029
+    .local v0, "t":Ljava/lang/Throwable;
+    :goto_de
+    :try_start_de
+    const-string v1, "StatsCompanionService"
+
+    const-string v5, "Could not read permissions"
+
+    invoke-static {v1, v5, v0}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    :try_end_e5
+    .catchall {:try_start_de .. :try_end_e5} :catchall_eb
+
+    .line 2031
+    nop
+
+    .end local v0  # "t":Ljava/lang/Throwable;
+    :goto_e6
+    invoke-static {v2, v3}, Landroid/os/Binder;->restoreCallingIdentity(J)V
+
+    .line 2032
+    nop
+
+    .line 2033
+    return-void
+
+    .line 2031
+    :catchall_eb
+    move-exception v0
+
+    invoke-static {v2, v3}, Landroid/os/Binder;->restoreCallingIdentity(J)V
 
     throw v0
 .end method
 
 .method private pullDebugElapsedClock(IJJLjava/util/List;)V
-    .registers 23
+    .registers 24
+    .param p1, "tagId"  # I
+    .param p2, "elapsedNanos"  # J
+    .param p4, "wallClockNanos"  # J
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(IJJ",
@@ -4263,7 +4942,8 @@
         }
     .end annotation
 
-    .line 1965
+    .line 1924
+    .local p6, "pulledData":Ljava/util/List;, "Ljava/util/List<Landroid/os/StatsLogEventWrapper;>;"
     move-object/from16 v0, p0
 
     move-object/from16 v1, p6
@@ -4272,7 +4952,8 @@
 
     move-result-wide v2
 
-    .line 1966
+    .line 1925
+    .local v2, "elapsedMillis":J
     iget-wide v4, v0, Lcom/android/server/stats/StatsCompanionService;->mDebugElapsedClockPreviousValue:J
 
     const-wide/16 v6, 0x0
@@ -4281,113 +4962,122 @@
 
     if-nez v8, :cond_11
 
-    .line 1967
+    .line 1926
     goto :goto_13
 
     :cond_11
     sub-long v6, v2, v4
 
-    .line 1969
     :goto_13
-    new-instance v4, Landroid/os/StatsLogEventWrapper;
+    move-wide v4, v6
 
-    move-object v8, v4
+    .line 1928
+    .local v4, "clockDiffMillis":J
+    new-instance v12, Landroid/os/StatsLogEventWrapper;
 
-    move/from16 v9, p1
+    move-object v6, v12
 
-    move-wide/from16 v10, p2
+    move/from16 v7, p1
 
-    move-wide/from16 v12, p4
+    move-wide/from16 v8, p2
 
-    invoke-direct/range {v8 .. v13}, Landroid/os/StatsLogEventWrapper;-><init>(IJJ)V
+    move-wide/from16 v10, p4
 
-    .line 1970
-    iget-wide v8, v0, Lcom/android/server/stats/StatsCompanionService;->mDebugElapsedClockPullCount:J
+    invoke-direct/range {v6 .. v11}, Landroid/os/StatsLogEventWrapper;-><init>(IJJ)V
 
-    invoke-virtual {v4, v8, v9}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
+    .line 1929
+    .local v6, "e":Landroid/os/StatsLogEventWrapper;
+    iget-wide v7, v0, Lcom/android/server/stats/StatsCompanionService;->mDebugElapsedClockPullCount:J
 
-    .line 1971
-    invoke-virtual {v4, v2, v3}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
+    invoke-virtual {v6, v7, v8}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
 
-    .line 1973
-    invoke-virtual {v4, v2, v3}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
+    .line 1930
+    invoke-virtual {v6, v2, v3}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
 
-    .line 1974
-    invoke-virtual {v4, v6, v7}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
+    .line 1932
+    invoke-virtual {v6, v2, v3}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
 
-    .line 1975
-    const/4 v5, 0x1
+    .line 1933
+    invoke-virtual {v6, v4, v5}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
 
-    invoke-virtual {v4, v5}, Landroid/os/StatsLogEventWrapper;->writeInt(I)V
+    .line 1934
+    const/4 v7, 0x1
 
-    .line 1976
-    invoke-interface {v1, v4}, Ljava/util/List;->add(Ljava/lang/Object;)Z
+    invoke-virtual {v6, v7}, Landroid/os/StatsLogEventWrapper;->writeInt(I)V
 
-    .line 1978
-    iget-wide v4, v0, Lcom/android/server/stats/StatsCompanionService;->mDebugElapsedClockPullCount:J
+    .line 1935
+    invoke-interface {v1, v6}, Ljava/util/List;->add(Ljava/lang/Object;)Z
 
-    const-wide/16 v8, 0x2
+    .line 1937
+    iget-wide v7, v0, Lcom/android/server/stats/StatsCompanionService;->mDebugElapsedClockPullCount:J
 
-    rem-long/2addr v4, v8
+    const-wide/16 v9, 0x2
 
-    const-wide/16 v8, 0x1
+    rem-long/2addr v7, v9
 
-    cmp-long v4, v4, v8
+    const-wide/16 v9, 0x1
 
-    if-nez v4, :cond_60
+    cmp-long v7, v7, v9
 
-    .line 1979
-    new-instance v4, Landroid/os/StatsLogEventWrapper;
+    if-nez v7, :cond_61
 
-    move-object v10, v4
+    .line 1938
+    new-instance v7, Landroid/os/StatsLogEventWrapper;
 
-    move/from16 v11, p1
+    move-object v11, v7
 
-    move-wide/from16 v12, p2
+    move/from16 v12, p1
 
-    move-wide/from16 v14, p4
+    move-wide/from16 v13, p2
 
-    invoke-direct/range {v10 .. v15}, Landroid/os/StatsLogEventWrapper;-><init>(IJJ)V
+    move-wide/from16 v15, p4
 
-    .line 1980
-    iget-wide v10, v0, Lcom/android/server/stats/StatsCompanionService;->mDebugElapsedClockPullCount:J
+    invoke-direct/range {v11 .. v16}, Landroid/os/StatsLogEventWrapper;-><init>(IJJ)V
 
-    invoke-virtual {v4, v10, v11}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
+    .line 1939
+    .local v7, "e2":Landroid/os/StatsLogEventWrapper;
+    iget-wide v11, v0, Lcom/android/server/stats/StatsCompanionService;->mDebugElapsedClockPullCount:J
 
-    .line 1981
-    invoke-virtual {v4, v2, v3}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
+    invoke-virtual {v7, v11, v12}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
 
-    .line 1983
-    invoke-virtual {v4, v2, v3}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
+    .line 1940
+    invoke-virtual {v7, v2, v3}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
 
-    .line 1984
-    invoke-virtual {v4, v6, v7}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
+    .line 1942
+    invoke-virtual {v7, v2, v3}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
 
-    .line 1985
-    const/4 v5, 0x2
+    .line 1943
+    invoke-virtual {v7, v4, v5}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
 
-    invoke-virtual {v4, v5}, Landroid/os/StatsLogEventWrapper;->writeInt(I)V
+    .line 1944
+    const/4 v8, 0x2
 
-    .line 1986
-    invoke-interface {v1, v4}, Ljava/util/List;->add(Ljava/lang/Object;)Z
+    invoke-virtual {v7, v8}, Landroid/os/StatsLogEventWrapper;->writeInt(I)V
 
-    .line 1989
-    :cond_60
-    iget-wide v4, v0, Lcom/android/server/stats/StatsCompanionService;->mDebugElapsedClockPullCount:J
+    .line 1945
+    invoke-interface {v1, v7}, Ljava/util/List;->add(Ljava/lang/Object;)Z
 
-    add-long/2addr v4, v8
+    .line 1948
+    .end local v7  # "e2":Landroid/os/StatsLogEventWrapper;
+    :cond_61
+    iget-wide v7, v0, Lcom/android/server/stats/StatsCompanionService;->mDebugElapsedClockPullCount:J
 
-    iput-wide v4, v0, Lcom/android/server/stats/StatsCompanionService;->mDebugElapsedClockPullCount:J
+    add-long/2addr v7, v9
 
-    .line 1990
+    iput-wide v7, v0, Lcom/android/server/stats/StatsCompanionService;->mDebugElapsedClockPullCount:J
+
+    .line 1949
     iput-wide v2, v0, Lcom/android/server/stats/StatsCompanionService;->mDebugElapsedClockPreviousValue:J
 
-    .line 1991
+    .line 1950
     return-void
 .end method
 
 .method private pullDebugFailingElapsedClock(IJJLjava/util/List;)V
-    .registers 14
+    .registers 15
+    .param p1, "tagId"  # I
+    .param p2, "elapsedNanos"  # J
+    .param p4, "wallClockNanos"  # J
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(IJJ",
@@ -4397,7 +5087,8 @@
         }
     .end annotation
 
-    .line 1995
+    .line 1954
+    .local p6, "pulledData":Ljava/util/List;, "Ljava/util/List<Landroid/os/StatsLogEventWrapper;>;"
     new-instance v6, Landroid/os/StatsLogEventWrapper;
 
     move-object v0, v6
@@ -4410,83 +5101,88 @@
 
     invoke-direct/range {v0 .. v5}, Landroid/os/StatsLogEventWrapper;-><init>(IJJ)V
 
-    .line 1996
+    .line 1955
+    .local v0, "e":Landroid/os/StatsLogEventWrapper;
     invoke-static {}, Landroid/os/SystemClock;->elapsedRealtime()J
 
-    move-result-wide p1
+    move-result-wide v1
 
-    .line 1998
-    iget-wide p3, p0, Lcom/android/server/stats/StatsCompanionService;->mDebugFailingElapsedClockPullCount:J
+    .line 1957
+    .local v1, "elapsedMillis":J
+    iget-wide v3, p0, Lcom/android/server/stats/StatsCompanionService;->mDebugFailingElapsedClockPullCount:J
 
-    const-wide/16 v0, 0x1
+    const-wide/16 v5, 0x1
 
-    add-long/2addr v0, p3
+    add-long/2addr v5, v3
 
-    iput-wide v0, p0, Lcom/android/server/stats/StatsCompanionService;->mDebugFailingElapsedClockPullCount:J
+    iput-wide v5, p0, Lcom/android/server/stats/StatsCompanionService;->mDebugFailingElapsedClockPullCount:J
 
-    const-wide/16 v0, 0x5
+    const-wide/16 v5, 0x5
 
-    rem-long/2addr p3, v0
+    rem-long/2addr v3, v5
 
-    const-wide/16 v0, 0x0
+    const-wide/16 v5, 0x0
 
-    cmp-long p3, p3, v0
+    cmp-long v3, v3, v5
 
-    if-eqz p3, :cond_3a
+    if-eqz v3, :cond_3a
 
-    .line 2003
-    iget-wide p3, p0, Lcom/android/server/stats/StatsCompanionService;->mDebugFailingElapsedClockPullCount:J
+    .line 1962
+    iget-wide v3, p0, Lcom/android/server/stats/StatsCompanionService;->mDebugFailingElapsedClockPullCount:J
 
-    invoke-virtual {v6, p3, p4}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
+    invoke-virtual {v0, v3, v4}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
 
-    .line 2004
-    invoke-virtual {v6, p1, p2}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
+    .line 1963
+    invoke-virtual {v0, v1, v2}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
 
-    .line 2006
-    invoke-virtual {v6, p1, p2}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
+    .line 1965
+    invoke-virtual {v0, v1, v2}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
 
-    .line 2007
-    iget-wide p3, p0, Lcom/android/server/stats/StatsCompanionService;->mDebugFailingElapsedClockPreviousValue:J
+    .line 1966
+    iget-wide v3, p0, Lcom/android/server/stats/StatsCompanionService;->mDebugFailingElapsedClockPreviousValue:J
 
-    cmp-long p5, p3, v0
+    cmp-long v7, v3, v5
 
-    if-nez p5, :cond_2f
+    if-nez v7, :cond_2f
 
-    .line 2008
+    .line 1967
     goto :goto_31
 
     :cond_2f
-    sub-long v0, p1, p3
+    sub-long v5, v1, v3
 
-    .line 2007
+    .line 1966
     :goto_31
-    invoke-virtual {v6, v0, v1}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
+    invoke-virtual {v0, v5, v6}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
 
-    .line 2009
-    iput-wide p1, p0, Lcom/android/server/stats/StatsCompanionService;->mDebugFailingElapsedClockPreviousValue:J
+    .line 1968
+    iput-wide v1, p0, Lcom/android/server/stats/StatsCompanionService;->mDebugFailingElapsedClockPreviousValue:J
 
-    .line 2010
-    invoke-interface {p6, v6}, Ljava/util/List;->add(Ljava/lang/Object;)Z
+    .line 1969
+    invoke-interface {p6, v0}, Ljava/util/List;->add(Ljava/lang/Object;)Z
 
-    .line 2011
+    .line 1970
     return-void
 
-    .line 1999
+    .line 1958
     :cond_3a
-    iput-wide p1, p0, Lcom/android/server/stats/StatsCompanionService;->mDebugFailingElapsedClockPreviousValue:J
+    iput-wide v1, p0, Lcom/android/server/stats/StatsCompanionService;->mDebugFailingElapsedClockPreviousValue:J
 
-    .line 2000
-    new-instance p1, Ljava/lang/RuntimeException;
+    .line 1959
+    new-instance v3, Ljava/lang/RuntimeException;
 
-    const-string p2, "Failing debug elapsed clock"
+    const-string v4, "Failing debug elapsed clock"
 
-    invoke-direct {p1, p2}, Ljava/lang/RuntimeException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v3, v4}, Ljava/lang/RuntimeException;-><init>(Ljava/lang/String;)V
 
-    throw p1
+    throw v3
 .end method
 
 .method private pullDeviceCalculatedPowerBlameOther(IJJLjava/util/List;)V
-    .registers 17
+    .registers 18
+    .param p1, "tagId"  # I
+    .param p2, "elapsedNanos"  # J
+    .param p4, "wallClockNanos"  # J
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(IJJ",
@@ -4496,7 +5192,8 @@
         }
     .end annotation
 
-    .line 1804
+    .line 1763
+    .local p6, "pulledData":Ljava/util/List;, "Ljava/util/List<Landroid/os/StatsLogEventWrapper;>;"
     invoke-direct {p0}, Lcom/android/server/stats/StatsCompanionService;->getBatteryStatsHelper()Lcom/android/internal/os/BatteryStatsHelper;
 
     move-result-object v0
@@ -4505,105 +5202,117 @@
 
     move-result-object v0
 
-    .line 1805
+    .line 1764
+    .local v0, "sippers":Ljava/util/List;, "Ljava/util/List<Lcom/android/internal/os/BatterySipper;>;"
     if-nez v0, :cond_b
 
-    .line 1806
+    .line 1765
     return-void
 
-    .line 1808
+    .line 1767
     :cond_b
     invoke-interface {v0}, Ljava/util/List;->iterator()Ljava/util/Iterator;
 
-    move-result-object v0
-
-    :goto_f
-    invoke-interface {v0}, Ljava/util/Iterator;->hasNext()Z
-
-    move-result v1
-
-    if-eqz v1, :cond_4f
-
-    invoke-interface {v0}, Ljava/util/Iterator;->next()Ljava/lang/Object;
-
     move-result-object v1
 
-    check-cast v1, Lcom/android/internal/os/BatterySipper;
+    :goto_f
+    invoke-interface {v1}, Ljava/util/Iterator;->hasNext()Z
 
-    .line 1809
-    iget-object v2, v1, Lcom/android/internal/os/BatterySipper;->drainType:Lcom/android/internal/os/BatterySipper$DrainType;
+    move-result v2
 
-    iget-object v3, v1, Lcom/android/internal/os/BatterySipper;->drainType:Lcom/android/internal/os/BatterySipper$DrainType;
+    if-eqz v2, :cond_4f
 
-    sget-object v3, Lcom/android/internal/os/BatterySipper$DrainType;->APP:Lcom/android/internal/os/BatterySipper$DrainType;
+    invoke-interface {v1}, Ljava/util/Iterator;->next()Ljava/lang/Object;
 
-    if-ne v2, v3, :cond_24
+    move-result-object v2
 
-    .line 1810
+    check-cast v2, Lcom/android/internal/os/BatterySipper;
+
+    .line 1768
+    .local v2, "bs":Lcom/android/internal/os/BatterySipper;
+    iget-object v3, v2, Lcom/android/internal/os/BatterySipper;->drainType:Lcom/android/internal/os/BatterySipper$DrainType;
+
+    iget-object v4, v2, Lcom/android/internal/os/BatterySipper;->drainType:Lcom/android/internal/os/BatterySipper$DrainType;
+
+    sget-object v4, Lcom/android/internal/os/BatterySipper$DrainType;->APP:Lcom/android/internal/os/BatterySipper$DrainType;
+
+    if-ne v3, v4, :cond_24
+
+    .line 1769
     goto :goto_f
 
-    .line 1812
+    .line 1771
     :cond_24
-    iget-object v2, v1, Lcom/android/internal/os/BatterySipper;->drainType:Lcom/android/internal/os/BatterySipper$DrainType;
+    iget-object v3, v2, Lcom/android/internal/os/BatterySipper;->drainType:Lcom/android/internal/os/BatterySipper$DrainType;
 
-    iget-object v3, v1, Lcom/android/internal/os/BatterySipper;->drainType:Lcom/android/internal/os/BatterySipper$DrainType;
+    iget-object v4, v2, Lcom/android/internal/os/BatterySipper;->drainType:Lcom/android/internal/os/BatterySipper$DrainType;
 
-    sget-object v3, Lcom/android/internal/os/BatterySipper$DrainType;->USER:Lcom/android/internal/os/BatterySipper$DrainType;
+    sget-object v4, Lcom/android/internal/os/BatterySipper$DrainType;->USER:Lcom/android/internal/os/BatterySipper$DrainType;
 
-    if-ne v2, v3, :cond_2d
+    if-ne v3, v4, :cond_2d
 
-    .line 1813
+    .line 1772
     goto :goto_f
 
-    .line 1815
+    .line 1774
     :cond_2d
-    new-instance v2, Landroid/os/StatsLogEventWrapper;
+    new-instance v3, Landroid/os/StatsLogEventWrapper;
 
-    move-object v4, v2
+    move-object v5, v3
 
-    move v5, p1
+    move v6, p1
 
-    move-wide v6, p2
+    move-wide v7, p2
 
-    move-wide v8, p4
+    move-wide v9, p4
 
-    invoke-direct/range {v4 .. v9}, Landroid/os/StatsLogEventWrapper;-><init>(IJJ)V
+    invoke-direct/range {v5 .. v10}, Landroid/os/StatsLogEventWrapper;-><init>(IJJ)V
 
-    .line 1816
-    iget-object v3, v1, Lcom/android/internal/os/BatterySipper;->drainType:Lcom/android/internal/os/BatterySipper$DrainType;
+    .line 1775
+    .local v3, "e":Landroid/os/StatsLogEventWrapper;
+    iget-object v4, v2, Lcom/android/internal/os/BatterySipper;->drainType:Lcom/android/internal/os/BatterySipper$DrainType;
 
-    invoke-virtual {v3}, Lcom/android/internal/os/BatterySipper$DrainType;->ordinal()I
+    invoke-virtual {v4}, Lcom/android/internal/os/BatterySipper$DrainType;->ordinal()I
 
-    move-result v3
+    move-result v4
 
-    invoke-virtual {v2, v3}, Landroid/os/StatsLogEventWrapper;->writeInt(I)V
+    invoke-virtual {v3, v4}, Landroid/os/StatsLogEventWrapper;->writeInt(I)V
 
-    .line 1817
-    iget-wide v3, v1, Lcom/android/internal/os/BatterySipper;->totalPowerMah:D
+    .line 1776
+    iget-wide v4, v2, Lcom/android/internal/os/BatterySipper;->totalPowerMah:D
 
-    move-object v1, p0
+    move-object v6, p0
 
-    invoke-direct {p0, v3, v4}, Lcom/android/server/stats/StatsCompanionService;->milliAmpHrsToNanoAmpSecs(D)J
+    invoke-direct {p0, v4, v5}, Lcom/android/server/stats/StatsCompanionService;->milliAmpHrsToNanoAmpSecs(D)J
 
-    move-result-wide v3
+    move-result-wide v4
 
-    invoke-virtual {v2, v3, v4}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
+    invoke-virtual {v3, v4, v5}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
 
-    .line 1818
-    move-object/from16 v3, p6
+    .line 1777
+    move-object/from16 v4, p6
 
-    invoke-interface {v3, v2}, Ljava/util/List;->add(Ljava/lang/Object;)Z
+    invoke-interface {v4, v3}, Ljava/util/List;->add(Ljava/lang/Object;)Z
 
-    .line 1819
+    .line 1778
+    .end local v2  # "bs":Lcom/android/internal/os/BatterySipper;
+    .end local v3  # "e":Landroid/os/StatsLogEventWrapper;
     goto :goto_f
 
-    .line 1820
+    .line 1779
     :cond_4f
+    move-object v6, p0
+
+    move-object/from16 v4, p6
+
     return-void
 .end method
 
 .method private pullDeviceCalculatedPowerBlameUid(IJJLjava/util/List;)V
-    .registers 17
+    .registers 18
+    .param p1, "tagId"  # I
+    .param p2, "elapsedNanos"  # J
+    .param p4, "wallClockNanos"  # J
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(IJJ",
@@ -4613,7 +5322,8 @@
         }
     .end annotation
 
-    .line 1787
+    .line 1746
+    .local p6, "pulledData":Ljava/util/List;, "Ljava/util/List<Landroid/os/StatsLogEventWrapper;>;"
     invoke-direct {p0}, Lcom/android/server/stats/StatsCompanionService;->getBatteryStatsHelper()Lcom/android/internal/os/BatteryStatsHelper;
 
     move-result-object v0
@@ -4622,92 +5332,104 @@
 
     move-result-object v0
 
-    .line 1788
+    .line 1747
+    .local v0, "sippers":Ljava/util/List;, "Ljava/util/List<Lcom/android/internal/os/BatterySipper;>;"
     if-nez v0, :cond_b
 
-    .line 1789
+    .line 1748
     return-void
 
-    .line 1791
+    .line 1750
     :cond_b
     invoke-interface {v0}, Ljava/util/List;->iterator()Ljava/util/Iterator;
 
-    move-result-object v0
-
-    :goto_f
-    invoke-interface {v0}, Ljava/util/Iterator;->hasNext()Z
-
-    move-result v1
-
-    if-eqz v1, :cond_46
-
-    invoke-interface {v0}, Ljava/util/Iterator;->next()Ljava/lang/Object;
-
     move-result-object v1
 
-    check-cast v1, Lcom/android/internal/os/BatterySipper;
+    :goto_f
+    invoke-interface {v1}, Ljava/util/Iterator;->hasNext()Z
 
-    .line 1792
-    iget-object v2, v1, Lcom/android/internal/os/BatterySipper;->drainType:Lcom/android/internal/os/BatterySipper$DrainType;
+    move-result v2
 
-    iget-object v3, v1, Lcom/android/internal/os/BatterySipper;->drainType:Lcom/android/internal/os/BatterySipper$DrainType;
+    if-eqz v2, :cond_46
 
-    sget-object v3, Lcom/android/internal/os/BatterySipper$DrainType;->APP:Lcom/android/internal/os/BatterySipper$DrainType;
+    invoke-interface {v1}, Ljava/util/Iterator;->next()Ljava/lang/Object;
 
-    if-eq v2, v3, :cond_24
+    move-result-object v2
 
-    .line 1793
+    check-cast v2, Lcom/android/internal/os/BatterySipper;
+
+    .line 1751
+    .local v2, "bs":Lcom/android/internal/os/BatterySipper;
+    iget-object v3, v2, Lcom/android/internal/os/BatterySipper;->drainType:Lcom/android/internal/os/BatterySipper$DrainType;
+
+    iget-object v4, v2, Lcom/android/internal/os/BatterySipper;->drainType:Lcom/android/internal/os/BatterySipper$DrainType;
+
+    sget-object v4, Lcom/android/internal/os/BatterySipper$DrainType;->APP:Lcom/android/internal/os/BatterySipper$DrainType;
+
+    if-eq v3, v4, :cond_24
+
+    .line 1752
     goto :goto_f
 
-    .line 1795
+    .line 1754
     :cond_24
-    new-instance v2, Landroid/os/StatsLogEventWrapper;
+    new-instance v3, Landroid/os/StatsLogEventWrapper;
 
-    move-object v4, v2
+    move-object v5, v3
 
-    move v5, p1
+    move v6, p1
 
-    move-wide v6, p2
+    move-wide v7, p2
 
-    move-wide v8, p4
+    move-wide v9, p4
 
-    invoke-direct/range {v4 .. v9}, Landroid/os/StatsLogEventWrapper;-><init>(IJJ)V
+    invoke-direct/range {v5 .. v10}, Landroid/os/StatsLogEventWrapper;-><init>(IJJ)V
 
-    .line 1796
-    iget-object v3, v1, Lcom/android/internal/os/BatterySipper;->uidObj:Landroid/os/BatteryStats$Uid;
+    .line 1755
+    .local v3, "e":Landroid/os/StatsLogEventWrapper;
+    iget-object v4, v2, Lcom/android/internal/os/BatterySipper;->uidObj:Landroid/os/BatteryStats$Uid;
 
-    invoke-virtual {v3}, Landroid/os/BatteryStats$Uid;->getUid()I
+    invoke-virtual {v4}, Landroid/os/BatteryStats$Uid;->getUid()I
 
-    move-result v3
+    move-result v4
 
-    invoke-virtual {v2, v3}, Landroid/os/StatsLogEventWrapper;->writeInt(I)V
+    invoke-virtual {v3, v4}, Landroid/os/StatsLogEventWrapper;->writeInt(I)V
 
-    .line 1797
-    iget-wide v3, v1, Lcom/android/internal/os/BatterySipper;->totalPowerMah:D
+    .line 1756
+    iget-wide v4, v2, Lcom/android/internal/os/BatterySipper;->totalPowerMah:D
 
-    move-object v1, p0
+    move-object v6, p0
 
-    invoke-direct {p0, v3, v4}, Lcom/android/server/stats/StatsCompanionService;->milliAmpHrsToNanoAmpSecs(D)J
+    invoke-direct {p0, v4, v5}, Lcom/android/server/stats/StatsCompanionService;->milliAmpHrsToNanoAmpSecs(D)J
 
-    move-result-wide v3
+    move-result-wide v4
 
-    invoke-virtual {v2, v3, v4}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
+    invoke-virtual {v3, v4, v5}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
 
-    .line 1798
-    move-object/from16 v3, p6
+    .line 1757
+    move-object/from16 v4, p6
 
-    invoke-interface {v3, v2}, Ljava/util/List;->add(Ljava/lang/Object;)Z
+    invoke-interface {v4, v3}, Ljava/util/List;->add(Ljava/lang/Object;)Z
 
-    .line 1799
+    .line 1758
+    .end local v2  # "bs":Lcom/android/internal/os/BatterySipper;
+    .end local v3  # "e":Landroid/os/StatsLogEventWrapper;
     goto :goto_f
 
-    .line 1800
+    .line 1759
     :cond_46
+    move-object v6, p0
+
+    move-object/from16 v4, p6
+
     return-void
 .end method
 
 .method private pullDeviceCalculatedPowerUse(IJJLjava/util/List;)V
     .registers 15
+    .param p1, "tagId"  # I
+    .param p2, "elapsedNanos"  # J
+    .param p4, "wallClockNanos"  # J
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(IJJ",
@@ -4717,12 +5439,14 @@
         }
     .end annotation
 
-    .line 1779
+    .line 1738
+    .local p6, "pulledData":Ljava/util/List;, "Ljava/util/List<Landroid/os/StatsLogEventWrapper;>;"
     invoke-direct {p0}, Lcom/android/server/stats/StatsCompanionService;->getBatteryStatsHelper()Lcom/android/internal/os/BatteryStatsHelper;
 
     move-result-object v0
 
-    .line 1780
+    .line 1739
+    .local v0, "bsHelper":Lcom/android/internal/os/BatteryStatsHelper;
     new-instance v7, Landroid/os/StatsLogEventWrapper;
 
     move-object v1, v7
@@ -4735,26 +5459,30 @@
 
     invoke-direct/range {v1 .. v6}, Landroid/os/StatsLogEventWrapper;-><init>(IJJ)V
 
-    .line 1781
+    .line 1740
+    .local v1, "e":Landroid/os/StatsLogEventWrapper;
     invoke-virtual {v0}, Lcom/android/internal/os/BatteryStatsHelper;->getComputedPower()D
 
-    move-result-wide p1
+    move-result-wide v2
 
-    invoke-direct {p0, p1, p2}, Lcom/android/server/stats/StatsCompanionService;->milliAmpHrsToNanoAmpSecs(D)J
+    invoke-direct {p0, v2, v3}, Lcom/android/server/stats/StatsCompanionService;->milliAmpHrsToNanoAmpSecs(D)J
 
-    move-result-wide p1
+    move-result-wide v2
 
-    invoke-virtual {v7, p1, p2}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
+    invoke-virtual {v1, v2, v3}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
 
-    .line 1782
-    invoke-interface {p6, v7}, Ljava/util/List;->add(Ljava/lang/Object;)Z
+    .line 1741
+    invoke-interface {p6, v1}, Ljava/util/List;->add(Ljava/lang/Object;)Z
 
-    .line 1783
+    .line 1742
     return-void
 .end method
 
 .method private pullDirectoryUsage(IJJLjava/util/List;)V
     .registers 20
+    .param p1, "tagId"  # I
+    .param p2, "elapsedNanos"  # J
+    .param p4, "wallClockNanos"  # J
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(IJJ",
@@ -4764,7 +5492,8 @@
         }
     .end annotation
 
-    .line 1431
+    .line 1429
+    .local p6, "pulledData":Ljava/util/List;, "Ljava/util/List<Landroid/os/StatsLogEventWrapper;>;"
     move-object/from16 v0, p6
 
     new-instance v1, Landroid/os/StatFs;
@@ -4779,7 +5508,8 @@
 
     invoke-direct {v1, v2}, Landroid/os/StatFs;-><init>(Ljava/lang/String;)V
 
-    .line 1432
+    .line 1430
+    .local v1, "statFsData":Landroid/os/StatFs;
     new-instance v2, Landroid/os/StatFs;
 
     invoke-static {}, Landroid/os/Environment;->getRootDirectory()Ljava/io/File;
@@ -4792,7 +5522,8 @@
 
     invoke-direct {v2, v3}, Landroid/os/StatFs;-><init>(Ljava/lang/String;)V
 
-    .line 1433
+    .line 1431
+    .local v2, "statFsSystem":Landroid/os/StatFs;
     new-instance v3, Landroid/os/StatFs;
 
     invoke-static {}, Landroid/os/Environment;->getDownloadCacheDirectory()Ljava/io/File;
@@ -4805,45 +5536,47 @@
 
     invoke-direct {v3, v4}, Landroid/os/StatFs;-><init>(Ljava/lang/String;)V
 
-    .line 1435
-    new-instance v4, Landroid/os/StatsLogEventWrapper;
+    .line 1433
+    .local v3, "statFsCache":Landroid/os/StatFs;
+    new-instance v10, Landroid/os/StatsLogEventWrapper;
 
-    move-object v5, v4
+    move-object v4, v10
 
-    move v6, p1
+    move v5, p1
 
-    move-wide v7, p2
+    move-wide v6, p2
 
-    move-wide/from16 v9, p4
+    move-wide/from16 v8, p4
 
-    invoke-direct/range {v5 .. v10}, Landroid/os/StatsLogEventWrapper;-><init>(IJJ)V
+    invoke-direct/range {v4 .. v9}, Landroid/os/StatsLogEventWrapper;-><init>(IJJ)V
 
-    .line 1436
+    .line 1434
+    .local v4, "e":Landroid/os/StatsLogEventWrapper;
     const/4 v5, 0x1
 
     invoke-virtual {v4, v5}, Landroid/os/StatsLogEventWrapper;->writeInt(I)V
 
-    .line 1437
+    .line 1435
     invoke-virtual {v1}, Landroid/os/StatFs;->getAvailableBytes()J
 
     move-result-wide v5
 
     invoke-virtual {v4, v5, v6}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
 
-    .line 1438
+    .line 1436
     invoke-virtual {v1}, Landroid/os/StatFs;->getTotalBytes()J
 
     move-result-wide v5
 
     invoke-virtual {v4, v5, v6}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
 
-    .line 1439
+    .line 1437
     invoke-interface {v0, v4}, Ljava/util/List;->add(Ljava/lang/Object;)Z
 
-    .line 1441
-    new-instance v1, Landroid/os/StatsLogEventWrapper;
+    .line 1439
+    new-instance v5, Landroid/os/StatsLogEventWrapper;
 
-    move-object v7, v1
+    move-object v7, v5
 
     move v8, p1
 
@@ -4853,69 +5586,70 @@
 
     invoke-direct/range {v7 .. v12}, Landroid/os/StatsLogEventWrapper;-><init>(IJJ)V
 
-    .line 1442
-    const/4 v4, 0x2
+    move-object v4, v5
 
-    invoke-virtual {v1, v4}, Landroid/os/StatsLogEventWrapper;->writeInt(I)V
+    .line 1440
+    const/4 v5, 0x2
 
-    .line 1443
+    invoke-virtual {v4, v5}, Landroid/os/StatsLogEventWrapper;->writeInt(I)V
+
+    .line 1441
     invoke-virtual {v3}, Landroid/os/StatFs;->getAvailableBytes()J
 
-    move-result-wide v4
+    move-result-wide v5
 
-    invoke-virtual {v1, v4, v5}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
+    invoke-virtual {v4, v5, v6}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
 
-    .line 1444
+    .line 1442
     invoke-virtual {v3}, Landroid/os/StatFs;->getTotalBytes()J
 
-    move-result-wide v3
+    move-result-wide v5
 
-    invoke-virtual {v1, v3, v4}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
+    invoke-virtual {v4, v5, v6}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
+
+    .line 1443
+    invoke-interface {v0, v4}, Ljava/util/List;->add(Ljava/lang/Object;)Z
 
     .line 1445
-    invoke-interface {v0, v1}, Ljava/util/List;->add(Ljava/lang/Object;)Z
+    new-instance v5, Landroid/os/StatsLogEventWrapper;
+
+    move-object v7, v5
+
+    invoke-direct/range {v7 .. v12}, Landroid/os/StatsLogEventWrapper;-><init>(IJJ)V
+
+    move-object v4, v5
+
+    .line 1446
+    const/4 v5, 0x3
+
+    invoke-virtual {v4, v5}, Landroid/os/StatsLogEventWrapper;->writeInt(I)V
 
     .line 1447
-    new-instance v1, Landroid/os/StatsLogEventWrapper;
-
-    move-object v5, v1
-
-    move v6, p1
-
-    move-wide v7, p2
-
-    move-wide/from16 v9, p4
-
-    invoke-direct/range {v5 .. v10}, Landroid/os/StatsLogEventWrapper;-><init>(IJJ)V
-
-    .line 1448
-    const/4 v3, 0x3
-
-    invoke-virtual {v1, v3}, Landroid/os/StatsLogEventWrapper;->writeInt(I)V
-
-    .line 1449
     invoke-virtual {v2}, Landroid/os/StatFs;->getAvailableBytes()J
 
-    move-result-wide v3
+    move-result-wide v5
 
-    invoke-virtual {v1, v3, v4}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
+    invoke-virtual {v4, v5, v6}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
 
-    .line 1450
+    .line 1448
     invoke-virtual {v2}, Landroid/os/StatFs;->getTotalBytes()J
 
-    move-result-wide v2
+    move-result-wide v5
 
-    invoke-virtual {v1, v2, v3}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
+    invoke-virtual {v4, v5, v6}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
 
-    .line 1451
-    invoke-interface {v0, v1}, Ljava/util/List;->add(Ljava/lang/Object;)Z
+    .line 1449
+    invoke-interface {v0, v4}, Ljava/util/List;->add(Ljava/lang/Object;)Z
 
-    .line 1452
+    .line 1450
     return-void
 .end method
 
 .method private pullDiskIo(IJJLjava/util/List;)V
     .registers 16
+    .param p1, "tagId"  # I
+    .param p2, "elapsedNanos"  # J
+    .param p4, "wallClockNanos"  # J
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(IJJ",
@@ -4925,7 +5659,8 @@
         }
     .end annotation
 
-    .line 1824
+    .line 1783
+    .local p6, "pulledData":Ljava/util/List;, "Ljava/util/List<Landroid/os/StatsLogEventWrapper;>;"
     iget-object v0, p0, Lcom/android/server/stats/StatsCompanionService;->mStoragedUidIoStatsReader:Lcom/android/internal/os/StoragedUidIoStatsReader;
 
     new-instance v8, Lcom/android/server/stats/-$$Lambda$StatsCompanionService$C35-JUjeqVrZ2ptbyqiMciF6UQM;
@@ -4944,12 +5679,15 @@
 
     invoke-virtual {v0, v8}, Lcom/android/internal/os/StoragedUidIoStatsReader;->readAbsolute(Lcom/android/internal/os/StoragedUidIoStatsReader$Callback;)V
 
-    .line 1842
+    .line 1801
     return-void
 .end method
 
 .method private pullDiskStats(IJJLjava/util/List;)V
-    .registers 21
+    .registers 26
+    .param p1, "tagId"  # I
+    .param p2, "elapsedNanos"  # J
+    .param p4, "wallClockNanos"  # J
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(IJJ",
@@ -4959,32 +5697,36 @@
         }
     .end annotation
 
-    .line 1377
+    .line 1375
+    .local p6, "pulledData":Ljava/util/List;, "Ljava/util/List<Landroid/os/StatsLogEventWrapper;>;"
     const-string/jumbo v1, "storaged not found"
 
     const/16 v0, 0x200
 
-    new-array v0, v0, [B
+    new-array v2, v0, [B
 
-    .line 1378
-    const/4 v2, 0x0
+    .line 1376
+    .local v2, "junk":[B
+    const/4 v0, 0x0
 
+    .local v0, "i":I
     :goto_8
-    array-length v3, v0
+    array-length v3, v2
 
-    if-ge v2, v3, :cond_11
+    if-ge v0, v3, :cond_11
 
-    int-to-byte v3, v2
+    int-to-byte v3, v0
 
-    aput-byte v3, v0, v2
+    aput-byte v3, v2, v0
 
-    add-int/lit8 v2, v2, 0x1
+    add-int/lit8 v0, v0, 0x1
 
     goto :goto_8
 
-    .line 1380
+    .line 1378
+    .end local v0  # "i":I
     :cond_11
-    new-instance v2, Ljava/io/File;
+    new-instance v0, Ljava/io/File;
 
     invoke-static {}, Landroid/os/Environment;->getDataDirectory()Ljava/io/File;
 
@@ -4992,235 +5734,232 @@
 
     const-string/jumbo v4, "system/statsdperftest.tmp"
 
-    invoke-direct {v2, v3, v4}, Ljava/io/File;-><init>(Ljava/io/File;Ljava/lang/String;)V
+    invoke-direct {v0, v3, v4}, Ljava/io/File;-><init>(Ljava/io/File;Ljava/lang/String;)V
 
-    .line 1381
-    nop
+    move-object v3, v0
 
-    .line 1382
-    nop
+    .line 1379
+    .local v3, "tmp":Ljava/io/File;
+    const/4 v4, 0x0
 
-    .line 1384
-    invoke-static {}, Landroid/os/SystemClock;->elapsedRealtime()J
-
-    move-result-wide v3
-
-    .line 1386
+    .line 1380
+    .local v4, "fos":Ljava/io/FileOutputStream;
     const/4 v5, 0x0
 
-    :try_start_24
-    new-instance v6, Ljava/io/FileOutputStream;
-
-    invoke-direct {v6, v2}, Ljava/io/FileOutputStream;-><init>(Ljava/io/File;)V
-    :try_end_29
-    .catch Ljava/io/IOException; {:try_start_24 .. :try_end_29} :catch_44
-    .catchall {:try_start_24 .. :try_end_29} :catchall_38
-
-    .line 1387
-    :try_start_29
-    invoke-virtual {v6, v0}, Ljava/io/FileOutputStream;->write([B)V
-    :try_end_2c
-    .catch Ljava/io/IOException; {:try_start_29 .. :try_end_2c} :catch_36
-    .catchall {:try_start_29 .. :try_end_2c} :catchall_32
-
-    .line 1392
-    :try_start_2c
-    invoke-virtual {v6}, Ljava/io/FileOutputStream;->close()V
-    :try_end_2f
-    .catch Ljava/io/IOException; {:try_start_2c .. :try_end_2f} :catch_30
-
-    .line 1395
-    :cond_2f
-    :goto_2f
-    goto :goto_4e
-
-    .line 1393
-    :catch_30
-    move-exception v0
-
-    .line 1396
-    goto :goto_4e
-
-    .line 1391
-    :catchall_32
-    move-exception v0
-
-    move-object v1, v0
-
-    move-object v5, v6
-
-    goto :goto_3a
-
-    .line 1388
-    :catch_36
-    move-exception v0
-
-    goto :goto_46
-
-    .line 1391
-    :catchall_38
-    move-exception v0
-
-    move-object v1, v0
-
-    .line 1392
-    :goto_3a
-    if-eqz v5, :cond_42
-
-    :try_start_3c
-    invoke-virtual {v5}, Ljava/io/FileOutputStream;->close()V
-    :try_end_3f
-    .catch Ljava/io/IOException; {:try_start_3c .. :try_end_3f} :catch_40
-
-    goto :goto_42
-
-    .line 1393
-    :catch_40
-    move-exception v0
-
-    goto :goto_43
-
-    .line 1395
-    :cond_42
-    :goto_42
-    nop
-
-    :goto_43
-    throw v1
-
-    .line 1388
-    :catch_44
-    move-exception v0
-
-    move-object v6, v5
-
-    :goto_46
-    move-object v5, v0
-
-    .line 1389
-    nop
-
-    .line 1392
-    if-eqz v6, :cond_2f
-
-    :try_start_4a
-    invoke-virtual {v6}, Ljava/io/FileOutputStream;->close()V
-    :try_end_4d
-    .catch Ljava/io/IOException; {:try_start_4a .. :try_end_4d} :catch_30
-
-    goto :goto_2f
-
-    .line 1398
-    :goto_4e
+    .line 1382
+    .local v5, "error":Ljava/io/IOException;
     invoke-static {}, Landroid/os/SystemClock;->elapsedRealtime()J
 
     move-result-wide v6
 
-    sub-long/2addr v6, v3
+    .line 1384
+    .local v6, "before":J
+    :try_start_24
+    new-instance v0, Ljava/io/FileOutputStream;
 
-    .line 1399
-    invoke-virtual {v2}, Ljava/io/File;->exists()Z
+    invoke-direct {v0, v3}, Ljava/io/FileOutputStream;-><init>(Ljava/io/File;)V
+
+    move-object v4, v0
+
+    .line 1385
+    invoke-virtual {v4, v2}, Ljava/io/FileOutputStream;->write([B)V
+    :try_end_2d
+    .catch Ljava/io/IOException; {:try_start_24 .. :try_end_2d} :catch_3f
+    .catchall {:try_start_24 .. :try_end_2d} :catchall_33
+
+    .line 1390
+    :try_start_2d
+    invoke-virtual {v4}, Ljava/io/FileOutputStream;->close()V
+    :try_end_30
+    .catch Ljava/io/IOException; {:try_start_2d .. :try_end_30} :catch_31
+
+    .line 1393
+    :cond_30
+    :goto_30
+    goto :goto_47
+
+    .line 1391
+    :catch_31
+    move-exception v0
+
+    .line 1394
+    goto :goto_47
+
+    .line 1389
+    :catchall_33
+    move-exception v0
+
+    move-object v1, v0
+
+    .line 1390
+    if-eqz v4, :cond_3d
+
+    :try_start_37
+    invoke-virtual {v4}, Ljava/io/FileOutputStream;->close()V
+    :try_end_3a
+    .catch Ljava/io/IOException; {:try_start_37 .. :try_end_3a} :catch_3b
+
+    goto :goto_3d
+
+    .line 1391
+    :catch_3b
+    move-exception v0
+
+    goto :goto_3e
+
+    .line 1393
+    :cond_3d
+    :goto_3d
+    nop
+
+    :goto_3e
+    throw v1
+
+    .line 1386
+    :catch_3f
+    move-exception v0
+
+    .line 1387
+    .local v0, "e":Ljava/io/IOException;
+    move-object v5, v0
+
+    .line 1390
+    .end local v0  # "e":Ljava/io/IOException;
+    if-eqz v4, :cond_30
+
+    :try_start_43
+    invoke-virtual {v4}, Ljava/io/FileOutputStream;->close()V
+    :try_end_46
+    .catch Ljava/io/IOException; {:try_start_43 .. :try_end_46} :catch_31
+
+    goto :goto_30
+
+    .line 1396
+    :goto_47
+    invoke-static {}, Landroid/os/SystemClock;->elapsedRealtime()J
+
+    move-result-wide v8
+
+    sub-long/2addr v8, v6
+
+    .line 1397
+    .local v8, "latency":J
+    invoke-virtual {v3}, Ljava/io/File;->exists()Z
 
     move-result v0
 
-    if-eqz v0, :cond_5c
+    if-eqz v0, :cond_55
 
-    invoke-virtual {v2}, Ljava/io/File;->delete()Z
+    invoke-virtual {v3}, Ljava/io/File;->delete()Z
 
-    .line 1401
-    :cond_5c
-    const-string v2, "StatsCompanionService"
+    .line 1399
+    :cond_55
+    const-string v10, "StatsCompanionService"
 
-    if-eqz v5, :cond_67
+    if-eqz v5, :cond_60
 
-    .line 1402
+    .line 1400
     const-string v0, "Error performing diskstats latency test"
 
-    invoke-static {v2, v0}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v10, v0}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 1403
-    const-wide/16 v6, -0x1
+    .line 1401
+    const-wide/16 v8, -0x1
 
-    .line 1406
-    :cond_67
+    .line 1404
+    :cond_60
     invoke-static {}, Landroid/os/storage/StorageManager;->isFileEncryptedNativeOnly()Z
 
-    move-result v3
+    move-result v11
+
+    .line 1407
+    .local v11, "fileBased":Z
+    const/4 v12, -0x1
 
     .line 1409
-    const/4 v4, -0x1
-
-    .line 1411
-    :try_start_6c
+    .local v12, "writeSpeed":I
+    :try_start_65
     const-string/jumbo v0, "storaged"
 
     invoke-static {v0}, Landroid/os/ServiceManager;->getService(Ljava/lang/String;)Landroid/os/IBinder;
 
     move-result-object v0
 
-    .line 1412
-    if-nez v0, :cond_78
+    .line 1410
+    .local v0, "binder":Landroid/os/IBinder;
+    if-nez v0, :cond_71
+
+    .line 1411
+    invoke-static {v10, v1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 1413
-    invoke-static {v2, v1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
-
-    .line 1415
-    :cond_78
+    :cond_71
     invoke-static {v0}, Landroid/os/IStoraged$Stub;->asInterface(Landroid/os/IBinder;)Landroid/os/IStoraged;
 
-    move-result-object v0
+    move-result-object v13
 
-    .line 1416
-    invoke-interface {v0}, Landroid/os/IStoraged;->getRecentPerf()I
+    .line 1414
+    .local v13, "storaged":Landroid/os/IStoraged;
+    invoke-interface {v13}, Landroid/os/IStoraged;->getRecentPerf()I
 
-    move-result v4
-    :try_end_80
-    .catch Landroid/os/RemoteException; {:try_start_6c .. :try_end_80} :catch_81
+    move-result v1
+    :try_end_79
+    .catch Landroid/os/RemoteException; {:try_start_65 .. :try_end_79} :catch_7b
 
-    .line 1419
-    goto :goto_85
+    move v12, v1
 
     .line 1417
-    :catch_81
+    .end local v0  # "binder":Landroid/os/IBinder;
+    .end local v13  # "storaged":Landroid/os/IStoraged;
+    goto :goto_7f
+
+    .line 1415
+    :catch_7b
     move-exception v0
 
-    .line 1418
-    invoke-static {v2, v1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
+    .line 1416
+    .local v0, "e":Landroid/os/RemoteException;
+    invoke-static {v10, v1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 1422
-    :goto_85
+    .line 1420
+    .end local v0  # "e":Landroid/os/RemoteException;
+    :goto_7f
     new-instance v0, Landroid/os/StatsLogEventWrapper;
 
-    move-object v8, v0
+    move-object v13, v0
 
-    move v9, p1
+    move/from16 v14, p1
 
-    move-wide/from16 v10, p2
+    move-wide/from16 v15, p2
 
-    move-wide/from16 v12, p4
+    move-wide/from16 v17, p4
 
-    invoke-direct/range {v8 .. v13}, Landroid/os/StatsLogEventWrapper;-><init>(IJJ)V
+    invoke-direct/range {v13 .. v18}, Landroid/os/StatsLogEventWrapper;-><init>(IJJ)V
+
+    .line 1421
+    .local v0, "e":Landroid/os/StatsLogEventWrapper;
+    invoke-virtual {v0, v8, v9}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
+
+    .line 1422
+    invoke-virtual {v0, v11}, Landroid/os/StatsLogEventWrapper;->writeBoolean(Z)V
 
     .line 1423
-    invoke-virtual {v0, v6, v7}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
+    invoke-virtual {v0, v12}, Landroid/os/StatsLogEventWrapper;->writeInt(I)V
 
     .line 1424
-    invoke-virtual {v0, v3}, Landroid/os/StatsLogEventWrapper;->writeBoolean(Z)V
-
-    .line 1425
-    invoke-virtual {v0, v4}, Landroid/os/StatsLogEventWrapper;->writeInt(I)V
-
-    .line 1426
     move-object/from16 v1, p6
 
     invoke-interface {v1, v0}, Ljava/util/List;->add(Ljava/lang/Object;)Z
 
-    .line 1427
+    .line 1425
     return-void
 .end method
 
 .method private pullExternalStorageInfo(IJJLjava/util/List;)V
-    .registers 18
+    .registers 23
+    .param p1, "tagId"  # I
+    .param p2, "elapsedNanos"  # J
+    .param p4, "wallClockNanos"  # J
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(IJJ",
@@ -5230,190 +5969,216 @@
         }
     .end annotation
 
-    .line 2193
-    move-object v0, p0
+    .line 2152
+    .local p6, "pulledData":Ljava/util/List;, "Ljava/util/List<Landroid/os/StatsLogEventWrapper;>;"
+    move-object/from16 v0, p0
 
-    iget-object v0, v0, Lcom/android/server/stats/StatsCompanionService;->mContext:Landroid/content/Context;
+    iget-object v1, v0, Lcom/android/server/stats/StatsCompanionService;->mContext:Landroid/content/Context;
 
-    const-class v1, Landroid/os/storage/StorageManager;
+    const-class v2, Landroid/os/storage/StorageManager;
 
-    invoke-virtual {v0, v1}, Landroid/content/Context;->getSystemService(Ljava/lang/Class;)Ljava/lang/Object;
-
-    move-result-object v0
-
-    check-cast v0, Landroid/os/storage/StorageManager;
-
-    .line 2194
-    if-eqz v0, :cond_7d
-
-    .line 2195
-    invoke-virtual {v0}, Landroid/os/storage/StorageManager;->getVolumes()Ljava/util/List;
-
-    move-result-object v0
-
-    .line 2196
-    invoke-interface {v0}, Ljava/util/List;->iterator()Ljava/util/Iterator;
-
-    move-result-object v0
-
-    :goto_15
-    invoke-interface {v0}, Ljava/util/Iterator;->hasNext()Z
-
-    move-result v1
-
-    if-eqz v1, :cond_7d
-
-    invoke-interface {v0}, Ljava/util/Iterator;->next()Ljava/lang/Object;
+    invoke-virtual {v1, v2}, Landroid/content/Context;->getSystemService(Ljava/lang/Class;)Ljava/lang/Object;
 
     move-result-object v1
 
-    check-cast v1, Landroid/os/storage/VolumeInfo;
+    check-cast v1, Landroid/os/storage/StorageManager;
 
-    .line 2197
-    invoke-virtual {v1}, Landroid/os/storage/VolumeInfo;->getState()I
+    .line 2153
+    .local v1, "storageManager":Landroid/os/storage/StorageManager;
+    if-eqz v1, :cond_81
 
-    move-result v2
-
-    invoke-static {v2}, Landroid/os/storage/VolumeInfo;->getEnvironmentForState(I)Ljava/lang/String;
+    .line 2154
+    invoke-virtual {v1}, Landroid/os/storage/StorageManager;->getVolumes()Ljava/util/List;
 
     move-result-object v2
 
-    .line 2198
-    invoke-virtual {v1}, Landroid/os/storage/VolumeInfo;->getDisk()Landroid/os/storage/DiskInfo;
+    .line 2155
+    .local v2, "volumes":Ljava/util/List;, "Ljava/util/List<Landroid/os/storage/VolumeInfo;>;"
+    invoke-interface {v2}, Ljava/util/List;->iterator()Ljava/util/Iterator;
 
     move-result-object v3
 
-    .line 2199
-    if-eqz v3, :cond_7a
+    :goto_16
+    invoke-interface {v3}, Ljava/util/Iterator;->hasNext()Z
 
-    .line 2200
-    const-string/jumbo v4, "mounted"
+    move-result v4
 
-    invoke-virtual {v2, v4}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    if-eqz v4, :cond_7e
 
-    move-result v2
+    invoke-interface {v3}, Ljava/util/Iterator;->next()Ljava/lang/Object;
 
-    if-eqz v2, :cond_77
+    move-result-object v4
 
-    .line 2202
-    nop
+    check-cast v4, Landroid/os/storage/VolumeInfo;
 
-    .line 2203
-    invoke-virtual {v1}, Landroid/os/storage/VolumeInfo;->getType()I
+    .line 2156
+    .local v4, "vol":Landroid/os/storage/VolumeInfo;
+    invoke-virtual {v4}, Landroid/os/storage/VolumeInfo;->getState()I
 
-    move-result v2
+    move-result v5
 
-    const/4 v4, 0x2
+    invoke-static {v5}, Landroid/os/storage/VolumeInfo;->getEnvironmentForState(I)Ljava/lang/String;
 
-    const/4 v5, 0x3
+    move-result-object v5
 
-    const/4 v6, 0x1
+    .line 2157
+    .local v5, "envState":Ljava/lang/String;
+    invoke-virtual {v4}, Landroid/os/storage/VolumeInfo;->getDisk()Landroid/os/storage/DiskInfo;
 
-    if-nez v2, :cond_44
+    move-result-object v6
 
-    .line 2204
-    move v1, v6
+    .line 2158
+    .local v6, "diskInfo":Landroid/os/storage/DiskInfo;
+    if-eqz v6, :cond_7b
 
-    goto :goto_4d
+    .line 2159
+    const-string/jumbo v7, "mounted"
 
-    .line 2205
-    :cond_44
-    invoke-virtual {v1}, Landroid/os/storage/VolumeInfo;->getType()I
+    invoke-virtual {v5, v7}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result v1
+    move-result v7
 
-    if-ne v1, v6, :cond_4c
+    if-eqz v7, :cond_78
 
-    .line 2206
-    move v1, v4
+    .line 2161
+    const/4 v7, 0x3
 
-    goto :goto_4d
+    .line 2162
+    .local v7, "volumeType":I
+    invoke-virtual {v4}, Landroid/os/storage/VolumeInfo;->getType()I
 
-    .line 2205
-    :cond_4c
-    move v1, v5
+    move-result v8
 
-    .line 2211
-    :goto_4d
-    invoke-virtual {v3}, Landroid/os/storage/DiskInfo;->isSd()Z
+    if-nez v8, :cond_42
 
-    move-result v2
+    .line 2163
+    const/4 v7, 0x1
 
-    if-eqz v2, :cond_55
+    goto :goto_4a
 
-    .line 2212
-    move v4, v6
+    .line 2164
+    :cond_42
+    invoke-virtual {v4}, Landroid/os/storage/VolumeInfo;->getType()I
 
-    goto :goto_5d
+    move-result v8
 
-    .line 2213
-    :cond_55
-    invoke-virtual {v3}, Landroid/os/storage/DiskInfo;->isUsb()Z
+    const/4 v9, 0x1
 
-    move-result v2
+    if-ne v8, v9, :cond_4a
 
-    if-eqz v2, :cond_5c
+    .line 2165
+    const/4 v7, 0x2
 
-    .line 2214
-    goto :goto_5d
+    .line 2170
+    :cond_4a
+    :goto_4a
+    invoke-virtual {v6}, Landroid/os/storage/DiskInfo;->isSd()Z
 
-    .line 2216
-    :cond_5c
-    move v4, v5
+    move-result v8
 
-    .line 2218
-    :goto_5d
-    new-instance v2, Landroid/os/StatsLogEventWrapper;
+    if-eqz v8, :cond_52
 
-    move-object v5, v2
+    .line 2171
+    const/4 v8, 0x1
 
-    move v6, p1
+    .local v8, "externalStorageType":I
+    goto :goto_5b
 
-    move-wide v7, p2
+    .line 2172
+    .end local v8  # "externalStorageType":I
+    :cond_52
+    invoke-virtual {v6}, Landroid/os/storage/DiskInfo;->isUsb()Z
 
-    move-wide v9, p4
+    move-result v8
 
-    invoke-direct/range {v5 .. v10}, Landroid/os/StatsLogEventWrapper;-><init>(IJJ)V
+    if-eqz v8, :cond_5a
 
-    .line 2220
-    invoke-virtual {v2, v4}, Landroid/os/StatsLogEventWrapper;->writeInt(I)V
+    .line 2173
+    const/4 v8, 0x2
 
-    .line 2221
-    invoke-virtual {v2, v1}, Landroid/os/StatsLogEventWrapper;->writeInt(I)V
+    .restart local v8  # "externalStorageType":I
+    goto :goto_5b
 
-    .line 2222
-    iget-wide v3, v3, Landroid/os/storage/DiskInfo;->size:J
+    .line 2175
+    .end local v8  # "externalStorageType":I
+    :cond_5a
+    const/4 v8, 0x3
 
-    invoke-virtual {v2, v3, v4}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
+    .line 2177
+    .restart local v8  # "externalStorageType":I
+    :goto_5b
+    new-instance v15, Landroid/os/StatsLogEventWrapper;
 
-    .line 2223
-    move-object/from16 v1, p6
+    move-object v9, v15
 
-    invoke-interface {v1, v2}, Ljava/util/List;->add(Ljava/lang/Object;)Z
+    move/from16 v10, p1
 
-    goto :goto_7c
+    move-wide/from16 v11, p2
 
-    .line 2200
-    :cond_77
-    move-object/from16 v1, p6
+    move-wide/from16 v13, p4
 
-    goto :goto_7c
+    invoke-direct/range {v9 .. v14}, Landroid/os/StatsLogEventWrapper;-><init>(IJJ)V
 
-    .line 2199
-    :cond_7a
-    move-object/from16 v1, p6
+    .line 2179
+    .local v9, "e":Landroid/os/StatsLogEventWrapper;
+    invoke-virtual {v9, v8}, Landroid/os/StatsLogEventWrapper;->writeInt(I)V
 
-    .line 2226
-    :goto_7c
-    goto :goto_15
+    .line 2180
+    invoke-virtual {v9, v7}, Landroid/os/StatsLogEventWrapper;->writeInt(I)V
 
-    .line 2228
-    :cond_7d
+    .line 2181
+    iget-wide v10, v6, Landroid/os/storage/DiskInfo;->size:J
+
+    invoke-virtual {v9, v10, v11}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
+
+    .line 2182
+    move-object/from16 v10, p6
+
+    invoke-interface {v10, v9}, Ljava/util/List;->add(Ljava/lang/Object;)Z
+
+    goto :goto_7d
+
+    .line 2159
+    .end local v7  # "volumeType":I
+    .end local v8  # "externalStorageType":I
+    .end local v9  # "e":Landroid/os/StatsLogEventWrapper;
+    :cond_78
+    move-object/from16 v10, p6
+
+    goto :goto_7d
+
+    .line 2158
+    :cond_7b
+    move-object/from16 v10, p6
+
+    .line 2185
+    .end local v4  # "vol":Landroid/os/storage/VolumeInfo;
+    .end local v5  # "envState":Ljava/lang/String;
+    .end local v6  # "diskInfo":Landroid/os/storage/DiskInfo;
+    :goto_7d
+    goto :goto_16
+
+    .line 2155
+    :cond_7e
+    move-object/from16 v10, p6
+
+    goto :goto_83
+
+    .line 2153
+    .end local v2  # "volumes":Ljava/util/List;, "Ljava/util/List<Landroid/os/storage/VolumeInfo;>;"
+    :cond_81
+    move-object/from16 v10, p6
+
+    .line 2187
+    :goto_83
     return-void
 .end method
 
 .method private pullFaceSettings(IJJLjava/util/List;)V
-    .registers 22
+    .registers 21
+    .param p1, "tagId"  # I
+    .param p2, "elapsedNanos"  # J
+    .param p4, "wallClockNanos"  # J
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(IJJ",
@@ -5423,72 +6188,79 @@
         }
     .end annotation
 
-    .line 2266
-    move-object v0, p0
+    .line 2225
+    .local p6, "pulledData":Ljava/util/List;, "Ljava/util/List<Landroid/os/StatsLogEventWrapper;>;"
+    move-object v1, p0
 
     invoke-static {}, Landroid/os/Binder;->clearCallingIdentity()J
 
-    move-result-wide v1
+    move-result-wide v2
 
-    .line 2268
+    .line 2227
+    .local v2, "callingToken":J
     :try_start_5
-    iget-object v3, v0, Lcom/android/server/stats/StatsCompanionService;->mContext:Landroid/content/Context;
+    iget-object v0, v1, Lcom/android/server/stats/StatsCompanionService;->mContext:Landroid/content/Context;
 
     const-class v4, Landroid/os/UserManager;
 
-    invoke-virtual {v3, v4}, Landroid/content/Context;->getSystemService(Ljava/lang/Class;)Ljava/lang/Object;
+    invoke-virtual {v0, v4}, Landroid/content/Context;->getSystemService(Ljava/lang/Class;)Ljava/lang/Object;
 
-    move-result-object v3
+    move-result-object v0
 
-    check-cast v3, Landroid/os/UserManager;
+    check-cast v0, Landroid/os/UserManager;
 
-    invoke-virtual {v3}, Landroid/os/UserManager;->getUsers()Ljava/util/List;
+    invoke-virtual {v0}, Landroid/os/UserManager;->getUsers()Ljava/util/List;
 
-    move-result-object v3
+    move-result-object v0
 
-    .line 2269
-    invoke-interface {v3}, Ljava/util/List;->size()I
+    .line 2228
+    .local v0, "users":Ljava/util/List;, "Ljava/util/List<Landroid/content/pm/UserInfo;>;"
+    invoke-interface {v0}, Ljava/util/List;->size()I
 
     move-result v4
 
-    .line 2270
+    .line 2229
+    .local v4, "numUsers":I
     const/4 v5, 0x0
 
-    move v6, v5
+    .local v5, "userNum":I
+    :goto_18
+    if-ge v5, v4, :cond_b8
 
-    :goto_19
-    if-ge v6, v4, :cond_b6
+    .line 2230
+    invoke-interface {v0, v5}, Ljava/util/List;->get(I)Ljava/lang/Object;
 
-    .line 2271
-    invoke-interface {v3, v6}, Ljava/util/List;->get(I)Ljava/lang/Object;
+    move-result-object v6
 
-    move-result-object v7
+    check-cast v6, Landroid/content/pm/UserInfo;
 
-    check-cast v7, Landroid/content/pm/UserInfo;
+    invoke-virtual {v6}, Landroid/content/pm/UserInfo;->getUserHandle()Landroid/os/UserHandle;
 
-    invoke-virtual {v7}, Landroid/content/pm/UserInfo;->getUserHandle()Landroid/os/UserHandle;
+    move-result-object v6
 
-    move-result-object v7
+    invoke-virtual {v6}, Landroid/os/UserHandle;->getIdentifier()I
 
-    invoke-virtual {v7}, Landroid/os/UserHandle;->getIdentifier()I
+    move-result v6
 
-    move-result v7
+    .line 2232
+    .local v6, "userId":I
+    new-instance v13, Landroid/os/StatsLogEventWrapper;
 
-    .line 2273
-    new-instance v14, Landroid/os/StatsLogEventWrapper;
+    move-object v7, v13
 
-    move-object v8, v14
+    move v8, p1
 
-    move/from16 v9, p1
+    move-wide/from16 v9, p2
 
-    move-wide/from16 v10, p2
+    move-wide/from16 v11, p4
 
-    move-wide/from16 v12, p4
+    invoke-direct/range {v7 .. v12}, Landroid/os/StatsLogEventWrapper;-><init>(IJJ)V
 
-    invoke-direct/range {v8 .. v13}, Landroid/os/StatsLogEventWrapper;-><init>(IJJ)V
+    move-object v7, v13
 
-    .line 2275
-    iget-object v8, v0, Lcom/android/server/stats/StatsCompanionService;->mContext:Landroid/content/Context;
+    .line 2234
+    .local v7, "e":Landroid/os/StatsLogEventWrapper;
+    iget-object v8, v1, Lcom/android/server/stats/StatsCompanionService;->mContext:Landroid/content/Context;
 
     invoke-virtual {v8}, Landroid/content/Context;->getContentResolver()Landroid/content/ContentResolver;
 
@@ -5498,9 +6270,11 @@
 
     const/4 v10, 0x1
 
-    invoke-static {v8, v9, v10, v7}, Landroid/provider/Settings$Secure;->getIntForUser(Landroid/content/ContentResolver;Ljava/lang/String;II)I
+    invoke-static {v8, v9, v10, v6}, Landroid/provider/Settings$Secure;->getIntForUser(Landroid/content/ContentResolver;Ljava/lang/String;II)I
 
     move-result v8
+
+    const/4 v9, 0x0
 
     if-eqz v8, :cond_46
 
@@ -5509,21 +6283,21 @@
     goto :goto_47
 
     :cond_46
-    move v8, v5
+    move v8, v9
 
     :goto_47
-    invoke-virtual {v14, v8}, Landroid/os/StatsLogEventWrapper;->writeBoolean(Z)V
+    invoke-virtual {v7, v8}, Landroid/os/StatsLogEventWrapper;->writeBoolean(Z)V
 
-    .line 2278
-    iget-object v8, v0, Lcom/android/server/stats/StatsCompanionService;->mContext:Landroid/content/Context;
+    .line 2237
+    iget-object v8, v1, Lcom/android/server/stats/StatsCompanionService;->mContext:Landroid/content/Context;
 
     invoke-virtual {v8}, Landroid/content/Context;->getContentResolver()Landroid/content/ContentResolver;
 
     move-result-object v8
 
-    const-string v9, "face_unlock_dismisses_keyguard"
+    const-string v11, "face_unlock_dismisses_keyguard"
 
-    invoke-static {v8, v9, v5, v7}, Landroid/provider/Settings$Secure;->getIntForUser(Landroid/content/ContentResolver;Ljava/lang/String;II)I
+    invoke-static {v8, v11, v9, v6}, Landroid/provider/Settings$Secure;->getIntForUser(Landroid/content/ContentResolver;Ljava/lang/String;II)I
 
     move-result v8
 
@@ -5534,21 +6308,21 @@
     goto :goto_5b
 
     :cond_5a
-    move v8, v5
+    move v8, v9
 
     :goto_5b
-    invoke-virtual {v14, v8}, Landroid/os/StatsLogEventWrapper;->writeBoolean(Z)V
+    invoke-virtual {v7, v8}, Landroid/os/StatsLogEventWrapper;->writeBoolean(Z)V
 
-    .line 2281
-    iget-object v8, v0, Lcom/android/server/stats/StatsCompanionService;->mContext:Landroid/content/Context;
+    .line 2240
+    iget-object v8, v1, Lcom/android/server/stats/StatsCompanionService;->mContext:Landroid/content/Context;
 
     invoke-virtual {v8}, Landroid/content/Context;->getContentResolver()Landroid/content/ContentResolver;
 
     move-result-object v8
 
-    const-string v9, "face_unlock_attention_required"
+    const-string v11, "face_unlock_attention_required"
 
-    invoke-static {v8, v9, v10, v7}, Landroid/provider/Settings$Secure;->getIntForUser(Landroid/content/ContentResolver;Ljava/lang/String;II)I
+    invoke-static {v8, v11, v10, v6}, Landroid/provider/Settings$Secure;->getIntForUser(Landroid/content/ContentResolver;Ljava/lang/String;II)I
 
     move-result v8
 
@@ -5559,21 +6333,21 @@
     goto :goto_6f
 
     :cond_6e
-    move v8, v5
+    move v8, v9
 
     :goto_6f
-    invoke-virtual {v14, v8}, Landroid/os/StatsLogEventWrapper;->writeBoolean(Z)V
+    invoke-virtual {v7, v8}, Landroid/os/StatsLogEventWrapper;->writeBoolean(Z)V
 
-    .line 2284
-    iget-object v8, v0, Lcom/android/server/stats/StatsCompanionService;->mContext:Landroid/content/Context;
+    .line 2243
+    iget-object v8, v1, Lcom/android/server/stats/StatsCompanionService;->mContext:Landroid/content/Context;
 
     invoke-virtual {v8}, Landroid/content/Context;->getContentResolver()Landroid/content/ContentResolver;
 
     move-result-object v8
 
-    const-string v9, "face_unlock_app_enabled"
+    const-string v11, "face_unlock_app_enabled"
 
-    invoke-static {v8, v9, v10, v7}, Landroid/provider/Settings$Secure;->getIntForUser(Landroid/content/ContentResolver;Ljava/lang/String;II)I
+    invoke-static {v8, v11, v10, v6}, Landroid/provider/Settings$Secure;->getIntForUser(Landroid/content/ContentResolver;Ljava/lang/String;II)I
 
     move-result v8
 
@@ -5584,21 +6358,21 @@
     goto :goto_83
 
     :cond_82
-    move v8, v5
+    move v8, v9
 
     :goto_83
-    invoke-virtual {v14, v8}, Landroid/os/StatsLogEventWrapper;->writeBoolean(Z)V
+    invoke-virtual {v7, v8}, Landroid/os/StatsLogEventWrapper;->writeBoolean(Z)V
 
-    .line 2287
-    iget-object v8, v0, Lcom/android/server/stats/StatsCompanionService;->mContext:Landroid/content/Context;
+    .line 2246
+    iget-object v8, v1, Lcom/android/server/stats/StatsCompanionService;->mContext:Landroid/content/Context;
 
     invoke-virtual {v8}, Landroid/content/Context;->getContentResolver()Landroid/content/ContentResolver;
 
     move-result-object v8
 
-    const-string v9, "face_unlock_always_require_confirmation"
+    const-string v11, "face_unlock_always_require_confirmation"
 
-    invoke-static {v8, v9, v5, v7}, Landroid/provider/Settings$Secure;->getIntForUser(Landroid/content/ContentResolver;Ljava/lang/String;II)I
+    invoke-static {v8, v11, v9, v6}, Landroid/provider/Settings$Secure;->getIntForUser(Landroid/content/ContentResolver;Ljava/lang/String;II)I
 
     move-result v8
 
@@ -5609,67 +6383,95 @@
     goto :goto_97
 
     :cond_96
-    move v8, v5
+    move v8, v9
 
     :goto_97
-    invoke-virtual {v14, v8}, Landroid/os/StatsLogEventWrapper;->writeBoolean(Z)V
+    invoke-virtual {v7, v8}, Landroid/os/StatsLogEventWrapper;->writeBoolean(Z)V
 
-    .line 2290
-    iget-object v8, v0, Lcom/android/server/stats/StatsCompanionService;->mContext:Landroid/content/Context;
+    .line 2249
+    iget-object v8, v1, Lcom/android/server/stats/StatsCompanionService;->mContext:Landroid/content/Context;
 
     invoke-virtual {v8}, Landroid/content/Context;->getContentResolver()Landroid/content/ContentResolver;
 
     move-result-object v8
 
-    const-string v9, "face_unlock_diversity_required"
+    const-string v11, "face_unlock_diversity_required"
 
-    invoke-static {v8, v9, v10, v7}, Landroid/provider/Settings$Secure;->getIntForUser(Landroid/content/ContentResolver;Ljava/lang/String;II)I
+    invoke-static {v8, v11, v10, v6}, Landroid/provider/Settings$Secure;->getIntForUser(Landroid/content/ContentResolver;Ljava/lang/String;II)I
 
-    move-result v7
+    move-result v8
 
-    if-eqz v7, :cond_a9
+    if-eqz v8, :cond_a9
 
-    goto :goto_aa
+    move v9, v10
 
     :cond_a9
-    move v10, v5
+    invoke-virtual {v7, v9}, Landroid/os/StatsLogEventWrapper;->writeBoolean(Z)V
+    :try_end_ac
+    .catchall {:try_start_5 .. :try_end_ac} :catchall_bf
 
-    :goto_aa
-    invoke-virtual {v14, v10}, Landroid/os/StatsLogEventWrapper;->writeBoolean(Z)V
+    .line 2253
+    move-object/from16 v8, p6
 
-    .line 2294
-    move-object/from16 v7, p6
+    :try_start_ae
+    invoke-interface {v8, v7}, Ljava/util/List;->add(Ljava/lang/Object;)Z
+    :try_end_b1
+    .catchall {:try_start_ae .. :try_end_b1} :catchall_b6
 
-    invoke-interface {v7, v14}, Ljava/util/List;->add(Ljava/lang/Object;)Z
-    :try_end_b2
-    .catchall {:try_start_5 .. :try_end_b2} :catchall_bb
-
-    .line 2270
-    add-int/lit8 v6, v6, 0x1
-
-    goto/16 :goto_19
-
-    .line 2297
-    :cond_b6
-    invoke-static {v1, v2}, Landroid/os/Binder;->restoreCallingIdentity(J)V
-
-    .line 2298
+    .line 2229
     nop
 
-    .line 2299
-    return-void
+    .end local v6  # "userId":I
+    .end local v7  # "e":Landroid/os/StatsLogEventWrapper;
+    add-int/lit8 v5, v5, 0x1
 
-    .line 2297
-    :catchall_bb
+    goto/16 :goto_18
+
+    .line 2256
+    .end local v0  # "users":Ljava/util/List;, "Ljava/util/List<Landroid/content/pm/UserInfo;>;"
+    .end local v4  # "numUsers":I
+    .end local v5  # "userNum":I
+    :catchall_b6
     move-exception v0
 
-    invoke-static {v1, v2}, Landroid/os/Binder;->restoreCallingIdentity(J)V
+    goto :goto_c2
+
+    .line 2229
+    .restart local v0  # "users":Ljava/util/List;, "Ljava/util/List<Landroid/content/pm/UserInfo;>;"
+    .restart local v4  # "numUsers":I
+    .restart local v5  # "userNum":I
+    :cond_b8
+    move-object/from16 v8, p6
+
+    .line 2256
+    .end local v0  # "users":Ljava/util/List;, "Ljava/util/List<Landroid/content/pm/UserInfo;>;"
+    .end local v4  # "numUsers":I
+    .end local v5  # "userNum":I
+    invoke-static {v2, v3}, Landroid/os/Binder;->restoreCallingIdentity(J)V
+
+    .line 2257
+    nop
+
+    .line 2258
+    return-void
+
+    .line 2256
+    :catchall_bf
+    move-exception v0
+
+    move-object/from16 v8, p6
+
+    :goto_c2
+    invoke-static {v2, v3}, Landroid/os/Binder;->restoreCallingIdentity(J)V
 
     throw v0
 .end method
 
 .method private pullKernelUidCpuActiveTime(IJJLjava/util/List;)V
     .registers 16
+    .param p1, "tagId"  # I
+    .param p2, "elapsedNanos"  # J
+    .param p4, "wallClockNanos"  # J
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(IJJ",
@@ -5679,7 +6481,8 @@
         }
     .end annotation
 
-    .line 1057
+    .line 1055
+    .local p6, "pulledData":Ljava/util/List;, "Ljava/util/List<Landroid/os/StatsLogEventWrapper;>;"
     iget-object v0, p0, Lcom/android/server/stats/StatsCompanionService;->mCpuUidActiveTimeReader:Lcom/android/internal/os/KernelCpuUidTimeReader$KernelCpuUidActiveTimeReader;
 
     new-instance v8, Lcom/android/server/stats/-$$Lambda$StatsCompanionService$xPc-EMoQkRUC4lkJfxYah3VZObc;
@@ -5698,12 +6501,15 @@
 
     invoke-virtual {v0, v8}, Lcom/android/internal/os/KernelCpuUidTimeReader$KernelCpuUidActiveTimeReader;->readAbsolute(Lcom/android/internal/os/KernelCpuUidTimeReader$Callback;)V
 
-    .line 1063
+    .line 1061
     return-void
 .end method
 
 .method private pullKernelUidCpuClusterTime(IJJLjava/util/List;)V
     .registers 16
+    .param p1, "tagId"  # I
+    .param p2, "elapsedNanos"  # J
+    .param p4, "wallClockNanos"  # J
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(IJJ",
@@ -5713,7 +6519,8 @@
         }
     .end annotation
 
-    .line 1042
+    .line 1040
+    .local p6, "pulledData":Ljava/util/List;, "Ljava/util/List<Landroid/os/StatsLogEventWrapper;>;"
     iget-object v0, p0, Lcom/android/server/stats/StatsCompanionService;->mCpuUidClusterTimeReader:Lcom/android/internal/os/KernelCpuUidTimeReader$KernelCpuUidClusterTimeReader;
 
     new-instance v8, Lcom/android/server/stats/-$$Lambda$StatsCompanionService$8XwH_9_4XyR23VE4UEw0TLmPhXk;
@@ -5732,12 +6539,15 @@
 
     invoke-virtual {v0, v8}, Lcom/android/internal/os/KernelCpuUidTimeReader$KernelCpuUidClusterTimeReader;->readAbsolute(Lcom/android/internal/os/KernelCpuUidTimeReader$Callback;)V
 
-    .line 1052
+    .line 1050
     return-void
 .end method
 
 .method private pullKernelUidCpuFreqTime(IJJLjava/util/List;)V
     .registers 16
+    .param p1, "tagId"  # I
+    .param p2, "elapsedNanos"  # J
+    .param p4, "wallClockNanos"  # J
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(IJJ",
@@ -5747,7 +6557,8 @@
         }
     .end annotation
 
-    .line 1025
+    .line 1023
+    .local p6, "pulledData":Ljava/util/List;, "Ljava/util/List<Landroid/os/StatsLogEventWrapper;>;"
     iget-object v0, p0, Lcom/android/server/stats/StatsCompanionService;->mCpuUidFreqTimeReader:Lcom/android/internal/os/KernelCpuUidTimeReader$KernelCpuUidFreqTimeReader;
 
     new-instance v8, Lcom/android/server/stats/-$$Lambda$StatsCompanionService$CEX8Lyeg27KwlBp4VWGjp9hZExA;
@@ -5766,12 +6577,15 @@
 
     invoke-virtual {v0, v8}, Lcom/android/internal/os/KernelCpuUidTimeReader$KernelCpuUidFreqTimeReader;->readAbsolute(Lcom/android/internal/os/KernelCpuUidTimeReader$Callback;)V
 
-    .line 1037
+    .line 1035
     return-void
 .end method
 
 .method private pullKernelUidCpuTime(IJJLjava/util/List;)V
     .registers 16
+    .param p1, "tagId"  # I
+    .param p2, "elapsedNanos"  # J
+    .param p4, "wallClockNanos"  # J
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(IJJ",
@@ -5781,7 +6595,8 @@
         }
     .end annotation
 
-    .line 1012
+    .line 1010
+    .local p6, "pulledData":Ljava/util/List;, "Ljava/util/List<Landroid/os/StatsLogEventWrapper;>;"
     iget-object v0, p0, Lcom/android/server/stats/StatsCompanionService;->mCpuUidUserSysTimeReader:Lcom/android/internal/os/KernelCpuUidTimeReader$KernelCpuUidUserSysTimeReader;
 
     new-instance v8, Lcom/android/server/stats/-$$Lambda$StatsCompanionService$UBm3QCI0bvsnm37DPdPZCp_VPm0;
@@ -5800,12 +6615,15 @@
 
     invoke-virtual {v0, v8}, Lcom/android/internal/os/KernelCpuUidTimeReader$KernelCpuUidUserSysTimeReader;->readAbsolute(Lcom/android/internal/os/KernelCpuUidTimeReader$Callback;)V
 
-    .line 1020
+    .line 1018
     return-void
 .end method
 
 .method private pullKernelWakelock(IJJLjava/util/List;)V
-    .registers 17
+    .registers 20
+    .param p1, "tagId"  # I
+    .param p2, "elapsedNanos"  # J
+    .param p4, "wallClockNanos"  # J
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(IJJ",
@@ -5815,100 +6633,115 @@
         }
     .end annotation
 
-    .line 864
+    .line 862
+    .local p6, "pulledData":Ljava/util/List;, "Ljava/util/List<Landroid/os/StatsLogEventWrapper;>;"
     move-object v0, p0
 
     iget-object v1, v0, Lcom/android/server/stats/StatsCompanionService;->mKernelWakelockReader:Lcom/android/internal/os/KernelWakelockReader;
 
-    iget-object v0, v0, Lcom/android/server/stats/StatsCompanionService;->mTmpWakelockStats:Lcom/android/internal/os/KernelWakelockStats;
+    iget-object v2, v0, Lcom/android/server/stats/StatsCompanionService;->mTmpWakelockStats:Lcom/android/internal/os/KernelWakelockStats;
 
-    .line 865
-    invoke-virtual {v1, v0}, Lcom/android/internal/os/KernelWakelockReader;->readKernelWakelockStats(Lcom/android/internal/os/KernelWakelockStats;)Lcom/android/internal/os/KernelWakelockStats;
-
-    move-result-object v0
-
-    .line 866
-    invoke-virtual {v0}, Lcom/android/internal/os/KernelWakelockStats;->entrySet()Ljava/util/Set;
-
-    move-result-object v0
-
-    invoke-interface {v0}, Ljava/util/Set;->iterator()Ljava/util/Iterator;
-
-    move-result-object v0
-
-    :goto_11
-    invoke-interface {v0}, Ljava/util/Iterator;->hasNext()Z
-
-    move-result v1
-
-    if-eqz v1, :cond_4a
-
-    invoke-interface {v0}, Ljava/util/Iterator;->next()Ljava/lang/Object;
+    .line 863
+    invoke-virtual {v1, v2}, Lcom/android/internal/os/KernelWakelockReader;->readKernelWakelockStats(Lcom/android/internal/os/KernelWakelockStats;)Lcom/android/internal/os/KernelWakelockStats;
 
     move-result-object v1
 
-    check-cast v1, Ljava/util/Map$Entry;
-
-    .line 867
-    invoke-interface {v1}, Ljava/util/Map$Entry;->getKey()Ljava/lang/Object;
+    .line 864
+    .local v1, "wakelockStats":Lcom/android/internal/os/KernelWakelockStats;
+    invoke-virtual {v1}, Lcom/android/internal/os/KernelWakelockStats;->entrySet()Ljava/util/Set;
 
     move-result-object v2
 
-    check-cast v2, Ljava/lang/String;
+    invoke-interface {v2}, Ljava/util/Set;->iterator()Ljava/util/Iterator;
+
+    move-result-object v2
+
+    :goto_11
+    invoke-interface {v2}, Ljava/util/Iterator;->hasNext()Z
+
+    move-result v3
+
+    if-eqz v3, :cond_4b
+
+    invoke-interface {v2}, Ljava/util/Iterator;->next()Ljava/lang/Object;
+
+    move-result-object v3
+
+    check-cast v3, Ljava/util/Map$Entry;
+
+    .line 865
+    .local v3, "ent":Ljava/util/Map$Entry;, "Ljava/util/Map$Entry<Ljava/lang/String;Lcom/android/internal/os/KernelWakelockStats$Entry;>;"
+    invoke-interface {v3}, Ljava/util/Map$Entry;->getKey()Ljava/lang/Object;
+
+    move-result-object v4
+
+    check-cast v4, Ljava/lang/String;
+
+    .line 866
+    .local v4, "name":Ljava/lang/String;
+    invoke-interface {v3}, Ljava/util/Map$Entry;->getValue()Ljava/lang/Object;
+
+    move-result-object v5
+
+    check-cast v5, Lcom/android/internal/os/KernelWakelockStats$Entry;
+
+    .line 867
+    .local v5, "kws":Lcom/android/internal/os/KernelWakelockStats$Entry;
+    new-instance v12, Landroid/os/StatsLogEventWrapper;
+
+    move-object v6, v12
+
+    move v7, p1
+
+    move-wide v8, p2
+
+    move-wide/from16 v10, p4
+
+    invoke-direct/range {v6 .. v11}, Landroid/os/StatsLogEventWrapper;-><init>(IJJ)V
 
     .line 868
-    invoke-interface {v1}, Ljava/util/Map$Entry;->getValue()Ljava/lang/Object;
-
-    move-result-object v1
-
-    check-cast v1, Lcom/android/internal/os/KernelWakelockStats$Entry;
+    .local v6, "e":Landroid/os/StatsLogEventWrapper;
+    invoke-virtual {v6, v4}, Landroid/os/StatsLogEventWrapper;->writeString(Ljava/lang/String;)V
 
     .line 869
-    new-instance v9, Landroid/os/StatsLogEventWrapper;
+    iget v7, v5, Lcom/android/internal/os/KernelWakelockStats$Entry;->mCount:I
 
-    move-object v3, v9
-
-    move v4, p1
-
-    move-wide v5, p2
-
-    move-wide v7, p4
-
-    invoke-direct/range {v3 .. v8}, Landroid/os/StatsLogEventWrapper;-><init>(IJJ)V
+    invoke-virtual {v6, v7}, Landroid/os/StatsLogEventWrapper;->writeInt(I)V
 
     .line 870
-    invoke-virtual {v9, v2}, Landroid/os/StatsLogEventWrapper;->writeString(Ljava/lang/String;)V
+    iget v7, v5, Lcom/android/internal/os/KernelWakelockStats$Entry;->mVersion:I
+
+    invoke-virtual {v6, v7}, Landroid/os/StatsLogEventWrapper;->writeInt(I)V
 
     .line 871
-    iget v2, v1, Lcom/android/internal/os/KernelWakelockStats$Entry;->mCount:I
+    iget-wide v7, v5, Lcom/android/internal/os/KernelWakelockStats$Entry;->mTotalTime:J
 
-    invoke-virtual {v9, v2}, Landroid/os/StatsLogEventWrapper;->writeInt(I)V
+    invoke-virtual {v6, v7, v8}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
 
     .line 872
-    iget v2, v1, Lcom/android/internal/os/KernelWakelockStats$Entry;->mVersion:I
+    move-object/from16 v7, p6
 
-    invoke-virtual {v9, v2}, Landroid/os/StatsLogEventWrapper;->writeInt(I)V
+    invoke-interface {v7, v6}, Ljava/util/List;->add(Ljava/lang/Object;)Z
 
     .line 873
-    iget-wide v1, v1, Lcom/android/internal/os/KernelWakelockStats$Entry;->mTotalTime:J
-
-    invoke-virtual {v9, v1, v2}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
-
-    .line 874
-    move-object/from16 v1, p6
-
-    invoke-interface {v1, v9}, Ljava/util/List;->add(Ljava/lang/Object;)Z
-
-    .line 875
+    .end local v3  # "ent":Ljava/util/Map$Entry;, "Ljava/util/Map$Entry<Ljava/lang/String;Lcom/android/internal/os/KernelWakelockStats$Entry;>;"
+    .end local v4  # "name":Ljava/lang/String;
+    .end local v5  # "kws":Lcom/android/internal/os/KernelWakelockStats$Entry;
+    .end local v6  # "e":Landroid/os/StatsLogEventWrapper;
     goto :goto_11
 
-    .line 876
-    :cond_4a
+    .line 874
+    :cond_4b
+    move-object/from16 v7, p6
+
     return-void
 .end method
 
 .method private pullLooperStats(IJJLjava/util/List;)V
-    .registers 16
+    .registers 18
+    .param p1, "tagId"  # I
+    .param p2, "elapsedNanos"  # J
+    .param p4, "wallClockNanos"  # J
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(IJJ",
@@ -5918,7 +6751,8 @@
         }
     .end annotation
 
-    .line 1346
+    .line 1344
+    .local p6, "pulledData":Ljava/util/List;, "Ljava/util/List<Landroid/os/StatsLogEventWrapper;>;"
     const-class v0, Lcom/android/internal/os/LooperStats;
 
     invoke-static {v0}, Lcom/android/server/LocalServices;->getService(Ljava/lang/Class;)Ljava/lang/Object;
@@ -5927,2365 +6761,39 @@
 
     check-cast v0, Lcom/android/internal/os/LooperStats;
 
-    .line 1347
-    if-eqz v0, :cond_7a
+    .line 1345
+    .local v0, "looperStats":Lcom/android/internal/os/LooperStats;
+    if-eqz v0, :cond_7e
 
-    .line 1351
+    .line 1349
     invoke-virtual {v0}, Lcom/android/internal/os/LooperStats;->getEntries()Ljava/util/List;
 
     move-result-object v1
 
-    .line 1352
+    .line 1350
+    .local v1, "entries":Ljava/util/List;, "Ljava/util/List<Lcom/android/internal/os/LooperStats$ExportedEntry;>;"
     invoke-virtual {v0}, Lcom/android/internal/os/LooperStats;->reset()V
 
-    .line 1353
+    .line 1351
     invoke-interface {v1}, Ljava/util/List;->iterator()Ljava/util/Iterator;
 
-    move-result-object v0
+    move-result-object v2
 
     :goto_15
-    invoke-interface {v0}, Ljava/util/Iterator;->hasNext()Z
-
-    move-result v1
-
-    if-eqz v1, :cond_79
-
-    invoke-interface {v0}, Ljava/util/Iterator;->next()Ljava/lang/Object;
-
-    move-result-object v1
-
-    check-cast v1, Lcom/android/internal/os/LooperStats$ExportedEntry;
-
-    .line 1354
-    new-instance v8, Landroid/os/StatsLogEventWrapper;
-
-    move-object v2, v8
-
-    move v3, p1
-
-    move-wide v4, p2
-
-    move-wide v6, p4
-
-    invoke-direct/range {v2 .. v7}, Landroid/os/StatsLogEventWrapper;-><init>(IJJ)V
-
-    .line 1355
-    iget v2, v1, Lcom/android/internal/os/LooperStats$ExportedEntry;->workSourceUid:I
-
-    invoke-virtual {v8, v2}, Landroid/os/StatsLogEventWrapper;->writeInt(I)V
-
-    .line 1356
-    iget-object v2, v1, Lcom/android/internal/os/LooperStats$ExportedEntry;->handlerClassName:Ljava/lang/String;
-
-    invoke-virtual {v8, v2}, Landroid/os/StatsLogEventWrapper;->writeString(Ljava/lang/String;)V
-
-    .line 1357
-    iget-object v2, v1, Lcom/android/internal/os/LooperStats$ExportedEntry;->threadName:Ljava/lang/String;
-
-    invoke-virtual {v8, v2}, Landroid/os/StatsLogEventWrapper;->writeString(Ljava/lang/String;)V
-
-    .line 1358
-    iget-object v2, v1, Lcom/android/internal/os/LooperStats$ExportedEntry;->messageName:Ljava/lang/String;
-
-    invoke-virtual {v8, v2}, Landroid/os/StatsLogEventWrapper;->writeString(Ljava/lang/String;)V
-
-    .line 1359
-    iget-wide v2, v1, Lcom/android/internal/os/LooperStats$ExportedEntry;->messageCount:J
-
-    invoke-virtual {v8, v2, v3}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
-
-    .line 1360
-    iget-wide v2, v1, Lcom/android/internal/os/LooperStats$ExportedEntry;->exceptionCount:J
-
-    invoke-virtual {v8, v2, v3}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
-
-    .line 1361
-    iget-wide v2, v1, Lcom/android/internal/os/LooperStats$ExportedEntry;->recordedMessageCount:J
-
-    invoke-virtual {v8, v2, v3}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
-
-    .line 1362
-    iget-wide v2, v1, Lcom/android/internal/os/LooperStats$ExportedEntry;->totalLatencyMicros:J
-
-    invoke-virtual {v8, v2, v3}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
-
-    .line 1363
-    iget-wide v2, v1, Lcom/android/internal/os/LooperStats$ExportedEntry;->cpuUsageMicros:J
-
-    invoke-virtual {v8, v2, v3}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
-
-    .line 1364
-    iget-boolean v2, v1, Lcom/android/internal/os/LooperStats$ExportedEntry;->isInteractive:Z
-
-    invoke-virtual {v8, v2}, Landroid/os/StatsLogEventWrapper;->writeBoolean(Z)V
-
-    .line 1365
-    iget-wide v2, v1, Lcom/android/internal/os/LooperStats$ExportedEntry;->maxCpuUsageMicros:J
-
-    invoke-virtual {v8, v2, v3}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
-
-    .line 1366
-    iget-wide v2, v1, Lcom/android/internal/os/LooperStats$ExportedEntry;->maxLatencyMicros:J
-
-    invoke-virtual {v8, v2, v3}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
-
-    .line 1367
-    iget-wide v2, v1, Lcom/android/internal/os/LooperStats$ExportedEntry;->recordedDelayMessageCount:J
-
-    invoke-virtual {v8, v2, v3}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
-
-    .line 1368
-    iget-wide v2, v1, Lcom/android/internal/os/LooperStats$ExportedEntry;->delayMillis:J
-
-    invoke-virtual {v8, v2, v3}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
-
-    .line 1369
-    iget-wide v1, v1, Lcom/android/internal/os/LooperStats$ExportedEntry;->maxDelayMillis:J
-
-    invoke-virtual {v8, v1, v2}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
-
-    .line 1370
-    invoke-interface {p6, v8}, Ljava/util/List;->add(Ljava/lang/Object;)Z
-
-    .line 1371
-    goto :goto_15
-
-    .line 1372
-    :cond_79
-    return-void
-
-    .line 1348
-    :cond_7a
-    new-instance p1, Ljava/lang/IllegalStateException;
-
-    const-string p2, "looperStats null"
-
-    invoke-direct {p1, p2}, Ljava/lang/IllegalStateException;-><init>(Ljava/lang/String;)V
-
-    throw p1
-.end method
-
-.method private pullMobileBytesTransfer(IJJLjava/util/List;)V
-    .registers 8
-    .annotation system Ldalvik/annotation/Signature;
-        value = {
-            "(IJJ",
-            "Ljava/util/List<",
-            "Landroid/os/StatsLogEventWrapper;",
-            ">;)V"
-        }
-    .end annotation
-
-    .line 930
-    const-string p2, "StatsCompanionService"
-
-    invoke-static {}, Landroid/os/Binder;->clearCallingIdentity()J
-
-    move-result-wide p3
-
-    .line 932
-    :try_start_6
-    const-class p5, Landroid/os/BatteryStatsInternal;
-
-    invoke-static {p5}, Lcom/android/server/LocalServices;->getService(Ljava/lang/Class;)Ljava/lang/Object;
-
-    move-result-object p5
-
-    check-cast p5, Landroid/os/BatteryStatsInternal;
-
-    .line 933
-    invoke-virtual {p5}, Landroid/os/BatteryStatsInternal;->getMobileIfaces()[Ljava/lang/String;
-
-    move-result-object p5
-
-    .line 934
-    array-length v0, p5
-    :try_end_13
-    .catch Landroid/os/RemoteException; {:try_start_6 .. :try_end_13} :catch_37
-    .catchall {:try_start_6 .. :try_end_13} :catchall_35
-
-    if-nez v0, :cond_19
-
-    .line 947
-    invoke-static {p3, p4}, Landroid/os/Binder;->restoreCallingIdentity(J)V
-
-    .line 935
-    return-void
-
-    .line 937
-    :cond_19
-    :try_start_19
-    iget-object v0, p0, Lcom/android/server/stats/StatsCompanionService;->mNetworkStatsService:Landroid/net/INetworkStatsService;
-
-    if-nez v0, :cond_26
-
-    .line 938
-    const-string p1, "NetworkStats Service is not available!"
-
-    invoke-static {p2, p1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
-    :try_end_22
-    .catch Landroid/os/RemoteException; {:try_start_19 .. :try_end_22} :catch_37
-    .catchall {:try_start_19 .. :try_end_22} :catchall_35
-
-    .line 947
-    invoke-static {p3, p4}, Landroid/os/Binder;->restoreCallingIdentity(J)V
-
-    .line 939
-    return-void
-
-    .line 942
-    :cond_26
-    :try_start_26
-    iget-object v0, p0, Lcom/android/server/stats/StatsCompanionService;->mNetworkStatsService:Landroid/net/INetworkStatsService;
-
-    invoke-interface {v0, p5}, Landroid/net/INetworkStatsService;->getDetailedUidStats([Ljava/lang/String;)Landroid/net/NetworkStats;
-
-    move-result-object p5
-
-    invoke-virtual {p5}, Landroid/net/NetworkStats;->groupedByUid()Landroid/net/NetworkStats;
-
-    move-result-object p5
-
-    .line 943
-    const/4 v0, 0x0
-
-    invoke-direct {p0, p1, p6, p5, v0}, Lcom/android/server/stats/StatsCompanionService;->addNetworkStats(ILjava/util/List;Landroid/net/NetworkStats;Z)V
-    :try_end_34
-    .catch Landroid/os/RemoteException; {:try_start_26 .. :try_end_34} :catch_37
-    .catchall {:try_start_26 .. :try_end_34} :catchall_35
-
-    goto :goto_3d
-
-    .line 947
-    :catchall_35
-    move-exception p1
-
-    goto :goto_42
-
-    .line 944
-    :catch_37
-    move-exception p1
-
-    .line 945
-    :try_start_38
-    const-string p5, "Pulling netstats for mobile bytes has error"
-
-    invoke-static {p2, p5, p1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
-    :try_end_3d
-    .catchall {:try_start_38 .. :try_end_3d} :catchall_35
-
-    .line 947
-    :goto_3d
-    invoke-static {p3, p4}, Landroid/os/Binder;->restoreCallingIdentity(J)V
-
-    .line 948
-    nop
-
-    .line 949
-    return-void
-
-    .line 947
-    :goto_42
-    invoke-static {p3, p4}, Landroid/os/Binder;->restoreCallingIdentity(J)V
-
-    throw p1
-.end method
-
-.method private pullMobileBytesTransferByFgBg(IJJLjava/util/List;)V
-    .registers 8
-    .annotation system Ldalvik/annotation/Signature;
-        value = {
-            "(IJJ",
-            "Ljava/util/List<",
-            "Landroid/os/StatsLogEventWrapper;",
-            ">;)V"
-        }
-    .end annotation
-
-    .line 970
-    const-string p2, "StatsCompanionService"
-
-    invoke-static {}, Landroid/os/Binder;->clearCallingIdentity()J
-
-    move-result-wide p3
-
-    .line 972
-    :try_start_6
-    const-class p5, Landroid/os/BatteryStatsInternal;
-
-    invoke-static {p5}, Lcom/android/server/LocalServices;->getService(Ljava/lang/Class;)Ljava/lang/Object;
-
-    move-result-object p5
-
-    check-cast p5, Landroid/os/BatteryStatsInternal;
-
-    .line 973
-    invoke-virtual {p5}, Landroid/os/BatteryStatsInternal;->getMobileIfaces()[Ljava/lang/String;
-
-    move-result-object p5
-
-    .line 974
-    array-length v0, p5
-    :try_end_13
-    .catch Landroid/os/RemoteException; {:try_start_6 .. :try_end_13} :catch_37
-    .catchall {:try_start_6 .. :try_end_13} :catchall_35
-
-    if-nez v0, :cond_19
-
-    .line 987
-    invoke-static {p3, p4}, Landroid/os/Binder;->restoreCallingIdentity(J)V
-
-    .line 975
-    return-void
-
-    .line 977
-    :cond_19
-    :try_start_19
-    iget-object v0, p0, Lcom/android/server/stats/StatsCompanionService;->mNetworkStatsService:Landroid/net/INetworkStatsService;
-
-    if-nez v0, :cond_26
-
-    .line 978
-    const-string p1, "NetworkStats Service is not available!"
-
-    invoke-static {p2, p1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
-    :try_end_22
-    .catch Landroid/os/RemoteException; {:try_start_19 .. :try_end_22} :catch_37
-    .catchall {:try_start_19 .. :try_end_22} :catchall_35
-
-    .line 987
-    invoke-static {p3, p4}, Landroid/os/Binder;->restoreCallingIdentity(J)V
-
-    .line 979
-    return-void
-
-    .line 981
-    :cond_26
-    :try_start_26
-    iget-object v0, p0, Lcom/android/server/stats/StatsCompanionService;->mNetworkStatsService:Landroid/net/INetworkStatsService;
-
-    .line 982
-    invoke-interface {v0, p5}, Landroid/net/INetworkStatsService;->getDetailedUidStats([Ljava/lang/String;)Landroid/net/NetworkStats;
-
-    move-result-object p5
-
-    .line 981
-    invoke-direct {p0, p5}, Lcom/android/server/stats/StatsCompanionService;->rollupNetworkStatsByFGBG(Landroid/net/NetworkStats;)Landroid/net/NetworkStats;
-
-    move-result-object p5
-
-    .line 983
-    const/4 v0, 0x1
-
-    invoke-direct {p0, p1, p6, p5, v0}, Lcom/android/server/stats/StatsCompanionService;->addNetworkStats(ILjava/util/List;Landroid/net/NetworkStats;Z)V
-    :try_end_34
-    .catch Landroid/os/RemoteException; {:try_start_26 .. :try_end_34} :catch_37
-    .catchall {:try_start_26 .. :try_end_34} :catchall_35
-
-    goto :goto_3d
-
-    .line 987
-    :catchall_35
-    move-exception p1
-
-    goto :goto_42
-
-    .line 984
-    :catch_37
-    move-exception p1
-
-    .line 985
-    :try_start_38
-    const-string p5, "Pulling netstats for mobile bytes w/ fg/bg has error"
-
-    invoke-static {p2, p5, p1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
-    :try_end_3d
-    .catchall {:try_start_38 .. :try_end_3d} :catchall_35
-
-    .line 987
-    :goto_3d
-    invoke-static {p3, p4}, Landroid/os/Binder;->restoreCallingIdentity(J)V
-
-    .line 988
-    nop
-
-    .line 989
-    return-void
-
-    .line 987
-    :goto_42
-    invoke-static {p3, p4}, Landroid/os/Binder;->restoreCallingIdentity(J)V
-
-    throw p1
-.end method
-
-.method private pullModemActivityInfo(IJJLjava/util/List;)V
-    .registers 15
-    .annotation system Ldalvik/annotation/Signature;
-        value = {
-            "(IJJ",
-            "Ljava/util/List<",
-            "Landroid/os/StatsLogEventWrapper;",
-            ">;)V"
-        }
-    .end annotation
-
-    .line 1103
-    invoke-static {}, Landroid/os/Binder;->clearCallingIdentity()J
-
-    .line 1104
-    monitor-enter p0
-
-    .line 1105
-    :try_start_4
-    iget-object v0, p0, Lcom/android/server/stats/StatsCompanionService;->mTelephony:Landroid/telephony/TelephonyManager;
-
-    if-nez v0, :cond_10
-
-    .line 1106
-    iget-object v0, p0, Lcom/android/server/stats/StatsCompanionService;->mContext:Landroid/content/Context;
-
-    invoke-static {v0}, Landroid/telephony/TelephonyManager;->from(Landroid/content/Context;)Landroid/telephony/TelephonyManager;
-
-    move-result-object v0
-
-    iput-object v0, p0, Lcom/android/server/stats/StatsCompanionService;->mTelephony:Landroid/telephony/TelephonyManager;
-
-    .line 1108
-    :cond_10
-    monitor-exit p0
-    :try_end_11
-    .catchall {:try_start_4 .. :try_end_11} :catchall_93
-
-    .line 1109
-    iget-object v0, p0, Lcom/android/server/stats/StatsCompanionService;->mTelephony:Landroid/telephony/TelephonyManager;
-
-    if-eqz v0, :cond_92
-
-    .line 1110
-    new-instance v0, Landroid/os/SynchronousResultReceiver;
-
-    const-string/jumbo v1, "telephony"
-
-    invoke-direct {v0, v1}, Landroid/os/SynchronousResultReceiver;-><init>(Ljava/lang/String;)V
-
-    .line 1111
-    iget-object v1, p0, Lcom/android/server/stats/StatsCompanionService;->mTelephony:Landroid/telephony/TelephonyManager;
-
-    invoke-virtual {v1, v0}, Landroid/telephony/TelephonyManager;->requestModemActivityInfo(Landroid/os/ResultReceiver;)V
-
-    .line 1112
-    invoke-static {v0}, Lcom/android/server/stats/StatsCompanionService;->awaitControllerInfo(Landroid/os/SynchronousResultReceiver;)Landroid/os/Parcelable;
-
-    move-result-object v0
-
-    check-cast v0, Landroid/telephony/ModemActivityInfo;
-
-    .line 1113
-    new-instance v7, Landroid/os/StatsLogEventWrapper;
-
-    move-object v1, v7
-
-    move v2, p1
-
-    move-wide v3, p2
-
-    move-wide v5, p4
-
-    invoke-direct/range {v1 .. v6}, Landroid/os/StatsLogEventWrapper;-><init>(IJJ)V
-
-    .line 1114
-    invoke-virtual {v0}, Landroid/telephony/ModemActivityInfo;->getTimestamp()J
-
-    move-result-wide p1
-
-    invoke-virtual {v7, p1, p2}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
-
-    .line 1115
-    invoke-virtual {v0}, Landroid/telephony/ModemActivityInfo;->getSleepTimeMillis()I
-
-    move-result p1
-
-    int-to-long p1, p1
-
-    invoke-virtual {v7, p1, p2}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
-
-    .line 1116
-    invoke-virtual {v0}, Landroid/telephony/ModemActivityInfo;->getIdleTimeMillis()I
-
-    move-result p1
-
-    int-to-long p1, p1
-
-    invoke-virtual {v7, p1, p2}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
-
-    .line 1117
-    invoke-virtual {v0}, Landroid/telephony/ModemActivityInfo;->getTxTimeMillis()[I
-
-    move-result-object p1
-
-    const/4 p2, 0x0
-
-    aget p1, p1, p2
-
-    int-to-long p1, p1
-
-    invoke-virtual {v7, p1, p2}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
-
-    .line 1118
-    invoke-virtual {v0}, Landroid/telephony/ModemActivityInfo;->getTxTimeMillis()[I
-
-    move-result-object p1
-
-    const/4 p2, 0x1
-
-    aget p1, p1, p2
-
-    int-to-long p1, p1
-
-    invoke-virtual {v7, p1, p2}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
-
-    .line 1119
-    invoke-virtual {v0}, Landroid/telephony/ModemActivityInfo;->getTxTimeMillis()[I
-
-    move-result-object p1
-
-    const/4 p2, 0x2
-
-    aget p1, p1, p2
-
-    int-to-long p1, p1
-
-    invoke-virtual {v7, p1, p2}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
-
-    .line 1120
-    invoke-virtual {v0}, Landroid/telephony/ModemActivityInfo;->getTxTimeMillis()[I
-
-    move-result-object p1
-
-    const/4 p2, 0x3
-
-    aget p1, p1, p2
-
-    int-to-long p1, p1
-
-    invoke-virtual {v7, p1, p2}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
-
-    .line 1121
-    invoke-virtual {v0}, Landroid/telephony/ModemActivityInfo;->getTxTimeMillis()[I
-
-    move-result-object p1
-
-    const/4 p2, 0x4
-
-    aget p1, p1, p2
-
-    int-to-long p1, p1
-
-    invoke-virtual {v7, p1, p2}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
-
-    .line 1122
-    invoke-virtual {v0}, Landroid/telephony/ModemActivityInfo;->getRxTimeMillis()I
-
-    move-result p1
-
-    int-to-long p1, p1
-
-    invoke-virtual {v7, p1, p2}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
-
-    .line 1123
-    invoke-virtual {v0}, Landroid/telephony/ModemActivityInfo;->getEnergyUsed()I
-
-    move-result p1
-
-    int-to-long p1, p1
-
-    invoke-virtual {v7, p1, p2}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
-
-    .line 1124
-    invoke-interface {p6, v7}, Ljava/util/List;->add(Ljava/lang/Object;)Z
-
-    .line 1126
-    :cond_92
-    return-void
-
-    .line 1108
-    :catchall_93
-    move-exception p1
-
-    :try_start_94
-    monitor-exit p0
-    :try_end_95
-    .catchall {:try_start_94 .. :try_end_95} :catchall_93
-
-    throw p1
-.end method
-
-.method private pullNativeProcessMemoryState(IJJLjava/util/List;)V
-    .registers 20
-    .annotation system Ldalvik/annotation/Signature;
-        value = {
-            "(IJJ",
-            "Ljava/util/List<",
-            "Landroid/os/StatsLogEventWrapper;",
-            ">;)V"
-        }
-    .end annotation
-
-    .line 1201
-    sget-object v0, Lcom/android/server/stats/StatsCompanionService;->MEMORY_INTERESTING_NATIVE_PROCESSES:[Ljava/lang/String;
-
-    invoke-static {v0}, Ljava/util/Arrays;->asList([Ljava/lang/Object;)Ljava/util/List;
-
-    move-result-object v0
-
-    .line 1202
-    sget-object v1, Lcom/android/server/stats/StatsCompanionService;->MEMORY_INTERESTING_NATIVE_PROCESSES:[Ljava/lang/String;
-
-    invoke-static {v1}, Landroid/os/Process;->getPidsForCommands([Ljava/lang/String;)[I
-
-    move-result-object v1
-
-    .line 1203
-    const/4 v2, 0x0
-
-    :goto_d
-    array-length v3, v1
-
-    if-ge v2, v3, :cond_69
-
-    .line 1204
-    aget v3, v1, v2
-
-    .line 1205
-    invoke-static {v3}, Lcom/android/server/am/MemoryStatUtil;->readMemoryStatFromProcfs(I)Lcom/android/server/am/MemoryStatUtil$MemoryStat;
-
-    move-result-object v4
-
-    .line 1206
-    if-nez v4, :cond_1b
-
-    .line 1207
-    move-object/from16 v3, p6
-
-    goto :goto_66
-
-    .line 1209
-    :cond_1b
-    invoke-static {v3}, Landroid/os/Process;->getUidForPid(I)I
-
-    move-result v5
-
-    .line 1210
-    invoke-static {v3}, Lcom/android/server/am/MemoryStatUtil;->readCmdlineFromProcfs(I)Ljava/lang/String;
-
-    move-result-object v3
-
-    .line 1214
-    invoke-interface {v0, v3}, Ljava/util/List;->contains(Ljava/lang/Object;)Z
-
-    move-result v6
-
-    if-nez v6, :cond_2c
-
-    .line 1215
-    move-object/from16 v3, p6
-
-    goto :goto_66
-
-    .line 1217
-    :cond_2c
-    new-instance v6, Landroid/os/StatsLogEventWrapper;
-
-    move-object v7, v6
-
-    move v8, p1
-
-    move-wide v9, p2
-
-    move-wide/from16 v11, p4
-
-    invoke-direct/range {v7 .. v12}, Landroid/os/StatsLogEventWrapper;-><init>(IJJ)V
-
-    .line 1218
-    invoke-virtual {v6, v5}, Landroid/os/StatsLogEventWrapper;->writeInt(I)V
-
-    .line 1219
-    invoke-virtual {v6, v3}, Landroid/os/StatsLogEventWrapper;->writeString(Ljava/lang/String;)V
-
-    .line 1220
-    iget-wide v7, v4, Lcom/android/server/am/MemoryStatUtil$MemoryStat;->pgfault:J
-
-    invoke-virtual {v6, v7, v8}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
-
-    .line 1221
-    iget-wide v7, v4, Lcom/android/server/am/MemoryStatUtil$MemoryStat;->pgmajfault:J
-
-    invoke-virtual {v6, v7, v8}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
-
-    .line 1222
-    iget-wide v7, v4, Lcom/android/server/am/MemoryStatUtil$MemoryStat;->rssInBytes:J
-
-    invoke-virtual {v6, v7, v8}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
-
-    .line 1223
-    const-wide/16 v7, 0x0
-
-    invoke-virtual {v6, v7, v8}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
-
-    .line 1224
-    iget-wide v7, v4, Lcom/android/server/am/MemoryStatUtil$MemoryStat;->startTimeNanos:J
-
-    invoke-virtual {v6, v7, v8}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
-
-    .line 1225
-    iget-wide v7, v4, Lcom/android/server/am/MemoryStatUtil$MemoryStat;->swapInBytes:J
-
-    invoke-virtual {v6, v7, v8}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
-
-    .line 1226
-    invoke-static {v4}, Lcom/android/server/stats/StatsCompanionService;->anonAndSwapInKilobytes(Lcom/android/server/am/MemoryStatUtil$MemoryStat;)I
+    invoke-interface {v2}, Ljava/util/Iterator;->hasNext()Z
 
     move-result v3
 
-    invoke-virtual {v6, v3}, Landroid/os/StatsLogEventWrapper;->writeInt(I)V
+    if-eqz v3, :cond_7b
 
-    .line 1227
-    move-object/from16 v3, p6
-
-    invoke-interface {v3, v6}, Ljava/util/List;->add(Ljava/lang/Object;)Z
-
-    .line 1203
-    :goto_66
-    add-int/lit8 v2, v2, 0x1
-
-    goto :goto_d
-
-    .line 1229
-    :cond_69
-    return-void
-.end method
-
-.method private pullNotificationStats(IIJJLjava/util/List;)V
-    .registers 22
-    .annotation system Ldalvik/annotation/Signature;
-        value = {
-            "(IIJJ",
-            "Ljava/util/List<",
-            "Landroid/os/StatsLogEventWrapper;",
-            ">;)V"
-        }
-    .end annotation
-
-    .line 1653
-    const-string v1, "Getting notistats failed: "
-
-    const-string v2, "StatsCompanionService"
-
-    invoke-static {}, Landroid/os/Binder;->clearCallingIdentity()J
-
-    move-result-wide v3
-
-    .line 1656
-    :try_start_8
-    sget-object v0, Ljava/util/concurrent/TimeUnit;->NANOSECONDS:Ljava/util/concurrent/TimeUnit;
-
-    const-wide/16 v5, 0x1
-
-    sget-object v7, Ljava/util/concurrent/TimeUnit;->DAYS:Ljava/util/concurrent/TimeUnit;
-
-    .line 1657
-    invoke-virtual {v0, v5, v6, v7}, Ljava/util/concurrent/TimeUnit;->convert(JLjava/util/concurrent/TimeUnit;)J
-
-    move-result-wide v5
-
-    sub-long v8, p5, v5
-
-    .line 1659
-    new-instance v0, Ljava/util/ArrayList;
-
-    invoke-direct {v0}, Ljava/util/ArrayList;-><init>()V
-
-    .line 1660
-    move-object v5, p0
-
-    iget-object v7, v5, Lcom/android/server/stats/StatsCompanionService;->mNotificationManager:Landroid/app/INotificationManager;
-
-    const/4 v11, 0x1
-
-    move v10, p1
-
-    move-object v12, v0
-
-    invoke-interface/range {v7 .. v12}, Landroid/app/INotificationManager;->pullStats(JIZLjava/util/List;)J
-
-    .line 1662
-    invoke-interface {v0}, Ljava/util/List;->size()I
-
-    move-result v5
-    :try_end_26
-    .catch Ljava/io/IOException; {:try_start_8 .. :try_end_26} :catch_46
-    .catch Landroid/os/RemoteException; {:try_start_8 .. :try_end_26} :catch_41
-    .catch Ljava/lang/SecurityException; {:try_start_8 .. :try_end_26} :catch_3c
-    .catchall {:try_start_8 .. :try_end_26} :catchall_3a
-
-    const/4 v6, 0x1
-
-    if-eq v5, v6, :cond_2d
-
-    .line 1674
-    invoke-static {v3, v4}, Landroid/os/Binder;->restoreCallingIdentity(J)V
-
-    .line 1663
-    return-void
-
-    .line 1665
-    :cond_2d
-    move/from16 v7, p2
-
-    move-wide/from16 v8, p3
-
-    move-wide/from16 v10, p5
-
-    move-object/from16 v12, p7
-
-    move-object v13, v0
-
-    :try_start_36
-    invoke-static/range {v7 .. v13}, Lcom/android/server/stats/StatsCompanionService;->unpackStreamedData(IJJLjava/util/List;Ljava/util/List;)V
-    :try_end_39
-    .catch Ljava/io/IOException; {:try_start_36 .. :try_end_39} :catch_46
-    .catch Landroid/os/RemoteException; {:try_start_36 .. :try_end_39} :catch_41
-    .catch Ljava/lang/SecurityException; {:try_start_36 .. :try_end_39} :catch_3c
-    .catchall {:try_start_36 .. :try_end_39} :catchall_3a
-
-    goto :goto_4a
-
-    .line 1674
-    :catchall_3a
-    move-exception v0
-
-    goto :goto_4f
-
-    .line 1671
-    :catch_3c
-    move-exception v0
-
-    .line 1672
-    :try_start_3d
-    invoke-static {v2, v1, v0}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
-
-    goto :goto_4a
-
-    .line 1669
-    :catch_41
-    move-exception v0
-
-    .line 1670
-    invoke-static {v2, v1, v0}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
-
-    goto :goto_4a
-
-    .line 1666
-    :catch_46
-    move-exception v0
-
-    .line 1667
-    invoke-static {v2, v1, v0}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
-    :try_end_4a
-    .catchall {:try_start_3d .. :try_end_4a} :catchall_3a
-
-    .line 1674
-    :goto_4a
-    invoke-static {v3, v4}, Landroid/os/Binder;->restoreCallingIdentity(J)V
-
-    .line 1675
-    nop
-
-    .line 1677
-    return-void
-
-    .line 1674
-    :goto_4f
-    invoke-static {v3, v4}, Landroid/os/Binder;->restoreCallingIdentity(J)V
-
-    throw v0
-.end method
-
-.method private pullNumBiometricsEnrolled(IIJJLjava/util/List;)V
-    .registers 24
-    .annotation system Ldalvik/annotation/Signature;
-        value = {
-            "(IIJJ",
-            "Ljava/util/List<",
-            "Landroid/os/StatsLogEventWrapper;",
-            ">;)V"
-        }
-    .end annotation
-
-    .line 1553
-    move-object/from16 v0, p0
-
-    move/from16 v1, p1
-
-    iget-object v2, v0, Lcom/android/server/stats/StatsCompanionService;->mContext:Landroid/content/Context;
-
-    invoke-virtual {v2}, Landroid/content/Context;->getPackageManager()Landroid/content/pm/PackageManager;
-
-    move-result-object v2
-
-    .line 1554
-    nop
-
-    .line 1555
-    nop
-
-    .line 1557
-    const-string v3, "android.hardware.fingerprint"
-
-    invoke-virtual {v2, v3}, Landroid/content/pm/PackageManager;->hasSystemFeature(Ljava/lang/String;)Z
-
-    move-result v3
-
-    const/4 v4, 0x0
-
-    if-eqz v3, :cond_20
-
-    .line 1558
-    iget-object v3, v0, Lcom/android/server/stats/StatsCompanionService;->mContext:Landroid/content/Context;
-
-    const-class v5, Landroid/hardware/fingerprint/FingerprintManager;
-
-    invoke-virtual {v3, v5}, Landroid/content/Context;->getSystemService(Ljava/lang/Class;)Ljava/lang/Object;
+    invoke-interface {v2}, Ljava/util/Iterator;->next()Ljava/lang/Object;
 
     move-result-object v3
 
-    check-cast v3, Landroid/hardware/fingerprint/FingerprintManager;
+    check-cast v3, Lcom/android/internal/os/LooperStats$ExportedEntry;
 
-    goto :goto_21
-
-    .line 1557
-    :cond_20
-    move-object v3, v4
-
-    .line 1561
-    :goto_21
-    const-string v5, "android.hardware.biometrics.face"
-
-    invoke-virtual {v2, v5}, Landroid/content/pm/PackageManager;->hasSystemFeature(Ljava/lang/String;)Z
-
-    move-result v2
-
-    if-eqz v2, :cond_34
-
-    .line 1562
-    iget-object v2, v0, Lcom/android/server/stats/StatsCompanionService;->mContext:Landroid/content/Context;
-
-    const-class v4, Landroid/hardware/face/FaceManager;
-
-    invoke-virtual {v2, v4}, Landroid/content/Context;->getSystemService(Ljava/lang/Class;)Ljava/lang/Object;
-
-    move-result-object v2
-
-    move-object v4, v2
-
-    check-cast v4, Landroid/hardware/face/FaceManager;
-
-    .line 1565
-    :cond_34
-    const/4 v2, 0x1
-
-    if-ne v1, v2, :cond_3a
-
-    if-nez v3, :cond_3a
-
-    .line 1566
-    return-void
-
-    .line 1568
-    :cond_3a
-    const/4 v5, 0x4
-
-    if-ne v1, v5, :cond_40
-
-    if-nez v4, :cond_40
-
-    .line 1569
-    return-void
-
-    .line 1571
-    :cond_40
-    iget-object v0, v0, Lcom/android/server/stats/StatsCompanionService;->mContext:Landroid/content/Context;
-
-    const-class v6, Landroid/os/UserManager;
-
-    invoke-virtual {v0, v6}, Landroid/content/Context;->getSystemService(Ljava/lang/Class;)Ljava/lang/Object;
-
-    move-result-object v0
-
-    check-cast v0, Landroid/os/UserManager;
-
-    .line 1572
-    if-nez v0, :cond_4d
-
-    .line 1573
-    return-void
-
-    .line 1576
-    :cond_4d
-    invoke-static {}, Landroid/os/Binder;->clearCallingIdentity()J
-
-    move-result-wide v6
-
-    .line 1577
-    invoke-virtual {v0}, Landroid/os/UserManager;->getUsers()Ljava/util/List;
-
-    move-result-object v0
-
-    invoke-interface {v0}, Ljava/util/List;->iterator()Ljava/util/Iterator;
-
-    move-result-object v0
-
-    :goto_59
-    invoke-interface {v0}, Ljava/util/Iterator;->hasNext()Z
-
-    move-result v8
-
-    if-eqz v8, :cond_9e
-
-    invoke-interface {v0}, Ljava/util/Iterator;->next()Ljava/lang/Object;
-
-    move-result-object v8
-
-    check-cast v8, Landroid/content/pm/UserInfo;
-
-    .line 1578
-    invoke-virtual {v8}, Landroid/content/pm/UserInfo;->getUserHandle()Landroid/os/UserHandle;
-
-    move-result-object v8
-
-    invoke-virtual {v8}, Landroid/os/UserHandle;->getIdentifier()I
-
-    move-result v8
-
-    .line 1579
-    nop
-
-    .line 1580
-    if-ne v1, v2, :cond_79
-
-    .line 1581
-    invoke-virtual {v3, v8}, Landroid/hardware/fingerprint/FingerprintManager;->getEnrolledFingerprints(I)Ljava/util/List;
-
-    move-result-object v9
-
-    invoke-interface {v9}, Ljava/util/List;->size()I
-
-    move-result v9
-
-    goto :goto_83
-
-    .line 1582
-    :cond_79
-    if-ne v1, v5, :cond_9d
-
-    .line 1583
-    invoke-virtual {v4, v8}, Landroid/hardware/face/FaceManager;->getEnrolledFaces(I)Ljava/util/List;
-
-    move-result-object v9
-
-    invoke-interface {v9}, Ljava/util/List;->size()I
-
-    move-result v9
-
-    .line 1587
-    :goto_83
-    new-instance v14, Landroid/os/StatsLogEventWrapper;
-
-    move-object v10, v14
-
-    move/from16 v11, p2
-
-    move-wide/from16 v12, p3
-
-    move-object v2, v14
-
-    move-wide/from16 v14, p5
-
-    invoke-direct/range {v10 .. v15}, Landroid/os/StatsLogEventWrapper;-><init>(IJJ)V
-
-    .line 1588
-    invoke-virtual {v2, v8}, Landroid/os/StatsLogEventWrapper;->writeInt(I)V
-
-    .line 1589
-    invoke-virtual {v2, v9}, Landroid/os/StatsLogEventWrapper;->writeInt(I)V
-
-    .line 1590
-    move-object/from16 v8, p7
-
-    invoke-interface {v8, v2}, Ljava/util/List;->add(Ljava/lang/Object;)Z
-
-    .line 1591
-    const/4 v2, 0x1
-
-    goto :goto_59
-
-    .line 1585
-    :cond_9d
-    return-void
-
-    .line 1592
-    :cond_9e
-    invoke-static {v6, v7}, Landroid/os/Binder;->restoreCallingIdentity(J)V
-
-    .line 1593
-    return-void
-.end method
-
-.method private pullPowerProfile(IJJLjava/util/List;)V
-    .registers 15
-    .annotation system Ldalvik/annotation/Signature;
-        value = {
-            "(IJJ",
-            "Ljava/util/List<",
-            "Landroid/os/StatsLogEventWrapper;",
-            ">;)V"
-        }
-    .end annotation
-
-    .line 1723
-    new-instance v0, Lcom/android/internal/os/PowerProfile;
-
-    iget-object v1, p0, Lcom/android/server/stats/StatsCompanionService;->mContext:Landroid/content/Context;
-
-    invoke-direct {v0, v1}, Lcom/android/internal/os/PowerProfile;-><init>(Landroid/content/Context;)V
-
-    .line 1724
-    invoke-static {v0}, Lcom/android/internal/util/Preconditions;->checkNotNull(Ljava/lang/Object;)Ljava/lang/Object;
-
-    .line 1726
-    new-instance v1, Landroid/os/StatsLogEventWrapper;
-
-    move-object v2, v1
-
-    move v3, p1
-
-    move-wide v4, p2
-
-    move-wide v6, p4
-
-    invoke-direct/range {v2 .. v7}, Landroid/os/StatsLogEventWrapper;-><init>(IJJ)V
-
-    .line 1728
-    new-instance p1, Landroid/util/proto/ProtoOutputStream;
-
-    invoke-direct {p1}, Landroid/util/proto/ProtoOutputStream;-><init>()V
-
-    .line 1729
-    invoke-virtual {v0, p1}, Lcom/android/internal/os/PowerProfile;->writeToProto(Landroid/util/proto/ProtoOutputStream;)V
-
-    .line 1730
-    invoke-virtual {p1}, Landroid/util/proto/ProtoOutputStream;->flush()V
-
-    .line 1731
-    invoke-virtual {p1}, Landroid/util/proto/ProtoOutputStream;->getBytes()[B
-
-    move-result-object p1
-
-    invoke-virtual {v1, p1}, Landroid/os/StatsLogEventWrapper;->writeStorage([B)V
-
-    .line 1732
-    invoke-interface {p6, v1}, Ljava/util/List;->add(Ljava/lang/Object;)Z
-
-    .line 1733
-    return-void
-.end method
-
-.method private pullProcessCpuTime(IJJLjava/util/List;)V
-    .registers 16
-    .annotation system Ldalvik/annotation/Signature;
-        value = {
-            "(IJJ",
-            "Ljava/util/List<",
-            "Landroid/os/StatsLogEventWrapper;",
-            ">;)V"
-        }
-    .end annotation
-
-    .line 1846
-    monitor-enter p0
-
-    .line 1847
-    :try_start_1
-    iget-object v0, p0, Lcom/android/server/stats/StatsCompanionService;->mProcessCpuTracker:Lcom/android/internal/os/ProcessCpuTracker;
-
-    const/4 v1, 0x0
-
-    if-nez v0, :cond_12
-
-    .line 1848
-    new-instance v0, Lcom/android/internal/os/ProcessCpuTracker;
-
-    invoke-direct {v0, v1}, Lcom/android/internal/os/ProcessCpuTracker;-><init>(Z)V
-
-    iput-object v0, p0, Lcom/android/server/stats/StatsCompanionService;->mProcessCpuTracker:Lcom/android/internal/os/ProcessCpuTracker;
-
-    .line 1849
-    iget-object v0, p0, Lcom/android/server/stats/StatsCompanionService;->mProcessCpuTracker:Lcom/android/internal/os/ProcessCpuTracker;
-
-    invoke-virtual {v0}, Lcom/android/internal/os/ProcessCpuTracker;->init()V
-
-    .line 1851
-    :cond_12
-    iget-object v0, p0, Lcom/android/server/stats/StatsCompanionService;->mProcessCpuTracker:Lcom/android/internal/os/ProcessCpuTracker;
-
-    invoke-virtual {v0}, Lcom/android/internal/os/ProcessCpuTracker;->update()V
-
-    .line 1852
-    nop
-
-    :goto_18
-    iget-object v0, p0, Lcom/android/server/stats/StatsCompanionService;->mProcessCpuTracker:Lcom/android/internal/os/ProcessCpuTracker;
-
-    invoke-virtual {v0}, Lcom/android/internal/os/ProcessCpuTracker;->countStats()I
-
-    move-result v0
-
-    if-ge v1, v0, :cond_49
-
-    .line 1853
-    iget-object v0, p0, Lcom/android/server/stats/StatsCompanionService;->mProcessCpuTracker:Lcom/android/internal/os/ProcessCpuTracker;
-
-    invoke-virtual {v0, v1}, Lcom/android/internal/os/ProcessCpuTracker;->getStats(I)Lcom/android/internal/os/ProcessCpuTracker$Stats;
-
-    move-result-object v0
-
-    .line 1854
-    new-instance v8, Landroid/os/StatsLogEventWrapper;
-
-    move-object v2, v8
-
-    move v3, p1
-
-    move-wide v4, p2
-
-    move-wide v6, p4
-
-    invoke-direct/range {v2 .. v7}, Landroid/os/StatsLogEventWrapper;-><init>(IJJ)V
-
-    .line 1856
-    iget v2, v0, Lcom/android/internal/os/ProcessCpuTracker$Stats;->uid:I
-
-    invoke-virtual {v8, v2}, Landroid/os/StatsLogEventWrapper;->writeInt(I)V
-
-    .line 1857
-    iget-object v2, v0, Lcom/android/internal/os/ProcessCpuTracker$Stats;->name:Ljava/lang/String;
-
-    invoke-virtual {v8, v2}, Landroid/os/StatsLogEventWrapper;->writeString(Ljava/lang/String;)V
-
-    .line 1858
-    iget-wide v2, v0, Lcom/android/internal/os/ProcessCpuTracker$Stats;->base_utime:J
-
-    invoke-virtual {v8, v2, v3}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
-
-    .line 1859
-    iget-wide v2, v0, Lcom/android/internal/os/ProcessCpuTracker$Stats;->base_stime:J
-
-    invoke-virtual {v8, v2, v3}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
-
-    .line 1860
-    invoke-interface {p6, v8}, Ljava/util/List;->add(Ljava/lang/Object;)Z
-
-    .line 1852
-    add-int/lit8 v1, v1, 0x1
-
-    goto :goto_18
-
-    .line 1862
-    :cond_49
-    monitor-exit p0
-
-    .line 1863
-    return-void
-
-    .line 1862
-    :catchall_4b
-    move-exception p1
-
-    monitor-exit p0
-    :try_end_4d
-    .catchall {:try_start_1 .. :try_end_4d} :catchall_4b
-
-    throw p1
-.end method
-
-.method private pullProcessMemoryHighWaterMark(IJJLjava/util/List;)V
-    .registers 21
-    .annotation system Ldalvik/annotation/Signature;
-        value = {
-            "(IJJ",
-            "Ljava/util/List<",
-            "Landroid/os/StatsLogEventWrapper;",
-            ">;)V"
-        }
-    .end annotation
-
-    .line 1238
-    move-object/from16 v0, p6
-
-    const-class v1, Landroid/app/ActivityManagerInternal;
-
-    .line 1239
-    invoke-static {v1}, Lcom/android/server/LocalServices;->getService(Ljava/lang/Class;)Ljava/lang/Object;
-
-    move-result-object v1
-
-    check-cast v1, Landroid/app/ActivityManagerInternal;
-
-    .line 1240
-    invoke-virtual {v1}, Landroid/app/ActivityManagerInternal;->getMemoryStateForProcesses()Ljava/util/List;
-
-    move-result-object v1
-
-    .line 1241
-    invoke-interface {v1}, Ljava/util/List;->iterator()Ljava/util/Iterator;
-
-    move-result-object v1
-
-    :goto_12
-    invoke-interface {v1}, Ljava/util/Iterator;->hasNext()Z
-
-    move-result v2
-
-    if-eqz v2, :cond_47
-
-    invoke-interface {v1}, Ljava/util/Iterator;->next()Ljava/lang/Object;
-
-    move-result-object v2
-
-    check-cast v2, Landroid/app/ProcessMemoryState;
-
-    .line 1242
-    iget v3, v2, Landroid/app/ProcessMemoryState;->pid:I
-
-    .line 1243
-    invoke-static {v3}, Lcom/android/server/am/MemoryStatUtil;->readRssHighWaterMarkFromProcfs(I)J
-
-    move-result-wide v3
-
-    .line 1244
-    const-wide/16 v5, 0x0
-
-    cmp-long v5, v3, v5
-
-    if-nez v5, :cond_2b
-
-    .line 1245
-    goto :goto_12
-
-    .line 1247
-    :cond_2b
-    new-instance v5, Landroid/os/StatsLogEventWrapper;
-
-    move-object v6, v5
-
-    move v7, p1
-
-    move-wide/from16 v8, p2
-
-    move-wide/from16 v10, p4
-
-    invoke-direct/range {v6 .. v11}, Landroid/os/StatsLogEventWrapper;-><init>(IJJ)V
-
-    .line 1248
-    iget v6, v2, Landroid/app/ProcessMemoryState;->uid:I
-
-    invoke-virtual {v5, v6}, Landroid/os/StatsLogEventWrapper;->writeInt(I)V
-
-    .line 1249
-    iget-object v2, v2, Landroid/app/ProcessMemoryState;->processName:Ljava/lang/String;
-
-    invoke-virtual {v5, v2}, Landroid/os/StatsLogEventWrapper;->writeString(Ljava/lang/String;)V
-
-    .line 1250
-    invoke-virtual {v5, v3, v4}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
-
-    .line 1251
-    invoke-interface {v0, v5}, Ljava/util/List;->add(Ljava/lang/Object;)Z
-
-    .line 1252
-    goto :goto_12
-
-    .line 1253
-    :cond_47
-    sget-object v1, Lcom/android/server/stats/StatsCompanionService;->MEMORY_INTERESTING_NATIVE_PROCESSES:[Ljava/lang/String;
-
-    invoke-static {v1}, Landroid/os/Process;->getPidsForCommands([Ljava/lang/String;)[I
-
-    move-result-object v1
-
-    .line 1254
-    const/4 v2, 0x0
-
-    :goto_4e
-    array-length v3, v1
-
-    if-ge v2, v3, :cond_79
-
-    .line 1255
-    aget v3, v1, v2
-
-    .line 1256
-    invoke-static {v3}, Landroid/os/Process;->getUidForPid(I)I
-
-    move-result v4
-
-    .line 1257
-    invoke-static {v3}, Lcom/android/server/am/MemoryStatUtil;->readCmdlineFromProcfs(I)Ljava/lang/String;
-
-    move-result-object v5
-
-    .line 1258
-    invoke-static {v3}, Lcom/android/server/am/MemoryStatUtil;->readRssHighWaterMarkFromProcfs(I)J
-
-    move-result-wide v6
-
-    .line 1259
-    new-instance v3, Landroid/os/StatsLogEventWrapper;
-
-    move-object v8, v3
-
-    move v9, p1
-
-    move-wide/from16 v10, p2
-
-    move-wide/from16 v12, p4
-
-    invoke-direct/range {v8 .. v13}, Landroid/os/StatsLogEventWrapper;-><init>(IJJ)V
-
-    .line 1260
-    invoke-virtual {v3, v4}, Landroid/os/StatsLogEventWrapper;->writeInt(I)V
-
-    .line 1261
-    invoke-virtual {v3, v5}, Landroid/os/StatsLogEventWrapper;->writeString(Ljava/lang/String;)V
-
-    .line 1262
-    invoke-virtual {v3, v6, v7}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
-
-    .line 1263
-    invoke-interface {v0, v3}, Ljava/util/List;->add(Ljava/lang/Object;)Z
-
-    .line 1254
-    add-int/lit8 v2, v2, 0x1
-
-    goto :goto_4e
-
-    .line 1266
-    :cond_79
-    const-string/jumbo v0, "sys.rss_hwm_reset.on"
-
-    const-string v1, "1"
-
-    invoke-static {v0, v1}, Landroid/os/SystemProperties;->set(Ljava/lang/String;Ljava/lang/String;)V
-
-    .line 1267
-    return-void
-.end method
-
-.method private pullProcessMemoryState(IJJLjava/util/List;)V
-    .registers 17
-    .annotation system Ldalvik/annotation/Signature;
-        value = {
-            "(IJJ",
-            "Ljava/util/List<",
-            "Landroid/os/StatsLogEventWrapper;",
-            ">;)V"
-        }
-    .end annotation
-
-    .line 1173
-    const-class v0, Landroid/app/ActivityManagerInternal;
-
-    .line 1174
-    invoke-static {v0}, Lcom/android/server/LocalServices;->getService(Ljava/lang/Class;)Ljava/lang/Object;
-
-    move-result-object v0
-
-    check-cast v0, Landroid/app/ActivityManagerInternal;
-
-    .line 1175
-    invoke-virtual {v0}, Landroid/app/ActivityManagerInternal;->getMemoryStateForProcesses()Ljava/util/List;
-
-    move-result-object v0
-
-    .line 1176
-    invoke-interface {v0}, Ljava/util/List;->iterator()Ljava/util/Iterator;
-
-    move-result-object v0
-
-    :goto_10
-    invoke-interface {v0}, Ljava/util/Iterator;->hasNext()Z
-
-    move-result v1
-
-    if-eqz v1, :cond_6f
-
-    invoke-interface {v0}, Ljava/util/Iterator;->next()Ljava/lang/Object;
-
-    move-result-object v1
-
-    check-cast v1, Landroid/app/ProcessMemoryState;
-
-    .line 1177
-    iget v2, v1, Landroid/app/ProcessMemoryState;->uid:I
-
-    iget v3, v1, Landroid/app/ProcessMemoryState;->pid:I
-
-    invoke-static {v2, v3}, Lcom/android/server/am/MemoryStatUtil;->readMemoryStatFromFilesystem(II)Lcom/android/server/am/MemoryStatUtil$MemoryStat;
-
-    move-result-object v2
-
-    .line 1179
-    if-nez v2, :cond_27
-
-    .line 1180
-    goto :goto_10
-
-    .line 1182
-    :cond_27
-    new-instance v9, Landroid/os/StatsLogEventWrapper;
-
-    move-object v3, v9
-
-    move v4, p1
-
-    move-wide v5, p2
-
-    move-wide v7, p4
-
-    invoke-direct/range {v3 .. v8}, Landroid/os/StatsLogEventWrapper;-><init>(IJJ)V
-
-    .line 1183
-    iget v3, v1, Landroid/app/ProcessMemoryState;->uid:I
-
-    invoke-virtual {v9, v3}, Landroid/os/StatsLogEventWrapper;->writeInt(I)V
-
-    .line 1184
-    iget-object v3, v1, Landroid/app/ProcessMemoryState;->processName:Ljava/lang/String;
-
-    invoke-virtual {v9, v3}, Landroid/os/StatsLogEventWrapper;->writeString(Ljava/lang/String;)V
-
-    .line 1185
-    iget v1, v1, Landroid/app/ProcessMemoryState;->oomScore:I
-
-    invoke-virtual {v9, v1}, Landroid/os/StatsLogEventWrapper;->writeInt(I)V
-
-    .line 1186
-    iget-wide v3, v2, Lcom/android/server/am/MemoryStatUtil$MemoryStat;->pgfault:J
-
-    invoke-virtual {v9, v3, v4}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
-
-    .line 1187
-    iget-wide v3, v2, Lcom/android/server/am/MemoryStatUtil$MemoryStat;->pgmajfault:J
-
-    invoke-virtual {v9, v3, v4}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
-
-    .line 1188
-    iget-wide v3, v2, Lcom/android/server/am/MemoryStatUtil$MemoryStat;->rssInBytes:J
-
-    invoke-virtual {v9, v3, v4}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
-
-    .line 1189
-    iget-wide v3, v2, Lcom/android/server/am/MemoryStatUtil$MemoryStat;->cacheInBytes:J
-
-    invoke-virtual {v9, v3, v4}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
-
-    .line 1190
-    iget-wide v3, v2, Lcom/android/server/am/MemoryStatUtil$MemoryStat;->swapInBytes:J
-
-    invoke-virtual {v9, v3, v4}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
-
-    .line 1191
-    const-wide/16 v3, 0x0
-
-    invoke-virtual {v9, v3, v4}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
-
-    .line 1192
-    iget-wide v3, v2, Lcom/android/server/am/MemoryStatUtil$MemoryStat;->startTimeNanos:J
-
-    invoke-virtual {v9, v3, v4}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
-
-    .line 1193
-    invoke-static {v2}, Lcom/android/server/stats/StatsCompanionService;->anonAndSwapInKilobytes(Lcom/android/server/am/MemoryStatUtil$MemoryStat;)I
-
-    move-result v1
-
-    invoke-virtual {v9, v1}, Landroid/os/StatsLogEventWrapper;->writeInt(I)V
-
-    .line 1194
-    move-object/from16 v1, p6
-
-    invoke-interface {v1, v9}, Ljava/util/List;->add(Ljava/lang/Object;)Z
-
-    .line 1195
-    goto :goto_10
-
-    .line 1196
-    :cond_6f
-    return-void
-.end method
-
-.method private pullProcessStats(IIJJLjava/util/List;)V
-    .registers 25
-    .annotation system Ldalvik/annotation/Signature;
-        value = {
-            "(IIJJ",
-            "Ljava/util/List<",
-            "Landroid/os/StatsLogEventWrapper;",
-            ">;)V"
-        }
-    .end annotation
-
-    .line 1621
-    move-object/from16 v1, p0
-
-    move/from16 v0, p1
-
-    monitor-enter p0
-
-    .line 1623
-    :try_start_5
-    invoke-direct/range {p0 .. p1}, Lcom/android/server/stats/StatsCompanionService;->readProcStatsHighWaterMark(I)J
-
-    move-result-wide v8
-
-    .line 1624
-    new-instance v16, Ljava/util/ArrayList;
-
-    invoke-direct/range {v16 .. v16}, Ljava/util/ArrayList;-><init>()V
-
-    .line 1625
-    iget-object v2, v1, Lcom/android/server/stats/StatsCompanionService;->mProcessStats:Lcom/android/internal/app/procstats/IProcessStats;
-
-    const/4 v6, 0x1
-
-    move-wide v3, v8
-
-    move/from16 v5, p1
-
-    move-object/from16 v7, v16
-
-    invoke-interface/range {v2 .. v7}, Lcom/android/internal/app/procstats/IProcessStats;->getCommittedStats(JIZLjava/util/List;)J
-
-    move-result-wide v2
-
-    .line 1627
-    invoke-interface/range {v16 .. v16}, Ljava/util/List;->size()I
-
-    move-result v4
-    :try_end_1e
-    .catch Ljava/io/IOException; {:try_start_5 .. :try_end_1e} :catch_97
-    .catch Landroid/os/RemoteException; {:try_start_5 .. :try_end_1e} :catch_8e
-    .catch Ljava/lang/SecurityException; {:try_start_5 .. :try_end_1e} :catch_85
-    .catchall {:try_start_5 .. :try_end_1e} :catchall_83
-
-    const/4 v5, 0x1
-
-    if-eq v4, v5, :cond_23
-
-    .line 1628
-    :try_start_21
-    monitor-exit p0
-    :try_end_22
-    .catchall {:try_start_21 .. :try_end_22} :catchall_83
-
-    return-void
-
-    .line 1630
-    :cond_23
-    move/from16 v10, p2
-
-    move-wide/from16 v11, p3
-
-    move-wide/from16 v13, p5
-
-    move-object/from16 v15, p7
-
-    :try_start_2b
-    invoke-static/range {v10 .. v16}, Lcom/android/server/stats/StatsCompanionService;->unpackStreamedData(IJJLjava/util/List;Ljava/util/List;)V
-
-    .line 1631
-    new-instance v4, Ljava/io/File;
-
-    new-instance v5, Ljava/lang/StringBuilder;
-
-    invoke-direct {v5}, Ljava/lang/StringBuilder;-><init>()V
-
-    iget-object v6, v1, Lcom/android/server/stats/StatsCompanionService;->mBaseDir:Ljava/io/File;
-
-    invoke-virtual {v6}, Ljava/io/File;->getAbsolutePath()Ljava/lang/String;
-
-    move-result-object v6
-
-    invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    const-string v6, "/"
-
-    invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v5, v0}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
-
-    const-string v6, "_"
-
-    invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v5, v8, v9}, Ljava/lang/StringBuilder;->append(J)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v5}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
-
-    move-result-object v5
-
-    invoke-direct {v4, v5}, Ljava/io/File;-><init>(Ljava/lang/String;)V
-
-    .line 1632
-    invoke-virtual {v4}, Ljava/io/File;->delete()Z
-
-    .line 1633
-    new-instance v4, Ljava/io/File;
-
-    new-instance v5, Ljava/lang/StringBuilder;
-
-    invoke-direct {v5}, Ljava/lang/StringBuilder;-><init>()V
-
-    iget-object v6, v1, Lcom/android/server/stats/StatsCompanionService;->mBaseDir:Ljava/io/File;
-
-    .line 1634
-    invoke-virtual {v6}, Ljava/io/File;->getAbsolutePath()Ljava/lang/String;
-
-    move-result-object v6
-
-    invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    const-string v6, "/"
-
-    invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v5, v0}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
-
-    const-string v0, "_"
-
-    invoke-virtual {v5, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v5, v2, v3}, Ljava/lang/StringBuilder;->append(J)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v5}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
-
-    move-result-object v0
-
-    invoke-direct {v4, v0}, Ljava/io/File;-><init>(Ljava/lang/String;)V
-
-    .line 1635
-    invoke-virtual {v4}, Ljava/io/File;->createNewFile()Z
-    :try_end_82
-    .catch Ljava/io/IOException; {:try_start_2b .. :try_end_82} :catch_97
-    .catch Landroid/os/RemoteException; {:try_start_2b .. :try_end_82} :catch_8e
-    .catch Ljava/lang/SecurityException; {:try_start_2b .. :try_end_82} :catch_85
-    .catchall {:try_start_2b .. :try_end_82} :catchall_83
-
-    goto :goto_9f
-
-    .line 1643
-    :catchall_83
-    move-exception v0
-
-    goto :goto_a2
-
-    .line 1640
-    :catch_85
-    move-exception v0
-
-    .line 1641
-    :try_start_86
-    const-string v2, "StatsCompanionService"
-
-    const-string v3, "Getting procstats failed: "
-
-    invoke-static {v2, v3, v0}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
-
-    goto :goto_a0
-
-    .line 1638
-    :catch_8e
-    move-exception v0
-
-    .line 1639
-    const-string v2, "StatsCompanionService"
-
-    const-string v3, "Getting procstats failed: "
-
-    invoke-static {v2, v3, v0}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
-
-    goto :goto_9f
-
-    .line 1636
-    :catch_97
-    move-exception v0
-
-    .line 1637
-    const-string v2, "StatsCompanionService"
-
-    const-string v3, "Getting procstats failed: "
-
-    invoke-static {v2, v3, v0}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
-
-    .line 1642
-    :goto_9f
-    nop
-
-    .line 1643
-    :goto_a0
-    monitor-exit p0
-
-    .line 1644
-    return-void
-
-    .line 1643
-    :goto_a2
-    monitor-exit p0
-    :try_end_a3
-    .catchall {:try_start_86 .. :try_end_a3} :catchall_83
-
-    throw v0
-.end method
-
-.method private pullProcessSystemIonHeapSize(IJJLjava/util/List;)V
-    .registers 16
-    .annotation system Ldalvik/annotation/Signature;
-        value = {
-            "(IJJ",
-            "Ljava/util/List<",
-            "Landroid/os/StatsLogEventWrapper;",
-            ">;)V"
-        }
-    .end annotation
-
-    .line 1281
-    invoke-static {}, Lcom/android/server/am/MemoryStatUtil;->readProcessSystemIonHeapSizesFromDebugfs()Ljava/util/List;
-
-    move-result-object v0
-
-    .line 1282
-    invoke-interface {v0}, Ljava/util/List;->iterator()Ljava/util/Iterator;
-
-    move-result-object v0
-
-    :goto_8
-    invoke-interface {v0}, Ljava/util/Iterator;->hasNext()Z
-
-    move-result v1
-
-    if-eqz v1, :cond_48
-
-    invoke-interface {v0}, Ljava/util/Iterator;->next()Ljava/lang/Object;
-
-    move-result-object v1
-
-    check-cast v1, Lcom/android/server/am/MemoryStatUtil$IonAllocations;
-
-    .line 1283
-    new-instance v8, Landroid/os/StatsLogEventWrapper;
-
-    move-object v2, v8
-
-    move v3, p1
-
-    move-wide v4, p2
-
-    move-wide v6, p4
-
-    invoke-direct/range {v2 .. v7}, Landroid/os/StatsLogEventWrapper;-><init>(IJJ)V
-
-    .line 1284
-    iget v2, v1, Lcom/android/server/am/MemoryStatUtil$IonAllocations;->pid:I
-
-    invoke-static {v2}, Landroid/os/Process;->getUidForPid(I)I
-
-    move-result v2
-
-    invoke-virtual {v8, v2}, Landroid/os/StatsLogEventWrapper;->writeInt(I)V
-
-    .line 1285
-    iget v2, v1, Lcom/android/server/am/MemoryStatUtil$IonAllocations;->pid:I
-
-    invoke-static {v2}, Lcom/android/server/am/MemoryStatUtil;->readCmdlineFromProcfs(I)Ljava/lang/String;
-
-    move-result-object v2
-
-    invoke-virtual {v8, v2}, Landroid/os/StatsLogEventWrapper;->writeString(Ljava/lang/String;)V
-
-    .line 1286
-    iget-wide v2, v1, Lcom/android/server/am/MemoryStatUtil$IonAllocations;->totalSizeInBytes:J
-
-    const-wide/16 v4, 0x400
-
-    div-long/2addr v2, v4
-
-    long-to-int v2, v2
-
-    invoke-virtual {v8, v2}, Landroid/os/StatsLogEventWrapper;->writeInt(I)V
-
-    .line 1287
-    iget v2, v1, Lcom/android/server/am/MemoryStatUtil$IonAllocations;->count:I
-
-    invoke-virtual {v8, v2}, Landroid/os/StatsLogEventWrapper;->writeInt(I)V
-
-    .line 1288
-    iget-wide v1, v1, Lcom/android/server/am/MemoryStatUtil$IonAllocations;->maxSizeInBytes:J
-
-    div-long/2addr v1, v4
-
-    long-to-int v1, v1
-
-    invoke-virtual {v8, v1}, Landroid/os/StatsLogEventWrapper;->writeInt(I)V
-
-    .line 1289
-    invoke-interface {p6, v8}, Ljava/util/List;->add(Ljava/lang/Object;)Z
-
-    .line 1290
-    goto :goto_8
-
-    .line 1291
-    :cond_48
-    return-void
-.end method
-
-.method private pullRoleHolders(JJLjava/util/List;)V
-    .registers 30
-    .annotation system Ldalvik/annotation/Signature;
-        value = {
-            "(JJ",
-            "Ljava/util/List<",
-            "Landroid/os/StatsLogEventWrapper;",
-            ">;)V"
-        }
-    .end annotation
-
-    .line 2132
-    move-object/from16 v0, p0
-
-    invoke-static {}, Landroid/os/Binder;->clearCallingIdentity()J
-
-    move-result-wide v1
-
-    .line 2134
-    :try_start_6
-    iget-object v3, v0, Lcom/android/server/stats/StatsCompanionService;->mContext:Landroid/content/Context;
-
-    invoke-virtual {v3}, Landroid/content/Context;->getPackageManager()Landroid/content/pm/PackageManager;
-
-    move-result-object v3
-
-    .line 2135
-    const-class v4, Lcom/android/server/role/RoleManagerInternal;
-
-    invoke-static {v4}, Lcom/android/server/LocalServices;->getService(Ljava/lang/Class;)Ljava/lang/Object;
-
-    move-result-object v4
-
-    check-cast v4, Lcom/android/server/role/RoleManagerInternal;
-
-    .line 2137
-    iget-object v0, v0, Lcom/android/server/stats/StatsCompanionService;->mContext:Landroid/content/Context;
-
-    const-class v5, Landroid/os/UserManager;
-
-    invoke-virtual {v0, v5}, Landroid/content/Context;->getSystemService(Ljava/lang/Class;)Ljava/lang/Object;
-
-    move-result-object v0
-
-    check-cast v0, Landroid/os/UserManager;
-
-    invoke-virtual {v0}, Landroid/os/UserManager;->getUsers()Ljava/util/List;
-
-    move-result-object v0
-
-    .line 2139
-    invoke-interface {v0}, Ljava/util/List;->size()I
-
-    move-result v5
-
-    .line 2140
-    const/4 v7, 0x0
-
-    :goto_27
-    if-ge v7, v5, :cond_c4
-
-    .line 2141
-    invoke-interface {v0, v7}, Ljava/util/List;->get(I)Ljava/lang/Object;
-
-    move-result-object v8
-
-    check-cast v8, Landroid/content/pm/UserInfo;
-
-    invoke-virtual {v8}, Landroid/content/pm/UserInfo;->getUserHandle()Landroid/os/UserHandle;
-
-    move-result-object v8
-
-    invoke-virtual {v8}, Landroid/os/UserHandle;->getIdentifier()I
-
-    move-result v8
-
-    .line 2143
-    invoke-virtual {v4, v8}, Lcom/android/server/role/RoleManagerInternal;->getRolesAndHolders(I)Landroid/util/ArrayMap;
-
-    move-result-object v9
-
-    .line 2146
-    invoke-virtual {v9}, Landroid/util/ArrayMap;->size()I
-
-    move-result v10
-
-    .line 2147
-    const/4 v11, 0x0
-
-    :goto_40
-    if-ge v11, v10, :cond_b8
-
-    .line 2148
-    invoke-virtual {v9, v11}, Landroid/util/ArrayMap;->keyAt(I)Ljava/lang/Object;
-
-    move-result-object v12
-
-    check-cast v12, Ljava/lang/String;
-
-    .line 2149
-    invoke-virtual {v9, v11}, Landroid/util/ArrayMap;->valueAt(I)Ljava/lang/Object;
-
-    move-result-object v13
-
-    check-cast v13, Landroid/util/ArraySet;
-
-    .line 2151
-    invoke-virtual {v13}, Landroid/util/ArraySet;->size()I
-
-    move-result v14
-
-    .line 2152
-    const/4 v15, 0x0
-
-    :goto_53
-    if-ge v15, v14, :cond_ad
-
-    .line 2153
-    invoke-virtual {v13, v15}, Landroid/util/ArraySet;->valueAt(I)Ljava/lang/Object;
-
-    move-result-object v16
-
-    move-object/from16 v6, v16
-
-    check-cast v6, Ljava/lang/String;
-    :try_end_5d
-    .catchall {:try_start_6 .. :try_end_5d} :catchall_c9
-
-    .line 2157
-    move-object/from16 v16, v0
-
-    move-object/from16 v17, v4
-
-    const/4 v0, 0x0
-
-    :try_start_62
-    invoke-virtual {v3, v6, v0, v8}, Landroid/content/pm/PackageManager;->getPackageInfoAsUser(Ljava/lang/String;II)Landroid/content/pm/PackageInfo;
-
-    move-result-object v4
-    :try_end_66
-    .catch Landroid/content/pm/PackageManager$NameNotFoundException; {:try_start_62 .. :try_end_66} :catch_8d
-    .catchall {:try_start_62 .. :try_end_66} :catchall_c9
-
-    .line 2161
-    nop
-
-    .line 2163
-    :try_start_67
-    new-instance v0, Landroid/os/StatsLogEventWrapper;
-
-    const/16 v19, 0x2741
-
-    move-object/from16 v18, v0
-
-    move-wide/from16 v20, p1
-
-    move-wide/from16 v22, p3
-
-    invoke-direct/range {v18 .. v23}, Landroid/os/StatsLogEventWrapper;-><init>(IJJ)V
-
-    .line 2165
-    iget-object v4, v4, Landroid/content/pm/PackageInfo;->applicationInfo:Landroid/content/pm/ApplicationInfo;
-
-    iget v4, v4, Landroid/content/pm/ApplicationInfo;->uid:I
-
-    invoke-virtual {v0, v4}, Landroid/os/StatsLogEventWrapper;->writeInt(I)V
-
-    .line 2166
-    invoke-virtual {v0, v6}, Landroid/os/StatsLogEventWrapper;->writeString(Ljava/lang/String;)V
-
-    .line 2167
-    invoke-virtual {v0, v12}, Landroid/os/StatsLogEventWrapper;->writeString(Ljava/lang/String;)V
-
-    .line 2168
-    move-object/from16 v4, p5
-
-    invoke-interface {v4, v0}, Ljava/util/List;->add(Ljava/lang/Object;)Z
-
-    .line 2152
-    add-int/lit8 v15, v15, 0x1
-
-    move-object/from16 v0, v16
-
-    move-object/from16 v4, v17
-
-    goto :goto_53
-
-    .line 2158
-    :catch_8d
-    move-exception v0
-
-    .line 2159
-    const-string v0, "StatsCompanionService"
-
-    new-instance v3, Ljava/lang/StringBuilder;
-
-    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
-
-    const-string v4, "Role holder "
-
-    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v3, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    const-string v4, " not found"
-
-    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
-
-    move-result-object v3
-
-    invoke-static {v0, v3}, Landroid/util/Log;->w(Ljava/lang/String;Ljava/lang/String;)I
-    :try_end_a9
-    .catchall {:try_start_67 .. :try_end_a9} :catchall_c9
-
-    .line 2173
-    invoke-static {v1, v2}, Landroid/os/Binder;->restoreCallingIdentity(J)V
-
-    .line 2160
-    return-void
-
-    .line 2147
-    :cond_ad
-    move-object/from16 v16, v0
-
-    move-object/from16 v17, v4
-
-    move-object/from16 v4, p5
-
-    add-int/lit8 v11, v11, 0x1
-
-    move-object/from16 v4, v17
-
-    goto :goto_40
-
-    .line 2140
-    :cond_b8
-    move-object/from16 v16, v0
-
-    move-object/from16 v17, v4
-
-    move-object/from16 v4, p5
-
-    add-int/lit8 v7, v7, 0x1
-
-    move-object/from16 v4, v17
-
-    goto/16 :goto_27
-
-    .line 2173
-    :cond_c4
-    invoke-static {v1, v2}, Landroid/os/Binder;->restoreCallingIdentity(J)V
-
-    .line 2174
-    nop
-
-    .line 2175
-    return-void
-
-    .line 2173
-    :catchall_c9
-    move-exception v0
-
-    invoke-static {v1, v2}, Landroid/os/Binder;->restoreCallingIdentity(J)V
-
-    throw v0
-.end method
-
-.method private pullSystemElapsedRealtime(IJJLjava/util/List;)V
-    .registers 14
-    .annotation system Ldalvik/annotation/Signature;
-        value = {
-            "(IJJ",
-            "Ljava/util/List<",
-            "Landroid/os/StatsLogEventWrapper;",
-            ">;)V"
-        }
-    .end annotation
-
-    .line 1158
-    new-instance v6, Landroid/os/StatsLogEventWrapper;
-
-    move-object v0, v6
-
-    move v1, p1
-
-    move-wide v2, p2
-
-    move-wide v4, p4
-
-    invoke-direct/range {v0 .. v5}, Landroid/os/StatsLogEventWrapper;-><init>(IJJ)V
-
-    .line 1159
-    invoke-static {}, Landroid/os/SystemClock;->elapsedRealtime()J
-
-    move-result-wide p1
-
-    invoke-virtual {v6, p1, p2}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
-
-    .line 1160
-    invoke-interface {p6, v6}, Ljava/util/List;->add(Ljava/lang/Object;)Z
-
-    .line 1161
-    return-void
-.end method
-
-.method private pullSystemIonHeapSize(IJJLjava/util/List;)V
-    .registers 16
-    .annotation system Ldalvik/annotation/Signature;
-        value = {
-            "(IJJ",
-            "Ljava/util/List<",
-            "Landroid/os/StatsLogEventWrapper;",
-            ">;)V"
-        }
-    .end annotation
-
-    .line 1272
-    invoke-static {}, Lcom/android/server/am/MemoryStatUtil;->readSystemIonHeapSizeFromDebugfs()J
-
-    move-result-wide v0
-
-    .line 1273
-    new-instance v8, Landroid/os/StatsLogEventWrapper;
-
-    move-object v2, v8
-
-    move v3, p1
-
-    move-wide v4, p2
-
-    move-wide v6, p4
-
-    invoke-direct/range {v2 .. v7}, Landroid/os/StatsLogEventWrapper;-><init>(IJJ)V
-
-    .line 1274
-    invoke-virtual {v8, v0, v1}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
-
-    .line 1275
-    invoke-interface {p6, v8}, Ljava/util/List;->add(Ljava/lang/Object;)Z
-
-    .line 1276
-    return-void
-.end method
-
-.method private pullSystemUpTime(IJJLjava/util/List;)V
-    .registers 14
-    .annotation system Ldalvik/annotation/Signature;
-        value = {
-            "(IJJ",
-            "Ljava/util/List<",
-            "Landroid/os/StatsLogEventWrapper;",
-            ">;)V"
-        }
-    .end annotation
-
-    .line 1165
-    new-instance v6, Landroid/os/StatsLogEventWrapper;
-
-    move-object v0, v6
-
-    move v1, p1
-
-    move-wide v2, p2
-
-    move-wide v4, p4
-
-    invoke-direct/range {v0 .. v5}, Landroid/os/StatsLogEventWrapper;-><init>(IJJ)V
-
-    .line 1166
-    invoke-static {}, Landroid/os/SystemClock;->uptimeMillis()J
-
-    move-result-wide p1
-
-    invoke-virtual {v6, p1, p2}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
-
-    .line 1167
-    invoke-interface {p6, v6}, Ljava/util/List;->add(Ljava/lang/Object;)Z
-
-    .line 1168
-    return-void
-.end method
-
-.method private pullTemperature(IJJLjava/util/List;)V
-    .registers 18
-    .annotation system Ldalvik/annotation/Signature;
-        value = {
-            "(IJJ",
-            "Ljava/util/List<",
-            "Landroid/os/StatsLogEventWrapper;",
-            ">;)V"
-        }
-    .end annotation
-
-    .line 1922
-    invoke-static {}, Landroid/os/Binder;->clearCallingIdentity()J
-
-    move-result-wide v1
-
-    .line 1924
-    :try_start_4
-    sget-object v0, Lcom/android/server/stats/StatsCompanionService;->sThermalService:Landroid/os/IThermalService;
-
-    invoke-interface {v0}, Landroid/os/IThermalService;->getCurrentTemperatures()Ljava/util/List;
-
-    move-result-object v0
-
-    .line 1925
-    invoke-interface {v0}, Ljava/util/List;->iterator()Ljava/util/Iterator;
-
-    move-result-object v0
-
-    :goto_e
-    invoke-interface {v0}, Ljava/util/Iterator;->hasNext()Z
-
-    move-result v3
-
-    if-eqz v3, :cond_53
-
-    invoke-interface {v0}, Ljava/util/Iterator;->next()Ljava/lang/Object;
-
-    move-result-object v3
-
-    check-cast v3, Landroid/os/Temperature;
-
-    .line 1926
+    .line 1352
+    .local v3, "entry":Lcom/android/internal/os/LooperStats$ExportedEntry;
     new-instance v10, Landroid/os/StatsLogEventWrapper;
 
     move-object v4, v10
@@ -8298,90 +6806,117 @@
 
     invoke-direct/range {v4 .. v9}, Landroid/os/StatsLogEventWrapper;-><init>(IJJ)V
 
-    .line 1928
-    invoke-virtual {v3}, Landroid/os/Temperature;->getType()I
+    .line 1353
+    .local v4, "e":Landroid/os/StatsLogEventWrapper;
+    iget v5, v3, Lcom/android/internal/os/LooperStats$ExportedEntry;->workSourceUid:I
 
-    move-result v4
+    invoke-virtual {v4, v5}, Landroid/os/StatsLogEventWrapper;->writeInt(I)V
 
-    invoke-virtual {v10, v4}, Landroid/os/StatsLogEventWrapper;->writeInt(I)V
+    .line 1354
+    iget-object v5, v3, Lcom/android/internal/os/LooperStats$ExportedEntry;->handlerClassName:Ljava/lang/String;
 
-    .line 1929
-    invoke-virtual {v3}, Landroid/os/Temperature;->getName()Ljava/lang/String;
+    invoke-virtual {v4, v5}, Landroid/os/StatsLogEventWrapper;->writeString(Ljava/lang/String;)V
 
-    move-result-object v4
+    .line 1355
+    iget-object v5, v3, Lcom/android/internal/os/LooperStats$ExportedEntry;->threadName:Ljava/lang/String;
 
-    invoke-virtual {v10, v4}, Landroid/os/StatsLogEventWrapper;->writeString(Ljava/lang/String;)V
+    invoke-virtual {v4, v5}, Landroid/os/StatsLogEventWrapper;->writeString(Ljava/lang/String;)V
 
-    .line 1930
-    invoke-virtual {v3}, Landroid/os/Temperature;->getValue()F
+    .line 1356
+    iget-object v5, v3, Lcom/android/internal/os/LooperStats$ExportedEntry;->messageName:Ljava/lang/String;
 
-    move-result v4
+    invoke-virtual {v4, v5}, Landroid/os/StatsLogEventWrapper;->writeString(Ljava/lang/String;)V
 
-    const/high16 v5, 0x41200000  # 10.0f
+    .line 1357
+    iget-wide v5, v3, Lcom/android/internal/os/LooperStats$ExportedEntry;->messageCount:J
 
-    mul-float/2addr v4, v5
+    invoke-virtual {v4, v5, v6}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
 
-    float-to-int v4, v4
+    .line 1358
+    iget-wide v5, v3, Lcom/android/internal/os/LooperStats$ExportedEntry;->exceptionCount:J
 
-    invoke-virtual {v10, v4}, Landroid/os/StatsLogEventWrapper;->writeInt(I)V
+    invoke-virtual {v4, v5, v6}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
 
-    .line 1931
-    invoke-virtual {v3}, Landroid/os/Temperature;->getStatus()I
+    .line 1359
+    iget-wide v5, v3, Lcom/android/internal/os/LooperStats$ExportedEntry;->recordedMessageCount:J
 
-    move-result v3
+    invoke-virtual {v4, v5, v6}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
 
-    invoke-virtual {v10, v3}, Landroid/os/StatsLogEventWrapper;->writeInt(I)V
+    .line 1360
+    iget-wide v5, v3, Lcom/android/internal/os/LooperStats$ExportedEntry;->totalLatencyMicros:J
 
-    .line 1932
-    move-object/from16 v3, p6
+    invoke-virtual {v4, v5, v6}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
 
-    invoke-interface {v3, v10}, Ljava/util/List;->add(Ljava/lang/Object;)Z
-    :try_end_48
-    .catch Landroid/os/RemoteException; {:try_start_4 .. :try_end_48} :catch_4b
-    .catchall {:try_start_4 .. :try_end_48} :catchall_49
+    .line 1361
+    iget-wide v5, v3, Lcom/android/internal/os/LooperStats$ExportedEntry;->cpuUsageMicros:J
 
-    .line 1933
-    goto :goto_e
+    invoke-virtual {v4, v5, v6}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
 
-    .line 1938
-    :catchall_49
-    move-exception v0
+    .line 1362
+    iget-boolean v5, v3, Lcom/android/internal/os/LooperStats$ExportedEntry;->isInteractive:Z
 
-    goto :goto_58
+    invoke-virtual {v4, v5}, Landroid/os/StatsLogEventWrapper;->writeBoolean(Z)V
 
-    .line 1934
-    :catch_4b
-    move-exception v0
+    .line 1363
+    iget-wide v5, v3, Lcom/android/internal/os/LooperStats$ExportedEntry;->maxCpuUsageMicros:J
 
-    .line 1936
-    :try_start_4c
-    const-string v0, "StatsCompanionService"
+    invoke-virtual {v4, v5, v6}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
 
-    const-string v3, "Disconnected from thermal service. Cannot pull temperatures."
+    .line 1364
+    iget-wide v5, v3, Lcom/android/internal/os/LooperStats$ExportedEntry;->maxLatencyMicros:J
 
-    invoke-static {v0, v3}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
-    :try_end_53
-    .catchall {:try_start_4c .. :try_end_53} :catchall_49
+    invoke-virtual {v4, v5, v6}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
 
-    .line 1938
-    :cond_53
-    invoke-static {v1, v2}, Landroid/os/Binder;->restoreCallingIdentity(J)V
+    .line 1365
+    iget-wide v5, v3, Lcom/android/internal/os/LooperStats$ExportedEntry;->recordedDelayMessageCount:J
 
-    .line 1939
-    nop
+    invoke-virtual {v4, v5, v6}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
 
-    .line 1940
+    .line 1366
+    iget-wide v5, v3, Lcom/android/internal/os/LooperStats$ExportedEntry;->delayMillis:J
+
+    invoke-virtual {v4, v5, v6}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
+
+    .line 1367
+    iget-wide v5, v3, Lcom/android/internal/os/LooperStats$ExportedEntry;->maxDelayMillis:J
+
+    invoke-virtual {v4, v5, v6}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
+
+    .line 1368
+    move-object/from16 v5, p6
+
+    invoke-interface {v5, v4}, Ljava/util/List;->add(Ljava/lang/Object;)Z
+
+    .line 1369
+    .end local v3  # "entry":Lcom/android/internal/os/LooperStats$ExportedEntry;
+    .end local v4  # "e":Landroid/os/StatsLogEventWrapper;
+    goto :goto_15
+
+    .line 1370
+    :cond_7b
+    move-object/from16 v5, p6
+
     return-void
 
-    .line 1938
-    :goto_58
-    invoke-static {v1, v2}, Landroid/os/Binder;->restoreCallingIdentity(J)V
+    .line 1346
+    .end local v1  # "entries":Ljava/util/List;, "Ljava/util/List<Lcom/android/internal/os/LooperStats$ExportedEntry;>;"
+    :cond_7e
+    move-object/from16 v5, p6
 
-    throw v0
+    new-instance v1, Ljava/lang/IllegalStateException;
+
+    const-string/jumbo v2, "looperStats null"
+
+    invoke-direct {v1, v2}, Ljava/lang/IllegalStateException;-><init>(Ljava/lang/String;)V
+
+    throw v1
 .end method
 
-.method private pullTimeZoneDataInfo(IJJLjava/util/List;)V
-    .registers 15
+.method private pullMobileBytesTransfer(IJJLjava/util/List;)V
+    .registers 14
+    .param p1, "tagId"  # I
+    .param p2, "elapsedNanos"  # J
+    .param p4, "wallClockNanos"  # J
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(IJJ",
@@ -8391,34 +6926,2712 @@
         }
     .end annotation
 
-    .line 2179
-    nop
+    .line 928
+    .local p6, "pulledData":Ljava/util/List;, "Ljava/util/List<Landroid/os/StatsLogEventWrapper;>;"
+    const-string v0, "StatsCompanionService"
 
-    .line 2181
-    :try_start_1
-    invoke-static {}, Landroid/icu/util/TimeZone;->getTZDataVersion()Ljava/lang/String;
+    invoke-static {}, Landroid/os/Binder;->clearCallingIdentity()J
 
-    move-result-object v0
-    :try_end_5
-    .catch Ljava/lang/Exception; {:try_start_1 .. :try_end_5} :catch_6
+    move-result-wide v1
 
-    .line 2184
-    goto :goto_10
+    .line 930
+    .local v1, "token":J
+    :try_start_6
+    const-class v3, Landroid/os/BatteryStatsInternal;
 
-    .line 2182
-    :catch_6
+    invoke-static {v3}, Lcom/android/server/LocalServices;->getService(Ljava/lang/Class;)Ljava/lang/Object;
+
+    move-result-object v3
+
+    check-cast v3, Landroid/os/BatteryStatsInternal;
+
+    .line 931
+    .local v3, "bs":Landroid/os/BatteryStatsInternal;
+    invoke-virtual {v3}, Landroid/os/BatteryStatsInternal;->getMobileIfaces()[Ljava/lang/String;
+
+    move-result-object v4
+
+    .line 932
+    .local v4, "ifaces":[Ljava/lang/String;
+    array-length v5, v4
+    :try_end_13
+    .catch Landroid/os/RemoteException; {:try_start_6 .. :try_end_13} :catch_37
+    .catchall {:try_start_6 .. :try_end_13} :catchall_35
+
+    if-nez v5, :cond_19
+
+    .line 945
+    invoke-static {v1, v2}, Landroid/os/Binder;->restoreCallingIdentity(J)V
+
+    .line 933
+    return-void
+
+    .line 935
+    :cond_19
+    :try_start_19
+    iget-object v5, p0, Lcom/android/server/stats/StatsCompanionService;->mNetworkStatsService:Landroid/net/INetworkStatsService;
+
+    if-nez v5, :cond_26
+
+    .line 936
+    const-string v5, "NetworkStats Service is not available!"
+
+    invoke-static {v0, v5}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
+    :try_end_22
+    .catch Landroid/os/RemoteException; {:try_start_19 .. :try_end_22} :catch_37
+    .catchall {:try_start_19 .. :try_end_22} :catchall_35
+
+    .line 945
+    invoke-static {v1, v2}, Landroid/os/Binder;->restoreCallingIdentity(J)V
+
+    .line 937
+    return-void
+
+    .line 940
+    :cond_26
+    :try_start_26
+    iget-object v5, p0, Lcom/android/server/stats/StatsCompanionService;->mNetworkStatsService:Landroid/net/INetworkStatsService;
+
+    invoke-interface {v5, v4}, Landroid/net/INetworkStatsService;->getDetailedUidStats([Ljava/lang/String;)Landroid/net/NetworkStats;
+
+    move-result-object v5
+
+    invoke-virtual {v5}, Landroid/net/NetworkStats;->groupedByUid()Landroid/net/NetworkStats;
+
+    move-result-object v5
+
+    .line 941
+    .local v5, "stats":Landroid/net/NetworkStats;
+    const/4 v6, 0x0
+
+    invoke-direct {p0, p1, p6, v5, v6}, Lcom/android/server/stats/StatsCompanionService;->addNetworkStats(ILjava/util/List;Landroid/net/NetworkStats;Z)V
+    :try_end_34
+    .catch Landroid/os/RemoteException; {:try_start_26 .. :try_end_34} :catch_37
+    .catchall {:try_start_26 .. :try_end_34} :catchall_35
+
+    .line 945
+    .end local v3  # "bs":Landroid/os/BatteryStatsInternal;
+    .end local v4  # "ifaces":[Ljava/lang/String;
+    .end local v5  # "stats":Landroid/net/NetworkStats;
+    goto :goto_3e
+
+    :catchall_35
     move-exception v0
 
-    .line 2183
-    const-string v1, "StatsCompanionService"
+    goto :goto_43
 
-    const-string v2, "Getting tzdb version failed: "
+    .line 942
+    :catch_37
+    move-exception v3
 
-    invoke-static {v1, v2, v0}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    .line 943
+    .local v3, "e":Landroid/os/RemoteException;
+    :try_start_38
+    const-string v4, "Pulling netstats for mobile bytes has error"
 
+    invoke-static {v0, v4, v3}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    :try_end_3d
+    .catchall {:try_start_38 .. :try_end_3d} :catchall_35
+
+    .line 945
+    nop
+
+    .end local v3  # "e":Landroid/os/RemoteException;
+    :goto_3e
+    invoke-static {v1, v2}, Landroid/os/Binder;->restoreCallingIdentity(J)V
+
+    .line 946
+    nop
+
+    .line 947
+    return-void
+
+    .line 945
+    :goto_43
+    invoke-static {v1, v2}, Landroid/os/Binder;->restoreCallingIdentity(J)V
+
+    throw v0
+.end method
+
+.method private pullMobileBytesTransferByFgBg(IJJLjava/util/List;)V
+    .registers 14
+    .param p1, "tagId"  # I
+    .param p2, "elapsedNanos"  # J
+    .param p4, "wallClockNanos"  # J
+    .annotation system Ldalvik/annotation/Signature;
+        value = {
+            "(IJJ",
+            "Ljava/util/List<",
+            "Landroid/os/StatsLogEventWrapper;",
+            ">;)V"
+        }
+    .end annotation
+
+    .line 968
+    .local p6, "pulledData":Ljava/util/List;, "Ljava/util/List<Landroid/os/StatsLogEventWrapper;>;"
+    const-string v0, "StatsCompanionService"
+
+    invoke-static {}, Landroid/os/Binder;->clearCallingIdentity()J
+
+    move-result-wide v1
+
+    .line 970
+    .local v1, "token":J
+    :try_start_6
+    const-class v3, Landroid/os/BatteryStatsInternal;
+
+    invoke-static {v3}, Lcom/android/server/LocalServices;->getService(Ljava/lang/Class;)Ljava/lang/Object;
+
+    move-result-object v3
+
+    check-cast v3, Landroid/os/BatteryStatsInternal;
+
+    .line 971
+    .local v3, "bs":Landroid/os/BatteryStatsInternal;
+    invoke-virtual {v3}, Landroid/os/BatteryStatsInternal;->getMobileIfaces()[Ljava/lang/String;
+
+    move-result-object v4
+
+    .line 972
+    .local v4, "ifaces":[Ljava/lang/String;
+    array-length v5, v4
+    :try_end_13
+    .catch Landroid/os/RemoteException; {:try_start_6 .. :try_end_13} :catch_37
+    .catchall {:try_start_6 .. :try_end_13} :catchall_35
+
+    if-nez v5, :cond_19
+
+    .line 985
+    invoke-static {v1, v2}, Landroid/os/Binder;->restoreCallingIdentity(J)V
+
+    .line 973
+    return-void
+
+    .line 975
+    :cond_19
+    :try_start_19
+    iget-object v5, p0, Lcom/android/server/stats/StatsCompanionService;->mNetworkStatsService:Landroid/net/INetworkStatsService;
+
+    if-nez v5, :cond_26
+
+    .line 976
+    const-string v5, "NetworkStats Service is not available!"
+
+    invoke-static {v0, v5}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
+    :try_end_22
+    .catch Landroid/os/RemoteException; {:try_start_19 .. :try_end_22} :catch_37
+    .catchall {:try_start_19 .. :try_end_22} :catchall_35
+
+    .line 985
+    invoke-static {v1, v2}, Landroid/os/Binder;->restoreCallingIdentity(J)V
+
+    .line 977
+    return-void
+
+    .line 979
+    :cond_26
+    :try_start_26
+    iget-object v5, p0, Lcom/android/server/stats/StatsCompanionService;->mNetworkStatsService:Landroid/net/INetworkStatsService;
+
+    .line 980
+    invoke-interface {v5, v4}, Landroid/net/INetworkStatsService;->getDetailedUidStats([Ljava/lang/String;)Landroid/net/NetworkStats;
+
+    move-result-object v5
+
+    .line 979
+    invoke-direct {p0, v5}, Lcom/android/server/stats/StatsCompanionService;->rollupNetworkStatsByFGBG(Landroid/net/NetworkStats;)Landroid/net/NetworkStats;
+
+    move-result-object v5
+
+    .line 981
+    .local v5, "stats":Landroid/net/NetworkStats;
+    const/4 v6, 0x1
+
+    invoke-direct {p0, p1, p6, v5, v6}, Lcom/android/server/stats/StatsCompanionService;->addNetworkStats(ILjava/util/List;Landroid/net/NetworkStats;Z)V
+    :try_end_34
+    .catch Landroid/os/RemoteException; {:try_start_26 .. :try_end_34} :catch_37
+    .catchall {:try_start_26 .. :try_end_34} :catchall_35
+
+    .line 985
+    .end local v3  # "bs":Landroid/os/BatteryStatsInternal;
+    .end local v4  # "ifaces":[Ljava/lang/String;
+    .end local v5  # "stats":Landroid/net/NetworkStats;
+    goto :goto_3e
+
+    :catchall_35
+    move-exception v0
+
+    goto :goto_43
+
+    .line 982
+    :catch_37
+    move-exception v3
+
+    .line 983
+    .local v3, "e":Landroid/os/RemoteException;
+    :try_start_38
+    const-string v4, "Pulling netstats for mobile bytes w/ fg/bg has error"
+
+    invoke-static {v0, v4, v3}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    :try_end_3d
+    .catchall {:try_start_38 .. :try_end_3d} :catchall_35
+
+    .line 985
+    nop
+
+    .end local v3  # "e":Landroid/os/RemoteException;
+    :goto_3e
+    invoke-static {v1, v2}, Landroid/os/Binder;->restoreCallingIdentity(J)V
+
+    .line 986
+    nop
+
+    .line 987
+    return-void
+
+    .line 985
+    :goto_43
+    invoke-static {v1, v2}, Landroid/os/Binder;->restoreCallingIdentity(J)V
+
+    throw v0
+.end method
+
+.method private pullModemActivityInfo(IJJLjava/util/List;)V
+    .registers 19
+    .param p1, "tagId"  # I
+    .param p2, "elapsedNanos"  # J
+    .param p4, "wallClockNanos"  # J
+    .annotation system Ldalvik/annotation/Signature;
+        value = {
+            "(IJJ",
+            "Ljava/util/List<",
+            "Landroid/os/StatsLogEventWrapper;",
+            ">;)V"
+        }
+    .end annotation
+
+    .line 1101
+    .local p6, "pulledData":Ljava/util/List;, "Ljava/util/List<Landroid/os/StatsLogEventWrapper;>;"
+    move-object v1, p0
+
+    invoke-static {}, Landroid/os/Binder;->clearCallingIdentity()J
+
+    move-result-wide v2
+
+    .line 1102
+    .local v2, "token":J
+    monitor-enter p0
+
+    .line 1103
+    :try_start_6
+    iget-object v0, v1, Lcom/android/server/stats/StatsCompanionService;->mTelephony:Landroid/telephony/TelephonyManager;
+
+    if-nez v0, :cond_12
+
+    .line 1104
+    iget-object v0, v1, Lcom/android/server/stats/StatsCompanionService;->mContext:Landroid/content/Context;
+
+    invoke-static {v0}, Landroid/telephony/TelephonyManager;->from(Landroid/content/Context;)Landroid/telephony/TelephonyManager;
+
+    move-result-object v0
+
+    iput-object v0, v1, Lcom/android/server/stats/StatsCompanionService;->mTelephony:Landroid/telephony/TelephonyManager;
+
+    .line 1106
+    :cond_12
+    monitor-exit p0
+    :try_end_13
+    .catchall {:try_start_6 .. :try_end_13} :catchall_9b
+
+    .line 1107
+    iget-object v0, v1, Lcom/android/server/stats/StatsCompanionService;->mTelephony:Landroid/telephony/TelephonyManager;
+
+    if-eqz v0, :cond_98
+
+    .line 1108
+    new-instance v0, Landroid/os/SynchronousResultReceiver;
+
+    const-string/jumbo v4, "telephony"
+
+    invoke-direct {v0, v4}, Landroid/os/SynchronousResultReceiver;-><init>(Ljava/lang/String;)V
+
+    .line 1109
+    .local v0, "modemReceiver":Landroid/os/SynchronousResultReceiver;
+    iget-object v4, v1, Lcom/android/server/stats/StatsCompanionService;->mTelephony:Landroid/telephony/TelephonyManager;
+
+    invoke-virtual {v4, v0}, Landroid/telephony/TelephonyManager;->requestModemActivityInfo(Landroid/os/ResultReceiver;)V
+
+    .line 1110
+    invoke-static {v0}, Lcom/android/server/stats/StatsCompanionService;->awaitControllerInfo(Landroid/os/SynchronousResultReceiver;)Landroid/os/Parcelable;
+
+    move-result-object v4
+
+    check-cast v4, Landroid/telephony/ModemActivityInfo;
+
+    .line 1111
+    .local v4, "modemInfo":Landroid/telephony/ModemActivityInfo;
+    new-instance v11, Landroid/os/StatsLogEventWrapper;
+
+    move-object v5, v11
+
+    move v6, p1
+
+    move-wide v7, p2
+
+    move-wide/from16 v9, p4
+
+    invoke-direct/range {v5 .. v10}, Landroid/os/StatsLogEventWrapper;-><init>(IJJ)V
+
+    .line 1112
+    .local v5, "e":Landroid/os/StatsLogEventWrapper;
+    invoke-virtual {v4}, Landroid/telephony/ModemActivityInfo;->getTimestamp()J
+
+    move-result-wide v6
+
+    invoke-virtual {v5, v6, v7}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
+
+    .line 1113
+    invoke-virtual {v4}, Landroid/telephony/ModemActivityInfo;->getSleepTimeMillis()I
+
+    move-result v6
+
+    int-to-long v6, v6
+
+    invoke-virtual {v5, v6, v7}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
+
+    .line 1114
+    invoke-virtual {v4}, Landroid/telephony/ModemActivityInfo;->getIdleTimeMillis()I
+
+    move-result v6
+
+    int-to-long v6, v6
+
+    invoke-virtual {v5, v6, v7}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
+
+    .line 1115
+    invoke-virtual {v4}, Landroid/telephony/ModemActivityInfo;->getTxTimeMillis()[I
+
+    move-result-object v6
+
+    const/4 v7, 0x0
+
+    aget v6, v6, v7
+
+    int-to-long v6, v6
+
+    invoke-virtual {v5, v6, v7}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
+
+    .line 1116
+    invoke-virtual {v4}, Landroid/telephony/ModemActivityInfo;->getTxTimeMillis()[I
+
+    move-result-object v6
+
+    const/4 v7, 0x1
+
+    aget v6, v6, v7
+
+    int-to-long v6, v6
+
+    invoke-virtual {v5, v6, v7}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
+
+    .line 1117
+    invoke-virtual {v4}, Landroid/telephony/ModemActivityInfo;->getTxTimeMillis()[I
+
+    move-result-object v6
+
+    const/4 v7, 0x2
+
+    aget v6, v6, v7
+
+    int-to-long v6, v6
+
+    invoke-virtual {v5, v6, v7}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
+
+    .line 1118
+    invoke-virtual {v4}, Landroid/telephony/ModemActivityInfo;->getTxTimeMillis()[I
+
+    move-result-object v6
+
+    const/4 v7, 0x3
+
+    aget v6, v6, v7
+
+    int-to-long v6, v6
+
+    invoke-virtual {v5, v6, v7}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
+
+    .line 1119
+    invoke-virtual {v4}, Landroid/telephony/ModemActivityInfo;->getTxTimeMillis()[I
+
+    move-result-object v6
+
+    const/4 v7, 0x4
+
+    aget v6, v6, v7
+
+    int-to-long v6, v6
+
+    invoke-virtual {v5, v6, v7}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
+
+    .line 1120
+    invoke-virtual {v4}, Landroid/telephony/ModemActivityInfo;->getRxTimeMillis()I
+
+    move-result v6
+
+    int-to-long v6, v6
+
+    invoke-virtual {v5, v6, v7}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
+
+    .line 1121
+    invoke-virtual {v4}, Landroid/telephony/ModemActivityInfo;->getEnergyUsed()I
+
+    move-result v6
+
+    int-to-long v6, v6
+
+    invoke-virtual {v5, v6, v7}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
+
+    .line 1122
+    move-object/from16 v6, p6
+
+    invoke-interface {v6, v5}, Ljava/util/List;->add(Ljava/lang/Object;)Z
+
+    goto :goto_9a
+
+    .line 1107
+    .end local v0  # "modemReceiver":Landroid/os/SynchronousResultReceiver;
+    .end local v4  # "modemInfo":Landroid/telephony/ModemActivityInfo;
+    .end local v5  # "e":Landroid/os/StatsLogEventWrapper;
+    :cond_98
+    move-object/from16 v6, p6
+
+    .line 1124
+    :goto_9a
+    return-void
+
+    .line 1106
+    :catchall_9b
+    move-exception v0
+
+    move-object/from16 v6, p6
+
+    :goto_9e
+    :try_start_9e
+    monitor-exit p0
+    :try_end_9f
+    .catchall {:try_start_9e .. :try_end_9f} :catchall_a0
+
+    throw v0
+
+    :catchall_a0
+    move-exception v0
+
+    goto :goto_9e
+.end method
+
+.method private pullNativeProcessMemoryState(IJJLjava/util/List;)V
+    .registers 21
+    .param p1, "tagId"  # I
+    .param p2, "elapsedNanos"  # J
+    .param p4, "wallClockNanos"  # J
+    .annotation system Ldalvik/annotation/Signature;
+        value = {
+            "(IJJ",
+            "Ljava/util/List<",
+            "Landroid/os/StatsLogEventWrapper;",
+            ">;)V"
+        }
+    .end annotation
+
+    .line 1199
+    .local p6, "pulledData":Ljava/util/List;, "Ljava/util/List<Landroid/os/StatsLogEventWrapper;>;"
+    sget-object v0, Lcom/android/server/stats/StatsCompanionService;->MEMORY_INTERESTING_NATIVE_PROCESSES:[Ljava/lang/String;
+
+    invoke-static {v0}, Ljava/util/Arrays;->asList([Ljava/lang/Object;)Ljava/util/List;
+
+    move-result-object v0
+
+    .line 1200
+    .local v0, "processNames":Ljava/util/List;, "Ljava/util/List<Ljava/lang/String;>;"
+    sget-object v1, Lcom/android/server/stats/StatsCompanionService;->MEMORY_INTERESTING_NATIVE_PROCESSES:[Ljava/lang/String;
+
+    invoke-static {v1}, Landroid/os/Process;->getPidsForCommands([Ljava/lang/String;)[I
+
+    move-result-object v1
+
+    .line 1201
+    .local v1, "pids":[I
+    const/4 v2, 0x0
+
+    .local v2, "i":I
+    :goto_d
+    array-length v3, v1
+
+    if-ge v2, v3, :cond_6a
+
+    .line 1202
+    aget v3, v1, v2
+
+    .line 1203
+    .local v3, "pid":I
+    invoke-static {v3}, Lcom/android/server/am/MemoryStatUtil;->readMemoryStatFromProcfs(I)Lcom/android/server/am/MemoryStatUtil$MemoryStat;
+
+    move-result-object v4
+
+    .line 1204
+    .local v4, "memoryStat":Lcom/android/server/am/MemoryStatUtil$MemoryStat;
+    if-nez v4, :cond_1b
+
+    .line 1205
+    move-object/from16 v8, p6
+
+    goto :goto_67
+
+    .line 1207
+    :cond_1b
+    invoke-static {v3}, Landroid/os/Process;->getUidForPid(I)I
+
+    move-result v5
+
+    .line 1208
+    .local v5, "uid":I
+    invoke-static {v3}, Lcom/android/server/am/MemoryStatUtil;->readCmdlineFromProcfs(I)Ljava/lang/String;
+
+    move-result-object v6
+
+    .line 1212
+    .local v6, "processName":Ljava/lang/String;
+    invoke-interface {v0, v6}, Ljava/util/List;->contains(Ljava/lang/Object;)Z
+
+    move-result v7
+
+    if-nez v7, :cond_2c
+
+    .line 1213
+    move-object/from16 v8, p6
+
+    goto :goto_67
+
+    .line 1215
+    :cond_2c
+    new-instance v7, Landroid/os/StatsLogEventWrapper;
+
+    move-object v8, v7
+
+    move v9, p1
+
+    move-wide/from16 v10, p2
+
+    move-wide/from16 v12, p4
+
+    invoke-direct/range {v8 .. v13}, Landroid/os/StatsLogEventWrapper;-><init>(IJJ)V
+
+    .line 1216
+    .local v7, "e":Landroid/os/StatsLogEventWrapper;
+    invoke-virtual {v7, v5}, Landroid/os/StatsLogEventWrapper;->writeInt(I)V
+
+    .line 1217
+    invoke-virtual {v7, v6}, Landroid/os/StatsLogEventWrapper;->writeString(Ljava/lang/String;)V
+
+    .line 1218
+    iget-wide v8, v4, Lcom/android/server/am/MemoryStatUtil$MemoryStat;->pgfault:J
+
+    invoke-virtual {v7, v8, v9}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
+
+    .line 1219
+    iget-wide v8, v4, Lcom/android/server/am/MemoryStatUtil$MemoryStat;->pgmajfault:J
+
+    invoke-virtual {v7, v8, v9}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
+
+    .line 1220
+    iget-wide v8, v4, Lcom/android/server/am/MemoryStatUtil$MemoryStat;->rssInBytes:J
+
+    invoke-virtual {v7, v8, v9}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
+
+    .line 1221
+    const-wide/16 v8, 0x0
+
+    invoke-virtual {v7, v8, v9}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
+
+    .line 1222
+    iget-wide v8, v4, Lcom/android/server/am/MemoryStatUtil$MemoryStat;->startTimeNanos:J
+
+    invoke-virtual {v7, v8, v9}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
+
+    .line 1223
+    iget-wide v8, v4, Lcom/android/server/am/MemoryStatUtil$MemoryStat;->swapInBytes:J
+
+    invoke-virtual {v7, v8, v9}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
+
+    .line 1224
+    invoke-static {v4}, Lcom/android/server/stats/StatsCompanionService;->anonAndSwapInKilobytes(Lcom/android/server/am/MemoryStatUtil$MemoryStat;)I
+
+    move-result v8
+
+    invoke-virtual {v7, v8}, Landroid/os/StatsLogEventWrapper;->writeInt(I)V
+
+    .line 1225
+    move-object/from16 v8, p6
+
+    invoke-interface {v8, v7}, Ljava/util/List;->add(Ljava/lang/Object;)Z
+
+    .line 1201
+    .end local v3  # "pid":I
+    .end local v4  # "memoryStat":Lcom/android/server/am/MemoryStatUtil$MemoryStat;
+    .end local v5  # "uid":I
+    .end local v6  # "processName":Ljava/lang/String;
+    .end local v7  # "e":Landroid/os/StatsLogEventWrapper;
+    :goto_67
+    add-int/lit8 v2, v2, 0x1
+
+    goto :goto_d
+
+    :cond_6a
+    move-object/from16 v8, p6
+
+    .line 1227
+    .end local v2  # "i":I
+    return-void
+.end method
+
+.method private pullNumBiometricsEnrolled(IIJJLjava/util/List;)V
+    .registers 29
+    .param p1, "modality"  # I
+    .param p2, "tagId"  # I
+    .param p3, "elapsedNanos"  # J
+    .param p5, "wallClockNanos"  # J
+    .annotation system Ldalvik/annotation/Signature;
+        value = {
+            "(IIJJ",
+            "Ljava/util/List<",
+            "Landroid/os/StatsLogEventWrapper;",
+            ">;)V"
+        }
+    .end annotation
+
+    .line 1551
+    .local p7, "pulledData":Ljava/util/List;, "Ljava/util/List<Landroid/os/StatsLogEventWrapper;>;"
+    move-object/from16 v0, p0
+
+    move/from16 v1, p1
+
+    iget-object v2, v0, Lcom/android/server/stats/StatsCompanionService;->mContext:Landroid/content/Context;
+
+    invoke-virtual {v2}, Landroid/content/Context;->getPackageManager()Landroid/content/pm/PackageManager;
+
+    move-result-object v2
+
+    .line 1552
+    .local v2, "pm":Landroid/content/pm/PackageManager;
+    const/4 v3, 0x0
+
+    .line 1553
+    .local v3, "fingerprintManager":Landroid/hardware/fingerprint/FingerprintManager;
+    const/4 v4, 0x0
+
+    .line 1555
+    .local v4, "faceManager":Landroid/hardware/face/FaceManager;
+    const-string v5, "android.hardware.fingerprint"
+
+    invoke-virtual {v2, v5}, Landroid/content/pm/PackageManager;->hasSystemFeature(Ljava/lang/String;)Z
+
+    move-result v5
+
+    if-eqz v5, :cond_1f
+
+    .line 1556
+    iget-object v5, v0, Lcom/android/server/stats/StatsCompanionService;->mContext:Landroid/content/Context;
+
+    const-class v6, Landroid/hardware/fingerprint/FingerprintManager;
+
+    invoke-virtual {v5, v6}, Landroid/content/Context;->getSystemService(Ljava/lang/Class;)Ljava/lang/Object;
+
+    move-result-object v5
+
+    move-object v3, v5
+
+    check-cast v3, Landroid/hardware/fingerprint/FingerprintManager;
+
+    .line 1559
+    :cond_1f
+    const-string v5, "android.hardware.biometrics.face"
+
+    invoke-virtual {v2, v5}, Landroid/content/pm/PackageManager;->hasSystemFeature(Ljava/lang/String;)Z
+
+    move-result v5
+
+    if-eqz v5, :cond_32
+
+    .line 1560
+    iget-object v5, v0, Lcom/android/server/stats/StatsCompanionService;->mContext:Landroid/content/Context;
+
+    const-class v6, Landroid/hardware/face/FaceManager;
+
+    invoke-virtual {v5, v6}, Landroid/content/Context;->getSystemService(Ljava/lang/Class;)Ljava/lang/Object;
+
+    move-result-object v5
+
+    move-object v4, v5
+
+    check-cast v4, Landroid/hardware/face/FaceManager;
+
+    .line 1563
+    :cond_32
+    const/4 v5, 0x1
+
+    if-ne v1, v5, :cond_38
+
+    if-nez v3, :cond_38
+
+    .line 1564
+    return-void
+
+    .line 1566
+    :cond_38
+    const/4 v6, 0x4
+
+    if-ne v1, v6, :cond_3e
+
+    if-nez v4, :cond_3e
+
+    .line 1567
+    return-void
+
+    .line 1569
+    :cond_3e
+    iget-object v7, v0, Lcom/android/server/stats/StatsCompanionService;->mContext:Landroid/content/Context;
+
+    const-class v8, Landroid/os/UserManager;
+
+    invoke-virtual {v7, v8}, Landroid/content/Context;->getSystemService(Ljava/lang/Class;)Ljava/lang/Object;
+
+    move-result-object v7
+
+    check-cast v7, Landroid/os/UserManager;
+
+    .line 1570
+    .local v7, "userManager":Landroid/os/UserManager;
+    if-nez v7, :cond_4b
+
+    .line 1571
+    return-void
+
+    .line 1574
+    :cond_4b
+    invoke-static {}, Landroid/os/Binder;->clearCallingIdentity()J
+
+    move-result-wide v8
+
+    .line 1575
+    .local v8, "token":J
+    invoke-virtual {v7}, Landroid/os/UserManager;->getUsers()Ljava/util/List;
+
+    move-result-object v10
+
+    invoke-interface {v10}, Ljava/util/List;->iterator()Ljava/util/Iterator;
+
+    move-result-object v10
+
+    :goto_57
+    invoke-interface {v10}, Ljava/util/Iterator;->hasNext()Z
+
+    move-result v11
+
+    if-eqz v11, :cond_9d
+
+    invoke-interface {v10}, Ljava/util/Iterator;->next()Ljava/lang/Object;
+
+    move-result-object v11
+
+    check-cast v11, Landroid/content/pm/UserInfo;
+
+    .line 1576
+    .local v11, "user":Landroid/content/pm/UserInfo;
+    invoke-virtual {v11}, Landroid/content/pm/UserInfo;->getUserHandle()Landroid/os/UserHandle;
+
+    move-result-object v12
+
+    invoke-virtual {v12}, Landroid/os/UserHandle;->getIdentifier()I
+
+    move-result v12
+
+    .line 1577
+    .local v12, "userId":I
+    const/4 v13, 0x0
+
+    .line 1578
+    .local v13, "numEnrolled":I
+    if-ne v1, v5, :cond_77
+
+    .line 1579
+    invoke-virtual {v3, v12}, Landroid/hardware/fingerprint/FingerprintManager;->getEnrolledFingerprints(I)Ljava/util/List;
+
+    move-result-object v14
+
+    invoke-interface {v14}, Ljava/util/List;->size()I
+
+    move-result v13
+
+    goto :goto_81
+
+    .line 1580
+    :cond_77
+    if-ne v1, v6, :cond_9a
+
+    .line 1581
+    invoke-virtual {v4, v12}, Landroid/hardware/face/FaceManager;->getEnrolledFaces(I)Ljava/util/List;
+
+    move-result-object v14
+
+    invoke-interface {v14}, Ljava/util/List;->size()I
+
+    move-result v13
+
+    .line 1585
+    :goto_81
+    new-instance v20, Landroid/os/StatsLogEventWrapper;
+
+    move-object/from16 v14, v20
+
+    move/from16 v15, p2
+
+    move-wide/from16 v16, p3
+
+    move-wide/from16 v18, p5
+
+    invoke-direct/range {v14 .. v19}, Landroid/os/StatsLogEventWrapper;-><init>(IJJ)V
+
+    .line 1586
+    .local v14, "e":Landroid/os/StatsLogEventWrapper;
+    invoke-virtual {v14, v12}, Landroid/os/StatsLogEventWrapper;->writeInt(I)V
+
+    .line 1587
+    invoke-virtual {v14, v13}, Landroid/os/StatsLogEventWrapper;->writeInt(I)V
+
+    .line 1588
+    move-object/from16 v15, p7
+
+    invoke-interface {v15, v14}, Ljava/util/List;->add(Ljava/lang/Object;)Z
+
+    .line 1589
+    .end local v11  # "user":Landroid/content/pm/UserInfo;
+    .end local v12  # "userId":I
+    .end local v13  # "numEnrolled":I
+    .end local v14  # "e":Landroid/os/StatsLogEventWrapper;
+    goto :goto_57
+
+    .line 1583
+    .restart local v11  # "user":Landroid/content/pm/UserInfo;
+    .restart local v12  # "userId":I
+    .restart local v13  # "numEnrolled":I
+    :cond_9a
+    move-object/from16 v15, p7
+
+    return-void
+
+    .line 1590
+    .end local v11  # "user":Landroid/content/pm/UserInfo;
+    .end local v12  # "userId":I
+    .end local v13  # "numEnrolled":I
+    :cond_9d
+    move-object/from16 v15, p7
+
+    invoke-static {v8, v9}, Landroid/os/Binder;->restoreCallingIdentity(J)V
+
+    .line 1591
+    return-void
+.end method
+
+.method private pullPowerProfile(IJJLjava/util/List;)V
+    .registers 15
+    .param p1, "tagId"  # I
+    .param p2, "elapsedNanos"  # J
+    .param p4, "wallClockNanos"  # J
+    .annotation system Ldalvik/annotation/Signature;
+        value = {
+            "(IJJ",
+            "Ljava/util/List<",
+            "Landroid/os/StatsLogEventWrapper;",
+            ">;)V"
+        }
+    .end annotation
+
+    .line 1682
+    .local p6, "pulledData":Ljava/util/List;, "Ljava/util/List<Landroid/os/StatsLogEventWrapper;>;"
+    new-instance v0, Lcom/android/internal/os/PowerProfile;
+
+    iget-object v1, p0, Lcom/android/server/stats/StatsCompanionService;->mContext:Landroid/content/Context;
+
+    invoke-direct {v0, v1}, Lcom/android/internal/os/PowerProfile;-><init>(Landroid/content/Context;)V
+
+    .line 1683
+    .local v0, "powerProfile":Lcom/android/internal/os/PowerProfile;
+    invoke-static {v0}, Lcom/android/internal/util/Preconditions;->checkNotNull(Ljava/lang/Object;)Ljava/lang/Object;
+
+    .line 1685
+    new-instance v7, Landroid/os/StatsLogEventWrapper;
+
+    move-object v1, v7
+
+    move v2, p1
+
+    move-wide v3, p2
+
+    move-wide v5, p4
+
+    invoke-direct/range {v1 .. v6}, Landroid/os/StatsLogEventWrapper;-><init>(IJJ)V
+
+    .line 1687
+    .local v1, "e":Landroid/os/StatsLogEventWrapper;
+    new-instance v2, Landroid/util/proto/ProtoOutputStream;
+
+    invoke-direct {v2}, Landroid/util/proto/ProtoOutputStream;-><init>()V
+
+    .line 1688
+    .local v2, "proto":Landroid/util/proto/ProtoOutputStream;
+    invoke-virtual {v0, v2}, Lcom/android/internal/os/PowerProfile;->writeToProto(Landroid/util/proto/ProtoOutputStream;)V
+
+    .line 1689
+    invoke-virtual {v2}, Landroid/util/proto/ProtoOutputStream;->flush()V
+
+    .line 1690
+    invoke-virtual {v2}, Landroid/util/proto/ProtoOutputStream;->getBytes()[B
+
+    move-result-object v3
+
+    invoke-virtual {v1, v3}, Landroid/os/StatsLogEventWrapper;->writeStorage([B)V
+
+    .line 1691
+    invoke-interface {p6, v1}, Ljava/util/List;->add(Ljava/lang/Object;)Z
+
+    .line 1692
+    return-void
+.end method
+
+.method private pullProcessCpuTime(IJJLjava/util/List;)V
+    .registers 16
+    .param p1, "tagId"  # I
+    .param p2, "elapsedNanos"  # J
+    .param p4, "wallClockNanos"  # J
+    .annotation system Ldalvik/annotation/Signature;
+        value = {
+            "(IJJ",
+            "Ljava/util/List<",
+            "Landroid/os/StatsLogEventWrapper;",
+            ">;)V"
+        }
+    .end annotation
+
+    .line 1805
+    .local p6, "pulledData":Ljava/util/List;, "Ljava/util/List<Landroid/os/StatsLogEventWrapper;>;"
+    monitor-enter p0
+
+    .line 1806
+    :try_start_1
+    iget-object v0, p0, Lcom/android/server/stats/StatsCompanionService;->mProcessCpuTracker:Lcom/android/internal/os/ProcessCpuTracker;
+
+    const/4 v1, 0x0
+
+    if-nez v0, :cond_12
+
+    .line 1807
+    new-instance v0, Lcom/android/internal/os/ProcessCpuTracker;
+
+    invoke-direct {v0, v1}, Lcom/android/internal/os/ProcessCpuTracker;-><init>(Z)V
+
+    iput-object v0, p0, Lcom/android/server/stats/StatsCompanionService;->mProcessCpuTracker:Lcom/android/internal/os/ProcessCpuTracker;
+
+    .line 1808
+    iget-object v0, p0, Lcom/android/server/stats/StatsCompanionService;->mProcessCpuTracker:Lcom/android/internal/os/ProcessCpuTracker;
+
+    invoke-virtual {v0}, Lcom/android/internal/os/ProcessCpuTracker;->init()V
+
+    .line 1810
+    :cond_12
+    iget-object v0, p0, Lcom/android/server/stats/StatsCompanionService;->mProcessCpuTracker:Lcom/android/internal/os/ProcessCpuTracker;
+
+    invoke-virtual {v0}, Lcom/android/internal/os/ProcessCpuTracker;->update()V
+
+    .line 1811
+    move v0, v1
+
+    .local v0, "i":I
+    :goto_18
+    iget-object v1, p0, Lcom/android/server/stats/StatsCompanionService;->mProcessCpuTracker:Lcom/android/internal/os/ProcessCpuTracker;
+
+    invoke-virtual {v1}, Lcom/android/internal/os/ProcessCpuTracker;->countStats()I
+
+    move-result v1
+
+    if-ge v0, v1, :cond_4b
+
+    .line 1812
+    iget-object v1, p0, Lcom/android/server/stats/StatsCompanionService;->mProcessCpuTracker:Lcom/android/internal/os/ProcessCpuTracker;
+
+    invoke-virtual {v1, v0}, Lcom/android/internal/os/ProcessCpuTracker;->getStats(I)Lcom/android/internal/os/ProcessCpuTracker$Stats;
+
+    move-result-object v1
+
+    .line 1813
+    .local v1, "st":Lcom/android/internal/os/ProcessCpuTracker$Stats;
+    new-instance v8, Landroid/os/StatsLogEventWrapper;
+
+    move-object v2, v8
+
+    move v3, p1
+
+    move-wide v4, p2
+
+    move-wide v6, p4
+
+    invoke-direct/range {v2 .. v7}, Landroid/os/StatsLogEventWrapper;-><init>(IJJ)V
+
+    move-object v2, v8
+
+    .line 1815
+    .local v2, "e":Landroid/os/StatsLogEventWrapper;
+    iget v3, v1, Lcom/android/internal/os/ProcessCpuTracker$Stats;->uid:I
+
+    invoke-virtual {v2, v3}, Landroid/os/StatsLogEventWrapper;->writeInt(I)V
+
+    .line 1816
+    iget-object v3, v1, Lcom/android/internal/os/ProcessCpuTracker$Stats;->name:Ljava/lang/String;
+
+    invoke-virtual {v2, v3}, Landroid/os/StatsLogEventWrapper;->writeString(Ljava/lang/String;)V
+
+    .line 1817
+    iget-wide v3, v1, Lcom/android/internal/os/ProcessCpuTracker$Stats;->base_utime:J
+
+    invoke-virtual {v2, v3, v4}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
+
+    .line 1818
+    iget-wide v3, v1, Lcom/android/internal/os/ProcessCpuTracker$Stats;->base_stime:J
+
+    invoke-virtual {v2, v3, v4}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
+
+    .line 1819
+    invoke-interface {p6, v2}, Ljava/util/List;->add(Ljava/lang/Object;)Z
+
+    .line 1811
+    nop
+
+    .end local v1  # "st":Lcom/android/internal/os/ProcessCpuTracker$Stats;
+    .end local v2  # "e":Landroid/os/StatsLogEventWrapper;
+    add-int/lit8 v0, v0, 0x1
+
+    goto :goto_18
+
+    .line 1821
+    .end local v0  # "i":I
+    :cond_4b
+    monitor-exit p0
+
+    .line 1822
+    return-void
+
+    .line 1821
+    :catchall_4d
+    move-exception v0
+
+    monitor-exit p0
+    :try_end_4f
+    .catchall {:try_start_1 .. :try_end_4f} :catchall_4d
+
+    throw v0
+.end method
+
+.method private pullProcessMemoryHighWaterMark(IJJLjava/util/List;)V
+    .registers 23
+    .param p1, "tagId"  # I
+    .param p2, "elapsedNanos"  # J
+    .param p4, "wallClockNanos"  # J
+    .annotation system Ldalvik/annotation/Signature;
+        value = {
+            "(IJJ",
+            "Ljava/util/List<",
+            "Landroid/os/StatsLogEventWrapper;",
+            ">;)V"
+        }
+    .end annotation
+
+    .line 1236
+    .local p6, "pulledData":Ljava/util/List;, "Ljava/util/List<Landroid/os/StatsLogEventWrapper;>;"
+    move-object/from16 v0, p6
+
+    const-class v1, Landroid/app/ActivityManagerInternal;
+
+    .line 1237
+    invoke-static {v1}, Lcom/android/server/LocalServices;->getService(Ljava/lang/Class;)Ljava/lang/Object;
+
+    move-result-object v1
+
+    check-cast v1, Landroid/app/ActivityManagerInternal;
+
+    .line 1238
+    invoke-virtual {v1}, Landroid/app/ActivityManagerInternal;->getMemoryStateForProcesses()Ljava/util/List;
+
+    move-result-object v1
+
+    .line 1239
+    .local v1, "managedProcessList":Ljava/util/List;, "Ljava/util/List<Landroid/app/ProcessMemoryState;>;"
+    invoke-interface {v1}, Ljava/util/List;->iterator()Ljava/util/Iterator;
+
+    move-result-object v2
+
+    :goto_12
+    invoke-interface {v2}, Ljava/util/Iterator;->hasNext()Z
+
+    move-result v3
+
+    if-eqz v3, :cond_48
+
+    invoke-interface {v2}, Ljava/util/Iterator;->next()Ljava/lang/Object;
+
+    move-result-object v3
+
+    check-cast v3, Landroid/app/ProcessMemoryState;
+
+    .line 1240
+    .local v3, "managedProcess":Landroid/app/ProcessMemoryState;
+    iget v4, v3, Landroid/app/ProcessMemoryState;->pid:I
+
+    .line 1241
+    invoke-static {v4}, Lcom/android/server/am/MemoryStatUtil;->readRssHighWaterMarkFromProcfs(I)J
+
+    move-result-wide v4
+
+    .line 1242
+    .local v4, "rssHighWaterMarkInBytes":J
+    const-wide/16 v6, 0x0
+
+    cmp-long v6, v4, v6
+
+    if-nez v6, :cond_2b
+
+    .line 1243
+    goto :goto_12
+
+    .line 1245
+    :cond_2b
+    new-instance v6, Landroid/os/StatsLogEventWrapper;
+
+    move-object v7, v6
+
+    move/from16 v8, p1
+
+    move-wide/from16 v9, p2
+
+    move-wide/from16 v11, p4
+
+    invoke-direct/range {v7 .. v12}, Landroid/os/StatsLogEventWrapper;-><init>(IJJ)V
+
+    .line 1246
+    .local v6, "e":Landroid/os/StatsLogEventWrapper;
+    iget v7, v3, Landroid/app/ProcessMemoryState;->uid:I
+
+    invoke-virtual {v6, v7}, Landroid/os/StatsLogEventWrapper;->writeInt(I)V
+
+    .line 1247
+    iget-object v7, v3, Landroid/app/ProcessMemoryState;->processName:Ljava/lang/String;
+
+    invoke-virtual {v6, v7}, Landroid/os/StatsLogEventWrapper;->writeString(Ljava/lang/String;)V
+
+    .line 1248
+    invoke-virtual {v6, v4, v5}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
+
+    .line 1249
+    invoke-interface {v0, v6}, Ljava/util/List;->add(Ljava/lang/Object;)Z
+
+    .line 1250
+    .end local v3  # "managedProcess":Landroid/app/ProcessMemoryState;
+    .end local v4  # "rssHighWaterMarkInBytes":J
+    .end local v6  # "e":Landroid/os/StatsLogEventWrapper;
+    goto :goto_12
+
+    .line 1251
+    :cond_48
+    sget-object v2, Lcom/android/server/stats/StatsCompanionService;->MEMORY_INTERESTING_NATIVE_PROCESSES:[Ljava/lang/String;
+
+    invoke-static {v2}, Landroid/os/Process;->getPidsForCommands([Ljava/lang/String;)[I
+
+    move-result-object v2
+
+    .line 1252
+    .local v2, "pids":[I
+    const/4 v3, 0x0
+
+    .local v3, "i":I
+    :goto_4f
+    array-length v4, v2
+
+    if-ge v3, v4, :cond_7b
+
+    .line 1253
+    aget v4, v2, v3
+
+    .line 1254
+    .local v4, "pid":I
+    invoke-static {v4}, Landroid/os/Process;->getUidForPid(I)I
+
+    move-result v5
+
+    .line 1255
+    .local v5, "uid":I
+    invoke-static {v4}, Lcom/android/server/am/MemoryStatUtil;->readCmdlineFromProcfs(I)Ljava/lang/String;
+
+    move-result-object v6
+
+    .line 1256
+    .local v6, "processName":Ljava/lang/String;
+    invoke-static {v4}, Lcom/android/server/am/MemoryStatUtil;->readRssHighWaterMarkFromProcfs(I)J
+
+    move-result-wide v7
+
+    .line 1257
+    .local v7, "rssHighWaterMarkInBytes":J
+    new-instance v15, Landroid/os/StatsLogEventWrapper;
+
+    move-object v9, v15
+
+    move/from16 v10, p1
+
+    move-wide/from16 v11, p2
+
+    move-wide/from16 v13, p4
+
+    invoke-direct/range {v9 .. v14}, Landroid/os/StatsLogEventWrapper;-><init>(IJJ)V
+
+    .line 1258
+    .local v9, "e":Landroid/os/StatsLogEventWrapper;
+    invoke-virtual {v9, v5}, Landroid/os/StatsLogEventWrapper;->writeInt(I)V
+
+    .line 1259
+    invoke-virtual {v9, v6}, Landroid/os/StatsLogEventWrapper;->writeString(Ljava/lang/String;)V
+
+    .line 1260
+    invoke-virtual {v9, v7, v8}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
+
+    .line 1261
+    invoke-interface {v0, v9}, Ljava/util/List;->add(Ljava/lang/Object;)Z
+
+    .line 1252
+    .end local v4  # "pid":I
+    .end local v5  # "uid":I
+    .end local v6  # "processName":Ljava/lang/String;
+    .end local v7  # "rssHighWaterMarkInBytes":J
+    .end local v9  # "e":Landroid/os/StatsLogEventWrapper;
+    add-int/lit8 v3, v3, 0x1
+
+    goto :goto_4f
+
+    .line 1264
+    .end local v3  # "i":I
+    :cond_7b
+    const-string/jumbo v3, "sys.rss_hwm_reset.on"
+
+    const-string v4, "1"
+
+    invoke-static {v3, v4}, Landroid/os/SystemProperties;->set(Ljava/lang/String;Ljava/lang/String;)V
+
+    .line 1265
+    return-void
+.end method
+
+.method private pullProcessMemoryState(IJJLjava/util/List;)V
+    .registers 18
+    .param p1, "tagId"  # I
+    .param p2, "elapsedNanos"  # J
+    .param p4, "wallClockNanos"  # J
+    .annotation system Ldalvik/annotation/Signature;
+        value = {
+            "(IJJ",
+            "Ljava/util/List<",
+            "Landroid/os/StatsLogEventWrapper;",
+            ">;)V"
+        }
+    .end annotation
+
+    .line 1171
+    .local p6, "pulledData":Ljava/util/List;, "Ljava/util/List<Landroid/os/StatsLogEventWrapper;>;"
+    const-class v0, Landroid/app/ActivityManagerInternal;
+
+    .line 1172
+    invoke-static {v0}, Lcom/android/server/LocalServices;->getService(Ljava/lang/Class;)Ljava/lang/Object;
+
+    move-result-object v0
+
+    check-cast v0, Landroid/app/ActivityManagerInternal;
+
+    .line 1173
+    invoke-virtual {v0}, Landroid/app/ActivityManagerInternal;->getMemoryStateForProcesses()Ljava/util/List;
+
+    move-result-object v0
+
+    .line 1174
+    .local v0, "processMemoryStates":Ljava/util/List;, "Ljava/util/List<Landroid/app/ProcessMemoryState;>;"
+    invoke-interface {v0}, Ljava/util/List;->iterator()Ljava/util/Iterator;
+
+    move-result-object v1
+
+    :goto_10
+    invoke-interface {v1}, Ljava/util/Iterator;->hasNext()Z
+
+    move-result v2
+
+    if-eqz v2, :cond_6f
+
+    invoke-interface {v1}, Ljava/util/Iterator;->next()Ljava/lang/Object;
+
+    move-result-object v2
+
+    check-cast v2, Landroid/app/ProcessMemoryState;
+
+    .line 1175
+    .local v2, "processMemoryState":Landroid/app/ProcessMemoryState;
+    iget v3, v2, Landroid/app/ProcessMemoryState;->uid:I
+
+    iget v4, v2, Landroid/app/ProcessMemoryState;->pid:I
+
+    invoke-static {v3, v4}, Lcom/android/server/am/MemoryStatUtil;->readMemoryStatFromFilesystem(II)Lcom/android/server/am/MemoryStatUtil$MemoryStat;
+
+    move-result-object v3
+
+    .line 1177
+    .local v3, "memoryStat":Lcom/android/server/am/MemoryStatUtil$MemoryStat;
+    if-nez v3, :cond_27
+
+    .line 1178
+    goto :goto_10
+
+    .line 1180
+    :cond_27
+    new-instance v10, Landroid/os/StatsLogEventWrapper;
+
+    move-object v4, v10
+
+    move v5, p1
+
+    move-wide v6, p2
+
+    move-wide v8, p4
+
+    invoke-direct/range {v4 .. v9}, Landroid/os/StatsLogEventWrapper;-><init>(IJJ)V
+
+    .line 1181
+    .local v4, "e":Landroid/os/StatsLogEventWrapper;
+    iget v5, v2, Landroid/app/ProcessMemoryState;->uid:I
+
+    invoke-virtual {v4, v5}, Landroid/os/StatsLogEventWrapper;->writeInt(I)V
+
+    .line 1182
+    iget-object v5, v2, Landroid/app/ProcessMemoryState;->processName:Ljava/lang/String;
+
+    invoke-virtual {v4, v5}, Landroid/os/StatsLogEventWrapper;->writeString(Ljava/lang/String;)V
+
+    .line 1183
+    iget v5, v2, Landroid/app/ProcessMemoryState;->oomScore:I
+
+    invoke-virtual {v4, v5}, Landroid/os/StatsLogEventWrapper;->writeInt(I)V
+
+    .line 1184
+    iget-wide v5, v3, Lcom/android/server/am/MemoryStatUtil$MemoryStat;->pgfault:J
+
+    invoke-virtual {v4, v5, v6}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
+
+    .line 1185
+    iget-wide v5, v3, Lcom/android/server/am/MemoryStatUtil$MemoryStat;->pgmajfault:J
+
+    invoke-virtual {v4, v5, v6}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
+
+    .line 1186
+    iget-wide v5, v3, Lcom/android/server/am/MemoryStatUtil$MemoryStat;->rssInBytes:J
+
+    invoke-virtual {v4, v5, v6}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
+
+    .line 1187
+    iget-wide v5, v3, Lcom/android/server/am/MemoryStatUtil$MemoryStat;->cacheInBytes:J
+
+    invoke-virtual {v4, v5, v6}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
+
+    .line 1188
+    iget-wide v5, v3, Lcom/android/server/am/MemoryStatUtil$MemoryStat;->swapInBytes:J
+
+    invoke-virtual {v4, v5, v6}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
+
+    .line 1189
+    const-wide/16 v5, 0x0
+
+    invoke-virtual {v4, v5, v6}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
+
+    .line 1190
+    iget-wide v5, v3, Lcom/android/server/am/MemoryStatUtil$MemoryStat;->startTimeNanos:J
+
+    invoke-virtual {v4, v5, v6}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
+
+    .line 1191
+    invoke-static {v3}, Lcom/android/server/stats/StatsCompanionService;->anonAndSwapInKilobytes(Lcom/android/server/am/MemoryStatUtil$MemoryStat;)I
+
+    move-result v5
+
+    invoke-virtual {v4, v5}, Landroid/os/StatsLogEventWrapper;->writeInt(I)V
+
+    .line 1192
+    move-object/from16 v5, p6
+
+    invoke-interface {v5, v4}, Ljava/util/List;->add(Ljava/lang/Object;)Z
+
+    .line 1193
+    .end local v2  # "processMemoryState":Landroid/app/ProcessMemoryState;
+    .end local v3  # "memoryStat":Lcom/android/server/am/MemoryStatUtil$MemoryStat;
+    .end local v4  # "e":Landroid/os/StatsLogEventWrapper;
+    goto :goto_10
+
+    .line 1194
+    :cond_6f
+    move-object/from16 v5, p6
+
+    return-void
+.end method
+
+.method private pullProcessStats(IIJJLjava/util/List;)V
+    .registers 26
+    .param p1, "section"  # I
+    .param p2, "tagId"  # I
+    .param p3, "elapsedNanos"  # J
+    .param p5, "wallClockNanos"  # J
+    .annotation system Ldalvik/annotation/Signature;
+        value = {
+            "(IIJJ",
+            "Ljava/util/List<",
+            "Landroid/os/StatsLogEventWrapper;",
+            ">;)V"
+        }
+    .end annotation
+
+    .line 1619
+    .local p7, "pulledData":Ljava/util/List;, "Ljava/util/List<Landroid/os/StatsLogEventWrapper;>;"
+    move-object/from16 v1, p0
+
+    move/from16 v8, p1
+
+    monitor-enter p0
+
+    .line 1621
+    :try_start_5
+    invoke-direct/range {p0 .. p1}, Lcom/android/server/stats/StatsCompanionService;->readProcStatsHighWaterMark(I)J
+
+    move-result-wide v2
+
+    move-wide v9, v2
+
+    .line 1622
+    .local v9, "lastHighWaterMark":J
+    new-instance v0, Ljava/util/ArrayList;
+
+    invoke-direct {v0}, Ljava/util/ArrayList;-><init>()V
+
+    .line 1623
+    .local v0, "statsFiles":Ljava/util/List;, "Ljava/util/List<Landroid/os/ParcelFileDescriptor;>;"
+    iget-object v2, v1, Lcom/android/server/stats/StatsCompanionService;->mProcessStats:Lcom/android/internal/app/procstats/IProcessStats;
+
+    const/4 v6, 0x1
+
+    move-wide v3, v9
+
+    move/from16 v5, p1
+
+    move-object v7, v0
+
+    invoke-interface/range {v2 .. v7}, Lcom/android/internal/app/procstats/IProcessStats;->getCommittedStats(JIZLjava/util/List;)J
+
+    move-result-wide v2
+
+    .line 1625
+    .local v2, "highWaterMark":J
+    invoke-interface {v0}, Ljava/util/List;->size()I
+
+    move-result v4
+    :try_end_1e
+    .catch Ljava/io/IOException; {:try_start_5 .. :try_end_1e} :catch_c9
+    .catch Landroid/os/RemoteException; {:try_start_5 .. :try_end_1e} :catch_bd
+    .catch Ljava/lang/SecurityException; {:try_start_5 .. :try_end_1e} :catch_b2
+    .catchall {:try_start_5 .. :try_end_1e} :catchall_ae
+
+    const/4 v5, 0x1
+
+    if-eq v4, v5, :cond_23
+
+    .line 1626
+    :try_start_21
+    monitor-exit p0
+    :try_end_22
+    .catchall {:try_start_21 .. :try_end_22} :catchall_ae
+
+    return-void
+
+    .line 1628
+    :cond_23
+    :try_start_23
+    new-instance v4, Landroid/os/ParcelFileDescriptor$AutoCloseInputStream;
+
+    .line 1629
+    const/4 v6, 0x0
+
+    invoke-interface {v0, v6}, Ljava/util/List;->get(I)Ljava/lang/Object;
+
+    move-result-object v7
+
+    check-cast v7, Landroid/os/ParcelFileDescriptor;
+
+    invoke-direct {v4, v7}, Landroid/os/ParcelFileDescriptor$AutoCloseInputStream;-><init>(Landroid/os/ParcelFileDescriptor;)V
+
+    .line 1630
+    .local v4, "stream":Ljava/io/InputStream;
+    new-array v5, v5, [I
+
+    .line 1631
+    .local v5, "len":[I
+    invoke-static {v4, v5}, Lcom/android/server/stats/StatsCompanionService;->readFully(Ljava/io/InputStream;[I)[B
+
+    move-result-object v7
+
+    .line 1632
+    .local v7, "stats":[B
+    new-instance v17, Landroid/os/StatsLogEventWrapper;
+
+    move-object/from16 v11, v17
+
+    move/from16 v12, p2
+
+    move-wide/from16 v13, p3
+
+    move-wide/from16 v15, p5
+
+    invoke-direct/range {v11 .. v16}, Landroid/os/StatsLogEventWrapper;-><init>(IJJ)V
+
+    move-object/from16 v11, v17
+
+    .line 1634
+    .local v11, "e":Landroid/os/StatsLogEventWrapper;
+    aget v6, v5, v6
+
+    invoke-static {v7, v6}, Ljava/util/Arrays;->copyOf([BI)[B
+
+    move-result-object v6
+
+    invoke-virtual {v11, v6}, Landroid/os/StatsLogEventWrapper;->writeStorage([B)V
+    :try_end_4d
+    .catch Ljava/io/IOException; {:try_start_23 .. :try_end_4d} :catch_c9
+    .catch Landroid/os/RemoteException; {:try_start_23 .. :try_end_4d} :catch_bd
+    .catch Ljava/lang/SecurityException; {:try_start_23 .. :try_end_4d} :catch_b2
+    .catchall {:try_start_23 .. :try_end_4d} :catchall_ae
+
+    .line 1635
+    move-object/from16 v6, p7
+
+    :try_start_4f
+    invoke-interface {v6, v11}, Ljava/util/List;->add(Ljava/lang/Object;)Z
+
+    .line 1636
+    new-instance v12, Ljava/io/File;
+
+    new-instance v13, Ljava/lang/StringBuilder;
+
+    invoke-direct {v13}, Ljava/lang/StringBuilder;-><init>()V
+
+    iget-object v14, v1, Lcom/android/server/stats/StatsCompanionService;->mBaseDir:Ljava/io/File;
+
+    invoke-virtual {v14}, Ljava/io/File;->getAbsolutePath()Ljava/lang/String;
+
+    move-result-object v14
+
+    invoke-virtual {v13, v14}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    const-string v14, "/"
+
+    invoke-virtual {v13, v14}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v13, v8}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+
+    const-string v14, "_"
+
+    invoke-virtual {v13, v14}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v13, v9, v10}, Ljava/lang/StringBuilder;->append(J)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v13}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v13
+
+    invoke-direct {v12, v13}, Ljava/io/File;-><init>(Ljava/lang/String;)V
+
+    .line 1637
+    invoke-virtual {v12}, Ljava/io/File;->delete()Z
+
+    .line 1638
+    new-instance v12, Ljava/io/File;
+
+    new-instance v13, Ljava/lang/StringBuilder;
+
+    invoke-direct {v13}, Ljava/lang/StringBuilder;-><init>()V
+
+    iget-object v14, v1, Lcom/android/server/stats/StatsCompanionService;->mBaseDir:Ljava/io/File;
+
+    .line 1639
+    invoke-virtual {v14}, Ljava/io/File;->getAbsolutePath()Ljava/lang/String;
+
+    move-result-object v14
+
+    invoke-virtual {v13, v14}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    const-string v14, "/"
+
+    invoke-virtual {v13, v14}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v13, v8}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+
+    const-string v14, "_"
+
+    invoke-virtual {v13, v14}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v13, v2, v3}, Ljava/lang/StringBuilder;->append(J)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v13}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v13
+
+    invoke-direct {v12, v13}, Ljava/io/File;-><init>(Ljava/lang/String;)V
+
+    .line 1640
+    invoke-virtual {v12}, Ljava/io/File;->createNewFile()Z
+    :try_end_a6
+    .catch Ljava/io/IOException; {:try_start_4f .. :try_end_a6} :catch_ac
+    .catch Landroid/os/RemoteException; {:try_start_4f .. :try_end_a6} :catch_aa
+    .catch Ljava/lang/SecurityException; {:try_start_4f .. :try_end_a6} :catch_a8
+    .catchall {:try_start_4f .. :try_end_a6} :catchall_d6
+
+    .line 1647
+    nop
+
+    .end local v0  # "statsFiles":Ljava/util/List;, "Ljava/util/List<Landroid/os/ParcelFileDescriptor;>;"
+    .end local v2  # "highWaterMark":J
+    .end local v4  # "stream":Ljava/io/InputStream;
+    .end local v5  # "len":[I
+    .end local v7  # "stats":[B
+    .end local v9  # "lastHighWaterMark":J
+    .end local v11  # "e":Landroid/os/StatsLogEventWrapper;
+    goto :goto_d4
+
+    .line 1645
+    :catch_a8
+    move-exception v0
+
+    goto :goto_b5
+
+    .line 1643
+    :catch_aa
+    move-exception v0
+
+    goto :goto_c0
+
+    .line 1641
+    :catch_ac
+    move-exception v0
+
+    goto :goto_cc
+
+    .line 1648
+    :catchall_ae
+    move-exception v0
+
+    move-object/from16 v6, p7
+
+    goto :goto_d7
+
+    .line 1645
+    :catch_b2
+    move-exception v0
+
+    move-object/from16 v6, p7
+
+    .line 1646
+    .local v0, "e":Ljava/lang/SecurityException;
+    :goto_b5
+    :try_start_b5
+    const-string v2, "StatsCompanionService"
+
+    const-string v3, "Getting procstats failed: "
+
+    invoke-static {v2, v3, v0}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+
+    goto :goto_d4
+
+    .line 1643
+    .end local v0  # "e":Ljava/lang/SecurityException;
+    :catch_bd
+    move-exception v0
+
+    move-object/from16 v6, p7
+
+    .line 1644
+    .local v0, "e":Landroid/os/RemoteException;
+    :goto_c0
+    const-string v2, "StatsCompanionService"
+
+    const-string v3, "Getting procstats failed: "
+
+    invoke-static {v2, v3, v0}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+
+    .line 1647
+    nop
+
+    .end local v0  # "e":Landroid/os/RemoteException;
+    goto :goto_d4
+
+    .line 1641
+    :catch_c9
+    move-exception v0
+
+    move-object/from16 v6, p7
+
+    .line 1642
+    .local v0, "e":Ljava/io/IOException;
+    :goto_cc
+    const-string v2, "StatsCompanionService"
+
+    const-string v3, "Getting procstats failed: "
+
+    invoke-static {v2, v3, v0}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+
+    .line 1647
+    nop
+
+    .line 1648
+    .end local v0  # "e":Ljava/io/IOException;
+    :goto_d4
+    monitor-exit p0
+
+    .line 1649
+    return-void
+
+    .line 1648
+    :catchall_d6
+    move-exception v0
+
+    :goto_d7
+    monitor-exit p0
+    :try_end_d8
+    .catchall {:try_start_b5 .. :try_end_d8} :catchall_d6
+
+    throw v0
+.end method
+
+.method private pullProcessSystemIonHeapSize(IJJLjava/util/List;)V
+    .registers 17
+    .param p1, "tagId"  # I
+    .param p2, "elapsedNanos"  # J
+    .param p4, "wallClockNanos"  # J
+    .annotation system Ldalvik/annotation/Signature;
+        value = {
+            "(IJJ",
+            "Ljava/util/List<",
+            "Landroid/os/StatsLogEventWrapper;",
+            ">;)V"
+        }
+    .end annotation
+
+    .line 1279
+    .local p6, "pulledData":Ljava/util/List;, "Ljava/util/List<Landroid/os/StatsLogEventWrapper;>;"
+    invoke-static {}, Lcom/android/server/am/MemoryStatUtil;->readProcessSystemIonHeapSizesFromDebugfs()Ljava/util/List;
+
+    move-result-object v0
+
+    .line 1280
+    .local v0, "result":Ljava/util/List;, "Ljava/util/List<Lcom/android/server/am/MemoryStatUtil$IonAllocations;>;"
+    invoke-interface {v0}, Ljava/util/List;->iterator()Ljava/util/Iterator;
+
+    move-result-object v1
+
+    :goto_8
+    invoke-interface {v1}, Ljava/util/Iterator;->hasNext()Z
+
+    move-result v2
+
+    if-eqz v2, :cond_4a
+
+    invoke-interface {v1}, Ljava/util/Iterator;->next()Ljava/lang/Object;
+
+    move-result-object v2
+
+    check-cast v2, Lcom/android/server/am/MemoryStatUtil$IonAllocations;
+
+    .line 1281
+    .local v2, "allocations":Lcom/android/server/am/MemoryStatUtil$IonAllocations;
+    new-instance v9, Landroid/os/StatsLogEventWrapper;
+
+    move-object v3, v9
+
+    move v4, p1
+
+    move-wide v5, p2
+
+    move-wide v7, p4
+
+    invoke-direct/range {v3 .. v8}, Landroid/os/StatsLogEventWrapper;-><init>(IJJ)V
+
+    .line 1282
+    .local v3, "e":Landroid/os/StatsLogEventWrapper;
+    iget v4, v2, Lcom/android/server/am/MemoryStatUtil$IonAllocations;->pid:I
+
+    invoke-static {v4}, Landroid/os/Process;->getUidForPid(I)I
+
+    move-result v4
+
+    invoke-virtual {v3, v4}, Landroid/os/StatsLogEventWrapper;->writeInt(I)V
+
+    .line 1283
+    iget v4, v2, Lcom/android/server/am/MemoryStatUtil$IonAllocations;->pid:I
+
+    invoke-static {v4}, Lcom/android/server/am/MemoryStatUtil;->readCmdlineFromProcfs(I)Ljava/lang/String;
+
+    move-result-object v4
+
+    invoke-virtual {v3, v4}, Landroid/os/StatsLogEventWrapper;->writeString(Ljava/lang/String;)V
+
+    .line 1284
+    iget-wide v4, v2, Lcom/android/server/am/MemoryStatUtil$IonAllocations;->totalSizeInBytes:J
+
+    const-wide/16 v6, 0x400
+
+    div-long/2addr v4, v6
+
+    long-to-int v4, v4
+
+    invoke-virtual {v3, v4}, Landroid/os/StatsLogEventWrapper;->writeInt(I)V
+
+    .line 1285
+    iget v4, v2, Lcom/android/server/am/MemoryStatUtil$IonAllocations;->count:I
+
+    invoke-virtual {v3, v4}, Landroid/os/StatsLogEventWrapper;->writeInt(I)V
+
+    .line 1286
+    iget-wide v4, v2, Lcom/android/server/am/MemoryStatUtil$IonAllocations;->maxSizeInBytes:J
+
+    div-long/2addr v4, v6
+
+    long-to-int v4, v4
+
+    invoke-virtual {v3, v4}, Landroid/os/StatsLogEventWrapper;->writeInt(I)V
+
+    .line 1287
+    move-object/from16 v4, p6
+
+    invoke-interface {v4, v3}, Ljava/util/List;->add(Ljava/lang/Object;)Z
+
+    .line 1288
+    .end local v2  # "allocations":Lcom/android/server/am/MemoryStatUtil$IonAllocations;
+    .end local v3  # "e":Landroid/os/StatsLogEventWrapper;
+    goto :goto_8
+
+    .line 1289
+    :cond_4a
+    move-object/from16 v4, p6
+
+    return-void
+.end method
+
+.method private pullRoleHolders(JJLjava/util/List;)V
+    .registers 30
+    .param p1, "elapsedNanos"  # J
+    .param p3, "wallClockNanos"  # J
+    .annotation system Ldalvik/annotation/Signature;
+        value = {
+            "(JJ",
+            "Ljava/util/List<",
+            "Landroid/os/StatsLogEventWrapper;",
+            ">;)V"
+        }
+    .end annotation
+
+    .line 2091
+    .local p5, "pulledData":Ljava/util/List;, "Ljava/util/List<Landroid/os/StatsLogEventWrapper;>;"
+    move-object/from16 v1, p0
+
+    invoke-static {}, Landroid/os/Binder;->clearCallingIdentity()J
+
+    move-result-wide v2
+
+    .line 2093
+    .local v2, "callingToken":J
+    :try_start_6
+    iget-object v0, v1, Lcom/android/server/stats/StatsCompanionService;->mContext:Landroid/content/Context;
+
+    invoke-virtual {v0}, Landroid/content/Context;->getPackageManager()Landroid/content/pm/PackageManager;
+
+    move-result-object v0
+
+    move-object v4, v0
+
+    .line 2094
+    .local v4, "pm":Landroid/content/pm/PackageManager;
+    const-class v0, Lcom/android/server/role/RoleManagerInternal;
+
+    invoke-static {v0}, Lcom/android/server/LocalServices;->getService(Ljava/lang/Class;)Ljava/lang/Object;
+
+    move-result-object v0
+
+    check-cast v0, Lcom/android/server/role/RoleManagerInternal;
+
+    move-object v5, v0
+
+    .line 2096
+    .local v5, "rmi":Lcom/android/server/role/RoleManagerInternal;
+    iget-object v0, v1, Lcom/android/server/stats/StatsCompanionService;->mContext:Landroid/content/Context;
+
+    const-class v6, Landroid/os/UserManager;
+
+    invoke-virtual {v0, v6}, Landroid/content/Context;->getSystemService(Ljava/lang/Class;)Ljava/lang/Object;
+
+    move-result-object v0
+
+    check-cast v0, Landroid/os/UserManager;
+
+    invoke-virtual {v0}, Landroid/os/UserManager;->getUsers()Ljava/util/List;
+
+    move-result-object v0
+
+    move-object v6, v0
+
+    .line 2098
+    .local v6, "users":Ljava/util/List;, "Ljava/util/List<Landroid/content/pm/UserInfo;>;"
+    invoke-interface {v6}, Ljava/util/List;->size()I
+
+    move-result v0
+
+    move v7, v0
+
+    .line 2099
+    .local v7, "numUsers":I
+    const/4 v0, 0x0
+
+    move v8, v0
+
+    .local v8, "userNum":I
+    :goto_2c
+    if-ge v8, v7, :cond_e8
+
+    .line 2100
+    invoke-interface {v6, v8}, Ljava/util/List;->get(I)Ljava/lang/Object;
+
+    move-result-object v0
+
+    check-cast v0, Landroid/content/pm/UserInfo;
+
+    invoke-virtual {v0}, Landroid/content/pm/UserInfo;->getUserHandle()Landroid/os/UserHandle;
+
+    move-result-object v0
+
+    invoke-virtual {v0}, Landroid/os/UserHandle;->getIdentifier()I
+
+    move-result v0
+
+    move v9, v0
+
+    .line 2102
+    .local v9, "userId":I
+    invoke-virtual {v5, v9}, Lcom/android/server/role/RoleManagerInternal;->getRolesAndHolders(I)Landroid/util/ArrayMap;
+
+    move-result-object v0
+
+    move-object v10, v0
+
+    .line 2105
+    .local v10, "roles":Landroid/util/ArrayMap;, "Landroid/util/ArrayMap<Ljava/lang/String;Landroid/util/ArraySet<Ljava/lang/String;>;>;"
+    invoke-virtual {v10}, Landroid/util/ArrayMap;->size()I
+
+    move-result v0
+
+    move v11, v0
+
+    .line 2106
+    .local v11, "numRoles":I
+    const/4 v0, 0x0
+
+    move v12, v0
+
+    .local v12, "roleNum":I
+    :goto_49
+    if-ge v12, v11, :cond_de
+
+    .line 2107
+    invoke-virtual {v10, v12}, Landroid/util/ArrayMap;->keyAt(I)Ljava/lang/Object;
+
+    move-result-object v0
+
+    check-cast v0, Ljava/lang/String;
+
+    move-object v13, v0
+
+    .line 2108
+    .local v13, "roleName":Ljava/lang/String;
+    invoke-virtual {v10, v12}, Landroid/util/ArrayMap;->valueAt(I)Ljava/lang/Object;
+
+    move-result-object v0
+
+    check-cast v0, Landroid/util/ArraySet;
+
+    move-object v14, v0
+
+    .line 2110
+    .local v14, "holders":Landroid/util/ArraySet;, "Landroid/util/ArraySet<Ljava/lang/String;>;"
+    invoke-virtual {v14}, Landroid/util/ArraySet;->size()I
+
+    move-result v0
+
+    move v15, v0
+
+    .line 2111
+    .local v15, "numHolders":I
+    const/4 v0, 0x0
+
+    move v1, v0
+
+    .local v1, "holderNum":I
+    :goto_60
+    if-ge v1, v15, :cond_d2
+
+    .line 2112
+    invoke-virtual {v14, v1}, Landroid/util/ArraySet;->valueAt(I)Ljava/lang/Object;
+
+    move-result-object v0
+
+    check-cast v0, Ljava/lang/String;
+    :try_end_68
+    .catchall {:try_start_6 .. :try_end_68} :catchall_f1
+
+    move-object/from16 v16, v0
+
+    .line 2116
+    .local v16, "holderName":Ljava/lang/String;
+    const/4 v0, 0x0
+
+    move-object/from16 v17, v5
+
+    move-object/from16 v5, v16
+
+    .end local v16  # "holderName":Ljava/lang/String;
+    .local v5, "holderName":Ljava/lang/String;
+    .local v17, "rmi":Lcom/android/server/role/RoleManagerInternal;
+    :try_start_6f
+    invoke-virtual {v4, v5, v0, v9}, Landroid/content/pm/PackageManager;->getPackageInfoAsUser(Ljava/lang/String;II)Landroid/content/pm/PackageInfo;
+
+    move-result-object v0
+    :try_end_73
+    .catch Landroid/content/pm/PackageManager$NameNotFoundException; {:try_start_6f .. :try_end_73} :catch_a7
+    .catchall {:try_start_6f .. :try_end_73} :catchall_a3
+
+    .line 2120
+    .local v0, "pkg":Landroid/content/pm/PackageInfo;
+    nop
+
+    .line 2122
+    :try_start_74
+    new-instance v16, Landroid/os/StatsLogEventWrapper;
+
+    const/16 v19, 0x2741
+
+    move-object/from16 v18, v16
+
+    move-wide/from16 v20, p1
+
+    move-wide/from16 v22, p3
+
+    invoke-direct/range {v18 .. v23}, Landroid/os/StatsLogEventWrapper;-><init>(IJJ)V
+
+    move-object/from16 v18, v16
+
+    .line 2124
+    .local v18, "e":Landroid/os/StatsLogEventWrapper;
+    move-object/from16 v16, v4
+
+    .end local v4  # "pm":Landroid/content/pm/PackageManager;
+    .local v16, "pm":Landroid/content/pm/PackageManager;
+    iget-object v4, v0, Landroid/content/pm/PackageInfo;->applicationInfo:Landroid/content/pm/ApplicationInfo;
+
+    iget v4, v4, Landroid/content/pm/ApplicationInfo;->uid:I
+
+    move-object/from16 v19, v0
+
+    move-object/from16 v0, v18
+
+    .end local v18  # "e":Landroid/os/StatsLogEventWrapper;
+    .local v0, "e":Landroid/os/StatsLogEventWrapper;
+    .local v19, "pkg":Landroid/content/pm/PackageInfo;
+    invoke-virtual {v0, v4}, Landroid/os/StatsLogEventWrapper;->writeInt(I)V
+
+    .line 2125
+    invoke-virtual {v0, v5}, Landroid/os/StatsLogEventWrapper;->writeString(Ljava/lang/String;)V
+
+    .line 2126
+    invoke-virtual {v0, v13}, Landroid/os/StatsLogEventWrapper;->writeString(Ljava/lang/String;)V
+    :try_end_96
+    .catchall {:try_start_74 .. :try_end_96} :catchall_a3
+
+    .line 2127
+    move-object/from16 v4, p5
+
+    :try_start_98
+    invoke-interface {v4, v0}, Ljava/util/List;->add(Ljava/lang/Object;)Z
+
+    .line 2111
+    nop
+
+    .end local v0  # "e":Landroid/os/StatsLogEventWrapper;
+    .end local v5  # "holderName":Ljava/lang/String;
+    .end local v19  # "pkg":Landroid/content/pm/PackageInfo;
+    add-int/lit8 v1, v1, 0x1
+
+    move-object/from16 v4, v16
+
+    move-object/from16 v5, v17
+
+    goto :goto_60
+
+    .line 2132
+    .end local v1  # "holderNum":I
+    .end local v6  # "users":Ljava/util/List;, "Ljava/util/List<Landroid/content/pm/UserInfo;>;"
+    .end local v7  # "numUsers":I
+    .end local v8  # "userNum":I
+    .end local v9  # "userId":I
+    .end local v10  # "roles":Landroid/util/ArrayMap;, "Landroid/util/ArrayMap<Ljava/lang/String;Landroid/util/ArraySet<Ljava/lang/String;>;>;"
+    .end local v11  # "numRoles":I
+    .end local v12  # "roleNum":I
+    .end local v13  # "roleName":Ljava/lang/String;
+    .end local v14  # "holders":Landroid/util/ArraySet;, "Landroid/util/ArraySet<Ljava/lang/String;>;"
+    .end local v15  # "numHolders":I
+    .end local v16  # "pm":Landroid/content/pm/PackageManager;
+    .end local v17  # "rmi":Lcom/android/server/role/RoleManagerInternal;
+    :catchall_a3
+    move-exception v0
+
+    move-object/from16 v4, p5
+
+    goto :goto_f2
+
+    .line 2117
+    .restart local v1  # "holderNum":I
+    .restart local v4  # "pm":Landroid/content/pm/PackageManager;
+    .restart local v5  # "holderName":Ljava/lang/String;
+    .restart local v6  # "users":Ljava/util/List;, "Ljava/util/List<Landroid/content/pm/UserInfo;>;"
+    .restart local v7  # "numUsers":I
+    .restart local v8  # "userNum":I
+    .restart local v9  # "userId":I
+    .restart local v10  # "roles":Landroid/util/ArrayMap;, "Landroid/util/ArrayMap<Ljava/lang/String;Landroid/util/ArraySet<Ljava/lang/String;>;>;"
+    .restart local v11  # "numRoles":I
+    .restart local v12  # "roleNum":I
+    .restart local v13  # "roleName":Ljava/lang/String;
+    .restart local v14  # "holders":Landroid/util/ArraySet;, "Landroid/util/ArraySet<Ljava/lang/String;>;"
+    .restart local v15  # "numHolders":I
+    .restart local v17  # "rmi":Lcom/android/server/role/RoleManagerInternal;
+    :catch_a7
+    move-exception v0
+
+    move-object/from16 v16, v4
+
+    move-object/from16 v4, p5
+
+    move-object/from16 v18, v0
+
+    .end local v4  # "pm":Landroid/content/pm/PackageManager;
+    .restart local v16  # "pm":Landroid/content/pm/PackageManager;
+    move-object/from16 v0, v18
+
+    .line 2118
+    .local v0, "e":Landroid/content/pm/PackageManager$NameNotFoundException;
+    nop
+
+    .end local v0  # "e":Landroid/content/pm/PackageManager$NameNotFoundException;
+    .local v18, "e":Landroid/content/pm/PackageManager$NameNotFoundException;
+    const-string v0, "StatsCompanionService"
+
+    move/from16 v19, v1
+
+    .end local v1  # "holderNum":I
+    .local v19, "holderNum":I
+    new-instance v1, Ljava/lang/StringBuilder;
+
+    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
+
+    const-string v4, "Role holder "
+
+    invoke-virtual {v1, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v1, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    const-string v4, " not found"
+
+    invoke-virtual {v1, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v1
+
+    invoke-static {v0, v1}, Landroid/util/Log;->w(Ljava/lang/String;Ljava/lang/String;)I
+    :try_end_ce
+    .catchall {:try_start_98 .. :try_end_ce} :catchall_f1
+
+    .line 2132
+    invoke-static {v2, v3}, Landroid/os/Binder;->restoreCallingIdentity(J)V
+
+    .line 2119
+    return-void
+
+    .line 2111
+    .end local v16  # "pm":Landroid/content/pm/PackageManager;
+    .end local v17  # "rmi":Lcom/android/server/role/RoleManagerInternal;
+    .end local v18  # "e":Landroid/content/pm/PackageManager$NameNotFoundException;
+    .end local v19  # "holderNum":I
+    .restart local v1  # "holderNum":I
+    .restart local v4  # "pm":Landroid/content/pm/PackageManager;
+    .local v5, "rmi":Lcom/android/server/role/RoleManagerInternal;
+    :cond_d2
+    move/from16 v19, v1
+
+    move-object/from16 v16, v4
+
+    move-object/from16 v17, v5
+
+    .line 2106
+    .end local v1  # "holderNum":I
+    .end local v4  # "pm":Landroid/content/pm/PackageManager;
+    .end local v5  # "rmi":Lcom/android/server/role/RoleManagerInternal;
+    .end local v13  # "roleName":Ljava/lang/String;
+    .end local v14  # "holders":Landroid/util/ArraySet;, "Landroid/util/ArraySet<Ljava/lang/String;>;"
+    .end local v15  # "numHolders":I
+    .restart local v16  # "pm":Landroid/content/pm/PackageManager;
+    .restart local v17  # "rmi":Lcom/android/server/role/RoleManagerInternal;
+    add-int/lit8 v12, v12, 0x1
+
+    move-object/from16 v1, p0
+
+    goto/16 :goto_49
+
+    .end local v16  # "pm":Landroid/content/pm/PackageManager;
+    .end local v17  # "rmi":Lcom/android/server/role/RoleManagerInternal;
+    .restart local v4  # "pm":Landroid/content/pm/PackageManager;
+    .restart local v5  # "rmi":Lcom/android/server/role/RoleManagerInternal;
+    :cond_de
+    move-object/from16 v16, v4
+
+    move-object/from16 v17, v5
+
+    .line 2099
+    .end local v4  # "pm":Landroid/content/pm/PackageManager;
+    .end local v5  # "rmi":Lcom/android/server/role/RoleManagerInternal;
+    .end local v9  # "userId":I
+    .end local v10  # "roles":Landroid/util/ArrayMap;, "Landroid/util/ArrayMap<Ljava/lang/String;Landroid/util/ArraySet<Ljava/lang/String;>;>;"
+    .end local v11  # "numRoles":I
+    .end local v12  # "roleNum":I
+    .restart local v16  # "pm":Landroid/content/pm/PackageManager;
+    .restart local v17  # "rmi":Lcom/android/server/role/RoleManagerInternal;
+    add-int/lit8 v8, v8, 0x1
+
+    move-object/from16 v1, p0
+
+    goto/16 :goto_2c
+
+    .end local v16  # "pm":Landroid/content/pm/PackageManager;
+    .end local v17  # "rmi":Lcom/android/server/role/RoleManagerInternal;
+    .restart local v4  # "pm":Landroid/content/pm/PackageManager;
+    .restart local v5  # "rmi":Lcom/android/server/role/RoleManagerInternal;
+    :cond_e8
+    move-object/from16 v16, v4
+
+    move-object/from16 v17, v5
+
+    .line 2132
+    .end local v4  # "pm":Landroid/content/pm/PackageManager;
+    .end local v5  # "rmi":Lcom/android/server/role/RoleManagerInternal;
+    .end local v6  # "users":Ljava/util/List;, "Ljava/util/List<Landroid/content/pm/UserInfo;>;"
+    .end local v7  # "numUsers":I
+    .end local v8  # "userNum":I
+    invoke-static {v2, v3}, Landroid/os/Binder;->restoreCallingIdentity(J)V
+
+    .line 2133
+    nop
+
+    .line 2134
+    return-void
+
+    .line 2132
+    :catchall_f1
+    move-exception v0
+
+    :goto_f2
+    invoke-static {v2, v3}, Landroid/os/Binder;->restoreCallingIdentity(J)V
+
+    throw v0
+.end method
+
+.method private pullSystemElapsedRealtime(IJJLjava/util/List;)V
+    .registers 14
+    .param p1, "tagId"  # I
+    .param p2, "elapsedNanos"  # J
+    .param p4, "wallClockNanos"  # J
+    .annotation system Ldalvik/annotation/Signature;
+        value = {
+            "(IJJ",
+            "Ljava/util/List<",
+            "Landroid/os/StatsLogEventWrapper;",
+            ">;)V"
+        }
+    .end annotation
+
+    .line 1156
+    .local p6, "pulledData":Ljava/util/List;, "Ljava/util/List<Landroid/os/StatsLogEventWrapper;>;"
+    new-instance v6, Landroid/os/StatsLogEventWrapper;
+
+    move-object v0, v6
+
+    move v1, p1
+
+    move-wide v2, p2
+
+    move-wide v4, p4
+
+    invoke-direct/range {v0 .. v5}, Landroid/os/StatsLogEventWrapper;-><init>(IJJ)V
+
+    .line 1157
+    .local v0, "e":Landroid/os/StatsLogEventWrapper;
+    invoke-static {}, Landroid/os/SystemClock;->elapsedRealtime()J
+
+    move-result-wide v1
+
+    invoke-virtual {v0, v1, v2}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
+
+    .line 1158
+    invoke-interface {p6, v0}, Ljava/util/List;->add(Ljava/lang/Object;)Z
+
+    .line 1159
+    return-void
+.end method
+
+.method private pullSystemIonHeapSize(IJJLjava/util/List;)V
+    .registers 16
+    .param p1, "tagId"  # I
+    .param p2, "elapsedNanos"  # J
+    .param p4, "wallClockNanos"  # J
+    .annotation system Ldalvik/annotation/Signature;
+        value = {
+            "(IJJ",
+            "Ljava/util/List<",
+            "Landroid/os/StatsLogEventWrapper;",
+            ">;)V"
+        }
+    .end annotation
+
+    .line 1270
+    .local p6, "pulledData":Ljava/util/List;, "Ljava/util/List<Landroid/os/StatsLogEventWrapper;>;"
+    invoke-static {}, Lcom/android/server/am/MemoryStatUtil;->readSystemIonHeapSizeFromDebugfs()J
+
+    move-result-wide v0
+
+    .line 1271
+    .local v0, "systemIonHeapSizeInBytes":J
+    new-instance v8, Landroid/os/StatsLogEventWrapper;
+
+    move-object v2, v8
+
+    move v3, p1
+
+    move-wide v4, p2
+
+    move-wide v6, p4
+
+    invoke-direct/range {v2 .. v7}, Landroid/os/StatsLogEventWrapper;-><init>(IJJ)V
+
+    .line 1272
+    .local v2, "e":Landroid/os/StatsLogEventWrapper;
+    invoke-virtual {v2, v0, v1}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
+
+    .line 1273
+    invoke-interface {p6, v2}, Ljava/util/List;->add(Ljava/lang/Object;)Z
+
+    .line 1274
+    return-void
+.end method
+
+.method private pullSystemUpTime(IJJLjava/util/List;)V
+    .registers 14
+    .param p1, "tagId"  # I
+    .param p2, "elapsedNanos"  # J
+    .param p4, "wallClockNanos"  # J
+    .annotation system Ldalvik/annotation/Signature;
+        value = {
+            "(IJJ",
+            "Ljava/util/List<",
+            "Landroid/os/StatsLogEventWrapper;",
+            ">;)V"
+        }
+    .end annotation
+
+    .line 1163
+    .local p6, "pulledData":Ljava/util/List;, "Ljava/util/List<Landroid/os/StatsLogEventWrapper;>;"
+    new-instance v6, Landroid/os/StatsLogEventWrapper;
+
+    move-object v0, v6
+
+    move v1, p1
+
+    move-wide v2, p2
+
+    move-wide v4, p4
+
+    invoke-direct/range {v0 .. v5}, Landroid/os/StatsLogEventWrapper;-><init>(IJJ)V
+
+    .line 1164
+    .local v0, "e":Landroid/os/StatsLogEventWrapper;
+    invoke-static {}, Landroid/os/SystemClock;->uptimeMillis()J
+
+    move-result-wide v1
+
+    invoke-virtual {v0, v1, v2}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
+
+    .line 1165
+    invoke-interface {p6, v0}, Ljava/util/List;->add(Ljava/lang/Object;)Z
+
+    .line 1166
+    return-void
+.end method
+
+.method private pullTemperature(IJJLjava/util/List;)V
+    .registers 19
+    .param p1, "tagId"  # I
+    .param p2, "elapsedNanos"  # J
+    .param p4, "wallClockNanos"  # J
+    .annotation system Ldalvik/annotation/Signature;
+        value = {
+            "(IJJ",
+            "Ljava/util/List<",
+            "Landroid/os/StatsLogEventWrapper;",
+            ">;)V"
+        }
+    .end annotation
+
+    .line 1881
+    .local p6, "pulledData":Ljava/util/List;, "Ljava/util/List<Landroid/os/StatsLogEventWrapper;>;"
+    invoke-static {}, Landroid/os/Binder;->clearCallingIdentity()J
+
+    move-result-wide v1
+
+    .line 1883
+    .local v1, "callingToken":J
+    :try_start_4
+    sget-object v0, Lcom/android/server/stats/StatsCompanionService;->sThermalService:Landroid/os/IThermalService;
+
+    invoke-interface {v0}, Landroid/os/IThermalService;->getCurrentTemperatures()Ljava/util/List;
+
+    move-result-object v0
+
+    .line 1884
+    .local v0, "temperatures":Ljava/util/List;, "Ljava/util/List<Landroid/os/Temperature;>;"
+    invoke-interface {v0}, Ljava/util/List;->iterator()Ljava/util/Iterator;
+
+    move-result-object v3
+
+    :goto_e
+    invoke-interface {v3}, Ljava/util/Iterator;->hasNext()Z
+
+    move-result v4
+
+    if-eqz v4, :cond_4e
+
+    invoke-interface {v3}, Ljava/util/Iterator;->next()Ljava/lang/Object;
+
+    move-result-object v4
+
+    check-cast v4, Landroid/os/Temperature;
+
+    .line 1885
+    .local v4, "temp":Landroid/os/Temperature;
+    new-instance v11, Landroid/os/StatsLogEventWrapper;
+
+    move-object v5, v11
+
+    move v6, p1
+
+    move-wide v7, p2
+
+    move-wide/from16 v9, p4
+
+    invoke-direct/range {v5 .. v10}, Landroid/os/StatsLogEventWrapper;-><init>(IJJ)V
+
+    move-object v5, v11
+
+    .line 1887
+    .local v5, "e":Landroid/os/StatsLogEventWrapper;
+    invoke-virtual {v4}, Landroid/os/Temperature;->getType()I
+
+    move-result v6
+
+    invoke-virtual {v5, v6}, Landroid/os/StatsLogEventWrapper;->writeInt(I)V
+
+    .line 1888
+    invoke-virtual {v4}, Landroid/os/Temperature;->getName()Ljava/lang/String;
+
+    move-result-object v6
+
+    invoke-virtual {v5, v6}, Landroid/os/StatsLogEventWrapper;->writeString(Ljava/lang/String;)V
+
+    .line 1889
+    invoke-virtual {v4}, Landroid/os/Temperature;->getValue()F
+
+    move-result v6
+
+    const/high16 v7, 0x41200000  # 10.0f
+
+    mul-float/2addr v6, v7
+
+    float-to-int v6, v6
+
+    invoke-virtual {v5, v6}, Landroid/os/StatsLogEventWrapper;->writeInt(I)V
+
+    .line 1890
+    invoke-virtual {v4}, Landroid/os/Temperature;->getStatus()I
+
+    move-result v6
+
+    invoke-virtual {v5, v6}, Landroid/os/StatsLogEventWrapper;->writeInt(I)V
+    :try_end_45
+    .catch Landroid/os/RemoteException; {:try_start_4 .. :try_end_45} :catch_55
+    .catchall {:try_start_4 .. :try_end_45} :catchall_51
+
+    .line 1891
+    move-object/from16 v6, p6
+
+    :try_start_47
+    invoke-interface {v6, v5}, Ljava/util/List;->add(Ljava/lang/Object;)Z
+    :try_end_4a
+    .catch Landroid/os/RemoteException; {:try_start_47 .. :try_end_4a} :catch_4c
+    .catchall {:try_start_47 .. :try_end_4a} :catchall_65
+
+    .line 1892
+    nop
+
+    .end local v4  # "temp":Landroid/os/Temperature;
+    .end local v5  # "e":Landroid/os/StatsLogEventWrapper;
+    goto :goto_e
+
+    .line 1893
+    .end local v0  # "temperatures":Ljava/util/List;, "Ljava/util/List<Landroid/os/Temperature;>;"
+    :catch_4c
+    move-exception v0
+
+    goto :goto_58
+
+    .line 1884
+    .restart local v0  # "temperatures":Ljava/util/List;, "Ljava/util/List<Landroid/os/Temperature;>;"
+    :cond_4e
+    move-object/from16 v6, p6
+
+    .line 1897
+    .end local v0  # "temperatures":Ljava/util/List;, "Ljava/util/List<Landroid/os/Temperature;>;"
+    goto :goto_60
+
+    :catchall_51
+    move-exception v0
+
+    move-object/from16 v6, p6
+
+    goto :goto_66
+
+    .line 1893
+    :catch_55
+    move-exception v0
+
+    move-object/from16 v6, p6
+
+    .line 1895
+    .local v0, "e":Landroid/os/RemoteException;
+    :goto_58
+    :try_start_58
+    const-string v3, "StatsCompanionService"
+
+    const-string v4, "Disconnected from thermal service. Cannot pull temperatures."
+
+    invoke-static {v3, v4}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
+    :try_end_5f
+    .catchall {:try_start_58 .. :try_end_5f} :catchall_65
+
+    .line 1897
+    nop
+
+    .end local v0  # "e":Landroid/os/RemoteException;
+    :goto_60
+    invoke-static {v1, v2}, Landroid/os/Binder;->restoreCallingIdentity(J)V
+
+    .line 1898
+    nop
+
+    .line 1899
+    return-void
+
+    .line 1897
+    :catchall_65
+    move-exception v0
+
+    :goto_66
+    invoke-static {v1, v2}, Landroid/os/Binder;->restoreCallingIdentity(J)V
+
+    throw v0
+.end method
+
+.method private pullTimeZoneDataInfo(IJJLjava/util/List;)V
+    .registers 15
+    .param p1, "tagId"  # I
+    .param p2, "elapsedNanos"  # J
+    .param p4, "wallClockNanos"  # J
+    .annotation system Ldalvik/annotation/Signature;
+        value = {
+            "(IJJ",
+            "Ljava/util/List<",
+            "Landroid/os/StatsLogEventWrapper;",
+            ">;)V"
+        }
+    .end annotation
+
+    .line 2138
+    .local p6, "pulledData":Ljava/util/List;, "Ljava/util/List<Landroid/os/StatsLogEventWrapper;>;"
     const-string v0, "Unknown"
 
-    .line 2186
+    .line 2140
+    .local v0, "tzDbVersion":Ljava/lang/String;
+    :try_start_2
+    invoke-static {}, Landroid/icu/util/TimeZone;->getTZDataVersion()Ljava/lang/String;
+
+    move-result-object v1
+    :try_end_6
+    .catch Ljava/lang/Exception; {:try_start_2 .. :try_end_6} :catch_8
+
+    move-object v0, v1
+
+    .line 2143
+    goto :goto_10
+
+    .line 2141
+    :catch_8
+    move-exception v1
+
+    .line 2142
+    .local v1, "e":Ljava/lang/Exception;
+    const-string v2, "StatsCompanionService"
+
+    const-string v3, "Getting tzdb version failed: "
+
+    invoke-static {v2, v3, v1}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+
+    .line 2145
+    .end local v1  # "e":Ljava/lang/Exception;
     :goto_10
     new-instance v7, Landroid/os/StatsLogEventWrapper;
 
@@ -8432,18 +9645,22 @@
 
     invoke-direct/range {v1 .. v6}, Landroid/os/StatsLogEventWrapper;-><init>(IJJ)V
 
-    .line 2187
-    invoke-virtual {v7, v0}, Landroid/os/StatsLogEventWrapper;->writeString(Ljava/lang/String;)V
+    .line 2146
+    .local v1, "e":Landroid/os/StatsLogEventWrapper;
+    invoke-virtual {v1, v0}, Landroid/os/StatsLogEventWrapper;->writeString(Ljava/lang/String;)V
 
-    .line 2188
-    invoke-interface {p6, v7}, Ljava/util/List;->add(Ljava/lang/Object;)Z
+    .line 2147
+    invoke-interface {p6, v1}, Ljava/util/List;->add(Ljava/lang/Object;)Z
 
-    .line 2189
+    .line 2148
     return-void
 .end method
 
 .method private pullWifiActivityInfo(IJJLjava/util/List;)V
-    .registers 17
+    .registers 19
+    .param p1, "tagId"  # I
+    .param p2, "elapsedNanos"  # J
+    .param p4, "wallClockNanos"  # J
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(IJJ",
@@ -8453,49 +9670,51 @@
         }
     .end annotation
 
-    .line 1068
+    .line 1066
+    .local p6, "pulledData":Ljava/util/List;, "Ljava/util/List<Landroid/os/StatsLogEventWrapper;>;"
     move-object v1, p0
 
     invoke-static {}, Landroid/os/Binder;->clearCallingIdentity()J
 
     move-result-wide v2
 
-    .line 1069
+    .line 1067
+    .local v2, "token":J
     monitor-enter p0
 
-    .line 1070
+    .line 1068
     :try_start_6
     iget-object v0, v1, Lcom/android/server/stats/StatsCompanionService;->mWifiManager:Landroid/net/wifi/IWifiManager;
 
     if-nez v0, :cond_17
 
-    .line 1071
+    .line 1069
     const-string/jumbo v0, "wifi"
 
-    .line 1073
+    .line 1071
     invoke-static {v0}, Landroid/os/ServiceManager;->getService(Ljava/lang/String;)Landroid/os/IBinder;
 
     move-result-object v0
 
-    .line 1072
+    .line 1070
     invoke-static {v0}, Landroid/net/wifi/IWifiManager$Stub;->asInterface(Landroid/os/IBinder;)Landroid/net/wifi/IWifiManager;
 
     move-result-object v0
 
     iput-object v0, v1, Lcom/android/server/stats/StatsCompanionService;->mWifiManager:Landroid/net/wifi/IWifiManager;
 
-    .line 1075
+    .line 1073
     :cond_17
     monitor-exit p0
     :try_end_18
-    .catchall {:try_start_6 .. :try_end_18} :catchall_7b
+    .catchall {:try_start_6 .. :try_end_18} :catchall_88
 
-    .line 1076
+    .line 1074
     iget-object v0, v1, Lcom/android/server/stats/StatsCompanionService;->mWifiManager:Landroid/net/wifi/IWifiManager;
 
-    if-eqz v0, :cond_7a
+    if-eqz v0, :cond_85
 
-    .line 1078
+    .line 1076
     :try_start_1c
     new-instance v0, Landroid/os/SynchronousResultReceiver;
 
@@ -8503,135 +9722,182 @@
 
     invoke-direct {v0, v4}, Landroid/os/SynchronousResultReceiver;-><init>(Ljava/lang/String;)V
 
-    .line 1079
-    iget-object v1, v1, Lcom/android/server/stats/StatsCompanionService;->mWifiManager:Landroid/net/wifi/IWifiManager;
+    .line 1077
+    .local v0, "wifiReceiver":Landroid/os/SynchronousResultReceiver;
+    iget-object v4, v1, Lcom/android/server/stats/StatsCompanionService;->mWifiManager:Landroid/net/wifi/IWifiManager;
 
-    invoke-interface {v1, v0}, Landroid/net/wifi/IWifiManager;->requestActivityInfo(Landroid/os/ResultReceiver;)V
+    invoke-interface {v4, v0}, Landroid/net/wifi/IWifiManager;->requestActivityInfo(Landroid/os/ResultReceiver;)V
 
-    .line 1080
+    .line 1078
     invoke-static {v0}, Lcom/android/server/stats/StatsCompanionService;->awaitControllerInfo(Landroid/os/SynchronousResultReceiver;)Landroid/os/Parcelable;
 
-    move-result-object v0
+    move-result-object v4
 
-    check-cast v0, Landroid/net/wifi/WifiActivityEnergyInfo;
+    check-cast v4, Landroid/net/wifi/WifiActivityEnergyInfo;
+
+    .line 1079
+    .local v4, "wifiInfo":Landroid/net/wifi/WifiActivityEnergyInfo;
+    new-instance v11, Landroid/os/StatsLogEventWrapper;
+
+    move-object v5, v11
+
+    move v6, p1
+
+    move-wide v7, p2
+
+    move-wide/from16 v9, p4
+
+    invoke-direct/range {v5 .. v10}, Landroid/os/StatsLogEventWrapper;-><init>(IJJ)V
+
+    move-object v5, v11
 
     .line 1081
-    new-instance v1, Landroid/os/StatsLogEventWrapper;
+    .local v5, "e":Landroid/os/StatsLogEventWrapper;
+    invoke-virtual {v4}, Landroid/net/wifi/WifiActivityEnergyInfo;->getTimeStamp()J
 
-    move-object v4, v1
+    move-result-wide v6
 
-    move v5, p1
+    invoke-virtual {v5, v6, v7}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
 
-    move-wide v6, p2
+    .line 1082
+    invoke-virtual {v4}, Landroid/net/wifi/WifiActivityEnergyInfo;->getStackState()I
 
-    move-wide v8, p4
+    move-result v6
 
-    invoke-direct/range {v4 .. v9}, Landroid/os/StatsLogEventWrapper;-><init>(IJJ)V
+    invoke-virtual {v5, v6}, Landroid/os/StatsLogEventWrapper;->writeInt(I)V
 
     .line 1083
-    invoke-virtual {v0}, Landroid/net/wifi/WifiActivityEnergyInfo;->getTimeStamp()J
+    invoke-virtual {v4}, Landroid/net/wifi/WifiActivityEnergyInfo;->getControllerTxTimeMillis()J
 
-    move-result-wide v4
+    move-result-wide v6
 
-    invoke-virtual {v1, v4, v5}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
+    invoke-virtual {v5, v6, v7}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
 
     .line 1084
-    invoke-virtual {v0}, Landroid/net/wifi/WifiActivityEnergyInfo;->getStackState()I
+    invoke-virtual {v4}, Landroid/net/wifi/WifiActivityEnergyInfo;->getControllerRxTimeMillis()J
 
-    move-result v4
+    move-result-wide v6
 
-    invoke-virtual {v1, v4}, Landroid/os/StatsLogEventWrapper;->writeInt(I)V
+    invoke-virtual {v5, v6, v7}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
 
     .line 1085
-    invoke-virtual {v0}, Landroid/net/wifi/WifiActivityEnergyInfo;->getControllerTxTimeMillis()J
+    invoke-virtual {v4}, Landroid/net/wifi/WifiActivityEnergyInfo;->getControllerIdleTimeMillis()J
 
-    move-result-wide v4
+    move-result-wide v6
 
-    invoke-virtual {v1, v4, v5}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
+    invoke-virtual {v5, v6, v7}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
 
     .line 1086
-    invoke-virtual {v0}, Landroid/net/wifi/WifiActivityEnergyInfo;->getControllerRxTimeMillis()J
+    invoke-virtual {v4}, Landroid/net/wifi/WifiActivityEnergyInfo;->getControllerEnergyUsed()J
 
-    move-result-wide v4
+    move-result-wide v6
 
-    invoke-virtual {v1, v4, v5}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
+    invoke-virtual {v5, v6, v7}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
+    :try_end_64
+    .catch Landroid/os/RemoteException; {:try_start_1c .. :try_end_64} :catch_71
+    .catchall {:try_start_1c .. :try_end_64} :catchall_6d
 
     .line 1087
-    invoke-virtual {v0}, Landroid/net/wifi/WifiActivityEnergyInfo;->getControllerIdleTimeMillis()J
+    move-object/from16 v6, p6
 
-    move-result-wide v4
+    :try_start_66
+    invoke-interface {v6, v5}, Ljava/util/List;->add(Ljava/lang/Object;)Z
+    :try_end_69
+    .catch Landroid/os/RemoteException; {:try_start_66 .. :try_end_69} :catch_6b
+    .catchall {:try_start_66 .. :try_end_69} :catchall_80
 
-    invoke-virtual {v1, v4, v5}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
+    .line 1093
+    nop
+
+    .end local v0  # "wifiReceiver":Landroid/os/SynchronousResultReceiver;
+    .end local v4  # "wifiInfo":Landroid/net/wifi/WifiActivityEnergyInfo;
+    .end local v5  # "e":Landroid/os/StatsLogEventWrapper;
+    goto :goto_7c
 
     .line 1088
-    invoke-virtual {v0}, Landroid/net/wifi/WifiActivityEnergyInfo;->getControllerEnergyUsed()J
+    :catch_6b
+    move-exception v0
 
-    move-result-wide v4
+    goto :goto_74
 
-    invoke-virtual {v1, v4, v5}, Landroid/os/StatsLogEventWrapper;->writeLong(J)V
+    .line 1093
+    :catchall_6d
+    move-exception v0
+
+    move-object/from16 v6, p6
+
+    goto :goto_81
+
+    .line 1088
+    :catch_71
+    move-exception v0
+
+    move-object/from16 v6, p6
 
     .line 1089
-    move-object/from16 v0, p6
+    .local v0, "e":Landroid/os/RemoteException;
+    :goto_74
+    :try_start_74
+    const-string v4, "StatsCompanionService"
 
-    invoke-interface {v0, v1}, Ljava/util/List;->add(Ljava/lang/Object;)Z
-    :try_end_67
-    .catch Landroid/os/RemoteException; {:try_start_1c .. :try_end_67} :catch_6a
-    .catchall {:try_start_1c .. :try_end_67} :catchall_68
+    const-string v5, "Pulling wifiManager for wifi controller activity energy info has error"
 
-    goto :goto_72
+    invoke-static {v4, v5, v0}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    :try_end_7b
+    .catchall {:try_start_74 .. :try_end_7b} :catchall_80
 
-    .line 1095
-    :catchall_68
-    move-exception v0
+    .line 1093
+    nop
 
-    goto :goto_76
-
-    .line 1090
-    :catch_6a
-    move-exception v0
-
-    .line 1091
-    :try_start_6b
-    const-string v1, "StatsCompanionService"
-
-    const-string v4, "Pulling wifiManager for wifi controller activity energy info has error"
-
-    invoke-static {v1, v4, v0}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
-    :try_end_72
-    .catchall {:try_start_6b .. :try_end_72} :catchall_68
-
-    .line 1095
-    :goto_72
+    .end local v0  # "e":Landroid/os/RemoteException;
+    :goto_7c
     invoke-static {v2, v3}, Landroid/os/Binder;->restoreCallingIdentity(J)V
+
+    .line 1094
+    goto :goto_87
+
+    .line 1093
+    :catchall_80
+    move-exception v0
+
+    :goto_81
+    invoke-static {v2, v3}, Landroid/os/Binder;->restoreCallingIdentity(J)V
+
+    throw v0
+
+    .line 1074
+    :cond_85
+    move-object/from16 v6, p6
 
     .line 1096
-    goto :goto_7a
-
-    .line 1095
-    :goto_76
-    invoke-static {v2, v3}, Landroid/os/Binder;->restoreCallingIdentity(J)V
-
-    throw v0
-
-    .line 1098
-    :cond_7a
-    :goto_7a
+    :goto_87
     return-void
 
-    .line 1075
-    :catchall_7b
+    .line 1073
+    :catchall_88
     move-exception v0
 
-    :try_start_7c
+    move-object/from16 v6, p6
+
+    :goto_8b
+    :try_start_8b
     monitor-exit p0
-    :try_end_7d
-    .catchall {:try_start_7c .. :try_end_7d} :catchall_7b
+    :try_end_8c
+    .catchall {:try_start_8b .. :try_end_8c} :catchall_8d
 
     throw v0
+
+    :catchall_8d
+    move-exception v0
+
+    goto :goto_8b
 .end method
 
 .method private pullWifiBytesTransfer(IJJLjava/util/List;)V
-    .registers 8
+    .registers 14
+    .param p1, "tagId"  # I
+    .param p2, "elapsedNanos"  # J
+    .param p4, "wallClockNanos"  # J
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(IJJ",
@@ -8641,123 +9907,138 @@
         }
     .end annotation
 
-    .line 881
-    const-string p2, "StatsCompanionService"
+    .line 879
+    .local p6, "pulledData":Ljava/util/List;, "Ljava/util/List<Landroid/os/StatsLogEventWrapper;>;"
+    const-string v0, "StatsCompanionService"
 
     invoke-static {}, Landroid/os/Binder;->clearCallingIdentity()J
 
-    move-result-wide p3
+    move-result-wide v1
+
+    .line 882
+    .local v1, "token":J
+    :try_start_6
+    const-class v3, Landroid/os/BatteryStatsInternal;
+
+    invoke-static {v3}, Lcom/android/server/LocalServices;->getService(Ljava/lang/Class;)Ljava/lang/Object;
+
+    move-result-object v3
+
+    check-cast v3, Landroid/os/BatteryStatsInternal;
+
+    .line 883
+    .local v3, "bs":Landroid/os/BatteryStatsInternal;
+    invoke-virtual {v3}, Landroid/os/BatteryStatsInternal;->getWifiIfaces()[Ljava/lang/String;
+
+    move-result-object v4
 
     .line 884
-    :try_start_6
-    const-class p5, Landroid/os/BatteryStatsInternal;
-
-    invoke-static {p5}, Lcom/android/server/LocalServices;->getService(Ljava/lang/Class;)Ljava/lang/Object;
-
-    move-result-object p5
-
-    check-cast p5, Landroid/os/BatteryStatsInternal;
-
-    .line 885
-    invoke-virtual {p5}, Landroid/os/BatteryStatsInternal;->getWifiIfaces()[Ljava/lang/String;
-
-    move-result-object p5
-
-    .line 886
-    array-length v0, p5
+    .local v4, "ifaces":[Ljava/lang/String;
+    array-length v5, v4
     :try_end_13
     .catch Landroid/os/RemoteException; {:try_start_6 .. :try_end_13} :catch_37
     .catchall {:try_start_6 .. :try_end_13} :catchall_35
 
-    if-nez v0, :cond_19
+    if-nez v5, :cond_19
 
-    .line 899
-    invoke-static {p3, p4}, Landroid/os/Binder;->restoreCallingIdentity(J)V
+    .line 897
+    invoke-static {v1, v2}, Landroid/os/Binder;->restoreCallingIdentity(J)V
 
-    .line 887
+    .line 885
     return-void
 
-    .line 889
+    .line 887
     :cond_19
     :try_start_19
-    iget-object v0, p0, Lcom/android/server/stats/StatsCompanionService;->mNetworkStatsService:Landroid/net/INetworkStatsService;
+    iget-object v5, p0, Lcom/android/server/stats/StatsCompanionService;->mNetworkStatsService:Landroid/net/INetworkStatsService;
 
-    if-nez v0, :cond_26
+    if-nez v5, :cond_26
 
-    .line 890
-    const-string p1, "NetworkStats Service is not available!"
+    .line 888
+    const-string v5, "NetworkStats Service is not available!"
 
-    invoke-static {p2, p1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v0, v5}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
     :try_end_22
     .catch Landroid/os/RemoteException; {:try_start_19 .. :try_end_22} :catch_37
     .catchall {:try_start_19 .. :try_end_22} :catchall_35
 
-    .line 899
-    invoke-static {p3, p4}, Landroid/os/Binder;->restoreCallingIdentity(J)V
+    .line 897
+    invoke-static {v1, v2}, Landroid/os/Binder;->restoreCallingIdentity(J)V
 
-    .line 891
+    .line 889
     return-void
 
-    .line 894
+    .line 892
     :cond_26
     :try_start_26
-    iget-object v0, p0, Lcom/android/server/stats/StatsCompanionService;->mNetworkStatsService:Landroid/net/INetworkStatsService;
+    iget-object v5, p0, Lcom/android/server/stats/StatsCompanionService;->mNetworkStatsService:Landroid/net/INetworkStatsService;
 
-    invoke-interface {v0, p5}, Landroid/net/INetworkStatsService;->getDetailedUidStats([Ljava/lang/String;)Landroid/net/NetworkStats;
+    invoke-interface {v5, v4}, Landroid/net/INetworkStatsService;->getDetailedUidStats([Ljava/lang/String;)Landroid/net/NetworkStats;
 
-    move-result-object p5
+    move-result-object v5
 
-    invoke-virtual {p5}, Landroid/net/NetworkStats;->groupedByUid()Landroid/net/NetworkStats;
+    invoke-virtual {v5}, Landroid/net/NetworkStats;->groupedByUid()Landroid/net/NetworkStats;
 
-    move-result-object p5
+    move-result-object v5
 
-    .line 895
-    const/4 v0, 0x0
+    .line 893
+    .local v5, "stats":Landroid/net/NetworkStats;
+    const/4 v6, 0x0
 
-    invoke-direct {p0, p1, p6, p5, v0}, Lcom/android/server/stats/StatsCompanionService;->addNetworkStats(ILjava/util/List;Landroid/net/NetworkStats;Z)V
+    invoke-direct {p0, p1, p6, v5, v6}, Lcom/android/server/stats/StatsCompanionService;->addNetworkStats(ILjava/util/List;Landroid/net/NetworkStats;Z)V
     :try_end_34
     .catch Landroid/os/RemoteException; {:try_start_26 .. :try_end_34} :catch_37
     .catchall {:try_start_26 .. :try_end_34} :catchall_35
 
-    goto :goto_3d
-
-    .line 899
-    :catchall_35
-    move-exception p1
-
-    goto :goto_42
-
-    .line 896
-    :catch_37
-    move-exception p1
-
     .line 897
-    :try_start_38
-    const-string p5, "Pulling netstats for wifi bytes has error"
+    .end local v3  # "bs":Landroid/os/BatteryStatsInternal;
+    .end local v4  # "ifaces":[Ljava/lang/String;
+    .end local v5  # "stats":Landroid/net/NetworkStats;
+    goto :goto_3e
 
-    invoke-static {p2, p5, p1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    :catchall_35
+    move-exception v0
+
+    goto :goto_43
+
+    .line 894
+    :catch_37
+    move-exception v3
+
+    .line 895
+    .local v3, "e":Landroid/os/RemoteException;
+    :try_start_38
+    const-string v4, "Pulling netstats for wifi bytes has error"
+
+    invoke-static {v0, v4, v3}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
     :try_end_3d
     .catchall {:try_start_38 .. :try_end_3d} :catchall_35
 
-    .line 899
-    :goto_3d
-    invoke-static {p3, p4}, Landroid/os/Binder;->restoreCallingIdentity(J)V
-
-    .line 900
+    .line 897
     nop
 
-    .line 901
-    return-void
+    .end local v3  # "e":Landroid/os/RemoteException;
+    :goto_3e
+    invoke-static {v1, v2}, Landroid/os/Binder;->restoreCallingIdentity(J)V
+
+    .line 898
+    nop
 
     .line 899
-    :goto_42
-    invoke-static {p3, p4}, Landroid/os/Binder;->restoreCallingIdentity(J)V
+    return-void
 
-    throw p1
+    .line 897
+    :goto_43
+    invoke-static {v1, v2}, Landroid/os/Binder;->restoreCallingIdentity(J)V
+
+    throw v0
 .end method
 
 .method private pullWifiBytesTransferByFgBg(IJJLjava/util/List;)V
-    .registers 8
+    .registers 14
+    .param p1, "tagId"  # I
+    .param p2, "elapsedNanos"  # J
+    .param p4, "wallClockNanos"  # J
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(IJJ",
@@ -8767,204 +10048,224 @@
         }
     .end annotation
 
-    .line 906
-    const-string p2, "StatsCompanionService"
+    .line 904
+    .local p6, "pulledData":Ljava/util/List;, "Ljava/util/List<Landroid/os/StatsLogEventWrapper;>;"
+    const-string v0, "StatsCompanionService"
 
     invoke-static {}, Landroid/os/Binder;->clearCallingIdentity()J
 
-    move-result-wide p3
+    move-result-wide v1
+
+    .line 906
+    .local v1, "token":J
+    :try_start_6
+    const-class v3, Landroid/os/BatteryStatsInternal;
+
+    invoke-static {v3}, Lcom/android/server/LocalServices;->getService(Ljava/lang/Class;)Ljava/lang/Object;
+
+    move-result-object v3
+
+    check-cast v3, Landroid/os/BatteryStatsInternal;
+
+    .line 907
+    .local v3, "bs":Landroid/os/BatteryStatsInternal;
+    invoke-virtual {v3}, Landroid/os/BatteryStatsInternal;->getWifiIfaces()[Ljava/lang/String;
+
+    move-result-object v4
 
     .line 908
-    :try_start_6
-    const-class p5, Landroid/os/BatteryStatsInternal;
-
-    invoke-static {p5}, Lcom/android/server/LocalServices;->getService(Ljava/lang/Class;)Ljava/lang/Object;
-
-    move-result-object p5
-
-    check-cast p5, Landroid/os/BatteryStatsInternal;
-
-    .line 909
-    invoke-virtual {p5}, Landroid/os/BatteryStatsInternal;->getWifiIfaces()[Ljava/lang/String;
-
-    move-result-object p5
-
-    .line 910
-    array-length v0, p5
+    .local v4, "ifaces":[Ljava/lang/String;
+    array-length v5, v4
     :try_end_13
     .catch Landroid/os/RemoteException; {:try_start_6 .. :try_end_13} :catch_37
     .catchall {:try_start_6 .. :try_end_13} :catchall_35
 
-    if-nez v0, :cond_19
+    if-nez v5, :cond_19
 
-    .line 923
-    invoke-static {p3, p4}, Landroid/os/Binder;->restoreCallingIdentity(J)V
+    .line 921
+    invoke-static {v1, v2}, Landroid/os/Binder;->restoreCallingIdentity(J)V
 
-    .line 911
+    .line 909
     return-void
 
-    .line 913
+    .line 911
     :cond_19
     :try_start_19
-    iget-object v0, p0, Lcom/android/server/stats/StatsCompanionService;->mNetworkStatsService:Landroid/net/INetworkStatsService;
+    iget-object v5, p0, Lcom/android/server/stats/StatsCompanionService;->mNetworkStatsService:Landroid/net/INetworkStatsService;
 
-    if-nez v0, :cond_26
+    if-nez v5, :cond_26
 
-    .line 914
-    const-string p1, "NetworkStats Service is not available!"
+    .line 912
+    const-string v5, "NetworkStats Service is not available!"
 
-    invoke-static {p2, p1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v0, v5}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
     :try_end_22
     .catch Landroid/os/RemoteException; {:try_start_19 .. :try_end_22} :catch_37
     .catchall {:try_start_19 .. :try_end_22} :catchall_35
 
-    .line 923
-    invoke-static {p3, p4}, Landroid/os/Binder;->restoreCallingIdentity(J)V
+    .line 921
+    invoke-static {v1, v2}, Landroid/os/Binder;->restoreCallingIdentity(J)V
 
-    .line 915
+    .line 913
     return-void
 
-    .line 917
+    .line 915
     :cond_26
     :try_start_26
-    iget-object v0, p0, Lcom/android/server/stats/StatsCompanionService;->mNetworkStatsService:Landroid/net/INetworkStatsService;
+    iget-object v5, p0, Lcom/android/server/stats/StatsCompanionService;->mNetworkStatsService:Landroid/net/INetworkStatsService;
 
-    .line 918
-    invoke-interface {v0, p5}, Landroid/net/INetworkStatsService;->getDetailedUidStats([Ljava/lang/String;)Landroid/net/NetworkStats;
+    .line 916
+    invoke-interface {v5, v4}, Landroid/net/INetworkStatsService;->getDetailedUidStats([Ljava/lang/String;)Landroid/net/NetworkStats;
 
-    move-result-object p5
+    move-result-object v5
+
+    .line 915
+    invoke-direct {p0, v5}, Lcom/android/server/stats/StatsCompanionService;->rollupNetworkStatsByFGBG(Landroid/net/NetworkStats;)Landroid/net/NetworkStats;
+
+    move-result-object v5
 
     .line 917
-    invoke-direct {p0, p5}, Lcom/android/server/stats/StatsCompanionService;->rollupNetworkStatsByFGBG(Landroid/net/NetworkStats;)Landroid/net/NetworkStats;
+    .local v5, "stats":Landroid/net/NetworkStats;
+    const/4 v6, 0x1
 
-    move-result-object p5
-
-    .line 919
-    const/4 v0, 0x1
-
-    invoke-direct {p0, p1, p6, p5, v0}, Lcom/android/server/stats/StatsCompanionService;->addNetworkStats(ILjava/util/List;Landroid/net/NetworkStats;Z)V
+    invoke-direct {p0, p1, p6, v5, v6}, Lcom/android/server/stats/StatsCompanionService;->addNetworkStats(ILjava/util/List;Landroid/net/NetworkStats;Z)V
     :try_end_34
     .catch Landroid/os/RemoteException; {:try_start_26 .. :try_end_34} :catch_37
     .catchall {:try_start_26 .. :try_end_34} :catchall_35
 
-    goto :goto_3d
-
-    .line 923
-    :catchall_35
-    move-exception p1
-
-    goto :goto_42
-
-    .line 920
-    :catch_37
-    move-exception p1
-
     .line 921
-    :try_start_38
-    const-string p5, "Pulling netstats for wifi bytes w/ fg/bg has error"
+    .end local v3  # "bs":Landroid/os/BatteryStatsInternal;
+    .end local v4  # "ifaces":[Ljava/lang/String;
+    .end local v5  # "stats":Landroid/net/NetworkStats;
+    goto :goto_3e
 
-    invoke-static {p2, p5, p1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    :catchall_35
+    move-exception v0
+
+    goto :goto_43
+
+    .line 918
+    :catch_37
+    move-exception v3
+
+    .line 919
+    .local v3, "e":Landroid/os/RemoteException;
+    :try_start_38
+    const-string v4, "Pulling netstats for wifi bytes w/ fg/bg has error"
+
+    invoke-static {v0, v4, v3}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
     :try_end_3d
     .catchall {:try_start_38 .. :try_end_3d} :catchall_35
 
-    .line 923
-    :goto_3d
-    invoke-static {p3, p4}, Landroid/os/Binder;->restoreCallingIdentity(J)V
-
-    .line 924
+    .line 921
     nop
 
-    .line 925
-    return-void
+    .end local v3  # "e":Landroid/os/RemoteException;
+    :goto_3e
+    invoke-static {v1, v2}, Landroid/os/Binder;->restoreCallingIdentity(J)V
+
+    .line 922
+    nop
 
     .line 923
-    :goto_42
-    invoke-static {p3, p4}, Landroid/os/Binder;->restoreCallingIdentity(J)V
+    return-void
 
-    throw p1
+    .line 921
+    :goto_43
+    invoke-static {v1, v2}, Landroid/os/Binder;->restoreCallingIdentity(J)V
+
+    throw v0
 .end method
 
 .method static readFully(Ljava/io/InputStream;[I)[B
-    .registers 6
+    .registers 8
+    .param p0, "stream"  # Ljava/io/InputStream;
+    .param p1, "outLen"  # [I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Ljava/io/IOException;
         }
     .end annotation
 
-    .line 1693
-    nop
+    .line 1652
+    const/4 v0, 0x0
 
-    .line 1694
+    .line 1653
+    .local v0, "pos":I
     invoke-virtual {p0}, Ljava/io/InputStream;->available()I
 
-    move-result v0
+    move-result v1
 
-    .line 1695
-    if-lez v0, :cond_a
+    .line 1654
+    .local v1, "initialAvail":I
+    if-lez v1, :cond_a
 
-    add-int/lit8 v0, v0, 0x1
+    add-int/lit8 v2, v1, 0x1
 
     goto :goto_c
 
     :cond_a
-    const/16 v0, 0x4000
+    const/16 v2, 0x4000
 
     :goto_c
-    new-array v0, v0, [B
+    new-array v2, v2, [B
 
-    const/4 v1, 0x0
+    .line 1656
+    .local v2, "data":[B
+    :goto_e
+    array-length v3, v2
 
-    move v2, v1
+    sub-int/2addr v3, v0
 
-    .line 1697
-    :goto_10
-    array-length v3, v0
-
-    sub-int/2addr v3, v2
-
-    invoke-virtual {p0, v0, v2, v3}, Ljava/io/InputStream;->read([BII)I
+    invoke-virtual {p0, v2, v0, v3}, Ljava/io/InputStream;->read([BII)I
 
     move-result v3
 
-    .line 1701
-    if-gez v3, :cond_1b
+    .line 1660
+    .local v3, "amt":I
+    const/4 v4, 0x0
 
-    .line 1705
-    aput v2, p1, v1
+    if-gez v3, :cond_1a
 
-    .line 1706
-    return-object v0
+    .line 1664
+    aput v0, p1, v4
 
-    .line 1708
-    :cond_1b
-    add-int/2addr v2, v3
+    .line 1665
+    return-object v2
 
-    .line 1709
-    array-length v3, v0
+    .line 1667
+    :cond_1a
+    add-int/2addr v0, v3
 
-    if-lt v2, v3, :cond_27
+    .line 1668
+    array-length v5, v2
 
-    .line 1710
-    add-int/lit16 v3, v2, 0x4000
+    if-lt v0, v5, :cond_26
 
-    new-array v3, v3, [B
+    .line 1669
+    add-int/lit16 v5, v0, 0x4000
 
-    .line 1714
-    invoke-static {v0, v1, v3, v1, v2}, Ljava/lang/System;->arraycopy(Ljava/lang/Object;ILjava/lang/Object;II)V
+    new-array v5, v5, [B
 
-    .line 1715
-    move-object v0, v3
+    .line 1673
+    .local v5, "newData":[B
+    invoke-static {v2, v4, v5, v4, v0}, Ljava/lang/System;->arraycopy(Ljava/lang/Object;ILjava/lang/Object;II)V
 
-    .line 1717
-    :cond_27
-    goto :goto_10
+    .line 1674
+    move-object v2, v5
+
+    .line 1676
+    .end local v3  # "amt":I
+    .end local v5  # "newData":[B
+    :cond_26
+    goto :goto_e
 .end method
 
 .method private readProcStatsHighWaterMark(I)J
-    .registers 8
+    .registers 9
+    .param p1, "section"  # I
 
-    .line 1598
+    .line 1596
     const-string v0, "StatsCompanionService"
 
     const-wide/16 v1, 0x0
@@ -8978,67 +10279,68 @@
 
     invoke-virtual {v3, v4}, Ljava/io/File;->listFiles(Ljava/io/FilenameFilter;)[Ljava/io/File;
 
-    move-result-object p1
+    move-result-object v3
 
-    .line 1601
-    if-eqz p1, :cond_46
+    .line 1599
+    .local v3, "files":[Ljava/io/File;
+    if-eqz v3, :cond_46
 
-    array-length v3, p1
+    array-length v4, v3
 
-    if-nez v3, :cond_15
+    if-nez v4, :cond_15
 
     goto :goto_46
 
-    .line 1604
+    .line 1602
     :cond_15
-    array-length v3, p1
+    array-length v4, v3
 
-    const/4 v4, 0x1
+    const/4 v5, 0x1
 
-    if-le v3, v4, :cond_2e
+    if-le v4, v5, :cond_2e
+
+    .line 1603
+    new-instance v4, Ljava/lang/StringBuilder;
+
+    invoke-direct {v4}, Ljava/lang/StringBuilder;-><init>()V
+
+    const-string v6, "Only 1 file expected for high water mark. Found "
+
+    invoke-virtual {v4, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    array-length v6, v3
+
+    invoke-virtual {v4, v6}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v4}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v4
+
+    invoke-static {v0, v4}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 1605
-    new-instance v3, Ljava/lang/StringBuilder;
-
-    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
-
-    const-string v5, "Only 1 file expected for high water mark. Found "
-
-    invoke-virtual {v3, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    array-length v5, p1
-
-    invoke-virtual {v3, v5}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
-
-    move-result-object v3
-
-    invoke-static {v0, v3}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;)I
-
-    .line 1607
     :cond_2e
-    const/4 v3, 0x0
+    const/4 v4, 0x0
 
-    aget-object p1, p1, v3
+    aget-object v4, v3, v4
 
-    invoke-virtual {p1}, Ljava/io/File;->getName()Ljava/lang/String;
+    invoke-virtual {v4}, Ljava/io/File;->getName()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v4
 
-    const-string v3, "_"
+    const-string v6, "_"
 
-    invoke-virtual {p1, v3}, Ljava/lang/String;->split(Ljava/lang/String;)[Ljava/lang/String;
+    invoke-virtual {v4, v6}, Ljava/lang/String;->split(Ljava/lang/String;)[Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v4
 
-    aget-object p1, p1, v4
+    aget-object v4, v4, v5
 
-    invoke-static {p1}, Ljava/lang/Long;->valueOf(Ljava/lang/String;)Ljava/lang/Long;
+    invoke-static {v4}, Ljava/lang/Long;->valueOf(Ljava/lang/String;)Ljava/lang/Long;
 
-    move-result-object p1
+    move-result-object v4
 
-    invoke-virtual {p1}, Ljava/lang/Long;->longValue()J
+    invoke-virtual {v4}, Ljava/lang/Long;->longValue()J
 
     move-result-wide v0
     :try_end_45
@@ -9047,43 +10349,49 @@
 
     return-wide v0
 
-    .line 1602
+    .line 1600
     :cond_46
     :goto_46
     return-wide v1
 
-    .line 1610
+    .line 1608
+    .end local v3  # "files":[Ljava/io/File;
     :catch_47
-    move-exception p1
+    move-exception v3
 
-    .line 1611
-    const-string v3, "Failed to parse file name."
+    .line 1609
+    .local v3, "e":Ljava/lang/NumberFormatException;
+    const-string v4, "Failed to parse file name."
 
-    invoke-static {v0, v3, p1}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    invoke-static {v0, v4, v3}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
     goto :goto_55
 
-    .line 1608
+    .line 1606
+    .end local v3  # "e":Ljava/lang/NumberFormatException;
     :catch_4e
-    move-exception p1
+    move-exception v3
 
-    .line 1609
-    const-string v3, "Failed to get procstats high watermark file."
+    .line 1607
+    .local v3, "e":Ljava/lang/SecurityException;
+    const-string v4, "Failed to get procstats high watermark file."
 
-    invoke-static {v0, v3, p1}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    invoke-static {v0, v4, v3}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
-    .line 1612
+    .line 1610
+    .end local v3  # "e":Ljava/lang/SecurityException;
     nop
 
-    .line 1613
+    .line 1611
     :goto_55
     return-wide v1
 .end method
 
 .method private rollupNetworkStatsByFGBG(Landroid/net/NetworkStats;)Landroid/net/NetworkStats;
     .registers 9
+    .param p1, "stats"  # Landroid/net/NetworkStats;
 
-    .line 803
+    .line 801
     new-instance v0, Landroid/net/NetworkStats;
 
     invoke-virtual {p1}, Landroid/net/NetworkStats;->getElapsedRealtime()J
@@ -9094,120 +10402,124 @@
 
     invoke-direct {v0, v1, v2, v3}, Landroid/net/NetworkStats;-><init>(JI)V
 
-    .line 805
+    .line 803
+    .local v0, "ret":Landroid/net/NetworkStats;
     new-instance v1, Landroid/net/NetworkStats$Entry;
 
     invoke-direct {v1}, Landroid/net/NetworkStats$Entry;-><init>()V
 
-    .line 806
+    .line 804
+    .local v1, "entry":Landroid/net/NetworkStats$Entry;
     sget-object v2, Landroid/net/NetworkStats;->IFACE_ALL:Ljava/lang/String;
 
     iput-object v2, v1, Landroid/net/NetworkStats$Entry;->iface:Ljava/lang/String;
 
-    .line 807
+    .line 805
     const/4 v2, 0x0
 
     iput v2, v1, Landroid/net/NetworkStats$Entry;->tag:I
 
-    .line 808
-    const/4 v3, -0x1
+    .line 806
+    const/4 v2, -0x1
 
-    iput v3, v1, Landroid/net/NetworkStats$Entry;->metered:I
+    iput v2, v1, Landroid/net/NetworkStats$Entry;->metered:I
+
+    .line 807
+    iput v2, v1, Landroid/net/NetworkStats$Entry;->roaming:I
 
     .line 809
-    iput v3, v1, Landroid/net/NetworkStats$Entry;->roaming:I
-
-    .line 811
     invoke-virtual {p1}, Landroid/net/NetworkStats;->size()I
 
-    move-result v3
+    move-result v2
+
+    .line 810
+    .local v2, "size":I
+    new-instance v3, Landroid/net/NetworkStats$Entry;
+
+    invoke-direct {v3}, Landroid/net/NetworkStats$Entry;-><init>()V
+
+    .line 811
+    .local v3, "recycle":Landroid/net/NetworkStats$Entry;
+    const/4 v4, 0x0
+
+    .local v4, "i":I
+    :goto_25
+    if-ge v4, v2, :cond_4d
 
     .line 812
-    new-instance v4, Landroid/net/NetworkStats$Entry;
+    invoke-virtual {p1, v4, v3}, Landroid/net/NetworkStats;->getValues(ILandroid/net/NetworkStats$Entry;)Landroid/net/NetworkStats$Entry;
 
-    invoke-direct {v4}, Landroid/net/NetworkStats$Entry;-><init>()V
-
-    .line 813
-    nop
-
-    :goto_25
-    if-ge v2, v3, :cond_4d
-
-    .line 814
-    invoke-virtual {p1, v2, v4}, Landroid/net/NetworkStats;->getValues(ILandroid/net/NetworkStats$Entry;)Landroid/net/NetworkStats$Entry;
-
-    .line 817
-    iget v5, v4, Landroid/net/NetworkStats$Entry;->tag:I
+    .line 815
+    iget v5, v3, Landroid/net/NetworkStats$Entry;->tag:I
 
     if-eqz v5, :cond_2f
 
     goto :goto_4a
 
-    .line 819
+    .line 817
     :cond_2f
-    iget v5, v4, Landroid/net/NetworkStats$Entry;->set:I
+    iget v5, v3, Landroid/net/NetworkStats$Entry;->set:I
 
     iput v5, v1, Landroid/net/NetworkStats$Entry;->set:I
 
-    .line 820
-    iget v5, v4, Landroid/net/NetworkStats$Entry;->uid:I
+    .line 818
+    iget v5, v3, Landroid/net/NetworkStats$Entry;->uid:I
 
     iput v5, v1, Landroid/net/NetworkStats$Entry;->uid:I
 
-    .line 821
-    iget-wide v5, v4, Landroid/net/NetworkStats$Entry;->rxBytes:J
+    .line 819
+    iget-wide v5, v3, Landroid/net/NetworkStats$Entry;->rxBytes:J
 
     iput-wide v5, v1, Landroid/net/NetworkStats$Entry;->rxBytes:J
 
-    .line 822
-    iget-wide v5, v4, Landroid/net/NetworkStats$Entry;->rxPackets:J
+    .line 820
+    iget-wide v5, v3, Landroid/net/NetworkStats$Entry;->rxPackets:J
 
     iput-wide v5, v1, Landroid/net/NetworkStats$Entry;->rxPackets:J
 
-    .line 823
-    iget-wide v5, v4, Landroid/net/NetworkStats$Entry;->txBytes:J
+    .line 821
+    iget-wide v5, v3, Landroid/net/NetworkStats$Entry;->txBytes:J
 
     iput-wide v5, v1, Landroid/net/NetworkStats$Entry;->txBytes:J
 
-    .line 824
-    iget-wide v5, v4, Landroid/net/NetworkStats$Entry;->txPackets:J
+    .line 822
+    iget-wide v5, v3, Landroid/net/NetworkStats$Entry;->txPackets:J
 
     iput-wide v5, v1, Landroid/net/NetworkStats$Entry;->txPackets:J
 
-    .line 826
+    .line 824
     invoke-virtual {v0, v1}, Landroid/net/NetworkStats;->combineValues(Landroid/net/NetworkStats$Entry;)Landroid/net/NetworkStats;
 
-    .line 813
+    .line 811
     :goto_4a
-    add-int/lit8 v2, v2, 0x1
+    add-int/lit8 v4, v4, 0x1
 
     goto :goto_25
 
-    .line 828
+    .line 826
+    .end local v4  # "i":I
     :cond_4d
     return-object v0
 .end method
 
 .method private sayHiToStatsd()V
-    .registers 18
+    .registers 11
 
-    .line 2617
-    move-object/from16 v1, p0
+    .line 2571
+    sget-object v0, Lcom/android/server/stats/StatsCompanionService;->sStatsdLock:Ljava/lang/Object;
 
-    sget-object v2, Lcom/android/server/stats/StatsCompanionService;->sStatsdLock:Ljava/lang/Object;
+    monitor-enter v0
 
-    monitor-enter v2
+    .line 2572
+    :try_start_3
+    sget-object v1, Lcom/android/server/stats/StatsCompanionService;->sStatsd:Landroid/os/IStatsManager;
 
-    .line 2618
-    :try_start_5
-    sget-object v0, Lcom/android/server/stats/StatsCompanionService;->sStatsd:Landroid/os/IStatsManager;
+    if-eqz v1, :cond_18
 
-    if-eqz v0, :cond_1a
+    .line 2573
+    const-string v1, "StatsCompanionService"
 
-    .line 2619
-    const-string v0, "StatsCompanionService"
-
-    const-string v1, "Trying to fetch statsd, but it was already fetched"
+    const-string v2, "Trying to fetch statsd, but it was already fetched"
 
     new-instance v3, Ljava/lang/IllegalStateException;
 
@@ -9215,166 +10527,119 @@
 
     invoke-direct {v3, v4}, Ljava/lang/IllegalStateException;-><init>(Ljava/lang/String;)V
 
-    invoke-static {v0, v1, v3}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    invoke-static {v1, v2, v3}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
-    .line 2622
-    monitor-exit v2
+    .line 2576
+    monitor-exit v0
 
     return-void
 
-    .line 2624
-    :cond_1a
+    .line 2578
+    :cond_18
     invoke-static {}, Lcom/android/server/stats/StatsCompanionService;->fetchStatsdService()Landroid/os/IStatsManager;
 
-    move-result-object v0
+    move-result-object v1
 
-    sput-object v0, Lcom/android/server/stats/StatsCompanionService;->sStatsd:Landroid/os/IStatsManager;
+    sput-object v1, Lcom/android/server/stats/StatsCompanionService;->sStatsd:Landroid/os/IStatsManager;
 
-    .line 2625
-    sget-object v0, Lcom/android/server/stats/StatsCompanionService;->sStatsd:Landroid/os/IStatsManager;
+    .line 2579
+    sget-object v1, Lcom/android/server/stats/StatsCompanionService;->sStatsd:Landroid/os/IStatsManager;
 
-    if-nez v0, :cond_2d
+    if-nez v1, :cond_2b
 
-    .line 2626
-    const-string v0, "StatsCompanionService"
+    .line 2580
+    const-string v1, "StatsCompanionService"
 
-    const-string v1, "Could not yet find statsd to tell it that StatsCompanion is alive."
+    const-string v2, "Could not yet find statsd to tell it that StatsCompanion is alive."
 
-    invoke-static {v0, v1}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v2}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 2629
-    monitor-exit v2
-    :try_end_2c
-    .catchall {:try_start_5 .. :try_end_2c} :catchall_c6
+    .line 2583
+    monitor-exit v0
+    :try_end_2a
+    .catchall {:try_start_3 .. :try_end_2a} :catchall_ca
 
     return-void
 
-    .line 2633
-    :cond_2d
-    :try_start_2d
-    sget-object v0, Lcom/android/server/stats/StatsCompanionService;->sStatsd:Landroid/os/IStatsManager;
+    .line 2587
+    :cond_2b
+    :try_start_2b
+    sget-object v1, Lcom/android/server/stats/StatsCompanionService;->sStatsd:Landroid/os/IStatsManager;
 
-    invoke-interface {v0}, Landroid/os/IStatsManager;->statsCompanionReady()V
-    :try_end_32
-    .catch Landroid/os/RemoteException; {:try_start_2d .. :try_end_32} :catch_b9
-    .catchall {:try_start_2d .. :try_end_32} :catchall_c6
+    invoke-interface {v1}, Landroid/os/IStatsManager;->statsCompanionReady()V
+    :try_end_30
+    .catch Landroid/os/RemoteException; {:try_start_2b .. :try_end_30} :catch_bd
+    .catchall {:try_start_2b .. :try_end_30} :catchall_ca
 
-    .line 2636
-    :try_start_32
-    sget-object v0, Lcom/android/server/stats/StatsCompanionService;->sStatsd:Landroid/os/IStatsManager;
+    .line 2590
+    :try_start_30
+    sget-object v1, Lcom/android/server/stats/StatsCompanionService;->sStatsd:Landroid/os/IStatsManager;
 
-    invoke-interface {v0}, Landroid/os/IStatsManager;->asBinder()Landroid/os/IBinder;
+    invoke-interface {v1}, Landroid/os/IStatsManager;->asBinder()Landroid/os/IBinder;
 
-    move-result-object v0
+    move-result-object v1
 
-    new-instance v3, Lcom/android/server/stats/StatsCompanionService$StatsdDeathRecipient;
+    new-instance v2, Lcom/android/server/stats/StatsCompanionService$StatsdDeathRecipient;
 
-    const/4 v4, 0x0
+    const/4 v3, 0x0
 
-    invoke-direct {v3, v1, v4}, Lcom/android/server/stats/StatsCompanionService$StatsdDeathRecipient;-><init>(Lcom/android/server/stats/StatsCompanionService;Lcom/android/server/stats/StatsCompanionService$1;)V
+    invoke-direct {v2, p0, v3}, Lcom/android/server/stats/StatsCompanionService$StatsdDeathRecipient;-><init>(Lcom/android/server/stats/StatsCompanionService;Lcom/android/server/stats/StatsCompanionService$1;)V
 
-    const/4 v4, 0x0
+    const/4 v3, 0x0
 
-    invoke-interface {v0, v3, v4}, Landroid/os/IBinder;->linkToDeath(Landroid/os/IBinder$DeathRecipient;I)V
-    :try_end_42
-    .catch Landroid/os/RemoteException; {:try_start_32 .. :try_end_42} :catch_43
-    .catchall {:try_start_32 .. :try_end_42} :catchall_c6
+    invoke-interface {v1, v2, v3}, Landroid/os/IBinder;->linkToDeath(Landroid/os/IBinder$DeathRecipient;I)V
+    :try_end_40
+    .catch Landroid/os/RemoteException; {:try_start_30 .. :try_end_40} :catch_41
+    .catchall {:try_start_30 .. :try_end_40} :catchall_ca
 
-    .line 2640
-    goto :goto_4e
+    .line 2594
+    goto :goto_4d
 
-    .line 2637
-    :catch_43
-    move-exception v0
+    .line 2591
+    :catch_41
+    move-exception v1
 
-    .line 2638
-    :try_start_44
-    const-string v3, "StatsCompanionService"
+    .line 2592
+    .local v1, "e":Landroid/os/RemoteException;
+    :try_start_42
+    const-string v2, "StatsCompanionService"
 
-    const-string v4, "linkToDeath(StatsdDeathRecipient) failed"
+    const-string/jumbo v3, "linkToDeath(StatsdDeathRecipient) failed"
 
-    invoke-static {v3, v4, v0}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    invoke-static {v2, v3, v1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
-    .line 2639
-    invoke-direct/range {p0 .. p0}, Lcom/android/server/stats/StatsCompanionService;->forgetEverythingLocked()V
+    .line 2593
+    invoke-direct {p0}, Lcom/android/server/stats/StatsCompanionService;->forgetEverythingLocked()V
 
-    .line 2642
-    :goto_4e
-    new-instance v8, Landroid/content/IntentFilter;
+    .line 2596
+    .end local v1  # "e":Landroid/os/RemoteException;
+    :goto_4d
+    new-instance v1, Landroid/content/IntentFilter;
 
-    const-string v0, "android.intent.action.PACKAGE_REPLACED"
+    const-string v2, "android.intent.action.PACKAGE_REPLACED"
 
-    invoke-direct {v8, v0}, Landroid/content/IntentFilter;-><init>(Ljava/lang/String;)V
+    invoke-direct {v1, v2}, Landroid/content/IntentFilter;-><init>(Ljava/lang/String;)V
 
-    .line 2643
-    const-string v0, "android.intent.action.PACKAGE_ADDED"
+    .line 2597
+    .local v1, "filter":Landroid/content/IntentFilter;
+    const-string v2, "android.intent.action.PACKAGE_ADDED"
 
-    invoke-virtual {v8, v0}, Landroid/content/IntentFilter;->addAction(Ljava/lang/String;)V
+    invoke-virtual {v1, v2}, Landroid/content/IntentFilter;->addAction(Ljava/lang/String;)V
 
-    .line 2644
-    const-string v0, "android.intent.action.PACKAGE_REMOVED"
+    .line 2598
+    const-string v2, "android.intent.action.PACKAGE_REMOVED"
 
-    invoke-virtual {v8, v0}, Landroid/content/IntentFilter;->addAction(Ljava/lang/String;)V
+    invoke-virtual {v1, v2}, Landroid/content/IntentFilter;->addAction(Ljava/lang/String;)V
 
-    .line 2645
-    const-string/jumbo v0, "package"
+    .line 2599
+    const-string/jumbo v2, "package"
 
-    invoke-virtual {v8, v0}, Landroid/content/IntentFilter;->addDataScheme(Ljava/lang/String;)V
+    invoke-virtual {v1, v2}, Landroid/content/IntentFilter;->addDataScheme(Ljava/lang/String;)V
 
-    .line 2646
-    iget-object v5, v1, Lcom/android/server/stats/StatsCompanionService;->mContext:Landroid/content/Context;
+    .line 2600
+    iget-object v3, p0, Lcom/android/server/stats/StatsCompanionService;->mContext:Landroid/content/Context;
 
-    iget-object v6, v1, Lcom/android/server/stats/StatsCompanionService;->mAppUpdateReceiver:Landroid/content/BroadcastReceiver;
-
-    sget-object v7, Landroid/os/UserHandle;->ALL:Landroid/os/UserHandle;
-
-    const/4 v9, 0x0
-
-    const/4 v10, 0x0
-
-    invoke-virtual/range {v5 .. v10}, Landroid/content/Context;->registerReceiverAsUser(Landroid/content/BroadcastReceiver;Landroid/os/UserHandle;Landroid/content/IntentFilter;Ljava/lang/String;Landroid/os/Handler;)Landroid/content/Intent;
-
-    .line 2653
-    new-instance v14, Landroid/content/IntentFilter;
-
-    const-string v0, "android.intent.action.USER_INITIALIZE"
-
-    invoke-direct {v14, v0}, Landroid/content/IntentFilter;-><init>(Ljava/lang/String;)V
-
-    .line 2654
-    const-string v0, "android.intent.action.USER_REMOVED"
-
-    invoke-virtual {v14, v0}, Landroid/content/IntentFilter;->addAction(Ljava/lang/String;)V
-
-    .line 2655
-    iget-object v11, v1, Lcom/android/server/stats/StatsCompanionService;->mContext:Landroid/content/Context;
-
-    iget-object v12, v1, Lcom/android/server/stats/StatsCompanionService;->mUserUpdateReceiver:Landroid/content/BroadcastReceiver;
-
-    sget-object v13, Landroid/os/UserHandle;->ALL:Landroid/os/UserHandle;
-
-    const/4 v15, 0x0
-
-    const/16 v16, 0x0
-
-    invoke-virtual/range {v11 .. v16}, Landroid/content/Context;->registerReceiverAsUser(Landroid/content/BroadcastReceiver;Landroid/os/UserHandle;Landroid/content/IntentFilter;Ljava/lang/String;Landroid/os/Handler;)Landroid/content/Intent;
-
-    .line 2659
-    new-instance v6, Landroid/content/IntentFilter;
-
-    const-string v0, "android.intent.action.REBOOT"
-
-    invoke-direct {v6, v0}, Landroid/content/IntentFilter;-><init>(Ljava/lang/String;)V
-
-    .line 2660
-    const-string v0, "android.intent.action.ACTION_SHUTDOWN"
-
-    invoke-virtual {v6, v0}, Landroid/content/IntentFilter;->addAction(Ljava/lang/String;)V
-
-    .line 2661
-    iget-object v3, v1, Lcom/android/server/stats/StatsCompanionService;->mContext:Landroid/content/Context;
-
-    iget-object v4, v1, Lcom/android/server/stats/StatsCompanionService;->mShutdownEventReceiver:Lcom/android/server/stats/StatsCompanionService$ShutdownEventReceiver;
+    iget-object v4, p0, Lcom/android/server/stats/StatsCompanionService;->mAppUpdateReceiver:Landroid/content/BroadcastReceiver;
 
     sget-object v5, Landroid/os/UserHandle;->ALL:Landroid/os/UserHandle;
 
@@ -9382,92 +10647,165 @@
 
     const/4 v8, 0x0
 
+    move-object v6, v1
+
     invoke-virtual/range {v3 .. v8}, Landroid/content/Context;->registerReceiverAsUser(Landroid/content/BroadcastReceiver;Landroid/os/UserHandle;Landroid/content/IntentFilter;Ljava/lang/String;Landroid/os/Handler;)Landroid/content/Intent;
 
-    .line 2663
+    .line 2607
+    new-instance v2, Landroid/content/IntentFilter;
+
+    const-string v3, "android.intent.action.USER_INITIALIZE"
+
+    invoke-direct {v2, v3}, Landroid/content/IntentFilter;-><init>(Ljava/lang/String;)V
+
+    move-object v1, v2
+
+    .line 2608
+    const-string v2, "android.intent.action.USER_REMOVED"
+
+    invoke-virtual {v1, v2}, Landroid/content/IntentFilter;->addAction(Ljava/lang/String;)V
+
+    .line 2609
+    iget-object v4, p0, Lcom/android/server/stats/StatsCompanionService;->mContext:Landroid/content/Context;
+
+    iget-object v5, p0, Lcom/android/server/stats/StatsCompanionService;->mUserUpdateReceiver:Landroid/content/BroadcastReceiver;
+
+    sget-object v6, Landroid/os/UserHandle;->ALL:Landroid/os/UserHandle;
+
+    const/4 v8, 0x0
+
+    const/4 v9, 0x0
+
+    move-object v7, v1
+
+    invoke-virtual/range {v4 .. v9}, Landroid/content/Context;->registerReceiverAsUser(Landroid/content/BroadcastReceiver;Landroid/os/UserHandle;Landroid/content/IntentFilter;Ljava/lang/String;Landroid/os/Handler;)Landroid/content/Intent;
+
+    .line 2613
+    new-instance v2, Landroid/content/IntentFilter;
+
+    const-string v3, "android.intent.action.REBOOT"
+
+    invoke-direct {v2, v3}, Landroid/content/IntentFilter;-><init>(Ljava/lang/String;)V
+
+    move-object v1, v2
+
+    .line 2614
+    const-string v2, "android.intent.action.ACTION_SHUTDOWN"
+
+    invoke-virtual {v1, v2}, Landroid/content/IntentFilter;->addAction(Ljava/lang/String;)V
+
+    .line 2615
+    iget-object v4, p0, Lcom/android/server/stats/StatsCompanionService;->mContext:Landroid/content/Context;
+
+    iget-object v5, p0, Lcom/android/server/stats/StatsCompanionService;->mShutdownEventReceiver:Lcom/android/server/stats/StatsCompanionService$ShutdownEventReceiver;
+
+    sget-object v6, Landroid/os/UserHandle;->ALL:Landroid/os/UserHandle;
+
+    const/4 v8, 0x0
+
+    const/4 v9, 0x0
+
+    move-object v7, v1
+
+    invoke-virtual/range {v4 .. v9}, Landroid/content/Context;->registerReceiverAsUser(Landroid/content/BroadcastReceiver;Landroid/os/UserHandle;Landroid/content/IntentFilter;Ljava/lang/String;Landroid/os/Handler;)Landroid/content/Intent;
+
+    .line 2617
     invoke-static {}, Landroid/os/Binder;->clearCallingIdentity()J
 
-    move-result-wide v3
-    :try_end_a3
-    .catch Landroid/os/RemoteException; {:try_start_44 .. :try_end_a3} :catch_b9
-    .catchall {:try_start_44 .. :try_end_a3} :catchall_c6
+    move-result-wide v2
+    :try_end_a6
+    .catch Landroid/os/RemoteException; {:try_start_42 .. :try_end_a6} :catch_bd
+    .catchall {:try_start_42 .. :try_end_a6} :catchall_ca
 
-    .line 2667
-    :try_start_a3
-    iget-object v0, v1, Lcom/android/server/stats/StatsCompanionService;->mContext:Landroid/content/Context;
+    .line 2621
+    .local v2, "token":J
+    :try_start_a6
+    iget-object v4, p0, Lcom/android/server/stats/StatsCompanionService;->mContext:Landroid/content/Context;
 
-    invoke-direct {v1, v0}, Lcom/android/server/stats/StatsCompanionService;->informAllUidsLocked(Landroid/content/Context;)V
-    :try_end_a8
-    .catchall {:try_start_a3 .. :try_end_a8} :catchall_b4
+    invoke-direct {p0, v4}, Lcom/android/server/stats/StatsCompanionService;->informAllUidsLocked(Landroid/content/Context;)V
+    :try_end_ab
+    .catchall {:try_start_a6 .. :try_end_ab} :catchall_b8
 
-    .line 2669
-    :try_start_a8
-    invoke-static {v3, v4}, Lcom/android/server/stats/StatsCompanionService;->restoreCallingIdentity(J)V
+    .line 2623
+    :try_start_ab
+    invoke-static {v2, v3}, Lcom/android/server/stats/StatsCompanionService;->restoreCallingIdentity(J)V
 
-    .line 2670
+    .line 2624
     nop
 
-    .line 2671
-    const-string v0, "StatsCompanionService"
+    .line 2625
+    const-string v4, "StatsCompanionService"
 
-    const-string v3, "Told statsd that StatsCompanionService is alive."
+    const-string v5, "Told statsd that StatsCompanionService is alive."
 
-    invoke-static {v0, v3}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v4, v5}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 2675
-    goto :goto_c4
+    .line 2629
+    nop
 
-    .line 2669
-    :catchall_b4
-    move-exception v0
+    .end local v1  # "filter":Landroid/content/IntentFilter;
+    .end local v2  # "token":J
+    goto :goto_c8
 
-    invoke-static {v3, v4}, Lcom/android/server/stats/StatsCompanionService;->restoreCallingIdentity(J)V
+    .line 2623
+    .restart local v1  # "filter":Landroid/content/IntentFilter;
+    .restart local v2  # "token":J
+    :catchall_b8
+    move-exception v4
 
-    throw v0
-    :try_end_b9
-    .catch Landroid/os/RemoteException; {:try_start_a8 .. :try_end_b9} :catch_b9
-    .catchall {:try_start_a8 .. :try_end_b9} :catchall_c6
+    invoke-static {v2, v3}, Lcom/android/server/stats/StatsCompanionService;->restoreCallingIdentity(J)V
 
-    .line 2672
-    :catch_b9
-    move-exception v0
+    .end local p0  # "this":Lcom/android/server/stats/StatsCompanionService;
+    throw v4
+    :try_end_bd
+    .catch Landroid/os/RemoteException; {:try_start_ab .. :try_end_bd} :catch_bd
+    .catchall {:try_start_ab .. :try_end_bd} :catchall_ca
 
-    .line 2673
-    :try_start_ba
-    const-string v3, "StatsCompanionService"
+    .line 2626
+    .end local v1  # "filter":Landroid/content/IntentFilter;
+    .end local v2  # "token":J
+    .restart local p0  # "this":Lcom/android/server/stats/StatsCompanionService;
+    :catch_bd
+    move-exception v1
 
-    const-string v4, "Failed to inform statsd that statscompanion is ready"
+    .line 2627
+    .local v1, "e":Landroid/os/RemoteException;
+    :try_start_be
+    const-string v2, "StatsCompanionService"
 
-    invoke-static {v3, v4, v0}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    const-string v3, "Failed to inform statsd that statscompanion is ready"
 
-    .line 2674
-    invoke-direct/range {p0 .. p0}, Lcom/android/server/stats/StatsCompanionService;->forgetEverythingLocked()V
+    invoke-static {v2, v3, v1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
-    .line 2676
-    :goto_c4
-    monitor-exit v2
+    .line 2628
+    invoke-direct {p0}, Lcom/android/server/stats/StatsCompanionService;->forgetEverythingLocked()V
 
-    .line 2677
+    .line 2630
+    .end local v1  # "e":Landroid/os/RemoteException;
+    :goto_c8
+    monitor-exit v0
+
+    .line 2631
     return-void
 
-    .line 2676
-    :catchall_c6
-    move-exception v0
+    .line 2630
+    :catchall_ca
+    move-exception v1
 
-    monitor-exit v2
-    :try_end_c8
-    .catchall {:try_start_ba .. :try_end_c8} :catchall_c6
+    monitor-exit v0
+    :try_end_cc
+    .catchall {:try_start_be .. :try_end_cc} :catchall_ca
 
-    throw v0
+    throw v1
 .end method
 
 .method private systemReady()V
     .registers 1
 
-    .line 2609
+    .line 2563
     invoke-direct {p0}, Lcom/android/server/stats/StatsCompanionService;->sayHiToStatsd()V
 
-    .line 2610
+    .line 2564
     return-void
 .end method
 
@@ -9482,22 +10820,25 @@
         }
     .end annotation
 
-    .line 449
+    .line 447
+    .local p0, "list":Ljava/util/List;, "Ljava/util/List<Ljava/lang/Integer;>;"
     invoke-interface {p0}, Ljava/util/List;->size()I
 
     move-result v0
 
     new-array v0, v0, [I
 
-    .line 450
+    .line 448
+    .local v0, "ret":[I
     const/4 v1, 0x0
 
+    .local v1, "i":I
     :goto_7
     array-length v2, v0
 
     if-ge v1, v2, :cond_19
 
-    .line 451
+    .line 449
     invoke-interface {p0, v1}, Ljava/util/List;->get(I)Ljava/lang/Object;
 
     move-result-object v2
@@ -9510,12 +10851,13 @@
 
     aput v2, v0, v1
 
-    .line 450
+    .line 448
     add-int/lit8 v1, v1, 0x1
 
     goto :goto_7
 
-    .line 453
+    .line 451
+    .end local v1  # "i":I
     :cond_19
     return-object v0
 .end method
@@ -9531,22 +10873,25 @@
         }
     .end annotation
 
-    .line 457
+    .line 455
+    .local p0, "list":Ljava/util/List;, "Ljava/util/List<Ljava/lang/Long;>;"
     invoke-interface {p0}, Ljava/util/List;->size()I
 
     move-result v0
 
     new-array v0, v0, [J
 
-    .line 458
+    .line 456
+    .local v0, "ret":[J
     const/4 v1, 0x0
 
+    .local v1, "i":I
     :goto_7
     array-length v2, v0
 
     if-ge v1, v2, :cond_19
 
-    .line 459
+    .line 457
     invoke-interface {p0, v1}, Ljava/util/List;->get(I)Ljava/lang/Object;
 
     move-result-object v2
@@ -9559,87 +10904,15 @@
 
     aput-wide v2, v0, v1
 
-    .line 458
+    .line 456
     add-int/lit8 v1, v1, 0x1
 
     goto :goto_7
 
-    .line 461
+    .line 459
+    .end local v1  # "i":I
     :cond_19
     return-object v0
-.end method
-
-.method static unpackStreamedData(IJJLjava/util/List;Ljava/util/List;)V
-    .registers 16
-    .annotation system Ldalvik/annotation/Signature;
-        value = {
-            "(IJJ",
-            "Ljava/util/List<",
-            "Landroid/os/StatsLogEventWrapper;",
-            ">;",
-            "Ljava/util/List<",
-            "Landroid/os/ParcelFileDescriptor;",
-            ">;)V"
-        }
-    .end annotation
-
-    .annotation system Ldalvik/annotation/Throws;
-        value = {
-            Ljava/io/IOException;
-        }
-    .end annotation
-
-    .line 1682
-    new-instance v0, Landroid/os/ParcelFileDescriptor$AutoCloseInputStream;
-
-    .line 1683
-    const/4 v1, 0x0
-
-    invoke-interface {p6, v1}, Ljava/util/List;->get(I)Ljava/lang/Object;
-
-    move-result-object p6
-
-    check-cast p6, Landroid/os/ParcelFileDescriptor;
-
-    invoke-direct {v0, p6}, Landroid/os/ParcelFileDescriptor$AutoCloseInputStream;-><init>(Landroid/os/ParcelFileDescriptor;)V
-
-    .line 1684
-    const/4 p6, 0x1
-
-    new-array p6, p6, [I
-
-    .line 1685
-    invoke-static {v0, p6}, Lcom/android/server/stats/StatsCompanionService;->readFully(Ljava/io/InputStream;[I)[B
-
-    move-result-object v0
-
-    .line 1686
-    new-instance v8, Landroid/os/StatsLogEventWrapper;
-
-    move-object v2, v8
-
-    move v3, p0
-
-    move-wide v4, p1
-
-    move-wide v6, p3
-
-    invoke-direct/range {v2 .. v7}, Landroid/os/StatsLogEventWrapper;-><init>(IJJ)V
-
-    .line 1688
-    aget p0, p6, v1
-
-    invoke-static {v0, p0}, Ljava/util/Arrays;->copyOf([BI)[B
-
-    move-result-object p0
-
-    invoke-virtual {v8, p0}, Landroid/os/StatsLogEventWrapper;->writeStorage([B)V
-
-    .line 1689
-    invoke-interface {p5, v8}, Ljava/util/List;->add(Ljava/lang/Object;)Z
-
-    .line 1690
-    return-void
 .end method
 
 
@@ -9647,15 +10920,16 @@
 .method public cancelAlarmForSubscriberTriggering()V
     .registers 5
 
-    .line 733
+    .line 731
     invoke-direct {p0}, Lcom/android/server/stats/StatsCompanionService;->enforceCallingPermission()V
 
-    .line 737
+    .line 735
     invoke-static {}, Landroid/os/Binder;->clearCallingIdentity()J
 
     move-result-wide v0
 
-    .line 739
+    .line 737
+    .local v0, "callingToken":J
     :try_start_7
     iget-object v2, p0, Lcom/android/server/stats/StatsCompanionService;->mAlarmManager:Landroid/app/AlarmManager;
 
@@ -9665,16 +10939,16 @@
     :try_end_e
     .catchall {:try_start_7 .. :try_end_e} :catchall_13
 
-    .line 741
+    .line 739
     invoke-static {v0, v1}, Landroid/os/Binder;->restoreCallingIdentity(J)V
 
-    .line 742
+    .line 740
     nop
 
-    .line 743
+    .line 741
     return-void
 
-    .line 741
+    .line 739
     :catchall_13
     move-exception v2
 
@@ -9686,15 +10960,16 @@
 .method public cancelAnomalyAlarm()V
     .registers 5
 
-    .line 702
+    .line 700
     invoke-direct {p0}, Lcom/android/server/stats/StatsCompanionService;->enforceCallingPermission()V
 
-    .line 704
+    .line 702
     invoke-static {}, Landroid/os/Binder;->clearCallingIdentity()J
 
     move-result-wide v0
 
-    .line 706
+    .line 704
+    .local v0, "callingToken":J
     :try_start_7
     iget-object v2, p0, Lcom/android/server/stats/StatsCompanionService;->mAlarmManager:Landroid/app/AlarmManager;
 
@@ -9704,16 +10979,16 @@
     :try_end_e
     .catchall {:try_start_7 .. :try_end_e} :catchall_13
 
-    .line 708
+    .line 706
     invoke-static {v0, v1}, Landroid/os/Binder;->restoreCallingIdentity(J)V
 
-    .line 709
+    .line 707
     nop
 
-    .line 710
+    .line 708
     return-void
 
-    .line 708
+    .line 706
     :catchall_13
     move-exception v2
 
@@ -9725,15 +11000,16 @@
 .method public cancelPullingAlarm()V
     .registers 5
 
-    .line 765
+    .line 763
     invoke-direct {p0}, Lcom/android/server/stats/StatsCompanionService;->enforceCallingPermission()V
 
-    .line 769
+    .line 767
     invoke-static {}, Landroid/os/Binder;->clearCallingIdentity()J
 
     move-result-wide v0
 
-    .line 771
+    .line 769
+    .local v0, "callingToken":J
     :try_start_7
     iget-object v2, p0, Lcom/android/server/stats/StatsCompanionService;->mAlarmManager:Landroid/app/AlarmManager;
 
@@ -9743,16 +11019,16 @@
     :try_end_e
     .catchall {:try_start_7 .. :try_end_e} :catchall_13
 
-    .line 773
+    .line 771
     invoke-static {v0, v1}, Landroid/os/Binder;->restoreCallingIdentity(J)V
 
-    .line 774
+    .line 772
     nop
 
-    .line 775
+    .line 773
     return-void
 
-    .line 773
+    .line 771
     :catchall_13
     move-exception v2
 
@@ -9762,1100 +11038,1114 @@
 .end method
 
 .method protected dump(Ljava/io/FileDescriptor;Ljava/io/PrintWriter;[Ljava/lang/String;)V
-    .registers 11
+    .registers 13
+    .param p1, "fd"  # Ljava/io/FileDescriptor;
+    .param p2, "writer"  # Ljava/io/PrintWriter;
+    .param p3, "args"  # [Ljava/lang/String;
 
-    .line 2736
-    iget-object p1, p0, Lcom/android/server/stats/StatsCompanionService;->mContext:Landroid/content/Context;
+    .line 2690
+    iget-object v0, p0, Lcom/android/server/stats/StatsCompanionService;->mContext:Landroid/content/Context;
 
-    const-string p3, "StatsCompanionService"
+    const-string v1, "StatsCompanionService"
 
-    invoke-static {p1, p3, p2}, Lcom/android/internal/util/DumpUtils;->checkDumpPermission(Landroid/content/Context;Ljava/lang/String;Ljava/io/PrintWriter;)Z
-
-    move-result p1
-
-    if-nez p1, :cond_b
-
-    return-void
-
-    .line 2738
-    :cond_b
-    sget-object p1, Lcom/android/server/stats/StatsCompanionService;->sStatsdLock:Ljava/lang/Object;
-
-    monitor-enter p1
-
-    .line 2739
-    :try_start_e
-    new-instance p3, Ljava/lang/StringBuilder;
-
-    invoke-direct {p3}, Ljava/lang/StringBuilder;-><init>()V
-
-    const-string v0, "Number of configuration files deleted: "
-
-    invoke-virtual {p3, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    iget-object v0, p0, Lcom/android/server/stats/StatsCompanionService;->mDeletedFiles:Ljava/util/HashMap;
-
-    .line 2740
-    invoke-virtual {v0}, Ljava/util/HashMap;->size()I
+    invoke-static {v0, v1, p2}, Lcom/android/internal/util/DumpUtils;->checkDumpPermission(Landroid/content/Context;Ljava/lang/String;Ljava/io/PrintWriter;)Z
 
     move-result v0
 
-    invoke-virtual {p3, v0}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    if-nez v0, :cond_b
 
-    invoke-virtual {p3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    return-void
 
-    move-result-object p3
+    .line 2692
+    :cond_b
+    sget-object v0, Lcom/android/server/stats/StatsCompanionService;->sStatsdLock:Ljava/lang/Object;
 
-    .line 2739
-    invoke-virtual {p2, p3}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    monitor-enter v0
 
-    .line 2741
-    iget-object p3, p0, Lcom/android/server/stats/StatsCompanionService;->mDeletedFiles:Ljava/util/HashMap;
+    .line 2693
+    :try_start_e
+    new-instance v1, Ljava/lang/StringBuilder;
 
-    invoke-virtual {p3}, Ljava/util/HashMap;->size()I
+    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
 
-    move-result p3
+    const-string v2, "Number of configuration files deleted: "
 
-    if-lez p3, :cond_35
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    .line 2742
-    const-string p3, "  timestamp, deleted file name"
+    iget-object v2, p0, Lcom/android/server/stats/StatsCompanionService;->mDeletedFiles:Ljava/util/HashMap;
 
-    invoke-virtual {p2, p3}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
-
-    .line 2745
-    :cond_35
-    invoke-static {}, Landroid/os/SystemClock;->currentThreadTimeMillis()J
-
-    move-result-wide v0
-
-    invoke-static {}, Landroid/os/SystemClock;->elapsedRealtime()J
-
-    move-result-wide v2
-
-    sub-long/2addr v0, v2
-
-    .line 2746
-    iget-object p3, p0, Lcom/android/server/stats/StatsCompanionService;->mDeletedFiles:Ljava/util/HashMap;
-
-    invoke-virtual {p3}, Ljava/util/HashMap;->keySet()Ljava/util/Set;
-
-    move-result-object p3
-
-    invoke-interface {p3}, Ljava/util/Set;->iterator()Ljava/util/Iterator;
-
-    move-result-object p3
-
-    :goto_48
-    invoke-interface {p3}, Ljava/util/Iterator;->hasNext()Z
+    .line 2694
+    invoke-virtual {v2}, Ljava/util/HashMap;->size()I
 
     move-result v2
 
-    if-eqz v2, :cond_7e
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    invoke-interface {p3}, Ljava/util/Iterator;->next()Ljava/lang/Object;
+    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v2
+    move-result-object v1
 
-    check-cast v2, Ljava/lang/Long;
+    .line 2693
+    invoke-virtual {p2, v1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
-    .line 2747
-    invoke-virtual {v2}, Ljava/lang/Long;->longValue()J
+    .line 2695
+    iget-object v1, p0, Lcom/android/server/stats/StatsCompanionService;->mDeletedFiles:Ljava/util/HashMap;
+
+    invoke-virtual {v1}, Ljava/util/HashMap;->size()I
+
+    move-result v1
+
+    if-lez v1, :cond_35
+
+    .line 2696
+    const-string v1, "  timestamp, deleted file name"
+
+    invoke-virtual {p2, v1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+
+    .line 2699
+    :cond_35
+    invoke-static {}, Landroid/os/SystemClock;->currentThreadTimeMillis()J
+
+    move-result-wide v1
+
+    invoke-static {}, Landroid/os/SystemClock;->elapsedRealtime()J
 
     move-result-wide v3
 
-    add-long/2addr v3, v0
+    sub-long/2addr v1, v3
 
-    .line 2748
-    new-instance v5, Ljava/lang/StringBuilder;
-
-    invoke-direct {v5}, Ljava/lang/StringBuilder;-><init>()V
-
-    const-string v6, "  "
-
-    invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v5, v3, v4}, Ljava/lang/StringBuilder;->append(J)Ljava/lang/StringBuilder;
-
-    const-string v3, ", "
-
-    invoke-virtual {v5, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
+    .line 2700
+    .local v1, "lastBootMillis":J
     iget-object v3, p0, Lcom/android/server/stats/StatsCompanionService;->mDeletedFiles:Ljava/util/HashMap;
 
-    .line 2749
-    invoke-virtual {v3, v2}, Ljava/util/HashMap;->get(Ljava/lang/Object;)Ljava/lang/Object;
+    invoke-virtual {v3}, Ljava/util/HashMap;->keySet()Ljava/util/Set;
 
-    move-result-object v2
+    move-result-object v3
 
-    check-cast v2, Ljava/lang/String;
+    invoke-interface {v3}, Ljava/util/Set;->iterator()Ljava/util/Iterator;
 
-    invoke-virtual {v5, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    move-result-object v3
 
-    invoke-virtual {v5}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    :goto_48
+    invoke-interface {v3}, Ljava/util/Iterator;->hasNext()Z
 
-    move-result-object v2
+    move-result v4
 
-    .line 2748
-    invoke-virtual {p2, v2}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    if-eqz v4, :cond_7e
 
-    .line 2750
+    invoke-interface {v3}, Ljava/util/Iterator;->next()Ljava/lang/Object;
+
+    move-result-object v4
+
+    check-cast v4, Ljava/lang/Long;
+
+    .line 2701
+    .local v4, "elapsedMillis":Ljava/lang/Long;
+    invoke-virtual {v4}, Ljava/lang/Long;->longValue()J
+
+    move-result-wide v5
+
+    add-long/2addr v5, v1
+
+    .line 2702
+    .local v5, "deletionMillis":J
+    new-instance v7, Ljava/lang/StringBuilder;
+
+    invoke-direct {v7}, Ljava/lang/StringBuilder;-><init>()V
+
+    const-string v8, "  "
+
+    invoke-virtual {v7, v8}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v7, v5, v6}, Ljava/lang/StringBuilder;->append(J)Ljava/lang/StringBuilder;
+
+    const-string v8, ", "
+
+    invoke-virtual {v7, v8}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    iget-object v8, p0, Lcom/android/server/stats/StatsCompanionService;->mDeletedFiles:Ljava/util/HashMap;
+
+    .line 2703
+    invoke-virtual {v8, v4}, Ljava/util/HashMap;->get(Ljava/lang/Object;)Ljava/lang/Object;
+
+    move-result-object v8
+
+    check-cast v8, Ljava/lang/String;
+
+    invoke-virtual {v7, v8}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v7}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v7
+
+    .line 2702
+    invoke-virtual {p2, v7}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+
+    .line 2704
+    .end local v4  # "elapsedMillis":Ljava/lang/Long;
+    .end local v5  # "deletionMillis":J
     goto :goto_48
 
-    .line 2751
+    .line 2705
+    .end local v1  # "lastBootMillis":J
     :cond_7e
-    monitor-exit p1
+    monitor-exit v0
 
-    .line 2752
+    .line 2706
     return-void
 
-    .line 2751
+    .line 2705
     :catchall_80
-    move-exception p2
+    move-exception v1
 
-    monitor-exit p1
+    monitor-exit v0
     :try_end_82
     .catchall {:try_start_e .. :try_end_82} :catchall_80
 
-    throw p2
+    throw v1
 .end method
 
 .method public pullData(I)[Landroid/os/StatsLogEventWrapper;
-    .registers 11
+    .registers 15
+    .param p1, "tagId"  # I
 
-    .line 2306
+    .line 2265
     invoke-direct {p0}, Lcom/android/server/stats/StatsCompanionService;->enforceCallingPermission()V
 
-    .line 2310
-    new-instance v8, Ljava/util/ArrayList;
+    .line 2269
+    new-instance v0, Ljava/util/ArrayList;
 
-    invoke-direct {v8}, Ljava/util/ArrayList;-><init>()V
+    invoke-direct {v0}, Ljava/util/ArrayList;-><init>()V
 
-    .line 2311
+    .line 2270
+    .local v0, "ret":Ljava/util/List;, "Ljava/util/List<Landroid/os/StatsLogEventWrapper;>;"
     invoke-static {}, Landroid/os/SystemClock;->elapsedRealtimeNanos()J
 
-    move-result-wide v3
+    move-result-wide v9
 
-    .line 2312
+    .line 2271
+    .local v9, "elapsedNanos":J
     invoke-static {}, Landroid/os/SystemClock;->currentTimeMicro()J
 
-    move-result-wide v0
+    move-result-wide v1
 
-    const-wide/16 v5, 0x3e8
+    const-wide/16 v3, 0x3e8
 
-    mul-long/2addr v5, v0
+    mul-long v11, v1, v3
 
-    .line 2313
+    .line 2272
+    .local v11, "wallClockNanos":J
     packed-switch p1, :pswitch_data_236
 
-    .line 2527
-    :pswitch_16  #0x2715, 0x2722, 0x2723, 0x2724, 0x272e, 0x2736, 0x273b, 0x273d, 0x2743, 0x2746, 0x2747, 0x274e, 0x274f, 0x2750, 0x2751
-    new-instance v0, Ljava/lang/StringBuilder;
+    .line 2481
+    :pswitch_17  #0x2715, 0x2722, 0x2723, 0x2724, 0x272e, 0x2736, 0x273b, 0x273d, 0x2743, 0x2746, 0x2747
+    new-instance v1, Ljava/lang/StringBuilder;
 
-    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v1, "No such tagId data as "
+    const-string v2, "No such tagId data as "
 
-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, p1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v1
 
-    const-string v0, "StatsCompanionService"
+    const-string v2, "StatsCompanionService"
 
-    invoke-static {v0, p1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v2, v1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 2528
-    const/4 p1, 0x0
+    .line 2482
+    const/4 v1, 0x0
 
-    return-object p1
+    return-object v1
 
-    .line 2522
-    :pswitch_2e  #0x2752
-    const/4 v1, 0x1
-
-    move-object v0, p0
+    .line 2354
+    :pswitch_2f  #0x274d
+    move-object v1, p0
 
     move v2, p1
 
-    move-object v7, v8
+    move-wide v3, v9
 
-    invoke-direct/range {v0 .. v7}, Lcom/android/server/stats/StatsCompanionService;->pullNotificationStats(IIJJLjava/util/List;)V
+    move-wide v5, v11
 
-    .line 2524
+    move-object v7, v0
+
+    invoke-direct/range {v1 .. v7}, Lcom/android/server/stats/StatsCompanionService;->pullProcessSystemIonHeapSize(IJJLjava/util/List;)V
+
+    .line 2355
     goto/16 :goto_228
 
-    .line 2395
-    :pswitch_37  #0x274d
-    move-object v0, p0
+    .line 2477
+    :pswitch_39  #0x274c
+    move-object v1, p0
 
-    move v1, p1
+    move-wide v2, v9
 
-    move-wide v2, v3
+    move-wide v4, v11
 
-    move-wide v4, v5
+    move-object v6, v0
 
-    move-object v6, v8
+    invoke-direct/range {v1 .. v6}, Lcom/android/server/stats/StatsCompanionService;->pullAppOps(JJLjava/util/List;)V
 
-    invoke-direct/range {v0 .. v6}, Lcom/android/server/stats/StatsCompanionService;->pullProcessSystemIonHeapSize(IJJLjava/util/List;)V
-
-    .line 2396
+    .line 2478
     goto/16 :goto_228
 
-    .line 2518
-    :pswitch_41  #0x274c
-    move-object v0, p0
+    .line 2441
+    :pswitch_42  #0x274b
+    move-object v1, p0
 
-    move-wide v1, v3
+    move v2, p1
 
-    move-wide v3, v5
+    move-wide v3, v9
 
-    move-object v5, v8
+    move-wide v5, v11
 
-    invoke-direct/range {v0 .. v5}, Lcom/android/server/stats/StatsCompanionService;->pullAppOps(JJLjava/util/List;)V
+    move-object v7, v0
 
-    .line 2519
+    invoke-direct/range {v1 .. v7}, Lcom/android/server/stats/StatsCompanionService;->pullCoolingDevices(IJJLjava/util/List;)V
+
+    .line 2442
     goto/16 :goto_228
 
-    .line 2482
-    :pswitch_4a  #0x274b
-    move-object v0, p0
+    .line 2473
+    :pswitch_4c  #0x274a
+    move-object v1, p0
 
-    move v1, p1
+    move v2, p1
 
-    move-wide v2, v3
+    move-wide v3, v9
 
-    move-wide v4, v5
+    move-wide v5, v11
 
-    move-object v6, v8
+    move-object v7, v0
 
-    invoke-direct/range {v0 .. v6}, Lcom/android/server/stats/StatsCompanionService;->pullCoolingDevices(IJJLjava/util/List;)V
+    invoke-direct/range {v1 .. v7}, Lcom/android/server/stats/StatsCompanionService;->pullFaceSettings(IJJLjava/util/List;)V
 
-    .line 2483
+    .line 2474
     goto/16 :goto_228
 
-    .line 2514
-    :pswitch_54  #0x274a
-    move-object v0, p0
+    .line 2469
+    :pswitch_56  #0x2749
+    move-object v1, p0
 
-    move v1, p1
+    move v2, p1
 
-    move-wide v2, v3
+    move-wide v3, v9
 
-    move-wide v4, v5
+    move-wide v5, v11
 
-    move-object v6, v8
+    move-object v7, v0
 
-    invoke-direct/range {v0 .. v6}, Lcom/android/server/stats/StatsCompanionService;->pullFaceSettings(IJJLjava/util/List;)V
+    invoke-direct/range {v1 .. v7}, Lcom/android/server/stats/StatsCompanionService;->pullAppsOnExternalStorageInfo(IJJLjava/util/List;)V
 
-    .line 2515
+    .line 2470
     goto/16 :goto_228
 
-    .line 2510
-    :pswitch_5e  #0x2749
-    move-object v0, p0
+    .line 2350
+    :pswitch_60  #0x2748
+    move-object v1, p0
 
-    move v1, p1
+    move v2, p1
 
-    move-wide v2, v3
+    move-wide v3, v9
 
-    move-wide v4, v5
+    move-wide v5, v11
 
-    move-object v6, v8
+    move-object v7, v0
 
-    invoke-direct/range {v0 .. v6}, Lcom/android/server/stats/StatsCompanionService;->pullAppsOnExternalStorageInfo(IJJLjava/util/List;)V
+    invoke-direct/range {v1 .. v7}, Lcom/android/server/stats/StatsCompanionService;->pullSystemIonHeapSize(IJJLjava/util/List;)V
 
-    .line 2511
+    .line 2351
+    goto/16 :goto_228
+
+    .line 2465
+    :pswitch_6a  #0x2745
+    move-object v1, p0
+
+    move v2, p1
+
+    move-wide v3, v9
+
+    move-wide v5, v11
+
+    move-object v7, v0
+
+    invoke-direct/range {v1 .. v7}, Lcom/android/server/stats/StatsCompanionService;->pullExternalStorageInfo(IJJLjava/util/List;)V
+
+    .line 2466
+    goto/16 :goto_228
+
+    .line 2461
+    :pswitch_74  #0x2744
+    move-object v1, p0
+
+    move v2, p1
+
+    move-wide v3, v9
+
+    move-wide v5, v11
+
+    move-object v7, v0
+
+    invoke-direct/range {v1 .. v7}, Lcom/android/server/stats/StatsCompanionService;->pullTimeZoneDataInfo(IJJLjava/util/List;)V
+
+    .line 2462
+    goto/16 :goto_228
+
+    .line 2457
+    :pswitch_7e  #0x2742
+    move-object v1, p0
+
+    move-wide v2, v9
+
+    move-wide v4, v11
+
+    move-object v6, v0
+
+    invoke-direct/range {v1 .. v6}, Lcom/android/server/stats/StatsCompanionService;->pullDangerousPermissionState(JJLjava/util/List;)V
+
+    .line 2458
+    goto/16 :goto_228
+
+    .line 2453
+    :pswitch_87  #0x2741
+    move-object v1, p0
+
+    move-wide v2, v9
+
+    move-wide v4, v11
+
+    move-object v6, v0
+
+    invoke-direct/range {v1 .. v6}, Lcom/android/server/stats/StatsCompanionService;->pullRoleHolders(JJLjava/util/List;)V
+
+    .line 2454
     goto/16 :goto_228
 
     .line 2391
-    :pswitch_68  #0x2748
-    move-object v0, p0
+    :pswitch_90  #0x2740
+    const/4 v2, 0x4
 
-    move v1, p1
+    move-object v1, p0
 
-    move-wide v2, v3
+    move v3, p1
 
-    move-wide v4, v5
+    move-wide v4, v9
 
-    move-object v6, v8
+    move-wide v6, v11
 
-    invoke-direct/range {v0 .. v6}, Lcom/android/server/stats/StatsCompanionService;->pullSystemIonHeapSize(IJJLjava/util/List;)V
+    move-object v8, v0
 
-    .line 2392
+    invoke-direct/range {v1 .. v8}, Lcom/android/server/stats/StatsCompanionService;->pullNumBiometricsEnrolled(IIJJLjava/util/List;)V
+
+    .line 2393
     goto/16 :goto_228
 
-    .line 2506
-    :pswitch_72  #0x2745
-    move-object v0, p0
-
-    move v1, p1
-
-    move-wide v2, v3
-
-    move-wide v4, v5
-
-    move-object v6, v8
-
-    invoke-direct/range {v0 .. v6}, Lcom/android/server/stats/StatsCompanionService;->pullExternalStorageInfo(IJJLjava/util/List;)V
-
-    .line 2507
-    goto/16 :goto_228
-
-    .line 2502
-    :pswitch_7c  #0x2744
-    move-object v0, p0
-
-    move v1, p1
-
-    move-wide v2, v3
-
-    move-wide v4, v5
-
-    move-object v6, v8
-
-    invoke-direct/range {v0 .. v6}, Lcom/android/server/stats/StatsCompanionService;->pullTimeZoneDataInfo(IJJLjava/util/List;)V
-
-    .line 2503
-    goto/16 :goto_228
-
-    .line 2498
-    :pswitch_86  #0x2742
-    move-object v0, p0
-
-    move-wide v1, v3
-
-    move-wide v3, v5
-
-    move-object v5, v8
-
-    invoke-direct/range {v0 .. v5}, Lcom/android/server/stats/StatsCompanionService;->pullDangerousPermissionState(JJLjava/util/List;)V
-
-    .line 2499
-    goto/16 :goto_228
-
-    .line 2494
-    :pswitch_8f  #0x2741
-    move-object v0, p0
-
-    move-wide v1, v3
-
-    move-wide v3, v5
-
-    move-object v5, v8
-
-    invoke-direct/range {v0 .. v5}, Lcom/android/server/stats/StatsCompanionService;->pullRoleHolders(JJLjava/util/List;)V
-
-    .line 2495
-    goto/16 :goto_228
-
-    .line 2432
-    :pswitch_98  #0x2740
-    const/4 v1, 0x4
-
-    move-object v0, p0
+    .line 2449
+    :pswitch_9b  #0x273f
+    move-object v1, p0
 
     move v2, p1
 
-    move-object v7, v8
+    move-wide v3, v9
 
-    invoke-direct/range {v0 .. v7}, Lcom/android/server/stats/StatsCompanionService;->pullNumBiometricsEnrolled(IIJJLjava/util/List;)V
+    move-wide v5, v11
+
+    move-object v7, v0
+
+    invoke-direct/range {v1 .. v7}, Lcom/android/server/stats/StatsCompanionService;->pullDebugFailingElapsedClock(IJJLjava/util/List;)V
+
+    .line 2450
+    goto/16 :goto_228
+
+    .line 2445
+    :pswitch_a5  #0x273e
+    move-object v1, p0
+
+    move v2, p1
+
+    move-wide v3, v9
+
+    move-wide v5, v11
+
+    move-object v7, v0
+
+    invoke-direct/range {v1 .. v7}, Lcom/android/server/stats/StatsCompanionService;->pullDebugElapsedClock(IJJLjava/util/List;)V
+
+    .line 2446
+    goto/16 :goto_228
+
+    .line 2413
+    :pswitch_af  #0x273c
+    move-object v1, p0
+
+    move v2, p1
+
+    move-wide v3, v9
+
+    move-wide v5, v11
+
+    move-object v7, v0
+
+    invoke-direct/range {v1 .. v7}, Lcom/android/server/stats/StatsCompanionService;->pullBuildInformation(IJJLjava/util/List;)V
+
+    .line 2414
+    goto/16 :goto_228
+
+    .line 2346
+    :pswitch_b9  #0x273a
+    move-object v1, p0
+
+    move v2, p1
+
+    move-wide v3, v9
+
+    move-wide v5, v11
+
+    move-object v7, v0
+
+    invoke-direct/range {v1 .. v7}, Lcom/android/server/stats/StatsCompanionService;->pullProcessMemoryHighWaterMark(IJJLjava/util/List;)V
+
+    .line 2347
+    goto/16 :goto_228
+
+    .line 2433
+    :pswitch_c3  #0x2739
+    move-object v1, p0
+
+    move v2, p1
+
+    move-wide v3, v9
+
+    move-wide v5, v11
+
+    move-object v7, v0
+
+    invoke-direct/range {v1 .. v7}, Lcom/android/server/stats/StatsCompanionService;->pullDeviceCalculatedPowerBlameOther(IJJLjava/util/List;)V
 
     .line 2434
     goto/16 :goto_228
 
-    .line 2490
-    :pswitch_a1  #0x273f
-    move-object v0, p0
+    .line 2429
+    :pswitch_cd  #0x2738
+    move-object v1, p0
 
-    move v1, p1
+    move v2, p1
 
-    move-wide v2, v3
+    move-wide v3, v9
 
-    move-wide v4, v5
+    move-wide v5, v11
 
-    move-object v6, v8
+    move-object v7, v0
 
-    invoke-direct/range {v0 .. v6}, Lcom/android/server/stats/StatsCompanionService;->pullDebugFailingElapsedClock(IJJLjava/util/List;)V
+    invoke-direct/range {v1 .. v7}, Lcom/android/server/stats/StatsCompanionService;->pullDeviceCalculatedPowerBlameUid(IJJLjava/util/List;)V
 
-    .line 2491
+    .line 2430
     goto/16 :goto_228
 
-    .line 2486
-    :pswitch_ab  #0x273e
-    move-object v0, p0
+    .line 2425
+    :pswitch_d7  #0x2737
+    move-object v1, p0
 
-    move v1, p1
+    move v2, p1
 
-    move-wide v2, v3
+    move-wide v3, v9
 
-    move-wide v4, v5
+    move-wide v5, v11
 
-    move-object v6, v8
+    move-object v7, v0
 
-    invoke-direct/range {v0 .. v6}, Lcom/android/server/stats/StatsCompanionService;->pullDebugElapsedClock(IJJLjava/util/List;)V
+    invoke-direct/range {v1 .. v7}, Lcom/android/server/stats/StatsCompanionService;->pullDeviceCalculatedPowerUse(IJJLjava/util/List;)V
 
-    .line 2487
+    .line 2426
     goto/16 :goto_228
 
-    .line 2454
-    :pswitch_b5  #0x273c
-    move-object v0, p0
+    .line 2421
+    :pswitch_e1  #0x2735
+    move-object v1, p0
 
-    move v1, p1
+    move v2, p1
 
-    move-wide v2, v3
+    move-wide v3, v9
 
-    move-wide v4, v5
+    move-wide v5, v11
 
-    move-object v6, v8
+    move-object v7, v0
 
-    invoke-direct/range {v0 .. v6}, Lcom/android/server/stats/StatsCompanionService;->pullBuildInformation(IJJLjava/util/List;)V
+    invoke-direct/range {v1 .. v7}, Lcom/android/server/stats/StatsCompanionService;->pullCpuTimePerThreadFreq(IJJLjava/util/List;)V
 
-    .line 2455
+    .line 2422
     goto/16 :goto_228
 
-    .line 2387
-    :pswitch_bf  #0x273a
-    move-object v0, p0
+    .line 2342
+    :pswitch_eb  #0x2734
+    move-object v1, p0
 
-    move v1, p1
+    move v2, p1
 
-    move-wide v2, v3
+    move-wide v3, v9
 
-    move-wide v4, v5
+    move-wide v5, v11
 
-    move-object v6, v8
+    move-object v7, v0
 
-    invoke-direct/range {v0 .. v6}, Lcom/android/server/stats/StatsCompanionService;->pullProcessMemoryHighWaterMark(IJJLjava/util/List;)V
+    invoke-direct/range {v1 .. v7}, Lcom/android/server/stats/StatsCompanionService;->pullNativeProcessMemoryState(IJJLjava/util/List;)V
+
+    .line 2343
+    goto/16 :goto_228
+
+    .line 2417
+    :pswitch_f5  #0x2733
+    move-object v1, p0
+
+    move v2, p1
+
+    move-wide v3, v9
+
+    move-wide v5, v11
+
+    move-object v7, v0
+
+    invoke-direct/range {v1 .. v7}, Lcom/android/server/stats/StatsCompanionService;->pullProcessCpuTime(IJJLjava/util/List;)V
+
+    .line 2418
+    goto/16 :goto_228
+
+    .line 2400
+    :pswitch_ff  #0x2732
+    const/4 v2, 0x2
+
+    move-object v1, p0
+
+    move v3, p1
+
+    move-wide v4, v9
+
+    move-wide v6, v11
+
+    move-object v8, v0
+
+    invoke-direct/range {v1 .. v8}, Lcom/android/server/stats/StatsCompanionService;->pullProcessStats(IIJJLjava/util/List;)V
+
+    .line 2402
+    goto/16 :goto_228
+
+    .line 2409
+    :pswitch_10a  #0x2731
+    move-object v1, p0
+
+    move v2, p1
+
+    move-wide v3, v9
+
+    move-wide v5, v11
+
+    move-object v7, v0
+
+    invoke-direct/range {v1 .. v7}, Lcom/android/server/stats/StatsCompanionService;->pullPowerProfile(IJJLjava/util/List;)V
+
+    .line 2410
+    goto/16 :goto_228
+
+    .line 2405
+    :pswitch_114  #0x2730
+    move-object v1, p0
+
+    move v2, p1
+
+    move-wide v3, v9
+
+    move-wide v5, v11
+
+    move-object v7, v0
+
+    invoke-direct/range {v1 .. v7}, Lcom/android/server/stats/StatsCompanionService;->pullDiskIo(IJJLjava/util/List;)V
+
+    .line 2406
+    goto/16 :goto_228
+
+    .line 2386
+    :pswitch_11e  #0x272f
+    const/4 v2, 0x1
+
+    move-object v1, p0
+
+    move v3, p1
+
+    move-wide v4, v9
+
+    move-wide v6, v11
+
+    move-object v8, v0
+
+    invoke-direct/range {v1 .. v8}, Lcom/android/server/stats/StatsCompanionService;->pullNumBiometricsEnrolled(IIJJLjava/util/List;)V
 
     .line 2388
     goto/16 :goto_228
 
-    .line 2474
-    :pswitch_c9  #0x2739
-    move-object v0, p0
+    .line 2396
+    :pswitch_129  #0x272d
+    const/16 v2, 0xf
 
-    move v1, p1
+    move-object v1, p0
 
-    move-wide v2, v3
+    move v3, p1
 
-    move-wide v4, v5
+    move-wide v4, v9
 
-    move-object v6, v8
+    move-wide v6, v11
 
-    invoke-direct/range {v0 .. v6}, Lcom/android/server/stats/StatsCompanionService;->pullDeviceCalculatedPowerBlameOther(IJJLjava/util/List;)V
+    move-object v8, v0
 
-    .line 2475
+    invoke-direct/range {v1 .. v8}, Lcom/android/server/stats/StatsCompanionService;->pullProcessStats(IIJJLjava/util/List;)V
+
+    .line 2397
     goto/16 :goto_228
 
-    .line 2470
-    :pswitch_d3  #0x2738
-    move-object v0, p0
+    .line 2382
+    :pswitch_135  #0x272c
+    move-object v1, p0
 
-    move v1, p1
+    move v2, p1
 
-    move-wide v2, v3
+    move-wide v3, v9
 
-    move-wide v4, v5
+    move-wide v5, v11
 
-    move-object v6, v8
+    move-object v7, v0
 
-    invoke-direct/range {v0 .. v6}, Lcom/android/server/stats/StatsCompanionService;->pullDeviceCalculatedPowerBlameUid(IJJLjava/util/List;)V
-
-    .line 2471
-    goto/16 :goto_228
-
-    .line 2466
-    :pswitch_dd  #0x2737
-    move-object v0, p0
-
-    move v1, p1
-
-    move-wide v2, v3
-
-    move-wide v4, v5
-
-    move-object v6, v8
-
-    invoke-direct/range {v0 .. v6}, Lcom/android/server/stats/StatsCompanionService;->pullDeviceCalculatedPowerUse(IJJLjava/util/List;)V
-
-    .line 2467
-    goto/16 :goto_228
-
-    .line 2462
-    :pswitch_e7  #0x2735
-    move-object v0, p0
-
-    move v1, p1
-
-    move-wide v2, v3
-
-    move-wide v4, v5
-
-    move-object v6, v8
-
-    invoke-direct/range {v0 .. v6}, Lcom/android/server/stats/StatsCompanionService;->pullCpuTimePerThreadFreq(IJJLjava/util/List;)V
-
-    .line 2463
-    goto/16 :goto_228
+    invoke-direct/range {v1 .. v7}, Lcom/android/server/stats/StatsCompanionService;->pullCategorySize(IJJLjava/util/List;)V
 
     .line 2383
-    :pswitch_f1  #0x2734
-    move-object v0, p0
-
-    move v1, p1
-
-    move-wide v2, v3
-
-    move-wide v4, v5
-
-    move-object v6, v8
-
-    invoke-direct/range {v0 .. v6}, Lcom/android/server/stats/StatsCompanionService;->pullNativeProcessMemoryState(IJJLjava/util/List;)V
-
-    .line 2384
     goto/16 :goto_228
 
-    .line 2458
-    :pswitch_fb  #0x2733
-    move-object v0, p0
-
-    move v1, p1
-
-    move-wide v2, v3
-
-    move-wide v4, v5
-
-    move-object v6, v8
-
-    invoke-direct/range {v0 .. v6}, Lcom/android/server/stats/StatsCompanionService;->pullProcessCpuTime(IJJLjava/util/List;)V
-
-    .line 2459
-    goto/16 :goto_228
-
-    .line 2441
-    :pswitch_105  #0x2732
-    const/4 v1, 0x2
-
-    move-object v0, p0
+    .line 2378
+    :pswitch_13f  #0x272b
+    move-object v1, p0
 
     move v2, p1
 
-    move-object v7, v8
+    move-wide v3, v9
 
-    invoke-direct/range {v0 .. v7}, Lcom/android/server/stats/StatsCompanionService;->pullProcessStats(IIJJLjava/util/List;)V
+    move-wide v5, v11
 
-    .line 2443
+    move-object v7, v0
+
+    invoke-direct/range {v1 .. v7}, Lcom/android/server/stats/StatsCompanionService;->pullAppSize(IJJLjava/util/List;)V
+
+    .line 2379
     goto/16 :goto_228
 
-    .line 2450
-    :pswitch_10e  #0x2731
-    move-object v0, p0
-
-    move v1, p1
-
-    move-wide v2, v3
-
-    move-wide v4, v5
-
-    move-object v6, v8
-
-    invoke-direct/range {v0 .. v6}, Lcom/android/server/stats/StatsCompanionService;->pullPowerProfile(IJJLjava/util/List;)V
-
-    .line 2451
-    goto/16 :goto_228
-
-    .line 2446
-    :pswitch_118  #0x2730
-    move-object v0, p0
-
-    move v1, p1
-
-    move-wide v2, v3
-
-    move-wide v4, v5
-
-    move-object v6, v8
-
-    invoke-direct/range {v0 .. v6}, Lcom/android/server/stats/StatsCompanionService;->pullDiskIo(IJJLjava/util/List;)V
-
-    .line 2447
-    goto/16 :goto_228
-
-    .line 2427
-    :pswitch_122  #0x272f
-    const/4 v1, 0x1
-
-    move-object v0, p0
+    .line 2374
+    :pswitch_149  #0x272a
+    move-object v1, p0
 
     move v2, p1
 
-    move-object v7, v8
+    move-wide v3, v9
 
-    invoke-direct/range {v0 .. v7}, Lcom/android/server/stats/StatsCompanionService;->pullNumBiometricsEnrolled(IIJJLjava/util/List;)V
+    move-wide v5, v11
 
-    .line 2429
+    move-object v7, v0
+
+    invoke-direct/range {v1 .. v7}, Lcom/android/server/stats/StatsCompanionService;->pullDirectoryUsage(IJJLjava/util/List;)V
+
+    .line 2375
+    goto/16 :goto_228
+
+    .line 2370
+    :pswitch_153  #0x2729
+    move-object v1, p0
+
+    move v2, p1
+
+    move-wide v3, v9
+
+    move-wide v5, v11
+
+    move-object v7, v0
+
+    invoke-direct/range {v1 .. v7}, Lcom/android/server/stats/StatsCompanionService;->pullDiskStats(IJJLjava/util/List;)V
+
+    .line 2371
+    goto/16 :goto_228
+
+    .line 2366
+    :pswitch_15d  #0x2728
+    move-object v1, p0
+
+    move v2, p1
+
+    move-wide v3, v9
+
+    move-wide v5, v11
+
+    move-object v7, v0
+
+    invoke-direct/range {v1 .. v7}, Lcom/android/server/stats/StatsCompanionService;->pullLooperStats(IJJLjava/util/List;)V
+
+    .line 2367
+    goto/16 :goto_228
+
+    .line 2362
+    :pswitch_167  #0x2727
+    move-object v1, p0
+
+    move v2, p1
+
+    move-wide v3, v9
+
+    move-wide v5, v11
+
+    move-object v7, v0
+
+    invoke-direct/range {v1 .. v7}, Lcom/android/server/stats/StatsCompanionService;->pullBinderCallsStatsExceptions(IJJLjava/util/List;)V
+
+    .line 2363
+    goto/16 :goto_228
+
+    .line 2358
+    :pswitch_171  #0x2726
+    move-object v1, p0
+
+    move v2, p1
+
+    move-wide v3, v9
+
+    move-wide v5, v11
+
+    move-object v7, v0
+
+    invoke-direct/range {v1 .. v7}, Lcom/android/server/stats/StatsCompanionService;->pullBinderCallsStats(IJJLjava/util/List;)V
+
+    .line 2359
     goto/16 :goto_228
 
     .line 2437
-    :pswitch_12b  #0x272d
-    const/16 v1, 0xf
-
-    move-object v0, p0
+    :pswitch_17b  #0x2725
+    move-object v1, p0
 
     move v2, p1
 
-    move-object v7, v8
+    move-wide v3, v9
 
-    invoke-direct/range {v0 .. v7}, Lcom/android/server/stats/StatsCompanionService;->pullProcessStats(IIJJLjava/util/List;)V
+    move-wide v5, v11
+
+    move-object v7, v0
+
+    invoke-direct/range {v1 .. v7}, Lcom/android/server/stats/StatsCompanionService;->pullTemperature(IJJLjava/util/List;)V
 
     .line 2438
     goto/16 :goto_228
 
-    .line 2423
-    :pswitch_135  #0x272c
-    move-object v0, p0
-
-    move v1, p1
-
-    move-wide v2, v3
-
-    move-wide v4, v5
-
-    move-object v6, v8
-
-    invoke-direct/range {v0 .. v6}, Lcom/android/server/stats/StatsCompanionService;->pullCategorySize(IJJLjava/util/List;)V
-
-    .line 2424
-    goto/16 :goto_228
-
-    .line 2419
-    :pswitch_13f  #0x272b
-    move-object v0, p0
-
-    move v1, p1
-
-    move-wide v2, v3
-
-    move-wide v4, v5
-
-    move-object v6, v8
-
-    invoke-direct/range {v0 .. v6}, Lcom/android/server/stats/StatsCompanionService;->pullAppSize(IJJLjava/util/List;)V
-
-    .line 2420
-    goto/16 :goto_228
-
-    .line 2415
-    :pswitch_149  #0x272a
-    move-object v0, p0
-
-    move v1, p1
-
-    move-wide v2, v3
-
-    move-wide v4, v5
-
-    move-object v6, v8
-
-    invoke-direct/range {v0 .. v6}, Lcom/android/server/stats/StatsCompanionService;->pullDirectoryUsage(IJJLjava/util/List;)V
-
-    .line 2416
-    goto/16 :goto_228
-
-    .line 2411
-    :pswitch_153  #0x2729
-    move-object v0, p0
-
-    move v1, p1
-
-    move-wide v2, v3
-
-    move-wide v4, v5
-
-    move-object v6, v8
-
-    invoke-direct/range {v0 .. v6}, Lcom/android/server/stats/StatsCompanionService;->pullDiskStats(IJJLjava/util/List;)V
-
-    .line 2412
-    goto/16 :goto_228
-
-    .line 2407
-    :pswitch_15d  #0x2728
-    move-object v0, p0
-
-    move v1, p1
-
-    move-wide v2, v3
-
-    move-wide v4, v5
-
-    move-object v6, v8
-
-    invoke-direct/range {v0 .. v6}, Lcom/android/server/stats/StatsCompanionService;->pullLooperStats(IJJLjava/util/List;)V
-
-    .line 2408
-    goto/16 :goto_228
-
-    .line 2403
-    :pswitch_167  #0x2727
-    move-object v0, p0
-
-    move v1, p1
-
-    move-wide v2, v3
-
-    move-wide v4, v5
-
-    move-object v6, v8
-
-    invoke-direct/range {v0 .. v6}, Lcom/android/server/stats/StatsCompanionService;->pullBinderCallsStatsExceptions(IJJLjava/util/List;)V
-
-    .line 2404
-    goto/16 :goto_228
-
-    .line 2399
-    :pswitch_171  #0x2726
-    move-object v0, p0
-
-    move v1, p1
-
-    move-wide v2, v3
-
-    move-wide v4, v5
-
-    move-object v6, v8
-
-    invoke-direct/range {v0 .. v6}, Lcom/android/server/stats/StatsCompanionService;->pullBinderCallsStats(IJJLjava/util/List;)V
-
-    .line 2400
-    goto/16 :goto_228
-
-    .line 2478
-    :pswitch_17b  #0x2725
-    move-object v0, p0
-
-    move v1, p1
-
-    move-wide v2, v3
-
-    move-wide v4, v5
-
-    move-object v6, v8
-
-    invoke-direct/range {v0 .. v6}, Lcom/android/server/stats/StatsCompanionService;->pullTemperature(IJJLjava/util/List;)V
-
-    .line 2479
-    goto/16 :goto_228
-
-    .line 2351
+    .line 2310
     :pswitch_185  #0x2721
-    move-object v0, p0
+    move-object v1, p0
 
-    move v1, p1
+    move v2, p1
 
-    move-wide v2, v3
+    move-wide v3, v9
 
-    move-wide v4, v5
+    move-wide v5, v11
 
-    move-object v6, v8
+    move-object v7, v0
 
-    invoke-direct/range {v0 .. v6}, Lcom/android/server/stats/StatsCompanionService;->pullKernelUidCpuClusterTime(IJJLjava/util/List;)V
+    invoke-direct/range {v1 .. v7}, Lcom/android/server/stats/StatsCompanionService;->pullKernelUidCpuClusterTime(IJJLjava/util/List;)V
 
-    .line 2352
+    .line 2311
     goto/16 :goto_228
 
-    .line 2355
+    .line 2314
     :pswitch_18f  #0x2720
-    move-object v0, p0
+    move-object v1, p0
 
-    move v1, p1
+    move v2, p1
 
-    move-wide v2, v3
+    move-wide v3, v9
 
-    move-wide v4, v5
+    move-wide v5, v11
 
-    move-object v6, v8
+    move-object v7, v0
 
-    invoke-direct/range {v0 .. v6}, Lcom/android/server/stats/StatsCompanionService;->pullKernelUidCpuActiveTime(IJJLjava/util/List;)V
-
-    .line 2356
-    goto/16 :goto_228
-
-    .line 2371
-    :pswitch_199  #0x271f
-    move-object v0, p0
-
-    move v1, p1
-
-    move-wide v2, v3
-
-    move-wide v4, v5
-
-    move-object v6, v8
-
-    invoke-direct/range {v0 .. v6}, Lcom/android/server/stats/StatsCompanionService;->pullSystemUpTime(IJJLjava/util/List;)V
-
-    .line 2372
-    goto/16 :goto_228
-
-    .line 2375
-    :pswitch_1a3  #0x271e
-    move-object v0, p0
-
-    move v1, p1
-
-    move-wide v2, v3
-
-    move-wide v4, v5
-
-    move-object v6, v8
-
-    invoke-direct/range {v0 .. v6}, Lcom/android/server/stats/StatsCompanionService;->pullSystemElapsedRealtime(IJJLjava/util/List;)V
-
-    .line 2376
-    goto/16 :goto_228
-
-    .line 2379
-    :pswitch_1ad  #0x271d
-    move-object v0, p0
-
-    move v1, p1
-
-    move-wide v2, v3
-
-    move-wide v4, v5
-
-    move-object v6, v8
-
-    invoke-direct/range {v0 .. v6}, Lcom/android/server/stats/StatsCompanionService;->pullProcessMemoryState(IJJLjava/util/List;)V
-
-    .line 2380
-    goto/16 :goto_228
-
-    .line 2363
-    :pswitch_1b7  #0x271c
-    move-object v0, p0
-
-    move v1, p1
-
-    move-wide v2, v3
-
-    move-wide v4, v5
-
-    move-object v6, v8
-
-    invoke-direct/range {v0 .. v6}, Lcom/android/server/stats/StatsCompanionService;->pullModemActivityInfo(IJJLjava/util/List;)V
-
-    .line 2364
-    goto/16 :goto_228
-
-    .line 2359
-    :pswitch_1c1  #0x271b
-    move-object v0, p0
-
-    move v1, p1
-
-    move-wide v2, v3
-
-    move-wide v4, v5
-
-    move-object v6, v8
-
-    invoke-direct/range {v0 .. v6}, Lcom/android/server/stats/StatsCompanionService;->pullWifiActivityInfo(IJJLjava/util/List;)V
-
-    .line 2360
-    goto/16 :goto_228
-
-    .line 2347
-    :pswitch_1cb  #0x271a
-    move-object v0, p0
-
-    move v1, p1
-
-    move-wide v2, v3
-
-    move-wide v4, v5
-
-    move-object v6, v8
-
-    invoke-direct/range {v0 .. v6}, Lcom/android/server/stats/StatsCompanionService;->pullKernelUidCpuFreqTime(IJJLjava/util/List;)V
-
-    .line 2348
-    goto/16 :goto_228
-
-    .line 2343
-    :pswitch_1d5  #0x2719
-    move-object v0, p0
-
-    move v1, p1
-
-    move-wide v2, v3
-
-    move-wide v4, v5
-
-    move-object v6, v8
-
-    invoke-direct/range {v0 .. v6}, Lcom/android/server/stats/StatsCompanionService;->pullKernelUidCpuTime(IJJLjava/util/List;)V
-
-    .line 2344
-    goto/16 :goto_228
-
-    .line 2339
-    :pswitch_1df  #0x2718
-    move-object v0, p0
-
-    move v1, p1
-
-    move-wide v2, v3
-
-    move-wide v4, v5
-
-    move-object v6, v8
-
-    invoke-direct/range {v0 .. v6}, Lcom/android/server/stats/StatsCompanionService;->pullCpuTimePerFreq(IJJLjava/util/List;)V
-
-    .line 2340
-    goto/16 :goto_228
-
-    .line 2367
-    :pswitch_1e9  #0x2717
-    move-object v0, p0
-
-    move v1, p1
-
-    move-wide v2, v3
-
-    move-wide v4, v5
-
-    move-object v6, v8
-
-    invoke-direct/range {v0 .. v6}, Lcom/android/server/stats/StatsCompanionService;->pullBluetoothActivityInfo(IJJLjava/util/List;)V
-
-    .line 2368
-    goto :goto_228
-
-    .line 2331
-    :pswitch_1f2  #0x2716
-    move-object v0, p0
-
-    move v1, p1
-
-    move-wide v2, v3
-
-    move-wide v4, v5
-
-    move-object v6, v8
-
-    invoke-direct/range {v0 .. v6}, Lcom/android/server/stats/StatsCompanionService;->pullBluetoothBytesTransfer(IJJLjava/util/List;)V
-
-    .line 2332
-    goto :goto_228
-
-    .line 2335
-    :pswitch_1fb  #0x2714
-    move-object v0, p0
-
-    move v1, p1
-
-    move-wide v2, v3
-
-    move-wide v4, v5
-
-    move-object v6, v8
-
-    invoke-direct/range {v0 .. v6}, Lcom/android/server/stats/StatsCompanionService;->pullKernelWakelock(IJJLjava/util/List;)V
-
-    .line 2336
-    goto :goto_228
-
-    .line 2327
-    :pswitch_204  #0x2713
-    move-object v0, p0
-
-    move v1, p1
-
-    move-wide v2, v3
-
-    move-wide v4, v5
-
-    move-object v6, v8
-
-    invoke-direct/range {v0 .. v6}, Lcom/android/server/stats/StatsCompanionService;->pullMobileBytesTransferByFgBg(IJJLjava/util/List;)V
-
-    .line 2328
-    goto :goto_228
-
-    .line 2319
-    :pswitch_20d  #0x2712
-    move-object v0, p0
-
-    move v1, p1
-
-    move-wide v2, v3
-
-    move-wide v4, v5
-
-    move-object v6, v8
-
-    invoke-direct/range {v0 .. v6}, Lcom/android/server/stats/StatsCompanionService;->pullMobileBytesTransfer(IJJLjava/util/List;)V
-
-    .line 2320
-    goto :goto_228
-
-    .line 2323
-    :pswitch_216  #0x2711
-    move-object v0, p0
-
-    move v1, p1
-
-    move-wide v2, v3
-
-    move-wide v4, v5
-
-    move-object v6, v8
-
-    invoke-direct/range {v0 .. v6}, Lcom/android/server/stats/StatsCompanionService;->pullWifiBytesTransferByFgBg(IJJLjava/util/List;)V
-
-    .line 2324
-    goto :goto_228
+    invoke-direct/range {v1 .. v7}, Lcom/android/server/stats/StatsCompanionService;->pullKernelUidCpuActiveTime(IJJLjava/util/List;)V
 
     .line 2315
+    goto/16 :goto_228
+
+    .line 2330
+    :pswitch_199  #0x271f
+    move-object v1, p0
+
+    move v2, p1
+
+    move-wide v3, v9
+
+    move-wide v5, v11
+
+    move-object v7, v0
+
+    invoke-direct/range {v1 .. v7}, Lcom/android/server/stats/StatsCompanionService;->pullSystemUpTime(IJJLjava/util/List;)V
+
+    .line 2331
+    goto/16 :goto_228
+
+    .line 2334
+    :pswitch_1a3  #0x271e
+    move-object v1, p0
+
+    move v2, p1
+
+    move-wide v3, v9
+
+    move-wide v5, v11
+
+    move-object v7, v0
+
+    invoke-direct/range {v1 .. v7}, Lcom/android/server/stats/StatsCompanionService;->pullSystemElapsedRealtime(IJJLjava/util/List;)V
+
+    .line 2335
+    goto/16 :goto_228
+
+    .line 2338
+    :pswitch_1ad  #0x271d
+    move-object v1, p0
+
+    move v2, p1
+
+    move-wide v3, v9
+
+    move-wide v5, v11
+
+    move-object v7, v0
+
+    invoke-direct/range {v1 .. v7}, Lcom/android/server/stats/StatsCompanionService;->pullProcessMemoryState(IJJLjava/util/List;)V
+
+    .line 2339
+    goto/16 :goto_228
+
+    .line 2322
+    :pswitch_1b7  #0x271c
+    move-object v1, p0
+
+    move v2, p1
+
+    move-wide v3, v9
+
+    move-wide v5, v11
+
+    move-object v7, v0
+
+    invoke-direct/range {v1 .. v7}, Lcom/android/server/stats/StatsCompanionService;->pullModemActivityInfo(IJJLjava/util/List;)V
+
+    .line 2323
+    goto/16 :goto_228
+
+    .line 2318
+    :pswitch_1c1  #0x271b
+    move-object v1, p0
+
+    move v2, p1
+
+    move-wide v3, v9
+
+    move-wide v5, v11
+
+    move-object v7, v0
+
+    invoke-direct/range {v1 .. v7}, Lcom/android/server/stats/StatsCompanionService;->pullWifiActivityInfo(IJJLjava/util/List;)V
+
+    .line 2319
+    goto/16 :goto_228
+
+    .line 2306
+    :pswitch_1cb  #0x271a
+    move-object v1, p0
+
+    move v2, p1
+
+    move-wide v3, v9
+
+    move-wide v5, v11
+
+    move-object v7, v0
+
+    invoke-direct/range {v1 .. v7}, Lcom/android/server/stats/StatsCompanionService;->pullKernelUidCpuFreqTime(IJJLjava/util/List;)V
+
+    .line 2307
+    goto/16 :goto_228
+
+    .line 2302
+    :pswitch_1d5  #0x2719
+    move-object v1, p0
+
+    move v2, p1
+
+    move-wide v3, v9
+
+    move-wide v5, v11
+
+    move-object v7, v0
+
+    invoke-direct/range {v1 .. v7}, Lcom/android/server/stats/StatsCompanionService;->pullKernelUidCpuTime(IJJLjava/util/List;)V
+
+    .line 2303
+    goto/16 :goto_228
+
+    .line 2298
+    :pswitch_1df  #0x2718
+    move-object v1, p0
+
+    move v2, p1
+
+    move-wide v3, v9
+
+    move-wide v5, v11
+
+    move-object v7, v0
+
+    invoke-direct/range {v1 .. v7}, Lcom/android/server/stats/StatsCompanionService;->pullCpuTimePerFreq(IJJLjava/util/List;)V
+
+    .line 2299
+    goto/16 :goto_228
+
+    .line 2326
+    :pswitch_1e9  #0x2717
+    move-object v1, p0
+
+    move v2, p1
+
+    move-wide v3, v9
+
+    move-wide v5, v11
+
+    move-object v7, v0
+
+    invoke-direct/range {v1 .. v7}, Lcom/android/server/stats/StatsCompanionService;->pullBluetoothActivityInfo(IJJLjava/util/List;)V
+
+    .line 2327
+    goto :goto_228
+
+    .line 2290
+    :pswitch_1f2  #0x2716
+    move-object v1, p0
+
+    move v2, p1
+
+    move-wide v3, v9
+
+    move-wide v5, v11
+
+    move-object v7, v0
+
+    invoke-direct/range {v1 .. v7}, Lcom/android/server/stats/StatsCompanionService;->pullBluetoothBytesTransfer(IJJLjava/util/List;)V
+
+    .line 2291
+    goto :goto_228
+
+    .line 2294
+    :pswitch_1fb  #0x2714
+    move-object v1, p0
+
+    move v2, p1
+
+    move-wide v3, v9
+
+    move-wide v5, v11
+
+    move-object v7, v0
+
+    invoke-direct/range {v1 .. v7}, Lcom/android/server/stats/StatsCompanionService;->pullKernelWakelock(IJJLjava/util/List;)V
+
+    .line 2295
+    goto :goto_228
+
+    .line 2286
+    :pswitch_204  #0x2713
+    move-object v1, p0
+
+    move v2, p1
+
+    move-wide v3, v9
+
+    move-wide v5, v11
+
+    move-object v7, v0
+
+    invoke-direct/range {v1 .. v7}, Lcom/android/server/stats/StatsCompanionService;->pullMobileBytesTransferByFgBg(IJJLjava/util/List;)V
+
+    .line 2287
+    goto :goto_228
+
+    .line 2278
+    :pswitch_20d  #0x2712
+    move-object v1, p0
+
+    move v2, p1
+
+    move-wide v3, v9
+
+    move-wide v5, v11
+
+    move-object v7, v0
+
+    invoke-direct/range {v1 .. v7}, Lcom/android/server/stats/StatsCompanionService;->pullMobileBytesTransfer(IJJLjava/util/List;)V
+
+    .line 2279
+    goto :goto_228
+
+    .line 2282
+    :pswitch_216  #0x2711
+    move-object v1, p0
+
+    move v2, p1
+
+    move-wide v3, v9
+
+    move-wide v5, v11
+
+    move-object v7, v0
+
+    invoke-direct/range {v1 .. v7}, Lcom/android/server/stats/StatsCompanionService;->pullWifiBytesTransferByFgBg(IJJLjava/util/List;)V
+
+    .line 2283
+    goto :goto_228
+
+    .line 2274
     :pswitch_21f  #0x2710
-    move-object v0, p0
+    move-object v1, p0
 
-    move v1, p1
+    move v2, p1
 
-    move-wide v2, v3
+    move-wide v3, v9
 
-    move-wide v4, v5
+    move-wide v5, v11
 
-    move-object v6, v8
+    move-object v7, v0
 
-    invoke-direct/range {v0 .. v6}, Lcom/android/server/stats/StatsCompanionService;->pullWifiBytesTransfer(IJJLjava/util/List;)V
+    invoke-direct/range {v1 .. v7}, Lcom/android/server/stats/StatsCompanionService;->pullWifiBytesTransfer(IJJLjava/util/List;)V
 
-    .line 2316
+    .line 2275
     nop
 
-    .line 2530
+    .line 2484
     :goto_228
-    invoke-interface {v8}, Ljava/util/List;->size()I
+    invoke-interface {v0}, Ljava/util/List;->size()I
 
-    move-result p1
+    move-result v1
 
-    new-array p1, p1, [Landroid/os/StatsLogEventWrapper;
+    new-array v1, v1, [Landroid/os/StatsLogEventWrapper;
 
-    invoke-interface {v8, p1}, Ljava/util/List;->toArray([Ljava/lang/Object;)[Ljava/lang/Object;
+    invoke-interface {v0, v1}, Ljava/util/List;->toArray([Ljava/lang/Object;)[Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v1
 
-    check-cast p1, [Landroid/os/StatsLogEventWrapper;
+    check-cast v1, [Landroid/os/StatsLogEventWrapper;
 
-    return-object p1
+    return-object v1
 
     nop
 
@@ -10866,7 +12156,7 @@
         :pswitch_20d  #00002712
         :pswitch_204  #00002713
         :pswitch_1fb  #00002714
-        :pswitch_16  #00002715
+        :pswitch_17  #00002715
         :pswitch_1f2  #00002716
         :pswitch_1e9  #00002717
         :pswitch_1df  #00002718
@@ -10879,9 +12169,9 @@
         :pswitch_199  #0000271f
         :pswitch_18f  #00002720
         :pswitch_185  #00002721
-        :pswitch_16  #00002722
-        :pswitch_16  #00002723
-        :pswitch_16  #00002724
+        :pswitch_17  #00002722
+        :pswitch_17  #00002723
+        :pswitch_17  #00002724
         :pswitch_17b  #00002725
         :pswitch_171  #00002726
         :pswitch_167  #00002727
@@ -10890,70 +12180,71 @@
         :pswitch_149  #0000272a
         :pswitch_13f  #0000272b
         :pswitch_135  #0000272c
-        :pswitch_12b  #0000272d
-        :pswitch_16  #0000272e
-        :pswitch_122  #0000272f
-        :pswitch_118  #00002730
-        :pswitch_10e  #00002731
-        :pswitch_105  #00002732
-        :pswitch_fb  #00002733
-        :pswitch_f1  #00002734
-        :pswitch_e7  #00002735
-        :pswitch_16  #00002736
-        :pswitch_dd  #00002737
-        :pswitch_d3  #00002738
-        :pswitch_c9  #00002739
-        :pswitch_bf  #0000273a
-        :pswitch_16  #0000273b
-        :pswitch_b5  #0000273c
-        :pswitch_16  #0000273d
-        :pswitch_ab  #0000273e
-        :pswitch_a1  #0000273f
-        :pswitch_98  #00002740
-        :pswitch_8f  #00002741
-        :pswitch_86  #00002742
-        :pswitch_16  #00002743
-        :pswitch_7c  #00002744
-        :pswitch_72  #00002745
-        :pswitch_16  #00002746
-        :pswitch_16  #00002747
-        :pswitch_68  #00002748
-        :pswitch_5e  #00002749
-        :pswitch_54  #0000274a
-        :pswitch_4a  #0000274b
-        :pswitch_41  #0000274c
-        :pswitch_37  #0000274d
-        :pswitch_16  #0000274e
-        :pswitch_16  #0000274f
-        :pswitch_16  #00002750
-        :pswitch_16  #00002751
-        :pswitch_2e  #00002752
+        :pswitch_129  #0000272d
+        :pswitch_17  #0000272e
+        :pswitch_11e  #0000272f
+        :pswitch_114  #00002730
+        :pswitch_10a  #00002731
+        :pswitch_ff  #00002732
+        :pswitch_f5  #00002733
+        :pswitch_eb  #00002734
+        :pswitch_e1  #00002735
+        :pswitch_17  #00002736
+        :pswitch_d7  #00002737
+        :pswitch_cd  #00002738
+        :pswitch_c3  #00002739
+        :pswitch_b9  #0000273a
+        :pswitch_17  #0000273b
+        :pswitch_af  #0000273c
+        :pswitch_17  #0000273d
+        :pswitch_a5  #0000273e
+        :pswitch_9b  #0000273f
+        :pswitch_90  #00002740
+        :pswitch_87  #00002741
+        :pswitch_7e  #00002742
+        :pswitch_17  #00002743
+        :pswitch_74  #00002744
+        :pswitch_6a  #00002745
+        :pswitch_17  #00002746
+        :pswitch_17  #00002747
+        :pswitch_60  #00002748
+        :pswitch_56  #00002749
+        :pswitch_4c  #0000274a
+        :pswitch_42  #0000274b
+        :pswitch_39  #0000274c
+        :pswitch_2f  #0000274d
     .end packed-switch
 .end method
 
 .method public sendActiveConfigsChangedBroadcast(Landroid/os/IBinder;[J)V
-    .registers 9
+    .registers 10
+    .param p1, "intentSenderBinder"  # Landroid/os/IBinder;
+    .param p2, "configIds"  # [J
 
-    .line 397
+    .line 395
     invoke-direct {p0}, Lcom/android/server/stats/StatsCompanionService;->enforceCallingPermission()V
 
-    .line 398
+    .line 396
     new-instance v0, Landroid/content/IntentSender;
 
     invoke-direct {v0, p1}, Landroid/content/IntentSender;-><init>(Landroid/os/IBinder;)V
 
-    .line 399
-    new-instance v3, Landroid/content/Intent;
+    .line 397
+    .local v0, "intentSender":Landroid/content/IntentSender;
+    new-instance v1, Landroid/content/Intent;
 
-    invoke-direct {v3}, Landroid/content/Intent;-><init>()V
+    invoke-direct {v1}, Landroid/content/Intent;-><init>()V
+
+    move-object v6, v1
+
+    .line 398
+    .local v6, "intent":Landroid/content/Intent;
+    const-string v1, "android.app.extra.STATS_ACTIVE_CONFIG_KEYS"
+
+    invoke-virtual {v6, v1, p2}, Landroid/content/Intent;->putExtra(Ljava/lang/String;[J)Landroid/content/Intent;
 
     .line 400
-    const-string p1, "android.app.extra.STATS_ACTIVE_CONFIG_KEYS"
-
-    invoke-virtual {v3, p1, p2}, Landroid/content/Intent;->putExtra(Ljava/lang/String;[J)Landroid/content/Intent;
-
-    .line 402
-    :try_start_12
+    :try_start_13
     iget-object v1, p0, Lcom/android/server/stats/StatsCompanionService;->mContext:Landroid/content/Context;
 
     const/4 v2, 0x1
@@ -10962,52 +12253,62 @@
 
     const/4 v5, 0x0
 
-    invoke-virtual/range {v0 .. v5}, Landroid/content/IntentSender;->sendIntent(Landroid/content/Context;ILandroid/content/Intent;Landroid/content/IntentSender$OnFinished;Landroid/os/Handler;)V
-    :try_end_1a
-    .catch Landroid/content/IntentSender$SendIntentException; {:try_start_12 .. :try_end_1a} :catch_1b
+    move-object v3, v6
 
-    .line 408
-    goto :goto_23
+    invoke-virtual/range {v0 .. v5}, Landroid/content/IntentSender;->sendIntent(Landroid/content/Context;ILandroid/content/Intent;Landroid/content/IntentSender$OnFinished;Landroid/os/Handler;)V
+    :try_end_1c
+    .catch Landroid/content/IntentSender$SendIntentException; {:try_start_13 .. :try_end_1c} :catch_1d
 
     .line 406
-    :catch_1b
-    move-exception p1
+    goto :goto_25
+
+    .line 404
+    :catch_1d
+    move-exception v1
+
+    .line 405
+    .local v1, "e":Landroid/content/IntentSender$SendIntentException;
+    const-string v2, "StatsCompanionService"
+
+    const-string v3, "Unable to send active configs changed broadcast using IntentSender"
+
+    invoke-static {v2, v3}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 407
-    const-string p1, "StatsCompanionService"
-
-    const-string p2, "Unable to send active configs changed broadcast using IntentSender"
-
-    invoke-static {p1, p2}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
-
-    .line 409
-    :goto_23
+    .end local v1  # "e":Landroid/content/IntentSender$SendIntentException;
+    :goto_25
     return-void
 .end method
 
 .method public sendDataBroadcast(Landroid/os/IBinder;J)V
-    .registers 10
+    .registers 11
+    .param p1, "intentSenderBinder"  # Landroid/os/IBinder;
+    .param p2, "lastReportTimeNs"  # J
 
-    .line 384
+    .line 382
     invoke-direct {p0}, Lcom/android/server/stats/StatsCompanionService;->enforceCallingPermission()V
 
-    .line 385
+    .line 383
     new-instance v0, Landroid/content/IntentSender;
 
     invoke-direct {v0, p1}, Landroid/content/IntentSender;-><init>(Landroid/os/IBinder;)V
 
-    .line 386
-    new-instance v3, Landroid/content/Intent;
+    .line 384
+    .local v0, "intentSender":Landroid/content/IntentSender;
+    new-instance v1, Landroid/content/Intent;
 
-    invoke-direct {v3}, Landroid/content/Intent;-><init>()V
+    invoke-direct {v1}, Landroid/content/Intent;-><init>()V
+
+    move-object v6, v1
+
+    .line 385
+    .local v6, "intent":Landroid/content/Intent;
+    const-string v1, "android.app.extra.LAST_REPORT_TIME"
+
+    invoke-virtual {v6, v1, p2, p3}, Landroid/content/Intent;->putExtra(Ljava/lang/String;J)Landroid/content/Intent;
 
     .line 387
-    const-string p1, "android.app.extra.LAST_REPORT_TIME"
-
-    invoke-virtual {v3, p1, p2, p3}, Landroid/content/Intent;->putExtra(Ljava/lang/String;J)Landroid/content/Intent;
-
-    .line 389
-    :try_start_12
+    :try_start_13
     iget-object v1, p0, Lcom/android/server/stats/StatsCompanionService;->mContext:Landroid/content/Context;
 
     const/4 v2, 0x1
@@ -11016,174 +12317,251 @@
 
     const/4 v5, 0x0
 
-    invoke-virtual/range {v0 .. v5}, Landroid/content/IntentSender;->sendIntent(Landroid/content/Context;ILandroid/content/Intent;Landroid/content/IntentSender$OnFinished;Landroid/os/Handler;)V
-    :try_end_1a
-    .catch Landroid/content/IntentSender$SendIntentException; {:try_start_12 .. :try_end_1a} :catch_1b
+    move-object v3, v6
 
-    .line 392
-    goto :goto_23
+    invoke-virtual/range {v0 .. v5}, Landroid/content/IntentSender;->sendIntent(Landroid/content/Context;ILandroid/content/Intent;Landroid/content/IntentSender$OnFinished;Landroid/os/Handler;)V
+    :try_end_1c
+    .catch Landroid/content/IntentSender$SendIntentException; {:try_start_13 .. :try_end_1c} :catch_1d
 
     .line 390
-    :catch_1b
-    move-exception p1
+    goto :goto_25
+
+    .line 388
+    :catch_1d
+    move-exception v1
+
+    .line 389
+    .local v1, "e":Landroid/content/IntentSender$SendIntentException;
+    const-string v2, "StatsCompanionService"
+
+    const-string v3, "Unable to send using IntentSender"
+
+    invoke-static {v2, v3}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 391
-    const-string p1, "StatsCompanionService"
-
-    const-string p2, "Unable to send using IntentSender"
-
-    invoke-static {p1, p2}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
-
-    .line 393
-    :goto_23
+    .end local v1  # "e":Landroid/content/IntentSender$SendIntentException;
+    :goto_25
     return-void
 .end method
 
 .method public sendSubscriberBroadcast(Landroid/os/IBinder;JJJJ[Ljava/lang/String;Landroid/os/StatsDimensionsValue;)V
-    .registers 14
+    .registers 32
+    .param p1, "intentSenderBinder"  # Landroid/os/IBinder;
+    .param p2, "configUid"  # J
+    .param p4, "configKey"  # J
+    .param p6, "subscriptionId"  # J
+    .param p8, "subscriptionRuleId"  # J
+    .param p10, "cookies"  # [Ljava/lang/String;
+    .param p11, "dimensionsValue"  # Landroid/os/StatsDimensionsValue;
+
+    .line 413
+    move-wide/from16 v1, p2
+
+    move-object/from16 v3, p10
+
+    invoke-direct/range {p0 .. p0}, Lcom/android/server/stats/StatsCompanionService;->enforceCallingPermission()V
+
+    .line 414
+    new-instance v4, Landroid/content/IntentSender;
+
+    move-object/from16 v10, p1
+
+    invoke-direct {v4, v10}, Landroid/content/IntentSender;-><init>(Landroid/os/IBinder;)V
 
     .line 415
-    invoke-direct {p0}, Lcom/android/server/stats/StatsCompanionService;->enforceCallingPermission()V
+    .local v4, "intentSender":Landroid/content/IntentSender;
+    new-instance v0, Landroid/content/Intent;
 
-    .line 416
-    new-instance v0, Landroid/content/IntentSender;
-
-    invoke-direct {v0, p1}, Landroid/content/IntentSender;-><init>(Landroid/os/IBinder;)V
+    invoke-direct {v0}, Landroid/content/Intent;-><init>()V
 
     .line 417
-    new-instance p1, Landroid/content/Intent;
+    const-string v5, "android.app.extra.STATS_CONFIG_UID"
 
-    invoke-direct {p1}, Landroid/content/Intent;-><init>()V
+    invoke-virtual {v0, v5, v1, v2}, Landroid/content/Intent;->putExtra(Ljava/lang/String;J)Landroid/content/Intent;
+
+    move-result-object v0
+
+    .line 418
+    const-string v5, "android.app.extra.STATS_CONFIG_KEY"
+
+    move-wide/from16 v11, p4
+
+    invoke-virtual {v0, v5, v11, v12}, Landroid/content/Intent;->putExtra(Ljava/lang/String;J)Landroid/content/Intent;
+
+    move-result-object v0
 
     .line 419
-    const-string v1, "android.app.extra.STATS_CONFIG_UID"
+    const-string v5, "android.app.extra.STATS_SUBSCRIPTION_ID"
 
-    invoke-virtual {p1, v1, p2, p3}, Landroid/content/Intent;->putExtra(Ljava/lang/String;J)Landroid/content/Intent;
+    move-wide/from16 v13, p6
 
-    move-result-object p1
+    invoke-virtual {v0, v5, v13, v14}, Landroid/content/Intent;->putExtra(Ljava/lang/String;J)Landroid/content/Intent;
+
+    move-result-object v0
 
     .line 420
-    const-string v1, "android.app.extra.STATS_CONFIG_KEY"
+    const-string v5, "android.app.extra.STATS_SUBSCRIPTION_RULE_ID"
 
-    invoke-virtual {p1, v1, p4, p5}, Landroid/content/Intent;->putExtra(Ljava/lang/String;J)Landroid/content/Intent;
+    move-wide/from16 v8, p8
 
-    move-result-object p1
+    invoke-virtual {v0, v5, v8, v9}, Landroid/content/Intent;->putExtra(Ljava/lang/String;J)Landroid/content/Intent;
+
+    move-result-object v0
 
     .line 421
-    const-string p4, "android.app.extra.STATS_SUBSCRIPTION_ID"
+    const-string v5, "android.app.extra.STATS_DIMENSIONS_VALUE"
 
-    invoke-virtual {p1, p4, p6, p7}, Landroid/content/Intent;->putExtra(Ljava/lang/String;J)Landroid/content/Intent;
+    move-object/from16 v15, p11
 
-    move-result-object p1
+    invoke-virtual {v0, v5, v15}, Landroid/content/Intent;->putExtra(Ljava/lang/String;Landroid/os/Parcelable;)Landroid/content/Intent;
 
-    .line 422
-    const-string p4, "android.app.extra.STATS_SUBSCRIPTION_RULE_ID"
-
-    invoke-virtual {p1, p4, p8, p9}, Landroid/content/Intent;->putExtra(Ljava/lang/String;J)Landroid/content/Intent;
-
-    move-result-object p1
+    move-result-object v7
 
     .line 423
-    const-string p4, "android.app.extra.STATS_DIMENSIONS_VALUE"
+    .local v7, "intent":Landroid/content/Intent;
+    new-instance v0, Ljava/util/ArrayList;
 
-    invoke-virtual {p1, p4, p11}, Landroid/content/Intent;->putExtra(Ljava/lang/String;Landroid/os/Parcelable;)Landroid/content/Intent;
+    array-length v5, v3
 
-    move-result-object p7
+    invoke-direct {v0, v5}, Ljava/util/ArrayList;-><init>(I)V
+
+    move-object v6, v0
+
+    .line 424
+    .local v6, "cookieList":Ljava/util/ArrayList;, "Ljava/util/ArrayList<Ljava/lang/String;>;"
+    array-length v0, v3
+
+    const/4 v5, 0x0
+
+    :goto_42
+    if-ge v5, v0, :cond_50
+
+    move/from16 v16, v0
+
+    aget-object v0, v3, v5
 
     .line 425
-    new-instance p1, Ljava/util/ArrayList;
+    .local v0, "cookie":Ljava/lang/String;
+    invoke-virtual {v6, v0}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
 
-    array-length p4, p10
+    .line 424
+    .end local v0  # "cookie":Ljava/lang/String;
+    add-int/lit8 v5, v5, 0x1
 
-    invoke-direct {p1, p4}, Ljava/util/ArrayList;-><init>(I)V
+    move/from16 v0, v16
 
-    .line 426
-    array-length p4, p10
-
-    const/4 p5, 0x0
-
-    :goto_33
-    if-ge p5, p4, :cond_3d
-
-    aget-object p6, p10, p5
+    goto :goto_42
 
     .line 427
-    invoke-virtual {p1, p6}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
+    :cond_50
+    const-string v0, "android.app.extra.STATS_BROADCAST_SUBSCRIBER_COOKIES"
 
-    .line 426
-    add-int/lit8 p5, p5, 0x1
+    invoke-virtual {v7, v0, v6}, Landroid/content/Intent;->putStringArrayListExtra(Ljava/lang/String;Ljava/util/ArrayList;)Landroid/content/Intent;
 
-    goto :goto_33
+    .line 438
+    move-object/from16 v5, p0
 
-    .line 429
-    :cond_3d
-    const-string p4, "android.app.extra.STATS_BROADCAST_SUBSCRIBER_COOKIES"
+    :try_start_57
+    iget-object v0, v5, Lcom/android/server/stats/StatsCompanionService;->mContext:Landroid/content/Context;
+    :try_end_59
+    .catch Landroid/content/IntentSender$SendIntentException; {:try_start_57 .. :try_end_59} :catch_70
 
-    invoke-virtual {p7, p4, p1}, Landroid/content/Intent;->putStringArrayListExtra(Ljava/lang/String;Ljava/util/ArrayList;)Landroid/content/Intent;
+    const/16 v16, 0x1
+
+    const/16 v17, 0x0
+
+    const/16 v18, 0x0
+
+    move-object v5, v0
+
+    move-object/from16 v19, v6
+
+    .end local v6  # "cookieList":Ljava/util/ArrayList;, "Ljava/util/ArrayList<Ljava/lang/String;>;"
+    .local v19, "cookieList":Ljava/util/ArrayList;, "Ljava/util/ArrayList<Ljava/lang/String;>;"
+    move/from16 v6, v16
+
+    move-object/from16 v16, v7
+
+    .end local v7  # "intent":Landroid/content/Intent;
+    .local v16, "intent":Landroid/content/Intent;
+    move-object/from16 v8, v17
+
+    move-object/from16 v9, v18
+
+    :try_start_6a
+    invoke-virtual/range {v4 .. v9}, Landroid/content/IntentSender;->sendIntent(Landroid/content/Context;ILandroid/content/Intent;Landroid/content/IntentSender$OnFinished;Landroid/os/Handler;)V
+    :try_end_6d
+    .catch Landroid/content/IntentSender$SendIntentException; {:try_start_6a .. :try_end_6d} :catch_6e
+
+    .line 443
+    goto :goto_90
+
+    .line 439
+    :catch_6e
+    move-exception v0
+
+    goto :goto_75
+
+    .end local v16  # "intent":Landroid/content/Intent;
+    .end local v19  # "cookieList":Ljava/util/ArrayList;, "Ljava/util/ArrayList<Ljava/lang/String;>;"
+    .restart local v6  # "cookieList":Ljava/util/ArrayList;, "Ljava/util/ArrayList<Ljava/lang/String;>;"
+    .restart local v7  # "intent":Landroid/content/Intent;
+    :catch_70
+    move-exception v0
+
+    move-object/from16 v19, v6
+
+    move-object/from16 v16, v7
 
     .line 440
-    :try_start_42
-    iget-object p5, p0, Lcom/android/server/stats/StatsCompanionService;->mContext:Landroid/content/Context;
+    .end local v6  # "cookieList":Ljava/util/ArrayList;, "Ljava/util/ArrayList<Ljava/lang/String;>;"
+    .end local v7  # "intent":Landroid/content/Intent;
+    .local v0, "e":Landroid/content/IntentSender$SendIntentException;
+    .restart local v16  # "intent":Landroid/content/Intent;
+    .restart local v19  # "cookieList":Ljava/util/ArrayList;, "Ljava/util/ArrayList<Ljava/lang/String;>;"
+    :goto_75
+    new-instance v5, Ljava/lang/StringBuilder;
 
-    const/4 p6, 0x1
+    invoke-direct {v5}, Ljava/lang/StringBuilder;-><init>()V
 
-    const/4 p8, 0x0
+    const-string v6, "Unable to send using IntentSender from uid "
 
-    const/4 p9, 0x0
+    invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    move-object p4, v0
+    invoke-virtual {v5, v1, v2}, Ljava/lang/StringBuilder;->append(J)Ljava/lang/StringBuilder;
 
-    invoke-virtual/range {p4 .. p9}, Landroid/content/IntentSender;->sendIntent(Landroid/content/Context;ILandroid/content/Intent;Landroid/content/IntentSender$OnFinished;Landroid/os/Handler;)V
-    :try_end_4b
-    .catch Landroid/content/IntentSender$SendIntentException; {:try_start_42 .. :try_end_4b} :catch_4c
+    const-string v6, "; presumably it had been cancelled."
 
-    .line 445
-    goto :goto_68
+    invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    .line 441
-    :catch_4c
-    move-exception p1
+    invoke-virtual {v5}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    .line 442
-    new-instance p1, Ljava/lang/StringBuilder;
+    move-result-object v5
 
-    invoke-direct {p1}, Ljava/lang/StringBuilder;-><init>()V
+    const-string v6, "StatsCompanionService"
 
-    const-string p4, "Unable to send using IntentSender from uid "
+    invoke-static {v6, v5}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
-    invoke-virtual {p1, p4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {p1, p2, p3}, Ljava/lang/StringBuilder;->append(J)Ljava/lang/StringBuilder;
-
-    const-string p2, "; presumably it had been cancelled."
-
-    invoke-virtual {p1, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {p1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
-
-    move-result-object p1
-
-    const-string p2, "StatsCompanionService"
-
-    invoke-static {p2, p1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
-
-    .line 446
-    :goto_68
+    .line 444
+    .end local v0  # "e":Landroid/content/IntentSender$SendIntentException;
+    :goto_90
     return-void
 .end method
 
 .method public setAlarmForSubscriberTriggering(J)V
     .registers 12
+    .param p1, "timestampMs"  # J
 
-    .line 714
+    .line 712
     invoke-direct {p0}, Lcom/android/server/stats/StatsCompanionService;->enforceCallingPermission()V
 
-    .line 720
+    .line 718
     invoke-static {}, Landroid/os/Binder;->clearCallingIdentity()J
 
     move-result-wide v0
 
-    .line 724
+    .line 722
+    .local v0, "callingToken":J
     :try_start_7
     iget-object v2, p0, Lcom/android/server/stats/StatsCompanionService;->mAlarmManager:Landroid/app/AlarmManager;
 
@@ -11201,36 +12579,38 @@
     :try_end_14
     .catchall {:try_start_7 .. :try_end_14} :catchall_19
 
-    .line 727
+    .line 725
     invoke-static {v0, v1}, Landroid/os/Binder;->restoreCallingIdentity(J)V
 
-    .line 728
+    .line 726
     nop
 
-    .line 729
+    .line 727
     return-void
 
-    .line 727
+    .line 725
     :catchall_19
-    move-exception p1
+    move-exception v2
 
     invoke-static {v0, v1}, Landroid/os/Binder;->restoreCallingIdentity(J)V
 
-    throw p1
+    throw v2
 .end method
 
 .method public setAnomalyAlarm(J)V
     .registers 12
+    .param p1, "timestampMs"  # J
 
-    .line 686
+    .line 684
     invoke-direct {p0}, Lcom/android/server/stats/StatsCompanionService;->enforceCallingPermission()V
 
-    .line 688
+    .line 686
     invoke-static {}, Landroid/os/Binder;->clearCallingIdentity()J
 
     move-result-wide v0
 
-    .line 693
+    .line 691
+    .local v0, "callingToken":J
     :try_start_7
     iget-object v2, p0, Lcom/android/server/stats/StatsCompanionService;->mAlarmManager:Landroid/app/AlarmManager;
 
@@ -11248,36 +12628,38 @@
     :try_end_14
     .catchall {:try_start_7 .. :try_end_14} :catchall_19
 
-    .line 696
+    .line 694
     invoke-static {v0, v1}, Landroid/os/Binder;->restoreCallingIdentity(J)V
 
-    .line 697
+    .line 695
     nop
 
-    .line 698
+    .line 696
     return-void
 
-    .line 696
+    .line 694
     :catchall_19
-    move-exception p1
+    move-exception v2
 
     invoke-static {v0, v1}, Landroid/os/Binder;->restoreCallingIdentity(J)V
 
-    throw p1
+    throw v2
 .end method
 
 .method public setPullingAlarm(J)V
     .registers 12
+    .param p1, "nextPullTimeMs"  # J
 
-    .line 747
+    .line 745
     invoke-direct {p0}, Lcom/android/server/stats/StatsCompanionService;->enforceCallingPermission()V
 
-    .line 752
+    .line 750
     invoke-static {}, Landroid/os/Binder;->clearCallingIdentity()J
 
     move-result-wide v0
 
-    .line 756
+    .line 754
+    .local v0, "callingToken":J
     :try_start_7
     iget-object v2, p0, Lcom/android/server/stats/StatsCompanionService;->mAlarmManager:Landroid/app/AlarmManager;
 
@@ -11295,34 +12677,34 @@
     :try_end_14
     .catchall {:try_start_7 .. :try_end_14} :catchall_19
 
-    .line 759
+    .line 757
     invoke-static {v0, v1}, Landroid/os/Binder;->restoreCallingIdentity(J)V
 
-    .line 760
+    .line 758
     nop
 
-    .line 761
+    .line 759
     return-void
 
-    .line 759
+    .line 757
     :catchall_19
-    move-exception p1
+    move-exception v2
 
     invoke-static {v0, v1}, Landroid/os/Binder;->restoreCallingIdentity(J)V
 
-    throw p1
+    throw v2
 .end method
 
 .method public statsdReady()V
     .registers 5
 
-    .line 2535
+    .line 2489
     invoke-direct {p0}, Lcom/android/server/stats/StatsCompanionService;->enforceCallingPermission()V
 
-    .line 2539
+    .line 2493
     invoke-direct {p0}, Lcom/android/server/stats/StatsCompanionService;->sayHiToStatsd()V
 
-    .line 2540
+    .line 2494
     iget-object v0, p0, Lcom/android/server/stats/StatsCompanionService;->mContext:Landroid/content/Context;
 
     new-instance v1, Landroid/content/Intent;
@@ -11331,7 +12713,7 @@
 
     invoke-direct {v1, v2}, Landroid/content/Intent;-><init>(Ljava/lang/String;)V
 
-    .line 2541
+    .line 2495
     const/high16 v2, 0x1000000
 
     invoke-virtual {v1, v2}, Landroid/content/Intent;->addFlags(I)Landroid/content/Intent;
@@ -11340,35 +12722,36 @@
 
     sget-object v2, Landroid/os/UserHandle;->SYSTEM:Landroid/os/UserHandle;
 
-    .line 2540
+    .line 2494
     const-string v3, "android.permission.DUMP"
 
     invoke-virtual {v0, v1, v2, v3}, Landroid/content/Context;->sendBroadcastAsUser(Landroid/content/Intent;Landroid/os/UserHandle;Ljava/lang/String;)V
 
-    .line 2543
+    .line 2497
     return-void
 .end method
 
 .method public triggerUidSnapshot()V
     .registers 7
 
-    .line 2547
+    .line 2501
     invoke-direct {p0}, Lcom/android/server/stats/StatsCompanionService;->enforceCallingPermission()V
 
-    .line 2548
+    .line 2502
     sget-object v0, Lcom/android/server/stats/StatsCompanionService;->sStatsdLock:Ljava/lang/Object;
 
     monitor-enter v0
 
-    .line 2549
+    .line 2503
     :try_start_6
     invoke-static {}, Landroid/os/Binder;->clearCallingIdentity()J
 
     move-result-wide v1
     :try_end_a
-    .catchall {:try_start_6 .. :try_end_a} :catchall_24
+    .catchall {:try_start_6 .. :try_end_a} :catchall_28
 
-    .line 2551
+    .line 2505
+    .local v1, "token":J
     :try_start_a
     iget-object v3, p0, Lcom/android/server/stats/StatsCompanionService;->mContext:Landroid/content/Context;
 
@@ -11377,27 +12760,28 @@
     .catch Landroid/os/RemoteException; {:try_start_a .. :try_end_f} :catch_15
     .catchall {:try_start_a .. :try_end_f} :catchall_13
 
-    .line 2555
-    :goto_f
+    .line 2509
     :try_start_f
     invoke-static {v1, v2}, Lcom/android/server/stats/StatsCompanionService;->restoreCallingIdentity(J)V
     :try_end_12
-    .catchall {:try_start_f .. :try_end_12} :catchall_24
+    .catchall {:try_start_f .. :try_end_12} :catchall_28
 
-    .line 2556
-    goto :goto_1e
+    .line 2510
+    :goto_12
+    goto :goto_22
 
-    .line 2555
+    .line 2509
     :catchall_13
     move-exception v3
 
-    goto :goto_20
+    goto :goto_24
 
-    .line 2552
+    .line 2506
     :catch_15
     move-exception v3
 
-    .line 2553
+    .line 2507
+    .local v3, "e":Landroid/os/RemoteException;
     :try_start_16
     const-string v4, "StatsCompanionService"
 
@@ -11407,29 +12791,40 @@
     :try_end_1d
     .catchall {:try_start_16 .. :try_end_1d} :catchall_13
 
-    goto :goto_f
+    .line 2509
+    nop
 
-    .line 2557
-    :goto_1e
+    .end local v3  # "e":Landroid/os/RemoteException;
     :try_start_1e
-    monitor-exit v0
-
-    .line 2558
-    return-void
-
-    .line 2555
-    :goto_20
     invoke-static {v1, v2}, Lcom/android/server/stats/StatsCompanionService;->restoreCallingIdentity(J)V
 
+    goto :goto_12
+
+    .line 2511
+    .end local v1  # "token":J
+    :goto_22
+    monitor-exit v0
+
+    .line 2512
+    return-void
+
+    .line 2509
+    .restart local v1  # "token":J
+    :goto_24
+    invoke-static {v1, v2}, Lcom/android/server/stats/StatsCompanionService;->restoreCallingIdentity(J)V
+
+    .end local p0  # "this":Lcom/android/server/stats/StatsCompanionService;
     throw v3
 
-    .line 2557
-    :catchall_24
+    .line 2511
+    .end local v1  # "token":J
+    .restart local p0  # "this":Lcom/android/server/stats/StatsCompanionService;
+    :catchall_28
     move-exception v1
 
     monitor-exit v0
-    :try_end_26
-    .catchall {:try_start_1e .. :try_end_26} :catchall_24
+    :try_end_2a
+    .catchall {:try_start_1e .. :try_end_2a} :catchall_28
 
     throw v1
 .end method

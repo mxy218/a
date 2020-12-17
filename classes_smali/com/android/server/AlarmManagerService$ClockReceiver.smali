@@ -21,111 +21,120 @@
 # direct methods
 .method public constructor <init>(Lcom/android/server/AlarmManagerService;)V
     .registers 4
+    .param p1, "this$0"  # Lcom/android/server/AlarmManagerService;
 
-    .line 4248
+    .line 4504
     iput-object p1, p0, Lcom/android/server/AlarmManagerService$ClockReceiver;->this$0:Lcom/android/server/AlarmManagerService;
 
     invoke-direct {p0}, Landroid/content/BroadcastReceiver;-><init>()V
 
-    .line 4249
+    .line 4505
     new-instance v0, Landroid/content/IntentFilter;
 
     invoke-direct {v0}, Landroid/content/IntentFilter;-><init>()V
 
-    .line 4250
+    .line 4506
+    .local v0, "filter":Landroid/content/IntentFilter;
     const-string v1, "android.intent.action.DATE_CHANGED"
 
     invoke-virtual {v0, v1}, Landroid/content/IntentFilter;->addAction(Ljava/lang/String;)V
 
-    .line 4251
+    .line 4507
     invoke-virtual {p1}, Lcom/android/server/AlarmManagerService;->getContext()Landroid/content/Context;
 
-    move-result-object p1
+    move-result-object v1
 
-    invoke-virtual {p1, p0, v0}, Landroid/content/Context;->registerReceiver(Landroid/content/BroadcastReceiver;Landroid/content/IntentFilter;)Landroid/content/Intent;
+    invoke-virtual {v1, p0, v0}, Landroid/content/Context;->registerReceiver(Landroid/content/BroadcastReceiver;Landroid/content/IntentFilter;)Landroid/content/Intent;
 
-    .line 4252
+    .line 4508
     return-void
 .end method
 
 
 # virtual methods
 .method public onReceive(Landroid/content/Context;Landroid/content/Intent;)V
-    .registers 5
+    .registers 7
+    .param p1, "context"  # Landroid/content/Context;
+    .param p2, "intent"  # Landroid/content/Intent;
 
-    .line 4256
+    .line 4512
     invoke-virtual {p2}, Landroid/content/Intent;->getAction()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    const-string p2, "android.intent.action.DATE_CHANGED"
+    const-string v1, "android.intent.action.DATE_CHANGED"
 
-    invoke-virtual {p1, p2}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v0, v1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result p1
+    move-result v0
 
-    if-eqz p1, :cond_36
+    if-eqz v0, :cond_37
 
-    .line 4261
-    const-string/jumbo p1, "persist.sys.timezone"
+    .line 4517
+    const-string/jumbo v0, "persist.sys.timezone"
 
-    invoke-static {p1}, Landroid/os/SystemProperties;->get(Ljava/lang/String;)Ljava/lang/String;
+    invoke-static {v0}, Landroid/os/SystemProperties;->get(Ljava/lang/String;)Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    invoke-static {p1}, Ljava/util/TimeZone;->getTimeZone(Ljava/lang/String;)Ljava/util/TimeZone;
+    invoke-static {v0}, Ljava/util/TimeZone;->getTimeZone(Ljava/lang/String;)Ljava/util/TimeZone;
 
-    move-result-object p1
+    move-result-object v0
 
-    .line 4262
-    iget-object p2, p0, Lcom/android/server/AlarmManagerService$ClockReceiver;->this$0:Lcom/android/server/AlarmManagerService;
+    .line 4518
+    .local v0, "zone":Ljava/util/TimeZone;
+    iget-object v1, p0, Lcom/android/server/AlarmManagerService$ClockReceiver;->this$0:Lcom/android/server/AlarmManagerService;
 
-    invoke-static {p2}, Lcom/android/server/AlarmManagerService;->access$100(Lcom/android/server/AlarmManagerService;)Lcom/android/server/AlarmManagerService$Injector;
+    invoke-static {v1}, Lcom/android/server/AlarmManagerService;->access$100(Lcom/android/server/AlarmManagerService;)Lcom/android/server/AlarmManagerService$Injector;
 
-    move-result-object p2
+    move-result-object v1
 
-    invoke-virtual {p2}, Lcom/android/server/AlarmManagerService$Injector;->getCurrentTimeMillis()J
+    invoke-virtual {v1}, Lcom/android/server/AlarmManagerService$Injector;->getCurrentTimeMillis()J
 
-    move-result-wide v0
+    move-result-wide v1
 
-    invoke-virtual {p1, v0, v1}, Ljava/util/TimeZone;->getOffset(J)I
+    invoke-virtual {v0, v1, v2}, Ljava/util/TimeZone;->getOffset(J)I
 
-    move-result p1
+    move-result v1
 
-    .line 4263
-    iget-object p2, p0, Lcom/android/server/AlarmManagerService$ClockReceiver;->this$0:Lcom/android/server/AlarmManagerService;
+    .line 4519
+    .local v1, "gmtOffset":I
+    iget-object v2, p0, Lcom/android/server/AlarmManagerService$ClockReceiver;->this$0:Lcom/android/server/AlarmManagerService;
 
-    invoke-static {p2}, Lcom/android/server/AlarmManagerService;->access$100(Lcom/android/server/AlarmManagerService;)Lcom/android/server/AlarmManagerService$Injector;
+    invoke-static {v2}, Lcom/android/server/AlarmManagerService;->access$100(Lcom/android/server/AlarmManagerService;)Lcom/android/server/AlarmManagerService$Injector;
 
-    move-result-object p2
+    move-result-object v2
 
-    const v0, 0xea60
+    const v3, 0xea60
 
-    div-int/2addr p1, v0
+    div-int v3, v1, v3
 
-    neg-int p1, p1
+    neg-int v3, v3
 
-    invoke-virtual {p2, p1}, Lcom/android/server/AlarmManagerService$Injector;->setKernelTimezone(I)V
+    invoke-virtual {v2, v3}, Lcom/android/server/AlarmManagerService$Injector;->setKernelTimezone(I)V
 
-    .line 4264
+    .line 4520
     invoke-virtual {p0}, Lcom/android/server/AlarmManagerService$ClockReceiver;->scheduleDateChangedEvent()V
 
-    .line 4266
-    :cond_36
+    .line 4522
+    .end local v0  # "zone":Ljava/util/TimeZone;
+    .end local v1  # "gmtOffset":I
+    :cond_37
     return-void
 .end method
 
 .method public scheduleDateChangedEvent()V
     .registers 21
 
-    .line 4288
+    .line 4544
     move-object/from16 v0, p0
 
     invoke-static {}, Ljava/util/Calendar;->getInstance()Ljava/util/Calendar;
 
     move-result-object v1
 
-    .line 4289
+    .line 4545
+    .local v1, "calendar":Ljava/util/Calendar;
     iget-object v2, v0, Lcom/android/server/AlarmManagerService$ClockReceiver;->this$0:Lcom/android/server/AlarmManagerService;
 
     invoke-static {v2}, Lcom/android/server/AlarmManagerService;->access$100(Lcom/android/server/AlarmManagerService;)Lcom/android/server/AlarmManagerService$Injector;
@@ -138,57 +147,56 @@
 
     invoke-virtual {v1, v2, v3}, Ljava/util/Calendar;->setTimeInMillis(J)V
 
-    .line 4290
+    .line 4546
     const/4 v2, 0x0
 
     const/16 v3, 0xb
 
     invoke-virtual {v1, v3, v2}, Ljava/util/Calendar;->set(II)V
 
-    .line 4291
+    .line 4547
     const/16 v3, 0xc
 
     invoke-virtual {v1, v3, v2}, Ljava/util/Calendar;->set(II)V
 
-    .line 4292
+    .line 4548
     const/16 v3, 0xd
 
     invoke-virtual {v1, v3, v2}, Ljava/util/Calendar;->set(II)V
 
-    .line 4293
+    .line 4549
     const/16 v3, 0xe
 
     invoke-virtual {v1, v3, v2}, Ljava/util/Calendar;->set(II)V
 
-    .line 4294
+    .line 4550
     const/4 v2, 0x5
 
     const/4 v3, 0x1
 
     invoke-virtual {v1, v2, v3}, Ljava/util/Calendar;->add(II)V
 
-    .line 4296
-    nop
+    .line 4552
+    const/4 v2, 0x0
 
-    .line 4297
+    .line 4553
+    .local v2, "workSource":Landroid/os/WorkSource;
     iget-object v4, v0, Lcom/android/server/AlarmManagerService$ClockReceiver;->this$0:Lcom/android/server/AlarmManagerService;
 
     invoke-virtual {v1}, Ljava/util/Calendar;->getTimeInMillis()J
 
     move-result-wide v6
 
-    iget-object v0, v0, Lcom/android/server/AlarmManagerService$ClockReceiver;->this$0:Lcom/android/server/AlarmManagerService;
+    iget-object v3, v0, Lcom/android/server/AlarmManagerService$ClockReceiver;->this$0:Lcom/android/server/AlarmManagerService;
 
-    iget-object v12, v0, Lcom/android/server/AlarmManagerService;->mDateChangeSender:Landroid/app/PendingIntent;
+    iget-object v12, v3, Lcom/android/server/AlarmManagerService;->mDateChangeSender:Landroid/app/PendingIntent;
 
-    .line 4299
+    .line 4555
     invoke-static {}, Landroid/os/Process;->myUid()I
 
     move-result v18
 
-    .line 4297
-    const/16 v16, 0x0
-
+    .line 4553
     const/4 v5, 0x1
 
     const-wide/16 v8, 0x0
@@ -205,116 +213,122 @@
 
     const-string v19, "android"
 
+    move-object/from16 v16, v2
+
     invoke-virtual/range {v4 .. v19}, Lcom/android/server/AlarmManagerService;->setImpl(IJJJLandroid/app/PendingIntent;Landroid/app/IAlarmListener;Ljava/lang/String;ILandroid/os/WorkSource;Landroid/app/AlarmManager$AlarmClockInfo;ILjava/lang/String;)V
 
-    .line 4300
+    .line 4556
     return-void
 .end method
 
 .method public scheduleTimeTickEvent()V
-    .registers 24
+    .registers 26
 
-    .line 4269
-    move-object/from16 v0, p0
+    .line 4525
+    move-object/from16 v1, p0
 
-    iget-object v1, v0, Lcom/android/server/AlarmManagerService$ClockReceiver;->this$0:Lcom/android/server/AlarmManagerService;
+    iget-object v0, v1, Lcom/android/server/AlarmManagerService$ClockReceiver;->this$0:Lcom/android/server/AlarmManagerService;
 
-    invoke-static {v1}, Lcom/android/server/AlarmManagerService;->access$100(Lcom/android/server/AlarmManagerService;)Lcom/android/server/AlarmManagerService$Injector;
+    invoke-static {v0}, Lcom/android/server/AlarmManagerService;->access$100(Lcom/android/server/AlarmManagerService;)Lcom/android/server/AlarmManagerService$Injector;
 
-    move-result-object v1
+    move-result-object v0
 
-    invoke-virtual {v1}, Lcom/android/server/AlarmManagerService$Injector;->getCurrentTimeMillis()J
+    invoke-virtual {v0}, Lcom/android/server/AlarmManagerService$Injector;->getCurrentTimeMillis()J
 
-    move-result-wide v1
+    move-result-wide v2
 
-    .line 4270
-    const-wide/32 v3, 0xea60
+    .line 4526
+    .local v2, "currentTime":J
+    const-wide/32 v4, 0xea60
 
-    div-long v5, v1, v3
+    div-long v6, v2, v4
 
-    const-wide/16 v7, 0x1
+    const-wide/16 v8, 0x1
 
-    add-long/2addr v5, v7
+    add-long/2addr v6, v8
 
-    mul-long/2addr v5, v3
+    mul-long/2addr v6, v4
 
-    .line 4274
-    sub-long/2addr v5, v1
+    .line 4530
+    .local v6, "nextTime":J
+    sub-long v4, v6, v2
 
-    .line 4276
-    nop
+    .line 4532
+    .local v4, "tickEventDelay":J
+    const/16 v24, 0x0
 
-    .line 4277
-    iget-object v7, v0, Lcom/android/server/AlarmManagerService$ClockReceiver;->this$0:Lcom/android/server/AlarmManagerService;
+    .line 4533
+    .local v24, "workSource":Landroid/os/WorkSource;
+    iget-object v8, v1, Lcom/android/server/AlarmManagerService$ClockReceiver;->this$0:Lcom/android/server/AlarmManagerService;
 
-    invoke-static {v7}, Lcom/android/server/AlarmManagerService;->access$100(Lcom/android/server/AlarmManagerService;)Lcom/android/server/AlarmManagerService$Injector;
+    invoke-static {v8}, Lcom/android/server/AlarmManagerService;->access$100(Lcom/android/server/AlarmManagerService;)Lcom/android/server/AlarmManagerService$Injector;
 
-    move-result-object v3
+    move-result-object v0
 
-    invoke-virtual {v3}, Lcom/android/server/AlarmManagerService$Injector;->getElapsedRealtime()J
+    invoke-virtual {v0}, Lcom/android/server/AlarmManagerService$Injector;->getElapsedRealtime()J
 
-    move-result-wide v3
+    move-result-wide v9
 
-    add-long v9, v3, v5
+    add-long v10, v9, v4
 
-    iget-object v3, v0, Lcom/android/server/AlarmManagerService$ClockReceiver;->this$0:Lcom/android/server/AlarmManagerService;
+    iget-object v0, v1, Lcom/android/server/AlarmManagerService$ClockReceiver;->this$0:Lcom/android/server/AlarmManagerService;
 
-    iget-object v3, v3, Lcom/android/server/AlarmManagerService;->mTimeTickTrigger:Landroid/app/IAlarmListener;
+    iget-object v0, v0, Lcom/android/server/AlarmManagerService;->mTimeTickTrigger:Landroid/app/IAlarmListener;
 
-    .line 4279
+    .line 4535
     invoke-static {}, Landroid/os/Process;->myUid()I
 
-    move-result v21
+    move-result v22
 
-    .line 4277
-    const/16 v19, 0x0
+    .line 4533
+    const/4 v9, 0x3
 
-    const/4 v8, 0x3
+    const-wide/16 v12, 0x0
 
-    const-wide/16 v11, 0x0
+    const-wide/16 v14, 0x0
 
-    const-wide/16 v13, 0x0
+    const/16 v16, 0x0
 
-    const/4 v15, 0x0
+    const-string v18, "TIME_TICK"
 
-    const-string v17, "TIME_TICK"
+    const/16 v19, 0x1
 
-    const/16 v18, 0x1
+    const/16 v21, 0x0
 
-    const/16 v20, 0x0
+    const-string v23, "android"
 
-    const-string v22, "android"
+    move-object/from16 v17, v0
 
-    move-object/from16 v16, v3
+    move-object/from16 v20, v24
 
-    invoke-virtual/range {v7 .. v22}, Lcom/android/server/AlarmManagerService;->setImpl(IJJJLandroid/app/PendingIntent;Landroid/app/IAlarmListener;Ljava/lang/String;ILandroid/os/WorkSource;Landroid/app/AlarmManager$AlarmClockInfo;ILjava/lang/String;)V
+    invoke-virtual/range {v8 .. v23}, Lcom/android/server/AlarmManagerService;->setImpl(IJJJLandroid/app/PendingIntent;Landroid/app/IAlarmListener;Ljava/lang/String;ILandroid/os/WorkSource;Landroid/app/AlarmManager$AlarmClockInfo;ILjava/lang/String;)V
 
-    .line 4282
-    iget-object v3, v0, Lcom/android/server/AlarmManagerService$ClockReceiver;->this$0:Lcom/android/server/AlarmManagerService;
+    .line 4538
+    iget-object v0, v1, Lcom/android/server/AlarmManagerService$ClockReceiver;->this$0:Lcom/android/server/AlarmManagerService;
 
-    iget-object v3, v3, Lcom/android/server/AlarmManagerService;->mLock:Ljava/lang/Object;
+    iget-object v8, v0, Lcom/android/server/AlarmManagerService;->mLock:Ljava/lang/Object;
 
-    monitor-enter v3
+    monitor-enter v8
 
-    .line 4283
-    :try_start_45
-    iget-object v0, v0, Lcom/android/server/AlarmManagerService$ClockReceiver;->this$0:Lcom/android/server/AlarmManagerService;
+    .line 4539
+    :try_start_48
+    iget-object v0, v1, Lcom/android/server/AlarmManagerService$ClockReceiver;->this$0:Lcom/android/server/AlarmManagerService;
 
-    invoke-static {v0, v1, v2}, Lcom/android/server/AlarmManagerService;->access$2702(Lcom/android/server/AlarmManagerService;J)J
+    invoke-static {v0, v2, v3}, Lcom/android/server/AlarmManagerService;->access$3102(Lcom/android/server/AlarmManagerService;J)J
 
-    .line 4284
-    monitor-exit v3
+    .line 4540
+    monitor-exit v8
 
-    .line 4285
+    .line 4541
     return-void
 
-    .line 4284
-    :catchall_4c
+    .line 4540
+    :catchall_4f
     move-exception v0
 
-    monitor-exit v3
-    :try_end_4e
-    .catchall {:try_start_45 .. :try_end_4e} :catchall_4c
+    monitor-exit v8
+    :try_end_51
+    .catchall {:try_start_48 .. :try_end_51} :catchall_4f
 
     throw v0
 .end method

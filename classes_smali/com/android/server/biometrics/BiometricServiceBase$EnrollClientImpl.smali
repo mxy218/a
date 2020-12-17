@@ -19,27 +19,41 @@
 
 
 # direct methods
-.method public constructor <init>(Lcom/android/server/biometrics/BiometricServiceBase;Landroid/content/Context;Lcom/android/server/biometrics/BiometricServiceBase$DaemonWrapper;JLandroid/os/IBinder;Lcom/android/server/biometrics/BiometricServiceBase$ServiceListener;II[BZLjava/lang/String;[II)V
-    .registers 31
-
-    .line 288
-    move-object/from16 v0, p0
-
-    move-object/from16 v1, p1
-
-    iput-object v1, v0, Lcom/android/server/biometrics/BiometricServiceBase$EnrollClientImpl;->this$0:Lcom/android/server/biometrics/BiometricServiceBase;
+.method public constructor <init>(Lcom/android/server/biometrics/BiometricServiceBase;Landroid/content/Context;Lcom/android/server/biometrics/BiometricServiceBase$DaemonWrapper;JLandroid/os/IBinder;Lcom/android/server/biometrics/BiometricServiceBase$ServiceListener;II[BZLjava/lang/String;[I)V
+    .registers 30
+    .param p1, "this$0"  # Lcom/android/server/biometrics/BiometricServiceBase;
+    .param p2, "context"  # Landroid/content/Context;
+    .param p3, "daemon"  # Lcom/android/server/biometrics/BiometricServiceBase$DaemonWrapper;
+    .param p4, "halDeviceId"  # J
+    .param p6, "token"  # Landroid/os/IBinder;
+    .param p7, "listener"  # Lcom/android/server/biometrics/BiometricServiceBase$ServiceListener;
+    .param p8, "userId"  # I
+    .param p9, "groupId"  # I
+    .param p10, "cryptoToken"  # [B
+    .param p11, "restricted"  # Z
+    .param p12, "owner"  # Ljava/lang/String;
+    .param p13, "disabledFeatures"  # [I
 
     .line 289
+    move-object/from16 v15, p0
+
+    move-object/from16 v14, p1
+
+    iput-object v14, v15, Lcom/android/server/biometrics/BiometricServiceBase$EnrollClientImpl;->this$0:Lcom/android/server/biometrics/BiometricServiceBase;
+
+    .line 290
     invoke-virtual/range {p1 .. p1}, Lcom/android/server/biometrics/BiometricServiceBase;->getConstants()Lcom/android/server/biometrics/Constants;
 
     move-result-object v2
 
-    .line 290
+    .line 291
     invoke-virtual/range {p1 .. p1}, Lcom/android/server/biometrics/BiometricServiceBase;->getBiometricUtils()Lcom/android/server/biometrics/BiometricUtils;
 
     move-result-object v13
 
-    .line 289
+    .line 290
+    move-object/from16 v0, p0
+
     move-object/from16 v1, p2
 
     move-object/from16 v3, p3
@@ -62,11 +76,9 @@
 
     move-object/from16 v14, p13
 
-    move/from16 v15, p14
+    invoke-direct/range {v0 .. v14}, Lcom/android/server/biometrics/EnrollClient;-><init>(Landroid/content/Context;Lcom/android/server/biometrics/Constants;Lcom/android/server/biometrics/BiometricServiceBase$DaemonWrapper;JLandroid/os/IBinder;Lcom/android/server/biometrics/BiometricServiceBase$ServiceListener;II[BZLjava/lang/String;Lcom/android/server/biometrics/BiometricUtils;[I)V
 
-    invoke-direct/range {v0 .. v15}, Lcom/android/server/biometrics/EnrollClient;-><init>(Landroid/content/Context;Lcom/android/server/biometrics/Constants;Lcom/android/server/biometrics/BiometricServiceBase$DaemonWrapper;JLandroid/os/IBinder;Lcom/android/server/biometrics/BiometricServiceBase$ServiceListener;II[BZLjava/lang/String;Lcom/android/server/biometrics/BiometricUtils;[II)V
-
-    .line 292
+    .line 293
     return-void
 .end method
 
@@ -75,11 +87,11 @@
 .method public notifyUserActivity()V
     .registers 2
 
-    .line 296
+    .line 297
     iget-object v0, p0, Lcom/android/server/biometrics/BiometricServiceBase$EnrollClientImpl;->this$0:Lcom/android/server/biometrics/BiometricServiceBase;
 
-    invoke-static {v0}, Lcom/android/server/biometrics/BiometricServiceBase;->access$400(Lcom/android/server/biometrics/BiometricServiceBase;)V
+    invoke-static {v0}, Lcom/android/server/biometrics/BiometricServiceBase;->access$500(Lcom/android/server/biometrics/BiometricServiceBase;)V
 
-    .line 297
+    .line 298
     return-void
 .end method

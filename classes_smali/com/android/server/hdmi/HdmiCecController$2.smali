@@ -33,6 +33,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/hdmi/HdmiCecController;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/hdmi/HdmiCecController;
 
     .line 91
     iput-object p1, p0, Lcom/android/server/hdmi/HdmiCecController$2;->this$0:Lcom/android/server/hdmi/HdmiCecController;
@@ -45,30 +46,31 @@
 
 # virtual methods
 .method public test(Ljava/lang/Integer;)Z
-    .registers 3
+    .registers 4
+    .param p1, "address"  # Ljava/lang/Integer;
 
     .line 94
     invoke-virtual {p1}, Ljava/lang/Integer;->intValue()I
 
-    move-result p1
+    move-result v0
 
-    invoke-static {p1}, Lcom/android/server/hdmi/HdmiUtils;->getTypeFromAddress(I)I
+    invoke-static {v0}, Lcom/android/server/hdmi/HdmiUtils;->getTypeFromAddress(I)I
 
-    move-result p1
+    move-result v0
 
-    const/4 v0, 0x5
+    const/4 v1, 0x5
 
-    if-ne p1, v0, :cond_d
+    if-ne v0, v1, :cond_d
 
-    const/4 p1, 0x1
+    const/4 v0, 0x1
 
     goto :goto_e
 
     :cond_d
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
     :goto_e
-    return p1
+    return v0
 .end method
 
 .method public bridge synthetic test(Ljava/lang/Object;)Z

@@ -28,6 +28,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/autofill/ui/SaveUi;Lcom/android/server/autofill/ui/SaveUi$OnSaveListener;)V
     .registers 3
+    .param p2, "realListener"  # Lcom/android/server/autofill/ui/SaveUi$OnSaveListener;
 
     .line 101
     iput-object p1, p0, Lcom/android/server/autofill/ui/SaveUi$OneActionThenDestroyListener;->this$0:Lcom/android/server/autofill/ui/SaveUi;
@@ -45,6 +46,7 @@
 # virtual methods
 .method public onCancel(Landroid/content/IntentSender;)V
     .registers 4
+    .param p1, "listener"  # Landroid/content/IntentSender;
 
     .line 116
     sget-boolean v0, Lcom/android/server/autofill/Helper;->sDebug:Z

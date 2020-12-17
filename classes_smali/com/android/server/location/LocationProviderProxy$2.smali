@@ -20,14 +20,24 @@
 
 # direct methods
 .method constructor <init>(Lcom/android/server/location/LocationProviderProxy;Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;IIILandroid/os/Handler;)V
-    .registers 17
+    .registers 19
+    .param p1, "this$0"  # Lcom/android/server/location/LocationProviderProxy;
+    .param p2, "context"  # Landroid/content/Context;
+    .param p3, "logTag"  # Ljava/lang/String;
+    .param p4, "action"  # Ljava/lang/String;
+    .param p5, "overlaySwitchResId"  # I
+    .param p6, "defaultServicePackageNameResId"  # I
+    .param p7, "initialPackageNamesResId"  # I
+    .param p8, "handler"  # Landroid/os/Handler;
 
     .line 125
+    move-object v8, p0
+
+    move-object v9, p1
+
+    iput-object v9, v8, Lcom/android/server/location/LocationProviderProxy$2;->this$0:Lcom/android/server/location/LocationProviderProxy;
+
     move-object v0, p0
-
-    move-object v1, p1
-
-    iput-object v1, v0, Lcom/android/server/location/LocationProviderProxy$2;->this$0:Lcom/android/server/location/LocationProviderProxy;
 
     move-object v1, p2
 
@@ -37,9 +47,9 @@
 
     move v4, p5
 
-    move v5, p6
+    move/from16 v5, p6
 
-    move v6, p7
+    move/from16 v6, p7
 
     move-object/from16 v7, p8
 
@@ -50,6 +60,8 @@
 
 .method static synthetic lambda$onBind$0(Lcom/android/server/location/LocationProviderProxy;Landroid/os/IBinder;)V
     .registers 2
+    .param p0, "rec$"  # Lcom/android/server/location/LocationProviderProxy;
+    .param p1, "x$0"  # Landroid/os/IBinder;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;

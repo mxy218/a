@@ -30,6 +30,8 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/job/controllers/QuotaController;ILjava/lang/String;)V
     .registers 4
+    .param p2, "userId"  # I
+    .param p3, "packageName"  # Ljava/lang/String;
 
     .line 1970
     iput-object p1, p0, Lcom/android/server/job/controllers/QuotaController$QcAlarmListener;->this$0:Lcom/android/server/job/controllers/QuotaController;
@@ -115,6 +117,7 @@
 
 .method setTriggerTime(J)V
     .registers 3
+    .param p1, "timeElapsed"  # J
 
     .line 1980
     iput-wide p1, p0, Lcom/android/server/job/controllers/QuotaController$QcAlarmListener;->mTriggerTimeElapsed:J

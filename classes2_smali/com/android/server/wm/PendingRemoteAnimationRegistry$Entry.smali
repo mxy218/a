@@ -24,7 +24,9 @@
 
 # direct methods
 .method constructor <init>(Lcom/android/server/wm/PendingRemoteAnimationRegistry;Ljava/lang/String;Landroid/view/RemoteAnimationAdapter;)V
-    .registers 6
+    .registers 7
+    .param p2, "packageName"  # Ljava/lang/String;
+    .param p3, "adapter"  # Landroid/view/RemoteAnimationAdapter;
 
     .line 75
     iput-object p1, p0, Lcom/android/server/wm/PendingRemoteAnimationRegistry$Entry;->this$0:Lcom/android/server/wm/PendingRemoteAnimationRegistry;
@@ -42,13 +44,13 @@
 
     move-result-object p1
 
-    new-instance p3, Lcom/android/server/wm/-$$Lambda$PendingRemoteAnimationRegistry$Entry$giivzkMgzIxukCXvO2EVzLb0oxo;
+    new-instance v0, Lcom/android/server/wm/-$$Lambda$PendingRemoteAnimationRegistry$Entry$giivzkMgzIxukCXvO2EVzLb0oxo;
 
-    invoke-direct {p3, p0, p2}, Lcom/android/server/wm/-$$Lambda$PendingRemoteAnimationRegistry$Entry$giivzkMgzIxukCXvO2EVzLb0oxo;-><init>(Lcom/android/server/wm/PendingRemoteAnimationRegistry$Entry;Ljava/lang/String;)V
+    invoke-direct {v0, p0, p2}, Lcom/android/server/wm/-$$Lambda$PendingRemoteAnimationRegistry$Entry$giivzkMgzIxukCXvO2EVzLb0oxo;-><init>(Lcom/android/server/wm/PendingRemoteAnimationRegistry$Entry;Ljava/lang/String;)V
 
-    const-wide/16 v0, 0xbb8
+    const-wide/16 v1, 0xbb8
 
-    invoke-virtual {p1, p3, v0, v1}, Landroid/os/Handler;->postDelayed(Ljava/lang/Runnable;J)Z
+    invoke-virtual {p1, v0, v1, v2}, Landroid/os/Handler;->postDelayed(Ljava/lang/Runnable;J)Z
 
     .line 86
     return-void
@@ -57,7 +59,8 @@
 
 # virtual methods
 .method public synthetic lambda$new$0$PendingRemoteAnimationRegistry$Entry(Ljava/lang/String;)V
-    .registers 4
+    .registers 5
+    .param p1, "packageName"  # Ljava/lang/String;
 
     .line 79
     iget-object v0, p0, Lcom/android/server/wm/PendingRemoteAnimationRegistry$Entry;->this$0:Lcom/android/server/wm/PendingRemoteAnimationRegistry;
@@ -87,18 +90,20 @@
     check-cast v1, Lcom/android/server/wm/PendingRemoteAnimationRegistry$Entry;
 
     .line 81
+    .local v1, "entry":Lcom/android/server/wm/PendingRemoteAnimationRegistry$Entry;
     if-ne v1, p0, :cond_23
 
     .line 82
-    iget-object v1, p0, Lcom/android/server/wm/PendingRemoteAnimationRegistry$Entry;->this$0:Lcom/android/server/wm/PendingRemoteAnimationRegistry;
+    iget-object v2, p0, Lcom/android/server/wm/PendingRemoteAnimationRegistry$Entry;->this$0:Lcom/android/server/wm/PendingRemoteAnimationRegistry;
 
-    invoke-static {v1}, Lcom/android/server/wm/PendingRemoteAnimationRegistry;->access$200(Lcom/android/server/wm/PendingRemoteAnimationRegistry;)Landroid/util/ArrayMap;
+    invoke-static {v2}, Lcom/android/server/wm/PendingRemoteAnimationRegistry;->access$200(Lcom/android/server/wm/PendingRemoteAnimationRegistry;)Landroid/util/ArrayMap;
 
-    move-result-object v1
+    move-result-object v2
 
-    invoke-virtual {v1, p1}, Landroid/util/ArrayMap;->remove(Ljava/lang/Object;)Ljava/lang/Object;
+    invoke-virtual {v2, p1}, Landroid/util/ArrayMap;->remove(Ljava/lang/Object;)Ljava/lang/Object;
 
     .line 84
+    .end local v1  # "entry":Lcom/android/server/wm/PendingRemoteAnimationRegistry$Entry;
     :cond_23
     monitor-exit v0
     :try_end_24
@@ -111,7 +116,7 @@
 
     .line 84
     :catchall_28
-    move-exception p1
+    move-exception v1
 
     :try_start_29
     monitor-exit v0
@@ -120,5 +125,5 @@
 
     invoke-static {}, Lcom/android/server/wm/WindowManagerService;->resetPriorityAfterLockedSection()V
 
-    throw p1
+    throw v1
 .end method

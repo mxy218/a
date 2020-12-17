@@ -28,8 +28,9 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/backup/UserBackupManagerService;Ljava/lang/String;Ljava/util/HashSet;)V
     .registers 4
+    .param p1, "this$0"  # Lcom/android/server/backup/UserBackupManagerService;
 
-    .line 2392
+    .line 2336
     iput-object p1, p0, Lcom/android/server/backup/UserBackupManagerService$4;->this$0:Lcom/android/server/backup/UserBackupManagerService;
 
     iput-object p2, p0, Lcom/android/server/backup/UserBackupManagerService$4;->val$packageName:Ljava/lang/String;
@@ -46,15 +47,15 @@
 .method public run()V
     .registers 4
 
-    .line 2394
+    .line 2338
     iget-object v0, p0, Lcom/android/server/backup/UserBackupManagerService$4;->this$0:Lcom/android/server/backup/UserBackupManagerService;
 
     iget-object v1, p0, Lcom/android/server/backup/UserBackupManagerService$4;->val$packageName:Ljava/lang/String;
 
     iget-object v2, p0, Lcom/android/server/backup/UserBackupManagerService$4;->val$targets:Ljava/util/HashSet;
 
-    invoke-static {v0, v1, v2}, Lcom/android/server/backup/UserBackupManagerService;->access$1400(Lcom/android/server/backup/UserBackupManagerService;Ljava/lang/String;Ljava/util/HashSet;)V
+    invoke-static {v0, v1, v2}, Lcom/android/server/backup/UserBackupManagerService;->access$1300(Lcom/android/server/backup/UserBackupManagerService;Ljava/lang/String;Ljava/util/HashSet;)V
 
-    .line 2395
+    .line 2339
     return-void
 .end method

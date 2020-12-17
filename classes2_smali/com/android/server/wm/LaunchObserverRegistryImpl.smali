@@ -24,6 +24,7 @@
 # direct methods
 .method public constructor <init>(Landroid/os/Looper;)V
     .registers 3
+    .param p1, "looper"  # Landroid/os/Looper;
 
     .line 56
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -48,10 +49,12 @@
 
 .method private handleOnActivityLaunchCancelled([B)V
     .registers 4
+    .param p1, "activity"  # [B
 
     .line 148
     const/4 v0, 0x0
 
+    .local v0, "i":I
     :goto_1
     iget-object v1, p0, Lcom/android/server/wm/LaunchObserverRegistryImpl;->mList:Ljava/util/ArrayList;
 
@@ -71,24 +74,29 @@
     check-cast v1, Lcom/android/server/wm/ActivityMetricsLaunchObserver;
 
     .line 150
+    .local v1, "o":Lcom/android/server/wm/ActivityMetricsLaunchObserver;
     invoke-interface {v1, p1}, Lcom/android/server/wm/ActivityMetricsLaunchObserver;->onActivityLaunchCancelled([B)V
 
     .line 148
+    .end local v1  # "o":Lcom/android/server/wm/ActivityMetricsLaunchObserver;
     add-int/lit8 v0, v0, 0x1
 
     goto :goto_1
 
     .line 152
+    .end local v0  # "i":I
     :cond_17
     return-void
 .end method
 
 .method private handleOnActivityLaunchFinished([B)V
     .registers 4
+    .param p1, "activity"  # [B
 
     .line 157
     const/4 v0, 0x0
 
+    .local v0, "i":I
     :goto_1
     iget-object v1, p0, Lcom/android/server/wm/LaunchObserverRegistryImpl;->mList:Ljava/util/ArrayList;
 
@@ -108,24 +116,30 @@
     check-cast v1, Lcom/android/server/wm/ActivityMetricsLaunchObserver;
 
     .line 159
+    .local v1, "o":Lcom/android/server/wm/ActivityMetricsLaunchObserver;
     invoke-interface {v1, p1}, Lcom/android/server/wm/ActivityMetricsLaunchObserver;->onActivityLaunchFinished([B)V
 
     .line 157
+    .end local v1  # "o":Lcom/android/server/wm/ActivityMetricsLaunchObserver;
     add-int/lit8 v0, v0, 0x1
 
     goto :goto_1
 
     .line 161
+    .end local v0  # "i":I
     :cond_17
     return-void
 .end method
 
 .method private handleOnActivityLaunched([BI)V
     .registers 5
+    .param p1, "activity"  # [B
+    .param p2, "temperature"  # I
 
     .line 139
     const/4 v0, 0x0
 
+    .local v0, "i":I
     :goto_1
     iget-object v1, p0, Lcom/android/server/wm/LaunchObserverRegistryImpl;->mList:Ljava/util/ArrayList;
 
@@ -145,14 +159,17 @@
     check-cast v1, Lcom/android/server/wm/ActivityMetricsLaunchObserver;
 
     .line 141
+    .local v1, "o":Lcom/android/server/wm/ActivityMetricsLaunchObserver;
     invoke-interface {v1, p1, p2}, Lcom/android/server/wm/ActivityMetricsLaunchObserver;->onActivityLaunched([BI)V
 
     .line 139
+    .end local v1  # "o":Lcom/android/server/wm/ActivityMetricsLaunchObserver;
     add-int/lit8 v0, v0, 0x1
 
     goto :goto_1
 
     .line 143
+    .end local v0  # "i":I
     :cond_17
     return-void
 .end method
@@ -163,6 +180,7 @@
     .line 129
     const/4 v0, 0x0
 
+    .local v0, "i":I
     :goto_1
     iget-object v1, p0, Lcom/android/server/wm/LaunchObserverRegistryImpl;->mList:Ljava/util/ArrayList;
 
@@ -182,24 +200,29 @@
     check-cast v1, Lcom/android/server/wm/ActivityMetricsLaunchObserver;
 
     .line 131
+    .local v1, "o":Lcom/android/server/wm/ActivityMetricsLaunchObserver;
     invoke-interface {v1}, Lcom/android/server/wm/ActivityMetricsLaunchObserver;->onIntentFailed()V
 
     .line 129
+    .end local v1  # "o":Lcom/android/server/wm/ActivityMetricsLaunchObserver;
     add-int/lit8 v0, v0, 0x1
 
     goto :goto_1
 
     .line 133
+    .end local v0  # "i":I
     :cond_17
     return-void
 .end method
 
 .method private handleOnIntentStarted(Landroid/content/Intent;)V
     .registers 4
+    .param p1, "intent"  # Landroid/content/Intent;
 
     .line 121
     const/4 v0, 0x0
 
+    .local v0, "i":I
     :goto_1
     iget-object v1, p0, Lcom/android/server/wm/LaunchObserverRegistryImpl;->mList:Ljava/util/ArrayList;
 
@@ -219,20 +242,24 @@
     check-cast v1, Lcom/android/server/wm/ActivityMetricsLaunchObserver;
 
     .line 123
+    .local v1, "o":Lcom/android/server/wm/ActivityMetricsLaunchObserver;
     invoke-interface {v1, p1}, Lcom/android/server/wm/ActivityMetricsLaunchObserver;->onIntentStarted(Landroid/content/Intent;)V
 
     .line 121
+    .end local v1  # "o":Lcom/android/server/wm/ActivityMetricsLaunchObserver;
     add-int/lit8 v0, v0, 0x1
 
     goto :goto_1
 
     .line 125
+    .end local v0  # "i":I
     :cond_17
     return-void
 .end method
 
 .method private handleRegisterLaunchObserver(Lcom/android/server/wm/ActivityMetricsLaunchObserver;)V
     .registers 3
+    .param p1, "observer"  # Lcom/android/server/wm/ActivityMetricsLaunchObserver;
 
     .line 112
     iget-object v0, p0, Lcom/android/server/wm/LaunchObserverRegistryImpl;->mList:Ljava/util/ArrayList;
@@ -245,6 +272,7 @@
 
 .method private handleUnregisterLaunchObserver(Lcom/android/server/wm/ActivityMetricsLaunchObserver;)V
     .registers 3
+    .param p1, "observer"  # Lcom/android/server/wm/ActivityMetricsLaunchObserver;
 
     .line 116
     iget-object v0, p0, Lcom/android/server/wm/LaunchObserverRegistryImpl;->mList:Ljava/util/ArrayList;
@@ -315,6 +343,7 @@
 # virtual methods
 .method public onActivityLaunchCancelled([B)V
     .registers 4
+    .param p1, "activity"  # [B
 
     .line 96
     iget-object v0, p0, Lcom/android/server/wm/LaunchObserverRegistryImpl;->mHandler:Landroid/os/Handler;
@@ -323,9 +352,9 @@
 
     invoke-static {v1, p0, p1}, Lcom/android/internal/util/function/pooled/PooledLambda;->obtainMessage(Ljava/util/function/BiConsumer;Ljava/lang/Object;Ljava/lang/Object;)Landroid/os/Message;
 
-    move-result-object p1
+    move-result-object v1
 
-    invoke-virtual {v0, p1}, Landroid/os/Handler;->sendMessage(Landroid/os/Message;)Z
+    invoke-virtual {v0, v1}, Landroid/os/Handler;->sendMessage(Landroid/os/Message;)Z
 
     .line 98
     return-void
@@ -333,6 +362,7 @@
 
 .method public onActivityLaunchFinished([B)V
     .registers 4
+    .param p1, "activity"  # [B
 
     .line 103
     iget-object v0, p0, Lcom/android/server/wm/LaunchObserverRegistryImpl;->mHandler:Landroid/os/Handler;
@@ -341,16 +371,18 @@
 
     invoke-static {v1, p0, p1}, Lcom/android/internal/util/function/pooled/PooledLambda;->obtainMessage(Ljava/util/function/BiConsumer;Ljava/lang/Object;Ljava/lang/Object;)Landroid/os/Message;
 
-    move-result-object p1
+    move-result-object v1
 
-    invoke-virtual {v0, p1}, Landroid/os/Handler;->sendMessage(Landroid/os/Message;)Z
+    invoke-virtual {v0, v1}, Landroid/os/Handler;->sendMessage(Landroid/os/Message;)Z
 
     .line 105
     return-void
 .end method
 
 .method public onActivityLaunched([BI)V
-    .registers 5
+    .registers 6
+    .param p1, "activity"  # [B
+    .param p2, "temperature"  # I
 
     .line 88
     iget-object v0, p0, Lcom/android/server/wm/LaunchObserverRegistryImpl;->mHandler:Landroid/os/Handler;
@@ -360,14 +392,14 @@
     .line 90
     invoke-static {p2}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
 
-    move-result-object p2
+    move-result-object v2
 
     .line 88
-    invoke-static {v1, p0, p1, p2}, Lcom/android/internal/util/function/pooled/PooledLambda;->obtainMessage(Lcom/android/internal/util/function/TriConsumer;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;)Landroid/os/Message;
+    invoke-static {v1, p0, p1, v2}, Lcom/android/internal/util/function/pooled/PooledLambda;->obtainMessage(Lcom/android/internal/util/function/TriConsumer;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;)Landroid/os/Message;
 
-    move-result-object p1
+    move-result-object v1
 
-    invoke-virtual {v0, p1}, Landroid/os/Handler;->sendMessage(Landroid/os/Message;)Z
+    invoke-virtual {v0, v1}, Landroid/os/Handler;->sendMessage(Landroid/os/Message;)Z
 
     .line 91
     return-void
@@ -393,6 +425,7 @@
 
 .method public onIntentStarted(Landroid/content/Intent;)V
     .registers 4
+    .param p1, "intent"  # Landroid/content/Intent;
 
     .line 74
     iget-object v0, p0, Lcom/android/server/wm/LaunchObserverRegistryImpl;->mHandler:Landroid/os/Handler;
@@ -401,9 +434,9 @@
 
     invoke-static {v1, p0, p1}, Lcom/android/internal/util/function/pooled/PooledLambda;->obtainMessage(Ljava/util/function/BiConsumer;Ljava/lang/Object;Ljava/lang/Object;)Landroid/os/Message;
 
-    move-result-object p1
+    move-result-object v1
 
-    invoke-virtual {v0, p1}, Landroid/os/Handler;->sendMessage(Landroid/os/Message;)Z
+    invoke-virtual {v0, v1}, Landroid/os/Handler;->sendMessage(Landroid/os/Message;)Z
 
     .line 76
     return-void
@@ -411,6 +444,7 @@
 
 .method public registerLaunchObserver(Lcom/android/server/wm/ActivityMetricsLaunchObserver;)V
     .registers 4
+    .param p1, "launchObserver"  # Lcom/android/server/wm/ActivityMetricsLaunchObserver;
 
     .line 62
     iget-object v0, p0, Lcom/android/server/wm/LaunchObserverRegistryImpl;->mHandler:Landroid/os/Handler;
@@ -419,9 +453,9 @@
 
     invoke-static {v1, p0, p1}, Lcom/android/internal/util/function/pooled/PooledLambda;->obtainMessage(Ljava/util/function/BiConsumer;Ljava/lang/Object;Ljava/lang/Object;)Landroid/os/Message;
 
-    move-result-object p1
+    move-result-object v1
 
-    invoke-virtual {v0, p1}, Landroid/os/Handler;->sendMessage(Landroid/os/Message;)Z
+    invoke-virtual {v0, v1}, Landroid/os/Handler;->sendMessage(Landroid/os/Message;)Z
 
     .line 64
     return-void
@@ -429,6 +463,7 @@
 
 .method public unregisterLaunchObserver(Lcom/android/server/wm/ActivityMetricsLaunchObserver;)V
     .registers 4
+    .param p1, "launchObserver"  # Lcom/android/server/wm/ActivityMetricsLaunchObserver;
 
     .line 68
     iget-object v0, p0, Lcom/android/server/wm/LaunchObserverRegistryImpl;->mHandler:Landroid/os/Handler;
@@ -437,9 +472,9 @@
 
     invoke-static {v1, p0, p1}, Lcom/android/internal/util/function/pooled/PooledLambda;->obtainMessage(Ljava/util/function/BiConsumer;Ljava/lang/Object;Ljava/lang/Object;)Landroid/os/Message;
 
-    move-result-object p1
+    move-result-object v1
 
-    invoke-virtual {v0, p1}, Landroid/os/Handler;->sendMessage(Landroid/os/Message;)Z
+    invoke-virtual {v0, v1}, Landroid/os/Handler;->sendMessage(Landroid/os/Message;)Z
 
     .line 70
     return-void

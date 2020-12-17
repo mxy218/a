@@ -24,6 +24,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/wm/KeyguardDisableHandler;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/wm/KeyguardDisableHandler;
 
     .line 111
     iput-object p1, p0, Lcom/android/server/wm/KeyguardDisableHandler$1;->this$0:Lcom/android/server/wm/KeyguardDisableHandler;
@@ -37,6 +38,7 @@
 # virtual methods
 .method public acquired(I)V
     .registers 3
+    .param p1, "userId"  # I
 
     .line 114
     iget-object v0, p0, Lcom/android/server/wm/KeyguardDisableHandler$1;->this$0:Lcom/android/server/wm/KeyguardDisableHandler;
@@ -49,6 +51,7 @@
 
 .method public released(I)V
     .registers 3
+    .param p1, "userId"  # I
 
     .line 119
     iget-object v0, p0, Lcom/android/server/wm/KeyguardDisableHandler$1;->this$0:Lcom/android/server/wm/KeyguardDisableHandler;

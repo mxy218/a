@@ -135,7 +135,12 @@
         }
     .end annotation
 
-    .line 16513
+    .line 17085
+    .local p1, "scannedPackages":Ljava/util/Map;, "Ljava/util/Map<Ljava/lang/String;Lcom/android/server/pm/PackageManagerService$ScanResult;>;"
+    .local p2, "sharedLibrarySource":Ljava/util/Map;, "Ljava/util/Map<Ljava/lang/String;Landroid/util/LongSparseArray<Landroid/content/pm/SharedLibraryInfo;>;>;"
+    .local p3, "allPackages":Ljava/util/Map;, "Ljava/util/Map<Ljava/lang/String;Landroid/content/pm/PackageParser$Package;>;"
+    .local p4, "versionInfos":Ljava/util/Map;, "Ljava/util/Map<Ljava/lang/String;Lcom/android/server/pm/Settings$VersionInfo;>;"
+    .local p5, "lastStaticSharedLibSettings":Ljava/util/Map;, "Ljava/util/Map<Ljava/lang/String;Lcom/android/server/pm/PackageSetting;>;"
     invoke-static {}, Ljava/util/Collections;->emptyMap()Ljava/util/Map;
 
     move-result-object v2
@@ -144,12 +149,12 @@
 
     move-result-object v3
 
-    .line 16514
+    .line 17086
     invoke-static {}, Ljava/util/Collections;->emptyMap()Ljava/util/Map;
 
     move-result-object v4
 
-    .line 16513
+    .line 17085
     move-object v0, p0
 
     move-object v1, p1
@@ -164,14 +169,20 @@
 
     invoke-direct/range {v0 .. v8}, Lcom/android/server/pm/PackageManagerService$ReconcileRequest;-><init>(Ljava/util/Map;Ljava/util/Map;Ljava/util/Map;Ljava/util/Map;Ljava/util/Map;Ljava/util/Map;Ljava/util/Map;Ljava/util/Map;)V
 
-    .line 16516
+    .line 17088
     return-void
 .end method
 
 .method synthetic constructor <init>(Ljava/util/Map;Ljava/util/Map;Ljava/util/Map;Ljava/util/Map;Ljava/util/Map;Lcom/android/server/pm/PackageManagerService$1;)V
     .registers 7
+    .param p1, "x0"  # Ljava/util/Map;
+    .param p2, "x1"  # Ljava/util/Map;
+    .param p3, "x2"  # Ljava/util/Map;
+    .param p4, "x3"  # Ljava/util/Map;
+    .param p5, "x4"  # Ljava/util/Map;
+    .param p6, "x5"  # Lcom/android/server/pm/PackageManagerService$1;
 
-    .line 16479
+    .line 17051
     invoke-direct/range {p0 .. p5}, Lcom/android/server/pm/PackageManagerService$ReconcileRequest;-><init>(Ljava/util/Map;Ljava/util/Map;Ljava/util/Map;Ljava/util/Map;Ljava/util/Map;)V
 
     return-void
@@ -218,41 +229,58 @@
         }
     .end annotation
 
-    .line 16497
+    .line 17069
+    .local p1, "scannedPackages":Ljava/util/Map;, "Ljava/util/Map<Ljava/lang/String;Lcom/android/server/pm/PackageManagerService$ScanResult;>;"
+    .local p2, "installArgs":Ljava/util/Map;, "Ljava/util/Map<Ljava/lang/String;Lcom/android/server/pm/PackageManagerService$InstallArgs;>;"
+    .local p3, "installResults":Ljava/util/Map;, "Ljava/util/Map<Ljava/lang/String;Lcom/android/server/pm/PackageManagerService$PackageInstalledInfo;>;"
+    .local p4, "preparedPackages":Ljava/util/Map;, "Ljava/util/Map<Ljava/lang/String;Lcom/android/server/pm/PackageManagerService$PrepareResult;>;"
+    .local p5, "sharedLibrarySource":Ljava/util/Map;, "Ljava/util/Map<Ljava/lang/String;Landroid/util/LongSparseArray<Landroid/content/pm/SharedLibraryInfo;>;>;"
+    .local p6, "allPackages":Ljava/util/Map;, "Ljava/util/Map<Ljava/lang/String;Landroid/content/pm/PackageParser$Package;>;"
+    .local p7, "versionInfos":Ljava/util/Map;, "Ljava/util/Map<Ljava/lang/String;Lcom/android/server/pm/Settings$VersionInfo;>;"
+    .local p8, "lastStaticSharedLibSettings":Ljava/util/Map;, "Ljava/util/Map<Ljava/lang/String;Lcom/android/server/pm/PackageSetting;>;"
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
-    .line 16498
+    .line 17070
     iput-object p1, p0, Lcom/android/server/pm/PackageManagerService$ReconcileRequest;->scannedPackages:Ljava/util/Map;
 
-    .line 16499
+    .line 17071
     iput-object p2, p0, Lcom/android/server/pm/PackageManagerService$ReconcileRequest;->installArgs:Ljava/util/Map;
 
-    .line 16500
+    .line 17072
     iput-object p3, p0, Lcom/android/server/pm/PackageManagerService$ReconcileRequest;->installResults:Ljava/util/Map;
 
-    .line 16501
+    .line 17073
     iput-object p4, p0, Lcom/android/server/pm/PackageManagerService$ReconcileRequest;->preparedPackages:Ljava/util/Map;
 
-    .line 16502
+    .line 17074
     iput-object p5, p0, Lcom/android/server/pm/PackageManagerService$ReconcileRequest;->sharedLibrarySource:Ljava/util/Map;
 
-    .line 16503
+    .line 17075
     iput-object p6, p0, Lcom/android/server/pm/PackageManagerService$ReconcileRequest;->allPackages:Ljava/util/Map;
 
-    .line 16504
+    .line 17076
     iput-object p7, p0, Lcom/android/server/pm/PackageManagerService$ReconcileRequest;->versionInfos:Ljava/util/Map;
 
-    .line 16505
+    .line 17077
     iput-object p8, p0, Lcom/android/server/pm/PackageManagerService$ReconcileRequest;->lastStaticSharedLibSettings:Ljava/util/Map;
 
-    .line 16506
+    .line 17078
     return-void
 .end method
 
 .method synthetic constructor <init>(Ljava/util/Map;Ljava/util/Map;Ljava/util/Map;Ljava/util/Map;Ljava/util/Map;Ljava/util/Map;Ljava/util/Map;Ljava/util/Map;Lcom/android/server/pm/PackageManagerService$1;)V
     .registers 10
+    .param p1, "x0"  # Ljava/util/Map;
+    .param p2, "x1"  # Ljava/util/Map;
+    .param p3, "x2"  # Ljava/util/Map;
+    .param p4, "x3"  # Ljava/util/Map;
+    .param p5, "x4"  # Ljava/util/Map;
+    .param p6, "x5"  # Ljava/util/Map;
+    .param p7, "x6"  # Ljava/util/Map;
+    .param p8, "x7"  # Ljava/util/Map;
+    .param p9, "x8"  # Lcom/android/server/pm/PackageManagerService$1;
 
-    .line 16479
+    .line 17051
     invoke-direct/range {p0 .. p8}, Lcom/android/server/pm/PackageManagerService$ReconcileRequest;-><init>(Ljava/util/Map;Ljava/util/Map;Ljava/util/Map;Ljava/util/Map;Ljava/util/Map;Ljava/util/Map;Ljava/util/Map;Ljava/util/Map;)V
 
     return-void

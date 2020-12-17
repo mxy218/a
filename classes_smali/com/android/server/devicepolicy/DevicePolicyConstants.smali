@@ -35,7 +35,8 @@
 
 # direct methods
 .method private constructor <init>(Ljava/lang/String;)V
-    .registers 13
+    .registers 15
+    .param p1, "settings"  # Ljava/lang/String;
 
     .line 83
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -48,6 +49,7 @@
     invoke-direct {v0, v1}, Landroid/util/KeyValueListParser;-><init>(C)V
 
     .line 87
+    .local v0, "parser":Landroid/util/KeyValueListParser;
     :try_start_a
     invoke-virtual {v0, p1}, Landroid/util/KeyValueListParser;->setString(Ljava/lang/String;)V
     :try_end_d
@@ -61,140 +63,148 @@
     move-exception v1
 
     .line 91
-    new-instance v1, Ljava/lang/StringBuilder;
+    .local v1, "e":Ljava/lang/IllegalArgumentException;
+    new-instance v2, Ljava/lang/StringBuilder;
 
-    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v2, "Bad device policy settings: "
+    const-string v3, "Bad device policy settings: "
 
-    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v1, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v2
 
-    const-string v1, "DevicePolicyManager"
+    const-string v3, "DevicePolicyManager"
 
-    invoke-static {v1, p1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v3, v2}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 94
+    .end local v1  # "e":Ljava/lang/IllegalArgumentException;
     :goto_25
-    sget-object p1, Ljava/util/concurrent/TimeUnit;->HOURS:Ljava/util/concurrent/TimeUnit;
+    sget-object v1, Ljava/util/concurrent/TimeUnit;->HOURS:Ljava/util/concurrent/TimeUnit;
 
     .line 95
-    const-wide/16 v1, 0x1
+    const-wide/16 v2, 0x1
 
-    invoke-virtual {p1, v1, v2}, Ljava/util/concurrent/TimeUnit;->toSeconds(J)J
+    invoke-virtual {v1, v2, v3}, Ljava/util/concurrent/TimeUnit;->toSeconds(J)J
 
-    move-result-wide v3
+    move-result-wide v4
 
     .line 94
-    const-string p1, "das_died_service_reconnect_backoff_sec"
+    const-string v1, "das_died_service_reconnect_backoff_sec"
 
-    invoke-virtual {v0, p1, v3, v4}, Landroid/util/KeyValueListParser;->getLong(Ljava/lang/String;J)J
+    invoke-virtual {v0, v1, v4, v5}, Landroid/util/KeyValueListParser;->getLong(Ljava/lang/String;J)J
 
-    move-result-wide v3
+    move-result-wide v4
 
     .line 97
-    const/high16 p1, 0x40000000  # 2.0f
+    .local v4, "dasDiedServiceReconnectBackoffSec":J
+    const/high16 v1, 0x40000000  # 2.0f
 
-    const-string v5, "das_died_service_reconnect_backoff_increase"
+    const-string v6, "das_died_service_reconnect_backoff_increase"
 
-    invoke-virtual {v0, v5, p1}, Landroid/util/KeyValueListParser;->getFloat(Ljava/lang/String;F)F
+    invoke-virtual {v0, v6, v1}, Landroid/util/KeyValueListParser;->getFloat(Ljava/lang/String;F)F
 
-    move-result p1
+    move-result v1
 
-    float-to-double v5, p1
+    float-to-double v6, v1
 
     .line 100
-    sget-object p1, Ljava/util/concurrent/TimeUnit;->DAYS:Ljava/util/concurrent/TimeUnit;
+    .local v6, "dasDiedServiceReconnectBackoffIncrease":D
+    sget-object v1, Ljava/util/concurrent/TimeUnit;->DAYS:Ljava/util/concurrent/TimeUnit;
 
     .line 101
-    invoke-virtual {p1, v1, v2}, Ljava/util/concurrent/TimeUnit;->toSeconds(J)J
+    invoke-virtual {v1, v2, v3}, Ljava/util/concurrent/TimeUnit;->toSeconds(J)J
 
     move-result-wide v1
 
     .line 100
-    const-string p1, "das_died_service_reconnect_max_backoff_sec"
+    const-string v3, "das_died_service_reconnect_max_backoff_sec"
 
-    invoke-virtual {v0, p1, v1, v2}, Landroid/util/KeyValueListParser;->getLong(Ljava/lang/String;J)J
+    invoke-virtual {v0, v3, v1, v2}, Landroid/util/KeyValueListParser;->getLong(Ljava/lang/String;J)J
 
     move-result-wide v1
 
     .line 103
-    sget-object p1, Ljava/util/concurrent/TimeUnit;->MINUTES:Ljava/util/concurrent/TimeUnit;
+    .local v1, "dasDiedServiceReconnectMaxBackoffSec":J
+    sget-object v3, Ljava/util/concurrent/TimeUnit;->MINUTES:Ljava/util/concurrent/TimeUnit;
 
-    const-wide/16 v7, 0x2
+    const-wide/16 v8, 0x2
 
     .line 105
-    invoke-virtual {p1, v7, v8}, Ljava/util/concurrent/TimeUnit;->toSeconds(J)J
+    invoke-virtual {v3, v8, v9}, Ljava/util/concurrent/TimeUnit;->toSeconds(J)J
 
-    move-result-wide v7
+    move-result-wide v8
 
     .line 103
-    const-string p1, "das_died_service_stable_connection_threshold_sec"
+    const-string v3, "das_died_service_stable_connection_threshold_sec"
 
-    invoke-virtual {v0, p1, v7, v8}, Landroid/util/KeyValueListParser;->getLong(Ljava/lang/String;J)J
+    invoke-virtual {v0, v3, v8, v9}, Landroid/util/KeyValueListParser;->getLong(Ljava/lang/String;J)J
 
-    move-result-wide v7
+    move-result-wide v8
 
     .line 107
-    const/16 p1, 0x28
+    .local v8, "dasDiedServiceStableConnectionThresholdSec":J
+    const/16 v3, 0x28
 
-    const-string v9, "battery_threshold_not_charging"
+    const-string v10, "battery_threshold_not_charging"
 
-    invoke-virtual {v0, v9, p1}, Landroid/util/KeyValueListParser;->getInt(Ljava/lang/String;I)I
+    invoke-virtual {v0, v10, v3}, Landroid/util/KeyValueListParser;->getInt(Ljava/lang/String;I)I
 
-    move-result p1
+    move-result v3
 
     .line 110
-    const/16 v9, 0x14
+    .local v3, "batteryThresholdNotCharging":I
+    const/16 v10, 0x14
 
-    const-string v10, "battery_threshold_charging"
+    const-string v11, "battery_threshold_charging"
 
-    invoke-virtual {v0, v10, v9}, Landroid/util/KeyValueListParser;->getInt(Ljava/lang/String;I)I
+    invoke-virtual {v0, v11, v10}, Landroid/util/KeyValueListParser;->getInt(Ljava/lang/String;I)I
 
-    move-result v0
+    move-result v10
 
     .line 114
-    const-wide/16 v9, 0x5
+    .local v10, "batteryThresholdCharging":I
+    const-wide/16 v11, 0x5
 
-    invoke-static {v9, v10, v3, v4}, Ljava/lang/Math;->max(JJ)J
+    invoke-static {v11, v12, v4, v5}, Ljava/lang/Math;->max(JJ)J
 
-    move-result-wide v3
+    move-result-wide v4
 
     .line 117
-    const-wide/high16 v9, 0x3ff0000000000000L  # 1.0
+    const-wide/high16 v11, 0x3ff0000000000000L  # 1.0
 
     .line 118
-    invoke-static {v9, v10, v5, v6}, Ljava/lang/Math;->max(DD)D
+    invoke-static {v11, v12, v6, v7}, Ljava/lang/Math;->max(DD)D
 
-    move-result-wide v5
+    move-result-wide v6
 
     .line 121
-    invoke-static {v3, v4, v1, v2}, Ljava/lang/Math;->max(JJ)J
+    invoke-static {v4, v5, v1, v2}, Ljava/lang/Math;->max(JJ)J
 
     move-result-wide v1
 
     .line 124
-    iput-wide v3, p0, Lcom/android/server/devicepolicy/DevicePolicyConstants;->DAS_DIED_SERVICE_RECONNECT_BACKOFF_SEC:J
+    iput-wide v4, p0, Lcom/android/server/devicepolicy/DevicePolicyConstants;->DAS_DIED_SERVICE_RECONNECT_BACKOFF_SEC:J
 
     .line 125
-    iput-wide v5, p0, Lcom/android/server/devicepolicy/DevicePolicyConstants;->DAS_DIED_SERVICE_RECONNECT_BACKOFF_INCREASE:D
+    iput-wide v6, p0, Lcom/android/server/devicepolicy/DevicePolicyConstants;->DAS_DIED_SERVICE_RECONNECT_BACKOFF_INCREASE:D
 
     .line 126
     iput-wide v1, p0, Lcom/android/server/devicepolicy/DevicePolicyConstants;->DAS_DIED_SERVICE_RECONNECT_MAX_BACKOFF_SEC:J
 
     .line 127
-    iput-wide v7, p0, Lcom/android/server/devicepolicy/DevicePolicyConstants;->DAS_DIED_SERVICE_STABLE_CONNECTION_THRESHOLD_SEC:J
+    iput-wide v8, p0, Lcom/android/server/devicepolicy/DevicePolicyConstants;->DAS_DIED_SERVICE_STABLE_CONNECTION_THRESHOLD_SEC:J
 
     .line 129
-    iput p1, p0, Lcom/android/server/devicepolicy/DevicePolicyConstants;->BATTERY_THRESHOLD_NOT_CHARGING:I
+    iput v3, p0, Lcom/android/server/devicepolicy/DevicePolicyConstants;->BATTERY_THRESHOLD_NOT_CHARGING:I
 
     .line 130
-    iput v0, p0, Lcom/android/server/devicepolicy/DevicePolicyConstants;->BATTERY_THRESHOLD_CHARGING:I
+    iput v10, p0, Lcom/android/server/devicepolicy/DevicePolicyConstants;->BATTERY_THRESHOLD_CHARGING:I
 
     .line 131
     return-void
@@ -202,6 +212,7 @@
 
 .method public static loadFromString(Ljava/lang/String;)Lcom/android/server/devicepolicy/DevicePolicyConstants;
     .registers 2
+    .param p0, "settings"  # Ljava/lang/String;
 
     .line 134
     new-instance v0, Lcom/android/server/devicepolicy/DevicePolicyConstants;
@@ -215,6 +226,8 @@
 # virtual methods
 .method public dump(Ljava/lang/String;Ljava/io/PrintWriter;)V
     .registers 5
+    .param p1, "prefix"  # Ljava/lang/String;
+    .param p2, "pw"  # Ljava/io/PrintWriter;
 
     .line 138
     invoke-virtual {p2, p1}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
@@ -267,9 +280,9 @@
     invoke-virtual {p2, p1}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
     .line 154
-    const-string p1, "  DAS_DIED_SERVICE_STABLE_CONNECTION_THRESHOLD_SEC: "
+    const-string v0, "  DAS_DIED_SERVICE_STABLE_CONNECTION_THRESHOLD_SEC: "
 
-    invoke-virtual {p2, p1}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
+    invoke-virtual {p2, v0}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
     .line 155
     iget-wide v0, p0, Lcom/android/server/devicepolicy/DevicePolicyConstants;->DAS_DIED_SERVICE_STABLE_CONNECTION_THRESHOLD_SEC:J

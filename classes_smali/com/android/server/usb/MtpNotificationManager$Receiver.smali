@@ -32,6 +32,8 @@
 
 .method synthetic constructor <init>(Lcom/android/server/usb/MtpNotificationManager;Lcom/android/server/usb/MtpNotificationManager$1;)V
     .registers 3
+    .param p1, "x0"  # Lcom/android/server/usb/MtpNotificationManager;
+    .param p2, "x1"  # Lcom/android/server/usb/MtpNotificationManager$1;
 
     .line 114
     invoke-direct {p0, p1}, Lcom/android/server/usb/MtpNotificationManager$Receiver;-><init>(Lcom/android/server/usb/MtpNotificationManager;)V
@@ -42,7 +44,9 @@
 
 # virtual methods
 .method public onReceive(Landroid/content/Context;Landroid/content/Intent;)V
-    .registers 6
+    .registers 8
+    .param p1, "context"  # Landroid/content/Context;
+    .param p2, "intent"  # Landroid/content/Intent;
 
     .line 117
     nop
@@ -50,18 +54,19 @@
     .line 118
     invoke-virtual {p2}, Landroid/content/Intent;->getExtras()Landroid/os/Bundle;
 
-    move-result-object p1
+    move-result-object v0
 
-    const-string v0, "device"
+    const-string v1, "device"
 
-    invoke-virtual {p1, v0}, Landroid/os/Bundle;->getParcelable(Ljava/lang/String;)Landroid/os/Parcelable;
+    invoke-virtual {v0, v1}, Landroid/os/Bundle;->getParcelable(Ljava/lang/String;)Landroid/os/Parcelable;
 
-    move-result-object p1
+    move-result-object v0
 
-    check-cast p1, Landroid/hardware/usb/UsbDevice;
+    check-cast v0, Landroid/hardware/usb/UsbDevice;
 
     .line 119
-    if-nez p1, :cond_10
+    .local v0, "device":Landroid/hardware/usb/UsbDevice;
+    if-nez v0, :cond_10
 
     .line 120
     return-void
@@ -70,46 +75,46 @@
     :cond_10
     invoke-virtual {p2}, Landroid/content/Intent;->getAction()Ljava/lang/String;
 
-    move-result-object p2
+    move-result-object v1
 
-    const/4 v0, -0x1
+    const/4 v2, -0x1
 
-    invoke-virtual {p2}, Ljava/lang/String;->hashCode()I
+    invoke-virtual {v1}, Ljava/lang/String;->hashCode()I
 
-    move-result v1
+    move-result v3
 
-    const v2, 0x2dcc4317
+    const v4, 0x2dcc4317
 
-    if-eq v1, v2, :cond_1f
+    if-eq v3, v4, :cond_1f
 
     :cond_1e
     goto :goto_28
 
     :cond_1f
-    const-string v1, "com.android.server.usb.ACTION_OPEN_IN_APPS"
+    const-string v3, "com.android.server.usb.ACTION_OPEN_IN_APPS"
 
-    invoke-virtual {p2, v1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v1, v3}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result p2
+    move-result v1
 
-    if-eqz p2, :cond_1e
+    if-eqz v1, :cond_1e
 
-    const/4 v0, 0x0
+    const/4 v2, 0x0
 
     :goto_28
-    if-eqz v0, :cond_2b
+    if-eqz v2, :cond_2b
 
     goto :goto_34
 
     .line 124
     :cond_2b
-    iget-object p2, p0, Lcom/android/server/usb/MtpNotificationManager$Receiver;->this$0:Lcom/android/server/usb/MtpNotificationManager;
+    iget-object v1, p0, Lcom/android/server/usb/MtpNotificationManager$Receiver;->this$0:Lcom/android/server/usb/MtpNotificationManager;
 
-    invoke-static {p2}, Lcom/android/server/usb/MtpNotificationManager;->access$100(Lcom/android/server/usb/MtpNotificationManager;)Lcom/android/server/usb/MtpNotificationManager$OnOpenInAppListener;
+    invoke-static {v1}, Lcom/android/server/usb/MtpNotificationManager;->access$100(Lcom/android/server/usb/MtpNotificationManager;)Lcom/android/server/usb/MtpNotificationManager$OnOpenInAppListener;
 
-    move-result-object p2
+    move-result-object v1
 
-    invoke-interface {p2, p1}, Lcom/android/server/usb/MtpNotificationManager$OnOpenInAppListener;->onOpenInApp(Landroid/hardware/usb/UsbDevice;)V
+    invoke-interface {v1, v0}, Lcom/android/server/usb/MtpNotificationManager$OnOpenInAppListener;->onOpenInApp(Landroid/hardware/usb/UsbDevice;)V
 
     .line 127
     :goto_34

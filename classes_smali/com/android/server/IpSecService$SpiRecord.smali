@@ -29,6 +29,10 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/IpSecService;ILjava/lang/String;Ljava/lang/String;I)V
     .registers 6
+    .param p2, "resourceId"  # I
+    .param p3, "sourceAddress"  # Ljava/lang/String;
+    .param p4, "destinationAddress"  # Ljava/lang/String;
+    .param p5, "spi"  # I
 
     .line 676
     iput-object p1, p0, Lcom/android/server/IpSecService$SpiRecord;->this$0:Lcom/android/server/IpSecService;
@@ -106,6 +110,7 @@
     move-exception v0
 
     .line 695
+    .local v0, "e":Ljava/lang/Exception;
     new-instance v1, Ljava/lang/StringBuilder;
 
     invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
@@ -127,6 +132,7 @@
     invoke-static {v2, v1, v0}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
     .line 698
+    .end local v0  # "e":Ljava/lang/Exception;
     :goto_36
     const/4 v0, 0x0
 
@@ -240,6 +246,7 @@
     invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
 
     .line 737
+    .local v0, "strBuilder":Ljava/lang/StringBuilder;
     nop
 
     .line 738
@@ -302,7 +309,7 @@
     .line 749
     invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v1
 
-    return-object v0
+    return-object v1
 .end method

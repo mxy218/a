@@ -28,7 +28,7 @@
 .method constructor <init>()V
     .registers 1
 
-    .line 2591
+    .line 2620
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
     return-void
@@ -39,20 +39,20 @@
 .method reset()V
     .registers 2
 
-    .line 2598
+    .line 2627
     const/4 v0, 0x0
 
     iput v0, p0, Lcom/android/server/wm/TaskRecord$TaskActivitiesReport;->numActivities:I
 
     iput v0, p0, Lcom/android/server/wm/TaskRecord$TaskActivitiesReport;->numRunning:I
 
-    .line 2599
+    .line 2628
     const/4 v0, 0x0
 
     iput-object v0, p0, Lcom/android/server/wm/TaskRecord$TaskActivitiesReport;->base:Lcom/android/server/wm/ActivityRecord;
 
     iput-object v0, p0, Lcom/android/server/wm/TaskRecord$TaskActivitiesReport;->top:Lcom/android/server/wm/ActivityRecord;
 
-    .line 2600
+    .line 2629
     return-void
 .end method

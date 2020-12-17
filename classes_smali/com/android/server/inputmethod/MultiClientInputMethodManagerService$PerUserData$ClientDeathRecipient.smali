@@ -26,6 +26,8 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/inputmethod/MultiClientInputMethodManagerService$PerUserData;Lcom/android/internal/view/IInputMethodClient;)V
     .registers 3
+    .param p1, "perUserData"  # Lcom/android/server/inputmethod/MultiClientInputMethodManagerService$PerUserData;
+    .param p2, "client"  # Lcom/android/internal/view/IInputMethodClient;
 
     .line 1068
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -75,6 +77,7 @@
     move-result-object v1
 
     .line 1081
+    .local v1, "clientInfo":Lcom/android/server/inputmethod/MultiClientInputMethodManagerService$InputMethodClientInfo;
     if-nez v1, :cond_1b
 
     .line 1082
@@ -154,9 +157,9 @@
 
     iget-object v2, v2, Lcom/android/server/inputmethod/MultiClientInputMethodManagerService$PerUserData;->mCurrentInputMethod:Lcom/android/internal/inputmethod/IMultiClientInputMethod;
 
-    iget v1, v1, Lcom/android/server/inputmethod/MultiClientInputMethodManagerService$InputMethodClientInfo;->mClientId:I
+    iget v3, v1, Lcom/android/server/inputmethod/MultiClientInputMethodManagerService$InputMethodClientInfo;->mClientId:I
 
-    invoke-interface {v2, v1}, Lcom/android/internal/inputmethod/IMultiClientInputMethod;->removeClient(I)V
+    invoke-interface {v2, v3}, Lcom/android/internal/inputmethod/IMultiClientInputMethod;->removeClient(I)V
     :try_end_49
     .catch Landroid/os/RemoteException; {:try_start_40 .. :try_end_49} :catch_4a
     .catchall {:try_start_40 .. :try_end_49} :catchall_4d
@@ -166,9 +169,10 @@
 
     .line 1102
     :catch_4a
-    move-exception v1
+    move-exception v2
 
     .line 1107
+    .end local v1  # "clientInfo":Lcom/android/server/inputmethod/MultiClientInputMethodManagerService$InputMethodClientInfo;
     :goto_4b
     :try_start_4b
     monitor-exit v0

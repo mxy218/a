@@ -21,6 +21,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/policy/LegacyGlobalActions;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/policy/LegacyGlobalActions;
 
     .line 762
     iput-object p1, p0, Lcom/android/server/policy/LegacyGlobalActions$10;->this$0:Lcom/android/server/policy/LegacyGlobalActions;
@@ -33,7 +34,8 @@
 
 # virtual methods
 .method public onServiceStateChanged(Landroid/telephony/ServiceState;)V
-    .registers 3
+    .registers 5
+    .param p1, "serviceState"  # Landroid/telephony/ServiceState;
 
     .line 765
     iget-object v0, p0, Lcom/android/server/policy/LegacyGlobalActions$10;->this$0:Lcom/android/server/policy/LegacyGlobalActions;
@@ -50,58 +52,59 @@
     :cond_9
     invoke-virtual {p1}, Landroid/telephony/ServiceState;->getState()I
 
-    move-result p1
+    move-result v0
 
-    const/4 v0, 0x3
+    const/4 v1, 0x3
 
-    if-ne p1, v0, :cond_12
+    if-ne v0, v1, :cond_12
 
-    const/4 p1, 0x1
+    const/4 v0, 0x1
 
     goto :goto_13
 
     :cond_12
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
     .line 767
+    .local v0, "inAirplaneMode":Z
     :goto_13
-    iget-object v0, p0, Lcom/android/server/policy/LegacyGlobalActions$10;->this$0:Lcom/android/server/policy/LegacyGlobalActions;
+    iget-object v1, p0, Lcom/android/server/policy/LegacyGlobalActions$10;->this$0:Lcom/android/server/policy/LegacyGlobalActions;
 
-    if-eqz p1, :cond_1a
+    if-eqz v0, :cond_1a
 
-    sget-object p1, Lcom/android/internal/globalactions/ToggleAction$State;->On:Lcom/android/internal/globalactions/ToggleAction$State;
+    sget-object v2, Lcom/android/internal/globalactions/ToggleAction$State;->On:Lcom/android/internal/globalactions/ToggleAction$State;
 
     goto :goto_1c
 
     :cond_1a
-    sget-object p1, Lcom/android/internal/globalactions/ToggleAction$State;->Off:Lcom/android/internal/globalactions/ToggleAction$State;
+    sget-object v2, Lcom/android/internal/globalactions/ToggleAction$State;->Off:Lcom/android/internal/globalactions/ToggleAction$State;
 
     :goto_1c
-    invoke-static {v0, p1}, Lcom/android/server/policy/LegacyGlobalActions;->access$402(Lcom/android/server/policy/LegacyGlobalActions;Lcom/android/internal/globalactions/ToggleAction$State;)Lcom/android/internal/globalactions/ToggleAction$State;
+    invoke-static {v1, v2}, Lcom/android/server/policy/LegacyGlobalActions;->access$402(Lcom/android/server/policy/LegacyGlobalActions;Lcom/android/internal/globalactions/ToggleAction$State;)Lcom/android/internal/globalactions/ToggleAction$State;
 
     .line 768
-    iget-object p1, p0, Lcom/android/server/policy/LegacyGlobalActions$10;->this$0:Lcom/android/server/policy/LegacyGlobalActions;
+    iget-object v1, p0, Lcom/android/server/policy/LegacyGlobalActions$10;->this$0:Lcom/android/server/policy/LegacyGlobalActions;
 
-    invoke-static {p1}, Lcom/android/server/policy/LegacyGlobalActions;->access$900(Lcom/android/server/policy/LegacyGlobalActions;)Lcom/android/internal/globalactions/ToggleAction;
+    invoke-static {v1}, Lcom/android/server/policy/LegacyGlobalActions;->access$900(Lcom/android/server/policy/LegacyGlobalActions;)Lcom/android/internal/globalactions/ToggleAction;
 
-    move-result-object p1
+    move-result-object v1
 
-    iget-object v0, p0, Lcom/android/server/policy/LegacyGlobalActions$10;->this$0:Lcom/android/server/policy/LegacyGlobalActions;
+    iget-object v2, p0, Lcom/android/server/policy/LegacyGlobalActions$10;->this$0:Lcom/android/server/policy/LegacyGlobalActions;
 
-    invoke-static {v0}, Lcom/android/server/policy/LegacyGlobalActions;->access$400(Lcom/android/server/policy/LegacyGlobalActions;)Lcom/android/internal/globalactions/ToggleAction$State;
+    invoke-static {v2}, Lcom/android/server/policy/LegacyGlobalActions;->access$400(Lcom/android/server/policy/LegacyGlobalActions;)Lcom/android/internal/globalactions/ToggleAction$State;
 
-    move-result-object v0
+    move-result-object v2
 
-    invoke-virtual {p1, v0}, Lcom/android/internal/globalactions/ToggleAction;->updateState(Lcom/android/internal/globalactions/ToggleAction$State;)V
+    invoke-virtual {v1, v2}, Lcom/android/internal/globalactions/ToggleAction;->updateState(Lcom/android/internal/globalactions/ToggleAction$State;)V
 
     .line 769
-    iget-object p1, p0, Lcom/android/server/policy/LegacyGlobalActions$10;->this$0:Lcom/android/server/policy/LegacyGlobalActions;
+    iget-object v1, p0, Lcom/android/server/policy/LegacyGlobalActions$10;->this$0:Lcom/android/server/policy/LegacyGlobalActions;
 
-    invoke-static {p1}, Lcom/android/server/policy/LegacyGlobalActions;->access$500(Lcom/android/server/policy/LegacyGlobalActions;)Lcom/android/internal/globalactions/ActionsAdapter;
+    invoke-static {v1}, Lcom/android/server/policy/LegacyGlobalActions;->access$500(Lcom/android/server/policy/LegacyGlobalActions;)Lcom/android/internal/globalactions/ActionsAdapter;
 
-    move-result-object p1
+    move-result-object v1
 
-    invoke-virtual {p1}, Lcom/android/internal/globalactions/ActionsAdapter;->notifyDataSetChanged()V
+    invoke-virtual {v1}, Lcom/android/internal/globalactions/ActionsAdapter;->notifyDataSetChanged()V
 
     .line 770
     return-void

@@ -29,25 +29,30 @@
 # direct methods
 .method constructor <init>(Landroid/bluetooth/BluetoothDevice;IZILjava/lang/String;)V
     .registers 6
+    .param p1, "device"  # Landroid/bluetooth/BluetoothDevice;
+    .param p2, "state"  # I
+    .param p3, "suppressNoisyIntent"  # Z
+    .param p4, "musicDevice"  # I
+    .param p5, "eventSource"  # Ljava/lang/String;
 
-    .line 301
+    .line 311
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
-    .line 302
+    .line 312
     iput-object p1, p0, Lcom/android/server/audio/AudioDeviceBroker$HearingAidDeviceConnectionInfo;->mDevice:Landroid/bluetooth/BluetoothDevice;
 
-    .line 303
+    .line 313
     iput p2, p0, Lcom/android/server/audio/AudioDeviceBroker$HearingAidDeviceConnectionInfo;->mState:I
 
-    .line 304
+    .line 314
     iput-boolean p3, p0, Lcom/android/server/audio/AudioDeviceBroker$HearingAidDeviceConnectionInfo;->mSupprNoisy:Z
 
-    .line 305
+    .line 315
     iput p4, p0, Lcom/android/server/audio/AudioDeviceBroker$HearingAidDeviceConnectionInfo;->mMusicDevice:I
 
-    .line 306
+    .line 316
     iput-object p5, p0, Lcom/android/server/audio/AudioDeviceBroker$HearingAidDeviceConnectionInfo;->mEventSource:Ljava/lang/String;
 
-    .line 307
+    .line 317
     return-void
 .end method

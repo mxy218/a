@@ -26,6 +26,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/print/RemotePrintService;Landroid/print/PrinterId;)V
     .registers 3
+    .param p1, "this$0"  # Lcom/android/server/print/RemotePrintService;
 
     .line 467
     iput-object p1, p0, Lcom/android/server/print/RemotePrintService$9;->this$0:Lcom/android/server/print/RemotePrintService;

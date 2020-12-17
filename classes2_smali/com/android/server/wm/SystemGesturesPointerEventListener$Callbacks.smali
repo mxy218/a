@@ -24,6 +24,9 @@
 .method public abstract onFling(I)V
 .end method
 
+.method public abstract onHorizontalFling(I)V
+.end method
+
 .method public abstract onMouseHoverAtBottom()V
 .end method
 
@@ -31,6 +34,9 @@
 .end method
 
 .method public abstract onMouseLeaveFromEdge()V
+.end method
+
+.method public abstract onScroll(Z)V
 .end method
 
 .method public abstract onSwipeFromBottom()V
@@ -46,4 +52,7 @@
 .end method
 
 .method public abstract onUpOrCancel()V
+.end method
+
+.method public abstract onVerticalFling(I)V
 .end method

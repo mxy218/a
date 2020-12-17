@@ -22,7 +22,7 @@
 .method static constructor <clinit>()V
     .registers 3
 
-    .line 1464
+    .line 1503
     invoke-static {}, Lcom/android/server/wm/ActivityStack$ActivityState;->values()[Lcom/android/server/wm/ActivityStack$ActivityState;
 
     move-result-object v0

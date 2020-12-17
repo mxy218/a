@@ -37,17 +37,17 @@
 .method private constructor <init>(Lcom/android/server/audio/AudioService;)V
     .registers 2
 
-    .line 3618
+    .line 3952
     iput-object p1, p0, Lcom/android/server/audio/AudioService$SoundPoolCallback;->this$0:Lcom/android/server/audio/AudioService;
 
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
-    .line 3621
+    .line 3955
     const/4 p1, 0x1
 
     iput p1, p0, Lcom/android/server/audio/AudioService$SoundPoolCallback;->mStatus:I
 
-    .line 3622
+    .line 3956
     new-instance p1, Ljava/util/ArrayList;
 
     invoke-direct {p1}, Ljava/util/ArrayList;-><init>()V
@@ -59,8 +59,10 @@
 
 .method synthetic constructor <init>(Lcom/android/server/audio/AudioService;Lcom/android/server/audio/AudioService$1;)V
     .registers 3
+    .param p1, "x0"  # Lcom/android/server/audio/AudioService;
+    .param p2, "x1"  # Lcom/android/server/audio/AudioService$1;
 
-    .line 3618
+    .line 3952
     invoke-direct {p0, p1}, Lcom/android/server/audio/AudioService$SoundPoolCallback;-><init>(Lcom/android/server/audio/AudioService;)V
 
     return-void
@@ -69,97 +71,104 @@
 
 # virtual methods
 .method public onLoadComplete(Landroid/media/SoundPool;II)V
-    .registers 5
+    .registers 7
+    .param p1, "soundPool"  # Landroid/media/SoundPool;
+    .param p2, "sampleId"  # I
+    .param p3, "status"  # I
 
-    .line 3638
-    iget-object p1, p0, Lcom/android/server/audio/AudioService$SoundPoolCallback;->this$0:Lcom/android/server/audio/AudioService;
+    .line 3972
+    iget-object v0, p0, Lcom/android/server/audio/AudioService$SoundPoolCallback;->this$0:Lcom/android/server/audio/AudioService;
 
-    invoke-static {p1}, Lcom/android/server/audio/AudioService;->access$2300(Lcom/android/server/audio/AudioService;)Ljava/lang/Object;
+    invoke-static {v0}, Lcom/android/server/audio/AudioService;->access$2300(Lcom/android/server/audio/AudioService;)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v0
 
-    monitor-enter p1
+    monitor-enter v0
 
-    .line 3639
+    .line 3973
     :try_start_7
-    iget-object v0, p0, Lcom/android/server/audio/AudioService$SoundPoolCallback;->mSamples:Ljava/util/List;
+    iget-object v1, p0, Lcom/android/server/audio/AudioService$SoundPoolCallback;->mSamples:Ljava/util/List;
 
     invoke-static {p2}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
 
-    move-result-object p2
+    move-result-object v2
 
-    invoke-interface {v0, p2}, Ljava/util/List;->indexOf(Ljava/lang/Object;)I
+    invoke-interface {v1, v2}, Ljava/util/List;->indexOf(Ljava/lang/Object;)I
 
-    move-result p2
+    move-result v1
 
-    .line 3640
-    if-ltz p2, :cond_18
+    .line 3974
+    .local v1, "i":I
+    if-ltz v1, :cond_18
 
-    .line 3641
-    iget-object v0, p0, Lcom/android/server/audio/AudioService$SoundPoolCallback;->mSamples:Ljava/util/List;
+    .line 3975
+    iget-object v2, p0, Lcom/android/server/audio/AudioService$SoundPoolCallback;->mSamples:Ljava/util/List;
 
-    invoke-interface {v0, p2}, Ljava/util/List;->remove(I)Ljava/lang/Object;
+    invoke-interface {v2, v1}, Ljava/util/List;->remove(I)Ljava/lang/Object;
 
-    .line 3643
+    .line 3977
     :cond_18
     if-nez p3, :cond_22
 
-    iget-object p2, p0, Lcom/android/server/audio/AudioService$SoundPoolCallback;->mSamples:Ljava/util/List;
+    iget-object v2, p0, Lcom/android/server/audio/AudioService$SoundPoolCallback;->mSamples:Ljava/util/List;
 
-    invoke-interface {p2}, Ljava/util/List;->isEmpty()Z
+    invoke-interface {v2}, Ljava/util/List;->isEmpty()Z
 
-    move-result p2
+    move-result v2
 
-    if-eqz p2, :cond_2d
+    if-eqz v2, :cond_2d
 
-    .line 3644
+    .line 3978
     :cond_22
     iput p3, p0, Lcom/android/server/audio/AudioService$SoundPoolCallback;->mStatus:I
 
-    .line 3645
-    iget-object p2, p0, Lcom/android/server/audio/AudioService$SoundPoolCallback;->this$0:Lcom/android/server/audio/AudioService;
+    .line 3979
+    iget-object v2, p0, Lcom/android/server/audio/AudioService$SoundPoolCallback;->this$0:Lcom/android/server/audio/AudioService;
 
-    invoke-static {p2}, Lcom/android/server/audio/AudioService;->access$2300(Lcom/android/server/audio/AudioService;)Ljava/lang/Object;
+    invoke-static {v2}, Lcom/android/server/audio/AudioService;->access$2300(Lcom/android/server/audio/AudioService;)Ljava/lang/Object;
 
-    move-result-object p2
+    move-result-object v2
 
-    invoke-virtual {p2}, Ljava/lang/Object;->notify()V
+    invoke-virtual {v2}, Ljava/lang/Object;->notify()V
 
-    .line 3647
+    .line 3981
+    .end local v1  # "i":I
     :cond_2d
-    monitor-exit p1
+    monitor-exit v0
 
-    .line 3648
+    .line 3982
     return-void
 
-    .line 3647
+    .line 3981
     :catchall_2f
-    move-exception p2
+    move-exception v1
 
-    monitor-exit p1
+    monitor-exit v0
     :try_end_31
     .catchall {:try_start_7 .. :try_end_31} :catchall_2f
 
-    throw p2
+    throw v1
 .end method
 
 .method public setSamples([I)V
     .registers 5
+    .param p1, "samples"  # [I
 
-    .line 3629
+    .line 3963
     const/4 v0, 0x0
 
+    .local v0, "i":I
     :goto_1
     array-length v1, p1
 
     if-ge v0, v1, :cond_16
 
-    .line 3631
+    .line 3965
     aget v1, p1, v0
 
     if-lez v1, :cond_13
 
-    .line 3632
+    .line 3966
     iget-object v1, p0, Lcom/android/server/audio/AudioService$SoundPoolCallback;->mSamples:Ljava/util/List;
 
     aget v2, p1, v0
@@ -170,13 +179,14 @@
 
     invoke-interface {v1, v2}, Ljava/util/List;->add(Ljava/lang/Object;)Z
 
-    .line 3629
+    .line 3963
     :cond_13
     add-int/lit8 v0, v0, 0x1
 
     goto :goto_1
 
-    .line 3635
+    .line 3969
+    .end local v0  # "i":I
     :cond_16
     return-void
 .end method
@@ -184,7 +194,7 @@
 .method public status()I
     .registers 2
 
-    .line 3625
+    .line 3959
     iget v0, p0, Lcom/android/server/audio/AudioService$SoundPoolCallback;->mStatus:I
 
     return v0

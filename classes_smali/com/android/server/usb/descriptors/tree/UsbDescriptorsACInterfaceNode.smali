@@ -14,6 +14,7 @@
 # direct methods
 .method public constructor <init>(Lcom/android/server/usb/descriptors/UsbACInterface;)V
     .registers 2
+    .param p1, "acInterface"  # Lcom/android/server/usb/descriptors/UsbACInterface;
 
     .line 34
     invoke-direct {p0}, Lcom/android/server/usb/descriptors/tree/UsbDescriptorsTreeNode;-><init>()V
@@ -29,6 +30,7 @@
 # virtual methods
 .method public report(Lcom/android/server/usb/descriptors/report/ReportCanvas;)V
     .registers 4
+    .param p1, "canvas"  # Lcom/android/server/usb/descriptors/report/ReportCanvas;
 
     .line 40
     new-instance v0, Ljava/lang/StringBuilder;

@@ -15,19 +15,11 @@
 
 
 # static fields
-.field private static final DISPLAY_SETTINGS_FILE_NAME:Ljava/lang/String; = "display_settings.xml"
-
 .field private static final IDENTIFIER_PORT:I = 0x1
 
 .field private static final IDENTIFIER_UNIQUE_ID:I = 0x0
 
-.field private static final SYSTEM_DIRECTORY:Ljava/lang/String; = "system"
-
 .field private static final TAG:Ljava/lang/String; = "WindowManager"
-
-.field private static final VENDOR_DISPLAY_SETTINGS_PATH:Ljava/lang/String; = "etc/display_settings.xml"
-
-.field private static final WM_DISPLAY_COMMIT_TAG:Ljava/lang/String; = "wm-displays"
 
 
 # instance fields
@@ -55,149 +47,173 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/wm/WindowManagerService;)V
     .registers 3
+    .param p1, "service"  # Lcom/android/server/wm/WindowManagerService;
 
-    .line 163
+    .line 157
     new-instance v0, Lcom/android/server/wm/DisplayWindowSettings$AtomicFileStorage;
 
     invoke-direct {v0}, Lcom/android/server/wm/DisplayWindowSettings$AtomicFileStorage;-><init>()V
 
     invoke-direct {p0, p1, v0}, Lcom/android/server/wm/DisplayWindowSettings;-><init>(Lcom/android/server/wm/WindowManagerService;Lcom/android/server/wm/DisplayWindowSettings$SettingPersister;)V
 
-    .line 164
+    .line 158
     return-void
 .end method
 
 .method constructor <init>(Lcom/android/server/wm/WindowManagerService;Lcom/android/server/wm/DisplayWindowSettings$SettingPersister;)V
     .registers 4
+    .param p1, "service"  # Lcom/android/server/wm/WindowManagerService;
+    .param p2, "storageImpl"  # Lcom/android/server/wm/DisplayWindowSettings$SettingPersister;
     .annotation build Lcom/android/internal/annotations/VisibleForTesting;
     .end annotation
 
-    .line 167
+    .line 161
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
-    .line 82
+    .line 76
     new-instance v0, Ljava/util/HashMap;
 
     invoke-direct {v0}, Ljava/util/HashMap;-><init>()V
 
     iput-object v0, p0, Lcom/android/server/wm/DisplayWindowSettings;->mEntries:Ljava/util/HashMap;
 
-    .line 91
+    .line 85
     const/4 v0, 0x0
 
     iput v0, p0, Lcom/android/server/wm/DisplayWindowSettings;->mIdentifier:I
 
-    .line 168
+    .line 162
     iput-object p1, p0, Lcom/android/server/wm/DisplayWindowSettings;->mService:Lcom/android/server/wm/WindowManagerService;
 
-    .line 169
+    .line 163
     iput-object p2, p0, Lcom/android/server/wm/DisplayWindowSettings;->mStorage:Lcom/android/server/wm/DisplayWindowSettings$SettingPersister;
 
-    .line 170
+    .line 164
     invoke-direct {p0}, Lcom/android/server/wm/DisplayWindowSettings;->readSettings()V
 
-    .line 171
+    .line 165
     return-void
 .end method
 
 .method private getBooleanAttribute(Lorg/xmlpull/v1/XmlPullParser;Ljava/lang/String;)Z
     .registers 4
+    .param p1, "parser"  # Lorg/xmlpull/v1/XmlPullParser;
+    .param p2, "name"  # Ljava/lang/String;
 
-    .line 522
+    .line 516
     const/4 v0, 0x0
 
     invoke-direct {p0, p1, p2, v0}, Lcom/android/server/wm/DisplayWindowSettings;->getBooleanAttribute(Lorg/xmlpull/v1/XmlPullParser;Ljava/lang/String;Z)Z
 
-    move-result p1
+    move-result v0
 
-    return p1
+    return v0
 .end method
 
 .method private getBooleanAttribute(Lorg/xmlpull/v1/XmlPullParser;Ljava/lang/String;Z)Z
-    .registers 5
+    .registers 6
+    .param p1, "parser"  # Lorg/xmlpull/v1/XmlPullParser;
+    .param p2, "name"  # Ljava/lang/String;
+    .param p3, "defaultValue"  # Z
 
-    .line 527
+    .line 521
     const/4 v0, 0x0
 
     :try_start_1
     invoke-interface {p1, v0, p2}, Lorg/xmlpull/v1/XmlPullParser;->getAttributeValue(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    .line 528
-    if-eqz p1, :cond_b
+    .line 522
+    .local v0, "str":Ljava/lang/String;
+    if-eqz v0, :cond_c
 
-    invoke-static {p1}, Ljava/lang/Boolean;->parseBoolean(Ljava/lang/String;)Z
+    invoke-static {v0}, Ljava/lang/Boolean;->parseBoolean(Ljava/lang/String;)Z
 
-    move-result p3
+    move-result v1
     :try_end_b
-    .catch Ljava/lang/NumberFormatException; {:try_start_1 .. :try_end_b} :catch_c
+    .catch Ljava/lang/NumberFormatException; {:try_start_1 .. :try_end_b} :catch_e
 
-    :cond_b
-    return p3
+    goto :goto_d
 
-    .line 529
-    :catch_c
-    move-exception p1
+    :cond_c
+    move v1, p3
 
-    .line 530
+    :goto_d
+    return v1
+
+    .line 523
+    .end local v0  # "str":Ljava/lang/String;
+    :catch_e
+    move-exception v0
+
+    .line 524
+    .local v0, "e":Ljava/lang/NumberFormatException;
     return p3
 .end method
 
 .method private getEntry(Landroid/view/DisplayInfo;)Lcom/android/server/wm/DisplayWindowSettings$Entry;
-    .registers 4
+    .registers 6
+    .param p1, "displayInfo"  # Landroid/view/DisplayInfo;
 
-    .line 174
+    .line 168
     invoke-direct {p0, p1}, Lcom/android/server/wm/DisplayWindowSettings;->getIdentifier(Landroid/view/DisplayInfo;)Ljava/lang/String;
 
     move-result-object v0
 
-    .line 177
+    .line 171
+    .local v0, "identifier":Ljava/lang/String;
     iget-object v1, p0, Lcom/android/server/wm/DisplayWindowSettings;->mEntries:Ljava/util/HashMap;
 
     invoke-virtual {v1, v0}, Ljava/util/HashMap;->get(Ljava/lang/Object;)Ljava/lang/Object;
 
-    move-result-object v0
+    move-result-object v1
 
-    check-cast v0, Lcom/android/server/wm/DisplayWindowSettings$Entry;
+    check-cast v1, Lcom/android/server/wm/DisplayWindowSettings$Entry;
 
-    if-eqz v0, :cond_f
+    move-object v2, v1
 
-    .line 178
-    return-object v0
+    .local v2, "entry":Lcom/android/server/wm/DisplayWindowSettings$Entry;
+    if-eqz v1, :cond_10
 
-    .line 181
-    :cond_f
-    iget-object v0, p0, Lcom/android/server/wm/DisplayWindowSettings;->mEntries:Ljava/util/HashMap;
+    .line 172
+    return-object v2
 
-    iget-object v1, p1, Landroid/view/DisplayInfo;->name:Ljava/lang/String;
+    .line 175
+    :cond_10
+    iget-object v1, p0, Lcom/android/server/wm/DisplayWindowSettings;->mEntries:Ljava/util/HashMap;
 
-    invoke-virtual {v0, v1}, Ljava/util/HashMap;->get(Ljava/lang/Object;)Ljava/lang/Object;
+    iget-object v3, p1, Landroid/view/DisplayInfo;->name:Ljava/lang/String;
 
-    move-result-object v0
+    invoke-virtual {v1, v3}, Ljava/util/HashMap;->get(Ljava/lang/Object;)Ljava/lang/Object;
 
-    check-cast v0, Lcom/android/server/wm/DisplayWindowSettings$Entry;
+    move-result-object v1
 
-    if-eqz v0, :cond_20
+    check-cast v1, Lcom/android/server/wm/DisplayWindowSettings$Entry;
 
-    .line 183
-    invoke-direct {p0, v0, p1}, Lcom/android/server/wm/DisplayWindowSettings;->updateIdentifierForEntry(Lcom/android/server/wm/DisplayWindowSettings$Entry;Landroid/view/DisplayInfo;)Lcom/android/server/wm/DisplayWindowSettings$Entry;
+    move-object v2, v1
 
-    move-result-object p1
+    if-eqz v1, :cond_22
 
-    return-object p1
+    .line 177
+    invoke-direct {p0, v2, p1}, Lcom/android/server/wm/DisplayWindowSettings;->updateIdentifierForEntry(Lcom/android/server/wm/DisplayWindowSettings$Entry;Landroid/view/DisplayInfo;)Lcom/android/server/wm/DisplayWindowSettings$Entry;
 
-    .line 185
-    :cond_20
-    const/4 p1, 0x0
+    move-result-object v1
 
-    return-object p1
+    return-object v1
+
+    .line 179
+    :cond_22
+    const/4 v1, 0x0
+
+    return-object v1
 .end method
 
 .method private getIdentifier(Landroid/view/DisplayInfo;)Ljava/lang/String;
     .registers 4
+    .param p1, "displayInfo"  # Landroid/view/DisplayInfo;
 
-    .line 684
+    .line 678
     iget v0, p0, Lcom/android/server/wm/DisplayWindowSettings;->mIdentifier:I
 
     const/4 v1, 0x1
@@ -208,14 +224,14 @@
 
     if-eqz v0, :cond_29
 
-    .line 686
+    .line 680
     iget-object v0, p1, Landroid/view/DisplayInfo;->address:Landroid/view/DisplayAddress;
 
     instance-of v0, v0, Landroid/view/DisplayAddress$Physical;
 
     if-eqz v0, :cond_29
 
-    .line 687
+    .line 681
     new-instance v0, Ljava/lang/StringBuilder;
 
     invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
@@ -224,185 +240,210 @@
 
     invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    iget-object p1, p1, Landroid/view/DisplayInfo;->address:Landroid/view/DisplayAddress;
+    iget-object v1, p1, Landroid/view/DisplayInfo;->address:Landroid/view/DisplayAddress;
 
-    check-cast p1, Landroid/view/DisplayAddress$Physical;
+    check-cast v1, Landroid/view/DisplayAddress$Physical;
 
-    invoke-virtual {p1}, Landroid/view/DisplayAddress$Physical;->getPort()B
+    invoke-virtual {v1}, Landroid/view/DisplayAddress$Physical;->getPort()B
 
-    move-result p1
+    move-result v1
 
-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
     invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    return-object p1
+    return-object v0
 
-    .line 690
+    .line 684
     :cond_29
-    iget-object p1, p1, Landroid/view/DisplayInfo;->uniqueId:Ljava/lang/String;
+    iget-object v0, p1, Landroid/view/DisplayInfo;->uniqueId:Ljava/lang/String;
 
-    return-object p1
+    return-object v0
 .end method
 
 .method private getIntAttribute(Lorg/xmlpull/v1/XmlPullParser;Ljava/lang/String;)I
     .registers 4
+    .param p1, "parser"  # Lorg/xmlpull/v1/XmlPullParser;
+    .param p2, "name"  # Ljava/lang/String;
 
-    .line 509
+    .line 503
     const/4 v0, 0x0
 
     invoke-direct {p0, p1, p2, v0}, Lcom/android/server/wm/DisplayWindowSettings;->getIntAttribute(Lorg/xmlpull/v1/XmlPullParser;Ljava/lang/String;I)I
 
-    move-result p1
+    move-result v0
 
-    return p1
+    return v0
 .end method
 
 .method private getIntAttribute(Lorg/xmlpull/v1/XmlPullParser;Ljava/lang/String;I)I
-    .registers 5
+    .registers 6
+    .param p1, "parser"  # Lorg/xmlpull/v1/XmlPullParser;
+    .param p2, "name"  # Ljava/lang/String;
+    .param p3, "defaultValue"  # I
 
-    .line 514
+    .line 508
     const/4 v0, 0x0
 
     :try_start_1
     invoke-interface {p1, v0, p2}, Lorg/xmlpull/v1/XmlPullParser;->getAttributeValue(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    .line 515
-    if-eqz p1, :cond_b
+    .line 509
+    .local v0, "str":Ljava/lang/String;
+    if-eqz v0, :cond_c
 
-    invoke-static {p1}, Ljava/lang/Integer;->parseInt(Ljava/lang/String;)I
+    invoke-static {v0}, Ljava/lang/Integer;->parseInt(Ljava/lang/String;)I
 
-    move-result p3
+    move-result v1
     :try_end_b
-    .catch Ljava/lang/NumberFormatException; {:try_start_1 .. :try_end_b} :catch_c
+    .catch Ljava/lang/NumberFormatException; {:try_start_1 .. :try_end_b} :catch_e
 
-    :cond_b
-    return p3
+    goto :goto_d
 
-    .line 516
-    :catch_c
-    move-exception p1
+    :cond_c
+    move v1, p3
 
-    .line 517
+    :goto_d
+    return v1
+
+    .line 510
+    .end local v0  # "str":Ljava/lang/String;
+    :catch_e
+    move-exception v0
+
+    .line 511
+    .local v0, "e":Ljava/lang/NumberFormatException;
     return p3
 .end method
 
 .method private getOrCreateEntry(Landroid/view/DisplayInfo;)Lcom/android/server/wm/DisplayWindowSettings$Entry;
-    .registers 4
+    .registers 6
+    .param p1, "displayInfo"  # Landroid/view/DisplayInfo;
 
-    .line 189
+    .line 183
     invoke-direct {p0, p1}, Lcom/android/server/wm/DisplayWindowSettings;->getEntry(Landroid/view/DisplayInfo;)Lcom/android/server/wm/DisplayWindowSettings$Entry;
 
     move-result-object v0
 
-    .line 190
-    if-eqz v0, :cond_7
+    .line 184
+    .local v0, "entry":Lcom/android/server/wm/DisplayWindowSettings$Entry;
+    if-eqz v0, :cond_8
 
-    goto :goto_11
+    move-object v1, v0
 
-    :cond_7
-    new-instance v0, Lcom/android/server/wm/DisplayWindowSettings$Entry;
+    goto :goto_12
+
+    :cond_8
+    new-instance v1, Lcom/android/server/wm/DisplayWindowSettings$Entry;
 
     invoke-direct {p0, p1}, Lcom/android/server/wm/DisplayWindowSettings;->getIdentifier(Landroid/view/DisplayInfo;)Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v2
 
-    const/4 v1, 0x0
+    const/4 v3, 0x0
 
-    invoke-direct {v0, p1, v1}, Lcom/android/server/wm/DisplayWindowSettings$Entry;-><init>(Ljava/lang/String;Lcom/android/server/wm/DisplayWindowSettings$1;)V
+    invoke-direct {v1, v2, v3}, Lcom/android/server/wm/DisplayWindowSettings$Entry;-><init>(Ljava/lang/String;Lcom/android/server/wm/DisplayWindowSettings$1;)V
 
-    :goto_11
-    return-object v0
+    :goto_12
+    return-object v1
 .end method
 
 .method private getWindowingModeLocked(Lcom/android/server/wm/DisplayWindowSettings$Entry;I)I
-    .registers 7
+    .registers 8
+    .param p1, "entry"  # Lcom/android/server/wm/DisplayWindowSettings$Entry;
+    .param p2, "displayId"  # I
 
-    .line 273
+    .line 267
     const/4 v0, 0x0
 
     if-eqz p1, :cond_8
 
     invoke-static {p1}, Lcom/android/server/wm/DisplayWindowSettings$Entry;->access$1400(Lcom/android/server/wm/DisplayWindowSettings$Entry;)I
 
-    move-result p1
+    move-result v1
 
     goto :goto_9
 
-    .line 274
+    .line 268
     :cond_8
-    move p1, v0
+    move v1, v0
+
+    :goto_9
+    nop
+
+    .line 271
+    .local v1, "windowingMode":I
+    const/4 v2, 0x5
+
+    const/4 v3, 0x1
+
+    if-ne v1, v2, :cond_15
+
+    iget-object v4, p0, Lcom/android/server/wm/DisplayWindowSettings;->mService:Lcom/android/server/wm/WindowManagerService;
+
+    iget-boolean v4, v4, Lcom/android/server/wm/WindowManagerService;->mSupportsFreeformWindowManagement:Z
+
+    if-nez v4, :cond_15
+
+    .line 273
+    return v3
+
+    .line 276
+    :cond_15
+    if-nez v1, :cond_31
 
     .line 277
-    :goto_9
-    const/4 v1, 0x5
+    iget-object v4, p0, Lcom/android/server/wm/DisplayWindowSettings;->mService:Lcom/android/server/wm/WindowManagerService;
 
-    const/4 v2, 0x1
+    iget-boolean v4, v4, Lcom/android/server/wm/WindowManagerService;->mForceDesktopModeOnExternalDisplays:Z
 
-    if-ne p1, v1, :cond_14
+    if-eqz v4, :cond_20
 
-    iget-object v3, p0, Lcom/android/server/wm/DisplayWindowSettings;->mService:Lcom/android/server/wm/WindowManagerService;
+    if-eqz p2, :cond_20
 
-    iget-boolean v3, v3, Lcom/android/server/wm/WindowManagerService;->mSupportsFreeformWindowManagement:Z
+    move v0, v3
 
-    if-nez v3, :cond_14
+    .line 280
+    .local v0, "forceDesktopMode":Z
+    :cond_20
+    iget-object v4, p0, Lcom/android/server/wm/DisplayWindowSettings;->mService:Lcom/android/server/wm/WindowManagerService;
 
-    .line 279
-    return v2
+    iget-boolean v4, v4, Lcom/android/server/wm/WindowManagerService;->mSupportsFreeformWindowManagement:Z
 
-    .line 282
-    :cond_14
-    if-nez p1, :cond_30
+    if-eqz v4, :cond_2f
 
-    .line 283
-    iget-object p1, p0, Lcom/android/server/wm/DisplayWindowSettings;->mService:Lcom/android/server/wm/WindowManagerService;
+    iget-object v4, p0, Lcom/android/server/wm/DisplayWindowSettings;->mService:Lcom/android/server/wm/WindowManagerService;
 
-    iget-boolean p1, p1, Lcom/android/server/wm/WindowManagerService;->mForceDesktopModeOnExternalDisplays:Z
+    iget-boolean v4, v4, Lcom/android/server/wm/WindowManagerService;->mIsPc:Z
 
-    if-eqz p1, :cond_1f
-
-    if-eqz p2, :cond_1f
-
-    move v0, v2
-
-    .line 286
-    :cond_1f
-    iget-object p1, p0, Lcom/android/server/wm/DisplayWindowSettings;->mService:Lcom/android/server/wm/WindowManagerService;
-
-    iget-boolean p1, p1, Lcom/android/server/wm/WindowManagerService;->mSupportsFreeformWindowManagement:Z
-
-    if-eqz p1, :cond_2f
-
-    iget-object p1, p0, Lcom/android/server/wm/DisplayWindowSettings;->mService:Lcom/android/server/wm/WindowManagerService;
-
-    iget-boolean p1, p1, Lcom/android/server/wm/WindowManagerService;->mIsPc:Z
-
-    if-nez p1, :cond_2d
+    if-nez v4, :cond_2e
 
     if-eqz v0, :cond_2f
 
-    .line 287
-    :cond_2d
-    move p1, v1
-
+    .line 281
+    :cond_2e
     goto :goto_30
 
-    .line 288
+    .line 282
     :cond_2f
-    move p1, v2
+    move v2, v3
 
-    .line 290
-    :cond_30
     :goto_30
-    return p1
+    move v1, v2
+
+    .line 284
+    .end local v0  # "forceDesktopMode":Z
+    :cond_31
+    return v1
 .end method
 
 .method private readConfig(Lorg/xmlpull/v1/XmlPullParser;)V
     .registers 3
+    .param p1, "parser"  # Lorg/xmlpull/v1/XmlPullParser;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Ljava/lang/NumberFormatException;,
@@ -411,7 +452,7 @@
         }
     .end annotation
 
-    .line 568
+    .line 562
     const-string v0, "identifier"
 
     invoke-direct {p0, p1, v0}, Lcom/android/server/wm/DisplayWindowSettings;->getIntAttribute(Lorg/xmlpull/v1/XmlPullParser;Ljava/lang/String;)I
@@ -420,15 +461,16 @@
 
     iput v0, p0, Lcom/android/server/wm/DisplayWindowSettings;->mIdentifier:I
 
-    .line 569
+    .line 563
     invoke-static {p1}, Lcom/android/internal/util/XmlUtils;->skipCurrentTag(Lorg/xmlpull/v1/XmlPullParser;)V
 
-    .line 570
+    .line 564
     return-void
 .end method
 
 .method private readDisplay(Lorg/xmlpull/v1/XmlPullParser;)V
     .registers 6
+    .param p1, "parser"  # Lorg/xmlpull/v1/XmlPullParser;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Ljava/lang/NumberFormatException;,
@@ -437,7 +479,7 @@
         }
     .end annotation
 
-    .line 536
+    .line 530
     const/4 v0, 0x0
 
     const-string v1, "name"
@@ -446,177 +488,182 @@
 
     move-result-object v1
 
-    .line 537
-    if-eqz v1, :cond_a4
+    .line 531
+    .local v1, "name":Ljava/lang/String;
+    if-eqz v1, :cond_a5
 
-    .line 538
+    .line 532
     new-instance v2, Lcom/android/server/wm/DisplayWindowSettings$Entry;
 
     invoke-direct {v2, v1, v0}, Lcom/android/server/wm/DisplayWindowSettings$Entry;-><init>(Ljava/lang/String;Lcom/android/server/wm/DisplayWindowSettings$1;)V
 
-    .line 539
-    const-string v0, "overscanLeft"
+    move-object v0, v2
 
-    invoke-direct {p0, p1, v0}, Lcom/android/server/wm/DisplayWindowSettings;->getIntAttribute(Lorg/xmlpull/v1/XmlPullParser;Ljava/lang/String;)I
+    .line 533
+    .local v0, "entry":Lcom/android/server/wm/DisplayWindowSettings$Entry;
+    const-string v2, "overscanLeft"
 
-    move-result v0
+    invoke-direct {p0, p1, v2}, Lcom/android/server/wm/DisplayWindowSettings;->getIntAttribute(Lorg/xmlpull/v1/XmlPullParser;Ljava/lang/String;)I
 
-    invoke-static {v2, v0}, Lcom/android/server/wm/DisplayWindowSettings$Entry;->access$302(Lcom/android/server/wm/DisplayWindowSettings$Entry;I)I
+    move-result v2
 
-    .line 540
-    const-string v0, "overscanTop"
+    invoke-static {v0, v2}, Lcom/android/server/wm/DisplayWindowSettings$Entry;->access$302(Lcom/android/server/wm/DisplayWindowSettings$Entry;I)I
 
-    invoke-direct {p0, p1, v0}, Lcom/android/server/wm/DisplayWindowSettings;->getIntAttribute(Lorg/xmlpull/v1/XmlPullParser;Ljava/lang/String;)I
+    .line 534
+    const-string v2, "overscanTop"
 
-    move-result v0
+    invoke-direct {p0, p1, v2}, Lcom/android/server/wm/DisplayWindowSettings;->getIntAttribute(Lorg/xmlpull/v1/XmlPullParser;Ljava/lang/String;)I
 
-    invoke-static {v2, v0}, Lcom/android/server/wm/DisplayWindowSettings$Entry;->access$402(Lcom/android/server/wm/DisplayWindowSettings$Entry;I)I
+    move-result v2
 
-    .line 541
-    const-string v0, "overscanRight"
+    invoke-static {v0, v2}, Lcom/android/server/wm/DisplayWindowSettings$Entry;->access$402(Lcom/android/server/wm/DisplayWindowSettings$Entry;I)I
 
-    invoke-direct {p0, p1, v0}, Lcom/android/server/wm/DisplayWindowSettings;->getIntAttribute(Lorg/xmlpull/v1/XmlPullParser;Ljava/lang/String;)I
+    .line 535
+    const-string v2, "overscanRight"
 
-    move-result v0
+    invoke-direct {p0, p1, v2}, Lcom/android/server/wm/DisplayWindowSettings;->getIntAttribute(Lorg/xmlpull/v1/XmlPullParser;Ljava/lang/String;)I
 
-    invoke-static {v2, v0}, Lcom/android/server/wm/DisplayWindowSettings$Entry;->access$502(Lcom/android/server/wm/DisplayWindowSettings$Entry;I)I
+    move-result v2
 
-    .line 542
-    const-string v0, "overscanBottom"
+    invoke-static {v0, v2}, Lcom/android/server/wm/DisplayWindowSettings$Entry;->access$502(Lcom/android/server/wm/DisplayWindowSettings$Entry;I)I
 
-    invoke-direct {p0, p1, v0}, Lcom/android/server/wm/DisplayWindowSettings;->getIntAttribute(Lorg/xmlpull/v1/XmlPullParser;Ljava/lang/String;)I
+    .line 536
+    const-string v2, "overscanBottom"
 
-    move-result v0
+    invoke-direct {p0, p1, v2}, Lcom/android/server/wm/DisplayWindowSettings;->getIntAttribute(Lorg/xmlpull/v1/XmlPullParser;Ljava/lang/String;)I
 
-    invoke-static {v2, v0}, Lcom/android/server/wm/DisplayWindowSettings$Entry;->access$602(Lcom/android/server/wm/DisplayWindowSettings$Entry;I)I
+    move-result v2
 
-    .line 543
-    const/4 v0, 0x0
+    invoke-static {v0, v2}, Lcom/android/server/wm/DisplayWindowSettings$Entry;->access$602(Lcom/android/server/wm/DisplayWindowSettings$Entry;I)I
+
+    .line 537
+    const/4 v2, 0x0
 
     const-string v3, "windowingMode"
 
-    invoke-direct {p0, p1, v3, v0}, Lcom/android/server/wm/DisplayWindowSettings;->getIntAttribute(Lorg/xmlpull/v1/XmlPullParser;Ljava/lang/String;I)I
+    invoke-direct {p0, p1, v3, v2}, Lcom/android/server/wm/DisplayWindowSettings;->getIntAttribute(Lorg/xmlpull/v1/XmlPullParser;Ljava/lang/String;I)I
 
     move-result v3
 
-    invoke-static {v2, v3}, Lcom/android/server/wm/DisplayWindowSettings$Entry;->access$1402(Lcom/android/server/wm/DisplayWindowSettings$Entry;I)I
+    invoke-static {v0, v3}, Lcom/android/server/wm/DisplayWindowSettings$Entry;->access$1402(Lcom/android/server/wm/DisplayWindowSettings$Entry;I)I
 
-    .line 545
+    .line 539
     const-string v3, "userRotationMode"
 
-    invoke-direct {p0, p1, v3, v0}, Lcom/android/server/wm/DisplayWindowSettings;->getIntAttribute(Lorg/xmlpull/v1/XmlPullParser;Ljava/lang/String;I)I
+    invoke-direct {p0, p1, v3, v2}, Lcom/android/server/wm/DisplayWindowSettings;->getIntAttribute(Lorg/xmlpull/v1/XmlPullParser;Ljava/lang/String;I)I
 
     move-result v3
 
-    invoke-static {v2, v3}, Lcom/android/server/wm/DisplayWindowSettings$Entry;->access$702(Lcom/android/server/wm/DisplayWindowSettings$Entry;I)I
+    invoke-static {v0, v3}, Lcom/android/server/wm/DisplayWindowSettings$Entry;->access$702(Lcom/android/server/wm/DisplayWindowSettings$Entry;I)I
 
-    .line 547
+    .line 541
     const-string v3, "userRotation"
 
-    invoke-direct {p0, p1, v3, v0}, Lcom/android/server/wm/DisplayWindowSettings;->getIntAttribute(Lorg/xmlpull/v1/XmlPullParser;Ljava/lang/String;I)I
+    invoke-direct {p0, p1, v3, v2}, Lcom/android/server/wm/DisplayWindowSettings;->getIntAttribute(Lorg/xmlpull/v1/XmlPullParser;Ljava/lang/String;I)I
 
     move-result v3
 
-    invoke-static {v2, v3}, Lcom/android/server/wm/DisplayWindowSettings$Entry;->access$802(Lcom/android/server/wm/DisplayWindowSettings$Entry;I)I
+    invoke-static {v0, v3}, Lcom/android/server/wm/DisplayWindowSettings$Entry;->access$802(Lcom/android/server/wm/DisplayWindowSettings$Entry;I)I
 
-    .line 549
+    .line 543
     const-string v3, "forcedWidth"
 
     invoke-direct {p0, p1, v3}, Lcom/android/server/wm/DisplayWindowSettings;->getIntAttribute(Lorg/xmlpull/v1/XmlPullParser;Ljava/lang/String;)I
 
     move-result v3
 
-    invoke-static {v2, v3}, Lcom/android/server/wm/DisplayWindowSettings$Entry;->access$902(Lcom/android/server/wm/DisplayWindowSettings$Entry;I)I
+    invoke-static {v0, v3}, Lcom/android/server/wm/DisplayWindowSettings$Entry;->access$902(Lcom/android/server/wm/DisplayWindowSettings$Entry;I)I
 
-    .line 550
+    .line 544
     const-string v3, "forcedHeight"
 
     invoke-direct {p0, p1, v3}, Lcom/android/server/wm/DisplayWindowSettings;->getIntAttribute(Lorg/xmlpull/v1/XmlPullParser;Ljava/lang/String;)I
 
     move-result v3
 
-    invoke-static {v2, v3}, Lcom/android/server/wm/DisplayWindowSettings$Entry;->access$1002(Lcom/android/server/wm/DisplayWindowSettings$Entry;I)I
+    invoke-static {v0, v3}, Lcom/android/server/wm/DisplayWindowSettings$Entry;->access$1002(Lcom/android/server/wm/DisplayWindowSettings$Entry;I)I
 
-    .line 551
+    .line 545
     const-string v3, "forcedDensity"
 
     invoke-direct {p0, p1, v3}, Lcom/android/server/wm/DisplayWindowSettings;->getIntAttribute(Lorg/xmlpull/v1/XmlPullParser;Ljava/lang/String;)I
 
     move-result v3
 
-    invoke-static {v2, v3}, Lcom/android/server/wm/DisplayWindowSettings$Entry;->access$1102(Lcom/android/server/wm/DisplayWindowSettings$Entry;I)I
+    invoke-static {v0, v3}, Lcom/android/server/wm/DisplayWindowSettings$Entry;->access$1102(Lcom/android/server/wm/DisplayWindowSettings$Entry;I)I
 
-    .line 552
+    .line 546
     const-string v3, "forcedScalingMode"
 
-    invoke-direct {p0, p1, v3, v0}, Lcom/android/server/wm/DisplayWindowSettings;->getIntAttribute(Lorg/xmlpull/v1/XmlPullParser;Ljava/lang/String;I)I
+    invoke-direct {p0, p1, v3, v2}, Lcom/android/server/wm/DisplayWindowSettings;->getIntAttribute(Lorg/xmlpull/v1/XmlPullParser;Ljava/lang/String;I)I
 
     move-result v3
 
-    invoke-static {v2, v3}, Lcom/android/server/wm/DisplayWindowSettings$Entry;->access$1202(Lcom/android/server/wm/DisplayWindowSettings$Entry;I)I
+    invoke-static {v0, v3}, Lcom/android/server/wm/DisplayWindowSettings$Entry;->access$1202(Lcom/android/server/wm/DisplayWindowSettings$Entry;I)I
 
-    .line 554
+    .line 548
     const-string v3, "removeContentMode"
 
-    invoke-direct {p0, p1, v3, v0}, Lcom/android/server/wm/DisplayWindowSettings;->getIntAttribute(Lorg/xmlpull/v1/XmlPullParser;Ljava/lang/String;I)I
+    invoke-direct {p0, p1, v3, v2}, Lcom/android/server/wm/DisplayWindowSettings;->getIntAttribute(Lorg/xmlpull/v1/XmlPullParser;Ljava/lang/String;I)I
 
-    move-result v0
+    move-result v2
 
-    invoke-static {v2, v0}, Lcom/android/server/wm/DisplayWindowSettings$Entry;->access$1502(Lcom/android/server/wm/DisplayWindowSettings$Entry;I)I
+    invoke-static {v0, v2}, Lcom/android/server/wm/DisplayWindowSettings$Entry;->access$1502(Lcom/android/server/wm/DisplayWindowSettings$Entry;I)I
 
-    .line 556
-    const-string v0, "shouldShowWithInsecureKeyguard"
+    .line 550
+    const-string v2, "shouldShowWithInsecureKeyguard"
 
-    invoke-direct {p0, p1, v0}, Lcom/android/server/wm/DisplayWindowSettings;->getBooleanAttribute(Lorg/xmlpull/v1/XmlPullParser;Ljava/lang/String;)Z
+    invoke-direct {p0, p1, v2}, Lcom/android/server/wm/DisplayWindowSettings;->getBooleanAttribute(Lorg/xmlpull/v1/XmlPullParser;Ljava/lang/String;)Z
 
-    move-result v0
+    move-result v2
 
-    invoke-static {v2, v0}, Lcom/android/server/wm/DisplayWindowSettings$Entry;->access$1602(Lcom/android/server/wm/DisplayWindowSettings$Entry;Z)Z
+    invoke-static {v0, v2}, Lcom/android/server/wm/DisplayWindowSettings$Entry;->access$1602(Lcom/android/server/wm/DisplayWindowSettings$Entry;Z)Z
 
-    .line 558
-    const-string v0, "shouldShowSystemDecors"
+    .line 552
+    const-string v2, "shouldShowSystemDecors"
 
-    invoke-direct {p0, p1, v0}, Lcom/android/server/wm/DisplayWindowSettings;->getBooleanAttribute(Lorg/xmlpull/v1/XmlPullParser;Ljava/lang/String;)Z
+    invoke-direct {p0, p1, v2}, Lcom/android/server/wm/DisplayWindowSettings;->getBooleanAttribute(Lorg/xmlpull/v1/XmlPullParser;Ljava/lang/String;)Z
 
-    move-result v0
+    move-result v2
 
-    invoke-static {v2, v0}, Lcom/android/server/wm/DisplayWindowSettings$Entry;->access$1702(Lcom/android/server/wm/DisplayWindowSettings$Entry;Z)Z
+    invoke-static {v0, v2}, Lcom/android/server/wm/DisplayWindowSettings$Entry;->access$1702(Lcom/android/server/wm/DisplayWindowSettings$Entry;Z)Z
 
-    .line 559
-    const-string v0, "shouldShowIme"
+    .line 553
+    const-string v2, "shouldShowIme"
 
-    invoke-direct {p0, p1, v0}, Lcom/android/server/wm/DisplayWindowSettings;->getBooleanAttribute(Lorg/xmlpull/v1/XmlPullParser;Ljava/lang/String;)Z
+    invoke-direct {p0, p1, v2}, Lcom/android/server/wm/DisplayWindowSettings;->getBooleanAttribute(Lorg/xmlpull/v1/XmlPullParser;Ljava/lang/String;)Z
 
-    move-result v0
+    move-result v2
 
-    invoke-static {v2, v0}, Lcom/android/server/wm/DisplayWindowSettings$Entry;->access$1802(Lcom/android/server/wm/DisplayWindowSettings$Entry;Z)Z
+    invoke-static {v0, v2}, Lcom/android/server/wm/DisplayWindowSettings$Entry;->access$1802(Lcom/android/server/wm/DisplayWindowSettings$Entry;Z)Z
 
-    .line 560
-    const-string v0, "fixedToUserRotation"
+    .line 554
+    const-string v2, "fixedToUserRotation"
 
-    invoke-direct {p0, p1, v0}, Lcom/android/server/wm/DisplayWindowSettings;->getIntAttribute(Lorg/xmlpull/v1/XmlPullParser;Ljava/lang/String;)I
+    invoke-direct {p0, p1, v2}, Lcom/android/server/wm/DisplayWindowSettings;->getIntAttribute(Lorg/xmlpull/v1/XmlPullParser;Ljava/lang/String;)I
 
-    move-result v0
+    move-result v2
 
-    invoke-static {v2, v0}, Lcom/android/server/wm/DisplayWindowSettings$Entry;->access$1302(Lcom/android/server/wm/DisplayWindowSettings$Entry;I)I
+    invoke-static {v0, v2}, Lcom/android/server/wm/DisplayWindowSettings$Entry;->access$1302(Lcom/android/server/wm/DisplayWindowSettings$Entry;I)I
 
-    .line 561
-    iget-object v0, p0, Lcom/android/server/wm/DisplayWindowSettings;->mEntries:Ljava/util/HashMap;
+    .line 555
+    iget-object v2, p0, Lcom/android/server/wm/DisplayWindowSettings;->mEntries:Ljava/util/HashMap;
 
-    invoke-virtual {v0, v1, v2}, Ljava/util/HashMap;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+    invoke-virtual {v2, v1, v0}, Ljava/util/HashMap;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
 
-    .line 563
-    :cond_a4
+    .line 557
+    .end local v0  # "entry":Lcom/android/server/wm/DisplayWindowSettings$Entry;
+    :cond_a5
     invoke-static {p1}, Lcom/android/internal/util/XmlUtils;->skipCurrentTag(Lorg/xmlpull/v1/XmlPullParser;)V
 
-    .line 564
+    .line 558
     return-void
 .end method
 
 .method private readSettings()V
-    .registers 10
+    .registers 12
 
-    .line 447
+    .line 441
     const-string v0, "Failed parsing "
 
     const-string v1, "WindowManager"
@@ -628,480 +675,548 @@
 
     move-result-object v2
     :try_end_a
-    .catch Ljava/io/IOException; {:try_start_4 .. :try_end_a} :catch_146
+    .catch Ljava/io/IOException; {:try_start_4 .. :try_end_a} :catch_15f
 
-    .line 451
+    .line 445
+    .local v2, "stream":Ljava/io/InputStream;
     nop
 
-    .line 452
-    nop
+    .line 446
+    const/4 v3, 0x0
 
-    .line 454
+    .line 448
+    .local v3, "success":Z
     :try_start_c
     invoke-static {}, Landroid/util/Xml;->newPullParser()Lorg/xmlpull/v1/XmlPullParser;
 
-    move-result-object v3
-
-    .line 455
-    sget-object v4, Ljava/nio/charset/StandardCharsets;->UTF_8:Ljava/nio/charset/Charset;
-
-    invoke-virtual {v4}, Ljava/nio/charset/Charset;->name()Ljava/lang/String;
-
     move-result-object v4
 
-    invoke-interface {v3, v2, v4}, Lorg/xmlpull/v1/XmlPullParser;->setInput(Ljava/io/InputStream;Ljava/lang/String;)V
+    .line 449
+    .local v4, "parser":Lorg/xmlpull/v1/XmlPullParser;
+    sget-object v5, Ljava/nio/charset/StandardCharsets;->UTF_8:Ljava/nio/charset/Charset;
 
-    .line 457
+    invoke-virtual {v5}, Ljava/nio/charset/Charset;->name()Ljava/lang/String;
+
+    move-result-object v5
+
+    invoke-interface {v4, v2, v5}, Lorg/xmlpull/v1/XmlPullParser;->setInput(Ljava/io/InputStream;Ljava/lang/String;)V
+
+    .line 451
     :goto_19
-    invoke-interface {v3}, Lorg/xmlpull/v1/XmlPullParser;->next()I
+    invoke-interface {v4}, Lorg/xmlpull/v1/XmlPullParser;->next()I
 
-    move-result v4
+    move-result v5
 
-    const/4 v5, 0x1
+    move v6, v5
 
-    const/4 v6, 0x2
+    .local v6, "type":I
+    const/4 v7, 0x1
 
-    if-eq v4, v6, :cond_24
+    const/4 v8, 0x2
 
-    if-eq v4, v5, :cond_24
+    if-eq v5, v8, :cond_25
+
+    if-eq v6, v7, :cond_25
 
     goto :goto_19
 
-    .line 462
-    :cond_24
-    if-ne v4, v6, :cond_7e
+    .line 456
+    :cond_25
+    if-ne v6, v8, :cond_89
 
-    .line 466
-    invoke-interface {v3}, Lorg/xmlpull/v1/XmlPullParser;->getDepth()I
+    .line 460
+    invoke-interface {v4}, Lorg/xmlpull/v1/XmlPullParser;->getDepth()I
 
-    move-result v4
+    move-result v5
 
-    .line 467
-    :cond_2a
-    :goto_2a
-    invoke-interface {v3}, Lorg/xmlpull/v1/XmlPullParser;->next()I
-
-    move-result v6
-
-    if-eq v6, v5, :cond_77
-
-    const/4 v7, 0x3
-
-    if-ne v6, v7, :cond_39
-
-    .line 468
-    invoke-interface {v3}, Lorg/xmlpull/v1/XmlPullParser;->getDepth()I
+    .line 461
+    .local v5, "outerDepth":I
+    :cond_2b
+    :goto_2b
+    invoke-interface {v4}, Lorg/xmlpull/v1/XmlPullParser;->next()I
 
     move-result v8
 
-    if-le v8, v4, :cond_77
+    move v6, v8
 
-    .line 469
-    :cond_39
-    if-eq v6, v7, :cond_2a
+    if-eq v8, v7, :cond_79
 
-    const/4 v7, 0x4
+    const/4 v8, 0x3
 
-    if-ne v6, v7, :cond_3f
+    if-ne v6, v8, :cond_3b
 
-    .line 470
-    goto :goto_2a
+    .line 462
+    invoke-interface {v4}, Lorg/xmlpull/v1/XmlPullParser;->getDepth()I
 
-    .line 473
-    :cond_3f
-    invoke-interface {v3}, Lorg/xmlpull/v1/XmlPullParser;->getName()Ljava/lang/String;
+    move-result v9
 
-    move-result-object v6
-
-    .line 474
-    const-string v7, "display"
-
-    invoke-virtual {v6, v7}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
-
-    move-result v7
-
-    if-eqz v7, :cond_4f
-
-    .line 475
-    invoke-direct {p0, v3}, Lcom/android/server/wm/DisplayWindowSettings;->readDisplay(Lorg/xmlpull/v1/XmlPullParser;)V
-
-    goto :goto_76
-
-    .line 476
-    :cond_4f
-    const-string v7, "config"
-
-    invoke-virtual {v6, v7}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
-
-    move-result v6
-
-    if-eqz v6, :cond_5b
-
-    .line 477
-    invoke-direct {p0, v3}, Lcom/android/server/wm/DisplayWindowSettings;->readConfig(Lorg/xmlpull/v1/XmlPullParser;)V
-
-    goto :goto_76
-
-    .line 479
-    :cond_5b
-    new-instance v6, Ljava/lang/StringBuilder;
-
-    invoke-direct {v6}, Ljava/lang/StringBuilder;-><init>()V
-
-    const-string v7, "Unknown element under <display-settings>: "
-
-    invoke-virtual {v6, v7}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    .line 480
-    invoke-interface {v3}, Lorg/xmlpull/v1/XmlPullParser;->getName()Ljava/lang/String;
-
-    move-result-object v7
-
-    invoke-virtual {v6, v7}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v6}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
-
-    move-result-object v6
-
-    .line 479
-    invoke-static {v1, v6}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
-
-    .line 481
-    invoke-static {v3}, Lcom/android/internal/util/XmlUtils;->skipCurrentTag(Lorg/xmlpull/v1/XmlPullParser;)V
-    :try_end_76
-    .catch Ljava/lang/IllegalStateException; {:try_start_c .. :try_end_76} :catch_11b
-    .catch Ljava/lang/NullPointerException; {:try_start_c .. :try_end_76} :catch_fe
-    .catch Ljava/lang/NumberFormatException; {:try_start_c .. :try_end_76} :catch_e1
-    .catch Lorg/xmlpull/v1/XmlPullParserException; {:try_start_c .. :try_end_76} :catch_c4
-    .catch Ljava/io/IOException; {:try_start_c .. :try_end_76} :catch_a7
-    .catch Ljava/lang/IndexOutOfBoundsException; {:try_start_c .. :try_end_76} :catch_89
-    .catchall {:try_start_c .. :try_end_76} :catchall_86
-
-    .line 483
-    :goto_76
-    goto :goto_2a
-
-    .line 484
-    :cond_77
-    nop
-
-    .line 498
-    nop
-
-    .line 502
-    :try_start_79
-    invoke-virtual {v2}, Ljava/io/InputStream;->close()V
-    :try_end_7c
-    .catch Ljava/io/IOException; {:try_start_79 .. :try_end_7c} :catch_138
-
-    goto/16 :goto_137
+    if-le v9, v5, :cond_79
 
     .line 463
-    :cond_7e
-    :try_start_7e
-    new-instance v3, Ljava/lang/IllegalStateException;
+    :cond_3b
+    if-eq v6, v8, :cond_2b
 
-    const-string v4, "no start tag found"
+    const/4 v8, 0x4
 
-    invoke-direct {v3, v4}, Ljava/lang/IllegalStateException;-><init>(Ljava/lang/String;)V
+    if-ne v6, v8, :cond_41
 
-    throw v3
-    :try_end_86
-    .catch Ljava/lang/IllegalStateException; {:try_start_7e .. :try_end_86} :catch_11b
-    .catch Ljava/lang/NullPointerException; {:try_start_7e .. :try_end_86} :catch_fe
-    .catch Ljava/lang/NumberFormatException; {:try_start_7e .. :try_end_86} :catch_e1
-    .catch Lorg/xmlpull/v1/XmlPullParserException; {:try_start_7e .. :try_end_86} :catch_c4
-    .catch Ljava/io/IOException; {:try_start_7e .. :try_end_86} :catch_a7
-    .catch Ljava/lang/IndexOutOfBoundsException; {:try_start_7e .. :try_end_86} :catch_89
-    .catchall {:try_start_7e .. :try_end_86} :catchall_86
+    .line 464
+    goto :goto_2b
 
-    .line 498
-    :catchall_86
-    move-exception v0
+    .line 467
+    :cond_41
+    invoke-interface {v4}, Lorg/xmlpull/v1/XmlPullParser;->getName()Ljava/lang/String;
 
-    goto/16 :goto_13b
+    move-result-object v8
 
-    .line 495
-    :catch_89
-    move-exception v3
+    .line 468
+    .local v8, "tagName":Ljava/lang/String;
+    const-string v9, "display"
 
-    .line 496
-    :try_start_8a
-    new-instance v4, Ljava/lang/StringBuilder;
+    invoke-virtual {v8, v9}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    invoke-direct {v4}, Ljava/lang/StringBuilder;-><init>()V
+    move-result v9
 
-    invoke-virtual {v4, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    if-eqz v9, :cond_51
 
-    invoke-virtual {v4, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    .line 469
+    invoke-direct {p0, v4}, Lcom/android/server/wm/DisplayWindowSettings;->readDisplay(Lorg/xmlpull/v1/XmlPullParser;)V
 
-    invoke-virtual {v4}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    goto :goto_78
 
-    move-result-object v0
+    .line 470
+    :cond_51
+    const-string v9, "config"
 
-    invoke-static {v1, v0}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
-    :try_end_9c
-    .catchall {:try_start_8a .. :try_end_9c} :catchall_86
+    invoke-virtual {v8, v9}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    .line 498
-    nop
+    move-result v9
 
-    .line 499
-    iget-object v0, p0, Lcom/android/server/wm/DisplayWindowSettings;->mEntries:Ljava/util/HashMap;
+    if-eqz v9, :cond_5d
 
-    invoke-virtual {v0}, Ljava/util/HashMap;->clear()V
+    .line 471
+    invoke-direct {p0, v4}, Lcom/android/server/wm/DisplayWindowSettings;->readConfig(Lorg/xmlpull/v1/XmlPullParser;)V
 
-    .line 502
-    :try_start_a2
-    invoke-virtual {v2}, Ljava/io/InputStream;->close()V
-    :try_end_a5
-    .catch Ljava/io/IOException; {:try_start_a2 .. :try_end_a5} :catch_138
+    goto :goto_78
 
-    goto/16 :goto_137
+    .line 473
+    :cond_5d
+    new-instance v9, Ljava/lang/StringBuilder;
 
-    .line 493
-    :catch_a7
-    move-exception v3
+    invoke-direct {v9}, Ljava/lang/StringBuilder;-><init>()V
 
-    .line 494
-    :try_start_a8
-    new-instance v4, Ljava/lang/StringBuilder;
+    const-string v10, "Unknown element under <display-settings>: "
 
-    invoke-direct {v4}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-virtual {v9, v10}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v4, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    .line 474
+    invoke-interface {v4}, Lorg/xmlpull/v1/XmlPullParser;->getName()Ljava/lang/String;
 
-    invoke-virtual {v4, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    move-result-object v10
 
-    invoke-virtual {v4}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v9, v10}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    move-result-object v0
+    invoke-virtual {v9}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    invoke-static {v1, v0}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
-    :try_end_ba
-    .catchall {:try_start_a8 .. :try_end_ba} :catchall_86
+    move-result-object v9
 
-    .line 498
-    nop
+    .line 473
+    invoke-static {v1, v9}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 499
-    iget-object v0, p0, Lcom/android/server/wm/DisplayWindowSettings;->mEntries:Ljava/util/HashMap;
+    .line 475
+    invoke-static {v4}, Lcom/android/internal/util/XmlUtils;->skipCurrentTag(Lorg/xmlpull/v1/XmlPullParser;)V
+    :try_end_78
+    .catch Ljava/lang/IllegalStateException; {:try_start_c .. :try_end_78} :catch_131
+    .catch Ljava/lang/NullPointerException; {:try_start_c .. :try_end_78} :catch_111
+    .catch Ljava/lang/NumberFormatException; {:try_start_c .. :try_end_78} :catch_f1
+    .catch Lorg/xmlpull/v1/XmlPullParserException; {:try_start_c .. :try_end_78} :catch_d2
+    .catch Ljava/io/IOException; {:try_start_c .. :try_end_78} :catch_b3
+    .catch Ljava/lang/IndexOutOfBoundsException; {:try_start_c .. :try_end_78} :catch_94
+    .catchall {:try_start_c .. :try_end_78} :catchall_91
 
-    invoke-virtual {v0}, Ljava/util/HashMap;->clear()V
+    .line 477
+    .end local v8  # "tagName":Ljava/lang/String;
+    :goto_78
+    goto :goto_2b
 
-    .line 502
-    :try_start_c0
-    invoke-virtual {v2}, Ljava/io/InputStream;->close()V
-    :try_end_c3
-    .catch Ljava/io/IOException; {:try_start_c0 .. :try_end_c3} :catch_138
-
-    goto :goto_137
-
-    .line 491
-    :catch_c4
-    move-exception v3
+    .line 478
+    :cond_79
+    const/4 v3, 0x1
 
     .line 492
-    :try_start_c5
-    new-instance v4, Ljava/lang/StringBuilder;
+    .end local v4  # "parser":Lorg/xmlpull/v1/XmlPullParser;
+    .end local v5  # "outerDepth":I
+    .end local v6  # "type":I
+    if-nez v3, :cond_81
 
-    invoke-direct {v4}, Ljava/lang/StringBuilder;-><init>()V
-
-    invoke-virtual {v4, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v4, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v4}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
-
-    move-result-object v0
-
-    invoke-static {v1, v0}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
-    :try_end_d7
-    .catchall {:try_start_c5 .. :try_end_d7} :catchall_86
-
-    .line 498
-    nop
-
-    .line 499
+    .line 493
     iget-object v0, p0, Lcom/android/server/wm/DisplayWindowSettings;->mEntries:Ljava/util/HashMap;
 
     invoke-virtual {v0}, Ljava/util/HashMap;->clear()V
 
-    .line 502
-    :try_start_dd
+    .line 496
+    :cond_81
+    :try_start_81
     invoke-virtual {v2}, Ljava/io/InputStream;->close()V
-    :try_end_e0
-    .catch Ljava/io/IOException; {:try_start_dd .. :try_end_e0} :catch_138
-
-    goto :goto_137
-
-    .line 489
-    :catch_e1
-    move-exception v3
-
-    .line 490
-    :try_start_e2
-    new-instance v4, Ljava/lang/StringBuilder;
-
-    invoke-direct {v4}, Ljava/lang/StringBuilder;-><init>()V
-
-    invoke-virtual {v4, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v4, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v4}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
-
-    move-result-object v0
-
-    invoke-static {v1, v0}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
-    :try_end_f4
-    .catchall {:try_start_e2 .. :try_end_f4} :catchall_86
+    :try_end_84
+    .catch Ljava/io/IOException; {:try_start_81 .. :try_end_84} :catch_86
 
     .line 498
-    nop
+    :goto_84
+    goto/16 :goto_151
 
-    .line 499
-    iget-object v0, p0, Lcom/android/server/wm/DisplayWindowSettings;->mEntries:Ljava/util/HashMap;
-
-    invoke-virtual {v0}, Ljava/util/HashMap;->clear()V
-
-    .line 502
-    :try_start_fa
-    invoke-virtual {v2}, Ljava/io/InputStream;->close()V
-    :try_end_fd
-    .catch Ljava/io/IOException; {:try_start_fa .. :try_end_fd} :catch_138
-
-    goto :goto_137
-
-    .line 487
-    :catch_fe
-    move-exception v3
-
-    .line 488
-    :try_start_ff
-    new-instance v4, Ljava/lang/StringBuilder;
-
-    invoke-direct {v4}, Ljava/lang/StringBuilder;-><init>()V
-
-    invoke-virtual {v4, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v4, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v4}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
-
-    move-result-object v0
-
-    invoke-static {v1, v0}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
-    :try_end_111
-    .catchall {:try_start_ff .. :try_end_111} :catchall_86
-
-    .line 498
-    nop
-
-    .line 499
-    iget-object v0, p0, Lcom/android/server/wm/DisplayWindowSettings;->mEntries:Ljava/util/HashMap;
-
-    invoke-virtual {v0}, Ljava/util/HashMap;->clear()V
-
-    .line 502
-    :try_start_117
-    invoke-virtual {v2}, Ljava/io/InputStream;->close()V
-    :try_end_11a
-    .catch Ljava/io/IOException; {:try_start_117 .. :try_end_11a} :catch_138
-
-    goto :goto_137
-
-    .line 485
-    :catch_11b
-    move-exception v3
-
-    .line 486
-    :try_start_11c
-    new-instance v4, Ljava/lang/StringBuilder;
-
-    invoke-direct {v4}, Ljava/lang/StringBuilder;-><init>()V
-
-    invoke-virtual {v4, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v4, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v4}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
-
-    move-result-object v0
-
-    invoke-static {v1, v0}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
-    :try_end_12e
-    .catchall {:try_start_11c .. :try_end_12e} :catchall_86
-
-    .line 498
-    nop
-
-    .line 499
-    iget-object v0, p0, Lcom/android/server/wm/DisplayWindowSettings;->mEntries:Ljava/util/HashMap;
-
-    invoke-virtual {v0}, Ljava/util/HashMap;->clear()V
-
-    .line 502
-    :try_start_134
-    invoke-virtual {v2}, Ljava/io/InputStream;->close()V
-    :try_end_137
-    .catch Ljava/io/IOException; {:try_start_134 .. :try_end_137} :catch_138
-
-    .line 504
-    :goto_137
-    goto :goto_13a
-
-    .line 503
-    :catch_138
+    .line 497
+    :catch_86
     move-exception v0
 
-    .line 505
+    .line 499
+    goto/16 :goto_151
+
+    .line 457
+    .restart local v4  # "parser":Lorg/xmlpull/v1/XmlPullParser;
+    .restart local v6  # "type":I
+    :cond_89
+    :try_start_89
+    new-instance v5, Ljava/lang/IllegalStateException;
+
+    const-string v7, "no start tag found"
+
+    invoke-direct {v5, v7}, Ljava/lang/IllegalStateException;-><init>(Ljava/lang/String;)V
+
+    .end local v2  # "stream":Ljava/io/InputStream;
+    .end local v3  # "success":Z
+    .end local p0  # "this":Lcom/android/server/wm/DisplayWindowSettings;
+    throw v5
+    :try_end_91
+    .catch Ljava/lang/IllegalStateException; {:try_start_89 .. :try_end_91} :catch_131
+    .catch Ljava/lang/NullPointerException; {:try_start_89 .. :try_end_91} :catch_111
+    .catch Ljava/lang/NumberFormatException; {:try_start_89 .. :try_end_91} :catch_f1
+    .catch Lorg/xmlpull/v1/XmlPullParserException; {:try_start_89 .. :try_end_91} :catch_d2
+    .catch Ljava/io/IOException; {:try_start_89 .. :try_end_91} :catch_b3
+    .catch Ljava/lang/IndexOutOfBoundsException; {:try_start_89 .. :try_end_91} :catch_94
+    .catchall {:try_start_89 .. :try_end_91} :catchall_91
+
+    .line 492
+    .end local v4  # "parser":Lorg/xmlpull/v1/XmlPullParser;
+    .end local v6  # "type":I
+    .restart local v2  # "stream":Ljava/io/InputStream;
+    .restart local v3  # "success":Z
+    .restart local p0  # "this":Lcom/android/server/wm/DisplayWindowSettings;
+    :catchall_91
+    move-exception v0
+
+    goto/16 :goto_152
+
+    .line 489
+    :catch_94
+    move-exception v4
+
+    .line 490
+    .local v4, "e":Ljava/lang/IndexOutOfBoundsException;
+    :try_start_95
+    new-instance v5, Ljava/lang/StringBuilder;
+
+    invoke-direct {v5}, Ljava/lang/StringBuilder;-><init>()V
+
+    invoke-virtual {v5, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v5, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v5}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v0
+
+    invoke-static {v1, v0}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    :try_end_a7
+    .catchall {:try_start_95 .. :try_end_a7} :catchall_91
+
+    .line 492
     nop
 
-    .line 506
-    :goto_13a
+    .end local v4  # "e":Ljava/lang/IndexOutOfBoundsException;
+    if-nez v3, :cond_af
+
+    .line 493
+    iget-object v0, p0, Lcom/android/server/wm/DisplayWindowSettings;->mEntries:Ljava/util/HashMap;
+
+    invoke-virtual {v0}, Ljava/util/HashMap;->clear()V
+
+    .line 496
+    :cond_af
+    :try_start_af
+    invoke-virtual {v2}, Ljava/io/InputStream;->close()V
+    :try_end_b2
+    .catch Ljava/io/IOException; {:try_start_af .. :try_end_b2} :catch_86
+
+    goto :goto_84
+
+    .line 487
+    :catch_b3
+    move-exception v4
+
+    .line 488
+    .local v4, "e":Ljava/io/IOException;
+    :try_start_b4
+    new-instance v5, Ljava/lang/StringBuilder;
+
+    invoke-direct {v5}, Ljava/lang/StringBuilder;-><init>()V
+
+    invoke-virtual {v5, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v5, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v5}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v0
+
+    invoke-static {v1, v0}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    :try_end_c6
+    .catchall {:try_start_b4 .. :try_end_c6} :catchall_91
+
+    .line 492
+    nop
+
+    .end local v4  # "e":Ljava/io/IOException;
+    if-nez v3, :cond_ce
+
+    .line 493
+    iget-object v0, p0, Lcom/android/server/wm/DisplayWindowSettings;->mEntries:Ljava/util/HashMap;
+
+    invoke-virtual {v0}, Ljava/util/HashMap;->clear()V
+
+    .line 496
+    :cond_ce
+    :try_start_ce
+    invoke-virtual {v2}, Ljava/io/InputStream;->close()V
+    :try_end_d1
+    .catch Ljava/io/IOException; {:try_start_ce .. :try_end_d1} :catch_86
+
+    goto :goto_84
+
+    .line 485
+    :catch_d2
+    move-exception v4
+
+    .line 486
+    .local v4, "e":Lorg/xmlpull/v1/XmlPullParserException;
+    :try_start_d3
+    new-instance v5, Ljava/lang/StringBuilder;
+
+    invoke-direct {v5}, Ljava/lang/StringBuilder;-><init>()V
+
+    invoke-virtual {v5, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v5, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v5}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v0
+
+    invoke-static {v1, v0}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    :try_end_e5
+    .catchall {:try_start_d3 .. :try_end_e5} :catchall_91
+
+    .line 492
+    nop
+
+    .end local v4  # "e":Lorg/xmlpull/v1/XmlPullParserException;
+    if-nez v3, :cond_ed
+
+    .line 493
+    iget-object v0, p0, Lcom/android/server/wm/DisplayWindowSettings;->mEntries:Ljava/util/HashMap;
+
+    invoke-virtual {v0}, Ljava/util/HashMap;->clear()V
+
+    .line 496
+    :cond_ed
+    :try_start_ed
+    invoke-virtual {v2}, Ljava/io/InputStream;->close()V
+    :try_end_f0
+    .catch Ljava/io/IOException; {:try_start_ed .. :try_end_f0} :catch_86
+
+    goto :goto_84
+
+    .line 483
+    :catch_f1
+    move-exception v4
+
+    .line 484
+    .local v4, "e":Ljava/lang/NumberFormatException;
+    :try_start_f2
+    new-instance v5, Ljava/lang/StringBuilder;
+
+    invoke-direct {v5}, Ljava/lang/StringBuilder;-><init>()V
+
+    invoke-virtual {v5, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v5, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v5}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v0
+
+    invoke-static {v1, v0}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    :try_end_104
+    .catchall {:try_start_f2 .. :try_end_104} :catchall_91
+
+    .line 492
+    nop
+
+    .end local v4  # "e":Ljava/lang/NumberFormatException;
+    if-nez v3, :cond_10c
+
+    .line 493
+    iget-object v0, p0, Lcom/android/server/wm/DisplayWindowSettings;->mEntries:Ljava/util/HashMap;
+
+    invoke-virtual {v0}, Ljava/util/HashMap;->clear()V
+
+    .line 496
+    :cond_10c
+    :try_start_10c
+    invoke-virtual {v2}, Ljava/io/InputStream;->close()V
+    :try_end_10f
+    .catch Ljava/io/IOException; {:try_start_10c .. :try_end_10f} :catch_86
+
+    goto/16 :goto_84
+
+    .line 481
+    :catch_111
+    move-exception v4
+
+    .line 482
+    .local v4, "e":Ljava/lang/NullPointerException;
+    :try_start_112
+    new-instance v5, Ljava/lang/StringBuilder;
+
+    invoke-direct {v5}, Ljava/lang/StringBuilder;-><init>()V
+
+    invoke-virtual {v5, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v5, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v5}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v0
+
+    invoke-static {v1, v0}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    :try_end_124
+    .catchall {:try_start_112 .. :try_end_124} :catchall_91
+
+    .line 492
+    nop
+
+    .end local v4  # "e":Ljava/lang/NullPointerException;
+    if-nez v3, :cond_12c
+
+    .line 493
+    iget-object v0, p0, Lcom/android/server/wm/DisplayWindowSettings;->mEntries:Ljava/util/HashMap;
+
+    invoke-virtual {v0}, Ljava/util/HashMap;->clear()V
+
+    .line 496
+    :cond_12c
+    :try_start_12c
+    invoke-virtual {v2}, Ljava/io/InputStream;->close()V
+    :try_end_12f
+    .catch Ljava/io/IOException; {:try_start_12c .. :try_end_12f} :catch_86
+
+    goto/16 :goto_84
+
+    .line 479
+    :catch_131
+    move-exception v4
+
+    .line 480
+    .local v4, "e":Ljava/lang/IllegalStateException;
+    :try_start_132
+    new-instance v5, Ljava/lang/StringBuilder;
+
+    invoke-direct {v5}, Ljava/lang/StringBuilder;-><init>()V
+
+    invoke-virtual {v5, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v5, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v5}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v0
+
+    invoke-static {v1, v0}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    :try_end_144
+    .catchall {:try_start_132 .. :try_end_144} :catchall_91
+
+    .line 492
+    nop
+
+    .end local v4  # "e":Ljava/lang/IllegalStateException;
+    if-nez v3, :cond_14c
+
+    .line 493
+    iget-object v0, p0, Lcom/android/server/wm/DisplayWindowSettings;->mEntries:Ljava/util/HashMap;
+
+    invoke-virtual {v0}, Ljava/util/HashMap;->clear()V
+
+    .line 496
+    :cond_14c
+    :try_start_14c
+    invoke-virtual {v2}, Ljava/io/InputStream;->close()V
+    :try_end_14f
+    .catch Ljava/io/IOException; {:try_start_14c .. :try_end_14f} :catch_86
+
+    goto/16 :goto_84
+
+    .line 500
+    :goto_151
     return-void
 
-    .line 499
-    :goto_13b
+    .line 492
+    :goto_152
+    if-nez v3, :cond_159
+
+    .line 493
     iget-object v1, p0, Lcom/android/server/wm/DisplayWindowSettings;->mEntries:Ljava/util/HashMap;
 
     invoke-virtual {v1}, Ljava/util/HashMap;->clear()V
 
-    .line 502
-    :try_start_140
+    .line 496
+    :cond_159
+    :try_start_159
     invoke-virtual {v2}, Ljava/io/InputStream;->close()V
-    :try_end_143
-    .catch Ljava/io/IOException; {:try_start_140 .. :try_end_143} :catch_144
+    :try_end_15c
+    .catch Ljava/io/IOException; {:try_start_159 .. :try_end_15c} :catch_15d
 
-    .line 504
-    goto :goto_145
+    .line 498
+    goto :goto_15e
 
-    .line 503
-    :catch_144
+    .line 497
+    :catch_15d
     move-exception v1
 
-    .line 504
-    :goto_145
+    .line 498
+    :goto_15e
     throw v0
 
-    .line 448
-    :catch_146
+    .line 442
+    .end local v2  # "stream":Ljava/io/InputStream;
+    .end local v3  # "success":Z
+    :catch_15f
     move-exception v0
 
-    .line 449
-    const-string v0, "No existing display settings, starting empty"
+    .line 443
+    .local v0, "e":Ljava/io/IOException;
+    const-string v2, "No existing display settings, starting empty"
 
-    invoke-static {v1, v0}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v2}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 450
+    .line 444
     return-void
 .end method
 
 .method private removeEntry(Landroid/view/DisplayInfo;)Z
     .registers 7
+    .param p1, "displayInfo"  # Landroid/view/DisplayInfo;
 
-    .line 675
+    .line 669
     iget-object v0, p0, Lcom/android/server/wm/DisplayWindowSettings;->mEntries:Ljava/util/HashMap;
 
     invoke-direct {p0, p1}, Lcom/android/server/wm/DisplayWindowSettings;->getIdentifier(Landroid/view/DisplayInfo;)Ljava/lang/String;
@@ -1125,7 +1240,8 @@
     :cond_10
     move v0, v2
 
-    .line 677
+    .line 671
+    .local v0, "removed":Z
     :goto_11
     iget-object v3, p0, Lcom/android/server/wm/DisplayWindowSettings;->mEntries:Ljava/util/HashMap;
 
@@ -1147,16 +1263,16 @@
     :goto_1e
     or-int/2addr v0, v3
 
-    .line 678
+    .line 672
     iget-object v3, p0, Lcom/android/server/wm/DisplayWindowSettings;->mEntries:Ljava/util/HashMap;
 
-    iget-object p1, p1, Landroid/view/DisplayInfo;->name:Ljava/lang/String;
+    iget-object v4, p1, Landroid/view/DisplayInfo;->name:Ljava/lang/String;
 
-    invoke-virtual {v3, p1}, Ljava/util/HashMap;->remove(Ljava/lang/Object;)Ljava/lang/Object;
+    invoke-virtual {v3, v4}, Ljava/util/HashMap;->remove(Ljava/lang/Object;)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v3
 
-    if-eqz p1, :cond_2a
+    if-eqz v3, :cond_2a
 
     goto :goto_2b
 
@@ -1164,16 +1280,18 @@
     move v1, v2
 
     :goto_2b
-    or-int p1, v0, v1
+    or-int/2addr v0, v1
 
-    .line 679
-    return p1
+    .line 673
+    return v0
 .end method
 
 .method private updateIdentifierForEntry(Lcom/android/server/wm/DisplayWindowSettings$Entry;Landroid/view/DisplayInfo;)Lcom/android/server/wm/DisplayWindowSettings$Entry;
     .registers 6
+    .param p1, "entry"  # Lcom/android/server/wm/DisplayWindowSettings$Entry;
+    .param p2, "displayInfo"  # Landroid/view/DisplayInfo;
 
-    .line 199
+    .line 193
     new-instance v0, Lcom/android/server/wm/DisplayWindowSettings$Entry;
 
     invoke-direct {p0, p2}, Lcom/android/server/wm/DisplayWindowSettings;->getIdentifier(Landroid/view/DisplayInfo;)Ljava/lang/String;
@@ -1184,26 +1302,27 @@
 
     invoke-direct {v0, v1, p1, v2}, Lcom/android/server/wm/DisplayWindowSettings$Entry;-><init>(Ljava/lang/String;Lcom/android/server/wm/DisplayWindowSettings$Entry;Lcom/android/server/wm/DisplayWindowSettings$1;)V
 
-    .line 200
+    .line 194
+    .local v0, "newEntry":Lcom/android/server/wm/DisplayWindowSettings$Entry;
     invoke-direct {p0, p2}, Lcom/android/server/wm/DisplayWindowSettings;->removeEntry(Landroid/view/DisplayInfo;)Z
 
-    .line 201
-    iget-object p1, p0, Lcom/android/server/wm/DisplayWindowSettings;->mEntries:Ljava/util/HashMap;
+    .line 195
+    iget-object v1, p0, Lcom/android/server/wm/DisplayWindowSettings;->mEntries:Ljava/util/HashMap;
 
     invoke-static {v0}, Lcom/android/server/wm/DisplayWindowSettings$Entry;->access$200(Lcom/android/server/wm/DisplayWindowSettings$Entry;)Ljava/lang/String;
 
-    move-result-object p2
+    move-result-object v2
 
-    invoke-virtual {p1, p2, v0}, Ljava/util/HashMap;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+    invoke-virtual {v1, v2, v0}, Ljava/util/HashMap;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
 
-    .line 202
+    .line 196
     return-object v0
 .end method
 
 .method private writeSettings()V
     .registers 12
 
-    .line 585
+    .line 579
     const-string v0, "display"
 
     const-string v1, "config"
@@ -1219,18 +1338,20 @@
 
     move-result-object v4
     :try_end_e
-    .catch Ljava/io/IOException; {:try_start_8 .. :try_end_e} :catch_1aa
+    .catch Ljava/io/IOException; {:try_start_8 .. :try_end_e} :catch_1ab
 
-    .line 589
+    .line 583
+    .local v4, "stream":Ljava/io/OutputStream;
     nop
 
-    .line 592
+    .line 586
     :try_start_f
     new-instance v5, Lcom/android/internal/util/FastXmlSerializer;
 
     invoke-direct {v5}, Lcom/android/internal/util/FastXmlSerializer;-><init>()V
 
-    .line 593
+    .line 587
+    .local v5, "out":Lorg/xmlpull/v1/XmlSerializer;
     sget-object v6, Ljava/nio/charset/StandardCharsets;->UTF_8:Ljava/nio/charset/Charset;
 
     invoke-virtual {v6}, Ljava/nio/charset/Charset;->name()Ljava/lang/String;
@@ -1239,7 +1360,7 @@
 
     invoke-interface {v5, v4, v6}, Lorg/xmlpull/v1/XmlSerializer;->setOutput(Ljava/io/OutputStream;Ljava/lang/String;)V
 
-    .line 594
+    .line 588
     const/4 v6, 0x1
 
     invoke-static {v6}, Ljava/lang/Boolean;->valueOf(Z)Ljava/lang/Boolean;
@@ -1250,13 +1371,13 @@
 
     invoke-interface {v5, v8, v7}, Lorg/xmlpull/v1/XmlSerializer;->startDocument(Ljava/lang/String;Ljava/lang/Boolean;)V
 
-    .line 596
+    .line 590
     invoke-interface {v5, v8, v2}, Lorg/xmlpull/v1/XmlSerializer;->startTag(Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
 
-    .line 598
+    .line 592
     invoke-interface {v5, v8, v1}, Lorg/xmlpull/v1/XmlSerializer;->startTag(Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
 
-    .line 599
+    .line 593
     const-string v7, "identifier"
 
     iget v9, p0, Lcom/android/server/wm/DisplayWindowSettings;->mIdentifier:I
@@ -1267,10 +1388,10 @@
 
     invoke-interface {v5, v8, v7, v9}, Lorg/xmlpull/v1/XmlSerializer;->attribute(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
 
-    .line 600
+    .line 594
     invoke-interface {v5, v8, v1}, Lorg/xmlpull/v1/XmlSerializer;->endTag(Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
 
-    .line 602
+    .line 596
     iget-object v1, p0, Lcom/android/server/wm/DisplayWindowSettings;->mEntries:Ljava/util/HashMap;
 
     invoke-virtual {v1}, Ljava/util/HashMap;->values()Ljava/util/Collection;
@@ -1286,7 +1407,7 @@
 
     move-result v7
 
-    if-eqz v7, :cond_191
+    if-eqz v7, :cond_192
 
     invoke-interface {v1}, Ljava/util/Iterator;->next()Ljava/lang/Object;
 
@@ -1294,10 +1415,11 @@
 
     check-cast v7, Lcom/android/server/wm/DisplayWindowSettings$Entry;
 
-    .line 603
+    .line 597
+    .local v7, "entry":Lcom/android/server/wm/DisplayWindowSettings$Entry;
     invoke-interface {v5, v8, v0}, Lorg/xmlpull/v1/XmlSerializer;->startTag(Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
 
-    .line 604
+    .line 598
     const-string v9, "name"
 
     invoke-static {v7}, Lcom/android/server/wm/DisplayWindowSettings$Entry;->access$200(Lcom/android/server/wm/DisplayWindowSettings$Entry;)Ljava/lang/String;
@@ -1306,14 +1428,14 @@
 
     invoke-interface {v5, v8, v9, v10}, Lorg/xmlpull/v1/XmlSerializer;->attribute(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
 
-    .line 605
+    .line 599
     invoke-static {v7}, Lcom/android/server/wm/DisplayWindowSettings$Entry;->access$300(Lcom/android/server/wm/DisplayWindowSettings$Entry;)I
 
     move-result v9
 
     if-eqz v9, :cond_6f
 
-    .line 606
+    .line 600
     const-string v9, "overscanLeft"
 
     invoke-static {v7}, Lcom/android/server/wm/DisplayWindowSettings$Entry;->access$300(Lcom/android/server/wm/DisplayWindowSettings$Entry;)I
@@ -1326,7 +1448,7 @@
 
     invoke-interface {v5, v8, v9, v10}, Lorg/xmlpull/v1/XmlSerializer;->attribute(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
 
-    .line 608
+    .line 602
     :cond_6f
     invoke-static {v7}, Lcom/android/server/wm/DisplayWindowSettings$Entry;->access$400(Lcom/android/server/wm/DisplayWindowSettings$Entry;)I
 
@@ -1334,7 +1456,7 @@
 
     if-eqz v9, :cond_82
 
-    .line 609
+    .line 603
     const-string v9, "overscanTop"
 
     invoke-static {v7}, Lcom/android/server/wm/DisplayWindowSettings$Entry;->access$400(Lcom/android/server/wm/DisplayWindowSettings$Entry;)I
@@ -1347,7 +1469,7 @@
 
     invoke-interface {v5, v8, v9, v10}, Lorg/xmlpull/v1/XmlSerializer;->attribute(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
 
-    .line 611
+    .line 605
     :cond_82
     invoke-static {v7}, Lcom/android/server/wm/DisplayWindowSettings$Entry;->access$500(Lcom/android/server/wm/DisplayWindowSettings$Entry;)I
 
@@ -1355,7 +1477,7 @@
 
     if-eqz v9, :cond_95
 
-    .line 612
+    .line 606
     const-string v9, "overscanRight"
 
     invoke-static {v7}, Lcom/android/server/wm/DisplayWindowSettings$Entry;->access$500(Lcom/android/server/wm/DisplayWindowSettings$Entry;)I
@@ -1368,7 +1490,7 @@
 
     invoke-interface {v5, v8, v9, v10}, Lorg/xmlpull/v1/XmlSerializer;->attribute(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
 
-    .line 614
+    .line 608
     :cond_95
     invoke-static {v7}, Lcom/android/server/wm/DisplayWindowSettings$Entry;->access$600(Lcom/android/server/wm/DisplayWindowSettings$Entry;)I
 
@@ -1376,7 +1498,7 @@
 
     if-eqz v9, :cond_a8
 
-    .line 615
+    .line 609
     const-string v9, "overscanBottom"
 
     invoke-static {v7}, Lcom/android/server/wm/DisplayWindowSettings$Entry;->access$600(Lcom/android/server/wm/DisplayWindowSettings$Entry;)I
@@ -1389,7 +1511,7 @@
 
     invoke-interface {v5, v8, v9, v10}, Lorg/xmlpull/v1/XmlSerializer;->attribute(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
 
-    .line 617
+    .line 611
     :cond_a8
     invoke-static {v7}, Lcom/android/server/wm/DisplayWindowSettings$Entry;->access$1400(Lcom/android/server/wm/DisplayWindowSettings$Entry;)I
 
@@ -1397,7 +1519,7 @@
 
     if-eqz v9, :cond_bb
 
-    .line 618
+    .line 612
     const-string v9, "windowingMode"
 
     invoke-static {v7}, Lcom/android/server/wm/DisplayWindowSettings$Entry;->access$1400(Lcom/android/server/wm/DisplayWindowSettings$Entry;)I
@@ -1410,7 +1532,7 @@
 
     invoke-interface {v5, v8, v9, v10}, Lorg/xmlpull/v1/XmlSerializer;->attribute(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
 
-    .line 620
+    .line 614
     :cond_bb
     invoke-static {v7}, Lcom/android/server/wm/DisplayWindowSettings$Entry;->access$700(Lcom/android/server/wm/DisplayWindowSettings$Entry;)I
 
@@ -1418,10 +1540,10 @@
 
     if-eqz v9, :cond_ce
 
-    .line 621
+    .line 615
     const-string v9, "userRotationMode"
 
-    .line 622
+    .line 616
     invoke-static {v7}, Lcom/android/server/wm/DisplayWindowSettings$Entry;->access$700(Lcom/android/server/wm/DisplayWindowSettings$Entry;)I
 
     move-result v10
@@ -1430,10 +1552,10 @@
 
     move-result-object v10
 
-    .line 621
+    .line 615
     invoke-interface {v5, v8, v9, v10}, Lorg/xmlpull/v1/XmlSerializer;->attribute(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
 
-    .line 624
+    .line 618
     :cond_ce
     invoke-static {v7}, Lcom/android/server/wm/DisplayWindowSettings$Entry;->access$800(Lcom/android/server/wm/DisplayWindowSettings$Entry;)I
 
@@ -1441,7 +1563,7 @@
 
     if-eqz v9, :cond_e1
 
-    .line 625
+    .line 619
     const-string v9, "userRotation"
 
     invoke-static {v7}, Lcom/android/server/wm/DisplayWindowSettings$Entry;->access$800(Lcom/android/server/wm/DisplayWindowSettings$Entry;)I
@@ -1454,7 +1576,7 @@
 
     invoke-interface {v5, v8, v9, v10}, Lorg/xmlpull/v1/XmlSerializer;->attribute(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
 
-    .line 627
+    .line 621
     :cond_e1
     invoke-static {v7}, Lcom/android/server/wm/DisplayWindowSettings$Entry;->access$900(Lcom/android/server/wm/DisplayWindowSettings$Entry;)I
 
@@ -1468,7 +1590,7 @@
 
     if-eqz v9, :cond_107
 
-    .line 628
+    .line 622
     const-string v9, "forcedWidth"
 
     invoke-static {v7}, Lcom/android/server/wm/DisplayWindowSettings$Entry;->access$900(Lcom/android/server/wm/DisplayWindowSettings$Entry;)I
@@ -1481,7 +1603,7 @@
 
     invoke-interface {v5, v8, v9, v10}, Lorg/xmlpull/v1/XmlSerializer;->attribute(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
 
-    .line 629
+    .line 623
     const-string v9, "forcedHeight"
 
     invoke-static {v7}, Lcom/android/server/wm/DisplayWindowSettings$Entry;->access$1000(Lcom/android/server/wm/DisplayWindowSettings$Entry;)I
@@ -1494,7 +1616,7 @@
 
     invoke-interface {v5, v8, v9, v10}, Lorg/xmlpull/v1/XmlSerializer;->attribute(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
 
-    .line 631
+    .line 625
     :cond_107
     invoke-static {v7}, Lcom/android/server/wm/DisplayWindowSettings$Entry;->access$1100(Lcom/android/server/wm/DisplayWindowSettings$Entry;)I
 
@@ -1502,7 +1624,7 @@
 
     if-eqz v9, :cond_11a
 
-    .line 632
+    .line 626
     const-string v9, "forcedDensity"
 
     invoke-static {v7}, Lcom/android/server/wm/DisplayWindowSettings$Entry;->access$1100(Lcom/android/server/wm/DisplayWindowSettings$Entry;)I
@@ -1515,7 +1637,7 @@
 
     invoke-interface {v5, v8, v9, v10}, Lorg/xmlpull/v1/XmlSerializer;->attribute(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
 
-    .line 634
+    .line 628
     :cond_11a
     invoke-static {v7}, Lcom/android/server/wm/DisplayWindowSettings$Entry;->access$1200(Lcom/android/server/wm/DisplayWindowSettings$Entry;)I
 
@@ -1523,10 +1645,10 @@
 
     if-eqz v9, :cond_12d
 
-    .line 635
+    .line 629
     const-string v9, "forcedScalingMode"
 
-    .line 636
+    .line 630
     invoke-static {v7}, Lcom/android/server/wm/DisplayWindowSettings$Entry;->access$1200(Lcom/android/server/wm/DisplayWindowSettings$Entry;)I
 
     move-result v10
@@ -1535,10 +1657,10 @@
 
     move-result-object v10
 
-    .line 635
+    .line 629
     invoke-interface {v5, v8, v9, v10}, Lorg/xmlpull/v1/XmlSerializer;->attribute(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
 
-    .line 638
+    .line 632
     :cond_12d
     invoke-static {v7}, Lcom/android/server/wm/DisplayWindowSettings$Entry;->access$1500(Lcom/android/server/wm/DisplayWindowSettings$Entry;)I
 
@@ -1546,10 +1668,10 @@
 
     if-eqz v9, :cond_140
 
-    .line 639
+    .line 633
     const-string v9, "removeContentMode"
 
-    .line 640
+    .line 634
     invoke-static {v7}, Lcom/android/server/wm/DisplayWindowSettings$Entry;->access$1500(Lcom/android/server/wm/DisplayWindowSettings$Entry;)I
 
     move-result v10
@@ -1558,10 +1680,10 @@
 
     move-result-object v10
 
-    .line 639
+    .line 633
     invoke-interface {v5, v8, v9, v10}, Lorg/xmlpull/v1/XmlSerializer;->attribute(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
 
-    .line 642
+    .line 636
     :cond_140
     invoke-static {v7}, Lcom/android/server/wm/DisplayWindowSettings$Entry;->access$1600(Lcom/android/server/wm/DisplayWindowSettings$Entry;)Z
 
@@ -1569,10 +1691,10 @@
 
     if-eqz v9, :cond_153
 
-    .line 643
+    .line 637
     const-string v9, "shouldShowWithInsecureKeyguard"
 
-    .line 644
+    .line 638
     invoke-static {v7}, Lcom/android/server/wm/DisplayWindowSettings$Entry;->access$1600(Lcom/android/server/wm/DisplayWindowSettings$Entry;)Z
 
     move-result v10
@@ -1581,10 +1703,10 @@
 
     move-result-object v10
 
-    .line 643
+    .line 637
     invoke-interface {v5, v8, v9, v10}, Lorg/xmlpull/v1/XmlSerializer;->attribute(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
 
-    .line 646
+    .line 640
     :cond_153
     invoke-static {v7}, Lcom/android/server/wm/DisplayWindowSettings$Entry;->access$1700(Lcom/android/server/wm/DisplayWindowSettings$Entry;)Z
 
@@ -1592,10 +1714,10 @@
 
     if-eqz v9, :cond_166
 
-    .line 647
+    .line 641
     const-string v9, "shouldShowSystemDecors"
 
-    .line 648
+    .line 642
     invoke-static {v7}, Lcom/android/server/wm/DisplayWindowSettings$Entry;->access$1700(Lcom/android/server/wm/DisplayWindowSettings$Entry;)Z
 
     move-result v10
@@ -1604,10 +1726,10 @@
 
     move-result-object v10
 
-    .line 647
+    .line 641
     invoke-interface {v5, v8, v9, v10}, Lorg/xmlpull/v1/XmlSerializer;->attribute(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
 
-    .line 650
+    .line 644
     :cond_166
     invoke-static {v7}, Lcom/android/server/wm/DisplayWindowSettings$Entry;->access$1800(Lcom/android/server/wm/DisplayWindowSettings$Entry;)Z
 
@@ -1615,7 +1737,7 @@
 
     if-eqz v9, :cond_179
 
-    .line 651
+    .line 645
     const-string v9, "shouldShowIme"
 
     invoke-static {v7}, Lcom/android/server/wm/DisplayWindowSettings$Entry;->access$1800(Lcom/android/server/wm/DisplayWindowSettings$Entry;)Z
@@ -1628,7 +1750,7 @@
 
     invoke-interface {v5, v8, v9, v10}, Lorg/xmlpull/v1/XmlSerializer;->attribute(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
 
-    .line 653
+    .line 647
     :cond_179
     invoke-static {v7}, Lcom/android/server/wm/DisplayWindowSettings$Entry;->access$1300(Lcom/android/server/wm/DisplayWindowSettings$Entry;)I
 
@@ -1636,70 +1758,78 @@
 
     if-eqz v9, :cond_18c
 
-    .line 654
+    .line 648
     const-string v9, "fixedToUserRotation"
 
-    .line 655
+    .line 649
     invoke-static {v7}, Lcom/android/server/wm/DisplayWindowSettings$Entry;->access$1300(Lcom/android/server/wm/DisplayWindowSettings$Entry;)I
 
-    move-result v7
+    move-result v10
 
-    invoke-static {v7}, Ljava/lang/Integer;->toString(I)Ljava/lang/String;
+    invoke-static {v10}, Ljava/lang/Integer;->toString(I)Ljava/lang/String;
 
-    move-result-object v7
+    move-result-object v10
 
-    .line 654
-    invoke-interface {v5, v8, v9, v7}, Lorg/xmlpull/v1/XmlSerializer;->attribute(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
+    .line 648
+    invoke-interface {v5, v8, v9, v10}, Lorg/xmlpull/v1/XmlSerializer;->attribute(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
 
-    .line 657
+    .line 651
     :cond_18c
     invoke-interface {v5, v8, v0}, Lorg/xmlpull/v1/XmlSerializer;->endTag(Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
 
-    .line 658
+    .line 652
+    nop
+
+    .end local v7  # "entry":Lcom/android/server/wm/DisplayWindowSettings$Entry;
     goto/16 :goto_44
 
-    .line 660
-    :cond_191
+    .line 654
+    :cond_192
     invoke-interface {v5, v8, v2}, Lorg/xmlpull/v1/XmlSerializer;->endTag(Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
 
-    .line 661
+    .line 655
     invoke-interface {v5}, Lorg/xmlpull/v1/XmlSerializer;->endDocument()V
 
-    .line 662
+    .line 656
     iget-object v0, p0, Lcom/android/server/wm/DisplayWindowSettings;->mStorage:Lcom/android/server/wm/DisplayWindowSettings$SettingPersister;
 
     invoke-interface {v0, v4, v6}, Lcom/android/server/wm/DisplayWindowSettings$SettingPersister;->finishWrite(Ljava/io/OutputStream;Z)V
-    :try_end_19c
-    .catch Ljava/io/IOException; {:try_start_f .. :try_end_19c} :catch_19d
+    :try_end_19d
+    .catch Ljava/io/IOException; {:try_start_f .. :try_end_19d} :catch_19e
 
-    .line 666
-    goto :goto_1a9
+    .line 660
+    .end local v5  # "out":Lorg/xmlpull/v1/XmlSerializer;
+    goto :goto_1aa
 
-    .line 663
-    :catch_19d
+    .line 657
+    :catch_19e
     move-exception v0
 
-    .line 664
+    .line 658
+    .local v0, "e":Ljava/io/IOException;
     const-string v1, "Failed to write display window settings."
 
     invoke-static {v3, v1, v0}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
-    .line 665
-    iget-object v0, p0, Lcom/android/server/wm/DisplayWindowSettings;->mStorage:Lcom/android/server/wm/DisplayWindowSettings$SettingPersister;
+    .line 659
+    iget-object v1, p0, Lcom/android/server/wm/DisplayWindowSettings;->mStorage:Lcom/android/server/wm/DisplayWindowSettings$SettingPersister;
 
-    const/4 v1, 0x0
+    const/4 v2, 0x0
 
-    invoke-interface {v0, v4, v1}, Lcom/android/server/wm/DisplayWindowSettings$SettingPersister;->finishWrite(Ljava/io/OutputStream;Z)V
+    invoke-interface {v1, v4, v2}, Lcom/android/server/wm/DisplayWindowSettings$SettingPersister;->finishWrite(Ljava/io/OutputStream;Z)V
 
-    .line 667
-    :goto_1a9
+    .line 661
+    .end local v0  # "e":Ljava/io/IOException;
+    :goto_1aa
     return-void
 
-    .line 586
-    :catch_1aa
+    .line 580
+    .end local v4  # "stream":Ljava/io/OutputStream;
+    :catch_1ab
     move-exception v0
 
-    .line 587
+    .line 581
+    .restart local v0  # "e":Ljava/io/IOException;
     new-instance v1, Ljava/lang/StringBuilder;
 
     invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
@@ -1712,18 +1842,20 @@
 
     invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v1
 
-    invoke-static {v3, v0}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v3, v1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 588
+    .line 582
     return-void
 .end method
 
 .method private writeSettingsIfNeeded(Lcom/android/server/wm/DisplayWindowSettings$Entry;Landroid/view/DisplayInfo;)V
-    .registers 4
+    .registers 5
+    .param p1, "changedEntry"  # Lcom/android/server/wm/DisplayWindowSettings$Entry;
+    .param p2, "displayInfo"  # Landroid/view/DisplayInfo;
 
-    .line 573
+    .line 567
     invoke-static {p1}, Lcom/android/server/wm/DisplayWindowSettings$Entry;->access$1900(Lcom/android/server/wm/DisplayWindowSettings$Entry;)Z
 
     move-result v0
@@ -1736,42 +1868,45 @@
 
     if-nez v0, :cond_d
 
-    .line 575
+    .line 569
     return-void
 
-    .line 578
+    .line 572
     :cond_d
     iget-object v0, p0, Lcom/android/server/wm/DisplayWindowSettings;->mEntries:Ljava/util/HashMap;
 
     invoke-direct {p0, p2}, Lcom/android/server/wm/DisplayWindowSettings;->getIdentifier(Landroid/view/DisplayInfo;)Ljava/lang/String;
 
-    move-result-object p2
+    move-result-object v1
 
-    invoke-virtual {v0, p2, p1}, Ljava/util/HashMap;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+    invoke-virtual {v0, v1, p1}, Ljava/util/HashMap;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
 
-    .line 579
+    .line 573
     invoke-direct {p0}, Lcom/android/server/wm/DisplayWindowSettings;->writeSettings()V
 
-    .line 580
+    .line 574
     return-void
 .end method
 
 
 # virtual methods
 .method applySettingsToDisplayLocked(Lcom/android/server/wm/DisplayContent;)V
-    .registers 7
+    .registers 8
+    .param p1, "dc"  # Lcom/android/server/wm/DisplayContent;
 
-    .line 402
+    .line 396
     invoke-virtual {p1}, Lcom/android/server/wm/DisplayContent;->getDisplayInfo()Landroid/view/DisplayInfo;
 
     move-result-object v0
 
-    .line 403
+    .line 397
+    .local v0, "displayInfo":Landroid/view/DisplayInfo;
     invoke-direct {p0, v0}, Lcom/android/server/wm/DisplayWindowSettings;->getOrCreateEntry(Landroid/view/DisplayInfo;)Lcom/android/server/wm/DisplayWindowSettings$Entry;
 
     move-result-object v1
 
-    .line 406
+    .line 400
+    .local v1, "entry":Lcom/android/server/wm/DisplayWindowSettings$Entry;
     invoke-virtual {p1}, Lcom/android/server/wm/DisplayContent;->getDisplayId()I
 
     move-result v2
@@ -1782,331 +1917,355 @@
 
     invoke-virtual {p1, v2}, Lcom/android/server/wm/DisplayContent;->setWindowingMode(I)V
 
-    .line 408
+    .line 402
     invoke-static {v1}, Lcom/android/server/wm/DisplayWindowSettings$Entry;->access$300(Lcom/android/server/wm/DisplayWindowSettings$Entry;)I
 
     move-result v2
 
     iput v2, v0, Landroid/view/DisplayInfo;->overscanLeft:I
 
-    .line 409
+    .line 403
     invoke-static {v1}, Lcom/android/server/wm/DisplayWindowSettings$Entry;->access$400(Lcom/android/server/wm/DisplayWindowSettings$Entry;)I
 
     move-result v2
 
     iput v2, v0, Landroid/view/DisplayInfo;->overscanTop:I
 
-    .line 410
+    .line 404
     invoke-static {v1}, Lcom/android/server/wm/DisplayWindowSettings$Entry;->access$500(Lcom/android/server/wm/DisplayWindowSettings$Entry;)I
 
     move-result v2
 
     iput v2, v0, Landroid/view/DisplayInfo;->overscanRight:I
 
-    .line 411
+    .line 405
     invoke-static {v1}, Lcom/android/server/wm/DisplayWindowSettings$Entry;->access$600(Lcom/android/server/wm/DisplayWindowSettings$Entry;)I
 
     move-result v2
 
     iput v2, v0, Landroid/view/DisplayInfo;->overscanBottom:I
 
-    .line 413
+    .line 407
     invoke-virtual {p1}, Lcom/android/server/wm/DisplayContent;->getDisplayRotation()Lcom/android/server/wm/DisplayRotation;
 
-    move-result-object v0
+    move-result-object v2
 
     invoke-static {v1}, Lcom/android/server/wm/DisplayWindowSettings$Entry;->access$700(Lcom/android/server/wm/DisplayWindowSettings$Entry;)I
 
-    move-result v2
-
-    .line 414
-    invoke-static {v1}, Lcom/android/server/wm/DisplayWindowSettings$Entry;->access$800(Lcom/android/server/wm/DisplayWindowSettings$Entry;)I
-
     move-result v3
 
-    invoke-static {v1}, Lcom/android/server/wm/DisplayWindowSettings$Entry;->access$1300(Lcom/android/server/wm/DisplayWindowSettings$Entry;)I
+    .line 408
+    invoke-static {v1}, Lcom/android/server/wm/DisplayWindowSettings$Entry;->access$800(Lcom/android/server/wm/DisplayWindowSettings$Entry;)I
 
     move-result v4
 
+    invoke-static {v1}, Lcom/android/server/wm/DisplayWindowSettings$Entry;->access$1300(Lcom/android/server/wm/DisplayWindowSettings$Entry;)I
+
+    move-result v5
+
+    .line 407
+    invoke-virtual {v2, v3, v4, v5}, Lcom/android/server/wm/DisplayRotation;->restoreSettings(III)V
+
+    .line 410
+    invoke-static {v1}, Lcom/android/server/wm/DisplayWindowSettings$Entry;->access$1100(Lcom/android/server/wm/DisplayWindowSettings$Entry;)I
+
+    move-result v2
+
+    if-eqz v2, :cond_4a
+
+    .line 411
+    invoke-static {v1}, Lcom/android/server/wm/DisplayWindowSettings$Entry;->access$1100(Lcom/android/server/wm/DisplayWindowSettings$Entry;)I
+
+    move-result v2
+
+    iput v2, p1, Lcom/android/server/wm/DisplayContent;->mBaseDisplayDensity:I
+
     .line 413
-    invoke-virtual {v0, v2, v3, v4}, Lcom/android/server/wm/DisplayRotation;->restoreSettings(III)V
-
-    .line 416
-    invoke-static {v1}, Lcom/android/server/wm/DisplayWindowSettings$Entry;->access$1100(Lcom/android/server/wm/DisplayWindowSettings$Entry;)I
-
-    move-result v0
-
-    if-eqz v0, :cond_4a
-
-    .line 417
-    invoke-static {v1}, Lcom/android/server/wm/DisplayWindowSettings$Entry;->access$1100(Lcom/android/server/wm/DisplayWindowSettings$Entry;)I
-
-    move-result v0
-
-    iput v0, p1, Lcom/android/server/wm/DisplayContent;->mBaseDisplayDensity:I
-
-    .line 419
     :cond_4a
     invoke-static {v1}, Lcom/android/server/wm/DisplayWindowSettings$Entry;->access$900(Lcom/android/server/wm/DisplayWindowSettings$Entry;)I
 
-    move-result v0
+    move-result v2
 
-    if-eqz v0, :cond_63
-
-    invoke-static {v1}, Lcom/android/server/wm/DisplayWindowSettings$Entry;->access$1000(Lcom/android/server/wm/DisplayWindowSettings$Entry;)I
-
-    move-result v0
-
-    if-eqz v0, :cond_63
-
-    .line 420
-    invoke-static {v1}, Lcom/android/server/wm/DisplayWindowSettings$Entry;->access$900(Lcom/android/server/wm/DisplayWindowSettings$Entry;)I
-
-    move-result v0
+    if-eqz v2, :cond_63
 
     invoke-static {v1}, Lcom/android/server/wm/DisplayWindowSettings$Entry;->access$1000(Lcom/android/server/wm/DisplayWindowSettings$Entry;)I
 
     move-result v2
 
-    iget v3, p1, Lcom/android/server/wm/DisplayContent;->mBaseDisplayDensity:I
+    if-eqz v2, :cond_63
 
-    invoke-virtual {p1, v0, v2, v3}, Lcom/android/server/wm/DisplayContent;->updateBaseDisplayMetrics(III)V
+    .line 414
+    invoke-static {v1}, Lcom/android/server/wm/DisplayWindowSettings$Entry;->access$900(Lcom/android/server/wm/DisplayWindowSettings$Entry;)I
 
-    .line 423
+    move-result v2
+
+    invoke-static {v1}, Lcom/android/server/wm/DisplayWindowSettings$Entry;->access$1000(Lcom/android/server/wm/DisplayWindowSettings$Entry;)I
+
+    move-result v3
+
+    iget v4, p1, Lcom/android/server/wm/DisplayContent;->mBaseDisplayDensity:I
+
+    invoke-virtual {p1, v2, v3, v4}, Lcom/android/server/wm/DisplayContent;->updateBaseDisplayMetrics(III)V
+
+    .line 417
     :cond_63
     invoke-static {v1}, Lcom/android/server/wm/DisplayWindowSettings$Entry;->access$1200(Lcom/android/server/wm/DisplayWindowSettings$Entry;)I
 
-    move-result v0
+    move-result v2
 
-    const/4 v1, 0x1
+    const/4 v3, 0x1
 
-    if-ne v0, v1, :cond_6b
+    if-ne v2, v3, :cond_6b
 
     goto :goto_6c
 
     :cond_6b
-    const/4 v1, 0x0
+    const/4 v3, 0x0
 
     :goto_6c
-    iput-boolean v1, p1, Lcom/android/server/wm/DisplayContent;->mDisplayScalingDisabled:Z
+    iput-boolean v3, p1, Lcom/android/server/wm/DisplayContent;->mDisplayScalingDisabled:Z
 
-    .line 424
+    .line 418
     return-void
 .end method
 
 .method getRemoveContentModeLocked(Lcom/android/server/wm/DisplayContent;)I
-    .registers 4
+    .registers 5
+    .param p1, "dc"  # Lcom/android/server/wm/DisplayContent;
 
-    .line 308
+    .line 302
     invoke-virtual {p1}, Lcom/android/server/wm/DisplayContent;->getDisplayInfo()Landroid/view/DisplayInfo;
 
     move-result-object v0
 
-    .line 309
+    .line 303
+    .local v0, "displayInfo":Landroid/view/DisplayInfo;
     invoke-direct {p0, v0}, Lcom/android/server/wm/DisplayWindowSettings;->getEntry(Landroid/view/DisplayInfo;)Lcom/android/server/wm/DisplayWindowSettings$Entry;
 
-    move-result-object v0
+    move-result-object v1
 
-    .line 310
-    if-eqz v0, :cond_16
+    .line 304
+    .local v1, "entry":Lcom/android/server/wm/DisplayWindowSettings$Entry;
+    if-eqz v1, :cond_16
 
-    invoke-static {v0}, Lcom/android/server/wm/DisplayWindowSettings$Entry;->access$1500(Lcom/android/server/wm/DisplayWindowSettings$Entry;)I
+    invoke-static {v1}, Lcom/android/server/wm/DisplayWindowSettings$Entry;->access$1500(Lcom/android/server/wm/DisplayWindowSettings$Entry;)I
 
-    move-result v1
+    move-result v2
 
-    if-nez v1, :cond_11
+    if-nez v2, :cond_11
 
     goto :goto_16
 
-    .line 318
+    .line 312
     :cond_11
-    invoke-static {v0}, Lcom/android/server/wm/DisplayWindowSettings$Entry;->access$1500(Lcom/android/server/wm/DisplayWindowSettings$Entry;)I
+    invoke-static {v1}, Lcom/android/server/wm/DisplayWindowSettings$Entry;->access$1500(Lcom/android/server/wm/DisplayWindowSettings$Entry;)I
 
-    move-result p1
+    move-result v2
 
-    return p1
+    return v2
 
-    .line 311
+    .line 305
     :cond_16
     :goto_16
     invoke-virtual {p1}, Lcom/android/server/wm/DisplayContent;->isPrivate()Z
 
-    move-result p1
+    move-result v2
 
-    if-eqz p1, :cond_1e
+    if-eqz v2, :cond_1e
 
-    .line 313
-    const/4 p1, 0x2
+    .line 307
+    const/4 v2, 0x2
 
-    return p1
+    return v2
 
-    .line 316
+    .line 310
     :cond_1e
-    const/4 p1, 0x1
+    const/4 v2, 0x1
 
-    return p1
+    return v2
 .end method
 
 .method getWindowingModeLocked(Lcom/android/server/wm/DisplayContent;)I
-    .registers 3
+    .registers 5
+    .param p1, "dc"  # Lcom/android/server/wm/DisplayContent;
 
-    .line 294
+    .line 288
     invoke-virtual {p1}, Lcom/android/server/wm/DisplayContent;->getDisplayInfo()Landroid/view/DisplayInfo;
 
     move-result-object v0
 
-    .line 295
+    .line 289
+    .local v0, "displayInfo":Landroid/view/DisplayInfo;
     invoke-direct {p0, v0}, Lcom/android/server/wm/DisplayWindowSettings;->getEntry(Landroid/view/DisplayInfo;)Lcom/android/server/wm/DisplayWindowSettings$Entry;
 
-    move-result-object v0
+    move-result-object v1
 
-    .line 296
+    .line 290
+    .local v1, "entry":Lcom/android/server/wm/DisplayWindowSettings$Entry;
     invoke-virtual {p1}, Lcom/android/server/wm/DisplayContent;->getDisplayId()I
 
-    move-result p1
+    move-result v2
 
-    invoke-direct {p0, v0, p1}, Lcom/android/server/wm/DisplayWindowSettings;->getWindowingModeLocked(Lcom/android/server/wm/DisplayWindowSettings$Entry;I)I
+    invoke-direct {p0, v1, v2}, Lcom/android/server/wm/DisplayWindowSettings;->getWindowingModeLocked(Lcom/android/server/wm/DisplayWindowSettings$Entry;I)I
 
-    move-result p1
+    move-result v2
 
-    return p1
+    return v2
 .end method
 
 .method setFixedToUserRotation(Lcom/android/server/wm/DisplayContent;I)V
-    .registers 4
+    .registers 5
+    .param p1, "displayContent"  # Lcom/android/server/wm/DisplayContent;
+    .param p2, "fixedToUserRotation"  # I
 
-    .line 266
+    .line 260
     invoke-virtual {p1}, Lcom/android/server/wm/DisplayContent;->getDisplayInfo()Landroid/view/DisplayInfo;
-
-    move-result-object p1
-
-    .line 267
-    invoke-direct {p0, p1}, Lcom/android/server/wm/DisplayWindowSettings;->getOrCreateEntry(Landroid/view/DisplayInfo;)Lcom/android/server/wm/DisplayWindowSettings$Entry;
 
     move-result-object v0
 
-    .line 268
-    invoke-static {v0, p2}, Lcom/android/server/wm/DisplayWindowSettings$Entry;->access$1302(Lcom/android/server/wm/DisplayWindowSettings$Entry;I)I
+    .line 261
+    .local v0, "displayInfo":Landroid/view/DisplayInfo;
+    invoke-direct {p0, v0}, Lcom/android/server/wm/DisplayWindowSettings;->getOrCreateEntry(Landroid/view/DisplayInfo;)Lcom/android/server/wm/DisplayWindowSettings$Entry;
 
-    .line 269
-    invoke-direct {p0, v0, p1}, Lcom/android/server/wm/DisplayWindowSettings;->writeSettingsIfNeeded(Lcom/android/server/wm/DisplayWindowSettings$Entry;Landroid/view/DisplayInfo;)V
+    move-result-object v1
 
-    .line 270
+    .line 262
+    .local v1, "entry":Lcom/android/server/wm/DisplayWindowSettings$Entry;
+    invoke-static {v1, p2}, Lcom/android/server/wm/DisplayWindowSettings$Entry;->access$1302(Lcom/android/server/wm/DisplayWindowSettings$Entry;I)I
+
+    .line 263
+    invoke-direct {p0, v1, v0}, Lcom/android/server/wm/DisplayWindowSettings;->writeSettingsIfNeeded(Lcom/android/server/wm/DisplayWindowSettings$Entry;Landroid/view/DisplayInfo;)V
+
+    .line 264
     return-void
 .end method
 
 .method setForcedDensity(Lcom/android/server/wm/DisplayContent;II)V
-    .registers 5
+    .registers 7
+    .param p1, "displayContent"  # Lcom/android/server/wm/DisplayContent;
+    .param p2, "density"  # I
+    .param p3, "userId"  # I
 
-    .line 238
+    .line 232
     iget-boolean v0, p1, Lcom/android/server/wm/DisplayContent;->isDefaultDisplay:Z
 
     if-eqz v0, :cond_1b
 
-    .line 239
+    .line 233
     if-nez p2, :cond_9
 
-    const-string p1, ""
+    const-string v0, ""
 
     goto :goto_d
 
     :cond_9
     invoke-static {p2}, Ljava/lang/Integer;->toString(I)Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    .line 240
+    .line 234
+    .local v0, "densityString":Ljava/lang/String;
     :goto_d
-    iget-object p2, p0, Lcom/android/server/wm/DisplayWindowSettings;->mService:Lcom/android/server/wm/WindowManagerService;
+    iget-object v1, p0, Lcom/android/server/wm/DisplayWindowSettings;->mService:Lcom/android/server/wm/WindowManagerService;
 
-    iget-object p2, p2, Lcom/android/server/wm/WindowManagerService;->mContext:Landroid/content/Context;
+    iget-object v1, v1, Lcom/android/server/wm/WindowManagerService;->mContext:Landroid/content/Context;
 
-    invoke-virtual {p2}, Landroid/content/Context;->getContentResolver()Landroid/content/ContentResolver;
+    invoke-virtual {v1}, Landroid/content/Context;->getContentResolver()Landroid/content/ContentResolver;
 
-    move-result-object p2
+    move-result-object v1
 
-    const-string v0, "display_density_forced"
+    const-string v2, "display_density_forced"
 
-    invoke-static {p2, v0, p1, p3}, Landroid/provider/Settings$Secure;->putStringForUser(Landroid/content/ContentResolver;Ljava/lang/String;Ljava/lang/String;I)Z
+    invoke-static {v1, v2, v0, p3}, Landroid/provider/Settings$Secure;->putStringForUser(Landroid/content/ContentResolver;Ljava/lang/String;Ljava/lang/String;I)Z
 
-    .line 242
+    .line 236
     return-void
 
-    .line 245
+    .line 239
+    .end local v0  # "densityString":Ljava/lang/String;
     :cond_1b
     invoke-virtual {p1}, Lcom/android/server/wm/DisplayContent;->getDisplayInfo()Landroid/view/DisplayInfo;
 
-    move-result-object p1
+    move-result-object v0
 
-    .line 246
-    invoke-direct {p0, p1}, Lcom/android/server/wm/DisplayWindowSettings;->getOrCreateEntry(Landroid/view/DisplayInfo;)Lcom/android/server/wm/DisplayWindowSettings$Entry;
+    .line 240
+    .local v0, "displayInfo":Landroid/view/DisplayInfo;
+    invoke-direct {p0, v0}, Lcom/android/server/wm/DisplayWindowSettings;->getOrCreateEntry(Landroid/view/DisplayInfo;)Lcom/android/server/wm/DisplayWindowSettings$Entry;
 
-    move-result-object p3
+    move-result-object v1
 
-    .line 247
-    invoke-static {p3, p2}, Lcom/android/server/wm/DisplayWindowSettings$Entry;->access$1102(Lcom/android/server/wm/DisplayWindowSettings$Entry;I)I
+    .line 241
+    .local v1, "entry":Lcom/android/server/wm/DisplayWindowSettings$Entry;
+    invoke-static {v1, p2}, Lcom/android/server/wm/DisplayWindowSettings$Entry;->access$1102(Lcom/android/server/wm/DisplayWindowSettings$Entry;I)I
 
-    .line 248
-    invoke-direct {p0, p3, p1}, Lcom/android/server/wm/DisplayWindowSettings;->writeSettingsIfNeeded(Lcom/android/server/wm/DisplayWindowSettings$Entry;Landroid/view/DisplayInfo;)V
+    .line 242
+    invoke-direct {p0, v1, v0}, Lcom/android/server/wm/DisplayWindowSettings;->writeSettingsIfNeeded(Lcom/android/server/wm/DisplayWindowSettings$Entry;Landroid/view/DisplayInfo;)V
 
-    .line 249
+    .line 243
     return-void
 .end method
 
 .method setForcedScalingMode(Lcom/android/server/wm/DisplayContent;I)V
-    .registers 4
+    .registers 5
+    .param p1, "displayContent"  # Lcom/android/server/wm/DisplayContent;
+    .param p2, "mode"  # I
 
-    .line 252
+    .line 246
     iget-boolean v0, p1, Lcom/android/server/wm/DisplayContent;->isDefaultDisplay:Z
 
     if-eqz v0, :cond_12
 
-    .line 253
-    iget-object p1, p0, Lcom/android/server/wm/DisplayWindowSettings;->mService:Lcom/android/server/wm/WindowManagerService;
+    .line 247
+    iget-object v0, p0, Lcom/android/server/wm/DisplayWindowSettings;->mService:Lcom/android/server/wm/WindowManagerService;
 
-    iget-object p1, p1, Lcom/android/server/wm/WindowManagerService;->mContext:Landroid/content/Context;
+    iget-object v0, v0, Lcom/android/server/wm/WindowManagerService;->mContext:Landroid/content/Context;
 
-    invoke-virtual {p1}, Landroid/content/Context;->getContentResolver()Landroid/content/ContentResolver;
-
-    move-result-object p1
-
-    const-string v0, "display_scaling_force"
-
-    invoke-static {p1, v0, p2}, Landroid/provider/Settings$Global;->putInt(Landroid/content/ContentResolver;Ljava/lang/String;I)Z
-
-    .line 255
-    return-void
-
-    .line 258
-    :cond_12
-    invoke-virtual {p1}, Lcom/android/server/wm/DisplayContent;->getDisplayInfo()Landroid/view/DisplayInfo;
-
-    move-result-object p1
-
-    .line 259
-    invoke-direct {p0, p1}, Lcom/android/server/wm/DisplayWindowSettings;->getOrCreateEntry(Landroid/view/DisplayInfo;)Lcom/android/server/wm/DisplayWindowSettings$Entry;
+    invoke-virtual {v0}, Landroid/content/Context;->getContentResolver()Landroid/content/ContentResolver;
 
     move-result-object v0
 
-    .line 260
-    invoke-static {v0, p2}, Lcom/android/server/wm/DisplayWindowSettings$Entry;->access$1202(Lcom/android/server/wm/DisplayWindowSettings$Entry;I)I
+    const-string v1, "display_scaling_force"
 
-    .line 261
-    invoke-direct {p0, v0, p1}, Lcom/android/server/wm/DisplayWindowSettings;->writeSettingsIfNeeded(Lcom/android/server/wm/DisplayWindowSettings$Entry;Landroid/view/DisplayInfo;)V
+    invoke-static {v0, v1, p2}, Landroid/provider/Settings$Global;->putInt(Landroid/content/ContentResolver;Ljava/lang/String;I)Z
 
-    .line 262
+    .line 249
+    return-void
+
+    .line 252
+    :cond_12
+    invoke-virtual {p1}, Lcom/android/server/wm/DisplayContent;->getDisplayInfo()Landroid/view/DisplayInfo;
+
+    move-result-object v0
+
+    .line 253
+    .local v0, "displayInfo":Landroid/view/DisplayInfo;
+    invoke-direct {p0, v0}, Lcom/android/server/wm/DisplayWindowSettings;->getOrCreateEntry(Landroid/view/DisplayInfo;)Lcom/android/server/wm/DisplayWindowSettings$Entry;
+
+    move-result-object v1
+
+    .line 254
+    .local v1, "entry":Lcom/android/server/wm/DisplayWindowSettings$Entry;
+    invoke-static {v1, p2}, Lcom/android/server/wm/DisplayWindowSettings$Entry;->access$1202(Lcom/android/server/wm/DisplayWindowSettings$Entry;I)I
+
+    .line 255
+    invoke-direct {p0, v1, v0}, Lcom/android/server/wm/DisplayWindowSettings;->writeSettingsIfNeeded(Lcom/android/server/wm/DisplayWindowSettings$Entry;Landroid/view/DisplayInfo;)V
+
+    .line 256
     return-void
 .end method
 
 .method setForcedSize(Lcom/android/server/wm/DisplayContent;II)V
-    .registers 5
+    .registers 7
+    .param p1, "displayContent"  # Lcom/android/server/wm/DisplayContent;
+    .param p2, "width"  # I
+    .param p3, "height"  # I
 
-    .line 223
+    .line 217
     iget-boolean v0, p1, Lcom/android/server/wm/DisplayContent;->isDefaultDisplay:Z
 
     if-eqz v0, :cond_2e
 
-    .line 224
+    .line 218
     if-eqz p2, :cond_1e
 
     if-nez p3, :cond_9
@@ -2114,123 +2273,139 @@
     goto :goto_1e
 
     :cond_9
-    new-instance p1, Ljava/lang/StringBuilder;
+    new-instance v0, Ljava/lang/StringBuilder;
 
-    invoke-direct {p1}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
 
-    invoke-virtual {p1, p2}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, p2}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    const-string p2, ","
+    const-string v1, ","
 
-    invoke-virtual {p1, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p1, p3}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, p3}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
     goto :goto_20
 
     :cond_1e
     :goto_1e
-    const-string p1, ""
+    const-string v0, ""
 
-    .line 225
+    .line 219
+    .local v0, "sizeString":Ljava/lang/String;
     :goto_20
-    iget-object p2, p0, Lcom/android/server/wm/DisplayWindowSettings;->mService:Lcom/android/server/wm/WindowManagerService;
+    iget-object v1, p0, Lcom/android/server/wm/DisplayWindowSettings;->mService:Lcom/android/server/wm/WindowManagerService;
 
-    iget-object p2, p2, Lcom/android/server/wm/WindowManagerService;->mContext:Landroid/content/Context;
+    iget-object v1, v1, Lcom/android/server/wm/WindowManagerService;->mContext:Landroid/content/Context;
 
-    invoke-virtual {p2}, Landroid/content/Context;->getContentResolver()Landroid/content/ContentResolver;
+    invoke-virtual {v1}, Landroid/content/Context;->getContentResolver()Landroid/content/ContentResolver;
 
-    move-result-object p2
+    move-result-object v1
 
-    const-string p3, "display_size_forced"
+    const-string v2, "display_size_forced"
 
-    invoke-static {p2, p3, p1}, Landroid/provider/Settings$Global;->putString(Landroid/content/ContentResolver;Ljava/lang/String;Ljava/lang/String;)Z
+    invoke-static {v1, v2, v0}, Landroid/provider/Settings$Global;->putString(Landroid/content/ContentResolver;Ljava/lang/String;Ljava/lang/String;)Z
 
-    .line 227
+    .line 221
     return-void
 
-    .line 230
+    .line 224
+    .end local v0  # "sizeString":Ljava/lang/String;
     :cond_2e
     invoke-virtual {p1}, Lcom/android/server/wm/DisplayContent;->getDisplayInfo()Landroid/view/DisplayInfo;
 
-    move-result-object p1
-
-    .line 231
-    invoke-direct {p0, p1}, Lcom/android/server/wm/DisplayWindowSettings;->getOrCreateEntry(Landroid/view/DisplayInfo;)Lcom/android/server/wm/DisplayWindowSettings$Entry;
-
     move-result-object v0
 
-    .line 232
-    invoke-static {v0, p2}, Lcom/android/server/wm/DisplayWindowSettings$Entry;->access$902(Lcom/android/server/wm/DisplayWindowSettings$Entry;I)I
+    .line 225
+    .local v0, "displayInfo":Landroid/view/DisplayInfo;
+    invoke-direct {p0, v0}, Lcom/android/server/wm/DisplayWindowSettings;->getOrCreateEntry(Landroid/view/DisplayInfo;)Lcom/android/server/wm/DisplayWindowSettings$Entry;
 
-    .line 233
-    invoke-static {v0, p3}, Lcom/android/server/wm/DisplayWindowSettings$Entry;->access$1002(Lcom/android/server/wm/DisplayWindowSettings$Entry;I)I
+    move-result-object v1
 
-    .line 234
-    invoke-direct {p0, v0, p1}, Lcom/android/server/wm/DisplayWindowSettings;->writeSettingsIfNeeded(Lcom/android/server/wm/DisplayWindowSettings$Entry;Landroid/view/DisplayInfo;)V
+    .line 226
+    .local v1, "entry":Lcom/android/server/wm/DisplayWindowSettings$Entry;
+    invoke-static {v1, p2}, Lcom/android/server/wm/DisplayWindowSettings$Entry;->access$902(Lcom/android/server/wm/DisplayWindowSettings$Entry;I)I
 
-    .line 235
+    .line 227
+    invoke-static {v1, p3}, Lcom/android/server/wm/DisplayWindowSettings$Entry;->access$1002(Lcom/android/server/wm/DisplayWindowSettings$Entry;I)I
+
+    .line 228
+    invoke-direct {p0, v1, v0}, Lcom/android/server/wm/DisplayWindowSettings;->writeSettingsIfNeeded(Lcom/android/server/wm/DisplayWindowSettings$Entry;Landroid/view/DisplayInfo;)V
+
+    .line 229
     return-void
 .end method
 
 .method setOverscanLocked(Landroid/view/DisplayInfo;IIII)V
     .registers 7
+    .param p1, "displayInfo"  # Landroid/view/DisplayInfo;
+    .param p2, "left"  # I
+    .param p3, "top"  # I
+    .param p4, "right"  # I
+    .param p5, "bottom"  # I
 
-    .line 206
+    .line 200
     invoke-direct {p0, p1}, Lcom/android/server/wm/DisplayWindowSettings;->getOrCreateEntry(Landroid/view/DisplayInfo;)Lcom/android/server/wm/DisplayWindowSettings$Entry;
 
     move-result-object v0
 
-    .line 207
+    .line 201
+    .local v0, "entry":Lcom/android/server/wm/DisplayWindowSettings$Entry;
     invoke-static {v0, p2}, Lcom/android/server/wm/DisplayWindowSettings$Entry;->access$302(Lcom/android/server/wm/DisplayWindowSettings$Entry;I)I
 
-    .line 208
+    .line 202
     invoke-static {v0, p3}, Lcom/android/server/wm/DisplayWindowSettings$Entry;->access$402(Lcom/android/server/wm/DisplayWindowSettings$Entry;I)I
 
-    .line 209
+    .line 203
     invoke-static {v0, p4}, Lcom/android/server/wm/DisplayWindowSettings$Entry;->access$502(Lcom/android/server/wm/DisplayWindowSettings$Entry;I)I
 
-    .line 210
+    .line 204
     invoke-static {v0, p5}, Lcom/android/server/wm/DisplayWindowSettings$Entry;->access$602(Lcom/android/server/wm/DisplayWindowSettings$Entry;I)I
 
-    .line 211
+    .line 205
     invoke-direct {p0, v0, p1}, Lcom/android/server/wm/DisplayWindowSettings;->writeSettingsIfNeeded(Lcom/android/server/wm/DisplayWindowSettings$Entry;Landroid/view/DisplayInfo;)V
 
-    .line 212
+    .line 206
     return-void
 .end method
 
 .method setRemoveContentModeLocked(Lcom/android/server/wm/DisplayContent;I)V
-    .registers 4
+    .registers 5
+    .param p1, "dc"  # Lcom/android/server/wm/DisplayContent;
+    .param p2, "mode"  # I
 
-    .line 322
+    .line 316
     invoke-virtual {p1}, Lcom/android/server/wm/DisplayContent;->getDisplayInfo()Landroid/view/DisplayInfo;
-
-    move-result-object p1
-
-    .line 323
-    invoke-direct {p0, p1}, Lcom/android/server/wm/DisplayWindowSettings;->getOrCreateEntry(Landroid/view/DisplayInfo;)Lcom/android/server/wm/DisplayWindowSettings$Entry;
 
     move-result-object v0
 
-    .line 324
-    invoke-static {v0, p2}, Lcom/android/server/wm/DisplayWindowSettings$Entry;->access$1502(Lcom/android/server/wm/DisplayWindowSettings$Entry;I)I
+    .line 317
+    .local v0, "displayInfo":Landroid/view/DisplayInfo;
+    invoke-direct {p0, v0}, Lcom/android/server/wm/DisplayWindowSettings;->getOrCreateEntry(Landroid/view/DisplayInfo;)Lcom/android/server/wm/DisplayWindowSettings$Entry;
 
-    .line 325
-    invoke-direct {p0, v0, p1}, Lcom/android/server/wm/DisplayWindowSettings;->writeSettingsIfNeeded(Lcom/android/server/wm/DisplayWindowSettings$Entry;Landroid/view/DisplayInfo;)V
+    move-result-object v1
 
-    .line 326
+    .line 318
+    .local v1, "entry":Lcom/android/server/wm/DisplayWindowSettings$Entry;
+    invoke-static {v1, p2}, Lcom/android/server/wm/DisplayWindowSettings$Entry;->access$1502(Lcom/android/server/wm/DisplayWindowSettings$Entry;I)I
+
+    .line 319
+    invoke-direct {p0, v1, v0}, Lcom/android/server/wm/DisplayWindowSettings;->writeSettingsIfNeeded(Lcom/android/server/wm/DisplayWindowSettings$Entry;Landroid/view/DisplayInfo;)V
+
+    .line 320
     return-void
 .end method
 
 .method setShouldShowImeLocked(Lcom/android/server/wm/DisplayContent;Z)V
-    .registers 4
+    .registers 5
+    .param p1, "dc"  # Lcom/android/server/wm/DisplayContent;
+    .param p2, "shouldShow"  # Z
 
-    .line 390
+    .line 384
     invoke-virtual {p1}, Lcom/android/server/wm/DisplayContent;->getDisplayId()I
 
     move-result v0
@@ -2239,41 +2414,45 @@
 
     if-nez p2, :cond_10
 
-    .line 391
-    const-string p1, "WindowManager"
+    .line 385
+    const-string v0, "WindowManager"
 
-    const-string p2, "Default display should show IME"
+    const-string v1, "Default display should show IME"
 
-    invoke-static {p1, p2}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v0, v1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 392
+    .line 386
     return-void
 
-    .line 395
+    .line 389
     :cond_10
     invoke-virtual {p1}, Lcom/android/server/wm/DisplayContent;->getDisplayInfo()Landroid/view/DisplayInfo;
 
-    move-result-object p1
-
-    .line 396
-    invoke-direct {p0, p1}, Lcom/android/server/wm/DisplayWindowSettings;->getOrCreateEntry(Landroid/view/DisplayInfo;)Lcom/android/server/wm/DisplayWindowSettings$Entry;
-
     move-result-object v0
 
-    .line 397
-    invoke-static {v0, p2}, Lcom/android/server/wm/DisplayWindowSettings$Entry;->access$1802(Lcom/android/server/wm/DisplayWindowSettings$Entry;Z)Z
+    .line 390
+    .local v0, "displayInfo":Landroid/view/DisplayInfo;
+    invoke-direct {p0, v0}, Lcom/android/server/wm/DisplayWindowSettings;->getOrCreateEntry(Landroid/view/DisplayInfo;)Lcom/android/server/wm/DisplayWindowSettings$Entry;
 
-    .line 398
-    invoke-direct {p0, v0, p1}, Lcom/android/server/wm/DisplayWindowSettings;->writeSettingsIfNeeded(Lcom/android/server/wm/DisplayWindowSettings$Entry;Landroid/view/DisplayInfo;)V
+    move-result-object v1
 
-    .line 399
+    .line 391
+    .local v1, "entry":Lcom/android/server/wm/DisplayWindowSettings$Entry;
+    invoke-static {v1, p2}, Lcom/android/server/wm/DisplayWindowSettings$Entry;->access$1802(Lcom/android/server/wm/DisplayWindowSettings$Entry;Z)Z
+
+    .line 392
+    invoke-direct {p0, v1, v0}, Lcom/android/server/wm/DisplayWindowSettings;->writeSettingsIfNeeded(Lcom/android/server/wm/DisplayWindowSettings$Entry;Landroid/view/DisplayInfo;)V
+
+    .line 393
     return-void
 .end method
 
 .method setShouldShowSystemDecorsLocked(Lcom/android/server/wm/DisplayContent;Z)V
-    .registers 4
+    .registers 5
+    .param p1, "dc"  # Lcom/android/server/wm/DisplayContent;
+    .param p2, "shouldShow"  # Z
 
-    .line 364
+    .line 358
     invoke-virtual {p1}, Lcom/android/server/wm/DisplayContent;->getDisplayId()I
 
     move-result v0
@@ -2282,41 +2461,45 @@
 
     if-nez p2, :cond_10
 
-    .line 365
-    const-string p1, "WindowManager"
+    .line 359
+    const-string v0, "WindowManager"
 
-    const-string p2, "Default display should show system decors"
+    const-string v1, "Default display should show system decors"
 
-    invoke-static {p1, p2}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v0, v1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 366
+    .line 360
     return-void
 
-    .line 369
+    .line 363
     :cond_10
     invoke-virtual {p1}, Lcom/android/server/wm/DisplayContent;->getDisplayInfo()Landroid/view/DisplayInfo;
 
-    move-result-object p1
-
-    .line 370
-    invoke-direct {p0, p1}, Lcom/android/server/wm/DisplayWindowSettings;->getOrCreateEntry(Landroid/view/DisplayInfo;)Lcom/android/server/wm/DisplayWindowSettings$Entry;
-
     move-result-object v0
 
-    .line 371
-    invoke-static {v0, p2}, Lcom/android/server/wm/DisplayWindowSettings$Entry;->access$1702(Lcom/android/server/wm/DisplayWindowSettings$Entry;Z)Z
+    .line 364
+    .local v0, "displayInfo":Landroid/view/DisplayInfo;
+    invoke-direct {p0, v0}, Lcom/android/server/wm/DisplayWindowSettings;->getOrCreateEntry(Landroid/view/DisplayInfo;)Lcom/android/server/wm/DisplayWindowSettings$Entry;
 
-    .line 372
-    invoke-direct {p0, v0, p1}, Lcom/android/server/wm/DisplayWindowSettings;->writeSettingsIfNeeded(Lcom/android/server/wm/DisplayWindowSettings$Entry;Landroid/view/DisplayInfo;)V
+    move-result-object v1
 
-    .line 373
+    .line 365
+    .local v1, "entry":Lcom/android/server/wm/DisplayWindowSettings$Entry;
+    invoke-static {v1, p2}, Lcom/android/server/wm/DisplayWindowSettings$Entry;->access$1702(Lcom/android/server/wm/DisplayWindowSettings$Entry;Z)Z
+
+    .line 366
+    invoke-direct {p0, v1, v0}, Lcom/android/server/wm/DisplayWindowSettings;->writeSettingsIfNeeded(Lcom/android/server/wm/DisplayWindowSettings$Entry;Landroid/view/DisplayInfo;)V
+
+    .line 367
     return-void
 .end method
 
 .method setShouldShowWithInsecureKeyguardLocked(Lcom/android/server/wm/DisplayContent;Z)V
-    .registers 4
+    .registers 5
+    .param p1, "dc"  # Lcom/android/server/wm/DisplayContent;
+    .param p2, "shouldShow"  # Z
 
-    .line 338
+    .line 332
     invoke-virtual {p1}, Lcom/android/server/wm/DisplayContent;->isPrivate()Z
 
     move-result v0
@@ -2325,209 +2508,230 @@
 
     if-eqz p2, :cond_10
 
-    .line 339
-    const-string p1, "WindowManager"
+    .line 333
+    const-string v0, "WindowManager"
 
-    const-string p2, "Public display can\'t be allowed to show content when locked"
+    const-string v1, "Public display can\'t be allowed to show content when locked"
 
-    invoke-static {p1, p2}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v0, v1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 340
+    .line 334
     return-void
 
-    .line 343
+    .line 337
     :cond_10
     invoke-virtual {p1}, Lcom/android/server/wm/DisplayContent;->getDisplayInfo()Landroid/view/DisplayInfo;
 
-    move-result-object p1
-
-    .line 344
-    invoke-direct {p0, p1}, Lcom/android/server/wm/DisplayWindowSettings;->getOrCreateEntry(Landroid/view/DisplayInfo;)Lcom/android/server/wm/DisplayWindowSettings$Entry;
-
     move-result-object v0
 
-    .line 345
-    invoke-static {v0, p2}, Lcom/android/server/wm/DisplayWindowSettings$Entry;->access$1602(Lcom/android/server/wm/DisplayWindowSettings$Entry;Z)Z
+    .line 338
+    .local v0, "displayInfo":Landroid/view/DisplayInfo;
+    invoke-direct {p0, v0}, Lcom/android/server/wm/DisplayWindowSettings;->getOrCreateEntry(Landroid/view/DisplayInfo;)Lcom/android/server/wm/DisplayWindowSettings$Entry;
 
-    .line 346
-    invoke-direct {p0, v0, p1}, Lcom/android/server/wm/DisplayWindowSettings;->writeSettingsIfNeeded(Lcom/android/server/wm/DisplayWindowSettings$Entry;Landroid/view/DisplayInfo;)V
+    move-result-object v1
 
-    .line 347
+    .line 339
+    .local v1, "entry":Lcom/android/server/wm/DisplayWindowSettings$Entry;
+    invoke-static {v1, p2}, Lcom/android/server/wm/DisplayWindowSettings$Entry;->access$1602(Lcom/android/server/wm/DisplayWindowSettings$Entry;Z)Z
+
+    .line 340
+    invoke-direct {p0, v1, v0}, Lcom/android/server/wm/DisplayWindowSettings;->writeSettingsIfNeeded(Lcom/android/server/wm/DisplayWindowSettings$Entry;Landroid/view/DisplayInfo;)V
+
+    .line 341
     return-void
 .end method
 
 .method setUserRotation(Lcom/android/server/wm/DisplayContent;II)V
-    .registers 5
+    .registers 6
+    .param p1, "displayContent"  # Lcom/android/server/wm/DisplayContent;
+    .param p2, "rotationMode"  # I
+    .param p3, "rotation"  # I
 
-    .line 215
+    .line 209
     invoke-virtual {p1}, Lcom/android/server/wm/DisplayContent;->getDisplayInfo()Landroid/view/DisplayInfo;
-
-    move-result-object p1
-
-    .line 216
-    invoke-direct {p0, p1}, Lcom/android/server/wm/DisplayWindowSettings;->getOrCreateEntry(Landroid/view/DisplayInfo;)Lcom/android/server/wm/DisplayWindowSettings$Entry;
 
     move-result-object v0
 
-    .line 217
-    invoke-static {v0, p2}, Lcom/android/server/wm/DisplayWindowSettings$Entry;->access$702(Lcom/android/server/wm/DisplayWindowSettings$Entry;I)I
+    .line 210
+    .local v0, "displayInfo":Landroid/view/DisplayInfo;
+    invoke-direct {p0, v0}, Lcom/android/server/wm/DisplayWindowSettings;->getOrCreateEntry(Landroid/view/DisplayInfo;)Lcom/android/server/wm/DisplayWindowSettings$Entry;
 
-    .line 218
-    invoke-static {v0, p3}, Lcom/android/server/wm/DisplayWindowSettings$Entry;->access$802(Lcom/android/server/wm/DisplayWindowSettings$Entry;I)I
+    move-result-object v1
 
-    .line 219
-    invoke-direct {p0, v0, p1}, Lcom/android/server/wm/DisplayWindowSettings;->writeSettingsIfNeeded(Lcom/android/server/wm/DisplayWindowSettings$Entry;Landroid/view/DisplayInfo;)V
+    .line 211
+    .local v1, "entry":Lcom/android/server/wm/DisplayWindowSettings$Entry;
+    invoke-static {v1, p2}, Lcom/android/server/wm/DisplayWindowSettings$Entry;->access$702(Lcom/android/server/wm/DisplayWindowSettings$Entry;I)I
 
-    .line 220
+    .line 212
+    invoke-static {v1, p3}, Lcom/android/server/wm/DisplayWindowSettings$Entry;->access$802(Lcom/android/server/wm/DisplayWindowSettings$Entry;I)I
+
+    .line 213
+    invoke-direct {p0, v1, v0}, Lcom/android/server/wm/DisplayWindowSettings;->writeSettingsIfNeeded(Lcom/android/server/wm/DisplayWindowSettings$Entry;Landroid/view/DisplayInfo;)V
+
+    .line 214
     return-void
 .end method
 
 .method setWindowingModeLocked(Lcom/android/server/wm/DisplayContent;I)V
     .registers 5
+    .param p1, "dc"  # Lcom/android/server/wm/DisplayContent;
+    .param p2, "mode"  # I
 
-    .line 300
+    .line 294
     invoke-virtual {p1}, Lcom/android/server/wm/DisplayContent;->getDisplayInfo()Landroid/view/DisplayInfo;
 
     move-result-object v0
 
-    .line 301
+    .line 295
+    .local v0, "displayInfo":Landroid/view/DisplayInfo;
     invoke-direct {p0, v0}, Lcom/android/server/wm/DisplayWindowSettings;->getOrCreateEntry(Landroid/view/DisplayInfo;)Lcom/android/server/wm/DisplayWindowSettings$Entry;
 
     move-result-object v1
 
-    .line 302
+    .line 296
+    .local v1, "entry":Lcom/android/server/wm/DisplayWindowSettings$Entry;
     invoke-static {v1, p2}, Lcom/android/server/wm/DisplayWindowSettings$Entry;->access$1402(Lcom/android/server/wm/DisplayWindowSettings$Entry;I)I
 
-    .line 303
+    .line 297
     invoke-virtual {p1, p2}, Lcom/android/server/wm/DisplayContent;->setWindowingMode(I)V
 
-    .line 304
+    .line 298
     invoke-direct {p0, v1, v0}, Lcom/android/server/wm/DisplayWindowSettings;->writeSettingsIfNeeded(Lcom/android/server/wm/DisplayWindowSettings$Entry;Landroid/view/DisplayInfo;)V
 
-    .line 305
+    .line 299
     return-void
 .end method
 
 .method shouldShowImeLocked(Lcom/android/server/wm/DisplayContent;)Z
-    .registers 3
+    .registers 5
+    .param p1, "dc"  # Lcom/android/server/wm/DisplayContent;
 
-    .line 376
+    .line 370
     invoke-virtual {p1}, Lcom/android/server/wm/DisplayContent;->getDisplayId()I
 
     move-result v0
 
     if-nez v0, :cond_8
 
-    .line 378
-    const/4 p1, 0x1
+    .line 372
+    const/4 v0, 0x1
 
-    return p1
+    return v0
 
-    .line 381
+    .line 375
     :cond_8
     invoke-virtual {p1}, Lcom/android/server/wm/DisplayContent;->getDisplayInfo()Landroid/view/DisplayInfo;
 
-    move-result-object p1
+    move-result-object v0
 
-    .line 382
-    invoke-direct {p0, p1}, Lcom/android/server/wm/DisplayWindowSettings;->getEntry(Landroid/view/DisplayInfo;)Lcom/android/server/wm/DisplayWindowSettings$Entry;
+    .line 376
+    .local v0, "displayInfo":Landroid/view/DisplayInfo;
+    invoke-direct {p0, v0}, Lcom/android/server/wm/DisplayWindowSettings;->getEntry(Landroid/view/DisplayInfo;)Lcom/android/server/wm/DisplayWindowSettings$Entry;
 
-    move-result-object p1
+    move-result-object v1
 
-    .line 383
-    if-nez p1, :cond_14
+    .line 377
+    .local v1, "entry":Lcom/android/server/wm/DisplayWindowSettings$Entry;
+    if-nez v1, :cond_14
 
-    .line 384
-    const/4 p1, 0x0
+    .line 378
+    const/4 v2, 0x0
 
-    return p1
+    return v2
 
-    .line 386
+    .line 380
     :cond_14
-    invoke-static {p1}, Lcom/android/server/wm/DisplayWindowSettings$Entry;->access$1800(Lcom/android/server/wm/DisplayWindowSettings$Entry;)Z
+    invoke-static {v1}, Lcom/android/server/wm/DisplayWindowSettings$Entry;->access$1800(Lcom/android/server/wm/DisplayWindowSettings$Entry;)Z
 
-    move-result p1
+    move-result v2
 
-    return p1
+    return v2
 .end method
 
 .method shouldShowSystemDecorsLocked(Lcom/android/server/wm/DisplayContent;)Z
-    .registers 3
+    .registers 5
+    .param p1, "dc"  # Lcom/android/server/wm/DisplayContent;
 
-    .line 350
+    .line 344
     invoke-virtual {p1}, Lcom/android/server/wm/DisplayContent;->getDisplayId()I
 
     move-result v0
 
     if-nez v0, :cond_8
 
-    .line 352
-    const/4 p1, 0x1
+    .line 346
+    const/4 v0, 0x1
 
-    return p1
+    return v0
 
-    .line 355
+    .line 349
     :cond_8
     invoke-virtual {p1}, Lcom/android/server/wm/DisplayContent;->getDisplayInfo()Landroid/view/DisplayInfo;
 
-    move-result-object p1
+    move-result-object v0
 
-    .line 356
-    invoke-direct {p0, p1}, Lcom/android/server/wm/DisplayWindowSettings;->getEntry(Landroid/view/DisplayInfo;)Lcom/android/server/wm/DisplayWindowSettings$Entry;
+    .line 350
+    .local v0, "displayInfo":Landroid/view/DisplayInfo;
+    invoke-direct {p0, v0}, Lcom/android/server/wm/DisplayWindowSettings;->getEntry(Landroid/view/DisplayInfo;)Lcom/android/server/wm/DisplayWindowSettings$Entry;
 
-    move-result-object p1
+    move-result-object v1
 
-    .line 357
-    if-nez p1, :cond_14
+    .line 351
+    .local v1, "entry":Lcom/android/server/wm/DisplayWindowSettings$Entry;
+    if-nez v1, :cond_14
 
-    .line 358
-    const/4 p1, 0x0
+    .line 352
+    const/4 v2, 0x0
 
-    return p1
+    return v2
 
-    .line 360
+    .line 354
     :cond_14
-    invoke-static {p1}, Lcom/android/server/wm/DisplayWindowSettings$Entry;->access$1700(Lcom/android/server/wm/DisplayWindowSettings$Entry;)Z
+    invoke-static {v1}, Lcom/android/server/wm/DisplayWindowSettings$Entry;->access$1700(Lcom/android/server/wm/DisplayWindowSettings$Entry;)Z
 
-    move-result p1
+    move-result v2
 
-    return p1
+    return v2
 .end method
 
 .method shouldShowWithInsecureKeyguardLocked(Lcom/android/server/wm/DisplayContent;)Z
-    .registers 2
+    .registers 5
+    .param p1, "dc"  # Lcom/android/server/wm/DisplayContent;
 
-    .line 329
+    .line 323
     invoke-virtual {p1}, Lcom/android/server/wm/DisplayContent;->getDisplayInfo()Landroid/view/DisplayInfo;
 
-    move-result-object p1
+    move-result-object v0
 
-    .line 330
-    invoke-direct {p0, p1}, Lcom/android/server/wm/DisplayWindowSettings;->getEntry(Landroid/view/DisplayInfo;)Lcom/android/server/wm/DisplayWindowSettings$Entry;
+    .line 324
+    .local v0, "displayInfo":Landroid/view/DisplayInfo;
+    invoke-direct {p0, v0}, Lcom/android/server/wm/DisplayWindowSettings;->getEntry(Landroid/view/DisplayInfo;)Lcom/android/server/wm/DisplayWindowSettings$Entry;
 
-    move-result-object p1
+    move-result-object v1
 
-    .line 331
-    if-nez p1, :cond_c
+    .line 325
+    .local v1, "entry":Lcom/android/server/wm/DisplayWindowSettings$Entry;
+    if-nez v1, :cond_c
 
-    .line 332
-    const/4 p1, 0x0
+    .line 326
+    const/4 v2, 0x0
 
-    return p1
+    return v2
 
-    .line 334
+    .line 328
     :cond_c
-    invoke-static {p1}, Lcom/android/server/wm/DisplayWindowSettings$Entry;->access$1600(Lcom/android/server/wm/DisplayWindowSettings$Entry;)Z
+    invoke-static {v1}, Lcom/android/server/wm/DisplayWindowSettings$Entry;->access$1600(Lcom/android/server/wm/DisplayWindowSettings$Entry;)Z
 
-    move-result p1
+    move-result v2
 
-    return p1
+    return v2
 .end method
 
 .method updateSettingsForDisplay(Lcom/android/server/wm/DisplayContent;)Z
     .registers 4
+    .param p1, "dc"  # Lcom/android/server/wm/DisplayContent;
 
-    .line 435
+    .line 429
     invoke-virtual {p1}, Lcom/android/server/wm/DisplayContent;->getWindowingMode()I
 
     move-result v0
@@ -2538,21 +2742,21 @@
 
     if-eq v0, v1, :cond_13
 
-    .line 438
+    .line 432
     invoke-virtual {p0, p1}, Lcom/android/server/wm/DisplayWindowSettings;->getWindowingModeLocked(Lcom/android/server/wm/DisplayContent;)I
 
     move-result v0
 
     invoke-virtual {p1, v0}, Lcom/android/server/wm/DisplayContent;->setWindowingMode(I)V
 
-    .line 439
-    const/4 p1, 0x1
+    .line 433
+    const/4 v0, 0x1
 
-    return p1
+    return v0
 
-    .line 441
+    .line 435
     :cond_13
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    return p1
+    return v0
 .end method

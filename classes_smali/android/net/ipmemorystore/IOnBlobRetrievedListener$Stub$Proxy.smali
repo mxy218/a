@@ -30,6 +30,7 @@
 # direct methods
 .method constructor <init>(Landroid/os/IBinder;)V
     .registers 3
+    .param p1, "remote"  # Landroid/os/IBinder;
 
     .line 108
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -87,11 +88,13 @@
     move-result-object v0
 
     .line 155
+    .local v0, "data":Landroid/os/Parcel;
     invoke-static {}, Landroid/os/Parcel;->obtain()Landroid/os/Parcel;
 
     move-result-object v1
 
     .line 157
+    .local v1, "reply":Landroid/os/Parcel;
     :try_start_d
     const-string v2, "android.net.ipmemorystore.IOnBlobRetrievedListener"
 
@@ -139,6 +142,8 @@
     throw v2
 
     .line 166
+    .end local v0  # "data":Landroid/os/Parcel;
+    .end local v1  # "reply":Landroid/os/Parcel;
     :cond_33
     :goto_33
     iget v0, p0, Landroid/net/ipmemorystore/IOnBlobRetrievedListener$Stub$Proxy;->mCachedVersion:I
@@ -148,6 +153,10 @@
 
 .method public onBlobRetrieved(Landroid/net/ipmemorystore/StatusParcelable;Ljava/lang/String;Ljava/lang/String;Landroid/net/ipmemorystore/Blob;)V
     .registers 9
+    .param p1, "status"  # Landroid/net/ipmemorystore/StatusParcelable;
+    .param p2, "l2Key"  # Ljava/lang/String;
+    .param p3, "name"  # Ljava/lang/String;
+    .param p4, "data"  # Landroid/net/ipmemorystore/Blob;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -160,6 +169,7 @@
     move-result-object v0
 
     .line 124
+    .local v0, "_data":Landroid/os/Parcel;
     :try_start_4
     const-string v1, "android.net.ipmemorystore.IOnBlobRetrievedListener"
 
@@ -217,20 +227,21 @@
     move-result v1
 
     .line 142
+    .local v1, "_status":Z
     if-nez v1, :cond_43
 
     invoke-static {}, Landroid/net/ipmemorystore/IOnBlobRetrievedListener$Stub;->getDefaultImpl()Landroid/net/ipmemorystore/IOnBlobRetrievedListener;
 
-    move-result-object v1
+    move-result-object v2
 
-    if-eqz v1, :cond_43
+    if-eqz v2, :cond_43
 
     .line 143
     invoke-static {}, Landroid/net/ipmemorystore/IOnBlobRetrievedListener$Stub;->getDefaultImpl()Landroid/net/ipmemorystore/IOnBlobRetrievedListener;
 
-    move-result-object v1
+    move-result-object v2
 
-    invoke-interface {v1, p1, p2, p3, p4}, Landroid/net/ipmemorystore/IOnBlobRetrievedListener;->onBlobRetrieved(Landroid/net/ipmemorystore/StatusParcelable;Ljava/lang/String;Ljava/lang/String;Landroid/net/ipmemorystore/Blob;)V
+    invoke-interface {v2, p1, p2, p3, p4}, Landroid/net/ipmemorystore/IOnBlobRetrievedListener;->onBlobRetrieved(Landroid/net/ipmemorystore/StatusParcelable;Ljava/lang/String;Ljava/lang/String;Landroid/net/ipmemorystore/Blob;)V
     :try_end_3f
     .catchall {:try_start_4 .. :try_end_3f} :catchall_48
 
@@ -241,6 +252,7 @@
     return-void
 
     .line 148
+    .end local v1  # "_status":Z
     :cond_43
     invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
 
@@ -252,9 +264,9 @@
 
     .line 148
     :catchall_48
-    move-exception p1
+    move-exception v1
 
     invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
 
-    throw p1
+    throw v1
 .end method

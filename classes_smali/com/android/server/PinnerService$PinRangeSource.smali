@@ -18,7 +18,7 @@
 .method private constructor <init>()V
     .registers 1
 
-    .line 714
+    .line 720
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
     return-void
@@ -26,8 +26,9 @@
 
 .method synthetic constructor <init>(Lcom/android/server/PinnerService$1;)V
     .registers 2
+    .param p1, "x0"  # Lcom/android/server/PinnerService$1;
 
-    .line 714
+    .line 720
     invoke-direct {p0}, Lcom/android/server/PinnerService$PinRangeSource;-><init>()V
 
     return-void

@@ -10,6 +10,7 @@
 # direct methods
 .method public constructor <init>(Landroid/content/Context;)V
     .registers 2
+    .param p1, "context"  # Landroid/content/Context;
 
     .line 34
     invoke-direct {p0, p1}, Lcom/android/server/SystemService;-><init>(Landroid/content/Context;)V
@@ -22,6 +23,7 @@
 # virtual methods
 .method public onBootPhase(I)V
     .registers 3
+    .param p1, "phase"  # I
 
     .line 50
     const/16 v0, 0x3e8
@@ -29,9 +31,9 @@
     if-ne p1, v0, :cond_9
 
     .line 51
-    iget-object p1, p0, Lcom/android/server/rollback/RollbackManagerService;->mService:Lcom/android/server/rollback/RollbackManagerServiceImpl;
+    iget-object v0, p0, Lcom/android/server/rollback/RollbackManagerService;->mService:Lcom/android/server/rollback/RollbackManagerServiceImpl;
 
-    invoke-virtual {p1}, Lcom/android/server/rollback/RollbackManagerServiceImpl;->onBootCompleted()V
+    invoke-virtual {v0}, Lcom/android/server/rollback/RollbackManagerServiceImpl;->onBootCompleted()V
 
     .line 53
     :cond_9
@@ -65,6 +67,7 @@
 
 .method public onUnlockUser(I)V
     .registers 3
+    .param p1, "user"  # I
 
     .line 45
     iget-object v0, p0, Lcom/android/server/rollback/RollbackManagerService;->mService:Lcom/android/server/rollback/RollbackManagerServiceImpl;

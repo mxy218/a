@@ -24,6 +24,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/NetworkScoreService;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/NetworkScoreService;
 
     .line 310
     iput-object p1, p0, Lcom/android/server/NetworkScoreService$4;->this$0:Lcom/android/server/NetworkScoreService;
@@ -36,46 +37,48 @@
 
 # virtual methods
 .method public getPackages(I)[Ljava/lang/String;
-    .registers 4
+    .registers 5
+    .param p1, "userId"  # I
 
     .line 313
-    iget-object p1, p0, Lcom/android/server/NetworkScoreService$4;->this$0:Lcom/android/server/NetworkScoreService;
+    iget-object v0, p0, Lcom/android/server/NetworkScoreService$4;->this$0:Lcom/android/server/NetworkScoreService;
 
-    invoke-static {p1}, Lcom/android/server/NetworkScoreService;->access$500(Lcom/android/server/NetworkScoreService;)Landroid/content/Context;
+    invoke-static {v0}, Lcom/android/server/NetworkScoreService;->access$500(Lcom/android/server/NetworkScoreService;)Landroid/content/Context;
 
-    move-result-object p1
+    move-result-object v0
 
-    invoke-virtual {p1}, Landroid/content/Context;->getContentResolver()Landroid/content/ContentResolver;
+    invoke-virtual {v0}, Landroid/content/Context;->getContentResolver()Landroid/content/ContentResolver;
 
-    move-result-object p1
+    move-result-object v0
 
-    const-string/jumbo v0, "use_open_wifi_package"
+    const-string/jumbo v1, "use_open_wifi_package"
 
-    invoke-static {p1, v0}, Landroid/provider/Settings$Global;->getString(Landroid/content/ContentResolver;Ljava/lang/String;)Ljava/lang/String;
+    invoke-static {v0, v1}, Landroid/provider/Settings$Global;->getString(Landroid/content/ContentResolver;Ljava/lang/String;)Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
     .line 315
-    invoke-static {p1}, Landroid/text/TextUtils;->isEmpty(Ljava/lang/CharSequence;)Z
+    .local v0, "useOpenWifiPackage":Ljava/lang/String;
+    invoke-static {v0}, Landroid/text/TextUtils;->isEmpty(Ljava/lang/CharSequence;)Z
 
-    move-result v0
+    move-result v1
 
-    if-nez v0, :cond_1e
+    if-nez v1, :cond_1e
 
     .line 316
-    const/4 v0, 0x1
+    const/4 v1, 0x1
 
-    new-array v0, v0, [Ljava/lang/String;
+    new-array v1, v1, [Ljava/lang/String;
 
-    const/4 v1, 0x0
+    const/4 v2, 0x0
 
-    aput-object p1, v0, v1
+    aput-object v0, v1, v2
 
-    return-object v0
+    return-object v1
 
     .line 318
     :cond_1e
-    const/4 p1, 0x0
+    const/4 v1, 0x0
 
-    return-object p1
+    return-object v1
 .end method

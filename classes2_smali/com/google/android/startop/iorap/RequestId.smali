@@ -54,6 +54,7 @@
 
 .method private constructor <init>(J)V
     .registers 3
+    .param p1, "requestId"  # J
 
     .line 60
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -70,6 +71,7 @@
 
 .method private constructor <init>(Landroid/os/Parcel;)V
     .registers 4
+    .param p1, "in"  # Landroid/os/Parcel;
 
     .line 98
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -90,6 +92,8 @@
 
 .method synthetic constructor <init>(Landroid/os/Parcel;Lcom/google/android/startop/iorap/RequestId$1;)V
     .registers 3
+    .param p1, "x0"  # Landroid/os/Parcel;
+    .param p2, "x1"  # Lcom/google/android/startop/iorap/RequestId$1;
 
     .line 37
     invoke-direct {p0, p1}, Lcom/google/android/startop/iorap/RequestId;-><init>(Landroid/os/Parcel;)V
@@ -125,25 +129,26 @@
 
 .method private equals(Lcom/google/android/startop/iorap/RequestId;)Z
     .registers 6
+    .param p1, "other"  # Lcom/google/android/startop/iorap/RequestId;
 
     .line 88
     iget-wide v0, p0, Lcom/google/android/startop/iorap/RequestId;->requestId:J
 
     iget-wide v2, p1, Lcom/google/android/startop/iorap/RequestId;->requestId:J
 
-    cmp-long p1, v0, v2
+    cmp-long v0, v0, v2
 
-    if-nez p1, :cond_a
+    if-nez v0, :cond_a
 
-    const/4 p1, 0x1
+    const/4 v0, 0x1
 
     goto :goto_b
 
     :cond_a
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
     :goto_b
-    return p1
+    return v0
 .end method
 
 .method public static nextValueForSequence()Lcom/google/android/startop/iorap/RequestId;
@@ -159,6 +164,7 @@
     sget-wide v1, Lcom/google/android/startop/iorap/RequestId;->mNextRequestId:J
 
     .line 55
+    .local v1, "currentRequestId":J
     sget-wide v3, Lcom/google/android/startop/iorap/RequestId;->mNextRequestId:J
 
     const-wide/16 v5, 0x1
@@ -180,6 +186,7 @@
     return-object v0
 
     .line 56
+    .end local v1  # "currentRequestId":J
     :catchall_13
     move-exception v1
 
@@ -204,35 +211,38 @@
 
 .method public equals(Ljava/lang/Object;)Z
     .registers 3
+    .param p1, "other"  # Ljava/lang/Object;
 
     .line 79
     if-ne p0, p1, :cond_4
 
     .line 80
-    const/4 p1, 0x1
+    const/4 v0, 0x1
 
-    return p1
+    return v0
 
     .line 81
     :cond_4
     instance-of v0, p1, Lcom/google/android/startop/iorap/RequestId;
 
-    if-eqz v0, :cond_f
+    if-eqz v0, :cond_10
 
     .line 82
-    check-cast p1, Lcom/google/android/startop/iorap/RequestId;
+    move-object v0, p1
 
-    invoke-direct {p0, p1}, Lcom/google/android/startop/iorap/RequestId;->equals(Lcom/google/android/startop/iorap/RequestId;)Z
+    check-cast v0, Lcom/google/android/startop/iorap/RequestId;
 
-    move-result p1
+    invoke-direct {p0, v0}, Lcom/google/android/startop/iorap/RequestId;->equals(Lcom/google/android/startop/iorap/RequestId;)Z
 
-    return p1
+    move-result v0
+
+    return v0
 
     .line 84
-    :cond_f
-    const/4 p1, 0x0
+    :cond_10
+    const/4 v0, 0x0
 
-    return p1
+    return v0
 .end method
 
 .method public toString()Ljava/lang/String;
@@ -264,6 +274,8 @@
 
 .method public writeToParcel(Landroid/os/Parcel;I)V
     .registers 5
+    .param p1, "out"  # Landroid/os/Parcel;
+    .param p2, "flags"  # I
 
     .line 95
     iget-wide v0, p0, Lcom/google/android/startop/iorap/RequestId;->requestId:J

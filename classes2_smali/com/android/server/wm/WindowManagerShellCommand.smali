@@ -12,6 +12,7 @@
 # direct methods
 .method public constructor <init>(Lcom/android/server/wm/WindowManagerService;)V
     .registers 2
+    .param p1, "service"  # Lcom/android/server/wm/WindowManagerService;
 
     .line 48
     invoke-direct {p0}, Landroid/os/ShellCommand;-><init>()V
@@ -27,116 +28,129 @@
 .end method
 
 .method private getDisplayId(Ljava/lang/String;)I
-    .registers 5
+    .registers 8
+    .param p1, "opt"  # Ljava/lang/String;
 
     .line 92
-    nop
+    const/4 v0, 0x0
 
     .line 93
-    const-string v0, "-d"
+    .local v0, "displayId":I
+    const-string v1, "-d"
 
-    invoke-virtual {v0, p1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v1, p1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+
+    move-result v2
+
+    if-eqz v2, :cond_b
+
+    move-object v2, p1
+
+    goto :goto_f
+
+    :cond_b
+    invoke-virtual {p0}, Lcom/android/server/wm/WindowManagerShellCommand;->getNextOption()Ljava/lang/String;
+
+    move-result-object v2
+
+    .line 94
+    .local v2, "option":Ljava/lang/String;
+    :goto_f
+    if-eqz v2, :cond_55
+
+    invoke-virtual {v1, v2}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
     move-result v1
 
-    if-eqz v1, :cond_a
-
-    goto :goto_e
-
-    :cond_a
-    invoke-virtual {p0}, Lcom/android/server/wm/WindowManagerShellCommand;->getNextOption()Ljava/lang/String;
-
-    move-result-object p1
-
-    .line 94
-    :goto_e
-    if-eqz p1, :cond_52
-
-    invoke-virtual {v0, p1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
-
-    move-result p1
-
-    if-eqz p1, :cond_52
+    if-eqz v1, :cond_55
 
     .line 96
-    :try_start_16
+    :try_start_17
     invoke-virtual {p0}, Lcom/android/server/wm/WindowManagerShellCommand;->getNextArgRequired()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v1
 
-    invoke-static {p1}, Ljava/lang/Integer;->parseInt(Ljava/lang/String;)I
+    invoke-static {v1}, Ljava/lang/Integer;->parseInt(Ljava/lang/String;)I
 
-    move-result p1
-    :try_end_1e
-    .catch Ljava/lang/NumberFormatException; {:try_start_16 .. :try_end_1e} :catch_39
-    .catch Ljava/lang/IllegalArgumentException; {:try_start_16 .. :try_end_1e} :catch_1f
+    move-result v1
+    :try_end_1f
+    .catch Ljava/lang/NumberFormatException; {:try_start_17 .. :try_end_1f} :catch_3b
+    .catch Ljava/lang/IllegalArgumentException; {:try_start_17 .. :try_end_1f} :catch_21
+
+    move v0, v1
 
     .line 101
-    goto :goto_53
+    :goto_20
+    goto :goto_55
 
     .line 99
-    :catch_1f
-    move-exception p1
+    :catch_21
+    move-exception v1
 
     .line 100
+    .local v1, "e":Ljava/lang/IllegalArgumentException;
     invoke-virtual {p0}, Lcom/android/server/wm/WindowManagerShellCommand;->getErrPrintWriter()Ljava/io/PrintWriter;
 
-    move-result-object v0
+    move-result-object v3
 
-    new-instance v1, Ljava/lang/StringBuilder;
+    new-instance v4, Ljava/lang/StringBuilder;
 
-    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v4}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v2, "Error: "
+    const-string v5, "Error: "
 
-    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v1, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    invoke-virtual {v4, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v4}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v4
 
-    invoke-virtual {v0, p1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {v3, v4}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
-    goto :goto_52
+    goto :goto_55
 
     .line 97
-    :catch_39
-    move-exception p1
+    .end local v1  # "e":Ljava/lang/IllegalArgumentException;
+    :catch_3b
+    move-exception v1
 
     .line 98
+    .local v1, "e":Ljava/lang/NumberFormatException;
     invoke-virtual {p0}, Lcom/android/server/wm/WindowManagerShellCommand;->getErrPrintWriter()Ljava/io/PrintWriter;
 
-    move-result-object v0
+    move-result-object v3
 
-    new-instance v1, Ljava/lang/StringBuilder;
+    new-instance v4, Ljava/lang/StringBuilder;
 
-    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v4}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v2, "Error: bad number "
+    const-string v5, "Error: bad number "
 
-    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v1, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    invoke-virtual {v4, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v4}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v4
 
-    invoke-virtual {v0, p1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {v3, v4}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+
+    .end local v1  # "e":Ljava/lang/NumberFormatException;
+    goto :goto_20
 
     .line 103
-    :cond_52
-    :goto_52
-    const/4 p1, 0x0
-
-    :goto_53
-    return p1
+    :cond_55
+    :goto_55
+    return v0
 .end method
 
 .method private parseDimension(Ljava/lang/String;I)I
     .registers 6
+    .param p1, "s"  # Ljava/lang/String;
+    .param p2, "displayId"  # I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Ljava/lang/NumberFormatException;
@@ -157,19 +171,19 @@
     .line 292
     invoke-virtual {p1}, Ljava/lang/String;->length()I
 
-    move-result p2
+    move-result v0
 
-    add-int/lit8 p2, p2, -0x2
+    add-int/lit8 v0, v0, -0x2
 
-    invoke-virtual {p1, v1, p2}, Ljava/lang/String;->substring(II)Ljava/lang/String;
+    invoke-virtual {p1, v1, v0}, Ljava/lang/String;->substring(II)Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    invoke-static {p1}, Ljava/lang/Integer;->parseInt(Ljava/lang/String;)I
+    invoke-static {v0}, Ljava/lang/Integer;->parseInt(Ljava/lang/String;)I
 
-    move-result p1
+    move-result v0
 
-    return p1
+    return v0
 
     .line 294
     :cond_18
@@ -182,29 +196,31 @@
     if-eqz v0, :cond_3c
 
     .line 297
-    const/16 v0, 0xa0
+    :try_start_20
+    iget-object v0, p0, Lcom/android/server/wm/WindowManagerShellCommand;->mInterface:Landroid/view/IWindowManager;
 
-    :try_start_22
-    iget-object v2, p0, Lcom/android/server/wm/WindowManagerShellCommand;->mInterface:Landroid/view/IWindowManager;
+    invoke-interface {v0, p2}, Landroid/view/IWindowManager;->getBaseDisplayDensity(I)I
 
-    invoke-interface {v2, p2}, Landroid/view/IWindowManager;->getBaseDisplayDensity(I)I
-
-    move-result p2
-    :try_end_28
-    .catch Landroid/os/RemoteException; {:try_start_22 .. :try_end_28} :catch_29
+    move-result v0
+    :try_end_26
+    .catch Landroid/os/RemoteException; {:try_start_20 .. :try_end_26} :catch_27
 
     .line 300
-    goto :goto_2b
+    .local v0, "density":I
+    goto :goto_2a
 
     .line 298
-    :catch_29
-    move-exception p2
+    .end local v0  # "density":I
+    :catch_27
+    move-exception v0
 
     .line 299
-    move p2, v0
+    .local v0, "e":Landroid/os/RemoteException;
+    const/16 v0, 0xa0
 
     .line 301
-    :goto_2b
+    .local v0, "density":I
+    :goto_2a
     invoke-virtual {p1}, Ljava/lang/String;->length()I
 
     move-result v2
@@ -213,29 +229,31 @@
 
     invoke-virtual {p1, v1, v2}, Ljava/lang/String;->substring(II)Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v1
 
-    invoke-static {p1}, Ljava/lang/Integer;->parseInt(Ljava/lang/String;)I
+    invoke-static {v1}, Ljava/lang/Integer;->parseInt(Ljava/lang/String;)I
 
-    move-result p1
+    move-result v1
 
-    mul-int/2addr p1, p2
+    mul-int/2addr v1, v0
 
-    div-int/2addr p1, v0
+    div-int/lit16 v1, v1, 0xa0
 
-    return p1
+    return v1
 
     .line 304
+    .end local v0  # "density":I
     :cond_3c
     invoke-static {p1}, Ljava/lang/Integer;->parseInt(Ljava/lang/String;)I
 
-    move-result p1
+    move-result v0
 
-    return p1
+    return v0
 .end method
 
 .method private printFoldedArea(Ljava/io/PrintWriter;)V
     .registers 6
+    .param p1, "pw"  # Ljava/io/PrintWriter;
 
     .line 213
     iget-object v0, p0, Lcom/android/server/wm/WindowManagerShellCommand;->mInternal:Lcom/android/server/wm/WindowManagerService;
@@ -245,6 +263,7 @@
     move-result-object v0
 
     .line 214
+    .local v0, "foldedArea":Landroid/graphics/Rect;
     invoke-virtual {v0}, Landroid/graphics/Rect;->isEmpty()Z
 
     move-result v1
@@ -252,9 +271,9 @@
     if-eqz v1, :cond_12
 
     .line 215
-    const-string v0, "Folded area: none"
+    const-string v1, "Folded area: none"
 
-    invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {p1, v1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
     goto :goto_42
 
@@ -288,15 +307,15 @@
 
     invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    iget v0, v0, Landroid/graphics/Rect;->bottom:I
+    iget v2, v0, Landroid/graphics/Rect;->bottom:I
 
-    invoke-virtual {v1, v0}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
     invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v1
 
-    invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {p1, v1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
     .line 220
     :goto_42
@@ -304,7 +323,9 @@
 .end method
 
 .method private printInitialDisplayDensity(Ljava/io/PrintWriter;I)V
-    .registers 6
+    .registers 7
+    .param p1, "pw"  # Ljava/io/PrintWriter;
+    .param p2, "displayId"  # I
 
     .line 163
     :try_start_0
@@ -315,22 +336,74 @@
     move-result v0
 
     .line 164
+    .local v0, "initialDensity":I
     iget-object v1, p0, Lcom/android/server/wm/WindowManagerShellCommand;->mInterface:Landroid/view/IWindowManager;
 
     invoke-interface {v1, p2}, Landroid/view/IWindowManager;->getBaseDisplayDensity(I)I
 
-    move-result p2
+    move-result v1
 
     .line 165
+    .local v1, "baseDensity":I
+    new-instance v2, Ljava/lang/StringBuilder;
+
+    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
+
+    const-string v3, "Physical density: "
+
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v2, v0}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v2
+
+    invoke-virtual {p1, v2}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+
+    .line 166
+    if-eq v0, v1, :cond_36
+
+    .line 167
+    new-instance v2, Ljava/lang/StringBuilder;
+
+    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
+
+    const-string v3, "Override density: "
+
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v2, v1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v2
+
+    invoke-virtual {p1, v2}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    :try_end_36
+    .catch Landroid/os/RemoteException; {:try_start_0 .. :try_end_36} :catch_37
+
+    .line 173
+    .end local v0  # "initialDensity":I
+    .end local v1  # "baseDensity":I
+    :cond_36
+    goto :goto_4c
+
+    .line 169
+    :catch_37
+    move-exception v0
+
+    .line 172
+    .local v0, "e":Landroid/os/RemoteException;
     new-instance v1, Ljava/lang/StringBuilder;
 
     invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v2, "Physical density: "
+    const-string v2, "Remote exception: "
 
     invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v1, v0}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
@@ -338,60 +411,16 @@
 
     invoke-virtual {p1, v1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
-    .line 166
-    if-eq v0, p2, :cond_36
-
-    .line 167
-    new-instance v0, Ljava/lang/StringBuilder;
-
-    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
-
-    const-string v1, "Override density: "
-
-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v0, p2}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
-
-    move-result-object p2
-
-    invoke-virtual {p1, p2}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
-    :try_end_36
-    .catch Landroid/os/RemoteException; {:try_start_0 .. :try_end_36} :catch_37
-
-    .line 173
-    :cond_36
-    goto :goto_4c
-
-    .line 169
-    :catch_37
-    move-exception p2
-
-    .line 172
-    new-instance v0, Ljava/lang/StringBuilder;
-
-    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
-
-    const-string v1, "Remote exception: "
-
-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v0, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
-
-    move-result-object p2
-
-    invoke-virtual {p1, p2}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
-
     .line 174
+    .end local v0  # "e":Landroid/os/RemoteException;
     :goto_4c
     return-void
 .end method
 
 .method private printInitialDisplaySize(Ljava/io/PrintWriter;I)V
-    .registers 7
+    .registers 8
+    .param p1, "pw"  # Ljava/io/PrintWriter;
+    .param p2, "displayId"  # I
 
     .line 107
     const-string v0, "x"
@@ -401,11 +430,13 @@
     invoke-direct {v1}, Landroid/graphics/Point;-><init>()V
 
     .line 108
+    .local v1, "initialSize":Landroid/graphics/Point;
     new-instance v2, Landroid/graphics/Point;
 
     invoke-direct {v2}, Landroid/graphics/Point;-><init>()V
 
     .line 111
+    .local v2, "baseSize":Landroid/graphics/Point;
     :try_start_c
     iget-object v3, p0, Lcom/android/server/wm/WindowManagerShellCommand;->mInterface:Landroid/view/IWindowManager;
 
@@ -417,61 +448,61 @@
     invoke-interface {v3, p2, v2}, Landroid/view/IWindowManager;->getBaseDisplaySize(ILandroid/graphics/Point;)V
 
     .line 113
-    new-instance p2, Ljava/lang/StringBuilder;
+    new-instance v3, Ljava/lang/StringBuilder;
 
-    invoke-direct {p2}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v3, "Physical size: "
+    const-string v4, "Physical size: "
 
-    invoke-virtual {p2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    iget v3, v1, Landroid/graphics/Point;->x:I
+    iget v4, v1, Landroid/graphics/Point;->x:I
 
-    invoke-virtual {p2, v3}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p2, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    iget v3, v1, Landroid/graphics/Point;->y:I
+    iget v4, v1, Landroid/graphics/Point;->y:I
 
-    invoke-virtual {p2, v3}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p2
+    move-result-object v3
 
-    invoke-virtual {p1, p2}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {p1, v3}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
     .line 114
     invoke-virtual {v1, v2}, Landroid/graphics/Point;->equals(Ljava/lang/Object;)Z
 
-    move-result p2
+    move-result v3
 
-    if-nez p2, :cond_58
+    if-nez v3, :cond_58
 
     .line 115
-    new-instance p2, Ljava/lang/StringBuilder;
+    new-instance v3, Ljava/lang/StringBuilder;
 
-    invoke-direct {p2}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v1, "Override size: "
+    const-string v4, "Override size: "
 
-    invoke-virtual {p2, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    iget v1, v2, Landroid/graphics/Point;->x:I
+    iget v4, v2, Landroid/graphics/Point;->x:I
 
-    invoke-virtual {p2, v1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p2, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     iget v0, v2, Landroid/graphics/Point;->y:I
 
-    invoke-virtual {p2, v0}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v0}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p2
+    move-result-object v0
 
-    invoke-virtual {p1, p2}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
     :try_end_58
     .catch Landroid/os/RemoteException; {:try_start_c .. :try_end_58} :catch_59
 
@@ -481,32 +512,35 @@
 
     .line 117
     :catch_59
-    move-exception p2
+    move-exception v0
 
     .line 120
-    new-instance v0, Ljava/lang/StringBuilder;
+    .local v0, "e":Landroid/os/RemoteException;
+    new-instance v3, Ljava/lang/StringBuilder;
 
-    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v1, "Remote exception: "
+    const-string v4, "Remote exception: "
 
-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p2
+    move-result-object v3
 
-    invoke-virtual {p1, p2}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {p1, v3}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
     .line 122
+    .end local v0  # "e":Landroid/os/RemoteException;
     :goto_6e
     return-void
 .end method
 
 .method private runDismissKeyguard(Ljava/io/PrintWriter;)I
-    .registers 3
+    .registers 4
+    .param p1, "pw"  # Ljava/io/PrintWriter;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -514,20 +548,21 @@
     .end annotation
 
     .line 286
-    iget-object p1, p0, Lcom/android/server/wm/WindowManagerShellCommand;->mInterface:Landroid/view/IWindowManager;
+    iget-object v0, p0, Lcom/android/server/wm/WindowManagerShellCommand;->mInterface:Landroid/view/IWindowManager;
 
-    const/4 v0, 0x0
+    const/4 v1, 0x0
 
-    invoke-interface {p1, v0, v0}, Landroid/view/IWindowManager;->dismissKeyguard(Lcom/android/internal/policy/IKeyguardDismissCallback;Ljava/lang/CharSequence;)V
+    invoke-interface {v0, v1, v1}, Landroid/view/IWindowManager;->dismissKeyguard(Lcom/android/internal/policy/IKeyguardDismissCallback;Ljava/lang/CharSequence;)V
 
     .line 287
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    return p1
+    return v0
 .end method
 
 .method private runDisplayDensity(Ljava/io/PrintWriter;)I
-    .registers 6
+    .registers 9
+    .param p1, "pw"  # Ljava/io/PrintWriter;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -540,11 +575,13 @@
     move-result-object v0
 
     .line 179
+    .local v0, "densityStr":Ljava/lang/String;
     invoke-direct {p0, v0}, Lcom/android/server/wm/WindowManagerShellCommand;->getDisplayId(Ljava/lang/String;)I
 
     move-result v1
 
     .line 181
+    .local v1, "displayId":I
     const/4 v2, 0x0
 
     if-nez v0, :cond_f
@@ -573,105 +610,116 @@
 
     .line 187
     :cond_1b
-    const-string p1, "reset"
+    const-string v3, "reset"
 
-    invoke-virtual {p1, v0}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v3, v0}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result p1
+    move-result v3
 
-    const/4 v3, -0x1
-
-    if-eqz p1, :cond_26
+    if-eqz v3, :cond_25
 
     .line 188
-    move p1, v3
+    const/4 v3, -0x1
 
-    goto :goto_39
+    .local v3, "density":I
+    goto :goto_3a
 
     .line 191
-    :cond_26
+    .end local v3  # "density":I
+    :cond_25
+    const/4 v3, -0x1
+
     :try_start_26
     invoke-static {v0}, Ljava/lang/Integer;->parseInt(Ljava/lang/String;)I
 
-    move-result p1
+    move-result v4
     :try_end_2a
-    .catch Ljava/lang/NumberFormatException; {:try_start_26 .. :try_end_2a} :catch_48
+    .catch Ljava/lang/NumberFormatException; {:try_start_26 .. :try_end_2a} :catch_49
 
     .line 195
+    .local v4, "density":I
     nop
 
     .line 196
-    const/16 v0, 0x48
+    const/16 v5, 0x48
 
-    if-ge p1, v0, :cond_39
+    if-ge v4, v5, :cond_39
 
     .line 197
     invoke-virtual {p0}, Lcom/android/server/wm/WindowManagerShellCommand;->getErrPrintWriter()Ljava/io/PrintWriter;
 
-    move-result-object p1
+    move-result-object v2
 
-    const-string v0, "Error: density must be >= 72"
+    const-string v5, "Error: density must be >= 72"
 
-    invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {v2, v5}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
     .line 198
     return v3
 
-    .line 202
+    .line 196
     :cond_39
-    :goto_39
-    const/4 v0, -0x2
+    move v3, v4
 
-    if-lez p1, :cond_42
+    .line 202
+    .end local v4  # "density":I
+    .restart local v3  # "density":I
+    :goto_3a
+    const/4 v4, -0x2
+
+    if-lez v3, :cond_43
 
     .line 203
-    iget-object v3, p0, Lcom/android/server/wm/WindowManagerShellCommand;->mInterface:Landroid/view/IWindowManager;
+    iget-object v5, p0, Lcom/android/server/wm/WindowManagerShellCommand;->mInterface:Landroid/view/IWindowManager;
 
-    invoke-interface {v3, v1, p1, v0}, Landroid/view/IWindowManager;->setForcedDisplayDensityForUser(III)V
+    invoke-interface {v5, v1, v3, v4}, Landroid/view/IWindowManager;->setForcedDisplayDensityForUser(III)V
 
-    goto :goto_47
+    goto :goto_48
 
     .line 206
-    :cond_42
-    iget-object p1, p0, Lcom/android/server/wm/WindowManagerShellCommand;->mInterface:Landroid/view/IWindowManager;
+    :cond_43
+    iget-object v5, p0, Lcom/android/server/wm/WindowManagerShellCommand;->mInterface:Landroid/view/IWindowManager;
 
-    invoke-interface {p1, v1, v0}, Landroid/view/IWindowManager;->clearForcedDisplayDensityForUser(II)V
+    invoke-interface {v5, v1, v4}, Landroid/view/IWindowManager;->clearForcedDisplayDensityForUser(II)V
 
     .line 209
-    :goto_47
+    :goto_48
     return v2
 
     .line 192
-    :catch_48
-    move-exception p1
+    .end local v3  # "density":I
+    :catch_49
+    move-exception v2
 
     .line 193
+    .local v2, "e":Ljava/lang/NumberFormatException;
     invoke-virtual {p0}, Lcom/android/server/wm/WindowManagerShellCommand;->getErrPrintWriter()Ljava/io/PrintWriter;
 
-    move-result-object v0
+    move-result-object v4
 
-    new-instance v1, Ljava/lang/StringBuilder;
+    new-instance v5, Ljava/lang/StringBuilder;
 
-    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v5}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v2, "Error: bad number "
+    const-string v6, "Error: bad number "
 
-    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v1, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    invoke-virtual {v5, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v5}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v5
 
-    invoke-virtual {v0, p1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {v4, v5}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
     .line 194
     return v3
 .end method
 
 .method private runDisplayFoldedArea(Ljava/io/PrintWriter;)I
-    .registers 8
+    .registers 11
+    .param p1, "pw"  # Ljava/io/PrintWriter;
 
     .line 223
     invoke-virtual {p0}, Lcom/android/server/wm/WindowManagerShellCommand;->getNextArg()Ljava/lang/String;
@@ -679,11 +727,13 @@
     move-result-object v0
 
     .line 224
+    .local v0, "areaStr":Ljava/lang/String;
     new-instance v1, Landroid/graphics/Rect;
 
     invoke-direct {v1}, Landroid/graphics/Rect;-><init>()V
 
     .line 225
+    .local v1, "rect":Landroid/graphics/Rect;
     const/4 v2, 0x0
 
     if-nez v0, :cond_10
@@ -696,13 +746,13 @@
 
     .line 228
     :cond_10
-    const-string p1, "reset"
+    const-string v3, "reset"
 
-    invoke-virtual {p1, v0}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v3, v0}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result p1
+    move-result v3
 
-    if-eqz p1, :cond_1c
+    if-eqz v3, :cond_1c
 
     .line 229
     invoke-virtual {v1}, Landroid/graphics/Rect;->setEmpty()V
@@ -711,96 +761,101 @@
 
     .line 231
     :cond_1c
-    const-string p1, "(-?\\d+),(-?\\d+),(-?\\d+),(-?\\d+)"
+    const-string v3, "(-?\\d+),(-?\\d+),(-?\\d+),(-?\\d+)"
 
-    invoke-static {p1}, Ljava/util/regex/Pattern;->compile(Ljava/lang/String;)Ljava/util/regex/Pattern;
+    invoke-static {v3}, Ljava/util/regex/Pattern;->compile(Ljava/lang/String;)Ljava/util/regex/Pattern;
 
-    move-result-object p1
+    move-result-object v3
 
     .line 233
-    invoke-virtual {p1, v0}, Ljava/util/regex/Pattern;->matcher(Ljava/lang/CharSequence;)Ljava/util/regex/Matcher;
+    .local v3, "flattenedPattern":Ljava/util/regex/Pattern;
+    invoke-virtual {v3, v0}, Ljava/util/regex/Pattern;->matcher(Ljava/lang/CharSequence;)Ljava/util/regex/Matcher;
 
-    move-result-object p1
+    move-result-object v4
 
     .line 234
-    invoke-virtual {p1}, Ljava/util/regex/Matcher;->matches()Z
+    .local v4, "matcher":Ljava/util/regex/Matcher;
+    invoke-virtual {v4}, Ljava/util/regex/Matcher;->matches()Z
 
-    move-result v0
+    move-result v5
 
-    if-nez v0, :cond_37
+    if-nez v5, :cond_37
 
     .line 235
     invoke-virtual {p0}, Lcom/android/server/wm/WindowManagerShellCommand;->getErrPrintWriter()Ljava/io/PrintWriter;
 
-    move-result-object p1
+    move-result-object v2
 
-    const-string v0, "Error: area should be LEFT,TOP,RIGHT,BOTTOM"
+    const-string v5, "Error: area should be LEFT,TOP,RIGHT,BOTTOM"
 
-    invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {v2, v5}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
     .line 236
-    const/4 p1, -0x1
+    const/4 v2, -0x1
 
-    return p1
+    return v2
 
     .line 238
     :cond_37
-    const/4 v0, 0x1
+    const/4 v5, 0x1
 
-    invoke-virtual {p1, v0}, Ljava/util/regex/Matcher;->group(I)Ljava/lang/String;
+    invoke-virtual {v4, v5}, Ljava/util/regex/Matcher;->group(I)Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v5
 
-    invoke-static {v0}, Ljava/lang/Integer;->parseInt(Ljava/lang/String;)I
+    invoke-static {v5}, Ljava/lang/Integer;->parseInt(Ljava/lang/String;)I
 
-    move-result v0
+    move-result v5
 
-    const/4 v3, 0x2
+    const/4 v6, 0x2
 
-    invoke-virtual {p1, v3}, Ljava/util/regex/Matcher;->group(I)Ljava/lang/String;
+    invoke-virtual {v4, v6}, Ljava/util/regex/Matcher;->group(I)Ljava/lang/String;
 
-    move-result-object v3
+    move-result-object v6
 
-    invoke-static {v3}, Ljava/lang/Integer;->parseInt(Ljava/lang/String;)I
+    invoke-static {v6}, Ljava/lang/Integer;->parseInt(Ljava/lang/String;)I
 
-    move-result v3
+    move-result v6
 
-    const/4 v4, 0x3
+    const/4 v7, 0x3
 
     .line 239
-    invoke-virtual {p1, v4}, Ljava/util/regex/Matcher;->group(I)Ljava/lang/String;
+    invoke-virtual {v4, v7}, Ljava/util/regex/Matcher;->group(I)Ljava/lang/String;
 
-    move-result-object v4
+    move-result-object v7
 
-    invoke-static {v4}, Ljava/lang/Integer;->parseInt(Ljava/lang/String;)I
+    invoke-static {v7}, Ljava/lang/Integer;->parseInt(Ljava/lang/String;)I
 
-    move-result v4
+    move-result v7
 
-    const/4 v5, 0x4
+    const/4 v8, 0x4
 
-    invoke-virtual {p1, v5}, Ljava/util/regex/Matcher;->group(I)Ljava/lang/String;
+    invoke-virtual {v4, v8}, Ljava/util/regex/Matcher;->group(I)Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v8
 
-    invoke-static {p1}, Ljava/lang/Integer;->parseInt(Ljava/lang/String;)I
+    invoke-static {v8}, Ljava/lang/Integer;->parseInt(Ljava/lang/String;)I
 
-    move-result p1
+    move-result v8
 
     .line 238
-    invoke-virtual {v1, v0, v3, v4, p1}, Landroid/graphics/Rect;->set(IIII)V
+    invoke-virtual {v1, v5, v6, v7, v8}, Landroid/graphics/Rect;->set(IIII)V
 
     .line 242
+    .end local v3  # "flattenedPattern":Ljava/util/regex/Pattern;
+    .end local v4  # "matcher":Ljava/util/regex/Matcher;
     :goto_5e
-    iget-object p1, p0, Lcom/android/server/wm/WindowManagerShellCommand;->mInternal:Lcom/android/server/wm/WindowManagerService;
+    iget-object v3, p0, Lcom/android/server/wm/WindowManagerShellCommand;->mInternal:Lcom/android/server/wm/WindowManagerService;
 
-    invoke-virtual {p1, v1}, Lcom/android/server/wm/WindowManagerService;->setOverrideFoldedArea(Landroid/graphics/Rect;)V
+    invoke-virtual {v3, v1}, Lcom/android/server/wm/WindowManagerService;->setOverrideFoldedArea(Landroid/graphics/Rect;)V
 
     .line 243
     return v2
 .end method
 
 .method private runDisplayOverscan(Ljava/io/PrintWriter;)I
-    .registers 10
+    .registers 12
+    .param p1, "pw"  # Ljava/io/PrintWriter;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -810,153 +865,163 @@
     .line 247
     invoke-virtual {p0}, Lcom/android/server/wm/WindowManagerShellCommand;->getNextArgRequired()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
     .line 248
-    new-instance v0, Landroid/graphics/Rect;
+    .local v0, "overscanStr":Ljava/lang/String;
+    new-instance v1, Landroid/graphics/Rect;
 
-    invoke-direct {v0}, Landroid/graphics/Rect;-><init>()V
+    invoke-direct {v1}, Landroid/graphics/Rect;-><init>()V
 
     .line 249
-    invoke-direct {p0, p1}, Lcom/android/server/wm/WindowManagerShellCommand;->getDisplayId(Ljava/lang/String;)I
+    .local v1, "rect":Landroid/graphics/Rect;
+    invoke-direct {p0, v0}, Lcom/android/server/wm/WindowManagerShellCommand;->getDisplayId(Ljava/lang/String;)I
+
+    move-result v8
+
+    .line 250
+    .local v8, "displayId":I
+    const-string v2, "reset"
+
+    invoke-virtual {v2, v0}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
     move-result v2
 
-    .line 250
-    const-string v1, "reset"
+    const/4 v9, 0x0
 
-    invoke-virtual {v1, p1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
-
-    move-result v1
-
-    const/4 v7, 0x0
-
-    if-eqz v1, :cond_1a
+    if-eqz v2, :cond_1a
 
     .line 251
-    invoke-virtual {v0, v7, v7, v7, v7}, Landroid/graphics/Rect;->set(IIII)V
+    invoke-virtual {v1, v9, v9, v9, v9}, Landroid/graphics/Rect;->set(IIII)V
 
     goto :goto_70
 
     .line 253
     :cond_1a
-    const-string v1, "(-?\\d+),(-?\\d+),(-?\\d+),(-?\\d+)"
+    const-string v2, "(-?\\d+),(-?\\d+),(-?\\d+),(-?\\d+)"
 
-    invoke-static {v1}, Ljava/util/regex/Pattern;->compile(Ljava/lang/String;)Ljava/util/regex/Pattern;
+    invoke-static {v2}, Ljava/util/regex/Pattern;->compile(Ljava/lang/String;)Ljava/util/regex/Pattern;
 
-    move-result-object v1
+    move-result-object v2
 
     .line 255
-    invoke-virtual {v1, p1}, Ljava/util/regex/Pattern;->matcher(Ljava/lang/CharSequence;)Ljava/util/regex/Matcher;
+    .local v2, "FLATTENED_PATTERN":Ljava/util/regex/Pattern;
+    invoke-virtual {v2, v0}, Ljava/util/regex/Pattern;->matcher(Ljava/lang/CharSequence;)Ljava/util/regex/Matcher;
 
-    move-result-object v1
+    move-result-object v3
 
     .line 256
-    invoke-virtual {v1}, Ljava/util/regex/Matcher;->matches()Z
+    .local v3, "matcher":Ljava/util/regex/Matcher;
+    invoke-virtual {v3}, Ljava/util/regex/Matcher;->matches()Z
 
-    move-result v3
+    move-result v4
 
-    if-nez v3, :cond_44
+    if-nez v4, :cond_44
 
     .line 257
     invoke-virtual {p0}, Lcom/android/server/wm/WindowManagerShellCommand;->getErrPrintWriter()Ljava/io/PrintWriter;
 
-    move-result-object v0
+    move-result-object v4
 
-    new-instance v1, Ljava/lang/StringBuilder;
+    new-instance v5, Ljava/lang/StringBuilder;
 
-    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v5}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v2, "Error: bad rectangle arg: "
+    const-string v6, "Error: bad rectangle arg: "
 
-    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v1, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v5, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v5}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v5
 
-    invoke-virtual {v0, p1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {v4, v5}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
     .line 258
-    const/4 p1, -0x1
+    const/4 v4, -0x1
 
-    return p1
+    return v4
 
     .line 260
     :cond_44
-    const/4 p1, 0x1
+    const/4 v4, 0x1
 
-    invoke-virtual {v1, p1}, Ljava/util/regex/Matcher;->group(I)Ljava/lang/String;
+    invoke-virtual {v3, v4}, Ljava/util/regex/Matcher;->group(I)Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v4
 
-    invoke-static {p1}, Ljava/lang/Integer;->parseInt(Ljava/lang/String;)I
+    invoke-static {v4}, Ljava/lang/Integer;->parseInt(Ljava/lang/String;)I
 
-    move-result p1
+    move-result v4
 
-    iput p1, v0, Landroid/graphics/Rect;->left:I
+    iput v4, v1, Landroid/graphics/Rect;->left:I
 
     .line 261
-    const/4 p1, 0x2
+    const/4 v4, 0x2
 
-    invoke-virtual {v1, p1}, Ljava/util/regex/Matcher;->group(I)Ljava/lang/String;
+    invoke-virtual {v3, v4}, Ljava/util/regex/Matcher;->group(I)Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v4
 
-    invoke-static {p1}, Ljava/lang/Integer;->parseInt(Ljava/lang/String;)I
+    invoke-static {v4}, Ljava/lang/Integer;->parseInt(Ljava/lang/String;)I
 
-    move-result p1
+    move-result v4
 
-    iput p1, v0, Landroid/graphics/Rect;->top:I
+    iput v4, v1, Landroid/graphics/Rect;->top:I
 
     .line 262
-    const/4 p1, 0x3
+    const/4 v4, 0x3
 
-    invoke-virtual {v1, p1}, Ljava/util/regex/Matcher;->group(I)Ljava/lang/String;
+    invoke-virtual {v3, v4}, Ljava/util/regex/Matcher;->group(I)Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v4
 
-    invoke-static {p1}, Ljava/lang/Integer;->parseInt(Ljava/lang/String;)I
+    invoke-static {v4}, Ljava/lang/Integer;->parseInt(Ljava/lang/String;)I
 
-    move-result p1
+    move-result v4
 
-    iput p1, v0, Landroid/graphics/Rect;->right:I
+    iput v4, v1, Landroid/graphics/Rect;->right:I
 
     .line 263
-    const/4 p1, 0x4
+    const/4 v4, 0x4
 
-    invoke-virtual {v1, p1}, Ljava/util/regex/Matcher;->group(I)Ljava/lang/String;
+    invoke-virtual {v3, v4}, Ljava/util/regex/Matcher;->group(I)Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v4
 
-    invoke-static {p1}, Ljava/lang/Integer;->parseInt(Ljava/lang/String;)I
+    invoke-static {v4}, Ljava/lang/Integer;->parseInt(Ljava/lang/String;)I
 
-    move-result p1
+    move-result v4
 
-    iput p1, v0, Landroid/graphics/Rect;->bottom:I
+    iput v4, v1, Landroid/graphics/Rect;->bottom:I
 
     .line 266
+    .end local v2  # "FLATTENED_PATTERN":Ljava/util/regex/Pattern;
+    .end local v3  # "matcher":Ljava/util/regex/Matcher;
     :goto_70
-    iget-object v1, p0, Lcom/android/server/wm/WindowManagerShellCommand;->mInterface:Landroid/view/IWindowManager;
+    iget-object v2, p0, Lcom/android/server/wm/WindowManagerShellCommand;->mInterface:Landroid/view/IWindowManager;
 
-    iget v3, v0, Landroid/graphics/Rect;->left:I
+    iget v4, v1, Landroid/graphics/Rect;->left:I
 
-    iget v4, v0, Landroid/graphics/Rect;->top:I
+    iget v5, v1, Landroid/graphics/Rect;->top:I
 
-    iget v5, v0, Landroid/graphics/Rect;->right:I
+    iget v6, v1, Landroid/graphics/Rect;->right:I
 
-    iget v6, v0, Landroid/graphics/Rect;->bottom:I
+    iget v7, v1, Landroid/graphics/Rect;->bottom:I
 
-    invoke-interface/range {v1 .. v6}, Landroid/view/IWindowManager;->setOverscan(IIIII)V
+    move v3, v8
+
+    invoke-interface/range {v2 .. v7}, Landroid/view/IWindowManager;->setOverscan(IIIII)V
 
     .line 267
-    return v7
+    return v9
 .end method
 
 .method private runDisplayScaling(Ljava/io/PrintWriter;)I
-    .registers 5
+    .registers 7
+    .param p1, "pw"  # Ljava/io/PrintWriter;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -966,73 +1031,75 @@
     .line 271
     invoke-virtual {p0}, Lcom/android/server/wm/WindowManagerShellCommand;->getNextArgRequired()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
     .line 272
-    const-string v0, "auto"
+    .local v0, "scalingStr":Ljava/lang/String;
+    const-string v1, "auto"
 
-    invoke-virtual {v0, p1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v1, v0}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result v0
+    move-result v1
 
-    const/4 v1, 0x0
+    const/4 v2, 0x0
 
-    if-eqz v0, :cond_17
+    if-eqz v1, :cond_17
 
     .line 273
-    iget-object v0, p0, Lcom/android/server/wm/WindowManagerShellCommand;->mInterface:Landroid/view/IWindowManager;
+    iget-object v1, p0, Lcom/android/server/wm/WindowManagerShellCommand;->mInterface:Landroid/view/IWindowManager;
 
-    invoke-direct {p0, p1}, Lcom/android/server/wm/WindowManagerShellCommand;->getDisplayId(Ljava/lang/String;)I
+    invoke-direct {p0, v0}, Lcom/android/server/wm/WindowManagerShellCommand;->getDisplayId(Ljava/lang/String;)I
 
-    move-result p1
+    move-result v3
 
-    invoke-interface {v0, p1, v1}, Landroid/view/IWindowManager;->setForcedDisplayScalingMode(II)V
+    invoke-interface {v1, v3, v2}, Landroid/view/IWindowManager;->setForcedDisplayScalingMode(II)V
 
     goto :goto_29
 
     .line 275
     :cond_17
-    const-string v0, "off"
+    const-string v1, "off"
 
-    invoke-virtual {v0, p1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v1, v0}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result v0
+    move-result v1
 
-    if-eqz v0, :cond_2a
+    if-eqz v1, :cond_2a
 
     .line 276
-    iget-object v0, p0, Lcom/android/server/wm/WindowManagerShellCommand;->mInterface:Landroid/view/IWindowManager;
+    iget-object v1, p0, Lcom/android/server/wm/WindowManagerShellCommand;->mInterface:Landroid/view/IWindowManager;
 
-    invoke-direct {p0, p1}, Lcom/android/server/wm/WindowManagerShellCommand;->getDisplayId(Ljava/lang/String;)I
+    invoke-direct {p0, v0}, Lcom/android/server/wm/WindowManagerShellCommand;->getDisplayId(Ljava/lang/String;)I
 
-    move-result p1
+    move-result v3
 
-    const/4 v2, 0x1
+    const/4 v4, 0x1
 
-    invoke-interface {v0, p1, v2}, Landroid/view/IWindowManager;->setForcedDisplayScalingMode(II)V
+    invoke-interface {v1, v3, v4}, Landroid/view/IWindowManager;->setForcedDisplayScalingMode(II)V
 
     .line 282
     :goto_29
-    return v1
+    return v2
 
     .line 279
     :cond_2a
     invoke-virtual {p0}, Lcom/android/server/wm/WindowManagerShellCommand;->getErrPrintWriter()Ljava/io/PrintWriter;
 
-    move-result-object p1
+    move-result-object v1
 
-    const-string v0, "Error: scaling must be \'auto\' or \'off\'"
+    const-string v2, "Error: scaling must be \'auto\' or \'off\'"
 
-    invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {v1, v2}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
     .line 280
-    const/4 p1, -0x1
+    const/4 v1, -0x1
 
-    return p1
+    return v1
 .end method
 
 .method private runDisplaySize(Ljava/io/PrintWriter;)I
-    .registers 7
+    .registers 12
+    .param p1, "pw"  # Ljava/io/PrintWriter;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -1045,11 +1112,13 @@
     move-result-object v0
 
     .line 127
+    .local v0, "size":Ljava/lang/String;
     invoke-direct {p0, v0}, Lcom/android/server/wm/WindowManagerShellCommand;->getDisplayId(Ljava/lang/String;)I
 
     move-result v1
 
     .line 128
+    .local v1, "displayId":I
     const/4 v2, 0x0
 
     if-nez v0, :cond_f
@@ -1078,485 +1147,504 @@
 
     .line 134
     :cond_1b
-    const-string p1, "reset"
+    const-string v3, "reset"
 
-    invoke-virtual {p1, v0}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v3, v0}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result p1
+    move-result v3
 
-    const/4 v3, -0x1
+    const/4 v4, -0x1
 
-    if-eqz p1, :cond_26
+    if-eqz v3, :cond_26
 
     .line 135
-    move v0, v3
+    move v3, v4
 
-    goto :goto_4a
+    .local v3, "h":I
+    .local v4, "w":I
+    goto :goto_4b
 
     .line 137
+    .end local v3  # "h":I
+    .end local v4  # "w":I
     :cond_26
-    const/16 p1, 0x78
+    const/16 v3, 0x78
 
-    invoke-virtual {v0, p1}, Ljava/lang/String;->indexOf(I)I
+    invoke-virtual {v0, v3}, Ljava/lang/String;->indexOf(I)I
 
-    move-result p1
+    move-result v3
 
     .line 138
-    if-lez p1, :cond_74
+    .local v3, "div":I
+    if-lez v3, :cond_75
 
     invoke-virtual {v0}, Ljava/lang/String;->length()I
 
-    move-result v4
+    move-result v5
 
-    add-int/lit8 v4, v4, -0x1
+    add-int/lit8 v5, v5, -0x1
 
-    if-lt p1, v4, :cond_37
+    if-lt v3, v5, :cond_37
 
-    goto :goto_74
+    goto :goto_75
 
     .line 142
     :cond_37
-    invoke-virtual {v0, v2, p1}, Ljava/lang/String;->substring(II)Ljava/lang/String;
+    invoke-virtual {v0, v2, v3}, Ljava/lang/String;->substring(II)Ljava/lang/String;
 
-    move-result-object v4
+    move-result-object v5
 
     .line 143
-    add-int/lit8 p1, p1, 0x1
+    .local v5, "wstr":Ljava/lang/String;
+    add-int/lit8 v6, v3, 0x1
 
-    invoke-virtual {v0, p1}, Ljava/lang/String;->substring(I)Ljava/lang/String;
+    invoke-virtual {v0, v6}, Ljava/lang/String;->substring(I)Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v6
 
     .line 145
+    .local v6, "hstr":Ljava/lang/String;
     :try_start_41
-    invoke-direct {p0, v4, v1}, Lcom/android/server/wm/WindowManagerShellCommand;->parseDimension(Ljava/lang/String;I)I
+    invoke-direct {p0, v5, v1}, Lcom/android/server/wm/WindowManagerShellCommand;->parseDimension(Ljava/lang/String;I)I
 
-    move-result v0
+    move-result v7
 
     .line 146
-    invoke-direct {p0, p1, v1}, Lcom/android/server/wm/WindowManagerShellCommand;->parseDimension(Ljava/lang/String;I)I
+    .local v7, "w":I
+    invoke-direct {p0, v6, v1}, Lcom/android/server/wm/WindowManagerShellCommand;->parseDimension(Ljava/lang/String;I)I
 
-    move-result v3
+    move-result v4
     :try_end_49
-    .catch Ljava/lang/NumberFormatException; {:try_start_41 .. :try_end_49} :catch_5a
+    .catch Ljava/lang/NumberFormatException; {:try_start_41 .. :try_end_49} :catch_5b
 
     .line 150
-    nop
+    .local v4, "h":I
+    move v3, v4
+
+    move v4, v7
 
     .line 153
-    :goto_4a
-    if-ltz v0, :cond_54
+    .end local v5  # "wstr":Ljava/lang/String;
+    .end local v6  # "hstr":Ljava/lang/String;
+    .end local v7  # "w":I
+    .local v3, "h":I
+    .local v4, "w":I
+    :goto_4b
+    if-ltz v4, :cond_55
 
-    if-ltz v3, :cond_54
+    if-ltz v3, :cond_55
 
     .line 154
-    iget-object p1, p0, Lcom/android/server/wm/WindowManagerShellCommand;->mInterface:Landroid/view/IWindowManager;
+    iget-object v5, p0, Lcom/android/server/wm/WindowManagerShellCommand;->mInterface:Landroid/view/IWindowManager;
 
-    invoke-interface {p1, v1, v0, v3}, Landroid/view/IWindowManager;->setForcedDisplaySize(III)V
+    invoke-interface {v5, v1, v4, v3}, Landroid/view/IWindowManager;->setForcedDisplaySize(III)V
 
-    goto :goto_59
+    goto :goto_5a
 
     .line 156
-    :cond_54
-    iget-object p1, p0, Lcom/android/server/wm/WindowManagerShellCommand;->mInterface:Landroid/view/IWindowManager;
+    :cond_55
+    iget-object v5, p0, Lcom/android/server/wm/WindowManagerShellCommand;->mInterface:Landroid/view/IWindowManager;
 
-    invoke-interface {p1, v1}, Landroid/view/IWindowManager;->clearForcedDisplaySize(I)V
+    invoke-interface {v5, v1}, Landroid/view/IWindowManager;->clearForcedDisplaySize(I)V
 
     .line 158
-    :goto_59
+    :goto_5a
     return v2
 
     .line 147
-    :catch_5a
-    move-exception p1
+    .end local v4  # "w":I
+    .local v3, "div":I
+    .restart local v5  # "wstr":Ljava/lang/String;
+    .restart local v6  # "hstr":Ljava/lang/String;
+    :catch_5b
+    move-exception v2
 
     .line 148
+    .local v2, "e":Ljava/lang/NumberFormatException;
     invoke-virtual {p0}, Lcom/android/server/wm/WindowManagerShellCommand;->getErrPrintWriter()Ljava/io/PrintWriter;
 
-    move-result-object v0
+    move-result-object v7
 
-    new-instance v1, Ljava/lang/StringBuilder;
+    new-instance v8, Ljava/lang/StringBuilder;
 
-    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v8}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v2, "Error: bad number "
+    const-string v9, "Error: bad number "
 
-    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v8, v9}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v1, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    invoke-virtual {v8, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v8}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v8
 
-    invoke-virtual {v0, p1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {v7, v8}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
     .line 149
-    return v3
+    return v4
 
     .line 139
-    :cond_74
-    :goto_74
+    .end local v2  # "e":Ljava/lang/NumberFormatException;
+    .end local v5  # "wstr":Ljava/lang/String;
+    .end local v6  # "hstr":Ljava/lang/String;
+    :cond_75
+    :goto_75
     invoke-virtual {p0}, Lcom/android/server/wm/WindowManagerShellCommand;->getErrPrintWriter()Ljava/io/PrintWriter;
 
-    move-result-object p1
+    move-result-object v2
 
-    new-instance v1, Ljava/lang/StringBuilder;
+    new-instance v5, Ljava/lang/StringBuilder;
 
-    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v5}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v2, "Error: bad size "
+    const-string v6, "Error: bad size "
 
-    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v1, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v5, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v5}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v5
 
-    invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {v2, v5}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
     .line 140
-    return v3
+    return v4
 .end method
 
 .method private runSetDisplayUserRotation(Ljava/io/PrintWriter;)I
-    .registers 6
+    .registers 10
+    .param p1, "pw"  # Ljava/io/PrintWriter;
 
     .line 308
     invoke-virtual {p0}, Lcom/android/server/wm/WindowManagerShellCommand;->getNextArgRequired()Ljava/lang/String;
 
-    move-result-object p1
-
-    .line 310
-    nop
-
-    .line 311
-    invoke-virtual {p0}, Lcom/android/server/wm/WindowManagerShellCommand;->getNextArg()Ljava/lang/String;
-
     move-result-object v0
 
+    .line 310
+    .local v0, "lockMode":Ljava/lang/String;
+    const/4 v1, 0x0
+
+    .line 311
+    .local v1, "displayId":I
+    invoke-virtual {p0}, Lcom/android/server/wm/WindowManagerShellCommand;->getNextArg()Ljava/lang/String;
+
+    move-result-object v2
+
     .line 312
-    const-string v1, "-d"
+    .local v2, "arg":Ljava/lang/String;
+    const-string v3, "-d"
 
-    invoke-virtual {v1, v0}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v3, v2}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result v1
+    move-result v3
 
-    const/4 v2, 0x0
-
-    if-eqz v1, :cond_1f
+    if-eqz v3, :cond_1d
 
     .line 313
     invoke-virtual {p0}, Lcom/android/server/wm/WindowManagerShellCommand;->getNextArgRequired()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v3
 
-    invoke-static {v0}, Ljava/lang/Integer;->parseInt(Ljava/lang/String;)I
+    invoke-static {v3}, Ljava/lang/Integer;->parseInt(Ljava/lang/String;)I
 
-    move-result v0
+    move-result v1
 
     .line 314
     invoke-virtual {p0}, Lcom/android/server/wm/WindowManagerShellCommand;->getNextArg()Ljava/lang/String;
 
-    move-result-object v1
-
-    goto :goto_21
-
-    .line 312
-    :cond_1f
-    move-object v1, v0
-
-    move v0, v2
+    move-result-object v2
 
     .line 317
-    :goto_21
+    :cond_1d
     const-string v3, "free"
 
-    invoke-virtual {v3, p1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v3, v0}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
     move-result v3
 
-    if-eqz v3, :cond_2f
+    const/4 v4, 0x0
+
+    if-eqz v3, :cond_2c
 
     .line 318
-    iget-object p1, p0, Lcom/android/server/wm/WindowManagerShellCommand;->mInternal:Lcom/android/server/wm/WindowManagerService;
+    iget-object v3, p0, Lcom/android/server/wm/WindowManagerShellCommand;->mInternal:Lcom/android/server/wm/WindowManagerService;
 
-    invoke-virtual {p1, v0}, Lcom/android/server/wm/WindowManagerService;->thawDisplayRotation(I)V
+    invoke-virtual {v3, v1}, Lcom/android/server/wm/WindowManagerService;->thawDisplayRotation(I)V
 
     .line 319
-    return v2
+    return v4
 
     .line 322
-    :cond_2f
+    :cond_2c
     const-string v3, "lock"
 
-    invoke-virtual {p1, v3}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v0, v3}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result p1
+    move-result v3
 
-    const/4 v3, -0x1
+    const/4 v5, -0x1
 
-    if-nez p1, :cond_42
+    if-nez v3, :cond_3f
 
     .line 323
     invoke-virtual {p0}, Lcom/android/server/wm/WindowManagerShellCommand;->getErrPrintWriter()Ljava/io/PrintWriter;
 
-    move-result-object p1
+    move-result-object v3
 
-    const-string v0, "Error: lock mode needs to be either free or lock."
+    const-string v4, "Error: lock mode needs to be either free or lock."
 
-    invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {v3, v4}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
     .line 324
-    return v3
+    return v5
 
     .line 328
-    :cond_42
-    if-eqz v1, :cond_4b
+    :cond_3f
+    if-eqz v2, :cond_48
 
-    :try_start_44
-    invoke-static {v1}, Ljava/lang/Integer;->parseInt(Ljava/lang/String;)I
+    :try_start_41
+    invoke-static {v2}, Ljava/lang/Integer;->parseInt(Ljava/lang/String;)I
 
-    move-result p1
+    move-result v3
 
-    goto :goto_4c
+    goto :goto_49
 
     .line 331
-    :catch_49
-    move-exception p1
+    :catch_46
+    move-exception v3
 
-    goto :goto_52
+    goto :goto_4f
 
     .line 328
-    :cond_4b
-    move p1, v2
+    :cond_48
+    move v3, v4
 
     .line 329
-    :goto_4c
-    iget-object v1, p0, Lcom/android/server/wm/WindowManagerShellCommand;->mInternal:Lcom/android/server/wm/WindowManagerService;
+    .local v3, "rotation":I
+    :goto_49
+    iget-object v6, p0, Lcom/android/server/wm/WindowManagerShellCommand;->mInternal:Lcom/android/server/wm/WindowManagerService;
 
-    invoke-virtual {v1, v0, p1}, Lcom/android/server/wm/WindowManagerService;->freezeDisplayRotation(II)V
-    :try_end_51
-    .catch Ljava/lang/IllegalArgumentException; {:try_start_44 .. :try_end_51} :catch_49
+    invoke-virtual {v6, v1, v3}, Lcom/android/server/wm/WindowManagerService;->freezeDisplayRotation(II)V
+    :try_end_4e
+    .catch Ljava/lang/IllegalArgumentException; {:try_start_41 .. :try_end_4e} :catch_46
 
     .line 330
-    return v2
+    return v4
 
     .line 332
-    :goto_52
+    .local v3, "e":Ljava/lang/IllegalArgumentException;
+    :goto_4f
     invoke-virtual {p0}, Lcom/android/server/wm/WindowManagerShellCommand;->getErrPrintWriter()Ljava/io/PrintWriter;
 
-    move-result-object v0
+    move-result-object v4
 
-    new-instance v1, Ljava/lang/StringBuilder;
+    new-instance v6, Ljava/lang/StringBuilder;
 
-    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v6}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v2, "Error: "
+    const-string v7, "Error: "
 
-    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v6, v7}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p1}, Ljava/lang/IllegalArgumentException;->getMessage()Ljava/lang/String;
+    invoke-virtual {v3}, Ljava/lang/IllegalArgumentException;->getMessage()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v7
 
-    invoke-virtual {v1, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v6, v7}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v6}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v6
 
-    invoke-virtual {v0, p1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {v4, v6}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
     .line 333
-    return v3
+    return v5
 .end method
 
 .method private runSetFixToUserRotation(Ljava/io/PrintWriter;)I
     .registers 10
+    .param p1, "pw"  # Ljava/io/PrintWriter;
 
     .line 338
-    nop
+    const/4 v0, 0x0
 
     .line 339
+    .local v0, "displayId":I
     invoke-virtual {p0}, Lcom/android/server/wm/WindowManagerShellCommand;->getNextArgRequired()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v1
 
     .line 340
-    const-string v0, "-d"
+    .local v1, "arg":Ljava/lang/String;
+    const-string v2, "-d"
 
-    invoke-virtual {v0, p1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v2, v1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result v0
+    move-result v2
 
-    const/4 v1, 0x0
-
-    if-eqz v0, :cond_1e
+    if-eqz v2, :cond_19
 
     .line 341
     invoke-virtual {p0}, Lcom/android/server/wm/WindowManagerShellCommand;->getNextArgRequired()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v2
 
-    invoke-static {p1}, Ljava/lang/Integer;->parseInt(Ljava/lang/String;)I
+    invoke-static {v2}, Ljava/lang/Integer;->parseInt(Ljava/lang/String;)I
 
-    move-result p1
+    move-result v0
 
     .line 342
     invoke-virtual {p0}, Lcom/android/server/wm/WindowManagerShellCommand;->getNextArgRequired()Ljava/lang/String;
 
-    move-result-object v0
-
-    move-object v7, v0
-
-    move v0, p1
-
-    move-object p1, v7
-
-    goto :goto_1f
-
-    .line 340
-    :cond_1e
-    move v0, v1
+    move-result-object v1
 
     .line 346
-    :goto_1f
-    invoke-virtual {p1}, Ljava/lang/String;->hashCode()I
+    :cond_19
+    invoke-virtual {v1}, Ljava/lang/String;->hashCode()I
 
     move-result v2
 
     const v3, -0x5ff074bf
 
-    const/4 v4, -0x1
+    const/4 v4, 0x0
 
     const/4 v5, 0x2
 
     const/4 v6, 0x1
 
-    if-eq v2, v3, :cond_4a
+    const/4 v7, -0x1
+
+    if-eq v2, v3, :cond_45
 
     const v3, 0x10263a7c
 
-    if-eq v2, v3, :cond_40
+    if-eq v2, v3, :cond_3b
 
     const v3, 0x5c13d641
 
-    if-eq v2, v3, :cond_36
+    if-eq v2, v3, :cond_31
 
-    :cond_35
-    goto :goto_54
+    :cond_30
+    goto :goto_4f
 
-    :cond_36
+    :cond_31
     const-string v2, "default"
 
-    invoke-virtual {p1, v2}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v1, v2}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
     move-result v2
 
-    if-eqz v2, :cond_35
+    if-eqz v2, :cond_30
 
     move v2, v5
 
-    goto :goto_55
+    goto :goto_50
 
-    :cond_40
+    :cond_3b
     const-string v2, "disabled"
 
-    invoke-virtual {p1, v2}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v1, v2}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
     move-result v2
 
-    if-eqz v2, :cond_35
+    if-eqz v2, :cond_30
 
     move v2, v6
 
-    goto :goto_55
+    goto :goto_50
 
-    :cond_4a
+    :cond_45
     const-string v2, "enabled"
 
-    invoke-virtual {p1, v2}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v1, v2}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
     move-result v2
 
-    if-eqz v2, :cond_35
+    if-eqz v2, :cond_30
 
-    move v2, v1
-
-    goto :goto_55
-
-    :goto_54
     move v2, v4
 
-    :goto_55
-    if-eqz v2, :cond_78
+    goto :goto_50
 
-    if-eq v2, v6, :cond_76
+    :goto_4f
+    move v2, v7
 
-    if-eq v2, v5, :cond_74
+    :goto_50
+    if-eqz v2, :cond_73
+
+    if-eq v2, v6, :cond_71
+
+    if-eq v2, v5, :cond_6f
 
     .line 357
     invoke-virtual {p0}, Lcom/android/server/wm/WindowManagerShellCommand;->getErrPrintWriter()Ljava/io/PrintWriter;
 
-    move-result-object v0
+    move-result-object v2
 
-    new-instance v1, Ljava/lang/StringBuilder;
+    new-instance v3, Ljava/lang/StringBuilder;
 
-    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v2, "Error: expecting enabled, disabled or default, but we get "
+    const-string v4, "Error: expecting enabled, disabled or default, but we get "
 
-    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v1, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v3
 
-    invoke-virtual {v0, p1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {v2, v3}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
     .line 359
-    return v4
+    return v7
 
     .line 354
-    :cond_74
-    nop
+    :cond_6f
+    const/4 v2, 0x1
 
     .line 355
-    goto :goto_7a
+    .local v2, "fixedToUserRotation":I
+    goto :goto_75
 
     .line 351
-    :cond_76
-    nop
+    .end local v2  # "fixedToUserRotation":I
+    :cond_71
+    const/4 v2, 0x1
 
     .line 352
-    goto :goto_7a
+    .restart local v2  # "fixedToUserRotation":I
+    goto :goto_75
 
     .line 348
-    :cond_78
-    nop
+    .end local v2  # "fixedToUserRotation":I
+    :cond_73
+    const/4 v2, 0x2
 
     .line 349
-    move v6, v5
+    .restart local v2  # "fixedToUserRotation":I
+    nop
 
     .line 362
-    :goto_7a
-    iget-object p1, p0, Lcom/android/server/wm/WindowManagerShellCommand;->mInternal:Lcom/android/server/wm/WindowManagerService;
+    :goto_75
+    iget-object v3, p0, Lcom/android/server/wm/WindowManagerShellCommand;->mInternal:Lcom/android/server/wm/WindowManagerService;
 
-    invoke-virtual {p1, v0, v6}, Lcom/android/server/wm/WindowManagerService;->setRotateForApp(II)V
+    invoke-virtual {v3, v0, v2}, Lcom/android/server/wm/WindowManagerService;->setRotateForApp(II)V
 
     .line 363
-    return v1
+    return v4
 .end method
 
 
 # virtual methods
 .method public onCommand(Ljava/lang/String;)I
-    .registers 6
+    .registers 7
+    .param p1, "cmd"  # Ljava/lang/String;
 
     .line 55
     if-nez p1, :cond_7
@@ -1564,9 +1652,9 @@
     .line 56
     invoke-virtual {p0, p1}, Lcom/android/server/wm/WindowManagerShellCommand;->handleDefaultCommands(Ljava/lang/String;)I
 
-    move-result p1
+    move-result v0
 
-    return p1
+    return v0
 
     .line 58
     :cond_7
@@ -1575,6 +1663,7 @@
     move-result-object v0
 
     .line 60
+    .local v0, "pw":Ljava/io/PrintWriter;
     const/4 v1, -0x1
 
     :try_start_c
@@ -1713,7 +1802,7 @@
     .line 83
     invoke-virtual {p0, p1}, Lcom/android/server/wm/WindowManagerShellCommand;->handleDefaultCommands(Ljava/lang/String;)I
 
-    move-result p1
+    move-result v1
 
     goto :goto_a9
 
@@ -1721,106 +1810,108 @@
     :pswitch_78  #0x8
     invoke-direct {p0, v0}, Lcom/android/server/wm/WindowManagerShellCommand;->runSetFixToUserRotation(Ljava/io/PrintWriter;)I
 
-    move-result p1
+    move-result v1
 
-    return p1
+    return v1
 
     .line 79
     :pswitch_7d  #0x7
     invoke-direct {p0, v0}, Lcom/android/server/wm/WindowManagerShellCommand;->runSetDisplayUserRotation(Ljava/io/PrintWriter;)I
 
-    move-result p1
+    move-result v1
 
-    return p1
+    return v1
 
     .line 77
     :pswitch_82  #0x6
-    iget-object p1, p0, Lcom/android/server/wm/WindowManagerShellCommand;->mInternal:Lcom/android/server/wm/WindowManagerService;
+    iget-object v2, p0, Lcom/android/server/wm/WindowManagerShellCommand;->mInternal:Lcom/android/server/wm/WindowManagerService;
 
-    iget-object p1, p1, Lcom/android/server/wm/WindowManagerService;->mWindowTracing:Lcom/android/server/wm/WindowTracing;
+    iget-object v2, v2, Lcom/android/server/wm/WindowManagerService;->mWindowTracing:Lcom/android/server/wm/WindowTracing;
 
-    invoke-virtual {p1, p0}, Lcom/android/server/wm/WindowTracing;->onShellCommand(Landroid/os/ShellCommand;)I
+    invoke-virtual {v2, p0}, Lcom/android/server/wm/WindowTracing;->onShellCommand(Landroid/os/ShellCommand;)I
 
-    move-result p1
+    move-result v1
 
-    return p1
+    return v1
 
     .line 72
     :pswitch_8b  #0x5
     invoke-direct {p0, v0}, Lcom/android/server/wm/WindowManagerShellCommand;->runDismissKeyguard(Ljava/io/PrintWriter;)I
 
-    move-result p1
+    move-result v1
 
-    return p1
+    return v1
 
     .line 70
     :pswitch_90  #0x4
     invoke-direct {p0, v0}, Lcom/android/server/wm/WindowManagerShellCommand;->runDisplayScaling(Ljava/io/PrintWriter;)I
 
-    move-result p1
+    move-result v1
 
-    return p1
+    return v1
 
     .line 68
     :pswitch_95  #0x3
     invoke-direct {p0, v0}, Lcom/android/server/wm/WindowManagerShellCommand;->runDisplayOverscan(Ljava/io/PrintWriter;)I
 
-    move-result p1
+    move-result v1
 
-    return p1
+    return v1
 
     .line 66
     :pswitch_9a  #0x2
     invoke-direct {p0, v0}, Lcom/android/server/wm/WindowManagerShellCommand;->runDisplayFoldedArea(Ljava/io/PrintWriter;)I
 
-    move-result p1
+    move-result v1
 
-    return p1
+    return v1
 
     .line 64
     :pswitch_9f  #0x1
     invoke-direct {p0, v0}, Lcom/android/server/wm/WindowManagerShellCommand;->runDisplayDensity(Ljava/io/PrintWriter;)I
 
-    move-result p1
+    move-result v1
 
-    return p1
+    return v1
 
     .line 62
     :pswitch_a4  #0x0
     invoke-direct {p0, v0}, Lcom/android/server/wm/WindowManagerShellCommand;->runDisplaySize(Ljava/io/PrintWriter;)I
 
-    move-result p1
+    move-result v1
     :try_end_a8
     .catch Landroid/os/RemoteException; {:try_start_c .. :try_end_a8} :catch_aa
 
-    return p1
+    return v1
 
     .line 83
     :goto_a9
-    return p1
+    return v1
 
     .line 85
     :catch_aa
-    move-exception p1
+    move-exception v2
 
     .line 86
-    new-instance v2, Ljava/lang/StringBuilder;
+    .local v2, "e":Landroid/os/RemoteException;
+    new-instance v3, Ljava/lang/StringBuilder;
 
-    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v3, "Remote exception: "
+    const-string v4, "Remote exception: "
 
-    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v2, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v3
 
-    invoke-virtual {v0, p1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {v0, v3}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
     .line 88
+    .end local v2  # "e":Landroid/os/RemoteException;
     return v1
 
     :sswitch_data_c0
@@ -1859,6 +1950,7 @@
     move-result-object v0
 
     .line 369
+    .local v0, "pw":Ljava/io/PrintWriter;
     const-string v1, "Window manager (window) commands:"
 
     invoke-virtual {v0, v1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V

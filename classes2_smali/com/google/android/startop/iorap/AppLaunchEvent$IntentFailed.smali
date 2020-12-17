@@ -17,6 +17,7 @@
 # direct methods
 .method public constructor <init>(J)V
     .registers 3
+    .param p1, "sequenceId"  # J
 
     .line 126
     invoke-direct {p0, p1, p2}, Lcom/google/android/startop/iorap/AppLaunchEvent;-><init>(J)V
@@ -27,6 +28,7 @@
 
 .method constructor <init>(Landroid/os/Parcel;)V
     .registers 2
+    .param p1, "p"  # Landroid/os/Parcel;
 
     .line 138
     invoke-direct {p0, p1}, Lcom/google/android/startop/iorap/AppLaunchEvent;-><init>(Landroid/os/Parcel;)V
@@ -39,6 +41,7 @@
 # virtual methods
 .method public equals(Ljava/lang/Object;)Z
     .registers 3
+    .param p1, "other"  # Ljava/lang/Object;
 
     .line 131
     instance-of v0, p1, Lcom/google/android/startop/iorap/AppLaunchEvent$IntentFailed;
@@ -48,13 +51,13 @@
     .line 132
     invoke-super {p0, p1}, Lcom/google/android/startop/iorap/AppLaunchEvent;->equals(Ljava/lang/Object;)Z
 
-    move-result p1
+    move-result v0
 
-    return p1
+    return v0
 
     .line 134
     :cond_9
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    return p1
+    return v0
 .end method

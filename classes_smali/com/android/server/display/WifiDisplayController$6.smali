@@ -24,8 +24,9 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/display/WifiDisplayController;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/display/WifiDisplayController;
 
-    .line 429
+    .line 526
     iput-object p1, p0, Lcom/android/server/display/WifiDisplayController$6;->this$0:Lcom/android/server/display/WifiDisplayController;
 
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -36,15 +37,46 @@
 
 # virtual methods
 .method public onFailure(I)V
-    .registers 2
+    .registers 4
+    .param p1, "reason"  # I
 
-    .line 442
+    .line 537
+    new-instance v0, Ljava/lang/StringBuilder;
+
+    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
+
+    const-string v1, "Stop peer discovery failed with reason "
+
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+
+    const-string v1, "."
+
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v0
+
+    const-string v1, "WifiDisplayController"
+
+    invoke-static {v1, v0}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
+
+    .line 539
     return-void
 .end method
 
 .method public onSuccess()V
-    .registers 1
+    .registers 3
 
-    .line 435
+    .line 530
+    const-string v0, "WifiDisplayController"
+
+    const-string v1, "Stop peer discovery succeeded."
+
+    invoke-static {v0, v1}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
+
+    .line 532
     return-void
 .end method

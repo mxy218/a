@@ -65,7 +65,8 @@
 
 # direct methods
 .method public constructor <init>(Landroid/content/Context;)V
-    .registers 5
+    .registers 6
+    .param p1, "context"  # Landroid/content/Context;
 
     .line 117
     invoke-direct {p0, p1}, Lcom/android/server/SystemService;-><init>(Landroid/content/Context;)V
@@ -104,65 +105,70 @@
     .line 119
     invoke-virtual {p1}, Landroid/content/Context;->getResources()Landroid/content/res/Resources;
 
-    move-result-object p1
+    move-result-object v0
 
-    const v0, 0x107003d
+    const v1, 0x1070035
 
-    invoke-virtual {p1, v0}, Landroid/content/res/Resources;->getIntArray(I)[I
+    invoke-virtual {v0, v1}, Landroid/content/res/Resources;->getIntArray(I)[I
 
-    move-result-object p1
+    move-result-object v0
 
     .line 121
-    new-instance v0, Ljava/util/ArrayList;
+    .local v0, "numbers":[I
+    new-instance v1, Ljava/util/ArrayList;
 
-    array-length v1, p1
+    array-length v2, v0
 
-    invoke-direct {v0, v1}, Ljava/util/ArrayList;-><init>(I)V
+    invoke-direct {v1, v2}, Ljava/util/ArrayList;-><init>(I)V
 
-    iput-object v0, p0, Lcom/android/server/emergency/EmergencyAffordanceService;->mEmergencyCallMccNumbers:Ljava/util/ArrayList;
+    iput-object v1, p0, Lcom/android/server/emergency/EmergencyAffordanceService;->mEmergencyCallMccNumbers:Ljava/util/ArrayList;
 
     .line 122
-    const/4 v0, 0x0
+    const/4 v1, 0x0
 
+    .local v1, "i":I
     :goto_35
-    array-length v1, p1
+    array-length v2, v0
 
-    if-ge v0, v1, :cond_46
+    if-ge v1, v2, :cond_46
 
     .line 123
-    iget-object v1, p0, Lcom/android/server/emergency/EmergencyAffordanceService;->mEmergencyCallMccNumbers:Ljava/util/ArrayList;
+    iget-object v2, p0, Lcom/android/server/emergency/EmergencyAffordanceService;->mEmergencyCallMccNumbers:Ljava/util/ArrayList;
 
-    aget v2, p1, v0
+    aget v3, v0, v1
 
-    invoke-static {v2}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
+    invoke-static {v3}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
 
-    move-result-object v2
+    move-result-object v3
 
-    invoke-virtual {v1, v2}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
+    invoke-virtual {v2, v3}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
 
     .line 122
-    add-int/lit8 v0, v0, 0x1
+    add-int/lit8 v1, v1, 0x1
 
     goto :goto_35
 
     .line 125
+    .end local v1  # "i":I
     :cond_46
     return-void
 .end method
 
 .method static synthetic access$000(Lcom/android/server/emergency/EmergencyAffordanceService;)Z
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/emergency/EmergencyAffordanceService;
 
     .line 48
     invoke-direct {p0}, Lcom/android/server/emergency/EmergencyAffordanceService;->isEmergencyAffordanceNeeded()Z
 
-    move-result p0
+    move-result v0
 
-    return p0
+    return v0
 .end method
 
 .method static synthetic access$100(Lcom/android/server/emergency/EmergencyAffordanceService;)V
     .registers 1
+    .param p0, "x0"  # Lcom/android/server/emergency/EmergencyAffordanceService;
 
     .line 48
     invoke-direct {p0}, Lcom/android/server/emergency/EmergencyAffordanceService;->requestCellScan()V
@@ -172,6 +178,7 @@
 
 .method static synthetic access$200(Lcom/android/server/emergency/EmergencyAffordanceService;)V
     .registers 1
+    .param p0, "x0"  # Lcom/android/server/emergency/EmergencyAffordanceService;
 
     .line 48
     invoke-direct {p0}, Lcom/android/server/emergency/EmergencyAffordanceService;->startScanning()V
@@ -180,16 +187,18 @@
 .end method
 
 .method static synthetic access$300(Lcom/android/server/emergency/EmergencyAffordanceService;)Lcom/android/server/emergency/EmergencyAffordanceService$MyHandler;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/emergency/EmergencyAffordanceService;
 
     .line 48
-    iget-object p0, p0, Lcom/android/server/emergency/EmergencyAffordanceService;->mHandler:Lcom/android/server/emergency/EmergencyAffordanceService$MyHandler;
+    iget-object v0, p0, Lcom/android/server/emergency/EmergencyAffordanceService;->mHandler:Lcom/android/server/emergency/EmergencyAffordanceService$MyHandler;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$400(Lcom/android/server/emergency/EmergencyAffordanceService;)V
     .registers 1
+    .param p0, "x0"  # Lcom/android/server/emergency/EmergencyAffordanceService;
 
     .line 48
     invoke-direct {p0}, Lcom/android/server/emergency/EmergencyAffordanceService;->handleInitializeState()V
@@ -198,25 +207,27 @@
 .end method
 
 .method static synthetic access$500(Lcom/android/server/emergency/EmergencyAffordanceService;)Z
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/emergency/EmergencyAffordanceService;
 
     .line 48
     invoke-direct {p0}, Lcom/android/server/emergency/EmergencyAffordanceService;->handleUpdateCellInfo()Z
 
-    move-result p0
+    move-result v0
 
-    return p0
+    return v0
 .end method
 
 .method static synthetic access$600(Lcom/android/server/emergency/EmergencyAffordanceService;)Z
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/emergency/EmergencyAffordanceService;
 
     .line 48
     invoke-direct {p0}, Lcom/android/server/emergency/EmergencyAffordanceService;->handleUpdateSimSubscriptionInfo()Z
 
-    move-result p0
+    move-result v0
 
-    return p0
+    return v0
 .end method
 
 .method private handleInitializeState()V
@@ -252,7 +263,7 @@
 .end method
 
 .method private handleUpdateCellInfo()Z
-    .registers 7
+    .registers 8
 
     .line 271
     iget-object v0, p0, Lcom/android/server/emergency/EmergencyAffordanceService;->mTelephonyManager:Landroid/telephony/TelephonyManager;
@@ -262,6 +273,7 @@
     move-result-object v0
 
     .line 272
+    .local v0, "cellInfos":Ljava/util/List;, "Ljava/util/List<Landroid/telephony/CellInfo;>;"
     const/4 v1, 0x0
 
     if-nez v0, :cond_a
@@ -271,121 +283,125 @@
 
     .line 275
     :cond_a
-    nop
+    const/4 v2, 0x0
 
     .line 276
+    .local v2, "stopScanningAfterScan":Z
     invoke-interface {v0}, Ljava/util/List;->iterator()Ljava/util/Iterator;
 
-    move-result-object v0
-
-    move v2, v1
-
-    :goto_10
-    invoke-interface {v0}, Ljava/util/Iterator;->hasNext()Z
-
-    move-result v3
-
-    if-eqz v3, :cond_5f
-
-    invoke-interface {v0}, Ljava/util/Iterator;->next()Ljava/lang/Object;
-
     move-result-object v3
 
-    check-cast v3, Landroid/telephony/CellInfo;
+    :goto_f
+    invoke-interface {v3}, Ljava/util/Iterator;->hasNext()Z
+
+    move-result v4
+
+    if-eqz v4, :cond_5f
+
+    invoke-interface {v3}, Ljava/util/Iterator;->next()Ljava/lang/Object;
+
+    move-result-object v4
+
+    check-cast v4, Landroid/telephony/CellInfo;
 
     .line 277
-    nop
+    .local v4, "cellInfo":Landroid/telephony/CellInfo;
+    const/4 v5, 0x0
 
     .line 278
-    instance-of v4, v3, Landroid/telephony/CellInfoGsm;
+    .local v5, "mcc":I
+    instance-of v6, v4, Landroid/telephony/CellInfoGsm;
 
-    if-eqz v4, :cond_2c
+    if-eqz v6, :cond_2c
 
     .line 279
-    check-cast v3, Landroid/telephony/CellInfoGsm;
+    move-object v6, v4
 
-    invoke-virtual {v3}, Landroid/telephony/CellInfoGsm;->getCellIdentity()Landroid/telephony/CellIdentityGsm;
+    check-cast v6, Landroid/telephony/CellInfoGsm;
 
-    move-result-object v3
+    invoke-virtual {v6}, Landroid/telephony/CellInfoGsm;->getCellIdentity()Landroid/telephony/CellIdentityGsm;
 
-    invoke-virtual {v3}, Landroid/telephony/CellIdentityGsm;->getMcc()I
+    move-result-object v6
 
-    move-result v3
+    invoke-virtual {v6}, Landroid/telephony/CellIdentityGsm;->getMcc()I
+
+    move-result v5
 
     goto :goto_4b
 
     .line 280
     :cond_2c
-    instance-of v4, v3, Landroid/telephony/CellInfoLte;
+    instance-of v6, v4, Landroid/telephony/CellInfoLte;
 
-    if-eqz v4, :cond_3b
+    if-eqz v6, :cond_3c
 
     .line 281
-    check-cast v3, Landroid/telephony/CellInfoLte;
+    move-object v6, v4
 
-    invoke-virtual {v3}, Landroid/telephony/CellInfoLte;->getCellIdentity()Landroid/telephony/CellIdentityLte;
+    check-cast v6, Landroid/telephony/CellInfoLte;
 
-    move-result-object v3
+    invoke-virtual {v6}, Landroid/telephony/CellInfoLte;->getCellIdentity()Landroid/telephony/CellIdentityLte;
 
-    invoke-virtual {v3}, Landroid/telephony/CellIdentityLte;->getMcc()I
+    move-result-object v6
 
-    move-result v3
+    invoke-virtual {v6}, Landroid/telephony/CellIdentityLte;->getMcc()I
+
+    move-result v5
 
     goto :goto_4b
 
     .line 282
-    :cond_3b
-    instance-of v4, v3, Landroid/telephony/CellInfoWcdma;
+    :cond_3c
+    instance-of v6, v4, Landroid/telephony/CellInfoWcdma;
 
-    if-eqz v4, :cond_4a
+    if-eqz v6, :cond_4b
 
     .line 283
-    check-cast v3, Landroid/telephony/CellInfoWcdma;
+    move-object v6, v4
 
-    invoke-virtual {v3}, Landroid/telephony/CellInfoWcdma;->getCellIdentity()Landroid/telephony/CellIdentityWcdma;
+    check-cast v6, Landroid/telephony/CellInfoWcdma;
 
-    move-result-object v3
+    invoke-virtual {v6}, Landroid/telephony/CellInfoWcdma;->getCellIdentity()Landroid/telephony/CellIdentityWcdma;
 
-    invoke-virtual {v3}, Landroid/telephony/CellIdentityWcdma;->getMcc()I
+    move-result-object v6
 
-    move-result v3
+    invoke-virtual {v6}, Landroid/telephony/CellIdentityWcdma;->getMcc()I
 
-    goto :goto_4b
-
-    .line 282
-    :cond_4a
-    move v3, v1
+    move-result v5
 
     .line 285
+    :cond_4b
     :goto_4b
-    invoke-direct {p0, v3}, Lcom/android/server/emergency/EmergencyAffordanceService;->mccRequiresEmergencyAffordance(I)Z
+    invoke-direct {p0, v5}, Lcom/android/server/emergency/EmergencyAffordanceService;->mccRequiresEmergencyAffordance(I)Z
 
-    move-result v4
+    move-result v6
 
-    const/4 v5, 0x1
-
-    if-eqz v4, :cond_56
+    if-eqz v6, :cond_56
 
     .line 286
-    invoke-direct {p0, v5}, Lcom/android/server/emergency/EmergencyAffordanceService;->setNetworkNeedsEmergencyAffordance(Z)V
+    const/4 v1, 0x1
+
+    invoke-direct {p0, v1}, Lcom/android/server/emergency/EmergencyAffordanceService;->setNetworkNeedsEmergencyAffordance(Z)V
 
     .line 287
-    return v5
+    return v1
 
     .line 288
     :cond_56
-    if-eqz v3, :cond_5e
+    if-eqz v5, :cond_5e
 
-    const v4, 0x7fffffff
+    const v6, 0x7fffffff
 
-    if-eq v3, v4, :cond_5e
+    if-eq v5, v6, :cond_5e
 
     .line 290
-    move v2, v5
+    const/4 v2, 0x1
 
     .line 292
+    .end local v4  # "cellInfo":Landroid/telephony/CellInfo;
+    .end local v5  # "mcc":I
     :cond_5e
-    goto :goto_10
+    goto :goto_f
 
     .line 293
     :cond_5f
@@ -409,7 +425,7 @@
 .end method
 
 .method private handleUpdateSimSubscriptionInfo()Z
-    .registers 8
+    .registers 10
 
     .line 217
     invoke-direct {p0}, Lcom/android/server/emergency/EmergencyAffordanceService;->simNeededAffordanceBefore()Z
@@ -417,152 +433,151 @@
     move-result v0
 
     .line 218
-    nop
+    .local v0, "neededBefore":Z
+    move v1, v0
 
     .line 219
-    iget-object v1, p0, Lcom/android/server/emergency/EmergencyAffordanceService;->mSubscriptionManager:Landroid/telephony/SubscriptionManager;
+    .local v1, "neededNow":Z
+    iget-object v2, p0, Lcom/android/server/emergency/EmergencyAffordanceService;->mSubscriptionManager:Landroid/telephony/SubscriptionManager;
 
     .line 220
-    invoke-virtual {v1}, Landroid/telephony/SubscriptionManager;->getActiveSubscriptionInfoList()Ljava/util/List;
+    invoke-virtual {v2}, Landroid/telephony/SubscriptionManager;->getActiveSubscriptionInfoList()Ljava/util/List;
 
-    move-result-object v1
+    move-result-object v2
 
     .line 221
-    if-nez v1, :cond_11
+    .local v2, "activeSubscriptionInfoList":Ljava/util/List;, "Ljava/util/List<Landroid/telephony/SubscriptionInfo;>;"
+    if-nez v2, :cond_11
 
     .line 222
-    invoke-direct {p0, v0}, Lcom/android/server/emergency/EmergencyAffordanceService;->setSimNeedsEmergencyAffordance(Z)V
+    invoke-direct {p0, v1}, Lcom/android/server/emergency/EmergencyAffordanceService;->setSimNeedsEmergencyAffordance(Z)V
 
     .line 223
-    return v0
+    return v1
 
     .line 225
     :cond_11
-    invoke-interface {v1}, Ljava/util/List;->iterator()Ljava/util/Iterator;
+    invoke-interface {v2}, Ljava/util/List;->iterator()Ljava/util/Iterator;
 
-    move-result-object v1
+    move-result-object v3
 
     :goto_15
-    invoke-interface {v1}, Ljava/util/Iterator;->hasNext()Z
-
-    move-result v2
-
-    const/4 v3, 0x1
-
-    if-eqz v2, :cond_61
-
-    invoke-interface {v1}, Ljava/util/Iterator;->next()Ljava/lang/Object;
-
-    move-result-object v2
-
-    check-cast v2, Landroid/telephony/SubscriptionInfo;
-
-    .line 226
-    invoke-virtual {v2}, Landroid/telephony/SubscriptionInfo;->getMcc()I
+    invoke-interface {v3}, Ljava/util/Iterator;->hasNext()Z
 
     move-result v4
 
-    .line 227
-    invoke-direct {p0, v4}, Lcom/android/server/emergency/EmergencyAffordanceService;->mccRequiresEmergencyAffordance(I)Z
+    if-eqz v4, :cond_5e
+
+    invoke-interface {v3}, Ljava/util/Iterator;->next()Ljava/lang/Object;
+
+    move-result-object v4
+
+    check-cast v4, Landroid/telephony/SubscriptionInfo;
+
+    .line 226
+    .local v4, "info":Landroid/telephony/SubscriptionInfo;
+    invoke-virtual {v4}, Landroid/telephony/SubscriptionInfo;->getMcc()I
 
     move-result v5
 
-    if-eqz v5, :cond_2e
+    .line 227
+    .local v5, "mcc":I
+    invoke-direct {p0, v5}, Lcom/android/server/emergency/EmergencyAffordanceService;->mccRequiresEmergencyAffordance(I)Z
+
+    move-result v6
+
+    if-eqz v6, :cond_2d
 
     .line 228
-    nop
+    const/4 v1, 0x1
 
     .line 229
-    goto :goto_62
+    goto :goto_5e
 
     .line 230
-    :cond_2e
-    const/4 v5, 0x0
-
-    if-eqz v4, :cond_37
+    :cond_2d
+    if-eqz v5, :cond_35
 
     const v6, 0x7fffffff
 
-    if-eq v4, v6, :cond_37
+    if-eq v5, v6, :cond_35
 
     .line 232
-    move v0, v5
+    const/4 v1, 0x0
 
     .line 234
-    :cond_37
-    iget-object v4, p0, Lcom/android/server/emergency/EmergencyAffordanceService;->mTelephonyManager:Landroid/telephony/TelephonyManager;
+    :cond_35
+    iget-object v6, p0, Lcom/android/server/emergency/EmergencyAffordanceService;->mTelephonyManager:Landroid/telephony/TelephonyManager;
 
-    invoke-virtual {v2}, Landroid/telephony/SubscriptionInfo;->getSubscriptionId()I
+    invoke-virtual {v4}, Landroid/telephony/SubscriptionInfo;->getSubscriptionId()I
 
-    move-result v2
+    move-result v7
 
-    invoke-virtual {v4, v2}, Landroid/telephony/TelephonyManager;->getSimOperator(I)Ljava/lang/String;
+    invoke-virtual {v6, v7}, Landroid/telephony/TelephonyManager;->getSimOperator(I)Ljava/lang/String;
 
-    move-result-object v2
+    move-result-object v6
 
     .line 235
-    nop
+    .local v6, "simOperator":Ljava/lang/String;
+    const/4 v5, 0x0
 
     .line 236
-    if-eqz v2, :cond_54
+    if-eqz v6, :cond_52
 
-    invoke-virtual {v2}, Ljava/lang/String;->length()I
+    invoke-virtual {v6}, Ljava/lang/String;->length()I
 
-    move-result v4
+    move-result v7
 
-    const/4 v6, 0x3
+    const/4 v8, 0x3
 
-    if-lt v4, v6, :cond_54
+    if-lt v7, v8, :cond_52
 
     .line 237
-    invoke-virtual {v2, v5, v6}, Ljava/lang/String;->substring(II)Ljava/lang/String;
+    const/4 v7, 0x0
 
-    move-result-object v2
+    invoke-virtual {v6, v7, v8}, Ljava/lang/String;->substring(II)Ljava/lang/String;
 
-    invoke-static {v2}, Ljava/lang/Integer;->parseInt(Ljava/lang/String;)I
+    move-result-object v7
 
-    move-result v2
+    invoke-static {v7}, Ljava/lang/Integer;->parseInt(Ljava/lang/String;)I
 
-    goto :goto_55
+    move-result v5
 
     .line 239
-    :cond_54
-    move v2, v5
-
-    :goto_55
-    if-eqz v2, :cond_60
+    :cond_52
+    if-eqz v5, :cond_5d
 
     .line 240
-    invoke-direct {p0, v2}, Lcom/android/server/emergency/EmergencyAffordanceService;->mccRequiresEmergencyAffordance(I)Z
+    invoke-direct {p0, v5}, Lcom/android/server/emergency/EmergencyAffordanceService;->mccRequiresEmergencyAffordance(I)Z
 
-    move-result v0
+    move-result v7
 
-    if-eqz v0, :cond_5f
+    if-eqz v7, :cond_5c
 
     .line 241
-    nop
+    const/4 v1, 0x1
 
     .line 242
-    goto :goto_62
+    goto :goto_5e
 
     .line 245
-    :cond_5f
-    move v0, v5
+    :cond_5c
+    const/4 v1, 0x0
 
     .line 248
-    :cond_60
+    .end local v4  # "info":Landroid/telephony/SubscriptionInfo;
+    .end local v5  # "mcc":I
+    .end local v6  # "simOperator":Ljava/lang/String;
+    :cond_5d
     goto :goto_15
 
-    .line 225
-    :cond_61
-    move v3, v0
-
     .line 249
-    :goto_62
-    invoke-direct {p0, v3}, Lcom/android/server/emergency/EmergencyAffordanceService;->setSimNeedsEmergencyAffordance(Z)V
+    :cond_5e
+    :goto_5e
+    invoke-direct {p0, v1}, Lcom/android/server/emergency/EmergencyAffordanceService;->setSimNeedsEmergencyAffordance(Z)V
 
     .line 250
-    return v3
+    return v1
 .end method
 
 .method private isEmergencyAffordanceNeeded()Z
@@ -593,20 +608,21 @@
 .end method
 
 .method private mccRequiresEmergencyAffordance(I)Z
-    .registers 3
+    .registers 4
+    .param p1, "mcc"  # I
 
     .line 319
     iget-object v0, p0, Lcom/android/server/emergency/EmergencyAffordanceService;->mEmergencyCallMccNumbers:Ljava/util/ArrayList;
 
     invoke-static {p1}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
 
-    move-result-object p1
+    move-result-object v1
 
-    invoke-virtual {v0, p1}, Ljava/util/ArrayList;->contains(Ljava/lang/Object;)Z
+    invoke-virtual {v0, v1}, Ljava/util/ArrayList;->contains(Ljava/lang/Object;)Z
 
-    move-result p1
+    move-result v0
 
-    return p1
+    return v0
 .end method
 
 .method private onCellScanFinishedUnsuccessful()V
@@ -672,7 +688,8 @@
 .end method
 
 .method private setNetworkNeedsEmergencyAffordance(Z)V
-    .registers 3
+    .registers 4
+    .param p1, "needsAffordance"  # Z
 
     .line 303
     iget-object v0, p0, Lcom/android/server/emergency/EmergencyAffordanceService;->mLock:Ljava/lang/Object;
@@ -694,17 +711,18 @@
 
     .line 306
     :catchall_a
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_c
     .catchall {:try_start_3 .. :try_end_c} :catchall_a
 
-    throw p1
+    throw v1
 .end method
 
 .method private setSimNeedsEmergencyAffordance(Z)V
     .registers 4
+    .param p1, "simNeedsEmergencyAffordance"  # Z
 
     .line 254
     invoke-direct {p0}, Lcom/android/server/emergency/EmergencyAffordanceService;->simNeededAffordanceBefore()Z
@@ -914,7 +932,8 @@
 
 # virtual methods
 .method public onBootPhase(I)V
-    .registers 4
+    .registers 6
+    .param p1, "phase"  # I
 
     .line 159
     const/16 v0, 0x258
@@ -922,31 +941,31 @@
     if-ne p1, v0, :cond_5f
 
     .line 160
-    iget-object p1, p0, Lcom/android/server/emergency/EmergencyAffordanceService;->mContext:Landroid/content/Context;
+    iget-object v0, p0, Lcom/android/server/emergency/EmergencyAffordanceService;->mContext:Landroid/content/Context;
 
-    const-class v0, Landroid/telephony/TelephonyManager;
+    const-class v1, Landroid/telephony/TelephonyManager;
 
-    invoke-virtual {p1, v0}, Landroid/content/Context;->getSystemService(Ljava/lang/Class;)Ljava/lang/Object;
+    invoke-virtual {v0, v1}, Landroid/content/Context;->getSystemService(Ljava/lang/Class;)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v0
 
-    check-cast p1, Landroid/telephony/TelephonyManager;
+    check-cast v0, Landroid/telephony/TelephonyManager;
 
-    iput-object p1, p0, Lcom/android/server/emergency/EmergencyAffordanceService;->mTelephonyManager:Landroid/telephony/TelephonyManager;
+    iput-object v0, p0, Lcom/android/server/emergency/EmergencyAffordanceService;->mTelephonyManager:Landroid/telephony/TelephonyManager;
 
     .line 161
-    iget-object p1, p0, Lcom/android/server/emergency/EmergencyAffordanceService;->mTelephonyManager:Landroid/telephony/TelephonyManager;
+    iget-object v0, p0, Lcom/android/server/emergency/EmergencyAffordanceService;->mTelephonyManager:Landroid/telephony/TelephonyManager;
 
-    invoke-virtual {p1}, Landroid/telephony/TelephonyManager;->isVoiceCapable()Z
+    invoke-virtual {v0}, Landroid/telephony/TelephonyManager;->isVoiceCapable()Z
 
-    move-result p1
+    move-result v0
 
-    iput-boolean p1, p0, Lcom/android/server/emergency/EmergencyAffordanceService;->mVoiceCapable:Z
+    iput-boolean v0, p0, Lcom/android/server/emergency/EmergencyAffordanceService;->mVoiceCapable:Z
 
     .line 162
-    iget-boolean p1, p0, Lcom/android/server/emergency/EmergencyAffordanceService;->mVoiceCapable:Z
+    iget-boolean v0, p0, Lcom/android/server/emergency/EmergencyAffordanceService;->mVoiceCapable:Z
 
-    if-nez p1, :cond_20
+    if-nez v0, :cond_20
 
     .line 163
     invoke-direct {p0}, Lcom/android/server/emergency/EmergencyAffordanceService;->updateEmergencyAffordanceNeeded()V
@@ -956,71 +975,75 @@
 
     .line 166
     :cond_20
-    iget-object p1, p0, Lcom/android/server/emergency/EmergencyAffordanceService;->mContext:Landroid/content/Context;
+    iget-object v0, p0, Lcom/android/server/emergency/EmergencyAffordanceService;->mContext:Landroid/content/Context;
 
-    invoke-static {p1}, Landroid/telephony/SubscriptionManager;->from(Landroid/content/Context;)Landroid/telephony/SubscriptionManager;
+    invoke-static {v0}, Landroid/telephony/SubscriptionManager;->from(Landroid/content/Context;)Landroid/telephony/SubscriptionManager;
 
-    move-result-object p1
+    move-result-object v0
 
-    iput-object p1, p0, Lcom/android/server/emergency/EmergencyAffordanceService;->mSubscriptionManager:Landroid/telephony/SubscriptionManager;
+    iput-object v0, p0, Lcom/android/server/emergency/EmergencyAffordanceService;->mSubscriptionManager:Landroid/telephony/SubscriptionManager;
 
     .line 167
-    new-instance p1, Landroid/os/HandlerThread;
+    new-instance v0, Landroid/os/HandlerThread;
 
-    const-string v0, "EmergencyAffordanceService"
+    const-string v1, "EmergencyAffordanceService"
 
-    invoke-direct {p1, v0}, Landroid/os/HandlerThread;-><init>(Ljava/lang/String;)V
+    invoke-direct {v0, v1}, Landroid/os/HandlerThread;-><init>(Ljava/lang/String;)V
 
     .line 168
-    invoke-virtual {p1}, Landroid/os/HandlerThread;->start()V
+    .local v0, "thread":Landroid/os/HandlerThread;
+    invoke-virtual {v0}, Landroid/os/HandlerThread;->start()V
 
     .line 169
-    new-instance v0, Lcom/android/server/emergency/EmergencyAffordanceService$MyHandler;
+    new-instance v1, Lcom/android/server/emergency/EmergencyAffordanceService$MyHandler;
 
-    invoke-virtual {p1}, Landroid/os/HandlerThread;->getLooper()Landroid/os/Looper;
+    invoke-virtual {v0}, Landroid/os/HandlerThread;->getLooper()Landroid/os/Looper;
 
-    move-result-object p1
+    move-result-object v2
 
-    invoke-direct {v0, p0, p1}, Lcom/android/server/emergency/EmergencyAffordanceService$MyHandler;-><init>(Lcom/android/server/emergency/EmergencyAffordanceService;Landroid/os/Looper;)V
+    invoke-direct {v1, p0, v2}, Lcom/android/server/emergency/EmergencyAffordanceService$MyHandler;-><init>(Lcom/android/server/emergency/EmergencyAffordanceService;Landroid/os/Looper;)V
 
-    iput-object v0, p0, Lcom/android/server/emergency/EmergencyAffordanceService;->mHandler:Lcom/android/server/emergency/EmergencyAffordanceService$MyHandler;
+    iput-object v1, p0, Lcom/android/server/emergency/EmergencyAffordanceService;->mHandler:Lcom/android/server/emergency/EmergencyAffordanceService$MyHandler;
 
     .line 170
-    iget-object p1, p0, Lcom/android/server/emergency/EmergencyAffordanceService;->mHandler:Lcom/android/server/emergency/EmergencyAffordanceService$MyHandler;
+    iget-object v1, p0, Lcom/android/server/emergency/EmergencyAffordanceService;->mHandler:Lcom/android/server/emergency/EmergencyAffordanceService$MyHandler;
 
-    const/4 v0, 0x1
+    const/4 v2, 0x1
 
-    invoke-virtual {p1, v0}, Lcom/android/server/emergency/EmergencyAffordanceService$MyHandler;->obtainMessage(I)Landroid/os/Message;
+    invoke-virtual {v1, v2}, Lcom/android/server/emergency/EmergencyAffordanceService$MyHandler;->obtainMessage(I)Landroid/os/Message;
 
-    move-result-object p1
+    move-result-object v1
 
-    invoke-virtual {p1}, Landroid/os/Message;->sendToTarget()V
+    invoke-virtual {v1}, Landroid/os/Message;->sendToTarget()V
 
     .line 171
     invoke-direct {p0}, Lcom/android/server/emergency/EmergencyAffordanceService;->startScanning()V
 
     .line 172
-    new-instance p1, Landroid/content/IntentFilter;
+    new-instance v1, Landroid/content/IntentFilter;
 
-    const-string v0, "android.intent.action.AIRPLANE_MODE"
+    const-string v2, "android.intent.action.AIRPLANE_MODE"
 
-    invoke-direct {p1, v0}, Landroid/content/IntentFilter;-><init>(Ljava/lang/String;)V
+    invoke-direct {v1, v2}, Landroid/content/IntentFilter;-><init>(Ljava/lang/String;)V
 
     .line 173
-    iget-object v0, p0, Lcom/android/server/emergency/EmergencyAffordanceService;->mContext:Landroid/content/Context;
+    .local v1, "filter":Landroid/content/IntentFilter;
+    iget-object v2, p0, Lcom/android/server/emergency/EmergencyAffordanceService;->mContext:Landroid/content/Context;
 
-    iget-object v1, p0, Lcom/android/server/emergency/EmergencyAffordanceService;->mAirplaneModeReceiver:Landroid/content/BroadcastReceiver;
+    iget-object v3, p0, Lcom/android/server/emergency/EmergencyAffordanceService;->mAirplaneModeReceiver:Landroid/content/BroadcastReceiver;
 
-    invoke-virtual {v0, v1, p1}, Landroid/content/Context;->registerReceiver(Landroid/content/BroadcastReceiver;Landroid/content/IntentFilter;)Landroid/content/Intent;
+    invoke-virtual {v2, v3, v1}, Landroid/content/Context;->registerReceiver(Landroid/content/BroadcastReceiver;Landroid/content/IntentFilter;)Landroid/content/Intent;
 
     .line 174
-    iget-object p1, p0, Lcom/android/server/emergency/EmergencyAffordanceService;->mSubscriptionManager:Landroid/telephony/SubscriptionManager;
+    iget-object v2, p0, Lcom/android/server/emergency/EmergencyAffordanceService;->mSubscriptionManager:Landroid/telephony/SubscriptionManager;
 
-    iget-object v0, p0, Lcom/android/server/emergency/EmergencyAffordanceService;->mSubscriptionChangedListener:Landroid/telephony/SubscriptionManager$OnSubscriptionsChangedListener;
+    iget-object v3, p0, Lcom/android/server/emergency/EmergencyAffordanceService;->mSubscriptionChangedListener:Landroid/telephony/SubscriptionManager$OnSubscriptionsChangedListener;
 
-    invoke-virtual {p1, v0}, Landroid/telephony/SubscriptionManager;->addOnSubscriptionsChangedListener(Landroid/telephony/SubscriptionManager$OnSubscriptionsChangedListener;)V
+    invoke-virtual {v2, v3}, Landroid/telephony/SubscriptionManager;->addOnSubscriptionsChangedListener(Landroid/telephony/SubscriptionManager$OnSubscriptionsChangedListener;)V
 
     .line 176
+    .end local v0  # "thread":Landroid/os/HandlerThread;
+    .end local v1  # "filter":Landroid/content/IntentFilter;
     :cond_5f
     return-void
 .end method

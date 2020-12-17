@@ -49,6 +49,7 @@
 
 .method public onComplete(Landroid/net/ipmemorystore/StatusParcelable;)V
     .registers 2
+    .param p1, "status"  # Landroid/net/ipmemorystore/StatusParcelable;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;

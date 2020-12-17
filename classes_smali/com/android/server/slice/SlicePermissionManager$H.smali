@@ -33,6 +33,7 @@
 # direct methods
 .method public constructor <init>(Lcom/android/server/slice/SlicePermissionManager;Landroid/os/Looper;)V
     .registers 3
+    .param p2, "looper"  # Landroid/os/Looper;
 
     .line 374
     iput-object p1, p0, Lcom/android/server/slice/SlicePermissionManager$H;->this$0:Lcom/android/server/slice/SlicePermissionManager;
@@ -47,7 +48,8 @@
 
 # virtual methods
 .method public handleMessage(Landroid/os/Message;)V
-    .registers 4
+    .registers 5
+    .param p1, "msg"  # Landroid/os/Message;
 
     .line 380
     iget v0, p1, Landroid/os/Message;->what:I
@@ -92,9 +94,9 @@
 
     move-result-object v1
 
-    iget-object p1, p1, Landroid/os/Message;->obj:Ljava/lang/Object;
+    iget-object v2, p1, Landroid/os/Message;->obj:Ljava/lang/Object;
 
-    invoke-virtual {v1, p1}, Landroid/util/ArrayMap;->remove(Ljava/lang/Object;)Ljava/lang/Object;
+    invoke-virtual {v1, v2}, Landroid/util/ArrayMap;->remove(Ljava/lang/Object;)Ljava/lang/Object;
 
     .line 398
     monitor-exit v0
@@ -102,13 +104,13 @@
     goto :goto_5e
 
     :catchall_26
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_28
     .catchall {:try_start_19 .. :try_end_28} :catchall_26
 
-    throw p1
+    throw v1
 
     .line 391
     :cond_29
@@ -128,9 +130,9 @@
 
     move-result-object v1
 
-    iget-object p1, p1, Landroid/os/Message;->obj:Ljava/lang/Object;
+    iget-object v2, p1, Landroid/os/Message;->obj:Ljava/lang/Object;
 
-    invoke-virtual {v1, p1}, Landroid/util/ArrayMap;->remove(Ljava/lang/Object;)Ljava/lang/Object;
+    invoke-virtual {v1, v2}, Landroid/util/ArrayMap;->remove(Ljava/lang/Object;)Ljava/lang/Object;
 
     .line 393
     monitor-exit v0
@@ -140,32 +142,32 @@
 
     .line 393
     :catchall_3d
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_3f
     .catchall {:try_start_30 .. :try_end_3f} :catchall_3d
 
-    throw p1
+    throw v1
 
     .line 388
     :cond_40
     iget-object v0, p0, Lcom/android/server/slice/SlicePermissionManager$H;->this$0:Lcom/android/server/slice/SlicePermissionManager;
 
-    iget-object p1, p1, Landroid/os/Message;->obj:Ljava/lang/Object;
+    iget-object v1, p1, Landroid/os/Message;->obj:Ljava/lang/Object;
 
-    check-cast p1, Lcom/android/server/slice/SlicePermissionManager$PkgUser;
+    check-cast v1, Lcom/android/server/slice/SlicePermissionManager$PkgUser;
 
-    invoke-static {v0, p1}, Lcom/android/server/slice/SlicePermissionManager;->access$500(Lcom/android/server/slice/SlicePermissionManager;Lcom/android/server/slice/SlicePermissionManager$PkgUser;)V
+    invoke-static {v0, v1}, Lcom/android/server/slice/SlicePermissionManager;->access$500(Lcom/android/server/slice/SlicePermissionManager;Lcom/android/server/slice/SlicePermissionManager$PkgUser;)V
 
     .line 389
     goto :goto_5e
 
     .line 385
     :cond_4a
-    iget-object p1, p0, Lcom/android/server/slice/SlicePermissionManager$H;->this$0:Lcom/android/server/slice/SlicePermissionManager;
+    iget-object v0, p0, Lcom/android/server/slice/SlicePermissionManager$H;->this$0:Lcom/android/server/slice/SlicePermissionManager;
 
-    invoke-virtual {p1}, Lcom/android/server/slice/SlicePermissionManager;->handlePersist()V
+    invoke-virtual {v0}, Lcom/android/server/slice/SlicePermissionManager;->handlePersist()V
 
     .line 386
     goto :goto_5e
@@ -178,11 +180,11 @@
 
     move-result-object v0
 
-    iget-object p1, p1, Landroid/os/Message;->obj:Ljava/lang/Object;
+    iget-object v1, p1, Landroid/os/Message;->obj:Ljava/lang/Object;
 
-    check-cast p1, Lcom/android/server/slice/DirtyTracker$Persistable;
+    check-cast v1, Lcom/android/server/slice/DirtyTracker$Persistable;
 
-    invoke-virtual {v0, p1}, Landroid/util/ArraySet;->add(Ljava/lang/Object;)Z
+    invoke-virtual {v0, v1}, Landroid/util/ArraySet;->add(Ljava/lang/Object;)Z
 
     .line 383
     nop

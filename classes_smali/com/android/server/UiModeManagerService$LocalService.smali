@@ -21,8 +21,9 @@
 # direct methods
 .method public constructor <init>(Lcom/android/server/UiModeManagerService;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/UiModeManagerService;
 
-    .line 1127
+    .line 958
     iput-object p1, p0, Lcom/android/server/UiModeManagerService$LocalService;->this$0:Lcom/android/server/UiModeManagerService;
 
     invoke-direct {p0}, Lcom/android/server/UiModeManagerInternal;-><init>()V
@@ -35,18 +36,18 @@
 .method public isNightMode()Z
     .registers 3
 
-    .line 1131
+    .line 962
     iget-object v0, p0, Lcom/android/server/UiModeManagerService$LocalService;->this$0:Lcom/android/server/UiModeManagerService;
 
     iget-object v0, v0, Lcom/android/server/UiModeManagerService;->mLock:Ljava/lang/Object;
 
     monitor-enter v0
 
-    .line 1132
+    .line 963
     :try_start_5
     iget-object v1, p0, Lcom/android/server/UiModeManagerService$LocalService;->this$0:Lcom/android/server/UiModeManagerService;
 
-    invoke-static {v1}, Lcom/android/server/UiModeManagerService;->access$2500(Lcom/android/server/UiModeManagerService;)Landroid/content/res/Configuration;
+    invoke-static {v1}, Lcom/android/server/UiModeManagerService;->access$1700(Lcom/android/server/UiModeManagerService;)Landroid/content/res/Configuration;
 
     move-result-object v1
 
@@ -63,13 +64,15 @@
     :cond_13
     const/4 v1, 0x0
 
-    .line 1140
+    .line 971
+    .local v1, "isIt":Z
     :goto_14
     monitor-exit v0
 
     return v1
 
-    .line 1141
+    .line 972
+    .end local v1  # "isIt":Z
     :catchall_16
     move-exception v1
 

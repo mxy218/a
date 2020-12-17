@@ -26,16 +26,17 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/TelephonyRegistry;Landroid/os/IBinder;)V
     .registers 3
+    .param p2, "binder"  # Landroid/os/IBinder;
 
-    .line 320
+    .line 334
     iput-object p1, p0, Lcom/android/server/TelephonyRegistry$TelephonyRegistryDeathRecipient;->this$0:Lcom/android/server/TelephonyRegistry;
 
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
-    .line 321
+    .line 335
     iput-object p2, p0, Lcom/android/server/TelephonyRegistry$TelephonyRegistryDeathRecipient;->binder:Landroid/os/IBinder;
 
-    .line 322
+    .line 336
     return-void
 .end method
 
@@ -44,13 +45,39 @@
 .method public binderDied()V
     .registers 3
 
-    .line 327
+    .line 340
+    invoke-static {}, Lcom/android/server/TelephonyRegistry;->access$900()Z
+
+    move-result v0
+
+    if-eqz v0, :cond_1c
+
+    new-instance v0, Ljava/lang/StringBuilder;
+
+    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
+
+    const-string v1, "binderDied "
+
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    iget-object v1, p0, Lcom/android/server/TelephonyRegistry$TelephonyRegistryDeathRecipient;->binder:Landroid/os/IBinder;
+
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v0
+
+    invoke-static {v0}, Lcom/android/server/TelephonyRegistry;->access$100(Ljava/lang/String;)V
+
+    .line 341
+    :cond_1c
     iget-object v0, p0, Lcom/android/server/TelephonyRegistry$TelephonyRegistryDeathRecipient;->this$0:Lcom/android/server/TelephonyRegistry;
 
     iget-object v1, p0, Lcom/android/server/TelephonyRegistry$TelephonyRegistryDeathRecipient;->binder:Landroid/os/IBinder;
 
-    invoke-static {v0, v1}, Lcom/android/server/TelephonyRegistry;->access$700(Lcom/android/server/TelephonyRegistry;Landroid/os/IBinder;)V
+    invoke-static {v0, v1}, Lcom/android/server/TelephonyRegistry;->access$1000(Lcom/android/server/TelephonyRegistry;Landroid/os/IBinder;)V
 
-    .line 328
+    .line 342
     return-void
 .end method

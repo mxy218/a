@@ -23,34 +23,38 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/inputmethod/InputMethodManagerService$ClientState;Landroid/graphics/Matrix;)V
     .registers 3
+    .param p1, "parentClient"  # Lcom/android/server/inputmethod/InputMethodManagerService$ClientState;
+    .param p2, "matrix"  # Landroid/graphics/Matrix;
 
-    .line 456
+    .line 475
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
-    .line 457
+    .line 476
     iput-object p1, p0, Lcom/android/server/inputmethod/InputMethodManagerService$ActivityViewInfo;->mParentClient:Lcom/android/server/inputmethod/InputMethodManagerService$ClientState;
 
-    .line 458
+    .line 477
     iput-object p2, p0, Lcom/android/server/inputmethod/InputMethodManagerService$ActivityViewInfo;->mMatrix:Landroid/graphics/Matrix;
 
-    .line 459
+    .line 478
     return-void
 .end method
 
-.method static synthetic access$1700(Lcom/android/server/inputmethod/InputMethodManagerService$ActivityViewInfo;)Lcom/android/server/inputmethod/InputMethodManagerService$ClientState;
-    .registers 1
+.method static synthetic access$1500(Lcom/android/server/inputmethod/InputMethodManagerService$ActivityViewInfo;)Lcom/android/server/inputmethod/InputMethodManagerService$ClientState;
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/inputmethod/InputMethodManagerService$ActivityViewInfo;
 
-    .line 445
-    iget-object p0, p0, Lcom/android/server/inputmethod/InputMethodManagerService$ActivityViewInfo;->mParentClient:Lcom/android/server/inputmethod/InputMethodManagerService$ClientState;
+    .line 464
+    iget-object v0, p0, Lcom/android/server/inputmethod/InputMethodManagerService$ActivityViewInfo;->mParentClient:Lcom/android/server/inputmethod/InputMethodManagerService$ClientState;
 
-    return-object p0
+    return-object v0
 .end method
 
-.method static synthetic access$1800(Lcom/android/server/inputmethod/InputMethodManagerService$ActivityViewInfo;)Landroid/graphics/Matrix;
-    .registers 1
+.method static synthetic access$1600(Lcom/android/server/inputmethod/InputMethodManagerService$ActivityViewInfo;)Landroid/graphics/Matrix;
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/inputmethod/InputMethodManagerService$ActivityViewInfo;
 
-    .line 445
-    iget-object p0, p0, Lcom/android/server/inputmethod/InputMethodManagerService$ActivityViewInfo;->mMatrix:Landroid/graphics/Matrix;
+    .line 464
+    iget-object v0, p0, Lcom/android/server/inputmethod/InputMethodManagerService$ActivityViewInfo;->mMatrix:Landroid/graphics/Matrix;
 
-    return-object p0
+    return-object v0
 .end method

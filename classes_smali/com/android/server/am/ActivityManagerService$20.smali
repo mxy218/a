@@ -34,8 +34,9 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/am/ActivityManagerService;IILandroid/os/IBinder;Ljava/lang/String;Landroid/app/ApplicationErrorReport$ParcelableCrashInfo;)V
     .registers 7
+    .param p1, "this$0"  # Lcom/android/server/am/ActivityManagerService;
 
-    .line 9401
+    .line 10017
     iput-object p1, p0, Lcom/android/server/am/ActivityManagerService$20;->this$0:Lcom/android/server/am/ActivityManagerService;
 
     iput p2, p0, Lcom/android/server/am/ActivityManagerService$20;->val$callingUid:I
@@ -58,7 +59,7 @@
 .method public run()V
     .registers 7
 
-    .line 9403
+    .line 10019
     iget-object v0, p0, Lcom/android/server/am/ActivityManagerService$20;->this$0:Lcom/android/server/am/ActivityManagerService;
 
     iget v1, p0, Lcom/android/server/am/ActivityManagerService$20;->val$callingUid:I
@@ -73,6 +74,6 @@
 
     invoke-virtual/range {v0 .. v5}, Lcom/android/server/am/ActivityManagerService;->handleApplicationWtfInner(IILandroid/os/IBinder;Ljava/lang/String;Landroid/app/ApplicationErrorReport$CrashInfo;)Lcom/android/server/am/ProcessRecord;
 
-    .line 9404
+    .line 10020
     return-void
 .end method

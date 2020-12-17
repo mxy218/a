@@ -21,6 +21,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/audio/AudioDeviceInventory$WiredDeviceConnectionState;)V
     .registers 2
+    .param p1, "state"  # Lcom/android/server/audio/AudioDeviceInventory$WiredDeviceConnectionState;
 
     .line 56
     invoke-direct {p0}, Lcom/android/server/audio/AudioEventLogger$Event;-><init>()V

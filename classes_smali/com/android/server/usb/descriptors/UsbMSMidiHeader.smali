@@ -10,6 +10,10 @@
 # direct methods
 .method public constructor <init>(IBBI)V
     .registers 5
+    .param p1, "length"  # I
+    .param p2, "type"  # B
+    .param p3, "subtype"  # B
+    .param p4, "subclass"  # I
 
     .line 29
     invoke-direct {p0, p1, p2, p3, p4}, Lcom/android/server/usb/descriptors/UsbACInterface;-><init>(IBBI)V
@@ -22,6 +26,7 @@
 # virtual methods
 .method public parseRawDescriptors(Lcom/android/server/usb/descriptors/ByteStream;)I
     .registers 4
+    .param p1, "stream"  # Lcom/android/server/usb/descriptors/ByteStream;
 
     .line 35
     iget v0, p0, Lcom/android/server/usb/descriptors/UsbMSMidiHeader;->mLength:I
@@ -35,13 +40,14 @@
     invoke-virtual {p1, v0}, Lcom/android/server/usb/descriptors/ByteStream;->advance(I)V
 
     .line 36
-    iget p1, p0, Lcom/android/server/usb/descriptors/UsbMSMidiHeader;->mLength:I
+    iget v0, p0, Lcom/android/server/usb/descriptors/UsbMSMidiHeader;->mLength:I
 
-    return p1
+    return v0
 .end method
 
 .method public report(Lcom/android/server/usb/descriptors/report/ReportCanvas;)V
     .registers 4
+    .param p1, "canvas"  # Lcom/android/server/usb/descriptors/report/ReportCanvas;
 
     .line 41
     invoke-super {p0, p1}, Lcom/android/server/usb/descriptors/UsbACInterface;->report(Lcom/android/server/usb/descriptors/report/ReportCanvas;)V

@@ -18,28 +18,31 @@
 .end method
 
 .method public static cancelJob(Landroid/content/Context;)V
-    .registers 2
+    .registers 3
+    .param p0, "context"  # Landroid/content/Context;
 
     .line 63
     const-class v0, Landroid/app/job/JobScheduler;
 
     invoke-virtual {p0, v0}, Landroid/content/Context;->getSystemService(Ljava/lang/Class;)Ljava/lang/Object;
 
-    move-result-object p0
+    move-result-object v0
 
-    check-cast p0, Landroid/app/job/JobScheduler;
+    check-cast v0, Landroid/app/job/JobScheduler;
 
     .line 64
-    const v0, 0x3bde38
+    .local v0, "jobScheduler":Landroid/app/job/JobScheduler;
+    const v1, 0x3bde38
 
-    invoke-virtual {p0, v0}, Landroid/app/job/JobScheduler;->cancel(I)V
+    invoke-virtual {v0, v1}, Landroid/app/job/JobScheduler;->cancel(I)V
 
     .line 65
     return-void
 .end method
 
 .method public static scheduleJob(Landroid/content/Context;)V
-    .registers 7
+    .registers 8
+    .param p0, "context"  # Landroid/content/Context;
 
     .line 43
     const-class v0, Landroid/app/job/JobScheduler;
@@ -51,6 +54,7 @@
     check-cast v0, Landroid/app/job/JobScheduler;
 
     .line 45
+    .local v0, "jobScheduler":Landroid/app/job/JobScheduler;
     const v1, 0x3bde38
 
     invoke-virtual {v0, v1}, Landroid/app/job/JobScheduler;->getPendingJob(I)Landroid/app/job/JobInfo;
@@ -58,6 +62,7 @@
     move-result-object v2
 
     .line 46
+    .local v2, "pending":Landroid/app/job/JobInfo;
     new-instance v3, Landroid/app/job/JobInfo$Builder;
 
     new-instance v4, Landroid/content/ComponentName;
@@ -69,42 +74,43 @@
     invoke-direct {v3, v1, v4}, Landroid/app/job/JobInfo$Builder;-><init>(ILandroid/content/ComponentName;)V
 
     .line 48
-    const/4 p0, 0x1
+    const/4 v4, 0x1
 
-    invoke-virtual {v3, p0}, Landroid/app/job/JobInfo$Builder;->setRequiresDeviceIdle(Z)Landroid/app/job/JobInfo$Builder;
+    invoke-virtual {v3, v4}, Landroid/app/job/JobInfo$Builder;->setRequiresDeviceIdle(Z)Landroid/app/job/JobInfo$Builder;
 
     move-result-object v3
 
     .line 49
-    invoke-virtual {v3, p0}, Landroid/app/job/JobInfo$Builder;->setRequiresCharging(Z)Landroid/app/job/JobInfo$Builder;
+    invoke-virtual {v3, v4}, Landroid/app/job/JobInfo$Builder;->setRequiresCharging(Z)Landroid/app/job/JobInfo$Builder;
 
-    move-result-object p0
+    move-result-object v3
 
-    sget-object v3, Ljava/util/concurrent/TimeUnit;->HOURS:Ljava/util/concurrent/TimeUnit;
+    sget-object v4, Ljava/util/concurrent/TimeUnit;->HOURS:Ljava/util/concurrent/TimeUnit;
 
     .line 50
-    const-wide/16 v4, 0x18
+    const-wide/16 v5, 0x18
 
-    invoke-virtual {v3, v4, v5}, Ljava/util/concurrent/TimeUnit;->toMillis(J)J
+    invoke-virtual {v4, v5, v6}, Ljava/util/concurrent/TimeUnit;->toMillis(J)J
 
-    move-result-wide v3
+    move-result-wide v4
 
-    invoke-virtual {p0, v3, v4}, Landroid/app/job/JobInfo$Builder;->setPeriodic(J)Landroid/app/job/JobInfo$Builder;
+    invoke-virtual {v3, v4, v5}, Landroid/app/job/JobInfo$Builder;->setPeriodic(J)Landroid/app/job/JobInfo$Builder;
 
-    move-result-object p0
+    move-result-object v3
 
-    invoke-virtual {p0}, Landroid/app/job/JobInfo$Builder;->build()Landroid/app/job/JobInfo;
+    invoke-virtual {v3}, Landroid/app/job/JobInfo$Builder;->build()Landroid/app/job/JobInfo;
 
-    move-result-object p0
+    move-result-object v3
 
     .line 52
+    .local v3, "jobInfo":Landroid/app/job/JobInfo;
     if-eqz v2, :cond_40
 
-    invoke-virtual {v2, p0}, Landroid/app/job/JobInfo;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v2, v3}, Landroid/app/job/JobInfo;->equals(Ljava/lang/Object;)Z
 
-    move-result v3
+    move-result v4
 
-    if-nez v3, :cond_40
+    if-nez v4, :cond_40
 
     .line 53
     invoke-virtual {v0, v1}, Landroid/app/job/JobScheduler;->cancel(I)V
@@ -117,7 +123,7 @@
     if-nez v2, :cond_45
 
     .line 58
-    invoke-virtual {v0, p0}, Landroid/app/job/JobScheduler;->schedule(Landroid/app/job/JobInfo;)I
+    invoke-virtual {v0, v3}, Landroid/app/job/JobScheduler;->schedule(Landroid/app/job/JobInfo;)I
 
     .line 60
     :cond_45
@@ -127,31 +133,34 @@
 
 # virtual methods
 .method public onStartJob(Landroid/app/job/JobParameters;)Z
-    .registers 2
+    .registers 4
+    .param p1, "params"  # Landroid/app/job/JobParameters;
 
     .line 72
-    const-class p1, Landroid/hardware/display/DisplayManagerInternal;
+    const-class v0, Landroid/hardware/display/DisplayManagerInternal;
 
-    invoke-static {p1}, Lcom/android/server/LocalServices;->getService(Ljava/lang/Class;)Ljava/lang/Object;
+    invoke-static {v0}, Lcom/android/server/LocalServices;->getService(Ljava/lang/Class;)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v0
 
-    check-cast p1, Landroid/hardware/display/DisplayManagerInternal;
+    check-cast v0, Landroid/hardware/display/DisplayManagerInternal;
 
     .line 73
-    invoke-virtual {p1}, Landroid/hardware/display/DisplayManagerInternal;->persistBrightnessTrackerState()V
+    .local v0, "dmi":Landroid/hardware/display/DisplayManagerInternal;
+    invoke-virtual {v0}, Landroid/hardware/display/DisplayManagerInternal;->persistBrightnessTrackerState()V
 
     .line 74
-    const/4 p1, 0x0
+    const/4 v1, 0x0
 
-    return p1
+    return v1
 .end method
 
 .method public onStopJob(Landroid/app/job/JobParameters;)Z
-    .registers 2
+    .registers 3
+    .param p1, "params"  # Landroid/app/job/JobParameters;
 
     .line 79
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    return p1
+    return v0
 .end method

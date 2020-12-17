@@ -29,41 +29,50 @@
 .end method
 
 .method public static create(Landroid/os/Parcel;)Landroid/content/Intent;
-    .registers 2
+    .registers 4
+    .param p0, "p"  # Landroid/os/Parcel;
 
     .line 386
     invoke-virtual {p0}, Landroid/os/Parcel;->createByteArray()[B
 
+    move-result-object v0
+
     .line 389
-    new-instance p0, Landroid/content/Intent;
+    .local v0, "data":[B
+    new-instance v1, Landroid/content/Intent;
 
-    const-string v0, "<cannot deserialize IntentProto>"
+    const-string v2, "<cannot deserialize IntentProto>"
 
-    invoke-direct {p0, v0}, Landroid/content/Intent;-><init>(Ljava/lang/String;)V
+    invoke-direct {v1, v2}, Landroid/content/Intent;-><init>(Ljava/lang/String;)V
 
-    return-object p0
+    return-object v1
 .end method
 
 .method public static write(Landroid/os/Parcel;Landroid/content/Intent;I)V
-    .registers 4
+    .registers 5
+    .param p0, "p"  # Landroid/os/Parcel;
+    .param p1, "intent"  # Landroid/content/Intent;
+    .param p2, "flags"  # I
 
     .line 372
-    new-instance p2, Landroid/util/proto/ProtoOutputStream;
+    new-instance v0, Landroid/util/proto/ProtoOutputStream;
 
-    const/16 v0, 0x400
+    const/16 v1, 0x400
 
-    invoke-direct {p2, v0}, Landroid/util/proto/ProtoOutputStream;-><init>(I)V
+    invoke-direct {v0, v1}, Landroid/util/proto/ProtoOutputStream;-><init>(I)V
 
     .line 375
-    invoke-virtual {p1, p2}, Landroid/content/Intent;->writeToProto(Landroid/util/proto/ProtoOutputStream;)V
+    .local v0, "protoOutputStream":Landroid/util/proto/ProtoOutputStream;
+    invoke-virtual {p1, v0}, Landroid/content/Intent;->writeToProto(Landroid/util/proto/ProtoOutputStream;)V
 
     .line 376
-    invoke-virtual {p2}, Landroid/util/proto/ProtoOutputStream;->getBytes()[B
+    invoke-virtual {v0}, Landroid/util/proto/ProtoOutputStream;->getBytes()[B
 
-    move-result-object p1
+    move-result-object v1
 
     .line 378
-    invoke-virtual {p0, p1}, Landroid/os/Parcel;->writeByteArray([B)V
+    .local v1, "bytes":[B
+    invoke-virtual {p0, v1}, Landroid/os/Parcel;->writeByteArray([B)V
 
     .line 379
     return-void

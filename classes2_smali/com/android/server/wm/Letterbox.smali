@@ -79,6 +79,7 @@
     .end annotation
 
     .line 58
+    .local p1, "surfaceControlFactory":Ljava/util/function/Supplier;, "Ljava/util/function/Supplier<Landroid/view/SurfaceControl$Builder;>;"
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
     .line 45
@@ -170,18 +171,20 @@
 .end method
 
 .method static synthetic access$100(Lcom/android/server/wm/Letterbox;)Ljava/util/function/Supplier;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/wm/Letterbox;
 
     .line 39
-    iget-object p0, p0, Lcom/android/server/wm/Letterbox;->mFactory:Ljava/util/function/Supplier;
+    iget-object v0, p0, Lcom/android/server/wm/Letterbox;->mFactory:Ljava/util/function/Supplier;
 
-    return-object p0
+    return-object v0
 .end method
 
 
 # virtual methods
 .method public applySurfaceChanges(Landroid/view/SurfaceControl$Transaction;)V
     .registers 6
+    .param p1, "t"  # Landroid/view/SurfaceControl$Transaction;
 
     .line 144
     iget-object v0, p0, Lcom/android/server/wm/Letterbox;->mSurfaces:[Lcom/android/server/wm/Letterbox$LetterboxSurface;
@@ -196,9 +199,11 @@
     aget-object v3, v0, v2
 
     .line 145
+    .local v3, "surface":Lcom/android/server/wm/Letterbox$LetterboxSurface;
     invoke-virtual {v3, p1}, Lcom/android/server/wm/Letterbox$LetterboxSurface;->applySurfaceChanges(Landroid/view/SurfaceControl$Transaction;)V
 
     .line 144
+    .end local v3  # "surface":Lcom/android/server/wm/Letterbox$LetterboxSurface;
     add-int/lit8 v2, v2, 0x1
 
     goto :goto_4
@@ -210,6 +215,7 @@
 
 .method attachInput(Lcom/android/server/wm/WindowState;)V
     .registers 6
+    .param p1, "win"  # Lcom/android/server/wm/WindowState;
 
     .line 151
     iget-object v0, p0, Lcom/android/server/wm/Letterbox;->mSurfaces:[Lcom/android/server/wm/Letterbox$LetterboxSurface;
@@ -224,9 +230,11 @@
     aget-object v3, v0, v2
 
     .line 152
+    .local v3, "surface":Lcom/android/server/wm/Letterbox$LetterboxSurface;
     invoke-virtual {v3, p1}, Lcom/android/server/wm/Letterbox$LetterboxSurface;->attachInput(Lcom/android/server/wm/WindowState;)V
 
     .line 151
+    .end local v3  # "surface":Lcom/android/server/wm/Letterbox$LetterboxSurface;
     add-int/lit8 v2, v2, 0x1
 
     goto :goto_4
@@ -262,9 +270,11 @@
     aget-object v3, v0, v2
 
     .line 129
+    .local v3, "surface":Lcom/android/server/wm/Letterbox$LetterboxSurface;
     invoke-virtual {v3}, Lcom/android/server/wm/Letterbox$LetterboxSurface;->remove()V
 
     .line 128
+    .end local v3  # "surface":Lcom/android/server/wm/Letterbox$LetterboxSurface;
     add-int/lit8 v2, v2, 0x1
 
     goto :goto_e
@@ -338,7 +348,8 @@
 .end method
 
 .method public isOverlappingWith(Landroid/graphics/Rect;)Z
-    .registers 7
+    .registers 8
+    .param p1, "rect"  # Landroid/graphics/Rect;
 
     .line 104
     iget-object v0, p0, Lcom/android/server/wm/Letterbox;->mSurfaces:[Lcom/android/server/wm/Letterbox$LetterboxSurface;
@@ -355,18 +366,20 @@
     aget-object v4, v0, v3
 
     .line 105
+    .local v4, "surface":Lcom/android/server/wm/Letterbox$LetterboxSurface;
     invoke-virtual {v4, p1}, Lcom/android/server/wm/Letterbox$LetterboxSurface;->isOverlappingWith(Landroid/graphics/Rect;)Z
 
-    move-result v4
+    move-result v5
 
-    if-eqz v4, :cond_11
+    if-eqz v5, :cond_11
 
     .line 106
-    const/4 p1, 0x1
+    const/4 v0, 0x1
 
-    return p1
+    return v0
 
     .line 104
+    .end local v4  # "surface":Lcom/android/server/wm/Letterbox$LetterboxSurface;
     :cond_11
     add-int/lit8 v3, v3, 0x1
 
@@ -379,6 +392,9 @@
 
 .method public layout(Landroid/graphics/Rect;Landroid/graphics/Rect;Landroid/graphics/Point;)V
     .registers 16
+    .param p1, "outer"  # Landroid/graphics/Rect;
+    .param p2, "inner"  # Landroid/graphics/Rect;
+    .param p3, "surfaceOrigin"  # Landroid/graphics/Point;
 
     .line 74
     iget-object v0, p0, Lcom/android/server/wm/Letterbox;->mOuter:Landroid/graphics/Rect;
@@ -455,7 +471,7 @@
 .end method
 
 .method public needsApplySurfaceChanges()Z
-    .registers 6
+    .registers 7
 
     .line 135
     iget-object v0, p0, Lcom/android/server/wm/Letterbox;->mSurfaces:[Lcom/android/server/wm/Letterbox$LetterboxSurface;
@@ -472,11 +488,12 @@
     aget-object v4, v0, v3
 
     .line 136
+    .local v4, "surface":Lcom/android/server/wm/Letterbox$LetterboxSurface;
     invoke-virtual {v4}, Lcom/android/server/wm/Letterbox$LetterboxSurface;->needsApplySurfaceChanges()Z
 
-    move-result v4
+    move-result v5
 
-    if-eqz v4, :cond_11
+    if-eqz v5, :cond_11
 
     .line 137
     const/4 v0, 0x1
@@ -484,6 +501,7 @@
     return v0
 
     .line 135
+    .end local v4  # "surface":Lcom/android/server/wm/Letterbox$LetterboxSurface;
     :cond_11
     add-int/lit8 v3, v3, 0x1
 
@@ -496,6 +514,7 @@
 
 .method onMovedToDisplay(I)V
     .registers 7
+    .param p1, "displayId"  # I
 
     .line 157
     iget-object v0, p0, Lcom/android/server/wm/Letterbox;->mSurfaces:[Lcom/android/server/wm/Letterbox$LetterboxSurface;
@@ -510,6 +529,7 @@
     aget-object v3, v0, v2
 
     .line 158
+    .local v3, "surface":Lcom/android/server/wm/Letterbox$LetterboxSurface;
     invoke-static {v3}, Lcom/android/server/wm/Letterbox$LetterboxSurface;->access$000(Lcom/android/server/wm/Letterbox$LetterboxSurface;)Lcom/android/server/wm/Letterbox$InputInterceptor;
 
     move-result-object v4
@@ -519,13 +539,14 @@
     .line 159
     invoke-static {v3}, Lcom/android/server/wm/Letterbox$LetterboxSurface;->access$000(Lcom/android/server/wm/Letterbox$LetterboxSurface;)Lcom/android/server/wm/Letterbox$InputInterceptor;
 
-    move-result-object v3
+    move-result-object v4
 
-    iget-object v3, v3, Lcom/android/server/wm/Letterbox$InputInterceptor;->mWindowHandle:Landroid/view/InputWindowHandle;
+    iget-object v4, v4, Lcom/android/server/wm/Letterbox$InputInterceptor;->mWindowHandle:Landroid/view/InputWindowHandle;
 
-    iput p1, v3, Landroid/view/InputWindowHandle;->displayId:I
+    iput p1, v4, Landroid/view/InputWindowHandle;->displayId:I
 
     .line 157
+    .end local v3  # "surface":Lcom/android/server/wm/Letterbox$LetterboxSurface;
     :cond_16
     add-int/lit8 v2, v2, 0x1
 

@@ -5,7 +5,10 @@
 
 # direct methods
 .method public constructor <init>(Landroid/content/Context;Lcom/android/server/wm/ActivityRecord;Lcom/android/server/wm/ActivityRecord;)V
-    .registers 9
+    .registers 12
+    .param p1, "context"  # Landroid/content/Context;
+    .param p2, "cur"  # Lcom/android/server/wm/ActivityRecord;
+    .param p3, "next"  # Lcom/android/server/wm/ActivityRecord;
 
     .line 31
     const v0, 0x103043b
@@ -36,12 +39,12 @@
     invoke-virtual {v1, v2}, Landroid/view/Window;->addFlags(I)V
 
     .line 38
-    const v1, 0x109008a
+    const v1, 0x1090088
 
     invoke-virtual {p0, v1}, Lcom/android/server/wm/LaunchWarningWindow;->setContentView(I)V
 
     .line 39
-    const v1, 0x104036f
+    const v1, 0x104036b
 
     invoke-virtual {p1, v1}, Landroid/content/Context;->getText(I)Ljava/lang/CharSequence;
 
@@ -55,6 +58,7 @@
     invoke-direct {v1}, Landroid/util/TypedValue;-><init>()V
 
     .line 42
+    .local v1, "out":Landroid/util/TypedValue;
     invoke-virtual {p0}, Lcom/android/server/wm/LaunchWarningWindow;->getContext()Landroid/content/Context;
 
     move-result-object v2
@@ -74,9 +78,9 @@
 
     move-result-object v2
 
-    iget v1, v1, Landroid/util/TypedValue;->resourceId:I
+    iget v4, v1, Landroid/util/TypedValue;->resourceId:I
 
-    invoke-virtual {v2, v0, v1}, Landroid/view/Window;->setFeatureDrawableResource(II)V
+    invoke-virtual {v2, v0, v4}, Landroid/view/Window;->setFeatureDrawableResource(II)V
 
     .line 45
     const v0, 0x10203e2
@@ -88,133 +92,139 @@
     check-cast v0, Landroid/widget/ImageView;
 
     .line 46
-    iget-object v1, p3, Lcom/android/server/wm/ActivityRecord;->info:Landroid/content/pm/ActivityInfo;
+    .local v0, "icon":Landroid/widget/ImageView;
+    iget-object v2, p3, Lcom/android/server/wm/ActivityRecord;->info:Landroid/content/pm/ActivityInfo;
 
-    iget-object v1, v1, Landroid/content/pm/ActivityInfo;->applicationInfo:Landroid/content/pm/ApplicationInfo;
+    iget-object v2, v2, Landroid/content/pm/ActivityInfo;->applicationInfo:Landroid/content/pm/ApplicationInfo;
 
-    invoke-virtual {p1}, Landroid/content/Context;->getPackageManager()Landroid/content/pm/PackageManager;
-
-    move-result-object v2
-
-    invoke-virtual {v1, v2}, Landroid/content/pm/ApplicationInfo;->loadIcon(Landroid/content/pm/PackageManager;)Landroid/graphics/drawable/Drawable;
-
-    move-result-object v1
-
-    invoke-virtual {v0, v1}, Landroid/widget/ImageView;->setImageDrawable(Landroid/graphics/drawable/Drawable;)V
-
-    .line 47
-    const v0, 0x10203e3
-
-    invoke-virtual {p0, v0}, Lcom/android/server/wm/LaunchWarningWindow;->findViewById(I)Landroid/view/View;
-
-    move-result-object v0
-
-    check-cast v0, Landroid/widget/TextView;
-
-    .line 48
-    invoke-virtual {p1}, Landroid/content/Context;->getResources()Landroid/content/res/Resources;
-
-    move-result-object v1
-
-    new-array v2, v3, [Ljava/lang/Object;
-
-    iget-object p3, p3, Lcom/android/server/wm/ActivityRecord;->info:Landroid/content/pm/ActivityInfo;
-
-    iget-object p3, p3, Landroid/content/pm/ActivityInfo;->applicationInfo:Landroid/content/pm/ApplicationInfo;
-
-    .line 49
     invoke-virtual {p1}, Landroid/content/Context;->getPackageManager()Landroid/content/pm/PackageManager;
 
     move-result-object v4
 
-    invoke-virtual {p3, v4}, Landroid/content/pm/ApplicationInfo;->loadLabel(Landroid/content/pm/PackageManager;)Ljava/lang/CharSequence;
+    invoke-virtual {v2, v4}, Landroid/content/pm/ApplicationInfo;->loadIcon(Landroid/content/pm/PackageManager;)Landroid/graphics/drawable/Drawable;
 
-    move-result-object p3
+    move-result-object v2
 
-    invoke-interface {p3}, Ljava/lang/CharSequence;->toString()Ljava/lang/String;
+    invoke-virtual {v0, v2}, Landroid/widget/ImageView;->setImageDrawable(Landroid/graphics/drawable/Drawable;)V
 
-    move-result-object p3
+    .line 47
+    const v2, 0x10203e3
 
-    const/4 v4, 0x0
+    invoke-virtual {p0, v2}, Lcom/android/server/wm/LaunchWarningWindow;->findViewById(I)Landroid/view/View;
 
-    aput-object p3, v2, v4
+    move-result-object v2
+
+    check-cast v2, Landroid/widget/TextView;
 
     .line 48
-    const p3, 0x104036e
+    .local v2, "text":Landroid/widget/TextView;
+    invoke-virtual {p1}, Landroid/content/Context;->getResources()Landroid/content/res/Resources;
 
-    invoke-virtual {v1, p3, v2}, Landroid/content/res/Resources;->getString(I[Ljava/lang/Object;)Ljava/lang/String;
+    move-result-object v4
 
-    move-result-object p3
+    new-array v5, v3, [Ljava/lang/Object;
 
-    invoke-virtual {v0, p3}, Landroid/widget/TextView;->setText(Ljava/lang/CharSequence;)V
+    iget-object v6, p3, Lcom/android/server/wm/ActivityRecord;->info:Landroid/content/pm/ActivityInfo;
+
+    iget-object v6, v6, Landroid/content/pm/ActivityInfo;->applicationInfo:Landroid/content/pm/ApplicationInfo;
+
+    .line 49
+    invoke-virtual {p1}, Landroid/content/Context;->getPackageManager()Landroid/content/pm/PackageManager;
+
+    move-result-object v7
+
+    invoke-virtual {v6, v7}, Landroid/content/pm/ApplicationInfo;->loadLabel(Landroid/content/pm/PackageManager;)Ljava/lang/CharSequence;
+
+    move-result-object v6
+
+    invoke-interface {v6}, Ljava/lang/CharSequence;->toString()Ljava/lang/String;
+
+    move-result-object v6
+
+    const/4 v7, 0x0
+
+    aput-object v6, v5, v7
+
+    .line 48
+    const v6, 0x104036a
+
+    invoke-virtual {v4, v6, v5}, Landroid/content/res/Resources;->getString(I[Ljava/lang/Object;)Ljava/lang/String;
+
+    move-result-object v4
+
+    invoke-virtual {v2, v4}, Landroid/widget/TextView;->setText(Ljava/lang/CharSequence;)V
 
     .line 50
-    const p3, 0x1020390
+    const v4, 0x1020390
 
-    invoke-virtual {p0, p3}, Lcom/android/server/wm/LaunchWarningWindow;->findViewById(I)Landroid/view/View;
+    invoke-virtual {p0, v4}, Lcom/android/server/wm/LaunchWarningWindow;->findViewById(I)Landroid/view/View;
 
-    move-result-object p3
+    move-result-object v4
 
-    check-cast p3, Landroid/widget/ImageView;
+    move-object v0, v4
+
+    check-cast v0, Landroid/widget/ImageView;
 
     .line 51
-    iget-object v0, p2, Lcom/android/server/wm/ActivityRecord;->info:Landroid/content/pm/ActivityInfo;
+    iget-object v4, p2, Lcom/android/server/wm/ActivityRecord;->info:Landroid/content/pm/ActivityInfo;
 
-    iget-object v0, v0, Landroid/content/pm/ActivityInfo;->applicationInfo:Landroid/content/pm/ApplicationInfo;
+    iget-object v4, v4, Landroid/content/pm/ActivityInfo;->applicationInfo:Landroid/content/pm/ApplicationInfo;
 
     invoke-virtual {p1}, Landroid/content/Context;->getPackageManager()Landroid/content/pm/PackageManager;
 
-    move-result-object v1
+    move-result-object v5
 
-    invoke-virtual {v0, v1}, Landroid/content/pm/ApplicationInfo;->loadIcon(Landroid/content/pm/PackageManager;)Landroid/graphics/drawable/Drawable;
+    invoke-virtual {v4, v5}, Landroid/content/pm/ApplicationInfo;->loadIcon(Landroid/content/pm/PackageManager;)Landroid/graphics/drawable/Drawable;
 
-    move-result-object v0
+    move-result-object v4
 
-    invoke-virtual {p3, v0}, Landroid/widget/ImageView;->setImageDrawable(Landroid/graphics/drawable/Drawable;)V
+    invoke-virtual {v0, v4}, Landroid/widget/ImageView;->setImageDrawable(Landroid/graphics/drawable/Drawable;)V
 
     .line 52
-    const p3, 0x1020391
+    const v4, 0x1020391
 
-    invoke-virtual {p0, p3}, Lcom/android/server/wm/LaunchWarningWindow;->findViewById(I)Landroid/view/View;
+    invoke-virtual {p0, v4}, Lcom/android/server/wm/LaunchWarningWindow;->findViewById(I)Landroid/view/View;
 
-    move-result-object p3
+    move-result-object v4
 
-    check-cast p3, Landroid/widget/TextView;
+    move-object v2, v4
+
+    check-cast v2, Landroid/widget/TextView;
 
     .line 53
     invoke-virtual {p1}, Landroid/content/Context;->getResources()Landroid/content/res/Resources;
 
-    move-result-object v0
+    move-result-object v4
 
-    new-array v1, v3, [Ljava/lang/Object;
+    new-array v3, v3, [Ljava/lang/Object;
 
-    iget-object p2, p2, Lcom/android/server/wm/ActivityRecord;->info:Landroid/content/pm/ActivityInfo;
+    iget-object v5, p2, Lcom/android/server/wm/ActivityRecord;->info:Landroid/content/pm/ActivityInfo;
 
-    iget-object p2, p2, Landroid/content/pm/ActivityInfo;->applicationInfo:Landroid/content/pm/ApplicationInfo;
+    iget-object v5, v5, Landroid/content/pm/ActivityInfo;->applicationInfo:Landroid/content/pm/ApplicationInfo;
 
     .line 54
     invoke-virtual {p1}, Landroid/content/Context;->getPackageManager()Landroid/content/pm/PackageManager;
 
-    move-result-object p1
+    move-result-object v6
 
-    invoke-virtual {p2, p1}, Landroid/content/pm/ApplicationInfo;->loadLabel(Landroid/content/pm/PackageManager;)Ljava/lang/CharSequence;
+    invoke-virtual {v5, v6}, Landroid/content/pm/ApplicationInfo;->loadLabel(Landroid/content/pm/PackageManager;)Ljava/lang/CharSequence;
 
-    move-result-object p1
+    move-result-object v5
 
-    invoke-interface {p1}, Ljava/lang/CharSequence;->toString()Ljava/lang/String;
+    invoke-interface {v5}, Ljava/lang/CharSequence;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v5
 
-    aput-object p1, v1, v4
+    aput-object v5, v3, v7
 
     .line 53
-    const p1, 0x104036d
+    const v5, 0x1040369
 
-    invoke-virtual {v0, p1, v1}, Landroid/content/res/Resources;->getString(I[Ljava/lang/Object;)Ljava/lang/String;
+    invoke-virtual {v4, v5, v3}, Landroid/content/res/Resources;->getString(I[Ljava/lang/Object;)Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v3
 
-    invoke-virtual {p3, p1}, Landroid/widget/TextView;->setText(Ljava/lang/CharSequence;)V
+    invoke-virtual {v2, v3}, Landroid/widget/TextView;->setText(Ljava/lang/CharSequence;)V
 
     .line 55
     return-void

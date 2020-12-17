@@ -48,6 +48,9 @@
 
 .method static synthetic access$1200(Lcom/android/server/print/RemotePrintSpooler$GetCustomPrinterIconCaller;Ljava/lang/Object;I)V
     .registers 3
+    .param p0, "x0"  # Lcom/android/server/print/RemotePrintSpooler$GetCustomPrinterIconCaller;
+    .param p1, "x1"  # Ljava/lang/Object;
+    .param p2, "x2"  # I
 
     .line 847
     invoke-virtual {p0, p1, p2}, Lcom/android/server/print/RemotePrintSpooler$GetCustomPrinterIconCaller;->onRemoteMethodResult(Ljava/lang/Object;I)V
@@ -59,6 +62,8 @@
 # virtual methods
 .method public getCustomPrinterIcon(Landroid/print/IPrintSpooler;Landroid/print/PrinterId;)Landroid/graphics/drawable/Icon;
     .registers 5
+    .param p1, "target"  # Landroid/print/IPrintSpooler;
+    .param p2, "printerId"  # Landroid/print/PrinterId;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;,
@@ -72,6 +77,7 @@
     move-result v0
 
     .line 863
+    .local v0, "sequence":I
     iget-object v1, p0, Lcom/android/server/print/RemotePrintSpooler$GetCustomPrinterIconCaller;->mCallback:Landroid/print/IPrintSpoolerCallbacks;
 
     invoke-interface {p1, p2, v1, v0}, Landroid/print/IPrintSpooler;->getCustomPrinterIcon(Landroid/print/PrinterId;Landroid/print/IPrintSpoolerCallbacks;I)V
@@ -79,9 +85,9 @@
     .line 864
     invoke-virtual {p0, v0}, Lcom/android/server/print/RemotePrintSpooler$GetCustomPrinterIconCaller;->getResultTimed(I)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v1
 
-    check-cast p1, Landroid/graphics/drawable/Icon;
+    check-cast v1, Landroid/graphics/drawable/Icon;
 
-    return-object p1
+    return-object v1
 .end method

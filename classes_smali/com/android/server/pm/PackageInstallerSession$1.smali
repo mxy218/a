@@ -21,7 +21,7 @@
 .method constructor <init>()V
     .registers 1
 
-    .line 311
+    .line 319
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
     return-void
@@ -31,8 +31,9 @@
 # virtual methods
 .method public accept(Ljava/io/File;)Z
     .registers 5
+    .param p1, "file"  # Ljava/io/File;
 
-    .line 316
+    .line 324
     invoke-virtual {p1}, Ljava/io/File;->isDirectory()Z
 
     move-result v0
@@ -43,7 +44,7 @@
 
     return v1
 
-    .line 317
+    .line 325
     :cond_8
     invoke-virtual {p1}, Ljava/io/File;->getName()Ljava/lang/String;
 
@@ -59,7 +60,7 @@
 
     return v1
 
-    .line 318
+    .line 326
     :cond_15
     invoke-static {p1}, Landroid/content/pm/dex/DexMetadataHelper;->isDexMetadataFile(Ljava/io/File;)Z
 
@@ -69,19 +70,19 @@
 
     return v1
 
-    .line 319
+    .line 327
     :cond_1c
     invoke-static {p1}, Lcom/android/server/security/VerityUtils;->isFsveritySignatureFile(Ljava/io/File;)Z
 
-    move-result p1
+    move-result v0
 
-    if-eqz p1, :cond_23
+    if-eqz v0, :cond_23
 
     return v1
 
-    .line 320
+    .line 328
     :cond_23
-    const/4 p1, 0x1
+    const/4 v0, 0x1
 
-    return p1
+    return v0
 .end method

@@ -58,6 +58,7 @@
     sget v1, Lcom/android/server/inputmethod/MultiClientInputMethodManagerService$WindowHandleSource;->sNextValue:I
 
     .line 616
+    .local v1, "result":I
     sget v2, Lcom/android/server/inputmethod/MultiClientInputMethodManagerService$WindowHandleSource;->sNextValue:I
 
     add-int/lit8 v2, v2, 0x1
@@ -83,6 +84,7 @@
     return v1
 
     .line 614
+    .end local v1  # "result":I
     :catchall_14
     move-exception v1
 

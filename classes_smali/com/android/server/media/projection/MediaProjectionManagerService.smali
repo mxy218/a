@@ -63,7 +63,8 @@
 
 # direct methods
 .method public constructor <init>(Landroid/content/Context;)V
-    .registers 3
+    .registers 4
+    .param p1, "context"  # Landroid/content/Context;
 
     .line 85
     invoke-direct {p0, p1}, Lcom/android/server/SystemService;-><init>(Landroid/content/Context;)V
@@ -79,80 +80,80 @@
     iput-object p1, p0, Lcom/android/server/media/projection/MediaProjectionManagerService;->mContext:Landroid/content/Context;
 
     .line 87
-    new-instance p1, Landroid/util/ArrayMap;
+    new-instance v0, Landroid/util/ArrayMap;
 
-    invoke-direct {p1}, Landroid/util/ArrayMap;-><init>()V
+    invoke-direct {v0}, Landroid/util/ArrayMap;-><init>()V
 
-    iput-object p1, p0, Lcom/android/server/media/projection/MediaProjectionManagerService;->mDeathEaters:Ljava/util/Map;
+    iput-object v0, p0, Lcom/android/server/media/projection/MediaProjectionManagerService;->mDeathEaters:Ljava/util/Map;
 
     .line 88
-    new-instance p1, Lcom/android/server/media/projection/MediaProjectionManagerService$CallbackDelegate;
+    new-instance v0, Lcom/android/server/media/projection/MediaProjectionManagerService$CallbackDelegate;
 
-    invoke-direct {p1}, Lcom/android/server/media/projection/MediaProjectionManagerService$CallbackDelegate;-><init>()V
+    invoke-direct {v0}, Lcom/android/server/media/projection/MediaProjectionManagerService$CallbackDelegate;-><init>()V
 
-    iput-object p1, p0, Lcom/android/server/media/projection/MediaProjectionManagerService;->mCallbackDelegate:Lcom/android/server/media/projection/MediaProjectionManagerService$CallbackDelegate;
+    iput-object v0, p0, Lcom/android/server/media/projection/MediaProjectionManagerService;->mCallbackDelegate:Lcom/android/server/media/projection/MediaProjectionManagerService$CallbackDelegate;
 
     .line 89
-    iget-object p1, p0, Lcom/android/server/media/projection/MediaProjectionManagerService;->mContext:Landroid/content/Context;
+    iget-object v0, p0, Lcom/android/server/media/projection/MediaProjectionManagerService;->mContext:Landroid/content/Context;
 
-    const-string v0, "appops"
+    const-string v1, "appops"
 
-    invoke-virtual {p1, v0}, Landroid/content/Context;->getSystemService(Ljava/lang/String;)Ljava/lang/Object;
+    invoke-virtual {v0, v1}, Landroid/content/Context;->getSystemService(Ljava/lang/String;)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v0
 
-    check-cast p1, Landroid/app/AppOpsManager;
+    check-cast v0, Landroid/app/AppOpsManager;
 
-    iput-object p1, p0, Lcom/android/server/media/projection/MediaProjectionManagerService;->mAppOps:Landroid/app/AppOpsManager;
+    iput-object v0, p0, Lcom/android/server/media/projection/MediaProjectionManagerService;->mAppOps:Landroid/app/AppOpsManager;
 
     .line 90
-    const-class p1, Landroid/app/ActivityManagerInternal;
+    const-class v0, Landroid/app/ActivityManagerInternal;
 
-    invoke-static {p1}, Lcom/android/server/LocalServices;->getService(Ljava/lang/Class;)Ljava/lang/Object;
+    invoke-static {v0}, Lcom/android/server/LocalServices;->getService(Ljava/lang/Class;)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v0
 
-    check-cast p1, Landroid/app/ActivityManagerInternal;
+    check-cast v0, Landroid/app/ActivityManagerInternal;
 
-    iput-object p1, p0, Lcom/android/server/media/projection/MediaProjectionManagerService;->mActivityManagerInternal:Landroid/app/ActivityManagerInternal;
+    iput-object v0, p0, Lcom/android/server/media/projection/MediaProjectionManagerService;->mActivityManagerInternal:Landroid/app/ActivityManagerInternal;
 
     .line 91
-    iget-object p1, p0, Lcom/android/server/media/projection/MediaProjectionManagerService;->mContext:Landroid/content/Context;
+    iget-object v0, p0, Lcom/android/server/media/projection/MediaProjectionManagerService;->mContext:Landroid/content/Context;
 
-    invoke-virtual {p1}, Landroid/content/Context;->getPackageManager()Landroid/content/pm/PackageManager;
+    invoke-virtual {v0}, Landroid/content/Context;->getPackageManager()Landroid/content/pm/PackageManager;
 
-    move-result-object p1
+    move-result-object v0
 
-    iput-object p1, p0, Lcom/android/server/media/projection/MediaProjectionManagerService;->mPackageManager:Landroid/content/pm/PackageManager;
+    iput-object v0, p0, Lcom/android/server/media/projection/MediaProjectionManagerService;->mPackageManager:Landroid/content/pm/PackageManager;
 
     .line 92
-    iget-object p1, p0, Lcom/android/server/media/projection/MediaProjectionManagerService;->mContext:Landroid/content/Context;
+    iget-object v0, p0, Lcom/android/server/media/projection/MediaProjectionManagerService;->mContext:Landroid/content/Context;
 
-    const-string v0, "media_router"
+    const-string/jumbo v1, "media_router"
 
-    invoke-virtual {p1, v0}, Landroid/content/Context;->getSystemService(Ljava/lang/String;)Ljava/lang/Object;
+    invoke-virtual {v0, v1}, Landroid/content/Context;->getSystemService(Ljava/lang/String;)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v0
 
-    check-cast p1, Landroid/media/MediaRouter;
+    check-cast v0, Landroid/media/MediaRouter;
 
-    iput-object p1, p0, Lcom/android/server/media/projection/MediaProjectionManagerService;->mMediaRouter:Landroid/media/MediaRouter;
+    iput-object v0, p0, Lcom/android/server/media/projection/MediaProjectionManagerService;->mMediaRouter:Landroid/media/MediaRouter;
 
     .line 93
-    new-instance p1, Lcom/android/server/media/projection/MediaProjectionManagerService$MediaRouterCallback;
+    new-instance v0, Lcom/android/server/media/projection/MediaProjectionManagerService$MediaRouterCallback;
 
-    const/4 v0, 0x0
+    const/4 v1, 0x0
 
-    invoke-direct {p1, p0, v0}, Lcom/android/server/media/projection/MediaProjectionManagerService$MediaRouterCallback;-><init>(Lcom/android/server/media/projection/MediaProjectionManagerService;Lcom/android/server/media/projection/MediaProjectionManagerService$1;)V
+    invoke-direct {v0, p0, v1}, Lcom/android/server/media/projection/MediaProjectionManagerService$MediaRouterCallback;-><init>(Lcom/android/server/media/projection/MediaProjectionManagerService;Lcom/android/server/media/projection/MediaProjectionManagerService$1;)V
 
-    iput-object p1, p0, Lcom/android/server/media/projection/MediaProjectionManagerService;->mMediaRouterCallback:Lcom/android/server/media/projection/MediaProjectionManagerService$MediaRouterCallback;
+    iput-object v0, p0, Lcom/android/server/media/projection/MediaProjectionManagerService;->mMediaRouterCallback:Lcom/android/server/media/projection/MediaProjectionManagerService$MediaRouterCallback;
 
     .line 94
     invoke-static {}, Lcom/android/server/Watchdog;->getInstance()Lcom/android/server/Watchdog;
 
-    move-result-object p1
+    move-result-object v0
 
-    invoke-virtual {p1, p0}, Lcom/android/server/Watchdog;->addMonitor(Lcom/android/server/Watchdog$Monitor;)V
+    invoke-virtual {v0, p0}, Lcom/android/server/Watchdog;->addMonitor(Lcom/android/server/Watchdog$Monitor;)V
 
     .line 95
     return-void
@@ -160,6 +161,8 @@
 
 .method static synthetic access$1000(Lcom/android/server/media/projection/MediaProjectionManagerService;Landroid/media/projection/IMediaProjectionWatcherCallback;)V
     .registers 2
+    .param p0, "x0"  # Lcom/android/server/media/projection/MediaProjectionManagerService;
+    .param p1, "x1"  # Landroid/media/projection/IMediaProjectionWatcherCallback;
 
     .line 63
     invoke-direct {p0, p1}, Lcom/android/server/media/projection/MediaProjectionManagerService;->addCallback(Landroid/media/projection/IMediaProjectionWatcherCallback;)V
@@ -169,6 +172,8 @@
 
 .method static synthetic access$1100(Lcom/android/server/media/projection/MediaProjectionManagerService;Ljava/io/PrintWriter;)V
     .registers 2
+    .param p0, "x0"  # Lcom/android/server/media/projection/MediaProjectionManagerService;
+    .param p1, "x1"  # Ljava/io/PrintWriter;
 
     .line 63
     invoke-direct {p0, p1}, Lcom/android/server/media/projection/MediaProjectionManagerService;->dump(Ljava/io/PrintWriter;)V
@@ -177,34 +182,39 @@
 .end method
 
 .method static synthetic access$1200(Lcom/android/server/media/projection/MediaProjectionManagerService;)Ljava/lang/Object;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/media/projection/MediaProjectionManagerService;
 
     .line 63
-    iget-object p0, p0, Lcom/android/server/media/projection/MediaProjectionManagerService;->mLock:Ljava/lang/Object;
+    iget-object v0, p0, Lcom/android/server/media/projection/MediaProjectionManagerService;->mLock:Ljava/lang/Object;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$1300(Lcom/android/server/media/projection/MediaProjectionManagerService;)Landroid/app/ActivityManagerInternal;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/media/projection/MediaProjectionManagerService;
 
     .line 63
-    iget-object p0, p0, Lcom/android/server/media/projection/MediaProjectionManagerService;->mActivityManagerInternal:Landroid/app/ActivityManagerInternal;
+    iget-object v0, p0, Lcom/android/server/media/projection/MediaProjectionManagerService;->mActivityManagerInternal:Landroid/app/ActivityManagerInternal;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$1400(Lcom/android/server/media/projection/MediaProjectionManagerService;)Lcom/android/server/media/projection/MediaProjectionManagerService$CallbackDelegate;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/media/projection/MediaProjectionManagerService;
 
     .line 63
-    iget-object p0, p0, Lcom/android/server/media/projection/MediaProjectionManagerService;->mCallbackDelegate:Lcom/android/server/media/projection/MediaProjectionManagerService$CallbackDelegate;
+    iget-object v0, p0, Lcom/android/server/media/projection/MediaProjectionManagerService;->mCallbackDelegate:Lcom/android/server/media/projection/MediaProjectionManagerService$CallbackDelegate;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$1500(Lcom/android/server/media/projection/MediaProjectionManagerService;Lcom/android/server/media/projection/MediaProjectionManagerService$MediaProjection;)V
     .registers 2
+    .param p0, "x0"  # Lcom/android/server/media/projection/MediaProjectionManagerService;
+    .param p1, "x1"  # Lcom/android/server/media/projection/MediaProjectionManagerService$MediaProjection;
 
     .line 63
     invoke-direct {p0, p1}, Lcom/android/server/media/projection/MediaProjectionManagerService;->startProjectionLocked(Lcom/android/server/media/projection/MediaProjectionManagerService$MediaProjection;)V
@@ -214,6 +224,8 @@
 
 .method static synthetic access$1600(Lcom/android/server/media/projection/MediaProjectionManagerService;Lcom/android/server/media/projection/MediaProjectionManagerService$MediaProjection;)V
     .registers 2
+    .param p0, "x0"  # Lcom/android/server/media/projection/MediaProjectionManagerService;
+    .param p1, "x1"  # Lcom/android/server/media/projection/MediaProjectionManagerService$MediaProjection;
 
     .line 63
     invoke-direct {p0, p1}, Lcom/android/server/media/projection/MediaProjectionManagerService;->stopProjectionLocked(Lcom/android/server/media/projection/MediaProjectionManagerService$MediaProjection;)V
@@ -222,27 +234,31 @@
 .end method
 
 .method static synthetic access$1700(I)Ljava/lang/String;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # I
 
     .line 63
     invoke-static {p0}, Lcom/android/server/media/projection/MediaProjectionManagerService;->typeToString(I)Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v0
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$1800(Lcom/android/server/media/projection/MediaProjectionManagerService;)Landroid/media/MediaRouter$RouteInfo;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/media/projection/MediaProjectionManagerService;
 
     .line 63
-    iget-object p0, p0, Lcom/android/server/media/projection/MediaProjectionManagerService;->mMediaRouteInfo:Landroid/media/MediaRouter$RouteInfo;
+    iget-object v0, p0, Lcom/android/server/media/projection/MediaProjectionManagerService;->mMediaRouteInfo:Landroid/media/MediaRouter$RouteInfo;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$1802(Lcom/android/server/media/projection/MediaProjectionManagerService;Landroid/media/MediaRouter$RouteInfo;)Landroid/media/MediaRouter$RouteInfo;
     .registers 2
+    .param p0, "x0"  # Lcom/android/server/media/projection/MediaProjectionManagerService;
+    .param p1, "x1"  # Landroid/media/MediaRouter$RouteInfo;
 
     .line 63
     iput-object p1, p0, Lcom/android/server/media/projection/MediaProjectionManagerService;->mMediaRouteInfo:Landroid/media/MediaRouter$RouteInfo;
@@ -252,6 +268,10 @@
 
 .method static synthetic access$200(Lcom/android/server/media/projection/MediaProjectionManagerService;III)V
     .registers 4
+    .param p0, "x0"  # Lcom/android/server/media/projection/MediaProjectionManagerService;
+    .param p1, "x1"  # I
+    .param p2, "x2"  # I
+    .param p3, "x3"  # I
 
     .line 63
     invoke-direct {p0, p1, p2, p3}, Lcom/android/server/media/projection/MediaProjectionManagerService;->handleForegroundServicesChanged(III)V
@@ -261,6 +281,8 @@
 
 .method static synthetic access$300(Lcom/android/server/media/projection/MediaProjectionManagerService;Landroid/media/projection/IMediaProjectionWatcherCallback;)V
     .registers 2
+    .param p0, "x0"  # Lcom/android/server/media/projection/MediaProjectionManagerService;
+    .param p1, "x1"  # Landroid/media/projection/IMediaProjectionWatcherCallback;
 
     .line 63
     invoke-direct {p0, p1}, Lcom/android/server/media/projection/MediaProjectionManagerService;->removeCallback(Landroid/media/projection/IMediaProjectionWatcherCallback;)V
@@ -269,65 +291,73 @@
 .end method
 
 .method static synthetic access$400(Lcom/android/server/media/projection/MediaProjectionManagerService;)Landroid/app/AppOpsManager;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/media/projection/MediaProjectionManagerService;
 
     .line 63
-    iget-object p0, p0, Lcom/android/server/media/projection/MediaProjectionManagerService;->mAppOps:Landroid/app/AppOpsManager;
+    iget-object v0, p0, Lcom/android/server/media/projection/MediaProjectionManagerService;->mAppOps:Landroid/app/AppOpsManager;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$500(Lcom/android/server/media/projection/MediaProjectionManagerService;)Landroid/content/Context;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/media/projection/MediaProjectionManagerService;
 
     .line 63
-    iget-object p0, p0, Lcom/android/server/media/projection/MediaProjectionManagerService;->mContext:Landroid/content/Context;
+    iget-object v0, p0, Lcom/android/server/media/projection/MediaProjectionManagerService;->mContext:Landroid/content/Context;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$600(Lcom/android/server/media/projection/MediaProjectionManagerService;)Landroid/content/pm/PackageManager;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/media/projection/MediaProjectionManagerService;
 
     .line 63
-    iget-object p0, p0, Lcom/android/server/media/projection/MediaProjectionManagerService;->mPackageManager:Landroid/content/pm/PackageManager;
+    iget-object v0, p0, Lcom/android/server/media/projection/MediaProjectionManagerService;->mPackageManager:Landroid/content/pm/PackageManager;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$700(Lcom/android/server/media/projection/MediaProjectionManagerService;Landroid/os/IBinder;)Z
-    .registers 2
+    .registers 3
+    .param p0, "x0"  # Lcom/android/server/media/projection/MediaProjectionManagerService;
+    .param p1, "x1"  # Landroid/os/IBinder;
 
     .line 63
     invoke-direct {p0, p1}, Lcom/android/server/media/projection/MediaProjectionManagerService;->isValidMediaProjection(Landroid/os/IBinder;)Z
 
-    move-result p0
+    move-result v0
 
-    return p0
+    return v0
 .end method
 
 .method static synthetic access$800(Lcom/android/server/media/projection/MediaProjectionManagerService;)Landroid/media/projection/MediaProjectionInfo;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/media/projection/MediaProjectionManagerService;
 
     .line 63
     invoke-direct {p0}, Lcom/android/server/media/projection/MediaProjectionManagerService;->getActiveProjectionInfo()Landroid/media/projection/MediaProjectionInfo;
 
-    move-result-object p0
+    move-result-object v0
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$900(Lcom/android/server/media/projection/MediaProjectionManagerService;)Lcom/android/server/media/projection/MediaProjectionManagerService$MediaProjection;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/media/projection/MediaProjectionManagerService;
 
     .line 63
-    iget-object p0, p0, Lcom/android/server/media/projection/MediaProjectionManagerService;->mProjectionGrant:Lcom/android/server/media/projection/MediaProjectionManagerService$MediaProjection;
+    iget-object v0, p0, Lcom/android/server/media/projection/MediaProjectionManagerService;->mProjectionGrant:Lcom/android/server/media/projection/MediaProjectionManagerService$MediaProjection;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method private addCallback(Landroid/media/projection/IMediaProjectionWatcherCallback;)V
     .registers 5
+    .param p1, "callback"  # Landroid/media/projection/IMediaProjectionWatcherCallback;
 
     .line 179
     new-instance v0, Lcom/android/server/media/projection/MediaProjectionManagerService$2;
@@ -335,6 +365,7 @@
     invoke-direct {v0, p0, p1}, Lcom/android/server/media/projection/MediaProjectionManagerService$2;-><init>(Lcom/android/server/media/projection/MediaProjectionManagerService;Landroid/media/projection/IMediaProjectionWatcherCallback;)V
 
     .line 185
+    .local v0, "deathRecipient":Landroid/os/IBinder$DeathRecipient;
     iget-object v1, p0, Lcom/android/server/media/projection/MediaProjectionManagerService;->mLock:Ljava/lang/Object;
 
     monitor-enter v1
@@ -356,17 +387,18 @@
 
     .line 188
     :catchall_12
-    move-exception p1
+    move-exception v2
 
     monitor-exit v1
     :try_end_14
     .catchall {:try_start_8 .. :try_end_14} :catchall_12
 
-    throw p1
+    throw v2
 .end method
 
 .method private dispatchStart(Lcom/android/server/media/projection/MediaProjectionManagerService$MediaProjection;)V
     .registers 3
+    .param p1, "projection"  # Lcom/android/server/media/projection/MediaProjectionManagerService$MediaProjection;
 
     .line 218
     iget-object v0, p0, Lcom/android/server/media/projection/MediaProjectionManagerService;->mCallbackDelegate:Lcom/android/server/media/projection/MediaProjectionManagerService$CallbackDelegate;
@@ -379,6 +411,7 @@
 
 .method private dispatchStop(Lcom/android/server/media/projection/MediaProjectionManagerService$MediaProjection;)V
     .registers 3
+    .param p1, "projection"  # Lcom/android/server/media/projection/MediaProjectionManagerService$MediaProjection;
 
     .line 222
     iget-object v0, p0, Lcom/android/server/media/projection/MediaProjectionManagerService;->mCallbackDelegate:Lcom/android/server/media/projection/MediaProjectionManagerService$CallbackDelegate;
@@ -391,6 +424,7 @@
 
 .method private dump(Ljava/io/PrintWriter;)V
     .registers 4
+    .param p1, "pw"  # Ljava/io/PrintWriter;
 
     .line 244
     const-string v0, "MEDIA PROJECTION MANAGER (dumpsys media_projection)"
@@ -435,13 +469,13 @@
 
     .line 252
     :catchall_1f
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_21
     .catchall {:try_start_8 .. :try_end_21} :catchall_1f
 
-    throw p1
+    throw v1
 .end method
 
 .method private getActiveProjectionInfo()Landroid/media/projection/MediaProjectionInfo;
@@ -489,61 +523,64 @@
 .end method
 
 .method private handleForegroundServicesChanged(III)V
-    .registers 5
+    .registers 6
+    .param p1, "pid"  # I
+    .param p2, "uid"  # I
+    .param p3, "serviceTypes"  # I
 
     .line 143
-    iget-object p1, p0, Lcom/android/server/media/projection/MediaProjectionManagerService;->mLock:Ljava/lang/Object;
+    iget-object v0, p0, Lcom/android/server/media/projection/MediaProjectionManagerService;->mLock:Ljava/lang/Object;
 
-    monitor-enter p1
+    monitor-enter v0
 
     .line 144
     :try_start_3
-    iget-object v0, p0, Lcom/android/server/media/projection/MediaProjectionManagerService;->mProjectionGrant:Lcom/android/server/media/projection/MediaProjectionManagerService$MediaProjection;
+    iget-object v1, p0, Lcom/android/server/media/projection/MediaProjectionManagerService;->mProjectionGrant:Lcom/android/server/media/projection/MediaProjectionManagerService$MediaProjection;
 
-    if-eqz v0, :cond_25
+    if-eqz v1, :cond_25
 
-    iget-object v0, p0, Lcom/android/server/media/projection/MediaProjectionManagerService;->mProjectionGrant:Lcom/android/server/media/projection/MediaProjectionManagerService$MediaProjection;
+    iget-object v1, p0, Lcom/android/server/media/projection/MediaProjectionManagerService;->mProjectionGrant:Lcom/android/server/media/projection/MediaProjectionManagerService$MediaProjection;
 
-    iget v0, v0, Lcom/android/server/media/projection/MediaProjectionManagerService$MediaProjection;->uid:I
+    iget v1, v1, Lcom/android/server/media/projection/MediaProjectionManagerService$MediaProjection;->uid:I
 
-    if-eq v0, p2, :cond_e
+    if-eq v1, p2, :cond_e
 
     goto :goto_25
 
     .line 148
     :cond_e
-    iget-object p2, p0, Lcom/android/server/media/projection/MediaProjectionManagerService;->mProjectionGrant:Lcom/android/server/media/projection/MediaProjectionManagerService$MediaProjection;
+    iget-object v1, p0, Lcom/android/server/media/projection/MediaProjectionManagerService;->mProjectionGrant:Lcom/android/server/media/projection/MediaProjectionManagerService$MediaProjection;
 
-    invoke-virtual {p2}, Lcom/android/server/media/projection/MediaProjectionManagerService$MediaProjection;->requiresForegroundService()Z
+    invoke-virtual {v1}, Lcom/android/server/media/projection/MediaProjectionManagerService$MediaProjection;->requiresForegroundService()Z
 
-    move-result p2
+    move-result v1
 
-    if-nez p2, :cond_18
+    if-nez v1, :cond_18
 
     .line 149
-    monitor-exit p1
+    monitor-exit v0
 
     return-void
 
     .line 152
     :cond_18
-    and-int/lit8 p2, p3, 0x20
+    and-int/lit8 v1, p3, 0x20
 
-    if-eqz p2, :cond_1e
+    if-eqz v1, :cond_1e
 
     .line 153
-    monitor-exit p1
+    monitor-exit v0
 
     return-void
 
     .line 156
     :cond_1e
-    iget-object p2, p0, Lcom/android/server/media/projection/MediaProjectionManagerService;->mProjectionGrant:Lcom/android/server/media/projection/MediaProjectionManagerService$MediaProjection;
+    iget-object v1, p0, Lcom/android/server/media/projection/MediaProjectionManagerService;->mProjectionGrant:Lcom/android/server/media/projection/MediaProjectionManagerService$MediaProjection;
 
-    invoke-virtual {p2}, Lcom/android/server/media/projection/MediaProjectionManagerService$MediaProjection;->stop()V
+    invoke-virtual {v1}, Lcom/android/server/media/projection/MediaProjectionManagerService$MediaProjection;->stop()V
 
     .line 157
-    monitor-exit p1
+    monitor-exit v0
 
     .line 158
     return-void
@@ -551,23 +588,24 @@
     .line 145
     :cond_25
     :goto_25
-    monitor-exit p1
+    monitor-exit v0
 
     return-void
 
     .line 157
     :catchall_27
-    move-exception p2
+    move-exception v1
 
-    monitor-exit p1
+    monitor-exit v0
     :try_end_29
     .catchall {:try_start_3 .. :try_end_29} :catchall_27
 
-    throw p2
+    throw v1
 .end method
 
 .method private isValidMediaProjection(Landroid/os/IBinder;)Z
     .registers 4
+    .param p1, "token"  # Landroid/os/IBinder;
 
     .line 226
     iget-object v0, p0, Lcom/android/server/media/projection/MediaProjectionManagerService;->mLock:Ljava/lang/Object;
@@ -585,73 +623,82 @@
 
     invoke-virtual {v1, p1}, Ljava/lang/Object;->equals(Ljava/lang/Object;)Z
 
-    move-result p1
+    move-result v1
 
     monitor-exit v0
 
-    return p1
+    return v1
 
     .line 230
     :cond_f
-    const/4 p1, 0x0
+    const/4 v1, 0x0
 
     monitor-exit v0
 
-    return p1
+    return v1
 
     .line 231
     :catchall_12
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_14
     .catchall {:try_start_3 .. :try_end_14} :catchall_12
 
-    throw p1
+    throw v1
 .end method
 
 .method private linkDeathRecipientLocked(Landroid/media/projection/IMediaProjectionWatcherCallback;Landroid/os/IBinder$DeathRecipient;)V
-    .registers 4
+    .registers 6
+    .param p1, "callback"  # Landroid/media/projection/IMediaProjectionWatcherCallback;
+    .param p2, "deathRecipient"  # Landroid/os/IBinder$DeathRecipient;
 
     .line 201
     :try_start_0
     invoke-interface {p1}, Landroid/media/projection/IMediaProjectionWatcherCallback;->asBinder()Landroid/os/IBinder;
 
-    move-result-object p1
+    move-result-object v0
 
     .line 202
-    const/4 v0, 0x0
+    .local v0, "token":Landroid/os/IBinder;
+    const/4 v1, 0x0
 
-    invoke-interface {p1, p2, v0}, Landroid/os/IBinder;->linkToDeath(Landroid/os/IBinder$DeathRecipient;I)V
+    invoke-interface {v0, p2, v1}, Landroid/os/IBinder;->linkToDeath(Landroid/os/IBinder$DeathRecipient;I)V
 
     .line 203
-    iget-object v0, p0, Lcom/android/server/media/projection/MediaProjectionManagerService;->mDeathEaters:Ljava/util/Map;
+    iget-object v1, p0, Lcom/android/server/media/projection/MediaProjectionManagerService;->mDeathEaters:Ljava/util/Map;
 
-    invoke-interface {v0, p1, p2}, Ljava/util/Map;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+    invoke-interface {v1, v0, p2}, Ljava/util/Map;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
     :try_end_d
-    .catch Landroid/os/RemoteException; {:try_start_0 .. :try_end_d} :catch_e
+    .catch Landroid/os/RemoteException; {:try_start_0 .. :try_end_d} :catch_f
 
     .line 206
-    goto :goto_16
+    nop
+
+    .end local v0  # "token":Landroid/os/IBinder;
+    goto :goto_17
 
     .line 204
-    :catch_e
-    move-exception p1
+    :catch_f
+    move-exception v0
 
     .line 205
-    const-string p2, "MediaProjectionManagerService"
+    .local v0, "e":Landroid/os/RemoteException;
+    const-string v1, "MediaProjectionManagerService"
 
-    const-string v0, "Unable to link to death for media projection monitoring callback"
+    const-string v2, "Unable to link to death for media projection monitoring callback"
 
-    invoke-static {p2, v0, p1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    invoke-static {v1, v2, v0}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
     .line 207
-    :goto_16
+    .end local v0  # "e":Landroid/os/RemoteException;
+    :goto_17
     return-void
 .end method
 
 .method private removeCallback(Landroid/media/projection/IMediaProjectionWatcherCallback;)V
     .registers 4
+    .param p1, "callback"  # Landroid/media/projection/IMediaProjectionWatcherCallback;
 
     .line 192
     iget-object v0, p0, Lcom/android/server/media/projection/MediaProjectionManagerService;->mLock:Ljava/lang/Object;
@@ -675,17 +722,18 @@
 
     .line 195
     :catchall_d
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_f
     .catchall {:try_start_3 .. :try_end_f} :catchall_d
 
-    throw p1
+    throw v1
 .end method
 
 .method private startProjectionLocked(Lcom/android/server/media/projection/MediaProjectionManagerService$MediaProjection;)V
     .registers 3
+    .param p1, "projection"  # Lcom/android/server/media/projection/MediaProjectionManagerService$MediaProjection;
 
     .line 161
     iget-object v0, p0, Lcom/android/server/media/projection/MediaProjectionManagerService;->mProjectionGrant:Lcom/android/server/media/projection/MediaProjectionManagerService$MediaProjection;
@@ -730,6 +778,7 @@
 
 .method private stopProjectionLocked(Lcom/android/server/media/projection/MediaProjectionManagerService$MediaProjection;)V
     .registers 3
+    .param p1, "projection"  # Lcom/android/server/media/projection/MediaProjectionManagerService$MediaProjection;
 
     .line 173
     const/4 v0, 0x0
@@ -748,6 +797,7 @@
 
 .method private static typeToString(I)Ljava/lang/String;
     .registers 2
+    .param p0, "type"  # I
 
     .line 697
     if-eqz p0, :cond_13
@@ -763,53 +813,56 @@
     .line 705
     invoke-static {p0}, Ljava/lang/Integer;->toString(I)Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v0
 
-    return-object p0
+    return-object v0
 
     .line 703
     :cond_d
-    const-string p0, "TYPE_PRESENTATION"
+    const-string v0, "TYPE_PRESENTATION"
 
-    return-object p0
+    return-object v0
 
     .line 701
     :cond_10
-    const-string p0, "TYPE_MIRRORING"
+    const-string v0, "TYPE_MIRRORING"
 
-    return-object p0
+    return-object v0
 
     .line 699
     :cond_13
-    const-string p0, "TYPE_SCREEN_CAPTURE"
+    const-string v0, "TYPE_SCREEN_CAPTURE"
 
-    return-object p0
+    return-object v0
 .end method
 
 .method private unlinkDeathRecipientLocked(Landroid/media/projection/IMediaProjectionWatcherCallback;)V
-    .registers 4
+    .registers 5
+    .param p1, "callback"  # Landroid/media/projection/IMediaProjectionWatcherCallback;
 
     .line 210
     invoke-interface {p1}, Landroid/media/projection/IMediaProjectionWatcherCallback;->asBinder()Landroid/os/IBinder;
 
-    move-result-object p1
-
-    .line 211
-    iget-object v0, p0, Lcom/android/server/media/projection/MediaProjectionManagerService;->mDeathEaters:Ljava/util/Map;
-
-    invoke-interface {v0, p1}, Ljava/util/Map;->remove(Ljava/lang/Object;)Ljava/lang/Object;
-
     move-result-object v0
 
-    check-cast v0, Landroid/os/IBinder$DeathRecipient;
+    .line 211
+    .local v0, "token":Landroid/os/IBinder;
+    iget-object v1, p0, Lcom/android/server/media/projection/MediaProjectionManagerService;->mDeathEaters:Ljava/util/Map;
+
+    invoke-interface {v1, v0}, Ljava/util/Map;->remove(Ljava/lang/Object;)Ljava/lang/Object;
+
+    move-result-object v1
+
+    check-cast v1, Landroid/os/IBinder$DeathRecipient;
 
     .line 212
-    if-eqz v0, :cond_12
+    .local v1, "deathRecipient":Landroid/os/IBinder$DeathRecipient;
+    if-eqz v1, :cond_12
 
     .line 213
-    const/4 v1, 0x0
+    const/4 v2, 0x0
 
-    invoke-interface {p1, v0, v1}, Landroid/os/IBinder;->unlinkToDeath(Landroid/os/IBinder$DeathRecipient;I)Z
+    invoke-interface {v0, v1, v2}, Landroid/os/IBinder;->unlinkToDeath(Landroid/os/IBinder$DeathRecipient;I)Z
 
     .line 215
     :cond_12
@@ -853,7 +906,7 @@
 
     invoke-direct {v0, p0, v1}, Lcom/android/server/media/projection/MediaProjectionManagerService$BinderService;-><init>(Lcom/android/server/media/projection/MediaProjectionManagerService;Lcom/android/server/media/projection/MediaProjectionManagerService$1;)V
 
-    const-string v1, "media_projection"
+    const-string/jumbo v1, "media_projection"
 
     const/4 v2, 0x0
 
@@ -884,7 +937,8 @@
 .end method
 
 .method public onSwitchUser(I)V
-    .registers 3
+    .registers 4
+    .param p1, "userId"  # I
 
     .line 124
     iget-object v0, p0, Lcom/android/server/media/projection/MediaProjectionManagerService;->mMediaRouter:Landroid/media/MediaRouter;
@@ -892,35 +946,35 @@
     invoke-virtual {v0, p1}, Landroid/media/MediaRouter;->rebindAsUser(I)V
 
     .line 125
-    iget-object p1, p0, Lcom/android/server/media/projection/MediaProjectionManagerService;->mLock:Ljava/lang/Object;
+    iget-object v0, p0, Lcom/android/server/media/projection/MediaProjectionManagerService;->mLock:Ljava/lang/Object;
 
-    monitor-enter p1
+    monitor-enter v0
 
     .line 126
     :try_start_8
-    iget-object v0, p0, Lcom/android/server/media/projection/MediaProjectionManagerService;->mProjectionGrant:Lcom/android/server/media/projection/MediaProjectionManagerService$MediaProjection;
+    iget-object v1, p0, Lcom/android/server/media/projection/MediaProjectionManagerService;->mProjectionGrant:Lcom/android/server/media/projection/MediaProjectionManagerService$MediaProjection;
 
-    if-eqz v0, :cond_11
+    if-eqz v1, :cond_11
 
     .line 127
-    iget-object v0, p0, Lcom/android/server/media/projection/MediaProjectionManagerService;->mProjectionGrant:Lcom/android/server/media/projection/MediaProjectionManagerService$MediaProjection;
+    iget-object v1, p0, Lcom/android/server/media/projection/MediaProjectionManagerService;->mProjectionGrant:Lcom/android/server/media/projection/MediaProjectionManagerService$MediaProjection;
 
-    invoke-virtual {v0}, Lcom/android/server/media/projection/MediaProjectionManagerService$MediaProjection;->stop()V
+    invoke-virtual {v1}, Lcom/android/server/media/projection/MediaProjectionManagerService$MediaProjection;->stop()V
 
     .line 129
     :cond_11
-    monitor-exit p1
+    monitor-exit v0
 
     .line 130
     return-void
 
     .line 129
     :catchall_13
-    move-exception v0
+    move-exception v1
 
-    monitor-exit p1
+    monitor-exit v0
     :try_end_15
     .catchall {:try_start_8 .. :try_end_15} :catchall_13
 
-    throw v0
+    throw v1
 .end method

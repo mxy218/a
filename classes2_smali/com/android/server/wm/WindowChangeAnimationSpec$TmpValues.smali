@@ -55,6 +55,7 @@
 
 .method synthetic constructor <init>(Lcom/android/server/wm/WindowChangeAnimationSpec$1;)V
     .registers 2
+    .param p1, "x0"  # Lcom/android/server/wm/WindowChangeAnimationSpec$1;
 
     .line 200
     invoke-direct {p0}, Lcom/android/server/wm/WindowChangeAnimationSpec$TmpValues;-><init>()V

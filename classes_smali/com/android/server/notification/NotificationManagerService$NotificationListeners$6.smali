@@ -28,8 +28,9 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/notification/NotificationManagerService$NotificationListeners;Lcom/android/server/notification/ManagedServices$ManagedServiceInfo;I)V
     .registers 4
+    .param p1, "this$1"  # Lcom/android/server/notification/NotificationManagerService$NotificationListeners;
 
-    .line 8472
+    .line 8602
     iput-object p1, p0, Lcom/android/server/notification/NotificationManagerService$NotificationListeners$6;->this$1:Lcom/android/server/notification/NotificationManagerService$NotificationListeners;
 
     iput-object p2, p0, Lcom/android/server/notification/NotificationManagerService$NotificationListeners$6;->val$serviceInfo:Lcom/android/server/notification/ManagedServices$ManagedServiceInfo;
@@ -46,15 +47,15 @@
 .method public run()V
     .registers 4
 
-    .line 8475
+    .line 8605
     iget-object v0, p0, Lcom/android/server/notification/NotificationManagerService$NotificationListeners$6;->this$1:Lcom/android/server/notification/NotificationManagerService$NotificationListeners;
 
     iget-object v1, p0, Lcom/android/server/notification/NotificationManagerService$NotificationListeners$6;->val$serviceInfo:Lcom/android/server/notification/ManagedServices$ManagedServiceInfo;
 
     iget v2, p0, Lcom/android/server/notification/NotificationManagerService$NotificationListeners$6;->val$interruptionFilter:I
 
-    invoke-static {v0, v1, v2}, Lcom/android/server/notification/NotificationManagerService$NotificationListeners;->access$9900(Lcom/android/server/notification/NotificationManagerService$NotificationListeners;Lcom/android/server/notification/ManagedServices$ManagedServiceInfo;I)V
+    invoke-static {v0, v1, v2}, Lcom/android/server/notification/NotificationManagerService$NotificationListeners;->access$10300(Lcom/android/server/notification/NotificationManagerService$NotificationListeners;Lcom/android/server/notification/ManagedServices$ManagedServiceInfo;I)V
 
-    .line 8476
+    .line 8606
     return-void
 .end method

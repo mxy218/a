@@ -1,5 +1,5 @@
 .class Lcom/android/server/policy/PhoneWindowManager$4;
-.super Landroid/service/vr/IPersistentVrStateCallbacks$Stub;
+.super Landroid/os/UEventObserver;
 .source "PhoneWindowManager.java"
 
 
@@ -21,27 +21,49 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/policy/PhoneWindowManager;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/policy/PhoneWindowManager;
 
-    .line 993
+    .line 771
     iput-object p1, p0, Lcom/android/server/policy/PhoneWindowManager$4;->this$0:Lcom/android/server/policy/PhoneWindowManager;
 
-    invoke-direct {p0}, Landroid/service/vr/IPersistentVrStateCallbacks$Stub;-><init>()V
+    invoke-direct {p0}, Landroid/os/UEventObserver;-><init>()V
 
     return-void
 .end method
 
 
 # virtual methods
-.method public onPersistentVrStateChanged(Z)V
-    .registers 3
+.method public onUEvent(Landroid/os/UEventObserver$UEvent;)V
+    .registers 5
+    .param p1, "event"  # Landroid/os/UEventObserver$UEvent;
 
-    .line 996
-    iget-object v0, p0, Lcom/android/server/policy/PhoneWindowManager$4;->this$0:Lcom/android/server/policy/PhoneWindowManager;
+    .line 774
+    const-string/jumbo v0, "status"
 
-    iget-object v0, v0, Lcom/android/server/policy/PhoneWindowManager;->mDefaultDisplayPolicy:Lcom/android/server/wm/DisplayPolicy;
+    invoke-virtual {p1, v0}, Landroid/os/UEventObserver$UEvent;->get(Ljava/lang/String;)Ljava/lang/String;
 
-    invoke-virtual {v0, p1}, Lcom/android/server/wm/DisplayPolicy;->setPersistentVrModeEnabled(Z)V
+    move-result-object v1
 
-    .line 997
+    if-eqz v1, :cond_1a
+
+    .line 775
+    iget-object v1, p0, Lcom/android/server/policy/PhoneWindowManager$4;->this$0:Lcom/android/server/policy/PhoneWindowManager;
+
+    iget-object v1, v1, Lcom/android/server/policy/PhoneWindowManager;->mDefaultDisplayPolicy:Lcom/android/server/wm/DisplayPolicy;
+
+    invoke-virtual {p1, v0}, Landroid/os/UEventObserver$UEvent;->get(Ljava/lang/String;)Ljava/lang/String;
+
+    move-result-object v0
+
+    const-string v2, "connected"
+
+    invoke-virtual {v2, v0}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+
+    move-result v0
+
+    invoke-virtual {v1, v0}, Lcom/android/server/wm/DisplayPolicy;->setHdmiPlugged(Z)V
+
+    .line 777
+    :cond_1a
     return-void
 .end method

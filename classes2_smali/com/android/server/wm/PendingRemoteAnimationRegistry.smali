@@ -35,6 +35,8 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/wm/ActivityTaskManagerService;Landroid/os/Handler;)V
     .registers 4
+    .param p1, "service"  # Lcom/android/server/wm/ActivityTaskManagerService;
+    .param p2, "handler"  # Landroid/os/Handler;
 
     .line 40
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -57,36 +59,41 @@
 .end method
 
 .method static synthetic access$000(Lcom/android/server/wm/PendingRemoteAnimationRegistry;)Landroid/os/Handler;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/wm/PendingRemoteAnimationRegistry;
 
     .line 32
-    iget-object p0, p0, Lcom/android/server/wm/PendingRemoteAnimationRegistry;->mHandler:Landroid/os/Handler;
+    iget-object v0, p0, Lcom/android/server/wm/PendingRemoteAnimationRegistry;->mHandler:Landroid/os/Handler;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$100(Lcom/android/server/wm/PendingRemoteAnimationRegistry;)Lcom/android/server/wm/ActivityTaskManagerService;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/wm/PendingRemoteAnimationRegistry;
 
     .line 32
-    iget-object p0, p0, Lcom/android/server/wm/PendingRemoteAnimationRegistry;->mService:Lcom/android/server/wm/ActivityTaskManagerService;
+    iget-object v0, p0, Lcom/android/server/wm/PendingRemoteAnimationRegistry;->mService:Lcom/android/server/wm/ActivityTaskManagerService;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$200(Lcom/android/server/wm/PendingRemoteAnimationRegistry;)Landroid/util/ArrayMap;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/wm/PendingRemoteAnimationRegistry;
 
     .line 32
-    iget-object p0, p0, Lcom/android/server/wm/PendingRemoteAnimationRegistry;->mEntries:Landroid/util/ArrayMap;
+    iget-object v0, p0, Lcom/android/server/wm/PendingRemoteAnimationRegistry;->mEntries:Landroid/util/ArrayMap;
 
-    return-object p0
+    return-object v0
 .end method
 
 
 # virtual methods
 .method addPendingAnimation(Ljava/lang/String;Landroid/view/RemoteAnimationAdapter;)V
     .registers 5
+    .param p1, "packageName"  # Ljava/lang/String;
+    .param p2, "adapter"  # Landroid/view/RemoteAnimationAdapter;
 
     .line 49
     iget-object v0, p0, Lcom/android/server/wm/PendingRemoteAnimationRegistry;->mEntries:Landroid/util/ArrayMap;
@@ -102,7 +109,9 @@
 .end method
 
 .method overrideOptionsIfNeeded(Ljava/lang/String;Landroid/app/ActivityOptions;)Landroid/app/ActivityOptions;
-    .registers 4
+    .registers 5
+    .param p1, "callingPackage"  # Ljava/lang/String;
+    .param p2, "options"  # Landroid/app/ActivityOptions;
 
     .line 58
     iget-object v0, p0, Lcom/android/server/wm/PendingRemoteAnimationRegistry;->mEntries:Landroid/util/ArrayMap;
@@ -114,6 +123,7 @@
     check-cast v0, Lcom/android/server/wm/PendingRemoteAnimationRegistry$Entry;
 
     .line 59
+    .local v0, "entry":Lcom/android/server/wm/PendingRemoteAnimationRegistry$Entry;
     if-nez v0, :cond_b
 
     .line 60
@@ -124,9 +134,9 @@
     if-nez p2, :cond_14
 
     .line 63
-    iget-object p2, v0, Lcom/android/server/wm/PendingRemoteAnimationRegistry$Entry;->adapter:Landroid/view/RemoteAnimationAdapter;
+    iget-object v1, v0, Lcom/android/server/wm/PendingRemoteAnimationRegistry$Entry;->adapter:Landroid/view/RemoteAnimationAdapter;
 
-    invoke-static {p2}, Landroid/app/ActivityOptions;->makeRemoteAnimation(Landroid/view/RemoteAnimationAdapter;)Landroid/app/ActivityOptions;
+    invoke-static {v1}, Landroid/app/ActivityOptions;->makeRemoteAnimation(Landroid/view/RemoteAnimationAdapter;)Landroid/app/ActivityOptions;
 
     move-result-object p2
 
@@ -134,15 +144,15 @@
 
     .line 65
     :cond_14
-    iget-object v0, v0, Lcom/android/server/wm/PendingRemoteAnimationRegistry$Entry;->adapter:Landroid/view/RemoteAnimationAdapter;
+    iget-object v1, v0, Lcom/android/server/wm/PendingRemoteAnimationRegistry$Entry;->adapter:Landroid/view/RemoteAnimationAdapter;
 
-    invoke-virtual {p2, v0}, Landroid/app/ActivityOptions;->setRemoteAnimationAdapter(Landroid/view/RemoteAnimationAdapter;)V
+    invoke-virtual {p2, v1}, Landroid/app/ActivityOptions;->setRemoteAnimationAdapter(Landroid/view/RemoteAnimationAdapter;)V
 
     .line 67
     :goto_19
-    iget-object v0, p0, Lcom/android/server/wm/PendingRemoteAnimationRegistry;->mEntries:Landroid/util/ArrayMap;
+    iget-object v1, p0, Lcom/android/server/wm/PendingRemoteAnimationRegistry;->mEntries:Landroid/util/ArrayMap;
 
-    invoke-virtual {v0, p1}, Landroid/util/ArrayMap;->remove(Ljava/lang/Object;)Ljava/lang/Object;
+    invoke-virtual {v1, p1}, Landroid/util/ArrayMap;->remove(Ljava/lang/Object;)Ljava/lang/Object;
 
     .line 68
     return-object p2

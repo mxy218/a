@@ -21,6 +21,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/am/AppErrorDialog;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/am/AppErrorDialog;
 
     .line 152
     iput-object p1, p0, Lcom/android/server/am/AppErrorDialog$1;->this$0:Lcom/android/server/am/AppErrorDialog;
@@ -33,19 +34,20 @@
 
 # virtual methods
 .method public handleMessage(Landroid/os/Message;)V
-    .registers 3
+    .registers 4
+    .param p1, "msg"  # Landroid/os/Message;
 
     .line 154
     iget-object v0, p0, Lcom/android/server/am/AppErrorDialog$1;->this$0:Lcom/android/server/am/AppErrorDialog;
 
-    iget p1, p1, Landroid/os/Message;->what:I
+    iget v1, p1, Landroid/os/Message;->what:I
 
-    invoke-static {v0, p1}, Lcom/android/server/am/AppErrorDialog;->access$000(Lcom/android/server/am/AppErrorDialog;I)V
+    invoke-static {v0, v1}, Lcom/android/server/am/AppErrorDialog;->access$000(Lcom/android/server/am/AppErrorDialog;I)V
 
     .line 155
-    iget-object p1, p0, Lcom/android/server/am/AppErrorDialog$1;->this$0:Lcom/android/server/am/AppErrorDialog;
+    iget-object v0, p0, Lcom/android/server/am/AppErrorDialog$1;->this$0:Lcom/android/server/am/AppErrorDialog;
 
-    invoke-virtual {p1}, Lcom/android/server/am/AppErrorDialog;->dismiss()V
+    invoke-virtual {v0}, Lcom/android/server/am/AppErrorDialog;->dismiss()V
 
     .line 156
     return-void

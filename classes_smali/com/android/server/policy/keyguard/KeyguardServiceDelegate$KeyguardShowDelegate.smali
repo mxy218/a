@@ -23,6 +23,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/policy/keyguard/KeyguardServiceDelegate;Lcom/android/server/policy/keyguard/KeyguardServiceDelegate$DrawnListener;)V
     .registers 3
+    .param p2, "drawnListener"  # Lcom/android/server/policy/keyguard/KeyguardServiceDelegate$DrawnListener;
 
     .line 101
     iput-object p1, p0, Lcom/android/server/policy/keyguard/KeyguardServiceDelegate$KeyguardShowDelegate;->this$0:Lcom/android/server/policy/keyguard/KeyguardServiceDelegate;

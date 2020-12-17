@@ -13,7 +13,12 @@
 
 # direct methods
 .method public constructor <init>(Landroid/os/IBinder;Ljava/lang/String;III)V
-    .registers 8
+    .registers 10
+    .param p1, "token"  # Landroid/os/IBinder;
+    .param p2, "name"  # Ljava/lang/String;
+    .param p3, "width"  # I
+    .param p4, "height"  # I
+    .param p5, "maxPointers"  # I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Ljava/io/IOException;
@@ -59,83 +64,83 @@
 
     invoke-static {p2, v0, p3, p4, p5}, Lcom/android/server/tv/UinputBridge;->nativeOpen(Ljava/lang/String;Ljava/lang/String;III)J
 
-    move-result-wide p3
+    move-result-wide v0
 
-    iput-wide p3, p0, Lcom/android/server/tv/UinputBridge;->mPtr:J
+    iput-wide v0, p0, Lcom/android/server/tv/UinputBridge;->mPtr:J
 
     .line 56
-    iget-wide p3, p0, Lcom/android/server/tv/UinputBridge;->mPtr:J
+    iget-wide v0, p0, Lcom/android/server/tv/UinputBridge;->mPtr:J
 
-    const-wide/16 v0, 0x0
+    const-wide/16 v2, 0x0
 
-    cmp-long p3, p3, v0
+    cmp-long v0, v0, v2
 
-    if-eqz p3, :cond_35
+    if-eqz v0, :cond_35
 
     .line 59
     iput-object p1, p0, Lcom/android/server/tv/UinputBridge;->mToken:Landroid/os/IBinder;
 
     .line 60
-    iget-object p1, p0, Lcom/android/server/tv/UinputBridge;->mCloseGuard:Ldalvik/system/CloseGuard;
+    iget-object v0, p0, Lcom/android/server/tv/UinputBridge;->mCloseGuard:Ldalvik/system/CloseGuard;
 
-    const-string p2, "close"
+    const-string v1, "close"
 
-    invoke-virtual {p1, p2}, Ldalvik/system/CloseGuard;->open(Ljava/lang/String;)V
+    invoke-virtual {v0, v1}, Ldalvik/system/CloseGuard;->open(Ljava/lang/String;)V
 
     .line 61
     return-void
 
     .line 57
     :cond_35
-    new-instance p1, Ljava/io/IOException;
+    new-instance v0, Ljava/io/IOException;
 
-    new-instance p3, Ljava/lang/StringBuilder;
+    new-instance v1, Ljava/lang/StringBuilder;
 
-    invoke-direct {p3}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string p4, "Could not open uinput device "
+    const-string v2, "Could not open uinput device "
 
-    invoke-virtual {p3, p4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p3, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p2
+    move-result-object v1
 
-    invoke-direct {p1, p2}, Ljava/io/IOException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v0, v1}, Ljava/io/IOException;-><init>(Ljava/lang/String;)V
 
-    throw p1
+    throw v0
 
     .line 53
     :cond_4c
-    new-instance p1, Ljava/lang/IllegalArgumentException;
+    new-instance v0, Ljava/lang/IllegalArgumentException;
 
-    const-string p2, "Token cannot be null"
+    const-string v1, "Token cannot be null"
 
-    invoke-direct {p1, p2}, Ljava/lang/IllegalArgumentException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v0, v1}, Ljava/lang/IllegalArgumentException;-><init>(Ljava/lang/String;)V
 
-    throw p1
+    throw v0
 
     .line 50
     :cond_54
-    new-instance p1, Ljava/lang/IllegalArgumentException;
+    new-instance v0, Ljava/lang/IllegalArgumentException;
 
-    const-string p2, "Touchpad must support between 1 and 32 pointers."
+    const-string v1, "Touchpad must support between 1 and 32 pointers."
 
-    invoke-direct {p1, p2}, Ljava/lang/IllegalArgumentException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v0, v1}, Ljava/lang/IllegalArgumentException;-><init>(Ljava/lang/String;)V
 
-    throw p1
+    throw v0
 
     .line 47
     :cond_5c
-    new-instance p1, Ljava/lang/IllegalArgumentException;
+    new-instance v0, Ljava/lang/IllegalArgumentException;
 
-    const-string p2, "Touchpad must be at least 1x1."
+    const-string v1, "Touchpad must be at least 1x1."
 
-    invoke-direct {p1, p2}, Ljava/lang/IllegalArgumentException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v0, v1}, Ljava/lang/IllegalArgumentException;-><init>(Ljava/lang/String;)V
 
-    throw p1
+    throw v0
 .end method
 
 .method private static native nativeClear(J)V
@@ -166,13 +171,14 @@
 # virtual methods
 .method public clear(Landroid/os/IBinder;)V
     .registers 4
+    .param p1, "token"  # Landroid/os/IBinder;
 
     .line 134
     invoke-virtual {p0, p1}, Lcom/android/server/tv/UinputBridge;->isTokenValid(Landroid/os/IBinder;)Z
 
-    move-result p1
+    move-result v0
 
-    if-eqz p1, :cond_b
+    if-eqz v0, :cond_b
 
     .line 135
     iget-wide v0, p0, Lcom/android/server/tv/UinputBridge;->mPtr:J
@@ -186,6 +192,7 @@
 
 .method public close(Landroid/os/IBinder;)V
     .registers 6
+    .param p1, "token"  # Landroid/os/IBinder;
 
     .line 77
     invoke-virtual {p0, p1}, Lcom/android/server/tv/UinputBridge;->isTokenValid(Landroid/os/IBinder;)Z
@@ -215,9 +222,9 @@
     iput-wide v2, p0, Lcom/android/server/tv/UinputBridge;->mPtr:J
 
     .line 83
-    iget-object p1, p0, Lcom/android/server/tv/UinputBridge;->mCloseGuard:Ldalvik/system/CloseGuard;
+    iget-object v0, p0, Lcom/android/server/tv/UinputBridge;->mCloseGuard:Ldalvik/system/CloseGuard;
 
-    invoke-virtual {p1}, Ldalvik/system/CloseGuard;->close()V
+    invoke-virtual {v0}, Ldalvik/system/CloseGuard;->close()V
 
     .line 86
     :cond_1d
@@ -288,33 +295,36 @@
 
 .method protected isTokenValid(Landroid/os/IBinder;)Z
     .registers 3
+    .param p1, "token"  # Landroid/os/IBinder;
 
     .line 93
     iget-object v0, p0, Lcom/android/server/tv/UinputBridge;->mToken:Landroid/os/IBinder;
 
     invoke-virtual {v0, p1}, Ljava/lang/Object;->equals(Ljava/lang/Object;)Z
 
-    move-result p1
+    move-result v0
 
-    return p1
+    return v0
 .end method
 
 .method public sendKeyDown(Landroid/os/IBinder;I)V
-    .registers 5
+    .registers 6
+    .param p1, "token"  # Landroid/os/IBinder;
+    .param p2, "keyCode"  # I
 
     .line 103
     invoke-virtual {p0, p1}, Lcom/android/server/tv/UinputBridge;->isTokenValid(Landroid/os/IBinder;)Z
 
-    move-result p1
+    move-result v0
 
-    if-eqz p1, :cond_c
+    if-eqz v0, :cond_c
 
     .line 104
     iget-wide v0, p0, Lcom/android/server/tv/UinputBridge;->mPtr:J
 
-    const/4 p1, 0x1
+    const/4 v2, 0x1
 
-    invoke-static {v0, v1, p2, p1}, Lcom/android/server/tv/UinputBridge;->nativeSendKey(JIZ)V
+    invoke-static {v0, v1, p2, v2}, Lcom/android/server/tv/UinputBridge;->nativeSendKey(JIZ)V
 
     .line 106
     :cond_c
@@ -322,21 +332,23 @@
 .end method
 
 .method public sendKeyUp(Landroid/os/IBinder;I)V
-    .registers 5
+    .registers 6
+    .param p1, "token"  # Landroid/os/IBinder;
+    .param p2, "keyCode"  # I
 
     .line 109
     invoke-virtual {p0, p1}, Lcom/android/server/tv/UinputBridge;->isTokenValid(Landroid/os/IBinder;)Z
 
-    move-result p1
+    move-result v0
 
-    if-eqz p1, :cond_c
+    if-eqz v0, :cond_c
 
     .line 110
     iget-wide v0, p0, Lcom/android/server/tv/UinputBridge;->mPtr:J
 
-    const/4 p1, 0x0
+    const/4 v2, 0x0
 
-    invoke-static {v0, v1, p2, p1}, Lcom/android/server/tv/UinputBridge;->nativeSendKey(JIZ)V
+    invoke-static {v0, v1, p2, v2}, Lcom/android/server/tv/UinputBridge;->nativeSendKey(JIZ)V
 
     .line 112
     :cond_c
@@ -345,13 +357,17 @@
 
 .method public sendPointerDown(Landroid/os/IBinder;III)V
     .registers 7
+    .param p1, "token"  # Landroid/os/IBinder;
+    .param p2, "pointerId"  # I
+    .param p3, "x"  # I
+    .param p4, "y"  # I
 
     .line 115
     invoke-virtual {p0, p1}, Lcom/android/server/tv/UinputBridge;->isTokenValid(Landroid/os/IBinder;)Z
 
-    move-result p1
+    move-result v0
 
-    if-eqz p1, :cond_b
+    if-eqz v0, :cond_b
 
     .line 116
     iget-wide v0, p0, Lcom/android/server/tv/UinputBridge;->mPtr:J
@@ -365,13 +381,14 @@
 
 .method public sendPointerSync(Landroid/os/IBinder;)V
     .registers 4
+    .param p1, "token"  # Landroid/os/IBinder;
 
     .line 127
     invoke-virtual {p0, p1}, Lcom/android/server/tv/UinputBridge;->isTokenValid(Landroid/os/IBinder;)Z
 
-    move-result p1
+    move-result v0
 
-    if-eqz p1, :cond_b
+    if-eqz v0, :cond_b
 
     .line 128
     iget-wide v0, p0, Lcom/android/server/tv/UinputBridge;->mPtr:J
@@ -385,13 +402,15 @@
 
 .method public sendPointerUp(Landroid/os/IBinder;I)V
     .registers 5
+    .param p1, "token"  # Landroid/os/IBinder;
+    .param p2, "pointerId"  # I
 
     .line 121
     invoke-virtual {p0, p1}, Lcom/android/server/tv/UinputBridge;->isTokenValid(Landroid/os/IBinder;)Z
 
-    move-result p1
+    move-result v0
 
-    if-eqz p1, :cond_b
+    if-eqz v0, :cond_b
 
     .line 122
     iget-wide v0, p0, Lcom/android/server/tv/UinputBridge;->mPtr:J
@@ -405,13 +424,15 @@
 
 .method public sendTimestamp(Landroid/os/IBinder;J)V
     .registers 6
+    .param p1, "token"  # Landroid/os/IBinder;
+    .param p2, "timestamp"  # J
 
     .line 97
     invoke-virtual {p0, p1}, Lcom/android/server/tv/UinputBridge;->isTokenValid(Landroid/os/IBinder;)Z
 
-    move-result p1
+    move-result v0
 
-    if-eqz p1, :cond_b
+    if-eqz v0, :cond_b
 
     .line 98
     iget-wide v0, p0, Lcom/android/server/tv/UinputBridge;->mPtr:J

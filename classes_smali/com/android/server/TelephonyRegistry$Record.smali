@@ -44,15 +44,15 @@
 .method private constructor <init>()V
     .registers 2
 
-    .line 106
+    .line 116
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
-    .line 124
+    .line 134
     const/4 v0, -0x1
 
     iput v0, p0, Lcom/android/server/TelephonyRegistry$Record;->subId:I
 
-    .line 126
+    .line 136
     iput v0, p0, Lcom/android/server/TelephonyRegistry$Record;->phoneId:I
 
     return-void
@@ -60,8 +60,9 @@
 
 .method synthetic constructor <init>(Lcom/android/server/TelephonyRegistry$1;)V
     .registers 2
+    .param p1, "x0"  # Lcom/android/server/TelephonyRegistry$1;
 
-    .line 106
+    .line 116
     invoke-direct {p0}, Lcom/android/server/TelephonyRegistry$Record;-><init>()V
 
     return-void
@@ -72,7 +73,7 @@
 .method canReadCallLog()Z
     .registers 6
 
-    .line 142
+    .line 152
     :try_start_0
     iget-object v0, p0, Lcom/android/server/TelephonyRegistry$Record;->context:Landroid/content/Context;
 
@@ -92,20 +93,21 @@
 
     return v0
 
-    .line 144
+    .line 154
     :catch_f
     move-exception v0
 
-    .line 145
-    const/4 v0, 0x0
+    .line 155
+    .local v0, "e":Ljava/lang/SecurityException;
+    const/4 v1, 0x0
 
-    return v0
+    return v1
 .end method
 
 .method matchOnOpportunisticSubscriptionsChangedListener()Z
     .registers 2
 
-    .line 137
+    .line 147
     iget-object v0, p0, Lcom/android/server/TelephonyRegistry$Record;->onOpportunisticSubscriptionsChangedListenerCallback:Lcom/android/internal/telephony/IOnSubscriptionsChangedListener;
 
     if-eqz v0, :cond_6
@@ -124,7 +126,7 @@
 .method matchOnSubscriptionsChangedListener()Z
     .registers 2
 
-    .line 133
+    .line 143
     iget-object v0, p0, Lcom/android/server/TelephonyRegistry$Record;->onSubscriptionsChangedListenerCallback:Lcom/android/internal/telephony/IOnSubscriptionsChangedListener;
 
     if-eqz v0, :cond_6
@@ -142,33 +144,34 @@
 
 .method matchPhoneStateListenerEvent(I)Z
     .registers 3
+    .param p1, "events"  # I
 
-    .line 129
+    .line 139
     iget-object v0, p0, Lcom/android/server/TelephonyRegistry$Record;->callback:Lcom/android/internal/telephony/IPhoneStateListener;
 
     if-eqz v0, :cond_b
 
     iget v0, p0, Lcom/android/server/TelephonyRegistry$Record;->events:I
 
-    and-int/2addr p1, v0
+    and-int/2addr v0, p1
 
-    if-eqz p1, :cond_b
+    if-eqz v0, :cond_b
 
-    const/4 p1, 0x1
+    const/4 v0, 0x1
 
     goto :goto_c
 
     :cond_b
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
     :goto_c
-    return p1
+    return v0
 .end method
 
 .method public toString()Ljava/lang/String;
     .registers 3
 
-    .line 151
+    .line 161
     new-instance v0, Ljava/lang/StringBuilder;
 
     invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
@@ -243,7 +246,7 @@
 
     iget v1, p0, Lcom/android/server/TelephonyRegistry$Record;->events:I
 
-    .line 158
+    .line 168
     invoke-static {v1}, Ljava/lang/Integer;->toHexString(I)Ljava/lang/String;
 
     move-result-object v1
@@ -258,6 +261,6 @@
 
     move-result-object v0
 
-    .line 151
+    .line 161
     return-object v0
 .end method

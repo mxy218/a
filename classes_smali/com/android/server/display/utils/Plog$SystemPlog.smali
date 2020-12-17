@@ -21,6 +21,7 @@
 # direct methods
 .method public constructor <init>(Ljava/lang/String;)V
     .registers 2
+    .param p1, "tag"  # Ljava/lang/String;
 
     .line 128
     invoke-direct {p0}, Lcom/android/server/display/utils/Plog;-><init>()V
@@ -36,6 +37,7 @@
 # virtual methods
 .method protected emit(Ljava/lang/String;)V
     .registers 3
+    .param p1, "message"  # Ljava/lang/String;
 
     .line 138
     iget-object v0, p0, Lcom/android/server/display/utils/Plog$SystemPlog;->mTag:Ljava/lang/String;

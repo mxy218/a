@@ -30,14 +30,15 @@
 
 # virtual methods
 .method public injectGnssMeasurementCorrections(Landroid/location/GnssMeasurementCorrections;)Z
-    .registers 2
+    .registers 3
+    .param p1, "measurementCorrections"  # Landroid/location/GnssMeasurementCorrections;
 
     .line 143
     invoke-static {p1}, Lcom/android/server/location/GnssMeasurementCorrectionsProvider;->access$100(Landroid/location/GnssMeasurementCorrections;)Z
 
-    move-result p1
+    move-result v0
 
-    return p1
+    return v0
 .end method
 
 .method public isMeasurementCorrectionsSupported()Z

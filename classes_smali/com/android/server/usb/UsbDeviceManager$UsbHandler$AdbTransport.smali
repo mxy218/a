@@ -21,14 +21,15 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/usb/UsbDeviceManager$UsbHandler;)V
     .registers 2
+    .param p1, "handler"  # Lcom/android/server/usb/UsbDeviceManager$UsbHandler;
 
-    .line 790
+    .line 920
     invoke-direct {p0}, Landroid/debug/IAdbTransport$Stub;-><init>()V
 
-    .line 791
+    .line 921
     iput-object p1, p0, Lcom/android/server/usb/UsbDeviceManager$UsbHandler$AdbTransport;->mHandler:Lcom/android/server/usb/UsbDeviceManager$UsbHandler;
 
-    .line 792
+    .line 922
     return-void
 .end method
 
@@ -36,14 +37,15 @@
 # virtual methods
 .method public onAdbEnabled(Z)V
     .registers 4
+    .param p1, "enabled"  # Z
 
-    .line 796
+    .line 926
     iget-object v0, p0, Lcom/android/server/usb/UsbDeviceManager$UsbHandler$AdbTransport;->mHandler:Lcom/android/server/usb/UsbDeviceManager$UsbHandler;
 
     const/4 v1, 0x1
 
     invoke-virtual {v0, v1, p1}, Lcom/android/server/usb/UsbDeviceManager$UsbHandler;->sendMessage(IZ)V
 
-    .line 797
+    .line 927
     return-void
 .end method

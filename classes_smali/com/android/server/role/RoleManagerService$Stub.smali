@@ -22,7 +22,7 @@
 .method private constructor <init>(Lcom/android/server/role/RoleManagerService;)V
     .registers 2
 
-    .line 429
+    .line 428
     iput-object p1, p0, Lcom/android/server/role/RoleManagerService$Stub;->this$0:Lcom/android/server/role/RoleManagerService;
 
     invoke-direct {p0}, Landroid/app/role/IRoleManager$Stub;-><init>()V
@@ -32,8 +32,10 @@
 
 .method synthetic constructor <init>(Lcom/android/server/role/RoleManagerService;Lcom/android/server/role/RoleManagerService$1;)V
     .registers 3
+    .param p1, "x0"  # Lcom/android/server/role/RoleManagerService;
+    .param p2, "x1"  # Lcom/android/server/role/RoleManagerService$1;
 
-    .line 429
+    .line 428
     invoke-direct {p0, p1}, Lcom/android/server/role/RoleManagerService$Stub;-><init>(Lcom/android/server/role/RoleManagerService;)V
 
     return-void
@@ -41,13 +43,15 @@
 
 .method private getUidForPackage(Ljava/lang/String;)I
     .registers 6
+    .param p1, "packageName"  # Ljava/lang/String;
 
-    .line 713
+    .line 712
     invoke-static {}, Landroid/os/Binder;->clearCallingIdentity()J
 
     move-result-wide v0
 
-    .line 715
+    .line 714
+    .local v0, "ident":J
     :try_start_4
     iget-object v2, p0, Lcom/android/server/role/RoleManagerService$Stub;->this$0:Lcom/android/server/role/RoleManagerService;
 
@@ -63,45 +67,49 @@
 
     invoke-virtual {v2, p1, v3}, Landroid/content/pm/PackageManager;->getApplicationInfo(Ljava/lang/String;I)Landroid/content/pm/ApplicationInfo;
 
-    move-result-object p1
+    move-result-object v2
 
-    iget p1, p1, Landroid/content/pm/ApplicationInfo;->uid:I
+    iget v2, v2, Landroid/content/pm/ApplicationInfo;->uid:I
     :try_end_16
     .catch Landroid/content/pm/PackageManager$NameNotFoundException; {:try_start_4 .. :try_end_16} :catch_1f
     .catchall {:try_start_4 .. :try_end_16} :catchall_1a
 
-    .line 720
+    .line 719
     invoke-static {v0, v1}, Landroid/os/Binder;->restoreCallingIdentity(J)V
 
-    .line 715
-    return p1
+    .line 714
+    return v2
 
-    .line 720
+    .line 719
     :catchall_1a
-    move-exception p1
+    move-exception v2
 
     invoke-static {v0, v1}, Landroid/os/Binder;->restoreCallingIdentity(J)V
 
-    throw p1
+    throw v2
+
+    .line 716
+    :catch_1f
+    move-exception v2
 
     .line 717
-    :catch_1f
-    move-exception p1
+    .local v2, "nnfe":Landroid/content/pm/PackageManager$NameNotFoundException;
+    const/4 v3, -0x1
 
-    .line 718
-    const/4 p1, -0x1
-
-    .line 720
+    .line 719
     invoke-static {v0, v1}, Landroid/os/Binder;->restoreCallingIdentity(J)V
 
-    .line 718
-    return p1
+    .line 717
+    return v3
 .end method
 
 .method private handleIncomingUser(IZLjava/lang/String;)I
     .registers 11
+    .param p1, "userId"  # I
+    .param p2, "allowAll"  # Z
+    .param p3, "name"  # Ljava/lang/String;
 
-    .line 626
+    .line 625
     invoke-static {}, Lcom/android/server/role/RoleManagerService$Stub;->getCallingPid()I
 
     move-result v0
@@ -122,58 +130,61 @@
 
     invoke-static/range {v0 .. v6}, Landroid/app/ActivityManager;->handleIncomingUser(IIIZZLjava/lang/String;Ljava/lang/String;)I
 
-    move-result p1
+    move-result v0
 
-    return p1
+    return v0
 .end method
 
 .method static synthetic lambda$getSmsMessagesForFinancialApp$0(Landroid/telephony/IFinancialSmsCallback;Landroid/os/Bundle;)V
-    .registers 3
+    .registers 5
+    .param p0, "callback"  # Landroid/telephony/IFinancialSmsCallback;
+    .param p1, "result"  # Landroid/os/Bundle;
+
+    .line 690
+    const/4 v0, 0x0
 
     .line 691
-    nop
+    .local v0, "messages":Landroid/database/CursorWindow;
+    if-nez p1, :cond_e
 
     .line 692
-    if-nez p1, :cond_f
-
-    .line 693
     invoke-static {}, Lcom/android/server/role/RoleManagerService;->access$1000()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v1
 
-    const-string/jumbo v0, "result is null."
+    const-string/jumbo v2, "result is null."
 
-    invoke-static {p1, v0}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
-
-    const/4 p1, 0x0
+    invoke-static {v1, v2}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
     goto :goto_18
 
-    .line 695
-    :cond_f
-    const-string/jumbo v0, "sms_messages"
+    .line 694
+    :cond_e
+    const-string/jumbo v1, "sms_messages"
 
-    invoke-virtual {p1, v0}, Landroid/os/Bundle;->getParcelable(Ljava/lang/String;)Landroid/os/Parcelable;
+    invoke-virtual {p1, v1}, Landroid/os/Bundle;->getParcelable(Ljava/lang/String;)Landroid/os/Parcelable;
 
-    move-result-object p1
+    move-result-object v1
 
-    check-cast p1, Landroid/database/CursorWindow;
+    move-object v0, v1
 
-    .line 698
+    check-cast v0, Landroid/database/CursorWindow;
+
+    .line 697
     :goto_18
     :try_start_18
-    invoke-interface {p0, p1}, Landroid/telephony/IFinancialSmsCallback;->onGetSmsMessagesForFinancialApp(Landroid/database/CursorWindow;)V
+    invoke-interface {p0, v0}, Landroid/telephony/IFinancialSmsCallback;->onGetSmsMessagesForFinancialApp(Landroid/database/CursorWindow;)V
     :try_end_1b
     .catch Landroid/os/RemoteException; {:try_start_18 .. :try_end_1b} :catch_1c
 
-    .line 701
+    .line 700
     goto :goto_1d
 
-    .line 699
+    .line 698
     :catch_1c
-    move-exception p0
+    move-exception v1
 
-    .line 702
+    .line 701
     :goto_1d
     return-void
 .end method
@@ -182,8 +193,10 @@
 # virtual methods
 .method public addOnRoleHoldersChangedListenerAsUser(Landroid/app/role/IOnRoleHoldersChangedListener;I)V
     .registers 6
+    .param p1, "listener"  # Landroid/app/role/IOnRoleHoldersChangedListener;
+    .param p2, "userId"  # I
 
-    .line 536
+    .line 535
     const/4 v0, -0x1
 
     if-eq p2, v0, :cond_2e
@@ -200,35 +213,35 @@
 
     if-nez v0, :cond_2e
 
-    .line 537
+    .line 536
     invoke-static {}, Lcom/android/server/role/RoleManagerService;->access$1000()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    new-instance v0, Ljava/lang/StringBuilder;
+    new-instance v1, Ljava/lang/StringBuilder;
 
-    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string/jumbo v1, "user "
+    const-string/jumbo v2, "user "
 
-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0, p2}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, p2}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    const-string p2, " does not exist"
+    const-string v2, " does not exist"
 
-    invoke-virtual {v0, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p2
+    move-result-object v1
 
-    invoke-static {p1, p2}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v0, v1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 538
+    .line 537
     return-void
 
-    .line 540
+    .line 539
     :cond_2e
     const/4 v0, 0x1
 
@@ -238,7 +251,7 @@
 
     move-result p2
 
-    .line 541
+    .line 540
     iget-object v0, p0, Lcom/android/server/role/RoleManagerService$Stub;->this$0:Lcom/android/server/role/RoleManagerService;
 
     invoke-virtual {v0}, Lcom/android/server/role/RoleManagerService;->getContext()Landroid/content/Context;
@@ -249,33 +262,38 @@
 
     invoke-virtual {v0, v2, v1}, Landroid/content/Context;->enforceCallingOrSelfPermission(Ljava/lang/String;Ljava/lang/String;)V
 
-    .line 544
-    const-string v0, "listener cannot be null"
+    .line 543
+    const-string/jumbo v0, "listener cannot be null"
 
     invoke-static {p1, v0}, Lcom/android/internal/util/Preconditions;->checkNotNull(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
 
-    .line 546
+    .line 545
     iget-object v0, p0, Lcom/android/server/role/RoleManagerService$Stub;->this$0:Lcom/android/server/role/RoleManagerService;
 
     invoke-static {v0, p2}, Lcom/android/server/role/RoleManagerService;->access$1200(Lcom/android/server/role/RoleManagerService;I)Landroid/os/RemoteCallbackList;
 
-    move-result-object p2
+    move-result-object v0
+
+    .line 547
+    .local v0, "listeners":Landroid/os/RemoteCallbackList;, "Landroid/os/RemoteCallbackList<Landroid/app/role/IOnRoleHoldersChangedListener;>;"
+    invoke-virtual {v0, p1}, Landroid/os/RemoteCallbackList;->register(Landroid/os/IInterface;)Z
 
     .line 548
-    invoke-virtual {p2, p1}, Landroid/os/RemoteCallbackList;->register(Landroid/os/IInterface;)Z
-
-    .line 549
     return-void
 .end method
 
 .method public addRoleHolderAsUser(Ljava/lang/String;Ljava/lang/String;IILandroid/os/RemoteCallback;)V
     .registers 9
-    .param p3  # I
+    .param p1, "roleName"  # Ljava/lang/String;
+    .param p2, "packageName"  # Ljava/lang/String;
+    .param p3, "flags"  # I
         .annotation build Landroid/app/role/RoleManager$ManageHoldersFlags;
         .end annotation
     .end param
+    .param p4, "userId"  # I
+    .param p5, "callback"  # Landroid/os/RemoteCallback;
 
-    .line 479
+    .line 478
     iget-object v0, p0, Lcom/android/server/role/RoleManagerService$Stub;->this$0:Lcom/android/server/role/RoleManagerService;
 
     invoke-static {v0}, Lcom/android/server/role/RoleManagerService;->access$900(Lcom/android/server/role/RoleManagerService;)Landroid/os/UserManagerInternal;
@@ -288,35 +306,35 @@
 
     if-nez v0, :cond_2b
 
-    .line 480
+    .line 479
     invoke-static {}, Lcom/android/server/role/RoleManagerService;->access$1000()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    new-instance p2, Ljava/lang/StringBuilder;
+    new-instance v1, Ljava/lang/StringBuilder;
 
-    invoke-direct {p2}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string/jumbo p3, "user "
+    const-string/jumbo v2, "user "
 
-    invoke-virtual {p2, p3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p2, p4}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, p4}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    const-string p3, " does not exist"
+    const-string v2, " does not exist"
 
-    invoke-virtual {p2, p3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p2
+    move-result-object v1
 
-    invoke-static {p1, p2}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v0, v1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 481
+    .line 480
     return-void
 
-    .line 483
+    .line 482
     :cond_2b
     const/4 v0, 0x0
 
@@ -326,7 +344,7 @@
 
     move-result p4
 
-    .line 484
+    .line 483
     iget-object v0, p0, Lcom/android/server/role/RoleManagerService$Stub;->this$0:Lcom/android/server/role/RoleManagerService;
 
     invoke-virtual {v0}, Lcom/android/server/role/RoleManagerService;->getContext()Landroid/content/Context;
@@ -337,38 +355,40 @@
 
     invoke-virtual {v0, v2, v1}, Landroid/content/Context;->enforceCallingOrSelfPermission(Ljava/lang/String;Ljava/lang/String;)V
 
-    .line 487
+    .line 486
     const-string/jumbo v0, "roleName cannot be null or empty"
 
     invoke-static {p1, v0}, Lcom/android/internal/util/Preconditions;->checkStringNotEmpty(Ljava/lang/CharSequence;Ljava/lang/Object;)Ljava/lang/CharSequence;
 
-    .line 488
+    .line 487
     const-string/jumbo v0, "packageName cannot be null or empty"
 
     invoke-static {p2, v0}, Lcom/android/internal/util/Preconditions;->checkStringNotEmpty(Ljava/lang/CharSequence;Ljava/lang/Object;)Ljava/lang/CharSequence;
 
-    .line 489
+    .line 488
     const-string v0, "callback cannot be null"
 
     invoke-static {p5, v0}, Lcom/android/internal/util/Preconditions;->checkNotNull(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
 
-    .line 491
+    .line 490
     iget-object v0, p0, Lcom/android/server/role/RoleManagerService$Stub;->this$0:Lcom/android/server/role/RoleManagerService;
 
     invoke-static {v0, p4}, Lcom/android/server/role/RoleManagerService;->access$1100(Lcom/android/server/role/RoleManagerService;I)Landroid/app/role/RoleControllerManager;
 
-    move-result-object p4
+    move-result-object v0
 
-    invoke-virtual {p4, p1, p2, p3, p5}, Landroid/app/role/RoleControllerManager;->onAddRoleHolder(Ljava/lang/String;Ljava/lang/String;ILandroid/os/RemoteCallback;)V
+    invoke-virtual {v0, p1, p2, p3, p5}, Landroid/app/role/RoleControllerManager;->onAddRoleHolder(Ljava/lang/String;Ljava/lang/String;ILandroid/os/RemoteCallback;)V
 
-    .line 493
+    .line 492
     return-void
 .end method
 
 .method public addRoleHolderFromController(Ljava/lang/String;Ljava/lang/String;)Z
     .registers 6
+    .param p1, "roleName"  # Ljava/lang/String;
+    .param p2, "packageName"  # Ljava/lang/String;
 
-    .line 586
+    .line 585
     iget-object v0, p0, Lcom/android/server/role/RoleManagerService$Stub;->this$0:Lcom/android/server/role/RoleManagerService;
 
     invoke-virtual {v0}, Lcom/android/server/role/RoleManagerService;->getContext()Landroid/content/Context;
@@ -381,43 +401,47 @@
 
     invoke-virtual {v0, v1, v2}, Landroid/content/Context;->enforceCallingOrSelfPermission(Ljava/lang/String;Ljava/lang/String;)V
 
-    .line 590
+    .line 589
     const-string/jumbo v0, "roleName cannot be null or empty"
 
     invoke-static {p1, v0}, Lcom/android/internal/util/Preconditions;->checkStringNotEmpty(Ljava/lang/CharSequence;Ljava/lang/Object;)Ljava/lang/CharSequence;
 
-    .line 591
+    .line 590
     const-string/jumbo v0, "packageName cannot be null or empty"
 
     invoke-static {p2, v0}, Lcom/android/internal/util/Preconditions;->checkStringNotEmpty(Ljava/lang/CharSequence;Ljava/lang/Object;)Ljava/lang/CharSequence;
 
-    .line 593
+    .line 592
     invoke-static {}, Landroid/os/UserHandle;->getCallingUserId()I
 
     move-result v0
 
-    .line 594
+    .line 593
+    .local v0, "userId":I
     iget-object v1, p0, Lcom/android/server/role/RoleManagerService$Stub;->this$0:Lcom/android/server/role/RoleManagerService;
 
     invoke-static {v1, v0}, Lcom/android/server/role/RoleManagerService;->access$700(Lcom/android/server/role/RoleManagerService;I)Lcom/android/server/role/RoleUserState;
 
-    move-result-object v0
+    move-result-object v1
 
-    invoke-virtual {v0, p1, p2}, Lcom/android/server/role/RoleUserState;->addRoleHolder(Ljava/lang/String;Ljava/lang/String;)Z
+    invoke-virtual {v1, p1, p2}, Lcom/android/server/role/RoleUserState;->addRoleHolder(Ljava/lang/String;Ljava/lang/String;)Z
 
-    move-result p1
+    move-result v1
 
-    return p1
+    return v1
 .end method
 
 .method public clearRoleHoldersAsUser(Ljava/lang/String;IILandroid/os/RemoteCallback;)V
     .registers 8
-    .param p2  # I
+    .param p1, "roleName"  # Ljava/lang/String;
+    .param p2, "flags"  # I
         .annotation build Landroid/app/role/RoleManager$ManageHoldersFlags;
         .end annotation
     .end param
+    .param p3, "userId"  # I
+    .param p4, "callback"  # Landroid/os/RemoteCallback;
 
-    .line 519
+    .line 518
     iget-object v0, p0, Lcom/android/server/role/RoleManagerService$Stub;->this$0:Lcom/android/server/role/RoleManagerService;
 
     invoke-static {v0}, Lcom/android/server/role/RoleManagerService;->access$900(Lcom/android/server/role/RoleManagerService;)Landroid/os/UserManagerInternal;
@@ -430,35 +454,35 @@
 
     if-nez v0, :cond_2b
 
-    .line 520
+    .line 519
     invoke-static {}, Lcom/android/server/role/RoleManagerService;->access$1000()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    new-instance p2, Ljava/lang/StringBuilder;
+    new-instance v1, Ljava/lang/StringBuilder;
 
-    invoke-direct {p2}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string/jumbo p4, "user "
+    const-string/jumbo v2, "user "
 
-    invoke-virtual {p2, p4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p2, p3}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, p3}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    const-string p3, " does not exist"
+    const-string v2, " does not exist"
 
-    invoke-virtual {p2, p3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p2
+    move-result-object v1
 
-    invoke-static {p1, p2}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v0, v1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 521
+    .line 520
     return-void
 
-    .line 523
+    .line 522
     :cond_2b
     const/4 v0, 0x0
 
@@ -468,7 +492,7 @@
 
     move-result p3
 
-    .line 524
+    .line 523
     iget-object v0, p0, Lcom/android/server/role/RoleManagerService$Stub;->this$0:Lcom/android/server/role/RoleManagerService;
 
     invoke-virtual {v0}, Lcom/android/server/role/RoleManagerService;->getContext()Landroid/content/Context;
@@ -479,33 +503,36 @@
 
     invoke-virtual {v0, v2, v1}, Landroid/content/Context;->enforceCallingOrSelfPermission(Ljava/lang/String;Ljava/lang/String;)V
 
-    .line 527
+    .line 526
     const-string/jumbo v0, "roleName cannot be null or empty"
 
     invoke-static {p1, v0}, Lcom/android/internal/util/Preconditions;->checkStringNotEmpty(Ljava/lang/CharSequence;Ljava/lang/Object;)Ljava/lang/CharSequence;
 
-    .line 528
+    .line 527
     const-string v0, "callback cannot be null"
 
     invoke-static {p4, v0}, Lcom/android/internal/util/Preconditions;->checkNotNull(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
 
-    .line 530
+    .line 529
     iget-object v0, p0, Lcom/android/server/role/RoleManagerService$Stub;->this$0:Lcom/android/server/role/RoleManagerService;
 
     invoke-static {v0, p3}, Lcom/android/server/role/RoleManagerService;->access$1100(Lcom/android/server/role/RoleManagerService;I)Landroid/app/role/RoleControllerManager;
 
-    move-result-object p3
+    move-result-object v0
 
-    invoke-virtual {p3, p1, p2, p4}, Landroid/app/role/RoleControllerManager;->onClearRoleHolders(Ljava/lang/String;ILandroid/os/RemoteCallback;)V
+    invoke-virtual {v0, p1, p2, p4}, Landroid/app/role/RoleControllerManager;->onClearRoleHolders(Ljava/lang/String;ILandroid/os/RemoteCallback;)V
 
-    .line 531
+    .line 530
     return-void
 .end method
 
 .method protected dump(Ljava/io/FileDescriptor;Ljava/io/PrintWriter;[Ljava/lang/String;)V
-    .registers 9
+    .registers 14
+    .param p1, "fd"  # Ljava/io/FileDescriptor;
+    .param p2, "fout"  # Ljava/io/PrintWriter;
+    .param p3, "args"  # [Ljava/lang/String;
 
-    .line 652
+    .line 651
     iget-object v0, p0, Lcom/android/server/role/RoleManagerService$Stub;->this$0:Lcom/android/server/role/RoleManagerService;
 
     invoke-virtual {v0}, Lcom/android/server/role/RoleManagerService;->getContext()Landroid/content/Context;
@@ -522,158 +549,169 @@
 
     if-nez v0, :cond_11
 
-    .line 653
+    .line 652
     return-void
 
-    .line 656
+    .line 655
     :cond_11
+    if-eqz p3, :cond_1d
+
+    const-string v0, "--proto"
+
+    invoke-static {p3, v0}, Lcom/android/internal/util/ArrayUtils;->contains([Ljava/lang/Object;Ljava/lang/Object;)Z
+
+    move-result v0
+
+    if-eqz v0, :cond_1d
+
+    const/4 v0, 0x1
+
+    goto :goto_1e
+
+    :cond_1d
     const/4 v0, 0x0
 
-    if-eqz p3, :cond_1e
-
-    const-string v1, "--proto"
-
-    invoke-static {p3, v1}, Lcom/android/internal/util/ArrayUtils;->contains([Ljava/lang/Object;Ljava/lang/Object;)Z
-
-    move-result p3
-
-    if-eqz p3, :cond_1e
-
-    const/4 p3, 0x1
-
-    goto :goto_1f
-
-    :cond_1e
-    move p3, v0
+    .line 657
+    .local v0, "dumpAsProto":Z
+    :goto_1e
+    if-eqz v0, :cond_2b
 
     .line 658
-    :goto_1f
-    if-eqz p3, :cond_2d
+    new-instance v1, Lcom/android/internal/util/dump/DualDumpOutputStream;
 
-    .line 659
-    new-instance p2, Lcom/android/internal/util/dump/DualDumpOutputStream;
+    new-instance v2, Landroid/util/proto/ProtoOutputStream;
 
-    new-instance p3, Landroid/util/proto/ProtoOutputStream;
+    invoke-direct {v2, p1}, Landroid/util/proto/ProtoOutputStream;-><init>(Ljava/io/FileDescriptor;)V
 
-    invoke-direct {p3, p1}, Landroid/util/proto/ProtoOutputStream;-><init>(Ljava/io/FileDescriptor;)V
+    invoke-direct {v1, v2}, Lcom/android/internal/util/dump/DualDumpOutputStream;-><init>(Landroid/util/proto/ProtoOutputStream;)V
 
-    invoke-direct {p2, p3}, Lcom/android/internal/util/dump/DualDumpOutputStream;-><init>(Landroid/util/proto/ProtoOutputStream;)V
+    .local v1, "dumpOutputStream":Lcom/android/internal/util/dump/DualDumpOutputStream;
+    goto :goto_3c
 
-    move-object p1, p2
+    .line 660
+    .end local v1  # "dumpOutputStream":Lcom/android/internal/util/dump/DualDumpOutputStream;
+    :cond_2b
+    const-string v1, "ROLE MANAGER STATE (dumpsys role):"
 
-    goto :goto_3e
+    invoke-virtual {p2, v1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
     .line 661
-    :cond_2d
-    const-string p1, "ROLE MANAGER STATE (dumpsys role):"
+    new-instance v1, Lcom/android/internal/util/dump/DualDumpOutputStream;
 
-    invoke-virtual {p2, p1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    new-instance v2, Lcom/android/internal/util/IndentingPrintWriter;
 
-    .line 662
-    new-instance p1, Lcom/android/internal/util/dump/DualDumpOutputStream;
+    const-string v3, "  "
 
-    new-instance p3, Lcom/android/internal/util/IndentingPrintWriter;
+    invoke-direct {v2, p2, v3}, Lcom/android/internal/util/IndentingPrintWriter;-><init>(Ljava/io/Writer;Ljava/lang/String;)V
 
-    const-string v1, "  "
+    invoke-direct {v1, v2}, Lcom/android/internal/util/dump/DualDumpOutputStream;-><init>(Lcom/android/internal/util/IndentingPrintWriter;)V
 
-    invoke-direct {p3, p2, v1}, Lcom/android/internal/util/IndentingPrintWriter;-><init>(Ljava/io/Writer;Ljava/lang/String;)V
-
-    invoke-direct {p1, p3}, Lcom/android/internal/util/dump/DualDumpOutputStream;-><init>(Lcom/android/internal/util/IndentingPrintWriter;)V
-
-    .line 665
-    :goto_3e
-    iget-object p2, p0, Lcom/android/server/role/RoleManagerService$Stub;->this$0:Lcom/android/server/role/RoleManagerService;
-
-    invoke-static {p2}, Lcom/android/server/role/RoleManagerService;->access$900(Lcom/android/server/role/RoleManagerService;)Landroid/os/UserManagerInternal;
-
-    move-result-object p2
-
-    invoke-virtual {p2}, Landroid/os/UserManagerInternal;->getUserIds()[I
-
-    move-result-object p2
-
-    .line 666
-    array-length p3, p2
-
-    .line 667
-    nop
-
-    :goto_4a
-    if-ge v0, p3, :cond_62
-
-    .line 668
-    aget v1, p2, v0
-
-    .line 670
+    .line 664
+    .restart local v1  # "dumpOutputStream":Lcom/android/internal/util/dump/DualDumpOutputStream;
+    :goto_3c
     iget-object v2, p0, Lcom/android/server/role/RoleManagerService$Stub;->this$0:Lcom/android/server/role/RoleManagerService;
 
-    invoke-static {v2, v1}, Lcom/android/server/role/RoleManagerService;->access$700(Lcom/android/server/role/RoleManagerService;I)Lcom/android/server/role/RoleUserState;
+    invoke-static {v2}, Lcom/android/server/role/RoleManagerService;->access$900(Lcom/android/server/role/RoleManagerService;)Landroid/os/UserManagerInternal;
 
-    move-result-object v1
+    move-result-object v2
 
-    .line 671
-    const-wide v2, 0x20b00000001L
+    invoke-virtual {v2}, Landroid/os/UserManagerInternal;->getUserIds()[I
 
-    const-string/jumbo v4, "user_states"
+    move-result-object v2
 
-    invoke-virtual {v1, p1, v4, v2, v3}, Lcom/android/server/role/RoleUserState;->dump(Lcom/android/internal/util/dump/DualDumpOutputStream;Ljava/lang/String;J)V
+    .line 665
+    .local v2, "userIds":[I
+    array-length v3, v2
+
+    .line 666
+    .local v3, "userIdsLength":I
+    const/4 v4, 0x0
+
+    .local v4, "i":I
+    :goto_48
+    if-ge v4, v3, :cond_60
 
     .line 667
-    add-int/lit8 v0, v0, 0x1
+    aget v5, v2, v4
 
-    goto :goto_4a
+    .line 669
+    .local v5, "userId":I
+    iget-object v6, p0, Lcom/android/server/role/RoleManagerService$Stub;->this$0:Lcom/android/server/role/RoleManagerService;
+
+    invoke-static {v6, v5}, Lcom/android/server/role/RoleManagerService;->access$700(Lcom/android/server/role/RoleManagerService;I)Lcom/android/server/role/RoleUserState;
+
+    move-result-object v6
+
+    .line 670
+    .local v6, "userState":Lcom/android/server/role/RoleUserState;
+    const-wide v7, 0x20b00000001L
+
+    const-string/jumbo v9, "user_states"
+
+    invoke-virtual {v6, v1, v9, v7, v8}, Lcom/android/server/role/RoleUserState;->dump(Lcom/android/internal/util/dump/DualDumpOutputStream;Ljava/lang/String;J)V
+
+    .line 666
+    .end local v5  # "userId":I
+    .end local v6  # "userState":Lcom/android/server/role/RoleUserState;
+    add-int/lit8 v4, v4, 0x1
+
+    goto :goto_48
+
+    .line 674
+    .end local v4  # "i":I
+    :cond_60
+    invoke-virtual {v1}, Lcom/android/internal/util/dump/DualDumpOutputStream;->flush()V
 
     .line 675
-    :cond_62
-    invoke-virtual {p1}, Lcom/android/internal/util/dump/DualDumpOutputStream;->flush()V
-
-    .line 676
     return-void
 .end method
 
 .method public getDefaultSmsPackage(I)Ljava/lang/String;
     .registers 5
+    .param p1, "userId"  # I
 
-    .line 640
+    .line 639
     invoke-static {}, Landroid/os/Binder;->clearCallingIdentity()J
 
     move-result-wide v0
 
-    .line 642
+    .line 641
+    .local v0, "identity":J
     :try_start_4
     const-string v2, "android.app.role.SMS"
 
-    .line 643
+    .line 642
     invoke-virtual {p0, v2, p1}, Lcom/android/server/role/RoleManagerService$Stub;->getRoleHoldersAsUser(Ljava/lang/String;I)Ljava/util/List;
 
-    move-result-object p1
+    move-result-object v2
 
-    .line 642
-    invoke-static {p1}, Lcom/android/internal/util/CollectionUtils;->firstOrNull(Ljava/util/List;)Ljava/lang/Object;
+    .line 641
+    invoke-static {v2}, Lcom/android/internal/util/CollectionUtils;->firstOrNull(Ljava/util/List;)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v2
 
-    check-cast p1, Ljava/lang/String;
+    check-cast v2, Ljava/lang/String;
     :try_end_10
     .catchall {:try_start_4 .. :try_end_10} :catchall_14
 
-    .line 645
+    .line 644
     invoke-static {v0, v1}, Landroid/os/Binder;->restoreCallingIdentity(J)V
 
-    .line 642
-    return-object p1
+    .line 641
+    return-object v2
 
-    .line 645
+    .line 644
     :catchall_14
-    move-exception p1
+    move-exception v2
 
     invoke-static {v0, v1}, Landroid/os/Binder;->restoreCallingIdentity(J)V
 
-    throw p1
+    throw v2
 .end method
 
 .method public getHeldRolesFromController(Ljava/lang/String;)Ljava/util/List;
     .registers 5
+    .param p1, "packageName"  # Ljava/lang/String;
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(",
@@ -685,7 +723,7 @@
         }
     .end annotation
 
-    .line 613
+    .line 612
     iget-object v0, p0, Lcom/android/server/role/RoleManagerService$Stub;->this$0:Lcom/android/server/role/RoleManagerService;
 
     invoke-virtual {v0}, Lcom/android/server/role/RoleManagerService;->getContext()Landroid/content/Context;
@@ -698,32 +736,35 @@
 
     invoke-virtual {v0, v1, v2}, Landroid/content/Context;->enforceCallingOrSelfPermission(Ljava/lang/String;Ljava/lang/String;)V
 
-    .line 617
+    .line 616
     const-string/jumbo v0, "packageName cannot be null or empty"
 
     invoke-static {p1, v0}, Lcom/android/internal/util/Preconditions;->checkStringNotEmpty(Ljava/lang/CharSequence;Ljava/lang/Object;)Ljava/lang/CharSequence;
 
-    .line 619
+    .line 618
     invoke-static {}, Landroid/os/UserHandle;->getCallingUserId()I
 
     move-result v0
 
-    .line 620
+    .line 619
+    .local v0, "userId":I
     iget-object v1, p0, Lcom/android/server/role/RoleManagerService$Stub;->this$0:Lcom/android/server/role/RoleManagerService;
 
     invoke-static {v1, v0}, Lcom/android/server/role/RoleManagerService;->access$700(Lcom/android/server/role/RoleManagerService;I)Lcom/android/server/role/RoleUserState;
 
-    move-result-object v0
+    move-result-object v1
 
-    invoke-virtual {v0, p1}, Lcom/android/server/role/RoleUserState;->getHeldRoles(Ljava/lang/String;)Ljava/util/List;
+    invoke-virtual {v1, p1}, Lcom/android/server/role/RoleUserState;->getHeldRoles(Ljava/lang/String;)Ljava/util/List;
 
-    move-result-object p1
+    move-result-object v1
 
-    return-object p1
+    return-object v1
 .end method
 
 .method public getRoleHoldersAsUser(Ljava/lang/String;I)Ljava/util/List;
     .registers 6
+    .param p1, "roleName"  # Ljava/lang/String;
+    .param p2, "userId"  # I
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(",
@@ -735,7 +776,7 @@
         }
     .end annotation
 
-    .line 458
+    .line 457
     iget-object v0, p0, Lcom/android/server/role/RoleManagerService$Stub;->this$0:Lcom/android/server/role/RoleManagerService;
 
     invoke-static {v0}, Lcom/android/server/role/RoleManagerService;->access$900(Lcom/android/server/role/RoleManagerService;)Landroid/os/UserManagerInternal;
@@ -748,39 +789,39 @@
 
     if-nez v0, :cond_2f
 
-    .line 459
+    .line 458
     invoke-static {}, Lcom/android/server/role/RoleManagerService;->access$1000()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    new-instance v0, Ljava/lang/StringBuilder;
+    new-instance v1, Ljava/lang/StringBuilder;
 
-    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string/jumbo v1, "user "
+    const-string/jumbo v2, "user "
 
-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0, p2}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, p2}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    const-string p2, " does not exist"
+    const-string v2, " does not exist"
 
-    invoke-virtual {v0, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p2
+    move-result-object v1
 
-    invoke-static {p1, p2}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v0, v1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 460
+    .line 459
     invoke-static {}, Ljava/util/Collections;->emptyList()Ljava/util/List;
 
-    move-result-object p1
+    move-result-object v0
 
-    return-object p1
+    return-object v0
 
-    .line 462
+    .line 461
     :cond_2f
     const/4 v0, 0x0
 
@@ -790,7 +831,7 @@
 
     move-result p2
 
-    .line 463
+    .line 462
     iget-object v0, p0, Lcom/android/server/role/RoleManagerService$Stub;->this$0:Lcom/android/server/role/RoleManagerService;
 
     invoke-virtual {v0}, Lcom/android/server/role/RoleManagerService;->getContext()Landroid/content/Context;
@@ -801,117 +842,125 @@
 
     invoke-virtual {v0, v2, v1}, Landroid/content/Context;->enforceCallingOrSelfPermission(Ljava/lang/String;Ljava/lang/String;)V
 
-    .line 466
+    .line 465
     const-string/jumbo v0, "roleName cannot be null or empty"
 
     invoke-static {p1, v0}, Lcom/android/internal/util/Preconditions;->checkStringNotEmpty(Ljava/lang/CharSequence;Ljava/lang/Object;)Ljava/lang/CharSequence;
 
-    .line 468
+    .line 467
     iget-object v0, p0, Lcom/android/server/role/RoleManagerService$Stub;->this$0:Lcom/android/server/role/RoleManagerService;
 
     invoke-static {v0, p2}, Lcom/android/server/role/RoleManagerService;->access$700(Lcom/android/server/role/RoleManagerService;I)Lcom/android/server/role/RoleUserState;
 
-    move-result-object p2
+    move-result-object v0
 
-    invoke-virtual {p2, p1}, Lcom/android/server/role/RoleUserState;->getRoleHolders(Ljava/lang/String;)Landroid/util/ArraySet;
+    invoke-virtual {v0, p1}, Lcom/android/server/role/RoleUserState;->getRoleHolders(Ljava/lang/String;)Landroid/util/ArraySet;
 
-    move-result-object p1
+    move-result-object v0
+
+    .line 468
+    .local v0, "roleHolders":Landroid/util/ArraySet;, "Landroid/util/ArraySet<Ljava/lang/String;>;"
+    if-nez v0, :cond_58
 
     .line 469
-    if-nez p1, :cond_58
-
-    .line 470
     invoke-static {}, Ljava/util/Collections;->emptyList()Ljava/util/List;
 
-    move-result-object p1
+    move-result-object v1
 
-    return-object p1
+    return-object v1
 
-    .line 472
+    .line 471
     :cond_58
-    new-instance p2, Ljava/util/ArrayList;
+    new-instance v1, Ljava/util/ArrayList;
 
-    invoke-direct {p2, p1}, Ljava/util/ArrayList;-><init>(Ljava/util/Collection;)V
+    invoke-direct {v1, v0}, Ljava/util/ArrayList;-><init>(Ljava/util/Collection;)V
 
-    return-object p2
+    return-object v1
 .end method
 
 .method public getSmsMessagesForFinancialApp(Ljava/lang/String;Landroid/os/Bundle;Landroid/telephony/IFinancialSmsCallback;)V
-    .registers 6
+    .registers 8
+    .param p1, "callingPkg"  # Ljava/lang/String;
+    .param p2, "params"  # Landroid/os/Bundle;
+    .param p3, "callback"  # Landroid/telephony/IFinancialSmsCallback;
 
-    .line 684
-    iget-object p1, p0, Lcom/android/server/role/RoleManagerService$Stub;->this$0:Lcom/android/server/role/RoleManagerService;
-
-    .line 685
-    invoke-virtual {p1}, Lcom/android/server/role/RoleManagerService;->getContext()Landroid/content/Context;
-
-    move-result-object p1
-
-    .line 684
-    const-string v0, "android:sms_financial_transactions"
-
-    invoke-static {p1, v0}, Landroid/content/PermissionChecker;->checkCallingOrSelfPermissionForDataDelivery(Landroid/content/Context;Ljava/lang/String;)I
-
-    move-result p1
-
-    .line 688
-    if-nez p1, :cond_27
-
-    .line 689
-    new-instance p1, Lcom/android/server/role/FinancialSmsManager;
-
+    .line 683
     iget-object v0, p0, Lcom/android/server/role/RoleManagerService$Stub;->this$0:Lcom/android/server/role/RoleManagerService;
 
+    .line 684
     invoke-virtual {v0}, Lcom/android/server/role/RoleManagerService;->getContext()Landroid/content/Context;
 
     move-result-object v0
 
-    invoke-direct {p1, v0}, Lcom/android/server/role/FinancialSmsManager;-><init>(Landroid/content/Context;)V
+    .line 683
+    const-string v1, "android:sms_financial_transactions"
 
-    .line 690
-    new-instance v0, Landroid/os/RemoteCallback;
+    invoke-static {v0, v1}, Landroid/content/PermissionChecker;->checkCallingOrSelfPermissionForDataDelivery(Landroid/content/Context;Ljava/lang/String;)I
 
-    new-instance v1, Lcom/android/server/role/-$$Lambda$RoleManagerService$Stub$2DaS8GFEsxV7psuQ8OMLocv4QEY;
+    move-result v0
 
-    invoke-direct {v1, p3}, Lcom/android/server/role/-$$Lambda$RoleManagerService$Stub$2DaS8GFEsxV7psuQ8OMLocv4QEY;-><init>(Landroid/telephony/IFinancialSmsCallback;)V
+    .line 687
+    .local v0, "mode":I
+    if-nez v0, :cond_27
 
-    invoke-direct {v0, v1}, Landroid/os/RemoteCallback;-><init>(Landroid/os/RemoteCallback$OnResultListener;)V
+    .line 688
+    new-instance v1, Lcom/android/server/role/FinancialSmsManager;
 
-    invoke-virtual {p1, v0, p2}, Lcom/android/server/role/FinancialSmsManager;->getSmsMessages(Landroid/os/RemoteCallback;Landroid/os/Bundle;)V
+    iget-object v2, p0, Lcom/android/server/role/RoleManagerService$Stub;->this$0:Lcom/android/server/role/RoleManagerService;
 
-    .line 703
+    invoke-virtual {v2}, Lcom/android/server/role/RoleManagerService;->getContext()Landroid/content/Context;
+
+    move-result-object v2
+
+    invoke-direct {v1, v2}, Lcom/android/server/role/FinancialSmsManager;-><init>(Landroid/content/Context;)V
+
+    .line 689
+    .local v1, "financialSmsManager":Lcom/android/server/role/FinancialSmsManager;
+    new-instance v2, Landroid/os/RemoteCallback;
+
+    new-instance v3, Lcom/android/server/role/-$$Lambda$RoleManagerService$Stub$2DaS8GFEsxV7psuQ8OMLocv4QEY;
+
+    invoke-direct {v3, p3}, Lcom/android/server/role/-$$Lambda$RoleManagerService$Stub$2DaS8GFEsxV7psuQ8OMLocv4QEY;-><init>(Landroid/telephony/IFinancialSmsCallback;)V
+
+    invoke-direct {v2, v3}, Landroid/os/RemoteCallback;-><init>(Landroid/os/RemoteCallback$OnResultListener;)V
+
+    invoke-virtual {v1, v2, p2}, Lcom/android/server/role/FinancialSmsManager;->getSmsMessages(Landroid/os/RemoteCallback;Landroid/os/Bundle;)V
+
+    .line 702
+    .end local v1  # "financialSmsManager":Lcom/android/server/role/FinancialSmsManager;
     goto :goto_2d
 
-    .line 705
+    .line 704
     :cond_27
-    const/4 p1, 0x0
+    const/4 v1, 0x0
 
     :try_start_28
-    invoke-interface {p3, p1}, Landroid/telephony/IFinancialSmsCallback;->onGetSmsMessagesForFinancialApp(Landroid/database/CursorWindow;)V
+    invoke-interface {p3, v1}, Landroid/telephony/IFinancialSmsCallback;->onGetSmsMessagesForFinancialApp(Landroid/database/CursorWindow;)V
     :try_end_2b
     .catch Landroid/os/RemoteException; {:try_start_28 .. :try_end_2b} :catch_2c
 
-    .line 708
+    .line 707
     goto :goto_2d
 
-    .line 706
+    .line 705
     :catch_2c
-    move-exception p1
+    move-exception v1
 
-    .line 710
+    .line 709
     :goto_2d
     return-void
 .end method
 
 .method public isRoleAvailable(Ljava/lang/String;)Z
     .registers 4
+    .param p1, "roleName"  # Ljava/lang/String;
 
-    .line 433
+    .line 432
     const-string/jumbo v0, "roleName cannot be null or empty"
 
     invoke-static {p1, v0}, Lcom/android/internal/util/Preconditions;->checkStringNotEmpty(Ljava/lang/CharSequence;Ljava/lang/Object;)Ljava/lang/CharSequence;
 
-    .line 435
+    .line 434
     invoke-static {}, Lcom/android/server/role/RoleManagerService$Stub;->getCallingUid()I
 
     move-result v0
@@ -920,29 +969,33 @@
 
     move-result v0
 
-    .line 436
+    .line 435
+    .local v0, "userId":I
     iget-object v1, p0, Lcom/android/server/role/RoleManagerService$Stub;->this$0:Lcom/android/server/role/RoleManagerService;
 
     invoke-static {v1, v0}, Lcom/android/server/role/RoleManagerService;->access$700(Lcom/android/server/role/RoleManagerService;I)Lcom/android/server/role/RoleUserState;
 
-    move-result-object v0
+    move-result-object v1
 
-    invoke-virtual {v0, p1}, Lcom/android/server/role/RoleUserState;->isRoleAvailable(Ljava/lang/String;)Z
+    invoke-virtual {v1, p1}, Lcom/android/server/role/RoleUserState;->isRoleAvailable(Ljava/lang/String;)Z
 
-    move-result p1
+    move-result v1
 
-    return p1
+    return v1
 .end method
 
 .method public isRoleHeld(Ljava/lang/String;Ljava/lang/String;)Z
-    .registers 5
+    .registers 7
+    .param p1, "roleName"  # Ljava/lang/String;
+    .param p2, "packageName"  # Ljava/lang/String;
 
-    .line 441
+    .line 440
     invoke-static {}, Lcom/android/server/role/RoleManagerService$Stub;->getCallingUid()I
 
     move-result v0
 
-    .line 442
+    .line 441
+    .local v0, "callingUid":I
     iget-object v1, p0, Lcom/android/server/role/RoleManagerService$Stub;->this$0:Lcom/android/server/role/RoleManagerService;
 
     invoke-static {v1}, Lcom/android/server/role/RoleManagerService;->access$800(Lcom/android/server/role/RoleManagerService;)Landroid/app/AppOpsManager;
@@ -951,53 +1004,61 @@
 
     invoke-virtual {v1, v0, p2}, Landroid/app/AppOpsManager;->checkPackage(ILjava/lang/String;)V
 
-    .line 444
+    .line 443
     const-string/jumbo v1, "roleName cannot be null or empty"
 
     invoke-static {p1, v1}, Lcom/android/internal/util/Preconditions;->checkStringNotEmpty(Ljava/lang/CharSequence;Ljava/lang/Object;)Ljava/lang/CharSequence;
 
-    .line 445
+    .line 444
     const-string/jumbo v1, "packageName cannot be null or empty"
 
     invoke-static {p2, v1}, Lcom/android/internal/util/Preconditions;->checkStringNotEmpty(Ljava/lang/CharSequence;Ljava/lang/Object;)Ljava/lang/CharSequence;
 
-    .line 447
+    .line 446
     invoke-static {v0}, Landroid/os/UserHandle;->getUserId(I)I
 
-    move-result v0
+    move-result v1
+
+    .line 447
+    .local v1, "userId":I
+    iget-object v2, p0, Lcom/android/server/role/RoleManagerService$Stub;->this$0:Lcom/android/server/role/RoleManagerService;
+
+    invoke-static {v2, v1}, Lcom/android/server/role/RoleManagerService;->access$700(Lcom/android/server/role/RoleManagerService;I)Lcom/android/server/role/RoleUserState;
+
+    move-result-object v2
+
+    invoke-virtual {v2, p1}, Lcom/android/server/role/RoleUserState;->getRoleHolders(Ljava/lang/String;)Landroid/util/ArraySet;
+
+    move-result-object v2
 
     .line 448
-    iget-object v1, p0, Lcom/android/server/role/RoleManagerService$Stub;->this$0:Lcom/android/server/role/RoleManagerService;
-
-    invoke-static {v1, v0}, Lcom/android/server/role/RoleManagerService;->access$700(Lcom/android/server/role/RoleManagerService;I)Lcom/android/server/role/RoleUserState;
-
-    move-result-object v0
-
-    invoke-virtual {v0, p1}, Lcom/android/server/role/RoleUserState;->getRoleHolders(Ljava/lang/String;)Landroid/util/ArraySet;
-
-    move-result-object p1
+    .local v2, "roleHolders":Landroid/util/ArraySet;, "Landroid/util/ArraySet<Ljava/lang/String;>;"
+    if-nez v2, :cond_2b
 
     .line 449
-    if-nez p1, :cond_2b
+    const/4 v3, 0x0
 
-    .line 450
-    const/4 p1, 0x0
+    return v3
 
-    return p1
-
-    .line 452
+    .line 451
     :cond_2b
-    invoke-virtual {p1, p2}, Landroid/util/ArraySet;->contains(Ljava/lang/Object;)Z
+    invoke-virtual {v2, p2}, Landroid/util/ArraySet;->contains(Ljava/lang/Object;)Z
 
-    move-result p1
+    move-result v3
 
-    return p1
+    return v3
 .end method
 
 .method public onShellCommand(Ljava/io/FileDescriptor;Ljava/io/FileDescriptor;Ljava/io/FileDescriptor;[Ljava/lang/String;Landroid/os/ShellCallback;Landroid/os/ResultReceiver;)V
     .registers 15
+    .param p1, "in"  # Ljava/io/FileDescriptor;
+    .param p2, "out"  # Ljava/io/FileDescriptor;
+    .param p3, "err"  # Ljava/io/FileDescriptor;
+    .param p4, "args"  # [Ljava/lang/String;
+    .param p5, "callback"  # Landroid/os/ShellCallback;
+    .param p6, "resultReceiver"  # Landroid/os/ResultReceiver;
 
-    .line 634
+    .line 633
     new-instance v0, Lcom/android/server/role/RoleManagerShellCommand;
 
     invoke-direct {v0, p0}, Lcom/android/server/role/RoleManagerShellCommand;-><init>(Landroid/app/role/IRoleManager;)V
@@ -1018,14 +1079,16 @@
 
     invoke-virtual/range {v0 .. v7}, Lcom/android/server/role/RoleManagerShellCommand;->exec(Landroid/os/Binder;Ljava/io/FileDescriptor;Ljava/io/FileDescriptor;Ljava/io/FileDescriptor;[Ljava/lang/String;Landroid/os/ShellCallback;Landroid/os/ResultReceiver;)I
 
-    .line 636
+    .line 635
     return-void
 .end method
 
 .method public removeOnRoleHoldersChangedListenerAsUser(Landroid/app/role/IOnRoleHoldersChangedListener;I)V
     .registers 6
+    .param p1, "listener"  # Landroid/app/role/IOnRoleHoldersChangedListener;
+    .param p2, "userId"  # I
 
-    .line 554
+    .line 553
     const/4 v0, -0x1
 
     if-eq p2, v0, :cond_2e
@@ -1042,35 +1105,35 @@
 
     if-nez v0, :cond_2e
 
-    .line 555
+    .line 554
     invoke-static {}, Lcom/android/server/role/RoleManagerService;->access$1000()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    new-instance v0, Ljava/lang/StringBuilder;
+    new-instance v1, Ljava/lang/StringBuilder;
 
-    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string/jumbo v1, "user "
+    const-string/jumbo v2, "user "
 
-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0, p2}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, p2}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    const-string p2, " does not exist"
+    const-string v2, " does not exist"
 
-    invoke-virtual {v0, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p2
+    move-result-object v1
 
-    invoke-static {p1, p2}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v0, v1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 556
+    .line 555
     return-void
 
-    .line 558
+    .line 557
     :cond_2e
     const/4 v0, 0x1
 
@@ -1080,7 +1143,7 @@
 
     move-result p2
 
-    .line 559
+    .line 558
     iget-object v0, p0, Lcom/android/server/role/RoleManagerService$Stub;->this$0:Lcom/android/server/role/RoleManagerService;
 
     invoke-virtual {v0}, Lcom/android/server/role/RoleManagerService;->getContext()Landroid/content/Context;
@@ -1091,40 +1154,45 @@
 
     invoke-virtual {v0, v2, v1}, Landroid/content/Context;->enforceCallingOrSelfPermission(Ljava/lang/String;Ljava/lang/String;)V
 
-    .line 562
-    const-string v0, "listener cannot be null"
+    .line 561
+    const-string/jumbo v0, "listener cannot be null"
 
     invoke-static {p1, v0}, Lcom/android/internal/util/Preconditions;->checkNotNull(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
 
-    .line 564
+    .line 563
     iget-object v0, p0, Lcom/android/server/role/RoleManagerService$Stub;->this$0:Lcom/android/server/role/RoleManagerService;
 
     invoke-static {v0, p2}, Lcom/android/server/role/RoleManagerService;->access$1300(Lcom/android/server/role/RoleManagerService;I)Landroid/os/RemoteCallbackList;
 
-    move-result-object p2
+    move-result-object v0
+
+    .line 564
+    .local v0, "listeners":Landroid/os/RemoteCallbackList;, "Landroid/os/RemoteCallbackList<Landroid/app/role/IOnRoleHoldersChangedListener;>;"
+    if-nez p1, :cond_50
 
     .line 565
-    if-nez p1, :cond_4f
-
-    .line 566
     return-void
 
-    .line 568
-    :cond_4f
-    invoke-virtual {p2, p1}, Landroid/os/RemoteCallbackList;->unregister(Landroid/os/IInterface;)Z
+    .line 567
+    :cond_50
+    invoke-virtual {v0, p1}, Landroid/os/RemoteCallbackList;->unregister(Landroid/os/IInterface;)Z
 
-    .line 569
+    .line 568
     return-void
 .end method
 
 .method public removeRoleHolderAsUser(Ljava/lang/String;Ljava/lang/String;IILandroid/os/RemoteCallback;)V
     .registers 9
-    .param p3  # I
+    .param p1, "roleName"  # Ljava/lang/String;
+    .param p2, "packageName"  # Ljava/lang/String;
+    .param p3, "flags"  # I
         .annotation build Landroid/app/role/RoleManager$ManageHoldersFlags;
         .end annotation
     .end param
+    .param p4, "userId"  # I
+    .param p5, "callback"  # Landroid/os/RemoteCallback;
 
-    .line 499
+    .line 498
     iget-object v0, p0, Lcom/android/server/role/RoleManagerService$Stub;->this$0:Lcom/android/server/role/RoleManagerService;
 
     invoke-static {v0}, Lcom/android/server/role/RoleManagerService;->access$900(Lcom/android/server/role/RoleManagerService;)Landroid/os/UserManagerInternal;
@@ -1137,35 +1205,35 @@
 
     if-nez v0, :cond_2b
 
-    .line 500
+    .line 499
     invoke-static {}, Lcom/android/server/role/RoleManagerService;->access$1000()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    new-instance p2, Ljava/lang/StringBuilder;
+    new-instance v1, Ljava/lang/StringBuilder;
 
-    invoke-direct {p2}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string/jumbo p3, "user "
+    const-string/jumbo v2, "user "
 
-    invoke-virtual {p2, p3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p2, p4}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, p4}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    const-string p3, " does not exist"
+    const-string v2, " does not exist"
 
-    invoke-virtual {p2, p3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p2
+    move-result-object v1
 
-    invoke-static {p1, p2}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v0, v1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 501
+    .line 500
     return-void
 
-    .line 503
+    .line 502
     :cond_2b
     const/4 v0, 0x0
 
@@ -1175,7 +1243,7 @@
 
     move-result p4
 
-    .line 504
+    .line 503
     iget-object v0, p0, Lcom/android/server/role/RoleManagerService$Stub;->this$0:Lcom/android/server/role/RoleManagerService;
 
     invoke-virtual {v0}, Lcom/android/server/role/RoleManagerService;->getContext()Landroid/content/Context;
@@ -1186,38 +1254,40 @@
 
     invoke-virtual {v0, v2, v1}, Landroid/content/Context;->enforceCallingOrSelfPermission(Ljava/lang/String;Ljava/lang/String;)V
 
-    .line 507
+    .line 506
     const-string/jumbo v0, "roleName cannot be null or empty"
 
     invoke-static {p1, v0}, Lcom/android/internal/util/Preconditions;->checkStringNotEmpty(Ljava/lang/CharSequence;Ljava/lang/Object;)Ljava/lang/CharSequence;
 
-    .line 508
+    .line 507
     const-string/jumbo v0, "packageName cannot be null or empty"
 
     invoke-static {p2, v0}, Lcom/android/internal/util/Preconditions;->checkStringNotEmpty(Ljava/lang/CharSequence;Ljava/lang/Object;)Ljava/lang/CharSequence;
 
-    .line 509
+    .line 508
     const-string v0, "callback cannot be null"
 
     invoke-static {p5, v0}, Lcom/android/internal/util/Preconditions;->checkNotNull(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
 
-    .line 511
+    .line 510
     iget-object v0, p0, Lcom/android/server/role/RoleManagerService$Stub;->this$0:Lcom/android/server/role/RoleManagerService;
 
     invoke-static {v0, p4}, Lcom/android/server/role/RoleManagerService;->access$1100(Lcom/android/server/role/RoleManagerService;I)Landroid/app/role/RoleControllerManager;
 
-    move-result-object p4
+    move-result-object v0
 
-    invoke-virtual {p4, p1, p2, p3, p5}, Landroid/app/role/RoleControllerManager;->onRemoveRoleHolder(Ljava/lang/String;Ljava/lang/String;ILandroid/os/RemoteCallback;)V
+    invoke-virtual {v0, p1, p2, p3, p5}, Landroid/app/role/RoleControllerManager;->onRemoveRoleHolder(Ljava/lang/String;Ljava/lang/String;ILandroid/os/RemoteCallback;)V
 
-    .line 513
+    .line 512
     return-void
 .end method
 
 .method public removeRoleHolderFromController(Ljava/lang/String;Ljava/lang/String;)Z
     .registers 6
+    .param p1, "roleName"  # Ljava/lang/String;
+    .param p2, "packageName"  # Ljava/lang/String;
 
-    .line 600
+    .line 599
     iget-object v0, p0, Lcom/android/server/role/RoleManagerService$Stub;->this$0:Lcom/android/server/role/RoleManagerService;
 
     invoke-virtual {v0}, Lcom/android/server/role/RoleManagerService;->getContext()Landroid/content/Context;
@@ -1230,33 +1300,34 @@
 
     invoke-virtual {v0, v1, v2}, Landroid/content/Context;->enforceCallingOrSelfPermission(Ljava/lang/String;Ljava/lang/String;)V
 
-    .line 604
+    .line 603
     const-string/jumbo v0, "roleName cannot be null or empty"
 
     invoke-static {p1, v0}, Lcom/android/internal/util/Preconditions;->checkStringNotEmpty(Ljava/lang/CharSequence;Ljava/lang/Object;)Ljava/lang/CharSequence;
 
-    .line 605
+    .line 604
     const-string/jumbo v0, "packageName cannot be null or empty"
 
     invoke-static {p2, v0}, Lcom/android/internal/util/Preconditions;->checkStringNotEmpty(Ljava/lang/CharSequence;Ljava/lang/Object;)Ljava/lang/CharSequence;
 
-    .line 607
+    .line 606
     invoke-static {}, Landroid/os/UserHandle;->getCallingUserId()I
 
     move-result v0
 
-    .line 608
+    .line 607
+    .local v0, "userId":I
     iget-object v1, p0, Lcom/android/server/role/RoleManagerService$Stub;->this$0:Lcom/android/server/role/RoleManagerService;
 
     invoke-static {v1, v0}, Lcom/android/server/role/RoleManagerService;->access$700(Lcom/android/server/role/RoleManagerService;I)Lcom/android/server/role/RoleUserState;
 
-    move-result-object v0
+    move-result-object v1
 
-    invoke-virtual {v0, p1, p2}, Lcom/android/server/role/RoleUserState;->removeRoleHolder(Ljava/lang/String;Ljava/lang/String;)Z
+    invoke-virtual {v1, p1, p2}, Lcom/android/server/role/RoleUserState;->removeRoleHolder(Ljava/lang/String;Ljava/lang/String;)Z
 
-    move-result p1
+    move-result v1
 
-    return p1
+    return v1
 .end method
 
 .method public setRoleNamesFromController(Ljava/util/List;)V
@@ -1270,7 +1341,8 @@
         }
     .end annotation
 
-    .line 573
+    .line 572
+    .local p1, "roleNames":Ljava/util/List;, "Ljava/util/List<Ljava/lang/String;>;"
     iget-object v0, p0, Lcom/android/server/role/RoleManagerService$Stub;->this$0:Lcom/android/server/role/RoleManagerService;
 
     invoke-virtual {v0}, Lcom/android/server/role/RoleManagerService;->getContext()Landroid/content/Context;
@@ -1283,25 +1355,26 @@
 
     invoke-virtual {v0, v1, v2}, Landroid/content/Context;->enforceCallingOrSelfPermission(Ljava/lang/String;Ljava/lang/String;)V
 
-    .line 577
+    .line 576
     const-string/jumbo v0, "roleNames cannot be null"
 
     invoke-static {p1, v0}, Lcom/android/internal/util/Preconditions;->checkNotNull(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
 
-    .line 579
+    .line 578
     invoke-static {}, Landroid/os/UserHandle;->getCallingUserId()I
 
     move-result v0
 
-    .line 580
+    .line 579
+    .local v0, "userId":I
     iget-object v1, p0, Lcom/android/server/role/RoleManagerService$Stub;->this$0:Lcom/android/server/role/RoleManagerService;
 
     invoke-static {v1, v0}, Lcom/android/server/role/RoleManagerService;->access$700(Lcom/android/server/role/RoleManagerService;I)Lcom/android/server/role/RoleUserState;
 
-    move-result-object v0
+    move-result-object v1
 
-    invoke-virtual {v0, p1}, Lcom/android/server/role/RoleUserState;->setRoleNames(Ljava/util/List;)V
+    invoke-virtual {v1, p1}, Lcom/android/server/role/RoleUserState;->setRoleNames(Ljava/util/List;)V
 
-    .line 581
+    .line 580
     return-void
 .end method

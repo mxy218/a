@@ -14,23 +14,28 @@
 .end method
 
 .method public static getJobIdForUserId(III)I
-    .registers 3
+    .registers 5
+    .param p0, "minJobId"  # I
+    .param p1, "maxJobId"  # I
+    .param p2, "userId"  # I
 
     .line 24
-    add-int/2addr p0, p2
+    add-int v0, p0, p2
 
-    if-gt p0, p1, :cond_4
+    if-gt v0, p1, :cond_7
 
     .line 28
-    return p0
+    add-int v0, p0, p2
+
+    return v0
 
     .line 25
-    :cond_4
-    new-instance p0, Ljava/lang/RuntimeException;
+    :cond_7
+    new-instance v0, Ljava/lang/RuntimeException;
 
-    const-string p1, "No job IDs available in the given range"
+    const-string v1, "No job IDs available in the given range"
 
-    invoke-direct {p0, p1}, Ljava/lang/RuntimeException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v0, v1}, Ljava/lang/RuntimeException;-><init>(Ljava/lang/String;)V
 
-    throw p0
+    throw v0
 .end method

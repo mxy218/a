@@ -51,14 +51,15 @@
 
 .method public static asInterface(Landroid/os/IBinder;)Landroid/os/IStoraged;
     .registers 3
+    .param p0, "obj"  # Landroid/os/IBinder;
 
     .line 41
     if-nez p0, :cond_4
 
     .line 42
-    const/4 p0, 0x0
+    const/4 v0, 0x0
 
-    return-object p0
+    return-object v0
 
     .line 44
     :cond_4
@@ -69,24 +70,27 @@
     move-result-object v0
 
     .line 45
-    if-eqz v0, :cond_13
+    .local v0, "iin":Landroid/os/IInterface;
+    if-eqz v0, :cond_14
 
     instance-of v1, v0, Landroid/os/IStoraged;
 
-    if-eqz v1, :cond_13
+    if-eqz v1, :cond_14
 
     .line 46
-    check-cast v0, Landroid/os/IStoraged;
+    move-object v1, v0
 
-    return-object v0
+    check-cast v1, Landroid/os/IStoraged;
+
+    return-object v1
 
     .line 48
-    :cond_13
-    new-instance v0, Landroid/os/IStoraged$Stub$Proxy;
+    :cond_14
+    new-instance v1, Landroid/os/IStoraged$Stub$Proxy;
 
-    invoke-direct {v0, p0}, Landroid/os/IStoraged$Stub$Proxy;-><init>(Landroid/os/IBinder;)V
+    invoke-direct {v1, p0}, Landroid/os/IStoraged$Stub$Proxy;-><init>(Landroid/os/IBinder;)V
 
-    return-object v0
+    return-object v1
 .end method
 
 .method public static getDefaultImpl()Landroid/os/IStoraged;
@@ -100,6 +104,7 @@
 
 .method public static setDefaultImpl(Landroid/os/IStoraged;)Z
     .registers 2
+    .param p0, "impl"  # Landroid/os/IStoraged;
 
     .line 175
     sget-object v0, Landroid/os/IStoraged$Stub$Proxy;->sDefaultImpl:Landroid/os/IStoraged;
@@ -112,15 +117,15 @@
     sput-object p0, Landroid/os/IStoraged$Stub$Proxy;->sDefaultImpl:Landroid/os/IStoraged;
 
     .line 177
-    const/4 p0, 0x1
+    const/4 v0, 0x1
 
-    return p0
+    return v0
 
     .line 179
     :cond_a
-    const/4 p0, 0x0
+    const/4 v0, 0x0
 
-    return p0
+    return v0
 .end method
 
 
@@ -134,6 +139,10 @@
 
 .method public onTransact(ILandroid/os/Parcel;Landroid/os/Parcel;I)Z
     .registers 8
+    .param p1, "code"  # I
+    .param p2, "data"  # Landroid/os/Parcel;
+    .param p3, "reply"  # Landroid/os/Parcel;
+    .param p4, "flags"  # I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -141,92 +150,96 @@
     .end annotation
 
     .line 56
-    nop
+    const-string v0, "android.os.IStoraged"
 
     .line 57
-    const/4 v0, 0x1
+    .local v0, "descriptor":Ljava/lang/String;
+    const/4 v1, 0x1
 
-    const-string v1, "android.os.IStoraged"
-
-    if-eq p1, v0, :cond_36
+    if-eq p1, v1, :cond_35
 
     const/4 v2, 0x2
 
-    if-eq p1, v2, :cond_28
+    if-eq p1, v2, :cond_27
 
     const/4 v2, 0x3
 
-    if-eq p1, v2, :cond_1a
+    if-eq p1, v2, :cond_19
 
     const v2, 0x5f4e5446
 
-    if-eq p1, v2, :cond_16
+    if-eq p1, v2, :cond_15
 
     .line 92
     invoke-super {p0, p1, p2, p3, p4}, Landroid/os/Binder;->onTransact(ILandroid/os/Parcel;Landroid/os/Parcel;I)Z
 
-    move-result p1
+    move-result v1
 
-    return p1
+    return v1
 
     .line 61
-    :cond_16
-    invoke-virtual {p3, v1}, Landroid/os/Parcel;->writeString(Ljava/lang/String;)V
+    :cond_15
+    invoke-virtual {p3, v0}, Landroid/os/Parcel;->writeString(Ljava/lang/String;)V
 
     .line 62
-    return v0
+    return v1
 
     .line 84
-    :cond_1a
-    invoke-virtual {p2, v1}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
+    :cond_19
+    invoke-virtual {p2, v0}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
 
     .line 85
     invoke-virtual {p0}, Landroid/os/IStoraged$Stub;->getRecentPerf()I
 
-    move-result p1
+    move-result v2
 
     .line 86
+    .local v2, "_result":I
     invoke-virtual {p3}, Landroid/os/Parcel;->writeNoException()V
 
     .line 87
-    invoke-virtual {p3, p1}, Landroid/os/Parcel;->writeInt(I)V
+    invoke-virtual {p3, v2}, Landroid/os/Parcel;->writeInt(I)V
 
     .line 88
-    return v0
+    return v1
 
     .line 75
-    :cond_28
-    invoke-virtual {p2, v1}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
+    .end local v2  # "_result":I
+    :cond_27
+    invoke-virtual {p2, v0}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
 
     .line 77
     invoke-virtual {p2}, Landroid/os/Parcel;->readInt()I
 
-    move-result p1
+    move-result v2
 
     .line 78
-    invoke-virtual {p0, p1}, Landroid/os/IStoraged$Stub;->onUserStopped(I)V
+    .local v2, "_arg0":I
+    invoke-virtual {p0, v2}, Landroid/os/IStoraged$Stub;->onUserStopped(I)V
 
     .line 79
     invoke-virtual {p3}, Landroid/os/Parcel;->writeNoException()V
 
     .line 80
-    return v0
+    return v1
 
     .line 66
-    :cond_36
-    invoke-virtual {p2, v1}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
+    .end local v2  # "_arg0":I
+    :cond_35
+    invoke-virtual {p2, v0}, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
 
     .line 68
     invoke-virtual {p2}, Landroid/os/Parcel;->readInt()I
 
-    move-result p1
+    move-result v2
 
     .line 69
-    invoke-virtual {p0, p1}, Landroid/os/IStoraged$Stub;->onUserStarted(I)V
+    .restart local v2  # "_arg0":I
+    invoke-virtual {p0, v2}, Landroid/os/IStoraged$Stub;->onUserStarted(I)V
 
     .line 70
     invoke-virtual {p3}, Landroid/os/Parcel;->writeNoException()V
 
     .line 71
-    return v0
+    return v1
 .end method

@@ -27,33 +27,39 @@
 # direct methods
 .method private constructor <init>(Lcom/android/server/pm/PackageInstallerSession;Landroid/util/SparseIntArray;Landroid/content/IntentSender;)V
     .registers 4
+    .param p2, "remainingSessions"  # Landroid/util/SparseIntArray;
+    .param p3, "statusReceiver"  # Landroid/content/IntentSender;
 
-    .line 928
+    .line 948
     iput-object p1, p0, Lcom/android/server/pm/PackageInstallerSession$ChildStatusIntentReceiver;->this$0:Lcom/android/server/pm/PackageInstallerSession;
 
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
-    .line 919
+    .line 939
     new-instance p1, Lcom/android/server/pm/PackageInstallerSession$ChildStatusIntentReceiver$1;
 
     invoke-direct {p1, p0}, Lcom/android/server/pm/PackageInstallerSession$ChildStatusIntentReceiver$1;-><init>(Lcom/android/server/pm/PackageInstallerSession$ChildStatusIntentReceiver;)V
 
     iput-object p1, p0, Lcom/android/server/pm/PackageInstallerSession$ChildStatusIntentReceiver;->mLocalSender:Landroid/content/IIntentSender$Stub;
 
-    .line 929
+    .line 949
     iput-object p2, p0, Lcom/android/server/pm/PackageInstallerSession$ChildStatusIntentReceiver;->mChildSessionsRemaining:Landroid/util/SparseIntArray;
 
-    .line 930
+    .line 950
     iput-object p3, p0, Lcom/android/server/pm/PackageInstallerSession$ChildStatusIntentReceiver;->mStatusReceiver:Landroid/content/IntentSender;
 
-    .line 931
+    .line 951
     return-void
 .end method
 
 .method synthetic constructor <init>(Lcom/android/server/pm/PackageInstallerSession;Landroid/util/SparseIntArray;Landroid/content/IntentSender;Lcom/android/server/pm/PackageInstallerSession$1;)V
     .registers 5
+    .param p1, "x0"  # Lcom/android/server/pm/PackageInstallerSession;
+    .param p2, "x1"  # Landroid/util/SparseIntArray;
+    .param p3, "x2"  # Landroid/content/IntentSender;
+    .param p4, "x3"  # Lcom/android/server/pm/PackageInstallerSession$1;
 
-    .line 916
+    .line 936
     invoke-direct {p0, p1, p2, p3}, Lcom/android/server/pm/PackageInstallerSession$ChildStatusIntentReceiver;-><init>(Lcom/android/server/pm/PackageInstallerSession;Landroid/util/SparseIntArray;Landroid/content/IntentSender;)V
 
     return-void
@@ -64,7 +70,7 @@
 .method public getIntentSender()Landroid/content/IntentSender;
     .registers 3
 
-    .line 934
+    .line 954
     new-instance v0, Landroid/content/IntentSender;
 
     iget-object v1, p0, Lcom/android/server/pm/PackageInstallerSession$ChildStatusIntentReceiver;->mLocalSender:Landroid/content/IIntentSender$Stub;
@@ -75,9 +81,10 @@
 .end method
 
 .method public synthetic lambda$statusUpdate$0$PackageInstallerSession$ChildStatusIntentReceiver(Landroid/content/Intent;)V
-    .registers 11
+    .registers 13
+    .param p1, "intent"  # Landroid/content/Intent;
 
-    .line 939
+    .line 959
     iget-object v0, p0, Lcom/android/server/pm/PackageInstallerSession$ChildStatusIntentReceiver;->mChildSessionsRemaining:Landroid/util/SparseIntArray;
 
     invoke-virtual {v0}, Landroid/util/SparseIntArray;->size()I
@@ -86,10 +93,10 @@
 
     if-nez v0, :cond_9
 
-    .line 940
+    .line 960
     return-void
 
-    .line 942
+    .line 962
     :cond_9
     const/4 v0, 0x0
 
@@ -99,7 +106,8 @@
 
     move-result v0
 
-    .line 944
+    .line 964
+    .local v0, "sessionId":I
     const/4 v2, 0x1
 
     const-string v3, "android.content.pm.extra.STATUS"
@@ -108,150 +116,152 @@
 
     move-result v2
 
-    .line 946
+    .line 966
+    .local v2, "status":I
     iget-object v3, p0, Lcom/android/server/pm/PackageInstallerSession$ChildStatusIntentReceiver;->mChildSessionsRemaining:Landroid/util/SparseIntArray;
 
     invoke-virtual {v3, v0}, Landroid/util/SparseIntArray;->indexOfKey(I)I
 
-    move-result v0
+    move-result v3
 
-    .line 947
+    .line 967
+    .local v3, "sessionIndex":I
     if-nez v2, :cond_45
 
-    .line 948
-    iget-object v2, p0, Lcom/android/server/pm/PackageInstallerSession$ChildStatusIntentReceiver;->mChildSessionsRemaining:Landroid/util/SparseIntArray;
+    .line 968
+    iget-object v4, p0, Lcom/android/server/pm/PackageInstallerSession$ChildStatusIntentReceiver;->mChildSessionsRemaining:Landroid/util/SparseIntArray;
 
-    invoke-virtual {v2, v0}, Landroid/util/SparseIntArray;->removeAt(I)V
+    invoke-virtual {v4, v3}, Landroid/util/SparseIntArray;->removeAt(I)V
 
-    .line 949
-    iget-object v0, p0, Lcom/android/server/pm/PackageInstallerSession$ChildStatusIntentReceiver;->mChildSessionsRemaining:Landroid/util/SparseIntArray;
+    .line 969
+    iget-object v4, p0, Lcom/android/server/pm/PackageInstallerSession$ChildStatusIntentReceiver;->mChildSessionsRemaining:Landroid/util/SparseIntArray;
 
-    invoke-virtual {v0}, Landroid/util/SparseIntArray;->size()I
+    invoke-virtual {v4}, Landroid/util/SparseIntArray;->size()I
 
-    move-result v0
+    move-result v4
 
-    if-nez v0, :cond_77
+    if-nez v4, :cond_77
 
-    .line 951
+    .line 971
     :try_start_2c
-    iget-object v0, p0, Lcom/android/server/pm/PackageInstallerSession$ChildStatusIntentReceiver;->this$0:Lcom/android/server/pm/PackageInstallerSession;
+    iget-object v4, p0, Lcom/android/server/pm/PackageInstallerSession$ChildStatusIntentReceiver;->this$0:Lcom/android/server/pm/PackageInstallerSession;
 
-    iget v0, v0, Lcom/android/server/pm/PackageInstallerSession;->sessionId:I
+    iget v4, v4, Lcom/android/server/pm/PackageInstallerSession;->sessionId:I
 
-    invoke-virtual {p1, v1, v0}, Landroid/content/Intent;->putExtra(Ljava/lang/String;I)Landroid/content/Intent;
+    invoke-virtual {p1, v1, v4}, Landroid/content/Intent;->putExtra(Ljava/lang/String;I)Landroid/content/Intent;
 
-    .line 953
-    iget-object v2, p0, Lcom/android/server/pm/PackageInstallerSession$ChildStatusIntentReceiver;->mStatusReceiver:Landroid/content/IntentSender;
+    .line 973
+    iget-object v5, p0, Lcom/android/server/pm/PackageInstallerSession$ChildStatusIntentReceiver;->mStatusReceiver:Landroid/content/IntentSender;
 
-    iget-object v0, p0, Lcom/android/server/pm/PackageInstallerSession$ChildStatusIntentReceiver;->this$0:Lcom/android/server/pm/PackageInstallerSession;
+    iget-object v1, p0, Lcom/android/server/pm/PackageInstallerSession$ChildStatusIntentReceiver;->this$0:Lcom/android/server/pm/PackageInstallerSession;
 
-    invoke-static {v0}, Lcom/android/server/pm/PackageInstallerSession;->access$300(Lcom/android/server/pm/PackageInstallerSession;)Landroid/content/Context;
+    invoke-static {v1}, Lcom/android/server/pm/PackageInstallerSession;->access$300(Lcom/android/server/pm/PackageInstallerSession;)Landroid/content/Context;
 
-    move-result-object v3
-
-    const/4 v4, 0x0
-
-    const/4 v6, 0x0
+    move-result-object v6
 
     const/4 v7, 0x0
 
-    move-object v5, p1
+    const/4 v9, 0x0
 
-    invoke-virtual/range {v2 .. v7}, Landroid/content/IntentSender;->sendIntent(Landroid/content/Context;ILandroid/content/Intent;Landroid/content/IntentSender$OnFinished;Landroid/os/Handler;)V
+    const/4 v10, 0x0
+
+    move-object v8, p1
+
+    invoke-virtual/range {v5 .. v10}, Landroid/content/IntentSender;->sendIntent(Landroid/content/Context;ILandroid/content/Intent;Landroid/content/IntentSender$OnFinished;Landroid/os/Handler;)V
     :try_end_42
     .catch Landroid/content/IntentSender$SendIntentException; {:try_start_2c .. :try_end_42} :catch_43
 
     goto :goto_44
 
-    .line 954
+    .line 974
     :catch_43
-    move-exception p1
+    move-exception v1
 
-    .line 955
+    .line 975
     :goto_44
     goto :goto_77
 
-    .line 957
+    .line 977
     :cond_45
-    const/4 v0, -0x1
+    const/4 v4, -0x1
 
-    if-ne v0, v2, :cond_5a
+    if-ne v4, v2, :cond_5a
 
-    .line 959
+    .line 979
     :try_start_48
-    iget-object v3, p0, Lcom/android/server/pm/PackageInstallerSession$ChildStatusIntentReceiver;->mStatusReceiver:Landroid/content/IntentSender;
+    iget-object v5, p0, Lcom/android/server/pm/PackageInstallerSession$ChildStatusIntentReceiver;->mStatusReceiver:Landroid/content/IntentSender;
 
-    iget-object v0, p0, Lcom/android/server/pm/PackageInstallerSession$ChildStatusIntentReceiver;->this$0:Lcom/android/server/pm/PackageInstallerSession;
+    iget-object v1, p0, Lcom/android/server/pm/PackageInstallerSession$ChildStatusIntentReceiver;->this$0:Lcom/android/server/pm/PackageInstallerSession;
 
-    invoke-static {v0}, Lcom/android/server/pm/PackageInstallerSession;->access$300(Lcom/android/server/pm/PackageInstallerSession;)Landroid/content/Context;
+    invoke-static {v1}, Lcom/android/server/pm/PackageInstallerSession;->access$300(Lcom/android/server/pm/PackageInstallerSession;)Landroid/content/Context;
 
-    move-result-object v4
-
-    const/4 v5, 0x0
+    move-result-object v6
 
     const/4 v7, 0x0
 
-    const/4 v8, 0x0
+    const/4 v9, 0x0
 
-    move-object v6, p1
+    const/4 v10, 0x0
 
-    invoke-virtual/range {v3 .. v8}, Landroid/content/IntentSender;->sendIntent(Landroid/content/Context;ILandroid/content/Intent;Landroid/content/IntentSender$OnFinished;Landroid/os/Handler;)V
+    move-object v8, p1
+
+    invoke-virtual/range {v5 .. v10}, Landroid/content/IntentSender;->sendIntent(Landroid/content/Context;ILandroid/content/Intent;Landroid/content/IntentSender$OnFinished;Landroid/os/Handler;)V
     :try_end_57
     .catch Landroid/content/IntentSender$SendIntentException; {:try_start_48 .. :try_end_57} :catch_58
 
     goto :goto_59
 
-    .line 960
+    .line 980
     :catch_58
-    move-exception p1
+    move-exception v1
 
-    .line 961
+    .line 981
     :goto_59
     goto :goto_77
 
-    .line 963
+    .line 983
     :cond_5a
-    iget-object v0, p0, Lcom/android/server/pm/PackageInstallerSession$ChildStatusIntentReceiver;->this$0:Lcom/android/server/pm/PackageInstallerSession;
+    iget-object v4, p0, Lcom/android/server/pm/PackageInstallerSession$ChildStatusIntentReceiver;->this$0:Lcom/android/server/pm/PackageInstallerSession;
 
-    iget v0, v0, Lcom/android/server/pm/PackageInstallerSession;->sessionId:I
+    iget v4, v4, Lcom/android/server/pm/PackageInstallerSession;->sessionId:I
 
-    invoke-virtual {p1, v1, v0}, Landroid/content/Intent;->putExtra(Ljava/lang/String;I)Landroid/content/Intent;
+    invoke-virtual {p1, v1, v4}, Landroid/content/Intent;->putExtra(Ljava/lang/String;I)Landroid/content/Intent;
 
-    .line 965
-    iget-object v0, p0, Lcom/android/server/pm/PackageInstallerSession$ChildStatusIntentReceiver;->mChildSessionsRemaining:Landroid/util/SparseIntArray;
+    .line 985
+    iget-object v1, p0, Lcom/android/server/pm/PackageInstallerSession$ChildStatusIntentReceiver;->mChildSessionsRemaining:Landroid/util/SparseIntArray;
 
-    invoke-virtual {v0}, Landroid/util/SparseIntArray;->clear()V
+    invoke-virtual {v1}, Landroid/util/SparseIntArray;->clear()V
 
-    .line 967
+    .line 987
     :try_start_66
-    iget-object v1, p0, Lcom/android/server/pm/PackageInstallerSession$ChildStatusIntentReceiver;->mStatusReceiver:Landroid/content/IntentSender;
+    iget-object v4, p0, Lcom/android/server/pm/PackageInstallerSession$ChildStatusIntentReceiver;->mStatusReceiver:Landroid/content/IntentSender;
 
-    iget-object v0, p0, Lcom/android/server/pm/PackageInstallerSession$ChildStatusIntentReceiver;->this$0:Lcom/android/server/pm/PackageInstallerSession;
+    iget-object v1, p0, Lcom/android/server/pm/PackageInstallerSession$ChildStatusIntentReceiver;->this$0:Lcom/android/server/pm/PackageInstallerSession;
 
-    invoke-static {v0}, Lcom/android/server/pm/PackageInstallerSession;->access$300(Lcom/android/server/pm/PackageInstallerSession;)Landroid/content/Context;
+    invoke-static {v1}, Lcom/android/server/pm/PackageInstallerSession;->access$300(Lcom/android/server/pm/PackageInstallerSession;)Landroid/content/Context;
 
-    move-result-object v2
-
-    const/4 v3, 0x0
-
-    const/4 v5, 0x0
+    move-result-object v5
 
     const/4 v6, 0x0
 
-    move-object v4, p1
+    const/4 v8, 0x0
 
-    invoke-virtual/range {v1 .. v6}, Landroid/content/IntentSender;->sendIntent(Landroid/content/Context;ILandroid/content/Intent;Landroid/content/IntentSender$OnFinished;Landroid/os/Handler;)V
+    const/4 v9, 0x0
+
+    move-object v7, p1
+
+    invoke-virtual/range {v4 .. v9}, Landroid/content/IntentSender;->sendIntent(Landroid/content/Context;ILandroid/content/Intent;Landroid/content/IntentSender$OnFinished;Landroid/os/Handler;)V
     :try_end_75
     .catch Landroid/content/IntentSender$SendIntentException; {:try_start_66 .. :try_end_75} :catch_76
 
-    .line 969
+    .line 989
     goto :goto_77
 
-    .line 968
+    .line 988
     :catch_76
-    move-exception p1
+    move-exception v1
 
-    .line 971
+    .line 991
     :cond_77
     :goto_77
     return-void
@@ -259,8 +269,9 @@
 
 .method public statusUpdate(Landroid/content/Intent;)V
     .registers 4
+    .param p1, "intent"  # Landroid/content/Intent;
 
-    .line 938
+    .line 958
     iget-object v0, p0, Lcom/android/server/pm/PackageInstallerSession$ChildStatusIntentReceiver;->this$0:Lcom/android/server/pm/PackageInstallerSession;
 
     invoke-static {v0}, Lcom/android/server/pm/PackageInstallerSession;->access$200(Lcom/android/server/pm/PackageInstallerSession;)Landroid/os/Handler;
@@ -273,6 +284,6 @@
 
     invoke-virtual {v0, v1}, Landroid/os/Handler;->post(Ljava/lang/Runnable;)Z
 
-    .line 972
+    .line 992
     return-void
 .end method

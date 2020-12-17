@@ -27,12 +27,12 @@
 .method private constructor <init>(Lcom/android/server/policy/PhoneWindowManager;)V
     .registers 2
 
-    .line 1646
+    .line 1525
     iput-object p1, p0, Lcom/android/server/policy/PhoneWindowManager$ScreenshotRunnable;->this$0:Lcom/android/server/policy/PhoneWindowManager;
 
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
-    .line 1647
+    .line 1526
     const/4 p1, 0x1
 
     iput p1, p0, Lcom/android/server/policy/PhoneWindowManager$ScreenshotRunnable;->mScreenshotType:I
@@ -42,8 +42,10 @@
 
 .method synthetic constructor <init>(Lcom/android/server/policy/PhoneWindowManager;Lcom/android/server/policy/PhoneWindowManager$1;)V
     .registers 3
+    .param p1, "x0"  # Lcom/android/server/policy/PhoneWindowManager;
+    .param p2, "x1"  # Lcom/android/server/policy/PhoneWindowManager$1;
 
-    .line 1646
+    .line 1525
     invoke-direct {p0, p1}, Lcom/android/server/policy/PhoneWindowManager$ScreenshotRunnable;-><init>(Lcom/android/server/policy/PhoneWindowManager;)V
 
     return-void
@@ -54,7 +56,7 @@
 .method public run()V
     .registers 3
 
-    .line 1655
+    .line 1534
     iget-object v0, p0, Lcom/android/server/policy/PhoneWindowManager$ScreenshotRunnable;->this$0:Lcom/android/server/policy/PhoneWindowManager;
 
     iget-object v0, v0, Lcom/android/server/policy/PhoneWindowManager;->mDefaultDisplayPolicy:Lcom/android/server/wm/DisplayPolicy;
@@ -63,16 +65,17 @@
 
     invoke-virtual {v0, v1}, Lcom/android/server/wm/DisplayPolicy;->takeScreenshot(I)V
 
-    .line 1656
+    .line 1535
     return-void
 .end method
 
 .method public setScreenshotType(I)V
     .registers 2
+    .param p1, "screenshotType"  # I
 
-    .line 1650
+    .line 1529
     iput p1, p0, Lcom/android/server/policy/PhoneWindowManager$ScreenshotRunnable;->mScreenshotType:I
 
-    .line 1651
+    .line 1530
     return-void
 .end method

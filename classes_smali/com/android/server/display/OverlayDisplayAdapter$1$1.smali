@@ -21,6 +21,8 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/display/OverlayDisplayAdapter$1;Landroid/os/Handler;)V
     .registers 3
+    .param p1, "this$1"  # Lcom/android/server/display/OverlayDisplayAdapter$1;
+    .param p2, "x0"  # Landroid/os/Handler;
 
     .line 118
     iput-object p1, p0, Lcom/android/server/display/OverlayDisplayAdapter$1$1;->this$1:Lcom/android/server/display/OverlayDisplayAdapter$1;
@@ -33,14 +35,15 @@
 
 # virtual methods
 .method public onChange(Z)V
-    .registers 2
+    .registers 3
+    .param p1, "selfChange"  # Z
 
     .line 121
-    iget-object p1, p0, Lcom/android/server/display/OverlayDisplayAdapter$1$1;->this$1:Lcom/android/server/display/OverlayDisplayAdapter$1;
+    iget-object v0, p0, Lcom/android/server/display/OverlayDisplayAdapter$1$1;->this$1:Lcom/android/server/display/OverlayDisplayAdapter$1;
 
-    iget-object p1, p1, Lcom/android/server/display/OverlayDisplayAdapter$1;->this$0:Lcom/android/server/display/OverlayDisplayAdapter;
+    iget-object v0, v0, Lcom/android/server/display/OverlayDisplayAdapter$1;->this$0:Lcom/android/server/display/OverlayDisplayAdapter;
 
-    invoke-static {p1}, Lcom/android/server/display/OverlayDisplayAdapter;->access$000(Lcom/android/server/display/OverlayDisplayAdapter;)V
+    invoke-static {v0}, Lcom/android/server/display/OverlayDisplayAdapter;->access$000(Lcom/android/server/display/OverlayDisplayAdapter;)V
 
     .line 122
     return-void

@@ -17,6 +17,7 @@
 # virtual methods
 .method public onAccessibilityEvent(Landroid/view/accessibility/AccessibilityEvent;)V
     .registers 2
+    .param p1, "event"  # Landroid/view/accessibility/AccessibilityEvent;
 
     .line 29
     return-void

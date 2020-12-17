@@ -33,8 +33,9 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/am/ActivityManagerService;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/am/ActivityManagerService;
 
-    .line 13361
+    .line 14082
     iput-object p1, p0, Lcom/android/server/am/ActivityManagerService$24;->this$0:Lcom/android/server/am/ActivityManagerService;
 
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -46,8 +47,10 @@
 # virtual methods
 .method public compare(Lcom/android/server/am/ProcessMemInfo;Lcom/android/server/am/ProcessMemInfo;)I
     .registers 9
+    .param p1, "lhs"  # Lcom/android/server/am/ProcessMemInfo;
+    .param p2, "rhs"  # Lcom/android/server/am/ProcessMemInfo;
 
-    .line 13363
+    .line 14084
     iget v0, p1, Lcom/android/server/am/ProcessMemInfo;->oomAdj:I
 
     iget v1, p2, Lcom/android/server/am/ProcessMemInfo;->oomAdj:I
@@ -58,12 +61,12 @@
 
     if-eq v0, v1, :cond_11
 
-    .line 13364
-    iget p1, p1, Lcom/android/server/am/ProcessMemInfo;->oomAdj:I
+    .line 14085
+    iget v0, p1, Lcom/android/server/am/ProcessMemInfo;->oomAdj:I
 
-    iget p2, p2, Lcom/android/server/am/ProcessMemInfo;->oomAdj:I
+    iget v1, p2, Lcom/android/server/am/ProcessMemInfo;->oomAdj:I
 
-    if-ge p1, p2, :cond_f
+    if-ge v0, v1, :cond_f
 
     goto :goto_10
 
@@ -73,7 +76,7 @@
     :goto_10
     return v2
 
-    .line 13366
+    .line 14087
     :cond_11
     iget-wide v0, p1, Lcom/android/server/am/ProcessMemInfo;->pss:J
 
@@ -83,31 +86,31 @@
 
     if-eqz v0, :cond_23
 
-    .line 13367
+    .line 14088
     iget-wide v0, p1, Lcom/android/server/am/ProcessMemInfo;->pss:J
 
-    iget-wide p1, p2, Lcom/android/server/am/ProcessMemInfo;->pss:J
+    iget-wide v4, p2, Lcom/android/server/am/ProcessMemInfo;->pss:J
 
-    cmp-long p1, v0, p1
+    cmp-long v0, v0, v4
 
-    if-gez p1, :cond_22
+    if-gez v0, :cond_22
 
     move v2, v3
 
     :cond_22
     return v2
 
-    .line 13369
+    .line 14090
     :cond_23
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    return p1
+    return v0
 .end method
 
 .method public bridge synthetic compare(Ljava/lang/Object;Ljava/lang/Object;)I
     .registers 3
 
-    .line 13361
+    .line 14082
     check-cast p1, Lcom/android/server/am/ProcessMemInfo;
 
     check-cast p2, Lcom/android/server/am/ProcessMemInfo;

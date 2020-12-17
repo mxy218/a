@@ -38,6 +38,9 @@
 # direct methods
 .method public constructor <init>(Ljava/lang/String;II)V
     .registers 10
+    .param p1, "packageName"  # Ljava/lang/String;
+    .param p2, "compilationReason"  # I
+    .param p3, "flags"  # I
 
     .line 87
     invoke-static {p2}, Lcom/android/server/pm/PackageManagerServiceCompilerMapping;->getCompilerFilterForReason(I)Ljava/lang/String;
@@ -61,18 +64,26 @@
 .end method
 
 .method public constructor <init>(Ljava/lang/String;ILjava/lang/String;Ljava/lang/String;I)V
-    .registers 7
+    .registers 10
+    .param p1, "packageName"  # Ljava/lang/String;
+    .param p2, "compilationReason"  # I
+    .param p3, "compilerFilter"  # Ljava/lang/String;
+    .param p4, "splitName"  # Ljava/lang/String;
+    .param p5, "flags"  # I
 
     .line 92
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
     .line 93
-    nop
+    const/16 v0, 0x67f
 
     .line 103
-    and-int/lit16 v0, p5, -0x680
+    .local v0, "validityMask":I
+    not-int v1, v0
 
-    if-nez v0, :cond_13
+    and-int/2addr v1, p5
+
+    if-nez v1, :cond_14
 
     .line 107
     iput-object p1, p0, Lcom/android/server/pm/dex/DexoptOptions;->mPackageName:Ljava/lang/String;
@@ -93,34 +104,37 @@
     return-void
 
     .line 104
-    :cond_13
-    new-instance p1, Ljava/lang/IllegalArgumentException;
+    :cond_14
+    new-instance v1, Ljava/lang/IllegalArgumentException;
 
-    new-instance p2, Ljava/lang/StringBuilder;
+    new-instance v2, Ljava/lang/StringBuilder;
 
-    invoke-direct {p2}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string p3, "Invalid flags : "
+    const-string v3, "Invalid flags : "
 
-    invoke-virtual {p2, p3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-static {p5}, Ljava/lang/Integer;->toHexString(I)Ljava/lang/String;
 
-    move-result-object p3
+    move-result-object v3
 
-    invoke-virtual {p2, p3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p2
+    move-result-object v2
 
-    invoke-direct {p1, p2}, Ljava/lang/IllegalArgumentException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v1, v2}, Ljava/lang/IllegalArgumentException;-><init>(Ljava/lang/String;)V
 
-    throw p1
+    throw v1
 .end method
 
 .method public constructor <init>(Ljava/lang/String;Ljava/lang/String;I)V
     .registers 10
+    .param p1, "packageName"  # Ljava/lang/String;
+    .param p2, "compilerFilter"  # Ljava/lang/String;
+    .param p3, "flags"  # I
 
     .line 83
     const/4 v2, -0x1

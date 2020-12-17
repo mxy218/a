@@ -181,16 +181,18 @@
 .end method
 
 .method static synthetic access$000(Lcom/android/server/notification/ScheduleConditionProvider;)Landroid/util/ArrayMap;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/notification/ScheduleConditionProvider;
 
     .line 52
-    iget-object p0, p0, Lcom/android/server/notification/ScheduleConditionProvider;->mSubscriptions:Landroid/util/ArrayMap;
+    iget-object v0, p0, Lcom/android/server/notification/ScheduleConditionProvider;->mSubscriptions:Landroid/util/ArrayMap;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$100(Lcom/android/server/notification/ScheduleConditionProvider;)V
     .registers 1
+    .param p0, "x0"  # Lcom/android/server/notification/ScheduleConditionProvider;
 
     .line 52
     invoke-direct {p0}, Lcom/android/server/notification/ScheduleConditionProvider;->evaluateSubscriptions()V
@@ -200,6 +202,7 @@
 
 .method private conditionSnoozed(Landroid/net/Uri;)Z
     .registers 4
+    .param p1, "conditionId"  # Landroid/net/Uri;
 
     .line 274
     iget-object v0, p0, Lcom/android/server/notification/ScheduleConditionProvider;->mSnoozedForAlarm:Landroid/util/ArraySet;
@@ -212,25 +215,28 @@
 
     invoke-virtual {v1, p1}, Landroid/util/ArraySet;->contains(Ljava/lang/Object;)Z
 
-    move-result p1
+    move-result v1
 
     monitor-exit v0
 
-    return p1
+    return v1
 
     .line 276
     :catchall_b
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_d
     .catchall {:try_start_3 .. :try_end_d} :catchall_b
 
-    throw p1
+    throw v1
 .end method
 
 .method private createCondition(Landroid/net/Uri;ILjava/lang/String;)Landroid/service/notification/Condition;
-    .registers 13
+    .registers 16
+    .param p1, "id"  # Landroid/net/Uri;
+    .param p2, "state"  # I
+    .param p3, "reason"  # Ljava/lang/String;
 
     .line 264
     sget-boolean v0, Lcom/android/server/notification/ScheduleConditionProvider;->DEBUG:Z
@@ -266,40 +272,52 @@
 
     invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p3
+    move-result-object v0
 
     .line 264
-    const-string v0, "ConditionProviders.SCP"
+    const-string v1, "ConditionProviders.SCP"
 
-    invoke-static {v0, p3}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v0}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
+
+    .line 267
+    :cond_2f
+    const-string v0, "..."
+
+    .line 268
+    .local v0, "summary":Ljava/lang/String;
+    const-string v1, "..."
+
+    .line 269
+    .local v1, "line1":Ljava/lang/String;
+    const-string v2, "..."
 
     .line 270
-    :cond_2f
-    new-instance p3, Landroid/service/notification/Condition;
+    .local v2, "line2":Ljava/lang/String;
+    new-instance v11, Landroid/service/notification/Condition;
 
-    const/4 v6, 0x0
+    const/4 v8, 0x0
 
-    const/4 v8, 0x2
-
-    const-string v3, "..."
-
-    const-string v4, "..."
+    const/4 v10, 0x2
 
     const-string v5, "..."
 
-    move-object v1, p3
+    const-string v6, "..."
 
-    move-object v2, p1
+    const-string v7, "..."
 
-    move v7, p2
+    move-object v3, v11
 
-    invoke-direct/range {v1 .. v8}, Landroid/service/notification/Condition;-><init>(Landroid/net/Uri;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;III)V
+    move-object v4, p1
 
-    return-object p3
+    move v9, p2
+
+    invoke-direct/range {v3 .. v10}, Landroid/service/notification/Condition;-><init>(Landroid/net/Uri;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;III)V
+
+    return-object v11
 .end method
 
 .method private evaluateSubscriptions()V
-    .registers 15
+    .registers 16
 
     .line 162
     iget-object v0, p0, Lcom/android/server/notification/ScheduleConditionProvider;->mAlarmManager:Landroid/app/AlarmManager;
@@ -326,6 +344,7 @@
     move-result-wide v8
 
     .line 166
+    .local v8, "now":J
     const-wide/16 v0, 0x0
 
     iput-wide v0, p0, Lcom/android/server/notification/ScheduleConditionProvider;->mNextAlarmTime:J
@@ -336,11 +355,13 @@
     move-result-wide v10
 
     .line 168
+    .local v10, "nextUserAlarmTime":J
     new-instance v0, Ljava/util/ArrayList;
 
     invoke-direct {v0}, Ljava/util/ArrayList;-><init>()V
 
     .line 169
+    .local v0, "conditionsToNotify":Ljava/util/List;, "Ljava/util/List<Landroid/service/notification/Condition;>;"
     iget-object v12, p0, Lcom/android/server/notification/ScheduleConditionProvider;->mSubscriptions:Landroid/util/ArrayMap;
 
     monitor-enter v12
@@ -381,21 +402,22 @@
 
     move-result v1
 
-    if-eqz v1, :cond_5f
+    if-eqz v1, :cond_60
 
     invoke-interface {v13}, Ljava/util/Iterator;->next()Ljava/lang/Object;
 
     move-result-object v1
 
-    move-object v2, v1
+    check-cast v1, Landroid/net/Uri;
 
-    check-cast v2, Landroid/net/Uri;
+    move-object v14, v1
 
     .line 172
+    .local v14, "conditionId":Landroid/net/Uri;
     iget-object v1, p0, Lcom/android/server/notification/ScheduleConditionProvider;->mSubscriptions:Landroid/util/ArrayMap;
 
     .line 173
-    invoke-virtual {v1, v2}, Landroid/util/ArrayMap;->get(Ljava/lang/Object;)Ljava/lang/Object;
+    invoke-virtual {v1, v14}, Landroid/util/ArrayMap;->get(Ljava/lang/Object;)Ljava/lang/Object;
 
     move-result-object v1
 
@@ -404,6 +426,8 @@
     check-cast v3, Landroid/service/notification/ScheduleCalendar;
 
     move-object v1, p0
+
+    move-object v2, v14
 
     move-wide v4, v8
 
@@ -414,20 +438,23 @@
     move-result-object v1
 
     .line 175
-    if-eqz v1, :cond_5e
+    .local v1, "condition":Landroid/service/notification/Condition;
+    if-eqz v1, :cond_5f
 
     .line 176
     invoke-interface {v0, v1}, Ljava/util/List;->add(Ljava/lang/Object;)Z
 
     .line 178
-    :cond_5e
+    .end local v1  # "condition":Landroid/service/notification/Condition;
+    .end local v14  # "conditionId":Landroid/net/Uri;
+    :cond_5f
     goto :goto_3c
 
     .line 179
-    :cond_5f
+    :cond_60
     monitor-exit v12
-    :try_end_60
-    .catchall {:try_start_24 .. :try_end_60} :catchall_75
+    :try_end_61
+    .catchall {:try_start_24 .. :try_end_61} :catchall_76
 
     .line 180
     invoke-interface {v0}, Ljava/util/List;->size()I
@@ -438,57 +465,59 @@
 
     invoke-interface {v0, v1}, Ljava/util/List;->toArray([Ljava/lang/Object;)[Ljava/lang/Object;
 
-    move-result-object v0
+    move-result-object v1
 
-    check-cast v0, [Landroid/service/notification/Condition;
+    check-cast v1, [Landroid/service/notification/Condition;
 
-    invoke-virtual {p0, v0}, Lcom/android/server/notification/ScheduleConditionProvider;->notifyConditions([Landroid/service/notification/Condition;)V
+    invoke-virtual {p0, v1}, Lcom/android/server/notification/ScheduleConditionProvider;->notifyConditions([Landroid/service/notification/Condition;)V
 
     .line 181
-    iget-wide v0, p0, Lcom/android/server/notification/ScheduleConditionProvider;->mNextAlarmTime:J
+    iget-wide v1, p0, Lcom/android/server/notification/ScheduleConditionProvider;->mNextAlarmTime:J
 
-    invoke-direct {p0, v8, v9, v0, v1}, Lcom/android/server/notification/ScheduleConditionProvider;->updateAlarm(JJ)V
+    invoke-direct {p0, v8, v9, v1, v2}, Lcom/android/server/notification/ScheduleConditionProvider;->updateAlarm(JJ)V
 
     .line 182
     return-void
 
     .line 179
-    :catchall_75
-    move-exception v0
+    :catchall_76
+    move-exception v1
 
-    :try_start_76
+    :try_start_77
     monitor-exit v12
-    :try_end_77
-    .catchall {:try_start_76 .. :try_end_77} :catchall_75
+    :try_end_78
+    .catchall {:try_start_77 .. :try_end_78} :catchall_76
 
-    throw v0
+    throw v1
 .end method
 
 .method private meetsSchedule(Landroid/service/notification/ScheduleCalendar;J)Z
-    .registers 4
+    .registers 5
+    .param p1, "cal"  # Landroid/service/notification/ScheduleCalendar;
+    .param p2, "time"  # J
 
     .line 244
     if-eqz p1, :cond_a
 
     invoke-virtual {p1, p2, p3}, Landroid/service/notification/ScheduleCalendar;->isInSchedule(J)Z
 
-    move-result p1
+    move-result v0
 
-    if-eqz p1, :cond_a
+    if-eqz v0, :cond_a
 
-    const/4 p1, 0x1
+    const/4 v0, 0x1
 
     goto :goto_b
 
     :cond_a
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
     :goto_b
-    return p1
+    return v0
 .end method
 
 .method private readSnoozed()V
-    .registers 8
+    .registers 10
 
     .line 304
     iget-object v0, p0, Lcom/android/server/notification/ScheduleConditionProvider;->mSnoozedForAlarm:Landroid/util/ArraySet;
@@ -501,9 +530,10 @@
 
     move-result-wide v1
     :try_end_7
-    .catchall {:try_start_3 .. :try_end_7} :catchall_4a
+    .catchall {:try_start_3 .. :try_end_7} :catchall_4b
 
     .line 307
+    .local v1, "identity":J
     :try_start_7
     iget-object v3, p0, Lcom/android/server/notification/ScheduleConditionProvider;->mContext:Landroid/content/Context;
 
@@ -525,98 +555,114 @@
     move-result-object v3
 
     .line 311
-    if-eqz v3, :cond_3f
+    .local v3, "setting":Ljava/lang/String;
+    if-eqz v3, :cond_40
 
     .line 312
     const-string v4, ";"
 
     invoke-virtual {v3, v4}, Ljava/lang/String;->split(Ljava/lang/String;)[Ljava/lang/String;
 
-    move-result-object v3
+    move-result-object v4
 
     .line 313
-    const/4 v4, 0x0
+    .local v4, "tokens":[Ljava/lang/String;
+    const/4 v5, 0x0
 
+    .local v5, "i":I
     :goto_21
-    array-length v5, v3
+    array-length v6, v4
 
-    if-ge v4, v5, :cond_3f
+    if-ge v5, v6, :cond_40
 
     .line 314
-    aget-object v5, v3, v4
+    aget-object v6, v4, v5
 
     .line 315
-    if-eqz v5, :cond_2c
+    .local v6, "token":Ljava/lang/String;
+    if-eqz v6, :cond_2d
 
     .line 316
-    invoke-virtual {v5}, Ljava/lang/String;->trim()Ljava/lang/String;
+    invoke-virtual {v6}, Ljava/lang/String;->trim()Ljava/lang/String;
 
-    move-result-object v5
+    move-result-object v7
+
+    move-object v6, v7
 
     .line 318
-    :cond_2c
-    invoke-static {v5}, Landroid/text/TextUtils;->isEmpty(Ljava/lang/CharSequence;)Z
+    :cond_2d
+    invoke-static {v6}, Landroid/text/TextUtils;->isEmpty(Ljava/lang/CharSequence;)Z
 
-    move-result v6
+    move-result v7
 
-    if-eqz v6, :cond_33
+    if-eqz v7, :cond_34
 
     .line 319
-    goto :goto_3c
+    goto :goto_3d
 
     .line 321
-    :cond_33
-    iget-object v6, p0, Lcom/android/server/notification/ScheduleConditionProvider;->mSnoozedForAlarm:Landroid/util/ArraySet;
+    :cond_34
+    iget-object v7, p0, Lcom/android/server/notification/ScheduleConditionProvider;->mSnoozedForAlarm:Landroid/util/ArraySet;
 
-    invoke-static {v5}, Landroid/net/Uri;->parse(Ljava/lang/String;)Landroid/net/Uri;
+    invoke-static {v6}, Landroid/net/Uri;->parse(Ljava/lang/String;)Landroid/net/Uri;
 
-    move-result-object v5
+    move-result-object v8
 
-    invoke-virtual {v6, v5}, Landroid/util/ArraySet;->add(Ljava/lang/Object;)Z
-    :try_end_3c
-    .catchall {:try_start_7 .. :try_end_3c} :catchall_45
+    invoke-virtual {v7, v8}, Landroid/util/ArraySet;->add(Ljava/lang/Object;)Z
+    :try_end_3d
+    .catchall {:try_start_7 .. :try_end_3d} :catchall_46
 
     .line 313
-    :goto_3c
-    add-int/lit8 v4, v4, 0x1
+    .end local v6  # "token":Ljava/lang/String;
+    :goto_3d
+    add-int/lit8 v5, v5, 0x1
 
     goto :goto_21
 
     .line 325
-    :cond_3f
-    :try_start_3f
+    .end local v3  # "setting":Ljava/lang/String;
+    .end local v4  # "tokens":[Ljava/lang/String;
+    .end local v5  # "i":I
+    :cond_40
+    :try_start_40
     invoke-static {v1, v2}, Landroid/os/Binder;->restoreCallingIdentity(J)V
 
     .line 326
     nop
 
     .line 327
+    .end local v1  # "identity":J
     monitor-exit v0
 
     .line 328
     return-void
 
     .line 325
-    :catchall_45
+    .restart local v1  # "identity":J
+    :catchall_46
     move-exception v3
 
     invoke-static {v1, v2}, Landroid/os/Binder;->restoreCallingIdentity(J)V
 
+    .end local p0  # "this":Lcom/android/server/notification/ScheduleConditionProvider;
     throw v3
 
     .line 327
-    :catchall_4a
+    .end local v1  # "identity":J
+    .restart local p0  # "this":Lcom/android/server/notification/ScheduleConditionProvider;
+    :catchall_4b
     move-exception v1
 
     monitor-exit v0
-    :try_end_4c
-    .catchall {:try_start_3f .. :try_end_4c} :catchall_4a
+    :try_end_4d
+    .catchall {:try_start_40 .. :try_end_4d} :catchall_4b
 
     throw v1
 .end method
 
 .method private removeSnoozed(Landroid/net/Uri;)V
     .registers 4
+    .param p1, "conditionId"  # Landroid/net/Uri;
 
     .line 288
     iget-object v0, p0, Lcom/android/server/notification/ScheduleConditionProvider;->mSnoozedForAlarm:Landroid/util/ArraySet;
@@ -640,13 +686,13 @@
 
     .line 291
     :catchall_d
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_f
     .catchall {:try_start_3 .. :try_end_f} :catchall_d
 
-    throw p1
+    throw v1
 .end method
 
 .method private saveSnoozedLocked()V
@@ -662,11 +708,13 @@
     move-result-object v0
 
     .line 296
+    .local v0, "setting":Ljava/lang/String;
     invoke-static {}, Landroid/app/ActivityManager;->getCurrentUser()I
 
     move-result v1
 
     .line 297
+    .local v1, "currentUser":I
     iget-object v2, p0, Lcom/android/server/notification/ScheduleConditionProvider;->mContext:Landroid/content/Context;
 
     invoke-virtual {v2}, Landroid/content/Context;->getContentResolver()Landroid/content/ContentResolver;
@@ -683,6 +731,7 @@
 
 .method private setRegistered(Z)V
     .registers 4
+    .param p1, "registered"  # Z
 
     .line 248
     iget-boolean v0, p0, Lcom/android/server/notification/ScheduleConditionProvider;->mRegistered:Z
@@ -720,48 +769,50 @@
     iput-boolean p1, p0, Lcom/android/server/notification/ScheduleConditionProvider;->mRegistered:Z
 
     .line 251
-    iget-boolean p1, p0, Lcom/android/server/notification/ScheduleConditionProvider;->mRegistered:Z
+    iget-boolean v0, p0, Lcom/android/server/notification/ScheduleConditionProvider;->mRegistered:Z
 
-    if-eqz p1, :cond_45
+    if-eqz v0, :cond_45
 
     .line 252
-    new-instance p1, Landroid/content/IntentFilter;
+    new-instance v0, Landroid/content/IntentFilter;
 
-    invoke-direct {p1}, Landroid/content/IntentFilter;-><init>()V
+    invoke-direct {v0}, Landroid/content/IntentFilter;-><init>()V
 
     .line 253
-    const-string v0, "android.intent.action.TIME_SET"
+    .local v0, "filter":Landroid/content/IntentFilter;
+    const-string v1, "android.intent.action.TIME_SET"
 
-    invoke-virtual {p1, v0}, Landroid/content/IntentFilter;->addAction(Ljava/lang/String;)V
+    invoke-virtual {v0, v1}, Landroid/content/IntentFilter;->addAction(Ljava/lang/String;)V
 
     .line 254
-    const-string v0, "android.intent.action.TIMEZONE_CHANGED"
+    const-string v1, "android.intent.action.TIMEZONE_CHANGED"
 
-    invoke-virtual {p1, v0}, Landroid/content/IntentFilter;->addAction(Ljava/lang/String;)V
+    invoke-virtual {v0, v1}, Landroid/content/IntentFilter;->addAction(Ljava/lang/String;)V
 
     .line 255
-    sget-object v0, Lcom/android/server/notification/ScheduleConditionProvider;->ACTION_EVALUATE:Ljava/lang/String;
+    sget-object v1, Lcom/android/server/notification/ScheduleConditionProvider;->ACTION_EVALUATE:Ljava/lang/String;
 
-    invoke-virtual {p1, v0}, Landroid/content/IntentFilter;->addAction(Ljava/lang/String;)V
+    invoke-virtual {v0, v1}, Landroid/content/IntentFilter;->addAction(Ljava/lang/String;)V
 
     .line 256
-    const-string v0, "android.app.action.NEXT_ALARM_CLOCK_CHANGED"
+    const-string v1, "android.app.action.NEXT_ALARM_CLOCK_CHANGED"
 
-    invoke-virtual {p1, v0}, Landroid/content/IntentFilter;->addAction(Ljava/lang/String;)V
+    invoke-virtual {v0, v1}, Landroid/content/IntentFilter;->addAction(Ljava/lang/String;)V
 
     .line 257
-    iget-object v0, p0, Lcom/android/server/notification/ScheduleConditionProvider;->mReceiver:Landroid/content/BroadcastReceiver;
+    iget-object v1, p0, Lcom/android/server/notification/ScheduleConditionProvider;->mReceiver:Landroid/content/BroadcastReceiver;
 
-    invoke-virtual {p0, v0, p1}, Lcom/android/server/notification/ScheduleConditionProvider;->registerReceiver(Landroid/content/BroadcastReceiver;Landroid/content/IntentFilter;)Landroid/content/Intent;
+    invoke-virtual {p0, v1, v0}, Lcom/android/server/notification/ScheduleConditionProvider;->registerReceiver(Landroid/content/BroadcastReceiver;Landroid/content/IntentFilter;)Landroid/content/Intent;
 
     .line 258
+    .end local v0  # "filter":Landroid/content/IntentFilter;
     goto :goto_4a
 
     .line 259
     :cond_45
-    iget-object p1, p0, Lcom/android/server/notification/ScheduleConditionProvider;->mReceiver:Landroid/content/BroadcastReceiver;
+    iget-object v0, p0, Lcom/android/server/notification/ScheduleConditionProvider;->mReceiver:Landroid/content/BroadcastReceiver;
 
-    invoke-virtual {p0, p1}, Lcom/android/server/notification/ScheduleConditionProvider;->unregisterReceiver(Landroid/content/BroadcastReceiver;)V
+    invoke-virtual {p0, v0}, Lcom/android/server/notification/ScheduleConditionProvider;->unregisterReceiver(Landroid/content/BroadcastReceiver;)V
 
     .line 261
     :goto_4a
@@ -770,6 +821,8 @@
 
 .method private updateAlarm(JJ)V
     .registers 13
+    .param p1, "now"  # J
+    .param p3, "time"  # J
 
     .line 220
     iget-object v0, p0, Lcom/android/server/notification/ScheduleConditionProvider;->mContext:Landroid/content/Context;
@@ -783,6 +836,7 @@
     check-cast v0, Landroid/app/AlarmManager;
 
     .line 221
+    .local v0, "alarms":Landroid/app/AlarmManager;
     iget-object v1, p0, Lcom/android/server/notification/ScheduleConditionProvider;->mContext:Landroid/content/Context;
 
     new-instance v2, Landroid/content/Intent;
@@ -815,6 +869,7 @@
     move-result-object v1
 
     .line 227
+    .local v1, "pendingIntent":Landroid/app/PendingIntent;
     invoke-virtual {v0, v1}, Landroid/app/AlarmManager;->cancel(Landroid/app/PendingIntent;)V
 
     .line 228
@@ -854,18 +909,18 @@
 
     invoke-static {p1, p2}, Lcom/android/server/notification/ScheduleConditionProvider;->ts(J)Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v6
 
-    aput-object p1, v2, v3
+    aput-object v6, v2, v3
 
     .line 229
-    const-string p1, "Scheduling evaluate for %s, in %s, now=%s"
+    const-string v3, "Scheduling evaluate for %s, in %s, now=%s"
 
-    invoke-static {p1, v2}, Ljava/lang/String;->format(Ljava/lang/String;[Ljava/lang/Object;)Ljava/lang/String;
+    invoke-static {v3, v2}, Ljava/lang/String;->format(Ljava/lang/String;[Ljava/lang/Object;)Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v2
 
-    invoke-static {v4, p1}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v4, v2}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 231
     :cond_56
@@ -875,13 +930,13 @@
 
     .line 233
     :cond_5a
-    sget-boolean p1, Lcom/android/server/notification/ScheduleConditionProvider;->DEBUG:Z
+    sget-boolean v2, Lcom/android/server/notification/ScheduleConditionProvider;->DEBUG:Z
 
-    if-eqz p1, :cond_63
+    if-eqz v2, :cond_63
 
-    const-string p1, "Not scheduling evaluate"
+    const-string v2, "Not scheduling evaluate"
 
-    invoke-static {v4, p1}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v4, v2}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 235
     :cond_63
@@ -893,6 +948,7 @@
 # virtual methods
 .method addSnoozed(Landroid/net/Uri;)V
     .registers 4
+    .param p1, "conditionId"  # Landroid/net/Uri;
     .annotation build Lcom/android/internal/annotations/VisibleForTesting;
     .end annotation
 
@@ -918,13 +974,13 @@
 
     .line 284
     :catchall_d
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_f
     .catchall {:try_start_3 .. :try_end_f} :catchall_d
 
-    throw p1
+    throw v1
 .end method
 
 .method public asInterface()Landroid/service/notification/IConditionProvider;
@@ -944,6 +1000,7 @@
 
 .method public attachBase(Landroid/content/Context;)V
     .registers 2
+    .param p1, "base"  # Landroid/content/Context;
 
     .line 153
     invoke-virtual {p0, p1}, Lcom/android/server/notification/ScheduleConditionProvider;->attachBaseContext(Landroid/content/Context;)V
@@ -953,192 +1010,203 @@
 .end method
 
 .method public dump(Ljava/io/PrintWriter;Lcom/android/server/notification/NotificationManagerService$DumpFilter;)V
-    .registers 9
+    .registers 12
+    .param p1, "pw"  # Ljava/io/PrintWriter;
+    .param p2, "filter"  # Lcom/android/server/notification/NotificationManagerService$DumpFilter;
 
     .line 91
-    const-string p2, "    "
+    const-string v0, "    "
 
-    invoke-virtual {p1, p2}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
+    invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
-    sget-object p2, Lcom/android/server/notification/ScheduleConditionProvider;->SIMPLE_NAME:Ljava/lang/String;
+    sget-object v0, Lcom/android/server/notification/ScheduleConditionProvider;->SIMPLE_NAME:Ljava/lang/String;
 
-    invoke-virtual {p1, p2}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
+    invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
-    const-string p2, ":"
+    const-string v0, ":"
 
-    invoke-virtual {p1, p2}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
     .line 92
-    const-string p2, "      mConnected="
+    const-string v0, "      mConnected="
 
-    invoke-virtual {p1, p2}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
+    invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
-    iget-boolean p2, p0, Lcom/android/server/notification/ScheduleConditionProvider;->mConnected:Z
+    iget-boolean v0, p0, Lcom/android/server/notification/ScheduleConditionProvider;->mConnected:Z
 
-    invoke-virtual {p1, p2}, Ljava/io/PrintWriter;->println(Z)V
+    invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->println(Z)V
 
     .line 93
-    const-string p2, "      mRegistered="
+    const-string v0, "      mRegistered="
 
-    invoke-virtual {p1, p2}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
+    invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
-    iget-boolean p2, p0, Lcom/android/server/notification/ScheduleConditionProvider;->mRegistered:Z
+    iget-boolean v0, p0, Lcom/android/server/notification/ScheduleConditionProvider;->mRegistered:Z
 
-    invoke-virtual {p1, p2}, Ljava/io/PrintWriter;->println(Z)V
+    invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->println(Z)V
 
     .line 94
-    const-string p2, "      mSubscriptions="
+    const-string v0, "      mSubscriptions="
 
-    invoke-virtual {p1, p2}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
     .line 95
     invoke-static {}, Ljava/lang/System;->currentTimeMillis()J
 
-    move-result-wide v4
+    move-result-wide v7
 
     .line 96
-    iget-object p2, p0, Lcom/android/server/notification/ScheduleConditionProvider;->mSubscriptions:Landroid/util/ArrayMap;
+    .local v7, "now":J
+    iget-object v0, p0, Lcom/android/server/notification/ScheduleConditionProvider;->mSubscriptions:Landroid/util/ArrayMap;
 
-    monitor-enter p2
+    monitor-enter v0
 
     .line 97
     :try_start_2f
-    iget-object v0, p0, Lcom/android/server/notification/ScheduleConditionProvider;->mSubscriptions:Landroid/util/ArrayMap;
+    iget-object v1, p0, Lcom/android/server/notification/ScheduleConditionProvider;->mSubscriptions:Landroid/util/ArrayMap;
 
-    invoke-virtual {v0}, Landroid/util/ArrayMap;->keySet()Ljava/util/Set;
-
-    move-result-object v0
-
-    invoke-interface {v0}, Ljava/util/Set;->iterator()Ljava/util/Iterator;
-
-    move-result-object v0
-
-    :goto_39
-    invoke-interface {v0}, Ljava/util/Iterator;->hasNext()Z
-
-    move-result v1
-
-    if-eqz v1, :cond_78
-
-    invoke-interface {v0}, Ljava/util/Iterator;->next()Ljava/lang/Object;
+    invoke-virtual {v1}, Landroid/util/ArrayMap;->keySet()Ljava/util/Set;
 
     move-result-object v1
 
-    check-cast v1, Landroid/net/Uri;
+    invoke-interface {v1}, Ljava/util/Set;->iterator()Ljava/util/Iterator;
 
-    .line 98
-    const-string v2, "        "
+    move-result-object v1
 
-    invoke-virtual {p1, v2}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
-
-    .line 99
-    iget-object v2, p0, Lcom/android/server/notification/ScheduleConditionProvider;->mSubscriptions:Landroid/util/ArrayMap;
-
-    invoke-virtual {v2, v1}, Landroid/util/ArrayMap;->get(Ljava/lang/Object;)Ljava/lang/Object;
-
-    move-result-object v2
-
-    check-cast v2, Landroid/service/notification/ScheduleCalendar;
-
-    invoke-direct {p0, v2, v4, v5}, Lcom/android/server/notification/ScheduleConditionProvider;->meetsSchedule(Landroid/service/notification/ScheduleCalendar;J)Z
+    :goto_39
+    invoke-interface {v1}, Ljava/util/Iterator;->hasNext()Z
 
     move-result v2
 
-    if-eqz v2, :cond_5b
+    if-eqz v2, :cond_78
 
-    const-string v2, "* "
+    invoke-interface {v1}, Ljava/util/Iterator;->next()Ljava/lang/Object;
+
+    move-result-object v2
+
+    check-cast v2, Landroid/net/Uri;
+
+    .line 98
+    .local v2, "conditionId":Landroid/net/Uri;
+    const-string v3, "        "
+
+    invoke-virtual {p1, v3}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
+
+    .line 99
+    iget-object v3, p0, Lcom/android/server/notification/ScheduleConditionProvider;->mSubscriptions:Landroid/util/ArrayMap;
+
+    invoke-virtual {v3, v2}, Landroid/util/ArrayMap;->get(Ljava/lang/Object;)Ljava/lang/Object;
+
+    move-result-object v3
+
+    check-cast v3, Landroid/service/notification/ScheduleCalendar;
+
+    invoke-direct {p0, v3, v7, v8}, Lcom/android/server/notification/ScheduleConditionProvider;->meetsSchedule(Landroid/service/notification/ScheduleCalendar;J)Z
+
+    move-result v3
+
+    if-eqz v3, :cond_5b
+
+    const-string v3, "* "
 
     goto :goto_5d
 
     :cond_5b
-    const-string v2, "  "
+    const-string v3, "  "
 
     :goto_5d
-    invoke-virtual {p1, v2}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
+    invoke-virtual {p1, v3}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
     .line 100
-    invoke-virtual {p1, v1}, Ljava/io/PrintWriter;->println(Ljava/lang/Object;)V
+    invoke-virtual {p1, v2}, Ljava/io/PrintWriter;->println(Ljava/lang/Object;)V
 
     .line 101
-    const-string v2, "            "
+    const-string v3, "            "
 
-    invoke-virtual {p1, v2}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
+    invoke-virtual {p1, v3}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
     .line 102
-    iget-object v2, p0, Lcom/android/server/notification/ScheduleConditionProvider;->mSubscriptions:Landroid/util/ArrayMap;
+    iget-object v3, p0, Lcom/android/server/notification/ScheduleConditionProvider;->mSubscriptions:Landroid/util/ArrayMap;
 
-    invoke-virtual {v2, v1}, Landroid/util/ArrayMap;->get(Ljava/lang/Object;)Ljava/lang/Object;
+    invoke-virtual {v3, v2}, Landroid/util/ArrayMap;->get(Ljava/lang/Object;)Ljava/lang/Object;
 
-    move-result-object v1
+    move-result-object v3
 
-    check-cast v1, Landroid/service/notification/ScheduleCalendar;
+    check-cast v3, Landroid/service/notification/ScheduleCalendar;
 
-    invoke-virtual {v1}, Landroid/service/notification/ScheduleCalendar;->toString()Ljava/lang/String;
+    invoke-virtual {v3}, Landroid/service/notification/ScheduleCalendar;->toString()Ljava/lang/String;
 
-    move-result-object v1
+    move-result-object v3
 
-    invoke-virtual {p1, v1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {p1, v3}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
     .line 103
+    .end local v2  # "conditionId":Landroid/net/Uri;
     goto :goto_39
 
     .line 104
     :cond_78
-    monitor-exit p2
+    monitor-exit v0
     :try_end_79
-    .catchall {:try_start_2f .. :try_end_79} :catchall_9e
+    .catchall {:try_start_2f .. :try_end_79} :catchall_a0
 
     .line 105
-    new-instance p2, Ljava/lang/StringBuilder;
+    new-instance v0, Ljava/lang/StringBuilder;
 
-    invoke-direct {p2}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v0, "      snoozed due to alarm: "
+    const-string v1, "      snoozed due to alarm: "
 
-    invoke-virtual {p2, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    iget-object v0, p0, Lcom/android/server/notification/ScheduleConditionProvider;->mSnoozedForAlarm:Landroid/util/ArraySet;
+    iget-object v1, p0, Lcom/android/server/notification/ScheduleConditionProvider;->mSnoozedForAlarm:Landroid/util/ArraySet;
 
-    const-string v1, ";"
+    const-string v2, ";"
 
-    invoke-static {v1, v0}, Landroid/text/TextUtils;->join(Ljava/lang/CharSequence;Ljava/lang/Iterable;)Ljava/lang/String;
+    invoke-static {v2, v1}, Landroid/text/TextUtils;->join(Ljava/lang/CharSequence;Ljava/lang/Iterable;)Ljava/lang/String;
+
+    move-result-object v1
+
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
     move-result-object v0
 
-    invoke-virtual {p2, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {p2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
-
-    move-result-object p2
-
-    invoke-virtual {p1, p2}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
     .line 106
-    iget-wide v2, p0, Lcom/android/server/notification/ScheduleConditionProvider;->mNextAlarmTime:J
+    iget-wide v3, p0, Lcom/android/server/notification/ScheduleConditionProvider;->mNextAlarmTime:J
 
-    const-string v1, "mNextAlarmTime"
+    const-string/jumbo v2, "mNextAlarmTime"
 
-    move-object v0, p1
+    move-object v1, p1
 
-    invoke-static/range {v0 .. v5}, Lcom/android/server/notification/ScheduleConditionProvider;->dumpUpcomingTime(Ljava/io/PrintWriter;Ljava/lang/String;JJ)V
+    move-wide v5, v7
+
+    invoke-static/range {v1 .. v6}, Lcom/android/server/notification/ScheduleConditionProvider;->dumpUpcomingTime(Ljava/io/PrintWriter;Ljava/lang/String;JJ)V
 
     .line 107
     return-void
 
     .line 104
-    :catchall_9e
-    move-exception p1
+    :catchall_a0
+    move-exception v1
 
-    :try_start_9f
-    monitor-exit p2
-    :try_end_a0
-    .catchall {:try_start_9f .. :try_end_a0} :catchall_9e
+    :try_start_a1
+    monitor-exit v0
+    :try_end_a2
+    .catchall {:try_start_a1 .. :try_end_a2} :catchall_a0
 
-    throw p1
+    throw v1
 .end method
 
 .method evaluateSubscriptionLocked(Landroid/net/Uri;Landroid/service/notification/ScheduleCalendar;JJ)Landroid/service/notification/Condition;
-    .registers 13
+    .registers 14
+    .param p1, "conditionId"  # Landroid/net/Uri;
+    .param p2, "cal"  # Landroid/service/notification/ScheduleCalendar;
+    .param p3, "now"  # J
+    .param p5, "nextUserAlarmTime"  # J
     .annotation build Lcom/android/internal/annotations/GuardedBy;
         value = {
             "mSubscriptions"
@@ -1194,19 +1262,21 @@
     if-nez p2, :cond_2f
 
     .line 192
-    const-string p2, "!invalidId"
+    const-string v0, "!invalidId"
 
-    invoke-direct {p0, p1, v2, p2}, Lcom/android/server/notification/ScheduleConditionProvider;->createCondition(Landroid/net/Uri;ILjava/lang/String;)Landroid/service/notification/Condition;
+    invoke-direct {p0, p1, v2, v0}, Lcom/android/server/notification/ScheduleConditionProvider;->createCondition(Landroid/net/Uri;ILjava/lang/String;)Landroid/service/notification/Condition;
 
-    move-result-object p2
+    move-result-object v0
 
     .line 193
+    .local v0, "condition":Landroid/service/notification/Condition;
     invoke-direct {p0, p1}, Lcom/android/server/notification/ScheduleConditionProvider;->removeSnoozed(Landroid/net/Uri;)V
 
     .line 194
-    return-object p2
+    return-object v0
 
     .line 196
+    .end local v0  # "condition":Landroid/service/notification/Condition;
     :cond_2f
     invoke-virtual {p2, p3, p4}, Landroid/service/notification/ScheduleCalendar;->isInSchedule(J)Z
 
@@ -1226,17 +1296,19 @@
 
     invoke-direct {p0, p1, v3, v0}, Lcom/android/server/notification/ScheduleConditionProvider;->createCondition(Landroid/net/Uri;ILjava/lang/String;)Landroid/service/notification/Condition;
 
-    move-result-object p1
+    move-result-object v0
 
-    goto :goto_65
+    .restart local v0  # "condition":Landroid/service/notification/Condition;
+    goto :goto_64
 
     .line 199
+    .end local v0  # "condition":Landroid/service/notification/Condition;
     :cond_43
     invoke-virtual {p2, p3, p4}, Landroid/service/notification/ScheduleCalendar;->shouldExitForAlarm(J)Z
 
     move-result v0
 
-    if-eqz v0, :cond_54
+    if-eqz v0, :cond_53
 
     .line 200
     const-string v0, "alarmCanceled"
@@ -1246,23 +1318,25 @@
     move-result-object v0
 
     .line 201
+    .restart local v0  # "condition":Landroid/service/notification/Condition;
     invoke-virtual {p0, p1}, Lcom/android/server/notification/ScheduleConditionProvider;->addSnoozed(Landroid/net/Uri;)V
 
-    move-object p1, v0
-
-    goto :goto_65
+    goto :goto_64
 
     .line 203
-    :cond_54
-    const-string v0, "meetsSchedule"
+    .end local v0  # "condition":Landroid/service/notification/Condition;
+    :cond_53
+    const-string/jumbo v0, "meetsSchedule"
 
     invoke-direct {p0, p1, v1, v0}, Lcom/android/server/notification/ScheduleConditionProvider;->createCondition(Landroid/net/Uri;ILjava/lang/String;)Landroid/service/notification/Condition;
 
-    move-result-object p1
+    move-result-object v0
 
-    goto :goto_65
+    .restart local v0  # "condition":Landroid/service/notification/Condition;
+    goto :goto_64
 
     .line 206
+    .end local v0  # "condition":Landroid/service/notification/Condition;
     :cond_5b
     const-string v0, "!meetsSchedule"
 
@@ -1271,48 +1345,48 @@
     move-result-object v0
 
     .line 207
+    .restart local v0  # "condition":Landroid/service/notification/Condition;
     invoke-direct {p0, p1}, Lcom/android/server/notification/ScheduleConditionProvider;->removeSnoozed(Landroid/net/Uri;)V
 
-    move-object p1, v0
-
     .line 209
-    :goto_65
+    :goto_64
     invoke-virtual {p2, p3, p4, p5, p6}, Landroid/service/notification/ScheduleCalendar;->maybeSetNextAlarm(JJ)V
 
     .line 210
     invoke-virtual {p2, p3, p4}, Landroid/service/notification/ScheduleCalendar;->getNextChangeTime(J)J
 
-    move-result-wide p5
+    move-result-wide v1
 
     .line 211
-    const-wide/16 v0, 0x0
+    .local v1, "nextChangeTime":J
+    const-wide/16 v3, 0x0
 
-    cmp-long p2, p5, v0
+    cmp-long v5, v1, v3
 
-    if-lez p2, :cond_82
+    if-lez v5, :cond_81
 
-    cmp-long p2, p5, p3
+    cmp-long v5, v1, p3
 
-    if-lez p2, :cond_82
+    if-lez v5, :cond_81
 
     .line 212
-    iget-wide p2, p0, Lcom/android/server/notification/ScheduleConditionProvider;->mNextAlarmTime:J
+    iget-wide v5, p0, Lcom/android/server/notification/ScheduleConditionProvider;->mNextAlarmTime:J
 
-    cmp-long p4, p2, v0
+    cmp-long v3, v5, v3
 
-    if-eqz p4, :cond_80
+    if-eqz v3, :cond_7f
 
-    cmp-long p2, p5, p2
+    cmp-long v3, v1, v5
 
-    if-gez p2, :cond_82
+    if-gez v3, :cond_81
 
     .line 213
-    :cond_80
-    iput-wide p5, p0, Lcom/android/server/notification/ScheduleConditionProvider;->mNextAlarmTime:J
+    :cond_7f
+    iput-wide v1, p0, Lcom/android/server/notification/ScheduleConditionProvider;->mNextAlarmTime:J
 
     .line 216
-    :cond_82
-    return-object p1
+    :cond_81
+    return-object v0
 .end method
 
 .method public getComponent()Landroid/content/ComponentName;
@@ -1325,7 +1399,7 @@
 .end method
 
 .method public getNextAlarm()J
-    .registers 3
+    .registers 4
 
     .line 238
     iget-object v0, p0, Lcom/android/server/notification/ScheduleConditionProvider;->mAlarmManager:Landroid/app/AlarmManager;
@@ -1341,30 +1415,32 @@
     move-result-object v0
 
     .line 240
+    .local v0, "info":Landroid/app/AlarmManager$AlarmClockInfo;
     if-eqz v0, :cond_11
 
     invoke-virtual {v0}, Landroid/app/AlarmManager$AlarmClockInfo;->getTriggerTime()J
 
-    move-result-wide v0
+    move-result-wide v1
 
     goto :goto_13
 
     :cond_11
-    const-wide/16 v0, 0x0
+    const-wide/16 v1, 0x0
 
     :goto_13
-    return-wide v0
+    return-wide v1
 .end method
 
 .method public isValidConditionId(Landroid/net/Uri;)Z
-    .registers 2
+    .registers 3
+    .param p1, "id"  # Landroid/net/Uri;
 
     .line 86
     invoke-static {p1}, Landroid/service/notification/ZenModeConfig;->isValidScheduleConditionId(Landroid/net/Uri;)Z
 
-    move-result p1
+    move-result v0
 
-    return p1
+    return v0
 .end method
 
 .method public onBootComplete()V
@@ -1430,6 +1506,7 @@
 
 .method public onSubscribe(Landroid/net/Uri;)V
     .registers 5
+    .param p1, "conditionId"  # Landroid/net/Uri;
 
     .line 130
     sget-boolean v0, Lcom/android/server/notification/ScheduleConditionProvider;->DEBUG:Z
@@ -1460,30 +1537,30 @@
 
     move-result v0
 
-    if-nez v0, :cond_2c
+    if-nez v0, :cond_2d
 
     .line 132
     const/4 v0, 0x3
 
-    const-string v1, "invalidId"
+    const-string/jumbo v1, "invalidId"
 
     invoke-direct {p0, p1, v0, v1}, Lcom/android/server/notification/ScheduleConditionProvider;->createCondition(Landroid/net/Uri;ILjava/lang/String;)Landroid/service/notification/Condition;
 
-    move-result-object p1
+    move-result-object v0
 
-    invoke-virtual {p0, p1}, Lcom/android/server/notification/ScheduleConditionProvider;->notifyCondition(Landroid/service/notification/Condition;)V
+    invoke-virtual {p0, v0}, Lcom/android/server/notification/ScheduleConditionProvider;->notifyCondition(Landroid/service/notification/Condition;)V
 
     .line 133
     return-void
 
     .line 135
-    :cond_2c
+    :cond_2d
     iget-object v0, p0, Lcom/android/server/notification/ScheduleConditionProvider;->mSubscriptions:Landroid/util/ArrayMap;
 
     monitor-enter v0
 
     .line 136
-    :try_start_2f
+    :try_start_30
     iget-object v1, p0, Lcom/android/server/notification/ScheduleConditionProvider;->mSubscriptions:Landroid/util/ArrayMap;
 
     invoke-static {p1}, Landroid/service/notification/ZenModeConfig;->toScheduleCalendar(Landroid/net/Uri;)Landroid/service/notification/ScheduleCalendar;
@@ -1494,8 +1571,8 @@
 
     .line 137
     monitor-exit v0
-    :try_end_39
-    .catchall {:try_start_2f .. :try_end_39} :catchall_3d
+    :try_end_3a
+    .catchall {:try_start_30 .. :try_end_3a} :catchall_3e
 
     .line 138
     invoke-direct {p0}, Lcom/android/server/notification/ScheduleConditionProvider;->evaluateSubscriptions()V
@@ -1504,19 +1581,20 @@
     return-void
 
     .line 137
-    :catchall_3d
-    move-exception p1
+    :catchall_3e
+    move-exception v1
 
-    :try_start_3e
+    :try_start_3f
     monitor-exit v0
-    :try_end_3f
-    .catchall {:try_start_3e .. :try_end_3f} :catchall_3d
+    :try_end_40
+    .catchall {:try_start_3f .. :try_end_40} :catchall_3e
 
-    throw p1
+    throw v1
 .end method
 
 .method public onUnsubscribe(Landroid/net/Uri;)V
     .registers 4
+    .param p1, "conditionId"  # Landroid/net/Uri;
 
     .line 143
     sget-boolean v0, Lcom/android/server/notification/ScheduleConditionProvider;->DEBUG:Z
@@ -1569,12 +1647,12 @@
 
     .line 146
     :catchall_2b
-    move-exception p1
+    move-exception v1
 
     :try_start_2c
     monitor-exit v0
     :try_end_2d
     .catchall {:try_start_2c .. :try_end_2d} :catchall_2b
 
-    throw p1
+    throw v1
 .end method

@@ -50,6 +50,7 @@
 # direct methods
 .method public constructor <init>(Lcom/android/server/pm/ShortcutService;)V
     .registers 11
+    .param p1, "service"  # Lcom/android/server/pm/ShortcutService;
 
     .line 112
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -103,6 +104,7 @@
 
 .method static synthetic lambda$waitForAllSavesLocked$0(Ljava/util/concurrent/CountDownLatch;)V
     .registers 1
+    .param p0, "latch"  # Ljava/util/concurrent/CountDownLatch;
 
     .line 120
     invoke-virtual {p0}, Ljava/util/concurrent/CountDownLatch;->countDown()V
@@ -114,43 +116,60 @@
     .registers 9
 
     .line 248
-    nop
-
-    .line 252
     const/4 v0, 0x0
 
+    .line 252
+    .local v0, "shortcut":Landroid/content/pm/ShortcutInfo;
     const/16 v1, 0x800
 
-    :try_start_4
+    :try_start_3
     iget-object v2, p0, Lcom/android/server/pm/ShortcutBitmapSaver;->mPendingItems:Ljava/util/Deque;
 
     monitor-enter v2
-    :try_end_7
-    .catchall {:try_start_4 .. :try_end_7} :catchall_8e
+    :try_end_6
+    .catchall {:try_start_3 .. :try_end_6} :catchall_9a
 
     .line 253
-    :try_start_7
+    :try_start_6
     iget-object v3, p0, Lcom/android/server/pm/ShortcutBitmapSaver;->mPendingItems:Ljava/util/Deque;
 
     invoke-interface {v3}, Ljava/util/Deque;->size()I
 
     move-result v3
 
-    if-nez v3, :cond_13
+    if-nez v3, :cond_1f
 
     .line 254
     const/4 v3, 0x0
 
     monitor-exit v2
+    :try_end_10
+    .catchall {:try_start_6 .. :try_end_10} :catchall_97
 
     .line 296
-    nop
+    if-eqz v0, :cond_1e
+
+    .line 297
+    invoke-virtual {v0}, Landroid/content/pm/ShortcutInfo;->getBitmapPath()Ljava/lang/String;
+
+    move-result-object v2
+
+    if-nez v2, :cond_1b
+
+    .line 298
+    invoke-virtual {p0, v0}, Lcom/android/server/pm/ShortcutBitmapSaver;->removeIcon(Landroid/content/pm/ShortcutInfo;)V
+
+    .line 302
+    :cond_1b
+    invoke-virtual {v0, v1}, Landroid/content/pm/ShortcutInfo;->clearFlags(I)V
 
     .line 254
+    :cond_1e
     return v3
 
     .line 256
-    :cond_13
+    :cond_1f
+    :try_start_1f
     iget-object v3, p0, Lcom/android/server/pm/ShortcutBitmapSaver;->mPendingItems:Ljava/util/Deque;
 
     invoke-interface {v3}, Ljava/util/Deque;->pop()Ljava/lang/Object;
@@ -160,27 +179,27 @@
     check-cast v3, Lcom/android/server/pm/ShortcutBitmapSaver$PendingItem;
 
     .line 257
+    .local v3, "item":Lcom/android/server/pm/ShortcutBitmapSaver$PendingItem;
     monitor-exit v2
-    :try_end_1c
-    .catchall {:try_start_7 .. :try_end_1c} :catchall_8b
+    :try_end_28
+    .catchall {:try_start_1f .. :try_end_28} :catchall_97
 
     .line 259
-    :try_start_1c
+    :try_start_28
     iget-object v2, v3, Lcom/android/server/pm/ShortcutBitmapSaver$PendingItem;->shortcut:Landroid/content/pm/ShortcutInfo;
-    :try_end_1e
-    .catchall {:try_start_1c .. :try_end_1e} :catchall_8e
+
+    move-object v0, v2
 
     .line 262
-    :try_start_1e
-    invoke-virtual {v2}, Landroid/content/pm/ShortcutInfo;->isIconPendingSave()Z
+    invoke-virtual {v0}, Landroid/content/pm/ShortcutInfo;->isIconPendingSave()Z
 
-    move-result v4
-    :try_end_22
-    .catchall {:try_start_1e .. :try_end_22} :catchall_89
+    move-result v2
+    :try_end_2f
+    .catchall {:try_start_28 .. :try_end_2f} :catchall_9a
 
-    const/4 v5, 0x1
+    const/4 v4, 0x1
 
-    if-nez v4, :cond_34
+    if-nez v2, :cond_41
 
     .line 263
     nop
@@ -189,217 +208,229 @@
     nop
 
     .line 297
-    invoke-virtual {v2}, Landroid/content/pm/ShortcutInfo;->getBitmapPath()Ljava/lang/String;
+    invoke-virtual {v0}, Landroid/content/pm/ShortcutInfo;->getBitmapPath()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v2
 
-    if-nez v0, :cond_30
+    if-nez v2, :cond_3d
 
     .line 298
-    invoke-virtual {p0, v2}, Lcom/android/server/pm/ShortcutBitmapSaver;->removeIcon(Landroid/content/pm/ShortcutInfo;)V
+    invoke-virtual {p0, v0}, Lcom/android/server/pm/ShortcutBitmapSaver;->removeIcon(Landroid/content/pm/ShortcutInfo;)V
 
     .line 302
-    :cond_30
-    invoke-virtual {v2, v1}, Landroid/content/pm/ShortcutInfo;->clearFlags(I)V
+    :cond_3d
+    invoke-virtual {v0, v1}, Landroid/content/pm/ShortcutInfo;->clearFlags(I)V
 
     .line 263
-    return v5
+    return v4
 
     .line 270
-    :cond_34
-    nop
+    :cond_41
+    const/4 v2, 0x0
 
     .line 272
-    :try_start_35
-    iget-object v4, p0, Lcom/android/server/pm/ShortcutBitmapSaver;->mService:Lcom/android/server/pm/ShortcutService;
+    .local v2, "file":Ljava/io/File;
+    :try_start_42
+    iget-object v5, p0, Lcom/android/server/pm/ShortcutBitmapSaver;->mService:Lcom/android/server/pm/ShortcutService;
 
     .line 273
-    invoke-virtual {v2}, Landroid/content/pm/ShortcutInfo;->getUserId()I
+    invoke-virtual {v0}, Landroid/content/pm/ShortcutInfo;->getUserId()I
 
     move-result v6
 
     .line 272
-    invoke-virtual {v4, v6, v2}, Lcom/android/server/pm/ShortcutService;->openIconFileForWrite(ILandroid/content/pm/ShortcutInfo;)Lcom/android/server/pm/ShortcutService$FileOutputStreamWithPath;
+    invoke-virtual {v5, v6, v0}, Lcom/android/server/pm/ShortcutService;->openIconFileForWrite(ILandroid/content/pm/ShortcutInfo;)Lcom/android/server/pm/ShortcutService$FileOutputStreamWithPath;
 
-    move-result-object v4
+    move-result-object v5
 
     .line 274
-    invoke-virtual {v4}, Lcom/android/server/pm/ShortcutService$FileOutputStreamWithPath;->getFile()Ljava/io/File;
+    .local v5, "out":Lcom/android/server/pm/ShortcutService$FileOutputStreamWithPath;
+    invoke-virtual {v5}, Lcom/android/server/pm/ShortcutService$FileOutputStreamWithPath;->getFile()Ljava/io/File;
 
-    move-result-object v0
-    :try_end_43
-    .catch Ljava/io/IOException; {:try_start_35 .. :try_end_43} :catch_67
-    .catch Ljava/lang/RuntimeException; {:try_start_35 .. :try_end_43} :catch_67
-    .catchall {:try_start_35 .. :try_end_43} :catchall_89
+    move-result-object v6
+    :try_end_50
+    .catch Ljava/io/IOException; {:try_start_42 .. :try_end_50} :catch_75
+    .catch Ljava/lang/RuntimeException; {:try_start_42 .. :try_end_50} :catch_75
+    .catchall {:try_start_42 .. :try_end_50} :catchall_9a
+
+    move-object v2, v6
 
     .line 277
-    :try_start_43
-    iget-object v3, v3, Lcom/android/server/pm/ShortcutBitmapSaver$PendingItem;->bytes:[B
+    :try_start_51
+    iget-object v6, v3, Lcom/android/server/pm/ShortcutBitmapSaver$PendingItem;->bytes:[B
 
-    invoke-virtual {v4, v3}, Lcom/android/server/pm/ShortcutService$FileOutputStreamWithPath;->write([B)V
-    :try_end_48
-    .catchall {:try_start_43 .. :try_end_48} :catchall_62
+    invoke-virtual {v5, v6}, Lcom/android/server/pm/ShortcutService$FileOutputStreamWithPath;->write([B)V
+    :try_end_56
+    .catchall {:try_start_51 .. :try_end_56} :catchall_70
 
     .line 279
-    :try_start_48
-    invoke-static {v4}, Llibcore/io/IoUtils;->closeQuietly(Ljava/lang/AutoCloseable;)V
+    :try_start_56
+    invoke-static {v5}, Llibcore/io/IoUtils;->closeQuietly(Ljava/lang/AutoCloseable;)V
 
     .line 280
     nop
 
     .line 282
-    invoke-virtual {v0}, Ljava/io/File;->getAbsolutePath()Ljava/lang/String;
+    invoke-virtual {v2}, Ljava/io/File;->getAbsolutePath()Ljava/lang/String;
 
-    move-result-object v3
+    move-result-object v6
 
-    invoke-virtual {v2, v3}, Landroid/content/pm/ShortcutInfo;->setBitmapPath(Ljava/lang/String;)V
-    :try_end_53
-    .catch Ljava/io/IOException; {:try_start_48 .. :try_end_53} :catch_67
-    .catch Ljava/lang/RuntimeException; {:try_start_48 .. :try_end_53} :catch_67
-    .catchall {:try_start_48 .. :try_end_53} :catchall_89
+    invoke-virtual {v0, v6}, Landroid/content/pm/ShortcutInfo;->setBitmapPath(Ljava/lang/String;)V
+    :try_end_61
+    .catch Ljava/io/IOException; {:try_start_56 .. :try_end_61} :catch_75
+    .catch Ljava/lang/RuntimeException; {:try_start_56 .. :try_end_61} :catch_75
+    .catchall {:try_start_56 .. :try_end_61} :catchall_9a
 
     .line 291
+    .end local v5  # "out":Lcom/android/server/pm/ShortcutService$FileOutputStreamWithPath;
     nop
 
     .line 296
+    .end local v2  # "file":Ljava/io/File;
+    .end local v3  # "item":Lcom/android/server/pm/ShortcutBitmapSaver$PendingItem;
     nop
 
     .line 297
-    invoke-virtual {v2}, Landroid/content/pm/ShortcutInfo;->getBitmapPath()Ljava/lang/String;
+    invoke-virtual {v0}, Landroid/content/pm/ShortcutInfo;->getBitmapPath()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v2
 
-    if-nez v0, :cond_5e
+    if-nez v2, :cond_6c
 
     .line 298
-    invoke-virtual {p0, v2}, Lcom/android/server/pm/ShortcutBitmapSaver;->removeIcon(Landroid/content/pm/ShortcutInfo;)V
+    invoke-virtual {p0, v0}, Lcom/android/server/pm/ShortcutBitmapSaver;->removeIcon(Landroid/content/pm/ShortcutInfo;)V
 
     .line 302
-    :cond_5e
-    invoke-virtual {v2, v1}, Landroid/content/pm/ShortcutInfo;->clearFlags(I)V
+    :cond_6c
+    invoke-virtual {v0, v1}, Landroid/content/pm/ShortcutInfo;->clearFlags(I)V
 
     .line 305
-    return v5
+    return v4
 
     .line 279
-    :catchall_62
-    move-exception v3
+    .restart local v2  # "file":Ljava/io/File;
+    .restart local v3  # "item":Lcom/android/server/pm/ShortcutBitmapSaver$PendingItem;
+    .restart local v5  # "out":Lcom/android/server/pm/ShortcutService$FileOutputStreamWithPath;
+    :catchall_70
+    move-exception v6
 
-    :try_start_63
-    invoke-static {v4}, Llibcore/io/IoUtils;->closeQuietly(Ljava/lang/AutoCloseable;)V
+    :try_start_71
+    invoke-static {v5}, Llibcore/io/IoUtils;->closeQuietly(Ljava/lang/AutoCloseable;)V
 
-    throw v3
-    :try_end_67
-    .catch Ljava/io/IOException; {:try_start_63 .. :try_end_67} :catch_67
-    .catch Ljava/lang/RuntimeException; {:try_start_63 .. :try_end_67} :catch_67
-    .catchall {:try_start_63 .. :try_end_67} :catchall_89
+    .end local v0  # "shortcut":Landroid/content/pm/ShortcutInfo;
+    .end local p0  # "this":Lcom/android/server/pm/ShortcutBitmapSaver;
+    throw v6
+    :try_end_75
+    .catch Ljava/io/IOException; {:try_start_71 .. :try_end_75} :catch_75
+    .catch Ljava/lang/RuntimeException; {:try_start_71 .. :try_end_75} :catch_75
+    .catchall {:try_start_71 .. :try_end_75} :catchall_9a
 
     .line 284
-    :catch_67
-    move-exception v3
+    .end local v5  # "out":Lcom/android/server/pm/ShortcutService$FileOutputStreamWithPath;
+    .restart local v0  # "shortcut":Landroid/content/pm/ShortcutInfo;
+    .restart local p0  # "this":Lcom/android/server/pm/ShortcutBitmapSaver;
+    :catch_75
+    move-exception v5
 
     .line 285
-    :try_start_68
-    const-string v4, "ShortcutService"
+    .local v5, "e":Ljava/lang/Exception;
+    :try_start_76
+    const-string v6, "ShortcutService"
 
-    const-string v6, "Unable to write bitmap to file"
+    const-string v7, "Unable to write bitmap to file"
 
-    invoke-static {v4, v6, v3}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    invoke-static {v6, v7, v5}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
     .line 287
-    if-eqz v0, :cond_7a
+    if-eqz v2, :cond_88
 
-    invoke-virtual {v0}, Ljava/io/File;->exists()Z
+    invoke-virtual {v2}, Ljava/io/File;->exists()Z
 
-    move-result v3
+    move-result v6
 
-    if-eqz v3, :cond_7a
+    if-eqz v6, :cond_88
 
     .line 288
-    invoke-virtual {v0}, Ljava/io/File;->delete()Z
-    :try_end_7a
-    .catchall {:try_start_68 .. :try_end_7a} :catchall_89
+    invoke-virtual {v2}, Ljava/io/File;->delete()Z
+    :try_end_88
+    .catchall {:try_start_76 .. :try_end_88} :catchall_9a
 
     .line 290
-    :cond_7a
+    :cond_88
     nop
 
     .line 296
     nop
 
     .line 297
-    invoke-virtual {v2}, Landroid/content/pm/ShortcutInfo;->getBitmapPath()Ljava/lang/String;
+    invoke-virtual {v0}, Landroid/content/pm/ShortcutInfo;->getBitmapPath()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v6
 
-    if-nez v0, :cond_85
+    if-nez v6, :cond_93
 
     .line 298
-    invoke-virtual {p0, v2}, Lcom/android/server/pm/ShortcutBitmapSaver;->removeIcon(Landroid/content/pm/ShortcutInfo;)V
+    invoke-virtual {p0, v0}, Lcom/android/server/pm/ShortcutBitmapSaver;->removeIcon(Landroid/content/pm/ShortcutInfo;)V
 
     .line 302
-    :cond_85
-    invoke-virtual {v2, v1}, Landroid/content/pm/ShortcutInfo;->clearFlags(I)V
+    :cond_93
+    invoke-virtual {v0, v1}, Landroid/content/pm/ShortcutInfo;->clearFlags(I)V
 
     .line 290
-    return v5
-
-    .line 293
-    :catchall_89
-    move-exception v0
-
-    goto :goto_92
+    return v4
 
     .line 257
-    :catchall_8b
+    .end local v2  # "file":Ljava/io/File;
+    .end local v3  # "item":Lcom/android/server/pm/ShortcutBitmapSaver$PendingItem;
+    .end local v5  # "e":Ljava/lang/Exception;
+    :catchall_97
     move-exception v3
 
-    :try_start_8c
+    :try_start_98
     monitor-exit v2
-    :try_end_8d
-    .catchall {:try_start_8c .. :try_end_8d} :catchall_8b
+    :try_end_99
+    .catchall {:try_start_98 .. :try_end_99} :catchall_97
 
-    :try_start_8d
+    .end local v0  # "shortcut":Landroid/content/pm/ShortcutInfo;
+    .end local p0  # "this":Lcom/android/server/pm/ShortcutBitmapSaver;
+    :try_start_99
     throw v3
-    :try_end_8e
-    .catchall {:try_start_8d .. :try_end_8e} :catchall_8e
+    :try_end_9a
+    .catchall {:try_start_99 .. :try_end_9a} :catchall_9a
 
     .line 293
-    :catchall_8e
+    .restart local v0  # "shortcut":Landroid/content/pm/ShortcutInfo;
+    .restart local p0  # "this":Lcom/android/server/pm/ShortcutBitmapSaver;
+    :catchall_9a
     move-exception v2
 
-    move-object v7, v2
-
-    move-object v2, v0
-
-    move-object v0, v7
-
     .line 296
-    :goto_92
-    if-eqz v2, :cond_a0
+    if-eqz v0, :cond_a9
 
     .line 297
-    invoke-virtual {v2}, Landroid/content/pm/ShortcutInfo;->getBitmapPath()Ljava/lang/String;
+    invoke-virtual {v0}, Landroid/content/pm/ShortcutInfo;->getBitmapPath()Ljava/lang/String;
 
     move-result-object v3
 
-    if-nez v3, :cond_9d
+    if-nez v3, :cond_a6
 
     .line 298
-    invoke-virtual {p0, v2}, Lcom/android/server/pm/ShortcutBitmapSaver;->removeIcon(Landroid/content/pm/ShortcutInfo;)V
+    invoke-virtual {p0, v0}, Lcom/android/server/pm/ShortcutBitmapSaver;->removeIcon(Landroid/content/pm/ShortcutInfo;)V
 
     .line 302
-    :cond_9d
-    invoke-virtual {v2, v1}, Landroid/content/pm/ShortcutInfo;->clearFlags(I)V
+    :cond_a6
+    invoke-virtual {v0, v1}, Landroid/content/pm/ShortcutInfo;->clearFlags(I)V
 
-    :cond_a0
-    throw v0
+    :cond_a9
+    throw v2
 .end method
 
 
 # virtual methods
 .method public dumpLocked(Ljava/io/PrintWriter;Ljava/lang/String;)V
-    .registers 7
+    .registers 8
+    .param p1, "pw"  # Ljava/io/PrintWriter;
+    .param p2, "prefix"  # Ljava/lang/String;
 
     .line 309
     iget-object v0, p0, Lcom/android/server/pm/ShortcutBitmapSaver;->mPendingItems:Ljava/util/Deque;
@@ -415,6 +446,7 @@
     move-result v1
 
     .line 311
+    .local v1, "N":I
     invoke-virtual {p1, p2}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
     .line 312
@@ -428,55 +460,58 @@
 
     invoke-virtual {v2, v1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    const-string v1, " Executor="
+    const-string v3, " Executor="
 
-    invoke-virtual {v2, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    iget-object v1, p0, Lcom/android/server/pm/ShortcutBitmapSaver;->mExecutor:Ljava/util/concurrent/Executor;
+    iget-object v3, p0, Lcom/android/server/pm/ShortcutBitmapSaver;->mExecutor:Ljava/util/concurrent/Executor;
 
-    invoke-virtual {v2, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v1
+    move-result-object v2
 
-    invoke-virtual {p1, v1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {p1, v2}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
     .line 314
-    iget-object v1, p0, Lcom/android/server/pm/ShortcutBitmapSaver;->mPendingItems:Ljava/util/Deque;
+    iget-object v2, p0, Lcom/android/server/pm/ShortcutBitmapSaver;->mPendingItems:Ljava/util/Deque;
 
-    invoke-interface {v1}, Ljava/util/Deque;->iterator()Ljava/util/Iterator;
-
-    move-result-object v1
-
-    :goto_30
-    invoke-interface {v1}, Ljava/util/Iterator;->hasNext()Z
-
-    move-result v2
-
-    if-eqz v2, :cond_48
-
-    invoke-interface {v1}, Ljava/util/Iterator;->next()Ljava/lang/Object;
+    invoke-interface {v2}, Ljava/util/Deque;->iterator()Ljava/util/Iterator;
 
     move-result-object v2
 
-    check-cast v2, Lcom/android/server/pm/ShortcutBitmapSaver$PendingItem;
+    :goto_30
+    invoke-interface {v2}, Ljava/util/Iterator;->hasNext()Z
+
+    move-result v3
+
+    if-eqz v3, :cond_48
+
+    invoke-interface {v2}, Ljava/util/Iterator;->next()Ljava/lang/Object;
+
+    move-result-object v3
+
+    check-cast v3, Lcom/android/server/pm/ShortcutBitmapSaver$PendingItem;
 
     .line 315
+    .local v3, "item":Lcom/android/server/pm/ShortcutBitmapSaver$PendingItem;
     invoke-virtual {p1, p2}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
     .line 316
-    const-string v3, "  "
+    const-string v4, "  "
 
-    invoke-virtual {p1, v3}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
+    invoke-virtual {p1, v4}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
     .line 317
-    invoke-virtual {p1, v2}, Ljava/io/PrintWriter;->println(Ljava/lang/Object;)V
+    invoke-virtual {p1, v3}, Ljava/io/PrintWriter;->println(Ljava/lang/Object;)V
 
     .line 318
+    .end local v3  # "item":Lcom/android/server/pm/ShortcutBitmapSaver$PendingItem;
     goto :goto_30
 
     .line 319
+    .end local v1  # "N":I
     :cond_48
     monitor-exit v0
 
@@ -485,17 +520,18 @@
 
     .line 319
     :catchall_4a
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_4c
     .catchall {:try_start_3 .. :try_end_4c} :catchall_4a
 
-    throw p1
+    throw v1
 .end method
 
 .method public getBitmapPathMayWaitLocked(Landroid/content/pm/ShortcutInfo;)Ljava/lang/String;
-    .registers 3
+    .registers 4
+    .param p1, "shortcut"  # Landroid/content/pm/ShortcutInfo;
 
     .line 138
     invoke-virtual {p0}, Lcom/android/server/pm/ShortcutBitmapSaver;->waitForAllSavesLocked()Z
@@ -503,26 +539,27 @@
     move-result v0
 
     .line 139
+    .local v0, "success":Z
     if-eqz v0, :cond_11
 
     invoke-virtual {p1}, Landroid/content/pm/ShortcutInfo;->hasIconFile()Z
 
-    move-result v0
+    move-result v1
 
-    if-eqz v0, :cond_11
+    if-eqz v1, :cond_11
 
     .line 140
     invoke-virtual {p1}, Landroid/content/pm/ShortcutInfo;->getBitmapPath()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v1
 
-    return-object p1
+    return-object v1
 
     .line 142
     :cond_11
-    const/4 p1, 0x0
+    const/4 v1, 0x0
 
-    return-object p1
+    return-object v1
 .end method
 
 .method public synthetic lambda$new$1$ShortcutBitmapSaver()V
@@ -545,6 +582,7 @@
 
 .method public removeIcon(Landroid/content/pm/ShortcutInfo;)V
     .registers 3
+    .param p1, "shortcut"  # Landroid/content/pm/ShortcutInfo;
 
     .line 149
     const/4 v0, 0x0
@@ -569,7 +607,11 @@
 .end method
 
 .method public saveBitmapLocked(Landroid/content/pm/ShortcutInfo;ILandroid/graphics/Bitmap$CompressFormat;I)V
-    .registers 10
+    .registers 13
+    .param p1, "shortcut"  # Landroid/content/pm/ShortcutInfo;
+    .param p2, "maxDimension"  # I
+    .param p3, "format"  # Landroid/graphics/Bitmap$CompressFormat;
+    .param p4, "quality"  # I
 
     .line 159
     invoke-virtual {p1}, Landroid/content/pm/ShortcutInfo;->getIcon()Landroid/graphics/drawable/Icon;
@@ -577,6 +619,7 @@
     move-result-object v0
 
     .line 160
+    .local v0, "icon":Landroid/graphics/drawable/Icon;
     invoke-static {v0}, Lcom/android/internal/util/Preconditions;->checkNotNull(Ljava/lang/Object;)Ljava/lang/Object;
 
     .line 162
@@ -585,26 +628,27 @@
     move-result-object v1
 
     .line 163
+    .local v1, "original":Landroid/graphics/Bitmap;
     if-nez v1, :cond_24
 
     .line 164
-    new-instance p2, Ljava/lang/StringBuilder;
+    new-instance v2, Ljava/lang/StringBuilder;
 
-    invoke-direct {p2}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string p3, "Missing icon: "
+    const-string v3, "Missing icon: "
 
-    invoke-virtual {p2, p3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p2, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v2
 
-    const-string p2, "ShortcutService"
+    const-string v3, "ShortcutService"
 
-    invoke-static {p2, p1}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v3, v2}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 165
     return-void
@@ -616,6 +660,7 @@
     move-result-object v2
 
     .line 174
+    .local v2, "oldPolicy":Landroid/os/StrictMode$ThreadPolicy;
     :try_start_28
     new-instance v3, Landroid/os/StrictMode$ThreadPolicy$Builder;
 
@@ -639,71 +684,76 @@
 
     invoke-static {v1, p2}, Lcom/android/server/pm/ShortcutService;->shrinkBitmap(Landroid/graphics/Bitmap;I)Landroid/graphics/Bitmap;
 
-    move-result-object p2
+    move-result-object v3
     :try_end_3e
-    .catch Ljava/io/IOException; {:try_start_28 .. :try_end_3e} :catch_a8
-    .catch Ljava/lang/RuntimeException; {:try_start_28 .. :try_end_3e} :catch_a8
-    .catch Ljava/lang/OutOfMemoryError; {:try_start_28 .. :try_end_3e} :catch_a8
-    .catchall {:try_start_28 .. :try_end_3e} :catchall_a6
+    .catch Ljava/io/IOException; {:try_start_28 .. :try_end_3e} :catch_aa
+    .catch Ljava/lang/RuntimeException; {:try_start_28 .. :try_end_3e} :catch_aa
+    .catch Ljava/lang/OutOfMemoryError; {:try_start_28 .. :try_end_3e} :catch_aa
+    .catchall {:try_start_28 .. :try_end_3e} :catchall_a8
 
     .line 179
+    .local v3, "shrunk":Landroid/graphics/Bitmap;
     :try_start_3e
-    new-instance v3, Ljava/io/ByteArrayOutputStream;
+    new-instance v4, Ljava/io/ByteArrayOutputStream;
 
-    const/high16 v4, 0x10000
+    const/high16 v5, 0x10000
 
-    invoke-direct {v3, v4}, Ljava/io/ByteArrayOutputStream;-><init>(I)V
+    invoke-direct {v4, v5}, Ljava/io/ByteArrayOutputStream;-><init>(I)V
     :try_end_45
-    .catchall {:try_start_3e .. :try_end_45} :catchall_9f
+    .catchall {:try_start_3e .. :try_end_45} :catchall_a0
 
     .line 180
+    .local v4, "out":Ljava/io/ByteArrayOutputStream;
     :try_start_45
-    invoke-virtual {p2, p3, p4, v3}, Landroid/graphics/Bitmap;->compress(Landroid/graphics/Bitmap$CompressFormat;ILjava/io/OutputStream;)Z
+    invoke-virtual {v3, p3, p4, v4}, Landroid/graphics/Bitmap;->compress(Landroid/graphics/Bitmap$CompressFormat;ILjava/io/OutputStream;)Z
 
-    move-result p3
+    move-result v5
 
-    if-nez p3, :cond_52
+    if-nez v5, :cond_52
 
     .line 181
-    const-string p3, "ShortcutService"
+    const-string v5, "ShortcutService"
 
-    const-string p4, "Unable to compress bitmap"
+    const-string v6, "Unable to compress bitmap"
 
-    invoke-static {p3, p4}, Landroid/util/Slog;->wtf(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v5, v6}, Landroid/util/Slog;->wtf(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 183
     :cond_52
-    invoke-virtual {v3}, Ljava/io/ByteArrayOutputStream;->flush()V
+    invoke-virtual {v4}, Ljava/io/ByteArrayOutputStream;->flush()V
 
     .line 184
-    invoke-virtual {v3}, Ljava/io/ByteArrayOutputStream;->toByteArray()[B
+    invoke-virtual {v4}, Ljava/io/ByteArrayOutputStream;->toByteArray()[B
 
-    move-result-object p3
+    move-result-object v5
 
     .line 185
-    invoke-virtual {v3}, Ljava/io/ByteArrayOutputStream;->close()V
+    .local v5, "bytes":[B
+    invoke-virtual {v4}, Ljava/io/ByteArrayOutputStream;->close()V
     :try_end_5c
-    .catchall {:try_start_45 .. :try_end_5c} :catchall_93
+    .catchall {:try_start_45 .. :try_end_5c} :catchall_94
 
     .line 186
     :try_start_5c
-    invoke-virtual {v3}, Ljava/io/ByteArrayOutputStream;->close()V
+    invoke-virtual {v4}, Ljava/io/ByteArrayOutputStream;->close()V
     :try_end_5f
-    .catchall {:try_start_5c .. :try_end_5f} :catchall_9f
+    .catchall {:try_start_5c .. :try_end_5f} :catchall_a0
 
     .line 188
-    if-eq p2, v1, :cond_64
+    .end local v4  # "out":Ljava/io/ByteArrayOutputStream;
+    if-eq v3, v1, :cond_64
 
     .line 189
     :try_start_61
-    invoke-virtual {p2}, Landroid/graphics/Bitmap;->recycle()V
+    invoke-virtual {v3}, Landroid/graphics/Bitmap;->recycle()V
     :try_end_64
-    .catch Ljava/io/IOException; {:try_start_61 .. :try_end_64} :catch_a8
-    .catch Ljava/lang/RuntimeException; {:try_start_61 .. :try_end_64} :catch_a8
-    .catch Ljava/lang/OutOfMemoryError; {:try_start_61 .. :try_end_64} :catch_a8
-    .catchall {:try_start_61 .. :try_end_64} :catchall_a6
+    .catch Ljava/io/IOException; {:try_start_61 .. :try_end_64} :catch_aa
+    .catch Ljava/lang/RuntimeException; {:try_start_61 .. :try_end_64} :catch_aa
+    .catch Ljava/lang/OutOfMemoryError; {:try_start_61 .. :try_end_64} :catch_aa
+    .catchall {:try_start_61 .. :try_end_64} :catchall_a8
 
     .line 196
+    .end local v3  # "shrunk":Landroid/graphics/Bitmap;
     :cond_64
     invoke-static {v2}, Landroid/os/StrictMode;->setThreadPolicy(Landroid/os/StrictMode$ThreadPolicy;)V
 
@@ -711,137 +761,202 @@
     nop
 
     .line 199
-    const/16 p2, 0x808
+    const/16 v3, 0x808
 
-    invoke-virtual {p1, p2}, Landroid/content/pm/ShortcutInfo;->addFlags(I)V
+    invoke-virtual {p1, v3}, Landroid/content/pm/ShortcutInfo;->addFlags(I)V
 
     .line 202
     invoke-virtual {v0}, Landroid/graphics/drawable/Icon;->getType()I
 
-    move-result p2
+    move-result v3
 
-    const/4 p4, 0x5
+    const/4 v4, 0x5
 
-    if-ne p2, p4, :cond_79
+    if-ne v3, v4, :cond_79
 
     .line 203
-    const/16 p2, 0x200
+    const/16 v3, 0x200
 
-    invoke-virtual {p1, p2}, Landroid/content/pm/ShortcutInfo;->addFlags(I)V
+    invoke-virtual {p1, v3}, Landroid/content/pm/ShortcutInfo;->addFlags(I)V
 
     .line 207
     :cond_79
-    new-instance p2, Lcom/android/server/pm/ShortcutBitmapSaver$PendingItem;
+    new-instance v3, Lcom/android/server/pm/ShortcutBitmapSaver$PendingItem;
 
-    const/4 p4, 0x0
+    const/4 v4, 0x0
 
-    invoke-direct {p2, p1, p3, p4}, Lcom/android/server/pm/ShortcutBitmapSaver$PendingItem;-><init>(Landroid/content/pm/ShortcutInfo;[BLcom/android/server/pm/ShortcutBitmapSaver$1;)V
+    invoke-direct {v3, p1, v5, v4}, Lcom/android/server/pm/ShortcutBitmapSaver$PendingItem;-><init>(Landroid/content/pm/ShortcutInfo;[BLcom/android/server/pm/ShortcutBitmapSaver$1;)V
+
+    move-object v4, v3
 
     .line 208
-    iget-object p1, p0, Lcom/android/server/pm/ShortcutBitmapSaver;->mPendingItems:Ljava/util/Deque;
+    .local v4, "item":Lcom/android/server/pm/ShortcutBitmapSaver$PendingItem;
+    iget-object v6, p0, Lcom/android/server/pm/ShortcutBitmapSaver;->mPendingItems:Ljava/util/Deque;
 
-    monitor-enter p1
+    monitor-enter v6
 
     .line 209
-    :try_start_82
-    iget-object p3, p0, Lcom/android/server/pm/ShortcutBitmapSaver;->mPendingItems:Ljava/util/Deque;
+    :try_start_83
+    iget-object v3, p0, Lcom/android/server/pm/ShortcutBitmapSaver;->mPendingItems:Ljava/util/Deque;
 
-    invoke-interface {p3, p2}, Ljava/util/Deque;->add(Ljava/lang/Object;)Z
+    invoke-interface {v3, v4}, Ljava/util/Deque;->add(Ljava/lang/Object;)Z
 
     .line 210
-    monitor-exit p1
-    :try_end_88
-    .catchall {:try_start_82 .. :try_end_88} :catchall_90
+    monitor-exit v6
+    :try_end_89
+    .catchall {:try_start_83 .. :try_end_89} :catchall_91
 
     .line 216
-    iget-object p1, p0, Lcom/android/server/pm/ShortcutBitmapSaver;->mExecutor:Ljava/util/concurrent/Executor;
+    iget-object v3, p0, Lcom/android/server/pm/ShortcutBitmapSaver;->mExecutor:Ljava/util/concurrent/Executor;
 
-    iget-object p2, p0, Lcom/android/server/pm/ShortcutBitmapSaver;->mRunnable:Ljava/lang/Runnable;
+    iget-object v6, p0, Lcom/android/server/pm/ShortcutBitmapSaver;->mRunnable:Ljava/lang/Runnable;
 
-    invoke-interface {p1, p2}, Ljava/util/concurrent/Executor;->execute(Ljava/lang/Runnable;)V
+    invoke-interface {v3, v6}, Ljava/util/concurrent/Executor;->execute(Ljava/lang/Runnable;)V
 
     .line 217
     return-void
 
     .line 210
-    :catchall_90
-    move-exception p2
+    :catchall_91
+    move-exception v3
 
-    :try_start_91
-    monitor-exit p1
-    :try_end_92
-    .catchall {:try_start_91 .. :try_end_92} :catchall_90
+    :try_start_92
+    monitor-exit v6
+    :try_end_93
+    .catchall {:try_start_92 .. :try_end_93} :catchall_91
 
-    throw p2
+    throw v3
 
     .line 179
-    :catchall_93
-    move-exception p1
+    .end local v5  # "bytes":[B
+    .restart local v3  # "shrunk":Landroid/graphics/Bitmap;
+    .local v4, "out":Ljava/io/ByteArrayOutputStream;
+    :catchall_94
+    move-exception v5
 
-    :try_start_94
-    throw p1
-    :try_end_95
-    .catchall {:try_start_94 .. :try_end_95} :catchall_95
+    .end local v0  # "icon":Landroid/graphics/drawable/Icon;
+    .end local v1  # "original":Landroid/graphics/Bitmap;
+    .end local v2  # "oldPolicy":Landroid/os/StrictMode$ThreadPolicy;
+    .end local v3  # "shrunk":Landroid/graphics/Bitmap;
+    .end local v4  # "out":Ljava/io/ByteArrayOutputStream;
+    .end local p0  # "this":Lcom/android/server/pm/ShortcutBitmapSaver;
+    .end local p1  # "shortcut":Landroid/content/pm/ShortcutInfo;
+    .end local p2  # "maxDimension":I
+    .end local p3  # "format":Landroid/graphics/Bitmap$CompressFormat;
+    .end local p4  # "quality":I
+    :try_start_95
+    throw v5
+    :try_end_96
+    .catchall {:try_start_95 .. :try_end_96} :catchall_96
 
     .line 186
-    :catchall_95
-    move-exception p3
+    .restart local v0  # "icon":Landroid/graphics/drawable/Icon;
+    .restart local v1  # "original":Landroid/graphics/Bitmap;
+    .restart local v2  # "oldPolicy":Landroid/os/StrictMode$ThreadPolicy;
+    .restart local v3  # "shrunk":Landroid/graphics/Bitmap;
+    .restart local v4  # "out":Ljava/io/ByteArrayOutputStream;
+    .restart local p0  # "this":Lcom/android/server/pm/ShortcutBitmapSaver;
+    .restart local p1  # "shortcut":Landroid/content/pm/ShortcutInfo;
+    .restart local p2  # "maxDimension":I
+    .restart local p3  # "format":Landroid/graphics/Bitmap$CompressFormat;
+    .restart local p4  # "quality":I
+    :catchall_96
+    move-exception v6
 
-    :try_start_96
-    invoke-virtual {v3}, Ljava/io/ByteArrayOutputStream;->close()V
-    :try_end_99
-    .catchall {:try_start_96 .. :try_end_99} :catchall_9a
+    :try_start_97
+    invoke-virtual {v4}, Ljava/io/ByteArrayOutputStream;->close()V
+    :try_end_9a
+    .catchall {:try_start_97 .. :try_end_9a} :catchall_9b
 
-    goto :goto_9e
+    goto :goto_9f
 
-    :catchall_9a
-    move-exception p4
+    :catchall_9b
+    move-exception v7
 
-    :try_start_9b
-    invoke-virtual {p1, p4}, Ljava/lang/Throwable;->addSuppressed(Ljava/lang/Throwable;)V
+    :try_start_9c
+    invoke-virtual {v5, v7}, Ljava/lang/Throwable;->addSuppressed(Ljava/lang/Throwable;)V
 
-    :goto_9e
-    throw p3
-    :try_end_9f
-    .catchall {:try_start_9b .. :try_end_9f} :catchall_9f
+    .end local v0  # "icon":Landroid/graphics/drawable/Icon;
+    .end local v1  # "original":Landroid/graphics/Bitmap;
+    .end local v2  # "oldPolicy":Landroid/os/StrictMode$ThreadPolicy;
+    .end local v3  # "shrunk":Landroid/graphics/Bitmap;
+    .end local p0  # "this":Lcom/android/server/pm/ShortcutBitmapSaver;
+    .end local p1  # "shortcut":Landroid/content/pm/ShortcutInfo;
+    .end local p2  # "maxDimension":I
+    .end local p3  # "format":Landroid/graphics/Bitmap$CompressFormat;
+    .end local p4  # "quality":I
+    :goto_9f
+    throw v6
+    :try_end_a0
+    .catchall {:try_start_9c .. :try_end_a0} :catchall_a0
 
     .line 188
-    :catchall_9f
-    move-exception p1
+    .end local v4  # "out":Ljava/io/ByteArrayOutputStream;
+    .restart local v0  # "icon":Landroid/graphics/drawable/Icon;
+    .restart local v1  # "original":Landroid/graphics/Bitmap;
+    .restart local v2  # "oldPolicy":Landroid/os/StrictMode$ThreadPolicy;
+    .restart local v3  # "shrunk":Landroid/graphics/Bitmap;
+    .restart local p0  # "this":Lcom/android/server/pm/ShortcutBitmapSaver;
+    .restart local p1  # "shortcut":Landroid/content/pm/ShortcutInfo;
+    .restart local p2  # "maxDimension":I
+    .restart local p3  # "format":Landroid/graphics/Bitmap$CompressFormat;
+    .restart local p4  # "quality":I
+    :catchall_a0
+    move-exception v4
 
-    if-eq p2, v1, :cond_a5
+    if-eq v3, v1, :cond_a6
 
     .line 189
-    :try_start_a2
-    invoke-virtual {p2}, Landroid/graphics/Bitmap;->recycle()V
+    :try_start_a3
+    invoke-virtual {v3}, Landroid/graphics/Bitmap;->recycle()V
 
-    :cond_a5
-    throw p1
-    :try_end_a6
-    .catch Ljava/io/IOException; {:try_start_a2 .. :try_end_a6} :catch_a8
-    .catch Ljava/lang/RuntimeException; {:try_start_a2 .. :try_end_a6} :catch_a8
-    .catch Ljava/lang/OutOfMemoryError; {:try_start_a2 .. :try_end_a6} :catch_a8
-    .catchall {:try_start_a2 .. :try_end_a6} :catchall_a6
+    :cond_a6
+    nop
+
+    .end local v0  # "icon":Landroid/graphics/drawable/Icon;
+    .end local v1  # "original":Landroid/graphics/Bitmap;
+    .end local v2  # "oldPolicy":Landroid/os/StrictMode$ThreadPolicy;
+    .end local p0  # "this":Lcom/android/server/pm/ShortcutBitmapSaver;
+    .end local p1  # "shortcut":Landroid/content/pm/ShortcutInfo;
+    .end local p2  # "maxDimension":I
+    .end local p3  # "format":Landroid/graphics/Bitmap$CompressFormat;
+    .end local p4  # "quality":I
+    throw v4
+    :try_end_a8
+    .catch Ljava/io/IOException; {:try_start_a3 .. :try_end_a8} :catch_aa
+    .catch Ljava/lang/RuntimeException; {:try_start_a3 .. :try_end_a8} :catch_aa
+    .catch Ljava/lang/OutOfMemoryError; {:try_start_a3 .. :try_end_a8} :catch_aa
+    .catchall {:try_start_a3 .. :try_end_a8} :catchall_a8
 
     .line 196
-    :catchall_a6
-    move-exception p1
+    .end local v3  # "shrunk":Landroid/graphics/Bitmap;
+    .restart local v0  # "icon":Landroid/graphics/drawable/Icon;
+    .restart local v1  # "original":Landroid/graphics/Bitmap;
+    .restart local v2  # "oldPolicy":Landroid/os/StrictMode$ThreadPolicy;
+    .restart local p0  # "this":Lcom/android/server/pm/ShortcutBitmapSaver;
+    .restart local p1  # "shortcut":Landroid/content/pm/ShortcutInfo;
+    .restart local p2  # "maxDimension":I
+    .restart local p3  # "format":Landroid/graphics/Bitmap$CompressFormat;
+    .restart local p4  # "quality":I
+    :catchall_a8
+    move-exception v3
 
-    goto :goto_b4
+    goto :goto_b6
 
     .line 192
-    :catch_a8
-    move-exception p1
+    :catch_aa
+    move-exception v3
 
     .line 193
-    :try_start_a9
-    const-string p2, "ShortcutService"
+    .local v3, "e":Ljava/lang/Throwable;
+    :try_start_ab
+    const-string v4, "ShortcutService"
 
-    const-string p3, "Unable to write bitmap to file"
+    const-string v5, "Unable to write bitmap to file"
 
-    invoke-static {p2, p3, p1}, Landroid/util/Slog;->wtf(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
-    :try_end_b0
-    .catchall {:try_start_a9 .. :try_end_b0} :catchall_a6
+    invoke-static {v4, v5, v3}, Landroid/util/Slog;->wtf(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    :try_end_b2
+    .catchall {:try_start_ab .. :try_end_b2} :catchall_a8
 
     .line 196
     invoke-static {v2}, Landroid/os/StrictMode;->setThreadPolicy(Landroid/os/StrictMode$ThreadPolicy;)V
@@ -850,10 +965,11 @@
     return-void
 
     .line 196
-    :goto_b4
+    .end local v3  # "e":Ljava/lang/Throwable;
+    :goto_b6
     invoke-static {v2}, Landroid/os/StrictMode;->setThreadPolicy(Landroid/os/StrictMode$ThreadPolicy;)V
 
-    throw p1
+    throw v3
 .end method
 
 .method public waitForAllSavesLocked()Z
@@ -867,6 +983,7 @@
     invoke-direct {v0, v1}, Ljava/util/concurrent/CountDownLatch;-><init>(I)V
 
     .line 120
+    .local v0, "latch":Ljava/util/concurrent/CountDownLatch;
     iget-object v2, p0, Lcom/android/server/pm/ShortcutBitmapSaver;->mExecutor:Ljava/util/concurrent/Executor;
 
     new-instance v3, Lcom/android/server/pm/-$$Lambda$ShortcutBitmapSaver$xgjvZfaiKXavxgGCSta_eIdVBnk;
@@ -883,40 +1000,42 @@
 
     invoke-virtual {v0, v2, v3, v4}, Ljava/util/concurrent/CountDownLatch;->await(JLjava/util/concurrent/TimeUnit;)Z
 
-    move-result v0
+    move-result v2
 
-    if-eqz v0, :cond_1b
+    if-eqz v2, :cond_1b
 
     .line 124
     return v1
 
     .line 126
     :cond_1b
-    iget-object v0, p0, Lcom/android/server/pm/ShortcutBitmapSaver;->mService:Lcom/android/server/pm/ShortcutService;
+    iget-object v1, p0, Lcom/android/server/pm/ShortcutBitmapSaver;->mService:Lcom/android/server/pm/ShortcutService;
 
-    const-string v1, "Timed out waiting on saving bitmaps."
+    const-string v2, "Timed out waiting on saving bitmaps."
 
-    invoke-virtual {v0, v1}, Lcom/android/server/pm/ShortcutService;->wtf(Ljava/lang/String;)V
+    invoke-virtual {v1, v2}, Lcom/android/server/pm/ShortcutService;->wtf(Ljava/lang/String;)V
     :try_end_22
     .catch Ljava/lang/InterruptedException; {:try_start_12 .. :try_end_22} :catch_23
 
     .line 129
-    goto :goto_2b
+    goto :goto_2c
 
     .line 127
     :catch_23
-    move-exception v0
+    move-exception v1
 
     .line 128
-    const-string v0, "ShortcutService"
+    .local v1, "e":Ljava/lang/InterruptedException;
+    const-string v2, "ShortcutService"
 
-    const-string v1, "interrupted"
+    const-string/jumbo v3, "interrupted"
 
-    invoke-static {v0, v1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v2, v3}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 130
-    :goto_2b
-    const/4 v0, 0x0
+    .end local v1  # "e":Ljava/lang/InterruptedException;
+    :goto_2c
+    const/4 v1, 0x0
 
-    return v0
+    return v1
 .end method

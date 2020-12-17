@@ -31,8 +31,9 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/pm/PackageManagerService;Ljava/util/concurrent/CountDownLatch;Lcom/android/server/pm/PackageManagerService$PackageFreezer;ILjava/lang/String;Z)V
     .registers 7
+    .param p1, "this$0"  # Lcom/android/server/pm/PackageManagerService;
 
-    .line 23690
+    .line 24451
     iput-object p1, p0, Lcom/android/server/pm/PackageManagerService$9;->this$0:Lcom/android/server/pm/PackageManagerService;
 
     iput-object p2, p0, Lcom/android/server/pm/PackageManagerService$9;->val$installedLatch:Ljava/util/concurrent/CountDownLatch;
@@ -53,110 +54,146 @@
 
 # virtual methods
 .method public onPackageInstalled(Ljava/lang/String;ILjava/lang/String;Landroid/os/Bundle;)V
-    .registers 5
+    .registers 9
+    .param p1, "basePackageName"  # Ljava/lang/String;
+    .param p2, "returnCode"  # I
+    .param p3, "msg"  # Ljava/lang/String;
+    .param p4, "extras"  # Landroid/os/Bundle;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
         }
     .end annotation
 
-    .line 23702
-    iget-object p1, p0, Lcom/android/server/pm/PackageManagerService$9;->val$installedLatch:Ljava/util/concurrent/CountDownLatch;
+    .line 24460
+    sget-boolean v0, Lcom/android/server/pm/PackageManagerService;->DEBUG_INSTALL:Z
 
-    invoke-virtual {p1}, Ljava/util/concurrent/CountDownLatch;->countDown()V
+    if-eqz v0, :cond_1e
 
-    .line 23703
-    iget-object p1, p0, Lcom/android/server/pm/PackageManagerService$9;->val$freezer:Lcom/android/server/pm/PackageManagerService$PackageFreezer;
+    new-instance v0, Ljava/lang/StringBuilder;
 
-    invoke-virtual {p1}, Lcom/android/server/pm/PackageManagerService$PackageFreezer;->close()V
+    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
 
-    .line 23705
+    const-string v1, "Install result for move: "
+
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    .line 24461
+    invoke-static {p2, p3}, Landroid/content/pm/PackageManager;->installStatusToString(ILjava/lang/String;)Ljava/lang/String;
+
+    move-result-object v1
+
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v0
+
+    .line 24460
+    const-string v1, "PackageManager"
+
+    invoke-static {v1, v0}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
+
+    .line 24463
+    :cond_1e
+    iget-object v0, p0, Lcom/android/server/pm/PackageManagerService$9;->val$installedLatch:Ljava/util/concurrent/CountDownLatch;
+
+    invoke-virtual {v0}, Ljava/util/concurrent/CountDownLatch;->countDown()V
+
+    .line 24464
+    iget-object v0, p0, Lcom/android/server/pm/PackageManagerService$9;->val$freezer:Lcom/android/server/pm/PackageManagerService$PackageFreezer;
+
+    invoke-virtual {v0}, Lcom/android/server/pm/PackageManagerService$PackageFreezer;->close()V
+
+    .line 24466
     invoke-static {p2}, Landroid/content/pm/PackageManager;->installStatusToPublicStatus(I)I
 
-    move-result p1
+    move-result v0
 
-    .line 23706
-    if-eqz p1, :cond_2d
+    .line 24467
+    .local v0, "status":I
+    if-eqz v0, :cond_4b
 
-    const/4 p2, 0x6
+    const/4 v1, 0x6
 
-    if-eq p1, p2, :cond_20
+    if-eq v0, v1, :cond_3e
 
-    .line 23717
-    iget-object p1, p0, Lcom/android/server/pm/PackageManagerService$9;->this$0:Lcom/android/server/pm/PackageManagerService;
+    .line 24478
+    iget-object v1, p0, Lcom/android/server/pm/PackageManagerService$9;->this$0:Lcom/android/server/pm/PackageManagerService;
 
-    invoke-static {p1}, Lcom/android/server/pm/PackageManagerService;->access$5200(Lcom/android/server/pm/PackageManagerService;)Lcom/android/server/pm/PackageManagerService$MoveCallbacks;
+    invoke-static {v1}, Lcom/android/server/pm/PackageManagerService;->access$5600(Lcom/android/server/pm/PackageManagerService;)Lcom/android/server/pm/PackageManagerService$MoveCallbacks;
 
-    move-result-object p1
+    move-result-object v1
 
-    iget p2, p0, Lcom/android/server/pm/PackageManagerService$9;->val$moveId:I
+    iget v2, p0, Lcom/android/server/pm/PackageManagerService$9;->val$moveId:I
 
-    const/4 p3, -0x6
+    const/4 v3, -0x6
 
-    invoke-static {p1, p2, p3}, Lcom/android/server/pm/PackageManagerService$MoveCallbacks;->access$5100(Lcom/android/server/pm/PackageManagerService$MoveCallbacks;II)V
+    invoke-static {v1, v2, v3}, Lcom/android/server/pm/PackageManagerService$MoveCallbacks;->access$5500(Lcom/android/server/pm/PackageManagerService$MoveCallbacks;II)V
 
-    goto :goto_44
+    goto :goto_62
 
-    .line 23713
-    :cond_20
-    iget-object p1, p0, Lcom/android/server/pm/PackageManagerService$9;->this$0:Lcom/android/server/pm/PackageManagerService;
+    .line 24474
+    :cond_3e
+    iget-object v1, p0, Lcom/android/server/pm/PackageManagerService$9;->this$0:Lcom/android/server/pm/PackageManagerService;
 
-    invoke-static {p1}, Lcom/android/server/pm/PackageManagerService;->access$5200(Lcom/android/server/pm/PackageManagerService;)Lcom/android/server/pm/PackageManagerService$MoveCallbacks;
+    invoke-static {v1}, Lcom/android/server/pm/PackageManagerService;->access$5600(Lcom/android/server/pm/PackageManagerService;)Lcom/android/server/pm/PackageManagerService$MoveCallbacks;
 
-    move-result-object p1
+    move-result-object v1
 
-    iget p2, p0, Lcom/android/server/pm/PackageManagerService$9;->val$moveId:I
+    iget v2, p0, Lcom/android/server/pm/PackageManagerService$9;->val$moveId:I
 
-    const/4 p3, -0x1
+    const/4 v3, -0x1
 
-    invoke-static {p1, p2, p3}, Lcom/android/server/pm/PackageManagerService$MoveCallbacks;->access$5100(Lcom/android/server/pm/PackageManagerService$MoveCallbacks;II)V
+    invoke-static {v1, v2, v3}, Lcom/android/server/pm/PackageManagerService$MoveCallbacks;->access$5500(Lcom/android/server/pm/PackageManagerService$MoveCallbacks;II)V
 
-    .line 23715
-    goto :goto_44
+    .line 24476
+    goto :goto_62
 
-    .line 23708
-    :cond_2d
-    iget-object p1, p0, Lcom/android/server/pm/PackageManagerService$9;->this$0:Lcom/android/server/pm/PackageManagerService;
+    .line 24469
+    :cond_4b
+    iget-object v1, p0, Lcom/android/server/pm/PackageManagerService$9;->this$0:Lcom/android/server/pm/PackageManagerService;
 
-    invoke-static {p1}, Lcom/android/server/pm/PackageManagerService;->access$5200(Lcom/android/server/pm/PackageManagerService;)Lcom/android/server/pm/PackageManagerService$MoveCallbacks;
+    invoke-static {v1}, Lcom/android/server/pm/PackageManagerService;->access$5600(Lcom/android/server/pm/PackageManagerService;)Lcom/android/server/pm/PackageManagerService$MoveCallbacks;
 
-    move-result-object p1
+    move-result-object v1
 
-    iget p2, p0, Lcom/android/server/pm/PackageManagerService$9;->val$moveId:I
+    iget v2, p0, Lcom/android/server/pm/PackageManagerService$9;->val$moveId:I
 
-    const/16 p3, -0x64
+    const/16 v3, -0x64
 
-    invoke-static {p1, p2, p3}, Lcom/android/server/pm/PackageManagerService$MoveCallbacks;->access$5100(Lcom/android/server/pm/PackageManagerService$MoveCallbacks;II)V
+    invoke-static {v1, v2, v3}, Lcom/android/server/pm/PackageManagerService$MoveCallbacks;->access$5500(Lcom/android/server/pm/PackageManagerService$MoveCallbacks;II)V
 
-    .line 23710
-    iget-object p1, p0, Lcom/android/server/pm/PackageManagerService$9;->this$0:Lcom/android/server/pm/PackageManagerService;
+    .line 24471
+    iget-object v1, p0, Lcom/android/server/pm/PackageManagerService$9;->this$0:Lcom/android/server/pm/PackageManagerService;
 
-    iget-object p2, p0, Lcom/android/server/pm/PackageManagerService$9;->val$packageName:Ljava/lang/String;
+    iget-object v2, p0, Lcom/android/server/pm/PackageManagerService$9;->val$packageName:Ljava/lang/String;
 
-    iget-boolean p3, p0, Lcom/android/server/pm/PackageManagerService$9;->val$isCurrentLocationExternal:Z
+    iget-boolean v3, p0, Lcom/android/server/pm/PackageManagerService$9;->val$isCurrentLocationExternal:Z
 
-    invoke-static {p1, p2, p3}, Lcom/android/server/pm/PackageManagerService;->access$5300(Lcom/android/server/pm/PackageManagerService;Ljava/lang/String;Z)V
+    invoke-static {v1, v2, v3}, Lcom/android/server/pm/PackageManagerService;->access$5700(Lcom/android/server/pm/PackageManagerService;Ljava/lang/String;Z)V
 
-    .line 23711
+    .line 24472
     nop
 
-    .line 23721
-    :goto_44
+    .line 24482
+    :goto_62
     return-void
 .end method
 
 .method public onUserActionRequired(Landroid/content/Intent;)V
-    .registers 2
+    .registers 3
+    .param p1, "intent"  # Landroid/content/Intent;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
         }
     .end annotation
 
-    .line 23693
-    new-instance p1, Ljava/lang/IllegalStateException;
+    .line 24454
+    new-instance v0, Ljava/lang/IllegalStateException;
 
-    invoke-direct {p1}, Ljava/lang/IllegalStateException;-><init>()V
+    invoke-direct {v0}, Ljava/lang/IllegalStateException;-><init>()V
 
-    throw p1
+    throw v0
 .end method

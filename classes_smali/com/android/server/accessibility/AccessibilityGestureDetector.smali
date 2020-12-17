@@ -169,6 +169,8 @@
 
 .method constructor <init>(Landroid/content/Context;Lcom/android/server/accessibility/AccessibilityGestureDetector$Listener;)V
     .registers 4
+    .param p1, "context"  # Landroid/content/Context;
+    .param p2, "listener"  # Lcom/android/server/accessibility/AccessibilityGestureDetector$Listener;
 
     .line 225
     const/4 v0, 0x0
@@ -180,7 +182,10 @@
 .end method
 
 .method constructor <init>(Landroid/content/Context;Lcom/android/server/accessibility/AccessibilityGestureDetector$Listener;Landroid/view/GestureDetector;)V
-    .registers 6
+    .registers 8
+    .param p1, "context"  # Landroid/content/Context;
+    .param p2, "listener"  # Lcom/android/server/accessibility/AccessibilityGestureDetector$Listener;
+    .param p3, "detector"  # Landroid/view/GestureDetector;
 
     .line 236
     invoke-direct {p0}, Landroid/view/GestureDetector$SimpleOnGestureListener;-><init>()V
@@ -204,11 +209,11 @@
     if-nez p3, :cond_1a
 
     .line 242
-    new-instance p2, Landroid/view/GestureDetector;
+    new-instance v0, Landroid/view/GestureDetector;
 
-    invoke-direct {p2, p1, p0}, Landroid/view/GestureDetector;-><init>(Landroid/content/Context;Landroid/view/GestureDetector$OnGestureListener;)V
+    invoke-direct {v0, p1, p0}, Landroid/view/GestureDetector;-><init>(Landroid/content/Context;Landroid/view/GestureDetector$OnGestureListener;)V
 
-    iput-object p2, p0, Lcom/android/server/accessibility/AccessibilityGestureDetector;->mGestureDetector:Landroid/view/GestureDetector;
+    iput-object v0, p0, Lcom/android/server/accessibility/AccessibilityGestureDetector;->mGestureDetector:Landroid/view/GestureDetector;
 
     goto :goto_1c
 
@@ -218,16 +223,36 @@
 
     .line 246
     :goto_1c
-    iget-object p2, p0, Lcom/android/server/accessibility/AccessibilityGestureDetector;->mGestureDetector:Landroid/view/GestureDetector;
+    iget-object v0, p0, Lcom/android/server/accessibility/AccessibilityGestureDetector;->mGestureDetector:Landroid/view/GestureDetector;
 
-    invoke-virtual {p2, p0}, Landroid/view/GestureDetector;->setOnDoubleTapListener(Landroid/view/GestureDetector$OnDoubleTapListener;)V
+    invoke-virtual {v0, p0}, Landroid/view/GestureDetector;->setOnDoubleTapListener(Landroid/view/GestureDetector$OnDoubleTapListener;)V
 
     .line 247
-    const/4 p2, 0x5
+    const/4 v0, 0x5
 
-    const/high16 p3, 0x3f800000  # 1.0f
+    const/high16 v1, 0x3f800000  # 1.0f
 
     .line 248
+    invoke-virtual {p1}, Landroid/content/Context;->getResources()Landroid/content/res/Resources;
+
+    move-result-object v2
+
+    invoke-virtual {v2}, Landroid/content/res/Resources;->getDisplayMetrics()Landroid/util/DisplayMetrics;
+
+    move-result-object v2
+
+    .line 247
+    invoke-static {v0, v1, v2}, Landroid/util/TypedValue;->applyDimension(IFLandroid/util/DisplayMetrics;)F
+
+    move-result v0
+
+    const/high16 v1, 0x41200000  # 10.0f
+
+    mul-float/2addr v0, v1
+
+    iput v0, p0, Lcom/android/server/accessibility/AccessibilityGestureDetector;->mGestureDetectionThreshold:F
+
+    .line 251
     invoke-virtual {p1}, Landroid/content/Context;->getResources()Landroid/content/res/Resources;
 
     move-result-object v0
@@ -236,50 +261,32 @@
 
     move-result-object v0
 
-    .line 247
-    invoke-static {p2, p3, v0}, Landroid/util/TypedValue;->applyDimension(IFLandroid/util/DisplayMetrics;)F
-
-    move-result p2
-
-    const/high16 p3, 0x41200000  # 10.0f
-
-    mul-float/2addr p2, p3
-
-    iput p2, p0, Lcom/android/server/accessibility/AccessibilityGestureDetector;->mGestureDetectionThreshold:F
-
-    .line 251
-    invoke-virtual {p1}, Landroid/content/Context;->getResources()Landroid/content/res/Resources;
-
-    move-result-object p2
-
-    invoke-virtual {p2}, Landroid/content/res/Resources;->getDisplayMetrics()Landroid/util/DisplayMetrics;
-
-    move-result-object p2
-
-    iget p2, p2, Landroid/util/DisplayMetrics;->xdpi:F
+    iget v0, v0, Landroid/util/DisplayMetrics;->xdpi:F
 
     .line 252
+    .local v0, "pixelsPerInchX":F
     invoke-virtual {p1}, Landroid/content/Context;->getResources()Landroid/content/res/Resources;
 
-    move-result-object p1
+    move-result-object v1
 
-    invoke-virtual {p1}, Landroid/content/res/Resources;->getDisplayMetrics()Landroid/util/DisplayMetrics;
+    invoke-virtual {v1}, Landroid/content/res/Resources;->getDisplayMetrics()Landroid/util/DisplayMetrics;
 
-    move-result-object p1
+    move-result-object v1
 
-    iget p1, p1, Landroid/util/DisplayMetrics;->ydpi:F
+    iget v1, v1, Landroid/util/DisplayMetrics;->ydpi:F
 
     .line 253
-    const p3, 0x3dcccccd  # 0.1f
+    .local v1, "pixelsPerInchY":F
+    const v2, 0x3dcccccd  # 0.1f
 
-    mul-float/2addr p2, p3
+    mul-float v3, v0, v2
 
-    iput p2, p0, Lcom/android/server/accessibility/AccessibilityGestureDetector;->mMinPixelsBetweenSamplesX:F
+    iput v3, p0, Lcom/android/server/accessibility/AccessibilityGestureDetector;->mMinPixelsBetweenSamplesX:F
 
     .line 254
-    mul-float/2addr p1, p3
+    mul-float/2addr v2, v1
 
-    iput p1, p0, Lcom/android/server/accessibility/AccessibilityGestureDetector;->mMinPixelsBetweenSamplesY:F
+    iput v2, p0, Lcom/android/server/accessibility/AccessibilityGestureDetector;->mMinPixelsBetweenSamplesY:F
 
     .line 255
     return-void
@@ -307,6 +314,8 @@
 
 .method private finishDoubleTap(Landroid/view/MotionEvent;I)Z
     .registers 4
+    .param p1, "event"  # Landroid/view/MotionEvent;
+    .param p2, "policyFlags"  # I
 
     .line 457
     invoke-virtual {p0}, Lcom/android/server/accessibility/AccessibilityGestureDetector;->clear()V
@@ -316,13 +325,14 @@
 
     invoke-interface {v0, p1, p2}, Lcom/android/server/accessibility/AccessibilityGestureDetector$Listener;->onDoubleTap(Landroid/view/MotionEvent;I)Z
 
-    move-result p1
+    move-result v0
 
-    return p1
+    return v0
 .end method
 
 .method private mapSecondPointerToFirstPointer(Landroid/view/MotionEvent;)Landroid/view/MotionEvent;
     .registers 19
+    .param p1, "event"  # Landroid/view/MotionEvent;
 
     .line 618
     move-object/from16 v0, p1
@@ -369,96 +379,97 @@
     move-result v1
 
     .line 627
-    const/4 v2, 0x1
-
-    if-ne v1, v4, :cond_28
+    .local v1, "action":I
+    if-ne v1, v4, :cond_26
 
     .line 628
     const/4 v1, 0x0
 
-    move v7, v1
-
-    goto :goto_2d
+    goto :goto_29
 
     .line 629
-    :cond_28
-    if-ne v1, v3, :cond_2c
+    :cond_26
+    if-ne v1, v3, :cond_29
 
     .line 630
-    move v7, v2
-
-    goto :goto_2d
-
-    .line 629
-    :cond_2c
-    move v7, v1
+    const/4 v1, 0x1
 
     .line 634
-    :goto_2d
-    move-object/from16 v1, p0
+    :cond_29
+    :goto_29
+    move-object/from16 v15, p0
 
-    iget-wide v3, v1, Lcom/android/server/accessibility/AccessibilityGestureDetector;->mSecondPointerDownTime:J
+    iget-wide v2, v15, Lcom/android/server/accessibility/AccessibilityGestureDetector;->mSecondPointerDownTime:J
 
     invoke-virtual/range {p1 .. p1}, Landroid/view/MotionEvent;->getEventTime()J
 
-    move-result-wide v5
+    move-result-wide v4
 
     .line 635
-    invoke-virtual {v0, v2}, Landroid/view/MotionEvent;->getX(I)F
+    const/4 v6, 0x1
+
+    invoke-virtual {v0, v6}, Landroid/view/MotionEvent;->getX(I)F
+
+    move-result v7
+
+    invoke-virtual {v0, v6}, Landroid/view/MotionEvent;->getY(I)F
 
     move-result v8
 
-    invoke-virtual {v0, v2}, Landroid/view/MotionEvent;->getY(I)F
+    invoke-virtual {v0, v6}, Landroid/view/MotionEvent;->getPressure(I)F
 
     move-result v9
 
-    invoke-virtual {v0, v2}, Landroid/view/MotionEvent;->getPressure(I)F
+    invoke-virtual {v0, v6}, Landroid/view/MotionEvent;->getSize(I)F
 
     move-result v10
-
-    invoke-virtual {v0, v2}, Landroid/view/MotionEvent;->getSize(I)F
-
-    move-result v11
 
     .line 636
     invoke-virtual/range {p1 .. p1}, Landroid/view/MotionEvent;->getMetaState()I
 
-    move-result v12
+    move-result v11
 
     invoke-virtual/range {p1 .. p1}, Landroid/view/MotionEvent;->getXPrecision()F
 
-    move-result v13
+    move-result v12
 
     invoke-virtual/range {p1 .. p1}, Landroid/view/MotionEvent;->getYPrecision()F
 
-    move-result v14
+    move-result v13
 
     .line 637
     invoke-virtual/range {p1 .. p1}, Landroid/view/MotionEvent;->getDeviceId()I
 
-    move-result v15
+    move-result v14
 
     invoke-virtual/range {p1 .. p1}, Landroid/view/MotionEvent;->getEdgeFlags()I
 
     move-result v16
 
     .line 634
-    invoke-static/range {v3 .. v16}, Landroid/view/MotionEvent;->obtain(JJIFFFFIFFII)Landroid/view/MotionEvent;
+    move v6, v1
 
-    move-result-object v0
+    move/from16 v15, v16
 
-    return-object v0
+    invoke-static/range {v2 .. v15}, Landroid/view/MotionEvent;->obtain(JJIFFFFIFFII)Landroid/view/MotionEvent;
+
+    move-result-object v2
+
+    return-object v2
 
     .line 622
+    .end local v1  # "action":I
     :cond_5e
     :goto_5e
-    const/4 v0, 0x0
+    const/4 v1, 0x0
 
-    return-object v0
+    return-object v1
 .end method
 
 .method private maybeSendLongPress(Landroid/view/MotionEvent;I)V
     .registers 4
+    .param p1, "event"  # Landroid/view/MotionEvent;
+    .param p2, "policyFlags"  # I
 
     .line 447
     iget-boolean v0, p0, Lcom/android/server/accessibility/AccessibilityGestureDetector;->mDoubleTapDetected:Z
@@ -483,6 +494,8 @@
 
 .method private recognizeGesture(Landroid/view/MotionEvent;I)Z
     .registers 22
+    .param p1, "event"  # Landroid/view/MotionEvent;
+    .param p2, "policyFlags"  # I
 
     .line 478
     move-object/from16 v0, p0
@@ -502,13 +515,13 @@
     if-ge v3, v4, :cond_16
 
     .line 479
-    iget-object v0, v0, Lcom/android/server/accessibility/AccessibilityGestureDetector;->mListener:Lcom/android/server/accessibility/AccessibilityGestureDetector$Listener;
+    iget-object v3, v0, Lcom/android/server/accessibility/AccessibilityGestureDetector;->mListener:Lcom/android/server/accessibility/AccessibilityGestureDetector$Listener;
 
-    invoke-interface {v0, v1, v2}, Lcom/android/server/accessibility/AccessibilityGestureDetector$Listener;->onGestureCancelled(Landroid/view/MotionEvent;I)Z
+    invoke-interface {v3, v1, v2}, Lcom/android/server/accessibility/AccessibilityGestureDetector$Listener;->onGestureCancelled(Landroid/view/MotionEvent;I)Z
 
-    move-result v0
+    move-result v3
 
-    return v0
+    return v3
 
     .line 488
     :cond_16
@@ -517,6 +530,7 @@
     invoke-direct {v3}, Ljava/util/ArrayList;-><init>()V
 
     .line 489
+    .local v3, "path":Ljava/util/ArrayList;, "Ljava/util/ArrayList<Landroid/graphics/PointF;>;"
     new-instance v4, Landroid/graphics/PointF;
 
     iget-object v5, v0, Lcom/android/server/accessibility/AccessibilityGestureDetector;->mStrokeBuffer:Ljava/util/ArrayList;
@@ -535,287 +549,347 @@
 
     invoke-virtual {v7, v6}, Ljava/util/ArrayList;->get(I)Ljava/lang/Object;
 
-    move-result-object v7
+    move-result-object v6
 
-    check-cast v7, Landroid/gesture/GesturePoint;
+    check-cast v6, Landroid/gesture/GesturePoint;
 
-    iget v7, v7, Landroid/gesture/GesturePoint;->y:F
+    iget v6, v6, Landroid/gesture/GesturePoint;->y:F
 
-    invoke-direct {v4, v5, v7}, Landroid/graphics/PointF;-><init>(FF)V
+    invoke-direct {v4, v5, v6}, Landroid/graphics/PointF;-><init>(FF)V
 
     .line 490
+    .local v4, "lastDelimiter":Landroid/graphics/PointF;
     invoke-virtual {v3, v4}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
 
     .line 492
-    nop
+    const/4 v5, 0x0
 
     .line 493
-    nop
-
-    .line 494
-    nop
-
-    .line 495
-    nop
-
-    .line 497
-    new-instance v5, Landroid/graphics/PointF;
-
-    invoke-direct {v5}, Landroid/graphics/PointF;-><init>()V
-
-    .line 498
-    move-object v13, v4
-
-    move v9, v6
-
-    const/4 v4, 0x1
-
-    const/4 v10, 0x0
-
-    const/4 v11, 0x0
-
-    const/4 v12, 0x0
-
-    :goto_47
-    iget-object v14, v0, Lcom/android/server/accessibility/AccessibilityGestureDetector;->mStrokeBuffer:Ljava/util/ArrayList;
-
-    invoke-virtual {v14}, Ljava/util/ArrayList;->size()I
-
-    move-result v14
-
-    if-ge v4, v14, :cond_d8
-
-    .line 499
-    new-instance v5, Landroid/graphics/PointF;
-
-    iget-object v14, v0, Lcom/android/server/accessibility/AccessibilityGestureDetector;->mStrokeBuffer:Ljava/util/ArrayList;
-
-    invoke-virtual {v14, v4}, Ljava/util/ArrayList;->get(I)Ljava/lang/Object;
-
-    move-result-object v14
-
-    check-cast v14, Landroid/gesture/GesturePoint;
-
-    iget v14, v14, Landroid/gesture/GesturePoint;->x:F
-
-    iget-object v15, v0, Lcom/android/server/accessibility/AccessibilityGestureDetector;->mStrokeBuffer:Ljava/util/ArrayList;
-
-    invoke-virtual {v15, v4}, Ljava/util/ArrayList;->get(I)Ljava/lang/Object;
-
-    move-result-object v15
-
-    check-cast v15, Landroid/gesture/GesturePoint;
-
-    iget v15, v15, Landroid/gesture/GesturePoint;->y:F
-
-    invoke-direct {v5, v14, v15}, Landroid/graphics/PointF;-><init>(FF)V
-
-    .line 500
-    if-lez v9, :cond_af
-
-    .line 502
-    int-to-float v14, v9
-
-    div-float v15, v10, v14
-
-    .line 503
-    div-float v14, v11, v14
-
-    .line 512
-    new-instance v6, Landroid/graphics/PointF;
-
-    mul-float v16, v12, v15
-
-    iget v7, v13, Landroid/graphics/PointF;->x:F
-
-    add-float v7, v16, v7
-
-    mul-float/2addr v12, v14
-
-    iget v8, v13, Landroid/graphics/PointF;->y:F
-
-    add-float/2addr v12, v8
-
-    invoke-direct {v6, v7, v12}, Landroid/graphics/PointF;-><init>(FF)V
-
-    .line 516
-    iget v7, v5, Landroid/graphics/PointF;->x:F
-
-    iget v8, v6, Landroid/graphics/PointF;->x:F
-
-    sub-float/2addr v7, v8
-
-    .line 517
-    iget v8, v5, Landroid/graphics/PointF;->y:F
-
-    iget v12, v6, Landroid/graphics/PointF;->y:F
-
-    sub-float/2addr v8, v12
-
-    .line 518
-    mul-float v12, v7, v7
-
-    mul-float v17, v8, v8
-
-    add-float v12, v12, v17
-
-    move/from16 v17, v9
-
-    move/from16 v18, v10
-
-    float-to-double v9, v12
-
-    invoke-static {v9, v10}, Ljava/lang/Math;->sqrt(D)D
-
-    move-result-wide v9
-
-    double-to-float v9, v9
-
-    .line 519
-    div-float/2addr v7, v9
-
-    .line 520
-    div-float/2addr v8, v9
-
-    .line 524
-    mul-float/2addr v15, v7
-
-    mul-float/2addr v14, v8
-
-    add-float/2addr v15, v14
-
-    .line 525
-    const/4 v7, 0x0
-
-    cmpg-float v8, v15, v7
-
-    if-gez v8, :cond_b4
-
-    .line 526
-    invoke-virtual {v3, v6}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
-
-    .line 527
-    nop
-
-    .line 528
-    nop
-
-    .line 529
-    nop
-
-    .line 530
-    move-object v13, v6
-
-    move v11, v7
-
-    move/from16 v18, v11
-
-    const/16 v17, 0x0
-
-    goto :goto_b4
-
-    .line 500
-    :cond_af
-    move/from16 v17, v9
-
-    move/from16 v18, v10
-
-    const/4 v7, 0x0
-
-    .line 535
-    :cond_b4
-    :goto_b4
-    iget v6, v5, Landroid/graphics/PointF;->x:F
-
-    iget v8, v13, Landroid/graphics/PointF;->x:F
-
-    sub-float/2addr v6, v8
-
-    .line 536
-    iget v8, v5, Landroid/graphics/PointF;->y:F
-
-    iget v9, v13, Landroid/graphics/PointF;->y:F
-
-    sub-float/2addr v8, v9
-
-    .line 537
-    mul-float v9, v6, v6
-
-    mul-float v10, v8, v8
-
-    add-float/2addr v9, v10
-
-    float-to-double v9, v9
-
-    invoke-static {v9, v10}, Ljava/lang/Math;->sqrt(D)D
-
-    move-result-wide v9
-
-    double-to-float v12, v9
-
-    .line 540
-    const/4 v9, 0x1
-
-    add-int/lit8 v10, v17, 0x1
-
-    .line 541
-    div-float/2addr v6, v12
-
-    add-float v6, v18, v6
-
-    .line 542
-    div-float/2addr v8, v12
-
-    add-float/2addr v11, v8
-
-    .line 498
-    add-int/lit8 v4, v4, 0x1
-
-    move v9, v10
-
-    move v10, v6
-
+    .local v5, "dX":F
     const/4 v6, 0x0
 
-    goto/16 :goto_47
+    .line 494
+    .local v6, "dY":F
+    const/4 v7, 0x0
 
-    .line 545
-    :cond_d8
+    .line 495
+    .local v7, "count":I
+    const/4 v8, 0x0
+
+    .line 497
+    .local v8, "length":F
+    new-instance v9, Landroid/graphics/PointF;
+
+    invoke-direct {v9}, Landroid/graphics/PointF;-><init>()V
+
+    .line 498
+    .local v9, "next":Landroid/graphics/PointF;
+    const/4 v10, 0x1
+
+    .local v10, "i":I
+    :goto_42
+    iget-object v11, v0, Lcom/android/server/accessibility/AccessibilityGestureDetector;->mStrokeBuffer:Ljava/util/ArrayList;
+
+    invoke-virtual {v11}, Ljava/util/ArrayList;->size()I
+
+    move-result v11
+
+    if-ge v10, v11, :cond_dd
+
+    .line 499
+    new-instance v11, Landroid/graphics/PointF;
+
+    iget-object v12, v0, Lcom/android/server/accessibility/AccessibilityGestureDetector;->mStrokeBuffer:Ljava/util/ArrayList;
+
+    invoke-virtual {v12, v10}, Ljava/util/ArrayList;->get(I)Ljava/lang/Object;
+
+    move-result-object v12
+
+    check-cast v12, Landroid/gesture/GesturePoint;
+
+    iget v12, v12, Landroid/gesture/GesturePoint;->x:F
+
+    iget-object v13, v0, Lcom/android/server/accessibility/AccessibilityGestureDetector;->mStrokeBuffer:Ljava/util/ArrayList;
+
+    invoke-virtual {v13, v10}, Ljava/util/ArrayList;->get(I)Ljava/lang/Object;
+
+    move-result-object v13
+
+    check-cast v13, Landroid/gesture/GesturePoint;
+
+    iget v13, v13, Landroid/gesture/GesturePoint;->y:F
+
+    invoke-direct {v11, v12, v13}, Landroid/graphics/PointF;-><init>(FF)V
+
+    move-object v9, v11
+
+    .line 500
+    if-lez v7, :cond_ae
+
+    .line 502
+    int-to-float v11, v7
+
+    div-float v11, v5, v11
+
+    .line 503
+    .local v11, "currentDX":F
+    int-to-float v12, v7
+
+    div-float v12, v6, v12
+
+    .line 512
+    .local v12, "currentDY":F
+    new-instance v13, Landroid/graphics/PointF;
+
+    mul-float v14, v8, v11
+
+    iget v15, v4, Landroid/graphics/PointF;->x:F
+
+    add-float/2addr v14, v15
+
+    mul-float v15, v8, v12
+
+    move/from16 v16, v5
+
+    .end local v5  # "dX":F
+    .local v16, "dX":F
+    iget v5, v4, Landroid/graphics/PointF;->y:F
+
+    add-float/2addr v15, v5
+
+    invoke-direct {v13, v14, v15}, Landroid/graphics/PointF;-><init>(FF)V
+
+    move-object v5, v13
+
+    .line 516
+    .local v5, "newDelimiter":Landroid/graphics/PointF;
+    iget v13, v9, Landroid/graphics/PointF;->x:F
+
+    iget v14, v5, Landroid/graphics/PointF;->x:F
+
+    sub-float/2addr v13, v14
+
+    .line 517
+    .local v13, "nextDX":F
+    iget v14, v9, Landroid/graphics/PointF;->y:F
+
+    iget v15, v5, Landroid/graphics/PointF;->y:F
+
+    sub-float/2addr v14, v15
+
+    .line 518
+    .local v14, "nextDY":F
+    mul-float v15, v13, v13
+
+    mul-float v17, v14, v14
+
+    add-float v15, v15, v17
+
+    move/from16 v17, v6
+
+    move/from16 v18, v7
+
+    .end local v6  # "dY":F
+    .end local v7  # "count":I
+    .local v17, "dY":F
+    .local v18, "count":I
+    float-to-double v6, v15
+
+    invoke-static {v6, v7}, Ljava/lang/Math;->sqrt(D)D
+
+    move-result-wide v6
+
+    double-to-float v6, v6
+
+    .line 519
+    .local v6, "nextLength":F
+    div-float/2addr v13, v6
+
+    .line 520
+    div-float/2addr v14, v6
+
+    .line 524
+    mul-float v7, v11, v13
+
+    mul-float v15, v12, v14
+
+    add-float/2addr v7, v15
+
+    .line 525
+    .local v7, "dot":F
+    const/4 v15, 0x0
+
+    cmpg-float v15, v7, v15
+
+    if-gez v15, :cond_b4
+
+    .line 526
     invoke-virtual {v3, v5}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
 
+    .line 527
+    move-object v4, v5
+
+    .line 528
+    const/4 v15, 0x0
+
+    .line 529
+    .end local v16  # "dX":F
+    .local v15, "dX":F
+    const/16 v16, 0x0
+
+    .line 530
+    .end local v17  # "dY":F
+    .local v16, "dY":F
+    const/16 v17, 0x0
+
+    .end local v18  # "count":I
+    .local v17, "count":I
+    goto :goto_ba
+
+    .line 500
+    .end local v11  # "currentDX":F
+    .end local v12  # "currentDY":F
+    .end local v13  # "nextDX":F
+    .end local v14  # "nextDY":F
+    .end local v15  # "dX":F
+    .end local v16  # "dY":F
+    .end local v17  # "count":I
+    .local v5, "dX":F
+    .local v6, "dY":F
+    .local v7, "count":I
+    :cond_ae
+    move/from16 v16, v5
+
+    move/from16 v17, v6
+
+    move/from16 v18, v7
+
+    .line 535
+    .end local v5  # "dX":F
+    .end local v6  # "dY":F
+    .end local v7  # "count":I
+    .local v16, "dX":F
+    .local v17, "dY":F
+    .restart local v18  # "count":I
+    :cond_b4
+    move/from16 v15, v16
+
+    move/from16 v16, v17
+
+    move/from16 v17, v18
+
+    .end local v18  # "count":I
+    .restart local v15  # "dX":F
+    .local v16, "dY":F
+    .local v17, "count":I
+    :goto_ba
+    iget v5, v9, Landroid/graphics/PointF;->x:F
+
+    iget v6, v4, Landroid/graphics/PointF;->x:F
+
+    sub-float/2addr v5, v6
+
+    .line 536
+    .local v5, "currentDX":F
+    iget v6, v9, Landroid/graphics/PointF;->y:F
+
+    iget v7, v4, Landroid/graphics/PointF;->y:F
+
+    sub-float/2addr v6, v7
+
+    .line 537
+    .local v6, "currentDY":F
+    mul-float v7, v5, v5
+
+    mul-float v11, v6, v6
+
+    add-float/2addr v7, v11
+
+    float-to-double v11, v7
+
+    invoke-static {v11, v12}, Ljava/lang/Math;->sqrt(D)D
+
+    move-result-wide v11
+
+    double-to-float v8, v11
+
+    .line 540
+    add-int/lit8 v7, v17, 0x1
+
+    .line 541
+    .end local v17  # "count":I
+    .restart local v7  # "count":I
+    div-float v11, v5, v8
+
+    add-float/2addr v11, v15
+
+    .line 542
+    .end local v15  # "dX":F
+    .local v11, "dX":F
+    div-float v12, v6, v8
+
+    add-float v6, v16, v12
+
+    .line 498
+    .end local v5  # "currentDX":F
+    .end local v16  # "dY":F
+    .local v6, "dY":F
+    add-int/lit8 v10, v10, 0x1
+
+    move v5, v11
+
+    goto/16 :goto_42
+
+    .end local v11  # "dX":F
+    .local v5, "dX":F
+    :cond_dd
+    move/from16 v16, v5
+
+    move/from16 v17, v6
+
+    .line 545
+    .end local v5  # "dX":F
+    .end local v6  # "dY":F
+    .end local v10  # "i":I
+    .local v16, "dX":F
+    .local v17, "dY":F
+    invoke-virtual {v3, v9}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
+
     .line 546
-    new-instance v4, Ljava/lang/StringBuilder;
+    new-instance v5, Ljava/lang/StringBuilder;
 
-    invoke-direct {v4}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v5}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string/jumbo v5, "path="
+    const-string/jumbo v6, "path="
 
-    invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v3}, Ljava/util/ArrayList;->toString()Ljava/lang/String;
 
+    move-result-object v6
+
+    invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v5}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
     move-result-object v5
 
-    invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    const-string v6, "AccessibilityGestureDetector"
 
-    invoke-virtual {v4}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
-
-    move-result-object v4
-
-    const-string v5, "AccessibilityGestureDetector"
-
-    invoke-static {v5, v4}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v6, v5}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 549
     invoke-direct {v0, v1, v2, v3}, Lcom/android/server/accessibility/AccessibilityGestureDetector;->recognizeGesturePath(Landroid/view/MotionEvent;ILjava/util/ArrayList;)Z
 
-    move-result v0
+    move-result v5
 
-    return v0
+    return v5
 .end method
 
 .method private recognizeGesturePath(Landroid/view/MotionEvent;ILjava/util/ArrayList;)Z
-    .registers 10
+    .registers 15
+    .param p1, "event"  # Landroid/view/MotionEvent;
+    .param p2, "policyFlags"  # I
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(",
@@ -828,6 +902,7 @@
     .end annotation
 
     .line 565
+    .local p3, "path":Ljava/util/ArrayList;, "Ljava/util/ArrayList<Landroid/graphics/PointF;>;"
     invoke-virtual {p3}, Ljava/util/ArrayList;->size()I
 
     move-result v0
@@ -850,86 +925,105 @@
     check-cast v0, Landroid/graphics/PointF;
 
     .line 567
+    .local v0, "start":Landroid/graphics/PointF;
     invoke-virtual {p3, v3}, Ljava/util/ArrayList;->get(I)Ljava/lang/Object;
 
-    move-result-object p3
+    move-result-object v1
 
-    check-cast p3, Landroid/graphics/PointF;
+    check-cast v1, Landroid/graphics/PointF;
 
     .line 569
-    iget v1, p3, Landroid/graphics/PointF;->x:F
+    .local v1, "end":Landroid/graphics/PointF;
+    iget v5, v1, Landroid/graphics/PointF;->x:F
 
-    iget v5, v0, Landroid/graphics/PointF;->x:F
+    iget v6, v0, Landroid/graphics/PointF;->x:F
 
-    sub-float/2addr v1, v5
+    sub-float/2addr v5, v6
 
     .line 570
-    iget p3, p3, Landroid/graphics/PointF;->y:F
+    .local v5, "dX":F
+    iget v6, v1, Landroid/graphics/PointF;->y:F
 
-    iget v0, v0, Landroid/graphics/PointF;->y:F
+    iget v7, v0, Landroid/graphics/PointF;->y:F
 
-    sub-float/2addr p3, v0
+    sub-float/2addr v6, v7
 
     .line 571
-    invoke-static {v1, p3}, Lcom/android/server/accessibility/AccessibilityGestureDetector;->toDirection(FF)I
+    .local v6, "dY":F
+    invoke-static {v5, v6}, Lcom/android/server/accessibility/AccessibilityGestureDetector;->toDirection(FF)I
 
-    move-result p3
+    move-result v7
 
     .line 572
-    if-eqz p3, :cond_43
+    .local v7, "direction":I
+    if-eqz v7, :cond_43
 
-    if-eq p3, v3, :cond_3b
+    if-eq v7, v3, :cond_3b
 
-    if-eq p3, v4, :cond_34
+    if-eq v7, v4, :cond_34
 
-    if-eq p3, v2, :cond_2d
+    if-eq v7, v2, :cond_2d
 
-    .line 585
+    .end local v0  # "start":Landroid/graphics/PointF;
+    .end local v1  # "end":Landroid/graphics/PointF;
+    .end local v5  # "dX":F
+    .end local v6  # "dY":F
+    .end local v7  # "direction":I
     goto :goto_8b
 
     .line 580
+    .restart local v0  # "start":Landroid/graphics/PointF;
+    .restart local v1  # "end":Landroid/graphics/PointF;
+    .restart local v5  # "dX":F
+    .restart local v6  # "dY":F
+    .restart local v7  # "direction":I
     :cond_2d
-    iget-object p1, p0, Lcom/android/server/accessibility/AccessibilityGestureDetector;->mListener:Lcom/android/server/accessibility/AccessibilityGestureDetector$Listener;
+    iget-object v2, p0, Lcom/android/server/accessibility/AccessibilityGestureDetector;->mListener:Lcom/android/server/accessibility/AccessibilityGestureDetector$Listener;
 
-    invoke-interface {p1, v4}, Lcom/android/server/accessibility/AccessibilityGestureDetector$Listener;->onGestureCompleted(I)Z
+    invoke-interface {v2, v4}, Lcom/android/server/accessibility/AccessibilityGestureDetector$Listener;->onGestureCompleted(I)Z
 
-    move-result p1
+    move-result v2
 
-    return p1
+    return v2
 
     .line 578
     :cond_34
-    iget-object p1, p0, Lcom/android/server/accessibility/AccessibilityGestureDetector;->mListener:Lcom/android/server/accessibility/AccessibilityGestureDetector$Listener;
+    iget-object v2, p0, Lcom/android/server/accessibility/AccessibilityGestureDetector;->mListener:Lcom/android/server/accessibility/AccessibilityGestureDetector$Listener;
 
-    invoke-interface {p1, v3}, Lcom/android/server/accessibility/AccessibilityGestureDetector$Listener;->onGestureCompleted(I)Z
+    invoke-interface {v2, v3}, Lcom/android/server/accessibility/AccessibilityGestureDetector$Listener;->onGestureCompleted(I)Z
 
-    move-result p1
+    move-result v2
 
-    return p1
+    return v2
 
     .line 576
     :cond_3b
-    iget-object p1, p0, Lcom/android/server/accessibility/AccessibilityGestureDetector;->mListener:Lcom/android/server/accessibility/AccessibilityGestureDetector$Listener;
+    iget-object v2, p0, Lcom/android/server/accessibility/AccessibilityGestureDetector;->mListener:Lcom/android/server/accessibility/AccessibilityGestureDetector$Listener;
 
-    const/4 p2, 0x4
+    const/4 v3, 0x4
 
-    invoke-interface {p1, p2}, Lcom/android/server/accessibility/AccessibilityGestureDetector$Listener;->onGestureCompleted(I)Z
+    invoke-interface {v2, v3}, Lcom/android/server/accessibility/AccessibilityGestureDetector$Listener;->onGestureCompleted(I)Z
 
-    move-result p1
+    move-result v2
 
-    return p1
+    return v2
 
     .line 574
     :cond_43
-    iget-object p1, p0, Lcom/android/server/accessibility/AccessibilityGestureDetector;->mListener:Lcom/android/server/accessibility/AccessibilityGestureDetector$Listener;
+    iget-object v3, p0, Lcom/android/server/accessibility/AccessibilityGestureDetector;->mListener:Lcom/android/server/accessibility/AccessibilityGestureDetector$Listener;
 
-    invoke-interface {p1, v2}, Lcom/android/server/accessibility/AccessibilityGestureDetector$Listener;->onGestureCompleted(I)Z
+    invoke-interface {v3, v2}, Lcom/android/server/accessibility/AccessibilityGestureDetector$Listener;->onGestureCompleted(I)Z
 
-    move-result p1
+    move-result v2
 
-    return p1
+    return v2
 
     .line 585
+    .end local v0  # "start":Landroid/graphics/PointF;
+    .end local v1  # "end":Landroid/graphics/PointF;
+    .end local v5  # "dX":F
+    .end local v6  # "dY":F
+    .end local v7  # "direction":I
     :cond_4a
     invoke-virtual {p3}, Ljava/util/ArrayList;->size()I
 
@@ -940,92 +1034,117 @@
     .line 586
     invoke-virtual {p3, v1}, Ljava/util/ArrayList;->get(I)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v0
 
-    check-cast p1, Landroid/graphics/PointF;
+    check-cast v0, Landroid/graphics/PointF;
 
     .line 587
+    .restart local v0  # "start":Landroid/graphics/PointF;
     invoke-virtual {p3, v3}, Ljava/util/ArrayList;->get(I)Ljava/lang/Object;
 
-    move-result-object p2
+    move-result-object v1
 
-    check-cast p2, Landroid/graphics/PointF;
+    check-cast v1, Landroid/graphics/PointF;
 
     .line 588
+    .local v1, "mid":Landroid/graphics/PointF;
     invoke-virtual {p3, v4}, Ljava/util/ArrayList;->get(I)Ljava/lang/Object;
 
-    move-result-object p3
+    move-result-object v2
 
-    check-cast p3, Landroid/graphics/PointF;
+    check-cast v2, Landroid/graphics/PointF;
 
     .line 590
-    iget v0, p2, Landroid/graphics/PointF;->x:F
+    .local v2, "end":Landroid/graphics/PointF;
+    iget v3, v1, Landroid/graphics/PointF;->x:F
 
-    iget v1, p1, Landroid/graphics/PointF;->x:F
+    iget v4, v0, Landroid/graphics/PointF;->x:F
 
-    sub-float/2addr v0, v1
+    sub-float/2addr v3, v4
 
     .line 591
-    iget v1, p2, Landroid/graphics/PointF;->y:F
+    .local v3, "dX0":F
+    iget v4, v1, Landroid/graphics/PointF;->y:F
 
-    iget p1, p1, Landroid/graphics/PointF;->y:F
+    iget v5, v0, Landroid/graphics/PointF;->y:F
 
-    sub-float/2addr v1, p1
+    sub-float/2addr v4, v5
 
     .line 593
-    iget p1, p3, Landroid/graphics/PointF;->x:F
+    .local v4, "dY0":F
+    iget v5, v2, Landroid/graphics/PointF;->x:F
 
-    iget v2, p2, Landroid/graphics/PointF;->x:F
+    iget v6, v1, Landroid/graphics/PointF;->x:F
 
-    sub-float/2addr p1, v2
+    sub-float/2addr v5, v6
 
     .line 594
-    iget p3, p3, Landroid/graphics/PointF;->y:F
+    .local v5, "dX1":F
+    iget v6, v2, Landroid/graphics/PointF;->y:F
 
-    iget p2, p2, Landroid/graphics/PointF;->y:F
+    iget v7, v1, Landroid/graphics/PointF;->y:F
 
-    sub-float/2addr p3, p2
+    sub-float/2addr v6, v7
 
     .line 596
-    invoke-static {v0, v1}, Lcom/android/server/accessibility/AccessibilityGestureDetector;->toDirection(FF)I
+    .local v6, "dY1":F
+    invoke-static {v3, v4}, Lcom/android/server/accessibility/AccessibilityGestureDetector;->toDirection(FF)I
 
-    move-result p2
+    move-result v7
 
     .line 597
-    invoke-static {p1, p3}, Lcom/android/server/accessibility/AccessibilityGestureDetector;->toDirection(FF)I
+    .local v7, "segmentDirection0":I
+    invoke-static {v5, v6}, Lcom/android/server/accessibility/AccessibilityGestureDetector;->toDirection(FF)I
 
-    move-result p1
+    move-result v8
 
     .line 598
-    sget-object p3, Lcom/android/server/accessibility/AccessibilityGestureDetector;->DIRECTIONS_TO_GESTURE_ID:[[I
+    .local v8, "segmentDirection1":I
+    sget-object v9, Lcom/android/server/accessibility/AccessibilityGestureDetector;->DIRECTIONS_TO_GESTURE_ID:[[I
 
-    aget-object p2, p3, p2
+    aget-object v9, v9, v7
 
-    aget p1, p2, p1
+    aget v9, v9, v8
 
     .line 599
-    iget-object p2, p0, Lcom/android/server/accessibility/AccessibilityGestureDetector;->mListener:Lcom/android/server/accessibility/AccessibilityGestureDetector$Listener;
+    .local v9, "gestureId":I
+    iget-object v10, p0, Lcom/android/server/accessibility/AccessibilityGestureDetector;->mListener:Lcom/android/server/accessibility/AccessibilityGestureDetector$Listener;
 
-    invoke-interface {p2, p1}, Lcom/android/server/accessibility/AccessibilityGestureDetector$Listener;->onGestureCompleted(I)Z
+    invoke-interface {v10, v9}, Lcom/android/server/accessibility/AccessibilityGestureDetector$Listener;->onGestureCompleted(I)Z
 
-    move-result p1
+    move-result v10
 
-    return p1
+    return v10
 
-    .line 602
+    .line 585
+    .end local v0  # "start":Landroid/graphics/PointF;
+    .end local v1  # "mid":Landroid/graphics/PointF;
+    .end local v2  # "end":Landroid/graphics/PointF;
+    .end local v3  # "dX0":F
+    .end local v4  # "dY0":F
+    .end local v5  # "dX1":F
+    .end local v6  # "dY1":F
+    .end local v7  # "segmentDirection0":I
+    .end local v8  # "segmentDirection1":I
+    .end local v9  # "gestureId":I
     :cond_8b
     :goto_8b
-    iget-object p3, p0, Lcom/android/server/accessibility/AccessibilityGestureDetector;->mListener:Lcom/android/server/accessibility/AccessibilityGestureDetector$Listener;
+    nop
 
-    invoke-interface {p3, p1, p2}, Lcom/android/server/accessibility/AccessibilityGestureDetector$Listener;->onGestureCancelled(Landroid/view/MotionEvent;I)Z
+    .line 602
+    iget-object v0, p0, Lcom/android/server/accessibility/AccessibilityGestureDetector;->mListener:Lcom/android/server/accessibility/AccessibilityGestureDetector$Listener;
 
-    move-result p1
+    invoke-interface {v0, p1, p2}, Lcom/android/server/accessibility/AccessibilityGestureDetector$Listener;->onGestureCancelled(Landroid/view/MotionEvent;I)Z
 
-    return p1
+    move-result v0
+
+    return v0
 .end method
 
 .method private static toDirection(FF)I
     .registers 4
+    .param p0, "dX"  # F
+    .param p1, "dY"  # F
 
     .line 607
     invoke-static {p0}, Ljava/lang/Math;->abs(F)F
@@ -1043,35 +1162,35 @@
     if-lez v0, :cond_15
 
     .line 609
-    cmpg-float p0, p0, v1
+    cmpg-float v0, p0, v1
 
-    if-gez p0, :cond_13
+    if-gez v0, :cond_13
 
-    const/4 p0, 0x0
+    const/4 v0, 0x0
 
     goto :goto_14
 
     :cond_13
-    const/4 p0, 0x1
+    const/4 v0, 0x1
 
     :goto_14
-    return p0
+    return v0
 
     .line 612
     :cond_15
-    cmpg-float p0, p1, v1
+    cmpg-float v0, p1, v1
 
-    if-gez p0, :cond_1b
+    if-gez v0, :cond_1b
 
-    const/4 p0, 0x2
+    const/4 v0, 0x2
 
     goto :goto_1c
 
     :cond_1b
-    const/4 p0, 0x3
+    const/4 v0, 0x3
 
     :goto_1c
-    return p0
+    return v0
 .end method
 
 
@@ -1131,21 +1250,23 @@
 .end method
 
 .method public onDoubleTap(Landroid/view/MotionEvent;)Z
-    .registers 2
+    .registers 3
+    .param p1, "event"  # Landroid/view/MotionEvent;
 
     .line 442
-    const/4 p1, 0x1
+    const/4 v0, 0x1
 
-    iput-boolean p1, p0, Lcom/android/server/accessibility/AccessibilityGestureDetector;->mDoubleTapDetected:Z
+    iput-boolean v0, p0, Lcom/android/server/accessibility/AccessibilityGestureDetector;->mDoubleTapDetected:Z
 
     .line 443
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    return p1
+    return v0
 .end method
 
 .method public onLongPress(Landroid/view/MotionEvent;)V
     .registers 3
+    .param p1, "e"  # Landroid/view/MotionEvent;
 
     .line 423
     iget v0, p0, Lcom/android/server/accessibility/AccessibilityGestureDetector;->mPolicyFlags:I
@@ -1157,454 +1278,494 @@
 .end method
 
 .method public onMotionEvent(Landroid/view/MotionEvent;Landroid/view/MotionEvent;I)Z
-    .registers 16
+    .registers 21
+    .param p1, "event"  # Landroid/view/MotionEvent;
+    .param p2, "rawEvent"  # Landroid/view/MotionEvent;
+    .param p3, "policyFlags"  # I
 
     .line 273
-    invoke-virtual {p2}, Landroid/view/MotionEvent;->getX()F
+    move-object/from16 v0, p0
 
-    move-result v0
+    move-object/from16 v1, p2
+
+    move/from16 v2, p3
+
+    invoke-virtual/range {p2 .. p2}, Landroid/view/MotionEvent;->getX()F
+
+    move-result v3
 
     .line 274
-    invoke-virtual {p2}, Landroid/view/MotionEvent;->getY()F
+    .local v3, "x":F
+    invoke-virtual/range {p2 .. p2}, Landroid/view/MotionEvent;->getY()F
 
-    move-result v1
+    move-result v4
 
     .line 275
-    invoke-virtual {p2}, Landroid/view/MotionEvent;->getEventTime()J
+    .local v4, "y":F
+    invoke-virtual/range {p2 .. p2}, Landroid/view/MotionEvent;->getEventTime()J
 
-    move-result-wide v2
+    move-result-wide v5
 
     .line 277
-    iput p3, p0, Lcom/android/server/accessibility/AccessibilityGestureDetector;->mPolicyFlags:I
+    .local v5, "time":J
+    iput v2, v0, Lcom/android/server/accessibility/AccessibilityGestureDetector;->mPolicyFlags:I
 
     .line 278
-    invoke-virtual {p2}, Landroid/view/MotionEvent;->getActionMasked()I
+    invoke-virtual/range {p2 .. p2}, Landroid/view/MotionEvent;->getActionMasked()I
 
-    move-result v4
+    move-result v7
 
-    const/4 v5, 0x1
+    const/4 v8, 0x1
 
-    const/4 v6, 0x0
+    const/4 v9, 0x0
 
-    if-eqz v4, :cond_fb
+    if-eqz v7, :cond_102
 
-    if-eq v4, v5, :cond_c3
+    if-eq v7, v8, :cond_ca
 
-    const/4 v7, 0x2
+    const/4 v10, 0x2
 
-    if-eq v4, v7, :cond_4b
+    if-eq v7, v10, :cond_51
 
-    const/4 v0, 0x3
+    const/4 v11, 0x3
 
-    if-eq v4, v0, :cond_46
+    if-eq v7, v11, :cond_4c
 
-    const/4 v0, 0x5
+    const/4 v11, 0x5
 
-    if-eq v4, v0, :cond_33
+    if-eq v7, v11, :cond_39
 
-    const/4 v0, 0x6
+    const/4 v8, 0x6
 
-    if-eq v4, v0, :cond_26
+    if-eq v7, v8, :cond_2c
 
-    goto/16 :goto_11d
+    goto/16 :goto_124
 
     .line 377
-    :cond_26
-    iget-boolean v0, p0, Lcom/android/server/accessibility/AccessibilityGestureDetector;->mSecondFingerDoubleTap:Z
+    :cond_2c
+    iget-boolean v7, v0, Lcom/android/server/accessibility/AccessibilityGestureDetector;->mSecondFingerDoubleTap:Z
 
-    if-eqz v0, :cond_11d
+    if-eqz v7, :cond_124
 
-    iget-boolean v0, p0, Lcom/android/server/accessibility/AccessibilityGestureDetector;->mDoubleTapDetected:Z
+    iget-boolean v7, v0, Lcom/android/server/accessibility/AccessibilityGestureDetector;->mDoubleTapDetected:Z
 
-    if-eqz v0, :cond_11d
+    if-eqz v7, :cond_124
 
     .line 378
-    invoke-direct {p0, p2, p3}, Lcom/android/server/accessibility/AccessibilityGestureDetector;->finishDoubleTap(Landroid/view/MotionEvent;I)Z
+    invoke-direct {v0, v1, v2}, Lcom/android/server/accessibility/AccessibilityGestureDetector;->finishDoubleTap(Landroid/view/MotionEvent;I)Z
 
-    move-result p1
+    move-result v7
 
-    return p1
+    return v7
 
     .line 360
-    :cond_33
-    invoke-direct {p0}, Lcom/android/server/accessibility/AccessibilityGestureDetector;->cancelGesture()V
+    :cond_39
+    invoke-direct/range {p0 .. p0}, Lcom/android/server/accessibility/AccessibilityGestureDetector;->cancelGesture()V
 
     .line 362
-    invoke-virtual {p2}, Landroid/view/MotionEvent;->getPointerCount()I
+    invoke-virtual/range {p2 .. p2}, Landroid/view/MotionEvent;->getPointerCount()I
 
-    move-result p3
+    move-result v7
 
-    if-ne p3, v7, :cond_42
+    if-ne v7, v10, :cond_48
 
     .line 365
-    iput-boolean v5, p0, Lcom/android/server/accessibility/AccessibilityGestureDetector;->mSecondFingerDoubleTap:Z
+    iput-boolean v8, v0, Lcom/android/server/accessibility/AccessibilityGestureDetector;->mSecondFingerDoubleTap:Z
 
     .line 366
-    iput-wide v2, p0, Lcom/android/server/accessibility/AccessibilityGestureDetector;->mSecondPointerDownTime:J
+    iput-wide v5, v0, Lcom/android/server/accessibility/AccessibilityGestureDetector;->mSecondPointerDownTime:J
 
-    goto/16 :goto_11d
+    goto/16 :goto_124
 
     .line 370
-    :cond_42
-    iput-boolean v6, p0, Lcom/android/server/accessibility/AccessibilityGestureDetector;->mSecondFingerDoubleTap:Z
+    :cond_48
+    iput-boolean v9, v0, Lcom/android/server/accessibility/AccessibilityGestureDetector;->mSecondFingerDoubleTap:Z
 
     .line 372
-    goto/16 :goto_11d
+    goto/16 :goto_124
 
     .line 383
-    :cond_46
-    invoke-virtual {p0}, Lcom/android/server/accessibility/AccessibilityGestureDetector;->clear()V
+    :cond_4c
+    invoke-virtual/range {p0 .. p0}, Lcom/android/server/accessibility/AccessibilityGestureDetector;->clear()V
 
-    goto/16 :goto_11d
+    goto/16 :goto_124
 
     .line 295
-    :cond_4b
-    iget-boolean v4, p0, Lcom/android/server/accessibility/AccessibilityGestureDetector;->mRecognizingGesture:Z
+    :cond_51
+    iget-boolean v7, v0, Lcom/android/server/accessibility/AccessibilityGestureDetector;->mRecognizingGesture:Z
 
-    if-eqz v4, :cond_11d
+    if-eqz v7, :cond_124
 
     .line 296
-    iget v4, p0, Lcom/android/server/accessibility/AccessibilityGestureDetector;->mBaseX:F
+    iget v7, v0, Lcom/android/server/accessibility/AccessibilityGestureDetector;->mBaseX:F
 
-    sub-float/2addr v4, v0
+    sub-float/2addr v7, v3
 
     .line 297
-    iget v7, p0, Lcom/android/server/accessibility/AccessibilityGestureDetector;->mBaseY:F
+    .local v7, "deltaX":F
+    iget v10, v0, Lcom/android/server/accessibility/AccessibilityGestureDetector;->mBaseY:F
 
-    sub-float/2addr v7, v1
+    sub-float/2addr v10, v4
 
     .line 298
-    float-to-double v8, v4
+    .local v10, "deltaY":F
+    float-to-double v11, v7
 
-    float-to-double v10, v7
+    float-to-double v13, v10
 
-    invoke-static {v8, v9, v10, v11}, Ljava/lang/Math;->hypot(DD)D
+    invoke-static {v11, v12, v13, v14}, Ljava/lang/Math;->hypot(DD)D
 
-    move-result-wide v7
+    move-result-wide v11
 
     .line 299
-    iget v4, p0, Lcom/android/server/accessibility/AccessibilityGestureDetector;->mGestureDetectionThreshold:F
+    .local v11, "moveDelta":D
+    iget v13, v0, Lcom/android/server/accessibility/AccessibilityGestureDetector;->mGestureDetectionThreshold:F
 
-    float-to-double v9, v4
+    float-to-double v13, v13
 
-    cmpl-double v4, v7, v9
+    cmpl-double v13, v11, v13
 
-    if-lez v4, :cond_79
+    if-lez v13, :cond_7f
 
     .line 302
-    iput v0, p0, Lcom/android/server/accessibility/AccessibilityGestureDetector;->mBaseX:F
+    iput v3, v0, Lcom/android/server/accessibility/AccessibilityGestureDetector;->mBaseX:F
 
     .line 303
-    iput v1, p0, Lcom/android/server/accessibility/AccessibilityGestureDetector;->mBaseY:F
+    iput v4, v0, Lcom/android/server/accessibility/AccessibilityGestureDetector;->mBaseY:F
 
     .line 304
-    iput-wide v2, p0, Lcom/android/server/accessibility/AccessibilityGestureDetector;->mBaseTime:J
+    iput-wide v5, v0, Lcom/android/server/accessibility/AccessibilityGestureDetector;->mBaseTime:J
 
     .line 308
-    iput-boolean v6, p0, Lcom/android/server/accessibility/AccessibilityGestureDetector;->mFirstTapDetected:Z
+    iput-boolean v9, v0, Lcom/android/server/accessibility/AccessibilityGestureDetector;->mFirstTapDetected:Z
 
     .line 309
-    iput-boolean v6, p0, Lcom/android/server/accessibility/AccessibilityGestureDetector;->mDoubleTapDetected:Z
+    iput-boolean v9, v0, Lcom/android/server/accessibility/AccessibilityGestureDetector;->mDoubleTapDetected:Z
 
     .line 313
-    iget-boolean p3, p0, Lcom/android/server/accessibility/AccessibilityGestureDetector;->mGestureStarted:Z
+    iget-boolean v13, v0, Lcom/android/server/accessibility/AccessibilityGestureDetector;->mGestureStarted:Z
 
-    if-nez p3, :cond_98
+    if-nez v13, :cond_9f
 
     .line 314
-    iput-boolean v5, p0, Lcom/android/server/accessibility/AccessibilityGestureDetector;->mGestureStarted:Z
+    iput-boolean v8, v0, Lcom/android/server/accessibility/AccessibilityGestureDetector;->mGestureStarted:Z
 
     .line 315
-    iget-object p1, p0, Lcom/android/server/accessibility/AccessibilityGestureDetector;->mListener:Lcom/android/server/accessibility/AccessibilityGestureDetector$Listener;
+    iget-object v8, v0, Lcom/android/server/accessibility/AccessibilityGestureDetector;->mListener:Lcom/android/server/accessibility/AccessibilityGestureDetector$Listener;
 
-    invoke-interface {p1}, Lcom/android/server/accessibility/AccessibilityGestureDetector$Listener;->onGestureStarted()Z
+    invoke-interface {v8}, Lcom/android/server/accessibility/AccessibilityGestureDetector$Listener;->onGestureStarted()Z
 
-    move-result p1
+    move-result v8
 
-    return p1
+    return v8
 
     .line 317
-    :cond_79
-    iget-boolean v4, p0, Lcom/android/server/accessibility/AccessibilityGestureDetector;->mFirstTapDetected:Z
+    :cond_7f
+    iget-boolean v8, v0, Lcom/android/server/accessibility/AccessibilityGestureDetector;->mFirstTapDetected:Z
 
-    if-nez v4, :cond_98
+    if-nez v8, :cond_9f
 
     .line 320
-    iget-wide v4, p0, Lcom/android/server/accessibility/AccessibilityGestureDetector;->mBaseTime:J
+    iget-wide v13, v0, Lcom/android/server/accessibility/AccessibilityGestureDetector;->mBaseTime:J
 
-    sub-long v4, v2, v4
+    sub-long v13, v5, v13
 
     .line 321
-    iget-boolean v7, p0, Lcom/android/server/accessibility/AccessibilityGestureDetector;->mGestureStarted:Z
+    .local v13, "timeDelta":J
+    iget-boolean v8, v0, Lcom/android/server/accessibility/AccessibilityGestureDetector;->mGestureStarted:Z
 
-    if-eqz v7, :cond_88
+    if-eqz v8, :cond_8e
 
     .line 322
-    const-wide/16 v7, 0x12c
+    const-wide/16 v15, 0x12c
 
-    goto :goto_8a
+    goto :goto_90
 
     .line 323
-    :cond_88
-    const-wide/16 v7, 0x96
+    :cond_8e
+    const-wide/16 v15, 0x96
+
+    :goto_90
+    nop
 
     .line 327
-    :goto_8a
-    cmp-long v4, v4, v7
+    .local v15, "threshold":J
+    cmp-long v8, v13, v15
 
-    if-lez v4, :cond_98
+    if-lez v8, :cond_9f
 
     .line 328
-    invoke-direct {p0}, Lcom/android/server/accessibility/AccessibilityGestureDetector;->cancelGesture()V
+    invoke-direct/range {p0 .. p0}, Lcom/android/server/accessibility/AccessibilityGestureDetector;->cancelGesture()V
 
     .line 329
-    iget-object p1, p0, Lcom/android/server/accessibility/AccessibilityGestureDetector;->mListener:Lcom/android/server/accessibility/AccessibilityGestureDetector$Listener;
+    iget-object v8, v0, Lcom/android/server/accessibility/AccessibilityGestureDetector;->mListener:Lcom/android/server/accessibility/AccessibilityGestureDetector$Listener;
 
-    invoke-interface {p1, p2, p3}, Lcom/android/server/accessibility/AccessibilityGestureDetector$Listener;->onGestureCancelled(Landroid/view/MotionEvent;I)Z
+    invoke-interface {v8, v1, v2}, Lcom/android/server/accessibility/AccessibilityGestureDetector$Listener;->onGestureCancelled(Landroid/view/MotionEvent;I)Z
 
-    move-result p1
+    move-result v8
 
-    return p1
+    return v8
 
     .line 333
-    :cond_98
-    iget p3, p0, Lcom/android/server/accessibility/AccessibilityGestureDetector;->mPreviousGestureX:F
+    .end local v13  # "timeDelta":J
+    .end local v15  # "threshold":J
+    :cond_9f
+    iget v8, v0, Lcom/android/server/accessibility/AccessibilityGestureDetector;->mPreviousGestureX:F
 
-    sub-float p3, v0, p3
+    sub-float v8, v3, v8
 
-    invoke-static {p3}, Ljava/lang/Math;->abs(F)F
+    invoke-static {v8}, Ljava/lang/Math;->abs(F)F
 
-    move-result p3
+    move-result v8
 
     .line 334
-    iget v4, p0, Lcom/android/server/accessibility/AccessibilityGestureDetector;->mPreviousGestureY:F
+    .local v8, "dX":F
+    iget v13, v0, Lcom/android/server/accessibility/AccessibilityGestureDetector;->mPreviousGestureY:F
 
-    sub-float v4, v1, v4
+    sub-float v13, v4, v13
 
-    invoke-static {v4}, Ljava/lang/Math;->abs(F)F
+    invoke-static {v13}, Ljava/lang/Math;->abs(F)F
 
-    move-result v4
+    move-result v13
 
     .line 335
-    iget v5, p0, Lcom/android/server/accessibility/AccessibilityGestureDetector;->mMinPixelsBetweenSamplesX:F
+    .local v13, "dY":F
+    iget v14, v0, Lcom/android/server/accessibility/AccessibilityGestureDetector;->mMinPixelsBetweenSamplesX:F
 
-    cmpl-float p3, p3, v5
+    cmpl-float v14, v8, v14
 
-    if-gez p3, :cond_b4
+    if-gez v14, :cond_bb
 
-    iget p3, p0, Lcom/android/server/accessibility/AccessibilityGestureDetector;->mMinPixelsBetweenSamplesY:F
+    iget v14, v0, Lcom/android/server/accessibility/AccessibilityGestureDetector;->mMinPixelsBetweenSamplesY:F
 
-    cmpl-float p3, v4, p3
+    cmpl-float v14, v13, v14
 
-    if-ltz p3, :cond_c2
+    if-ltz v14, :cond_c9
 
     .line 336
-    :cond_b4
-    iput v0, p0, Lcom/android/server/accessibility/AccessibilityGestureDetector;->mPreviousGestureX:F
+    :cond_bb
+    iput v3, v0, Lcom/android/server/accessibility/AccessibilityGestureDetector;->mPreviousGestureX:F
 
     .line 337
-    iput v1, p0, Lcom/android/server/accessibility/AccessibilityGestureDetector;->mPreviousGestureY:F
+    iput v4, v0, Lcom/android/server/accessibility/AccessibilityGestureDetector;->mPreviousGestureY:F
 
     .line 338
-    iget-object p3, p0, Lcom/android/server/accessibility/AccessibilityGestureDetector;->mStrokeBuffer:Ljava/util/ArrayList;
+    iget-object v14, v0, Lcom/android/server/accessibility/AccessibilityGestureDetector;->mStrokeBuffer:Ljava/util/ArrayList;
 
-    new-instance v4, Landroid/gesture/GesturePoint;
+    new-instance v15, Landroid/gesture/GesturePoint;
 
-    invoke-direct {v4, v0, v1, v2, v3}, Landroid/gesture/GesturePoint;-><init>(FFJ)V
+    invoke-direct {v15, v3, v4, v5, v6}, Landroid/gesture/GesturePoint;-><init>(FFJ)V
 
-    invoke-virtual {p3, v4}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
+    invoke-virtual {v14, v15}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
 
     .line 340
-    :cond_c2
-    goto :goto_11d
+    .end local v7  # "deltaX":F
+    .end local v8  # "dX":F
+    .end local v10  # "deltaY":F
+    .end local v11  # "moveDelta":D
+    .end local v13  # "dY":F
+    :cond_c9
+    goto :goto_124
 
     .line 344
-    :cond_c3
-    iget-boolean v4, p0, Lcom/android/server/accessibility/AccessibilityGestureDetector;->mDoubleTapDetected:Z
+    :cond_ca
+    iget-boolean v7, v0, Lcom/android/server/accessibility/AccessibilityGestureDetector;->mDoubleTapDetected:Z
 
-    if-eqz v4, :cond_cc
+    if-eqz v7, :cond_d3
 
     .line 345
-    invoke-direct {p0, p2, p3}, Lcom/android/server/accessibility/AccessibilityGestureDetector;->finishDoubleTap(Landroid/view/MotionEvent;I)Z
+    invoke-direct {v0, v1, v2}, Lcom/android/server/accessibility/AccessibilityGestureDetector;->finishDoubleTap(Landroid/view/MotionEvent;I)Z
 
-    move-result p1
+    move-result v7
 
-    return p1
+    return v7
 
     .line 347
-    :cond_cc
-    iget-boolean v4, p0, Lcom/android/server/accessibility/AccessibilityGestureDetector;->mGestureStarted:Z
+    :cond_d3
+    iget-boolean v7, v0, Lcom/android/server/accessibility/AccessibilityGestureDetector;->mGestureStarted:Z
 
-    if-eqz v4, :cond_11d
+    if-eqz v7, :cond_124
 
     .line 348
-    iget p1, p0, Lcom/android/server/accessibility/AccessibilityGestureDetector;->mPreviousGestureX:F
+    iget v7, v0, Lcom/android/server/accessibility/AccessibilityGestureDetector;->mPreviousGestureX:F
 
-    sub-float p1, v0, p1
+    sub-float v7, v3, v7
 
-    invoke-static {p1}, Ljava/lang/Math;->abs(F)F
+    invoke-static {v7}, Ljava/lang/Math;->abs(F)F
 
-    move-result p1
+    move-result v7
 
     .line 349
-    iget v4, p0, Lcom/android/server/accessibility/AccessibilityGestureDetector;->mPreviousGestureY:F
+    .local v7, "dX":F
+    iget v8, v0, Lcom/android/server/accessibility/AccessibilityGestureDetector;->mPreviousGestureY:F
 
-    sub-float v4, v1, v4
+    sub-float v8, v4, v8
 
-    invoke-static {v4}, Ljava/lang/Math;->abs(F)F
+    invoke-static {v8}, Ljava/lang/Math;->abs(F)F
 
-    move-result v4
+    move-result v8
 
     .line 350
-    iget v5, p0, Lcom/android/server/accessibility/AccessibilityGestureDetector;->mMinPixelsBetweenSamplesX:F
+    .local v8, "dY":F
+    iget v9, v0, Lcom/android/server/accessibility/AccessibilityGestureDetector;->mMinPixelsBetweenSamplesX:F
 
-    cmpl-float p1, p1, v5
+    cmpl-float v9, v7, v9
 
-    if-gez p1, :cond_ec
+    if-gez v9, :cond_f3
 
-    iget p1, p0, Lcom/android/server/accessibility/AccessibilityGestureDetector;->mMinPixelsBetweenSamplesY:F
+    iget v9, v0, Lcom/android/server/accessibility/AccessibilityGestureDetector;->mMinPixelsBetweenSamplesY:F
 
-    cmpl-float p1, v4, p1
+    cmpl-float v9, v8, v9
 
-    if-ltz p1, :cond_f6
+    if-ltz v9, :cond_fd
 
     .line 351
-    :cond_ec
-    iget-object p1, p0, Lcom/android/server/accessibility/AccessibilityGestureDetector;->mStrokeBuffer:Ljava/util/ArrayList;
+    :cond_f3
+    iget-object v9, v0, Lcom/android/server/accessibility/AccessibilityGestureDetector;->mStrokeBuffer:Ljava/util/ArrayList;
 
-    new-instance v4, Landroid/gesture/GesturePoint;
+    new-instance v10, Landroid/gesture/GesturePoint;
 
-    invoke-direct {v4, v0, v1, v2, v3}, Landroid/gesture/GesturePoint;-><init>(FFJ)V
+    invoke-direct {v10, v3, v4, v5, v6}, Landroid/gesture/GesturePoint;-><init>(FFJ)V
 
-    invoke-virtual {p1, v4}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
+    invoke-virtual {v9, v10}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
 
     .line 353
-    :cond_f6
-    invoke-direct {p0, p2, p3}, Lcom/android/server/accessibility/AccessibilityGestureDetector;->recognizeGesture(Landroid/view/MotionEvent;I)Z
+    :cond_fd
+    invoke-direct {v0, v1, v2}, Lcom/android/server/accessibility/AccessibilityGestureDetector;->recognizeGesture(Landroid/view/MotionEvent;I)Z
 
-    move-result p1
+    move-result v9
 
-    return p1
+    return v9
 
     .line 280
-    :cond_fb
-    iput-boolean v6, p0, Lcom/android/server/accessibility/AccessibilityGestureDetector;->mDoubleTapDetected:Z
+    .end local v7  # "dX":F
+    .end local v8  # "dY":F
+    :cond_102
+    iput-boolean v9, v0, Lcom/android/server/accessibility/AccessibilityGestureDetector;->mDoubleTapDetected:Z
 
     .line 281
-    iput-boolean v6, p0, Lcom/android/server/accessibility/AccessibilityGestureDetector;->mSecondFingerDoubleTap:Z
+    iput-boolean v9, v0, Lcom/android/server/accessibility/AccessibilityGestureDetector;->mSecondFingerDoubleTap:Z
 
     .line 282
-    iput-boolean v5, p0, Lcom/android/server/accessibility/AccessibilityGestureDetector;->mRecognizingGesture:Z
+    iput-boolean v8, v0, Lcom/android/server/accessibility/AccessibilityGestureDetector;->mRecognizingGesture:Z
 
     .line 283
-    iput-boolean v6, p0, Lcom/android/server/accessibility/AccessibilityGestureDetector;->mGestureStarted:Z
+    iput-boolean v9, v0, Lcom/android/server/accessibility/AccessibilityGestureDetector;->mGestureStarted:Z
 
     .line 284
-    iput v0, p0, Lcom/android/server/accessibility/AccessibilityGestureDetector;->mPreviousGestureX:F
+    iput v3, v0, Lcom/android/server/accessibility/AccessibilityGestureDetector;->mPreviousGestureX:F
 
     .line 285
-    iput v1, p0, Lcom/android/server/accessibility/AccessibilityGestureDetector;->mPreviousGestureY:F
+    iput v4, v0, Lcom/android/server/accessibility/AccessibilityGestureDetector;->mPreviousGestureY:F
 
     .line 286
-    iget-object p3, p0, Lcom/android/server/accessibility/AccessibilityGestureDetector;->mStrokeBuffer:Ljava/util/ArrayList;
+    iget-object v7, v0, Lcom/android/server/accessibility/AccessibilityGestureDetector;->mStrokeBuffer:Ljava/util/ArrayList;
 
-    invoke-virtual {p3}, Ljava/util/ArrayList;->clear()V
+    invoke-virtual {v7}, Ljava/util/ArrayList;->clear()V
 
     .line 287
-    iget-object p3, p0, Lcom/android/server/accessibility/AccessibilityGestureDetector;->mStrokeBuffer:Ljava/util/ArrayList;
+    iget-object v7, v0, Lcom/android/server/accessibility/AccessibilityGestureDetector;->mStrokeBuffer:Ljava/util/ArrayList;
 
-    new-instance v4, Landroid/gesture/GesturePoint;
+    new-instance v8, Landroid/gesture/GesturePoint;
 
-    invoke-direct {v4, v0, v1, v2, v3}, Landroid/gesture/GesturePoint;-><init>(FFJ)V
+    invoke-direct {v8, v3, v4, v5, v6}, Landroid/gesture/GesturePoint;-><init>(FFJ)V
 
-    invoke-virtual {p3, v4}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
+    invoke-virtual {v7, v8}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
 
     .line 289
-    iput v0, p0, Lcom/android/server/accessibility/AccessibilityGestureDetector;->mBaseX:F
+    iput v3, v0, Lcom/android/server/accessibility/AccessibilityGestureDetector;->mBaseX:F
 
     .line 290
-    iput v1, p0, Lcom/android/server/accessibility/AccessibilityGestureDetector;->mBaseY:F
+    iput v4, v0, Lcom/android/server/accessibility/AccessibilityGestureDetector;->mBaseY:F
 
     .line 291
-    iput-wide v2, p0, Lcom/android/server/accessibility/AccessibilityGestureDetector;->mBaseTime:J
+    iput-wide v5, v0, Lcom/android/server/accessibility/AccessibilityGestureDetector;->mBaseTime:J
 
     .line 292
     nop
 
     .line 389
-    :cond_11d
-    :goto_11d
-    iget-boolean p3, p0, Lcom/android/server/accessibility/AccessibilityGestureDetector;->mSecondFingerDoubleTap:Z
+    :cond_124
+    :goto_124
+    iget-boolean v7, v0, Lcom/android/server/accessibility/AccessibilityGestureDetector;->mSecondFingerDoubleTap:Z
 
-    if-eqz p3, :cond_132
+    if-eqz v7, :cond_139
 
     .line 390
-    invoke-direct {p0, p2}, Lcom/android/server/accessibility/AccessibilityGestureDetector;->mapSecondPointerToFirstPointer(Landroid/view/MotionEvent;)Landroid/view/MotionEvent;
+    invoke-direct {v0, v1}, Lcom/android/server/accessibility/AccessibilityGestureDetector;->mapSecondPointerToFirstPointer(Landroid/view/MotionEvent;)Landroid/view/MotionEvent;
 
-    move-result-object p1
+    move-result-object v7
 
     .line 391
-    if-nez p1, :cond_128
+    .local v7, "newEvent":Landroid/view/MotionEvent;
+    if-nez v7, :cond_12f
 
     .line 392
-    return v6
+    return v9
 
     .line 394
-    :cond_128
-    iget-object p2, p0, Lcom/android/server/accessibility/AccessibilityGestureDetector;->mGestureDetector:Landroid/view/GestureDetector;
+    :cond_12f
+    iget-object v8, v0, Lcom/android/server/accessibility/AccessibilityGestureDetector;->mGestureDetector:Landroid/view/GestureDetector;
 
-    invoke-virtual {p2, p1}, Landroid/view/GestureDetector;->onTouchEvent(Landroid/view/MotionEvent;)Z
+    invoke-virtual {v8, v7}, Landroid/view/GestureDetector;->onTouchEvent(Landroid/view/MotionEvent;)Z
 
-    move-result p2
+    move-result v8
 
     .line 395
-    invoke-virtual {p1}, Landroid/view/MotionEvent;->recycle()V
+    .local v8, "handled":Z
+    invoke-virtual {v7}, Landroid/view/MotionEvent;->recycle()V
 
     .line 396
-    return p2
+    return v8
 
     .line 399
-    :cond_132
-    iget-boolean p2, p0, Lcom/android/server/accessibility/AccessibilityGestureDetector;->mRecognizingGesture:Z
+    .end local v7  # "newEvent":Landroid/view/MotionEvent;
+    .end local v8  # "handled":Z
+    :cond_139
+    iget-boolean v7, v0, Lcom/android/server/accessibility/AccessibilityGestureDetector;->mRecognizingGesture:Z
 
-    if-nez p2, :cond_137
+    if-nez v7, :cond_13e
 
     .line 400
-    return v6
+    return v9
 
     .line 404
-    :cond_137
-    iget-object p2, p0, Lcom/android/server/accessibility/AccessibilityGestureDetector;->mGestureDetector:Landroid/view/GestureDetector;
+    :cond_13e
+    iget-object v7, v0, Lcom/android/server/accessibility/AccessibilityGestureDetector;->mGestureDetector:Landroid/view/GestureDetector;
 
-    invoke-virtual {p2, p1}, Landroid/view/GestureDetector;->onTouchEvent(Landroid/view/MotionEvent;)Z
+    move-object/from16 v8, p1
 
-    move-result p1
+    invoke-virtual {v7, v8}, Landroid/view/GestureDetector;->onTouchEvent(Landroid/view/MotionEvent;)Z
 
-    return p1
+    move-result v7
+
+    return v7
 .end method
 
 .method public onSingleTapConfirmed(Landroid/view/MotionEvent;)Z
-    .registers 2
+    .registers 3
+    .param p1, "event"  # Landroid/view/MotionEvent;
 
     .line 434
     invoke-virtual {p0}, Lcom/android/server/accessibility/AccessibilityGestureDetector;->clear()V
 
     .line 435
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    return p1
+    return v0
 .end method
 
 .method public onSingleTapUp(Landroid/view/MotionEvent;)Z
-    .registers 2
+    .registers 3
+    .param p1, "event"  # Landroid/view/MotionEvent;
 
     .line 428
-    const/4 p1, 0x1
+    const/4 v0, 0x1
 
-    iput-boolean p1, p0, Lcom/android/server/accessibility/AccessibilityGestureDetector;->mFirstTapDetected:Z
+    iput-boolean v0, p0, Lcom/android/server/accessibility/AccessibilityGestureDetector;->mFirstTapDetected:Z
 
     .line 429
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    return p1
+    return v0
 .end method

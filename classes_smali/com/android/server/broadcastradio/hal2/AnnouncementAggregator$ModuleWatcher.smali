@@ -51,6 +51,8 @@
 
 .method synthetic constructor <init>(Lcom/android/server/broadcastradio/hal2/AnnouncementAggregator;Lcom/android/server/broadcastradio/hal2/AnnouncementAggregator$1;)V
     .registers 3
+    .param p1, "x0"  # Lcom/android/server/broadcastradio/hal2/AnnouncementAggregator;
+    .param p2, "x1"  # Lcom/android/server/broadcastradio/hal2/AnnouncementAggregator$1;
 
     .line 57
     invoke-direct {p0, p1}, Lcom/android/server/broadcastradio/hal2/AnnouncementAggregator$ModuleWatcher;-><init>(Lcom/android/server/broadcastradio/hal2/AnnouncementAggregator;)V
@@ -81,7 +83,7 @@
 .end method
 
 .method public onListUpdated(Ljava/util/List;)V
-    .registers 2
+    .registers 3
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(",
@@ -92,34 +94,36 @@
     .end annotation
 
     .line 62
+    .local p1, "active":Ljava/util/List;, "Ljava/util/List<Landroid/hardware/radio/Announcement;>;"
     invoke-static {p1}, Ljava/util/Objects;->requireNonNull(Ljava/lang/Object;)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v0
 
-    check-cast p1, Ljava/util/List;
+    check-cast v0, Ljava/util/List;
 
-    iput-object p1, p0, Lcom/android/server/broadcastradio/hal2/AnnouncementAggregator$ModuleWatcher;->currentList:Ljava/util/List;
+    iput-object v0, p0, Lcom/android/server/broadcastradio/hal2/AnnouncementAggregator$ModuleWatcher;->currentList:Ljava/util/List;
 
     .line 63
-    iget-object p1, p0, Lcom/android/server/broadcastradio/hal2/AnnouncementAggregator$ModuleWatcher;->this$0:Lcom/android/server/broadcastradio/hal2/AnnouncementAggregator;
+    iget-object v0, p0, Lcom/android/server/broadcastradio/hal2/AnnouncementAggregator$ModuleWatcher;->this$0:Lcom/android/server/broadcastradio/hal2/AnnouncementAggregator;
 
-    invoke-static {p1}, Lcom/android/server/broadcastradio/hal2/AnnouncementAggregator;->access$100(Lcom/android/server/broadcastradio/hal2/AnnouncementAggregator;)V
+    invoke-static {v0}, Lcom/android/server/broadcastradio/hal2/AnnouncementAggregator;->access$100(Lcom/android/server/broadcastradio/hal2/AnnouncementAggregator;)V
 
     .line 64
     return-void
 .end method
 
 .method public setCloseHandle(Landroid/hardware/radio/ICloseHandle;)V
-    .registers 2
+    .registers 3
+    .param p1, "closeHandle"  # Landroid/hardware/radio/ICloseHandle;
 
     .line 67
     invoke-static {p1}, Ljava/util/Objects;->requireNonNull(Ljava/lang/Object;)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v0
 
-    check-cast p1, Landroid/hardware/radio/ICloseHandle;
+    check-cast v0, Landroid/hardware/radio/ICloseHandle;
 
-    iput-object p1, p0, Lcom/android/server/broadcastradio/hal2/AnnouncementAggregator$ModuleWatcher;->mCloseHandle:Landroid/hardware/radio/ICloseHandle;
+    iput-object v0, p0, Lcom/android/server/broadcastradio/hal2/AnnouncementAggregator$ModuleWatcher;->mCloseHandle:Landroid/hardware/radio/ICloseHandle;
 
     .line 68
     return-void

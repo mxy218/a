@@ -12,6 +12,8 @@
 # direct methods
 .method public constructor <init>(JJ)V
     .registers 5
+    .param p1, "sunriseTimeMillis"  # J
+    .param p3, "sunsetTimeMillis"  # J
 
     .line 37
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -30,6 +32,7 @@
 # virtual methods
 .method public equals(Lcom/android/server/twilight/TwilightState;)Z
     .registers 6
+    .param p1, "other"  # Lcom/android/server/twilight/TwilightState;
 
     .line 88
     if-eqz p1, :cond_14
@@ -46,46 +49,49 @@
 
     iget-wide v2, p1, Lcom/android/server/twilight/TwilightState;->mSunsetTimeMillis:J
 
-    cmp-long p1, v0, v2
+    cmp-long v0, v0, v2
 
-    if-nez p1, :cond_14
+    if-nez v0, :cond_14
 
-    const/4 p1, 0x1
+    const/4 v0, 0x1
 
     goto :goto_15
 
     :cond_14
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
     :goto_15
-    return p1
+    return v0
 .end method
 
 .method public equals(Ljava/lang/Object;)Z
     .registers 3
+    .param p1, "o"  # Ljava/lang/Object;
 
     .line 84
     instance-of v0, p1, Lcom/android/server/twilight/TwilightState;
 
-    if-eqz v0, :cond_e
+    if-eqz v0, :cond_f
 
-    check-cast p1, Lcom/android/server/twilight/TwilightState;
+    move-object v0, p1
 
-    invoke-virtual {p0, p1}, Lcom/android/server/twilight/TwilightState;->equals(Lcom/android/server/twilight/TwilightState;)Z
+    check-cast v0, Lcom/android/server/twilight/TwilightState;
 
-    move-result p1
+    invoke-virtual {p0, v0}, Lcom/android/server/twilight/TwilightState;->equals(Lcom/android/server/twilight/TwilightState;)Z
 
-    if-eqz p1, :cond_e
+    move-result v0
 
-    const/4 p1, 0x1
+    if-eqz v0, :cond_f
 
-    goto :goto_f
+    const/4 v0, 0x1
 
-    :cond_e
-    const/4 p1, 0x0
+    goto :goto_10
 
-    :goto_f
-    return p1
+    :cond_f
+    const/4 v0, 0x0
+
+    :goto_10
+    return v0
 .end method
 
 .method public hashCode()I
@@ -118,6 +124,7 @@
     move-result-wide v0
 
     .line 79
+    .local v0, "now":J
     iget-wide v2, p0, Lcom/android/server/twilight/TwilightState;->mSunsetTimeMillis:J
 
     cmp-long v2, v0, v2
@@ -126,19 +133,19 @@
 
     iget-wide v2, p0, Lcom/android/server/twilight/TwilightState;->mSunriseTimeMillis:J
 
-    cmp-long v0, v0, v2
+    cmp-long v2, v0, v2
 
-    if-gez v0, :cond_12
+    if-gez v2, :cond_12
 
-    const/4 v0, 0x1
+    const/4 v2, 0x1
 
     goto :goto_13
 
     :cond_12
-    const/4 v0, 0x0
+    const/4 v2, 0x0
 
     :goto_13
-    return v0
+    return v2
 .end method
 
 .method public sunrise()Ljava/time/LocalDateTime;
@@ -154,6 +161,7 @@
     move-result-object v0
 
     .line 55
+    .local v0, "zoneId":Ljava/time/ZoneId;
     iget-wide v1, p0, Lcom/android/server/twilight/TwilightState;->mSunriseTimeMillis:J
 
     invoke-static {v1, v2}, Ljava/time/Instant;->ofEpochMilli(J)Ljava/time/Instant;
@@ -162,9 +170,9 @@
 
     invoke-static {v1, v0}, Ljava/time/LocalDateTime;->ofInstant(Ljava/time/Instant;Ljava/time/ZoneId;)Ljava/time/LocalDateTime;
 
-    move-result-object v0
+    move-result-object v1
 
-    return-object v0
+    return-object v1
 .end method
 
 .method public sunriseTimeMillis()J
@@ -189,6 +197,7 @@
     move-result-object v0
 
     .line 71
+    .local v0, "zoneId":Ljava/time/ZoneId;
     iget-wide v1, p0, Lcom/android/server/twilight/TwilightState;->mSunsetTimeMillis:J
 
     invoke-static {v1, v2}, Ljava/time/Instant;->ofEpochMilli(J)Ljava/time/Instant;
@@ -197,9 +206,9 @@
 
     invoke-static {v1, v0}, Ljava/time/LocalDateTime;->ofInstant(Ljava/time/Instant;Ljava/time/ZoneId;)Ljava/time/LocalDateTime;
 
-    move-result-object v0
+    move-result-object v1
 
-    return-object v0
+    return-object v1
 .end method
 
 .method public sunsetTimeMillis()J

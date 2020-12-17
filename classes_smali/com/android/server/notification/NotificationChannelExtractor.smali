@@ -30,6 +30,8 @@
 # virtual methods
 .method public initialize(Landroid/content/Context;Lcom/android/server/notification/NotificationUsageStats;)V
     .registers 3
+    .param p1, "ctx"  # Landroid/content/Context;
+    .param p2, "usageStats"  # Lcom/android/server/notification/NotificationUsageStats;
 
     .line 32
     return-void
@@ -37,6 +39,7 @@
 
 .method public process(Lcom/android/server/notification/NotificationRecord;)Lcom/android/server/notification/RankingReconsideration;
     .registers 8
+    .param p1, "record"  # Lcom/android/server/notification/NotificationRecord;
 
     .line 35
     const/4 v0, 0x0
@@ -103,6 +106,7 @@
 
 .method public setConfig(Lcom/android/server/notification/RankingConfig;)V
     .registers 2
+    .param p1, "config"  # Lcom/android/server/notification/RankingConfig;
 
     .line 53
     iput-object p1, p0, Lcom/android/server/notification/NotificationChannelExtractor;->mConfig:Lcom/android/server/notification/RankingConfig;
@@ -113,6 +117,7 @@
 
 .method public setZenHelper(Lcom/android/server/notification/ZenModeHelper;)V
     .registers 2
+    .param p1, "helper"  # Lcom/android/server/notification/ZenModeHelper;
 
     .line 59
     return-void

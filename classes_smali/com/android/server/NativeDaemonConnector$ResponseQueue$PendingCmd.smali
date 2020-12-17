@@ -35,6 +35,8 @@
 # direct methods
 .method public constructor <init>(ILjava/lang/String;)V
     .registers 5
+    .param p1, "cmdNum"  # I
+    .param p2, "logCmd"  # Ljava/lang/String;
 
     .line 635
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V

@@ -23,43 +23,50 @@
 # direct methods
 .method private constructor <init>(Ljava/lang/String;Ljava/lang/String;)V
     .registers 3
+    .param p1, "taskRootPackage"  # Ljava/lang/String;
+    .param p2, "taskRootClass"  # Ljava/lang/String;
 
-    .line 153
+    .line 178
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
-    .line 154
+    .line 179
     iput-object p1, p0, Lcom/android/server/usage/UsageStatsService$ActivityData;->mTaskRootPackage:Ljava/lang/String;
 
-    .line 155
+    .line 180
     iput-object p2, p0, Lcom/android/server/usage/UsageStatsService$ActivityData;->mTaskRootClass:Ljava/lang/String;
 
-    .line 156
+    .line 181
     return-void
 .end method
 
 .method synthetic constructor <init>(Ljava/lang/String;Ljava/lang/String;Lcom/android/server/usage/UsageStatsService$1;)V
     .registers 4
+    .param p1, "x0"  # Ljava/lang/String;
+    .param p2, "x1"  # Ljava/lang/String;
+    .param p3, "x2"  # Lcom/android/server/usage/UsageStatsService$1;
 
-    .line 150
+    .line 175
     invoke-direct {p0, p1, p2}, Lcom/android/server/usage/UsageStatsService$ActivityData;-><init>(Ljava/lang/String;Ljava/lang/String;)V
 
     return-void
 .end method
 
-.method static synthetic access$400(Lcom/android/server/usage/UsageStatsService$ActivityData;)Ljava/lang/String;
-    .registers 1
+.method static synthetic access$700(Lcom/android/server/usage/UsageStatsService$ActivityData;)Ljava/lang/String;
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/usage/UsageStatsService$ActivityData;
 
-    .line 150
-    iget-object p0, p0, Lcom/android/server/usage/UsageStatsService$ActivityData;->mTaskRootPackage:Ljava/lang/String;
+    .line 175
+    iget-object v0, p0, Lcom/android/server/usage/UsageStatsService$ActivityData;->mTaskRootPackage:Ljava/lang/String;
 
-    return-object p0
+    return-object v0
 .end method
 
-.method static synthetic access$500(Lcom/android/server/usage/UsageStatsService$ActivityData;)Ljava/lang/String;
-    .registers 1
+.method static synthetic access$800(Lcom/android/server/usage/UsageStatsService$ActivityData;)Ljava/lang/String;
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/usage/UsageStatsService$ActivityData;
 
-    .line 150
-    iget-object p0, p0, Lcom/android/server/usage/UsageStatsService$ActivityData;->mTaskRootClass:Ljava/lang/String;
+    .line 175
+    iget-object v0, p0, Lcom/android/server/usage/UsageStatsService$ActivityData;->mTaskRootClass:Ljava/lang/String;
 
-    return-object p0
+    return-object v0
 .end method

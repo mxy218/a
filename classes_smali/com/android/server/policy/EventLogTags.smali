@@ -20,7 +20,10 @@
 .end method
 
 .method public static writeInterceptPower(Ljava/lang/String;II)V
-    .registers 5
+    .registers 6
+    .param p0, "action"  # Ljava/lang/String;
+    .param p1, "mpowerkeyhandled"  # I
+    .param p2, "mpowerkeypresscounter"  # I
 
     .line 24
     const/4 v0, 0x3
@@ -33,23 +36,23 @@
 
     invoke-static {p1}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
 
-    move-result-object p0
+    move-result-object v1
 
-    const/4 p1, 0x1
+    const/4 v2, 0x1
 
-    aput-object p0, v0, p1
+    aput-object v1, v0, v2
 
     invoke-static {p2}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
 
-    move-result-object p0
+    move-result-object v1
 
-    const/4 p1, 0x2
+    const/4 v2, 0x2
 
-    aput-object p0, v0, p1
+    aput-object v1, v0, v2
 
-    const p0, 0x11171
+    const v1, 0x11171
 
-    invoke-static {p0, v0}, Landroid/util/EventLog;->writeEvent(I[Ljava/lang/Object;)I
+    invoke-static {v1, v0}, Landroid/util/EventLog;->writeEvent(I[Ljava/lang/Object;)I
 
     .line 25
     return-void
@@ -57,6 +60,7 @@
 
 .method public static writeScreenToggled(I)V
     .registers 2
+    .param p0, "screenState"  # I
 
     .line 20
     const v0, 0x11170

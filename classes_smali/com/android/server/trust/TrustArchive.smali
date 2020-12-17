@@ -62,6 +62,7 @@
 
 .method private addEvent(Lcom/android/server/trust/TrustArchive$Event;)V
     .registers 4
+    .param p1, "e"  # Lcom/android/server/trust/TrustArchive$Event;
 
     .line 108
     iget-object v0, p0, Lcom/android/server/trust/TrustArchive;->mEvents:Ljava/util/ArrayDeque;
@@ -91,6 +92,7 @@
 
 .method private dumpGrantFlags(I)Ljava/lang/String;
     .registers 5
+    .param p1, "flags"  # I
 
     .line 200
     new-instance v0, Ljava/lang/StringBuilder;
@@ -98,6 +100,7 @@
     invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
 
     .line 201
+    .local v0, "sb":Ljava/lang/StringBuilder;
     and-int/lit8 v1, p1, 0x1
 
     const/16 v2, 0x7c
@@ -121,49 +124,50 @@
 
     .line 205
     :cond_19
-    and-int/lit8 p1, p1, 0x2
+    and-int/lit8 v1, p1, 0x2
 
-    if-eqz p1, :cond_2b
+    if-eqz v1, :cond_2b
 
     .line 206
     invoke-virtual {v0}, Ljava/lang/StringBuilder;->length()I
 
-    move-result p1
+    move-result v1
 
-    if-eqz p1, :cond_26
+    if-eqz v1, :cond_26
 
     invoke-virtual {v0, v2}, Ljava/lang/StringBuilder;->append(C)Ljava/lang/StringBuilder;
 
     .line 207
     :cond_26
-    const-string p1, "DISMISS_KEYGUARD"
+    const-string v1, "DISMISS_KEYGUARD"
 
-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     .line 209
     :cond_2b
     invoke-virtual {v0}, Ljava/lang/StringBuilder;->length()I
 
-    move-result p1
+    move-result v1
 
-    if-nez p1, :cond_36
+    if-nez v1, :cond_36
 
     .line 210
-    const/16 p1, 0x30
+    const/16 v1, 0x30
 
-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(C)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(C)Ljava/lang/StringBuilder;
 
     .line 212
     :cond_36
     invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v1
 
-    return-object p1
+    return-object v1
 .end method
 
 .method private dumpType(I)Ljava/lang/String;
     .registers 4
+    .param p1, "type"  # I
 
     .line 177
     packed-switch p1, :pswitch_data_32
@@ -179,63 +183,63 @@
 
     invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    const-string p1, ")"
+    const-string v1, ")"
 
-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    return-object p1
+    return-object v0
 
     .line 193
     :pswitch_1a  #0x7
-    const-string p1, "DevicePolicyChanged"
+    const-string v0, "DevicePolicyChanged"
 
-    return-object p1
+    return-object v0
 
     .line 191
     :pswitch_1d  #0x6
-    const-string p1, "ManagingTrust"
+    const-string v0, "ManagingTrust"
 
-    return-object p1
+    return-object v0
 
     .line 189
     :pswitch_20  #0x5
-    const-string p1, "AgentStopped"
+    const-string v0, "AgentStopped"
 
-    return-object p1
+    return-object v0
 
     .line 187
     :pswitch_23  #0x4
-    const-string p1, "AgentConnected"
+    const-string v0, "AgentConnected"
 
-    return-object p1
+    return-object v0
 
     .line 185
     :pswitch_26  #0x3
-    const-string p1, "AgentDied"
+    const-string v0, "AgentDied"
 
-    return-object p1
+    return-object v0
 
     .line 183
     :pswitch_29  #0x2
-    const-string p1, "TrustTimeout"
+    const-string v0, "TrustTimeout"
 
-    return-object p1
+    return-object v0
 
     .line 181
     :pswitch_2c  #0x1
-    const-string p1, "RevokeTrust"
+    const-string v0, "RevokeTrust"
 
-    return-object p1
+    return-object v0
 
     .line 179
     :pswitch_2f  #0x0
-    const-string p1, "GrantTrust"
+    const-string v0, "GrantTrust"
 
-    return-object p1
+    return-object v0
 
     :pswitch_data_32
     .packed-switch 0x0
@@ -251,7 +255,8 @@
 .end method
 
 .method public static formatDuration(J)Ljava/lang/String;
-    .registers 3
+    .registers 4
+    .param p0, "duration"  # J
 
     .line 155
     new-instance v0, Ljava/lang/StringBuilder;
@@ -259,303 +264,319 @@
     invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
 
     .line 156
+    .local v0, "sb":Ljava/lang/StringBuilder;
     invoke-static {p0, p1, v0}, Landroid/util/TimeUtils;->formatDuration(JLjava/lang/StringBuilder;)V
 
     .line 157
     invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v1
 
-    return-object p0
+    return-object v1
 .end method
 
 .method private static formatElapsed(J)Ljava/lang/String;
-    .registers 4
+    .registers 7
+    .param p0, "elapsed"  # J
 
     .line 161
     invoke-static {}, Landroid/os/SystemClock;->elapsedRealtime()J
 
     move-result-wide v0
 
-    sub-long/2addr p0, v0
+    sub-long v0, p0, v0
 
     .line 162
+    .local v0, "delta":J
     invoke-static {}, Ljava/lang/System;->currentTimeMillis()J
 
-    move-result-wide v0
+    move-result-wide v2
 
-    add-long/2addr p0, v0
+    add-long/2addr v2, v0
 
     .line 163
-    invoke-static {p0, p1}, Landroid/util/TimeUtils;->logTimeOfDay(J)Ljava/lang/String;
+    .local v2, "wallTime":J
+    invoke-static {v2, v3}, Landroid/util/TimeUtils;->logTimeOfDay(J)Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v4
 
-    return-object p0
+    return-object v4
 .end method
 
 .method static getSimpleName(Landroid/content/ComponentName;)Ljava/lang/String;
-    .registers 3
+    .registers 4
+    .param p0, "cn"  # Landroid/content/ComponentName;
 
     .line 167
     invoke-virtual {p0}, Landroid/content/ComponentName;->getClassName()Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v0
 
     .line 168
-    const/16 v0, 0x2e
+    .local v0, "name":Ljava/lang/String;
+    const/16 v1, 0x2e
 
-    invoke-virtual {p0, v0}, Ljava/lang/String;->lastIndexOf(I)I
-
-    move-result v0
-
-    .line 169
-    invoke-virtual {p0}, Ljava/lang/String;->length()I
+    invoke-virtual {v0, v1}, Ljava/lang/String;->lastIndexOf(I)I
 
     move-result v1
 
-    if-ge v0, v1, :cond_19
+    .line 169
+    .local v1, "idx":I
+    invoke-virtual {v0}, Ljava/lang/String;->length()I
 
-    if-ltz v0, :cond_19
+    move-result v2
+
+    if-ge v1, v2, :cond_19
+
+    if-ltz v1, :cond_19
 
     .line 170
-    add-int/lit8 v0, v0, 0x1
+    add-int/lit8 v2, v1, 0x1
 
-    invoke-virtual {p0, v0}, Ljava/lang/String;->substring(I)Ljava/lang/String;
+    invoke-virtual {v0, v2}, Ljava/lang/String;->substring(I)Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v2
 
-    return-object p0
+    return-object v2
 
     .line 172
     :cond_19
-    return-object p0
+    return-object v0
 .end method
 
 
 # virtual methods
 .method public dump(Ljava/io/PrintWriter;IILjava/lang/String;Z)V
     .registers 16
+    .param p1, "writer"  # Ljava/io/PrintWriter;
+    .param p2, "limit"  # I
+    .param p3, "userId"  # I
+    .param p4, "linePrefix"  # Ljava/lang/String;
+    .param p5, "duplicateSimpleNames"  # Z
 
     .line 116
-    nop
+    const/4 v0, 0x0
 
     .line 117
-    iget-object v0, p0, Lcom/android/server/trust/TrustArchive;->mEvents:Ljava/util/ArrayDeque;
+    .local v0, "count":I
+    iget-object v1, p0, Lcom/android/server/trust/TrustArchive;->mEvents:Ljava/util/ArrayDeque;
 
-    invoke-virtual {v0}, Ljava/util/ArrayDeque;->descendingIterator()Ljava/util/Iterator;
+    invoke-virtual {v1}, Ljava/util/ArrayDeque;->descendingIterator()Ljava/util/Iterator;
 
-    move-result-object v0
-
-    const/4 v1, 0x0
-
-    move v2, v1
+    move-result-object v1
 
     .line 118
-    :goto_9
-    invoke-interface {v0}, Ljava/util/Iterator;->hasNext()Z
+    .local v1, "iter":Ljava/util/Iterator;, "Ljava/util/Iterator<Lcom/android/server/trust/TrustArchive$Event;>;"
+    :goto_7
+    invoke-interface {v1}, Ljava/util/Iterator;->hasNext()Z
 
-    move-result v3
+    move-result v2
 
-    if-eqz v3, :cond_ba
+    if-eqz v2, :cond_ba
 
-    if-ge v2, p2, :cond_ba
+    if-ge v0, p2, :cond_ba
 
     .line 119
-    invoke-interface {v0}, Ljava/util/Iterator;->next()Ljava/lang/Object;
+    invoke-interface {v1}, Ljava/util/Iterator;->next()Ljava/lang/Object;
 
-    move-result-object v3
+    move-result-object v2
 
-    check-cast v3, Lcom/android/server/trust/TrustArchive$Event;
+    check-cast v2, Lcom/android/server/trust/TrustArchive$Event;
 
     .line 120
-    const/4 v4, -0x1
+    .local v2, "ev":Lcom/android/server/trust/TrustArchive$Event;
+    const/4 v3, -0x1
 
-    if-eq p3, v4, :cond_23
+    if-eq p3, v3, :cond_21
 
-    iget v5, v3, Lcom/android/server/trust/TrustArchive$Event;->userId:I
+    iget v4, v2, Lcom/android/server/trust/TrustArchive$Event;->userId:I
 
-    if-eq p3, v5, :cond_23
+    if-eq p3, v4, :cond_21
 
-    iget v5, v3, Lcom/android/server/trust/TrustArchive$Event;->userId:I
+    iget v4, v2, Lcom/android/server/trust/TrustArchive$Event;->userId:I
 
-    if-eq v5, v4, :cond_23
+    if-eq v4, v3, :cond_21
 
     .line 122
-    goto :goto_9
+    goto :goto_7
 
     .line 125
-    :cond_23
+    :cond_21
     invoke-virtual {p1, p4}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
     .line 126
-    const/4 v5, 0x3
+    const/4 v4, 0x3
 
-    new-array v6, v5, [Ljava/lang/Object;
+    new-array v5, v4, [Ljava/lang/Object;
 
-    invoke-static {v2}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
+    invoke-static {v0}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
 
-    move-result-object v7
+    move-result-object v6
 
-    aput-object v7, v6, v1
+    const/4 v7, 0x0
 
-    iget-wide v7, v3, Lcom/android/server/trust/TrustArchive$Event;->elapsedTimestamp:J
+    aput-object v6, v5, v7
 
-    invoke-static {v7, v8}, Lcom/android/server/trust/TrustArchive;->formatElapsed(J)Ljava/lang/String;
+    iget-wide v8, v2, Lcom/android/server/trust/TrustArchive$Event;->elapsedTimestamp:J
 
-    move-result-object v7
+    invoke-static {v8, v9}, Lcom/android/server/trust/TrustArchive;->formatElapsed(J)Ljava/lang/String;
+
+    move-result-object v6
 
     const/4 v8, 0x1
 
-    aput-object v7, v6, v8
+    aput-object v6, v5, v8
 
-    iget v7, v3, Lcom/android/server/trust/TrustArchive$Event;->type:I
+    iget v6, v2, Lcom/android/server/trust/TrustArchive$Event;->type:I
 
     .line 127
-    invoke-direct {p0, v7}, Lcom/android/server/trust/TrustArchive;->dumpType(I)Ljava/lang/String;
+    invoke-direct {p0, v6}, Lcom/android/server/trust/TrustArchive;->dumpType(I)Ljava/lang/String;
 
-    move-result-object v7
+    move-result-object v6
 
     const/4 v9, 0x2
 
-    aput-object v7, v6, v9
+    aput-object v6, v5, v9
 
     .line 126
-    const-string v7, "#%-2d %s %s: "
+    const-string v6, "#%-2d %s %s: "
 
-    invoke-virtual {p1, v7, v6}, Ljava/io/PrintWriter;->printf(Ljava/lang/String;[Ljava/lang/Object;)Ljava/io/PrintWriter;
+    invoke-virtual {p1, v6, v5}, Ljava/io/PrintWriter;->printf(Ljava/lang/String;[Ljava/lang/Object;)Ljava/io/PrintWriter;
 
     .line 128
-    if-ne p3, v4, :cond_58
+    if-ne p3, v3, :cond_57
 
     .line 129
-    const-string/jumbo v4, "user="
+    const-string/jumbo v3, "user="
 
-    invoke-virtual {p1, v4}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
+    invoke-virtual {p1, v3}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
-    iget v4, v3, Lcom/android/server/trust/TrustArchive$Event;->userId:I
+    iget v3, v2, Lcom/android/server/trust/TrustArchive$Event;->userId:I
 
-    invoke-virtual {p1, v4}, Ljava/io/PrintWriter;->print(I)V
+    invoke-virtual {p1, v3}, Ljava/io/PrintWriter;->print(I)V
 
-    const-string v4, ", "
+    const-string v3, ", "
 
-    invoke-virtual {p1, v4}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
+    invoke-virtual {p1, v3}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
     .line 131
-    :cond_58
-    iget-object v4, v3, Lcom/android/server/trust/TrustArchive$Event;->agent:Landroid/content/ComponentName;
+    :cond_57
+    iget-object v3, v2, Lcom/android/server/trust/TrustArchive$Event;->agent:Landroid/content/ComponentName;
 
-    if-eqz v4, :cond_76
+    if-eqz v3, :cond_75
 
     .line 132
-    const-string v4, "agent="
+    const-string v3, "agent="
 
-    invoke-virtual {p1, v4}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
+    invoke-virtual {p1, v3}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
     .line 133
-    if-eqz p5, :cond_6d
+    if-eqz p5, :cond_6c
 
     .line 134
-    iget-object v4, v3, Lcom/android/server/trust/TrustArchive$Event;->agent:Landroid/content/ComponentName;
+    iget-object v3, v2, Lcom/android/server/trust/TrustArchive$Event;->agent:Landroid/content/ComponentName;
 
-    invoke-virtual {v4}, Landroid/content/ComponentName;->flattenToShortString()Ljava/lang/String;
-
-    move-result-object v4
-
-    invoke-virtual {p1, v4}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
-
-    goto :goto_76
-
-    .line 136
-    :cond_6d
-    iget-object v4, v3, Lcom/android/server/trust/TrustArchive$Event;->agent:Landroid/content/ComponentName;
-
-    invoke-static {v4}, Lcom/android/server/trust/TrustArchive;->getSimpleName(Landroid/content/ComponentName;)Ljava/lang/String;
-
-    move-result-object v4
-
-    invoke-virtual {p1, v4}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
-
-    .line 139
-    :cond_76
-    :goto_76
-    iget v4, v3, Lcom/android/server/trust/TrustArchive$Event;->type:I
-
-    if-eqz v4, :cond_97
-
-    const/4 v5, 0x6
-
-    if-eq v4, v5, :cond_7e
-
-    goto :goto_b3
-
-    .line 145
-    :cond_7e
-    new-instance v4, Ljava/lang/StringBuilder;
-
-    invoke-direct {v4}, Ljava/lang/StringBuilder;-><init>()V
-
-    const-string v5, ", managingTrust="
-
-    invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    iget-boolean v3, v3, Lcom/android/server/trust/TrustArchive$Event;->managingTrust:Z
-
-    invoke-virtual {v4, v3}, Ljava/lang/StringBuilder;->append(Z)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v4}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v3}, Landroid/content/ComponentName;->flattenToShortString()Ljava/lang/String;
 
     move-result-object v3
 
-    new-array v4, v1, [Ljava/lang/Object;
+    invoke-virtual {p1, v3}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
+
+    goto :goto_75
+
+    .line 136
+    :cond_6c
+    iget-object v3, v2, Lcom/android/server/trust/TrustArchive$Event;->agent:Landroid/content/ComponentName;
+
+    invoke-static {v3}, Lcom/android/server/trust/TrustArchive;->getSimpleName(Landroid/content/ComponentName;)Ljava/lang/String;
+
+    move-result-object v3
+
+    invoke-virtual {p1, v3}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
+
+    .line 139
+    :cond_75
+    :goto_75
+    iget v3, v2, Lcom/android/server/trust/TrustArchive$Event;->type:I
+
+    if-eqz v3, :cond_96
+
+    const/4 v4, 0x6
+
+    if-eq v3, v4, :cond_7d
+
+    goto :goto_b2
+
+    .line 145
+    :cond_7d
+    new-instance v3, Ljava/lang/StringBuilder;
+
+    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
+
+    const-string v4, ", managingTrust="
+
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    iget-boolean v4, v2, Lcom/android/server/trust/TrustArchive$Event;->managingTrust:Z
+
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Z)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v3
+
+    new-array v4, v7, [Ljava/lang/Object;
 
     invoke-virtual {p1, v3, v4}, Ljava/io/PrintWriter;->printf(Ljava/lang/String;[Ljava/lang/Object;)Ljava/io/PrintWriter;
 
     .line 146
-    goto :goto_b3
+    goto :goto_b2
 
     .line 141
-    :cond_97
-    new-array v4, v5, [Ljava/lang/Object;
+    :cond_96
+    new-array v3, v4, [Ljava/lang/Object;
 
-    iget-object v5, v3, Lcom/android/server/trust/TrustArchive$Event;->message:Ljava/lang/String;
+    iget-object v4, v2, Lcom/android/server/trust/TrustArchive$Event;->message:Ljava/lang/String;
 
-    aput-object v5, v4, v1
+    aput-object v4, v3, v7
 
-    iget-wide v5, v3, Lcom/android/server/trust/TrustArchive$Event;->duration:J
+    iget-wide v4, v2, Lcom/android/server/trust/TrustArchive$Event;->duration:J
 
     .line 142
-    invoke-static {v5, v6}, Lcom/android/server/trust/TrustArchive;->formatDuration(J)Ljava/lang/String;
+    invoke-static {v4, v5}, Lcom/android/server/trust/TrustArchive;->formatDuration(J)Ljava/lang/String;
 
-    move-result-object v5
+    move-result-object v4
 
-    aput-object v5, v4, v8
+    aput-object v4, v3, v8
 
-    iget v3, v3, Lcom/android/server/trust/TrustArchive$Event;->flags:I
+    iget v4, v2, Lcom/android/server/trust/TrustArchive$Event;->flags:I
 
-    invoke-direct {p0, v3}, Lcom/android/server/trust/TrustArchive;->dumpGrantFlags(I)Ljava/lang/String;
+    invoke-direct {p0, v4}, Lcom/android/server/trust/TrustArchive;->dumpGrantFlags(I)Ljava/lang/String;
 
-    move-result-object v3
+    move-result-object v4
 
-    aput-object v3, v4, v9
+    aput-object v4, v3, v9
 
     .line 141
-    const-string v3, ", message=\"%s\", duration=%s, flags=%s"
+    const-string v4, ", message=\"%s\", duration=%s, flags=%s"
 
-    invoke-virtual {p1, v3, v4}, Ljava/io/PrintWriter;->printf(Ljava/lang/String;[Ljava/lang/Object;)Ljava/io/PrintWriter;
+    invoke-virtual {p1, v4, v3}, Ljava/io/PrintWriter;->printf(Ljava/lang/String;[Ljava/lang/Object;)Ljava/io/PrintWriter;
 
     .line 143
     nop
 
     .line 149
-    :goto_b3
+    :goto_b2
     invoke-virtual {p1}, Ljava/io/PrintWriter;->println()V
 
     .line 150
-    add-int/lit8 v2, v2, 0x1
+    nop
+
+    .end local v2  # "ev":Lcom/android/server/trust/TrustArchive$Event;
+    add-int/lit8 v0, v0, 0x1
 
     .line 151
-    goto/16 :goto_9
+    goto/16 :goto_7
 
     .line 152
     :cond_ba
@@ -564,6 +585,8 @@
 
 .method public logAgentConnected(ILandroid/content/ComponentName;)V
     .registers 14
+    .param p1, "userId"  # I
+    .param p2, "agent"  # Landroid/content/ComponentName;
 
     .line 92
     new-instance v10, Lcom/android/server/trust/TrustArchive$Event;
@@ -596,6 +619,8 @@
 
 .method public logAgentDied(ILandroid/content/ComponentName;)V
     .registers 14
+    .param p1, "userId"  # I
+    .param p2, "agent"  # Landroid/content/ComponentName;
 
     .line 88
     new-instance v10, Lcom/android/server/trust/TrustArchive$Event;
@@ -628,6 +653,8 @@
 
 .method public logAgentStopped(ILandroid/content/ComponentName;)V
     .registers 14
+    .param p1, "userId"  # I
+    .param p2, "agent"  # Landroid/content/ComponentName;
 
     .line 96
     new-instance v10, Lcom/android/server/trust/TrustArchive$Event;
@@ -692,6 +719,11 @@
 
 .method public logGrantTrust(ILandroid/content/ComponentName;Ljava/lang/String;JI)V
     .registers 18
+    .param p1, "userId"  # I
+    .param p2, "agent"  # Landroid/content/ComponentName;
+    .param p3, "message"  # Ljava/lang/String;
+    .param p4, "duration"  # J
+    .param p6, "flags"  # I
 
     .line 75
     new-instance v10, Lcom/android/server/trust/TrustArchive$Event;
@@ -726,6 +758,9 @@
 
 .method public logManagingTrust(ILandroid/content/ComponentName;Z)V
     .registers 15
+    .param p1, "userId"  # I
+    .param p2, "agent"  # Landroid/content/ComponentName;
+    .param p3, "managing"  # Z
 
     .line 100
     new-instance v10, Lcom/android/server/trust/TrustArchive$Event;
@@ -758,6 +793,8 @@
 
 .method public logRevokeTrust(ILandroid/content/ComponentName;)V
     .registers 14
+    .param p1, "userId"  # I
+    .param p2, "agent"  # Landroid/content/ComponentName;
 
     .line 80
     new-instance v10, Lcom/android/server/trust/TrustArchive$Event;
@@ -790,6 +827,8 @@
 
 .method public logTrustTimeout(ILandroid/content/ComponentName;)V
     .registers 14
+    .param p1, "userId"  # I
+    .param p2, "agent"  # Landroid/content/ComponentName;
 
     .line 84
     new-instance v10, Lcom/android/server/trust/TrustArchive$Event;

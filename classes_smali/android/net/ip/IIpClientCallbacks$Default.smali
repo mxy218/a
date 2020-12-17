@@ -49,6 +49,7 @@
 
 .method public installPacketFilter([B)V
     .registers 2
+    .param p1, "filter"  # [B
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -61,6 +62,7 @@
 
 .method public onIpClientCreated(Landroid/net/ip/IIpClient;)V
     .registers 2
+    .param p1, "ipClient"  # Landroid/net/ip/IIpClient;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -73,6 +75,7 @@
 
 .method public onLinkPropertiesChange(Landroid/net/LinkProperties;)V
     .registers 2
+    .param p1, "newLp"  # Landroid/net/LinkProperties;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -85,6 +88,7 @@
 
 .method public onNewDhcpResults(Landroid/net/DhcpResultsParcelable;)V
     .registers 2
+    .param p1, "dhcpResults"  # Landroid/net/DhcpResultsParcelable;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -121,6 +125,7 @@
 
 .method public onProvisioningFailure(Landroid/net/LinkProperties;)V
     .registers 2
+    .param p1, "newLp"  # Landroid/net/LinkProperties;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -133,6 +138,7 @@
 
 .method public onProvisioningSuccess(Landroid/net/LinkProperties;)V
     .registers 2
+    .param p1, "newLp"  # Landroid/net/LinkProperties;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -157,6 +163,7 @@
 
 .method public onReachabilityLost(Ljava/lang/String;)V
     .registers 2
+    .param p1, "logMsg"  # Ljava/lang/String;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -169,6 +176,7 @@
 
 .method public setFallbackMulticastFilter(Z)V
     .registers 2
+    .param p1, "enabled"  # Z
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -181,6 +189,7 @@
 
 .method public setNeighborDiscoveryOffload(Z)V
     .registers 2
+    .param p1, "enable"  # Z
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;

@@ -29,7 +29,10 @@
 .end method
 
 .method static createDpEncodedReportMap(Z[BLjava/util/List;Lcom/android/server/net/watchlist/WatchlistReportDbHelper$AggregatedResult;)Ljava/util/Map;
-    .registers 11
+    .registers 13
+    .param p0, "isSecure"  # Z
+    .param p1, "userSecret"  # [B
+    .param p3, "aggregatedResult"  # Lcom/android/server/net/watchlist/WatchlistReportDbHelper$AggregatedResult;
     .annotation build Lcom/android/internal/annotations/VisibleForTesting;
     .end annotation
 
@@ -49,110 +52,127 @@
     .end annotation
 
     .line 90
+    .local p2, "appDigestList":Ljava/util/List;, "Ljava/util/List<Ljava/lang/String;>;"
     invoke-interface {p2}, Ljava/util/List;->size()I
 
     move-result v0
 
     .line 91
+    .local v0, "appDigestListSize":I
     new-instance v1, Ljava/util/HashMap;
 
     invoke-direct {v1, v0}, Ljava/util/HashMap;-><init>(I)V
 
     .line 92
+    .local v1, "resultMap":Ljava/util/HashMap;, "Ljava/util/HashMap<Ljava/lang/String;Ljava/lang/Boolean;>;"
     const/4 v2, 0x0
 
-    move v3, v2
-
-    :goto_b
-    if-ge v3, v0, :cond_3a
+    .local v2, "i":I
+    :goto_a
+    if-ge v2, v0, :cond_3b
 
     .line 93
-    invoke-interface {p2, v3}, Ljava/util/List;->get(I)Ljava/lang/Object;
+    invoke-interface {p2, v2}, Ljava/util/List;->get(I)Ljava/lang/Object;
+
+    move-result-object v3
+
+    check-cast v3, Ljava/lang/String;
+
+    .line 95
+    .local v3, "appDigest":Ljava/lang/String;
+    if-eqz p0, :cond_19
+
+    .line 96
+    invoke-static {p1, v3}, Lcom/android/server/net/watchlist/PrivacyUtils;->createSecureDPEncoder([BLjava/lang/String;)Landroid/privacy/DifferentialPrivacyEncoder;
 
     move-result-object v4
 
-    check-cast v4, Ljava/lang/String;
-
-    .line 95
-    if-eqz p0, :cond_1a
-
-    .line 96
-    invoke-static {p1, v4}, Lcom/android/server/net/watchlist/PrivacyUtils;->createSecureDPEncoder([BLjava/lang/String;)Landroid/privacy/DifferentialPrivacyEncoder;
-
-    move-result-object v5
-
-    goto :goto_1e
+    goto :goto_1d
 
     .line 97
-    :cond_1a
-    invoke-static {v4}, Lcom/android/server/net/watchlist/PrivacyUtils;->createInsecureDPEncoderForTest(Ljava/lang/String;)Landroid/privacy/DifferentialPrivacyEncoder;
+    :cond_19
+    invoke-static {v3}, Lcom/android/server/net/watchlist/PrivacyUtils;->createInsecureDPEncoderForTest(Ljava/lang/String;)Landroid/privacy/DifferentialPrivacyEncoder;
 
-    move-result-object v5
+    move-result-object v4
+
+    :goto_1d
+    nop
 
     .line 98
-    :goto_1e
-    iget-object v6, p3, Lcom/android/server/net/watchlist/WatchlistReportDbHelper$AggregatedResult;->appDigestList:Ljava/util/Set;
+    .local v4, "encoder":Landroid/privacy/DifferentialPrivacyEncoder;
+    iget-object v5, p3, Lcom/android/server/net/watchlist/WatchlistReportDbHelper$AggregatedResult;->appDigestList:Ljava/util/Set;
 
-    invoke-interface {v6, v4}, Ljava/util/Set;->contains(Ljava/lang/Object;)Z
+    invoke-interface {v5, v3}, Ljava/util/Set;->contains(Ljava/lang/Object;)Z
 
-    move-result v6
+    move-result v5
 
     .line 101
-    invoke-interface {v5, v6}, Landroid/privacy/DifferentialPrivacyEncoder;->encodeBoolean(Z)[B
+    .local v5, "visitedWatchlist":Z
+    invoke-interface {v4, v5}, Landroid/privacy/DifferentialPrivacyEncoder;->encodeBoolean(Z)[B
 
-    move-result-object v5
+    move-result-object v6
 
-    aget-byte v5, v5, v2
+    const/4 v7, 0x0
 
-    const/4 v6, 0x1
+    aget-byte v6, v6, v7
 
-    and-int/2addr v5, v6
+    const/4 v8, 0x1
 
-    if-ne v5, v6, :cond_2f
+    and-int/2addr v6, v8
 
-    goto :goto_30
+    if-ne v6, v8, :cond_30
 
-    :cond_2f
-    move v6, v2
+    move v7, v8
+
+    :cond_30
+    move v6, v7
 
     .line 103
-    :goto_30
+    .local v6, "encodedVisitedWatchlist":Z
     invoke-static {v6}, Ljava/lang/Boolean;->valueOf(Z)Ljava/lang/Boolean;
 
-    move-result-object v5
+    move-result-object v7
 
-    invoke-virtual {v1, v4, v5}, Ljava/util/HashMap;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+    invoke-virtual {v1, v3, v7}, Ljava/util/HashMap;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
 
     .line 92
-    add-int/lit8 v3, v3, 0x1
+    .end local v3  # "appDigest":Ljava/lang/String;
+    .end local v4  # "encoder":Landroid/privacy/DifferentialPrivacyEncoder;
+    .end local v5  # "visitedWatchlist":Z
+    .end local v6  # "encodedVisitedWatchlist":Z
+    add-int/lit8 v2, v2, 0x1
 
-    goto :goto_b
+    goto :goto_a
 
     .line 105
-    :cond_3a
+    .end local v2  # "i":I
+    :cond_3b
     return-object v1
 .end method
 
 .method static createInsecureDPEncoderForTest(Ljava/lang/String;)Landroid/privacy/DifferentialPrivacyEncoder;
-    .registers 1
+    .registers 3
+    .param p0, "appDigest"  # Ljava/lang/String;
     .annotation build Lcom/android/internal/annotations/VisibleForTesting;
     .end annotation
 
     .line 58
     invoke-static {p0}, Lcom/android/server/net/watchlist/PrivacyUtils;->createLongitudinalReportingConfig(Ljava/lang/String;)Landroid/privacy/internal/longitudinalreporting/LongitudinalReportingConfig;
 
-    move-result-object p0
+    move-result-object v0
 
     .line 59
-    invoke-static {p0}, Landroid/privacy/internal/longitudinalreporting/LongitudinalReportingEncoder;->createInsecureEncoderForTest(Landroid/privacy/internal/longitudinalreporting/LongitudinalReportingConfig;)Landroid/privacy/internal/longitudinalreporting/LongitudinalReportingEncoder;
+    .local v0, "config":Landroid/privacy/internal/longitudinalreporting/LongitudinalReportingConfig;
+    invoke-static {v0}, Landroid/privacy/internal/longitudinalreporting/LongitudinalReportingEncoder;->createInsecureEncoderForTest(Landroid/privacy/internal/longitudinalreporting/LongitudinalReportingConfig;)Landroid/privacy/internal/longitudinalreporting/LongitudinalReportingEncoder;
 
-    move-result-object p0
+    move-result-object v1
 
-    return-object p0
+    return-object v1
 .end method
 
 .method private static createLongitudinalReportingConfig(Ljava/lang/String;)Landroid/privacy/internal/longitudinalreporting/LongitudinalReportingConfig;
     .registers 10
+    .param p0, "appDigest"  # Ljava/lang/String;
 
     .line 79
     new-instance v8, Landroid/privacy/internal/longitudinalreporting/LongitudinalReportingConfig;
@@ -185,19 +205,22 @@
 .end method
 
 .method static createSecureDPEncoder([BLjava/lang/String;)Landroid/privacy/DifferentialPrivacyEncoder;
-    .registers 2
+    .registers 4
+    .param p0, "userSecret"  # [B
+    .param p1, "appDigest"  # Ljava/lang/String;
     .annotation build Lcom/android/internal/annotations/VisibleForTesting;
     .end annotation
 
     .line 71
     invoke-static {p1}, Lcom/android/server/net/watchlist/PrivacyUtils;->createLongitudinalReportingConfig(Ljava/lang/String;)Landroid/privacy/internal/longitudinalreporting/LongitudinalReportingConfig;
 
-    move-result-object p1
+    move-result-object v0
 
     .line 72
-    invoke-static {p1, p0}, Landroid/privacy/internal/longitudinalreporting/LongitudinalReportingEncoder;->createEncoder(Landroid/privacy/internal/longitudinalreporting/LongitudinalReportingConfig;[B)Landroid/privacy/internal/longitudinalreporting/LongitudinalReportingEncoder;
+    .local v0, "config":Landroid/privacy/internal/longitudinalreporting/LongitudinalReportingConfig;
+    invoke-static {v0, p0}, Landroid/privacy/internal/longitudinalreporting/LongitudinalReportingEncoder;->createEncoder(Landroid/privacy/internal/longitudinalreporting/LongitudinalReportingConfig;[B)Landroid/privacy/internal/longitudinalreporting/LongitudinalReportingEncoder;
 
-    move-result-object p0
+    move-result-object v1
 
-    return-object p0
+    return-object v1
 .end method

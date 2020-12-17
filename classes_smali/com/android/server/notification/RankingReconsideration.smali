@@ -29,6 +29,7 @@
 # direct methods
 .method public constructor <init>(Ljava/lang/String;)V
     .registers 4
+    .param p1, "key"  # Ljava/lang/String;
 
     .line 38
     const-wide/16 v0, 0x0
@@ -40,7 +41,9 @@
 .end method
 
 .method public constructor <init>(Ljava/lang/String;J)V
-    .registers 4
+    .registers 5
+    .param p1, "key"  # Ljava/lang/String;
+    .param p2, "delay"  # J
 
     .line 41
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -52,9 +55,9 @@
     iput-object p1, p0, Lcom/android/server/notification/RankingReconsideration;->mKey:Ljava/lang/String;
 
     .line 44
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    iput p1, p0, Lcom/android/server/notification/RankingReconsideration;->mState:I
+    iput v0, p0, Lcom/android/server/notification/RankingReconsideration;->mState:I
 
     .line 45
     return-void
@@ -66,32 +69,34 @@
 .end method
 
 .method public cancel(Z)Z
-    .registers 2
+    .registers 3
+    .param p1, "mayInterruptIfRunning"  # Z
 
     .line 69
-    iget p1, p0, Lcom/android/server/notification/RankingReconsideration;->mState:I
+    iget v0, p0, Lcom/android/server/notification/RankingReconsideration;->mState:I
 
-    if-nez p1, :cond_9
+    if-nez v0, :cond_9
 
     .line 70
-    const/4 p1, 0x3
+    const/4 v0, 0x3
 
-    iput p1, p0, Lcom/android/server/notification/RankingReconsideration;->mState:I
+    iput v0, p0, Lcom/android/server/notification/RankingReconsideration;->mState:I
 
     .line 71
-    const/4 p1, 0x1
+    const/4 v0, 0x1
 
-    return p1
+    return v0
 
     .line 73
     :cond_9
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    return p1
+    return v0
 .end method
 
 .method public getDelay(Ljava/util/concurrent/TimeUnit;)J
     .registers 5
+    .param p1, "unit"  # Ljava/util/concurrent/TimeUnit;
 
     .line 65
     iget-wide v0, p0, Lcom/android/server/notification/RankingReconsideration;->mDelay:J

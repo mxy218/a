@@ -32,36 +32,37 @@
 
 # direct methods
 .method public constructor <init>(Lcom/android/server/power/PowerManagerService;Landroid/os/Handler;)V
-    .registers 3
+    .registers 4
+    .param p2, "handler"  # Landroid/os/Handler;
 
-    .line 642
+    .line 625
     iput-object p1, p0, Lcom/android/server/power/PowerManagerService$Constants;->this$0:Lcom/android/server/power/PowerManagerService;
 
-    .line 643
+    .line 626
     invoke-direct {p0, p2}, Landroid/database/ContentObserver;-><init>(Landroid/os/Handler;)V
 
-    .line 637
+    .line 620
     const/4 p1, 0x1
 
     iput-boolean p1, p0, Lcom/android/server/power/PowerManagerService$Constants;->NO_CACHED_WAKE_LOCKS:Z
 
-    .line 640
+    .line 623
     new-instance p1, Landroid/util/KeyValueListParser;
 
-    const/16 p2, 0x2c
+    const/16 v0, 0x2c
 
-    invoke-direct {p1, p2}, Landroid/util/KeyValueListParser;-><init>(C)V
+    invoke-direct {p1, v0}, Landroid/util/KeyValueListParser;-><init>(C)V
 
     iput-object p1, p0, Lcom/android/server/power/PowerManagerService$Constants;->mParser:Landroid/util/KeyValueListParser;
 
-    .line 644
+    .line 627
     return-void
 .end method
 
 .method private updateConstants()V
     .registers 5
 
-    .line 659
+    .line 642
     iget-object v0, p0, Lcom/android/server/power/PowerManagerService$Constants;->this$0:Lcom/android/server/power/PowerManagerService;
 
     invoke-static {v0}, Lcom/android/server/power/PowerManagerService;->access$000(Lcom/android/server/power/PowerManagerService;)Ljava/lang/Object;
@@ -70,7 +71,7 @@
 
     monitor-enter v0
 
-    .line 661
+    .line 644
     :try_start_7
     iget-object v1, p0, Lcom/android/server/power/PowerManagerService$Constants;->mParser:Landroid/util/KeyValueListParser;
 
@@ -87,20 +88,21 @@
     .catch Ljava/lang/IllegalArgumentException; {:try_start_7 .. :try_end_15} :catch_18
     .catchall {:try_start_7 .. :try_end_15} :catchall_16
 
-    .line 667
+    .line 650
     goto :goto_20
 
-    .line 671
+    .line 654
     :catchall_16
     move-exception v1
 
     goto :goto_2e
 
-    .line 663
+    .line 646
     :catch_18
     move-exception v1
 
-    .line 666
+    .line 649
+    .local v1, "e":Ljava/lang/IllegalArgumentException;
     :try_start_19
     const-string v2, "PowerManagerService"
 
@@ -108,7 +110,8 @@
 
     invoke-static {v2, v3, v1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
-    .line 669
+    .line 652
+    .end local v1  # "e":Ljava/lang/IllegalArgumentException;
     :goto_20
     iget-object v1, p0, Lcom/android/server/power/PowerManagerService$Constants;->mParser:Landroid/util/KeyValueListParser;
 
@@ -122,13 +125,13 @@
 
     iput-boolean v1, p0, Lcom/android/server/power/PowerManagerService$Constants;->NO_CACHED_WAKE_LOCKS:Z
 
-    .line 671
+    .line 654
     monitor-exit v0
 
-    .line 672
+    .line 655
     return-void
 
-    .line 671
+    .line 654
     :goto_2e
     monitor-exit v0
     :try_end_2f
@@ -141,13 +144,14 @@
 # virtual methods
 .method dump(Ljava/io/PrintWriter;)V
     .registers 3
+    .param p1, "pw"  # Ljava/io/PrintWriter;
 
-    .line 675
+    .line 658
     const-string v0, "  Settings power_manager_constants:"
 
     invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
-    .line 677
+    .line 660
     const-string v0, "    "
 
     invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
@@ -160,71 +164,76 @@
 
     invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
-    .line 678
+    .line 661
     iget-boolean v0, p0, Lcom/android/server/power/PowerManagerService$Constants;->NO_CACHED_WAKE_LOCKS:Z
 
     invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->println(Z)V
 
-    .line 679
+    .line 662
     return-void
 .end method
 
 .method dumpProto(Landroid/util/proto/ProtoOutputStream;)V
     .registers 7
+    .param p1, "proto"  # Landroid/util/proto/ProtoOutputStream;
 
-    .line 682
+    .line 665
     const-wide v0, 0x10b00000001L
 
     invoke-virtual {p1, v0, v1}, Landroid/util/proto/ProtoOutputStream;->start(J)J
 
     move-result-wide v0
 
-    .line 683
+    .line 666
+    .local v0, "constantsToken":J
     iget-boolean v2, p0, Lcom/android/server/power/PowerManagerService$Constants;->NO_CACHED_WAKE_LOCKS:Z
 
     const-wide v3, 0x10800000001L
 
     invoke-virtual {p1, v3, v4, v2}, Landroid/util/proto/ProtoOutputStream;->write(JZ)V
 
-    .line 685
+    .line 668
     invoke-virtual {p1, v0, v1}, Landroid/util/proto/ProtoOutputStream;->end(J)V
 
-    .line 686
+    .line 669
     return-void
 .end method
 
 .method public onChange(ZLandroid/net/Uri;)V
     .registers 3
+    .param p1, "selfChange"  # Z
+    .param p2, "uri"  # Landroid/net/Uri;
 
-    .line 655
+    .line 638
     invoke-direct {p0}, Lcom/android/server/power/PowerManagerService$Constants;->updateConstants()V
 
-    .line 656
+    .line 639
     return-void
 .end method
 
 .method public start(Landroid/content/ContentResolver;)V
-    .registers 4
+    .registers 5
+    .param p1, "resolver"  # Landroid/content/ContentResolver;
 
-    .line 647
+    .line 630
     iput-object p1, p0, Lcom/android/server/power/PowerManagerService$Constants;->mResolver:Landroid/content/ContentResolver;
 
-    .line 648
-    iget-object p1, p0, Lcom/android/server/power/PowerManagerService$Constants;->mResolver:Landroid/content/ContentResolver;
+    .line 631
+    iget-object v0, p0, Lcom/android/server/power/PowerManagerService$Constants;->mResolver:Landroid/content/ContentResolver;
 
-    const-string/jumbo v0, "power_manager_constants"
+    const-string/jumbo v1, "power_manager_constants"
 
-    invoke-static {v0}, Landroid/provider/Settings$Global;->getUriFor(Ljava/lang/String;)Landroid/net/Uri;
+    invoke-static {v1}, Landroid/provider/Settings$Global;->getUriFor(Ljava/lang/String;)Landroid/net/Uri;
 
-    move-result-object v0
+    move-result-object v1
 
-    const/4 v1, 0x0
+    const/4 v2, 0x0
 
-    invoke-virtual {p1, v0, v1, p0}, Landroid/content/ContentResolver;->registerContentObserver(Landroid/net/Uri;ZLandroid/database/ContentObserver;)V
+    invoke-virtual {v0, v1, v2, p0}, Landroid/content/ContentResolver;->registerContentObserver(Landroid/net/Uri;ZLandroid/database/ContentObserver;)V
 
-    .line 650
+    .line 633
     invoke-direct {p0}, Lcom/android/server/power/PowerManagerService$Constants;->updateConstants()V
 
-    .line 651
+    .line 634
     return-void
 .end method

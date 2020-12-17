@@ -10,6 +10,7 @@
 # direct methods
 .method private constructor <init>(Lcom/android/server/backup/encryption/storage/BackupEncryptionDbHelper;)V
     .registers 2
+    .param p1, "helper"  # Lcom/android/server/backup/encryption/storage/BackupEncryptionDbHelper;
 
     .line 37
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -22,7 +23,8 @@
 .end method
 
 .method public static newInstance(Landroid/content/Context;)Lcom/android/server/backup/encryption/storage/BackupEncryptionDb;
-    .registers 2
+    .registers 3
+    .param p0, "context"  # Landroid/content/Context;
 
     .line 32
     new-instance v0, Lcom/android/server/backup/encryption/storage/BackupEncryptionDbHelper;
@@ -30,16 +32,17 @@
     invoke-direct {v0, p0}, Lcom/android/server/backup/encryption/storage/BackupEncryptionDbHelper;-><init>(Landroid/content/Context;)V
 
     .line 33
-    const/4 p0, 0x1
+    .local v0, "helper":Lcom/android/server/backup/encryption/storage/BackupEncryptionDbHelper;
+    const/4 v1, 0x1
 
-    invoke-virtual {v0, p0}, Lcom/android/server/backup/encryption/storage/BackupEncryptionDbHelper;->setWriteAheadLoggingEnabled(Z)V
+    invoke-virtual {v0, v1}, Lcom/android/server/backup/encryption/storage/BackupEncryptionDbHelper;->setWriteAheadLoggingEnabled(Z)V
 
     .line 34
-    new-instance p0, Lcom/android/server/backup/encryption/storage/BackupEncryptionDb;
+    new-instance v1, Lcom/android/server/backup/encryption/storage/BackupEncryptionDb;
 
-    invoke-direct {p0, v0}, Lcom/android/server/backup/encryption/storage/BackupEncryptionDb;-><init>(Lcom/android/server/backup/encryption/storage/BackupEncryptionDbHelper;)V
+    invoke-direct {v1, v0}, Lcom/android/server/backup/encryption/storage/BackupEncryptionDb;-><init>(Lcom/android/server/backup/encryption/storage/BackupEncryptionDbHelper;)V
 
-    return-object p0
+    return-object v1
 .end method
 
 

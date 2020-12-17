@@ -207,7 +207,9 @@
 .end method
 
 .method private dumpFile(Ljava/io/PrintWriter;Ljava/io/File;)V
-    .registers 6
+    .registers 8
+    .param p1, "pw"  # Ljava/io/PrintWriter;
+    .param p2, "file"  # Ljava/io/File;
 
     .line 278
     new-instance v0, Ljava/lang/StringBuilder;
@@ -234,6 +236,7 @@
     new-array v0, v0, [C
 
     .line 281
+    .local v0, "buffer":[C
     :try_start_1b
     new-instance v1, Ljava/io/BufferedReader;
 
@@ -243,81 +246,109 @@
 
     invoke-direct {v1, v2}, Ljava/io/BufferedReader;-><init>(Ljava/io/Reader;)V
     :try_end_25
-    .catch Ljava/io/IOException; {:try_start_1b .. :try_end_25} :catch_42
+    .catch Ljava/io/IOException; {:try_start_1b .. :try_end_25} :catch_43
 
     .line 283
+    .local v1, "in":Ljava/io/Reader;
     :cond_25
     :goto_25
     :try_start_25
     invoke-virtual {v1, v0}, Ljava/io/Reader;->read([C)I
 
-    move-result p2
+    move-result v2
 
-    if-ltz p2, :cond_32
+    move v3, v2
+
+    .local v3, "read":I
+    if-ltz v2, :cond_33
 
     .line 284
-    if-lez p2, :cond_25
+    if-lez v3, :cond_25
 
     .line 285
     const/4 v2, 0x0
 
-    invoke-virtual {p1, v0, v2, p2}, Ljava/io/PrintWriter;->write([CII)V
-    :try_end_31
-    .catchall {:try_start_25 .. :try_end_31} :catchall_36
+    invoke-virtual {p1, v0, v2, v3}, Ljava/io/PrintWriter;->write([CII)V
+    :try_end_32
+    .catchall {:try_start_25 .. :try_end_32} :catchall_37
 
     goto :goto_25
 
     .line 288
-    :cond_32
-    :try_start_32
+    .end local v3  # "read":I
+    :cond_33
+    :try_start_33
     invoke-virtual {v1}, Ljava/io/Reader;->close()V
-    :try_end_35
-    .catch Ljava/io/IOException; {:try_start_32 .. :try_end_35} :catch_42
+    :try_end_36
+    .catch Ljava/io/IOException; {:try_start_33 .. :try_end_36} :catch_43
 
     .line 289
-    goto :goto_43
+    .end local v1  # "in":Ljava/io/Reader;
+    goto :goto_44
 
     .line 281
-    :catchall_36
-    move-exception p1
+    .restart local v1  # "in":Ljava/io/Reader;
+    :catchall_37
+    move-exception v2
 
-    :try_start_37
-    throw p1
-    :try_end_38
-    .catchall {:try_start_37 .. :try_end_38} :catchall_38
+    .end local v0  # "buffer":[C
+    .end local v1  # "in":Ljava/io/Reader;
+    .end local p0  # "this":Lcom/android/server/content/SyncLogger$RotatingFileLogger;
+    .end local p1  # "pw":Ljava/io/PrintWriter;
+    .end local p2  # "file":Ljava/io/File;
+    :try_start_38
+    throw v2
+    :try_end_39
+    .catchall {:try_start_38 .. :try_end_39} :catchall_39
 
     .line 288
-    :catchall_38
-    move-exception p2
+    .restart local v0  # "buffer":[C
+    .restart local v1  # "in":Ljava/io/Reader;
+    .restart local p0  # "this":Lcom/android/server/content/SyncLogger$RotatingFileLogger;
+    .restart local p1  # "pw":Ljava/io/PrintWriter;
+    .restart local p2  # "file":Ljava/io/File;
+    :catchall_39
+    move-exception v3
 
-    :try_start_39
+    :try_start_3a
     invoke-virtual {v1}, Ljava/io/Reader;->close()V
-    :try_end_3c
-    .catchall {:try_start_39 .. :try_end_3c} :catchall_3d
+    :try_end_3d
+    .catchall {:try_start_3a .. :try_end_3d} :catchall_3e
 
-    goto :goto_41
+    goto :goto_42
 
-    :catchall_3d
-    move-exception v0
+    :catchall_3e
+    move-exception v4
 
-    :try_start_3e
-    invoke-virtual {p1, v0}, Ljava/lang/Throwable;->addSuppressed(Ljava/lang/Throwable;)V
+    :try_start_3f
+    invoke-virtual {v2, v4}, Ljava/lang/Throwable;->addSuppressed(Ljava/lang/Throwable;)V
 
-    :goto_41
-    throw p2
-    :try_end_42
-    .catch Ljava/io/IOException; {:try_start_3e .. :try_end_42} :catch_42
+    .end local v0  # "buffer":[C
+    .end local p0  # "this":Lcom/android/server/content/SyncLogger$RotatingFileLogger;
+    .end local p1  # "pw":Ljava/io/PrintWriter;
+    .end local p2  # "file":Ljava/io/File;
+    :goto_42
+    throw v3
+    :try_end_43
+    .catch Ljava/io/IOException; {:try_start_3f .. :try_end_43} :catch_43
 
-    :catch_42
-    move-exception p1
+    .end local v1  # "in":Ljava/io/Reader;
+    .restart local v0  # "buffer":[C
+    .restart local p0  # "this":Lcom/android/server/content/SyncLogger$RotatingFileLogger;
+    .restart local p1  # "pw":Ljava/io/PrintWriter;
+    .restart local p2  # "file":Ljava/io/File;
+    :catch_43
+    move-exception v1
 
     .line 290
-    :goto_43
+    :goto_44
     return-void
 .end method
 
 .method private handleException(Ljava/lang/String;Ljava/lang/Exception;)V
     .registers 4
+    .param p1, "message"  # Ljava/lang/String;
+    .param p2, "e"  # Ljava/lang/Exception;
 
     .line 167
     iget-boolean v0, p0, Lcom/android/server/content/SyncLogger$RotatingFileLogger;->mErrorShown:Z
@@ -330,9 +361,9 @@
     invoke-static {v0, p1, p2}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
     .line 169
-    const/4 p1, 0x1
+    const/4 v0, 0x1
 
-    iput-boolean p1, p0, Lcom/android/server/content/SyncLogger$RotatingFileLogger;->mErrorShown:Z
+    iput-boolean v0, p0, Lcom/android/server/content/SyncLogger$RotatingFileLogger;->mErrorShown:Z
 
     .line 171
     :cond_c
@@ -340,7 +371,8 @@
 .end method
 
 .method private openLogLocked(J)V
-    .registers 7
+    .registers 10
+    .param p1, "now"  # J
     .annotation build Lcom/android/internal/annotations/GuardedBy;
         value = {
             "mLock"
@@ -353,6 +385,7 @@
     rem-long v0, p1, v0
 
     .line 222
+    .local v0, "day":J
     iget-object v2, p0, Lcom/android/server/content/SyncLogger$RotatingFileLogger;->mLogWriter:Ljava/io/Writer;
 
     if-eqz v2, :cond_10
@@ -374,60 +407,62 @@
     iput-wide v0, p0, Lcom/android/server/content/SyncLogger$RotatingFileLogger;->mCurrentLogFileDayTimestamp:J
 
     .line 231
-    iget-object v0, p0, Lcom/android/server/content/SyncLogger$RotatingFileLogger;->mCachedDate:Ljava/util/Date;
+    iget-object v2, p0, Lcom/android/server/content/SyncLogger$RotatingFileLogger;->mCachedDate:Ljava/util/Date;
 
-    invoke-virtual {v0, p1, p2}, Ljava/util/Date;->setTime(J)V
+    invoke-virtual {v2, p1, p2}, Ljava/util/Date;->setTime(J)V
 
     .line 232
-    new-instance p1, Ljava/lang/StringBuilder;
+    new-instance v2, Ljava/lang/StringBuilder;
 
-    invoke-direct {p1}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string/jumbo p2, "synclog-"
+    const-string/jumbo v3, "synclog-"
 
-    invoke-virtual {p1, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    sget-object p2, Lcom/android/server/content/SyncLogger$RotatingFileLogger;->sFilenameDateFormat:Ljava/text/SimpleDateFormat;
+    sget-object v3, Lcom/android/server/content/SyncLogger$RotatingFileLogger;->sFilenameDateFormat:Ljava/text/SimpleDateFormat;
 
-    iget-object v0, p0, Lcom/android/server/content/SyncLogger$RotatingFileLogger;->mCachedDate:Ljava/util/Date;
+    iget-object v4, p0, Lcom/android/server/content/SyncLogger$RotatingFileLogger;->mCachedDate:Ljava/util/Date;
 
-    invoke-virtual {p2, v0}, Ljava/text/SimpleDateFormat;->format(Ljava/util/Date;)Ljava/lang/String;
+    invoke-virtual {v3, v4}, Ljava/text/SimpleDateFormat;->format(Ljava/util/Date;)Ljava/lang/String;
 
-    move-result-object p2
+    move-result-object v3
 
-    invoke-virtual {p1, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string p2, ".log"
+    const-string v3, ".log"
 
-    invoke-virtual {p1, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v2
 
     .line 233
-    new-instance p2, Ljava/io/File;
+    .local v2, "filename":Ljava/lang/String;
+    new-instance v3, Ljava/io/File;
 
-    iget-object v0, p0, Lcom/android/server/content/SyncLogger$RotatingFileLogger;->mLogPath:Ljava/io/File;
+    iget-object v4, p0, Lcom/android/server/content/SyncLogger$RotatingFileLogger;->mLogPath:Ljava/io/File;
 
-    invoke-direct {p2, v0, p1}, Ljava/io/File;-><init>(Ljava/io/File;Ljava/lang/String;)V
+    invoke-direct {v3, v4, v2}, Ljava/io/File;-><init>(Ljava/io/File;Ljava/lang/String;)V
 
     .line 235
-    invoke-virtual {p2}, Ljava/io/File;->getParentFile()Ljava/io/File;
+    .local v3, "file":Ljava/io/File;
+    invoke-virtual {v3}, Ljava/io/File;->getParentFile()Ljava/io/File;
 
-    move-result-object p1
+    move-result-object v4
 
-    invoke-virtual {p1}, Ljava/io/File;->mkdirs()Z
+    invoke-virtual {v4}, Ljava/io/File;->mkdirs()Z
 
     .line 238
     :try_start_47
-    new-instance p1, Ljava/io/FileWriter;
+    new-instance v4, Ljava/io/FileWriter;
 
-    const/4 v0, 0x1
+    const/4 v5, 0x1
 
-    invoke-direct {p1, p2, v0}, Ljava/io/FileWriter;-><init>(Ljava/io/File;Z)V
+    invoke-direct {v4, v3, v5}, Ljava/io/FileWriter;-><init>(Ljava/io/File;Z)V
 
-    iput-object p1, p0, Lcom/android/server/content/SyncLogger$RotatingFileLogger;->mLogWriter:Ljava/io/Writer;
+    iput-object v4, p0, Lcom/android/server/content/SyncLogger$RotatingFileLogger;->mLogWriter:Ljava/io/Writer;
     :try_end_4f
     .catch Ljava/io/IOException; {:try_start_47 .. :try_end_4f} :catch_50
 
@@ -436,26 +471,28 @@
 
     .line 239
     :catch_50
-    move-exception p1
+    move-exception v4
 
     .line 240
-    new-instance v0, Ljava/lang/StringBuilder;
+    .local v4, "e":Ljava/io/IOException;
+    new-instance v5, Ljava/lang/StringBuilder;
 
-    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v5}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v1, "Failed to open log file: "
+    const-string v6, "Failed to open log file: "
 
-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    invoke-virtual {v5, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v5}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p2
+    move-result-object v5
 
-    invoke-direct {p0, p2, p1}, Lcom/android/server/content/SyncLogger$RotatingFileLogger;->handleException(Ljava/lang/String;Ljava/lang/Exception;)V
+    invoke-direct {p0, v5, v4}, Lcom/android/server/content/SyncLogger$RotatingFileLogger;->handleException(Ljava/lang/String;Ljava/lang/Exception;)V
 
     .line 242
+    .end local v4  # "e":Ljava/io/IOException;
     :goto_65
     return-void
 .end method
@@ -464,6 +501,7 @@
 # virtual methods
 .method public dumpAll(Ljava/io/PrintWriter;)V
     .registers 9
+    .param p1, "pw"  # Ljava/io/PrintWriter;
 
     .line 264
     iget-object v0, p0, Lcom/android/server/content/SyncLogger$RotatingFileLogger;->mLock:Ljava/lang/Object;
@@ -479,6 +517,7 @@
     move-result-object v1
 
     .line 266
+    .local v1, "files":[Ljava/lang/String;
     if-eqz v1, :cond_27
 
     array-length v2, v1
@@ -502,6 +541,7 @@
     aget-object v4, v1, v3
 
     .line 272
+    .local v4, "file":Ljava/lang/String;
     new-instance v5, Ljava/io/File;
 
     iget-object v6, p0, Lcom/android/server/content/SyncLogger$RotatingFileLogger;->mLogPath:Ljava/io/File;
@@ -511,11 +551,13 @@
     invoke-direct {p0, p1, v5}, Lcom/android/server/content/SyncLogger$RotatingFileLogger;->dumpFile(Ljava/io/PrintWriter;Ljava/io/File;)V
 
     .line 271
+    .end local v4  # "file":Ljava/lang/String;
     add-int/lit8 v3, v3, 0x1
 
     goto :goto_14
 
     .line 274
+    .end local v1  # "files":[Ljava/lang/String;
     :cond_25
     monitor-exit v0
 
@@ -523,6 +565,7 @@
     return-void
 
     .line 267
+    .restart local v1  # "files":[Ljava/lang/String;
     :cond_27
     :goto_27
     monitor-exit v0
@@ -530,14 +573,15 @@
     return-void
 
     .line 274
+    .end local v1  # "files":[Ljava/lang/String;
     :catchall_29
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_2b
     .catchall {:try_start_3 .. :try_end_2b} :catchall_29
 
-    throw p1
+    throw v1
 .end method
 
 .method public enabled()Z
@@ -550,18 +594,20 @@
 .end method
 
 .method public jobParametersToString(Landroid/app/job/JobParameters;)Ljava/lang/String;
-    .registers 2
+    .registers 3
+    .param p1, "params"  # Landroid/app/job/JobParameters;
 
     .line 259
     invoke-static {p1}, Lcom/android/server/content/SyncJobService;->jobParametersToString(Landroid/app/job/JobParameters;)Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    return-object p1
+    return-object v0
 .end method
 
 .method public varargs log([Ljava/lang/Object;)V
     .registers 5
+    .param p1, "message"  # [Ljava/lang/Object;
 
     .line 175
     if-nez p1, :cond_3
@@ -576,6 +622,7 @@
     move-result-wide v0
 
     .line 179
+    .local v0, "now":J
     iget-object v2, p0, Lcom/android/server/content/SyncLogger$RotatingFileLogger;->mHandler:Lcom/android/server/content/SyncLogger$RotatingFileLogger$MyHandler;
 
     invoke-virtual {v2, v0, v1, p1}, Lcom/android/server/content/SyncLogger$RotatingFileLogger$MyHandler;->log(J[Ljava/lang/Object;)V
@@ -585,7 +632,9 @@
 .end method
 
 .method logInner(J[Ljava/lang/Object;)V
-    .registers 8
+    .registers 10
+    .param p1, "now"  # J
+    .param p3, "message"  # [Ljava/lang/Object;
 
     .line 183
     iget-object v0, p0, Lcom/android/server/content/SyncLogger$RotatingFileLogger;->mLock:Ljava/lang/Object;
@@ -620,136 +669,144 @@
     invoke-virtual {v1, p1, p2}, Ljava/util/Date;->setTime(J)V
 
     .line 191
-    iget-object p1, p0, Lcom/android/server/content/SyncLogger$RotatingFileLogger;->mStringBuilder:Ljava/lang/StringBuilder;
+    iget-object v1, p0, Lcom/android/server/content/SyncLogger$RotatingFileLogger;->mStringBuilder:Ljava/lang/StringBuilder;
 
-    sget-object p2, Lcom/android/server/content/SyncLogger$RotatingFileLogger;->sTimestampFormat:Ljava/text/SimpleDateFormat;
+    sget-object v3, Lcom/android/server/content/SyncLogger$RotatingFileLogger;->sTimestampFormat:Ljava/text/SimpleDateFormat;
 
-    iget-object v1, p0, Lcom/android/server/content/SyncLogger$RotatingFileLogger;->mCachedDate:Ljava/util/Date;
+    iget-object v4, p0, Lcom/android/server/content/SyncLogger$RotatingFileLogger;->mCachedDate:Ljava/util/Date;
 
-    invoke-virtual {p2, v1}, Ljava/text/SimpleDateFormat;->format(Ljava/util/Date;)Ljava/lang/String;
+    invoke-virtual {v3, v4}, Ljava/text/SimpleDateFormat;->format(Ljava/util/Date;)Ljava/lang/String;
 
-    move-result-object p2
+    move-result-object v3
 
-    invoke-virtual {p1, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     .line 192
-    iget-object p1, p0, Lcom/android/server/content/SyncLogger$RotatingFileLogger;->mStringBuilder:Ljava/lang/StringBuilder;
+    iget-object v1, p0, Lcom/android/server/content/SyncLogger$RotatingFileLogger;->mStringBuilder:Ljava/lang/StringBuilder;
 
-    const/16 p2, 0x20
+    const/16 v3, 0x20
 
-    invoke-virtual {p1, p2}, Ljava/lang/StringBuilder;->append(C)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v3}, Ljava/lang/StringBuilder;->append(C)Ljava/lang/StringBuilder;
 
     .line 194
-    iget-object p1, p0, Lcom/android/server/content/SyncLogger$RotatingFileLogger;->mStringBuilder:Ljava/lang/StringBuilder;
+    iget-object v1, p0, Lcom/android/server/content/SyncLogger$RotatingFileLogger;->mStringBuilder:Ljava/lang/StringBuilder;
 
     invoke-static {}, Landroid/os/Process;->myTid()I
 
-    move-result v1
+    move-result v4
 
-    invoke-virtual {p1, v1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v4}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
     .line 195
-    iget-object p1, p0, Lcom/android/server/content/SyncLogger$RotatingFileLogger;->mStringBuilder:Ljava/lang/StringBuilder;
+    iget-object v1, p0, Lcom/android/server/content/SyncLogger$RotatingFileLogger;->mStringBuilder:Ljava/lang/StringBuilder;
 
-    invoke-virtual {p1, p2}, Ljava/lang/StringBuilder;->append(C)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v3}, Ljava/lang/StringBuilder;->append(C)Ljava/lang/StringBuilder;
 
     .line 197
-    iget-object p1, p0, Lcom/android/server/content/SyncLogger$RotatingFileLogger;->mStringBuilder:Ljava/lang/StringBuilder;
+    iget-object v1, p0, Lcom/android/server/content/SyncLogger$RotatingFileLogger;->mStringBuilder:Ljava/lang/StringBuilder;
 
-    invoke-virtual {p1}, Ljava/lang/StringBuilder;->length()I
+    invoke-virtual {v1}, Ljava/lang/StringBuilder;->length()I
 
-    move-result p1
+    move-result v1
 
     .line 199
-    array-length p2, p3
+    .local v1, "messageStart":I
+    array-length v3, p3
 
     :goto_40
-    if-ge v2, p2, :cond_4c
+    if-ge v2, v3, :cond_4d
 
-    aget-object v1, p3, v2
+    aget-object v4, p3, v2
 
     .line 200
-    iget-object v3, p0, Lcom/android/server/content/SyncLogger$RotatingFileLogger;->mStringBuilder:Ljava/lang/StringBuilder;
+    .local v4, "o":Ljava/lang/Object;
+    iget-object v5, p0, Lcom/android/server/content/SyncLogger$RotatingFileLogger;->mStringBuilder:Ljava/lang/StringBuilder;
 
-    invoke-virtual {v3, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    invoke-virtual {v5, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
     .line 199
+    nop
+
+    .end local v4  # "o":Ljava/lang/Object;
     add-int/lit8 v2, v2, 0x1
 
     goto :goto_40
 
     .line 202
-    :cond_4c
-    iget-object p2, p0, Lcom/android/server/content/SyncLogger$RotatingFileLogger;->mStringBuilder:Ljava/lang/StringBuilder;
+    :cond_4d
+    iget-object v2, p0, Lcom/android/server/content/SyncLogger$RotatingFileLogger;->mStringBuilder:Ljava/lang/StringBuilder;
 
-    const/16 p3, 0xa
+    const/16 v3, 0xa
 
-    invoke-virtual {p2, p3}, Ljava/lang/StringBuilder;->append(C)Ljava/lang/StringBuilder;
-    :try_end_53
-    .catchall {:try_start_3 .. :try_end_53} :catchall_77
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(C)Ljava/lang/StringBuilder;
+    :try_end_54
+    .catchall {:try_start_3 .. :try_end_54} :catchall_78
 
     .line 205
-    :try_start_53
-    iget-object p2, p0, Lcom/android/server/content/SyncLogger$RotatingFileLogger;->mLogWriter:Ljava/io/Writer;
+    :try_start_54
+    iget-object v2, p0, Lcom/android/server/content/SyncLogger$RotatingFileLogger;->mLogWriter:Ljava/io/Writer;
 
-    iget-object p3, p0, Lcom/android/server/content/SyncLogger$RotatingFileLogger;->mStringBuilder:Ljava/lang/StringBuilder;
+    iget-object v3, p0, Lcom/android/server/content/SyncLogger$RotatingFileLogger;->mStringBuilder:Ljava/lang/StringBuilder;
 
-    invoke-virtual {p2, p3}, Ljava/io/Writer;->append(Ljava/lang/CharSequence;)Ljava/io/Writer;
+    invoke-virtual {v2, v3}, Ljava/io/Writer;->append(Ljava/lang/CharSequence;)Ljava/io/Writer;
 
     .line 206
-    iget-object p2, p0, Lcom/android/server/content/SyncLogger$RotatingFileLogger;->mLogWriter:Ljava/io/Writer;
+    iget-object v2, p0, Lcom/android/server/content/SyncLogger$RotatingFileLogger;->mLogWriter:Ljava/io/Writer;
 
-    invoke-virtual {p2}, Ljava/io/Writer;->flush()V
+    invoke-virtual {v2}, Ljava/io/Writer;->flush()V
 
     .line 209
-    sget-boolean p2, Lcom/android/server/content/SyncLogger$RotatingFileLogger;->DO_LOGCAT:Z
+    sget-boolean v2, Lcom/android/server/content/SyncLogger$RotatingFileLogger;->DO_LOGCAT:Z
 
-    if-eqz p2, :cond_6e
+    if-eqz v2, :cond_6f
 
     .line 210
-    const-string p2, "SyncLogger"
+    const-string v2, "SyncLogger"
 
-    iget-object p3, p0, Lcom/android/server/content/SyncLogger$RotatingFileLogger;->mStringBuilder:Ljava/lang/StringBuilder;
+    iget-object v3, p0, Lcom/android/server/content/SyncLogger$RotatingFileLogger;->mStringBuilder:Ljava/lang/StringBuilder;
 
-    invoke-virtual {p3, p1}, Ljava/lang/StringBuilder;->substring(I)Ljava/lang/String;
+    invoke-virtual {v3, v1}, Ljava/lang/StringBuilder;->substring(I)Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v3
 
-    invoke-static {p2, p1}, Landroid/util/Log;->d(Ljava/lang/String;Ljava/lang/String;)I
-    :try_end_6e
-    .catch Ljava/io/IOException; {:try_start_53 .. :try_end_6e} :catch_6f
-    .catchall {:try_start_53 .. :try_end_6e} :catchall_77
+    invoke-static {v2, v3}, Landroid/util/Log;->d(Ljava/lang/String;Ljava/lang/String;)I
+    :try_end_6f
+    .catch Ljava/io/IOException; {:try_start_54 .. :try_end_6f} :catch_70
+    .catchall {:try_start_54 .. :try_end_6f} :catchall_78
 
     .line 214
-    :cond_6e
-    goto :goto_75
+    :cond_6f
+    goto :goto_76
 
     .line 212
-    :catch_6f
-    move-exception p1
+    :catch_70
+    move-exception v2
 
     .line 213
-    :try_start_70
-    const-string p2, "Failed to write log"
+    .local v2, "e":Ljava/io/IOException;
+    :try_start_71
+    const-string v3, "Failed to write log"
 
-    invoke-direct {p0, p2, p1}, Lcom/android/server/content/SyncLogger$RotatingFileLogger;->handleException(Ljava/lang/String;Ljava/lang/Exception;)V
+    invoke-direct {p0, v3, v2}, Lcom/android/server/content/SyncLogger$RotatingFileLogger;->handleException(Ljava/lang/String;Ljava/lang/Exception;)V
 
     .line 215
-    :goto_75
+    .end local v1  # "messageStart":I
+    .end local v2  # "e":Ljava/io/IOException;
+    :goto_76
     monitor-exit v0
 
     .line 216
     return-void
 
     .line 215
-    :catchall_77
-    move-exception p1
+    :catchall_78
+    move-exception v1
 
     monitor-exit v0
-    :try_end_79
-    .catchall {:try_start_70 .. :try_end_79} :catchall_77
+    :try_end_7a
+    .catchall {:try_start_71 .. :try_end_7a} :catchall_78
 
-    throw p1
+    throw v1
 .end method
 
 .method public purgeOldLogs()V

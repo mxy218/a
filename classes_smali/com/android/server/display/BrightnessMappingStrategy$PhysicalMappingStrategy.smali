@@ -40,11 +40,15 @@
 # direct methods
 .method public constructor <init>(Landroid/hardware/display/BrightnessConfiguration;[F[IF)V
     .registers 9
+    .param p1, "config"  # Landroid/hardware/display/BrightnessConfiguration;
+    .param p2, "nits"  # [F
+    .param p3, "backlight"  # [I
+    .param p4, "maxGamma"  # F
 
-    .line 629
+    .line 909
     invoke-direct {p0}, Lcom/android/server/display/BrightnessMappingStrategy;-><init>()V
 
-    .line 630
+    .line 910
     array-length v0, p2
 
     const/4 v1, 0x1
@@ -69,7 +73,7 @@
 
     invoke-static {v0, v3}, Lcom/android/internal/util/Preconditions;->checkArgument(ZLjava/lang/Object;)V
 
-    .line 632
+    .line 912
     array-length v0, p2
 
     array-length v3, p3
@@ -86,10 +90,10 @@
 
     invoke-static {v1, v0}, Lcom/android/internal/util/Preconditions;->checkArgument(ZLjava/lang/Object;)V
 
-    .line 634
+    .line 914
     invoke-static {p1}, Lcom/android/internal/util/Preconditions;->checkNotNull(Ljava/lang/Object;)Ljava/lang/Object;
 
-    .line 635
+    .line 915
     const v0, 0x7f7fffff  # Float.MAX_VALUE
 
     const/4 v1, 0x0
@@ -98,151 +102,159 @@
 
     invoke-static {p2, v1, v0, v3}, Lcom/android/internal/util/Preconditions;->checkArrayElementsInRange([FFFLjava/lang/String;)[F
 
-    .line 636
-    const/16 v0, 0xff
+    .line 916
+    sget v0, Landroid/os/PowerManager;->BRIGHTNESS_ON:I
 
     const-string v3, "backlight"
 
     invoke-static {p3, v2, v0, v3}, Lcom/android/internal/util/Preconditions;->checkArrayElementsInRange([IIILjava/lang/String;)[I
 
-    .line 639
+    .line 919
     iput p4, p0, Lcom/android/server/display/BrightnessMappingStrategy$PhysicalMappingStrategy;->mMaxGamma:F
 
-    .line 640
+    .line 920
     iput v1, p0, Lcom/android/server/display/BrightnessMappingStrategy$PhysicalMappingStrategy;->mAutoBrightnessAdjustment:F
 
-    .line 641
-    const/high16 p4, -0x40800000  # -1.0f
+    .line 921
+    const/high16 v0, -0x40800000  # -1.0f
 
-    iput p4, p0, Lcom/android/server/display/BrightnessMappingStrategy$PhysicalMappingStrategy;->mUserLux:F
+    iput v0, p0, Lcom/android/server/display/BrightnessMappingStrategy$PhysicalMappingStrategy;->mUserLux:F
 
-    .line 642
-    iput p4, p0, Lcom/android/server/display/BrightnessMappingStrategy$PhysicalMappingStrategy;->mUserBrightness:F
+    .line 922
+    iput v0, p0, Lcom/android/server/display/BrightnessMappingStrategy$PhysicalMappingStrategy;->mUserBrightness:F
 
-    .line 645
-    array-length p4, p2
+    .line 925
+    array-length v0, p2
 
-    .line 646
-    new-array v0, p4, [F
+    .line 926
+    .local v0, "N":I
+    new-array v1, v0, [F
 
-    .line 647
-    nop
+    .line 927
+    .local v1, "normalizedBacklight":[F
+    const/4 v2, 0x0
 
+    .local v2, "i":I
     :goto_40
-    if-ge v2, p4, :cond_4d
+    if-ge v2, v0, :cond_4d
 
-    .line 648
-    aget v1, p3, v2
+    .line 928
+    aget v3, p3, v2
 
-    invoke-virtual {p0, v1}, Lcom/android/server/display/BrightnessMappingStrategy$PhysicalMappingStrategy;->normalizeAbsoluteBrightness(I)F
+    invoke-virtual {p0, v3}, Lcom/android/server/display/BrightnessMappingStrategy$PhysicalMappingStrategy;->normalizeAbsoluteBrightness(I)F
 
-    move-result v1
+    move-result v3
 
-    aput v1, v0, v2
+    aput v3, v1, v2
 
-    .line 647
+    .line 927
     add-int/lit8 v2, v2, 0x1
 
     goto :goto_40
 
-    .line 651
+    .line 931
+    .end local v2  # "i":I
     :cond_4d
-    invoke-static {p2, v0}, Landroid/util/Spline;->createSpline([F[F)Landroid/util/Spline;
+    invoke-static {p2, v1}, Landroid/util/Spline;->createSpline([F[F)Landroid/util/Spline;
 
-    move-result-object p3
+    move-result-object v2
 
-    iput-object p3, p0, Lcom/android/server/display/BrightnessMappingStrategy$PhysicalMappingStrategy;->mNitsToBacklightSpline:Landroid/util/Spline;
+    iput-object v2, p0, Lcom/android/server/display/BrightnessMappingStrategy$PhysicalMappingStrategy;->mNitsToBacklightSpline:Landroid/util/Spline;
 
-    .line 652
-    invoke-static {v0, p2}, Landroid/util/Spline;->createSpline([F[F)Landroid/util/Spline;
+    .line 932
+    invoke-static {v1, p2}, Landroid/util/Spline;->createSpline([F[F)Landroid/util/Spline;
 
-    move-result-object p2
+    move-result-object v2
 
-    iput-object p2, p0, Lcom/android/server/display/BrightnessMappingStrategy$PhysicalMappingStrategy;->mBacklightToNitsSpline:Landroid/util/Spline;
+    iput-object v2, p0, Lcom/android/server/display/BrightnessMappingStrategy$PhysicalMappingStrategy;->mBacklightToNitsSpline:Landroid/util/Spline;
 
-    .line 654
+    .line 934
     iput-object p1, p0, Lcom/android/server/display/BrightnessMappingStrategy$PhysicalMappingStrategy;->mDefaultConfig:Landroid/hardware/display/BrightnessConfiguration;
 
-    .line 655
-    iget-boolean p2, p0, Lcom/android/server/display/BrightnessMappingStrategy$PhysicalMappingStrategy;->mLoggingEnabled:Z
+    .line 935
+    iget-boolean v2, p0, Lcom/android/server/display/BrightnessMappingStrategy$PhysicalMappingStrategy;->mLoggingEnabled:Z
 
-    if-eqz p2, :cond_69
+    if-eqz v2, :cond_69
 
-    .line 656
-    invoke-static {}, Lcom/android/server/display/BrightnessMappingStrategy;->access$000()Lcom/android/server/display/utils/Plog;
+    .line 936
+    invoke-static {}, Lcom/android/server/display/BrightnessMappingStrategy;->access$200()Lcom/android/server/display/utils/Plog;
 
-    move-result-object p2
+    move-result-object v2
 
-    const-string/jumbo p3, "physical mapping strategy"
+    const-string/jumbo v3, "physical mapping strategy"
 
-    invoke-virtual {p2, p3}, Lcom/android/server/display/utils/Plog;->start(Ljava/lang/String;)Lcom/android/server/display/utils/Plog;
+    invoke-virtual {v2, v3}, Lcom/android/server/display/utils/Plog;->start(Ljava/lang/String;)Lcom/android/server/display/utils/Plog;
 
-    .line 658
+    .line 938
     :cond_69
     iput-object p1, p0, Lcom/android/server/display/BrightnessMappingStrategy$PhysicalMappingStrategy;->mConfig:Landroid/hardware/display/BrightnessConfiguration;
 
-    .line 659
+    .line 939
     invoke-direct {p0}, Lcom/android/server/display/BrightnessMappingStrategy$PhysicalMappingStrategy;->computeSpline()V
 
-    .line 660
+    .line 940
     return-void
 .end method
 
 .method private computeSpline()V
-    .registers 10
+    .registers 12
 
-    .line 785
+    .line 1065
     iget-object v0, p0, Lcom/android/server/display/BrightnessMappingStrategy$PhysicalMappingStrategy;->mConfig:Landroid/hardware/display/BrightnessConfiguration;
 
     invoke-virtual {v0}, Landroid/hardware/display/BrightnessConfiguration;->getCurve()Landroid/util/Pair;
 
     move-result-object v0
 
-    .line 786
+    .line 1066
+    .local v0, "defaultCurve":Landroid/util/Pair;, "Landroid/util/Pair<[F[F>;"
     iget-object v1, v0, Landroid/util/Pair;->first:Ljava/lang/Object;
 
-    move-object v3, v1
+    check-cast v1, [F
 
-    check-cast v3, [F
+    .line 1067
+    .local v1, "defaultLux":[F
+    iget-object v2, v0, Landroid/util/Pair;->second:Ljava/lang/Object;
 
-    .line 787
-    iget-object v0, v0, Landroid/util/Pair;->second:Ljava/lang/Object;
+    move-object v9, v2
 
-    check-cast v0, [F
+    check-cast v9, [F
 
-    .line 788
-    array-length v1, v0
+    .line 1068
+    .local v9, "defaultNits":[F
+    array-length v2, v9
 
-    new-array v4, v1, [F
+    new-array v10, v2, [F
 
-    .line 789
-    const/4 v1, 0x0
+    .line 1069
+    .local v10, "defaultBacklight":[F
+    const/4 v2, 0x0
 
-    move v2, v1
+    .local v2, "i":I
+    :goto_13
+    array-length v3, v10
 
-    :goto_14
-    array-length v5, v4
+    if-ge v2, v3, :cond_23
 
-    if-ge v2, v5, :cond_24
+    .line 1070
+    iget-object v3, p0, Lcom/android/server/display/BrightnessMappingStrategy$PhysicalMappingStrategy;->mNitsToBacklightSpline:Landroid/util/Spline;
 
-    .line 790
-    iget-object v5, p0, Lcom/android/server/display/BrightnessMappingStrategy$PhysicalMappingStrategy;->mNitsToBacklightSpline:Landroid/util/Spline;
+    aget v4, v9, v2
 
-    aget v6, v0, v2
+    invoke-virtual {v3, v4}, Landroid/util/Spline;->interpolate(F)F
 
-    invoke-virtual {v5, v6}, Landroid/util/Spline;->interpolate(F)F
+    move-result v3
 
-    move-result v5
+    aput v3, v10, v2
 
-    aput v5, v4, v2
-
-    .line 789
+    .line 1069
     add-int/lit8 v2, v2, 0x1
 
-    goto :goto_14
+    goto :goto_13
 
-    .line 792
-    :cond_24
+    .line 1072
+    .end local v2  # "i":I
+    :cond_23
     iget v5, p0, Lcom/android/server/display/BrightnessMappingStrategy$PhysicalMappingStrategy;->mUserLux:F
 
     iget v6, p0, Lcom/android/server/display/BrightnessMappingStrategy$PhysicalMappingStrategy;->mUserBrightness:F
@@ -253,167 +265,190 @@
 
     move-object v2, p0
 
+    move-object v3, v1
+
+    move-object v4, v10
+
     invoke-virtual/range {v2 .. v8}, Lcom/android/server/display/BrightnessMappingStrategy$PhysicalMappingStrategy;->getAdjustedCurve([F[FFFFF)Landroid/util/Pair;
 
-    move-result-object v0
+    move-result-object v2
 
-    .line 794
-    iget-object v2, v0, Landroid/util/Pair;->first:Ljava/lang/Object;
+    .line 1074
+    .local v2, "curve":Landroid/util/Pair;, "Landroid/util/Pair<[F[F>;"
+    iget-object v3, v2, Landroid/util/Pair;->first:Ljava/lang/Object;
 
-    check-cast v2, [F
+    check-cast v3, [F
 
-    .line 795
-    iget-object v0, v0, Landroid/util/Pair;->second:Ljava/lang/Object;
+    .line 1075
+    .local v3, "lux":[F
+    iget-object v4, v2, Landroid/util/Pair;->second:Ljava/lang/Object;
 
-    check-cast v0, [F
+    check-cast v4, [F
 
-    .line 796
-    array-length v3, v0
+    .line 1076
+    .local v4, "backlight":[F
+    array-length v5, v4
 
-    new-array v3, v3, [F
+    new-array v5, v5, [F
 
-    .line 797
-    nop
+    .line 1077
+    .local v5, "nits":[F
+    const/4 v6, 0x0
 
-    :goto_3d
-    array-length v4, v3
+    .local v6, "i":I
+    :goto_3e
+    array-length v7, v5
 
-    if-ge v1, v4, :cond_4d
+    if-ge v6, v7, :cond_4e
 
-    .line 798
-    iget-object v4, p0, Lcom/android/server/display/BrightnessMappingStrategy$PhysicalMappingStrategy;->mBacklightToNitsSpline:Landroid/util/Spline;
+    .line 1078
+    iget-object v7, p0, Lcom/android/server/display/BrightnessMappingStrategy$PhysicalMappingStrategy;->mBacklightToNitsSpline:Landroid/util/Spline;
 
-    aget v5, v0, v1
+    aget v8, v4, v6
 
-    invoke-virtual {v4, v5}, Landroid/util/Spline;->interpolate(F)F
+    invoke-virtual {v7, v8}, Landroid/util/Spline;->interpolate(F)F
 
-    move-result v4
+    move-result v7
 
-    aput v4, v3, v1
+    aput v7, v5, v6
 
-    .line 797
-    add-int/lit8 v1, v1, 0x1
+    .line 1077
+    add-int/lit8 v6, v6, 0x1
 
-    goto :goto_3d
+    goto :goto_3e
 
-    .line 800
-    :cond_4d
-    invoke-static {v2, v3}, Landroid/util/Spline;->createSpline([F[F)Landroid/util/Spline;
+    .line 1080
+    .end local v6  # "i":I
+    :cond_4e
+    invoke-static {v3, v5}, Landroid/util/Spline;->createSpline([F[F)Landroid/util/Spline;
 
-    move-result-object v0
+    move-result-object v6
 
-    iput-object v0, p0, Lcom/android/server/display/BrightnessMappingStrategy$PhysicalMappingStrategy;->mBrightnessSpline:Landroid/util/Spline;
+    iput-object v6, p0, Lcom/android/server/display/BrightnessMappingStrategy$PhysicalMappingStrategy;->mBrightnessSpline:Landroid/util/Spline;
 
-    .line 801
+    .line 1081
     return-void
 .end method
 
 .method private correctBrightness(FLjava/lang/String;I)F
-    .registers 5
+    .registers 6
+    .param p1, "brightness"  # F
+    .param p2, "packageName"  # Ljava/lang/String;
+    .param p3, "category"  # I
 
-    .line 810
+    .line 1090
     if-eqz p2, :cond_f
 
-    .line 811
+    .line 1091
     iget-object v0, p0, Lcom/android/server/display/BrightnessMappingStrategy$PhysicalMappingStrategy;->mConfig:Landroid/hardware/display/BrightnessConfiguration;
 
     invoke-virtual {v0, p2}, Landroid/hardware/display/BrightnessConfiguration;->getCorrectionByPackageName(Ljava/lang/String;)Landroid/hardware/display/BrightnessCorrection;
 
-    move-result-object p2
+    move-result-object v0
 
-    .line 812
-    if-eqz p2, :cond_f
+    .line 1092
+    .local v0, "correction":Landroid/hardware/display/BrightnessCorrection;
+    if-eqz v0, :cond_f
 
-    .line 813
-    invoke-virtual {p2, p1}, Landroid/hardware/display/BrightnessCorrection;->apply(F)F
+    .line 1093
+    invoke-virtual {v0, p1}, Landroid/hardware/display/BrightnessCorrection;->apply(F)F
 
-    move-result p1
+    move-result v1
 
-    return p1
+    return v1
 
-    .line 816
+    .line 1096
+    .end local v0  # "correction":Landroid/hardware/display/BrightnessCorrection;
     :cond_f
-    const/4 p2, -0x1
+    const/4 v0, -0x1
 
-    if-eq p3, p2, :cond_1f
+    if-eq p3, v0, :cond_1f
 
-    .line 817
-    iget-object p2, p0, Lcom/android/server/display/BrightnessMappingStrategy$PhysicalMappingStrategy;->mConfig:Landroid/hardware/display/BrightnessConfiguration;
+    .line 1097
+    iget-object v0, p0, Lcom/android/server/display/BrightnessMappingStrategy$PhysicalMappingStrategy;->mConfig:Landroid/hardware/display/BrightnessConfiguration;
 
-    invoke-virtual {p2, p3}, Landroid/hardware/display/BrightnessConfiguration;->getCorrectionByCategory(I)Landroid/hardware/display/BrightnessCorrection;
+    invoke-virtual {v0, p3}, Landroid/hardware/display/BrightnessConfiguration;->getCorrectionByCategory(I)Landroid/hardware/display/BrightnessCorrection;
 
-    move-result-object p2
+    move-result-object v0
 
-    .line 818
-    if-eqz p2, :cond_1f
+    .line 1098
+    .restart local v0  # "correction":Landroid/hardware/display/BrightnessCorrection;
+    if-eqz v0, :cond_1f
 
-    .line 819
-    invoke-virtual {p2, p1}, Landroid/hardware/display/BrightnessCorrection;->apply(F)F
+    .line 1099
+    invoke-virtual {v0, p1}, Landroid/hardware/display/BrightnessCorrection;->apply(F)F
 
-    move-result p1
+    move-result v1
 
-    return p1
+    return v1
 
-    .line 822
+    .line 1102
+    .end local v0  # "correction":Landroid/hardware/display/BrightnessCorrection;
     :cond_1f
     return p1
 .end method
 
 .method private getUnadjustedBrightness(F)F
-    .registers 4
+    .registers 6
+    .param p1, "lux"  # F
 
-    .line 804
+    .line 1084
     iget-object v0, p0, Lcom/android/server/display/BrightnessMappingStrategy$PhysicalMappingStrategy;->mConfig:Landroid/hardware/display/BrightnessConfiguration;
 
     invoke-virtual {v0}, Landroid/hardware/display/BrightnessConfiguration;->getCurve()Landroid/util/Pair;
 
     move-result-object v0
 
-    .line 805
+    .line 1085
+    .local v0, "curve":Landroid/util/Pair;, "Landroid/util/Pair<[F[F>;"
     iget-object v1, v0, Landroid/util/Pair;->first:Ljava/lang/Object;
 
     check-cast v1, [F
 
-    iget-object v0, v0, Landroid/util/Pair;->second:Ljava/lang/Object;
+    iget-object v2, v0, Landroid/util/Pair;->second:Ljava/lang/Object;
 
-    check-cast v0, [F
+    check-cast v2, [F
 
-    invoke-static {v1, v0}, Landroid/util/Spline;->createSpline([F[F)Landroid/util/Spline;
+    invoke-static {v1, v2}, Landroid/util/Spline;->createSpline([F[F)Landroid/util/Spline;
 
-    move-result-object v0
+    move-result-object v1
 
-    .line 806
-    iget-object v1, p0, Lcom/android/server/display/BrightnessMappingStrategy$PhysicalMappingStrategy;->mNitsToBacklightSpline:Landroid/util/Spline;
-
-    invoke-virtual {v0, p1}, Landroid/util/Spline;->interpolate(F)F
-
-    move-result p1
+    .line 1086
+    .local v1, "spline":Landroid/util/Spline;
+    iget-object v2, p0, Lcom/android/server/display/BrightnessMappingStrategy$PhysicalMappingStrategy;->mNitsToBacklightSpline:Landroid/util/Spline;
 
     invoke-virtual {v1, p1}, Landroid/util/Spline;->interpolate(F)F
 
-    move-result p1
+    move-result v3
 
-    return p1
+    invoke-virtual {v2, v3}, Landroid/util/Spline;->interpolate(F)F
+
+    move-result v2
+
+    return v2
 .end method
 
 
 # virtual methods
 .method public addUserDataPoint(FF)V
-    .registers 7
+    .registers 8
+    .param p1, "lux"  # F
+    .param p2, "brightness"  # F
 
-    .line 721
+    .line 1001
     invoke-direct {p0, p1}, Lcom/android/server/display/BrightnessMappingStrategy$PhysicalMappingStrategy;->getUnadjustedBrightness(F)F
 
     move-result v0
 
-    .line 722
+    .line 1002
+    .local v0, "unadjustedBrightness":F
     iget-boolean v1, p0, Lcom/android/server/display/BrightnessMappingStrategy$PhysicalMappingStrategy;->mLoggingEnabled:Z
 
     const-string v2, "BrightnessMappingStrategy"
 
     if-eqz v1, :cond_41
 
-    .line 723
+    .line 1003
     new-instance v1, Ljava/lang/StringBuilder;
 
     invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
@@ -440,8 +475,8 @@
 
     invoke-static {v2, v1}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 724
-    invoke-static {}, Lcom/android/server/display/BrightnessMappingStrategy;->access$000()Lcom/android/server/display/utils/Plog;
+    .line 1004
+    invoke-static {}, Lcom/android/server/display/BrightnessMappingStrategy;->access$200()Lcom/android/server/display/utils/Plog;
 
     move-result-object v1
 
@@ -451,77 +486,90 @@
 
     move-result-object v1
 
-    .line 725
+    .line 1005
     const-string/jumbo v3, "user data point"
 
     invoke-virtual {v1, v3, p1, p2}, Lcom/android/server/display/utils/Plog;->logPoint(Ljava/lang/String;FF)Lcom/android/server/display/utils/Plog;
 
     move-result-object v1
 
-    .line 726
+    .line 1006
     const-string v3, "current brightness"
 
     invoke-virtual {v1, v3, p1, v0}, Lcom/android/server/display/utils/Plog;->logPoint(Ljava/lang/String;FF)Lcom/android/server/display/utils/Plog;
 
-    .line 728
+    .line 1008
     :cond_41
     iget v1, p0, Lcom/android/server/display/BrightnessMappingStrategy$PhysicalMappingStrategy;->mMaxGamma:F
 
     invoke-virtual {p0, v1, p2, v0}, Lcom/android/server/display/BrightnessMappingStrategy$PhysicalMappingStrategy;->inferAutoBrightnessAdjustment(FFF)F
 
-    move-result v0
+    move-result v1
 
-    .line 731
-    iget-boolean v1, p0, Lcom/android/server/display/BrightnessMappingStrategy$PhysicalMappingStrategy;->mLoggingEnabled:Z
+    .line 1011
+    .local v1, "adjustment":F
+    iget-boolean v3, p0, Lcom/android/server/display/BrightnessMappingStrategy$PhysicalMappingStrategy;->mLoggingEnabled:Z
 
-    if-eqz v1, :cond_69
+    if-eqz v3, :cond_69
 
-    .line 732
-    new-instance v1, Ljava/lang/StringBuilder;
+    .line 1012
+    new-instance v3, Ljava/lang/StringBuilder;
 
-    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v3, "addUserDataPoint: "
+    const-string v4, "addUserDataPoint: "
 
-    invoke-virtual {v1, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    iget v3, p0, Lcom/android/server/display/BrightnessMappingStrategy$PhysicalMappingStrategy;->mAutoBrightnessAdjustment:F
+    iget v4, p0, Lcom/android/server/display/BrightnessMappingStrategy$PhysicalMappingStrategy;->mAutoBrightnessAdjustment:F
 
-    invoke-virtual {v1, v3}, Ljava/lang/StringBuilder;->append(F)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(F)Ljava/lang/StringBuilder;
 
-    const-string v3, " => "
+    const-string v4, " => "
 
-    invoke-virtual {v1, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v1, v0}, Ljava/lang/StringBuilder;->append(F)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v1}, Ljava/lang/StringBuilder;->append(F)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v1
+    move-result-object v3
 
-    invoke-static {v2, v1}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v2, v3}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 735
+    .line 1015
     :cond_69
-    iput v0, p0, Lcom/android/server/display/BrightnessMappingStrategy$PhysicalMappingStrategy;->mAutoBrightnessAdjustment:F
+    iput v1, p0, Lcom/android/server/display/BrightnessMappingStrategy$PhysicalMappingStrategy;->mAutoBrightnessAdjustment:F
 
-    .line 736
+    .line 1016
     iput p1, p0, Lcom/android/server/display/BrightnessMappingStrategy$PhysicalMappingStrategy;->mUserLux:F
 
-    .line 737
+    .line 1017
     iput p2, p0, Lcom/android/server/display/BrightnessMappingStrategy$PhysicalMappingStrategy;->mUserBrightness:F
 
-    .line 738
+    .line 1018
     invoke-direct {p0}, Lcom/android/server/display/BrightnessMappingStrategy$PhysicalMappingStrategy;->computeSpline()V
 
-    .line 739
+    .line 1019
+    return-void
+.end method
+
+.method public addUserDataPoint(FFFFF)V
+    .registers 6
+    .param p1, "lux"  # F
+    .param p2, "brightness"  # F
+    .param p3, "darkeningThreshold"  # F
+    .param p4, "brighteningThreshold"  # F
+    .param p5, "deepDarkeAmbientLuxThreshold"  # F
+
+    .line 1129
     return-void
 .end method
 
 .method public clearUserDataPoints()V
     .registers 6
 
-    .line 743
+    .line 1023
     iget v0, p0, Lcom/android/server/display/BrightnessMappingStrategy$PhysicalMappingStrategy;->mUserLux:F
 
     const/high16 v1, -0x40800000  # -1.0f
@@ -530,12 +578,12 @@
 
     if-eqz v0, :cond_47
 
-    .line 744
+    .line 1024
     iget-boolean v0, p0, Lcom/android/server/display/BrightnessMappingStrategy$PhysicalMappingStrategy;->mLoggingEnabled:Z
 
     if-eqz v0, :cond_3d
 
-    .line 745
+    .line 1025
     new-instance v0, Ljava/lang/StringBuilder;
 
     invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
@@ -560,8 +608,8 @@
 
     invoke-static {v2, v0}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 746
-    invoke-static {}, Lcom/android/server/display/BrightnessMappingStrategy;->access$000()Lcom/android/server/display/utils/Plog;
+    .line 1026
+    invoke-static {}, Lcom/android/server/display/BrightnessMappingStrategy;->access$200()Lcom/android/server/display/utils/Plog;
 
     move-result-object v0
 
@@ -575,57 +623,59 @@
 
     iget v3, p0, Lcom/android/server/display/BrightnessMappingStrategy$PhysicalMappingStrategy;->mUserBrightness:F
 
-    .line 747
+    .line 1027
     const-string/jumbo v4, "user data point"
 
     invoke-virtual {v0, v4, v2, v3}, Lcom/android/server/display/utils/Plog;->logPoint(Ljava/lang/String;FF)Lcom/android/server/display/utils/Plog;
 
-    .line 749
+    .line 1029
     :cond_3d
     const/4 v0, 0x0
 
     iput v0, p0, Lcom/android/server/display/BrightnessMappingStrategy$PhysicalMappingStrategy;->mAutoBrightnessAdjustment:F
 
-    .line 750
+    .line 1030
     iput v1, p0, Lcom/android/server/display/BrightnessMappingStrategy$PhysicalMappingStrategy;->mUserLux:F
 
-    .line 751
+    .line 1031
     iput v1, p0, Lcom/android/server/display/BrightnessMappingStrategy$PhysicalMappingStrategy;->mUserBrightness:F
 
-    .line 752
+    .line 1032
     invoke-direct {p0}, Lcom/android/server/display/BrightnessMappingStrategy$PhysicalMappingStrategy;->computeSpline()V
 
-    .line 754
+    .line 1034
     :cond_47
     return-void
 .end method
 
 .method public convertToNits(I)F
-    .registers 3
+    .registers 4
+    .param p1, "backlight"  # I
 
-    .line 716
+    .line 996
     iget-object v0, p0, Lcom/android/server/display/BrightnessMappingStrategy$PhysicalMappingStrategy;->mBacklightToNitsSpline:Landroid/util/Spline;
 
     invoke-virtual {p0, p1}, Lcom/android/server/display/BrightnessMappingStrategy$PhysicalMappingStrategy;->normalizeAbsoluteBrightness(I)F
 
-    move-result p1
+    move-result v1
 
-    invoke-virtual {v0, p1}, Landroid/util/Spline;->interpolate(F)F
+    invoke-virtual {v0, v1}, Landroid/util/Spline;->interpolate(F)F
 
-    move-result p1
+    move-result v0
 
-    return p1
+    return v0
 .end method
 
 .method public dump(Ljava/io/PrintWriter;)V
     .registers 4
+    .param p1, "pw"  # Ljava/io/PrintWriter;
 
-    .line 773
+    .line 1053
     const-string v0, "PhysicalMappingStrategy"
 
     invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
-    .line 774
+    .line 1054
     new-instance v0, Ljava/lang/StringBuilder;
 
     invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
@@ -644,7 +694,7 @@
 
     invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
-    .line 775
+    .line 1055
     new-instance v0, Ljava/lang/StringBuilder;
 
     invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
@@ -663,7 +713,7 @@
 
     invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
-    .line 776
+    .line 1056
     new-instance v0, Ljava/lang/StringBuilder;
 
     invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
@@ -682,7 +732,7 @@
 
     invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
-    .line 777
+    .line 1057
     new-instance v0, Ljava/lang/StringBuilder;
 
     invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
@@ -701,7 +751,7 @@
 
     invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
-    .line 778
+    .line 1058
     new-instance v0, Ljava/lang/StringBuilder;
 
     invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
@@ -720,7 +770,7 @@
 
     invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
-    .line 779
+    .line 1059
     new-instance v0, Ljava/lang/StringBuilder;
 
     invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
@@ -739,7 +789,7 @@
 
     invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
-    .line 780
+    .line 1060
     new-instance v0, Ljava/lang/StringBuilder;
 
     invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
@@ -758,7 +808,7 @@
 
     invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
-    .line 781
+    .line 1061
     new-instance v0, Ljava/lang/StringBuilder;
 
     invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
@@ -777,75 +827,133 @@
 
     invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
-    .line 782
+    .line 1062
     return-void
 .end method
 
 .method public getAutoBrightnessAdjustment()F
     .registers 2
 
-    .line 695
+    .line 975
     iget v0, p0, Lcom/android/server/display/BrightnessMappingStrategy$PhysicalMappingStrategy;->mAutoBrightnessAdjustment:F
 
     return v0
 .end method
 
-.method public getBrightness(FLjava/lang/String;I)F
-    .registers 6
+.method public getAutomaticBrightnessDefaultMinLevel()F
+    .registers 5
 
-    .line 681
+    .line 1118
+    const/high16 v0, -0x40800000  # -1.0f
+
+    .line 1119
+    .local v0, "min":F
+    iget-object v1, p0, Lcom/android/server/display/BrightnessMappingStrategy$PhysicalMappingStrategy;->mConfig:Landroid/hardware/display/BrightnessConfiguration;
+
+    if-eqz v1, :cond_20
+
+    .line 1120
+    invoke-virtual {v1}, Landroid/hardware/display/BrightnessConfiguration;->getCurve()Landroid/util/Pair;
+
+    move-result-object v1
+
+    .line 1121
+    .local v1, "curve":Landroid/util/Pair;, "Landroid/util/Pair<[F[F>;"
+    iget-object v2, v1, Landroid/util/Pair;->second:Ljava/lang/Object;
+
+    if-eqz v2, :cond_1d
+
+    iget-object v2, v1, Landroid/util/Pair;->second:Ljava/lang/Object;
+
+    check-cast v2, [F
+
+    array-length v2, v2
+
+    if-lez v2, :cond_1d
+
+    iget-object v2, v1, Landroid/util/Pair;->second:Ljava/lang/Object;
+
+    check-cast v2, [F
+
+    const/4 v3, 0x0
+
+    aget v2, v2, v3
+
+    goto :goto_1f
+
+    :cond_1d
+    const/high16 v2, -0x40800000  # -1.0f
+
+    :goto_1f
+    move v0, v2
+
+    .line 1124
+    .end local v1  # "curve":Landroid/util/Pair;, "Landroid/util/Pair<[F[F>;"
+    :cond_20
+    return v0
+.end method
+
+.method public getBrightness(FLjava/lang/String;I)F
+    .registers 8
+    .param p1, "lux"  # F
+    .param p2, "packageName"  # Ljava/lang/String;
+    .param p3, "category"  # I
+
+    .line 961
     iget-object v0, p0, Lcom/android/server/display/BrightnessMappingStrategy$PhysicalMappingStrategy;->mBrightnessSpline:Landroid/util/Spline;
 
     invoke-virtual {v0, p1}, Landroid/util/Spline;->interpolate(F)F
 
-    move-result p1
+    move-result v0
 
-    .line 682
-    iget-object v0, p0, Lcom/android/server/display/BrightnessMappingStrategy$PhysicalMappingStrategy;->mNitsToBacklightSpline:Landroid/util/Spline;
+    .line 962
+    .local v0, "nits":F
+    iget-object v1, p0, Lcom/android/server/display/BrightnessMappingStrategy$PhysicalMappingStrategy;->mNitsToBacklightSpline:Landroid/util/Spline;
 
-    invoke-virtual {v0, p1}, Landroid/util/Spline;->interpolate(F)F
+    invoke-virtual {v1, v0}, Landroid/util/Spline;->interpolate(F)F
 
-    move-result p1
+    move-result v1
 
-    .line 685
-    iget v0, p0, Lcom/android/server/display/BrightnessMappingStrategy$PhysicalMappingStrategy;->mUserLux:F
+    .line 965
+    .local v1, "backlight":F
+    iget v2, p0, Lcom/android/server/display/BrightnessMappingStrategy$PhysicalMappingStrategy;->mUserLux:F
 
-    const/high16 v1, -0x40800000  # -1.0f
+    const/high16 v3, -0x40800000  # -1.0f
 
-    cmpl-float v0, v0, v1
+    cmpl-float v2, v2, v3
 
-    if-nez v0, :cond_19
+    if-nez v2, :cond_19
 
-    .line 686
-    invoke-direct {p0, p1, p2, p3}, Lcom/android/server/display/BrightnessMappingStrategy$PhysicalMappingStrategy;->correctBrightness(FLjava/lang/String;I)F
+    .line 966
+    invoke-direct {p0, v1, p2, p3}, Lcom/android/server/display/BrightnessMappingStrategy$PhysicalMappingStrategy;->correctBrightness(FLjava/lang/String;I)F
 
-    move-result p1
+    move-result v1
 
     goto :goto_25
 
-    .line 687
+    .line 967
     :cond_19
-    iget-boolean p2, p0, Lcom/android/server/display/BrightnessMappingStrategy$PhysicalMappingStrategy;->mLoggingEnabled:Z
+    iget-boolean v2, p0, Lcom/android/server/display/BrightnessMappingStrategy$PhysicalMappingStrategy;->mLoggingEnabled:Z
 
-    if-eqz p2, :cond_25
+    if-eqz v2, :cond_25
 
-    .line 688
-    const-string p2, "BrightnessMappingStrategy"
+    .line 968
+    const-string v2, "BrightnessMappingStrategy"
 
-    const-string/jumbo p3, "user point set, correction not applied"
+    const-string/jumbo v3, "user point set, correction not applied"
 
-    invoke-static {p2, p3}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v2, v3}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 690
+    .line 970
     :cond_25
     :goto_25
-    return p1
+    return v1
 .end method
 
 .method public getDefaultConfig()Landroid/hardware/display/BrightnessConfiguration;
     .registers 2
 
-    .line 768
+    .line 1048
     iget-object v0, p0, Lcom/android/server/display/BrightnessMappingStrategy$PhysicalMappingStrategy;->mDefaultConfig:Landroid/hardware/display/BrightnessConfiguration;
 
     return-object v0
@@ -854,7 +962,7 @@
 .method public hasUserDataPoints()Z
     .registers 3
 
-    .line 758
+    .line 1038
     iget v0, p0, Lcom/android/server/display/BrightnessMappingStrategy$PhysicalMappingStrategy;->mUserLux:F
 
     const/high16 v1, -0x40800000  # -1.0f
@@ -877,7 +985,7 @@
 .method public isDefaultConfig()Z
     .registers 3
 
-    .line 763
+    .line 1043
     iget-object v0, p0, Lcom/android/server/display/BrightnessMappingStrategy$PhysicalMappingStrategy;->mDefaultConfig:Landroid/hardware/display/BrightnessConfiguration;
 
     iget-object v1, p0, Lcom/android/server/display/BrightnessMappingStrategy$PhysicalMappingStrategy;->mConfig:Landroid/hardware/display/BrightnessConfiguration;
@@ -891,8 +999,9 @@
 
 .method public setAutoBrightnessAdjustment(F)Z
     .registers 4
+    .param p1, "adjustment"  # F
 
-    .line 700
+    .line 980
     const/high16 v0, -0x40800000  # -1.0f
 
     const/high16 v1, 0x3f800000  # 1.0f
@@ -901,25 +1010,25 @@
 
     move-result p1
 
-    .line 701
+    .line 981
     iget v0, p0, Lcom/android/server/display/BrightnessMappingStrategy$PhysicalMappingStrategy;->mAutoBrightnessAdjustment:F
 
     cmpl-float v0, p1, v0
 
     if-nez v0, :cond_10
 
-    .line 702
-    const/4 p1, 0x0
+    .line 982
+    const/4 v0, 0x0
 
-    return p1
+    return v0
 
-    .line 704
+    .line 984
     :cond_10
     iget-boolean v0, p0, Lcom/android/server/display/BrightnessMappingStrategy$PhysicalMappingStrategy;->mLoggingEnabled:Z
 
     if-eqz v0, :cond_3e
 
-    .line 705
+    .line 985
     new-instance v0, Ljava/lang/StringBuilder;
 
     invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
@@ -946,8 +1055,8 @@
 
     invoke-static {v1, v0}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 707
-    invoke-static {}, Lcom/android/server/display/BrightnessMappingStrategy;->access$000()Lcom/android/server/display/utils/Plog;
+    .line 987
+    invoke-static {}, Lcom/android/server/display/BrightnessMappingStrategy;->access$200()Lcom/android/server/display/utils/Plog;
 
     move-result-object v0
 
@@ -955,29 +1064,46 @@
 
     invoke-virtual {v0, v1}, Lcom/android/server/display/utils/Plog;->start(Ljava/lang/String;)Lcom/android/server/display/utils/Plog;
 
-    .line 709
+    .line 989
     :cond_3e
     iput p1, p0, Lcom/android/server/display/BrightnessMappingStrategy$PhysicalMappingStrategy;->mAutoBrightnessAdjustment:F
 
-    .line 710
+    .line 990
     invoke-direct {p0}, Lcom/android/server/display/BrightnessMappingStrategy$PhysicalMappingStrategy;->computeSpline()V
 
-    .line 711
-    const/4 p1, 0x1
+    .line 991
+    const/4 v0, 0x1
 
-    return p1
+    return v0
+.end method
+
+.method public setAutoBrightnessAdjustment(FFFFF)Z
+    .registers 7
+    .param p1, "lux"  # F
+    .param p2, "adjustment"  # F
+    .param p3, "darkeningThreshold"  # F
+    .param p4, "brighteningThreshold"  # F
+    .param p5, "deepDarkeAmbientLuxThreshold"  # F
+
+    .line 1114
+    invoke-virtual {p0, p2}, Lcom/android/server/display/BrightnessMappingStrategy$PhysicalMappingStrategy;->setAutoBrightnessAdjustment(F)Z
+
+    move-result v0
+
+    return v0
 .end method
 
 .method public setBrightnessConfiguration(Landroid/hardware/display/BrightnessConfiguration;)Z
     .registers 4
+    .param p1, "config"  # Landroid/hardware/display/BrightnessConfiguration;
 
-    .line 664
+    .line 944
     if-nez p1, :cond_4
 
-    .line 665
+    .line 945
     iget-object p1, p0, Lcom/android/server/display/BrightnessMappingStrategy$PhysicalMappingStrategy;->mDefaultConfig:Landroid/hardware/display/BrightnessConfiguration;
 
-    .line 667
+    .line 947
     :cond_4
     iget-object v0, p0, Lcom/android/server/display/BrightnessMappingStrategy$PhysicalMappingStrategy;->mConfig:Landroid/hardware/display/BrightnessConfiguration;
 
@@ -987,19 +1113,19 @@
 
     if-eqz v0, :cond_e
 
-    .line 668
-    const/4 p1, 0x0
+    .line 948
+    const/4 v0, 0x0
 
-    return p1
+    return v0
 
-    .line 670
+    .line 950
     :cond_e
     iget-boolean v0, p0, Lcom/android/server/display/BrightnessMappingStrategy$PhysicalMappingStrategy;->mLoggingEnabled:Z
 
     if-eqz v0, :cond_1b
 
-    .line 671
-    invoke-static {}, Lcom/android/server/display/BrightnessMappingStrategy;->access$000()Lcom/android/server/display/utils/Plog;
+    .line 951
+    invoke-static {}, Lcom/android/server/display/BrightnessMappingStrategy;->access$200()Lcom/android/server/display/utils/Plog;
 
     move-result-object v0
 
@@ -1007,15 +1133,25 @@
 
     invoke-virtual {v0, v1}, Lcom/android/server/display/utils/Plog;->start(Ljava/lang/String;)Lcom/android/server/display/utils/Plog;
 
-    .line 673
+    .line 953
     :cond_1b
     iput-object p1, p0, Lcom/android/server/display/BrightnessMappingStrategy$PhysicalMappingStrategy;->mConfig:Landroid/hardware/display/BrightnessConfiguration;
 
-    .line 674
+    .line 954
     invoke-direct {p0}, Lcom/android/server/display/BrightnessMappingStrategy$PhysicalMappingStrategy;->computeSpline()V
 
-    .line 675
-    const/4 p1, 0x1
+    .line 955
+    const/4 v0, 0x1
 
-    return p1
+    return v0
+.end method
+
+.method public setTemporaryAutoBrightnessAdjustment(F)Z
+    .registers 3
+    .param p1, "adjustment"  # F
+
+    .line 1108
+    const/4 v0, 0x0
+
+    return v0
 .end method

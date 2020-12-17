@@ -21,6 +21,8 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/DockObserver;Z)V
     .registers 3
+    .param p1, "this$0"  # Lcom/android/server/DockObserver;
+    .param p2, "x0"  # Z
 
     .line 225
     iput-object p1, p0, Lcom/android/server/DockObserver$1;->this$0:Lcom/android/server/DockObserver;
@@ -33,29 +35,30 @@
 
 # virtual methods
 .method public handleMessage(Landroid/os/Message;)V
-    .registers 2
+    .registers 3
+    .param p1, "msg"  # Landroid/os/Message;
 
     .line 228
-    iget p1, p1, Landroid/os/Message;->what:I
+    iget v0, p1, Landroid/os/Message;->what:I
 
-    if-eqz p1, :cond_5
+    if-eqz v0, :cond_5
 
     goto :goto_13
 
     .line 230
     :cond_5
-    iget-object p1, p0, Lcom/android/server/DockObserver$1;->this$0:Lcom/android/server/DockObserver;
+    iget-object v0, p0, Lcom/android/server/DockObserver$1;->this$0:Lcom/android/server/DockObserver;
 
-    invoke-static {p1}, Lcom/android/server/DockObserver;->access$100(Lcom/android/server/DockObserver;)V
+    invoke-static {v0}, Lcom/android/server/DockObserver;->access$100(Lcom/android/server/DockObserver;)V
 
     .line 231
-    iget-object p1, p0, Lcom/android/server/DockObserver$1;->this$0:Lcom/android/server/DockObserver;
+    iget-object v0, p0, Lcom/android/server/DockObserver$1;->this$0:Lcom/android/server/DockObserver;
 
-    invoke-static {p1}, Lcom/android/server/DockObserver;->access$200(Lcom/android/server/DockObserver;)Landroid/os/PowerManager$WakeLock;
+    invoke-static {v0}, Lcom/android/server/DockObserver;->access$200(Lcom/android/server/DockObserver;)Landroid/os/PowerManager$WakeLock;
 
-    move-result-object p1
+    move-result-object v0
 
-    invoke-virtual {p1}, Landroid/os/PowerManager$WakeLock;->release()V
+    invoke-virtual {v0}, Landroid/os/PowerManager$WakeLock;->release()V
 
     .line 234
     :goto_13

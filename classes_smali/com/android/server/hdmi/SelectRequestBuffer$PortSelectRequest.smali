@@ -17,6 +17,9 @@
 # direct methods
 .method private constructor <init>(Lcom/android/server/hdmi/HdmiControlService;ILandroid/hardware/hdmi/IHdmiControlCallback;)V
     .registers 4
+    .param p1, "srv"  # Lcom/android/server/hdmi/HdmiControlService;
+    .param p2, "id"  # I
+    .param p3, "callback"  # Landroid/hardware/hdmi/IHdmiControlCallback;
 
     .line 105
     invoke-direct {p0, p1, p2, p3}, Lcom/android/server/hdmi/SelectRequestBuffer$SelectRequest;-><init>(Lcom/android/server/hdmi/HdmiControlService;ILandroid/hardware/hdmi/IHdmiControlCallback;)V
@@ -27,6 +30,10 @@
 
 .method synthetic constructor <init>(Lcom/android/server/hdmi/HdmiControlService;ILandroid/hardware/hdmi/IHdmiControlCallback;Lcom/android/server/hdmi/SelectRequestBuffer$1;)V
     .registers 5
+    .param p1, "x0"  # Lcom/android/server/hdmi/HdmiControlService;
+    .param p2, "x1"  # I
+    .param p3, "x2"  # Landroid/hardware/hdmi/IHdmiControlCallback;
+    .param p4, "x3"  # Lcom/android/server/hdmi/SelectRequestBuffer$1;
 
     .line 103
     invoke-direct {p0, p1, p2, p3}, Lcom/android/server/hdmi/SelectRequestBuffer$PortSelectRequest;-><init>(Lcom/android/server/hdmi/HdmiControlService;ILandroid/hardware/hdmi/IHdmiControlCallback;)V
@@ -37,7 +44,7 @@
 
 # virtual methods
 .method public process()V
-    .registers 4
+    .registers 5
 
     .line 110
     invoke-virtual {p0}, Lcom/android/server/hdmi/SelectRequestBuffer$PortSelectRequest;->isLocalDeviceReady()Z
@@ -73,6 +80,7 @@
     move-result-object v0
 
     .line 113
+    .local v0, "tv":Lcom/android/server/hdmi/HdmiCecLocalDeviceTv;
     if-eqz v0, :cond_2c
 
     .line 114
@@ -89,19 +97,22 @@
     :cond_2c
     invoke-virtual {p0}, Lcom/android/server/hdmi/SelectRequestBuffer$PortSelectRequest;->audioSystem()Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;
 
-    move-result-object v0
+    move-result-object v1
 
     .line 118
-    if-eqz v0, :cond_39
+    .local v1, "audioSystem":Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;
+    if-eqz v1, :cond_39
 
     .line 119
-    iget v1, p0, Lcom/android/server/hdmi/SelectRequestBuffer$PortSelectRequest;->mId:I
+    iget v2, p0, Lcom/android/server/hdmi/SelectRequestBuffer$PortSelectRequest;->mId:I
 
-    iget-object v2, p0, Lcom/android/server/hdmi/SelectRequestBuffer$PortSelectRequest;->mCallback:Landroid/hardware/hdmi/IHdmiControlCallback;
+    iget-object v3, p0, Lcom/android/server/hdmi/SelectRequestBuffer$PortSelectRequest;->mCallback:Landroid/hardware/hdmi/IHdmiControlCallback;
 
-    invoke-virtual {v0, v1, v2}, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->doManualPortSwitching(ILandroid/hardware/hdmi/IHdmiControlCallback;)V
+    invoke-virtual {v1, v2, v3}, Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;->doManualPortSwitching(ILandroid/hardware/hdmi/IHdmiControlCallback;)V
 
     .line 122
+    .end local v0  # "tv":Lcom/android/server/hdmi/HdmiCecLocalDeviceTv;
+    .end local v1  # "audioSystem":Lcom/android/server/hdmi/HdmiCecLocalDeviceAudioSystem;
     :cond_39
     return-void
 .end method

@@ -96,6 +96,7 @@
     invoke-direct {v0}, Ljava/util/ArrayList;-><init>()V
 
     .line 123
+    .local v0, "pids":Ljava/util/ArrayList;, "Ljava/util/ArrayList<Ljava/lang/Integer;>;"
     invoke-static {}, Landroid/os/Process;->myPid()I
 
     move-result v1
@@ -200,7 +201,7 @@
 .end method
 
 .method static declared-synchronized shutdown()V
-    .registers 6
+    .registers 7
 
     const-class v0, Lcom/android/server/SystemServerInitThreadPool;
 
@@ -245,6 +246,7 @@
     .catchall {:try_start_14 .. :try_end_20} :catchall_9b
 
     .line 97
+    .local v1, "terminated":Z
     nop
 
     .line 98
@@ -265,139 +267,146 @@
     move-result-object v2
 
     .line 104
+    .local v2, "unstartedRunnables":Ljava/util/List;, "Ljava/util/List<Ljava/lang/Runnable;>;"
     if-eqz v1, :cond_41
 
     .line 112
-    sget-object v1, Lcom/android/server/SystemServerInitThreadPool;->sInstance:Lcom/android/server/SystemServerInitThreadPool;
+    sget-object v3, Lcom/android/server/SystemServerInitThreadPool;->sInstance:Lcom/android/server/SystemServerInitThreadPool;
 
-    const/4 v2, 0x0
+    const/4 v4, 0x0
 
-    iput-object v2, v1, Lcom/android/server/SystemServerInitThreadPool;->mService:Ljava/util/concurrent/ExecutorService;
+    iput-object v4, v3, Lcom/android/server/SystemServerInitThreadPool;->mService:Ljava/util/concurrent/ExecutorService;
 
     .line 113
-    sget-object v1, Lcom/android/server/SystemServerInitThreadPool;->sInstance:Lcom/android/server/SystemServerInitThreadPool;
+    sget-object v3, Lcom/android/server/SystemServerInitThreadPool;->sInstance:Lcom/android/server/SystemServerInitThreadPool;
 
-    iput-object v2, v1, Lcom/android/server/SystemServerInitThreadPool;->mPendingTasks:Ljava/util/List;
+    iput-object v4, v3, Lcom/android/server/SystemServerInitThreadPool;->mPendingTasks:Ljava/util/List;
 
     .line 114
-    sget-object v1, Lcom/android/server/SystemServerInitThreadPool;->TAG:Ljava/lang/String;
+    sget-object v3, Lcom/android/server/SystemServerInitThreadPool;->TAG:Ljava/lang/String;
 
-    const-string v2, "Shutdown successful"
+    const-string v4, "Shutdown successful"
 
-    invoke-static {v1, v2}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v3, v4}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
 
     goto :goto_99
 
     .line 105
     :cond_41
-    new-instance v1, Ljava/util/ArrayList;
+    new-instance v3, Ljava/util/ArrayList;
 
-    invoke-direct {v1}, Ljava/util/ArrayList;-><init>()V
+    invoke-direct {v3}, Ljava/util/ArrayList;-><init>()V
 
     .line 106
-    sget-object v3, Lcom/android/server/SystemServerInitThreadPool;->sInstance:Lcom/android/server/SystemServerInitThreadPool;
+    .local v3, "copy":Ljava/util/List;, "Ljava/util/List<Ljava/lang/String;>;"
+    sget-object v4, Lcom/android/server/SystemServerInitThreadPool;->sInstance:Lcom/android/server/SystemServerInitThreadPool;
 
-    iget-object v3, v3, Lcom/android/server/SystemServerInitThreadPool;->mPendingTasks:Ljava/util/List;
+    iget-object v4, v4, Lcom/android/server/SystemServerInitThreadPool;->mPendingTasks:Ljava/util/List;
 
-    monitor-enter v3
+    monitor-enter v4
     :try_end_4b
     .catchall {:try_start_23 .. :try_end_4b} :catchall_9b
 
     .line 107
     :try_start_4b
-    sget-object v4, Lcom/android/server/SystemServerInitThreadPool;->sInstance:Lcom/android/server/SystemServerInitThreadPool;
+    sget-object v5, Lcom/android/server/SystemServerInitThreadPool;->sInstance:Lcom/android/server/SystemServerInitThreadPool;
 
-    iget-object v4, v4, Lcom/android/server/SystemServerInitThreadPool;->mPendingTasks:Ljava/util/List;
+    iget-object v5, v5, Lcom/android/server/SystemServerInitThreadPool;->mPendingTasks:Ljava/util/List;
 
-    invoke-interface {v1, v4}, Ljava/util/List;->addAll(Ljava/util/Collection;)Z
+    invoke-interface {v3, v5}, Ljava/util/List;->addAll(Ljava/util/Collection;)Z
 
     .line 108
-    monitor-exit v3
+    monitor-exit v4
     :try_end_53
     .catchall {:try_start_4b .. :try_end_53} :catchall_72
 
     .line 109
     :try_start_53
-    new-instance v3, Ljava/lang/IllegalStateException;
+    new-instance v4, Ljava/lang/IllegalStateException;
 
-    new-instance v4, Ljava/lang/StringBuilder;
+    new-instance v5, Ljava/lang/StringBuilder;
 
-    invoke-direct {v4}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v5}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v5, "Cannot shutdown. Unstarted tasks "
+    const-string v6, "Cannot shutdown. Unstarted tasks "
 
-    invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v4, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    invoke-virtual {v5, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
-    const-string v2, " Unfinished tasks "
+    const-string v6, " Unfinished tasks "
 
-    invoke-virtual {v4, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v4, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    invoke-virtual {v5, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v4}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v5}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v1
+    move-result-object v5
 
-    invoke-direct {v3, v1}, Ljava/lang/IllegalStateException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v4, v5}, Ljava/lang/IllegalStateException;-><init>(Ljava/lang/String;)V
 
-    throw v3
+    throw v4
     :try_end_72
     .catchall {:try_start_53 .. :try_end_72} :catchall_9b
 
     .line 108
     :catchall_72
-    move-exception v1
+    move-exception v5
 
     :try_start_73
-    monitor-exit v3
+    monitor-exit v4
     :try_end_74
     .catchall {:try_start_73 .. :try_end_74} :catchall_72
 
     :try_start_74
-    throw v1
+    throw v5
 
     .line 93
+    .end local v1  # "terminated":Z
+    .end local v2  # "unstartedRunnables":Ljava/util/List;, "Ljava/util/List<Ljava/lang/Runnable;>;"
+    .end local v3  # "copy":Ljava/util/List;, "Ljava/util/List<Ljava/lang/String;>;"
     :catch_75
     move-exception v1
 
     .line 94
+    .local v1, "e":Ljava/lang/InterruptedException;
     invoke-static {}, Ljava/lang/Thread;->currentThread()Ljava/lang/Thread;
 
-    move-result-object v1
+    move-result-object v2
 
-    invoke-virtual {v1}, Ljava/lang/Thread;->interrupt()V
+    invoke-virtual {v2}, Ljava/lang/Thread;->interrupt()V
 
     .line 95
     invoke-static {}, Lcom/android/server/SystemServerInitThreadPool;->dumpStackTraces()V
 
     .line 96
-    new-instance v1, Ljava/lang/IllegalStateException;
+    new-instance v2, Ljava/lang/IllegalStateException;
 
-    new-instance v2, Ljava/lang/StringBuilder;
+    new-instance v3, Ljava/lang/StringBuilder;
 
-    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
 
-    sget-object v3, Lcom/android/server/SystemServerInitThreadPool;->TAG:Ljava/lang/String;
+    sget-object v4, Lcom/android/server/SystemServerInitThreadPool;->TAG:Ljava/lang/String;
 
-    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string v3, " init interrupted"
+    const-string v4, " init interrupted"
 
-    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v2
+    move-result-object v3
 
-    invoke-direct {v1, v2}, Ljava/lang/IllegalStateException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v2, v3}, Ljava/lang/IllegalStateException;-><init>(Ljava/lang/String;)V
 
-    throw v1
+    throw v2
     :try_end_99
     .catchall {:try_start_74 .. :try_end_99} :catchall_9b
 
     .line 116
+    .end local v1  # "e":Ljava/lang/InterruptedException;
     :cond_99
     :goto_99
     monitor-exit v0
@@ -416,7 +425,9 @@
 
 # virtual methods
 .method public synthetic lambda$submit$0$SystemServerInitThreadPool(Ljava/lang/String;Ljava/lang/Runnable;)V
-    .registers 6
+    .registers 7
+    .param p1, "description"  # Ljava/lang/String;
+    .param p2, "runnable"  # Ljava/lang/Runnable;
 
     .line 68
     sget-boolean v0, Lcom/android/server/SystemServerInitThreadPool;->IS_DEBUGGABLE:Z
@@ -453,44 +464,44 @@
     nop
 
     .line 77
-    iget-object p2, p0, Lcom/android/server/SystemServerInitThreadPool;->mPendingTasks:Ljava/util/List;
+    iget-object v0, p0, Lcom/android/server/SystemServerInitThreadPool;->mPendingTasks:Ljava/util/List;
 
-    monitor-enter p2
+    monitor-enter v0
 
     .line 78
     :try_start_21
-    iget-object v0, p0, Lcom/android/server/SystemServerInitThreadPool;->mPendingTasks:Ljava/util/List;
+    iget-object v1, p0, Lcom/android/server/SystemServerInitThreadPool;->mPendingTasks:Ljava/util/List;
 
-    invoke-interface {v0, p1}, Ljava/util/List;->remove(Ljava/lang/Object;)Z
+    invoke-interface {v1, p1}, Ljava/util/List;->remove(Ljava/lang/Object;)Z
 
     .line 79
-    monitor-exit p2
+    monitor-exit v0
     :try_end_27
     .catchall {:try_start_21 .. :try_end_27} :catchall_42
 
     .line 80
-    sget-boolean p2, Lcom/android/server/SystemServerInitThreadPool;->IS_DEBUGGABLE:Z
+    sget-boolean v0, Lcom/android/server/SystemServerInitThreadPool;->IS_DEBUGGABLE:Z
 
-    if-eqz p2, :cond_41
+    if-eqz v0, :cond_41
 
     .line 81
-    sget-object p2, Lcom/android/server/SystemServerInitThreadPool;->TAG:Ljava/lang/String;
+    sget-object v0, Lcom/android/server/SystemServerInitThreadPool;->TAG:Ljava/lang/String;
 
-    new-instance v0, Ljava/lang/StringBuilder;
+    new-instance v1, Ljava/lang/StringBuilder;
 
-    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v1, "Finished executing "
+    const-string v2, "Finished executing "
 
-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v1
 
-    invoke-static {p2, p1}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v0, v1}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 83
     :cond_41
@@ -498,50 +509,53 @@
 
     .line 79
     :catchall_42
-    move-exception p1
+    move-exception v1
 
     :try_start_43
-    monitor-exit p2
+    monitor-exit v0
     :try_end_44
     .catchall {:try_start_43 .. :try_end_44} :catchall_42
 
-    throw p1
+    throw v1
 
     .line 73
     :catch_45
-    move-exception p2
+    move-exception v0
 
     .line 74
-    sget-object v0, Lcom/android/server/SystemServerInitThreadPool;->TAG:Ljava/lang/String;
+    .local v0, "e":Ljava/lang/RuntimeException;
+    sget-object v1, Lcom/android/server/SystemServerInitThreadPool;->TAG:Ljava/lang/String;
 
-    new-instance v1, Ljava/lang/StringBuilder;
+    new-instance v2, Ljava/lang/StringBuilder;
 
-    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v2, "Failure in "
+    const-string v3, "Failure in "
 
-    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v1, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string p1, ": "
+    const-string v3, ": "
 
-    invoke-virtual {v1, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v1, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v2
 
-    invoke-static {v0, p1, p2}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    invoke-static {v1, v2, v0}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
     .line 75
-    throw p2
+    throw v0
 .end method
 
 .method public submit(Ljava/lang/Runnable;Ljava/lang/String;)Ljava/util/concurrent/Future;
     .registers 5
+    .param p1, "runnable"  # Ljava/lang/Runnable;
+    .param p2, "description"  # Ljava/lang/String;
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(",
@@ -578,18 +592,18 @@
 
     invoke-interface {v0, v1}, Ljava/util/concurrent/ExecutorService;->submit(Ljava/lang/Runnable;)Ljava/util/concurrent/Future;
 
-    move-result-object p1
+    move-result-object v0
 
-    return-object p1
+    return-object v0
 
     .line 66
     :catchall_15
-    move-exception p1
+    move-exception v1
 
     :try_start_16
     monitor-exit v0
     :try_end_17
     .catchall {:try_start_16 .. :try_end_17} :catchall_15
 
-    throw p1
+    throw v1
 .end method

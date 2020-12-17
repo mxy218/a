@@ -21,6 +21,7 @@
 # direct methods
 .method public constructor <init>(Landroid/content/Context;)V
     .registers 2
+    .param p1, "context"  # Landroid/content/Context;
 
     .line 79
     invoke-direct {p0, p1}, Lcom/android/server/SystemService;-><init>(Landroid/content/Context;)V
@@ -33,6 +34,7 @@
 # virtual methods
 .method public onBootPhase(I)V
     .registers 3
+    .param p1, "phase"  # I
 
     .line 90
     const/16 v0, 0x226
@@ -40,9 +42,9 @@
     if-ne p1, v0, :cond_a
 
     .line 91
-    iget-object p1, p0, Lcom/android/server/usb/UsbService$Lifecycle;->mUsbService:Lcom/android/server/usb/UsbService;
+    iget-object v0, p0, Lcom/android/server/usb/UsbService$Lifecycle;->mUsbService:Lcom/android/server/usb/UsbService;
 
-    invoke-virtual {p1}, Lcom/android/server/usb/UsbService;->systemReady()V
+    invoke-virtual {v0}, Lcom/android/server/usb/UsbService;->systemReady()V
 
     goto :goto_13
 
@@ -53,9 +55,9 @@
     if-ne p1, v0, :cond_13
 
     .line 93
-    iget-object p1, p0, Lcom/android/server/usb/UsbService$Lifecycle;->mUsbService:Lcom/android/server/usb/UsbService;
+    iget-object v0, p0, Lcom/android/server/usb/UsbService$Lifecycle;->mUsbService:Lcom/android/server/usb/UsbService;
 
-    invoke-virtual {p1}, Lcom/android/server/usb/UsbService;->bootCompleted()V
+    invoke-virtual {v0}, Lcom/android/server/usb/UsbService;->bootCompleted()V
 
     .line 95
     :cond_13
@@ -89,16 +91,17 @@
 .end method
 
 .method public onStopUser(I)V
-    .registers 3
+    .registers 4
+    .param p1, "userHandle"  # I
 
     .line 104
     iget-object v0, p0, Lcom/android/server/usb/UsbService$Lifecycle;->mUsbService:Lcom/android/server/usb/UsbService;
 
     invoke-static {p1}, Landroid/os/UserHandle;->of(I)Landroid/os/UserHandle;
 
-    move-result-object p1
+    move-result-object v1
 
-    invoke-static {v0, p1}, Lcom/android/server/usb/UsbService;->access$100(Lcom/android/server/usb/UsbService;Landroid/os/UserHandle;)V
+    invoke-static {v0, v1}, Lcom/android/server/usb/UsbService;->access$100(Lcom/android/server/usb/UsbService;Landroid/os/UserHandle;)V
 
     .line 105
     return-void
@@ -106,6 +109,7 @@
 
 .method public onSwitchUser(I)V
     .registers 3
+    .param p1, "newUserId"  # I
 
     .line 99
     iget-object v0, p0, Lcom/android/server/usb/UsbService$Lifecycle;->mUsbService:Lcom/android/server/usb/UsbService;
@@ -118,6 +122,7 @@
 
 .method public onUnlockUser(I)V
     .registers 3
+    .param p1, "userHandle"  # I
 
     .line 109
     iget-object v0, p0, Lcom/android/server/usb/UsbService$Lifecycle;->mUsbService:Lcom/android/server/usb/UsbService;

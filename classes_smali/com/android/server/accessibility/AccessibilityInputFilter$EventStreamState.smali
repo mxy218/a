@@ -68,21 +68,23 @@
 .end method
 
 .method public shouldProcessKeyEvent(Landroid/view/KeyEvent;)Z
-    .registers 2
+    .registers 3
+    .param p1, "event"  # Landroid/view/KeyEvent;
 
     .line 581
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    return p1
+    return v0
 .end method
 
 .method public shouldProcessMotionEvent(Landroid/view/MotionEvent;)Z
-    .registers 2
+    .registers 3
+    .param p1, "event"  # Landroid/view/MotionEvent;
 
     .line 573
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    return p1
+    return v0
 .end method
 
 .method public shouldProcessScroll()Z
@@ -96,6 +98,7 @@
 
 .method public updateInputSource(I)Z
     .registers 3
+    .param p1, "source"  # I
 
     .line 538
     iget v0, p0, Lcom/android/server/accessibility/AccessibilityInputFilter$EventStreamState;->mSource:I
@@ -103,9 +106,9 @@
     if-ne v0, p1, :cond_6
 
     .line 539
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    return p1
+    return v0
 
     .line 542
     :cond_6
@@ -115,7 +118,7 @@
     iput p1, p0, Lcom/android/server/accessibility/AccessibilityInputFilter$EventStreamState;->mSource:I
 
     .line 544
-    const/4 p1, 0x1
+    const/4 v0, 0x1
 
-    return p1
+    return v0
 .end method

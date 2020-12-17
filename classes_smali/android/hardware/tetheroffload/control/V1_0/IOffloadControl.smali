@@ -29,7 +29,8 @@
 
 # direct methods
 .method public static asInterface(Landroid/os/IHwBinder;)Landroid/hardware/tetheroffload/control/V1_0/IOffloadControl;
-    .registers 5
+    .registers 8
+    .param p0, "binder"  # Landroid/os/IHwBinder;
 
     .line 16
     const/4 v0, 0x0
@@ -51,96 +52,103 @@
     move-result-object v2
 
     .line 23
-    if-eqz v2, :cond_14
+    .local v2, "iface":Landroid/os/IHwInterface;
+    if-eqz v2, :cond_15
 
     instance-of v3, v2, Landroid/hardware/tetheroffload/control/V1_0/IOffloadControl;
 
-    if-eqz v3, :cond_14
+    if-eqz v3, :cond_15
 
     .line 24
-    check-cast v2, Landroid/hardware/tetheroffload/control/V1_0/IOffloadControl;
+    move-object v0, v2
 
-    return-object v2
+    check-cast v0, Landroid/hardware/tetheroffload/control/V1_0/IOffloadControl;
+
+    return-object v0
 
     .line 27
-    :cond_14
-    new-instance v2, Landroid/hardware/tetheroffload/control/V1_0/IOffloadControl$Proxy;
+    :cond_15
+    new-instance v3, Landroid/hardware/tetheroffload/control/V1_0/IOffloadControl$Proxy;
 
-    invoke-direct {v2, p0}, Landroid/hardware/tetheroffload/control/V1_0/IOffloadControl$Proxy;-><init>(Landroid/os/IHwBinder;)V
+    invoke-direct {v3, p0}, Landroid/hardware/tetheroffload/control/V1_0/IOffloadControl$Proxy;-><init>(Landroid/os/IHwBinder;)V
 
     .line 30
-    :try_start_19
-    invoke-interface {v2}, Landroid/hardware/tetheroffload/control/V1_0/IOffloadControl;->interfaceChain()Ljava/util/ArrayList;
+    .local v3, "proxy":Landroid/hardware/tetheroffload/control/V1_0/IOffloadControl;
+    :try_start_1a
+    invoke-interface {v3}, Landroid/hardware/tetheroffload/control/V1_0/IOffloadControl;->interfaceChain()Ljava/util/ArrayList;
 
-    move-result-object p0
+    move-result-object v4
 
-    invoke-virtual {p0}, Ljava/util/ArrayList;->iterator()Ljava/util/Iterator;
+    invoke-virtual {v4}, Ljava/util/ArrayList;->iterator()Ljava/util/Iterator;
 
-    move-result-object p0
+    move-result-object v4
 
-    :goto_21
-    invoke-interface {p0}, Ljava/util/Iterator;->hasNext()Z
+    :goto_22
+    invoke-interface {v4}, Ljava/util/Iterator;->hasNext()Z
 
-    move-result v3
+    move-result v5
 
-    if-eqz v3, :cond_35
+    if-eqz v5, :cond_36
 
-    invoke-interface {p0}, Ljava/util/Iterator;->next()Ljava/lang/Object;
+    invoke-interface {v4}, Ljava/util/Iterator;->next()Ljava/lang/Object;
 
-    move-result-object v3
+    move-result-object v5
 
-    check-cast v3, Ljava/lang/String;
+    check-cast v5, Ljava/lang/String;
 
     .line 31
-    invoke-virtual {v3, v1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    .local v5, "descriptor":Ljava/lang/String;
+    invoke-virtual {v5, v1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result v3
-    :try_end_31
-    .catch Landroid/os/RemoteException; {:try_start_19 .. :try_end_31} :catch_36
+    move-result v6
+    :try_end_32
+    .catch Landroid/os/RemoteException; {:try_start_1a .. :try_end_32} :catch_37
 
-    if-eqz v3, :cond_34
+    if-eqz v6, :cond_35
 
     .line 32
-    return-object v2
+    return-object v3
 
     .line 34
-    :cond_34
-    goto :goto_21
+    .end local v5  # "descriptor":Ljava/lang/String;
+    :cond_35
+    goto :goto_22
 
     .line 36
-    :cond_35
-    goto :goto_37
+    :cond_36
+    goto :goto_38
 
     .line 35
-    :catch_36
-    move-exception p0
+    :catch_37
+    move-exception v1
 
     .line 38
-    :goto_37
+    :goto_38
     return-object v0
 .end method
 
 .method public static castFrom(Landroid/os/IHwInterface;)Landroid/hardware/tetheroffload/control/V1_0/IOffloadControl;
-    .registers 1
+    .registers 2
+    .param p0, "iface"  # Landroid/os/IHwInterface;
 
     .line 45
     if-nez p0, :cond_4
 
-    const/4 p0, 0x0
+    const/4 v0, 0x0
 
     goto :goto_c
 
     :cond_4
     invoke-interface {p0}, Landroid/os/IHwInterface;->asBinder()Landroid/os/IHwBinder;
 
-    move-result-object p0
+    move-result-object v0
 
-    invoke-static {p0}, Landroid/hardware/tetheroffload/control/V1_0/IOffloadControl;->asInterface(Landroid/os/IHwBinder;)Landroid/hardware/tetheroffload/control/V1_0/IOffloadControl;
+    invoke-static {v0}, Landroid/hardware/tetheroffload/control/V1_0/IOffloadControl;->asInterface(Landroid/os/IHwBinder;)Landroid/hardware/tetheroffload/control/V1_0/IOffloadControl;
 
-    move-result-object p0
+    move-result-object v0
 
     :goto_c
-    return-object p0
+    return-object v0
 .end method
 
 .method public static getService()Landroid/hardware/tetheroffload/control/V1_0/IOffloadControl;
@@ -163,6 +171,7 @@
 
 .method public static getService(Ljava/lang/String;)Landroid/hardware/tetheroffload/control/V1_0/IOffloadControl;
     .registers 2
+    .param p0, "serviceName"  # Ljava/lang/String;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -174,17 +183,19 @@
 
     invoke-static {v0, p0}, Landroid/os/HwBinder;->getService(Ljava/lang/String;Ljava/lang/String;)Landroid/os/IHwBinder;
 
-    move-result-object p0
+    move-result-object v0
 
-    invoke-static {p0}, Landroid/hardware/tetheroffload/control/V1_0/IOffloadControl;->asInterface(Landroid/os/IHwBinder;)Landroid/hardware/tetheroffload/control/V1_0/IOffloadControl;
+    invoke-static {v0}, Landroid/hardware/tetheroffload/control/V1_0/IOffloadControl;->asInterface(Landroid/os/IHwBinder;)Landroid/hardware/tetheroffload/control/V1_0/IOffloadControl;
 
-    move-result-object p0
+    move-result-object v0
 
-    return-object p0
+    return-object v0
 .end method
 
 .method public static getService(Ljava/lang/String;Z)Landroid/hardware/tetheroffload/control/V1_0/IOffloadControl;
     .registers 3
+    .param p0, "serviceName"  # Ljava/lang/String;
+    .param p1, "retry"  # Z
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -196,17 +207,18 @@
 
     invoke-static {v0, p0, p1}, Landroid/os/HwBinder;->getService(Ljava/lang/String;Ljava/lang/String;Z)Landroid/os/IHwBinder;
 
-    move-result-object p0
+    move-result-object v0
 
-    invoke-static {p0}, Landroid/hardware/tetheroffload/control/V1_0/IOffloadControl;->asInterface(Landroid/os/IHwBinder;)Landroid/hardware/tetheroffload/control/V1_0/IOffloadControl;
+    invoke-static {v0}, Landroid/hardware/tetheroffload/control/V1_0/IOffloadControl;->asInterface(Landroid/os/IHwBinder;)Landroid/hardware/tetheroffload/control/V1_0/IOffloadControl;
 
-    move-result-object p0
+    move-result-object v0
 
-    return-object p0
+    return-object v0
 .end method
 
 .method public static getService(Z)Landroid/hardware/tetheroffload/control/V1_0/IOffloadControl;
     .registers 2
+    .param p0, "retry"  # Z
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -218,9 +230,9 @@
 
     invoke-static {v0, p0}, Landroid/hardware/tetheroffload/control/V1_0/IOffloadControl;->getService(Ljava/lang/String;Z)Landroid/hardware/tetheroffload/control/V1_0/IOffloadControl;
 
-    move-result-object p0
+    move-result-object v0
 
-    return-object p0
+    return-object v0
 .end method
 
 

@@ -77,7 +77,16 @@
 .end method
 
 .method constructor <init>(Landroid/content/Context;Landroid/service/autofill/FillResponse;Landroid/view/autofill/AutofillId;Ljava/lang/String;Lcom/android/server/autofill/ui/OverlayControl;Ljava/lang/CharSequence;Landroid/graphics/drawable/Drawable;ZLcom/android/server/autofill/ui/FillUi$Callback;)V
-    .registers 31
+    .registers 41
+    .param p1, "context"  # Landroid/content/Context;
+    .param p2, "response"  # Landroid/service/autofill/FillResponse;
+    .param p3, "focusedViewId"  # Landroid/view/autofill/AutofillId;
+    .param p4, "filterText"  # Ljava/lang/String;
+    .param p5, "overlayControl"  # Lcom/android/server/autofill/ui/OverlayControl;
+    .param p6, "serviceLabel"  # Ljava/lang/CharSequence;
+    .param p7, "serviceIcon"  # Landroid/graphics/drawable/Drawable;
+    .param p8, "nightMode"  # Z
+    .param p9, "callback"  # Lcom/android/server/autofill/ui/FillUi$Callback;
 
     .line 134
     move-object/from16 v1, p0
@@ -86,52 +95,52 @@
 
     move-object/from16 v3, p5
 
-    move/from16 v0, p8
+    move/from16 v4, p8
 
     invoke-direct/range {p0 .. p0}, Ljava/lang/Object;-><init>()V
 
     .line 93
-    new-instance v4, Landroid/graphics/Point;
+    new-instance v0, Landroid/graphics/Point;
 
-    invoke-direct {v4}, Landroid/graphics/Point;-><init>()V
+    invoke-direct {v0}, Landroid/graphics/Point;-><init>()V
 
-    iput-object v4, v1, Lcom/android/server/autofill/ui/FillUi;->mTempPoint:Landroid/graphics/Point;
+    iput-object v0, v1, Lcom/android/server/autofill/ui/FillUi;->mTempPoint:Landroid/graphics/Point;
 
     .line 95
-    new-instance v4, Lcom/android/server/autofill/ui/FillUi$AutofillWindowPresenter;
+    new-instance v0, Lcom/android/server/autofill/ui/FillUi$AutofillWindowPresenter;
 
     const/4 v5, 0x0
 
-    invoke-direct {v4, v1, v5}, Lcom/android/server/autofill/ui/FillUi$AutofillWindowPresenter;-><init>(Lcom/android/server/autofill/ui/FillUi;Lcom/android/server/autofill/ui/FillUi$1;)V
+    invoke-direct {v0, v1, v5}, Lcom/android/server/autofill/ui/FillUi$AutofillWindowPresenter;-><init>(Lcom/android/server/autofill/ui/FillUi;Lcom/android/server/autofill/ui/FillUi$1;)V
 
-    iput-object v4, v1, Lcom/android/server/autofill/ui/FillUi;->mWindowPresenter:Lcom/android/server/autofill/ui/FillUi$AutofillWindowPresenter;
+    iput-object v0, v1, Lcom/android/server/autofill/ui/FillUi;->mWindowPresenter:Lcom/android/server/autofill/ui/FillUi$AutofillWindowPresenter;
 
     .line 135
-    sget-boolean v4, Lcom/android/server/autofill/Helper;->sVerbose:Z
+    sget-boolean v0, Lcom/android/server/autofill/Helper;->sVerbose:Z
 
     const-string v6, "FillUi"
 
-    if-eqz v4, :cond_35
+    if-eqz v0, :cond_35
 
-    new-instance v4, Ljava/lang/StringBuilder;
+    new-instance v0, Ljava/lang/StringBuilder;
 
-    invoke-direct {v4}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
 
     const-string/jumbo v7, "nightMode: "
 
-    invoke-virtual {v4, v7}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v7}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v4, v0}, Ljava/lang/StringBuilder;->append(Z)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v4}, Ljava/lang/StringBuilder;->append(Z)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v4}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v4
+    move-result-object v0
 
-    invoke-static {v6, v4}, Landroid/util/Slog;->v(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v6, v0}, Landroid/util/Slog;->v(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 136
     :cond_35
-    if-eqz v0, :cond_3b
+    if-eqz v4, :cond_3b
 
     const v0, 0x10303dc
 
@@ -144,9 +153,9 @@
     iput v0, v1, Lcom/android/server/autofill/ui/FillUi;->mThemeId:I
 
     .line 137
-    move-object/from16 v4, p9
+    move-object/from16 v7, p9
 
-    iput-object v4, v1, Lcom/android/server/autofill/ui/FillUi;->mCallback:Lcom/android/server/autofill/ui/FillUi$Callback;
+    iput-object v7, v1, Lcom/android/server/autofill/ui/FillUi;->mCallback:Lcom/android/server/autofill/ui/FillUi$Callback;
 
     .line 138
     invoke-static/range {p1 .. p1}, Lcom/android/server/autofill/ui/FillUi;->isFullScreen(Landroid/content/Context;)Z
@@ -158,11 +167,11 @@
     .line 139
     new-instance v0, Landroid/view/ContextThemeWrapper;
 
-    iget v7, v1, Lcom/android/server/autofill/ui/FillUi;->mThemeId:I
+    iget v8, v1, Lcom/android/server/autofill/ui/FillUi;->mThemeId:I
 
-    move-object/from16 v8, p1
+    move-object/from16 v9, p1
 
-    invoke-direct {v0, v8, v7}, Landroid/view/ContextThemeWrapper;-><init>(Landroid/content/Context;I)V
+    invoke-direct {v0, v9, v8}, Landroid/view/ContextThemeWrapper;-><init>(Landroid/content/Context;I)V
 
     iput-object v0, v1, Lcom/android/server/autofill/ui/FillUi;->mContext:Landroid/content/Context;
 
@@ -171,200 +180,218 @@
 
     invoke-static {v0}, Landroid/view/LayoutInflater;->from(Landroid/content/Context;)Landroid/view/LayoutInflater;
 
-    move-result-object v0
-
-    .line 143
-    invoke-virtual/range {p2 .. p2}, Landroid/service/autofill/FillResponse;->getHeader()Landroid/widget/RemoteViews;
-
-    move-result-object v7
-
-    .line 144
-    invoke-virtual/range {p2 .. p2}, Landroid/service/autofill/FillResponse;->getFooter()Landroid/widget/RemoteViews;
-
     move-result-object v8
 
-    .line 146
-    iget-boolean v9, v1, Lcom/android/server/autofill/ui/FillUi;->mFullScreen:Z
+    .line 143
+    .local v8, "inflater":Landroid/view/LayoutInflater;
+    invoke-virtual/range {p2 .. p2}, Landroid/service/autofill/FillResponse;->getHeader()Landroid/widget/RemoteViews;
 
-    if-eqz v9, :cond_72
+    move-result-object v10
+
+    .line 144
+    .local v10, "headerPresentation":Landroid/widget/RemoteViews;
+    invoke-virtual/range {p2 .. p2}, Landroid/service/autofill/FillResponse;->getFooter()Landroid/widget/RemoteViews;
+
+    move-result-object v11
+
+    .line 146
+    .local v11, "footerPresentation":Landroid/widget/RemoteViews;
+    iget-boolean v0, v1, Lcom/android/server/autofill/ui/FillUi;->mFullScreen:Z
+
+    if-eqz v0, :cond_72
 
     .line 147
-    const v9, 0x109003d
+    const v0, 0x109003d
 
-    invoke-virtual {v0, v9, v5}, Landroid/view/LayoutInflater;->inflate(ILandroid/view/ViewGroup;)Landroid/view/View;
+    invoke-virtual {v8, v0, v5}, Landroid/view/LayoutInflater;->inflate(ILandroid/view/ViewGroup;)Landroid/view/View;
 
     move-result-object v0
 
     check-cast v0, Landroid/view/ViewGroup;
 
-    move-object v9, v0
+    move-object v12, v0
 
+    .local v0, "decor":Landroid/view/ViewGroup;
     goto :goto_8c
 
     .line 148
+    .end local v0  # "decor":Landroid/view/ViewGroup;
     :cond_72
-    if-nez v7, :cond_82
+    if-nez v10, :cond_82
 
-    if-eqz v8, :cond_77
+    if-eqz v11, :cond_77
 
     goto :goto_82
 
     .line 152
     :cond_77
-    const v9, 0x109003c
+    const v0, 0x109003c
 
-    invoke-virtual {v0, v9, v5}, Landroid/view/LayoutInflater;->inflate(ILandroid/view/ViewGroup;)Landroid/view/View;
+    invoke-virtual {v8, v0, v5}, Landroid/view/LayoutInflater;->inflate(ILandroid/view/ViewGroup;)Landroid/view/View;
 
     move-result-object v0
 
     check-cast v0, Landroid/view/ViewGroup;
 
-    move-object v9, v0
+    move-object v12, v0
 
+    .restart local v0  # "decor":Landroid/view/ViewGroup;
     goto :goto_8c
 
     .line 149
+    .end local v0  # "decor":Landroid/view/ViewGroup;
     :cond_82
     :goto_82
-    const v9, 0x109003e
+    const v0, 0x109003e
 
-    invoke-virtual {v0, v9, v5}, Landroid/view/LayoutInflater;->inflate(ILandroid/view/ViewGroup;)Landroid/view/View;
+    invoke-virtual {v8, v0, v5}, Landroid/view/LayoutInflater;->inflate(ILandroid/view/ViewGroup;)Landroid/view/View;
 
     move-result-object v0
 
     check-cast v0, Landroid/view/ViewGroup;
 
-    move-object v9, v0
+    move-object v12, v0
 
     .line 154
+    .local v12, "decor":Landroid/view/ViewGroup;
     :goto_8c
-    const/4 v10, 0x1
+    const/4 v0, 0x1
 
-    invoke-virtual {v9, v10}, Landroid/view/ViewGroup;->setClipToOutline(Z)V
+    invoke-virtual {v12, v0}, Landroid/view/ViewGroup;->setClipToOutline(Z)V
 
     .line 155
-    const v0, 0x10201cb
+    const v13, 0x10201cb
 
-    invoke-virtual {v9, v0}, Landroid/view/ViewGroup;->findViewById(I)Landroid/view/View;
+    invoke-virtual {v12, v13}, Landroid/view/ViewGroup;->findViewById(I)Landroid/view/View;
 
-    move-result-object v0
+    move-result-object v13
 
-    check-cast v0, Landroid/widget/TextView;
+    check-cast v13, Landroid/widget/TextView;
 
     .line 156
-    const/4 v11, 0x0
+    .local v13, "titleView":Landroid/widget/TextView;
+    const/4 v14, 0x0
 
-    if-eqz v0, :cond_ac
+    if-eqz v13, :cond_ac
 
     .line 157
-    iget-object v12, v1, Lcom/android/server/autofill/ui/FillUi;->mContext:Landroid/content/Context;
+    iget-object v15, v1, Lcom/android/server/autofill/ui/FillUi;->mContext:Landroid/content/Context;
 
-    const v13, 0x10400ec
+    const v5, 0x10400e9
 
-    new-array v14, v10, [Ljava/lang/Object;
+    new-array v4, v0, [Ljava/lang/Object;
 
-    aput-object p6, v14, v11
+    aput-object p6, v4, v14
 
-    invoke-virtual {v12, v13, v14}, Landroid/content/Context;->getString(I[Ljava/lang/Object;)Ljava/lang/String;
+    invoke-virtual {v15, v5, v4}, Landroid/content/Context;->getString(I[Ljava/lang/Object;)Ljava/lang/String;
 
-    move-result-object v12
+    move-result-object v4
 
-    invoke-virtual {v0, v12}, Landroid/widget/TextView;->setText(Ljava/lang/CharSequence;)V
+    invoke-virtual {v13, v4}, Landroid/widget/TextView;->setText(Ljava/lang/CharSequence;)V
 
     .line 159
     :cond_ac
-    const v0, 0x10201c8
+    const v4, 0x10201c8
 
-    invoke-virtual {v9, v0}, Landroid/view/ViewGroup;->findViewById(I)Landroid/view/View;
+    invoke-virtual {v12, v4}, Landroid/view/ViewGroup;->findViewById(I)Landroid/view/View;
 
-    move-result-object v0
+    move-result-object v4
 
-    check-cast v0, Landroid/widget/ImageView;
+    check-cast v4, Landroid/widget/ImageView;
 
     .line 160
-    if-eqz v0, :cond_bc
+    .local v4, "iconView":Landroid/widget/ImageView;
+    if-eqz v4, :cond_bd
 
     .line 161
-    move-object/from16 v12, p7
+    move-object/from16 v5, p7
 
-    invoke-virtual {v0, v12}, Landroid/widget/ImageView;->setImageDrawable(Landroid/graphics/drawable/Drawable;)V
+    invoke-virtual {v4, v5}, Landroid/widget/ImageView;->setImageDrawable(Landroid/graphics/drawable/Drawable;)V
+
+    goto :goto_bf
+
+    .line 160
+    :cond_bd
+    move-object/from16 v5, p7
 
     .line 165
-    :cond_bc
-    iget-boolean v0, v1, Lcom/android/server/autofill/ui/FillUi;->mFullScreen:Z
+    :goto_bf
+    iget-boolean v15, v1, Lcom/android/server/autofill/ui/FillUi;->mFullScreen:Z
 
-    if-eqz v0, :cond_f8
+    if-eqz v15, :cond_fc
 
     .line 166
-    iget-object v0, v1, Lcom/android/server/autofill/ui/FillUi;->mTempPoint:Landroid/graphics/Point;
+    iget-object v15, v1, Lcom/android/server/autofill/ui/FillUi;->mTempPoint:Landroid/graphics/Point;
 
     .line 167
-    iget-object v12, v1, Lcom/android/server/autofill/ui/FillUi;->mContext:Landroid/content/Context;
+    .local v15, "outPoint":Landroid/graphics/Point;
+    iget-object v14, v1, Lcom/android/server/autofill/ui/FillUi;->mContext:Landroid/content/Context;
 
-    invoke-virtual {v12}, Landroid/content/Context;->getDisplay()Landroid/view/Display;
+    invoke-virtual {v14}, Landroid/content/Context;->getDisplay()Landroid/view/Display;
 
-    move-result-object v12
+    move-result-object v14
 
-    invoke-virtual {v12, v0}, Landroid/view/Display;->getSize(Landroid/graphics/Point;)V
+    invoke-virtual {v14, v15}, Landroid/view/Display;->getSize(Landroid/graphics/Point;)V
 
     .line 169
-    const/4 v12, -0x1
+    const/4 v14, -0x1
 
-    iput v12, v1, Lcom/android/server/autofill/ui/FillUi;->mContentWidth:I
+    iput v14, v1, Lcom/android/server/autofill/ui/FillUi;->mContentWidth:I
 
     .line 170
-    iget v0, v0, Landroid/graphics/Point;->y:I
+    iget v14, v15, Landroid/graphics/Point;->y:I
 
-    div-int/lit8 v0, v0, 0x2
+    div-int/lit8 v14, v14, 0x2
 
-    iput v0, v1, Lcom/android/server/autofill/ui/FillUi;->mContentHeight:I
+    iput v14, v1, Lcom/android/server/autofill/ui/FillUi;->mContentHeight:I
 
     .line 171
-    sget-boolean v0, Lcom/android/server/autofill/Helper;->sVerbose:Z
+    sget-boolean v14, Lcom/android/server/autofill/Helper;->sVerbose:Z
 
-    if-eqz v0, :cond_f8
+    if-eqz v14, :cond_fc
 
     .line 172
-    new-instance v0, Ljava/lang/StringBuilder;
+    new-instance v14, Ljava/lang/StringBuilder;
 
-    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v14}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v12, "initialized fillscreen LayoutParams "
+    const-string/jumbo v0, "initialized fillscreen LayoutParams "
 
-    invoke-virtual {v0, v12}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v14, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    iget v12, v1, Lcom/android/server/autofill/ui/FillUi;->mContentWidth:I
+    iget v0, v1, Lcom/android/server/autofill/ui/FillUi;->mContentWidth:I
 
-    invoke-virtual {v0, v12}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v14, v0}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    const-string v12, ","
+    const-string v0, ","
 
-    invoke-virtual {v0, v12}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v14, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    iget v12, v1, Lcom/android/server/autofill/ui/FillUi;->mContentHeight:I
+    iget v0, v1, Lcom/android/server/autofill/ui/FillUi;->mContentHeight:I
 
-    invoke-virtual {v0, v12}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v14, v0}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v14}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
     move-result-object v0
 
     invoke-static {v6, v0}, Landroid/util/Slog;->v(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 178
-    :cond_f8
+    .end local v15  # "outPoint":Landroid/graphics/Point;
+    :cond_fc
     new-instance v0, Lcom/android/server/autofill/ui/-$$Lambda$FillUi$FY016gv4LQ5AA6yOkKTH3EM5zaM;
 
     invoke-direct {v0, v1}, Lcom/android/server/autofill/ui/-$$Lambda$FillUi$FY016gv4LQ5AA6yOkKTH3EM5zaM;-><init>(Lcom/android/server/autofill/ui/FillUi;)V
 
-    invoke-virtual {v9, v0}, Landroid/view/ViewGroup;->addOnUnhandledKeyEventListener(Landroid/view/View$OnUnhandledKeyEventListener;)V
+    invoke-virtual {v12, v0}, Landroid/view/ViewGroup;->addOnUnhandledKeyEventListener(Landroid/view/View$OnUnhandledKeyEventListener;)V
 
     .line 195
     invoke-static {}, Lcom/android/server/autofill/AutofillManagerService;->getVisibleDatasetsMaxCount()I
 
     move-result v0
 
-    if-lez v0, :cond_128
+    if-lez v0, :cond_12c
 
     .line 196
     invoke-static {}, Lcom/android/server/autofill/AutofillManagerService;->getVisibleDatasetsMaxCount()I
@@ -376,20 +403,20 @@
     .line 197
     sget-boolean v0, Lcom/android/server/autofill/Helper;->sVerbose:Z
 
-    if-eqz v0, :cond_137
+    if-eqz v0, :cond_13b
 
     .line 198
     new-instance v0, Ljava/lang/StringBuilder;
 
     invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string/jumbo v12, "overriding maximum visible datasets to "
+    const-string/jumbo v14, "overriding maximum visible datasets to "
 
-    invoke-virtual {v0, v12}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v14}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    iget v12, v1, Lcom/android/server/autofill/ui/FillUi;->mVisibleDatasetsMaxCount:I
+    iget v14, v1, Lcom/android/server/autofill/ui/FillUi;->mVisibleDatasetsMaxCount:I
 
-    invoke-virtual {v0, v12}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v14}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
     invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
@@ -397,205 +424,263 @@
 
     invoke-static {v6, v0}, Landroid/util/Slog;->v(Ljava/lang/String;Ljava/lang/String;)I
 
-    goto :goto_137
+    goto :goto_13b
 
     .line 201
-    :cond_128
+    :cond_12c
     iget-object v0, v1, Lcom/android/server/autofill/ui/FillUi;->mContext:Landroid/content/Context;
 
     invoke-virtual {v0}, Landroid/content/Context;->getResources()Landroid/content/res/Resources;
 
     move-result-object v0
 
-    const v12, 0x10e0004
+    const v14, 0x10e0004
 
     .line 202
-    invoke-virtual {v0, v12}, Landroid/content/res/Resources;->getInteger(I)I
+    invoke-virtual {v0, v14}, Landroid/content/res/Resources;->getInteger(I)I
 
     move-result v0
 
     iput v0, v1, Lcom/android/server/autofill/ui/FillUi;->mVisibleDatasetsMaxCount:I
 
     .line 205
-    :cond_137
-    :goto_137
-    new-instance v12, Lcom/android/server/autofill/ui/-$$Lambda$FillUi$QXIyKJs3cMApGd5ifauQkxdpdqk;
+    :cond_13b
+    :goto_13b
+    new-instance v14, Lcom/android/server/autofill/ui/-$$Lambda$FillUi$QXIyKJs3cMApGd5ifauQkxdpdqk;
 
-    invoke-direct {v12, v1}, Lcom/android/server/autofill/ui/-$$Lambda$FillUi$QXIyKJs3cMApGd5ifauQkxdpdqk;-><init>(Lcom/android/server/autofill/ui/FillUi;)V
+    .local v14, "interceptionHandler":Landroid/widget/RemoteViews$OnClickHandler;
+    invoke-direct {v14, v1}, Lcom/android/server/autofill/ui/-$$Lambda$FillUi$QXIyKJs3cMApGd5ifauQkxdpdqk;-><init>(Lcom/android/server/autofill/ui/FillUi;)V
 
     .line 212
     invoke-virtual/range {p2 .. p2}, Landroid/service/autofill/FillResponse;->getAuthentication()Landroid/content/IntentSender;
 
     move-result-object v0
 
-    const-string v13, "Error inflating remote views"
+    const-string v15, "Error inflating remote views"
 
-    if-eqz v0, :cond_1c5
+    if-eqz v0, :cond_1de
 
     .line 213
-    iput-object v5, v1, Lcom/android/server/autofill/ui/FillUi;->mHeader:Landroid/view/View;
+    move-object/from16 v18, v4
+
+    const/4 v4, 0x0
+
+    .end local v4  # "iconView":Landroid/widget/ImageView;
+    .local v18, "iconView":Landroid/widget/ImageView;
+    iput-object v4, v1, Lcom/android/server/autofill/ui/FillUi;->mHeader:Landroid/view/View;
 
     .line 214
-    iput-object v5, v1, Lcom/android/server/autofill/ui/FillUi;->mListView:Landroid/widget/ListView;
+    iput-object v4, v1, Lcom/android/server/autofill/ui/FillUi;->mListView:Landroid/widget/ListView;
 
     .line 215
-    iput-object v5, v1, Lcom/android/server/autofill/ui/FillUi;->mFooter:Landroid/view/View;
+    iput-object v4, v1, Lcom/android/server/autofill/ui/FillUi;->mFooter:Landroid/view/View;
 
     .line 216
-    iput-object v5, v1, Lcom/android/server/autofill/ui/FillUi;->mAdapter:Lcom/android/server/autofill/ui/FillUi$ItemsAdapter;
+    iput-object v4, v1, Lcom/android/server/autofill/ui/FillUi;->mAdapter:Lcom/android/server/autofill/ui/FillUi$ItemsAdapter;
 
     .line 219
     const v0, 0x10201ca
 
-    invoke-virtual {v9, v0}, Landroid/view/ViewGroup;->findViewById(I)Landroid/view/View;
+    invoke-virtual {v12, v0}, Landroid/view/ViewGroup;->findViewById(I)Landroid/view/View;
 
     move-result-object v0
 
-    check-cast v0, Landroid/view/ViewGroup;
+    move-object v4, v0
+
+    check-cast v4, Landroid/view/ViewGroup;
 
     .line 222
-    :try_start_155
+    .local v4, "container":Landroid/view/ViewGroup;
+    :try_start_15d
     invoke-virtual/range {p2 .. p2}, Landroid/service/autofill/FillResponse;->getPresentation()Landroid/widget/RemoteViews;
 
-    move-result-object v2
+    move-result-object v0
 
-    iget-object v7, v1, Lcom/android/server/autofill/ui/FillUi;->mContext:Landroid/content/Context;
+    iget-object v5, v1, Lcom/android/server/autofill/ui/FillUi;->mContext:Landroid/content/Context;
 
-    iget v8, v1, Lcom/android/server/autofill/ui/FillUi;->mThemeId:I
+    iget v7, v1, Lcom/android/server/autofill/ui/FillUi;->mThemeId:I
 
-    invoke-virtual {v2, v7, v9, v12, v8}, Landroid/widget/RemoteViews;->applyWithTheme(Landroid/content/Context;Landroid/view/ViewGroup;Landroid/widget/RemoteViews$OnClickHandler;I)Landroid/view/View;
+    invoke-virtual {v0, v5, v12, v14, v7}, Landroid/widget/RemoteViews;->applyWithTheme(Landroid/content/Context;Landroid/view/ViewGroup;Landroid/widget/RemoteViews$OnClickHandler;I)Landroid/view/View;
 
-    move-result-object v2
+    move-result-object v0
 
     .line 224
-    invoke-virtual {v0, v2}, Landroid/view/ViewGroup;->addView(Landroid/view/View;)V
-    :try_end_164
-    .catch Ljava/lang/RuntimeException; {:try_start_155 .. :try_end_164} :catch_1bb
+    .local v0, "content":Landroid/view/View;
+    invoke-virtual {v4, v0}, Landroid/view/ViewGroup;->addView(Landroid/view/View;)V
+    :try_end_16c
+    .catch Ljava/lang/RuntimeException; {:try_start_15d .. :try_end_16c} :catch_1cf
 
     .line 230
     nop
 
     .line 231
-    invoke-virtual {v0, v10}, Landroid/view/ViewGroup;->setFocusable(Z)V
+    const/4 v5, 0x1
+
+    invoke-virtual {v4, v5}, Landroid/view/ViewGroup;->setFocusable(Z)V
 
     .line 232
-    new-instance v4, Lcom/android/server/autofill/ui/-$$Lambda$FillUi$h0jT24YuSGGDnoZ6Tf22n1QRkO8;
+    new-instance v5, Lcom/android/server/autofill/ui/-$$Lambda$FillUi$h0jT24YuSGGDnoZ6Tf22n1QRkO8;
 
-    move-object/from16 v14, p2
+    move-object/from16 v7, p2
 
-    invoke-direct {v4, v1, v14}, Lcom/android/server/autofill/ui/-$$Lambda$FillUi$h0jT24YuSGGDnoZ6Tf22n1QRkO8;-><init>(Lcom/android/server/autofill/ui/FillUi;Landroid/service/autofill/FillResponse;)V
+    invoke-direct {v5, v1, v7}, Lcom/android/server/autofill/ui/-$$Lambda$FillUi$h0jT24YuSGGDnoZ6Tf22n1QRkO8;-><init>(Lcom/android/server/autofill/ui/FillUi;Landroid/service/autofill/FillResponse;)V
 
-    invoke-virtual {v0, v4}, Landroid/view/ViewGroup;->setOnClickListener(Landroid/view/View$OnClickListener;)V
+    invoke-virtual {v4, v5}, Landroid/view/ViewGroup;->setOnClickListener(Landroid/view/View$OnClickListener;)V
 
     .line 234
-    iget-boolean v0, v1, Lcom/android/server/autofill/ui/FillUi;->mFullScreen:Z
-
-    if-nez v0, :cond_1af
-
-    .line 235
-    iget-object v0, v1, Lcom/android/server/autofill/ui/FillUi;->mTempPoint:Landroid/graphics/Point;
-
-    .line 236
-    iget-object v4, v1, Lcom/android/server/autofill/ui/FillUi;->mContext:Landroid/content/Context;
-
-    invoke-static {v4, v0}, Lcom/android/server/autofill/ui/FillUi;->resolveMaxWindowSize(Landroid/content/Context;Landroid/graphics/Point;)V
-
-    .line 238
-    invoke-virtual {v2}, Landroid/view/View;->getLayoutParams()Landroid/view/ViewGroup$LayoutParams;
-
-    move-result-object v4
-
     iget-boolean v5, v1, Lcom/android/server/autofill/ui/FillUi;->mFullScreen:Z
 
-    const/4 v6, -0x2
+    if-nez v5, :cond_1bb
 
-    if-eqz v5, :cond_189
+    .line 235
+    iget-object v5, v1, Lcom/android/server/autofill/ui/FillUi;->mTempPoint:Landroid/graphics/Point;
 
-    iget v5, v0, Landroid/graphics/Point;->x:I
+    .line 236
+    .local v5, "maxSize":Landroid/graphics/Point;
+    iget-object v6, v1, Lcom/android/server/autofill/ui/FillUi;->mContext:Landroid/content/Context;
 
-    goto :goto_18a
+    invoke-static {v6, v5}, Lcom/android/server/autofill/ui/FillUi;->resolveMaxWindowSize(Landroid/content/Context;Landroid/graphics/Point;)V
+
+    .line 238
+    invoke-virtual {v0}, Landroid/view/View;->getLayoutParams()Landroid/view/ViewGroup$LayoutParams;
+
+    move-result-object v6
+
+    iget-boolean v15, v1, Lcom/android/server/autofill/ui/FillUi;->mFullScreen:Z
+
+    move-object/from16 v16, v4
+
+    .end local v4  # "container":Landroid/view/ViewGroup;
+    .local v16, "container":Landroid/view/ViewGroup;
+    const/4 v4, -0x2
+
+    if-eqz v15, :cond_194
+
+    iget v15, v5, Landroid/graphics/Point;->x:I
+
+    goto :goto_195
 
     .line 239
-    :cond_189
-    move v5, v6
+    :cond_194
+    move v15, v4
 
-    :goto_18a
-    iput v5, v4, Landroid/view/ViewGroup$LayoutParams;->width:I
+    :goto_195
+    iput v15, v6, Landroid/view/ViewGroup$LayoutParams;->width:I
 
     .line 240
-    invoke-virtual {v2}, Landroid/view/View;->getLayoutParams()Landroid/view/ViewGroup$LayoutParams;
+    invoke-virtual {v0}, Landroid/view/View;->getLayoutParams()Landroid/view/ViewGroup$LayoutParams;
 
-    move-result-object v4
+    move-result-object v6
 
-    iput v6, v4, Landroid/view/ViewGroup$LayoutParams;->height:I
+    iput v4, v6, Landroid/view/ViewGroup$LayoutParams;->height:I
 
     .line 241
-    iget v4, v0, Landroid/graphics/Point;->x:I
+    iget v4, v5, Landroid/graphics/Point;->x:I
 
-    const/high16 v5, -0x80000000
+    const/high16 v6, -0x80000000
 
-    invoke-static {v4, v5}, Landroid/view/View$MeasureSpec;->makeMeasureSpec(II)I
+    invoke-static {v4, v6}, Landroid/view/View$MeasureSpec;->makeMeasureSpec(II)I
 
     move-result v4
 
     .line 243
-    iget v0, v0, Landroid/graphics/Point;->y:I
+    .local v4, "widthMeasureSpec":I
+    iget v15, v5, Landroid/graphics/Point;->y:I
 
-    invoke-static {v0, v5}, Landroid/view/View$MeasureSpec;->makeMeasureSpec(II)I
+    invoke-static {v15, v6}, Landroid/view/View$MeasureSpec;->makeMeasureSpec(II)I
 
-    move-result v0
+    move-result v6
 
     .line 246
-    invoke-virtual {v9, v4, v0}, Landroid/view/ViewGroup;->measure(II)V
+    .local v6, "heightMeasureSpec":I
+    invoke-virtual {v12, v4, v6}, Landroid/view/ViewGroup;->measure(II)V
 
     .line 247
-    invoke-virtual {v2}, Landroid/view/View;->getMeasuredWidth()I
+    invoke-virtual {v0}, Landroid/view/View;->getMeasuredWidth()I
 
-    move-result v0
+    move-result v15
 
-    iput v0, v1, Lcom/android/server/autofill/ui/FillUi;->mContentWidth:I
+    iput v15, v1, Lcom/android/server/autofill/ui/FillUi;->mContentWidth:I
 
     .line 248
-    invoke-virtual {v2}, Landroid/view/View;->getMeasuredHeight()I
+    invoke-virtual {v0}, Landroid/view/View;->getMeasuredHeight()I
 
-    move-result v0
+    move-result v15
 
-    iput v0, v1, Lcom/android/server/autofill/ui/FillUi;->mContentHeight:I
+    iput v15, v1, Lcom/android/server/autofill/ui/FillUi;->mContentHeight:I
+
+    goto :goto_1bd
+
+    .line 234
+    .end local v5  # "maxSize":Landroid/graphics/Point;
+    .end local v6  # "heightMeasureSpec":I
+    .end local v16  # "container":Landroid/view/ViewGroup;
+    .local v4, "container":Landroid/view/ViewGroup;
+    :cond_1bb
+    move-object/from16 v16, v4
 
     .line 251
-    :cond_1af
-    new-instance v0, Lcom/android/server/autofill/ui/FillUi$AnchoredWindow;
+    .end local v4  # "container":Landroid/view/ViewGroup;
+    .restart local v16  # "container":Landroid/view/ViewGroup;
+    :goto_1bd
+    new-instance v4, Lcom/android/server/autofill/ui/FillUi$AnchoredWindow;
 
-    invoke-direct {v0, v1, v9, v3}, Lcom/android/server/autofill/ui/FillUi$AnchoredWindow;-><init>(Lcom/android/server/autofill/ui/FillUi;Landroid/view/View;Lcom/android/server/autofill/ui/OverlayControl;)V
+    invoke-direct {v4, v1, v12, v3}, Lcom/android/server/autofill/ui/FillUi$AnchoredWindow;-><init>(Lcom/android/server/autofill/ui/FillUi;Landroid/view/View;Lcom/android/server/autofill/ui/OverlayControl;)V
 
-    iput-object v0, v1, Lcom/android/server/autofill/ui/FillUi;->mWindow:Lcom/android/server/autofill/ui/FillUi$AnchoredWindow;
+    iput-object v4, v1, Lcom/android/server/autofill/ui/FillUi;->mWindow:Lcom/android/server/autofill/ui/FillUi$AnchoredWindow;
 
     .line 252
     invoke-virtual/range {p0 .. p0}, Lcom/android/server/autofill/ui/FillUi;->requestShowFillUi()V
 
     .line 253
-    goto/16 :goto_37c
+    .end local v0  # "content":Landroid/view/View;
+    .end local v16  # "container":Landroid/view/ViewGroup;
+    move-object/from16 v17, v8
+
+    move-object/from16 v27, v10
+
+    move-object/from16 v28, v11
+
+    goto/16 :goto_3d1
 
     .line 225
-    :catch_1bb
+    .restart local v4  # "container":Landroid/view/ViewGroup;
+    :catch_1cf
     move-exception v0
 
+    move-object/from16 v7, p2
+
+    move-object/from16 v16, v4
+
     .line 226
+    .end local v4  # "container":Landroid/view/ViewGroup;
+    .local v0, "e":Ljava/lang/RuntimeException;
+    .restart local v16  # "container":Landroid/view/ViewGroup;
     invoke-interface/range {p9 .. p9}, Lcom/android/server/autofill/ui/FillUi$Callback;->onCanceled()V
 
     .line 227
-    invoke-static {v6, v13, v0}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    invoke-static {v6, v15, v0}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
     .line 228
-    iput-object v5, v1, Lcom/android/server/autofill/ui/FillUi;->mWindow:Lcom/android/server/autofill/ui/FillUi$AnchoredWindow;
+    const/4 v4, 0x0
+
+    iput-object v4, v1, Lcom/android/server/autofill/ui/FillUi;->mWindow:Lcom/android/server/autofill/ui/FillUi$AnchoredWindow;
 
     .line 229
     return-void
 
     .line 254
-    :cond_1c5
-    move-object/from16 v14, p2
+    .end local v0  # "e":Ljava/lang/RuntimeException;
+    .end local v16  # "container":Landroid/view/ViewGroup;
+    .end local v18  # "iconView":Landroid/widget/ImageView;
+    .local v4, "iconView":Landroid/widget/ImageView;
+    :cond_1de
+    move-object/from16 v7, p2
 
+    move-object/from16 v18, v4
+
+    .end local v4  # "iconView":Landroid/widget/ImageView;
+    .restart local v18  # "iconView":Landroid/widget/ImageView;
     invoke-virtual/range {p2 .. p2}, Landroid/service/autofill/FillResponse;->getDatasets()Ljava/util/List;
 
     move-result-object v0
@@ -605,28 +690,29 @@
     move-result v4
 
     .line 255
+    .local v4, "datasetCount":I
     sget-boolean v0, Lcom/android/server/autofill/Helper;->sVerbose:Z
 
-    if-eqz v0, :cond_1f1
+    if-eqz v0, :cond_20c
 
     .line 256
     new-instance v0, Ljava/lang/StringBuilder;
 
     invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v15, "Number datasets: "
+    const-string v5, "Number datasets: "
 
-    invoke-virtual {v0, v15}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v0, v4}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    const-string v15, " max visible: "
+    const-string v5, " max visible: "
 
-    invoke-virtual {v0, v15}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    iget v15, v1, Lcom/android/server/autofill/ui/FillUi;->mVisibleDatasetsMaxCount:I
+    iget v5, v1, Lcom/android/server/autofill/ui/FillUi;->mVisibleDatasetsMaxCount:I
 
-    invoke-virtual {v0, v15}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v5}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
     invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
@@ -635,11 +721,12 @@
     invoke-static {v6, v0}, Landroid/util/Slog;->v(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 260
-    :cond_1f1
-    nop
+    :cond_20c
+    const/4 v0, 0x0
 
     .line 261
-    if-eqz v7, :cond_21d
+    .local v0, "clickBlocker":Landroid/widget/RemoteViews$OnClickHandler;
+    if-eqz v10, :cond_23c
 
     .line 262
     invoke-direct/range {p0 .. p0}, Lcom/android/server/autofill/ui/FillUi;->newClickBlocker()Landroid/widget/RemoteViews$OnClickHandler;
@@ -647,72 +734,89 @@
     move-result-object v0
 
     .line 263
-    iget-object v15, v1, Lcom/android/server/autofill/ui/FillUi;->mContext:Landroid/content/Context;
+    iget-object v5, v1, Lcom/android/server/autofill/ui/FillUi;->mContext:Landroid/content/Context;
 
-    iget v10, v1, Lcom/android/server/autofill/ui/FillUi;->mThemeId:I
+    iget v7, v1, Lcom/android/server/autofill/ui/FillUi;->mThemeId:I
 
-    invoke-virtual {v7, v15, v5, v0, v10}, Landroid/widget/RemoteViews;->applyWithTheme(Landroid/content/Context;Landroid/view/ViewGroup;Landroid/widget/RemoteViews$OnClickHandler;I)Landroid/view/View;
+    move-object/from16 v17, v8
 
-    move-result-object v7
+    const/4 v8, 0x0
 
-    iput-object v7, v1, Lcom/android/server/autofill/ui/FillUi;->mHeader:Landroid/view/View;
+    .end local v8  # "inflater":Landroid/view/LayoutInflater;
+    .local v17, "inflater":Landroid/view/LayoutInflater;
+    invoke-virtual {v10, v5, v8, v0, v7}, Landroid/widget/RemoteViews;->applyWithTheme(Landroid/content/Context;Landroid/view/ViewGroup;Landroid/widget/RemoteViews$OnClickHandler;I)Landroid/view/View;
 
-    .line 264
-    const v7, 0x10201c7
+    move-result-object v5
 
-    .line 265
-    invoke-virtual {v9, v7}, Landroid/view/ViewGroup;->findViewById(I)Landroid/view/View;
-
-    move-result-object v7
-
-    check-cast v7, Landroid/widget/LinearLayout;
-
-    .line 266
-    sget-boolean v10, Lcom/android/server/autofill/Helper;->sVerbose:Z
-
-    if-eqz v10, :cond_214
-
-    const-string v10, "adding header"
-
-    invoke-static {v6, v10}, Landroid/util/Slog;->v(Ljava/lang/String;Ljava/lang/String;)I
-
-    .line 267
-    :cond_214
-    iget-object v10, v1, Lcom/android/server/autofill/ui/FillUi;->mHeader:Landroid/view/View;
-
-    invoke-virtual {v7, v10}, Landroid/widget/LinearLayout;->addView(Landroid/view/View;)V
-
-    .line 268
-    invoke-virtual {v7, v11}, Landroid/widget/LinearLayout;->setVisibility(I)V
-
-    .line 269
-    goto :goto_220
-
-    .line 270
-    :cond_21d
     iput-object v5, v1, Lcom/android/server/autofill/ui/FillUi;->mHeader:Landroid/view/View;
 
-    move-object v0, v5
+    .line 264
+    const v5, 0x10201c7
+
+    .line 265
+    invoke-virtual {v12, v5}, Landroid/view/ViewGroup;->findViewById(I)Landroid/view/View;
+
+    move-result-object v5
+
+    check-cast v5, Landroid/widget/LinearLayout;
+
+    .line 266
+    .local v5, "headerContainer":Landroid/widget/LinearLayout;
+    sget-boolean v7, Lcom/android/server/autofill/Helper;->sVerbose:Z
+
+    if-eqz v7, :cond_232
+
+    const-string v7, "adding header"
+
+    invoke-static {v6, v7}, Landroid/util/Slog;->v(Ljava/lang/String;Ljava/lang/String;)I
+
+    .line 267
+    :cond_232
+    iget-object v7, v1, Lcom/android/server/autofill/ui/FillUi;->mHeader:Landroid/view/View;
+
+    invoke-virtual {v5, v7}, Landroid/widget/LinearLayout;->addView(Landroid/view/View;)V
+
+    .line 268
+    const/4 v7, 0x0
+
+    invoke-virtual {v5, v7}, Landroid/widget/LinearLayout;->setVisibility(I)V
+
+    .line 269
+    .end local v5  # "headerContainer":Landroid/widget/LinearLayout;
+    goto :goto_241
+
+    .line 270
+    .end local v17  # "inflater":Landroid/view/LayoutInflater;
+    .restart local v8  # "inflater":Landroid/view/LayoutInflater;
+    :cond_23c
+    move-object/from16 v17, v8
+
+    .end local v8  # "inflater":Landroid/view/LayoutInflater;
+    .restart local v17  # "inflater":Landroid/view/LayoutInflater;
+    const/4 v5, 0x0
+
+    iput-object v5, v1, Lcom/android/server/autofill/ui/FillUi;->mHeader:Landroid/view/View;
 
     .line 273
-    :goto_220
-    if-eqz v8, :cond_252
+    :goto_241
+    if-eqz v11, :cond_278
 
     .line 274
-    const v7, 0x10201c6
+    const v5, 0x10201c6
 
     .line 275
-    invoke-virtual {v9, v7}, Landroid/view/ViewGroup;->findViewById(I)Landroid/view/View;
+    invoke-virtual {v12, v5}, Landroid/view/ViewGroup;->findViewById(I)Landroid/view/View;
 
-    move-result-object v7
+    move-result-object v5
 
-    check-cast v7, Landroid/widget/LinearLayout;
+    check-cast v5, Landroid/widget/LinearLayout;
 
     .line 276
-    if-eqz v7, :cond_24f
+    .local v5, "footerContainer":Landroid/widget/LinearLayout;
+    if-eqz v5, :cond_273
 
     .line 277
-    if-nez v0, :cond_233
+    if-nez v0, :cond_254
 
     .line 278
     invoke-direct/range {p0 .. p0}, Lcom/android/server/autofill/ui/FillUi;->newClickBlocker()Landroid/widget/RemoteViews$OnClickHandler;
@@ -720,60 +824,83 @@
     move-result-object v0
 
     .line 280
-    :cond_233
-    iget-object v10, v1, Lcom/android/server/autofill/ui/FillUi;->mContext:Landroid/content/Context;
+    :cond_254
+    iget-object v7, v1, Lcom/android/server/autofill/ui/FillUi;->mContext:Landroid/content/Context;
 
-    iget v15, v1, Lcom/android/server/autofill/ui/FillUi;->mThemeId:I
+    iget v8, v1, Lcom/android/server/autofill/ui/FillUi;->mThemeId:I
 
-    invoke-virtual {v8, v10, v5, v0, v15}, Landroid/widget/RemoteViews;->applyWithTheme(Landroid/content/Context;Landroid/view/ViewGroup;Landroid/widget/RemoteViews$OnClickHandler;I)Landroid/view/View;
+    const/4 v9, 0x0
 
-    move-result-object v0
+    invoke-virtual {v11, v7, v9, v0, v8}, Landroid/widget/RemoteViews;->applyWithTheme(Landroid/content/Context;Landroid/view/ViewGroup;Landroid/widget/RemoteViews$OnClickHandler;I)Landroid/view/View;
 
-    iput-object v0, v1, Lcom/android/server/autofill/ui/FillUi;->mFooter:Landroid/view/View;
+    move-result-object v7
+
+    iput-object v7, v1, Lcom/android/server/autofill/ui/FillUi;->mFooter:Landroid/view/View;
 
     .line 283
-    sget-boolean v0, Lcom/android/server/autofill/Helper;->sVerbose:Z
+    sget-boolean v7, Lcom/android/server/autofill/Helper;->sVerbose:Z
 
-    if-eqz v0, :cond_246
+    if-eqz v7, :cond_268
 
-    const-string v0, "adding footer"
+    const-string v7, "adding footer"
 
-    invoke-static {v6, v0}, Landroid/util/Slog;->v(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v6, v7}, Landroid/util/Slog;->v(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 284
-    :cond_246
-    iget-object v0, v1, Lcom/android/server/autofill/ui/FillUi;->mFooter:Landroid/view/View;
+    :cond_268
+    iget-object v7, v1, Lcom/android/server/autofill/ui/FillUi;->mFooter:Landroid/view/View;
 
-    invoke-virtual {v7, v0}, Landroid/widget/LinearLayout;->addView(Landroid/view/View;)V
+    invoke-virtual {v5, v7}, Landroid/widget/LinearLayout;->addView(Landroid/view/View;)V
 
     .line 285
-    invoke-virtual {v7, v11}, Landroid/widget/LinearLayout;->setVisibility(I)V
+    const/4 v7, 0x0
 
-    goto :goto_251
+    invoke-virtual {v5, v7}, Landroid/widget/LinearLayout;->setVisibility(I)V
+
+    const/4 v7, 0x0
+
+    goto :goto_276
 
     .line 287
-    :cond_24f
-    iput-object v5, v1, Lcom/android/server/autofill/ui/FillUi;->mFooter:Landroid/view/View;
+    :cond_273
+    const/4 v7, 0x0
+
+    iput-object v7, v1, Lcom/android/server/autofill/ui/FillUi;->mFooter:Landroid/view/View;
 
     .line 289
-    :goto_251
-    goto :goto_254
+    .end local v5  # "footerContainer":Landroid/widget/LinearLayout;
+    :goto_276
+    move-object v5, v0
+
+    goto :goto_27c
 
     .line 290
-    :cond_252
-    iput-object v5, v1, Lcom/android/server/autofill/ui/FillUi;->mFooter:Landroid/view/View;
+    :cond_278
+    const/4 v7, 0x0
+
+    iput-object v7, v1, Lcom/android/server/autofill/ui/FillUi;->mFooter:Landroid/view/View;
+
+    move-object v5, v0
 
     .line 293
-    :goto_254
-    new-instance v7, Ljava/util/ArrayList;
+    .end local v0  # "clickBlocker":Landroid/widget/RemoteViews$OnClickHandler;
+    .local v5, "clickBlocker":Landroid/widget/RemoteViews$OnClickHandler;
+    :goto_27c
+    new-instance v0, Ljava/util/ArrayList;
 
-    invoke-direct {v7, v4}, Ljava/util/ArrayList;-><init>(I)V
+    invoke-direct {v0, v4}, Ljava/util/ArrayList;-><init>(I)V
+
+    move-object v7, v0
 
     .line 294
-    move v8, v11
+    .local v7, "items":Ljava/util/ArrayList;, "Ljava/util/ArrayList<Lcom/android/server/autofill/ui/FillUi$ViewItem;>;"
+    const/4 v0, 0x0
 
-    :goto_25a
-    if-ge v8, v4, :cond_33d
+    move v8, v0
+
+    .local v8, "i":I
+    :goto_284
+    if-ge v8, v4, :cond_38a
 
     .line 295
     invoke-virtual/range {p2 .. p2}, Landroid/service/autofill/FillResponse;->getDatasets()Ljava/util/List;
@@ -784,271 +911,418 @@
 
     move-result-object v0
 
-    check-cast v0, Landroid/service/autofill/Dataset;
+    move-object v9, v0
+
+    check-cast v9, Landroid/service/autofill/Dataset;
 
     .line 296
-    invoke-virtual {v0}, Landroid/service/autofill/Dataset;->getFieldIds()Ljava/util/ArrayList;
+    .local v9, "dataset":Landroid/service/autofill/Dataset;
+    invoke-virtual {v9}, Landroid/service/autofill/Dataset;->getFieldIds()Ljava/util/ArrayList;
 
-    move-result-object v10
+    move-result-object v0
 
-    invoke-virtual {v10, v2}, Ljava/util/ArrayList;->indexOf(Ljava/lang/Object;)I
+    move/from16 v25, v4
 
-    move-result v10
+    .end local v4  # "datasetCount":I
+    .local v25, "datasetCount":I
+    invoke-virtual {v0, v2}, Ljava/util/ArrayList;->indexOf(Ljava/lang/Object;)I
+
+    move-result v4
 
     .line 297
-    if-ltz v10, :cond_333
+    .local v4, "index":I
+    if-ltz v4, :cond_378
 
     .line 298
-    invoke-virtual {v0, v10}, Landroid/service/autofill/Dataset;->getFieldPresentation(I)Landroid/widget/RemoteViews;
+    move-object/from16 v26, v5
 
-    move-result-object v15
+    .end local v5  # "clickBlocker":Landroid/widget/RemoteViews$OnClickHandler;
+    .local v26, "clickBlocker":Landroid/widget/RemoteViews$OnClickHandler;
+    invoke-virtual {v9, v4}, Landroid/service/autofill/Dataset;->getFieldPresentation(I)Landroid/widget/RemoteViews;
+
+    move-result-object v5
 
     .line 299
-    if-nez v15, :cond_297
+    .local v5, "presentation":Landroid/widget/RemoteViews;
+    if-nez v5, :cond_2c8
 
     .line 300
-    new-instance v10, Ljava/lang/StringBuilder;
+    new-instance v0, Ljava/lang/StringBuilder;
 
-    invoke-direct {v10}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string/jumbo v15, "not displaying UI on field "
+    move-object/from16 v27, v10
 
-    invoke-virtual {v10, v15}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    .end local v10  # "headerPresentation":Landroid/widget/RemoteViews;
+    .local v27, "headerPresentation":Landroid/widget/RemoteViews;
+    const-string/jumbo v10, "not displaying UI on field "
 
-    invoke-virtual {v10, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v10}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string v15, " because service didn\'t provide a presentation for it on "
+    invoke-virtual {v0, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v10, v15}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    const-string v10, " because service didn\'t provide a presentation for it on "
 
-    invoke-virtual {v10, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v10}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v10}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v0, v9}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
     move-result-object v0
 
     invoke-static {v6, v0}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 302
-    move/from16 p6, v4
+    move-object/from16 v28, v11
 
-    goto/16 :goto_335
+    goto/16 :goto_37e
 
     .line 306
-    :cond_297
-    :try_start_297
-    sget-boolean v16, Lcom/android/server/autofill/Helper;->sVerbose:Z
+    .end local v27  # "headerPresentation":Landroid/widget/RemoteViews;
+    .restart local v10  # "headerPresentation":Landroid/widget/RemoteViews;
+    :cond_2c8
+    move-object/from16 v27, v10
 
-    if-eqz v16, :cond_2b0
+    .end local v10  # "headerPresentation":Landroid/widget/RemoteViews;
+    .restart local v27  # "headerPresentation":Landroid/widget/RemoteViews;
+    :try_start_2ca
+    sget-boolean v0, Lcom/android/server/autofill/Helper;->sVerbose:Z
+    :try_end_2cc
+    .catch Ljava/lang/RuntimeException; {:try_start_2ca .. :try_end_2cc} :catch_36f
 
-    new-instance v11, Ljava/lang/StringBuilder;
+    if-eqz v0, :cond_2eb
 
-    invoke-direct {v11}, Ljava/lang/StringBuilder;-><init>()V
+    :try_start_2ce
+    new-instance v0, Ljava/lang/StringBuilder;
 
-    const-string/jumbo v5, "setting remote view for "
+    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
 
-    invoke-virtual {v11, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    const-string/jumbo v10, "setting remote view for "
 
-    invoke-virtual {v11, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v10}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v11}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v0, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
-    move-result-object v5
+    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    invoke-static {v6, v5}, Landroid/util/Slog;->v(Ljava/lang/String;Ljava/lang/String;)I
+    move-result-object v0
 
-    .line 307
-    :cond_2b0
-    iget-object v5, v1, Lcom/android/server/autofill/ui/FillUi;->mContext:Landroid/content/Context;
+    invoke-static {v6, v0}, Landroid/util/Slog;->v(Ljava/lang/String;Ljava/lang/String;)I
+    :try_end_2e3
+    .catch Ljava/lang/RuntimeException; {:try_start_2ce .. :try_end_2e3} :catch_2e4
 
-    iget v11, v1, Lcom/android/server/autofill/ui/FillUi;->mThemeId:I
-    :try_end_2b4
-    .catch Ljava/lang/RuntimeException; {:try_start_297 .. :try_end_2b4} :catch_32c
-
-    move/from16 p6, v4
-
-    const/4 v4, 0x0
-
-    :try_start_2b7
-    invoke-virtual {v15, v5, v4, v12, v11}, Landroid/widget/RemoteViews;->applyWithTheme(Landroid/content/Context;Landroid/view/ViewGroup;Landroid/widget/RemoteViews$OnClickHandler;I)Landroid/view/View;
-
-    move-result-object v20
-    :try_end_2bb
-    .catch Ljava/lang/RuntimeException; {:try_start_2b7 .. :try_end_2bb} :catch_32a
-
-    .line 312
-    nop
-
-    .line 313
-    invoke-virtual {v0, v10}, Landroid/service/autofill/Dataset;->getFilter(I)Landroid/service/autofill/Dataset$DatasetFieldFilter;
-
-    move-result-object v4
-
-    .line 314
-    nop
-
-    .line 315
-    nop
-
-    .line 316
-    nop
-
-    .line 317
-    if-nez v4, :cond_2ed
-
-    .line 318
-    invoke-virtual {v0}, Landroid/service/autofill/Dataset;->getFieldValues()Ljava/util/ArrayList;
-
-    move-result-object v4
-
-    invoke-virtual {v4, v10}, Ljava/util/ArrayList;->get(I)Ljava/lang/Object;
-
-    move-result-object v4
-
-    check-cast v4, Landroid/view/autofill/AutofillValue;
-
-    .line 319
-    if-eqz v4, :cond_2e5
-
-    invoke-virtual {v4}, Landroid/view/autofill/AutofillValue;->isText()Z
-
-    move-result v5
-
-    if-eqz v5, :cond_2e5
-
-    .line 320
-    invoke-virtual {v4}, Landroid/view/autofill/AutofillValue;->getTextValue()Ljava/lang/CharSequence;
-
-    move-result-object v4
-
-    invoke-interface {v4}, Ljava/lang/CharSequence;->toString()Ljava/lang/String;
-
-    move-result-object v4
-
-    invoke-virtual {v4}, Ljava/lang/String;->toLowerCase()Ljava/lang/String;
-
-    move-result-object v4
-
-    move-object v5, v4
-
-    goto :goto_2e6
-
-    .line 322
-    :cond_2e5
-    const/4 v5, 0x0
-
-    :goto_2e6
-    move-object/from16 v19, v5
-
-    const/16 v17, 0x0
-
-    const/16 v18, 0x1
-
-    goto :goto_31e
-
-    .line 323
-    :cond_2ed
-    iget-object v5, v4, Landroid/service/autofill/Dataset$DatasetFieldFilter;->pattern:Ljava/util/regex/Pattern;
-
-    .line 324
-    if-nez v5, :cond_318
-
-    .line 325
-    sget-boolean v4, Lcom/android/server/autofill/Helper;->sVerbose:Z
-
-    if-eqz v4, :cond_311
-
-    .line 326
-    new-instance v4, Ljava/lang/StringBuilder;
-
-    invoke-direct {v4}, Ljava/lang/StringBuilder;-><init>()V
-
-    const-string v11, "Explicitly disabling filter at id "
-
-    invoke-virtual {v4, v11}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v4, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
-
-    const-string v11, " for dataset #"
-
-    invoke-virtual {v4, v11}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v4, v10}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v4}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
-
-    move-result-object v4
-
-    invoke-static {v6, v4}, Landroid/util/Slog;->v(Ljava/lang/String;Ljava/lang/String;)I
-
-    .line 329
-    :cond_311
-    move-object/from16 v17, v5
-
-    const/16 v18, 0x0
-
-    const/16 v19, 0x0
-
-    goto :goto_31e
-
-    .line 324
-    :cond_318
-    move-object/from16 v17, v5
-
-    const/16 v18, 0x1
-
-    const/16 v19, 0x0
-
-    .line 333
-    :goto_31e
-    new-instance v4, Lcom/android/server/autofill/ui/FillUi$ViewItem;
-
-    move-object v15, v4
-
-    move-object/from16 v16, v0
-
-    invoke-direct/range {v15 .. v20}, Lcom/android/server/autofill/ui/FillUi$ViewItem;-><init>(Landroid/service/autofill/Dataset;Ljava/util/regex/Pattern;ZLjava/lang/String;Landroid/view/View;)V
-
-    invoke-virtual {v7, v4}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
-
-    goto :goto_335
+    goto :goto_2eb
 
     .line 309
-    :catch_32a
+    :catch_2e4
     move-exception v0
 
-    goto :goto_32f
+    move-object/from16 v29, v5
 
-    :catch_32c
-    move-exception v0
+    move-object/from16 v28, v11
 
-    move/from16 p6, v4
+    goto/16 :goto_374
 
-    .line 310
-    :goto_32f
-    invoke-static {v6, v13, v0}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    .line 307
+    :cond_2eb
+    :goto_2eb
+    :try_start_2eb
+    iget-object v0, v1, Lcom/android/server/autofill/ui/FillUi;->mContext:Landroid/content/Context;
 
-    .line 311
-    goto :goto_335
+    iget v10, v1, Lcom/android/server/autofill/ui/FillUi;->mThemeId:I
+    :try_end_2ef
+    .catch Ljava/lang/RuntimeException; {:try_start_2eb .. :try_end_2ef} :catch_36f
 
-    .line 297
-    :cond_333
-    move/from16 p6, v4
-
-    .line 294
-    :goto_335
-    add-int/lit8 v8, v8, 0x1
-
-    move/from16 v4, p6
-
-    const/4 v5, 0x0
+    move-object/from16 v28, v11
 
     const/4 v11, 0x0
 
-    goto/16 :goto_25a
+    .end local v11  # "footerPresentation":Landroid/widget/RemoteViews;
+    .local v28, "footerPresentation":Landroid/widget/RemoteViews;
+    :try_start_2f2
+    invoke-virtual {v5, v0, v11, v14, v10}, Landroid/widget/RemoteViews;->applyWithTheme(Landroid/content/Context;Landroid/view/ViewGroup;Landroid/widget/RemoteViews$OnClickHandler;I)Landroid/view/View;
+
+    move-result-object v24
+    :try_end_2f6
+    .catch Ljava/lang/RuntimeException; {:try_start_2f2 .. :try_end_2f6} :catch_36b
+
+    .line 312
+    .local v24, "view":Landroid/view/View;
+    nop
+
+    .line 313
+    invoke-virtual {v9, v4}, Landroid/service/autofill/Dataset;->getFilter(I)Landroid/service/autofill/Dataset$DatasetFieldFilter;
+
+    move-result-object v0
+
+    .line 314
+    .local v0, "filter":Landroid/service/autofill/Dataset$DatasetFieldFilter;
+    const/4 v10, 0x0
+
+    .line 315
+    .local v10, "filterPattern":Ljava/util/regex/Pattern;
+    const/4 v11, 0x0
+
+    .line 316
+    .local v11, "valueText":Ljava/lang/String;
+    const/16 v19, 0x1
+
+    .line 317
+    .local v19, "filterable":Z
+    if-nez v0, :cond_327
+
+    .line 318
+    move-object/from16 v29, v5
+
+    .end local v5  # "presentation":Landroid/widget/RemoteViews;
+    .local v29, "presentation":Landroid/widget/RemoteViews;
+    invoke-virtual {v9}, Landroid/service/autofill/Dataset;->getFieldValues()Ljava/util/ArrayList;
+
+    move-result-object v5
+
+    invoke-virtual {v5, v4}, Ljava/util/ArrayList;->get(I)Ljava/lang/Object;
+
+    move-result-object v5
+
+    check-cast v5, Landroid/view/autofill/AutofillValue;
+
+    .line 319
+    .local v5, "value":Landroid/view/autofill/AutofillValue;
+    if-eqz v5, :cond_321
+
+    invoke-virtual {v5}, Landroid/view/autofill/AutofillValue;->isText()Z
+
+    move-result v20
+
+    if-eqz v20, :cond_321
+
+    .line 320
+    invoke-virtual {v5}, Landroid/view/autofill/AutofillValue;->getTextValue()Ljava/lang/CharSequence;
+
+    move-result-object v20
+
+    invoke-interface/range {v20 .. v20}, Ljava/lang/CharSequence;->toString()Ljava/lang/String;
+
+    move-result-object v20
+
+    invoke-virtual/range {v20 .. v20}, Ljava/lang/String;->toLowerCase()Ljava/lang/String;
+
+    move-result-object v11
+
+    .line 322
+    .end local v5  # "value":Landroid/view/autofill/AutofillValue;
+    :cond_321
+    move-object/from16 v30, v0
+
+    move-object v5, v10
+
+    move/from16 v0, v19
+
+    goto :goto_358
+
+    .line 323
+    .end local v29  # "presentation":Landroid/widget/RemoteViews;
+    .local v5, "presentation":Landroid/widget/RemoteViews;
+    :cond_327
+    move-object/from16 v29, v5
+
+    .end local v5  # "presentation":Landroid/widget/RemoteViews;
+    .restart local v29  # "presentation":Landroid/widget/RemoteViews;
+    iget-object v5, v0, Landroid/service/autofill/Dataset$DatasetFieldFilter;->pattern:Ljava/util/regex/Pattern;
+
+    .line 324
+    .end local v10  # "filterPattern":Ljava/util/regex/Pattern;
+    .local v5, "filterPattern":Ljava/util/regex/Pattern;
+    if-nez v5, :cond_354
+
+    .line 325
+    sget-boolean v10, Lcom/android/server/autofill/Helper;->sVerbose:Z
+
+    if-eqz v10, :cond_350
+
+    .line 326
+    new-instance v10, Ljava/lang/StringBuilder;
+
+    invoke-direct {v10}, Ljava/lang/StringBuilder;-><init>()V
+
+    move-object/from16 v30, v0
+
+    .end local v0  # "filter":Landroid/service/autofill/Dataset$DatasetFieldFilter;
+    .local v30, "filter":Landroid/service/autofill/Dataset$DatasetFieldFilter;
+    const-string v0, "Explicitly disabling filter at id "
+
+    invoke-virtual {v10, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v10, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+
+    const-string v0, " for dataset #"
+
+    invoke-virtual {v10, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v10, v4}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v10}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v0
+
+    invoke-static {v6, v0}, Landroid/util/Slog;->v(Ljava/lang/String;Ljava/lang/String;)I
+
+    goto :goto_352
+
+    .line 325
+    .end local v30  # "filter":Landroid/service/autofill/Dataset$DatasetFieldFilter;
+    .restart local v0  # "filter":Landroid/service/autofill/Dataset$DatasetFieldFilter;
+    :cond_350
+    move-object/from16 v30, v0
+
+    .line 329
+    .end local v0  # "filter":Landroid/service/autofill/Dataset$DatasetFieldFilter;
+    .restart local v30  # "filter":Landroid/service/autofill/Dataset$DatasetFieldFilter;
+    :goto_352
+    const/4 v0, 0x0
+
+    .end local v19  # "filterable":Z
+    .local v0, "filterable":Z
+    goto :goto_358
+
+    .line 324
+    .end local v30  # "filter":Landroid/service/autofill/Dataset$DatasetFieldFilter;
+    .local v0, "filter":Landroid/service/autofill/Dataset$DatasetFieldFilter;
+    .restart local v19  # "filterable":Z
+    :cond_354
+    move-object/from16 v30, v0
+
+    .end local v0  # "filter":Landroid/service/autofill/Dataset$DatasetFieldFilter;
+    .restart local v30  # "filter":Landroid/service/autofill/Dataset$DatasetFieldFilter;
+    move/from16 v0, v19
+
+    .line 333
+    .end local v19  # "filterable":Z
+    .local v0, "filterable":Z
+    :goto_358
+    new-instance v10, Lcom/android/server/autofill/ui/FillUi$ViewItem;
+
+    move-object/from16 v19, v10
+
+    move-object/from16 v20, v9
+
+    move-object/from16 v21, v5
+
+    move/from16 v22, v0
+
+    move-object/from16 v23, v11
+
+    invoke-direct/range {v19 .. v24}, Lcom/android/server/autofill/ui/FillUi$ViewItem;-><init>(Landroid/service/autofill/Dataset;Ljava/util/regex/Pattern;ZLjava/lang/String;Landroid/view/View;)V
+
+    invoke-virtual {v7, v10}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
+
+    goto :goto_37e
+
+    .line 309
+    .end local v0  # "filterable":Z
+    .end local v11  # "valueText":Ljava/lang/String;
+    .end local v24  # "view":Landroid/view/View;
+    .end local v29  # "presentation":Landroid/widget/RemoteViews;
+    .end local v30  # "filter":Landroid/service/autofill/Dataset$DatasetFieldFilter;
+    .local v5, "presentation":Landroid/widget/RemoteViews;
+    :catch_36b
+    move-exception v0
+
+    move-object/from16 v29, v5
+
+    .end local v5  # "presentation":Landroid/widget/RemoteViews;
+    .restart local v29  # "presentation":Landroid/widget/RemoteViews;
+    goto :goto_374
+
+    .end local v28  # "footerPresentation":Landroid/widget/RemoteViews;
+    .end local v29  # "presentation":Landroid/widget/RemoteViews;
+    .restart local v5  # "presentation":Landroid/widget/RemoteViews;
+    .local v11, "footerPresentation":Landroid/widget/RemoteViews;
+    :catch_36f
+    move-exception v0
+
+    move-object/from16 v29, v5
+
+    move-object/from16 v28, v11
+
+    .line 310
+    .end local v5  # "presentation":Landroid/widget/RemoteViews;
+    .end local v11  # "footerPresentation":Landroid/widget/RemoteViews;
+    .local v0, "e":Ljava/lang/RuntimeException;
+    .restart local v28  # "footerPresentation":Landroid/widget/RemoteViews;
+    .restart local v29  # "presentation":Landroid/widget/RemoteViews;
+    :goto_374
+    invoke-static {v6, v15, v0}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+
+    .line 311
+    goto :goto_37e
+
+    .line 297
+    .end local v0  # "e":Ljava/lang/RuntimeException;
+    .end local v26  # "clickBlocker":Landroid/widget/RemoteViews$OnClickHandler;
+    .end local v27  # "headerPresentation":Landroid/widget/RemoteViews;
+    .end local v28  # "footerPresentation":Landroid/widget/RemoteViews;
+    .end local v29  # "presentation":Landroid/widget/RemoteViews;
+    .local v5, "clickBlocker":Landroid/widget/RemoteViews$OnClickHandler;
+    .local v10, "headerPresentation":Landroid/widget/RemoteViews;
+    .restart local v11  # "footerPresentation":Landroid/widget/RemoteViews;
+    :cond_378
+    move-object/from16 v26, v5
+
+    move-object/from16 v27, v10
+
+    move-object/from16 v28, v11
+
+    .line 294
+    .end local v4  # "index":I
+    .end local v5  # "clickBlocker":Landroid/widget/RemoteViews$OnClickHandler;
+    .end local v9  # "dataset":Landroid/service/autofill/Dataset;
+    .end local v10  # "headerPresentation":Landroid/widget/RemoteViews;
+    .end local v11  # "footerPresentation":Landroid/widget/RemoteViews;
+    .restart local v26  # "clickBlocker":Landroid/widget/RemoteViews$OnClickHandler;
+    .restart local v27  # "headerPresentation":Landroid/widget/RemoteViews;
+    .restart local v28  # "footerPresentation":Landroid/widget/RemoteViews;
+    :goto_37e
+    add-int/lit8 v8, v8, 0x1
+
+    move/from16 v4, v25
+
+    move-object/from16 v5, v26
+
+    move-object/from16 v10, v27
+
+    move-object/from16 v11, v28
+
+    goto/16 :goto_284
+
+    .end local v25  # "datasetCount":I
+    .end local v26  # "clickBlocker":Landroid/widget/RemoteViews$OnClickHandler;
+    .end local v27  # "headerPresentation":Landroid/widget/RemoteViews;
+    .end local v28  # "footerPresentation":Landroid/widget/RemoteViews;
+    .local v4, "datasetCount":I
+    .restart local v5  # "clickBlocker":Landroid/widget/RemoteViews$OnClickHandler;
+    .restart local v10  # "headerPresentation":Landroid/widget/RemoteViews;
+    .restart local v11  # "footerPresentation":Landroid/widget/RemoteViews;
+    :cond_38a
+    move/from16 v25, v4
+
+    move-object/from16 v26, v5
+
+    move-object/from16 v27, v10
+
+    move-object/from16 v28, v11
 
     .line 337
-    :cond_33d
+    .end local v4  # "datasetCount":I
+    .end local v5  # "clickBlocker":Landroid/widget/RemoteViews$OnClickHandler;
+    .end local v8  # "i":I
+    .end local v10  # "headerPresentation":Landroid/widget/RemoteViews;
+    .end local v11  # "footerPresentation":Landroid/widget/RemoteViews;
+    .restart local v25  # "datasetCount":I
+    .restart local v26  # "clickBlocker":Landroid/widget/RemoteViews$OnClickHandler;
+    .restart local v27  # "headerPresentation":Landroid/widget/RemoteViews;
+    .restart local v28  # "footerPresentation":Landroid/widget/RemoteViews;
     new-instance v0, Lcom/android/server/autofill/ui/FillUi$ItemsAdapter;
 
     invoke-direct {v0, v1, v7}, Lcom/android/server/autofill/ui/FillUi$ItemsAdapter;-><init>(Lcom/android/server/autofill/ui/FillUi;Ljava/util/List;)V
@@ -1058,7 +1332,7 @@
     .line 339
     const v0, 0x10201c9
 
-    invoke-virtual {v9, v0}, Landroid/view/ViewGroup;->findViewById(I)Landroid/view/View;
+    invoke-virtual {v12, v0}, Landroid/view/ViewGroup;->findViewById(I)Landroid/view/View;
 
     move-result-object v0
 
@@ -1069,38 +1343,38 @@
     .line 340
     iget-object v0, v1, Lcom/android/server/autofill/ui/FillUi;->mListView:Landroid/widget/ListView;
 
-    iget-object v2, v1, Lcom/android/server/autofill/ui/FillUi;->mAdapter:Lcom/android/server/autofill/ui/FillUi$ItemsAdapter;
+    iget-object v4, v1, Lcom/android/server/autofill/ui/FillUi;->mAdapter:Lcom/android/server/autofill/ui/FillUi$ItemsAdapter;
 
-    invoke-virtual {v0, v2}, Landroid/widget/ListView;->setAdapter(Landroid/widget/ListAdapter;)V
+    invoke-virtual {v0, v4}, Landroid/widget/ListView;->setAdapter(Landroid/widget/ListAdapter;)V
 
     .line 341
     iget-object v0, v1, Lcom/android/server/autofill/ui/FillUi;->mListView:Landroid/widget/ListView;
 
-    const/4 v2, 0x0
+    const/4 v4, 0x0
 
-    invoke-virtual {v0, v2}, Landroid/widget/ListView;->setVisibility(I)V
+    invoke-virtual {v0, v4}, Landroid/widget/ListView;->setVisibility(I)V
 
     .line 342
     iget-object v0, v1, Lcom/android/server/autofill/ui/FillUi;->mListView:Landroid/widget/ListView;
 
-    new-instance v2, Lcom/android/server/autofill/ui/-$$Lambda$FillUi$TUHYXtyYjvn8kBKxh1vyXjC9x84;
+    new-instance v4, Lcom/android/server/autofill/ui/-$$Lambda$FillUi$TUHYXtyYjvn8kBKxh1vyXjC9x84;
 
-    invoke-direct {v2, v1}, Lcom/android/server/autofill/ui/-$$Lambda$FillUi$TUHYXtyYjvn8kBKxh1vyXjC9x84;-><init>(Lcom/android/server/autofill/ui/FillUi;)V
+    invoke-direct {v4, v1}, Lcom/android/server/autofill/ui/-$$Lambda$FillUi$TUHYXtyYjvn8kBKxh1vyXjC9x84;-><init>(Lcom/android/server/autofill/ui/FillUi;)V
 
-    invoke-virtual {v0, v2}, Landroid/widget/ListView;->setOnItemClickListener(Landroid/widget/AdapterView$OnItemClickListener;)V
+    invoke-virtual {v0, v4}, Landroid/widget/ListView;->setOnItemClickListener(Landroid/widget/AdapterView$OnItemClickListener;)V
 
     .line 347
-    if-nez p4, :cond_36c
+    if-nez p4, :cond_3c1
 
     .line 348
-    const/4 v2, 0x0
+    const/4 v4, 0x0
 
-    iput-object v2, v1, Lcom/android/server/autofill/ui/FillUi;->mFilterText:Ljava/lang/String;
+    iput-object v4, v1, Lcom/android/server/autofill/ui/FillUi;->mFilterText:Ljava/lang/String;
 
-    goto :goto_372
+    goto :goto_3c7
 
     .line 350
-    :cond_36c
+    :cond_3c1
     invoke-virtual/range {p4 .. p4}, Ljava/lang/String;->toLowerCase()Ljava/lang/String;
 
     move-result-object v0
@@ -1108,59 +1382,67 @@
     iput-object v0, v1, Lcom/android/server/autofill/ui/FillUi;->mFilterText:Ljava/lang/String;
 
     .line 353
-    :goto_372
+    :goto_3c7
     invoke-direct/range {p0 .. p0}, Lcom/android/server/autofill/ui/FillUi;->applyNewFilterText()V
 
     .line 354
     new-instance v0, Lcom/android/server/autofill/ui/FillUi$AnchoredWindow;
 
-    invoke-direct {v0, v1, v9, v3}, Lcom/android/server/autofill/ui/FillUi$AnchoredWindow;-><init>(Lcom/android/server/autofill/ui/FillUi;Landroid/view/View;Lcom/android/server/autofill/ui/OverlayControl;)V
+    invoke-direct {v0, v1, v12, v3}, Lcom/android/server/autofill/ui/FillUi$AnchoredWindow;-><init>(Lcom/android/server/autofill/ui/FillUi;Landroid/view/View;Lcom/android/server/autofill/ui/OverlayControl;)V
 
     iput-object v0, v1, Lcom/android/server/autofill/ui/FillUi;->mWindow:Lcom/android/server/autofill/ui/FillUi$AnchoredWindow;
 
     .line 356
-    :goto_37c
+    .end local v7  # "items":Ljava/util/ArrayList;, "Ljava/util/ArrayList<Lcom/android/server/autofill/ui/FillUi$ViewItem;>;"
+    .end local v25  # "datasetCount":I
+    .end local v26  # "clickBlocker":Landroid/widget/RemoteViews$OnClickHandler;
+    :goto_3d1
     return-void
 .end method
 
 .method static synthetic access$100(Lcom/android/server/autofill/ui/FillUi;)Lcom/android/server/autofill/ui/FillUi$AnchoredWindow;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/autofill/ui/FillUi;
 
     .line 71
-    iget-object p0, p0, Lcom/android/server/autofill/ui/FillUi;->mWindow:Lcom/android/server/autofill/ui/FillUi$AnchoredWindow;
+    iget-object v0, p0, Lcom/android/server/autofill/ui/FillUi;->mWindow:Lcom/android/server/autofill/ui/FillUi$AnchoredWindow;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$1000(Lcom/android/server/autofill/ui/FillUi;)Landroid/widget/ListView;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/autofill/ui/FillUi;
 
     .line 71
-    iget-object p0, p0, Lcom/android/server/autofill/ui/FillUi;->mListView:Landroid/widget/ListView;
+    iget-object v0, p0, Lcom/android/server/autofill/ui/FillUi;->mListView:Landroid/widget/ListView;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$1100(Lcom/android/server/autofill/ui/FillUi;)Landroid/content/Context;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/autofill/ui/FillUi;
 
     .line 71
-    iget-object p0, p0, Lcom/android/server/autofill/ui/FillUi;->mContext:Landroid/content/Context;
+    iget-object v0, p0, Lcom/android/server/autofill/ui/FillUi;->mContext:Landroid/content/Context;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$200(Lcom/android/server/autofill/ui/FillUi;)Lcom/android/server/autofill/ui/FillUi$Callback;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/autofill/ui/FillUi;
 
     .line 71
-    iget-object p0, p0, Lcom/android/server/autofill/ui/FillUi;->mCallback:Lcom/android/server/autofill/ui/FillUi$Callback;
+    iget-object v0, p0, Lcom/android/server/autofill/ui/FillUi;->mCallback:Lcom/android/server/autofill/ui/FillUi$Callback;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$900(Lcom/android/server/autofill/ui/FillUi;)V
     .registers 1
+    .param p0, "x0"  # Lcom/android/server/autofill/ui/FillUi;
 
     .line 71
     invoke-direct {p0}, Lcom/android/server/autofill/ui/FillUi;->announceSearchResultIfNeeded()V
@@ -1220,6 +1502,7 @@
     move-result v0
 
     .line 374
+    .local v0, "oldCount":I
     iget-object v1, p0, Lcom/android/server/autofill/ui/FillUi;->mAdapter:Lcom/android/server/autofill/ui/FillUi$ItemsAdapter;
 
     invoke-virtual {v1}, Lcom/android/server/autofill/ui/FillUi$ItemsAdapter;->getFilter()Landroid/widget/Filter;
@@ -1239,7 +1522,8 @@
 .end method
 
 .method public static isFullScreen(Landroid/content/Context;)Z
-    .registers 2
+    .registers 3
+    .param p0, "context"  # Landroid/content/Context;
 
     .line 124
     sget-object v0, Lcom/android/server/autofill/Helper;->sFullScreenMode:Ljava/lang/Boolean;
@@ -1247,86 +1531,89 @@
     if-eqz v0, :cond_27
 
     .line 125
-    sget-boolean p0, Lcom/android/server/autofill/Helper;->sVerbose:Z
+    sget-boolean v0, Lcom/android/server/autofill/Helper;->sVerbose:Z
 
-    if-eqz p0, :cond_20
+    if-eqz v0, :cond_20
 
-    new-instance p0, Ljava/lang/StringBuilder;
+    new-instance v0, Ljava/lang/StringBuilder;
 
-    invoke-direct {p0}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v0, "forcing full-screen mode to "
+    const-string v1, "forcing full-screen mode to "
 
-    invoke-virtual {p0, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    sget-object v0, Lcom/android/server/autofill/Helper;->sFullScreenMode:Ljava/lang/Boolean;
+    sget-object v1, Lcom/android/server/autofill/Helper;->sFullScreenMode:Ljava/lang/Boolean;
 
-    invoke-virtual {p0, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v0
 
-    const-string v0, "FillUi"
+    const-string v1, "FillUi"
 
-    invoke-static {v0, p0}, Landroid/util/Slog;->v(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v0}, Landroid/util/Slog;->v(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 126
     :cond_20
-    sget-object p0, Lcom/android/server/autofill/Helper;->sFullScreenMode:Ljava/lang/Boolean;
+    sget-object v0, Lcom/android/server/autofill/Helper;->sFullScreenMode:Ljava/lang/Boolean;
 
-    invoke-virtual {p0}, Ljava/lang/Boolean;->booleanValue()Z
+    invoke-virtual {v0}, Ljava/lang/Boolean;->booleanValue()Z
 
-    move-result p0
+    move-result v0
 
-    return p0
+    return v0
 
     .line 128
     :cond_27
     invoke-virtual {p0}, Landroid/content/Context;->getPackageManager()Landroid/content/pm/PackageManager;
 
-    move-result-object p0
+    move-result-object v0
 
-    const-string v0, "android.software.leanback"
+    const-string v1, "android.software.leanback"
 
-    invoke-virtual {p0, v0}, Landroid/content/pm/PackageManager;->hasSystemFeature(Ljava/lang/String;)Z
+    invoke-virtual {v0, v1}, Landroid/content/pm/PackageManager;->hasSystemFeature(Ljava/lang/String;)Z
 
-    move-result p0
+    move-result v0
 
-    return p0
+    return v0
 .end method
 
 .method static synthetic lambda$newClickBlocker$4(Landroid/view/View;Landroid/app/PendingIntent;Landroid/widget/RemoteViews$RemoteResponse;)Z
-    .registers 3
+    .registers 5
+    .param p0, "view"  # Landroid/view/View;
+    .param p1, "pendingIntent"  # Landroid/app/PendingIntent;
+    .param p2, "response"  # Landroid/widget/RemoteViews$RemoteResponse;
 
     .line 367
-    sget-boolean p1, Lcom/android/server/autofill/Helper;->sVerbose:Z
+    sget-boolean v0, Lcom/android/server/autofill/Helper;->sVerbose:Z
 
-    if-eqz p1, :cond_1a
+    if-eqz v0, :cond_1a
 
-    new-instance p1, Ljava/lang/StringBuilder;
+    new-instance v0, Ljava/lang/StringBuilder;
 
-    invoke-direct {p1}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string p2, "Ignoring click on "
+    const-string v1, "Ignoring click on "
 
-    invoke-virtual {p1, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p1, p0}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, p0}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v0
 
-    const-string p1, "FillUi"
+    const-string v1, "FillUi"
 
-    invoke-static {p1, p0}, Landroid/util/Slog;->v(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v0}, Landroid/util/Slog;->v(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 368
     :cond_1a
-    const/4 p0, 0x1
+    const/4 v0, 0x1
 
-    return p0
+    return v0
 .end method
 
 .method private newClickBlocker()Landroid/widget/RemoteViews$OnClickHandler;
@@ -1340,6 +1627,8 @@
 
 .method private static resolveMaxWindowSize(Landroid/content/Context;Landroid/graphics/Point;)V
     .registers 6
+    .param p0, "context"  # Landroid/content/Context;
+    .param p1, "outPoint"  # Landroid/graphics/Point;
 
     .line 525
     invoke-virtual {p0}, Landroid/content/Context;->getDisplay()Landroid/view/Display;
@@ -1352,6 +1641,7 @@
     sget-object v0, Lcom/android/server/autofill/ui/FillUi;->sTempTypedValue:Landroid/util/TypedValue;
 
     .line 527
+    .local v0, "typedValue":Landroid/util/TypedValue;
     invoke-virtual {p0}, Landroid/content/Context;->getTheme()Landroid/content/res/Resources$Theme;
 
     move-result-object v1
@@ -1382,28 +1672,28 @@
     .line 530
     invoke-virtual {p0}, Landroid/content/Context;->getTheme()Landroid/content/res/Resources$Theme;
 
-    move-result-object p0
+    move-result-object v1
 
-    const v1, 0x1120012
+    const v3, 0x1120012
 
-    invoke-virtual {p0, v1, v0, v2}, Landroid/content/res/Resources$Theme;->resolveAttribute(ILandroid/util/TypedValue;Z)Z
+    invoke-virtual {v1, v3, v0, v2}, Landroid/content/res/Resources$Theme;->resolveAttribute(ILandroid/util/TypedValue;Z)Z
 
     .line 532
-    iget p0, p1, Landroid/graphics/Point;->y:I
-
-    int-to-float p0, p0
-
     iget v1, p1, Landroid/graphics/Point;->y:I
 
     int-to-float v1, v1
 
-    invoke-virtual {v0, p0, v1}, Landroid/util/TypedValue;->getFraction(FF)F
+    iget v2, p1, Landroid/graphics/Point;->y:I
 
-    move-result p0
+    int-to-float v2, v2
 
-    float-to-int p0, p0
+    invoke-virtual {v0, v1, v2}, Landroid/util/TypedValue;->getFraction(FF)F
 
-    iput p0, p1, Landroid/graphics/Point;->y:I
+    move-result v1
+
+    float-to-int v1, v1
+
+    iput v1, p1, Landroid/graphics/Point;->y:I
 
     .line 533
     return-void
@@ -1448,65 +1738,61 @@
     :cond_6
     iget-boolean v2, p0, Lcom/android/server/autofill/ui/FillUi;->mFullScreen:Z
 
-    const/4 v3, 0x1
-
     if-eqz v2, :cond_c
 
     .line 446
-    return v3
+    const/4 v0, 0x1
+
+    return v0
 
     .line 448
     :cond_c
-    nop
+    const/4 v2, 0x0
 
     .line 449
+    .local v2, "changed":Z
     invoke-virtual {v0}, Lcom/android/server/autofill/ui/FillUi$ItemsAdapter;->getCount()I
 
     move-result v0
 
-    if-gtz v0, :cond_24
+    if-gtz v0, :cond_22
 
     .line 450
     iget v0, p0, Lcom/android/server/autofill/ui/FillUi;->mContentWidth:I
 
-    if-eqz v0, :cond_1b
+    if-eqz v0, :cond_1a
 
     .line 451
     iput v1, p0, Lcom/android/server/autofill/ui/FillUi;->mContentWidth:I
 
     .line 452
-    move v0, v3
-
-    goto :goto_1c
-
-    .line 450
-    :cond_1b
-    move v0, v1
+    const/4 v2, 0x1
 
     .line 454
-    :goto_1c
-    iget v2, p0, Lcom/android/server/autofill/ui/FillUi;->mContentHeight:I
+    :cond_1a
+    iget v0, p0, Lcom/android/server/autofill/ui/FillUi;->mContentHeight:I
 
-    if-eqz v2, :cond_23
+    if-eqz v0, :cond_21
 
     .line 455
     iput v1, p0, Lcom/android/server/autofill/ui/FillUi;->mContentHeight:I
 
     .line 456
-    move v0, v3
+    const/4 v2, 0x1
 
     .line 458
-    :cond_23
-    return v0
+    :cond_21
+    return v2
 
     .line 461
-    :cond_24
+    :cond_22
     iget-object v0, p0, Lcom/android/server/autofill/ui/FillUi;->mTempPoint:Landroid/graphics/Point;
 
     .line 462
-    iget-object v2, p0, Lcom/android/server/autofill/ui/FillUi;->mContext:Landroid/content/Context;
+    .local v0, "maxSize":Landroid/graphics/Point;
+    iget-object v3, p0, Lcom/android/server/autofill/ui/FillUi;->mContext:Landroid/content/Context;
 
-    invoke-static {v2, v0}, Lcom/android/server/autofill/ui/FillUi;->resolveMaxWindowSize(Landroid/content/Context;Landroid/graphics/Point;)V
+    invoke-static {v3, v0}, Lcom/android/server/autofill/ui/FillUi;->resolveMaxWindowSize(Landroid/content/Context;Landroid/graphics/Point;)V
 
     .line 464
     iput v1, p0, Lcom/android/server/autofill/ui/FillUi;->mContentWidth:I
@@ -1515,15 +1801,16 @@
     iput v1, p0, Lcom/android/server/autofill/ui/FillUi;->mContentHeight:I
 
     .line 467
-    iget v2, v0, Landroid/graphics/Point;->x:I
+    iget v1, v0, Landroid/graphics/Point;->x:I
 
     const/high16 v3, -0x80000000
 
-    invoke-static {v2, v3}, Landroid/view/View$MeasureSpec;->makeMeasureSpec(II)I
+    invoke-static {v1, v3}, Landroid/view/View$MeasureSpec;->makeMeasureSpec(II)I
 
-    move-result v2
+    move-result v1
 
     .line 469
+    .local v1, "widthMeasureSpec":I
     iget v4, v0, Landroid/graphics/Point;->y:I
 
     invoke-static {v4, v3}, Landroid/view/View$MeasureSpec;->makeMeasureSpec(II)I
@@ -1531,6 +1818,7 @@
     move-result v3
 
     .line 471
+    .local v3, "heightMeasureSpec":I
     iget-object v4, p0, Lcom/android/server/autofill/ui/FillUi;->mAdapter:Lcom/android/server/autofill/ui/FillUi$ItemsAdapter;
 
     invoke-virtual {v4}, Lcom/android/server/autofill/ui/FillUi$ItemsAdapter;->getCount()I
@@ -1538,12 +1826,13 @@
     move-result v4
 
     .line 473
+    .local v4, "itemCount":I
     iget-object v5, p0, Lcom/android/server/autofill/ui/FillUi;->mHeader:Landroid/view/View;
 
-    if-eqz v5, :cond_59
+    if-eqz v5, :cond_56
 
     .line 474
-    invoke-virtual {v5, v2, v3}, Landroid/view/View;->measure(II)V
+    invoke-virtual {v5, v1, v3}, Landroid/view/View;->measure(II)V
 
     .line 475
     iget-object v5, p0, Lcom/android/server/autofill/ui/FillUi;->mHeader:Landroid/view/View;
@@ -1552,191 +1841,188 @@
 
     move-result v5
 
-    or-int/2addr v5, v1
+    or-int/2addr v2, v5
 
     .line 476
-    iget-object v6, p0, Lcom/android/server/autofill/ui/FillUi;->mHeader:Landroid/view/View;
+    iget-object v5, p0, Lcom/android/server/autofill/ui/FillUi;->mHeader:Landroid/view/View;
 
-    invoke-direct {p0, v6, v0}, Lcom/android/server/autofill/ui/FillUi;->updateHeight(Landroid/view/View;Landroid/graphics/Point;)Z
+    invoke-direct {p0, v5, v0}, Lcom/android/server/autofill/ui/FillUi;->updateHeight(Landroid/view/View;Landroid/graphics/Point;)Z
 
-    move-result v6
+    move-result v5
 
-    or-int/2addr v5, v6
-
-    goto :goto_5a
-
-    .line 473
-    :cond_59
-    move v5, v1
+    or-int/2addr v2, v5
 
     .line 479
-    :goto_5a
-    nop
+    :cond_56
+    const/4 v5, 0x0
 
-    :goto_5b
-    if-ge v1, v4, :cond_79
+    .local v5, "i":I
+    :goto_57
+    if-ge v5, v4, :cond_75
 
     .line 480
     iget-object v6, p0, Lcom/android/server/autofill/ui/FillUi;->mAdapter:Lcom/android/server/autofill/ui/FillUi$ItemsAdapter;
 
-    invoke-virtual {v6, v1}, Lcom/android/server/autofill/ui/FillUi$ItemsAdapter;->getItem(I)Lcom/android/server/autofill/ui/FillUi$ViewItem;
+    invoke-virtual {v6, v5}, Lcom/android/server/autofill/ui/FillUi$ItemsAdapter;->getItem(I)Lcom/android/server/autofill/ui/FillUi$ViewItem;
 
     move-result-object v6
 
     iget-object v6, v6, Lcom/android/server/autofill/ui/FillUi$ViewItem;->view:Landroid/view/View;
 
     .line 481
-    invoke-virtual {v6, v2, v3}, Landroid/view/View;->measure(II)V
+    .local v6, "view":Landroid/view/View;
+    invoke-virtual {v6, v1, v3}, Landroid/view/View;->measure(II)V
 
     .line 482
     invoke-direct {p0, v6, v0}, Lcom/android/server/autofill/ui/FillUi;->updateWidth(Landroid/view/View;Landroid/graphics/Point;)Z
 
     move-result v7
 
-    or-int/2addr v5, v7
+    or-int/2addr v2, v7
 
     .line 483
     iget v7, p0, Lcom/android/server/autofill/ui/FillUi;->mVisibleDatasetsMaxCount:I
 
-    if-ge v1, v7, :cond_76
+    if-ge v5, v7, :cond_72
 
     .line 484
     invoke-direct {p0, v6, v0}, Lcom/android/server/autofill/ui/FillUi;->updateHeight(Landroid/view/View;Landroid/graphics/Point;)Z
 
-    move-result v6
+    move-result v7
 
-    or-int/2addr v5, v6
+    or-int/2addr v2, v7
 
     .line 479
-    :cond_76
-    add-int/lit8 v1, v1, 0x1
+    .end local v6  # "view":Landroid/view/View;
+    :cond_72
+    add-int/lit8 v5, v5, 0x1
 
-    goto :goto_5b
+    goto :goto_57
 
     .line 488
-    :cond_79
-    iget-object v1, p0, Lcom/android/server/autofill/ui/FillUi;->mFooter:Landroid/view/View;
+    .end local v5  # "i":I
+    :cond_75
+    iget-object v5, p0, Lcom/android/server/autofill/ui/FillUi;->mFooter:Landroid/view/View;
 
-    if-eqz v1, :cond_8f
+    if-eqz v5, :cond_8a
 
     .line 489
-    invoke-virtual {v1, v2, v3}, Landroid/view/View;->measure(II)V
+    invoke-virtual {v5, v1, v3}, Landroid/view/View;->measure(II)V
 
     .line 490
-    iget-object v1, p0, Lcom/android/server/autofill/ui/FillUi;->mFooter:Landroid/view/View;
+    iget-object v5, p0, Lcom/android/server/autofill/ui/FillUi;->mFooter:Landroid/view/View;
 
-    invoke-direct {p0, v1, v0}, Lcom/android/server/autofill/ui/FillUi;->updateWidth(Landroid/view/View;Landroid/graphics/Point;)Z
+    invoke-direct {p0, v5, v0}, Lcom/android/server/autofill/ui/FillUi;->updateWidth(Landroid/view/View;Landroid/graphics/Point;)Z
 
-    move-result v1
+    move-result v5
 
-    or-int/2addr v1, v5
+    or-int/2addr v2, v5
 
     .line 491
-    iget-object v2, p0, Lcom/android/server/autofill/ui/FillUi;->mFooter:Landroid/view/View;
+    iget-object v5, p0, Lcom/android/server/autofill/ui/FillUi;->mFooter:Landroid/view/View;
 
-    invoke-direct {p0, v2, v0}, Lcom/android/server/autofill/ui/FillUi;->updateHeight(Landroid/view/View;Landroid/graphics/Point;)Z
+    invoke-direct {p0, v5, v0}, Lcom/android/server/autofill/ui/FillUi;->updateHeight(Landroid/view/View;Landroid/graphics/Point;)Z
 
-    move-result v0
+    move-result v5
 
-    or-int v5, v1, v0
+    or-int/2addr v2, v5
 
     .line 493
-    :cond_8f
-    return v5
+    :cond_8a
+    return v2
 .end method
 
 .method private updateHeight(Landroid/view/View;Landroid/graphics/Point;)Z
-    .registers 3
+    .registers 7
+    .param p1, "view"  # Landroid/view/View;
+    .param p2, "maxSize"  # Landroid/graphics/Point;
 
     .line 508
-    nop
+    const/4 v0, 0x0
 
     .line 509
+    .local v0, "changed":Z
     invoke-virtual {p1}, Landroid/view/View;->getMeasuredHeight()I
 
-    move-result p1
+    move-result v1
 
-    iget p2, p2, Landroid/graphics/Point;->y:I
+    iget v2, p2, Landroid/graphics/Point;->y:I
 
-    invoke-static {p1, p2}, Ljava/lang/Math;->min(II)I
+    invoke-static {v1, v2}, Ljava/lang/Math;->min(II)I
 
-    move-result p1
+    move-result v1
 
     .line 510
-    iget p2, p0, Lcom/android/server/autofill/ui/FillUi;->mContentHeight:I
+    .local v1, "clampedMeasuredHeight":I
+    iget v2, p0, Lcom/android/server/autofill/ui/FillUi;->mContentHeight:I
 
-    add-int/2addr p1, p2
+    add-int v3, v2, v1
 
     .line 511
-    if-eq p1, p2, :cond_14
+    .local v3, "newContentHeight":I
+    if-eq v3, v2, :cond_14
 
     .line 512
-    iput p1, p0, Lcom/android/server/autofill/ui/FillUi;->mContentHeight:I
+    iput v3, p0, Lcom/android/server/autofill/ui/FillUi;->mContentHeight:I
 
     .line 513
-    const/4 p1, 0x1
-
-    goto :goto_15
-
-    .line 511
-    :cond_14
-    const/4 p1, 0x0
+    const/4 v0, 0x1
 
     .line 515
-    :goto_15
-    return p1
+    :cond_14
+    return v0
 .end method
 
 .method private updateWidth(Landroid/view/View;Landroid/graphics/Point;)Z
-    .registers 3
+    .registers 7
+    .param p1, "view"  # Landroid/view/View;
+    .param p2, "maxSize"  # Landroid/graphics/Point;
 
     .line 497
-    nop
+    const/4 v0, 0x0
 
     .line 498
+    .local v0, "changed":Z
     invoke-virtual {p1}, Landroid/view/View;->getMeasuredWidth()I
 
-    move-result p1
+    move-result v1
 
-    iget p2, p2, Landroid/graphics/Point;->x:I
+    iget v2, p2, Landroid/graphics/Point;->x:I
 
-    invoke-static {p1, p2}, Ljava/lang/Math;->min(II)I
+    invoke-static {v1, v2}, Ljava/lang/Math;->min(II)I
 
-    move-result p1
+    move-result v1
 
     .line 499
-    iget p2, p0, Lcom/android/server/autofill/ui/FillUi;->mContentWidth:I
+    .local v1, "clampedMeasuredWidth":I
+    iget v2, p0, Lcom/android/server/autofill/ui/FillUi;->mContentWidth:I
 
-    invoke-static {p2, p1}, Ljava/lang/Math;->max(II)I
+    invoke-static {v2, v1}, Ljava/lang/Math;->max(II)I
 
-    move-result p1
+    move-result v2
 
     .line 500
-    iget p2, p0, Lcom/android/server/autofill/ui/FillUi;->mContentWidth:I
+    .local v2, "newContentWidth":I
+    iget v3, p0, Lcom/android/server/autofill/ui/FillUi;->mContentWidth:I
 
-    if-eq p1, p2, :cond_19
+    if-eq v2, v3, :cond_18
 
     .line 501
-    iput p1, p0, Lcom/android/server/autofill/ui/FillUi;->mContentWidth:I
+    iput v2, p0, Lcom/android/server/autofill/ui/FillUi;->mContentWidth:I
 
     .line 502
-    const/4 p1, 0x1
-
-    goto :goto_1a
-
-    .line 500
-    :cond_19
-    const/4 p1, 0x0
+    const/4 v0, 0x1
 
     .line 504
-    :goto_1a
-    return p1
+    :cond_18
+    return v0
 .end method
 
 
 # virtual methods
 .method public destroy(Z)V
     .registers 4
+    .param p1, "notifyClient"  # Z
 
     .line 429
     invoke-direct {p0}, Lcom/android/server/autofill/ui/FillUi;->throwIfDestroyed()V
@@ -1761,15 +2047,15 @@
     if-eqz p1, :cond_17
 
     .line 435
-    iget-object p1, p0, Lcom/android/server/autofill/ui/FillUi;->mCallback:Lcom/android/server/autofill/ui/FillUi$Callback;
+    iget-object v0, p0, Lcom/android/server/autofill/ui/FillUi;->mCallback:Lcom/android/server/autofill/ui/FillUi$Callback;
 
-    invoke-interface {p1}, Lcom/android/server/autofill/ui/FillUi$Callback;->requestHideFillUi()V
+    invoke-interface {v0}, Lcom/android/server/autofill/ui/FillUi$Callback;->requestHideFillUi()V
 
     .line 437
     :cond_17
-    const/4 p1, 0x1
+    const/4 v0, 0x1
 
-    iput-boolean p1, p0, Lcom/android/server/autofill/ui/FillUi;->mDestroyed:Z
+    iput-boolean v0, p0, Lcom/android/server/autofill/ui/FillUi;->mDestroyed:Z
 
     .line 438
     return-void
@@ -1777,11 +2063,13 @@
 
 .method public dump(Ljava/io/PrintWriter;Ljava/lang/String;)V
     .registers 7
+    .param p1, "pw"  # Ljava/io/PrintWriter;
+    .param p2, "prefix"  # Ljava/lang/String;
 
     .line 710
     invoke-virtual {p1, p2}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
-    const-string v0, "mCallback: "
+    const-string/jumbo v0, "mCallback: "
 
     invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
@@ -1791,22 +2079,22 @@
 
     const/4 v2, 0x0
 
-    if-eqz v0, :cond_10
+    if-eqz v0, :cond_11
 
     move v0, v1
 
-    goto :goto_11
+    goto :goto_12
 
-    :cond_10
+    :cond_11
     move v0, v2
 
-    :goto_11
+    :goto_12
     invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->println(Z)V
 
     .line 711
     invoke-virtual {p1, p2}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
-    const-string v0, "mFullScreen: "
+    const-string/jumbo v0, "mFullScreen: "
 
     invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
@@ -1817,7 +2105,7 @@
     .line 712
     invoke-virtual {p1, p2}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
-    const-string v0, "mVisibleDatasetsMaxCount: "
+    const-string/jumbo v0, "mVisibleDatasetsMaxCount: "
 
     invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
@@ -1828,12 +2116,12 @@
     .line 714
     iget-object v0, p0, Lcom/android/server/autofill/ui/FillUi;->mHeader:Landroid/view/View;
 
-    if-eqz v0, :cond_3f
+    if-eqz v0, :cond_43
 
     .line 715
     invoke-virtual {p1, p2}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
-    const-string v0, "mHeader: "
+    const-string/jumbo v0, "mHeader: "
 
     invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
@@ -1842,15 +2130,15 @@
     invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->println(Ljava/lang/Object;)V
 
     .line 717
-    :cond_3f
+    :cond_43
     iget-object v0, p0, Lcom/android/server/autofill/ui/FillUi;->mListView:Landroid/widget/ListView;
 
-    if-eqz v0, :cond_50
+    if-eqz v0, :cond_55
 
     .line 718
     invoke-virtual {p1, p2}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
-    const-string v0, "mListView: "
+    const-string/jumbo v0, "mListView: "
 
     invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
@@ -1859,15 +2147,15 @@
     invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->println(Ljava/lang/Object;)V
 
     .line 720
-    :cond_50
+    :cond_55
     iget-object v0, p0, Lcom/android/server/autofill/ui/FillUi;->mFooter:Landroid/view/View;
 
-    if-eqz v0, :cond_61
+    if-eqz v0, :cond_67
 
     .line 721
     invoke-virtual {p1, p2}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
-    const-string v0, "mFooter: "
+    const-string/jumbo v0, "mFooter: "
 
     invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
@@ -1876,15 +2164,15 @@
     invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->println(Ljava/lang/Object;)V
 
     .line 723
-    :cond_61
+    :cond_67
     iget-object v0, p0, Lcom/android/server/autofill/ui/FillUi;->mAdapter:Lcom/android/server/autofill/ui/FillUi$ItemsAdapter;
 
-    if-eqz v0, :cond_72
+    if-eqz v0, :cond_79
 
     .line 724
     invoke-virtual {p1, p2}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
-    const-string v0, "mAdapter: "
+    const-string/jumbo v0, "mAdapter: "
 
     invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
@@ -1893,15 +2181,15 @@
     invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->println(Ljava/lang/Object;)V
 
     .line 726
-    :cond_72
+    :cond_79
     iget-object v0, p0, Lcom/android/server/autofill/ui/FillUi;->mFilterText:Ljava/lang/String;
 
-    if-eqz v0, :cond_83
+    if-eqz v0, :cond_8b
 
     .line 727
     invoke-virtual {p1, p2}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
-    const-string v0, "mFilterText: "
+    const-string/jumbo v0, "mFilterText: "
 
     invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
@@ -1911,10 +2199,10 @@
     invoke-static {p1, v0}, Lcom/android/server/autofill/Helper;->printlnRedactedText(Ljava/io/PrintWriter;Ljava/lang/CharSequence;)V
 
     .line 730
-    :cond_83
+    :cond_8b
     invoke-virtual {p1, p2}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
-    const-string v0, "mContentWidth: "
+    const-string/jumbo v0, "mContentWidth: "
 
     invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
@@ -1925,7 +2213,7 @@
     .line 731
     invoke-virtual {p1, p2}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
-    const-string v0, "mContentHeight: "
+    const-string/jumbo v0, "mContentHeight: "
 
     invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
@@ -1936,7 +2224,7 @@
     .line 732
     invoke-virtual {p1, p2}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
-    const-string v0, "mDestroyed: "
+    const-string/jumbo v0, "mDestroyed: "
 
     invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
@@ -1960,30 +2248,30 @@
 
     const v3, 0x10303dc
 
-    if-eq v0, v3, :cond_d0
+    if-eq v0, v3, :cond_db
 
     const v3, 0x10303e5
 
-    if-eq v0, v3, :cond_ca
+    if-eq v0, v3, :cond_d5
 
     .line 742
     const-string v0, "(UNKNOWN_MODE)"
 
     invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
-    goto :goto_d6
+    goto :goto_e1
 
     .line 739
-    :cond_ca
+    :cond_d5
     const-string v0, " (light)"
 
     invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
     .line 740
-    goto :goto_d6
+    goto :goto_e1
 
     .line 736
-    :cond_d0
+    :cond_db
     const-string v0, " (dark)"
 
     invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
@@ -1992,15 +2280,15 @@
     nop
 
     .line 745
-    :goto_d6
+    :goto_e1
     iget-object v0, p0, Lcom/android/server/autofill/ui/FillUi;->mWindow:Lcom/android/server/autofill/ui/FillUi$AnchoredWindow;
 
-    if-eqz v0, :cond_165
+    if-eqz v0, :cond_171
 
     .line 746
     invoke-virtual {p1, p2}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
-    const-string v0, "mWindow: "
+    const-string/jumbo v0, "mWindow: "
 
     invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
@@ -2011,128 +2299,134 @@
 
     invoke-virtual {v0, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string p2, "  "
+    const-string v3, "  "
 
-    invoke-virtual {v0, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p2
+    move-result-object v0
 
     .line 748
+    .local v0, "prefix2":Ljava/lang/String;
     invoke-virtual {p1}, Ljava/io/PrintWriter;->println()V
 
     .line 749
-    invoke-virtual {p1, p2}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
-
-    const-string/jumbo v0, "showing: "
-
     invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
-    iget-object v0, p0, Lcom/android/server/autofill/ui/FillUi;->mWindow:Lcom/android/server/autofill/ui/FillUi$AnchoredWindow;
+    const-string/jumbo v3, "showing: "
 
-    invoke-static {v0}, Lcom/android/server/autofill/ui/FillUi$AnchoredWindow;->access$300(Lcom/android/server/autofill/ui/FillUi$AnchoredWindow;)Z
+    invoke-virtual {p1, v3}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
-    move-result v0
+    iget-object v3, p0, Lcom/android/server/autofill/ui/FillUi;->mWindow:Lcom/android/server/autofill/ui/FillUi$AnchoredWindow;
 
-    invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->println(Z)V
+    invoke-static {v3}, Lcom/android/server/autofill/ui/FillUi$AnchoredWindow;->access$300(Lcom/android/server/autofill/ui/FillUi$AnchoredWindow;)Z
+
+    move-result v3
+
+    invoke-virtual {p1, v3}, Ljava/io/PrintWriter;->println(Z)V
 
     .line 750
-    invoke-virtual {p1, p2}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
-
-    const-string/jumbo v0, "view: "
-
     invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
-    iget-object v0, p0, Lcom/android/server/autofill/ui/FillUi;->mWindow:Lcom/android/server/autofill/ui/FillUi$AnchoredWindow;
+    const-string/jumbo v3, "view: "
 
-    invoke-static {v0}, Lcom/android/server/autofill/ui/FillUi$AnchoredWindow;->access$400(Lcom/android/server/autofill/ui/FillUi$AnchoredWindow;)Landroid/view/View;
+    invoke-virtual {p1, v3}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
-    move-result-object v0
+    iget-object v3, p0, Lcom/android/server/autofill/ui/FillUi;->mWindow:Lcom/android/server/autofill/ui/FillUi$AnchoredWindow;
 
-    invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->println(Ljava/lang/Object;)V
+    invoke-static {v3}, Lcom/android/server/autofill/ui/FillUi$AnchoredWindow;->access$400(Lcom/android/server/autofill/ui/FillUi$AnchoredWindow;)Landroid/view/View;
+
+    move-result-object v3
+
+    invoke-virtual {p1, v3}, Ljava/io/PrintWriter;->println(Ljava/lang/Object;)V
 
     .line 751
-    iget-object v0, p0, Lcom/android/server/autofill/ui/FillUi;->mWindow:Lcom/android/server/autofill/ui/FillUi$AnchoredWindow;
+    iget-object v3, p0, Lcom/android/server/autofill/ui/FillUi;->mWindow:Lcom/android/server/autofill/ui/FillUi$AnchoredWindow;
 
-    invoke-static {v0}, Lcom/android/server/autofill/ui/FillUi$AnchoredWindow;->access$500(Lcom/android/server/autofill/ui/FillUi$AnchoredWindow;)Landroid/view/WindowManager$LayoutParams;
+    invoke-static {v3}, Lcom/android/server/autofill/ui/FillUi$AnchoredWindow;->access$500(Lcom/android/server/autofill/ui/FillUi$AnchoredWindow;)Landroid/view/WindowManager$LayoutParams;
 
-    move-result-object v0
+    move-result-object v3
 
-    if-eqz v0, :cond_134
+    if-eqz v3, :cond_140
 
     .line 752
-    invoke-virtual {p1, p2}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
-
-    const-string/jumbo v0, "params: "
-
     invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
-    iget-object v0, p0, Lcom/android/server/autofill/ui/FillUi;->mWindow:Lcom/android/server/autofill/ui/FillUi$AnchoredWindow;
+    const-string/jumbo v3, "params: "
 
-    invoke-static {v0}, Lcom/android/server/autofill/ui/FillUi$AnchoredWindow;->access$500(Lcom/android/server/autofill/ui/FillUi$AnchoredWindow;)Landroid/view/WindowManager$LayoutParams;
+    invoke-virtual {p1, v3}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
-    move-result-object v0
+    iget-object v3, p0, Lcom/android/server/autofill/ui/FillUi;->mWindow:Lcom/android/server/autofill/ui/FillUi$AnchoredWindow;
 
-    invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->println(Ljava/lang/Object;)V
+    invoke-static {v3}, Lcom/android/server/autofill/ui/FillUi$AnchoredWindow;->access$500(Lcom/android/server/autofill/ui/FillUi$AnchoredWindow;)Landroid/view/WindowManager$LayoutParams;
+
+    move-result-object v3
+
+    invoke-virtual {p1, v3}, Ljava/io/PrintWriter;->println(Ljava/lang/Object;)V
 
     .line 754
-    :cond_134
-    invoke-virtual {p1, p2}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
-
-    const-string/jumbo p2, "screen coordinates: "
-
-    invoke-virtual {p1, p2}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
-
-    .line 755
-    iget-object p2, p0, Lcom/android/server/autofill/ui/FillUi;->mWindow:Lcom/android/server/autofill/ui/FillUi$AnchoredWindow;
-
-    invoke-static {p2}, Lcom/android/server/autofill/ui/FillUi$AnchoredWindow;->access$400(Lcom/android/server/autofill/ui/FillUi$AnchoredWindow;)Landroid/view/View;
-
-    move-result-object p2
-
-    if-nez p2, :cond_14b
-
-    .line 756
-    const-string p2, "N/A"
-
-    invoke-virtual {p1, p2}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
-
-    goto :goto_165
-
-    .line 758
-    :cond_14b
-    iget-object p2, p0, Lcom/android/server/autofill/ui/FillUi;->mWindow:Lcom/android/server/autofill/ui/FillUi$AnchoredWindow;
-
-    invoke-static {p2}, Lcom/android/server/autofill/ui/FillUi$AnchoredWindow;->access$400(Lcom/android/server/autofill/ui/FillUi$AnchoredWindow;)Landroid/view/View;
-
-    move-result-object p2
-
-    invoke-virtual {p2}, Landroid/view/View;->getLocationOnScreen()[I
-
-    move-result-object p2
-
-    .line 759
-    aget v0, p2, v2
-
-    invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->print(I)V
-
-    const-string/jumbo v0, "x"
-
+    :cond_140
     invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
-    aget p2, p2, v1
+    const-string/jumbo v3, "screen coordinates: "
 
-    invoke-virtual {p1, p2}, Ljava/io/PrintWriter;->println(I)V
+    invoke-virtual {p1, v3}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
+
+    .line 755
+    iget-object v3, p0, Lcom/android/server/autofill/ui/FillUi;->mWindow:Lcom/android/server/autofill/ui/FillUi$AnchoredWindow;
+
+    invoke-static {v3}, Lcom/android/server/autofill/ui/FillUi$AnchoredWindow;->access$400(Lcom/android/server/autofill/ui/FillUi$AnchoredWindow;)Landroid/view/View;
+
+    move-result-object v3
+
+    if-nez v3, :cond_157
+
+    .line 756
+    const-string v1, "N/A"
+
+    invoke-virtual {p1, v1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+
+    goto :goto_171
+
+    .line 758
+    :cond_157
+    iget-object v3, p0, Lcom/android/server/autofill/ui/FillUi;->mWindow:Lcom/android/server/autofill/ui/FillUi$AnchoredWindow;
+
+    invoke-static {v3}, Lcom/android/server/autofill/ui/FillUi$AnchoredWindow;->access$400(Lcom/android/server/autofill/ui/FillUi$AnchoredWindow;)Landroid/view/View;
+
+    move-result-object v3
+
+    invoke-virtual {v3}, Landroid/view/View;->getLocationOnScreen()[I
+
+    move-result-object v3
+
+    .line 759
+    .local v3, "coordinates":[I
+    aget v2, v3, v2
+
+    invoke-virtual {p1, v2}, Ljava/io/PrintWriter;->print(I)V
+
+    const-string/jumbo v2, "x"
+
+    invoke-virtual {p1, v2}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
+
+    aget v1, v3, v1
+
+    invoke-virtual {p1, v1}, Ljava/io/PrintWriter;->println(I)V
 
     .line 762
-    :cond_165
-    :goto_165
+    .end local v0  # "prefix2":Ljava/lang/String;
+    .end local v3  # "coordinates":[I
+    :cond_171
+    :goto_171
     return-void
 .end method
 
 .method public synthetic lambda$applyNewFilterText$5$FillUi(II)V
-    .registers 5
+    .registers 6
+    .param p1, "oldCount"  # I
+    .param p2, "count"  # I
 
     .line 375
     iget-boolean v0, p0, Lcom/android/server/autofill/ui/FillUi;->mDestroyed:Z
@@ -2149,51 +2443,53 @@
     if-gtz p2, :cond_36
 
     .line 379
-    sget-boolean p1, Lcom/android/server/autofill/Helper;->sDebug:Z
+    sget-boolean v1, Lcom/android/server/autofill/Helper;->sDebug:Z
 
-    if-eqz p1, :cond_30
+    if-eqz v1, :cond_30
 
     .line 380
-    iget-object p1, p0, Lcom/android/server/autofill/ui/FillUi;->mFilterText:Ljava/lang/String;
+    iget-object v1, p0, Lcom/android/server/autofill/ui/FillUi;->mFilterText:Ljava/lang/String;
 
-    if-nez p1, :cond_11
+    if-nez v1, :cond_11
 
     goto :goto_15
 
     :cond_11
-    invoke-virtual {p1}, Ljava/lang/String;->length()I
+    invoke-virtual {v1}, Ljava/lang/String;->length()I
 
     move-result v0
 
     .line 381
+    .local v0, "size":I
     :goto_15
-    new-instance p1, Ljava/lang/StringBuilder;
+    new-instance v1, Ljava/lang/StringBuilder;
 
-    invoke-direct {p1}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string p2, "No dataset matches filter with "
+    const-string v2, "No dataset matches filter with "
 
-    invoke-virtual {p1, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p1, v0}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v0}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    const-string p2, " chars"
+    const-string v2, " chars"
 
-    invoke-virtual {p1, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v1
 
-    const-string p2, "FillUi"
+    const-string v2, "FillUi"
 
-    invoke-static {p2, p1}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v2, v1}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 383
+    .end local v0  # "size":I
     :cond_30
-    iget-object p1, p0, Lcom/android/server/autofill/ui/FillUi;->mCallback:Lcom/android/server/autofill/ui/FillUi$Callback;
+    iget-object v0, p0, Lcom/android/server/autofill/ui/FillUi;->mCallback:Lcom/android/server/autofill/ui/FillUi$Callback;
 
-    invoke-interface {p1}, Lcom/android/server/autofill/ui/FillUi$Callback;->requestHideFillUi()V
+    invoke-interface {v0}, Lcom/android/server/autofill/ui/FillUi$Callback;->requestHideFillUi()V
 
     goto :goto_67
 
@@ -2201,59 +2497,59 @@
     :cond_36
     invoke-direct {p0}, Lcom/android/server/autofill/ui/FillUi;->updateContentSize()Z
 
-    move-result p2
+    move-result v1
 
-    if-eqz p2, :cond_3f
+    if-eqz v1, :cond_3f
 
     .line 386
     invoke-virtual {p0}, Lcom/android/server/autofill/ui/FillUi;->requestShowFillUi()V
 
     .line 388
     :cond_3f
-    iget-object p2, p0, Lcom/android/server/autofill/ui/FillUi;->mAdapter:Lcom/android/server/autofill/ui/FillUi$ItemsAdapter;
+    iget-object v1, p0, Lcom/android/server/autofill/ui/FillUi;->mAdapter:Lcom/android/server/autofill/ui/FillUi$ItemsAdapter;
 
-    invoke-virtual {p2}, Lcom/android/server/autofill/ui/FillUi$ItemsAdapter;->getCount()I
+    invoke-virtual {v1}, Lcom/android/server/autofill/ui/FillUi$ItemsAdapter;->getCount()I
 
-    move-result p2
+    move-result v1
 
-    iget v1, p0, Lcom/android/server/autofill/ui/FillUi;->mVisibleDatasetsMaxCount:I
+    iget v2, p0, Lcom/android/server/autofill/ui/FillUi;->mVisibleDatasetsMaxCount:I
 
-    if-le p2, v1, :cond_55
+    if-le v1, v2, :cond_55
 
     .line 389
-    iget-object p2, p0, Lcom/android/server/autofill/ui/FillUi;->mListView:Landroid/widget/ListView;
+    iget-object v0, p0, Lcom/android/server/autofill/ui/FillUi;->mListView:Landroid/widget/ListView;
 
-    const/4 v0, 0x1
+    const/4 v1, 0x1
 
-    invoke-virtual {p2, v0}, Landroid/widget/ListView;->setVerticalScrollBarEnabled(Z)V
+    invoke-virtual {v0, v1}, Landroid/widget/ListView;->setVerticalScrollBarEnabled(Z)V
 
     .line 390
-    iget-object p2, p0, Lcom/android/server/autofill/ui/FillUi;->mListView:Landroid/widget/ListView;
+    iget-object v0, p0, Lcom/android/server/autofill/ui/FillUi;->mListView:Landroid/widget/ListView;
 
-    invoke-virtual {p2, v0}, Landroid/widget/ListView;->onVisibilityAggregated(Z)V
+    invoke-virtual {v0, v1}, Landroid/widget/ListView;->onVisibilityAggregated(Z)V
 
     goto :goto_5a
 
     .line 392
     :cond_55
-    iget-object p2, p0, Lcom/android/server/autofill/ui/FillUi;->mListView:Landroid/widget/ListView;
+    iget-object v1, p0, Lcom/android/server/autofill/ui/FillUi;->mListView:Landroid/widget/ListView;
 
-    invoke-virtual {p2, v0}, Landroid/widget/ListView;->setVerticalScrollBarEnabled(Z)V
+    invoke-virtual {v1, v0}, Landroid/widget/ListView;->setVerticalScrollBarEnabled(Z)V
 
     .line 394
     :goto_5a
-    iget-object p2, p0, Lcom/android/server/autofill/ui/FillUi;->mAdapter:Lcom/android/server/autofill/ui/FillUi$ItemsAdapter;
+    iget-object v0, p0, Lcom/android/server/autofill/ui/FillUi;->mAdapter:Lcom/android/server/autofill/ui/FillUi$ItemsAdapter;
 
-    invoke-virtual {p2}, Lcom/android/server/autofill/ui/FillUi$ItemsAdapter;->getCount()I
+    invoke-virtual {v0}, Lcom/android/server/autofill/ui/FillUi$ItemsAdapter;->getCount()I
 
-    move-result p2
+    move-result v0
 
-    if-eq p2, p1, :cond_67
+    if-eq v0, p1, :cond_67
 
     .line 395
-    iget-object p1, p0, Lcom/android/server/autofill/ui/FillUi;->mListView:Landroid/widget/ListView;
+    iget-object v0, p0, Lcom/android/server/autofill/ui/FillUi;->mListView:Landroid/widget/ListView;
 
-    invoke-virtual {p1}, Landroid/widget/ListView;->requestLayout()V
+    invoke-virtual {v0}, Landroid/widget/ListView;->requestLayout()V
 
     .line 398
     :cond_67
@@ -2262,43 +2558,45 @@
 .end method
 
 .method public synthetic lambda$new$0$FillUi(Landroid/view/View;Landroid/view/KeyEvent;)Z
-    .registers 4
+    .registers 5
+    .param p1, "view"  # Landroid/view/View;
+    .param p2, "event"  # Landroid/view/KeyEvent;
 
     .line 179
     invoke-virtual {p2}, Landroid/view/KeyEvent;->getKeyCode()I
 
-    move-result p1
+    move-result v0
 
-    const/4 v0, 0x4
+    const/4 v1, 0x4
 
-    if-eq p1, v0, :cond_19
+    if-eq v0, v1, :cond_19
 
-    const/16 v0, 0x42
+    const/16 v1, 0x42
 
-    if-eq p1, v0, :cond_19
+    if-eq v0, v1, :cond_19
 
-    const/16 v0, 0x6f
+    const/16 v1, 0x6f
 
-    if-eq p1, v0, :cond_19
+    if-eq v0, v1, :cond_19
 
-    packed-switch p1, :pswitch_data_1c
+    packed-switch v0, :pswitch_data_1c
 
     .line 190
-    iget-object p1, p0, Lcom/android/server/autofill/ui/FillUi;->mCallback:Lcom/android/server/autofill/ui/FillUi$Callback;
+    iget-object v0, p0, Lcom/android/server/autofill/ui/FillUi;->mCallback:Lcom/android/server/autofill/ui/FillUi$Callback;
 
-    invoke-interface {p1, p2}, Lcom/android/server/autofill/ui/FillUi$Callback;->dispatchUnhandledKey(Landroid/view/KeyEvent;)V
+    invoke-interface {v0, p2}, Lcom/android/server/autofill/ui/FillUi$Callback;->dispatchUnhandledKey(Landroid/view/KeyEvent;)V
 
     .line 191
-    const/4 p1, 0x1
+    const/4 v0, 0x1
 
-    return p1
+    return v0
 
     .line 188
     :cond_19
     :pswitch_19  #0x13, 0x14, 0x15, 0x16, 0x17
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    return p1
+    return v0
 
     nop
 
@@ -2313,54 +2611,64 @@
 .end method
 
 .method public synthetic lambda$new$1$FillUi(Landroid/view/View;Landroid/app/PendingIntent;Landroid/widget/RemoteViews$RemoteResponse;)Z
-    .registers 4
+    .registers 6
+    .param p1, "view"  # Landroid/view/View;
+    .param p2, "pendingIntent"  # Landroid/app/PendingIntent;
+    .param p3, "r"  # Landroid/widget/RemoteViews$RemoteResponse;
 
     .line 206
     if-eqz p2, :cond_b
 
     .line 207
-    iget-object p1, p0, Lcom/android/server/autofill/ui/FillUi;->mCallback:Lcom/android/server/autofill/ui/FillUi$Callback;
+    iget-object v0, p0, Lcom/android/server/autofill/ui/FillUi;->mCallback:Lcom/android/server/autofill/ui/FillUi$Callback;
 
     invoke-virtual {p2}, Landroid/app/PendingIntent;->getIntentSender()Landroid/content/IntentSender;
 
-    move-result-object p2
+    move-result-object v1
 
-    invoke-interface {p1, p2}, Lcom/android/server/autofill/ui/FillUi$Callback;->startIntentSender(Landroid/content/IntentSender;)V
+    invoke-interface {v0, v1}, Lcom/android/server/autofill/ui/FillUi$Callback;->startIntentSender(Landroid/content/IntentSender;)V
 
     .line 209
     :cond_b
-    const/4 p1, 0x1
+    const/4 v0, 0x1
 
-    return p1
+    return v0
 .end method
 
 .method public synthetic lambda$new$2$FillUi(Landroid/service/autofill/FillResponse;Landroid/view/View;)V
-    .registers 3
+    .registers 4
+    .param p1, "response"  # Landroid/service/autofill/FillResponse;
+    .param p2, "v"  # Landroid/view/View;
 
     .line 232
-    iget-object p2, p0, Lcom/android/server/autofill/ui/FillUi;->mCallback:Lcom/android/server/autofill/ui/FillUi$Callback;
+    iget-object v0, p0, Lcom/android/server/autofill/ui/FillUi;->mCallback:Lcom/android/server/autofill/ui/FillUi$Callback;
 
-    invoke-interface {p2, p1}, Lcom/android/server/autofill/ui/FillUi$Callback;->onResponsePicked(Landroid/service/autofill/FillResponse;)V
+    invoke-interface {v0, p1}, Lcom/android/server/autofill/ui/FillUi$Callback;->onResponsePicked(Landroid/service/autofill/FillResponse;)V
 
     return-void
 .end method
 
 .method public synthetic lambda$new$3$FillUi(Landroid/widget/AdapterView;Landroid/view/View;IJ)V
-    .registers 6
+    .registers 9
+    .param p1, "adapter"  # Landroid/widget/AdapterView;
+    .param p2, "view"  # Landroid/view/View;
+    .param p3, "position"  # I
+    .param p4, "id"  # J
 
     .line 343
-    iget-object p1, p0, Lcom/android/server/autofill/ui/FillUi;->mAdapter:Lcom/android/server/autofill/ui/FillUi$ItemsAdapter;
+    iget-object v0, p0, Lcom/android/server/autofill/ui/FillUi;->mAdapter:Lcom/android/server/autofill/ui/FillUi$ItemsAdapter;
 
-    invoke-virtual {p1, p3}, Lcom/android/server/autofill/ui/FillUi$ItemsAdapter;->getItem(I)Lcom/android/server/autofill/ui/FillUi$ViewItem;
+    invoke-virtual {v0, p3}, Lcom/android/server/autofill/ui/FillUi$ItemsAdapter;->getItem(I)Lcom/android/server/autofill/ui/FillUi$ViewItem;
 
-    move-result-object p1
+    move-result-object v0
 
     .line 344
-    iget-object p2, p0, Lcom/android/server/autofill/ui/FillUi;->mCallback:Lcom/android/server/autofill/ui/FillUi$Callback;
+    .local v0, "vi":Lcom/android/server/autofill/ui/FillUi$ViewItem;
+    iget-object v1, p0, Lcom/android/server/autofill/ui/FillUi;->mCallback:Lcom/android/server/autofill/ui/FillUi$Callback;
 
-    iget-object p1, p1, Lcom/android/server/autofill/ui/FillUi$ViewItem;->dataset:Landroid/service/autofill/Dataset;
+    iget-object v2, v0, Lcom/android/server/autofill/ui/FillUi$ViewItem;->dataset:Landroid/service/autofill/Dataset;
 
-    invoke-interface {p2, p1}, Lcom/android/server/autofill/ui/FillUi$Callback;->onDatasetPicked(Landroid/service/autofill/Dataset;)V
+    invoke-interface {v1, v2}, Lcom/android/server/autofill/ui/FillUi$Callback;->onDatasetPicked(Landroid/service/autofill/Dataset;)V
 
     .line 345
     return-void
@@ -2386,6 +2694,7 @@
 
 .method public setFilterText(Ljava/lang/String;)V
     .registers 3
+    .param p1, "filterText"  # Ljava/lang/String;
 
     .line 402
     invoke-direct {p0}, Lcom/android/server/autofill/ui/FillUi;->throwIfDestroyed()V
@@ -2398,9 +2707,9 @@
     .line 406
     invoke-static {p1}, Landroid/text/TextUtils;->isEmpty(Ljava/lang/CharSequence;)Z
 
-    move-result p1
+    move-result v0
 
-    if-eqz p1, :cond_11
+    if-eqz v0, :cond_11
 
     .line 407
     invoke-virtual {p0}, Lcom/android/server/autofill/ui/FillUi;->requestShowFillUi()V
@@ -2409,9 +2718,9 @@
 
     .line 409
     :cond_11
-    iget-object p1, p0, Lcom/android/server/autofill/ui/FillUi;->mCallback:Lcom/android/server/autofill/ui/FillUi$Callback;
+    iget-object v0, p0, Lcom/android/server/autofill/ui/FillUi;->mCallback:Lcom/android/server/autofill/ui/FillUi$Callback;
 
-    invoke-interface {p1}, Lcom/android/server/autofill/ui/FillUi$Callback;->requestHideFillUi()V
+    invoke-interface {v0}, Lcom/android/server/autofill/ui/FillUi$Callback;->requestHideFillUi()V
 
     .line 411
     :goto_16

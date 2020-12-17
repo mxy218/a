@@ -97,6 +97,14 @@
 # direct methods
 .method public constructor <init>(Landroid/content/Context;Ljava/lang/String;IIIIZLcom/android/server/display/OverlayDisplayWindow$Listener;)V
     .registers 12
+    .param p1, "context"  # Landroid/content/Context;
+    .param p2, "name"  # Ljava/lang/String;
+    .param p3, "width"  # I
+    .param p4, "height"  # I
+    .param p5, "densityDpi"  # I
+    .param p6, "gravity"  # I
+    .param p7, "secure"  # Z
+    .param p8, "listener"  # Lcom/android/server/display/OverlayDisplayWindow$Listener;
 
     .line 98
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -190,35 +198,35 @@
     iput-object p8, p0, Lcom/android/server/display/OverlayDisplayWindow;->mListener:Lcom/android/server/display/OverlayDisplayWindow$Listener;
 
     .line 107
-    const-string p2, "display"
+    const-string v0, "display"
 
-    invoke-virtual {p1, p2}, Landroid/content/Context;->getSystemService(Ljava/lang/String;)Ljava/lang/Object;
+    invoke-virtual {p1, v0}, Landroid/content/Context;->getSystemService(Ljava/lang/String;)Ljava/lang/Object;
 
-    move-result-object p2
+    move-result-object v0
 
-    check-cast p2, Landroid/hardware/display/DisplayManager;
+    check-cast v0, Landroid/hardware/display/DisplayManager;
 
-    iput-object p2, p0, Lcom/android/server/display/OverlayDisplayWindow;->mDisplayManager:Landroid/hardware/display/DisplayManager;
+    iput-object v0, p0, Lcom/android/server/display/OverlayDisplayWindow;->mDisplayManager:Landroid/hardware/display/DisplayManager;
 
     .line 109
-    const-string/jumbo p2, "window"
+    const-string/jumbo v0, "window"
 
-    invoke-virtual {p1, p2}, Landroid/content/Context;->getSystemService(Ljava/lang/String;)Ljava/lang/Object;
+    invoke-virtual {p1, v0}, Landroid/content/Context;->getSystemService(Ljava/lang/String;)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v0
 
-    check-cast p1, Landroid/view/WindowManager;
+    check-cast v0, Landroid/view/WindowManager;
 
-    iput-object p1, p0, Lcom/android/server/display/OverlayDisplayWindow;->mWindowManager:Landroid/view/WindowManager;
+    iput-object v0, p0, Lcom/android/server/display/OverlayDisplayWindow;->mWindowManager:Landroid/view/WindowManager;
 
     .line 112
-    iget-object p1, p0, Lcom/android/server/display/OverlayDisplayWindow;->mWindowManager:Landroid/view/WindowManager;
+    iget-object v0, p0, Lcom/android/server/display/OverlayDisplayWindow;->mWindowManager:Landroid/view/WindowManager;
 
-    invoke-interface {p1}, Landroid/view/WindowManager;->getDefaultDisplay()Landroid/view/Display;
+    invoke-interface {v0}, Landroid/view/WindowManager;->getDefaultDisplay()Landroid/view/Display;
 
-    move-result-object p1
+    move-result-object v0
 
-    iput-object p1, p0, Lcom/android/server/display/OverlayDisplayWindow;->mDefaultDisplay:Landroid/view/Display;
+    iput-object v0, p0, Lcom/android/server/display/OverlayDisplayWindow;->mDefaultDisplay:Landroid/view/Display;
 
     .line 113
     invoke-direct {p0}, Lcom/android/server/display/OverlayDisplayWindow;->updateDefaultDisplayInfo()Z
@@ -234,63 +242,70 @@
 .end method
 
 .method static synthetic access$000(Lcom/android/server/display/OverlayDisplayWindow;)Landroid/view/Display;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/display/OverlayDisplayWindow;
 
     .line 48
-    iget-object p0, p0, Lcom/android/server/display/OverlayDisplayWindow;->mDefaultDisplay:Landroid/view/Display;
+    iget-object v0, p0, Lcom/android/server/display/OverlayDisplayWindow;->mDefaultDisplay:Landroid/view/Display;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$100(Lcom/android/server/display/OverlayDisplayWindow;)Z
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/display/OverlayDisplayWindow;
 
     .line 48
     invoke-direct {p0}, Lcom/android/server/display/OverlayDisplayWindow;->updateDefaultDisplayInfo()Z
 
-    move-result p0
+    move-result v0
 
-    return p0
+    return v0
 .end method
 
 .method static synthetic access$200(Lcom/android/server/display/OverlayDisplayWindow;)Landroid/view/DisplayInfo;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/display/OverlayDisplayWindow;
 
     .line 48
-    iget-object p0, p0, Lcom/android/server/display/OverlayDisplayWindow;->mDefaultDisplayInfo:Landroid/view/DisplayInfo;
+    iget-object v0, p0, Lcom/android/server/display/OverlayDisplayWindow;->mDefaultDisplayInfo:Landroid/view/DisplayInfo;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$300(Lcom/android/server/display/OverlayDisplayWindow;)Lcom/android/server/display/OverlayDisplayWindow$Listener;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/display/OverlayDisplayWindow;
 
     .line 48
-    iget-object p0, p0, Lcom/android/server/display/OverlayDisplayWindow;->mListener:Lcom/android/server/display/OverlayDisplayWindow$Listener;
+    iget-object v0, p0, Lcom/android/server/display/OverlayDisplayWindow;->mListener:Lcom/android/server/display/OverlayDisplayWindow$Listener;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$400(Lcom/android/server/display/OverlayDisplayWindow;)Landroid/view/GestureDetector;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/display/OverlayDisplayWindow;
 
     .line 48
-    iget-object p0, p0, Lcom/android/server/display/OverlayDisplayWindow;->mGestureDetector:Landroid/view/GestureDetector;
+    iget-object v0, p0, Lcom/android/server/display/OverlayDisplayWindow;->mGestureDetector:Landroid/view/GestureDetector;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$500(Lcom/android/server/display/OverlayDisplayWindow;)Landroid/view/ScaleGestureDetector;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/display/OverlayDisplayWindow;
 
     .line 48
-    iget-object p0, p0, Lcom/android/server/display/OverlayDisplayWindow;->mScaleGestureDetector:Landroid/view/ScaleGestureDetector;
+    iget-object v0, p0, Lcom/android/server/display/OverlayDisplayWindow;->mScaleGestureDetector:Landroid/view/ScaleGestureDetector;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$600(Lcom/android/server/display/OverlayDisplayWindow;)V
     .registers 1
+    .param p0, "x0"  # Lcom/android/server/display/OverlayDisplayWindow;
 
     .line 48
     invoke-direct {p0}, Lcom/android/server/display/OverlayDisplayWindow;->saveWindowParams()V
@@ -300,6 +315,8 @@
 
 .method static synthetic access$724(Lcom/android/server/display/OverlayDisplayWindow;F)F
     .registers 3
+    .param p0, "x0"  # Lcom/android/server/display/OverlayDisplayWindow;
+    .param p1, "x1"  # F
 
     .line 48
     iget v0, p0, Lcom/android/server/display/OverlayDisplayWindow;->mLiveTranslationX:F
@@ -313,6 +330,8 @@
 
 .method static synthetic access$824(Lcom/android/server/display/OverlayDisplayWindow;F)F
     .registers 3
+    .param p0, "x0"  # Lcom/android/server/display/OverlayDisplayWindow;
+    .param p1, "x1"  # F
 
     .line 48
     iget v0, p0, Lcom/android/server/display/OverlayDisplayWindow;->mLiveTranslationY:F
@@ -326,6 +345,8 @@
 
 .method static synthetic access$932(Lcom/android/server/display/OverlayDisplayWindow;F)F
     .registers 3
+    .param p0, "x0"  # Lcom/android/server/display/OverlayDisplayWindow;
+    .param p1, "x1"  # F
 
     .line 48
     iget v0, p0, Lcom/android/server/display/OverlayDisplayWindow;->mLiveScale:F
@@ -358,7 +379,7 @@
 .end method
 
 .method private createWindow()V
-    .registers 5
+    .registers 6
 
     .line 196
     iget-object v0, p0, Lcom/android/server/display/OverlayDisplayWindow;->mContext:Landroid/content/Context;
@@ -368,240 +389,245 @@
     move-result-object v0
 
     .line 198
-    const v1, 0x10900b5
+    .local v0, "inflater":Landroid/view/LayoutInflater;
+    const v1, 0x10900b3
 
     const/4 v2, 0x0
 
     invoke-virtual {v0, v1, v2}, Landroid/view/LayoutInflater;->inflate(ILandroid/view/ViewGroup;)Landroid/view/View;
 
-    move-result-object v0
+    move-result-object v1
 
-    iput-object v0, p0, Lcom/android/server/display/OverlayDisplayWindow;->mWindowContent:Landroid/view/View;
+    iput-object v1, p0, Lcom/android/server/display/OverlayDisplayWindow;->mWindowContent:Landroid/view/View;
 
     .line 200
-    iget-object v0, p0, Lcom/android/server/display/OverlayDisplayWindow;->mWindowContent:Landroid/view/View;
+    iget-object v1, p0, Lcom/android/server/display/OverlayDisplayWindow;->mWindowContent:Landroid/view/View;
 
-    iget-object v1, p0, Lcom/android/server/display/OverlayDisplayWindow;->mOnTouchListener:Landroid/view/View$OnTouchListener;
+    iget-object v2, p0, Lcom/android/server/display/OverlayDisplayWindow;->mOnTouchListener:Landroid/view/View$OnTouchListener;
 
-    invoke-virtual {v0, v1}, Landroid/view/View;->setOnTouchListener(Landroid/view/View$OnTouchListener;)V
+    invoke-virtual {v1, v2}, Landroid/view/View;->setOnTouchListener(Landroid/view/View$OnTouchListener;)V
 
     .line 202
-    iget-object v0, p0, Lcom/android/server/display/OverlayDisplayWindow;->mWindowContent:Landroid/view/View;
+    iget-object v1, p0, Lcom/android/server/display/OverlayDisplayWindow;->mWindowContent:Landroid/view/View;
 
-    const v1, 0x1020398
+    const v2, 0x1020398
 
-    invoke-virtual {v0, v1}, Landroid/view/View;->findViewById(I)Landroid/view/View;
+    invoke-virtual {v1, v2}, Landroid/view/View;->findViewById(I)Landroid/view/View;
 
-    move-result-object v0
+    move-result-object v1
 
-    check-cast v0, Landroid/view/TextureView;
+    check-cast v1, Landroid/view/TextureView;
 
-    iput-object v0, p0, Lcom/android/server/display/OverlayDisplayWindow;->mTextureView:Landroid/view/TextureView;
+    iput-object v1, p0, Lcom/android/server/display/OverlayDisplayWindow;->mTextureView:Landroid/view/TextureView;
 
     .line 204
-    iget-object v0, p0, Lcom/android/server/display/OverlayDisplayWindow;->mTextureView:Landroid/view/TextureView;
+    iget-object v1, p0, Lcom/android/server/display/OverlayDisplayWindow;->mTextureView:Landroid/view/TextureView;
 
-    const/4 v1, 0x0
+    const/4 v2, 0x0
 
-    invoke-virtual {v0, v1}, Landroid/view/TextureView;->setPivotX(F)V
+    invoke-virtual {v1, v2}, Landroid/view/TextureView;->setPivotX(F)V
 
     .line 205
-    iget-object v0, p0, Lcom/android/server/display/OverlayDisplayWindow;->mTextureView:Landroid/view/TextureView;
+    iget-object v1, p0, Lcom/android/server/display/OverlayDisplayWindow;->mTextureView:Landroid/view/TextureView;
 
-    invoke-virtual {v0, v1}, Landroid/view/TextureView;->setPivotY(F)V
+    invoke-virtual {v1, v2}, Landroid/view/TextureView;->setPivotY(F)V
 
     .line 206
-    iget-object v0, p0, Lcom/android/server/display/OverlayDisplayWindow;->mTextureView:Landroid/view/TextureView;
+    iget-object v1, p0, Lcom/android/server/display/OverlayDisplayWindow;->mTextureView:Landroid/view/TextureView;
 
-    invoke-virtual {v0}, Landroid/view/TextureView;->getLayoutParams()Landroid/view/ViewGroup$LayoutParams;
+    invoke-virtual {v1}, Landroid/view/TextureView;->getLayoutParams()Landroid/view/ViewGroup$LayoutParams;
 
-    move-result-object v0
+    move-result-object v1
 
-    iget v1, p0, Lcom/android/server/display/OverlayDisplayWindow;->mWidth:I
+    iget v2, p0, Lcom/android/server/display/OverlayDisplayWindow;->mWidth:I
 
-    iput v1, v0, Landroid/view/ViewGroup$LayoutParams;->width:I
+    iput v2, v1, Landroid/view/ViewGroup$LayoutParams;->width:I
 
     .line 207
-    iget-object v0, p0, Lcom/android/server/display/OverlayDisplayWindow;->mTextureView:Landroid/view/TextureView;
+    iget-object v1, p0, Lcom/android/server/display/OverlayDisplayWindow;->mTextureView:Landroid/view/TextureView;
 
-    invoke-virtual {v0}, Landroid/view/TextureView;->getLayoutParams()Landroid/view/ViewGroup$LayoutParams;
+    invoke-virtual {v1}, Landroid/view/TextureView;->getLayoutParams()Landroid/view/ViewGroup$LayoutParams;
 
-    move-result-object v0
+    move-result-object v1
 
-    iget v1, p0, Lcom/android/server/display/OverlayDisplayWindow;->mHeight:I
+    iget v2, p0, Lcom/android/server/display/OverlayDisplayWindow;->mHeight:I
 
-    iput v1, v0, Landroid/view/ViewGroup$LayoutParams;->height:I
+    iput v2, v1, Landroid/view/ViewGroup$LayoutParams;->height:I
 
     .line 208
-    iget-object v0, p0, Lcom/android/server/display/OverlayDisplayWindow;->mTextureView:Landroid/view/TextureView;
+    iget-object v1, p0, Lcom/android/server/display/OverlayDisplayWindow;->mTextureView:Landroid/view/TextureView;
 
-    const/4 v1, 0x0
+    const/4 v2, 0x0
 
-    invoke-virtual {v0, v1}, Landroid/view/TextureView;->setOpaque(Z)V
+    invoke-virtual {v1, v2}, Landroid/view/TextureView;->setOpaque(Z)V
 
     .line 209
-    iget-object v0, p0, Lcom/android/server/display/OverlayDisplayWindow;->mTextureView:Landroid/view/TextureView;
+    iget-object v1, p0, Lcom/android/server/display/OverlayDisplayWindow;->mTextureView:Landroid/view/TextureView;
 
-    iget-object v2, p0, Lcom/android/server/display/OverlayDisplayWindow;->mSurfaceTextureListener:Landroid/view/TextureView$SurfaceTextureListener;
+    iget-object v3, p0, Lcom/android/server/display/OverlayDisplayWindow;->mSurfaceTextureListener:Landroid/view/TextureView$SurfaceTextureListener;
 
-    invoke-virtual {v0, v2}, Landroid/view/TextureView;->setSurfaceTextureListener(Landroid/view/TextureView$SurfaceTextureListener;)V
+    invoke-virtual {v1, v3}, Landroid/view/TextureView;->setSurfaceTextureListener(Landroid/view/TextureView$SurfaceTextureListener;)V
 
     .line 211
-    iget-object v0, p0, Lcom/android/server/display/OverlayDisplayWindow;->mWindowContent:Landroid/view/View;
+    iget-object v1, p0, Lcom/android/server/display/OverlayDisplayWindow;->mWindowContent:Landroid/view/View;
 
-    const v2, 0x1020399
+    const v3, 0x1020399
 
-    invoke-virtual {v0, v2}, Landroid/view/View;->findViewById(I)Landroid/view/View;
+    invoke-virtual {v1, v3}, Landroid/view/View;->findViewById(I)Landroid/view/View;
 
-    move-result-object v0
+    move-result-object v1
 
-    check-cast v0, Landroid/widget/TextView;
+    check-cast v1, Landroid/widget/TextView;
 
-    iput-object v0, p0, Lcom/android/server/display/OverlayDisplayWindow;->mTitleTextView:Landroid/widget/TextView;
+    iput-object v1, p0, Lcom/android/server/display/OverlayDisplayWindow;->mTitleTextView:Landroid/widget/TextView;
 
     .line 213
-    iget-object v0, p0, Lcom/android/server/display/OverlayDisplayWindow;->mTitleTextView:Landroid/widget/TextView;
+    iget-object v1, p0, Lcom/android/server/display/OverlayDisplayWindow;->mTitleTextView:Landroid/widget/TextView;
 
-    iget-object v2, p0, Lcom/android/server/display/OverlayDisplayWindow;->mTitle:Ljava/lang/String;
+    iget-object v3, p0, Lcom/android/server/display/OverlayDisplayWindow;->mTitle:Ljava/lang/String;
 
-    invoke-virtual {v0, v2}, Landroid/widget/TextView;->setText(Ljava/lang/CharSequence;)V
+    invoke-virtual {v1, v3}, Landroid/widget/TextView;->setText(Ljava/lang/CharSequence;)V
 
     .line 215
-    new-instance v0, Landroid/view/WindowManager$LayoutParams;
+    new-instance v1, Landroid/view/WindowManager$LayoutParams;
 
-    const/16 v2, 0x7ea
+    const/16 v3, 0x7ea
 
-    invoke-direct {v0, v2}, Landroid/view/WindowManager$LayoutParams;-><init>(I)V
+    invoke-direct {v1, v3}, Landroid/view/WindowManager$LayoutParams;-><init>(I)V
 
-    iput-object v0, p0, Lcom/android/server/display/OverlayDisplayWindow;->mWindowParams:Landroid/view/WindowManager$LayoutParams;
+    iput-object v1, p0, Lcom/android/server/display/OverlayDisplayWindow;->mWindowParams:Landroid/view/WindowManager$LayoutParams;
 
     .line 217
-    iget-object v0, p0, Lcom/android/server/display/OverlayDisplayWindow;->mWindowParams:Landroid/view/WindowManager$LayoutParams;
+    iget-object v1, p0, Lcom/android/server/display/OverlayDisplayWindow;->mWindowParams:Landroid/view/WindowManager$LayoutParams;
 
-    iget v2, v0, Landroid/view/WindowManager$LayoutParams;->flags:I
+    iget v3, v1, Landroid/view/WindowManager$LayoutParams;->flags:I
 
-    const v3, 0x1000328
+    const v4, 0x1000328
 
-    or-int/2addr v2, v3
+    or-int/2addr v3, v4
 
-    iput v2, v0, Landroid/view/WindowManager$LayoutParams;->flags:I
+    iput v3, v1, Landroid/view/WindowManager$LayoutParams;->flags:I
 
     .line 222
-    iget-boolean v0, p0, Lcom/android/server/display/OverlayDisplayWindow;->mSecure:Z
+    iget-boolean v1, p0, Lcom/android/server/display/OverlayDisplayWindow;->mSecure:Z
 
-    if-eqz v0, :cond_83
+    if-eqz v1, :cond_83
 
     .line 223
-    iget-object v0, p0, Lcom/android/server/display/OverlayDisplayWindow;->mWindowParams:Landroid/view/WindowManager$LayoutParams;
+    iget-object v1, p0, Lcom/android/server/display/OverlayDisplayWindow;->mWindowParams:Landroid/view/WindowManager$LayoutParams;
 
-    iget v2, v0, Landroid/view/WindowManager$LayoutParams;->flags:I
+    iget v3, v1, Landroid/view/WindowManager$LayoutParams;->flags:I
 
-    or-int/lit16 v2, v2, 0x2000
+    or-int/lit16 v3, v3, 0x2000
 
-    iput v2, v0, Landroid/view/WindowManager$LayoutParams;->flags:I
+    iput v3, v1, Landroid/view/WindowManager$LayoutParams;->flags:I
 
     .line 228
     :cond_83
-    iget-object v0, p0, Lcom/android/server/display/OverlayDisplayWindow;->mWindowParams:Landroid/view/WindowManager$LayoutParams;
+    iget-object v1, p0, Lcom/android/server/display/OverlayDisplayWindow;->mWindowParams:Landroid/view/WindowManager$LayoutParams;
 
-    iget v2, v0, Landroid/view/WindowManager$LayoutParams;->privateFlags:I
+    iget v3, v1, Landroid/view/WindowManager$LayoutParams;->privateFlags:I
 
-    or-int/lit8 v2, v2, 0x2
+    or-int/lit8 v3, v3, 0x2
 
-    iput v2, v0, Landroid/view/WindowManager$LayoutParams;->privateFlags:I
+    iput v3, v1, Landroid/view/WindowManager$LayoutParams;->privateFlags:I
 
     .line 230
-    iget-object v0, p0, Lcom/android/server/display/OverlayDisplayWindow;->mWindowParams:Landroid/view/WindowManager$LayoutParams;
+    iget-object v1, p0, Lcom/android/server/display/OverlayDisplayWindow;->mWindowParams:Landroid/view/WindowManager$LayoutParams;
 
-    const v2, 0x3f4ccccd  # 0.8f
+    const v3, 0x3f4ccccd  # 0.8f
 
-    iput v2, v0, Landroid/view/WindowManager$LayoutParams;->alpha:F
+    iput v3, v1, Landroid/view/WindowManager$LayoutParams;->alpha:F
 
     .line 231
-    const/16 v2, 0x33
+    const/16 v3, 0x33
 
-    iput v2, v0, Landroid/view/WindowManager$LayoutParams;->gravity:I
+    iput v3, v1, Landroid/view/WindowManager$LayoutParams;->gravity:I
 
     .line 232
-    iget-object v2, p0, Lcom/android/server/display/OverlayDisplayWindow;->mTitle:Ljava/lang/String;
+    iget-object v3, p0, Lcom/android/server/display/OverlayDisplayWindow;->mTitle:Ljava/lang/String;
 
-    invoke-virtual {v0, v2}, Landroid/view/WindowManager$LayoutParams;->setTitle(Ljava/lang/CharSequence;)V
+    invoke-virtual {v1, v3}, Landroid/view/WindowManager$LayoutParams;->setTitle(Ljava/lang/CharSequence;)V
 
     .line 234
-    new-instance v0, Landroid/view/GestureDetector;
+    new-instance v1, Landroid/view/GestureDetector;
 
-    iget-object v2, p0, Lcom/android/server/display/OverlayDisplayWindow;->mContext:Landroid/content/Context;
+    iget-object v3, p0, Lcom/android/server/display/OverlayDisplayWindow;->mContext:Landroid/content/Context;
 
-    iget-object v3, p0, Lcom/android/server/display/OverlayDisplayWindow;->mOnGestureListener:Landroid/view/GestureDetector$OnGestureListener;
+    iget-object v4, p0, Lcom/android/server/display/OverlayDisplayWindow;->mOnGestureListener:Landroid/view/GestureDetector$OnGestureListener;
 
-    invoke-direct {v0, v2, v3}, Landroid/view/GestureDetector;-><init>(Landroid/content/Context;Landroid/view/GestureDetector$OnGestureListener;)V
+    invoke-direct {v1, v3, v4}, Landroid/view/GestureDetector;-><init>(Landroid/content/Context;Landroid/view/GestureDetector$OnGestureListener;)V
 
-    iput-object v0, p0, Lcom/android/server/display/OverlayDisplayWindow;->mGestureDetector:Landroid/view/GestureDetector;
+    iput-object v1, p0, Lcom/android/server/display/OverlayDisplayWindow;->mGestureDetector:Landroid/view/GestureDetector;
 
     .line 235
-    new-instance v0, Landroid/view/ScaleGestureDetector;
+    new-instance v1, Landroid/view/ScaleGestureDetector;
 
-    iget-object v2, p0, Lcom/android/server/display/OverlayDisplayWindow;->mContext:Landroid/content/Context;
+    iget-object v3, p0, Lcom/android/server/display/OverlayDisplayWindow;->mContext:Landroid/content/Context;
 
-    iget-object v3, p0, Lcom/android/server/display/OverlayDisplayWindow;->mOnScaleGestureListener:Landroid/view/ScaleGestureDetector$OnScaleGestureListener;
+    iget-object v4, p0, Lcom/android/server/display/OverlayDisplayWindow;->mOnScaleGestureListener:Landroid/view/ScaleGestureDetector$OnScaleGestureListener;
 
-    invoke-direct {v0, v2, v3}, Landroid/view/ScaleGestureDetector;-><init>(Landroid/content/Context;Landroid/view/ScaleGestureDetector$OnScaleGestureListener;)V
+    invoke-direct {v1, v3, v4}, Landroid/view/ScaleGestureDetector;-><init>(Landroid/content/Context;Landroid/view/ScaleGestureDetector$OnScaleGestureListener;)V
 
-    iput-object v0, p0, Lcom/android/server/display/OverlayDisplayWindow;->mScaleGestureDetector:Landroid/view/ScaleGestureDetector;
+    iput-object v1, p0, Lcom/android/server/display/OverlayDisplayWindow;->mScaleGestureDetector:Landroid/view/ScaleGestureDetector;
 
     .line 239
-    iget v0, p0, Lcom/android/server/display/OverlayDisplayWindow;->mGravity:I
+    iget v1, p0, Lcom/android/server/display/OverlayDisplayWindow;->mGravity:I
 
-    const/4 v2, 0x3
+    const/4 v3, 0x3
 
-    and-int/2addr v0, v2
+    and-int/2addr v1, v3
 
-    if-ne v0, v2, :cond_b9
+    if-ne v1, v3, :cond_b9
 
     .line 240
-    move v0, v1
+    move v1, v2
 
     goto :goto_bd
 
     :cond_b9
-    iget-object v0, p0, Lcom/android/server/display/OverlayDisplayWindow;->mDefaultDisplayInfo:Landroid/view/DisplayInfo;
+    iget-object v1, p0, Lcom/android/server/display/OverlayDisplayWindow;->mDefaultDisplayInfo:Landroid/view/DisplayInfo;
 
-    iget v0, v0, Landroid/view/DisplayInfo;->logicalWidth:I
+    iget v1, v1, Landroid/view/DisplayInfo;->logicalWidth:I
 
     :goto_bd
-    iput v0, p0, Lcom/android/server/display/OverlayDisplayWindow;->mWindowX:I
+    iput v1, p0, Lcom/android/server/display/OverlayDisplayWindow;->mWindowX:I
 
     .line 241
-    iget v0, p0, Lcom/android/server/display/OverlayDisplayWindow;->mGravity:I
+    iget v1, p0, Lcom/android/server/display/OverlayDisplayWindow;->mGravity:I
 
-    const/16 v2, 0x30
+    const/16 v3, 0x30
 
-    and-int/2addr v0, v2
+    and-int/2addr v1, v3
 
-    if-ne v0, v2, :cond_c7
+    if-ne v1, v3, :cond_c7
 
     .line 242
     goto :goto_cb
 
     :cond_c7
-    iget-object v0, p0, Lcom/android/server/display/OverlayDisplayWindow;->mDefaultDisplayInfo:Landroid/view/DisplayInfo;
+    iget-object v1, p0, Lcom/android/server/display/OverlayDisplayWindow;->mDefaultDisplayInfo:Landroid/view/DisplayInfo;
 
-    iget v1, v0, Landroid/view/DisplayInfo;->logicalHeight:I
+    iget v2, v1, Landroid/view/DisplayInfo;->logicalHeight:I
 
     :goto_cb
-    iput v1, p0, Lcom/android/server/display/OverlayDisplayWindow;->mWindowY:I
+    iput v2, p0, Lcom/android/server/display/OverlayDisplayWindow;->mWindowY:I
 
     .line 243
-    const/high16 v0, 0x3f000000  # 0.5f
+    const/high16 v1, 0x3f000000  # 0.5f
 
-    iput v0, p0, Lcom/android/server/display/OverlayDisplayWindow;->mWindowScale:F
+    iput v1, p0, Lcom/android/server/display/OverlayDisplayWindow;->mWindowScale:F
 
     .line 244
     return-void
 .end method
 
 .method private resize(IIIZ)V
-    .registers 6
+    .registers 9
+    .param p1, "width"  # I
+    .param p2, "height"  # I
+    .param p3, "densityDpi"  # I
+    .param p4, "doLayout"  # Z
 
     .line 148
     iput p1, p0, Lcom/android/server/display/OverlayDisplayWindow;->mWidth:I
@@ -613,95 +639,95 @@
     iput p3, p0, Lcom/android/server/display/OverlayDisplayWindow;->mDensityDpi:I
 
     .line 151
-    iget-object p1, p0, Lcom/android/server/display/OverlayDisplayWindow;->mContext:Landroid/content/Context;
+    iget-object v0, p0, Lcom/android/server/display/OverlayDisplayWindow;->mContext:Landroid/content/Context;
 
-    invoke-virtual {p1}, Landroid/content/Context;->getResources()Landroid/content/res/Resources;
+    invoke-virtual {v0}, Landroid/content/Context;->getResources()Landroid/content/res/Resources;
 
-    move-result-object p1
+    move-result-object v0
 
-    const/4 p2, 0x4
+    const/4 v1, 0x4
 
-    new-array p2, p2, [Ljava/lang/Object;
+    new-array v1, v1, [Ljava/lang/Object;
 
-    iget-object p3, p0, Lcom/android/server/display/OverlayDisplayWindow;->mName:Ljava/lang/String;
+    iget-object v2, p0, Lcom/android/server/display/OverlayDisplayWindow;->mName:Ljava/lang/String;
 
-    const/4 v0, 0x0
+    const/4 v3, 0x0
 
-    aput-object p3, p2, v0
+    aput-object v2, v1, v3
 
-    iget p3, p0, Lcom/android/server/display/OverlayDisplayWindow;->mWidth:I
+    iget v2, p0, Lcom/android/server/display/OverlayDisplayWindow;->mWidth:I
 
     .line 153
-    invoke-static {p3}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
+    invoke-static {v2}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
 
-    move-result-object p3
+    move-result-object v2
 
-    const/4 v0, 0x1
+    const/4 v3, 0x1
 
-    aput-object p3, p2, v0
+    aput-object v2, v1, v3
 
-    iget p3, p0, Lcom/android/server/display/OverlayDisplayWindow;->mHeight:I
+    iget v2, p0, Lcom/android/server/display/OverlayDisplayWindow;->mHeight:I
 
-    invoke-static {p3}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
+    invoke-static {v2}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
 
-    move-result-object p3
+    move-result-object v2
 
-    const/4 v0, 0x2
+    const/4 v3, 0x2
 
-    aput-object p3, p2, v0
+    aput-object v2, v1, v3
 
-    iget p3, p0, Lcom/android/server/display/OverlayDisplayWindow;->mDensityDpi:I
+    iget v2, p0, Lcom/android/server/display/OverlayDisplayWindow;->mDensityDpi:I
 
-    invoke-static {p3}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
+    invoke-static {v2}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
 
-    move-result-object p3
+    move-result-object v2
 
-    const/4 v0, 0x3
+    const/4 v3, 0x3
 
-    aput-object p3, p2, v0
+    aput-object v2, v1, v3
 
     .line 151
-    const p3, 0x1040207
+    const v2, 0x1040203
 
-    invoke-virtual {p1, p3, p2}, Landroid/content/res/Resources;->getString(I[Ljava/lang/Object;)Ljava/lang/String;
+    invoke-virtual {v0, v2, v1}, Landroid/content/res/Resources;->getString(I[Ljava/lang/Object;)Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    iput-object p1, p0, Lcom/android/server/display/OverlayDisplayWindow;->mTitle:Ljava/lang/String;
+    iput-object v0, p0, Lcom/android/server/display/OverlayDisplayWindow;->mTitle:Ljava/lang/String;
 
     .line 154
-    iget-boolean p1, p0, Lcom/android/server/display/OverlayDisplayWindow;->mSecure:Z
+    iget-boolean v0, p0, Lcom/android/server/display/OverlayDisplayWindow;->mSecure:Z
 
-    if-eqz p1, :cond_5c
+    if-eqz v0, :cond_5c
 
     .line 155
-    new-instance p1, Ljava/lang/StringBuilder;
+    new-instance v0, Ljava/lang/StringBuilder;
 
-    invoke-direct {p1}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
 
-    iget-object p2, p0, Lcom/android/server/display/OverlayDisplayWindow;->mTitle:Ljava/lang/String;
+    iget-object v1, p0, Lcom/android/server/display/OverlayDisplayWindow;->mTitle:Ljava/lang/String;
 
-    invoke-virtual {p1, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    iget-object p2, p0, Lcom/android/server/display/OverlayDisplayWindow;->mContext:Landroid/content/Context;
+    iget-object v1, p0, Lcom/android/server/display/OverlayDisplayWindow;->mContext:Landroid/content/Context;
 
-    invoke-virtual {p2}, Landroid/content/Context;->getResources()Landroid/content/res/Resources;
+    invoke-virtual {v1}, Landroid/content/Context;->getResources()Landroid/content/res/Resources;
 
-    move-result-object p2
+    move-result-object v1
 
-    const p3, 0x1040206
+    const v2, 0x1040202
 
-    invoke-virtual {p2, p3}, Landroid/content/res/Resources;->getString(I)Ljava/lang/String;
+    invoke-virtual {v1, v2}, Landroid/content/res/Resources;->getString(I)Ljava/lang/String;
 
-    move-result-object p2
+    move-result-object v1
 
-    invoke-virtual {p1, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    iput-object p1, p0, Lcom/android/server/display/OverlayDisplayWindow;->mTitle:Ljava/lang/String;
+    iput-object v0, p0, Lcom/android/server/display/OverlayDisplayWindow;->mTitle:Ljava/lang/String;
 
     .line 158
     :cond_5c
@@ -782,7 +808,7 @@
 .end method
 
 .method private updateWindowParams()V
-    .registers 8
+    .registers 9
 
     .line 247
     iget v0, p0, Lcom/android/server/display/OverlayDisplayWindow;->mWindowScale:F
@@ -792,6 +818,7 @@
     mul-float/2addr v0, v1
 
     .line 248
+    .local v0, "scale":F
     iget-object v1, p0, Lcom/android/server/display/OverlayDisplayWindow;->mDefaultDisplayInfo:Landroid/view/DisplayInfo;
 
     iget v1, v1, Landroid/view/DisplayInfo;->logicalWidth:I
@@ -830,11 +857,11 @@
 
     invoke-static {v1, v0}, Ljava/lang/Math;->min(FF)F
 
-    move-result v0
+    move-result v2
 
-    const v2, 0x3e99999a  # 0.3f
+    const v3, 0x3e99999a  # 0.3f
 
-    invoke-static {v2, v0}, Ljava/lang/Math;->max(FF)F
+    invoke-static {v3, v2}, Ljava/lang/Math;->max(FF)F
 
     move-result v0
 
@@ -850,6 +877,7 @@
     mul-float/2addr v2, v1
 
     .line 253
+    .local v2, "offsetScale":F
     iget v1, p0, Lcom/android/server/display/OverlayDisplayWindow;->mWidth:I
 
     int-to-float v1, v1
@@ -859,6 +887,7 @@
     float-to-int v1, v1
 
     .line 254
+    .local v1, "width":I
     iget v3, p0, Lcom/android/server/display/OverlayDisplayWindow;->mHeight:I
 
     int-to-float v3, v3
@@ -868,6 +897,7 @@
     float-to-int v3, v3
 
     .line 255
+    .local v3, "height":I
     iget v4, p0, Lcom/android/server/display/OverlayDisplayWindow;->mWindowX:I
 
     int-to-float v4, v4
@@ -885,6 +915,7 @@
     float-to-int v4, v4
 
     .line 256
+    .local v4, "x":I
     iget v5, p0, Lcom/android/server/display/OverlayDisplayWindow;->mWindowY:I
 
     int-to-float v5, v5
@@ -899,22 +930,23 @@
 
     sub-float/2addr v5, v6
 
-    float-to-int v2, v5
+    float-to-int v5, v5
 
     .line 257
-    iget-object v5, p0, Lcom/android/server/display/OverlayDisplayWindow;->mDefaultDisplayInfo:Landroid/view/DisplayInfo;
+    .local v5, "y":I
+    iget-object v6, p0, Lcom/android/server/display/OverlayDisplayWindow;->mDefaultDisplayInfo:Landroid/view/DisplayInfo;
 
-    iget v5, v5, Landroid/view/DisplayInfo;->logicalWidth:I
+    iget v6, v6, Landroid/view/DisplayInfo;->logicalWidth:I
 
-    sub-int/2addr v5, v1
+    sub-int/2addr v6, v1
 
-    invoke-static {v4, v5}, Ljava/lang/Math;->min(II)I
+    invoke-static {v4, v6}, Ljava/lang/Math;->min(II)I
 
-    move-result v4
+    move-result v6
 
-    const/4 v5, 0x0
+    const/4 v7, 0x0
 
-    invoke-static {v5, v4}, Ljava/lang/Math;->max(II)I
+    invoke-static {v7, v6}, Ljava/lang/Math;->max(II)I
 
     move-result v4
 
@@ -925,37 +957,37 @@
 
     sub-int/2addr v6, v3
 
-    invoke-static {v2, v6}, Ljava/lang/Math;->min(II)I
+    invoke-static {v5, v6}, Ljava/lang/Math;->min(II)I
 
-    move-result v2
+    move-result v6
 
-    invoke-static {v5, v2}, Ljava/lang/Math;->max(II)I
+    invoke-static {v7, v6}, Ljava/lang/Math;->max(II)I
 
-    move-result v2
+    move-result v5
 
     .line 267
-    iget-object v5, p0, Lcom/android/server/display/OverlayDisplayWindow;->mTextureView:Landroid/view/TextureView;
+    iget-object v6, p0, Lcom/android/server/display/OverlayDisplayWindow;->mTextureView:Landroid/view/TextureView;
 
-    invoke-virtual {v5, v0}, Landroid/view/TextureView;->setScaleX(F)V
+    invoke-virtual {v6, v0}, Landroid/view/TextureView;->setScaleX(F)V
 
     .line 268
-    iget-object v5, p0, Lcom/android/server/display/OverlayDisplayWindow;->mTextureView:Landroid/view/TextureView;
+    iget-object v6, p0, Lcom/android/server/display/OverlayDisplayWindow;->mTextureView:Landroid/view/TextureView;
 
-    invoke-virtual {v5, v0}, Landroid/view/TextureView;->setScaleY(F)V
+    invoke-virtual {v6, v0}, Landroid/view/TextureView;->setScaleY(F)V
 
     .line 270
-    iget-object v0, p0, Lcom/android/server/display/OverlayDisplayWindow;->mWindowParams:Landroid/view/WindowManager$LayoutParams;
+    iget-object v6, p0, Lcom/android/server/display/OverlayDisplayWindow;->mWindowParams:Landroid/view/WindowManager$LayoutParams;
 
-    iput v4, v0, Landroid/view/WindowManager$LayoutParams;->x:I
+    iput v4, v6, Landroid/view/WindowManager$LayoutParams;->x:I
 
     .line 271
-    iput v2, v0, Landroid/view/WindowManager$LayoutParams;->y:I
+    iput v5, v6, Landroid/view/WindowManager$LayoutParams;->y:I
 
     .line 272
-    iput v1, v0, Landroid/view/WindowManager$LayoutParams;->width:I
+    iput v1, v6, Landroid/view/WindowManager$LayoutParams;->width:I
 
     .line 273
-    iput v3, v0, Landroid/view/WindowManager$LayoutParams;->height:I
+    iput v3, v6, Landroid/view/WindowManager$LayoutParams;->height:I
 
     .line 274
     return-void
@@ -996,211 +1028,213 @@
 .end method
 
 .method public dump(Ljava/io/PrintWriter;Ljava/lang/String;)V
-    .registers 4
+    .registers 5
+    .param p1, "pw"  # Ljava/io/PrintWriter;
+    .param p2, "prefix"  # Ljava/lang/String;
 
     .line 172
-    new-instance p2, Ljava/lang/StringBuilder;
+    new-instance v0, Ljava/lang/StringBuilder;
 
-    invoke-direct {p2}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v0, "mWindowVisible="
+    const-string/jumbo v1, "mWindowVisible="
 
-    invoke-virtual {p2, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    iget-boolean v0, p0, Lcom/android/server/display/OverlayDisplayWindow;->mWindowVisible:Z
+    iget-boolean v1, p0, Lcom/android/server/display/OverlayDisplayWindow;->mWindowVisible:Z
 
-    invoke-virtual {p2, v0}, Ljava/lang/StringBuilder;->append(Z)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Z)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p2
+    move-result-object v0
 
-    invoke-virtual {p1, p2}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
     .line 173
-    new-instance p2, Ljava/lang/StringBuilder;
+    new-instance v0, Ljava/lang/StringBuilder;
 
-    invoke-direct {p2}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v0, "mWindowX="
+    const-string/jumbo v1, "mWindowX="
 
-    invoke-virtual {p2, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    iget v0, p0, Lcom/android/server/display/OverlayDisplayWindow;->mWindowX:I
+    iget v1, p0, Lcom/android/server/display/OverlayDisplayWindow;->mWindowX:I
 
-    invoke-virtual {p2, v0}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p2
+    move-result-object v0
 
-    invoke-virtual {p1, p2}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
     .line 174
-    new-instance p2, Ljava/lang/StringBuilder;
+    new-instance v0, Ljava/lang/StringBuilder;
 
-    invoke-direct {p2}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v0, "mWindowY="
+    const-string/jumbo v1, "mWindowY="
 
-    invoke-virtual {p2, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    iget v0, p0, Lcom/android/server/display/OverlayDisplayWindow;->mWindowY:I
+    iget v1, p0, Lcom/android/server/display/OverlayDisplayWindow;->mWindowY:I
 
-    invoke-virtual {p2, v0}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p2
+    move-result-object v0
 
-    invoke-virtual {p1, p2}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
     .line 175
-    new-instance p2, Ljava/lang/StringBuilder;
+    new-instance v0, Ljava/lang/StringBuilder;
 
-    invoke-direct {p2}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v0, "mWindowScale="
+    const-string/jumbo v1, "mWindowScale="
 
-    invoke-virtual {p2, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    iget v0, p0, Lcom/android/server/display/OverlayDisplayWindow;->mWindowScale:F
+    iget v1, p0, Lcom/android/server/display/OverlayDisplayWindow;->mWindowScale:F
 
-    invoke-virtual {p2, v0}, Ljava/lang/StringBuilder;->append(F)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(F)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p2
+    move-result-object v0
 
-    invoke-virtual {p1, p2}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
     .line 176
-    new-instance p2, Ljava/lang/StringBuilder;
+    new-instance v0, Ljava/lang/StringBuilder;
 
-    invoke-direct {p2}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v0, "mWindowParams="
+    const-string/jumbo v1, "mWindowParams="
 
-    invoke-virtual {p2, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    iget-object v0, p0, Lcom/android/server/display/OverlayDisplayWindow;->mWindowParams:Landroid/view/WindowManager$LayoutParams;
+    iget-object v1, p0, Lcom/android/server/display/OverlayDisplayWindow;->mWindowParams:Landroid/view/WindowManager$LayoutParams;
 
-    invoke-virtual {p2, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p2
+    move-result-object v0
 
-    invoke-virtual {p1, p2}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
     .line 177
-    iget-object p2, p0, Lcom/android/server/display/OverlayDisplayWindow;->mTextureView:Landroid/view/TextureView;
+    iget-object v0, p0, Lcom/android/server/display/OverlayDisplayWindow;->mTextureView:Landroid/view/TextureView;
 
-    if-eqz p2, :cond_a6
+    if-eqz v0, :cond_ad
 
     .line 178
-    new-instance p2, Ljava/lang/StringBuilder;
+    new-instance v0, Ljava/lang/StringBuilder;
 
-    invoke-direct {p2}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v0, "mTextureView.getScaleX()="
+    const-string/jumbo v1, "mTextureView.getScaleX()="
 
-    invoke-virtual {p2, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    iget-object v0, p0, Lcom/android/server/display/OverlayDisplayWindow;->mTextureView:Landroid/view/TextureView;
+    iget-object v1, p0, Lcom/android/server/display/OverlayDisplayWindow;->mTextureView:Landroid/view/TextureView;
 
-    invoke-virtual {v0}, Landroid/view/TextureView;->getScaleX()F
+    invoke-virtual {v1}, Landroid/view/TextureView;->getScaleX()F
 
-    move-result v0
+    move-result v1
 
-    invoke-virtual {p2, v0}, Ljava/lang/StringBuilder;->append(F)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(F)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p2
+    move-result-object v0
 
-    invoke-virtual {p1, p2}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
     .line 179
-    new-instance p2, Ljava/lang/StringBuilder;
+    new-instance v0, Ljava/lang/StringBuilder;
 
-    invoke-direct {p2}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v0, "mTextureView.getScaleY()="
+    const-string/jumbo v1, "mTextureView.getScaleY()="
 
-    invoke-virtual {p2, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    iget-object v0, p0, Lcom/android/server/display/OverlayDisplayWindow;->mTextureView:Landroid/view/TextureView;
+    iget-object v1, p0, Lcom/android/server/display/OverlayDisplayWindow;->mTextureView:Landroid/view/TextureView;
 
-    invoke-virtual {v0}, Landroid/view/TextureView;->getScaleY()F
+    invoke-virtual {v1}, Landroid/view/TextureView;->getScaleY()F
 
-    move-result v0
+    move-result v1
 
-    invoke-virtual {p2, v0}, Ljava/lang/StringBuilder;->append(F)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(F)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p2
+    move-result-object v0
 
-    invoke-virtual {p1, p2}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
     .line 181
-    :cond_a6
-    new-instance p2, Ljava/lang/StringBuilder;
+    :cond_ad
+    new-instance v0, Ljava/lang/StringBuilder;
 
-    invoke-direct {p2}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v0, "mLiveTranslationX="
+    const-string/jumbo v1, "mLiveTranslationX="
 
-    invoke-virtual {p2, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    iget v0, p0, Lcom/android/server/display/OverlayDisplayWindow;->mLiveTranslationX:F
+    iget v1, p0, Lcom/android/server/display/OverlayDisplayWindow;->mLiveTranslationX:F
 
-    invoke-virtual {p2, v0}, Ljava/lang/StringBuilder;->append(F)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(F)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p2
+    move-result-object v0
 
-    invoke-virtual {p1, p2}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
     .line 182
-    new-instance p2, Ljava/lang/StringBuilder;
+    new-instance v0, Ljava/lang/StringBuilder;
 
-    invoke-direct {p2}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v0, "mLiveTranslationY="
+    const-string/jumbo v1, "mLiveTranslationY="
 
-    invoke-virtual {p2, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    iget v0, p0, Lcom/android/server/display/OverlayDisplayWindow;->mLiveTranslationY:F
+    iget v1, p0, Lcom/android/server/display/OverlayDisplayWindow;->mLiveTranslationY:F
 
-    invoke-virtual {p2, v0}, Ljava/lang/StringBuilder;->append(F)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(F)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p2
+    move-result-object v0
 
-    invoke-virtual {p1, p2}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
     .line 183
-    new-instance p2, Ljava/lang/StringBuilder;
+    new-instance v0, Ljava/lang/StringBuilder;
 
-    invoke-direct {p2}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v0, "mLiveScale="
+    const-string/jumbo v1, "mLiveScale="
 
-    invoke-virtual {p2, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    iget v0, p0, Lcom/android/server/display/OverlayDisplayWindow;->mLiveScale:F
+    iget v1, p0, Lcom/android/server/display/OverlayDisplayWindow;->mLiveScale:F
 
-    invoke-virtual {p2, v0}, Ljava/lang/StringBuilder;->append(F)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(F)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p2
+    move-result-object v0
 
-    invoke-virtual {p1, p2}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
     .line 184
     return-void
@@ -1233,6 +1267,9 @@
 
 .method public resize(III)V
     .registers 5
+    .param p1, "width"  # I
+    .param p2, "height"  # I
+    .param p3, "densityDpi"  # I
 
     .line 144
     const/4 v0, 0x1

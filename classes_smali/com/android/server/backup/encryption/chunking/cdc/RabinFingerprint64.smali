@@ -40,6 +40,7 @@
 
 .method public constructor <init>(J)V
     .registers 5
+    .param p1, "poly64"  # J
 
     .line 37
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -64,7 +65,7 @@
 .end method
 
 .method private computeFingerprintTables64()V
-    .registers 12
+    .registers 11
 
     .line 66
     const/16 v0, 0x40
@@ -72,6 +73,7 @@
     new-array v1, v0, [J
 
     .line 67
+    .local v1, "degreesRes64":[J
     iget-wide v2, p0, Lcom/android/server/backup/encryption/chunking/cdc/RabinFingerprint64;->mPoly64:J
 
     const/4 v4, 0x0
@@ -81,115 +83,125 @@
     .line 68
     const/4 v2, 0x1
 
-    move v3, v2
+    .local v2, "i":I
+    :goto_a
+    const/4 v3, 0x1
 
-    :goto_b
-    if-ge v3, v0, :cond_2b
+    if-ge v2, v0, :cond_31
 
     .line 69
-    add-int/lit8 v5, v3, -0x1
+    add-int/lit8 v4, v2, -0x1
 
-    aget-wide v6, v1, v5
+    aget-wide v4, v1, v4
 
-    const-wide/high16 v8, -0x8000000000000000L
+    const-wide/high16 v6, -0x8000000000000000L
 
-    and-long/2addr v6, v8
+    and-long/2addr v4, v6
 
-    const-wide/16 v8, 0x0
+    const-wide/16 v6, 0x0
 
-    cmp-long v6, v6, v8
+    cmp-long v4, v4, v6
 
-    if-nez v6, :cond_20
+    if-nez v4, :cond_23
 
     .line 70
-    aget-wide v5, v1, v5
+    add-int/lit8 v4, v2, -0x1
 
-    shl-long/2addr v5, v2
+    aget-wide v4, v1, v4
 
-    aput-wide v5, v1, v3
+    shl-long v3, v4, v3
 
-    goto :goto_28
+    aput-wide v3, v1, v2
+
+    goto :goto_2e
 
     .line 72
-    :cond_20
-    aget-wide v5, v1, v5
+    :cond_23
+    add-int/lit8 v4, v2, -0x1
 
-    shl-long/2addr v5, v2
+    aget-wide v4, v1, v4
 
-    iget-wide v7, p0, Lcom/android/server/backup/encryption/chunking/cdc/RabinFingerprint64;->mPoly64:J
+    shl-long v3, v4, v3
 
-    xor-long/2addr v5, v7
+    iget-wide v5, p0, Lcom/android/server/backup/encryption/chunking/cdc/RabinFingerprint64;->mPoly64:J
 
-    aput-wide v5, v1, v3
+    xor-long/2addr v3, v5
+
+    aput-wide v3, v1, v2
 
     .line 68
-    :goto_28
-    add-int/lit8 v3, v3, 0x1
+    :goto_2e
+    add-int/lit8 v2, v2, 0x1
 
-    goto :goto_b
+    goto :goto_a
 
     .line 75
-    :cond_2b
-    move v0, v4
+    .end local v2  # "i":I
+    :cond_31
+    const/4 v0, 0x0
 
-    :goto_2c
-    const/16 v3, 0x100
+    .local v0, "i":I
+    :goto_32
+    const/16 v2, 0x100
 
-    if-ge v0, v3, :cond_4e
+    if-ge v0, v2, :cond_53
 
     .line 76
-    nop
+    move v2, v0
 
     .line 77
-    move v3, v0
+    .local v2, "currIndex":I
+    const/4 v4, 0x0
 
-    move v5, v4
+    .local v4, "j":I
+    :goto_38
+    if-lez v2, :cond_50
 
-    :goto_33
-    if-lez v3, :cond_4b
+    const/16 v5, 0x8
 
-    const/16 v6, 0x8
-
-    if-ge v5, v6, :cond_4b
+    if-ge v4, v5, :cond_50
 
     .line 78
-    and-int/lit8 v6, v3, 0x1
+    and-int/lit8 v5, v2, 0x1
 
-    if-ne v6, v2, :cond_46
+    if-ne v5, v3, :cond_4b
 
     .line 79
-    iget-object v6, p0, Lcom/android/server/backup/encryption/chunking/cdc/RabinFingerprint64;->mTableFP64:[J
+    iget-object v5, p0, Lcom/android/server/backup/encryption/chunking/cdc/RabinFingerprint64;->mTableFP64:[J
 
-    aget-wide v7, v6, v0
+    aget-wide v6, v5, v0
 
-    aget-wide v9, v1, v5
+    aget-wide v8, v1, v4
 
-    xor-long/2addr v7, v9
+    xor-long/2addr v6, v8
 
-    aput-wide v7, v6, v0
+    aput-wide v6, v5, v0
 
     .line 81
-    :cond_46
-    ushr-int/lit8 v3, v3, 0x1
+    :cond_4b
+    ushr-int/lit8 v2, v2, 0x1
 
     .line 77
-    add-int/lit8 v5, v5, 0x1
+    add-int/lit8 v4, v4, 0x1
 
-    goto :goto_33
+    goto :goto_38
 
     .line 75
-    :cond_4b
+    .end local v2  # "currIndex":I
+    .end local v4  # "j":I
+    :cond_50
     add-int/lit8 v0, v0, 0x1
 
-    goto :goto_2c
+    goto :goto_32
 
     .line 84
-    :cond_4e
+    .end local v0  # "i":I
+    :cond_53
     return-void
 .end method
 
 .method private computeFingerprintTables64Windowed()V
-    .registers 14
+    .registers 13
 
     .line 94
     const/16 v0, 0x8
@@ -197,6 +209,7 @@
     new-array v1, v0, [J
 
     .line 95
+    .local v1, "degsRes64":[J
     iget-wide v2, p0, Lcom/android/server/backup/encryption/chunking/cdc/RabinFingerprint64;->mPoly64:J
 
     const/4 v4, 0x0
@@ -206,152 +219,169 @@
     .line 96
     const/16 v2, 0x41
 
+    .local v2, "i":I
     :goto_b
     const/16 v3, 0x100
 
-    const/4 v5, 0x1
+    const/4 v4, 0x1
 
-    if-ge v2, v3, :cond_33
+    if-ge v2, v3, :cond_3b
 
     .line 97
     add-int/lit8 v3, v2, -0x1
 
     rem-int/2addr v3, v0
 
-    aget-wide v6, v1, v3
+    aget-wide v5, v1, v3
 
-    const-wide/high16 v8, -0x8000000000000000L
+    const-wide/high16 v7, -0x8000000000000000L
 
-    and-long/2addr v6, v8
+    and-long/2addr v5, v7
 
-    const-wide/16 v8, 0x0
+    const-wide/16 v7, 0x0
 
-    cmp-long v6, v6, v8
+    cmp-long v3, v5, v7
 
-    if-nez v6, :cond_26
+    if-nez v3, :cond_2a
 
     .line 98
-    rem-int/lit8 v6, v2, 0x8
+    rem-int/lit8 v3, v2, 0x8
 
-    aget-wide v7, v1, v3
+    add-int/lit8 v5, v2, -0x1
 
-    shl-long/2addr v7, v5
+    rem-int/2addr v5, v0
 
-    aput-wide v7, v1, v6
+    aget-wide v5, v1, v5
 
-    goto :goto_30
+    shl-long v4, v5, v4
+
+    aput-wide v4, v1, v3
+
+    goto :goto_38
 
     .line 100
-    :cond_26
-    rem-int/lit8 v6, v2, 0x8
+    :cond_2a
+    rem-int/lit8 v3, v2, 0x8
 
-    aget-wide v7, v1, v3
+    add-int/lit8 v5, v2, -0x1
 
-    shl-long/2addr v7, v5
+    rem-int/2addr v5, v0
 
-    iget-wide v9, p0, Lcom/android/server/backup/encryption/chunking/cdc/RabinFingerprint64;->mPoly64:J
+    aget-wide v5, v1, v5
 
-    xor-long/2addr v7, v9
+    shl-long v4, v5, v4
 
-    aput-wide v7, v1, v6
+    iget-wide v6, p0, Lcom/android/server/backup/encryption/chunking/cdc/RabinFingerprint64;->mPoly64:J
+
+    xor-long/2addr v4, v6
+
+    aput-wide v4, v1, v3
 
     .line 96
-    :goto_30
+    :goto_38
     add-int/lit8 v2, v2, 0x1
 
     goto :goto_b
 
     .line 103
-    :cond_33
-    move v2, v4
+    .end local v2  # "i":I
+    :cond_3b
+    const/4 v2, 0x0
 
-    :goto_34
-    if-ge v2, v3, :cond_52
+    .restart local v2  # "i":I
+    :goto_3c
+    if-ge v2, v3, :cond_59
 
     .line 104
-    nop
+    move v5, v2
 
     .line 105
-    move v6, v2
+    .local v5, "currIndex":I
+    const/4 v6, 0x0
 
-    move v7, v4
+    .local v6, "j":I
+    :goto_40
+    if-lez v5, :cond_56
 
-    :goto_39
-    if-lez v6, :cond_4f
-
-    if-ge v7, v0, :cond_4f
+    if-ge v6, v0, :cond_56
 
     .line 106
-    and-int/lit8 v8, v6, 0x1
+    and-int/lit8 v7, v5, 0x1
 
-    if-ne v8, v5, :cond_4a
+    if-ne v7, v4, :cond_51
 
     .line 107
-    iget-object v8, p0, Lcom/android/server/backup/encryption/chunking/cdc/RabinFingerprint64;->mTableOutByte:[J
+    iget-object v7, p0, Lcom/android/server/backup/encryption/chunking/cdc/RabinFingerprint64;->mTableOutByte:[J
 
-    aget-wide v9, v8, v2
+    aget-wide v8, v7, v2
 
-    aget-wide v11, v1, v7
+    aget-wide v10, v1, v6
 
-    xor-long/2addr v9, v11
+    xor-long/2addr v8, v10
 
-    aput-wide v9, v8, v2
+    aput-wide v8, v7, v2
 
     .line 109
-    :cond_4a
-    ushr-int/lit8 v6, v6, 0x1
+    :cond_51
+    ushr-int/lit8 v5, v5, 0x1
 
     .line 105
-    add-int/lit8 v7, v7, 0x1
+    add-int/lit8 v6, v6, 0x1
 
-    goto :goto_39
+    goto :goto_40
 
     .line 103
-    :cond_4f
+    .end local v5  # "currIndex":I
+    .end local v6  # "j":I
+    :cond_56
     add-int/lit8 v2, v2, 0x1
 
-    goto :goto_34
+    goto :goto_3c
 
     .line 112
-    :cond_52
+    .end local v2  # "i":I
+    :cond_59
     return-void
 .end method
 
 
 # virtual methods
 .method public computeFingerprint64(BBJ)J
-    .registers 9
+    .registers 10
+    .param p1, "inChar"  # B
+    .param p2, "outChar"  # B
+    .param p3, "fingerPrint"  # J
 
     .line 58
     const/16 v0, 0x8
 
     shl-long v0, p3, v0
 
-    and-int/lit16 p1, p1, 0xff
+    and-int/lit16 v2, p1, 0xff
 
-    int-to-long v2, p1
+    int-to-long v2, v2
 
     xor-long/2addr v0, v2
 
-    iget-object p1, p0, Lcom/android/server/backup/encryption/chunking/cdc/RabinFingerprint64;->mTableFP64:[J
+    iget-object v2, p0, Lcom/android/server/backup/encryption/chunking/cdc/RabinFingerprint64;->mTableFP64:[J
 
-    const/16 v2, 0x38
+    const/16 v3, 0x38
 
-    ushr-long/2addr p3, v2
+    ushr-long v3, p3, v3
 
-    long-to-int p3, p3
+    long-to-int v3, v3
 
-    aget-wide p3, p1, p3
+    aget-wide v2, v2, v3
 
-    xor-long/2addr p3, v0
+    xor-long/2addr v0, v2
 
-    iget-object p1, p0, Lcom/android/server/backup/encryption/chunking/cdc/RabinFingerprint64;->mTableOutByte:[J
+    iget-object v2, p0, Lcom/android/server/backup/encryption/chunking/cdc/RabinFingerprint64;->mTableOutByte:[J
 
-    and-int/lit16 p2, p2, 0xff
+    and-int/lit16 v3, p2, 0xff
 
-    aget-wide p1, p1, p2
+    aget-wide v2, v2, v3
 
-    xor-long/2addr p1, p3
+    xor-long/2addr v0, v2
 
-    return-wide p1
+    return-wide v0
 .end method

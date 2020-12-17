@@ -35,6 +35,8 @@
 
 .method synthetic constructor <init>(Lcom/android/server/wm/PinnedStackController;Lcom/android/server/wm/PinnedStackController$1;)V
     .registers 3
+    .param p1, "x0"  # Lcom/android/server/wm/PinnedStackController;
+    .param p2, "x1"  # Lcom/android/server/wm/PinnedStackController$1;
 
     .line 156
     invoke-direct {p0, p1}, Lcom/android/server/wm/PinnedStackController$PinnedStackListenerDeathHandler;-><init>(Lcom/android/server/wm/PinnedStackController;)V

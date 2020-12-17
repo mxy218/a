@@ -151,6 +151,9 @@
 
 .method private static buildEvent(IJLjava/lang/String;)Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$IpConnectivityEvent;
     .registers 5
+    .param p0, "netId"  # I
+    .param p1, "transports"  # J
+    .param p3, "ifname"  # Ljava/lang/String;
 
     .line 159
     new-instance v0, Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$IpConnectivityEvent;
@@ -158,6 +161,7 @@
     invoke-direct {v0}, Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$IpConnectivityEvent;-><init>()V
 
     .line 160
+    .local v0, "ev":Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$IpConnectivityEvent;
     iput p0, v0, Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$IpConnectivityEvent;->networkId:I
 
     .line 161
@@ -179,6 +183,7 @@
 
 .method private static bytesToInts([B)[I
     .registers 4
+    .param p0, "in"  # [B
 
     .line 308
     array-length v0, p0
@@ -186,8 +191,10 @@
     new-array v0, v0, [I
 
     .line 309
+    .local v0, "out":[I
     const/4 v1, 0x0
 
+    .local v1, "i":I
     :goto_4
     array-length v2, p0
 
@@ -206,111 +213,114 @@
     goto :goto_4
 
     .line 312
+    .end local v1  # "i":I
     :cond_10
     return-object v0
 .end method
 
 .method private static ifnameToLinkLayer(Ljava/lang/String;)I
     .registers 4
+    .param p0, "ifname"  # Ljava/lang/String;
 
     .line 391
     const/4 v0, 0x0
 
-    move v1, v0
+    .local v0, "i":I
+    :goto_1
+    const/4 v1, 0x7
 
-    :goto_2
-    const/4 v2, 0x7
-
-    if-ge v1, v2, :cond_17
+    if-ge v0, v1, :cond_16
 
     .line 392
-    sget-object v2, Lcom/android/server/connectivity/IpConnectivityEventBuilder;->IFNAME_PREFIXES:[Ljava/lang/String;
+    sget-object v1, Lcom/android/server/connectivity/IpConnectivityEventBuilder;->IFNAME_PREFIXES:[Ljava/lang/String;
 
-    aget-object v2, v2, v1
+    aget-object v1, v1, v0
 
     .line 393
-    invoke-virtual {p0, v2}, Ljava/lang/String;->startsWith(Ljava/lang/String;)Z
+    .local v1, "pattern":Ljava/lang/String;
+    invoke-virtual {p0, v1}, Ljava/lang/String;->startsWith(Ljava/lang/String;)Z
 
     move-result v2
 
-    if-eqz v2, :cond_14
+    if-eqz v2, :cond_13
 
     .line 394
-    sget-object p0, Lcom/android/server/connectivity/IpConnectivityEventBuilder;->IFNAME_LINKLAYERS:[I
+    sget-object v2, Lcom/android/server/connectivity/IpConnectivityEventBuilder;->IFNAME_LINKLAYERS:[I
 
-    aget p0, p0, v1
+    aget v2, v2, v0
 
-    return p0
+    return v2
 
     .line 391
-    :cond_14
-    add-int/lit8 v1, v1, 0x1
+    .end local v1  # "pattern":Ljava/lang/String;
+    :cond_13
+    add-int/lit8 v0, v0, 0x1
 
-    goto :goto_2
+    goto :goto_1
 
     .line 397
-    :cond_17
+    .end local v0  # "i":I
+    :cond_16
+    const/4 v0, 0x0
+
     return v0
 .end method
 
 .method private static inferLinkLayer(Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$IpConnectivityEvent;)V
-    .registers 5
+    .registers 6
+    .param p0, "ev"  # Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$IpConnectivityEvent;
 
     .line 345
-    nop
+    const/4 v0, 0x0
 
     .line 346
-    iget-wide v0, p0, Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$IpConnectivityEvent;->transports:J
+    .local v0, "linkLayer":I
+    iget-wide v1, p0, Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$IpConnectivityEvent;->transports:J
 
-    const-wide/16 v2, 0x0
+    const-wide/16 v3, 0x0
 
-    cmp-long v0, v0, v2
+    cmp-long v1, v1, v3
 
-    if-eqz v0, :cond_10
+    if-eqz v1, :cond_10
 
     .line 347
-    iget-wide v0, p0, Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$IpConnectivityEvent;->transports:J
+    iget-wide v1, p0, Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$IpConnectivityEvent;->transports:J
 
-    invoke-static {v0, v1}, Lcom/android/server/connectivity/IpConnectivityEventBuilder;->transportsToLinkLayer(J)I
+    invoke-static {v1, v2}, Lcom/android/server/connectivity/IpConnectivityEventBuilder;->transportsToLinkLayer(J)I
 
     move-result v0
 
-    goto :goto_1c
+    goto :goto_1a
 
     .line 348
     :cond_10
-    iget-object v0, p0, Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$IpConnectivityEvent;->ifName:Ljava/lang/String;
+    iget-object v1, p0, Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$IpConnectivityEvent;->ifName:Ljava/lang/String;
 
-    if-eqz v0, :cond_1b
+    if-eqz v1, :cond_1a
 
     .line 349
-    iget-object v0, p0, Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$IpConnectivityEvent;->ifName:Ljava/lang/String;
+    iget-object v1, p0, Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$IpConnectivityEvent;->ifName:Ljava/lang/String;
 
-    invoke-static {v0}, Lcom/android/server/connectivity/IpConnectivityEventBuilder;->ifnameToLinkLayer(Ljava/lang/String;)I
+    invoke-static {v1}, Lcom/android/server/connectivity/IpConnectivityEventBuilder;->ifnameToLinkLayer(Ljava/lang/String;)I
 
     move-result v0
 
-    goto :goto_1c
-
-    .line 348
-    :cond_1b
-    const/4 v0, 0x0
-
     .line 351
-    :goto_1c
-    if-nez v0, :cond_1f
+    :cond_1a
+    :goto_1a
+    if-nez v0, :cond_1d
 
     .line 352
     return-void
 
     .line 354
-    :cond_1f
+    :cond_1d
     iput v0, p0, Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$IpConnectivityEvent;->linkLayer:I
 
     .line 355
-    const-string v0, ""
+    const-string v1, ""
 
-    iput-object v0, p0, Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$IpConnectivityEvent;->ifName:Ljava/lang/String;
+    iput-object v1, p0, Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$IpConnectivityEvent;->ifName:Ljava/lang/String;
 
     .line 356
     return-void
@@ -318,6 +328,7 @@
 
 .method private static ipSupportOf(Landroid/net/metrics/DefaultNetworkEvent;)I
     .registers 2
+    .param p0, "in"  # Landroid/net/metrics/DefaultNetworkEvent;
 
     .line 328
     iget-boolean v0, p0, Landroid/net/metrics/DefaultNetworkEvent;->ipv4:Z
@@ -329,9 +340,9 @@
     if-eqz v0, :cond_a
 
     .line 329
-    const/4 p0, 0x3
+    const/4 v0, 0x3
 
-    return p0
+    return v0
 
     .line 331
     :cond_a
@@ -340,39 +351,41 @@
     if-eqz v0, :cond_10
 
     .line 332
-    const/4 p0, 0x2
+    const/4 v0, 0x2
 
-    return p0
+    return v0
 
     .line 334
     :cond_10
-    iget-boolean p0, p0, Landroid/net/metrics/DefaultNetworkEvent;->ipv4:Z
+    iget-boolean v0, p0, Landroid/net/metrics/DefaultNetworkEvent;->ipv4:Z
 
-    if-eqz p0, :cond_16
+    if-eqz v0, :cond_16
 
     .line 335
-    const/4 p0, 0x1
+    const/4 v0, 0x1
 
-    return p0
+    return v0
 
     .line 337
     :cond_16
-    const/4 p0, 0x0
+    const/4 v0, 0x0
 
-    return p0
+    return v0
 .end method
 
 .method private static isBitSet(II)Z
-    .registers 3
+    .registers 4
+    .param p0, "flags"  # I
+    .param p1, "bit"  # I
 
     .line 341
     const/4 v0, 0x1
 
-    shl-int p1, v0, p1
+    shl-int v1, v0, p1
 
-    and-int/2addr p0, p1
+    and-int/2addr v1, p0
 
-    if-eqz p0, :cond_7
+    if-eqz v1, :cond_7
 
     goto :goto_8
 
@@ -385,6 +398,7 @@
 
 .method public static serialize(ILjava/util/List;)[B
     .registers 4
+    .param p0, "dropped"  # I
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(I",
@@ -401,11 +415,13 @@
     .end annotation
 
     .line 62
+    .local p1, "events":Ljava/util/List;, "Ljava/util/List<Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$IpConnectivityEvent;>;"
     new-instance v0, Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$IpConnectivityLog;
 
     invoke-direct {v0}, Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$IpConnectivityLog;-><init>()V
 
     .line 63
+    .local v0, "log":Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$IpConnectivityLog;
     invoke-interface {p1}, Ljava/util/List;->size()I
 
     move-result v1
@@ -414,41 +430,43 @@
 
     invoke-interface {p1, v1}, Ljava/util/List;->toArray([Ljava/lang/Object;)[Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v1
 
-    check-cast p1, [Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$IpConnectivityEvent;
+    check-cast v1, [Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$IpConnectivityEvent;
 
-    iput-object p1, v0, Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$IpConnectivityLog;->events:[Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$IpConnectivityEvent;
+    iput-object v1, v0, Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$IpConnectivityLog;->events:[Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$IpConnectivityEvent;
 
     .line 64
     iput p0, v0, Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$IpConnectivityLog;->droppedEvents:I
 
     .line 65
-    iget-object p1, v0, Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$IpConnectivityLog;->events:[Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$IpConnectivityEvent;
+    iget-object v1, v0, Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$IpConnectivityLog;->events:[Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$IpConnectivityEvent;
 
-    array-length p1, p1
+    array-length v1, v1
 
-    if-gtz p1, :cond_1c
+    if-gtz v1, :cond_1c
 
     if-lez p0, :cond_1f
 
     .line 67
     :cond_1c
-    const/4 p0, 0x2
+    const/4 v1, 0x2
 
-    iput p0, v0, Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$IpConnectivityLog;->version:I
+    iput v1, v0, Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$IpConnectivityLog;->version:I
 
     .line 69
     :cond_1f
     invoke-static {v0}, Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$IpConnectivityLog;->toByteArray(Lcom/android/framework/protobuf/nano/MessageNano;)[B
 
-    move-result-object p0
+    move-result-object v1
 
-    return-object p0
+    return-object v1
 .end method
 
 .method private static setApfProgramEvent(Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$IpConnectivityEvent;Landroid/net/metrics/ApfProgramEvent;)V
     .registers 5
+    .param p0, "out"  # Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$IpConnectivityEvent;
+    .param p1, "in"  # Landroid/net/metrics/ApfProgramEvent;
 
     .line 264
     new-instance v0, Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$ApfProgramEvent;
@@ -456,6 +474,7 @@
     invoke-direct {v0}, Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$ApfProgramEvent;-><init>()V
 
     .line 266
+    .local v0, "apfProgramEvent":Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$ApfProgramEvent;
     iget-wide v1, p1, Landroid/net/metrics/ApfProgramEvent;->lifetime:J
 
     iput-wide v1, v0, Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$ApfProgramEvent;->lifetime:J
@@ -498,13 +517,13 @@
 
     .line 274
     :cond_25
-    iget p1, p1, Landroid/net/metrics/ApfProgramEvent;->flags:I
+    iget v1, p1, Landroid/net/metrics/ApfProgramEvent;->flags:I
 
-    invoke-static {p1, v2}, Lcom/android/server/connectivity/IpConnectivityEventBuilder;->isBitSet(II)Z
+    invoke-static {v1, v2}, Lcom/android/server/connectivity/IpConnectivityEventBuilder;->isBitSet(II)Z
 
-    move-result p1
+    move-result v1
 
-    if-eqz p1, :cond_2f
+    if-eqz v1, :cond_2f
 
     .line 275
     iput-boolean v2, v0, Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$ApfProgramEvent;->hasIpv4Addr:Z
@@ -519,6 +538,8 @@
 
 .method private static setApfStats(Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$IpConnectivityEvent;Landroid/net/metrics/ApfStats;)V
     .registers 5
+    .param p0, "out"  # Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$IpConnectivityEvent;
+    .param p1, "in"  # Landroid/net/metrics/ApfStats;
 
     .line 281
     new-instance v0, Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$ApfStatistics;
@@ -526,6 +547,7 @@
     invoke-direct {v0}, Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$ApfStatistics;-><init>()V
 
     .line 283
+    .local v0, "apfStatistics":Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$ApfStatistics;
     iget-wide v1, p1, Landroid/net/metrics/ApfStats;->durationMs:J
 
     iput-wide v1, v0, Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$ApfStatistics;->durationMs:J
@@ -571,9 +593,9 @@
     iput v1, v0, Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$ApfStatistics;->programUpdatesAllowingMulticast:I
 
     .line 292
-    iget p1, p1, Landroid/net/metrics/ApfStats;->maxProgramSize:I
+    iget v1, p1, Landroid/net/metrics/ApfStats;->maxProgramSize:I
 
-    iput p1, v0, Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$ApfStatistics;->maxProgramSize:I
+    iput v1, v0, Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$ApfStatistics;->maxProgramSize:I
 
     .line 293
     invoke-virtual {p0, v0}, Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$IpConnectivityEvent;->setApfStatistics(Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$ApfStatistics;)Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$IpConnectivityEvent;
@@ -584,6 +606,8 @@
 
 .method private static setDhcpClientEvent(Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$IpConnectivityEvent;Landroid/net/metrics/DhcpClientEvent;)V
     .registers 4
+    .param p0, "out"  # Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$IpConnectivityEvent;
+    .param p1, "in"  # Landroid/net/metrics/DhcpClientEvent;
 
     .line 225
     new-instance v0, Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$DHCPEvent;
@@ -591,14 +615,15 @@
     invoke-direct {v0}, Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$DHCPEvent;-><init>()V
 
     .line 226
+    .local v0, "dhcpEvent":Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$DHCPEvent;
     iget-object v1, p1, Landroid/net/metrics/DhcpClientEvent;->msg:Ljava/lang/String;
 
     invoke-virtual {v0, v1}, Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$DHCPEvent;->setStateTransition(Ljava/lang/String;)Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$DHCPEvent;
 
     .line 227
-    iget p1, p1, Landroid/net/metrics/DhcpClientEvent;->durationMs:I
+    iget v1, p1, Landroid/net/metrics/DhcpClientEvent;->durationMs:I
 
-    iput p1, v0, Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$DHCPEvent;->durationMs:I
+    iput v1, v0, Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$DHCPEvent;->durationMs:I
 
     .line 228
     invoke-virtual {p0, v0}, Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$IpConnectivityEvent;->setDhcpEvent(Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$DHCPEvent;)Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$IpConnectivityEvent;
@@ -608,7 +633,9 @@
 .end method
 
 .method private static setDhcpErrorEvent(Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$IpConnectivityEvent;Landroid/net/metrics/DhcpErrorEvent;)V
-    .registers 3
+    .registers 4
+    .param p0, "out"  # Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$IpConnectivityEvent;
+    .param p1, "in"  # Landroid/net/metrics/DhcpErrorEvent;
 
     .line 219
     new-instance v0, Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$DHCPEvent;
@@ -616,9 +643,10 @@
     invoke-direct {v0}, Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$DHCPEvent;-><init>()V
 
     .line 220
-    iget p1, p1, Landroid/net/metrics/DhcpErrorEvent;->errorCode:I
+    .local v0, "dhcpEvent":Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$DHCPEvent;
+    iget v1, p1, Landroid/net/metrics/DhcpErrorEvent;->errorCode:I
 
-    invoke-virtual {v0, p1}, Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$DHCPEvent;->setErrorCode(I)Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$DHCPEvent;
+    invoke-virtual {v0, v1}, Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$DHCPEvent;->setErrorCode(I)Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$DHCPEvent;
 
     .line 221
     invoke-virtual {p0, v0}, Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$IpConnectivityEvent;->setDhcpEvent(Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$DHCPEvent;)Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$IpConnectivityEvent;
@@ -629,143 +657,165 @@
 
 .method private static setEvent(Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$IpConnectivityEvent;Landroid/os/Parcelable;)Z
     .registers 4
+    .param p0, "out"  # Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$IpConnectivityEvent;
+    .param p1, "in"  # Landroid/os/Parcelable;
 
     .line 170
     instance-of v0, p1, Landroid/net/metrics/DhcpErrorEvent;
 
     const/4 v1, 0x1
 
-    if-eqz v0, :cond_b
+    if-eqz v0, :cond_c
 
     .line 171
-    check-cast p1, Landroid/net/metrics/DhcpErrorEvent;
+    move-object v0, p1
 
-    invoke-static {p0, p1}, Lcom/android/server/connectivity/IpConnectivityEventBuilder;->setDhcpErrorEvent(Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$IpConnectivityEvent;Landroid/net/metrics/DhcpErrorEvent;)V
+    check-cast v0, Landroid/net/metrics/DhcpErrorEvent;
+
+    invoke-static {p0, v0}, Lcom/android/server/connectivity/IpConnectivityEventBuilder;->setDhcpErrorEvent(Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$IpConnectivityEvent;Landroid/net/metrics/DhcpErrorEvent;)V
 
     .line 172
     return v1
 
     .line 175
-    :cond_b
+    :cond_c
     instance-of v0, p1, Landroid/net/metrics/DhcpClientEvent;
 
-    if-eqz v0, :cond_15
+    if-eqz v0, :cond_17
 
     .line 176
-    check-cast p1, Landroid/net/metrics/DhcpClientEvent;
+    move-object v0, p1
 
-    invoke-static {p0, p1}, Lcom/android/server/connectivity/IpConnectivityEventBuilder;->setDhcpClientEvent(Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$IpConnectivityEvent;Landroid/net/metrics/DhcpClientEvent;)V
+    check-cast v0, Landroid/net/metrics/DhcpClientEvent;
+
+    invoke-static {p0, v0}, Lcom/android/server/connectivity/IpConnectivityEventBuilder;->setDhcpClientEvent(Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$IpConnectivityEvent;Landroid/net/metrics/DhcpClientEvent;)V
 
     .line 177
     return v1
 
     .line 180
-    :cond_15
+    :cond_17
     instance-of v0, p1, Landroid/net/metrics/IpManagerEvent;
 
-    if-eqz v0, :cond_1f
+    if-eqz v0, :cond_22
 
     .line 181
-    check-cast p1, Landroid/net/metrics/IpManagerEvent;
+    move-object v0, p1
 
-    invoke-static {p0, p1}, Lcom/android/server/connectivity/IpConnectivityEventBuilder;->setIpManagerEvent(Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$IpConnectivityEvent;Landroid/net/metrics/IpManagerEvent;)V
+    check-cast v0, Landroid/net/metrics/IpManagerEvent;
+
+    invoke-static {p0, v0}, Lcom/android/server/connectivity/IpConnectivityEventBuilder;->setIpManagerEvent(Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$IpConnectivityEvent;Landroid/net/metrics/IpManagerEvent;)V
 
     .line 182
     return v1
 
     .line 185
-    :cond_1f
+    :cond_22
     instance-of v0, p1, Landroid/net/metrics/IpReachabilityEvent;
 
-    if-eqz v0, :cond_29
+    if-eqz v0, :cond_2d
 
     .line 186
-    check-cast p1, Landroid/net/metrics/IpReachabilityEvent;
+    move-object v0, p1
 
-    invoke-static {p0, p1}, Lcom/android/server/connectivity/IpConnectivityEventBuilder;->setIpReachabilityEvent(Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$IpConnectivityEvent;Landroid/net/metrics/IpReachabilityEvent;)V
+    check-cast v0, Landroid/net/metrics/IpReachabilityEvent;
+
+    invoke-static {p0, v0}, Lcom/android/server/connectivity/IpConnectivityEventBuilder;->setIpReachabilityEvent(Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$IpConnectivityEvent;Landroid/net/metrics/IpReachabilityEvent;)V
 
     .line 187
     return v1
 
     .line 190
-    :cond_29
+    :cond_2d
     instance-of v0, p1, Landroid/net/metrics/NetworkEvent;
 
-    if-eqz v0, :cond_33
+    if-eqz v0, :cond_38
 
     .line 191
-    check-cast p1, Landroid/net/metrics/NetworkEvent;
+    move-object v0, p1
 
-    invoke-static {p0, p1}, Lcom/android/server/connectivity/IpConnectivityEventBuilder;->setNetworkEvent(Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$IpConnectivityEvent;Landroid/net/metrics/NetworkEvent;)V
+    check-cast v0, Landroid/net/metrics/NetworkEvent;
+
+    invoke-static {p0, v0}, Lcom/android/server/connectivity/IpConnectivityEventBuilder;->setNetworkEvent(Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$IpConnectivityEvent;Landroid/net/metrics/NetworkEvent;)V
 
     .line 192
     return v1
 
     .line 195
-    :cond_33
+    :cond_38
     instance-of v0, p1, Landroid/net/metrics/ValidationProbeEvent;
 
-    if-eqz v0, :cond_3d
+    if-eqz v0, :cond_43
 
     .line 196
-    check-cast p1, Landroid/net/metrics/ValidationProbeEvent;
+    move-object v0, p1
 
-    invoke-static {p0, p1}, Lcom/android/server/connectivity/IpConnectivityEventBuilder;->setValidationProbeEvent(Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$IpConnectivityEvent;Landroid/net/metrics/ValidationProbeEvent;)V
+    check-cast v0, Landroid/net/metrics/ValidationProbeEvent;
+
+    invoke-static {p0, v0}, Lcom/android/server/connectivity/IpConnectivityEventBuilder;->setValidationProbeEvent(Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$IpConnectivityEvent;Landroid/net/metrics/ValidationProbeEvent;)V
 
     .line 197
     return v1
 
     .line 200
-    :cond_3d
+    :cond_43
     instance-of v0, p1, Landroid/net/metrics/ApfProgramEvent;
 
-    if-eqz v0, :cond_47
+    if-eqz v0, :cond_4e
 
     .line 201
-    check-cast p1, Landroid/net/metrics/ApfProgramEvent;
+    move-object v0, p1
 
-    invoke-static {p0, p1}, Lcom/android/server/connectivity/IpConnectivityEventBuilder;->setApfProgramEvent(Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$IpConnectivityEvent;Landroid/net/metrics/ApfProgramEvent;)V
+    check-cast v0, Landroid/net/metrics/ApfProgramEvent;
+
+    invoke-static {p0, v0}, Lcom/android/server/connectivity/IpConnectivityEventBuilder;->setApfProgramEvent(Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$IpConnectivityEvent;Landroid/net/metrics/ApfProgramEvent;)V
 
     .line 202
     return v1
 
     .line 205
-    :cond_47
+    :cond_4e
     instance-of v0, p1, Landroid/net/metrics/ApfStats;
 
-    if-eqz v0, :cond_51
+    if-eqz v0, :cond_59
 
     .line 206
-    check-cast p1, Landroid/net/metrics/ApfStats;
+    move-object v0, p1
 
-    invoke-static {p0, p1}, Lcom/android/server/connectivity/IpConnectivityEventBuilder;->setApfStats(Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$IpConnectivityEvent;Landroid/net/metrics/ApfStats;)V
+    check-cast v0, Landroid/net/metrics/ApfStats;
+
+    invoke-static {p0, v0}, Lcom/android/server/connectivity/IpConnectivityEventBuilder;->setApfStats(Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$IpConnectivityEvent;Landroid/net/metrics/ApfStats;)V
 
     .line 207
     return v1
 
     .line 210
-    :cond_51
+    :cond_59
     instance-of v0, p1, Landroid/net/metrics/RaEvent;
 
-    if-eqz v0, :cond_5b
+    if-eqz v0, :cond_64
 
     .line 211
-    check-cast p1, Landroid/net/metrics/RaEvent;
+    move-object v0, p1
 
-    invoke-static {p0, p1}, Lcom/android/server/connectivity/IpConnectivityEventBuilder;->setRaEvent(Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$IpConnectivityEvent;Landroid/net/metrics/RaEvent;)V
+    check-cast v0, Landroid/net/metrics/RaEvent;
+
+    invoke-static {p0, v0}, Lcom/android/server/connectivity/IpConnectivityEventBuilder;->setRaEvent(Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$IpConnectivityEvent;Landroid/net/metrics/RaEvent;)V
 
     .line 212
     return v1
 
     .line 215
-    :cond_5b
-    const/4 p0, 0x0
+    :cond_64
+    const/4 v0, 0x0
 
-    return p0
+    return v0
 .end method
 
 .method private static setIpManagerEvent(Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$IpConnectivityEvent;Landroid/net/metrics/IpManagerEvent;)V
     .registers 5
+    .param p0, "out"  # Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$IpConnectivityEvent;
+    .param p1, "in"  # Landroid/net/metrics/IpManagerEvent;
 
     .line 232
     new-instance v0, Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$IpProvisioningEvent;
@@ -773,6 +823,7 @@
     invoke-direct {v0}, Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$IpProvisioningEvent;-><init>()V
 
     .line 234
+    .local v0, "ipProvisioningEvent":Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$IpProvisioningEvent;
     iget v1, p1, Landroid/net/metrics/IpManagerEvent;->eventType:I
 
     iput v1, v0, Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$IpProvisioningEvent;->eventType:I
@@ -780,9 +831,9 @@
     .line 235
     iget-wide v1, p1, Landroid/net/metrics/IpManagerEvent;->durationMs:J
 
-    long-to-int p1, v1
+    long-to-int v1, v1
 
-    iput p1, v0, Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$IpProvisioningEvent;->latencyMs:I
+    iput v1, v0, Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$IpProvisioningEvent;->latencyMs:I
 
     .line 236
     invoke-virtual {p0, v0}, Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$IpConnectivityEvent;->setIpProvisioningEvent(Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$IpProvisioningEvent;)Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$IpConnectivityEvent;
@@ -792,7 +843,9 @@
 .end method
 
 .method private static setIpReachabilityEvent(Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$IpConnectivityEvent;Landroid/net/metrics/IpReachabilityEvent;)V
-    .registers 3
+    .registers 4
+    .param p0, "out"  # Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$IpConnectivityEvent;
+    .param p1, "in"  # Landroid/net/metrics/IpReachabilityEvent;
 
     .line 240
     new-instance v0, Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$IpReachabilityEvent;
@@ -800,9 +853,10 @@
     invoke-direct {v0}, Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$IpReachabilityEvent;-><init>()V
 
     .line 242
-    iget p1, p1, Landroid/net/metrics/IpReachabilityEvent;->eventType:I
+    .local v0, "ipReachabilityEvent":Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$IpReachabilityEvent;
+    iget v1, p1, Landroid/net/metrics/IpReachabilityEvent;->eventType:I
 
-    iput p1, v0, Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$IpReachabilityEvent;->eventType:I
+    iput v1, v0, Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$IpReachabilityEvent;->eventType:I
 
     .line 243
     invoke-virtual {p0, v0}, Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$IpConnectivityEvent;->setIpReachabilityEvent(Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$IpReachabilityEvent;)Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$IpConnectivityEvent;
@@ -813,6 +867,8 @@
 
 .method private static setNetworkEvent(Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$IpConnectivityEvent;Landroid/net/metrics/NetworkEvent;)V
     .registers 5
+    .param p0, "out"  # Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$IpConnectivityEvent;
+    .param p1, "in"  # Landroid/net/metrics/NetworkEvent;
 
     .line 247
     new-instance v0, Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$NetworkEvent;
@@ -820,6 +876,7 @@
     invoke-direct {v0}, Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$NetworkEvent;-><init>()V
 
     .line 249
+    .local v0, "networkEvent":Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$NetworkEvent;
     iget v1, p1, Landroid/net/metrics/NetworkEvent;->eventType:I
 
     iput v1, v0, Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$NetworkEvent;->eventType:I
@@ -827,9 +884,9 @@
     .line 250
     iget-wide v1, p1, Landroid/net/metrics/NetworkEvent;->durationMs:J
 
-    long-to-int p1, v1
+    long-to-int v1, v1
 
-    iput p1, v0, Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$NetworkEvent;->latencyMs:I
+    iput v1, v0, Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$NetworkEvent;->latencyMs:I
 
     .line 251
     invoke-virtual {p0, v0}, Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$IpConnectivityEvent;->setNetworkEvent(Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$NetworkEvent;)Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$IpConnectivityEvent;
@@ -840,6 +897,8 @@
 
 .method private static setRaEvent(Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$IpConnectivityEvent;Landroid/net/metrics/RaEvent;)V
     .registers 5
+    .param p0, "out"  # Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$IpConnectivityEvent;
+    .param p1, "in"  # Landroid/net/metrics/RaEvent;
 
     .line 297
     new-instance v0, Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$RaEvent;
@@ -847,6 +906,7 @@
     invoke-direct {v0}, Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$RaEvent;-><init>()V
 
     .line 298
+    .local v0, "raEvent":Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$RaEvent;
     iget-wide v1, p1, Landroid/net/metrics/RaEvent;->routerLifetime:J
 
     iput-wide v1, v0, Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$RaEvent;->routerLifetime:J
@@ -885,6 +945,8 @@
 
 .method private static setValidationProbeEvent(Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$IpConnectivityEvent;Landroid/net/metrics/ValidationProbeEvent;)V
     .registers 5
+    .param p0, "out"  # Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$IpConnectivityEvent;
+    .param p1, "in"  # Landroid/net/metrics/ValidationProbeEvent;
 
     .line 255
     new-instance v0, Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$ValidationProbeEvent;
@@ -892,6 +954,7 @@
     invoke-direct {v0}, Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$ValidationProbeEvent;-><init>()V
 
     .line 257
+    .local v0, "validationProbeEvent":Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$ValidationProbeEvent;
     iget-wide v1, p1, Landroid/net/metrics/ValidationProbeEvent;->durationMs:J
 
     long-to-int v1, v1
@@ -904,9 +967,9 @@
     iput v1, v0, Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$ValidationProbeEvent;->probeType:I
 
     .line 259
-    iget p1, p1, Landroid/net/metrics/ValidationProbeEvent;->returnCode:I
+    iget v1, p1, Landroid/net/metrics/ValidationProbeEvent;->returnCode:I
 
-    iput p1, v0, Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$ValidationProbeEvent;->probeResult:I
+    iput v1, v0, Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$ValidationProbeEvent;->probeResult:I
 
     .line 260
     invoke-virtual {p0, v0}, Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$IpConnectivityEvent;->setValidationProbeEvent(Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$ValidationProbeEvent;)Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$IpConnectivityEvent;
@@ -917,6 +980,7 @@
 
 .method private static toPairArray(Landroid/util/SparseIntArray;)[Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$Pair;
     .registers 6
+    .param p0, "counts"  # Landroid/util/SparseIntArray;
 
     .line 316
     invoke-virtual {p0}, Landroid/util/SparseIntArray;->size()I
@@ -924,11 +988,14 @@
     move-result v0
 
     .line 317
+    .local v0, "s":I
     new-array v1, v0, [Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$Pair;
 
     .line 318
+    .local v1, "pairs":[Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$Pair;
     const/4 v2, 0x0
 
+    .local v2, "i":I
     :goto_7
     if-ge v2, v0, :cond_1f
 
@@ -938,6 +1005,7 @@
     invoke-direct {v3}, Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$Pair;-><init>()V
 
     .line 320
+    .local v3, "p":Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$Pair;
     invoke-virtual {p0, v2}, Landroid/util/SparseIntArray;->keyAt(I)I
 
     move-result v4
@@ -955,17 +1023,20 @@
     aput-object v3, v1, v2
 
     .line 318
+    .end local v3  # "p":Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$Pair;
     add-int/lit8 v2, v2, 0x1
 
     goto :goto_7
 
     .line 324
+    .end local v2  # "i":I
     :cond_1f
     return-object v1
 .end method
 
 .method public static toProto(Landroid/net/ConnectivityMetricsEvent;)Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$IpConnectivityEvent;
     .registers 5
+    .param p0, "ev"  # Landroid/net/ConnectivityMetricsEvent;
 
     .line 85
     iget v0, p0, Landroid/net/ConnectivityMetricsEvent;->netId:I
@@ -979,23 +1050,24 @@
     move-result-object v0
 
     .line 86
+    .local v0, "out":Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$IpConnectivityEvent;
     iget-wide v1, p0, Landroid/net/ConnectivityMetricsEvent;->timestamp:J
 
     iput-wide v1, v0, Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$IpConnectivityEvent;->timeMs:J
 
     .line 87
-    iget-object p0, p0, Landroid/net/ConnectivityMetricsEvent;->data:Landroid/os/Parcelable;
+    iget-object v1, p0, Landroid/net/ConnectivityMetricsEvent;->data:Landroid/os/Parcelable;
 
-    invoke-static {v0, p0}, Lcom/android/server/connectivity/IpConnectivityEventBuilder;->setEvent(Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$IpConnectivityEvent;Landroid/os/Parcelable;)Z
+    invoke-static {v0, v1}, Lcom/android/server/connectivity/IpConnectivityEventBuilder;->setEvent(Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$IpConnectivityEvent;Landroid/os/Parcelable;)Z
 
-    move-result p0
+    move-result v1
 
-    if-nez p0, :cond_18
+    if-nez v1, :cond_18
 
     .line 88
-    const/4 p0, 0x0
+    const/4 v1, 0x0
 
-    return-object p0
+    return-object v1
 
     .line 90
     :cond_18
@@ -1003,7 +1075,8 @@
 .end method
 
 .method public static toProto(Landroid/net/metrics/ConnectStats;)Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$IpConnectivityEvent;
-    .registers 5
+    .registers 6
+    .param p0, "in"  # Landroid/net/metrics/ConnectStats;
 
     .line 94
     new-instance v0, Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$ConnectStatistics;
@@ -1011,6 +1084,7 @@
     invoke-direct {v0}, Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$ConnectStatistics;-><init>()V
 
     .line 96
+    .local v0, "stats":Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$ConnectStatistics;
     iget v1, p0, Landroid/net/metrics/ConnectStats;->connectCount:I
 
     iput v1, v0, Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$ConnectStatistics;->connectCount:I
@@ -1048,21 +1122,23 @@
 
     iget-wide v2, p0, Landroid/net/metrics/ConnectStats;->transports:J
 
-    const/4 p0, 0x0
+    const/4 v4, 0x0
 
-    invoke-static {v1, v2, v3, p0}, Lcom/android/server/connectivity/IpConnectivityEventBuilder;->buildEvent(IJLjava/lang/String;)Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$IpConnectivityEvent;
+    invoke-static {v1, v2, v3, v4}, Lcom/android/server/connectivity/IpConnectivityEventBuilder;->buildEvent(IJLjava/lang/String;)Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$IpConnectivityEvent;
 
-    move-result-object p0
+    move-result-object v1
 
     .line 102
-    invoke-virtual {p0, v0}, Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$IpConnectivityEvent;->setConnectStatistics(Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$ConnectStatistics;)Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$IpConnectivityEvent;
+    .local v1, "out":Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$IpConnectivityEvent;
+    invoke-virtual {v1, v0}, Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$IpConnectivityEvent;->setConnectStatistics(Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$ConnectStatistics;)Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$IpConnectivityEvent;
 
     .line 103
-    return-object p0
+    return-object v1
 .end method
 
 .method public static toProto(Landroid/net/metrics/DefaultNetworkEvent;)Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$IpConnectivityEvent;
     .registers 6
+    .param p0, "in"  # Landroid/net/metrics/DefaultNetworkEvent;
 
     .line 141
     new-instance v0, Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$DefaultNetworkEvent;
@@ -1070,6 +1146,7 @@
     invoke-direct {v0}, Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$DefaultNetworkEvent;-><init>()V
 
     .line 143
+    .local v0, "ev":Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$DefaultNetworkEvent;
     iget v1, p0, Landroid/net/metrics/DefaultNetworkEvent;->finalScore:I
 
     int-to-long v1, v1
@@ -1125,14 +1202,15 @@
     move-result-object v1
 
     .line 150
-    iget p0, p0, Landroid/net/metrics/DefaultNetworkEvent;->transports:I
+    .local v1, "out":Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$IpConnectivityEvent;
+    iget v2, p0, Landroid/net/metrics/DefaultNetworkEvent;->transports:I
 
-    if-nez p0, :cond_37
+    if-nez v2, :cond_37
 
     .line 152
-    const/4 p0, 0x5
+    const/4 v2, 0x5
 
-    iput p0, v1, Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$IpConnectivityEvent;->linkLayer:I
+    iput v2, v1, Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$IpConnectivityEvent;->linkLayer:I
 
     .line 154
     :cond_37
@@ -1143,7 +1221,8 @@
 .end method
 
 .method public static toProto(Landroid/net/metrics/DnsEvent;)Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$IpConnectivityEvent;
-    .registers 5
+    .registers 6
+    .param p0, "in"  # Landroid/net/metrics/DnsEvent;
 
     .line 108
     new-instance v0, Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$DNSLookupBatch;
@@ -1151,6 +1230,7 @@
     invoke-direct {v0}, Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$DNSLookupBatch;-><init>()V
 
     .line 110
+    .local v0, "dnsLookupBatch":Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$DNSLookupBatch;
     iget v1, p0, Landroid/net/metrics/DnsEvent;->eventCount:I
 
     invoke-virtual {p0, v1}, Landroid/net/metrics/DnsEvent;->resize(I)V
@@ -1183,21 +1263,23 @@
 
     iget-wide v2, p0, Landroid/net/metrics/DnsEvent;->transports:J
 
-    const/4 p0, 0x0
+    const/4 v4, 0x0
 
-    invoke-static {v1, v2, v3, p0}, Lcom/android/server/connectivity/IpConnectivityEventBuilder;->buildEvent(IJLjava/lang/String;)Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$IpConnectivityEvent;
+    invoke-static {v1, v2, v3, v4}, Lcom/android/server/connectivity/IpConnectivityEventBuilder;->buildEvent(IJLjava/lang/String;)Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$IpConnectivityEvent;
 
-    move-result-object p0
+    move-result-object v1
 
     .line 115
-    invoke-virtual {p0, v0}, Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$IpConnectivityEvent;->setDnsLookupBatch(Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$DNSLookupBatch;)Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$IpConnectivityEvent;
+    .local v1, "out":Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$IpConnectivityEvent;
+    invoke-virtual {v1, v0}, Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$IpConnectivityEvent;->setDnsLookupBatch(Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$DNSLookupBatch;)Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$IpConnectivityEvent;
 
     .line 116
-    return-object p0
+    return-object v1
 .end method
 
 .method public static toProto(Landroid/net/metrics/WakeupStats;)Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$IpConnectivityEvent;
-    .registers 5
+    .registers 6
+    .param p0, "in"  # Landroid/net/metrics/WakeupStats;
 
     .line 120
     new-instance v0, Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$WakeupStats;
@@ -1205,6 +1287,7 @@
     invoke-direct {v0}, Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$WakeupStats;-><init>()V
 
     .line 122
+    .local v0, "wakeupStats":Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$WakeupStats;
     invoke-virtual {p0}, Landroid/net/metrics/WakeupStats;->updateDuration()V
 
     .line 123
@@ -1276,25 +1359,26 @@
     iput-object v1, v0, Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$WakeupStats;->ipNextHeaderCounts:[Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$Pair;
 
     .line 135
-    iget-object p0, p0, Landroid/net/metrics/WakeupStats;->iface:Ljava/lang/String;
+    iget-object v1, p0, Landroid/net/metrics/WakeupStats;->iface:Ljava/lang/String;
 
-    const/4 v1, 0x0
+    const/4 v2, 0x0
 
-    const-wide/16 v2, 0x0
+    const-wide/16 v3, 0x0
 
-    invoke-static {v1, v2, v3, p0}, Lcom/android/server/connectivity/IpConnectivityEventBuilder;->buildEvent(IJLjava/lang/String;)Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$IpConnectivityEvent;
+    invoke-static {v2, v3, v4, v1}, Lcom/android/server/connectivity/IpConnectivityEventBuilder;->buildEvent(IJLjava/lang/String;)Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$IpConnectivityEvent;
 
-    move-result-object p0
+    move-result-object v1
 
     .line 136
-    invoke-virtual {p0, v0}, Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$IpConnectivityEvent;->setWakeupStats(Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$WakeupStats;)Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$IpConnectivityEvent;
+    .local v1, "out":Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$IpConnectivityEvent;
+    invoke-virtual {v1, v0}, Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$IpConnectivityEvent;->setWakeupStats(Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$WakeupStats;)Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$IpConnectivityEvent;
 
     .line 137
-    return-object p0
+    return-object v1
 .end method
 
 .method public static toProto(Ljava/util/List;)Ljava/util/List;
-    .registers 3
+    .registers 5
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(",
@@ -1308,6 +1392,7 @@
     .end annotation
 
     .line 73
+    .local p0, "eventsIn":Ljava/util/List;, "Ljava/util/List<Landroid/net/ConnectivityMetricsEvent;>;"
     new-instance v0, Ljava/util/ArrayList;
 
     invoke-interface {p0}, Ljava/util/List;->size()I
@@ -1317,39 +1402,44 @@
     invoke-direct {v0, v1}, Ljava/util/ArrayList;-><init>(I)V
 
     .line 74
+    .local v0, "eventsOut":Ljava/util/ArrayList;, "Ljava/util/ArrayList<Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$IpConnectivityEvent;>;"
     invoke-interface {p0}, Ljava/util/List;->iterator()Ljava/util/Iterator;
 
-    move-result-object p0
+    move-result-object v1
 
     :goto_d
-    invoke-interface {p0}, Ljava/util/Iterator;->hasNext()Z
+    invoke-interface {v1}, Ljava/util/Iterator;->hasNext()Z
 
-    move-result v1
+    move-result v2
 
-    if-eqz v1, :cond_24
+    if-eqz v2, :cond_24
 
-    invoke-interface {p0}, Ljava/util/Iterator;->next()Ljava/lang/Object;
+    invoke-interface {v1}, Ljava/util/Iterator;->next()Ljava/lang/Object;
 
-    move-result-object v1
+    move-result-object v2
 
-    check-cast v1, Landroid/net/ConnectivityMetricsEvent;
+    check-cast v2, Landroid/net/ConnectivityMetricsEvent;
 
     .line 75
-    invoke-static {v1}, Lcom/android/server/connectivity/IpConnectivityEventBuilder;->toProto(Landroid/net/ConnectivityMetricsEvent;)Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$IpConnectivityEvent;
+    .local v2, "in":Landroid/net/ConnectivityMetricsEvent;
+    invoke-static {v2}, Lcom/android/server/connectivity/IpConnectivityEventBuilder;->toProto(Landroid/net/ConnectivityMetricsEvent;)Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$IpConnectivityEvent;
 
-    move-result-object v1
+    move-result-object v3
 
     .line 76
-    if-nez v1, :cond_20
+    .local v3, "out":Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$IpConnectivityEvent;
+    if-nez v3, :cond_20
 
     .line 77
     goto :goto_d
 
     .line 79
     :cond_20
-    invoke-virtual {v0, v1}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
+    invoke-virtual {v0, v3}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
 
     .line 80
+    .end local v2  # "in":Landroid/net/ConnectivityMetricsEvent;
+    .end local v3  # "out":Lcom/android/server/connectivity/metrics/nano/IpConnectivityLogClass$IpConnectivityEvent;
     goto :goto_d
 
     .line 81
@@ -1359,6 +1449,7 @@
 
 .method private static transportToLinkLayer(I)I
     .registers 3
+    .param p0, "transport"  # I
 
     .line 371
     if-ltz p0, :cond_a
@@ -1370,19 +1461,20 @@
     if-ge p0, v1, :cond_a
 
     .line 372
-    aget p0, v0, p0
+    aget v0, v0, p0
 
-    return p0
+    return v0
 
     .line 374
     :cond_a
-    const/4 p0, 0x0
+    const/4 v0, 0x0
 
-    return p0
+    return v0
 .end method
 
 .method private static transportsToLinkLayer(J)I
     .registers 4
+    .param p0, "transports"  # J
 
     .line 359
     invoke-static {p0, p1}, Ljava/lang/Long;->bitCount(J)I
@@ -1396,26 +1488,28 @@
     if-eq v0, v1, :cond_b
 
     .line 366
-    const/4 p0, 0x6
+    const/4 v0, 0x6
 
-    return p0
+    return v0
 
     .line 363
     :cond_b
     invoke-static {p0, p1}, Ljava/lang/Long;->numberOfTrailingZeros(J)I
 
-    move-result p0
+    move-result v0
 
     .line 364
-    invoke-static {p0}, Lcom/android/server/connectivity/IpConnectivityEventBuilder;->transportToLinkLayer(I)I
+    .local v0, "t":I
+    invoke-static {v0}, Lcom/android/server/connectivity/IpConnectivityEventBuilder;->transportToLinkLayer(I)I
 
-    move-result p0
+    move-result v1
 
-    return p0
+    return v1
 
     .line 361
+    .end local v0  # "t":I
     :cond_14
-    const/4 p0, 0x0
+    const/4 v0, 0x0
 
-    return p0
+    return v0
 .end method

@@ -23,8 +23,9 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/broadcastradio/hal2/RadioModule;Lcom/android/server/broadcastradio/hal2/Mutable;)V
     .registers 3
+    .param p1, "this$0"  # Lcom/android/server/broadcastradio/hal2/RadioModule;
 
-    .line 281
+    .line 255
     iput-object p1, p0, Lcom/android/server/broadcastradio/hal2/RadioModule$3;->this$0:Lcom/android/server/broadcastradio/hal2/RadioModule;
 
     iput-object p2, p0, Lcom/android/server/broadcastradio/hal2/RadioModule$3;->val$hwCloseHandle:Lcom/android/server/broadcastradio/hal2/Mutable;
@@ -39,7 +40,7 @@
 .method public close()V
     .registers 4
 
-    .line 284
+    .line 258
     :try_start_0
     iget-object v0, p0, Lcom/android/server/broadcastradio/hal2/RadioModule$3;->val$hwCloseHandle:Lcom/android/server/broadcastradio/hal2/Mutable;
 
@@ -51,21 +52,23 @@
     :try_end_9
     .catch Landroid/os/RemoteException; {:try_start_0 .. :try_end_9} :catch_a
 
-    .line 287
+    .line 261
     goto :goto_12
 
-    .line 285
+    .line 259
     :catch_a
     move-exception v0
 
-    .line 286
+    .line 260
+    .local v0, "ex":Landroid/os/RemoteException;
     const-string v1, "BcRadio2Srv.module"
 
     const-string v2, "Failed closing announcement listener"
 
     invoke-static {v1, v2, v0}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
-    .line 288
+    .line 262
+    .end local v0  # "ex":Landroid/os/RemoteException;
     :goto_12
     return-void
 .end method

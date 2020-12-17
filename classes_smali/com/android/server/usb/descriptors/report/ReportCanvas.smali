@@ -14,6 +14,7 @@
 # direct methods
 .method public constructor <init>(Lcom/android/server/usb/descriptors/UsbDescriptorParser;)V
     .registers 2
+    .param p1, "parser"  # Lcom/android/server/usb/descriptors/UsbDescriptorParser;
 
     .line 34
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -26,7 +27,8 @@
 .end method
 
 .method public static getBCDString(I)Ljava/lang/String;
-    .registers 5
+    .registers 6
+    .param p0, "valueBCD"  # I
 
     .line 138
     shr-int/lit8 v0, p0, 0x8
@@ -34,41 +36,45 @@
     and-int/lit8 v0, v0, 0xf
 
     .line 139
+    .local v0, "major":I
     shr-int/lit8 v1, p0, 0x4
 
     and-int/lit8 v1, v1, 0xf
 
     .line 140
-    and-int/lit8 p0, p0, 0xf
+    .local v1, "minor":I
+    and-int/lit8 v2, p0, 0xf
 
     .line 142
-    new-instance v2, Ljava/lang/StringBuilder;
+    .local v2, "subminor":I
+    new-instance v3, Ljava/lang/StringBuilder;
 
-    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v3, ""
+    const-string v4, ""
 
-    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v2, v0}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v0}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    const-string v0, "."
+    const-string v4, "."
 
-    invoke-virtual {v2, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v2, v1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v2, p0}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v2}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v3
 
-    return-object p0
+    return-object v3
 .end method
 
 .method public static getHexString(B)Ljava/lang/String;
     .registers 3
+    .param p0, "value"  # B
 
     .line 130
     new-instance v0, Ljava/lang/StringBuilder;
@@ -79,57 +85,59 @@
 
     invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    and-int/lit16 p0, p0, 0xff
+    and-int/lit16 v1, p0, 0xff
 
-    invoke-static {p0}, Ljava/lang/Integer;->toHexString(I)Ljava/lang/String;
+    invoke-static {v1}, Ljava/lang/Integer;->toHexString(I)Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v1
 
-    invoke-virtual {p0}, Ljava/lang/String;->toUpperCase()Ljava/lang/String;
+    invoke-virtual {v1}, Ljava/lang/String;->toUpperCase()Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v1
 
-    invoke-virtual {v0, p0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v0
 
-    return-object p0
+    return-object v0
 .end method
 
 .method public static getHexString(I)Ljava/lang/String;
-    .registers 3
+    .registers 4
+    .param p0, "value"  # I
 
     .line 152
     const v0, 0xffff
 
-    and-int/2addr p0, v0
+    and-int/2addr v0, p0
 
     .line 153
-    new-instance v0, Ljava/lang/StringBuilder;
+    .local v0, "intValue":I
+    new-instance v1, Ljava/lang/StringBuilder;
 
-    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v1, "0x"
+    const-string v2, "0x"
 
-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-static {p0}, Ljava/lang/Integer;->toHexString(I)Ljava/lang/String;
+    invoke-static {v0}, Ljava/lang/Integer;->toHexString(I)Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v2
 
-    invoke-virtual {p0}, Ljava/lang/String;->toUpperCase()Ljava/lang/String;
+    invoke-virtual {v2}, Ljava/lang/String;->toUpperCase()Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v2
 
-    invoke-virtual {v0, p0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v1
 
-    return-object p0
+    return-object v1
 .end method
 
 
@@ -148,6 +156,8 @@
 
 .method public dumpHexArray([BLjava/lang/StringBuilder;)V
     .registers 6
+    .param p1, "rawData"  # [B
+    .param p2, "builder"  # Ljava/lang/StringBuilder;
 
     .line 162
     if-eqz p1, :cond_2a
@@ -158,8 +168,9 @@
     invoke-virtual {p0, v0}, Lcom/android/server/usb/descriptors/report/ReportCanvas;->openParagraph(Z)V
 
     .line 165
-    nop
+    const/4 v0, 0x0
 
+    .local v0, "index":I
     :goto_7
     array-length v1, p1
 
@@ -194,6 +205,7 @@
     goto :goto_7
 
     .line 168
+    .end local v0  # "index":I
     :cond_27
     invoke-virtual {p0}, Lcom/android/server/usb/descriptors/report/ReportCanvas;->closeParagraph()V
 
@@ -228,6 +240,8 @@
 
 .method public writeHeader(ILjava/lang/String;)V
     .registers 3
+    .param p1, "level"  # I
+    .param p2, "text"  # Ljava/lang/String;
 
     .line 65
     invoke-virtual {p0, p1}, Lcom/android/server/usb/descriptors/report/ReportCanvas;->openHeader(I)V
@@ -244,6 +258,7 @@
 
 .method public writeListItem(Ljava/lang/String;)V
     .registers 2
+    .param p1, "text"  # Ljava/lang/String;
 
     .line 115
     invoke-virtual {p0}, Lcom/android/server/usb/descriptors/report/ReportCanvas;->openListItem()V

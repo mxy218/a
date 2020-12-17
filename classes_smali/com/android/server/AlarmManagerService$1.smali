@@ -33,8 +33,9 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/AlarmManagerService;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/AlarmManagerService;
 
-    .line 860
+    .line 911
     iput-object p1, p0, Lcom/android/server/AlarmManagerService$1;->this$0:Lcom/android/server/AlarmManagerService;
 
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -46,8 +47,10 @@
 # virtual methods
 .method public compare(Lcom/android/server/AlarmManagerService$Alarm;Lcom/android/server/AlarmManagerService$Alarm;)I
     .registers 9
+    .param p1, "lhs"  # Lcom/android/server/AlarmManagerService$Alarm;
+    .param p2, "rhs"  # Lcom/android/server/AlarmManagerService$Alarm;
 
-    .line 864
+    .line 915
     iget-object v0, p1, Lcom/android/server/AlarmManagerService$Alarm;->priorityClass:Lcom/android/server/AlarmManagerService$PriorityClass;
 
     iget v0, v0, Lcom/android/server/AlarmManagerService$PriorityClass;->priority:I
@@ -60,10 +63,10 @@
 
     if-ge v0, v1, :cond_c
 
-    .line 865
+    .line 916
     return v2
 
-    .line 866
+    .line 917
     :cond_c
     iget-object v0, p1, Lcom/android/server/AlarmManagerService$Alarm;->priorityClass:Lcom/android/server/AlarmManagerService$PriorityClass;
 
@@ -77,10 +80,10 @@
 
     if-le v0, v1, :cond_18
 
-    .line 867
+    .line 918
     return v3
 
-    .line 871
+    .line 922
     :cond_18
     iget-wide v0, p1, Lcom/android/server/AlarmManagerService$Alarm;->whenElapsed:J
 
@@ -90,33 +93,33 @@
 
     if-gez v0, :cond_21
 
-    .line 872
+    .line 923
     return v2
 
-    .line 873
+    .line 924
     :cond_21
     iget-wide v0, p1, Lcom/android/server/AlarmManagerService$Alarm;->whenElapsed:J
 
-    iget-wide p1, p2, Lcom/android/server/AlarmManagerService$Alarm;->whenElapsed:J
+    iget-wide v4, p2, Lcom/android/server/AlarmManagerService$Alarm;->whenElapsed:J
 
-    cmp-long p1, v0, p1
+    cmp-long v0, v0, v4
 
-    if-lez p1, :cond_2a
+    if-lez v0, :cond_2a
 
-    .line 874
+    .line 925
     return v3
 
-    .line 878
+    .line 929
     :cond_2a
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    return p1
+    return v0
 .end method
 
 .method public bridge synthetic compare(Ljava/lang/Object;Ljava/lang/Object;)I
     .registers 3
 
-    .line 860
+    .line 911
     check-cast p1, Lcom/android/server/AlarmManagerService$Alarm;
 
     check-cast p2, Lcom/android/server/AlarmManagerService$Alarm;

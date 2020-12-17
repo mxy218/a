@@ -22,7 +22,9 @@
 
 # direct methods
 .method public constructor <init>(ILjava/lang/String;)V
-    .registers 3
+    .registers 4
+    .param p1, "audioCodec"  # I
+    .param p2, "sad"  # Ljava/lang/String;
 
     .line 655
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -33,9 +35,9 @@
     .line 657
     invoke-static {p2}, Lcom/android/internal/util/HexDump;->hexStringToByteArray(Ljava/lang/String;)[B
 
-    move-result-object p1
+    move-result-object v0
 
-    iput-object p1, p0, Lcom/android/server/hdmi/HdmiUtils$CodecSad;->sad:[B
+    iput-object v0, p0, Lcom/android/server/hdmi/HdmiUtils$CodecSad;->sad:[B
 
     .line 658
     return-void
@@ -43,6 +45,8 @@
 
 .method public constructor <init>(I[B)V
     .registers 3
+    .param p1, "audioCodec"  # I
+    .param p2, "sad"  # [B
 
     .line 650
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -60,49 +64,54 @@
 
 # virtual methods
 .method public equals(Ljava/lang/Object;)Z
-    .registers 5
+    .registers 6
+    .param p1, "obj"  # Ljava/lang/Object;
 
     .line 662
     instance-of v0, p1, Lcom/android/server/hdmi/HdmiUtils$CodecSad;
 
     const/4 v1, 0x0
 
-    if-eqz v0, :cond_1b
+    if-eqz v0, :cond_1c
 
     .line 663
-    check-cast p1, Lcom/android/server/hdmi/HdmiUtils$CodecSad;
+    move-object v0, p1
+
+    check-cast v0, Lcom/android/server/hdmi/HdmiUtils$CodecSad;
 
     .line 664
-    iget v0, p1, Lcom/android/server/hdmi/HdmiUtils$CodecSad;->audioCodec:I
+    .local v0, "that":Lcom/android/server/hdmi/HdmiUtils$CodecSad;
+    iget v2, v0, Lcom/android/server/hdmi/HdmiUtils$CodecSad;->audioCodec:I
 
-    iget v2, p0, Lcom/android/server/hdmi/HdmiUtils$CodecSad;->audioCodec:I
+    iget v3, p0, Lcom/android/server/hdmi/HdmiUtils$CodecSad;->audioCodec:I
 
-    if-ne v0, v2, :cond_19
+    if-ne v2, v3, :cond_1a
 
-    iget-object p1, p1, Lcom/android/server/hdmi/HdmiUtils$CodecSad;->sad:[B
+    iget-object v2, v0, Lcom/android/server/hdmi/HdmiUtils$CodecSad;->sad:[B
 
-    iget-object v0, p0, Lcom/android/server/hdmi/HdmiUtils$CodecSad;->sad:[B
+    iget-object v3, p0, Lcom/android/server/hdmi/HdmiUtils$CodecSad;->sad:[B
 
     .line 665
-    invoke-static {p1, v0}, Ljava/util/Arrays;->equals([B[B)Z
+    invoke-static {v2, v3}, Ljava/util/Arrays;->equals([B[B)Z
 
-    move-result p1
+    move-result v2
 
-    if-eqz p1, :cond_19
+    if-eqz v2, :cond_1a
 
     const/4 v1, 0x1
 
-    goto :goto_1a
+    goto :goto_1b
 
-    :cond_19
+    :cond_1a
     nop
 
     .line 664
-    :goto_1a
+    :goto_1b
     return v1
 
     .line 667
-    :cond_1b
+    .end local v0  # "that":Lcom/android/server/hdmi/HdmiUtils$CodecSad;
+    :cond_1c
     return v1
 .end method
 

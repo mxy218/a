@@ -23,6 +23,8 @@
 # direct methods
 .method public constructor <init>(Ljava/lang/String;J)V
     .registers 4
+    .param p1, "token"  # Ljava/lang/String;
+    .param p2, "expiryEpochMillis"  # J
 
     .line 42
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V

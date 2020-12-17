@@ -40,7 +40,11 @@
 
 # direct methods
 .method constructor <init>(Ljava/lang/String;Landroid/os/Handler;Landroid/hardware/SensorManager;I)V
-    .registers 6
+    .registers 7
+    .param p1, "tag"  # Ljava/lang/String;
+    .param p2, "handler"  # Landroid/os/Handler;
+    .param p3, "sensorManager"  # Landroid/hardware/SensorManager;
+    .param p4, "rate"  # I
 
     .line 78
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -59,9 +63,9 @@
     iput-object p1, p0, Lcom/android/server/display/whitebalance/AmbientSensor;->mTag:Ljava/lang/String;
 
     .line 81
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    iput-boolean p1, p0, Lcom/android/server/display/whitebalance/AmbientSensor;->mLoggingEnabled:Z
+    iput-boolean v0, p0, Lcom/android/server/display/whitebalance/AmbientSensor;->mLoggingEnabled:Z
 
     .line 82
     iput-object p2, p0, Lcom/android/server/display/whitebalance/AmbientSensor;->mHandler:Landroid/os/Handler;
@@ -70,22 +74,22 @@
     iput-object p3, p0, Lcom/android/server/display/whitebalance/AmbientSensor;->mSensorManager:Landroid/hardware/SensorManager;
 
     .line 84
-    iput-boolean p1, p0, Lcom/android/server/display/whitebalance/AmbientSensor;->mEnabled:Z
+    iput-boolean v0, p0, Lcom/android/server/display/whitebalance/AmbientSensor;->mEnabled:Z
 
     .line 85
     iput p4, p0, Lcom/android/server/display/whitebalance/AmbientSensor;->mRate:I
 
     .line 86
-    iput p1, p0, Lcom/android/server/display/whitebalance/AmbientSensor;->mEventsCount:I
+    iput v0, p0, Lcom/android/server/display/whitebalance/AmbientSensor;->mEventsCount:I
 
     .line 87
-    new-instance p1, Lcom/android/server/display/utils/History;
+    new-instance v0, Lcom/android/server/display/utils/History;
 
-    const/16 p2, 0x32
+    const/16 v1, 0x32
 
-    invoke-direct {p1, p2}, Lcom/android/server/display/utils/History;-><init>(I)V
+    invoke-direct {v0, v1}, Lcom/android/server/display/utils/History;-><init>(I)V
 
-    iput-object p1, p0, Lcom/android/server/display/whitebalance/AmbientSensor;->mEventsHistory:Lcom/android/server/display/utils/History;
+    iput-object v0, p0, Lcom/android/server/display/whitebalance/AmbientSensor;->mEventsHistory:Lcom/android/server/display/utils/History;
 
     .line 88
     return-void
@@ -93,6 +97,8 @@
 
 .method static synthetic access$000(Lcom/android/server/display/whitebalance/AmbientSensor;F)V
     .registers 2
+    .param p0, "x0"  # Lcom/android/server/display/whitebalance/AmbientSensor;
+    .param p1, "x1"  # F
 
     .line 40
     invoke-direct {p0, p1}, Lcom/android/server/display/whitebalance/AmbientSensor;->handleNewEvent(F)V
@@ -183,6 +189,7 @@
 
 .method private handleNewEvent(F)V
     .registers 5
+    .param p1, "value"  # F
 
     .line 193
     iget-boolean v0, p0, Lcom/android/server/display/whitebalance/AmbientSensor;->mEnabled:Z
@@ -288,7 +295,10 @@
 .end method
 
 .method private static validateArguments(Landroid/os/Handler;Landroid/hardware/SensorManager;I)V
-    .registers 4
+    .registers 5
+    .param p0, "handler"  # Landroid/os/Handler;
+    .param p1, "sensorManager"  # Landroid/hardware/SensorManager;
+    .param p2, "rate"  # I
 
     .line 142
     const-string v0, "handler cannot be null"
@@ -296,9 +306,9 @@
     invoke-static {p0, v0}, Lcom/android/internal/util/Preconditions;->checkNotNull(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
 
     .line 143
-    const-string/jumbo p0, "sensorManager cannot be null"
+    const-string/jumbo v0, "sensorManager cannot be null"
 
-    invoke-static {p1, p0}, Lcom/android/internal/util/Preconditions;->checkNotNull(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+    invoke-static {p1, v0}, Lcom/android/internal/util/Preconditions;->checkNotNull(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
 
     .line 144
     if-lez p2, :cond_e
@@ -308,19 +318,20 @@
 
     .line 145
     :cond_e
-    new-instance p0, Ljava/lang/IllegalArgumentException;
+    new-instance v0, Ljava/lang/IllegalArgumentException;
 
-    const-string/jumbo p1, "rate must be positive"
+    const-string/jumbo v1, "rate must be positive"
 
-    invoke-direct {p0, p1}, Ljava/lang/IllegalArgumentException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v0, v1}, Ljava/lang/IllegalArgumentException;-><init>(Ljava/lang/String;)V
 
-    throw p0
+    throw v0
 .end method
 
 
 # virtual methods
 .method public dump(Ljava/io/PrintWriter;)V
     .registers 4
+    .param p1, "writer"  # Ljava/io/PrintWriter;
 
     .line 129
     new-instance v0, Ljava/lang/StringBuilder;
@@ -498,7 +509,8 @@
 .end method
 
 .method public setEnabled(Z)Z
-    .registers 2
+    .registers 3
+    .param p1, "enabled"  # Z
 
     .line 99
     if-eqz p1, :cond_7
@@ -506,21 +518,22 @@
     .line 100
     invoke-direct {p0}, Lcom/android/server/display/whitebalance/AmbientSensor;->enable()Z
 
-    move-result p1
+    move-result v0
 
-    return p1
+    return v0
 
     .line 102
     :cond_7
     invoke-direct {p0}, Lcom/android/server/display/whitebalance/AmbientSensor;->disable()Z
 
-    move-result p1
+    move-result v0
 
-    return p1
+    return v0
 .end method
 
 .method public setLoggingEnabled(Z)Z
     .registers 3
+    .param p1, "loggingEnabled"  # Z
 
     .line 115
     iget-boolean v0, p0, Lcom/android/server/display/whitebalance/AmbientSensor;->mLoggingEnabled:Z
@@ -528,18 +541,18 @@
     if-ne v0, p1, :cond_6
 
     .line 116
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    return p1
+    return v0
 
     .line 118
     :cond_6
     iput-boolean p1, p0, Lcom/android/server/display/whitebalance/AmbientSensor;->mLoggingEnabled:Z
 
     .line 119
-    const/4 p1, 0x1
+    const/4 v0, 0x1
 
-    return p1
+    return v0
 .end method
 
 .method protected abstract update(F)V

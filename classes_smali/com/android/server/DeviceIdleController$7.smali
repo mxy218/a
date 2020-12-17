@@ -24,8 +24,9 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/DeviceIdleController;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/DeviceIdleController;
 
-    .line 805
+    .line 714
     iput-object p1, p0, Lcom/android/server/DeviceIdleController$7;->this$0:Lcom/android/server/DeviceIdleController;
 
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -37,52 +38,58 @@
 # virtual methods
 .method public onLocationChanged(Landroid/location/Location;)V
     .registers 4
+    .param p1, "location"  # Landroid/location/Location;
 
-    .line 808
+    .line 717
     iget-object v0, p0, Lcom/android/server/DeviceIdleController$7;->this$0:Lcom/android/server/DeviceIdleController;
 
     monitor-enter v0
 
-    .line 809
+    .line 718
     :try_start_3
     iget-object v1, p0, Lcom/android/server/DeviceIdleController$7;->this$0:Lcom/android/server/DeviceIdleController;
 
     invoke-virtual {v1, p1}, Lcom/android/server/DeviceIdleController;->receivedGenericLocationLocked(Landroid/location/Location;)V
 
-    .line 810
+    .line 719
     monitor-exit v0
 
-    .line 811
+    .line 720
     return-void
 
-    .line 810
+    .line 719
     :catchall_a
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_c
     .catchall {:try_start_3 .. :try_end_c} :catchall_a
 
-    throw p1
+    throw v1
 .end method
 
 .method public onProviderDisabled(Ljava/lang/String;)V
     .registers 2
+    .param p1, "provider"  # Ljava/lang/String;
 
-    .line 823
+    .line 732
     return-void
 .end method
 
 .method public onProviderEnabled(Ljava/lang/String;)V
     .registers 2
+    .param p1, "provider"  # Ljava/lang/String;
 
-    .line 819
+    .line 728
     return-void
 .end method
 
 .method public onStatusChanged(Ljava/lang/String;ILandroid/os/Bundle;)V
     .registers 4
+    .param p1, "provider"  # Ljava/lang/String;
+    .param p2, "status"  # I
+    .param p3, "extras"  # Landroid/os/Bundle;
 
-    .line 815
+    .line 724
     return-void
 .end method

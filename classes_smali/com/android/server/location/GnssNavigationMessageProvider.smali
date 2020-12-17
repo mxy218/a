@@ -52,6 +52,8 @@
 
 .method protected constructor <init>(Landroid/content/Context;Landroid/os/Handler;)V
     .registers 4
+    .param p1, "context"  # Landroid/content/Context;
+    .param p2, "handler"  # Landroid/os/Handler;
 
     .line 44
     new-instance v0, Lcom/android/server/location/GnssNavigationMessageProvider$GnssNavigationMessageProviderNative;
@@ -66,6 +68,9 @@
 
 .method constructor <init>(Landroid/content/Context;Landroid/os/Handler;Lcom/android/server/location/GnssNavigationMessageProvider$GnssNavigationMessageProviderNative;)V
     .registers 5
+    .param p1, "context"  # Landroid/content/Context;
+    .param p2, "handler"  # Landroid/os/Handler;
+    .param p3, "aNative"  # Lcom/android/server/location/GnssNavigationMessageProvider$GnssNavigationMessageProviderNative;
     .annotation build Lcom/android/internal/annotations/VisibleForTesting;
     .end annotation
 
@@ -116,6 +121,9 @@
 
 .method static synthetic lambda$onNavigationMessageAvailable$0(Landroid/location/GnssNavigationMessage;Landroid/location/IGnssNavigationMessageListener;Lcom/android/server/location/CallerIdentity;)V
     .registers 3
+    .param p0, "event"  # Landroid/location/GnssNavigationMessage;
+    .param p1, "listener"  # Landroid/location/IGnssNavigationMessageListener;
+    .param p2, "callerIdentity"  # Lcom/android/server/location/CallerIdentity;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -142,6 +150,7 @@
 # virtual methods
 .method protected getHandlerOperation(I)Lcom/android/server/location/RemoteListenerHelper$ListenerOperation;
     .registers 5
+    .param p1, "result"  # I
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(I)",
@@ -152,19 +161,19 @@
     .end annotation
 
     .line 108
-    const/4 v0, 0x2
-
-    const/4 v1, 0x1
-
     if-eqz p1, :cond_2e
 
-    if-eq p1, v1, :cond_2c
+    const/4 v0, 0x1
 
     if-eq p1, v0, :cond_2c
 
-    const/4 v1, 0x3
+    const/4 v0, 0x2
 
-    if-eq p1, v1, :cond_2a
+    if-eq p1, v0, :cond_2c
+
+    const/4 v0, 0x3
+
+    if-eq p1, v0, :cond_2a
 
     const/4 v0, 0x4
 
@@ -189,11 +198,11 @@
 
     invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    const-string v0, "GnssNavigationMessageProvider"
+    const-string v2, "GnssNavigationMessageProvider"
 
-    invoke-static {v0, p1}, Landroid/util/Log;->v(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v2, v0}, Landroid/util/Log;->v(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 124
     return-object v1
@@ -204,32 +213,37 @@
 
     .line 118
     :cond_2a
-    nop
+    const/4 v0, 0x2
 
     .line 119
+    .local v0, "status":I
     goto :goto_30
 
     .line 115
+    .end local v0  # "status":I
     :cond_2c
     const/4 v0, 0x0
 
     .line 116
+    .restart local v0  # "status":I
     goto :goto_30
 
     .line 110
+    .end local v0  # "status":I
     :cond_2e
-    nop
+    const/4 v0, 0x1
 
     .line 111
-    move v0, v1
+    .restart local v0  # "status":I
+    nop
 
     .line 126
     :goto_30
-    new-instance p1, Lcom/android/server/location/GnssNavigationMessageProvider$StatusChangedOperation;
+    new-instance v1, Lcom/android/server/location/GnssNavigationMessageProvider$StatusChangedOperation;
 
-    invoke-direct {p1, v0}, Lcom/android/server/location/GnssNavigationMessageProvider$StatusChangedOperation;-><init>(I)V
+    invoke-direct {v1, v0}, Lcom/android/server/location/GnssNavigationMessageProvider$StatusChangedOperation;-><init>(I)V
 
-    return-object p1
+    return-object v1
 .end method
 
 .method protected isAvailableInPlatform()Z
@@ -247,6 +261,7 @@
 
 .method public onCapabilitiesUpdated(Z)V
     .registers 2
+    .param p1, "isGnssNavigationMessageSupported"  # Z
 
     .line 96
     invoke-virtual {p0, p1}, Lcom/android/server/location/GnssNavigationMessageProvider;->setSupported(Z)V
@@ -273,6 +288,7 @@
 
 .method public onNavigationMessageAvailable(Landroid/location/GnssNavigationMessage;)V
     .registers 3
+    .param p1, "event"  # Landroid/location/GnssNavigationMessage;
 
     .line 88
     new-instance v0, Lcom/android/server/location/-$$Lambda$GnssNavigationMessageProvider$FPgP5DRMyheqM1CQ4z7jkoJwIFg;
@@ -286,7 +302,7 @@
 .end method
 
 .method protected registerWithService()I
-    .registers 2
+    .registers 3
 
     .line 70
     iget-object v0, p0, Lcom/android/server/location/GnssNavigationMessageProvider;->mNative:Lcom/android/server/location/GnssNavigationMessageProvider$GnssNavigationMessageProviderNative;
@@ -296,23 +312,24 @@
     move-result v0
 
     .line 71
+    .local v0, "result":Z
     if-eqz v0, :cond_d
 
     .line 72
-    const/4 v0, 0x1
+    const/4 v1, 0x1
 
-    iput-boolean v0, p0, Lcom/android/server/location/GnssNavigationMessageProvider;->mCollectionStarted:Z
+    iput-boolean v1, p0, Lcom/android/server/location/GnssNavigationMessageProvider;->mCollectionStarted:Z
 
     .line 73
-    const/4 v0, 0x0
+    const/4 v1, 0x0
 
-    return v0
+    return v1
 
     .line 75
     :cond_d
-    const/4 v0, 0x4
+    const/4 v1, 0x4
 
-    return v0
+    return v1
 .end method
 
 .method resumeIfStarted()V
@@ -347,7 +364,7 @@
 .end method
 
 .method protected unregisterFromService()V
-    .registers 2
+    .registers 3
 
     .line 81
     iget-object v0, p0, Lcom/android/server/location/GnssNavigationMessageProvider;->mNative:Lcom/android/server/location/GnssNavigationMessageProvider$GnssNavigationMessageProviderNative;
@@ -357,12 +374,13 @@
     move-result v0
 
     .line 82
+    .local v0, "stopped":Z
     if-eqz v0, :cond_b
 
     .line 83
-    const/4 v0, 0x0
+    const/4 v1, 0x0
 
-    iput-boolean v0, p0, Lcom/android/server/location/GnssNavigationMessageProvider;->mCollectionStarted:Z
+    iput-boolean v1, p0, Lcom/android/server/location/GnssNavigationMessageProvider;->mCollectionStarted:Z
 
     .line 85
     :cond_b

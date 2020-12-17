@@ -20,164 +20,173 @@
 
 # direct methods
 .method constructor <init>(Lcom/android/server/infra/AbstractMasterSystemService;Landroid/os/Handler;)V
-    .registers 6
+    .registers 8
+    .param p2, "handler"  # Landroid/os/Handler;
 
-    .line 959
+    .line 865
+    .local p0, "this":Lcom/android/server/infra/AbstractMasterSystemService$SettingsObserver;, "Lcom/android/server/infra/AbstractMasterSystemService<TM;TS;>.SettingsObserver;"
     iput-object p1, p0, Lcom/android/server/infra/AbstractMasterSystemService$SettingsObserver;->this$0:Lcom/android/server/infra/AbstractMasterSystemService;
 
-    .line 960
+    .line 866
     invoke-direct {p0, p2}, Landroid/database/ContentObserver;-><init>(Landroid/os/Handler;)V
 
-    .line 961
+    .line 867
     invoke-virtual {p1}, Lcom/android/server/infra/AbstractMasterSystemService;->getContext()Landroid/content/Context;
 
-    move-result-object p2
+    move-result-object v0
 
-    invoke-virtual {p2}, Landroid/content/Context;->getContentResolver()Landroid/content/ContentResolver;
+    invoke-virtual {v0}, Landroid/content/Context;->getContentResolver()Landroid/content/ContentResolver;
 
-    move-result-object p2
+    move-result-object v0
 
-    .line 962
+    .line 868
+    .local v0, "resolver":Landroid/content/ContentResolver;
     invoke-virtual {p1}, Lcom/android/server/infra/AbstractMasterSystemService;->getServiceSettingsProperty()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v1
 
-    .line 963
-    const/4 v1, -0x1
+    .line 869
+    .local v1, "serviceProperty":Ljava/lang/String;
+    const/4 v2, -0x1
 
-    const/4 v2, 0x0
+    const/4 v3, 0x0
 
-    if-eqz v0, :cond_1c
+    if-eqz v1, :cond_1c
 
-    .line 964
-    invoke-static {v0}, Landroid/provider/Settings$Secure;->getUriFor(Ljava/lang/String;)Landroid/net/Uri;
+    .line 870
+    invoke-static {v1}, Landroid/provider/Settings$Secure;->getUriFor(Ljava/lang/String;)Landroid/net/Uri;
 
-    move-result-object v0
+    move-result-object v4
 
-    invoke-virtual {p2, v0, v2, p0, v1}, Landroid/content/ContentResolver;->registerContentObserver(Landroid/net/Uri;ZLandroid/database/ContentObserver;I)V
+    invoke-virtual {v0, v4, v3, p0, v2}, Landroid/content/ContentResolver;->registerContentObserver(Landroid/net/Uri;ZLandroid/database/ContentObserver;I)V
 
-    .line 967
+    .line 873
     :cond_1c
-    const-string/jumbo v0, "user_setup_complete"
+    const-string/jumbo v4, "user_setup_complete"
 
-    invoke-static {v0}, Landroid/provider/Settings$Secure;->getUriFor(Ljava/lang/String;)Landroid/net/Uri;
+    invoke-static {v4}, Landroid/provider/Settings$Secure;->getUriFor(Ljava/lang/String;)Landroid/net/Uri;
 
-    move-result-object v0
+    move-result-object v4
 
-    invoke-virtual {p2, v0, v2, p0, v1}, Landroid/content/ContentResolver;->registerContentObserver(Landroid/net/Uri;ZLandroid/database/ContentObserver;I)V
+    invoke-virtual {v0, v4, v3, p0, v2}, Landroid/content/ContentResolver;->registerContentObserver(Landroid/net/Uri;ZLandroid/database/ContentObserver;I)V
 
-    .line 969
-    invoke-virtual {p1, p2, p0}, Lcom/android/server/infra/AbstractMasterSystemService;->registerForExtraSettingsChanges(Landroid/content/ContentResolver;Landroid/database/ContentObserver;)V
+    .line 875
+    invoke-virtual {p1, v0, p0}, Lcom/android/server/infra/AbstractMasterSystemService;->registerForExtraSettingsChanges(Landroid/content/ContentResolver;Landroid/database/ContentObserver;)V
 
-    .line 970
+    .line 876
     return-void
 .end method
 
 
 # virtual methods
 .method public onChange(ZLandroid/net/Uri;I)V
-    .registers 6
+    .registers 7
+    .param p1, "selfChange"  # Z
+    .param p2, "uri"  # Landroid/net/Uri;
+    .param p3, "userId"  # I
 
-    .line 974
-    iget-object p1, p0, Lcom/android/server/infra/AbstractMasterSystemService$SettingsObserver;->this$0:Lcom/android/server/infra/AbstractMasterSystemService;
+    .line 880
+    .local p0, "this":Lcom/android/server/infra/AbstractMasterSystemService$SettingsObserver;, "Lcom/android/server/infra/AbstractMasterSystemService<TM;TS;>.SettingsObserver;"
+    iget-object v0, p0, Lcom/android/server/infra/AbstractMasterSystemService$SettingsObserver;->this$0:Lcom/android/server/infra/AbstractMasterSystemService;
 
-    iget-boolean p1, p1, Lcom/android/server/infra/AbstractMasterSystemService;->verbose:Z
+    iget-boolean v0, v0, Lcom/android/server/infra/AbstractMasterSystemService;->verbose:Z
 
-    if-eqz p1, :cond_27
+    if-eqz v0, :cond_27
 
-    iget-object p1, p0, Lcom/android/server/infra/AbstractMasterSystemService$SettingsObserver;->this$0:Lcom/android/server/infra/AbstractMasterSystemService;
+    iget-object v0, p0, Lcom/android/server/infra/AbstractMasterSystemService$SettingsObserver;->this$0:Lcom/android/server/infra/AbstractMasterSystemService;
 
-    iget-object p1, p1, Lcom/android/server/infra/AbstractMasterSystemService;->mTag:Ljava/lang/String;
+    iget-object v0, v0, Lcom/android/server/infra/AbstractMasterSystemService;->mTag:Ljava/lang/String;
 
-    new-instance v0, Ljava/lang/StringBuilder;
+    new-instance v1, Ljava/lang/StringBuilder;
 
-    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string/jumbo v1, "onChange(): uri="
+    const-string/jumbo v2, "onChange(): uri="
 
-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
-    const-string v1, ", userId="
+    const-string v2, ", userId="
 
-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0, p3}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, p3}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v1
 
-    invoke-static {p1, v0}, Landroid/util/Slog;->v(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v0, v1}, Landroid/util/Slog;->v(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 975
+    .line 881
     :cond_27
     invoke-virtual {p2}, Landroid/net/Uri;->getLastPathSegment()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    .line 976
-    iget-object p2, p0, Lcom/android/server/infra/AbstractMasterSystemService$SettingsObserver;->this$0:Lcom/android/server/infra/AbstractMasterSystemService;
+    .line 882
+    .local v0, "property":Ljava/lang/String;
+    iget-object v1, p0, Lcom/android/server/infra/AbstractMasterSystemService$SettingsObserver;->this$0:Lcom/android/server/infra/AbstractMasterSystemService;
 
-    invoke-virtual {p2}, Lcom/android/server/infra/AbstractMasterSystemService;->getServiceSettingsProperty()Ljava/lang/String;
+    invoke-virtual {v1}, Lcom/android/server/infra/AbstractMasterSystemService;->getServiceSettingsProperty()Ljava/lang/String;
 
-    move-result-object p2
+    move-result-object v1
 
-    invoke-virtual {p1, p2}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v0, v1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result p2
+    move-result v1
 
-    if-nez p2, :cond_47
+    if-nez v1, :cond_47
 
-    .line 977
-    const-string/jumbo p2, "user_setup_complete"
+    .line 883
+    const-string/jumbo v1, "user_setup_complete"
 
-    invoke-virtual {p1, p2}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v0, v1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result p2
+    move-result v1
 
-    if-eqz p2, :cond_41
+    if-eqz v1, :cond_41
 
     goto :goto_47
 
-    .line 982
+    .line 888
     :cond_41
-    iget-object p2, p0, Lcom/android/server/infra/AbstractMasterSystemService$SettingsObserver;->this$0:Lcom/android/server/infra/AbstractMasterSystemService;
+    iget-object v1, p0, Lcom/android/server/infra/AbstractMasterSystemService$SettingsObserver;->this$0:Lcom/android/server/infra/AbstractMasterSystemService;
 
-    invoke-virtual {p2, p3, p1}, Lcom/android/server/infra/AbstractMasterSystemService;->onSettingsChanged(ILjava/lang/String;)V
+    invoke-virtual {v1, p3, v0}, Lcom/android/server/infra/AbstractMasterSystemService;->onSettingsChanged(ILjava/lang/String;)V
 
     goto :goto_52
 
-    .line 978
+    .line 884
     :cond_47
     :goto_47
-    iget-object p1, p0, Lcom/android/server/infra/AbstractMasterSystemService$SettingsObserver;->this$0:Lcom/android/server/infra/AbstractMasterSystemService;
+    iget-object v1, p0, Lcom/android/server/infra/AbstractMasterSystemService$SettingsObserver;->this$0:Lcom/android/server/infra/AbstractMasterSystemService;
 
-    iget-object p1, p1, Lcom/android/server/infra/AbstractMasterSystemService;->mLock:Ljava/lang/Object;
+    iget-object v1, v1, Lcom/android/server/infra/AbstractMasterSystemService;->mLock:Ljava/lang/Object;
 
-    monitor-enter p1
+    monitor-enter v1
 
-    .line 979
+    .line 885
     :try_start_4c
-    iget-object p2, p0, Lcom/android/server/infra/AbstractMasterSystemService$SettingsObserver;->this$0:Lcom/android/server/infra/AbstractMasterSystemService;
+    iget-object v2, p0, Lcom/android/server/infra/AbstractMasterSystemService$SettingsObserver;->this$0:Lcom/android/server/infra/AbstractMasterSystemService;
 
-    invoke-virtual {p2, p3}, Lcom/android/server/infra/AbstractMasterSystemService;->updateCachedServiceLocked(I)V
+    invoke-virtual {v2, p3}, Lcom/android/server/infra/AbstractMasterSystemService;->updateCachedServiceLocked(I)V
 
-    .line 980
-    monitor-exit p1
+    .line 886
+    monitor-exit v1
 
-    .line 984
+    .line 890
     :goto_52
     return-void
 
-    .line 980
+    .line 886
     :catchall_53
-    move-exception p2
+    move-exception v2
 
-    monitor-exit p1
+    monitor-exit v1
     :try_end_55
     .catchall {:try_start_4c .. :try_end_55} :catchall_53
 
-    throw p2
+    throw v2
 .end method

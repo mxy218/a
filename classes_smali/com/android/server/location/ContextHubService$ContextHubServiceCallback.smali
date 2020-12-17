@@ -23,6 +23,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/location/ContextHubService;I)V
     .registers 3
+    .param p2, "contextHubId"  # I
 
     .line 114
     iput-object p1, p0, Lcom/android/server/location/ContextHubService$ContextHubServiceCallback;->this$0:Lcom/android/server/location/ContextHubService;
@@ -40,6 +41,8 @@
 # virtual methods
 .method public handleAppAbort(JI)V
     .registers 6
+    .param p1, "nanoAppId"  # J
+    .param p3, "abortCode"  # I
 
     .line 135
     iget-object v0, p0, Lcom/android/server/location/ContextHubService$ContextHubServiceCallback;->this$0:Lcom/android/server/location/ContextHubService;
@@ -64,6 +67,7 @@
     .end annotation
 
     .line 140
+    .local p1, "nanoAppInfoList":Ljava/util/ArrayList;, "Ljava/util/ArrayList<Landroid/hardware/contexthub/V1_0/HubAppInfo;>;"
     iget-object v0, p0, Lcom/android/server/location/ContextHubService$ContextHubServiceCallback;->this$0:Lcom/android/server/location/ContextHubService;
 
     iget v1, p0, Lcom/android/server/location/ContextHubService$ContextHubServiceCallback;->mContextHubId:I
@@ -76,6 +80,7 @@
 
 .method public handleClientMsg(Landroid/hardware/contexthub/V1_0/ContextHubMsg;)V
     .registers 4
+    .param p1, "message"  # Landroid/hardware/contexthub/V1_0/ContextHubMsg;
 
     .line 120
     iget-object v0, p0, Lcom/android/server/location/ContextHubService$ContextHubServiceCallback;->this$0:Lcom/android/server/location/ContextHubService;
@@ -90,6 +95,7 @@
 
 .method public handleHubEvent(I)V
     .registers 4
+    .param p1, "eventType"  # I
 
     .line 130
     iget-object v0, p0, Lcom/android/server/location/ContextHubService$ContextHubServiceCallback;->this$0:Lcom/android/server/location/ContextHubService;
@@ -104,6 +110,8 @@
 
 .method public handleTxnResult(II)V
     .registers 5
+    .param p1, "transactionId"  # I
+    .param p2, "result"  # I
 
     .line 125
     iget-object v0, p0, Lcom/android/server/location/ContextHubService$ContextHubServiceCallback;->this$0:Lcom/android/server/location/ContextHubService;

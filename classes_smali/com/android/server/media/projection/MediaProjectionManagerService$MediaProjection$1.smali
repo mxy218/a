@@ -26,6 +26,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/media/projection/MediaProjectionManagerService$MediaProjection;Landroid/media/projection/IMediaProjectionCallback;)V
     .registers 3
+    .param p1, "this$1"  # Lcom/android/server/media/projection/MediaProjectionManagerService$MediaProjection;
 
     .line 484
     iput-object p1, p0, Lcom/android/server/media/projection/MediaProjectionManagerService$MediaProjection$1;->this$1:Lcom/android/server/media/projection/MediaProjectionManagerService$MediaProjection;

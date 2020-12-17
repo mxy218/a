@@ -40,6 +40,8 @@
 
 .method public onAppIntentEvent(Lcom/google/android/startop/iorap/RequestId;Lcom/google/android/startop/iorap/AppIntentEvent;)V
     .registers 3
+    .param p1, "request"  # Lcom/google/android/startop/iorap/RequestId;
+    .param p2, "event"  # Lcom/google/android/startop/iorap/AppIntentEvent;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -52,6 +54,8 @@
 
 .method public onAppLaunchEvent(Lcom/google/android/startop/iorap/RequestId;Lcom/google/android/startop/iorap/AppLaunchEvent;)V
     .registers 3
+    .param p1, "request"  # Lcom/google/android/startop/iorap/RequestId;
+    .param p2, "event"  # Lcom/google/android/startop/iorap/AppLaunchEvent;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -64,6 +68,8 @@
 
 .method public onPackageEvent(Lcom/google/android/startop/iorap/RequestId;Lcom/google/android/startop/iorap/PackageEvent;)V
     .registers 3
+    .param p1, "request"  # Lcom/google/android/startop/iorap/RequestId;
+    .param p2, "event"  # Lcom/google/android/startop/iorap/PackageEvent;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -76,6 +82,8 @@
 
 .method public onSystemServiceEvent(Lcom/google/android/startop/iorap/RequestId;Lcom/google/android/startop/iorap/SystemServiceEvent;)V
     .registers 3
+    .param p1, "request"  # Lcom/google/android/startop/iorap/RequestId;
+    .param p2, "event"  # Lcom/google/android/startop/iorap/SystemServiceEvent;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -88,6 +96,8 @@
 
 .method public onSystemServiceUserEvent(Lcom/google/android/startop/iorap/RequestId;Lcom/google/android/startop/iorap/SystemServiceUserEvent;)V
     .registers 3
+    .param p1, "request"  # Lcom/google/android/startop/iorap/RequestId;
+    .param p2, "event"  # Lcom/google/android/startop/iorap/SystemServiceUserEvent;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -100,6 +110,7 @@
 
 .method public setTaskListener(Lcom/google/android/startop/iorap/ITaskListener;)V
     .registers 2
+    .param p1, "listener"  # Lcom/google/android/startop/iorap/ITaskListener;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;

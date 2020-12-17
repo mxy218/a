@@ -29,6 +29,7 @@
 # direct methods
 .method public constructor <init>(Lcom/android/server/media/RemoteDisplayProviderProxy$Connection;)V
     .registers 3
+    .param p1, "connection"  # Lcom/android/server/media/RemoteDisplayProviderProxy$Connection;
 
     .line 427
     invoke-direct {p0}, Landroid/media/IRemoteDisplayCallback$Stub;-><init>()V
@@ -60,6 +61,7 @@
 
 .method public onStateChanged(Landroid/media/RemoteDisplayState;)V
     .registers 3
+    .param p1, "state"  # Landroid/media/RemoteDisplayState;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -76,6 +78,7 @@
     check-cast v0, Lcom/android/server/media/RemoteDisplayProviderProxy$Connection;
 
     .line 438
+    .local v0, "connection":Lcom/android/server/media/RemoteDisplayProviderProxy$Connection;
     if-eqz v0, :cond_d
 
     .line 439

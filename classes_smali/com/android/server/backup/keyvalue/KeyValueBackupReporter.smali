@@ -33,6 +33,9 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/backup/UserBackupManagerService;Landroid/app/backup/IBackupObserver;Landroid/app/backup/IBackupManagerMonitor;)V
     .registers 4
+    .param p1, "backupManagerService"  # Lcom/android/server/backup/UserBackupManagerService;
+    .param p2, "observer"  # Landroid/app/backup/IBackupObserver;
+    .param p3, "monitor"  # Landroid/app/backup/IBackupManagerMonitor;
 
     .line 73
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -51,24 +54,26 @@
 .end method
 
 .method private getPackageName(Landroid/content/pm/PackageInfo;)Ljava/lang/String;
-    .registers 2
+    .registers 3
+    .param p1, "packageInfo"  # Landroid/content/pm/PackageInfo;
 
     .line 371
     if-eqz p1, :cond_5
 
-    iget-object p1, p1, Landroid/content/pm/PackageInfo;->packageName:Ljava/lang/String;
+    iget-object v0, p1, Landroid/content/pm/PackageInfo;->packageName:Ljava/lang/String;
 
     goto :goto_8
 
     :cond_5
-    const-string/jumbo p1, "no_package_yet"
+    const-string/jumbo v0, "no_package_yet"
 
     :goto_8
-    return-object p1
+    return-object v0
 .end method
 
 .method static onNewThread(Ljava/lang/String;)V
     .registers 3
+    .param p0, "threadName"  # Ljava/lang/String;
 
     .line 62
     new-instance v0, Ljava/lang/StringBuilder;
@@ -83,11 +88,11 @@
 
     invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v0
 
-    const-string v0, "KeyValueBackupTask"
+    const-string v1, "KeyValueBackupTask"
 
-    invoke-static {v0, p0}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v0}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 64
     return-void
@@ -114,7 +119,8 @@
 .end method
 
 .method onAgentCancelled(Landroid/content/pm/PackageInfo;)V
-    .registers 6
+    .registers 7
+    .param p1, "packageInfo"  # Landroid/content/pm/PackageInfo;
 
     .line 349
     invoke-direct {p0, p1}, Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;->getPackageName(Landroid/content/pm/PackageInfo;)Ljava/lang/String;
@@ -122,6 +128,7 @@
     move-result-object v0
 
     .line 350
+    .local v0, "packageName":Ljava/lang/String;
     new-instance v1, Ljava/lang/StringBuilder;
 
     invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
@@ -146,29 +153,29 @@
     invoke-static {v1, v0}, Landroid/util/EventLog;->writeEvent(ILjava/lang/String;)I
 
     .line 352
-    iget-object v0, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;->mMonitor:Landroid/app/backup/IBackupManagerMonitor;
+    iget-object v1, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;->mMonitor:Landroid/app/backup/IBackupManagerMonitor;
 
     .line 358
-    const/4 v1, 0x0
+    const/4 v2, 0x0
 
-    const-string v2, "android.app.backup.extra.LOG_CANCEL_ALL"
+    const-string v3, "android.app.backup.extra.LOG_CANCEL_ALL"
 
-    const/4 v3, 0x1
+    const/4 v4, 0x1
 
-    invoke-static {v1, v2, v3}, Lcom/android/server/backup/utils/BackupManagerMonitorUtils;->putMonitoringExtra(Landroid/os/Bundle;Ljava/lang/String;Z)Landroid/os/Bundle;
+    invoke-static {v2, v3, v4}, Lcom/android/server/backup/utils/BackupManagerMonitorUtils;->putMonitoringExtra(Landroid/os/Bundle;Ljava/lang/String;Z)Landroid/os/Bundle;
+
+    move-result-object v2
+
+    .line 353
+    const/16 v3, 0x15
+
+    const/4 v4, 0x2
+
+    invoke-static {v1, v3, p1, v4, v2}, Lcom/android/server/backup/utils/BackupManagerMonitorUtils;->monitorEvent(Landroid/app/backup/IBackupManagerMonitor;ILandroid/content/pm/PackageInfo;ILandroid/os/Bundle;)Landroid/app/backup/IBackupManagerMonitor;
 
     move-result-object v1
 
-    .line 353
-    const/16 v2, 0x15
-
-    const/4 v3, 0x2
-
-    invoke-static {v0, v2, p1, v3, v1}, Lcom/android/server/backup/utils/BackupManagerMonitorUtils;->monitorEvent(Landroid/app/backup/IBackupManagerMonitor;ILandroid/content/pm/PackageInfo;ILandroid/os/Bundle;)Landroid/app/backup/IBackupManagerMonitor;
-
-    move-result-object p1
-
-    iput-object p1, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;->mMonitor:Landroid/app/backup/IBackupManagerMonitor;
+    iput-object v1, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;->mMonitor:Landroid/app/backup/IBackupManagerMonitor;
 
     .line 360
     return-void
@@ -176,6 +183,8 @@
 
 .method onAgentDataError(Ljava/lang/String;Ljava/io/IOException;)V
     .registers 5
+    .param p1, "packageName"  # Ljava/lang/String;
+    .param p2, "e"  # Ljava/io/IOException;
 
     .line 229
     new-instance v0, Ljava/lang/StringBuilder;
@@ -188,19 +197,19 @@
 
     invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string p1, ": "
+    const-string v1, ": "
 
-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v0, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    const-string p2, "KeyValueBackupTask"
+    const-string v1, "KeyValueBackupTask"
 
-    invoke-static {p2, p1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v0}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 230
     return-void
@@ -208,6 +217,7 @@
 
 .method onAgentDoQuotaExceededError(Ljava/lang/Exception;)V
     .registers 4
+    .param p1, "e"  # Ljava/lang/Exception;
 
     .line 289
     new-instance v0, Ljava/lang/StringBuilder;
@@ -222,11 +232,11 @@
 
     invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    const-string v0, "KeyValueBackupTask"
+    const-string v1, "KeyValueBackupTask"
 
-    invoke-static {v0, p1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v0}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 290
     return-void
@@ -234,6 +244,7 @@
 
 .method onAgentError(Ljava/lang/String;)V
     .registers 4
+    .param p1, "packageName"  # Ljava/lang/String;
 
     .line 173
     iget-object v0, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;->mObserver:Landroid/app/backup/IBackupObserver;
@@ -248,18 +259,22 @@
 
 .method onAgentFilesReady(Ljava/io/File;)V
     .registers 2
+    .param p1, "backupDataFile"  # Ljava/io/File;
 
     .line 187
     return-void
 .end method
 
 .method onAgentIllegalKey(Landroid/content/pm/PackageInfo;Ljava/lang/String;)V
-    .registers 7
+    .registers 8
+    .param p1, "packageInfo"  # Landroid/content/pm/PackageInfo;
+    .param p2, "key"  # Ljava/lang/String;
 
     .line 209
     iget-object v0, p1, Landroid/content/pm/PackageInfo;->packageName:Ljava/lang/String;
 
     .line 210
+    .local v0, "packageName":Ljava/lang/String;
     const/4 v1, 0x2
 
     new-array v1, v1, [Ljava/lang/Object;
@@ -288,93 +303,96 @@
 
     invoke-static {v2, v3, p2}, Lcom/android/server/backup/utils/BackupManagerMonitorUtils;->putMonitoringExtra(Landroid/os/Bundle;Ljava/lang/String;Ljava/lang/String;)Landroid/os/Bundle;
 
-    move-result-object p2
+    move-result-object v2
 
     .line 212
-    const/4 v2, 0x5
+    const/4 v3, 0x5
 
-    const/4 v3, 0x3
+    const/4 v4, 0x3
 
-    invoke-static {v1, v2, p1, v3, p2}, Lcom/android/server/backup/utils/BackupManagerMonitorUtils;->monitorEvent(Landroid/app/backup/IBackupManagerMonitor;ILandroid/content/pm/PackageInfo;ILandroid/os/Bundle;)Landroid/app/backup/IBackupManagerMonitor;
+    invoke-static {v1, v3, p1, v4, v2}, Lcom/android/server/backup/utils/BackupManagerMonitorUtils;->monitorEvent(Landroid/app/backup/IBackupManagerMonitor;ILandroid/content/pm/PackageInfo;ILandroid/os/Bundle;)Landroid/app/backup/IBackupManagerMonitor;
 
-    move-result-object p1
+    move-result-object v1
 
-    iput-object p1, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;->mMonitor:Landroid/app/backup/IBackupManagerMonitor;
+    iput-object v1, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;->mMonitor:Landroid/app/backup/IBackupManagerMonitor;
 
     .line 219
-    iget-object p1, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;->mObserver:Landroid/app/backup/IBackupObserver;
+    iget-object v1, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;->mObserver:Landroid/app/backup/IBackupObserver;
 
-    const/16 p2, -0x3eb
+    const/16 v2, -0x3eb
 
-    invoke-static {p1, v0, p2}, Lcom/android/server/backup/utils/BackupObserverUtils;->sendBackupOnPackageResult(Landroid/app/backup/IBackupObserver;Ljava/lang/String;I)V
+    invoke-static {v1, v0, v2}, Lcom/android/server/backup/utils/BackupObserverUtils;->sendBackupOnPackageResult(Landroid/app/backup/IBackupObserver;Ljava/lang/String;I)V
 
     .line 226
     return-void
 .end method
 
 .method onAgentResultError(Landroid/content/pm/PackageInfo;)V
-    .registers 5
+    .registers 6
+    .param p1, "packageInfo"  # Landroid/content/pm/PackageInfo;
 
     .line 363
     invoke-direct {p0, p1}, Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;->getPackageName(Landroid/content/pm/PackageInfo;)Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
     .line 364
-    iget-object v0, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;->mObserver:Landroid/app/backup/IBackupObserver;
+    .local v0, "packageName":Ljava/lang/String;
+    iget-object v1, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;->mObserver:Landroid/app/backup/IBackupObserver;
 
-    const/16 v1, -0x3eb
+    const/16 v2, -0x3eb
 
-    invoke-static {v0, p1, v1}, Lcom/android/server/backup/utils/BackupObserverUtils;->sendBackupOnPackageResult(Landroid/app/backup/IBackupObserver;Ljava/lang/String;I)V
+    invoke-static {v1, v0, v2}, Lcom/android/server/backup/utils/BackupObserverUtils;->sendBackupOnPackageResult(Landroid/app/backup/IBackupObserver;Ljava/lang/String;I)V
 
     .line 366
-    const/4 v0, 0x2
+    const/4 v1, 0x2
 
-    new-array v0, v0, [Ljava/lang/Object;
+    new-array v1, v1, [Ljava/lang/Object;
 
-    const/4 v1, 0x0
+    const/4 v2, 0x0
 
-    aput-object p1, v0, v1
+    aput-object v0, v1, v2
 
-    const/4 v1, 0x1
+    const/4 v2, 0x1
 
-    const-string/jumbo v2, "result error"
+    const-string/jumbo v3, "result error"
 
-    aput-object v2, v0, v1
+    aput-object v3, v1, v2
 
-    const/16 v1, 0xb07
+    const/16 v2, 0xb07
 
-    invoke-static {v1, v0}, Landroid/util/EventLog;->writeEvent(I[Ljava/lang/Object;)I
+    invoke-static {v2, v1}, Landroid/util/EventLog;->writeEvent(I[Ljava/lang/Object;)I
 
     .line 367
-    new-instance v0, Ljava/lang/StringBuilder;
+    new-instance v1, Ljava/lang/StringBuilder;
 
-    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v1, "Agent "
+    const-string v2, "Agent "
 
-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string p1, " error in onBackup()"
+    const-string v2, " error in onBackup()"
 
-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v1
 
-    const-string v0, "KeyValueBackupTask"
+    const-string v2, "KeyValueBackupTask"
 
-    invoke-static {v0, p1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v2, v1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 368
     return-void
 .end method
 
 .method onAgentTimedOut(Landroid/content/pm/PackageInfo;)V
-    .registers 6
+    .registers 7
+    .param p1, "packageInfo"  # Landroid/content/pm/PackageInfo;
 
     .line 333
     invoke-direct {p0, p1}, Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;->getPackageName(Landroid/content/pm/PackageInfo;)Ljava/lang/String;
@@ -382,6 +400,7 @@
     move-result-object v0
 
     .line 334
+    .local v0, "packageName":Ljava/lang/String;
     new-instance v1, Ljava/lang/StringBuilder;
 
     invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
@@ -410,29 +429,29 @@
     invoke-static {v1, v0}, Landroid/util/EventLog;->writeEvent(ILjava/lang/String;)I
 
     .line 338
-    iget-object v0, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;->mMonitor:Landroid/app/backup/IBackupManagerMonitor;
+    iget-object v1, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;->mMonitor:Landroid/app/backup/IBackupManagerMonitor;
 
     .line 344
-    const/4 v1, 0x0
+    const/4 v2, 0x0
 
-    const-string v2, "android.app.backup.extra.LOG_CANCEL_ALL"
+    const-string v3, "android.app.backup.extra.LOG_CANCEL_ALL"
 
-    const/4 v3, 0x0
+    const/4 v4, 0x0
 
-    invoke-static {v1, v2, v3}, Lcom/android/server/backup/utils/BackupManagerMonitorUtils;->putMonitoringExtra(Landroid/os/Bundle;Ljava/lang/String;Z)Landroid/os/Bundle;
+    invoke-static {v2, v3, v4}, Lcom/android/server/backup/utils/BackupManagerMonitorUtils;->putMonitoringExtra(Landroid/os/Bundle;Ljava/lang/String;Z)Landroid/os/Bundle;
+
+    move-result-object v2
+
+    .line 339
+    const/16 v3, 0x15
+
+    const/4 v4, 0x2
+
+    invoke-static {v1, v3, p1, v4, v2}, Lcom/android/server/backup/utils/BackupManagerMonitorUtils;->monitorEvent(Landroid/app/backup/IBackupManagerMonitor;ILandroid/content/pm/PackageInfo;ILandroid/os/Bundle;)Landroid/app/backup/IBackupManagerMonitor;
 
     move-result-object v1
 
-    .line 339
-    const/16 v2, 0x15
-
-    const/4 v3, 0x2
-
-    invoke-static {v0, v2, p1, v3, v1}, Lcom/android/server/backup/utils/BackupManagerMonitorUtils;->monitorEvent(Landroid/app/backup/IBackupManagerMonitor;ILandroid/content/pm/PackageInfo;ILandroid/os/Bundle;)Landroid/app/backup/IBackupManagerMonitor;
-
-    move-result-object p1
-
-    iput-object p1, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;->mMonitor:Landroid/app/backup/IBackupManagerMonitor;
+    iput-object v1, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;->mMonitor:Landroid/app/backup/IBackupManagerMonitor;
 
     .line 346
     return-void
@@ -440,6 +459,7 @@
 
 .method onAgentUnknown(Ljava/lang/String;)V
     .registers 4
+    .param p1, "packageName"  # Ljava/lang/String;
 
     .line 158
     const-string v0, "KeyValueBackupTask"
@@ -461,6 +481,7 @@
 
 .method onBackupFinished(I)V
     .registers 3
+    .param p1, "status"  # I
 
     .line 413
     iget-object v0, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;->mObserver:Landroid/app/backup/IBackupObserver;
@@ -473,6 +494,8 @@
 
 .method onBindAgentError(Ljava/lang/String;Ljava/lang/SecurityException;)V
     .registers 5
+    .param p1, "packageName"  # Ljava/lang/String;
+    .param p2, "e"  # Ljava/lang/SecurityException;
 
     .line 164
     const-string v0, "KeyValueBackupTask"
@@ -482,18 +505,21 @@
     invoke-static {v0, v1, p2}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
     .line 165
-    iget-object p2, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;->mObserver:Landroid/app/backup/IBackupObserver;
+    iget-object v0, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;->mObserver:Landroid/app/backup/IBackupObserver;
 
-    const/16 v0, -0x3eb
+    const/16 v1, -0x3eb
 
-    invoke-static {p2, p1, v0}, Lcom/android/server/backup/utils/BackupObserverUtils;->sendBackupOnPackageResult(Landroid/app/backup/IBackupObserver;Ljava/lang/String;I)V
+    invoke-static {v0, p1, v1}, Lcom/android/server/backup/utils/BackupObserverUtils;->sendBackupOnPackageResult(Landroid/app/backup/IBackupObserver;Ljava/lang/String;I)V
 
     .line 167
     return-void
 .end method
 
 .method onCallAgentDoBackupError(Ljava/lang/String;ZLjava/lang/Exception;)V
-    .registers 7
+    .registers 8
+    .param p1, "packageName"  # Ljava/lang/String;
+    .param p2, "callingAgent"  # Z
+    .param p3, "e"  # Ljava/lang/Exception;
 
     .line 194
     const-string v0, ": "
@@ -503,78 +529,78 @@
     if-eqz p2, :cond_28
 
     .line 195
-    new-instance p2, Ljava/lang/StringBuilder;
+    new-instance v2, Ljava/lang/StringBuilder;
 
-    invoke-direct {p2}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v2, "Error invoking agent on "
+    const-string v3, "Error invoking agent on "
 
-    invoke-virtual {p2, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p2, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p2, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p2, p3}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, p3}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p2
+    move-result-object v0
 
-    invoke-static {v1, p2}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v0}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 196
-    iget-object p2, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;->mObserver:Landroid/app/backup/IBackupObserver;
+    iget-object v0, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;->mObserver:Landroid/app/backup/IBackupObserver;
 
-    const/16 v0, -0x3eb
+    const/16 v1, -0x3eb
 
-    invoke-static {p2, p1, v0}, Lcom/android/server/backup/utils/BackupObserverUtils;->sendBackupOnPackageResult(Landroid/app/backup/IBackupObserver;Ljava/lang/String;I)V
+    invoke-static {v0, p1, v1}, Lcom/android/server/backup/utils/BackupObserverUtils;->sendBackupOnPackageResult(Landroid/app/backup/IBackupObserver;Ljava/lang/String;I)V
 
     goto :goto_42
 
     .line 199
     :cond_28
-    new-instance p2, Ljava/lang/StringBuilder;
+    new-instance v2, Ljava/lang/StringBuilder;
 
-    invoke-direct {p2}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v2, "Error before invoking agent on "
+    const-string v3, "Error before invoking agent on "
 
-    invoke-virtual {p2, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p2, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p2, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p2, p3}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, p3}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p2
+    move-result-object v0
 
-    invoke-static {v1, p2}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v0}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 201
     :goto_42
-    const/16 p2, 0xb07
+    const/16 v0, 0xb07
 
-    const/4 v0, 0x2
+    const/4 v1, 0x2
 
-    new-array v0, v0, [Ljava/lang/Object;
+    new-array v1, v1, [Ljava/lang/Object;
 
-    const/4 v1, 0x0
+    const/4 v2, 0x0
 
-    aput-object p1, v0, v1
+    aput-object p1, v1, v2
 
-    const/4 p1, 0x1
+    const/4 v2, 0x1
 
     invoke-virtual {p3}, Ljava/lang/Exception;->toString()Ljava/lang/String;
 
-    move-result-object p3
+    move-result-object v3
 
-    aput-object p3, v0, p1
+    aput-object v3, v1, v2
 
-    invoke-static {p2, v0}, Landroid/util/EventLog;->writeEvent(I[Ljava/lang/Object;)I
+    invoke-static {v0, v1}, Landroid/util/EventLog;->writeEvent(I[Ljava/lang/Object;)I
 
     .line 202
     return-void
@@ -589,6 +615,7 @@
 
 .method onCloseFileDescriptorError(Ljava/lang/String;)V
     .registers 4
+    .param p1, "logName"  # Ljava/lang/String;
 
     .line 323
     new-instance v0, Ljava/lang/StringBuilder;
@@ -601,31 +628,32 @@
 
     invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string p1, " file-descriptor"
+    const-string v1, " file-descriptor"
 
-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    const-string v0, "KeyValueBackupTask"
+    const-string v1, "KeyValueBackupTask"
 
-    invoke-static {v0, p1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v0}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 324
     return-void
 .end method
 
 .method onDigestError(Ljava/security/NoSuchAlgorithmException;)V
-    .registers 3
+    .registers 4
+    .param p1, "e"  # Ljava/security/NoSuchAlgorithmException;
 
     .line 233
-    const-string p1, "KeyValueBackupTask"
+    const-string v0, "KeyValueBackupTask"
 
-    const-string v0, "Unable to use SHA-1!"
+    const-string v1, "Unable to use SHA-1!"
 
-    invoke-static {p1, v0}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v0, v1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 234
     return-void
@@ -633,6 +661,7 @@
 
 .method onEmptyData(Landroid/content/pm/PackageInfo;)V
     .registers 6
+    .param p1, "packageInfo"  # Landroid/content/pm/PackageInfo;
 
     .line 257
     iget-object v0, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;->mMonitor:Landroid/app/backup/IBackupManagerMonitor;
@@ -646,9 +675,9 @@
 
     invoke-static {v0, v1, p1, v2, v3}, Lcom/android/server/backup/utils/BackupManagerMonitorUtils;->monitorEvent(Landroid/app/backup/IBackupManagerMonitor;ILandroid/content/pm/PackageInfo;ILandroid/os/Bundle;)Landroid/app/backup/IBackupManagerMonitor;
 
-    move-result-object p1
+    move-result-object v0
 
-    iput-object p1, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;->mMonitor:Landroid/app/backup/IBackupManagerMonitor;
+    iput-object v0, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;->mMonitor:Landroid/app/backup/IBackupManagerMonitor;
 
     .line 264
     return-void
@@ -670,6 +699,7 @@
 
 .method onExtractAgentData(Ljava/lang/String;)V
     .registers 4
+    .param p1, "packageName"  # Ljava/lang/String;
 
     .line 179
     new-instance v0, Ljava/lang/StringBuilder;
@@ -684,11 +714,11 @@
 
     invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    const-string v0, "KeyValueBackupTask"
+    const-string v1, "KeyValueBackupTask"
 
-    invoke-static {v0, p1}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v0}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 181
     return-void
@@ -696,6 +726,7 @@
 
 .method onExtractPmAgentDataError(Ljava/lang/Exception;)V
     .registers 4
+    .param p1, "e"  # Ljava/lang/Exception;
 
     .line 131
     const-string v0, "KeyValueBackupTask"
@@ -710,6 +741,7 @@
 
 .method onFailAgentError(Ljava/lang/String;)V
     .registers 4
+    .param p1, "packageName"  # Ljava/lang/String;
 
     .line 205
     new-instance v0, Ljava/lang/StringBuilder;
@@ -724,25 +756,26 @@
 
     invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    const-string v0, "KeyValueBackupTask"
+    const-string v1, "KeyValueBackupTask"
 
-    invoke-static {v0, p1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v0}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 206
     return-void
 .end method
 
 .method onInitializeTransport(Ljava/lang/String;)V
-    .registers 3
+    .registers 4
+    .param p1, "transportName"  # Ljava/lang/String;
 
     .line 110
-    const-string p1, "KeyValueBackupTask"
+    const-string v0, "KeyValueBackupTask"
 
-    const-string v0, "Initializing transport and resetting backup state"
+    const-string v1, "Initializing transport and resetting backup state"
 
-    invoke-static {p1, v0}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v0, v1}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 111
     return-void
@@ -750,6 +783,7 @@
 
 .method onInitializeTransportError(Ljava/lang/Exception;)V
     .registers 4
+    .param p1, "e"  # Ljava/lang/Exception;
 
     .line 123
     const-string v0, "KeyValueBackupTask"
@@ -764,6 +798,7 @@
 
 .method onJournalDeleteFailed(Lcom/android/server/backup/DataChangedJournal;)V
     .registers 4
+    .param p1, "journal"  # Lcom/android/server/backup/DataChangedJournal;
 
     .line 391
     new-instance v0, Ljava/lang/StringBuilder;
@@ -778,18 +813,20 @@
 
     invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    const-string v0, "KeyValueBackupTask"
+    const-string v1, "KeyValueBackupTask"
 
-    invoke-static {v0, p1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v0}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 392
     return-void
 .end method
 
 .method onPackageBackupComplete(Ljava/lang/String;J)V
-    .registers 6
+    .registers 7
+    .param p1, "packageName"  # Ljava/lang/String;
+    .param p2, "size"  # J
 
     .line 267
     iget-object v0, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;->mObserver:Landroid/app/backup/IBackupObserver;
@@ -807,20 +844,20 @@
 
     invoke-static {p2, p3}, Ljava/lang/Long;->valueOf(J)Ljava/lang/Long;
 
-    move-result-object p2
+    move-result-object v1
 
-    const/4 p3, 0x1
+    const/4 v2, 0x1
 
-    aput-object p2, v0, p3
+    aput-object v1, v0, v2
 
-    const/16 p2, 0xb08
+    const/16 v1, 0xb08
 
-    invoke-static {p2, v0}, Landroid/util/EventLog;->writeEvent(I[Ljava/lang/Object;)I
+    invoke-static {v1, v0}, Landroid/util/EventLog;->writeEvent(I[Ljava/lang/Object;)I
 
     .line 270
-    iget-object p2, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;->mBackupManagerService:Lcom/android/server/backup/UserBackupManagerService;
+    iget-object v0, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;->mBackupManagerService:Lcom/android/server/backup/UserBackupManagerService;
 
-    invoke-virtual {p2, p1}, Lcom/android/server/backup/UserBackupManagerService;->logBackupComplete(Ljava/lang/String;)V
+    invoke-virtual {v0, p1}, Lcom/android/server/backup/UserBackupManagerService;->logBackupComplete(Ljava/lang/String;)V
 
     .line 271
     return-void
@@ -828,6 +865,7 @@
 
 .method onPackageBackupNonIncrementalAndNonIncrementalRequired(Ljava/lang/String;)V
     .registers 4
+    .param p1, "packageName"  # Ljava/lang/String;
 
     .line 303
     const-string v0, "KeyValueBackupTask"
@@ -854,6 +892,7 @@
 
 .method onPackageBackupNonIncrementalRequired(Landroid/content/pm/PackageInfo;)V
     .registers 6
+    .param p1, "packageInfo"  # Landroid/content/pm/PackageInfo;
 
     .line 293
     const-string v0, "KeyValueBackupTask"
@@ -879,6 +918,7 @@
 
 .method onPackageBackupQuotaExceeded(Ljava/lang/String;)V
     .registers 4
+    .param p1, "packageName"  # Ljava/lang/String;
 
     .line 283
     iget-object v0, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;->mObserver:Landroid/app/backup/IBackupObserver;
@@ -898,6 +938,7 @@
 
 .method onPackageBackupRejected(Ljava/lang/String;)V
     .registers 4
+    .param p1, "packageName"  # Ljava/lang/String;
 
     .line 274
     iget-object v0, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;->mObserver:Landroid/app/backup/IBackupObserver;
@@ -917,6 +958,8 @@
 
 .method onPackageBackupTransportError(Ljava/lang/String;Ljava/lang/Exception;)V
     .registers 5
+    .param p1, "packageName"  # Ljava/lang/String;
+    .param p2, "e"  # Ljava/lang/Exception;
 
     .line 316
     new-instance v0, Ljava/lang/StringBuilder;
@@ -938,16 +981,16 @@
     invoke-static {v1, v0, p2}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
     .line 317
-    iget-object p2, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;->mObserver:Landroid/app/backup/IBackupObserver;
+    iget-object v0, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;->mObserver:Landroid/app/backup/IBackupObserver;
 
-    const/16 v0, -0x3e8
+    const/16 v1, -0x3e8
 
-    invoke-static {p2, p1, v0}, Lcom/android/server/backup/utils/BackupObserverUtils;->sendBackupOnPackageResult(Landroid/app/backup/IBackupObserver;Ljava/lang/String;I)V
+    invoke-static {v0, p1, v1}, Lcom/android/server/backup/utils/BackupObserverUtils;->sendBackupOnPackageResult(Landroid/app/backup/IBackupObserver;Ljava/lang/String;I)V
 
     .line 319
-    const/16 p2, 0xb06
+    const/16 v0, 0xb06
 
-    invoke-static {p2, p1}, Landroid/util/EventLog;->writeEvent(ILjava/lang/String;)I
+    invoke-static {v0, p1}, Landroid/util/EventLog;->writeEvent(ILjava/lang/String;)I
 
     .line 320
     return-void
@@ -955,6 +998,7 @@
 
 .method onPackageBackupTransportFailure(Ljava/lang/String;)V
     .registers 4
+    .param p1, "packageName"  # Ljava/lang/String;
 
     .line 310
     iget-object v0, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;->mObserver:Landroid/app/backup/IBackupObserver;
@@ -974,6 +1018,7 @@
 
 .method onPackageEligibleForFullBackup(Ljava/lang/String;)V
     .registers 4
+    .param p1, "packageName"  # Ljava/lang/String;
 
     .line 145
     new-instance v0, Ljava/lang/StringBuilder;
@@ -1011,6 +1056,7 @@
 
 .method onPackageNotEligibleForBackup(Ljava/lang/String;)V
     .registers 4
+    .param p1, "packageName"  # Ljava/lang/String;
 
     .line 139
     new-instance v0, Ljava/lang/StringBuilder;
@@ -1048,6 +1094,7 @@
 
 .method onPackageStopped(Ljava/lang/String;)V
     .registers 4
+    .param p1, "packageName"  # Ljava/lang/String;
 
     .line 153
     iget-object v0, p0, Lcom/android/server/backup/keyvalue/KeyValueBackupReporter;->mObserver:Landroid/app/backup/IBackupObserver;
@@ -1062,6 +1109,7 @@
 
 .method onPendingInitializeTransportError(Ljava/lang/Exception;)V
     .registers 4
+    .param p1, "e"  # Ljava/lang/Exception;
 
     .line 405
     new-instance v0, Ljava/lang/StringBuilder;
@@ -1076,11 +1124,11 @@
 
     invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    const-string v0, "KeyValueBackupTask"
+    const-string v1, "KeyValueBackupTask"
 
-    invoke-static {v0, p1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v0}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 406
     return-void
@@ -1098,6 +1146,7 @@
     .end annotation
 
     .line 101
+    .local p1, "queue":Ljava/util/List;, "Ljava/util/List<Ljava/lang/String;>;"
     new-instance v0, Ljava/lang/StringBuilder;
 
     invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
@@ -1108,21 +1157,21 @@
 
     invoke-interface {p1}, Ljava/util/List;->size()I
 
-    move-result p1
+    move-result v1
 
-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    const-string p1, " targets"
+    const-string v1, " targets"
 
-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    const-string v0, "KeyValueBackupTask"
+    const-string v1, "KeyValueBackupTask"
 
-    invoke-static {v0, p1}, Landroid/util/Slog;->v(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v0}, Landroid/util/Slog;->v(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 103
     return-void
@@ -1130,6 +1179,8 @@
 
 .method onRemoteCallReturned(Lcom/android/server/backup/remote/RemoteResult;Ljava/lang/String;)V
     .registers 3
+    .param p1, "result"  # Lcom/android/server/backup/remote/RemoteResult;
+    .param p2, "logIdentifier"  # Ljava/lang/String;
 
     .line 388
     return-void
@@ -1137,6 +1188,7 @@
 
 .method onRestoreconFailed(Ljava/io/File;)V
     .registers 4
+    .param p1, "backupDataFile"  # Ljava/io/File;
 
     .line 190
     new-instance v0, Ljava/lang/StringBuilder;
@@ -1151,11 +1203,11 @@
 
     invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    const-string v0, "KeyValueBackupTask"
+    const-string v1, "KeyValueBackupTask"
 
-    invoke-static {v0, p1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v0}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 191
     return-void
@@ -1170,6 +1222,7 @@
 
 .method onSetCurrentTokenError(Ljava/lang/Exception;)V
     .registers 4
+    .param p1, "e"  # Ljava/lang/Exception;
 
     .line 395
     new-instance v0, Ljava/lang/StringBuilder;
@@ -1184,11 +1237,11 @@
 
     invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    const-string v0, "KeyValueBackupTask"
+    const-string v1, "KeyValueBackupTask"
 
-    invoke-static {v0, p1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v0}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 396
     return-void
@@ -1234,6 +1287,7 @@
     .end annotation
 
     .line 417
+    .local p1, "pendingFullBackups":Ljava/util/List;, "Ljava/util/List<Ljava/lang/String;>;"
     new-instance v0, Ljava/lang/StringBuilder;
 
     invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
@@ -1246,11 +1300,11 @@
 
     invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    const-string v0, "KeyValueBackupTask"
+    const-string v1, "KeyValueBackupTask"
 
-    invoke-static {v0, p1}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v0}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 418
     return-void
@@ -1258,6 +1312,7 @@
 
 .method onStartPackageBackup(Ljava/lang/String;)V
     .registers 4
+    .param p1, "packageName"  # Ljava/lang/String;
 
     .line 135
     new-instance v0, Ljava/lang/StringBuilder;
@@ -1272,11 +1327,11 @@
 
     invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    const-string v0, "KeyValueBackupTask"
+    const-string v1, "KeyValueBackupTask"
 
-    invoke-static {v0, p1}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v0}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 136
     return-void
@@ -1297,36 +1352,37 @@
 .end method
 
 .method onTransportInitialized(I)V
-    .registers 3
+    .registers 4
+    .param p1, "status"  # I
 
     .line 114
     if-nez p1, :cond_b
 
     .line 115
-    const/16 p1, 0xb0b
+    const/16 v0, 0xb0b
 
-    const/4 v0, 0x0
+    const/4 v1, 0x0
 
-    new-array v0, v0, [Ljava/lang/Object;
+    new-array v1, v1, [Ljava/lang/Object;
 
-    invoke-static {p1, v0}, Landroid/util/EventLog;->writeEvent(I[Ljava/lang/Object;)I
+    invoke-static {v0, v1}, Landroid/util/EventLog;->writeEvent(I[Ljava/lang/Object;)I
 
     goto :goto_19
 
     .line 117
     :cond_b
-    const/16 p1, 0xb06
+    const/16 v0, 0xb06
 
-    const-string v0, "(initialize)"
+    const-string v1, "(initialize)"
 
-    invoke-static {p1, v0}, Landroid/util/EventLog;->writeEvent(ILjava/lang/String;)I
+    invoke-static {v0, v1}, Landroid/util/EventLog;->writeEvent(ILjava/lang/String;)I
 
     .line 118
-    const-string p1, "KeyValueBackupTask"
+    const-string v0, "KeyValueBackupTask"
 
-    const-string v0, "Transport error in initializeDevice()"
+    const-string v1, "Transport error in initializeDevice()"
 
-    invoke-static {p1, v0}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v0, v1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 120
     :goto_19
@@ -1342,6 +1398,7 @@
 
 .method onTransportPerformBackup(Ljava/lang/String;)V
     .registers 2
+    .param p1, "packageName"  # Ljava/lang/String;
 
     .line 251
     return-void
@@ -1349,6 +1406,7 @@
 
 .method onTransportReady(Ljava/lang/String;)V
     .registers 3
+    .param p1, "transportName"  # Ljava/lang/String;
 
     .line 106
     const/16 v0, 0xb05
@@ -1361,6 +1419,7 @@
 
 .method onTransportRequestBackupTimeError(Ljava/lang/Exception;)V
     .registers 4
+    .param p1, "e"  # Ljava/lang/Exception;
 
     .line 381
     new-instance v0, Ljava/lang/StringBuilder;
@@ -1375,11 +1434,11 @@
 
     invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    const-string v0, "KeyValueBackupTask"
+    const-string v1, "KeyValueBackupTask"
 
-    invoke-static {v0, p1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v0}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 382
     return-void
@@ -1387,6 +1446,8 @@
 
 .method onWriteWidgetData(Z[B)V
     .registers 3
+    .param p1, "priorStateExists"  # Z
+    .param p2, "widgetState"  # [B
 
     .line 245
     return-void

@@ -21,8 +21,10 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/DropBoxManagerService;Landroid/os/Handler;)V
     .registers 3
+    .param p1, "this$0"  # Lcom/android/server/DropBoxManagerService;
+    .param p2, "x0"  # Landroid/os/Handler;
 
-    .line 341
+    .line 345
     iput-object p1, p0, Lcom/android/server/DropBoxManagerService$3;->this$0:Lcom/android/server/DropBoxManagerService;
 
     invoke-direct {p0, p2}, Landroid/database/ContentObserver;-><init>(Landroid/os/Handler;)V
@@ -33,27 +35,28 @@
 
 # virtual methods
 .method public onChange(Z)V
-    .registers 4
+    .registers 5
+    .param p1, "selfChange"  # Z
 
-    .line 344
-    iget-object p1, p0, Lcom/android/server/DropBoxManagerService$3;->this$0:Lcom/android/server/DropBoxManagerService;
-
-    invoke-static {p1}, Lcom/android/server/DropBoxManagerService;->access$1000(Lcom/android/server/DropBoxManagerService;)Landroid/content/BroadcastReceiver;
-
-    move-result-object p1
-
+    .line 348
     iget-object v0, p0, Lcom/android/server/DropBoxManagerService$3;->this$0:Lcom/android/server/DropBoxManagerService;
 
-    invoke-virtual {v0}, Lcom/android/server/DropBoxManagerService;->getContext()Landroid/content/Context;
+    invoke-static {v0}, Lcom/android/server/DropBoxManagerService;->access$1000(Lcom/android/server/DropBoxManagerService;)Landroid/content/BroadcastReceiver;
 
     move-result-object v0
 
-    const/4 v1, 0x0
+    iget-object v1, p0, Lcom/android/server/DropBoxManagerService$3;->this$0:Lcom/android/server/DropBoxManagerService;
 
-    check-cast v1, Landroid/content/Intent;
+    invoke-virtual {v1}, Lcom/android/server/DropBoxManagerService;->getContext()Landroid/content/Context;
 
-    invoke-virtual {p1, v0, v1}, Landroid/content/BroadcastReceiver;->onReceive(Landroid/content/Context;Landroid/content/Intent;)V
+    move-result-object v1
 
-    .line 345
+    const/4 v2, 0x0
+
+    check-cast v2, Landroid/content/Intent;
+
+    invoke-virtual {v0, v1, v2}, Landroid/content/BroadcastReceiver;->onReceive(Landroid/content/Context;Landroid/content/Intent;)V
+
+    .line 349
     return-void
 .end method

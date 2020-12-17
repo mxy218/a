@@ -29,7 +29,12 @@
 
 # direct methods
 .method constructor <init>(Landroid/hardware/radio/ITunerCallback;IIZI)V
-    .registers 8
+    .registers 9
+    .param p1, "clientCallback"  # Landroid/hardware/radio/ITunerCallback;
+    .param p2, "halRev"  # I
+    .param p3, "region"  # I
+    .param p4, "withAudio"  # Z
+    .param p5, "band"  # I
 
     .line 55
     invoke-direct {p0}, Landroid/hardware/radio/ITuner$Stub;-><init>()V
@@ -68,28 +73,28 @@
     .line 60
     invoke-direct {p0, p2, p4, p5}, Lcom/android/server/broadcastradio/hal1/Tuner;->nativeInit(IZI)J
 
-    move-result-wide p1
+    move-result-wide v1
 
-    iput-wide p1, p0, Lcom/android/server/broadcastradio/hal1/Tuner;->mNativeContext:J
+    iput-wide v1, p0, Lcom/android/server/broadcastradio/hal1/Tuner;->mNativeContext:J
 
     .line 61
-    new-instance p1, Lcom/android/server/broadcastradio/hal1/-$$Lambda$-XcW_oxw3YwSco8d8bZQoqwUTnM;
+    new-instance v1, Lcom/android/server/broadcastradio/hal1/-$$Lambda$-XcW_oxw3YwSco8d8bZQoqwUTnM;
 
-    invoke-direct {p1, p0}, Lcom/android/server/broadcastradio/hal1/-$$Lambda$-XcW_oxw3YwSco8d8bZQoqwUTnM;-><init>(Lcom/android/server/broadcastradio/hal1/Tuner;)V
+    invoke-direct {v1, p0}, Lcom/android/server/broadcastradio/hal1/-$$Lambda$-XcW_oxw3YwSco8d8bZQoqwUTnM;-><init>(Lcom/android/server/broadcastradio/hal1/Tuner;)V
 
-    iput-object p1, p0, Lcom/android/server/broadcastradio/hal1/Tuner;->mDeathRecipient:Landroid/os/IBinder$DeathRecipient;
+    iput-object v1, p0, Lcom/android/server/broadcastradio/hal1/Tuner;->mDeathRecipient:Landroid/os/IBinder$DeathRecipient;
 
     .line 63
     :try_start_29
-    iget-object p1, p0, Lcom/android/server/broadcastradio/hal1/Tuner;->mClientCallback:Landroid/hardware/radio/ITunerCallback;
+    iget-object v1, p0, Lcom/android/server/broadcastradio/hal1/Tuner;->mClientCallback:Landroid/hardware/radio/ITunerCallback;
 
-    invoke-interface {p1}, Landroid/hardware/radio/ITunerCallback;->asBinder()Landroid/os/IBinder;
+    invoke-interface {v1}, Landroid/hardware/radio/ITunerCallback;->asBinder()Landroid/os/IBinder;
 
-    move-result-object p1
+    move-result-object v1
 
-    iget-object p2, p0, Lcom/android/server/broadcastradio/hal1/Tuner;->mDeathRecipient:Landroid/os/IBinder$DeathRecipient;
+    iget-object v2, p0, Lcom/android/server/broadcastradio/hal1/Tuner;->mDeathRecipient:Landroid/os/IBinder$DeathRecipient;
 
-    invoke-interface {p1, p2, v0}, Landroid/os/IBinder;->linkToDeath(Landroid/os/IBinder$DeathRecipient;I)V
+    invoke-interface {v1, v2, v0}, Landroid/os/IBinder;->linkToDeath(Landroid/os/IBinder$DeathRecipient;I)V
     :try_end_34
     .catch Landroid/os/RemoteException; {:try_start_29 .. :try_end_34} :catch_35
 
@@ -98,12 +103,14 @@
 
     .line 64
     :catch_35
-    move-exception p1
+    move-exception v0
 
     .line 65
+    .local v0, "ex":Landroid/os/RemoteException;
     invoke-virtual {p0}, Lcom/android/server/broadcastradio/hal1/Tuner;->close()V
 
     .line 67
+    .end local v0  # "ex":Landroid/os/RemoteException;
     :goto_39
     return-void
 .end method
@@ -409,6 +416,7 @@
 
 .method public getImage(I)Landroid/graphics/Bitmap;
     .registers 5
+    .param p1, "id"  # I
 
     .line 221
     if-eqz p1, :cond_1e
@@ -424,17 +432,18 @@
 
     invoke-direct {p0, v1, v2, p1}, Lcom/android/server/broadcastradio/hal1/Tuner;->nativeGetImage(JI)[B
 
-    move-result-object p1
+    move-result-object v1
 
     .line 228
+    .local v1, "rawImage":[B
     monitor-exit v0
     :try_end_c
     .catchall {:try_start_5 .. :try_end_c} :catchall_1b
 
     .line 229
-    if-eqz p1, :cond_19
+    if-eqz v1, :cond_19
 
-    array-length v0, p1
+    array-length v0, v1
 
     if-nez v0, :cond_12
 
@@ -444,45 +453,46 @@
     :cond_12
     const/4 v0, 0x0
 
-    array-length v1, p1
+    array-length v2, v1
 
-    invoke-static {p1, v0, v1}, Landroid/graphics/BitmapFactory;->decodeByteArray([BII)Landroid/graphics/Bitmap;
+    invoke-static {v1, v0, v2}, Landroid/graphics/BitmapFactory;->decodeByteArray([BII)Landroid/graphics/Bitmap;
 
-    move-result-object p1
+    move-result-object v0
 
-    return-object p1
+    return-object v0
 
     .line 230
     :cond_19
     :goto_19
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    return-object p1
+    return-object v0
 
     .line 228
+    .end local v1  # "rawImage":[B
     :catchall_1b
-    move-exception p1
+    move-exception v1
 
     :try_start_1c
     monitor-exit v0
     :try_end_1d
     .catchall {:try_start_1c .. :try_end_1d} :catchall_1b
 
-    throw p1
+    throw v1
 
     .line 222
     :cond_1e
-    new-instance p1, Ljava/lang/IllegalArgumentException;
+    new-instance v0, Ljava/lang/IllegalArgumentException;
 
-    const-string v0, "Image ID is missing"
+    const-string v1, "Image ID is missing"
 
-    invoke-direct {p1, v0}, Ljava/lang/IllegalArgumentException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v0, v1}, Ljava/lang/IllegalArgumentException;-><init>(Ljava/lang/String;)V
 
-    throw p1
+    throw v0
 .end method
 
 .method public getParameters(Ljava/util/List;)Ljava/util/Map;
-    .registers 3
+    .registers 4
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(",
@@ -494,17 +504,19 @@
     .end annotation
 
     .line 301
-    new-instance p1, Ljava/lang/UnsupportedOperationException;
+    .local p1, "keys":Ljava/util/List;, "Ljava/util/List<Ljava/lang/String;>;"
+    new-instance v0, Ljava/lang/UnsupportedOperationException;
 
-    const-string v0, "Not supported by HAL 1.x"
+    const-string v1, "Not supported by HAL 1.x"
 
-    invoke-direct {p1, v0}, Ljava/lang/UnsupportedOperationException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v0, v1}, Ljava/lang/UnsupportedOperationException;-><init>(Ljava/lang/String;)V
 
-    throw p1
+    throw v0
 .end method
 
 .method getProgramList(Ljava/util/Map;)Ljava/util/List;
-    .registers 5
+    .registers 7
+    .param p1, "vendorFilter"  # Ljava/util/Map;
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(",
@@ -517,51 +529,60 @@
     .end annotation
 
     .line 245
-    nop
+    move-object v0, p1
 
     .line 246
-    iget-object v0, p0, Lcom/android/server/broadcastradio/hal1/Tuner;->mLock:Ljava/lang/Object;
+    .local v0, "sFilter":Ljava/util/Map;, "Ljava/util/Map<Ljava/lang/String;Ljava/lang/String;>;"
+    iget-object v1, p0, Lcom/android/server/broadcastradio/hal1/Tuner;->mLock:Ljava/lang/Object;
 
-    monitor-enter v0
+    monitor-enter v1
 
     .line 247
     :try_start_4
     invoke-direct {p0}, Lcom/android/server/broadcastradio/hal1/Tuner;->checkNotClosedLocked()V
 
     .line 248
-    iget-wide v1, p0, Lcom/android/server/broadcastradio/hal1/Tuner;->mNativeContext:J
+    iget-wide v2, p0, Lcom/android/server/broadcastradio/hal1/Tuner;->mNativeContext:J
 
-    invoke-direct {p0, v1, v2, p1}, Lcom/android/server/broadcastradio/hal1/Tuner;->nativeGetProgramList(JLjava/util/Map;)Ljava/util/List;
+    invoke-direct {p0, v2, v3, v0}, Lcom/android/server/broadcastradio/hal1/Tuner;->nativeGetProgramList(JLjava/util/Map;)Ljava/util/List;
 
-    move-result-object p1
+    move-result-object v2
 
     .line 249
-    if-eqz p1, :cond_11
+    .local v2, "list":Ljava/util/List;, "Ljava/util/List<Landroid/hardware/radio/RadioManager$ProgramInfo;>;"
+    if-eqz v2, :cond_11
 
     .line 252
-    monitor-exit v0
+    monitor-exit v1
 
-    return-object p1
+    return-object v2
 
     .line 250
     :cond_11
-    new-instance p1, Ljava/lang/IllegalStateException;
+    new-instance v3, Ljava/lang/IllegalStateException;
 
-    const-string v1, "Program list is not ready"
+    const-string v4, "Program list is not ready"
 
-    invoke-direct {p1, v1}, Ljava/lang/IllegalStateException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v3, v4}, Ljava/lang/IllegalStateException;-><init>(Ljava/lang/String;)V
 
-    throw p1
+    .end local v0  # "sFilter":Ljava/util/Map;, "Ljava/util/Map<Ljava/lang/String;Ljava/lang/String;>;"
+    .end local p0  # "this":Lcom/android/server/broadcastradio/hal1/Tuner;
+    .end local p1  # "vendorFilter":Ljava/util/Map;
+    throw v3
 
     .line 253
+    .end local v2  # "list":Ljava/util/List;, "Ljava/util/List<Landroid/hardware/radio/RadioManager$ProgramInfo;>;"
+    .restart local v0  # "sFilter":Ljava/util/Map;, "Ljava/util/Map<Ljava/lang/String;Ljava/lang/String;>;"
+    .restart local p0  # "this":Lcom/android/server/broadcastradio/hal1/Tuner;
+    .restart local p1  # "vendorFilter":Ljava/util/Map;
     :catchall_19
-    move-exception p1
+    move-exception v2
 
-    monitor-exit v0
+    monitor-exit v1
     :try_end_1b
     .catchall {:try_start_4 .. :try_end_1b} :catchall_19
 
-    throw p1
+    throw v2
 .end method
 
 .method public isClosed()Z
@@ -574,7 +595,8 @@
 .end method
 
 .method public isConfigFlagSet(I)Z
-    .registers 4
+    .registers 5
+    .param p1, "flag"  # I
 
     .line 273
     const/4 v0, 0x2
@@ -582,63 +604,64 @@
     if-ne p1, v0, :cond_14
 
     .line 274
-    iget-object p1, p0, Lcom/android/server/broadcastradio/hal1/Tuner;->mLock:Ljava/lang/Object;
+    iget-object v0, p0, Lcom/android/server/broadcastradio/hal1/Tuner;->mLock:Ljava/lang/Object;
 
-    monitor-enter p1
+    monitor-enter v0
 
     .line 275
     :try_start_6
     invoke-direct {p0}, Lcom/android/server/broadcastradio/hal1/Tuner;->checkNotClosedLocked()V
 
     .line 276
-    iget-wide v0, p0, Lcom/android/server/broadcastradio/hal1/Tuner;->mNativeContext:J
+    iget-wide v1, p0, Lcom/android/server/broadcastradio/hal1/Tuner;->mNativeContext:J
 
-    invoke-direct {p0, v0, v1}, Lcom/android/server/broadcastradio/hal1/Tuner;->nativeIsAnalogForced(J)Z
+    invoke-direct {p0, v1, v2}, Lcom/android/server/broadcastradio/hal1/Tuner;->nativeIsAnalogForced(J)Z
 
-    move-result v0
+    move-result v1
 
-    monitor-exit p1
+    monitor-exit v0
 
-    return v0
+    return v1
 
     .line 277
     :catchall_11
-    move-exception v0
+    move-exception v1
 
-    monitor-exit p1
+    monitor-exit v0
     :try_end_13
     .catchall {:try_start_6 .. :try_end_13} :catchall_11
 
-    throw v0
+    throw v1
 
     .line 279
     :cond_14
-    new-instance p1, Ljava/lang/UnsupportedOperationException;
+    new-instance v0, Ljava/lang/UnsupportedOperationException;
 
-    const-string v0, "Not supported by HAL 1.x"
+    const-string v1, "Not supported by HAL 1.x"
 
-    invoke-direct {p1, v0}, Ljava/lang/UnsupportedOperationException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v0, v1}, Ljava/lang/UnsupportedOperationException;-><init>(Ljava/lang/String;)V
 
-    throw p1
+    throw v0
 .end method
 
 .method public isConfigFlagSupported(I)Z
     .registers 3
+    .param p1, "flag"  # I
 
     .line 268
     const/4 v0, 0x2
 
     if-ne p1, v0, :cond_5
 
-    const/4 p1, 0x1
+    const/4 v0, 0x1
 
     goto :goto_6
 
     :cond_5
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
     :goto_6
-    return p1
+    return v0
 .end method
 
 .method public isMuted()Z
@@ -691,6 +714,8 @@
 
 .method public scan(ZZ)V
     .registers 6
+    .param p1, "directionDown"  # Z
+    .param p2, "skipSubChannel"  # Z
 
     .line 183
     iget-object v0, p0, Lcom/android/server/broadcastradio/hal1/Tuner;->mLock:Ljava/lang/Object;
@@ -726,17 +751,19 @@
 
     .line 187
     :catchall_15
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_17
     .catchall {:try_start_3 .. :try_end_17} :catchall_15
 
-    throw p1
+    throw v1
 .end method
 
 .method public setConfigFlag(IZ)V
-    .registers 5
+    .registers 6
+    .param p1, "flag"  # I
+    .param p2, "value"  # Z
 
     .line 284
     const/4 v0, 0x2
@@ -744,47 +771,48 @@
     if-ne p1, v0, :cond_13
 
     .line 285
-    iget-object p1, p0, Lcom/android/server/broadcastradio/hal1/Tuner;->mLock:Ljava/lang/Object;
+    iget-object v0, p0, Lcom/android/server/broadcastradio/hal1/Tuner;->mLock:Ljava/lang/Object;
 
-    monitor-enter p1
+    monitor-enter v0
 
     .line 286
     :try_start_6
     invoke-direct {p0}, Lcom/android/server/broadcastradio/hal1/Tuner;->checkNotClosedLocked()V
 
     .line 287
-    iget-wide v0, p0, Lcom/android/server/broadcastradio/hal1/Tuner;->mNativeContext:J
+    iget-wide v1, p0, Lcom/android/server/broadcastradio/hal1/Tuner;->mNativeContext:J
 
-    invoke-direct {p0, v0, v1, p2}, Lcom/android/server/broadcastradio/hal1/Tuner;->nativeSetAnalogForced(JZ)V
+    invoke-direct {p0, v1, v2, p2}, Lcom/android/server/broadcastradio/hal1/Tuner;->nativeSetAnalogForced(JZ)V
 
     .line 288
-    monitor-exit p1
+    monitor-exit v0
 
     return-void
 
     .line 289
     :catchall_10
-    move-exception p2
+    move-exception v1
 
-    monitor-exit p1
+    monitor-exit v0
     :try_end_12
     .catchall {:try_start_6 .. :try_end_12} :catchall_10
 
-    throw p2
+    throw v1
 
     .line 291
     :cond_13
-    new-instance p1, Ljava/lang/UnsupportedOperationException;
+    new-instance v0, Ljava/lang/UnsupportedOperationException;
 
-    const-string p2, "Not supported by HAL 1.x"
+    const-string v1, "Not supported by HAL 1.x"
 
-    invoke-direct {p1, p2}, Ljava/lang/UnsupportedOperationException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v0, v1}, Ljava/lang/UnsupportedOperationException;-><init>(Ljava/lang/String;)V
 
-    throw p1
+    throw v0
 .end method
 
 .method public setConfiguration(Landroid/hardware/radio/RadioManager$BandConfig;)V
     .registers 5
+    .param p1, "config"  # Landroid/hardware/radio/RadioManager$BandConfig;
 
     .line 129
     if-eqz p1, :cond_18
@@ -806,9 +834,9 @@
     .line 135
     invoke-virtual {p1}, Landroid/hardware/radio/RadioManager$BandConfig;->getRegion()I
 
-    move-result p1
+    move-result v1
 
-    iput p1, p0, Lcom/android/server/broadcastradio/hal1/Tuner;->mRegion:I
+    iput v1, p0, Lcom/android/server/broadcastradio/hal1/Tuner;->mRegion:I
 
     .line 136
     monitor-exit v0
@@ -818,27 +846,28 @@
 
     .line 136
     :catchall_15
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_17
     .catchall {:try_start_5 .. :try_end_17} :catchall_15
 
-    throw p1
+    throw v1
 
     .line 130
     :cond_18
-    new-instance p1, Ljava/lang/IllegalArgumentException;
+    new-instance v0, Ljava/lang/IllegalArgumentException;
 
-    const-string v0, "The argument must not be a null pointer"
+    const-string v1, "The argument must not be a null pointer"
 
-    invoke-direct {p1, v0}, Ljava/lang/IllegalArgumentException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v0, v1}, Ljava/lang/IllegalArgumentException;-><init>(Ljava/lang/String;)V
 
-    throw p1
+    throw v0
 .end method
 
 .method public setMuted(Z)V
-    .registers 4
+    .registers 5
+    .param p1, "mute"  # Z
 
     .line 149
     iget-boolean v0, p0, Lcom/android/server/broadcastradio/hal1/Tuner;->mWithAudio:Z
@@ -868,11 +897,11 @@
     iput-boolean p1, p0, Lcom/android/server/broadcastradio/hal1/Tuner;->mIsMuted:Z
 
     .line 156
-    const-string p1, "BroadcastRadioService.Tuner"
+    const-string v1, "BroadcastRadioService.Tuner"
 
-    const-string v1, "Mute via RadioService is not implemented - please handle it via app"
+    const-string v2, "Mute via RadioService is not implemented - please handle it via app"
 
-    invoke-static {p1, v1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v2}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 157
     monitor-exit v0
@@ -882,36 +911,37 @@
 
     .line 157
     :catchall_1b
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_1d
     .catchall {:try_start_7 .. :try_end_1d} :catchall_1b
 
-    throw p1
+    throw v1
 
     .line 150
     :cond_1e
-    new-instance p1, Ljava/lang/IllegalStateException;
+    new-instance v0, Ljava/lang/IllegalStateException;
 
-    const-string v0, "Can\'t operate on mute - no audio requested"
+    const-string v1, "Can\'t operate on mute - no audio requested"
 
-    invoke-direct {p1, v0}, Ljava/lang/IllegalStateException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v0, v1}, Ljava/lang/IllegalStateException;-><init>(Ljava/lang/String;)V
 
-    throw p1
+    throw v0
 .end method
 
 .method public setParameters(Ljava/util/Map;)Ljava/util/Map;
-    .registers 3
+    .registers 4
+    .param p1, "parameters"  # Ljava/util/Map;
 
     .line 296
-    new-instance p1, Ljava/lang/UnsupportedOperationException;
+    new-instance v0, Ljava/lang/UnsupportedOperationException;
 
-    const-string v0, "Not supported by HAL 1.x"
+    const-string v1, "Not supported by HAL 1.x"
 
-    invoke-direct {p1, v0}, Ljava/lang/UnsupportedOperationException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v0, v1}, Ljava/lang/UnsupportedOperationException;-><init>(Ljava/lang/String;)V
 
-    throw p1
+    throw v0
 .end method
 
 .method public startBackgroundScan()Z
@@ -950,6 +980,7 @@
 
 .method public startProgramListUpdates(Landroid/hardware/radio/ProgramList$Filter;)V
     .registers 3
+    .param p1, "filter"  # Landroid/hardware/radio/ProgramList$Filter;
 
     .line 258
     iget-object v0, p0, Lcom/android/server/broadcastradio/hal1/Tuner;->mTunerCallback:Lcom/android/server/broadcastradio/hal1/TunerCallback;
@@ -962,6 +993,8 @@
 
 .method public step(ZZ)V
     .registers 6
+    .param p1, "directionDown"  # Z
+    .param p2, "skipSubChannel"  # Z
 
     .line 174
     iget-object v0, p0, Lcom/android/server/broadcastradio/hal1/Tuner;->mLock:Ljava/lang/Object;
@@ -997,13 +1030,13 @@
 
     .line 178
     :catchall_15
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_17
     .catchall {:try_start_3 .. :try_end_17} :catchall_15
 
-    throw p1
+    throw v1
 .end method
 
 .method public stopProgramListUpdates()V
@@ -1020,6 +1053,7 @@
 
 .method public tune(Landroid/hardware/radio/ProgramSelector;)V
     .registers 5
+    .param p1, "selector"  # Landroid/hardware/radio/ProgramSelector;
 
     .line 192
     if-eqz p1, :cond_30
@@ -1077,21 +1111,21 @@
 
     .line 200
     :catchall_2d
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_2f
     .catchall {:try_start_1b .. :try_end_2f} :catchall_2d
 
-    throw p1
+    throw v1
 
     .line 193
     :cond_30
-    new-instance p1, Ljava/lang/IllegalArgumentException;
+    new-instance v0, Ljava/lang/IllegalArgumentException;
 
-    const-string v0, "The argument must not be a null pointer"
+    const-string v1, "The argument must not be a null pointer"
 
-    invoke-direct {p1, v0}, Ljava/lang/IllegalArgumentException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v0, v1}, Ljava/lang/IllegalArgumentException;-><init>(Ljava/lang/String;)V
 
-    throw p1
+    throw v0
 .end method

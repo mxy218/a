@@ -52,6 +52,7 @@
 
 .method public constructor <init>(I)V
     .registers 2
+    .param p1, "type"  # I
 
     .line 54
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -67,7 +68,8 @@
 .end method
 
 .method private constructor <init>(Landroid/os/Parcel;)V
-    .registers 2
+    .registers 3
+    .param p1, "in"  # Landroid/os/Parcel;
 
     .line 88
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -75,9 +77,9 @@
     .line 89
     invoke-virtual {p1}, Landroid/os/Parcel;->readInt()I
 
-    move-result p1
+    move-result v0
 
-    iput p1, p0, Lcom/google/android/startop/iorap/SystemServiceEvent;->type:I
+    iput v0, p0, Lcom/google/android/startop/iorap/SystemServiceEvent;->type:I
 
     .line 90
     invoke-direct {p0}, Lcom/google/android/startop/iorap/SystemServiceEvent;->checkConstructorArguments()V
@@ -88,6 +90,8 @@
 
 .method synthetic constructor <init>(Landroid/os/Parcel;Lcom/google/android/startop/iorap/SystemServiceEvent$1;)V
     .registers 3
+    .param p1, "x0"  # Landroid/os/Parcel;
+    .param p2, "x1"  # Lcom/google/android/startop/iorap/SystemServiceEvent$1;
 
     .line 34
     invoke-direct {p0, p1}, Lcom/google/android/startop/iorap/SystemServiceEvent;-><init>(Landroid/os/Parcel;)V
@@ -110,24 +114,25 @@
 .end method
 
 .method private equals(Lcom/google/android/startop/iorap/SystemServiceEvent;)Z
-    .registers 3
+    .registers 4
+    .param p1, "other"  # Lcom/google/android/startop/iorap/SystemServiceEvent;
 
     .line 79
     iget v0, p0, Lcom/google/android/startop/iorap/SystemServiceEvent;->type:I
 
-    iget p1, p1, Lcom/google/android/startop/iorap/SystemServiceEvent;->type:I
+    iget v1, p1, Lcom/google/android/startop/iorap/SystemServiceEvent;->type:I
 
-    if-ne v0, p1, :cond_8
+    if-ne v0, v1, :cond_8
 
-    const/4 p1, 0x1
+    const/4 v0, 0x1
 
     goto :goto_9
 
     :cond_8
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
     :goto_9
-    return p1
+    return v0
 .end method
 
 
@@ -143,35 +148,38 @@
 
 .method public equals(Ljava/lang/Object;)Z
     .registers 3
+    .param p1, "other"  # Ljava/lang/Object;
 
     .line 70
     if-ne p0, p1, :cond_4
 
     .line 71
-    const/4 p1, 0x1
+    const/4 v0, 0x1
 
-    return p1
+    return v0
 
     .line 72
     :cond_4
     instance-of v0, p1, Lcom/google/android/startop/iorap/SystemServiceEvent;
 
-    if-eqz v0, :cond_f
+    if-eqz v0, :cond_10
 
     .line 73
-    check-cast p1, Lcom/google/android/startop/iorap/SystemServiceEvent;
+    move-object v0, p1
 
-    invoke-direct {p0, p1}, Lcom/google/android/startop/iorap/SystemServiceEvent;->equals(Lcom/google/android/startop/iorap/SystemServiceEvent;)Z
+    check-cast v0, Lcom/google/android/startop/iorap/SystemServiceEvent;
 
-    move-result p1
+    invoke-direct {p0, v0}, Lcom/google/android/startop/iorap/SystemServiceEvent;->equals(Lcom/google/android/startop/iorap/SystemServiceEvent;)Z
 
-    return p1
+    move-result v0
+
+    return v0
 
     .line 75
-    :cond_f
-    const/4 p1, 0x0
+    :cond_10
+    const/4 v0, 0x0
 
-    return p1
+    return v0
 .end method
 
 .method public toString()Ljava/lang/String;
@@ -202,12 +210,14 @@
 .end method
 
 .method public writeToParcel(Landroid/os/Parcel;I)V
-    .registers 3
+    .registers 4
+    .param p1, "out"  # Landroid/os/Parcel;
+    .param p2, "flags"  # I
 
     .line 85
-    iget p2, p0, Lcom/google/android/startop/iorap/SystemServiceEvent;->type:I
+    iget v0, p0, Lcom/google/android/startop/iorap/SystemServiceEvent;->type:I
 
-    invoke-virtual {p1, p2}, Landroid/os/Parcel;->writeInt(I)V
+    invoke-virtual {p1, v0}, Landroid/os/Parcel;->writeInt(I)V
 
     .line 86
     return-void

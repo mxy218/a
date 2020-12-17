@@ -21,8 +21,11 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/location/GnssLocationProvider;Landroid/content/Context;Landroid/os/Handler;)V
     .registers 4
+    .param p1, "this$0"  # Lcom/android/server/location/GnssLocationProvider;
+    .param p2, "context"  # Landroid/content/Context;
+    .param p3, "handler"  # Landroid/os/Handler;
 
-    .line 654
+    .line 639
     iput-object p1, p0, Lcom/android/server/location/GnssLocationProvider$2;->this$0:Lcom/android/server/location/GnssLocationProvider;
 
     invoke-direct {p0, p2, p3}, Lcom/android/server/location/GnssStatusListenerHelper;-><init>(Landroid/content/Context;Landroid/os/Handler;)V
@@ -35,7 +38,7 @@
 .method protected isAvailableInPlatform()Z
     .registers 2
 
-    .line 657
+    .line 642
     invoke-static {}, Lcom/android/server/location/GnssLocationProvider;->isSupported()Z
 
     move-result v0
@@ -46,10 +49,10 @@
 .method protected isGpsEnabled()Z
     .registers 2
 
-    .line 662
+    .line 647
     iget-object v0, p0, Lcom/android/server/location/GnssLocationProvider$2;->this$0:Lcom/android/server/location/GnssLocationProvider;
 
-    invoke-static {v0}, Lcom/android/server/location/GnssLocationProvider;->access$900(Lcom/android/server/location/GnssLocationProvider;)Z
+    invoke-static {v0}, Lcom/android/server/location/GnssLocationProvider;->access$600(Lcom/android/server/location/GnssLocationProvider;)Z
 
     move-result v0
 

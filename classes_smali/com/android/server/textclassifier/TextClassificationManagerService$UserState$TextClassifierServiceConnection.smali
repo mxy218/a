@@ -35,6 +35,8 @@
 
 .method synthetic constructor <init>(Lcom/android/server/textclassifier/TextClassificationManagerService$UserState;Lcom/android/server/textclassifier/TextClassificationManagerService$1;)V
     .registers 3
+    .param p1, "x0"  # Lcom/android/server/textclassifier/TextClassificationManagerService$UserState;
+    .param p2, "x1"  # Lcom/android/server/textclassifier/TextClassificationManagerService$1;
 
     .line 561
     invoke-direct {p0, p1}, Lcom/android/server/textclassifier/TextClassificationManagerService$UserState$TextClassifierServiceConnection;-><init>(Lcom/android/server/textclassifier/TextClassificationManagerService$UserState;)V
@@ -43,7 +45,8 @@
 .end method
 
 .method private init(Landroid/service/textclassifier/ITextClassifierService;)V
-    .registers 4
+    .registers 5
+    .param p1, "service"  # Landroid/service/textclassifier/ITextClassifierService;
 
     .line 587
     iget-object v0, p0, Lcom/android/server/textclassifier/TextClassificationManagerService$UserState$TextClassifierServiceConnection;->this$0:Lcom/android/server/textclassifier/TextClassificationManagerService$UserState;
@@ -61,16 +64,16 @@
     iput-object p1, v1, Lcom/android/server/textclassifier/TextClassificationManagerService$UserState;->mService:Landroid/service/textclassifier/ITextClassifierService;
 
     .line 589
-    iget-object p1, p0, Lcom/android/server/textclassifier/TextClassificationManagerService$UserState$TextClassifierServiceConnection;->this$0:Lcom/android/server/textclassifier/TextClassificationManagerService$UserState;
+    iget-object v1, p0, Lcom/android/server/textclassifier/TextClassificationManagerService$UserState$TextClassifierServiceConnection;->this$0:Lcom/android/server/textclassifier/TextClassificationManagerService$UserState;
 
-    const/4 v1, 0x0
+    const/4 v2, 0x0
 
-    iput-boolean v1, p1, Lcom/android/server/textclassifier/TextClassificationManagerService$UserState;->mBinding:Z
+    iput-boolean v2, v1, Lcom/android/server/textclassifier/TextClassificationManagerService$UserState;->mBinding:Z
 
     .line 590
-    iget-object p1, p0, Lcom/android/server/textclassifier/TextClassificationManagerService$UserState$TextClassifierServiceConnection;->this$0:Lcom/android/server/textclassifier/TextClassificationManagerService$UserState;
+    iget-object v1, p0, Lcom/android/server/textclassifier/TextClassificationManagerService$UserState$TextClassifierServiceConnection;->this$0:Lcom/android/server/textclassifier/TextClassificationManagerService$UserState;
 
-    invoke-static {p1}, Lcom/android/server/textclassifier/TextClassificationManagerService$UserState;->access$1300(Lcom/android/server/textclassifier/TextClassificationManagerService$UserState;)V
+    invoke-static {v1}, Lcom/android/server/textclassifier/TextClassificationManagerService$UserState;->access$1300(Lcom/android/server/textclassifier/TextClassificationManagerService$UserState;)V
 
     .line 591
     monitor-exit v0
@@ -80,13 +83,13 @@
 
     .line 591
     :catchall_17
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_19
     .catchall {:try_start_7 .. :try_end_19} :catchall_17
 
-    throw p1
+    throw v1
 .end method
 
 
@@ -105,6 +108,7 @@
 
 .method public onBindingDied(Landroid/content/ComponentName;)V
     .registers 2
+    .param p1, "name"  # Landroid/content/ComponentName;
 
     .line 574
     invoke-virtual {p0}, Lcom/android/server/textclassifier/TextClassificationManagerService$UserState$TextClassifierServiceConnection;->cleanupService()V
@@ -115,6 +119,7 @@
 
 .method public onNullBinding(Landroid/content/ComponentName;)V
     .registers 2
+    .param p1, "name"  # Landroid/content/ComponentName;
 
     .line 579
     invoke-virtual {p0}, Lcom/android/server/textclassifier/TextClassificationManagerService$UserState$TextClassifierServiceConnection;->cleanupService()V
@@ -124,14 +129,16 @@
 .end method
 
 .method public onServiceConnected(Landroid/content/ComponentName;Landroid/os/IBinder;)V
-    .registers 3
+    .registers 4
+    .param p1, "name"  # Landroid/content/ComponentName;
+    .param p2, "service"  # Landroid/os/IBinder;
 
     .line 564
     invoke-static {p2}, Landroid/service/textclassifier/ITextClassifierService$Stub;->asInterface(Landroid/os/IBinder;)Landroid/service/textclassifier/ITextClassifierService;
 
-    move-result-object p1
+    move-result-object v0
 
-    invoke-direct {p0, p1}, Lcom/android/server/textclassifier/TextClassificationManagerService$UserState$TextClassifierServiceConnection;->init(Landroid/service/textclassifier/ITextClassifierService;)V
+    invoke-direct {p0, v0}, Lcom/android/server/textclassifier/TextClassificationManagerService$UserState$TextClassifierServiceConnection;->init(Landroid/service/textclassifier/ITextClassifierService;)V
 
     .line 565
     return-void
@@ -139,6 +146,7 @@
 
 .method public onServiceDisconnected(Landroid/content/ComponentName;)V
     .registers 2
+    .param p1, "name"  # Landroid/content/ComponentName;
 
     .line 569
     invoke-virtual {p0}, Lcom/android/server/textclassifier/TextClassificationManagerService$UserState$TextClassifierServiceConnection;->cleanupService()V

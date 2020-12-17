@@ -24,8 +24,9 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/MmsServiceBroker;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/MmsServiceBroker;
 
-    .line 119
+    .line 122
     iput-object p1, p0, Lcom/android/server/MmsServiceBroker$3;->this$0:Lcom/android/server/MmsServiceBroker;
 
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -35,8 +36,9 @@
 
 .method private returnPendingIntentWithError(Landroid/app/PendingIntent;)V
     .registers 5
+    .param p1, "pendingIntent"  # Landroid/app/PendingIntent;
 
-    .line 210
+    .line 213
     :try_start_0
     iget-object v0, p0, Lcom/android/server/MmsServiceBroker$3;->this$0:Lcom/android/server/MmsServiceBroker;
 
@@ -52,21 +54,23 @@
     :try_end_b
     .catch Landroid/app/PendingIntent$CanceledException; {:try_start_0 .. :try_end_b} :catch_c
 
-    .line 213
+    .line 216
     goto :goto_14
 
-    .line 211
-    :catch_c
-    move-exception p1
-
-    .line 212
-    const-string v0, "MmsServiceBroker"
-
-    const-string v1, "Failed to return pending intent result"
-
-    invoke-static {v0, v1, p1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
-
     .line 214
+    :catch_c
+    move-exception v0
+
+    .line 215
+    .local v0, "e":Landroid/app/PendingIntent$CanceledException;
+    const-string v1, "MmsServiceBroker"
+
+    const-string v2, "Failed to return pending intent result"
+
+    invoke-static {v1, v2, v0}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+
+    .line 217
+    .end local v0  # "e":Landroid/app/PendingIntent$CanceledException;
     :goto_14
     return-void
 .end method
@@ -74,96 +78,114 @@
 
 # virtual methods
 .method public addMultimediaMessageDraft(Ljava/lang/String;Landroid/net/Uri;)Landroid/net/Uri;
-    .registers 3
+    .registers 4
+    .param p1, "callingPkg"  # Ljava/lang/String;
+    .param p2, "contentUri"  # Landroid/net/Uri;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
         }
     .end annotation
 
-    .line 189
-    const/4 p1, 0x0
+    .line 192
+    const/4 v0, 0x0
 
-    return-object p1
+    return-object v0
 .end method
 
 .method public addTextMessageDraft(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Landroid/net/Uri;
-    .registers 4
+    .registers 5
+    .param p1, "callingPkg"  # Ljava/lang/String;
+    .param p2, "address"  # Ljava/lang/String;
+    .param p3, "text"  # Ljava/lang/String;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
         }
     .end annotation
 
-    .line 183
-    const/4 p1, 0x0
+    .line 186
+    const/4 v0, 0x0
 
-    return-object p1
+    return-object v0
 .end method
 
 .method public archiveStoredConversation(Ljava/lang/String;JZ)Z
-    .registers 5
+    .registers 6
+    .param p1, "callingPkg"  # Ljava/lang/String;
+    .param p2, "conversationId"  # J
+    .param p4, "archived"  # Z
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
         }
     .end annotation
 
-    .line 177
-    const/4 p1, 0x0
+    .line 180
+    const/4 v0, 0x0
 
-    return p1
+    return v0
 .end method
 
 .method public asBinder()Landroid/os/IBinder;
     .registers 2
 
-    .line 123
+    .line 126
     const/4 v0, 0x0
 
     return-object v0
 .end method
 
 .method public deleteStoredConversation(Ljava/lang/String;J)Z
-    .registers 4
+    .registers 5
+    .param p1, "callingPkg"  # Ljava/lang/String;
+    .param p2, "conversationId"  # J
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
         }
     .end annotation
 
-    .line 165
-    const/4 p1, 0x0
+    .line 168
+    const/4 v0, 0x0
 
-    return p1
+    return v0
 .end method
 
 .method public deleteStoredMessage(Ljava/lang/String;Landroid/net/Uri;)Z
-    .registers 3
+    .registers 4
+    .param p1, "callingPkg"  # Ljava/lang/String;
+    .param p2, "messageUri"  # Landroid/net/Uri;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
         }
     .end annotation
 
-    .line 159
-    const/4 p1, 0x0
+    .line 162
+    const/4 v0, 0x0
 
-    return p1
+    return v0
 .end method
 
 .method public downloadMessage(ILjava/lang/String;Ljava/lang/String;Landroid/net/Uri;Landroid/os/Bundle;Landroid/app/PendingIntent;)V
     .registers 7
+    .param p1, "subId"  # I
+    .param p2, "callingPkg"  # Ljava/lang/String;
+    .param p3, "locationUrl"  # Ljava/lang/String;
+    .param p4, "contentUri"  # Landroid/net/Uri;
+    .param p5, "configOverrides"  # Landroid/os/Bundle;
+    .param p6, "downloadedIntent"  # Landroid/app/PendingIntent;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
         }
     .end annotation
 
-    .line 136
+    .line 139
     invoke-direct {p0, p6}, Lcom/android/server/MmsServiceBroker$3;->returnPendingIntentWithError(Landroid/app/PendingIntent;)V
 
-    .line 137
+    .line 140
     return-void
 .end method
 
@@ -175,106 +197,136 @@
         }
     .end annotation
 
-    .line 205
+    .line 208
     const/4 v0, 0x0
 
     return v0
 .end method
 
 .method public getCarrierConfigValues(I)Landroid/os/Bundle;
-    .registers 2
+    .registers 3
+    .param p1, "subId"  # I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
         }
     .end annotation
 
-    .line 141
-    const/4 p1, 0x0
+    .line 144
+    const/4 v0, 0x0
 
-    return-object p1
+    return-object v0
 .end method
 
 .method public importMultimediaMessage(Ljava/lang/String;Landroid/net/Uri;Ljava/lang/String;JZZ)Landroid/net/Uri;
-    .registers 8
+    .registers 9
+    .param p1, "callingPkg"  # Ljava/lang/String;
+    .param p2, "contentUri"  # Landroid/net/Uri;
+    .param p3, "messageId"  # Ljava/lang/String;
+    .param p4, "timestampSecs"  # J
+    .param p6, "seen"  # Z
+    .param p7, "read"  # Z
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
         }
     .end annotation
 
-    .line 153
-    const/4 p1, 0x0
+    .line 156
+    const/4 v0, 0x0
 
-    return-object p1
+    return-object v0
 .end method
 
 .method public importTextMessage(Ljava/lang/String;Ljava/lang/String;ILjava/lang/String;JZZ)Landroid/net/Uri;
-    .registers 9
+    .registers 10
+    .param p1, "callingPkg"  # Ljava/lang/String;
+    .param p2, "address"  # Ljava/lang/String;
+    .param p3, "type"  # I
+    .param p4, "text"  # Ljava/lang/String;
+    .param p5, "timestampMillis"  # J
+    .param p7, "seen"  # Z
+    .param p8, "read"  # Z
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
         }
     .end annotation
 
-    .line 147
-    const/4 p1, 0x0
+    .line 150
+    const/4 v0, 0x0
 
-    return-object p1
+    return-object v0
 .end method
 
 .method public sendMessage(ILjava/lang/String;Landroid/net/Uri;Ljava/lang/String;Landroid/os/Bundle;Landroid/app/PendingIntent;)V
     .registers 7
+    .param p1, "subId"  # I
+    .param p2, "callingPkg"  # Ljava/lang/String;
+    .param p3, "contentUri"  # Landroid/net/Uri;
+    .param p4, "locationUrl"  # Ljava/lang/String;
+    .param p5, "configOverrides"  # Landroid/os/Bundle;
+    .param p6, "sentIntent"  # Landroid/app/PendingIntent;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
         }
     .end annotation
 
-    .line 129
+    .line 132
     invoke-direct {p0, p6}, Lcom/android/server/MmsServiceBroker$3;->returnPendingIntentWithError(Landroid/app/PendingIntent;)V
 
-    .line 130
+    .line 133
     return-void
 .end method
 
 .method public sendStoredMessage(ILjava/lang/String;Landroid/net/Uri;Landroid/os/Bundle;Landroid/app/PendingIntent;)V
     .registers 6
+    .param p1, "subId"  # I
+    .param p2, "callingPkg"  # Ljava/lang/String;
+    .param p3, "messageUri"  # Landroid/net/Uri;
+    .param p4, "configOverrides"  # Landroid/os/Bundle;
+    .param p5, "sentIntent"  # Landroid/app/PendingIntent;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
         }
     .end annotation
 
-    .line 195
+    .line 198
     invoke-direct {p0, p5}, Lcom/android/server/MmsServiceBroker$3;->returnPendingIntentWithError(Landroid/app/PendingIntent;)V
 
-    .line 196
+    .line 199
     return-void
 .end method
 
 .method public setAutoPersisting(Ljava/lang/String;Z)V
     .registers 3
+    .param p1, "callingPkg"  # Ljava/lang/String;
+    .param p2, "enabled"  # Z
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
         }
     .end annotation
 
-    .line 201
+    .line 204
     return-void
 .end method
 
 .method public updateStoredMessageStatus(Ljava/lang/String;Landroid/net/Uri;Landroid/content/ContentValues;)Z
-    .registers 4
+    .registers 5
+    .param p1, "callingPkg"  # Ljava/lang/String;
+    .param p2, "messageUri"  # Landroid/net/Uri;
+    .param p3, "statusValues"  # Landroid/content/ContentValues;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
         }
     .end annotation
 
-    .line 171
-    const/4 p1, 0x0
+    .line 174
+    const/4 v0, 0x0
 
-    return p1
+    return v0
 .end method

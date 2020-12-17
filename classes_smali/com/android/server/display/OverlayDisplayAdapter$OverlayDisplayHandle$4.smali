@@ -24,6 +24,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/display/OverlayDisplayAdapter$OverlayDisplayHandle;)V
     .registers 2
+    .param p1, "this$1"  # Lcom/android/server/display/OverlayDisplayAdapter$OverlayDisplayHandle;
 
     .line 500
     iput-object p1, p0, Lcom/android/server/display/OverlayDisplayAdapter$OverlayDisplayHandle$4;->this$1:Lcom/android/server/display/OverlayDisplayAdapter$OverlayDisplayHandle;
@@ -36,7 +37,7 @@
 
 # virtual methods
 .method public run()V
-    .registers 5
+    .registers 6
 
     .line 505
     iget-object v0, p0, Lcom/android/server/display/OverlayDisplayAdapter$OverlayDisplayHandle$4;->this$1:Lcom/android/server/display/OverlayDisplayAdapter$OverlayDisplayHandle;
@@ -85,6 +86,7 @@
     check-cast v1, Lcom/android/server/display/OverlayDisplayAdapter$OverlayMode;
 
     .line 510
+    .local v1, "mode":Lcom/android/server/display/OverlayDisplayAdapter$OverlayMode;
     iget-object v2, p0, Lcom/android/server/display/OverlayDisplayAdapter$OverlayDisplayHandle$4;->this$1:Lcom/android/server/display/OverlayDisplayAdapter$OverlayDisplayHandle;
 
     invoke-static {v2}, Lcom/android/server/display/OverlayDisplayAdapter$OverlayDisplayHandle;->access$800(Lcom/android/server/display/OverlayDisplayAdapter$OverlayDisplayHandle;)Lcom/android/server/display/OverlayDisplayWindow;
@@ -92,6 +94,7 @@
     move-result-object v2
 
     .line 511
+    .local v2, "window":Lcom/android/server/display/OverlayDisplayWindow;
     monitor-exit v0
     :try_end_2c
     .catchall {:try_start_9 .. :try_end_2c} :catchall_36
@@ -101,14 +104,16 @@
 
     iget v3, v1, Lcom/android/server/display/OverlayDisplayAdapter$OverlayMode;->mHeight:I
 
-    iget v1, v1, Lcom/android/server/display/OverlayDisplayAdapter$OverlayMode;->mDensityDpi:I
+    iget v4, v1, Lcom/android/server/display/OverlayDisplayAdapter$OverlayMode;->mDensityDpi:I
 
-    invoke-virtual {v2, v0, v3, v1}, Lcom/android/server/display/OverlayDisplayWindow;->resize(III)V
+    invoke-virtual {v2, v0, v3, v4}, Lcom/android/server/display/OverlayDisplayWindow;->resize(III)V
 
     .line 513
     return-void
 
     .line 511
+    .end local v1  # "mode":Lcom/android/server/display/OverlayDisplayAdapter$OverlayMode;
+    .end local v2  # "window":Lcom/android/server/display/OverlayDisplayWindow;
     :catchall_36
     move-exception v1
 

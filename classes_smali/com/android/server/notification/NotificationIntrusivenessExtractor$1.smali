@@ -21,6 +21,9 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/notification/NotificationIntrusivenessExtractor;Ljava/lang/String;J)V
     .registers 5
+    .param p1, "this$0"  # Lcom/android/server/notification/NotificationIntrusivenessExtractor;
+    .param p2, "key"  # Ljava/lang/String;
+    .param p3, "delay"  # J
 
     .line 67
     iput-object p1, p0, Lcom/android/server/notification/NotificationIntrusivenessExtractor$1;->this$0:Lcom/android/server/notification/NotificationIntrusivenessExtractor;
@@ -34,6 +37,7 @@
 # virtual methods
 .method public applyChangesLocked(Lcom/android/server/notification/NotificationRecord;)V
     .registers 6
+    .param p1, "record"  # Lcom/android/server/notification/NotificationRecord;
 
     .line 77
     invoke-static {}, Ljava/lang/System;->currentTimeMillis()J

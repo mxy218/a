@@ -49,6 +49,7 @@
 
 .method protected constructor <init>(Ljava/io/File;)V
     .registers 4
+    .param p1, "xmlFile"  # Ljava/io/File;
     .annotation build Lcom/android/internal/annotations/VisibleForTesting;
     .end annotation
 
@@ -73,16 +74,16 @@
     invoke-direct {p0}, Lcom/android/server/net/watchlist/WatchlistSettings;->reloadSettings()V
 
     .line 82
-    iget-object p1, p0, Lcom/android/server/net/watchlist/WatchlistSettings;->mPrivacySecretKey:[B
+    iget-object v0, p0, Lcom/android/server/net/watchlist/WatchlistSettings;->mPrivacySecretKey:[B
 
-    if-nez p1, :cond_20
+    if-nez v0, :cond_20
 
     .line 84
     invoke-direct {p0}, Lcom/android/server/net/watchlist/WatchlistSettings;->generatePrivacySecretKey()[B
 
-    move-result-object p1
+    move-result-object v0
 
-    iput-object p1, p0, Lcom/android/server/net/watchlist/WatchlistSettings;->mPrivacySecretKey:[B
+    iput-object v0, p0, Lcom/android/server/net/watchlist/WatchlistSettings;->mPrivacySecretKey:[B
 
     .line 85
     invoke-direct {p0}, Lcom/android/server/net/watchlist/WatchlistSettings;->saveSettings()V
@@ -101,6 +102,7 @@
     new-array v0, v0, [B
 
     .line 135
+    .local v0, "key":[B
     new-instance v1, Ljava/security/SecureRandom;
 
     invoke-direct {v1}, Ljava/security/SecureRandom;-><init>()V
@@ -139,6 +141,7 @@
 
 .method private parseSecretKey(Lorg/xmlpull/v1/XmlPullParser;)[B
     .registers 6
+    .param p1, "parser"  # Lorg/xmlpull/v1/XmlPullParser;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Ljava/io/IOException;,
@@ -165,6 +168,7 @@
     move-result-object v2
 
     .line 115
+    .local v2, "key":[B
     const/4 v3, 0x3
 
     invoke-interface {p1, v3, v1, v0}, Lorg/xmlpull/v1/XmlPullParser;->require(ILjava/lang/String;Ljava/lang/String;)V
@@ -172,11 +176,11 @@
     .line 116
     if-eqz v2, :cond_1d
 
-    array-length p1, v2
+    array-length v0, v2
 
-    const/16 v0, 0x30
+    const/16 v3, 0x30
 
-    if-eq p1, v0, :cond_1c
+    if-eq v0, v3, :cond_1c
 
     goto :goto_1d
 
@@ -187,11 +191,11 @@
     .line 117
     :cond_1d
     :goto_1d
-    const-string p1, "WatchlistSettings"
+    const-string v0, "WatchlistSettings"
 
-    const-string v0, "Unable to parse secret key"
+    const-string v3, "Unable to parse secret key"
 
-    invoke-static {p1, v0}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v0, v3}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 118
     return-object v1
@@ -223,20 +227,22 @@
 
     move-result-object v1
     :try_end_11
-    .catch Ljava/lang/IllegalStateException; {:try_start_b .. :try_end_11} :catch_5b
-    .catch Ljava/lang/NullPointerException; {:try_start_b .. :try_end_11} :catch_5b
-    .catch Ljava/lang/NumberFormatException; {:try_start_b .. :try_end_11} :catch_5b
-    .catch Lorg/xmlpull/v1/XmlPullParserException; {:try_start_b .. :try_end_11} :catch_5b
-    .catch Ljava/io/IOException; {:try_start_b .. :try_end_11} :catch_5b
-    .catch Ljava/lang/IndexOutOfBoundsException; {:try_start_b .. :try_end_11} :catch_5b
+    .catch Ljava/lang/IllegalStateException; {:try_start_b .. :try_end_11} :catch_5c
+    .catch Ljava/lang/NullPointerException; {:try_start_b .. :try_end_11} :catch_5c
+    .catch Ljava/lang/NumberFormatException; {:try_start_b .. :try_end_11} :catch_5c
+    .catch Lorg/xmlpull/v1/XmlPullParserException; {:try_start_b .. :try_end_11} :catch_5c
+    .catch Ljava/io/IOException; {:try_start_b .. :try_end_11} :catch_5c
+    .catch Ljava/lang/IndexOutOfBoundsException; {:try_start_b .. :try_end_11} :catch_5c
 
     .line 95
+    .local v1, "stream":Ljava/io/FileInputStream;
     :try_start_11
     invoke-static {}, Landroid/util/Xml;->newPullParser()Lorg/xmlpull/v1/XmlPullParser;
 
     move-result-object v2
 
     .line 96
+    .local v2, "parser":Lorg/xmlpull/v1/XmlPullParser;
     sget-object v3, Ljava/nio/charset/StandardCharsets;->UTF_8:Ljava/nio/charset/Charset;
 
     invoke-virtual {v3}, Ljava/nio/charset/Charset;->name()Ljava/lang/String;
@@ -256,6 +262,7 @@
     move-result v3
 
     .line 99
+    .local v3, "outerDepth":I
     :cond_28
     :goto_28
     invoke-static {v2, v3}, Lcom/android/internal/util/XmlUtils;->nextElementWithin(Lorg/xmlpull/v1/XmlPullParser;I)Z
@@ -288,78 +295,93 @@
 
     .line 104
     :cond_42
-    const-string v2, "Reload watchlist settings done"
+    const-string v4, "Reload watchlist settings done"
 
-    invoke-static {v0, v2}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v0, v4}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
     :try_end_47
-    .catchall {:try_start_11 .. :try_end_47} :catchall_4d
+    .catchall {:try_start_11 .. :try_end_47} :catchall_4e
 
     .line 105
-    if-eqz v1, :cond_4c
+    nop
 
-    :try_start_49
+    .end local v2  # "parser":Lorg/xmlpull/v1/XmlPullParser;
+    .end local v3  # "outerDepth":I
+    if-eqz v1, :cond_4d
+
+    :try_start_4a
     invoke-virtual {v1}, Ljava/io/FileInputStream;->close()V
-    :try_end_4c
-    .catch Ljava/lang/IllegalStateException; {:try_start_49 .. :try_end_4c} :catch_5b
-    .catch Ljava/lang/NullPointerException; {:try_start_49 .. :try_end_4c} :catch_5b
-    .catch Ljava/lang/NumberFormatException; {:try_start_49 .. :try_end_4c} :catch_5b
-    .catch Lorg/xmlpull/v1/XmlPullParserException; {:try_start_49 .. :try_end_4c} :catch_5b
-    .catch Ljava/io/IOException; {:try_start_49 .. :try_end_4c} :catch_5b
-    .catch Ljava/lang/IndexOutOfBoundsException; {:try_start_49 .. :try_end_4c} :catch_5b
+    :try_end_4d
+    .catch Ljava/lang/IllegalStateException; {:try_start_4a .. :try_end_4d} :catch_5c
+    .catch Ljava/lang/NullPointerException; {:try_start_4a .. :try_end_4d} :catch_5c
+    .catch Ljava/lang/NumberFormatException; {:try_start_4a .. :try_end_4d} :catch_5c
+    .catch Lorg/xmlpull/v1/XmlPullParserException; {:try_start_4a .. :try_end_4d} :catch_5c
+    .catch Ljava/io/IOException; {:try_start_4a .. :try_end_4d} :catch_5c
+    .catch Ljava/lang/IndexOutOfBoundsException; {:try_start_4a .. :try_end_4d} :catch_5c
 
     .line 108
-    :cond_4c
-    goto :goto_61
+    .end local v1  # "stream":Ljava/io/FileInputStream;
+    :cond_4d
+    goto :goto_62
 
     .line 94
-    :catchall_4d
+    .restart local v1  # "stream":Ljava/io/FileInputStream;
+    :catchall_4e
     move-exception v2
 
-    :try_start_4e
+    .end local v1  # "stream":Ljava/io/FileInputStream;
+    .end local p0  # "this":Lcom/android/server/net/watchlist/WatchlistSettings;
+    :try_start_4f
     throw v2
-    :try_end_4f
-    .catchall {:try_start_4e .. :try_end_4f} :catchall_4f
+    :try_end_50
+    .catchall {:try_start_4f .. :try_end_50} :catchall_50
 
     .line 105
-    :catchall_4f
+    .restart local v1  # "stream":Ljava/io/FileInputStream;
+    .restart local p0  # "this":Lcom/android/server/net/watchlist/WatchlistSettings;
+    :catchall_50
     move-exception v3
 
-    if-eqz v1, :cond_5a
+    if-eqz v1, :cond_5b
 
-    :try_start_52
+    :try_start_53
     invoke-virtual {v1}, Ljava/io/FileInputStream;->close()V
-    :try_end_55
-    .catchall {:try_start_52 .. :try_end_55} :catchall_56
+    :try_end_56
+    .catchall {:try_start_53 .. :try_end_56} :catchall_57
 
-    goto :goto_5a
+    goto :goto_5b
 
-    :catchall_56
-    move-exception v1
+    :catchall_57
+    move-exception v4
 
-    :try_start_57
-    invoke-virtual {v2, v1}, Ljava/lang/Throwable;->addSuppressed(Ljava/lang/Throwable;)V
+    :try_start_58
+    invoke-virtual {v2, v4}, Ljava/lang/Throwable;->addSuppressed(Ljava/lang/Throwable;)V
 
-    :cond_5a
-    :goto_5a
+    .end local p0  # "this":Lcom/android/server/net/watchlist/WatchlistSettings;
+    :cond_5b
+    :goto_5b
     throw v3
-    :try_end_5b
-    .catch Ljava/lang/IllegalStateException; {:try_start_57 .. :try_end_5b} :catch_5b
-    .catch Ljava/lang/NullPointerException; {:try_start_57 .. :try_end_5b} :catch_5b
-    .catch Ljava/lang/NumberFormatException; {:try_start_57 .. :try_end_5b} :catch_5b
-    .catch Lorg/xmlpull/v1/XmlPullParserException; {:try_start_57 .. :try_end_5b} :catch_5b
-    .catch Ljava/io/IOException; {:try_start_57 .. :try_end_5b} :catch_5b
-    .catch Ljava/lang/IndexOutOfBoundsException; {:try_start_57 .. :try_end_5b} :catch_5b
+    :try_end_5c
+    .catch Ljava/lang/IllegalStateException; {:try_start_58 .. :try_end_5c} :catch_5c
+    .catch Ljava/lang/NullPointerException; {:try_start_58 .. :try_end_5c} :catch_5c
+    .catch Ljava/lang/NumberFormatException; {:try_start_58 .. :try_end_5c} :catch_5c
+    .catch Lorg/xmlpull/v1/XmlPullParserException; {:try_start_58 .. :try_end_5c} :catch_5c
+    .catch Ljava/io/IOException; {:try_start_58 .. :try_end_5c} :catch_5c
+    .catch Ljava/lang/IndexOutOfBoundsException; {:try_start_58 .. :try_end_5c} :catch_5c
 
-    :catch_5b
+    .end local v1  # "stream":Ljava/io/FileInputStream;
+    .restart local p0  # "this":Lcom/android/server/net/watchlist/WatchlistSettings;
+    :catch_5c
     move-exception v1
 
     .line 107
+    .local v1, "e":Ljava/lang/Exception;
     const-string v2, "Failed parsing xml"
 
     invoke-static {v0, v2, v1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
     .line 109
-    :goto_61
+    .end local v1  # "e":Ljava/lang/Exception;
+    :goto_62
     return-void
 .end method
 
@@ -383,6 +405,7 @@
     .catch Ljava/io/IOException; {:try_start_8 .. :try_end_e} :catch_50
 
     .line 146
+    .local v3, "stream":Ljava/io/FileOutputStream;
     nop
 
     .line 148
@@ -392,6 +415,7 @@
     invoke-direct {v4}, Lcom/android/internal/util/FastXmlSerializer;-><init>()V
 
     .line 149
+    .local v4, "out":Lorg/xmlpull/v1/XmlSerializer;
     sget-object v5, Ljava/nio/charset/StandardCharsets;->UTF_8:Ljava/nio/charset/Charset;
 
     invoke-virtual {v5}, Ljava/nio/charset/Charset;->name()Ljava/lang/String;
@@ -443,6 +467,7 @@
     .catch Ljava/io/IOException; {:try_start_f .. :try_end_43} :catch_44
 
     .line 161
+    .end local v4  # "out":Lorg/xmlpull/v1/XmlSerializer;
     goto :goto_4f
 
     .line 158
@@ -450,24 +475,28 @@
     move-exception v0
 
     .line 159
+    .local v0, "e":Ljava/io/IOException;
     const-string v1, "Failed to write display settings, restoring backup."
 
     invoke-static {v2, v1, v0}, Landroid/util/Log;->w(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
     .line 160
-    iget-object v0, p0, Lcom/android/server/net/watchlist/WatchlistSettings;->mXmlFile:Landroid/util/AtomicFile;
+    iget-object v1, p0, Lcom/android/server/net/watchlist/WatchlistSettings;->mXmlFile:Landroid/util/AtomicFile;
 
-    invoke-virtual {v0, v3}, Landroid/util/AtomicFile;->failWrite(Ljava/io/FileOutputStream;)V
+    invoke-virtual {v1, v3}, Landroid/util/AtomicFile;->failWrite(Ljava/io/FileOutputStream;)V
 
     .line 162
+    .end local v0  # "e":Ljava/io/IOException;
     :goto_4f
     return-void
 
     .line 143
+    .end local v3  # "stream":Ljava/io/FileOutputStream;
     :catch_50
     move-exception v0
 
     .line 144
+    .restart local v0  # "e":Ljava/io/IOException;
     new-instance v1, Ljava/lang/StringBuilder;
 
     invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
@@ -480,9 +509,9 @@
 
     invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v1
 
-    invoke-static {v2, v0}, Landroid/util/Log;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v2, v1}, Landroid/util/Log;->w(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 145
     return-void
@@ -502,6 +531,7 @@
     new-array v1, v0, [B
 
     .line 129
+    .local v1, "key":[B
     iget-object v2, p0, Lcom/android/server/net/watchlist/WatchlistSettings;->mPrivacySecretKey:[B
 
     const/4 v3, 0x0
@@ -516,6 +546,8 @@
     return-object v1
 
     .line 127
+    .end local v1  # "key":[B
+    .end local p0  # "this":Lcom/android/server/net/watchlist/WatchlistSettings;
     :catchall_d
     move-exception v0
 

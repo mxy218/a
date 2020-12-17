@@ -63,7 +63,8 @@
 .end method
 
 .method public final readFromParcel(Landroid/os/Parcel;)V
-    .registers 5
+    .registers 6
+    .param p1, "_aidl_parcel"  # Landroid/os/Parcel;
 
     .line 42
     invoke-virtual {p1}, Landroid/os/Parcel;->dataPosition()I
@@ -71,11 +72,13 @@
     move-result v0
 
     .line 43
+    .local v0, "_aidl_start_pos":I
     invoke-virtual {p1}, Landroid/os/Parcel;->readInt()I
 
     move-result v1
 
     .line 44
+    .local v1, "_aidl_parcelable_size":I
     if-gez v1, :cond_b
 
     return-void
@@ -98,23 +101,23 @@
 
     move-result v2
     :try_end_19
-    .catchall {:try_start_b .. :try_end_19} :catchall_61
+    .catchall {:try_start_b .. :try_end_19} :catchall_66
 
     sub-int/2addr v2, v0
 
-    if-lt v2, v1, :cond_21
+    if-lt v2, v1, :cond_22
 
     .line 55
-    add-int/2addr v0, v1
+    add-int v2, v0, v1
 
-    invoke-virtual {p1, v0}, Landroid/os/Parcel;->setDataPosition(I)V
+    invoke-virtual {p1, v2}, Landroid/os/Parcel;->setDataPosition(I)V
 
     .line 47
     return-void
 
     .line 48
-    :cond_21
-    :try_start_21
+    :cond_22
+    :try_start_22
     sget-object v2, Landroid/net/IpPrefix;->CREATOR:Landroid/os/Parcelable$Creator;
 
     invoke-virtual {p1, v2}, Landroid/os/Parcel;->createTypedArray(Landroid/os/Parcelable$Creator;)[Ljava/lang/Object;
@@ -129,24 +132,24 @@
     invoke-virtual {p1}, Landroid/os/Parcel;->dataPosition()I
 
     move-result v2
-    :try_end_2f
-    .catchall {:try_start_21 .. :try_end_2f} :catchall_61
+    :try_end_30
+    .catchall {:try_start_22 .. :try_end_30} :catchall_66
 
     sub-int/2addr v2, v0
 
-    if-lt v2, v1, :cond_37
+    if-lt v2, v1, :cond_39
 
     .line 55
-    add-int/2addr v0, v1
+    add-int v2, v0, v1
 
-    invoke-virtual {p1, v0}, Landroid/os/Parcel;->setDataPosition(I)V
+    invoke-virtual {p1, v2}, Landroid/os/Parcel;->setDataPosition(I)V
 
     .line 49
     return-void
 
     .line 50
-    :cond_37
-    :try_start_37
+    :cond_39
+    :try_start_39
     invoke-virtual {p1}, Landroid/os/Parcel;->createStringArray()[Ljava/lang/String;
 
     move-result-object v2
@@ -157,24 +160,24 @@
     invoke-virtual {p1}, Landroid/os/Parcel;->dataPosition()I
 
     move-result v2
-    :try_end_41
-    .catchall {:try_start_37 .. :try_end_41} :catchall_61
+    :try_end_43
+    .catchall {:try_start_39 .. :try_end_43} :catchall_66
 
     sub-int/2addr v2, v0
 
-    if-lt v2, v1, :cond_49
+    if-lt v2, v1, :cond_4c
 
     .line 55
-    add-int/2addr v0, v1
+    add-int v2, v0, v1
 
-    invoke-virtual {p1, v0}, Landroid/os/Parcel;->setDataPosition(I)V
+    invoke-virtual {p1, v2}, Landroid/os/Parcel;->setDataPosition(I)V
 
     .line 51
     return-void
 
     .line 52
-    :cond_49
-    :try_start_49
+    :cond_4c
+    :try_start_4c
     invoke-virtual {p1}, Landroid/os/Parcel;->readString()Ljava/lang/String;
 
     move-result-object v2
@@ -185,26 +188,26 @@
     invoke-virtual {p1}, Landroid/os/Parcel;->dataPosition()I
 
     move-result v2
-    :try_end_53
-    .catchall {:try_start_49 .. :try_end_53} :catchall_61
+    :try_end_56
+    .catchall {:try_start_4c .. :try_end_56} :catchall_66
 
     sub-int/2addr v2, v0
 
-    if-lt v2, v1, :cond_5b
+    if-lt v2, v1, :cond_5f
 
     .line 55
-    add-int/2addr v0, v1
+    add-int v2, v0, v1
 
-    invoke-virtual {p1, v0}, Landroid/os/Parcel;->setDataPosition(I)V
+    invoke-virtual {p1, v2}, Landroid/os/Parcel;->setDataPosition(I)V
 
     .line 53
     return-void
 
     .line 55
-    :cond_5b
-    add-int/2addr v0, v1
+    :cond_5f
+    add-int v2, v0, v1
 
-    invoke-virtual {p1, v0}, Landroid/os/Parcel;->setDataPosition(I)V
+    invoke-virtual {p1, v2}, Landroid/os/Parcel;->setDataPosition(I)V
 
     .line 56
     nop
@@ -213,64 +216,68 @@
     return-void
 
     .line 55
-    :catchall_61
+    :catchall_66
     move-exception v2
 
-    add-int/2addr v0, v1
+    add-int v3, v0, v1
 
-    invoke-virtual {p1, v0}, Landroid/os/Parcel;->setDataPosition(I)V
+    invoke-virtual {p1, v3}, Landroid/os/Parcel;->setDataPosition(I)V
 
     throw v2
 .end method
 
 .method public final writeToParcel(Landroid/os/Parcel;I)V
-    .registers 5
+    .registers 6
+    .param p1, "_aidl_parcel"  # Landroid/os/Parcel;
+    .param p2, "_aidl_flag"  # I
 
     .line 29
     invoke-virtual {p1}, Landroid/os/Parcel;->dataPosition()I
 
-    move-result p2
+    move-result v0
 
     .line 30
-    const/4 v0, 0x0
+    .local v0, "_aidl_start_pos":I
+    const/4 v1, 0x0
 
-    invoke-virtual {p1, v0}, Landroid/os/Parcel;->writeInt(I)V
+    invoke-virtual {p1, v1}, Landroid/os/Parcel;->writeInt(I)V
 
     .line 31
-    iget-object v1, p0, Landroid/net/InitialConfigurationParcelable;->ipAddresses:[Landroid/net/LinkAddress;
+    iget-object v2, p0, Landroid/net/InitialConfigurationParcelable;->ipAddresses:[Landroid/net/LinkAddress;
 
-    invoke-virtual {p1, v1, v0}, Landroid/os/Parcel;->writeTypedArray([Landroid/os/Parcelable;I)V
+    invoke-virtual {p1, v2, v1}, Landroid/os/Parcel;->writeTypedArray([Landroid/os/Parcelable;I)V
 
     .line 32
-    iget-object v1, p0, Landroid/net/InitialConfigurationParcelable;->directlyConnectedRoutes:[Landroid/net/IpPrefix;
+    iget-object v2, p0, Landroid/net/InitialConfigurationParcelable;->directlyConnectedRoutes:[Landroid/net/IpPrefix;
 
-    invoke-virtual {p1, v1, v0}, Landroid/os/Parcel;->writeTypedArray([Landroid/os/Parcelable;I)V
+    invoke-virtual {p1, v2, v1}, Landroid/os/Parcel;->writeTypedArray([Landroid/os/Parcelable;I)V
 
     .line 33
-    iget-object v0, p0, Landroid/net/InitialConfigurationParcelable;->dnsServers:[Ljava/lang/String;
+    iget-object v1, p0, Landroid/net/InitialConfigurationParcelable;->dnsServers:[Ljava/lang/String;
 
-    invoke-virtual {p1, v0}, Landroid/os/Parcel;->writeStringArray([Ljava/lang/String;)V
+    invoke-virtual {p1, v1}, Landroid/os/Parcel;->writeStringArray([Ljava/lang/String;)V
 
     .line 34
-    iget-object v0, p0, Landroid/net/InitialConfigurationParcelable;->gateway:Ljava/lang/String;
+    iget-object v1, p0, Landroid/net/InitialConfigurationParcelable;->gateway:Ljava/lang/String;
 
-    invoke-virtual {p1, v0}, Landroid/os/Parcel;->writeString(Ljava/lang/String;)V
+    invoke-virtual {p1, v1}, Landroid/os/Parcel;->writeString(Ljava/lang/String;)V
 
     .line 35
     invoke-virtual {p1}, Landroid/os/Parcel;->dataPosition()I
 
-    move-result v0
+    move-result v1
 
     .line 36
-    invoke-virtual {p1, p2}, Landroid/os/Parcel;->setDataPosition(I)V
+    .local v1, "_aidl_end_pos":I
+    invoke-virtual {p1, v0}, Landroid/os/Parcel;->setDataPosition(I)V
 
     .line 37
-    sub-int p2, v0, p2
+    sub-int v2, v1, v0
 
-    invoke-virtual {p1, p2}, Landroid/os/Parcel;->writeInt(I)V
+    invoke-virtual {p1, v2}, Landroid/os/Parcel;->writeInt(I)V
 
     .line 38
-    invoke-virtual {p1, v0}, Landroid/os/Parcel;->setDataPosition(I)V
+    invoke-virtual {p1, v1}, Landroid/os/Parcel;->setDataPosition(I)V
 
     .line 39
     return-void

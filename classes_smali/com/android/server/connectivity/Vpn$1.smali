@@ -20,22 +20,34 @@
 
 # direct methods
 .method constructor <init>(Lcom/android/server/connectivity/Vpn;Landroid/os/Looper;Landroid/content/Context;Ljava/lang/String;Landroid/net/NetworkInfo;Landroid/net/NetworkCapabilities;Landroid/net/LinkProperties;ILandroid/net/NetworkMisc;I)V
-    .registers 21
+    .registers 23
+    .param p1, "this$0"  # Lcom/android/server/connectivity/Vpn;
+    .param p2, "x0"  # Landroid/os/Looper;
+    .param p3, "x1"  # Landroid/content/Context;
+    .param p4, "x2"  # Ljava/lang/String;
+    .param p5, "x3"  # Landroid/net/NetworkInfo;
+    .param p6, "x4"  # Landroid/net/NetworkCapabilities;
+    .param p7, "x5"  # Landroid/net/LinkProperties;
+    .param p8, "x6"  # I
+    .param p9, "x7"  # Landroid/net/NetworkMisc;
+    .param p10, "x8"  # I
 
-    .line 985
+    .line 1079
+    move-object v10, p0
+
+    move-object v11, p1
+
+    iput-object v11, v10, Lcom/android/server/connectivity/Vpn$1;->this$0:Lcom/android/server/connectivity/Vpn;
+
     move-object v0, p0
-
-    move-object v1, p1
-
-    iput-object v1, v0, Lcom/android/server/connectivity/Vpn$1;->this$0:Lcom/android/server/connectivity/Vpn;
 
     move-object v1, p2
 
     move-object v2, p3
 
-    move-object v3, p4
+    move-object/from16 v3, p4
 
-    move-object v4, p5
+    move-object/from16 v4, p5
 
     move-object/from16 v5, p6
 
@@ -57,6 +69,6 @@
 .method public unwanted()V
     .registers 1
 
-    .line 989
+    .line 1083
     return-void
 .end method

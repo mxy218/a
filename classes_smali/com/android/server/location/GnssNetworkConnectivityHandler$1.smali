@@ -1,11 +1,11 @@
 .class Lcom/android/server/location/GnssNetworkConnectivityHandler$1;
-.super Landroid/net/ConnectivityManager$NetworkCallback;
+.super Landroid/telephony/SubscriptionManager$OnSubscriptionsChangedListener;
 .source "GnssNetworkConnectivityHandler.java"
 
 
 # annotations
-.annotation system Ldalvik/annotation/EnclosingMethod;
-    value = Lcom/android/server/location/GnssNetworkConnectivityHandler;->createNetworkConnectivityCallback()Landroid/net/ConnectivityManager$NetworkCallback;
+.annotation system Ldalvik/annotation/EnclosingClass;
+    value = Lcom/android/server/location/GnssNetworkConnectivityHandler;
 .end annotation
 
 .annotation system Ldalvik/annotation/InnerClass;
@@ -15,221 +15,449 @@
 
 
 # instance fields
-.field private mAvailableNetworkCapabilities:Ljava/util/HashMap;
-    .annotation system Ldalvik/annotation/Signature;
-        value = {
-            "Ljava/util/HashMap<",
-            "Landroid/net/Network;",
-            "Landroid/net/NetworkCapabilities;",
-            ">;"
-        }
-    .end annotation
-.end field
-
 .field final synthetic this$0:Lcom/android/server/location/GnssNetworkConnectivityHandler;
 
 
 # direct methods
 .method constructor <init>(Lcom/android/server/location/GnssNetworkConnectivityHandler;)V
-    .registers 3
+    .registers 2
+    .param p1, "this$0"  # Lcom/android/server/location/GnssNetworkConnectivityHandler;
 
     .line 227
     iput-object p1, p0, Lcom/android/server/location/GnssNetworkConnectivityHandler$1;->this$0:Lcom/android/server/location/GnssNetworkConnectivityHandler;
 
-    invoke-direct {p0}, Landroid/net/ConnectivityManager$NetworkCallback;-><init>()V
-
-    .line 232
-    new-instance p1, Ljava/util/HashMap;
-
-    const/4 v0, 0x5
-
-    invoke-direct {p1, v0}, Ljava/util/HashMap;-><init>(I)V
-
-    iput-object p1, p0, Lcom/android/server/location/GnssNetworkConnectivityHandler$1;->mAvailableNetworkCapabilities:Ljava/util/HashMap;
+    invoke-direct {p0}, Landroid/telephony/SubscriptionManager$OnSubscriptionsChangedListener;-><init>()V
 
     return-void
 .end method
 
 
 # virtual methods
-.method public onCapabilitiesChanged(Landroid/net/Network;Landroid/net/NetworkCapabilities;)V
-    .registers 6
+.method public onSubscriptionsChanged()V
+    .registers 12
 
-    .line 242
-    iget-object v0, p0, Lcom/android/server/location/GnssNetworkConnectivityHandler$1;->mAvailableNetworkCapabilities:Ljava/util/HashMap;
+    .line 230
+    iget-object v0, p0, Lcom/android/server/location/GnssNetworkConnectivityHandler$1;->this$0:Lcom/android/server/location/GnssNetworkConnectivityHandler;
 
-    .line 243
-    invoke-virtual {v0, p1}, Ljava/util/HashMap;->get(Ljava/lang/Object;)Ljava/lang/Object;
+    invoke-static {v0}, Lcom/android/server/location/GnssNetworkConnectivityHandler;->access$200(Lcom/android/server/location/GnssNetworkConnectivityHandler;)Ljava/util/HashMap;
 
     move-result-object v0
 
-    check-cast v0, Landroid/net/NetworkCapabilities;
+    if-nez v0, :cond_15
 
-    .line 242
-    invoke-static {v0, p2}, Lcom/android/server/location/GnssNetworkConnectivityHandler$NetworkAttributes;->access$000(Landroid/net/NetworkCapabilities;Landroid/net/NetworkCapabilities;)Z
+    .line 232
+    iget-object v0, p0, Lcom/android/server/location/GnssNetworkConnectivityHandler$1;->this$0:Lcom/android/server/location/GnssNetworkConnectivityHandler;
 
-    move-result v0
+    new-instance v1, Ljava/util/HashMap;
 
-    const-string v1, "GnssNetworkConnectivityHandler"
+    const/4 v2, 0x2
 
-    if-nez v0, :cond_2b
+    const/high16 v3, 0x3f800000  # 1.0f
 
-    .line 244
+    invoke-direct {v1, v2, v3}, Ljava/util/HashMap;-><init>(IF)V
+
+    invoke-static {v0, v1}, Lcom/android/server/location/GnssNetworkConnectivityHandler;->access$202(Lcom/android/server/location/GnssNetworkConnectivityHandler;Ljava/util/HashMap;)Ljava/util/HashMap;
+
+    .line 234
+    :cond_15
+    iget-object v0, p0, Lcom/android/server/location/GnssNetworkConnectivityHandler$1;->this$0:Lcom/android/server/location/GnssNetworkConnectivityHandler;
+
+    invoke-static {v0}, Lcom/android/server/location/GnssNetworkConnectivityHandler;->access$300(Lcom/android/server/location/GnssNetworkConnectivityHandler;)Landroid/content/Context;
+
+    move-result-object v0
+
+    const-class v1, Landroid/telephony/SubscriptionManager;
+
+    invoke-virtual {v0, v1}, Landroid/content/Context;->getSystemService(Ljava/lang/Class;)Ljava/lang/Object;
+
+    move-result-object v0
+
+    check-cast v0, Landroid/telephony/SubscriptionManager;
+
+    .line 235
+    .local v0, "subManager":Landroid/telephony/SubscriptionManager;
+    iget-object v1, p0, Lcom/android/server/location/GnssNetworkConnectivityHandler$1;->this$0:Lcom/android/server/location/GnssNetworkConnectivityHandler;
+
+    invoke-static {v1}, Lcom/android/server/location/GnssNetworkConnectivityHandler;->access$300(Lcom/android/server/location/GnssNetworkConnectivityHandler;)Landroid/content/Context;
+
+    move-result-object v1
+
+    const-class v2, Landroid/telephony/TelephonyManager;
+
+    invoke-virtual {v1, v2}, Landroid/content/Context;->getSystemService(Ljava/lang/Class;)Ljava/lang/Object;
+
+    move-result-object v1
+
+    check-cast v1, Landroid/telephony/TelephonyManager;
+
+    .line 236
+    .local v1, "telManager":Landroid/telephony/TelephonyManager;
+    if-eqz v0, :cond_175
+
+    if-eqz v1, :cond_175
+
+    .line 237
+    nop
+
+    .line 238
+    invoke-virtual {v0}, Landroid/telephony/SubscriptionManager;->getActiveSubscriptionInfoList()Ljava/util/List;
+
+    move-result-object v2
+
+    .line 239
+    .local v2, "subscriptionInfoList":Ljava/util/List;, "Ljava/util/List<Landroid/telephony/SubscriptionInfo;>;"
+    new-instance v3, Ljava/util/HashSet;
+
+    invoke-direct {v3}, Ljava/util/HashSet;-><init>()V
+
+    .line 240
+    .local v3, "activeSubIds":Ljava/util/HashSet;, "Ljava/util/HashSet<Ljava/lang/Integer;>;"
+    const-string v4, "GnssNetworkConnectivityHandler"
+
+    if-eqz v2, :cond_df
+
+    .line 241
     invoke-static {}, Lcom/android/server/location/GnssNetworkConnectivityHandler;->access$100()Z
 
-    move-result p1
+    move-result v5
 
-    if-eqz p1, :cond_2a
+    if-eqz v5, :cond_61
+
+    new-instance v5, Ljava/lang/StringBuilder;
+
+    invoke-direct {v5}, Ljava/lang/StringBuilder;-><init>()V
+
+    const-string v6, "Active Sub List size: "
+
+    invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-interface {v2}, Ljava/util/List;->size()I
+
+    move-result v6
+
+    invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v5}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v5
+
+    invoke-static {v4, v5}, Landroid/util/Log;->d(Ljava/lang/String;Ljava/lang/String;)I
+
+    .line 243
+    :cond_61
+    invoke-interface {v2}, Ljava/util/List;->iterator()Ljava/util/Iterator;
+
+    move-result-object v5
+
+    :goto_65
+    invoke-interface {v5}, Ljava/util/Iterator;->hasNext()Z
+
+    move-result v6
+
+    if-eqz v6, :cond_df
+
+    invoke-interface {v5}, Ljava/util/Iterator;->next()Ljava/lang/Object;
+
+    move-result-object v6
+
+    check-cast v6, Landroid/telephony/SubscriptionInfo;
+
+    .line 244
+    .local v6, "subInfo":Landroid/telephony/SubscriptionInfo;
+    invoke-virtual {v6}, Landroid/telephony/SubscriptionInfo;->getSubscriptionId()I
+
+    move-result v7
+
+    invoke-static {v7}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
+
+    move-result-object v7
+
+    invoke-virtual {v3, v7}, Ljava/util/HashSet;->add(Ljava/lang/Object;)Z
 
     .line 245
-    new-instance p1, Ljava/lang/StringBuilder;
+    iget-object v7, p0, Lcom/android/server/location/GnssNetworkConnectivityHandler$1;->this$0:Lcom/android/server/location/GnssNetworkConnectivityHandler;
 
-    invoke-direct {p1}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-static {v7}, Lcom/android/server/location/GnssNetworkConnectivityHandler;->access$200(Lcom/android/server/location/GnssNetworkConnectivityHandler;)Ljava/util/HashMap;
 
-    const-string v0, "Relevant network capabilities unchanged. Capabilities: "
+    move-result-object v7
 
-    invoke-virtual {p1, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v6}, Landroid/telephony/SubscriptionInfo;->getSubscriptionId()I
 
-    invoke-virtual {p1, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    move-result v8
 
-    invoke-virtual {p1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-static {v8}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
 
-    move-result-object p1
+    move-result-object v8
 
-    invoke-static {v1, p1}, Landroid/util/Log;->v(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-virtual {v7, v8}, Ljava/util/HashMap;->containsKey(Ljava/lang/Object;)Z
+
+    move-result v7
+
+    if-nez v7, :cond_de
+
+    .line 246
+    nop
+
+    .line 247
+    invoke-virtual {v6}, Landroid/telephony/SubscriptionInfo;->getSubscriptionId()I
+
+    move-result v7
+
+    invoke-virtual {v1, v7}, Landroid/telephony/TelephonyManager;->createForSubscriptionId(I)Landroid/telephony/TelephonyManager;
+
+    move-result-object v7
 
     .line 248
-    :cond_2a
-    return-void
+    .local v7, "subIdTelManager":Landroid/telephony/TelephonyManager;
+    if-eqz v7, :cond_de
+
+    .line 249
+    invoke-static {}, Lcom/android/server/location/GnssNetworkConnectivityHandler;->access$100()Z
+
+    move-result v8
+
+    if-eqz v8, :cond_b9
+
+    new-instance v8, Ljava/lang/StringBuilder;
+
+    invoke-direct {v8}, Ljava/lang/StringBuilder;-><init>()V
+
+    const-string v9, "Listener sub"
+
+    invoke-virtual {v8, v9}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v6}, Landroid/telephony/SubscriptionInfo;->getSubscriptionId()I
+
+    move-result v9
+
+    invoke-virtual {v8, v9}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v8}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v8
+
+    invoke-static {v4, v8}, Landroid/util/Log;->d(Ljava/lang/String;Ljava/lang/String;)I
+
+    .line 250
+    :cond_b9
+    new-instance v8, Lcom/android/server/location/GnssNetworkConnectivityHandler$SubIdPhoneStateListener;
+
+    iget-object v9, p0, Lcom/android/server/location/GnssNetworkConnectivityHandler$1;->this$0:Lcom/android/server/location/GnssNetworkConnectivityHandler;
 
     .line 251
-    :cond_2b
-    iget-object v0, p0, Lcom/android/server/location/GnssNetworkConnectivityHandler$1;->mAvailableNetworkCapabilities:Ljava/util/HashMap;
+    invoke-virtual {v6}, Landroid/telephony/SubscriptionInfo;->getSubscriptionId()I
 
-    invoke-virtual {v0, p1, p2}, Ljava/util/HashMap;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+    move-result v10
+
+    invoke-static {v10}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
+
+    move-result-object v10
+
+    invoke-direct {v8, v9, v10}, Lcom/android/server/location/GnssNetworkConnectivityHandler$SubIdPhoneStateListener;-><init>(Lcom/android/server/location/GnssNetworkConnectivityHandler;Ljava/lang/Integer;)V
 
     .line 252
-    invoke-static {}, Lcom/android/server/location/GnssNetworkConnectivityHandler;->access$200()Z
+    .local v8, "subIdPhoneStateListener":Lcom/android/server/location/GnssNetworkConnectivityHandler$SubIdPhoneStateListener;
+    iget-object v9, p0, Lcom/android/server/location/GnssNetworkConnectivityHandler$1;->this$0:Lcom/android/server/location/GnssNetworkConnectivityHandler;
 
-    move-result v0
+    invoke-static {v9}, Lcom/android/server/location/GnssNetworkConnectivityHandler;->access$200(Lcom/android/server/location/GnssNetworkConnectivityHandler;)Ljava/util/HashMap;
 
-    if-eqz v0, :cond_50
+    move-result-object v9
 
-    .line 253
-    new-instance v0, Ljava/lang/StringBuilder;
+    invoke-virtual {v6}, Landroid/telephony/SubscriptionInfo;->getSubscriptionId()I
 
-    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
+    move-result v10
 
-    const-string v2, "Network connected/capabilities updated. Available networks count: "
+    invoke-static {v10}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
 
-    invoke-virtual {v0, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    move-result-object v10
 
-    iget-object v2, p0, Lcom/android/server/location/GnssNetworkConnectivityHandler$1;->mAvailableNetworkCapabilities:Ljava/util/HashMap;
+    invoke-virtual {v9, v10, v8}, Ljava/util/HashMap;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
 
     .line 254
-    invoke-virtual {v2}, Ljava/util/HashMap;->size()I
+    const/16 v9, 0x800
 
-    move-result v2
+    invoke-virtual {v7, v8, v9}, Landroid/telephony/TelephonyManager;->listen(Landroid/telephony/PhoneStateListener;I)V
 
-    invoke-virtual {v0, v2}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
-
-    move-result-object v0
-
-    .line 253
-    invoke-static {v1, v0}, Landroid/util/Log;->d(Ljava/lang/String;Ljava/lang/String;)I
-
-    .line 257
-    :cond_50
-    iget-object v0, p0, Lcom/android/server/location/GnssNetworkConnectivityHandler$1;->this$0:Lcom/android/server/location/GnssNetworkConnectivityHandler;
-
-    invoke-static {v0}, Lcom/android/server/location/GnssNetworkConnectivityHandler;->access$300(Lcom/android/server/location/GnssNetworkConnectivityHandler;)Lcom/android/server/location/GnssNetworkConnectivityHandler$GnssNetworkListener;
-
-    move-result-object v0
-
-    invoke-interface {v0}, Lcom/android/server/location/GnssNetworkConnectivityHandler$GnssNetworkListener;->onNetworkAvailable()V
-
-    .line 260
-    iget-object v0, p0, Lcom/android/server/location/GnssNetworkConnectivityHandler$1;->this$0:Lcom/android/server/location/GnssNetworkConnectivityHandler;
-
-    const/4 v1, 0x1
-
-    invoke-static {v0, p1, v1, p2}, Lcom/android/server/location/GnssNetworkConnectivityHandler;->access$400(Lcom/android/server/location/GnssNetworkConnectivityHandler;Landroid/net/Network;ZLandroid/net/NetworkCapabilities;)V
+    .line 258
+    .end local v6  # "subInfo":Landroid/telephony/SubscriptionInfo;
+    .end local v7  # "subIdTelManager":Landroid/telephony/TelephonyManager;
+    .end local v8  # "subIdPhoneStateListener":Lcom/android/server/location/GnssNetworkConnectivityHandler$SubIdPhoneStateListener;
+    :cond_de
+    goto :goto_65
 
     .line 261
-    return-void
-.end method
+    :cond_df
+    iget-object v5, p0, Lcom/android/server/location/GnssNetworkConnectivityHandler$1;->this$0:Lcom/android/server/location/GnssNetworkConnectivityHandler;
 
-.method public onLost(Landroid/net/Network;)V
-    .registers 5
+    .line 262
+    invoke-static {v5}, Lcom/android/server/location/GnssNetworkConnectivityHandler;->access$200(Lcom/android/server/location/GnssNetworkConnectivityHandler;)Ljava/util/HashMap;
+
+    move-result-object v5
+
+    invoke-virtual {v5}, Ljava/util/HashMap;->entrySet()Ljava/util/Set;
+
+    move-result-object v5
+
+    invoke-interface {v5}, Ljava/util/Set;->iterator()Ljava/util/Iterator;
+
+    move-result-object v5
+
+    .line 263
+    .local v5, "iterator":Ljava/util/Iterator;, "Ljava/util/Iterator<Ljava/util/Map$Entry<Ljava/lang/Integer;Lcom/android/server/location/GnssNetworkConnectivityHandler$SubIdPhoneStateListener;>;>;"
+    :goto_ed
+    invoke-interface {v5}, Ljava/util/Iterator;->hasNext()Z
+
+    move-result v6
+
+    if-eqz v6, :cond_15f
+
+    .line 264
+    invoke-interface {v5}, Ljava/util/Iterator;->next()Ljava/lang/Object;
+
+    move-result-object v6
+
+    check-cast v6, Ljava/util/Map$Entry;
 
     .line 265
-    iget-object v0, p0, Lcom/android/server/location/GnssNetworkConnectivityHandler$1;->mAvailableNetworkCapabilities:Ljava/util/HashMap;
+    .local v6, "element":Ljava/util/Map$Entry;, "Ljava/util/Map$Entry<Ljava/lang/Integer;Lcom/android/server/location/GnssNetworkConnectivityHandler$SubIdPhoneStateListener;>;"
+    invoke-interface {v6}, Ljava/util/Map$Entry;->getKey()Ljava/lang/Object;
 
-    invoke-virtual {v0, p1}, Ljava/util/HashMap;->remove(Ljava/lang/Object;)Ljava/lang/Object;
+    move-result-object v7
 
-    move-result-object v0
+    invoke-virtual {v3, v7}, Ljava/util/HashSet;->contains(Ljava/lang/Object;)Z
 
-    const-string v1, "GnssNetworkConnectivityHandler"
+    move-result v7
 
-    if-nez v0, :cond_1f
+    if-nez v7, :cond_15e
 
     .line 266
-    new-instance v0, Ljava/lang/StringBuilder;
+    nop
 
-    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
+    .line 267
+    invoke-interface {v6}, Ljava/util/Map$Entry;->getKey()Ljava/lang/Object;
 
-    const-string v2, "Incorrectly received network callback onLost() before onCapabilitiesChanged() for network: "
+    move-result-object v7
 
-    invoke-virtual {v0, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    check-cast v7, Ljava/lang/Integer;
 
-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    invoke-virtual {v7}, Ljava/lang/Integer;->intValue()I
 
-    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    move-result v7
 
-    move-result-object p1
+    invoke-virtual {v1, v7}, Landroid/telephony/TelephonyManager;->createForSubscriptionId(I)Landroid/telephony/TelephonyManager;
 
-    invoke-static {v1, p1}, Landroid/util/Log;->w(Ljava/lang/String;Ljava/lang/String;)I
+    move-result-object v7
 
     .line 268
-    return-void
+    .restart local v7  # "subIdTelManager":Landroid/telephony/TelephonyManager;
+    if-eqz v7, :cond_141
 
-    .line 271
-    :cond_1f
-    new-instance v0, Ljava/lang/StringBuilder;
+    .line 269
+    invoke-static {}, Lcom/android/server/location/GnssNetworkConnectivityHandler;->access$100()Z
 
-    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
+    move-result v8
 
-    const-string v2, "Network connection lost. Available networks count: "
+    if-eqz v8, :cond_133
 
-    invoke-virtual {v0, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    new-instance v8, Ljava/lang/StringBuilder;
 
-    iget-object v2, p0, Lcom/android/server/location/GnssNetworkConnectivityHandler$1;->mAvailableNetworkCapabilities:Ljava/util/HashMap;
+    invoke-direct {v8}, Ljava/lang/StringBuilder;-><init>()V
 
-    .line 272
-    invoke-virtual {v2}, Ljava/util/HashMap;->size()I
+    const-string/jumbo v9, "unregister listener sub "
 
-    move-result v2
+    invoke-virtual {v8, v9}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0, v2}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-interface {v6}, Ljava/util/Map$Entry;->getKey()Ljava/lang/Object;
 
-    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    move-result-object v9
 
-    move-result-object v0
+    invoke-virtual {v8, v9}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
-    .line 271
-    invoke-static {v1, v0}, Landroid/util/Log;->i(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-virtual {v8}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v8
+
+    invoke-static {v4, v8}, Landroid/util/Log;->d(Ljava/lang/String;Ljava/lang/String;)I
+
+    .line 270
+    :cond_133
+    invoke-interface {v6}, Ljava/util/Map$Entry;->getValue()Ljava/lang/Object;
+
+    move-result-object v8
+
+    check-cast v8, Landroid/telephony/PhoneStateListener;
+
+    const/4 v9, 0x0
+
+    invoke-virtual {v7, v8, v9}, Landroid/telephony/TelephonyManager;->listen(Landroid/telephony/PhoneStateListener;I)V
 
     .line 273
-    iget-object v0, p0, Lcom/android/server/location/GnssNetworkConnectivityHandler$1;->this$0:Lcom/android/server/location/GnssNetworkConnectivityHandler;
+    invoke-interface {v5}, Ljava/util/Iterator;->remove()V
 
-    const/4 v1, 0x0
+    goto :goto_15e
 
-    const/4 v2, 0x0
+    .line 275
+    :cond_141
+    new-instance v8, Ljava/lang/StringBuilder;
 
-    invoke-static {v0, p1, v1, v2}, Lcom/android/server/location/GnssNetworkConnectivityHandler;->access$400(Lcom/android/server/location/GnssNetworkConnectivityHandler;Landroid/net/Network;ZLandroid/net/NetworkCapabilities;)V
+    invoke-direct {v8}, Ljava/lang/StringBuilder;-><init>()V
 
-    .line 274
+    const-string v9, "Telephony Manager for Sub "
+
+    invoke-virtual {v8, v9}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-interface {v6}, Ljava/util/Map$Entry;->getKey()Ljava/lang/Object;
+
+    move-result-object v9
+
+    invoke-virtual {v8, v9}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+
+    const-string v9, " null"
+
+    invoke-virtual {v8, v9}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v8}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v8
+
+    invoke-static {v4, v8}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;)I
+
+    .line 278
+    .end local v6  # "element":Ljava/util/Map$Entry;, "Ljava/util/Map$Entry<Ljava/lang/Integer;Lcom/android/server/location/GnssNetworkConnectivityHandler$SubIdPhoneStateListener;>;"
+    .end local v7  # "subIdTelManager":Landroid/telephony/TelephonyManager;
+    :cond_15e
+    :goto_15e
+    goto :goto_ed
+
+    .line 280
+    :cond_15f
+    iget-object v4, p0, Lcom/android/server/location/GnssNetworkConnectivityHandler$1;->this$0:Lcom/android/server/location/GnssNetworkConnectivityHandler;
+
+    invoke-static {v4}, Lcom/android/server/location/GnssNetworkConnectivityHandler;->access$000(Lcom/android/server/location/GnssNetworkConnectivityHandler;)I
+
+    move-result v4
+
+    invoke-static {v4}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
+
+    move-result-object v4
+
+    invoke-virtual {v3, v4}, Ljava/util/HashSet;->contains(Ljava/lang/Object;)Z
+
+    move-result v4
+
+    if-nez v4, :cond_175
+
+    .line 281
+    iget-object v4, p0, Lcom/android/server/location/GnssNetworkConnectivityHandler$1;->this$0:Lcom/android/server/location/GnssNetworkConnectivityHandler;
+
+    const/4 v6, -0x1
+
+    invoke-static {v4, v6}, Lcom/android/server/location/GnssNetworkConnectivityHandler;->access$002(Lcom/android/server/location/GnssNetworkConnectivityHandler;I)I
+
+    .line 284
+    .end local v2  # "subscriptionInfoList":Ljava/util/List;, "Ljava/util/List<Landroid/telephony/SubscriptionInfo;>;"
+    .end local v3  # "activeSubIds":Ljava/util/HashSet;, "Ljava/util/HashSet<Ljava/lang/Integer;>;"
+    .end local v5  # "iterator":Ljava/util/Iterator;, "Ljava/util/Iterator<Ljava/util/Map$Entry<Ljava/lang/Integer;Lcom/android/server/location/GnssNetworkConnectivityHandler$SubIdPhoneStateListener;>;>;"
+    :cond_175
     return-void
 .end method

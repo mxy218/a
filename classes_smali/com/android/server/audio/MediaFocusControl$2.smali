@@ -23,6 +23,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/audio/MediaFocusControl;Z)V
     .registers 3
+    .param p1, "this$0"  # Lcom/android/server/audio/MediaFocusControl;
 
     .line 934
     iput-object p1, p0, Lcom/android/server/audio/MediaFocusControl$2;->this$0:Lcom/android/server/audio/MediaFocusControl;
@@ -60,9 +61,11 @@
     move-exception v0
 
     .line 940
+    .local v0, "e":Ljava/lang/InterruptedException;
     invoke-virtual {v0}, Ljava/lang/InterruptedException;->printStackTrace()V
 
     .line 943
+    .end local v0  # "e":Ljava/lang/InterruptedException;
     :cond_e
     :goto_e
     invoke-static {}, Lcom/android/server/audio/MediaFocusControl;->access$000()Ljava/lang/Object;

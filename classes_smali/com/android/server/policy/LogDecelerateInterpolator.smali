@@ -16,7 +16,9 @@
 
 # direct methods
 .method public constructor <init>(II)V
-    .registers 4
+    .registers 6
+    .param p1, "base"  # I
+    .param p2, "drift"  # I
 
     .line 27
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -28,19 +30,19 @@
     iput p2, p0, Lcom/android/server/policy/LogDecelerateInterpolator;->mDrift:I
 
     .line 31
-    iget p1, p0, Lcom/android/server/policy/LogDecelerateInterpolator;->mBase:I
+    iget v0, p0, Lcom/android/server/policy/LogDecelerateInterpolator;->mBase:I
 
-    iget p2, p0, Lcom/android/server/policy/LogDecelerateInterpolator;->mDrift:I
+    iget v1, p0, Lcom/android/server/policy/LogDecelerateInterpolator;->mDrift:I
 
-    const/high16 v0, 0x3f800000  # 1.0f
+    const/high16 v2, 0x3f800000  # 1.0f
 
-    invoke-static {v0, p1, p2}, Lcom/android/server/policy/LogDecelerateInterpolator;->computeLog(FII)F
+    invoke-static {v2, v0, v1}, Lcom/android/server/policy/LogDecelerateInterpolator;->computeLog(FII)F
 
-    move-result p1
+    move-result v0
 
-    div-float/2addr v0, p1
+    div-float/2addr v2, v0
 
-    iput v0, p0, Lcom/android/server/policy/LogDecelerateInterpolator;->mLogScale:F
+    iput v2, p0, Lcom/android/server/policy/LogDecelerateInterpolator;->mLogScale:F
 
     .line 32
     return-void
@@ -48,13 +50,16 @@
 
 .method private static computeLog(FII)F
     .registers 7
+    .param p0, "t"  # F
+    .param p1, "base"  # I
+    .param p2, "drift"  # I
 
     .line 35
     int-to-double v0, p1
 
-    neg-float p1, p0
+    neg-float v2, p0
 
-    float-to-double v2, p1
+    float-to-double v2, v2
 
     invoke-static {v0, v1, v2, v3}, Ljava/lang/Math;->pow(DD)D
 
@@ -62,25 +67,26 @@
 
     neg-double v0, v0
 
-    double-to-float p1, v0
+    double-to-float v0, v0
 
-    const/high16 v0, 0x3f800000  # 1.0f
+    const/high16 v1, 0x3f800000  # 1.0f
 
-    add-float/2addr p1, v0
+    add-float/2addr v0, v1
 
-    int-to-float p2, p2
+    int-to-float v1, p2
 
-    mul-float/2addr p2, p0
+    mul-float/2addr v1, p0
 
-    add-float/2addr p1, p2
+    add-float/2addr v0, v1
 
-    return p1
+    return v0
 .end method
 
 
 # virtual methods
 .method public getInterpolation(F)F
     .registers 4
+    .param p1, "t"  # F
 
     .line 40
     iget v0, p0, Lcom/android/server/policy/LogDecelerateInterpolator;->mBase:I
@@ -89,11 +95,11 @@
 
     invoke-static {p1, v0, v1}, Lcom/android/server/policy/LogDecelerateInterpolator;->computeLog(FII)F
 
-    move-result p1
+    move-result v0
 
-    iget v0, p0, Lcom/android/server/policy/LogDecelerateInterpolator;->mLogScale:F
+    iget v1, p0, Lcom/android/server/policy/LogDecelerateInterpolator;->mLogScale:F
 
-    mul-float/2addr p1, v0
+    mul-float/2addr v0, v1
 
-    return p1
+    return v0
 .end method

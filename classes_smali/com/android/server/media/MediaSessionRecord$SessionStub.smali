@@ -32,6 +32,8 @@
 
 .method synthetic constructor <init>(Lcom/android/server/media/MediaSessionRecord;Lcom/android/server/media/MediaSessionRecord$1;)V
     .registers 3
+    .param p1, "x0"  # Lcom/android/server/media/MediaSessionRecord;
+    .param p2, "x1"  # Lcom/android/server/media/MediaSessionRecord$1;
 
     .line 800
     invoke-direct {p0, p1}, Lcom/android/server/media/MediaSessionRecord$SessionStub;-><init>(Lcom/android/server/media/MediaSessionRecord;)V
@@ -55,6 +57,7 @@
     move-result-wide v0
 
     .line 805
+    .local v0, "token":J
     :try_start_4
     iget-object v2, p0, Lcom/android/server/media/MediaSessionRecord$SessionStub;->this$0:Lcom/android/server/media/MediaSessionRecord;
 
@@ -105,7 +108,9 @@
 .end method
 
 .method public sendEvent(Ljava/lang/String;Landroid/os/Bundle;)V
-    .registers 5
+    .registers 6
+    .param p1, "event"  # Ljava/lang/String;
+    .param p2, "data"  # Landroid/os/Bundle;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -122,29 +127,28 @@
     .line 814
     if-nez p2, :cond_a
 
-    const/4 p2, 0x0
+    const/4 v1, 0x0
 
-    goto :goto_10
+    goto :goto_f
 
     :cond_a
     new-instance v1, Landroid/os/Bundle;
 
     invoke-direct {v1, p2}, Landroid/os/Bundle;-><init>(Landroid/os/Bundle;)V
 
-    move-object p2, v1
-
     .line 813
-    :goto_10
-    const/4 v1, 0x6
+    :goto_f
+    const/4 v2, 0x6
 
-    invoke-virtual {v0, v1, p1, p2}, Lcom/android/server/media/MediaSessionRecord$MessageHandler;->post(ILjava/lang/Object;Landroid/os/Bundle;)V
+    invoke-virtual {v0, v2, p1, v1}, Lcom/android/server/media/MediaSessionRecord$MessageHandler;->post(ILjava/lang/Object;Landroid/os/Bundle;)V
 
     .line 815
     return-void
 .end method
 
 .method public setActive(Z)V
-    .registers 5
+    .registers 6
+    .param p1, "active"  # Z
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -162,16 +166,17 @@
     move-result-wide v0
 
     .line 827
+    .local v0, "token":J
     :try_start_9
-    iget-object p1, p0, Lcom/android/server/media/MediaSessionRecord$SessionStub;->this$0:Lcom/android/server/media/MediaSessionRecord;
-
-    invoke-static {p1}, Lcom/android/server/media/MediaSessionRecord;->access$800(Lcom/android/server/media/MediaSessionRecord;)Lcom/android/server/media/MediaSessionService;
-
-    move-result-object p1
-
     iget-object v2, p0, Lcom/android/server/media/MediaSessionRecord$SessionStub;->this$0:Lcom/android/server/media/MediaSessionRecord;
 
-    invoke-virtual {p1, v2}, Lcom/android/server/media/MediaSessionService;->updateSession(Lcom/android/server/media/MediaSessionRecord;)V
+    invoke-static {v2}, Lcom/android/server/media/MediaSessionRecord;->access$800(Lcom/android/server/media/MediaSessionRecord;)Lcom/android/server/media/MediaSessionService;
+
+    move-result-object v2
+
+    iget-object v3, p0, Lcom/android/server/media/MediaSessionRecord$SessionStub;->this$0:Lcom/android/server/media/MediaSessionRecord;
+
+    invoke-virtual {v2, v3}, Lcom/android/server/media/MediaSessionService;->updateSession(Lcom/android/server/media/MediaSessionRecord;)V
     :try_end_14
     .catchall {:try_start_9 .. :try_end_14} :catchall_23
 
@@ -182,30 +187,31 @@
     nop
 
     .line 831
-    iget-object p1, p0, Lcom/android/server/media/MediaSessionRecord$SessionStub;->this$0:Lcom/android/server/media/MediaSessionRecord;
+    iget-object v2, p0, Lcom/android/server/media/MediaSessionRecord$SessionStub;->this$0:Lcom/android/server/media/MediaSessionRecord;
 
-    invoke-static {p1}, Lcom/android/server/media/MediaSessionRecord;->access$900(Lcom/android/server/media/MediaSessionRecord;)Lcom/android/server/media/MediaSessionRecord$MessageHandler;
+    invoke-static {v2}, Lcom/android/server/media/MediaSessionRecord;->access$900(Lcom/android/server/media/MediaSessionRecord;)Lcom/android/server/media/MediaSessionRecord$MessageHandler;
 
-    move-result-object p1
+    move-result-object v2
 
-    const/4 v0, 0x7
+    const/4 v3, 0x7
 
-    invoke-virtual {p1, v0}, Lcom/android/server/media/MediaSessionRecord$MessageHandler;->post(I)V
+    invoke-virtual {v2, v3}, Lcom/android/server/media/MediaSessionRecord$MessageHandler;->post(I)V
 
     .line 832
     return-void
 
     .line 829
     :catchall_23
-    move-exception p1
+    move-exception v2
 
     invoke-static {v0, v1}, Landroid/os/Binder;->restoreCallingIdentity(J)V
 
-    throw p1
+    throw v2
 .end method
 
 .method public setCurrentVolume(I)V
-    .registers 3
+    .registers 4
+    .param p1, "volume"  # I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -218,15 +224,15 @@
     invoke-static {v0, p1}, Lcom/android/server/media/MediaSessionRecord;->access$602(Lcom/android/server/media/MediaSessionRecord;I)I
 
     .line 936
-    iget-object p1, p0, Lcom/android/server/media/MediaSessionRecord$SessionStub;->this$0:Lcom/android/server/media/MediaSessionRecord;
+    iget-object v0, p0, Lcom/android/server/media/MediaSessionRecord$SessionStub;->this$0:Lcom/android/server/media/MediaSessionRecord;
 
-    invoke-static {p1}, Lcom/android/server/media/MediaSessionRecord;->access$900(Lcom/android/server/media/MediaSessionRecord;)Lcom/android/server/media/MediaSessionRecord$MessageHandler;
+    invoke-static {v0}, Lcom/android/server/media/MediaSessionRecord;->access$900(Lcom/android/server/media/MediaSessionRecord;)Lcom/android/server/media/MediaSessionRecord$MessageHandler;
 
-    move-result-object p1
+    move-result-object v0
 
-    const/16 v0, 0x8
+    const/16 v1, 0x8
 
-    invoke-virtual {p1, v0}, Lcom/android/server/media/MediaSessionRecord$MessageHandler;->post(I)V
+    invoke-virtual {v0, v1}, Lcom/android/server/media/MediaSessionRecord$MessageHandler;->post(I)V
 
     .line 937
     return-void
@@ -234,6 +240,7 @@
 
 .method public setExtras(Landroid/os/Bundle;)V
     .registers 5
+    .param p1, "extras"  # Landroid/os/Bundle;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -255,53 +262,52 @@
 
     if-nez p1, :cond_d
 
-    const/4 p1, 0x0
+    const/4 v2, 0x0
 
-    goto :goto_13
+    goto :goto_12
 
     :cond_d
     new-instance v2, Landroid/os/Bundle;
 
     invoke-direct {v2, p1}, Landroid/os/Bundle;-><init>(Landroid/os/Bundle;)V
 
-    move-object p1, v2
-
-    :goto_13
-    invoke-static {v1, p1}, Lcom/android/server/media/MediaSessionRecord;->access$2202(Lcom/android/server/media/MediaSessionRecord;Landroid/os/Bundle;)Landroid/os/Bundle;
+    :goto_12
+    invoke-static {v1, v2}, Lcom/android/server/media/MediaSessionRecord;->access$2202(Lcom/android/server/media/MediaSessionRecord;Landroid/os/Bundle;)Landroid/os/Bundle;
 
     .line 924
     monitor-exit v0
-    :try_end_17
-    .catchall {:try_start_7 .. :try_end_17} :catchall_22
+    :try_end_16
+    .catchall {:try_start_7 .. :try_end_16} :catchall_21
 
     .line 925
-    iget-object p1, p0, Lcom/android/server/media/MediaSessionRecord$SessionStub;->this$0:Lcom/android/server/media/MediaSessionRecord;
+    iget-object v0, p0, Lcom/android/server/media/MediaSessionRecord$SessionStub;->this$0:Lcom/android/server/media/MediaSessionRecord;
 
-    invoke-static {p1}, Lcom/android/server/media/MediaSessionRecord;->access$900(Lcom/android/server/media/MediaSessionRecord;)Lcom/android/server/media/MediaSessionRecord$MessageHandler;
+    invoke-static {v0}, Lcom/android/server/media/MediaSessionRecord;->access$900(Lcom/android/server/media/MediaSessionRecord;)Lcom/android/server/media/MediaSessionRecord$MessageHandler;
 
-    move-result-object p1
+    move-result-object v0
 
-    const/4 v0, 0x5
+    const/4 v1, 0x5
 
-    invoke-virtual {p1, v0}, Lcom/android/server/media/MediaSessionRecord$MessageHandler;->post(I)V
+    invoke-virtual {v0, v1}, Lcom/android/server/media/MediaSessionRecord$MessageHandler;->post(I)V
 
     .line 926
     return-void
 
     .line 924
-    :catchall_22
-    move-exception p1
+    :catchall_21
+    move-exception v1
 
-    :try_start_23
+    :try_start_22
     monitor-exit v0
-    :try_end_24
-    .catchall {:try_start_23 .. :try_end_24} :catchall_22
+    :try_end_23
+    .catchall {:try_start_22 .. :try_end_23} :catchall_21
 
-    throw p1
+    throw v1
 .end method
 
 .method public setFlags(I)V
     .registers 6
+    .param p1, "flags"  # I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -311,9 +317,9 @@
     .line 836
     const/high16 v0, 0x10000
 
-    and-int/2addr v0, p1
+    and-int v1, p1, v0
 
-    if-eqz v0, :cond_16
+    if-eqz v1, :cond_17
 
     .line 837
     invoke-static {}, Landroid/os/Binder;->getCallingPid()I
@@ -321,11 +327,13 @@
     move-result v1
 
     .line 838
+    .local v1, "pid":I
     invoke-static {}, Landroid/os/Binder;->getCallingUid()I
 
     move-result v2
 
     .line 839
+    .local v2, "uid":I
     iget-object v3, p0, Lcom/android/server/media/MediaSessionRecord$SessionStub;->this$0:Lcom/android/server/media/MediaSessionRecord;
 
     invoke-static {v3}, Lcom/android/server/media/MediaSessionRecord;->access$800(Lcom/android/server/media/MediaSessionRecord;)Lcom/android/server/media/MediaSessionService;
@@ -335,7 +343,9 @@
     invoke-virtual {v3, v1, v2}, Lcom/android/server/media/MediaSessionService;->enforcePhoneStatePermission(II)V
 
     .line 841
-    :cond_16
+    .end local v1  # "pid":I
+    .end local v2  # "uid":I
+    :cond_17
     iget-object v1, p0, Lcom/android/server/media/MediaSessionRecord$SessionStub;->this$0:Lcom/android/server/media/MediaSessionRecord;
 
     int-to-long v2, p1
@@ -343,7 +353,9 @@
     invoke-static {v1, v2, v3}, Lcom/android/server/media/MediaSessionRecord;->access$1202(Lcom/android/server/media/MediaSessionRecord;J)J
 
     .line 842
-    if-eqz v0, :cond_36
+    and-int/2addr v0, p1
+
+    if-eqz v0, :cond_38
 
     .line 843
     invoke-static {}, Landroid/os/Binder;->clearCallingIdentity()J
@@ -351,45 +363,47 @@
     move-result-wide v0
 
     .line 845
-    :try_start_22
-    iget-object p1, p0, Lcom/android/server/media/MediaSessionRecord$SessionStub;->this$0:Lcom/android/server/media/MediaSessionRecord;
-
-    invoke-static {p1}, Lcom/android/server/media/MediaSessionRecord;->access$800(Lcom/android/server/media/MediaSessionRecord;)Lcom/android/server/media/MediaSessionService;
-
-    move-result-object p1
-
+    .local v0, "token":J
+    :try_start_24
     iget-object v2, p0, Lcom/android/server/media/MediaSessionRecord$SessionStub;->this$0:Lcom/android/server/media/MediaSessionRecord;
 
-    invoke-virtual {p1, v2}, Lcom/android/server/media/MediaSessionService;->setGlobalPrioritySession(Lcom/android/server/media/MediaSessionRecord;)V
-    :try_end_2d
-    .catchall {:try_start_22 .. :try_end_2d} :catchall_31
+    invoke-static {v2}, Lcom/android/server/media/MediaSessionRecord;->access$800(Lcom/android/server/media/MediaSessionRecord;)Lcom/android/server/media/MediaSessionService;
+
+    move-result-object v2
+
+    iget-object v3, p0, Lcom/android/server/media/MediaSessionRecord$SessionStub;->this$0:Lcom/android/server/media/MediaSessionRecord;
+
+    invoke-virtual {v2, v3}, Lcom/android/server/media/MediaSessionService;->setGlobalPrioritySession(Lcom/android/server/media/MediaSessionRecord;)V
+    :try_end_2f
+    .catchall {:try_start_24 .. :try_end_2f} :catchall_33
 
     .line 847
     invoke-static {v0, v1}, Landroid/os/Binder;->restoreCallingIdentity(J)V
 
     .line 848
-    goto :goto_36
+    goto :goto_38
 
     .line 847
-    :catchall_31
-    move-exception p1
+    :catchall_33
+    move-exception v2
 
     invoke-static {v0, v1}, Landroid/os/Binder;->restoreCallingIdentity(J)V
 
-    throw p1
+    throw v2
 
     .line 850
-    :cond_36
-    :goto_36
-    iget-object p1, p0, Lcom/android/server/media/MediaSessionRecord$SessionStub;->this$0:Lcom/android/server/media/MediaSessionRecord;
+    .end local v0  # "token":J
+    :cond_38
+    :goto_38
+    iget-object v0, p0, Lcom/android/server/media/MediaSessionRecord$SessionStub;->this$0:Lcom/android/server/media/MediaSessionRecord;
 
-    invoke-static {p1}, Lcom/android/server/media/MediaSessionRecord;->access$900(Lcom/android/server/media/MediaSessionRecord;)Lcom/android/server/media/MediaSessionRecord$MessageHandler;
+    invoke-static {v0}, Lcom/android/server/media/MediaSessionRecord;->access$900(Lcom/android/server/media/MediaSessionRecord;)Lcom/android/server/media/MediaSessionRecord$MessageHandler;
 
-    move-result-object p1
+    move-result-object v0
 
-    const/4 v0, 0x7
+    const/4 v1, 0x7
 
-    invoke-virtual {p1, v0}, Lcom/android/server/media/MediaSessionRecord$MessageHandler;->post(I)V
+    invoke-virtual {v0, v1}, Lcom/android/server/media/MediaSessionRecord$MessageHandler;->post(I)V
 
     .line 851
     return-void
@@ -397,6 +411,7 @@
 
 .method public setLaunchPendingIntent(Landroid/app/PendingIntent;)V
     .registers 3
+    .param p1, "pi"  # Landroid/app/PendingIntent;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -413,7 +428,8 @@
 .end method
 
 .method public setMediaButtonReceiver(Landroid/app/PendingIntent;)V
-    .registers 5
+    .registers 6
+    .param p1, "pi"  # Landroid/app/PendingIntent;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -431,16 +447,17 @@
     move-result-wide v0
 
     .line 858
+    .local v0, "token":J
     :try_start_9
-    iget-object p1, p0, Lcom/android/server/media/MediaSessionRecord$SessionStub;->this$0:Lcom/android/server/media/MediaSessionRecord;
-
-    invoke-static {p1}, Lcom/android/server/media/MediaSessionRecord;->access$800(Lcom/android/server/media/MediaSessionRecord;)Lcom/android/server/media/MediaSessionService;
-
-    move-result-object p1
-
     iget-object v2, p0, Lcom/android/server/media/MediaSessionRecord$SessionStub;->this$0:Lcom/android/server/media/MediaSessionRecord;
 
-    invoke-virtual {p1, v2}, Lcom/android/server/media/MediaSessionService;->onMediaButtonReceiverChanged(Lcom/android/server/media/MediaSessionRecord;)V
+    invoke-static {v2}, Lcom/android/server/media/MediaSessionRecord;->access$800(Lcom/android/server/media/MediaSessionRecord;)Lcom/android/server/media/MediaSessionService;
+
+    move-result-object v2
+
+    iget-object v3, p0, Lcom/android/server/media/MediaSessionRecord$SessionStub;->this$0:Lcom/android/server/media/MediaSessionRecord;
+
+    invoke-virtual {v2, v3}, Lcom/android/server/media/MediaSessionService;->onMediaButtonReceiverChanged(Lcom/android/server/media/MediaSessionRecord;)V
     :try_end_14
     .catchall {:try_start_9 .. :try_end_14} :catchall_19
 
@@ -455,15 +472,18 @@
 
     .line 860
     :catchall_19
-    move-exception p1
+    move-exception v2
 
     invoke-static {v0, v1}, Landroid/os/Binder;->restoreCallingIdentity(J)V
 
-    throw p1
+    throw v2
 .end method
 
 .method public setMetadata(Landroid/media/MediaMetadata;JLjava/lang/String;)V
-    .registers 7
+    .registers 8
+    .param p1, "metadata"  # Landroid/media/MediaMetadata;
+    .param p2, "duration"  # J
+    .param p4, "metadataDescription"  # Ljava/lang/String;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -482,7 +502,7 @@
     .line 873
     if-nez p1, :cond_b
 
-    const/4 p1, 0x0
+    const/4 v1, 0x0
 
     goto :goto_14
 
@@ -495,64 +515,71 @@
 
     invoke-virtual {v1}, Landroid/media/MediaMetadata$Builder;->build()Landroid/media/MediaMetadata;
 
-    move-result-object p1
+    move-result-object v1
+
+    :goto_14
+    nop
 
     .line 878
-    :goto_14
-    if-eqz p1, :cond_19
+    .local v1, "temp":Landroid/media/MediaMetadata;
+    if-eqz v1, :cond_1a
 
     .line 879
-    invoke-virtual {p1}, Landroid/media/MediaMetadata;->size()I
+    invoke-virtual {v1}, Landroid/media/MediaMetadata;->size()I
 
     .line 881
-    :cond_19
-    iget-object v1, p0, Lcom/android/server/media/MediaSessionRecord$SessionStub;->this$0:Lcom/android/server/media/MediaSessionRecord;
+    :cond_1a
+    iget-object v2, p0, Lcom/android/server/media/MediaSessionRecord$SessionStub;->this$0:Lcom/android/server/media/MediaSessionRecord;
 
-    invoke-static {v1, p1}, Lcom/android/server/media/MediaSessionRecord;->access$1602(Lcom/android/server/media/MediaSessionRecord;Landroid/media/MediaMetadata;)Landroid/media/MediaMetadata;
+    invoke-static {v2, v1}, Lcom/android/server/media/MediaSessionRecord;->access$1602(Lcom/android/server/media/MediaSessionRecord;Landroid/media/MediaMetadata;)Landroid/media/MediaMetadata;
 
     .line 882
-    iget-object p1, p0, Lcom/android/server/media/MediaSessionRecord$SessionStub;->this$0:Lcom/android/server/media/MediaSessionRecord;
+    iget-object v2, p0, Lcom/android/server/media/MediaSessionRecord$SessionStub;->this$0:Lcom/android/server/media/MediaSessionRecord;
 
-    invoke-static {p1, p2, p3}, Lcom/android/server/media/MediaSessionRecord;->access$1702(Lcom/android/server/media/MediaSessionRecord;J)J
+    invoke-static {v2, p2, p3}, Lcom/android/server/media/MediaSessionRecord;->access$1702(Lcom/android/server/media/MediaSessionRecord;J)J
 
     .line 883
-    iget-object p1, p0, Lcom/android/server/media/MediaSessionRecord$SessionStub;->this$0:Lcom/android/server/media/MediaSessionRecord;
+    iget-object v2, p0, Lcom/android/server/media/MediaSessionRecord$SessionStub;->this$0:Lcom/android/server/media/MediaSessionRecord;
 
-    invoke-static {p1, p4}, Lcom/android/server/media/MediaSessionRecord;->access$1802(Lcom/android/server/media/MediaSessionRecord;Ljava/lang/String;)Ljava/lang/String;
+    invoke-static {v2, p4}, Lcom/android/server/media/MediaSessionRecord;->access$1802(Lcom/android/server/media/MediaSessionRecord;Ljava/lang/String;)Ljava/lang/String;
 
     .line 884
+    nop
+
+    .end local v1  # "temp":Landroid/media/MediaMetadata;
     monitor-exit v0
-    :try_end_29
-    .catchall {:try_start_b .. :try_end_29} :catchall_34
+    :try_end_2b
+    .catchall {:try_start_b .. :try_end_2b} :catchall_36
 
     .line 885
-    iget-object p1, p0, Lcom/android/server/media/MediaSessionRecord$SessionStub;->this$0:Lcom/android/server/media/MediaSessionRecord;
+    iget-object v0, p0, Lcom/android/server/media/MediaSessionRecord$SessionStub;->this$0:Lcom/android/server/media/MediaSessionRecord;
 
-    invoke-static {p1}, Lcom/android/server/media/MediaSessionRecord;->access$900(Lcom/android/server/media/MediaSessionRecord;)Lcom/android/server/media/MediaSessionRecord$MessageHandler;
+    invoke-static {v0}, Lcom/android/server/media/MediaSessionRecord;->access$900(Lcom/android/server/media/MediaSessionRecord;)Lcom/android/server/media/MediaSessionRecord$MessageHandler;
 
-    move-result-object p1
+    move-result-object v0
 
-    const/4 p2, 0x1
+    const/4 v1, 0x1
 
-    invoke-virtual {p1, p2}, Lcom/android/server/media/MediaSessionRecord$MessageHandler;->post(I)V
+    invoke-virtual {v0, v1}, Lcom/android/server/media/MediaSessionRecord$MessageHandler;->post(I)V
 
     .line 886
     return-void
 
     .line 884
-    :catchall_34
-    move-exception p1
+    :catchall_36
+    move-exception v1
 
-    :try_start_35
+    :try_start_37
     monitor-exit v0
-    :try_end_36
-    .catchall {:try_start_35 .. :try_end_36} :catchall_34
+    :try_end_38
+    .catchall {:try_start_37 .. :try_end_38} :catchall_36
 
-    throw p1
+    throw v1
 .end method
 
 .method public setPlaybackState(Landroid/media/session/PlaybackState;)V
-    .registers 7
+    .registers 8
+    .param p1, "state"  # Landroid/media/session/PlaybackState;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -587,6 +614,7 @@
     move-result v0
 
     .line 892
+    .local v0, "oldState":I
     :goto_15
     if-nez p1, :cond_18
 
@@ -599,6 +627,7 @@
     move-result v1
 
     .line 894
+    .local v1, "newState":I
     :goto_1c
     iget-object v2, p0, Lcom/android/server/media/MediaSessionRecord$SessionStub;->this$0:Lcom/android/server/media/MediaSessionRecord;
 
@@ -625,16 +654,17 @@
     move-result-wide v2
 
     .line 899
+    .local v2, "token":J
     :try_start_2d
-    iget-object p1, p0, Lcom/android/server/media/MediaSessionRecord$SessionStub;->this$0:Lcom/android/server/media/MediaSessionRecord;
-
-    invoke-static {p1}, Lcom/android/server/media/MediaSessionRecord;->access$800(Lcom/android/server/media/MediaSessionRecord;)Lcom/android/server/media/MediaSessionService;
-
-    move-result-object p1
-
     iget-object v4, p0, Lcom/android/server/media/MediaSessionRecord$SessionStub;->this$0:Lcom/android/server/media/MediaSessionRecord;
 
-    invoke-virtual {p1, v4, v0, v1}, Lcom/android/server/media/MediaSessionService;->onSessionPlaystateChanged(Lcom/android/server/media/MediaSessionRecord;II)V
+    invoke-static {v4}, Lcom/android/server/media/MediaSessionRecord;->access$800(Lcom/android/server/media/MediaSessionRecord;)Lcom/android/server/media/MediaSessionService;
+
+    move-result-object v4
+
+    iget-object v5, p0, Lcom/android/server/media/MediaSessionRecord$SessionStub;->this$0:Lcom/android/server/media/MediaSessionRecord;
+
+    invoke-virtual {v4, v5, v0, v1}, Lcom/android/server/media/MediaSessionService;->onSessionPlaystateChanged(Lcom/android/server/media/MediaSessionRecord;II)V
     :try_end_38
     .catchall {:try_start_2d .. :try_end_38} :catchall_47
 
@@ -645,41 +675,43 @@
     nop
 
     .line 903
-    iget-object p1, p0, Lcom/android/server/media/MediaSessionRecord$SessionStub;->this$0:Lcom/android/server/media/MediaSessionRecord;
+    iget-object v4, p0, Lcom/android/server/media/MediaSessionRecord$SessionStub;->this$0:Lcom/android/server/media/MediaSessionRecord;
 
-    invoke-static {p1}, Lcom/android/server/media/MediaSessionRecord;->access$900(Lcom/android/server/media/MediaSessionRecord;)Lcom/android/server/media/MediaSessionRecord$MessageHandler;
+    invoke-static {v4}, Lcom/android/server/media/MediaSessionRecord;->access$900(Lcom/android/server/media/MediaSessionRecord;)Lcom/android/server/media/MediaSessionRecord$MessageHandler;
 
-    move-result-object p1
+    move-result-object v4
 
-    const/4 v0, 0x2
+    const/4 v5, 0x2
 
-    invoke-virtual {p1, v0}, Lcom/android/server/media/MediaSessionRecord$MessageHandler;->post(I)V
+    invoke-virtual {v4, v5}, Lcom/android/server/media/MediaSessionRecord$MessageHandler;->post(I)V
 
     .line 904
     return-void
 
     .line 901
     :catchall_47
-    move-exception p1
+    move-exception v4
 
     invoke-static {v2, v3}, Landroid/os/Binder;->restoreCallingIdentity(J)V
 
-    throw p1
+    throw v4
 
     .line 896
+    .end local v2  # "token":J
     :catchall_4c
-    move-exception p1
+    move-exception v3
 
     :try_start_4d
     monitor-exit v2
     :try_end_4e
     .catchall {:try_start_4d .. :try_end_4e} :catchall_4c
 
-    throw p1
+    throw v3
 .end method
 
 .method public setPlaybackToLocal(Landroid/media/AudioAttributes;)V
-    .registers 6
+    .registers 7
+    .param p1, "attributes"  # Landroid/media/AudioAttributes;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -717,6 +749,7 @@
     const/4 v1, 0x0
 
     .line 944
+    .local v1, "typeChanged":Z
     :goto_14
     iget-object v2, p0, Lcom/android/server/media/MediaSessionRecord$SessionStub;->this$0:Lcom/android/server/media/MediaSessionRecord;
 
@@ -734,11 +767,11 @@
 
     .line 948
     :cond_21
-    const-string p1, "MediaSessionRecord"
+    const-string v2, "MediaSessionRecord"
 
-    const-string v2, "Received null audio attributes, using existing attributes"
+    const-string v3, "Received null audio attributes, using existing attributes"
 
-    invoke-static {p1, v2}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v2, v3}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 950
     :goto_28
@@ -752,68 +785,73 @@
     .line 952
     invoke-static {}, Landroid/os/Binder;->clearCallingIdentity()J
 
-    move-result-wide v0
+    move-result-wide v2
 
     .line 954
+    .local v2, "token":J
     :try_start_2f
-    iget-object p1, p0, Lcom/android/server/media/MediaSessionRecord$SessionStub;->this$0:Lcom/android/server/media/MediaSessionRecord;
+    iget-object v0, p0, Lcom/android/server/media/MediaSessionRecord$SessionStub;->this$0:Lcom/android/server/media/MediaSessionRecord;
 
-    invoke-static {p1}, Lcom/android/server/media/MediaSessionRecord;->access$800(Lcom/android/server/media/MediaSessionRecord;)Lcom/android/server/media/MediaSessionService;
+    invoke-static {v0}, Lcom/android/server/media/MediaSessionRecord;->access$800(Lcom/android/server/media/MediaSessionRecord;)Lcom/android/server/media/MediaSessionService;
 
-    move-result-object p1
+    move-result-object v0
 
-    iget-object v2, p0, Lcom/android/server/media/MediaSessionRecord$SessionStub;->this$0:Lcom/android/server/media/MediaSessionRecord;
+    iget-object v4, p0, Lcom/android/server/media/MediaSessionRecord$SessionStub;->this$0:Lcom/android/server/media/MediaSessionRecord;
 
-    invoke-virtual {p1, v2}, Lcom/android/server/media/MediaSessionService;->onSessionPlaybackTypeChanged(Lcom/android/server/media/MediaSessionRecord;)V
+    invoke-virtual {v0, v4}, Lcom/android/server/media/MediaSessionService;->onSessionPlaybackTypeChanged(Lcom/android/server/media/MediaSessionRecord;)V
     :try_end_3a
     .catchall {:try_start_2f .. :try_end_3a} :catchall_4a
 
     .line 956
-    invoke-static {v0, v1}, Landroid/os/Binder;->restoreCallingIdentity(J)V
+    invoke-static {v2, v3}, Landroid/os/Binder;->restoreCallingIdentity(J)V
 
     .line 957
     nop
 
     .line 958
-    iget-object p1, p0, Lcom/android/server/media/MediaSessionRecord$SessionStub;->this$0:Lcom/android/server/media/MediaSessionRecord;
+    iget-object v0, p0, Lcom/android/server/media/MediaSessionRecord$SessionStub;->this$0:Lcom/android/server/media/MediaSessionRecord;
 
-    invoke-static {p1}, Lcom/android/server/media/MediaSessionRecord;->access$900(Lcom/android/server/media/MediaSessionRecord;)Lcom/android/server/media/MediaSessionRecord$MessageHandler;
+    invoke-static {v0}, Lcom/android/server/media/MediaSessionRecord;->access$900(Lcom/android/server/media/MediaSessionRecord;)Lcom/android/server/media/MediaSessionRecord$MessageHandler;
 
-    move-result-object p1
+    move-result-object v0
 
-    const/16 v0, 0x8
+    const/16 v4, 0x8
 
-    invoke-virtual {p1, v0}, Lcom/android/server/media/MediaSessionRecord$MessageHandler;->post(I)V
+    invoke-virtual {v0, v4}, Lcom/android/server/media/MediaSessionRecord$MessageHandler;->post(I)V
 
     goto :goto_4f
 
     .line 956
     :catchall_4a
-    move-exception p1
+    move-exception v0
 
-    invoke-static {v0, v1}, Landroid/os/Binder;->restoreCallingIdentity(J)V
+    invoke-static {v2, v3}, Landroid/os/Binder;->restoreCallingIdentity(J)V
 
-    throw p1
+    throw v0
 
     .line 960
+    .end local v2  # "token":J
     :cond_4f
     :goto_4f
     return-void
 
     .line 950
+    .end local v1  # "typeChanged":Z
     :catchall_50
-    move-exception p1
+    move-exception v1
 
     :try_start_51
     monitor-exit v0
     :try_end_52
     .catchall {:try_start_51 .. :try_end_52} :catchall_50
 
-    throw p1
+    throw v1
 .end method
 
 .method public setPlaybackToRemote(II)V
-    .registers 7
+    .registers 8
+    .param p1, "control"  # I
+    .param p2, "max"  # I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -846,97 +884,104 @@
     :cond_11
     const/4 v2, 0x0
 
-    .line 967
     :goto_12
-    iget-object v1, p0, Lcom/android/server/media/MediaSessionRecord$SessionStub;->this$0:Lcom/android/server/media/MediaSessionRecord;
+    move v1, v2
+
+    .line 967
+    .local v1, "typeChanged":Z
+    iget-object v2, p0, Lcom/android/server/media/MediaSessionRecord$SessionStub;->this$0:Lcom/android/server/media/MediaSessionRecord;
 
     const/4 v3, 0x2
 
-    invoke-static {v1, v3}, Lcom/android/server/media/MediaSessionRecord;->access$2402(Lcom/android/server/media/MediaSessionRecord;I)I
+    invoke-static {v2, v3}, Lcom/android/server/media/MediaSessionRecord;->access$2402(Lcom/android/server/media/MediaSessionRecord;I)I
 
     .line 968
-    iget-object v1, p0, Lcom/android/server/media/MediaSessionRecord$SessionStub;->this$0:Lcom/android/server/media/MediaSessionRecord;
+    iget-object v2, p0, Lcom/android/server/media/MediaSessionRecord$SessionStub;->this$0:Lcom/android/server/media/MediaSessionRecord;
 
-    invoke-static {v1, p1}, Lcom/android/server/media/MediaSessionRecord;->access$2602(Lcom/android/server/media/MediaSessionRecord;I)I
+    invoke-static {v2, p1}, Lcom/android/server/media/MediaSessionRecord;->access$2602(Lcom/android/server/media/MediaSessionRecord;I)I
 
     .line 969
-    iget-object p1, p0, Lcom/android/server/media/MediaSessionRecord$SessionStub;->this$0:Lcom/android/server/media/MediaSessionRecord;
+    iget-object v2, p0, Lcom/android/server/media/MediaSessionRecord$SessionStub;->this$0:Lcom/android/server/media/MediaSessionRecord;
 
-    invoke-static {p1, p2}, Lcom/android/server/media/MediaSessionRecord;->access$2702(Lcom/android/server/media/MediaSessionRecord;I)I
+    invoke-static {v2, p2}, Lcom/android/server/media/MediaSessionRecord;->access$2702(Lcom/android/server/media/MediaSessionRecord;I)I
 
     .line 970
     monitor-exit v0
-    :try_end_23
-    .catchall {:try_start_7 .. :try_end_23} :catchall_4a
+    :try_end_24
+    .catchall {:try_start_7 .. :try_end_24} :catchall_4b
 
     .line 971
-    if-eqz v2, :cond_49
+    if-eqz v1, :cond_4a
 
     .line 972
     invoke-static {}, Landroid/os/Binder;->clearCallingIdentity()J
 
-    move-result-wide p1
+    move-result-wide v2
 
     .line 974
-    :try_start_29
+    .local v2, "token":J
+    :try_start_2a
     iget-object v0, p0, Lcom/android/server/media/MediaSessionRecord$SessionStub;->this$0:Lcom/android/server/media/MediaSessionRecord;
 
     invoke-static {v0}, Lcom/android/server/media/MediaSessionRecord;->access$800(Lcom/android/server/media/MediaSessionRecord;)Lcom/android/server/media/MediaSessionService;
 
     move-result-object v0
 
-    iget-object v1, p0, Lcom/android/server/media/MediaSessionRecord$SessionStub;->this$0:Lcom/android/server/media/MediaSessionRecord;
+    iget-object v4, p0, Lcom/android/server/media/MediaSessionRecord$SessionStub;->this$0:Lcom/android/server/media/MediaSessionRecord;
 
-    invoke-virtual {v0, v1}, Lcom/android/server/media/MediaSessionService;->onSessionPlaybackTypeChanged(Lcom/android/server/media/MediaSessionRecord;)V
-    :try_end_34
-    .catchall {:try_start_29 .. :try_end_34} :catchall_44
+    invoke-virtual {v0, v4}, Lcom/android/server/media/MediaSessionService;->onSessionPlaybackTypeChanged(Lcom/android/server/media/MediaSessionRecord;)V
+    :try_end_35
+    .catchall {:try_start_2a .. :try_end_35} :catchall_45
 
     .line 976
-    invoke-static {p1, p2}, Landroid/os/Binder;->restoreCallingIdentity(J)V
+    invoke-static {v2, v3}, Landroid/os/Binder;->restoreCallingIdentity(J)V
 
     .line 977
     nop
 
     .line 978
-    iget-object p1, p0, Lcom/android/server/media/MediaSessionRecord$SessionStub;->this$0:Lcom/android/server/media/MediaSessionRecord;
+    iget-object v0, p0, Lcom/android/server/media/MediaSessionRecord$SessionStub;->this$0:Lcom/android/server/media/MediaSessionRecord;
 
-    invoke-static {p1}, Lcom/android/server/media/MediaSessionRecord;->access$900(Lcom/android/server/media/MediaSessionRecord;)Lcom/android/server/media/MediaSessionRecord$MessageHandler;
+    invoke-static {v0}, Lcom/android/server/media/MediaSessionRecord;->access$900(Lcom/android/server/media/MediaSessionRecord;)Lcom/android/server/media/MediaSessionRecord$MessageHandler;
 
-    move-result-object p1
+    move-result-object v0
 
-    const/16 p2, 0x8
+    const/16 v4, 0x8
 
-    invoke-virtual {p1, p2}, Lcom/android/server/media/MediaSessionRecord$MessageHandler;->post(I)V
+    invoke-virtual {v0, v4}, Lcom/android/server/media/MediaSessionRecord$MessageHandler;->post(I)V
 
-    goto :goto_49
+    goto :goto_4a
 
     .line 976
-    :catchall_44
+    :catchall_45
     move-exception v0
 
-    invoke-static {p1, p2}, Landroid/os/Binder;->restoreCallingIdentity(J)V
+    invoke-static {v2, v3}, Landroid/os/Binder;->restoreCallingIdentity(J)V
 
     throw v0
 
     .line 980
-    :cond_49
-    :goto_49
+    .end local v2  # "token":J
+    :cond_4a
+    :goto_4a
     return-void
 
     .line 970
-    :catchall_4a
-    move-exception p1
+    .end local v1  # "typeChanged":Z
+    :catchall_4b
+    move-exception v1
 
-    :try_start_4b
+    :try_start_4c
     monitor-exit v0
-    :try_end_4c
-    .catchall {:try_start_4b .. :try_end_4c} :catchall_4a
+    :try_end_4d
+    .catchall {:try_start_4c .. :try_end_4d} :catchall_4b
 
-    throw p1
+    throw v1
 .end method
 
 .method public setQueue(Landroid/content/pm/ParceledListSlice;)V
-    .registers 4
+    .registers 5
+    .param p1, "queue"  # Landroid/content/pm/ParceledListSlice;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -958,17 +1003,17 @@
 
     if-nez p1, :cond_d
 
-    const/4 p1, 0x0
+    const/4 v2, 0x0
 
     goto :goto_11
 
     :cond_d
     invoke-virtual {p1}, Landroid/content/pm/ParceledListSlice;->getList()Ljava/util/List;
 
-    move-result-object p1
+    move-result-object v2
 
     :goto_11
-    invoke-static {v1, p1}, Lcom/android/server/media/MediaSessionRecord;->access$2002(Lcom/android/server/media/MediaSessionRecord;Ljava/util/List;)Ljava/util/List;
+    invoke-static {v1, v2}, Lcom/android/server/media/MediaSessionRecord;->access$2002(Lcom/android/server/media/MediaSessionRecord;Ljava/util/List;)Ljava/util/List;
 
     .line 910
     monitor-exit v0
@@ -976,33 +1021,34 @@
     .catchall {:try_start_7 .. :try_end_15} :catchall_20
 
     .line 911
-    iget-object p1, p0, Lcom/android/server/media/MediaSessionRecord$SessionStub;->this$0:Lcom/android/server/media/MediaSessionRecord;
+    iget-object v0, p0, Lcom/android/server/media/MediaSessionRecord$SessionStub;->this$0:Lcom/android/server/media/MediaSessionRecord;
 
-    invoke-static {p1}, Lcom/android/server/media/MediaSessionRecord;->access$900(Lcom/android/server/media/MediaSessionRecord;)Lcom/android/server/media/MediaSessionRecord$MessageHandler;
+    invoke-static {v0}, Lcom/android/server/media/MediaSessionRecord;->access$900(Lcom/android/server/media/MediaSessionRecord;)Lcom/android/server/media/MediaSessionRecord$MessageHandler;
 
-    move-result-object p1
+    move-result-object v0
 
-    const/4 v0, 0x3
+    const/4 v1, 0x3
 
-    invoke-virtual {p1, v0}, Lcom/android/server/media/MediaSessionRecord$MessageHandler;->post(I)V
+    invoke-virtual {v0, v1}, Lcom/android/server/media/MediaSessionRecord$MessageHandler;->post(I)V
 
     .line 912
     return-void
 
     .line 910
     :catchall_20
-    move-exception p1
+    move-exception v1
 
     :try_start_21
     monitor-exit v0
     :try_end_22
     .catchall {:try_start_21 .. :try_end_22} :catchall_20
 
-    throw p1
+    throw v1
 .end method
 
 .method public setQueueTitle(Ljava/lang/CharSequence;)V
-    .registers 3
+    .registers 4
+    .param p1, "title"  # Ljava/lang/CharSequence;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -1015,15 +1061,15 @@
     invoke-static {v0, p1}, Lcom/android/server/media/MediaSessionRecord;->access$2102(Lcom/android/server/media/MediaSessionRecord;Ljava/lang/CharSequence;)Ljava/lang/CharSequence;
 
     .line 917
-    iget-object p1, p0, Lcom/android/server/media/MediaSessionRecord$SessionStub;->this$0:Lcom/android/server/media/MediaSessionRecord;
+    iget-object v0, p0, Lcom/android/server/media/MediaSessionRecord$SessionStub;->this$0:Lcom/android/server/media/MediaSessionRecord;
 
-    invoke-static {p1}, Lcom/android/server/media/MediaSessionRecord;->access$900(Lcom/android/server/media/MediaSessionRecord;)Lcom/android/server/media/MediaSessionRecord$MessageHandler;
+    invoke-static {v0}, Lcom/android/server/media/MediaSessionRecord;->access$900(Lcom/android/server/media/MediaSessionRecord;)Lcom/android/server/media/MediaSessionRecord$MessageHandler;
 
-    move-result-object p1
+    move-result-object v0
 
-    const/4 v0, 0x4
+    const/4 v1, 0x4
 
-    invoke-virtual {p1, v0}, Lcom/android/server/media/MediaSessionRecord$MessageHandler;->post(I)V
+    invoke-virtual {v0, v1}, Lcom/android/server/media/MediaSessionRecord$MessageHandler;->post(I)V
 
     .line 918
     return-void
@@ -1031,6 +1077,7 @@
 
 .method public setRatingType(I)V
     .registers 3
+    .param p1, "type"  # I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;

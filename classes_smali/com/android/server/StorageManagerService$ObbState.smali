@@ -35,36 +35,43 @@
 
 # direct methods
 .method public constructor <init>(Lcom/android/server/StorageManagerService;Ljava/lang/String;Ljava/lang/String;ILandroid/os/storage/IObbActionListener;ILjava/lang/String;)V
-    .registers 8
+    .registers 9
+    .param p1, "this$0"  # Lcom/android/server/StorageManagerService;
+    .param p2, "rawPath"  # Ljava/lang/String;
+    .param p3, "canonicalPath"  # Ljava/lang/String;
+    .param p4, "callingUid"  # I
+    .param p5, "token"  # Landroid/os/storage/IObbActionListener;
+    .param p6, "nonce"  # I
+    .param p7, "volId"  # Ljava/lang/String;
 
-    .line 504
+    .line 514
     iput-object p1, p0, Lcom/android/server/StorageManagerService$ObbState;->this$0:Lcom/android/server/StorageManagerService;
 
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
-    .line 505
+    .line 515
     iput-object p2, p0, Lcom/android/server/StorageManagerService$ObbState;->rawPath:Ljava/lang/String;
 
-    .line 506
+    .line 516
     iput-object p3, p0, Lcom/android/server/StorageManagerService$ObbState;->canonicalPath:Ljava/lang/String;
 
-    .line 507
+    .line 517
     invoke-static {p4}, Landroid/os/UserHandle;->getSharedAppGid(I)I
 
-    move-result p1
+    move-result v0
 
-    iput p1, p0, Lcom/android/server/StorageManagerService$ObbState;->ownerGid:I
+    iput v0, p0, Lcom/android/server/StorageManagerService$ObbState;->ownerGid:I
 
-    .line 508
+    .line 518
     iput-object p5, p0, Lcom/android/server/StorageManagerService$ObbState;->token:Landroid/os/storage/IObbActionListener;
 
-    .line 509
+    .line 519
     iput p6, p0, Lcom/android/server/StorageManagerService$ObbState;->nonce:I
 
-    .line 510
+    .line 520
     iput-object p7, p0, Lcom/android/server/StorageManagerService$ObbState;->volId:Ljava/lang/String;
 
-    .line 511
+    .line 521
     return-void
 .end method
 
@@ -73,7 +80,7 @@
 .method public binderDied()V
     .registers 5
 
-    .line 532
+    .line 542
     new-instance v0, Lcom/android/server/StorageManagerService$UnmountObbAction;
 
     iget-object v1, p0, Lcom/android/server/StorageManagerService$ObbState;->this$0:Lcom/android/server/StorageManagerService;
@@ -82,7 +89,8 @@
 
     invoke-direct {v0, v1, p0, v2}, Lcom/android/server/StorageManagerService$UnmountObbAction;-><init>(Lcom/android/server/StorageManagerService;Lcom/android/server/StorageManagerService$ObbState;Z)V
 
-    .line 533
+    .line 543
+    .local v0, "action":Lcom/android/server/StorageManagerService$ObbAction;
     iget-object v1, p0, Lcom/android/server/StorageManagerService$ObbState;->this$0:Lcom/android/server/StorageManagerService;
 
     invoke-static {v1}, Lcom/android/server/StorageManagerService;->access$800(Lcom/android/server/StorageManagerService;)Lcom/android/server/StorageManagerService$ObbActionHandler;
@@ -97,18 +105,18 @@
 
     invoke-virtual {v3, v2, v0}, Lcom/android/server/StorageManagerService$ObbActionHandler;->obtainMessage(ILjava/lang/Object;)Landroid/os/Message;
 
-    move-result-object v0
+    move-result-object v2
 
-    invoke-virtual {v1, v0}, Lcom/android/server/StorageManagerService$ObbActionHandler;->sendMessage(Landroid/os/Message;)Z
+    invoke-virtual {v1, v2}, Lcom/android/server/StorageManagerService$ObbActionHandler;->sendMessage(Landroid/os/Message;)Z
 
-    .line 534
+    .line 544
     return-void
 .end method
 
 .method public getBinder()Landroid/os/IBinder;
     .registers 2
 
-    .line 527
+    .line 537
     iget-object v0, p0, Lcom/android/server/StorageManagerService$ObbState;->token:Landroid/os/storage/IObbActionListener;
 
     invoke-interface {v0}, Landroid/os/storage/IObbActionListener;->asBinder()Landroid/os/IBinder;
@@ -126,7 +134,7 @@
         }
     .end annotation
 
-    .line 537
+    .line 547
     invoke-virtual {p0}, Lcom/android/server/StorageManagerService$ObbState;->getBinder()Landroid/os/IBinder;
 
     move-result-object v0
@@ -135,21 +143,22 @@
 
     invoke-interface {v0, p0, v1}, Landroid/os/IBinder;->linkToDeath(Landroid/os/IBinder$DeathRecipient;I)V
 
-    .line 538
+    .line 548
     return-void
 .end method
 
 .method public toString()Ljava/lang/String;
     .registers 3
 
-    .line 546
+    .line 556
     new-instance v0, Ljava/lang/StringBuilder;
 
     const-string v1, "ObbState{"
 
     invoke-direct {v0, v1}, Ljava/lang/StringBuilder;-><init>(Ljava/lang/String;)V
 
-    .line 547
+    .line 557
+    .local v0, "sb":Ljava/lang/StringBuilder;
     const-string/jumbo v1, "rawPath="
 
     invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
@@ -158,7 +167,7 @@
 
     invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    .line 548
+    .line 558
     const-string v1, ",canonicalPath="
 
     invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
@@ -167,7 +176,7 @@
 
     invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    .line 549
+    .line 559
     const-string v1, ",ownerGid="
 
     invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
@@ -176,7 +185,7 @@
 
     invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    .line 550
+    .line 560
     const-string v1, ",token="
 
     invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
@@ -185,7 +194,7 @@
 
     invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
-    .line 551
+    .line 561
     const-string v1, ",binder="
 
     invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
@@ -196,7 +205,7 @@
 
     invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
-    .line 552
+    .line 562
     const-string v1, ",volId="
 
     invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
@@ -205,23 +214,23 @@
 
     invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    .line 553
+    .line 563
     const/16 v1, 0x7d
 
     invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(C)Ljava/lang/StringBuilder;
 
-    .line 554
+    .line 564
     invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v1
 
-    return-object v0
+    return-object v1
 .end method
 
 .method public unlink()V
     .registers 3
 
-    .line 541
+    .line 551
     invoke-virtual {p0}, Lcom/android/server/StorageManagerService$ObbState;->getBinder()Landroid/os/IBinder;
 
     move-result-object v0
@@ -230,6 +239,6 @@
 
     invoke-interface {v0, p0, v1}, Landroid/os/IBinder;->unlinkToDeath(Landroid/os/IBinder$DeathRecipient;I)Z
 
-    .line 542
+    .line 552
     return-void
 .end method

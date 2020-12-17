@@ -26,6 +26,7 @@
 # direct methods
 .method public constructor <init>(Landroid/content/Context;)V
     .registers 2
+    .param p1, "context"  # Landroid/content/Context;
 
     .line 103
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -55,14 +56,15 @@
 
 # virtual methods
 .method protected final getBinderService(Ljava/lang/String;)Landroid/os/IBinder;
-    .registers 2
+    .registers 3
+    .param p1, "name"  # Ljava/lang/String;
 
     .line 243
     invoke-static {p1}, Landroid/os/ServiceManager;->getService(Ljava/lang/String;)Landroid/os/IBinder;
 
-    move-result-object p1
+    move-result-object v0
 
-    return-object p1
+    return-object v0
 .end method
 
 .method public final getContext()Landroid/content/Context;
@@ -75,7 +77,7 @@
 .end method
 
 .method protected final getLocalService(Ljava/lang/Class;)Ljava/lang/Object;
-    .registers 2
+    .registers 3
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "<T:",
@@ -87,11 +89,12 @@
     .end annotation
 
     .line 257
+    .local p1, "type":Ljava/lang/Class;, "Ljava/lang/Class<TT;>;"
     invoke-static {p1}, Lcom/android/server/LocalServices;->getService(Ljava/lang/Class;)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v0
 
-    return-object p1
+    return-object v0
 .end method
 
 .method public final getUiContext()Landroid/content/Context;
@@ -126,6 +129,7 @@
 
 .method public onBootPhase(I)V
     .registers 2
+    .param p1, "phase"  # I
 
     .line 145
     return-void
@@ -133,6 +137,7 @@
 
 .method public onCleanupUser(I)V
     .registers 2
+    .param p1, "userHandle"  # I
 
     .line 200
     return-void
@@ -143,6 +148,7 @@
 
 .method public onStartUser(I)V
     .registers 2
+    .param p1, "userHandle"  # I
 
     .line 152
     return-void
@@ -150,6 +156,7 @@
 
 .method public onStopUser(I)V
     .registers 2
+    .param p1, "userHandle"  # I
 
     .line 188
     return-void
@@ -157,6 +164,7 @@
 
 .method public onSwitchUser(I)V
     .registers 2
+    .param p1, "userHandle"  # I
 
     .line 176
     return-void
@@ -164,6 +172,7 @@
 
 .method public onUnlockUser(I)V
     .registers 2
+    .param p1, "userHandle"  # I
 
     .line 168
     return-void
@@ -171,6 +180,8 @@
 
 .method protected final publishBinderService(Ljava/lang/String;Landroid/os/IBinder;)V
     .registers 4
+    .param p1, "name"  # Ljava/lang/String;
+    .param p2, "service"  # Landroid/os/IBinder;
 
     .line 209
     const/4 v0, 0x0
@@ -183,6 +194,9 @@
 
 .method protected final publishBinderService(Ljava/lang/String;Landroid/os/IBinder;Z)V
     .registers 5
+    .param p1, "name"  # Ljava/lang/String;
+    .param p2, "service"  # Landroid/os/IBinder;
+    .param p3, "allowIsolated"  # Z
 
     .line 222
     const/16 v0, 0x8
@@ -195,6 +209,10 @@
 
 .method protected final publishBinderService(Ljava/lang/String;Landroid/os/IBinder;ZI)V
     .registers 5
+    .param p1, "name"  # Ljava/lang/String;
+    .param p2, "service"  # Landroid/os/IBinder;
+    .param p3, "allowIsolated"  # Z
+    .param p4, "dumpPriority"  # I
 
     .line 236
     invoke-static {p1, p2, p3, p4}, Landroid/os/ServiceManager;->addService(Ljava/lang/String;Landroid/os/IBinder;ZI)V
@@ -216,6 +234,8 @@
     .end annotation
 
     .line 250
+    .local p1, "type":Ljava/lang/Class;, "Ljava/lang/Class<TT;>;"
+    .local p2, "service":Ljava/lang/Object;, "TT;"
     invoke-static {p1, p2}, Lcom/android/server/LocalServices;->addService(Ljava/lang/Class;Ljava/lang/Object;)V
 
     .line 251

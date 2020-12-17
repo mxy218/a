@@ -28,6 +28,8 @@
 # virtual methods
 .method public onGidsChanged(II)V
     .registers 3
+    .param p1, "appId"  # I
+    .param p2, "userId"  # I
 
     .line 48
     return-void
@@ -63,6 +65,8 @@
 
 .method public onPermissionGranted(II)V
     .registers 3
+    .param p1, "uid"  # I
+    .param p2, "userId"  # I
 
     .line 52
     return-void
@@ -77,6 +81,8 @@
 
 .method public onPermissionRevoked(II)V
     .registers 3
+    .param p1, "uid"  # I
+    .param p2, "userId"  # I
 
     .line 56
     return-void
@@ -84,6 +90,8 @@
 
 .method public onPermissionUpdated([IZ)V
     .registers 3
+    .param p1, "updatedUserIds"  # [I
+    .param p2, "sync"  # Z
 
     .line 60
     return-void

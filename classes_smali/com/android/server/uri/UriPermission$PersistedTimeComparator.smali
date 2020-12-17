@@ -39,18 +39,20 @@
 
 # virtual methods
 .method public compare(Lcom/android/server/uri/UriPermission;Lcom/android/server/uri/UriPermission;)I
-    .registers 5
+    .registers 7
+    .param p1, "lhs"  # Lcom/android/server/uri/UriPermission;
+    .param p2, "rhs"  # Lcom/android/server/uri/UriPermission;
 
     .line 357
     iget-wide v0, p1, Lcom/android/server/uri/UriPermission;->persistedCreateTime:J
 
-    iget-wide p1, p2, Lcom/android/server/uri/UriPermission;->persistedCreateTime:J
+    iget-wide v2, p2, Lcom/android/server/uri/UriPermission;->persistedCreateTime:J
 
-    invoke-static {v0, v1, p1, p2}, Ljava/lang/Long;->compare(JJ)I
+    invoke-static {v0, v1, v2, v3}, Ljava/lang/Long;->compare(JJ)I
 
-    move-result p1
+    move-result v0
 
-    return p1
+    return v0
 .end method
 
 .method public bridge synthetic compare(Ljava/lang/Object;Ljava/lang/Object;)I

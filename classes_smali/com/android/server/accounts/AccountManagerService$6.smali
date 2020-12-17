@@ -27,8 +27,16 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/accounts/AccountManagerService;Lcom/android/server/accounts/AccountManagerService$UserAccounts;Landroid/accounts/IAccountManagerResponse;Ljava/lang/String;ZZLjava/lang/String;ZLandroid/accounts/Account;ILandroid/os/Bundle;)V
     .registers 12
+    .param p1, "this$0"  # Lcom/android/server/accounts/AccountManagerService;
+    .param p2, "accounts"  # Lcom/android/server/accounts/AccountManagerService$UserAccounts;
+    .param p3, "response"  # Landroid/accounts/IAccountManagerResponse;
+    .param p4, "accountType"  # Ljava/lang/String;
+    .param p5, "expectActivityLaunch"  # Z
+    .param p6, "stripAuthTokenFromResult"  # Z
+    .param p7, "accountName"  # Ljava/lang/String;
+    .param p8, "authDetailsRequired"  # Z
 
-    .line 1754
+    .line 1729
     iput-object p1, p0, Lcom/android/server/accounts/AccountManagerService$6;->this$0:Lcom/android/server/accounts/AccountManagerService;
 
     iput-object p9, p0, Lcom/android/server/accounts/AccountManagerService$6;->val$account:Landroid/accounts/Account;
@@ -46,26 +54,29 @@
 # virtual methods
 .method public onError(ILjava/lang/String;)V
     .registers 3
+    .param p1, "errorCode"  # I
+    .param p2, "errorMessage"  # Ljava/lang/String;
 
-    .line 1786
+    .line 1761
     invoke-super {p0, p1, p2}, Lcom/android/server/accounts/AccountManagerService$Session;->onError(ILjava/lang/String;)V
 
-    .line 1789
+    .line 1764
     return-void
 .end method
 
 .method public onResult(Landroid/os/Bundle;)V
     .registers 3
+    .param p1, "result"  # Landroid/os/Bundle;
 
-    .line 1775
+    .line 1750
     const/4 v0, 0x1
 
     invoke-static {p1, v0}, Landroid/os/Bundle;->setDefusable(Landroid/os/Bundle;Z)Landroid/os/Bundle;
 
-    .line 1781
+    .line 1756
     invoke-super {p0, p1}, Lcom/android/server/accounts/AccountManagerService$Session;->onResult(Landroid/os/Bundle;)V
 
-    .line 1782
+    .line 1757
     return-void
 .end method
 
@@ -77,7 +88,7 @@
         }
     .end annotation
 
-    .line 1764
+    .line 1739
     iget-object v0, p0, Lcom/android/server/accounts/AccountManagerService$6;->this$0:Lcom/android/server/accounts/AccountManagerService;
 
     iget v1, p0, Lcom/android/server/accounts/AccountManagerService$6;->val$parentUserId:I
@@ -101,16 +112,17 @@
 
     aget-object v3, v0, v2
 
-    .line 1765
+    .line 1740
+    .local v3, "acc":Landroid/accounts/Account;
     iget-object v4, p0, Lcom/android/server/accounts/AccountManagerService$6;->val$account:Landroid/accounts/Account;
 
     invoke-virtual {v3, v4}, Landroid/accounts/Account;->equals(Ljava/lang/Object;)Z
 
-    move-result v3
+    move-result v4
 
-    if-eqz v3, :cond_26
+    if-eqz v4, :cond_26
 
-    .line 1766
+    .line 1741
     iget-object v0, p0, Lcom/android/server/accounts/AccountManagerService$6;->mAuthenticator:Landroid/accounts/IAccountAuthenticator;
 
     iget-object v1, p0, Lcom/android/server/accounts/AccountManagerService$6;->val$account:Landroid/accounts/Account;
@@ -119,48 +131,50 @@
 
     invoke-interface {v0, p0, v1, v2}, Landroid/accounts/IAccountAuthenticator;->addAccountFromCredentials(Landroid/accounts/IAccountAuthenticatorResponse;Landroid/accounts/Account;Landroid/os/Bundle;)V
 
-    .line 1768
+    .line 1743
     goto :goto_29
 
-    .line 1764
+    .line 1739
+    .end local v3  # "acc":Landroid/accounts/Account;
     :cond_26
     add-int/lit8 v2, v2, 0x1
 
     goto :goto_10
 
-    .line 1771
+    .line 1746
     :cond_29
     :goto_29
     return-void
 .end method
 
 .method protected toDebugString(J)Ljava/lang/String;
-    .registers 4
+    .registers 5
+    .param p1, "now"  # J
 
-    .line 1757
+    .line 1732
     new-instance v0, Ljava/lang/StringBuilder;
 
     invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
 
     invoke-super {p0, p1, p2}, Lcom/android/server/accounts/AccountManagerService$Session;->toDebugString(J)Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v1
 
-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string p1, ", getAccountCredentialsForClone, "
+    const-string v1, ", getAccountCredentialsForClone, "
 
-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    iget-object p1, p0, Lcom/android/server/accounts/AccountManagerService$6;->val$account:Landroid/accounts/Account;
+    iget-object v1, p0, Lcom/android/server/accounts/AccountManagerService$6;->val$account:Landroid/accounts/Account;
 
-    iget-object p1, p1, Landroid/accounts/Account;->type:Ljava/lang/String;
+    iget-object v1, v1, Landroid/accounts/Account;->type:Ljava/lang/String;
 
-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    return-object p1
+    return-object v0
 .end method

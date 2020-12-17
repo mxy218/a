@@ -28,10 +28,10 @@
 .method constructor <init>()V
     .registers 2
 
-    .line 649
+    .line 645
     invoke-direct {p0}, Lcom/android/server/power/ThermalManagerService$ThermalHalWrapper;-><init>()V
 
-    .line 651
+    .line 647
     const/4 v0, 0x0
 
     iput-object v0, p0, Lcom/android/server/power/ThermalManagerService$ThermalHal10Wrapper;->mThermalHal10:Landroid/hardware/thermal/V1_0/IThermal;
@@ -40,171 +40,185 @@
 .end method
 
 .method static synthetic lambda$getCurrentCoolingDevices$1(ZILjava/util/List;Landroid/hardware/thermal/V1_0/ThermalStatus;Ljava/util/ArrayList;)V
-    .registers 9
+    .registers 12
+    .param p0, "shouldFilter"  # Z
+    .param p1, "type"  # I
+    .param p2, "ret"  # Ljava/util/List;
+    .param p3, "status"  # Landroid/hardware/thermal/V1_0/ThermalStatus;
+    .param p4, "coolingDevices"  # Ljava/util/ArrayList;
 
-    .line 704
+    .line 700
     iget v0, p3, Landroid/hardware/thermal/V1_0/ThermalStatus;->code:I
 
     if-nez v0, :cond_2c
 
-    .line 706
+    .line 702
     invoke-virtual {p4}, Ljava/util/ArrayList;->iterator()Ljava/util/Iterator;
 
-    move-result-object p3
+    move-result-object v0
 
     :goto_8
-    invoke-interface {p3}, Ljava/util/Iterator;->hasNext()Z
+    invoke-interface {v0}, Ljava/util/Iterator;->hasNext()Z
 
-    move-result p4
+    move-result v1
 
-    if-eqz p4, :cond_2b
+    if-eqz v1, :cond_2b
 
-    invoke-interface {p3}, Ljava/util/Iterator;->next()Ljava/lang/Object;
+    invoke-interface {v0}, Ljava/util/Iterator;->next()Ljava/lang/Object;
 
-    move-result-object p4
+    move-result-object v1
 
-    check-cast p4, Landroid/hardware/thermal/V1_0/CoolingDevice;
+    check-cast v1, Landroid/hardware/thermal/V1_0/CoolingDevice;
 
-    .line 707
+    .line 703
+    .local v1, "coolingDevice":Landroid/hardware/thermal/V1_0/CoolingDevice;
     if-eqz p0, :cond_1b
 
-    iget v0, p4, Landroid/hardware/thermal/V1_0/CoolingDevice;->type:I
+    iget v2, v1, Landroid/hardware/thermal/V1_0/CoolingDevice;->type:I
 
-    if-eq p1, v0, :cond_1b
+    if-eq p1, v2, :cond_1b
 
-    .line 708
+    .line 704
     goto :goto_8
 
-    .line 710
+    .line 706
     :cond_1b
-    new-instance v0, Landroid/os/CoolingDevice;
+    new-instance v2, Landroid/os/CoolingDevice;
 
-    iget v1, p4, Landroid/hardware/thermal/V1_0/CoolingDevice;->currentValue:F
+    iget v3, v1, Landroid/hardware/thermal/V1_0/CoolingDevice;->currentValue:F
 
-    float-to-long v1, v1
+    float-to-long v3, v3
 
-    iget v3, p4, Landroid/hardware/thermal/V1_0/CoolingDevice;->type:I
+    iget v5, v1, Landroid/hardware/thermal/V1_0/CoolingDevice;->type:I
 
-    iget-object p4, p4, Landroid/hardware/thermal/V1_0/CoolingDevice;->name:Ljava/lang/String;
+    iget-object v6, v1, Landroid/hardware/thermal/V1_0/CoolingDevice;->name:Ljava/lang/String;
 
-    invoke-direct {v0, v1, v2, v3, p4}, Landroid/os/CoolingDevice;-><init>(JILjava/lang/String;)V
+    invoke-direct {v2, v3, v4, v5, v6}, Landroid/os/CoolingDevice;-><init>(JILjava/lang/String;)V
 
-    invoke-interface {p2, v0}, Ljava/util/List;->add(Ljava/lang/Object;)Z
+    invoke-interface {p2, v2}, Ljava/util/List;->add(Ljava/lang/Object;)Z
 
-    .line 714
+    .line 710
+    .end local v1  # "coolingDevice":Landroid/hardware/thermal/V1_0/CoolingDevice;
     goto :goto_8
 
     :cond_2b
     goto :goto_44
 
-    .line 716
+    .line 712
     :cond_2c
-    sget-object p0, Lcom/android/server/power/ThermalManagerService$ThermalHal10Wrapper;->TAG:Ljava/lang/String;
+    sget-object v0, Lcom/android/server/power/ThermalManagerService$ThermalHal10Wrapper;->TAG:Ljava/lang/String;
 
-    new-instance p1, Ljava/lang/StringBuilder;
+    new-instance v1, Ljava/lang/StringBuilder;
 
-    invoke-direct {p1}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string p2, "Couldn\'t get cooling device because of HAL error: "
+    const-string v2, "Couldn\'t get cooling device because of HAL error: "
 
-    invoke-virtual {p1, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    iget-object p2, p3, Landroid/hardware/thermal/V1_0/ThermalStatus;->debugMessage:Ljava/lang/String;
+    iget-object v2, p3, Landroid/hardware/thermal/V1_0/ThermalStatus;->debugMessage:Ljava/lang/String;
 
-    invoke-virtual {p1, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v1
 
-    invoke-static {p0, p1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v0, v1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 721
+    .line 717
     :goto_44
     return-void
 .end method
 
 .method static synthetic lambda$getCurrentTemperatures$0(ZILjava/util/List;Landroid/hardware/thermal/V1_0/ThermalStatus;Ljava/util/ArrayList;)V
-    .registers 9
+    .registers 12
+    .param p0, "shouldFilter"  # Z
+    .param p1, "type"  # I
+    .param p2, "ret"  # Ljava/util/List;
+    .param p3, "status"  # Landroid/hardware/thermal/V1_0/ThermalStatus;
+    .param p4, "temperatures"  # Ljava/util/ArrayList;
 
-    .line 667
+    .line 663
     iget v0, p3, Landroid/hardware/thermal/V1_0/ThermalStatus;->code:I
 
     if-nez v0, :cond_2c
 
-    .line 669
+    .line 665
     invoke-virtual {p4}, Ljava/util/ArrayList;->iterator()Ljava/util/Iterator;
 
-    move-result-object p3
+    move-result-object v0
 
     :goto_8
-    invoke-interface {p3}, Ljava/util/Iterator;->hasNext()Z
+    invoke-interface {v0}, Ljava/util/Iterator;->hasNext()Z
 
-    move-result p4
+    move-result v1
 
-    if-eqz p4, :cond_2b
+    if-eqz v1, :cond_2b
 
-    invoke-interface {p3}, Ljava/util/Iterator;->next()Ljava/lang/Object;
+    invoke-interface {v0}, Ljava/util/Iterator;->next()Ljava/lang/Object;
 
-    move-result-object p4
+    move-result-object v1
 
-    check-cast p4, Landroid/hardware/thermal/V1_0/Temperature;
+    check-cast v1, Landroid/hardware/thermal/V1_0/Temperature;
 
-    .line 670
+    .line 666
+    .local v1, "temperature":Landroid/hardware/thermal/V1_0/Temperature;
     if-eqz p0, :cond_1b
 
-    iget v0, p4, Landroid/hardware/thermal/V1_0/Temperature;->type:I
+    iget v2, v1, Landroid/hardware/thermal/V1_0/Temperature;->type:I
 
-    if-eq p1, v0, :cond_1b
+    if-eq p1, v2, :cond_1b
 
-    .line 671
+    .line 667
     goto :goto_8
 
-    .line 674
+    .line 670
     :cond_1b
-    new-instance v0, Landroid/os/Temperature;
+    new-instance v2, Landroid/os/Temperature;
 
-    iget v1, p4, Landroid/hardware/thermal/V1_0/Temperature;->currentValue:F
+    iget v3, v1, Landroid/hardware/thermal/V1_0/Temperature;->currentValue:F
 
-    iget v2, p4, Landroid/hardware/thermal/V1_0/Temperature;->type:I
+    iget v4, v1, Landroid/hardware/thermal/V1_0/Temperature;->type:I
 
-    iget-object p4, p4, Landroid/hardware/thermal/V1_0/Temperature;->name:Ljava/lang/String;
+    iget-object v5, v1, Landroid/hardware/thermal/V1_0/Temperature;->name:Ljava/lang/String;
 
-    const/4 v3, 0x0
+    const/4 v6, 0x0
 
-    invoke-direct {v0, v1, v2, p4, v3}, Landroid/os/Temperature;-><init>(FILjava/lang/String;I)V
+    invoke-direct {v2, v3, v4, v5, v6}, Landroid/os/Temperature;-><init>(FILjava/lang/String;I)V
 
-    invoke-interface {p2, v0}, Ljava/util/List;->add(Ljava/lang/Object;)Z
+    invoke-interface {p2, v2}, Ljava/util/List;->add(Ljava/lang/Object;)Z
 
-    .line 678
+    .line 674
+    .end local v1  # "temperature":Landroid/hardware/thermal/V1_0/Temperature;
     goto :goto_8
 
     :cond_2b
     goto :goto_44
 
-    .line 680
+    .line 676
     :cond_2c
-    sget-object p0, Lcom/android/server/power/ThermalManagerService$ThermalHal10Wrapper;->TAG:Ljava/lang/String;
+    sget-object v0, Lcom/android/server/power/ThermalManagerService$ThermalHal10Wrapper;->TAG:Ljava/lang/String;
 
-    new-instance p1, Ljava/lang/StringBuilder;
+    new-instance v1, Ljava/lang/StringBuilder;
 
-    invoke-direct {p1}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string p2, "Couldn\'t get temperatures because of HAL error: "
+    const-string v2, "Couldn\'t get temperatures because of HAL error: "
 
-    invoke-virtual {p1, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    iget-object p2, p3, Landroid/hardware/thermal/V1_0/ThermalStatus;->debugMessage:Ljava/lang/String;
+    iget-object v2, p3, Landroid/hardware/thermal/V1_0/ThermalStatus;->debugMessage:Ljava/lang/String;
 
-    invoke-virtual {p1, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v1
 
-    invoke-static {p0, p1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v0, v1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 685
+    .line 681
     :goto_44
     return-void
 .end method
@@ -214,12 +228,12 @@
 .method protected connectToHal()Z
     .registers 6
 
-    .line 732
+    .line 728
     iget-object v0, p0, Lcom/android/server/power/ThermalManagerService$ThermalHal10Wrapper;->mHalLock:Ljava/lang/Object;
 
     monitor-enter v0
 
-    .line 734
+    .line 730
     :try_start_3
     invoke-static {}, Landroid/hardware/thermal/V1_0/IThermal;->getService()Landroid/hardware/thermal/V1_0/IThermal;
 
@@ -227,7 +241,7 @@
 
     iput-object v1, p0, Lcom/android/server/power/ThermalManagerService$ThermalHal10Wrapper;->mThermalHal10:Landroid/hardware/thermal/V1_0/IThermal;
 
-    .line 735
+    .line 731
     iget-object v1, p0, Lcom/android/server/power/ThermalManagerService$ThermalHal10Wrapper;->mThermalHal10:Landroid/hardware/thermal/V1_0/IThermal;
 
     new-instance v2, Lcom/android/server/power/ThermalManagerService$ThermalHalWrapper$DeathRecipient;
@@ -238,7 +252,7 @@
 
     invoke-interface {v1, v2, v3, v4}, Landroid/hardware/thermal/V1_0/IThermal;->linkToDeath(Landroid/os/IHwBinder$DeathRecipient;J)Z
 
-    .line 737
+    .line 733
     sget-object v1, Lcom/android/server/power/ThermalManagerService$ThermalHal10Wrapper;->TAG:Ljava/lang/String;
 
     const-string v2, "Thermal HAL 1.0 service connected, no thermal call back will be called due to legacy API."
@@ -249,33 +263,35 @@
     .catch Landroid/os/RemoteException; {:try_start_3 .. :try_end_1c} :catch_1f
     .catchall {:try_start_3 .. :try_end_1c} :catchall_1d
 
-    .line 744
+    .line 740
     goto :goto_2a
 
-    .line 746
+    .line 742
     :catchall_1d
     move-exception v1
 
     goto :goto_33
 
-    .line 740
+    .line 736
     :catch_1f
     move-exception v1
 
-    .line 741
+    .line 737
+    .local v1, "e":Ljava/lang/Exception;
     :try_start_20
-    sget-object v1, Lcom/android/server/power/ThermalManagerService$ThermalHal10Wrapper;->TAG:Ljava/lang/String;
+    sget-object v2, Lcom/android/server/power/ThermalManagerService$ThermalHal10Wrapper;->TAG:Ljava/lang/String;
 
-    const-string v2, "Thermal HAL 1.0 service not connected."
+    const-string v3, "Thermal HAL 1.0 service not connected."
 
-    invoke-static {v1, v2}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v2, v3}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 743
-    const/4 v1, 0x0
+    .line 739
+    const/4 v2, 0x0
 
-    iput-object v1, p0, Lcom/android/server/power/ThermalManagerService$ThermalHal10Wrapper;->mThermalHal10:Landroid/hardware/thermal/V1_0/IThermal;
+    iput-object v2, p0, Lcom/android/server/power/ThermalManagerService$ThermalHal10Wrapper;->mThermalHal10:Landroid/hardware/thermal/V1_0/IThermal;
 
-    .line 745
+    .line 741
+    .end local v1  # "e":Ljava/lang/Exception;
     :goto_2a
     iget-object v1, p0, Lcom/android/server/power/ThermalManagerService$ThermalHal10Wrapper;->mThermalHal10:Landroid/hardware/thermal/V1_0/IThermal;
 
@@ -293,7 +309,7 @@
 
     return v1
 
-    .line 746
+    .line 742
     :goto_33
     monitor-exit v0
     :try_end_34
@@ -303,67 +319,71 @@
 .end method
 
 .method protected dump(Ljava/io/PrintWriter;Ljava/lang/String;)V
-    .registers 5
+    .registers 6
+    .param p1, "pw"  # Ljava/io/PrintWriter;
+    .param p2, "prefix"  # Ljava/lang/String;
 
-    .line 751
+    .line 747
     iget-object v0, p0, Lcom/android/server/power/ThermalManagerService$ThermalHal10Wrapper;->mHalLock:Ljava/lang/Object;
 
     monitor-enter v0
 
-    .line 752
+    .line 748
     :try_start_3
     invoke-virtual {p1, p2}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
-    .line 753
-    new-instance p2, Ljava/lang/StringBuilder;
+    .line 749
+    new-instance v1, Ljava/lang/StringBuilder;
 
-    invoke-direct {p2}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v1, "ThermalHAL 1.0 connected: "
+    const-string v2, "ThermalHAL 1.0 connected: "
 
-    invoke-virtual {p2, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    iget-object v1, p0, Lcom/android/server/power/ThermalManagerService$ThermalHal10Wrapper;->mThermalHal10:Landroid/hardware/thermal/V1_0/IThermal;
+    iget-object v2, p0, Lcom/android/server/power/ThermalManagerService$ThermalHal10Wrapper;->mThermalHal10:Landroid/hardware/thermal/V1_0/IThermal;
 
-    if-eqz v1, :cond_18
+    if-eqz v2, :cond_18
 
-    const-string/jumbo v1, "yes"
+    const-string/jumbo v2, "yes"
 
     goto :goto_1b
 
-    .line 754
+    .line 750
     :cond_18
-    const-string/jumbo v1, "no"
+    const-string/jumbo v2, "no"
 
     :goto_1b
-    invoke-virtual {p2, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p2
+    move-result-object v1
 
-    .line 753
-    invoke-virtual {p1, p2}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    .line 749
+    invoke-virtual {p1, v1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
-    .line 755
+    .line 751
     monitor-exit v0
 
-    .line 756
+    .line 752
     return-void
 
-    .line 755
+    .line 751
     :catchall_27
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_29
     .catchall {:try_start_3 .. :try_end_29} :catchall_27
 
-    throw p1
+    throw v1
 .end method
 
 .method protected getCurrentCoolingDevices(ZI)Ljava/util/List;
-    .registers 7
+    .registers 8
+    .param p1, "shouldFilter"  # Z
+    .param p2, "type"  # I
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(ZI)",
@@ -373,30 +393,31 @@
         }
     .end annotation
 
-    .line 697
+    .line 693
     iget-object v0, p0, Lcom/android/server/power/ThermalManagerService$ThermalHal10Wrapper;->mHalLock:Ljava/lang/Object;
 
     monitor-enter v0
 
-    .line 698
+    .line 694
     :try_start_3
     new-instance v1, Ljava/util/ArrayList;
 
     invoke-direct {v1}, Ljava/util/ArrayList;-><init>()V
 
-    .line 699
+    .line 695
+    .local v1, "ret":Ljava/util/List;, "Ljava/util/List<Landroid/os/CoolingDevice;>;"
     iget-object v2, p0, Lcom/android/server/power/ThermalManagerService$ThermalHal10Wrapper;->mThermalHal10:Landroid/hardware/thermal/V1_0/IThermal;
 
     if-nez v2, :cond_e
 
-    .line 700
+    .line 696
     monitor-exit v0
     :try_end_d
     .catchall {:try_start_3 .. :try_end_d} :catchall_26
 
     return-object v1
 
-    .line 703
+    .line 699
     :cond_e
     :try_start_e
     iget-object v2, p0, Lcom/android/server/power/ThermalManagerService$ThermalHal10Wrapper;->mThermalHal10:Landroid/hardware/thermal/V1_0/IThermal;
@@ -410,43 +431,48 @@
     .catch Landroid/os/RemoteException; {:try_start_e .. :try_end_18} :catch_19
     .catchall {:try_start_e .. :try_end_18} :catchall_26
 
-    .line 725
+    .line 721
     goto :goto_24
 
-    .line 722
+    .line 718
     :catch_19
-    move-exception p1
+    move-exception v2
 
-    .line 723
+    .line 719
+    .local v2, "e":Landroid/os/RemoteException;
     :try_start_1a
-    sget-object p2, Lcom/android/server/power/ThermalManagerService$ThermalHal10Wrapper;->TAG:Ljava/lang/String;
+    sget-object v3, Lcom/android/server/power/ThermalManagerService$ThermalHal10Wrapper;->TAG:Ljava/lang/String;
 
-    const-string v2, "Couldn\'t getCurrentCoolingDevices, reconnecting..."
+    const-string v4, "Couldn\'t getCurrentCoolingDevices, reconnecting..."
 
-    invoke-static {p2, v2, p1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    invoke-static {v3, v4, v2}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
-    .line 724
+    .line 720
     invoke-virtual {p0}, Lcom/android/server/power/ThermalManagerService$ThermalHal10Wrapper;->connectToHal()Z
 
-    .line 726
+    .line 722
+    .end local v2  # "e":Landroid/os/RemoteException;
     :goto_24
     monitor-exit v0
 
     return-object v1
 
-    .line 727
+    .line 723
+    .end local v1  # "ret":Ljava/util/List;, "Ljava/util/List<Landroid/os/CoolingDevice;>;"
     :catchall_26
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_28
     .catchall {:try_start_1a .. :try_end_28} :catchall_26
 
-    throw p1
+    throw v1
 .end method
 
 .method protected getCurrentTemperatures(ZI)Ljava/util/List;
-    .registers 7
+    .registers 8
+    .param p1, "shouldFilter"  # Z
+    .param p2, "type"  # I
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(ZI)",
@@ -456,30 +482,31 @@
         }
     .end annotation
 
-    .line 657
+    .line 653
     iget-object v0, p0, Lcom/android/server/power/ThermalManagerService$ThermalHal10Wrapper;->mHalLock:Ljava/lang/Object;
 
     monitor-enter v0
 
-    .line 658
+    .line 654
     :try_start_3
     new-instance v1, Ljava/util/ArrayList;
 
     invoke-direct {v1}, Ljava/util/ArrayList;-><init>()V
 
-    .line 659
+    .line 655
+    .local v1, "ret":Ljava/util/List;, "Ljava/util/List<Landroid/os/Temperature;>;"
     iget-object v2, p0, Lcom/android/server/power/ThermalManagerService$ThermalHal10Wrapper;->mThermalHal10:Landroid/hardware/thermal/V1_0/IThermal;
 
     if-nez v2, :cond_e
 
-    .line 660
+    .line 656
     monitor-exit v0
     :try_end_d
     .catchall {:try_start_3 .. :try_end_d} :catchall_26
 
     return-object v1
 
-    .line 663
+    .line 659
     :cond_e
     :try_start_e
     iget-object v2, p0, Lcom/android/server/power/ThermalManagerService$ThermalHal10Wrapper;->mThermalHal10:Landroid/hardware/thermal/V1_0/IThermal;
@@ -493,37 +520,40 @@
     .catch Landroid/os/RemoteException; {:try_start_e .. :try_end_18} :catch_19
     .catchall {:try_start_e .. :try_end_18} :catchall_26
 
-    .line 689
+    .line 685
     goto :goto_24
 
-    .line 686
+    .line 682
     :catch_19
-    move-exception p1
+    move-exception v2
 
-    .line 687
+    .line 683
+    .local v2, "e":Landroid/os/RemoteException;
     :try_start_1a
-    sget-object p2, Lcom/android/server/power/ThermalManagerService$ThermalHal10Wrapper;->TAG:Ljava/lang/String;
+    sget-object v3, Lcom/android/server/power/ThermalManagerService$ThermalHal10Wrapper;->TAG:Ljava/lang/String;
 
-    const-string v2, "Couldn\'t getCurrentTemperatures, reconnecting..."
+    const-string v4, "Couldn\'t getCurrentTemperatures, reconnecting..."
 
-    invoke-static {p2, v2, p1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    invoke-static {v3, v4, v2}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
-    .line 688
+    .line 684
     invoke-virtual {p0}, Lcom/android/server/power/ThermalManagerService$ThermalHal10Wrapper;->connectToHal()Z
 
-    .line 690
+    .line 686
+    .end local v2  # "e":Landroid/os/RemoteException;
     :goto_24
     monitor-exit v0
 
     return-object v1
 
-    .line 691
+    .line 687
+    .end local v1  # "ret":Ljava/util/List;, "Ljava/util/List<Landroid/os/Temperature;>;"
     :catchall_26
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_28
     .catchall {:try_start_1a .. :try_end_28} :catchall_26
 
-    throw p1
+    throw v1
 .end method

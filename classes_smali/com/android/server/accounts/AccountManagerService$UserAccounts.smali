@@ -132,7 +132,11 @@
 
 # direct methods
 .method constructor <init>(Landroid/content/Context;ILjava/io/File;Ljava/io/File;)V
-    .registers 7
+    .registers 8
+    .param p1, "context"  # Landroid/content/Context;
+    .param p2, "userId"  # I
+    .param p3, "preNDbFile"  # Ljava/io/File;
+    .param p4, "deDbFile"  # Ljava/io/File;
 
     .line 244
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -234,9 +238,9 @@
     :try_start_58
     invoke-static {p1, p2, p3, p4}, Lcom/android/server/accounts/AccountsDb;->create(Landroid/content/Context;ILjava/io/File;Ljava/io/File;)Lcom/android/server/accounts/AccountsDb;
 
-    move-result-object p1
+    move-result-object v2
 
-    iput-object p1, p0, Lcom/android/server/accounts/AccountManagerService$UserAccounts;->accountsDb:Lcom/android/server/accounts/AccountsDb;
+    iput-object v2, p0, Lcom/android/server/accounts/AccountManagerService$UserAccounts;->accountsDb:Lcom/android/server/accounts/AccountsDb;
 
     .line 249
     monitor-exit v1
@@ -254,104 +258,123 @@
 
     .line 249
     :catchall_61
-    move-exception p1
+    move-exception v2
 
     :try_start_62
     monitor-exit v1
     :try_end_63
     .catchall {:try_start_62 .. :try_end_63} :catchall_61
 
+    .end local p0  # "this":Lcom/android/server/accounts/AccountManagerService$UserAccounts;
+    .end local p1  # "context":Landroid/content/Context;
+    .end local p2  # "userId":I
+    .end local p3  # "preNDbFile":Ljava/io/File;
+    .end local p4  # "deDbFile":Ljava/io/File;
     :try_start_63
-    throw p1
+    throw v2
 
     .line 250
+    .restart local p0  # "this":Lcom/android/server/accounts/AccountManagerService$UserAccounts;
+    .restart local p1  # "context":Landroid/content/Context;
+    .restart local p2  # "userId":I
+    .restart local p3  # "preNDbFile":Ljava/io/File;
+    .restart local p4  # "deDbFile":Ljava/io/File;
     :catchall_64
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_66
     .catchall {:try_start_63 .. :try_end_66} :catchall_64
 
-    throw p1
+    throw v1
 .end method
 
 .method static synthetic access$1000(Lcom/android/server/accounts/AccountManagerService$UserAccounts;)Ljava/util/Map;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/accounts/AccountManagerService$UserAccounts;
 
     .line 203
-    iget-object p0, p0, Lcom/android/server/accounts/AccountManagerService$UserAccounts;->mReceiversForType:Ljava/util/Map;
+    iget-object v0, p0, Lcom/android/server/accounts/AccountManagerService$UserAccounts;->mReceiversForType:Ljava/util/Map;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$1100(Lcom/android/server/accounts/AccountManagerService$UserAccounts;)Ljava/util/Map;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/accounts/AccountManagerService$UserAccounts;
 
     .line 203
-    iget-object p0, p0, Lcom/android/server/accounts/AccountManagerService$UserAccounts;->userDataCache:Ljava/util/Map;
+    iget-object v0, p0, Lcom/android/server/accounts/AccountManagerService$UserAccounts;->userDataCache:Ljava/util/Map;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$1200(Lcom/android/server/accounts/AccountManagerService$UserAccounts;)Ljava/util/Map;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/accounts/AccountManagerService$UserAccounts;
 
     .line 203
-    iget-object p0, p0, Lcom/android/server/accounts/AccountManagerService$UserAccounts;->authTokenCache:Ljava/util/Map;
+    iget-object v0, p0, Lcom/android/server/accounts/AccountManagerService$UserAccounts;->authTokenCache:Ljava/util/Map;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$1300(Lcom/android/server/accounts/AccountManagerService$UserAccounts;)Lcom/android/server/accounts/TokenCache;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/accounts/AccountManagerService$UserAccounts;
 
     .line 203
-    iget-object p0, p0, Lcom/android/server/accounts/AccountManagerService$UserAccounts;->accountTokenCaches:Lcom/android/server/accounts/TokenCache;
+    iget-object v0, p0, Lcom/android/server/accounts/AccountManagerService$UserAccounts;->accountTokenCaches:Lcom/android/server/accounts/TokenCache;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$1400(Lcom/android/server/accounts/AccountManagerService$UserAccounts;)Ljava/util/HashMap;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/accounts/AccountManagerService$UserAccounts;
 
     .line 203
-    iget-object p0, p0, Lcom/android/server/accounts/AccountManagerService$UserAccounts;->previousNameCache:Ljava/util/HashMap;
+    iget-object v0, p0, Lcom/android/server/accounts/AccountManagerService$UserAccounts;->previousNameCache:Ljava/util/HashMap;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$1600(Lcom/android/server/accounts/AccountManagerService$UserAccounts;)Ljava/util/HashMap;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/accounts/AccountManagerService$UserAccounts;
 
     .line 203
-    iget-object p0, p0, Lcom/android/server/accounts/AccountManagerService$UserAccounts;->credentialsPermissionNotificationIds:Ljava/util/HashMap;
+    iget-object v0, p0, Lcom/android/server/accounts/AccountManagerService$UserAccounts;->credentialsPermissionNotificationIds:Ljava/util/HashMap;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$2200(Lcom/android/server/accounts/AccountManagerService$UserAccounts;)Ljava/util/HashMap;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/accounts/AccountManagerService$UserAccounts;
 
     .line 203
-    iget-object p0, p0, Lcom/android/server/accounts/AccountManagerService$UserAccounts;->signinRequiredNotificationIds:Ljava/util/HashMap;
+    iget-object v0, p0, Lcom/android/server/accounts/AccountManagerService$UserAccounts;->signinRequiredNotificationIds:Ljava/util/HashMap;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$800(Lcom/android/server/accounts/AccountManagerService$UserAccounts;)I
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/accounts/AccountManagerService$UserAccounts;
 
     .line 203
-    iget p0, p0, Lcom/android/server/accounts/AccountManagerService$UserAccounts;->userId:I
+    iget v0, p0, Lcom/android/server/accounts/AccountManagerService$UserAccounts;->userId:I
 
-    return p0
+    return v0
 .end method
 
 .method static synthetic access$900(Lcom/android/server/accounts/AccountManagerService$UserAccounts;)Ljava/util/Map;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/accounts/AccountManagerService$UserAccounts;
 
     .line 203
-    iget-object p0, p0, Lcom/android/server/accounts/AccountManagerService$UserAccounts;->visibilityCache:Ljava/util/Map;
+    iget-object v0, p0, Lcom/android/server/accounts/AccountManagerService$UserAccounts;->visibilityCache:Ljava/util/Map;
 
-    return-object p0
+    return-object v0
 .end method

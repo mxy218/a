@@ -28,53 +28,57 @@
 
 # direct methods
 .method private constructor <init>(Ljava/io/File;ZZ)V
-    .registers 4
+    .registers 5
+    .param p1, "file"  # Ljava/io/File;
+    .param p2, "staged"  # Z
+    .param p3, "existing"  # Z
 
-    .line 15014
+    .line 15511
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
-    .line 15015
+    .line 15512
     iput-object p1, p0, Lcom/android/server/pm/PackageManagerService$OriginInfo;->file:Ljava/io/File;
 
-    .line 15016
+    .line 15513
     iput-boolean p2, p0, Lcom/android/server/pm/PackageManagerService$OriginInfo;->staged:Z
 
-    .line 15017
+    .line 15514
     iput-boolean p3, p0, Lcom/android/server/pm/PackageManagerService$OriginInfo;->existing:Z
 
-    .line 15019
+    .line 15516
     if-eqz p1, :cond_14
 
-    .line 15020
+    .line 15517
     invoke-virtual {p1}, Ljava/io/File;->getAbsolutePath()Ljava/lang/String;
 
-    move-result-object p2
+    move-result-object v0
 
-    iput-object p2, p0, Lcom/android/server/pm/PackageManagerService$OriginInfo;->resolvedPath:Ljava/lang/String;
+    iput-object v0, p0, Lcom/android/server/pm/PackageManagerService$OriginInfo;->resolvedPath:Ljava/lang/String;
 
-    .line 15021
+    .line 15518
     iput-object p1, p0, Lcom/android/server/pm/PackageManagerService$OriginInfo;->resolvedFile:Ljava/io/File;
 
     goto :goto_19
 
-    .line 15023
+    .line 15520
     :cond_14
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    iput-object p1, p0, Lcom/android/server/pm/PackageManagerService$OriginInfo;->resolvedPath:Ljava/lang/String;
+    iput-object v0, p0, Lcom/android/server/pm/PackageManagerService$OriginInfo;->resolvedPath:Ljava/lang/String;
 
-    .line 15024
-    iput-object p1, p0, Lcom/android/server/pm/PackageManagerService$OriginInfo;->resolvedFile:Ljava/io/File;
+    .line 15521
+    iput-object v0, p0, Lcom/android/server/pm/PackageManagerService$OriginInfo;->resolvedFile:Ljava/io/File;
 
-    .line 15026
+    .line 15523
     :goto_19
     return-void
 .end method
 
 .method static fromExistingFile(Ljava/io/File;)Lcom/android/server/pm/PackageManagerService$OriginInfo;
     .registers 4
+    .param p0, "file"  # Ljava/io/File;
 
-    .line 15007
+    .line 15504
     new-instance v0, Lcom/android/server/pm/PackageManagerService$OriginInfo;
 
     const/4 v1, 0x0
@@ -89,7 +93,7 @@
 .method static fromNothing()Lcom/android/server/pm/PackageManagerService$OriginInfo;
     .registers 3
 
-    .line 14999
+    .line 15496
     new-instance v0, Lcom/android/server/pm/PackageManagerService$OriginInfo;
 
     const/4 v1, 0x0
@@ -103,8 +107,9 @@
 
 .method static fromStagedFile(Ljava/io/File;)Lcom/android/server/pm/PackageManagerService$OriginInfo;
     .registers 4
+    .param p0, "file"  # Ljava/io/File;
 
-    .line 15011
+    .line 15508
     new-instance v0, Lcom/android/server/pm/PackageManagerService$OriginInfo;
 
     const/4 v1, 0x1
@@ -118,8 +123,9 @@
 
 .method static fromUntrustedFile(Ljava/io/File;)Lcom/android/server/pm/PackageManagerService$OriginInfo;
     .registers 3
+    .param p0, "file"  # Ljava/io/File;
 
-    .line 15003
+    .line 15500
     new-instance v0, Lcom/android/server/pm/PackageManagerService$OriginInfo;
 
     const/4 v1, 0x0

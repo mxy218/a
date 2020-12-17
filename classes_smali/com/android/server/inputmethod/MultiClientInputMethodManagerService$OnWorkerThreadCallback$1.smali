@@ -21,6 +21,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/inputmethod/MultiClientInputMethodManagerService$OnWorkerThreadCallback;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/inputmethod/MultiClientInputMethodManagerService$OnWorkerThreadCallback;
 
     .line 480
     iput-object p1, p0, Lcom/android/server/inputmethod/MultiClientInputMethodManagerService$OnWorkerThreadCallback$1;->this$0:Lcom/android/server/inputmethod/MultiClientInputMethodManagerService$OnWorkerThreadCallback;
@@ -33,12 +34,14 @@
 
 # virtual methods
 .method public onReceive(Landroid/content/Context;Landroid/content/Intent;)V
-    .registers 3
+    .registers 4
+    .param p1, "context"  # Landroid/content/Context;
+    .param p2, "intent"  # Landroid/content/Intent;
 
     .line 483
-    iget-object p1, p0, Lcom/android/server/inputmethod/MultiClientInputMethodManagerService$OnWorkerThreadCallback$1;->this$0:Lcom/android/server/inputmethod/MultiClientInputMethodManagerService$OnWorkerThreadCallback;
+    iget-object v0, p0, Lcom/android/server/inputmethod/MultiClientInputMethodManagerService$OnWorkerThreadCallback$1;->this$0:Lcom/android/server/inputmethod/MultiClientInputMethodManagerService$OnWorkerThreadCallback;
 
-    invoke-virtual {p1, p2}, Lcom/android/server/inputmethod/MultiClientInputMethodManagerService$OnWorkerThreadCallback;->onPackageAdded(Landroid/content/Intent;)V
+    invoke-virtual {v0, p2}, Lcom/android/server/inputmethod/MultiClientInputMethodManagerService$OnWorkerThreadCallback;->onPackageAdded(Landroid/content/Intent;)V
 
     .line 484
     return-void

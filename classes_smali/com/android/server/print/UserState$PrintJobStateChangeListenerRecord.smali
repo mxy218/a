@@ -27,7 +27,9 @@
 
 # direct methods
 .method public constructor <init>(Lcom/android/server/print/UserState;Landroid/print/IPrintJobStateChangeListener;I)V
-    .registers 4
+    .registers 5
+    .param p2, "listener"  # Landroid/print/IPrintJobStateChangeListener;
+    .param p3, "appId"  # I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -50,9 +52,9 @@
 
     move-result-object p1
 
-    const/4 p2, 0x0
+    const/4 v0, 0x0
 
-    invoke-interface {p1, p0, p2}, Landroid/os/IBinder;->linkToDeath(Landroid/os/IBinder$DeathRecipient;I)V
+    invoke-interface {p1, p0, v0}, Landroid/os/IBinder;->linkToDeath(Landroid/os/IBinder$DeathRecipient;I)V
 
     .line 1220
     return-void

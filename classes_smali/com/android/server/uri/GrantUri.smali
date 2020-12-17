@@ -14,6 +14,9 @@
 # direct methods
 .method public constructor <init>(ILandroid/net/Uri;Z)V
     .registers 4
+    .param p1, "sourceUserId"  # I
+    .param p2, "uri"  # Landroid/net/Uri;
+    .param p3, "prefix"  # Z
 
     .line 32
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -32,7 +35,9 @@
 .end method
 
 .method public static resolve(ILandroid/net/Uri;)Lcom/android/server/uri/GrantUri;
-    .registers 4
+    .registers 6
+    .param p0, "defaultSourceUserHandle"  # I
+    .param p1, "uri"  # Landroid/net/Uri;
 
     .line 78
     invoke-virtual {p1}, Landroid/net/Uri;->getScheme()Ljava/lang/String;
@@ -54,14 +59,14 @@
 
     invoke-static {p1, p0}, Landroid/content/ContentProvider;->getUserIdFromUri(Landroid/net/Uri;I)I
 
-    move-result p0
+    move-result v2
 
     .line 80
     invoke-static {p1}, Landroid/content/ContentProvider;->getUriWithoutUserId(Landroid/net/Uri;)Landroid/net/Uri;
 
-    move-result-object p1
+    move-result-object v3
 
-    invoke-direct {v0, p0, p1, v1}, Lcom/android/server/uri/GrantUri;-><init>(ILandroid/net/Uri;Z)V
+    invoke-direct {v0, v2, v3, v1}, Lcom/android/server/uri/GrantUri;-><init>(ILandroid/net/Uri;Z)V
 
     .line 79
     return-object v0
@@ -78,48 +83,53 @@
 
 # virtual methods
 .method public equals(Ljava/lang/Object;)Z
-    .registers 5
+    .registers 6
+    .param p1, "o"  # Ljava/lang/Object;
 
     .line 49
     instance-of v0, p1, Lcom/android/server/uri/GrantUri;
 
     const/4 v1, 0x0
 
-    if-eqz v0, :cond_1f
+    if-eqz v0, :cond_20
 
     .line 50
-    check-cast p1, Lcom/android/server/uri/GrantUri;
+    move-object v0, p1
+
+    check-cast v0, Lcom/android/server/uri/GrantUri;
 
     .line 51
-    iget-object v0, p0, Lcom/android/server/uri/GrantUri;->uri:Landroid/net/Uri;
+    .local v0, "other":Lcom/android/server/uri/GrantUri;
+    iget-object v2, p0, Lcom/android/server/uri/GrantUri;->uri:Landroid/net/Uri;
 
-    iget-object v2, p1, Lcom/android/server/uri/GrantUri;->uri:Landroid/net/Uri;
+    iget-object v3, v0, Lcom/android/server/uri/GrantUri;->uri:Landroid/net/Uri;
 
-    invoke-virtual {v0, v2}, Landroid/net/Uri;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v2, v3}, Landroid/net/Uri;->equals(Ljava/lang/Object;)Z
 
-    move-result v0
+    move-result v2
 
-    if-eqz v0, :cond_1e
+    if-eqz v2, :cond_1f
 
-    iget v0, p0, Lcom/android/server/uri/GrantUri;->sourceUserId:I
+    iget v2, p0, Lcom/android/server/uri/GrantUri;->sourceUserId:I
 
-    iget v2, p1, Lcom/android/server/uri/GrantUri;->sourceUserId:I
+    iget v3, v0, Lcom/android/server/uri/GrantUri;->sourceUserId:I
 
-    if-ne v0, v2, :cond_1e
+    if-ne v2, v3, :cond_1f
 
-    iget-boolean v0, p0, Lcom/android/server/uri/GrantUri;->prefix:Z
+    iget-boolean v2, p0, Lcom/android/server/uri/GrantUri;->prefix:Z
 
-    iget-boolean p1, p1, Lcom/android/server/uri/GrantUri;->prefix:Z
+    iget-boolean v3, v0, Lcom/android/server/uri/GrantUri;->prefix:Z
 
-    if-ne v0, p1, :cond_1e
+    if-ne v2, v3, :cond_1f
 
     const/4 v1, 0x1
 
-    :cond_1e
+    :cond_1f
     return v1
 
     .line 54
-    :cond_1f
+    .end local v0  # "other":Lcom/android/server/uri/GrantUri;
+    :cond_20
     return v1
 .end method
 
@@ -127,17 +137,20 @@
     .registers 4
 
     .line 40
-    nop
+    const/4 v0, 0x1
 
     .line 41
-    iget v0, p0, Lcom/android/server/uri/GrantUri;->sourceUserId:I
+    .local v0, "hashCode":I
+    mul-int/lit8 v1, v0, 0x1f
 
-    const/16 v1, 0x1f
+    iget v2, p0, Lcom/android/server/uri/GrantUri;->sourceUserId:I
 
-    add-int/2addr v0, v1
+    add-int/2addr v1, v2
 
     .line 42
-    mul-int/2addr v0, v1
+    .end local v0  # "hashCode":I
+    .local v1, "hashCode":I
+    mul-int/lit8 v0, v1, 0x1f
 
     iget-object v2, p0, Lcom/android/server/uri/GrantUri;->uri:Landroid/net/Uri;
 
@@ -148,28 +161,32 @@
     add-int/2addr v0, v2
 
     .line 43
-    mul-int/2addr v0, v1
+    .end local v1  # "hashCode":I
+    .restart local v0  # "hashCode":I
+    mul-int/lit8 v1, v0, 0x1f
 
-    iget-boolean v1, p0, Lcom/android/server/uri/GrantUri;->prefix:Z
+    iget-boolean v2, p0, Lcom/android/server/uri/GrantUri;->prefix:Z
 
-    if-eqz v1, :cond_16
+    if-eqz v2, :cond_18
 
-    const/16 v1, 0x4cf
+    const/16 v2, 0x4cf
 
-    goto :goto_18
+    goto :goto_1a
 
-    :cond_16
-    const/16 v1, 0x4d5
+    :cond_18
+    const/16 v2, 0x4d5
 
-    :goto_18
-    add-int/2addr v0, v1
+    :goto_1a
+    add-int/2addr v1, v2
 
     .line 44
-    return v0
+    .end local v0  # "hashCode":I
+    .restart local v1  # "hashCode":I
+    return v1
 .end method
 
 .method public toSafeString()Ljava/lang/String;
-    .registers 3
+    .registers 4
 
     .line 65
     new-instance v0, Ljava/lang/StringBuilder;
@@ -201,6 +218,7 @@
     move-result-object v0
 
     .line 66
+    .local v0, "result":Ljava/lang/String;
     iget-boolean v1, p0, Lcom/android/server/uri/GrantUri;->prefix:Z
 
     if-eqz v1, :cond_36
@@ -211,9 +229,9 @@
 
     invoke-virtual {v1, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string v0, " [prefix]"
+    const-string v2, " [prefix]"
 
-    invoke-virtual {v1, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
@@ -225,7 +243,7 @@
 .end method
 
 .method public toString()Ljava/lang/String;
-    .registers 3
+    .registers 4
 
     .line 59
     new-instance v0, Ljava/lang/StringBuilder;
@@ -257,6 +275,7 @@
     move-result-object v0
 
     .line 60
+    .local v0, "result":Ljava/lang/String;
     iget-boolean v1, p0, Lcom/android/server/uri/GrantUri;->prefix:Z
 
     if-eqz v1, :cond_36
@@ -267,9 +286,9 @@
 
     invoke-virtual {v1, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string v0, " [prefix]"
+    const-string v2, " [prefix]"
 
-    invoke-virtual {v1, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
@@ -281,33 +300,36 @@
 .end method
 
 .method public writeToProto(Landroid/util/proto/ProtoOutputStream;J)V
-    .registers 7
+    .registers 9
+    .param p1, "proto"  # Landroid/util/proto/ProtoOutputStream;
+    .param p2, "fieldId"  # J
 
     .line 71
     invoke-virtual {p1, p2, p3}, Landroid/util/proto/ProtoOutputStream;->start(J)J
 
-    move-result-wide p2
+    move-result-wide v0
 
     .line 72
-    iget-object v0, p0, Lcom/android/server/uri/GrantUri;->uri:Landroid/net/Uri;
+    .local v0, "token":J
+    iget-object v2, p0, Lcom/android/server/uri/GrantUri;->uri:Landroid/net/Uri;
 
-    invoke-virtual {v0}, Landroid/net/Uri;->toString()Ljava/lang/String;
+    invoke-virtual {v2}, Landroid/net/Uri;->toString()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v2
 
-    const-wide v1, 0x10900000002L
+    const-wide v3, 0x10900000002L
 
-    invoke-virtual {p1, v1, v2, v0}, Landroid/util/proto/ProtoOutputStream;->write(JLjava/lang/String;)V
+    invoke-virtual {p1, v3, v4, v2}, Landroid/util/proto/ProtoOutputStream;->write(JLjava/lang/String;)V
 
     .line 73
-    iget v0, p0, Lcom/android/server/uri/GrantUri;->sourceUserId:I
+    iget v2, p0, Lcom/android/server/uri/GrantUri;->sourceUserId:I
 
-    const-wide v1, 0x10500000001L
+    const-wide v3, 0x10500000001L
 
-    invoke-virtual {p1, v1, v2, v0}, Landroid/util/proto/ProtoOutputStream;->write(JI)V
+    invoke-virtual {p1, v3, v4, v2}, Landroid/util/proto/ProtoOutputStream;->write(JI)V
 
     .line 74
-    invoke-virtual {p1, p2, p3}, Landroid/util/proto/ProtoOutputStream;->end(J)V
+    invoke-virtual {p1, v0, v1}, Landroid/util/proto/ProtoOutputStream;->end(J)V
 
     .line 75
     return-void

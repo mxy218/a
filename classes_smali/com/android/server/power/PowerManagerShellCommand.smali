@@ -14,6 +14,7 @@
 # direct methods
 .method constructor <init>(Landroid/os/IPowerManager;)V
     .registers 2
+    .param p1, "service"  # Landroid/os/IPowerManager;
 
     .line 31
     invoke-direct {p0}, Landroid/os/ShellCommand;-><init>()V
@@ -53,7 +54,7 @@
 .end method
 
 .method private runSetMode()I
-    .registers 5
+    .registers 6
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -66,78 +67,84 @@
     move-result-object v0
 
     .line 64
-    nop
+    .local v0, "pw":Ljava/io/PrintWriter;
+    const/4 v1, -0x1
 
     .line 66
+    .local v1, "mode":I
     :try_start_5
     invoke-virtual {p0}, Lcom/android/server/power/PowerManagerShellCommand;->getNextArgRequired()Ljava/lang/String;
 
-    move-result-object v1
+    move-result-object v2
 
-    invoke-static {v1}, Ljava/lang/Integer;->parseInt(Ljava/lang/String;)I
+    invoke-static {v2}, Ljava/lang/Integer;->parseInt(Ljava/lang/String;)I
 
-    move-result v0
+    move-result v2
     :try_end_d
-    .catch Ljava/lang/RuntimeException; {:try_start_5 .. :try_end_d} :catch_1a
+    .catch Ljava/lang/RuntimeException; {:try_start_5 .. :try_end_d} :catch_1b
+
+    move v1, v2
 
     .line 70
     nop
 
     .line 71
-    iget-object v1, p0, Lcom/android/server/power/PowerManagerShellCommand;->mInterface:Landroid/os/IPowerManager;
+    iget-object v2, p0, Lcom/android/server/power/PowerManagerShellCommand;->mInterface:Landroid/os/IPowerManager;
 
-    const/4 v2, 0x0
+    const/4 v3, 0x0
 
-    const/4 v3, 0x1
+    const/4 v4, 0x1
 
-    if-ne v0, v3, :cond_15
+    if-ne v1, v4, :cond_16
 
-    goto :goto_16
+    goto :goto_17
 
-    :cond_15
-    move v3, v2
+    :cond_16
+    move v4, v3
 
-    :goto_16
-    invoke-interface {v1, v3}, Landroid/os/IPowerManager;->setPowerSaveModeEnabled(Z)Z
+    :goto_17
+    invoke-interface {v2, v4}, Landroid/os/IPowerManager;->setPowerSaveModeEnabled(Z)Z
 
     .line 72
-    return v2
+    return v3
 
     .line 67
-    :catch_1a
-    move-exception v1
+    :catch_1b
+    move-exception v2
 
     .line 68
-    new-instance v2, Ljava/lang/StringBuilder;
+    .local v2, "ex":Ljava/lang/RuntimeException;
+    new-instance v3, Ljava/lang/StringBuilder;
 
-    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v3, "Error: "
+    const-string v4, "Error: "
 
-    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v1}, Ljava/lang/RuntimeException;->toString()Ljava/lang/String;
+    invoke-virtual {v2}, Ljava/lang/RuntimeException;->toString()Ljava/lang/String;
 
-    move-result-object v1
+    move-result-object v4
 
-    invoke-virtual {v2, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v1
+    move-result-object v3
 
-    invoke-virtual {v0, v1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {v0, v3}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
     .line 69
-    const/4 v0, -0x1
+    const/4 v3, -0x1
 
-    return v0
+    return v3
 .end method
 
 
 # virtual methods
 .method public onCommand(Ljava/lang/String;)I
     .registers 7
+    .param p1, "cmd"  # Ljava/lang/String;
 
     .line 37
     if-nez p1, :cond_7
@@ -145,9 +152,9 @@
     .line 38
     invoke-virtual {p0, p1}, Lcom/android/server/power/PowerManagerShellCommand;->handleDefaultCommands(Ljava/lang/String;)I
 
-    move-result p1
+    move-result v0
 
-    return p1
+    return v0
 
     .line 41
     :cond_7
@@ -156,6 +163,7 @@
     move-result-object v0
 
     .line 43
+    .local v0, "pw":Ljava/io/PrintWriter;
     const/4 v1, -0x1
 
     :try_start_c
@@ -213,50 +221,52 @@
     .line 49
     invoke-virtual {p0, p1}, Lcom/android/server/power/PowerManagerShellCommand;->handleDefaultCommands(Ljava/lang/String;)I
 
-    move-result p1
+    move-result v1
 
-    return p1
+    return v1
 
     .line 47
     :cond_3c
     invoke-direct {p0}, Lcom/android/server/power/PowerManagerShellCommand;->runSetMode()I
 
-    move-result p1
+    move-result v1
 
-    return p1
+    return v1
 
     .line 45
     :cond_41
     invoke-direct {p0}, Lcom/android/server/power/PowerManagerShellCommand;->runSetAdaptiveEnabled()I
 
-    move-result p1
+    move-result v1
     :try_end_45
     .catch Landroid/os/RemoteException; {:try_start_c .. :try_end_45} :catch_46
 
-    return p1
+    return v1
 
     .line 51
     :catch_46
-    move-exception p1
+    move-exception v2
 
     .line 52
-    new-instance v2, Ljava/lang/StringBuilder;
+    .local v2, "e":Landroid/os/RemoteException;
+    new-instance v3, Ljava/lang/StringBuilder;
 
-    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v3, "Remote exception: "
+    const-string v4, "Remote exception: "
 
-    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v2, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v3
 
-    invoke-virtual {v0, p1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {v0, v3}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
     .line 54
+    .end local v2  # "e":Landroid/os/RemoteException;
     return v1
 .end method
 
@@ -269,6 +279,7 @@
     move-result-object v0
 
     .line 78
+    .local v0, "pw":Ljava/io/PrintWriter;
     const-string v1, "Power manager (power) commands:"
 
     invoke-virtual {v0, v1}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V

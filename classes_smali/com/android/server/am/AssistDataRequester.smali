@@ -67,6 +67,13 @@
 # direct methods
 .method public constructor <init>(Landroid/content/Context;Landroid/view/IWindowManager;Landroid/app/AppOpsManager;Lcom/android/server/am/AssistDataRequester$AssistDataRequesterCallbacks;Ljava/lang/Object;II)V
     .registers 9
+    .param p1, "context"  # Landroid/content/Context;
+    .param p2, "windowManager"  # Landroid/view/IWindowManager;
+    .param p3, "appOpsManager"  # Landroid/app/AppOpsManager;
+    .param p4, "callbacks"  # Lcom/android/server/am/AssistDataRequester$AssistDataRequesterCallbacks;
+    .param p5, "callbacksLock"  # Ljava/lang/Object;
+    .param p6, "requestStructureAppOps"  # I
+    .param p7, "requestScreenshotAppOps"  # I
 
     .line 131
     invoke-direct {p0}, Landroid/app/IAssistDataReceiver$Stub;-><init>()V
@@ -97,9 +104,9 @@
     .line 135
     invoke-static {}, Landroid/app/ActivityTaskManager;->getService()Landroid/app/IActivityTaskManager;
 
-    move-result-object p2
+    move-result-object v0
 
-    iput-object p2, p0, Lcom/android/server/am/AssistDataRequester;->mActivityTaskManager:Landroid/app/IActivityTaskManager;
+    iput-object v0, p0, Lcom/android/server/am/AssistDataRequester;->mActivityTaskManager:Landroid/app/IActivityTaskManager;
 
     .line 136
     iput-object p1, p0, Lcom/android/server/am/AssistDataRequester;->mContext:Landroid/content/Context;
@@ -118,60 +125,56 @@
 .end method
 
 .method private dispatchAssistDataReceived(Landroid/os/Bundle;)V
-    .registers 5
+    .registers 6
+    .param p1, "data"  # Landroid/os/Bundle;
 
     .line 368
-    nop
+    const/4 v0, 0x0
 
     .line 369
-    nop
+    .local v0, "activityIndex":I
+    const/4 v1, 0x0
 
     .line 370
+    .local v1, "activityCount":I
     if-eqz p1, :cond_c
 
     .line 371
-    const-string/jumbo v0, "receiverExtras"
+    const-string/jumbo v2, "receiverExtras"
 
-    invoke-virtual {p1, v0}, Landroid/os/Bundle;->getBundle(Ljava/lang/String;)Landroid/os/Bundle;
+    invoke-virtual {p1, v2}, Landroid/os/Bundle;->getBundle(Ljava/lang/String;)Landroid/os/Bundle;
 
-    move-result-object v0
+    move-result-object v2
 
     goto :goto_d
 
     :cond_c
-    const/4 v0, 0x0
+    const/4 v2, 0x0
 
     .line 372
+    .local v2, "receiverExtras":Landroid/os/Bundle;
     :goto_d
-    const/4 v1, 0x0
-
-    if-eqz v0, :cond_1d
+    if-eqz v2, :cond_1c
 
     .line 373
-    const-string v1, "index"
+    const-string/jumbo v3, "index"
 
-    invoke-virtual {v0, v1}, Landroid/os/Bundle;->getInt(Ljava/lang/String;)I
-
-    move-result v1
-
-    .line 374
-    const-string v2, "count"
-
-    invoke-virtual {v0, v2}, Landroid/os/Bundle;->getInt(Ljava/lang/String;)I
+    invoke-virtual {v2, v3}, Landroid/os/Bundle;->getInt(Ljava/lang/String;)I
 
     move-result v0
 
-    goto :goto_1e
+    .line 374
+    const-string v3, "count"
 
-    .line 372
-    :cond_1d
-    move v0, v1
+    invoke-virtual {v2, v3}, Landroid/os/Bundle;->getInt(Ljava/lang/String;)I
+
+    move-result v1
 
     .line 376
-    :goto_1e
-    iget-object v2, p0, Lcom/android/server/am/AssistDataRequester;->mCallbacks:Lcom/android/server/am/AssistDataRequester$AssistDataRequesterCallbacks;
+    :cond_1c
+    iget-object v3, p0, Lcom/android/server/am/AssistDataRequester;->mCallbacks:Lcom/android/server/am/AssistDataRequester$AssistDataRequesterCallbacks;
 
-    invoke-interface {v2, p1, v1, v0}, Lcom/android/server/am/AssistDataRequester$AssistDataRequesterCallbacks;->onAssistDataReceivedLocked(Landroid/os/Bundle;II)V
+    invoke-interface {v3, p1, v0, v1}, Lcom/android/server/am/AssistDataRequester$AssistDataRequesterCallbacks;->onAssistDataReceivedLocked(Landroid/os/Bundle;II)V
 
     .line 377
     return-void
@@ -179,6 +182,7 @@
 
 .method private dispatchAssistScreenshotReceived(Landroid/graphics/Bitmap;)V
     .registers 3
+    .param p1, "screenshot"  # Landroid/graphics/Bitmap;
 
     .line 380
     iget-object v0, p0, Lcom/android/server/am/AssistDataRequester;->mCallbacks:Lcom/android/server/am/AssistDataRequester$AssistDataRequesterCallbacks;
@@ -200,76 +204,87 @@
     move-result v0
 
     .line 295
+    .local v0, "dataCount":I
     const/4 v1, 0x0
 
-    move v2, v1
-
-    :goto_8
-    if-ge v2, v0, :cond_18
+    .local v1, "i":I
+    :goto_7
+    if-ge v1, v0, :cond_17
 
     .line 296
-    iget-object v3, p0, Lcom/android/server/am/AssistDataRequester;->mAssistData:Ljava/util/ArrayList;
-
-    invoke-virtual {v3, v2}, Ljava/util/ArrayList;->get(I)Ljava/lang/Object;
-
-    move-result-object v3
-
-    check-cast v3, Landroid/os/Bundle;
-
-    invoke-direct {p0, v3}, Lcom/android/server/am/AssistDataRequester;->dispatchAssistDataReceived(Landroid/os/Bundle;)V
-
-    .line 295
-    add-int/lit8 v2, v2, 0x1
-
-    goto :goto_8
-
-    .line 298
-    :cond_18
-    iget-object v0, p0, Lcom/android/server/am/AssistDataRequester;->mAssistData:Ljava/util/ArrayList;
-
-    invoke-virtual {v0}, Ljava/util/ArrayList;->clear()V
-
-    .line 299
-    iget-object v0, p0, Lcom/android/server/am/AssistDataRequester;->mAssistScreenshot:Ljava/util/ArrayList;
-
-    invoke-virtual {v0}, Ljava/util/ArrayList;->size()I
-
-    move-result v0
-
-    .line 300
-    nop
-
-    :goto_24
-    if-ge v1, v0, :cond_34
-
-    .line 301
-    iget-object v2, p0, Lcom/android/server/am/AssistDataRequester;->mAssistScreenshot:Ljava/util/ArrayList;
+    iget-object v2, p0, Lcom/android/server/am/AssistDataRequester;->mAssistData:Ljava/util/ArrayList;
 
     invoke-virtual {v2, v1}, Ljava/util/ArrayList;->get(I)Ljava/lang/Object;
 
     move-result-object v2
 
-    check-cast v2, Landroid/graphics/Bitmap;
+    check-cast v2, Landroid/os/Bundle;
 
-    invoke-direct {p0, v2}, Lcom/android/server/am/AssistDataRequester;->dispatchAssistScreenshotReceived(Landroid/graphics/Bitmap;)V
+    invoke-direct {p0, v2}, Lcom/android/server/am/AssistDataRequester;->dispatchAssistDataReceived(Landroid/os/Bundle;)V
 
-    .line 300
+    .line 295
     add-int/lit8 v1, v1, 0x1
 
-    goto :goto_24
+    goto :goto_7
+
+    .line 298
+    .end local v1  # "i":I
+    :cond_17
+    iget-object v1, p0, Lcom/android/server/am/AssistDataRequester;->mAssistData:Ljava/util/ArrayList;
+
+    invoke-virtual {v1}, Ljava/util/ArrayList;->clear()V
+
+    .line 299
+    iget-object v1, p0, Lcom/android/server/am/AssistDataRequester;->mAssistScreenshot:Ljava/util/ArrayList;
+
+    invoke-virtual {v1}, Ljava/util/ArrayList;->size()I
+
+    move-result v1
+
+    .line 300
+    .local v1, "screenshotsCount":I
+    const/4 v2, 0x0
+
+    .local v2, "i":I
+    :goto_23
+    if-ge v2, v1, :cond_33
+
+    .line 301
+    iget-object v3, p0, Lcom/android/server/am/AssistDataRequester;->mAssistScreenshot:Ljava/util/ArrayList;
+
+    invoke-virtual {v3, v2}, Ljava/util/ArrayList;->get(I)Ljava/lang/Object;
+
+    move-result-object v3
+
+    check-cast v3, Landroid/graphics/Bitmap;
+
+    invoke-direct {p0, v3}, Lcom/android/server/am/AssistDataRequester;->dispatchAssistScreenshotReceived(Landroid/graphics/Bitmap;)V
+
+    .line 300
+    add-int/lit8 v2, v2, 0x1
+
+    goto :goto_23
 
     .line 303
-    :cond_34
-    iget-object v0, p0, Lcom/android/server/am/AssistDataRequester;->mAssistScreenshot:Ljava/util/ArrayList;
+    .end local v2  # "i":I
+    :cond_33
+    iget-object v2, p0, Lcom/android/server/am/AssistDataRequester;->mAssistScreenshot:Ljava/util/ArrayList;
 
-    invoke-virtual {v0}, Ljava/util/ArrayList;->clear()V
+    invoke-virtual {v2}, Ljava/util/ArrayList;->clear()V
 
     .line 304
     return-void
 .end method
 
 .method private requestData(Ljava/util/List;ZZZZZILjava/lang/String;)V
-    .registers 27
+    .registers 30
+    .param p2, "requestAutofillData"  # Z
+    .param p3, "fetchData"  # Z
+    .param p4, "fetchScreenshot"  # Z
+    .param p5, "allowFetchData"  # Z
+    .param p6, "allowFetchScreenshot"  # Z
+    .param p7, "callingUid"  # I
+    .param p8, "callingPackage"  # Ljava/lang/String;
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(",
@@ -282,6 +297,7 @@
     .end annotation
 
     .line 194
+    .local p1, "activityTokens":Ljava/util/List;, "Ljava/util/List<Landroid/os/IBinder;>;"
     move-object/from16 v8, p0
 
     move/from16 v9, p7
@@ -302,64 +318,75 @@
 
     .line 201
     :cond_10
-    nop
+    const/4 v1, 0x0
 
     .line 203
-    const/4 v11, 0x0
-
-    :try_start_12
+    .local v1, "isAssistDataAllowed":Z
+    :try_start_11
     iget-object v0, v8, Lcom/android/server/am/AssistDataRequester;->mActivityTaskManager:Landroid/app/IActivityTaskManager;
 
     invoke-interface {v0}, Landroid/app/IActivityTaskManager;->isAssistDataAllowedOnCurrentActivity()Z
 
     move-result v0
-    :try_end_18
-    .catch Landroid/os/RemoteException; {:try_start_12 .. :try_end_18} :catch_19
+    :try_end_17
+    .catch Landroid/os/RemoteException; {:try_start_11 .. :try_end_17} :catch_1a
+
+    move v1, v0
 
     .line 206
-    goto :goto_1b
+    move v11, v1
+
+    goto :goto_1c
 
     .line 204
-    :catch_19
+    :catch_1a
     move-exception v0
 
-    move v0, v11
+    move v11, v1
 
     .line 207
-    :goto_1b
-    and-int v1, p5, v0
+    .end local v1  # "isAssistDataAllowed":Z
+    .local v11, "isAssistDataAllowed":Z
+    :goto_1c
+    and-int v12, p5, v11
 
     .line 208
-    const/4 v12, 0x1
+    .end local p5  # "allowFetchData":Z
+    .local v12, "allowFetchData":Z
+    const/4 v13, 0x0
 
-    if-eqz p3, :cond_29
+    const/4 v14, 0x1
 
-    if-eqz v0, :cond_29
+    if-eqz p3, :cond_2b
+
+    if-eqz v11, :cond_2b
 
     iget v0, v8, Lcom/android/server/am/AssistDataRequester;->mRequestScreenshotAppOps:I
 
-    const/4 v2, -0x1
+    const/4 v1, -0x1
 
-    if-eq v0, v2, :cond_29
+    if-eq v0, v1, :cond_2b
 
-    move v0, v12
+    move v0, v14
 
-    goto :goto_2a
+    goto :goto_2c
 
-    :cond_29
-    move v0, v11
+    :cond_2b
+    move v0, v13
 
-    :goto_2a
-    and-int v13, p6, v0
+    :goto_2c
+    and-int v15, p6, v0
 
     .line 211
-    iput-boolean v11, v8, Lcom/android/server/am/AssistDataRequester;->mCanceled:Z
+    .end local p6  # "allowFetchScreenshot":Z
+    .local v15, "allowFetchScreenshot":Z
+    iput-boolean v13, v8, Lcom/android/server/am/AssistDataRequester;->mCanceled:Z
 
     .line 212
-    iput v11, v8, Lcom/android/server/am/AssistDataRequester;->mPendingDataCount:I
+    iput v13, v8, Lcom/android/server/am/AssistDataRequester;->mPendingDataCount:I
 
     .line 213
-    iput v11, v8, Lcom/android/server/am/AssistDataRequester;->mPendingScreenshotCount:I
+    iput v13, v8, Lcom/android/server/am/AssistDataRequester;->mPendingScreenshotCount:I
 
     .line 214
     iget-object v0, v8, Lcom/android/server/am/AssistDataRequester;->mAssistData:Ljava/util/ArrayList;
@@ -372,231 +399,334 @@
     invoke-virtual {v0}, Ljava/util/ArrayList;->clear()V
 
     .line 217
-    const/4 v14, 0x0
+    const/4 v7, 0x0
 
-    if-eqz p3, :cond_d0
+    if-eqz p3, :cond_ff
 
     .line 218
     iget-object v0, v8, Lcom/android/server/am/AssistDataRequester;->mAppOpsManager:Landroid/app/AppOpsManager;
 
-    iget v2, v8, Lcom/android/server/am/AssistDataRequester;->mRequestStructureAppOps:I
+    iget v1, v8, Lcom/android/server/am/AssistDataRequester;->mRequestStructureAppOps:I
 
-    invoke-virtual {v0, v2, v9, v10}, Landroid/app/AppOpsManager;->checkOpNoThrow(IILjava/lang/String;)I
+    invoke-virtual {v0, v1, v9, v10}, Landroid/app/AppOpsManager;->checkOpNoThrow(IILjava/lang/String;)I
 
     move-result v0
 
-    if-nez v0, :cond_be
+    if-nez v0, :cond_eb
 
-    if-eqz v1, :cond_be
+    if-eqz v12, :cond_eb
 
     .line 220
     invoke-interface/range {p1 .. p1}, Ljava/util/List;->size()I
 
-    move-result v15
+    move-result v6
 
     .line 221
-    move v7, v11
+    .local v6, "numActivities":I
+    const/4 v0, 0x0
 
-    :goto_50
-    if-ge v7, v15, :cond_bc
+    move v5, v0
+
+    .local v5, "i":I
+    :goto_53
+    if-ge v5, v6, :cond_e5
 
     .line 222
-    move-object/from16 v6, p1
+    move-object/from16 v4, p1
 
-    invoke-interface {v6, v7}, Ljava/util/List;->get(I)Ljava/lang/Object;
+    invoke-interface {v4, v5}, Ljava/util/List;->get(I)Ljava/lang/Object;
 
     move-result-object v0
 
-    move-object v5, v0
+    move-object v3, v0
 
-    check-cast v5, Landroid/os/IBinder;
+    check-cast v3, Landroid/os/IBinder;
 
     .line 224
-    :try_start_5b
+    .local v3, "topActivity":Landroid/os/IBinder;
+    :try_start_5e
     iget-object v0, v8, Lcom/android/server/am/AssistDataRequester;->mContext:Landroid/content/Context;
 
     const-string v1, "assist_with_context"
 
-    invoke-static {v0, v1, v12}, Lcom/android/internal/logging/MetricsLogger;->count(Landroid/content/Context;Ljava/lang/String;I)V
+    invoke-static {v0, v1, v14}, Lcom/android/internal/logging/MetricsLogger;->count(Landroid/content/Context;Ljava/lang/String;I)V
 
     .line 225
-    new-instance v4, Landroid/os/Bundle;
+    new-instance v0, Landroid/os/Bundle;
 
-    invoke-direct {v4}, Landroid/os/Bundle;-><init>()V
+    invoke-direct {v0}, Landroid/os/Bundle;-><init>()V
 
     .line 226
-    const-string v0, "index"
+    .local v0, "receiverExtras":Landroid/os/Bundle;
+    const-string/jumbo v1, "index"
 
-    invoke-virtual {v4, v0, v7}, Landroid/os/Bundle;->putInt(Ljava/lang/String;I)V
+    invoke-virtual {v0, v1, v5}, Landroid/os/Bundle;->putInt(Ljava/lang/String;I)V
 
     .line 227
-    const-string v0, "count"
+    const-string v1, "count"
 
-    invoke-virtual {v4, v0, v15}, Landroid/os/Bundle;->putInt(Ljava/lang/String;I)V
+    invoke-virtual {v0, v1, v6}, Landroid/os/Bundle;->putInt(Ljava/lang/String;I)V
+    :try_end_75
+    .catch Landroid/os/RemoteException; {:try_start_5e .. :try_end_75} :catch_d5
 
     .line 228
-    if-eqz p2, :cond_7c
+    if-eqz p2, :cond_8e
 
     .line 229
-    iget-object v0, v8, Lcom/android/server/am/AssistDataRequester;->mActivityTaskManager:Landroid/app/IActivityTaskManager;
-
-    invoke-interface {v0, v8, v4, v5, v11}, Landroid/app/IActivityTaskManager;->requestAutofillData(Landroid/app/IAssistDataReceiver;Landroid/os/Bundle;Landroid/os/IBinder;I)Z
-
-    move-result v0
-
-    move/from16 v17, v7
-
-    goto :goto_96
-
-    .line 231
-    :cond_7c
+    :try_start_77
     iget-object v1, v8, Lcom/android/server/am/AssistDataRequester;->mActivityTaskManager:Landroid/app/IActivityTaskManager;
-    :try_end_7e
-    .catch Landroid/os/RemoteException; {:try_start_5b .. :try_end_7e} :catch_b6
 
-    const/4 v2, 0x1
+    invoke-interface {v1, v8, v0, v3, v13}, Landroid/app/IActivityTaskManager;->requestAutofillData(Landroid/app/IAssistDataReceiver;Landroid/os/Bundle;Landroid/os/IBinder;I)Z
 
-    if-nez v7, :cond_83
+    move-result v1
+    :try_end_7d
+    .catch Landroid/os/RemoteException; {:try_start_77 .. :try_end_7d} :catch_85
 
-    move v0, v12
+    move-object/from16 v18, v3
 
-    goto :goto_84
+    move/from16 v19, v5
 
-    :cond_83
-    move v0, v11
+    move/from16 v20, v6
 
-    :goto_84
-    if-nez v7, :cond_89
-
-    move/from16 v16, v12
-
-    goto :goto_8b
-
-    :cond_89
-    move/from16 v16, v11
-
-    :goto_8b
-    move-object/from16 v3, p0
-
-    move v6, v0
-
-    move/from16 v17, v7
-
-    move/from16 v7, v16
-
-    :try_start_92
-    invoke-interface/range {v1 .. v7}, Landroid/app/IActivityTaskManager;->requestAssistContextExtras(ILandroid/app/IAssistDataReceiver;Landroid/os/Bundle;Landroid/os/IBinder;ZZ)Z
-
-    move-result v0
-
-    .line 234
-    :goto_96
-    if-eqz v0, :cond_a0
-
-    .line 235
-    iget v0, v8, Lcom/android/server/am/AssistDataRequester;->mPendingDataCount:I
-
-    add-int/2addr v0, v12
-
-    iput v0, v8, Lcom/android/server/am/AssistDataRequester;->mPendingDataCount:I
-
-    goto :goto_b5
-
-    .line 246
-    :catch_9e
-    move-exception v0
-
-    goto :goto_b9
-
-    .line 236
-    :cond_a0
-    if-nez v17, :cond_b5
-
-    .line 238
-    iget-object v0, v8, Lcom/android/server/am/AssistDataRequester;->mCallbacks:Lcom/android/server/am/AssistDataRequester$AssistDataRequesterCallbacks;
-
-    invoke-interface {v0}, Lcom/android/server/am/AssistDataRequester$AssistDataRequesterCallbacks;->canHandleReceivedAssistDataLocked()Z
-
-    move-result v0
-
-    if-eqz v0, :cond_ae
-
-    .line 239
-    invoke-direct {v8, v14}, Lcom/android/server/am/AssistDataRequester;->dispatchAssistDataReceived(Landroid/os/Bundle;)V
+    move-object v13, v7
 
     goto :goto_b3
 
-    .line 241
-    :cond_ae
-    iget-object v0, v8, Lcom/android/server/am/AssistDataRequester;->mAssistData:Ljava/util/ArrayList;
+    .line 246
+    .end local v0  # "receiverExtras":Landroid/os/Bundle;
+    :catch_85
+    move-exception v0
 
-    invoke-virtual {v0, v14}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
-    :try_end_b3
-    .catch Landroid/os/RemoteException; {:try_start_92 .. :try_end_b3} :catch_9e
+    move-object/from16 v18, v3
 
-    .line 243
+    move/from16 v19, v5
+
+    move/from16 v20, v6
+
+    move-object v13, v7
+
+    goto :goto_dd
+
+    .line 231
+    .restart local v0  # "receiverExtras":Landroid/os/Bundle;
+    :cond_8e
+    :try_start_8e
+    iget-object v1, v8, Lcom/android/server/am/AssistDataRequester;->mActivityTaskManager:Landroid/app/IActivityTaskManager;
+    :try_end_90
+    .catch Landroid/os/RemoteException; {:try_start_8e .. :try_end_90} :catch_d5
+
+    const/4 v2, 0x1
+
+    if-nez v5, :cond_96
+
+    move/from16 v16, v14
+
+    goto :goto_98
+
+    :cond_96
+    move/from16 v16, v13
+
+    :goto_98
+    if-nez v5, :cond_9d
+
+    move/from16 v17, v14
+
+    goto :goto_9f
+
+    :cond_9d
+    move/from16 v17, v13
+
+    :goto_9f
+    move-object/from16 v18, v3
+
+    .end local v3  # "topActivity":Landroid/os/IBinder;
+    .local v18, "topActivity":Landroid/os/IBinder;
+    move-object/from16 v3, p0
+
+    move-object v4, v0
+
+    move/from16 v19, v5
+
+    .end local v5  # "i":I
+    .local v19, "i":I
+    move-object/from16 v5, v18
+
+    move/from16 v20, v6
+
+    .end local v6  # "numActivities":I
+    .local v20, "numActivities":I
+    move/from16 v6, v16
+
+    move-object v13, v7
+
+    move/from16 v7, v17
+
+    :try_start_af
+    invoke-interface/range {v1 .. v7}, Landroid/app/IActivityTaskManager;->requestAssistContextExtras(ILandroid/app/IAssistDataReceiver;Landroid/os/Bundle;Landroid/os/IBinder;ZZ)Z
+
+    move-result v1
+
     :goto_b3
     nop
 
-    .line 244
-    goto :goto_bd
+    .line 234
+    .local v1, "result":Z
+    if-eqz v1, :cond_be
 
-    .line 248
-    :cond_b5
-    :goto_b5
-    goto :goto_b9
+    .line 235
+    iget v2, v8, Lcom/android/server/am/AssistDataRequester;->mPendingDataCount:I
+
+    add-int/2addr v2, v14
+
+    iput v2, v8, Lcom/android/server/am/AssistDataRequester;->mPendingDataCount:I
+
+    goto :goto_d4
 
     .line 246
-    :catch_b6
+    .end local v0  # "receiverExtras":Landroid/os/Bundle;
+    .end local v1  # "result":Z
+    :catch_bc
     move-exception v0
 
-    move/from16 v17, v7
+    goto :goto_dd
 
-    .line 221
-    :goto_b9
-    add-int/lit8 v7, v17, 0x1
+    .line 236
+    .restart local v0  # "receiverExtras":Landroid/os/Bundle;
+    .restart local v1  # "result":Z
+    :cond_be
+    if-nez v19, :cond_d4
 
-    goto :goto_50
+    .line 238
+    iget-object v2, v8, Lcom/android/server/am/AssistDataRequester;->mCallbacks:Lcom/android/server/am/AssistDataRequester$AssistDataRequesterCallbacks;
 
-    :cond_bc
-    move v11, v13
+    invoke-interface {v2}, Lcom/android/server/am/AssistDataRequester$AssistDataRequesterCallbacks;->canHandleReceivedAssistDataLocked()Z
 
-    .line 250
-    :goto_bd
+    move-result v2
+
+    if-eqz v2, :cond_cc
+
+    .line 239
+    invoke-direct {v8, v13}, Lcom/android/server/am/AssistDataRequester;->dispatchAssistDataReceived(Landroid/os/Bundle;)V
+
     goto :goto_d1
 
+    .line 241
+    :cond_cc
+    iget-object v2, v8, Lcom/android/server/am/AssistDataRequester;->mAssistData:Ljava/util/ArrayList;
+
+    invoke-virtual {v2, v13}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
+    :try_end_d1
+    .catch Landroid/os/RemoteException; {:try_start_af .. :try_end_d1} :catch_bc
+
+    .line 243
+    :goto_d1
+    const/4 v2, 0x0
+
+    .line 244
+    .end local v15  # "allowFetchScreenshot":Z
+    .local v2, "allowFetchScreenshot":Z
+    move v15, v2
+
+    goto :goto_ea
+
+    .line 248
+    .end local v0  # "receiverExtras":Landroid/os/Bundle;
+    .end local v1  # "result":Z
+    .end local v2  # "allowFetchScreenshot":Z
+    .restart local v15  # "allowFetchScreenshot":Z
+    :cond_d4
+    :goto_d4
+    goto :goto_dd
+
+    .line 246
+    .end local v18  # "topActivity":Landroid/os/IBinder;
+    .end local v19  # "i":I
+    .end local v20  # "numActivities":I
+    .restart local v3  # "topActivity":Landroid/os/IBinder;
+    .restart local v5  # "i":I
+    .restart local v6  # "numActivities":I
+    :catch_d5
+    move-exception v0
+
+    move-object/from16 v18, v3
+
+    move/from16 v19, v5
+
+    move/from16 v20, v6
+
+    move-object v13, v7
+
+    .line 221
+    .end local v3  # "topActivity":Landroid/os/IBinder;
+    .end local v5  # "i":I
+    .end local v6  # "numActivities":I
+    .restart local v19  # "i":I
+    .restart local v20  # "numActivities":I
+    :goto_dd
+    add-int/lit8 v5, v19, 0x1
+
+    move-object v7, v13
+
+    move/from16 v6, v20
+
+    const/4 v13, 0x0
+
+    .end local v19  # "i":I
+    .restart local v5  # "i":I
+    goto/16 :goto_53
+
+    .end local v20  # "numActivities":I
+    .restart local v6  # "numActivities":I
+    :cond_e5
+    move/from16 v19, v5
+
+    move/from16 v20, v6
+
+    move-object v13, v7
+
+    .line 250
+    .end local v5  # "i":I
+    .end local v6  # "numActivities":I
+    :goto_ea
+    goto :goto_100
+
+    .line 218
+    :cond_eb
+    move-object v13, v7
+
     .line 252
-    :cond_be
     iget-object v0, v8, Lcom/android/server/am/AssistDataRequester;->mCallbacks:Lcom/android/server/am/AssistDataRequester$AssistDataRequesterCallbacks;
 
     invoke-interface {v0}, Lcom/android/server/am/AssistDataRequester$AssistDataRequesterCallbacks;->canHandleReceivedAssistDataLocked()Z
 
     move-result v0
 
-    if-eqz v0, :cond_ca
+    if-eqz v0, :cond_f8
 
     .line 253
-    invoke-direct {v8, v14}, Lcom/android/server/am/AssistDataRequester;->dispatchAssistDataReceived(Landroid/os/Bundle;)V
+    invoke-direct {v8, v13}, Lcom/android/server/am/AssistDataRequester;->dispatchAssistDataReceived(Landroid/os/Bundle;)V
 
-    goto :goto_cf
+    goto :goto_fd
 
     .line 255
-    :cond_ca
+    :cond_f8
     iget-object v0, v8, Lcom/android/server/am/AssistDataRequester;->mAssistData:Ljava/util/ArrayList;
 
-    invoke-virtual {v0, v14}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
+    invoke-virtual {v0, v13}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
 
     .line 257
-    :goto_cf
-    goto :goto_d1
+    :goto_fd
+    const/4 v15, 0x0
+
+    goto :goto_100
 
     .line 217
-    :cond_d0
-    move v11, v13
+    :cond_ff
+    move-object v13, v7
 
     .line 261
-    :goto_d1
-    if-eqz p4, :cond_104
+    :goto_100
+    if-eqz p4, :cond_133
 
     .line 262
     iget-object v0, v8, Lcom/android/server/am/AssistDataRequester;->mAppOpsManager:Landroid/app/AppOpsManager;
@@ -607,22 +737,22 @@
 
     move-result v0
 
-    if-nez v0, :cond_f3
+    if-nez v0, :cond_122
 
-    if-eqz v11, :cond_f3
+    if-eqz v15, :cond_122
 
     .line 265
-    :try_start_df
+    :try_start_10e
     iget-object v0, v8, Lcom/android/server/am/AssistDataRequester;->mContext:Landroid/content/Context;
 
     const-string v1, "assist_with_screen"
 
-    invoke-static {v0, v1, v12}, Lcom/android/internal/logging/MetricsLogger;->count(Landroid/content/Context;Ljava/lang/String;I)V
+    invoke-static {v0, v1, v14}, Lcom/android/internal/logging/MetricsLogger;->count(Landroid/content/Context;Ljava/lang/String;I)V
 
     .line 266
     iget v0, v8, Lcom/android/server/am/AssistDataRequester;->mPendingScreenshotCount:I
 
-    add-int/2addr v0, v12
+    add-int/2addr v0, v14
 
     iput v0, v8, Lcom/android/server/am/AssistDataRequester;->mPendingScreenshotCount:I
 
@@ -630,43 +760,43 @@
     iget-object v0, v8, Lcom/android/server/am/AssistDataRequester;->mWindowManager:Landroid/view/IWindowManager;
 
     invoke-interface {v0, v8}, Landroid/view/IWindowManager;->requestAssistScreenshot(Landroid/app/IAssistDataReceiver;)Z
-    :try_end_f0
-    .catch Landroid/os/RemoteException; {:try_start_df .. :try_end_f0} :catch_f1
+    :try_end_11f
+    .catch Landroid/os/RemoteException; {:try_start_10e .. :try_end_11f} :catch_120
 
-    goto :goto_f2
+    goto :goto_121
 
     .line 268
-    :catch_f1
+    :catch_120
     move-exception v0
 
     .line 270
-    :goto_f2
-    goto :goto_104
+    :goto_121
+    goto :goto_133
 
     .line 272
-    :cond_f3
+    :cond_122
     iget-object v0, v8, Lcom/android/server/am/AssistDataRequester;->mCallbacks:Lcom/android/server/am/AssistDataRequester$AssistDataRequesterCallbacks;
 
     invoke-interface {v0}, Lcom/android/server/am/AssistDataRequester$AssistDataRequesterCallbacks;->canHandleReceivedAssistDataLocked()Z
 
     move-result v0
 
-    if-eqz v0, :cond_ff
+    if-eqz v0, :cond_12e
 
     .line 273
-    invoke-direct {v8, v14}, Lcom/android/server/am/AssistDataRequester;->dispatchAssistScreenshotReceived(Landroid/graphics/Bitmap;)V
+    invoke-direct {v8, v13}, Lcom/android/server/am/AssistDataRequester;->dispatchAssistScreenshotReceived(Landroid/graphics/Bitmap;)V
 
-    goto :goto_104
+    goto :goto_133
 
     .line 275
-    :cond_ff
+    :cond_12e
     iget-object v0, v8, Lcom/android/server/am/AssistDataRequester;->mAssistScreenshot:Ljava/util/ArrayList;
 
-    invoke-virtual {v0, v14}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
+    invoke-virtual {v0, v13}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
 
     .line 281
-    :cond_104
-    :goto_104
+    :cond_133
+    :goto_133
     invoke-direct/range {p0 .. p0}, Lcom/android/server/am/AssistDataRequester;->tryDispatchRequestComplete()V
 
     .line 282
@@ -746,11 +876,13 @@
 
 .method public dump(Ljava/lang/String;Ljava/io/PrintWriter;)V
     .registers 4
+    .param p1, "prefix"  # Ljava/lang/String;
+    .param p2, "pw"  # Ljava/io/PrintWriter;
 
     .line 391
     invoke-virtual {p2, p1}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
-    const-string v0, "mPendingDataCount="
+    const-string/jumbo v0, "mPendingDataCount="
 
     invoke-virtual {p2, v0}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
@@ -761,7 +893,7 @@
     .line 392
     invoke-virtual {p2, p1}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
-    const-string v0, "mAssistData="
+    const-string/jumbo v0, "mAssistData="
 
     invoke-virtual {p2, v0}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
@@ -772,7 +904,7 @@
     .line 393
     invoke-virtual {p2, p1}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
-    const-string v0, "mPendingScreenshotCount="
+    const-string/jumbo v0, "mPendingScreenshotCount="
 
     invoke-virtual {p2, v0}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
@@ -783,13 +915,13 @@
     .line 394
     invoke-virtual {p2, p1}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
-    const-string p1, "mAssistScreenshot="
+    const-string/jumbo v0, "mAssistScreenshot="
 
-    invoke-virtual {p2, p1}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
+    invoke-virtual {p2, v0}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
-    iget-object p1, p0, Lcom/android/server/am/AssistDataRequester;->mAssistScreenshot:Ljava/util/ArrayList;
+    iget-object v0, p0, Lcom/android/server/am/AssistDataRequester;->mAssistScreenshot:Ljava/util/ArrayList;
 
-    invoke-virtual {p2, p1}, Ljava/io/PrintWriter;->println(Ljava/lang/Object;)V
+    invoke-virtual {p2, v0}, Ljava/io/PrintWriter;->println(Ljava/lang/Object;)V
 
     .line 395
     return-void
@@ -815,6 +947,7 @@
 
 .method public onHandleAssistData(Landroid/os/Bundle;)V
     .registers 4
+    .param p1, "data"  # Landroid/os/Bundle;
 
     .line 329
     iget-object v0, p0, Lcom/android/server/am/AssistDataRequester;->mCallbacksLock:Ljava/lang/Object;
@@ -875,17 +1008,18 @@
 
     .line 344
     :catchall_28
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_2a
     .catchall {:try_start_3 .. :try_end_2a} :catchall_28
 
-    throw p1
+    throw v1
 .end method
 
 .method public onHandleAssistScreenshot(Landroid/graphics/Bitmap;)V
     .registers 4
+    .param p1, "screenshot"  # Landroid/graphics/Bitmap;
 
     .line 349
     iget-object v0, p0, Lcom/android/server/am/AssistDataRequester;->mCallbacksLock:Ljava/lang/Object;
@@ -946,13 +1080,13 @@
 
     .line 364
     :catchall_28
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_2a
     .catchall {:try_start_3 .. :try_end_2a} :catchall_28
 
-    throw p1
+    throw v1
 .end method
 
 .method public processPendingAssistData()V
@@ -970,6 +1104,12 @@
 
 .method public requestAssistData(Ljava/util/List;ZZZZILjava/lang/String;)V
     .registers 17
+    .param p2, "fetchData"  # Z
+    .param p3, "fetchScreenshot"  # Z
+    .param p4, "allowFetchData"  # Z
+    .param p5, "allowFetchScreenshot"  # Z
+    .param p6, "callingUid"  # I
+    .param p7, "callingPackage"  # Ljava/lang/String;
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(",
@@ -982,6 +1122,7 @@
     .end annotation
 
     .line 165
+    .local p1, "activityTokens":Ljava/util/List;, "Ljava/util/List<Landroid/os/IBinder;>;"
     const/4 v2, 0x0
 
     move-object v0, p0
@@ -1008,6 +1149,8 @@
 
 .method public requestAutofillData(Ljava/util/List;ILjava/lang/String;)V
     .registers 13
+    .param p2, "callingUid"  # I
+    .param p3, "callingPackage"  # Ljava/lang/String;
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(",
@@ -1020,6 +1163,7 @@
     .end annotation
 
     .line 150
+    .local p1, "activityTokens":Ljava/util/List;, "Ljava/util/List<Landroid/os/IBinder;>;"
     const/4 v2, 0x1
 
     const/4 v3, 0x1

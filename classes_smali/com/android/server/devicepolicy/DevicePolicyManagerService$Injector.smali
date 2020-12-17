@@ -24,6 +24,7 @@
 # direct methods
 .method constructor <init>(Landroid/content/Context;)V
     .registers 2
+    .param p1, "context"  # Landroid/content/Context;
 
     .line 1863
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -108,6 +109,7 @@
 
 .method binderRestoreCallingIdentity(J)V
     .registers 3
+    .param p1, "token"  # J
 
     .line 2029
     invoke-static {p1, p2}, Landroid/os/Binder;->restoreCallingIdentity(J)V
@@ -118,6 +120,7 @@
 
 .method binderWithCleanCallingIdentity(Lcom/android/internal/util/FunctionalUtils$ThrowingRunnable;)V
     .registers 2
+    .param p1, "action"  # Lcom/android/internal/util/FunctionalUtils$ThrowingRunnable;
 
     .line 2049
     invoke-static {p1}, Landroid/os/Binder;->withCleanCallingIdentity(Lcom/android/internal/util/FunctionalUtils$ThrowingRunnable;)V
@@ -128,6 +131,7 @@
 
 .method createContextAsUser(Landroid/os/UserHandle;)Landroid/content/Context;
     .registers 5
+    .param p1, "user"  # Landroid/os/UserHandle;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/content/pm/PackageManager$NameNotFoundException;
@@ -142,26 +146,28 @@
     move-result-object v0
 
     .line 1873
+    .local v0, "packageName":Ljava/lang/String;
     iget-object v1, p0, Lcom/android/server/devicepolicy/DevicePolicyManagerService$Injector;->mContext:Landroid/content/Context;
 
     const/4 v2, 0x0
 
     invoke-virtual {v1, v0, v2, p1}, Landroid/content/Context;->createPackageContextAsUser(Ljava/lang/String;ILandroid/os/UserHandle;)Landroid/content/Context;
 
-    move-result-object p1
+    move-result-object v1
 
-    return-object p1
+    return-object v1
 .end method
 
 .method environmentGetUserSystemDirectory(I)Ljava/io/File;
-    .registers 2
+    .registers 3
+    .param p1, "userId"  # I
 
     .line 2057
     invoke-static {p1}, Landroid/os/Environment;->getUserSystemDirectory(I)Ljava/io/File;
 
-    move-result-object p1
+    move-result-object v0
 
-    return-object p1
+    return-object v0
 .end method
 
 .method getActivityManagerInternal()Landroid/app/ActivityManagerInternal;
@@ -423,6 +429,7 @@
 
 .method getPermissionControllerManager(Landroid/os/UserHandle;)Landroid/permission/PermissionControllerManager;
     .registers 5
+    .param p1, "user"  # Landroid/os/UserHandle;
 
     .line 1903
     iget-object v0, p0, Lcom/android/server/devicepolicy/DevicePolicyManagerService$Injector;->mContext:Landroid/content/Context;
@@ -438,17 +445,17 @@
     if-eqz v0, :cond_17
 
     .line 1904
-    iget-object p1, p0, Lcom/android/server/devicepolicy/DevicePolicyManagerService$Injector;->mContext:Landroid/content/Context;
+    iget-object v0, p0, Lcom/android/server/devicepolicy/DevicePolicyManagerService$Injector;->mContext:Landroid/content/Context;
 
-    const-class v0, Landroid/permission/PermissionControllerManager;
+    const-class v1, Landroid/permission/PermissionControllerManager;
 
-    invoke-virtual {p1, v0}, Landroid/content/Context;->getSystemService(Ljava/lang/Class;)Ljava/lang/Object;
+    invoke-virtual {v0, v1}, Landroid/content/Context;->getSystemService(Ljava/lang/Class;)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v0
 
-    check-cast p1, Landroid/permission/PermissionControllerManager;
+    check-cast v0, Landroid/permission/PermissionControllerManager;
 
-    return-object p1
+    return-object v0
 
     .line 1907
     :cond_17
@@ -465,32 +472,33 @@
 
     invoke-virtual {v0, v1, v2, p1}, Landroid/content/Context;->createPackageContextAsUser(Ljava/lang/String;ILandroid/os/UserHandle;)Landroid/content/Context;
 
-    move-result-object p1
+    move-result-object v0
 
-    const-class v0, Landroid/permission/PermissionControllerManager;
+    const-class v1, Landroid/permission/PermissionControllerManager;
 
     .line 1908
-    invoke-virtual {p1, v0}, Landroid/content/Context;->getSystemService(Ljava/lang/Class;)Ljava/lang/Object;
+    invoke-virtual {v0, v1}, Landroid/content/Context;->getSystemService(Ljava/lang/Class;)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v0
 
-    check-cast p1, Landroid/permission/PermissionControllerManager;
+    check-cast v0, Landroid/permission/PermissionControllerManager;
     :try_end_2c
     .catch Landroid/content/pm/PackageManager$NameNotFoundException; {:try_start_17 .. :try_end_2c} :catch_2d
 
     .line 1907
-    return-object p1
+    return-object v0
 
     .line 1909
     :catch_2d
-    move-exception p1
+    move-exception v0
 
     .line 1911
-    new-instance v0, Ljava/lang/IllegalStateException;
+    .local v0, "notPossible":Landroid/content/pm/PackageManager$NameNotFoundException;
+    new-instance v1, Ljava/lang/IllegalStateException;
 
-    invoke-direct {v0, p1}, Ljava/lang/IllegalStateException;-><init>(Ljava/lang/Throwable;)V
+    invoke-direct {v1, v0}, Ljava/lang/IllegalStateException;-><init>(Ljava/lang/Throwable;)V
 
-    throw v0
+    throw v1
 .end method
 
 .method getPowerManagerInternal()Landroid/os/PowerManagerInternal;
@@ -639,6 +647,7 @@
 
 .method keyChainBindAsUser(Landroid/os/UserHandle;)Landroid/security/KeyChain$KeyChainConnection;
     .registers 3
+    .param p1, "user"  # Landroid/os/UserHandle;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Ljava/lang/InterruptedException;
@@ -650,9 +659,9 @@
 
     invoke-static {v0, p1}, Landroid/security/KeyChain;->bindAsUser(Landroid/content/Context;Landroid/os/UserHandle;)Landroid/security/KeyChain$KeyChainConnection;
 
-    move-result-object p1
+    move-result-object v0
 
-    return-object p1
+    return-object v0
 .end method
 
 .method newLockPatternUtils()Lcom/android/internal/widget/LockPatternUtils;
@@ -709,18 +718,25 @@
 .end method
 
 .method pendingIntentGetActivityAsUser(Landroid/content/Context;ILandroid/content/Intent;ILandroid/os/Bundle;Landroid/os/UserHandle;)Landroid/app/PendingIntent;
-    .registers 7
+    .registers 8
+    .param p1, "context"  # Landroid/content/Context;
+    .param p2, "requestCode"  # I
+    .param p3, "intent"  # Landroid/content/Intent;
+    .param p4, "flags"  # I
+    .param p5, "options"  # Landroid/os/Bundle;
+    .param p6, "user"  # Landroid/os/UserHandle;
 
     .line 2103
     invoke-static/range {p1 .. p6}, Landroid/app/PendingIntent;->getActivityAsUser(Landroid/content/Context;ILandroid/content/Intent;ILandroid/os/Bundle;Landroid/os/UserHandle;)Landroid/app/PendingIntent;
 
-    move-result-object p1
+    move-result-object v0
 
-    return-object p1
+    return-object v0
 .end method
 
 .method postOnSystemServerInitThreadPool(Ljava/lang/Runnable;)V
     .registers 4
+    .param p1, "runnable"  # Ljava/lang/Runnable;
 
     .line 2185
     invoke-static {}, Lcom/android/server/SystemServerInitThreadPool;->get()Lcom/android/server/SystemServerInitThreadPool;
@@ -737,6 +753,9 @@
 
 .method powerManagerGoToSleep(JII)V
     .registers 7
+    .param p1, "time"  # J
+    .param p3, "reason"  # I
+    .param p4, "flags"  # I
 
     .line 2061
     iget-object v0, p0, Lcom/android/server/devicepolicy/DevicePolicyManagerService$Injector;->mContext:Landroid/content/Context;
@@ -757,6 +776,7 @@
 
 .method powerManagerReboot(Ljava/lang/String;)V
     .registers 4
+    .param p1, "reason"  # Ljava/lang/String;
 
     .line 2065
     iget-object v0, p0, Lcom/android/server/devicepolicy/DevicePolicyManagerService$Injector;->mContext:Landroid/content/Context;
@@ -777,6 +797,10 @@
 
 .method recoverySystemRebootWipeUserData(ZLjava/lang/String;ZZ)V
     .registers 6
+    .param p1, "shutdown"  # Z
+    .param p2, "reason"  # Ljava/lang/String;
+    .param p3, "force"  # Z
+    .param p4, "wipeEuicc"  # Z
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Ljava/io/IOException;
@@ -794,6 +818,10 @@
 
 .method registerContentObserver(Landroid/net/Uri;ZLandroid/database/ContentObserver;I)V
     .registers 6
+    .param p1, "uri"  # Landroid/net/Uri;
+    .param p2, "notifyForDescendents"  # Z
+    .param p3, "observer"  # Landroid/database/ContentObserver;
+    .param p4, "userHandle"  # I
 
     .line 2109
     iget-object v0, p0, Lcom/android/server/devicepolicy/DevicePolicyManagerService$Injector;->mContext:Landroid/content/Context;
@@ -842,6 +870,7 @@
 
 .method securityLogSetLoggingEnabledProperty(Z)V
     .registers 2
+    .param p1, "enabled"  # Z
 
     .line 2169
     invoke-static {p1}, Landroid/app/admin/SecurityLog;->setLoggingEnabledProperty(Z)V
@@ -852,6 +881,8 @@
 
 .method settingsGlobalGetInt(Ljava/lang/String;I)I
     .registers 4
+    .param p1, "name"  # Ljava/lang/String;
+    .param p2, "def"  # I
 
     .line 2143
     iget-object v0, p0, Lcom/android/server/devicepolicy/DevicePolicyManagerService$Injector;->mContext:Landroid/content/Context;
@@ -862,13 +893,14 @@
 
     invoke-static {v0, p1, p2}, Landroid/provider/Settings$Global;->getInt(Landroid/content/ContentResolver;Ljava/lang/String;I)I
 
-    move-result p1
+    move-result v0
 
-    return p1
+    return v0
 .end method
 
 .method settingsGlobalGetString(Ljava/lang/String;)Ljava/lang/String;
     .registers 3
+    .param p1, "name"  # Ljava/lang/String;
 
     .line 2148
     iget-object v0, p0, Lcom/android/server/devicepolicy/DevicePolicyManagerService$Injector;->mContext:Landroid/content/Context;
@@ -879,13 +911,15 @@
 
     invoke-static {v0, p1}, Landroid/provider/Settings$Global;->getString(Landroid/content/ContentResolver;Ljava/lang/String;)Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    return-object p1
+    return-object v0
 .end method
 
 .method settingsGlobalPutInt(Ljava/lang/String;I)V
     .registers 4
+    .param p1, "name"  # Ljava/lang/String;
+    .param p2, "value"  # I
 
     .line 2152
     iget-object v0, p0, Lcom/android/server/devicepolicy/DevicePolicyManagerService$Injector;->mContext:Landroid/content/Context;
@@ -902,6 +936,8 @@
 
 .method settingsGlobalPutString(Ljava/lang/String;Ljava/lang/String;)V
     .registers 4
+    .param p1, "name"  # Ljava/lang/String;
+    .param p2, "value"  # Ljava/lang/String;
 
     .line 2160
     iget-object v0, p0, Lcom/android/server/devicepolicy/DevicePolicyManagerService$Injector;->mContext:Landroid/content/Context;
@@ -918,6 +954,9 @@
 
 .method settingsGlobalPutStringForUser(Ljava/lang/String;Ljava/lang/String;I)V
     .registers 5
+    .param p1, "name"  # Ljava/lang/String;
+    .param p2, "value"  # Ljava/lang/String;
+    .param p3, "userHandle"  # I
 
     .line 2134
     iget-object v0, p0, Lcom/android/server/devicepolicy/DevicePolicyManagerService$Injector;->mContext:Landroid/content/Context;
@@ -934,6 +973,9 @@
 
 .method settingsSecureGetIntForUser(Ljava/lang/String;II)I
     .registers 5
+    .param p1, "name"  # Ljava/lang/String;
+    .param p2, "def"  # I
+    .param p3, "userHandle"  # I
 
     .line 2114
     iget-object v0, p0, Lcom/android/server/devicepolicy/DevicePolicyManagerService$Injector;->mContext:Landroid/content/Context;
@@ -944,13 +986,15 @@
 
     invoke-static {v0, p1, p2, p3}, Landroid/provider/Settings$Secure;->getIntForUser(Landroid/content/ContentResolver;Ljava/lang/String;II)I
 
-    move-result p1
+    move-result v0
 
-    return p1
+    return v0
 .end method
 
 .method settingsSecureGetStringForUser(Ljava/lang/String;I)Ljava/lang/String;
     .registers 4
+    .param p1, "name"  # Ljava/lang/String;
+    .param p2, "userHandle"  # I
 
     .line 2119
     iget-object v0, p0, Lcom/android/server/devicepolicy/DevicePolicyManagerService$Injector;->mContext:Landroid/content/Context;
@@ -961,13 +1005,15 @@
 
     invoke-static {v0, p1, p2}, Landroid/provider/Settings$Secure;->getStringForUser(Landroid/content/ContentResolver;Ljava/lang/String;I)Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    return-object p1
+    return-object v0
 .end method
 
 .method settingsSecurePutInt(Ljava/lang/String;I)V
     .registers 4
+    .param p1, "name"  # Ljava/lang/String;
+    .param p2, "value"  # I
 
     .line 2139
     iget-object v0, p0, Lcom/android/server/devicepolicy/DevicePolicyManagerService$Injector;->mContext:Landroid/content/Context;
@@ -984,6 +1030,9 @@
 
 .method settingsSecurePutIntForUser(Ljava/lang/String;II)V
     .registers 5
+    .param p1, "name"  # Ljava/lang/String;
+    .param p2, "value"  # I
+    .param p3, "userHandle"  # I
 
     .line 2124
     iget-object v0, p0, Lcom/android/server/devicepolicy/DevicePolicyManagerService$Injector;->mContext:Landroid/content/Context;
@@ -1000,6 +1049,8 @@
 
 .method settingsSecurePutString(Ljava/lang/String;Ljava/lang/String;)V
     .registers 4
+    .param p1, "name"  # Ljava/lang/String;
+    .param p2, "value"  # Ljava/lang/String;
 
     .line 2156
     iget-object v0, p0, Lcom/android/server/devicepolicy/DevicePolicyManagerService$Injector;->mContext:Landroid/content/Context;
@@ -1016,6 +1067,9 @@
 
 .method settingsSecurePutStringForUser(Ljava/lang/String;Ljava/lang/String;I)V
     .registers 5
+    .param p1, "name"  # Ljava/lang/String;
+    .param p2, "value"  # Ljava/lang/String;
+    .param p3, "userHandle"  # I
 
     .line 2129
     iget-object v0, p0, Lcom/android/server/devicepolicy/DevicePolicyManagerService$Injector;->mContext:Landroid/content/Context;
@@ -1032,6 +1086,9 @@
 
 .method settingsSystemPutStringForUser(Ljava/lang/String;Ljava/lang/String;I)V
     .registers 5
+    .param p1, "name"  # Ljava/lang/String;
+    .param p2, "value"  # Ljava/lang/String;
+    .param p3, "userId"  # I
 
     .line 2164
     iget-object v0, p0, Lcom/android/server/devicepolicy/DevicePolicyManagerService$Injector;->mContext:Landroid/content/Context;
@@ -1090,6 +1147,7 @@
     move-result-wide v0
 
     .line 2002
+    .local v0, "identity":J
     :try_start_4
     invoke-static {}, Landroid/os/storage/StorageManager;->isNonDefaultBlockEncrypted()Z
 
@@ -1113,51 +1171,60 @@
 .end method
 
 .method systemPropertiesGet(Ljava/lang/String;)Ljava/lang/String;
-    .registers 2
+    .registers 3
+    .param p1, "key"  # Ljava/lang/String;
 
     .line 2086
     invoke-static {p1}, Landroid/os/SystemProperties;->get(Ljava/lang/String;)Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    return-object p1
+    return-object v0
 .end method
 
 .method systemPropertiesGet(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
-    .registers 3
+    .registers 4
+    .param p1, "key"  # Ljava/lang/String;
+    .param p2, "def"  # Ljava/lang/String;
 
     .line 2082
     invoke-static {p1, p2}, Landroid/os/SystemProperties;->get(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    return-object p1
+    return-object v0
 .end method
 
 .method systemPropertiesGetBoolean(Ljava/lang/String;Z)Z
-    .registers 3
+    .registers 4
+    .param p1, "key"  # Ljava/lang/String;
+    .param p2, "def"  # Z
 
     .line 2074
     invoke-static {p1, p2}, Landroid/os/SystemProperties;->getBoolean(Ljava/lang/String;Z)Z
 
-    move-result p1
+    move-result v0
 
-    return p1
+    return v0
 .end method
 
 .method systemPropertiesGetLong(Ljava/lang/String;J)J
-    .registers 4
+    .registers 6
+    .param p1, "key"  # Ljava/lang/String;
+    .param p2, "def"  # J
 
     .line 2078
     invoke-static {p1, p2, p3}, Landroid/os/SystemProperties;->getLong(Ljava/lang/String;J)J
 
-    move-result-wide p1
+    move-result-wide v0
 
-    return-wide p1
+    return-wide v0
 .end method
 
 .method systemPropertiesSet(Ljava/lang/String;Ljava/lang/String;)V
     .registers 3
+    .param p1, "key"  # Ljava/lang/String;
+    .param p2, "value"  # Ljava/lang/String;
 
     .line 2090
     invoke-static {p1, p2}, Landroid/os/SystemProperties;->set(Ljava/lang/String;Ljava/lang/String;)V

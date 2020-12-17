@@ -62,6 +62,7 @@
 
 .method public putEnabledStatus(Z)V
     .registers 4
+    .param p1, "isEnabled"  # Z
 
     .line 903
     iget-object v0, p0, Lcom/android/server/NsdService$NsdSettings$1;->val$resolver:Landroid/content/ContentResolver;
@@ -76,6 +77,8 @@
 
 .method public registerContentObserver(Landroid/net/Uri;Landroid/database/ContentObserver;)V
     .registers 5
+    .param p1, "uri"  # Landroid/net/Uri;
+    .param p2, "observer"  # Landroid/database/ContentObserver;
 
     .line 908
     iget-object v0, p0, Lcom/android/server/NsdService$NsdSettings$1;->val$resolver:Landroid/content/ContentResolver;

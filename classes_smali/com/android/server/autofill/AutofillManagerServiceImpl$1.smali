@@ -24,6 +24,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/autofill/AutofillManagerServiceImpl;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/autofill/AutofillManagerServiceImpl;
 
     .line 1127
     iput-object p1, p0, Lcom/android/server/autofill/AutofillManagerServiceImpl$1;->this$0:Lcom/android/server/autofill/AutofillManagerServiceImpl;
@@ -36,36 +37,38 @@
 
 # virtual methods
 .method public onServiceDied(Lcom/android/server/autofill/RemoteAugmentedAutofillService;)V
-    .registers 3
+    .registers 5
+    .param p1, "service"  # Lcom/android/server/autofill/RemoteAugmentedAutofillService;
 
     .line 1130
-    const-string p1, "AutofillManagerServiceImpl"
+    const-string v0, "AutofillManagerServiceImpl"
 
-    const-string/jumbo v0, "remote augmented autofill service died"
+    const-string/jumbo v1, "remote augmented autofill service died"
 
-    invoke-static {p1, v0}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v0, v1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 1131
-    iget-object p1, p0, Lcom/android/server/autofill/AutofillManagerServiceImpl$1;->this$0:Lcom/android/server/autofill/AutofillManagerServiceImpl;
+    iget-object v0, p0, Lcom/android/server/autofill/AutofillManagerServiceImpl$1;->this$0:Lcom/android/server/autofill/AutofillManagerServiceImpl;
 
     .line 1132
-    invoke-static {p1}, Lcom/android/server/autofill/AutofillManagerServiceImpl;->access$100(Lcom/android/server/autofill/AutofillManagerServiceImpl;)Lcom/android/server/autofill/RemoteAugmentedAutofillService;
+    invoke-static {v0}, Lcom/android/server/autofill/AutofillManagerServiceImpl;->access$100(Lcom/android/server/autofill/AutofillManagerServiceImpl;)Lcom/android/server/autofill/RemoteAugmentedAutofillService;
 
-    move-result-object p1
+    move-result-object v0
 
     .line 1133
-    if-eqz p1, :cond_13
+    .local v0, "remoteService":Lcom/android/server/autofill/RemoteAugmentedAutofillService;
+    if-eqz v0, :cond_13
 
     .line 1134
-    invoke-virtual {p1}, Lcom/android/server/autofill/RemoteAugmentedAutofillService;->destroy()V
+    invoke-virtual {v0}, Lcom/android/server/autofill/RemoteAugmentedAutofillService;->destroy()V
 
     .line 1136
     :cond_13
-    iget-object p1, p0, Lcom/android/server/autofill/AutofillManagerServiceImpl$1;->this$0:Lcom/android/server/autofill/AutofillManagerServiceImpl;
+    iget-object v1, p0, Lcom/android/server/autofill/AutofillManagerServiceImpl$1;->this$0:Lcom/android/server/autofill/AutofillManagerServiceImpl;
 
-    const/4 v0, 0x0
+    const/4 v2, 0x0
 
-    invoke-static {p1, v0}, Lcom/android/server/autofill/AutofillManagerServiceImpl;->access$102(Lcom/android/server/autofill/AutofillManagerServiceImpl;Lcom/android/server/autofill/RemoteAugmentedAutofillService;)Lcom/android/server/autofill/RemoteAugmentedAutofillService;
+    invoke-static {v1, v2}, Lcom/android/server/autofill/AutofillManagerServiceImpl;->access$102(Lcom/android/server/autofill/AutofillManagerServiceImpl;Lcom/android/server/autofill/RemoteAugmentedAutofillService;)Lcom/android/server/autofill/RemoteAugmentedAutofillService;
 
     .line 1137
     return-void

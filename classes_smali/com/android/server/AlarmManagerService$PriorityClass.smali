@@ -24,25 +24,26 @@
 
 # direct methods
 .method constructor <init>(Lcom/android/server/AlarmManagerService;)V
-    .registers 2
+    .registers 3
+    .param p1, "this$0"  # Lcom/android/server/AlarmManagerService;
 
-    .line 663
+    .line 693
     iput-object p1, p0, Lcom/android/server/AlarmManagerService$PriorityClass;->this$0:Lcom/android/server/AlarmManagerService;
 
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
-    .line 664
-    iget p1, p1, Lcom/android/server/AlarmManagerService;->mCurrentSeq:I
+    .line 694
+    iget v0, p1, Lcom/android/server/AlarmManagerService;->mCurrentSeq:I
 
-    add-int/lit8 p1, p1, -0x1
+    add-int/lit8 v0, v0, -0x1
 
-    iput p1, p0, Lcom/android/server/AlarmManagerService$PriorityClass;->seq:I
+    iput v0, p0, Lcom/android/server/AlarmManagerService$PriorityClass;->seq:I
 
-    .line 665
-    const/4 p1, 0x2
+    .line 695
+    const/4 v0, 0x2
 
-    iput p1, p0, Lcom/android/server/AlarmManagerService$PriorityClass;->priority:I
+    iput v0, p0, Lcom/android/server/AlarmManagerService$PriorityClass;->priority:I
 
-    .line 666
+    .line 696
     return-void
 .end method

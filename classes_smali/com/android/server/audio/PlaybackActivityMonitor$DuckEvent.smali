@@ -27,35 +27,37 @@
 # direct methods
 .method constructor <init>(Landroid/media/AudioPlaybackConfiguration;Z)V
     .registers 4
+    .param p1, "apc"  # Landroid/media/AudioPlaybackConfiguration;
+    .param p2, "skipRamp"  # Z
 
-    .line 916
+    .line 834
     invoke-direct {p0}, Lcom/android/server/audio/AudioEventLogger$Event;-><init>()V
 
-    .line 917
+    .line 835
     invoke-virtual {p1}, Landroid/media/AudioPlaybackConfiguration;->getPlayerInterfaceId()I
 
     move-result v0
 
     iput v0, p0, Lcom/android/server/audio/PlaybackActivityMonitor$DuckEvent;->mPlayerIId:I
 
-    .line 918
+    .line 836
     iput-boolean p2, p0, Lcom/android/server/audio/PlaybackActivityMonitor$DuckEvent;->mSkipRamp:Z
 
-    .line 919
+    .line 837
     invoke-virtual {p1}, Landroid/media/AudioPlaybackConfiguration;->getClientUid()I
 
-    move-result p2
+    move-result v0
 
-    iput p2, p0, Lcom/android/server/audio/PlaybackActivityMonitor$DuckEvent;->mClientUid:I
+    iput v0, p0, Lcom/android/server/audio/PlaybackActivityMonitor$DuckEvent;->mClientUid:I
 
-    .line 920
+    .line 838
     invoke-virtual {p1}, Landroid/media/AudioPlaybackConfiguration;->getClientPid()I
 
-    move-result p1
+    move-result v0
 
-    iput p1, p0, Lcom/android/server/audio/PlaybackActivityMonitor$DuckEvent;->mClientPid:I
+    iput v0, p0, Lcom/android/server/audio/PlaybackActivityMonitor$DuckEvent;->mClientPid:I
 
-    .line 921
+    .line 839
     return-void
 .end method
 
@@ -64,7 +66,7 @@
 .method public eventToString()Ljava/lang/String;
     .registers 3
 
-    .line 925
+    .line 843
     new-instance v0, Ljava/lang/StringBuilder;
 
     const-string v1, "ducking player piid:"
@@ -75,7 +77,7 @@
 
     invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    .line 926
+    .line 844
     const-string v1, " uid/pid:"
 
     invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
@@ -92,7 +94,7 @@
 
     invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    .line 927
+    .line 845
     const-string v1, " skip ramp:"
 
     invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
@@ -105,6 +107,6 @@
 
     move-result-object v0
 
-    .line 925
+    .line 843
     return-object v0
 .end method

@@ -48,6 +48,9 @@
 
 .method static synthetic access$700(Lcom/android/server/print/RemotePrintSpooler$GetPrintJobInfoCaller;Ljava/lang/Object;I)V
     .registers 3
+    .param p0, "x0"  # Lcom/android/server/print/RemotePrintSpooler$GetPrintJobInfoCaller;
+    .param p1, "x1"  # Ljava/lang/Object;
+    .param p2, "x2"  # I
 
     .line 742
     invoke-virtual {p0, p1, p2}, Lcom/android/server/print/RemotePrintSpooler$GetPrintJobInfoCaller;->onRemoteMethodResult(Ljava/lang/Object;I)V
@@ -59,6 +62,9 @@
 # virtual methods
 .method public getPrintJobInfo(Landroid/print/IPrintSpooler;Landroid/print/PrintJobId;I)Landroid/print/PrintJobInfo;
     .registers 6
+    .param p1, "target"  # Landroid/print/IPrintSpooler;
+    .param p2, "printJobId"  # Landroid/print/PrintJobId;
+    .param p3, "appId"  # I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;,
@@ -72,6 +78,7 @@
     move-result v0
 
     .line 758
+    .local v0, "sequence":I
     iget-object v1, p0, Lcom/android/server/print/RemotePrintSpooler$GetPrintJobInfoCaller;->mCallback:Landroid/print/IPrintSpoolerCallbacks;
 
     invoke-interface {p1, p2, v1, p3, v0}, Landroid/print/IPrintSpooler;->getPrintJobInfo(Landroid/print/PrintJobId;Landroid/print/IPrintSpoolerCallbacks;II)V
@@ -79,9 +86,9 @@
     .line 759
     invoke-virtual {p0, v0}, Lcom/android/server/print/RemotePrintSpooler$GetPrintJobInfoCaller;->getResultTimed(I)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v1
 
-    check-cast p1, Landroid/print/PrintJobInfo;
+    check-cast v1, Landroid/print/PrintJobInfo;
 
-    return-object p1
+    return-object v1
 .end method

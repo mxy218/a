@@ -101,6 +101,7 @@
     const/16 v0, -0xa
 
     .line 97
+    .local v0, "priority":I
     :goto_d
     invoke-virtual {p0, v0}, Lcom/android/server/wm/WindowManagerThreadPriorityBooster;->setBoostToPriority(I)V
 
@@ -129,6 +130,7 @@
     move-result v0
 
     .line 58
+    .local v0, "myTid":I
     iget v1, p0, Lcom/android/server/wm/WindowManagerThreadPriorityBooster;->mAnimationThreadId:I
 
     if-eq v0, v1, :cond_11
@@ -161,6 +163,7 @@
     move-result v0
 
     .line 69
+    .local v0, "myTid":I
     iget v1, p0, Lcom/android/server/wm/WindowManagerThreadPriorityBooster;->mAnimationThreadId:I
 
     if-eq v0, v1, :cond_11
@@ -186,6 +189,7 @@
 
 .method setAppTransitionRunning(Z)V
     .registers 4
+    .param p1, "running"  # Z
 
     .line 76
     iget-object v0, p0, Lcom/android/server/wm/WindowManagerThreadPriorityBooster;->mLock:Ljava/lang/Object;
@@ -213,17 +217,18 @@
 
     .line 81
     :catchall_e
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_10
     .catchall {:try_start_3 .. :try_end_10} :catchall_e
 
-    throw p1
+    throw v1
 .end method
 
 .method setBoundsAnimationRunning(Z)V
     .registers 4
+    .param p1, "running"  # Z
 
     .line 85
     iget-object v0, p0, Lcom/android/server/wm/WindowManagerThreadPriorityBooster;->mLock:Ljava/lang/Object;
@@ -251,11 +256,11 @@
 
     .line 90
     :catchall_e
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_10
     .catchall {:try_start_3 .. :try_end_10} :catchall_e
 
-    throw p1
+    throw v1
 .end method

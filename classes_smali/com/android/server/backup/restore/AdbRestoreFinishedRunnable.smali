@@ -17,6 +17,9 @@
 # direct methods
 .method constructor <init>(Landroid/app/IBackupAgent;ILcom/android/server/backup/UserBackupManagerService;)V
     .registers 4
+    .param p1, "agent"  # Landroid/app/IBackupAgent;
+    .param p2, "token"  # I
+    .param p3, "backupManagerService"  # Lcom/android/server/backup/UserBackupManagerService;
 
     .line 19
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V

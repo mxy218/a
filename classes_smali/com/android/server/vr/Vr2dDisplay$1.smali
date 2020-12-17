@@ -21,6 +21,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/vr/Vr2dDisplay;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/vr/Vr2dDisplay;
 
     .line 83
     iput-object p1, p0, Lcom/android/server/vr/Vr2dDisplay$1;->this$0:Lcom/android/server/vr/Vr2dDisplay;
@@ -34,6 +35,7 @@
 # virtual methods
 .method public onPersistentVrStateChanged(Z)V
     .registers 3
+    .param p1, "enabled"  # Z
 
     .line 86
     iget-object v0, p0, Lcom/android/server/vr/Vr2dDisplay$1;->this$0:Lcom/android/server/vr/Vr2dDisplay;
@@ -50,9 +52,9 @@
     invoke-static {v0, p1}, Lcom/android/server/vr/Vr2dDisplay;->access$002(Lcom/android/server/vr/Vr2dDisplay;Z)Z
 
     .line 88
-    iget-object p1, p0, Lcom/android/server/vr/Vr2dDisplay$1;->this$0:Lcom/android/server/vr/Vr2dDisplay;
+    iget-object v0, p0, Lcom/android/server/vr/Vr2dDisplay$1;->this$0:Lcom/android/server/vr/Vr2dDisplay;
 
-    invoke-static {p1}, Lcom/android/server/vr/Vr2dDisplay;->access$100(Lcom/android/server/vr/Vr2dDisplay;)V
+    invoke-static {v0}, Lcom/android/server/vr/Vr2dDisplay;->access$100(Lcom/android/server/vr/Vr2dDisplay;)V
 
     .line 90
     :cond_12

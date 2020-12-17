@@ -112,6 +112,14 @@
 
 .method constructor <init>(Lcom/android/server/am/AppBindRecord;Lcom/android/server/wm/ActivityServiceConnectionsHolder;Landroid/app/IServiceConnection;IILandroid/app/PendingIntent;ILjava/lang/String;Ljava/lang/String;)V
     .registers 10
+    .param p1, "_binding"  # Lcom/android/server/am/AppBindRecord;
+    .param p3, "_conn"  # Landroid/app/IServiceConnection;
+    .param p4, "_flags"  # I
+    .param p5, "_clientLabel"  # I
+    .param p6, "_clientIntent"  # Landroid/app/PendingIntent;
+    .param p7, "_clientUid"  # I
+    .param p8, "_clientProcessName"  # Ljava/lang/String;
+    .param p9, "_clientPackageName"  # Ljava/lang/String;
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(",
@@ -130,6 +138,7 @@
     .end annotation
 
     .line 104
+    .local p2, "_activity":Lcom/android/server/wm/ActivityServiceConnectionsHolder;, "Lcom/android/server/wm/ActivityServiceConnectionsHolder<Lcom/android/server/am/ConnectionRecord;>;"
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
     .line 105
@@ -167,6 +176,8 @@
 # virtual methods
 .method dump(Ljava/io/PrintWriter;Ljava/lang/String;)V
     .registers 5
+    .param p1, "pw"  # Ljava/io/PrintWriter;
+    .param p2, "prefix"  # Ljava/lang/String;
 
     .line 92
     new-instance v0, Ljava/lang/StringBuilder;
@@ -205,37 +216,37 @@
 
     invoke-virtual {v0, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string p2, "conn="
+    const-string v1, "conn="
 
-    invoke-virtual {v0, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    iget-object p2, p0, Lcom/android/server/am/ConnectionRecord;->conn:Landroid/app/IServiceConnection;
+    iget-object v1, p0, Lcom/android/server/am/ConnectionRecord;->conn:Landroid/app/IServiceConnection;
 
-    invoke-interface {p2}, Landroid/app/IServiceConnection;->asBinder()Landroid/os/IBinder;
+    invoke-interface {v1}, Landroid/app/IServiceConnection;->asBinder()Landroid/os/IBinder;
 
-    move-result-object p2
+    move-result-object v1
 
-    invoke-virtual {v0, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
-    const-string p2, " flags=0x"
+    const-string v1, " flags=0x"
 
-    invoke-virtual {v0, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    iget p2, p0, Lcom/android/server/am/ConnectionRecord;->flags:I
+    iget v1, p0, Lcom/android/server/am/ConnectionRecord;->flags:I
 
     .line 97
-    invoke-static {p2}, Ljava/lang/Integer;->toHexString(I)Ljava/lang/String;
+    invoke-static {v1}, Ljava/lang/Integer;->toHexString(I)Ljava/lang/String;
 
-    move-result-object p2
+    move-result-object v1
 
-    invoke-virtual {v0, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p2
+    move-result-object v0
 
     .line 96
-    invoke-virtual {p1, p2}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
+    invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->println(Ljava/lang/String;)V
 
     .line 98
     return-void
@@ -243,48 +254,50 @@
 
 .method public hasFlag(I)Z
     .registers 3
+    .param p1, "flag"  # I
 
     .line 117
     iget v0, p0, Lcom/android/server/am/ConnectionRecord;->flags:I
 
-    and-int/2addr p1, v0
+    and-int/2addr v0, p1
 
-    if-eqz p1, :cond_7
+    if-eqz v0, :cond_7
 
-    const/4 p1, 0x1
+    const/4 v0, 0x1
 
     goto :goto_8
 
     :cond_7
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
     :goto_8
-    return p1
+    return v0
 .end method
 
 .method public notHasFlag(I)Z
     .registers 3
+    .param p1, "flag"  # I
 
     .line 121
     iget v0, p0, Lcom/android/server/am/ConnectionRecord;->flags:I
 
-    and-int/2addr p1, v0
+    and-int/2addr v0, p1
 
-    if-nez p1, :cond_7
+    if-nez v0, :cond_7
 
-    const/4 p1, 0x1
+    const/4 v0, 0x1
 
     goto :goto_8
 
     :cond_7
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
     :goto_8
-    return p1
+    return v0
 .end method
 
 .method public startAssociationIfNeeded()V
-    .registers 5
+    .registers 6
 
     .line 127
     iget-object v0, p0, Lcom/android/server/am/ConnectionRecord;->association:Lcom/android/internal/app/procstats/AssociationState$SourceState;
@@ -353,6 +366,7 @@
     move-result-object v0
 
     .line 133
+    .local v0, "holder":Lcom/android/internal/app/procstats/ProcessStats$ProcessStateHolder;
     const-string v1, ": proc="
 
     const-string v2, "ActivityManager"
@@ -360,23 +374,23 @@
     if-nez v0, :cond_69
 
     .line 134
-    new-instance v0, Ljava/lang/StringBuilder;
+    new-instance v3, Ljava/lang/StringBuilder;
 
-    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v3, "No package in referenced service "
+    const-string v4, "No package in referenced service "
 
-    invoke-virtual {v0, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    iget-object v3, p0, Lcom/android/server/am/ConnectionRecord;->binding:Lcom/android/server/am/AppBindRecord;
+    iget-object v4, p0, Lcom/android/server/am/ConnectionRecord;->binding:Lcom/android/server/am/AppBindRecord;
 
-    iget-object v3, v3, Lcom/android/server/am/AppBindRecord;->service:Lcom/android/server/am/ServiceRecord;
+    iget-object v4, v4, Lcom/android/server/am/AppBindRecord;->service:Lcom/android/server/am/ServiceRecord;
 
-    iget-object v3, v3, Lcom/android/server/am/ServiceRecord;->shortInstanceName:Ljava/lang/String;
+    iget-object v4, v4, Lcom/android/server/am/ServiceRecord;->shortInstanceName:Ljava/lang/String;
 
-    invoke-virtual {v0, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     iget-object v1, p0, Lcom/android/server/am/ConnectionRecord;->binding:Lcom/android/server/am/AppBindRecord;
 
@@ -384,13 +398,13 @@
 
     iget-object v1, v1, Lcom/android/server/am/ServiceRecord;->app:Lcom/android/server/am/ProcessRecord;
 
-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v1
 
-    invoke-static {v2, v0}, Landroid/util/Slog;->wtf(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v2, v1}, Landroid/util/Slog;->wtf(Ljava/lang/String;Ljava/lang/String;)I
 
     goto :goto_b2
 
@@ -401,23 +415,23 @@
     if-nez v3, :cond_94
 
     .line 137
-    new-instance v0, Ljava/lang/StringBuilder;
+    new-instance v3, Ljava/lang/StringBuilder;
 
-    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v3, "Inactive holder in referenced service "
+    const-string v4, "Inactive holder in referenced service "
 
-    invoke-virtual {v0, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    iget-object v3, p0, Lcom/android/server/am/ConnectionRecord;->binding:Lcom/android/server/am/AppBindRecord;
+    iget-object v4, p0, Lcom/android/server/am/ConnectionRecord;->binding:Lcom/android/server/am/AppBindRecord;
 
-    iget-object v3, v3, Lcom/android/server/am/AppBindRecord;->service:Lcom/android/server/am/ServiceRecord;
+    iget-object v4, v4, Lcom/android/server/am/AppBindRecord;->service:Lcom/android/server/am/ServiceRecord;
 
-    iget-object v3, v3, Lcom/android/server/am/ServiceRecord;->shortInstanceName:Ljava/lang/String;
+    iget-object v4, v4, Lcom/android/server/am/ServiceRecord;->shortInstanceName:Ljava/lang/String;
 
-    invoke-virtual {v0, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     iget-object v1, p0, Lcom/android/server/am/ConnectionRecord;->binding:Lcom/android/server/am/AppBindRecord;
 
@@ -425,13 +439,13 @@
 
     iget-object v1, v1, Lcom/android/server/am/ServiceRecord;->app:Lcom/android/server/am/ProcessRecord;
 
-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    invoke-virtual {v3, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v1
 
-    invoke-static {v2, v0}, Landroid/util/Slog;->wtf(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v2, v1}, Landroid/util/Slog;->wtf(Ljava/lang/String;Ljava/lang/String;)I
 
     goto :goto_b2
 
@@ -439,38 +453,39 @@
     :cond_94
     iget-object v1, v0, Lcom/android/internal/app/procstats/ProcessStats$ProcessStateHolder;->pkg:Lcom/android/internal/app/procstats/ProcessStats$PackageState;
 
-    iget-object v0, v0, Lcom/android/internal/app/procstats/ProcessStats$ProcessStateHolder;->state:Lcom/android/internal/app/procstats/ProcessState;
+    iget-object v2, v0, Lcom/android/internal/app/procstats/ProcessStats$ProcessStateHolder;->state:Lcom/android/internal/app/procstats/ProcessState;
 
-    iget-object v2, p0, Lcom/android/server/am/ConnectionRecord;->binding:Lcom/android/server/am/AppBindRecord;
+    iget-object v3, p0, Lcom/android/server/am/ConnectionRecord;->binding:Lcom/android/server/am/AppBindRecord;
 
-    iget-object v2, v2, Lcom/android/server/am/AppBindRecord;->service:Lcom/android/server/am/ServiceRecord;
+    iget-object v3, v3, Lcom/android/server/am/AppBindRecord;->service:Lcom/android/server/am/ServiceRecord;
 
-    iget-object v2, v2, Lcom/android/server/am/ServiceRecord;->instanceName:Landroid/content/ComponentName;
+    iget-object v3, v3, Lcom/android/server/am/ServiceRecord;->instanceName:Landroid/content/ComponentName;
 
     .line 141
-    invoke-virtual {v2}, Landroid/content/ComponentName;->getClassName()Ljava/lang/String;
+    invoke-virtual {v3}, Landroid/content/ComponentName;->getClassName()Ljava/lang/String;
 
-    move-result-object v2
+    move-result-object v3
 
     .line 140
-    invoke-virtual {v1, v0, v2}, Lcom/android/internal/app/procstats/ProcessStats$PackageState;->getAssociationStateLocked(Lcom/android/internal/app/procstats/ProcessState;Ljava/lang/String;)Lcom/android/internal/app/procstats/AssociationState;
+    invoke-virtual {v1, v2, v3}, Lcom/android/internal/app/procstats/ProcessStats$PackageState;->getAssociationStateLocked(Lcom/android/internal/app/procstats/ProcessState;Ljava/lang/String;)Lcom/android/internal/app/procstats/AssociationState;
 
-    move-result-object v0
+    move-result-object v1
 
-    iget v1, p0, Lcom/android/server/am/ConnectionRecord;->clientUid:I
+    iget v2, p0, Lcom/android/server/am/ConnectionRecord;->clientUid:I
 
-    iget-object v2, p0, Lcom/android/server/am/ConnectionRecord;->clientProcessName:Ljava/lang/String;
+    iget-object v3, p0, Lcom/android/server/am/ConnectionRecord;->clientProcessName:Ljava/lang/String;
 
-    iget-object v3, p0, Lcom/android/server/am/ConnectionRecord;->clientPackageName:Ljava/lang/String;
+    iget-object v4, p0, Lcom/android/server/am/ConnectionRecord;->clientPackageName:Ljava/lang/String;
 
     .line 141
-    invoke-virtual {v0, v1, v2, v3}, Lcom/android/internal/app/procstats/AssociationState;->startSource(ILjava/lang/String;Ljava/lang/String;)Lcom/android/internal/app/procstats/AssociationState$SourceState;
+    invoke-virtual {v1, v2, v3, v4}, Lcom/android/internal/app/procstats/AssociationState;->startSource(ILjava/lang/String;Ljava/lang/String;)Lcom/android/internal/app/procstats/AssociationState$SourceState;
 
-    move-result-object v0
+    move-result-object v1
 
-    iput-object v0, p0, Lcom/android/server/am/ConnectionRecord;->association:Lcom/android/internal/app/procstats/AssociationState$SourceState;
+    iput-object v1, p0, Lcom/android/server/am/ConnectionRecord;->association:Lcom/android/internal/app/procstats/AssociationState$SourceState;
 
     .line 146
+    .end local v0  # "holder":Lcom/android/internal/app/procstats/ProcessStats$ProcessStateHolder;
     :cond_b2
     :goto_b2
     return-void
@@ -517,6 +532,7 @@
     invoke-direct {v0, v1}, Ljava/lang/StringBuilder;-><init>(I)V
 
     .line 166
+    .local v0, "sb":Ljava/lang/StringBuilder;
     const-string v2, "ConnectionRecord{"
 
     invoke-virtual {v0, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
@@ -851,15 +867,18 @@
     .line 232
     invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v1
 
-    iput-object v0, p0, Lcom/android/server/am/ConnectionRecord;->stringName:Ljava/lang/String;
+    iput-object v1, p0, Lcom/android/server/am/ConnectionRecord;->stringName:Ljava/lang/String;
 
-    return-object v0
+    return-object v1
 .end method
 
 .method public trackProcState(IIJ)V
     .registers 6
+    .param p1, "procState"  # I
+    .param p2, "seq"  # I
+    .param p3, "now"  # J
 
     .line 149
     iget-object v0, p0, Lcom/android/server/am/ConnectionRecord;->association:Lcom/android/internal/app/procstats/AssociationState$SourceState;
@@ -875,7 +894,9 @@
 .end method
 
 .method public writeToProto(Landroid/util/proto/ProtoOutputStream;J)V
-    .registers 13
+    .registers 15
+    .param p1, "proto"  # Landroid/util/proto/ProtoOutputStream;
+    .param p2, "fieldId"  # J
 
     .line 236
     iget-object v0, p0, Lcom/android/server/am/ConnectionRecord;->binding:Lcom/android/server/am/AppBindRecord;
@@ -888,89 +909,90 @@
     :cond_5
     invoke-virtual {p1, p2, p3}, Landroid/util/proto/ProtoOutputStream;->start(J)J
 
-    move-result-wide p2
+    move-result-wide v0
 
     .line 238
-    const-wide v0, 0x10900000001L
+    .local v0, "token":J
+    const-wide v2, 0x10900000001L
 
     .line 239
     invoke-static {p0}, Ljava/lang/System;->identityHashCode(Ljava/lang/Object;)I
 
-    move-result v2
+    move-result v4
 
-    invoke-static {v2}, Ljava/lang/Integer;->toHexString(I)Ljava/lang/String;
+    invoke-static {v4}, Ljava/lang/Integer;->toHexString(I)Ljava/lang/String;
 
-    move-result-object v2
+    move-result-object v4
 
     .line 238
-    invoke-virtual {p1, v0, v1, v2}, Landroid/util/proto/ProtoOutputStream;->write(JLjava/lang/String;)V
+    invoke-virtual {p1, v2, v3, v4}, Landroid/util/proto/ProtoOutputStream;->write(JLjava/lang/String;)V
 
     .line 240
-    iget-object v0, p0, Lcom/android/server/am/ConnectionRecord;->binding:Lcom/android/server/am/AppBindRecord;
-
-    iget-object v0, v0, Lcom/android/server/am/AppBindRecord;->client:Lcom/android/server/am/ProcessRecord;
-
-    if-eqz v0, :cond_2d
-
-    .line 241
-    const-wide v0, 0x10500000002L
-
     iget-object v2, p0, Lcom/android/server/am/ConnectionRecord;->binding:Lcom/android/server/am/AppBindRecord;
 
     iget-object v2, v2, Lcom/android/server/am/AppBindRecord;->client:Lcom/android/server/am/ProcessRecord;
 
-    iget v2, v2, Lcom/android/server/am/ProcessRecord;->userId:I
+    if-eqz v2, :cond_2d
 
-    invoke-virtual {p1, v0, v1, v2}, Landroid/util/proto/ProtoOutputStream;->write(JI)V
+    .line 241
+    const-wide v2, 0x10500000002L
+
+    iget-object v4, p0, Lcom/android/server/am/ConnectionRecord;->binding:Lcom/android/server/am/AppBindRecord;
+
+    iget-object v4, v4, Lcom/android/server/am/AppBindRecord;->client:Lcom/android/server/am/ProcessRecord;
+
+    iget v4, v4, Lcom/android/server/am/ProcessRecord;->userId:I
+
+    invoke-virtual {p1, v2, v3, v4}, Landroid/util/proto/ProtoOutputStream;->write(JI)V
 
     .line 243
     :cond_2d
-    const-wide v4, 0x20e00000003L
+    const-wide v6, 0x20e00000003L
 
-    iget v6, p0, Lcom/android/server/am/ConnectionRecord;->flags:I
+    iget v8, p0, Lcom/android/server/am/ConnectionRecord;->flags:I
 
-    sget-object v7, Lcom/android/server/am/ConnectionRecord;->BIND_ORIG_ENUMS:[I
+    sget-object v9, Lcom/android/server/am/ConnectionRecord;->BIND_ORIG_ENUMS:[I
 
-    sget-object v8, Lcom/android/server/am/ConnectionRecord;->BIND_PROTO_ENUMS:[I
+    sget-object v10, Lcom/android/server/am/ConnectionRecord;->BIND_PROTO_ENUMS:[I
 
-    move-object v3, p1
+    move-object v5, p1
 
-    invoke-static/range {v3 .. v8}, Landroid/util/proto/ProtoUtils;->writeBitWiseFlagsToProtoEnum(Landroid/util/proto/ProtoOutputStream;JI[I[I)V
+    invoke-static/range {v5 .. v10}, Landroid/util/proto/ProtoUtils;->writeBitWiseFlagsToProtoEnum(Landroid/util/proto/ProtoOutputStream;JI[I[I)V
 
     .line 245
-    iget-boolean v0, p0, Lcom/android/server/am/ConnectionRecord;->serviceDead:Z
+    iget-boolean v2, p0, Lcom/android/server/am/ConnectionRecord;->serviceDead:Z
 
-    if-eqz v0, :cond_4a
+    if-eqz v2, :cond_4a
 
     .line 246
-    const-wide v0, 0x20e00000003L
+    const-wide v2, 0x20e00000003L
 
-    const/16 v2, 0xf
+    const/16 v4, 0xf
 
-    invoke-virtual {p1, v0, v1, v2}, Landroid/util/proto/ProtoOutputStream;->write(JI)V
+    invoke-virtual {p1, v2, v3, v4}, Landroid/util/proto/ProtoOutputStream;->write(JI)V
 
     .line 248
     :cond_4a
-    iget-object v0, p0, Lcom/android/server/am/ConnectionRecord;->binding:Lcom/android/server/am/AppBindRecord;
-
-    iget-object v0, v0, Lcom/android/server/am/AppBindRecord;->service:Lcom/android/server/am/ServiceRecord;
-
-    if-eqz v0, :cond_5e
-
-    .line 249
-    const-wide v0, 0x10900000004L
-
     iget-object v2, p0, Lcom/android/server/am/ConnectionRecord;->binding:Lcom/android/server/am/AppBindRecord;
 
     iget-object v2, v2, Lcom/android/server/am/AppBindRecord;->service:Lcom/android/server/am/ServiceRecord;
 
-    iget-object v2, v2, Lcom/android/server/am/ServiceRecord;->shortInstanceName:Ljava/lang/String;
+    if-eqz v2, :cond_5e
 
-    invoke-virtual {p1, v0, v1, v2}, Landroid/util/proto/ProtoOutputStream;->write(JLjava/lang/String;)V
+    .line 249
+    const-wide v2, 0x10900000004L
+
+    iget-object v4, p0, Lcom/android/server/am/ConnectionRecord;->binding:Lcom/android/server/am/AppBindRecord;
+
+    iget-object v4, v4, Lcom/android/server/am/AppBindRecord;->service:Lcom/android/server/am/ServiceRecord;
+
+    iget-object v4, v4, Lcom/android/server/am/ServiceRecord;->shortInstanceName:Ljava/lang/String;
+
+    invoke-virtual {p1, v2, v3, v4}, Landroid/util/proto/ProtoOutputStream;->write(JLjava/lang/String;)V
 
     .line 251
     :cond_5e
-    invoke-virtual {p1, p2, p3}, Landroid/util/proto/ProtoOutputStream;->end(J)V
+    invoke-virtual {p1, v0, v1}, Landroid/util/proto/ProtoOutputStream;->end(J)V
 
     .line 252
     return-void

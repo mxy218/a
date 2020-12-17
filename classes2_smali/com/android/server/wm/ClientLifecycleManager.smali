@@ -14,39 +14,49 @@
 .end method
 
 .method private static transactionWithCallback(Landroid/app/IApplicationThread;Landroid/os/IBinder;Landroid/app/servertransaction/ClientTransactionItem;)Landroid/app/servertransaction/ClientTransaction;
-    .registers 3
+    .registers 4
+    .param p0, "client"  # Landroid/app/IApplicationThread;
+    .param p1, "activityToken"  # Landroid/os/IBinder;
+    .param p2, "callback"  # Landroid/app/servertransaction/ClientTransactionItem;
 
     .line 124
     invoke-static {p0, p1}, Landroid/app/servertransaction/ClientTransaction;->obtain(Landroid/app/IApplicationThread;Landroid/os/IBinder;)Landroid/app/servertransaction/ClientTransaction;
 
-    move-result-object p0
+    move-result-object v0
 
     .line 125
-    invoke-virtual {p0, p2}, Landroid/app/servertransaction/ClientTransaction;->addCallback(Landroid/app/servertransaction/ClientTransactionItem;)V
+    .local v0, "clientTransaction":Landroid/app/servertransaction/ClientTransaction;
+    invoke-virtual {v0, p2}, Landroid/app/servertransaction/ClientTransaction;->addCallback(Landroid/app/servertransaction/ClientTransactionItem;)V
 
     .line 126
-    return-object p0
+    return-object v0
 .end method
 
 .method private static transactionWithState(Landroid/app/IApplicationThread;Landroid/os/IBinder;Landroid/app/servertransaction/ActivityLifecycleItem;)Landroid/app/servertransaction/ClientTransaction;
-    .registers 3
+    .registers 4
+    .param p0, "client"  # Landroid/app/IApplicationThread;
+    .param p1, "activityToken"  # Landroid/os/IBinder;
+    .param p2, "stateRequest"  # Landroid/app/servertransaction/ActivityLifecycleItem;
 
     .line 111
     invoke-static {p0, p1}, Landroid/app/servertransaction/ClientTransaction;->obtain(Landroid/app/IApplicationThread;Landroid/os/IBinder;)Landroid/app/servertransaction/ClientTransaction;
 
-    move-result-object p0
+    move-result-object v0
 
     .line 112
-    invoke-virtual {p0, p2}, Landroid/app/servertransaction/ClientTransaction;->setLifecycleStateRequest(Landroid/app/servertransaction/ActivityLifecycleItem;)V
+    .local v0, "clientTransaction":Landroid/app/servertransaction/ClientTransaction;
+    invoke-virtual {v0, p2}, Landroid/app/servertransaction/ClientTransaction;->setLifecycleStateRequest(Landroid/app/servertransaction/ActivityLifecycleItem;)V
 
     .line 113
-    return-object p0
+    return-object v0
 .end method
 
 
 # virtual methods
 .method scheduleTransaction(Landroid/app/IApplicationThread;Landroid/app/servertransaction/ClientTransactionItem;)V
     .registers 4
+    .param p1, "client"  # Landroid/app/IApplicationThread;
+    .param p2, "callback"  # Landroid/app/servertransaction/ClientTransactionItem;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -58,17 +68,21 @@
 
     invoke-static {p1, v0, p2}, Lcom/android/server/wm/ClientLifecycleManager;->transactionWithCallback(Landroid/app/IApplicationThread;Landroid/os/IBinder;Landroid/app/servertransaction/ClientTransactionItem;)Landroid/app/servertransaction/ClientTransaction;
 
-    move-result-object p1
+    move-result-object v0
 
     .line 100
-    invoke-virtual {p0, p1}, Lcom/android/server/wm/ClientLifecycleManager;->scheduleTransaction(Landroid/app/servertransaction/ClientTransaction;)V
+    .local v0, "clientTransaction":Landroid/app/servertransaction/ClientTransaction;
+    invoke-virtual {p0, v0}, Lcom/android/server/wm/ClientLifecycleManager;->scheduleTransaction(Landroid/app/servertransaction/ClientTransaction;)V
 
     .line 101
     return-void
 .end method
 
 .method scheduleTransaction(Landroid/app/IApplicationThread;Landroid/os/IBinder;Landroid/app/servertransaction/ActivityLifecycleItem;)V
-    .registers 4
+    .registers 5
+    .param p1, "client"  # Landroid/app/IApplicationThread;
+    .param p2, "activityToken"  # Landroid/os/IBinder;
+    .param p3, "stateRequest"  # Landroid/app/servertransaction/ActivityLifecycleItem;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -78,17 +92,21 @@
     .line 67
     invoke-static {p1, p2, p3}, Lcom/android/server/wm/ClientLifecycleManager;->transactionWithState(Landroid/app/IApplicationThread;Landroid/os/IBinder;Landroid/app/servertransaction/ActivityLifecycleItem;)Landroid/app/servertransaction/ClientTransaction;
 
-    move-result-object p1
+    move-result-object v0
 
     .line 69
-    invoke-virtual {p0, p1}, Lcom/android/server/wm/ClientLifecycleManager;->scheduleTransaction(Landroid/app/servertransaction/ClientTransaction;)V
+    .local v0, "clientTransaction":Landroid/app/servertransaction/ClientTransaction;
+    invoke-virtual {p0, v0}, Lcom/android/server/wm/ClientLifecycleManager;->scheduleTransaction(Landroid/app/servertransaction/ClientTransaction;)V
 
     .line 70
     return-void
 .end method
 
 .method scheduleTransaction(Landroid/app/IApplicationThread;Landroid/os/IBinder;Landroid/app/servertransaction/ClientTransactionItem;)V
-    .registers 4
+    .registers 5
+    .param p1, "client"  # Landroid/app/IApplicationThread;
+    .param p2, "activityToken"  # Landroid/os/IBinder;
+    .param p3, "callback"  # Landroid/app/servertransaction/ClientTransactionItem;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -98,17 +116,19 @@
     .line 83
     invoke-static {p1, p2, p3}, Lcom/android/server/wm/ClientLifecycleManager;->transactionWithCallback(Landroid/app/IApplicationThread;Landroid/os/IBinder;Landroid/app/servertransaction/ClientTransactionItem;)Landroid/app/servertransaction/ClientTransaction;
 
-    move-result-object p1
+    move-result-object v0
 
     .line 85
-    invoke-virtual {p0, p1}, Lcom/android/server/wm/ClientLifecycleManager;->scheduleTransaction(Landroid/app/servertransaction/ClientTransaction;)V
+    .local v0, "clientTransaction":Landroid/app/servertransaction/ClientTransaction;
+    invoke-virtual {p0, v0}, Lcom/android/server/wm/ClientLifecycleManager;->scheduleTransaction(Landroid/app/servertransaction/ClientTransaction;)V
 
     .line 86
     return-void
 .end method
 
 .method scheduleTransaction(Landroid/app/servertransaction/ClientTransaction;)V
-    .registers 3
+    .registers 4
+    .param p1, "transaction"  # Landroid/app/servertransaction/ClientTransaction;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -121,12 +141,13 @@
     move-result-object v0
 
     .line 47
+    .local v0, "client":Landroid/app/IApplicationThread;
     invoke-virtual {p1}, Landroid/app/servertransaction/ClientTransaction;->schedule()V
 
     .line 48
-    instance-of v0, v0, Landroid/os/Binder;
+    instance-of v1, v0, Landroid/os/Binder;
 
-    if-nez v0, :cond_e
+    if-nez v1, :cond_e
 
     .line 52
     invoke-virtual {p1}, Landroid/app/servertransaction/ClientTransaction;->recycle()V

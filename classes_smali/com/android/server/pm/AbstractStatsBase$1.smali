@@ -23,8 +23,11 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/pm/AbstractStatsBase;Ljava/lang/String;Ljava/lang/Object;)V
     .registers 4
+    .param p1, "this$0"  # Lcom/android/server/pm/AbstractStatsBase;
+    .param p2, "x0"  # Ljava/lang/String;
 
     .line 75
+    .local p0, "this":Lcom/android/server/pm/AbstractStatsBase$1;, "Lcom/android/server/pm/AbstractStatsBase$1;"
     iput-object p1, p0, Lcom/android/server/pm/AbstractStatsBase$1;->this$0:Lcom/android/server/pm/AbstractStatsBase;
 
     iput-object p3, p0, Lcom/android/server/pm/AbstractStatsBase$1;->val$data:Ljava/lang/Object;
@@ -40,6 +43,7 @@
     .registers 5
 
     .line 79
+    .local p0, "this":Lcom/android/server/pm/AbstractStatsBase$1;, "Lcom/android/server/pm/AbstractStatsBase$1;"
     const/4 v0, 0x0
 
     :try_start_1

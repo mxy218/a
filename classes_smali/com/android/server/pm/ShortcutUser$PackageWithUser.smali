@@ -22,7 +22,9 @@
 
 # direct methods
 .method private constructor <init>(ILjava/lang/String;)V
-    .registers 3
+    .registers 4
+    .param p1, "userId"  # I
+    .param p2, "packageName"  # Ljava/lang/String;
 
     .line 76
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -33,11 +35,11 @@
     .line 78
     invoke-static {p2}, Lcom/android/internal/util/Preconditions;->checkNotNull(Ljava/lang/Object;)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v0
 
-    check-cast p1, Ljava/lang/String;
+    check-cast v0, Ljava/lang/String;
 
-    iput-object p1, p0, Lcom/android/server/pm/ShortcutUser$PackageWithUser;->packageName:Ljava/lang/String;
+    iput-object v0, p0, Lcom/android/server/pm/ShortcutUser$PackageWithUser;->packageName:Ljava/lang/String;
 
     .line 79
     return-void
@@ -45,6 +47,8 @@
 
 .method public static of(ILjava/lang/String;)Lcom/android/server/pm/ShortcutUser$PackageWithUser;
     .registers 3
+    .param p0, "userId"  # I
+    .param p1, "packageName"  # Ljava/lang/String;
 
     .line 82
     new-instance v0, Lcom/android/server/pm/ShortcutUser$PackageWithUser;
@@ -55,7 +59,8 @@
 .end method
 
 .method public static of(Lcom/android/server/pm/ShortcutPackageItem;)Lcom/android/server/pm/ShortcutUser$PackageWithUser;
-    .registers 3
+    .registers 4
+    .param p0, "spi"  # Lcom/android/server/pm/ShortcutPackageItem;
 
     .line 86
     new-instance v0, Lcom/android/server/pm/ShortcutUser$PackageWithUser;
@@ -66,9 +71,9 @@
 
     invoke-virtual {p0}, Lcom/android/server/pm/ShortcutPackageItem;->getPackageName()Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v2
 
-    invoke-direct {v0, v1, p0}, Lcom/android/server/pm/ShortcutUser$PackageWithUser;-><init>(ILjava/lang/String;)V
+    invoke-direct {v0, v1, v2}, Lcom/android/server/pm/ShortcutUser$PackageWithUser;-><init>(ILjava/lang/String;)V
 
     return-object v0
 .end method
@@ -76,7 +81,8 @@
 
 # virtual methods
 .method public equals(Ljava/lang/Object;)Z
-    .registers 5
+    .registers 6
+    .param p1, "obj"  # Ljava/lang/Object;
 
     .line 96
     instance-of v0, p1, Lcom/android/server/pm/ShortcutUser$PackageWithUser;
@@ -90,28 +96,31 @@
 
     .line 99
     :cond_6
-    check-cast p1, Lcom/android/server/pm/ShortcutUser$PackageWithUser;
+    move-object v0, p1
+
+    check-cast v0, Lcom/android/server/pm/ShortcutUser$PackageWithUser;
 
     .line 101
-    iget v0, p0, Lcom/android/server/pm/ShortcutUser$PackageWithUser;->userId:I
+    .local v0, "that":Lcom/android/server/pm/ShortcutUser$PackageWithUser;
+    iget v2, p0, Lcom/android/server/pm/ShortcutUser$PackageWithUser;->userId:I
 
-    iget v2, p1, Lcom/android/server/pm/ShortcutUser$PackageWithUser;->userId:I
+    iget v3, v0, Lcom/android/server/pm/ShortcutUser$PackageWithUser;->userId:I
 
-    if-ne v0, v2, :cond_19
+    if-ne v2, v3, :cond_1a
 
-    iget-object v0, p0, Lcom/android/server/pm/ShortcutUser$PackageWithUser;->packageName:Ljava/lang/String;
+    iget-object v2, p0, Lcom/android/server/pm/ShortcutUser$PackageWithUser;->packageName:Ljava/lang/String;
 
-    iget-object p1, p1, Lcom/android/server/pm/ShortcutUser$PackageWithUser;->packageName:Ljava/lang/String;
+    iget-object v3, v0, Lcom/android/server/pm/ShortcutUser$PackageWithUser;->packageName:Ljava/lang/String;
 
-    invoke-virtual {v0, p1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    invoke-virtual {v2, v3}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
-    move-result p1
+    move-result v2
 
-    if-eqz p1, :cond_19
+    if-eqz v2, :cond_1a
 
     const/4 v1, 0x1
 
-    :cond_19
+    :cond_1a
     return v1
 .end method
 

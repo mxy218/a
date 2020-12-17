@@ -31,15 +31,18 @@
 
 # direct methods
 .method public constructor <init>(Lcom/android/server/hdmi/HdmiCecLocalDeviceTv;Landroid/hardware/hdmi/HdmiDeviceInfo;Landroid/hardware/hdmi/IHdmiControlCallback;)V
-    .registers 4
+    .registers 6
+    .param p1, "source"  # Lcom/android/server/hdmi/HdmiCecLocalDeviceTv;
+    .param p2, "target"  # Landroid/hardware/hdmi/HdmiDeviceInfo;
+    .param p3, "callback"  # Landroid/hardware/hdmi/IHdmiControlCallback;
 
     .line 76
     invoke-direct {p0, p1}, Lcom/android/server/hdmi/HdmiCecFeatureAction;-><init>(Lcom/android/server/hdmi/HdmiCecLocalDevice;)V
 
     .line 65
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    iput p1, p0, Lcom/android/server/hdmi/DeviceSelectAction;->mPowerStatusCounter:I
+    iput v0, p0, Lcom/android/server/hdmi/DeviceSelectAction;->mPowerStatusCounter:I
 
     .line 77
     iput-object p3, p0, Lcom/android/server/hdmi/DeviceSelectAction;->mCallback:Landroid/hardware/hdmi/IHdmiControlCallback;
@@ -53,18 +56,18 @@
     .line 80
     invoke-virtual {p0}, Lcom/android/server/hdmi/DeviceSelectAction;->getSourceAddress()I
 
-    move-result p1
+    move-result v0
 
     invoke-virtual {p0}, Lcom/android/server/hdmi/DeviceSelectAction;->getTargetAddress()I
 
-    move-result p2
+    move-result v1
 
     .line 79
-    invoke-static {p1, p2}, Lcom/android/server/hdmi/HdmiCecMessageBuilder;->buildGiveDevicePowerStatus(II)Lcom/android/server/hdmi/HdmiCecMessage;
+    invoke-static {v0, v1}, Lcom/android/server/hdmi/HdmiCecMessageBuilder;->buildGiveDevicePowerStatus(II)Lcom/android/server/hdmi/HdmiCecMessage;
 
-    move-result-object p1
+    move-result-object v0
 
-    iput-object p1, p0, Lcom/android/server/hdmi/DeviceSelectAction;->mGivePowerStatus:Lcom/android/server/hdmi/HdmiCecMessage;
+    iput-object v0, p0, Lcom/android/server/hdmi/DeviceSelectAction;->mGivePowerStatus:Lcom/android/server/hdmi/HdmiCecMessage;
 
     .line 81
     return-void
@@ -72,6 +75,8 @@
 
 .method static synthetic access$000(Lcom/android/server/hdmi/DeviceSelectAction;I)V
     .registers 2
+    .param p0, "x0"  # Lcom/android/server/hdmi/DeviceSelectAction;
+    .param p1, "x1"  # I
 
     .line 35
     invoke-direct {p0, p1}, Lcom/android/server/hdmi/DeviceSelectAction;->invokeCallback(I)V
@@ -80,7 +85,8 @@
 .end method
 
 .method private handleReportPowerStatus(I)Z
-    .registers 6
+    .registers 7
+    .param p1, "powerStatus"  # I
 
     .line 130
     const/4 v0, 0x1
@@ -100,25 +106,25 @@
     if-eq p1, v2, :cond_f
 
     .line 158
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    return p1
+    return v0
 
     .line 135
     :cond_f
-    iget p1, p0, Lcom/android/server/hdmi/DeviceSelectAction;->mPowerStatusCounter:I
+    iget v2, p0, Lcom/android/server/hdmi/DeviceSelectAction;->mPowerStatusCounter:I
 
-    const/4 v2, 0x4
+    const/4 v4, 0x4
 
-    if-ge p1, v2, :cond_1c
+    if-ge v2, v4, :cond_1c
 
     .line 136
     iput v3, p0, Lcom/android/server/hdmi/DeviceSelectAction;->mState:I
 
     .line 137
-    iget p1, p0, Lcom/android/server/hdmi/DeviceSelectAction;->mState:I
+    iget v2, p0, Lcom/android/server/hdmi/DeviceSelectAction;->mState:I
 
-    invoke-virtual {p0, p1, v1}, Lcom/android/server/hdmi/DeviceSelectAction;->addTimer(II)V
+    invoke-virtual {p0, v2, v1}, Lcom/android/server/hdmi/DeviceSelectAction;->addTimer(II)V
 
     goto :goto_1f
 
@@ -132,19 +138,19 @@
 
     .line 150
     :cond_20
-    iget p1, p0, Lcom/android/server/hdmi/DeviceSelectAction;->mPowerStatusCounter:I
+    iget v3, p0, Lcom/android/server/hdmi/DeviceSelectAction;->mPowerStatusCounter:I
 
-    const/16 v3, 0x14
+    const/16 v4, 0x14
 
-    if-ge p1, v3, :cond_2e
+    if-ge v3, v4, :cond_2e
 
     .line 151
     iput v2, p0, Lcom/android/server/hdmi/DeviceSelectAction;->mState:I
 
     .line 152
-    iget p1, p0, Lcom/android/server/hdmi/DeviceSelectAction;->mState:I
+    iget v2, p0, Lcom/android/server/hdmi/DeviceSelectAction;->mState:I
 
-    invoke-virtual {p0, p1, v1}, Lcom/android/server/hdmi/DeviceSelectAction;->addTimer(II)V
+    invoke-virtual {p0, v2, v1}, Lcom/android/server/hdmi/DeviceSelectAction;->addTimer(II)V
 
     goto :goto_31
 
@@ -158,9 +164,9 @@
 
     .line 143
     :cond_32
-    iget p1, p0, Lcom/android/server/hdmi/DeviceSelectAction;->mPowerStatusCounter:I
+    iget v1, p0, Lcom/android/server/hdmi/DeviceSelectAction;->mPowerStatusCounter:I
 
-    if-nez p1, :cond_3a
+    if-nez v1, :cond_3a
 
     .line 144
     invoke-direct {p0}, Lcom/android/server/hdmi/DeviceSelectAction;->turnOnDevice()V
@@ -184,7 +190,8 @@
 .end method
 
 .method private invokeCallback(I)V
-    .registers 4
+    .registers 5
+    .param p1, "result"  # I
 
     .line 205
     iget-object v0, p0, Lcom/android/server/hdmi/DeviceSelectAction;->mCallback:Landroid/hardware/hdmi/IHdmiControlCallback;
@@ -206,28 +213,30 @@
 
     .line 210
     :catch_9
-    move-exception p1
+    move-exception v0
 
     .line 211
-    new-instance v0, Ljava/lang/StringBuilder;
+    .local v0, "e":Landroid/os/RemoteException;
+    new-instance v1, Ljava/lang/StringBuilder;
 
-    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v1, "Callback failed:"
+    const-string v2, "Callback failed:"
 
-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v1
 
-    const-string v0, "DeviceSelect"
+    const-string v2, "DeviceSelect"
 
-    invoke-static {v0, p1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v2, v1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 213
+    .end local v0  # "e":Landroid/os/RemoteException;
     :goto_20
     return-void
 .end method
@@ -377,7 +386,8 @@
 .end method
 
 .method public handleTimerEvent(I)V
-    .registers 4
+    .registers 5
+    .param p1, "timeoutState"  # I
 
     .line 183
     iget v0, p0, Lcom/android/server/hdmi/DeviceSelectAction;->mState:I
@@ -385,40 +395,40 @@
     if-eq v0, p1, :cond_c
 
     .line 184
-    const-string p1, "DeviceSelect"
+    const-string v0, "DeviceSelect"
 
-    const-string v0, "Timer in a wrong state. Ignored."
+    const-string v1, "Timer in a wrong state. Ignored."
 
-    invoke-static {p1, v0}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v0, v1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 185
     return-void
 
     .line 187
     :cond_c
-    iget p1, p0, Lcom/android/server/hdmi/DeviceSelectAction;->mState:I
+    iget v0, p0, Lcom/android/server/hdmi/DeviceSelectAction;->mState:I
 
-    const/4 v0, 0x1
+    const/4 v1, 0x1
 
-    if-eq p1, v0, :cond_21
+    if-eq v0, v1, :cond_21
 
-    const/4 v1, 0x2
+    const/4 v2, 0x2
 
-    if-eq p1, v1, :cond_18
+    if-eq v0, v2, :cond_18
 
-    const/4 v1, 0x3
+    const/4 v2, 0x3
 
-    if-eq p1, v1, :cond_18
+    if-eq v0, v2, :cond_18
 
     goto :goto_37
 
     .line 198
     :cond_18
-    iget p1, p0, Lcom/android/server/hdmi/DeviceSelectAction;->mPowerStatusCounter:I
+    iget v0, p0, Lcom/android/server/hdmi/DeviceSelectAction;->mPowerStatusCounter:I
 
-    add-int/2addr p1, v0
+    add-int/2addr v0, v1
 
-    iput p1, p0, Lcom/android/server/hdmi/DeviceSelectAction;->mPowerStatusCounter:I
+    iput v0, p0, Lcom/android/server/hdmi/DeviceSelectAction;->mPowerStatusCounter:I
 
     .line 199
     invoke-direct {p0}, Lcom/android/server/hdmi/DeviceSelectAction;->queryDevicePowerStatus()V
@@ -429,18 +439,18 @@
     :cond_21
     invoke-virtual {p0}, Lcom/android/server/hdmi/DeviceSelectAction;->tv()Lcom/android/server/hdmi/HdmiCecLocalDeviceTv;
 
-    move-result-object p1
+    move-result-object v0
 
-    invoke-virtual {p1}, Lcom/android/server/hdmi/HdmiCecLocalDeviceTv;->isPowerStandbyOrTransient()Z
+    invoke-virtual {v0}, Lcom/android/server/hdmi/HdmiCecLocalDeviceTv;->isPowerStandbyOrTransient()Z
 
-    move-result p1
+    move-result v0
 
-    if-eqz p1, :cond_33
+    if-eqz v0, :cond_33
 
     .line 190
-    const/4 p1, 0x6
+    const/4 v0, 0x6
 
-    invoke-direct {p0, p1}, Lcom/android/server/hdmi/DeviceSelectAction;->invokeCallback(I)V
+    invoke-direct {p0, v0}, Lcom/android/server/hdmi/DeviceSelectAction;->invokeCallback(I)V
 
     .line 191
     invoke-virtual {p0}, Lcom/android/server/hdmi/DeviceSelectAction;->finish()V
@@ -461,7 +471,8 @@
 .end method
 
 .method public processCommand(Lcom/android/server/hdmi/HdmiCecMessage;)Z
-    .registers 6
+    .registers 7
+    .param p1, "cmd"  # Lcom/android/server/hdmi/HdmiCecMessage;
 
     .line 111
     invoke-virtual {p1}, Lcom/android/server/hdmi/HdmiCecMessage;->getSource()I
@@ -486,34 +497,36 @@
     move-result v0
 
     .line 115
+    .local v0, "opcode":I
     invoke-virtual {p1}, Lcom/android/server/hdmi/HdmiCecMessage;->getParams()[B
 
-    move-result-object p1
+    move-result-object v1
 
     .line 117
-    iget v1, p0, Lcom/android/server/hdmi/DeviceSelectAction;->mState:I
+    .local v1, "params":[B
+    iget v3, p0, Lcom/android/server/hdmi/DeviceSelectAction;->mState:I
 
-    const/4 v3, 0x1
+    const/4 v4, 0x1
 
-    if-eq v1, v3, :cond_1a
+    if-eq v3, v4, :cond_1a
 
     .line 126
     return v2
 
     .line 119
     :cond_1a
-    const/16 v1, 0x90
+    const/16 v3, 0x90
 
-    if-ne v0, v1, :cond_25
+    if-ne v0, v3, :cond_25
 
     .line 120
-    aget-byte p1, p1, v2
+    aget-byte v2, v1, v2
 
-    invoke-direct {p0, p1}, Lcom/android/server/hdmi/DeviceSelectAction;->handleReportPowerStatus(I)Z
+    invoke-direct {p0, v2}, Lcom/android/server/hdmi/DeviceSelectAction;->handleReportPowerStatus(I)Z
 
-    move-result p1
+    move-result v2
 
-    return p1
+    return v2
 
     .line 122
     :cond_25

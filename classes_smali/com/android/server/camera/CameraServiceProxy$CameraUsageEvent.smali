@@ -28,33 +28,36 @@
 
 # direct methods
 .method public constructor <init>(ILjava/lang/String;I)V
-    .registers 4
+    .registers 6
+    .param p1, "facing"  # I
+    .param p2, "clientName"  # Ljava/lang/String;
+    .param p3, "apiLevel"  # I
 
-    .line 139
+    .line 124
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
-    .line 140
+    .line 125
     iput p1, p0, Lcom/android/server/camera/CameraServiceProxy$CameraUsageEvent;->mCameraFacing:I
 
-    .line 141
+    .line 126
     iput-object p2, p0, Lcom/android/server/camera/CameraServiceProxy$CameraUsageEvent;->mClientName:Ljava/lang/String;
 
-    .line 142
+    .line 127
     iput p3, p0, Lcom/android/server/camera/CameraServiceProxy$CameraUsageEvent;->mAPILevel:I
 
-    .line 143
+    .line 128
     invoke-static {}, Landroid/os/SystemClock;->elapsedRealtime()J
 
-    move-result-wide p1
+    move-result-wide v0
 
-    iput-wide p1, p0, Lcom/android/server/camera/CameraServiceProxy$CameraUsageEvent;->mDurationOrStartTimeMs:J
+    iput-wide v0, p0, Lcom/android/server/camera/CameraServiceProxy$CameraUsageEvent;->mDurationOrStartTimeMs:J
 
-    .line 144
-    const/4 p1, 0x0
+    .line 129
+    const/4 v0, 0x0
 
-    iput-boolean p1, p0, Lcom/android/server/camera/CameraServiceProxy$CameraUsageEvent;->mCompleted:Z
+    iput-boolean v0, p0, Lcom/android/server/camera/CameraServiceProxy$CameraUsageEvent;->mCompleted:Z
 
-    .line 145
+    .line 130
     return-void
 .end method
 
@@ -63,7 +66,7 @@
 .method public getDuration()J
     .registers 3
 
-    .line 164
+    .line 149
     iget-boolean v0, p0, Lcom/android/server/camera/CameraServiceProxy$CameraUsageEvent;->mCompleted:Z
 
     if-eqz v0, :cond_7
@@ -82,21 +85,21 @@
 .method public markCompleted()V
     .registers 5
 
-    .line 148
+    .line 133
     iget-boolean v0, p0, Lcom/android/server/camera/CameraServiceProxy$CameraUsageEvent;->mCompleted:Z
 
     if-eqz v0, :cond_5
 
-    .line 149
+    .line 134
     return-void
 
-    .line 151
+    .line 136
     :cond_5
     const/4 v0, 0x1
 
     iput-boolean v0, p0, Lcom/android/server/camera/CameraServiceProxy$CameraUsageEvent;->mCompleted:Z
 
-    .line 152
+    .line 137
     invoke-static {}, Landroid/os/SystemClock;->elapsedRealtime()J
 
     move-result-wide v0
@@ -107,6 +110,6 @@
 
     iput-wide v0, p0, Lcom/android/server/camera/CameraServiceProxy$CameraUsageEvent;->mDurationOrStartTimeMs:J
 
-    .line 158
+    .line 143
     return-void
 .end method

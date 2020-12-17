@@ -18,6 +18,8 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/locksettings/recoverablekeystore/KeyStoreProxy;Landroid/security/KeyStore;)V
     .registers 3
+    .param p1, "keyStore"  # Lcom/android/server/locksettings/recoverablekeystore/KeyStoreProxy;
+    .param p2, "keystoreService"  # Landroid/security/KeyStore;
     .annotation build Lcom/android/internal/annotations/VisibleForTesting;
     .end annotation
 
@@ -36,6 +38,7 @@
 
 .method public static getInstance(Landroid/security/KeyStore;)Lcom/android/server/locksettings/recoverablekeystore/storage/ApplicationKeyStorage;
     .registers 4
+    .param p0, "keystoreService"  # Landroid/security/KeyStore;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Ljava/security/KeyStoreException;
@@ -62,6 +65,9 @@
 
 .method private getInternalAlias(IILjava/lang/String;)Ljava/lang/String;
     .registers 6
+    .param p1, "userId"  # I
+    .param p2, "uid"  # I
+    .param p3, "alias"  # Ljava/lang/String;
 
     .line 118
     new-instance v0, Ljava/lang/StringBuilder;
@@ -74,27 +80,30 @@
 
     invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    const-string p1, "/"
+    const-string v1, "/"
 
-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v0, p2}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v0, p3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    return-object p1
+    return-object v0
 .end method
 
 
 # virtual methods
 .method public deleteEntry(IILjava/lang/String;)V
     .registers 8
+    .param p1, "userId"  # I
+    .param p2, "uid"  # I
+    .param p3, "alias"  # Ljava/lang/String;
 
     .line 98
     sget-object v0, Ljava/util/Locale;->US:Ljava/util/Locale;
@@ -139,9 +148,9 @@
 
     invoke-direct {p0, p1, p2, p3}, Lcom/android/server/locksettings/recoverablekeystore/storage/ApplicationKeyStorage;->getInternalAlias(IILjava/lang/String;)Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v1
 
-    invoke-interface {v0, p1}, Lcom/android/server/locksettings/recoverablekeystore/KeyStoreProxy;->deleteEntry(Ljava/lang/String;)V
+    invoke-interface {v0, v1}, Lcom/android/server/locksettings/recoverablekeystore/KeyStoreProxy;->deleteEntry(Ljava/lang/String;)V
     :try_end_2a
     .catch Ljava/security/KeyStoreException; {:try_start_21 .. :try_end_2a} :catch_2c
 
@@ -153,24 +162,28 @@
 
     .line 101
     :catch_2c
-    move-exception p1
+    move-exception v0
 
     .line 102
-    new-instance p2, Landroid/os/ServiceSpecificException;
+    .local v0, "e":Ljava/security/KeyStoreException;
+    new-instance v1, Landroid/os/ServiceSpecificException;
 
-    const/16 p3, 0x16
+    const/16 v2, 0x16
 
-    invoke-virtual {p1}, Ljava/security/KeyStoreException;->getMessage()Ljava/lang/String;
+    invoke-virtual {v0}, Ljava/security/KeyStoreException;->getMessage()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v3
 
-    invoke-direct {p2, p3, p1}, Landroid/os/ServiceSpecificException;-><init>(ILjava/lang/String;)V
+    invoke-direct {v1, v2, v3}, Landroid/os/ServiceSpecificException;-><init>(ILjava/lang/String;)V
 
-    throw p2
+    throw v1
 .end method
 
 .method public getGrantAlias(IILjava/lang/String;)Ljava/lang/String;
     .registers 8
+    .param p1, "userId"  # I
+    .param p2, "uid"  # I
+    .param p3, "alias"  # Ljava/lang/String;
 
     .line 73
     sget-object v0, Ljava/util/Locale;->US:Ljava/util/Locale;
@@ -220,26 +233,31 @@
 
     invoke-direct {p0, p1, p2, p3}, Lcom/android/server/locksettings/recoverablekeystore/storage/ApplicationKeyStorage;->getInternalAlias(IILjava/lang/String;)Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v1
 
-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
     .line 75
-    iget-object p3, p0, Lcom/android/server/locksettings/recoverablekeystore/storage/ApplicationKeyStorage;->mKeystoreService:Landroid/security/KeyStore;
+    .local v0, "keystoreAlias":Ljava/lang/String;
+    iget-object v1, p0, Lcom/android/server/locksettings/recoverablekeystore/storage/ApplicationKeyStorage;->mKeystoreService:Landroid/security/KeyStore;
 
-    invoke-virtual {p3, p1, p2}, Landroid/security/KeyStore;->grant(Ljava/lang/String;I)Ljava/lang/String;
+    invoke-virtual {v1, v0, p2}, Landroid/security/KeyStore;->grant(Ljava/lang/String;I)Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v1
 
-    return-object p1
+    return-object v1
 .end method
 
 .method public setSymmetricKeyEntry(IILjava/lang/String;[B)V
-    .registers 9
+    .registers 11
+    .param p1, "userId"  # I
+    .param p2, "uid"  # I
+    .param p3, "alias"  # Ljava/lang/String;
+    .param p4, "secretKey"  # [B
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Ljava/security/KeyStoreException;
@@ -302,51 +320,51 @@
     .line 84
     invoke-direct {p0, p1, p2, p3}, Lcom/android/server/locksettings/recoverablekeystore/storage/ApplicationKeyStorage;->getInternalAlias(IILjava/lang/String;)Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v1
 
-    new-instance p2, Ljava/security/KeyStore$SecretKeyEntry;
+    new-instance v2, Ljava/security/KeyStore$SecretKeyEntry;
 
-    new-instance p3, Ljavax/crypto/spec/SecretKeySpec;
+    new-instance v4, Ljavax/crypto/spec/SecretKeySpec;
 
-    const-string v1, "AES"
+    const-string v5, "AES"
 
-    invoke-direct {p3, p4, v1}, Ljavax/crypto/spec/SecretKeySpec;-><init>([BLjava/lang/String;)V
+    invoke-direct {v4, p4, v5}, Ljavax/crypto/spec/SecretKeySpec;-><init>([BLjava/lang/String;)V
 
-    invoke-direct {p2, p3}, Ljava/security/KeyStore$SecretKeyEntry;-><init>(Ljavax/crypto/SecretKey;)V
+    invoke-direct {v2, v4}, Ljava/security/KeyStore$SecretKeyEntry;-><init>(Ljavax/crypto/SecretKey;)V
 
-    new-instance p3, Landroid/security/keystore/KeyProtection$Builder;
+    new-instance v4, Landroid/security/keystore/KeyProtection$Builder;
 
-    invoke-direct {p3, v3}, Landroid/security/keystore/KeyProtection$Builder;-><init>(I)V
+    invoke-direct {v4, v3}, Landroid/security/keystore/KeyProtection$Builder;-><init>(I)V
 
-    const-string p4, "GCM"
+    const-string v3, "GCM"
 
-    filled-new-array {p4}, [Ljava/lang/String;
+    filled-new-array {v3}, [Ljava/lang/String;
 
-    move-result-object p4
+    move-result-object v3
 
     .line 89
-    invoke-virtual {p3, p4}, Landroid/security/keystore/KeyProtection$Builder;->setBlockModes([Ljava/lang/String;)Landroid/security/keystore/KeyProtection$Builder;
+    invoke-virtual {v4, v3}, Landroid/security/keystore/KeyProtection$Builder;->setBlockModes([Ljava/lang/String;)Landroid/security/keystore/KeyProtection$Builder;
 
-    move-result-object p3
+    move-result-object v3
 
-    const-string p4, "NoPadding"
+    const-string v4, "NoPadding"
 
-    filled-new-array {p4}, [Ljava/lang/String;
+    filled-new-array {v4}, [Ljava/lang/String;
 
-    move-result-object p4
+    move-result-object v4
 
     .line 90
-    invoke-virtual {p3, p4}, Landroid/security/keystore/KeyProtection$Builder;->setEncryptionPaddings([Ljava/lang/String;)Landroid/security/keystore/KeyProtection$Builder;
+    invoke-virtual {v3, v4}, Landroid/security/keystore/KeyProtection$Builder;->setEncryptionPaddings([Ljava/lang/String;)Landroid/security/keystore/KeyProtection$Builder;
 
-    move-result-object p3
+    move-result-object v3
 
     .line 91
-    invoke-virtual {p3}, Landroid/security/keystore/KeyProtection$Builder;->build()Landroid/security/keystore/KeyProtection;
+    invoke-virtual {v3}, Landroid/security/keystore/KeyProtection$Builder;->build()Landroid/security/keystore/KeyProtection;
 
-    move-result-object p3
+    move-result-object v3
 
     .line 83
-    invoke-interface {v0, p1, p2, p3}, Lcom/android/server/locksettings/recoverablekeystore/KeyStoreProxy;->setEntry(Ljava/lang/String;Ljava/security/KeyStore$Entry;Ljava/security/KeyStore$ProtectionParameter;)V
+    invoke-interface {v0, v1, v2, v3}, Lcom/android/server/locksettings/recoverablekeystore/KeyStoreProxy;->setEntry(Ljava/lang/String;Ljava/security/KeyStore$Entry;Ljava/security/KeyStore$ProtectionParameter;)V
     :try_end_5b
     .catch Ljava/security/KeyStoreException; {:try_start_29 .. :try_end_5b} :catch_5d
 
@@ -358,18 +376,19 @@
 
     .line 92
     :catch_5d
-    move-exception p1
+    move-exception v0
 
     .line 93
-    new-instance p2, Landroid/os/ServiceSpecificException;
+    .local v0, "e":Ljava/security/KeyStoreException;
+    new-instance v1, Landroid/os/ServiceSpecificException;
 
-    const/16 p3, 0x16
+    const/16 v2, 0x16
 
-    invoke-virtual {p1}, Ljava/security/KeyStoreException;->getMessage()Ljava/lang/String;
+    invoke-virtual {v0}, Ljava/security/KeyStoreException;->getMessage()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v3
 
-    invoke-direct {p2, p3, p1}, Landroid/os/ServiceSpecificException;-><init>(ILjava/lang/String;)V
+    invoke-direct {v1, v2, v3}, Landroid/os/ServiceSpecificException;-><init>(ILjava/lang/String;)V
 
-    throw p2
+    throw v1
 .end method

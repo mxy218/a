@@ -62,6 +62,7 @@
 
 .method public printLog(Ljava/lang/String;)Lcom/android/server/audio/AudioEventLogger$Event;
     .registers 3
+    .param p1, "tag"  # Ljava/lang/String;
 
     .line 63
     invoke-virtual {p0}, Lcom/android/server/audio/AudioEventLogger$Event;->eventToString()Ljava/lang/String;

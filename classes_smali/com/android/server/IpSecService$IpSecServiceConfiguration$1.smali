@@ -30,7 +30,7 @@
 
 # virtual methods
 .method public getNetdInstance()Landroid/net/INetd;
-    .registers 3
+    .registers 4
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -43,6 +43,7 @@
     move-result-object v0
 
     .line 135
+    .local v0, "netd":Landroid/net/INetd;
     if-eqz v0, :cond_7
 
     .line 138
@@ -50,11 +51,11 @@
 
     .line 136
     :cond_7
-    new-instance v0, Landroid/os/RemoteException;
+    new-instance v1, Landroid/os/RemoteException;
 
-    const-string v1, "Failed to Get Netd Instance"
+    const-string v2, "Failed to Get Netd Instance"
 
-    invoke-direct {v0, v1}, Landroid/os/RemoteException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v1, v2}, Landroid/os/RemoteException;-><init>(Ljava/lang/String;)V
 
-    throw v0
+    throw v1
 .end method

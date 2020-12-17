@@ -20,6 +20,7 @@
 # direct methods
 .method public constructor <init>(J)V
     .registers 3
+    .param p1, "time"  # J
 
     .line 30
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -35,6 +36,7 @@
 # virtual methods
 .method public addDays(I)V
     .registers 8
+    .param p1, "val"  # I
 
     .line 35
     iget-wide v0, p0, Lcom/android/server/usage/UnixCalendar;->mTime:J
@@ -55,6 +57,7 @@
 
 .method public addMonths(I)V
     .registers 8
+    .param p1, "val"  # I
 
     .line 43
     iget-wide v0, p0, Lcom/android/server/usage/UnixCalendar;->mTime:J
@@ -75,6 +78,7 @@
 
 .method public addWeeks(I)V
     .registers 8
+    .param p1, "val"  # I
 
     .line 39
     iget-wide v0, p0, Lcom/android/server/usage/UnixCalendar;->mTime:J
@@ -95,6 +99,7 @@
 
 .method public addYears(I)V
     .registers 8
+    .param p1, "val"  # I
 
     .line 47
     iget-wide v0, p0, Lcom/android/server/usage/UnixCalendar;->mTime:J
@@ -124,6 +129,7 @@
 
 .method public setTimeInMillis(J)V
     .registers 3
+    .param p1, "time"  # J
 
     .line 51
     iput-wide p1, p0, Lcom/android/server/usage/UnixCalendar;->mTime:J

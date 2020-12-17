@@ -74,7 +74,9 @@
 
 # direct methods
 .method private static synthetic $closeResource(Ljava/lang/Throwable;Ljava/lang/AutoCloseable;)V
-    .registers 2
+    .registers 3
+    .param p0, "x0"  # Ljava/lang/Throwable;
+    .param p1, "x1"  # Ljava/lang/AutoCloseable;
 
     .line 194
     if-eqz p0, :cond_b
@@ -87,9 +89,9 @@
     goto :goto_e
 
     :catchall_6
-    move-exception p1
+    move-exception v0
 
-    invoke-virtual {p0, p1}, Ljava/lang/Throwable;->addSuppressed(Ljava/lang/Throwable;)V
+    invoke-virtual {p0, v0}, Ljava/lang/Throwable;->addSuppressed(Ljava/lang/Throwable;)V
 
     goto :goto_e
 
@@ -102,6 +104,9 @@
 
 .method public constructor <init>(Lcom/android/server/slice/SliceManagerService;Landroid/net/Uri;Ljava/lang/String;)V
     .registers 5
+    .param p1, "service"  # Lcom/android/server/slice/SliceManagerService;
+    .param p2, "uri"  # Landroid/net/Uri;
+    .param p3, "pkg"  # Ljava/lang/String;
 
     .line 60
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -142,13 +147,13 @@
     iput-object p3, p0, Lcom/android/server/slice/PinnedSliceState;->mPkg:Ljava/lang/String;
 
     .line 64
-    iget-object p1, p0, Lcom/android/server/slice/PinnedSliceState;->mService:Lcom/android/server/slice/SliceManagerService;
+    iget-object v0, p0, Lcom/android/server/slice/PinnedSliceState;->mService:Lcom/android/server/slice/SliceManagerService;
 
-    invoke-virtual {p1}, Lcom/android/server/slice/SliceManagerService;->getLock()Ljava/lang/Object;
+    invoke-virtual {v0}, Lcom/android/server/slice/SliceManagerService;->getLock()Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v0
 
-    iput-object p1, p0, Lcom/android/server/slice/PinnedSliceState;->mLock:Ljava/lang/Object;
+    iput-object v0, p0, Lcom/android/server/slice/PinnedSliceState;->mLock:Ljava/lang/Object;
 
     .line 65
     return-void
@@ -178,6 +183,8 @@
 
 .method private findSpec([Landroid/app/slice/SliceSpec;Ljava/lang/String;)Landroid/app/slice/SliceSpec;
     .registers 7
+    .param p1, "specs"  # [Landroid/app/slice/SliceSpec;
+    .param p2, "type"  # Ljava/lang/String;
 
     .line 94
     array-length v0, p1
@@ -190,6 +197,7 @@
     aget-object v2, p1, v1
 
     .line 95
+    .local v2, "spec":Landroid/app/slice/SliceSpec;
     invoke-virtual {v2}, Landroid/app/slice/SliceSpec;->getType()Ljava/lang/String;
 
     move-result-object v3
@@ -204,6 +212,7 @@
     return-object v2
 
     .line 94
+    .end local v2  # "spec":Landroid/app/slice/SliceSpec;
     :cond_11
     add-int/lit8 v1, v1, 0x1
 
@@ -211,13 +220,13 @@
 
     .line 99
     :cond_14
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    return-object p1
+    return-object v0
 .end method
 
 .method private handleRecheckListeners()V
-    .registers 4
+    .registers 5
 
     .line 172
     invoke-virtual {p0}, Lcom/android/server/slice/PinnedSliceState;->hasPinOrListener()Z
@@ -244,6 +253,7 @@
 
     add-int/lit8 v1, v1, -0x1
 
+    .local v1, "i":I
     :goto_12
     if-ltz v1, :cond_2e
 
@@ -257,28 +267,31 @@
     check-cast v2, Lcom/android/server/slice/PinnedSliceState$ListenerInfo;
 
     .line 176
+    .local v2, "l":Lcom/android/server/slice/PinnedSliceState$ListenerInfo;
     invoke-static {v2}, Lcom/android/server/slice/PinnedSliceState$ListenerInfo;->access$000(Lcom/android/server/slice/PinnedSliceState$ListenerInfo;)Landroid/os/IBinder;
 
-    move-result-object v2
+    move-result-object v3
 
-    invoke-interface {v2}, Landroid/os/IBinder;->isBinderAlive()Z
+    invoke-interface {v3}, Landroid/os/IBinder;->isBinderAlive()Z
 
-    move-result v2
+    move-result v3
 
-    if-nez v2, :cond_2b
+    if-nez v3, :cond_2b
 
     .line 177
-    iget-object v2, p0, Lcom/android/server/slice/PinnedSliceState;->mListeners:Landroid/util/ArrayMap;
+    iget-object v3, p0, Lcom/android/server/slice/PinnedSliceState;->mListeners:Landroid/util/ArrayMap;
 
-    invoke-virtual {v2, v1}, Landroid/util/ArrayMap;->removeAt(I)Ljava/lang/Object;
+    invoke-virtual {v3, v1}, Landroid/util/ArrayMap;->removeAt(I)Ljava/lang/Object;
 
     .line 174
+    .end local v2  # "l":Lcom/android/server/slice/PinnedSliceState$ListenerInfo;
     :cond_2b
     add-int/lit8 v1, v1, -0x1
 
     goto :goto_12
 
     .line 180
+    .end local v1  # "i":I
     :cond_2e
     invoke-direct {p0}, Lcom/android/server/slice/PinnedSliceState;->checkSelfRemove()V
 
@@ -300,7 +313,7 @@
 .end method
 
 .method private handleSendPinned()V
-    .registers 7
+    .registers 8
 
     .line 185
     invoke-virtual {p0}, Lcom/android/server/slice/PinnedSliceState;->getClient()Landroid/content/ContentProviderClient;
@@ -308,6 +321,7 @@
     move-result-object v0
 
     .line 186
+    .local v0, "client":Landroid/content/ContentProviderClient;
     const/4 v1, 0x0
 
     if-nez v0, :cond_d
@@ -329,6 +343,7 @@
     invoke-direct {v2}, Landroid/os/Bundle;-><init>()V
 
     .line 188
+    .local v2, "b":Landroid/os/Bundle;
     const-string/jumbo v3, "slice_uri"
 
     iget-object v4, p0, Lcom/android/server/slice/PinnedSliceState;->mUri:Landroid/net/Uri;
@@ -343,7 +358,7 @@
 
     invoke-virtual {v0, v3, v1, v2}, Landroid/content/ContentProviderClient;->call(Ljava/lang/String;Ljava/lang/String;Landroid/os/Bundle;)Landroid/os/Bundle;
     :try_end_20
-    .catch Ljava/lang/Exception; {:try_start_1a .. :try_end_20} :catch_21
+    .catch Landroid/os/RemoteException; {:try_start_1a .. :try_end_20} :catch_21
     .catchall {:try_start_1a .. :try_end_20} :catchall_3e
 
     .line 193
@@ -351,49 +366,58 @@
 
     .line 191
     :catch_21
-    move-exception v2
+    move-exception v3
 
     .line 192
+    .local v3, "e":Landroid/os/RemoteException;
     :try_start_22
-    const-string v3, "PinnedSliceState"
+    const-string v4, "PinnedSliceState"
 
-    new-instance v4, Ljava/lang/StringBuilder;
+    new-instance v5, Ljava/lang/StringBuilder;
 
-    invoke-direct {v4}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v5}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v5, "Unable to contact "
+    const-string v6, "Unable to contact "
 
-    invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    iget-object v5, p0, Lcom/android/server/slice/PinnedSliceState;->mUri:Landroid/net/Uri;
+    iget-object v6, p0, Lcom/android/server/slice/PinnedSliceState;->mUri:Landroid/net/Uri;
 
-    invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v4}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v5}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v4
+    move-result-object v5
 
-    invoke-static {v3, v4, v2}, Landroid/util/Log;->w(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    invoke-static {v4, v5, v3}, Landroid/util/Log;->w(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
     :try_end_3a
     .catchall {:try_start_22 .. :try_end_3a} :catchall_3e
 
     .line 194
+    .end local v2  # "b":Landroid/os/Bundle;
+    .end local v3  # "e":Landroid/os/RemoteException;
     :goto_3a
     invoke-static {v1, v0}, Lcom/android/server/slice/PinnedSliceState;->$closeResource(Ljava/lang/Throwable;Ljava/lang/AutoCloseable;)V
 
     .line 195
+    .end local v0  # "client":Landroid/content/ContentProviderClient;
     return-void
 
     .line 185
+    .restart local v0  # "client":Landroid/content/ContentProviderClient;
     :catchall_3e
     move-exception v1
 
+    .end local v0  # "client":Landroid/content/ContentProviderClient;
+    .end local p0  # "this":Lcom/android/server/slice/PinnedSliceState;
     :try_start_3f
     throw v1
     :try_end_40
     .catchall {:try_start_3f .. :try_end_40} :catchall_40
 
     .line 194
+    .restart local v0  # "client":Landroid/content/ContentProviderClient;
+    .restart local p0  # "this":Lcom/android/server/slice/PinnedSliceState;
     :catchall_40
     move-exception v2
 
@@ -403,7 +427,7 @@
 .end method
 
 .method private handleSendUnpinned()V
-    .registers 7
+    .registers 8
 
     .line 198
     invoke-virtual {p0}, Lcom/android/server/slice/PinnedSliceState;->getClient()Landroid/content/ContentProviderClient;
@@ -411,6 +435,7 @@
     move-result-object v0
 
     .line 199
+    .local v0, "client":Landroid/content/ContentProviderClient;
     const/4 v1, 0x0
 
     if-nez v0, :cond_d
@@ -432,6 +457,7 @@
     invoke-direct {v2}, Landroid/os/Bundle;-><init>()V
 
     .line 201
+    .local v2, "b":Landroid/os/Bundle;
     const-string/jumbo v3, "slice_uri"
 
     iget-object v4, p0, Lcom/android/server/slice/PinnedSliceState;->mUri:Landroid/net/Uri;
@@ -446,7 +472,7 @@
 
     invoke-virtual {v0, v3, v1, v2}, Landroid/content/ContentProviderClient;->call(Ljava/lang/String;Ljava/lang/String;Landroid/os/Bundle;)Landroid/os/Bundle;
     :try_end_20
-    .catch Ljava/lang/Exception; {:try_start_1a .. :try_end_20} :catch_21
+    .catch Landroid/os/RemoteException; {:try_start_1a .. :try_end_20} :catch_21
     .catchall {:try_start_1a .. :try_end_20} :catchall_3e
 
     .line 206
@@ -454,49 +480,58 @@
 
     .line 204
     :catch_21
-    move-exception v2
+    move-exception v3
 
     .line 205
+    .local v3, "e":Landroid/os/RemoteException;
     :try_start_22
-    const-string v3, "PinnedSliceState"
+    const-string v4, "PinnedSliceState"
 
-    new-instance v4, Ljava/lang/StringBuilder;
+    new-instance v5, Ljava/lang/StringBuilder;
 
-    invoke-direct {v4}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v5}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v5, "Unable to contact "
+    const-string v6, "Unable to contact "
 
-    invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    iget-object v5, p0, Lcom/android/server/slice/PinnedSliceState;->mUri:Landroid/net/Uri;
+    iget-object v6, p0, Lcom/android/server/slice/PinnedSliceState;->mUri:Landroid/net/Uri;
 
-    invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v4}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v5}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v4
+    move-result-object v5
 
-    invoke-static {v3, v4, v2}, Landroid/util/Log;->w(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+    invoke-static {v4, v5, v3}, Landroid/util/Log;->w(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
     :try_end_3a
     .catchall {:try_start_22 .. :try_end_3a} :catchall_3e
 
     .line 207
+    .end local v2  # "b":Landroid/os/Bundle;
+    .end local v3  # "e":Landroid/os/RemoteException;
     :goto_3a
     invoke-static {v1, v0}, Lcom/android/server/slice/PinnedSliceState;->$closeResource(Ljava/lang/Throwable;Ljava/lang/AutoCloseable;)V
 
     .line 208
+    .end local v0  # "client":Landroid/content/ContentProviderClient;
     return-void
 
     .line 198
+    .restart local v0  # "client":Landroid/content/ContentProviderClient;
     :catchall_3e
     move-exception v1
 
+    .end local v0  # "client":Landroid/content/ContentProviderClient;
+    .end local p0  # "this":Lcom/android/server/slice/PinnedSliceState;
     :try_start_3f
     throw v1
     :try_end_40
     .catchall {:try_start_3f .. :try_end_40} :catchall_40
 
     .line 207
+    .restart local v0  # "client":Landroid/content/ContentProviderClient;
+    .restart local p0  # "this":Lcom/android/server/slice/PinnedSliceState;
     :catchall_40
     move-exception v2
 
@@ -522,29 +557,31 @@
 .end method
 
 .method static synthetic lambda$mergeSpecs$1(Landroid/app/slice/SliceSpec;)Z
-    .registers 1
+    .registers 2
+    .param p0, "s"  # Landroid/app/slice/SliceSpec;
 
     .line 88
     if-eqz p0, :cond_4
 
-    const/4 p0, 0x1
+    const/4 v0, 0x1
 
     goto :goto_5
 
     :cond_4
-    const/4 p0, 0x0
+    const/4 v0, 0x0
 
     :goto_5
-    return p0
+    return v0
 .end method
 
 .method static synthetic lambda$mergeSpecs$2(I)[Landroid/app/slice/SliceSpec;
-    .registers 1
+    .registers 2
+    .param p0, "x$0"  # I
 
     .line 88
-    new-array p0, p0, [Landroid/app/slice/SliceSpec;
+    new-array v0, p0, [Landroid/app/slice/SliceSpec;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method public static synthetic lambda$t5Vl61Ns1u_83c4ri7920sczEu0(Lcom/android/server/slice/PinnedSliceState;)V
@@ -556,7 +593,8 @@
 .end method
 
 .method private setSlicePinned(Z)V
-    .registers 4
+    .registers 5
+    .param p1, "pinned"  # Z
 
     .line 111
     iget-object v0, p0, Lcom/android/server/slice/PinnedSliceState;->mLock:Ljava/lang/Object;
@@ -581,33 +619,33 @@
     if-eqz p1, :cond_1c
 
     .line 115
-    iget-object p1, p0, Lcom/android/server/slice/PinnedSliceState;->mService:Lcom/android/server/slice/SliceManagerService;
+    iget-object v1, p0, Lcom/android/server/slice/PinnedSliceState;->mService:Lcom/android/server/slice/SliceManagerService;
 
-    invoke-virtual {p1}, Lcom/android/server/slice/SliceManagerService;->getHandler()Landroid/os/Handler;
+    invoke-virtual {v1}, Lcom/android/server/slice/SliceManagerService;->getHandler()Landroid/os/Handler;
 
-    move-result-object p1
+    move-result-object v1
 
-    new-instance v1, Lcom/android/server/slice/-$$Lambda$PinnedSliceState$TZdoqC_LDA8If7sQ7WXz9LM6VHg;
+    new-instance v2, Lcom/android/server/slice/-$$Lambda$PinnedSliceState$TZdoqC_LDA8If7sQ7WXz9LM6VHg;
 
-    invoke-direct {v1, p0}, Lcom/android/server/slice/-$$Lambda$PinnedSliceState$TZdoqC_LDA8If7sQ7WXz9LM6VHg;-><init>(Lcom/android/server/slice/PinnedSliceState;)V
+    invoke-direct {v2, p0}, Lcom/android/server/slice/-$$Lambda$PinnedSliceState$TZdoqC_LDA8If7sQ7WXz9LM6VHg;-><init>(Lcom/android/server/slice/PinnedSliceState;)V
 
-    invoke-virtual {p1, v1}, Landroid/os/Handler;->post(Ljava/lang/Runnable;)Z
+    invoke-virtual {v1, v2}, Landroid/os/Handler;->post(Ljava/lang/Runnable;)Z
 
     goto :goto_2a
 
     .line 117
     :cond_1c
-    iget-object p1, p0, Lcom/android/server/slice/PinnedSliceState;->mService:Lcom/android/server/slice/SliceManagerService;
+    iget-object v1, p0, Lcom/android/server/slice/PinnedSliceState;->mService:Lcom/android/server/slice/SliceManagerService;
 
-    invoke-virtual {p1}, Lcom/android/server/slice/SliceManagerService;->getHandler()Landroid/os/Handler;
+    invoke-virtual {v1}, Lcom/android/server/slice/SliceManagerService;->getHandler()Landroid/os/Handler;
 
-    move-result-object p1
+    move-result-object v1
 
-    new-instance v1, Lcom/android/server/slice/-$$Lambda$PinnedSliceState$t5Vl61Ns1u_83c4ri7920sczEu0;
+    new-instance v2, Lcom/android/server/slice/-$$Lambda$PinnedSliceState$t5Vl61Ns1u_83c4ri7920sczEu0;
 
-    invoke-direct {v1, p0}, Lcom/android/server/slice/-$$Lambda$PinnedSliceState$t5Vl61Ns1u_83c4ri7920sczEu0;-><init>(Lcom/android/server/slice/PinnedSliceState;)V
+    invoke-direct {v2, p0}, Lcom/android/server/slice/-$$Lambda$PinnedSliceState$t5Vl61Ns1u_83c4ri7920sczEu0;-><init>(Lcom/android/server/slice/PinnedSliceState;)V
 
-    invoke-virtual {p1, v1}, Landroid/os/Handler;->post(Ljava/lang/Runnable;)Z
+    invoke-virtual {v1, v2}, Landroid/os/Handler;->post(Ljava/lang/Runnable;)Z
 
     .line 119
     :goto_2a
@@ -618,13 +656,13 @@
 
     .line 119
     :catchall_2c
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_2e
     .catchall {:try_start_3 .. :try_end_2e} :catchall_2c
 
-    throw p1
+    throw v1
 .end method
 
 
@@ -663,11 +701,12 @@
     move-result-object v0
 
     .line 159
+    .local v0, "client":Landroid/content/ContentProviderClient;
     if-nez v0, :cond_14
 
-    const/4 v0, 0x0
+    const/4 v1, 0x0
 
-    return-object v0
+    return-object v1
 
     .line 160
     :cond_14
@@ -803,7 +842,9 @@
 .end method
 
 .method public synthetic lambda$mergeSpecs$0$PinnedSliceState([Landroid/app/slice/SliceSpec;Landroid/app/slice/SliceSpec;)Landroid/app/slice/SliceSpec;
-    .registers 5
+    .registers 6
+    .param p1, "supportedSpecs"  # [Landroid/app/slice/SliceSpec;
+    .param p2, "s"  # Landroid/app/slice/SliceSpec;
 
     .line 82
     invoke-virtual {p2}, Landroid/app/slice/SliceSpec;->getType()Ljava/lang/String;
@@ -812,29 +853,30 @@
 
     invoke-direct {p0, p1, v0}, Lcom/android/server/slice/PinnedSliceState;->findSpec([Landroid/app/slice/SliceSpec;Ljava/lang/String;)Landroid/app/slice/SliceSpec;
 
-    move-result-object p1
+    move-result-object v0
 
     .line 83
-    if-nez p1, :cond_c
+    .local v0, "other":Landroid/app/slice/SliceSpec;
+    if-nez v0, :cond_c
 
-    const/4 p1, 0x0
+    const/4 v1, 0x0
 
-    return-object p1
+    return-object v1
 
     .line 84
     :cond_c
-    invoke-virtual {p1}, Landroid/app/slice/SliceSpec;->getRevision()I
-
-    move-result v0
-
-    invoke-virtual {p2}, Landroid/app/slice/SliceSpec;->getRevision()I
+    invoke-virtual {v0}, Landroid/app/slice/SliceSpec;->getRevision()I
 
     move-result v1
 
-    if-ge v0, v1, :cond_17
+    invoke-virtual {p2}, Landroid/app/slice/SliceSpec;->getRevision()I
+
+    move-result v2
+
+    if-ge v1, v2, :cond_17
 
     .line 85
-    return-object p1
+    return-object v0
 
     .line 87
     :cond_17
@@ -842,7 +884,8 @@
 .end method
 
 .method public mergeSpecs([Landroid/app/slice/SliceSpec;)V
-    .registers 5
+    .registers 6
+    .param p1, "supportedSpecs"  # [Landroid/app/slice/SliceSpec;
 
     .line 76
     iget-object v0, p0, Lcom/android/server/slice/PinnedSliceState;->mLock:Ljava/lang/Object;
@@ -869,36 +912,38 @@
     move-result-object v1
 
     .line 81
+    .local v1, "specs":Ljava/util/List;, "Ljava/util/List<Landroid/app/slice/SliceSpec;>;"
     invoke-interface {v1}, Ljava/util/List;->stream()Ljava/util/stream/Stream;
 
-    move-result-object v1
+    move-result-object v2
 
-    new-instance v2, Lcom/android/server/slice/-$$Lambda$PinnedSliceState$j_JfEZwPCa729MjgsTSd8MAItIw;
+    new-instance v3, Lcom/android/server/slice/-$$Lambda$PinnedSliceState$j_JfEZwPCa729MjgsTSd8MAItIw;
 
-    invoke-direct {v2, p0, p1}, Lcom/android/server/slice/-$$Lambda$PinnedSliceState$j_JfEZwPCa729MjgsTSd8MAItIw;-><init>(Lcom/android/server/slice/PinnedSliceState;[Landroid/app/slice/SliceSpec;)V
+    invoke-direct {v3, p0, p1}, Lcom/android/server/slice/-$$Lambda$PinnedSliceState$j_JfEZwPCa729MjgsTSd8MAItIw;-><init>(Lcom/android/server/slice/PinnedSliceState;[Landroid/app/slice/SliceSpec;)V
 
-    invoke-interface {v1, v2}, Ljava/util/stream/Stream;->map(Ljava/util/function/Function;)Ljava/util/stream/Stream;
+    invoke-interface {v2, v3}, Ljava/util/stream/Stream;->map(Ljava/util/function/Function;)Ljava/util/stream/Stream;
 
-    move-result-object p1
+    move-result-object v2
 
-    sget-object v1, Lcom/android/server/slice/-$$Lambda$PinnedSliceState$2PaYhOaggf1E5xg82LTTEwxmLE4;->INSTANCE:Lcom/android/server/slice/-$$Lambda$PinnedSliceState$2PaYhOaggf1E5xg82LTTEwxmLE4;
+    sget-object v3, Lcom/android/server/slice/-$$Lambda$PinnedSliceState$2PaYhOaggf1E5xg82LTTEwxmLE4;->INSTANCE:Lcom/android/server/slice/-$$Lambda$PinnedSliceState$2PaYhOaggf1E5xg82LTTEwxmLE4;
 
     .line 88
-    invoke-interface {p1, v1}, Ljava/util/stream/Stream;->filter(Ljava/util/function/Predicate;)Ljava/util/stream/Stream;
+    invoke-interface {v2, v3}, Ljava/util/stream/Stream;->filter(Ljava/util/function/Predicate;)Ljava/util/stream/Stream;
 
-    move-result-object p1
+    move-result-object v2
 
-    sget-object v1, Lcom/android/server/slice/-$$Lambda$PinnedSliceState$vxnx7v9Z67Tj9aywVmtdX48br1M;->INSTANCE:Lcom/android/server/slice/-$$Lambda$PinnedSliceState$vxnx7v9Z67Tj9aywVmtdX48br1M;
+    sget-object v3, Lcom/android/server/slice/-$$Lambda$PinnedSliceState$vxnx7v9Z67Tj9aywVmtdX48br1M;->INSTANCE:Lcom/android/server/slice/-$$Lambda$PinnedSliceState$vxnx7v9Z67Tj9aywVmtdX48br1M;
 
-    invoke-interface {p1, v1}, Ljava/util/stream/Stream;->toArray(Ljava/util/function/IntFunction;)[Ljava/lang/Object;
+    invoke-interface {v2, v3}, Ljava/util/stream/Stream;->toArray(Ljava/util/function/IntFunction;)[Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v2
 
-    check-cast p1, [Landroid/app/slice/SliceSpec;
+    check-cast v2, [Landroid/app/slice/SliceSpec;
 
-    iput-object p1, p0, Lcom/android/server/slice/PinnedSliceState;->mSupportedSpecs:[Landroid/app/slice/SliceSpec;
+    iput-object v2, p0, Lcom/android/server/slice/PinnedSliceState;->mSupportedSpecs:[Landroid/app/slice/SliceSpec;
 
     .line 90
+    .end local v1  # "specs":Ljava/util/List;, "Ljava/util/List<Landroid/app/slice/SliceSpec;>;"
     :goto_2d
     monitor-exit v0
 
@@ -907,17 +952,20 @@
 
     .line 90
     :catchall_2f
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_31
     .catchall {:try_start_3 .. :try_end_31} :catchall_2f
 
-    throw p1
+    throw v1
 .end method
 
 .method public pin(Ljava/lang/String;[Landroid/app/slice/SliceSpec;Landroid/os/IBinder;)V
     .registers 14
+    .param p1, "pkg"  # Ljava/lang/String;
+    .param p2, "specs"  # [Landroid/app/slice/SliceSpec;
+    .param p3, "token"  # Landroid/os/IBinder;
 
     .line 123
     iget-object v0, p0, Lcom/android/server/slice/PinnedSliceState;->mLock:Ljava/lang/Object;
@@ -958,11 +1006,11 @@
 
     .line 127
     :try_start_1a
-    iget-object p1, p0, Lcom/android/server/slice/PinnedSliceState;->mDeathRecipient:Landroid/os/IBinder$DeathRecipient;
+    iget-object v1, p0, Lcom/android/server/slice/PinnedSliceState;->mDeathRecipient:Landroid/os/IBinder$DeathRecipient;
 
-    const/4 v1, 0x0
+    const/4 v2, 0x0
 
-    invoke-interface {p3, p1, v1}, Landroid/os/IBinder;->linkToDeath(Landroid/os/IBinder$DeathRecipient;I)V
+    invoke-interface {p3, v1, v2}, Landroid/os/IBinder;->linkToDeath(Landroid/os/IBinder$DeathRecipient;I)V
     :try_end_20
     .catch Landroid/os/RemoteException; {:try_start_1a .. :try_end_20} :catch_21
     .catchall {:try_start_1a .. :try_end_20} :catchall_2b
@@ -972,7 +1020,7 @@
 
     .line 128
     :catch_21
-    move-exception p1
+    move-exception v1
 
     .line 130
     :goto_22
@@ -980,9 +1028,9 @@
     invoke-virtual {p0, p2}, Lcom/android/server/slice/PinnedSliceState;->mergeSpecs([Landroid/app/slice/SliceSpec;)V
 
     .line 131
-    const/4 p1, 0x1
+    const/4 v1, 0x1
 
-    invoke-direct {p0, p1}, Lcom/android/server/slice/PinnedSliceState;->setSlicePinned(Z)V
+    invoke-direct {p0, v1}, Lcom/android/server/slice/PinnedSliceState;->setSlicePinned(Z)V
 
     .line 132
     monitor-exit v0
@@ -992,58 +1040,60 @@
 
     .line 132
     :catchall_2b
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_2d
     .catchall {:try_start_22 .. :try_end_2d} :catchall_2b
 
-    throw p1
+    throw v1
 .end method
 
 .method public unpin(Ljava/lang/String;Landroid/os/IBinder;)Z
-    .registers 5
+    .registers 6
+    .param p1, "pkg"  # Ljava/lang/String;
+    .param p2, "token"  # Landroid/os/IBinder;
 
     .line 136
-    iget-object p1, p0, Lcom/android/server/slice/PinnedSliceState;->mLock:Ljava/lang/Object;
+    iget-object v0, p0, Lcom/android/server/slice/PinnedSliceState;->mLock:Ljava/lang/Object;
 
-    monitor-enter p1
+    monitor-enter v0
 
     .line 137
     :try_start_3
-    iget-object v0, p0, Lcom/android/server/slice/PinnedSliceState;->mDeathRecipient:Landroid/os/IBinder$DeathRecipient;
+    iget-object v1, p0, Lcom/android/server/slice/PinnedSliceState;->mDeathRecipient:Landroid/os/IBinder$DeathRecipient;
 
-    const/4 v1, 0x0
+    const/4 v2, 0x0
 
-    invoke-interface {p2, v0, v1}, Landroid/os/IBinder;->unlinkToDeath(Landroid/os/IBinder$DeathRecipient;I)Z
+    invoke-interface {p2, v1, v2}, Landroid/os/IBinder;->unlinkToDeath(Landroid/os/IBinder$DeathRecipient;I)Z
 
     .line 138
-    iget-object v0, p0, Lcom/android/server/slice/PinnedSliceState;->mListeners:Landroid/util/ArrayMap;
+    iget-object v1, p0, Lcom/android/server/slice/PinnedSliceState;->mListeners:Landroid/util/ArrayMap;
 
-    invoke-virtual {v0, p2}, Landroid/util/ArrayMap;->remove(Ljava/lang/Object;)Ljava/lang/Object;
+    invoke-virtual {v1, p2}, Landroid/util/ArrayMap;->remove(Ljava/lang/Object;)Ljava/lang/Object;
 
     .line 139
-    monitor-exit p1
+    monitor-exit v0
     :try_end_f
     .catchall {:try_start_3 .. :try_end_f} :catchall_16
 
     .line 140
     invoke-virtual {p0}, Lcom/android/server/slice/PinnedSliceState;->hasPinOrListener()Z
 
-    move-result p1
+    move-result v0
 
-    xor-int/lit8 p1, p1, 0x1
+    xor-int/lit8 v0, v0, 0x1
 
-    return p1
+    return v0
 
     .line 139
     :catchall_16
-    move-exception p2
+    move-exception v1
 
     :try_start_17
-    monitor-exit p1
+    monitor-exit v0
     :try_end_18
     .catchall {:try_start_17 .. :try_end_18} :catchall_16
 
-    throw p2
+    throw v1
 .end method

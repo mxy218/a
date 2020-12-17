@@ -24,8 +24,9 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/NetworkManagementService;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/NetworkManagementService;
 
-    .line 2480
+    .line 2678
     iput-object p1, p0, Lcom/android/server/NetworkManagementService$Injector;->this$0:Lcom/android/server/NetworkManagementService;
 
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -38,23 +39,23 @@
 .method reset()V
     .registers 8
 
-    .line 2506
+    .line 2704
     iget-object v0, p0, Lcom/android/server/NetworkManagementService$Injector;->this$0:Lcom/android/server/NetworkManagementService;
 
-    invoke-static {v0}, Lcom/android/server/NetworkManagementService;->access$2000(Lcom/android/server/NetworkManagementService;)Ljava/lang/Object;
+    invoke-static {v0}, Lcom/android/server/NetworkManagementService;->access$1900(Lcom/android/server/NetworkManagementService;)Ljava/lang/Object;
 
     move-result-object v0
 
     monitor-enter v0
 
-    .line 2507
+    .line 2705
     const/4 v1, 0x0
 
     :try_start_8
     invoke-virtual {p0, v1}, Lcom/android/server/NetworkManagementService$Injector;->setDataSaverMode(Z)V
 
-    .line 2508
-    const/4 v2, 0x4
+    .line 2706
+    const/4 v2, 0x3
 
     new-array v3, v2, [I
 
@@ -66,50 +67,42 @@
 
     aput v5, v3, v4
 
-    const/4 v4, 0x3
+    aput v2, v3, v5
 
-    aput v4, v3, v5
+    move-object v2, v3
 
-    aput v2, v3, v4
-
-    .line 2514
-    array-length v2, v3
+    .line 2711
+    .local v2, "chains":[I
+    array-length v3, v2
 
     move v4, v1
 
-    :goto_1b
-    if-ge v4, v2, :cond_2e
+    :goto_19
+    if-ge v4, v3, :cond_2c
 
-    aget v5, v3, v4
+    aget v5, v2, v4
 
-    .line 2515
+    .line 2712
+    .local v5, "chain":I
     invoke-virtual {p0, v5, v1}, Lcom/android/server/NetworkManagementService$Injector;->setFirewallChainState(IZ)V
 
-    .line 2516
+    .line 2713
     iget-object v6, p0, Lcom/android/server/NetworkManagementService$Injector;->this$0:Lcom/android/server/NetworkManagementService;
 
-    invoke-static {v6, v5}, Lcom/android/server/NetworkManagementService;->access$2100(Lcom/android/server/NetworkManagementService;I)Landroid/util/SparseIntArray;
+    invoke-static {v6, v5}, Lcom/android/server/NetworkManagementService;->access$2000(Lcom/android/server/NetworkManagementService;I)Landroid/util/SparseIntArray;
 
-    move-result-object v5
+    move-result-object v6
 
-    invoke-virtual {v5}, Landroid/util/SparseIntArray;->clear()V
+    invoke-virtual {v6}, Landroid/util/SparseIntArray;->clear()V
 
-    .line 2514
+    .line 2711
+    .end local v5  # "chain":I
     add-int/lit8 v4, v4, 0x1
 
-    goto :goto_1b
+    goto :goto_19
 
-    .line 2518
-    :cond_2e
-    iget-object v1, p0, Lcom/android/server/NetworkManagementService$Injector;->this$0:Lcom/android/server/NetworkManagementService;
-
-    invoke-static {v1}, Lcom/android/server/NetworkManagementService;->access$2300(Lcom/android/server/NetworkManagementService;)Landroid/util/SparseBooleanArray;
-
-    move-result-object v1
-
-    invoke-virtual {v1}, Landroid/util/SparseBooleanArray;->clear()V
-
-    .line 2519
+    .line 2715
+    :cond_2c
     iget-object v1, p0, Lcom/android/server/NetworkManagementService$Injector;->this$0:Lcom/android/server/NetworkManagementService;
 
     invoke-static {v1}, Lcom/android/server/NetworkManagementService;->access$2200(Lcom/android/server/NetworkManagementService;)Landroid/util/SparseBooleanArray;
@@ -118,137 +111,156 @@
 
     invoke-virtual {v1}, Landroid/util/SparseBooleanArray;->clear()V
 
-    .line 2520
+    .line 2716
+    iget-object v1, p0, Lcom/android/server/NetworkManagementService$Injector;->this$0:Lcom/android/server/NetworkManagementService;
+
+    invoke-static {v1}, Lcom/android/server/NetworkManagementService;->access$2100(Lcom/android/server/NetworkManagementService;)Landroid/util/SparseBooleanArray;
+
+    move-result-object v1
+
+    invoke-virtual {v1}, Landroid/util/SparseBooleanArray;->clear()V
+
+    .line 2717
+    .end local v2  # "chains":[I
     monitor-exit v0
 
-    .line 2521
+    .line 2718
     return-void
 
-    .line 2520
-    :catchall_42
+    .line 2717
+    :catchall_40
     move-exception v1
 
     monitor-exit v0
-    :try_end_44
-    .catchall {:try_start_8 .. :try_end_44} :catchall_42
+    :try_end_42
+    .catchall {:try_start_8 .. :try_end_42} :catchall_40
 
     throw v1
 .end method
 
 .method setDataSaverMode(Z)V
     .registers 3
+    .param p1, "dataSaverMode"  # Z
 
-    .line 2482
+    .line 2680
     iget-object v0, p0, Lcom/android/server/NetworkManagementService$Injector;->this$0:Lcom/android/server/NetworkManagementService;
 
-    invoke-static {v0, p1}, Lcom/android/server/NetworkManagementService;->access$1802(Lcom/android/server/NetworkManagementService;Z)Z
+    invoke-static {v0, p1}, Lcom/android/server/NetworkManagementService;->access$1702(Lcom/android/server/NetworkManagementService;Z)Z
 
-    .line 2483
+    .line 2681
     return-void
 .end method
 
 .method setFirewallChainState(IZ)V
     .registers 4
+    .param p1, "chain"  # I
+    .param p2, "state"  # Z
 
-    .line 2486
+    .line 2684
     iget-object v0, p0, Lcom/android/server/NetworkManagementService$Injector;->this$0:Lcom/android/server/NetworkManagementService;
 
-    invoke-static {v0, p1, p2}, Lcom/android/server/NetworkManagementService;->access$1900(Lcom/android/server/NetworkManagementService;IZ)V
+    invoke-static {v0, p1, p2}, Lcom/android/server/NetworkManagementService;->access$1800(Lcom/android/server/NetworkManagementService;IZ)V
 
-    .line 2487
+    .line 2685
     return-void
 .end method
 
 .method setFirewallRule(III)V
     .registers 6
+    .param p1, "chain"  # I
+    .param p2, "uid"  # I
+    .param p3, "rule"  # I
 
-    .line 2490
+    .line 2688
     iget-object v0, p0, Lcom/android/server/NetworkManagementService$Injector;->this$0:Lcom/android/server/NetworkManagementService;
 
-    invoke-static {v0}, Lcom/android/server/NetworkManagementService;->access$2000(Lcom/android/server/NetworkManagementService;)Ljava/lang/Object;
+    invoke-static {v0}, Lcom/android/server/NetworkManagementService;->access$1900(Lcom/android/server/NetworkManagementService;)Ljava/lang/Object;
 
     move-result-object v0
 
     monitor-enter v0
 
-    .line 2491
+    .line 2689
     :try_start_7
     iget-object v1, p0, Lcom/android/server/NetworkManagementService$Injector;->this$0:Lcom/android/server/NetworkManagementService;
 
-    invoke-static {v1, p1}, Lcom/android/server/NetworkManagementService;->access$2100(Lcom/android/server/NetworkManagementService;I)Landroid/util/SparseIntArray;
+    invoke-static {v1, p1}, Lcom/android/server/NetworkManagementService;->access$2000(Lcom/android/server/NetworkManagementService;I)Landroid/util/SparseIntArray;
 
-    move-result-object p1
+    move-result-object v1
 
-    invoke-virtual {p1, p2, p3}, Landroid/util/SparseIntArray;->put(II)V
+    invoke-virtual {v1, p2, p3}, Landroid/util/SparseIntArray;->put(II)V
 
-    .line 2492
+    .line 2690
     monitor-exit v0
 
-    .line 2493
+    .line 2691
     return-void
 
-    .line 2492
+    .line 2690
     :catchall_12
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_14
     .catchall {:try_start_7 .. :try_end_14} :catchall_12
 
-    throw p1
+    throw v1
 .end method
 
 .method setUidOnMeteredNetworkList(ZIZ)V
-    .registers 5
+    .registers 6
+    .param p1, "blacklist"  # Z
+    .param p2, "uid"  # I
+    .param p3, "enable"  # Z
 
-    .line 2496
+    .line 2694
     iget-object v0, p0, Lcom/android/server/NetworkManagementService$Injector;->this$0:Lcom/android/server/NetworkManagementService;
 
-    invoke-static {v0}, Lcom/android/server/NetworkManagementService;->access$2000(Lcom/android/server/NetworkManagementService;)Ljava/lang/Object;
+    invoke-static {v0}, Lcom/android/server/NetworkManagementService;->access$1900(Lcom/android/server/NetworkManagementService;)Ljava/lang/Object;
 
     move-result-object v0
 
     monitor-enter v0
 
-    .line 2497
+    .line 2695
     if-eqz p1, :cond_13
 
-    .line 2498
+    .line 2696
     :try_start_9
-    iget-object p1, p0, Lcom/android/server/NetworkManagementService$Injector;->this$0:Lcom/android/server/NetworkManagementService;
+    iget-object v1, p0, Lcom/android/server/NetworkManagementService$Injector;->this$0:Lcom/android/server/NetworkManagementService;
 
-    invoke-static {p1}, Lcom/android/server/NetworkManagementService;->access$2200(Lcom/android/server/NetworkManagementService;)Landroid/util/SparseBooleanArray;
+    invoke-static {v1}, Lcom/android/server/NetworkManagementService;->access$2100(Lcom/android/server/NetworkManagementService;)Landroid/util/SparseBooleanArray;
 
-    move-result-object p1
+    move-result-object v1
 
-    invoke-virtual {p1, p2, p3}, Landroid/util/SparseBooleanArray;->put(IZ)V
+    invoke-virtual {v1, p2, p3}, Landroid/util/SparseBooleanArray;->put(IZ)V
 
     goto :goto_1c
 
-    .line 2500
+    .line 2698
     :cond_13
-    iget-object p1, p0, Lcom/android/server/NetworkManagementService$Injector;->this$0:Lcom/android/server/NetworkManagementService;
+    iget-object v1, p0, Lcom/android/server/NetworkManagementService$Injector;->this$0:Lcom/android/server/NetworkManagementService;
 
-    invoke-static {p1}, Lcom/android/server/NetworkManagementService;->access$2300(Lcom/android/server/NetworkManagementService;)Landroid/util/SparseBooleanArray;
+    invoke-static {v1}, Lcom/android/server/NetworkManagementService;->access$2200(Lcom/android/server/NetworkManagementService;)Landroid/util/SparseBooleanArray;
 
-    move-result-object p1
+    move-result-object v1
 
-    invoke-virtual {p1, p2, p3}, Landroid/util/SparseBooleanArray;->put(IZ)V
+    invoke-virtual {v1, p2, p3}, Landroid/util/SparseBooleanArray;->put(IZ)V
 
-    .line 2502
+    .line 2700
     :goto_1c
     monitor-exit v0
 
-    .line 2503
+    .line 2701
     return-void
 
-    .line 2502
+    .line 2700
     :catchall_1e
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_20
     .catchall {:try_start_9 .. :try_end_20} :catchall_1e
 
-    throw p1
+    throw v1
 .end method

@@ -52,7 +52,7 @@
 .method static constructor <clinit>()V
     .registers 9
 
-    .line 51
+    .line 53
     new-instance v0, Lcom/android/server/connectivity/NetworkNotificationManager$NotificationType;
 
     const/4 v1, 0x0
@@ -65,7 +65,7 @@
 
     sput-object v0, Lcom/android/server/connectivity/NetworkNotificationManager$NotificationType;->LOST_INTERNET:Lcom/android/server/connectivity/NetworkNotificationManager$NotificationType;
 
-    .line 52
+    .line 54
     new-instance v0, Lcom/android/server/connectivity/NetworkNotificationManager$NotificationType;
 
     const/4 v2, 0x1
@@ -78,7 +78,7 @@
 
     sput-object v0, Lcom/android/server/connectivity/NetworkNotificationManager$NotificationType;->NETWORK_SWITCH:Lcom/android/server/connectivity/NetworkNotificationManager$NotificationType;
 
-    .line 53
+    .line 55
     new-instance v0, Lcom/android/server/connectivity/NetworkNotificationManager$NotificationType;
 
     const/4 v3, 0x2
@@ -91,7 +91,7 @@
 
     sput-object v0, Lcom/android/server/connectivity/NetworkNotificationManager$NotificationType;->NO_INTERNET:Lcom/android/server/connectivity/NetworkNotificationManager$NotificationType;
 
-    .line 54
+    .line 56
     new-instance v0, Lcom/android/server/connectivity/NetworkNotificationManager$NotificationType;
 
     const/4 v4, 0x3
@@ -104,7 +104,7 @@
 
     sput-object v0, Lcom/android/server/connectivity/NetworkNotificationManager$NotificationType;->LOGGED_IN:Lcom/android/server/connectivity/NetworkNotificationManager$NotificationType;
 
-    .line 55
+    .line 57
     new-instance v0, Lcom/android/server/connectivity/NetworkNotificationManager$NotificationType;
 
     const/4 v5, 0x4
@@ -117,7 +117,7 @@
 
     sput-object v0, Lcom/android/server/connectivity/NetworkNotificationManager$NotificationType;->PARTIAL_CONNECTIVITY:Lcom/android/server/connectivity/NetworkNotificationManager$NotificationType;
 
-    .line 56
+    .line 58
     new-instance v0, Lcom/android/server/connectivity/NetworkNotificationManager$NotificationType;
 
     const/4 v6, 0x5
@@ -130,7 +130,7 @@
 
     sput-object v0, Lcom/android/server/connectivity/NetworkNotificationManager$NotificationType;->SIGN_IN:Lcom/android/server/connectivity/NetworkNotificationManager$NotificationType;
 
-    .line 50
+    .line 52
     const/4 v0, 0x6
 
     new-array v0, v0, [Lcom/android/server/connectivity/NetworkNotificationManager$NotificationType;
@@ -166,65 +166,68 @@
 
 .method private constructor <init>(Ljava/lang/String;II)V
     .registers 4
+    .param p3, "eventId"  # I
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(I)V"
         }
     .end annotation
 
-    .line 60
+    .line 62
     invoke-direct {p0, p1, p2}, Ljava/lang/Enum;-><init>(Ljava/lang/String;I)V
 
-    .line 61
+    .line 63
     iput p3, p0, Lcom/android/server/connectivity/NetworkNotificationManager$NotificationType;->eventId:I
 
-    .line 62
+    .line 64
     invoke-static {}, Lcom/android/server/connectivity/NetworkNotificationManager$NotificationType$Holder;->access$000()Landroid/util/SparseArray;
 
     move-result-object p1
 
     invoke-virtual {p1, p3, p0}, Landroid/util/SparseArray;->put(ILjava/lang/Object;)V
 
-    .line 63
+    .line 65
     return-void
 .end method
 
 .method public static getFromId(I)Lcom/android/server/connectivity/NetworkNotificationManager$NotificationType;
     .registers 2
+    .param p0, "id"  # I
 
-    .line 70
+    .line 72
     invoke-static {}, Lcom/android/server/connectivity/NetworkNotificationManager$NotificationType$Holder;->access$000()Landroid/util/SparseArray;
 
     move-result-object v0
 
     invoke-virtual {v0, p0}, Landroid/util/SparseArray;->get(I)Ljava/lang/Object;
 
-    move-result-object p0
+    move-result-object v0
 
-    check-cast p0, Lcom/android/server/connectivity/NetworkNotificationManager$NotificationType;
+    check-cast v0, Lcom/android/server/connectivity/NetworkNotificationManager$NotificationType;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method public static valueOf(Ljava/lang/String;)Lcom/android/server/connectivity/NetworkNotificationManager$NotificationType;
     .registers 2
+    .param p0, "name"  # Ljava/lang/String;
 
-    .line 50
+    .line 52
     const-class v0, Lcom/android/server/connectivity/NetworkNotificationManager$NotificationType;
 
     invoke-static {v0, p0}, Ljava/lang/Enum;->valueOf(Ljava/lang/Class;Ljava/lang/String;)Ljava/lang/Enum;
 
-    move-result-object p0
+    move-result-object v0
 
-    check-cast p0, Lcom/android/server/connectivity/NetworkNotificationManager$NotificationType;
+    check-cast v0, Lcom/android/server/connectivity/NetworkNotificationManager$NotificationType;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method public static values()[Lcom/android/server/connectivity/NetworkNotificationManager$NotificationType;
     .registers 1
 
-    .line 50
+    .line 52
     sget-object v0, Lcom/android/server/connectivity/NetworkNotificationManager$NotificationType;->$VALUES:[Lcom/android/server/connectivity/NetworkNotificationManager$NotificationType;
 
     invoke-virtual {v0}, [Lcom/android/server/connectivity/NetworkNotificationManager$NotificationType;->clone()Ljava/lang/Object;

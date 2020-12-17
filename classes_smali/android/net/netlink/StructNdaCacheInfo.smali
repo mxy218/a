@@ -45,32 +45,34 @@
 .end method
 
 .method private static hasAvailableSpace(Ljava/nio/ByteBuffer;)Z
-    .registers 2
+    .registers 3
+    .param p0, "byteBuffer"  # Ljava/nio/ByteBuffer;
 
     .line 37
     if-eqz p0, :cond_c
 
     invoke-virtual {p0}, Ljava/nio/ByteBuffer;->remaining()I
 
-    move-result p0
+    move-result v0
 
-    const/16 v0, 0x10
+    const/16 v1, 0x10
 
-    if-lt p0, v0, :cond_c
+    if-lt v0, v1, :cond_c
 
-    const/4 p0, 0x1
+    const/4 v0, 0x1
 
     goto :goto_d
 
     :cond_c
-    const/4 p0, 0x0
+    const/4 v0, 0x0
 
     :goto_d
-    return p0
+    return v0
 .end method
 
 .method public static parse(Ljava/nio/ByteBuffer;)Landroid/net/netlink/StructNdaCacheInfo;
     .registers 3
+    .param p0, "byteBuffer"  # Ljava/nio/ByteBuffer;
 
     .line 41
     invoke-static {p0}, Landroid/net/netlink/StructNdaCacheInfo;->hasAvailableSpace(Ljava/nio/ByteBuffer;)Z
@@ -79,9 +81,9 @@
 
     if-nez v0, :cond_8
 
-    const/4 p0, 0x0
+    const/4 v0, 0x0
 
-    return-object p0
+    return-object v0
 
     .line 46
     :cond_8
@@ -90,6 +92,7 @@
     invoke-direct {v0}, Landroid/net/netlink/StructNdaCacheInfo;-><init>()V
 
     .line 47
+    .local v0, "struct":Landroid/net/netlink/StructNdaCacheInfo;
     invoke-virtual {p0}, Ljava/nio/ByteBuffer;->getInt()I
 
     move-result v1
@@ -113,16 +116,17 @@
     .line 50
     invoke-virtual {p0}, Ljava/nio/ByteBuffer;->getInt()I
 
-    move-result p0
+    move-result v1
 
-    iput p0, v0, Landroid/net/netlink/StructNdaCacheInfo;->ndm_refcnt:I
+    iput v1, v0, Landroid/net/netlink/StructNdaCacheInfo;->ndm_refcnt:I
 
     .line 51
     return-object v0
 .end method
 
 .method private static ticksToMilliSeconds(I)J
-    .registers 5
+    .registers 7
+    .param p0, "intClockTicks"  # I
 
     .line 59
     int-to-long v0, p0
@@ -132,15 +136,16 @@
     and-long/2addr v0, v2
 
     .line 60
+    .local v0, "longClockTicks":J
     const-wide/16 v2, 0x3e8
 
-    mul-long/2addr v0, v2
+    mul-long/2addr v2, v0
 
-    sget-wide v2, Landroid/net/netlink/StructNdaCacheInfo;->CLOCK_TICKS_PER_SECOND:J
+    sget-wide v4, Landroid/net/netlink/StructNdaCacheInfo;->CLOCK_TICKS_PER_SECOND:J
 
-    div-long/2addr v0, v2
+    div-long/2addr v2, v4
 
-    return-wide v0
+    return-wide v2
 .end method
 
 

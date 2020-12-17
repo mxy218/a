@@ -152,17 +152,18 @@
 
 .method public static valueOf(Ljava/lang/String;)Lcom/android/server/connectivity/NetworkDiagnostics$DnsResponseCode;
     .registers 2
+    .param p0, "name"  # Ljava/lang/String;
 
     .line 99
     const-class v0, Lcom/android/server/connectivity/NetworkDiagnostics$DnsResponseCode;
 
     invoke-static {v0, p0}, Ljava/lang/Enum;->valueOf(Ljava/lang/Class;Ljava/lang/String;)Ljava/lang/Enum;
 
-    move-result-object p0
+    move-result-object v0
 
-    check-cast p0, Lcom/android/server/connectivity/NetworkDiagnostics$DnsResponseCode;
+    check-cast v0, Lcom/android/server/connectivity/NetworkDiagnostics$DnsResponseCode;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method public static values()[Lcom/android/server/connectivity/NetworkDiagnostics$DnsResponseCode;

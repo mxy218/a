@@ -64,6 +64,7 @@
 # direct methods
 .method public constructor <init>(Ljava/lang/String;)V
     .registers 6
+    .param p1, "settingsKey"  # Ljava/lang/String;
 
     .line 87
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -112,6 +113,7 @@
 
 .method static synthetic access$000(Lcom/android/server/am/BroadcastConstants;)V
     .registers 1
+    .param p0, "x0"  # Lcom/android/server/am/BroadcastConstants;
 
     .line 32
     invoke-direct {p0}, Lcom/android/server/am/BroadcastConstants;->updateConstants()V
@@ -243,6 +245,7 @@
     move-exception v1
 
     .line 110
+    .local v1, "e":Ljava/lang/IllegalArgumentException;
     const-string v2, "BroadcastConstants"
 
     new-instance v3, Ljava/lang/StringBuilder;
@@ -273,6 +276,7 @@
     return-void
 
     .line 123
+    .end local v1  # "e":Ljava/lang/IllegalArgumentException;
     :goto_7d
     monitor-exit v0
     :try_end_7e
@@ -285,6 +289,7 @@
 # virtual methods
 .method public dump(Ljava/io/PrintWriter;)V
     .registers 5
+    .param p1, "pw"  # Ljava/io/PrintWriter;
 
     .line 130
     iget-object v0, p0, Lcom/android/server/am/BroadcastConstants;->mParser:Landroid/util/KeyValueListParser;
@@ -458,42 +463,44 @@
 
     .line 159
     :catchall_aa
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_ac
     .catchall {:try_start_3 .. :try_end_ac} :catchall_aa
 
-    throw p1
+    throw v1
 .end method
 
 .method public startObserving(Landroid/os/Handler;Landroid/content/ContentResolver;)V
-    .registers 5
+    .registers 7
+    .param p1, "handler"  # Landroid/os/Handler;
+    .param p2, "resolver"  # Landroid/content/ContentResolver;
 
     .line 96
     iput-object p2, p0, Lcom/android/server/am/BroadcastConstants;->mResolver:Landroid/content/ContentResolver;
 
     .line 98
-    new-instance p2, Lcom/android/server/am/BroadcastConstants$SettingsObserver;
+    new-instance v0, Lcom/android/server/am/BroadcastConstants$SettingsObserver;
 
-    invoke-direct {p2, p0, p1}, Lcom/android/server/am/BroadcastConstants$SettingsObserver;-><init>(Lcom/android/server/am/BroadcastConstants;Landroid/os/Handler;)V
+    invoke-direct {v0, p0, p1}, Lcom/android/server/am/BroadcastConstants$SettingsObserver;-><init>(Lcom/android/server/am/BroadcastConstants;Landroid/os/Handler;)V
 
-    iput-object p2, p0, Lcom/android/server/am/BroadcastConstants;->mSettingsObserver:Lcom/android/server/am/BroadcastConstants$SettingsObserver;
+    iput-object v0, p0, Lcom/android/server/am/BroadcastConstants;->mSettingsObserver:Lcom/android/server/am/BroadcastConstants$SettingsObserver;
 
     .line 99
-    iget-object p1, p0, Lcom/android/server/am/BroadcastConstants;->mResolver:Landroid/content/ContentResolver;
+    iget-object v0, p0, Lcom/android/server/am/BroadcastConstants;->mResolver:Landroid/content/ContentResolver;
 
-    iget-object p2, p0, Lcom/android/server/am/BroadcastConstants;->mSettingsKey:Ljava/lang/String;
+    iget-object v1, p0, Lcom/android/server/am/BroadcastConstants;->mSettingsKey:Ljava/lang/String;
 
-    invoke-static {p2}, Landroid/provider/Settings$Global;->getUriFor(Ljava/lang/String;)Landroid/net/Uri;
+    invoke-static {v1}, Landroid/provider/Settings$Global;->getUriFor(Ljava/lang/String;)Landroid/net/Uri;
 
-    move-result-object p2
+    move-result-object v1
 
-    iget-object v0, p0, Lcom/android/server/am/BroadcastConstants;->mSettingsObserver:Lcom/android/server/am/BroadcastConstants$SettingsObserver;
+    iget-object v2, p0, Lcom/android/server/am/BroadcastConstants;->mSettingsObserver:Lcom/android/server/am/BroadcastConstants$SettingsObserver;
 
-    const/4 v1, 0x0
+    const/4 v3, 0x0
 
-    invoke-virtual {p1, p2, v1, v0}, Landroid/content/ContentResolver;->registerContentObserver(Landroid/net/Uri;ZLandroid/database/ContentObserver;)V
+    invoke-virtual {v0, v1, v3, v2}, Landroid/content/ContentResolver;->registerContentObserver(Landroid/net/Uri;ZLandroid/database/ContentObserver;)V
 
     .line 102
     invoke-direct {p0}, Lcom/android/server/am/BroadcastConstants;->updateConstants()V

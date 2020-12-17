@@ -27,6 +27,9 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/NsdService;ILjava/lang/String;[Ljava/lang/String;)V
     .registers 5
+    .param p2, "code"  # I
+    .param p3, "raw"  # Ljava/lang/String;
+    .param p4, "cooked"  # [Ljava/lang/String;
 
     .line 646
     iput-object p1, p0, Lcom/android/server/NsdService$NativeEvent;->this$0:Lcom/android/server/NsdService;

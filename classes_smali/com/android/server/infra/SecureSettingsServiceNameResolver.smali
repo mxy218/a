@@ -15,6 +15,8 @@
 # direct methods
 .method public constructor <init>(Landroid/content/Context;Ljava/lang/String;)V
     .registers 3
+    .param p1, "context"  # Landroid/content/Context;
+    .param p2, "property"  # Ljava/lang/String;
 
     .line 38
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -33,6 +35,7 @@
 # virtual methods
 .method public dumpShort(Ljava/io/PrintWriter;)V
     .registers 3
+    .param p1, "pw"  # Ljava/io/PrintWriter;
 
     .line 51
     const-string v0, "SecureSettingsServiceNamer: prop="
@@ -49,6 +52,8 @@
 
 .method public dumpShort(Ljava/io/PrintWriter;I)V
     .registers 4
+    .param p1, "pw"  # Ljava/io/PrintWriter;
+    .param p2, "userId"  # I
 
     .line 57
     const-string v0, "defaultService="
@@ -57,9 +62,9 @@
 
     invoke-virtual {p0, p2}, Lcom/android/server/infra/SecureSettingsServiceNameResolver;->getDefaultServiceName(I)Ljava/lang/String;
 
-    move-result-object p2
+    move-result-object v0
 
-    invoke-virtual {p1, p2}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
+    invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
 
     .line 58
     return-void
@@ -67,6 +72,7 @@
 
 .method public getDefaultServiceName(I)Ljava/lang/String;
     .registers 4
+    .param p1, "userId"  # I
 
     .line 45
     iget-object v0, p0, Lcom/android/server/infra/SecureSettingsServiceNameResolver;->mContext:Landroid/content/Context;
@@ -79,9 +85,9 @@
 
     invoke-static {v0, v1, p1}, Landroid/provider/Settings$Secure;->getStringForUser(Landroid/content/ContentResolver;Ljava/lang/String;I)Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
-    return-object p1
+    return-object v0
 .end method
 
 .method public toString()Ljava/lang/String;

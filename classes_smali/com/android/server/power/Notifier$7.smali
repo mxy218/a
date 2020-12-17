@@ -21,8 +21,9 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/power/Notifier;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/power/Notifier;
 
-    .line 782
+    .line 813
     iput-object p1, p0, Lcom/android/server/power/Notifier$7;->this$0:Lcom/android/server/power/Notifier;
 
     invoke-direct {p0}, Landroid/content/BroadcastReceiver;-><init>()V
@@ -33,56 +34,58 @@
 
 # virtual methods
 .method public onReceive(Landroid/content/Context;Landroid/content/Intent;)V
-    .registers 8
+    .registers 10
+    .param p1, "context"  # Landroid/content/Context;
+    .param p2, "intent"  # Landroid/content/Intent;
 
-    .line 785
-    const/4 p1, 0x3
+    .line 816
+    const/4 v0, 0x3
 
-    new-array p1, p1, [Ljava/lang/Object;
+    new-array v0, v0, [Ljava/lang/Object;
 
-    const/4 p2, 0x1
+    const/4 v1, 0x1
 
-    invoke-static {p2}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
+    invoke-static {v1}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
 
-    move-result-object v0
+    move-result-object v2
 
-    const/4 v1, 0x0
+    const/4 v3, 0x0
 
-    aput-object v0, p1, v1
+    aput-object v2, v0, v3
 
-    .line 786
+    .line 817
     invoke-static {}, Landroid/os/SystemClock;->uptimeMillis()J
-
-    move-result-wide v1
-
-    iget-object v3, p0, Lcom/android/server/power/Notifier$7;->this$0:Lcom/android/server/power/Notifier;
-
-    invoke-static {v3}, Lcom/android/server/power/Notifier;->access$500(Lcom/android/server/power/Notifier;)J
 
     move-result-wide v3
 
-    sub-long/2addr v1, v3
+    iget-object v5, p0, Lcom/android/server/power/Notifier$7;->this$0:Lcom/android/server/power/Notifier;
 
-    invoke-static {v1, v2}, Ljava/lang/Long;->valueOf(J)Ljava/lang/Long;
+    invoke-static {v5}, Lcom/android/server/power/Notifier;->access$500(Lcom/android/server/power/Notifier;)J
 
-    move-result-object v1
+    move-result-wide v5
 
-    aput-object v1, p1, p2
+    sub-long/2addr v3, v5
 
-    const/4 p2, 0x2
+    invoke-static {v3, v4}, Ljava/lang/Long;->valueOf(J)Ljava/lang/Long;
 
-    aput-object v0, p1, p2
+    move-result-object v3
 
-    .line 785
-    const/16 p2, 0xaa6
+    aput-object v3, v0, v1
 
-    invoke-static {p2, p1}, Landroid/util/EventLog;->writeEvent(I[Ljava/lang/Object;)I
+    const/4 v1, 0x2
 
-    .line 787
-    iget-object p1, p0, Lcom/android/server/power/Notifier$7;->this$0:Lcom/android/server/power/Notifier;
+    aput-object v2, v0, v1
 
-    invoke-static {p1}, Lcom/android/server/power/Notifier;->access$600(Lcom/android/server/power/Notifier;)V
+    .line 816
+    const/16 v1, 0xaa6
 
-    .line 788
+    invoke-static {v1, v0}, Landroid/util/EventLog;->writeEvent(I[Ljava/lang/Object;)I
+
+    .line 818
+    iget-object v0, p0, Lcom/android/server/power/Notifier$7;->this$0:Lcom/android/server/power/Notifier;
+
+    invoke-static {v0}, Lcom/android/server/power/Notifier;->access$600(Lcom/android/server/power/Notifier;)V
+
+    .line 819
     return-void
 .end method

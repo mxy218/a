@@ -94,7 +94,8 @@
 .end method
 
 .method public constructor <init>(Landroid/content/Context;)V
-    .registers 2
+    .registers 3
+    .param p1, "context"  # Landroid/content/Context;
 
     .line 109
     invoke-direct {p0}, Landroid/os/Binder;-><init>()V
@@ -102,9 +103,9 @@
     .line 110
     invoke-virtual {p1}, Landroid/content/Context;->getContentResolver()Landroid/content/ContentResolver;
 
-    move-result-object p1
+    move-result-object v0
 
-    invoke-direct {p0, p1}, Lcom/android/server/CertBlacklister;->registerObservers(Landroid/content/ContentResolver;)V
+    invoke-direct {p0, v0}, Lcom/android/server/CertBlacklister;->registerObservers(Landroid/content/ContentResolver;)V
 
     .line 111
     return-void
@@ -112,6 +113,7 @@
 
 .method private buildPubkeyObserver(Landroid/content/ContentResolver;)Lcom/android/server/CertBlacklister$BlacklistObserver;
     .registers 6
+    .param p1, "cr"  # Landroid/content/ContentResolver;
 
     .line 114
     new-instance v0, Lcom/android/server/CertBlacklister$BlacklistObserver;
@@ -129,6 +131,7 @@
 
 .method private buildSerialObserver(Landroid/content/ContentResolver;)Lcom/android/server/CertBlacklister$BlacklistObserver;
     .registers 6
+    .param p1, "cr"  # Landroid/content/ContentResolver;
 
     .line 121
     new-instance v0, Lcom/android/server/CertBlacklister$BlacklistObserver;
@@ -146,6 +149,7 @@
 
 .method private registerObservers(Landroid/content/ContentResolver;)V
     .registers 5
+    .param p1, "cr"  # Landroid/content/ContentResolver;
 
     .line 129
     nop

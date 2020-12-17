@@ -49,6 +49,7 @@
 
 .method public constructor <init>(Landroid/content/Context;)V
     .registers 2
+    .param p1, "context"  # Landroid/content/Context;
 
     .line 66
     invoke-direct {p0, p1}, Lcom/android/server/SystemService;-><init>(Landroid/content/Context;)V
@@ -70,12 +71,13 @@
 .end method
 
 .method static synthetic access$200(Lcom/android/server/RecoverySystemService;)Landroid/content/Context;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/RecoverySystemService;
 
     .line 47
-    iget-object p0, p0, Lcom/android/server/RecoverySystemService;->mContext:Landroid/content/Context;
+    iget-object v0, p0, Lcom/android/server/RecoverySystemService;->mContext:Landroid/content/Context;
 
-    return-object p0
+    return-object v0
 .end method
 
 

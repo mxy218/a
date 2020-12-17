@@ -32,7 +32,7 @@
 .method public asBinder()Landroid/os/IBinder;
     .registers 2
 
-    .line 329
+    .line 323
     const/4 v0, 0x0
 
     return-object v0
@@ -40,6 +40,7 @@
 
 .method public bandwidthAddNaughtyApp(I)V
     .registers 2
+    .param p1, "uid"  # I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -52,6 +53,7 @@
 
 .method public bandwidthAddNiceApp(I)V
     .registers 2
+    .param p1, "uid"  # I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -62,20 +64,9 @@
     return-void
 .end method
 
-.method public bandwidthAddRestrictAppOnInterface(Ljava/lang/String;Ljava/lang/String;I)V
-    .registers 4
-    .annotation system Ldalvik/annotation/Throws;
-        value = {
-            Landroid/os/RemoteException;
-        }
-    .end annotation
-
-    .line 319
-    return-void
-.end method
-
 .method public bandwidthEnableDataSaver(Z)Z
-    .registers 2
+    .registers 3
+    .param p1, "enable"  # Z
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -83,13 +74,14 @@
     .end annotation
 
     .line 27
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    return p1
+    return v0
 .end method
 
 .method public bandwidthRemoveInterfaceAlert(Ljava/lang/String;)V
     .registers 2
+    .param p1, "ifName"  # Ljava/lang/String;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -102,6 +94,7 @@
 
 .method public bandwidthRemoveInterfaceQuota(Ljava/lang/String;)V
     .registers 2
+    .param p1, "ifName"  # Ljava/lang/String;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -114,6 +107,7 @@
 
 .method public bandwidthRemoveNaughtyApp(I)V
     .registers 2
+    .param p1, "uid"  # I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -126,6 +120,7 @@
 
 .method public bandwidthRemoveNiceApp(I)V
     .registers 2
+    .param p1, "uid"  # I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -136,20 +131,9 @@
     return-void
 .end method
 
-.method public bandwidthRemoveRestrictAppOnInterface(Ljava/lang/String;Ljava/lang/String;I)V
-    .registers 4
-    .annotation system Ldalvik/annotation/Throws;
-        value = {
-            Landroid/os/RemoteException;
-        }
-    .end annotation
-
-    .line 322
-    return-void
-.end method
-
 .method public bandwidthSetGlobalAlert(J)V
     .registers 3
+    .param p1, "bytes"  # J
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -162,6 +146,8 @@
 
 .method public bandwidthSetInterfaceAlert(Ljava/lang/String;J)V
     .registers 4
+    .param p1, "ifName"  # Ljava/lang/String;
+    .param p2, "bytes"  # J
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -174,6 +160,8 @@
 
 .method public bandwidthSetInterfaceQuota(Ljava/lang/String;J)V
     .registers 4
+    .param p1, "ifName"  # Ljava/lang/String;
+    .param p2, "bytes"  # J
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -185,7 +173,9 @@
 .end method
 
 .method public clatdStart(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
-    .registers 3
+    .registers 4
+    .param p1, "ifName"  # Ljava/lang/String;
+    .param p2, "nat64Prefix"  # Ljava/lang/String;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -193,13 +183,14 @@
     .end annotation
 
     .line 134
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    return-object p1
+    return-object v0
 .end method
 
 .method public clatdStop(Ljava/lang/String;)V
     .registers 2
+    .param p1, "ifName"  # Ljava/lang/String;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -212,6 +203,8 @@
 
 .method public firewallAddUidInterfaceRules(Ljava/lang/String;[I)V
     .registers 3
+    .param p1, "ifName"  # Ljava/lang/String;
+    .param p2, "uids"  # [I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -224,6 +217,8 @@
 
 .method public firewallEnableChildChain(IZ)V
     .registers 3
+    .param p1, "childChain"  # I
+    .param p2, "enable"  # Z
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -236,6 +231,7 @@
 
 .method public firewallRemoveUidInterfaceRules([I)V
     .registers 2
+    .param p1, "uids"  # [I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -247,7 +243,10 @@
 .end method
 
 .method public firewallReplaceUidChain(Ljava/lang/String;Z[I)Z
-    .registers 4
+    .registers 5
+    .param p1, "chainName"  # Ljava/lang/String;
+    .param p2, "isWhitelist"  # Z
+    .param p3, "uids"  # [I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -255,13 +254,14 @@
     .end annotation
 
     .line 23
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    return p1
+    return v0
 .end method
 
 .method public firewallSetFirewallType(I)V
     .registers 2
+    .param p1, "firewalltype"  # I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -274,6 +274,8 @@
 
 .method public firewallSetInterfaceRule(Ljava/lang/String;I)V
     .registers 3
+    .param p1, "ifName"  # Ljava/lang/String;
+    .param p2, "firewallRule"  # I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -286,6 +288,9 @@
 
 .method public firewallSetUidRule(III)V
     .registers 4
+    .param p1, "childChain"  # I
+    .param p2, "uid"  # I
+    .param p3, "firewallRule"  # I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -299,7 +304,7 @@
 .method public getInterfaceVersion()I
     .registers 2
 
-    .line 325
+    .line 319
     const/4 v0, -0x1
 
     return v0
@@ -320,7 +325,11 @@
 .end method
 
 .method public getProcSysNet(IILjava/lang/String;Ljava/lang/String;)Ljava/lang/String;
-    .registers 5
+    .registers 6
+    .param p1, "ipversion"  # I
+    .param p2, "which"  # I
+    .param p3, "ifname"  # Ljava/lang/String;
+    .param p4, "parameter"  # Ljava/lang/String;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -328,13 +337,16 @@
     .end annotation
 
     .line 72
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    return-object p1
+    return-object v0
 .end method
 
 .method public idletimerAddInterface(Ljava/lang/String;ILjava/lang/String;)V
     .registers 4
+    .param p1, "ifName"  # Ljava/lang/String;
+    .param p2, "timeout"  # I
+    .param p3, "classLabel"  # Ljava/lang/String;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -347,6 +359,9 @@
 
 .method public idletimerRemoveInterface(Ljava/lang/String;ILjava/lang/String;)V
     .registers 4
+    .param p1, "ifName"  # Ljava/lang/String;
+    .param p2, "timeout"  # I
+    .param p3, "classLabel"  # Ljava/lang/String;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -359,6 +374,9 @@
 
 .method public interfaceAddAddress(Ljava/lang/String;Ljava/lang/String;I)V
     .registers 4
+    .param p1, "ifName"  # Ljava/lang/String;
+    .param p2, "addrString"  # Ljava/lang/String;
+    .param p3, "prefixLength"  # I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -371,6 +389,7 @@
 
 .method public interfaceClearAddrs(Ljava/lang/String;)V
     .registers 2
+    .param p1, "ifName"  # Ljava/lang/String;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -383,6 +402,9 @@
 
 .method public interfaceDelAddress(Ljava/lang/String;Ljava/lang/String;I)V
     .registers 4
+    .param p1, "ifName"  # Ljava/lang/String;
+    .param p2, "addrString"  # Ljava/lang/String;
+    .param p3, "prefixLength"  # I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -394,7 +416,8 @@
 .end method
 
 .method public interfaceGetCfg(Ljava/lang/String;)Landroid/net/InterfaceConfigurationParcel;
-    .registers 2
+    .registers 3
+    .param p1, "ifName"  # Ljava/lang/String;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -402,9 +425,9 @@
     .end annotation
 
     .line 275
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    return-object p1
+    return-object v0
 .end method
 
 .method public interfaceGetList()[Ljava/lang/String;
@@ -423,6 +446,7 @@
 
 .method public interfaceSetCfg(Landroid/net/InterfaceConfigurationParcel;)V
     .registers 2
+    .param p1, "cfg"  # Landroid/net/InterfaceConfigurationParcel;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -435,6 +459,8 @@
 
 .method public interfaceSetEnableIPv6(Ljava/lang/String;Z)V
     .registers 3
+    .param p1, "ifName"  # Ljava/lang/String;
+    .param p2, "enable"  # Z
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -447,6 +473,8 @@
 
 .method public interfaceSetIPv6PrivacyExtensions(Ljava/lang/String;Z)V
     .registers 3
+    .param p1, "ifName"  # Ljava/lang/String;
+    .param p2, "enable"  # Z
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -459,6 +487,8 @@
 
 .method public interfaceSetMtu(Ljava/lang/String;I)V
     .registers 3
+    .param p1, "ifName"  # Ljava/lang/String;
+    .param p2, "mtu"  # I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -471,6 +501,27 @@
 
 .method public ipSecAddSecurityAssociation(IILjava/lang/String;Ljava/lang/String;IIIILjava/lang/String;[BILjava/lang/String;[BILjava/lang/String;[BIIIII)V
     .registers 22
+    .param p1, "transformId"  # I
+    .param p2, "mode"  # I
+    .param p3, "sourceAddress"  # Ljava/lang/String;
+    .param p4, "destinationAddress"  # Ljava/lang/String;
+    .param p5, "underlyingNetId"  # I
+    .param p6, "spi"  # I
+    .param p7, "markValue"  # I
+    .param p8, "markMask"  # I
+    .param p9, "authAlgo"  # Ljava/lang/String;
+    .param p10, "authKey"  # [B
+    .param p11, "authTruncBits"  # I
+    .param p12, "cryptAlgo"  # Ljava/lang/String;
+    .param p13, "cryptKey"  # [B
+    .param p14, "cryptTruncBits"  # I
+    .param p15, "aeadAlgo"  # Ljava/lang/String;
+    .param p16, "aeadKey"  # [B
+    .param p17, "aeadIcvBits"  # I
+    .param p18, "encapType"  # I
+    .param p19, "encapLocalPort"  # I
+    .param p20, "encapRemotePort"  # I
+    .param p21, "interfaceId"  # I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -483,6 +534,15 @@
 
 .method public ipSecAddSecurityPolicy(IIILjava/lang/String;Ljava/lang/String;IIII)V
     .registers 10
+    .param p1, "transformId"  # I
+    .param p2, "selAddrFamily"  # I
+    .param p3, "direction"  # I
+    .param p4, "tmplSrcAddress"  # Ljava/lang/String;
+    .param p5, "tmplDstAddress"  # Ljava/lang/String;
+    .param p6, "spi"  # I
+    .param p7, "markValue"  # I
+    .param p8, "markMask"  # I
+    .param p9, "interfaceId"  # I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -495,6 +555,12 @@
 
 .method public ipSecAddTunnelInterface(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;III)V
     .registers 7
+    .param p1, "deviceName"  # Ljava/lang/String;
+    .param p2, "localAddress"  # Ljava/lang/String;
+    .param p3, "remoteAddress"  # Ljava/lang/String;
+    .param p4, "iKey"  # I
+    .param p5, "oKey"  # I
+    .param p6, "interfaceId"  # I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -506,7 +572,11 @@
 .end method
 
 .method public ipSecAllocateSpi(ILjava/lang/String;Ljava/lang/String;I)I
-    .registers 5
+    .registers 6
+    .param p1, "transformId"  # I
+    .param p2, "sourceAddress"  # Ljava/lang/String;
+    .param p3, "destinationAddress"  # Ljava/lang/String;
+    .param p4, "spi"  # I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -514,13 +584,19 @@
     .end annotation
 
     .line 82
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    return p1
+    return v0
 .end method
 
 .method public ipSecApplyTransportModeTransform(Landroid/os/ParcelFileDescriptor;IILjava/lang/String;Ljava/lang/String;I)V
     .registers 7
+    .param p1, "socket"  # Landroid/os/ParcelFileDescriptor;
+    .param p2, "transformId"  # I
+    .param p3, "direction"  # I
+    .param p4, "sourceAddress"  # Ljava/lang/String;
+    .param p5, "destinationAddress"  # Ljava/lang/String;
+    .param p6, "spi"  # I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -533,6 +609,13 @@
 
 .method public ipSecDeleteSecurityAssociation(ILjava/lang/String;Ljava/lang/String;IIII)V
     .registers 8
+    .param p1, "transformId"  # I
+    .param p2, "sourceAddress"  # Ljava/lang/String;
+    .param p3, "destinationAddress"  # Ljava/lang/String;
+    .param p4, "spi"  # I
+    .param p5, "markValue"  # I
+    .param p6, "markMask"  # I
+    .param p7, "interfaceId"  # I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -545,6 +628,12 @@
 
 .method public ipSecDeleteSecurityPolicy(IIIIII)V
     .registers 7
+    .param p1, "transformId"  # I
+    .param p2, "selAddrFamily"  # I
+    .param p3, "direction"  # I
+    .param p4, "markValue"  # I
+    .param p5, "markMask"  # I
+    .param p6, "interfaceId"  # I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -557,6 +646,7 @@
 
 .method public ipSecRemoveTransportModeTransform(Landroid/os/ParcelFileDescriptor;)V
     .registers 2
+    .param p1, "socket"  # Landroid/os/ParcelFileDescriptor;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -569,6 +659,7 @@
 
 .method public ipSecRemoveTunnelInterface(Ljava/lang/String;)V
     .registers 2
+    .param p1, "deviceName"  # Ljava/lang/String;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -581,6 +672,8 @@
 
 .method public ipSecSetEncapSocketOwner(Landroid/os/ParcelFileDescriptor;I)V
     .registers 3
+    .param p1, "socket"  # Landroid/os/ParcelFileDescriptor;
+    .param p2, "newUid"  # I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -593,6 +686,15 @@
 
 .method public ipSecUpdateSecurityPolicy(IIILjava/lang/String;Ljava/lang/String;IIII)V
     .registers 10
+    .param p1, "transformId"  # I
+    .param p2, "selAddrFamily"  # I
+    .param p3, "direction"  # I
+    .param p4, "tmplSrcAddress"  # Ljava/lang/String;
+    .param p5, "tmplDstAddress"  # Ljava/lang/String;
+    .param p6, "spi"  # I
+    .param p7, "markValue"  # I
+    .param p8, "markMask"  # I
+    .param p9, "interfaceId"  # I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -605,6 +707,12 @@
 
 .method public ipSecUpdateTunnelInterface(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;III)V
     .registers 7
+    .param p1, "deviceName"  # Ljava/lang/String;
+    .param p2, "localAddress"  # Ljava/lang/String;
+    .param p3, "remoteAddress"  # Ljava/lang/String;
+    .param p4, "iKey"  # I
+    .param p5, "oKey"  # I
+    .param p6, "interfaceId"  # I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -617,6 +725,8 @@
 
 .method public ipfwdAddInterfaceForward(Ljava/lang/String;Ljava/lang/String;)V
     .registers 3
+    .param p1, "fromIface"  # Ljava/lang/String;
+    .param p2, "toIface"  # Ljava/lang/String;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -629,6 +739,7 @@
 
 .method public ipfwdDisableForwarding(Ljava/lang/String;)V
     .registers 2
+    .param p1, "requester"  # Ljava/lang/String;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -641,6 +752,7 @@
 
 .method public ipfwdEnableForwarding(Ljava/lang/String;)V
     .registers 2
+    .param p1, "requester"  # Ljava/lang/String;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -681,6 +793,8 @@
 
 .method public ipfwdRemoveInterfaceForward(Ljava/lang/String;Ljava/lang/String;)V
     .registers 3
+    .param p1, "fromIface"  # Ljava/lang/String;
+    .param p2, "toIface"  # Ljava/lang/String;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -707,6 +821,8 @@
 
 .method public networkAddInterface(ILjava/lang/String;)V
     .registers 3
+    .param p1, "netId"  # I
+    .param p2, "iface"  # Ljava/lang/String;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -719,6 +835,11 @@
 
 .method public networkAddLegacyRoute(ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;I)V
     .registers 6
+    .param p1, "netId"  # I
+    .param p2, "ifName"  # Ljava/lang/String;
+    .param p3, "destination"  # Ljava/lang/String;
+    .param p4, "nextHop"  # Ljava/lang/String;
+    .param p5, "uid"  # I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -731,6 +852,10 @@
 
 .method public networkAddRoute(ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;)V
     .registers 5
+    .param p1, "netId"  # I
+    .param p2, "ifName"  # Ljava/lang/String;
+    .param p3, "destination"  # Ljava/lang/String;
+    .param p4, "nextHop"  # Ljava/lang/String;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -743,6 +868,8 @@
 
 .method public networkAddUidRanges(I[Landroid/net/UidRangeParcel;)V
     .registers 3
+    .param p1, "netId"  # I
+    .param p2, "uidRanges"  # [Landroid/net/UidRangeParcel;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -754,7 +881,8 @@
 .end method
 
 .method public networkCanProtect(I)Z
-    .registers 2
+    .registers 3
+    .param p1, "uid"  # I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -762,9 +890,9 @@
     .end annotation
 
     .line 255
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    return p1
+    return v0
 .end method
 
 .method public networkClearDefault()V
@@ -781,6 +909,7 @@
 
 .method public networkClearPermissionForUser([I)V
     .registers 2
+    .param p1, "uids"  # [I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -793,6 +922,8 @@
 
 .method public networkCreatePhysical(II)V
     .registers 3
+    .param p1, "netId"  # I
+    .param p2, "permission"  # I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -805,6 +936,8 @@
 
 .method public networkCreateVpn(IZ)V
     .registers 3
+    .param p1, "netId"  # I
+    .param p2, "secure"  # Z
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -817,6 +950,7 @@
 
 .method public networkDestroy(I)V
     .registers 2
+    .param p1, "netId"  # I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -843,6 +977,8 @@
 
 .method public networkRejectNonSecureVpn(Z[Landroid/net/UidRangeParcel;)V
     .registers 3
+    .param p1, "add"  # Z
+    .param p2, "uidRanges"  # [Landroid/net/UidRangeParcel;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -855,6 +991,8 @@
 
 .method public networkRemoveInterface(ILjava/lang/String;)V
     .registers 3
+    .param p1, "netId"  # I
+    .param p2, "iface"  # Ljava/lang/String;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -867,6 +1005,11 @@
 
 .method public networkRemoveLegacyRoute(ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;I)V
     .registers 6
+    .param p1, "netId"  # I
+    .param p2, "ifName"  # Ljava/lang/String;
+    .param p3, "destination"  # Ljava/lang/String;
+    .param p4, "nextHop"  # Ljava/lang/String;
+    .param p5, "uid"  # I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -879,6 +1022,10 @@
 
 .method public networkRemoveRoute(ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;)V
     .registers 5
+    .param p1, "netId"  # I
+    .param p2, "ifName"  # Ljava/lang/String;
+    .param p3, "destination"  # Ljava/lang/String;
+    .param p4, "nextHop"  # Ljava/lang/String;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -891,6 +1038,8 @@
 
 .method public networkRemoveUidRanges(I[Landroid/net/UidRangeParcel;)V
     .registers 3
+    .param p1, "netId"  # I
+    .param p2, "uidRanges"  # [Landroid/net/UidRangeParcel;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -903,6 +1052,7 @@
 
 .method public networkSetDefault(I)V
     .registers 2
+    .param p1, "netId"  # I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -915,6 +1065,8 @@
 
 .method public networkSetPermissionForNetwork(II)V
     .registers 3
+    .param p1, "netId"  # I
+    .param p2, "permission"  # I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -927,6 +1079,8 @@
 
 .method public networkSetPermissionForUser(I[I)V
     .registers 3
+    .param p1, "permission"  # I
+    .param p2, "uids"  # [I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -939,6 +1093,7 @@
 
 .method public networkSetProtectAllow(I)V
     .registers 2
+    .param p1, "uid"  # I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -951,6 +1106,7 @@
 
 .method public networkSetProtectDeny(I)V
     .registers 2
+    .param p1, "uid"  # I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -963,6 +1119,7 @@
 
 .method public registerUnsolicitedEventListener(Landroid/net/INetdUnsolicitedEventListener;)V
     .registers 2
+    .param p1, "listener"  # Landroid/net/INetdUnsolicitedEventListener;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -975,6 +1132,8 @@
 
 .method public setIPv6AddrGenMode(Ljava/lang/String;I)V
     .registers 3
+    .param p1, "ifName"  # Ljava/lang/String;
+    .param p2, "mode"  # I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -987,6 +1146,11 @@
 
 .method public setProcSysNet(IILjava/lang/String;Ljava/lang/String;Ljava/lang/String;)V
     .registers 6
+    .param p1, "ipversion"  # I
+    .param p2, "which"  # I
+    .param p3, "ifname"  # Ljava/lang/String;
+    .param p4, "parameter"  # Ljava/lang/String;
+    .param p5, "value"  # Ljava/lang/String;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -999,6 +1163,8 @@
 
 .method public setTcpRWmemorySize(Ljava/lang/String;Ljava/lang/String;)V
     .registers 3
+    .param p1, "rmemValues"  # Ljava/lang/String;
+    .param p2, "wmemValues"  # Ljava/lang/String;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -1011,6 +1177,8 @@
 
 .method public socketDestroy([Landroid/net/UidRangeParcel;[I)V
     .registers 3
+    .param p1, "uidRanges"  # [Landroid/net/UidRangeParcel;
+    .param p2, "exemptUids"  # [I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -1023,6 +1191,8 @@
 
 .method public strictUidCleartextPenalty(II)V
     .registers 3
+    .param p1, "uid"  # I
+    .param p2, "policyPenalty"  # I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -1035,6 +1205,8 @@
 
 .method public tetherAddForward(Ljava/lang/String;Ljava/lang/String;)V
     .registers 3
+    .param p1, "intIface"  # Ljava/lang/String;
+    .param p2, "extIface"  # Ljava/lang/String;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -1075,6 +1247,8 @@
 
 .method public tetherDnsSet(I[Ljava/lang/String;)V
     .registers 3
+    .param p1, "netId"  # I
+    .param p2, "dnsAddrs"  # [Ljava/lang/String;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -1101,6 +1275,7 @@
 
 .method public tetherInterfaceAdd(Ljava/lang/String;)V
     .registers 2
+    .param p1, "ifName"  # Ljava/lang/String;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -1127,6 +1302,7 @@
 
 .method public tetherInterfaceRemove(Ljava/lang/String;)V
     .registers 2
+    .param p1, "ifName"  # Ljava/lang/String;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -1153,6 +1329,8 @@
 
 .method public tetherRemoveForward(Ljava/lang/String;Ljava/lang/String;)V
     .registers 3
+    .param p1, "intIface"  # Ljava/lang/String;
+    .param p2, "extIface"  # Ljava/lang/String;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -1165,6 +1343,7 @@
 
 .method public tetherStart([Ljava/lang/String;)V
     .registers 2
+    .param p1, "dhcpRanges"  # [Ljava/lang/String;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -1189,6 +1368,8 @@
 
 .method public trafficSetNetPermForUids(I[I)V
     .registers 3
+    .param p1, "permission"  # I
+    .param p2, "uids"  # [I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -1213,6 +1394,10 @@
 
 .method public wakeupAddInterface(Ljava/lang/String;Ljava/lang/String;II)V
     .registers 5
+    .param p1, "ifName"  # Ljava/lang/String;
+    .param p2, "prefix"  # Ljava/lang/String;
+    .param p3, "mark"  # I
+    .param p4, "mask"  # I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;
@@ -1225,6 +1410,10 @@
 
 .method public wakeupDelInterface(Ljava/lang/String;Ljava/lang/String;II)V
     .registers 5
+    .param p1, "ifName"  # Ljava/lang/String;
+    .param p2, "prefix"  # Ljava/lang/String;
+    .param p3, "mark"  # I
+    .param p4, "mask"  # I
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/os/RemoteException;

@@ -21,14 +21,15 @@
 # direct methods
 .method public constructor <init>(Lcom/android/server/wm/RootWindowContainer;Landroid/os/Looper;)V
     .registers 3
+    .param p2, "looper"  # Landroid/os/Looper;
 
-    .line 981
+    .line 972
     iput-object p1, p0, Lcom/android/server/wm/RootWindowContainer$MyHandler;->this$0:Lcom/android/server/wm/RootWindowContainer;
 
-    .line 982
+    .line 973
     invoke-direct {p0, p2}, Landroid/os/Handler;-><init>(Landroid/os/Looper;)V
 
-    .line 983
+    .line 974
     return-void
 .end method
 
@@ -36,75 +37,59 @@
 # virtual methods
 .method public handleMessage(Landroid/os/Message;)V
     .registers 5
+    .param p1, "msg"  # Landroid/os/Message;
 
-    .line 987
+    .line 978
     iget v0, p1, Landroid/os/Message;->what:I
-
-    if-eqz v0, :cond_29
 
     const/4 v1, 0x1
 
-    if-eq v0, v1, :cond_1d
+    if-eq v0, v1, :cond_1b
 
     const/4 v1, 0x2
 
-    if-eq v0, v1, :cond_b
+    if-eq v0, v1, :cond_9
 
-    goto :goto_35
+    goto :goto_27
 
-    .line 997
-    :cond_b
+    .line 984
+    :cond_9
     iget-object v0, p0, Lcom/android/server/wm/RootWindowContainer$MyHandler;->this$0:Lcom/android/server/wm/RootWindowContainer;
 
     iget-object v0, v0, Lcom/android/server/wm/RootWindowContainer;->mWmService:Lcom/android/server/wm/WindowManagerService;
 
     iget-object v0, v0, Lcom/android/server/wm/WindowManagerService;->mPowerManagerInternal:Landroid/os/PowerManagerInternal;
 
-    iget-object p1, p1, Landroid/os/Message;->obj:Ljava/lang/Object;
+    iget-object v1, p1, Landroid/os/Message;->obj:Ljava/lang/Object;
 
-    check-cast p1, Ljava/lang/Long;
+    check-cast v1, Ljava/lang/Long;
 
-    .line 998
-    invoke-virtual {p1}, Ljava/lang/Long;->longValue()J
+    .line 985
+    invoke-virtual {v1}, Ljava/lang/Long;->longValue()J
 
     move-result-wide v1
 
     invoke-virtual {v0, v1, v2}, Landroid/os/PowerManagerInternal;->setUserActivityTimeoutOverrideFromWindowManager(J)V
 
-    .line 999
-    goto :goto_35
+    .line 986
+    goto :goto_27
 
-    .line 993
-    :cond_1d
+    .line 980
+    :cond_1b
     iget-object v0, p0, Lcom/android/server/wm/RootWindowContainer$MyHandler;->this$0:Lcom/android/server/wm/RootWindowContainer;
 
     iget-object v0, v0, Lcom/android/server/wm/RootWindowContainer;->mWmService:Lcom/android/server/wm/WindowManagerService;
 
     iget-object v0, v0, Lcom/android/server/wm/WindowManagerService;->mPowerManagerInternal:Landroid/os/PowerManagerInternal;
 
-    iget p1, p1, Landroid/os/Message;->arg1:I
+    iget v1, p1, Landroid/os/Message;->arg1:I
 
-    invoke-virtual {v0, p1}, Landroid/os/PowerManagerInternal;->setScreenBrightnessOverrideFromWindowManager(I)V
+    invoke-virtual {v0, v1}, Landroid/os/PowerManagerInternal;->setScreenBrightnessOverrideFromWindowManager(I)V
 
-    .line 995
-    goto :goto_35
-
-    .line 989
-    :cond_29
-    iget-object v0, p0, Lcom/android/server/wm/RootWindowContainer$MyHandler;->this$0:Lcom/android/server/wm/RootWindowContainer;
-
-    iget-object v0, v0, Lcom/android/server/wm/RootWindowContainer;->mWmService:Lcom/android/server/wm/WindowManagerService;
-
-    iget-object v0, v0, Lcom/android/server/wm/WindowManagerService;->mPowerManagerInternal:Landroid/os/PowerManagerInternal;
-
-    iget p1, p1, Landroid/os/Message;->arg1:I
-
-    invoke-virtual {v0, p1}, Landroid/os/PowerManagerInternal;->setButtonBrightnessOverrideFromWindowManager(I)V
-
-    .line 991
+    .line 982
     nop
 
-    .line 1003
-    :goto_35
+    .line 990
+    :goto_27
     return-void
 .end method

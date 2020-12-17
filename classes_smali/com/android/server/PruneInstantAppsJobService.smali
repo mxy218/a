@@ -42,6 +42,7 @@
 
 .method public static schedule(Landroid/content/Context;)V
     .registers 5
+    .param p0, "context"  # Landroid/content/Context;
 
     .line 39
     new-instance v0, Landroid/app/job/JobInfo$Builder;
@@ -85,16 +86,18 @@
     move-result-object v0
 
     .line 45
+    .local v0, "pruneJob":Landroid/app/job/JobInfo;
     const-class v1, Landroid/app/job/JobScheduler;
 
     invoke-virtual {p0, v1}, Landroid/content/Context;->getSystemService(Ljava/lang/Class;)Ljava/lang/Object;
 
-    move-result-object p0
+    move-result-object v1
 
-    check-cast p0, Landroid/app/job/JobScheduler;
+    check-cast v1, Landroid/app/job/JobScheduler;
 
     .line 46
-    invoke-virtual {p0, v0}, Landroid/app/job/JobScheduler;->schedule(Landroid/app/job/JobInfo;)I
+    .local v1, "jobScheduler":Landroid/app/job/JobScheduler;
+    invoke-virtual {v1, v0}, Landroid/app/job/JobScheduler;->schedule(Landroid/app/job/JobInfo;)I
 
     .line 47
     return-void
@@ -103,7 +106,8 @@
 
 # virtual methods
 .method public synthetic lambda$onStartJob$0$PruneInstantAppsJobService(Landroid/app/job/JobParameters;)V
-    .registers 3
+    .registers 4
+    .param p1, "params"  # Landroid/app/job/JobParameters;
 
     .line 52
     const-class v0, Landroid/content/pm/PackageManagerInternal;
@@ -115,12 +119,13 @@
     check-cast v0, Landroid/content/pm/PackageManagerInternal;
 
     .line 54
+    .local v0, "packageManagerInternal":Landroid/content/pm/PackageManagerInternal;
     invoke-virtual {v0}, Landroid/content/pm/PackageManagerInternal;->pruneInstantApps()V
 
     .line 55
-    const/4 v0, 0x0
+    const/4 v1, 0x0
 
-    invoke-virtual {p0, p1, v0}, Lcom/android/server/PruneInstantAppsJobService;->jobFinished(Landroid/app/job/JobParameters;Z)V
+    invoke-virtual {p0, p1, v1}, Lcom/android/server/PruneInstantAppsJobService;->jobFinished(Landroid/app/job/JobParameters;Z)V
 
     .line 56
     return-void
@@ -128,6 +133,7 @@
 
 .method public onStartJob(Landroid/app/job/JobParameters;)Z
     .registers 3
+    .param p1, "params"  # Landroid/app/job/JobParameters;
 
     .line 51
     new-instance v0, Lcom/android/server/-$$Lambda$PruneInstantAppsJobService$i4sLSJdxcTXdgPAQZFbP66ZRprE;
@@ -137,16 +143,17 @@
     invoke-static {v0}, Landroid/os/AsyncTask;->execute(Ljava/lang/Runnable;)V
 
     .line 57
-    const/4 p1, 0x1
+    const/4 v0, 0x1
 
-    return p1
+    return v0
 .end method
 
 .method public onStopJob(Landroid/app/job/JobParameters;)Z
-    .registers 2
+    .registers 3
+    .param p1, "params"  # Landroid/app/job/JobParameters;
 
     .line 62
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    return p1
+    return v0
 .end method

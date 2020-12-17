@@ -39,133 +39,149 @@
 
 # virtual methods
 .method public createFromParcel(Landroid/os/Parcel;)Lcom/android/server/usb/UsbPortManager$RawPortInfo;
-    .registers 19
+    .registers 27
+    .param p1, "in"  # Landroid/os/Parcel;
 
     .line 1331
     invoke-virtual/range {p1 .. p1}, Landroid/os/Parcel;->readString()Ljava/lang/String;
 
-    move-result-object v1
+    move-result-object v14
 
     .line 1332
+    .local v14, "id":Ljava/lang/String;
     invoke-virtual/range {p1 .. p1}, Landroid/os/Parcel;->readInt()I
 
-    move-result v2
+    move-result v15
 
     .line 1333
+    .local v15, "supportedModes":I
     invoke-virtual/range {p1 .. p1}, Landroid/os/Parcel;->readInt()I
 
-    move-result v3
+    move-result v16
 
     .line 1334
+    .local v16, "supportedContaminantProtectionModes":I
     invoke-virtual/range {p1 .. p1}, Landroid/os/Parcel;->readInt()I
 
-    move-result v4
+    move-result v17
 
     .line 1335
+    .local v17, "currentMode":I
     invoke-virtual/range {p1 .. p1}, Landroid/os/Parcel;->readByte()B
 
     move-result v0
 
-    const/4 v5, 0x1
+    const/4 v1, 0x1
 
-    const/4 v6, 0x0
+    const/4 v2, 0x0
 
     if-eqz v0, :cond_1a
 
-    move v7, v5
+    move v5, v1
 
     goto :goto_1b
 
     :cond_1a
-    move v7, v6
+    move v5, v2
 
     .line 1336
+    .local v5, "canChangeMode":Z
     :goto_1b
     invoke-virtual/range {p1 .. p1}, Landroid/os/Parcel;->readInt()I
 
-    move-result v8
+    move-result v18
 
     .line 1337
+    .local v18, "currentPowerRole":I
     invoke-virtual/range {p1 .. p1}, Landroid/os/Parcel;->readByte()B
 
     move-result v0
 
     if-eqz v0, :cond_27
 
-    move v9, v5
+    move v7, v1
 
     goto :goto_28
 
     :cond_27
-    move v9, v6
+    move v7, v2
 
     .line 1338
+    .local v7, "canChangePowerRole":Z
     :goto_28
     invoke-virtual/range {p1 .. p1}, Landroid/os/Parcel;->readInt()I
 
-    move-result v10
+    move-result v19
 
     .line 1339
+    .local v19, "currentDataRole":I
     invoke-virtual/range {p1 .. p1}, Landroid/os/Parcel;->readByte()B
 
     move-result v0
 
     if-eqz v0, :cond_34
 
-    move v11, v5
+    move v9, v1
 
     goto :goto_35
 
     :cond_34
-    move v11, v6
+    move v9, v2
 
     .line 1340
+    .local v9, "canChangeDataRole":Z
     :goto_35
     invoke-virtual/range {p1 .. p1}, Landroid/os/Parcel;->readBoolean()Z
 
-    move-result v12
+    move-result v20
 
     .line 1341
+    .local v20, "supportsEnableContaminantPresenceProtection":Z
     invoke-virtual/range {p1 .. p1}, Landroid/os/Parcel;->readInt()I
 
-    move-result v13
+    move-result v21
 
     .line 1342
+    .local v21, "contaminantProtectionStatus":I
     invoke-virtual/range {p1 .. p1}, Landroid/os/Parcel;->readBoolean()Z
 
-    move-result v14
+    move-result v22
 
     .line 1343
+    .local v22, "supportsEnableContaminantPresenceDetection":Z
     invoke-virtual/range {p1 .. p1}, Landroid/os/Parcel;->readInt()I
 
-    move-result v15
+    move-result v23
 
     .line 1344
-    new-instance v16, Lcom/android/server/usb/UsbPortManager$RawPortInfo;
+    .local v23, "contaminantDetectionStatus":I
+    new-instance v24, Lcom/android/server/usb/UsbPortManager$RawPortInfo;
 
-    move-object/from16 v0, v16
+    move-object/from16 v0, v24
 
-    move v5, v7
+    move-object v1, v14
 
-    move v6, v8
+    move v2, v15
 
-    move v7, v9
+    move/from16 v3, v16
 
-    move v8, v10
+    move/from16 v4, v17
 
-    move v9, v11
+    move/from16 v6, v18
 
-    move v10, v12
+    move/from16 v8, v19
 
-    move v11, v13
+    move/from16 v10, v20
 
-    move v12, v14
+    move/from16 v11, v21
 
-    move v13, v15
+    move/from16 v12, v22
+
+    move/from16 v13, v23
 
     invoke-direct/range {v0 .. v13}, Lcom/android/server/usb/UsbPortManager$RawPortInfo;-><init>(Ljava/lang/String;IIIZIZIZZIZI)V
 
-    return-object v16
+    return-object v24
 .end method
 
 .method public bridge synthetic createFromParcel(Landroid/os/Parcel;)Ljava/lang/Object;
@@ -180,12 +196,13 @@
 .end method
 
 .method public newArray(I)[Lcom/android/server/usb/UsbPortManager$RawPortInfo;
-    .registers 2
+    .registers 3
+    .param p1, "size"  # I
 
     .line 1356
-    new-array p1, p1, [Lcom/android/server/usb/UsbPortManager$RawPortInfo;
+    new-array v0, p1, [Lcom/android/server/usb/UsbPortManager$RawPortInfo;
 
-    return-object p1
+    return-object v0
 .end method
 
 .method public bridge synthetic newArray(I)[Ljava/lang/Object;

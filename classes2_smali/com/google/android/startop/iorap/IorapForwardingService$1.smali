@@ -24,6 +24,7 @@
 # direct methods
 .method constructor <init>(Lcom/google/android/startop/iorap/IorapForwardingService;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/google/android/startop/iorap/IorapForwardingService;
 
     .line 115
     iput-object p1, p0, Lcom/google/android/startop/iorap/IorapForwardingService$1;->this$0:Lcom/google/android/startop/iorap/IorapForwardingService;

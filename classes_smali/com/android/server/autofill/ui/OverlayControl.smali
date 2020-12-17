@@ -12,6 +12,7 @@
 # direct methods
 .method constructor <init>(Landroid/content/Context;)V
     .registers 3
+    .param p1, "context"  # Landroid/content/Context;
 
     .line 37
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -28,11 +29,11 @@
 
     invoke-virtual {p1, v0}, Landroid/content/Context;->getSystemService(Ljava/lang/Class;)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v0
 
-    check-cast p1, Landroid/app/AppOpsManager;
+    check-cast v0, Landroid/app/AppOpsManager;
 
-    iput-object p1, p0, Lcom/android/server/autofill/ui/OverlayControl;->mAppOpsManager:Landroid/app/AppOpsManager;
+    iput-object v0, p0, Lcom/android/server/autofill/ui/OverlayControl;->mAppOpsManager:Landroid/app/AppOpsManager;
 
     .line 39
     return-void
@@ -40,6 +41,7 @@
 
 .method private setOverlayAllowed(Z)V
     .registers 14
+    .param p1, "allowed"  # Z
 
     .line 50
     iget-object v0, p0, Lcom/android/server/autofill/ui/OverlayControl;->mAppOpsManager:Landroid/app/AppOpsManager;

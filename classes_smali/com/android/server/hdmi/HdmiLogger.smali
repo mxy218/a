@@ -100,6 +100,7 @@
 
 .method private static buildMessage(Ljava/lang/String;Landroid/util/Pair;)Ljava/lang/String;
     .registers 4
+    .param p0, "message"  # Ljava/lang/String;
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(",
@@ -113,6 +114,7 @@
     .end annotation
 
     .line 122
+    .local p1, "timing":Landroid/util/Pair;, "Landroid/util/Pair<Ljava/lang/Long;Ljava/lang/Integer;>;"
     new-instance v0, Ljava/lang/StringBuilder;
 
     invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
@@ -124,39 +126,41 @@
 
     if-nez p1, :cond_e
 
-    const/4 p1, 0x1
+    const/4 v1, 0x1
 
     goto :goto_16
 
     :cond_e
-    iget-object p1, p1, Landroid/util/Pair;->second:Ljava/lang/Object;
+    iget-object v1, p1, Landroid/util/Pair;->second:Ljava/lang/Object;
 
-    check-cast p1, Ljava/lang/Integer;
+    check-cast v1, Ljava/lang/Integer;
 
-    invoke-virtual {p1}, Ljava/lang/Integer;->intValue()I
+    invoke-virtual {v1}, Ljava/lang/Integer;->intValue()I
 
-    move-result p1
+    move-result v1
 
     :goto_16
-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    const-string p1, "]:"
+    const-string v1, "]:"
 
-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     .line 124
     invoke-virtual {v0, p0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v0
 
     .line 122
-    return-object p0
+    return-object v0
 .end method
 
 .method static final varargs debug(Ljava/lang/String;[Ljava/lang/Object;)V
-    .registers 3
+    .registers 4
+    .param p0, "logMessage"  # Ljava/lang/String;
+    .param p1, "objs"  # [Ljava/lang/Object;
 
     .line 82
     invoke-static {}, Lcom/android/server/hdmi/HdmiLogger;->getLogger()Lcom/android/server/hdmi/HdmiLogger;
@@ -165,9 +169,9 @@
 
     invoke-static {p0, p1}, Lcom/android/server/hdmi/HdmiLogger;->toLogString(Ljava/lang/String;[Ljava/lang/Object;)Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v1
 
-    invoke-direct {v0, p0}, Lcom/android/server/hdmi/HdmiLogger;->debugInternal(Ljava/lang/String;)V
+    invoke-direct {v0, v1}, Lcom/android/server/hdmi/HdmiLogger;->debugInternal(Ljava/lang/String;)V
 
     .line 83
     return-void
@@ -175,6 +179,7 @@
 
 .method private debugInternal(Ljava/lang/String;)V
     .registers 3
+    .param p1, "logMessage"  # Ljava/lang/String;
 
     .line 86
     sget-boolean v0, Lcom/android/server/hdmi/HdmiLogger;->DEBUG:Z
@@ -192,7 +197,9 @@
 .end method
 
 .method static final varargs error(Ljava/lang/String;[Ljava/lang/Object;)V
-    .registers 3
+    .registers 4
+    .param p0, "logMessage"  # Ljava/lang/String;
+    .param p1, "objs"  # [Ljava/lang/Object;
 
     .line 71
     invoke-static {}, Lcom/android/server/hdmi/HdmiLogger;->getLogger()Lcom/android/server/hdmi/HdmiLogger;
@@ -201,35 +208,37 @@
 
     invoke-static {p0, p1}, Lcom/android/server/hdmi/HdmiLogger;->toLogString(Ljava/lang/String;[Ljava/lang/Object;)Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v1
 
-    invoke-direct {v0, p0}, Lcom/android/server/hdmi/HdmiLogger;->errorInternal(Ljava/lang/String;)V
+    invoke-direct {v0, v1}, Lcom/android/server/hdmi/HdmiLogger;->errorInternal(Ljava/lang/String;)V
 
     .line 72
     return-void
 .end method
 
 .method private errorInternal(Ljava/lang/String;)V
-    .registers 3
+    .registers 4
+    .param p1, "logMessage"  # Ljava/lang/String;
 
     .line 75
     iget-object v0, p0, Lcom/android/server/hdmi/HdmiLogger;->mErrorTimingCache:Ljava/util/HashMap;
 
     invoke-static {v0, p1}, Lcom/android/server/hdmi/HdmiLogger;->updateLog(Ljava/util/HashMap;Ljava/lang/String;)Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
     .line 76
-    invoke-virtual {p1}, Ljava/lang/String;->isEmpty()Z
+    .local v0, "log":Ljava/lang/String;
+    invoke-virtual {v0}, Ljava/lang/String;->isEmpty()Z
 
-    move-result v0
+    move-result v1
 
-    if-nez v0, :cond_11
+    if-nez v1, :cond_11
 
     .line 77
-    const-string v0, "HDMI"
+    const-string v1, "HDMI"
 
-    invoke-static {v0, p1}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v0}, Landroid/util/Slog;->e(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 79
     :cond_11
@@ -249,12 +258,15 @@
     check-cast v0, Lcom/android/server/hdmi/HdmiLogger;
 
     .line 101
-    if-nez v0, :cond_14
+    .local v0, "logger":Lcom/android/server/hdmi/HdmiLogger;
+    if-nez v0, :cond_15
 
     .line 102
-    new-instance v0, Lcom/android/server/hdmi/HdmiLogger;
+    new-instance v1, Lcom/android/server/hdmi/HdmiLogger;
 
-    invoke-direct {v0}, Lcom/android/server/hdmi/HdmiLogger;-><init>()V
+    invoke-direct {v1}, Lcom/android/server/hdmi/HdmiLogger;-><init>()V
+
+    move-object v0, v1
 
     .line 103
     sget-object v1, Lcom/android/server/hdmi/HdmiLogger;->sLogger:Ljava/lang/ThreadLocal;
@@ -262,12 +274,13 @@
     invoke-virtual {v1, v0}, Ljava/lang/ThreadLocal;->set(Ljava/lang/Object;)V
 
     .line 105
-    :cond_14
+    :cond_15
     return-object v0
 .end method
 
 .method private static increaseLogCount(Ljava/util/HashMap;Ljava/lang/String;)V
-    .registers 5
+    .registers 6
+    .param p1, "message"  # Ljava/lang/String;
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(",
@@ -283,6 +296,7 @@
     .end annotation
 
     .line 129
+    .local p0, "cache":Ljava/util/HashMap;, "Ljava/util/HashMap<Ljava/lang/String;Landroid/util/Pair<Ljava/lang/Long;Ljava/lang/Integer;>;>;"
     invoke-virtual {p0, p1}, Ljava/util/HashMap;->get(Ljava/lang/Object;)Ljava/lang/Object;
 
     move-result-object v0
@@ -290,6 +304,7 @@
     check-cast v0, Landroid/util/Pair;
 
     .line 130
+    .local v0, "timing":Landroid/util/Pair;, "Landroid/util/Pair<Ljava/lang/Long;Ljava/lang/Integer;>;"
     if-eqz v0, :cond_22
 
     .line 131
@@ -299,21 +314,21 @@
 
     check-cast v2, Ljava/lang/Long;
 
-    iget-object v0, v0, Landroid/util/Pair;->second:Ljava/lang/Object;
+    iget-object v3, v0, Landroid/util/Pair;->second:Ljava/lang/Object;
 
-    check-cast v0, Ljava/lang/Integer;
+    check-cast v3, Ljava/lang/Integer;
 
-    invoke-virtual {v0}, Ljava/lang/Integer;->intValue()I
+    invoke-virtual {v3}, Ljava/lang/Integer;->intValue()I
 
-    move-result v0
+    move-result v3
 
-    add-int/lit8 v0, v0, 0x1
+    add-int/lit8 v3, v3, 0x1
 
-    invoke-static {v0}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
+    invoke-static {v3}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
 
-    move-result-object v0
+    move-result-object v3
 
-    invoke-direct {v1, v2, v0}, Landroid/util/Pair;-><init>(Ljava/lang/Object;Ljava/lang/Object;)V
+    invoke-direct {v1, v2, v3}, Landroid/util/Pair;-><init>(Ljava/lang/Object;Ljava/lang/Object;)V
 
     invoke-virtual {p0, p1, v1}, Ljava/util/HashMap;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
 
@@ -323,7 +338,8 @@
 .end method
 
 .method private static shouldLogNow(Landroid/util/Pair;J)Z
-    .registers 5
+    .registers 7
+    .param p1, "curTime"  # J
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(",
@@ -335,41 +351,44 @@
     .end annotation
 
     .line 136
-    if-eqz p0, :cond_14
+    .local p0, "timing":Landroid/util/Pair;, "Landroid/util/Pair<Ljava/lang/Long;Ljava/lang/Integer;>;"
+    if-eqz p0, :cond_15
 
-    iget-object p0, p0, Landroid/util/Pair;->first:Ljava/lang/Object;
+    iget-object v0, p0, Landroid/util/Pair;->first:Ljava/lang/Object;
 
-    check-cast p0, Ljava/lang/Long;
+    check-cast v0, Ljava/lang/Long;
 
-    invoke-virtual {p0}, Ljava/lang/Long;->longValue()J
+    invoke-virtual {v0}, Ljava/lang/Long;->longValue()J
 
     move-result-wide v0
 
-    sub-long/2addr p1, v0
+    sub-long v0, p1, v0
 
-    const-wide/16 v0, 0x4e20
+    const-wide/16 v2, 0x4e20
 
-    cmp-long p0, p1, v0
+    cmp-long v0, v0, v2
 
-    if-lez p0, :cond_12
-
-    goto :goto_14
-
-    :cond_12
-    const/4 p0, 0x0
+    if-lez v0, :cond_13
 
     goto :goto_15
 
-    :cond_14
-    :goto_14
-    const/4 p0, 0x1
+    :cond_13
+    const/4 v0, 0x0
 
+    goto :goto_16
+
+    :cond_15
     :goto_15
-    return p0
+    const/4 v0, 0x1
+
+    :goto_16
+    return v0
 .end method
 
 .method private static final toLogString(Ljava/lang/String;[Ljava/lang/Object;)Ljava/lang/String;
     .registers 3
+    .param p0, "logMessage"  # Ljava/lang/String;
+    .param p1, "objs"  # [Ljava/lang/Object;
 
     .line 92
     array-length v0, p1
@@ -379,9 +398,9 @@
     .line 93
     invoke-static {p0, p1}, Ljava/lang/String;->format(Ljava/lang/String;[Ljava/lang/Object;)Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v0
 
-    return-object p0
+    return-object v0
 
     .line 95
     :cond_8
@@ -389,7 +408,8 @@
 .end method
 
 .method private static updateLog(Ljava/util/HashMap;Ljava/lang/String;)Ljava/lang/String;
-    .registers 6
+    .registers 9
+    .param p1, "logMessage"  # Ljava/lang/String;
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(",
@@ -406,11 +426,13 @@
     .end annotation
 
     .line 109
+    .local p0, "cache":Ljava/util/HashMap;, "Ljava/util/HashMap<Ljava/lang/String;Landroid/util/Pair<Ljava/lang/Long;Ljava/lang/Integer;>;>;"
     invoke-static {}, Landroid/os/SystemClock;->uptimeMillis()J
 
     move-result-wide v0
 
     .line 110
+    .local v0, "curTime":J
     invoke-virtual {p0, p1}, Ljava/util/HashMap;->get(Ljava/lang/Object;)Ljava/lang/Object;
 
     move-result-object v2
@@ -418,6 +440,7 @@
     check-cast v2, Landroid/util/Pair;
 
     .line 111
+    .local v2, "timing":Landroid/util/Pair;, "Landroid/util/Pair<Ljava/lang/Long;Ljava/lang/Integer;>;"
     invoke-static {v2, v0, v1}, Lcom/android/server/hdmi/HdmiLogger;->shouldLogNow(Landroid/util/Pair;J)Z
 
     move-result v3
@@ -427,40 +450,44 @@
     .line 112
     invoke-static {p1, v2}, Lcom/android/server/hdmi/HdmiLogger;->buildMessage(Ljava/lang/String;Landroid/util/Pair;)Ljava/lang/String;
 
-    move-result-object v2
+    move-result-object v3
 
     .line 113
-    new-instance v3, Landroid/util/Pair;
+    .local v3, "log":Ljava/lang/String;
+    new-instance v4, Landroid/util/Pair;
 
     invoke-static {v0, v1}, Ljava/lang/Long;->valueOf(J)Ljava/lang/Long;
 
-    move-result-object v0
+    move-result-object v5
 
-    const/4 v1, 0x1
+    const/4 v6, 0x1
 
-    invoke-static {v1}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
+    invoke-static {v6}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
 
-    move-result-object v1
+    move-result-object v6
 
-    invoke-direct {v3, v0, v1}, Landroid/util/Pair;-><init>(Ljava/lang/Object;Ljava/lang/Object;)V
+    invoke-direct {v4, v5, v6}, Landroid/util/Pair;-><init>(Ljava/lang/Object;Ljava/lang/Object;)V
 
-    invoke-virtual {p0, p1, v3}, Ljava/util/HashMap;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+    invoke-virtual {p0, p1, v4}, Ljava/util/HashMap;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
 
     .line 114
-    return-object v2
+    return-object v3
 
     .line 116
+    .end local v3  # "log":Ljava/lang/String;
     :cond_26
     invoke-static {p0, p1}, Lcom/android/server/hdmi/HdmiLogger;->increaseLogCount(Ljava/util/HashMap;Ljava/lang/String;)V
 
     .line 118
-    const-string p0, ""
+    const-string v3, ""
 
-    return-object p0
+    return-object v3
 .end method
 
 .method static final varargs warning(Ljava/lang/String;[Ljava/lang/Object;)V
-    .registers 3
+    .registers 4
+    .param p0, "logMessage"  # Ljava/lang/String;
+    .param p1, "objs"  # [Ljava/lang/Object;
 
     .line 60
     invoke-static {}, Lcom/android/server/hdmi/HdmiLogger;->getLogger()Lcom/android/server/hdmi/HdmiLogger;
@@ -469,35 +496,37 @@
 
     invoke-static {p0, p1}, Lcom/android/server/hdmi/HdmiLogger;->toLogString(Ljava/lang/String;[Ljava/lang/Object;)Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v1
 
-    invoke-direct {v0, p0}, Lcom/android/server/hdmi/HdmiLogger;->warningInternal(Ljava/lang/String;)V
+    invoke-direct {v0, v1}, Lcom/android/server/hdmi/HdmiLogger;->warningInternal(Ljava/lang/String;)V
 
     .line 61
     return-void
 .end method
 
 .method private warningInternal(Ljava/lang/String;)V
-    .registers 3
+    .registers 4
+    .param p1, "logMessage"  # Ljava/lang/String;
 
     .line 64
     iget-object v0, p0, Lcom/android/server/hdmi/HdmiLogger;->mWarningTimingCache:Ljava/util/HashMap;
 
     invoke-static {v0, p1}, Lcom/android/server/hdmi/HdmiLogger;->updateLog(Ljava/util/HashMap;Ljava/lang/String;)Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v0
 
     .line 65
-    invoke-virtual {p1}, Ljava/lang/String;->isEmpty()Z
+    .local v0, "log":Ljava/lang/String;
+    invoke-virtual {v0}, Ljava/lang/String;->isEmpty()Z
 
-    move-result v0
+    move-result v1
 
-    if-nez v0, :cond_11
+    if-nez v1, :cond_11
 
     .line 66
-    const-string v0, "HDMI"
+    const-string v1, "HDMI"
 
-    invoke-static {v0, p1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v0}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 68
     :cond_11

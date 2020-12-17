@@ -18,6 +18,9 @@
 .method public abstract dispatchUnhandledKey(Landroid/os/IBinder;Landroid/view/KeyEvent;I)Landroid/view/KeyEvent;
 .end method
 
+.method public abstract dispatcherWaitToCheckSystemGesture(Landroid/view/MotionEvent;I)Z
+.end method
+
 .method public abstract getPointerDisplayId()I
 .end method
 
@@ -30,7 +33,13 @@
 .method public abstract interceptKeyBeforeQueueing(Landroid/view/KeyEvent;I)I
 .end method
 
+.method public abstract interceptMotionBeforeDispatching(Landroid/view/MotionEvent;II)J
+.end method
+
 .method public abstract interceptMotionBeforeQueueingNonInteractive(IJI)I
+.end method
+
+.method public abstract mzInterceptMotionBeforeQueueing(Landroid/view/MotionEvent;I)I
 .end method
 
 .method public abstract notifyANR(Landroid/os/IBinder;Ljava/lang/String;)J

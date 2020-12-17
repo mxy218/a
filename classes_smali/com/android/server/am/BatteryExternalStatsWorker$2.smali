@@ -24,6 +24,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/am/BatteryExternalStatsWorker;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/am/BatteryExternalStatsWorker;
 
     .line 394
     iput-object p1, p0, Lcom/android/server/am/BatteryExternalStatsWorker$2;->this$0:Lcom/android/server/am/BatteryExternalStatsWorker;

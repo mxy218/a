@@ -30,22 +30,26 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/am/ActivityManagerService;ILandroid/os/IBinder;Ljava/lang/String;)V
     .registers 5
+    .param p1, "this$0"  # Lcom/android/server/am/ActivityManagerService;
+    .param p2, "_pid"  # I
+    .param p3, "_token"  # Landroid/os/IBinder;
+    .param p4, "_reason"  # Ljava/lang/String;
 
-    .line 821
+    .line 899
     iput-object p1, p0, Lcom/android/server/am/ActivityManagerService$ImportanceToken;->this$0:Lcom/android/server/am/ActivityManagerService;
 
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
-    .line 822
+    .line 900
     iput p2, p0, Lcom/android/server/am/ActivityManagerService$ImportanceToken;->pid:I
 
-    .line 823
+    .line 901
     iput-object p3, p0, Lcom/android/server/am/ActivityManagerService$ImportanceToken;->token:Landroid/os/IBinder;
 
-    .line 824
+    .line 902
     iput-object p4, p0, Lcom/android/server/am/ActivityManagerService$ImportanceToken;->reason:Ljava/lang/String;
 
-    .line 825
+    .line 903
     return-void
 .end method
 
@@ -54,7 +58,7 @@
 .method public toString()Ljava/lang/String;
     .registers 4
 
-    .line 829
+    .line 907
     new-instance v0, Ljava/lang/StringBuilder;
 
     invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
@@ -105,45 +109,48 @@
 .end method
 
 .method writeToProto(Landroid/util/proto/ProtoOutputStream;J)V
-    .registers 7
+    .registers 9
+    .param p1, "proto"  # Landroid/util/proto/ProtoOutputStream;
+    .param p2, "fieldId"  # J
 
-    .line 834
+    .line 912
     invoke-virtual {p1, p2, p3}, Landroid/util/proto/ProtoOutputStream;->start(J)J
 
-    move-result-wide p2
+    move-result-wide v0
 
-    .line 835
-    iget v0, p0, Lcom/android/server/am/ActivityManagerService$ImportanceToken;->pid:I
+    .line 913
+    .local v0, "pToken":J
+    iget v2, p0, Lcom/android/server/am/ActivityManagerService$ImportanceToken;->pid:I
 
-    const-wide v1, 0x10500000001L
+    const-wide v3, 0x10500000001L
 
-    invoke-virtual {p1, v1, v2, v0}, Landroid/util/proto/ProtoOutputStream;->write(JI)V
+    invoke-virtual {p1, v3, v4, v2}, Landroid/util/proto/ProtoOutputStream;->write(JI)V
 
-    .line 836
-    iget-object v0, p0, Lcom/android/server/am/ActivityManagerService$ImportanceToken;->token:Landroid/os/IBinder;
+    .line 914
+    iget-object v2, p0, Lcom/android/server/am/ActivityManagerService$ImportanceToken;->token:Landroid/os/IBinder;
 
-    if-eqz v0, :cond_1e
+    if-eqz v2, :cond_1e
 
-    .line 837
-    const-wide v1, 0x10900000002L
+    .line 915
+    const-wide v3, 0x10900000002L
 
-    invoke-virtual {v0}, Ljava/lang/Object;->toString()Ljava/lang/String;
+    invoke-virtual {v2}, Ljava/lang/Object;->toString()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v2
 
-    invoke-virtual {p1, v1, v2, v0}, Landroid/util/proto/ProtoOutputStream;->write(JLjava/lang/String;)V
+    invoke-virtual {p1, v3, v4, v2}, Landroid/util/proto/ProtoOutputStream;->write(JLjava/lang/String;)V
 
-    .line 839
+    .line 917
     :cond_1e
-    const-wide v0, 0x10900000003L
+    const-wide v2, 0x10900000003L
 
-    iget-object v2, p0, Lcom/android/server/am/ActivityManagerService$ImportanceToken;->reason:Ljava/lang/String;
+    iget-object v4, p0, Lcom/android/server/am/ActivityManagerService$ImportanceToken;->reason:Ljava/lang/String;
 
-    invoke-virtual {p1, v0, v1, v2}, Landroid/util/proto/ProtoOutputStream;->write(JLjava/lang/String;)V
+    invoke-virtual {p1, v2, v3, v4}, Landroid/util/proto/ProtoOutputStream;->write(JLjava/lang/String;)V
 
-    .line 840
-    invoke-virtual {p1, p2, p3}, Landroid/util/proto/ProtoOutputStream;->end(J)V
+    .line 918
+    invoke-virtual {p1, v0, v1}, Landroid/util/proto/ProtoOutputStream;->end(J)V
 
-    .line 841
+    .line 919
     return-void
 .end method

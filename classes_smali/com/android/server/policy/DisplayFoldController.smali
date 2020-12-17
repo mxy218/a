@@ -42,6 +42,11 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/wm/WindowManagerInternal;Landroid/hardware/display/DisplayManagerInternal;ILandroid/graphics/Rect;Landroid/os/Handler;)V
     .registers 7
+    .param p1, "windowManagerInternal"  # Lcom/android/server/wm/WindowManagerInternal;
+    .param p2, "displayManagerInternal"  # Landroid/hardware/display/DisplayManagerInternal;
+    .param p3, "displayId"  # I
+    .param p4, "foldedArea"  # Landroid/graphics/Rect;
+    .param p5, "handler"  # Landroid/os/Handler;
 
     .line 62
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -84,11 +89,11 @@
     iput p3, p0, Lcom/android/server/policy/DisplayFoldController;->mDisplayId:I
 
     .line 66
-    new-instance p1, Landroid/graphics/Rect;
+    new-instance v0, Landroid/graphics/Rect;
 
-    invoke-direct {p1, p4}, Landroid/graphics/Rect;-><init>(Landroid/graphics/Rect;)V
+    invoke-direct {v0, p4}, Landroid/graphics/Rect;-><init>(Landroid/graphics/Rect;)V
 
-    iput-object p1, p0, Lcom/android/server/policy/DisplayFoldController;->mFoldedArea:Landroid/graphics/Rect;
+    iput-object v0, p0, Lcom/android/server/policy/DisplayFoldController;->mFoldedArea:Landroid/graphics/Rect;
 
     .line 67
     iput-object p5, p0, Lcom/android/server/policy/DisplayFoldController;->mHandler:Landroid/os/Handler;
@@ -98,7 +103,9 @@
 .end method
 
 .method static create(Landroid/content/Context;I)Lcom/android/server/policy/DisplayFoldController;
-    .registers 9
+    .registers 12
+    .param p0, "context"  # Landroid/content/Context;
+    .param p1, "displayId"  # I
 
     .line 189
     const-class v0, Landroid/hardware/display/DisplayManagerInternal;
@@ -108,62 +115,65 @@
 
     move-result-object v0
 
-    move-object v3, v0
-
-    check-cast v3, Landroid/hardware/display/DisplayManagerInternal;
+    check-cast v0, Landroid/hardware/display/DisplayManagerInternal;
 
     .line 191
+    .local v0, "displayService":Landroid/hardware/display/DisplayManagerInternal;
     invoke-virtual {p0}, Landroid/content/Context;->getResources()Landroid/content/res/Resources;
 
-    move-result-object p0
+    move-result-object v1
 
-    const v0, 0x104017a
+    const v2, 0x1040174
 
-    invoke-virtual {p0, v0}, Landroid/content/res/Resources;->getString(I)Ljava/lang/String;
+    invoke-virtual {v1, v2}, Landroid/content/res/Resources;->getString(I)Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v7
 
     .line 194
-    if-eqz p0, :cond_23
+    .local v7, "configFoldedArea":Ljava/lang/String;
+    if-eqz v7, :cond_22
 
-    invoke-virtual {p0}, Ljava/lang/String;->isEmpty()Z
+    invoke-virtual {v7}, Ljava/lang/String;->isEmpty()Z
 
-    move-result v0
+    move-result v1
 
-    if-eqz v0, :cond_1d
+    if-eqz v1, :cond_1c
 
-    goto :goto_23
+    goto :goto_22
 
     .line 197
-    :cond_1d
-    invoke-static {p0}, Landroid/graphics/Rect;->unflattenFromString(Ljava/lang/String;)Landroid/graphics/Rect;
+    :cond_1c
+    invoke-static {v7}, Landroid/graphics/Rect;->unflattenFromString(Ljava/lang/String;)Landroid/graphics/Rect;
 
-    move-result-object p0
+    move-result-object v1
 
-    move-object v5, p0
+    move-object v8, v1
 
-    goto :goto_29
+    .local v1, "foldedArea":Landroid/graphics/Rect;
+    goto :goto_28
 
     .line 195
-    :cond_23
-    :goto_23
-    new-instance p0, Landroid/graphics/Rect;
+    .end local v1  # "foldedArea":Landroid/graphics/Rect;
+    :cond_22
+    :goto_22
+    new-instance v1, Landroid/graphics/Rect;
 
-    invoke-direct {p0}, Landroid/graphics/Rect;-><init>()V
+    invoke-direct {v1}, Landroid/graphics/Rect;-><init>()V
 
-    move-object v5, p0
+    move-object v8, v1
 
     .line 200
-    :goto_29
-    new-instance p0, Lcom/android/server/policy/DisplayFoldController;
+    .local v8, "foldedArea":Landroid/graphics/Rect;
+    :goto_28
+    new-instance v9, Lcom/android/server/policy/DisplayFoldController;
 
-    const-class v0, Lcom/android/server/wm/WindowManagerInternal;
+    const-class v1, Lcom/android/server/wm/WindowManagerInternal;
 
-    invoke-static {v0}, Lcom/android/server/LocalServices;->getService(Ljava/lang/Class;)Ljava/lang/Object;
+    invoke-static {v1}, Lcom/android/server/LocalServices;->getService(Ljava/lang/Class;)Ljava/lang/Object;
 
-    move-result-object v0
+    move-result-object v1
 
-    move-object v2, v0
+    move-object v2, v1
 
     check-cast v2, Lcom/android/server/wm/WindowManagerInternal;
 
@@ -172,18 +182,24 @@
 
     move-result-object v6
 
-    move-object v1, p0
+    move-object v1, v9
+
+    move-object v3, v0
 
     move v4, p1
+
+    move-object v5, v8
 
     invoke-direct/range {v1 .. v6}, Lcom/android/server/policy/DisplayFoldController;-><init>(Lcom/android/server/wm/WindowManagerInternal;Landroid/hardware/display/DisplayManagerInternal;ILandroid/graphics/Rect;Landroid/os/Handler;)V
 
     .line 200
-    return-object p0
+    return-object v9
 .end method
 
 .method static createWithProxSensor(Landroid/content/Context;I)Lcom/android/server/policy/DisplayFoldController;
-    .registers 5
+    .registers 7
+    .param p0, "context"  # Landroid/content/Context;
+    .param p1, "displayId"  # I
 
     .line 162
     const-class v0, Landroid/hardware/SensorManager;
@@ -195,6 +211,7 @@
     check-cast v0, Landroid/hardware/SensorManager;
 
     .line 163
+    .local v0, "sensorManager":Landroid/hardware/SensorManager;
     const/16 v1, 0x8
 
     invoke-virtual {v0, v1}, Landroid/hardware/SensorManager;->getDefaultSensor(I)Landroid/hardware/Sensor;
@@ -202,30 +219,32 @@
     move-result-object v1
 
     .line 164
+    .local v1, "proxSensor":Landroid/hardware/Sensor;
     if-nez v1, :cond_12
 
     .line 165
-    const/4 p0, 0x0
+    const/4 v2, 0x0
 
-    return-object p0
+    return-object v2
 
     .line 168
     :cond_12
     invoke-static {p0, p1}, Lcom/android/server/policy/DisplayFoldController;->create(Landroid/content/Context;I)Lcom/android/server/policy/DisplayFoldController;
 
-    move-result-object p0
+    move-result-object v2
 
     .line 169
-    new-instance p1, Lcom/android/server/policy/DisplayFoldController$1;
+    .local v2, "result":Lcom/android/server/policy/DisplayFoldController;
+    new-instance v3, Lcom/android/server/policy/DisplayFoldController$1;
 
-    invoke-direct {p1, p0}, Lcom/android/server/policy/DisplayFoldController$1;-><init>(Lcom/android/server/policy/DisplayFoldController;)V
+    invoke-direct {v3, v2}, Lcom/android/server/policy/DisplayFoldController$1;-><init>(Lcom/android/server/policy/DisplayFoldController;)V
 
-    const/4 v2, 0x3
+    const/4 v4, 0x3
 
-    invoke-virtual {v0, p1, v1, v2}, Landroid/hardware/SensorManager;->registerListener(Landroid/hardware/SensorEventListener;Landroid/hardware/Sensor;I)Z
+    invoke-virtual {v0, v3, v1, v4}, Landroid/hardware/SensorManager;->registerListener(Landroid/hardware/SensorEventListener;Landroid/hardware/Sensor;I)Z
 
     .line 181
-    return-object p0
+    return-object v2
 .end method
 
 
@@ -282,6 +301,7 @@
 
 .method public synthetic lambda$registerDisplayFoldListener$1$DisplayFoldController(Landroid/view/IDisplayFoldListener;)V
     .registers 4
+    .param p1, "listener"  # Landroid/view/IDisplayFoldListener;
 
     .line 134
     :try_start_0
@@ -302,7 +322,7 @@
 
     .line 135
     :catch_c
-    move-exception p1
+    move-exception v0
 
     .line 138
     :goto_d
@@ -311,6 +331,7 @@
 
 .method public synthetic lambda$requestDeviceFolded$0$DisplayFoldController(Z)V
     .registers 2
+    .param p1, "folded"  # Z
 
     .line 79
     invoke-virtual {p0, p1}, Lcom/android/server/policy/DisplayFoldController;->setDeviceFolded(Z)V
@@ -320,6 +341,7 @@
 
 .method onDefaultDisplayFocusChanged(Ljava/lang/String;)V
     .registers 2
+    .param p1, "pkg"  # Ljava/lang/String;
 
     .line 185
     iput-object p1, p0, Lcom/android/server/policy/DisplayFoldController;->mFocusedApp:Ljava/lang/String;
@@ -330,6 +352,7 @@
 
 .method registerDisplayFoldListener(Landroid/view/IDisplayFoldListener;)V
     .registers 4
+    .param p1, "listener"  # Landroid/view/IDisplayFoldListener;
 
     .line 128
     iget-object v0, p0, Lcom/android/server/policy/DisplayFoldController;->mListeners:Landroid/os/RemoteCallbackList;
@@ -360,6 +383,7 @@
 
 .method requestDeviceFolded(Z)V
     .registers 4
+    .param p1, "folded"  # Z
 
     .line 79
     iget-object v0, p0, Lcom/android/server/policy/DisplayFoldController;->mHandler:Landroid/os/Handler;
@@ -376,6 +400,7 @@
 
 .method setDeviceFolded(Z)V
     .registers 9
+    .param p1, "folded"  # Z
 
     .line 83
     iget-object v0, p0, Lcom/android/server/policy/DisplayFoldController;->mFolded:Ljava/lang/Boolean;
@@ -393,53 +418,72 @@
 
     .line 86
     :cond_b
-    const/4 v0, 0x0
-
-    if-eqz p1, :cond_6a
+    if-eqz p1, :cond_69
 
     .line 88
-    iget-object v1, p0, Lcom/android/server/policy/DisplayFoldController;->mOverrideFoldedArea:Landroid/graphics/Rect;
+    iget-object v0, p0, Lcom/android/server/policy/DisplayFoldController;->mOverrideFoldedArea:Landroid/graphics/Rect;
 
-    invoke-virtual {v1}, Landroid/graphics/Rect;->isEmpty()Z
+    invoke-virtual {v0}, Landroid/graphics/Rect;->isEmpty()Z
 
-    move-result v1
+    move-result v0
 
-    if-nez v1, :cond_19
+    if-nez v0, :cond_18
 
     .line 89
-    iget-object v1, p0, Lcom/android/server/policy/DisplayFoldController;->mOverrideFoldedArea:Landroid/graphics/Rect;
+    iget-object v0, p0, Lcom/android/server/policy/DisplayFoldController;->mOverrideFoldedArea:Landroid/graphics/Rect;
 
-    goto :goto_23
+    .local v0, "foldedArea":Landroid/graphics/Rect;
+    goto :goto_22
 
     .line 90
-    :cond_19
-    iget-object v1, p0, Lcom/android/server/policy/DisplayFoldController;->mFoldedArea:Landroid/graphics/Rect;
+    .end local v0  # "foldedArea":Landroid/graphics/Rect;
+    :cond_18
+    iget-object v0, p0, Lcom/android/server/policy/DisplayFoldController;->mFoldedArea:Landroid/graphics/Rect;
 
-    invoke-virtual {v1}, Landroid/graphics/Rect;->isEmpty()Z
+    invoke-virtual {v0}, Landroid/graphics/Rect;->isEmpty()Z
 
-    move-result v1
+    move-result v0
 
-    if-nez v1, :cond_69
+    if-nez v0, :cond_68
 
     .line 91
-    iget-object v1, p0, Lcom/android/server/policy/DisplayFoldController;->mFoldedArea:Landroid/graphics/Rect;
+    iget-object v0, p0, Lcom/android/server/policy/DisplayFoldController;->mFoldedArea:Landroid/graphics/Rect;
 
     .line 96
-    :goto_23
-    iget-object v2, p0, Lcom/android/server/policy/DisplayFoldController;->mDisplayManagerInternal:Landroid/hardware/display/DisplayManagerInternal;
+    .restart local v0  # "foldedArea":Landroid/graphics/Rect;
+    :goto_22
+    iget-object v1, p0, Lcom/android/server/policy/DisplayFoldController;->mDisplayManagerInternal:Landroid/hardware/display/DisplayManagerInternal;
 
-    iget v3, p0, Lcom/android/server/policy/DisplayFoldController;->mDisplayId:I
+    iget v2, p0, Lcom/android/server/policy/DisplayFoldController;->mDisplayId:I
 
-    iget-object v4, p0, Lcom/android/server/policy/DisplayFoldController;->mNonOverrideDisplayInfo:Landroid/view/DisplayInfo;
+    iget-object v3, p0, Lcom/android/server/policy/DisplayFoldController;->mNonOverrideDisplayInfo:Landroid/view/DisplayInfo;
 
-    invoke-virtual {v2, v3, v4}, Landroid/hardware/display/DisplayManagerInternal;->getNonOverrideDisplayInfo(ILandroid/view/DisplayInfo;)V
+    invoke-virtual {v1, v2, v3}, Landroid/hardware/display/DisplayManagerInternal;->getNonOverrideDisplayInfo(ILandroid/view/DisplayInfo;)V
 
     .line 97
+    iget-object v1, p0, Lcom/android/server/policy/DisplayFoldController;->mNonOverrideDisplayInfo:Landroid/view/DisplayInfo;
+
+    iget v1, v1, Landroid/view/DisplayInfo;->logicalWidth:I
+
+    invoke-virtual {v0}, Landroid/graphics/Rect;->width()I
+
+    move-result v2
+
+    sub-int/2addr v1, v2
+
+    div-int/lit8 v1, v1, 0x2
+
+    iget v2, v0, Landroid/graphics/Rect;->left:I
+
+    sub-int/2addr v1, v2
+
+    .line 99
+    .local v1, "dx":I
     iget-object v2, p0, Lcom/android/server/policy/DisplayFoldController;->mNonOverrideDisplayInfo:Landroid/view/DisplayInfo;
 
-    iget v2, v2, Landroid/view/DisplayInfo;->logicalWidth:I
+    iget v2, v2, Landroid/view/DisplayInfo;->logicalHeight:I
 
-    invoke-virtual {v1}, Landroid/graphics/Rect;->width()I
+    invoke-virtual {v0}, Landroid/graphics/Rect;->height()I
 
     move-result v3
 
@@ -447,131 +491,122 @@
 
     div-int/lit8 v2, v2, 0x2
 
-    iget v3, v1, Landroid/graphics/Rect;->left:I
+    iget v3, v0, Landroid/graphics/Rect;->top:I
 
     sub-int/2addr v2, v3
 
-    .line 99
-    iget-object v3, p0, Lcom/android/server/policy/DisplayFoldController;->mNonOverrideDisplayInfo:Landroid/view/DisplayInfo;
-
-    iget v3, v3, Landroid/view/DisplayInfo;->logicalHeight:I
-
-    invoke-virtual {v1}, Landroid/graphics/Rect;->height()I
-
-    move-result v4
-
-    sub-int/2addr v3, v4
-
-    div-int/lit8 v3, v3, 0x2
-
-    iget v4, v1, Landroid/graphics/Rect;->top:I
-
-    sub-int/2addr v3, v4
-
     .line 103
-    iget-object v4, p0, Lcom/android/server/policy/DisplayFoldController;->mDisplayManagerInternal:Landroid/hardware/display/DisplayManagerInternal;
-
-    iget v5, p0, Lcom/android/server/policy/DisplayFoldController;->mDisplayId:I
-
-    const/4 v6, 0x1
-
-    invoke-virtual {v4, v5, v6}, Landroid/hardware/display/DisplayManagerInternal;->setDisplayScalingDisabled(IZ)V
-
-    .line 104
-    iget-object v4, p0, Lcom/android/server/policy/DisplayFoldController;->mWindowManagerInternal:Lcom/android/server/wm/WindowManagerInternal;
-
-    iget v5, p0, Lcom/android/server/policy/DisplayFoldController;->mDisplayId:I
-
-    .line 105
-    invoke-virtual {v1}, Landroid/graphics/Rect;->width()I
-
-    move-result v6
-
-    invoke-virtual {v1}, Landroid/graphics/Rect;->height()I
-
-    move-result v1
-
-    .line 104
-    invoke-virtual {v4, v5, v6, v1}, Lcom/android/server/wm/WindowManagerInternal;->setForcedDisplaySize(III)V
-
-    .line 106
-    iget-object v1, p0, Lcom/android/server/policy/DisplayFoldController;->mDisplayManagerInternal:Landroid/hardware/display/DisplayManagerInternal;
+    .local v2, "dy":I
+    iget-object v3, p0, Lcom/android/server/policy/DisplayFoldController;->mDisplayManagerInternal:Landroid/hardware/display/DisplayManagerInternal;
 
     iget v4, p0, Lcom/android/server/policy/DisplayFoldController;->mDisplayId:I
 
-    neg-int v2, v2
+    const/4 v5, 0x1
 
-    neg-int v3, v3
+    invoke-virtual {v3, v4, v5}, Landroid/hardware/display/DisplayManagerInternal;->setDisplayScalingDisabled(IZ)V
 
-    invoke-virtual {v1, v4, v2, v3}, Landroid/hardware/display/DisplayManagerInternal;->setDisplayOffsets(III)V
+    .line 104
+    iget-object v3, p0, Lcom/android/server/policy/DisplayFoldController;->mWindowManagerInternal:Lcom/android/server/wm/WindowManagerInternal;
+
+    iget v4, p0, Lcom/android/server/policy/DisplayFoldController;->mDisplayId:I
+
+    .line 105
+    invoke-virtual {v0}, Landroid/graphics/Rect;->width()I
+
+    move-result v5
+
+    invoke-virtual {v0}, Landroid/graphics/Rect;->height()I
+
+    move-result v6
+
+    .line 104
+    invoke-virtual {v3, v4, v5, v6}, Lcom/android/server/wm/WindowManagerInternal;->setForcedDisplaySize(III)V
+
+    .line 106
+    iget-object v3, p0, Lcom/android/server/policy/DisplayFoldController;->mDisplayManagerInternal:Landroid/hardware/display/DisplayManagerInternal;
+
+    iget v4, p0, Lcom/android/server/policy/DisplayFoldController;->mDisplayId:I
+
+    neg-int v5, v1
+
+    neg-int v6, v2
+
+    invoke-virtual {v3, v4, v5, v6}, Landroid/hardware/display/DisplayManagerInternal;->setDisplayOffsets(III)V
 
     .line 107
+    .end local v0  # "foldedArea":Landroid/graphics/Rect;
+    .end local v1  # "dx":I
+    .end local v2  # "dy":I
     goto :goto_7f
 
     .line 93
-    :cond_69
+    :cond_68
     return-void
 
     .line 108
-    :cond_6a
-    iget-object v1, p0, Lcom/android/server/policy/DisplayFoldController;->mDisplayManagerInternal:Landroid/hardware/display/DisplayManagerInternal;
+    :cond_69
+    iget-object v0, p0, Lcom/android/server/policy/DisplayFoldController;->mDisplayManagerInternal:Landroid/hardware/display/DisplayManagerInternal;
 
-    iget v2, p0, Lcom/android/server/policy/DisplayFoldController;->mDisplayId:I
+    iget v1, p0, Lcom/android/server/policy/DisplayFoldController;->mDisplayId:I
 
-    invoke-virtual {v1, v2, v0}, Landroid/hardware/display/DisplayManagerInternal;->setDisplayScalingDisabled(IZ)V
+    const/4 v2, 0x0
+
+    invoke-virtual {v0, v1, v2}, Landroid/hardware/display/DisplayManagerInternal;->setDisplayScalingDisabled(IZ)V
 
     .line 109
-    iget-object v1, p0, Lcom/android/server/policy/DisplayFoldController;->mWindowManagerInternal:Lcom/android/server/wm/WindowManagerInternal;
+    iget-object v0, p0, Lcom/android/server/policy/DisplayFoldController;->mWindowManagerInternal:Lcom/android/server/wm/WindowManagerInternal;
 
-    iget v2, p0, Lcom/android/server/policy/DisplayFoldController;->mDisplayId:I
+    iget v1, p0, Lcom/android/server/policy/DisplayFoldController;->mDisplayId:I
 
-    invoke-virtual {v1, v2}, Lcom/android/server/wm/WindowManagerInternal;->clearForcedDisplaySize(I)V
+    invoke-virtual {v0, v1}, Lcom/android/server/wm/WindowManagerInternal;->clearForcedDisplaySize(I)V
 
     .line 110
-    iget-object v1, p0, Lcom/android/server/policy/DisplayFoldController;->mDisplayManagerInternal:Landroid/hardware/display/DisplayManagerInternal;
+    iget-object v0, p0, Lcom/android/server/policy/DisplayFoldController;->mDisplayManagerInternal:Landroid/hardware/display/DisplayManagerInternal;
 
-    iget v2, p0, Lcom/android/server/policy/DisplayFoldController;->mDisplayId:I
+    iget v1, p0, Lcom/android/server/policy/DisplayFoldController;->mDisplayId:I
 
-    invoke-virtual {v1, v2, v0, v0}, Landroid/hardware/display/DisplayManagerInternal;->setDisplayOffsets(III)V
+    invoke-virtual {v0, v1, v2, v2}, Landroid/hardware/display/DisplayManagerInternal;->setDisplayOffsets(III)V
 
     .line 112
     :goto_7f
-    iget-object v1, p0, Lcom/android/server/policy/DisplayFoldController;->mDurationLogger:Lcom/android/server/policy/DisplayFoldDurationLogger;
+    iget-object v0, p0, Lcom/android/server/policy/DisplayFoldController;->mDurationLogger:Lcom/android/server/policy/DisplayFoldDurationLogger;
 
-    invoke-virtual {v1, p1}, Lcom/android/server/policy/DisplayFoldDurationLogger;->setDeviceFolded(Z)V
+    invoke-virtual {v0, p1}, Lcom/android/server/policy/DisplayFoldDurationLogger;->setDeviceFolded(Z)V
 
     .line 113
-    iget-object v1, p0, Lcom/android/server/policy/DisplayFoldController;->mDurationLogger:Lcom/android/server/policy/DisplayFoldDurationLogger;
+    iget-object v0, p0, Lcom/android/server/policy/DisplayFoldController;->mDurationLogger:Lcom/android/server/policy/DisplayFoldDurationLogger;
 
-    iget-object v2, p0, Lcom/android/server/policy/DisplayFoldController;->mFocusedApp:Ljava/lang/String;
+    iget-object v1, p0, Lcom/android/server/policy/DisplayFoldController;->mFocusedApp:Ljava/lang/String;
 
-    invoke-virtual {v1, p1, v2}, Lcom/android/server/policy/DisplayFoldDurationLogger;->logFocusedAppWithFoldState(ZLjava/lang/String;)V
+    invoke-virtual {v0, p1, v1}, Lcom/android/server/policy/DisplayFoldDurationLogger;->logFocusedAppWithFoldState(ZLjava/lang/String;)V
 
     .line 114
     invoke-static {p1}, Ljava/lang/Boolean;->valueOf(Z)Ljava/lang/Boolean;
 
-    move-result-object v1
+    move-result-object v0
 
-    iput-object v1, p0, Lcom/android/server/policy/DisplayFoldController;->mFolded:Ljava/lang/Boolean;
+    iput-object v0, p0, Lcom/android/server/policy/DisplayFoldController;->mFolded:Ljava/lang/Boolean;
 
     .line 116
-    iget-object v1, p0, Lcom/android/server/policy/DisplayFoldController;->mListeners:Landroid/os/RemoteCallbackList;
+    iget-object v0, p0, Lcom/android/server/policy/DisplayFoldController;->mListeners:Landroid/os/RemoteCallbackList;
 
-    invoke-virtual {v1}, Landroid/os/RemoteCallbackList;->beginBroadcast()I
+    invoke-virtual {v0}, Landroid/os/RemoteCallbackList;->beginBroadcast()I
 
-    move-result v1
+    move-result v0
 
     .line 117
-    nop
+    .local v0, "n":I
+    const/4 v1, 0x0
 
+    .local v1, "i":I
     :goto_98
-    if-ge v0, v1, :cond_ac
+    if-ge v1, v0, :cond_ac
 
     .line 119
     :try_start_9a
     iget-object v2, p0, Lcom/android/server/policy/DisplayFoldController;->mListeners:Landroid/os/RemoteCallbackList;
 
-    invoke-virtual {v2, v0}, Landroid/os/RemoteCallbackList;->getBroadcastItem(I)Landroid/os/IInterface;
+    invoke-virtual {v2, v1}, Landroid/os/RemoteCallbackList;->getBroadcastItem(I)Landroid/os/IInterface;
 
     move-result-object v2
 
@@ -592,15 +627,16 @@
 
     .line 117
     :goto_a9
-    add-int/lit8 v0, v0, 0x1
+    add-int/lit8 v1, v1, 0x1
 
     goto :goto_98
 
     .line 124
+    .end local v1  # "i":I
     :cond_ac
-    iget-object p1, p0, Lcom/android/server/policy/DisplayFoldController;->mListeners:Landroid/os/RemoteCallbackList;
+    iget-object v1, p0, Lcom/android/server/policy/DisplayFoldController;->mListeners:Landroid/os/RemoteCallbackList;
 
-    invoke-virtual {p1}, Landroid/os/RemoteCallbackList;->finishBroadcast()V
+    invoke-virtual {v1}, Landroid/os/RemoteCallbackList;->finishBroadcast()V
 
     .line 125
     return-void
@@ -608,6 +644,7 @@
 
 .method setOverrideFoldedArea(Landroid/graphics/Rect;)V
     .registers 3
+    .param p1, "area"  # Landroid/graphics/Rect;
 
     .line 146
     iget-object v0, p0, Lcom/android/server/policy/DisplayFoldController;->mOverrideFoldedArea:Landroid/graphics/Rect;
@@ -620,6 +657,7 @@
 
 .method unregisterDisplayFoldListener(Landroid/view/IDisplayFoldListener;)V
     .registers 3
+    .param p1, "listener"  # Landroid/view/IDisplayFoldListener;
 
     .line 142
     iget-object v0, p0, Lcom/android/server/policy/DisplayFoldController;->mListeners:Landroid/os/RemoteCallbackList;

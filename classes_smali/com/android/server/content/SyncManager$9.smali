@@ -24,6 +24,7 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/content/SyncManager;)V
     .registers 2
+    .param p1, "this$0"  # Lcom/android/server/content/SyncManager;
 
     .line 596
     iput-object p1, p0, Lcom/android/server/content/SyncManager$9;->this$0:Lcom/android/server/content/SyncManager;
@@ -37,6 +38,10 @@
 # virtual methods
 .method public onPeriodicSyncAdded(Lcom/android/server/content/SyncStorageEngine$EndPoint;Landroid/os/Bundle;JJ)V
     .registers 14
+    .param p1, "target"  # Lcom/android/server/content/SyncStorageEngine$EndPoint;
+    .param p2, "extras"  # Landroid/os/Bundle;
+    .param p3, "pollFrequency"  # J
+    .param p5, "flex"  # J
 
     .line 600
     iget-object v0, p0, Lcom/android/server/content/SyncManager$9;->this$0:Lcom/android/server/content/SyncManager;

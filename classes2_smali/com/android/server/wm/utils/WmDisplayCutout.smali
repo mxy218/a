@@ -33,6 +33,8 @@
 
 .method public constructor <init>(Landroid/view/DisplayCutout;Landroid/util/Size;)V
     .registers 3
+    .param p1, "inner"  # Landroid/view/DisplayCutout;
+    .param p2, "frameSize"  # Landroid/util/Size;
 
     .line 39
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -48,7 +50,9 @@
 .end method
 
 .method private static computeSafeInsets(Landroid/util/Size;Landroid/view/DisplayCutout;)Landroid/graphics/Rect;
-    .registers 6
+    .registers 7
+    .param p0, "displaySize"  # Landroid/util/Size;
+    .param p1, "cutout"  # Landroid/view/DisplayCutout;
 
     .line 115
     invoke-virtual {p0}, Landroid/util/Size;->getWidth()I
@@ -84,35 +88,41 @@
     .line 116
     invoke-virtual {p1, v0}, Landroid/view/DisplayCutout;->replaceSafeInsets(Landroid/graphics/Rect;)Landroid/view/DisplayCutout;
 
-    move-result-object p1
+    move-result-object v0
 
     .line 118
-    invoke-virtual {p1}, Landroid/view/DisplayCutout;->getBoundingRects()Ljava/util/List;
+    invoke-virtual {v0}, Landroid/view/DisplayCutout;->getBoundingRects()Ljava/util/List;
 
-    move-result-object p1
+    move-result-object v0
 
     .line 119
-    const/16 v0, 0x30
+    .local v0, "boundingRects":Ljava/util/List;, "Ljava/util/List<Landroid/graphics/Rect;>;"
+    const/16 v1, 0x30
 
-    invoke-static {p0, p1, v0}, Lcom/android/server/wm/utils/WmDisplayCutout;->findInsetForSide(Landroid/util/Size;Ljava/util/List;I)I
+    invoke-static {p0, v0, v1}, Lcom/android/server/wm/utils/WmDisplayCutout;->findInsetForSide(Landroid/util/Size;Ljava/util/List;I)I
 
-    move-result v0
+    move-result v1
 
     .line 120
-    const/16 v1, 0x50
+    .local v1, "topInset":I
+    const/16 v3, 0x50
 
-    invoke-static {p0, p1, v1}, Lcom/android/server/wm/utils/WmDisplayCutout;->findInsetForSide(Landroid/util/Size;Ljava/util/List;I)I
+    invoke-static {p0, v0, v3}, Lcom/android/server/wm/utils/WmDisplayCutout;->findInsetForSide(Landroid/util/Size;Ljava/util/List;I)I
 
-    move-result p0
+    move-result v3
 
     .line 121
-    new-instance p1, Landroid/graphics/Rect;
+    .local v3, "bottomInset":I
+    new-instance v4, Landroid/graphics/Rect;
 
-    invoke-direct {p1, v2, v0, v2, p0}, Landroid/graphics/Rect;-><init>(IIII)V
+    invoke-direct {v4, v2, v1, v2, v3}, Landroid/graphics/Rect;-><init>(IIII)V
 
-    return-object p1
+    return-object v4
 
     .line 122
+    .end local v0  # "boundingRects":Ljava/util/List;, "Ljava/util/List<Landroid/graphics/Rect;>;"
+    .end local v1  # "topInset":I
+    .end local v3  # "bottomInset":I
     :cond_36
     invoke-virtual {p0}, Landroid/util/Size;->getWidth()I
 
@@ -145,35 +155,41 @@
     .line 123
     invoke-virtual {p1, v0}, Landroid/view/DisplayCutout;->replaceSafeInsets(Landroid/graphics/Rect;)Landroid/view/DisplayCutout;
 
-    move-result-object p1
+    move-result-object v0
 
     .line 125
-    invoke-virtual {p1}, Landroid/view/DisplayCutout;->getBoundingRects()Ljava/util/List;
+    invoke-virtual {v0}, Landroid/view/DisplayCutout;->getBoundingRects()Ljava/util/List;
 
-    move-result-object p1
+    move-result-object v0
 
     .line 126
-    const/4 v0, 0x3
+    .restart local v0  # "boundingRects":Ljava/util/List;, "Ljava/util/List<Landroid/graphics/Rect;>;"
+    const/4 v1, 0x3
 
-    invoke-static {p0, p1, v0}, Lcom/android/server/wm/utils/WmDisplayCutout;->findInsetForSide(Landroid/util/Size;Ljava/util/List;I)I
+    invoke-static {p0, v0, v1}, Lcom/android/server/wm/utils/WmDisplayCutout;->findInsetForSide(Landroid/util/Size;Ljava/util/List;I)I
 
-    move-result v0
+    move-result v1
 
     .line 127
-    const/4 v1, 0x5
+    .local v1, "leftInset":I
+    const/4 v3, 0x5
 
-    invoke-static {p0, p1, v1}, Lcom/android/server/wm/utils/WmDisplayCutout;->findInsetForSide(Landroid/util/Size;Ljava/util/List;I)I
+    invoke-static {p0, v0, v3}, Lcom/android/server/wm/utils/WmDisplayCutout;->findInsetForSide(Landroid/util/Size;Ljava/util/List;I)I
 
-    move-result p0
+    move-result v3
 
     .line 128
-    new-instance p1, Landroid/graphics/Rect;
+    .local v3, "right":I
+    new-instance v4, Landroid/graphics/Rect;
 
-    invoke-direct {p1, v0, v2, p0, v2}, Landroid/graphics/Rect;-><init>(IIII)V
+    invoke-direct {v4, v1, v2, v3, v2}, Landroid/graphics/Rect;-><init>(IIII)V
 
-    return-object p1
+    return-object v4
 
     .line 130
+    .end local v0  # "boundingRects":Ljava/util/List;, "Ljava/util/List<Landroid/graphics/Rect;>;"
+    .end local v1  # "leftInset":I
+    .end local v3  # "right":I
     :cond_69
     new-instance v0, Ljava/lang/UnsupportedOperationException;
 
@@ -187,23 +203,26 @@
 
     invoke-virtual {v1, p0}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
-    const-string p0, " cutout="
+    const-string v2, " cutout="
 
-    invoke-virtual {v1, p0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v1, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p0
+    move-result-object v1
 
-    invoke-direct {v0, p0}, Ljava/lang/UnsupportedOperationException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v0, v1}, Ljava/lang/UnsupportedOperationException;-><init>(Ljava/lang/String;)V
 
     throw v0
 .end method
 
 .method public static computeSafeInsets(Landroid/view/DisplayCutout;II)Lcom/android/server/wm/utils/WmDisplayCutout;
-    .registers 4
+    .registers 7
+    .param p0, "inner"  # Landroid/view/DisplayCutout;
+    .param p1, "displayWidth"  # I
+    .param p2, "displayHeight"  # I
 
     .line 46
     sget-object v0, Landroid/view/DisplayCutout;->NO_CUTOUT:Landroid/view/DisplayCutout;
@@ -225,31 +244,37 @@
     invoke-direct {v0, p1, p2}, Landroid/util/Size;-><init>(II)V
 
     .line 51
+    .local v0, "displaySize":Landroid/util/Size;
     invoke-static {v0, p0}, Lcom/android/server/wm/utils/WmDisplayCutout;->computeSafeInsets(Landroid/util/Size;Landroid/view/DisplayCutout;)Landroid/graphics/Rect;
 
-    move-result-object p1
+    move-result-object v1
 
     .line 52
-    new-instance p2, Lcom/android/server/wm/utils/WmDisplayCutout;
+    .local v1, "safeInsets":Landroid/graphics/Rect;
+    new-instance v2, Lcom/android/server/wm/utils/WmDisplayCutout;
 
-    invoke-virtual {p0, p1}, Landroid/view/DisplayCutout;->replaceSafeInsets(Landroid/graphics/Rect;)Landroid/view/DisplayCutout;
+    invoke-virtual {p0, v1}, Landroid/view/DisplayCutout;->replaceSafeInsets(Landroid/graphics/Rect;)Landroid/view/DisplayCutout;
 
-    move-result-object p0
+    move-result-object v3
 
-    invoke-direct {p2, p0, v0}, Lcom/android/server/wm/utils/WmDisplayCutout;-><init>(Landroid/view/DisplayCutout;Landroid/util/Size;)V
+    invoke-direct {v2, v3, v0}, Lcom/android/server/wm/utils/WmDisplayCutout;-><init>(Landroid/view/DisplayCutout;Landroid/util/Size;)V
 
-    return-object p2
+    return-object v2
 
     .line 47
+    .end local v0  # "displaySize":Landroid/util/Size;
+    .end local v1  # "safeInsets":Landroid/graphics/Rect;
     :cond_1e
     :goto_1e
-    sget-object p0, Lcom/android/server/wm/utils/WmDisplayCutout;->NO_CUTOUT:Lcom/android/server/wm/utils/WmDisplayCutout;
+    sget-object v0, Lcom/android/server/wm/utils/WmDisplayCutout;->NO_CUTOUT:Lcom/android/server/wm/utils/WmDisplayCutout;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method private static findInsetForSide(Landroid/util/Size;Ljava/util/List;I)I
-    .registers 9
+    .registers 10
+    .param p0, "display"  # Landroid/util/Size;
+    .param p2, "gravity"  # I
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(",
@@ -261,44 +286,47 @@
     .end annotation
 
     .line 136
-    nop
+    .local p1, "boundingRects":Ljava/util/List;, "Ljava/util/List<Landroid/graphics/Rect;>;"
+    const/4 v0, 0x0
 
     .line 137
+    .local v0, "inset":I
     invoke-interface {p1}, Ljava/util/List;->size()I
 
-    move-result v0
+    move-result v1
 
     .line 138
-    const/4 v1, 0x0
+    .local v1, "size":I
+    const/4 v2, 0x0
 
-    move v2, v1
-
-    :goto_7
-    if-ge v1, v0, :cond_74
+    .local v2, "i":I
+    :goto_6
+    if-ge v2, v1, :cond_73
 
     .line 139
-    invoke-interface {p1, v1}, Ljava/util/List;->get(I)Ljava/lang/Object;
+    invoke-interface {p1, v2}, Ljava/util/List;->get(I)Ljava/lang/Object;
 
     move-result-object v3
 
     check-cast v3, Landroid/graphics/Rect;
 
     .line 140
+    .local v3, "boundingRect":Landroid/graphics/Rect;
     const/4 v4, 0x3
 
-    if-eq p2, v4, :cond_67
+    if-eq p2, v4, :cond_66
 
     const/4 v4, 0x5
 
-    if-eq p2, v4, :cond_53
+    if-eq p2, v4, :cond_52
 
     const/16 v4, 0x30
 
-    if-eq p2, v4, :cond_48
+    if-eq p2, v4, :cond_47
 
     const/16 v4, 0x50
 
-    if-ne p2, v4, :cond_31
+    if-ne p2, v4, :cond_30
 
     .line 147
     iget v4, v3, Landroid/graphics/Rect;->bottom:I
@@ -307,114 +335,117 @@
 
     move-result v5
 
-    if-ne v4, v5, :cond_71
+    if-ne v4, v5, :cond_70
 
     .line 148
     invoke-virtual {p0}, Landroid/util/Size;->getHeight()I
 
     move-result v4
 
-    iget v3, v3, Landroid/graphics/Rect;->top:I
+    iget v5, v3, Landroid/graphics/Rect;->top:I
 
-    sub-int/2addr v4, v3
+    sub-int/2addr v4, v5
 
-    invoke-static {v2, v4}, Ljava/lang/Math;->max(II)I
+    invoke-static {v0, v4}, Ljava/lang/Math;->max(II)I
 
-    move-result v2
+    move-result v0
 
-    goto :goto_71
+    goto :goto_70
 
     .line 162
-    :cond_31
-    new-instance p0, Ljava/lang/IllegalArgumentException;
+    :cond_30
+    new-instance v4, Ljava/lang/IllegalArgumentException;
 
-    new-instance p1, Ljava/lang/StringBuilder;
+    new-instance v5, Ljava/lang/StringBuilder;
 
-    invoke-direct {p1}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v5}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v0, "unknown gravity: "
+    const-string v6, "unknown gravity: "
 
-    invoke-virtual {p1, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p1, p2}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v5, p2}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    invoke-virtual {p1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v5}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v5
 
-    invoke-direct {p0, p1}, Ljava/lang/IllegalArgumentException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v4, v5}, Ljava/lang/IllegalArgumentException;-><init>(Ljava/lang/String;)V
 
-    throw p0
+    throw v4
 
     .line 142
-    :cond_48
+    :cond_47
     iget v4, v3, Landroid/graphics/Rect;->top:I
 
-    if-nez v4, :cond_71
+    if-nez v4, :cond_70
 
     .line 143
-    iget v3, v3, Landroid/graphics/Rect;->bottom:I
+    iget v4, v3, Landroid/graphics/Rect;->bottom:I
 
-    invoke-static {v2, v3}, Ljava/lang/Math;->max(II)I
+    invoke-static {v0, v4}, Ljava/lang/Math;->max(II)I
 
-    move-result v2
+    move-result v0
 
-    goto :goto_71
+    goto :goto_70
 
     .line 157
-    :cond_53
+    :cond_52
     iget v4, v3, Landroid/graphics/Rect;->right:I
 
     invoke-virtual {p0}, Landroid/util/Size;->getWidth()I
 
     move-result v5
 
-    if-ne v4, v5, :cond_71
+    if-ne v4, v5, :cond_70
 
     .line 158
     invoke-virtual {p0}, Landroid/util/Size;->getWidth()I
 
     move-result v4
 
-    iget v3, v3, Landroid/graphics/Rect;->left:I
+    iget v5, v3, Landroid/graphics/Rect;->left:I
 
-    sub-int/2addr v4, v3
+    sub-int/2addr v4, v5
 
-    invoke-static {v2, v4}, Ljava/lang/Math;->max(II)I
+    invoke-static {v0, v4}, Ljava/lang/Math;->max(II)I
 
-    move-result v2
+    move-result v0
 
-    goto :goto_71
+    goto :goto_70
 
     .line 152
-    :cond_67
+    :cond_66
     iget v4, v3, Landroid/graphics/Rect;->left:I
 
-    if-nez v4, :cond_71
+    if-nez v4, :cond_70
 
     .line 153
-    iget v3, v3, Landroid/graphics/Rect;->right:I
+    iget v4, v3, Landroid/graphics/Rect;->right:I
 
-    invoke-static {v2, v3}, Ljava/lang/Math;->max(II)I
+    invoke-static {v0, v4}, Ljava/lang/Math;->max(II)I
 
-    move-result v2
+    move-result v0
 
     .line 138
-    :cond_71
-    :goto_71
-    add-int/lit8 v1, v1, 0x1
+    .end local v3  # "boundingRect":Landroid/graphics/Rect;
+    :cond_70
+    :goto_70
+    add-int/lit8 v2, v2, 0x1
 
-    goto :goto_7
+    goto :goto_6
 
     .line 165
-    :cond_74
-    return v2
+    .end local v2  # "i":I
+    :cond_73
+    return v0
 .end method
 
 
 # virtual methods
 .method public calculateRelativeTo(Landroid/graphics/Rect;)Lcom/android/server/wm/utils/WmDisplayCutout;
     .registers 6
+    .param p1, "frame"  # Landroid/graphics/Rect;
 
     .line 84
     iget-object v0, p0, Lcom/android/server/wm/utils/WmDisplayCutout;->mFrameSize:Landroid/util/Size;
@@ -435,6 +466,7 @@
     sub-int/2addr v0, v1
 
     .line 88
+    .local v0, "insetRight":I
     iget-object v1, p0, Lcom/android/server/wm/utils/WmDisplayCutout;->mFrameSize:Landroid/util/Size;
 
     invoke-virtual {v1}, Landroid/util/Size;->getHeight()I
@@ -446,6 +478,7 @@
     sub-int/2addr v1, v2
 
     .line 89
+    .local v1, "insetBottom":I
     iget v2, p1, Landroid/graphics/Rect;->left:I
 
     if-nez v2, :cond_22
@@ -503,9 +536,9 @@
     if-lt v1, v2, :cond_49
 
     .line 96
-    sget-object p1, Lcom/android/server/wm/utils/WmDisplayCutout;->NO_CUTOUT:Lcom/android/server/wm/utils/WmDisplayCutout;
+    sget-object v2, Lcom/android/server/wm/utils/WmDisplayCutout;->NO_CUTOUT:Lcom/android/server/wm/utils/WmDisplayCutout;
 
-    return-object p1
+    return-object v2
 
     .line 98
     :cond_49
@@ -524,30 +557,33 @@
     :cond_52
     iget v2, p1, Landroid/graphics/Rect;->left:I
 
-    iget p1, p1, Landroid/graphics/Rect;->top:I
+    iget v3, p1, Landroid/graphics/Rect;->top:I
 
-    invoke-virtual {p0, v2, p1, v0, v1}, Lcom/android/server/wm/utils/WmDisplayCutout;->inset(IIII)Lcom/android/server/wm/utils/WmDisplayCutout;
+    invoke-virtual {p0, v2, v3, v0, v1}, Lcom/android/server/wm/utils/WmDisplayCutout;->inset(IIII)Lcom/android/server/wm/utils/WmDisplayCutout;
 
-    move-result-object p1
+    move-result-object v2
 
-    return-object p1
+    return-object v2
 .end method
 
 .method public computeSafeInsets(II)Lcom/android/server/wm/utils/WmDisplayCutout;
     .registers 4
+    .param p1, "width"  # I
+    .param p2, "height"  # I
 
     .line 111
     iget-object v0, p0, Lcom/android/server/wm/utils/WmDisplayCutout;->mInner:Landroid/view/DisplayCutout;
 
     invoke-static {v0, p1, p2}, Lcom/android/server/wm/utils/WmDisplayCutout;->computeSafeInsets(Landroid/view/DisplayCutout;II)Lcom/android/server/wm/utils/WmDisplayCutout;
 
-    move-result-object p1
+    move-result-object v0
 
-    return-object p1
+    return-object v0
 .end method
 
 .method public equals(Ljava/lang/Object;)Z
-    .registers 5
+    .registers 6
+    .param p1, "o"  # Ljava/lang/Object;
 
     .line 174
     instance-of v0, p1, Lcom/android/server/wm/utils/WmDisplayCutout;
@@ -561,39 +597,42 @@
 
     .line 177
     :cond_6
-    check-cast p1, Lcom/android/server/wm/utils/WmDisplayCutout;
+    move-object v0, p1
+
+    check-cast v0, Lcom/android/server/wm/utils/WmDisplayCutout;
 
     .line 178
-    iget-object v0, p0, Lcom/android/server/wm/utils/WmDisplayCutout;->mInner:Landroid/view/DisplayCutout;
+    .local v0, "that":Lcom/android/server/wm/utils/WmDisplayCutout;
+    iget-object v2, p0, Lcom/android/server/wm/utils/WmDisplayCutout;->mInner:Landroid/view/DisplayCutout;
 
-    iget-object v2, p1, Lcom/android/server/wm/utils/WmDisplayCutout;->mInner:Landroid/view/DisplayCutout;
+    iget-object v3, v0, Lcom/android/server/wm/utils/WmDisplayCutout;->mInner:Landroid/view/DisplayCutout;
 
-    invoke-static {v0, v2}, Ljava/util/Objects;->equals(Ljava/lang/Object;Ljava/lang/Object;)Z
+    invoke-static {v2, v3}, Ljava/util/Objects;->equals(Ljava/lang/Object;Ljava/lang/Object;)Z
 
-    move-result v0
+    move-result v2
 
-    if-eqz v0, :cond_1e
+    if-eqz v2, :cond_1f
 
-    iget-object v0, p0, Lcom/android/server/wm/utils/WmDisplayCutout;->mFrameSize:Landroid/util/Size;
+    iget-object v2, p0, Lcom/android/server/wm/utils/WmDisplayCutout;->mFrameSize:Landroid/util/Size;
 
-    iget-object p1, p1, Lcom/android/server/wm/utils/WmDisplayCutout;->mFrameSize:Landroid/util/Size;
+    iget-object v3, v0, Lcom/android/server/wm/utils/WmDisplayCutout;->mFrameSize:Landroid/util/Size;
 
     .line 179
-    invoke-static {v0, p1}, Ljava/util/Objects;->equals(Ljava/lang/Object;Ljava/lang/Object;)Z
+    invoke-static {v2, v3}, Ljava/util/Objects;->equals(Ljava/lang/Object;Ljava/lang/Object;)Z
 
-    move-result p1
+    move-result v2
 
-    if-eqz p1, :cond_1e
+    if-eqz v2, :cond_1f
 
     const/4 v1, 0x1
 
-    goto :goto_1f
+    goto :goto_20
 
-    :cond_1e
+    :cond_1f
     nop
 
     .line 178
-    :goto_1f
+    :goto_20
     return v1
 .end method
 
@@ -634,7 +673,11 @@
 .end method
 
 .method public inset(IIII)Lcom/android/server/wm/utils/WmDisplayCutout;
-    .registers 8
+    .registers 9
+    .param p1, "insetLeft"  # I
+    .param p2, "insetTop"  # I
+    .param p3, "insetRight"  # I
+    .param p4, "insetBottom"  # I
 
     .line 62
     iget-object v0, p0, Lcom/android/server/wm/utils/WmDisplayCutout;->mInner:Landroid/view/DisplayCutout;
@@ -644,6 +687,7 @@
     move-result-object v0
 
     .line 64
+    .local v0, "newInner":Landroid/view/DisplayCutout;
     iget-object v1, p0, Lcom/android/server/wm/utils/WmDisplayCutout;->mInner:Landroid/view/DisplayCutout;
 
     if-ne v1, v0, :cond_b
@@ -657,7 +701,7 @@
 
     if-nez v1, :cond_11
 
-    const/4 p1, 0x0
+    const/4 v1, 0x0
 
     goto :goto_25
 
@@ -673,28 +717,31 @@
 
     sub-int/2addr v1, p3
 
-    iget-object p1, p0, Lcom/android/server/wm/utils/WmDisplayCutout;->mFrameSize:Landroid/util/Size;
+    iget-object v3, p0, Lcom/android/server/wm/utils/WmDisplayCutout;->mFrameSize:Landroid/util/Size;
 
     .line 70
-    invoke-virtual {p1}, Landroid/util/Size;->getHeight()I
+    invoke-virtual {v3}, Landroid/util/Size;->getHeight()I
 
-    move-result p1
+    move-result v3
 
-    sub-int/2addr p1, p2
+    sub-int/2addr v3, p2
 
-    sub-int/2addr p1, p4
+    sub-int/2addr v3, p4
 
-    invoke-direct {v2, v1, p1}, Landroid/util/Size;-><init>(II)V
+    invoke-direct {v2, v1, v3}, Landroid/util/Size;-><init>(II)V
 
-    move-object p1, v2
+    move-object v1, v2
+
+    :goto_25
+    nop
 
     .line 72
-    :goto_25
-    new-instance p2, Lcom/android/server/wm/utils/WmDisplayCutout;
+    .local v1, "frame":Landroid/util/Size;
+    new-instance v2, Lcom/android/server/wm/utils/WmDisplayCutout;
 
-    invoke-direct {p2, v0, p1}, Lcom/android/server/wm/utils/WmDisplayCutout;-><init>(Landroid/view/DisplayCutout;Landroid/util/Size;)V
+    invoke-direct {v2, v0, v1}, Lcom/android/server/wm/utils/WmDisplayCutout;-><init>(Landroid/view/DisplayCutout;Landroid/util/Size;)V
 
-    return-object p2
+    return-object v2
 .end method
 
 .method public toString()Ljava/lang/String;

@@ -28,6 +28,9 @@
 # direct methods
 .method constructor <init>(Landroid/content/pm/ApplicationInfo;II)V
     .registers 4
+    .param p1, "_appInfo"  # Landroid/content/pm/ApplicationInfo;
+    .param p2, "_backupMode"  # I
+    .param p3, "_userId"  # I
 
     .line 37
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -67,6 +70,7 @@
     invoke-direct {v0, v1}, Ljava/lang/StringBuilder;-><init>(I)V
 
     .line 48
+    .local v0, "sb":Ljava/lang/StringBuilder;
     const-string v1, "BackupRecord{"
 
     invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
@@ -118,9 +122,9 @@
     .line 53
     invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v0
+    move-result-object v1
 
-    iput-object v0, p0, Lcom/android/server/am/BackupRecord;->stringName:Ljava/lang/String;
+    iput-object v1, p0, Lcom/android/server/am/BackupRecord;->stringName:Ljava/lang/String;
 
-    return-object v0
+    return-object v1
 .end method

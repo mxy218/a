@@ -26,6 +26,8 @@
 # direct methods
 .method constructor <init>(Lcom/android/server/usb/UsbPortManager;Lcom/android/internal/util/IndentingPrintWriter;)V
     .registers 3
+    .param p1, "this$0"  # Lcom/android/server/usb/UsbPortManager;
+    .param p2, "pw"  # Lcom/android/internal/util/IndentingPrintWriter;
 
     .line 750
     iput-object p1, p0, Lcom/android/server/usb/UsbPortManager$DeathRecipient;->this$0:Lcom/android/server/usb/UsbPortManager;
@@ -43,6 +45,7 @@
 # virtual methods
 .method public serviceDied(J)V
     .registers 7
+    .param p1, "cookie"  # J
 
     .line 756
     const-wide/16 v0, 0x3e8
@@ -68,40 +71,40 @@
 
     invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v2
 
-    invoke-static {v0, v1, p1}, Lcom/android/server/usb/UsbPortManager;->access$100(ILcom/android/internal/util/IndentingPrintWriter;Ljava/lang/String;)V
+    invoke-static {v0, v1, v2}, Lcom/android/server/usb/UsbPortManager;->access$100(ILcom/android/internal/util/IndentingPrintWriter;Ljava/lang/String;)V
 
     .line 758
-    iget-object p1, p0, Lcom/android/server/usb/UsbPortManager$DeathRecipient;->this$0:Lcom/android/server/usb/UsbPortManager;
+    iget-object v0, p0, Lcom/android/server/usb/UsbPortManager$DeathRecipient;->this$0:Lcom/android/server/usb/UsbPortManager;
 
-    invoke-static {p1}, Lcom/android/server/usb/UsbPortManager;->access$300(Lcom/android/server/usb/UsbPortManager;)Ljava/lang/Object;
+    invoke-static {v0}, Lcom/android/server/usb/UsbPortManager;->access$300(Lcom/android/server/usb/UsbPortManager;)Ljava/lang/Object;
 
-    move-result-object p1
+    move-result-object v0
 
-    monitor-enter p1
+    monitor-enter v0
 
     .line 759
     :try_start_24
-    iget-object p2, p0, Lcom/android/server/usb/UsbPortManager$DeathRecipient;->this$0:Lcom/android/server/usb/UsbPortManager;
+    iget-object v1, p0, Lcom/android/server/usb/UsbPortManager$DeathRecipient;->this$0:Lcom/android/server/usb/UsbPortManager;
 
-    const/4 v0, 0x0
+    const/4 v2, 0x0
 
-    invoke-static {p2, v0}, Lcom/android/server/usb/UsbPortManager;->access$402(Lcom/android/server/usb/UsbPortManager;Landroid/hardware/usb/V1_0/IUsb;)Landroid/hardware/usb/V1_0/IUsb;
+    invoke-static {v1, v2}, Lcom/android/server/usb/UsbPortManager;->access$402(Lcom/android/server/usb/UsbPortManager;Landroid/hardware/usb/V1_0/IUsb;)Landroid/hardware/usb/V1_0/IUsb;
 
     .line 760
-    monitor-exit p1
+    monitor-exit v0
 
     goto :goto_2f
 
     :catchall_2c
-    move-exception p2
+    move-exception v1
 
-    monitor-exit p1
+    monitor-exit v0
     :try_end_2e
     .catchall {:try_start_24 .. :try_end_2e} :catchall_2c
 
-    throw p2
+    throw v1
 
     .line 762
     :cond_2f

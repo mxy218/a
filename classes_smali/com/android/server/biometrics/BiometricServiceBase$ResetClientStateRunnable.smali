@@ -25,7 +25,7 @@
 .method private constructor <init>(Lcom/android/server/biometrics/BiometricServiceBase;)V
     .registers 2
 
-    .line 538
+    .line 532
     iput-object p1, p0, Lcom/android/server/biometrics/BiometricServiceBase$ResetClientStateRunnable;->this$0:Lcom/android/server/biometrics/BiometricServiceBase;
 
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -35,8 +35,10 @@
 
 .method synthetic constructor <init>(Lcom/android/server/biometrics/BiometricServiceBase;Lcom/android/server/biometrics/BiometricServiceBase$1;)V
     .registers 3
+    .param p1, "x0"  # Lcom/android/server/biometrics/BiometricServiceBase;
+    .param p2, "x1"  # Lcom/android/server/biometrics/BiometricServiceBase$1;
 
-    .line 538
+    .line 532
     invoke-direct {p0, p1}, Lcom/android/server/biometrics/BiometricServiceBase$ResetClientStateRunnable;-><init>(Lcom/android/server/biometrics/BiometricServiceBase;)V
 
     return-void
@@ -47,7 +49,7 @@
 .method public run()V
     .registers 5
 
-    .line 551
+    .line 545
     iget-object v0, p0, Lcom/android/server/biometrics/BiometricServiceBase$ResetClientStateRunnable;->this$0:Lcom/android/server/biometrics/BiometricServiceBase;
 
     invoke-virtual {v0}, Lcom/android/server/biometrics/BiometricServiceBase;->getTag()Ljava/lang/String;
@@ -62,10 +64,10 @@
 
     invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    .line 552
+    .line 546
     iget-object v2, p0, Lcom/android/server/biometrics/BiometricServiceBase$ResetClientStateRunnable;->this$0:Lcom/android/server/biometrics/BiometricServiceBase;
 
-    invoke-static {v2}, Lcom/android/server/biometrics/BiometricServiceBase;->access$600(Lcom/android/server/biometrics/BiometricServiceBase;)Lcom/android/server/biometrics/ClientMonitor;
+    invoke-static {v2}, Lcom/android/server/biometrics/BiometricServiceBase;->access$700(Lcom/android/server/biometrics/BiometricServiceBase;)Lcom/android/server/biometrics/ClientMonitor;
 
     move-result-object v2
 
@@ -75,7 +77,7 @@
 
     iget-object v2, p0, Lcom/android/server/biometrics/BiometricServiceBase$ResetClientStateRunnable;->this$0:Lcom/android/server/biometrics/BiometricServiceBase;
 
-    invoke-static {v2}, Lcom/android/server/biometrics/BiometricServiceBase;->access$600(Lcom/android/server/biometrics/BiometricServiceBase;)Lcom/android/server/biometrics/ClientMonitor;
+    invoke-static {v2}, Lcom/android/server/biometrics/BiometricServiceBase;->access$700(Lcom/android/server/biometrics/BiometricServiceBase;)Lcom/android/server/biometrics/ClientMonitor;
 
     move-result-object v2
 
@@ -95,7 +97,7 @@
 
     invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    .line 554
+    .line 548
     iget-object v2, p0, Lcom/android/server/biometrics/BiometricServiceBase$ResetClientStateRunnable;->this$0:Lcom/android/server/biometrics/BiometricServiceBase;
 
     invoke-static {v2}, Lcom/android/server/biometrics/BiometricServiceBase;->access$800(Lcom/android/server/biometrics/BiometricServiceBase;)Lcom/android/server/biometrics/ClientMonitor;
@@ -121,32 +123,32 @@
 
     move-result-object v1
 
-    .line 551
+    .line 545
     invoke-static {v0, v1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 556
+    .line 550
     const/16 v0, 0x94
 
     iget-object v1, p0, Lcom/android/server/biometrics/BiometricServiceBase$ResetClientStateRunnable;->this$0:Lcom/android/server/biometrics/BiometricServiceBase;
 
-    .line 557
+    .line 551
     invoke-virtual {v1}, Lcom/android/server/biometrics/BiometricServiceBase;->statsModality()I
 
     move-result v1
 
     const/4 v2, 0x4
 
-    .line 556
+    .line 550
     invoke-static {v0, v1, v2}, Landroid/util/StatsLog;->write(III)I
 
-    .line 559
+    .line 553
     iget-object v0, p0, Lcom/android/server/biometrics/BiometricServiceBase$ResetClientStateRunnable;->this$0:Lcom/android/server/biometrics/BiometricServiceBase;
 
     const/4 v1, 0x0
 
-    invoke-static {v0, v1}, Lcom/android/server/biometrics/BiometricServiceBase;->access$602(Lcom/android/server/biometrics/BiometricServiceBase;Lcom/android/server/biometrics/ClientMonitor;)Lcom/android/server/biometrics/ClientMonitor;
+    invoke-static {v0, v1}, Lcom/android/server/biometrics/BiometricServiceBase;->access$702(Lcom/android/server/biometrics/BiometricServiceBase;Lcom/android/server/biometrics/ClientMonitor;)Lcom/android/server/biometrics/ClientMonitor;
 
-    .line 560
+    .line 554
     iget-object v0, p0, Lcom/android/server/biometrics/BiometricServiceBase$ResetClientStateRunnable;->this$0:Lcom/android/server/biometrics/BiometricServiceBase;
 
     invoke-static {v0}, Lcom/android/server/biometrics/BiometricServiceBase;->access$800(Lcom/android/server/biometrics/BiometricServiceBase;)Lcom/android/server/biometrics/ClientMonitor;
@@ -157,6 +159,6 @@
 
     invoke-static {v0, v1, v2}, Lcom/android/server/biometrics/BiometricServiceBase;->access$900(Lcom/android/server/biometrics/BiometricServiceBase;Lcom/android/server/biometrics/ClientMonitor;Z)V
 
-    .line 561
+    .line 555
     return-void
 .end method

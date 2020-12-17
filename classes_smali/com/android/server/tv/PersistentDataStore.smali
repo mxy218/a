@@ -49,7 +49,9 @@
 
 # direct methods
 .method public constructor <init>(Landroid/content/Context;I)V
-    .registers 5
+    .registers 7
+    .param p1, "context"  # Landroid/content/Context;
+    .param p2, "userId"  # I
 
     .line 86
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -86,62 +88,63 @@
     .line 88
     invoke-static {p2}, Landroid/os/Environment;->getUserSystemDirectory(I)Ljava/io/File;
 
-    move-result-object p1
+    move-result-object v0
 
     .line 89
-    invoke-virtual {p1}, Ljava/io/File;->exists()Z
+    .local v0, "userDir":Ljava/io/File;
+    invoke-virtual {v0}, Ljava/io/File;->exists()Z
 
-    move-result p2
+    move-result v1
 
-    if-nez p2, :cond_46
+    if-nez v1, :cond_46
 
     .line 90
-    invoke-virtual {p1}, Ljava/io/File;->mkdirs()Z
+    invoke-virtual {v0}, Ljava/io/File;->mkdirs()Z
 
-    move-result p2
+    move-result v1
 
-    if-eqz p2, :cond_2f
+    if-eqz v1, :cond_2f
 
     goto :goto_46
 
     .line 91
     :cond_2f
-    new-instance p2, Ljava/lang/IllegalStateException;
+    new-instance v1, Ljava/lang/IllegalStateException;
 
-    new-instance v0, Ljava/lang/StringBuilder;
+    new-instance v2, Ljava/lang/StringBuilder;
 
-    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v1, "User dir cannot be created: "
+    const-string v3, "User dir cannot be created: "
 
-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v2
 
-    invoke-direct {p2, p1}, Ljava/lang/IllegalStateException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v1, v2}, Ljava/lang/IllegalStateException;-><init>(Ljava/lang/String;)V
 
-    throw p2
+    throw v1
 
     .line 94
     :cond_46
     :goto_46
-    new-instance p2, Landroid/util/AtomicFile;
+    new-instance v1, Landroid/util/AtomicFile;
 
-    new-instance v0, Ljava/io/File;
+    new-instance v2, Ljava/io/File;
 
-    const-string/jumbo v1, "tv-input-manager-state.xml"
+    const-string/jumbo v3, "tv-input-manager-state.xml"
 
-    invoke-direct {v0, p1, v1}, Ljava/io/File;-><init>(Ljava/io/File;Ljava/lang/String;)V
+    invoke-direct {v2, v0, v3}, Ljava/io/File;-><init>(Ljava/io/File;Ljava/lang/String;)V
 
-    const-string/jumbo p1, "tv-input-state"
+    const-string/jumbo v3, "tv-input-state"
 
-    invoke-direct {p2, v0, p1}, Landroid/util/AtomicFile;-><init>(Ljava/io/File;Ljava/lang/String;)V
+    invoke-direct {v1, v2, v3}, Landroid/util/AtomicFile;-><init>(Ljava/io/File;Ljava/lang/String;)V
 
-    iput-object p2, p0, Lcom/android/server/tv/PersistentDataStore;->mAtomicFile:Landroid/util/AtomicFile;
+    iput-object v1, p0, Lcom/android/server/tv/PersistentDataStore;->mAtomicFile:Landroid/util/AtomicFile;
 
     .line 95
     return-void
@@ -149,6 +152,7 @@
 
 .method static synthetic access$000(Lcom/android/server/tv/PersistentDataStore;)V
     .registers 1
+    .param p0, "x0"  # Lcom/android/server/tv/PersistentDataStore;
 
     .line 64
     invoke-direct {p0}, Lcom/android/server/tv/PersistentDataStore;->save()V
@@ -240,9 +244,10 @@
 
     move-result-object v0
     :try_end_9
-    .catch Ljava/io/FileNotFoundException; {:try_start_3 .. :try_end_9} :catch_36
+    .catch Ljava/io/FileNotFoundException; {:try_start_3 .. :try_end_9} :catch_39
 
     .line 166
+    .local v0, "is":Ljava/io/InputStream;
     nop
 
     .line 170
@@ -252,6 +257,7 @@
     move-result-object v1
 
     .line 171
+    .local v1, "parser":Lorg/xmlpull/v1/XmlPullParser;
     new-instance v2, Ljava/io/BufferedInputStream;
 
     invoke-direct {v2, v0}, Ljava/io/BufferedInputStream;-><init>(Ljava/io/InputStream;)V
@@ -267,24 +273,30 @@
     .line 172
     invoke-direct {p0, v1}, Lcom/android/server/tv/PersistentDataStore;->loadFromXml(Lorg/xmlpull/v1/XmlPullParser;)V
     :try_end_1f
-    .catch Ljava/io/IOException; {:try_start_a .. :try_end_1f} :catch_22
-    .catch Lorg/xmlpull/v1/XmlPullParserException; {:try_start_a .. :try_end_1f} :catch_22
-    .catchall {:try_start_a .. :try_end_1f} :catchall_20
-
-    goto :goto_2d
+    .catch Ljava/io/IOException; {:try_start_a .. :try_end_1f} :catch_25
+    .catch Lorg/xmlpull/v1/XmlPullParserException; {:try_start_a .. :try_end_1f} :catch_25
+    .catchall {:try_start_a .. :try_end_1f} :catchall_23
 
     .line 177
-    :catchall_20
+    invoke-static {v0}, Llibcore/io/IoUtils;->closeQuietly(Ljava/lang/AutoCloseable;)V
+
+    .line 178
+    goto :goto_34
+
+    .line 177
+    .end local v1  # "parser":Lorg/xmlpull/v1/XmlPullParser;
+    :catchall_23
     move-exception v1
 
-    goto :goto_32
+    goto :goto_35
 
     .line 173
-    :catch_22
+    :catch_25
     move-exception v1
 
     .line 174
-    :try_start_23
+    .local v1, "ex":Ljava/lang/Exception;
+    :try_start_26
     const-string v2, "TvInputManagerService"
 
     const-string v3, "Failed to load tv input manager persistent store data."
@@ -293,35 +305,39 @@
 
     .line 175
     invoke-direct {p0}, Lcom/android/server/tv/PersistentDataStore;->clearState()V
-    :try_end_2d
-    .catchall {:try_start_23 .. :try_end_2d} :catchall_20
+    :try_end_30
+    .catchall {:try_start_26 .. :try_end_30} :catchall_23
 
     .line 177
-    :goto_2d
+    .end local v1  # "ex":Ljava/lang/Exception;
     invoke-static {v0}, Llibcore/io/IoUtils;->closeQuietly(Ljava/lang/AutoCloseable;)V
 
     .line 178
     nop
 
     .line 179
+    :goto_34
     return-void
 
     .line 177
-    :goto_32
+    :goto_35
     invoke-static {v0}, Llibcore/io/IoUtils;->closeQuietly(Ljava/lang/AutoCloseable;)V
 
     throw v1
 
     .line 164
-    :catch_36
+    .end local v0  # "is":Ljava/io/InputStream;
+    :catch_39
     move-exception v0
 
     .line 165
+    .local v0, "ex":Ljava/io/FileNotFoundException;
     return-void
 .end method
 
 .method private loadBlockedRatingsFromXml(Lorg/xmlpull/v1/XmlPullParser;)V
-    .registers 5
+    .registers 6
+    .param p1, "parser"  # Lorg/xmlpull/v1/XmlPullParser;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Ljava/io/IOException;,
@@ -335,6 +351,7 @@
     move-result v0
 
     .line 262
+    .local v0, "outerDepth":I
     :cond_4
     :goto_4
     invoke-static {p1, v0}, Lcom/android/internal/util/XmlUtils;->nextElementWithin(Lorg/xmlpull/v1/XmlPullParser;I)Z
@@ -366,6 +383,7 @@
     move-result-object v1
 
     .line 265
+    .local v1, "ratingString":Ljava/lang/String;
     invoke-static {v1}, Landroid/text/TextUtils;->isEmpty(Ljava/lang/CharSequence;)Z
 
     move-result v2
@@ -377,30 +395,34 @@
 
     invoke-static {v1}, Landroid/media/tv/TvContentRating;->unflattenFromString(Ljava/lang/String;)Landroid/media/tv/TvContentRating;
 
-    move-result-object v1
+    move-result-object v3
 
-    invoke-interface {v2, v1}, Ljava/util/List;->add(Ljava/lang/Object;)Z
+    invoke-interface {v2, v3}, Ljava/util/List;->add(Ljava/lang/Object;)Z
 
     .line 270
+    .end local v1  # "ratingString":Ljava/lang/String;
     goto :goto_4
 
     .line 266
+    .restart local v1  # "ratingString":Ljava/lang/String;
     :cond_2f
-    new-instance p1, Lorg/xmlpull/v1/XmlPullParserException;
+    new-instance v2, Lorg/xmlpull/v1/XmlPullParserException;
 
-    const-string v0, "Missing string attribute on rating"
+    const-string v3, "Missing string attribute on rating"
 
-    invoke-direct {p1, v0}, Lorg/xmlpull/v1/XmlPullParserException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v2, v3}, Lorg/xmlpull/v1/XmlPullParserException;-><init>(Ljava/lang/String;)V
 
-    throw p1
+    throw v2
 
     .line 272
+    .end local v1  # "ratingString":Ljava/lang/String;
     :cond_37
     return-void
 .end method
 
 .method private loadFromXml(Lorg/xmlpull/v1/XmlPullParser;)V
-    .registers 5
+    .registers 6
+    .param p1, "parser"  # Lorg/xmlpull/v1/XmlPullParser;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Ljava/io/IOException;,
@@ -419,6 +441,7 @@
     move-result v0
 
     .line 245
+    .local v0, "outerDepth":I
     :cond_a
     :goto_a
     invoke-static {p1, v0}, Lcom/android/internal/util/XmlUtils;->nextElementWithin(Lorg/xmlpull/v1/XmlPullParser;I)Z
@@ -469,6 +492,7 @@
     move-result-object v1
 
     .line 250
+    .local v1, "enabled":Ljava/lang/String;
     invoke-static {v1}, Landroid/text/TextUtils;->isEmpty(Ljava/lang/CharSequence;)Z
 
     move-result v2
@@ -478,24 +502,27 @@
     .line 254
     invoke-static {v1}, Ljava/lang/Boolean;->parseBoolean(Ljava/lang/String;)Z
 
-    move-result v1
+    move-result v2
 
-    iput-boolean v1, p0, Lcom/android/server/tv/PersistentDataStore;->mParentalControlsEnabled:Z
+    iput-boolean v2, p0, Lcom/android/server/tv/PersistentDataStore;->mParentalControlsEnabled:Z
 
     .line 255
+    .end local v1  # "enabled":Ljava/lang/String;
     goto :goto_a
 
     .line 251
+    .restart local v1  # "enabled":Ljava/lang/String;
     :cond_41
-    new-instance p1, Lorg/xmlpull/v1/XmlPullParserException;
+    new-instance v2, Lorg/xmlpull/v1/XmlPullParserException;
 
-    const-string v0, "Missing enabled attribute on parental-controls"
+    const-string v3, "Missing enabled attribute on parental-controls"
 
-    invoke-direct {p1, v0}, Lorg/xmlpull/v1/XmlPullParserException;-><init>(Ljava/lang/String;)V
+    invoke-direct {v2, v3}, Lorg/xmlpull/v1/XmlPullParserException;-><init>(Ljava/lang/String;)V
 
-    throw p1
+    throw v2
 
     .line 257
+    .end local v1  # "enabled":Ljava/lang/String;
     :cond_49
     return-void
 .end method
@@ -543,7 +570,7 @@
 .end method
 
 .method private save()V
-    .registers 5
+    .registers 6
 
     .line 200
     :try_start_0
@@ -553,74 +580,113 @@
 
     move-result-object v0
     :try_end_6
-    .catch Ljava/io/IOException; {:try_start_0 .. :try_end_6} :catch_32
+    .catch Ljava/io/IOException; {:try_start_0 .. :try_end_6} :catch_46
 
     .line 201
-    nop
+    .local v0, "os":Ljava/io/FileOutputStream;
+    const/4 v1, 0x0
 
     .line 203
+    .local v1, "success":Z
     :try_start_7
-    new-instance v1, Lcom/android/internal/util/FastXmlSerializer;
+    new-instance v2, Lcom/android/internal/util/FastXmlSerializer;
 
-    invoke-direct {v1}, Lcom/android/internal/util/FastXmlSerializer;-><init>()V
+    invoke-direct {v2}, Lcom/android/internal/util/FastXmlSerializer;-><init>()V
 
     .line 204
-    new-instance v2, Ljava/io/BufferedOutputStream;
+    .local v2, "serializer":Lorg/xmlpull/v1/XmlSerializer;
+    new-instance v3, Ljava/io/BufferedOutputStream;
 
-    invoke-direct {v2, v0}, Ljava/io/BufferedOutputStream;-><init>(Ljava/io/OutputStream;)V
+    invoke-direct {v3, v0}, Ljava/io/BufferedOutputStream;-><init>(Ljava/io/OutputStream;)V
 
-    sget-object v3, Ljava/nio/charset/StandardCharsets;->UTF_8:Ljava/nio/charset/Charset;
+    sget-object v4, Ljava/nio/charset/StandardCharsets;->UTF_8:Ljava/nio/charset/Charset;
 
-    invoke-virtual {v3}, Ljava/nio/charset/Charset;->name()Ljava/lang/String;
+    invoke-virtual {v4}, Ljava/nio/charset/Charset;->name()Ljava/lang/String;
 
-    move-result-object v3
+    move-result-object v4
 
-    invoke-interface {v1, v2, v3}, Lorg/xmlpull/v1/XmlSerializer;->setOutput(Ljava/io/OutputStream;Ljava/lang/String;)V
+    invoke-interface {v2, v3, v4}, Lorg/xmlpull/v1/XmlSerializer;->setOutput(Ljava/io/OutputStream;Ljava/lang/String;)V
 
     .line 205
-    invoke-direct {p0, v1}, Lcom/android/server/tv/PersistentDataStore;->saveToXml(Lorg/xmlpull/v1/XmlSerializer;)V
+    invoke-direct {p0, v2}, Lcom/android/server/tv/PersistentDataStore;->saveToXml(Lorg/xmlpull/v1/XmlSerializer;)V
 
     .line 206
-    invoke-interface {v1}, Lorg/xmlpull/v1/XmlSerializer;->flush()V
+    invoke-interface {v2}, Lorg/xmlpull/v1/XmlSerializer;->flush()V
     :try_end_20
-    .catchall {:try_start_7 .. :try_end_20} :catchall_2b
+    .catchall {:try_start_7 .. :try_end_20} :catchall_33
 
     .line 207
-    nop
+    const/4 v1, 0x1
 
     .line 209
-    nop
+    .end local v2  # "serializer":Lorg/xmlpull/v1/XmlSerializer;
+    if-eqz v1, :cond_2c
 
     .line 210
-    :try_start_22
-    iget-object v1, p0, Lcom/android/server/tv/PersistentDataStore;->mAtomicFile:Landroid/util/AtomicFile;
+    :try_start_23
+    iget-object v2, p0, Lcom/android/server/tv/PersistentDataStore;->mAtomicFile:Landroid/util/AtomicFile;
 
-    invoke-virtual {v1, v0}, Landroid/util/AtomicFile;->finishWrite(Ljava/io/FileOutputStream;)V
+    invoke-virtual {v2, v0}, Landroid/util/AtomicFile;->finishWrite(Ljava/io/FileOutputStream;)V
 
     .line 211
     invoke-direct {p0}, Lcom/android/server/tv/PersistentDataStore;->broadcastChangesIfNeeded()V
 
-    .line 218
-    goto :goto_3a
-
-    .line 209
-    :catchall_2b
-    move-exception v1
+    goto :goto_32
 
     .line 213
+    :cond_2c
     iget-object v2, p0, Lcom/android/server/tv/PersistentDataStore;->mAtomicFile:Landroid/util/AtomicFile;
 
     invoke-virtual {v2, v0}, Landroid/util/AtomicFile;->failWrite(Ljava/io/FileOutputStream;)V
 
-    throw v1
-    :try_end_32
-    .catch Ljava/io/IOException; {:try_start_22 .. :try_end_32} :catch_32
+    .line 215
+    nop
+
+    .line 218
+    .end local v1  # "success":Z
+    :goto_32
+    goto :goto_4e
+
+    .line 209
+    .restart local v1  # "success":Z
+    :catchall_33
+    move-exception v2
+
+    if-eqz v1, :cond_3f
+
+    .line 210
+    iget-object v3, p0, Lcom/android/server/tv/PersistentDataStore;->mAtomicFile:Landroid/util/AtomicFile;
+
+    invoke-virtual {v3, v0}, Landroid/util/AtomicFile;->finishWrite(Ljava/io/FileOutputStream;)V
+
+    .line 211
+    invoke-direct {p0}, Lcom/android/server/tv/PersistentDataStore;->broadcastChangesIfNeeded()V
+
+    goto :goto_44
+
+    .line 213
+    :cond_3f
+    iget-object v3, p0, Lcom/android/server/tv/PersistentDataStore;->mAtomicFile:Landroid/util/AtomicFile;
+
+    invoke-virtual {v3, v0}, Landroid/util/AtomicFile;->failWrite(Ljava/io/FileOutputStream;)V
+
+    :goto_44
+    nop
+
+    .end local p0  # "this":Lcom/android/server/tv/PersistentDataStore;
+    throw v2
+    :try_end_46
+    .catch Ljava/io/IOException; {:try_start_23 .. :try_end_46} :catch_46
 
     .line 216
-    :catch_32
+    .end local v0  # "os":Ljava/io/FileOutputStream;
+    .end local v1  # "success":Z
+    .restart local p0  # "this":Lcom/android/server/tv/PersistentDataStore;
+    :catch_46
     move-exception v0
 
     .line 217
+    .local v0, "ex":Ljava/io/IOException;
     const-string v1, "TvInputManagerService"
 
     const-string v2, "Failed to save tv input manager persistent store data."
@@ -628,12 +694,14 @@
     invoke-static {v1, v2, v0}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
     .line 219
-    :goto_3a
+    .end local v0  # "ex":Ljava/io/IOException;
+    :goto_4e
     return-void
 .end method
 
 .method private saveToXml(Lorg/xmlpull/v1/XmlSerializer;)V
-    .registers 7
+    .registers 8
+    .param p1, "serializer"  # Lorg/xmlpull/v1/XmlSerializer;
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Ljava/io/IOException;
@@ -684,7 +752,7 @@
 
     move-result v3
 
-    if-eqz v3, :cond_45
+    if-eqz v3, :cond_46
 
     invoke-interface {v1}, Ljava/util/Iterator;->next()Ljava/lang/Object;
 
@@ -693,6 +761,7 @@
     check-cast v3, Landroid/media/tv/TvContentRating;
 
     .line 281
+    .local v3, "rating":Landroid/media/tv/TvContentRating;
     const-string/jumbo v4, "rating"
 
     invoke-interface {p1, v2, v4}, Lorg/xmlpull/v1/XmlSerializer;->startTag(Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
@@ -702,23 +771,26 @@
 
     invoke-virtual {v3}, Landroid/media/tv/TvContentRating;->flattenToString()Ljava/lang/String;
 
-    move-result-object v3
+    move-result-object v5
 
-    invoke-interface {p1, v2, v4, v3}, Lorg/xmlpull/v1/XmlSerializer;->attribute(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
+    invoke-interface {p1, v2, v4, v5}, Lorg/xmlpull/v1/XmlSerializer;->attribute(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
 
     .line 283
-    const-string/jumbo v3, "rating"
+    const-string/jumbo v4, "rating"
 
-    invoke-interface {p1, v2, v3}, Lorg/xmlpull/v1/XmlSerializer;->endTag(Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
+    invoke-interface {p1, v2, v4}, Lorg/xmlpull/v1/XmlSerializer;->endTag(Ljava/lang/String;Ljava/lang/String;)Lorg/xmlpull/v1/XmlSerializer;
 
     .line 284
+    nop
+
+    .end local v3  # "rating":Landroid/media/tv/TvContentRating;
     goto :goto_22
 
     .line 285
-    :cond_45
+    :cond_46
     monitor-exit v0
-    :try_end_46
-    .catchall {:try_start_1c .. :try_end_46} :catchall_6c
+    :try_end_47
+    .catchall {:try_start_1c .. :try_end_47} :catchall_6d
 
     .line 286
     const-string v0, "blocked-ratings"
@@ -758,21 +830,22 @@
     return-void
 
     .line 285
-    :catchall_6c
-    move-exception p1
+    :catchall_6d
+    move-exception v1
 
-    :try_start_6d
+    :try_start_6e
     monitor-exit v0
-    :try_end_6e
-    .catchall {:try_start_6d .. :try_end_6e} :catchall_6c
+    :try_end_6f
+    .catchall {:try_start_6e .. :try_end_6f} :catchall_6d
 
-    throw p1
+    throw v1
 .end method
 
 
 # virtual methods
 .method public addBlockedRating(Landroid/media/tv/TvContentRating;)V
     .registers 3
+    .param p1, "rating"  # Landroid/media/tv/TvContentRating;
 
     .line 129
     invoke-direct {p0}, Lcom/android/server/tv/PersistentDataStore;->loadIfNeeded()V
@@ -794,9 +867,9 @@
     invoke-interface {v0, p1}, Ljava/util/List;->add(Ljava/lang/Object;)Z
 
     .line 132
-    const/4 p1, 0x1
+    const/4 v0, 0x1
 
-    iput-boolean p1, p0, Lcom/android/server/tv/PersistentDataStore;->mBlockedRatingsChanged:Z
+    iput-boolean v0, p0, Lcom/android/server/tv/PersistentDataStore;->mBlockedRatingsChanged:Z
 
     .line 133
     invoke-direct {p0}, Lcom/android/server/tv/PersistentDataStore;->postSave()V
@@ -843,7 +916,8 @@
 .end method
 
 .method public isRatingBlocked(Landroid/media/tv/TvContentRating;)Z
-    .registers 5
+    .registers 6
+    .param p1, "rating"  # Landroid/media/tv/TvContentRating;
 
     .line 112
     invoke-direct {p0}, Lcom/android/server/tv/PersistentDataStore;->loadIfNeeded()V
@@ -875,20 +949,22 @@
     check-cast v2, Landroid/media/tv/TvContentRating;
 
     .line 115
+    .local v2, "blockedRating":Landroid/media/tv/TvContentRating;
     invoke-virtual {p1, v2}, Landroid/media/tv/TvContentRating;->contains(Landroid/media/tv/TvContentRating;)Z
 
-    move-result v2
+    move-result v3
 
-    if-eqz v2, :cond_21
+    if-eqz v3, :cond_21
 
     .line 116
-    const/4 p1, 0x1
+    const/4 v1, 0x1
 
     monitor-exit v0
 
-    return p1
+    return v1
 
     .line 118
+    .end local v2  # "blockedRating":Landroid/media/tv/TvContentRating;
     :cond_21
     goto :goto_c
 
@@ -897,23 +973,24 @@
     monitor-exit v0
 
     .line 120
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    return p1
+    return v0
 
     .line 119
     :catchall_25
-    move-exception p1
+    move-exception v1
 
     monitor-exit v0
     :try_end_27
     .catchall {:try_start_6 .. :try_end_27} :catchall_25
 
-    throw p1
+    throw v1
 .end method
 
 .method public removeBlockedRating(Landroid/media/tv/TvContentRating;)V
     .registers 3
+    .param p1, "rating"  # Landroid/media/tv/TvContentRating;
 
     .line 138
     invoke-direct {p0}, Lcom/android/server/tv/PersistentDataStore;->loadIfNeeded()V
@@ -935,9 +1012,9 @@
     invoke-interface {v0, p1}, Ljava/util/List;->remove(Ljava/lang/Object;)Z
 
     .line 141
-    const/4 p1, 0x1
+    const/4 v0, 0x1
 
-    iput-boolean p1, p0, Lcom/android/server/tv/PersistentDataStore;->mBlockedRatingsChanged:Z
+    iput-boolean v0, p0, Lcom/android/server/tv/PersistentDataStore;->mBlockedRatingsChanged:Z
 
     .line 142
     invoke-direct {p0}, Lcom/android/server/tv/PersistentDataStore;->postSave()V
@@ -949,6 +1026,7 @@
 
 .method public setParentalControlsEnabled(Z)V
     .registers 3
+    .param p1, "enabled"  # Z
 
     .line 103
     invoke-direct {p0}, Lcom/android/server/tv/PersistentDataStore;->loadIfNeeded()V
@@ -962,9 +1040,9 @@
     iput-boolean p1, p0, Lcom/android/server/tv/PersistentDataStore;->mParentalControlsEnabled:Z
 
     .line 106
-    const/4 p1, 0x1
+    const/4 v0, 0x1
 
-    iput-boolean p1, p0, Lcom/android/server/tv/PersistentDataStore;->mParentalControlsEnabledChanged:Z
+    iput-boolean v0, p0, Lcom/android/server/tv/PersistentDataStore;->mParentalControlsEnabledChanged:Z
 
     .line 107
     invoke-direct {p0}, Lcom/android/server/tv/PersistentDataStore;->postSave()V

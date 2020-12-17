@@ -84,6 +84,7 @@
 
 .method public set(I)V
     .registers 3
+    .param p1, "res"  # I
 
     .line 21
     monitor-enter p0
@@ -108,11 +109,11 @@
 
     .line 25
     :catchall_b
-    move-exception p1
+    move-exception v0
 
     monitor-exit p0
     :try_end_d
     .catchall {:try_start_2 .. :try_end_d} :catchall_b
 
-    throw p1
+    throw v0
 .end method

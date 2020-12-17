@@ -43,7 +43,8 @@
 
 # direct methods
 .method constructor <init>(Lcom/android/server/am/ActivityManagerService;)V
-    .registers 4
+    .registers 5
+    .param p1, "am"  # Lcom/android/server/am/ActivityManagerService;
 
     .line 43
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -64,20 +65,20 @@
     iput-object p1, p0, Lcom/android/server/am/LowMemDetector;->mAm:Lcom/android/server/am/ActivityManagerService;
 
     .line 45
-    new-instance p1, Lcom/android/server/am/LowMemDetector$LowMemThread;
+    new-instance v1, Lcom/android/server/am/LowMemDetector$LowMemThread;
 
-    const/4 v1, 0x0
+    const/4 v2, 0x0
 
-    invoke-direct {p1, p0, v1}, Lcom/android/server/am/LowMemDetector$LowMemThread;-><init>(Lcom/android/server/am/LowMemDetector;Lcom/android/server/am/LowMemDetector$1;)V
+    invoke-direct {v1, p0, v2}, Lcom/android/server/am/LowMemDetector$LowMemThread;-><init>(Lcom/android/server/am/LowMemDetector;Lcom/android/server/am/LowMemDetector$1;)V
 
-    iput-object p1, p0, Lcom/android/server/am/LowMemDetector;->mLowMemThread:Lcom/android/server/am/LowMemDetector$LowMemThread;
+    iput-object v1, p0, Lcom/android/server/am/LowMemDetector;->mLowMemThread:Lcom/android/server/am/LowMemDetector$LowMemThread;
 
     .line 46
     invoke-direct {p0}, Lcom/android/server/am/LowMemDetector;->init()I
 
-    move-result p1
+    move-result v1
 
-    if-eqz p1, :cond_20
+    if-eqz v1, :cond_20
 
     .line 47
     iput-boolean v0, p0, Lcom/android/server/am/LowMemDetector;->mAvailable:Z
@@ -86,14 +87,14 @@
 
     .line 49
     :cond_20
-    const/4 p1, 0x1
+    const/4 v0, 0x1
 
-    iput-boolean p1, p0, Lcom/android/server/am/LowMemDetector;->mAvailable:Z
+    iput-boolean v0, p0, Lcom/android/server/am/LowMemDetector;->mAvailable:Z
 
     .line 50
-    iget-object p1, p0, Lcom/android/server/am/LowMemDetector;->mLowMemThread:Lcom/android/server/am/LowMemDetector$LowMemThread;
+    iget-object v0, p0, Lcom/android/server/am/LowMemDetector;->mLowMemThread:Lcom/android/server/am/LowMemDetector$LowMemThread;
 
-    invoke-virtual {p1}, Lcom/android/server/am/LowMemDetector$LowMemThread;->start()V
+    invoke-virtual {v0}, Lcom/android/server/am/LowMemDetector$LowMemThread;->start()V
 
     .line 52
     :goto_28
@@ -101,18 +102,21 @@
 .end method
 
 .method static synthetic access$100(Lcom/android/server/am/LowMemDetector;)I
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/am/LowMemDetector;
 
     .line 26
     invoke-direct {p0}, Lcom/android/server/am/LowMemDetector;->waitForPressure()I
 
-    move-result p0
+    move-result v0
 
-    return p0
+    return v0
 .end method
 
 .method static synthetic access$202(Lcom/android/server/am/LowMemDetector;Z)Z
     .registers 2
+    .param p0, "x0"  # Lcom/android/server/am/LowMemDetector;
+    .param p1, "x1"  # Z
 
     .line 26
     iput-boolean p1, p0, Lcom/android/server/am/LowMemDetector;->mAvailable:Z
@@ -121,16 +125,19 @@
 .end method
 
 .method static synthetic access$300(Lcom/android/server/am/LowMemDetector;)Ljava/lang/Object;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/am/LowMemDetector;
 
     .line 26
-    iget-object p0, p0, Lcom/android/server/am/LowMemDetector;->mPressureStateLock:Ljava/lang/Object;
+    iget-object v0, p0, Lcom/android/server/am/LowMemDetector;->mPressureStateLock:Ljava/lang/Object;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method static synthetic access$402(Lcom/android/server/am/LowMemDetector;I)I
     .registers 2
+    .param p0, "x0"  # Lcom/android/server/am/LowMemDetector;
+    .param p1, "x1"  # I
 
     .line 26
     iput p1, p0, Lcom/android/server/am/LowMemDetector;->mPressureState:I

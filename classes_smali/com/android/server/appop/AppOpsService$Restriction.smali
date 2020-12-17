@@ -44,7 +44,7 @@
 .method static constructor <clinit>()V
     .registers 1
 
-    .line 4354
+    .line 4326
     new-instance v0, Landroid/util/ArraySet;
 
     invoke-direct {v0}, Landroid/util/ArraySet;-><init>()V
@@ -57,10 +57,10 @@
 .method private constructor <init>()V
     .registers 2
 
-    .line 4353
+    .line 4325
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
-    .line 4356
+    .line 4328
     sget-object v0, Lcom/android/server/appop/AppOpsService$Restriction;->NO_EXCEPTIONS:Landroid/util/ArraySet;
 
     iput-object v0, p0, Lcom/android/server/appop/AppOpsService$Restriction;->exceptionPackages:Landroid/util/ArraySet;
@@ -70,8 +70,9 @@
 
 .method synthetic constructor <init>(Lcom/android/server/appop/AppOpsService$1;)V
     .registers 2
+    .param p1, "x0"  # Lcom/android/server/appop/AppOpsService$1;
 
-    .line 4353
+    .line 4325
     invoke-direct {p0}, Lcom/android/server/appop/AppOpsService$Restriction;-><init>()V
 
     return-void

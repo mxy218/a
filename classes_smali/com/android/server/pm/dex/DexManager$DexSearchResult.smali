@@ -25,6 +25,8 @@
 # direct methods
 .method public constructor <init>(Lcom/android/server/pm/dex/DexManager;Ljava/lang/String;I)V
     .registers 4
+    .param p2, "owningPackageName"  # Ljava/lang/String;
+    .param p3, "outcome"  # I
 
     .line 870
     iput-object p1, p0, Lcom/android/server/pm/dex/DexManager$DexSearchResult;->this$0:Lcom/android/server/pm/dex/DexManager;
@@ -42,21 +44,23 @@
 .end method
 
 .method static synthetic access$000(Lcom/android/server/pm/dex/DexManager$DexSearchResult;)I
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/pm/dex/DexManager$DexSearchResult;
 
     .line 866
-    iget p0, p0, Lcom/android/server/pm/dex/DexManager$DexSearchResult;->mOutcome:I
+    iget v0, p0, Lcom/android/server/pm/dex/DexManager$DexSearchResult;->mOutcome:I
 
-    return p0
+    return v0
 .end method
 
 .method static synthetic access$100(Lcom/android/server/pm/dex/DexManager$DexSearchResult;)Ljava/lang/String;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/pm/dex/DexManager$DexSearchResult;
 
     .line 866
-    iget-object p0, p0, Lcom/android/server/pm/dex/DexManager$DexSearchResult;->mOwningPackageName:Ljava/lang/String;
+    iget-object v0, p0, Lcom/android/server/pm/dex/DexManager$DexSearchResult;->mOwningPackageName:Ljava/lang/String;
 
-    return-object p0
+    return-object v0
 .end method
 
 

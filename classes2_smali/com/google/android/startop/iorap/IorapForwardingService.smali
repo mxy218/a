@@ -77,65 +77,69 @@
 .end method
 
 .method public constructor <init>(Landroid/content/Context;)V
-    .registers 3
+    .registers 4
+    .param p1, "context"  # Landroid/content/Context;
 
     .line 75
     invoke-direct {p0, p1}, Lcom/android/server/SystemService;-><init>(Landroid/content/Context;)V
 
     .line 60
-    new-instance p1, Ljava/lang/Object;
+    new-instance v0, Ljava/lang/Object;
 
-    invoke-direct {p1}, Ljava/lang/Object;-><init>()V
+    invoke-direct {v0}, Ljava/lang/Object;-><init>()V
 
-    iput-object p1, p0, Lcom/google/android/startop/iorap/IorapForwardingService;->mLock:Ljava/lang/Object;
+    iput-object v0, p0, Lcom/google/android/startop/iorap/IorapForwardingService;->mLock:Ljava/lang/Object;
 
     .line 62
-    new-instance p1, Lcom/google/android/startop/iorap/IorapForwardingService$BinderConnectionHandler;
+    new-instance v0, Lcom/google/android/startop/iorap/IorapForwardingService$BinderConnectionHandler;
 
     .line 63
     invoke-static {}, Lcom/android/server/IoThread;->getHandler()Landroid/os/Handler;
 
-    move-result-object v0
+    move-result-object v1
 
-    invoke-virtual {v0}, Landroid/os/Handler;->getLooper()Landroid/os/Looper;
+    invoke-virtual {v1}, Landroid/os/Handler;->getLooper()Landroid/os/Looper;
 
-    move-result-object v0
+    move-result-object v1
 
-    invoke-direct {p1, p0, v0}, Lcom/google/android/startop/iorap/IorapForwardingService$BinderConnectionHandler;-><init>(Lcom/google/android/startop/iorap/IorapForwardingService;Landroid/os/Looper;)V
+    invoke-direct {v0, p0, v1}, Lcom/google/android/startop/iorap/IorapForwardingService$BinderConnectionHandler;-><init>(Lcom/google/android/startop/iorap/IorapForwardingService;Landroid/os/Looper;)V
 
-    iput-object p1, p0, Lcom/google/android/startop/iorap/IorapForwardingService;->mHandler:Landroid/os/Handler;
+    iput-object v0, p0, Lcom/google/android/startop/iorap/IorapForwardingService;->mHandler:Landroid/os/Handler;
 
     .line 238
-    new-instance p1, Lcom/google/android/startop/iorap/IorapForwardingService$AppLaunchObserver;
+    new-instance v0, Lcom/google/android/startop/iorap/IorapForwardingService$AppLaunchObserver;
 
-    const/4 v0, 0x0
+    const/4 v1, 0x0
 
-    invoke-direct {p1, p0, v0}, Lcom/google/android/startop/iorap/IorapForwardingService$AppLaunchObserver;-><init>(Lcom/google/android/startop/iorap/IorapForwardingService;Lcom/google/android/startop/iorap/IorapForwardingService$1;)V
+    invoke-direct {v0, p0, v1}, Lcom/google/android/startop/iorap/IorapForwardingService$AppLaunchObserver;-><init>(Lcom/google/android/startop/iorap/IorapForwardingService;Lcom/google/android/startop/iorap/IorapForwardingService$1;)V
 
-    iput-object p1, p0, Lcom/google/android/startop/iorap/IorapForwardingService;->mAppLaunchObserver:Lcom/google/android/startop/iorap/IorapForwardingService$AppLaunchObserver;
+    iput-object v0, p0, Lcom/google/android/startop/iorap/IorapForwardingService;->mAppLaunchObserver:Lcom/google/android/startop/iorap/IorapForwardingService$AppLaunchObserver;
 
     .line 239
-    const/4 p1, 0x0
+    const/4 v0, 0x0
 
-    iput-boolean p1, p0, Lcom/google/android/startop/iorap/IorapForwardingService;->mRegisteredListeners:Z
+    iput-boolean v0, p0, Lcom/google/android/startop/iorap/IorapForwardingService;->mRegisteredListeners:Z
 
     .line 76
     return-void
 .end method
 
 .method static synthetic access$000(Lcom/google/android/startop/iorap/IorapForwardingService;I)Z
-    .registers 2
+    .registers 3
+    .param p0, "x0"  # Lcom/google/android/startop/iorap/IorapForwardingService;
+    .param p1, "x1"  # I
 
     .line 48
     invoke-direct {p0, p1}, Lcom/google/android/startop/iorap/IorapForwardingService;->retryConnectToRemoteAndConfigure(I)Z
 
-    move-result p0
+    move-result v0
 
-    return p0
+    return v0
 .end method
 
 .method static synthetic access$200(Lcom/google/android/startop/iorap/IorapForwardingService$RemoteRunnable;)V
     .registers 1
+    .param p0, "x0"  # Lcom/google/android/startop/iorap/IorapForwardingService$RemoteRunnable;
 
     .line 48
     invoke-static {p0}, Lcom/google/android/startop/iorap/IorapForwardingService;->invokeRemote(Lcom/google/android/startop/iorap/IorapForwardingService$RemoteRunnable;)V
@@ -144,12 +148,13 @@
 .end method
 
 .method static synthetic access$300(Lcom/google/android/startop/iorap/IorapForwardingService;)Lcom/google/android/startop/iorap/IIorap;
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/google/android/startop/iorap/IorapForwardingService;
 
     .line 48
-    iget-object p0, p0, Lcom/google/android/startop/iorap/IorapForwardingService;->mIorapRemote:Lcom/google/android/startop/iorap/IIorap;
+    iget-object v0, p0, Lcom/google/android/startop/iorap/IorapForwardingService;->mIorapRemote:Lcom/google/android/startop/iorap/IIorap;
 
-    return-object p0
+    return-object v0
 .end method
 
 .method private connectToRemoteAndConfigure()Z
@@ -249,6 +254,7 @@
 
 .method private static handleRemoteError(Ljava/lang/Throwable;)V
     .registers 3
+    .param p0, "t"  # Ljava/lang/Throwable;
 
     .line 384
     sget-boolean v0, Lcom/google/android/startop/iorap/IorapForwardingService;->WTF_CRASH:Z
@@ -275,7 +281,8 @@
 .end method
 
 .method private static invokeRemote(Lcom/google/android/startop/iorap/IorapForwardingService$RemoteRunnable;)V
-    .registers 1
+    .registers 2
+    .param p0, "r"  # Lcom/google/android/startop/iorap/IorapForwardingService$RemoteRunnable;
 
     .line 368
     :try_start_0
@@ -288,12 +295,14 @@
 
     .line 369
     :catch_4
-    move-exception p0
+    move-exception v0
 
     .line 379
-    invoke-static {p0}, Lcom/google/android/startop/iorap/IorapForwardingService;->handleRemoteError(Ljava/lang/Throwable;)V
+    .local v0, "e":Landroid/os/RemoteException;
+    invoke-static {v0}, Lcom/google/android/startop/iorap/IorapForwardingService;->handleRemoteError(Ljava/lang/Throwable;)V
 
     .line 381
+    .end local v0  # "e":Landroid/os/RemoteException;
     :goto_8
     return-void
 .end method
@@ -319,82 +328,88 @@
     move-result-object v0
 
     .line 258
+    .local v0, "launchObserverRegistry":Lcom/android/server/wm/ActivityMetricsLaunchObserverRegistry;
     iget-object v1, p0, Lcom/google/android/startop/iorap/IorapForwardingService;->mAppLaunchObserver:Lcom/google/android/startop/iorap/IorapForwardingService$AppLaunchObserver;
 
     invoke-interface {v0, v1}, Lcom/android/server/wm/ActivityMetricsLaunchObserverRegistry;->registerLaunchObserver(Lcom/android/server/wm/ActivityMetricsLaunchObserver;)V
 
     .line 260
-    const/4 v0, 0x1
+    const/4 v1, 0x1
 
-    iput-boolean v0, p0, Lcom/google/android/startop/iorap/IorapForwardingService;->mRegisteredListeners:Z
+    iput-boolean v1, p0, Lcom/google/android/startop/iorap/IorapForwardingService;->mRegisteredListeners:Z
 
     .line 261
     return-void
 .end method
 
 .method private retryConnectToRemoteAndConfigure(I)Z
-    .registers 6
+    .registers 8
+    .param p1, "attempts"  # I
+
+    .line 177
+    const/16 v0, 0x3e8
 
     .line 179
-    sget-boolean v0, Lcom/google/android/startop/iorap/IorapForwardingService;->DEBUG:Z
+    .local v0, "sleepTime":I
+    sget-boolean v1, Lcom/google/android/startop/iorap/IorapForwardingService;->DEBUG:Z
 
-    const-string v1, "IorapForwardingService"
+    const-string v2, "IorapForwardingService"
 
-    if-eqz v0, :cond_1a
+    if-eqz v1, :cond_1c
 
     .line 180
-    new-instance v0, Ljava/lang/StringBuilder;
+    new-instance v1, Ljava/lang/StringBuilder;
 
-    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v2, "retryConnectToRemoteAndConfigure - attempt #"
+    const-string v3, "retryConnectToRemoteAndConfigure - attempt #"
 
-    invoke-virtual {v0, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, p1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
-
-    move-result-object p1
-
-    invoke-static {v1, p1}, Landroid/util/Log;->v(Ljava/lang/String;Ljava/lang/String;)I
-
-    .line 183
-    :cond_1a
-    invoke-direct {p0}, Lcom/google/android/startop/iorap/IorapForwardingService;->connectToRemoteAndConfigure()Z
-
-    move-result p1
-
-    if-eqz p1, :cond_22
-
-    .line 184
-    const/4 p1, 0x1
-
-    return p1
-
-    .line 193
-    :cond_22
-    const-string p1, "Failed to connect to iorapd, is it down? Delay for 1000"
-
-    invoke-static {v1, p1}, Landroid/util/Log;->w(Ljava/lang/String;Ljava/lang/String;)I
-
-    .line 197
-    iget-object p1, p0, Lcom/google/android/startop/iorap/IorapForwardingService;->mHandler:Landroid/os/Handler;
-
-    .line 198
-    const/4 v0, 0x0
-
-    invoke-virtual {p1, v0}, Landroid/os/Handler;->obtainMessage(I)Landroid/os/Message;
+    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
     move-result-object v1
 
-    const-wide/16 v2, 0x3e8
+    invoke-static {v2, v1}, Landroid/util/Log;->v(Ljava/lang/String;Ljava/lang/String;)I
+
+    .line 183
+    :cond_1c
+    invoke-direct {p0}, Lcom/google/android/startop/iorap/IorapForwardingService;->connectToRemoteAndConfigure()Z
+
+    move-result v1
+
+    if-eqz v1, :cond_24
+
+    .line 184
+    const/4 v1, 0x1
+
+    return v1
+
+    .line 193
+    :cond_24
+    const-string v1, "Failed to connect to iorapd, is it down? Delay for 1000"
+
+    invoke-static {v2, v1}, Landroid/util/Log;->w(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 197
-    invoke-virtual {p1, v1, v2, v3}, Landroid/os/Handler;->sendMessageDelayed(Landroid/os/Message;J)Z
+    iget-object v1, p0, Lcom/google/android/startop/iorap/IorapForwardingService;->mHandler:Landroid/os/Handler;
+
+    .line 198
+    const/4 v2, 0x0
+
+    invoke-virtual {v1, v2}, Landroid/os/Handler;->obtainMessage(I)Landroid/os/Message;
+
+    move-result-object v3
+
+    const-wide/16 v4, 0x3e8
+
+    .line 197
+    invoke-virtual {v1, v3, v4, v5}, Landroid/os/Handler;->sendMessageDelayed(Landroid/os/Message;J)Z
 
     .line 201
-    return v0
+    return v2
 .end method
 
 
@@ -492,6 +507,7 @@
     .catch Landroid/os/ServiceManager$ServiceNotFoundException; {:try_start_1 .. :try_end_b} :catch_1f
 
     .line 101
+    .local v1, "iorap":Lcom/google/android/startop/iorap/IIorap;
     nop
 
     .line 104
@@ -518,19 +534,23 @@
 
     .line 105
     :catch_1a
-    move-exception v1
+    move-exception v2
 
     .line 106
-    invoke-static {v1}, Lcom/google/android/startop/iorap/IorapForwardingService;->handleRemoteError(Ljava/lang/Throwable;)V
+    .local v2, "e":Landroid/os/RemoteException;
+    invoke-static {v2}, Lcom/google/android/startop/iorap/IorapForwardingService;->handleRemoteError(Ljava/lang/Throwable;)V
 
     .line 107
     return-object v0
 
     .line 98
+    .end local v1  # "iorap":Lcom/google/android/startop/iorap/IIorap;
+    .end local v2  # "e":Landroid/os/RemoteException;
     :catch_1f
     move-exception v1
 
     .line 99
+    .local v1, "e":Landroid/os/ServiceManager$ServiceNotFoundException;
     invoke-static {v1}, Lcom/google/android/startop/iorap/IorapForwardingService;->handleRemoteError(Ljava/lang/Throwable;)V
 
     .line 100
@@ -538,7 +558,7 @@
 .end method
 
 .method protected provideLaunchObserverRegistry()Lcom/android/server/wm/ActivityMetricsLaunchObserverRegistry;
-    .registers 2
+    .registers 3
     .annotation build Lcom/android/internal/annotations/VisibleForTesting;
     .end annotation
 
@@ -553,13 +573,15 @@
     check-cast v0, Lcom/android/server/wm/ActivityTaskManagerInternal;
 
     .line 88
+    .local v0, "amtInternal":Lcom/android/server/wm/ActivityTaskManagerInternal;
     nop
 
     .line 89
     invoke-virtual {v0}, Lcom/android/server/wm/ActivityTaskManagerInternal;->getLaunchObserverRegistry()Lcom/android/server/wm/ActivityMetricsLaunchObserverRegistry;
 
-    move-result-object v0
+    move-result-object v1
 
     .line 90
-    return-object v0
+    .local v1, "launchObserverRegistry":Lcom/android/server/wm/ActivityMetricsLaunchObserverRegistry;
+    return-object v1
 .end method

@@ -25,6 +25,7 @@
 # direct methods
 .method public constructor <init>(Lcom/android/server/pm/permission/PermissionsState$PermissionState;)V
     .registers 3
+    .param p1, "other"  # Lcom/android/server/pm/permission/PermissionsState$PermissionState;
 
     .line 852
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -40,9 +41,9 @@
     iput-boolean v0, p0, Lcom/android/server/pm/permission/PermissionsState$PermissionState;->mGranted:Z
 
     .line 855
-    iget p1, p1, Lcom/android/server/pm/permission/PermissionsState$PermissionState;->mFlags:I
+    iget v0, p1, Lcom/android/server/pm/permission/PermissionsState$PermissionState;->mFlags:I
 
-    iput p1, p0, Lcom/android/server/pm/permission/PermissionsState$PermissionState;->mFlags:I
+    iput v0, p0, Lcom/android/server/pm/permission/PermissionsState$PermissionState;->mFlags:I
 
     .line 856
     return-void
@@ -50,6 +51,7 @@
 
 .method public constructor <init>(Ljava/lang/String;)V
     .registers 2
+    .param p1, "name"  # Ljava/lang/String;
 
     .line 848
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -62,16 +64,19 @@
 .end method
 
 .method static synthetic access$000(Lcom/android/server/pm/permission/PermissionsState$PermissionState;)Z
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/pm/permission/PermissionsState$PermissionState;
 
     .line 843
-    iget-boolean p0, p0, Lcom/android/server/pm/permission/PermissionsState$PermissionState;->mGranted:Z
+    iget-boolean v0, p0, Lcom/android/server/pm/permission/PermissionsState$PermissionState;->mGranted:Z
 
-    return p0
+    return v0
 .end method
 
 .method static synthetic access$002(Lcom/android/server/pm/permission/PermissionsState$PermissionState;Z)Z
     .registers 2
+    .param p0, "x0"  # Lcom/android/server/pm/permission/PermissionsState$PermissionState;
+    .param p1, "x1"  # Z
 
     .line 843
     iput-boolean p1, p0, Lcom/android/server/pm/permission/PermissionsState$PermissionState;->mGranted:Z
@@ -80,16 +85,19 @@
 .end method
 
 .method static synthetic access$100(Lcom/android/server/pm/permission/PermissionsState$PermissionState;)I
-    .registers 1
+    .registers 2
+    .param p0, "x0"  # Lcom/android/server/pm/permission/PermissionsState$PermissionState;
 
     .line 843
-    iget p0, p0, Lcom/android/server/pm/permission/PermissionsState$PermissionState;->mFlags:I
+    iget v0, p0, Lcom/android/server/pm/permission/PermissionsState$PermissionState;->mFlags:I
 
-    return p0
+    return v0
 .end method
 
 .method static synthetic access$102(Lcom/android/server/pm/permission/PermissionsState$PermissionState;I)I
     .registers 2
+    .param p0, "x0"  # Lcom/android/server/pm/permission/PermissionsState$PermissionState;
+    .param p1, "x1"  # I
 
     .line 843
     iput p1, p0, Lcom/android/server/pm/permission/PermissionsState$PermissionState;->mFlags:I

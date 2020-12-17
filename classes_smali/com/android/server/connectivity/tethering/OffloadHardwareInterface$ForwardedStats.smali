@@ -43,6 +43,7 @@
 # virtual methods
 .method public add(Lcom/android/server/connectivity/tethering/OffloadHardwareInterface$ForwardedStats;)V
     .registers 6
+    .param p1, "other"  # Lcom/android/server/connectivity/tethering/OffloadHardwareInterface$ForwardedStats;
 
     .line 80
     iget-wide v0, p0, Lcom/android/server/connectivity/tethering/OffloadHardwareInterface$ForwardedStats;->rxBytes:J

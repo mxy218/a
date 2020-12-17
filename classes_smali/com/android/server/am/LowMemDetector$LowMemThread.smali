@@ -32,6 +32,8 @@
 
 .method synthetic constructor <init>(Lcom/android/server/am/LowMemDetector;Lcom/android/server/am/LowMemDetector$1;)V
     .registers 3
+    .param p1, "x0"  # Lcom/android/server/am/LowMemDetector;
+    .param p2, "x1"  # Lcom/android/server/am/LowMemDetector$1;
 
     .line 74
     invoke-direct {p0, p1}, Lcom/android/server/am/LowMemDetector$LowMemThread;-><init>(Lcom/android/server/am/LowMemDetector;)V
@@ -53,24 +55,27 @@
     move-result v0
 
     .line 80
+    .local v0, "newPressureState":I
     const/4 v1, -0x1
 
     if-ne v0, v1, :cond_11
 
     .line 82
-    iget-object v0, p0, Lcom/android/server/am/LowMemDetector$LowMemThread;->this$0:Lcom/android/server/am/LowMemDetector;
+    iget-object v1, p0, Lcom/android/server/am/LowMemDetector$LowMemThread;->this$0:Lcom/android/server/am/LowMemDetector;
 
-    const/4 v1, 0x0
+    const/4 v2, 0x0
 
-    invoke-static {v0, v1}, Lcom/android/server/am/LowMemDetector;->access$202(Lcom/android/server/am/LowMemDetector;Z)Z
+    invoke-static {v1, v2}, Lcom/android/server/am/LowMemDetector;->access$202(Lcom/android/server/am/LowMemDetector;Z)Z
 
     .line 83
     nop
 
     .line 90
+    .end local v0  # "newPressureState":I
     return-void
 
     .line 86
+    .restart local v0  # "newPressureState":I
     :cond_11
     iget-object v1, p0, Lcom/android/server/am/LowMemDetector$LowMemThread;->this$0:Lcom/android/server/am/LowMemDetector;
 
@@ -90,15 +95,17 @@
     monitor-exit v1
 
     .line 89
+    .end local v0  # "newPressureState":I
     goto :goto_0
 
     .line 88
+    .restart local v0  # "newPressureState":I
     :catchall_1f
-    move-exception v0
+    move-exception v2
 
     monitor-exit v1
     :try_end_21
     .catchall {:try_start_18 .. :try_end_21} :catchall_1f
 
-    throw v0
+    throw v2
 .end method
